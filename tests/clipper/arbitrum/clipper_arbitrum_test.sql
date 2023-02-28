@@ -83,7 +83,7 @@ WITH unit_test AS (
         CASE
             WHEN LOWER(test.tx_to) = LOWER(actual.tx_to) THEN TRUE
             ELSE FALSE
-        END AS tx_to_test,
+        END AS tx_to_test
 
     FROM {{ ref('clipper_arbitrum_trades') }} AS actual
         INNER JOIN {{ ref('clipper_arbitrum_trades_test_data') }} AS test
