@@ -7,7 +7,7 @@
 with
  stable_to_stable_trades as (
     select
-        distinct tx_hash
+        tx_hash
     from (
         select tx_hash
         from {{ ref('dex_aggregator_trades') }}
@@ -24,13 +24,15 @@ with
  )
 
 select
-  array("ethereum") as blockchain,
+  "ethereum" as blockchain,
   tx_hash,
   "Stable to stable" AS name,
-  "stable_to_stable" AS category,
+  "tx_hash" AS category,
   "gentrexha" AS contributor,
   "query" AS source,
   timestamp('2022-11-16') as created_at,
-  now() as updated_at
+  now() as updated_at,
+  "stable_to_stable" as model_name,
+  "usage" as label_type
 from
   stable_to_stable_trades
