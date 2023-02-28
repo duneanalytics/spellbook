@@ -6,5 +6,5 @@ sources:
     freshness:
       warn_after: { count: 12, period: hour }
     tables:
-      - name: Pair_evt_Swap
-        loaded_at_field: RewardsController_evt_RewardsClaimed
+      - name: RewardsController_evt_RewardsClaimed
+        loaded_at_field: evt_block_time
