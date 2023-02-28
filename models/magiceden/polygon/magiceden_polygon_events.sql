@@ -168,6 +168,7 @@ SELECT
   2 * amount_raw / power(10, p.decimals) / 100 AS platform_fee_amount,
   2 * amount_raw / power(10, p.decimals) * p.price / 100 AS platform_fee_amount_usd,
   CAST(2 AS DOUBLE) AS platform_fee_percentage,
+  0 AS royalty_fee_amount_raw,
   0 AS royalty_fee_amount,
   0 AS royalty_fee_amount_usd,
   0 AS royalty_fee_percentage,

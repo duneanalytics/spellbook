@@ -233,6 +233,8 @@ models:
         +schema: zora_ethereum
     magiceden:
       +schema: magiceden
+      polygon:
+        +schema: magiceden_polygon
       solana:
         +schema: magiceden_solana
 
