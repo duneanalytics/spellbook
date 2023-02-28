@@ -122,7 +122,7 @@ with source_ethereum_transactions as (
           end as receiver
         ,a.zone
         ,a.token_contract_address
-        ,a.original_amount
+        ,CAST(a.original_amount AS DECIMAL(38,0)) AS original_amount
         ,a.item_type
         ,a.token_id
         ,a.platform_contract_address
@@ -224,7 +224,38 @@ with source_ethereum_transactions as (
     and a.is_traded_nft
 )
 ,iv_trades as (
-  select a.*
+    select a.block_date
+          ,a.block_time
+          ,a.tx_hash
+          ,a.evt_index
+          ,a.block_number
+          ,a.seller
+          ,a.buyer
+          ,a.trade_type
+          ,a.order_type
+          ,a.nft_contract_address
+          ,a.nft_token_amount
+          ,a.nft_token_id
+          ,a.nft_token_standard
+          ,a.zone
+          ,a.platform_contract_address
+          ,b.token_contract_address
+          ,a.price_amount_raw
+          ,a.platform_fee_amount_raw
+          ,a.platform_fee_receiver
+          ,a.creator_fee_amount_raw
+          ,a.creator_fee_amount_raw_1
+          ,a.creator_fee_amount_raw_2
+          ,a.creator_fee_amount_raw_3
+          ,a.creator_fee_amount_raw_4
+          ,a.creator_fee_receiver_1
+          ,a.creator_fee_receiver_2
+          ,a.creator_fee_receiver_3
+          ,a.creator_fee_receiver_4
+          ,a.estimated_price
+          ,a.is_private
+          ,a.sub_type
+          ,a.sub_idx
           ,n.name AS nft_token_name
           ,t.from as tx_from
           ,t.to as tx_to
@@ -258,82 +289,78 @@ with source_ethereum_transactions as (
   left join ref_nft_aggregators agg on agg.contract_address = t.to
   left join ref_nft_aggregators_marks agg_m on right(t.data, agg_m.hash_marker_size) = agg_m.hash_marker
 )
-,iv_columns as (
   -- Rename column to align other *.trades tables
   -- But the columns ordering is according to convenience.
   -- initcap the code value if needed
   select
-    -- basic info
-    'ethereum' as blockchain
-    ,'seaport' as project
-    ,'v1' as version
+        -- basic info
+        'ethereum' as blockchain
+        ,'seaport' as project
+        ,'v1' as version
 
-    -- order info
-    ,block_date
-    ,block_time
-    ,seller
-    ,buyer
-    ,initcap(trade_type) as trade_type
-    ,initcap(order_type) as trade_category -- Buy / Offer Accepted
-    ,'Trade' as evt_type
+        -- order info
+        ,block_date
+        ,block_time
+        ,seller
+        ,buyer
+        ,initcap(trade_type) as trade_type
+        ,initcap(order_type) as trade_category -- Buy / Offer Accepted
+        ,'Trade' as evt_type
 
-    -- nft token info
-    ,nft_contract_address
-    ,nft_token_name as collection
-    ,nft_token_id as token_id
-    ,nft_token_amount as number_of_items
-    ,nft_token_standard as token_standard
+        -- nft token info
+        ,nft_contract_address
+        ,nft_token_name as collection
+        ,nft_token_id as token_id
+        ,nft_token_amount as number_of_items
+        ,nft_token_standard as token_standard
 
-    -- price info
-    ,price_amount as amount_original
-    ,price_amount_raw as amount_raw
-    ,price_amount_usd as amount_usd
-    ,token_symbol as currency_symbol
-    ,token_alternative_symbol as currency_contract
-    ,token_contract_address as original_currency_contract
-    ,price_token_decimals as currency_decimals   -- in case calculating royalty1~4
+        -- price info
+        ,price_amount as amount_original
+        ,price_amount_raw as amount_raw
+        ,price_amount_usd as amount_usd
+        ,token_symbol as currency_symbol
+        ,token_alternative_symbol as currency_contract
+        ,token_contract_address as original_currency_contract
+        ,price_token_decimals as currency_decimals   -- in case calculating royalty1~4
 
-    -- project info (platform or exchange)
-    ,platform_contract_address as project_contract_address
-    ,platform_fee_receiver as platform_fee_receive_address
-    ,platform_fee_amount_raw
-    ,platform_fee_amount
-    ,platform_fee_amount_usd
+        -- project info (platform or exchange)
+        ,platform_contract_address as project_contract_address
+        ,platform_fee_receiver as platform_fee_receive_address
+        ,platform_fee_amount_raw
+        ,platform_fee_amount
+        ,platform_fee_amount_usd
 
-    -- royalty info
-    ,creator_fee_receiver_1 as royalty_fee_receive_address
-    ,creator_fee_amount_raw as royalty_fee_amount_raw
-    ,creator_fee_amount as royalty_fee_amount
-    ,creator_fee_amount_usd as royalty_fee_amount_usd
-    ,creator_fee_receiver_1 as royalty_fee_receive_address_1
-    ,creator_fee_receiver_2 as royalty_fee_receive_address_2
-    ,creator_fee_receiver_3 as royalty_fee_receive_address_3
-    ,creator_fee_receiver_4 as royalty_fee_receive_address_4
-    ,creator_fee_amount_raw_1 as royalty_fee_amount_raw_1
-    ,creator_fee_amount_raw_2 as royalty_fee_amount_raw_2
-    ,creator_fee_amount_raw_3 as royalty_fee_amount_raw_3
-    ,creator_fee_amount_raw_4 as royalty_fee_amount_raw_4
+        -- royalty info
+        ,creator_fee_receiver_1 as royalty_fee_receive_address
+        ,creator_fee_amount_raw as royalty_fee_amount_raw
+        ,creator_fee_amount as royalty_fee_amount
+        ,creator_fee_amount_usd as royalty_fee_amount_usd
+        ,creator_fee_receiver_1 as royalty_fee_receive_address_1
+        ,creator_fee_receiver_2 as royalty_fee_receive_address_2
+        ,creator_fee_receiver_3 as royalty_fee_receive_address_3
+        ,creator_fee_receiver_4 as royalty_fee_receive_address_4
+        ,creator_fee_amount_raw_1 as royalty_fee_amount_raw_1
+        ,creator_fee_amount_raw_2 as royalty_fee_amount_raw_2
+        ,creator_fee_amount_raw_3 as royalty_fee_amount_raw_3
+        ,creator_fee_amount_raw_4 as royalty_fee_amount_raw_4
 
-    -- aggregator
-    ,aggregator_name
-    ,aggregator_address
+        -- aggregator
+        ,aggregator_name
+        ,aggregator_address
 
-    -- tx
-    ,block_number
-    ,tx_hash
-    ,evt_index
-    ,tx_from
-    ,tx_to
-    ,right_hash
+        -- tx
+        ,block_number
+        ,tx_hash
+        ,evt_index
+        ,tx_from
+        ,tx_to
+        ,right_hash
 
-    -- seaport etc
-    ,zone as zone_address
-    ,estimated_price
-    ,is_private
-    ,sub_idx
-    ,sub_type
-  from iv_trades
-)
-select *
-from iv_columns
+        -- seaport etc
+        ,zone as zone_address
+        ,estimated_price
+        ,is_private
+        ,sub_idx
+        ,sub_type
+    from iv_trades
 ;
