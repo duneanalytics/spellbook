@@ -29,7 +29,7 @@ SELECT
     logs.index,
     logs.block_time,
     logs.block_number,
-    bytea2numeric_v2 (SUBSTRING(logs.data FROM 32 FOR 64)) * 1 AS swap_fee_percentage
+    bytea2numeric_v3 (SUBSTRING(logs.data FROM 32 FOR 64)) * 1 AS swap_fee_percentage
 FROM
     {{ source ('arbitrum', 'logs') }}
     INNER JOIN registered_pools ON registered_pools.pool_address = logs.contract_address
