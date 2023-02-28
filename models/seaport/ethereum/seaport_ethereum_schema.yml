@@ -307,10 +307,10 @@ models:
             - token_id
             - sub_type
             - sub_idx
-      # - check_seaport_seed:
-      #     blockchain: ethereum
-      #     project: seaport
-      #     version: v1        
+      - check_seaport_seed:
+          blockchain: ethereum
+          project: seaport
+          version: v1        
     columns:
       - *blockchain
       - *project
@@ -400,10 +400,10 @@ models:
             - token_id
             - sub_type
             - sub_idx
-      # - check_seaport_seed:
-      #     blockchain: ethereum
-      #     project: seaport
-      #     version: v1        
+      - check_seaport_seed:
+          blockchain: ethereum
+          project: seaport
+          version: v1        
     columns:
       - *blockchain
       - *project
