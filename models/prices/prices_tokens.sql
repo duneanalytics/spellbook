@@ -253,6 +253,7 @@ VALUES
     ("safemoon-safemoon", "bnb", "SAFEMOON", "0x8076c74c5e3f5852037f31ff0093eeb8c8add8d3", 9),
     --("sbd-steem-dollars", "bnb", "SBD", "0x3bf7e66b905bf2aaa08c45f0bdab0c4b26c36d4a", 9),
     ("soul-phantasma", "bnb", "SOUL", "0x67d012f731c23f0313cea1186d0121779c77fcfe", 8),
+    ("stg-stargatetoken","bnb","STG","0xb0d502e938ed5f4df2e681fe6e419ff29631d62b",18),
     ("super-superfarm", "bnb", "SUPER", "0x51ba0b044d96c3abfca52b64d733603ccc4f0d4d", 18),
     ("sushi-sushi", "bnb", "SUSHI", "0x947950bcc74888a40ffa2593c5798f11fc9124c4", 18),
     ("swap-trustswap", "bnb", "SWAP", "0x82443a77684a7da92fdcb639c8d2bd068a596245", 18),
@@ -337,6 +338,7 @@ VALUES
     ("mdb-milliondollarbaby", "bnb", "MDB", "0x0557a288a93ed0df218785f2787dac1cd077f8f3", 18),
     ("walv-alvey-chain", "bnb", "wALV", "0x256d1fce1b1221e8398f65f9b36033ce50b2d497", 18),
     ("loop-loopnetwork", "bnb", "LOOP", "0xce186ad6430e2fe494a22c9edbd4c68794a28b35", 18),
+    ("phantom-protocol", "bnb", "PHM", "0x4399AE7538c33cA24edD4C28C5dd7Ce9a80acF81", 18),
 
     ("0xbtc-0xbitcoin", "ethereum", "0xBTC", "0xb6ed7644c69416d67b522e20bc294a9a9b405b31", 8),
     ("1inch-1inch", "ethereum", "1INCH", "0x111111111117dc0aa78b770fa6a738034120c302", 18),
@@ -659,6 +661,7 @@ VALUES
     ("storj-storj", "ethereum", "STORJ", "0xb64ef51c888972c908cfacf59b47c1afbc0ab8ac", 8),
     ("stpt-stpt", "ethereum", "STPT", "0xde7d85157d9714eadf595045cc12ca4a5f3e2adb", 18),
     ("strong-strong", "ethereum", "STRONG", "0x990f341946a3fdb507ae7e52d17851b87168017c", 18),
+    ("stg-stargatetoken","ethereum","STG","0xaf5191b0de278c7286d6c7cc6ab6bb8a73ba2cd6",18),
     ("super-superfarm", "ethereum", "SUPER", "0xe53ec727dbdeb9e2d5456c3be40cff031ab40a55", 18),
     ("sushi-sushi", "ethereum", "SUSHI", "0x6b3595068778dd592e39a122f4f5a5cf09c90fe2", 18),
     ("swise-stakewise", "ethereum", "SWISE", "0x48c3399719b582dd63eb5aadf12a40b4c3f52fa2", 18),
