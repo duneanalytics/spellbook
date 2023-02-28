@@ -255,6 +255,7 @@ with source_ethereum_transactions as (
   left join ref_nft_aggregators agg on agg.contract_address = t.to
   left join ref_nft_aggregators_marks agg_m on right(t.data, agg_m.hash_marker_size) = agg_m.hash_marker
 )
+
   -- Rename column to align other *.trades tables
   -- But the columns ordering is according to convenience.
   -- initcap the code value if needed
