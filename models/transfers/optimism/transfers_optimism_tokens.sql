@@ -4,7 +4,7 @@
         materialized ='incremental',
         file_format ='delta',
         incremental_strategy='merge',
-        unique_key= ['evt_tx_hash', 'evt_index', 'trace_address'],
+        unique_key= ['tx_hash', 'evt_index', 'trace_address'],
         post_hook='{{ expose_spells(\'["optimism"]\',
                                     "sector",
                                     "transfers",
