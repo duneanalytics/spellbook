@@ -119,7 +119,8 @@ models:
       tags: ['safe', 'transfers', 'optimism']
     description: "ETH transfers into or out of Safes"
     columns:
-      - *address
+      - name: address
+        description: "Safe contract address"
       - *block_date
       - *block_time
       - &amount_raw
