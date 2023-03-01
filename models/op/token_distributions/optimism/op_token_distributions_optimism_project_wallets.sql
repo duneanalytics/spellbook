@@ -165,7 +165,7 @@ FROM (values
 
 SELECT
         address, label, proposal_name, address_descriptor,
-        COALESCE(pnm.project_name, a.proposal_name) AS project_name
+        COALESCE(pnm.project_name, fin.proposal_name) AS project_name
 
 FROM (
         SELECT address, label, proposal_name, address_descriptor, ROW_NUMBER() OVER(PARTITION BY address ORDER BY rnk ASC) AS choice_rank 
@@ -186,6 +186,6 @@ FROM (
                 ) do_choice_rank
         ) fin
 LEFT JOIN {{ ref('op_token_distributions_optimism_project_name_mapping') }} pnm 
-        ON pnm.proposal_name = a.proposal_name
+        ON pnm.proposal_name = fin.proposal_name
 
 WHERE choice_rank = 1 --remove dupes in preferred order
