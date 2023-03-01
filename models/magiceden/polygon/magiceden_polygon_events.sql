@@ -174,7 +174,7 @@ SELECT
   0 AS royalty_fee_percentage,
   CAST(NULL AS double) AS royalty_fee_receive_address,
   CAST(NULL AS string) AS royalty_fee_currency_symbol,
-  a.evt_tx_hash || '-' || a.evt_type  || '-' || a.evt_index || '-' || a.token_id  AS unique_trade_id
+  a.evt_tx_hash || '-' || a.evt_type  || '-' || a.evt_index ||  '-' || a.token_id || '-' || cast(a.number_of_items as string) AS unique_trade_id
 FROM all_events a
 INNER JOIN {{ source('polygon','transactions') }} t ON a.evt_block_number = t.block_number
      AND a.evt_tx_hash = t.hash
