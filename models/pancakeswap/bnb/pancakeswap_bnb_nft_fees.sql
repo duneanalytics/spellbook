@@ -1,6 +1,6 @@
  {{
   config(
-        alias='fees',
+        alias='nft_fees',
         post_hook='{{ expose_spells(\'["bnb"]\',
                                     "project",
                                     "pancakeswap",

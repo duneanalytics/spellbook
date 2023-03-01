@@ -1,6 +1,6 @@
  {{
   config(
-        alias='trades',
+        alias='nft_trades',
         post_hook='{{ expose_spells(\'["bnb"]\',
                                     "project",
                                     "pancakeswap",
