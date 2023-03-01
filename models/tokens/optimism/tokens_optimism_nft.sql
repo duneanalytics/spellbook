@@ -262,6 +262,7 @@ FROM
 ,('0x9374e7813CC6b4d64224a7Dd039f52543bF12D07', 'LiYu', 'erc721')
 ,('0x4e3a6e6534097a42b505c280ba5cd7d203be9501', 'Galxe Stargate Warrior', 'erc721')
 ,('0x656B02f01500E0D7c072330E324F3e026dF91F55', 'ZONIC Gift Box', 'erc721')
-
+,('0xe22FD22B3fc0EcD5217D2461d15159A7dfC38790', 'Base Subscription', 'erc1155')
+,('0xd8266CD02173f185b2a01D0bf3d654dF1Cd00714', 'Beefy Finance x Layer3', 'erc1155')
 
 ) as temp_table (contract_address, name, standard)
