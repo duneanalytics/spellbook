@@ -181,6 +181,10 @@ models:
     config:
       tags: ['labels', 'ethereum', 'gauges']
     description: 'Balancer v2 gauge labels.'
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - address
     columns:
       - *blockchain
       - *address
@@ -202,6 +206,10 @@ models:
     config:
       tags: ['labels', 'polygon', 'gauges']
     description: 'Balancer v2 gauge labels.'
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - address
     columns:
       - *blockchain
       - *address
@@ -223,6 +231,10 @@ models:
     config:
       tags: ['labels', 'arbitrum', 'gauges']
     description: 'Balancer v2 gauge labels.'
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - address
     columns:
       - *blockchain
       - *address
@@ -244,6 +256,10 @@ models:
     config:
       tags: ['labels', 'optimism', 'gauges']
     description: 'Balancer v2 gauge labels.'
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - address
     columns:
       - *blockchain
       - *address
