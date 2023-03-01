@@ -69,7 +69,7 @@ FROM (
             NULL AS to_name, cast(amount as double) / cast(1e18 as double) AS amount_dec
             --get last
             , tf.evt_index AS evt_tfer_index
-            , bytearray_substring(tx.data, 1, 4) AS method
+            , substring(tx.data,1,10) AS method --bytearray_substring(tx.data, 1, 4) AS method
             , contract_project AS to_contract
             
             ,ROW_NUMBER() OVER (PARTITION BY r.evt_tx_hash, r.evt_index ORDER BY tf.evt_index DESC) AS claim_rank_desc
@@ -180,7 +180,7 @@ GROUP BY 1,2,3,4
                         cast(amount_sold as double)/POWER(10,18) AS amount_sold_dec,
                         evt_index AS evt_tfer_index,
                         
-                        bytearray_substring(tx.data, 1, 4) AS method
+                        substring(tx.data,1,10) AS method --bytearray_substring(tx.data, 1, 4) AS method
                         
                         FROM {{source('erc20_optimism','evt_transfer') }} tf
                         -- OLD: we want the sender to always be either the foundation or a project or a CEX
