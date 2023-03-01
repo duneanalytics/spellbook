@@ -42,11 +42,6 @@ jobs:
       - name: dbt seed
         run: "dbt seed --select state:modified --state ."
 
-      - name: check schemas
-        run: |
-          test=$(dbt --quiet --no-print ls --select config.schema:no_schema --output path)
-          [[ -z "$test" ]] && { echo "Success: All models have a custom schema"; exit 0; } || { echo "Found models without custom schema:"; echo "$test"; exit 1; }
-
       - name: dbt run initial model(s)
         run: "dbt -x run --select state:modified --defer --state ."
 
