@@ -26,7 +26,7 @@ WITH
                 type,
                 concat(id, signature, type) as unique_signature_id
             FROM {{ source(chain, 'signatures') }}
-            
+
             {% if is_incremental() %}
             WHERE created_at >= date_trunc("day", now() - interval '2 days')
             {% endif %}
@@ -41,14 +41,14 @@ WITH
     SELECT
     *
     FROM (
-        SELECT 
+        SELECT
             id
             , signature
             , abi
             , type
             , created_at
             , date_trunc('month',created_at) as created_at_month
-            , unique_signature_id 
+            , unique_signature_id
             , row_number() over (partition by unique_signature_id order by created_at desc) recency
         FROM signatures
     ) a
