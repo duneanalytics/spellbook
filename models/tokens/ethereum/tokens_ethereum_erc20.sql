@@ -14741,7 +14741,7 @@ FROM (VALUES
         ('0xb4d1ba947e5f84b9aef00595b8b945585d5b4cae', 'BVB', 18),
         ('0xb4d294cb85f5c79c7b86127e427846fd143959d3', 'coreKORE', 18),
         ('0xb4d32103911714833b85e39e0866a7a5c350403a', 'WEFP', 8),
-        ('0xb4d930279552397bba2ee473229f89ec245bc365', 'MAHA', 18),
+        ('0x745407c86df8db893011912d3ab28e68b62e49b0', 'MAHA', 18),
         ('0xb4dffa52fee44bd493f12d85829d775ec8017691', 'Gaas', 9),
         ('0xb4e1bba882e1058dc9088c69f26f832394cabc77', 'TREATS', 18),
         ('0xb4e40865eb5068dd5271ea2b510d18f54d906be0', 'DW', 9),
