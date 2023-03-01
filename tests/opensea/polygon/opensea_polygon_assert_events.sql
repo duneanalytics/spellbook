@@ -2,8 +2,8 @@
 with opensea_trades_test AS (
    select call_block_time,
         call_tx_hash,
-        case when length(a.rightOrder:makerAssetData) = 650 then cast(bytea2numeric_v3(substr(a.rightOrder:makerAssetData,332,64)) as string)
-                else cast(bytea2numeric_v3(substr(a.rightOrder:makerAssetData,76,64)) as string)
+        case when length(rightOrder:makerAssetData) = 650 then cast(bytea2numeric_v3(substr(rightOrder:makerAssetData,332,64)) as string)
+                else cast(bytea2numeric_v3(substr(rightOrder:makerAssetData,76,64)) as string)
         end AS token_id,
         least(cast(output_matchedFillResults:left:takerFeePaid as numeric), cast(output_matchedFillResults:right:makerFeePaid as numeric)) AS number_of_items
    from {{ source('opensea_polygon_v2_polygon','ZeroExFeeWrapper_call_matchOrders') }} a
@@ -16,7 +16,7 @@ with opensea_trades_test AS (
 raw_events as (
     SELECT call_block_time as raw_block_time,
         call_tx_hash as raw_tx_hash,
-        call_tx_hash || '-Trade-0-' || token_id || '-' || cast(a.number_of_items as string) as raw_unique_trade_id
+        call_tx_hash || '-Trade-0-' || token_id || '-' || cast(coalesce(number_of_items, 1) as string) as raw_unique_trade_id
     from opensea_trades_test
 ),
 
@@ -25,8 +25,8 @@ processed_events AS (
         tx_hash,
         unique_trade_id
     FROM {{ ref('opensea_polygon_events') }}
-    WHERE call_block_time >= '2022-06-01'
-        AND call_block_time < '2022-07-01'
+    WHERE block_time >= '2022-06-01'
+        AND block_time < '2022-07-01'
         AND evt_type = 'Trade'
 )
 
