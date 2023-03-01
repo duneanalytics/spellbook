@@ -8,6 +8,8 @@ sources:
         loaded_at_field: evt_block_time
       - name: TreasureMarketplaceV2_evt_ItemSold
         loaded_at_field: evt_block_time
+      - name: TreasureMarketplaceV1_evt_ItemSold
+        loaded_at_field: evt_block_time
 
   - name: treasure_trove_ethereum
     description: Decoded contract of Trove Marketplace on Ethereum

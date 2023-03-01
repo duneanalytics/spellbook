@@ -7,7 +7,8 @@
 )}}
 
 {% set trove_arbitrum_models = [
-    'trove_v2_arbitrum_trades'
+    ref('trove_v2_arbitrum_trades')
+    ,ref('trove_v1_arbitrum_trades')
 ] %}
 
 

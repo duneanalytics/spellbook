@@ -1,5 +1,5 @@
 {{ config(
-    schema='trove_v2_arbitrum',
+    schema='trove_v1_arbitrum',
     alias = 'trades',
     partition_by = ['block_date'],
     materialized = 'incremental',
@@ -8,7 +8,7 @@
     unique_key = ['unique_trade_id']
 )}}
 
-{% set project_start_date = '2022-06-13' %}
+{% set project_start_date = '2021-11-13' %}
 
 with marketplace as (
     select
@@ -23,58 +23,25 @@ with marketplace as (
         seller,
         buyer,
         cast(pricePerItem as decimal(38, 0)) * cast(quantity as decimal(38, 0)) as amount_raw,
-        paymentToken as currency_contract,
+        '0x539bde0d7dbd336b79148aa742883198bbf60342' as currency_contract,
         nftAddress as nft_contract_address,
         contract_address as project_contract_address,
         evt_tx_hash as tx_hash,
         evt_block_number as block_number,
         evt_index
-    from (
-        select evt_block_time,
-               evt_index,
-               tokenId,
-               quantity,
-               seller,
-               pricePerItem,
-               paymentToken,
-               nftAddress,
-               evt_tx_hash,
-               evt_block_number,
-               contract_address,
-               bidder as buyer
-        from {{ source('treasure_trove_arbitrum', 'TreasureMarketplaceV2_evt_BidAccepted') }}
-        {% if is_incremental() %}
-        where evt_block_time >= date_trunc("day", now() - interval '1 week')
-        {% else %}
-        where evt_block_time >= '{{project_start_date}}'
-        {% endif %}
-        union all
-        select evt_block_time,
-               evt_index,
-               tokenId,
-               quantity,
-               seller,
-               pricePerItem,
-               paymentToken,
-               nftAddress,
-               evt_tx_hash,
-               evt_block_number,
-               contract_address,
-               buyer
-        from {{ source('treasure_trove_arbitrum', 'TreasureMarketplaceV2_evt_ItemSold') }}
-        {% if is_incremental() %}
-        where evt_block_time >= date_trunc("day", now() - interval '1 week')
-        {% else %}
-        where evt_block_time >= '{{project_start_date}}'
-        {% endif %}
-    )
+    from {{ source('treasure_trove_arbitrum', 'TreasureMarketplaceV1_evt_ItemSold') }}
+    {% if is_incremental() %}
+    where evt_block_time >= date_trunc("day", now() - interval '1 week')
+    {% else %}
+    where evt_block_time >= '{{project_start_date}}'
+    {% endif %}
 )
 
 
 select
     'arbitrum' as blockchain,
     'trove' as project,
-    'v2' as version,
+    'v1' as version,
     date_trunc('day',mp.block_time) as block_date,
     mp.block_time,
     token_id,
