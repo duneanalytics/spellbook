@@ -219,7 +219,7 @@ GROUP BY 1,2,3,4
                         AND dext.tx_hash = tf.evt_tx_hash
                         AND dext.project_wallet = tf.`from`
                     
-                    LEFT JOIN {{ ref('contracts_optimism_contract_mapping') }}g cm
+                    LEFT JOIN {{ ref('contracts_optimism_contract_mapping') }} cm
                         ON cm.contract_address = tx.to
                         AND is_self_destruct = false
                         AND tx.to IS NOT NULL
