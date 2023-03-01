@@ -5,28 +5,32 @@
                                     \'["jacektrocinski"]\') }}')}}
 
 SELECT
-    array('polygon') AS blockchain,
+    'polygon' AS blockchain,
     gauge.gauge AS address,
     'pol:' || pools.name  AS name,
     'balancer_v2_gauges' AS category,
     'balancerlabs' AS contributor,
     'query' AS source,
     TIMESTAMP('2022-01-13') AS created_at,
-    NOW() AS updated_at
+    NOW() AS updated_at,
+    'balancer_v2_gauges_polygon' AS model_name,
+    'identifier' AS label_type
 FROM
     {{ source('balancer_ethereum', 'PolygonRootGaugeFactory_evt_PolygonRootGaugeCreated') }} gauge
     LEFT JOIN {{ source('balancer_polygon', 'ChildChainLiquidityGaugeFactory_evt_RewardsOnlyGaugeCreated') }} streamer ON gauge.recipient = streamer.streamer
     LEFT JOIN {{ ref('labels_balancer_v2_pools_polygon') }} pools ON pools.address = streamer.pool
 UNION ALL
 SELECT
-    array('polygon') AS blockchain,
+    'polygon' AS blockchain,
     gauge.gauge AS address,
     'pol:' || pools.name  AS name,
     'balancer_v2_gauges' AS category,
     'balancerlabs' AS contributor,
     'query' AS source,
     TIMESTAMP('2022-01-13') AS created_at,
-    NOW() AS updated_at
+    NOW() AS updated_at,
+    'balancer_v2_gauges_polygon' AS model_name,
+    'identifier' AS label_type
 FROM
     {{ source('balancer_ethereum', 'CappedPolygonRootGaugeFactory_evt_GaugeCreated') }} gauge
     INNER JOIN {{ source('balancer_ethereum', 'CappedPolygonRootGaugeFactory_call_create') }} call ON call.call_tx_hash = gauge.evt_tx_hash
