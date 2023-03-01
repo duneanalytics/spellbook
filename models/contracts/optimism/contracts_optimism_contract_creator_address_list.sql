@@ -412,7 +412,8 @@ FROM (
       ,('0x607291C9B3b03D8C2DC1F5f7F8db2B6A06C91183', 'Tide Protocol')
       ,('0xEe312dDc7aCE9F08728241BF2693B67D3428271B', 'Aloe II')
       ,('0x33d73cc0E060939476A10E47b86A4568c7DcF261', 'Coinvise')
-      ,('0xcD6596071e9CB8FC358796F2839A5704496795F9' ,'Superfluid')
+      ,('0xcD6596071e9CB8FC358796F2839A5704496795F9', 'Superfluid')
+      ,('0x71a15Ac12ee91BF7c83D08506f3a3588143898B5', 'Llamaswap')
 
   ) as temp_table (creator_address, contract_project)
 
