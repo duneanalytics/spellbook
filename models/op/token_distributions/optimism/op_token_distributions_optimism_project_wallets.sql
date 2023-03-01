@@ -164,7 +164,7 @@ FROM (values
 )
 
 SELECT
-        address, label, proposal_name, address_descriptor,
+        fin.address, fin.label, fin.proposal_name, fin.address_descriptor,
         COALESCE(pnm.project_name, fin.proposal_name) AS project_name
 FROM (
         SELECT address, label, proposal_name, address_descriptor, ROW_NUMBER() OVER(PARTITION BY address ORDER BY rnk ASC) AS choice_rank 
