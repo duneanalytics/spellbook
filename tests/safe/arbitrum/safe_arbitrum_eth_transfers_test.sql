@@ -2,7 +2,7 @@
 
 with test_data as (
     select round(sum(amount_raw) / 1e18, 0) as total
-    from {{ ref('safe_arbitrum_safes') }}
+    from {{ ref('safe_arbitrum_eth_transfers') }}
     where block_time between '2022-11-01' and '2022-11-03'
 ),
 
