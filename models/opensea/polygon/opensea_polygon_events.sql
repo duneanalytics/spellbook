@@ -129,7 +129,7 @@ SELECT
   CAST(royalty_fee AS double) AS royalty_fee_percentage,
   a.fee_recipient AS royalty_fee_receive_address,
   erc20.symbol AS royalty_fee_currency_symbol,
-  a.tx_hash|| '-' || a.evt_type  || '-' || a.evt_index || '-' || a.token_id  AS unique_trade_id
+  a.tx_hash|| '-' || a.evt_type  || '-' || a.evt_index || '-' || a.token_id || '-' || cast(a.number_of_items as string)  AS unique_trade_id
 FROM all_events a
 INNER JOIN {{ source('polygon','transactions') }} t ON a.block_number = t.block_number AND a.tx_hash = t.hash
     {% if not is_incremental() %}
