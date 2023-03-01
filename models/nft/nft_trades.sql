@@ -1,9 +1,9 @@
 {{ config(
         alias ='trades',
-        post_hook='{{ expose_spells(\'["ethereum","solana","bnb", "optimism","arbitrum"]\',
+        post_hook='{{ expose_spells(\'["ethereum","solana","bnb", "optimism","arbitrum","polygon"]\',
                                     "sector",
                                     "nft",
-                                    \'["soispoke", "0xRob"]\') }}')
+                                    \'["soispoke", "0xRob","springzh"]\') }}')
 }}
 
 
@@ -16,6 +16,7 @@
 ,ref('liquidifty_trades')
 ,ref('looksrare_ethereum_trades')
 ,ref('magiceden_trades')
+,ref('oneplanet_polygon_trades')
 ,ref('opensea_trades')
 ,ref('sudoswap_ethereum_trades')
 ,ref('superrare_ethereum_trades')

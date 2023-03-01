@@ -1,6 +1,6 @@
 {{ config(
         alias ='fees',
-        post_hook='{{ expose_spells(\'["ethereum","solana","bnb","optimism","arbitrum"]\',
+        post_hook='{{ expose_spells(\'["ethereum","solana","bnb","optimism","arbitrum","polygon"]\',
                                     "sector",
                                     "nft",
                                     \'["soispoke","0xRob","springzh"]\') }}')
