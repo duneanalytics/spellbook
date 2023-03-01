@@ -12,7 +12,6 @@
     )
 }}
 
-
 {% set project_start_date = '2022-11-29' %}
 
 WITH 
@@ -53,7 +52,6 @@ dexs as (
         FROM 
         dexs_raw
 )
-
 SELECT
     'avalanche_c' as blockchain, 
     'odos' as project, 
@@ -120,4 +118,4 @@ LEFT JOIN {{ source('prices', 'usd') }} p_sold
     {% if is_incremental() %}
     AND p_sold.minute >= date_trunc("day", now() - interval '1 week')
     {% endif %}
-; 
+;
