@@ -61,7 +61,7 @@ FROM (
     SELECT r.evt_block_time, r.evt_block_number, r.evt_index,
         tf."from" AS from_address, tf.to AS to_address, tx.to AS tx_to_address, tx."from" AS tx_from_address, r.evt_tx_hash,
         'Project' as from_label, 'Parter Fund' AS from_type, 'Aave' AS from_name, 
-        tf.to as user_address, lbl_to.address_type AS to_type
+        tf.to as user_address, lbl_to.address_descriptor AS to_type
             ,COALESCE(
                 lbl_to.label
                 , 'Other'
@@ -131,6 +131,7 @@ GROUP BY 1,2,3,4
 
 )
 
+
   , outgoing_distributions AS 
             (
                 WITH tfers AS (
@@ -138,14 +139,14 @@ GROUP BY 1,2,3,4
                     SELECT
                         evt_block_time, evt_block_number, evt_index,
                         tf."from" AS from_address, tf.to AS to_address, tx.to AS tx_to_address, tx."from" AS tx_from_address,  evt_tx_hash,
-                        COALESCE(lbl_from_util_tx.address_type
-                            -- lbl_to_tx.address_type,
-                            ,lbl_from.address_type
+                        COALESCE(lbl_from_util_tx.address_descriptor
+                            -- lbl_to_tx.address_descriptor,
+                            ,lbl_from.address_descriptor
                             ) 
                             AS from_type, --override if to an incentive tx address
                     COALESCE(
-                        CASE WHEN tf.to = dc.address THEN lbl_from_util_tx.address_type ELSE NULL END --if utility, mark as internal
-                        ,lbl_to.address_type
+                        CASE WHEN tf.to = dc.address THEN lbl_from_util_tx.address_descriptor ELSE NULL END --if utility, mark as internal
+                        ,lbl_to.address_descriptor
                         )
                         AS to_type,
                     COALESCE(lbl_from_util_tx.label
@@ -154,10 +155,10 @@ GROUP BY 1,2,3,4
                             'Other') 
                             AS from_label, --override if to an incentive tx address
                     COALESCE(
-                            dc.address_name,--if we have a name override, like airdrop 2
-                            lbl_from_util_tx.address_name
+                            dc.project_name,--if we have a name override, like airdrop 2
+                            lbl_from_util_tx.project_name
                             -- lbl_to_tx.project,
-                            ,lbl_from.address_name) 
+                            ,lbl_from.project_name) 
                             AS from_name, --override if to an incentive tx address
                     COALESCE(
                         txl.tx_type
@@ -168,8 +169,8 @@ GROUP BY 1,2,3,4
                             AS to_label,
                     COALESCE(
                         txl.tx_name
-                        ,CASE WHEN tf.to = dc.address THEN lbl_from_util_tx.address_name ELSE NULL END --if utility, mark as internal
-                        ,lbl_to.address_name
+                        ,CASE WHEN tf.to = dc.address THEN lbl_from_util_tx.project_name ELSE NULL END --if utility, mark as internal
+                        ,lbl_to.project_name
                         ,dext.project
                         ) AS to_name,
                         
