@@ -274,7 +274,7 @@ with source_polygon_transactions as (
     ,tx_hash
     ,tx_from
     ,tx_to
-    ,tx_hash || '-' || cast(evt_index as VARCHAR(10)) || '-' || nft_contract_address || '-' || cast(nft_token_id as VARCHAR(10)) || '-' || cast(sub_idx as VARCHAR(10)) as unique_trade_id
+    ,'OnePlanet-' || tx_hash || '-' || cast(evt_index as VARCHAR(10)) || '-' || nft_contract_address || '-' || cast(nft_token_id as VARCHAR(10)) || '-' || cast(sub_idx as VARCHAR(10)) as unique_trade_id
   from iv_trades
 )
 select *

@@ -1,6 +1,6 @@
  {{
   config(
-      schema = 'fractal_polygon',
+      schema = 'oneplanet_polygon',
       alias='mints',
       partition_by = ['block_date'],
       materialized = 'incremental',
@@ -22,9 +22,9 @@ WITH contract_list as (
 
 mints as (
     SELECT 'mint' AS trade_category,
-        block_time AS evt_block_time,
-        block_number AS evt_block_number,
-        tx_hash AS evt_tx_hash,
+        block_time,
+        block_number,
+        tx_hash,
         CAST(NULL AS string) AS contract_address,
         evt_index,
         'Mint' AS evt_type,
@@ -52,7 +52,8 @@ SELECT
     'polygon' AS blockchain,
     'oneplanet' AS project,
     'v1' AS version,
-    a.evt_block_time AS block_time,
+    date_trunc('day', a.block_time) as block_date,
+    a.block_time,
     token_id,
     CAST(NULL AS string) AS collection,
     CAST(0 as DECIMAL(38,0)) AS amount_usd,
@@ -71,14 +72,14 @@ SELECT
     coalesce(a.contract_address, t.`to`) AS project_contract_address,
     agg.name AS aggregator_name,
     agg.contract_address AS aggregator_address,
-    a.evt_block_number AS block_number,
-    a.evt_tx_hash AS tx_hash,
+    a.block_number,
+    a.tx_hash,
     t.`from` AS tx_from,
     t.`to` AS tx_to,
-    evt_tx_hash || '-' || evt_type || '-' || evt_index || '-' || token_id  AS unique_trade_id
+    'OnePlanet-' || a.tx_hash || '-' || a.evt_type || '-' || a.evt_index || '-' || a.token_id  AS unique_trade_id
 FROM mints a
-INNER JOIN {{ source('polygon','transactions') }} t ON a.evt_block_number = t.block_number
-    AND a.evt_tx_hash = t.hash
+INNER JOIN {{ source('polygon','transactions') }} t ON a.block_number = t.block_number
+    AND a.tx_hash = t.hash
     {% if not is_incremental() %}
     AND t.block_time >= '{{nft_start_date}}'
     {% endif %}
