@@ -65,6 +65,12 @@ models:
     config:
       tags: ["transfers", "optimism", "eth","erc20","erc721","erc1155","nft"]
     description: "Events of all token transfers on Optimism."
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+            - trace_address
     columns:
       - *tx_block_time
       - *tx_block_number
