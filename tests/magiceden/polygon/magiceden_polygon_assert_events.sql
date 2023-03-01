@@ -2,7 +2,7 @@
 with raw_events AS (
     SELECT evt_block_time as raw_block_time,
           evt_tx_hash as raw_tx_hash,
-          evt_tx_hash || '-Trade-' || evt_index || '-' || erc721TokenId  AS raw_unique_trade_id
+          evt_tx_hash || '-Trade-' || evt_index || '-' || erc721TokenId || '-1'  AS raw_unique_trade_id
     FROM {{ source ('zeroex_polygon', 'ExchangeProxy_evt_ERC721OrderFilled') }}
     WHERE substring(nonce, 1, 38) = '10013141590000000000000000000000000000'
         AND evt_block_time >= '2023-01-01'
@@ -12,7 +12,7 @@ with raw_events AS (
 
     SELECT evt_block_time as raw_block_time,
           evt_tx_hash as raw_tx_hash,
-          evt_tx_hash || '-Trade-' || evt_index || '-' || erc1155TokenId  AS raw_unique_trade_id
+          evt_tx_hash || '-Trade-' || evt_index || '-' || erc1155TokenId || '-' || erc1155FillAmount AS raw_unique_trade_id
     FROM {{ source ('zeroex_polygon', 'ExchangeProxy_evt_ERC1155OrderFilled') }}
     WHERE substring(nonce, 1, 38) = '10013141590000000000000000000000000000'
         AND evt_block_time >= '2023-01-01'
