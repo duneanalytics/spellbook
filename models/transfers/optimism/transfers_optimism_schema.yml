@@ -71,6 +71,7 @@ models:
             - tx_hash
             - evt_index
             - trace_address
+            - token_id
     columns:
       - *tx_block_time
       - *tx_block_number
