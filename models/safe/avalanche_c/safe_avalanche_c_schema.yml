@@ -107,7 +107,7 @@ models:
         name: output
         description: "Output data"
 
- - name: safe_avalanche_c_avax_transfers
+  - name: safe_avalanche_c_avax_transfers
     meta:
       blockchain: avalanche_c
       project: safe
