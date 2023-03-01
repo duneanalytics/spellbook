@@ -161,15 +161,15 @@ GROUP BY 1,2,3,4
                             ,lbl_from.project_name) 
                             AS from_name, --override if to an incentive tx address
                     COALESCE(
-                        txl.tx_type
-                        ,CASE WHEN tf.to = dc.address THEN lbl_from_util_tx.label ELSE NULL END --if utility, mark as internal
+                        /*txl.tx_type
+                        ,*/CASE WHEN tf.to = dc.address THEN lbl_from_util_tx.label ELSE NULL END --if utility, mark as internal
                         ,lbl_to.label
                         , dext.label
                             , 'Other') 
                             AS to_label,
                     COALESCE(
-                        txl.tx_name
-                        ,CASE WHEN tf.to = dc.address THEN lbl_from_util_tx.project_name ELSE NULL END --if utility, mark as internal
+                        /*txl.tx_name
+                        ,*/CASE WHEN tf.to = dc.address THEN lbl_from_util_tx.project_name ELSE NULL END --if utility, mark as internal
                         ,lbl_to.project_name
                         ,dext.project
                         ) AS to_name,
@@ -224,8 +224,8 @@ GROUP BY 1,2,3,4
                         AND is_self_destruct = false
                         AND tx.to IS NOT NULL
                         
-                    LEFT JOIN tx_labels txl
-                        ON txl.tx_hash = tf.evt_tx_hash
+                    -- LEFT JOIN tx_labels txl
+                    --     ON txl.tx_hash = tf.evt_tx_hash
                         
                         WHERE tf.contract_address = '{{op_token_address}}'
                         --exclude Wintermute funding tfers
