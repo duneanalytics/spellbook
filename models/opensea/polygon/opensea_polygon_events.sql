@@ -62,15 +62,15 @@ trades AS (
       a.leftOrder:makerAddress AS buyer,
       a.rightOrder:makerAddress AS seller,
       '0x' || right(substring(a.rightOrder:makerAssetData, 11, 64), 40) AS nft_contract_address,
-      case when length(a.rightOrder:makerAssetData) = 650 then bytea2numeric_v3(substr(a.rightOrder:makerAssetData,332,64))::string
-            else bytea2numeric_v3(substr(a.rightOrder:makerAssetData,76,64))::string
-       end AS token_id,
-      least((output_matchedFillResults:left:takerFeePaid)::numeric, (output_matchedFillResults:right:makerFeePaid)::numeric) AS number_of_items,
+      case when length(a.rightOrder:makerAssetData) = 650 then cast(bytea2numeric_v3(substr(a.rightOrder:makerAssetData,332,64)) as string)
+            else cast(bytea2numeric_v3(substr(a.rightOrder:makerAssetData,76,64)) as string)
+      end AS token_id,
+      least(cast(output_matchedFillResults:left:takerFeePaid as numeric), cast(output_matchedFillResults:right:makerFeePaid as numeric)) AS number_of_items,
       case when length(a.rightOrder:makerAssetData) = 650 then 'erc1155'
             else 'erc721' -- 138
        end AS token_standard, 
       paymentTokenAddress AS currency_contract,
-      least((output_matchedFillResults:left:makerFeePaid)::decimal(38,0), (output_matchedFillResults:right:takerFeePaid)::decimal(38,0)) AS amount_raw,
+      least(cast(output_matchedFillResults:left:makerFeePaid as decimal(38,0)), cast(output_matchedFillResults:right:takerFeePaid as decimal(38,0))) AS amount_raw,
       2.5 AS platform_fee,
       feeData[0]:recipient AS fee_recipient,
       case when length(feeData[1]:recipient) > 0 then 2.5 else 0 end AS royalty_fee
@@ -129,7 +129,7 @@ SELECT
   CAST(royalty_fee AS double) AS royalty_fee_percentage,
   a.fee_recipient AS royalty_fee_receive_address,
   erc20.symbol AS royalty_fee_currency_symbol,
-  a.tx_hash|| '-' || a.evt_type  || '-' || a.evt_index || '-' || a.token_id || '-' || cast(a.number_of_items as string)  AS unique_trade_id
+  a.tx_hash || '-' || a.evt_type  || '-' || a.evt_index || '-' || a.token_id || '-' || cast(a.number_of_items as string)  AS unique_trade_id
 FROM all_events a
 INNER JOIN {{ source('polygon','transactions') }} t ON a.block_number = t.block_number AND a.tx_hash = t.hash
     {% if not is_incremental() %}
