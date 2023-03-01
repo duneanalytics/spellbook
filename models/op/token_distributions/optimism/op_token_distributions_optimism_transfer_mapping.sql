@@ -5,7 +5,7 @@
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
-    unique_key = ['block_date', 'evt_block_time', 'evt_block_number', 'evt_tx_hash', 'evt_index', 'from_address', 'to_address'],
+    unique_key = ['block_date', 'evt_block_time', 'evt_block_number', 'evt_tx_hash', 'evt_index'],
     post_hook='{{ expose_spells(\'["optimism"]\',
                                 "project",
                                 "op_token",
@@ -317,7 +317,7 @@ DATE_TRUNC('day',evt_block_time) AS block_date,
     tx_to_address, tx_from_address, evt_tx_hash,
     from_type, to_type, from_label
     , COALESCE(dfrom.name,from_name) AS from_name, to_label, COALESCE(dto.name,dtxto.name,to_name) AS to_name
-    , amount_dec, method--, distro_type
+    , op_amount_decimal, method as tx_method
     --
     ,cast(op_claimed as decimal) AS op_claimed
     ,cast(op_deployed as decimal) as op_deployed
@@ -326,7 +326,7 @@ DATE_TRUNC('day',evt_block_time) AS block_date,
     ,cast(op_incoming_clawback as decimal) as op_incoming_clawback
     ,cast(running_op_claims as decimal) as running_op_claims
     ,cast(total_running_op_claims as decimal) as total_running_op_claims
-    ,cast(amount_sold_dec as decimal) as op_dumped_on_dex
+    ,cast(amount_sold_dec as decimal) as op_sold
     
     , to_name AS og_to_name
     , from_name AS og_from_name

@@ -1,0 +1,77 @@
+version: 2
+
+models:
+  - name: op_token_distributions_optimism_transfer_mapping
+    meta:
+      blockchain: optimism
+      project: op
+      contributors: msilb7
+    config:
+      tags: ['optimism','op','grants','distributions']
+    description: >
+        A table containing best guess mappings of OP grants token distributions
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+              - block_date
+              - evt_block_time
+              - evt_block_number
+              - evt_tx_hash
+              - evt_index
+    columns:
+      - &block_date
+        name: block_date
+      - &evt_block_time
+        name: evt_block_time
+      - &evt_block_number
+        name: evt_block_number
+      - &evt_index
+        name: evt_index
+      - &from_address
+        name: from_address
+      - &to_address
+        name: to_address
+      - &tx_to_address
+        name: tx_to_address
+      - &tx_from_address
+        name: tx_from_address
+      - &evt_tx_hash
+        name: evt_tx_hash
+      - &from_type
+        name: from_type
+      - &to_type
+        name: to_type
+      - &from_label
+        name: from_label
+      - &from_name
+        name: from_name
+      - &to_label
+        name: to_label
+      - &to_name
+        name: to_name
+      - &op_amount_decimal
+        name: op_amount_decimal
+      - &tx_method
+        name: tx_method
+      - &op_claimed
+        name: op_claimed
+      - &op_deployed
+        name: op_deployed
+      - &op_to_project
+        name: op_to_project
+      - &op_between_projects
+        name: op_between_projects
+      - &op_incoming_clawback
+        name: op_incoming_clawback
+      - &running_op_claims
+        name: running_op_claims
+      - &total_running_op_claims
+        name: total_running_op_claims
+      - &op_sold
+        name: op_sold
+      - &og_to_name
+        name: og_to_name
+      - &og_from_name
+        name: og_from_name
+      - &to_contract
+        name: to_contract
