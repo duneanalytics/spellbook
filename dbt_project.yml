@@ -182,8 +182,8 @@ models:
         +schema: element_avalanche_c
 
 
-    abi:
-      +schema: abi
+#    abi:
+#      +schema: abi
 
     superrare:
       +schema: superrare
