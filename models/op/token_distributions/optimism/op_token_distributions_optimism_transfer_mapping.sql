@@ -310,7 +310,7 @@ SELECT *,
 
 )
 
-SELECT 
+SELECT distinct
 DATE_TRUNC('day',evt_block_time) AS block_date,
     evt_block_time, evt_block_number, evt_index,
     from_address, to_address,
