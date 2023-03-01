@@ -272,6 +272,7 @@ with source_polygon_transactions as (
     ,tx_hash
     ,tx_from
     ,tx_to
+    ,evt_index
     ,'OnePlanet-' || tx_hash || '-Trade-' || cast(evt_index as VARCHAR(10)) || '-' || nft_token_id as unique_trade_id
   from iv_trades
 )
