@@ -1,7 +1,7 @@
  {{
   config(
         alias='fees',
-        post_hook='{{ expose_spells(\'["ethereum"]\',
+        post_hook='{{ expose_spells(\'["bnb"]\',
                                     "project",
                                     "pancakeswap",
                                     \'["thb0301"]\') }}'
