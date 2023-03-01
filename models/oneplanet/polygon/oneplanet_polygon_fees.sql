@@ -188,7 +188,9 @@ with source_polygon_transactions as (
         ,a.platform_contract_address
         ,b.token_contract_address
         ,round(price_amount_raw / nft_cnt) as price_amount_raw
-
+        ,platform_fee_amount_raw
+        ,creator_fee_amount_raw
+        ,creator_fee_receiver_1
         ,case when nft_cnt > 1 then true
               else false
           end as estimated_price
@@ -270,7 +272,7 @@ with source_polygon_transactions as (
     ,tx_hash
     ,tx_from
     ,tx_to
-    ,tx_hash || '-' || evt_type || '-' || cast(evt_index as VARCHAR(10)) || '-' || cast(token_id as VARCHAR(10)) as unique_trade_id
+    ,'OnePlanet-' || tx_hash || '-Trade-' || cast(evt_index as VARCHAR(10)) || '-' || nft_token_id as unique_trade_id
   from iv_trades
 )
 select *
