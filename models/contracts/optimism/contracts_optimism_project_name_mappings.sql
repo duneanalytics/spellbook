@@ -73,4 +73,5 @@ from (
     ,('powerbomb','Powerbomb Finance')
     ,('lemma_finance','Lemma Finance')
     ,('lemma','Lemma Finance')
+    ,('collab_land_dao_pass', 'Collab Land')
     ) as temp_table (dune_name, mapped_name)
