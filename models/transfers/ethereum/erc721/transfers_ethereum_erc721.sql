@@ -28,9 +28,9 @@ with
         where contract_address = lower('0xBC4CA0EdA7647A8aB7C2061c2E118A18a936f13D')
     )
     
-select 'ethereum' as blockchain, wallet_address, token_address, evt_block_time, tokenId, amount, unique_tx_id
+select 'ethereum' as blockchain, wallet_address, token_address, evt_block_time, evt_index, tokenId, amount, unique_tx_id
 from received_transfers
 union
-select 'ethereum' as blockchain, wallet_address, token_address, evt_block_time, tokenId, amount, unique_tx_id
+select 'ethereum' as blockchain, wallet_address, token_address, evt_block_time, evt_index, tokenId, amount, unique_tx_id
 from sent_transfers
 
