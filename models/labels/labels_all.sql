@@ -22,8 +22,8 @@ UNION ALL
 SELECT * FROM {{ ref('labels_dao') }}
 UNION ALL
 SELECT * FROM {{ ref('labels_infrastructure') }}
-UNION ALL
-SELECT * FROM {{ ref('labels_institution') }}
+-- UNION ALL
+-- SELECT * FROM {{ ref('labels_institution') }}
 
 -- -- single category labels (no subsets), needs label_type and model_name added still.
 -- UNION ALL
