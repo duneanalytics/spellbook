@@ -30,7 +30,7 @@ SELECT
     evt_block_time, evt_block_number, evt_index, 
     tx_to_address, tx_from_address,
     evt_tx_hash, from_label, from_type, from_name, 
-    to_type, to_label, to_name, op_amount_decimal, method,
+    to_type, to_label, to_name, op_amount_decimal, tx_method,
     MIN(evt_tfer_index) AS min_evt_tfer_index, MAX(evt_tfer_index) AS max_evt_tfer_index,
     
     (array_agg(
@@ -58,7 +58,7 @@ FROM (
             NULL AS to_name, cast(amount as double) / cast(1e18 as double) AS op_amount_decimal
             --get last
             , tf.evt_index AS evt_tfer_index
-            , substring(tx.data,1,10) AS method --bytearray_substring(tx.data, 1, 4) AS method
+            , substring(tx.data,1,10) AS tx_method --bytearray_substring(tx.data, 1, 4) AS tx_method
             
             ,ROW_NUMBER() OVER (PARTITION BY r.evt_tx_hash, r.evt_index ORDER BY tf.evt_index DESC) AS claim_rank_desc
             ,ROW_NUMBER() OVER (PARTITION BY r.evt_tx_hash, r.evt_index ORDER BY tf.evt_index ASC) AS claim_rank_asc

@@ -104,7 +104,7 @@ models:
       - *to_type
       - *to_name
       - *op_amount_decimal
-      - *method
+      - *tx_method
       - &min_evt_tfer_index
         name: min_evt_tfer_index
       - &max_evt_tfer_index

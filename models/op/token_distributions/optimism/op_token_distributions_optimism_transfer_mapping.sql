@@ -71,7 +71,7 @@ WITH all_labels AS (
                     cast(tf.value as double)/cast( 1e18 as double) AS op_amount_decimal,
                     evt_index AS evt_tfer_index,
                     
-                    substring(tx.data,1,10) AS method --bytearray_substring(tx.data, 1, 4) AS method
+                    substring(tx.data,1,10) AS tx_method --bytearray_substring(tx.data, 1, 4) AS tx_method
                     
                 FROM {{source('erc20_optimism','evt_transfer') }} tf
                 -- We want either the send or receiver to be the foundation or a project
@@ -126,7 +126,7 @@ WITH all_labels AS (
                 SELECT 
                     evt_block_time, evt_block_number, evt_index,
                     from_address, to_address, tx_to_address, tx_from_address, evt_tx_hash,
-                    from_type, to_type, from_label, from_name, to_label, to_name, op_amount_decimal, method
+                    from_type, to_type, from_label, from_name, to_label, to_name, op_amount_decimal, tx_method
                 FROM {{ ref('op_token_distributions_optimism_other_distributions_claims') }} o
                 
                 UNION ALL
@@ -134,7 +134,7 @@ WITH all_labels AS (
                 SELECT 
                     t.evt_block_time, t.evt_block_number, t.evt_index,
                     t.from_address, t.to_address, t.tx_to_address, t.tx_from_address, t.evt_tx_hash,
-                    t.from_type, t.to_type, t.from_label, t.from_name, t.to_label, t.to_name, t.op_amount_decimal, t.method
+                    t.from_type, t.to_type, t.from_label, t.from_name, t.to_label, t.to_name, t.op_amount_decimal, t.tx_method
                 
                 FROM tfers t
                 LEFT JOIN {{ ref('op_token_distributions_optimism_other_distributions_claims') }} o --don't double count - at the amount level b/c there could be multiple claims in one tx
@@ -176,7 +176,7 @@ DATE_TRUNC('day',evt_block_time) AS block_date,
     tx_to_address, tx_from_address, evt_tx_hash,
     from_type, to_type, from_label
     , COALESCE(dfrom.address_name,from_name) AS from_name, to_label, COALESCE(dto.address_name,dtxto.address_name,to_name) AS to_name
-    , op_amount_decimal, method as tx_method
+    , op_amount_decimal, tx_method
     --
     ,cast(op_claimed as decimal) AS op_claimed
     ,cast(op_deployed as decimal) as op_deployed
