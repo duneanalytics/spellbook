@@ -57,4 +57,6 @@ jobs:
             repo: 'spellbook-dagster',
             workflow_id: 'deploy.yml',
             ref: 'main'
+          inputs: {
+            name: $GIT_SHA
           })
