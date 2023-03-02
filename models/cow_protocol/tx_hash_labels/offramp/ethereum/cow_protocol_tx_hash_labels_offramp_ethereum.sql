@@ -7,15 +7,15 @@
 with
  offramp_trades as (
     select
-        tx_hash
+        *
     from (
-        select tx_hash
+        select tx_hash, evt_index, project, version
         from {{ ref('dex_aggregator_trades') }}
         where blockchain = 'ethereum'
         and token_bought_address in (select contract_address from {{ ref('tokens_ethereum_erc20_stablecoins') }})
         and token_sold_address not in (select contract_address from {{ ref('tokens_ethereum_erc20_stablecoins') }})
         UNION ALL
-        select tx_hash
+        select tx_hash, evt_index, project, version
         from {{ ref('dex_trades') }}
         where blockchain = 'ethereum'
         and token_bought_address in (select contract_address from {{ ref('tokens_ethereum_erc20_stablecoins') }})
@@ -25,7 +25,7 @@ with
 
 select
   "ethereum" as blockchain,
-  tx_hash,
+  concat(tx_hash, evt_index, project, version) as tx_hash_key,
   "Offramp to stable" AS name,
   "tx_hash" AS category,
   "gentrexha" AS contributor,

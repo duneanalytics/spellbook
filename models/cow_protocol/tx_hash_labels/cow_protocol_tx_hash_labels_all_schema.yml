@@ -13,8 +13,8 @@ models:
     columns:
       - name: blockchain
         description: "Blockchain"
-      - name: tx_hash
-        description: "Label transaction hash"
+      - name: tx_hash_key
+        description: "Label transaction hash key made up from tx_hash, evt_index, project, and version"
       - name: name
         description: "Label name"
       - name: category
