@@ -100,7 +100,7 @@ FROM (
     evt_block_time, evt_block_number, evt_index, 
     tx_to_address, tx_from_address,
     evt_tx_hash, from_label, from_type, from_name, 
-    to_type, to_label, to_name, op_amount_decimal, method
+    to_type, to_label, to_name, op_amount_decimal, tx_method
 
 )
 
