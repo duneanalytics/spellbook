@@ -46,9 +46,6 @@ select
     , 'Mint' as evt_type
     , nft_mints.from as seller
     , nft_mints.to as buyer
-    , cast(coalesce(sum(tr.value), sum(cast(erc20s.value as double)), 0)*(nft_mints.amount/nft_count.nfts_minted_in_tx) as decimal(38,0)) as amount_raw
-    , coalesce(sum(tr.value_decimal), sum(cast(erc20s.value as double))/power(10, pu_erc20s.decimals))*(nft_mints.amount/nft_count.nfts_minted_in_tx) as amount_original
-    , coalesce(pu_eth.price*sum(tr.value_decimal), pu_erc20s.price*sum(cast(erc20s.value as double))/power(10, pu_erc20s.decimals))*(nft_mints.amount/nft_count.nfts_minted_in_tx) as amount_usd
     , case when tr.tx_hash is not null then 'ETH' else pu_erc20s.symbol end as currency_symbol
     , case when tr.tx_hash is not null then '{{eth_address}}' else erc20s.contract_address end as currency_contract
     , nft_mints.contract_address as nft_contract_address
@@ -69,6 +66,9 @@ select
     , cast(0 as double) as royalty_fee_amount_usd
     , cast(0 as double) as royalty_fee_percentage
     , 'optimism' || '-' || coalesce(ec.namespace, 'Unknown') || '-Mint-' || coalesce(nft_mints.tx_hash, '-1') || '-' || coalesce(nft_mints.to, '-1') || '-' ||  coalesce(nft_mints.contract_address, '-1') || '-' || coalesce(nft_mints.token_id, '-1') || '-' || coalesce(nft_mints.amount, '-1') || '-'|| coalesce(erc20s.contract_address, '0x0000000000000000000000000000000000000000') || '-' || coalesce(nft_mints.evt_index, '-1') as unique_trade_id
+    , cast(coalesce(sum(tr.value), sum(cast(erc20s.value as double)), 0)*(nft_mints.amount/nft_count.nfts_minted_in_tx) as decimal(38,0)) as amount_raw
+    , coalesce(sum(tr.value_decimal), sum(cast(erc20s.value as double))/power(10, pu_erc20s.decimals))*(nft_mints.amount/nft_count.nfts_minted_in_tx) as amount_original
+    , coalesce(pu_eth.price*sum(tr.value_decimal), pu_erc20s.price*sum(cast(erc20s.value as double))/power(10, pu_erc20s.decimals))*(nft_mints.amount/nft_count.nfts_minted_in_tx) as amount_usd
 from {{ ref('nft_optimism_transfers') }} as nft_mints
 left join {{ source('optimism','transactions') }} as etxs 
     on etxs.block_time=nft_mints.block_time
@@ -126,4 +126,4 @@ where
     ) 
     -- to exclude bridged L1 NFT collections to L2
     and bm.contract_address is null 
-    {{ dbt_utils.group_by(n=40) }}
+    {{ dbt_utils.group_by(n=37) }}
