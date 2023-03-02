@@ -1,5 +1,6 @@
 {{ config(
         alias = 'signatures',
+        schema = 'abi',
         partition_by = ['created_at_month'],
         materialized = 'incremental',
         file_format = 'delta',
@@ -12,11 +13,20 @@
         )
 }}
 
-{% set chains = ['ethereum', 'optimism', 'arbitrum', 'avalanche_c', 'polygon', 'bnb', 'gnosis', 'fantom'] %}
+{% set chains = [
+    source('ethereum', 'signatures')
+    ,source('optimism', 'signatures')
+    ,source('arbitrum', 'signatures')
+    ,source('avalanche_c', 'signatures')
+    ,source('polygon', 'signatures')
+    ,source('bnb', 'signatures')
+    ,source('gnosis', 'signatures')
+    ,source('fantom', 'signatures')
+] %}
 
 WITH
     signatures as (
-        {% for chain in chains %}
+        {% for chain_source in chains %}
 
             SELECT
                 abi,
@@ -25,8 +35,8 @@ WITH
                 signature,
                 type,
                 concat(id, signature, type) as unique_signature_id
-            FROM {{ source(chain, 'signatures') }}
-            
+            FROM {{ chain_source }}
+
             {% if is_incremental() %}
             WHERE created_at >= date_trunc("day", now() - interval '2 days')
             {% endif %}
@@ -41,14 +51,14 @@ WITH
     SELECT
     *
     FROM (
-        SELECT 
+        SELECT
             id
             , signature
             , abi
             , type
             , created_at
             , date_trunc('month',created_at) as created_at_month
-            , unique_signature_id 
+            , unique_signature_id
             , row_number() over (partition by unique_signature_id order by created_at desc) recency
         FROM signatures
     ) a
