@@ -33,13 +33,12 @@ WITH all_labels AS (
 
 , outgoing_distributions AS 
         (
-            WITH tfers AS (
+        WITH tfers AS (
             -- transfers out
                 SELECT
                     evt_block_time, evt_block_number, evt_index,
                     tf.`from` AS from_address, tf.to AS to_address, tx.to AS tx_to_address, tx.`from` AS tx_from_address,  evt_tx_hash,
                     COALESCE(lbl_from_util_tx.address_descriptor
-                        -- lbl_to_tx.address_descriptor,
                         ,lbl_from.address_descriptor
                         ) 
                         AS from_type, --override if to an incentive tx address
@@ -49,14 +48,12 @@ WITH all_labels AS (
                     )
                     AS to_type,
                 COALESCE(lbl_from_util_tx.label
-                        -- lbl_to_tx.label,
                         ,lbl_from.label,
                         'Other') 
                         AS from_label, --override if to an incentive tx address
                 COALESCE(
                         dc.project_name,--if we have a name override, like airdrop 2
                         lbl_from_util_tx.project_name
-                        -- lbl_to_tx.project,
                         ,lbl_from.project_name) 
                         AS from_name, --override if to an incentive tx address
                 COALESCE(
@@ -76,32 +73,26 @@ WITH all_labels AS (
                     
                     substring(tx.data,1,10) AS method --bytearray_substring(tx.data, 1, 4) AS method
                     
-                    FROM {{source('erc20_optimism','evt_transfer') }} tf
-                    -- We want either the send or receiver to be the foundation or a project
-                    INNER JOIN all_labels lbl_from
-                        ON lbl_from.address = tf.`from`
-                    -- if the recipient is in this list to, then we track it
-                    LEFT JOIN all_labels lbl_to
-                        ON lbl_to.address = tf.to
+                FROM {{source('erc20_optimism','evt_transfer') }} tf
+                -- We want either the send or receiver to be the foundation or a project
+                INNER JOIN all_labels lbl_from
+                    ON lbl_from.address = tf.`from`
+                -- if the recipient is in this list to, then we track it
+                LEFT JOIN all_labels lbl_to
+                    ON lbl_to.address = tf.to
         
                     
-                    LEFT JOIN {{ source('optimism','transactions') }} tx
-                        ON tx.hash = tf.evt_tx_hash
-                        AND tx.block_number = tf.evt_block_number
-                        AND tx.block_time > cast('{{op_token_launch_date}}' as date)
-                        {% if is_incremental() %} 
-                        and tx.block_time >= date_trunc('day', now() - interval '1 week')
-                        {% endif %}
-                        AND lbl_to.label IS NULL -- don't try if we have a label on the to transfer
-            
-                    -- LEFT JOIN other_claims lbl_to_tx
-                    -- ON lbl_to_tx.address = tx.to
-                    -- AND lbl_to.label IS NULL -- don't try if we have a label on the to transfer
+                LEFT JOIN {{ source('optimism','transactions') }} tx
+                    ON tx.hash = tf.evt_tx_hash
+                    AND tx.block_number = tf.evt_block_number
+                    AND tx.block_time > cast('{{op_token_launch_date}}' as date)
+                    {% if is_incremental() %} 
+                    and tx.block_time >= date_trunc('day', now() - interval '1 week')
+                    {% endif %}
+                    AND lbl_to.label IS NULL -- don't try if we have a label on the to transfer
                 
                 LEFT JOIN disperse_contracts dc
                     ON tx.to = dc.address
-                    -- AND tf.`from` = tx.to
-                    -- AND tf.`from` IN (SELECT address FROM all_labels)
                 
                 LEFT JOIN all_labels lbl_from_util_tx
                     ON lbl_from_util_tx.address = tx.`from` --label of the transaction sender
@@ -136,7 +127,7 @@ WITH all_labels AS (
                     evt_block_time, evt_block_number, evt_index,
                     from_address, to_address, tx_to_address, tx_from_address, evt_tx_hash,
                     from_type, to_type, from_label, from_name, to_label, to_name, op_amount_decimal, method
-                FROM {{ ref('op_token_distributions_optimism_other_claims') }} o
+                FROM {{ ref('op_token_distributions_optimism_other_distributions_claims') }} o
                 
                 UNION ALL
                 
@@ -146,7 +137,7 @@ WITH all_labels AS (
                     t.from_type, t.to_type, t.from_label, t.from_name, t.to_label, t.to_name, t.op_amount_decimal, t.method
                 
                 FROM tfers t
-                LEFT JOIN {{ ref('op_token_distributions_optimism_other_claims') }} o --don't double count - at the amount level b/c there could be multiple claims in one tx
+                LEFT JOIN {{ ref('op_token_distributions_optimism_other_distributions_claims') }} o --don't double count - at the amount level b/c there could be multiple claims in one tx
                     ON t.evt_block_number = o.evt_block_number
                     AND t.evt_block_time = o.evt_block_time
                     AND t.evt_tx_hash = o.evt_tx_hash

@@ -116,25 +116,27 @@ models:
           combination_of_columns:
               - proposal_name
     columns:
-      - *proposal_name
+      - &proposal_name
+        name: proposal_name
       - *project_name
   
   - name: op_token_distributions_optimism_project_wallets
     meta:
-        blockchain: optimism
-        project: op
-        contributors: msilb7
-      config:
-        tags: ['optimism','op','grants','project']
-      description: >
-          A table containing mappings for project wallets that we want to track distributions for
-      tests:
-        - dbt_utils.unique_combination_of_columns:
-            combination_of_columns:
-                - address
-                
-      columns:
-      - *address
+      blockchain: optimism
+      project: op
+      contributors: msilb7
+    config:
+      tags: ['optimism','op','grants','project']
+    description: >
+        A table containing mappings for project wallets that we want to track distributions for
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+              - address
+              
+    columns:
+      - &address
+        name: address
       - &label
         name: label
       - *proposal_name
@@ -144,36 +146,35 @@ models:
 
   - name: op_token_distributions_optimism_all_labels
     meta:
-        blockchain: optimism
-        project: op
-        contributors: msilb7
-      config:
-        tags: ['optimism','op','grants','addresses']
-      description: >
-          A table containing unifying labels for tagged wallets that we want to track distributions for
-      tests:
-        - dbt_utils.unique_combination_of_columns:
-            combination_of_columns:
-                - address
-      columns:
-      - &address
-        name: address
-      - &address_name
-        name: address_name
+      blockchain: optimism
+      project: op
+      contributors: msilb7
+    config:
+      tags: ['optimism','op','grants','addresses']
+    description: >
+        A table containing unifying labels for tagged wallets that we want to track distributions for
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+              - address
+    columns:
+    - *address
+    - &address_name
+      name: address_name
   
   - name: op_token_distributions_optimism_other_tags
     meta:
-        blockchain: optimism
-        project: op
-        contributors: msilb7
-      config:
-        tags: ['optimism','op','grants','addresses']
-      description: >
-          A table containing labels for other addresses that we don't want to track distributions for, but we know what they are.
-      tests:
-        - dbt_utils.unique_combination_of_columns:
-            combination_of_columns:
-                - address
-      columns:
+      blockchain: optimism
+      project: op
+      contributors: msilb7
+    config:
+      tags: ['optimism','op','grants','addresses']
+    description: >
+        A table containing labels for other addresses that we don't want to track distributions for, but we know what they are.
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+              - address
+    columns:
       - *address
       - *address_name
