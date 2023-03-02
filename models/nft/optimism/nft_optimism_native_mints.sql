@@ -121,9 +121,14 @@ where
         'Velodrome', 
         'Thales',
         'Layer2dao',
-        'Qidao'
-        ,'Mean Finance'
+        'Qidao',
+        'Mean Finance',
+        'Lyra',
+        'Uniswap'
     ) 
     -- to exclude bridged L1 NFT collections to L2
     and bm.contract_address is null 
-    {{ dbt_utils.group_by(n=37) }}
+    group by nft_mints.block_time, nft_mints.block_number, nft_mints.token_id, nft_mints.token_standard
+    , nft_mints.amount, nft_mints.from, nft_mints.to, nft_mints.contract_address, etxs.to, nft_mints.evt_index
+    , nft_mints.tx_hash, etxs.from, ec.namespace, tok.name, pu_erc20s.decimals, pu_eth.price, pu_erc20s.price
+    , agg.name, agg.contract_address, nft_count.nfts_minted_in_tx, pu_erc20s.symbol, erc20s.contract_address, tr.tx_hash
