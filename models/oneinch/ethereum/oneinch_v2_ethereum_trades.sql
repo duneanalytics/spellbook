@@ -40,8 +40,7 @@ WITH oneinch_events AS
         evt_block_time as block_time,
         CAST(NULL as array<int>) as trace_address,
         evt_index,
-        contract_address,
-        '2' as version
+        contract_address
     FROM
         {{ source('oneinch_v2_ethereum', 'OneInchExchange_evt_Swapped') }}
     {% if is_incremental() %}
@@ -58,7 +57,7 @@ WITH oneinch_events AS
         block_number,
         block_time,
         '1inch' AS project,
-        version,
+        '2' as version,
         taker,
         CAST(NULL as string) AS maker,
         to_amount AS token_bought_amount_raw,

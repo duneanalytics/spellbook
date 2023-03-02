@@ -40,8 +40,7 @@ WITH oneinch_calls AS
         call_block_time as block_time,
         call_trace_address as trace_address,
         CAST(NULL as integer) as evt_index,
-        contract_address,
-        '1' as version
+        contract_address
     FROM
         {{ source('oneinch_ethereum', 'exchange_v1_call_aggregate') }}
     WHERE
@@ -65,8 +64,7 @@ WITH oneinch_calls AS
         call_block_time as block_time,
         call_trace_address as trace_address,
         CAST(NULL as integer) as evt_index,
-        contract_address,
-        '1' as version
+        contract_address
     FROM
         {{ source('oneinch_ethereum', 'exchange_v2_call_aggregate') }}
     WHERE
@@ -90,8 +88,7 @@ WITH oneinch_calls AS
         call_block_time as block_time,
         call_trace_address as trace_address,
         CAST(NULL as integer) as evt_index,
-        contract_address,
-        '1' as version
+        contract_address
     FROM
         {{ source('oneinch_ethereum', 'exchange_v3_call_aggregate') }}
     WHERE
@@ -115,8 +112,7 @@ WITH oneinch_calls AS
         call_block_time as block_time,
         call_trace_address as trace_address,
         CAST(NULL as integer) as evt_index,
-        contract_address,
-        '1' as version
+        contract_address
     FROM
         {{ source('oneinch_ethereum', 'exchange_v4_call_aggregate') }}
     WHERE
@@ -140,8 +136,7 @@ WITH oneinch_calls AS
         call_block_time as block_time,
         call_trace_address as trace_address,
         CAST(NULL as integer) as evt_index,
-        contract_address,
-        '1' as version
+        contract_address
     FROM
         {{ source('oneinch_ethereum', 'exchange_v5_call_aggregate') }}
     WHERE
@@ -165,8 +160,7 @@ WITH oneinch_calls AS
         call_block_time as block_time,
         call_trace_address as trace_address,
         CAST(NULL as integer) as evt_index,
-        contract_address,
-        '1' as version
+        contract_address
     FROM
         {{ source('oneinch_ethereum', 'exchange_v6_call_aggregate') }}
     WHERE
@@ -190,8 +184,7 @@ WITH oneinch_calls AS
         call_block_time as block_time,
         call_trace_address as trace_address,
         CAST(NULL as integer) as evt_index,
-        contract_address,
-        '1' as version
+        contract_address
     FROM
         {{ source('oneinch_ethereum', 'exchange_v7_call_swap') }}
     WHERE
@@ -215,8 +208,7 @@ WITH oneinch_calls AS
         call_block_time as block_time,
         call_trace_address as trace_address,
         CAST(NULL as integer) as evt_index,
-        contract_address,
-        '1' as version
+        contract_address
     FROM
         {{ source('oneinch_ethereum', 'OneInchExchange_call_swap') }}
     WHERE
@@ -233,7 +225,7 @@ WITH oneinch_calls AS
         block_number,
         block_time,
         '1inch' AS project,
-        version,
+        '1' as version,
         taker,
         CAST(NULL as string) AS maker,
         to_amount AS token_bought_amount_raw,

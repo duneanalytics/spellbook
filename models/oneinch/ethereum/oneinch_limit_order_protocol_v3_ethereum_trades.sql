@@ -15,7 +15,6 @@
 WITH limit_order_protocol AS
 (
     SELECT
-        '3' as version,
         call_block_number,
         get_json_object(order_,'$.maker') AS maker,
         get_json_object(order_,'$.takerAsset') AS token_bought_address,
@@ -40,7 +39,6 @@ WITH limit_order_protocol AS
     UNION ALL
         
     SELECT
-        '3' as version,
         call_block_number,
         get_json_object(order,'$.maker') AS maker,
         get_json_object(order,'$.takerAsset') AS token_bought_address,
@@ -65,7 +63,6 @@ WITH limit_order_protocol AS
     UNION ALL
         
     SELECT
-        '3' as version,
         call_block_number,
         get_json_object(order,'$.maker') AS maker,
         get_json_object(order,'$.takerAsset') AS token_bought_address,
@@ -93,7 +90,7 @@ WITH limit_order_protocol AS
         call_block_number as block_number,
         call_block_time as block_time,
         '1inch Limit Order Protocol' AS project,
-        version,
+        '3' as version,
         CAST(NULL as string) as taker, -- get from base table downstream
         maker,
         output_1 AS token_bought_amount_raw,

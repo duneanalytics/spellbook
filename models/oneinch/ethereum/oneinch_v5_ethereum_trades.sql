@@ -40,8 +40,7 @@ WITH oneinch_calls AS
         call_block_time as block_time,
         call_trace_address as trace_address,
         CAST(NULL as integer) as evt_index,
-        contract_address,
-        '5' as version
+        contract_address
     FROM
         {{ source('oneinch_ethereum', 'AggregationRouterV5_call_swap') }}
     WHERE
@@ -58,7 +57,7 @@ WITH oneinch_calls AS
         block_number,
         block_time,
         '1inch' AS project,
-        version,
+        '5' as version,
         taker,
         CAST(NULL as string) AS maker,
         to_amount AS token_bought_amount_raw,

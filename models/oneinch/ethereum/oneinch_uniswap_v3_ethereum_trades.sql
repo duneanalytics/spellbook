@@ -145,7 +145,7 @@ WITH uniswap AS
         , output_returnAmount
         , amount
         , CASE
-            WHEN CAST(pools[array_size(pools) - 1] / POWER(2, 252) as int) & 2 != 0 --cast((pools[array_size(pools) - 1] / (POWER(2, 252))) as int) & 2 != 0
+            WHEN CAST(pools[array_size(pools) - 1] / POWER(2, 252) as int) & 2 != 0
             THEN '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee'
             ELSE to
         END as dstToken
