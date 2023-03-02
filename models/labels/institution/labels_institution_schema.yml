@@ -5,7 +5,7 @@ models:
     meta:
       blockchain: ethereum
       sector: labels
-      category: nft
+      category: institution
       project: ['labels']
       contributors: soispoke
     config:
