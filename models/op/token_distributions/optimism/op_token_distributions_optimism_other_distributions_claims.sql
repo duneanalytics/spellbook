@@ -26,6 +26,7 @@ WITH all_labels AS (
 
 , aave_lm_claims AS ( 
 SELECT
+    DATE_TRUNC('day',evt_block_time) AS block_date,
     evt_block_time, evt_block_number, evt_index, 
     tx_to_address, tx_from_address,
     evt_tx_hash, from_label, from_type, from_name, 
