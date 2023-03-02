@@ -153,7 +153,6 @@ FROM (
                         ) AS to_name,
                         
                         cast(tf.value as double)/cast( 1e18 as double) AS op_amount_decimal,
-                        cast(amount_sold as double)/cast( 1e18 as double) AS amount_sold_dec,
                         evt_index AS evt_tfer_index,
                         
                         substring(tx.data,1,10) AS method --bytearray_substring(tx.data, 1, 4) AS method
@@ -218,7 +217,7 @@ FROM (
                         SELECT 
                         evt_block_time, evt_block_number, evt_index,
                         from_address_map AS from_address, to_address_map AS to_address, tx_to_address, tx_from_address, evt_tx_hash,
-                        from_type, to_type, from_label, from_name, to_label, to_name, op_amount_decimal, 0 AS amount_sold_dec,
+                        from_type, to_type, from_label, from_name, to_label, to_name, op_amount_decimal,
                         min_evt_tfer_index, max_evt_tfer_index, method
                         FROM other_claims
                     )
@@ -226,7 +225,7 @@ FROM (
                     SELECT 
                         evt_block_time, evt_block_number, evt_index,
                         from_address, to_address, tx_to_address, tx_from_address, evt_tx_hash,
-                        from_type, to_type, from_label, from_name, to_label, to_name, op_amount_decimal, amount_sold_dec, method
+                        from_type, to_type, from_label, from_name, to_label, to_name, op_amount_decimal, method
                     FROM others o
                     
                     UNION ALL
@@ -234,7 +233,7 @@ FROM (
                     SELECT 
                         t.evt_block_time, t.evt_block_number, t.evt_index,
                         t.from_address, t.to_address, t.tx_to_address, t.tx_from_address, t.evt_tx_hash,
-                        t.from_type, t.to_type, t.from_label, t.from_name, t.to_label, t.to_name, t.op_amount_decimal, t.amount_sold_dec, t.method
+                        t.from_type, t.to_type, t.from_label, t.from_name, t.to_label, t.to_name, t.op_amount_decimal, t.method
                     
                     FROM tfers t
                     LEFT JOIN others o --don't double count - at the amount level b/c there could be multiple claims in one tx
@@ -283,7 +282,6 @@ DATE_TRUNC('day',evt_block_time) AS block_date,
     ,cast(op_to_project as decimal) as op_to_project
     ,cast(op_between_projects as decimal) as op_between_projects
     ,cast(op_incoming_clawback as decimal) as op_incoming_clawback
-    ,cast(amount_sold_dec as decimal) as op_sold
     
     , to_name AS og_to_name
     , from_name AS og_from_name
