@@ -41,7 +41,7 @@ SELECT
     tx_to_address, tx_from_address,
     evt_tx_hash, from_label, from_type, from_name, 
     --user_address,
-    to_type, to_label, to_name, amount_dec, method, to_contract,
+    to_type, to_label, to_name, op_amount_decimal, method, to_contract,
     MIN(evt_tfer_index) AS min_evt_tfer_index, MAX(evt_tfer_index) AS max_evt_tfer_index,
     -- FIRST_VALUE(CASE WHEN claim_rank_asc = 1 THEN from_address ELSE NULL END) AS from_address_map,
     -- LAST_VALUE(CASE WHEN claim_rank_desc = 1 THEN to_address ELSE NULL END) AS to_address_map,
@@ -66,7 +66,7 @@ FROM (
                 lbl_to.label
                 , 'Other'
                 ) AS to_label,
-            NULL AS to_name, cast(amount as double) / cast(1e18 as double) AS amount_dec
+            NULL AS to_name, cast(amount as double) / cast(1e18 as double) AS op_amount_decimal
             --get last
             , tf.evt_index AS evt_tfer_index
             , substring(tx.data,1,10) AS method --bytearray_substring(tx.data, 1, 4) AS method
@@ -176,7 +176,7 @@ GROUP BY 1,2,3,4
                         
                         contract_project AS to_contract,
                         
-                        cast(tf.value as double)/POWER(10,18) AS amount_dec,
+                        cast(tf.value as double)/POWER(10,18) AS op_amount_decimal,
                         cast(amount_sold as double)/POWER(10,18) AS amount_sold_dec,
                         evt_index AS evt_tfer_index,
                         
@@ -253,7 +253,7 @@ GROUP BY 1,2,3,4
                         SELECT 
                         evt_block_time, evt_block_number, evt_index,
                         from_address_map AS from_address, to_address_map AS to_address, tx_to_address, tx_from_address, evt_tx_hash,
-                        from_type, to_type, from_label, from_name, to_label, to_name, amount_dec, 0 AS amount_sold_dec,
+                        from_type, to_type, from_label, from_name, to_label, to_name, op_amount_decimal, 0 AS amount_sold_dec,
                         min_evt_tfer_index, max_evt_tfer_index, method, to_contract
                         FROM other_claims
                     )
@@ -261,7 +261,7 @@ GROUP BY 1,2,3,4
                     SELECT 
                         evt_block_time, evt_block_number, evt_index,
                         from_address, to_address, tx_to_address, tx_from_address, evt_tx_hash,
-                        from_type, to_type, from_label, from_name, to_label, to_name, amount_dec, amount_sold_dec, method, to_contract
+                        from_type, to_type, from_label, from_name, to_label, to_name, op_amount_decimal, amount_sold_dec, method, to_contract
                     FROM others o
                     
                     UNION ALL
@@ -269,7 +269,7 @@ GROUP BY 1,2,3,4
                     SELECT 
                         t.evt_block_time, t.evt_block_number, t.evt_index,
                         t.from_address, t.to_address, t.tx_to_address, t.tx_from_address, t.evt_tx_hash,
-                        t.from_type, t.to_type, t.from_label, t.from_name, t.to_label, t.to_name, t.amount_dec, t.amount_sold_dec, t.method, t.to_contract
+                        t.from_type, t.to_type, t.from_label, t.from_name, t.to_label, t.to_name, t.op_amount_decimal, t.amount_sold_dec, t.method, t.to_contract
                     
                     FROM tfers t
                     LEFT JOIN others o --don't double count - at the amount level b/c there could be multiple claims in one tx
@@ -288,22 +288,22 @@ GROUP BY 1,2,3,4
 , distributions AS (
 
 SELECT *,
-    CASE WHEN to_label = 'Other' THEN amount_dec ELSE 0 END AS op_claimed,
+    CASE WHEN to_label = 'Other' THEN op_amount_decimal ELSE 0 END AS op_claimed,
     
-    CASE WHEN  to_label IN ('Other','Deployed') AND from_label != 'Deployed' THEN amount_dec
-         WHEN (from_name != to_name) AND from_label = 'Project' AND to_label = 'Project' THEN amount_dec --handle for distirbutions to other projects (i.e. Uniswap to Gamma)
+    CASE WHEN  to_label IN ('Other','Deployed') AND from_label != 'Deployed' THEN op_amount_decimal
+         WHEN (from_name != to_name) AND from_label = 'Project' AND to_label = 'Project' THEN op_amount_decimal --handle for distirbutions to other projects (i.e. Uniswap to Gamma)
     ELSE 0 END AS op_deployed,
     
-    CASE WHEN from_label = 'Foundation' AND from_type = 'Grants' AND to_label = 'Project' THEN amount_dec ELSE 0 END AS op_to_project,
+    CASE WHEN from_label = 'Foundation' AND from_type = 'Grants' AND to_label = 'Project' THEN op_amount_decimal ELSE 0 END AS op_to_project,
     
     CASE WHEN from_label = 'Project' AND to_label = 'Project'
-            AND from_name != to_name THEN amount_dec ELSE 0 END AS op_between_projects,
+            AND from_name != to_name THEN op_amount_decimal ELSE 0 END AS op_between_projects,
             
-    CASE WHEN from_label='Deployed' and to_label='Project' AND from_name = to_name THEN amount_dec ELSE 0 END AS op_incoming_clawback, --Project's deployer back to the OG project wallet
+    CASE WHEN from_label='Deployed' and to_label='Project' AND from_name = to_name THEN op_amount_decimal ELSE 0 END AS op_incoming_clawback, --Project's deployer back to the OG project wallet
     -- tokens sent to users
-    SUM(CASE WHEN to_label = 'Other' THEN amount_dec ELSE 0 END)
+    SUM(CASE WHEN to_label = 'Other' THEN op_amount_decimal ELSE 0 END)
             OVER (PARTITION BY from_address, from_label, from_name, to_address ORDER BY evt_block_time ASC) AS running_op_claims,
-    SUM(CASE WHEN to_label = 'Other' THEN amount_dec ELSE 0 END)
+    SUM(CASE WHEN to_label = 'Other' THEN op_amount_decimal ELSE 0 END)
             OVER (PARTITION BY from_address, from_label, from_name ORDER BY evt_block_time ASC) AS total_running_op_claims
             
     FROM outgoing_distributions
