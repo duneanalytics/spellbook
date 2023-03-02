@@ -122,6 +122,7 @@ models:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - block_date
+            - address
             - tx_hash
             - trace_address
     columns:
