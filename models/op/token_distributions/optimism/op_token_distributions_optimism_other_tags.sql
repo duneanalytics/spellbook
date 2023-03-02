@@ -1,5 +1,5 @@
 {{ config(
-    schema = 'op_token_optimism',
+    schema = 'op_token_distributions_optimism',
     alias = 'other_tags'
     )
 }}
@@ -7,9 +7,9 @@
 -- These are wallets that we don't want to track distributions for, but we know what they are, so don't want to keep re-checking them over and over again
 
 WITH tagged_wallets AS (
-SELECT address, name
+SELECT distinct address, address_name
 FROM (
-SELECT LOWER(address) AS address, name, ROW_NUMBER() OVER (PARTITION BY address ORDER BY name) AS rnk
+SELECT LOWER(address) AS address, address_name, ROW_NUMBER() OVER (PARTITION BY address ORDER BY address_name) AS rnk
 FROM (values
              ('0x030058ac851ba6f282ec0e717a7ed577d09dff0b','Perp Foundation')
             ,('0x283c280ef8c42e2775d12aa804f5e053475d5397','Perp Foundation')
@@ -52,7 +52,7 @@ FROM (values
 
 SELECT *
 FROM (
-    SELECT 'Other' as label, address, name
+    SELECT 'Other' as label, address, address_name
     FROM tagged_wallets
     UNION ALL
     SELECT 'Other',address, cex_name

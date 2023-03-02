@@ -1,5 +1,5 @@
 {{ config(
-    schema = 'op_token_optimism',
+    schema = 'op_token_distributions_optimism',
     alias = 'foundation_wallet_approvals',
     partition_by = ['block_date'],
     materialized = 'incremental',
