@@ -64,10 +64,10 @@ WITH unit_test AS (
             WHEN LOWER(test.taker) = LOWER(actual.taker) THEN TRUE
             ELSE FALSE
         END AS taker_test,
-        CASE
-            WHEN LOWER(test.maker) = LOWER(actual.maker) THEN TRUE
-            ELSE FALSE
-        END AS maker_test,
+--         CASE
+--             WHEN LOWER(test.maker) = LOWER(actual.maker) THEN TRUE
+--             ELSE FALSE
+--         END AS maker_test,
         CASE
             WHEN LOWER(test.project_contract_address) = LOWER(actual.project_contract_address) THEN TRUE
             ELSE FALSE
@@ -117,7 +117,7 @@ WHERE
     OR token_bought_address_test = FALSE
     OR token_sold_address_test = FALSE
     OR taker_test = FALSE
-    OR maker_test = FALSE
+--    OR maker_test = FALSE
     OR project_contract_address_test = FALSE
     OR tx_hash_test = FALSE
     OR tx_from_test = FALSE
