@@ -17,8 +17,8 @@ WITH event_data as (
         evt_block_number as block_number,
         recipient as taker,
         '' AS maker,
-        inAmount AS token_sold_amount_raw,
-        outAmount AS token_bought_amount_raw,
+        CAST(inAmount AS DECIMAL(38,0)) AS token_sold_amount_raw,
+        CAST(outAmount AS DECIMAL(38,0)) AS token_bought_amount_raw,
         inAsset as token_sold_address,
         outAsset as token_bought_address,
         contract_address AS project_contract_address,
@@ -48,13 +48,13 @@ SELECT
         when lower(t_bought.symbol) > lower(t_sold.symbol) then concat(t_sold.symbol, '-', t_bought.symbol)
         else concat(t_bought.symbol, '-', t_sold.symbol)
     end as token_pair
-    ,e.token_bought_amount_raw / power(10, t_bought.decimals) AS token_bought_amount
-    ,e.token_sold_amount_raw / power(10, t_sold.decimals) AS token_sold_amount
+    ,CAST(e.token_bought_amount_raw AS DECIMAL(38,0)) / power(10, t_bought.decimals) AS token_bought_amount
+    ,CAST(e.token_sold_amount_raw AS DECIMAL(38,0)) / power(10, t_sold.decimals) AS token_sold_amount
     ,CAST(e.token_bought_amount_raw AS DECIMAL(38,0)) AS token_bought_amount_raw
     ,CAST(e.token_sold_amount_raw AS DECIMAL(38,0)) AS token_sold_amount_raw
     ,coalesce(
-        (e.token_bought_amount_raw / power(10, p_bought.decimals)) * p_bought.price
-        ,(e.token_sold_amount_raw / power(10, p_sold.decimals)) * p_sold.price
+        (CAST(e.token_bought_amount_raw AS DECIMAL(38,0)) / power(10, p_bought.decimals)) * p_bought.price
+        ,(CAST(e.token_sold_amount_raw AS DECIMAL(38,0)) / power(10, p_sold.decimals)) * p_sold.price
     ) AS amount_usd
     ,e.token_bought_address
     ,e.token_sold_address
