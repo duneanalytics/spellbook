@@ -118,6 +118,13 @@ models:
     config:
       tags: ['safe', 'transfers', 'optimism']
     description: "ETH transfers into or out of Safes"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_date
+            - address
+            - tx_hash
+            - trace_address
     columns:
       - name: address
         description: "Safe contract address"

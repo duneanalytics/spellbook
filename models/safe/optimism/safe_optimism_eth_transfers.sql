@@ -24,7 +24,7 @@ select
     et.tx_hash,
     array_join(et.trace_address, ',') as trace_address
 from {{ source('optimism', 'traces') }} et
-join {{ ref('safe_optimism_safes') }} s on et.from = s.address
+inner join {{ ref('safe_optimism_safes') }} s on et.from = s.address
     and et.from != et.to -- exclude calls to self to guarantee unique key property
     and et.success = true
     and (lower(et.call_type) not in ('delegatecall', 'callcode', 'staticcall') or et.call_type is null)
@@ -47,7 +47,7 @@ select
     et.tx_hash,
     array_join(et.trace_address, ',') as trace_address
 from {{ source('optimism', 'traces') }} et
-join {{ ref('safe_optimism_safes') }} s on et.to = s.address
+inner join {{ ref('safe_optimism_safes') }} s on et.to = s.address
     and et.from != et.to -- exclude calls to self to guarantee unique key property
     and et.success = true
     and (lower(et.call_type) not in ('delegatecall', 'callcode', 'staticcall') or et.call_type is null)
@@ -71,7 +71,7 @@ select
     r.evt_tx_hash as tx_hash,
     cast(array(r.evt_index) as string) as trace_address
 from {{ source('erc20_optimism', 'evt_Transfer') }} r
-join {{ ref('safe_optimism_safes') }} s 
+inner join {{ ref('safe_optimism_safes') }} s
     on r.to = s.address
 where 
     r.contract_address = lower('0xDeadDeAddeAddEAddeadDEaDDEAdDeaDDeAD0000')
@@ -94,7 +94,7 @@ select
     r.evt_tx_hash as tx_hash,
     cast(array(r.evt_index) as string) as trace_address
 from {{ source('erc20_optimism', 'evt_Transfer') }} r
-join {{ ref('safe_optimism_safes') }} s 
+inner join {{ ref('safe_optimism_safes') }} s
     on r.from = s.address
 where 
     r.contract_address = lower('0xDeadDeAddeAddEAddeadDEaDDEAdDeaDDeAD0000')
