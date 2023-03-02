@@ -47,6 +47,12 @@ sources:
         loaded_at_field: call_block_time
       - name: AggregationRouterV5_call_fillOrder
         loaded_at_field: call_block_time
+      - name: AggregationRouterV5_call_fillOrderRFQ
+        loaded_at_field: call_block_time
+      - name: AggregationRouterV5_call_fillOrderRFQTo
+        loaded_at_field: call_block_time
+      - name: AggregationRouterV5_call_fillOrderRFQToWithPermit
+        loaded_at_field: call_block_time
   
   - name: oneinch_v2_ethereum
     description: "decoded events and function calls for 1inch v2 on ethereum"
