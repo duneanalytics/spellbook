@@ -1,0 +1,15 @@
+version: 2
+
+sources:
+  - name: nftx_v2_ethereum
+    freshness:
+      warn_after: { count: 12, period: hour }
+    tables:
+      - name: NFTXVaultFactoryUpgradeable_v1_evt_NewVault
+        loaded_at_field: evt_block_time
+      - name: NFTXVaultFactoryUpgradeable_v1_call_createVault
+        loaded_at_field: evt_block_time
+      - name: Staking_evt_PoolCreated
+        loaded_at_field: evt_block_time
+      - name: Staking_evt_PoolUpdated
+        loaded_at_field: evt_block_time
