@@ -28,6 +28,9 @@ models:
       - &tokenId
         name: tokenId
         description: "ID of this ERC721 token"
+      - &num_tokens
+        name: num_tokens
+        description: "Number of tokens held by this wallet at a given time(should always be 1 here)"
       - &collection
         name: collection
         description: "Name of NFT collection"
@@ -51,6 +54,7 @@ models:
       - *wallet_address
       - *token_address
       - *tokenId
+      - *num_tokens
       - *collection
 
   - name: balances_ethereum_erc721_latest
@@ -69,21 +73,8 @@ models:
       - *wallet_address
       - *token_address
       - *tokenId
+      - *num_tokens
       - *collection
-      - &updated_at
-        name: updated_at
-        description: "UTC timestamp when data was last updated"
+      
 
-  - name: balances_ethereum_erc721_noncompliant
-    meta:
-      blockchain: ethereum
-      sector: balances
-      project: erc721
-      contributors: Henrystats, 0xBoxer
-    config:
-      tags: ['balances', 'ethereum', 'erc721', 'noncompliant', 'Henrystats']
-    description: >
-        ERC721 NFT contract addresses that allow multiple minting(from 0x000..000) of the same tokenId.
-        Depends on erc721_ethereum_transfers.
-    columns:
-      - *token_address
+  
