@@ -173,7 +173,6 @@ models:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
               - address
-              
     columns:
       - &address
         name: address
@@ -218,3 +217,21 @@ models:
     columns:
       - *address
       - *address_name
+  
+  - name: op_token_distributions_optimism_disperse_contracts
+    meta:
+      blockchain: optimism
+      project: op
+      contributors: msilb7
+    config:
+      tags: ['optimism','op','grants','disperse']
+    description: >
+        A table containing mappings for disperse contract wallets that we want to map distributions with
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+              - address
+    columns:
+      - *address
+      - *label
+      - *address_descriptor
