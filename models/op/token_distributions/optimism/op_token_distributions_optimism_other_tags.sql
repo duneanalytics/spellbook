@@ -45,7 +45,7 @@ FROM (values
             ,('0x1111111254EEB25477B68fb85Ed929f73A960582', '1inch Swap')
             -- ,('0x74ffc2d7a5bf1f74d971707ec9aaa7ffdbcce05c99a4b8929f07a6d1223e76e6','')
             
-    ) a (address, name)
+    ) a (address, address_name)
     ) b
     WHERE rnk = 1 --check to prevent duplicates
 )
