@@ -10,12 +10,12 @@
 
 -- new/standardized labels
 SELECT * FROM {{ ref('labels_bridges') }}
--- UNION ALL
--- SELECT * FROM {{ ref('labels_dex') }}
--- UNION ALL
--- SELECT * FROM {{ ref('labels_social') }}
--- UNION ALL
--- SELECT * FROM {{ ref('labels_nft') }}
+UNION ALL
+SELECT * FROM {{ ref('labels_dex') }}
+UNION ALL
+SELECT * FROM {{ ref('labels_social') }}
+UNION ALL
+SELECT * FROM {{ ref('labels_nft') }}
 -- UNION ALL
 -- SELECT * FROM {{ ref('labels_airdrop') }}
 -- UNION ALL
