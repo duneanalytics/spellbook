@@ -108,6 +108,8 @@ left join namespaces as ec
     on etxs.to=ec.address
 left join {{ ref('nft_optimism_aggregators') }} as agg 
     on etxs.to=agg.contract_address
+left join nfts_per_tx nft_count 
+    on nft_count.tx_hash=nft_mints.tx_hash
 where 
     nft_mints.from = '0x0000000000000000000000000000000000000000'
     {% if is_incremental() %}
