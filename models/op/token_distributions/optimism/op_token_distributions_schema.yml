@@ -107,19 +107,19 @@ models:
         blockchain: optimism
         project: op
         contributors: msilb7
-      config:
-        tags: ['optimism','op','grants','project']
-      description: >
-          A table containing mappings from governance proposal names to Dune project names.
-      tests:
-        - dbt_utils.unique_combination_of_columns:
-            combination_of_columns:
-                - proposal_name
-      columns:
-      - &proposal_name
-        name: proposal_name
-      - &project_name
-        name: project_name
+    config:
+      tags: ['optimism','op','grants','project']
+    description: >
+        A table containing mappings from governance proposal names to Dune project names.
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+              - proposal_name
+    columns:
+    - &proposal_name
+      name: proposal_name
+    - &project_name
+      name: project_name
   
   - name: op_token_distributions_optimism_project_wallets
     meta:
