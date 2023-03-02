@@ -97,9 +97,7 @@ models:
         name: project_address
       - &project_name
         name: project_name
-      - &tx_to_address
-        name: tx_to_address
-      - &tx_from_address
-        name: tx_from_address
+      - *tx_to_address
+      - *tx_from_address
       - &op_approved_to_project
         name: op_approved_to_project
