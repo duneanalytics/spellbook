@@ -48,6 +48,7 @@ FROM
     ("luna-luna-wormhole", "polygon", "LUNA", "0x9cd6746665d9557e1b9a775819625711d0693439", 6),
     ("ust-terrausd", "polygon", "USTC", "0x692597b009d13c4049a947cab2239b7d6517875f", 18),
     ("maticx-liquid-staking-matic-pos","polygon","MATICX","0xfa68fb4628dff1028cfec22b4162fccd0d45efb6",18),
-    ("zed-zed-run", "polygon", "ZED", "0x5ec03c1f7fa7ff05ec476d19e34a22eddb48acdc", 18)
+    ("zed-zed-run", "polygon", "ZED", "0x5ec03c1f7fa7ff05ec476d19e34a22eddb48acdc", 18),
+    ("polydoge-polydoge","polygon","PolyDoge","0x8a953cfe442c5e8855cc6c61b1293fa648bae472",18)
     
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)
