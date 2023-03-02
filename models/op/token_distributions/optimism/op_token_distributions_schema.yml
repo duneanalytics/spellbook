@@ -63,15 +63,9 @@ models:
         name: op_between_projects
       - &op_incoming_clawback
         name: op_incoming_clawback
-      - &running_op_claims
-        name: running_op_claims
-      - &total_running_op_claims
-        name: total_running_op_claims
       - &op_sold
         name: op_sold
       - &og_to_name
         name: og_to_name
       - &og_from_name
         name: og_from_name
-      - &to_contract
-        name: to_contract

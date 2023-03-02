@@ -15,6 +15,8 @@
 
 {% set op_token_address = '0x4200000000000000000000000000000000000042' %}
 {% set op_token_launch_date = '2022-05-31'  %}
+{% set foundation_label = 'OP Foundation'  %}
+{% set grants_descriptor = 'OP Foundation Grants'  %}
 
 
 WITH all_labels AS (
@@ -35,16 +37,12 @@ WITH all_labels AS (
 )
 
 , other_claims AS ( --protocols that never claimed and transferred from the fnd wallet
-SELECT 
+SELECT
     evt_block_time, evt_block_number, evt_index, 
-    -- from_address, to_address, 
     tx_to_address, tx_from_address,
     evt_tx_hash, from_label, from_type, from_name, 
-    --user_address,
-    to_type, to_label, to_name, op_amount_decimal, method, to_contract,
+    to_type, to_label, to_name, op_amount_decimal, method,
     MIN(evt_tfer_index) AS min_evt_tfer_index, MAX(evt_tfer_index) AS max_evt_tfer_index,
-    -- FIRST_VALUE(CASE WHEN claim_rank_asc = 1 THEN from_address ELSE NULL END) AS from_address_map,
-    -- LAST_VALUE(CASE WHEN claim_rank_desc = 1 THEN to_address ELSE NULL END) AS to_address_map,
     
     (array_agg(
         CASE WHEN claim_rank_asc = 1 THEN from_address ELSE NULL END
@@ -70,7 +68,6 @@ FROM (
             --get last
             , tf.evt_index AS evt_tfer_index
             , substring(tx.data,1,10) AS method --bytearray_substring(tx.data, 1, 4) AS method
-            , contract_project AS to_contract
             
             ,ROW_NUMBER() OVER (PARTITION BY r.evt_tx_hash, r.evt_index ORDER BY tf.evt_index DESC) AS claim_rank_desc
             ,ROW_NUMBER() OVER (PARTITION BY r.evt_tx_hash, r.evt_index ORDER BY tf.evt_index ASC) AS claim_rank_asc
@@ -82,7 +79,7 @@ FROM (
                 AND tf.contract_address = r.reward
                 AND value = amount
                 {% if is_incremental() %} 
-                and tf.evt_block_time >= date_trunc("day", now() - interval '1 week')
+                and tf.evt_block_time >= date_trunc('day', now() - interval '1 week')
                 {% endif %}
             left JOIN all_labels lbl_from
                 ON lbl_from.address = tf.`from`
@@ -95,42 +92,25 @@ FROM (
                 AND lbl_to.label IS NULL -- don't try if we have a label on the to transfer
                 AND tx.block_time > cast('{{op_token_launch_date}}' as date)
                 {% if is_incremental() %} 
-                and tx.block_time >= date_trunc("day", now() - interval '1 week')
+                and tx.block_time >= date_trunc('day', now() - interval '1 week')
                 {% endif %}
-            LEFT JOIN {{ ref('contracts_optimism_contract_mapping') }} cm
-                ON cm.contract_address = tx.to
+
             
         WHERE reward = '{{op_token_address}}' --OP Token
         and cast(amount as double)/cast(1e18 as double) > 0
         AND tf.evt_block_time > cast('{{op_token_launch_date}}' as date) --OP token launch date
-        AND lbl_from.label = 'Foundation'
+        AND lbl_from.label = '{{foundation_label}}'
         {% if is_incremental() %} 
-        and r.evt_block_time >= date_trunc("day", now() - interval '1 week')
+        and r.evt_block_time >= date_trunc('day', now() - interval '1 week')
         {% endif %}
 
     ) a
-    GROUP BY 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15-- Get Uniques
-
+    GROUP BY
+    evt_block_time, evt_block_number, evt_index, 
+    tx_to_address, tx_from_address,
+    evt_tx_hash, from_label, from_type, from_name, 
+    to_type, to_label, to_name, op_amount_decimal, method
 )
-
-
--- get token dump transactions
-, get_dex_trades AS (
-SELECT block_time, taker AS project_wallet, tx_hash, 'DEX Sale' AS label, 'DEX Sale - ' || array_join( array_agg(distinct project), ',') as project, SUM(token_sold_amount) AS amount_sold
-FROM {{ ref('dex_trades') }} t
-    INNER JOIN all_labels al
-        ON al.address = t.taker
-        AND al.label = 'Project'
-WHERE blockchain = 'optimism'
-AND token_sold_address = '{{op_token_address}}'
-AND block_date > cast('2022-05-30' as date)
-{% if is_incremental() %} 
-and t.block_time >= date_trunc("day", now() - interval '1 week')
-{% endif %}
-GROUP BY 1,2,3,4
-
-)
-
 
   , outgoing_distributions AS 
             (
@@ -164,27 +144,22 @@ GROUP BY 1,2,3,4
                         /*txl.tx_type
                         ,*/CASE WHEN tf.to = dc.address THEN lbl_from_util_tx.label ELSE NULL END --if utility, mark as internal
                         ,lbl_to.label
-                        , dext.label
                             , 'Other') 
                             AS to_label,
                     COALESCE(
                         /*txl.tx_name
                         ,*/CASE WHEN tf.to = dc.address THEN lbl_from_util_tx.project_name ELSE NULL END --if utility, mark as internal
                         ,lbl_to.project_name
-                        ,dext.project
                         ) AS to_name,
                         
-                        contract_project AS to_contract,
-                        
-                        cast(tf.value as double)/POWER(10,18) AS op_amount_decimal,
-                        cast(amount_sold as double)/POWER(10,18) AS amount_sold_dec,
+                        cast(tf.value as double)/cast( 1e18 as double) AS op_amount_decimal,
+                        cast(amount_sold as double)/cast( 1e18 as double) AS amount_sold_dec,
                         evt_index AS evt_tfer_index,
                         
                         substring(tx.data,1,10) AS method --bytearray_substring(tx.data, 1, 4) AS method
                         
                         FROM {{source('erc20_optimism','evt_transfer') }} tf
-                        -- OLD: we want the sender to always be either the foundation or a project or a CEX
-                        -- NEW: We want either the send or receiver to be the foundation or a project
+                        -- We want either the send or receiver to be the foundation or a project
                         INNER JOIN all_labels lbl_from
                             ON lbl_from.address = tf.`from`
                         -- if the recipient is in this list to, then we track it
@@ -197,7 +172,7 @@ GROUP BY 1,2,3,4
                             AND tx.block_number = tf.evt_block_number
                             AND tx.block_time > cast('{{op_token_launch_date}}' as date)
                             {% if is_incremental() %} 
-                            and tx.block_time >= date_trunc("day", now() - interval '1 week')
+                            and tx.block_time >= date_trunc('day', now() - interval '1 week')
                             {% endif %}
                             AND lbl_to.label IS NULL -- don't try if we have a label on the to transfer
                 
@@ -213,16 +188,6 @@ GROUP BY 1,2,3,4
                     LEFT JOIN all_labels lbl_from_util_tx
                         ON lbl_from_util_tx.address = tx.`from` --label of the transaction sender
                         AND dc.address IS NOT NULL --we have a disperse
-                    
-                    LEFT JOIN get_dex_trades dext
-                        ON dext.block_time = tf.evt_block_time
-                        AND dext.tx_hash = tf.evt_tx_hash
-                        AND dext.project_wallet = tf.`from`
-                    
-                    LEFT JOIN {{ ref('contracts_optimism_contract_mapping') }} cm
-                        ON cm.contract_address = tx.to
-                        AND is_self_destruct = false
-                        AND tx.to IS NOT NULL
                         
                     -- LEFT JOIN tx_labels txl
                     --     ON txl.tx_hash = tf.evt_tx_hash
@@ -235,7 +200,7 @@ GROUP BY 1,2,3,4
                                 )
                         AND tf.evt_block_time > cast('{{op_token_launch_date}}' as date)
                         {% if is_incremental() %} 
-                        and tf.evt_block_time >= date_trunc("day", now() - interval '1 week')
+                        and tf.evt_block_time >= date_trunc('day', now() - interval '1 week')
                         {% endif %}
                         
                         AND 1= ( --exclude CEX to CEX or CEX withdrawals
@@ -254,14 +219,14 @@ GROUP BY 1,2,3,4
                         evt_block_time, evt_block_number, evt_index,
                         from_address_map AS from_address, to_address_map AS to_address, tx_to_address, tx_from_address, evt_tx_hash,
                         from_type, to_type, from_label, from_name, to_label, to_name, op_amount_decimal, 0 AS amount_sold_dec,
-                        min_evt_tfer_index, max_evt_tfer_index, method, to_contract
+                        min_evt_tfer_index, max_evt_tfer_index, method
                         FROM other_claims
                     )
                     
                     SELECT 
                         evt_block_time, evt_block_number, evt_index,
                         from_address, to_address, tx_to_address, tx_from_address, evt_tx_hash,
-                        from_type, to_type, from_label, from_name, to_label, to_name, op_amount_decimal, amount_sold_dec, method, to_contract
+                        from_type, to_type, from_label, from_name, to_label, to_name, op_amount_decimal, amount_sold_dec, method
                     FROM others o
                     
                     UNION ALL
@@ -269,7 +234,7 @@ GROUP BY 1,2,3,4
                     SELECT 
                         t.evt_block_time, t.evt_block_number, t.evt_index,
                         t.from_address, t.to_address, t.tx_to_address, t.tx_from_address, t.evt_tx_hash,
-                        t.from_type, t.to_type, t.from_label, t.from_name, t.to_label, t.to_name, t.op_amount_decimal, t.amount_sold_dec, t.method, t.to_contract
+                        t.from_type, t.to_type, t.from_label, t.from_name, t.to_label, t.to_name, t.op_amount_decimal, t.amount_sold_dec, t.method
                     
                     FROM tfers t
                     LEFT JOIN others o --don't double count - at the amount level b/c there could be multiple claims in one tx
@@ -282,7 +247,6 @@ GROUP BY 1,2,3,4
                             t.evt_tfer_index = o.max_evt_tfer_index
                             )
                     WHERE o.evt_block_number IS NULL
-                    -- WHERE t.evt_block_number IS NULL
             )
 
 , distributions AS (
@@ -294,17 +258,12 @@ SELECT *,
          WHEN (from_name != to_name) AND from_label = 'Project' AND to_label = 'Project' THEN op_amount_decimal --handle for distirbutions to other projects (i.e. Uniswap to Gamma)
     ELSE 0 END AS op_deployed,
     
-    CASE WHEN from_label = 'Foundation' AND from_type = 'Grants' AND to_label = 'Project' THEN op_amount_decimal ELSE 0 END AS op_to_project,
+    CASE WHEN from_label = '{{foundation_label}}' AND from_type = '{{grants_descriptor}}' AND to_label = 'Project' THEN op_amount_decimal ELSE 0 END AS op_to_project,
     
     CASE WHEN from_label = 'Project' AND to_label = 'Project'
             AND from_name != to_name THEN op_amount_decimal ELSE 0 END AS op_between_projects,
             
-    CASE WHEN from_label='Deployed' and to_label='Project' AND from_name = to_name THEN op_amount_decimal ELSE 0 END AS op_incoming_clawback, --Project's deployer back to the OG project wallet
-    -- tokens sent to users
-    SUM(CASE WHEN to_label = 'Other' THEN op_amount_decimal ELSE 0 END)
-            OVER (PARTITION BY from_address, from_label, from_name, to_address ORDER BY evt_block_time ASC) AS running_op_claims,
-    SUM(CASE WHEN to_label = 'Other' THEN op_amount_decimal ELSE 0 END)
-            OVER (PARTITION BY from_address, from_label, from_name ORDER BY evt_block_time ASC) AS total_running_op_claims
+    CASE WHEN from_label='Deployed' and to_label='Project' AND from_name = to_name THEN op_amount_decimal ELSE 0 END AS op_incoming_clawback --Project's deployer back to the OG project wallet
             
     FROM outgoing_distributions
 
@@ -324,13 +283,10 @@ DATE_TRUNC('day',evt_block_time) AS block_date,
     ,cast(op_to_project as decimal) as op_to_project
     ,cast(op_between_projects as decimal) as op_between_projects
     ,cast(op_incoming_clawback as decimal) as op_incoming_clawback
-    ,cast(running_op_claims as decimal) as running_op_claims
-    ,cast(total_running_op_claims as decimal) as total_running_op_claims
     ,cast(amount_sold_dec as decimal) as op_sold
     
     , to_name AS og_to_name
     , from_name AS og_from_name
-    , to_contract
     
 FROM distributions d
 -- read in other tags
