@@ -116,10 +116,8 @@ models:
           combination_of_columns:
               - proposal_name
     columns:
-    - &proposal_name
-      name: proposal_name
-    - &project_name
-      name: project_name
+    - *proposal_name
+    - *project_name
   
   - name: op_token_distributions_optimism_project_wallets
     meta:
