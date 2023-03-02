@@ -14,9 +14,9 @@ models:
       - &blockchain
         name: blockchain
         description: "Blockchain"   
-      - &tx_hash
-        name: tx_hash
-        description: "Transaction hash of blue chip investment trade"
+      - &tx_hash_key
+        name: tx_hash_key
+        description: "Transaction hash key of a blue chip investment trade made up from tx_hash, evt_index, project, and version"
       - &name
         name: name
         description: "Label name"
@@ -53,7 +53,7 @@ models:
     description:  "Trades that bought a blue chip type of token (wBTC, ETH, and WETH)"
     columns:
       - *blockchain
-      - *tx_hash
+      - *tx_hash_key
       - *name
       - *category
       - *contributor
