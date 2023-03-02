@@ -217,7 +217,7 @@ INNER JOIN {{ source('ethereum', 'transactions') }} as tx
     AND src.block_number = tx.block_number
     {% if is_incremental() %}
     AND tx.block_time >= date_trunc("day", now() - interval '1 week')
-    {% else %}s
+    {% else %}
     AND tx.block_time >= '{{project_start_date}}'
     {% endif %}
 LEFT JOIN {{ ref('tokens_erc20') }} as token_bought

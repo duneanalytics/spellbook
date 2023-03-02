@@ -20,7 +20,6 @@ WITH limit_order_protocol AS
         get_json_object(order,'$.takerAsset') AS token_bought_address,
         get_json_object(order,'$.makerAsset') AS token_sold_address,
         contract_address,
-        -- order,
         output_0,
         output_1,
         call_block_time,

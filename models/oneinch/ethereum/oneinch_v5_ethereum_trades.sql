@@ -24,7 +24,6 @@
     ,'trace_address'
     ,'evt_index'
     ,'contract_address'
-    ,'version'
 ] %}
 
 WITH oneinch_calls AS
