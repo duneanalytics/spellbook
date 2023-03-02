@@ -14,9 +14,8 @@
 with namespaces as (
     select 
         contract_address as address
-        ,coalesce(contract_name, contract_project, token_symbol) as namespace
-	from {{ ref('contracts_optimism','contract_mapping') }}
-	group by 1
+        ,coalesce(contract_project, contract_name, token_symbol) as namespace
+	from {{ ref('contracts_optimism_contract_mapping') }}
 )
 , nfts_per_tx as (
     select 
@@ -49,7 +48,7 @@ select
     , nft_mints.to as buyer
     , cast(coalesce(sum(tr.value), sum(cast(erc20s.value as double)), 0)*(nft_mints.amount/nft_count.nfts_minted_in_tx) as decimal(38,0)) as amount_raw
     , coalesce(sum(tr.value_decimal), sum(cast(erc20s.value as double))/power(10, pu_erc20s.decimals))*(nft_mints.amount/nft_count.nfts_minted_in_tx) as amount_original
-    , coalesce(pu_eth.price*sum(cast(et.value as double))/power(10, 18), pu_erc20s.price*sum(cast(erc20s.value as double))/power(10, pu_erc20s.decimals))*(nft_mints.amount/nft_count.nfts_minted_in_tx) as amount_usd
+    , coalesce(pu_eth.price*sum(tr.value_decimal), pu_erc20s.price*sum(cast(erc20s.value as double))/power(10, pu_erc20s.decimals))*(nft_mints.amount/nft_count.nfts_minted_in_tx) as amount_usd
     , case when tr.tx_hash is not null then 'ETH' else pu_erc20s.symbol end as currency_symbol
     , case when tr.tx_hash is not null then '{{eth_address}}' else erc20s.contract_address end as currency_contract
     , nft_mints.contract_address as nft_contract_address
@@ -87,7 +86,7 @@ left join {{ ref('transfers_optimism_eth') }} as tr
     and tr.value_decimal > 0
 left join {{ source('prices','usd') }} as pu_eth 
     on pu_eth.blockchain='optimism'
-    and pu_eth.minute=date_trunc('minute', et.block_time)
+    and pu_eth.minute=date_trunc('minute', tr.tx_block_time)
     and pu_eth.contract_address='{{eth_address}}'
     {% if is_incremental() %}
     and pu_eth.minute >= date_trunc("day", now() - interval '1 week')
