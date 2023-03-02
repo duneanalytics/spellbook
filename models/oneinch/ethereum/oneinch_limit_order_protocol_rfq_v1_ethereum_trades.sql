@@ -15,33 +15,14 @@
 WITH limit_order_protocol_rfq_v1 AS
 (
     SELECT
-        call_block_number,
-        call_block_time,
-        order,
-        output_0,
-        output_1,
-        contract_address,
-        call_tx_hash,
-        call_trace_address
-    FROM
-        {{ source('oneinch_v4_ethereum', 'AggregationRouterV4_call_fillOrderRFQ') }}
-    WHERE
-        call_success
-        {% if is_incremental() %}
-        AND call_block_time >= date_trunc("day", now() - interval '1 week')
-        {% else %}
-        AND call_block_time >= '{{project_start_date}}'
-        {% endif %}
-
-    SELECT
         call_block_number as block_number,
         call_block_time as block_time,
         '1inch Limit Order Protocol' AS project,
         'RFQ v1' AS version,
-        CAST(NULL as string) as taker, --will get from base table downstream
+        ts.from as taker,
         CONCAT('0x', substring(get_json_object(order,'$.makerAssetData'), 35, 40)) AS maker,
-        bytea2numeric_v3(substring(tf2.input, 68, 32)) AS token_bought_amount_raw,
-        bytea2numeric_v3(substring(tf1.input, 68, 32)) AS token_sold_amount_raw,
+        bytea2numeric_v3(substring(tf2.input, 139, 64)) AS token_bought_amount_raw,
+        bytea2numeric_v3(substring(tf1.input, 139, 64)) AS token_sold_amount_raw,
         CAST(NULL as double) AS amount_usd,
         get_json_object(order,'$.takerAsset') AS token_bought_address,
         get_json_object(order,'$.makerAsset') AS token_sold_address,
@@ -50,51 +31,45 @@ WITH limit_order_protocol_rfq_v1 AS
         call_trace_address AS trace_address,
         CAST(NULL as integer) AS evt_index
     FROM
-        oneinch_lop_ethereum.LimitOrderProtocol_call_fillOrderRFQ as call
+        {{ source('oneinch_lop_ethereum', 'LimitOrderProtocol_call_fillOrderRFQ') }} as call
     INNER JOIN
-        ethereum.traces as ts
+        {{ source('ethereum', 'traces') }} as ts
         ON call.call_tx_hash = ts.tx_hash
         AND call.call_trace_address = ts.trace_address
         AND call.call_block_number = ts.block_number
-        and ts.block_time >= '{{start_date}}'
+        {% if is_incremental() %}
+        AND ts.block_time >= date_trunc("day", now() - interval '1 week')
+        {% else %}
+        AND ts.block_time >= '{{project_start_date}}'
+        {% endif %}
     INNER JOIN
-        ethereum.traces as tf1
+        {{ source('ethereum', 'traces') }} as tf1
         ON call.call_tx_hash = tf1.tx_hash
         AND call.call_block_number = tf1.block_number
         AND CONCAT(COALESCE(call.call_trace_address, CAST(NULL as array<long>)), ARRAY((ts.sub_traces - 2))) = tf1.trace_address
-        and tf1.block_time >= '{{start_date}}'
+        {% if is_incremental() %}
+        AND tf1.block_time >= date_trunc("day", now() - interval '1 week')
+        {% else %}
+        AND tf1.block_time >= '{{project_start_date}}'
+        {% endif %}
     INNER JOIN
-        ethereum.traces as tf2
+        {{ source('ethereum', 'traces') }} as tf2
         ON call.call_tx_hash = tf2.tx_hash
         AND call.call_block_number = tf2.block_number
         AND CONCAT(COALESCE(call.call_trace_address, CAST(NULL as array<long>)), ARRAY((ts.sub_traces - 1))) = tf2.trace_address
-        and tf2.block_time >= '{{start_date}}'
+        {% if is_incremental() %}
+        AND tf2.block_time >= date_trunc("day", now() - interval '1 week')
+        {% else %}
+        AND tf2.block_time >= '{{project_start_date}}'
+        {% endif %}
     WHERE
         call.call_success
-        and call.call_block_time >= '{{start_date}}'
+        {% if is_incremental() %}
+        AND call.call_block_time >= date_trunc("day", now() - interval '1 week')
+        {% else %}
+        AND call.call_block_time >= '{{project_start_date}}'
+        {% endif %}
 )
-, oneinch AS
-(
-    SELECT
-        call_block_number as block_number,
-        call_block_time as block_time,
-        '1inch Limit Order Protocol' AS project,
-        'eRFQ v1' AS version,
-        CAST(NULL as string) as taker, --will get from base table downstream
-        get_json_object(order,'$.maker') AS maker,
-        output_1 AS token_bought_amount_raw,
-        output_0 AS token_sold_amount_raw,
-        CAST(NULL as double) AS amount_usd,
-        get_json_object(order,'$.takerAsset') AS token_bought_address,
-        get_json_object(order,'$.makerAsset') AS token_sold_address,
-        contract_address AS project_contract_address,
-        call_tx_hash as tx_hash,
-        call_trace_address AS trace_address,
-        CAST(NULL as integer) AS evt_index
-    FROM
-        limit_order_protocol_rfq_v1
-)
-
 SELECT
     'ethereum' AS blockchain
     ,src.project
@@ -157,7 +132,7 @@ SELECT
     ,tx.to AS tx_to
     ,src.trace_address
     ,src.evt_index
-FROM oneinch as src
+FROM limit_order_protocol_rfq_v1 as src
 INNER JOIN {{ source('ethereum', 'transactions') }} as tx
     ON src.tx_hash = tx.hash
     AND src.block_number = tx.block_number
