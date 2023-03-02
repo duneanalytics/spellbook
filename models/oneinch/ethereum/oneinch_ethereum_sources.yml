@@ -148,3 +148,9 @@ sources:
         loaded_at_field: call_block_time
       - name: LimitOrderProtocol_call_fillOrderToWithPermit
         loaded_at_field: call_block_time
+      - name: LimitOrderProtocol_call_fillOrderRFQ
+        loaded_at_field: call_block_time
+      - name: LimitOrderProtocol_call_fillOrderRFQTo
+        loaded_at_field: call_block_time
+      - name: LimitOrderProtocol_call_fillOrderRFQToWithPermit
+        loaded_at_field: call_block_time

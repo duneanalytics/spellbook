@@ -22,6 +22,7 @@ ref('oneinch_v1_ethereum_trades')
 ,ref('oneinch_limit_order_protocol_v3_ethereum_trades')
 ,ref('oneinch_limit_order_protocol_embedded_rfq_ethereum_trades')
 ,ref('oneinch_limit_order_protocol_rfq_v1_ethereum_trades')
+,ref('oneinch_limit_order_protocol_rfq_v2_ethereum_trades')
 ] %}
 
 
