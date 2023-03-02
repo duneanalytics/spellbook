@@ -1,4 +1,4 @@
-{{config(alias='nft',
+{{config(alias='institution',
         post_hook='{{ expose_spells(\'["ethereum","bnb","fantom"]\',
                                     "sector",
                                     "labels",
