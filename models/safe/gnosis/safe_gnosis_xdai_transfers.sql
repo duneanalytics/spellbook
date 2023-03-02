@@ -3,7 +3,7 @@
         materialized='incremental',
         alias='xdai_transfers',
         partition_by = ['block_date'],
-        unique_key = ['block_date', 'tx_hash', 'trace_address', 'amount_raw'],
+        unique_key = ['block_date', 'address', 'tx_hash', 'trace_address'],
         on_schema_change='fail',
         file_format ='delta',
         incremental_strategy='merge',
@@ -13,6 +13,8 @@
                                     \'["tschubotz"]\') }}'
     ) 
 }}
+
+{% set project_start_date = '2020-05-21' %}
 
 select 
     s.address,
@@ -28,7 +30,7 @@ join {{ ref('safe_gnosis_safes') }} s on et.from = s.address
     and (lower(et.call_type) not in ('delegatecall', 'callcode', 'staticcall') or et.call_type is null)
     and et.value > '0' -- value is of type string. exclude 0 value traces
 {% if not is_incremental() %}
-where et.block_time > '2020-05-21' -- for initial query optimisation    
+where et.block_time > '{{project_start_date}}' -- for initial query optimisation
 {% endif %}
 {% if is_incremental() %}
 -- to prevent potential counterfactual safe deployment issues we take a bigger interval
@@ -51,7 +53,7 @@ join {{ ref('safe_gnosis_safes') }} s on et.to = s.address
     and (lower(et.call_type) not in ('delegatecall', 'callcode', 'staticcall') or et.call_type is null)
     and et.value > '0' -- value is of type string. exclude 0 value traces
 {% if not is_incremental() %}
-where et.block_time > '2020-05-21' -- for initial query optimisation    
+where et.block_time > '{{project_start_date}}' -- for initial query optimisation
 {% endif %}
 {% if is_incremental() %}
 -- to prevent potential counterfactual safe deployment issues we take a bigger interval
@@ -71,7 +73,7 @@ from {{ source('xdai_gnosis', 'BlockRewardAuRa_evt_AddedReceiver') }} a
 join {{ ref('safe_gnosis_safes') }} s
     on a.receiver = s.address
 {% if not is_incremental() %}
-where a.evt_block_time > '2020-05-21' -- for initial query optimisation    
+where a.evt_block_time > '{{project_start_date}}' -- for initial query optimisation
 {% endif %}
 {% if is_incremental() %}
 -- to prevent potential counterfactual safe deployment issues we take a bigger interval
