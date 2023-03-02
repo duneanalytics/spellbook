@@ -3,10 +3,10 @@ version: 2
 models:
   - name: labels_dex_traders
     meta:
-      blockchain: ethereum
+      blockchain: ethereum, gnosis, fantom, arbitrum, polygon, optimism
       sector: labels
       category: dex_traders
-      contributors: gentrexha
+      contributors: gentrexha, Henrystats
     config:
       tags: ['labels', 'dex']
     description: "DEX traders query labels across chains"
@@ -41,24 +41,3 @@ models:
       - &label_type
         name: label_type
         description: "Type of label (see labels overall readme)"
-
-  - name: labels_dex_traders_ethereum
-    meta:
-      blockchain: ethereum
-      sector: labels
-      category: dex_traders
-      contributors: gentrexha
-    config:
-      tags: ['labels', 'ethereum', 'dex']
-    description: "DEX traders query labels on ethereum"
-    columns:
-      - *blockchain
-      - *address
-      - *name
-      - *category
-      - *contributor
-      - *source
-      - *created_at
-      - *updated_at
-      - *label_type
-      - *model_name
