@@ -30,8 +30,9 @@ WITH all_labels AS (
 
 
 SELECT
+DATE_TRUNC('day',evt_block_time) AS block_date,
 a.evt_block_time, a.evt_block_number, a.evt_tx_hash, a.evt_index,
-a.spender AS project_address, al.proposal_name, al.project_name
+a.spender AS project_address, al.proposal_name, al.project_name,
 
 t.`from` AS tx_from_address, t.to AS tx_to_address, 
 

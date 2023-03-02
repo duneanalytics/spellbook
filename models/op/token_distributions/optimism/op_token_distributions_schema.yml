@@ -69,3 +69,37 @@ models:
         name: og_to_name
       - &og_from_name
         name: og_from_name
+  
+  - name: op_token_distributions_optimism_foundation_wallet_approvals
+    meta:
+      blockchain: optimism
+      project: op
+      contributors: msilb7
+    config:
+      tags: ['optimism','op','grants','distributions']
+    description: >
+        A table containing mappings of transfer approvals for OP grants token distributions
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+              - block_date
+              - evt_block_time
+              - evt_block_number
+              - evt_tx_hash
+              - evt_index
+    columns:
+      - *block_date
+      - *evt_block_time
+      - *evt_block_number
+      - *evt_tx_hash
+      - *evt_index
+      - &project_address
+        name: project_address
+      - &project_name
+        name: project_name
+      - &tx_to_address
+        name: tx_to_address
+      - &tx_from_address
+        name: tx_from_address
+      - &op_approved_to_project
+        name: op_approved_to_project
