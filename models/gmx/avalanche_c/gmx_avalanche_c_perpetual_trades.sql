@@ -98,6 +98,7 @@ SELECT
     'avalanche_c' as blockchain, 
     'gmx' as project, 
     '1' as version, 
+    'gmx' as frontend,
     date_trunc('day', pe.block_time) as block_date, 
     pe.block_time, 
     COALESCE(erc20a.symbol, pe.virtual_asset) as virtual_asset, 

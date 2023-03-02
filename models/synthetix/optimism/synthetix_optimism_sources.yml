@@ -13,6 +13,9 @@ sources:
       - name: FuturesMarketManager_evt_MarketAdded
         loaded_at_field: evt_block_time
         description: "Details the asset markets"
+      - name: FuturesMarket_evt_FuturesTracking
+        loaded_at_field: evt_block_time
+        description: "Provides details on the app or protocol where the trade was executed"
       - name: SNX_evt_SynthExchange
         loaded_at_field: evt_block_time
         description: "Details the synth exchange"
@@ -25,3 +28,6 @@ sources:
           error_after: { count: 7, period: day }
         loaded_at_field: evt_block_time
         description: "Details the perpetuals trades/swaps on PerpsV2"
+      - name: ProxyPerpsV2_evt_PerpsTracking
+        loaded_at_field: evt_block_time
+        description: "Provides details on the app or protocol where the trade was executed"

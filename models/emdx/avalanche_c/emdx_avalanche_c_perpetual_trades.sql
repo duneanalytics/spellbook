@@ -93,6 +93,7 @@ trade_data as (
 SELECT 'avalanche_c'                    as blockchain,
        'emdx'                           as project,
        '1'                              as version,
+       'emdx'                           as frontend,
        date_trunc('day', pe.block_time) as block_date,
        pe.block_time,
        pe.virtual_asset,

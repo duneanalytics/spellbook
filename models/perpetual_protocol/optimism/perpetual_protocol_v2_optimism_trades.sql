@@ -32,6 +32,7 @@ WITH perps AS (
 
 		,'Perpetual' AS project
 		,'2' AS version
+		,'Perpetual' AS frontend
 		,p.trader
 		,p.exchangedPositionNotional AS volume_raw
 		,p.evt_tx_hash AS tx_hash
@@ -48,7 +49,7 @@ WITH perps AS (
 	{% if is_incremental() %}
 	WHERE p.evt_block_time >= DATE_TRUNC("DAY", NOW() - INTERVAL '1 WEEK')
 	{% endif %}
-	GROUP BY 1, 2, 3, 4, 5, 7, 8, 9, 10, 11, 12, 13
+	GROUP BY 1, 2, 3, 4, 5, 7, 8, 9, 10, 11, 12, 13, 14
 )
 
 SELECT
@@ -65,6 +66,7 @@ SELECT
 	,perps.trade
 	,perps.project
 	,perps.version
+	,perps.frontend
 	,perps.trader
 	,perps.volume_raw
 	,perps.tx_hash

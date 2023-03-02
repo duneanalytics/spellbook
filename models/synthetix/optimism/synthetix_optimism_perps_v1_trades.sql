@@ -84,6 +84,7 @@ perps AS (
 
 		,'Synthetix' AS project
 		,'1' AS version
+		,INITCAP(IFNULL(DECODE(UNHEX(SUBSTRING(tr.trackingCode, 3)), 'UTF-8'), 'Unspecified')) AS frontend
 		,s.account AS trader
 		,s.tradeSize AS volume_raw
 		,s.evt_tx_hash AS tx_hash
@@ -94,6 +95,10 @@ perps AS (
 	LEFT JOIN asset_price AS p
 		ON s.contract_address = p.market_address
 		AND s.evt_block_time = p.evt_block_time
+	LEFT JOIN {{ source('synthetix_optimism', 'FuturesMarket_evt_FuturesTracking') }} AS tr
+		ON s.evt_tx_hash = tr.evt_tx_hash
+		AND s.fee = tr.fee
+		AND s.tradeSize = tr.sizeDelta
 	WHERE CAST(s.tradeSize AS DOUBLE) != 0
 	{% if is_incremental() %}
 	AND s.evt_block_time >= DATE_TRUNC("DAY", NOW() - INTERVAL '1 WEEK')
@@ -114,6 +119,7 @@ SELECT
 	,perps.trade
 	,perps.project
 	,perps.version
+	,perps.frontend
 	,perps.trader
 	,perps.volume_raw
 	,perps.tx_hash

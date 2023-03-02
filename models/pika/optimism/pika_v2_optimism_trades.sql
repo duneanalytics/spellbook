@@ -126,6 +126,7 @@ perps AS (
 
 		,'Pika' AS project
 		,version
+		,'Pika' AS frontend
 		,user AS trader
 		,margin * leverage AS volume_raw
 		,evt_tx_hash AS tx_hash
@@ -148,6 +149,7 @@ SELECT
 	,perps.trade
 	,perps.project
 	,perps.version
+	,perps.frontend
 	,perps.trader
 	,perps.volume_raw
 	,perps.tx_hash
