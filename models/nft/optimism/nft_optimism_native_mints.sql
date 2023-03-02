@@ -115,17 +115,7 @@ where
     {% if is_incremental() %}
     and nft_mints.block_time >= date_trunc("day", now() - interval '1 week')
     {% endif %}
-    -- to exclude any DeFi nft mints
-    and ec.namespace not in (
-        'Uniswap V3', 
-        'Velodrome', 
-        'Thales',
-        'Layer2dao',
-        'Qidao',
-        'Mean Finance',
-        'Lyra',
-        'Uniswap'
-    ) 
+
     -- to exclude bridged L1 NFT collections to L2
     and bm.contract_address is null 
     group by nft_mints.block_time, nft_mints.block_number, nft_mints.token_id, nft_mints.token_standard
