@@ -351,6 +351,7 @@ VALUES
     ("agld-adventure-gold", "ethereum", "AGLD", "0x32353a6c91143bfd6c7d363b546e62a9a2489a20", 18),
     ("aion-aion", "ethereum", "AION", "0x4ceda7906a5ed2179785cd3a40a69ee8bc99c466", 8),
     ("akro-akropolis", "ethereum", "AKRO", "0x8ab7404063ec4dbcfd4598215992dc3f8ec853d7", 18),
+    ("alongside-crypto-market-index", "ethereum", "AMKT", "0xF17A3fE536F8F7847F1385ec1bC967b2Ca9caE8D", 18),
     ("alcx-alchemix", "ethereum", "ALCX", "0xdbdb4d16eda451d0503b854cf79d55697f90c8df", 18),
     ("alpha-alpha-finance", "ethereum", "ALPHA", "0xa1faa113cbe53436df28ff0aee54275c13b40975", 18),
     ("amb-ambrosus", "ethereum", "AMB", "0x4dc3643dbc642b72c158e7f3d2ff232df61cb6ce", 18),
@@ -1759,6 +1760,7 @@ VALUES
 
     ("aave-new","polygon","AAVE","0xd6df932a45c0f255f85145f286ea0b292b21c90b",18),
     ("ageur-ageur","polygon",'agEUR',"0xe0b52e49357fd4daf2c15e02058dce6bc0057db4",18),
+    ("alongside-crypto-market-index", "polygon", "AMKT", "0xB87904DB461005FC716a6BF9F2d451c33b10b80b", 18),
     ("axlusdc-axelar-usd-coin", "polygon", "axlUSDC", "0x750e4c4984a9e0f12978ea6742bc1c5d248f40ed", 6),
     ("axlusdt-axelar-usd-tether", "polygon", "axlUSDT", "0xceed2671d8634e3ee65000edbbee66139b132fbf", 6),
     ("axlatom-axelar-wrapped-atom", "polygon", "axlATOM", "0x33f8a5029264bcfb66e39157af3fea3e2a8a5067", 6),
