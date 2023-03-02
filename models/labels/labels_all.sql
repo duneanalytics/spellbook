@@ -19,7 +19,7 @@ SELECT * FROM {{ ref('labels_social') }}
 UNION ALL
 SELECT * FROM {{ ref('labels_airdrop') }}
 UNION ALL
-SELECT * FROM {{ ref('labels_dao') }}
+-- SELECT * FROM {{ ref('labels_dao') }}
 UNION ALL
 SELECT * FROM {{ ref('labels_infrastructure') }}
 UNION ALL
