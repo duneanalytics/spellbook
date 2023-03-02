@@ -267,5 +267,7 @@ FROM
 ,('0x1e2eaf72bd96784d1e64e2ac3d8ec258b889f8f0', '1st Impact', 'erc721')
 ,('0xe30b4a83afbe78165841e10164441ef0f0d07eba', 'OptiChilds', 'erc721')
 ,('0x1af7bBb04793E6eb5F7eCB7A0f5B2f697d0398C4', 'Pixel Pooly', 'erc721')
+,('0x8dbc32a6a29c1398184256a83553d038ae74db62', 'CyberNerds', 'erc721')
+,('0xd312c1e723961164916ef2ebb767e53fbdff4094', 'ApeTown WTF', 'erc721')
 
 ) as temp_table (contract_address, name, standard)
