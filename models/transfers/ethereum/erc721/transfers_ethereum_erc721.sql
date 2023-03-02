@@ -11,7 +11,7 @@ with
             1 as amount
         from
             {{ source('erc721_ethereum', 'evt_transfer') }}
-        where token_address = lower('0xBC4CA0EdA7647A8aB7C2061c2E118A18a936f13D')
+        where contract_address = lower('0xBC4CA0EdA7647A8aB7C2061c2E118A18a936f13D')
     )
 
     ,
@@ -25,7 +25,7 @@ with
             -1 as amount
         from
             {{ source('erc721_ethereum', 'evt_transfer') }}
-        where token_address = lower('0xBC4CA0EdA7647A8aB7C2061c2E118A18a936f13D')
+        where contract_address = lower('0xBC4CA0EdA7647A8aB7C2061c2E118A18a936f13D')
     )
     
 select 'ethereum' as blockchain, wallet_address, token_address, evt_block_time, tokenId, amount, unique_tx_id
