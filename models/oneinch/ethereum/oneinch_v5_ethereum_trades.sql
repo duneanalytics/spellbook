@@ -10,7 +10,7 @@
     )
 }}
 
-{% set project_start_date = '2017-01-01' %} --for testing, use small subset of data
+{% set project_start_date = '2022-11-04' %} --for testing, use small subset of data
 
 {% set final_columns = [
     'block_number'

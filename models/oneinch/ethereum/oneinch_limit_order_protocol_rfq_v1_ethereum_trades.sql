@@ -10,7 +10,7 @@
     )
 }}
 
-{% set project_start_date = '2017-01-01' %} --for testing, use small subset of data
+{% set project_start_date = '2021-06-24' %} --for testing, use small subset of data
 
 WITH limit_order_protocol_rfq_v1 AS
 (
