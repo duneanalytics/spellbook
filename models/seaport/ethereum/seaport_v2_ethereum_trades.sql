@@ -116,6 +116,7 @@ with source_ethereum_transactions as (
           ,b.om_order_id
       from ref_seaport_ethereum_base_pairs a
            left join iv_orders_matched b on b.om_order_hash = a.order_hash
+                                         and b.om_tx_hash = a.tx_hash  -- order_hash is not unique in itself, so must join with tx_hash
      where a.platform_contract_address = '{{c_seaport_contract_address}}'
 )
 ,iv_volume as (
