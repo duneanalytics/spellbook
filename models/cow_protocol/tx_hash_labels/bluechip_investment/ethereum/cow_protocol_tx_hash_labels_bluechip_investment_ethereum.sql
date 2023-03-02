@@ -18,15 +18,15 @@ with
 
  bluechip_investment_trades as (
     select
-        distinct tx_hash
+        *
     from (
-        select tx_hash
+        select tx_hash, evt_index, project, version
         from {{ ref('dex_aggregator_trades') }}
         where blockchain = 'ethereum'
         and token_bought_address in (select bluechip_address from bluechips)
         and token_sold_address not in (select bluechip_address from bluechips)
         UNION ALL
-        select tx_hash
+        select tx_hash, evt_index, project, version
         from {{ ref('dex_trades') }}
         where blockchain = 'ethereum'
         and token_bought_address in (select bluechip_address from bluechips)
@@ -36,7 +36,7 @@ with
 
 select
   "ethereum" as blockchain,
-  tx_hash,
+  concat(tx_hash, evt_index, project, version) as tx_hash_key,
   "Bluechip Investment" as name,
   "tx_hash" as category,
   "gentrexha" as contributor,
