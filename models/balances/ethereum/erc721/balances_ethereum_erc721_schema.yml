@@ -34,6 +34,9 @@ models:
       - &collection
         name: collection
         description: "Name of NFT collection"
+      - &evt_block_number_index
+        name: evt_block_number_index
+        description: "combination of evt_block_number and evt_index"
 
   - name: balances_ethereum_erc721_hour
     meta:
@@ -56,6 +59,7 @@ models:
       - *tokenId
       - *num_tokens
       - *collection
+      - *evt_block_number_index
 
   - name: balances_ethereum_erc721_latest
     meta:
@@ -75,6 +79,7 @@ models:
       - *tokenId
       - *num_tokens
       - *collection
+      - *evt_block_number_index
       
 
   

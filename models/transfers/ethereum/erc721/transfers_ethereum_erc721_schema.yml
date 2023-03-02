@@ -30,11 +30,17 @@ models:
       - &evt_index
         name: evt_index
         description: "the index of the event in the block"
+      - &evt_block_number 
+        name: evt_block_number
+        description: "Block number in which this event occured"
+      - &evt_block_number_index
+        name: evt_block_number_index
+        description: "combination of evt_block_number and evt_index"  
       - &tokenId
         name: tokenId
         description: "ID of the ERC721 token"
       - name: amount
-        description: "Amount of ERC721 token held"
+        description: "helper column for amount of tokens transferred"
 
   - name: transfers_ethereum_erc721_agg
     meta:
@@ -52,6 +58,8 @@ models:
       - *wallet_address
       - *token_address
       - *tokenId
+      - *evt_block_number
+      - *evt_block_number_index
       - name: next_evt
         description: "The next event for this token"
       - name: num_tokens 
