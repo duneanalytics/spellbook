@@ -196,6 +196,7 @@ FROM
     ("pstn-piston", "bnb", "PSTN", "0xBfACD29427fF376FF3BC22dfFB29866277cA5Fb4", 18),
     ("ocean-ocean-protocol", "bnb", "OCEAN", "0x3516141b1ac8751c2042a8a1bc411ab8655464ac", 18),
     ("ole-openleverage", "bnb", "OLE", "0xa865197a84e780957422237b5d152772654341f3", 18),
-    ("stg-stargatetoken","bnb","STG","0xb0d502e938ed5f4df2e681fe6e419ff29631d62b",18)
+    ("stg-stargatetoken","bnb","STG","0xb0d502e938ed5f4df2e681fe6e419ff29631d62b",18),
+    ("ico-axelar", "bnb", "AXL", "0x8b1f4432f943c465a973fedc6d7aa50fc96f1f65", 6)
     
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)
