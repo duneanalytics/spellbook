@@ -25,4 +25,5 @@ from
     ,('0x15DdA60616Ffca20371ED1659dBB78E888f65556', 'RetroPGF Receiver', 'AssetReceiver')
     ,('0x92D932aBBC7885999c4347880Eb069F854982eDD', 'OKX NFT', NULL)
     ,('0x86Bb63148d17d445Ed5398ef26Aa05Bf76dD5b59', 'Layer Zero', 'TheAptosBridge')
+    ,('0x00000000000076a84fef008cdabe6409d2fe638b', 'DelegateCash', 'delegationRegistry')
     ) as temp_table(contract_address, contract_project, contract_name)

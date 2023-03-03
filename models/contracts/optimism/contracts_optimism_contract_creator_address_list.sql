@@ -414,6 +414,11 @@ FROM (
       ,('0x33d73cc0E060939476A10E47b86A4568c7DcF261', 'Coinvise')
       ,('0xcD6596071e9CB8FC358796F2839A5704496795F9', 'Superfluid')
       ,('0x71a15Ac12ee91BF7c83D08506f3a3588143898B5', 'Llamaswap')
+      ,('0xb48bC8FBB6283740389eF69eac58FBEE07d42f1A', 'Clipper')
+      ,('0xF26DdF26623e8Ae83f78012a48d24704AD175431', 'OpenOcean')
+      ,('0x6453bD91C3B06DCC24F588FFfa384b0EEB0178B3', 'Beefy Finance')
+      ,('0xd8693368d37b502ed54c315e38efde7eb3dcdb5c', 'FunDex')
+      ,('0x4e59b44847b379578588920ca78fbf26c0b4956c', 'LlamaPay')
 
   ) as temp_table (creator_address, contract_project)
 
