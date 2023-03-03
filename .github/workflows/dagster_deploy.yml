@@ -1,8 +1,7 @@
 on:
-  commit:
   push:
-    branches:
-      - "main"
+#    branches:
+#      - "main"
       
 jobs:
   commit_manifest:
