@@ -44,6 +44,7 @@ FROM
     , ('0x141efc30c4093bc0f8204accb8afa6643fddecf2', 'Alpha Sharks') -- Alpha Sharks
     , ('0x552b16d19dbad7af2786fe5a40d96d2a5c09428c', 'Alpha Sharks') -- Alpha Sharks 2.0
     , ('0x114e54a100a0415abf9727234c92c83dbcc59abf', 'Alpha Sharks') -- Alpha Sharks 2.1
+    , ('0x1ed3d33b41e392014e0c9d8125369aba4e09798f', 'Alpha Sharks') -- Magically (Alpha Sharks)
     , ('0xef1c6e67703c7bd7107eed8303fbe6ec2554bf6b', 'Uniswap') -- Uniswap's Universal Router
     , ('0x36ab1c395b3711d3d5ed2af8ac8371cc991aa06c', 'Flip') -- Flip
     , ('0x7db11e30ae8ad7495668701c3f2c1b6d60587eda', 'Flip') -- Flip's LooksRare Checkout
