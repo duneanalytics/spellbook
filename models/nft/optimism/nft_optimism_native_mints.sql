@@ -108,14 +108,13 @@ left join namespaces as ec
     on etxs.to=ec.address
 left join {{ ref('nft_optimism_aggregators') }} as agg 
     on etxs.to=agg.contract_address
-left join nfts_per_tx nft_count 
+left join nfts_per_tx as nft_count 
     on nft_count.tx_hash=nft_mints.tx_hash
 where 
     nft_mints.from = '0x0000000000000000000000000000000000000000'
     {% if is_incremental() %}
     and nft_mints.block_time >= date_trunc("day", now() - interval '1 week')
     {% endif %}
-
     -- to exclude bridged L1 NFT collections to L2
     and bm.contract_address is null 
     group by nft_mints.block_time, nft_mints.block_number, nft_mints.token_id, nft_mints.token_standard
