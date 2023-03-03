@@ -1317,6 +1317,7 @@ FROM
     ("blank-blockwallet","ethereum", "BLANK", "0x41a3dba3d677e573636ba691a70ff2d606c29666", 18),
     ("vra-verasity", "ethereum", "VRA", "0xf411903cbc70a74d22900a5de66a2dda66507255", 18),
     ("gt-gatechain-token","ethereum", "GT", "0xe66747a101bff2dba3697199dcce5b743b454759",18),
-    ("stg-stargatetoken","ethereum","STG","0xaf5191b0de278c7286d6c7cc6ab6bb8a73ba2cd6",18)
+    ("stg-stargatetoken","ethereum","STG","0xaf5191b0de278c7286d6c7cc6ab6bb8a73ba2cd6",18),
+    ("ico-axelar", "ethereum", "AXL", "0x467719ad09025fcc6cf6f8311755809d45a5e5f3", 6)
     
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)

@@ -69,6 +69,7 @@ FROM
     ("ust-terrausd", "fantom", "USTC", "0xe2d27f06f63d98b8e11b38b5b08a75d0c8dd62b9", 6),
     ("luna-terra", "fantom", "LUNC", "0x95dd59343a893637be1c3228060ee6afbf6f0730", 6),
     ("2shares-2share", "fantom", "2SHARES", "0xc54A1684fD1bef1f077a336E6be4Bd9a3096a6Ca", 18), 
-    ("3share-3share", "fantom", "3SHARE", "0x6437adac543583c4b31bf0323a0870430f5cc2e7", 18)
+    ("3share-3share", "fantom", "3SHARE", "0x6437adac543583c4b31bf0323a0870430f5cc2e7", 18),
+    ("ico-axelar", "fantom", "AXL", "0x8b1f4432f943c465a973fedc6d7aa50fc96f1f65", 6)
 
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)
