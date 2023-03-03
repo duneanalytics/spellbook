@@ -1385,8 +1385,8 @@ seeds:
             token_pair: string
             token_bought_amount: double
             token_sold_amount: double
-            token_bought_amount_raw: int
-            token_sold_amount_raw: int
+            token_bought_amount_raw: bigint
+            token_sold_amount_raw: bigint
             amount_usd: double
             token_bought_address: string
             token_sold_address: string
