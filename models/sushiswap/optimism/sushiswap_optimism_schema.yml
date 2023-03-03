@@ -5,10 +5,10 @@ models:
     meta:
       blockchain: optimism
       sector: dex
-      project: sushiswap
+      project: sushi
       contributors: msilb7
     config:
-      tags: ['optimism','sushiswap','trades','dex']
+      tags: ['optimism','sushiswap','sushi','trades','dex']
     description: >
         Sushiswap contract trades on optimism
     tests:
