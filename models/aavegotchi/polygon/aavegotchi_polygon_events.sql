@@ -121,8 +121,8 @@ INNER JOIN {{ source('polygon','transactions') }} t ON a.evt_block_number = t.bl
     AND t.block_time >= date_trunc("day", now() - interval '1 week')
     {% endif %}
 LEFT JOIN {{ ref('tokens_erc20') }} erc
-    ON t.blockchain = 'polygon'
-    AND t.contract_address = a.currency_contract
+    ON erc.blockchain = 'polygon'
+    AND erc.contract_address = a.currency_contract
 -- There is no price data for GHST token before 2022-10-27, these trades won't have usd information
 LEFT JOIN {{ source('prices', 'usd') }} p
     ON p.blockchain = 'polygon'
