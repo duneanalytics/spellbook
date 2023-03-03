@@ -128,7 +128,10 @@ WITH all_labels AS (
                     from_address, to_address, tx_to_address, tx_from_address, evt_tx_hash,
                     from_type, to_type, from_label, from_name, to_label, to_name, op_amount_decimal, tx_method
                 FROM {{ ref('op_token_distributions_optimism_other_distributions_claims') }} o
-                
+                {% if is_incremental() %} 
+                    where o.evt_block_time >= date_trunc('day', now() - interval '1 week')
+                {% endif %}
+
                 UNION ALL
                 
                 SELECT 
@@ -146,6 +149,9 @@ WITH all_labels AS (
                         OR
                         t.evt_tfer_index = o.max_evt_tfer_index
                         )
+                    {% if is_incremental() %} 
+                    and o.evt_block_time >= date_trunc('day', now() - interval '1 week')
+                    {% endif %}
                 WHERE o.evt_block_number IS NULL
         )
 
@@ -174,8 +180,9 @@ DATE_TRUNC('day',evt_block_time) AS block_date,
     evt_block_time, evt_block_number, evt_index,
     from_address, to_address,
     tx_to_address, tx_from_address, evt_tx_hash,
-    from_type, to_type, from_label
-    , COALESCE(dfrom.address_name,from_name) AS from_name, to_label, COALESCE(dto.address_name,dtxto.address_name,to_name) AS to_name
+    from_type, to_type
+    , from_label, COALESCE(dfrom.address_name,from_name) AS from_name
+    , to_label, COALESCE(dto.address_name,dtxto.address_name,to_name) AS to_name
     , op_amount_decimal, tx_method
     --
     ,cast(op_claimed as decimal) AS op_claimed
