@@ -1,10 +1,11 @@
 
 {{ config(
+        schema ='dex_aggregator',
         alias ='trades',
         post_hook='{{ expose_spells(\'["ethereum", "gnosis", "avalanche_c", "fantom"]\',
                                 "sector",
                                 "dex_aggregator",
-                                \'["bh2smith", "Henrystats"]\') }}'
+                                \'["bh2smith", "Henrystats", "jeff-dude"]\') }}'
         )
 }}
 
