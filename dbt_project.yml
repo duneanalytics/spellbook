@@ -38,6 +38,8 @@ models:
       sql: "{{ optimize_spell(this, model.config.materialized) }}"
       transaction: true
     +materialized: view
+    +schema: no_schema    # this should be overriden in model specific configs
+
     aave:
       +schema: aave
       ethereum:
@@ -102,6 +104,8 @@ models:
         +schema: nft_optimism
       polygon:
         +schema: nft_polygon
+      fantom:
+        +schema: nft_fantom
 
     compound:
       +schema: compound
@@ -123,7 +127,7 @@ models:
         +schema: uniswap_optimism
       polygon:
         +schema: uniswap_polygon
-    
+
     quickswap:
       +schema: quickswap
       polygon:
@@ -183,8 +187,8 @@ models:
         +schema: element_avalanche_c
 
 
-    abi:
-      +schema: abi
+#    abi:
+#      +schema: abi
 
     superrare:
       +schema: superrare
@@ -293,7 +297,7 @@ models:
         +schema: dodo_arbitrum
       optimism:
         +schema: dodo_optimism
-        
+
 
     spookyswap:
       +schema: spookyswap
@@ -456,7 +460,7 @@ models:
         +schema: trove_arbitrum
       ethereum:
         +schema: trove_ethereum
-        
+
     lifi:
       +schema: lifi
       fantom:
@@ -635,6 +639,9 @@ models:
       +schema: pancakeswap
       bnb:
         +schema: pancakeswap_bnb
+      ethereum:
+        +schema: pancakeswap_ethereum
+
     bancor:
       +schema: bancor
       ethereum:
@@ -798,7 +805,7 @@ models:
         +schema: beethoven_x_optimism
       fantom:
         +schema: beethoven_x_fantom
-    
+
     zipswap:
       +schema: zipswap
       optimism:
