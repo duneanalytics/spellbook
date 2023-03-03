@@ -1,0 +1,235 @@
+version: 2
+
+sources: 
+  - name: uniswap_ethereum
+    description: "Ethereum decoded tables related to Uniswap v1 contract"
+    freshness: # default freshness
+      warn_after: { count: 12, period: hour }
+      error_after: { count: 24, period: hour }
+    tables:
+      - name: Exchange_evt_TokenPurchase
+        freshness:
+          warn_after: { count: 12, period: hour }
+        loaded_at_field: evt_block_time
+        description: "" # to-do
+        columns:
+          - &buyer
+            name: buyer
+            description: "Buyer Ethereum wallet address"
+          - &contract_address
+            name: contract_address
+            description: "Ethereum address for the liquidity pool used in transaction"
+          - &eth_sold
+            name: eth_sold
+            description: "Raw amount of ETH sold during transaction with the contract"
+          - &evt_block_number
+            name: evt_block_number
+            description: "Block number which processed the unique transaction hash"
+          - &evt_block_time
+            name: evt_block_time
+            description: "Timestamp for block event time in UTC"
+          - &evt_index
+            name: evt_index
+            description: "Index value of the transaction"
+          - &evt_tx_hash
+            name: evt_tx_hash
+            description: "Primary key of the transaction"
+            tests:
+              - not_null
+          - &tokens_bought
+            name: tokens_bought
+            description: "Raw amount of tokens bought during transaction with the contract"
+      - name: Factory_evt_NewExchange
+        loaded_at_field: evt_block_time
+        freshness: # default freshness
+          warn_after: { count: 84, period: hour }
+        description: "" # to-do
+        columns:
+          - name: contract_address # appears to be used differently here than the exchange event tables in uniswap v1
+            description: "Ethereum address for the Uniswap v1 contract"
+          - *evt_block_number
+          - *evt_block_time
+          - *evt_index
+          - *evt_tx_hash
+          - &exchange
+            name: exchange
+            description: "Ethereum address for the liquidity pool used in transaction, used to join to contract_address in Exchange_evt_TokenPurchase"
+          - &token
+            name: token
+            description: "Token bought contract address"
+      - name: Exchange_evt_EthPurchase
+        loaded_at_field: evt_block_time
+        description: "" # to-do
+        columns:
+          - *buyer
+          - *contract_address
+          - &eth_bought
+            name: eth_bought
+            description: "Raw amount of ETH bought during transaction with the contract"
+          - *evt_block_number
+          - *evt_block_time 
+          - *evt_index
+          - *evt_tx_hash
+          - &tokens_sold
+            name: tokens_sold
+            description: "Raw amount of tokens sold during transaction with the contract"
+
+  - name: uniswap_v2_ethereum
+    description: "Ethereum decoded tables related to Uniswap v2 contract"
+    freshness:
+      warn_after: { count: 12, period: hour }
+    tables:
+      - name: Pair_evt_Swap
+        loaded_at_field: evt_block_time
+        description: "" # to-do
+        columns:
+          - &amount0In
+            name: amount0In
+          - &amount0Out
+            name: amount0Out
+          - &amount1In
+            name: amount1In
+          - &amount1Out
+            name: amount1Out
+          - *contract_address
+          - *evt_block_number
+          - *evt_block_time 
+          - *evt_index
+          - *evt_tx_hash
+          - &sender
+            name: sender
+          - &to
+            name: to
+      - name: Factory_evt_PairCreated
+        loaded_at_field: evt_block_time
+        description: "" # to-do
+        columns:
+          - &_0
+            name: _0
+          - *contract_address
+          - *evt_block_number
+          - *evt_block_time 
+          - *evt_index
+          - *evt_tx_hash
+          - &pair
+            name: pair
+          - &token0
+            name: token0
+          - &token1
+            name: token1
+
+  - name: uniswap_v3_ethereum
+    description: "Ethereum decoded tables related to Uniswap v3 contract"
+    freshness:
+      warn_after: { count: 12, period: hour }
+    tables:
+      - name: Pair_evt_Swap
+        loaded_at_field: evt_block_time
+        description: "" # to-do
+        columns:
+          - &amount1
+            name: amount1
+          - &amount0
+            name: amount0
+          - *contract_address
+          - *evt_block_number
+          - *evt_block_time 
+          - *evt_index
+          - *evt_tx_hash
+          - &liquidity
+            name: liquidity
+          - &recipient
+            name: recipient
+          - *sender
+          - &sqrtPriceX96
+            name: sqrtPriceX96
+          - &tick
+            name: tick
+      - name: Factory_evt_PoolCreated
+        loaded_at_field: evt_block_time
+        description: "" # to-do
+        columns:
+          - *contract_address
+          - *evt_block_number
+          - *evt_block_time
+          - *evt_index
+          - *evt_tx_hash
+          - &fee
+            name: fee
+          - &pool
+            name: pool
+          - &tickSpacing
+            name: tickSpacing
+          - *token0
+          - *token1
+      - name: GovernorBravoDelegate_evt_VoteCast
+        loaded_at_field: evt_block_time
+        columns:
+          - *contract_address
+          - *evt_block_number
+          - *evt_block_time
+          - *evt_index
+          - *evt_tx_hash
+          - &proposalId
+            name: proposalId
+          - &reason
+            name: reason
+          - &voter
+            name: voter
+          - &votes
+            name: votes
+      - name: GovernorBravoDelegate_evt_ProposalCreated
+        loaded_at_field: evt_block_time
+        columns:
+          - *contract_address
+          - *evt_block_number
+          - *evt_block_time
+          - *evt_index
+          - *evt_tx_hash
+          - &calldatas
+            name: calldatas
+          - &description
+            name: description
+          - &endBlock
+            name: endBlock
+          - &id
+            name: id
+          - &proposer
+            name: proposer
+          - &signatures
+            name: signatures
+          - &startBlock
+            name: startBlock
+          - &targets
+            name: targets
+          - &values
+            name: values
+      - name: GovernorBravoDelegate_evt_ProposalCanceled
+        loaded_at_field: evt_block_time
+        columns:
+          - *contract_address
+          - *evt_block_number
+          - *evt_block_time
+          - *evt_index
+          - *evt_tx_hash
+          - *id
+      - name: GovernorBravoDelegate_evt_ProposalExecuted
+        loaded_at_field: evt_block_time
+        columns:
+          - *contract_address
+          - *evt_block_number
+          - *evt_block_time
+          - *evt_index
+          - *evt_tx_hash
+          - *id
+      - name: GovernorBravoDelegate_evt_ProposalQueued
+        loaded_at_field: evt_block_time
+        columns:
+          - *contract_address
+          - &eta
+            name: eta
+          - *evt_block_number
+          - *evt_block_time
+          - *evt_index
+          - *evt_tx_hash
+          - *id

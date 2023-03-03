@@ -1,0 +1,10 @@
+version: 2
+
+sources: 
+  - name: nexusmutual_ethereum
+    freshness:
+      warn_after: { count: 12, period: hour }
+    tables:
+      - name: QuotationData_evt_CoverDetailsEvent
+        loaded_at_field: evt_block_time
+        description: "quotation cover detatil"

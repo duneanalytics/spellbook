@@ -1,0 +1,42 @@
+ {{
+  config(
+        alias='fees',
+        post_hook='{{ expose_spells(\'["solana"]\',
+                                    "project",
+                                    "magiceden",
+                                    \'["soispoke"]\') }}')
+}}
+
+SELECT blockchain,
+project,
+version,
+block_time,
+token_id,
+CAST(NULL AS VARCHAR(5)) as collection,
+platform_fee_amount_raw,
+platform_fee_amount,
+platform_fee_amount_usd,
+platform_fee_percentage,
+royalty_fee_amount_raw,
+royalty_fee_amount,
+royalty_fee_amount_usd,
+royalty_fee_percentage,
+CAST(NULL AS VARCHAR(5)) as royalty_fee_receive_address,
+royalty_fee_currency_symbol,
+token_standard,
+trade_type,
+number_of_items,
+CAST(NULL AS VARCHAR(5)) as trade_category,
+evt_type,
+seller,
+buyer,
+CAST(NULL AS VARCHAR(5)) as nft_contract_address,
+project_contract_address,
+CAST(NULL AS VARCHAR(5)) as aggregator_name,
+CAST(NULL AS VARCHAR(5)) as aggregator_address,
+block_number,
+tx_hash,
+CAST(NULL AS VARCHAR(5)) as tx_from,
+CAST(NULL AS VARCHAR(5)) as tx_to,
+unique_trade_id
+FROM {{ ref('magiceden_solana_events') }}

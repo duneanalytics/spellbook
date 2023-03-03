@@ -1,0 +1,39 @@
+version: 2
+
+sources:
+  - name: sudo_amm_ethereum
+    freshness:
+      warn_after: { count: 12, period: hour }
+      error_after: { count: 24, period: hour }
+    tables:
+      - name: LSSVMPairFactory_call_createPairETH
+        freshness:
+          warn_after: { count: 12, period: hour }
+        description: "As of 8/9/22, only ETH pairs have been created. Will need ERC20 logic in the future."
+        loaded_at_field: call_block_time
+      - name: LSSVMPair_general_call_swapNFTsForToken
+        freshness:
+          warn_after: { count: 12, period: hour }
+        loaded_at_field: call_block_time
+      - name: LSSVMPair_general_call_swapTokenForAnyNFTs
+        loaded_at_field: call_block_time
+      - name: LSSVMPair_general_call_swapTokenForSpecificNFTs
+        freshness:
+          warn_after: { count: 12, period: hour }
+        loaded_at_field: call_block_time
+      - name: LSSVMPair_general_evt_FeeUpdate
+        freshness:
+          warn_after: { count: 12, period: hour }
+        loaded_at_field: evt_block_time
+      - name: LSSVMPair_general_evt_AssetRecipientChange
+        loaded_at_field: evt_block_time
+      - name: LSSVMPairFactory_evt_ProtocolFeeMultiplierUpdate
+        loaded_at_field: evt_block_time
+      - name: LSSVMPair_general_evt_DeltaUpdate
+        freshness:
+          warn_after: { count: 12, period: hour }
+        loaded_at_field: evt_block_time
+      - name: LSSVMPair_general_evt_SpotPriceUpdate
+        freshness:
+          warn_after: { count: 12, period: hour }
+        loaded_at_field: evt_block_time

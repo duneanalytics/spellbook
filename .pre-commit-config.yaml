@@ -1,0 +1,12 @@
+default_stages: [push, manual]
+exclude: ^deprecated-dune-v1-abstractions/
+repos:
+- repo: https://github.com/offbi/pre-commit-dbt
+  rev: v1.0.0
+  hooks:
+  - id: dbt-compile
+  - id: check-script-ref-and-source
+  - id: check-model-has-description
+    exclude: ^tests/
+  - id: check-model-has-properties-file
+    exclude: ^tests/

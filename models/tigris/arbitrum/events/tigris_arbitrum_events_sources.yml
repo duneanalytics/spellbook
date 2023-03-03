@@ -1,0 +1,80 @@
+version: 2
+
+sources:
+  - name: tigristrade_arbitrum
+    description: "tigris trade arbitrum decoded events"
+    tables:
+      - name: PairsContract_evt_AssetAdded
+        loaded_at_field: evt_block_time
+      - name: TradingV2_evt_PositionOpened
+        loaded_at_field: evt_block_time
+      - name: TradingV3_evt_PositionOpened
+        loaded_at_field: evt_block_time
+      - name: TradingV4_evt_PositionOpened
+        loaded_at_field: evt_block_time
+      - name: TradingV5_evt_PositionOpened
+        loaded_at_field: evt_block_time
+      - name: TradingV2_evt_AddToPosition
+        loaded_at_field: evt_block_time
+      - name: TradingV3_evt_AddToPosition
+        loaded_at_field: evt_block_time
+      - name: TradingV4_evt_AddToPosition
+        loaded_at_field: evt_block_time
+      - name: TradingV5_evt_AddToPosition
+        loaded_at_field: evt_block_time
+      - name: TradingV2_evt_MarginModified
+        loaded_at_field: evt_block_time
+      - name: TradingV3_evt_MarginModified
+        loaded_at_field: evt_block_time
+      - name: TradingV4_evt_MarginModified
+        loaded_at_field: evt_block_time
+      - name: TradingV5_evt_MarginModified
+        loaded_at_field: evt_block_time
+      - name: TradingV2_evt_PositionClosed
+        loaded_at_field: evt_block_time
+      - name: TradingV3_evt_PositionClosed
+        loaded_at_field: evt_block_time
+      - name: TradingV4_evt_PositionClosed
+        loaded_at_field: evt_block_time
+      - name: TradingV5_evt_PositionClosed
+        loaded_at_field: evt_block_time
+      - name: TradingV2_evt_PositionLiquidated
+        loaded_at_field: evt_block_time
+      - name: TradingV3_evt_PositionLiquidated
+        loaded_at_field: evt_block_time
+      - name: TradingV4_evt_PositionLiquidated
+        loaded_at_field: evt_block_time
+      - name: TradingV5_evt_PositionLiquidated
+        loaded_at_field: evt_block_time
+      - name: TradingV2_call_addToPosition
+        loaded_at_field: call_block_time
+      - name: TradingV3_call_addToPosition
+        loaded_at_field: call_block_time
+      - name: TradingV4_call_addToPosition
+        loaded_at_field: call_block_time
+      - name: TradingV5_call_addToPosition
+        loaded_at_field: call_block_time
+      - name: TradingV2_call_addMargin
+        loaded_at_field: call_block_time
+      - name: TradingV2_call_removeMargin
+        loaded_at_field: call_block_time
+      - name: TradingV3_call_addMargin
+        loaded_at_field: call_block_time
+      - name: TradingV3_call_removeMargin
+        loaded_at_field: call_block_time
+      - name: TradingV4_call_addMargin
+        loaded_at_field: call_block_time
+      - name: TradingV4_call_removeMargin
+        loaded_at_field: call_block_time
+      - name: TradingV5_call_addMargin
+        loaded_at_field: call_block_time
+      - name: TradingV5_call_removeMargin
+        loaded_at_field: call_block_time
+      - name: TradingV2_evt_LimitOrderExecuted
+        loaded_at_field: evt_block_time
+      - name: TradingV3_evt_LimitOrderExecuted
+        loaded_at_field: evt_block_time
+      - name: TradingV4_evt_LimitOrderExecuted
+        loaded_at_field: evt_block_time
+      - name: TradingV5_evt_LimitOrderExecuted
+        loaded_at_field: evt_block_time

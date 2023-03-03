@@ -1,0 +1,99 @@
+version: 2
+
+models:
+  - name: bend_dao_ethereum_lending
+    meta:
+      blockchain: ethereum
+      project: bend_dao
+      contributors: [Henrystats]
+    config:
+      tags: ['ethereum','bend_dao','v1','lending']
+    description: >
+        bend_dao lending (repay & borrow) on ethereum
+    tests:
+        - dbt_utils.unique_combination_of_columns:
+            combination_of_columns:
+              - block_date
+              - blockchain
+              - project
+              - version
+              - evt_type
+              - tx_hash
+              - evt_index
+        - check_seed:
+            seed_file: ref('bend_dao_nft_lending')
+            match_columns:
+              - block_number
+              - tx_hash
+              - token_id
+            check_columns:
+              - amount_original
+              - evt_type
+              - address
+    columns:
+      - &blockchain
+        name: blockchain
+        description: "Blockchain"
+      - &project
+        name: project
+        description: "Project"
+      - &version
+        name: version
+        description: "Project version"
+      - &block_time
+        name: block_time
+        description: "UTC event block time"
+      - &block_date
+        name: block_date
+        description: "UTC event block date"
+      - &token_id
+        name: token_id
+        description: "NFT Token ID"
+      - &collection
+        name: collection
+        description: "NFT collection name"
+      - &amount_usd
+        name: amount_usd
+        description:  "USD value of the trade at time of execution"
+      - &token_standard
+        name: token_standard
+        description:  "Token standard"
+      - &evt_type
+        name: evt_type
+        description:  "Event type (Borrow, Repay)"
+      - &address
+        name: address
+        description:  "Address repaying or borrowing"
+      - &amount_original
+        name: amount_original
+        description:  "Traded amount in original currency"
+      - &amount_raw
+        name: amount_raw
+        description:   "Traded amount in original currency before decimals correction"
+      - &collateral_currency_symbol
+        name: collateral_currency_symbol
+        description:  "Symbol of collateral currency used for loan"
+      - &collateral_currency_contract
+        name: collateral_currency_contract
+        description:  "Contract address of collateral currency used for loan"
+      - &nft_contract_address
+        name: nft_contract_address
+        description:  "NFT contract address"
+      - &project_contract_address
+        name: project_contract_address
+        description:  "Contract address used by the project, in this case bend_dao contract"
+      - &tx_hash
+        name: tx_hash
+        description:  "Transaction hash"
+      - &block_number
+        name: block_number
+        description: "Block number in which the transaction was executed "
+      - &tx_from
+        name: tx_from
+        description:  "Address that initiated the transaction"
+      - &tx_to
+        name: tx_to
+        description:  "Address that received the transaction"
+      - &evt_index
+        name: evt_index
+        description: "Index of the corresponding lending event"

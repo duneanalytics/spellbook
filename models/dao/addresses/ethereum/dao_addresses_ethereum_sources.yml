@@ -1,0 +1,14 @@
+version: 2
+
+sources:
+  - name: aragon_ethereum
+    description: "aragon dao deployed decoded event"
+    tables:
+      - name: DAOFactory_evt_DeployDAO
+        loaded_at_field: evt_block_time
+
+  - name: syndicate_v2_ethereum
+    description: "syndicate dao deployed event"
+    tables:
+      - name: ERC20ClubFactory_evt_ERC20ClubCreated
+        loaded_at_field: evt_block_time

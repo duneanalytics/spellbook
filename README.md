@@ -1,51 +1,140 @@
-# spellbook
-<img width="799" alt="Screen Shot 2022-05-28 at 7 54 26 AM" src="https://user-images.githubusercontent.com/9472574/170824402-9ab683b5-b04e-434f-b19e-6fb626d2d64f.png">
+![spellbook-logo@10x](https://user-images.githubusercontent.com/2520869/200791687-76f1bc4f-05d0-4384-a753-e3b5da0e7a4a.png#gh-light-mode-only)
+![spellbook-logo-negative_10x](https://user-images.githubusercontent.com/2520869/200865128-426354af-8059-494d-83f7-46947aae271c.png#gh-dark-mode-only)
 
 Welcome to your [Spellbook](https://youtu.be/o7p0BNt7NHs). Cast a magical incantation to tame the blockchain.
 
-### Dune contributors using the project
-Use the pipfile to create a pipenv.
+📖 Documentation of models can be found [here](https://spellbook-docs.dune.com/#!/overview), with a full example contribution walkthrough [here](https://dune.com/docs/spellbook/getting-started/)
+
+### Heads up
+Working on something new? Open a draft PR to let other wizards know you're working on it to help minimize duplicated work. 
+
+Looking for abstractions from the V1 engine? We moved them to [dune-v1-abstractions](https://github.com/duneanalytics/dune-v1-abstractions).
+
+## Intro
+
+Write SQL to transform blockchain data into curated datasets on [dune.com](https://dune.com/home).
+
+First-time visitor? Check out how to [get started](#getting-started) below and visit the [Spellbook Getting Started Guide](https://dune.com/docs/spellbook/getting-started/). More tk.
+
+Been here before? An archive of intermediate datasets that were contributed to Dune v1 can be consulted [here](https://github.com/duneanalytics/dune-v1-abstractions).
+
+## Getting Started
+
+### Prerequisites
+
+- Fork this repo and clone your fork locally. See Github's [guide](https://docs.github.com/en/get-started/quickstart/contributing-to-projects) on contributing to projects.
+- python 3.9 installed. Our recommendation is to follow the [Hitchhiker's Guide to Python](https://docs.python-guide.org/starting/installation/)
+- [pip](https://pip.pypa.io/en/stable/installation/) installed
+- [pipenv](https://pypi.org/project/pipenv/) installed
+- paths for both pip and pipenv are set (this should happen automatically but sometimes does not). If you run into issues like "pipenv: command not found", try troubleshooting with the pip or pipenv documentation.
+
+### Initial Installation
+
+You can watch the video version of this if you scroll down a bit.
+
+Navigate to the abstraction repo within your CLI (Command line interface).
+
+```console
+cd user\directory\github\spellbook
+# Change this to wherever spellbooks are stored locally on your machine.
 ```
-cd spellbook/
+
+Use the pipfile to create a pipenv.
+
+```console
 pipenv install
 ```
 
-If the env is created successfully, enter the env shell. (If you run into Python version errors, try installing the matching version or editing the python version in the Pipfile but don't commit your change).
+If the env is created successfully, skip ahead to `pipenv shell`.
+
+Our script is looking for a static python version, the likelihood of an error for a wrong python version is pretty high. If that error occurs, check your python version with:
+
+```console
+py --version
 ```
+
+Now use any text editor program to change the python version in the pipfile within the spellbook directory to your python version. You need to have at least python 3.9.
+If you have changed the python version in the pipfile, run `pipenv install` again.
+
+You are now ready to activate this project's virtual environment.
+Use:
+
+```console
 pipenv shell
 ```
 
-Set up the dbt spellbook project. (You must run this step from the spellbook directory)
-Run `dbt init` and select Databricks, then enter `.` or other placeholders for the host, HTTP path, and token. This will not connect to the database but you have access to some dbt actions.
+You have now created a virtual environment for this project. You can read more about virtual environments [here](https://realpython.com/pipenv-guide/).
 
-When you are prompted to choose a target, please enter `wizard` so we know you are an external contributor.
-```
+To initiate the dbt project run:
+
+```console
 dbt init
 ```
 
-Then, run the following commands:
+Enter the values as shown below:
 
+```console
+Which database would you like to use?
+[1] databricks
+[2] spark
+
+(Don't see the one you want? https://docs.getdbt.com/docs/available-adapters)
+
+Enter a number: 1
+host (yourorg.databricks.com): .
+http_path (HTTP Path): .
+token (dapiXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX):
+[1] use Unity Catalog
+[2] not use Unity Catalog
+Desired unity catalog option (enter a number): 2
+schema (default schema that dbt will build objects in): wizard
+threads (1 or more) [1]: 2
 ```
-cd spellbook/
+
+This will not connect to the database but you have access to some dbt actions.
+**When you are prompted to choose a schema, please enter `wizard` so we know you are an external contributor.**
+Should you make an error during this process (not entering `wizard` being the only one you can make), simply quit the CLI and start over.
+
+To pull the dbt project dependencies run:
+
+```console
+dbt deps
+```
+
+Then, run the following command:
+
+```console
 dbt compile
 ```
-dbt compile will compile the JINJA and SQL templated SQL into plain SQL which can be executed in the Dune UI. We are thinking about better solutions to make more dbt actions available directly but also have to consider security. 
 
-https://user-images.githubusercontent.com/9472574/172207409-731a54a0-f1c2-4a57-93a7-6e7934567caa.mov
+dbt compile will compile the JINJA and SQL templated SQL into plain SQL which can be executed in the Dune UI. Your spellbook directory now has a folder named `target` containing plain SQL versions of all models in Dune. If you have made changes to the repo before completing all these actions, you can now be certain that at least the compile process works correctly, if there is big errors the compile process will not complete.
+If you haven't made changes to the directory beforehand, you can now start adding, editing or deleting files within the repository.
+Afterwards simply run `dbt compile` again once you are finished with your work in the directory and test the plain language sql queries on dune.com.
 
-### How to use dbt to create abstractions
+### Coming back
 
-There's a couple new concepts to consider when making abstractions in dbt. The most common ones wizards will encounter are refs, sources, freshness, and tests. 
+If you have done this installation on your machine once, to get back into dbt, simply navigate to the spellbook repo, run `pipenv shell`, and you can run `dbt compile` again.
+
+### What did I just do?
+
+You now have the ability to compile your dbt model statements and test statements into plain SQL. This allows you to test those queries on the usual dune.com environment and should therefore lead to a better experience while developing spells. Running the queries will immediately give you feedback on typos, logical errors or mismatches.
+This in turn will help us deploy these spells faster and avoid any potential mistakes.
+
+We are thinking about better solutions to make more dbt actions available directly but we also have to consider security.
+
+### How to use dbt to create spells
+
+There's a couple new concepts to consider when making spells in dbt. The most common ones wizards will encounter are refs, sources, freshness, and tests.
 
 In the body of each query, tables are referred to either as refs, ex `{{ ref('1inch_ethereum') }}` or sources, ex `{{ source('ethereum', 'traces') }}`. Refs refer to other dbt models and they should refer to the file name like `1inch_ethereum.sql`, even if the model itself is aliased. Sources refer to "raw" data or tables/views not generated by dbt. Using refs and sources allows us to automatically build dependency trees.
 
-Sources and models are defined in schema.yml files where tests and other attributes are defined. 
+Sources and models are defined in schema.yml files where tests and other attributes are defined.
 
-Best practice is to add tests unique and non_null tests to the primary key for every new model. Similarly, a freshness check should be added to every new source (although we will try not to re-test freshness if the source is used elsewhere). 
+Best practice is to add tests unique and non_null tests to the primary key for every new model. Similarly, a freshness check should be added to every new source (although we will try not to re-test freshness if the source is used elsewhere).
 
-Adding descriptions to tables and columns will help people find and use your tables. 
+Adding descriptions to tables and columns will help people find and use your tables.
 
-```
+```yaml
 models:
   - name: 1inch_ethereum
     description: "Trades on 1inch, a DEX aggregator"
@@ -55,7 +144,7 @@ models:
         tests:
           - unique
           - not_null
- 
+
   sources:
   - name: ethereum
     freshness:
@@ -66,67 +155,41 @@ models:
         loaded_at_field: block_time
 ```
 
-See links to more docs on dbt below. 
+See links to more docs on dbt below.
 
 ### Generating and serving documentation:
-To generate documentation and view it as a website, run the following commands:
-- `dbt docs generate`
-- `dbt docs serve` 
-You must have set up dbt with `dbt init` but you don't need database credentials to run these commands. 
 
-See [dbt docs documentation](https://docs.getdbt.com/docs/building-a-dbt-project/documentation) for more information on 
-how to contribute to documentation. 
+To generate documentation and view it as a website, run the following commands:
+
+- `dbt docs generate`
+- `dbt docs serve`
+  You must have set up dbt with `dbt init` but you don't need database credentials to run these commands.
+
+See [dbt docs documentation](https://docs.getdbt.com/docs/building-a-dbt-project/documentation) for more information on
+how to contribute to documentation.
 
 As a preview, you can do [things](https://docs.getdbt.com/reference/resource-properties/description) like:
+
 - Write simple one or many line descriptions of models or columns.
 - Write longer descriptions as code blocks using markdown.
-- Link to other models in your descriptions. 
-- Add images / project logos from the repo into descriptions. 
+- Link to other models in your descriptions.
+- Add images / project logos from the repo into descriptions.
 - Use HTML in your description.
-
-### Dune employees using the project developing locally
-Follow instructions from [Databricks](https://docs.databricks.com/dev-tools/dbt.html) on how to set up dbt-core. 
-
-Use the dbt_local_development cluster on Arrakis-[Dev](https://dbc-4f40755f-e259.cloud.databricks.com/?o=2121725202597946#setting/clusters/0414-134107-y2lk5vai/configuration). 
-Look under Advanced Options and JDBC/ODBC to find host name, port, and HTTP Path. Use a schema with your name in it, ex `dbt_meghan`. 
-Ask meghan@dune.com if you need help. 
-
-Create your own [access token](https://dbc-4f40755f-e259.cloud.databricks.com/?o=2121725202597946#setting/account) for the Arrakis Dev.
-Save this to a secure password manager. 
-
-Try running the following commands from spellbook directory:
-- dbt run
-- dbt test
-- dbt run --select {model_name e.g. opensea_trades}
-
-Try `dbt debug` if the commands above do not work. 
-
-See the dbt command reference for more [options](https://docs.getdbt.com/reference/commands/run)
-
-### Dune employees using the project developing in the cloud
-Ask meghan@dune.com to invite you to the dbt cloud projects. 
-
-In dbt cloud, navigate to your profile on the right hand side and then credentials in the menu on the left. You'll need to add a personal access token to the spellbook dev project from generated from the arrakis-dev databricks workspace. You won't need to add credentials for spellbook prod. 
-
-<img width="1428" alt="Screen Shot 2022-04-28 at 4 58 28 PM" src="https://user-images.githubusercontent.com/9472574/165844567-a02d11c7-3195-46c6-b80b-40de6cff7d79.png">
-
-These credentials will be used for the Develop IDE in the hamburger menu. You can run dbt commands from this browser IDE and preview query results, lineages, and compiled SQL. 
-
-### Dune employees deploying the project
-
-Each pull request triggers a PR job in dbt cloud spellbook dev. This job will run and test only the models that have been modified since the last dev deploy job which runs daily. Verify this job runs correctly and request code review from a colleague. When approved, merge into main. 
-
-When we are ready to deploy to production, merge main into a new branch named following the v{major}-{minor}-{patch} pattern. In dbt cloud spellbook prod deploy environment, update the custom branch to match the new branch (note the name of the current branch). Trigger the production deploy or production deploy full refresh job depending on whether the change needs to rewrite exisiting tables. 
-
-<img width="1166" alt="Screen Shot 2022-04-28 at 5 29 08 PM" src="https://user-images.githubusercontent.com/9472574/165849010-64cd5306-d6ab-4514-813a-7496bc8591b7.png">
-
-If the deploy fail, rollback by replacing the previous branch and trigger the job again.
 
 ### Troubleshooting
 
-If you fail to run `dbt compile` with `Could not find profile named 'spellbook'` as the error message, check `~/.dbt/profiles.yml` and make sure there is a profile named `spellbook`. When you run `dbt init` to initiate a project, a profile gets created. Inside `spellbook` you cannot initiate a project called the same name, so you need to run `dbt init spellbook` outside the project so it creates the profile, or create one with a different name and then manually edit the `profiles.yml` file.
+If you fail to run `dbt compile`, here are some common error messages:
+
+- `Could not find profile named 'spellbook'` <br> Check `~/.dbt/profiles.yml` and make sure there is a profile named `spellbook`. When you run `dbt init` to initiate a project, a profile gets created. Inside `spellbook` you cannot initiate a project called the same name, so you need to run `dbt init spellbook` outside the project so it creates the profile, or create one with a different name and then manually edit the `profiles.yml` file.
+- ```console
+  Credentials in profile "spellbook", target "dev" invalid: Runtime Error
+   http connection method requires additional dependencies.
+   Install the additional required dependencies with pip install dbt-spark[PyHive]
+  ```
+  You've probably selected the `spark` option instead of the `databricks` option when running `dbt init`. Rerun `dbt init`, overwrite the profile and select the `databricks` option.
 
 ### DBT Resources:
+
 - Learn more about dbt [in the docs](https://docs.getdbt.com/docs/introduction)
 - Check out [Discourse](https://discourse.getdbt.com/) for commonly asked questions and answers
 - Join the [chat](https://community.getdbt.com/) on Slack for live discussions and support

@@ -1,0 +1,47 @@
+version: 2
+
+macros:
+  - name: generate_schema_name
+    description: "This overrides the dbt-core function for setting schemas. For PR tests, the schema is set to test_schema"
+    arguments:
+      - name: custom_schema_name
+        type: column name or expression
+        description: "Custom schema name"
+      - name: node
+        type: column name or expression
+        description: "Node"
+
+  - name: generate_alias_name
+    description: "This overrides the dbt-core function for setting aliases. For PR test, the alias is set to the user schema and file name. "
+    arguments:
+      - name: custom_alias_name
+        type: column name or expression
+        description: "Custom alias name"
+      - name: node
+        type: column name or expression
+        description: "Node"
+
+  - name: databricks__create_table_as
+    description: >
+      Overrides databricks table macro to use an s3 bucket set by a dbt var set by an env variable.
+      Macros do not allow access to env variables and therefore we must set use the dbt_project file
+      to set the dbt var with the env var. If no env var is set, no location will be used. Env vars
+      must be set by Dune employees but no change is needed for wizards
+
+  - name: spark__create_table_as
+    description: >
+      Same but overrides macro for spark package
+
+  - name: databricks__create_csv_table
+    description: >
+      Same as create_table_as but for seeds with databricks package
+
+  - name: spark__create_csv_table
+    description: >
+      Same as create_table_as but for seeds with spark package
+
+  - name: is_incremental
+    description: >
+      Overrides the core is_incremental marco to allow the usage of a force-incremental command line variable.
+      This enables us to easily get the compiled incremental models. 
+      Example usage: dbt compile --vars '{force-incremental: True}'

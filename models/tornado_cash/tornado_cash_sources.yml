@@ -1,0 +1,224 @@
+version: 2
+
+sources:
+  - name: tornado_cash_bnb
+    tables:
+      - name: TornadoCashBNB_evt_Deposit
+        loaded_at_field: evt_block_time
+        columns:
+          - name: evt_tx_hash
+          - name: evt_index
+          - name: evt_block_time
+          - name: evt_block_number
+          - name: commitment
+          - name: leafIndex
+          - name: timestamp
+      - name: TornadoCashBNB_evt_Withdrawal
+        loaded_at_field: evt_block_time
+        columns:
+          - name: contract_address
+          - name: evt_tx_hash
+          - name: evt_index
+          - name: evt_block_time
+          - name: evt_block_number
+          - name: fee
+          - name: nullifierHash
+          - name: relayer
+          - name: to
+
+  - name: tornado_cash_arbitrum
+    tables:
+      - name: ETHTornado_evt_Deposit
+        loaded_at_field: evt_block_time
+        columns:
+          - name: contract_address
+          - name: evt_tx_hash
+          - name: evt_index
+          - name: evt_block_time
+          - name: evt_block_number
+          - name: commitment
+          - name: leafIndex
+          - name: timestamp
+      - name: ETHTornado_evt_Withdrawal
+        loaded_at_field: evt_block_time
+        columns:
+          - name: contract_address
+          - name: evt_tx_hash
+          - name: evt_index
+          - name: evt_block_time
+          - name: evt_block_number
+          - name: fee
+          - name: nullifierHash
+          - name: relayer
+          - name: to
+
+  - name: tornado_cash_optimism
+    tables:
+      - name: ETHTornado_evt_Deposit
+        loaded_at_field: evt_block_time
+        columns:
+          - name: contract_address
+          - name: evt_tx_hash
+          - name: evt_index
+          - name: evt_block_time
+          - name: evt_block_number
+          - name: commitment
+          - name: leafIndex
+          - name: timestamp
+      - name: ETHTornado_evt_Withdrawal
+        loaded_at_field: evt_block_time
+        columns:
+          - name: contract_address
+          - name: evt_tx_hash
+          - name: evt_index
+          - name: evt_block_time
+          - name: evt_block_number
+          - name: fee
+          - name: nullifierHash
+          - name: relayer
+          - name: to
+
+  - name: tornado_cash_avalanche_c
+    tables:
+      - name: ETHTornado_evt_Deposit
+        loaded_at_field: evt_block_time
+        columns:
+          - name: contract_address
+          - name: evt_tx_hash
+          - name: evt_index
+          - name: evt_block_time
+          - name: evt_block_number
+          - name: commitment
+          - name: leafIndex
+          - name: timestamp
+      - name: ETHTornado_evt_Withdrawal
+        loaded_at_field: evt_block_time
+        columns:
+          - name: contract_address
+          - name: evt_tx_hash
+          - name: evt_index
+          - name: evt_block_time
+          - name: evt_block_number
+          - name: fee
+          - name: nullifierHash
+          - name: relayer
+          - name: to
+
+  - name: tornado_cash_ethereum
+    tables:
+      - name: erc20_evt_Deposit
+        loaded_at_field: evt_block_time
+        columns:
+          - name: contract_address
+          - name: evt_tx_hash
+          - name: evt_index
+          - name: evt_block_time
+          - name: evt_block_number
+          - name: commitment
+      - name: eth_evt_Deposit
+        loaded_at_field: evt_block_time
+        columns:
+          - name: contract_address
+          - name: evt_tx_hash
+          - name: evt_index
+          - name: evt_block_time
+          - name: evt_block_number
+          - name: commitment
+      - name: erc20_evt_Withdrawal
+        loaded_at_field: evt_block_time
+        columns:
+          - name: contract_address
+          - name: evt_tx_hash
+          - name: evt_index
+          - name: evt_block_time
+          - name: evt_block_number
+          - name: fee
+          - name: nullifierHash
+          - name: relayer
+          - name: to
+      - name: eth_evt_Withdrawal
+        loaded_at_field: evt_block_time
+        columns:
+          - name: contract_address
+          - name: evt_tx_hash
+          - name: evt_index
+          - name: evt_block_time
+          - name: evt_block_number
+          - name: fee
+          - name: nullifierHash
+          - name: relayer
+          - name: to
+      - name: ERC20Tornado_evt_Deposit
+        loaded_at_field: evt_block_time
+        columns:
+          - name: contract_address
+          - name: evt_tx_hash
+          - name: evt_index
+          - name: evt_block_time
+          - name: evt_block_number
+          - name: fee
+          - name: nullifierHash
+          - name: relayer
+          - name: to
+      - name: ERC20Tornado_evt_Withdrawal
+        loaded_at_field: evt_block_time
+        columns:
+          - name: contract_address
+          - name: evt_tx_hash
+          - name: evt_index
+          - name: evt_block_time
+          - name: evt_block_number
+          - name: fee
+          - name: nullifierHash
+          - name: relayer
+          - name: to
+
+  - name: tornado_cash_gnosis
+    tables:
+      - name: eth_evt_Deposit
+        loaded_at_field: evt_block_time
+        columns:
+          - name: contract_address
+          - name: evt_tx_hash
+          - name: evt_index
+          - name: evt_block_time
+          - name: evt_block_number
+          - name: commitment
+      - name: eth_evt_Withdrawal
+        loaded_at_field: evt_block_time
+        columns:
+          - name: contract_address
+          - name: evt_tx_hash
+          - name: evt_index
+          - name: evt_block_time
+          - name: evt_block_number
+          - name: fee
+          - name: nullifierHash
+          - name: relayer
+          - name: to
+
+  - name: tornado_cash_polygon
+    tables:
+      - name: TornadoCashMatic_evt_Deposit
+        loaded_at_field: evt_block_time
+        columns:
+          - name: contract_address
+          - name: evt_tx_hash
+          - name: evt_index
+          - name: evt_block_time
+          - name: evt_block_number
+          - name: commitment
+          - name: leafIndex
+          - name: timestamp
+      - name: TornadoCashMatic_evt_Withdrawal
+        loaded_at_field: evt_block_time
+        columns:
+          - name: contract_address
+          - name: evt_tx_hash
+          - name: evt_index
+          - name: evt_block_time
+          - name: evt_block_number
+          - name: fee
+          - name: nullifierHash
+          - name: relayer
+          - name: to

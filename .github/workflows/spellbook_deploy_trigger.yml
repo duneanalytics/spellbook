@@ -1,0 +1,16 @@
+name: Trigger Spellbook Deploy to update the spellbook site
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - 'main'
+
+jobs:
+  notify:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Create a repository dispatch event to dune spellbook-deploy
+        run: |
+          gh api repos/duneanalytics/spellbook-deploy/dispatches \
+              --raw-field event_type=spellbook-updated

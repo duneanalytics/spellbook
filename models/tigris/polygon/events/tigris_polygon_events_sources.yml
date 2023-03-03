@@ -1,0 +1,112 @@
+version: 2
+
+sources:
+  - name: tigristrade_polygon
+    description: "tigris trade polygon decoded events"
+    tables:
+      - name: PairsContract_evt_AssetAdded
+        loaded_at_field: evt_block_time
+      - name: Tradingv1_evt_PositionOpened
+        loaded_at_field: evt_block_time
+      - name: TradingV2_evt_PositionOpened
+        loaded_at_field: evt_block_time
+      - name: TradingV3_evt_PositionOpened
+        loaded_at_field: evt_block_time
+      - name: TradingV4_evt_PositionOpened
+        loaded_at_field: evt_block_time
+      - name: TradingV5_evt_PositionOpened
+        loaded_at_field: evt_block_time
+      - name: TradingV6_evt_PositionOpened
+        loaded_at_field: evt_block_time
+      - name: TradingV7_evt_PositionOpened
+        loaded_at_field: evt_block_time
+      - name: TradingV8_evt_PositionOpened
+        loaded_at_field: evt_block_time
+      - name: TradingV5_evt_AddToPosition
+        loaded_at_field: evt_block_time
+      - name: TradingV6_evt_AddToPosition
+        loaded_at_field: evt_block_time
+      - name: TradingV7_evt_AddToPosition
+        loaded_at_field: evt_block_time
+      - name: TradingV8_evt_AddToPosition
+        loaded_at_field: evt_block_time
+      - name: TradingV5_evt_MarginModified
+        loaded_at_field: evt_block_time
+      - name: TradingV6_evt_MarginModified
+        loaded_at_field: evt_block_time
+      - name: TradingV7_evt_MarginModified
+        loaded_at_field: evt_block_time
+      - name: TradingV8_evt_MarginModified
+        loaded_at_field: evt_block_time
+      - name: Tradingv1_evt_PositionClosed
+        loaded_at_field: evt_block_time
+      - name: TradingV2_evt_PositionClosed
+        loaded_at_field: evt_block_time
+      - name: TradingV3_evt_PositionClosed
+        loaded_at_field: evt_block_time
+      - name: TradingV4_evt_PositionClosed
+        loaded_at_field: evt_block_time
+      - name: TradingV5_evt_PositionClosed
+        loaded_at_field: evt_block_time
+      - name: TradingV6_evt_PositionClosed
+        loaded_at_field: evt_block_time
+      - name: TradingV7_evt_PositionClosed
+        loaded_at_field: evt_block_time
+      - name: TradingV8_evt_PositionClosed
+        loaded_at_field: evt_block_time
+      - name: Tradingv1_evt_PositionLiquidated
+        loaded_at_field: evt_block_time
+      - name: TradingV2_evt_PositionLiquidated
+        loaded_at_field: evt_block_time
+      - name: TradingV3_evt_PositionLiquidated
+        loaded_at_field: evt_block_time
+      - name: TradingV4_evt_PositionLiquidated
+        loaded_at_field: evt_block_time
+      - name: TradingV5_evt_PositionLiquidated
+        loaded_at_field: evt_block_time
+      - name: TradingV6_evt_PositionLiquidated
+        loaded_at_field: evt_block_time
+      - name: TradingV7_evt_PositionLiquidated
+        loaded_at_field: evt_block_time
+      - name: TradingV8_evt_PositionLiquidated
+        loaded_at_field: evt_block_time
+      - name: TradingV5_call_addToPosition
+        loaded_at_field: call_block_time
+      - name: TradingV6_call_addToPosition
+        loaded_at_field: call_block_time
+      - name: TradingV7_call_addToPosition
+        loaded_at_field: call_block_time
+      - name: TradingV8_call_addToPosition
+        loaded_at_field: call_block_time
+      - name: TradingV5_call_addMargin
+        loaded_at_field: call_block_time
+      - name: TradingV5_call_removeMargin
+        loaded_at_field: call_block_time
+      - name: TradingV6_call_addMargin
+        loaded_at_field: call_block_time
+      - name: TradingV6_call_removeMargin
+        loaded_at_field: call_block_time
+      - name: TradingV7_call_addMargin
+        loaded_at_field: call_block_time
+      - name: TradingV7_call_removeMargin
+        loaded_at_field: call_block_time
+      - name: TradingV8_call_addMargin
+        loaded_at_field: call_block_time
+      - name: TradingV8_call_removeMargin
+        loaded_at_field: call_block_time
+      - name: Tradingv1_evt_LimitOrderExecuted
+        loaded_at_field: evt_block_time
+      - name: TradingV2_evt_LimitOrderExecuted
+        loaded_at_field: evt_block_time
+      - name: TradingV3_evt_LimitOrderExecuted
+        loaded_at_field: evt_block_time
+      - name: TradingV4_evt_LimitOrderExecuted
+        loaded_at_field: evt_block_time
+      - name: TradingV5_evt_LimitOrderExecuted
+        loaded_at_field: evt_block_time
+      - name: TradingV6_evt_LimitOrderExecuted
+        loaded_at_field: evt_block_time
+      - name: TradingV7_evt_LimitOrderExecuted
+        loaded_at_field: evt_block_time
+      - name: TradingV8_evt_LimitOrderExecuted
+        loaded_at_field: evt_block_time

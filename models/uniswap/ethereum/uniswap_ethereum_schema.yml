@@ -1,0 +1,328 @@
+version: 2
+
+models:
+  - name: uniswap_v1_ethereum_trades
+    meta:
+      blockchain: ethereum
+      sector: dex
+      project: uniswap_v1
+      contributors: jeff-dude, masquot, soispoke
+    config:
+      tags: ['ethereum','uniswap_v1','trades', 'uniswap','dex']
+    description: >
+        Uniswap V1 contract trades on Ethereum
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_date
+            - blockchain
+            - project
+            - version
+            - tx_hash
+            - evt_index
+            - trace_address
+      - check_dex_seed:
+          blockchain: ethereum
+          project: uniswap
+          version: 1
+    columns:
+      - &blockchain
+        name: blockchain
+        description: "Blockchain which the DEX is deployed"
+      - &project
+        name: project
+        description: "Project name of the DEX"
+      - &version
+        name: version
+        description: "Version of the contract built and deployed by the DEX project"
+      - &block_date
+        name: block_date
+        description: "UTC event block date of each DEX trade"
+      - &block_time
+        name: block_time
+        description: "UTC event block time of each DEX trade"
+      - &token_bought_symbol
+        name: token_bought_symbol
+        description: "Token symbol for token bought in the transaction"
+      - &token_sold_symbol
+        name: token_sold_symbol
+        description: "Token symbol for token sold in the transaction"
+      - &token_pair
+        name: token_pair
+        description: "Token symbol pair for each token involved in the transaction"
+      - &token_bought_amount
+        name: token_bought_amount
+        description: "Value of the token bought at time of execution in the original currency"
+      - &token_sold_amount
+        name: token_sold_amount
+        description: "Value of the token sold at time of execution in the original currency"
+      - &token_bought_amount_raw
+        name: token_bought_amount_raw
+        description: "Raw value of the token bought at time of execution in the original currency"
+      - &token_sold_amount_raw
+        name: token_sold_amount_raw
+        description: "Raw value of the token sold at time of execution in the original currency"
+      - &amount_usd
+        name: amount_usd
+        description: "USD value of the trade at time of execution"
+      - &token_bought_address
+        name: token_bought_address
+        description: "Contract address of the token bought"
+      - &token_sold_address
+        name: token_sold_address
+        description: "Contract address of the token sold"
+      - &taker
+        name: taker
+        description: "Address of trader who purchased a token"
+      - &maker
+        name: maker
+        description: "Address of trader who sold a token"
+      - &project_contract_address
+        name: project_contract_address
+        description: "Project contract address which executed the trade on the blockchain"
+      - &tx_hash
+        name: tx_hash
+        description: "Unique transaction hash value tied to each transaction on the DEX"
+      - &tx_from
+        name: tx_from
+        description: "Address which initiated the transaction"
+      - &tx_to
+        name: tx_to
+        description: "Address which received the transaction"
+      - &trace_address
+        name: trace_address
+        description: ""
+      - &evt_index
+        name: evt_index
+        description: ""
+
+  - name: uniswap_v2_ethereum_trades
+    meta:
+      blockchain: ethereum
+      sector: dex
+      project: uniswap_v2
+      contributors: jeff-dude, masquot, soispoke
+    config:
+      tags: ['ethereum','uniswap_v2','trades', 'uniswap','dex']
+    description: >
+        Uniswap V2 contract trades on Ethereum
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_date
+            - blockchain
+            - project
+            - version
+            - tx_hash
+            - evt_index
+            - trace_address
+      - check_dex_seed:
+          blockchain: ethereum
+          project: uniswap
+          version: 2
+    columns:
+      - *blockchain
+      - *project
+      - *version
+      - *block_date
+      - *block_time
+      - *token_bought_symbol
+      - *token_sold_symbol
+      - *token_pair
+      - *token_bought_amount
+      - *token_sold_amount
+      - *token_bought_amount_raw
+      - *token_sold_amount_raw
+      - *amount_usd
+      - *token_bought_address
+      - *token_sold_address
+      - *taker
+      - *maker
+      - *project_contract_address
+      - *tx_hash
+      - *tx_from
+      - *tx_to
+      - *trace_address
+      - *evt_index
+
+  - name: uniswap_v3_ethereum_trades
+    meta:
+      blockchain: ethereum
+      sector: dex
+      project: uniswap_v3
+      contributors: jeff-dude, masquot, soispoke
+    config:
+      tags: ['ethereum','uniswap_v3','trades', 'uniswap','dex']
+    description: >
+        Uniswap V3 contract trades on Ethereum
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_date
+            - blockchain
+            - project
+            - version
+            - tx_hash
+            - evt_index
+            - trace_address
+      - check_dex_seed:
+          blockchain: ethereum
+          project: uniswap
+          version: 3
+    columns:
+      - *blockchain
+      - *project
+      - *version
+      - *block_date
+      - *block_time
+      - *token_bought_symbol
+      - *token_sold_symbol
+      - *token_pair
+      - *token_bought_amount
+      - *token_sold_amount
+      - *token_bought_amount_raw
+      - *token_sold_amount_raw
+      - *amount_usd
+      - *token_bought_address
+      - *token_sold_address
+      - *taker
+      - *maker
+      - *project_contract_address
+      - *tx_hash
+      - *tx_from
+      - *tx_to
+      - *trace_address
+      - *evt_index
+
+  - name: uniswap_ethereum_trades
+    meta:
+      blockchain: ethereum
+      sector: dex
+      project: uniswap
+      contributors: jeff-dude, masquot, soispoke
+    config:
+      tags: ['ethereum','dex','trades', 'uniswap', 'jeff-dude']
+    description: >
+        Uniswap trades on Ethereum across all contracts and versions. This table will load dex trades downstream.
+    columns:
+      - *blockchain
+      - *project
+      - *version
+      - *block_date
+      - *block_time
+      - *token_bought_symbol
+      - *token_sold_symbol
+      - *token_pair
+      - *token_bought_amount
+      - *token_sold_amount
+      - *token_bought_amount_raw
+      - *token_sold_amount_raw
+      - *amount_usd
+      - *token_bought_address
+      - *token_sold_address
+      - *taker
+      - *maker
+      - *project_contract_address
+      - *tx_hash
+      - *tx_from
+      - *tx_to
+      - *trace_address
+      - *evt_index
+
+  - name: uniswap_v3_ethereum_votes
+    meta:
+      blockchain: ethereum
+      sector: dao
+      contributors: soispoke
+    config:
+      tags: ['ethereum', 'votes', 'dao', 'cross-chain']
+    description: >
+      DAO votes on all chains across all contracts and versions
+    columns:
+      - name: blockchain
+      - name: project
+        description: "Project name of the DAO"
+      - name: version
+        description: "Version of the contract built and deployed by the DAO project"
+      - name: block_time
+        description: "UTC event block time of each DAO vote"
+      - name: tx_hash
+        description: "Unique transaction hash value tied to each vote on the DAO"
+      - &dao_name
+        name: dao_name
+        description: "DAO name"
+      - &dao_address
+        name: dao_address
+        description: "DAO wallet address"
+      - &proposal_id
+        name: proposal_id
+      - &votes
+        name: votes
+        description: "Votes weighted by the amount of governance tokens"
+      - &votes_share
+        name: votes_share
+        description: "Votes share in percent for a given proposal"
+      - &token_symbol
+        name: token_symbol
+      - &token_address
+        name: token_address
+      - &votes_value_usd
+        name: votes_value_usd
+        description: "USD amount of governance tokens used at the time of the vote"
+      - &voter_address
+        name: voter_address
+      - &support
+        name: support
+        description: "0 = Against, 1 = For, 2 = Abstain votes"
+        tests:
+        - accepted_values:
+            values: ['for', 'against', 'abstain']
+      - &reason
+        name: reason
+        description: "Optional onchain commments to explain votes"
+
+  - name: uniswap_v3_ethereum_proposals
+    meta:
+      blockchain: ethereum
+      sector: dao
+      contributors: soispoke
+    config:
+      tags: ['ethereum', 'proposals', 'dao', 'cross-chain']
+    description: >
+      DAO proposals on all chains across all contracts and versions
+    columns:
+      - name: blockchain
+      - name: project
+        description: "Project name of the DAO"
+      - name: version
+        description: "Version of the contract built and deployed by the DAO project"
+      - name: created_at
+        description: "UTC event block time at which the proposal was created"
+      - name: tx_hash
+        description: "Unique transaction hash value tied to each DAO proposal"
+      - *dao_name
+      - *dao_address
+      - name: proposal_id
+        tests:
+          - unique
+      - &votes_for
+        name: votes_for
+      - &votes_against
+        name: votes_against
+      - &votes_total
+        name: votes_total
+        description: "Total number of governance tokens used to vote on a given DAO proposal"
+      - &number_of_voters
+        name: number_of_voters
+      - &participation
+        name: participation
+        description: "Participation in percent: Number of governance tokens used to vote / Total token supply"
+      - &status
+        name: status
+        description: "Proposal status: Queued, Active, Executed, Canceled or Defeated"
+        tests:
+          - accepted_values:
+              values: ['Queued', 'Active', 'Executed', 'Canceled','Defeated']
+      - &description
+        name: description
+        description: "Description of the proposal"
