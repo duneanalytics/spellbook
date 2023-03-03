@@ -52,9 +52,12 @@ jobs:
       with:
         github-token: ${{ steps.set-pat-token.outputs.token }}
         script: |
-          await github.rest.actions.createWorkflowDispatch({
-            owner: 'duneanalytics',
-            repo: 'spellbook-dagster',
-            workflow_id: 'deploy.yml',
-            ref: 'main'
-            inputs: {git_sha: $GIT_SHA} })
+              await github.rest.actions.createWorkflowDispatch({
+                owner: 'duneanalytics',
+                repo: 'spellbook-dagster',
+                workflow_id: 'deploy.yml',
+                ref: 'main',
+                inputs: {
+                  git_sha: $GIT_SHA,
+                },
+              });
