@@ -43,6 +43,9 @@ jobs:
     runs-on: [ self-hosted, linux, spellbook ]
 #    needs: commit_manifest
     steps:
+    - name: Set environment variables (again)
+      run: |
+        echo "GIT_SHA=$(echo ${{ github.sha }} | tr - _ | cut -c1-8)" >> $GITHUB_ENV
     - name: Set pat token
       id: set-pat-token
       run: |
