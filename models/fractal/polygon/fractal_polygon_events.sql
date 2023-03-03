@@ -15,39 +15,7 @@
 
 {% set nft_start_date = "2022-12-30" %}
 
-WITH contract_list as (
-    SELECT distinct assetContract as nft_contract_address
-    FROM {{ source ('fractal_polygon', 'Marketplace_evt_ListingAdded') }}
-),
-
-mints as (
-    SELECT 'mint' AS trade_category,
-        block_time AS evt_block_time,
-        block_number AS evt_block_number,
-        tx_hash AS evt_tx_hash,
-        CAST(NULL AS string) AS contract_address, -- We leave it NULL here and will get its value below by join from transactions table
-        evt_index,
-        'Mint' AS evt_type,
-        `to` AS buyer,
-        CAST(NULL AS string) AS seller,
-        contract_address AS nft_contract_address,
-        token_id,
-        amount AS number_of_items,
-        token_standard,
-        '0x0d500b1d8e8ef31e21c99d1db9a6444d3adf1270' AS currency_contract, -- All sale are in MATIC
-        CAST(0 as DECIMAL(38,0)) AS amount_raw -- It's hard to get the mint price. So handle it similar as in nftb_bnb_events
-    FROM {{ ref('nft_polygon_transfers') }}
-    WHERE contract_address IN ( SELECT nft_contract_address FROM contract_list )
-        AND `from` = '0x0000000000000000000000000000000000000000'   -- mint
-        {% if not is_incremental() %}
-        AND block_time >= '{{nft_start_date}}'
-        {% endif %}
-        {% if is_incremental() %}
-        AND block_time >= date_trunc("day", now() - interval '1 week')
-        {% endif %}
-),
-
-listing_detail AS (
+WITH listing_detail AS (
     SELECT assetContract AS nft_contract_address,
         contract_address,
         evt_block_number,
@@ -94,30 +62,7 @@ trades AS (
         {% if is_incremental() %}
         AND s.evt_block_time >= date_trunc("day", now() - interval '1 week')
         {% endif %}
-),
-
-all_events as (
-    SELECT * FROM mints
-    UNION ALL
-    SELECT * FROM trades
-),
-
-price_list AS (
-    SELECT contract_address,
-        minute,
-        price,
-        decimals,
-        symbol
-     FROM {{ source('prices', 'usd') }} p
-     WHERE blockchain = 'polygon'
-        AND contract_address IN ( SELECT DISTINCT currency_contract FROM all_events) 
-        {% if not is_incremental() %}
-        AND minute >= '{{nft_start_date}}' 
-        {% endif %}
-        {% if is_incremental() %}
-        AND minute >= date_trunc("day", now() - interval '1 week')
-        {% endif %}
-) 
+)
 
 SELECT
     'polygon' AS blockchain,
@@ -130,8 +75,8 @@ SELECT
     amount_raw / power(10, p.decimals) * p.price AS amount_usd,
     amount_raw / power(10, p.decimals) AS amount_original,
     amount_raw,
-    CASE WHEN p.symbol = 'WMATIC' THEN 'MATIC' ELSE p.symbol END AS currency_symbol,
-    p.contract_address AS currency_contract,
+    p.symbol AS currency_symbol,
+    a.currency_contract,
     token_id,
     token_standard,
     coalesce(a.contract_address, t.`to`) AS project_contract_address,
@@ -167,5 +112,11 @@ INNER JOIN {{ source('polygon','transactions') }} t ON a.evt_block_number = t.bl
     {% if is_incremental() %}
     AND t.block_time >= date_trunc("day", now() - interval '1 week')
     {% endif %}
-LEFT JOIN price_list p ON p.contract_address = a.currency_contract AND p.minute = date_trunc('minute', a.evt_block_time)
+LEFT JOIN {{ source('prices', 'usd') }} p
+    ON p.blockchain = 'polygon'
+    {% if not is_incremental() %}
+    AND p.minute >= '{{nft_start_date}}'
+    {% endif %}
+    AND p.contract_address = a.currency_contract
+    AND p.minute = date_trunc('minute', a.evt_block_time)
 LEFT JOIN {{ ref('nft_aggregators') }} agg ON agg.blockchain = 'polygon' AND agg.contract_address = t.`to`
