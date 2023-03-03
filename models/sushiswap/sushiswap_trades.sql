@@ -13,6 +13,7 @@ ref('sushiswap_ethereum_trades')
 , ref('sushiswap_gnosis_trades')
 , ref('sushiswap_arbitrum_trades')
 , ref('sushiswap_fantom_trades')
+, ref('sushiswap_optimism_trades')
 ] %}
 
 
