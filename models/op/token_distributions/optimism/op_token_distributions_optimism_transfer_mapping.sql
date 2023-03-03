@@ -181,8 +181,8 @@ DATE_TRUNC('day',evt_block_time) AS block_date,
     from_address, to_address,
     tx_to_address, tx_from_address, evt_tx_hash,
     from_type, to_type
-    , from_label, COALESCE(dfrom.address_name,from_name) AS from_name
-    , to_label, COALESCE(dto.address_name,dtxto.address_name,to_name) AS to_name
+    , from_label, COALESCE(dfrom.address_name,d.from_name) AS from_name
+    , to_label, COALESCE(dto.address_name,dtxto.address_name,d.to_name) AS to_name
     , op_amount_decimal, tx_method
     --
     ,cast(op_claimed as decimal) AS op_claimed
@@ -191,8 +191,8 @@ DATE_TRUNC('day',evt_block_time) AS block_date,
     ,cast(op_between_projects as decimal) as op_between_projects
     ,cast(op_incoming_clawback as decimal) as op_incoming_clawback
     
-    , to_name AS og_to_name
-    , from_name AS og_from_name
+    , d.to_name AS og_to_name
+    , d.from_name AS og_from_name
     
 FROM distributions d
 -- read in other tags
