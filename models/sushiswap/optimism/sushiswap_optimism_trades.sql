@@ -39,6 +39,7 @@ with dexs as (
     WHERE t.evt_block_time >= '{{ project_start_date }}'
     {% endif %}
 
+    UNION ALL
     -- Stable Pool
     SELECT
         'trident-sp' as version,
