@@ -71,24 +71,6 @@ trades AS (
         {% endif %}
 ),
 
-price_list AS (
-    SELECT contract_address,
-        minute,
-        price,
-        decimals,
-        symbol
-     FROM {{ source('prices', 'usd') }} p
-     WHERE blockchain = 'polygon'
-        AND contract_address IN ( SELECT DISTINCT currency_contract FROM all_events )
-        {% if not is_incremental() %}
-        AND minute >= '{{nft_start_date}}'
-        {% endif %}
-        {% if is_incremental() %}
-        AND minute >= date_trunc("day", now() - interval '1 week')
-        {% endif %}
-),
-
-
 
 SELECT
     'polygon' AS blockchain,
@@ -129,7 +111,7 @@ SELECT
     CAST(NULL AS double) AS royalty_fee_receive_address,
     CAST(NULL AS string) AS royalty_fee_currency_symbol,
     evt_tx_hash || '-' || evt_type || '-' || evt_index || '-' || token_id  AS unique_trade_id
-FROM all_events AS a
+FROM trades AS a
 INNER JOIN {{ source('polygon','transactions') }} t ON a.evt_block_number = t.block_number
     AND a.evt_tx_hash = t.hash
     {% if not is_incremental() %}
