@@ -15,7 +15,7 @@
 
 {% set nft_start_date = "2021-03-02" %}
 
-trades AS (
+WITH trades AS (
     SELECT 'buy' AS trade_category,
         evt_block_time,
         evt_block_number,
