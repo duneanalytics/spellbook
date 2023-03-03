@@ -103,7 +103,7 @@ SELECT
     CAST(NULL AS double) AS royalty_fee_receive_address,
     CAST(NULL AS string) AS royalty_fee_currency_symbol,
     evt_tx_hash || '-' || evt_type || '-' || evt_index || '-' || token_id  AS unique_trade_id
-FROM all_events a
+FROM trades a
 INNER JOIN {{ source('polygon','transactions') }} t ON a.evt_block_number = t.block_number
     AND a.evt_tx_hash = t.hash
     {% if not is_incremental() %}
