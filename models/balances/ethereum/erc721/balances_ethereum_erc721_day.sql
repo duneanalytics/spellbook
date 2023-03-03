@@ -10,7 +10,7 @@
 with
     days as (
         select
-            max(number) || '_' || 0 as evt_block_number_index,  
+            cast(max(number) as double) as evt_block_number_index,   
             date_trunc('day', time) as day
         from {{ source('ethereum', 'blocks') }}
         group by 2

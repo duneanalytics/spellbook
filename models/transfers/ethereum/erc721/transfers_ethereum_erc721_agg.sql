@@ -12,7 +12,7 @@ select
     wallet_address,
     token_address,
     tokenId,
-    lead(evt_block_number_index, 1, '99999999999999_0') OVER (PARTITION BY wallet_address, token_address, tokenId ORDER BY evt_block_number_index asc) AS next_evt,
+    lead(evt_block_number_index, 1, cast(99999999999999.00 as double)) OVER (PARTITION BY wallet_address, token_address, tokenId ORDER BY evt_block_number_index asc) AS next_evt,
     SUM(amount)                     OVER (PARTITION BY wallet_address, token_address, tokenId ORDER BY evt_block_number_index ASC) AS num_tokens,
     unique_tx_id || '-' || wallet_address || '-' || token_address || '-' || tokenId as unique_transfer_id
 from {{ ref('transfers_ethereum_erc721') }}

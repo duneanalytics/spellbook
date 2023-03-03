@@ -10,7 +10,7 @@
 with
     minutes as (
         select
-            max(number) || '_' || 0 as evt_block_number_index,  
+            cast(max(number) as double) as evt_block_number_index,  
             date_trunc('minute', time) as minute
         from {{ source('ethereum', 'blocks') }}
         group by 2
@@ -30,6 +30,6 @@ FROM minutes d
 INNER JOIN {{ ref('transfers_ethereum_erc721_agg') }} b ON (b.evt_block_number_index <= d.evt_block_number_index AND d.evt_block_number_index < b.next_evt)
 LEFT JOIN {{ ref('tokens_ethereum_nft') }} nft_tokens ON (nft_tokens.contract_address = b.token_address)
 where num_tokens = 1
-and d.minute = date_trunc('minute', now()) --as recent as the database pipeline allows as we are using the db time as base
+having max(evt_block_number_index)
 
 --only here can we drop the prior owners with "num_token=1" to have a continuos chain of ownership for a specific NFT
