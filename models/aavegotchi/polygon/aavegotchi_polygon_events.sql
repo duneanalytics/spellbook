@@ -69,7 +69,7 @@ WITH trades AS (
         {% if is_incremental() %}
         AND evt_block_time >= date_trunc("day", now() - interval '1 week')
         {% endif %}
-),
+)
 
 
 SELECT
