@@ -1,4 +1,14 @@
- {{config(alias='aggregators', tags=['static'], materialized='table', file_format = 'delta')}}
+{{ config(
+        alias ='aggregators',
+        materialized='incremental',
+        file_format = 'delta',
+        post_hook='{{ expose_spells(\'["ethereum"]\',
+                                    "sector",
+                                    "nft",
+                                    \'["hildobby"]\') }}',
+        unique_key = ['contract_address']
+)
+}}
 
 SELECT
   LOWER(contract_address) AS contract_address,
@@ -11,6 +21,7 @@ FROM
     , ('0xcdface5643b90ca4b3160dd2b5de80c1bf1cb088', 'Genie') -- Genie
     , ('0x31837aaf36961274a04b915697fdfca1af31a0c7', 'Genie') -- Genie
     , ('0xf97e9727d8e7db7aa8f006d1742d107cf9411412', 'Genie') -- Genie
+    /*
     , ('0xf24629fbb477e10f2cf331c2b7452d8596b5c7a5', 'Gem') -- Gem
     , ('0x83c8f28c26bf6aaca652df1dbbe0e1b56f8baba2', 'Gem') -- Gem 2
     , ('0x0000000031f7382a812c64b604da4fc520afef4b', 'Gem') -- Gem Single Contract Checkout 1
@@ -23,6 +34,7 @@ FROM
     , ('0x4326275317acc0fae4aa5c68fce4c54c74dc08d3', 'Gem') -- Gem v2 X2Y2
     , ('0x29ab6d8f7e3d815168d6b40ebb12625b4fe13998', 'Gem') -- Gem v2 
     , ('0x241b8e59e81455e66b9cd0e2ffb2506be1838144', 'Gem') -- Gem v2
+    */
     , ('0x56dd5bbede9bfdb10a2845c4d70d4a2950163044', 'X2Y2') -- X2Y2's OpenSea Sniper
     , ('0x69cf8871f61fb03f540bc519dd1f1d4682ea0bf6', 'Element') -- Element NFT Marketplace Aggregator
     , ('0xb4e7b8946fa2b35912cc0581772cccd69a33000c', 'Element') -- Element NFT Marketplace Aggregator 2
@@ -52,3 +64,28 @@ FROM
     , ('0xdc077a4e3f46138dedac5d684882d33fcc927cf7', 'GigaMart') -- GigaMart's GigaAggregator v 1.2
     , ('0x4abab19c2ad968adbc52e2c8a5ccda5379629576', 'Skillet') -- Skillet
   ) AS temp_table (contract_address, name)
+
+UNION ALL
+
+SELECT distinct to AS contract_address
+, 'Gem' AS name
+FROM ethereum.transactions
+WHERE to IN (
+    SELECT address
+    FROM ethereum.creation_traces
+    WHERE from = '0x073ab1c0cad3677cde9bdb0cdeedc2085c029579'
+    {% if not is_incremental() %}
+    AND block_time >= '2021-10-12'  -- Date when Vasa started working on Gem
+    {% endif %}
+    {% if is_incremental() %}
+    AND block_time >= date_trunc("day", NOW() - interval '1 week')
+    {% endif %}
+    )
+AND from != '0x073ab1c0cad3677cde9bdb0cdeedc2085c029579'
+{% if not is_incremental() %}
+AND evt_block_time >= '2021-10-12'  -- Date when Vasa started working on Gem
+{% endif %}
+{% if is_incremental() %}
+AND block_time >= date_trunc("day", NOW() - interval '1 week')
+{% endif %}
+GROUP BY 1
