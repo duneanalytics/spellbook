@@ -29,6 +29,13 @@ jobs:
     - name: copy old manifest to s3
       run: "aws s3 cp previous_manifest.json s3://manifest-spellbook/previous_manifest.json"
 
+    - name: Set environment variables
+      run: |
+        echo "GIT_SHA=$(echo ${{ github.sha }} | tr - _ | cut -c1-8)" >> $GITHUB_ENV
+
+    - name: upload git_sha versioned previous manifest (for manual catchup if jobs fail)
+      run: "aws s3 cp previous_manifest.json s3://manifest-spellbook/manifest_$GIT_SHA.json"
+
     - name: upload manifest
       run: "aws s3 cp manifest.json s3://manifest-spellbook/manifest.json"
 
@@ -45,9 +52,12 @@ jobs:
       with:
         github-token: ${{ steps.set-pat-token.outputs.token }}
         script: |
-          await github.rest.actions.createWorkflowDispatch({
-            owner: 'duneanalytics',
-            repo: 'spellbook-dagster',
-            workflow_id: 'deploy.yml',
-            ref: 'main'
-          })
+              await github.rest.actions.createWorkflowDispatch({
+                owner: 'duneanalytics',
+                repo: 'spellbook-dagster',
+                workflow_id: 'deploy.yml',
+                ref: 'main',
+                inputs: {
+                  git_sha: process.env.GIT_SHA,
+                },
+              });
