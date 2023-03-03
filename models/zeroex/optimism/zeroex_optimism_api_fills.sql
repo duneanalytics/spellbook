@@ -364,7 +364,8 @@ SELECT
              ELSE COALESCE((all_tx.maker_token_amount_raw / pow(10, mp.decimals)) * mp.price, (all_tx.taker_token_amount_raw / pow(10, tp.decimals)) * tp.price)
              END AS volume_usd, 
         tx.from AS tx_from,
-        tx.to AS tx_to
+        tx.to AS tx_to,
+        'optimism' AS blockchain
 FROM all_tx
 INNER JOIN {{ source('optimism', 'transactions')}} tx ON all_tx.tx_hash = tx.hash
 {% if is_incremental() %}
