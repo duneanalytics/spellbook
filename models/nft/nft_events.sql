@@ -3,7 +3,7 @@
     post_hook='{{ expose_spells(\'["ethereum","solana","bnb","optimism","arbitrum"]\',
                     "sector",
                     "nft",
-                    \'["soispoke","0xRob","springzh"]\') }}')
+                    \'["soispoke","0xRob"]\') }}')
 }}
 
 {% set nft_models = [
