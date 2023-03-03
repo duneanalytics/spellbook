@@ -61,6 +61,6 @@ jobs:
                 workflow_id: 'deploy.yml',
                 ref: 'main',
                 inputs: {
-                  git_sha: '${{ env.GIT_SHA }}',
+                  git_sha: process.env.GIT_SHA,
                 },
               });
