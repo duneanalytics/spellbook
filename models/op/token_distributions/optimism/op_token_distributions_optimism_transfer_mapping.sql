@@ -183,6 +183,7 @@ DATE_TRUNC('day',evt_block_time) AS block_date,
     from_type, to_type
     , from_label, COALESCE(dfrom.address_name,d.from_name) AS from_name
     , to_label, COALESCE(dto.address_name,dtxto.address_name,d.to_name) AS to_name
+    
     , op_amount_decimal, tx_method
     --
     ,cast(op_claimed as decimal) AS op_claimed
