@@ -450,10 +450,6 @@ models:
             - tx_hash
             - evt_index
             - trace_address
-      - check_dex_aggregator_seed:
-          blockchain: ethereum
-          project: 1inch
-          version: 'UNI v2'
     columns:
       - *blockchain
       - *project
@@ -546,10 +542,6 @@ models:
             - tx_hash
             - evt_index
             - trace_address
-      - check_dex_aggregator_seed:
-          blockchain: ethereum
-          project: 1inch
-          version: 'UNI v2'
     columns:
       - *blockchain
       - *project

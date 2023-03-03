@@ -82,7 +82,7 @@ WITH unoswap AS
         src.contract_address AS project_contract_address,
         src.call_tx_hash as tx_hash,
         src.call_trace_address AS trace_address,
-        CAST(NULL as integer) AS evt_index,
+        CAST(0 as integer) AS evt_index,
         tx.from AS tx_from,
         tx.to AS tx_to
     FROM
@@ -180,7 +180,7 @@ SELECT
     ,src.tx_hash
     ,src.tx_from
     ,src.tx_to
-    ,src.trace_address
+    ,CAST(src.trace_address as array<long>) as trace_address
     ,src.evt_index
 FROM
     oneinch as src

@@ -38,7 +38,7 @@ WITH oneinch_calls AS
         call_tx_hash as tx_hash,
         call_block_time as block_time,
         call_trace_address as trace_address,
-        CAST(NULL as integer) as evt_index,
+        CAST(0 as integer) as evt_index,
         contract_address
     FROM
         {{ source('oneinch_ethereum', 'AggregationRouterV5_call_swap') }}
@@ -147,7 +147,7 @@ SELECT
     ,src.tx_hash
     ,tx.from AS tx_from
     ,tx.to AS tx_to
-    ,src.trace_address
+    ,CAST(src.trace_address as array<long>) as trace_address
     ,src.evt_index
 FROM oneinch as src
 INNER JOIN {{ source('ethereum', 'transactions') }} as tx

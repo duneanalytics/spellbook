@@ -29,7 +29,7 @@ WITH limit_order_protocol_rfq_v1 AS
         contract_address AS project_contract_address,
         call_tx_hash as tx_hash,
         call_trace_address AS trace_address,
-        CAST(NULL as integer) AS evt_index
+        CAST(0 as integer) AS evt_index
     FROM
         {{ source('oneinch_lop_ethereum', 'LimitOrderProtocol_call_fillOrderRFQ') }} as call
     INNER JOIN
@@ -46,7 +46,7 @@ WITH limit_order_protocol_rfq_v1 AS
         {{ source('ethereum', 'traces') }} as tf1
         ON call.call_tx_hash = tf1.tx_hash
         AND call.call_block_number = tf1.block_number
-        AND CONCAT(COALESCE(call.call_trace_address, CAST(NULL as array<long>)), ARRAY((ts.sub_traces - 2))) = tf1.trace_address
+        AND CONCAT(COALESCE(call.call_trace_address, CAST(ARRAY() as array<long>)), ARRAY((ts.sub_traces - 2))) = tf1.trace_address
         {% if is_incremental() %}
         AND tf1.block_time >= date_trunc("day", now() - interval '1 week')
         {% else %}
@@ -56,7 +56,7 @@ WITH limit_order_protocol_rfq_v1 AS
         {{ source('ethereum', 'traces') }} as tf2
         ON call.call_tx_hash = tf2.tx_hash
         AND call.call_block_number = tf2.block_number
-        AND CONCAT(COALESCE(call.call_trace_address, CAST(NULL as array<long>)), ARRAY((ts.sub_traces - 1))) = tf2.trace_address
+        AND CONCAT(COALESCE(call.call_trace_address, CAST(ARRAY() as array<long>)), ARRAY((ts.sub_traces - 1))) = tf2.trace_address
         {% if is_incremental() %}
         AND tf2.block_time >= date_trunc("day", now() - interval '1 week')
         {% else %}
@@ -130,7 +130,7 @@ SELECT
     ,src.tx_hash
     ,tx.from AS tx_from
     ,tx.to AS tx_to
-    ,src.trace_address
+    ,CAST(src.trace_address as array<long>) as trace_address
     ,src.evt_index
 FROM limit_order_protocol_rfq_v1 as src
 INNER JOIN {{ source('ethereum', 'transactions') }} as tx

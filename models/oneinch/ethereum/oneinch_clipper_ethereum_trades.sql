@@ -169,7 +169,7 @@ WITH clipper AS
         contract_address AS project_contract_address,
         call_tx_hash as tx_hash,
         call_trace_address AS trace_address,
-        CAST(NULL as integer) AS evt_index
+        CAST(0 as integer) AS evt_index
     FROM
         clipper
 )
@@ -234,7 +234,7 @@ SELECT
     ,src.tx_hash
     ,tx.from AS tx_from
     ,tx.to AS tx_to
-    ,src.trace_address
+    ,CAST(src.trace_address as array<long>) as trace_address
     ,src.evt_index
 FROM oneinch as src
 INNER JOIN {{ source('ethereum', 'transactions') }} as tx

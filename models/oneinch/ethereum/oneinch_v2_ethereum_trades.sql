@@ -37,7 +37,7 @@ WITH oneinch_events AS
         returnAmount as to_amount,
         evt_tx_hash as tx_hash,
         evt_block_time as block_time,
-        CAST(NULL as array<int>) as trace_address,
+        CAST(ARRAY() as array<int>) as trace_address,
         evt_index,
         contract_address
     FROM
@@ -147,7 +147,7 @@ SELECT
     ,src.tx_hash
     ,tx.from AS tx_from
     ,tx.to AS tx_to
-    ,src.trace_address
+    ,CAST(src.trace_address as array<long>) as trace_address
     ,src.evt_index
 FROM oneinch as src
 INNER JOIN {{ source('ethereum', 'transactions') }} as tx

@@ -144,7 +144,7 @@ WITH zeroex AS
         CONCAT('0x', substring(makerAssetData, 35, 40)) AS token_sold_address,
         contract_address AS project_contract_address,
         evt_tx_hash as tx_hash,
-        CAST(NULL as array<int>) as trace_address,
+        CAST(ARRAY() as array<int>) as trace_address,
         evt_index
     FROM zeroex
 )
@@ -208,7 +208,7 @@ SELECT
     ,src.tx_hash
     ,tx.from AS tx_from
     ,tx.to AS tx_to
-    ,src.trace_address
+    ,CAST(src.trace_address as array<long>) as trace_address
     ,src.evt_index
 FROM
     oneinch as src
