@@ -95,7 +95,7 @@ FROM (
         tx_from,
         tx_to,
         unique_trade_id
-    FROM {{ native_mint }}
+    FROM {{ native_mint }} as n
 	LEFT JOIN (select block_number as p_block_number, tx_hash as p_tx_hash from project_mints) p
 	 ON n.block_number = p_block_number
 	 AND n.tx_hash = p_tx_hash
