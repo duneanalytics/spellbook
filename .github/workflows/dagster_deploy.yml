@@ -1,4 +1,5 @@
 on:
+  commit:
   push:
     branches:
       - "main"
@@ -23,8 +24,8 @@ jobs:
     - name: dbt compile to create prod manifest from main
       run: "dbt compile --target-path ."
 
-    - name: copy old manifest locally
-      run: "aws s3 cp s3://manifest-spellbook/manifest.json previous_manifest.json"
+#    - name: copy old manifest locally
+#      run: "aws s3 cp s3://manifest-spellbook/manifest.json previous_manifest.json"
       
     - name: copy old manifest to s3
       run: "aws s3 cp previous_manifest.json s3://manifest-spellbook/previous_manifest.json"
@@ -35,9 +36,9 @@ jobs:
 
     - name: upload git_sha versioned previous manifest
       run: "aws s3 cp previous_manifest.json s3://manifest-spellbook/manifest_$GIT_SHA.json"
-
-    - name: upload manifest
-      run: "aws s3 cp manifest.json s3://manifest-spellbook/manifest.json"
+#
+#    - name: upload manifest
+#      run: "aws s3 cp manifest.json s3://manifest-spellbook/manifest.json"
 
   dispatch:
     runs-on: [ self-hosted, linux, spellbook ]
@@ -57,6 +58,6 @@ jobs:
             repo: 'spellbook-dagster',
             workflow_id: 'deploy.yml',
             ref: 'main'
-          inputs: {
-            name: $GIT_SHA
+            inputs: {
+             name: $GIT_SHA
           })
