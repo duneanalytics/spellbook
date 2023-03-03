@@ -29,7 +29,7 @@ with namespaces as (
 )
 select 
     'optimism' as blockchain
-    , coalesce(ec.namespace, 'Unknown') as project
+    , coalesce(lower(ec.namespace), 'Unknown') as project
     , '' as version
     , nft_mints.block_time as block_time
     , date_trunc('day', nft_mints.block_time) as block_date
