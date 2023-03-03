@@ -295,7 +295,8 @@ WITH raw_token_list AS (
     ,('0x46f21fda29f1339e0ab543763ff683d399e393ec', 'opxveVELO', 18, 'receipt')
     ,('0x79af5dd14e855823fa3e9ecacdf001d99647d043', 'jEUR', 18, 'underlying')
     ,('0x8B21e9b7dAF2c4325bf3D18c1BeB79A347fE902A', 'COLLAB', 18, 'underlying')
-    
+    ,('0xc96f4F893286137aC17e07Ae7F217fFca5db3AB6', 'NFTE', 18, 'underlying')
+    ,('0xd652776dE7Ad802be5EC7beBfafdA37600222B48', 'SLM', 18, 'underlying')
 
     ) AS temp_table (contract_address, symbol, decimals, token_type)
 )
@@ -307,9 +308,10 @@ SELECT contract_address, symbol, MIN(decimals) AS decimals, token_type, token_ma
 FROM (
 
     SELECT
-    LOWER(l2_token) AS contract_address, symbol AS symbol, decimals as decimals
-    , 'underlying' as token_type, 'l2 token factory' AS token_mapping_source
-    FROM {{ ref('ovm_optimism_l2_token_factory') }}
+    LOWER(l2_token) AS contract_address, l1_symbol AS symbol, l1_decimals as decimals
+    , 'underlying' as token_type, 'l2 bridge mapping' AS token_mapping_source
+    FROM {{ ref('tokens_optimism_erc20_bridged_mapping') }}
+    WHERE l1_symbol IS NOT NULL
 /*
     -- UNION ALL
 
