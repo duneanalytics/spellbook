@@ -57,6 +57,7 @@ WITH dao_wallet AS (
         , (LOWER('0x5F5c328732c9E52DfCb81067b8bA56459b33921f'), 'Foundation Reserves', 'Fixed', 'DAIF-001')
         , (LOWER('0x478c7ce3e1df09130f8d65a23ad80e05b352af62'), 'Gelato Keepers', 'Variable', 'GELATO')
         --, (LOWER('0x0048FC4357DB3c0f45AdEA433a07A20769dDB0CF'), 'DSS Blow', 'Variable', 'BLOW')
+        , (LOWER('0xb386Bc4e8bAE87c3F67ae94Da36F385C100a370a'), 'New Risk Multisig', 'Fixed', 'RISK-001')
     ) AS  t(wallet_address, wallet_label, varfix, code)
 )
 
