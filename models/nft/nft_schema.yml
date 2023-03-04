@@ -374,11 +374,11 @@ models:
 
   - name: nft_transfers
     meta:
-      blockchain: ethereum, polygon, bnb, avalanche_c, gnosis, optimism, arbitrum
+      blockchain: ethereum, polygon, bnb, avalanche_c, gnosis, optimism, arbitrum, fantom
       sector: nft
       contributors: hildobby
     config:
-      tags: ['nft', 'ethereum', 'polygon', 'bnb', 'avalanche_c', 'gnosis', 'optimism', 'arbitrum', 'transfers']
+      tags: ['nft', 'ethereum', 'polygon', 'bnb', 'avalanche_c', 'gnosis', 'optimism', 'arbitrum', 'fantom', 'transfers']
     description: >
         NFT transfers
     columns:
@@ -409,6 +409,8 @@ models:
         description: "Address that sent the token(s)"
       - name: to
         description: "Address that received the token(s)"
+      - name: executed_by
+        description: "Address that executed the transaction"
       - name: tx_hash
         description: "Transaction hash"
       - name: unique_transfer_id

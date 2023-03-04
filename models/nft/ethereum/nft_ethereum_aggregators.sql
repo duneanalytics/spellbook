@@ -1,7 +1,7 @@
  {{config(alias='aggregators', tags=['static'], materialized='table', file_format = 'delta')}}
 
 SELECT
-  contract_address,
+  LOWER(contract_address) AS contract_address,
   name
 FROM
   (
@@ -20,6 +20,9 @@ FROM
     , ('0x9e97195f937c9372fe5fda5e3b86e9b88cbefed7', 'Gem') -- Gem's X2Y2 Batch Buys (Old)
     , ('0x539ea5d6ec0093ff6401dbcd14d049c37a77151b', 'Gem') -- Gem's X2Y2 Batch Buys
     , ('0xf22007700b8c443bcb36a39580f7804bffdb1169', 'Gem') -- Gem's Blur Batch Buys
+    , ('0x4326275317acc0fae4aa5c68fce4c54c74dc08d3', 'Gem') -- Gem v2 X2Y2
+    , ('0x29ab6d8f7e3d815168d6b40ebb12625b4fe13998', 'Gem') -- Gem v2 
+    , ('0x241b8e59e81455e66b9cd0e2ffb2506be1838144', 'Gem') -- Gem v2
     , ('0x56dd5bbede9bfdb10a2845c4d70d4a2950163044', 'X2Y2') -- X2Y2's OpenSea Sniper
     , ('0x69cf8871f61fb03f540bc519dd1f1d4682ea0bf6', 'Element') -- Element NFT Marketplace Aggregator
     , ('0xb4e7b8946fa2b35912cc0581772cccd69a33000c', 'Element') -- Element NFT Marketplace Aggregator 2
@@ -41,8 +44,12 @@ FROM
     , ('0x141efc30c4093bc0f8204accb8afa6643fddecf2', 'Alpha Sharks') -- Alpha Sharks
     , ('0x552b16d19dbad7af2786fe5a40d96d2a5c09428c', 'Alpha Sharks') -- Alpha Sharks 2.0
     , ('0x114e54a100a0415abf9727234c92c83dbcc59abf', 'Alpha Sharks') -- Alpha Sharks 2.1
+    , ('0x1ed3d33b41e392014e0c9d8125369aba4e09798f', 'Alpha Sharks') -- Magically (Alpha Sharks)
     , ('0xef1c6e67703c7bd7107eed8303fbe6ec2554bf6b', 'Uniswap') -- Uniswap's Universal Router
     , ('0x36ab1c395b3711d3d5ed2af8ac8371cc991aa06c', 'Flip') -- Flip
     , ('0x7db11e30ae8ad7495668701c3f2c1b6d60587eda', 'Flip') -- Flip's LooksRare Checkout
     , ('0xb123504fa220ba482768dd1e798594c1af88d7dc', 'Tiny Astro') -- Tiny Astro
+    , ('0x4c9712cd94376c537464caa4d87bce198d59936c', 'GigaMart') -- GigaMart's GigaAggregator
+    , ('0xdc077a4e3f46138dedac5d684882d33fcc927cf7', 'GigaMart') -- GigaMart's GigaAggregator v 1.2
+    , ('0x4abab19c2ad968adbc52e2c8a5ccda5379629576', 'Skillet') -- Skillet
   ) AS temp_table (contract_address, name)
