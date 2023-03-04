@@ -5,7 +5,7 @@ models:
     meta:
       blockchain: fantom
       sector: nft
-      contributors: hildobby
+      contributors: hildobby, 0xRob, Henrystats
     config:
       tags: ['nft', 'fantom', 'transfers']
     description: >

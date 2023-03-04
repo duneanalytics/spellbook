@@ -235,6 +235,10 @@ models:
         description: "First item_type of offer in this trade : `native`|`erc20`|`erc721`|`erc1155`"
       - name: consideration_first_item_type
         description: "First item_type of consideration in this trade : `native`|`erc20`|`erc721`|`erc1155`"
+      - name: offerer
+        description: "Original offerer"
+      - name: recipient
+        description: "Original recipient"
       - name: sender
         description: "Item sender"
       - name: receiver
@@ -255,6 +259,8 @@ models:
         description: "Total number of offer items"
       - name: consideration_cnt
         description: "Total number of consideration items"
+      - name : order_hash
+        description: "Order hash"
       - name: is_private
         description: "If trade is private sale then `true` else `false` (boolean)"
       - name: eth_erc_idx
@@ -288,6 +294,99 @@ models:
       project: seaport
       contributors: sohwak
     config:
+      tags: ['ethereum','seaport','trades','sohwak']
+    description: >
+        Seaport trades on Ethereum
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_date
+            - tx_hash
+            - evt_index
+            - nft_contract_address
+            - token_id
+            - sub_type
+            - sub_idx
+      - check_seaport_seed:
+          blockchain: ethereum
+          project: seaport
+          version: v1        
+    columns:
+      - *blockchain
+      - *project
+      - *version
+      - name: block_date
+        description:  "block date"
+      - *block_time
+      - *seller
+      - *buyer
+      - *trade_type
+      - *trade_category
+      - *evt_type
+      - *nft_contract_address
+      - *collection
+      - *token_id
+      - *number_of_items
+      - *token_standard
+      - *amount_raw
+      - *amount_original
+      - *amount_usd
+      - *currency_symbol
+      - *currency_contract
+      - name:  original_currency_contract
+        description: "original currency"
+      - name:  currency_decimal
+        description:  "Token Decimal"
+      - *project_contract_address
+      - name: platform_fee_receive_address
+        description:  "Platform fee receive address"
+      - *platform_fee_amount_raw
+      - *platform_fee_amount
+      - *platform_fee_amount_usd
+      - name: royalty_fee_receive_address
+        description:  "Wallet addresses receiving fees from the transaction"
+      - *royalty_fee_amount_raw
+      - *royalty_fee_amount
+      - *royalty_fee_amount_usd
+      - name: royalty_fee_receive_address_1
+        description:  "Wallet addresses receiving fees from the transaction"
+      - name: royalty_fee_receive_address_2
+        description:  "Wallet addresses receiving fees from the transaction"
+      - name: royalty_fee_receive_address_3
+        description:  "Wallet addresses receiving fees from the transaction"
+      - name: royalty_fee_receive_address_4
+        description:  "Wallet addresses receiving fees from the transaction"
+      - name: royalty_fee_amount_raw_1
+        description:  "Wallet addresses receiving fees from the transaction"
+      - name: royalty_fee_amount_raw_2
+        description:  "Wallet addresses receiving fees from the transaction"
+      - name: royalty_fee_amount_raw_3
+        description:  "Wallet addresses receiving fees from the transaction"
+      - name: royalty_fee_amount_raw_4
+        description:  "Wallet addresses receiving fees from the transaction"
+      - *aggregator_name
+      - *aggregator_address
+      - *block_number
+      - *tx_hash
+      - name: evt_index
+        description: "Event index of transaction event"
+      - *tx_from
+      - *tx_to
+      - name: right_hash
+        description: "right 8 character of data column on Transaction"
+      - name: zone_address
+        description: "zone address of Seaport transaction"
+      - name: estimated_price
+        description: "True if it is bundle trade and dividened price"
+      - name: is_private
+        description: "True if it is private sale"
+
+  - name: seaport_v1_ethereum_trades
+    meta:
+      blockchain: ethereum
+      project: seaport
+      contributors: sohwak
+    config:
       tags: ['ethereum','seaport','base_pairs','sohwak']
     description: >
         Seaport trades on Ethereum
@@ -305,6 +404,95 @@ models:
           blockchain: ethereum
           project: seaport
           version: v1        
+    columns:
+      - *blockchain
+      - *project
+      - *version
+      - name: block_date
+        description:  "block date"
+      - *block_time
+      - *seller
+      - *buyer
+      - *trade_type
+      - *trade_category
+      - *evt_type
+      - *nft_contract_address
+      - *collection
+      - *token_id
+      - *number_of_items
+      - *token_standard
+      - *amount_raw
+      - *amount_original
+      - *amount_usd
+      - *currency_symbol
+      - *currency_contract
+      - name:  original_currency_contract
+        description: "original currency"
+      - name:  currency_decimal
+        description:  "Token Decimal"
+      - *project_contract_address
+      - name: platform_fee_receive_address
+        description:  "Platform fee receive address"
+      - *platform_fee_amount_raw
+      - *platform_fee_amount
+      - *platform_fee_amount_usd
+      - name: royalty_fee_receive_address
+        description:  "Wallet addresses receiving fees from the transaction"
+      - *royalty_fee_amount_raw
+      - *royalty_fee_amount
+      - *royalty_fee_amount_usd
+      - name: royalty_fee_receive_address_1
+        description:  "Wallet addresses receiving fees from the transaction"
+      - name: royalty_fee_receive_address_2
+        description:  "Wallet addresses receiving fees from the transaction"
+      - name: royalty_fee_receive_address_3
+        description:  "Wallet addresses receiving fees from the transaction"
+      - name: royalty_fee_receive_address_4
+        description:  "Wallet addresses receiving fees from the transaction"
+      - name: royalty_fee_amount_raw_1
+        description:  "Wallet addresses receiving fees from the transaction"
+      - name: royalty_fee_amount_raw_2
+        description:  "Wallet addresses receiving fees from the transaction"
+      - name: royalty_fee_amount_raw_3
+        description:  "Wallet addresses receiving fees from the transaction"
+      - name: royalty_fee_amount_raw_4
+        description:  "Wallet addresses receiving fees from the transaction"
+      - *aggregator_name
+      - *aggregator_address
+      - *block_number
+      - *tx_hash
+      - name: evt_index
+        description: "Event index of transaction event"
+      - *tx_from
+      - *tx_to
+      - name: right_hash
+        description: "right 8 character of data column on Transaction"
+      - name: zone_address
+        description: "zone address of Seaport transaction"
+      - name: estimated_price
+        description: "True if it is bundle trade and dividened price"
+      - name: is_private
+        description: "True if it is private sale"
+
+  - name: seaport_v2_ethereum_trades
+    meta:
+      blockchain: ethereum
+      project: seaport
+      contributors: sohwak
+    config:
+      tags: ['ethereum','seaport','base_pairs','sohwak']
+    description: >
+        Seaport trades on Ethereum
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_date
+            - tx_hash
+            - evt_index
+            - nft_contract_address
+            - token_id
+            - sub_type
+            - sub_idx
     columns:
       - *blockchain
       - *project
