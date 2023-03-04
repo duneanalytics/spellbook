@@ -2,7 +2,6 @@ version: 2
 
 models:
   - name: labels_ens
-  
     meta:
       blockchain: ethereum
       sector: labels
@@ -16,9 +15,6 @@ models:
           combination_of_columns:
             - blockchain
             - address
-            - category
-            - model_name
-            - blockchain
     columns:
       - name: blockchain
         description: "Blockchain"
