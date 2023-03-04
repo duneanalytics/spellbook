@@ -23,14 +23,14 @@ top as (
 
 SELECT
     'blockchain' as blockchain,
-    (CONCAT('0x', substring(owner::text from 3))) as address
+    (CONCAT('0x', substring(cast(owner as string), 3))) as address,
     'most_three_letter_ens_owner' as model_name,
     'spanish-or-vanish' as contributor,
-    'query' as source
+    'query' as source,
     'social' as category,
     timestamp('2022-03-03') as created_at,
     now() as updated_at,
     'personas' as label_type,
-    'The owner of the most three letter ENS Domains'as name,
+    'The owner of the most three letter ENS Domains'as name
 FROM top
 WHERE owner is not null
