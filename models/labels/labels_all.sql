@@ -16,8 +16,8 @@ UNION ALL
 SELECT * FROM {{ ref('labels_social') }}
 UNION ALL
 SELECT * FROM {{ ref('labels_nft') }}
--- UNION ALL
--- SELECT * FROM {{ ref('labels_airdrop') }}
+UNION ALL
+SELECT * FROM {{ ref('labels_airdrop') }}
 -- UNION ALL
 -- SELECT * FROM {{ ref('labels_dao') }}
 UNION ALL
