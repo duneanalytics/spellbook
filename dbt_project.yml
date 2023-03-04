@@ -1370,3 +1370,6 @@ seeds:
         +column_types:
           hex: string
           dec: string
+
+    method_ids:
+      +schema: method_ids
