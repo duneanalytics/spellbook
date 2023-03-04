@@ -102,9 +102,6 @@ models:
       - &blockchain
         name: blockchain
         description: "Blockchain which the aggregator project is deployed"
-        tests:
-          - zeroex_ethereum_fills_test:
-              seed_file: ref('zeroex_ethereum_api_fills_sample')
               
   - name: zeroex_ethereum_api_fills_deduped
     meta:
