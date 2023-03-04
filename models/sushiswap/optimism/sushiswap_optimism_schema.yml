@@ -24,7 +24,11 @@ models:
       - check_dex_seed:
           blockchain: optimism
           project: sushiswap
-          version: 1
+          version: trident-cpp
+      - check_dex_seed:
+          blockchain: optimism
+          project: sushiswap
+          version: trident-sp
     columns:
       - &blockchain
         name: blockchain
