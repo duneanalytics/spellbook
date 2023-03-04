@@ -1,7 +1,7 @@
 
 {{ config(
-        schema = 'method_ids'
-        alias ='evm_non_app_method+ids',
+        schema = 'method_ids',
+        alias ='evm_non_app_method_ids',
         post_hook='{{ expose_spells(\'["ethereum","optimism","arbitrum",  "polygon","gnosis","avalanche_c","fantom","goerli","bnb"]\',
                                 "sector",
                                 "method_ids",
@@ -9,10 +9,9 @@
         )
 }}
 
-
-{% set all_chains_array = array('ethereum','optimism','arbitrum','polygon','gnosis','avalanche_c','fantom','goerli','bnb') %}
-
-SELECT '{{all_chains_array}}' as blockchains, method_id, method_descriptor
+-- Generic EVM methods
+-- Is there a list of supported evm chains that we can pull from here?
+SELECT array('ethereum','optimism','arbitrum','polygon','gnosis','avalanche_c','fantom','goerli','bnb') as blockchains, method_id, method_descriptor
     FROM (values
          ('0x095ea7b3','ERC20 Approval') --'ERC20 Approval'
         ,('0xa9059cbb','ERC20 Transfer') --'ERC20 Transfer'
@@ -25,17 +24,17 @@ SELECT '{{all_chains_array}}' as blockchains, method_id, method_descriptor
         ,('0x60806040','Contract Creation'), ('0x60c06040','Contract Creation') --'Contract Creation'
         ) a (method_id, method_descriptor)
 )
-UNION ALL
+UNION ALL --Optimism-Specific Methods
 
 SELECT array('optimism') AS blockchains, method_id, method_descriptor
     FROM (values
-        ('0xcbd4ece9','Bridge In (L1 to L2)') --'Bridge In (L1 to L2)'
+         ('0xcbd4ece9','Bridge In (L1 to L2)') --'Bridge In (L1 to L2)'
         ,('0x32b7006d','Bridge Out (L2 to L1)') --'Bridge Out (L2 to L1)'
         ,('0xbede39b5','OVM Gas Price Oracle'), ('0xbf1fe420','OVM Gas Price Oracle') --'OVM Gas Price Oracle'
         ,('0x015d8eb9','Set L1 Block Values') -- Set L1 Block Values System Transaction (Bedrock and later)
         ) a (method_id, method_descriptor)
 
-UNION ALL
+UNION ALL --Arbitrum-Specific Methods
 
 SELECT array('arbitrum') AS blockchains, method_id, method_descriptor
     FROM (values
