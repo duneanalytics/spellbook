@@ -1,6 +1,5 @@
 {{ config(
-    schema = 'sushi_optimism'
-    , alias = 'trades'
+    alias = 'trades'
     ,partition_by = ['block_date']
     ,materialized = 'incremental'
     ,file_format = 'delta'
