@@ -65,11 +65,11 @@ SELECT array('arbitrum') AS blockchains, method_id, method_descriptor
 SELECT *
 FROM (
     {% for chain in all_chains_array %}
-    SELECT chain AS blockchain, method_id, method_descriptor
+    SELECT '{{chain}}' AS blockchain, method_id, method_descriptor
     FROM aggrregate_methods
     WHERE
         blockchains IS NULL --If Null, make an entry for all chains
-        OR array_contains(blockchains,chain)
+        OR array_contains(blockchains,'{{chain}}')
     {% if not loop.last %}
     UNION ALL
     {% endif %}
