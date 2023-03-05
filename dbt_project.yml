@@ -57,6 +57,8 @@ models:
         +schema: balancer_polygon
       optimism:
         +schema: balancer_optimism
+      gnosis:
+        +schema: balancer_gnosis
 
     ens:
       +schema: ens
