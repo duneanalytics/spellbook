@@ -70,6 +70,15 @@ models:
       - &project_name
         name: project_name
         description: "name of the nft project"
+      - &tx_from
+        name: tx_from
+        description: "Address which initiated the trade"
+      - &tx_to
+        name: tx_to
+        description: "Address which received the trade"
+      - &blockchain
+        name: blockchain
+        description: "Blockchain which the aggregator project is deployed"
   - name: zeroex_polygon_nft_fills
     meta:
       blockchain: polygon
@@ -164,9 +173,7 @@ models:
             - maker
             - taker
     columns:
-      - &blockchain
-        name: blockchain
-        description: "Blockchain which the aggregator project is deployed"
+      - *blockchain
       - &project 
         name: project 
         description: "Name of aggregator project"
@@ -192,10 +199,6 @@ models:
       - *maker
       - *affiliate_address
       - *tx_hash
-      - &tx_from
-        name: tx_from
-        description: "Address which initiated the trade"
-      - &tx_to
-        name: tx_to
-        description: "Address which received the trade"
-      - *evt_index                
+      - *tx_from
+      - *tx_to
+      - *evt_index               
