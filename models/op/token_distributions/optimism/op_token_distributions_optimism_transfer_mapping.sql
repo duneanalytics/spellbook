@@ -153,6 +153,9 @@ WITH all_labels AS (
                     and o.evt_block_time >= date_trunc('day', now() - interval '1 week')
                     {% endif %}
                 WHERE o.evt_block_number IS NULL
+                {% if is_incremental() %} 
+                and t.evt_block_time >= date_trunc('day', now() - interval '1 week')
+                {% endif %}
         )
 
 , distributions AS (
@@ -176,21 +179,21 @@ SELECT *,
 )
 
 SELECT distinct
-DATE_TRUNC('day',evt_block_time) AS block_date,
-    evt_block_time, evt_block_number, evt_index,
-    from_address, to_address,
-    tx_to_address, tx_from_address, evt_tx_hash,
-    from_type, to_type
+DATE_TRUNC('day',evt_block_time) AS block_date
+    , evt_block_time, evt_block_number, evt_index
+    , from_address, to_address
+    , tx_to_address, tx_from_address, evt_tx_hash
+    , from_type, to_type
     , from_label, COALESCE(dfrom.address_name,d.from_name) AS from_name
     , to_label, COALESCE(dto.address_name,dtxto.address_name,d.to_name) AS to_name
 
     , op_amount_decimal, tx_method
     --
-    ,cast(op_claimed as decimal) AS op_claimed
-    ,cast(op_deployed as decimal) as op_deployed
-    ,cast(op_to_project as decimal) as op_to_project
-    ,cast(op_between_projects as decimal) as op_between_projects
-    ,cast(op_incoming_clawback as decimal) as op_incoming_clawback
+    , cast(op_claimed as double) AS op_claimed
+    , cast(op_deployed as double) as op_deployed
+    , cast(op_to_project as double) as op_to_project
+    , cast(op_between_projects as double) as op_between_projects
+    , cast(op_incoming_clawback as double) as op_incoming_clawback
     
     , d.to_name AS og_to_name
     , d.from_name AS og_from_name
