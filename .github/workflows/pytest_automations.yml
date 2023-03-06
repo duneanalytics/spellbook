@@ -1,0 +1,39 @@
+name: Pytest Prices Automation
+
+on:
+  pull_request:
+    branches: [ main ]
+    paths:
+      - 'scripts/**'
+
+permissions:
+  contents: read
+
+jobs:
+  pytest-automation:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+    - name: Set up Python 3.9
+      uses: actions/setup-python@v3
+      with:
+        python-version: "3.9"
+    - uses: actions/cache@v3
+      id: cache
+      with:
+        path: ~/.cache/pip
+        key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.*') }}
+        restore-keys: | 
+          ${{ runner.os }}-pip-
+    - name: Install pipenv
+      run: |
+        pip install pipenv
+    - name: Install dependencies
+      run: |
+        pipenv install
+
+    - name: Run pytest
+      working-directory: scripts
+      run: | 
+        pipenv run pytest test_token_checker.py

@@ -12,7 +12,7 @@ SELECT "polygon"                             AS blockchain,
        feed_name,
        LOWER(proxy_address)                  AS proxy_address,
        LOWER(underlying_token_address)       AS underlying_token_address,
-       CAST( extra_decimals AS NUMERIC)      AS extra_decimals
+       CAST( extra_decimals AS BIGINT)      AS extra_decimals
 FROM (values
         ("EUR / USD","0x73366fe0aa0ded304479862808e02506fe556a98","0x4e3decbb3645551b8a19f0ea1678079fcb33fb4c",0),
         ("GBP / USD","0x099a2540848573e94fb1ca0fa420b00acbbc845a","0x767058f11800fba6a682e73a6e79ec5eb74fac8c",0),

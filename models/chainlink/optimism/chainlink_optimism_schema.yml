@@ -5,20 +5,31 @@ models:
     meta:
       blockchain: optimism
       project: chainlink
-      contributors: msilb7
+      contributors: ["msilb7","0xroll"]
     config:
-      tags: ['optimism','chainlink','oralce']
+      tags: ['optimism','chainlink','oracle']
     description: >
         Table pulling price updates for known Chainlink oracle addresses
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
               - blockchain
-              - block_time
+              - block_number
               - proxy_address
-              - aggregator_address
               - underlying_token_address
-              - oracle_price
+      - check_seed:
+          seed_file: ref('chainlink_get_price_seed')
+          filter:
+            blockchain: optimism
+          match_columns:
+            - blockchain
+            - block_number
+            - proxy_address
+            - underlying_token_address
+          check_columns:
+            - aggregator_address
+            - feed_name
+            - oracle_price
     columns:
       - &blockchain
         name: blockchain
@@ -29,6 +40,9 @@ models:
       - &block_date
         name: block_date
         description: "Block time of the oracle update - truncated to date"
+      - &block_number
+        name: block_number
+        description: "Block number of the oracle update"
       - &feed_name
         name: feed_name
         description:  "Feed name from Chainlink docs"  
@@ -54,7 +68,7 @@ models:
       project: chainlink
       contributors: msilb7
     config:
-      tags: ['optimism','chainlink','oralce']
+      tags: ['optimism','chainlink','oracle']
     description: >
         Table pulling price updates for known Chainlink oracle addresses, truncated to hourly average price for easier joining with other on-chain tables.
     tests:
@@ -84,7 +98,7 @@ models:
       project: chainlink
       contributors: msilb7
     config:
-      tags: ['optimism','chainlink','oralce']
+      tags: ['optimism','chainlink','oracle']
     description: >
         Manually updated table for mapping chainlink oracle addresses to underlying ERC20 token addresses.
     columns:
@@ -104,7 +118,7 @@ models:
       project: chainlink
       contributors: msilb7
     config:
-      tags: ['optimism','chainlink','oralce']
+      tags: ['optimism','chainlink','oracle']
     description: >
         Manually updated table for mapping chainlink feeds to proxy addresses and the aggregator addresses (where updates read to)
     tests:

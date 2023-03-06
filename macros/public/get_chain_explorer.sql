@@ -12,6 +12,7 @@
          when 'gnosis' = chain_ then 'https://gnosisscan.io'
          when 'bnb' = chain_ then 'https://bscscan.com'
          when 'solana' = chain_ then 'https://solscan.io'
+         when 'fantom' = chain_ then 'https://ftmscan.com'
          else 'https://etherscan.io'
       end as explorer_url;
 {% endmacro %}

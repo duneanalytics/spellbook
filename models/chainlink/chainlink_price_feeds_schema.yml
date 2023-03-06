@@ -3,7 +3,7 @@ version: 2
 models:
   - name: chainlink_price_feeds_hourly
     meta:
-      blockchain: ["optimism","polygon"]
+      blockchain: ["optimism","polygon","bnb"]
       sector: oracle
       project: chainlink
       contributors: ["msilb7","0xroll"]
@@ -33,7 +33,7 @@ models:
         name: feed_name
         description: "Feed name from Chainlink docs"  
       - &oracle_price
-        name: orcale_price_avg
+        name: oracle_price_avg
         description:  "Price returned by Chainlink oracle update" 
       - &proxy_address
         name: proxy_address

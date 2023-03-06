@@ -11,7 +11,7 @@
 SELECT 'polygon'                             AS blockchain,
        LOWER(jfiat_collateral_pool_address)  AS jfiat_collateral_pool_address,
        jfiat_collateral_symbol,
-       CAST(decimals AS numeric)             AS decimals,
+       CAST(decimals AS BIGINT)             AS decimals,
        LOWER(jfiat_collateral_token_address) AS jfiat_collateral_token_address
 FROM (values
 ('0x65a7b4ff684c2d08c115d55a4b089bf4e92f5003','USDC',6,'0x2791bca1f2de4661ed88a30c99a7a9449aa84174'), 

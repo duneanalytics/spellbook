@@ -2,9 +2,9 @@
     config(
         schema = 'balancer_v2_optimism',
         alias='bpt_prices',
-        post_hook='{{ expose_spells(\'["optimism"]\',
+        post_hook='{{ expose_spells_hide_trino(\'["optimism"]\',
                                     "project",
-                                    "balancer",
+                                    "balancer_v2",
                                     \'["victorstefenon"]\') }}'
     )
 }}

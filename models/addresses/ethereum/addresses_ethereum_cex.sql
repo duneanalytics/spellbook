@@ -33,6 +33,8 @@ FROM (VALUES
     , ('0xc3c8e0a39769e2308869f7461364ca48155d1d9e', 'Binance', 'Binance 24')
     , ('0x2e581a5ae722207aa59acd3939771e7c7052dd3d', 'Binance', 'Binance 25')
     , ('0x44592b81c05b4c35efb8424eb9d62538b949ebbf', 'Binance', 'Binance 26')
+    , ('0xa344c7ada83113b3b56941f6e85bf2eb425949f3', 'Binance', 'Binance 27')
+    , ('0x5a52e96bacdabb82fd05763e25335261b270efcb', 'Binance', 'Binance 28')
     , ('0x06a0048079ec6571cd1b537418869cde6191d42d', 'Binance', 'Binance 29')
     , ('0x892e9e24aea3f27f4c6e9360e312cce93cc98ebe', 'Binance', 'Binance 30')
     , ('0x00799bbc833d5b168f0410312d2a8fd9e0e3079c', 'Binance', 'Binance 31')
@@ -40,8 +42,9 @@ FROM (VALUES
     , ('0x50d669f43b484166680ecc3670e4766cdb0945ce', 'Binance', 'Binance 33')
     , ('0x2f7e209e0f5f645c7612d7610193fe268f118b28', 'Binance', 'Binance 34')
     , ('0xd9d93951896b4ef97d251334ef2a0e39f6f6d7d7', 'Binance', 'Binance 35')
-    , ('0x5a52e96bacdabb82fd05763e25335261b270efcb', 'Binance', 'Binance 36')
-    , ('0xa344c7ada83113b3b56941f6e85bf2eb425949f3', 'Binance', 'Binance 37')
+    , ('0xf35a6bd6e0459a4b53a27862c51a2a7292b383d1', 'Binance', 'Binance 40')
+    , ('0x294b9b133ca7bc8ed2cdd03ba661a4c6d3a834d9', 'Binance', 'Binance 41')
+    , ('0x5d7f34372fa8708e09689d400a613eee67f75543', 'Binance', 'Binance 42')
     , ('0x8b99f3660622e21f2910ecca7fbe51d654a1517d', 'Binance', 'Binance Charity')
     , ('0xab83d182f3485cf1d6ccdd34c7cfef95b4c08da4', 'Binance', 'Binance JEX')
     , ('0xc365c3315cf926351ccaf13fa7d19c8c4058c8e1', 'Binance', 'Binance Pool')
@@ -52,6 +55,9 @@ FROM (VALUES
     -- FTX, Source: https://etherscan.io/accounts/label/ftx
     , ('0x2faf487a4414fe77e2327f0bf4ae2a264a776ad2', 'FTX', 'FTX 1')
     , ('0xc098b2a3aa256d2140208c3de6543aaef5cd3a94', 'FTX', 'FTX 2')
+    , ('0x25eaff5b179f209cf186b1cdcbfa463a69df4c45', 'FTX', 'FTX (formerly Blockfolio)')
+    -- FTX US, Source: https://etherscan.io/accounts/label/ftx
+    , ('0x7abe0ce388281d2acf297cb089caef3819b13448', 'FTX US', 'FTX US')
     -- Coinbase, Source: https://etherscan.io/accounts/label/coinbase
     , ('0x71660c4005ba85c37ccec55d0c4493e66fe775d3', 'Coinbase', 'Coinbase 1')
     , ('0x503828976d22510aad0201ac7ec88293211d23da', 'Coinbase', 'Coinbase 2')
@@ -64,6 +70,9 @@ FROM (VALUES
     , ('0x6b76f8b1e9e59913bfe758821887311ba1805cab', 'Coinbase', 'Coinbase 9')
     , ('0xa9d1e08c7793af67e9d92fe308d5697fb81d3e43', 'Coinbase', 'Coinbase 10')
     , ('0x77696bb39917c91a0c3908d577d5e322095425ca', 'Coinbase', 'Coinbase 11')
+    , ('0x7c195d981abfdc3ddecd2ca0fed0958430488e34', 'Coinbase', 'Coinbase 12')
+    , ('0x95a9bd206ae52c4ba8eecfc93d18eacdd41c88cc', 'Coinbase', 'Coinbase 13')
+    , ('0xb739d0895772dbb71a89a3754a160269068f0d45', 'Coinbase', 'Coinbase 14')
     , ('0xa090e606e30bd747d4e6245a1517ebe430f0057e', 'Coinbase', 'Coinbase Miscellaneous')
     , ('0xf6874c88757721a02f47592140905c4336dfbc61', 'Coinbase', 'Coinbase Commerce')
     , ('0x881d4032abe4188e2237efcd27ab435e81fc6bb1', 'Coinbase', 'Coinbase Commerce 2')
@@ -87,6 +96,7 @@ FROM (VALUES
     , ('0x4d19c0a5357bc48be0017095d3c871d9afc3f21d', 'OKX', 'OKX 17')
     , ('0x5c52cc7c96bde8594e5b77d5b76d042cb5fae5f2', 'OKX', 'OKX 18')
     , ('0xe9172daf64b05b26eb18f07ac8d6d723acb48f99', 'OKX', 'OKX 19')
+    , ('0x7eb6c83ab7d8d9b8618c0ed973cbef71d1921ef2', 'OKX', 'OKX 20')
     -- Huobi, Source: https://etherscan.io/accounts/label/huobi
     , ('0xab5c66752a9e8167967685f1450532fb96d5d24f', 'Huobi', 'Huobi 1')
     , ('0x6748f50f686bfbca6fe8ad62b22228b87f31ff2b', 'Huobi', 'Huobi 2')
@@ -127,6 +137,7 @@ FROM (VALUES
     , ('0xf66852bc122fd40bfecc63cd48217e88bda12109', 'Huobi', 'Huobi 37')
     , ('0x49517ca7b7a50f592886d4c74175f4c07d460a70', 'Huobi', 'Huobi 38')
     , ('0x58c2cb4a6bee98c309215d0d2a38d7f8aa71211c', 'Huobi', 'Huobi 39')
+    , ('0x39d9f4640b98189540a9c0edcfa95c5e657706aa', 'Huobi', 'Huobi 40')
     , ('0x1d1e10e8c66b67692f4c002c0cb334de5d485e41', 'Huobi', 'Huobi Old Address 1')
     , ('0x1b93129f05cc2e840135aab154223c75097b69bf', 'Huobi', 'Huobi Old Address 2')
     , ('0xeb6d43fe241fb2320b5a3c9be9cdfd4dd8226451', 'Huobi', 'Huobi Old Address 3')
@@ -166,6 +177,8 @@ FROM (VALUES
     , ('0x0d0707963952f2fba59dd06f2b425ace40b492fe', 'Gate.io', 'Gate.io 1')
     , ('0x7793cd85c11a924478d358d49b05b37e91b5810f', 'Gate.io', 'Gate.io 2')
     , ('0x1c4b70a3968436b9a0a9cf5205c787eb81bb558c', 'Gate.io', 'Gate.io 3')
+    , ('0x234ee9e35f8e9749a002fc42970d570db716453b', 'Gate.io', 'Gate.io 4')
+    , ('0xc882b111a75c0c657fc507c04fbfcd2cc984f071', 'Gate.io', 'Gate.io 5')
     -- Kraken, Source: https://etherscan.io/accounts/label/kraken
     , ('0x2910543af39aba0cd09dbb2d50200b3e800a63d2', 'Kraken', 'Kraken 1')
     , ('0x0a869d79a7052c7f1b55a8ebabbea3420f0d1e13', 'Kraken', 'Kraken 2')
@@ -220,6 +233,11 @@ FROM (VALUES
     , ('0x899b5d52671830f567bf43a14684eb14e1f945fe', 'KuCoin', 'KuCoin 8')
     , ('0xf16e9b0d03470827a95cdfd0cb8a8a3b46969b91', 'KuCoin', 'KuCoin 9')
     , ('0xcad621da75a66c7a8f4ff86d30a2bf981bfc8fdd', 'KuCoin', 'KuCoin 10')
+    , ('0xec30d02f10353f8efc9601371f56e808751f396f', 'KuCoin', 'KuCoin 11')
+    , ('0x738cf6903e6c4e699d1c2dd9ab8b67fcdb3121ea', 'KuCoin', 'Kucoin 12')
+    , ('0xd89350284c7732163765b23338f2ff27449e0bf5', 'KuCoin', 'KuCoin 13')
+    , ('0x88bd4d3e2997371bceefe8d9386c6b5b4de60346', 'KuCoin', 'KuCoin 14')
+    , ('0xb8e6d31e7b212b2b7250ee9c26c56cebbfbe6b23', 'KuCoin', 'KuCoin 15')
     -- Crypto.com, Source: https://etherscan.io/accounts/label/crypto-com
     , ('0x6262998ced04146fa42253a5c0af90ca02dfd2a3', 'Crypto.com', 'Crypto.com 1')
     , ('0x46340b20830761efd32832a74d7169b29feb9758', 'Crypto.com', 'Crypto.com 2')
@@ -252,9 +270,6 @@ FROM (VALUES
     , ('0x66f820a414680b5bcda5eeca5dea238543f42054', 'Bittrex', 'Bittrex 3')
     -- Bithumb, Source: https://etherscan.io/accounts/label/bithumb
     , ('0x88d34944cf554e9cccf4a24292d891f620e9c94f', 'Bithumb', 'Bithumb 1')
-    , ('0x186549a4ae594fc1f70ba4cffdac714b405be3f9', 'Bithumb', 'Bithumb 10')
-    , ('0xd273bd546b11bd60214a2f9d71f22a088aafe31b', 'Bithumb', 'Bithumb 11')
-    , ('0x558553d54183a8542f7832742e7b4ba9c33aa1e6', 'Bithumb', 'Bithumb 12')
     , ('0x3052cd6bf951449a984fe4b5a38b46aef9455c8e', 'Bithumb', 'Bithumb 2')
     , ('0x2140efd7ba31169c69dfff6cdc66c542f0211825', 'Bithumb', 'Bithumb 3')
     , ('0xa0ff1e0f30b5dda2dc01e7e828290bc72b71e57d', 'Bithumb', 'Bithumb 4')
@@ -263,6 +278,9 @@ FROM (VALUES
     , ('0x15878e87c685f866edfaf454be6dc06fa517b35b', 'Bithumb', 'Bithumb 7')
     , ('0x31d03f07178bcd74f9099afebd23b0ae30184ab5', 'Bithumb', 'Bithumb 8')
     , ('0xed48dc0628789c2956b1e41726d062a86ec45bff', 'Bithumb', 'Bithumb 9')
+    , ('0x186549a4ae594fc1f70ba4cffdac714b405be3f9', 'Bithumb', 'Bithumb 10')
+    , ('0xd273bd546b11bd60214a2f9d71f22a088aafe31b', 'Bithumb', 'Bithumb 11')
+    , ('0x558553d54183a8542f7832742e7b4ba9c33aa1e6', 'Bithumb', 'Bithumb 12')
     , ('0xbb5a0408fa54287b9074a2f47ab54c855e95ef82', 'Bithumb', 'Bithumb Old Address 1')
     , ('0x5521a68d4f8253fc44bfb1490249369b3e299a4a', 'Bithumb', 'Bithumb Old Address 2')
     , ('0x8fa8af91c675452200e49b4683a33ca2e1a34e42', 'Bithumb', 'Bithumb Old Address 3')
@@ -425,8 +443,6 @@ FROM (VALUES
     -- BW 
     , ('0xbcdfc35b86bedf72f0cda046a3c16829a2ef41d1', 'BW', 'BW Old Address') -- https://etherscan.io/address/0xbcdfc35b86bedf72f0cda046a3c16829a2ef41d1
     , ('0x73957709695e73fd175582105c44743cf0fb6f2f', 'BW', 'BW 1') -- https://etherscan.io/address/0x73957709695e73fd175582105c44743cf0fb6f2f
-    -- Blockfolio 
-    , ('0x25eaff5b179f209cf186b1cdcbfa463a69df4c45', 'Blockfolio', 'Blockfolio') -- https://etherscan.io/address/0x25eaff5b179f209cf186b1cdcbfa463a69df4c45
     -- bitFlyer
     , ('0x111cff45948819988857bbf1966a0399e0d1141e', 'bitFlyer', 'bitFlyer 1') -- https://etherscan.io/address/0x111cff45948819988857bbf1966a0399e0d1141e
     -- Coinone

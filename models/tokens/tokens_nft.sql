@@ -1,5 +1,5 @@
 {{ config( alias='nft',
-        post_hook='{{ expose_spells(\'["avalanche_c","bnb","ethereum","optimism", "gnosis"]\',
+        post_hook='{{ expose_spells(\'["avalanche_c","bnb","ethereum","optimism", "gnosis", "fantom","arbitrum"]\',
                                     "sector",
                                     "tokens",
                                     \'["0xManny","hildobby","soispoke","dot2dotseurat"]\') }}')}}
@@ -36,7 +36,7 @@ SELECT
 contract_address, 
 name, 
 CAST(NULL AS VARCHAR(5)) as symbol,
-CAST(NULL AS VARCHAR(5)) as standard,
+standard,
 CAST(NULL AS VARCHAR(5)) as category
 FROM  {{ ref('tokens_optimism_nft') }}
             UNION
@@ -57,3 +57,21 @@ CAST(NULL AS VARCHAR(5)) as symbol,
 standard, 
 CAST(NULL AS VARCHAR(5)) as category
 FROM  {{ ref('tokens_bnb_nft') }}
+            UNION
+SELECT
+'fantom' as blockchain, 
+contract_address, 
+name, 
+symbol,
+standard, 
+category 
+FROM  {{ ref('tokens_fantom_nft') }}
+            UNION
+SELECT
+'arbitrum' as blockchain, 
+contract_address, 
+name, 
+symbol,
+standard, 
+category 
+FROM  {{ ref('tokens_arbitrum_nft') }}

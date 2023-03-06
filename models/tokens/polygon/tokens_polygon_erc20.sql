@@ -1,4 +1,4 @@
-{{ config( alias='erc20')}}
+{{ config( alias='erc20', tags=['static'])}}
 
 SELECT LOWER(contract_address) AS contract_address, symbol, decimals
   FROM (VALUES
@@ -10,6 +10,7 @@ SELECT LOWER(contract_address) AS contract_address, symbol, decimals
 ,('0x1bfd67037b42cf73acf2047067bd4f2c47d9bfd6', 'WBTC', 8)
 ,('0x7ceb23fd6bc0add59e62ac25578270cff1b9f619', 'WETH', 18)
 ,('0x2c89bbc92bd86f8075d1decc58c7f4e0107f286b', 'WAVAX', 18)
+,('0x5d47baba0d66083c52009271faf3f50dcc01023c', 'BANANA', 18)
 ,('0x0d500b1d8e8ef31e21c99d1db9a6444d3adf1270', 'WMATIC', 18)
 ,('0xd6df932a45c0f255f85145f286ea0b292b21c90b', 'AAVE', 18)
 ,('0xa3fa99a148fa48d14ed51d610c367c61876997f1', 'miMATIC', 18)
@@ -46,9 +47,17 @@ SELECT LOWER(contract_address) AS contract_address, symbol, decimals
 ,('0xfa68fb4628dff1028cfec22b4162fccd0d45efb6', 'MaticX', 18)
 ,('0x48e6b98ef6329f8f0a30ebb8c7c960330d648085', 'bb-am-usd', 18)
 ,('0x0503dd6b2d3dd463c9bef67fb5156870af63393e', 'bb-a-DAI', 18)
-,('x8a819a4cabd6efcb4e5504fe8679a1abd831dd8f', 'bb-a-USDT', 18)
+,('0x8a819a4cabd6efcb4e5504fe8679a1abd831dd8f', 'bb-a-USDT', 18)
 ,('0x1aafc31091d93c3ff003cff5d2d8f7ba2e728425', 'LP-USDC-USD+', 18)
 ,('0x221836a597948dce8f3568e044ff123108acc42a', 'amUSDC', 6)
 ,('0x19c60a251e525fa88cd6f3768416a8024e98fc19', 'amUSDT', 6)
-
+,('0x385eeac5cb85a38a9a07a70c73e0a3271cfb54a7', 'GHST', 18)
+,('0xe0b52e49357fd4daf2c15e02058dce6bc0057db4', 'agEUR', 18)
+,('0x0b3f868e0be5597d5db7feb59e1cadbb0fdda50a', 'SUSHI', 18)
+,('0x9a71012b13ca4d3d0cdc72a177df3ef03b0e76a3', 'BAL', 18)
+,('0xe111178a87a3bff0c8d18decba5798827539ae99', 'EURS', 2)
+,('0x4e3decbb3645551b8a19f0ea1678079fcb33fb4c', 'jEUR', 18)
+,('0x85955046df4668e1dd369d2de9f3aeb98dd2a369', 'DPI', 18)
+,('0xef1348dac70e8349513e4ae7498f302e27102101', 'CWETHLP', 18)
+,('0xa03258b76ef13af716370529358f6a79eb03ec12', 'CUSDCLP', 18)
 ) AS temp_table (contract_address, symbol, decimals)

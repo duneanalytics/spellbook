@@ -8,70 +8,73 @@
     post_hook='{{ expose_spells(\'["ethereum"]\',
                                 "project",
                                 "blur",
-                                \'["hildobby"]\') }}')
+                                \'["hildobby","pandajackson42"]\') }}')
 }}
 
 {% set project_start_date = '2022-10-18' %}
+{% set seaport_usage_start_date = '2023-01-25' %}
 
-SELECT
-    'ethereum' AS blockchain
-    , 'blur' AS project
-    , 'v1' AS version
-    , date_trunc('day', bm.evt_block_time) AS block_date
-    , bm.evt_block_time AS block_time
-    , bm.evt_block_number AS block_number
-    , get_json_object(bm.buy, '$.tokenId') AS token_id
-    , erct.token_standard
-    , nft.name AS collection
-    , CASE WHEN get_json_object(bm.buy, '$.amount')=1 THEN 'Single Item Trade'
-        ELSE 'Bundle Trade'
+SELECT distinct
+    CAST('ethereum' AS string) AS blockchain
+    , CAST('blur' AS string) AS project
+    , CAST('v1' AS string) AS version
+    , CAST(date_trunc('day', bm.evt_block_time) AS timestamp) AS block_date
+    , CAST(bm.evt_block_time AS timestamp) AS block_time
+    , CAST(bm.evt_block_number AS double) AS block_number
+    , CAST(get_json_object(bm.sell, '$.tokenId') AS string) AS token_id
+    , CAST(erct.token_standard AS string) AS token_standard
+    , CAST(nft.name AS string) AS collection
+    , CASE WHEN get_json_object(bm.buy, '$.amount')=1 THEN CAST('Single Item Trade' AS string)
+        ELSE CAST('Bundle Trade' AS string)
         END AS trade_type
-    , get_json_object(bm.buy, '$.amount') AS number_of_items
+    , CAST(get_json_object(bm.buy, '$.amount') AS DECIMAL(38,0)) AS number_of_items
     , 'Trade' AS evt_type
-    , COALESCE(seller_fix.from, get_json_object(bm.sell, '$.trader')) AS seller
-    , COALESCE(buyer_fix.to, get_json_object(bm.buy, '$.trader')) AS buyer
-    , CASE WHEN et.from=buyer_fix.to OR et.from=COALESCE(buyer_fix.to, get_json_object(bm.buy, '$.trader')) THEN 'Buy'
-        ELSE 'Offer Accepted'
+    , CAST(COALESCE(seller_fix.from, get_json_object(bm.sell, '$.trader')) AS string) AS seller
+    , CAST(COALESCE(buyer_fix.to, get_json_object(bm.buy, '$.trader')) AS string) AS buyer
+    , CASE WHEN get_json_object(bm.buy, '$.matchingPolicy') IN ('0x00000000006411739da1c40b106f8511de5d1fac', '0x0000000000dab4a563819e8fd93dba3b25bc3495') THEN CAST('Buy' AS string)
+        WHEN get_json_object(bm.buy, '$.matchingPolicy') IN ('0x0000000000b92d5d043faf7cecf7e2ee6aaed232') THEN CAST('Offer Accepted' AS string)
+        WHEN et.from=buyer_fix.to OR et.from=COALESCE(buyer_fix.to, get_json_object(bm.buy, '$.trader')) THEN CAST('Buy' AS string)
+        ELSE CAST('Offer Accepted' AS string)
         END AS trade_category
-    , get_json_object(bm.buy, '$.price') AS amount_raw
-    , CASE WHEN get_json_object(bm.buy, '$.paymentToken')='0x0000000000000000000000000000000000000000' THEN get_json_object(bm.buy, '$.price')/POWER(10, 18)
-        ELSE get_json_object(bm.buy, '$.price')/POWER(10, pu.decimals)
+    , CAST(get_json_object(bm.buy, '$.price') AS DECIMAL(38,0)) AS amount_raw
+    , CASE WHEN get_json_object(bm.buy, '$.paymentToken') IN ('0x0000000000000000000000000000000000000000', '0x0000000000a39bb272e79075ade125fd351887ac') THEN CAST(get_json_object(bm.buy, '$.price')/POWER(10, 18) AS double)
+        ELSE CAST(get_json_object(bm.buy, '$.price')/POWER(10, pu.decimals) AS double)
         END AS amount_original
-    , CASE WHEN get_json_object(bm.buy, '$.paymentToken')='0x0000000000000000000000000000000000000000' THEN pu.price*get_json_object(bm.buy, '$.price')/POWER(10, 18)
-        ELSE pu.price*get_json_object(bm.buy, '$.price')/POWER(10, pu.decimals)
+    , CASE WHEN get_json_object(bm.buy, '$.paymentToken') IN ('0x0000000000000000000000000000000000000000', '0x0000000000a39bb272e79075ade125fd351887ac') THEN CAST(pu.price*get_json_object(bm.buy, '$.price')/POWER(10, 18) AS double)
+        ELSE CAST(pu.price*get_json_object(bm.buy, '$.price')/POWER(10, pu.decimals) AS double)
         END AS amount_usd
-    , CASE WHEN get_json_object(bm.buy, '$.paymentToken')='0x0000000000000000000000000000000000000000' THEN 'ETH'
-        ELSE pu.symbol
+    , CASE WHEN get_json_object(bm.buy, '$.paymentToken') IN ('0x0000000000000000000000000000000000000000', '0x0000000000a39bb272e79075ade125fd351887ac') THEN CAST('ETH' AS string)
+        ELSE CAST(pu.symbol AS string)
         END AS currency_symbol
-    , CASE WHEN get_json_object(bm.buy, '$.paymentToken')='0x0000000000000000000000000000000000000000' THEN '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'
-        ELSE get_json_object(bm.buy, '$.paymentToken')
+    , CASE WHEN get_json_object(bm.buy, '$.paymentToken') IN ('0x0000000000000000000000000000000000000000', '0x0000000000a39bb272e79075ade125fd351887ac') THEN CAST('0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2' AS string)
+        ELSE CAST(get_json_object(bm.buy, '$.paymentToken') AS string)
         END AS currency_contract
-    , bm.contract_address AS project_contract_address
-    , get_json_object(bm.buy, '$.collection') AS nft_contract_address
-    , agg.name AS aggregator_name
-    , agg.contract_address AS aggregator_address
-    , bm.evt_tx_hash AS tx_hash
-    , et.from AS tx_from
-    , et.to AS tx_to
-    , 0 AS platform_fee_amount_raw
-    , 0 AS platform_fee_amount
-    , 0 AS platform_fee_amount_usd
+    , CAST(bm.contract_address AS string) AS project_contract_address
+    , CAST(get_json_object(bm.buy, '$.collection') AS string) AS nft_contract_address
+    , CAST(coalesce(agg.name,agg_m.aggregator_name) AS string) AS aggregator_name
+    , CAST(agg.contract_address AS string) AS aggregator_address
+    , CAST(bm.evt_tx_hash AS string) AS tx_hash
+    , CAST(et.from AS string) AS tx_from
+    , CAST(et.to AS string) AS tx_to
+    , CAST(0 AS DOUBLE) AS platform_fee_amount_raw
+    , CAST(0 AS DOUBLE) AS platform_fee_amount
+    , CAST(0 AS DOUBLE) AS platform_fee_amount_usd
     , CAST(0 AS DOUBLE) AS platform_fee_percentage
-    , COALESCE(get_json_object(bm.buy, '$.price')*get_json_object(get_json_object(bm.sell, '$.fees[0]'), '$.rate')/10000, 0) AS royalty_fee_amount_raw
-    , CASE WHEN get_json_object(bm.buy, '$.paymentToken')='0x0000000000000000000000000000000000000000' THEN COALESCE(get_json_object(bm.buy, '$.price')/POWER(10, 18)*get_json_object(get_json_object(bm.sell, '$.fees[0]'), '$.rate')/10000, 0)
-        ELSE COALESCE(get_json_object(bm.buy, '$.price')/POWER(10, pu.decimals)*get_json_object(get_json_object(bm.sell, '$.fees[0]'), '$.rate')/10000, 0)
+    , CAST(COALESCE(get_json_object(bm.buy, '$.price')*get_json_object(get_json_object(bm.sell, '$.fees[0]'), '$.rate')/10000, 0) AS DOUBLE) AS royalty_fee_amount_raw
+    , CASE WHEN get_json_object(bm.buy, '$.paymentToken') IN ('0x0000000000000000000000000000000000000000', '0x0000000000a39bb272e79075ade125fd351887ac') THEN CAST(COALESCE(get_json_object(bm.buy, '$.price')/POWER(10, 18)*get_json_object(get_json_object(bm.sell, '$.fees[0]'), '$.rate')/10000, 0) AS DOUBLE)
+        ELSE CAST(COALESCE(get_json_object(bm.buy, '$.price')/POWER(10, pu.decimals)*get_json_object(get_json_object(bm.sell, '$.fees[0]'), '$.rate')/10000, 0) AS DOUBLE)
         END AS royalty_fee_amount
-    , CASE WHEN get_json_object(bm.buy, '$.paymentToken')='0x0000000000000000000000000000000000000000' THEN COALESCE(pu.price*get_json_object(bm.buy, '$.price')/POWER(10, 18)*get_json_object(get_json_object(bm.sell, '$.fees[0]'), '$.rate')/10000, 0)
-        ELSE COALESCE(pu.price*get_json_object(bm.buy, '$.price')/POWER(10, pu.decimals)*get_json_object(get_json_object(bm.sell, '$.fees[0]'), '$.rate')/10000, 0)
+    , CASE WHEN get_json_object(bm.buy, '$.paymentToken') IN ('0x0000000000000000000000000000000000000000', '0x0000000000a39bb272e79075ade125fd351887ac') THEN CAST(COALESCE(pu.price*get_json_object(bm.buy, '$.price')/POWER(10, 18)*get_json_object(get_json_object(bm.sell, '$.fees[0]'), '$.rate')/10000, 0) AS DOUBLE)
+        ELSE CAST(COALESCE(pu.price*get_json_object(bm.buy, '$.price')/POWER(10, pu.decimals)*get_json_object(get_json_object(bm.sell, '$.fees[0]'), '$.rate')/10000, 0) AS DOUBLE)
         END AS royalty_fee_amount_usd
     , CAST(COALESCE(get_json_object(get_json_object(bm.sell, '$.fees[0]'), '$.rate')/100, 0) AS DOUBLE) AS royalty_fee_percentage
-    , get_json_object(get_json_object(bm.sell, '$.fees[0]'), '$.recipient') AS royalty_fee_receive_address
-    , CASE WHEN get_json_object(get_json_object(bm.sell, '$.fees[0]'), '$.recipient') IS NOT NULL AND get_json_object(bm.buy, '$.paymentToken')='0x0000000000000000000000000000000000000000' THEN 'ETH'
-        WHEN get_json_object(get_json_object(bm.sell, '$.fees[0]'), '$.recipient') IS NOT NULL THEN pu.symbol
+    , CAST(get_json_object(get_json_object(bm.sell, '$.fees[0]'), '$.recipient') AS string) AS royalty_fee_receive_address
+    , CASE WHEN get_json_object(get_json_object(bm.sell, '$.fees[0]'), '$.recipient') IS NOT NULL AND get_json_object(bm.buy, '$.paymentToken') IN ('0x0000000000000000000000000000000000000000', '0x0000000000a39bb272e79075ade125fd351887ac') THEN CAST('ETH' AS string)
+        WHEN get_json_object(get_json_object(bm.sell, '$.fees[0]'), '$.recipient') IS NOT NULL THEN CAST(pu.symbol AS string)
         END AS royalty_fee_currency_symbol
-    ,  'ethereum-blur-v1-' || bm.evt_block_number || '-' || bm.evt_tx_hash || '-' || bm.evt_index AS unique_trade_id
+    ,  CAST('ethereum-blur-v1-' || bm.evt_block_number || '-' || bm.evt_tx_hash || '-' || bm.evt_index AS string) AS unique_trade_id
 FROM {{ source('blur_ethereum','BlurExchange_evt_OrdersMatched') }} bm
-JOIN {{ source('ethereum','transactions') }} et ON et.block_time=bm.evt_block_time
+JOIN {{ source('ethereum','transactions') }} et ON et.block_number=bm.evt_block_number
     AND et.hash=bm.evt_tx_hash
     {% if not is_incremental() %}
     AND et.block_time >= '{{project_start_date}}'
@@ -80,10 +83,13 @@ JOIN {{ source('ethereum','transactions') }} et ON et.block_time=bm.evt_block_ti
     AND et.block_time >= date_trunc("day", now() - interval '1 week')
     {% endif %}
 LEFT JOIN {{ ref('nft_ethereum_aggregators') }} agg ON agg.contract_address=et.to
+LEFT JOIN {{ ref('nft_ethereum_aggregators_markers') }} agg_m
+    ON RIGHT(et.data, agg_m.hash_marker_size) = agg_m.hash_marker
 LEFT JOIN {{ source('prices','usd') }} pu ON pu.blockchain='ethereum'
     AND pu.minute=date_trunc('minute', bm.evt_block_time)
     AND (pu.contract_address=get_json_object(bm.buy, '$.paymentToken')
-        OR (pu.contract_address='0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2' AND get_json_object(bm.buy, '$.paymentToken')='0x0000000000000000000000000000000000000000'))
+        OR (pu.contract_address='0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2' AND get_json_object(bm.buy, '$.paymentToken')='0x0000000000000000000000000000000000000000')
+        OR (pu.contract_address='0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2' AND get_json_object(bm.buy, '$.paymentToken')='0x0000000000a39bb272e79075ade125fd351887ac'))
     {% if not is_incremental() %}
     AND pu.minute >= '{{project_start_date}}'
     {% endif %}
@@ -94,7 +100,7 @@ LEFT JOIN {{ ref('tokens_ethereum_nft') }} nft ON get_json_object(bm.buy, '$.col
 LEFT JOIN {{ ref('nft_ethereum_transfers') }} erct ON erct.block_time=bm.evt_block_time
     AND get_json_object(bm.buy, '$.collection')=erct.contract_address
     AND erct.tx_hash=bm.evt_tx_hash
-    AND get_json_object(bm.buy, '$.tokenId')=erct.token_id
+    AND get_json_object(bm.sell, '$.tokenId')=erct.token_id
     AND erct.from=get_json_object(bm.sell, '$.trader')
     {% if not is_incremental() %}
     AND erct.block_time >= '{{project_start_date}}'
@@ -105,7 +111,7 @@ LEFT JOIN {{ ref('nft_ethereum_transfers') }} erct ON erct.block_time=bm.evt_blo
 LEFT JOIN {{ ref('nft_ethereum_transfers') }} buyer_fix ON buyer_fix.block_time=bm.evt_block_time
     AND get_json_object(bm.buy, '$.collection')=buyer_fix.contract_address
     AND buyer_fix.tx_hash=bm.evt_tx_hash
-    AND get_json_object(bm.buy, '$.tokenId')=buyer_fix.token_id
+    AND get_json_object(bm.sell, '$.tokenId')=buyer_fix.token_id
     AND get_json_object(bm.buy, '$.trader')=agg.contract_address
     AND buyer_fix.from=agg.contract_address
     {% if not is_incremental() %}
@@ -117,7 +123,7 @@ LEFT JOIN {{ ref('nft_ethereum_transfers') }} buyer_fix ON buyer_fix.block_time=
 LEFT JOIN {{ ref('nft_ethereum_transfers') }} seller_fix ON seller_fix.block_time=bm.evt_block_time
     AND get_json_object(bm.buy, '$.collection')=seller_fix.contract_address
     AND seller_fix.tx_hash=bm.evt_tx_hash
-    AND get_json_object(bm.buy, '$.tokenId')=seller_fix.token_id
+    AND get_json_object(bm.sell, '$.tokenId')=seller_fix.token_id
     AND get_json_object(bm.sell, '$.trader')=agg.contract_address
     AND seller_fix.to=agg.contract_address
     {% if not is_incremental() %}
@@ -128,5 +134,87 @@ LEFT JOIN {{ ref('nft_ethereum_transfers') }} seller_fix ON seller_fix.block_tim
     {% endif %}
 {% if is_incremental() %}
 WHERE bm.evt_block_time >= date_trunc("day", now() - interval '1 week')
+{% endif %}
+
+UNION ALL
+
+SELECT distinct
+    CAST('ethereum' AS string) AS blockchain
+    , CAST('blur' AS string) AS project
+    , CAST('v1' AS string) AS version
+    , CAST(date_trunc('day', s.evt_block_time) AS timestamp) AS block_date
+    , CAST(s.evt_block_time AS timestamp) AS block_time
+    , CAST(s.evt_block_number AS double) AS block_number
+    , CAST(get_json_object(s.offer[0], '$.identifier') AS string) AS token_id
+    , CAST(tr.token_standard AS string) AS token_standard
+    , CAST(nft_tok.name AS string) AS collection
+    , CASE WHEN get_json_object(s.offer[0], '$.amount')=1 THEN CAST('Single Item Trade' AS string) ELSE CAST('Bundle Trade' AS string) END AS trade_type
+    , CAST(get_json_object(s.offer[0], '$.amount') AS DECIMAL(38,0)) AS number_of_items
+    , CAST('Trade' AS string) AS evt_type
+    , CAST(s.offerer AS string) AS seller
+    , CAST(s.recipient AS string) AS buyer
+    , CAST('Buy' AS string) AS trade_category
+    , CAST(get_json_object(s.consideration[0], '$.amount')+get_json_object(s.consideration[1], '$.amount') AS DECIMAL(38,0)) AS amount_raw
+    , CAST((get_json_object(s.consideration[0], '$.amount')+get_json_object(s.consideration[1], '$.amount'))/POWER(10, 18) AS double) AS amount_original
+    , CAST(pu.price*(get_json_object(s.consideration[0], '$.amount')+get_json_object(s.consideration[1], '$.amount'))/POWER(10, 18) AS double) AS amount_usd
+    , CASE WHEN get_json_object(s.consideration[0], '$.token')='0x0000000000000000000000000000000000000000' THEN CAST('ETH' AS string) ELSE CAST(currency_tok.symbol AS string) END AS currency_symbol
+    , CAST(get_json_object(s.consideration[0], '$.token') AS string) AS currency_contract
+    , CAST(s.contract_address AS string) AS project_contract_address
+    , CAST(get_json_object(s.offer[0], '$.token') AS string) AS nft_contract_address
+    , CAST(NULL AS string) AS aggregator_name
+    , CAST(NULL AS string) AS aggregator_address
+    , CAST(s.evt_tx_hash AS string) AS tx_hash
+    , CAST(tx.from AS string) AS tx_from
+    , CAST(tx.to AS string) AS tx_to
+    , CAST(0 AS DOUBLE) AS platform_fee_amount_raw
+    , CAST(0 AS DOUBLE) AS platform_fee_amount
+    , CAST(0 AS DOUBLE) AS platform_fee_amount_usd
+    , CAST(0 AS DOUBLE) AS platform_fee_percentage
+    , CAST(LEAST(get_json_object(s.consideration[0], '$.amount'), get_json_object(s.consideration[1], '$.amount')) AS DOUBLE) AS royalty_fee_amount_raw
+    , CAST(LEAST(get_json_object(s.consideration[0], '$.amount'), get_json_object(s.consideration[1], '$.amount'))/POWER(10, 18) AS DOUBLE) AS royalty_fee_amount
+    , CAST(pu.price*LEAST(get_json_object(s.consideration[0], '$.amount'), get_json_object(s.consideration[1], '$.amount'))/POWER(10, 18) AS DOUBLE) AS royalty_fee_amount_usd
+    , CAST(100.0*LEAST(get_json_object(s.consideration[0], '$.amount'), get_json_object(s.consideration[1], '$.amount'))
+        /(get_json_object(s.consideration[0], '$.amount')+get_json_object(s.consideration[1], '$.amount')) AS DOUBLE) AS royalty_fee_percentage
+    , CAST(currency_tok.symbol AS string) AS royalty_fee_currency_symbol
+    , CASE WHEN get_json_object(s.consideration[0], '$.recipient')!=s.recipient THEN CAST(get_json_object(s.consideration[0], '$.recipient') AS string)
+        ELSE CAST(get_json_object(s.consideration[1], '$.recipient') AS string)
+        END AS royalty_fee_receive_address
+    , CAST('ethereum-blur-v1-' || s.evt_block_number || '-' || s.evt_tx_hash || '-' || s.evt_index AS string) AS unique_trade_id
+FROM {{ source('seaport_ethereum','Seaport_evt_OrderFulfilled') }} s
+INNER JOIN {{ source('ethereum', 'transactions') }} tx ON tx.block_number=s.evt_block_number
+    AND tx.hash=s.evt_tx_hash
+    {% if is_incremental() %}
+    AND tx.block_time >= date_trunc("day", now() - interval '1 week')
+    {% endif %}
+    {% if not is_incremental() %}
+    AND tx.block_time >= '{{seaport_usage_start_date}}'
+    {% endif %}
+LEFT JOIN {{ ref('tokens_ethereum_nft') }} nft_tok ON nft_tok.contract_address=get_json_object(s.offer[0], '$.token')
+LEFT JOIN {{ ref('tokens_ethereum_erc20') }} currency_tok ON currency_tok.contract_address=get_json_object(s.consideration[0], '$.token')
+LEFT JOIN {{ ref('prices_usd_forward_fill') }} pu ON ((pu.contract_address=get_json_object(s.consideration[0], '$.token') AND pu.blockchain='ethereum')
+        OR (get_json_object(s.consideration[0], '$.token')='0x0000000000000000000000000000000000000000'  AND pu.blockchain IS NULL AND pu.contract_address IS NULL AND pu.symbol='ETH'))
+    AND pu.minute=date_trunc('minute', s.evt_block_time)
+    {% if is_incremental() %}
+    AND pu.minute >= date_trunc("day", now() - interval '1 week')
+    {% endif %}
+    {% if not is_incremental() %}
+    AND pu.minute >= '{{seaport_usage_start_date}}'
+    {% endif %}
+LEFT JOIN {{ ref('nft_ethereum_transfers') }} tr ON tr.block_time=s.evt_block_time
+    AND tr.contract_address=get_json_object(s.offer[0], '$.token')
+    AND tr.token_id=get_json_object(s.offer[0], '$.identifier')
+    AND tr.from=s.offerer
+    {% if is_incremental() %}
+    AND tr.block_time >= date_trunc("day", now() - interval '1 week')
+    {% endif %}
+    {% if not is_incremental() %}
+    AND tr.block_time >= '{{seaport_usage_start_date}}'
+    {% endif %}
+WHERE s.zone='0x0000000000d80cfcb8dfcd8b2c4fd9c813482938'
+{% if is_incremental() %}
+AND s.evt_block_time >= date_trunc("day", now() - interval '1 week')
+{% endif %}
+{% if not is_incremental() %}
+AND s.evt_block_time >= '{{seaport_usage_start_date}}'
 {% endif %}
 ;

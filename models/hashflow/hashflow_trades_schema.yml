@@ -3,12 +3,12 @@ version: 2
 models:
   - name: hashflow_trades
     meta:
-      blockchain: ethereum, avalanche_c
+      blockchain: ethereum, avalanche_c, bnb
       sector: dex
       project: hashflow
-      contributors: hosuke, justabi
+      contributors: hosuke, justabi, Henrystats
     config:
-      tags: ['avalanche_c','hashflow','trades', 'dex', 'hosuke', 'justabi', 'cross-chain']
+      tags: ['avalanche_c','hashflow','trades', 'dex', 'hosuke', 'justabi', 'Henrystats', 'cross-chain']
     description: >
         Hashflow trades on all chains across all contracts and versions. This table will load dex trades downstream.
     columns:

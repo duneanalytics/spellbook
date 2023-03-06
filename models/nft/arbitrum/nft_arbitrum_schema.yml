@@ -5,12 +5,14 @@ models:
     meta:
       blockchain: arbitrum
       sector: nft
-      contributors: hildobby
+      contributors: hildobby, 0xRob
     config:
       tags: ['nft', 'arbitrum', 'transfers']
     description: >
         NFT transfers
     columns:
+      - name: blockchain
+        description: "Blockchain"
       - name: block_time
         description: "UTC event block time"
       - name: block_number
@@ -37,6 +39,8 @@ models:
         description: "Address that sent the token(s)"
       - name: to
         description: "Address that received the token(s)"
+      - name: executed_by
+        description: "Address that executed the transaction"
       - name: tx_hash
         description: "Transaction hash"
       - name: unique_transfer_id

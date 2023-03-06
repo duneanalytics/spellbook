@@ -3,8 +3,12 @@
 
 Welcome to your [Spellbook](https://youtu.be/o7p0BNt7NHs). Cast a magical incantation to tame the blockchain.
 
-#### Heads up
+📖 Documentation of models can be found [here](https://spellbook-docs.dune.com/#!/overview), with a full example contribution walkthrough [here](https://dune.com/docs/spellbook/getting-started/)
+
+### Heads up
 Working on something new? Open a draft PR to let other wizards know you're working on it to help minimize duplicated work. 
+
+Looking for abstractions from the V1 engine? We moved them to [dune-v1-abstractions](https://github.com/duneanalytics/dune-v1-abstractions).
 
 ## Intro
 
@@ -12,7 +16,7 @@ Write SQL to transform blockchain data into curated datasets on [dune.com](https
 
 First-time visitor? Check out how to [get started](#getting-started) below and visit the [Spellbook Getting Started Guide](https://dune.com/docs/spellbook/getting-started/). More tk.
 
-Been here before? An archive of intermediate datasets that were contributed to Dune v1 can be consulted [here](deprecated-dune-v1-abstractions).
+Been here before? An archive of intermediate datasets that were contributed to Dune v1 can be consulted [here](https://github.com/duneanalytics/dune-v1-abstractions).
 
 ## Getting Started
 

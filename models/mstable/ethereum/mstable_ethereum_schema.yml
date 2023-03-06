@@ -21,6 +21,14 @@ models:
             - tx_hash
             - evt_index
             - trace_address
+      - check_dex_seed:
+          blockchain: ethereum
+          project: mstable
+          version: feederpool
+      - check_dex_seed:
+          blockchain: ethereum
+          project: mstable
+          version: masset
     columns:
       - &blockchain
         name: blockchain
@@ -64,15 +72,9 @@ models:
       - &token_bought_address
         name: token_bought_address
         description: "Contract address of the token bought"
-        tests:
-          - dex_trades_token_bought:
-              dex_trades_seed: ref('dex_trades_seed')        
       - &token_sold_address
         name: token_sold_address
         description: "Contract address of the token sold"
-        tests:
-          - dex_trades_token_bought:
-              dex_trades_seed: ref('dex_trades_seed')        
       - &taker
         name: taker
         description: "Address of trader who purchased a token"

@@ -85,8 +85,8 @@ FROM
                 CAST(NULL AS DOUBLE) as royalty_fee_amount,
                 CAST(NULL AS DOUBLE) as royalty_fee_amount_usd,
                 CAST(NULL AS DOUBLE) as royalty_fee_percentage,
-                CAST(NULL AS DOUBLE) as royalty_fee_receive_address,
-                CAST(NULL AS DOUBLE) as royalty_fee_currency_symbol,
+                CAST(NULL AS VARCHAR(5)) as royalty_fee_receive_address,
+                CAST(NULL AS VARCHAR(5)) as royalty_fee_currency_symbol,
                 unique_trade_id
         FROM {{ ref('opensea_solana_events') }}
 )

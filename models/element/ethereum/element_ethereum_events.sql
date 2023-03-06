@@ -30,13 +30,13 @@ WITH element_txs AS (
         , ee.contract_address AS project_contract_address
         , ee.evt_tx_hash AS tx_hash
         , ee.evt_block_number AS block_number
-        FROM {{ source('element_ex_ethereum','ERC721OrdersFeature_evt_ERC721SellOrderFilled') }} ee
+        FROM {{ source('element_ex_ethereum','OrdersFeature_evt_ERC721SellOrderFilled') }} ee
         {% if is_incremental() %}
         WHERE ee.evt_block_time >= date_trunc("day", now() - interval '1 week')
         {% endif %}
-        
+
         UNION ALL
-        
+
         -- Ethereum ERC721 Buys
         SELECT 'ethereum' AS blockchain
         , 'element' AS project
@@ -57,13 +57,13 @@ WITH element_txs AS (
         , ee.contract_address AS project_contract_address
         , ee.evt_tx_hash AS tx_hash
         , ee.evt_block_number AS block_number
-        FROM {{ source('element_ex_ethereum','ERC721OrdersFeature_evt_ERC721BuyOrderFilled') }} ee
+        FROM {{ source('element_ex_ethereum','OrdersFeature_evt_ERC721BuyOrderFilled') }} ee
         {% if is_incremental() %}
         WHERE ee.evt_block_time >= date_trunc("day", now() - interval '1 week')
         {% endif %}
-        
+
         UNION ALL
-        
+
         -- Ethereum ERC1155 Sells
         SELECT 'ethereum' AS blockchain
         , 'element' AS project
@@ -84,13 +84,13 @@ WITH element_txs AS (
         , ee.contract_address AS project_contract_address
         , ee.evt_tx_hash AS tx_hash
         , ee.evt_block_number AS block_number
-        FROM {{ source('element_ex_ethereum','ERC1155OrdersFeature_evt_ERC1155SellOrderFilled') }} ee
+        FROM {{ source('element_ex_ethereum','OrdersFeature_evt_ERC1155SellOrderFilled') }} ee
         {% if is_incremental() %}
         WHERE ee.evt_block_time >= date_trunc("day", now() - interval '1 week')
         {% endif %}
-        
+
         UNION ALL
-        
+
         -- Ethereum ERC1155 Buys
         SELECT 'ethereum' AS blockchain
         , 'element' AS project
@@ -111,12 +111,12 @@ WITH element_txs AS (
         , ee.contract_address AS project_contract_address
         , ee.evt_tx_hash AS tx_hash
         , ee.evt_block_number AS block_number
-        FROM {{ source('element_ex_ethereum','ERC1155OrdersFeature_evt_ERC1155BuyOrderFilled') }} ee
+        FROM {{ source('element_ex_ethereum','OrdersFeature_evt_ERC1155BuyOrderFilled') }} ee
         {% if is_incremental() %}
         WHERE ee.evt_block_time >= date_trunc("day", now() - interval '1 week')
         {% endif %}
         )
-    
+
 SELECT alet.blockchain
 , alet.project
 , alet.version
@@ -145,15 +145,15 @@ SELECT alet.blockchain
 , et.from AS tx_from
 , et.to AS tx_to
 , CAST(0 AS DOUBLE) AS platform_fee_amount_raw
-, 0 AS platform_fee_amount
-, 0 AS platform_fee_amount_usd
+, CAST(0 AS DOUBLE) AS platform_fee_amount
+, CAST(0 AS DOUBLE) AS platform_fee_amount_usd
 , CAST(0 AS DOUBLE) AS platform_fee_percentage
 , CAST(0 AS DOUBLE) AS royalty_fee_amount_raw
-, 0 AS royalty_fee_amount
-, 0 AS royalty_fee_amount_usd
+, CAST(0 AS DOUBLE) AS royalty_fee_amount
+, CAST(0 AS DOUBLE) AS royalty_fee_amount_usd
 , CAST(0 AS DOUBLE) AS royalty_fee_percentage
-, 0 AS royalty_fee_receive_address
-, 0 AS royalty_fee_currency_symbol
+, CAST('0' AS VARCHAR(5)) AS royalty_fee_receive_address
+, CAST('0' AS VARCHAR(5)) AS royalty_fee_currency_symbol
 , alet.blockchain || alet.project || alet.version || alet.tx_hash || alet.seller  || alet.buyer || alet.nft_contract_address || alet.token_id AS unique_trade_id
 FROM element_txs alet
 LEFT JOIN {{ ref('nft_aggregators') }} agg ON alet.buyer=agg.contract_address AND agg.blockchain='ethereum'
