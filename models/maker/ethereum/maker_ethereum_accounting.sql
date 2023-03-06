@@ -1357,7 +1357,7 @@ WITH dao_wallet AS (
             , 'DAI' AS token
             , 'HVB Yield' AS descriptor
             , ilk
-        FROM psm_yield
+        FROM hvb_yield
 
 
         UNION ALL
