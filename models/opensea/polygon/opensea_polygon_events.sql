@@ -61,7 +61,7 @@ fees as (
         AND e.evt_block_time >= '{{nft_start_date}}'
         {% endif %}
         {% if is_incremental() %}
-        AND e.evnt_block_time >= date_trunc("day", now() - interval '1 week')
+        AND e.evt_block_time >= date_trunc("day", now() - interval '1 week')
         {% endif %}
     WHERE e.`to` = '0x8de9c5a032463c561423387a9648c5c7bcc5bc90' -- OpenSea: Fees Address
 )
