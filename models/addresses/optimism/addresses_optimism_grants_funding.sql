@@ -6,7 +6,8 @@
 
 SELECT
 	category, lower(address) AS address
-	, proposal_name, funding_source
+	, cast(proposal_name as varchar(100)) AS proposal_name
+	, cast(funding_source as varchar(100)) AS funding_source
 
 FROM (VALUES
 
@@ -42,7 +43,7 @@ FROM (VALUES
 ,('Project',	'0x2a185c8a3c63d7bfe63ad5d950244ffe9d0a4b60',	'Beethoven X',	'Season 1')
 ,('Project',	'0xc146a672c85b408a9a7bc00f74ad567b7684134c',	'WardenSwap',	'Season 1')
 ,('Project',	'0x7a79e2e867d36a91bb47e0929787305c95e793c5',	'Pickle Finance',	'Season 1')
--- ,('Project',	'tbd',	'Paraswap',	'Season 1')
+,('Project',	'0x0740374d74Ee4424398f3A16fcC5b301FCf47F92',	'Paraswap',	'Season 1')
 ,('Project',	'0x9531c059098e3d194ff87febb587ab07b30b1306',	'Rotki',	'Season 1')
 ,('Project',	'0xa60b3402051ec75b17abb81b4c92bf88d5e49aa8',	'Candide Wallet',	'Season 1')
 ,('Project',	'0x719cf569ffc5c09625b2b5c68a1078f73c6a1a6f',	'Superfluid',	'Season 1')
@@ -86,12 +87,36 @@ FROM (VALUES
 ,('Project',	'0x41693B7c0E41CBEa0d4F68Dc73898CB79e390f29',	'Mochi',	'Season 2')
 ,('Project',	'0xb074ec6c37659525EEf2Fb44478077901F878012',	'Velodrome',	'Season 2') --dupe
 
+,('Project',	'0xd873d124d79ca220ebed2b93eb1205c61d228864',	'Atomic Links','Season 3')
+,('Project',	'0x5eff4b8c042aa6003cbda6e32c4aa23657d3b6af',	'Attestation Station Interface','Season 3')
+,('Project',	'0xef43993d36145a74ed34bc17656789a28a7c60c7',	'Clique','Season 3')
+,('Project',	'0x92978b0d605c5ec59f9dbd9f11b689604f64ca3a',	'DeFunds','Season 3')
+,('Project',	'0xf473edfaaef8cb2e5cdd246b7d5b285e4f56f721',	'Edge Wallet','Season 3')
+,('Project',	'0x1d7b8d3c6c896d7eb4f9118ea377c359073d4083',	'ENS Wildcard Domains','Season 3')
+,('Project',	'0xb476ee7d610dae7b23b671ebc7bd6112e9772969',	'Front running protection','Season 3')
+,('Project',	'0x627f84bb4bba3333f253f09fe22a445f195bcf34',	'Karma delegate registry','Season 3')
+,('Project',	'0x1a44ae850933cc7b3bb464da6d500df1745df0ba',	'Metronomo','Season 3')
+,('Project',	'0x9531c059098e3d194ff87febb587ab07b30b1306',	'Rotki','Season 3')
+,('Project',	'0x61ee892250c03c1d7bc673e661be87116caba2ac',	'Crypto LDFM','Season 3')
+,('Project',	'0x5891be896ed4a79ed928c55b17fbbecdb46f8a00',	'KyberSwap','Season 3')
+,('Project',	'0x7c8126ef43c09c22bf0ccdf7426180e6c48068a5',	'Mux','Season 3')
+,('Project',	'0x07963001638c2e8283ef7f3dabf4242eaf5d4f79',	'Nested','Season 3')
+,('Project',	'0x66a44dab44d21e2631e61b21759a30b73e94ae69',	'OPWeave','Season 3')
+,('Project',	'0xf95ced2c9a8defd9378208ad84019866a3787233',	'Parcel','Season 3')
+,('Project',	'0xfc5538e1e9814ed6487b407fad7b5710739a1cc2',	'Premia','Season 3')
+,('Project',	'0x3204ac6f848e05557c6c7876e09059882e07962f',	'Rubicon','Season 3')
+,('Project',	'0x784b82a27029c9e114b521abcc39d02b3d1deaf2',	'Sonne Finance','Season 3')
+,('Project',	'0x489863b61c625a15c74fb4c21486bacb4a3937ab',	'Thales','Season 3')
+,('Project',	'0x6b492bbbe311f3c1e15e3d4ccc00cc2a412089ff',	'The Optimistic Series','Season 3')
+,('Project',	'0x1a27cdf069f2e8cc5b77b72bea43851086af5d83',	'Via Protocol','Season 3')
+
 -- Announced Partner Fund
 ,('Project',	'0xfb0dadb835fade151abf6780beafb12fc5ba0e1f',	'PoolTogether',	'Partner Fund')
 ,('Project',	'0x30688fcd63d0f2d067a7fe264b3367c348e9b031',	'Velodrome',	'Partner Fund')
 ,('Project',	'0x13838884271ec954cb036d0b29d404afab5eae2a',	'CryptoTesters',	'Partner Fund')
 ,('Project',	'0xeb952357394b6668684a4890bd49d8a4c3e19ec0',	'Okex',	'Partner Fund')
 ,('Project',	'0xb1ea5a3e5ea7fa1834d48058ecda26d8c59e8251',	'Quix',	'Partner Fund')
+,('Project',	'0xf42279467D821bCDf40b50E9A5d2cACCc4Cf5b30',	'Coinbase Quest','Partner Fund')
 
 
 
