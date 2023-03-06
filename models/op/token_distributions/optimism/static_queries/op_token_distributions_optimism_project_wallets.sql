@@ -97,8 +97,8 @@ FROM (values
     ,('0x10e7449c75dbbe2d18e9f4cceec7ab6c7d1f8a30','Thales','distributor')
     ,('0x5027cE356C375A934B4d1DE9240bA789072A5Af1','Thales','distributor')
     ,('0x4dea9e918c6289a52cd469cac652727b7b412cd2','Stargate Finance','LP Staking Time')
-    ,('0xc5ae4b5f86332e70f3205a8151ee9ed9f71e0797','Synthetix','Crv Gague')
-    ,('0xcb8883d1d8c560003489df43b30612aabb8013bb','Synthetix','Crv Gague')
+    ,('0xc5ae4b5f86332e70f3205a8151ee9ed9f71e0797','Synthetix','sUSD-3Crv: Curve')
+    ,('0xcb8883d1d8c560003489df43b30612aabb8013bb','Synthetix','sETH-ETH: Curve')
     ,('0xF510a2Ff7e9DD7e18629137adA4eb56B9c13E885','Kwenta','distributor') --airdropper
     ,('0x4a8ff08af7f229b0d032ac182e2abb47ad3094e5','Kwenta','distributor') --airdropper
     ,('0x2c8d267abd311e411793ffc3aca2d5206af59a08','QiDao','velo bribe')
@@ -121,11 +121,14 @@ FROM (values
     ,('0x1db11cf7c332e797ac912e11b8762e0a4b24a836','Hundred Finance','pool')
     ,('0x73280c390da5c6fe05ad2d1e6837e8e8c05e4b32','Hundred Finance','pool')
     ,('0x198618d2aa6cbc89ea24550fe896d4afa28cd635','Hundred Finance','pool')
-    ,('0xe4e919a0289c66cb7d971268671fb529d88aad46','Beefy Finance','bribe')
+    ,('0xe4e919a0289c66cb7d971268671fb529d88aad46','Beefy Finance','BIFI/WETH: Velodrome')
+    ,('0xf276b01b74b410f85c10aaa0e7091164fec7d93d','Beefy Finance','BIFI/OP: Velodrome')
+    ,('0xa3795274e173866b64afd1123fce62813076af82','Beefy Finance','BIFI/OP: Velodrome')
+    ,('0x340e8ce762327392d430bbda16318ed734d58ef0','Layer2dao','L2DAO/OP: Velodrome')
     ,('0xebe1e96e67a516c2f8549edbd48e6fdc7b50c9ae','Thales','distributor')
-    ,('0x4022e57784b2fF8DceE839c16161F283223aE87B','Synthetix','velo bribe')
-    ,('0xBee1E4C4276687A8350C2E44eCBe79d676637f86','Synthetix','velo bribe')
-    ,('0x68a1d9a49b82c5A0a3431aAE6178F89Ad5214730','Synthetix','velo bribe')
+    ,('0x4022e57784b2fF8DceE839c16161F283223aE87B','Synthetix','USDC/SNX: Velodrome')
+    ,('0xBee1E4C4276687A8350C2E44eCBe79d676637f86','Synthetix','USDC/sUSD: Velodrome')
+    ,('0x68a1d9a49b82c5A0a3431aAE6178F89Ad5214730','Synthetix','ETH/sETH: Velodrome')
     ,('0x1A3E5557039763425B00a2e1B0eB767B01d64756','Beefy Finance','Beefy Launchpool')
     ,('0x65F8a09A1C3581a02C8788a6959652E32a87FC77','Beefy Finance','Beefy Launchpool')
     ,('0xda62d109064138c14d45085b6e49568e1c0b4e23','xToken Terminal / Gamma Strategies','Rewards Program')
@@ -135,18 +138,18 @@ FROM (values
     ,('0xAde63D643564AaA8C2A86F2244f43B5eB00ed5e6','Clipper','Distributor')
     ,('0x9024d0C5d4709b98856CDaE02B955890A69f8007','Kwenta','distributor')
     
-    ,('0x3ee85ac7c0e1799af6f4e582de485fcdfb12855a', 'Rocket Pool', 'Beets Pool') --5k per week
-    ,('0xdd5bfe292e377308abb58a211a572bd9732b62b7', 'Rocket Pool', 'Velo Pool') --2.1k per week
-    ,('0x4bae082f810fa888364600efda0bf9f5c6e5e315', 'Rocket Pool', 'Velo Pool') --4.3k per week
-    ,('0xE01A297289f0aE9e745DdDC61F139537ab733710', 'Overnight', 'Velo Pool') 
-    ,('0x8801b45390095f7632C02392C4489985e0607E82', 'Overnight', 'Beets Pool')
-    ,('0xB66D278b843dBE76ee73Da61182fF97100f97920', 'Overnight', 'Velo Pool')
+    ,('0x3ee85ac7c0e1799af6f4e582de485fcdfb12855a', 'Rocket Pool', 'WETH/rETH: Beethoven X') --5k per week
+    ,('0xdd5bfe292e377308abb58a211a572bd9732b62b7', 'Rocket Pool', 'sWETH/rETH: Velodrome') --2.1k per week
+    ,('0x4bae082f810fa888364600efda0bf9f5c6e5e315', 'Rocket Pool', 'vWETH/rETH: Velodrome')
+    ,('0xE01A297289f0aE9e745DdDC61F139537ab733710', 'Overnight', 'USD+/USDC: Velodrome') 
+    ,('0x8801b45390095f7632C02392C4489985e0607E82', 'Overnight', 'BPT-USD+: Beethoven X')
+    ,('0xB66D278b843dBE76ee73Da61182fF97100f97920', 'Overnight', 'USD+/DOLA: Velodrome')
+    ,('0x41a7540ec8cb3afafe16a834abe0863f22016ec0', 'Overnight', 'USD+/LUSD: Velodrome')
     ,('0x97a7E9726df22D6f28BB86679a0e5512A8c0E8A2', 'dHedge', 'Distributor')
-    ,('0xC792980F2F3016F60bEd35926d21A43E140b99cC', 'dHedge', 'Velo Pool')
-    ,('0x827ecD158b76f63010e8F129b19fE64A85E97e95', 'dHedge', 'Velo Pool')
+    ,('0xC792980F2F3016F60bEd35926d21A43E140b99cC', 'dHedge', 'DHT/OP: Velodrome')
     ,('0xfCC293db3b7396a1c2477C9F24F5F948431EF6eC', 'Pika Protocol', 'distributor')
-    ,('0x8b50d942bb4effe0db32393a141ea083db0c4e7f', 'Alchemix', 'Velo Pool')
-    ,('0x4ea2e39626de031a011c3ca7360878202454ce75', 'Angle', 'Velo Pool')
+    ,('0x8b50d942bb4effe0db32393a141ea083db0c4e7f', 'Alchemix', 'alETH/WETH: Velodrome')
+    ,('0x4ea2e39626de031a011c3ca7360878202454ce75', 'Angle', 'OP/agEUR: Velodrome')
     ,('0x6333000289bc27a090b3d51e734c2f13e3edc4fd', 'Hundred Finance', 'Token Treasury')
     
     --quix - should come from CB?
