@@ -22,7 +22,6 @@ FROM (
     SELECT 
     _lp_token As pool, _gauge AS gauge,
     evt_block_time, evt_block_number, contract_address, evt_tx_hash, evt_index
-    FROM curvefi_optimism.Vyper_contract_evt_DeployedGauge
     FROM {{ source ('curvefi_optimism', 'Vyper_contract_evt_DeployedGauge') }}
     {% if is_incremental() %}
     WHERE evt_block_time >= NOW() - interval '1 week'
