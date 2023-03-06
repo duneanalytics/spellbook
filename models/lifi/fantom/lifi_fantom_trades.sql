@@ -34,7 +34,7 @@ FROM (
         tx_hash,
         tx_from,
         tx_to,
-        trace_address,
+        trace_address, --ensure field is explicitly cast as array<bigint> in base models
         evt_index
     FROM {{ dex_model }}
     {% if not loop.last %}

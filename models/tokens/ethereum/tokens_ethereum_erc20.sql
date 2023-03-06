@@ -20875,5 +20875,20 @@ FROM (VALUES
         ('0xd8eb58d76af99547333cfeeb6a0f9bd1a63b6492', 'ETH MATIC-f', 18),
         ('0xfb66bc82781cc1e8035e4e21fe3041b463e4902c', 'dot', 9),
         ('0xfc1406b4dca60665ed17fa81862fb9b9466cff35', 'BPEPES', 9),
-        ('0xfec1408fa5ef2a57c4f46edb3c105ff3804ac5d6', 'ALIT', 18)
+        ('0xfec1408fa5ef2a57c4f46edb3c105ff3804ac5d6', 'ALIT', 18),
+        ('0x02ad335dd3ca11c18cebbbb583b9613b6289d75f', 'BPEG', 18),
+        ('0x0f7b3f5a8fed821c5eb60049538a548db2d479ce', 'ATOR', 18),
+        ('0x178e029173417b1f9c8bc16dcec6f697bc323746', 'FUD', 18),
+        ('0x2805390f81a7f19c2c49300a094aa500597b1862', 'DOOR', 9),
+        ('0x50cf90b954958480b8df7958a9e965752f627124', 'bb-euler-USD-BPT', 18),
+        ('0x9333d3983d8af4f233f9b185ea4567bedfaf26ad', 'o1', 18),
+        ('0xae6b919ecc0249f4803784bf7bb73a0e2e531f80', 'BRAINLETS', 18),
+        ('0xb18aa65ac5550a8d121e2f06d6b7788d2719c249', 'oFloki', 18),
+        ('0xb4d930279552397bba2ee473229f89ec245bc365', 'MAHA', 18),
+        ('0xc6745a45f46bf6f73fb687010ecb852224b9a56a', 'BTCinu', 18),
+        ('0xcf9a813556c878c8101f42f2f950a7da8ab7f12d', 'DATBOI', 18),
+        ('0xd9f7d5ccc6650fbf8b3b7c557e58bcc615877f9d', 'CR', 18),
+        ('0xe21ffd04ea35d9317636f9c7c06587a396c9e6dd', 'oSHIB', 18),
+        ('0xfa5a8164be9e8be3c8de24afdd0907eb3570d827', 'SEND', 18),
+        ('0xfac0403a24229d7e2edd994d50f5940624cbeac2', 'THEO', 9)
      ) AS temp_table (contract_address, symbol, decimals)
