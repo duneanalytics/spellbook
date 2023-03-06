@@ -405,7 +405,7 @@ WITH dao_wallet AS (
          , 31170 AS code
          , value --increased equity
          , ilk
-    FROM psm_yield_preunioned
+    FROM hvb_yield_preunioned
 
     UNION ALL
 
@@ -414,7 +414,7 @@ WITH dao_wallet AS (
          , 21120  AS code
          , -value AS value--decreased liability
          , ilk
-    FROM psm_yield_preunioned
+    FROM hvb_yield_preunioned
 )
 , liquidation_revenues AS (
     SELECT call_block_time           ts
