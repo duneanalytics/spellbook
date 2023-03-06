@@ -57,21 +57,23 @@ settings AS (
     next_block_number
     FROM state_with_gaps s
     LEFT JOIN {{ ref('tokens_ethereum_erc20') }} t ON s.token = t.contract_address
+    AND blockchain = "ethereum"
     WHERE next_block_number = 99999999
     AND denorm > 0
 ),
 
 final AS (
     SELECT 
-      array('ethereum') AS blockchain,
+      'ethereum' AS blockchain,
       pool AS address,
       lower(concat(array_join(collect_list(symbol), '/'), ' ', array_join(collect_list(cast(norm_weight AS string)), '/'))) AS name,
       'balancer_v1_pool' AS category,
       'balancerlabs' AS contributor,
       'query' AS source,
       timestamp('2023-02-02') AS created_at,
-      now() AS updated_at
-
+      now() AS updated_at,
+      'balancer_v1_pools_ethereum' AS model_name,
+      'identifier' as label_type
     FROM   (
         SELECT s1.pool, symbol, cast(100*denorm/total_denorm AS integer) AS norm_weight FROM settings s1
         INNER JOIN (SELECT pool, sum(denorm) AS total_denorm FROM settings GROUP BY pool) s2
