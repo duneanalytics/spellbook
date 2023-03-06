@@ -178,11 +178,11 @@ models:
 
   - name: nft_mints
     meta:
-      blockchain: ethereum, solana, polygon
+      blockchain: ethereum, solana
       sector: nft
       contributors: soispoke, hildobby, umer_h_adil
     config:
-      tags: ['nft', 'opensea', 'looksrare', 'x2y2', 'magiceden', 'foundation', 'element', 'zora', 'ethereum', 'bnb', 'avalanche_c', 'solana', 'mints', 'polygon', 'oneplanet']
+      tags: ['nft', 'opensea', 'looksrare', 'x2y2', 'magiceden', 'foundation', 'element', 'zora', 'ethereum', 'bnb', 'avalanche_c', 'solana', 'mints']
     description: >
         NFT mints
     columns:
