@@ -78,7 +78,16 @@ models:
         description: "If the swap's order was initially created and submitted thru Matcha. This is for Matcha related query needs."
       - &volume_usd
         name: volume_usd
-        description: "Trading volume measured in USD value"           
+        description: "Trading volume measured in USD value" 
+      - &tx_from
+        name: tx_from
+        description: "Address which initiated the trade"
+      - &tx_to
+        name: tx_to
+        description: "Address which received the trade"
+      - &blockchain
+        name: blockchain
+        description: "Blockchain which the aggregator project is deployed"
         
   - name: zeroex_avalanche_c_api_fills_deduped
     meta:
@@ -104,9 +113,7 @@ models:
             - maker
             - taker
     columns:
-      - &blockchain
-        name: blockchain
-        description: "Blockchain which the aggregator project is deployed"
+      - *blockchain
       - &project 
         name: project 
         description: "Name of aggregator project"
@@ -132,10 +139,6 @@ models:
       - *maker
       - *affiliate_address
       - *tx_hash
-      - &tx_from
-        name: tx_from
-        description: "Address which initiated the trade"
-      - &tx_to
-        name: tx_to
-        description: "Address which received the trade"
-      - *evt_index        
+      - *tx_from
+      - *tx_to
+      - *evt_index     

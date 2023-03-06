@@ -25,13 +25,13 @@ with
 
  early_investment_trades as (
     select
-        tx_hash
+        *
     from (
-        select tx_hash, block_date, token_bought_address
+        select tx_hash, evt_index, project, version, block_date, token_bought_address
         from {{ ref('dex_aggregator_trades') }}
         where blockchain = 'ethereum'
         UNION ALL
-        select tx_hash, block_date, token_bought_address
+        select tx_hash, evt_index, project, version, block_date, token_bought_address
         from {{ ref('dex_trades') }}
         where blockchain = 'ethereum'
     ) t join project_starts p on t.token_bought_address = p.token_bought_address
@@ -42,7 +42,7 @@ with
 
 select
   "ethereum" as blockchain,
-  tx_hash,
+  concat(tx_hash, evt_index, project, version) as tx_hash_key,
   "Early investment" AS name,
   "tx_hash" AS category,
   "gentrexha" AS contributor,

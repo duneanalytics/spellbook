@@ -93,6 +93,15 @@ models:
       - &volume_usd
         name: volume_usd
         description: "Trading volume measured in USD value"
+      - &tx_from
+        name: tx_from
+        description: "Address which initiated the trade"
+      - &tx_to
+        name: tx_to
+        description: "Address which received the trade"
+      - &blockchain
+        name: blockchain
+        description: "Blockchain which the aggregator project is deployed"
         tests:
           - zeroex_ethereum_fills_test:
               seed_file: ref('zeroex_ethereum_api_fills_sample')
@@ -113,9 +122,7 @@ models:
             - tx_hash
             - evt_index
     columns:
-      - &blockchain
-        name: blockchain
-        description: "Blockchain which the aggregator project is deployed"
+      - *blockchain
       - &project 
         name: project 
         description: "Name of aggregator project"
@@ -141,12 +148,8 @@ models:
         name: project_contract_address
         description: "Project contract address which executed the trade on the blockchain"
       - *tx_hash
-      - &tx_from
-        name: tx_from
-        description: "Address which initiated the trade"
-      - &tx_to
-        name: tx_to
-        description: "Address which received the trade"
+      - *tx_from
+      - *tx_to
       - &trace_address
         name: trace_address
         tests:
