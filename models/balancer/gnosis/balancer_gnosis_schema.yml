@@ -1,31 +1,45 @@
 version: 2
 
 models:
-  - name: dex_aggregator_trades
+  - name: balancer_gnosis_trades
     meta:
-      blockchain: ethereum, gnosis, avalanche_c, fantom
-      sector: dex_aggregator
-      contributors: bh2smith, Henrystats
+      blockchain: gnosis
+      sector: dex
+      contributors: bizzyvinci
     config:
-      tags: ['ethereum', 'gnosis', 'avalanche_c', 'fantom', 'aggregator', 'dex', 'trades', 'cross-chain']
+      tags: ['balancer', 'gnosis', 'amm', 'trades', 'dex']
     description: >
-      Aggregator trades on all chains across all contracts and versions
+      DEX trades on balancer on gnosis
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_date
+            - blockchain
+            - project
+            - version
+            - tx_hash
+            - evt_index
+            - trace_address
+      - check_dex_seed:
+          blockchain: gnosis
+          project: balancer
+          version: 2
     columns:
       - &blockchain
         name: blockchain
-        description: "Blockchain which the aggregator project is deployed"
+        description: "Blockchain"
       - &project
         name: project
-        description: "Name of aggregator project"
+        description: "Project name (balancer)"
       - &version
         name: version
-        description: "Version of the contract built and deployed by the project"
+        description: "Version of the project"
       - &block_date
         name: block_date
-        description: "UTC event block date of the trade"
+        description: "Block date in UTC"
       - &block_time
         name: block_time
-        description: "UTC event block time of the trade"
+        description: 'Block time in UTC'
       - &token_bought_symbol
         name: token_bought_symbol
         description: "Token symbol for token bought in the trade"
@@ -64,19 +78,19 @@ models:
         description: "Address of trader who sold a token"
       - &project_contract_address
         name: project_contract_address
-        description: "Project contract address which executed the trade on the blockchain"
+        description: "Pool address"
       - &tx_hash
         name: tx_hash
-        description: "Transaction hash of the trade's settlement"
+        description: "Transaction hash"
       - &tx_from
         name: tx_from
-        description: "Address which initiated the trade"
+        description: "transaction.from"
       - &tx_to
         name: tx_to
-        description: "Address which received the trade"
+        description: "transaction.to"
       - &trace_address
         name: trace_address
-        description: ""
+        description: "Trace address"
       - &evt_index
         name: evt_index
-        description: "Index of the corresponding trade event"
+        description: "Event index"
