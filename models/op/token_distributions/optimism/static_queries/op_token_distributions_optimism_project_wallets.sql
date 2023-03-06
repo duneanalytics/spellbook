@@ -101,9 +101,9 @@ FROM (values
     ,('0xcb8883d1d8c560003489df43b30612aabb8013bb','Synthetix','sETH-ETH: Curve')
     ,('0xF510a2Ff7e9DD7e18629137adA4eb56B9c13E885','Kwenta','distributor') --airdropper
     ,('0x4a8ff08af7f229b0d032ac182e2abb47ad3094e5','Kwenta','distributor') --airdropper
-    ,('0x2c8d267abd311e411793ffc3aca2d5206af59a08','QiDao','velo bribe')
-    ,('0xd1b1f5b294432aaa399f9eb3069af13a8d327f45','QiDao','velo bribe')
-    ,('0x26d9a248c4ebe777adb37813254e6aa59c1fe301','QiDao','velo bribe')
+    ,('0x2c8d267abd311e411793ffc3aca2d5206af59a08','QiDao','sUSDC/MAI: Velodrome')
+    ,('0xd1b1f5b294432aaa399f9eb3069af13a8d327f45','QiDao','sUSDC/MAI: Velodrome')
+    ,('0x26d9a248c4ebe777adb37813254e6aa59c1fe301','QiDao','vUSDC/MAI: Velodrome')
     ,('0xecc205dfa8300ced05955c9aea930f1a7ab8daeb','Beethoven X','pool')
     ,('0xc529fa26588932e15eac04c971ad9350bc8dea32','Beethoven X','pool')
     ,('0xb99b0b41cc107aea462119253ed3f241e9487abc','Beethoven X','pool')
