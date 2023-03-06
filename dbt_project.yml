@@ -523,6 +523,8 @@ models:
         +schema: curvefi_optimism
       avalanche_c:
         +schema: curvefi_avalanche_c
+      fantom:
+        +schema: curvefi_fantom
 
     cow_protocol:
       +schema: cow_protocol
