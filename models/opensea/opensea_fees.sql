@@ -3,7 +3,7 @@
         post_hook='{{ expose_spells(\'["ethereum","solana","polygon"]\',
                                             "project",
                                             "opensea",
-                                            \'["soispoke","springzh"]\') }}'
+                                            \'["soispoke"]\') }}'
         )
 }}
 
@@ -52,7 +52,7 @@ collection,
 platform_fee_amount_raw,
 platform_fee_amount,
 platform_fee_amount_usd,
-CAST(platform_fee_percentage AS DOUBLE) AS platform_fee_percentage,
+platform_fee_percentage,
 royalty_fee_amount_raw,
 royalty_fee_amount,
 royalty_fee_amount_usd,

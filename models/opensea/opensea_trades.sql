@@ -3,7 +3,7 @@
         post_hook='{{ expose_spells(\'["ethereum","solana","polygon"]\',
                                             "project",
                                             "opensea",
-                                            \'["soispoke","springzh"]\') }}'
+                                            \'["soispoke"]\') }}'
         )
 }}
 
@@ -78,13 +78,13 @@ collection,
 amount_usd,
 token_standard,
 trade_type,
-CAST(number_of_items AS DECIMAL(38,0)) AS number_of_items,
+number_of_items,
 trade_category,
 evt_type,
 seller,
 buyer,
 amount_original,
-CAST(amount_raw AS DECIMAL(38,0)) AS amount_raw,
+amount_raw,
 currency_symbol,
 currency_contract,
 nft_contract_address,

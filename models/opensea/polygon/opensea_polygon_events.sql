@@ -20,36 +20,6 @@ WITH contract_list AS (
    FROM  {{ source('opensea_polygon_v2_polygon','ZeroExFeeWrapper_call_matchOrders') }}
 ),
 
-mints AS (
-    SELECT 'mint' AS trade_category,
-        t.block_time,
-        t.block_number,
-        t.tx_hash,
-        CAST(NULL AS string) AS contract_address,
-        t.evt_index,
-        'Mint' AS evt_type,
-        t.`to` AS buyer,
-        CAST(NULL AS string) AS seller,
-        t.contract_address AS nft_contract_address,
-        t.token_id,
-        t.amount AS number_of_items,
-        t.token_standard,
-        '0x0d500b1d8e8ef31e21c99d1db9a6444d3adf1270' AS currency_contract,
-        CAST(0 AS DECIMAL(38,0)) AS amount_raw,
-        CAST(0 AS double) AS platform_fee,
-        CAST(NULL AS string) AS fee_recipient,
-        CAST(0 AS double) AS royalty_fee
-    FROM {{ ref('nft_polygon_transfers') }} t
-    INNER JOIN contract_list c ON t.contract_address = c.nft_contract_address
-        AND t.`from` = '0x0000000000000000000000000000000000000000'   -- mint
-        {% if not is_incremental() %}
-        AND t.block_time >= '{{nft_start_date}}'
-        {% endif %}
-        {% if is_incremental() %}
-        AND t.block_time >= date_trunc("day", now() - interval '1 week')
-        {% endif %}
-),
-
 trades AS (
    select 
       'buy' AS trade_category,
@@ -85,12 +55,6 @@ trades AS (
     {% endif %}
 ),
 
-all_events AS (
-    SELECT * FROM mints
-    UNION ALL
-    SELECT * FROM trades
-)
-
 SELECT
   'polygon' AS blockchain,
   'opensea' AS project,
@@ -99,18 +63,18 @@ SELECT
   date_trunc('day', a.block_time) AS block_date,
   a.block_time,
   a.block_number,
-  a.amount_raw / power(10,erc20.decimals) * p.price AS amount_usd,
-  a.amount_raw / power(10,erc20.decimals) AS amount_original,
-  a.amount_raw,
+  CAST(a.amount_raw / power(10,erc20.decimals) * p.price AS double) AS amount_usd,
+  CAST(a.amount_raw / power(10,erc20.decimals) AS double) AS amount_original,
+  CAST(a.amount_raw AS decimal(38,0)) AS amount_raw,
   erc20.symbol AS currency_symbol,
   a.currency_contract,
   a.token_id,
   a.token_standard,
-  coalesce(a.contract_address, t.`to`) AS project_contract_address,
+  a.contract_address AS project_contract_address,
   a.evt_type,
   CAST(NULL AS string) AS collection,
   CASE WHEN a.number_of_items = 1 THEN 'Single Item Trade' ELSE 'Bundle Trade' END AS trade_type,
-  coalesce(a.number_of_items, 1) as number_of_items,
+  CAST(coalesce(a.number_of_items, 1) AS decimal(38,0)) AS number_of_items,
   a.trade_category,
   a.buyer,
   a.seller,
@@ -119,18 +83,18 @@ SELECT
   agg.contract_address AS aggregator_address,
   t.`from` AS tx_from,
   t.`to` AS tx_to,
-  platform_fee * a.amount_raw / 100 AS platform_fee_amount_raw,
-  platform_fee * a.amount_raw / power(10,erc20.decimals) / 100 AS platform_fee_amount,
-  platform_fee * a.amount_raw / power(10,erc20.decimals) * p.price / 100 AS platform_fee_amount_usd,
+  CAST(platform_fee * a.amount_raw / 100 AS double) AS platform_fee_amount_raw,
+  CAST(platform_fee * a.amount_raw / power(10,erc20.decimals) / 100 AS double) AS platform_fee_amount,
+  CAST(platform_fee * a.amount_raw / power(10,erc20.decimals) * p.price / 100 AS double) AS platform_fee_amount_usd,
   CAST(platform_fee AS double) AS platform_fee_percentage,
-  royalty_fee * a.amount_raw AS royalty_fee_amount_raw,
-  royalty_fee * a.amount_raw / power(10,erc20.decimals) / 100 AS royalty_fee_amount,
-  royalty_fee * a.amount_raw / power(10,erc20.decimals) * p.price / 100 AS royalty_fee_amount_usd,
+  CAST(royalty_fee * a.amount_raw AS double) AS royalty_fee_amount_raw,
+  CAST(royalty_fee * a.amount_raw / power(10,erc20.decimals) / 100 AS double) AS royalty_fee_amount,
+  CAST(royalty_fee * a.amount_raw / power(10,erc20.decimals) * p.price / 100 AS double) AS royalty_fee_amount_usd,
   CAST(royalty_fee AS double) AS royalty_fee_percentage,
   a.fee_recipient AS royalty_fee_receive_address,
   erc20.symbol AS royalty_fee_currency_symbol,
   a.tx_hash || '-' || a.evt_type  || '-' || a.evt_index || '-' || a.token_id || '-' || cast(coalesce(a.number_of_items, 1) as string)  AS unique_trade_id
-FROM all_events a
+FROM trades a
 INNER JOIN {{ source('polygon','transactions') }} t ON a.block_number = t.block_number AND a.tx_hash = t.hash
     {% if not is_incremental() %}
     AND t.block_time >= '{{nft_start_date}}'
