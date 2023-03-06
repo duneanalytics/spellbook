@@ -212,10 +212,10 @@ FROM distributions d
 -- read in other tags
 LEFT JOIN other_tags dto
     ON dto.address = d.to_address
-    AND d.to_name IS NULL -- don't overwrite existing
+    AND d.to_name = 'Other' -- don't overwrite existing
 LEFT JOIN other_tags dtxto
     ON dtxto.address = d.tx_to_address
-    AND d.to_name IS NULL -- don't overwrite existing
+    AND d.to_name = 'Other' -- don't overwrite existing
 LEFT JOIN other_tags dfrom
     ON dfrom.address = d.from_address
-    AND d.from_name IS NULL -- don't overwrite existing
+    AND d.from_name = 'Other' -- don't overwrite existing
