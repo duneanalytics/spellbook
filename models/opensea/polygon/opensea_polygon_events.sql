@@ -48,6 +48,22 @@ WITH trades AS (
     {% if is_incremental() %}
     AND a.call_block_time >= date_trunc("day", now() - interval '1 week')
     {% endif %}
+),
+
+fees as (
+    SELECT e.evt_block_number,
+        e.evt_tx_hash,
+        CAST(e.value as decimal(38,0)) AS platform_fee_amount_raw
+    FROM {{ source('erc20_polygon', 'evt_transfer') }} e
+    INNER JOIN trades t ON e.evt_block_number = t.block_number
+        AND e.evt_tx_hash = t.tx_hash
+        {% if not is_incremental() %}
+        AND e.evt_block_time >= '{{nft_start_date}}'
+        {% endif %}
+        {% if is_incremental() %}
+        AND e.evnt_block_time >= date_trunc("day", now() - interval '1 week')
+        {% endif %}
+    WHERE e.`to` = '0x8de9c5a032463c561423387a9648c5c7bcc5bc90' -- OpenSea: Fees Address
 )
 
 SELECT
@@ -78,10 +94,10 @@ SELECT
   agg.contract_address AS aggregator_address,
   t.`from` AS tx_from,
   t.`to` AS tx_to,
-  CAST(platform_fee * a.amount_raw / 100 AS double) AS platform_fee_amount_raw,
-  CAST(platform_fee * a.amount_raw / power(10,erc20.decimals) / 100 AS double) AS platform_fee_amount,
-  CAST(platform_fee * a.amount_raw / power(10,erc20.decimals) * p.price / 100 AS double) AS platform_fee_amount_usd,
-  CAST(platform_fee AS double) AS platform_fee_percentage,
+  CAST(f.platform_fee_amount_raw AS double) AS platform_fee_amount_raw,
+  CAST(f.platform_fee_amount_raw / power(10,erc20.decimals) AS double) AS platform_fee_amount,
+  CAST(f.platform_fee_amount_raw / power(10,erc20.decimals) * p.price AS double) AS platform_fee_amount_usd,
+  CAST(f.platform_fee_amount_raw / a.amount_raw * 100 AS double) AS platform_fee_percentage,
   CAST(royalty_fee * a.amount_raw AS double) AS royalty_fee_amount_raw,
   CAST(royalty_fee * a.amount_raw / power(10,erc20.decimals) / 100 AS double) AS royalty_fee_amount,
   CAST(royalty_fee * a.amount_raw / power(10,erc20.decimals) * p.price / 100 AS double) AS royalty_fee_amount_usd,
@@ -97,6 +113,7 @@ INNER JOIN {{ source('polygon','transactions') }} t ON a.block_number = t.block_
     {% if is_incremental() %}
     AND t.block_time >= date_trunc("day", now() - interval '1 week')
     {% endif %}
+LEFT JOIN fees f ON a.block_number = f.evt_block_number AND a.tx_hash = f.evt_tx_hash
 LEFT JOIN {{ source('prices', 'usd') }} p ON p.minute = date_trunc('minute', a.block_time)
     AND p.contract_address = a.currency_contract
     AND p.blockchain ='polygon'
