@@ -15,12 +15,7 @@
 
 {% set nft_start_date='2021-06-28' %}
 
-WITH contract_list AS (
-   SELECT DISTINCT '0x' || right(substring(rightOrder:makerAssetData, 11, 64), 40) AS nft_contract_address
-   FROM  {{ source('opensea_polygon_v2_polygon','ZeroExFeeWrapper_call_matchOrders') }}
-),
-
-trades AS (
+WITH trades AS (
    select 
       'buy' AS trade_category,
       call_block_time AS block_time,
@@ -53,7 +48,7 @@ trades AS (
     {% if is_incremental() %}
     AND a.call_block_time >= date_trunc("day", now() - interval '1 week')
     {% endif %}
-),
+)
 
 SELECT
   'polygon' AS blockchain,
