@@ -34,4 +34,3 @@ SELECT
       unique_trade_id
 FROM {{ ref('aavegotchi_polygon_events') }}
 WHERE evt_type = 'Trade'
-;
