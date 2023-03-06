@@ -26,7 +26,6 @@
 ,ref('nftb_bnb_fees')
 ,ref('tofu_fees')
 ,ref('nftearth_optimism_fees')
-,ref('nftx_ethereum_fees')
 ] %}
 
 
