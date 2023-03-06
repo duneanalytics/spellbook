@@ -179,14 +179,16 @@ SELECT *,
 )
 
 SELECT distinct
-DATE_TRUNC('day',evt_block_time) AS block_date
+    DATE_TRUNC('day',evt_block_time) AS block_date
     , evt_block_time, evt_block_number, evt_index
+    --
     , from_address, to_address
     , tx_to_address, tx_from_address, evt_tx_hash
+    --
     , from_type, to_type
-    , d.from_label, COALESCE(dfrom.address_name,d.from_name) AS from_name
-    , d.to_label, COALESCE(dto.address_name,dtxto.address_name,d.to_name) AS to_name
-
+    , d.from_label, COALESCE(dfrom.address_name, d.from_name) AS from_name
+    , d.to_label, COALESCE(dto.address_name, dtxto.address_name, d.to_name) AS to_namez
+    --
     , op_amount_decimal, tx_method
     --
     , cast(op_claimed as double) AS op_claimed
@@ -194,7 +196,7 @@ DATE_TRUNC('day',evt_block_time) AS block_date
     , cast(op_to_project as double) as op_to_project
     , cast(op_between_projects as double) as op_between_projects
     , cast(op_incoming_clawback as double) as op_incoming_clawback
-    
+    --
     , d.to_name AS og_to_name
     , d.from_name AS og_from_name
     

@@ -67,8 +67,10 @@ models:
         name: op_sold
       - &og_to_name
         name: og_to_name
+        description: "Orignal name for the to address (without additional mapping)"
       - &og_from_name
         name: og_from_name
+        description: "Orignal name for the from address (without additional mapping)"
   
   - name: op_token_distributions_optimism_other_distributions_claims
     meta:
