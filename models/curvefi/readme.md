@@ -1,0 +1,23 @@
+# Curvefi Spellbook Models 
+
+Welcome to Curve! Here's a short getting started guide for navigating the protocol, and the model files. 
+
+The protocol docs can be found [here](https://resources.curve.fi/). Each pool has a pool, token, and sometimes gauge contracts. The pool and token are combined into one contract for v1 pools, but have become two separate contracts (on deployment) for v2.
+
+We haven't included fees in these models yet, but the fees are dynamic and you can read about them at the [end of the whitepaper](https://classic.curve.fi/files/crypto-pools-paper.pdf) or in [this overview article](https://nagaking.substack.com/p/deep-dive-curve-v2-parameters).
+
+The main events are `TokenExchange` and `TokenExchangeUnderlying`, which swap through an array of coin addresses (you can input different indexes starting from 0 in this [read contract link](https://etherscan.io/address/0xbebc44782c7db0a1a60cb6fe97d0b483032ff1c7#readContract) to get a sense of this). So the events have a `bought_id` and `sold_id` that corresponds to this coins index (you'll see for factory trades we usually just get the coin address at the index for the `coins` column).
+
+LP positions can be staked in gauges to earn CRV yield (which is then used to [vote on the weight](https://dao.curve.fi/gaugeweight) of rewards across pools). Protocols like [Convex](https://www.convexfinance.com/stake) build on top of this reward system.
+
+There are a few pool types you need to know: 
+1. Base Pools (v1): these are deployed one by one, and not from a factory. These are defined in the `curvefi_ethereum_pool_details.sql` model. Here's the most popular base pool, [3pool](https://curve.fi/#/ethereum/pools/3pool/deposit), you can see the tokens (coins) involved and other high level stats. You can check if we're missing any base pools [with this query](https://dune.com/queries/1927331). If we're missing one, just add it to the pool details model and then the trades will automatically populate through.
+    - Some `Regular` pools have both `TokenExchange` and `TokenExchangeUnderlying`. There are some special pools here like [usdt](https://etherscan.io/address/0x52ea46506b9cc5ef470c5bf89f17dc28bb35d85c#readContract) where tokens are held in compound. So you can `TokenExchange` for [just the cTokens](https://etherscan.io/tx/0x79b2880bb2e684a64a5bdfd76dd06edd76675ba161d0ad42f919806e87e8cdac), or you can `TokenExchangeUnderlying` for [the actual reserves of dai, usdc, usdt](https://etherscan.io/tx/0x219ff387329417ebd082a51d15d193adcd343e7a07d436cd0aa2697b25e2e32d). Note that if you sell an underlying token for the base coin token, the amount shown is the pool token amount. So [here someone is selling USDC to BaoUSD](https://etherscan.io/tx/0xee63bdb6adf42f21c6796465cd0d48e6a6c2918f929004489a6445147916c7e5), but the event will show the y pool token amount and not the USDC amount even though the USDC token is the token sold (but the sold_id will correspond with USDC's address). It's important to note that the decimals will be 18 for the token bought if coin 0 is bought, because the y pool token is 18 decimals (sold token is swapped to y token first then swapped).
+    - Some `regular` pools only have `TokenExchange`, and no concept of undercoins/underlying. You can check for this by looking if there is a `TokenExchangeUnderlying` event [in the ABI or not](https://dune.com/queries/1537319/2577384?contract_t6c1ea=0x890f4e345B1dAED0367A877a1612f86A1f86985f).
+2. Factory Pools (v1 plain): only `TokenExchange` here, anyone can set a number of tokens (coins) that can be swapped. These are defined in the `curvefi_ethereum_view_pools.sql` model.
+3. Factory Pools (v1 meta): this one is the most confusing. You have two tokens, one normal ERC20 like USDD and the other is the base pool that you want to swap into. So [this pool](https://curve.fi/#/ethereum/pools/factory-v2-116/deposit) allows you to swap USDD into the token contract of the 3pool if you do a normal `TokenExchange`. However, you can also swap directly from USDD to USDT with `TokenExchangeUnderlying`. This means you're now swapping through an `undercoins` index, which we've constructed in the `curvefi_ethereum_view_pools.sql` model. You'll see that a CASE WHEN is used for the trades logic of meta pools.
+4. Factory Pools (v2): only `TokenExchange` here, just like plain pools. Also defined in the `curvefi_ethereum_view_pools.sql` model.
+
+All pools have a `deposit_contract` to easily zap into yERC20s. The list in the `curvefi_ethereum_pool_details.sql` models right now is incomplete.
+
+Hope you've found this helpful! If you're looking to contribute to this spell and you get lost, feel free to [reach out to me](https://twitter.com/andrewhong5297) with questions.
