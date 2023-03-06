@@ -37,7 +37,7 @@ WITH oneinch_events AS
         returnAmount as to_amount,
         evt_tx_hash as tx_hash,
         evt_block_time as block_time,
-        CAST(ARRAY() as array<int>) as trace_address,
+        CAST(ARRAY() as array<bigint>) as trace_address,
         evt_index,
         contract_address
     FROM

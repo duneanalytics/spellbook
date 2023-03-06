@@ -144,7 +144,7 @@ WITH zeroex AS
         CONCAT('0x', substring(makerAssetData, 35, 40)) AS token_sold_address,
         contract_address AS project_contract_address,
         evt_tx_hash as tx_hash,
-        CAST(ARRAY() as array<int>) as trace_address,
+        CAST(ARRAY() as array<bigint>) as trace_address,
         evt_index
     FROM zeroex
 )
