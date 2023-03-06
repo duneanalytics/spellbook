@@ -47,6 +47,11 @@ models:
       optimism:
         +schema: aave_optimism
 
+    aavegotchi:
+      +schema: aavegotchi
+      polygon:
+        +schema: aavegotchi_polygon
+
     balancer:
       +schema: balancer
       arbitrum:
