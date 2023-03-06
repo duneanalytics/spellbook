@@ -1,4 +1,5 @@
 {{ config(
+    schema ='pooltogether_v4_ethereum',
     alias ='prize_structure',
     materialized = 'incremental',
     file_format = 'delta',
@@ -11,7 +12,7 @@
 )}}
 
 WITH
-  --Calculate proze structure for Ethereum network per drawID
+  --Calculate prize structure for Ethereum network per drawID
 prize_distribution AS (
     --ETHEREUM POST DPR
     SELECT call_tx_hash                                                        AS tx_hash,
