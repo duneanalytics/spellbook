@@ -75,8 +75,6 @@ models:
 
     dex:
       +schema: dex
-      aggregator:
-        +schema: dex_aggregator
 
     nft:
       +schema: nft
