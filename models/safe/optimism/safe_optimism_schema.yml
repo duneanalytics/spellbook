@@ -29,3 +29,109 @@ models:
         description: "Date/time of safe creation"
       - &tx_hash
         name: tx_hash
+  - name: safe_optimism_singletons
+    meta:
+      blockchain: optimism
+      project: safe
+      contributors: tschubotz
+    freshness:
+      warn_after: { count: 12, period: hour }
+      error_after: { count: 24, period: hour }
+    config:
+      tags: ['safe', 'singletons', 'optimism']
+    description: "Singletons addresses used with Safes"
+    columns:
+      - name: address
+        description: "Safe contract address"
+        tests:
+          - unique
+          - not_null
+
+  - name: safe_optimism_transactions
+    meta:
+      blockchain: optimism
+      project: safe
+      contributors: tschubotz
+    freshness:
+      warn_after: { count: 12, period: hour }
+      error_after: { count: 24, period: hour }
+    config:
+      tags: ['safe', 'optimism']
+    description: "Safe transactions"
+    columns:
+      - *blockchain
+      - *block_date
+      - &block_time
+        name: block_time
+        description: "Datetime of block"
+      - &block_number
+        name: block_number
+        description: "Number of block"
+      - *tx_hash
+      - name: address
+        description: "Safe contract address"
+      - &to
+        name: to
+        description: "Destination address"
+      - &value
+        name: value
+        description: "Value of transaction"
+      - &gas
+        name: gas 
+        description: "Gas limit set for transaction"
+      - &gas_used
+        name: gas_used
+        description: "Gas used during transaction"
+      - &tx_index
+        name: tx_index
+        description: "Transaction index"
+      - &sub_traces
+        name: sub_traces
+        description: "Number of sub traces"
+      - &trace_address
+        name: trace_address
+        description: ""
+      - &success
+        name: success
+        description: "Success state of transaction"
+      - &error
+        name: error
+        description: "Error of transaction if any"
+      - &code
+        name: code
+        description: "Code"
+      - &input
+        name: input
+        description: "Input data"
+      - &output
+        name: output
+        description: "Output data"
+
+  - name: safe_optimism_eth_transfers
+    meta:
+      blockchain: optimism
+      project: safe
+      contributors: tschubotz
+    freshness:
+      warn_after: { count: 12, period: hour }
+      error_after: { count: 24, period: hour }
+    config:
+      tags: ['safe', 'transfers', 'optimism']
+    description: "ETH transfers into or out of Safes"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_date
+            - address
+            - tx_hash
+            - trace_address
+    columns:
+      - name: address
+        description: "Safe contract address"
+      - *block_date
+      - *block_time
+      - &amount_raw
+        name: amount_raw
+        description: "Raw amount of transferred ETH"
+      - *tx_hash
+      - *trace_address
