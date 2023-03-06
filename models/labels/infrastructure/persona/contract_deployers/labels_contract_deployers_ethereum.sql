@@ -5,7 +5,7 @@
                                     \'["hildobby"]\') }}')}}
 
 SELECT distinct 'ethereum' AS blockchain
-, creation."from" AS address
+, creation.`from` AS address
 , 'Contract Deployer' as name
 , 'infrastructure' as category
 , 'hildobby' as contributor
@@ -15,4 +15,4 @@ SELECT distinct 'ethereum' AS blockchain
 , 'contract_deployers' AS model_name
 , 'persona' as label_type
 FROM {{ source('ethereum', 'creation_traces') }} creation
-LEFT ANTI JOIN {{this}} anti ON creation."from"=anti."from"
+LEFT ANTI JOIN {{this}} anti ON creation.`from`=anti.`from`
