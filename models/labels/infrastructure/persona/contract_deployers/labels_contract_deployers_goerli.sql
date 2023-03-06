@@ -15,4 +15,4 @@ SELECT distinct 'goerli' AS blockchain
 , 'contract_deployers' AS model_name
 , 'persona' as label_type
 FROM {{ source('goerli', 'creation_traces') }} creation
-LEFT ANTI JOIN {{this}} anti ON creation.`from`=anti.`from`
+LEFT ANTI JOIN {{this}} anti_table ON creation.`from`=anti_table.`from`
