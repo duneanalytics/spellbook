@@ -12,7 +12,7 @@
     )
 }}
 
-{% set c_oneplanet_first_date = "2023-02-01" %}
+{% set c_oneplanet_first_date = "2023-09-03" %}
 
 with iv_offer_consideration as (
     select evt_block_time as block_time
