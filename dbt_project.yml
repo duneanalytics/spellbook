@@ -106,6 +106,8 @@ models:
         +schema: nft_polygon
       fantom:
         +schema: nft_fantom
+      goerli:
+        +schema: nft_goerli
 
     compound:
       +schema: compound
@@ -157,6 +159,8 @@ models:
         +schema: sushiswap_arbitrum
       fantom:
         +schema: sushiswap_fantom
+      optimism:
+        +schema: sushiswap_optimism
 
     openocean:
       +schema: openocean
@@ -840,6 +844,14 @@ models:
       +schema: zonic
       optimism:
         +schema: zonic_optimism
+    
+    pooltogether:
+      +schema: pooltogether
+      ethereum:
+        +schema: pooltogether_ethereum
+
+    method_ids:
+      +schema: method_ids
 
 seeds:
   spellbook:
