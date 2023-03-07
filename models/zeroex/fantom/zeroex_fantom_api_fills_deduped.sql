@@ -65,8 +65,7 @@ AS
     FROM fills_first_last a
     GROUP BY  tx_hash,hop_count
 )
-SELECT  'fantom' AS blockchain
-      , '0x API' AS project 
+SELECT  a.blockchain
       , a.block_date
       , a.block_time
       , COALESCE(b.taker_symbol,b.taker_token) AS taker_symbol
@@ -83,9 +82,12 @@ SELECT  'fantom' AS blockchain
       , a.maker
       , a.affiliate_address
       , a.tx_hash
-      , a.tx_from AS tx_from
-      , a.tx_to tx_to
+      , a.tx_from
+      , a.tx_to
       , b.evt_index
+      , a.type
+      , a.swap_flag
+      , b.fills_within
 FROM fills_with_tx_fill_number a
 INNER JOIN deduped_bridge_fills b
     ON (a.tx_hash = b.tx_hash AND a.evt_index = b.evt_index)
