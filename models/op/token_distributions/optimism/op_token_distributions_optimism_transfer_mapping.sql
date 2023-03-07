@@ -169,7 +169,7 @@ SELECT
     --
     , from_type, to_type
     , from_label, to_label
-    , from_name, to_name
+    , from_name AS og_from_name, to_name AS og_to_name
     , op_amount_decimal, tx_method,
 
     CASE WHEN to_label = 'Other' THEN op_amount_decimal ELSE 0 END AS op_claimed,
@@ -205,8 +205,8 @@ SELECT
     --
     , from_type, to_type
     , d.from_label, d.to_label
-    , COALESCE(dfrom.address_name, d.from_name) AS from_name
-    , COALESCE(dto.address_name, dtxto.address_name, d.to_name) AS to_name
+    , COALESCE(dfrom.address_name, d.og_from_name) AS from_name
+    , COALESCE(dto.address_name, dtxto.address_name, d.og_to_name) AS to_name
     --
     , op_amount_decimal, tx_method
     --
@@ -216,8 +216,8 @@ SELECT
     , cast(op_between_projects as double) as op_between_projects
     , cast(op_incoming_clawback as double) as op_incoming_clawback
     --
-    , d.to_name AS og_to_name
-    , d.from_name AS og_from_name
+    , d.og_to_name
+    , d.og_from_name
     
 FROM distributions d
 -- read in other tags
