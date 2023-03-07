@@ -648,6 +648,8 @@ models:
         +schema: kyberswap_arbitrum
       avalanche_c:
         +schema: kyberswap_avalanche_c
+      bnb:
+        +schema: kyberswap_bnb
       ethereum:
         +schema: kyberswap_ethereum
       optimism:

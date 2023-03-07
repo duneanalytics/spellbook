@@ -10,6 +10,7 @@
 {% set kyber_models = [
  ref('kyberswap_arbitrum_trades')
 ,ref('kyberswap_avalanche_c_trades')
+,ref('kyberswap_bnb_trades')
 ,ref('kyberswap_ethereum_trades')
 ,ref('kyberswap_optimism_trades')
 ,ref('kyberswap_polygon_trades')
