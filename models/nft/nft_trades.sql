@@ -8,7 +8,8 @@
 
 
 {% set nft_models = [
- ref('archipelago_ethereum_trades')
+ref('aavegotchi_polygon_trades')
+,ref('archipelago_ethereum_trades')
 ,ref('blur_ethereum_trades')
 ,ref('cryptopunks_ethereum_trades')
 ,ref('element_trades')
