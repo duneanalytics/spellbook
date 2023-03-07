@@ -47,6 +47,11 @@ models:
       optimism:
         +schema: aave_optimism
 
+    aavegotchi:
+      +schema: aavegotchi
+      polygon:
+        +schema: aavegotchi_polygon
+
     balancer:
       +schema: balancer
       arbitrum:
@@ -523,6 +528,8 @@ models:
         +schema: curvefi_optimism
       avalanche_c:
         +schema: curvefi_avalanche_c
+      fantom:
+        +schema: curvefi_fantom
 
     cow_protocol:
       +schema: cow_protocol
