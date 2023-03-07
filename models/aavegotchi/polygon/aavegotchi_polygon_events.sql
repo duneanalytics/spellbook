@@ -89,7 +89,7 @@ SELECT
     token_standard,
     a.contract_address AS project_contract_address,
     evt_type,
-    CAST(NULL AS string) AS collection,
+    CAST(NULL AS VARCHAR(100)) AS collection,
     CASE WHEN number_of_items = 1 THEN 'Single Item Trade' ELSE 'Bundle Trade' END AS trade_type,
     CAST(number_of_items AS decimal(38,0)) AS number_of_items,
     a.trade_category,
@@ -108,8 +108,8 @@ SELECT
     CAST(0 AS double) AS royalty_fee_amount,
     CAST(0 AS double) AS royalty_fee_amount_usd,
     CAST(0 AS double) AS royalty_fee_percentage,
-    CAST(NULL AS double) AS royalty_fee_receive_address,
-    CAST(NULL AS string) AS royalty_fee_currency_symbol,
+    CAST(NULL AS VARCHAR(100)) AS royalty_fee_receive_address,
+    CAST(NULL AS VARCHAR(100)) AS royalty_fee_currency_symbol,
     evt_tx_hash || '-' || evt_type || '-' || evt_index || '-' || token_id AS unique_trade_id
 FROM trades AS a
 INNER JOIN {{ source('polygon','transactions') }} t ON a.evt_block_number = t.block_number
