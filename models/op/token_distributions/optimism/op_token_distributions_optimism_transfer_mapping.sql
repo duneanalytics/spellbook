@@ -1,5 +1,4 @@
 {{ config(
-    schema = 'op_token_distributions_optimism',
     alias = 'transfer_mapping',
     partition_by = ['block_date'],
     materialized = 'incremental',
@@ -85,9 +84,10 @@ WITH all_labels AS (
             LEFT JOIN {{ source('optimism','transactions') }} tx
                 ON tx.hash = tf.evt_tx_hash
                 AND tx.block_number = tf.evt_block_number
-                AND tx.block_time > cast('{{op_token_launch_date}}' as date)
                 {% if is_incremental() %} 
                 and tx.block_time >= date_trunc('day', now() - interval '1 week')
+                {% else %}
+                AND tx.block_time >= cast('{{op_token_launch_date}}' as date)
                 {% endif %}
                 AND lbl_to.label IS NULL -- don't try if we have a label on the to transfer
             
@@ -101,25 +101,26 @@ WITH all_labels AS (
             -- LEFT JOIN tx_labels txl
             --     ON txl.tx_hash = tf.evt_tx_hash
                 
-                WHERE tf.contract_address = '{{op_token_address}}'
-                --exclude Wintermute funding tfers
-                AND NOT (tf.`from` = '0x2501c477d0a35545a387aa4a3eee4292a9a8b3f0'
-                        and tf.to IN ('0x4f3a120e72c76c22ae802d129f599bfdbc31cb81'
-                                ,'0x51d3a2f94e60cbecdce05ab41b61d7ce5240b8ff')
-                        )
-                AND tf.evt_block_time > cast('{{op_token_launch_date}}' as date)
-                {% if is_incremental() %} 
-                and tf.evt_block_time >= date_trunc('day', now() - interval '1 week')
-                {% endif %}
-                
-                AND 1= ( --exclude CEX to CEX or CEX withdrawals
-                    CASE
-                        WHEN lbl_from.label != 'CEX' THEN 1
-                        WHEN lbl_from.label = 'CEX' AND lbl_to.label = 'CEX' THEN 0
-                        WHEN lbl_from.label = 'CEX' AND lbl_to.label IS NULL THEN 0
-                        ELSE 1
-                    END
+            WHERE tf.contract_address = '{{op_token_address}}'
+            --exclude Wintermute funding tfers
+            AND NOT (tf.`from` = '0x2501c477d0a35545a387aa4a3eee4292a9a8b3f0'
+                    and tf.to IN ('0x4f3a120e72c76c22ae802d129f599bfdbc31cb81'
+                            ,'0x51d3a2f94e60cbecdce05ab41b61d7ce5240b8ff')
                     )
+            {% if is_incremental() %} 
+            and tf.evt_block_time >= date_trunc('day', now() - interval '1 week')
+            {% else %}
+            AND tf.evt_block_time >= cast('{{op_token_launch_date}}' as date)
+            {% endif %}
+            
+            AND 1= ( --exclude CEX to CEX or CEX withdrawals
+                CASE
+                    WHEN lbl_from.label != 'CEX' THEN 1
+                    WHEN lbl_from.label = 'CEX' AND lbl_to.label = 'CEX' THEN 0
+                    WHEN lbl_from.label = 'CEX' AND lbl_to.label IS NULL THEN 0
+                    ELSE 1
+                END
+                )
             
             )
 

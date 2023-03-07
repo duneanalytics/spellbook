@@ -1,5 +1,4 @@
 {{ config(
-    schema = 'op_token_distributions_optimism',
     alias = 'other_distributions_claims',
     partition_by = ['block_date'],
     materialized = 'incremental',
@@ -71,6 +70,8 @@ FROM (
                 AND value = amount
                 {% if is_incremental() %} 
                 and tf.evt_block_time >= date_trunc('day', now() - interval '1 week')
+                {% else %}
+                and tf.evt_block_time >= cast('{{op_token_launch_date}}' as date)
                 {% endif %}
             left JOIN all_labels lbl_from
                 ON lbl_from.address = tf.`from`
@@ -81,15 +82,15 @@ FROM (
                 ON tx.hash = tf.evt_tx_hash
                 AND tx.block_number = tf.evt_block_number
                 AND lbl_to.label IS NULL -- don't try if we have a label on the to transfer
-                AND tx.block_time > cast('{{op_token_launch_date}}' as date)
                 {% if is_incremental() %} 
-                and tx.block_time >= date_trunc('day', now() - interval '1 week')
+                AND tx.block_time >= date_trunc('day', now() - interval '1 week')
+                {% else %}
+                AND tx.block_time >= cast('{{op_token_launch_date}}' as date)
                 {% endif %}
 
             
         WHERE reward = '{{op_token_address}}' --OP Token
         and cast(amount as double)/cast(1e18 as double) > 0
-        AND tf.evt_block_time > cast('{{op_token_launch_date}}' as date) --OP token launch date
         AND lbl_from.label = '{{foundation_label}}'
         {% if is_incremental() %} 
         and r.evt_block_time >= date_trunc('day', now() - interval '1 week')

@@ -1,6 +1,5 @@
 {{ config(
-    schema = 'op_token_distributions_optimism',
-    alias = 'all_distributions_labels',
+    alias = 'all_distributions_labels'
     )
 }}
 

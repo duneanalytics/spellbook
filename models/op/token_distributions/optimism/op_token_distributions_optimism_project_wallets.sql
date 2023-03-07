@@ -1,5 +1,4 @@
 {{ config(
-    schema = 'op_token_distributions_optimism',
     alias = 'project_wallets',
     post_hook='{{ expose_spells(\'["optimism"]\',
                                 "project",
@@ -164,7 +163,7 @@ FROM (values
     ) a (address, proposal_name, address_descriptor)
     ) b
     WHERE rnk = 1 --check to prvent duplicates
-    AND address NOT IN (SELECT address FROM addresses_optimism.cex) --make sure we don't accidently catch a CEX
+    AND address NOT IN (SELECT address FROM {{ref('addresses_optimism_cex')}}) --make sure we don't accidently catch a CEX
 )
 
 SELECT
