@@ -9,7 +9,7 @@ models:
     config:
       tags: ['optimism','uniswap','arrakis','pools']
     description: >
-        A canonical table containing Uniswap mappings for known Arrakis pools created on Optimism. 
+        A canonical table containing Uniswap mappings for known Arrakis pools created. 
     columns:
       - &blockchain
         name: blockchain
