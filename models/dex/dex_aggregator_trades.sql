@@ -1,10 +1,11 @@
 
 {{ config(
+        schema ='dex_aggregator',
         alias ='trades',
         post_hook='{{ expose_spells(\'["ethereum", "gnosis", "avalanche_c", "fantom"]\',
                                 "sector",
                                 "dex_aggregator",
-                                \'["bh2smith", "Henrystats"]\') }}'
+                                \'["bh2smith", "Henrystats", "jeff-dude"]\') }}'
         )
 }}
 
@@ -43,7 +44,7 @@ FROM (
          , tx_hash
          , tx_from
          , tx_to
-         , trace_address
+         , trace_address --ensure field is explicitly cast as array<bigint> in base models
          , evt_index
     FROM {{ aggregator_model }}
     {% if not loop.last %}
@@ -51,3 +52,4 @@ FROM (
     {% endif %}
     {% endfor %}
 )
+;
