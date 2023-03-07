@@ -7,7 +7,7 @@
 }}
 
 {% set nft_models = [
- ref('opensea_mints')
+ref('opensea_mints')
 ,ref('magiceden_mints')
 ,ref('looksrare_ethereum_mints')
 ,ref('x2y2_ethereum_mints')

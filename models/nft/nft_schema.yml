@@ -22,7 +22,7 @@ models:
       sector: nft
       contributors: soispoke, hildobby, ilemi, 0xRob, cat, umer_h_adil, springzh
     config:
-      tags: ['nft', 'opensea', 'looksrare', 'x2y2', 'magiceden', 'sudoswap', 'foundation', 'element', 'zora', 'ethereum', 'bnb', 'avalanche_c', 'solana', 'events', 'polygon', 'rarible']
+      tags: ['nft', 'opensea', 'looksrare', 'x2y2', 'magiceden', 'sudoswap', 'foundation', 'element', 'zora', 'ethereum', 'bnb', 'avalanche_c', 'solana', 'events', 'polygon', 'rarible', 'aavegotchi']
     description: >
         NFT events
     columns:
@@ -144,7 +144,7 @@ models:
       sector: nft
       contributors: soispoke, hildobby, ilemi, cat, springzh
     config:
-      tags: ['nft', 'opensea', 'looksrare', 'x2y2', 'magiceden', 'sudoswap', 'foundation', 'element', 'zora', 'ethereum', 'bnb', 'avalanche_c', 'solana', 'trades','superrare', 'polygon', 'rarible']
+      tags: ['nft', 'opensea', 'looksrare', 'x2y2', 'magiceden', 'sudoswap', 'foundation', 'element', 'zora', 'ethereum', 'bnb', 'avalanche_c', 'solana', 'trades','superrare', 'polygon', 'rarible', 'aavegotchi']
     description: >
         NFT trades
     columns:
@@ -182,7 +182,7 @@ models:
       sector: nft
       contributors: soispoke, hildobby, umer_h_adil, springzh
     config:
-      tags: ['nft', 'opensea', 'looksrare', 'x2y2', 'magiceden', 'foundation', 'element', 'zora', 'ethereum', 'bnb', 'avalanche_c', 'solana', 'mints', 'polygon', 'rarible']
+      tags: ['nft', 'opensea', 'looksrare', 'x2y2', 'magiceden', 'foundation', 'element', 'zora', 'ethereum', 'bnb', 'avalanche_c', 'solana', 'mints', 'polygon', 'aavegotchi']
     description: >
         NFT mints
     columns:
@@ -258,7 +258,7 @@ models:
       sector: nft
       contributors: soispoke, hildobby, ilemi, cat, springzh
     config:
-      tags: ['nft', 'opensea', 'looksrare', 'x2y2', 'magiceden', 'sudoswap', 'foundation', 'element', 'zora', 'ethereum', 'bnb', 'avalanche_c', 'solana', 'fees','superrare', 'polygon', 'rarible']
+      tags: ['nft', 'opensea', 'looksrare', 'x2y2', 'magiceden', 'sudoswap', 'foundation', 'element', 'zora', 'ethereum', 'bnb', 'avalanche_c', 'solana', 'fees','superrare', 'polygon', 'rarible', 'aavegotchi']
     description: >
         NFT fees
     columns:
@@ -374,11 +374,11 @@ models:
 
   - name: nft_transfers
     meta:
-      blockchain: ethereum, polygon, bnb, avalanche_c, gnosis, optimism, arbitrum
+      blockchain: ethereum, polygon, bnb, avalanche_c, gnosis, optimism, arbitrum, fantom
       sector: nft
       contributors: hildobby
     config:
-      tags: ['nft', 'ethereum', 'polygon', 'bnb', 'avalanche_c', 'gnosis', 'optimism', 'arbitrum', 'transfers']
+      tags: ['nft', 'ethereum', 'polygon', 'bnb', 'avalanche_c', 'gnosis', 'optimism', 'arbitrum', 'fantom', 'transfers']
     description: >
         NFT transfers
     columns:
