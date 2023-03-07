@@ -11,6 +11,7 @@
 {% set balancer_models = [
     ref('balancer_arbitrum_trades'),
     ref('balancer_ethereum_trades'),
+    ref('balancer_gnosis_trades'),
     ref('balancer_optimism_trades'),
     ref('balancer_polygon_trades')
 ] %}
