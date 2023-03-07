@@ -51,6 +51,7 @@
 ,ref('balancer_trades')
 ,ref('spiritswap_fantom_trades')
 ,ref('quickswap_trades')
+,ref('integral_trades')
 ] %}
 
 
