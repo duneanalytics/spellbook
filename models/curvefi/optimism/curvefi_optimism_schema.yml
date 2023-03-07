@@ -145,6 +145,11 @@ models:
       tags: ['curve','curvefi', 'amm', 'trades', 'dex', 'incentives', 'optimism']
     description: >
       Gauge to Pool mappings for curve on optimism
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+              - pool_contract
+              - incentives_contract
     columns:
       - *blockchain
       - *version

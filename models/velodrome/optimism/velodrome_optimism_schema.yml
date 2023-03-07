@@ -103,7 +103,13 @@ models:
     config:
       tags: ['optimism','velodrome','velo','dex', 'incentives']
     description: >
-      Gauge to Pool mappings for balancer on all chains
+      Bribe to Pool mappings for velodrome on all chains
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+              - pool_contract
+              - incentives_contract
+              - allowed_rewards
     columns:
       - *blockchain
       - *project

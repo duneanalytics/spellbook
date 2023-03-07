@@ -8,4 +8,3 @@ sources:
     tables:
       - name: ArrakisFactoryV1_evt_PoolCreated
         loaded_at_field: evt_block_time
-        description: "" # to-do

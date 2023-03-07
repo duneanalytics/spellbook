@@ -2,9 +2,7 @@
     config(
         schema = 'velodrome_optimism',
         alias='bribe_mappings',
-        materialized = 'incremental',
-        file_format = 'delta',
-        incremental_strategy = 'merge',
+        materialized = 'table',
         unique_key = ['pool_contract', 'incentives_contract', 'allowed_rewards'],
         post_hook='{{ expose_spells(\'["optimism"]\',
                                     "project",

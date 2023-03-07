@@ -2,12 +2,12 @@
   config(
         schema='gamma_optimism',
         alias='uniswap_pools',
-        materialized = 'incremental',
-        file_format = 'delta',
-        incremental_strategy = 'merge',
+        materialized = 'table',
         unique_key = ['contract_address', 'pool_contract']
   )
 }}
+
+{% set project_start_date = '2022-12-21' %}
 
 -- Gamma pools don't come from a factory contract, so we manually map them
 with manual_mapping as (
@@ -42,11 +42,10 @@ SELECT distinct
     INNER JOIN {{ source('optimism', 'creation_traces') }} ct 
         ON ct.address = mm.contract_address
         -- only pull new contract creations
-        {% if is_incremental() %}
-        AND ct.block_time >= date_trunc('day', now() - interval '1 month')
-        {% endif %}
+        AND ct.block_time >= '{{project_start_date}}'
     INNER JOIN {{ source('optimism', 'transactions') }} t 
         ON t.to = mm.contract_address
+        AND t.block_time >= '{{project_start_date}}'
         AND t.block_time >= ct.block_time
         AND t.block_time < ct.block_time + interval '1 month'
         AND substring(t.data,1,10) IN ('0x85919c5d','0xa8559872') --on rebalances & withdrawals, we can pull the uniswap pool
@@ -56,5 +55,6 @@ SELECT distinct
         AND t.block_time = l.block_time
         AND l.block_time >= ct.block_time
         AND l.block_time < ct.block_time + interval '1 month'
+        AND l.block_time >= '{{project_start_date}}'
     INNER JOIN {{ ref('uniswap_optimism_pools') }} up
         ON up.pool = l.contract_address
