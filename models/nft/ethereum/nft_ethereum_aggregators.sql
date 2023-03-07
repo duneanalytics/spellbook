@@ -85,7 +85,7 @@ WHERE to IN (
     )
 AND from != '0x073ab1c0cad3677cde9bdb0cdeedc2085c029579'
 {% if not is_incremental() %}
-AND evt_block_time >= '2021-10-12'  -- Date when Vasa started working on Gem
+AND block_time >= '2021-10-12'  -- Date when Vasa started working on Gem
 {% endif %}
 {% if is_incremental() %}
 AND block_time >= date_trunc("day", NOW() - interval '1 week')
