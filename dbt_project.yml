@@ -157,6 +157,8 @@ models:
         +schema: sushiswap_arbitrum
       fantom:
         +schema: sushiswap_fantom
+      optimism:
+        +schema: sushiswap_optimism
 
     openocean:
       +schema: openocean
