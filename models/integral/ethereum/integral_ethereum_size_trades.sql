@@ -34,7 +34,7 @@ WITH dexs AS
     INNER JOIN {{ source('integral_size_ethereum', 'Factory_evt_PairCreated') }} f
         ON f.pair = t.contract_address
     {% if is_incremental() %}
-    AND t.evt_block_time >= date_trunc("day", now() - interval '1 week')
+    WHERE t.evt_block_time >= date_trunc("day", now() - interval '1 week')
     {% endif %}
 )
 SELECT
