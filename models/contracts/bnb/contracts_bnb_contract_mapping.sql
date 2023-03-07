@@ -4851,7 +4851,6 @@ from
   ('0x0b6f3be1b3c8cef713626edbcd5fda5b0fe4fdae', 'Valkyrie Network', 'Defi'),
   ('0xb0c1795c5800cdc400bad6c8a619f233bcf5bd18', 'Militia Game', 'Gaming'),
   ('0x8531aca7bab87fc953ada1afb7b1a89bb151b4d2', 'DPK', 'Gaming'),
-  ('0x4f3266a56589357b4f8082918b14b923693e57f0', 'LiquidCollectibles', 'NFT'),
   ('0x25ef2439ee92552b6f58463394e66d289f9e7b7c', 'LiquidCollectibles', 'NFT'),
   ('0x6c3b1ff7481fe0b106d046cfe60c5751caa30c7d', 'LiquidCollectibles', 'NFT'),
   ('0x2254c09b79e73306d7eacb8466a9938dac601330', 'LiquidCollectibles', 'NFT'),
