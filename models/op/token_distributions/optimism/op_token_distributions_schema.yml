@@ -185,7 +185,7 @@ models:
         name: address_descriptor
       - *project_name
 
-  - name: op_token_distributions_optimism_all_labels
+  - name: op_token_distributions_optimism_all_distributions_labels
     meta:
       blockchain: optimism
       project: op

@@ -19,7 +19,7 @@
 
 
 WITH all_labels AS (
-    SELECT address, label, proposal_name, address_descriptor, project_name FROM {{ ref('op_token_distributions_optimism_all_labels') }}
+    SELECT address, label, proposal_name, address_descriptor, project_name FROM {{ ref('op_token_distributions_optimism_all_distributions_labels') }}
 )
 
 , disperse_contracts AS (
@@ -89,7 +89,6 @@ WITH all_labels AS (
                 {% else %}
                 AND tx.block_time >= cast('{{op_token_launch_date}}' as date)
                 {% endif %}
-                AND lbl_to.label IS NULL -- don't try if we have a label on the to transfer
             
             LEFT JOIN disperse_contracts dc
                 ON tx.to = dc.address

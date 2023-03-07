@@ -22,7 +22,7 @@
 {% set grants_descriptor = 'OP Foundation Grants'  %}
 
 
-WITH all_labels AS (
+WITH project_labels AS (
     SELECT * FROM {{ ref('op_token_distributions_optimism_project_wallets') }}
     WHERE label IS NOT NULL
 )
@@ -47,12 +47,12 @@ FROM {{ source('erc20_optimism', 'evt_Approval') }} a
         AND t.block_time >= cast( '{{approvals_start_date}}' as date )
         {% endif %}
         AND t.to = a.owner
-        AND t.to in (SELECT address FROM all_labels WHERE label = '{{foundation_label}}' AND address_descriptor = '{{grants_descriptor}}')
-    LEFT JOIN all_labels al
+        AND t.to in (SELECT address FROM project_labels WHERE label = '{{foundation_label}}' AND address_descriptor = '{{grants_descriptor}}')
+    LEFT JOIN project_labels al
         ON a.spender = al.address
 WHERE
     a.contract_address = '{{op_token_address}}' --OP Token
-    AND owner in (SELECT address FROM all_labels WHERE label = '{{foundation_label}}' AND address_descriptor = '{{grants_descriptor}}')
+    AND owner in (SELECT address FROM project_labels WHERE label = '{{foundation_label}}' AND address_descriptor = '{{grants_descriptor}}')
     {% if is_incremental() %} 
     AND a.evt_block_time >= date_trunc('day', now() - interval '1 week')
     {% else %}
