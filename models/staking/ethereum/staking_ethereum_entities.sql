@@ -107,7 +107,6 @@ FROM
     , ('0xf79caa45612fb183c4e258ed449bfa632d7400b9', 'Everstake Pool', 'Everstake', 'Staking Pools')
     , ('0xcf07df57a6b338a20d50114a79fee09d28b13d72', 'cryptostake.com', 'cryptostake.com', 'Staking Pools')
     , ('0x2915f91dcff0be7b60df411f164827d517caca67', 'TokenPocket', 'TokenPocket', 'Others')  
-    , ('0x1e68238ce926dec62b3fbc99ab06eb1d85ce0270' , 'Kiln', 'Kiln', 'Staking Pools') 
     ) 
     x (address, entity, entity_unique_name, category)
 
