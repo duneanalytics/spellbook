@@ -114,9 +114,6 @@ models:
             - taker
     columns:
       - *blockchain
-      - &project 
-        name: project 
-        description: "Name of aggregator project"
       - *block_date
       - *block_time
       - &taker_symbol
@@ -142,3 +139,8 @@ models:
       - *tx_from
       - *tx_to
       - *evt_index       
+      - *type
+      - *swap_flag
+      - &fills_within
+        name: fills_within
+        description: "fills in then multihop, if present"          
