@@ -839,6 +839,11 @@ models:
       +schema: zonic
       optimism:
         +schema: zonic_optimism
+    
+    pooltogether:
+      +schema: pooltogether
+      ethereum:
+        +schema: pooltogether_ethereum
 
     method_ids:
       +schema: method_ids
