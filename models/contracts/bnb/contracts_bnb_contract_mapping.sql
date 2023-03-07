@@ -7687,7 +7687,6 @@ from
   ('0xe5a34187478aa144a918c58b5c9d2c72582c77b5', 'SingSing', 'Music'),
   ('0x7056606223955ff3a1ac1f524ecdf9e45d6790d5', 'SingSing', 'Music'),
   ('0xe1c02f4d3313b8b36e531d74aaabb35cc7042a95', 'SingSing', 'Music'),
-  ('0x6f61810e3f4d128b2033b00e72e130ec60479b80 ', 'NFT5', 'NFT'),
   ('0xd1610cc3a3db892f8f2a67caae1a9901b82ce600', 'NFT5', 'NFT'),
   ('0x9809e877192b510d767a94ba39a79429219a5afb', 'ShopNEXT', 'Other'),
   ('0x19d45b0432930959b5cef955c9dc8e37324c1c3f', 'Carv', 'GameFi infra'),
