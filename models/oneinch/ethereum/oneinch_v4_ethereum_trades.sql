@@ -38,7 +38,7 @@ WITH oneinch_calls AS
         call_tx_hash as tx_hash,
         call_block_time as block_time,
         call_trace_address as trace_address,
-        CAST(0 as integer) as evt_index,
+        CAST(-1 as integer) AS evt_index,
         contract_address
     FROM
         {{ source('oneinch_v4_ethereum', 'AggregationRouterV4_call_swap') }}

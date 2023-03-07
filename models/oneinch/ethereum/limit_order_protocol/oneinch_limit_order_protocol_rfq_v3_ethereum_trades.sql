@@ -92,7 +92,7 @@ WITH limit_order_protocol_rfq_v3 AS
         contract_address AS project_contract_address,
         call_tx_hash as tx_hash,
         call_trace_address AS trace_address,
-        CAST(0 as integer) AS evt_index
+        CAST(-1 as integer) AS evt_index
     FROM
         limit_order_protocol_rfq_v3
 )

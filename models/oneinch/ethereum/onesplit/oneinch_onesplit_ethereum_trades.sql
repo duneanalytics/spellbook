@@ -79,7 +79,7 @@ WITH onesplit AS
         contract_address AS project_contract_address,
         tx_hash,
         trace_address,
-        CAST(0 as integer) as evt_index
+        CAST(-1 as integer) AS evt_index
     FROM onesplit
 )
 SELECT

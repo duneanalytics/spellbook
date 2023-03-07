@@ -136,7 +136,7 @@ WITH unoswap AS
         ,src.contract_address AS project_contract_address
         ,src.call_tx_hash as tx_hash
         ,src.call_trace_address AS trace_address
-        ,CAST(0 as integer) AS evt_index
+        ,CAST(-1 as integer) AS evt_index
     FROM
         join_to_traces as src
 )

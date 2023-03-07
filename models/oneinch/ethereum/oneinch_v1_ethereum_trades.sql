@@ -38,7 +38,7 @@ WITH oneinch_calls AS
         call_tx_hash as tx_hash,
         call_block_time as block_time,
         call_trace_address as trace_address,
-        CAST(0 as integer) as evt_index,
+        CAST(-1 as integer) AS evt_index,
         contract_address
     FROM
         {{ source('oneinch_ethereum', 'exchange_v1_call_aggregate') }}
@@ -62,7 +62,7 @@ WITH oneinch_calls AS
         call_tx_hash as tx_hash,
         call_block_time as block_time,
         call_trace_address as trace_address,
-        CAST(0 as integer) as evt_index,
+        CAST(-1 as integer) AS evt_index,
         contract_address
     FROM
         {{ source('oneinch_ethereum', 'exchange_v2_call_aggregate') }}
@@ -86,7 +86,7 @@ WITH oneinch_calls AS
         call_tx_hash as tx_hash,
         call_block_time as block_time,
         call_trace_address as trace_address,
-        CAST(0 as integer) as evt_index,
+        CAST(-1 as integer) AS evt_index,
         contract_address
     FROM
         {{ source('oneinch_ethereum', 'exchange_v3_call_aggregate') }}
@@ -110,7 +110,7 @@ WITH oneinch_calls AS
         call_tx_hash as tx_hash,
         call_block_time as block_time,
         call_trace_address as trace_address,
-        CAST(0 as integer) as evt_index,
+        CAST(-1 as integer) AS evt_index,
         contract_address
     FROM
         {{ source('oneinch_ethereum', 'exchange_v4_call_aggregate') }}
@@ -134,7 +134,7 @@ WITH oneinch_calls AS
         call_tx_hash as tx_hash,
         call_block_time as block_time,
         call_trace_address as trace_address,
-        CAST(0 as integer) as evt_index,
+        CAST(-1 as integer) AS evt_index,
         contract_address
     FROM
         {{ source('oneinch_ethereum', 'exchange_v5_call_aggregate') }}
@@ -158,7 +158,7 @@ WITH oneinch_calls AS
         call_tx_hash as tx_hash,
         call_block_time as block_time,
         call_trace_address as trace_address,
-        CAST(0 as integer) as evt_index,
+        CAST(-1 as integer) AS evt_index,
         contract_address
     FROM
         {{ source('oneinch_ethereum', 'exchange_v6_call_aggregate') }}
@@ -182,7 +182,7 @@ WITH oneinch_calls AS
         call_tx_hash as tx_hash,
         call_block_time as block_time,
         call_trace_address as trace_address,
-        CAST(0 as integer) as evt_index,
+        CAST(-1 as integer) AS evt_index,
         contract_address
     FROM
         {{ source('oneinch_ethereum', 'exchange_v7_call_swap') }}
@@ -206,7 +206,7 @@ WITH oneinch_calls AS
         call_tx_hash as tx_hash,
         call_block_time as block_time,
         call_trace_address as trace_address,
-        CAST(0 as integer) as evt_index,
+        CAST(-1 as integer) AS evt_index,
         contract_address
     FROM
         {{ source('oneinch_ethereum', 'OneInchExchange_call_swap') }}
