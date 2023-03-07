@@ -11168,6 +11168,19 @@ from
 ('0x7b422b3f77142e178bea8659c747273e7085e3bf', 'Astrone', ''),
 ('0x3f5291f7f77dff10e215c8314cc99e7a8e1225ed', 'Astrone', ''),
 ('0x337464f90f933a88dc2ffacaebb0deceac130ab7', 'ETH Game', ''),
-('0x5a29c96fa93ffa8845fb7f8616a03aa85fcc11d6', 'France REV Finance', '')
+('0x5a29c96fa93ffa8845fb7f8616a03aa85fcc11d6', 'France REV Finance', ''),
+('0xa983d1ed7a798bacf870daf1025f7b6f097b0a1a', 'Defina Finance', ''),
+('0xf7bdeb93a980560ca0d9a7a164138d4ca1cdea34', 'Defina Finance', ''),
+('0x0d7e97a074a11d5c0343461f78ca216108cf68d2', 'Defina Finance', ''),
+('0xfb0649b1d270a5e9c4567c40711a4a8258423870', 'Defina Finance', ''),
+('0x2926710dcb5c3e046285755410979d1de5fcc1ea', 'Uniwhale', 'Derivatives'),
+('0xdaf311cd286bc7094487afc306f6ff3681cff129', 'Uniwhale', 'Derivatives'),
+('0x656ac046304446c5802849fcfd5f5ddb090a8ea7', 'Uniwhale', 'Derivatives'),
+('0xbb1b941ab76fae4e9f552b860efac1f367ac9bcc', 'Uniwhale', 'Derivatives'),
+('0x0b56a61d817e215d6f6dc7b461be2e5b0ca3716b', 'Uniwhale', 'Derivatives'),
+('0x3d8ce31601b8ed4db5eeb921fcf7f178babe7c2e', 'Uniwhale', 'Derivatives'),
+('0x9865eebdd1ce65f45b6247aeed2fa2252eca7a08', 'Transit Swap', ''),
+('0xb45a2dda996c32e93b8c47098e90ed0e7ab18e39', 'Transit Swap', '')
+
 ) as temp_table (contract_address,project_name,project_type)
 ;
