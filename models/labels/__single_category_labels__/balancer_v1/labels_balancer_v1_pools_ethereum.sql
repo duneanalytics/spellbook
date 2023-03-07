@@ -57,7 +57,6 @@ settings AS (
     next_block_number
     FROM state_with_gaps s
     LEFT JOIN {{ ref('tokens_ethereum_erc20') }} t ON s.token = t.contract_address
-    AND blockchain = "ethereum"
     WHERE next_block_number = 99999999
     AND denorm > 0
 ),
