@@ -116,22 +116,15 @@ models:
         name: is_moved_nft
         description: "Transferred NFT if `true`, because it is traded or just transferred."
 
-  - name: oneplanet_polygon_trades
+  - name: oneplanet_polygon_events
     meta:
       blockchain: polygon
       project: oneplanet
       contributors: springzh
     config:
-      tags: ['polygon','oneplanet','trades','springzh']
+      tags: ['polygon','oneplanet','events','springzh']
     description: >
-        OnePlanet trades on Polygon
-    tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
-            - nft_contract_address
-            - token_id
+        OnePlanet events on Polygon
     columns:
       - &blockchain
         name: blockchain
@@ -189,43 +182,6 @@ models:
       - &project_contract_address
         name: project_contract_address
         description: "Contract address used by the project, in this case wyvern contract"
-      - &aggregator_name
-        name: aggregator_name
-        description:  "If the trade was performed via an aggregator, displays aggregator name"
-      - &aggregator_address
-        name: aggregator_address
-        description:  "If the trade was performed via an aggregator, displays aggregator address"
-      - *block_number
-      - *tx_hash
-      - *evt_index
-      - &tx_from
-        name: tx_from
-        description:  "Address that initiated the transaction"
-      - &tx_to
-        name: tx_to
-        description:  "Address that received the transaction"
-      - &unique_trade_id
-        name: unique_trade_id
-        description:  "Unique trade ID"
-        tests:
-          - unique
-
-  - name: oneplanet_polygon_fees
-    meta:
-      blockchain: polygon
-      project: oneplanet
-      contributors: [springzh]
-    config:
-      tags: ['polygon','oneplanet','fees']
-    description: >
-        OnePlanet fees on Polygon
-    columns:
-      - *blockchain
-      - *project
-      - *version
-      - *block_time
-      - *token_id
-      - *collection
       - &platform_fee_amount_raw
         name: platform_fee_amount_raw
         description:  "Raw numerical amount for platform fees"
@@ -256,6 +212,92 @@ models:
       - &royalty_fee_currency_symbol
         name: royalty_fee_currency_symbol
         description: "Symbol of the token in which fees are paid out"
+      - &aggregator_name
+        name: aggregator_name
+        description:  "If the trade was performed via an aggregator, displays aggregator name"
+      - &aggregator_address
+        name: aggregator_address
+        description:  "If the trade was performed via an aggregator, displays aggregator address"
+      - *block_number
+      - *tx_hash
+      - *evt_index
+      - &tx_from
+        name: tx_from
+        description:  "Address that initiated the transaction"
+      - &tx_to
+        name: tx_to
+        description:  "Address that received the transaction"
+      - &unique_trade_id
+        name: unique_trade_id
+        description:  "Unique trade ID"
+        tests:
+          - unique
+
+  - name: oneplanet_polygon_trades
+    meta:
+      blockchain: polygon
+      project: oneplanet
+      contributors: springzh
+    config:
+      tags: ['polygon','oneplanet','trades','springzh']
+    description: >
+        OnePlanet trades on Polygon
+    columns:
+      - *blockchain
+      - *project
+      - *version
+      - *block_time
+      - *seller
+      - *buyer
+      - *trade_type
+      - *trade_category
+      - *evt_type
+      - *nft_contract_address
+      - *collection
+      - *token_id
+      - *number_of_items
+      - *token_standard
+      - *amount_raw
+      - *amount_original
+      - *amount_usd
+      - *currency_symbol
+      - *currency_contract
+      - *project_contract_address
+      - *aggregator_name
+      - *aggregator_address
+      - *block_number
+      - *tx_hash
+      - *evt_index
+      - *tx_from
+      - *tx_to
+      - *unique_trade_id
+
+  - name: oneplanet_polygon_fees
+    meta:
+      blockchain: polygon
+      project: oneplanet
+      contributors: [springzh]
+    config:
+      tags: ['polygon','oneplanet','fees']
+    description: >
+        OnePlanet fees on Polygon
+    columns:
+      - *blockchain
+      - *project
+      - *version
+      - *block_time
+      - *token_id
+      - *collection
+      - *platform_fee_amount_raw
+      - *platform_fee_amount
+      - *platform_fee_amount_usd
+      - *platform_fee_percentage
+      - *royalty_fee_amount_raw
+      - *royalty_fee_amount
+      - *royalty_fee_amount_usd
+      - *royalty_fee_percentage
+      - *royalty_fee_receive_address
+      - *royalty_fee_currency_symbol
       - *token_standard
       - *trade_type
       - *number_of_items
