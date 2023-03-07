@@ -161,7 +161,17 @@ WITH all_labels AS (
 
 , distributions AS (
 
-SELECT od.*,
+SELECT 
+     evt_block_time, evt_block_number, evt_index, evt_tx_hash
+    --
+    , from_address, to_address
+    , tx_to_address, tx_from_address
+    --
+    , from_type, to_type
+    , from_label, to_label
+    , from_name, to_name
+    , op_amount_decimal, tx_method,
+
     CASE WHEN to_label = 'Other' THEN op_amount_decimal ELSE 0 END AS op_claimed,
     
     CASE WHEN  to_label IN ('Other','Deployed') AND from_label != 'Deployed' THEN op_amount_decimal
