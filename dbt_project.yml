@@ -836,6 +836,9 @@ models:
       optimism:
         +schema: zonic_optimism
 
+    method_ids:
+      +schema: method_ids
+
 seeds:
   spellbook:
     +schema: test_data
@@ -1377,6 +1380,3 @@ seeds:
         +column_types:
           hex: string
           dec: string
-
-    method_ids:
-      +schema: method_ids
