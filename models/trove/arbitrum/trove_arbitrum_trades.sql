@@ -45,7 +45,7 @@ with marketplace as (
                evt_block_number,
                contract_address,
                bidder as buyer
-        from {{ source('treasure_trove_arbitrum', 'TreasureMarketplace_evt_BidAccepted') }}
+        from {{ source('treasure_trove_arbitrum', 'TreasureMarketplaceV2_evt_BidAccepted') }}
         {% if is_incremental() %}
         where evt_block_time >= date_trunc("day", now() - interval '1 week')
         {% else %}
@@ -64,7 +64,7 @@ with marketplace as (
                evt_block_number,
                contract_address,
                buyer
-        from {{ source('treasure_trove_arbitrum', 'TreasureMarketplace_evt_ItemSold') }}
+        from {{ source('treasure_trove_arbitrum', 'TreasureMarketplaceV2_evt_ItemSold') }}
         {% if is_incremental() %}
         where evt_block_time >= date_trunc("day", now() - interval '1 week')
         {% else %}
