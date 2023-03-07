@@ -265,7 +265,7 @@ with base_level as (
 )
 select 
   c.contract_address
-  ,initcap(
+  ,cast(initcap(
       replace(
       -- priority order: Override name, Mapped vs Dune, Raw/Actual names
         coalesce(
@@ -277,9 +277,9 @@ select
       '_',
       ' '
     )
-   ) as contract_project
+   ) as varchar(250)) as contract_project
   ,c.token_symbol
-  ,coalesce(co.contract_name, c.contract_name) as contract_name
+  ,cast( coalesce(co.contract_name, c.contract_name) as varchar(250)) as contract_name
   ,coalesce(c.creator_address, ovm1c.creator_address) as creator_address
   ,coalesce(c.created_time, to_timestamp(ovm1c.created_time)) as created_time
   ,coalesce(c.contract_factory, 
