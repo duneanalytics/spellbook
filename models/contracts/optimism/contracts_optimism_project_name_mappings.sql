@@ -19,7 +19,7 @@ from (
     ,('aave_v3', 'Aave')
     ,('perp_v2', 'Perpetual Protocol')
     ,('synthetix_futures', 'Kwenta')
-    ,('zeroex', cast('0x' as varchar(250) )
+    ,('zeroex', '0x Project' )
     ,('uniswap_v3', 'Uniswap')
     ,('Uniswap V3', 'Uniswap')
     ,('oneinch', '1inch')
