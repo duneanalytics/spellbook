@@ -5,7 +5,7 @@
 The logic to identify a sandwich attacker is as follows:
 
 1. Two separate trades, t1 and t2 in no particular order, in the same block initiated by the same address
-2. Both trades inititated on the same project
+2. Both trades initiated on the same project
 3. Token bought in t1 = token sold in t2
 4. Token sold in t1 = token bought in t2
 5. Amount bought in t1 = Amount sold in t2
