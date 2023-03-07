@@ -161,7 +161,7 @@ WITH all_labels AS (
 
 , distributions AS (
 
-SELECT *,
+SELECT od.*,
     CASE WHEN to_label = 'Other' THEN op_amount_decimal ELSE 0 END AS op_claimed,
     
     CASE WHEN  to_label IN ('Other','Deployed') AND from_label != 'Deployed' THEN op_amount_decimal
@@ -182,7 +182,7 @@ SELECT *,
         ELSE 0 END
     AS op_incoming_clawback --Project's deployer back to the OG project wallet
             
-    FROM outgoing_distributions
+    FROM outgoing_distributions od
 
 )
 
