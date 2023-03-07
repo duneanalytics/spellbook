@@ -644,6 +644,8 @@ models:
 
     kyberswap:
       +schema: kyberswap
+      arbitrum:
+        +schema: kyberswap_arbitrum
       avalanche_c:
         +schema: kyberswap_avalanche_c
       optimism:
