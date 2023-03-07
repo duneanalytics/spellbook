@@ -5,14 +5,10 @@
     ,file_format = 'delta'
     ,incremental_strategy = 'merge'
     ,unique_key = ['block_date', 'blockchain', 'project', 'version', 'tx_hash', 'evt_index', 'trace_address']
-    , post_hook='{{ expose_spells(\'["optimism"]\',
-                                "project",
-                                "sushi",
-                                \'["msilb7"]\') }}'
     )
 }}
 
-{% set project_start_date = '2022-05-12' %} -- min(evt_block_time) from sushi_optimism.Pair_evt_Swap
+{% set project_start_date = '2022-05-12' %}
 
 with dexs as (
     -- Constant Product Pool

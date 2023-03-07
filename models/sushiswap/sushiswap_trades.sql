@@ -1,9 +1,9 @@
 {{ config(
         alias='trades',
-        post_hook='{{ expose_spells(\'["ethereum", "gnosis", "avalanche_c", "arbitrum", "fantom"]\',
+        post_hook='{{ expose_spells(\'["ethereum", "gnosis", "avalanche_c", "arbitrum", "fantom", "optimism"]\',
                         "project",
                         "sushiswap",
-                        \'["augustog", "hosuke", "Henrystats"]\') }}'
+                        \'["augustog", "hosuke", "Henrystats", "msilb7"]\') }}'
         )
 }}
 
@@ -31,8 +31,8 @@ FROM (
         token_pair,
         token_bought_amount,
         token_sold_amount,
-        CAST(token_bought_amount_raw AS DECIMAL(38,0)) AS token_bought_amount_raw,
-        CAST(token_sold_amount_raw AS DECIMAL(38,0)) AS token_sold_amount_raw,
+        token_bought_amount_raw,
+        token_sold_amount_raw,
         amount_usd,
         token_bought_address,
         token_sold_address,
