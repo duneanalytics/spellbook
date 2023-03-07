@@ -96,7 +96,7 @@ models:
         name: evt_index
         description: "Index of the corresponding trade event"
 
-  - name: integral_size_arbitrum_trades
+  - name: integral_arbitrum_size_trades
     meta:
       blockchain: arbitrum
       sector: dex

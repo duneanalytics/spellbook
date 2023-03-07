@@ -1,19 +1,18 @@
 {{ config(
-    schema = 'integral_ethereum_trades',
-    alias = 'trades',
+    alias = 'size_trades',
     partition_by = ['block_date'],
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
     unique_key = ['block_date', 'blockchain', 'project', 'version', 'tx_hash', 'evt_index', 'trace_address'],
-    post_hook='{{ expose_spells(\'["ethereum"]\',
+    post_hook='{{ expose_spells(\'["arbitrum"]\',
                                 "project",
                                 "integral",
                                 \'["integralhq"]\') }}'
     )
 }}
 
-{% set project_start_date = '2022-03-20' %}
+{% set project_start_date = '2022-07-12' %}
 
 WITH dexs AS
 (
@@ -24,22 +23,22 @@ WITH dexs AS
         t.sender AS maker,
         CASE WHEN amount0Out = 0 THEN amount1Out ELSE amount0Out END AS token_bought_amount_raw,
         CASE WHEN amount0In = 0 OR amount1Out = 0 THEN amount1In ELSE amount0In END AS token_sold_amount_raw,
-        NULL AS amount_usd,
+        CAST(NULL AS DOUBLE) AS amount_usd,
         CASE WHEN amount0Out = 0 THEN f.token1 ELSE f.token0 END AS token_bought_address,
         CASE WHEN amount0In = 0 OR amount1Out = 0 THEN f.token1 ELSE f.token0 END AS token_sold_address,
         t.contract_address AS project_contract_address,
         t.evt_tx_hash AS tx_hash,
         '' AS trace_address,
         t.evt_index
-    FROM {{ source('integral_size_ethereum', 'Pair_evt_Swap') }} t
-    INNER JOIN {{ source('integral_size_ethereum', 'Factory_evt_PairCreated') }} f
+    FROM {{ source('integral_size_arbitrum', 'TwapPair_evt_Swap') }} t
+    INNER JOIN {{ source('integral_size_arbitrum', 'TwapFactory_evt_PairCreated') }} f
         ON f.pair = t.contract_address
     {% if is_incremental() %}
     AND t.evt_block_time >= date_trunc("day", now() - interval '1 week')
     {% endif %}
 )
 SELECT
-    'ethereum' AS blockchain,
+    'arbitrum' AS blockchain,
     'integral' AS project,
     'size' AS version,
     TRY_CAST(date_trunc('DAY', dexs.block_time) AS date) AS block_date,
@@ -70,7 +69,7 @@ SELECT
     dexs.trace_address,
     dexs.evt_index
 FROM dexs
-INNER JOIN {{ source('ethereum', 'transactions') }} tx
+INNER JOIN {{ source('arbitrum', 'transactions') }} tx
     ON dexs.tx_hash = tx.hash
     {% if not is_incremental() %}
     AND tx.block_time >= '{{project_start_date}}'
@@ -80,14 +79,14 @@ INNER JOIN {{ source('ethereum', 'transactions') }} tx
     {% endif %}
 LEFT JOIN {{ ref('tokens_erc20') }} erc20a
     ON erc20a.contract_address = dexs.token_bought_address
-    AND erc20a.blockchain = 'ethereum'
+    AND erc20a.blockchain = 'arbitrum'
 LEFT JOIN {{ ref('tokens_erc20') }} erc20b
     ON erc20b.contract_address = dexs.token_sold_address
-    AND erc20b.blockchain = 'ethereum'
+    AND erc20b.blockchain = 'arbitrum'
 LEFT JOIN {{ source('prices', 'usd') }} p_bought
     ON p_bought.minute = date_trunc('minute', dexs.block_time)
     AND p_bought.contract_address = dexs.token_bought_address
-    AND p_bought.blockchain = 'ethereum'
+    AND p_bought.blockchain = 'arbitrum'
     {% if not is_incremental() %}
     AND p_bought.minute >= '{{project_start_date}}'
     {% endif %}
@@ -97,7 +96,7 @@ LEFT JOIN {{ source('prices', 'usd') }} p_bought
 LEFT JOIN {{ source('prices', 'usd') }} p_sold
     ON p_sold.minute = date_trunc('minute', dexs.block_time)
     AND p_sold.contract_address = dexs.token_sold_address
-    AND p_sold.blockchain = 'ethereum'
+    AND p_sold.blockchain = 'arbitrum'
     {% if not is_incremental() %}
     AND p_sold.minute >= '{{project_start_date}}'
     {% endif %}
