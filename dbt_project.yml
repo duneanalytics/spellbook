@@ -106,6 +106,8 @@ models:
         +schema: nft_polygon
       fantom:
         +schema: nft_fantom
+      goerli:
+        +schema: nft_goerli
 
     compound:
       +schema: compound
