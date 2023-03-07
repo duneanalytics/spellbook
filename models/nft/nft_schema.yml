@@ -20,9 +20,9 @@ models:
     meta:
       blockchain: ethereum, solana
       sector: nft
-      contributors: soispoke, hildobby, ilemi, 0xRob, cat, umer_h_adil
+      contributors: soispoke, hildobby, ilemi, 0xRob, cat, umer_h_adil, springzh
     config:
-      tags: ['nft', 'opensea', 'looksrare', 'x2y2', 'magiceden', 'sudoswap', 'foundation', 'element', 'zora', 'ethereum', 'bnb', 'avalanche_c', 'solana', 'events']
+      tags: ['nft', 'opensea', 'looksrare', 'x2y2', 'magiceden', 'sudoswap', 'foundation', 'element', 'zora', 'ethereum', 'bnb', 'avalanche_c', 'solana', 'events', 'polygon', 'aavegotchi']
     description: >
         NFT events
     columns:
@@ -142,9 +142,9 @@ models:
     meta:
       blockchain: ethereum, solana
       sector: nft
-      contributors: soispoke, hildobby, ilemi, cat
+      contributors: soispoke, hildobby, ilemi, cat, springzh
     config:
-      tags: ['nft', 'opensea', 'looksrare', 'x2y2', 'magiceden', 'sudoswap', 'foundation', 'element', 'zora', 'ethereum', 'bnb', 'avalanche_c', 'solana', 'trades','superrare']
+      tags: ['nft', 'opensea', 'looksrare', 'x2y2', 'magiceden', 'sudoswap', 'foundation', 'element', 'zora', 'ethereum', 'bnb', 'avalanche_c', 'solana', 'trades','superrare', 'polygon', 'aavegotchi']
     description: >
         NFT trades
     columns:
@@ -180,9 +180,9 @@ models:
     meta:
       blockchain: ethereum, solana
       sector: nft
-      contributors: soispoke, hildobby, umer_h_adil
+      contributors: soispoke, hildobby, umer_h_adil, springzh
     config:
-      tags: ['nft', 'opensea', 'looksrare', 'x2y2', 'magiceden', 'foundation', 'element', 'zora', 'ethereum', 'bnb', 'avalanche_c', 'solana', 'mints']
+      tags: ['nft', 'opensea', 'looksrare', 'x2y2', 'magiceden', 'foundation', 'element', 'zora', 'ethereum', 'bnb', 'avalanche_c', 'solana', 'mints', 'polygon', 'aavegotchi']
     description: >
         NFT mints
     columns:
@@ -256,9 +256,9 @@ models:
     meta:
       blockchain: ethereum, solana
       sector: nft
-      contributors: soispoke, hildobby, ilemi, cat
+      contributors: soispoke, hildobby, ilemi, cat, springzh
     config:
-      tags: ['nft', 'opensea', 'looksrare', 'x2y2', 'magiceden', 'sudoswap', 'foundation', 'element', 'zora', 'ethereum', 'bnb', 'avalanche_c', 'solana', 'fees','superrare']
+      tags: ['nft', 'opensea', 'looksrare', 'x2y2', 'magiceden', 'sudoswap', 'foundation', 'element', 'zora', 'ethereum', 'bnb', 'avalanche_c', 'solana', 'fees','superrare', 'polygon', 'aavegotchi']
     description: >
         NFT fees
     columns:

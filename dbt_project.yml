@@ -38,12 +38,19 @@ models:
       sql: "{{ optimize_spell(this, model.config.materialized) }}"
       transaction: true
     +materialized: view
+    +schema: no_schema    # this should be overriden in model specific configs
+
     aave:
       +schema: aave
       ethereum:
         +schema: aave_ethereum
       optimism:
         +schema: aave_optimism
+
+    aavegotchi:
+      +schema: aavegotchi
+      polygon:
+        +schema: aavegotchi_polygon
 
     balancer:
       +schema: balancer
@@ -55,6 +62,8 @@ models:
         +schema: balancer_polygon
       optimism:
         +schema: balancer_optimism
+      gnosis:
+        +schema: balancer_gnosis
 
     ens:
       +schema: ens
@@ -73,8 +82,6 @@ models:
 
     dex:
       +schema: dex
-      aggregator:
-        +schema: dex_aggregator
 
     nft:
       +schema: nft
@@ -120,7 +127,7 @@ models:
         +schema: uniswap_optimism
       polygon:
         +schema: uniswap_polygon
-    
+
     quickswap:
       +schema: quickswap
       polygon:
@@ -180,8 +187,8 @@ models:
         +schema: element_avalanche_c
 
 
-    abi:
-      +schema: abi
+#    abi:
+#      +schema: abi
 
     superrare:
       +schema: superrare
@@ -290,7 +297,7 @@ models:
         +schema: dodo_arbitrum
       optimism:
         +schema: dodo_optimism
-        
+
 
     spookyswap:
       +schema: spookyswap
@@ -453,7 +460,7 @@ models:
         +schema: trove_arbitrum
       ethereum:
         +schema: trove_ethereum
-        
+
     lifi:
       +schema: lifi
       fantom:
@@ -521,6 +528,8 @@ models:
         +schema: curvefi_optimism
       avalanche_c:
         +schema: curvefi_avalanche_c
+      fantom:
+        +schema: curvefi_fantom
 
     cow_protocol:
       +schema: cow_protocol
@@ -798,7 +807,7 @@ models:
         +schema: beethoven_x_optimism
       fantom:
         +schema: beethoven_x_fantom
-    
+
     zipswap:
       +schema: zipswap
       optimism:
