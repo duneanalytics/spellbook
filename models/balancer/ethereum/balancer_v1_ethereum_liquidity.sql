@@ -2,7 +2,10 @@
     config(
         schema='balancer_v1_ethereum',
         alias='liquidity',
-        materialized = 'table',
+        materialized = 'incremental',
+        file_format = 'delta',
+        incremental_strategy = 'merge',
+        unique_key = ['day', 'pool_id', 'token_address'],
         post_hook='{{ expose_spells_hide_trino(\'["ethereum"]\',
                                     "project",
                                     "balancer_v1",
@@ -17,8 +20,9 @@ WITH prices AS (
             AVG(price) AS price
         FROM {{ source('prices', 'usd') }}
         WHERE blockchain = 'ethereum'
-        AND minute >= DATE_TRUNC('day', NOW() - interval '1 day')
-        AND contract_address IN ('0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2', '0xba100000625a3754423978a60c9317c58a424e3d')
+        {% if is_incremental() %}
+        AND minute >= date_trunc("day", now() - interval '1 week')
+        {% endif %}
         GROUP BY 1, 2
     ),
     
@@ -30,8 +34,9 @@ WITH prices AS (
             SUM(sample_size) AS sample_size
         FROM {{ ref('dex_prices') }}
         WHERE blockchain = 'ethereum'
-        AND day >= DATE_TRUNC('day', NOW() - interval '1 day')
-        AND contract_address IN ('0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2', '0xba100000625a3754423978a60c9317c58a424e3d')
+        {% if is_incremental() %}
+        AND hour >= date_trunc("day", now() - interval '1 week')
+        {% endif %}
         GROUP BY 1, 2
         HAVING SUM(sample_size) > 5
         AND AVG(median_price) < 1e8
@@ -55,9 +60,9 @@ WITH prices AS (
             token,
             cumulative_amount
         FROM {{ ref('balancer_ethereum_balances') }} b
-        WHERE pool = '0x59a19d8c652fa0284f44113d0ff9aba70bd46fb4'
-        AND token IN ('0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2', '0xba100000625a3754423978a60c9317c58a424e3d')
-        AND b.day >= DATE_TRUNC('day', NOW() - interval '1 day')
+        {% if is_incremental() %}
+        WHERE day >= date_trunc("day", now() - interval '1 week')
+        {% endif %}
     ),
     
    cumulative_usd_balance AS (
@@ -80,17 +85,14 @@ WITH prices AS (
     pool_liquidity_estimates AS (
         SELECT
             b.day,
-            w.token_address,
             b.pool,
-            b.symbol,
             SUM(b.amount_usd) / SUM(w.normalized_weight) AS liquidity
         FROM cumulative_usd_balance b
         INNER JOIN {{ ref('balancer_v1_ethereum_pools_tokens_weights') }} w ON b.pool = w.pool_id
-        AND w.token_address IN ('0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2', '0xba100000625a3754423978a60c9317c58a424e3d')
         AND b.token = w.token_address
         AND b.amount_usd > 0
         AND w.normalized_weight > 0
-        GROUP BY 1, 2, 3, 4
+        GROUP BY 1, 2
     ),
     
     balancer_liquidity AS (
@@ -98,13 +100,13 @@ WITH prices AS (
             b.day,
             w.pool_id,
             --p.name AS pool_symbol,
-            b.token_address,
-            b.symbol AS token_symbol,
+            w.token_address,
+            t.symbol AS token_symbol,
             liquidity * normalized_weight AS usd_amount
         FROM pool_liquidity_estimates b
         LEFT JOIN {{ ref('balancer_v1_ethereum_pools_tokens_weights') }} w ON b.pool = w.pool_id
-        AND b.token_address = w.token_address
         AND w.normalized_weight > 0
+        LEFT JOIN tokens.erc20 t ON t.contract_address = w.token_address
         --LEFT JOIN pool_labels p ON p.address = w.pool_id
     )
     
