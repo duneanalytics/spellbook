@@ -836,6 +836,9 @@ models:
       optimism:
         +schema: zonic_optimism
 
+    method_ids:
+      +schema: method_ids
+
 seeds:
   spellbook:
     +schema: test_data
