@@ -652,6 +652,8 @@ models:
         +schema: kyberswap_ethereum
       optimism:
         +schema: kyberswap_optimism
+      polygon:
+        +schema: kyberswap_polygon
 
     hubble_exchange:
       +schema: hubble_exchange
