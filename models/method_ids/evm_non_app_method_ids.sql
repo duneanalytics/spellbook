@@ -68,7 +68,7 @@ FROM (
     FROM aggrregate_methods
     WHERE
         blockchains IS NULL --If Null, make an entry for all chains
-        OR array_contains(blockchains,'{{chain}}')
+        OR blockchains = '{{chain}}'
     {% if not loop.last %}
     UNION ALL
     {% endif %}
