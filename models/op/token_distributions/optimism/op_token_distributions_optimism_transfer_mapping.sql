@@ -120,10 +120,12 @@ WITH all_labels AS (
                     ELSE 1
                 END
                 )
+
+            GROUP BY 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17 --get uniques b/c of duplicated receiver addresses
             
             )
 
-        SELECT 
+        SELECT
             evt_block_time, evt_block_number, evt_index,
             from_address, to_address, tx_to_address, tx_from_address, evt_tx_hash,
             from_type, to_type, from_label, from_name, to_label, to_name, op_amount_decimal, tx_method
@@ -134,7 +136,7 @@ WITH all_labels AS (
 
         UNION ALL
         
-        SELECT 
+        SELECT
             t.evt_block_time, t.evt_block_number, t.evt_index,
             t.from_address, t.to_address, t.tx_to_address, t.tx_from_address, t.evt_tx_hash,
             t.from_type, t.to_type, t.from_label, t.from_name, t.to_label, t.to_name, t.op_amount_decimal, t.tx_method
