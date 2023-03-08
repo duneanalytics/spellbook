@@ -38,12 +38,19 @@ models:
       sql: "{{ optimize_spell(this, model.config.materialized) }}"
       transaction: true
     +materialized: view
+    +schema: no_schema    # this should be overriden in model specific configs
+
     aave:
       +schema: aave
       ethereum:
         +schema: aave_ethereum
       optimism:
         +schema: aave_optimism
+
+    aavegotchi:
+      +schema: aavegotchi
+      polygon:
+        +schema: aavegotchi_polygon
 
     balancer:
       +schema: balancer
@@ -55,6 +62,8 @@ models:
         +schema: balancer_polygon
       optimism:
         +schema: balancer_optimism
+      gnosis:
+        +schema: balancer_gnosis
 
     ens:
       +schema: ens
@@ -76,8 +85,6 @@ models:
 
     dex:
       +schema: dex
-      aggregator:
-        +schema: dex_aggregator
 
     nft:
       +schema: nft
@@ -100,6 +107,10 @@ models:
         +schema: nft_optimism
       polygon:
         +schema: nft_polygon
+      fantom:
+        +schema: nft_fantom
+      goerli:
+        +schema: nft_goerli
 
     compound:
       +schema: compound
@@ -122,6 +133,18 @@ models:
       polygon:
         +schema: uniswap_polygon
 
+    quickswap:
+      +schema: quickswap
+      polygon:
+        +schema: quickswap_polygon
+
+    paraswap:
+      +schema: paraswap
+      avalanche_c:
+        +schema: paraswap_avalanche_c
+      fantom:
+        +schema: paraswap_fantom
+
     nomiswap:
       +schema: nomiswap
       bnb:
@@ -139,6 +162,15 @@ models:
         +schema: sushiswap_arbitrum
       fantom:
         +schema: sushiswap_fantom
+      optimism:
+        +schema: sushiswap_optimism
+
+    openocean:
+      +schema: openocean
+      fantom:
+        +schema: openocean_fantom
+      avalanche_c:
+        +schema: openocean_avalanche_c
 
     babyswap:
       +schema: babyswap
@@ -162,8 +194,8 @@ models:
         +schema: element_avalanche_c
 
 
-    abi:
-      +schema: abi
+#    abi:
+#      +schema: abi
 
     superrare:
       +schema: superrare
@@ -270,7 +302,10 @@ models:
         +schema: dodo_polygon
       arbitrum:
         +schema: dodo_arbitrum
-        
+      optimism:
+        +schema: dodo_optimism
+
+
     spookyswap:
       +schema: spookyswap
       fantom:
@@ -395,17 +430,17 @@ models:
         +schema: safe_ethereum
       optimism:
         +schema: safe_optimism
-      gnosis: 
+      gnosis:
         +schema: safe_gnosis
-      polygon: 
+      polygon:
         +schema: safe_polygon
-      bnb: 
+      bnb:
         +schema: safe_bnb
-      avalanche_c: 
+      avalanche_c:
         +schema: safe_avalanche_c
-      fantom: 
+      fantom:
         +schema: safe_fantom
-      arbitrum: 
+      arbitrum:
         +schema: safe_arbitrum
 
     liquidifty:
@@ -419,11 +454,24 @@ models:
       +schema: nftb
       bnb:
         +schema: nftb_bnb
-    
+
     nftrade:
       +schema: nftrade
       bnb:
         +schema: nftrade_bnb
+
+
+    trove:
+      +schema: trove
+      arbitrum:
+        +schema: trove_arbitrum
+      ethereum:
+        +schema: trove_ethereum
+
+    lifi:
+      +schema: lifi
+      fantom:
+        +schema: lifi_fantom
 
     spiritswap:
       +schema: spiritswap
@@ -439,6 +487,11 @@ models:
       +schema: cryptopunks
       ethereum:
         +schema: cryptopunks_ethereum
+
+    spaceid:
+      +schema: spaceid
+      bnb:
+        +schema: spaceid_bnb
 
     spartacus_exchange:
       +schema: spartacus_exchange
@@ -482,6 +535,8 @@ models:
         +schema: curvefi_optimism
       avalanche_c:
         +schema: curvefi_avalanche_c
+      fantom:
+        +schema: curvefi_fantom
 
     cow_protocol:
       +schema: cow_protocol
@@ -593,6 +648,9 @@ models:
       +schema: pancakeswap
       bnb:
         +schema: pancakeswap_bnb
+      ethereum:
+        +schema: pancakeswap_ethereum
+
     bancor:
       +schema: bancor
       ethereum:
@@ -668,18 +726,18 @@ models:
         +schema: zeroex_ethereum
       optimism:
         +schema: zeroex_optimism
-        
+
       polygon:
         +schema: zeroex_polygon
-        
+
       avalanche_c:
         +schema: zeroex_avalanche_c
       fantom:
         +schema: zeroex_fantom
-        
+
       arbitrum:
         +schema: zeroex_arbitrum
-      
+
 
     wombat:
       +schema: wombat
@@ -744,22 +802,24 @@ models:
       +schema: ovm
       optimism:
         +schema: ovm_optimism
-    
+
     rubicon:
       +schema: rubicon
       optimism:
         +schema: rubicon_optimism
-    
+
     beethoven_x:
       +schema: beethoven_x
       optimism:
         +schema: beethoven_x_optimism
-    
+      fantom:
+        +schema: beethoven_x_fantom
+
     zipswap:
       +schema: zipswap
       optimism:
         +schema: zipswap_optimism
-        
+
     sharky:
       +schema: sharky
       solana:
@@ -777,6 +837,24 @@ models:
       +schema: op_token
       # optimism:
       #   +schema: op_token_optimism
+
+    nftearth:
+      +schema: nftearth
+      optimism:
+        +schema: nftearth_optimism
+
+    zonic:
+      +schema: zonic
+      optimism:
+        +schema: zonic_optimism
+    
+    pooltogether:
+      +schema: pooltogether
+      ethereum:
+        +schema: pooltogether_ethereum
+
+    method_ids:
+      +schema: method_ids
 
 seeds:
   spellbook:
@@ -873,7 +951,7 @@ seeds:
           token_bought_address: string
           token_bought_amount: float
           token_sold_address: string
-          token_sold_amount: float  
+          token_sold_amount: float
       pools:
         +column_types:
           blockchain: string
@@ -1213,9 +1291,8 @@ seeds:
             token_id: string
     pancakeswap:
       bnb:
-        +enabled: true
-        +schema: test_data
         pancakeswap_nft_trades_samples:
+          column_types:
             block_time: timestamp
             token_id: int
             seller: string
@@ -1223,12 +1300,11 @@ seeds:
             tx_hash: string
             block_number: int
             amount_original: double
-    
+
     liquidifty:
       bnb:
-        +enabled: true
-        +schema: test_data
         liquidifty_bnb_nft_trades_samples:
+          column_types:
             block_number: int
             version: string
             token_id: string
@@ -1237,9 +1313,8 @@ seeds:
             tx_hash: string
             amount_original: double
       ethereum:
-        +enabled: true
-        +schema: test_data
         liquidifty_ethereum_nft_trades_samples:
+          column_types:
             block_number: int
             version: string
             token_id: string
@@ -1250,9 +1325,8 @@ seeds:
 
     nftrade:
       bnb:
-        +enabled: true
-        +schema: test_data
         nftrade_nft_trades_samples:
+           column_types:
             block_number: int
             token_id: string
             seller: string
@@ -1262,15 +1336,34 @@ seeds:
 
     tofu:
       arbitrum:
-        +enabled: true
-        +schema: test_data
         tofu_arbitrum_nft_trades_samples:
-            block_number: int
-            token_id: string
-            seller: string
-            buyer: string
-            tx_hash: string
-            amount_original: double  
+            column_types:
+              block_number: int
+              token_id: string
+              seller: string
+              buyer: string
+              tx_hash: string
+              amount_original: double
+
+    trove:
+      arbitrum:
+        trove_arbitrum_nft_trades_samples:
+            column_types:
+              block_number: int
+              token_id: string
+              seller: string
+              buyer: string
+              tx_hash: string
+              amount_original: double
+      ethereum:
+        trove_ethereum_nft_trades_samples:
+            column_types:
+              block_number: int
+              token_id: string
+              seller: string
+              buyer: string
+              tx_hash: string
+              amount_original: double
 
     foundation:
       ethereum:

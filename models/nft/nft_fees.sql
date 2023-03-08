@@ -8,7 +8,8 @@
 
 
 {% set nft_models = [
- ref('archipelago_ethereum_fees')
+ ref('aavegotchi_polygon_fees')
+,ref('archipelago_ethereum_fees')
 ,ref('blur_ethereum_fees')
 ,ref('element_fees')
 ,ref('foundation_ethereum_fees')
@@ -22,8 +23,10 @@
 ,ref('pancakeswap_bnb_nft_fees')
 ,ref('quix_optimism_fees')
 ,ref('nftrade_bnb_fees')
+,ref('zonic_optimism_fees')
 ,ref('nftb_bnb_fees')
 ,ref('tofu_fees')
+,ref('nftearth_optimism_fees')
 ] %}
 
 
