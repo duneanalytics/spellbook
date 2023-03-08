@@ -29,7 +29,7 @@ dexs as (
             _tokenOut as token_bought_address, 
             contract_address as project_contract_address, 
             evt_tx_hash as tx_hash,
-            '' as trace_address,
+            CAST(ARRAY() as array<bigint>) AS trace_address,
             evt_index
         FROM 
         {{ source('yield_yak_avalanche_c', 'YakRouter_evt_YakSwap') }}
