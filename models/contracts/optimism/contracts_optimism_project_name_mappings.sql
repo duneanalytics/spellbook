@@ -10,7 +10,7 @@
 }}
 
 select 
-  dune_name
+  cast(dune_name as varchar(250)) AS dune_name
   ,cast(mapped_name as varchar(250)) AS mapped_name
 from (
     values
@@ -19,7 +19,7 @@ from (
     ,('aave_v3', 'Aave')
     ,('perp_v2', 'Perpetual Protocol')
     ,('synthetix_futures', 'Kwenta')
-    ,('zeroex', '0x Project' )
+    ,('zeroex', 'Zeroex (0x)' )
     ,('uniswap_v3', 'Uniswap')
     ,('Uniswap V3', 'Uniswap')
     ,('oneinch', '1inch')
