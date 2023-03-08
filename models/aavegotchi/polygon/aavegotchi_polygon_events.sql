@@ -6,10 +6,10 @@
     file_format = 'delta',
     incremental_strategy = 'merge',
     unique_key = ['block_time', 'unique_trade_id'],
-    post_hook='{{ expose_spells(\'["polygon"]\'
-                              "project",
-                              "aavegotchi",
-                              \'["springzh"]\') }}'
+    post_hook='{{ expose_spells(\'["polygon"]\',
+                                "project",
+                                "aavegotchi",
+                                \'["springzh"]\') }}'
     )
 }}
 
