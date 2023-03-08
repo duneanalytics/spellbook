@@ -19,7 +19,19 @@
 
 
 WITH all_labels AS (
-    SELECT address, label, proposal_name, address_descriptor, project_name FROM {{ ref('op_token_distributions_optimism_all_distributions_labels') }}
+-- get distinct address & label & project
+    SELECT address, label, project_name
+        FROM (
+        SELECT address, label, project_name, ROW_NUMBER(PARTITION BY address ORDER BY rn ASC) AS rnk
+        FROM (
+            SELECT 
+            address, label, project_name,
+                CASE WHEN label = 'CEX' THEN 99 ELSE 1 END AS rn
+            FROM {{ ref('op_token_distributions_optimism_all_distributions_labels') }}
+            GROUP BY 1,2,3
+        ) a
+    ) f 
+    WHERE rnk = 1
 )
 
 , disperse_contracts AS (

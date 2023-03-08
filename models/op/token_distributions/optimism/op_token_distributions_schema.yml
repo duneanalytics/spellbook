@@ -139,8 +139,8 @@ models:
         name: project_address
       - &project_name
         name: project_name
-      - *tx_to_address
       - *tx_from_address
+      - *tx_to_address
       - &op_approved_to_project
         name: op_approved_to_project
 
@@ -175,6 +175,8 @@ models:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
               - address
+              - proposal_name
+              - address_descriptor
     columns:
       - &address
         name: address
@@ -194,14 +196,12 @@ models:
       tags: ['optimism','op','grants','addresses']
     description: >
         A table containing unifying labels for tagged wallets that we want to track distributions for
-    tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-              - address
     columns:
     - *address
-    - &address_name
-      name: address_name
+    - *label
+    - *proposal_name
+    - *address_descriptor
+    - *project_name
   
   - name: op_token_distributions_optimism_other_tags
     meta:
@@ -215,10 +215,12 @@ models:
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
+              - label
               - address
     columns:
+      - *label
       - *address
-      - *address_name
+      - &address_name
   
   - name: op_token_distributions_optimism_disperse_contracts
     meta:
