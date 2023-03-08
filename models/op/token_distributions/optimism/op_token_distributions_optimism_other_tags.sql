@@ -36,14 +36,13 @@ FROM (values
             ,('0x4cd804c696f54c419b75fc241a17c512bfb13df4','Perp Foundation')
             ,('0x7702dc73e8f8d9ae95cf50933adbee68e9f1d725','dForceOP Pool')
             ,('0xc5785b0ce1095213465a4a4f28c19269cb4b35ec','Lyra Unknown')
-            ,('0x9fa23d27bc93533cd29e6038275611c829813147','Aelin whale')
-            ,('0x897a7f6af47881c62d7ca7e3dc5bd8a1341ad8ae', 'xToken LP whale')
-            ,('0x68f5c0a2de713a54991e01858fd27a3832401849', 'xToken LP whale')
-            ,('0xcc98cfdc5f5480d8dd0a0d0a7f80506eb30d5159', 'xToken LP whale')
+            ,('0x9fa23d27bc93533cd29e6038275611c829813147','Aelin user')
+            ,('0x897a7f6af47881c62d7ca7e3dc5bd8a1341ad8ae', 'xToken LP')
+            ,('0x68f5c0a2de713a54991e01858fd27a3832401849', 'xToken LP ')
+            ,('0xcc98cfdc5f5480d8dd0a0d0a7f80506eb30d5159', 'xToken LP')
             ,('0x574a21fe5ea9666dbca804c9d69d8caf21d5322b', 'Rubicon LP')
             ,('0x1111111254760f7ab3f16433eea9304126dcd199', '1inch Swap')
             ,('0x1111111254EEB25477B68fb85Ed929f73A960582', '1inch Swap')
-            -- ,('0x74ffc2d7a5bf1f74d971707ec9aaa7ffdbcce05c99a4b8929f07a6d1223e76e6','')
             
     ) a (address, address_name)
     ) b
