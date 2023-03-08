@@ -219,7 +219,8 @@ valued_trades as (
            limit_sell_amount,
            limit_buy_amount,
            valid_to,
-           flags
+           flags,
+           case when (flags % 2) = 0 then 'SELL' else 'BUY' end as order_type
     FROM trades_with_token_units trades
     JOIN uid_to_app_id
         ON uid = order_uid
