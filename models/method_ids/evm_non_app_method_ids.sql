@@ -39,7 +39,7 @@ SELECT NULL as blockchains, method_id, method_descriptor
 
 UNION ALL --Optimism-Specific Methods
 
-SELECT array('optimism') AS blockchains, method_id, method_descriptor
+SELECT 'optimism' AS blockchains, method_id, method_descriptor
     FROM (values
          ('0xcbd4ece9','Bridge In (L1 to L2)') --'Bridge In (L1 to L2)'
         ,('0x32b7006d','Bridge Out (L2 to L1)') --'Bridge Out (L2 to L1)'
@@ -49,7 +49,7 @@ SELECT array('optimism') AS blockchains, method_id, method_descriptor
 
 UNION ALL --Arbitrum-Specific Methods
 
-SELECT array('arbitrum') AS blockchains, method_id, method_descriptor
+SELECT 'arbitrum' AS blockchains, method_id, method_descriptor
     FROM (values
          ('0x6bf6a42d','ARBOS System Transaction') --ARBOS System Transaction
         ,('0xc9f95d32', 'Submit Retryable Tx') --Arb RetryableTx
