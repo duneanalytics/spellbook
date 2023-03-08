@@ -1,6 +1,6 @@
 {{ config(
         alias ='trades',
-        post_hook='{{ expose_spells(\'["arbitrum"]\',
+        post_hook='{{ expose_spells(\'["arbitrum","ethereum"]\',
                                 "project",
                                 "integral",
                                 \'["integralhq"]\') }}'
