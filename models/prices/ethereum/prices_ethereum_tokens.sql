@@ -28,6 +28,7 @@ FROM
     ("aion-aion", "ethereum", "AION", "0x4ceda7906a5ed2179785cd3a40a69ee8bc99c466", 8),
     ("akro-akropolis", "ethereum", "AKRO", "0x8ab7404063ec4dbcfd4598215992dc3f8ec853d7", 18),
     ("alcx-alchemix", "ethereum", "ALCX", "0xdbdb4d16eda451d0503b854cf79d55697f90c8df", 18),
+    ("amkt-alongside-crypto-market-index", "ethereum", "AMKT", "0xf17a3fe536f8f7847f1385ec1bc967b2ca9cae8d", 18),
     ("alpha-alpha-finance", "ethereum", "ALPHA", "0xa1faa113cbe53436df28ff0aee54275c13b40975", 18),
     ("amb-ambrosus", "ethereum", "AMB", "0x4dc3643dbc642b72c158e7f3d2ff232df61cb6ce", 18),
     ("amn-amon", "ethereum", "AMN", "0x737f98ac8ca59f2c68ad658e3c3d8c8963e40a4c", 18),
