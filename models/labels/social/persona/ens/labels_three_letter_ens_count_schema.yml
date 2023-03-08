@@ -1,7 +1,7 @@
 version: 2
 
 models:
-  - name: three_letter_ens_count_schema
+  - name: labels_three_letter_ens_count
     meta:
       blockchain: ethereum
       sector: labels
