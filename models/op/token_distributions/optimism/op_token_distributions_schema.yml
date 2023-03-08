@@ -221,6 +221,7 @@ models:
       - *label
       - *address
       - &address_name
+        name: address_name
   
   - name: op_token_distributions_optimism_disperse_contracts
     meta:
