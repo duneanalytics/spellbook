@@ -1,4 +1,5 @@
 {{ config(
+    schema = 'ovm_optimism',
     alias = 'cross_domain_messenger_messages',
     partition_by = ['l2_block_date'],
     materialized = 'incremental',
