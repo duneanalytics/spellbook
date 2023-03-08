@@ -31,12 +31,16 @@ models:
         name: evt_tx_hash
       - &from_address
         name: from_address
+        description: "Token transfer from address"
       - &to_address
         name: to_address
+        description: "Token transfer to address"
       - &tx_to_address
         name: tx_to_address
+        description: "Transaction to address"
       - &tx_from_address
         name: tx_from_address
+        description: "Transaction from address"
       - &from_type
         name: from_type
       - &to_type
@@ -51,20 +55,25 @@ models:
         name: to_name
       - &op_amount_decimal
         name: op_amount_decimal
+        description: "OP Amount Transferred"
       - &tx_method
         name: tx_method
+        description: "First 4 bytes of calldata, indicating the function call"
       - &op_claimed
         name: op_claimed
+        description: "OP Amount - if marked as claimed by an end user"
       - &op_deployed
         name: op_deployed
+        description: "OP Amount - if marked as deployed, leaving the project's wallet(s)"
       - &op_to_project
         name: op_to_project
+        description: "OP Amount - if transferred to the project"
       - &op_between_projects
         name: op_between_projects
+        description: "OP Amount - if transferred between projects receiving grants"
       - &op_incoming_clawback
         name: op_incoming_clawback
-      - &op_sold
-        name: op_sold
+        description: "OP Amount - if marked as clawed back by the project"
       - &og_to_name
         name: og_to_name
         description: "Orignal name for the to address (without additional mapping)"
