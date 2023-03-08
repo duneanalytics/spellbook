@@ -311,19 +311,19 @@ direct_uniswapv2 AS (
             swap.contract_address AS maker,
             LAST_VALUE(swap.to) OVER ( PARTITION BY swap.evt_tx_hash ORDER BY swap.evt_index) AS taker,
             CASE
-                WHEN swap.amount0In > swap.amount0Out THEN pair.token0
+                WHEN CAST(swap.amount0In AS float) > CAST(swap.amount0Out AS float) THEN pair.token0
                 ELSE pair.token1
             END AS taker_token,
             CASE
-                WHEN swap.amount0In > swap.amount0Out THEN pair.token1
+                WHEN CAST(swap.amount0In AS float) > CAST(swap.amount0Out AS float) THEN pair.token1
                 ELSE pair.token0
             END AS maker_token,
             CASE
-                WHEN swap.amount0In > swap.amount0Out THEN swap.amount0In - swap.amount0Out
+                WHEN CAST(swap.amount0In AS float) > CAST(swap.amount0Out AS float) THEN swap.amount0In - swap.amount0Out
                 ELSE swap.amount1In - swap.amount1Out
             END AS taker_token_amount_raw,
             CASE
-                WHEN swap.amount0In > swap.amount0Out THEN swap.amount1Out - swap.amount1In
+                WHEN CAST(swap.amount0In AS float) > CAST(swap.amount0Out AS float) THEN swap.amount1Out - swap.amount1In
                 ELSE swap.amount0Out - swap.amount0In
             END AS maker_token_amount_raw,
             'Uniswap V2 Direct' AS type,
@@ -352,19 +352,19 @@ direct_sushiswap AS (
             swap.contract_address AS maker,
             LAST_VALUE(swap.to) OVER (PARTITION BY swap.evt_tx_hash ORDER BY swap.evt_index) AS taker,
             CASE
-                WHEN swap.amount0In > swap.amount0Out THEN pair.token0
+                WHEN CAST(swap.amount0In AS float) > CAST(swap.amount0Out AS float) THEN pair.token0
                 ELSE pair.token1
             END AS taker_token,
             CASE
-                WHEN swap.amount0In > swap.amount0Out THEN pair.token1
+                WHEN CAST(swap.amount0In AS float) > CAST(swap.amount0Out AS float) THEN pair.token1
                 ELSE pair.token0
             END AS maker_token,
             CASE
-                WHEN swap.amount0In > swap.amount0Out THEN swap.amount0In - swap.amount0Out
+                WHEN CAST(swap.amount0In AS float) > CAST(swap.amount0Out AS float) THEN swap.amount0In - swap.amount0Out
                 ELSE swap.amount1In - swap.amount1Out
             END AS taker_token_amount_raw,
             CASE
-                WHEN swap.amount0In > swap.amount0Out THEN swap.amount1Out - swap.amount1In
+                WHEN CAST(swap.amount0In AS float) > CAST(swap.amount0Out AS float) THEN swap.amount1Out - swap.amount1In
                 ELSE swap.amount0Out - swap.amount0In
             END AS maker_token_amount_raw,
             'Sushiswap Direct' AS type,
