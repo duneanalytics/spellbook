@@ -13,7 +13,7 @@ SELECT *
 FROM (
   select 
     lower(creator_address) as creator_address
-    ,contract_project
+    ,cast(contract_project as varchar(250)) AS contract_project
   from 
       (values
       ('0x932607335869cff6349ef450e74c83a3b871a9ff', 'Lyra V1')
@@ -344,7 +344,7 @@ FROM (
       ,('0x11F11121DF7256C40339393b0FB045321022ce44', 'LiFi')
       ,('0xcde47c1a5e2d60b9ff262b0a3b6d486048575ad9', 'OP')
       ,('0x59ca05674f5073f95f292aaca2d28a7dc80f12d6', 'Mirror')
-      ,('0xedcd79f34db8b78cd7a55e04dbf991ecd1a5c0f4', '0x')
+      ,('0xedcd79f34db8b78cd7a55e04dbf991ecd1a5c0f4', '0x Project')
       ,('0x48cff7ff77b2bf83e4a6f843b5b1709601671e83', 'Clipper')
       ,('0x1a3daa6f487a480c1ad312b90fd0244871940b66', 'Quix')
       ,('0x8df57e3d9ddde355dce1adb19ebce93419ffa0fb', 'Revert Finance')
