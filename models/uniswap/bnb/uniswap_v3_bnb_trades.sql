@@ -32,9 +32,9 @@ WITH dexs AS
         ,'' AS trace_address
         ,t.evt_index
     FROM
-        {{ source('uniswap_v3_bnb', 'UniswapV3Pool_evt_Swap') }} t
+        {{ source('uniswap_v3_bnb', 'Pair_evt_Swap') }} t
     INNER JOIN 
-        {{ source('uniswap_v3_bnb', 'factory_bnb_evt_PoolCreated') }} f
+        {{ source('uniswap_v3_bnb', 'UniswapV3Factory_evt_PoolCreated') }} f
         ON f.pool = t.contract_address
     {% if is_incremental() %}
     WHERE t.evt_block_time >= date_trunc("day", now() - interval '1 week')
