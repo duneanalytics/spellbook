@@ -11,7 +11,7 @@
 
 select 
   lower(contract_address) as contract_address
-  ,contract_project
+  ,cast(contract_project as varchar(250)) AS contract_project
   ,contract_name
 from 
     (values 
