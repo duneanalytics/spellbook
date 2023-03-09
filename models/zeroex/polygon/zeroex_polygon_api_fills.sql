@@ -159,7 +159,7 @@ otc_fills AS (
     {% endif %}
 
 ),
-/*
+
 ERC20BridgeTransfer AS (
     SELECT 
             logs.tx_hash,
@@ -188,6 +188,7 @@ ERC20BridgeTransfer AS (
     {% endif %}
 
 ), 
+/*
 BridgeFill AS (
     SELECT 
             logs.tx_hash,
@@ -329,9 +330,9 @@ all_tx AS (
     UNION ALL
     SELECT *
     FROM ERC20BridgeTransfer
-    UNION ALL
+    /* UNION ALL
     SELECT *
-    FROM BridgeFill
+    FROM BridgeFill */
     UNION ALL 
     SELECT *
     FROM v4_limit_fills_no_bridge
