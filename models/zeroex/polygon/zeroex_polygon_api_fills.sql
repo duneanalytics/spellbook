@@ -125,7 +125,7 @@ v4_limit_fills_no_bridge AS (
     WHERE evt_block_time >= '{{zeroex_v4_start_date}}'
     {% endif %}
 ),
-*/
+
 otc_fills AS (
     SELECT 
             fills.evt_tx_hash               AS tx_hash,
