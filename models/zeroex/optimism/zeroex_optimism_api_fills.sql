@@ -319,8 +319,6 @@ all_tx AS (
     UNION ALL
     SELECT *
     FROM ERC20BridgeTransfer
-    UNION ALL
-
     UNION ALL 
     SELECT *
     FROM v4_rfq_fills_no_bridge
