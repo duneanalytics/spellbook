@@ -30,6 +30,7 @@ FROM minutes d
 INNER JOIN {{ ref('transfers_ethereum_erc721_agg') }} b ON (b.evt_block_number_index <= d.evt_block_number_index AND d.evt_block_number_index < b.next_evt)
 LEFT JOIN {{ ref('tokens_ethereum_nft') }} nft_tokens ON (nft_tokens.contract_address = b.token_address)
 where num_tokens = 1
-having max(evt_block_number_index)
 group by 1,2,4,5,6,7,8
+having max(evt_block_number_index)
+
 --only here can we drop the prior owners with "num_token=1" to have a continuos chain of ownership for a specific NFT
