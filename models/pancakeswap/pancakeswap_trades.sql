@@ -10,6 +10,8 @@
 {% set pancake_models = [
     ref('pancakeswap_v2_bnb_trades')
 ,   ref('pancakeswap_v2_ethereum_trades')
+,   ref('pancakeswap_v2_bnb_mmpool')
+,   ref('pancakeswap_v2_ethereum_mmpool')
 ] %}
 
 
