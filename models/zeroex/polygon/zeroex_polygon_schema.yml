@@ -203,8 +203,4 @@ models:
       - *swap_flag
       - &fills_within
         name: fills_within
-<<<<<<< HEAD
-        description: "fills in then multihop, if present" 
-=======
         description: "fills in then multihop, if present"          
->>>>>>> e5aadfc609cc0c4f9a73b0a911c3e60666e5632d
