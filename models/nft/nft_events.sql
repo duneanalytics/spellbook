@@ -7,7 +7,8 @@
 }}
 
 {% set nft_models = [
- ref('archipelago_ethereum_events')
+ ref('aavegotchi_polygon_events')
+,ref('archipelago_ethereum_events')
 ,ref('blur_ethereum_events')
 ,ref('cryptopunks_ethereum_events')
 ,ref('element_events')

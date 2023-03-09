@@ -138,7 +138,7 @@ FROM
     ("sfm-safemoon", "bnb", "SFM", "0x42981d0bfbaf196529376ee702f2a9eb9092fcb5", 9),
     ("mnft-marvelous-nfts", "bnb", "MNFT", "0x33be7644c0e489b3a0c639d103392d4f3e338158", 18),
     ("bets-betswirl", "bnb", "BETS", "0x3e0a7c7db7bb21bda290a80c9811de6d47781671", 18),
-    ("floki-floki-inu", "bnb", "FLOKI", "0xfb5b838b6cfeedc2873ab27866079ac55363d37e", 18),
+    ("floki-floki-inu", "bnb", "FLOKI", "0xfb5b838b6cfeedc2873ab27866079ac55363d37e", 9),
     ("wom-wombat-exchange", "bnb", "WOM", "0xad6742a35fb341a9cc6ad674738dd8da98b94fb1", 18),
     ("hay-hay", "bnb", "HAY", "0x0782b6d8c4551b9760e74c0545a9bcd90bdc41e5", 18),
     ("bnbx-stader-bnbx", "bnb", "BNBx", "0x1bdd3cf7f79cfb8edbb955f20ad99211551ba275", 18),
@@ -180,7 +180,6 @@ FROM
     ("usdd-usdd" ,"bnb" ,"USDD" ,"0xd17479997f34dd9156deef8f95a52d81d265be9c" ,18),
     ("alpaca-alpaca-finance","bnb" ,"ALPACA" ,"0x8f0528ce5ef7b51152a59745befdd91d97091d2f" ,18),
     ("ppp-playposeidon-nft" ,"bnb" ,"PPP" ,"0xce355300b9d7909f577640a3fb179cf911a23fbb" ,18),
-    ("wirtual-wirtual","bnb" ,"WIRTUAL" ,"0xa19d3f4219e2ed6dc1cb595db20f70b8b6866734" ,18),
     ("ape-apecoin", "bnb" ,"APE" ,"0x0b079b33b6e72311c6be245f9f660cc385029fc3",18),
     ("metis-metis-token","bnb" ,"Metis" ,"0xe552fb52a4f19e44ef5a967632dbc320b0820639" ,18),
     ("xen-xen-crypto", "bnb", "XEN", "0x2AB0e9e4eE70FFf1fB9D67031E44F6410170d00e", 18),
@@ -196,6 +195,7 @@ FROM
     ("pstn-piston", "bnb", "PSTN", "0xBfACD29427fF376FF3BC22dfFB29866277cA5Fb4", 18),
     ("ocean-ocean-protocol", "bnb", "OCEAN", "0x3516141b1ac8751c2042a8a1bc411ab8655464ac", 18),
     ("ole-openleverage", "bnb", "OLE", "0xa865197a84e780957422237b5d152772654341f3", 18),
-    ("stg-stargatetoken","bnb","STG","0xb0d502e938ed5f4df2e681fe6e419ff29631d62b",18)
+    ("stg-stargatetoken","bnb","STG","0xb0d502e938ed5f4df2e681fe6e419ff29631d62b",18),
+    ("ico-axelar", "bnb", "AXL", "0x8b1f4432f943c465a973fedc6d7aa50fc96f1f65", 6)
     
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)
