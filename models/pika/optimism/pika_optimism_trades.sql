@@ -7,11 +7,18 @@
         )
 }}
 
+{% set pika_optimism_trade_models = [
+    ref('pika_v1_optimism_trades')
+    , ref('pika_v2_optimism_trades')
+    , ref('pika_v3_optimism_trades')
+] %}
+
 SELECT *
 FROM
 (
+    {% for pika_trades in pika_optimism_trade_models %}
     SELECT
-        blockchain
+		blockchain
 		,block_date
         ,block_time
         ,virtual_asset
@@ -31,51 +38,9 @@ FROM
         ,tx_from
         ,tx_to
         ,evt_index
-    FROM {{ ref('pika_v1_optimism_trades') }}
+    FROM {{ pika_trades }}
+    {% if not loop.last %}
     UNION ALL
-    SELECT
-        blockchain
-		,block_date
-        ,block_time
-        ,virtual_asset
-        ,underlying_asset
-        ,market
-        ,market_address
-        ,volume_usd
-        ,fee_usd
-        ,margin_usd
-        ,trade
-        ,project
-        ,version
-        ,frontend
-        ,trader
-        ,volume_raw
-        ,tx_hash
-        ,tx_from
-        ,tx_to
-        ,evt_index
-    FROM {{ ref('pika_v2_optimism_trades') }}
-    UNION ALL
-    SELECT
-        blockchain
-		,block_date
-        ,block_time
-        ,virtual_asset
-        ,underlying_asset
-        ,market
-        ,market_address
-        ,volume_usd
-        ,fee_usd
-        ,margin_usd
-        ,trade
-        ,project
-        ,version
-        ,frontend
-        ,trader
-        ,volume_raw
-        ,tx_hash
-        ,tx_from
-        ,tx_to
-        ,evt_index
-    FROM {{ ref('pika_v3_optimism_trades') }}
+    {% endif %}
+    {% endfor %}
 )
