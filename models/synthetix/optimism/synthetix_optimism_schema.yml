@@ -20,6 +20,10 @@ models:
             - version
             - tx_hash
             - evt_index
+      - check_perpetuals_seed:
+          blockchain: optimism
+          project: Synthetix
+          version: 1
     columns:
       - &blockchain
         name: blockchain
