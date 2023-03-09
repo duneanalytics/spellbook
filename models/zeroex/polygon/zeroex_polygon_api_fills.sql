@@ -335,7 +335,7 @@ all_tx AS (
     UNION ALL 
     SELECT *
     FROM v4_limit_fills_no_bridge
-    
+    UNION ALL 
     SELECT *
     FROM NewBridgeFill 
     UNION ALL
