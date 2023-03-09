@@ -1,7 +1,7 @@
 version: 2
 
 models:
-  - name: pancakeswap_v2_ethereum_trades
+  - name: pancakeswap_v2_ethereum_amm_trades
     meta:
       blockchain: ethereum
       sector: dex
@@ -75,7 +75,7 @@ models:
 
 
 
-  - name: pancakeswap_v2_ethereum_mmpool
+  - name: pancakeswap_v2_ethereum_mmpool_trades
     meta:
       blockchain: ethereum
       sector: dex

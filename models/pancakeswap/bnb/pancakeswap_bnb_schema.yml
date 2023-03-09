@@ -1,7 +1,7 @@
 version: 2
 
 models:
-  - name: pancakeswap_v2_bnb_trades
+  - name: pancakeswap_v2_bnb_amm_trades
     meta:
       blockchain: bnb
       sector: dex
@@ -73,7 +73,7 @@ models:
       - name: evt_index
         description: "Index of the corresponding trade event"
 
-  - name: pancakeswap_v2_bnb_mmpool
+  - name: pancakeswap_v2_bnb_mmpool_trades
     meta:
       blockchain: bnb
       sector: dex
