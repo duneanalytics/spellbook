@@ -174,6 +174,9 @@ ERC20BridgeTransfer AS (
             bytea2numeric(substring(DATA, 219, 40)) AS maker_token_amount_raw,
             'ERC20BridgeTransfer'                   AS type,
             zeroex_tx.affiliate_address             AS affiliate_address,
+            zeroex_tx.to, 
+            zeroex_tx.from,
+            zeroex_tx.block_number,
             TRUE                                    AS swap_flag,
             FALSE                                   AS matcha_limit_order_flag
     FROM {{ source('polygon', 'logs') }} logs
