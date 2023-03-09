@@ -28,14 +28,14 @@ with
 
  staking_token_investment_trades as (
     select
-        tx_hash
+        *
     from (
-        select tx_hash
+        select tx_hash, evt_index, project, version
         from {{ ref('dex_aggregator_trades') }}
         where blockchain = 'ethereum'
         and token_bought_address in (select staking_token_address from staking_tokens)
         UNION ALL
-        select tx_hash
+        select tx_hash, evt_index, project, version
         from {{ ref('dex_trades') }}
         where blockchain = 'ethereum'
         and token_bought_address in (select staking_token_address from staking_tokens)
@@ -44,7 +44,7 @@ with
 
 select
   "ethereum" as blockchain,
-  tx_hash,
+  concat(tx_hash, evt_index, project, version) as tx_hash_key,
   "Staking token investment" AS name,
   "tx_hash" AS category,
   "gentrexha" AS contributor,
