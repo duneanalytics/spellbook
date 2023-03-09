@@ -12,7 +12,7 @@ with safes as (
         et.`from` as address,
         size(_owners) as num_owners,
         _threshold as threshold
-    from {{ source('gnosis_safe_ethereum', 'Safev0_1_0_call_setup') }} s
+    from {{ source('gnosis_safe_ethereum', 'Safev0.1.0_call_setup') }} s
     join {{ source('ethereum', 'traces') }} et
         on s.call_tx_hash = et.tx_hash and s.call_trace_address = et.trace_address
     where
