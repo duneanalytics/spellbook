@@ -92,7 +92,7 @@ v4_rfq_fills_no_bridge AS (
     WHERE evt_block_time >= '{{zeroex_v4_start_date}}'
     {% endif %}
 ),
-/*
+
 v4_limit_fills_no_bridge AS (
     SELECT 
             fills.evt_tx_hash AS tx_hash,
@@ -111,7 +111,7 @@ v4_limit_fills_no_bridge AS (
             zeroex_tx.from,
             zeroex_tx.block_number,
             (zeroex_tx.tx_hash IS NOT NULL) AS swap_flag,
-            (fills.feeRecipient = '0x86003b044f70dac0abc80ac8957305b6370893ed') AS matcha_limit_order_flag
+            (fills.feeRecipient = '0x9b858be6e3047d88820f439b240deac2418a2551') AS matcha_limit_order_flag
     FROM {{ source('zeroex_polygon', 'ExchangeProxy_evt_LimitOrderFilled') }} fills
     INNER JOIN zeroex_tx
         ON zeroex_tx.tx_hash = fills.evt_tx_hash
@@ -323,6 +323,7 @@ all_tx AS (
     SELECT *
     FROM direct_uniswapv3
     UNION ALL
+    */
     SELECT *
     FROM direct_PLP
     UNION ALL
@@ -331,10 +332,10 @@ all_tx AS (
     UNION ALL
     SELECT *
     FROM BridgeFill
-    UNION ALL
+    UNION ALL 
     SELECT *
     FROM v4_limit_fills_no_bridge
-    */
+    
     SELECT *
     FROM NewBridgeFill 
     UNION ALL
