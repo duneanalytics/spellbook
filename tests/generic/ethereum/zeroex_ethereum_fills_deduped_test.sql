@@ -1,18 +1,14 @@
 {% test zeroex_ethereum_fills_deduped_test(model, column_name, seed_file) %}
-
-WITH unit_tests AS
-(
-    SELECT 
-        CASE WHEN 
-            fills.{{ column_name }} = fills_sample.{{ column_name }}
-            THEN True ELSE False END 
-        AS amount_test
-    FROM {{ model }} fills
-    JOIN {{ seed_file }} fills_sample 
-        ON fills.tx_hash = fills_sample.tx_hash
-        AND fills.evt_index = fills_sample.evt_index
+WITH unit_tests as
+(SELECT case when test.maker_token = actual.maker_token 
+                and test.taker = actual.taker 
+                and test.taker_token = actual.taker_token
+then True else False end as test
+FROM {{ ref('zeroex_ethereum_api_fills_deduped') }} actual
+JOIN {{ ref('zeroex_ethereum_api_fills_deduped_sample') }} test 
+    ON test.tx_hash = actual.tx_hash AND test.evt_index = actual.evt_index
 )
-select *
-    from unit_tests
-    where amount_test = True
+select count(case when test = false then 1 else null end)/count(*) as pct_mismatch, count(*) as count_rows
+from unit_tests
+having count(case when test = false then 1 else null end) > count(*)*0.1
 {% endtest %}

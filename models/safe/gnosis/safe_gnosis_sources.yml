@@ -93,3 +93,23 @@ sources:
           - &singleton
             name: singleton
             description: "Singleton"
+  - name: xdai_gnosis
+    tables:
+      - name: BlockRewardAuRa_evt_AddedReceiver
+        loaded_at_field: evt_block_time
+        description: "Blockreward receptions"
+        columns:
+          - *contract_address
+          - *evt_block_number
+          - *evt_block_time
+          - *evt_index
+          - *evt_tx_hash
+          - &receiver
+            name: receiver
+            description: "Receiver"
+          - &amount
+            name: amount
+            description: "Amount"
+          - &bridge
+            name: bridge
+            description: "Bridge"

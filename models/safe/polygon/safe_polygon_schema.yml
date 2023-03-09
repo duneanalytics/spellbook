@@ -46,3 +46,34 @@ models:
         description: "Datetime of Safe creation"
       - &tx_hash
         name: tx_hash
+
+  - name: safe_polygon_matic_transfers
+    meta:
+      blockchain: polygon
+      project: safe
+      contributors: tschubotz
+    freshness:
+      warn_after: { count: 12, period: hour }
+      error_after: { count: 24, period: hour }
+    config:
+      tags: ['safe', 'transfers', 'polygon']
+    description: "MATIC transfers into or out of Safes"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_date
+            - address
+            - tx_hash
+            - trace_address
+    columns:
+      - name: address
+        description: "Safe contract address"
+      - *block_date
+      - name: block_time
+        description: "Datetime of block"
+      - &amount_raw
+        name: amount_raw
+        description: "Raw amount of transferred MATIC"
+      - *tx_hash
+      - name: trace_address
+        description: ""

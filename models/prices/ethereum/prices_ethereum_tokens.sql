@@ -28,6 +28,7 @@ FROM
     ("aion-aion", "ethereum", "AION", "0x4ceda7906a5ed2179785cd3a40a69ee8bc99c466", 8),
     ("akro-akropolis", "ethereum", "AKRO", "0x8ab7404063ec4dbcfd4598215992dc3f8ec853d7", 18),
     ("alcx-alchemix", "ethereum", "ALCX", "0xdbdb4d16eda451d0503b854cf79d55697f90c8df", 18),
+    ("amkt-alongside-crypto-market-index", "ethereum", "AMKT", "0xf17a3fe536f8f7847f1385ec1bc967b2ca9cae8d", 18),
     ("alpha-alpha-finance", "ethereum", "ALPHA", "0xa1faa113cbe53436df28ff0aee54275c13b40975", 18),
     ("amb-ambrosus", "ethereum", "AMB", "0x4dc3643dbc642b72c158e7f3d2ff232df61cb6ce", 18),
     ("amn-amon", "ethereum", "AMN", "0x737f98ac8ca59f2c68ad658e3c3d8c8963e40a4c", 18),
@@ -513,7 +514,6 @@ FROM
     ('swrv-swerve', 'ethereum', 'SWRV', '0xb8baa0e4287890a5f79863ab62b7f175cecbd433', 18),
     ('ctx-cryptex', 'ethereum', 'CTX', '0x321c2fe4446c7c963dc41dd58879af648838f98d', 18),
     ('fst-futureswap', 'ethereum', 'FST', '0x0e192d382a36de7011f795acc4391cd302003606', 18),
-    ('robot-robot', 'ethereum', 'ROBOT', '0xfb5453340c03db5ade474b27e68b6a9c6b2823eb', 18),
     ('ssv-ssv-network', 'ethereum', 'SSV', '0x9d65ff81a3c488d585bbfb0bfe3c7707c7917f54', 18),
     ('stkatom-pstake-staked-atom', 'ethereum', 'STKATOM', '0x44017598f2af1bd733f9d87b5017b4e7c1b28dde', 6),
     ('dodi-doubledice', 'ethereum', 'DODI', '0x4e08f03079c5cd3083ea331ec61bcc87538b7665', 18),
@@ -1317,6 +1317,7 @@ FROM
     ("blank-blockwallet","ethereum", "BLANK", "0x41a3dba3d677e573636ba691a70ff2d606c29666", 18),
     ("vra-verasity", "ethereum", "VRA", "0xf411903cbc70a74d22900a5de66a2dda66507255", 18),
     ("gt-gatechain-token","ethereum", "GT", "0xe66747a101bff2dba3697199dcce5b743b454759",18),
-    ("stg-stargatetoken","ethereum","STG","0xaf5191b0de278c7286d6c7cc6ab6bb8a73ba2cd6",18)
+    ("stg-stargatetoken","ethereum","STG","0xaf5191b0de278c7286d6c7cc6ab6bb8a73ba2cd6",18),
+    ("ico-axelar", "ethereum", "AXL", "0x467719ad09025fcc6cf6f8311755809d45a5e5f3", 6)
     
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)
