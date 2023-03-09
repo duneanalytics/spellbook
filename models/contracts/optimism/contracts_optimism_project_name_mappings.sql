@@ -19,7 +19,7 @@ from (
     ,('aave_v3', 'Aave')
     ,('perp_v2', 'Perpetual Protocol')
     ,('synthetix_futures', 'Kwenta')
-    ,('zeroex', 'Zeroex (0x)' )
+    ,('zeroex', 'Zeroex' )
     ,('uniswap_v3', 'Uniswap')
     ,('Uniswap V3', 'Uniswap')
     ,('oneinch', '1inch')
