@@ -180,7 +180,6 @@ FROM
     ("usdd-usdd" ,"bnb" ,"USDD" ,"0xd17479997f34dd9156deef8f95a52d81d265be9c" ,18),
     ("alpaca-alpaca-finance","bnb" ,"ALPACA" ,"0x8f0528ce5ef7b51152a59745befdd91d97091d2f" ,18),
     ("ppp-playposeidon-nft" ,"bnb" ,"PPP" ,"0xce355300b9d7909f577640a3fb179cf911a23fbb" ,18),
-    ("wirtual-wirtual","bnb" ,"WIRTUAL" ,"0xa19d3f4219e2ed6dc1cb595db20f70b8b6866734" ,18),
     ("ape-apecoin", "bnb" ,"APE" ,"0x0b079b33b6e72311c6be245f9f660cc385029fc3",18),
     ("metis-metis-token","bnb" ,"Metis" ,"0xe552fb52a4f19e44ef5a967632dbc320b0820639" ,18),
     ("xen-xen-crypto", "bnb", "XEN", "0x2AB0e9e4eE70FFf1fB9D67031E44F6410170d00e", 18),
