@@ -12,8 +12,6 @@ SELECT * FROM  {{ ref('labels_contract_deployers_bnb') }}
 UNION
 SELECT * FROM  {{ ref('labels_contract_deployers_ethereum') }}
 UNION
-SELECT * FROM  {{ ref('labels_contract_deployers_ethereum') }}
-UNION
 SELECT * FROM  {{ ref('labels_contract_deployers_fantom') }}
 UNION
 SELECT * FROM  {{ ref('labels_contract_deployers_gnosis') }}
