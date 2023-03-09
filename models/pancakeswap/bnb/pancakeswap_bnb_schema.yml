@@ -96,7 +96,7 @@ models:
       - check_dex_seed:
           blockchain: bnb
           project: pancakeswap
-          version: 2
+          version: mmpool
     columns:
       - name: blockchain
         description: "Blockchain which the DEX is deployed"
