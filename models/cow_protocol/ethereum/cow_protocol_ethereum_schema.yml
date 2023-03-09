@@ -130,6 +130,12 @@ models:
       - &flags
         name: flags
         description: "bitmap with additional trade information (cf. https://github.com/cowprotocol/contracts/blob/main/src/contracts/libraries/GPv2Trade.sol#L58-L94)"
+      - &surplus_usd
+        name: surplus_usd
+        description: "USD value of surplus (difference between limit and executed price)"
+      - &order_type
+        name: order_type
+        description: "SELL/BUY string indicating if the trade was a sell or buy order"
 
   - name: cow_protocol_ethereum_batches
     meta:

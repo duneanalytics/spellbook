@@ -155,6 +155,7 @@ valued_trades as (
            block_time,
            tx_hash,
            evt_index,
+           CAST(ARRAY() as array<bigint>) AS trace_address,
            project_contract_address,
            order_uid,
            trader,
@@ -212,4 +213,8 @@ valued_trades as (
                   ON uid = order_uid
 )
 
-select * from valued_trades
+select *,
+  -- Relative surplus (in %) is the difference between limit price and executed price as a ratio of the limit price.
+  -- Absolute surplus (in USD) is relative surplus multiplied with the value of the trade
+  usd_value * (((limit_sell_amount / limit_buy_amount) - (atoms_sold/atoms_bought)) / (limit_sell_amount / limit_buy_amount)) as surplus_usd
+from valued_trades
