@@ -11,6 +11,9 @@
 }}
 
 {% set project_start_date = '2021-11-12' %} --for testing, use small subset of data
+{% set burn_address = '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee' %} --according to etherscan label
+{% set blockchain = 'ethereum' %}
+{% set blockchain_symbol = 'ETH' %}
 
 WITH limit_order_protocol_embedded_rfq AS
 (
@@ -98,7 +101,7 @@ WITH limit_order_protocol_embedded_rfq AS
 )
 
 SELECT
-    'ethereum' AS blockchain
+    '{{blockchain}}' AS blockchain
     ,src.project
     ,src.version
     ,date_trunc('day', src.block_time) AS block_date
@@ -118,7 +121,7 @@ SELECT
         src.amount_usd
         , (src.token_bought_amount_raw / power(10,
             CASE
-                WHEN token_bought_address = '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee'
+                WHEN token_bought_address = '{{burn_address}}'
                     THEN 18
                 ELSE prices_bought.decimals
             END
@@ -127,14 +130,14 @@ SELECT
         *
         (
             CASE
-                WHEN token_bought_address = '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee'
+                WHEN token_bought_address = '{{burn_address}}'
                     THEN prices_eth.price
                 ELSE prices_bought.price
             END
         )
         , (src.token_sold_amount_raw / power(10,
             CASE
-                WHEN token_sold_address = '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee'
+                WHEN token_sold_address = '{{burn_address}}'
                     THEN 18
                 ELSE prices_sold.decimals
             END
@@ -143,7 +146,7 @@ SELECT
         *
         (
             CASE
-                WHEN token_sold_address = '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee'
+                WHEN token_sold_address = '{{burn_address}}'
                     THEN prices_eth.price
                 ELSE prices_sold.price
             END
@@ -170,14 +173,14 @@ INNER JOIN {{ source('ethereum', 'transactions') }} as tx
     {% endif %}
 LEFT JOIN {{ ref('tokens_erc20') }} as token_bought
     ON token_bought.contract_address = src.token_bought_address
-    AND token_bought.blockchain = 'ethereum'
+    AND token_bought.blockchain = '{{blockchain}}'
 LEFT JOIN {{ ref('tokens_erc20') }} as token_sold
     ON token_sold.contract_address = src.token_sold_address
-    AND token_sold.blockchain = 'ethereum'
+    AND token_sold.blockchain = '{{blockchain}}'
 LEFT JOIN {{ source('prices', 'usd') }} as prices_bought
     ON prices_bought.minute = date_trunc('minute', src.block_time)
     AND prices_bought.contract_address = src.token_bought_address
-    AND prices_bought.blockchain = 'ethereum'
+    AND prices_bought.blockchain = '{{blockchain}}'
     {% if is_incremental() %}
     AND prices_bought.minute >= date_trunc("day", now() - interval '1 week')
     {% else %}
@@ -186,7 +189,7 @@ LEFT JOIN {{ source('prices', 'usd') }} as prices_bought
 LEFT JOIN {{ source('prices', 'usd') }} as prices_sold
     ON prices_sold.minute = date_trunc('minute', src.block_time)
     AND prices_sold.contract_address = src.token_sold_address
-    AND prices_sold.blockchain = 'ethereum'
+    AND prices_sold.blockchain = '{{blockchain}}'
     {% if is_incremental() %}
     AND prices_sold.minute >= date_trunc("day", now() - interval '1 week')
     {% else %}
@@ -195,7 +198,7 @@ LEFT JOIN {{ source('prices', 'usd') }} as prices_sold
 LEFT JOIN {{ source('prices', 'usd') }} as prices_eth
     ON prices_eth.minute = date_trunc('minute', src.block_time)
     AND prices_eth.blockchain is null
-    AND prices_eth.symbol = 'ETH'
+    AND prices_eth.symbol = '{{blockchain_symbol}}'
     {% if is_incremental() %}
     AND prices_eth.minute >= date_trunc("day", now() - interval '1 week')
     {% else %}

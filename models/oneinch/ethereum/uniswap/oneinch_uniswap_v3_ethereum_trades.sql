@@ -11,6 +11,9 @@
 }}
 
 {% set project_start_date = '2021-11-07' %} --for testing, use small subset of data
+{% set burn_address = '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee' %} --according to etherscan label
+{% set blockchain = 'ethereum' %}
+{% set blockchain_symbol = 'ETH' %}
 
 WITH uniswap AS
 (
@@ -146,7 +149,7 @@ WITH uniswap AS
         , amount
         , CASE
             WHEN CAST(pools[array_size(pools) - 1] / POWER(2, 252) as int) & 2 != 0
-            THEN '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee'
+            THEN '{{burn_address}}'
             ELSE to
         END as dstToken
         , pools
@@ -178,12 +181,15 @@ WITH uniswap AS
             ON traces.tx_hash = uniswap.call_tx_hash
             AND traces.block_number = uniswap.call_block_number
             AND traces.from != uniswap.contract_address
-            /*
-            --replace this logic with below COALESCE condition
-            AND COALESCE(uniswap.call_trace_address, CAST(NULL as array<int>)) = traces.trace_address[:COALESCE(array_size(uniswap.call_trace_address) - 1, 0)] --spark uses 0-based array index, subtract 1 from size output
-            AND COALESCE(array_size(uniswap.call_trace_address), 0) + 2 = COALESCE(array_size(traces.trace_address), 0)
-            */
-            AND COALESCE(array_size(uniswap.call_trace_address), 0) < COALESCE(array_size(traces.trace_address), 0) --only get traces that are deeper than the original swap call
+            /*****************************************************************************************************
+                below commented out join conditions are from v1 engine, replaced by one line below for simplicity
+            ******************************************************************************************************
+            -- AND COALESCE(uniswap.call_trace_address, CAST(NULL as array<int>)) = traces.trace_address[:COALESCE(array_size(uniswap.call_trace_address) - 1, 0)] --spark uses 0-based array index, subtract 1 from size output
+            -- AND COALESCE(array_size(uniswap.call_trace_address), 0) + 2 = COALESCE(array_size(traces.trace_address), 0)
+            ******************************************************************************************/
+            --only get traces that are deeper than the original swap call
+            AND COALESCE(array_size(uniswap.call_trace_address), 0) < COALESCE(array_size(traces.trace_address), 0)
+            /******************************************************************************************/
             AND SUBSTRING(traces.input,1,10) = '0xa9059cbb' --find the token address that transfer() was called on
             AND traces.call_type = 'call'
             {% if is_incremental() %}
@@ -200,7 +206,7 @@ WITH uniswap AS
         call_block_number
         , output_returnAmount
         , amount
-        , COALESCE(to, '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee') AS srcToken
+        , COALESCE(to, '{{burn_address}}') AS srcToken
         , pools
         , call_tx_hash
         , call_trace_address
@@ -229,12 +235,15 @@ WITH uniswap AS
             {{ source('ethereum', 'traces') }} AS traces
             ON traces.tx_hash = uniswap.call_tx_hash
             AND traces.block_number = uniswap.call_block_number
-            /*
-            --replace this logic with below COALESCE condition
+            /*****************************************************************************************************
+                below commented out join conditions are from v1 engine, replaced by one line below for simplicity
+            ******************************************************************************************************
             AND COALESCE(uniswap.call_trace_address, CAST(NULL as array<int>)) = traces.trace_address[:COALESCE(array_size(uniswap.call_trace_address) - 1, 0)] --spark uses 0-based array index, subtract 1 from size output
             AND COALESCE(array_size(uniswap.call_trace_address), 0) + 3 = COALESCE(array_size(traces.trace_address), 0)
-            */
-            AND COALESCE(array_size(uniswap.call_trace_address), 0) < COALESCE(array_size(traces.trace_address), 0) --only get traces that are deeper than the original swap call
+            ******************************************************************************************/
+            --only get traces that are deeper than the original swap call
+            AND COALESCE(array_size(uniswap.call_trace_address), 0) < COALESCE(array_size(traces.trace_address), 0)
+            /******************************************************************************************/
             AND SUBSTRING(traces.input,1,10) = '0x23b872dd' --find the token address that transfer() was called on
             AND traces.call_type = 'call'
             {% if is_incremental() %}
@@ -275,7 +284,7 @@ WITH uniswap AS
         AND src.call_trace_address = token_sold.call_trace_address
 )
 SELECT
-    'ethereum' AS blockchain
+    '{{blockchain}}' AS blockchain
     ,src.project
     ,src.version
     ,date_trunc('day', src.block_time) AS block_date
@@ -295,7 +304,7 @@ SELECT
         src.amount_usd
         , (src.token_bought_amount_raw / power(10,
             CASE
-                WHEN src.token_bought_address = '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee'
+                WHEN src.token_bought_address = '{{burn_address}}'
                     THEN 18
                 ELSE prices_bought.decimals
             END
@@ -304,14 +313,14 @@ SELECT
         *
         (
             CASE
-                WHEN src.token_bought_address = '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee'
+                WHEN src.token_bought_address = '{{burn_address}}'
                     THEN prices_eth.price
                 ELSE prices_bought.price
             END
         )
         , (src.token_sold_amount_raw / power(10,
             CASE
-                WHEN src.token_sold_address = '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee'
+                WHEN src.token_sold_address = '{{burn_address}}'
                     THEN 18
                 ELSE prices_sold.decimals
             END
@@ -320,7 +329,7 @@ SELECT
         *
         (
             CASE
-                WHEN src.token_sold_address = '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee'
+                WHEN src.token_sold_address = '{{burn_address}}'
                     THEN prices_eth.price
                 ELSE prices_sold.price
             END
@@ -348,14 +357,14 @@ INNER JOIN {{ source('ethereum', 'transactions') }} as tx
     {% endif %}
 LEFT JOIN {{ ref('tokens_erc20') }} as token_bought
     ON token_bought.contract_address = src.token_bought_address
-    AND token_bought.blockchain = 'ethereum'
+    AND token_bought.blockchain = '{{blockchain}}'
 LEFT JOIN {{ ref('tokens_erc20') }} as token_sold
     ON token_sold.contract_address = src.token_sold_address
-    AND token_sold.blockchain = 'ethereum'
+    AND token_sold.blockchain = '{{blockchain}}'
 LEFT JOIN {{ source('prices', 'usd') }} as prices_bought
     ON prices_bought.minute = date_trunc('minute', src.block_time)
     AND prices_bought.contract_address = src.token_bought_address
-    AND prices_bought.blockchain = 'ethereum'
+    AND prices_bought.blockchain = '{{blockchain}}'
     {% if is_incremental() %}
     AND prices_bought.minute >= date_trunc("day", now() - interval '1 week')
     {% else %}
@@ -364,7 +373,7 @@ LEFT JOIN {{ source('prices', 'usd') }} as prices_bought
 LEFT JOIN {{ source('prices', 'usd') }} as prices_sold
     ON prices_sold.minute = date_trunc('minute', src.block_time)
     AND prices_sold.contract_address = src.token_sold_address
-    AND prices_sold.blockchain = 'ethereum'
+    AND prices_sold.blockchain = '{{blockchain}}'
     {% if is_incremental() %}
     AND prices_sold.minute >= date_trunc("day", now() - interval '1 week')
     {% else %}
@@ -373,7 +382,7 @@ LEFT JOIN {{ source('prices', 'usd') }} as prices_sold
 LEFT JOIN {{ source('prices', 'usd') }} as prices_eth
     ON prices_eth.minute = date_trunc('minute', src.block_time)
     AND prices_eth.blockchain is null
-    AND prices_eth.symbol = 'ETH'
+    AND prices_eth.symbol = '{{blockchain_symbol}}'
     {% if is_incremental() %}
     AND prices_eth.minute >= date_trunc("day", now() - interval '1 week')
     {% else %}
