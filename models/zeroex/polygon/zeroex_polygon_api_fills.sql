@@ -251,7 +251,7 @@ NewBridgeFill AS (
         AND logs.block_time >= '{{zeroex_v4_start_date}}'
         {% endif %}
 ),
-/*
+
 direct_PLP AS (
     SELECT 
             plp.evt_tx_hash             AS tx_hash,
@@ -284,7 +284,7 @@ direct_PLP AS (
     WHERE evt_block_time >= '{{zeroex_v3_start_date}}'
     {% endif %}
 ), 
-
+/*
 direct_uniswapv3 AS (
     SELECT 
             swap.evt_tx_hash                                                                        AS tx_hash,
