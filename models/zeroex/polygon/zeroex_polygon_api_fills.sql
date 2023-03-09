@@ -165,7 +165,7 @@ ERC20BridgeTransfer AS (
             logs.tx_hash,
             INDEX                                   AS evt_index,
             logs.contract_address,
-            block_time                              AS block_time,
+            zeroex_tx.block_time                    AS block_time,
             '0x' || substring(DATA, 283, 40)        AS maker,
             '0x' || substring(DATA, 347, 40)        AS taker,
             '0x' || substring(DATA, 27, 40)         AS taker_token,
@@ -181,7 +181,7 @@ ERC20BridgeTransfer AS (
     WHERE topic1 = '0x349fc08071558d8e3aa92dec9396e4e9f2dfecd6bb9065759d1932e7da43b8a9'
     
     {% if is_incremental() %}
-    AND block_time >= date_trunc('day', now() - interval '1 week')
+    AND zeroex_tx.block_time >= date_trunc('day', now() - interval '1 week')
     {% endif %}
     {% if not is_incremental() %}
     AND block_time >= '{{zeroex_v3_start_date}}'
