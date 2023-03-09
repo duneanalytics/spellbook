@@ -10,7 +10,7 @@
 
 WITH creation AS (
     SELECT distinct 'ethereum'           AS blockchain
-                  , creation.`from`      AS address
+                  , ct.`from`            AS address
                   , 'Contract Deployer'  AS name
                   , 'infrastructure'     AS category
                   , 'hildobby'           AS contributor
@@ -19,7 +19,7 @@ WITH creation AS (
                   , NOW()                AS modified_at
                   , 'contract_deployers' AS model_name
                   , 'persona'            AS label_type
-    FROM {{ source('ethereum', 'creation_traces') }}
+    FROM {{ source('ethereum', 'creation_traces') }} ct
 )
 SELECT *
 FROM creation
