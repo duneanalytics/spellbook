@@ -172,7 +172,7 @@ INNER JOIN {{ source('polygon','transactions') }} t ON a.evt_block_number = t.bl
     {% if is_incremental() %}
     AND t.block_time >= date_trunc("day", now() - interval '1 week')
     {% endif %}
-INNER JOIN trade_amount_summary s ON a.evt_block_number = s.evt_block_number AND a.evt_tx_hash = s.evt_tx_hash
+LEFT JOIN trade_amount_summary s ON a.evt_block_number = s.evt_block_number AND a.evt_tx_hash = s.evt_tx_hash -- There are 0 amount trades
 LEFT JOIN {{ ref('tokens_erc20') }} erc ON erc.blockchain = 'polygon' AND erc.contract_address = a.currency_contract
 LEFT JOIN {{ source('prices', 'usd') }} p ON p.contract_address = a.currency_contract
     AND p.minute = date_trunc('minute', a.evt_block_time)
