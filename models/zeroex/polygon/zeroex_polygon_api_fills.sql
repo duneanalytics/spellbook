@@ -184,7 +184,7 @@ ERC20BridgeTransfer AS (
     AND zeroex_tx.block_time >= date_trunc('day', now() - interval '1 week')
     {% endif %}
     {% if not is_incremental() %}
-    AND block_time >= '{{zeroex_v3_start_date}}'
+    AND zeroex_tx.block_time >= '{{zeroex_v3_start_date}}'
     {% endif %}
 
 ), 
