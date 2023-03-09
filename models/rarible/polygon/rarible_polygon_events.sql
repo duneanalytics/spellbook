@@ -71,29 +71,11 @@ WITH trades AS (
         {% endif %}
 ),
 
-fees_data as (
-    SELECT e.evt_block_number,
-        e.evt_tx_hash,
-        CAST(e.value as double) AS platform_fee_amount_raw,
-        row_number() over (partition by e.evt_tx_hash order by e.evt_index) as row_num
-    FROM {{ source('erc20_polygon', 'evt_transfer') }} e
-    INNER JOIN trades t ON e.evt_block_number = t.evt_block_number
-        AND e.evt_tx_hash = t.evt_tx_hash
-        {% if not is_incremental() %}
-        AND e.evt_block_time >= '{{nft_start_date}}'
-        {% endif %}
-        {% if is_incremental() %}
-        AND e.evt_block_time >= date_trunc("day", now() - interval '1 week')
-        {% endif %}
-    WHERE e.`to` = '0x424ace4669579986d200ebeb3c75924282324a42'
-        AND t.currency_contract <> '0x0d500b1d8e8ef31e21c99d1db9a6444d3adf1270'
-
-    UNION ALL
-
+trade_amount_detail as (
     SELECT e.block_number AS evt_block_number,
         e.tx_hash AS evt_tx_hash,
-        CAST(e.value as double) AS platform_fee_amount_raw,
-        row_number() over (partition by e.tx_hash order by e.trace_address) as row_num
+        cast(e.value AS double) as amount_raw,
+        row_number() OVER (PARTITION BY e.tx_hash ORDER BY e.trace_address) AS item_index
     FROM {{ source('polygon', 'traces') }} e
     INNER JOIN trades t ON e.block_number = t.evt_block_number
         AND e.tx_hash = t.evt_tx_hash
@@ -103,16 +85,46 @@ fees_data as (
         {% if is_incremental() %}
         AND e.block_time >= date_trunc("day", now() - interval '1 week')
         {% endif %}
-    WHERE e.`to` = '0x424ace4669579986d200ebeb3c75924282324a42'
-        AND t.currency_contract = '0x0d500b1d8e8ef31e21c99d1db9a6444d3adf1270'
+    WHERE t.currency_contract = '0x0d500b1d8e8ef31e21c99d1db9a6444d3adf1270'
+        AND cast(e.value as double) > 0
+        AND cardinality(trace_address) > 0 -- exclude the main call record
+
+    UNION ALL
+
+    SELECT e.evt_block_number,
+        e.evt_tx_hash,
+        CAST(e.value as double) AS amount_raw,
+        row_number() OVER (PARTITION BY e.evt_tx_hash ORDER BY e.evt_index) AS item_index
+    FROM {{ source('erc20_polygon', 'evt_transfer') }} e
+    INNER JOIN trades t ON e.evt_block_number = t.evt_block_number
+        AND e.evt_tx_hash = t.evt_tx_hash
+        {% if not is_incremental() %}
+        AND e.evt_block_time >= '{{nft_start_date}}'
+        {% endif %}
+        {% if is_incremental() %}
+        AND e.evt_block_time >= date_trunc("day", now() - interval '1 week')
+        {% endif %}
+    WHERE t.currency_contract <> '0x0d500b1d8e8ef31e21c99d1db9a6444d3adf1270'
 ),
 
-fees as (
-    select evt_block_number,
+trade_amount_summary as (
+    SELECT evt_block_number,
         evt_tx_hash,
-        platform_fee_amount_raw
-    from fees_data
-    where row_num = 1
+        amount_raw,
+        -- When there is royalty fee, it is the first transfer
+        (case when transfer_count >= 4 then amount_raw_2 else amount_raw_1 end) AS platform_fee_amount_raw,
+        (case when transfer_count >= 4 then amount_raw_1 else 0 end) AS royalty_fee_amount_raw
+    FROM (
+        SELECT evt_block_number,
+            evt_tx_hash,
+            sum(amount_raw) AS amount_raw,
+            sum(case when item_index = 1 then amount_raw else 0 end) AS amount_raw_1,
+            sum(case when item_index = 2 then amount_raw else 0 end) AS amount_raw_2,
+            sum(case when item_index = 3 then amount_raw else 0 end) AS amount_raw_3,
+            count(*) as transfer_count
+        FROM trade_amount_detail
+        GROUP BY 1, 2
+    )
 )
 
 SELECT
@@ -123,9 +135,9 @@ SELECT
   date_trunc('day', a.evt_block_time) AS block_date,
   a.evt_block_time AS block_time,
   a.evt_block_number AS block_number,
-  amount_raw / power(10, erc.decimals) * p.price AS amount_usd,
-  amount_raw / power(10, erc.decimals) AS amount_original,
-  amount_raw,
+  s.amount_raw / power(10, erc.decimals) * p.price AS amount_usd,
+  s.amount_raw / power(10, erc.decimals) AS amount_original,
+  s.amount_raw,
   CASE WHEN erc.symbol = 'WMATIC' THEN 'MATIC' ELSE erc.symbol END AS currency_symbol,
   a.currency_contract,
   token_id,
@@ -143,16 +155,14 @@ SELECT
   agg.contract_address AS aggregator_address,
   t.`from` AS tx_from,
   t.`to` AS tx_to,
-  f.platform_fee_amount_raw,
-  CAST(f.platform_fee_amount_raw / power(10, erc.decimals) AS double) AS platform_fee_amount,
-  CAST(f.platform_fee_amount_raw / power(10, erc.decimals) * p.price AS double) AS platform_fee_amount_usd,
-  CASE WHEN t.value > 0 THEN CAST(f.platform_fee_amount_raw / t.value * 100 as double)
-    ELSE CAST(f.platform_fee_amount_raw / (coalesce(a.amount_raw, 0) + coalesce(f.platform_fee_amount_raw, 0)) * 100 AS double)
-  END AS platform_fee_percentage,
-  CAST(0 as double) AS royalty_fee_amount_raw,
-  CAST(0 as double) AS royalty_fee_amount,
-  CAST(0 as double) AS royalty_fee_amount_usd,
-  CAST(0 as double) AS royalty_fee_percentage,
+  s.platform_fee_amount_raw,
+  CAST(s.platform_fee_amount_raw / power(10, erc.decimals) AS double) AS platform_fee_amount,
+  CAST(s.platform_fee_amount_raw / power(10, erc.decimals) * p.price AS double) AS platform_fee_amount_usd,
+  CAST(s.platform_fee_amount_raw  / s.amount_raw * 100 as double) as platform_fee_percentage,
+  CAST(s.royalty_fee_amount_raw as double) AS royalty_fee_amount_raw,
+  CAST(s.royalty_fee_amount_raw / power(10, erc.decimals) as double) AS royalty_fee_amount,
+  CAST(s.royalty_fee_amount_raw / power(10, erc.decimals) * p.price AS double) AS royalty_fee_amount_usd,
+  CAST(s.royalty_fee_amount_raw / s.amount_raw * 100 AS double) AS royalty_fee_percentage,
   CAST(NULL AS double) AS royalty_fee_receive_address,
   CAST(NULL AS string)  AS royalty_fee_currency_symbol,
   a.evt_tx_hash || '-' || a.evt_type || '-' || a.evt_index || '-' || a.token_id || '-' || CAST(a.number_of_items AS string)  AS unique_trade_id
@@ -165,7 +175,7 @@ INNER JOIN {{ source('polygon','transactions') }} t ON a.evt_block_number = t.bl
     {% if is_incremental() %}
     AND t.block_time >= date_trunc("day", now() - interval '1 week')
     {% endif %}
-LEFT JOIN fees f ON a.evt_block_number = f.evt_block_number AND a.evt_tx_hash = f.evt_tx_hash
+LEFT JOIN trade_amount_summary s ON a.evt_block_number = s.evt_block_number AND a.evt_tx_hash = s.evt_tx_hash
 LEFT JOIN {{ ref('tokens_erc20') }} erc ON erc.blockchain = 'polygon' AND erc.contract_address = a.currency_contract
 LEFT JOIN {{ source('prices', 'usd') }} p ON p.contract_address = a.currency_contract AND p.minute = date_trunc('minute', a.evt_block_time)
     {% if not is_incremental() %}
