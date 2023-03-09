@@ -181,15 +181,8 @@ WITH uniswap AS
             ON traces.tx_hash = uniswap.call_tx_hash
             AND traces.block_number = uniswap.call_block_number
             AND traces.from != uniswap.contract_address
-            /*****************************************************************************************************
-                below commented out join conditions are from v1 engine, replaced by one line below for simplicity
-            ******************************************************************************************************
-            -- AND COALESCE(uniswap.call_trace_address, CAST(NULL as array<int>)) = traces.trace_address[:COALESCE(array_size(uniswap.call_trace_address) - 1, 0)] --spark uses 0-based array index, subtract 1 from size output
-            -- AND COALESCE(array_size(uniswap.call_trace_address), 0) + 2 = COALESCE(array_size(traces.trace_address), 0)
-            ******************************************************************************************/
-            --only get traces that are deeper than the original swap call
-            AND COALESCE(array_size(uniswap.call_trace_address), 0) < COALESCE(array_size(traces.trace_address), 0)
-            /******************************************************************************************/
+            AND COALESCE(uniswap.call_trace_address, CAST(ARRAY() as array<bigint>)) = SLICE(traces.trace_address, 1, COALESCE(array_size(uniswap.call_trace_address), 0))
+            AND COALESCE(array_size(uniswap.call_trace_address), 0) + 2 = COALESCE(array_size(traces.trace_address), 0)
             AND SUBSTRING(traces.input,1,10) = '0xa9059cbb' --find the token address that transfer() was called on
             AND traces.call_type = 'call'
             {% if is_incremental() %}
@@ -235,15 +228,8 @@ WITH uniswap AS
             {{ source('ethereum', 'traces') }} AS traces
             ON traces.tx_hash = uniswap.call_tx_hash
             AND traces.block_number = uniswap.call_block_number
-            /*****************************************************************************************************
-                below commented out join conditions are from v1 engine, replaced by one line below for simplicity
-            ******************************************************************************************************
-            AND COALESCE(uniswap.call_trace_address, CAST(NULL as array<int>)) = traces.trace_address[:COALESCE(array_size(uniswap.call_trace_address) - 1, 0)] --spark uses 0-based array index, subtract 1 from size output
+            AND COALESCE(uniswap.call_trace_address, CAST(ARRAY() as array<bigint>)) = SLICE(traces.trace_address, 1, COALESCE(array_size(uniswap.call_trace_address), 0))
             AND COALESCE(array_size(uniswap.call_trace_address), 0) + 3 = COALESCE(array_size(traces.trace_address), 0)
-            ******************************************************************************************/
-            --only get traces that are deeper than the original swap call
-            AND COALESCE(array_size(uniswap.call_trace_address), 0) < COALESCE(array_size(traces.trace_address), 0)
-            /******************************************************************************************/
             AND SUBSTRING(traces.input,1,10) = '0x23b872dd' --find the token address that transfer() was called on
             AND traces.call_type = 'call'
             {% if is_incremental() %}

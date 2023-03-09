@@ -14,10 +14,10 @@
  ,ref('openocean_trades')
  ,ref('paraswap_trades')
  ,ref('lifi_trades')
- ,ref('odos_trades')
  ,ref('yield_yak_avalanche_c_trades')
+ ,ref('oneinch_ethereum_trades')
 ] %}
-
+ --,ref('odos_trades') --remove odos trades until base model resolves duplicates issue
 
 SELECT *
 FROM (
