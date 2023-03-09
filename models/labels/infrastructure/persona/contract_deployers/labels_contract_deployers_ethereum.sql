@@ -11,14 +11,14 @@
 WITH creation AS (
     SELECT distinct 'ethereum'           AS blockchain
                   , creation.`from`      AS address
-                  , 'Contract Deployer'  as name
-                  , 'infrastructure'     as category
-                  , 'hildobby'           as contributor
+                  , 'Contract Deployer'  AS name
+                  , 'infrastructure'     AS category
+                  , 'hildobby'           AS contributor
                   , 'query'              AS source
                   , date('2023-03-03')   AS created_at
-                  , NOW()                as modified_at
+                  , NOW()                AS modified_at
                   , 'contract_deployers' AS model_name
-                  , 'persona'            as label_type
+                  , 'persona'            AS label_type
     FROM {{ source('ethereum', 'creation_traces') }}
 )
 SELECT *

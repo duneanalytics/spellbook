@@ -1,8 +1,12 @@
-{{config(alias='contract_deployers',
+{{
+    config(
+        alias='contract_deployers',
         post_hook='{{ expose_spells(\'["arbitrum", "avalanche_c", "bnb", "ethereum", "fantom", "gnosis","goerli","optimism","polygon"]\',
                                     "sector",
                                     "labels",
-                                    \'["hildobby"]\') }}')}}
+                                    \'["hildobby", "hosuke"]\') }}'
+    )
+}}
 
 SELECT * FROM  {{ ref('labels_contract_deployers_arbitrum') }}
 UNION
