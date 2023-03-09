@@ -173,8 +173,9 @@ ERC20BridgeTransfer AS (
   --  AND block_time >= '{{zeroex_v3_start_date}}'
     {% endif %}
 
-/*
+
 ),
+/*
 BridgeFill AS (
     SELECT
 
