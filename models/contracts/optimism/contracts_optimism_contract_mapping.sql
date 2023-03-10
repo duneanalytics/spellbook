@@ -221,7 +221,7 @@ with base_level as (
 
   select 
      NULL as trace_creator_address
-     NULL as creator_address
+    ,NULL as creator_address
     ,NULL as contract_factory
     ,lower(newaddress) as contract_address
     ,'Uniswap' as contract_project
