@@ -1,17 +1,12 @@
 {{ config(
     alias = 'balances',
-    materialized = 'incremental',
+    materialized = 'table',
     file_format = 'delta',
     post_hook='{{ expose_spells(\'["ethereum", "gnosis", "polygon"]\',
                                 "sector",
                                 "dao",
                                 \'["Henrystats"]\') }}')
 }}
-
--- HACK: This model should be a view but it's syntax isn't supported in DuneSQL
--- To maintain compatibility on both engines, we will materialize it as a table
--- To add it to the hourly schedule, we'll mark it as incremental despite not having incremental logic
-
 
 {% set project_start_date = '2018-10-27' %}
 
