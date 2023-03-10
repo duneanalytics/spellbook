@@ -51,8 +51,8 @@ models:
         name: to_label
       - &from_name
         name: from_name
-      - &to_name
-        name: to_name
+      - &to_namez
+        name: to_namez
       - &op_amount_decimal
         name: op_amount_decimal
         description: "OP Amount Transferred"
