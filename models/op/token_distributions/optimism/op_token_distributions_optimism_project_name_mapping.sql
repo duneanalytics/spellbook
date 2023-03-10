@@ -12,7 +12,6 @@ FROM (values
          ('xToken Terminal / Gamma', 'xToken')
         ,('Bankless Academy', 'Bankless')
         ,('Rainbow Wallet', 'Rainbow')
-        ,('Rainbow Wallet', 'Rainbow')
         ,('Karma 1', 'Karma')
         ,('Karma 2', 'Karma')
         ,('Safe', 'Gnosis Safe')
