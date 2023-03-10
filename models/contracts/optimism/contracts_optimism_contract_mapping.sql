@@ -69,7 +69,7 @@ with base_level as (
     from {{ this }}
       {% endif %} -- line 55 incremental filter
   ) as x
-  group by 1, 2, 3, 4, 5, 6
+  group by 1, 2, 3, 4, 5, 6, 7
 )
 ,tokens as (
   select 
