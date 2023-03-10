@@ -28,7 +28,7 @@
 
 with base_level as (
   select 
-    ,creator_address AS trace_creator_address -- get the original contract creator address
+     creator_address AS trace_creator_address -- get the original contract creator address
     ,creator_address
     ,contract_factory
     ,contract_address
