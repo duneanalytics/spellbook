@@ -54,7 +54,7 @@ WITH all_labels AS (
                     dc.project_name,--if we have a name override, like airdrop 2
                     lbl_from_util_tx.project_name
                     ,lbl_from.project_name
-                    ,'Other') 
+                    ) 
                     AS from_name, --override if to an incentive tx address
             COALESCE(
                 /*txl.tx_type
