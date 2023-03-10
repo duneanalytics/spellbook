@@ -41,10 +41,10 @@ WITH all_labels AS (
                     ) 
                     AS from_type, --override if to an incentive tx address
             COALESCE(
-                CASE WHEN tf.to = dc.address THEN lbl_from_util_tx.address_descriptor ELSE NULL END --if utility, mark as internal
-                ,lbl_to.address_descriptor
-                ,'Other'
-                )
+                    CASE WHEN tf.to = dc.address THEN lbl_from_util_tx.address_descriptor ELSE NULL END --if utility, mark as internal
+                    ,lbl_to.address_descriptor
+                    ,'Other'
+                    )
                 AS to_type,
             COALESCE(lbl_from_util_tx.label
                     ,lbl_from.label
