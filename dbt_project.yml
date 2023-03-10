@@ -832,6 +832,11 @@ models:
       polygon:
         +schema: rocifi_polygon
 
+    oneinch:
+      +schema: oneinch
+      ethereum:
+        +schema: oneinch_ethereum
+        
     nftearth:
       +schema: nftearth
       optimism:
