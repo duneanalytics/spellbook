@@ -193,31 +193,31 @@ SELECT
     FROM outgoing_distributions od
 
 )
-select * from distributions
--- SELECT 
---     DATE_TRUNC('day',evt_block_time) AS block_date
---     , evt_block_time, evt_block_number, evt_index, evt_tx_hash
---     --
---     , from_address, to_address
---     , tx_to_address, tx_from_address
---     --
---     , from_type, to_type
---     , d.from_label, d.to_label
---     , COALESCE(dfrom.address_name, d.og_from_name) AS from_name
---     , COALESCE(dto.address_name, dtxto.address_name, d.og_to_name) AS to_name
---     --
---     , op_amount_decimal, tx_method
---     --
---     , cast(op_claimed as double) AS op_claimed
---     , cast(op_deployed as double) as op_deployed
---     , cast(op_to_project as double) as op_to_project
---     , cast(op_between_projects as double) as op_between_projects
---     , cast(op_incoming_clawback as double) as op_incoming_clawback
---     --
---     , d.og_to_name
---     , d.og_from_name
+
+SELECT 
+    DATE_TRUNC('day',evt_block_time) AS block_date
+    , evt_block_time, evt_block_number, evt_index, evt_tx_hash
+    --
+    , from_address, to_address
+    , tx_to_address, tx_from_address
+    --
+    , from_type, to_type
+    , d.from_label, d.to_label
+    , d.og_from_name AS from_name--COALESCE(dfrom.address_name, d.og_from_name) AS from_name
+    , d.og_to_name AS to_name---COALESCE(dto.address_name, dtxto.address_name, d.og_to_name) AS to_name
+    --
+    , op_amount_decimal, tx_method
+    --
+    , cast(op_claimed as double) AS op_claimed
+    , cast(op_deployed as double) as op_deployed
+    , cast(op_to_project as double) as op_to_project
+    , cast(op_between_projects as double) as op_between_projects
+    , cast(op_incoming_clawback as double) as op_incoming_clawback
+    --
+    , d.og_to_name
+    , d.og_from_name
     
--- FROM distributions d
+FROM distributions d
 -- -- read in other tags
 -- LEFT JOIN other_tags dto
 --     ON dto.address = d.to_address
