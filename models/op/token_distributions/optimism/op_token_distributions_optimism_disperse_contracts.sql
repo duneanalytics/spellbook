@@ -9,7 +9,7 @@
 WITH disperse_contracts AS (
     SELECT LOWER(address) AS address, name_override
     FROM (values
-             ('0xd152f549545093347a162dce210e7293f1452150',NULL) --generic disperse
+             ('0xd152f549545093347a162dce210e7293f1452150','Disperse') --generic disperse
             ,('0x5bc45d36577df70a7865c1d8af47cdf7db3efbd8','OP Airdrop 2 Distributor') --OP Airdrop 2 disperse
         ) a (address, name_override)
     )
