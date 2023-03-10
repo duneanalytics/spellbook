@@ -52,7 +52,7 @@ models:
       - &from_name
         name: from_name
       - &to_name
-        name: to_namez
+        name: to_name
       - &op_amount_decimal
         name: op_amount_decimal
         description: "OP Amount Transferred"
