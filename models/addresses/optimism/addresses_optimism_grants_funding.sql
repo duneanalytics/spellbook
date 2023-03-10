@@ -19,7 +19,7 @@ FROM (VALUES
 ,('Project',	'0xcd150d9cfdb39d287d69b9b1bb7111e58414aca8',	'Aave',	'Phase 0')
 ,('Project',	'0x7ee753e87f20eb3262967c2fc54762b0b4ff4d75',	'Chainlink',	'Phase 0')
 ,('Project',	'0x59672d112d680ce34c20ff1507197993cc0ba430',	'Polynomial Protocol',	'Phase 0')
-,('Project',	'0xba9493f97bef07a272998139a268398b80ab9dd5',	'0x Project',	'Phase 0')
+,('Project',	'0xba9493f97bef07a272998139a268398b80ab9dd5',	'Zeroex (0x)',	'Phase 0')
 ,('Project',	'0x5b8f3fb479571eca6a06240b21926db586cdf10f',	'Aelin',	'Phase 0')
 ,('Project',	'0x9d439e524f214fb0cb5fa42030e578f60e64d98c',	'Slingshot',	'Phase 0')
 ,('Project',	'0x75f7b331bbdbacafe1ec5ba5215a0fbfc002b3b8',	'WePiggy',	'Phase 0')

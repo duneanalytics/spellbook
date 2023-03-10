@@ -22,7 +22,7 @@ FROM (values
      ('0xd4c00fe7657791c2a43025de483f05e49a5f76a6','Lyra','intermediate') --holds velo venft
     ,('0xb074ec6c37659525EEf2Fb44478077901F878012','Velodrome','intermediate')
     ,('0xe3f6b34445f499383025ca054028a3ad9693ff67','xToken Terminal / Gamma Strategies','intermediate') --guessing
-    ,('0x1d702651ed22736eeb261ac9e2b72e7f79ed9ea9','0x Project','intermediate?') --guessing
+    ,('0x1d702651ed22736eeb261ac9e2b72e7f79ed9ea9','Zeroex (0x)','intermediate?') --guessing
     ,('0xFd0Bd19e849493F77D8f77eD026520C1368102Bd','Layer2dao','deplpoyer')
     ,('0xdb583b636f995ef1ef28ac96b9ba235916bd1583','Beefy Finance','intermediate')
     ,('0x2c3ee61296e89612994e7a1d336fb623e5138411','Quix','intermediate - cb deposit')
