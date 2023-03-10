@@ -63,8 +63,7 @@ WITH all_labels AS (
             COALESCE(
                 /*txl.tx_name
                 ,*/CASE WHEN tf.to = dc.address THEN lbl_from_util_tx.project_name ELSE NULL END --if utility, mark as internal
-                ,lbl_to.project_name,
-                'Other'
+                ,lbl_to.project_name
                 ) AS to_name,
                 
                 cast(tf.value as double)/cast( 1e18 as double) AS op_amount_decimal,
