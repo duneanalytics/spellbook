@@ -135,8 +135,7 @@ FROM (values
     ,('0x65F8a09A1C3581a02C8788a6959652E32a87FC77','Beefy Finance','Beefy Launchpool')
     ,('0xda62d109064138c14d45085b6e49568e1c0b4e23','xToken Terminal / Gamma Strategies','Rewards Program')
     ,('0xf099FA1Bd92f8AAF4886e8927D7bd3c15bA0BbFd','xToken Terminal / Gamma Strategies','Rewarder')
-    -- ,('0x8636600a864797aa7ac8807a065c5d8bd9ba3ccb','Arrakis Finance','Uniswap Program')
-    -- ,('0xa7eeb1b719ef7b40f79d2056900ee3ca904f28f9','xToken Terminal / Gamma Strategies','Uniswap Program')
+
     ,('0xAde63D643564AaA8C2A86F2244f43B5eB00ed5e6','Clipper','Distributor')
     ,('0x9024d0C5d4709b98856CDaE02B955890A69f8007','Kwenta','Distributor')
     ,('0x06292DE88aDb3b1557B034ebB1c367E65Ab93E4C','Celer','Liquidity Mining Distributor')
