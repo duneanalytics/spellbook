@@ -1,13 +1,12 @@
 {{ config(
     alias = 'balances',
-    materialized = 'view',
+    materialized = 'table',
     file_format = 'delta',
     post_hook='{{ expose_spells(\'["ethereum", "gnosis", "polygon"]\',
                                 "sector",
                                 "dao",
                                 \'["Henrystats"]\') }}')
 }}
-
 
 {% set project_start_date = '2018-10-27' %}
 
