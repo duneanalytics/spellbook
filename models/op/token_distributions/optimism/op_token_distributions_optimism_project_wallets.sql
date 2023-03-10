@@ -45,6 +45,9 @@ FROM (values
     ,('0xA7EEb1b719ef7b40F79D2056900ee3Ca904F28F9', 'DefiEdge', 'Uniswap Grants')
     ,('0xfda462548ce04282f4b6d6619823a7c64fdc0185', 'Angle', 'Contract Deplopyer')
     ,('0x20f3880A281092dBC6699E5D5a0FF5FEB3D3db1A','Celer','Intermediate')
+    --quix - should come from CB
+    ,('0x5Ad4A019F77e82940f6Dd15A5215362AF061A742','Quix','Distributor')
+    
     --suspected grants multisigs
     ,('0x5a06d52f38965904cf15c3f55286263ab9a237d7','Perpetual Protocol','Grants Wallet') --guessing
     ,('0xC69a2d7e3De31542aB9ba1e80F9F5d68e49f78e6','Lyra','Lyra Grants DAO')
@@ -153,10 +156,11 @@ FROM (values
     ,('0x4ea2e39626de031a011c3ca7360878202454ce75', 'Angle', 'OP/agEUR: Velodrome')
     ,('0x6333000289bc27a090b3d51e734c2f13e3edc4fd', 'Hundred Finance', 'Token Treasury')
     
-    --quix - should come from CB
-    ,('0x5Ad4A019F77e82940f6Dd15A5215362AF061A742','Quix','Distributor')
     ,('0xeeab81526c9addb75ffffde0cd3f6f018cc39ac2','Synthetix','Multisig - Distributor')
     ,('0x09992dd7b32f7b35d347de9bdaf1919a57d38e82','Synthetix','Hop Rewards Distributor')
+
+    ,('0xf42279467D821bCDf40b50E9A5d2cACCc4Cf5b30','Coinbase Quests','Quest 1 - DEX')
+    ,('0x9F4F2B8BdA8D2d3832021b3119747470ea86A183','Coinbase Quests','Quest 2 - Delegation')
 
     --governance delegation
     ,('0x6a1e22c82be29eb96850158011b40fafbce1340c','Synthetix','SNXAmbassadors delegation')
