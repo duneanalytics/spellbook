@@ -16,7 +16,8 @@
 {% set max_levels = 5 %}
 -- set column names to loop through
 {% set cols = [
-    "contract_project"
+     "trace_creator_address"
+    ,"contract_project"
     ,"token_symbol"
     ,"contract_name"
     ,"creator_address"
@@ -263,15 +264,14 @@ with base_level as (
 )
 ,cleanup as (
 --grab the first non-null value for each, i.e. if we have the contract via both contract mapping and optimism.contracts
-  select 
-     trace_creator_address
-    ,contract_address
+  select
+    contract_address
     {% for col in cols %}
     ,(array_agg({{ col }}) filter (where {{ col }} is not NULL))[0] as {{ col }}
     {% endfor %}
   from get_contracts
   where contract_address is not NULL 
-  group by 1,2
+  group by 1
 )
 select 
   c.trace_creator_address
