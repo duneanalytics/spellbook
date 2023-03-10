@@ -30,8 +30,9 @@ WITH all_labels AS (
         SELECT * FROM {{ ref('op_token_distributions_optimism_other_tags') }}
 )
 
-, outgoing_distributions AS (
-    WITH tfers AS (
+-- , outgoing_distributions AS (
+    -- WITH 
+,tfers AS (
         -- transfers out
             SELECT
                 evt_block_time, evt_block_number, evt_index,
@@ -127,7 +128,7 @@ WITH all_labels AS (
         SELECT
             evt_block_time, evt_block_number, evt_index,
             from_address, to_address, tx_to_address, tx_from_address, evt_tx_hash,
-            from_type, to_type, from_label, from_name, to_label, to_name, op_amount_decimal, tx_method
+            from_type, to_type, from_label, from_name, to_label, o.to_name, op_amount_decimal, tx_method
         FROM {{ ref('op_token_distributions_optimism_other_distributions_claims') }} o
         {% if is_incremental() %} 
             where o.evt_block_time >= date_trunc('day', now() - interval '1 week')
@@ -154,9 +155,8 @@ WITH all_labels AS (
             and o.evt_block_time >= date_trunc('day', now() - interval '1 week')
             {% endif %}
         WHERE o.evt_block_number IS NULL
-)
+-- )
 
-SELECT * FROM outgoing_distributions
 
 -- , distributions AS (
 
