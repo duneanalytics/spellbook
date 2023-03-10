@@ -133,6 +133,9 @@ models:
       - &surplus_usd
         name: surplus_usd
         description: "USD value of surplus (difference between limit and executed price)"
+      - &order_type
+        name: order_type
+        description: "SELL/BUY string indicating if the trade was a sell or buy order"
 
   - name: cow_protocol_ethereum_batches
     meta:
