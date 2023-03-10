@@ -43,16 +43,18 @@ WITH all_labels AS (
             COALESCE(
                 CASE WHEN tf.to = dc.address THEN lbl_from_util_tx.address_descriptor ELSE NULL END --if utility, mark as internal
                 ,lbl_to.address_descriptor
+                ,'Other'
                 )
                 AS to_type,
             COALESCE(lbl_from_util_tx.label
-                    ,lbl_from.label,
-                    'Other') 
+                    ,lbl_from.label
+                    ) 
                     AS from_label, --override if to an incentive tx address
             COALESCE(
                     dc.project_name,--if we have a name override, like airdrop 2
                     lbl_from_util_tx.project_name
-                    ,lbl_from.project_name) 
+                    ,lbl_from.project_name
+                    ,'Other') 
                     AS from_name, --override if to an incentive tx address
             COALESCE(
                 /*txl.tx_type
