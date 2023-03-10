@@ -54,7 +54,7 @@ FROM (
                 lbl_to.label
                 , 'Other'
                 ) AS to_label,
-            NULL AS to_name, cast(amount as double) / cast(1e18 as double) AS op_amount_decimal
+            'Other' AS to_name, cast(amount as double) / cast(1e18 as double) AS op_amount_decimal
             --get last
             , tf.evt_index AS evt_tfer_index
             , substring(tx.data,1,10) AS tx_method --bytearray_substring(tx.data, 1, 4) AS tx_method

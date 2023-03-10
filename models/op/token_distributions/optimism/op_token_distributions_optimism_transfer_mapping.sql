@@ -64,6 +64,7 @@ WITH all_labels AS (
                 /*txl.tx_name
                 ,*/CASE WHEN tf.to = dc.address THEN lbl_from_util_tx.project_name ELSE NULL END --if utility, mark as internal
                 ,lbl_to.project_name
+                ,'Other'
                 ) AS to_name,
                 
                 cast(tf.value as double)/cast( 1e18 as double) AS op_amount_decimal,
@@ -167,7 +168,7 @@ WITH all_labels AS (
 --     --
 --     , from_type, to_type
 --     , from_label, to_label
---     , from_name AS og_from_name, to_name AS og_to_name
+--     , from_name, to_name
 --     , op_amount_decimal, tx_method,
 
 --     CASE WHEN to_label = 'Other' THEN op_amount_decimal ELSE 0 END AS op_claimed,
@@ -203,8 +204,8 @@ WITH all_labels AS (
 --     --
 --     , from_type, to_type
 --     , d.from_label, d.to_label
---     , COALESCE(dfrom.address_name, d.og_from_name) AS from_name
---     , COALESCE(dto.address_name, dtxto.address_name, d.og_to_name) AS to_name
+--     , COALESCE(dfrom.address_name, d.from_name) AS from_name
+--     , COALESCE(dto.address_name, dtxto.address_name, d.to_name) AS to_name
 --     --
 --     , op_amount_decimal, tx_method
 --     --
@@ -214,17 +215,17 @@ WITH all_labels AS (
 --     , cast(op_between_projects as double) as op_between_projects
 --     , cast(op_incoming_clawback as double) as op_incoming_clawback
 --     --
---     , d.og_to_name
---     , d.og_from_name
+--     , d.to_name AS og_to_name --keep original name in case we want it
+--     , d.from_name AS og_from_name --keep original name in case we want it
     
 -- FROM distributions d
 -- -- read in other tags
 -- LEFT JOIN other_tags dto
 --     ON dto.address = d.to_address
---     AND d.og_to_name = 'Other' -- don't overwrite existing
+--     AND d.to_name = 'Other' -- don't overwrite existing mapping
 -- LEFT JOIN other_tags dtxto
 --     ON dtxto.address = d.tx_to_address
---     AND d.og_to_name = 'Other' -- don't overwrite existing
+--     AND d.to_name = 'Other' -- don't overwrite existing mapping
 -- LEFT JOIN other_tags dfrom
 --     ON dfrom.address = d.from_address
---     AND d.og_from_name = 'Other' -- don't overwrite existing
+--     AND d.from_name = 'Other' -- don't overwrite existing mapping
