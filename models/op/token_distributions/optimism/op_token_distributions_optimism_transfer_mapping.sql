@@ -36,7 +36,9 @@ WITH all_labels AS (
             SELECT
                 evt_block_time, evt_block_number, evt_index,
                 tf.`from` AS from_address, tf.to AS to_address, tx.to AS tx_to_address, tx.`from` AS tx_from_address,  evt_tx_hash,
-                COALESCE(lbl_from_util_tx.address_descriptor
+            
+            COALESCE(
+                    lbl_from_util_tx.address_descriptor
                     ,lbl_from.address_descriptor
                     ) 
                     AS from_type, --override if to an incentive tx address
@@ -45,11 +47,20 @@ WITH all_labels AS (
                     ,lbl_to.address_descriptor
                     ,'Other'
                     )
-                AS to_type,
-            COALESCE(lbl_from_util_tx.label
+                    AS to_type,
+                    
+            COALESCE(
+                     lbl_from_util_tx.label
                     ,lbl_from.label
                     ) 
                     AS from_label, --override if to an incentive tx address
+            COALESCE(
+                    /*txl.tx_type
+                    ,*/CASE WHEN tf.to = dc.address THEN lbl_from_util_tx.label ELSE NULL END --if utility, mark as internal
+                    ,lbl_to.label
+                    , 'Other') 
+                    AS to_label,
+                    
             COALESCE(
                     dc.project_name,--if we have a name override, like airdrop 2
                     lbl_from_util_tx.project_name
@@ -57,18 +68,12 @@ WITH all_labels AS (
                     ) 
                     AS from_name, --override if to an incentive tx address
             COALESCE(
-                /*txl.tx_type
-                ,*/CASE WHEN tf.to = dc.address THEN lbl_from_util_tx.label ELSE NULL END --if utility, mark as internal
-                ,lbl_to.label
-                    , 'Other') 
-                    AS to_label,
-            COALESCE(
-                /*txl.tx_name
-                ,*/CASE WHEN tf.to = dc.address THEN lbl_from_util_tx.project_name ELSE NULL END --if utility, mark as internal
-                ,lbl_to.project_name
-                ,'Other'
-                ) AS to_name,
-                
+                    /*txl.tx_name
+                    ,*/CASE WHEN tf.to = dc.address THEN lbl_from_util_tx.project_name ELSE NULL END --if utility, mark as internal
+                    ,lbl_to.project_name
+                    ,'Other'
+                    ) AS to_name,
+                    
                 cast(tf.value as double)/cast( 1e18 as double) AS op_amount_decimal,
                 evt_index AS evt_tfer_index,
                 
