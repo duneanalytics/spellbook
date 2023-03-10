@@ -186,7 +186,7 @@ with base_level as (
         )
     )
     {% endif %}
-    group by 1, 2, 3, 4, 5, 6, 7, 8, 9
+    group by 1, 2, 3, 4, 5, 6, 7, 8, 9, 10
 
   union all 
   --synthetix genesis contracts
@@ -214,7 +214,7 @@ with base_level as (
         and gc.contract_project LIKE 'Synthetix%' --future proof in case this name changes
     )
     {% endif %}
-    group by 1, 2, 3, 4, 5, 6, 7, 8, 9
+    group by 1, 2, 3, 4, 5, 6, 7, 8, 9, 10
 
     union all 
   --uniswap pools from ovm1
@@ -242,7 +242,7 @@ with base_level as (
         and gc.contract_project LIKE 'Uniswap%' --future proof in case this name changes
     )
     {% endif %}
-    group by 1, 2, 3, 4, 5, 6, 7, 8, 9
+    group by 1, 2, 3, 4, 5, 6, 7, 8, 9, 10
 )
 ,get_contracts as (
   select 
@@ -259,7 +259,7 @@ with base_level as (
   from combine as c 
   left join tokens as t 
     on c.contract_address = t.contract_address
-  group by 1, 2, 3, 4, 5, 6, 7, 8, 9
+  group by 1, 2, 3, 4, 5, 6, 7, 8, 9, 10
 )
 ,cleanup as (
 --grab the first non-null value for each, i.e. if we have the contract via both contract mapping and optimism.contracts
