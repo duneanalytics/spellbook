@@ -50,10 +50,12 @@ WITH trades AS (
     {% endif %}
 ),
 
-fees as (
+trade_amount_detail as (
     SELECT e.evt_block_number,
         e.evt_tx_hash,
-        CAST(e.value as decimal(38,0)) AS platform_fee_amount_raw
+        CAST(e.value as double) AS amount_raw,
+        e.`to` AS receive_address,
+        row_number() OVER (PARTITION BY e.evt_tx_hash ORDER BY e.evt_index) AS item_index
     FROM {{ source('erc20_polygon', 'evt_transfer') }} e
     INNER JOIN trades t ON e.evt_block_number = t.block_number
         AND e.evt_tx_hash = t.tx_hash
@@ -63,7 +65,28 @@ fees as (
         {% if is_incremental() %}
         AND e.evt_block_time >= date_trunc("day", now() - interval '1 week')
         {% endif %}
-    WHERE e.`to` = '0x8de9c5a032463c561423387a9648c5c7bcc5bc90' -- OpenSea: Fees Address
+    WHERE e.`from` = '0xf715beb51ec8f63317d66f491e37e7bb048fcc2d' -- All fees are transferred to this address then split to other addresses
+),
+
+trade_amount_grouped as (
+    SELECT evt_block_number,
+        evt_tx_hash,
+        sum(case when item_index = 1 then amount_raw else 0 end) AS fee_amount_raw_1,
+        max(case when item_index = 1 then receive_address else null end) AS receive_address,
+        sum(case when item_index = 2 then amount_raw else 0 end) AS fee_amount_raw_2,
+        count(*) as row_count
+    FROM trade_amount_detail
+    GROUP BY 1, 2
+),
+
+trade_amount_summary as (
+    SELECT evt_block_number,
+        evt_tx_hash,
+        -- Some tx has no royalty fee: https://polygonscan.com/tx/0x7a583aa2ac9aa7b25fdf969ddc7e3a860f4565e4e48e83c2d5d513355dd952a5
+        (case when row_count = 2 then fee_amount_raw_2 else fee_amount_raw_1 end) AS platform_fee_amount_raw,
+        (case when row_count = 2 then receive_address else null end) AS royalty_fee_receive_address,
+        (case when row_count = 2 then fee_amount_raw_1 else null end) AS royalty_fee_amount_raw
+    FROM trade_amount_grouped
 )
 
 SELECT
@@ -98,11 +121,11 @@ SELECT
   CAST(f.platform_fee_amount_raw / power(10,erc20.decimals) AS double) AS platform_fee_amount,
   CAST(f.platform_fee_amount_raw / power(10,erc20.decimals) * p.price AS double) AS platform_fee_amount_usd,
   CAST(f.platform_fee_amount_raw / a.amount_raw * 100 AS double) AS platform_fee_percentage,
-  CAST(royalty_fee * a.amount_raw AS double) AS royalty_fee_amount_raw,
-  CAST(royalty_fee * a.amount_raw / power(10,erc20.decimals) / 100 AS double) AS royalty_fee_amount,
-  CAST(royalty_fee * a.amount_raw / power(10,erc20.decimals) * p.price / 100 AS double) AS royalty_fee_amount_usd,
-  CAST(royalty_fee AS double) AS royalty_fee_percentage,
-  a.fee_recipient AS royalty_fee_receive_address,
+  CAST(f.royalty_fee_amount_raw AS double) AS royalty_fee_amount_raw,
+  CAST(f.royalty_fee_amount_raw / power(10,erc20.decimals) AS double) AS royalty_fee_amount,
+  CAST(f.royalty_fee_amount_raw / power(10,erc20.decimals) * p.price AS double) AS royalty_fee_amount_usd,
+  CAST(f.royalty_fee_amount_raw / a.amount_raw * 100 AS double) AS royalty_fee_percentage,
+  f.royalty_fee_receive_address,
   erc20.symbol AS royalty_fee_currency_symbol,
   a.tx_hash || '-' || a.evt_type  || '-' || a.evt_index || '-' || a.token_id || '-' || cast(coalesce(a.number_of_items, 1) as string)  AS unique_trade_id
 FROM trades a
@@ -113,7 +136,7 @@ INNER JOIN {{ source('polygon','transactions') }} t ON a.block_number = t.block_
     {% if is_incremental() %}
     AND t.block_time >= date_trunc("day", now() - interval '1 week')
     {% endif %}
-LEFT JOIN fees f ON a.block_number = f.evt_block_number AND a.tx_hash = f.evt_tx_hash
+LEFT JOIN trade_amount_summary f ON a.block_number = f.evt_block_number AND a.tx_hash = f.evt_tx_hash
 LEFT JOIN {{ source('prices', 'usd') }} p ON p.minute = date_trunc('minute', a.block_time)
     AND p.contract_address = a.currency_contract
     AND p.blockchain ='polygon'
