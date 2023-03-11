@@ -162,6 +162,8 @@ models:
         name: project_address
       - &project_name
         name: project_name
+        tests:
+          - not_null
       - *tx_from_address
       - *tx_to_address
       - &op_approved_to_project
@@ -183,6 +185,8 @@ models:
     columns:
       - &proposal_name
         name: proposal_name
+        tests:
+          - not_null
       - *project_name
   
   - name: op_token_distributions_optimism_project_wallets
@@ -208,6 +212,8 @@ models:
       - *proposal_name
       - &address_descriptor
         name: address_descriptor
+        tests:
+          - not_null
       - *project_name
 
   - name: op_token_distributions_optimism_all_distributions_labels
@@ -245,22 +251,6 @@ models:
       - *address
       - &address_name
         name: address_name
-  
-  - name: op_token_distributions_optimism_disperse_contracts
-    meta:
-      blockchain: optimism
-      project: op
-      contributors: msilb7
-    config:
-      tags: ['optimism','op','grants','disperse']
-    description: >
-        A table containing mappings for disperse contract wallets that we want to map distributions with
-    tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-              - address
-    columns:
-      - *address
-      - *label
-      - *address_descriptor
+        tests:
+          - not_null
       
