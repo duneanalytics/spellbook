@@ -123,4 +123,4 @@ models:
         description: "What is the type of backing for the stablecoin"
         tests:
           - accepted_values:
-              values: ['Crypto-Backed','Fiat-Backed','Algorithmic']
+              values: ['Crypto-Backed','Fiat-Backed','Algorithmic','Bridge-Backed']
