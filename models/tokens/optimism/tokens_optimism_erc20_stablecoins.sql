@@ -54,7 +54,7 @@ FROM (VALUES
       ,('0x56900d66d74cb14e3c86895789901c9135c95b16', 'DAI Hop Token', 'USD', 'Bridge-Backed')
       ,('0x67c10c397dd0ba417329543c1a40eb48aaa7cd00', 'Synapse USD', 'USD', 'Bridge-Backed')
 
-  ) AS tbl (contract_address, name, reserve_type)
+  ) AS tbl (contract_address, name, currency_peg, reserve_type)
 
 -- JOIN FOR DATA QUALITY
 -- -- Enforce that the token is listen in "tokens_optimism_erc20.sql"
