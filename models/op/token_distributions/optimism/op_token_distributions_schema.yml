@@ -162,8 +162,6 @@ models:
         name: project_address
       - &project_name
         name: project_name
-        tests:
-          - not_null
       - *tx_from_address
       - *tx_to_address
       - &op_approved_to_project
