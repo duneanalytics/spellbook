@@ -27,12 +27,20 @@
             inner join {{model}} model
                 ON 1=1
                     {%- for column_name in seed_matching_columns %}
+                    {% if column_name == 'trace_address' %}
+                    AND COALESCE(CAST(split(seed.{{column_name}}, ',') as array<bigint>), ARRAY()) = model.{{column_name}}
+                    {% else %}
                     AND seed.{{column_name}} = model.{{column_name}}
+                    {% endif %}
                     {% endfor -%}
             ) model_sample
         ON 1=1
             {%- for column_name in seed_matching_columns %}
+            {% if column_name == 'trace_address' %}
+            AND COALESCE(CAST(split(seed.{{column_name}}, ',') as array<bigint>), ARRAY()) = model_sample.{{column_name}}
+            {% else %}
             AND seed.{{column_name}} = model_sample.{{column_name}}
+            {% endif %}
             {% endfor -%}
         WHERE 1=1
               {%- if filter is not none %}
