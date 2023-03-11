@@ -35,8 +35,10 @@ tests:
 models:
   spellbook:
     +post-hook:
-      sql: "{{ optimize_spell(this, model.config.materialized) }}"
-      transaction: true
+      - sql: "{{ optimize_spell(this, model.config.materialized) }}"
+        transaction: true
+      - sql: "{{ mark_as_spell(this, model.config.materialized) }}"
+        transaction: true
     +materialized: view
     +schema: no_schema    # this should be overriden in model specific configs
 
@@ -46,6 +48,11 @@ models:
         +schema: aave_ethereum
       optimism:
         +schema: aave_optimism
+
+    aavegotchi:
+      +schema: aavegotchi
+      polygon:
+        +schema: aavegotchi_polygon
 
     balancer:
       +schema: balancer
@@ -57,6 +64,8 @@ models:
         +schema: balancer_polygon
       optimism:
         +schema: balancer_optimism
+      gnosis:
+        +schema: balancer_gnosis
 
     ens:
       +schema: ens
@@ -75,8 +84,6 @@ models:
 
     dex:
       +schema: dex
-      aggregator:
-        +schema: dex_aggregator
 
     nft:
       +schema: nft
@@ -101,6 +108,8 @@ models:
         +schema: nft_polygon
       fantom:
         +schema: nft_fantom
+      goerli:
+        +schema: nft_goerli
 
     compound:
       +schema: compound
@@ -152,6 +161,8 @@ models:
         +schema: sushiswap_arbitrum
       fantom:
         +schema: sushiswap_fantom
+      optimism:
+        +schema: sushiswap_optimism
 
     openocean:
       +schema: openocean
@@ -403,6 +414,8 @@ models:
         +schema: transfers_optimism
       bnb:
         +schema: transfers_bnb
+      arbitrum:
+        +schema: transfers_arbitrum
 
     sudoswap:
       +schema: sudoswap
@@ -525,6 +538,8 @@ models:
         +schema: curvefi_optimism
       avalanche_c:
         +schema: curvefi_avalanche_c
+      fantom:
+        +schema: curvefi_fantom
 
     cow_protocol:
       +schema: cow_protocol
@@ -821,6 +836,11 @@ models:
       polygon:
         +schema: rocifi_polygon
 
+    oneinch:
+      +schema: oneinch
+      ethereum:
+        +schema: oneinch_ethereum
+        
     nftearth:
       +schema: nftearth
       optimism:
@@ -830,6 +850,14 @@ models:
       +schema: zonic
       optimism:
         +schema: zonic_optimism
+    
+    pooltogether:
+      +schema: pooltogether
+      ethereum:
+        +schema: pooltogether_ethereum
+
+    method_ids:
+      +schema: method_ids
 
 seeds:
   spellbook:
