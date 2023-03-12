@@ -34,7 +34,7 @@ UNION ALL
 select
   blockchain,
   quester_address AS address,
-  'Optimism Quests' || 
+  'Optimism Quests - ' || 
   CASE WHEN num_quests_completed >= 10 THEN 'Tier 3'
        WHEN num_quests_completed >= 7 THEN 'Tier 2'
        ELSE 'Tier 1'
