@@ -83,7 +83,7 @@ select
   'query' AS source,
   timestamp('2023-03-11') as created_at,
   now() as updated_at,
-  model_name,
+  'likely_bot_contracts' as model_name,
 'persona' as label_type
 
   FROM (
