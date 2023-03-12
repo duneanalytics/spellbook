@@ -28,7 +28,7 @@ FROM (
 
 
     FROM {{source('erc20_' + chain, 'evt_transfer')}} t
-        INNER JOIN {{ref('addresses_'+chain+'_cex')}} c
+        INNER JOIN {{ref('addresses_'+ chain +'_cex')}} c
         ON t.`from` = c.address
 
     UNION ALL
@@ -47,7 +47,7 @@ FROM (
 
 
     FROM {{source('erc20_' + chain, 'evt_transfer')}} t
-        INNER JOIN {{ref('addresses_'+chain+'_cex')}} c
+        INNER JOIN {{ref('addresses_'+ chain +'_cex')}} c
         ON t.`from` = c.address
 
     {% if not loop.last %}
