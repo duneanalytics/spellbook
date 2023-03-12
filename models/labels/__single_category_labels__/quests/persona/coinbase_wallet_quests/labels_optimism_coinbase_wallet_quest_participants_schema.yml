@@ -5,7 +5,7 @@ models:
     meta:
       blockchain: optimism
       sector: labels
-      category: coinbase_wallet_quest_participants
+      category: quest_participants
       contributors: msilb7
     config:
       tags: ['labels', 'quests','coinbase','optimism']
@@ -22,7 +22,7 @@ models:
         description: "Label name"
       - &category
         name: category
-        description: "Label category (dex_trader)"
+        description: "Label category"
       - &contributor
         name: contributor
         description: "Wizard(s) contributing to labels"
