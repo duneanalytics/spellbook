@@ -10,13 +10,14 @@
     'optimism'
     ] %}
 
-SELECT *
+SELECT 
+blockchain, address, name, category, contributor, source, created_at, updated_at, model_name, label_type
 FROM (
 {% for chain in chains %}
     SELECT
     '{{chain}}' as blockchain,
     address,
-    cex_name || ' User' name,
+    cex_name || ' User' AS name,
     'cex users' AS category,
     'msilb7' AS contributor,
     'query' AS source,
@@ -35,7 +36,7 @@ FROM (
     SELECT
     '{{chain}}' as blockchain,
     address,
-    cex_name || ' User' name,
+    cex_name || ' User' AS name,
     'cex users' AS category,
     'msilb7' AS contributor,
     'query' AS source,
