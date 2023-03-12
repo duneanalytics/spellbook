@@ -14,7 +14,7 @@
 --quests started soft-launching in feb 2023, so set a buffer
 {% set project_start_date = '2023-01-01' %}
 
-, distributions AS (
+WITH distributions AS (
 
 SELECT
 qa.distributor_address, qa.quest_name
