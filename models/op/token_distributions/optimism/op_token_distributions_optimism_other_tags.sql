@@ -8,8 +8,8 @@
 WITH tagged_wallets AS (
 SELECT distinct address, address_name
 FROM (
-SELECT LOWER(address) AS address, cast(address_name as varchar(100)) AS address_name
-    , ROW_NUMBER() OVER (PARTITION BY address ORDER BY cast(address_name as varchar(100)) ) AS rnk
+SELECT LOWER(address) AS address, cast(address_name as varchar(250)) AS address_name
+    , ROW_NUMBER() OVER (PARTITION BY address ORDER BY cast(address_name as varchar(250)) ) AS rnk
 FROM (values
              ('0x030058ac851ba6f282ec0e717a7ed577d09dff0b','Perp Foundation')
             ,('0x283c280ef8c42e2775d12aa804f5e053475d5397','Perp Foundation')

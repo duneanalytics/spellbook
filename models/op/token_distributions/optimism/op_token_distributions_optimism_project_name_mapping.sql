@@ -17,4 +17,7 @@ FROM (values
         ,('Safe', 'Gnosis Safe')
         ,('Okex', 'OKX')
         ,('Overtime Markets', 'Thales')
+        ,('Quests on Coinbase Wallet - Quest #1 DEX Swap','Quests on Coinbase Wallet')
+        ,('Quests on Coinbase Wallet - Quest #2 Delegation','Quests on Coinbase Wallet')
+        
 ) a (proposal_name, project_name)
