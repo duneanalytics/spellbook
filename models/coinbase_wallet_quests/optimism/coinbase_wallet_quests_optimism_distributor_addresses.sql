@@ -20,4 +20,6 @@ FROM (values
 
 )
 
-SELECT * FROM quest_addresses
+SELECT distinct 
+    distributor_address, rewards_token, quest_name
+    FROM quest_addresses
