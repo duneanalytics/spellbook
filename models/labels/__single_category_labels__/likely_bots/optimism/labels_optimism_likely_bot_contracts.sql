@@ -36,10 +36,14 @@ FROM (
         COUNT(*) AS num_txs, COUNT(DISTINCT `from`) AS num_senders, COUNT(*)/COUNT(DISTINCT `from`) AS txs_per_sender,
         
         cast(cast(COUNT(*) as double)/cast(COUNT(DISTINCT `from`) as double) as double) / 
-            ( cast( date_DIFF('second', MIN(block_time), MAX(block_time)) as double) / (60.0*60.0) ) AS txs_per_addr_per_hour,
+            ( cast( bigint(MAX(min_block_time)) - bigint(MIN(min_block_time)) as double) / (60.0*60.0) )
+            -- DuneSQL ( cast( date_DIFF('second', MIN(block_time), MAX(block_time)) as double) / (60.0*60.0) )  
+            AS txs_per_addr_per_hour,
             
         cast(COUNT(*) as double) / 
-            ( cast( date_DIFF('second', MIN(block_time), MAX(block_time)) as double) / (60.0*60.0) ) AS txs_per_hour
+            ( cast( bigint(MAX(min_block_time)) - bigint(MIN(min_block_time)) as double) / (60.0*60.0) )
+            -- DuneSQL ( cast( date_DIFF('second', MIN(block_time), MAX(block_time)) as double) / (60.0*60.0) ) 
+            AS txs_per_hour
         -- SUM( CASE WHEN substring(data from 1 for 10) = mode(substring(data from 1 for 10) THEN 1 ELSE 0 END) ) AS method_dupe
         FROM {{ source('optimism','transactions') }} t
         GROUP BY 1
@@ -49,19 +53,22 @@ FROM (
         -- early bots: > 25 txs / hour per address
         (COUNT(*) >= 100 AND
         cast(cast(COUNT(*) as double)/cast(COUNT(DISTINCT `from`) as double) as double) / 
-            ( cast( date_DIFF('second', MIN(block_time), MAX(block_time)) as double) / (60.0*60.0) ) >= 25 )
+            ( cast( bigint(MAX(min_block_time)) - bigint(MIN(min_block_time)) as double) / (60.0*60.0) ) >= 25 
+              -- Dunesql ( cast( date_DIFF('second', MIN(min_block_time), MAX(max_block_time)) as double) / (60.0*60.0) ) >= 25 
         OR
         -- established bots: less than 30 senders & > 2.5k txs & > 0.5 txs / hr (to make sure we don't accidently catch active multisigs)
             (COUNT(*) >= 2500 AND COUNT(DISTINCT `from`) <=30
             AND cast(COUNT(*) as double) / 
-            ( cast( date_DIFF('second', MIN(block_time), MAX(block_time)) as double) / (60.0*60.0) ) >= 0.5
+            ( cast( bigint(MAX(block_time)) - bigint(MIN(block_time)) as double) / (60.0*60.0) ) >= 0.5
+            -- DuneSQL( cast( date_DIFF('second', MIN(block_time), MAX(block_time)) as double) / (60.0*60.0) ) >= 0.5
             )
             OR 
         -- wider distribution bots: > 2.5k txs and > 1k txs per sender & > 0.5 txs / hr (to make sure we don't accidently catch active multisigs)
             (
             COUNT(*) >= 2500 AND cast(COUNT(*) as double)/cast(COUNT(DISTINCT `from`) as double) >= 1000
             AND cast(COUNT(*) as double) / 
-            ( cast( date_DIFF('second', MIN(block_time), MAX(block_time)) as double) / (60.0*60.0) ) >= 0.5
+            ( cast( bigint(MAX(block_time)) - bigint(MIN(block_time)) as double) / (60.0*60.0) ) >= 0.5
+            -- DuneSQL( cast( date_DIFF('second', MIN(block_time), MAX(block_time)) as double) / (60.0*60.0) ) >= 0.5
             )
     ) a
 )
