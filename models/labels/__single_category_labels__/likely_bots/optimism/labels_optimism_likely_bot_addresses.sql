@@ -88,7 +88,7 @@ FROM (
                 OR 
                     (
                     cast(COUNT(*) as double) / 
-                        ( cast( bigint(MAX(min_block_time)) - bigint(MIN(min_block_time)) as double) / (60.0*60.0) ) >= 25 
+                        ( cast( bigint(MAX(max_block_time)) - bigint(MIN(min_block_time)) as double) / (60.0*60.0) ) >= 25 
                         -- Dunesql ( cast( date_DIFF('second', MIN(min_block_time), MAX(max_block_time)) as double) / (60.0*60.0) ) >= 25 
                     AND SUM(wk_txs) >= 100
                     ) --frequency gt 25 txs per hour
