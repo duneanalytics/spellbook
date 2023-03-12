@@ -22,7 +22,7 @@ FROM (
     'query' AS source,
     timestamp('2023-03-11') as created_at,
     now() as updated_at,
-    model_name,
+    'cex_users_withdrawals' model_name,
     'persona' as label_type
 
 
@@ -41,7 +41,7 @@ FROM (
     'query' AS source,
     timestamp('2023-03-11') as created_at,
     now() as updated_at,
-    model_name,
+    'cex_users_withdrawals' model_name,
     'persona' as label_type
 
 
