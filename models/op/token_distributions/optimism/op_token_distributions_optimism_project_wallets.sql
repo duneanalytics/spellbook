@@ -41,7 +41,7 @@ FROM (values
     ,('0x5891BE896ed4a79ed928C55B17FbbEcDb46f8A00', 'QiDao', 'Intermediate')
     ,('0xa6200c2bf2ce83b32c4c1a7345888e75ab64f0e3', 'LiFi', 'Intermediate')
     ,('0xf508311867EFdC50cf36B06EC95E0EEdb2212599', 'Candide Wallet','Intermediate')
-    ,('0x8636600a864797aa7ac8807a065c5d8bd9ba3ccb', 'Arrakis Finaince', 'Uniswap Grants')
+    ,('0x8636600a864797aa7ac8807a065c5d8bd9ba3ccb', 'Arrakis Finance', 'Uniswap Grants')
     ,('0xA7EEb1b719ef7b40F79D2056900ee3Ca904F28F9', 'DefiEdge', 'Uniswap Grants')
     ,('0xfda462548ce04282f4b6d6619823a7c64fdc0185', 'Angle', 'Contract Deplopyer')
     ,('0x20f3880A281092dBC6699E5D5a0FF5FEB3D3db1A','Celer','Intermediate')
