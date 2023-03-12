@@ -55,6 +55,7 @@ FROM (
         cast(cast(COUNT(*) as double)/cast(COUNT(DISTINCT `from`) as double) as double) / 
             ( cast( bigint(MAX(min_block_time)) - bigint(MIN(min_block_time)) as double) / (60.0*60.0) ) >= 25 
               -- Dunesql ( cast( date_DIFF('second', MIN(min_block_time), MAX(max_block_time)) as double) / (60.0*60.0) ) >= 25 
+        )
         OR
         -- established bots: less than 30 senders & > 2.5k txs & > 0.5 txs / hr (to make sure we don't accidently catch active multisigs)
             (COUNT(*) >= 2500 AND COUNT(DISTINCT `from`) <=30
