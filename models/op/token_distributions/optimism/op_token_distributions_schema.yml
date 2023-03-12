@@ -206,7 +206,7 @@ models:
       - &address
         name: address
         tests:
-        - unique
+          - unique
       - &label
         name: label
       - *proposal_name
