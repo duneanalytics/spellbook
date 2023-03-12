@@ -28,6 +28,8 @@ UNION ALL
 SELECT * FROM {{ ref('labels_safe_ethereum') }}
 UNION ALL
 SELECT * FROM {{ ref('labels_tornado_cash') }}
+UNION ALL
+SELECT * FROM {{ ref('labels_quest_participants') }}
 
 -- new/standardized labels
 UNION ALL
