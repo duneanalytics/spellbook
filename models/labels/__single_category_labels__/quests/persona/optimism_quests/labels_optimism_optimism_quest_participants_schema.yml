@@ -1,7 +1,7 @@
 version: 2
 
 models:
-  - name: labels_optimism_coinbase_wallet_quest_participants_schema
+  - name: labels_optimism_optimism_quest_participants
     meta:
       blockchain: optimism
       sector: labels
