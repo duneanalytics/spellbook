@@ -156,7 +156,7 @@ FROM (values
     ,('0x6333000289bc27a090b3d51e734c2f13e3edc4fd', 'Hundred Finance', 'Token Treasury')
     
     ,('0xeeab81526c9addb75ffffde0cd3f6f018cc39ac2','Synthetix','Multisig - Distributor')
-    ,('0x09992dd7b32f7b35d347de9bdaf1919a57d38e82','Synthetix','Hop Rewards Distributor')
+    ,('0x09992dd7b32f7b35d347de9bdaf1919a57d38e82','Synthetix','SNX Bridge: Hop')
 
     ,('0xf42279467D821bCDf40b50E9A5d2cACCc4Cf5b30','Coinbase Quests','Quest 1 - DEX')
     ,('0x9F4F2B8BdA8D2d3832021b3119747470ea86A183','Coinbase Quests','Quest 2 - Delegation')
