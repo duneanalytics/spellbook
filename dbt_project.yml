@@ -152,7 +152,7 @@ models:
     maverick:
       +schema: maverick
       ethereum:
-        +schema: ethereum
+        +schema: maverick_ethereum
 
     sushiswap:
       +schema: sushiswap
