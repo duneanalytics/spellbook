@@ -113,7 +113,7 @@ models:
       contributors: msilb7
     config:
       tags: ['labels', 'optimism','ethereum', 'cex']
-    description: "Addresses withrawing from known centralised exchange addresses across chains"
+    description: "Addresses withrawing from known centralised exchange addresses across chains (sourced by chain withdrawals)"
     columns:
       - *blockchain
       - &user_address
