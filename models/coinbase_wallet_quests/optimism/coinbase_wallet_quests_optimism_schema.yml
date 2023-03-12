@@ -10,12 +10,15 @@ models:
       tags: ['optimism','coinbase wallet','quests']
     description: >
         A table containing quest information (i.e. name, distributor address) for Coinbase Wallet Quests
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+              - distributor_address
+              - quest_name
     columns:
       - &distributor_address
         name: distributor_address
         description: "The address distributing quest rewards. There should be a distinct distributor address for each quest."
-        tests:
-          - unique
       - &rewards_token
         name: rewards_token
         description:  "The token used as a quest reward"
