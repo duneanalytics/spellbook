@@ -116,7 +116,8 @@ FROM (VALUES
 ,('Project',	'0x13838884271ec954cb036d0b29d404afab5eae2a',	'CryptoTesters',	'Partner Fund')
 ,('Project',	'0xeb952357394b6668684a4890bd49d8a4c3e19ec0',	'Okex',	'Partner Fund')
 ,('Project',	'0xb1ea5a3e5ea7fa1834d48058ecda26d8c59e8251',	'Quix',	'Partner Fund')
-,('Project',	'0xf42279467D821bCDf40b50E9A5d2cACCc4Cf5b30',	'Coinbase Quest','Partner Fund')
+,('Project',	'0xf42279467d821bcdf40b50e9a5d2caccc4cf5b30',	'Quests on Coinbase Wallet','Partner Fund')
+,('Project',	'0x9f4f2b8bda8d2d3832021b3119747470ea86a183',	'Quests on Coinbase Wallet','Partner Fund')
 
 
 

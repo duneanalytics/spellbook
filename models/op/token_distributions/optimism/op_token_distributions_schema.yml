@@ -205,6 +205,8 @@ models:
     columns:
       - &address
         name: address
+        tests:
+        - unique
       - &label
         name: label
       - *proposal_name
