@@ -12,7 +12,7 @@
 
 SELECT *
 FROM (
-{% for dex_model in dex_trade_models %}
+{% for chain in chains %}
     SELECT
     '{{chain}}' as blockchain,
     address,
@@ -26,7 +26,7 @@ FROM (
     'persona' as label_type
 
 
-    FROM {{ref('erc20_{{chain}}_evt_transfer')}} t
+    FROM {{source('erc20_' + chain, 'evt_transfer')}} t
         INNER JOIN {{ref('addresses_{{chain}}_cex')}} c
         ON t.`from` = c.address
 
@@ -45,7 +45,7 @@ FROM (
     'persona' as label_type
 
 
-    FROM {{ref('transfers_{{chain}}_eth')}} t
+    FROM {{source('erc20_' + chain, 'evt_transfer')}} t
         INNER JOIN {{ref('addresses_{{chain}}_cex')}} c
         ON t.`from` = c.address
 
