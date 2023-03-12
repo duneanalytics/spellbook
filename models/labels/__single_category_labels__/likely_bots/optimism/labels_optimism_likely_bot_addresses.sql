@@ -57,7 +57,7 @@ FROM (
                         , MIN(block_time) AS min_block_time
                         , MAX(block_time) AS max_block_time
                         , COUNT(*) AS hr_txs
-                        , SUM(CASE WHEN to IN (SELECT address FROM bot_contracts WHERE name != 'chain ops bot') THEN 1 ELSE 0 END) AS bot_concentration_txs
+                        , SUM(CASE WHEN to IN (SELECT address FROM {{ ref('labels_optimism_likely_bot_contracts') }} WHERE name != 'chain ops bot') THEN 1 ELSE 0 END) AS bot_concentration_txs
                         
                         , SUM(CASE WHEN EXISTS (SELECT 1 FROM {{ source('erc20_optimism','evt_Transfer') }} r WHERE t.hash = r.evt_tx_hash AND t.block_number = r.evt_block_number) THEN 1 ELSE 0 END) AS num_erc20_tfer_txs
                         , SUM(CASE WHEN EXISTS (SELECT 1 FROM nft.transfers r WHERE t.hash = r.tx_hash AND t.block_number = r.block_number AND blockchain = 'optimism') THEN 1 ELSE 0 END) AS num_nft_tfer_txs
