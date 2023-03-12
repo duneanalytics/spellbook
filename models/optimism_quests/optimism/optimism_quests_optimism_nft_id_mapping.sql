@@ -9,7 +9,7 @@
 
 
 with quest_nft_ids AS (
-    SELECT contract_project, quest_project, cast(nft_id as varchar) as nft_id
+    SELECT contract_project, quest_project, cast(nft_id as varchar(4)) as nft_id
     FROM (values
          ('Beethoven X', 'Beethoven X', 6366)
         ,('Clipper','Clipper', 6357)
