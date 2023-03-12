@@ -10,14 +10,14 @@
 
 with 
  questers as (
-    select quester, 'optimism' AS blockchain, COUNT(*) AS num_quests_completed
+    select quester_address, 'optimism' AS blockchain, COUNT(*) AS num_quests_completed
     from {{ref('optimism_quests_optimism_quest_completions')}}
     GROUP BY 1,2
   )
 
 select
   blockchain,
-  address,
+  quester_address AS address,
   'Optimism Quests Participant' AS name,
   'quests' AS category,
   'msilb7' AS contributor,

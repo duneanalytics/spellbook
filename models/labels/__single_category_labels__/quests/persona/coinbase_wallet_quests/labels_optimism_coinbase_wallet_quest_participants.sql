@@ -16,7 +16,7 @@ with
   )
 select
   blockchain,
-  address,
+  quester_address AS address,
   "Coinbase Wallet Quest Participant" AS name,
   "quests" AS category,
   "msilb7" AS contributor,
