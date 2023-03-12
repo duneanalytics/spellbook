@@ -10,6 +10,14 @@ models:
     config:
       tags: ['labels', 'quests','coinbase','optimism']
     description: "DEX traders query labels across chains"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - address
+            - name
+            - category
+            - blockchain
+    
     columns:
       - &blockchain
         name: blockchain
