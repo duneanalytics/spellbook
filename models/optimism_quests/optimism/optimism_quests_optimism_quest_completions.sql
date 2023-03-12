@@ -20,7 +20,7 @@ SELECT
     call_tx_hash AS tx_hash,
     call_block_number AS block_number,
     call_block_time AS block_time,
-    cast(cid as varchar) AS nft_id,
+    nft_id,
     contract_project,
     quest_project
 
