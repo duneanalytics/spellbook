@@ -3,7 +3,7 @@ version: 2
 models:
   - name: maverick_trades
     meta:
-      blockchain: arbitrum, ethereum, optimism, polygon
+      blockchain: ethereum
       sector: dex
       contributors: gte620v
     config:
