@@ -12,7 +12,9 @@
 with 
 --- filtering out wash trades based on definition in this model https://github.com/duneanalytics/spellbook/blob/main/models/nft/nft_wash_trades.sql
 nft_trades_no_wash as 
-( select nft.* from {{ref('nft_trades')}} nft INNER JOIN {{ref('nft_wash_trades')}} wt ON wt.block_number=nft.block_number
+( select nft.*
+    from {{ref('nft_trades')}} nft 
+    INNER JOIN {{ref('nft_wash_trades')}} wt ON wt.block_number=nft.block_number
     AND wt.unique_trade_id=nft.unique_trade_id 
     where is_wash_trade = FALSE ),
 
@@ -80,7 +82,8 @@ reservoir_floors as (select
 contract, 
 price_decimal,
 row_number() over (partition by contract order by created_at desc) rn_desc
-from {{source('reservoir','collection_floor_ask_events')}}
+-- TODO: Change this to a source table once Dune employee updates the source file for reservoir
+from reservoir.collection_floor_ask_events
 where 1=1
 and valid_until_dt > current_date
 ),
