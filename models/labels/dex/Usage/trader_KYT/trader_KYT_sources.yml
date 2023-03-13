@@ -1,0 +1,31 @@
+version: 2
+
+sources:
+
+  - name: Trader_KYT
+
+    description: >
+
+      sources used for creating KYT labels for dex traders.
+
+    tables:
+
+      - name: ethereum.transactions
+
+      - name: polygon.transactions
+
+      - name: optimism.transactions
+
+      - name: arbitrum.transactions
+
+      - name: gnosis.transactions
+
+      - name: fantom.transactions
+
+      - name: bnb.transactions
+
+      - name: avalanche_c.transactions
+
+      - name: query_2143144
+
+      
