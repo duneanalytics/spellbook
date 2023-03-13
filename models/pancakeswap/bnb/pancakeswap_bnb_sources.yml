@@ -66,5 +66,7 @@ sources:
             name: token1
             description: "Token1 contract address"
       - name: ERC721NFTMarketV1_evt_Trade
-      - name: PancakeStableSwap_evt_TokenExchange
       - name: PancakeSwapMMPool_evt_Swap
+      - name: PancakeStableSwap_evt_TokenExchange
+      - name: PancakeStableSwapTwoPool_evt_TokenExchange
+      - name: PancakeStableSwapFactory_evt_NewStableSwapPair

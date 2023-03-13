@@ -7,6 +7,7 @@
 {% set pancake_models = [
     ref('pancakeswap_v2_bnb_amm_trades')
 ,   ref('pancakeswap_v2_bnb_mmpool_trades')
+,   ref('pancakeswap_v2_bnb_stableswap_trades')
 ] %}
 
 
