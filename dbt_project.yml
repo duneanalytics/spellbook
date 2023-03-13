@@ -804,6 +804,13 @@ models:
       optimism:
         +schema: ovm_optimism
 
+    op:
+      +schema: op
+      token_distributions:
+        +schema: op_token_distributions
+        optimism:
+          +schema: op_token_distributions_optimism
+
     rubicon:
       +schema: rubicon
       optimism:
