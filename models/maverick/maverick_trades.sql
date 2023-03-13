@@ -1,7 +1,7 @@
 {{ config(
     schema = 'maverick',
     alias = 'trades',
-    post_hook='{{ expose_spells(\'["arbitrum", "ethereum", "optimism", "polygon"]\',
+    post_hook='{{ expose_spells(\'["ethereum"]\',
                                 "project",
                                 "maverick",
                                 \'["gte620v"]\') }}'
