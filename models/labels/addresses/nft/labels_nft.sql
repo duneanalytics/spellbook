@@ -2,7 +2,7 @@
         post_hook='{{ expose_spells(\'["ethereum","solana"]\',
                                     "sector",
                                     "labels",
-                                    \'["soispoke"]\') }}'
+                                    \'["soispoke", "NazihKalo"]\') }}'
 )}}
 
 SELECT * FROM {{ ref('labels_nft_traders_transactions') }}
@@ -10,3 +10,5 @@ UNION ALL
 SELECT * FROM {{ ref('labels_nft_traders_volume_usd') }}
 UNION ALL
 SELECT * FROM {{ ref('labels_nft_users_platforms') }}
+UNION ALL
+SELECT * FROM {{ ref('labels_nft_smart_trader_ROI_eth') }}
