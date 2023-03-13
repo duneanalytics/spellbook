@@ -30,6 +30,8 @@ UNION ALL
 SELECT * FROM {{ ref('labels_tornado_cash') }}
 UNION ALL
 SELECT * FROM {{ ref('labels_likely_bot_labels') }}
+UNION ALL
+SELECT * FROM {{ ref('labels_cex_users') }}
 
 -- new/standardized labels
 UNION ALL
