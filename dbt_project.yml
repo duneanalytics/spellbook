@@ -35,8 +35,10 @@ tests:
 models:
   spellbook:
     +post-hook:
-      sql: "{{ optimize_spell(this, model.config.materialized) }}"
-      transaction: true
+      - sql: "{{ optimize_spell(this, model.config.materialized) }}"
+        transaction: true
+      - sql: "{{ mark_as_spell(this, model.config.materialized) }}"
+        transaction: true
     +materialized: view
     +schema: no_schema    # this should be overriden in model specific configs
 
@@ -410,6 +412,8 @@ models:
         +schema: transfers_optimism
       bnb:
         +schema: transfers_bnb
+      arbitrum:
+        +schema: transfers_arbitrum
 
     sudoswap:
       +schema: sudoswap
@@ -830,6 +834,11 @@ models:
       polygon:
         +schema: rocifi_polygon
 
+    oneinch:
+      +schema: oneinch
+      ethereum:
+        +schema: oneinch_ethereum
+        
     nftearth:
       +schema: nftearth
       optimism:
