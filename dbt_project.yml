@@ -414,6 +414,8 @@ models:
         +schema: transfers_bnb
       arbitrum:
         +schema: transfers_arbitrum
+      fantom:
+        +schema: transfers_fantom
 
     sudoswap:
       +schema: sudoswap
