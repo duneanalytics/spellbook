@@ -2,7 +2,7 @@
 
 with test_data as (
     select count(*) as total
-    from {{ ref('transfers_arbitrum_erc20') }}
+    from {{ ref('transfers_avalanche_c_erc20') }}
     where evt_block_time between '2023-01-01' and '2023-02-01'
 ),
 
