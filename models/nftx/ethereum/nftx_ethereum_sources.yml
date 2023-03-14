@@ -8,8 +8,16 @@ sources:
       - name: NFTXVaultFactoryUpgradeable_v1_evt_NewVault
         loaded_at_field: evt_block_time
       - name: NFTXVaultFactoryUpgradeable_v1_call_createVault
-        loaded_at_field: evt_block_time
+        loaded_at_field: call_block_time
       - name: Staking_evt_PoolCreated
         loaded_at_field: evt_block_time
-      - name: Staking_evt_PoolUpdated
+      - name: NFTXVaultUpgradeable_v1_evt_Minted
+        loaded_at_field: evt_block_time
+      - name: NFTXVaultUpgradeable_v1_evt_Redeemed
+        loaded_at_field: evt_block_time
+      - name: NFTXMarketplaceZap_evt_Buy
+        loaded_at_field: evt_block_time
+      - name: NFTXMarketplaceZap_evt_Sell
+        loaded_at_field: evt_block_time
+      - name: NFTXMarketplaceZap_evt_Swap
         loaded_at_field: evt_block_time
