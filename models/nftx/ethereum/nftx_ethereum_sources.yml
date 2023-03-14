@@ -11,6 +11,8 @@ sources:
         loaded_at_field: call_block_time
       - name: Staking_evt_PoolCreated
         loaded_at_field: evt_block_time
+      - name: Staking_evt_PoolUpdated
+        loaded_at_field: evt_block_time
       - name: NFTXVaultUpgradeable_v1_evt_Minted
         loaded_at_field: evt_block_time
       - name: NFTXVaultUpgradeable_v1_evt_Redeemed
