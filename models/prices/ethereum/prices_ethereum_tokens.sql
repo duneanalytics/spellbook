@@ -514,7 +514,6 @@ FROM
     ('swrv-swerve', 'ethereum', 'SWRV', '0xb8baa0e4287890a5f79863ab62b7f175cecbd433', 18),
     ('ctx-cryptex', 'ethereum', 'CTX', '0x321c2fe4446c7c963dc41dd58879af648838f98d', 18),
     ('fst-futureswap', 'ethereum', 'FST', '0x0e192d382a36de7011f795acc4391cd302003606', 18),
-    ('robot-robot', 'ethereum', 'ROBOT', '0xfb5453340c03db5ade474b27e68b6a9c6b2823eb', 18),
     ('ssv-ssv-network', 'ethereum', 'SSV', '0x9d65ff81a3c488d585bbfb0bfe3c7707c7917f54', 18),
     ('stkatom-pstake-staked-atom', 'ethereum', 'STKATOM', '0x44017598f2af1bd733f9d87b5017b4e7c1b28dde', 6),
     ('dodi-doubledice', 'ethereum', 'DODI', '0x4e08f03079c5cd3083ea331ec61bcc87538b7665', 18),
