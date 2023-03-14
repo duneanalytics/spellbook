@@ -124,6 +124,7 @@ models:
       - *updated_at
       - *model_name
       - *label_type
+
   - name: labels_nft_smart_trader_ROI_eth
     meta:
       blockchain: ethereum
