@@ -45,14 +45,14 @@ having count(*) > 1000
 
 select address, 'Bot' as trader_type
 from (
-select 
-cast("from" as varchar) as address 
+select
+cast("from" as varchar) as address
 from initial_bot_list t1
 except
 (
 select address
 from {{ ref('labels_all') }}
-where category='cex' or name='Ethereum Miner' 
+where category='cex' or name='Ethereum Miner'
 union all
 select
 cast(address as varchar)
@@ -125,7 +125,7 @@ select
  trader_type as name
     , "Dex" as category
     , "whiskey" as contributor
-    ,"query"AS source,
+    ,"query"AS source
     , cast('2023-03-05' as timestamp) as created_at 
     , now() as updated_at
     , "usage" as label_type
