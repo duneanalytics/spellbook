@@ -54,7 +54,6 @@ FROM
     , ('bnb', '0x14016e85a25aeb13065688cafb43044c2ef86784', 'Fiat-backed stablecoin', 'infrastructure', 'hildobby', 'static', timestamp('2023-03-02'), now(), 'stablecoins', 'identifier')
     , ('polygon', '0x2e1ad108ff1d8c782fcbbb89aad783ac49586756', 'Fiat-backed stablecoin', 'infrastructure', 'hildobby', 'static', timestamp('2023-03-02'), now(), 'stablecoins', 'identifier')
     , ('fantom', '0x9879abdea01a879644185341f7af7d8343556b7a', 'Fiat-backed stablecoin', 'infrastructure', 'hildobby', 'static', timestamp('2023-03-02'), now(), 'stablecoins', 'identifier')
-    , ('polygon', '0x2e1ad108ff1d8c782fcbbb89aad783ac49586756', 'Fiat-backed stablecoin', 'infrastructure', 'hildobby', 'static', timestamp('2023-03-02'), now(), 'stablecoins', 'identifier')
     , ('arbitrum', '0x4d15a3a2286d883af0aa1b3f21367843fac63e07', 'Fiat-backed stablecoin', 'infrastructure', 'hildobby', 'static', timestamp('2023-03-02'), now(), 'stablecoins', 'identifier')
     , ('avalanche_c', '0x1c20e891bab6b1727d14da358fae2984ed9b59eb', 'Fiat-backed stablecoin', 'infrastructure', 'hildobby', 'static', timestamp('2023-03-02'), now(), 'stablecoins', 'identifier')
     -- FRAX
