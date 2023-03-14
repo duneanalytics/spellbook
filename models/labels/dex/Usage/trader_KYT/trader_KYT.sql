@@ -46,7 +46,7 @@ having count(*) > 1000
 select address, 'Bot' as trader_type
 from (
 select 
-cast("from" as varchar(5)) as address
+cast("from" as varchar) as address 
 from initial_bot_list t1
 except
 (
@@ -106,11 +106,11 @@ ORDER BY t.month, t.monthly_trade_amount DESC )
 
 ,final as (
 SELECT
-cast(tx_from as varchar(5)) as address, trader_type
+cast(tx_from as varchar) as address , trader_type
 from active_traders
 union all
 SELECT
-cast(tx_from as varchar(5)) as address, trader_type
+cast(tx_from as varchar) as address , trader_type
 from Former_traders
 union all
 SELECT
