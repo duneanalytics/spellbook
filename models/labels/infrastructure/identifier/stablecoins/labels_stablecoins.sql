@@ -134,63 +134,65 @@ FROM
     -- Vesta Stable
     , ('arbitrum', '0x64343594ab9b56e99087bfa6f2335db24c2d1f17', 'Crypto-backed stablecoin', 'infrastructure', 'hildobby', 'static', timestamp('2023-03-02'), now(), 'stablecoins', 'identifier')
     -- USDK
-    , ('ethereum', '0x1c48f86ae57291f7686349f12601910bd8d470bb', '? stablecoin', 'infrastructure', 'hildobby', 'static', timestamp('2023-03-02'), now(), 'stablecoins', 'identifier')
+    , ('ethereum', '0x1c48f86ae57291f7686349f12601910bd8d470bb', 'Fiat-backed stablecoin', 'infrastructure', 'hildobby', 'static', timestamp('2023-03-02'), now(), 'stablecoins', 'identifier')
     -- mStable USD
-    , ('ethereum', '0xe2f2a5c287993345a840db3b0845fbc70f5935a5', '? stablecoin', 'infrastructure', 'hildobby', 'static', timestamp('2023-03-02'), now(), 'stablecoins', 'identifier')
+    , ('ethereum', '0xe2f2a5c287993345a840db3b0845fbc70f5935a5', 'Crypto-backed stablecoin', 'infrastructure', 'hildobby', 'static', timestamp('2023-03-02'), now(), 'stablecoins', 'identifier')
     -- Vai
-    , ('bnb', '0x4bd17003473389a42daf6a0a729f6fdb328bbbd7', '? stablecoin', 'infrastructure', 'hildobby', 'static', timestamp('2023-03-02'), now(), 'stablecoins', 'identifier')
+    , ('bnb', '0x4bd17003473389a42daf6a0a729f6fdb328bbbd7', 'Crypto-backed stablecoin', 'infrastructure', 'hildobby', 'static', timestamp('2023-03-02'), now(), 'stablecoins', 'identifier')
     -- Coin98 Dollar
-    , ('ethereum', '0xc285b7e09a4584d027e5bc36571785b515898246', '? stablecoin', 'infrastructure', 'hildobby', 'static', timestamp('2023-03-02'), now(), 'stablecoins', 'identifier')
-    , ('bnb', '0xfa4ba88cf97e282c505bea095297786c16070129', '? stablecoin', 'infrastructure', 'hildobby', 'static', timestamp('2023-03-02'), now(), 'stablecoins', 'identifier')
-    , ('solana', 'CUSDvqAQLbt7fRofcmV2EXfPA2t36kzj7FjzdmqDiNQL', '? stablecoin', 'infrastructure', 'hildobby', 'static', timestamp('2023-03-02'), now(), 'stablecoins', 'identifier')
+    , ('ethereum', '0xc285b7e09a4584d027e5bc36571785b515898246', 'Fiat-backed stablecoin', 'infrastructure', 'hildobby', 'static', timestamp('2023-03-02'), now(), 'stablecoins', 'identifier')
+    , ('bnb', '0xfa4ba88cf97e282c505bea095297786c16070129', 'Fiat-backed stablecoin', 'infrastructure', 'hildobby', 'static', timestamp('2023-03-02'), now(), 'stablecoins', 'identifier')
+    , ('solana', 'CUSDvqAQLbt7fRofcmV2EXfPA2t36kzj7FjzdmqDiNQL', 'Fiat-backed stablecoin', 'infrastructure', 'hildobby', 'static', timestamp('2023-03-02'), now(), 'stablecoins', 'identifier')
      -- USDP Stablecoin
-    , ('ethereum', '0x1456688345527be1f37e9e627da0837d6f08c925', '? stablecoin', 'infrastructure', 'hildobby', 'static', timestamp('2023-03-02'), now(), 'stablecoins', 'identifier')
+    , ('ethereum', '0x1456688345527be1f37e9e627da0837d6f08c925', 'Crypto-backed stablecoin', 'infrastructure', 'hildobby', 'static', timestamp('2023-03-02'), now(), 'stablecoins', 'identifier')
     -- Sperax USD
-    , ('arbitrum', '0xd74f5255d557944cf7dd0e45ff521520002d5748', '? stablecoin', 'infrastructure', 'hildobby', 'static', timestamp('2023-03-02'), now(), 'stablecoins', 'identifier')
+    , ('arbitrum', '0xd74f5255d557944cf7dd0e45ff521520002d5748', 'Crypto-backed stablecoin', 'infrastructure', 'hildobby', 'static', timestamp('2023-03-02'), now(), 'stablecoins', 'identifier')
     -- ZUSD
-    , ('ethereum', '0xc56c2b7e71b54d38aab6d52e94a04cbfa8f604fa', '? stablecoin', 'infrastructure', 'hildobby', 'static', timestamp('2023-03-02'), now(), 'stablecoins', 'identifier')
+    , ('ethereum', '0xc56c2b7e71b54d38aab6d52e94a04cbfa8f604fa', 'Fiat-backed stablecoin', 'infrastructure', 'hildobby', 'static', timestamp('2023-03-02'), now(), 'stablecoins', 'identifier')
     -- SpiceUSD
-    , ('ethereum', '0x45fdb1b92a649fb6a64ef1511d3ba5bf60044838', '? stablecoin', 'infrastructure', 'hildobby', 'static', timestamp('2023-03-02'), now(), 'stablecoins', 'identifier')
-    , ('bnb', '0xde7d1ce109236b12809c45b23d22f30dba0ef424', '? stablecoin', 'infrastructure', 'hildobby', 'static', timestamp('2023-03-02'), now(), 'stablecoins', 'identifier')
-    , ('polygon', '0x2f1b1662a895c6ba01a99dcaf56778e7d77e5609', '? stablecoin', 'infrastructure', 'hildobby', 'static', timestamp('2023-03-02'), now(), 'stablecoins', 'identifier')
-    , ('avalanche_c', '0xab05b04743e0aeaf9d2ca81e5d3b8385e4bf961e', '? stablecoin', 'infrastructure', 'hildobby', 'static', timestamp('2023-03-02'), now(), 'stablecoins', 'identifier')
+    , ('ethereum', '0x45fdb1b92a649fb6a64ef1511d3ba5bf60044838', 'Hybrid stablecoin', 'infrastructure', 'hildobby', 'static', timestamp('2023-03-02'), now(), 'stablecoins', 'identifier')
+    , ('bnb', '0xde7d1ce109236b12809c45b23d22f30dba0ef424', 'Hybrid stablecoin', 'infrastructure', 'hildobby', 'static', timestamp('2023-03-02'), now(), 'stablecoins', 'identifier')
+    , ('polygon', '0x2f1b1662a895c6ba01a99dcaf56778e7d77e5609', 'Hybrid stablecoin', 'infrastructure', 'hildobby', 'static', timestamp('2023-03-02'), now(), 'stablecoins', 'identifier')
+    , ('avalanche_c', '0xab05b04743e0aeaf9d2ca81e5d3b8385e4bf961e', 'Hybrid stablecoin', 'infrastructure', 'hildobby', 'static', timestamp('2023-03-02'), now(), 'stablecoins', 'identifier')
     -- BondAppetite USD
-    , ('ethereum', '0x9a1997c130f4b2997166975d9aff92797d5134c2', '? stablecoin', 'infrastructure', 'hildobby', 'static', timestamp('2023-03-02'), now(), 'stablecoins', 'identifier')
+    , ('ethereum', '0x9a1997c130f4b2997166975d9aff92797d5134c2', 'RWA-backed stablecoin', 'infrastructure', 'hildobby', 'static', timestamp('2023-03-02'), now(), 'stablecoins', 'identifier')
     -- Zasset zUSD
-    , ('bnb', '0xf0186490b18cb74619816cfc7feb51cdbe4ae7b9', '? stablecoin', 'infrastructure', 'hildobby', 'static', timestamp('2023-03-02'), now(), 'stablecoins', 'identifier')
+    , ('bnb', '0xf0186490b18cb74619816cfc7feb51cdbe4ae7b9', 'RWA-backed stablecoin', 'infrastructure', 'hildobby', 'static', timestamp('2023-03-02'), now(), 'stablecoins', 'identifier')
     -- USD Balance
-    , ('fantom', '0x6fc9383486c163fa48becdec79d6058f984f62ca', '? stablecoin', 'infrastructure', 'hildobby', 'static', timestamp('2023-03-02'), now(), 'stablecoins', 'identifier')
+    , ('fantom', '0x6fc9383486c163fa48becdec79d6058f984f62ca', 'Hybrid stablecoin', 'infrastructure', 'hildobby', 'static', timestamp('2023-03-02'), now(), 'stablecoins', 'identifier')
     -- Inflation Adjusted USDS
-    , ('ethereum', '0xf9c2b386ff5df088ac717ab0010587bad3bc1ab1', '? stablecoin', 'infrastructure', 'hildobby', 'static', timestamp('2023-03-02'), now(), 'stablecoins', 'identifier')
-    , ('bnb', '0x6458df5d764284346c19d88a104fd3d692471499', '? stablecoin', 'infrastructure', 'hildobby', 'static', timestamp('2023-03-02'), now(), 'stablecoins', 'identifier')
-    , ('polygon', '0x66f31345cb9477b427a1036d43f923a557c432a4', '? stablecoin', 'infrastructure', 'hildobby', 'static', timestamp('2023-03-02'), now(), 'stablecoins', 'identifier')
-    , ('avalanche_c', '0x8861f5c40a0961579689fdf6cdea2be494f9b25a', '? stablecoin', 'infrastructure', 'hildobby', 'static', timestamp('2023-03-02'), now(), 'stablecoins', 'identifier')
+    , ('ethereum', '0xf9c2b386ff5df088ac717ab0010587bad3bc1ab1', 'Hybrid stablecoin', 'infrastructure', 'hildobby', 'static', timestamp('2023-03-02'), now(), 'stablecoins', 'identifier')
+    , ('bnb', '0x6458df5d764284346c19d88a104fd3d692471499', 'Hybrid stablecoin', 'infrastructure', 'hildobby', 'static', timestamp('2023-03-02'), now(), 'stablecoins', 'identifier')
+    , ('polygon', '0x66f31345cb9477b427a1036d43f923a557c432a4', 'Hybrid stablecoin', 'infrastructure', 'hildobby', 'static', timestamp('2023-03-02'), now(), 'stablecoins', 'identifier')
+    , ('avalanche_c', '0x8861f5c40a0961579689fdf6cdea2be494f9b25a', 'Hybrid stablecoin', 'infrastructure', 'hildobby', 'static', timestamp('2023-03-02'), now(), 'stablecoins', 'identifier')
+    -- xDollar Interverse Money
+    , ('ethereum', '0x573d2505a7ee69d136a8667b4cd915f039ac54e5', 'Crypto-backed stablecoin', 'infrastructure', 'hildobby', 'static', timestamp('2023-03-02'), now(), 'stablecoins', 'identifier')
     -- xDollar Stablecoin
-    , ('polygon', '0x3a3e7650f8b9f667da98f236010fbf44ee4b2975', '? stablecoin', 'infrastructure', 'hildobby', 'static', timestamp('2023-03-02'), now(), 'stablecoins', 'identifier')
-    , ('arbitrum', '0x3509f19581afedeff07c53592bc0ca84e4855475', '? stablecoin', 'infrastructure', 'hildobby', 'static', timestamp('2023-03-02'), now(), 'stablecoins', 'identifier')
+    , ('polygon', '0x3a3e7650f8b9f667da98f236010fbf44ee4b2975', 'Crypto-backed stablecoin', 'infrastructure', 'hildobby', 'static', timestamp('2023-03-02'), now(), 'stablecoins', 'identifier')
+    , ('arbitrum', '0x3509f19581afedeff07c53592bc0ca84e4855475', 'Crypto-backed stablecoin', 'infrastructure', 'hildobby', 'static', timestamp('2023-03-02'), now(), 'stablecoins', 'identifier')
     -- Wrapped USDR
-    , ('ethereum', '0xd5a14081a34d256711b02bbef17e567da48e80b5', '? stablecoin', 'infrastructure', 'hildobby', 'static', timestamp('2023-03-02'), now(), 'stablecoins', 'identifier')
-    , ('bnb', '0x2952beb1326accbb5243725bd4da2fc937bca087', '? stablecoin', 'infrastructure', 'hildobby', 'static', timestamp('2023-03-02'), now(), 'stablecoins', 'identifier')
-    , ('polygon', '0xaf0d9d65fc54de245cda37af3d18cbec860a4d4b', '? stablecoin', 'infrastructure', 'hildobby', 'static', timestamp('2023-03-02'), now(), 'stablecoins', 'identifier')
-    , ('arbitrum', '0xddc0385169797937066bbd8ef409b5b3c0dfeb52', '? stablecoin', 'infrastructure', 'hildobby', 'static', timestamp('2023-03-02'), now(), 'stablecoins', 'identifier')
-    , ('optimism', '0x340fe1d898eccaad394e2ba0fc1f93d27c7b717a', '? stablecoin', 'infrastructure', 'hildobby', 'static', timestamp('2023-03-02'), now(), 'stablecoins', 'identifier')
+    , ('ethereum', '0xd5a14081a34d256711b02bbef17e567da48e80b5', 'RWA-backed stablecoin', 'infrastructure', 'hildobby', 'static', timestamp('2023-03-02'), now(), 'stablecoins', 'identifier')
+    , ('bnb', '0x2952beb1326accbb5243725bd4da2fc937bca087', 'RWA-backed stablecoin', 'infrastructure', 'hildobby', 'static', timestamp('2023-03-02'), now(), 'stablecoins', 'identifier')
+    , ('polygon', '0xaf0d9d65fc54de245cda37af3d18cbec860a4d4b', 'RWA-backed stablecoin', 'infrastructure', 'hildobby', 'static', timestamp('2023-03-02'), now(), 'stablecoins', 'identifier')
+    , ('arbitrum', '0xddc0385169797937066bbd8ef409b5b3c0dfeb52', 'RWA-backed stablecoin', 'infrastructure', 'hildobby', 'static', timestamp('2023-03-02'), now(), 'stablecoins', 'identifier')
+    , ('optimism', '0x340fe1d898eccaad394e2ba0fc1f93d27c7b717a', 'RWA-backed stablecoin', 'infrastructure', 'hildobby', 'static', timestamp('2023-03-02'), now(), 'stablecoins', 'identifier')
     -- Wrapped USTC
-    , ('ethereum', '0xa47c8bf37f92abed4a126bda807a7b7498661acd', '? stablecoin', 'infrastructure', 'hildobby', 'static', timestamp('2023-03-02'), now(), 'stablecoins', 'identifier')
-    , ('bnb', '0x23396cf899ca06c4472205fc903bdb4de249d6fc', '? stablecoin', 'infrastructure', 'hildobby', 'static', timestamp('2023-03-02'), now(), 'stablecoins', 'identifier')
-    , ('polygon', '0x692597b009d13c4049a947cab2239b7d6517875f', '? stablecoin', 'infrastructure', 'hildobby', 'static', timestamp('2023-03-02'), now(), 'stablecoins', 'identifier')
-    , ('solana', 'CXLBjMMcwkc17GfJtBos6rQCo1ypeH6eDbB82Kby4MRm', '? stablecoin', 'infrastructure', 'hildobby', 'static', timestamp('2023-03-02'), now(), 'stablecoins', 'identifier')
-    , ('fantom', '0xe2d27f06f63d98b8e11b38b5b08a75d0c8dd62b9', '? stablecoin', 'infrastructure', 'hildobby', 'static', timestamp('2023-03-02'), now(), 'stablecoins', 'identifier')
+    , ('ethereum', '0xa47c8bf37f92abed4a126bda807a7b7498661acd', 'Algorithmic stablecoin', 'infrastructure', 'hildobby', 'static', timestamp('2023-03-02'), now(), 'stablecoins', 'identifier')
+    , ('bnb', '0x23396cf899ca06c4472205fc903bdb4de249d6fc', 'Algorithmic stablecoin', 'infrastructure', 'hildobby', 'static', timestamp('2023-03-02'), now(), 'stablecoins', 'identifier')
+    , ('polygon', '0x692597b009d13c4049a947cab2239b7d6517875f', 'Algorithmic stablecoin', 'infrastructure', 'hildobby', 'static', timestamp('2023-03-02'), now(), 'stablecoins', 'identifier')
+    , ('solana', 'CXLBjMMcwkc17GfJtBos6rQCo1ypeH6eDbB82Kby4MRm', 'Algorithmic stablecoin', 'infrastructure', 'hildobby', 'static', timestamp('2023-03-02'), now(), 'stablecoins', 'identifier')
+    , ('fantom', '0xe2d27f06f63d98b8e11b38b5b08a75d0c8dd62b9', 'Algorithmic stablecoin', 'infrastructure', 'hildobby', 'static', timestamp('2023-03-02'), now(), 'stablecoins', 'identifier')
     -- Synth oUSD
-    , ('bnb', '0x6bf2be9468314281cd28a94c35f967cafd388325', '? stablecoin', 'infrastructure', 'hildobby', 'static', timestamp('2023-03-02'), now(), 'stablecoins', 'identifier')
+    , ('bnb', '0x6bf2be9468314281cd28a94c35f967cafd388325', 'Hybrid stablecoin', 'infrastructure', 'hildobby', 'static', timestamp('2023-03-02'), now(), 'stablecoins', 'identifier')
     -- dForce USD
-    , ('ethereum', '0x0a5e677a6a24b2f1a2bf4f3bffc443231d2fdec8', '? stablecoin', 'infrastructure', 'hildobby', 'static', timestamp('2023-03-02'), now(), 'stablecoins', 'identifier')
-    , ('bnb', '0xb5102cee1528ce2c760893034a4603663495fd72', '? stablecoin', 'infrastructure', 'hildobby', 'static', timestamp('2023-03-02'), now(), 'stablecoins', 'identifier')
-    , ('polygon', '0xcf66eb3d546f0415b368d98a95eaf56ded7aa752', '? stablecoin', 'infrastructure', 'hildobby', 'static', timestamp('2023-03-02'), now(), 'stablecoins', 'identifier')
-    , ('arbitrum', '0x641441c631e2f909700d2f41fd87f0aa6a6b4edb', '? stablecoin', 'infrastructure', 'hildobby', 'static', timestamp('2023-03-02'), now(), 'stablecoins', 'identifier')
-    , ('optimism', '0xbfd291da8a403daaf7e5e9dc1ec0aceacd4848b9', '? stablecoin', 'infrastructure', 'hildobby', 'static', timestamp('2023-03-02'), now(), 'stablecoins', 'identifier')
+    , ('ethereum', '0x0a5e677a6a24b2f1a2bf4f3bffc443231d2fdec8', 'Crypto-backed stablecoin', 'infrastructure', 'hildobby', 'static', timestamp('2023-03-02'), now(), 'stablecoins', 'identifier')
+    , ('bnb', '0xb5102cee1528ce2c760893034a4603663495fd72', 'Crypto-backed stablecoin', 'infrastructure', 'hildobby', 'static', timestamp('2023-03-02'), now(), 'stablecoins', 'identifier')
+    , ('polygon', '0xcf66eb3d546f0415b368d98a95eaf56ded7aa752', 'Crypto-backed stablecoin', 'infrastructure', 'hildobby', 'static', timestamp('2023-03-02'), now(), 'stablecoins', 'identifier')
+    , ('arbitrum', '0x641441c631e2f909700d2f41fd87f0aa6a6b4edb', 'Crypto-backed stablecoin', 'infrastructure', 'hildobby', 'static', timestamp('2023-03-02'), now(), 'stablecoins', 'identifier')
+    , ('optimism', '0xbfd291da8a403daaf7e5e9dc1ec0aceacd4848b9', 'Crypto-backed stablecoin', 'infrastructure', 'hildobby', 'static', timestamp('2023-03-02'), now(), 'stablecoins', 'identifier')
     -- Coffin Dollar
-    , ('fantom', '0x0def844ed26409c5c46dda124ec28fb064d90d27', '? stablecoin', 'infrastructure', 'hildobby', 'static', timestamp('2023-03-02'), now(), 'stablecoins', 'identifier')
+    , ('fantom', '0x0def844ed26409c5c46dda124ec28fb064d90d27', 'Hybrid stablecoin', 'infrastructure', 'hildobby', 'static', timestamp('2023-03-02'), now(), 'stablecoins', 'identifier')
     -- Iron
-    , ('polygon', '0xd86b5923f3ad7b585ed81b448170ae026c65ae9a', '? stablecoin', 'infrastructure', 'hildobby', 'static', timestamp('2023-03-02'), now(), 'stablecoins', 'identifier')
+    , ('polygon', '0xd86b5923f3ad7b585ed81b448170ae026c65ae9a', 'Hybrid stablecoin', 'infrastructure', 'hildobby', 'static', timestamp('2023-03-02'), now(), 'stablecoins', 'identifier')
     ) AS temp_table (blockchain, address, name, category, contributor, source, created_at, updated_at, model_name, label_type)
 ;
