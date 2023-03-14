@@ -210,6 +210,10 @@ models:
       +schema: blur
       ethereum:
         +schema: blur_ethereum
+    nftx:
+      +schema: nftx
+      ethereum:
+        +schema: nftx_ethereum
 
     gas:
       +schema: gas
