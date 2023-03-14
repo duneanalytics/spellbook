@@ -46,16 +46,16 @@ having count(*) > 1000
 select address, 'Bot' as trader_type
 from (
 select 
-cast("from" as varchar) as address 
+cast("from" as varchar(5)) as address
 from initial_bot_list t1
 except
 (
 select address
 from {{ ref('labels_all') }}
-where category='cex' or name='Ethereum Miner' 
+where category='cex' or name='Ethereum Miner'
 union all
 select
-cast(address as varchar)
+cast(address as varchar(5))
 from
 {{ source('trader_KYT','query_2143144') }}
 )
@@ -68,21 +68,21 @@ from
 SELECT 
 tx_from,sum(amount_usd) as trade_amount , 
 case 
-when sum(amount_usd) >=10000 and sum(amount_usd) < 100000 then 'Active Turtle trader'
-when sum(amount_usd) >= 100000 and sum(amount_usd) < 500000 then 'Active Shark trader'
-when sum(amount_usd) >= 500000 then 'Active Whale trader' end as trader_type
+when sum(amount_usd) >=cast(10000 as double) and sum(amount_usd) < cast(100000 as double) then 'Active Turtle trader'
+when sum(amount_usd) >= cast(100000 as double) and sum(amount_usd) < cast(500000 as double) then 'Active Shark trader'
+when sum(amount_usd) >= cast(500000 as double) then 'Active Whale trader' end as trader_type
 from {{ ref('dex_trades') }}
 where block_time > now() - interval '30' day
 group by 1
-having sum(amount_usd) >10000
+having sum(amount_usd) >ccast(10000 as double)
 )
 --Find the Retired traders
 ,Former_traders as (
 SELECT t.tx_from, t.month, t.monthly_trade_amount,
 case
-when t.monthly_trade_amount >=10000 and t.monthly_trade_amount < 100000 then 'Former Turtle trader'
-when t.monthly_trade_amount >= 100000 and t.monthly_trade_amount < 500000 then 'Former Shark trader'
-when t.monthly_trade_amount >= 500000 then 'Former Whale trader' end as trader_type
+when t.monthly_trade_amount >=cast(10000 as double) and t.monthly_trade_amount < cast(100000 as double) then 'Former Turtle trader'
+when t.monthly_trade_amount >= cast(100000 as double) and t.monthly_trade_amount < cast(500000 as double) then 'Former Shark trader'
+when t.monthly_trade_amount >= cast(500000 as double) then 'Former Whale trader' end as trader_type
 FROM (
     SELECT
         t1.tx_from,
@@ -94,7 +94,7 @@ FROM (
     where t1.block_time >= now() - interval '1' year and t1.block_time < now() - interval '30' day
     and t2.tx_from is NULL
     GROUP BY 1,2
-    HAVING sum(t1.amount_usd) > 10000
+    HAVING sum(t1.amount_usd) > cast(10000 as double)
 ) t
 WHERE t.rn = 1
 ORDER BY t.month, t.monthly_trade_amount DESC )
@@ -106,11 +106,11 @@ ORDER BY t.month, t.monthly_trade_amount DESC )
 
 ,final as (
 SELECT
-cast(tx_from as varchar) as address , trader_type
+cast(tx_from as varchar(5)) as address, trader_type
 from active_traders
 union all
 SELECT
-cast(tx_from as varchar) as address , trader_type
+cast(tx_from as varchar(5)) as address, trader_type
 from Former_traders
 union all
 SELECT
@@ -125,7 +125,7 @@ select
  trader_type as name
     , "Dex" as category
     , "whiskey" as contributor
-    ,"query"AS source,
+    ,"query"AS source
     , cast('2023-03-05' as timestamp) as created_at 
     , now() as updated_at
     , "usage" as label_type
