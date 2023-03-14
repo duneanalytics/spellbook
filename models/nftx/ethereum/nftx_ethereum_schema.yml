@@ -290,29 +290,22 @@ models:
       project: nftx
       contributors: [hildobby]
     config:
-      tags: ['ethereum','nftx','fees']
+      tags: ['ethereum','nftx','vaults']
     description: >
-        NFTX fees on Ethereum
+        NFTX Vaults on Ethereum
     columns:
-      - name
-        name: name
+      - name: name
         description: "Vault name"
-      - symbol
-        name: symbol
+      - name: symbol
         description: "Vault token symbol"
-      - pools
-        name: pools
+      - name: pools
         description: "Pools on vault"
-      - asset_address
-        name: asset_address
+      - name: asset_address
         description: "Crypto asset address"
-      - vault_address
-        name: vault_address
+      - name: vault_address
         description: "Vault address"
-      - creation_block_time
-        name: creation_block_time
+      - name: creation_block_time
         description: "Block time of vault creation"
-      - creation_block_number
-        name: creation_block_number
+      - name: creation_block_number
         description: "Block number of vault creation"
       - *project_contract_address
