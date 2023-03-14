@@ -13,14 +13,6 @@ WITH three_letter_ens_count AS (
     ORDER BY ens_count DESC
 ),
 
-top as (
-    SELECT
-        owner
-    FROM
-        three_letter_ens_count
-    LIMIT 1
-)
-
 SELECT
     'blockchain' as blockchain,
     (CONCAT('0x', substring(cast(owner as string), 3))) as address,
@@ -31,6 +23,6 @@ SELECT
     timestamp('2022-03-03') as created_at,
     now() as updated_at,
     'personas' as label_type,
-    'The owner of the most three letter ENS Domains'as name
-FROM top
+    concat('Number of three letter ENS Domains owned', ens_count) as name
+FROM three_letter_ens_count
 WHERE owner is not null
