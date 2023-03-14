@@ -1,5 +1,4 @@
 {{ config(
-    schema = 'maverick',
     alias = 'trades',
     post_hook='{{ expose_spells(\'["ethereum"]\',
                                 "project",
