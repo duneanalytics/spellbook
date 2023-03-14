@@ -1,7 +1,7 @@
 version: 2
 
 models:
-  - name: labels_KYT
+  - name: trader_KYT
     meta:
       blockchain: ethereum, fantom, bnb, avalanche_c, arbitrum,polygon, gnosis, optimism
       sector: labels
