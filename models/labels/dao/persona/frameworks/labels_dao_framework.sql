@@ -1,6 +1,6 @@
 {{config(alias='dao_framework')}}
 
-SELECT 
+SELECT distinct
     blockchain,
     dao as address, 
     CASE 
@@ -22,7 +22,7 @@ WHERE dao_creator_tool != 'zodiac' -- excluding zodiac since they're gnosis safe
 
 UNION  -- using a union because there are daos whose contract address also receives and send funds
 
-SELECT 
+SELECT distinct 
     blockchain,
     dao_wallet_address as address, 
     CASE 
