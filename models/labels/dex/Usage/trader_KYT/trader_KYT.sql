@@ -71,7 +71,7 @@ case
 when sum(amount_usd) >=10000 and sum(amount_usd) < 100000 then 'Active Turtle trader'
 when sum(amount_usd) >= 100000 and sum(amount_usd) < 500000 then 'Active Shark trader'
 when sum(amount_usd) >= 500000 then 'Active Whale trader' end as trader_type
-from {{ ref('dex_trades') }}
+from {{ ref('dex.trades') }}
 where block_time > now() - interval '30' day
 group by 1
 having sum(amount_usd) >10000
@@ -89,7 +89,7 @@ FROM (
         date_trunc('month', t1.block_time) AS month,
         sum(t1.amount_usd) AS monthly_trade_amount,
         ROW_NUMBER() OVER (PARTITION BY t1.tx_from ORDER BY sum(t1.amount_usd) DESC) AS rn
-    FROM {{ ref('dex_trades') }} t1
+    FROM {{ ref('dex.trades') }} t1
     left join active_traders t2 on t1.tx_from = t2.tx_from
     where t1.block_time >= now() - interval '1' year and t1.block_time < now() - interval '30' day
     and t2.tx_from is NULL
