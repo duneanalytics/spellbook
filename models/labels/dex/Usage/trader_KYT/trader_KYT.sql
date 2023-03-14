@@ -46,7 +46,7 @@ having count(*) > 1000
 select address, 'Bot' as trader_type
 from (
 select 
-cast("from" as varchar) as address 
+cast("from" as varchar(5)) as address 
 from initial_bot_list t1
 except
 (
@@ -74,7 +74,7 @@ when sum(amount_usd) >= cast(500000 as double) then 'Active Whale trader' end as
 from {{ ref('dex_trades') }}
 where block_time > now() - interval '30' day
 group by 1
-having sum(amount_usd) >ccast(10000 as double)
+having sum(amount_usd) >cast(10000 as double)
 )
 --Find the Retired traders
 ,Former_traders as (
@@ -106,11 +106,11 @@ ORDER BY t.month, t.monthly_trade_amount DESC )
 
 ,final as (
 SELECT
-cast(tx_from as varchar) as address , trader_type
+cast(tx_from as varchar(5)) as address , trader_type
 from active_traders
 union all
 SELECT
-cast(tx_from as varchar) as address , trader_type
+cast(tx_from as varchar(5)) as address , trader_type
 from Former_traders
 union all
 SELECT
