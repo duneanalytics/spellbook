@@ -13,23 +13,7 @@
 
 {% set project_start_date = '2021-06-21' %}
 
-WITH vaults AS (
-    SELECT CAST(v.vaultId AS double) AS vault_id
-    , p.pool
-    , cv.name
-    , cv.symbol
-    , v.assetAddress AS asset_address
-    , v.vaultAddress AS vault_address
-    , v.evt_block_time AS block_time
-    , v.evt_block_number AS block_number
-    , v.contract_address AS project_contract_address
-    FROM {{ source('nftx_v2_ethereum','NFTXVaultFactoryUpgradeable_v1_evt_NewVault') }} v
-    INNER JOIN {{ source('nftx_v2_ethereum','NFTXVaultFactoryUpgradeable_v1_call_createVault') }} cv ON cv.call_success
-        AND cv.output_0=v.vaultId
-    INNER JOIN {{ source('nftx_v2_ethereum','Staking_evt_PoolCreated') }} p ON p.vaultId=v.vaultId
-    )
-
-, mints_and_redemptions AS (
+WITH mints_and_redemptions AS (
     SELECT 'Sell' AS trade_category
     , contract_address
     , tx_hash

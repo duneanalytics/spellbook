@@ -30,8 +30,8 @@ SELECT CAST(v.vaultId AS double) AS vault_id
 , p.pools
 , v.assetAddress AS asset_address
 , v.vaultAddress AS vault_address
-, v.evt_block_time AS block_time
-, v.evt_block_number AS block_number
+, v.evt_block_time AS creation_block_time
+, v.evt_block_number AS creation_block_number
 , v.contract_address AS project_contract_address
 FROM {{source('nftx_v2_ethereum','NFTXVaultFactoryUpgradeable_v1_evt_NewVault')}} v
 INNER JOIN {{source('nftx_v2_ethereum','NFTXVaultFactoryUpgradeable_v1_call_createVault')}} cv ON cv.call_success

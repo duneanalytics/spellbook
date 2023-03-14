@@ -283,3 +283,36 @@ models:
       - *tx_from
       - *tx_to
       - *unique_trade_id
+
+  - name: nftx_ethereum_vaults
+    meta:
+      blockchain: ethereum
+      project: nftx
+      contributors: [hildobby]
+    config:
+      tags: ['ethereum','nftx','fees']
+    description: >
+        NFTX fees on Ethereum
+    columns:
+      - name
+        name: name
+        description: "Vault name"
+      - symbol
+        name: symbol
+        description: "Vault token symbol"
+      - pools
+        name: pools
+        description: "Pools on vault"
+      - asset_address
+        name: asset_address
+        description: "Crypto asset address"
+      - vault_address
+        name: vault_address
+        description: "Vault address"
+      - creation_block_time
+        name: creation_block_time
+        description: "Block time of vault creation"
+      - creation_block_number
+        name: creation_block_number
+        description: "Block number of vault creation"
+      - *project_contract_address
