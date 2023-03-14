@@ -24,7 +24,7 @@ WITH dexs AS
         ,'' AS maker
         ,amountOut AS token_bought_amount_raw
         ,amountIn AS token_sold_amount_raw
-        ,NULL AS amount_usd
+        ,CAST(NULL AS DOUBLE) AS amount_usd
         ,CASE WHEN tokenAIn THEN f.tokenB ELSE f.tokenA END AS token_bought_address
         ,CASE WHEN tokenAIn THEN f.tokenA ELSE f.tokenB END AS token_sold_address
         ,CAST(t.contract_address as string) as project_contract_address
