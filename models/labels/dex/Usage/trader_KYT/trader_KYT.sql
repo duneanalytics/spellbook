@@ -15,28 +15,28 @@ with initial_bot_list as (
 select
 distinct "from"
 from(
-select "from", date_trunc('month', block_time) as month, count(*) as num_tx from {{ source('ethereum.transactions') }}  group by 1,2 
+select "from", date_trunc('month', block_time) as month, count(*) as num_tx from {{ source('trader_KYT','ethereum.transactions') }}  group by 1,2 
 having count(*) > 1000
 union all 
-select "from", date_trunc('month', block_time) as month, count(*) as num_tx from {{ source('polygon.transactions') }}  group by 1,2 
+select "from", date_trunc('month', block_time) as month, count(*) as num_tx from {{ source('trader_KYT','polygon.transactions') }}  group by 1,2 
 having count(*) > 1000
 union all
-select "from", date_trunc('month', block_time) as month, count(*) as num_tx from {{ source('optimism.transactions') }}  group by 1,2 
+select "from", date_trunc('month', block_time) as month, count(*) as num_tx from {{ source('trader_KYT','optimism.transactions') }}  group by 1,2 
 having count(*) > 1000
 union all
-select "from", date_trunc('month', block_time) as month, count(*) as num_tx from {{ source('arbitrum.transactions') }}  group by 1,2 
+select "from", date_trunc('month', block_time) as month, count(*) as num_tx from {{ source('trader_KYT','arbitrum.transactions') }}  group by 1,2 
 having count(*) > 1000
 union all
-select "from", date_trunc('month', block_time) as month, count(*) as num_tx from {{ source('gnosis.transactions') }}  group by 1,2 
+select "from", date_trunc('month', block_time) as month, count(*) as num_tx from {{ source('trader_KYT','gnosis.transactions') }}  group by 1,2 
 having count(*) > 1000
 union all
-select "from", date_trunc('month', block_time) as month, count(*) as num_tx from {{ source('fantom.transactions') }}  group by 1,2 
+select "from", date_trunc('month', block_time) as month, count(*) as num_tx from {{ source('trader_KYT','fantom.transactions') }}  group by 1,2 
 having count(*) > 1000
 union all
-select "from", date_trunc('month', block_time) as month, count(*) as num_tx from {{ source('bnb.transactions') }}  group by 1,2 
+select "from", date_trunc('month', block_time) as month, count(*) as num_tx from {{ source('trader_KYT','bnb.transactions') }}  group by 1,2 
 having count(*) > 1000
 union all
-select "from", date_trunc('month', block_time) as month, count(*) as num_tx from {{ source('avalanche_c.transactions') }} group by 1,2 
+select "from", date_trunc('month', block_time) as month, count(*) as num_tx from {{ source('trader_KYT','avalanche_c.transactions') }} group by 1,2 
 having count(*) > 1000
 ))
 
@@ -57,7 +57,7 @@ union all
 select
 cast(address as varchar)
 from
-{{ source('query_2143144') }}
+{{ source('trader_KYT','query_2143144') }}
 )
 )
 )
