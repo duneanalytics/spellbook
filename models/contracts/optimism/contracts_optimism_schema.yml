@@ -115,3 +115,20 @@ models:
       - *creator_address
       - name: creator_name
         description: "Name of the creator, indicating why we shouldn't use it for mapping."
+  
+  - name: contracts_optimism_disperse_contracts
+    meta:
+      blockchain: optimism
+      project: op
+      contributors: msilb7
+    config:
+      tags: ['optimism','op','contracts','disperse']
+    description: >
+        A table containing mappings for disperse contract wallets that we want to map distributions with
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+              - contract_address
+    columns:
+      - *contract_address
+      - *contract_name
