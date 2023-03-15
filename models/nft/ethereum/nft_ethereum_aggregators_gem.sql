@@ -14,5 +14,8 @@ select
 from vasa_contracts c
 left join {{ source('ethereum','transactions') }} t
 on t.block_time >= '2021-10-12' and t.to = c.contract_address
+left join {{ ref('nft_ethereum_transfers') }} nt
+on t.block_number = nt.block_number and t.hash = nt.tx_hash
 group by 1,2
-having count(*) filter(where t.from != '0x073ab1c0cad3677cde9bdb0cdeedc2085c029579') > 10
+having count(distinct t.tx_hash) filter(where t.from != '0x073ab1c0cad3677cde9bdb0cdeedc2085c029579') > 10
+    and count(distinct nt.contact_address) > 2
