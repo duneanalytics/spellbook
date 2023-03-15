@@ -13,6 +13,8 @@ models:
     columns:
       - name: contract_address
         description: "Aggregator project's contract address"
+        tests:
+          - unique
       - name: name
         description: "Aggregator project's name"
 
@@ -249,7 +251,7 @@ models:
         description: "number of trades"
       - name: last_updated
         description: "Last time spell was updated"
-        
+
   - name: nft_ethereum_collection_stats
     meta:
       blockchain: ethereum
