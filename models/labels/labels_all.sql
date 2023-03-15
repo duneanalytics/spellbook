@@ -46,5 +46,3 @@ UNION ALL
 SELECT * FROM {{ ref('labels_dao') }}
 UNION ALL
 SELECT * FROM {{ ref('labels_infrastructure') }}
-UNION ALL
-SELECT * FROM {{ ref('labels_stablecoins') }}
