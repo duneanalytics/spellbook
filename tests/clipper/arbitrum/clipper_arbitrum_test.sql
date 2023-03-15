@@ -41,11 +41,11 @@ WITH unit_test AS (
             ELSE FALSE
         END AS token_sold_amount_test,
         CASE
-            WHEN test.token_bought_amount_raw = actual.token_bought_amount_raw THEN TRUE
+            WHEN CAST(test.token_bought_amount_raw AS DECIMAL(38,0)) = CAST(actual.token_bought_amount_raw AS DECIMAL(38,0)) THEN TRUE
             ELSE FALSE
         END AS token_bought_amount_raw_test,
         CASE
-            WHEN test.token_sold_amount_raw = actual.token_sold_amount_raw THEN TRUE
+            WHEN CAST(test.token_sold_amount_raw AS DECIMAL(38,0)) = CAST(actual.token_sold_amount_raw AS DECIMAL(38,0)) THEN TRUE
             ELSE FALSE
         END AS token_sold_amount_raw_test,
         CASE
