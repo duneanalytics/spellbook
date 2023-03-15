@@ -7,13 +7,13 @@
         )
 }}
 
-{% set zeroex_models = [
-'zeroex_arbitrum_api_fills_deduped'
-,'zeroex_avalanche_c_api_fills_deduped'
-,'zeroex_ethereum_api_fills_deduped'
-,'zeroex_fantom_api_fills_deduped'
-,'zeroex_optimism_api_fills_deduped'
-,'zeroex_polygon_api_fills_deduped'
+{% set zeroex_models = [  
+ref('zeroex_arbitrum_api_fills_deduped')
+,ref('zeroex_avalanche_c_api_fills_deduped')
+,ref('zeroex_ethereum_api_fills_deduped')
+,ref('zeroex_fantom_api_fills_deduped')
+,ref('zeroex_optimism_api_fills_deduped')
+,ref('zeroex_polygon_api_fills_deduped')
 ] %}
 
 
@@ -44,7 +44,7 @@ FROM (
       maker_token_amount  as token_bought_amount, 
       null  as version,
       cast(maker_token_amount_raw as decimal)  as token_bought_amount_raw
-    FROM {{ ref(model) }}
+    FROM {{ model }}
     {% if not loop.last %}
     UNION ALL
     {% endif %}
