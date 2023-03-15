@@ -4,7 +4,7 @@
 WITH mev_addresses AS (
     SELECT 
         address
-    FROM {{ ref('labels_mev_ethereum.sql') }}
+    FROM {{ ref('labels_mev_ethereum') }}
 )
 
 , aave_v2_annual_liquidations AS (
