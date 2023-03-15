@@ -143,6 +143,7 @@ otc_fills AS (
 ERC20BridgeTransfer AS (
     SELECT 
             logs.tx_hash,
+            logs.block_number                      AS block_number,
             INDEX                                   AS evt_index,
             logs.contract_address,
             block_time                              AS block_time,
@@ -171,6 +172,7 @@ ERC20BridgeTransfer AS (
 BridgeFill AS (
     SELECT 
             logs.tx_hash,
+            logs.block_number                      AS block_number,
             INDEX                                           AS evt_index,
             logs.contract_address,
             block_time                                      AS block_time,
@@ -199,6 +201,7 @@ BridgeFill AS (
 NewBridgeFill AS (
     SELECT 
             logs.tx_hash as tx_hash,
+            logs.block_number                      AS block_number,
             INDEX                                           AS evt_index,
             logs.contract_address,
             block_time                                      AS block_time,
@@ -267,6 +270,7 @@ all_tx AS (
 
 SELECT 
         all_tx.tx_hash,
+        all_tx.block_number,
         all_tx.evt_index,
         all_tx.contract_address,
         all_tx.block_time,
@@ -276,8 +280,11 @@ SELECT
             WHEN taker = '0xdef189deaef76e379df891899eb5a00a94cbc250' THEN tx.from
             ELSE taker
         END AS taker, -- fix the user masked by ProxyContract issue
-        taker_token,
+         taker_token,
+        ts.symbol AS taker_symbol,
         maker_token,
+        ms.symbol AS maker_symbol,
+        CASE WHEN lower(ts.symbol) > lower(ms.symbol) THEN concat(ms.symbol, '-', ts.symbol) ELSE concat(ts.symbol, '-', ms.symbol) END AS token_pair,
         taker_token_amount_raw / pow(10, tp.decimals) AS taker_token_amount,
         taker_token_amount_raw,
         maker_token_amount_raw / pow(10, mp.decimals) AS maker_token_amount,
@@ -291,7 +298,10 @@ SELECT
              WHEN taker_token IN ('0x04068da6c83afcfa0e13ba15a6696662335d5b75','0x21be370d5312f44cb42ce377bc9b8a0cef1a4c83','0x74b23882a30290451a17c44f4f05243b6b58c76d','0x049d68029688eabf473097a2fc38ef61633a3c7a','0x82f0b8b456c1a451378467398982d4834b6829c1', '0x321162cd933e2be498cd2267a90534a804051b11')     
              THEN (all_tx.taker_token_amount_raw / pow(10, tp.decimals)) * tp.price
              ELSE COALESCE((all_tx.maker_token_amount_raw / pow(10, mp.decimals)) * mp.price, (all_tx.taker_token_amount_raw / pow(10, tp.decimals)) * tp.price)
-             END AS volume_usd, tx.to, tx.from 
+             END AS volume_usd, 
+        tx.from AS tx_from,
+        tx.to AS tx_to,
+        'fantom' AS blockchain
 FROM all_tx
 INNER JOIN {{ source('fantom', 'transactions')}} tx ON all_tx.tx_hash = tx.hash
 
@@ -329,3 +339,6 @@ AND mp.minute >= date_trunc('day', now() - interval '1 week')
 {% if not is_incremental() %}
 AND mp.minute >= '{{zeroex_v3_start_date}}'
 {% endif %}
+
+LEFT OUTER JOIN {{ ref('tokens_erc20') }} ts ON ts.contract_address = taker_token and ts.blockchain = 'fantom'
+LEFT OUTER JOIN {{ ref('tokens_erc20') }} ms ON ms.contract_address = maker_token and ms.blockchain = 'fantom'

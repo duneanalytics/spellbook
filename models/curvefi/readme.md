@@ -2,7 +2,7 @@
 
 Welcome to Curve! Here's a short getting started guide for navigating the protocol, and the model files. 
 
-The protocol docs can be found [here](https://resources.curve.fi/). Each pool has a pool, token, and sometimes gauge contracts. The pool and token are combined into one contract for v1 pools, but have become two seperate contracts (on deployment) for v2.
+The protocol docs can be found [here](https://resources.curve.fi/). Each pool has a pool, token, and sometimes gauge contracts. The pool and token are combined into one contract for v1 pools, but have become two separate contracts (on deployment) for v2.
 
 We haven't included fees in these models yet, but the fees are dynamic and you can read about them at the [end of the whitepaper](https://classic.curve.fi/files/crypto-pools-paper.pdf) or in [this overview article](https://nagaking.substack.com/p/deep-dive-curve-v2-parameters).
 
