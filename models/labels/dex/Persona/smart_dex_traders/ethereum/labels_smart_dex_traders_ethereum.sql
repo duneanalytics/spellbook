@@ -164,7 +164,7 @@ swappers as (
 
 -- Get latest prices
 , prices as (
-    select symbol, price, cast(contract_address as varbinary) as token_address
+    select symbol, price, cast(contract_address as varchar(5)) as token_address
     from {{ ref('prices_usd_latest') }}
     where blockchain = 'ethereum'
 )
@@ -178,9 +178,9 @@ swappers as (
         'buy' as action,
         block_time,
         token_sold_symbol,
-        cast(token_sold_address as varbinary) as token_sold_address,
+        cast(token_sold_address as varchar(5)) as token_sold_address,
         token_bought_symbol,
-        cast(token_bought_address as varbinary) as token_bought_address,
+        cast(token_bought_address as varchar(5)) as token_bought_address,
         token_bought_amount,
         amount_usd, 
         taker,
@@ -208,9 +208,9 @@ swappers as (
         'sell' as action,
         block_time,
         token_sold_symbol,
-        cast(token_sold_address as varbinary) as token_sold_address,
+        cast(token_sold_address as varchar(5)) as token_sold_address,
         token_bought_symbol,
-        cast(token_bought_address as varbinary) as token_bought_address,
+        cast(token_bought_address as varchar(5)) as token_bought_address,
         token_sold_amount,
         amount_usd, 
         taker,
