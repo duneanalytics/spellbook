@@ -86,13 +86,13 @@ swappers as (
 -- Get list of known contract addresses
 , addresses_to_exclude as (
     select distinct address from (
-        select distinct cast(address as varchar) as address from {{ ref('labels_contracts') }}
+        select distinct cast(address as varchar(5)) as address from {{ ref('labels_contracts') }}
         union all
-        select distinct cast(address as varchar) as address from {{ source('ethereum', 'traces') }}
+        select distinct cast(address as varchar(5)) as address from {{ source('ethereum', 'traces') }}
         union all
-        select distinct cast(address as varchar) as address from {{ ref('labels_mev_ethereum') }}
+        select distinct cast(address as varchar(5)) as address from {{ ref('labels_mev_ethereum') }}
         union all
-        select distinct cast(address as varchar) as address from {{ ref('labels_sandwich_attackers') }}
+        select distinct cast(address as varchar(5)) as address from {{ ref('labels_sandwich_attackers') }}
     )
 )
 
