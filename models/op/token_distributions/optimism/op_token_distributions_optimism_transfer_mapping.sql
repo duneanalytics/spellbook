@@ -12,15 +12,18 @@
     )
 }}
 
+
 {% set op_token_address = '0x4200000000000000000000000000000000000042' %}
 {% set op_token_launch_date = '2022-05-31'  %}
 {% set foundation_label = 'OP Foundation'  %}
 {% set grants_descriptor = 'OP Foundation Grants'  %}
 
+-- should rebuild on each update to upstream tables
 
 WITH all_labels AS (
     SELECT address, label, proposal_name, address_descriptor, project_name FROM {{ ref('op_token_distributions_optimism_all_distributions_labels') }}
 )
+
 
 , disperse_contracts AS (
     SELECT * FROM all_labels WHERE label = 'Utility'
@@ -50,7 +53,7 @@ WITH all_labels AS (
                     AS to_type,
                     
             COALESCE(
-                     lbl_from_util_tx.label
+                     lbl_from_util_tx.label 
                     ,lbl_from.label
                     ) 
                     AS from_label, --override if to an incentive tx address
