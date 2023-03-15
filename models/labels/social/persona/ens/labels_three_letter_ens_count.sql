@@ -11,10 +11,10 @@ WITH three_letter_ens_count AS (
 
     GROUP BY owner
     ORDER BY ens_count DESC
-),
+)
 
 SELECT
-    'blockchain' as blockchain,
+    'ethereum' as blockchain,
     (CONCAT('0x', substring(cast(owner as string), 3))) as address,
     'most_three_letter_ens_owner' as model_name,
     'spanish-or-vanish' as contributor,

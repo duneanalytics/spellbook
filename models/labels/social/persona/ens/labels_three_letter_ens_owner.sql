@@ -20,7 +20,7 @@ top as (
 )
 
 SELECT
-    'blockchain' as blockchain,
+    'ethereum' as blockchain,
     (CONCAT('0x', substring(cast(owner as string), 3))) as address,
     'three_letter_ens_owner' as model_name,
     'spanish-or-vanish' as contributor,
