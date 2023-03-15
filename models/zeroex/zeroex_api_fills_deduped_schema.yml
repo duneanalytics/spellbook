@@ -1,7 +1,7 @@
 version: 2
 
 models:
-  - name: zeroex_fills_deduped
+  - name: zeroex_api_fills_deduped
     meta:
       blockchain: ethereum, optimism, polygon, arbitrum, fantom, avalance
       sector: dex

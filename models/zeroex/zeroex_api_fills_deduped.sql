@@ -1,5 +1,5 @@
 {{ config(
-        alias ='trades',
+        alias ='api_fills_deduped',
         post_hook='{{ expose_spells(\'["ethereum","arbitrum", "optimism", "polygon","fantom","avalanche_c"]\',
                                 "project",
                                 "zeroex",
