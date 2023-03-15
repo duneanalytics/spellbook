@@ -51,7 +51,7 @@ FROM (VALUES
 ,('Project',	'0x31b73b0549e0151b6233c5d179580b8a840b83fb',	'Biconomy',	'Season 1')
 ,('Project',	'0x2319D8e71268FF128e3a9CfA0E62d32596d4DC02',	'Rocket Pool',	'Season 1')
 ,('Project',	'0xf6a4475a006b28b9996c92bee27deedc38032cde',	'Boardroom',	'Season 1')
-,('Project',	'0x38138586aedb29b436eab16105b09c317f5a79dd',	'xToken / Gamma',	'Season 1')
+,('Project',	'0x38138586aedb29b436eab16105b09c317f5a79dd',	'xToken Terminal / Gamma Strategies',	'Season 1')
 ,('Project',	'0x4aba01fb8e1f6bfe80c56deb367f19f35df0f4ae',	'Beefy Finance',	'Season 1')
 ,('Project',	'0xb1a8d1d6dc07ca0e1e78a0004aa0bb034fa73d60',	'QiDao',	'Season 1')
 

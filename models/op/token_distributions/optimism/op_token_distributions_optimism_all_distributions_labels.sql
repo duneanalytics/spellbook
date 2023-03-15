@@ -1,5 +1,9 @@
 {{ config(
-    alias = 'all_distributions_labels'
+    alias = 'all_distributions_labels',
+    post_hook='{{ expose_spells(\'["optimism"]\',
+                                "project",
+                                "op_token_distributions",
+                                \'["msilb7"]\') }}'
     )
 }}
 
