@@ -76,7 +76,7 @@ FROM (VALUES
     , ('0xa090e606e30bd747d4e6245a1517ebe430f0057e', 'Coinbase', 'Coinbase Miscellaneous')
     , ('0xf6874c88757721a02f47592140905c4336dfbc61', 'Coinbase', 'Coinbase Commerce')
     , ('0x881d4032abe4188e2237efcd27ab435e81fc6bb1', 'Coinbase', 'Coinbase Commerce 2')
-    -- OKX, Source: https://etherscan.io/accounts/label/okx
+    -- OKX, Source: https://etherscan.io/accounts/label/okex
     , ('0x6cc5f688a315f3dc28a7781717a9a798a59fda7b', 'OKX', 'OKX')
     , ('0x236f9f97e0e62388479bf9e5ba4889e46b0273c3', 'OKX', 'OKX 2')
     , ('0xa7efae728d2936e78bda97dc267687568dd593f3', 'OKX', 'OKX 3')

@@ -13,7 +13,7 @@
  ,ref('labels_dao_framework')
 ] %}
 
-SELECT distinct *
+SELECT *
 FROM (
     {% for dao_model in dao_models %}
     SELECT
