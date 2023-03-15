@@ -30,20 +30,20 @@ FROM (
       '0x API'  as project,
       --contract_address  as project_contract_address,
       taker  as taker, 
-      cast(maker_symbol as varbinary)  as  token_bought_symbol, 
+      maker_symbolas  token_bought_symbol, 
       token_pair  as token_pair,
-      cast(taker_token as varbinary) as token_sold_address,
+      taker_token as token_sold_address,
       taker_token_amount  as token_sold_amount,
-      cast(taker_symbol as varbinary)  as  token_sold_symbol,
+      taker_symbol  as  token_sold_symbol,
       null  as trace_address,
       tx_from  as tx_from,
       tx_hash  as tx_hash,
       tx_to  as tx_to,
-      cast(taker_token_amount_raw as double)  as token_sold_amount_raw,
-      cast(maker_token as varbinary) as token_bought_address, 
+      taker_token_amount_raw  as token_sold_amount_raw,
+      maker_token  as token_bought_address, 
       maker_token_amount  as token_bought_amount, 
       null  as version,
-      cast(maker_token_amount_raw as decimal)  as token_bought_amount_raw
+      maker_token_amount_raw  as token_bought_amount_raw
     FROM {{ model }}
     {% if not loop.last %}
     UNION ALL
