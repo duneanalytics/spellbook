@@ -30,7 +30,7 @@ FROM (
       '0x API'  as project,
       --contract_address  as project_contract_address,
       taker  as taker, 
-      maker_symbolas  token_bought_symbol, 
+      maker_symbol as  token_bought_symbol, 
       token_pair  as token_pair,
       taker_token as token_sold_address,
       taker_token_amount  as token_sold_amount,
