@@ -19,7 +19,7 @@
 
 SELECT *
 FROM (
-    {% for dex_model in zeroex_models %}
+    {% for model in zeroex_models %}
     SELECT
     volume_usd  as amount_usd,
       block_date  as block_date,
@@ -44,7 +44,7 @@ FROM (
       maker_token_amount  as token_bought_amount, 
       null  as version,
       cast(maker_token_amount_raw as decimal)  as token_bought_amount_raw
-    FROM {{ ref(dex_model) }}
+    FROM {{ ref(model) }}
     {% if not loop.last %}
     UNION ALL
     {% endif %}
