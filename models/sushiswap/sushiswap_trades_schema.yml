@@ -3,7 +3,7 @@ version: 2
 models:
   - name: sushiswap_trades
     meta:
-      blockchain: ethereum, fantom, avalanche_c, arbitrum, gnosis, polygon, bnb
+      blockchain: ethereum, fantom, avalanche_c, arbitrum, gnosis, polygon, bnb #  
       sector: dex
       project: sushiswap
       contributors: jeff-dude, masquot, soispoke, augustog, hosuke, Henrystats, chrispearcx
