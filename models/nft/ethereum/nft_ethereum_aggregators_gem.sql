@@ -11,4 +11,8 @@ WITH vasa_contracts as (
 select
     contract_address
     ,'Gem' as name
-from vasa_contracts
+from vasa_contracts c
+left join {{ source('ethereum','transactions') }} t
+on t.block_time >= '2021-10-12' and t.to = c.contract_address
+group by 1,2
+having count(*) filter(where t.from != '0x073ab1c0cad3677cde9bdb0cdeedc2085c029579') > 10
