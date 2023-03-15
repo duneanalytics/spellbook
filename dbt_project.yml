@@ -35,8 +35,10 @@ tests:
 models:
   spellbook:
     +post-hook:
-      sql: "{{ optimize_spell(this, model.config.materialized) }}"
-      transaction: true
+      - sql: "{{ optimize_spell(this, model.config.materialized) }}"
+        transaction: true
+      - sql: "{{ mark_as_spell(this, model.config.materialized) }}"
+        transaction: true
     +materialized: view
     +schema: no_schema    # this should be overriden in model specific configs
 
@@ -106,6 +108,8 @@ models:
         +schema: nft_polygon
       fantom:
         +schema: nft_fantom
+      goerli:
+        +schema: nft_goerli
 
     compound:
       +schema: compound
@@ -157,6 +161,8 @@ models:
         +schema: sushiswap_arbitrum
       fantom:
         +schema: sushiswap_fantom
+      optimism:
+        +schema: sushiswap_optimism
 
     openocean:
       +schema: openocean
@@ -406,6 +412,8 @@ models:
         +schema: transfers_optimism
       bnb:
         +schema: transfers_bnb
+      arbitrum:
+        +schema: transfers_arbitrum
 
     sudoswap:
       +schema: sudoswap
@@ -796,6 +804,13 @@ models:
       optimism:
         +schema: ovm_optimism
 
+    op:
+      +schema: op
+      token_distributions:
+        +schema: op_token_distributions
+        optimism:
+          +schema: op_token_distributions_optimism
+
     rubicon:
       +schema: rubicon
       optimism:
@@ -826,6 +841,11 @@ models:
       polygon:
         +schema: rocifi_polygon
 
+    oneinch:
+      +schema: oneinch
+      ethereum:
+        +schema: oneinch_ethereum
+        
     nftearth:
       +schema: nftearth
       optimism:
@@ -835,6 +855,14 @@ models:
       +schema: zonic
       optimism:
         +schema: zonic_optimism
+    
+    pooltogether:
+      +schema: pooltogether
+      ethereum:
+        +schema: pooltogether_ethereum
+
+    method_ids:
+      +schema: method_ids
 
 seeds:
   spellbook:

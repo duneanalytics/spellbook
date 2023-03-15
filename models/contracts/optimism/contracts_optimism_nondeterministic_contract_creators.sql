@@ -12,7 +12,7 @@
 
 SELECT
 
-LOWER(creator_address) AS creator_address, creator_name
+LOWER(creator_address) AS creator_address, cast(creator_name as varchar(250)) AS creator_name
 
 FROM (values
     ('0xbb6e024b9cffacb947a71991e386681b1cd1477d',	'singleton factory')
