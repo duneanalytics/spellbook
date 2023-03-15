@@ -1,6 +1,6 @@
 {{ config(
         alias ='transfers',
-        post_hook='{{ expose_spells(\'["ethereum", "bnb", "avalanche_c", "gnosis", "optimism", "arbitrum", "polygon"]\',
+        post_hook='{{ expose_spells(\'["ethereum", "bnb", "avalanche_c", "gnosis", "optimism", "arbitrum", "polygon", "fantom", "goerli"]\',
                                     "sector",
                                     "nft",
                                     \'["hildobby", "0xRob"]\') }}'
@@ -15,6 +15,8 @@
 ,ref('nft_optimism_transfers')
 ,ref('nft_arbitrum_transfers')
 ,ref('nft_polygon_transfers')
+,ref('nft_fantom_transfers')
+,ref('nft_goerli_transfers')
 ] %}
 
 SELECT *
@@ -33,6 +35,7 @@ FROM (
         , amount
         , `from`
         , to
+        , executed_by
         , tx_hash
         , unique_transfer_id
     FROM {{ nft_model }}

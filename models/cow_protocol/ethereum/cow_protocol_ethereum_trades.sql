@@ -171,6 +171,7 @@ valued_trades as (
            block_time,
            tx_hash,
            evt_index,
+           CAST(ARRAY() as array<bigint>) AS trace_address,
            project_contract_address,
            trades.order_uid,
            -- ETH Flow orders have trader = sender of orderCreation.
@@ -184,9 +185,9 @@ valued_trades as (
                  else concat(buy_token, '-', sell_token)
                end as token_pair,
            units_sold,
-           atoms_sold,
+           CAST(atoms_sold AS DECIMAL(38,0)) AS atoms_sold,
            units_bought,
-           atoms_bought,
+           CAST(atoms_bought AS DECIMAL(38,0)) AS atoms_bought,
            (CASE
                 WHEN sell_price IS NOT NULL THEN
                     -- Choose the larger of two prices when both not null.
@@ -218,7 +219,8 @@ valued_trades as (
            limit_sell_amount,
            limit_buy_amount,
            valid_to,
-           flags
+           flags,
+           case when (flags % 2) = 0 then 'SELL' else 'BUY' end as order_type
     FROM trades_with_token_units trades
     JOIN uid_to_app_id
         ON uid = order_uid
@@ -226,4 +228,8 @@ valued_trades as (
         ON trades.order_uid = efs.order_uid
 )
 
-select * from valued_trades
+select *,
+  -- Relative surplus (in %) is the difference between limit price and executed price as a ratio of the limit price.
+  -- Absolute surplus (in USD) is relative surplus multiplied with the value of the trade
+  usd_value * (((limit_sell_amount / limit_buy_amount) - (atoms_sold/atoms_bought)) / (limit_sell_amount / limit_buy_amount)) as surplus_usd
+from valued_trades

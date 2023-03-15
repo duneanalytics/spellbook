@@ -83,7 +83,7 @@ models:
     config:
       tags: ['bnb','pancakeswap','events']
     description: >
-        Pancakeswap events on BNB
+        Pancakeswap nft events on BNB smart chain
     tests:
        - dbt_utils.unique_combination_of_columns:
            combination_of_columns:
@@ -218,13 +218,13 @@ models:
 
   - name: pancakeswap_bnb_nft_trades
     meta:
-      blockchain: ethereum
+      blockchain: bnb
       project: pancakeswap
       contributors: [ thb0301, 0xRob ]
     config:
-      tags: [ 'ethereum','pancakeswap','trades' ]
+      tags: [ 'bnb','pancakeswap','trades' ]
     description: >
-      pancakeswap nft trades on Ethereum
+      pancakeswap nft trades on BNB smart chain
     columns:
       - *blockchain
       - *project
@@ -256,13 +256,13 @@ models:
 
   - name: pancakeswap_bnb_nft_fees
     meta:
-      blockchain: ethereum
+      blockchain: bnb
       project: pancakeswap
       contributors: [ thb0301, 0xRob ]
     config:
-      tags: [ 'ethereum','pancakeswap','fees' ]
+      tags: [ 'bnb','pancakeswap','fees' ]
     description: >
-      pancakeswap nft fees on Ethereum
+      pancakeswap nft fees on BNB smart chain
     columns:
       - *blockchain
       - *project
