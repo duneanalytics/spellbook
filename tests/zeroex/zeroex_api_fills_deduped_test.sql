@@ -3,7 +3,7 @@ WITH unit_tests as
                
                 and test.taker_token = actual.taker_token
 then True else False end as test
-FROM {{ ref('zeroex_api_fills_deduped') }} actual
+FROM {{ ref('zeroex_api_fills_deduped') }} actual 
 JOIN {{ ref('zeroex_api_fills_deduped') }} test 
     ON test.tx_hash = actual.tx_hash AND test.evt_index = actual.evt_index
 )
