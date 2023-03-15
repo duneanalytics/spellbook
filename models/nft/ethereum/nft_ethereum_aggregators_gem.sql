@@ -9,7 +9,7 @@ WITH vasa_contracts as (
 
 
 select
-    contract_address
+    t.contract_address
     ,'Gem' as name
 from vasa_contracts c
 left join {{ source('ethereum','transactions') }} t
