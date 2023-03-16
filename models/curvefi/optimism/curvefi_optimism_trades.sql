@@ -81,7 +81,7 @@ SELECT
 
         UNION ALL
 
-        -- MetaPoolSwap TokenExchang
+        -- MetaPoolSwap TokenExchange
         SELECT
             'meta' AS pool_type, -- has implications for decimals for curve
             t.evt_block_time AS block_time,
