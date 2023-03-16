@@ -98,8 +98,18 @@ SELECT
             bought_id, 
             sold_id
         FROM {{ source('curvefi_optimism', 'MetaPoolSwap_evt_TokenExchange') }} t
+        -- handle for dupes due to decoding issues
+        WHERE NOT EXISTS (
+            SELECT 1 FROM {{ source('curvefi_optimism', 'MetaPoolSwap_evt_TokenExchangeUnderlying') }} s 
+            WHERE t.evt_block_number = s.evt_block_number
+            AND t.evt_tx_hash = s.evt_tx_hash
+            AND t.evt_index = s.evt_index
+            {% if is_incremental() %}
+            AND s.evt_block_time >= date_trunc('day', now() - interval '1 week')
+            {% endif %}
+        )
         {% if is_incremental() %}
-        WHERE t.evt_block_time >= date_trunc('day', now() - interval '1 week')
+        AND t.evt_block_time >= date_trunc('day', now() - interval '1 week')
         {% endif %}
     
 
