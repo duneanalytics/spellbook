@@ -4,7 +4,7 @@
 }}
 
 {% set uniswap_bnb_models = [
-'uniswap_v3_bnb_trades'
+ref('uniswap_v3_bnb_trades')
 ] %}
 
 
@@ -35,7 +35,7 @@ FROM (
         tx_to,
         trace_address,
         evt_index
-    FROM {{ ref(dex_model) }}
+    FROM {{ dex_model }}
     {% if not loop.last %}
     UNION ALL
     {% endif %}
