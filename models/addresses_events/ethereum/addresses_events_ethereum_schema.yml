@@ -10,7 +10,21 @@ models:
     config:
       tags: ['table', 'funded', 'addresses_events', 'ethereum']
     description: "Table showing who first funded each Ethereum address in ETH"
+    tests:
+      - check_seed:
+          seed_file: ref('first_funded_by_seed')
+          filter:
+            blockchain: ethereum
+          match_columns:
+            - blockchain
+            - address
+          check_columns:
+            - first_funded_by
+            - block_number
+            - tx_hash
     columns:
+      - name: blockchain
+        description: "Blockchain"
       - name: address
         description: "Concerned Ethereum address"
         tests:

@@ -7,7 +7,7 @@ sources:
     tables:
       - name: GnosisSafeL2_v1_3_0_evt_SafeSetup
         loaded_at_field: evt_block_time
-        description: "Optimism Safe v1.3.0 setup events"
+        description: "Optimism Safe v1.3.0L2 setup events"
         columns:
           - &contract_address
             name: contract_address
@@ -39,3 +39,40 @@ sources:
           - &threshold
             name: threshold
             description: "Number of required confirmations for a Safe transaction"
+      - name: GnosisSafeProxyFactory_v1_3_0_evt_ProxyCreation
+        loaded_at_field: evt_block_time
+        description: "Safe v1.3.0 factory ProxyCreation events"
+        columns:
+          - *contract_address
+          - *evt_block_number
+          - *evt_block_time
+          - *evt_index
+          - *evt_tx_hash
+          - &proxy
+            name: proxy
+            description: "Address of created Safe proxy"
+          - &singleton
+            name: singleton
+            description: "Singleton"
+  - name: erc20_optimism
+    freshness:
+      warn_after: { count: 12, period: hour }
+    tables:
+      - name: evt_Transfer
+        loaded_at_field: evt_block_time
+        description: "ERC20 transfer events on Optimism"
+        columns:
+          - *contract_address
+          - *evt_block_number
+          - *evt_block_time
+          - *evt_index
+          - *evt_tx_hash
+          - &from
+            name: from
+            description: "Sender address"
+          - &to
+            name: to
+            description: "Recipient address"
+          - &value
+            name: value
+            description: "Amount transferred"

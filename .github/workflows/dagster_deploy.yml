@@ -1,19 +1,64 @@
 on:
+  workflow_dispatch:
   push:
     branches:
       - "main"
-
+      
 jobs:
-  dispatch:
-    runs-on: ubuntu-latest
+  commit_manifest:
+    runs-on: [ self-hosted, linux, spellbook ]
+
     steps:
+    - uses: actions/setup-python@v3
+    - name: Checkout main branch
+      uses: actions/checkout@v2
+      with:
+        ref: main
+
+    - name: Add git_sha to schema
+      run: "/runner/change_schema.sh wizard"
+
+    - name: dbt dependencies
+      run: "dbt deps"
+
+    - name: dbt compile to create prod manifest from main
+      run: "dbt compile --target-path ."
+
+    - name: copy old manifest locally
+      run: "aws s3 cp s3://manifest-spellbook/manifest.json previous_manifest.json"
+      
+    - name: copy old manifest to s3
+      run: "aws s3 cp previous_manifest.json s3://manifest-spellbook/previous_manifest.json"
+
+    - name: Set environment variables
+      run: |
+        echo "GIT_SHA=$(echo ${{ github.sha }} | tr - _ | cut -c1-7)" >> $GITHUB_ENV
+
+    - name: upload git_sha versioned previous manifest (for manual catchup if jobs fail)
+      run: "aws s3 cp previous_manifest.json s3://manifest-spellbook/manifest_$GIT_SHA.json"
+
+    - name: upload manifest
+      run: "aws s3 cp manifest.json s3://manifest-spellbook/manifest.json"
+
+  dispatch:
+    runs-on: [ self-hosted, linux, spellbook ]
+    needs: commit_manifest
+    steps:
+    - name: Set pat token
+      id: set-pat-token
+      run: |
+          echo "token=$SPELLBOOK_PAT_TOKEN" >> $GITHUB_OUTPUT
+          exit 0
     - uses: actions/github-script@v6
       with:
-        github-token: ${{ secrets.PAT_TOKEN }}
+        github-token: ${{ steps.set-pat-token.outputs.token }}
         script: |
-          await github.rest.actions.createWorkflowDispatch({
-            owner: 'duneanalytics',
-            repo: 'spellbook-dagster',
-            workflow_id: 'deploy.yml',
-            ref: 'main'
-          })
+              await github.rest.actions.createWorkflowDispatch({
+                owner: 'duneanalytics',
+                repo: 'spellbook-dagster',
+                workflow_id: 'deploy.yml',
+                ref: 'main',
+                inputs: {
+                  git_sha: process.env.GIT_SHA,
+                },
+              });

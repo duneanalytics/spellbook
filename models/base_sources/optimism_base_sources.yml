@@ -231,6 +231,24 @@ sources:
           - *to
           - name: value
             description: "Amount of ERC20 token transferred"
+      - name: evt_Approval
+        loaded_at_field: evt_block_time
+        description: "Approval events for ERC20 tokens on Optimism."
+        freshness:
+          warn_after: { count: 12, period: hour }
+          error_after: { count: 24, period: hour }
+        columns:
+          - name: contract_address
+            description: "ERC20 token contract address"
+          - *evt_block_number
+          - *evt_block_time
+          - *evt_index
+          - *evt_tx_hash
+          - &owner
+            name: owner
+          - &spender
+            name: spender
+          - *value
 
   - name: erc1155_optimism
     description: "Transfers events for ERC1155 tokens on Optimism."
@@ -280,8 +298,7 @@ sources:
         loaded_at_field: evt_block_time
         description: "Transfers events for ERC721 tokens on Optimism."
         columns:
-          - &contract_address
-            name: contract_address
+          - name: contract_address
             description: "ERC721 token contract address"
           - *evt_tx_hash
           - *evt_index

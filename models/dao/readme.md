@@ -3,13 +3,13 @@
 ### Brief Background on DAOs
 
 Decentralized Autonomous Organisations (DAOs) frame how humans use blockchain technology to coordinate decisions that pertain to community and capital.
-They operate via decentrealized governance to allow a group of people to engage in open, democratic processes and make decisions. 
+They operate via decentralized governance to allow a group of people to engage in open, democratic processes and make decisions. 
 Using smart contracts and crypto-economic properties to create and enforce rules and interactions between parties, DAOs can be used to manage 
 funds and treasuries, maintain and improve products like decentralized applications (dApps), invest in growth, etc.
 
 In practice, any member of a DAO can make a **proposal** to suggest a modification, an improvement or a feature to a given project. 
 If the proposal reaches a quorum, then all DAO members are asked to **vote** on the proposal to determine whether it should be accepted or refused.
-Members of a DAO ususally refer to governance token holders (e.g., to be a member of the Uniswap DAO, you must hold $UNI tokens), and votes 
+Members of a DAO usually refer to governance token holders (e.g., to be a member of the Uniswap DAO, you must hold $UNI tokens), and votes 
 are proportional to the amount of tokens used to vote on a proposal (e.g., Bob holds 100 UNI tokens, and uses (locks in) 50 of its tokens to vote on 
 a given proposal). 
 

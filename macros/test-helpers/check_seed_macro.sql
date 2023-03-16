@@ -27,12 +27,20 @@
             inner join {{model}} model
                 ON 1=1
                     {%- for column_name in seed_matching_columns %}
+                    {% if column_name == 'trace_address' %}
+                    AND COALESCE(CAST(split(seed.{{column_name}}, ',') as array<bigint>), ARRAY()) = model.{{column_name}}
+                    {% else %}
                     AND seed.{{column_name}} = model.{{column_name}}
+                    {% endif %}
                     {% endfor -%}
             ) model_sample
         ON 1=1
             {%- for column_name in seed_matching_columns %}
+            {% if column_name == 'trace_address' %}
+            AND COALESCE(CAST(split(seed.{{column_name}}, ',') as array<bigint>), ARRAY()) = model_sample.{{column_name}}
+            {% else %}
             AND seed.{{column_name}} = model_sample.{{column_name}}
+            {% endif %}
             {% endfor -%}
         WHERE 1=1
               {%- if filter is not none %}
@@ -46,8 +54,8 @@
     matching_count_test as (
         select
             'matched records count' as test_description,
-            count(model_{{seed_matching_columns[0]}}) as `result (model)`,
-            1 as `expected (seed)`,
+            count(model_{{seed_matching_columns[0]}}) as `result_model`,
+            1 as `expected_seed`,
             {%- for column_name in seed_matching_columns %}
             seed_{{column_name}} as {{column_name}}{% if not loop.last %},{% endif %}
             {% endfor -%}
@@ -66,8 +74,8 @@
             ,test.*
         from (
             select
-                model_{{checked_column}} as `result (model)`,
-                seed_{{checked_column}} as `expected (seed)`,
+                model_{{checked_column}} as `result_model`,
+                seed_{{checked_column}} as `expected_seed`,
                 {%- for column_name in seed_matching_columns %}
                 seed_{{column_name}} {% if not loop.last %},{% endif %}
                 {% endfor -%}
@@ -87,5 +95,5 @@
         select *
         from equality_tests
     ) all
-    where `result (model)` != `expected (seed)`
+    where `result_model` != `expected_seed`
 {% endmacro %}

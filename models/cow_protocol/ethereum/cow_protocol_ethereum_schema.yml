@@ -23,6 +23,7 @@ models:
       - &active
         name: active
         description: "Solver's active status according to the events emitted by GPv2AllowListAuthentication. True if solver has been 'added' and not yet removed, False when the solver has been 'removed'."
+
   - name: cow_protocol_ethereum_trades
     meta:
       blockchain: ethereum
@@ -129,6 +130,13 @@ models:
       - &flags
         name: flags
         description: "bitmap with additional trade information (cf. https://github.com/cowprotocol/contracts/blob/main/src/contracts/libraries/GPv2Trade.sol#L58-L94)"
+      - &surplus_usd
+        name: surplus_usd
+        description: "USD value of surplus (difference between limit and executed price)"
+      - &order_type
+        name: order_type
+        description: "SELL/BUY string indicating if the trade was a sell or buy order"
+
   - name: cow_protocol_ethereum_batches
     meta:
       blockchain: ethereum
@@ -175,6 +183,7 @@ models:
       - &token_approvals
         name: token_approvals
         description: Number of ERC20 token approvals made within the settlement
+
   - name: cow_protocol_ethereum_app_data
     meta:
       blockchain: ethereum
@@ -201,6 +210,7 @@ models:
       - &slippage_bips
         name: slippage_bips
         description: User's slippage tolerance configured through the interface. Used to compute trade execution price improvement (can be Null)
+
   - name: cow_protocol_ethereum_order_rewards
     meta:
       blockchain: ethereum
@@ -224,6 +234,7 @@ models:
         name: surplus_fee
         description: "Fee taken from limit orders"
       - *order_uid
+
   - name: cow_protocol_ethereum_eth_flow_orders
     meta:
       blockchain: ethereum
@@ -259,6 +270,7 @@ models:
         description: sender of order placement transaction. Equivalent to "trader"
       - *app_hash
       - *order_uid
+
   - name: cow_protocol_ethereum_referrals
     meta:
       blockchain: ethereum
@@ -274,4 +286,38 @@ models:
     columns:
       - *trader
       - *referrer
+
+  - name: cow_protocol_ethereum_trade_slippage
+    meta:
+      blockchain: ethereum
+      project: cow_protocol
+      contributors: bh2smith, gentrexha, josojo
+    config:
+      tags: [ 'ethereum','cow_protocol','trade_slippage' ]
+    description: >
+      The query contains several measurements between the quoted price on cowswap and 
+      the executed price. The price difference between the quote and the actual price 
+      is called price improvement and is measured as percentage or in absolute dollars.
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - order_uid
+    columns:
+      - *order_uid
+      - *block_time
+      - *block_number
+      - &buy_quote
+        name: buy_quote
+      - &sell_quote
+        name: sell_quote
+      - &tolerance_bips
+        name: tolerance_bips
+      - &trade_usd_value
+        name: trade_usd_value
+      - &amount_atoms
+        name: amount_atoms
+      - &amount_percentage
+        name: amount_percentage
+      - &amount_usd
+        name: amount_usd
 
