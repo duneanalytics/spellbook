@@ -81,3 +81,31 @@ models:
       - &evt_index
         name: evt_index
         description: "the position of this event log within this transaction"
+
+  - name: uniswap_pools
+    meta:
+      blockchain: ethereum, optimism, polygon, arbitrum
+      sector: dex
+      contributors: hildobby
+    config:
+      tags: ['ethereum']
+    description: >
+      Uniswap DEX pools
+    columns:
+      - *blockchain
+      - *project
+      - *version
+      - name: pool
+        description: "DEX pool smart contract address"
+      - name: fee
+        description: "Defined fee"
+      - name: token0
+        description: "First token in pool"
+      - name: token1
+        description: "Second token in pool"
+      - name: creation_block_time
+        description: "Block time of pool creation"
+      - name: creation_block_number
+        description: "Block number of pool creation"
+      - name: contract_address
+        description: "Contract address used to create the pool"
