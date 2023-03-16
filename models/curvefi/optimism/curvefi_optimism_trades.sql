@@ -58,7 +58,7 @@ SELECT
 
         UNION ALL
 
-        -- MetaPoolSwap
+        -- MetaPoolSwap TokenExchangeUnderlying
         SELECT
             'meta' AS pool_type, -- has implications for decimals for curve
             t.evt_block_time AS block_time,
@@ -75,6 +75,29 @@ SELECT
             bought_id, 
             sold_id
         FROM {{ source('curvefi_optimism', 'MetaPoolSwap_evt_TokenExchangeUnderlying') }} t
+        {% if is_incremental() %}
+        WHERE t.evt_block_time >= date_trunc('day', now() - interval '1 week')
+        {% endif %}
+
+        UNION ALL
+
+        -- MetaPoolSwap TokenExchang
+        SELECT
+            'meta' AS pool_type, -- has implications for decimals for curve
+            t.evt_block_time AS block_time,
+            t.evt_block_number,
+            t.buyer AS taker,
+            '' AS maker,
+            -- when amount0 is negative it means taker is buying token0 from the pool
+            tokens_bought AS token_bought_amount_raw,
+            tokens_sold AS token_sold_amount_raw,
+            t.contract_address as project_contract_address,
+            t.evt_tx_hash AS tx_hash,
+            '' AS trace_address,
+            t.evt_index, 
+            bought_id, 
+            sold_id
+        FROM {{ source('curvefi_optimism', 'MetaPoolSwap_evt_TokenExchange') }} t
         {% if is_incremental() %}
         WHERE t.evt_block_time >= date_trunc('day', now() - interval '1 week')
         {% endif %}
