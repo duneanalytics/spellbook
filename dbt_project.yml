@@ -73,6 +73,9 @@ models:
     airdrop:
       +schema: airdrop
       +materialized: table
+      ethereum:
+        +schema: airdrop_ethereum
+        +materialized: table
       optimism:
         +schema: airdrop_optimism
         +materialized: table
