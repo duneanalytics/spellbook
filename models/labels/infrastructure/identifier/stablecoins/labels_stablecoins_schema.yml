@@ -5,7 +5,7 @@ models:
     meta:
       blockchain: ethereum, bnb, polygon, solana, arbitrum, optimism, fantom, avalanche_c, gnosis
       sector: labels
-      project: system_addresses
+      project: stablecoins
       contributors: hildobby
     config:
       tags: ['labels', 'stablecoins', 'erc20', 'ethereum', 'bnb', 'polygon', 'solana', 'arbitrum', 'optimism', 'fantom', 'avalanche_c', 'gnosis']
