@@ -6,7 +6,7 @@
                                 \'["hildobby"]\') }}'
 )}}
 
-SELECT blockchain, lower(address) as address, name, category, contributor, source, created_at, updated_at, model_name, label_type
+SELECT blockchain, trim(lower(address)) as address, name, category, contributor, source, created_at, updated_at, model_name, label_type
 FROM
 (   
     -- Sources:
