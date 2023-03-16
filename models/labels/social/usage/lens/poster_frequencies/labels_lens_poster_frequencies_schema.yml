@@ -1,7 +1,7 @@
 version: 2
 
 models:
-  - name: labels_lens
+  - name: labels_lens_poster_frequencies
     meta:
       blockchain: polygon
       sector: labels
