@@ -23,6 +23,6 @@ SELECT
     timestamp('2022-03-03') as created_at,
     now() as updated_at,
     'personas' as label_type,
-    concat('Number of three letter ENS Domains owned', ens_count) as name
+    concat('Number of three letter ENS Domains owned: ', ens_count) as name
 FROM three_letter_ens_count
 WHERE owner is not null
