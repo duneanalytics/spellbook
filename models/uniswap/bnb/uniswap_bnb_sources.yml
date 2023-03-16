@@ -8,7 +8,7 @@ sources:
     tables:
       - name: Pair_evt_Swap
         loaded_at_field: evt_block_time
-        description: "" # to-do
+        description: "Uniswap v3 pair swap events table"
         columns:
           - &amount1
             name: amount1
@@ -47,11 +47,12 @@ sources:
           - &tick
             name: tick
             description: the log base 1.0001 of price of the pool after the swap"
-      - name: factory_bnb_evt_PoolCreated
+      - name: UniswapV3Factory_evt_PoolCreated
         loaded_at_field: evt_block_time
-        description: "" # to-do
+        description: "Uniswap v3 Factory PoolCreated events table"
         columns:
-          - name: contract_address
+          - &contract_address
+            name: contract_address
             description: "The contract that deployed the pool"
           - *evt_block_number
           - *evt_block_time
