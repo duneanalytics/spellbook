@@ -6,17 +6,27 @@ models:
       blockchain: polygon
       sector: transfers
       project: erc20
-      contributors: soispoke, dot2dotseurat, tschubotz
+      contributors: soispoke, dot2dotseurat, tschubotz, hosuke
     config:
       tags: ['transfers', 'polygon', 'erc20']
     description: "ERC20 Token Transfers on polygon. This table is updated every 30 minutes."
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
-            - unique_transfer_id
+            - transfer_type
+            - evt_tx_hash
+            - evt_index
+            - wallet_address
     columns:
-      - name: unique_transfer_id
-        description: "Unique transfer ID (used for testing for duplicates)"
+      - name: transfer_type
+        description: "Transfer type, can be one of [send, receive, deposit, withdrawn]"
+        tests:
+          - accepted_values:
+              values: [ "send", "receive", "deposit", "withdrawn"]
+      - name: evt_tx_hash
+        description: "Transaction hash for the transfer event"
+      - name: evt_index
+        description: "Event index for the transfer"
       - &blockchain
         name: blockchain
         description: "Blockchain"

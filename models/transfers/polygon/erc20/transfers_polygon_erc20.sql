@@ -3,7 +3,7 @@
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
-    unique_key = ['unique_transfer_id'],
+    unique_key = ['transfer_type', 'evt_tx_hash', 'evt_index', 'wallet_address'],
     post_hook='{{ expose_spells(\'["polygon"]\',
                                     "sector",
                                     "transfers",
@@ -12,14 +12,13 @@
 }}
 
 with sent_transfers as (
-    select CAST('send' AS VARCHAR(4)) || CAST('-' AS VARCHAR(1)) ||
-           CAST(evt_tx_hash AS VARCHAR(100)) || CAST('-' AS VARCHAR(1)) ||
-           CAST(evt_index AS VARCHAR(100)) || CAST('-' AS VARCHAR(1)) ||
-           CAST(`to` AS VARCHAR(100)) as unique_transfer_id,
-           `to`                       as wallet_address,
-           contract_address           as token_address,
+    select 'send'           as transfer_type,
+           evt_tx_hash,
+           evt_index,
+           `to`             as wallet_address,
+           contract_address as token_address,
            evt_block_time,
-           value                      as amount_raw
+           value            as amount_raw
     from
         {{ source('erc20_polygon', 'evt_transfer') }}
     {% if is_incremental() %}
@@ -27,10 +26,9 @@ with sent_transfers as (
     {% endif %}
 ),
 received_transfers as (
-    select CAST('receive' AS VARCHAR(7)) || CAST('-' AS VARCHAR(1)) ||
-           CAST(evt_tx_hash AS VARCHAR(100)) || CAST('-' AS VARCHAR(1)) ||
-           CAST(evt_index AS VARCHAR(100)) || CAST('-' AS VARCHAR(1)) ||
-           CAST(`from` AS VARCHAR(100))       as unique_transfer_id,
+    select 'receive'                          as transfer_type,
+           evt_tx_hash,
+           evt_index,
            `from`                             as wallet_address,
            contract_address                   as token_address,
            evt_block_time,
@@ -42,14 +40,13 @@ received_transfers as (
     {% endif %}
 ),
 deposited_wmatic as (
-    select CAST('deposit' AS VARCHAR(7)) || CAST('-' AS VARCHAR(1)) ||
-           CAST(evt_tx_hash AS VARCHAR(100)) || CAST('-' AS VARCHAR(1)) ||
-           CAST(evt_index AS VARCHAR(100)) || CAST('-' AS VARCHAR(1)) ||
-           CAST(dst AS VARCHAR(100)) as unique_transfer_id,
-           dst                       as wallet_address,
-           contract_address          as token_address,
+    select 'deposit'        as transfer_type,
+           evt_tx_hash,
+           evt_index,
+           dst              as wallet_address,
+           contract_address as token_address,
            evt_block_time,
-           wad                       as amount_raw
+           wad              as amount_raw
     from
         {{ source('mahadao_polygon', 'wmatic_evt_deposit') }}
     {% if is_incremental() %}
@@ -57,10 +54,9 @@ deposited_wmatic as (
     {% endif %}
 ),
 withdrawn_wmatic as (
-    select CAST('withdrawn' AS VARCHAR(9)) || CAST('-' AS VARCHAR(1)) ||
-           CAST(evt_tx_hash AS VARCHAR(100)) || CAST('-' AS VARCHAR(1)) ||
-           CAST(evt_index AS VARCHAR(100)) || CAST('-' AS VARCHAR(1)) ||
-           CAST(src AS VARCHAR(100))        as unique_transfer_id,
+    select 'withdrawn'                      as transfer_type,
+           evt_tx_hash,
+           evt_index,
            src                              as wallet_address,
            contract_address                 as token_address,
            evt_block_time,
@@ -72,32 +68,40 @@ withdrawn_wmatic as (
     {% endif %}
 )
     
-select unique_transfer_id,
+select transfer_type,
        'polygon'                        as blockchain,
+       evt_tx_hash,
+       evt_index,
        wallet_address,
        token_address,
        evt_block_time,
        CAST(amount_raw AS VARCHAR(100)) as amount_raw
 from sent_transfers
 union
-select unique_transfer_id,
+select transfer_type,
        'polygon'                        as blockchain,
+       evt_tx_hash,
+       evt_index,
        wallet_address,
        token_address,
        evt_block_time,
        CAST(amount_raw AS VARCHAR(100)) as amount_raw
 from received_transfers
 union
-select unique_transfer_id,
+select transfer_type,
        'polygon'                        as blockchain,
+       evt_tx_hash,
+       evt_index,
        wallet_address,
        token_address,
        evt_block_time,
        CAST(amount_raw AS VARCHAR(100)) as amount_raw
 from deposited_wmatic
 union
-select unique_transfer_id,
+select transfer_type,
        'polygon'                        as blockchain,
+       evt_tx_hash,
+       evt_index,
        wallet_address,
        token_address,
        evt_block_time,
