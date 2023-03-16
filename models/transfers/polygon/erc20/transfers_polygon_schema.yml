@@ -10,6 +10,10 @@ models:
     config:
       tags: ['transfers', 'polygon', 'erc20']
     description: "ERC20 Token Transfers on polygon. This table is updated every 30 minutes."
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - unique_transfer_id
     columns:
       - name: unique_transfer_id
         description: "Unique transfer ID (used for testing for duplicates)"

@@ -1,10 +1,13 @@
 {{ config(
-    materialized='view',
     alias='erc20',
+    materialized = 'incremental',
+    file_format = 'delta',
+    incremental_strategy = 'merge',
+    unique_key = ['unique_transfer_id'],
     post_hook='{{ expose_spells(\'["polygon"]\',
                                     "sector",
                                     "transfers",
-                                    \'["soispoke", "dot2dotseurat", "tschubotz"]\') }}'
+                                    \'["soispoke", "dot2dotseurat", "tschubotz", "hosuke"]\') }}'
     )
 }}
 
@@ -19,6 +22,9 @@ with sent_transfers as (
            value                      as amount_raw
     from
         {{ source('erc20_polygon', 'evt_transfer') }}
+    {% if is_incremental() %}
+    where evt_block_time >= date_trunc("day", now() - interval '1 week')
+    {% endif %}
 ),
 received_transfers as (
     select CAST('receive' AS VARCHAR(7)) || CAST('-' AS VARCHAR(1)) ||
@@ -31,6 +37,9 @@ received_transfers as (
            '-' || CAST(value AS VARCHAR(100)) as amount_raw
     from
         {{ source('erc20_polygon', 'evt_transfer') }}
+    {% if is_incremental() %}
+    where evt_block_time >= date_trunc("day", now() - interval '1 week')
+    {% endif %}
 ),
 deposited_wmatic as (
     select CAST('deposit' AS VARCHAR(7)) || CAST('-' AS VARCHAR(1)) ||
@@ -43,6 +52,9 @@ deposited_wmatic as (
            wad                       as amount_raw
     from
         {{ source('mahadao_polygon', 'wmatic_evt_deposit') }}
+    {% if is_incremental() %}
+    where evt_block_time >= date_trunc("day", now() - interval '1 week')
+    {% endif %}
 ),
 withdrawn_wmatic as (
     select CAST('withdrawn' AS VARCHAR(9)) || CAST('-' AS VARCHAR(1)) ||
@@ -55,6 +67,9 @@ withdrawn_wmatic as (
            '-' || CAST(wad AS VARCHAR(100)) as amount_raw
     from
         {{ source('mahadao_polygon', 'wmatic_evt_withdrawal') }}
+    {% if is_incremental() %}
+    where evt_block_time >= date_trunc("day", now() - interval '1 week')
+    {% endif %}
 )
     
 select unique_transfer_id,
