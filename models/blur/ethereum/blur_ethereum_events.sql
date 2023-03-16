@@ -67,7 +67,7 @@ SELECT distinct
     , CASE WHEN get_json_object(bm.buy, '$.paymentToken') IN ('0x0000000000000000000000000000000000000000', '0x0000000000a39bb272e79075ade125fd351887ac') THEN CAST(COALESCE(pu.price*get_json_object(bm.buy, '$.price')/POWER(10, 18)*get_json_object(get_json_object(bm.sell, '$.fees[0]'), '$.rate')/10000, 0) AS DOUBLE)
         ELSE CAST(COALESCE(pu.price*get_json_object(bm.buy, '$.price')/POWER(10, pu.decimals)*get_json_object(get_json_object(bm.sell, '$.fees[0]'), '$.rate')/10000, 0) AS DOUBLE)
         END AS royalty_fee_amount_usd
-    , CAST(COALESCE(get_json_object(get_json_object(bm.sell, '$.fees[0]'), '$.rate')/100, 0) AS DOUBLE) AS royalty_fee_percentage
+    , CAST(COALESCE(get_json_object(get_json_object(bm.sell, '$.fees[0]'), '$.rate')/100, 0) AS DOUBLE) * 100.00 / CAST(get_json_object(bm.buy, '$.price') AS DECIMAL(38,0)) AS royalty_fee_percentage
     , CAST(get_json_object(get_json_object(bm.sell, '$.fees[0]'), '$.recipient') AS string) AS royalty_fee_receive_address
     , CASE WHEN get_json_object(get_json_object(bm.sell, '$.fees[0]'), '$.recipient') IS NOT NULL AND get_json_object(bm.buy, '$.paymentToken') IN ('0x0000000000000000000000000000000000000000', '0x0000000000a39bb272e79075ade125fd351887ac') THEN CAST('ETH' AS string)
         WHEN get_json_object(get_json_object(bm.sell, '$.fees[0]'), '$.recipient') IS NOT NULL THEN CAST(pu.symbol AS string)
@@ -170,12 +170,12 @@ SELECT distinct
     , CAST(0 AS DOUBLE) AS platform_fee_amount
     , CAST(0 AS DOUBLE) AS platform_fee_amount_usd
     , CAST(0 AS DOUBLE) AS platform_fee_percentage
-    , CAST(LEAST(get_json_object(s.consideration[0], '$.amount'), get_json_object(s.consideration[1], '$.amount')) AS DOUBLE) AS royalty_fee_amount_raw
-    , CAST(LEAST(get_json_object(s.consideration[0], '$.amount'), get_json_object(s.consideration[1], '$.amount'))/POWER(10, 18) AS DOUBLE) AS royalty_fee_amount
-    , CAST(pu.price*LEAST(get_json_object(s.consideration[0], '$.amount'), get_json_object(s.consideration[1], '$.amount'))/POWER(10, 18) AS DOUBLE) AS royalty_fee_amount_usd
-    , CAST(100.0*LEAST(get_json_object(s.consideration[0], '$.amount'), get_json_object(s.consideration[1], '$.amount'))
-        /(get_json_object(s.consideration[0], '$.amount')+get_json_object(s.consideration[1], '$.amount')) AS DOUBLE) AS royalty_fee_percentage
-    , CAST(currency_tok.symbol AS string) AS royalty_fee_currency_symbol
+    , LEAST(CAST(get_json_object(s.consideration[0], '$.amount') AS DOUBLE), CAST(get_json_object(s.consideration[1], '$.amount') AS DOUBLE)) AS royalty_fee_amount_raw
+    , LEAST(CAST(get_json_object(s.consideration[0], '$.amount') AS DOUBLE), CAST(get_json_object(s.consideration[1], '$.amount') AS DOUBLE))/POWER(10, 18) AS royalty_fee_amount
+    , pu.price*LEAST(CAST(get_json_object(s.consideration[0], '$.amount') AS DOUBLE), CAST(get_json_object(s.consideration[1], '$.amount') AS DOUBLE))/POWER(10, 18) AS royalty_fee_amount_usd
+    , 100.0*LEAST(CAST(get_json_object(s.consideration[0], '$.amount') AS DOUBLE), CAST(get_json_object(s.consideration[1], '$.amount') AS DOUBLE))
+        /CAST(CAST(get_json_object(s.consideration[0], '$.amount') AS DOUBLE)+CAST(get_json_object(s.consideration[1], '$.amount') AS DOUBLE) AS DECIMAL(38,0)) AS royalty_fee_percentage
+    , CASE WHEN get_json_object(s.consideration[0], '$.token')='0x0000000000000000000000000000000000000000' THEN CAST('ETH' AS string) ELSE CAST(currency_tok.symbol AS string) END AS royalty_fee_currency_symbol
     , CASE WHEN get_json_object(s.consideration[0], '$.recipient')!=s.recipient THEN CAST(get_json_object(s.consideration[0], '$.recipient') AS string)
         ELSE CAST(get_json_object(s.consideration[1], '$.recipient') AS string)
         END AS royalty_fee_receive_address
