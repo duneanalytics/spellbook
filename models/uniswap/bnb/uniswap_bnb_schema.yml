@@ -101,7 +101,7 @@ models:
       blockchain: bnb
       sector: dex
       project: uniswap
-      contributors: henrystats
+      contributors: chrispearcx
     config:
       tags: ['bnb','dex','trades', 'uniswap']
     description: >
