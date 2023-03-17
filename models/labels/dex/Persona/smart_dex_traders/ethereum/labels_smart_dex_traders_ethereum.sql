@@ -112,7 +112,7 @@ swappers as (
 --     Trades taken should tend twards weekends or weekdays. ie. skewness <> 0
 , filter_by_weekday as (
     select taker, 
-        skewness(day_of_week(block_date)) as trading_day_variance
+        skewness(dayofweek(block_date)) as trading_day_variance
     from swappers_address_only
     group by 1
     having
@@ -120,7 +120,7 @@ swappers as (
         --  negative/positive = distribution of trades is towards end/start of the week
         --  zero = distribution of trades is even across all days of the week
         --  NaN = data does not provide sufficient information about its distribution
-        (skewness(day_of_week(block_date)) > 0 or skewness(day_of_week(block_date)) < 0)
+        (skewness(dayofweek(block_date)) > 0 or skewness(dayofweek(block_date)) < 0)
 )
 
 -- H2. A retail trader trades takes breaks between trades. 
