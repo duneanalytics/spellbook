@@ -114,7 +114,7 @@ trade_amount_summary as (
         amount_raw,
         -- When there is royalty fee, it is the first transfer
         (case when transfer_count >= 4 then amount_raw_2 else amount_raw_1 end) AS platform_fee_amount_raw,
-        (case when transfer_count >= 4 then amount_raw_1 else 0 end) AS coalesce(royalty_fee_amount_raw,0)
+        (case when transfer_count >= 4 then amount_raw_1 else 0 end) AS royalty_fee_amount_raw
     FROM (
         SELECT evt_block_number,
             evt_tx_hash,
