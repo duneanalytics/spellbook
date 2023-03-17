@@ -77,6 +77,8 @@ models:
       - &amount_raw
         name: amount_raw
         description:   "Traded amount in original currency before decimals correction"
+        tests:
+          - not_null
       - &currency_symbol
         name: currency_symbol
         description:  "Symbol of original currency used for payment"
