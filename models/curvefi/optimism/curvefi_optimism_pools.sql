@@ -26,7 +26,7 @@ WITH base_pools AS (
         , output_0 AS token
         , contract_address AS pool
     FROM {{ source('curvefi_optimism', 'StableSwap_call_coins') }}
-    WHERE call_success
+    WHERE call_success and output_0 is not null
     GROUP BY
         arg0, output_0, contract_address --unique
 )
