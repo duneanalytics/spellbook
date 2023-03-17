@@ -841,7 +841,7 @@ models:
       +schema: zonic
       optimism:
         +schema: zonic_optimism
-    
+
     pooltogether:
       +schema: pooltogether
       ethereum:
@@ -849,6 +849,11 @@ models:
 
     method_ids:
       +schema: method_ids
+
+    rarible:
+      +schema: rarible
+      polygon:
+        +schema: rarible_polygon
 
 seeds:
   spellbook:
@@ -911,11 +916,6 @@ seeds:
             block_time: timestamp
             tx_hash: string
             amount: string
-
-    rarible:
-      +schema: rarible
-      polygon:
-        +schema: rarible_polygon
 
     sharky:
       solana:
