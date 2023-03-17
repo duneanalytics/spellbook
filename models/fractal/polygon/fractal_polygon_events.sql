@@ -108,10 +108,10 @@ trade_amount_detail as (
 trade_amount_summary as (
     SELECT evt_block_number,
         evt_tx_hash,
-        coalesce(sum(amount_raw),0) AS amount_raw,
+        sum(amount_raw) AS amount_raw,
         -- 1st is for platform fee, 2nd is for seller, 3rd is for royalty (no sample found so far)
-        coalesce(sum(case when item_index = 1 then amount_raw else 0 end),0) AS platform_fee_amount_raw,
-        coalesce(sum(case when item_index = 3 then amount_raw else 0 end),0) AS royalty_fee_amount_raw
+        sum(case when item_index = 1 then amount_raw else 0 end) AS platform_fee_amount_raw,
+        sum(case when item_index = 3 then amount_raw else 0 end) AS royalty_fee_amount_raw
     FROM trade_amount_detail
     GROUP BY 1, 2
 )
@@ -124,9 +124,9 @@ SELECT
     date_trunc('day', a.evt_block_time) AS block_date,
     a.evt_block_time AS block_time,
     a.evt_block_number AS block_number,
-    s.amount_raw / power(10, erc.decimals) * p.price AS amount_usd,
-    s.amount_raw / power(10, erc.decimals) AS amount_original,
-    s.amount_raw,
+    coalesce(s.amount_raw,0) / power(10, erc.decimals) * p.price AS amount_usd,
+    coalesce(s.amount_raw,0) / power(10, erc.decimals) AS amount_original,
+    coalesce(s.amount_raw,0) as amount_raw,
     erc.symbol AS currency_symbol,
     a.currency_contract,
     token_id,
@@ -145,14 +145,14 @@ SELECT
     t.`from` AS tx_from,
     t.`to` AS tx_to,
 
-    s.platform_fee_amount_raw,
-    CAST(s.platform_fee_amount_raw / power(10, erc.decimals) AS double) AS platform_fee_amount,
-    CAST(s.platform_fee_amount_raw / power(10, erc.decimals) * p.price AS double) AS platform_fee_amount_usd,
-    CAST(s.platform_fee_amount_raw  / s.amount_raw * 100 as double) as platform_fee_percentage,
-    CAST(s.royalty_fee_amount_raw AS double) AS royalty_fee_amount_raw,
-    CAST(s.royalty_fee_amount_raw / power(10, erc.decimals) AS double) AS royalty_fee_amount,
-    CAST(s.royalty_fee_amount_raw / power(10, erc.decimals) * p.price AS double) AS royalty_fee_amount_usd,
-    CAST(s.royalty_fee_amount_raw / s.amount_raw * 100 AS double) AS royalty_fee_percentage,
+    coalesce(s.platform_fee_amount_raw,0) as platform_fee_amount_raw,
+    CAST(coalesce(s.platform_fee_amount_raw,0) / power(10, erc.decimals) AS double) AS platform_fee_amount,
+    CAST(coalesce(s.platform_fee_amount_raw,0) / power(10, erc.decimals) * p.price AS double) AS platform_fee_amount_usd,
+    CAST(coalesce(s.platform_fee_amount_raw,0)  / s.amount_raw * 100 as double) as platform_fee_percentage,
+    CAST(coalesce(s.royalty_fee_amount_raw,0) AS double) AS royalty_fee_amount_raw,
+    CAST(coalesce(s.royalty_fee_amount_raw,0) / power(10, erc.decimals) AS double) AS royalty_fee_amount,
+    CAST(coalesce(s.royalty_fee_amount_raw,0) / power(10, erc.decimals) * p.price AS double) AS royalty_fee_amount_usd,
+    CAST(coalesce(s.royalty_fee_amount_raw,0) / s.amount_raw * 100 AS double) AS royalty_fee_percentage,
     CAST(NULL AS double) AS royalty_fee_receive_address,
     CAST(NULL AS string) AS royalty_fee_currency_symbol,
     a.evt_tx_hash || '-' || a.evt_type || '-' || a.evt_index || '-' || a.token_id  AS unique_trade_id
