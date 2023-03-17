@@ -13,10 +13,7 @@ WITH lens_addresses as
        ,CAST (profileId AS string) AS profileId
 FROM {{ source('lens_polygon','LensHub_evt_ProfileCreated') }} pc 
 
--- {% if is_incremental() %}
--- WHERE 1=1
--- AND pc.evt_block_time >= date_trunc('day', now() - interval '1 week')
--- {% endif %}
+
 
 )
 
@@ -28,10 +25,7 @@ FROM {{ source('lens_polygon','LensHub_evt_ProfileCreated') }} pc
  
     FROM {{ source('lens_polygon','LensHub_call_post') }} cp1
     
-    -- {% if is_incremental() %}
-    -- WHERE 1=1
-    -- AND cp.call_block_time >= date_trunc('day', now() - interval '1 week')
-    -- {% endif %}
+ 
     WHERE 1=1
     AND call_success = true
 
@@ -44,10 +38,7 @@ FROM {{ source('lens_polygon','LensHub_evt_ProfileCreated') }} pc
         ,CAST(get_json_object(vars, '$.profileId') AS string) as profileId
     FROM {{ source('lens_polygon','LensHub_call_postWithSig') }} cp2
 
-    -- -- {% if is_incremental() %}
-    -- WHERE 1=1
-    -- -- AND cp2.call_block_time >= date_trunc('day', now() - interval '1 week')
-    -- -- {% endif %}
+  
     WHERE 1=1
     AND call_success = true
 )
