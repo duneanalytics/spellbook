@@ -68,6 +68,7 @@ trades AS (
         {% endif %}
 ),
 
+-- note: This logic will probably break down for multi-trade transactions.
 trade_amount_detail as (
     SELECT e.block_number AS evt_block_number,
         e.tx_hash AS evt_tx_hash,
@@ -82,7 +83,7 @@ trade_amount_detail as (
         {% if is_incremental() %}
         AND e.block_time >= date_trunc("day", now() - interval '1 week')
         {% endif %}
-    WHERE t.original_currency IN ('0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee', '0x0000000000000000000000000000000000001010') 
+    WHERE t.original_currency IN ('0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee', '0x0000000000000000000000000000000000001010')
         AND cast(e.value as double) > 0
         AND cardinality(trace_address) > 0 -- exclude the main call record
 
@@ -101,7 +102,7 @@ trade_amount_detail as (
         {% if is_incremental() %}
         AND e.evt_block_time >= date_trunc("day", now() - interval '1 week')
         {% endif %}
-    WHERE t.original_currency NOT IN ('0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee', '0x0000000000000000000000000000000000001010') 
+    WHERE t.original_currency NOT IN ('0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee', '0x0000000000000000000000000000000000001010')
 ),
 
 trade_amount_summary as (
@@ -170,7 +171,7 @@ LEFT JOIN {{ source('prices', 'usd') }} p ON p.blockchain = 'polygon'
     AND p.contract_address = a.currency_contract
     AND p.minute = date_trunc('minute', a.evt_block_time)
     {% if not is_incremental() %}
-    AND p.minute >= '{{nft_start_date}}' 
+    AND p.minute >= '{{nft_start_date}}'
     {% endif %}
     {% if is_incremental() %}
     AND p.minute >= date_trunc("day", now() - interval '1 week')
