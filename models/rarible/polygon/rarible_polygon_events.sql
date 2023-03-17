@@ -71,6 +71,7 @@ WITH trades AS (
         {% endif %}
 ),
 
+-- note: this logic will probably not hold for multi trade transactions
 trade_amount_detail as (
     SELECT e.block_number AS evt_block_number,
         e.tx_hash AS evt_tx_hash,
@@ -113,7 +114,7 @@ trade_amount_summary as (
         amount_raw,
         -- When there is royalty fee, it is the first transfer
         (case when transfer_count >= 4 then amount_raw_2 else amount_raw_1 end) AS platform_fee_amount_raw,
-        (case when transfer_count >= 4 then amount_raw_1 else 0 end) AS royalty_fee_amount_raw
+        (case when transfer_count >= 4 then amount_raw_1 else 0 end) AS coalesce(royalty_fee_amount_raw,0)
     FROM (
         SELECT evt_block_number,
             evt_tx_hash,
@@ -135,9 +136,9 @@ SELECT
   date_trunc('day', a.evt_block_time) AS block_date,
   a.evt_block_time AS block_time,
   a.evt_block_number AS block_number,
-  s.amount_raw / power(10, erc.decimals) * p.price AS amount_usd,
-  s.amount_raw / power(10, erc.decimals) AS amount_original,
-  s.amount_raw,
+  coalesce(s.amount_raw,0) / power(10, erc.decimals) * p.price AS amount_usd,
+  coalesce(s.amount_raw,0) / power(10, erc.decimals) AS amount_original,
+  coalesce(s.amount_raw,0) as amount_raw,
   CASE WHEN erc.symbol = 'WMATIC' THEN 'MATIC' ELSE erc.symbol END AS currency_symbol,
   a.currency_contract,
   token_id,
@@ -155,14 +156,14 @@ SELECT
   agg.contract_address AS aggregator_address,
   t.`from` AS tx_from,
   t.`to` AS tx_to,
-  s.platform_fee_amount_raw,
-  CAST(s.platform_fee_amount_raw / power(10, erc.decimals) AS double) AS platform_fee_amount,
-  CAST(s.platform_fee_amount_raw / power(10, erc.decimals) * p.price AS double) AS platform_fee_amount_usd,
-  CAST(s.platform_fee_amount_raw  / s.amount_raw * 100 as double) as platform_fee_percentage,
-  CAST(s.royalty_fee_amount_raw as double) AS royalty_fee_amount_raw,
-  CAST(s.royalty_fee_amount_raw / power(10, erc.decimals) as double) AS royalty_fee_amount,
-  CAST(s.royalty_fee_amount_raw / power(10, erc.decimals) * p.price AS double) AS royalty_fee_amount_usd,
-  CAST(s.royalty_fee_amount_raw / s.amount_raw * 100 AS double) AS royalty_fee_percentage,
+  coalesce(s.platform_fee_amount_raw,0) as platform_fee_amount_raw,
+  CAST(coalesce(s.platform_fee_amount_raw,0) / power(10, erc.decimals) AS double) AS platform_fee_amount,
+  CAST(coalesce(s.platform_fee_amount_raw,0) / power(10, erc.decimals) * p.price AS double) AS platform_fee_amount_usd,
+  CAST(coalesce(s.platform_fee_amount_raw,0)  / s.amount_raw * 100 as double) as platform_fee_percentage,
+  CAST(coalesce(s.royalty_fee_amount_raw,0) as double) AS royalty_fee_amount_raw,
+  CAST(coalesce(s.royalty_fee_amount_raw,0) / power(10, erc.decimals) as double) AS royalty_fee_amount,
+  CAST(coalesce(s.royalty_fee_amount_raw,0) / power(10, erc.decimals) * p.price AS double) AS royalty_fee_amount_usd,
+  CAST(.coalesce(s.royalty_fee_amount_raw,0) / s.amount_raw * 100 AS double) AS royalty_fee_percentage,
   CAST(NULL AS double) AS royalty_fee_receive_address,
   CAST(NULL AS string)  AS royalty_fee_currency_symbol,
   a.evt_tx_hash || '-' || a.evt_type || '-' || a.evt_index || '-' || a.token_id || '-' || CAST(a.number_of_items AS string)  AS unique_trade_id
@@ -179,7 +180,7 @@ LEFT JOIN trade_amount_summary s ON a.evt_block_number = s.evt_block_number AND 
 LEFT JOIN {{ ref('tokens_erc20') }} erc ON erc.blockchain = 'polygon' AND erc.contract_address = a.currency_contract
 LEFT JOIN {{ source('prices', 'usd') }} p ON p.contract_address = a.currency_contract AND p.minute = date_trunc('minute', a.evt_block_time)
     {% if not is_incremental() %}
-    AND p.minute >= '{{nft_start_date}}' 
+    AND p.minute >= '{{nft_start_date}}'
     {% endif %}
     {% if is_incremental() %}
     AND p.minute >= date_trunc("day", now() - interval '1 week')
