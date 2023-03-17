@@ -15,7 +15,6 @@
 -- Original Ref - Dune v1 Abstraction: https://github.com/duneanalytics/spellbook/blob/main/deprecated-dune-v1-abstractions/optimism2/dex/insert_curve.sql
 -- Start Time
 -- SELECT MIN(call_block_time) FROM curvefi_optimism.StableSwap_call_coins
--- test CI
 {% set project_start_date = '2022-01-17' %}
 
 

@@ -14,7 +14,6 @@
 -- SELECT MIN(evt_block_time) FROM curvefi_optimism.StableSwap_evt_TokenExchange
 -- UNION ALL
 -- SELECT MIN(evt_block_time) FROM curvefi_optimism.MetaPoolSwap_evt_TokenExchange
--- test CI
 {% set project_start_date = '2022-01-17' %}
 
 with dexs as
