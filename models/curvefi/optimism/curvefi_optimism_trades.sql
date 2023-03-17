@@ -14,6 +14,7 @@
 -- SELECT MIN(evt_block_time) FROM curvefi_optimism.StableSwap_evt_TokenExchange
 -- UNION ALL
 -- SELECT MIN(evt_block_time) FROM curvefi_optimism.MetaPoolSwap_evt_TokenExchange
+-- test CI
 {% set project_start_date = '2022-01-17' %}
 
 with dexs as
@@ -48,8 +49,8 @@ SELECT
             t.contract_address as project_contract_address,
             t.evt_tx_hash AS tx_hash,
             '' AS trace_address,
-            t.evt_index, 
-            bought_id, 
+            t.evt_index,
+            bought_id,
             sold_id
         FROM {{ source('curvefi_optimism', 'StableSwap_evt_TokenExchange') }} t
         {% if is_incremental() %}
@@ -71,14 +72,14 @@ SELECT
             t.contract_address as project_contract_address,
             t.evt_tx_hash AS tx_hash,
             '' AS trace_address,
-            t.evt_index, 
-            bought_id, 
+            t.evt_index,
+            bought_id,
             sold_id
         FROM {{ source('curvefi_optimism', 'MetaPoolSwap_evt_TokenExchangeUnderlying') }} t
         {% if is_incremental() %}
         WHERE t.evt_block_time >= date_trunc('day', now() - interval '1 week')
         {% endif %}
-    
+
 
         UNION ALL
 
