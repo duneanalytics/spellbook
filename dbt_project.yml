@@ -841,7 +841,7 @@ models:
       +schema: zonic
       optimism:
         +schema: zonic_optimism
-    
+
     pooltogether:
       +schema: pooltogether
       ethereum:
@@ -849,6 +849,11 @@ models:
 
     method_ids:
       +schema: method_ids
+
+    fractal:
+      +schema: fractal
+      polygon:
+        +schema: fractal_polygon
 
 seeds:
   spellbook:
@@ -1371,11 +1376,6 @@ seeds:
             seller: string
             platform_fee_amount: double
             royalty_fee_amount: double
-
-    fractal:
-      +schema: fractal
-      polygon:
-        +schema: fractal_polygon
 
     balancer:
       balancer_transfers_bpt_seed:
