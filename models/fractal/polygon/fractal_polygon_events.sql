@@ -108,10 +108,10 @@ trade_amount_detail as (
 trade_amount_summary as (
     SELECT evt_block_number,
         evt_tx_hash,
-        sum(amount_raw) AS amount_raw,
+        coalesce(sum(amount_raw),0) AS amount_raw,
         -- 1st is for platform fee, 2nd is for seller, 3rd is for royalty (no sample found so far)
-        sum(case when item_index = 1 then amount_raw else 0 end) AS platform_fee_amount_raw,
-        sum(case when item_index = 3 then amount_raw else 0 end) AS royalty_fee_amount_raw
+        coalesce(sum(case when item_index = 1 then amount_raw else 0 end),0) AS platform_fee_amount_raw,
+        coalesce(sum(case when item_index = 3 then amount_raw else 0 end),0) AS royalty_fee_amount_raw
     FROM trade_amount_detail
     GROUP BY 1, 2
 )
