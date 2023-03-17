@@ -6,7 +6,6 @@
                                     "project",
                                     "fractal",
                                     \'["springzh"]\') }}')
-        )
 }}
 
 SELECT
