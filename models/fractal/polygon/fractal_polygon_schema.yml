@@ -10,6 +10,24 @@ models:
       tags: ['polygon','fractal','events']
     description: >
         Fractal events on Polygon
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_time
+            - unique_trade_id
+      - check_seed:
+          seed_file: ref('fractal_polygon_sample_trades')
+          match_columns:
+            - block_number
+            - tx_hash
+          check_columns:
+            - nft_contract_address
+            - token_id
+            - buyer
+            - seller
+            - amount_original
+            - royalty_fee_amount
+            - platform_fee_amount
     columns:
       - &blockchain
         name: blockchain
