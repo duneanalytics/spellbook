@@ -1,10 +1,15 @@
  {{
   config(
         alias='trades'
+        schema = 'fractal_polygon',
+        post_hook='{{ expose_spells(\'["polygon"]\',
+                                    "project",
+                                    "fractal",
+                                    \'["springzh"]\') }}')
         )
 }}
 
-SELECT 
+SELECT
       blockchain,
       project,
       version,

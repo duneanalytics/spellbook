@@ -1,6 +1,7 @@
  {{
   config(
         alias='fees',
+        schema = 'fractal_polygon',
         post_hook='{{ expose_spells(\'["polygon"]\',
                                     "project",
                                     "fractal",
