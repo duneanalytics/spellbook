@@ -1,0 +1,40 @@
+version: 2
+
+models:
+  - name: airdrop_claims_optimism_optimism_1
+    meta:
+      blockchain: optimism
+      sector: airdrop_claim
+      project: addresses
+      contributors: hildobby
+    config:
+      tags: ['table', 'airdrop', 'optimism', 'claim']
+    description: "List of claim transactions for the $OP airdrop"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - recipient
+    columns:
+      - name: blockchain
+        description: "Blockchain"
+      - name: block_time
+        description: "Block time of transaction"
+      - name: block_number
+        description: "Block number of transaction"
+      - name: project
+        description: "Project name"
+      - name: recipient
+        description: "Airdrop recipient"
+      - name: contract_address
+        description: "Contract addressed used"
+      - name: tx_hash
+        description: "Transaction hash"
+      - name: evt_index
+        description: "Event index"
+      - name: quantity
+        description: "Quantity of claim tokens"
+      - name: token_address
+        description: "Token address"
+      - name: token_symbol
+        description: "Token symbol"

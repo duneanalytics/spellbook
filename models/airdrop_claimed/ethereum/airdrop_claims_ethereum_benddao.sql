@@ -1,0 +1,30 @@
+{{
+    config(
+        alias='benddao',
+        materialized = 'incremental',
+        file_format = 'delta',
+        incremental_strategy = 'merge',
+        unique_key = ['recipient', 'tx_hash'],
+        post_hook='{{ expose_spells(\'["ethereum"]\',
+                                "project",
+                                "airdrop",
+                                \'["hildobby"]\') }}'
+    )
+}}
+
+
+SELECT 'ethereum' AS blockchain
+, evt_block_time AS block_time
+, evt_block_number AS block_number
+, 'BendDAO' AS project
+, 'BendDAO Airdrop' AS airdrop_identifier
+, account AS recipient
+, contract_address
+, evt_tx_hash AS tx_hash
+, amount/POWER(10, 18) AS quantity
+, '0x0d02755a5700414b26ff040e1de35d337df56218' AS token_address
+, 'BEND' AS token_symbol
+FROM {{ source('benddao_ethereum', 'MerkleDistributor_evt_Claimed') }}
+{% if is_incremental() %}
+WHERE evt_block_time >= date_trunc("day", now() - interval '1 week')
+{% endif %}

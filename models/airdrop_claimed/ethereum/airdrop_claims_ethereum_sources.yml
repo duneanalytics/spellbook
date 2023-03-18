@@ -1,0 +1,121 @@
+version: 2
+
+sources: 
+  - name: looksrare_ethereum
+    description: >
+      $LOOKS airdrop claims
+    tables:
+      - name: LooksRareAirdrop_evt_AirdropRewardsClaim
+        loaded_at_field: evt_block_time
+
+  - name: forta_network_ethereum
+    description: >
+      $FORT airdrop claims
+    tables:
+      - name: Airdrop_evt_TokensReleased
+        loaded_at_field: evt_block_time
+
+  - name: uniswap_ethereum
+    description: >
+      $UNI airdrop claims
+    tables:
+      - name: MerkleDistributor_evt_Claimed
+        loaded_at_field: evt_block_time
+
+  - name: blur_ethereum
+    description: >
+      $BLUR airdrop claims
+    tables:
+      - name: BlurAirdrop_evt_Claimed
+        loaded_at_field: evt_block_time
+
+  - name: gas_dao_ethereum
+    description: >
+      $GAS airdrop claims
+    tables:
+      - name: GASToken_evt_Claim
+        loaded_at_field: evt_block_time
+
+  - name: dappradar_ethereum
+    description: >
+      $RADAR airdrop claims
+    tables:
+      - name: Airdrop_evt_TokenClaimed
+        loaded_at_field: evt_block_time
+
+  - name: ethereumnameservice_ethereum
+    description: >
+      $ENS airdrop claims
+    tables:
+      - name: ENSToken_evt_Claim
+        loaded_at_field: evt_block_time
+
+  - name: hop_protocol_ethereum
+    description: >
+      $HOP airdrop claims
+    tables:
+      - name: HOPToken_evt_Claim
+        loaded_at_field: evt_block_time
+
+  - name: oneinch_ethereum
+    description: >
+      $1INCH airdrop claims
+    tables:
+      - name: MerkleDistributor_evt_Claimed
+        loaded_at_field: evt_block_time
+
+  - name: apecoin_ethereum
+    description: >
+      $APE airdrop claims
+    tables:
+      - name: AirdropGrapesToken_evt_AirDrop
+        loaded_at_field: evt_block_time
+
+  - name: gitcoin_ethereum
+    description: >
+      $GTC airdrop claims
+    tables:
+      - name: TokenDistributor_evt_Claimed
+        loaded_at_field: evt_block_time
+
+  - name: galaxy_ethereum
+    description: >
+      $GAL airdrop claims
+    tables:
+      - name: MerkleDistributor_Airdrop_evt_Claimed
+        loaded_at_field: evt_block_time
+
+  - name: ribbon_ethereum
+    description: >
+      $RBN airdrop claims
+    tables:
+      - name: MerkleDistributor_evt_Claimed
+        loaded_at_field: evt_block_time
+
+  - name: cow_protocol_ethereum
+    description: >
+      $COW airdrop claims
+    tables:
+      - name: CowProtocolVirtualToken_evt_Claimed
+        loaded_at_field: evt_block_time
+
+  - name: paladin_ethereum
+    description: >
+      $PAL airdrop claims
+    tables:
+      - name: MerkleDistributor_evt_Claimed
+        loaded_at_field: evt_block_time
+
+  - name: benddao_ethereum
+    description: >
+      $BEND airdrop claims
+    tables:
+      - name: MerkleDistributor_evt_Claimed
+        loaded_at_field: evt_block_time
+
+  - name: sudoswap_ethereum
+    description: >
+      $SUDO airdrop claims
+    tables:
+      - name: Astrodrop_evt_Claimed
+        loaded_at_field: evt_block_time
