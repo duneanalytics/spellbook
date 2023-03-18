@@ -21,7 +21,6 @@
     , ref('airdrop_claims_ethereum_hop_protocol')
     , ref('airdrop_claims_ethereum_uniswap')
     , ref('airdrop_claims_ethereum_gas_dao')
-    , ref('airdrop_claims_ethereum_cowswap')
     , ref('airdrop_claims_ethereum_apecoin')
     , ref('airdrop_claims_ethereum_gitcoin')
     , ref('airdrop_claims_ethereum_ribbon')
