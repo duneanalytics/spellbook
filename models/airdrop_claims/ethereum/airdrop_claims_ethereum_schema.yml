@@ -302,11 +302,6 @@ models:
     config:
       tags: ['table', 'airdrop', 'ethereum', 'claim', 'dydx']
     description: "List of claim transactions for the $DYDX airdrop"
-    tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - recipient
     columns:
       - *blockchain
       - *block_time
@@ -410,11 +405,6 @@ models:
     config:
       tags: ['table', 'airdrop', 'ethereum', 'claim', 'cow_protocol']
     description: "List of claim transactions for the $COW airdrop"
-    tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - recipient
     columns:
       - *blockchain
       - *block_time

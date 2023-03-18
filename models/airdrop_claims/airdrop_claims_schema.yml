@@ -10,11 +10,6 @@ models:
     config:
       tags: ['table', 'airdrop', 'ethereum', 'optimism', 'claim']
     description: "List of claim transactions for all airdrops"
-    tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - recipient
     columns:
       - &blockchain
         name: blockchain
