@@ -8,21 +8,18 @@
     )
 }}
 
--- Find bot traders
---addresses with more than 1000 tx monthly
-
 with initial_bot_list as (
 select
 distinct "from"
 from(
-select t1."from", date_trunc('month', t1.block_time) as month, count(*) as num_tx from {{ source('ethereum','transactions') }} t1 
+select t1."from", date_trunc('month', t1.block_time) as month, count(*) as num_tx from {{ source('ethereum','transactions') }} t1
 join (select  distinct "from" from {{ source('ethereum','transactions') }} where block_time > now() - interval '30' day ) t2 on t1."from"=t2."from"
- group by 1,2
+group by 1,2
 having count(*) > 1000
 union all 
 select t1."from", date_trunc('month', t1.block_time) as month, count(*) as num_tx from {{ source('polygon','transactions') }} t1
 join (select  distinct "from" from {{ source('polygon','transactions') }} where block_time > now() - interval '30' day ) t2 on t1."from"=t2."from"
-group by 1,2 
+group by 1,2
 having count(*) > 1000
 union all
 select t1."from", date_trunc('month', t1.block_time) as month, count(*) as num_tx from {{ source('optimism','transactions') }} t1
@@ -32,27 +29,27 @@ having count(*) > 1000
 union all
 select t1."from", date_trunc('month', t1.block_time) as month, count(*) as num_tx from {{ source('arbitrum','transactions') }} t1
 join (select  distinct "from" from {{ source('arbitrum','transactions') }} where block_time > now() - interval '30' day ) t2 on t1."from"=t2."from"
-group by 1,2 
+group by 1,2
 having count(*) > 1000
 union all
 select t1."from", date_trunc('month', t1.block_time) as month, count(*) as num_tx from {{ source('gnosis','transactions') }} t1
 join (select  distinct "from" from {{ source('gnosis','transactions') }} where block_time > now() - interval '30' day ) t2 on t1."from"=t2."from"
-group by 1,2 
+group by 1,2
 having count(*) > 1000
 union all
 select t1."from", date_trunc('month', t1.block_time) as month, count(*) as num_tx from {{ source('fantom','transactions') }} t1
 join (select  distinct "from" from {{ source('fantom','transactions') }} where block_time > now() - interval '30' day ) t2 on t1."from"=t2."from"
-group by 1,2 
+group by 1,2
 having count(*) > 1000
 union all
 select t1."from", date_trunc('month', t1.block_time) as month, count(*) as num_tx from {{ source('bnb','transactions') }} t1
 join (select  distinct "from" from {{ source('bnb','transactions') }} where block_time > now() - interval '30' day ) t2 on t1."from"=t2."from"
-group by 1,2 
+group by 1,2
 having count(*) > 1000
 union all
 select t1."from", date_trunc('month', t1.block_time) as month, count(*) as num_tx from {{ source('avalanche_c','transactions') }} t1
 join (select  distinct "from" from {{ source('avalanche_c','transactions') }} where block_time > now() - interval '30' day ) t2 on t1."from"=t2."from"
-group by 1,2 
+group by 1,2
 having count(*) > 1000
 ))
  
@@ -134,8 +131,6 @@ from
 )
 )
 
-
----Find the Active traders 
 ,active_traders as (
 SELECT 
 tx_from,sum(amount_usd) as trade_amount , 
@@ -149,7 +144,6 @@ group by 1
 having sum(amount_usd) >cast(10000 as double)
 )
 
---Find the Retired traders
 ,Former_traders as (
 SELECT t.tx_from,
 case
