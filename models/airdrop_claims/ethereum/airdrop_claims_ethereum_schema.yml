@@ -508,3 +508,111 @@ models:
       - *quantity
       - *token_address
       - *token_symbol
+
+  - name: airdrop_claims_ethereum_apecoin
+    meta:
+      blockchain: ethereum
+      sector: airdrop_claim
+      project: addresses
+      contributors: hildobby
+    config:
+      tags: ['table', 'airdrop', 'ethereum', 'claim', 'apecoin']
+    description: "List of claim transactions for the $APE airdrop"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - recipient
+    columns:
+      - *blockchain
+      - *block_time
+      - *block_number
+      - *project
+      - *airdrop_identifier
+      - *recipient
+      - *contract_address
+      - *tx_hash
+      - *quantity
+      - *token_address
+      - *token_symbol
+
+  - name: airdrop_claims_ethereum_galxe
+    meta:
+      blockchain: ethereum
+      sector: airdrop_claim
+      project: addresses
+      contributors: hildobby
+    config:
+      tags: ['table', 'airdrop', 'ethereum', 'claim', 'galxe']
+    description: "List of claim transactions for the $GAL airdrop"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - recipient
+    columns:
+      - *blockchain
+      - *block_time
+      - *block_number
+      - *project
+      - *airdrop_identifier
+      - *recipient
+      - *contract_address
+      - *tx_hash
+      - *quantity
+      - *token_address
+      - *token_symbol
+
+  - name: airdrop_claims_ethereum_tornado_cash
+    meta:
+      blockchain: ethereum
+      sector: airdrop_claim
+      project: addresses
+      contributors: hildobby
+    config:
+      tags: ['table', 'airdrop', 'ethereum', 'claim', 'tornado_cash']
+    description: "List of claim transactions for the $TORN airdrop"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - recipient
+    columns:
+      - *blockchain
+      - *block_time
+      - *block_number
+      - *project
+      - *airdrop_identifier
+      - *recipient
+      - *contract_address
+      - *tx_hash
+      - *quantity
+      - *token_address
+      - *token_symbol
+
+  - name: airdrop_claims_ethereum_ampleforth
+    meta:
+      blockchain: ethereum
+      sector: airdrop_claim
+      project: addresses
+      contributors: hildobby
+    config:
+      tags: ['table', 'airdrop', 'ethereum', 'claim', 'ampleforth']
+    description: "List of claim transactions for the $FORTH airdrop"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - recipient
+    columns:
+      - *blockchain
+      - *block_time
+      - *block_number
+      - *project
+      - *airdrop_identifier
+      - *recipient
+      - *contract_address
+      - *tx_hash
+      - *quantity
+      - *token_address
+      - *token_symbol
