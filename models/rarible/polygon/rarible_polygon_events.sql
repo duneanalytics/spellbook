@@ -131,7 +131,7 @@ trade_amount_summary as (
 SELECT
   'polygon' AS blockchain,
   'rarible' AS project,
-  'v1' AS version,
+  'v2' AS version,
   a.evt_tx_hash AS tx_hash,
   date_trunc('day', a.evt_block_time) AS block_date,
   a.evt_block_time AS block_time,
