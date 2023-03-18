@@ -131,7 +131,7 @@ models:
       - *token_address
       - *token_symbol
 
-  - name: airdrop_claims_ethereum_blur
+  - name: airdrop_claims_ethereum_blur_1
     meta:
       blockchain: ethereum
       sector: airdrop_claim
