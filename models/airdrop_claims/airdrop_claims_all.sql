@@ -27,6 +27,7 @@
     , ref('airdrop_claims_ethereum_paladin')
     , ref('airdrop_claims_ethereum_paraswap')
     , ref('airdrop_claims_ethereum_ribbon')
+    , ref('airdrop_claims_ethereum_safe')
     , ref('airdrop_claims_ethereum_sudoswap')
     , ref('airdrop_claims_ethereum_tornado_cash')
     , ref('airdrop_claims_ethereum_uniswap')

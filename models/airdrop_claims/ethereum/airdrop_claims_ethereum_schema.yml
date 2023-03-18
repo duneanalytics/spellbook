@@ -662,3 +662,32 @@ models:
       - *token_address
       - *token_symbol
       - *evt_index
+
+  - name: airdrop_claims_ethereum_safe
+    meta:
+      blockchain: ethereum
+      sector: airdrop_claim
+      project: addresses
+      contributors: hildobby
+    config:
+      tags: ['table', 'airdrop', 'ethereum', 'claim', 'safe']
+    description: "List of claim transactions for the $SAFE airdrop"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - recipient
+            - evt_index
+    columns:
+      - *blockchain
+      - *block_time
+      - *block_number
+      - *project
+      - *airdrop_identifier
+      - *recipient
+      - *contract_address
+      - *tx_hash
+      - *quantity
+      - *token_address
+      - *token_symbol
+      - *evt_index
