@@ -26,7 +26,7 @@ SELECT 'ethereum' AS blockchain
 FROM {{ source('erc20_ethereum', 'evt_transfer') }}
 WHERE contract_address = '0xcafe001067cdef266afb7eb5a286dcfd277f3de5'
 AND from = '0x090e53c44e8a9b6b1bca800e881455b921aec420'
-AND block_time > '2021-11-15'
+AND evt_block_time > '2021-11-15'
 {% if is_incremental() %}
 AND evt_block_time >= date_trunc("day", now() - interval '1 week')
 {% endif %}
