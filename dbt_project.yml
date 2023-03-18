@@ -77,14 +77,14 @@ models:
         +schema: airdrop_optimism
         +materialized: table
 
-    airdrop_claimed:
-      +schema: airdrop_claimed
+    airdrop_claims:
+      +schema: airdrop_claims
       +materialized: table
       ethereum:
-        +schema: airdrop_claimed_ethereum
+        +schema: airdrop_claims_ethereum
         +materialized: table
       optimism:
-        +schema: airdrop_claimed_optimism
+        +schema: airdrop_claims_optimism
         +materialized: table
 
     staking:
