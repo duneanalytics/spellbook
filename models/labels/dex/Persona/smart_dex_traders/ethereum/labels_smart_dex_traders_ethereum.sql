@@ -128,7 +128,7 @@ swappers as (
 , time_between_trades as (
     select 
         taker,
-        timestampdiff('second', lag(block_time, 1) over (partition by taker order by block_time), block_time) / 60  as time_between_trades_mins
+        ( unix_timestamp(block_time) - unix_timestamp(lag(block_time, 1) over (partition by taker order by block_time)) ) / 60  as time_between_trades_mins
     from swappers_address_only
 )
 -- Note: We can't have nested aggregate functions, so breaking it up into two CTEs
