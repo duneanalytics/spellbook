@@ -1,7 +1,7 @@
 {{ config(
     schema = 'uniswap_ethereum',
     alias = 'pools',
-    partition_by = ['block_date'],
+    partition_by = ['pool'],
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
