@@ -4,7 +4,7 @@
         materialized = 'incremental',
         file_format = 'delta',
         incremental_strategy = 'merge',
-        unique_key = ['recipient', 'tx_hash'],
+        unique_key = ['recipient', 'tx_hash', 'evt_index'],
         post_hook='{{ expose_spells(\'["ethereum"]\',
                                 "project",
                                 "airdrop",
@@ -24,6 +24,7 @@ SELECT 'ethereum' AS blockchain
 , amount/POWER(10, 18) AS quantity
 , '0x0d02755a5700414b26ff040e1de35d337df56218' AS token_address
 , 'BEND' AS token_symbol
+, evt_index
 FROM {{ source('benddao_ethereum', 'MerkleDistributor_evt_Claimed') }}
 {% if is_incremental() %}
 WHERE evt_block_time >= date_trunc("day", now() - interval '1 week')

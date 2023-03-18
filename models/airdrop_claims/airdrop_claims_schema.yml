@@ -44,3 +44,6 @@ models:
       - &token_symbol
         name: token_symbol
         description: "Token symbol"
+      - &evt_index
+        name: evt_index
+        description: "Event index"

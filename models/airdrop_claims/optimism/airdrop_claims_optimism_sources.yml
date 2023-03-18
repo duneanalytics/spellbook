@@ -7,3 +7,9 @@ sources:
     tables:
       - name: MerkleDistributor_evt_Claimed
         loaded_at_field: evt_block_time
+  - name: velodrome_optimism
+    description: >
+      $OP airdrop claims
+    tables:
+      - name: MerkleClaim_evt_Claim
+        loaded_at_field: evt_block_time

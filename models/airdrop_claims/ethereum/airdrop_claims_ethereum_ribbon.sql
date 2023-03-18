@@ -4,7 +4,7 @@
         materialized = 'incremental',
         file_format = 'delta',
         incremental_strategy = 'merge',
-        unique_key = ['recipient', 'tx_hash'],
+        unique_key = ['recipient', 'tx_hash', 'evt_index'],
         post_hook='{{ expose_spells(\'["ethereum"]\',
                                 "project",
                                 "airdrop",
@@ -24,6 +24,7 @@ SELECT 'ethereum' AS blockchain
 , amount/POWER(10, 18) AS quantity
 , '0x6123b0049f904d730db3c36a31167d9d4121fa6b' AS token_address
 , 'RBN' AS token_symbol
+, evt_index
 FROM {{ source('ribbon_ethereum', 'MerkleDistributor_evt_Claimed') }}
 {% if is_incremental() %}
 WHERE evt_block_time >= date_trunc("day", now() - interval '1 week')

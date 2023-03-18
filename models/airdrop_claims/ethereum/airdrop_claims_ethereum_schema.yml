@@ -49,6 +49,9 @@ models:
       - &token_symbol
         name: token_symbol
         description: "Token symbol"
+      - &evt_index
+        name: evt_index
+        description: "Event index"
 
   - name: airdrop_claims_ethereum_forta_network
     meta:
@@ -76,6 +79,7 @@ models:
       - *quantity
       - *token_address
       - *token_symbol
+      - *evt_index
 
   - name: airdrop_claims_ethereum_uniswap
     meta:
@@ -103,6 +107,7 @@ models:
       - *quantity
       - *token_address
       - *token_symbol
+      - *evt_index
 
   - name: airdrop_claims_ethereum_hop_protocol
     meta:
@@ -130,6 +135,7 @@ models:
       - *quantity
       - *token_address
       - *token_symbol
+      - *evt_index
 
   - name: airdrop_claims_ethereum_blur_1
     meta:
@@ -157,6 +163,7 @@ models:
       - *quantity
       - *token_address
       - *token_symbol
+      - *evt_index
 
   - name: airdrop_claims_ethereum_oneinch
     meta:
@@ -184,6 +191,7 @@ models:
       - *quantity
       - *token_address
       - *token_symbol
+      - *evt_index
 
   - name: airdrop_claims_ethereum_ens
     meta:
@@ -211,6 +219,7 @@ models:
       - *quantity
       - *token_address
       - *token_symbol
+      - *evt_index
 
   - name: airdrop_claims_ethereum_x2y2
     meta:
@@ -238,6 +247,7 @@ models:
       - *quantity
       - *token_address
       - *token_symbol
+      - *evt_index
 
   - name: airdrop_claims_ethereum_gas_dao
     meta:
@@ -265,6 +275,7 @@ models:
       - *quantity
       - *token_address
       - *token_symbol
+      - *evt_index
 
   - name: airdrop_claims_ethereum_dappradar
     meta:
@@ -292,6 +303,7 @@ models:
       - *quantity
       - *token_address
       - *token_symbol
+      - *evt_index
 
   - name: airdrop_claims_ethereum_dydx
     meta:
@@ -314,6 +326,7 @@ models:
       - *quantity
       - *token_address
       - *token_symbol
+      - *evt_index
 
   - name: airdrop_claims_ethereum_gitcoin
     meta:
@@ -341,6 +354,7 @@ models:
       - *quantity
       - *token_address
       - *token_symbol
+      - *evt_index
 
   - name: airdrop_claims_ethereum_ribbon
     meta:
@@ -368,6 +382,7 @@ models:
       - *quantity
       - *token_address
       - *token_symbol
+      - *evt_index
 
   - name: airdrop_claims_ethereum_paraswap
     meta:
@@ -395,6 +410,7 @@ models:
       - *quantity
       - *token_address
       - *token_symbol
+      - *evt_index
 
   - name: airdrop_claims_ethereum_cow_protocol
     meta:
@@ -417,6 +433,7 @@ models:
       - *quantity
       - *token_address
       - *token_symbol
+      - *evt_index
 
   - name: airdrop_claims_ethereum_paladin
     meta:
@@ -444,6 +461,7 @@ models:
       - *quantity
       - *token_address
       - *token_symbol
+      - *evt_index
 
   - name: airdrop_claims_ethereum_benddao
     meta:
@@ -471,6 +489,7 @@ models:
       - *quantity
       - *token_address
       - *token_symbol
+      - *evt_index
 
   - name: airdrop_claims_ethereum_sudoswap
     meta:
@@ -498,6 +517,7 @@ models:
       - *quantity
       - *token_address
       - *token_symbol
+      - *evt_index
 
   - name: airdrop_claims_ethereum_apecoin
     meta:
@@ -525,6 +545,7 @@ models:
       - *quantity
       - *token_address
       - *token_symbol
+      - *evt_index
 
   - name: airdrop_claims_ethereum_galxe
     meta:
@@ -552,6 +573,7 @@ models:
       - *quantity
       - *token_address
       - *token_symbol
+      - *evt_index
 
   - name: airdrop_claims_ethereum_tornado_cash
     meta:
@@ -579,6 +601,7 @@ models:
       - *quantity
       - *token_address
       - *token_symbol
+      - *evt_index
 
   - name: airdrop_claims_ethereum_ampleforth
     meta:
@@ -606,3 +629,4 @@ models:
       - *quantity
       - *token_address
       - *token_symbol
+      - *evt_index

@@ -16,25 +16,67 @@ models:
             - tx_hash
             - recipient
     columns:
-      - name: blockchain
+      - &blockchain
+        name: blockchain
         description: "Blockchain"
-      - name: block_time
+      - &block_time
+        name: block_time
         description: "Block time of transaction"
-      - name: block_number
+      - &block_number
+        name: block_number
         description: "Block number of transaction"
-      - name: project
+      - &project
+        name: project
         description: "Project name"
-      - name: recipient
+      - &airdrop_identifier
+        name: airdrop_identifier
+        description: "Airdrop identifier name"
+      - &recipient
+        name: recipient
         description: "Airdrop recipient"
-      - name: contract_address
+      - &contract_address
+        name: contract_address
         description: "Contract addressed used"
-      - name: tx_hash
+      - &tx_hash
+        name: tx_hash
         description: "Transaction hash"
-      - name: evt_index
-        description: "Event index"
-      - name: quantity
+      - &quantity
+        name: quantity
         description: "Quantity of claim tokens"
-      - name: token_address
+      - &token_address
+        name: token_address
         description: "Token address"
-      - name: token_symbol
+      - &token_symbol
+        name: token_symbol
         description: "Token symbol"
+      - &evt_index
+        name: evt_index
+        description: "Event index"
+
+  - name: airdrop_claims_optimism_velodrome
+    meta:
+      blockchain: optimism
+      sector: airdrop_claim
+      project: addresses
+      contributors: hildobby
+    config:
+      tags: ['table', 'airdrop', 'optimism', 'velodrome','claim']
+    description: "List of claim transactions for the $VELO airdrop"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - recipient
+    columns:
+      - *blockchain
+      - *block_time
+      - *block_number
+      - *project
+      - *airdrop_identifier
+      - *recipient
+      - *contract_address
+      - *tx_hash
+      - *quantity
+      - *token_address
+      - *token_symbol
+      - *evt_index

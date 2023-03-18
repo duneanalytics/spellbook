@@ -4,7 +4,7 @@
         materialized = 'incremental',
         file_format = 'delta',
         incremental_strategy = 'merge',
-        unique_key = ['recipient', 'tx_hash'],
+        unique_key = ['recipient', 'tx_hash', 'evt_index'],
         post_hook='{{ expose_spells(\'["ethereum"]\',
                                 "project",
                                 "airdrop",
@@ -23,6 +23,7 @@ SELECT 'ethereum' AS blockchain
 , value/POWER(10, 18) AS quantity
 , '0xcafe001067cdef266afb7eb5a286dcfd277f3de5' AS token_address
 , 'PSP' AS token_symbol
+, evt_index
 FROM {{ source('erc20_ethereum', 'evt_transfer') }}
 WHERE contract_address = '0xcafe001067cdef266afb7eb5a286dcfd277f3de5'
 AND from = '0x090e53c44e8a9b6b1bca800e881455b921aec420'

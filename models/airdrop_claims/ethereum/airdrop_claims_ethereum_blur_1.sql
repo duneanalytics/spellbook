@@ -4,7 +4,7 @@
         materialized = 'incremental',
         file_format = 'delta',
         incremental_strategy = 'merge',
-        unique_key = ['recipient', 'tx_hash'],
+        unique_key = ['recipient', 'tx_hash', 'evt_index'],
         post_hook='{{ expose_spells(\'["ethereum"]\',
                                 "project",
                                 "airdrop",
@@ -23,6 +23,7 @@ SELECT 'ethereum' AS blockchain
 , amount/POWER(10, 18) AS quantity
 , '0x5283d291dbcf85356a21ba090e6db59121208b44' AS token_address
 , 'BLUR' AS token_symbol
+, evt_index
 FROM {{ source('blur_ethereum', 'BlurAirdrop_evt_Claimed') }}
 {% if is_incremental() %}
 WHERE evt_block_time >= date_trunc("day", now() - interval '1 week')

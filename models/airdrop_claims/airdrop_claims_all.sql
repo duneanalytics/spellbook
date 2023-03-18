@@ -32,6 +32,7 @@
     , ref('airdrop_claims_ethereum_uniswap')
     , ref('airdrop_claims_ethereum_x2y2')
     , ref('airdrop_claims_optimism_optimism_1')
+    , ref('airdrop_claims_optimism_velodrome')
 ] %}
 
 
@@ -50,6 +51,7 @@ FROM (
     , quantity
     , token_address
     , token_symbol
+    , evt_index
     FROM {{ airdrop_claims_model }}
     {% if not loop.last %}
     UNION ALL
