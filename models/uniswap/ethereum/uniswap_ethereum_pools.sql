@@ -16,8 +16,8 @@
 SELECT 'ethereum' AS blockchain
 , 'uniswap' AS project
 , 'v2' AS version
-, pool
-, fee
+, pair AS pool
+, 0.3 AS fee
 , token0
 , token1
 , evt_block_time AS creation_block_time
