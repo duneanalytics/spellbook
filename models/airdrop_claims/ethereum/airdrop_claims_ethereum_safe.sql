@@ -23,6 +23,7 @@ SELECT 'optimism' AS blockchain
 , value/POWER(10, 18) AS quantity
 , '0x5afe3855358e112b5647b952709e6165e1c1eeee' AS token_address
 , 'SAFE' AS token_symbol
+, evt_index
 FROM {{ source('erc20_ethereum', 'evt_transfer') }}
 WHERE contract_address = '0x5afe3855358e112b5647b952709e6165e1c1eeee'
 AND from = '0xa0b937d5c8e32a80e3a8ed4227cd020221544ee6'
