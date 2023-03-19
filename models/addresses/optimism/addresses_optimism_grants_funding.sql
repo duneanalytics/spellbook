@@ -131,8 +131,9 @@ FROM (VALUES
 SELECT
    category
    , entries.address
-   , coalesce(cast(wallets.project_name as varchar(100)), cast(entries.proposal_name as varchar(100))) as project_name
+   , cast(coalesce(pnm.project_name, entries.proposal_name) as varchar(100)) as project_name
    , cast(entries.proposal_name as varchar(100)) as proposal_name
    , cast(entries.funding_source as varchar(100)) as funding_source
 FROM entries
-LEFT JOIN {{ ref('op_token_distributions_optimism_project_wallets') }} wallets on entries.proposal_name = wallets.proposal_name
+LEFT JOIN {{ ref('op_token_distributions_optimism_project_name_mapping') }} pnm
+        ON pnm.proposal_name = entries.proposal_name
