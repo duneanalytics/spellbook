@@ -176,6 +176,11 @@ models:
       bnb:
         +schema: babyswap_bnb
 
+    oneplanet:
+      +schema: oneplanet
+      polygon:
+        +schema: oneplanet_polygon
+
     opensea:
       +schema: opensea
       ethereum:
@@ -883,6 +888,15 @@ seeds:
             token_symbol: string
             amount_raw: string
             amount: string
+
+    oneplanet:
+      polygon:
+        oneplanet_polygon_trades_seed:
+          +column_types:
+            block_time: timestamp
+            tx_hash: string
+            price_amount_raw: string
+
     opensea:
       ethereum:
         opensea_wyvern_trades_samples:

@@ -18,11 +18,11 @@ models:
 
   - name: nft_events
     meta:
-      blockchain: ethereum, solana
+      blockchain: ethereum, solana, polygon
       sector: nft
       contributors: soispoke, hildobby, ilemi, 0xRob, cat, umer_h_adil, springzh
     config:
-      tags: ['nft', 'opensea', 'looksrare', 'x2y2', 'magiceden', 'sudoswap', 'foundation', 'element', 'zora', 'ethereum', 'bnb', 'avalanche_c', 'solana', 'events', 'polygon', 'aavegotchi']
+      tags: ['nft', 'opensea', 'looksrare', 'x2y2', 'magiceden', 'sudoswap', 'foundation', 'element', 'zora', 'ethereum', 'bnb', 'avalanche_c', 'solana', 'events', 'polygon', 'aavegotchi', 'oneplanet']
     description: >
         NFT events
     columns:
@@ -140,11 +140,11 @@ models:
 
   - name: nft_trades
     meta:
-      blockchain: ethereum, solana
+      blockchain: ethereum, solana, polygon
       sector: nft
-      contributors: soispoke, hildobby, ilemi, cat, springzh
+      contributors: soispoke, hildobby, ilemi, cat
     config:
-      tags: ['nft', 'opensea', 'looksrare', 'x2y2', 'magiceden', 'sudoswap', 'foundation', 'element', 'zora', 'ethereum', 'bnb', 'avalanche_c', 'solana', 'trades','superrare', 'polygon', 'aavegotchi']
+      tags: ['nft', 'opensea', 'looksrare', 'x2y2', 'magiceden', 'sudoswap', 'foundation', 'element', 'zora', 'ethereum', 'bnb', 'avalanche_c', 'solana', 'trades','superrare', 'polygon', 'aavegotchi', 'oneplanet']
     description: >
         NFT trades
     columns:
@@ -254,11 +254,11 @@ models:
 
   - name: nft_fees
     meta:
-      blockchain: ethereum, solana
+      blockchain: ethereum, solana, polygon
       sector: nft
       contributors: soispoke, hildobby, ilemi, cat, springzh
     config:
-      tags: ['nft', 'opensea', 'looksrare', 'x2y2', 'magiceden', 'sudoswap', 'foundation', 'element', 'zora', 'ethereum', 'bnb', 'avalanche_c', 'solana', 'fees','superrare', 'polygon', 'aavegotchi']
+      tags: ['nft', 'opensea', 'looksrare', 'x2y2', 'magiceden', 'sudoswap', 'foundation', 'element', 'zora', 'ethereum', 'bnb', 'avalanche_c', 'solana', 'fees','superrare', 'polygon', 'aavegotchi', 'oneplanet']
     description: >
         NFT fees
     columns:
