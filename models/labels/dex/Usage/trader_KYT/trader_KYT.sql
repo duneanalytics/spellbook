@@ -1,10 +1,13 @@
-{ { config(
-  alias = 'KYT'
-  , post_hook = '{{ expose_spells(\'["ethereum", "fantom", "arbitrum", "avalanche_c", "gnosis", "bnb", "optimism", "polygon"]\',
+{{
+    config(
+        alias='KYT',
+        post_hook='{{ expose_spells(\'["ethereum", "fantom", "arbitrum", "avalanche_c", "gnosis", "bnb", "optimism", "polygon"]\',
                                     "sector",
                                     "labels",
                                     \'["whiskey"]\') }}'
-) } }
+    )
+}}
+
 with initial_bot_list as (
   select distinct
     `from`
