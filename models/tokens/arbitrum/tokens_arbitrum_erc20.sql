@@ -106,4 +106,5 @@ FROM (VALUES
         ,('0xda492c29d88ffe9b7cbfa6dc068c2f9befae851b', 'CUSDCLP', 18)
         ,('0xb86af5eb59a8e871bfa573fa656123ea86f47c3a', 'CWETHLP', 18)
         ,('0x1426cf37caa89628c4da2864e40cf75e6d66ac6b', 'RELAY', 18)
+        ,('0x912ce59144191c1204e64559fe8253a0e49e6548', 'ARB',  18)
      ) AS temp_table (contract_address, symbol, decimals)
