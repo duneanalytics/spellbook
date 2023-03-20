@@ -6,7 +6,7 @@
         file_format = 'delta',
         incremental_strategy = 'merge',
         unique_key = ['day', 'pool_id', 'token_address'],
-        post_hook='{{ expose_spells_hide_trino(\'["ethereum"]\',
+        post_hook='{{ expose_spells(\'["ethereum"]\',
                                     "project",
                                     "balancer_v1",
                                     \'["stefenon"]\') }}'
