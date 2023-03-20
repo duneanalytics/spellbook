@@ -101,6 +101,7 @@ LEFT JOIN {{ ref('tokens_ethereum_nft') }} nft ON get_json_object(bm.buy, '$.col
 LEFT JOIN {{ ref('nft_ethereum_transfers') }} erct ON erct.block_time=bm.evt_block_time
     AND get_json_object(bm.buy, '$.collection')=erct.contract_address
     AND erct.tx_hash=bm.evt_tx_hash
+    AND erct.evt_index = bm.evt_index - 1
     AND get_json_object(bm.sell, '$.tokenId')=erct.token_id
     AND erct.from=get_json_object(bm.sell, '$.trader')
     {% if not is_incremental() %}
