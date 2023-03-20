@@ -1,5 +1,4 @@
 {{ config(
-    schema = 'impossible_finance_vesting_bnb',
     alias = 'vesting',
     post_hook='{{ expose_spells(\'["bnb"]\',
                                 "project",
@@ -43,8 +42,10 @@ SELECT
 
 FROM {{ source('bnb', 'transactions') }} tr
 LEFT JOIN {{ source('erc20_bnb', 'evt_Transfer') }} b 
-ON tr.hash = b.evt_tx_hash 
+    ON tr.hash = b.evt_tx_hash
+    AND tr.block_number = b.evt_block_number
+    AND b.contract_address = lower('0x0b15Ddf19D47E6a86A56148fb4aFFFc6929BcB89')
+    AND b.evt_block_time >= '{{project_start_date}}'
 WHERE tr.to = lower('0x6610f572057018843bD64ADCf7c47787EB7ba8B2')
-AND b.contract_address = lower('0x0b15Ddf19D47E6a86A56148fb4aFFFc6929BcB89')
-AND tr.block_time >= '{{project_start_date}}'
+    AND tr.block_time >= '{{project_start_date}}'
 ;

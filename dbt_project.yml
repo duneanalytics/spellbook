@@ -673,18 +673,17 @@ models:
       +schema: fraxswap
       avalanche_c:
         +schema: fraxswap_avalanche_c
-        +materialized: view
+      bnb:
+        +schema: fraxswap_bnb
+      ethereum:
+        +schema: fraxswap_ethereum
+      polygon:
+        +schema: fraxswap_polygon
         
     impossible_finance:
       +schema: impossible_finance
-      +materialized: view
       bnb:
-        +schema: impossible_bnb
-        +materialized: view
-      polygon:
-        +schema: fraxswap_polygon
-      ethereum:
-        +schema: fraxswap_ethereum
+        +schema: impossible_finance_bnb
 
     mstable:
       +schema: mstable

@@ -1,7 +1,7 @@
 version: 2
 
 models:
-  - name: impossible_bnb_vesting
+  - name: impossible_finance_bnb_vesting
     meta:
       blockchain: bnb
       sector: dex
@@ -17,7 +17,7 @@ models:
         description: "Blockchain in which transactions occur"
       - &block_time
        name: block_time
-       description: "Block timestamp"
+       description: "Block timestamp in UTC"
       - &user
        name: user
        description: "User wallet address"
