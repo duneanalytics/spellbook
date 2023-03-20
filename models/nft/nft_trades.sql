@@ -31,6 +31,7 @@ ref('aavegotchi_polygon_trades')
 ,ref('zonic_optimism_trades')
 ,ref('nftb_bnb_trades')
 ,ref('nftearth_optimism_trades')
+,ref('rarible_polygon_trades')
 ] %}
 
 SELECT *
