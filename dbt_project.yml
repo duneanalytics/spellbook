@@ -131,6 +131,8 @@ models:
         +schema: uniswap_optimism
       polygon:
         +schema: uniswap_polygon
+      bnb:
+        +schema: uniswap_bnb
 
     quickswap:
       +schema: quickswap
