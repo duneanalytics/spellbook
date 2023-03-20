@@ -13,6 +13,7 @@
 ,ref('cryptopunks_ethereum_events')
 ,ref('element_events')
 ,ref('foundation_ethereum_events')
+,ref('fractal_polygon_events')
 ,ref('looksrare_ethereum_events')
 ,ref('magiceden_events')
 ,ref('opensea_events')

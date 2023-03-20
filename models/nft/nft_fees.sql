@@ -13,6 +13,7 @@
 ,ref('blur_ethereum_fees')
 ,ref('element_fees')
 ,ref('foundation_ethereum_fees')
+,ref('fractal_polygon_fees')
 ,ref('looksrare_ethereum_fees')
 ,ref('magiceden_fees')
 ,ref('oneplanet_polygon_fees')

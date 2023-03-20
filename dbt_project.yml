@@ -869,6 +869,11 @@ models:
     method_ids:
       +schema: method_ids
 
+    fractal:
+      +schema: fractal
+      polygon:
+        +schema: fractal_polygon
+        
     rarible:
       +schema: rarible
       polygon:
