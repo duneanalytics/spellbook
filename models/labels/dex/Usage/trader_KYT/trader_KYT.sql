@@ -39,14 +39,14 @@ with initial_bot_list as (
         , date_trunc('month', t1.block_time) as month
         , count(*) as num_tx
       from
-        { {
-      source('polygon', 'transactions') } } t1
+        {{
+      source('polygon', 'transactions') }} t1
       join (
         select distinct
           `from`
         from
-          { {
-        source('polygon', 'transactions') } }
+          {{
+        source('polygon', 'transactions') }}
         where
           block_time > now() - interval '30' day
       ) t2
@@ -62,14 +62,14 @@ with initial_bot_list as (
         , date_trunc('month', t1.block_time) as month
         , count(*) as num_tx
       from
-        { {
-      source('optimism', 'transactions') } } t1
+        {{
+      source('optimism', 'transactions') }} t1
       join (
         select distinct
           `from`
         from
-          { {
-        source('optimism', 'transactions') } }
+          {{
+        source('optimism', 'transactions') }}
         where
           block_time > now() - interval '30' day
       ) t2
@@ -85,14 +85,14 @@ with initial_bot_list as (
         , date_trunc('month', t1.block_time) as month
         , count(*) as num_tx
       from
-        { {
-      source('arbitrum', 'transactions') } } t1
+        {{
+      source('arbitrum', 'transactions') }} t1
       join (
         select distinct
           `from`
         from
-          { {
-        source('arbitrum', 'transactions') } }
+          {{
+        source('arbitrum', 'transactions') }}
         where
           block_time > now() - interval '30' day
       ) t2
@@ -108,14 +108,14 @@ with initial_bot_list as (
         , date_trunc('month', t1.block_time) as month
         , count(*) as num_tx
       from
-        { {
-      source('gnosis', 'transactions') } } t1
+        {{
+      source('gnosis', 'transactions') }} t1
       join (
         select distinct
           `from`
         from
-          { {
-        source('gnosis', 'transactions') } }
+          {{
+        source('gnosis', 'transactions') }}
         where
           block_time > now() - interval '30' day
       ) t2
@@ -131,14 +131,14 @@ with initial_bot_list as (
         , date_trunc('month', t1.block_time) as month
         , count(*) as num_tx
       from
-        { {
-      source('fantom', 'transactions') } } t1
+        {{
+      source('fantom', 'transactions') }} t1
       join (
         select distinct
           `from`
         from
-          { {
-        source('fantom', 'transactions') } }
+          {{
+        source('fantom', 'transactions') }}
         where
           block_time > now() - interval '30' day
       ) t2
@@ -154,14 +154,14 @@ with initial_bot_list as (
         , date_trunc('month', t1.block_time) as month
         , count(*) as num_tx
       from
-        { {
-      source('bnb', 'transactions') } } t1
+        {{
+      source('bnb', 'transactions') }} t1
       join (
         select distinct
           `from`
         from
-          { {
-        source('bnb', 'transactions') } }
+          {{
+        source('bnb', 'transactions') }}
         where
           block_time > now() - interval '30' day
       ) t2
@@ -177,14 +177,14 @@ with initial_bot_list as (
         , date_trunc('month', t1.block_time) as month
         , count(*) as num_tx
       from
-        { {
-      source('avalanche_c', 'transactions') } } t1
+        {{
+      source('avalanche_c', 'transactions') }} t1
       join (
         select distinct
           `from`
         from
-          { {
-        source('avalanche_c', 'transactions') } }
+          {{
+        source('avalanche_c', 'transactions') }}
         where
           block_time > now() - interval '30' day
       ) t2
@@ -211,7 +211,7 @@ with initial_bot_list as (
         select
           address
         from
-          { { ref('labels_all') } }
+          {{ ref('labels_all') }}
         where
           category = 'cex'
           or name = 'Ethereum Miner'
@@ -469,7 +469,7 @@ with initial_bot_list as (
       when sum(amount_usd) >= cast(500000 as double) then 'Whale trader'
     end as trader_type
   from
-    { { ref('dex_trades') } }
+    {{ ref('dex_trades') }}
   where
     block_time > now() - interval '30' day
   group by
@@ -505,12 +505,12 @@ with initial_bot_list as (
             sum(t1.amount_usd) DESC
         ) AS rn
       FROM
-        { { ref('dex_trades') } } t1
+        {{ ref('dex_trades') }} t1
         join (
           select distinct
             tx_from
           from
-            { { ref('dex_trades') } }
+            {{ ref('dex_trades') }}
           where
             block_time > now() - interval '3' month
         ) t3
