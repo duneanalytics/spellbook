@@ -780,6 +780,11 @@ models:
       +schema: ribbon
       ethereum:
         +schema: ribbon_ethereum
+
+    galxe:
+      +schema: galxe
+      ethereum:
+        +schema: galxe_ethereum
       
     dydx:
       +schema: dydx
