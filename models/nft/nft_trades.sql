@@ -1,6 +1,6 @@
 {{ config(
         alias ='trades',
-        post_hook='{{ expose_spells(\'["ethereum","solana","bnb", "optimism","arbitrum"]\',
+        post_hook='{{ expose_spells(\'["ethereum","solana","bnb", "optimism","arbitrum","polygon"]\',
                                     "sector",
                                     "nft",
                                     \'["soispoke", "0xRob"]\') }}')
@@ -18,6 +18,7 @@ ref('aavegotchi_polygon_trades')
 ,ref('liquidifty_trades')
 ,ref('looksrare_ethereum_trades')
 ,ref('magiceden_trades')
+,ref('oneplanet_polygon_trades')
 ,ref('opensea_trades')
 ,ref('sudoswap_ethereum_trades')
 ,ref('superrare_ethereum_trades')
@@ -31,6 +32,7 @@ ref('aavegotchi_polygon_trades')
 ,ref('zonic_optimism_trades')
 ,ref('nftb_bnb_trades')
 ,ref('nftearth_optimism_trades')
+,ref('rarible_polygon_trades')
 ] %}
 
 SELECT *
