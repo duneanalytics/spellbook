@@ -1,22 +1,29 @@
 
 {{ config(
+        schema ='dex_aggregator',
         alias ='trades',
         post_hook='{{ expose_spells(\'["ethereum", "gnosis", "avalanche_c", "fantom"]\',
                                 "sector",
                                 "dex_aggregator",
-                                \'["bh2smith", "Henrystats"]\') }}'
+                                \'["bh2smith", "Henrystats", "jeff-dude"]\') }}'
         )
 }}
+
+/********************************************************
+spells with issues, to be excluded in short term:
+-- ,ref('odos_trades') contains duplicates
+
+spells to be added, once dunesql compatible
+-- ,ref('oneinch_ethereum_trades')
+********************************************************/
 
 {% set dex_aggregator_models = [
  ref('cow_protocol_trades')
  ,ref('openocean_trades')
  ,ref('paraswap_trades')
  ,ref('lifi_trades')
- ,ref('odos_trades')
  ,ref('yield_yak_avalanche_c_trades')
 ] %}
-
 
 SELECT *
 FROM (
@@ -43,7 +50,7 @@ FROM (
          , tx_hash
          , tx_from
          , tx_to
-         , trace_address
+         , trace_address --ensure field is explicitly cast as array<bigint> in base models
          , evt_index
     FROM {{ aggregator_model }}
     {% if not loop.last %}
@@ -51,3 +58,4 @@ FROM (
     {% endif %}
     {% endfor %}
 )
+;
