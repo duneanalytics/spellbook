@@ -151,7 +151,7 @@ SELECT distinct
     , CASE WHEN get_json_object(s.offer[0], '$.amount')=1 THEN 'Single Item Trade' ELSE 'Bundle Trade' END AS trade_type
     , CAST(get_json_object(s.offer[0], '$.amount') AS DECIMAL(38,0)) AS number_of_items
     , 'Trade' AS evt_type
-    , s.offererAS seller
+    , s.offerer AS seller
     , s.recipient AS buyer
     , 'Buy' AS trade_category
     , CAST(get_json_object(s.consideration[0], '$.amount')+get_json_object(s.consideration[1], '$.amount') AS DECIMAL(38,0)) AS amount_raw
