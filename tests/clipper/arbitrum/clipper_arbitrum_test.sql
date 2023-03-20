@@ -40,14 +40,15 @@ WITH unit_test AS (
             WHEN ROUND(test.token_sold_amount, 6) = ROUND(actual.token_sold_amount, 6) THEN TRUE
             ELSE FALSE
         END AS token_sold_amount_test,
-        CASE
-            WHEN CAST(test.token_bought_amount_raw AS DECIMAL(38,0)) = CAST(actual.token_bought_amount_raw AS DECIMAL(38,0)) THEN TRUE
-            ELSE FALSE
-        END AS token_bought_amount_raw_test,
-        CASE
-            WHEN CAST(test.token_sold_amount_raw AS DECIMAL(38,0)) = CAST(actual.token_sold_amount_raw AS DECIMAL(38,0)) THEN TRUE
-            ELSE FALSE
-        END AS token_sold_amount_raw_test,
+-- removed as suggested by @Hosuke https://github.com/duneanalytics/spellbook/pull/2701/#issuecomment-1469273665
+--         CASE
+--             WHEN CAST(test.token_bought_amount_raw AS DECIMAL(38,0)) = CAST(actual.token_bought_amount_raw AS DECIMAL(38,0)) THEN TRUE
+--             ELSE FALSE
+--         END AS token_bought_amount_raw_test,
+--         CASE
+--             WHEN CAST(test.token_sold_amount_raw AS DECIMAL(38,0)) = CAST(actual.token_sold_amount_raw AS DECIMAL(38,0)) THEN TRUE
+--             ELSE FALSE
+--         END AS token_sold_amount_raw_test,
         CASE
             WHEN ROUND(test.amount_usd, 2) = ROUND(actual.amount_usd, 2) THEN TRUE
             ELSE FALSE
