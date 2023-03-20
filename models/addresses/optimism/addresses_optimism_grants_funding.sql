@@ -4,10 +4,12 @@
 		"addresses",
 		\'["msilb7"]\') }}')}}
 
+WITH entries AS (
 SELECT
-	category, lower(address) AS address
-	, cast(proposal_name as varchar(100)) AS proposal_name
-	, cast(funding_source as varchar(100)) AS funding_source
+	category
+	, lower(address) AS address
+	, proposal_name
+	, funding_source
 
 FROM (VALUES
 
@@ -123,3 +125,15 @@ FROM (VALUES
 
 
    ) AS x (category, address, proposal_name, funding_source)
+
+)
+
+SELECT
+   category
+   , entries.address
+   , cast(coalesce(pnm.project_name, entries.proposal_name) as varchar(100)) as project_name
+   , cast(entries.proposal_name as varchar(100)) as proposal_name
+   , cast(entries.funding_source as varchar(100)) as funding_source
+FROM entries
+LEFT JOIN {{ ref('op_token_distributions_optimism_project_name_mapping') }} pnm
+        ON pnm.proposal_name = entries.proposal_name
