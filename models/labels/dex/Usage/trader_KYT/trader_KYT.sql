@@ -18,14 +18,12 @@ with initial_bot_list as (
         , date_trunc('month', t1.block_time) as month
         , count(*) as num_tx
       from
-        { {
-      source('ethereum', 'transactions') } } t1
+        { { source('ethereum', 'transactions') } } t1
       join (
         select distinct
           `from`
         from
-          { {
-        source('ethereum', 'transactions') } }
+          { { source('ethereum', 'transactions') } }
         where
           block_time > now() - interval '30' day
       ) t2
