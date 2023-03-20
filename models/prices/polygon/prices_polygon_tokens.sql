@@ -51,6 +51,8 @@ FROM
     ("zed-zed-run", "polygon", "ZED", "0x5ec03c1f7fa7ff05ec476d19e34a22eddb48acdc", 18),
     ("polydoge-polydoge","polygon","PolyDoge","0x8a953cfe442c5e8855cc6c61b1293fa648bae472",18),
     ("gns-gains-network", "polygon", "GNS", "0xe5417af564e4bfda1c483642db72007871397896", 18),
-    ("ico-axelar", "polygon", "AXL", "0x6e4e624106cb12e168e6533f8ec7c82263358940", 6)
+    ("ico-axelar", "polygon", "AXL", "0x6e4e624106cb12e168e6533f8ec7c82263358940", 6),
+    ("frax-frax", "polygon", "FRAX", "0x45c32fa6df82ead1e2ef74d17b76547eddfaff89", 18),
+    ("fxs-frax-share", "polygon", "FXS", "0x1a3acf6D19267E2d3e7f898f42803e90C9219062", 18)
     
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)

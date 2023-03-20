@@ -18,11 +18,11 @@ models:
 
   - name: nft_events
     meta:
-      blockchain: ethereum, solana
+      blockchain: ethereum, solana, polygon
       sector: nft
-      contributors: soispoke, hildobby, ilemi, 0xRob, cat, umer_h_adil, springzh
+      contributors: soispoke, hildobby, ilemi, 0xRob, cat, umer_h_adil
     config:
-      tags: ['nft', 'opensea', 'looksrare', 'x2y2', 'magiceden', 'sudoswap', 'foundation', 'element', 'zora', 'ethereum', 'bnb', 'avalanche_c', 'solana', 'events', 'polygon', 'aavegotchi']
+      tags: ['nft', 'opensea', 'looksrare', 'x2y2', 'magiceden', 'sudoswap', 'foundation', 'element', 'zora', 'ethereum', 'bnb', 'avalanche_c', 'solana', 'events', 'polygon', 'rarible', 'aavegotchi', 'oneplanet', 'fractal']
     description: >
         NFT events
     columns:
@@ -140,11 +140,11 @@ models:
 
   - name: nft_trades
     meta:
-      blockchain: ethereum, solana
+      blockchain: ethereum, solana, polygon
       sector: nft
-      contributors: soispoke, hildobby, ilemi, cat, springzh
+      contributors: soispoke, hildobby, ilemi, cat
     config:
-      tags: ['nft', 'opensea', 'looksrare', 'x2y2', 'magiceden', 'sudoswap', 'foundation', 'element', 'zora', 'ethereum', 'bnb', 'avalanche_c', 'solana', 'trades','superrare', 'polygon', 'aavegotchi']
+      tags: ['nft', 'opensea', 'looksrare', 'x2y2', 'magiceden', 'sudoswap', 'foundation', 'element', 'zora', 'ethereum', 'bnb', 'avalanche_c', 'solana', 'trades','superrare', 'polygon', 'rarible', 'aavegotchi', 'oneplanet', 'fractal']
     description: >
         NFT trades
     columns:
@@ -178,9 +178,9 @@ models:
 
   - name: nft_mints
     meta:
-      blockchain: ethereum, solana
+      blockchain: ethereum, solana, polygon
       sector: nft
-      contributors: soispoke, hildobby, umer_h_adil, springzh
+      contributors: soispoke, hildobby, umer_h_adil
     config:
       tags: ['nft', 'opensea', 'looksrare', 'x2y2', 'magiceden', 'foundation', 'element', 'zora', 'ethereum', 'bnb', 'avalanche_c', 'solana', 'mints', 'polygon', 'aavegotchi']
     description: >
@@ -254,11 +254,11 @@ models:
 
   - name: nft_fees
     meta:
-      blockchain: ethereum, solana
+      blockchain: ethereum, solana, polygon
       sector: nft
-      contributors: soispoke, hildobby, ilemi, cat, springzh
+      contributors: soispoke, hildobby, ilemi, cat
     config:
-      tags: ['nft', 'opensea', 'looksrare', 'x2y2', 'magiceden', 'sudoswap', 'foundation', 'element', 'zora', 'ethereum', 'bnb', 'avalanche_c', 'solana', 'fees','superrare', 'polygon', 'aavegotchi']
+      tags: ['nft', 'opensea', 'looksrare', 'x2y2', 'magiceden', 'sudoswap', 'foundation', 'element', 'zora', 'ethereum', 'bnb', 'avalanche_c', 'solana', 'fees','superrare', 'polygon', 'rarible', 'aavegotchi', 'oneplanet', 'fractal']
     description: >
         NFT fees
     columns:
@@ -374,11 +374,11 @@ models:
 
   - name: nft_transfers
     meta:
-      blockchain: ethereum, polygon, bnb, avalanche_c, gnosis, optimism, arbitrum, fantom
+      blockchain: ethereum, polygon, bnb, avalanche_c, gnosis, optimism, arbitrum, fantom, goerli
       sector: nft
       contributors: hildobby
     config:
-      tags: ['nft', 'ethereum', 'polygon', 'bnb', 'avalanche_c', 'gnosis', 'optimism', 'arbitrum', 'fantom', 'transfers']
+      tags: ['nft', 'ethereum', 'polygon', 'bnb', 'avalanche_c', 'gnosis', 'optimism', 'arbitrum', 'fantom', 'goerli', 'transfers']
     description: >
         NFT transfers
     columns:

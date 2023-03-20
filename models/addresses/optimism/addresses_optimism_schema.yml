@@ -35,7 +35,6 @@ models:
             - address
             - proposal_name
             - funding_source
-            - project_name
     columns:
       - name: category
         description: "What type of address is this (i.e. Optimism vs Project)."
@@ -45,5 +44,3 @@ models:
         description: "The project name on the proposal mapping to the grant."
       - name: funding_source
         description: "Source of how the funding was received (i.e. governance seasons)"
-      - name: project_name
-        description: "Proposal name mapped to a project name, if relevant."
