@@ -5,7 +5,7 @@
         select
             rlike({{ column_name }}, '0[x][0-9a-f]{40}') as assert_evm_address
         from {{ model }} m
-        where blockchain in {{ all_evm_chains() }}
+        where blockchain in ('ethereum', 'optimism', 'arbitrum', 'avalanche_c', 'polygon', 'bnb', 'gnosis', 'fantom') -- TODO: turn into generic macro (all_evm_chains fails atm)
     )
     select *
     from unit_test
