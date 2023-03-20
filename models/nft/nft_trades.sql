@@ -14,6 +14,7 @@ ref('aavegotchi_polygon_trades')
 ,ref('cryptopunks_ethereum_trades')
 ,ref('element_trades')
 ,ref('foundation_ethereum_trades')
+,ref('fractal_polygon_trades')
 ,ref('liquidifty_trades')
 ,ref('looksrare_ethereum_trades')
 ,ref('magiceden_trades')
@@ -31,6 +32,7 @@ ref('aavegotchi_polygon_trades')
 ,ref('zonic_optimism_trades')
 ,ref('nftb_bnb_trades')
 ,ref('nftearth_optimism_trades')
+,ref('rarible_polygon_trades')
 ] %}
 
 SELECT *

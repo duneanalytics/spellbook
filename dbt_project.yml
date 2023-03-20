@@ -131,6 +131,8 @@ models:
         +schema: uniswap_optimism
       polygon:
         +schema: uniswap_polygon
+      bnb:
+        +schema: uniswap_bnb
 
     quickswap:
       +schema: quickswap
@@ -253,6 +255,8 @@ models:
         +schema: zora_ethereum
     magiceden:
       +schema: magiceden
+      polygon:
+        +schema: magiceden_polygon
       solana:
         +schema: magiceden_solana
 
@@ -862,7 +866,7 @@ models:
       +schema: zonic
       optimism:
         +schema: zonic_optimism
-    
+
     pooltogether:
       +schema: pooltogether
       ethereum:
@@ -870,6 +874,16 @@ models:
 
     method_ids:
       +schema: method_ids
+
+    fractal:
+      +schema: fractal
+      polygon:
+        +schema: fractal_polygon
+        
+    rarible:
+      +schema: rarible
+      polygon:
+        +schema: rarible_polygon
 
 seeds:
   spellbook:
