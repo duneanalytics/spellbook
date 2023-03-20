@@ -81,3 +81,41 @@ models:
       - &evt_index
         name: evt_index
         description: "the position of this event log within this transaction"
+
+  - name: uniswap_liquidity_manager_pools
+    meta:
+      blockchain: optimism
+      project: uniswap
+      contributors: msilb7
+    config:
+      tags: ['optimism','uniswap','pools','liquidity managers']
+    description: >
+        A table containing Uniswap mappings for known liquidity manager pools created.
+    columns:
+      - &blockchain_lm
+        name: blockchain
+        description: 'Blockchain of the LP Token'
+      - &dex_project_name
+        name: dex_project_name
+        description: "DEX Project Name - This will be used for overall DEX LM incentives models"
+      - &dex_project_version
+        name: dex_project_version
+        description: "DEX Project Version - This will be used for overall DEX LM incentives models"
+      - &project_lm
+        name: project
+        description: 'Project Name of the LP Token'
+      - &contract_address_lm
+        name: contract_address
+        description: 'Manager LP Token contract address'
+      - &pool_contract
+        name: pool_contract
+        description: "Uniswap liquidity pool contract address"
+      - &fee
+        name: fee
+        description:  "Swap fee of a Uniswap liquidity pool. Divide by 1e4 or power(10,4) to get the fee percentage"
+      - &token0
+        name: token0
+        description:  "Token0 contract address"
+      - &token1
+        name: token1
+        description:  "Token1 contract address"

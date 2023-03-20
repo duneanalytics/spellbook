@@ -40,6 +40,8 @@ models:
         description: "What type of address is this (i.e. Optimism vs Project)."
       - name: address
         description: "Address of the project's grant receiver address."
+      - name: project_name
+        description: "Proposal name mapped to a project name, if relevant."
       - name: proposal_name
         description: "The project name on the proposal mapping to the grant."
       - name: funding_source
