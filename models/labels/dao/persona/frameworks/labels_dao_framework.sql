@@ -56,7 +56,7 @@ SELECT
     model_name,
     label_type
 FROM (
-    SELECT *, row_number() over (partition by blockchain, address order by created_at desc) as rn FROM base
+    SELECT *, row_number() over (partition by blockchain, address order by created_at asc) as rn FROM base
     ) b
 WHERE rn = 1
 
