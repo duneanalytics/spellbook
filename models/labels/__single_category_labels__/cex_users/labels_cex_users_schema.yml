@@ -1,45 +1,34 @@
 version: 2
 
 models:
-  - name: labels_dex
-    tests:
-    - dbt_utils.unique_combination_of_columns:
-        combination_of_columns:
-          - address
-          - name
-          - category
-          - model_name
-          - blockchain
+  - name: labels_cex_users
     meta:
-      blockchain: ethereum
+      blockchain: ethereum, optimism
       sector: labels
-      category: dex
-      contributors: ilemi
+      project: cex
+      contributors: msilb7
     config:
-      tags: ['labels', 'dex']
-    description: "all dex labels"
+      tags: ['labels', 'optimism','ethereum', 'cex']
+    description: "Addresses withrawing from known centralised exchange addresses across chains (sourced by chain withdrawals)"
     columns:
       - &blockchain
         name: blockchain
         description: "Blockchain"   
-      - &address
+      - &user_address
         name: address
-        description: "Label address"
+        description: "Addresses withrawing from known centralised exchange"
       - &name
         name: name
-        description: "Label name"
+        description: "Label name of centralised exchange"
       - &category
         name: category
         description: "Label category"
-        tests:
-          - accepted_values:
-              values: ['dex']
       - &contributor
         name: contributor
         description: "Wizard(s) contributing to labels"
       - &source
         name: source
-        description: "How were labels generated (query)"
+        description: "How were labels generated (could be static or query)"
       - &created_at
         name: created_at
         description: "When were labels created"
