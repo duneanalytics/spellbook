@@ -19,7 +19,7 @@ with initial_bot_list as (
         , count(*) as num_tx
       from
         { { source('ethereum', 'transactions') } } t1
-      join (
+      INNER JOIN (
         select distinct
           `from`
         from
