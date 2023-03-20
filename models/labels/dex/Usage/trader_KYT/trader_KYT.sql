@@ -55,7 +55,7 @@ from (select `from`, date_trunc('month', block_time) as month, count(*) as num_t
 select address, 'Likely Bot' as trader_type
 from (
 select 
-cast("from" as varchar(5)) as address 
+cast(`from` as varchar(100)) as address
 from initial_bot_list t1
 except
 (
