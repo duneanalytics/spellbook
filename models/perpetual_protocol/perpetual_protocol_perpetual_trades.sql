@@ -1,5 +1,5 @@
 {{ config(
-	alias = 'trades',
+	alias = 'perpetual_trades',
     post_hook='{{ expose_spells(\'["optimism"]\',
                                 "project",
                                 "perpetual_protocol",
@@ -7,13 +7,13 @@
 	)
 }}
 
-{% set perpetual_trade_models = [
- ref('perpetual_protocol_optimism_trades')
+{% set perpetual_protocol_perpetual_trade_models = [
+ ref('perpetual_protocol_optimism_perpetual_trades')
 ] %}
 
 SELECT *
 FROM (
-    {% for perpetual_model in perpetual_trade_models %}
+    {% for perpetual_protocol_perpetual_model in perpetual_protocol_perpetual_trade_models %}
     SELECT
 		blockchain
 		,block_date
@@ -35,7 +35,7 @@ FROM (
 		,tx_from
 		,tx_to
 		,evt_index
-    FROM {{ perpetual_model }}
+    FROM {{ perpetual_protocol_perpetual_model }}
     {% if not loop.last %}
     UNION ALL
     {% endif %}

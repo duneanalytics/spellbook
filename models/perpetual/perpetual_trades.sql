@@ -1,5 +1,5 @@
 {{ config(
-        alias ='trades',
+        alias ='perpetual_trades',
         post_hook='{{ expose_spells_hide_trino(\'["optimism","avalanche_c","arbitrum"]\',
                                 "sector",
                                 "perpetual",
@@ -8,9 +8,9 @@
 }}
 
 {% set perpetual_trade_models = [
- ref('perpetual_protocol_trades')
-,ref('pika_trades')
-,ref('synthetix_perps_trades')
+ ref('perpetual_protocol_perpetual_trades')
+,ref('pika_perpetual_trades')
+,ref('synthetix_perpetual_trades')
 ,ref('emdx_avalanche_c_perpetual_trades')
 ,ref('hubble_exchange_avalanche_c_perpetual_trades')
 ,ref('gmx_perpetual_trades')

@@ -1,7 +1,7 @@
 version: 2
 
 models:
-  - name: perpetual_protocol_trades
+  - name: perpetual_protocol_perpetual_trades
     meta:
       blockchain: optimism
       sector: perpetual

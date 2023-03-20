@@ -1,7 +1,7 @@
 version: 2
 
 models:
-  - name: synthetix_optimism_perps_v1_trades
+  - name: synthetix_v1_optimism_perpetual_trades
     meta:
       blockchain: optimism
       sector: perpetual
@@ -89,7 +89,7 @@ models:
         name: evt_index
         description: "Event index number"
   
-  - name: synthetix_optimism_perps_v2_trades
+  - name: synthetix_v2_optimism_perpetual_trades
     meta:
       blockchain: optimism
       sector: perpetual
@@ -133,7 +133,7 @@ models:
       - *tx_to
       - *evt_index
 
-  - name: synthetix_optimism_perps_trades
+  - name: synthetix_optimism_perpetual_trades
     meta:
       blockchain: optimism
       sector: perpetual

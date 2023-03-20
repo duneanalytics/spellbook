@@ -1,6 +1,6 @@
 {{ config(
-	schema = 'perpetual_protocol_v2_optimism',
-	alias ='trades',
+	schema = 'perpetual_protocol_v2_optimism_perpetual_trades',
+	alias ='perpetual_trades',
 	partition_by = ['block_date'],
 	materialized = 'incremental',
 	file_format = 'delta',

@@ -1,5 +1,5 @@
 {{ config(
-    alias ='trades',
+    alias ='perpetual_trades',
     post_hook='{{ expose_spells(\'["optimism"]\',
                                     "project",
                                     "pika",
@@ -7,16 +7,16 @@
         )
 }}
 
-{% set pika_optimism_trade_models = [
-    ref('pika_v1_optimism_trades')
-    , ref('pika_v2_optimism_trades')
-    , ref('pika_v3_optimism_trades')
+{% set pika_optimism_perpetual_trade_models = [
+    ref('pika_v1_optimism_perpetual_trades')
+    , ref('pika_v2_optimism_perpetual_trades')
+    , ref('pika_v3_optimism_perpetual_trades')
 ] %}
 
 SELECT *
 FROM
 (
-    {% for pika_trades in pika_optimism_trade_models %}
+    {% for pika_perpetual_trades in pika_optimism_perpetual_trade_models %}
     SELECT
 		blockchain
 		,block_date
@@ -38,7 +38,7 @@ FROM
         ,tx_from
         ,tx_to
         ,evt_index
-    FROM {{ pika_trades }}
+    FROM {{ pika_perpetual_trades }}
     {% if not loop.last %}
     UNION ALL
     {% endif %}

@@ -1,6 +1,6 @@
 {{ config(
-	schema = 'pika_v1_optimism',
-	alias ='trades',
+	schema = 'pika_v2_optimism',
+	alias ='perpetual_trades',
 	partition_by = ['block_date'],
 	materialized = 'incremental',
 	file_format = 'delta',
@@ -25,14 +25,14 @@ WITH positions AS (
 		,oraclePrice
 		,margin
 		,leverage
-		,0 AS fee
+		,fee
 		,contract_address
 		,evt_tx_hash
 		,evt_index
 		,evt_block_time
 		,evt_block_number
-		,'1' AS version
-	FROM {{ source('pika_perp_optimism', 'PikaPerpV2_evt_NewPosition') }}
+		,'2' AS version
+	FROM {{ source('pika_perp_v2_optimism', 'PikaPerpV2_evt_NewPosition') }}
 	{% if is_incremental() %}
 	WHERE evt_block_time >= DATE_TRUNC("DAY", NOW() - INTERVAL '1 WEEK')
 	{% endif %}
@@ -48,14 +48,14 @@ WITH positions AS (
 		,entryPrice
 		,margin
 		,leverage
-		,0 AS fee
+		,fee
 		,contract_address
 		,evt_tx_hash
 		,evt_index
 		,evt_block_time
 		,evt_block_number
-		,'1' AS version
-	FROM {{ source('pika_perp_optimism', 'PikaPerpV2_evt_ClosePosition') }}
+		,'2' AS version
+	FROM {{ source('pika_perp_v2_optimism', 'PikaPerpV2_evt_ClosePosition') }}
 	{% if is_incremental() %}
 	WHERE evt_block_time >= DATE_TRUNC("DAY", NOW() - INTERVAL '1 WEEK')
 	{% endif %}
@@ -132,6 +132,7 @@ perps AS (
 		,evt_tx_hash AS tx_hash
 		,evt_index
 	FROM positions
+
 )
 
 SELECT

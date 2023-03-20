@@ -1,7 +1,7 @@
 version: 2
 
 models:
-  - name: pika_trades
+  - name: pika_perpetual_trades
     meta:
       blockchain: optimism
       sector: perpetual

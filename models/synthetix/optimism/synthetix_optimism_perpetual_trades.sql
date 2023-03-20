@@ -1,5 +1,5 @@
 {{ config(
-    alias ='trades',
+    alias ='perpetual_trades',
     post_hook='{{ expose_spells(\'["optimism"]\',
                                     "project",
                                     "synthetix",
@@ -7,9 +7,15 @@
     )
 }}
 
+{% set synthetix_optimism_perpetual_trade_models = [
+    ref('synthetix_v1_optimism_perpetual_trades')
+    , ref('synthetix_v2_optimism_perpetual_trades')
+] %}
+
 SELECT *
 FROM
 (
+	{% for synthetix_perpetual_trades in synthetix_optimism_perpetual_trade_models %}
     SELECT
         blockchain
 		,block_date
@@ -31,28 +37,9 @@ FROM
 		,tx_from
 		,tx_to
 		,evt_index
-    FROM {{ ref('synthetix_optimism_perps_v1_trades')}}
+    FROM {{ synthetix_perpetual_trades }}
+    {% if not loop.last %}
     UNION ALL
-    SELECT
-        blockchain
-		,block_date
-		,block_time
-		,virtual_asset
-		,underlying_asset
-		,market
-		,market_address
-		,volume_usd
-		,fee_usd
-		,margin_usd
-		,trade
-		,project
-		,version
-        ,frontend
-		,trader
-		,volume_raw
-		,tx_hash
-		,tx_from
-		,tx_to
-		,evt_index
-    FROM {{ ref('synthetix_optimism_perps_v2_trades')}}
+    {% endif %}
+    {% endfor %}
 )

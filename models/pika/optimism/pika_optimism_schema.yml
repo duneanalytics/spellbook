@@ -1,7 +1,7 @@
 version: 2
 
 models:
-  - name: pika_v1_optimism_trades
+  - name: pika_v1_optimism_perpetual_trades
     meta:
       blockchain: optimism
       sector: perpetual
@@ -84,7 +84,7 @@ models:
         name: evt_index
         description: "Event index number"
 
-  - name: pika_v2_optimism_trades
+  - name: pika_v2_optimism_perpetual_trades
     meta:
       blockchain: optimism
       sector: perpetual
@@ -123,7 +123,7 @@ models:
       - *tx_to
       - *evt_index
     
-  - name: pika_v3_optimism_trades
+  - name: pika_v3_optimism_perpetual_trades
     meta:
       blockchain: optimism
       sector: perpetual
@@ -162,7 +162,7 @@ models:
       - *tx_to
       - *evt_index
 
-  - name: pika_optimism_trades
+  - name: pika_optimism_perpetual_trades
     meta:
       blockchain: optimism
       sector: perpetual
