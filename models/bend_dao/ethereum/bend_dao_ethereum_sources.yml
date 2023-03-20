@@ -11,3 +11,10 @@ sources:
         loaded_at_field: evt_block_time
       - name: LendingPool_evt_Repay
         loaded_at_field: evt_block_time
+
+  - name: benddao_ethereum
+    description: >
+      $BEND airdrop claims
+    tables:
+      - name: MerkleDistributor_evt_Claimed
+        loaded_at_field: evt_block_time

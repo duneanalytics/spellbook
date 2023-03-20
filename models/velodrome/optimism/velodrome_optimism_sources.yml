@@ -10,3 +10,5 @@ sources:
         loaded_at_field: evt_block_time
       - name: PairFactory_evt_PairCreated
         loaded_at_field: evt_block_time
+      - name: MerkleClaim_evt_Claim
+        loaded_at_field: evt_block_time

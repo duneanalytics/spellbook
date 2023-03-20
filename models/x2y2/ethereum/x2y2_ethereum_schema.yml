@@ -292,3 +292,48 @@ models:
       - *tx_from
       - *tx_to
       - *unique_trade_id
+
+  - name: x2y2_ethereum_airdrop_claims
+    meta:
+      blockchain: ethereum
+      sector: airdrop
+      project: x2y2
+      contributors: hildobby
+    config:
+      tags: ['table', 'airdrop', 'ethereum', 'claim', 'x2y2']
+    description: "List of claim transactions for the $X2Y2 airdrop"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - recipient
+            - evt_index
+    columns:
+      - *blockchain
+      - *block_time
+      - *block_number
+      - *project
+      - &airdrop_identifier
+        name: airdrop_identifier
+        description: "Airdrop identifier name"
+      - &recipient
+        name: recipient
+        description: "Airdrop recipient"
+      - &contract_address
+        name: contract_address
+        description: "Contract addressed used"
+      - *tx_hash
+      - &quantity
+        name: quantity
+        description: "Quantity of claimed tokens"
+      - &token_address
+        name: token_address
+        description: "Token address"
+      - &token_symbol
+        name: token_symbol
+        description: "Token symbol"
+      - &evt_index
+        name: evt_index
+        description: "Event index"
+
+

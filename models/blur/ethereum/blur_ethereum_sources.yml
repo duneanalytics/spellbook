@@ -7,3 +7,5 @@ sources:
     tables:
       - name: BlurExchange_evt_OrdersMatched
         loaded_at_field: evt_block_time
+      - name: BlurAirdrop_evt_Claimed
+        loaded_at_field: evt_block_time

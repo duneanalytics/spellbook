@@ -21,3 +21,5 @@ sources:
         loaded_at_field: call_block_time
       - name: StrategyAnyItemFromCollectionForFixedPriceV1B_call_viewProtocolFee
         loaded_at_field: call_block_time
+      - name: LooksRareAirdrop_evt_AirdropRewardsClaim
+        loaded_at_field: evt_block_time
