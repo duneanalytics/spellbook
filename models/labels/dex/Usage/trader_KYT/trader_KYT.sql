@@ -12,54 +12,65 @@
 --addresses with more than 1000 tx monthly
 
 with initial_bot_list as (
-select
-distinct "from"
-from(
-select "from", date_trunc('month', block_time) as month, count(*) as num_tx from {{ source('ethereum','transactions') }}  group by 1,2 
-having count(*) > 1000
-union all 
-select "from", date_trunc('month', block_time) as month, count(*) as num_tx from {{ source('polygon','transactions') }}  group by 1,2 
-having count(*) > 1000
-union all
-select "from", date_trunc('month', block_time) as month, count(*) as num_tx from {{ source('optimism','transactions') }}  group by 1,2 
-having count(*) > 1000
-union all
-select "from", date_trunc('month', block_time) as month, count(*) as num_tx from {{ source('arbitrum','transactions') }}  group by 1,2 
-having count(*) > 1000
-union all
-select "from", date_trunc('month', block_time) as month, count(*) as num_tx from {{ source('gnosis','transactions') }}  group by 1,2 
-having count(*) > 1000
-union all
-select "from", date_trunc('month', block_time) as month, count(*) as num_tx from {{ source('fantom','transactions') }}  group by 1,2 
-having count(*) > 1000
-union all
-select "from", date_trunc('month', block_time) as month, count(*) as num_tx from {{ source('bnb','transactions') }}  group by 1,2 
-having count(*) > 1000
-union all
-select "from", date_trunc('month', block_time) as month, count(*) as num_tx from {{ source('avalanche_c','transactions') }} group by 1,2 
-having count(*) > 1000
+select distinct `from`
+from (select `from`, date_trunc('month', block_time) as month, count(*) as num_tx
+      from {{ source('ethereum', 'transactions') }}
+      group by 1, 2
+      having count(*) > 1000
+      union all
+      select `from`, date_trunc('month', block_time) as month, count(*) as num_tx
+      from {{ source('polygon', 'transactions') }}
+      group by 1, 2
+      having count(*) > 1000
+      union all
+      select `from`, date_trunc('month', block_time) as month, count(*) as num_tx
+      from {{ source('optimism', 'transactions') }}
+      group by 1, 2
+      having count(*) > 1000
+      union all
+      select `from`, date_trunc('month', block_time) as month, count(*) as num_tx
+      from {{ source('arbitrum', 'transactions') }}
+      group by 1, 2
+      having count(*) > 1000
+      union all
+      select `from`, date_trunc('month', block_time) as month, count(*) as num_tx
+      from {{ source('gnosis', 'transactions') }}
+      group by 1, 2
+      having count(*) > 1000
+      union all
+      select `from`, date_trunc('month', block_time) as month, count(*) as num_tx
+      from {{ source('fantom', 'transactions') }}
+      group by 1, 2
+      having count(*) > 1000
+      union all
+      select `from`, date_trunc('month', block_time) as month, count(*) as num_tx
+      from {{ source('bnb', 'transactions') }}
+      group by 1, 2
+      having count(*) > 1000
+      union all
+      select `from`, date_trunc('month', block_time) as month, count(*) as num_tx
+      from {{ source('avalanche_c', 'transactions') }}
+      group by 1, 2
+      having count(*) > 1000
 ))
 
  
 , final_bot_list as (
-
 select address, 'Bot' as trader_type
 from (
-select
-cast("from" as varchar(5)) as address
-from initial_bot_list t1
-except
-(
-select address
-from {{ ref('labels_all') }}
-where category='cex' or name='Ethereum Miner'
-union all
-select
-cast(address as varchar(5))
-from
-{{ source('trader_KYT','query_2143144') }}
-)
-)
+    select cast("from" as varchar(100)) as address
+    from initial_bot_list t1
+    except (
+        select address
+        from {{ ref('labels_all') }}
+        where category='cex' or name = 'Ethereum Miner'
+        union all
+        select
+            cast (address as varchar (100))
+        from
+            {{ source('trader_KYT', 'query_2143144') }}
+        )
+    )
 )
 
 
@@ -97,38 +108,32 @@ FROM (
     HAVING sum(t1.amount_usd) > 10000
 ) t
 WHERE t.rn = 1
-ORDER BY t.month, t.monthly_trade_amount DESC )
-
-
- 
-
-
-
-,final as (
-SELECT
-cast(tx_from as varchar(5)) as address , trader_type
-from active_traders
-union all
-SELECT
-cast(tx_from as varchar(5)) as address , trader_type
-from Former_traders
-union all
-SELECT
-address , trader_type
-from
-final_bot_list
+ORDER BY t.month, t.monthly_trade_amount DESC
 )
 
-select 
- "Multi" as blockchain ,
- address ,
- trader_type as name
-    , "Dex" as category
-    , "whiskey" as contributor
-    ,"query"AS source
-    , cast('2023-03-05' as timestamp) as created_at 
-    , now() as updated_at
-    , "usage" as label_type
-    , "KYT.DexGuru" as model_name
+,final as (
+SELECT cast(tx_from as varchar(100)) as address,
+       trader_type
+from active_traders
+union all
+SELECT cast(tx_from as varchar(100)) as address,
+       trader_type
+from Former_traders
+union all
+SELECT address,
+       trader_type
+from final_bot_list
+)
+
+select "Multi"                         as blockchain
+     , address
+     , trader_type                     as name
+     , "Dex"                           as category
+     , "whiskey"                       as contributor
+     , "query"                         AS source
+     , cast('2023-03-05' as timestamp) as created_at
+     , now()                           as updated_at
+     , "usage"                         as label_type
+     , "KYT.DexGuru"                   as model_name
 from final
 ;
