@@ -5,7 +5,7 @@ WITH raw_events AS (
   , erc721Token AS raw_nft_contract_address
   , erc721TokenId AS raw_token_id
   , evt_tx_hash || erc721Token || erc721TokenId AS raw_unique_trade_id
-  FROM {{ source('element_ex_ethereum','ERC721OrdersFeature_evt_ERC721SellOrderFilled') }}
+  FROM {{ source('element_ex_ethereum','OrdersFeature_evt_ERC721SellOrderFilled') }}
   WHERE evt_block_time >= '2022-04-15'
   AND evt_block_time < NOW() - interval '1 day' -- allow some head desync
   UNION
@@ -14,7 +14,7 @@ WITH raw_events AS (
   , erc721Token AS raw_nft_contract_address
   , erc721TokenId AS raw_token_id
   , evt_tx_hash || erc721Token || erc721TokenId AS raw_unique_trade_id
-  FROM {{ source('element_ex_ethereum','ERC721OrdersFeature_evt_ERC721BuyOrderFilled') }}
+  FROM {{ source('element_ex_ethereum','OrdersFeature_evt_ERC721BuyOrderFilled') }}
   WHERE evt_block_time >= '2022-04-15'
   AND evt_block_time < NOW() - interval '1 day' -- allow some head desync
   UNION
@@ -23,7 +23,7 @@ WITH raw_events AS (
   , erc1155Token AS raw_nft_contract_address
   , erc1155TokenId AS raw_token_id
   , evt_tx_hash || erc1155Token || erc1155TokenId AS raw_unique_trade_id
-  FROM {{ source('element_ex_ethereum','ERC1155OrdersFeature_evt_ERC1155SellOrderFilled') }}
+  FROM {{ source('element_ex_ethereum','OrdersFeature_evt_ERC1155SellOrderFilled') }}
   WHERE evt_block_time >= '2022-04-15'
   AND evt_block_time < NOW() - interval '1 day' -- allow some head desync
   UNION
@@ -32,7 +32,7 @@ WITH raw_events AS (
   , erc1155Token AS raw_nft_contract_address
   , erc1155TokenId AS raw_token_id
   , evt_tx_hash || erc1155Token || erc1155TokenId AS raw_unique_trade_id
-  FROM {{ source('element_ex_ethereum','ERC1155OrdersFeature_evt_ERC1155BuyOrderFilled') }}
+  FROM {{ source('element_ex_ethereum','OrdersFeature_evt_ERC1155BuyOrderFilled') }}
   WHERE evt_block_time >= '2022-04-15'
   AND evt_block_time < NOW() - interval '1 day' -- allow some head desync
   )

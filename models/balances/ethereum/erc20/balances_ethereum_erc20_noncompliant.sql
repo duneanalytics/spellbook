@@ -1,6 +1,7 @@
 {{ config(
         alias='erc20_noncompliant',
-        materialized ='table'
+        materialized ='table',
+        file_format = 'delta'
 ) 
 }}
 

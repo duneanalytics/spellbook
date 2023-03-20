@@ -4,11 +4,11 @@
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
-    unique_key = ['blockchain', 'hour', 'proxy_address', 'aggregator_address', 'underlying_token_address'],
+    unique_key = ['blockchain', 'hour', 'proxy_address', 'underlying_token_address'],
     post_hook='{{ expose_spells(\'["optimism"]\',
                                 "project",
                                 "chainlink",
-                                \'["msilb7"]\') }}'
+                                \'["msilb7","0xroll"]\') }}'
     )
 }}
 -- OVM1 Launch

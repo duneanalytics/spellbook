@@ -6,7 +6,7 @@ models:
       blockchain: optimism
       sector: perpetual
       project: perpetual_v2
-      contributors: MSilb7, drethereum, rplust
+      contributors: msilb7, drethereum, rplust
     config:
       tags: ['optimism', 'perpetual', 'perpetuals', 'perps']
     description: >
@@ -85,7 +85,7 @@ models:
     meta:
       blockchain: optimism
       sector: perpetual
-      contributors: MSilb7, drethereum, rplust
+      contributors: msilb7, drethereum, rplust
     config:
       tags: ['optimism', 'perpetuals', 'perps']
     description: >

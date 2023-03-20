@@ -1,0 +1,79 @@
+version: 2
+
+models:
+  - name: safe_polygon_singletons
+    meta:
+      blockchain: polygon
+      project: safe
+      contributors: tschubotz
+    freshness:
+      warn_after: { count: 12, period: hour }
+      error_after: { count: 24, period: hour }
+    config:
+      tags: ['safe', 'singletons', 'polygon']
+    description: "Singletons addresses used with Safes"
+    columns:
+      - &address
+        name: address
+        description: "Safe contract address"
+        tests:
+          - unique
+          - not_null
+
+  - name: safe_polygon_safes
+    meta:
+      blockchain: polygon
+      project: safe
+      contributors: tschubotz
+    freshness:
+      warn_after: { count: 12, period: hour }
+      error_after: { count: 24, period: hour }
+    config:
+      tags: ['safe', 'polygon']
+    description: "Safe addresses"
+    columns:
+      - &blockchain
+        name: blockchain
+        description: "Blockchain on which the Safe is deployed"
+      - *address
+      - &creation_version
+        name: creation_version
+        description: "Initial version during creation"
+      - &block_date
+        name: block_date
+      - &creation_time
+        name: creation_time
+        description: "Datetime of Safe creation"
+      - &tx_hash
+        name: tx_hash
+
+  - name: safe_polygon_matic_transfers
+    meta:
+      blockchain: polygon
+      project: safe
+      contributors: tschubotz
+    freshness:
+      warn_after: { count: 12, period: hour }
+      error_after: { count: 24, period: hour }
+    config:
+      tags: ['safe', 'transfers', 'polygon']
+    description: "MATIC transfers into or out of Safes"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_date
+            - address
+            - tx_hash
+            - trace_address
+    columns:
+      - name: address
+        description: "Safe contract address"
+      - *block_date
+      - name: block_time
+        description: "Datetime of block"
+      - &amount_raw
+        name: amount_raw
+        description: "Raw amount of transferred MATIC"
+      - *tx_hash
+      - name: trace_address
+        description: ""

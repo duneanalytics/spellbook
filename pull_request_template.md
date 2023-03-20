@@ -12,7 +12,7 @@ I've checked that:
 * [ ] each sql file is a select statement and has only one view, table or function defined  
 * [ ] column names are `lowercase_snake_cased`
 * [ ] if adding a new model, I edited the dbt project YAML file with new directory path for both models and seeds (if applicable)
-* [ ] if wanting to expose a model in the UI (Dune data explorer), I added a post-hook in the JINJA config to add metadata (blockchains, sector/project, name and contributors)
+* [ ] if wanting to expose a model in the UI (Dune data explorer), I added a post-hook in the JINJA config to add metadata (blockchains, sector/project, name and contributor Dune usernames)
 
 ### Pricing checks:
 * [ ] `coin_id` represents the ID of the coin on coinpaprika.com

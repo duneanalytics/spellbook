@@ -5,13 +5,13 @@
     post_hook='{{ expose_spells(\'["optimism"]\',
                               "sector",
                               "contracts",
-                              \'["msilb7", "chuxinh"]\') }}'
+                              \'["msilb7", "chuxin"]\') }}'
     )  
 }}
 
 select 
-  dune_name
-  ,mapped_name
+  cast(dune_name as varchar(250)) AS dune_name
+  ,cast(mapped_name as varchar(250)) AS mapped_name
 from (
     values
     ('lyra_v1',	'Lyra')
@@ -19,9 +19,9 @@ from (
     ,('aave_v3', 'Aave')
     ,('perp_v2', 'Perpetual Protocol')
     ,('synthetix_futures', 'Kwenta')
-    ,('zeroex', '0x')
-    ,('uniswap_v3', 'Uniswap V3')
-    ,('Uniswap V3', 'Uniswap V3')
+    ,('zeroex', 'Zeroex (0x)' )
+    ,('uniswap_v3', 'Uniswap')
+    ,('Uniswap V3', 'Uniswap')
     ,('oneinch', '1inch')
     ,('pika_perp_v2', 'Pika Protocol')
     ,('quixotic_v1', 'Quix')
@@ -51,7 +51,7 @@ from (
     ,('Xtoken', 'xToken')
     ,('Instadapp', 'InstaDapp')
     ,('Lifi', 'LiFi')
-    ,('Optimistic Exporer', 'Optimistic Explorer - Get Started NFT')
+    ,('Optimistic Explorer', 'Optimistic Explorer - Get Started NFT')
     ,('ironbank', 'Iron Bank')
     ,('iron_bank', 'Iron Bank')
     ,('bluesweep', 'BlueSweep')
@@ -59,4 +59,20 @@ from (
     ,('quixotic', 'Quix')
     ,('project galaxy', 'Galxe')
     ,('project_galaxy', 'Galxe')
+    ,('Masoud_ecc', 'ECC Domains')
+    ,('opx_finance', 'OPX Finance')
+    ,('pooltogether_v3', 'PoolTogether')
+    ,('beethovenx', 'Beethoven X')
+    ,('openxswap', 'OpenXSwap')
+    ,('eccdomains', 'ECC Domains')
+    ,('2pi_network','2Pi Network')
+    ,('twopi_network','2Pi Network')
+    ,('acryptos', 'AcryptoS')
+    ,('woofi', 'WooFi')
+    ,('powerbomb_finance','Powerbomb Finance')
+    ,('powerbomb','Powerbomb Finance')
+    ,('lemma_finance','Lemma Finance')
+    ,('lemma','Lemma Finance')
+    ,('collab_land_dao_pass', 'Collab Land')
+    ,('Llama', 'Llamapay')
     ) as temp_table (dune_name, mapped_name)

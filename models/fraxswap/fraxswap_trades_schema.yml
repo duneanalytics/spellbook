@@ -3,12 +3,12 @@ version: 2
 models:
   - name: fraxswap_trades
     meta:
-      blockchain: avalanche_c
+      blockchain: avalanche_c,  bnb, polygon, ethereum
       sector: dex
       project: fraxswap
-      contributors: zhongyiio
+      contributors: zhongyiio, kndlexi
     config:
-      tags: ['avalanche_c', 'trades', 'dex', 'fraxswap', 'zhongyiio', 'hosuke']
+      tags: ['avalanche_c', 'bnb', 'polygon', 'ethereum', 'trades', 'dex', 'fraxswap', 'zhongyiio', 'kndlexi', 'hosuke']
     description: >
         Fraxswap trades on all chains across all contracts and versions. This table will load dex trades downstream.
     columns:
