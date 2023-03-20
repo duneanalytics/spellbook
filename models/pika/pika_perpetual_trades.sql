@@ -7,9 +7,14 @@
     )
 }}
 
+{% set pika_perpetual_trade_models = [
+ ref('pika_optimism_perpetual_trades')
+] %}
+
 SELECT *
 FROM
 (
+    {% for pika_perpetual_model in pika_perpetual_trade_models %}
     SELECT
         blockchain
 		,block_date
@@ -31,5 +36,9 @@ FROM
         ,tx_from
         ,tx_to
         ,evt_index
-    FROM {{ ref('pika_optimism_trades') }}
+    FROM {{ pika_perpetual_model }}
+	{% if not loop.last %}
+    UNION ALL
+    {% endif %}
+    {% endfor %}
 )
