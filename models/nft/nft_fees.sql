@@ -15,6 +15,7 @@
 ,ref('foundation_ethereum_fees')
 ,ref('looksrare_ethereum_fees')
 ,ref('magiceden_fees')
+,ref('oneplanet_polygon_fees')
 ,ref('opensea_fees')
 ,ref('sudoswap_ethereum_fees')
 ,ref('superrare_ethereum_fees')
