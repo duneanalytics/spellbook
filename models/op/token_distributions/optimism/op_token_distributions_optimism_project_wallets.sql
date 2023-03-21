@@ -2,7 +2,7 @@
     alias = 'project_wallets',
     post_hook='{{ expose_spells(\'["optimism"]\',
                                 "project",
-                                "op_token",
+                                "op_token_distributions",
                                 \'["msilb7"]\') }}'
     )
 }}
