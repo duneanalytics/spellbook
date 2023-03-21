@@ -1,15 +1,15 @@
 version: 2
 
 models:
-  - name: trader_kyt
+  - name: labels_trader_kyt
     meta:
       blockchain: ethereum, fantom, bnb, avalanche_c, arbitrum,polygon, gnosis, optimism
       sector: labels
       category: dex
       contributors: whiskey
     config:
-      tags: ['labels', 'cross-chain', 'KYT', 'dex', ]
-    description: "Trader categoty based on trader tx count and  trades value in the last 30 days"
+      tags: ['labels', 'cross-chain', 'KYT', 'dex']
+    description: "Trader category based on trader tx count and  trades value in the last 30 days"
     columns:
       - &blockchain
         name: blockchain
