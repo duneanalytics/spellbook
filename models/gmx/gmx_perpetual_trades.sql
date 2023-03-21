@@ -29,6 +29,7 @@ FROM (
 		,trade
 		,project
 		,version
+		,frontend
 		,trader
 		,volume_raw
 		,tx_hash
