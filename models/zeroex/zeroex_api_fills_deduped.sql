@@ -28,7 +28,7 @@ FROM (
       evt_index  as evt_index, 
       maker  as maker, 
       '0x API'  as project,
-      --contract_address  as project_contract_address,
+      contract_address  as project_contract_address,
       taker  as taker, 
       maker_symbol as  token_bought_symbol, 
       token_pair  as token_pair,
