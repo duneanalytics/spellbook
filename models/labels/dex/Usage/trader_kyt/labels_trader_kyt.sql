@@ -10,7 +10,7 @@
 
 with initial_bot_list AS (
 select distinct `from`
-from (select `from`, date_trunc('month', block_time) AS month, count(*) AS num_tx
+from (select t1.`from`, date_trunc('month', t1.block_time) AS month, count(*) AS num_tx
       from {{ source('ethereum', 'transactions') }} t1
       INNER JOIN (select distinct `from`
         from {{ source('ethereum', 'transactions') }}
@@ -18,7 +18,7 @@ from (select `from`, date_trunc('month', block_time) AS month, count(*) AS num_t
       group by 1, 2
       having count(*) > 1000
       union all
-      select `from`, date_trunc('month', block_time) AS month, count(*) AS num_tx
+      select t1.`from`, date_trunc('month', t1.block_time) AS month, count(*) AS num_tx
       from {{ source('polygon', 'transactions') }} t1
         INNER JOIN (select distinct `from`
         from {{ source('polygon', 'transactions') }}
@@ -27,7 +27,7 @@ from (select `from`, date_trunc('month', block_time) AS month, count(*) AS num_t
       group by 1, 2
       having count(*) > 1000
       union all
-      select `from`, date_trunc('month', block_time) AS month, count(*) AS num_tx
+      select t1.`from`, date_trunc('month', t1.block_time) AS month, count(*) AS num_tx
       from {{ source('optimism', 'transactions') }} t1
         INNER JOIN (select distinct `from`
         from {{ source('optimism', 'transactions') }}
@@ -35,7 +35,7 @@ from (select `from`, date_trunc('month', block_time) AS month, count(*) AS num_t
       group by 1, 2
       having count(*) > 1000
       union all
-      select `from`, date_trunc('month', block_time) AS month, count(*) AS num_tx
+      select t1.`from`, date_trunc('month', t1.block_time) AS month, count(*) AS num_tx
       from {{ source('arbitrum', 'transactions') }} t1
         INNER JOIN (select distinct `from`
         from {{ source('arbitrum', 'transactions') }}
@@ -43,7 +43,7 @@ from (select `from`, date_trunc('month', block_time) AS month, count(*) AS num_t
       group by 1, 2
       having count(*) > 1000
       union all
-      select `from`, date_trunc('month', block_time) AS month, count(*) AS num_tx
+      select t1.`from`, date_trunc('month', t1.block_time) AS month, count(*) AS num_tx
       from {{ source('gnosis', 'transactions') }} t1
         INNER JOIN (select distinct `from`
         from {{ source('gnosis', 'transactions') }}
@@ -51,7 +51,7 @@ from (select `from`, date_trunc('month', block_time) AS month, count(*) AS num_t
       group by 1, 2
       having count(*) > 1000
       union all
-      select `from`, date_trunc('month', block_time) AS month, count(*) AS num_tx
+      select t1.`from`, date_trunc('month', t1.block_time) AS month, count(*) AS num_tx
       from {{ source('fantom', 'transactions') }} t1
         INNER JOIN (select distinct `from`
         from {{ source('fantom', 'transactions') }}
@@ -59,7 +59,7 @@ from (select `from`, date_trunc('month', block_time) AS month, count(*) AS num_t
       group by 1, 2
       having count(*) > 1000
       union all
-      select `from`, date_trunc('month', block_time) AS month, count(*) AS num_tx
+      select t1.`from`, date_trunc('month', t1.block_time) AS month, count(*) AS num_tx
       from {{ source('bnb', 'transactions') }} t1
         INNER JOIN (select distinct `from`
         from {{ source('bnb', 'transactions') }}
@@ -67,7 +67,7 @@ from (select `from`, date_trunc('month', block_time) AS month, count(*) AS num_t
       group by 1, 2
       having count(*) > 1000
       union all
-      select `from`, date_trunc('month', block_time) AS month, count(*) AS num_tx
+      select t1.`from`, date_trunc('month', t1.block_time) AS month, count(*) AS num_tx
       from {{ source('avalanche_c', 'transactions') }} t1
         INNER JOIN (select distinct `from`
         from {{ source('avalanche_c', 'transactions') }}
