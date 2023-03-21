@@ -11,42 +11,67 @@
 with initial_bot_list AS (
 select distinct `from`
 from (select `from`, date_trunc('month', block_time) AS month, count(*) AS num_tx
-      from {{ source('ethereum', 'transactions') }}
+      from {{ source('ethereum', 'transactions') }} t1
+      INNER JOIN (select distinct `from`
+        from {{ source('ethereum', 'transactions') }} t2
+        where block_time > now() - interval '30' day) t2 on t1.`from` = t2.`from`
       group by 1, 2
       having count(*) > 1000
       union all
       select `from`, date_trunc('month', block_time) AS month, count(*) AS num_tx
-      from {{ source('polygon', 'transactions') }}
+      from {{ source('polygon', 'transactions') }} t1
+        INNER JOIN (select distinct `from`
+        from {{ source('polygon', 'transactions') }} t2
+        where
+        block_time > now() - interval '30' day) t2 on t1.`from` = t2.`from`
       group by 1, 2
       having count(*) > 1000
       union all
       select `from`, date_trunc('month', block_time) AS month, count(*) AS num_tx
-      from {{ source('optimism', 'transactions') }}
+      from {{ source('optimism', 'transactions') }} t1
+        INNER JOIN (select distinct `from`
+        from {{ source('optimism', 'transactions') }} t2
+        where block_time > now() - interval '30' day) t2 on t1.`from` = t2.`from`
       group by 1, 2
       having count(*) > 1000
       union all
       select `from`, date_trunc('month', block_time) AS month, count(*) AS num_tx
       from {{ source('arbitrum', 'transactions') }}
+        INNER JOIN (select distinct `from`
+        from {{ source('arbitrum', 'transactions') }} t2
+        where block_time > now() - interval '30' day) t2 on t1.`from` = t2.`from`
       group by 1, 2
       having count(*) > 1000
       union all
       select `from`, date_trunc('month', block_time) AS month, count(*) AS num_tx
       from {{ source('gnosis', 'transactions') }}
+        INNER JOIN (select distinct `from`
+        from {{ source('gnosis', 'transactions') }} t2
+        where block_time > now() - interval '30' day) t2 on t1.`from` = t2.`from`
       group by 1, 2
       having count(*) > 1000
       union all
       select `from`, date_trunc('month', block_time) AS month, count(*) AS num_tx
       from {{ source('fantom', 'transactions') }}
+        INNER JOIN (select distinct `from`
+        from {{ source('fantom', 'transactions') }} t2
+        where block_time > now() - interval '30' day) t2 on t1.`from` = t2.`from`
       group by 1, 2
       having count(*) > 1000
       union all
       select `from`, date_trunc('month', block_time) AS month, count(*) AS num_tx
       from {{ source('bnb', 'transactions') }}
+        INNER JOIN (select distinct `from`
+        from {{ source('bnb', 'transactions') }} t2
+        where block_time > now() - interval '30' day) t2 on t1.`from` = t2.`from`
       group by 1, 2
       having count(*) > 1000
       union all
       select `from`, date_trunc('month', block_time) AS month, count(*) AS num_tx
       from {{ source('avalanche_c', 'transactions') }}
+        INNER JOIN (select distinct `from`
+        from {{ source('avalanche_c', 'transactions') }} t2
+        where block_time > now() - interval '30' day) t2 on t1.`from` = t2.`from`
       group by 1, 2
       having count(*) > 1000
 ))
@@ -58,8 +83,10 @@ from (select `from`, date_trunc('month', block_time) AS month, count(*) AS num_t
         from initial_bot_list t1
         except (
             select address
-            from {{ ref('labels_all') }}
-            where category='cex' or name='Ethereum Miner'
+            from {{ ref('labels_cex') }}
+            union all 
+            select address
+            from {{ ref('labels_miners') }}
             union all
             select
                 cast (lower(address) AS varchar (100))
@@ -98,7 +125,7 @@ from (select `from`, date_trunc('month', block_time) AS month, count(*) AS num_t
                , ('0xa305fab8bda7e1638235b054889b3217441dd645', 'changenow binance deposit address')
                , ('0xc5a8859c44ac8aa2169afacf45b87c08593bec10', 'Paxos')
                , ('0x95b564f3b3bae3f206aa418667ba000afafacc8a', 'Bitvavo')
-               , ('0xd2c82f2e5fa236e114a81173e375a73664610998', 'coinl, ‘t')
+               , ('0xd2c82f2e5fa236e114a81173e375a73664610998', 'coinl')
                , ('0xc9f5296eb3ac266c94568d790b6e91eba7d76a11', 'Cex.io ')
                , ('0x808b4da0be6c9512e948521452227efc619bea52', 'BlockFi')
                , ('0x6dfc34609a05bc22319fa4cce1d1e2929548c0d7', 'Bovada Gambeling')
