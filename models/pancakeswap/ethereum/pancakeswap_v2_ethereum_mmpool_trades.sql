@@ -45,14 +45,14 @@ SELECT
      , 'mmpool'                                                  AS version
      , TRY_CAST(date_trunc('DAY', dexs.block_time) AS date)      AS block_date
      , dexs.block_time
-     , bep20a.symbol                                             AS token_bought_symbol
-     , bep20b.symbol                                             AS token_sold_symbol
+     , erc20a.symbol                                             AS token_bought_symbol
+     , erc20b.symbol                                             AS token_sold_symbol
      , case
-           when lower(bep20a.symbol) > lower(bep20b.symbol) then concat(bep20b.symbol, '-', bep20a.symbol)
-           else concat(bep20a.symbol, '-', bep20b.symbol)
+           when lower(erc20a.symbol) > lower(erc20b.symbol) then concat(erc20b.symbol, '-', erc20a.symbol)
+           else concat(erc20a.symbol, '-', erc20b.symbol)
        end                                                       AS token_pair
-     , dexs.token_bought_amount_raw / power(10, bep20a.decimals) AS token_bought_amount
-     , dexs.token_sold_amount_raw / power(10, bep20b.decimals)   AS token_sold_amount
+     , dexs.token_bought_amount_raw / power(10, erc20a.decimals) AS token_bought_amount
+     , dexs.token_sold_amount_raw / power(10, erc20b.decimals)   AS token_sold_amount
      , CAST(dexs.token_bought_amount_raw AS DECIMAL(38,0))       AS token_bought_amount_raw
      , CAST(dexs.token_sold_amount_raw AS DECIMAL(38,0))         AS token_sold_amount_raw
      , coalesce(
@@ -79,12 +79,12 @@ INNER JOIN {{ source('ethereum', 'transactions') }} tx
     {% if is_incremental() %}
     AND tx.block_time >= date_trunc("day", now() - interval '1 week')
     {% endif %}
-LEFT JOIN {{ ref('tokens_erc20') }} bep20a
-    ON bep20a.contract_address = dexs.token_bought_address
-    AND bep20a.blockchain = 'ethereum'
-LEFT JOIN {{ ref('tokens_erc20') }} bep20b
-    ON bep20b.contract_address = dexs.token_sold_address
-    AND bep20b.blockchain = 'ethereum'
+LEFT JOIN {{ ref('tokens_erc20') }} erc20a
+    ON erc20a.contract_address = dexs.token_bought_address
+    AND erc20a.blockchain = 'ethereum'
+LEFT JOIN {{ ref('tokens_erc20') }} erc20b
+    ON erc20b.contract_address = dexs.token_sold_address
+    AND erc20b.blockchain = 'ethereum'
 LEFT JOIN {{ source('prices', 'usd') }} p_bought
     ON p_bought.minute = date_trunc('minute', dexs.block_time)
     AND p_bought.contract_address = dexs.token_bought_address
