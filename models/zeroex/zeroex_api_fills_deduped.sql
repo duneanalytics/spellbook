@@ -42,7 +42,7 @@ FROM (
       taker_token_amount_raw  as token_sold_amount_raw,
       maker_token  as token_bought_address, 
       maker_token_amount  as token_bought_amount, 
-      select cast(null as string) version,
+      cast(null as string) version,
       maker_token_amount_raw  as token_bought_amount_raw
     FROM {{ model }}
     {% if not loop.last %}
