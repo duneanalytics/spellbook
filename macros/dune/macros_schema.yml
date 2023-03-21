@@ -45,3 +45,8 @@ macros:
       Overrides the core is_incremental marco to allow the usage of a force-incremental command line variable.
       This enables us to easily get the compiled incremental models. 
       Example usage: dbt compile --vars '{force-incremental: True}'
+
+  - name: ref
+    description: >
+      Overrides the builtin ref macro to force the use of "delta_prod" as the database (or catalog)
+
