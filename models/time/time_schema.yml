@@ -1,0 +1,74 @@
+version: 2
+
+models:
+  - name: time_minute
+    meta:
+      blockchain: ethereum
+      contributors: [ilemi]
+    config:
+      tags: ['utility']
+    description: >
+        time series for minute
+    columns:
+      - &minute
+        name: minute
+
+  - name: time_hour
+    meta:
+      blockchain: ethereum
+      contributors: [ilemi]
+    config:
+      tags: ['utility']
+    description: >
+        time series for day
+    columns:
+      - &hour
+        name: hour
+
+  - name: time_day
+    meta:
+      blockchain: ethereum
+      contributors: [ilemi]
+    config:
+      tags: ['utility']
+    description: >
+        time series for day
+    columns:
+      - &day
+        name: day
+
+  - name: time_week
+    meta:
+      blockchain: ethereum
+      contributors: [ilemi]
+    config:
+      tags: ['utility']
+    description: >
+        time series for week
+    columns:
+      - &week
+        name: week
+
+  - name: time_month
+    meta:
+      blockchain: ethereum
+      contributors: [ilemi]
+    config:
+      tags: ['utility']
+    description: >
+        time series for month
+    columns:
+      - &month
+        name: month
+
+  - name: time_year
+    meta:
+      blockchain: ethereum
+      contributors: [ilemi]
+    config:
+      tags: ['utility']
+    description: >
+        time series for year
+    columns:
+      - &year
+        name: year
