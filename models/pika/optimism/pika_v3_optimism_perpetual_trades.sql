@@ -64,6 +64,7 @@ WITH positions AS (
 perps AS (
 	SELECT
 		evt_block_time AS block_time
+		,evt_block_number AS block_number
 		
 		,CASE
 		WHEN productId = 1 OR productId = 16 THEN 'ETH'
@@ -158,6 +159,7 @@ SELECT
 FROM perps
 INNER JOIN {{ source('optimism', 'transactions') }} AS tx
 	ON perps.tx_hash = tx.hash
+	AND perps.block_number = tx.block_number
 	{% if not is_incremental() %}
 	AND tx.block_time >= '{{project_start_date}}'
 	{% endif %}

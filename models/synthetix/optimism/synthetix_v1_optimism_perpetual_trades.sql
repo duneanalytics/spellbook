@@ -60,6 +60,7 @@ synthetix_markets AS (
 perps AS (
 	SELECT
 		s.evt_block_time AS block_time
+		,s.evt_block_number AS block_number
 		,DECODE(sm.asset, 'UTF-8') AS virtual_asset
 		
 		,CASE
@@ -129,6 +130,7 @@ SELECT
 FROM perps
 INNER JOIN {{ source('optimism', 'transactions') }} AS tx
 	ON perps.tx_hash = tx.hash
+	AND perps.block_number = tx.block_number
 	{% if not is_incremental() %}
 	AND tx.block_time >= '{{project_start_date}}'
 	{% endif %}

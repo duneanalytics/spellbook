@@ -118,6 +118,7 @@ perp_events pe
 INNER JOIN 
 {{ source('avalanche_c', 'transactions') }} txns 
     ON pe.tx_hash = txns.hash
+    AND pe.block_number = txns.block_number
     {% if not is_incremental() %}
     AND txns.block_time >= '{{project_start_date}}'
     {% endif %}
