@@ -13,6 +13,8 @@ models:
     columns:
       - name: contract_address
         description: "Aggregator project's contract address"
+        tests:
+          - unique
       - name: name
         description: "Aggregator project's name"
 
@@ -249,7 +251,7 @@ models:
         description: "number of trades"
       - name: last_updated
         description: "Last time spell was updated"
-        
+
   - name: nft_ethereum_collection_stats
     meta:
       blockchain: ethereum
@@ -279,3 +281,37 @@ models:
         description: "Min NFT trade price Measured in ETH"
       - name: price_max_eth
         description: "Max NFT trade price Measured in ETH"
+
+  - name: nft_ethereum_aggregators_manual
+    meta:
+      blockchain: ethereum
+      sector: nft
+      contributors: hildobby, soispoke
+    config:
+      tags: [ 'nft', 'ethereum', 'aggregators' ]
+    description: >
+      NFT aggregators manual entries
+    columns:
+      - name: contract_address
+        description: "Aggregator project's contract address"
+        tests:
+          - unique
+      - name: name
+        description: "Aggregator project's name"
+
+  - name: nft_ethereum_aggregators_gem
+    meta:
+      blockchain: ethereum
+      sector: nft
+      contributors: hildobby, 0xRob
+    config:
+      tags: [ 'nft', 'ethereum', 'aggregators' ]
+    description: >
+      NFT aggregators gem deployed contracts
+    columns:
+      - name: contract_address
+        description: "Aggregator project's contract address"
+        tests:
+          - unique
+      - name: name
+        description: "Aggregator project's name"
