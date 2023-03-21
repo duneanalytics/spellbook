@@ -4,7 +4,7 @@ The models here allow you to add static or query labels to any address. The idea
 
 The most important thing to learn are the label types below. If you have a label type that you think does not belong in one of these three, then we'll handle it on a case by case basis. 
 
-**There are currently 7 high-level categories of labels**, and we are always open to adding more. If the model is likely to be the only model of it's category, it will go in the `__single_category_labels__` folder until we find something to expand on or attach it to. Those models have the exact same schemas as others, but are put into their own folder so that high-level categories are easily found and navigated.
+**There are currently 8 high-level categories of labels**, and we are always open to adding more. If the model is likely to be the only model of it's category, it will go in the `__single_category_labels__` folder until we find something to expand on or attach it to. Those models have the exact same schemas as others, but are put into their own folder so that high-level categories are easily found and navigated.
 
 ## Contributing
 
