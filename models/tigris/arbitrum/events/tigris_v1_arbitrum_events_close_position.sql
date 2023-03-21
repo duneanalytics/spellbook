@@ -1,4 +1,5 @@
 {{ config(
+    schema = 'tigris_v1_arbitrum',
     alias = 'events_close_position',
     partition_by = ['day'],
     materialized = 'incremental',
@@ -83,17 +84,17 @@ close_position_v5 as (
 )
 
 
-SELECT *, 'v2' as version FROM close_position_v2
+SELECT *, '1.2' as version FROM close_position_v2
 
 UNION ALL
 
-SELECT *, 'v3' as version FROM close_position_v3
+SELECT *, '1.3' as version FROM close_position_v3
 
 UNION ALL
 
-SELECT *, 'v4' as version FROM close_position_v4
+SELECT *, '1.4' as version FROM close_position_v4
 
 UNION ALL
 
-SELECT *, 'v5' as version FROM close_position_v5
+SELECT *, '1.5' as version FROM close_position_v5
 ;

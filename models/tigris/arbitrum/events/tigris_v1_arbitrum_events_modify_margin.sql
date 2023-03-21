@@ -1,4 +1,5 @@
 {{ config(
+    schema = 'tigris_v1_arbitrum',
     alias = 'events_modify_margin',
     partition_by = ['day'],
     materialized = 'incremental',
@@ -150,17 +151,17 @@ modify_margin_v5 as (
         {% endif %}
 )
 
-SELECT *, 'v2' as version FROM modify_margin_v2
+SELECT *, 'v1.2' as version FROM modify_margin_v2
 
 UNION ALL
 
-SELECT *, 'v3' as version FROM modify_margin_v3
+SELECT *, 'v1.3' as version FROM modify_margin_v3
 
 UNION ALL
 
-SELECT *, 'v4' as version FROM modify_margin_v4
+SELECT *, 'v1.4' as version FROM modify_margin_v4
 
 UNION ALL
 
-SELECT *, 'v5' as version FROM modify_margin_v5
+SELECT *, 'v1.5' as version FROM modify_margin_v5
 ;
