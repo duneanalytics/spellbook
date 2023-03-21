@@ -8,6 +8,7 @@ models:
             - address
             - name
             - category
+            - model_name
             - blockchain
     meta:
       blockchain: ethereum, solana

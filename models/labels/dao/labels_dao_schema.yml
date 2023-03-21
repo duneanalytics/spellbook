@@ -2,6 +2,14 @@ version: 2
 
 models:
   - name: labels_dao
+    tests:
+    - dbt_utils.unique_combination_of_columns:
+        combination_of_columns:
+          - address
+          - name
+          - category
+          - model_name
+          - blockchain
     meta:
       blockchain: ethereum, polygon, gnosis
       sector: labels
