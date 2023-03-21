@@ -21,6 +21,7 @@ FROM (
     FROM {{ dao_model }}
     {% if not loop.last %}
     UNION ALL
+    
     {% endif %}
     {% endfor %}
 )
