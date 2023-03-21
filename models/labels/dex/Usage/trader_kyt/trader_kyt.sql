@@ -1,6 +1,6 @@
 {{
     config(
-        alias='KYT',
+        alias='kyt',
         post_hook='{{ expose_spells(\'["ethereum", "fantom", "arbitrum", "avalanche_c", "gnosis", "bnb", "optimism", "polygon"]\',
                                     "sector",
                                     "labels",
@@ -8,53 +8,53 @@
     )
 }}
 
-with initial_bot_list as (
+with initial_bot_list AS (
 select distinct `from`
-from (select `from`, date_trunc('month', block_time) as month, count(*) as num_tx
+from (select `from`, date_trunc('month', block_time) AS month, count(*) AS num_tx
       from {{ source('ethereum', 'transactions') }}
       group by 1, 2
       having count(*) > 1000
       union all
-      select `from`, date_trunc('month', block_time) as month, count(*) as num_tx
+      select `from`, date_trunc('month', block_time) AS month, count(*) AS num_tx
       from {{ source('polygon', 'transactions') }}
       group by 1, 2
       having count(*) > 1000
       union all
-      select `from`, date_trunc('month', block_time) as month, count(*) as num_tx
+      select `from`, date_trunc('month', block_time) AS month, count(*) AS num_tx
       from {{ source('optimism', 'transactions') }}
       group by 1, 2
       having count(*) > 1000
       union all
-      select `from`, date_trunc('month', block_time) as month, count(*) as num_tx
+      select `from`, date_trunc('month', block_time) AS month, count(*) AS num_tx
       from {{ source('arbitrum', 'transactions') }}
       group by 1, 2
       having count(*) > 1000
       union all
-      select `from`, date_trunc('month', block_time) as month, count(*) as num_tx
+      select `from`, date_trunc('month', block_time) AS month, count(*) AS num_tx
       from {{ source('gnosis', 'transactions') }}
       group by 1, 2
       having count(*) > 1000
       union all
-      select `from`, date_trunc('month', block_time) as month, count(*) as num_tx
+      select `from`, date_trunc('month', block_time) AS month, count(*) AS num_tx
       from {{ source('fantom', 'transactions') }}
       group by 1, 2
       having count(*) > 1000
       union all
-      select `from`, date_trunc('month', block_time) as month, count(*) as num_tx
+      select `from`, date_trunc('month', block_time) AS month, count(*) AS num_tx
       from {{ source('bnb', 'transactions') }}
       group by 1, 2
       having count(*) > 1000
       union all
-      select `from`, date_trunc('month', block_time) as month, count(*) as num_tx
+      select `from`, date_trunc('month', block_time) AS month, count(*) AS num_tx
       from {{ source('avalanche_c', 'transactions') }}
       group by 1, 2
       having count(*) > 1000
 ))
  
-, final_bot_list as (
-    select address, 'Likely Bot' as trader_type
+, final_bot_list AS (
+    select address, 'Likely Bot' AS trader_type
     from (
-        select cast(`from` as varchar(100)) as address
+        select cast(`from` AS varchar(100)) AS address
         from initial_bot_list t1
         except (
             select address
@@ -62,7 +62,7 @@ from (select `from`, date_trunc('month', block_time) as month, count(*) as num_t
             where category='cex' or name='Ethereum Miner'
             union all
             select
-                cast (lower(address) as varchar (100))
+                cast (lower(address) AS varchar (100))
             from
            (VALUES
            ('0x7ed1e469fcb3ee19c0366d829e291451be638e59', 'https://freewallet.org/')
@@ -122,35 +122,35 @@ from (select `from`, date_trunc('month', block_time) as month, count(*) as num_t
                , ('0xC333E80eF2deC2805F239E3f1e810612D294F771', 'Alameda Research')
                , ('0x20312e96b1a0568ac31c6630844a962383cc66c2', 'Coinspot gas supplir')
                , ('0x73f9b272abda7a97cb1b237d85f9a7236edb6f16', 'Binance Deposit')
-           ) as data (address, label)
+           ) AS data (address, label)
        )
     )
 )
 
-,active_traders as (
+,active_traders AS (
     SELECT tx_from,
-           sum(amount_usd)                                                            as trade_amount,
+           sum(amount_usd)                                                            AS trade_amount,
            case
-               when sum(amount_usd) >= cast(10000 as double) and
-                    sum(amount_usd) < cast(100000 as double) then 'Turtle trader'
-               when sum(amount_usd) >= cast(100000 as double) and
-                    sum(amount_usd) < cast(500000 as double) then 'Shark trader'
-               when sum(amount_usd) >= cast(500000 as double) then 'Whale trader' end as trader_type
+               when sum(amount_usd) >= cast(10000 AS double) and
+                    sum(amount_usd) < cast(100000 AS double) then 'Turtle trader'
+               when sum(amount_usd) >= cast(100000 AS double) and
+                    sum(amount_usd) < cast(500000 AS double) then 'Shark trader'
+               when sum(amount_usd) >= cast(500000 AS double) then 'Whale trader' end AS trader_type
     from {{ ref('dex_trades') }}
     where block_time > now() - interval '30' day
     group by 1
-    having sum(amount_usd) > cast (10000 as double)
+    having sum(amount_usd) > cast (10000 AS double)
 )
 
-, Former_traders as (
+, Former_traders AS (
     SELECT t.tx_from,
            case
-               when t.monthly_trade_amount >= cast(10000 as double) and
-                    t.monthly_trade_amount < cast(100000 as double) then 'Former Turtle trader'
-               when t.monthly_trade_amount >= cast(100000 as double) and
-                    t.monthly_trade_amount < cast(500000 as double) then 'Former Shark trader'
-               when t.monthly_trade_amount >= cast(500000 as double)
-                   then 'Former Whale trader' end as trader_type
+               when t.monthly_trade_amount >= cast(10000 AS double) and
+                    t.monthly_trade_amount < cast(100000 AS double) then 'Former Turtle trader'
+               when t.monthly_trade_amount >= cast(100000 AS double) and
+                    t.monthly_trade_amount < cast(500000 AS double) then 'Former Shark trader'
+               when t.monthly_trade_amount >= cast(500000 AS double)
+                   then 'Former Whale trader' end AS trader_type
     FROM (
         SELECT t1.tx_from,
                date_trunc('month', t1.block_time)                                           AS month,
@@ -165,18 +165,18 @@ from (select `from`, date_trunc('month', block_time) as month, count(*) as num_t
             < now() - interval '30' day
           and t2.tx_from is NULL
         GROUP BY 1, 2
-        HAVING sum(t1.amount_usd) > cast (10000 as double)
+        HAVING sum(t1.amount_usd) > cast (10000 AS double)
         ) t
     WHERE t.rn = 1
     ORDER BY t.month, t.monthly_trade_amount DESC
 )
 
-, final as (
-    SELECT cast(tx_from as varchar(100)) as address,
+, final AS (
+    SELECT cast(tx_from AS varchar(100)) AS address,
            trader_type
     from active_traders
     union all
-    SELECT cast(tx_from as varchar(100)) as address,
+    SELECT cast(tx_from AS varchar(100)) AS address,
            trader_type
     from Former_traders
     union all
@@ -185,15 +185,15 @@ from (select `from`, date_trunc('month', block_time) as month, count(*) as num_t
     from final_bot_list
 )
 
-select "Multi"                         as blockchain
+select "Multi"                         AS blockchain
      , address
-     , trader_type                     as name
-     , "Dex"                           as category
-     , "whiskey"                       as contributor
+     , trader_type                     AS name
+     , "Dex"                           AS category
+     , "whiskey"                       AS contributor
      , "query"                         AS source
-     , cast('2023-03-05' as timestamp) as created_at
-     , now()                           as updated_at
-     , "usage"                         as label_type
-     , "KYT.DexGuru"                   as model_name
+     , cast('2023-03-05' AS timestamp) AS created_at
+     , now()                           AS updated_at
+     , "usage"                         AS label_type
+     , "KYT.DexGuru"                   AS model_name
 from final
 ;
