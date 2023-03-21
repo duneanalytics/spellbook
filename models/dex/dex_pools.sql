@@ -1,5 +1,5 @@
 {{ config(
-        alias ='trades',
+        alias ='pools',
         post_hook='{{ expose_spells(\'["ethereum", "arbitrum", "polygon"]\',
                                 "sector",
                                 "dex",
