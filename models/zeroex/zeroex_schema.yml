@@ -3,7 +3,7 @@ version: 2
 models:
   - name: zeroex_api_fills_deduped
     meta: 
-      blockchain: ethereum, optimism, polygon, arbitrum, fantom, avalance
+      blockchain: ethereum, optimism, polygon, arbitrum, fantom, avalanche
       sector: dex
       project: uniswap
       contributors: rantumBits, bakabhai993
@@ -83,7 +83,7 @@ models:
         description: "the position of this event log within this transaction"
   - name: zeroex_api_fills 
     meta:
-      blockchain: ethereum
+      blockchain: ethereum, optimism, polygon, arbitrum, fantom, avalanche
       project: zeroex
       contributors: sui414, bakabhai993, hosuke
     config:
