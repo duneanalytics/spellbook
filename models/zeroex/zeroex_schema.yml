@@ -104,8 +104,8 @@ models:
           check_columns:
             - maker
             - taker
-            - token_bought_symbol
-            - token_sold_symbol
+            - taker_symbol
+            - maker_symbol
     columns:
       - *tx_hash
       - &block_number
