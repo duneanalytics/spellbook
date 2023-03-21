@@ -81,7 +81,7 @@ models:
       - &evt_index
         name: evt_index
         description: "the position of this event log within this transaction"
-  - name: zeroex_ethereum_api_fills 
+  - name: zeroex_api_fills 
     meta:
       blockchain: ethereum
       project: zeroex
@@ -117,12 +117,8 @@ models:
         desctiption: "The address of the contract which fired the fill/swap event"
       - *block_time
       - *block_date
-      - &maker
-        name: maker
-        description: "For limit order, the wallet who posted order first; for AMM orders, the liquidity pools; for RFQ orders, the professional market makers."
-      - &taker
-        name: taker
-        description: "User who is taking the order"
+      - *maker
+      - *taker
       - &taker_token
         name: taker_token
         description: "Contract address of the token taker sells"
