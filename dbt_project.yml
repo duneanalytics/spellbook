@@ -329,6 +329,10 @@ models:
       +materialized: table
       +file_format: delta
 
+    time:
+      +schema: time
+      +materialized: table
+
     dao:
       +schema: dao
 
