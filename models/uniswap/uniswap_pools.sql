@@ -27,6 +27,7 @@ FROM (
         , token1
         , creation_block_time
         , creation_block_number
+        , contract_address
     FROM {{ ref(dex_model) }}
     {% if not loop.last %}
     UNION ALL
