@@ -1,7 +1,15 @@
 version: 2
 
 models:
-  - name: labels_bridges
+  - name: labels_bridges    
+    tests:
+    - dbt_utils.unique_combination_of_columns:
+        combination_of_columns:
+          - address
+          - name
+          - category
+          - model_name
+          - blockchain
     meta:
       blockchain: ethereum, fantom
       sector: labels

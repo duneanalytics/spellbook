@@ -1,0 +1,27 @@
+version: 2
+
+sources:
+  - name: ethereum
+    freshness:
+      warn_after: { count: 12, period: hour }
+    tables:
+      - name: creation_traces
+        loaded_at_field: block_time
+        description: "Optimism creation traces"
+        columns:
+          - &block_time
+            name: block_time
+            description: "Timestamp for block event time in UTC"
+          - &block_number
+            name: block_number
+            description: "Block number"
+          - &tx_hash
+            name: tx_hash
+            description: "Transaction hash"
+          - &address
+            name: address
+            description: "Contract address created"
+          - name: from
+            description: "Contract creator address"
+          - name: code
+            description: "Contract code"
