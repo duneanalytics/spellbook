@@ -1,9 +1,9 @@
 {{ config(
         alias ='mints',
-        post_hook='{{ expose_spells(\'["ethereum","solana","bnb"]\',
+        post_hook='{{ expose_spells(\'["ethereum","solana","bnb","optimism","polygon"]\',
                     "sector",
                     "nft",
-                    \'["soispoke","umer_h_adil","hildobby","0xRob"]\') }}')
+                    \'["soispoke","umer_h_adil","hildobby","0xRob", "chuxin"]\') }}')
 }}
 
 {% set nft_models = [
@@ -16,6 +16,11 @@ ref('opensea_mints')
 ,ref('blur_ethereum_mints')
 ,ref('zora_ethereum_mints')
 ,ref('nftb_bnb_mints')
+] %}
+
+{% set native_mints = [
+ ref('nft_ethereum_native_mints')
+,ref('nft_optimism_native_mints')
 ] %}
 
 WITH project_mints as (
@@ -59,6 +64,9 @@ FROM (
 ),
 
 native_mints AS (
+SELECT *
+FROM (
+    {% for native_mint in native_mints %}
     SELECT
         blockchain,
         project,
@@ -87,11 +95,16 @@ native_mints AS (
         tx_from,
         tx_to,
         unique_trade_id
-    FROM {{ ref('nft_ethereum_native_mints') }} n
+    FROM {{ native_mint }} as n
 	LEFT JOIN (select block_number as p_block_number, tx_hash as p_tx_hash from project_mints) p
 	 ON n.block_number = p_block_number
 	 AND n.tx_hash = p_tx_hash
 	WHERE p_tx_hash is null
+    {% if not loop.last %}
+    UNION ALL
+    {% endif %}
+    {% endfor %}
+    )
 )
 
 SELECT * FROM project_mints
