@@ -34,9 +34,9 @@ WITH looksrare_trades AS (
         {% if is_incremental() %}
         WHERE ta.evt_block_time >= date_trunc("day", NOW() - interval '1 week')
         {% endif %}
-    
+
         UNION ALL
-        
+
         SELECT tb.evt_block_time AS block_time
         , tb.tokenId AS token_id
         , tb.amount AS number_of_items
@@ -96,7 +96,7 @@ WITH looksrare_trades AS (
     )
 
 
-SELECT distinct 'ethereum' AS blockchain
+SELECT 'ethereum' AS blockchain
 , 'looksrare' AS project
 , 'v1' AS version
 , lr.block_time
