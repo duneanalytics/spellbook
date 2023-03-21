@@ -5,55 +5,55 @@
      'blockchain': 'avalanche_c',
      'schema': 'fraxswap_avalanche_c',
      'table_name': 'FraxswapPair_evt_Swap',
-     'time_column': 'evt_block_time'}
+     'time_column': 'evt_block_time'},
 
-    ,{'project': 'fraxswap',
+    {'project': 'fraxswap',
      'blockchain': 'bnb',
      'schema': 'fraxswap_bnb',
      'table_name': 'FraxswapPair_evt_Swap',
-     'time_column': 'evt_block_time'}
+     'time_column': 'evt_block_time'},
 
-    ,{'project': 'dfx',
+    {'project': 'dfx',
      'blockchain': 'ethereum',
      'schema': 'dfx_finance_ethereum',
      'table_name': 'Curve_evt_Trade',
-     'time_column': 'evt_block_time'}
+     'time_column': 'evt_block_time'},
 
-    ,{'project': 'hashflow',
+    {'project': 'hashflow',
      'blockchain': 'avalanche_c',
      'schema': 'hashflow_avalanche_c',
      'table_name': 'Pool_evt_Trade',
-     'time_column': 'evt_block_time'}
+     'time_column': 'evt_block_time'},
 
-    ,{'project': 'hashflow',
+    {'project': 'hashflow',
      'blockchain': 'ethereum',
      'schema': 'hashflow_ethereum',
      'table_name': 'pool_evt_trade',
-     'time_column': 'evt_block_time'}
+     'time_column': 'evt_block_time'},
 
-    ,{'project': 'zigzag',
+    {'project': 'zigzag',
      'blockchain': 'arbitrum',
      'schema': 'zigzag_test_v6_arbitrum',
      'table_name': 'zigzag_settelment_call_matchOrders',
-     'time_column': 'call_block_time'}
+     'time_column': 'call_block_time'},
 
-    ,{'project': 'mstable',
+    {'project': 'mstable',
      'blockchain': 'ethereum',
      'schema': 'mstable_ethereum',
      'table_name': 'Masset_evt_Swapped',
-     'time_column': 'evt_block_time'}
+     'time_column': 'evt_block_time'},
 
-    ,{'project': 'Bancor Network',
+    {'project': 'Bancor Network',
      'blockchain': 'ethereum',
      'schema': 'bancornetwork_ethereum',
      'table_name': 'BancorNetwork_v10_evt_Conversion',
-     'time_column': 'evt_block_time'}
+     'time_column': 'evt_block_time'},
 
-    -- ,{'project': 'airswap',
-    --  'blockchain': 'ethereum',
-    --  'schema': 'airswap_ethereum',
-    --  'table_name': 'swap_evt_Swap',
-    --  'time_column': 'evt_block_time'}
+    {'project': 'airswap',
+     'blockchain': 'ethereum',
+     'schema': 'airswap_ethereum',
+     'table_name': 'swap_evt_Swap',
+     'time_column': 'evt_block_time'}
 ] %}
 
 
