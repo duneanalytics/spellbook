@@ -1,6 +1,6 @@
 {{ config(
 	schema = 'perpetual_protocol_v2_optimism',
-	alias ='trades',
+	alias ='perpetual_trades',
 	partition_by = ['block_date'],
 	materialized = 'incremental',
 	file_format = 'delta',
@@ -18,6 +18,7 @@
 WITH perps AS (
 	SELECT
 		p.evt_block_time AS block_time
+		,p.evt_block_number AS block_number
 		,p.baseToken
 		,pp.pool AS market_address
 		,ABS(p.exchangedPositionNotional)/1e18 AS volume_usd
@@ -32,6 +33,7 @@ WITH perps AS (
 
 		,'Perpetual' AS project
 		,'2' AS version
+		,'Perpetual' AS frontend
 		,p.trader
 		,p.exchangedPositionNotional AS volume_raw
 		,p.evt_tx_hash AS tx_hash
@@ -48,7 +50,7 @@ WITH perps AS (
 	{% if is_incremental() %}
 	WHERE p.evt_block_time >= DATE_TRUNC("DAY", NOW() - INTERVAL '1 WEEK')
 	{% endif %}
-	GROUP BY 1, 2, 3, 4, 5, 7, 8, 9, 10, 11, 12, 13
+	GROUP BY 1, 2, 3, 4, 5, 6, 8, 9, 10, 11, 12, 13, 14, 15
 )
 
 SELECT
@@ -65,6 +67,7 @@ SELECT
 	,perps.trade
 	,perps.project
 	,perps.version
+	,perps.frontend
 	,perps.trader
 	,perps.volume_raw
 	,perps.tx_hash
@@ -72,10 +75,12 @@ SELECT
 	,tx.to AS tx_to
 	,perps.evt_index
 FROM perps
-LEFT JOIN {{ ref('tokens_optimism_erc20') }} AS e
+LEFT JOIN {{ ref('tokens_erc20') }} AS e
 	ON perps.baseToken = e.contract_address
+	AND e.blockchain = 'optimism'
 INNER JOIN {{ source('optimism', 'transactions') }} AS tx
 	ON perps.tx_hash = tx.hash
+	AND perps.block_number = tx.block_number
 	{% if not is_incremental() %}
 	AND tx.block_time >= '{{project_start_date}}'
 	{% endif %}
