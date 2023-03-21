@@ -1,4 +1,5 @@
 {{ config(
+    schema = 'tigris_v1_polygon',
     alias = 'events_limit_order',
     partition_by = ['day'],
     materialized = 'incremental',
@@ -31,7 +32,7 @@ pairs as (
 limit_orders AS (
     {% for limit_order_trading_evt in limit_order_trading_evt_tables %}
         SELECT
-            '{{ 'v' + loop.index | string }}' as version,
+            '{{ 'v1.' + loop.index | string }}' as version,
             date_trunc('day', t.evt_block_time) as day,
             t.evt_block_time,
             t.evt_index,

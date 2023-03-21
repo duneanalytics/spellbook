@@ -1,4 +1,5 @@
 {{ config(
+    schema = 'tigris_v1_polygon',
     alias = 'events_liquidate_position',
     partition_by = ['day'],
     materialized = 'incremental',
@@ -21,7 +22,7 @@ liquidate_position_v1 as (
         FROM 
         {{ source('tigristrade_polygon', 'Tradingv1_evt_PositionLiquidated') }} pl 
         INNER JOIN 
-        {{ ref('tigris_polygon_events_open_position') }} op 
+        {{ ref('tigris_v1_polygon_events_open_position') }} op 
             ON pl._id = op.position_id
             AND op.version = 'v1'
         {% if is_incremental() %}
@@ -40,7 +41,7 @@ liquidate_position_v2 as (
         FROM 
         {{ source('tigristrade_polygon', 'TradingV2_evt_PositionLiquidated') }} pl 
         INNER JOIN 
-        {{ ref('tigris_polygon_events_open_position') }} op 
+        {{ ref('tigris_v1_polygon_events_open_position') }} op 
             ON pl._id = op.position_id
             AND op.version = 'v2'
         {% if is_incremental() %}
@@ -59,7 +60,7 @@ liquidate_position_v3 as (
         FROM 
         {{ source('tigristrade_polygon', 'TradingV3_evt_PositionLiquidated') }} pl 
         INNER JOIN 
-        {{ ref('tigris_polygon_events_open_position') }} op 
+        {{ ref('tigris_v1_polygon_events_open_position') }} op 
             ON pl._id = op.position_id
             AND op.version = 'v3'
         {% if is_incremental() %}
@@ -78,7 +79,7 @@ liquidate_position_v4 as (
         FROM 
         {{ source('tigristrade_polygon', 'TradingV4_evt_PositionLiquidated') }} pl 
         INNER JOIN 
-        {{ ref('tigris_polygon_events_open_position') }} op 
+        {{ ref('tigris_v1_polygon_events_open_position') }} op 
             ON pl._id = op.position_id
             AND op.version = 'v4'
         {% if is_incremental() %}
@@ -146,33 +147,33 @@ liquidate_position_v8 as (
         {% endif %}
 )
 
-SELECT *, 'v1' as version FROM liquidate_position_v1
+SELECT *, 'v1.1' as version FROM liquidate_position_v1
 
 UNION ALL
 
-SELECT *, 'v2' as version FROM liquidate_position_v2
+SELECT *, 'v1.2' as version FROM liquidate_position_v2
 
 UNION ALL
 
-SELECT *, 'v3' as version FROM liquidate_position_v3
+SELECT *, 'v1.3' as version FROM liquidate_position_v3
 
 UNION ALL
 
-SELECT *, 'v4' as version FROM liquidate_position_v4
+SELECT *, 'v1.4' as version FROM liquidate_position_v4
 
 UNION ALL
 
-SELECT *, 'v5' as version FROM liquidate_position_v5
+SELECT *, 'v1.5' as version FROM liquidate_position_v5
 
 UNION ALL
 
-SELECT *, 'v6' as version FROM liquidate_position_v6
+SELECT *, 'v1.6' as version FROM liquidate_position_v6
 
 UNION ALL
 
-SELECT *, 'v7' as version FROM liquidate_position_v7
+SELECT *, 'v1.7' as version FROM liquidate_position_v7
 
 UNION ALL
 
-SELECT *, 'v8' as version FROM liquidate_position_v8
+SELECT *, 'v1.8' as version FROM liquidate_position_v8
 ;

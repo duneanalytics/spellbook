@@ -1,15 +1,15 @@
 version: 2
 
 models:
-  - name: tigris_polygon_trades
+  - name: tigris_v1_polygon_trades
     meta:
       blockchain: polygon
-      project: tigris
+      project: tigris_v1
       contributors: Henrystats
     config:
       tags: ['polygon', 'tigris', 'trades', 'perps', 'dex']
     description: >
-        tigirstrades on polygon
+        tigirstrades on polygon v1
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -72,3 +72,68 @@ models:
       - &version
         name: version
         description: "trading contract version"
+      
+  - name: tigris_v2_polygon_trades
+    meta:
+      blockchain: polygon
+      project: tigris_v2
+      contributors: Henrystats
+    config:
+      tags: ['polygon', 'tigris', 'trades', 'perps', 'dex']
+    description: >
+        tigirstrades on polygon v2
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - evt_block_time
+            - evt_tx_hash
+            - position_id 
+            - trade_type
+    columns:
+      - *blockchain
+      - *day
+      - *evt_block_time
+      - *evt_index
+      - *evt_tx_hash
+      - *position_id
+      - *price
+      - *new_margin
+      - *leverage
+      - *volume_usd 
+      - *margin_asset
+      - *pair
+      - *direction
+      - *referral
+      - *trader
+      - *margin_change
+      - *trade_type
+      - *version
+
+  - name: tigris_polygon_trades
+    meta:
+      blockchain: polygon
+      project: tigris
+      contributors: Henrystats
+    config:
+      tags: ['polygon', 'tigris', 'trades', 'perps', 'dex']
+    description: >
+        tigirstrades on polygon across all versions
+    columns:
+      - *blockchain
+      - *day
+      - *evt_block_time
+      - *evt_index
+      - *evt_tx_hash
+      - *position_id
+      - *price
+      - *new_margin
+      - *leverage
+      - *volume_usd 
+      - *margin_asset
+      - *pair
+      - *direction
+      - *referral
+      - *trader
+      - *margin_change
+      - *trade_type
+      - *version

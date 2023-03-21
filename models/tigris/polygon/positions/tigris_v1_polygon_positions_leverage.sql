@@ -1,4 +1,5 @@
 {{ config(
+    schema = 'tigris_v1_polygon',
     alias = 'positions_leverage'
     )
  }}
@@ -13,7 +14,7 @@ leverage as (
         version,
         evt_index
     FROM 
-    {{ ref('tigris_polygon_events_open_position') }}
+    {{ ref('tigris_v1_polygon_events_open_position') }}
 
     UNION 
 
@@ -24,7 +25,7 @@ leverage as (
         version,
         evt_index
     FROM 
-    {{ ref('tigris_polygon_events_modify_margin') }}
+    {{ ref('tigris_v1_polygon_events_modify_margin') }}
 
     UNION 
 
@@ -35,7 +36,7 @@ leverage as (
         version,
         evt_index
     FROM 
-    {{ ref('tigris_polygon_events_limit_order') }}
+    {{ ref('tigris_v1_polygon_events_limit_order') }}
 )
 
 SELECT * FROM leverage

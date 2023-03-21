@@ -1,4 +1,5 @@
 {{ config(
+    schema = 'tigris_v1_polygon',
     alias = 'events_add_margin',
     partition_by = ['day'],
     materialized = 'incremental',
@@ -114,17 +115,17 @@ add_margin_v8 as (
         {% endif %}
 )
 
-SELECT *, 'v5' as version FROM add_margin_v5
+SELECT *, 'v1.5' as version FROM add_margin_v5
 
 UNION ALL
 
-SELECT *, 'v6' as version FROM add_margin_v6
+SELECT *, 'v1.6' as version FROM add_margin_v6
 
 UNION ALL
 
-SELECT *, 'v7' as version FROM add_margin_v7
+SELECT *, 'v1.7' as version FROM add_margin_v7
 
 UNION ALL
 
-SELECT *, 'v8' as version FROM add_margin_v8
+SELECT *, 'v1.8' as version FROM add_margin_v8
 ;
