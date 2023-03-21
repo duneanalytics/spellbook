@@ -1,6 +1,6 @@
 {{ config(
 	schema = 'pika_v1_optimism',
-	alias ='trades',
+	alias ='perpetual_trades',
 	partition_by = ['block_date'],
 	materialized = 'incremental',
 	file_format = 'delta',
@@ -64,6 +64,7 @@ WITH positions AS (
 perps AS (
 	SELECT
 		evt_block_time AS block_time
+		,evt_block_number AS block_number
 		
 		,CASE
 		WHEN productId = 1 OR productId = 16 THEN 'ETH'
@@ -126,6 +127,7 @@ perps AS (
 
 		,'Pika' AS project
 		,version
+		,'Pika' AS frontend
 		,user AS trader
 		,margin * leverage AS volume_raw
 		,evt_tx_hash AS tx_hash
@@ -147,6 +149,7 @@ SELECT
 	,perps.trade
 	,perps.project
 	,perps.version
+	,perps.frontend
 	,perps.trader
 	,perps.volume_raw
 	,perps.tx_hash
@@ -156,6 +159,7 @@ SELECT
 FROM perps
 INNER JOIN {{ source('optimism', 'transactions') }} AS tx
 	ON perps.tx_hash = tx.hash
+	AND perps.block_number = tx.block_number
 	{% if not is_incremental() %}
 	AND tx.block_time >= '{{project_start_date}}'
 	{% endif %}

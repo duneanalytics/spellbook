@@ -6,7 +6,7 @@
     file_format = 'delta',
     incremental_strategy = 'merge',
     unique_key = ['block_time', 'unique_trade_id'],
-    post_hook='{{ expose_spells(\'["polygon"]\'
+    post_hook='{{ expose_spells(\'["polygon"]\',
                               "project",
                               "fractal",
                               \'["springzh"]\') }}'
@@ -153,7 +153,7 @@ SELECT
     CAST(coalesce(s.royalty_fee_amount_raw,0) / power(10, erc.decimals) AS double) AS royalty_fee_amount,
     CAST(coalesce(s.royalty_fee_amount_raw,0) / power(10, erc.decimals) * p.price AS double) AS royalty_fee_amount_usd,
     CAST(coalesce(s.royalty_fee_amount_raw,0) / s.amount_raw * 100 AS double) AS royalty_fee_percentage,
-    CAST(NULL AS double) AS royalty_fee_receive_address,
+    CAST(NULL AS varchar(5)) AS royalty_fee_receive_address,
     CAST(NULL AS string) AS royalty_fee_currency_symbol,
     a.evt_tx_hash || '-' || a.evt_type || '-' || a.evt_index || '-' || a.token_id  AS unique_trade_id
 FROM trades a
