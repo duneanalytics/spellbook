@@ -1,15 +1,12 @@
 {{ config(
-        alias ='trades',
-        post_hook='{{ expose_spells(\'["bnb","ethereum"]\',
-                                "project",
-                                "pancakeswap",
-                                \'["hosuke", "chef_seaweed"]\') }}'
+        alias ='trades'
         )
 }}
 
+
 {% set pancake_models = [
-    ref('pancakeswap_bnb_trades')
-,   ref('pancakeswap_ethereum_trades')
+    ref('pancakeswap_v2_ethereum_amm_trades')
+,   ref('pancakeswap_v2_ethereum_mmpool_trades')
 ] %}
 
 
