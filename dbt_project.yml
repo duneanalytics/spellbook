@@ -888,3 +888,23 @@ models:
 
     method_ids:
       +schema: method_ids
+      
+    coinbase_wallet_quests:
+      +schema: coinbase_wallet_quests
+      optimism:
+        +schema: coinbase_wallet_quests_optimism
+
+    optimism_quests:
+      +schema: optimism_quests
+      optimism:
+        +schema: optimism_quests_optimism
+
+    fractal:
+      +schema: fractal
+      polygon:
+        +schema: fractal_polygon
+
+    rarible:
+      +schema: rarible
+      polygon:
+        +schema: rarible_polygon
