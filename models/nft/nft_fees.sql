@@ -1,6 +1,6 @@
 {{ config(
         alias ='fees',
-        post_hook='{{ expose_spells(\'["ethereum","solana","bnb","optimism","arbitrum"]\',
+        post_hook='{{ expose_spells(\'["ethereum","solana","bnb","optimism","arbitrum","polygon"]\',
                                     "sector",
                                     "nft",
                                     \'["soispoke","0xRob"]\') }}')
@@ -13,8 +13,10 @@
 ,ref('blur_ethereum_fees')
 ,ref('element_fees')
 ,ref('foundation_ethereum_fees')
+,ref('fractal_polygon_fees')
 ,ref('looksrare_ethereum_fees')
 ,ref('magiceden_fees')
+,ref('oneplanet_polygon_fees')
 ,ref('opensea_fees')
 ,ref('sudoswap_ethereum_fees')
 ,ref('superrare_ethereum_fees')
@@ -22,6 +24,7 @@
 ,ref('zora_ethereum_fees')
 ,ref('pancakeswap_bnb_nft_fees')
 ,ref('quix_optimism_fees')
+,ref('rarible_polygon_fees')
 ,ref('nftrade_bnb_fees')
 ,ref('zonic_optimism_fees')
 ,ref('nftb_bnb_fees')

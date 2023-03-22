@@ -9,7 +9,9 @@
 }}
 
 {% set social_models = [
- ref('labels_ens')
+  ref('labels_ens')
+, ref('labels_three_letter_ens_count')
+ ,ref('labels_lens_poster_frequencies')
 ] %}
 
 SELECT *
