@@ -359,7 +359,7 @@ models:
       - &uncapped_payment_eth
         name: uncapped_payment_eth
         description: the (uncapped) payment (in ETH) to be awarded to the winning solver for the batch.
-      - &uncapped_payment_eth
+      - &capped_payment
         name: capped_payment
         description: the payment (in ETH) to be awarded to the winning solver for the batch.
       - &participating_solvers
