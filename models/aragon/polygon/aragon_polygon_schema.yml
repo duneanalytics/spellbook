@@ -13,9 +13,6 @@ models:
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
-            - created_date
-            - blockchain
-            - dao_creator_tool
             - dao
             - dao_wallet_address
     columns:

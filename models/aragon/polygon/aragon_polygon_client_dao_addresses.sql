@@ -4,7 +4,7 @@
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
-    unique_key = ['created_block_time', 'dao_wallet_address', 'blockchain', 'dao', 'dao_creator_tool']
+    unique_key = ['dao_wallet_address', 'dao']
     )
 }}
 
@@ -58,7 +58,7 @@ SELECT
     'polygon' as blockchain, 
     'aragon' as dao_creator_tool, 
     ad.dao, 
-    gw.dao_wallet_address, 
+    COALESCE(gw.dao_wallet_address, '') as dao_wallet_address, 
     ad.created_block_time,
     TRY_CAST(ad.created_date as DATE) as created_date, 
     'aragon_client' as product
