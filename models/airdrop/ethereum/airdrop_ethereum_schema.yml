@@ -13,6 +13,8 @@ models:
     columns:
       - name: address
         description: "Eligible address for $OP airdrop"
+        tests:
+          - unique
       - name: lp_tokens
         description: "Hop protocol liquidity providers"
       - name: hop_user_tokens
