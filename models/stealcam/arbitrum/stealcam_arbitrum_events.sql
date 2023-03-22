@@ -36,8 +36,8 @@ SELECT 'arbitrum' AS blockchain
 , sc.value/POWER(10, 18) AS amount_original
 , pu.price*sc.value/POWER(10, 18) AS amount_usd
 , sc.contract_address AS project_contract_address
-, NULL AS aggregator_name
-, NULL AS aggregator_address
+, CAST(NULL AS string) AS aggregator_name
+, CAST(NULL AS string) AS aggregator_address
 , sc.evt_tx_hash AS tx_hash
 , at.from AS tx_from
 , at.to AS tx_to
