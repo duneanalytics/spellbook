@@ -90,8 +90,8 @@ v3_fills_no_bridge AS (
             evt_block_time                                                             AS block_time,
             fills.makerAddress                                                         AS maker,
             fills.takerAddress                                                         AS taker,
-            SUBSTRING(fills.takerAssetData, 34, 40)                                    AS taker_token,
-            SUBSTRING(fills.makerAssetData, 34, 40)                                    AS maker_token,
+            '0x' || SUBSTRING(fills.takerAssetData, 35, 40)                            AS taker_token,
+            '0x' || SUBSTRING(fills.makerAssetData, 35, 40)                            AS maker_token,
             fills.takerAssetFilledAmount                                               AS taker_token_amount_raw,
             fills.makerAssetFilledAmount                                               AS maker_token_amount_raw,
             'Fill'                                                                     AS type,
@@ -153,7 +153,7 @@ v4_limit_fills_no_bridge AS (
             'LimitOrderFilled' AS type,
             COALESCE(zeroex_tx.affiliate_address, fills.feeRecipient) AS affiliate_address,
             (zeroex_tx.tx_hash IS NOT NULL) AS swap_flag,
-            (fills.feeRecipient = '0x9b858Be6E3047D88820f439B240deaC2418a2551') AS matcha_limit_order_flag
+            (fills.feeRecipient = '0x9b858be6e3047d88820f439b240deac2418a2551') AS matcha_limit_order_flag
     FROM {{ source('zeroex_ethereum', 'ExchangeProxy_evt_LimitOrderFilled') }} fills
     LEFT JOIN zeroex_tx ON zeroex_tx.tx_hash = fills.evt_tx_hash
 
