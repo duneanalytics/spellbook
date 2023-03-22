@@ -1,23 +1,15 @@
 version: 2
 
 models:
-  - name: labels_dao_framework
-    tests:
-    - dbt_utils.unique_combination_of_columns:
-        combination_of_columns:
-          - address
-          - name
-          - category
-          - model_name
-          - blockchain
+  - name: labels_optimism_optimism_quest_participants
     meta:
-      blockchain: ethereum, polygon, gnosis
+      blockchain: optimism
       sector: labels
-      project: dao
-      contibutors: henrystats, hosuke
+      category: quest_participants
+      contributors: msilb7
     config:
-      tags: ['labels', 'ethereum', 'gnosis', 'polygon', 'dao']
-    description: "dao addresses and wallet addresses from dao addresses spell"
+      tags: ['labels', 'quests','coinbase','optimism']
+    description: "DEX traders query labels across chains"
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -25,18 +17,17 @@ models:
             - name
             - category
             - blockchain
+    
     columns:
       - &blockchain
         name: blockchain
         description: "Blockchain"   
       - &address
         name: address
-        description: "DAO Address"
-        tests:
-          - unique
+        description: "Address"
       - &name
         name: name
-        description: "custom name determined by tool used to create dao"
+        description: "Label name"
       - &category
         name: category
         description: "Label category"
@@ -45,7 +36,7 @@ models:
         description: "Wizard(s) contributing to labels"
       - &source
         name: source
-        description: "How were labels generated (could be static or query)"
+        description: "How were labels generated (query)"
       - &created_at
         name: created_at
         description: "When were labels created"
