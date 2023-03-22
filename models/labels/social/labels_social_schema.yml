@@ -8,7 +8,7 @@ models:
       category: social
       contributors: ilemi
     config:
-      tags: ['labels', 'social','ens']
+      tags: ['labels', 'social','ens','lens']
     description: "all social labels"
     columns:
       - &blockchain
