@@ -1,16 +1,16 @@
 version: 2
 
 models:
-  - name: gmx_trades
-    meta:
-      blockchain: arbitrum, avalanche_c
+  - name: zeroex_api_fills_deduped
+    meta: 
+      blockchain: ethereum, optimism, polygon, arbitrum, fantom, avalance
       sector: dex
-      project: gmx
-      contributors: Henrystats
+      project: uniswap
+      contributors: rantumBits, bakabhai993
     config:
-      tags: ['arbitrum', 'avalanche_c', 'gmx','trades', 'swaps', 'dex', 'henrystats','cross-chain']
+      tags: ['ethereum', 'optimism', 'polygon', 'uniswap','trades', 'dex', 'jeff-dude','cross-chain']
     description: >
-        GMX trades on all chains across all contracts and versions. This table will load dex trades downstream.
+        Zeroex API on all chains across all contracts and versions. This table will load dex trades downstream.
     columns:
       - &blockchain
         name: blockchain
@@ -81,57 +81,3 @@ models:
       - &evt_index
         name: evt_index
         description: "the position of this event log within this transaction"
-
-  - name: gmx_perpetual_trades
-    meta:
-      blockchain: avalanche_c, arbitrum
-      sector: perpetual
-      project: gmx
-      contributors: Henrystats
-    config:
-      tags: ['avalanche_c', 'arbitrum', 'gmx', 'perpetuals', 'perps']
-    description: >
-      gmx perpetuals trades/swaps on avalanche_c & arbitrum
-    columns:
-      - *blockchain
-      - *block_date
-      - *block_time
-      - &virtual_asset
-        name: virtual_asset
-        description: "How the protocol represents the underlying asset"
-      - &underlying_asset
-        name: underlying_asset
-        description: "The real underlying asset that is represented in the swap"
-      - &market
-        name: market
-        description: "The futures market involved in the transaction"
-      - &market_address
-        name: market_address
-        description: "Contract address of the market / project contract address"
-      - &volume_usd
-        name: volume_usd
-        description: "The size of the position taken for the swap in USD; already in absolute value and decimal normalized"
-      - &fee_usd
-        name: fee_usd
-        description: "The fees charged to the user for the swap in USD"
-      - &margin_usd
-        name: margin_usd
-        description: "The amount of collateral/margin used in a trade in USD"
-      - &trade
-        name: trade
-        description: "Indicates the trade's direction whether a short, long, of if a position is being closed"
-      - *project
-      - *version
-      - &frontend
-        name: frontend
-        description: "The frontend protocol/project where the specific swap was executed; built on top of the 'project' and defaults to the 'project' if no other frontend is specified"
-      - &trader
-        name: trader
-        description: "The address which made the swap in the protocol"
-      - &volume_raw
-        name: volume_raw
-        description: "The size of the position in raw form"
-      - *tx_hash
-      - *tx_from
-      - *tx_to
-      - *evt_index
