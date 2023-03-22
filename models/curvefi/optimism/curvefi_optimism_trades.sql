@@ -111,42 +111,6 @@ SELECT
         {% if is_incremental() %}
         AND t.evt_block_time >= date_trunc('day', now() - interval '1 week')
         {% endif %}
-
-        UNION ALL
-
-        --BasicPoolSwap --to replace with decoded contract eventually
-        --example https://optimistic.etherscan.io/address/0x3da3153e26a230d918bb9f9428a8d60349b73379#events
-        SELECT
-            'basic' as pool_type,
-            block_time,
-            block_number,
-            '0x' || substring(l.topic2, 27,40) AS taker,
-            '' AS maker,
-            conv(substring(data,3+64*3,64),16,10) as token_bought_amount_raw, --2nd bought
-            conv(substring(data,3+64*1,64),16,10) as token_sold_amount_raw, --1st sold
-            contract_address AS project_contract_address,
-            l.tx_hash,
-            '' AS trace_address,
-            index AS evt_index,
-            conv(substring(data,3+64*2,64),16,10) AS bought_id,
-            conv(substring(data,3+64*0,64),16,10) AS sold_id
-        FROM {{ source('optimism', 'logs') }} l
-        INNER JOIN {{ ref('curvefi_optimism_pools') }} ta
-            ON l.contract_address = ta.pool
-            AND conv(substring(data,3+64*3,64),16,10) = ta.tokenid --t.bought_id = ta.tokenid
-            AND ta.version = 'Basic Pool'
-        INNER JOIN {{ ref('curvefi_optimism_pools') }} tb
-            ON l.contract_address = tb.pool
-            AND conv(substring(data,3+64*1,64),16,10) = tb.tokenid --t.sold_id = tb.tokenid
-            AND tb.version = 'Basic Pool'
-        WHERE l.topic1 = '0x8b3e96f2b889fa771c53c981b40daf005f63f637f1869f707052d15a3dd97140'
-        AND l.topic2 IS NOT NULL AND l.data IS NOT NULL
-        {% if is_incremental() %}
-        AND l.block_time >= date_trunc('day', now() - interval '1 week')
-        {% endif %}
-        {% if not is_incremental() %}
-        AND l.block_time >= '{{project_start_date}}'
-        {% endif %}
     ) cp
     INNER JOIN {{ ref('curvefi_optimism_pools') }} ta
         ON cp.project_contract_address = ta.pool
