@@ -212,10 +212,10 @@ from (select t1.`from`, date_trunc('month', t1.block_time) AS month, count(*) AS
     from final_bot_list
 )
 
-select "Multi"                         AS blockchain
+select "multi"                         AS blockchain
      , address
      , trader_type                     AS name
-     , "Dex"                           AS category
+     , "dex"                           AS category
      , "whiskey"                       AS contributor
      , "query"                         AS source
      , cast('2023-03-05' AS timestamp) AS created_at
