@@ -133,6 +133,13 @@ sources:
           - name: tx_hash
           - name: data
           - name: order_uid
+      - name: raw_batch_rewards
+        columns:
+          - name: block_number
+          - name: block_deadline
+          - name: solver
+          - name: tx_hash
+          - name: data
   - name: cow_protocol_ethereum
     description: "Ethereum decoded tables related to CoW Protocol contract's"
     tables:
