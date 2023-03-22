@@ -88,7 +88,7 @@ SELECT
             'basic' as pool_type,
             block_time,
             block_number,
-            substring(topic2,25,40) AS taker,
+            '0x' || substring(l.topic2, 27,40) AS taker,
             '' AS maker,
             conv(substring(data,3+64*3,64),16,10) as token_bought_amount_raw, --2nd bought
             conv(substring(data,3+64*1,64),16,10) as token_sold_amount_raw, --1st sold
