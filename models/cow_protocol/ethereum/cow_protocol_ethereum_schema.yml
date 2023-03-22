@@ -352,9 +352,7 @@ models:
       - &surplus
         name: surplus
         description: Total surplus achieved (in ETH) for the batch. Zero when tx_hash is Null.
-      - &fee
-        name: fee
-        description: total fee (in ETH) collected for the batch. Zero when tx_hash is Null.
+      - *fee
       - &execution_cost
         name: execution_cost
         description: execution cost of the batch (can also be acquired from `ethereum.transactions`)
