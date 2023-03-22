@@ -26,7 +26,7 @@ WITH initial_allocation_percentages AS (
     --19% Core Contributors
       ,(0.19, 'Core Contributors', 'Core Contributors')
     --17% Core Contributors
-      ,(0.17, 'Sugar Xaddies (Investors)', 'Sugar Xaddies (Investors)')
+      ,(0.17, 'Investors', 'Investors')
   ) sup (pct_supply_allocation, allocation_category, allocation_subcategory)
 )
 
