@@ -50,15 +50,41 @@ with
       distinct t1.taker as address
     FROM
       (
-        SELECT * FROM {{ref('dex_trades')}}
+        SELECT taker,
+               tx_hash,
+               blockchain,
+               token_sold_address,
+               token_bought_address,
+               evt_index
+        FROM {{ref('dex_trades')}}
+
         UNION ALL
-        SELECT * FROM {{ref('dex_aggregator_trades')}}
+
+        SELECT taker,
+               tx_hash,
+               blockchain,
+               token_sold_address,
+               token_bought_address,
+               evt_index
+        FROM {{ref('dex_aggregator_trades')}}
       ) t1
       INNER JOIN
       (
-        SELECT * FROM {{ref('dex_trades')}}
+        SELECT taker,
+               tx_hash,
+               blockchain,
+               token_sold_address,
+               token_bought_address,
+               evt_index
+        FROM {{ref('dex_trades')}}
         UNION ALL
-        SELECT * FROM {{ref('dex_aggregator_trades')}}
+        SELECT taker,
+               tx_hash,
+               blockchain,
+               token_sold_address,
+               token_bought_address,
+               evt_index
+        FROM {{ref('dex_aggregator_trades')}}
       ) t2 ON t1.tx_hash = t2.tx_hash
     WHERE
       t1.blockchain = 'ethereum'
