@@ -1,15 +1,15 @@
 version: 2
 
 models:
-  - name: dao_addresses_polygon_syndicate
+  - name: aragon_gnosis_client_dao_addresses
     meta:
-      blockchain: polygon
-      project: syndicate
+      blockchain: gnosis
+      project: aragon
       contributors: Henrystats 
     config:
-      tags: [ 'polygon', 'daos', 'syndicate', 'dao creator tools', 'henrystats' ]
+      tags: [ 'gnosis', 'dao', 'aragon', 'dao creator tools', 'Henrystats', 'Aragon Client']
     description: >
-      wallet addresses of daos created on syndicate 
+      wallet addresses of daos created on aragon client
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -21,9 +21,8 @@ models:
     columns:
       - &blockchain
         name: blockchain
-        description: "Blockchain which the DAO is deployed"
-      - &dao_creator_tool
-        name: dao_creator_tool
+        description: "blockchain which the DAO is deployed"
+      - name: dao_creator_tool
         description: "Name of creator tool used to create DAO"
         tests:
           - dao_addresses_creator_tool:
@@ -40,21 +39,26 @@ models:
       - &created_block_time
         name: created_block_time
         description: "UTC event block time of DAO creation"
+      - &product
+        name: product
+        description: "Aragon Product used to deploy DAO"
 
-  - name: dao_addresses_polygon
+  - name: aragon_gnosis_dao_addresses
     meta:
-      blockchain: polygon
-      sector: dao
+      blockchain: gnosis
+      project: aragon
       contributors: Henrystats 
     config:
-      tags: [ 'polygon', 'daos', 'aragon', 'syndicate', 'dao creator tools', 'henrystats' ]
+      tags: [ 'gnosis', 'dao', 'aragon', 'dao creator tools', 'Henrystats']
     description: >
-      wallet addresses of daos created on polygon across all dao creator tools
+      wallet addresses of daos created across all aragon products
     columns:
       - *blockchain
-      - name: dao_creator_tool
+      - &dao_creator_tool
+        name: dao_creator_tool
         description: "Name of creator tool used to create DAO"
       - *dao
       - *dao_wallet_address
       - *created_date
       - *created_block_time
+      - *product

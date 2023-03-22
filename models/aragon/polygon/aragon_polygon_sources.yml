@@ -1,0 +1,8 @@
+version: 2
+
+sources:
+  - name: aragon_polygon
+    description: "aragon dao deployed decoded event"
+    tables:
+      - name: dao_factory_evt_DeployDAO
+        loaded_at_field: evt_block_time

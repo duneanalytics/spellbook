@@ -1,15 +1,15 @@
 version: 2
 
 models:
-  - name: dao_addresses_ethereum_daohaus
+  - name: aragon_ethereum_client_dao_addresses
     meta:
       blockchain: ethereum
-      project: daohaus
+      project: aragon
       contributors: Henrystats 
     config:
-      tags: [ 'ethereum', 'dao', 'daohaus', 'dao creator tools', 'Henrystats' ]
+      tags: [ 'ethereum', 'dao', 'aragon', 'dao creator tools', 'Henrystats', 'Aragon Client']
     description: >
-      wallet addresses of daos created on daohaus
+      wallet addresses of daos created on aragon client
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -22,8 +22,7 @@ models:
       - &blockchain
         name: blockchain
         description: "blockchain which the DAO is deployed"
-      - &dao_creator_tool
-        name: dao_creator_tool
+      - name: dao_creator_tool
         description: "Name of creator tool used to create DAO"
         tests:
           - dao_addresses_creator_tool:
@@ -40,16 +39,19 @@ models:
       - &created_block_time
         name: created_block_time
         description: "UTC event block time of DAO creation"
+      - &product
+        name: product
+        description: "Aragon Product used to deploy DAO"
 
-  - name: dao_addresses_ethereum_zodiac
+  - name: aragon_ethereum_app_dao_addresses
     meta:
       blockchain: ethereum
-      project: zodiac
+      project: aragon
       contributors: Henrystats 
     config:
-      tags: [ 'ethereum', 'dao', 'zodiac', 'dao creator tools', 'Henrystats' ]
+      tags: [ 'ethereum', 'dao', 'aragon', 'dao creator tools', 'Henrystats', 'Aragon App']
     description: >
-      wallet addresses of daos created on zodiac 
+      wallet addresses of daos created on aragon app 
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -58,53 +60,35 @@ models:
             - dao_creator_tool
             - dao
             - dao_wallet_address
-    columns:
-      - *blockchain
-      - *dao_creator_tool
-      - *dao
-      - *dao_wallet_address
-      - *created_date
-      - *created_block_time
-
-  - name: dao_addresses_ethereum_syndicate
-    meta:
-      blockchain: ethereum
-      project: syndicate
-      contributors: Henrystats 
-    config:
-      tags: [ 'ethereum', 'dao', 'syndicate', 'dao creator tools', 'Henrystats' ]
-    description: >
-      wallet addresses of daos created on syndicate 
-    tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - created_date
-            - blockchain
-            - dao_creator_tool
-            - dao
-            - dao_wallet_address
-    columns:
-      - *blockchain
-      - *dao_creator_tool
-      - *dao
-      - *dao_wallet_address
-      - *created_date
-      - *created_block_time
-
-  - name: dao_addresses_ethereum
-    meta:
-      blockchain: ethereum
-      sector: dao
-      contributors: Henrystats 
-    config:
-      tags: [ 'ethereum', 'dao', 'aragon', 'zodiac', 'daohaus', 'dao creator tools', 'Henrystats' ]
-    description: >
-      wallet addresses of daos created on ethereum across all dao creator tools
     columns:
       - *blockchain
       - name: dao_creator_tool
+        description: "Name of creator tool used to create DAO"
+        tests:
+          - dao_addresses_creator_tool:
+              dao_addresses_seed: ref('dao_addresses_seed')
+      - *dao
+      - *dao_wallet_address
+      - *created_date
+      - *created_block_time
+      - *product
+
+  - name: aragon_ethereum_dao_addresses
+    meta:
+      blockchain: ethereum
+      project: aragon
+      contributors: Henrystats 
+    config:
+      tags: [ 'ethereum', 'dao', 'aragon', 'dao creator tools', 'Henrystats']
+    description: >
+      wallet addresses of daos created across all aragon products
+    columns:
+      - *blockchain
+      - &dao_creator_tool
+        name: dao_creator_tool
         description: "Name of creator tool used to create DAO"
       - *dao
       - *dao_wallet_address
       - *created_date
       - *created_block_time
+      - *product
