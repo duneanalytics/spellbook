@@ -1,20 +1,21 @@
 {{ config(
-	alias = 'trades',
+	alias = 'perpetual_trades',
     post_hook='{{ expose_spells(\'["optimism"]\',
                                 "project",
-                                "perpetual_protocol",
+                                "synthetix",
                                 \'["msilb7", "drethereum", "rplust"]\') }}'
 	)
 }}
 
-{% set perpetual_trade_models = [
- ref('perpetual_protocol_optimism_trades')
+{% set synthetix_perpetual_trade_models = [
+ ref('synthetix_optimism_perpetual_trades')
 ] %}
 
 SELECT *
-FROM (
-    {% for perpetual_model in perpetual_trade_models %}
-    SELECT
+FROM
+(
+	{% for synthetix_perpetual_model in synthetix_perpetual_trade_models %}
+	SELECT
 		blockchain
 		,block_date
 		,block_time
@@ -28,14 +29,15 @@ FROM (
 		,trade
 		,project
 		,version
+		,frontend
 		,trader
 		,volume_raw
 		,tx_hash
 		,tx_from
 		,tx_to
 		,evt_index
-    FROM {{ perpetual_model }}
-    {% if not loop.last %}
+	FROM {{ synthetix_perpetual_model }}
+	{% if not loop.last %}
     UNION ALL
     {% endif %}
     {% endfor %}

@@ -151,6 +151,11 @@ models:
       bnb:
         +schema: nomiswap_bnb
 
+    maverick:
+      +schema: maverick
+      ethereum:
+        +schema: maverick_ethereum
+
     sushiswap:
       +schema: sushiswap
       ethereum:

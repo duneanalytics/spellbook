@@ -20,6 +20,7 @@ perp_events as (
     -- decrease position
     SELECT
         evt_block_time as block_time, 
+        evt_block_number as block_number, 
         'decrease_position' as trade_data, 
         indexToken as virtual_asset,
         collateralToken as underlying_asset,
@@ -46,6 +47,7 @@ perp_events as (
     -- increase position  
     SELECT
         evt_block_time as block_time, 
+        evt_block_number as block_number, 
         'increase_position' as trade_data, 
         indexToken as virtual_asset,
         collateralToken as underlying_asset,
@@ -72,6 +74,7 @@ perp_events as (
     -- liquidate position 
     SELECT
         evt_block_time as block_time, 
+        evt_block_number as block_number, 
         'liquidate_position' as trade_data, 
         indexToken as virtual_asset,
         collateralToken as underlying_asset,
@@ -98,6 +101,7 @@ SELECT
     'avalanche_c' as blockchain, 
     'gmx' as project, 
     '1' as version, 
+    'gmx' as frontend,
     date_trunc('day', pe.block_time) as block_date, 
     pe.block_time, 
     COALESCE(erc20a.symbol, pe.virtual_asset) as virtual_asset, 
@@ -125,6 +129,7 @@ FROM
 perp_events pe 
 INNER JOIN {{ source('avalanche_c', 'transactions') }} txns 
     ON pe.tx_hash = txns.hash
+    AND pe.block_number = txns.block_number
     {% if not is_incremental() %}
     AND txns.block_time >= '{{project_start_date}}'
     {% endif %}

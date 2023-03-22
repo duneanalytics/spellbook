@@ -1,6 +1,6 @@
 {{ config(
     schema = 'pancakeswap_v2_ethereum',
-    alias = 'trades',
+    alias = 'amm_trades',
     partition_by = ['block_date'],
     materialized = 'incremental',
     file_format = 'delta',
@@ -42,7 +42,7 @@ WITH dexs AS
 )
 
 SELECT
-    'ethereum'                                                        AS blockchain
+    'ethereum'                                                   AS blockchain
      , 'pancakeswap'                                             AS project
      , '2'                                                       AS version
      , TRY_CAST(date_trunc('DAY', dexs.block_time) AS date)      AS block_date
