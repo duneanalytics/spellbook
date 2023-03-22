@@ -608,6 +608,8 @@ models:
       +schema: clipper
       ethereum:
         +schema: clipper_ethereum
+      arbitrum:
+        +schema: clipper_arbitrum
 
     reaper:
       +schema: reaper
