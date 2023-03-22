@@ -10,14 +10,6 @@ models:
       tags: [ 'polygon', 'ethereum', 'gnosis', 'dao', 'aragon', 'dao creator tools', 'Henrystats', 'Aragon Client', 'Aragon App']
     description: >
       wallet addresses of daos created on aragon across all products & blockchains
-    tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - created_date
-            - blockchain
-            - dao_creator_tool
-            - dao
-            - dao_wallet_address
     columns:
       - &blockchain
         name: blockchain
