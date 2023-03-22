@@ -209,35 +209,43 @@ select b.wallet,
        s.tx_hash                                                                               sell_tx_hash,
        b.amount_usd                                                                            buy_amount_usd,
        s.amount_usd                                                                            sell_amount_usd,
-       coalesce(floors1.avg_floor_price * p.price, floors2.price_p5_eth * p.price, 0)          floor_usd,
-       coalesce(s.amount_usd, floors1.avg_floor_price * p.price, floors2.price_p5_eth * p.price, 0) +
-       b.amount_usd                                                                            usd_profit,
        b.eth_amount                                                                            buy_amount_eth,
        -- Sell amount else current floor (for calculating ROI)
        s.eth_amount                                                                            sell_amount_eth,
-       coalesce(floors1.avg_floor_price, floors2.price_p5_eth, 0)                              floor_eth,
-       coalesce(s.eth_amount, floors1.avg_floor_price, floors2.price_p5_eth, 0)                sell_amount_eth_or_floor,
-       case when s.wallet is not null then s.eth_amount + b.eth_amount else 0 end              eth_profit_realized,
-       case
-           when s.wallet is null then coalesce(floors1.avg_floor_price, floors2.price_p5_eth, 0) + b.eth_amount
-           else 0 end                                                                          eth_profit_unrealized,
-       coalesce(s.eth_amount, floors1.avg_floor_price, floors2.price_p5_eth, 0) + b.eth_amount eth_profit
+       case when s.wallet is not null then s.eth_amount + b.eth_amount else 0 end              eth_profit_realized
 from buys_and_sells_w_index b
 left join buys_and_sells_w_index s
     on b.wallet = s.wallet
     and b.nft_contract_address = s.nft_contract_address
     and b.token_id = s.token_id
     and b.nft_tx_index + 1 = s.nft_tx_index
-left join reservoir_floors_latest_avg floors1
-    on cast(floors1.contract as string) = cast(b.nft_contract_address as string)
-left join eth_collection_stats_latest_floor floors2
-    on cast(floors2.nft_contract_address as string) = cast(b.nft_contract_address as string)
-LEFT JOIN lastest_eth_price_usd p
 where 1 = 1
   and b.trade_type = 'buy'
   and coalesce(s.trade_type, 'sell') = 'sell'
 order by b.block_time desc
 ),
+
+--- Hacky split to fix bloom size error 
+all_trades_profit_and_unrealized_profit_w_floors as 
+
+    (select 
+        b.*,
+        coalesce(floors1.avg_floor_price * p.price, floors2.price_p5_eth * p.price, 0)          floor_usd,
+               coalesce(sell_amount_usd, floors1.avg_floor_price * p.price, floors2.price_p5_eth * p.price, 0) +
+               buy_amount_usd                                                                            usd_profit,
+        
+        coalesce(floors1.avg_floor_price, floors2.price_p5_eth, 0)                              floor_eth,
+        coalesce(sell_amount_eth, floors1.avg_floor_price, floors2.price_p5_eth, 0)                sell_amount_eth_or_floor,
+        case
+           when nft_was_sold = 0 then coalesce(floors1.avg_floor_price, floors2.price_p5_eth, 0) + buy_amount_eth
+           else 0 end                                                                          eth_profit_unrealized,
+        coalesce(sell_amount_eth, floors1.avg_floor_price, floors2.price_p5_eth, 0) + buy_amount_eth eth_profit
+    FROM all_trades_profit_and_unrealized_profit b
+    left join reservoir_floors_latest_avg floors1
+        on cast(floors1.contract as string) = cast(b.nft_contract_address as string)
+    left join eth_collection_stats_latest_floor floors2
+        on cast(floors2.nft_contract_address as string) = cast(b.nft_contract_address as string)
+    CROSS JOIN lastest_eth_price_usd p),
 
 aggregated_wallet_trading_stats as (
 select wallet,
@@ -272,7 +280,7 @@ select wallet,
        count(distinct date_trunc('week', buy_block_time))                                    unique_weeks_buying,
        count(distinct date_trunc('week', sell_block_time))                                   unique_weeks_selling
 
-from all_trades_profit_and_unrealized_profit
+from all_trades_profit_and_unrealized_profit_w_floors
 group by 1
 )
 
