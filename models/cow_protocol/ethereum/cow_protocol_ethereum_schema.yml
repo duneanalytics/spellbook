@@ -338,7 +338,7 @@ models:
       - *block_number
       - &block_deadline
         name: block_deadline
-        description: latest block for which winning solver must submit their solution. After this block, the payment is ZERO.
+        description: Latest block for which winning solver must submit their solution. After this block, the payment is ZERO.
       - &winning_solver
         name: winning_solver
         description: Solver which won the auction (i.e. the right to execute the batch)
@@ -355,13 +355,13 @@ models:
       - *fee
       - &execution_cost
         name: execution_cost
-        description: execution cost of the batch (can also be acquired from `ethereum.transactions`)
+        description: Execution cost of the batch (can also be acquired from `ethereum.transactions`)
       - &uncapped_payment_eth
         name: uncapped_payment_eth
-        description: the (uncapped) payment (in ETH) to be awarded to the winning solver for the batch.
+        description: The (uncapped) payment (in ETH) to be awarded to the winning solver for the batch.
       - &capped_payment
         name: capped_payment
-        description: the payment (in ETH) to be awarded to the winning solver for the batch.
+        description: The payment (in ETH) to be awarded to the winning solver for the batch.
       - &participating_solvers
         name: participating_solvers
-        description: an array of solvers who submitted a valid score/solution for the batch. Used to compute participation/secondary rewards
+        description: An array of solvers who submitted a valid score/solution for the batch. Used to compute participation/secondary rewards
