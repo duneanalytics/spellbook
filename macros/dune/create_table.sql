@@ -2,7 +2,7 @@
 {% macro properties(properties, relation) %}
   {% do log(relation, info=true) %}
 
-  {% set s3_bucket = var('DBT_ENV_CUSTOM_ENV_S3_BUCKET', 'trino-dev-datasets-118330671040') %}
+  {% set s3_bucket = var('DBT_ENV_CUSTOM_ENV_S3_BUCKET', 'local') %}
   {%- if properties is not none -%}
       WITH (
           location = 's3a://{{s3_bucket}}/hive/{{relation.schema}}/{{relation.identifier | replace("__dbt_tmp","")}}'
