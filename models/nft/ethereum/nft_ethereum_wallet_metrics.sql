@@ -232,7 +232,7 @@ left join reservoir_floors_latest_avg floors1
     on cast(floors1.contract as string) = cast(b.nft_contract_address as string)
 left join eth_collection_stats_latest_floor floors2
     on cast(floors2.nft_contract_address as string) = cast(b.nft_contract_address as string)
-CROSS JOIN lastest_eth_price_usd p
+LEFT JOIN lastest_eth_price_usd p
 where 1 = 1
   and b.trade_type = 'buy'
   and coalesce(s.trade_type, 'sell') = 'sell'
