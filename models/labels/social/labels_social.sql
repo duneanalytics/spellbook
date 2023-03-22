@@ -10,6 +10,7 @@
 
 {% set social_models = [
  ref('labels_ens')
+ ,ref('labels_lens_poster_frequencies')
 ] %}
 
 SELECT *
