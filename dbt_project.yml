@@ -151,6 +151,11 @@ models:
       bnb:
         +schema: nomiswap_bnb
 
+    maverick:
+      +schema: maverick
+      ethereum:
+        +schema: maverick_ethereum
+
     sushiswap:
       +schema: sushiswap
       ethereum:
@@ -872,6 +877,14 @@ models:
 
     method_ids:
       +schema: method_ids
+    
+    coinbase_wallet_quests:
+      optimism:
+        +schema: coinbase_wallet_quests_optimism
+    
+    optimism_quests:
+      optimism:
+        +schema: optimism_quests_optimism
 
     fractal:
       +schema: fractal

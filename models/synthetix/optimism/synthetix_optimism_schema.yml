@@ -1,7 +1,7 @@
 version: 2
 
 models:
-  - name: synthetix_optimism_trades
+  - name: synthetix_v1_optimism_perpetual_trades
     meta:
       blockchain: optimism
       sector: perpetual
@@ -10,15 +10,20 @@ models:
     config:
       tags: ['optimism', 'synthetix', 'kwenta', 'perpetuals', 'perps']
     description: >
-      Kwenta/Synthetix perpetuals trades/swaps on Optimism
+      Synthetix perpetuals trades/swaps on Optimism via Kwenta and Decentrex
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
-            - block_time
+            - block_date
+            - blockchain
             - project
             - version
             - tx_hash
             - evt_index
+      - check_perpetuals_seed:
+          blockchain: optimism
+          project: Synthetix
+          version: 1
     columns:
       - &blockchain
         name: blockchain
@@ -58,16 +63,19 @@ models:
         description: "Indicates the trade's direction whether a short, long, of if a position is being closed"
       - &project
         name: project
-        description: "The protocol/project where the swap took place"
+        description: "The underlying protocol/project where the swap took place"
       - &version
         name: version
         description: "The version of the protocol/project"
+      - &frontend
+        name: frontend
+        description: "The frontend protocol/project where the specific swap was executed; built on top of the 'project' and defaults to the 'project' if no other frontend is specified"
       - &trader
         name: trader
         description: "The address which made the swap in the protocol"
       - &volume_raw
         name: volume_raw
-        description: "The size of the position in raw form, 18 decimals for Synthetix and Perpetual, 8 decimals for Pika"
+        description: "The size of the position in raw form"
       - &tx_hash
         name: tx_hash
         description: "The hash of the transaction"
@@ -80,6 +88,89 @@ models:
       - &evt_index
         name: evt_index
         description: "Event index number"
+  
+  - name: synthetix_v2_optimism_perpetual_trades
+    meta:
+      blockchain: optimism
+      sector: perpetual
+      project: synthetix
+      contributors: rplust
+    config:
+      tags: ['optimism', 'synthetix', 'kwenta', 'decentrex', 'perpetuals', 'perps']
+    description: >
+      Synthetix perpetuals trades/swaps on Optimism via Kwenta and Decentrex
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_date
+            - blockchain
+            - project
+            - version
+            - tx_hash
+            - evt_index
+      - check_perpetuals_seed:
+          blockchain: optimism
+          project: Synthetix
+          version: 2
+    columns:
+      - *blockchain
+      - *block_time
+      - *virtual_asset
+      - *underlying_asset
+      - *market
+      - *market_address
+      - *volume_usd
+      - *fee_usd
+      - *margin_usd
+      - *trade
+      - *project
+      - *version
+      - *frontend
+      - *trader
+      - *volume_raw
+      - *tx_hash
+      - *tx_from
+      - *tx_to
+      - *evt_index
+
+  - name: synthetix_optimism_perpetual_trades
+    meta:
+      blockchain: optimism
+      sector: perpetual
+      project: synthetix
+      contributors: msilb7, drethereum, rplust
+    config:
+      tags: ['optimism', 'synthetix', 'kwenta', 'decentrex', 'perpetuals', 'perps']
+    description: >
+      Synthetix perpetuals trades/swaps on Optimism via Kwenta and Decentrex
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_time
+            - project
+            - version
+            - tx_hash
+            - evt_index
+    columns:
+      - *blockchain
+      - *block_time
+      - *virtual_asset
+      - *underlying_asset
+      - *market
+      - *market_address
+      - *volume_usd
+      - *fee_usd
+      - *margin_usd
+      - *trade
+      - *project
+      - *version
+      - *frontend
+      - *trader
+      - *volume_raw
+      - *tx_hash
+      - *tx_from
+      - *tx_to
+      - *evt_index
   
   - name: synthetix_optimism_spot_trades
     meta:
