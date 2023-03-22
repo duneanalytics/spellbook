@@ -33,7 +33,7 @@
 ,ref('zigzag_trades')
 ,ref('nomiswap_bnb_trades')
 ,ref('gmx_trades')
-,ref('biswap_bnb_trades') 
+,ref('biswap_bnb_trades')
 ,ref('wombat_bnb_trades')
 ,ref('iziswap_bnb_trades')
 ,ref('babyswap_bnb_trades')
@@ -51,6 +51,7 @@
 ,ref('balancer_trades')
 ,ref('spiritswap_fantom_trades')
 ,ref('quickswap_trades')
+,ref('maverick_trades')
 ] %}
 
 
