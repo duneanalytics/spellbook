@@ -58,8 +58,6 @@ models:
             - contract_address
             - contract_address_l1
     columns:
-      - name: category
-        description: "Category of the NFT Project"
       - name: contract_address
         description: "The contract address is the unique address of where the NFTs are stored on Optimism."
       - name: name
@@ -94,7 +92,7 @@ models:
         description: "Token Symbol on L1, if it's in the ethereum erc20 tokens table"
       - name: l1_decimals
         description: "Token Decimals on L1, if it's in the ethereum erc20 tokens table"
-  
+
   - name: tokens_optimism_erc20_stablecoins
     meta:
       blockchain: optimism
