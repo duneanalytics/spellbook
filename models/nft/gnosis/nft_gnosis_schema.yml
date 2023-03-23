@@ -47,22 +47,3 @@ models:
         tests:
           - unique
         description: "Unique transfer ID"
-
-  - name: nft_gnosis_contract_standards
-    meta:
-      blockchain: gnosis
-      sector: nft
-      contributors: 0xRob
-    config:
-      tags: [ 'nft','gnosis' ]
-    description: >
-      NFT contract standards
-    columns:
-      - name: blockchain
-        description: "Blockchain"
-      - name: nft_contract_address
-        description: "the NFT contract address"
-        tests:
-          - unique
-      - name: standard
-        description: "The NFT standard erc721/erc1155/..."
