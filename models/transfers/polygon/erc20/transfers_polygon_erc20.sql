@@ -54,7 +54,7 @@ deposited_wmatic as (
     {% endif %}
 ),
 withdrawn_wmatic as (
-    select 'withdraw'                      as transfer_type,
+    select 'withdrawn'                      as transfer_type,
            evt_tx_hash,
            evt_index,
            src                              as wallet_address,
