@@ -368,7 +368,7 @@ models:
         name: is_wash_trade
         description: "Have any of the filters flag as true? Then it is labelled as a wash trade"
 
-- name: nft_ethereum_aggregators_manual
+  - name: nft_ethereum_aggregators_manual
     meta:
       blockchain: ethereum
       sector: nft
