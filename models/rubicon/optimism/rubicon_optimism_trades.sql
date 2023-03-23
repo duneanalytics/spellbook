@@ -12,8 +12,8 @@
                                 \'["msilb7"]\') }}'
     )
 }}
--- First swap event 2022-05-23
-{% set project_start_date = '2022-05-23' %}
+-- First swap event at timestamp 1636432841 (2021-11-09 04:40:41)
+{% set project_start_date = '2021-11-09' %}
 
 WITH dexs AS
 (
