@@ -47,6 +47,11 @@ models:
       - &amount_usd
         name: amount_usd
         description:  "USD value of the trade at time of execution"
+        tests:
+          - dbt_utils.accepted_range:
+            max_value: 10,000,000,000
+            config:
+              severity: warn
       - &token_standard
         name: token_standard
         description:  "Token standard"
@@ -113,6 +118,11 @@ models:
       - &platform_fee_amount_usd
         name: platform_fee_amount_usd
         description:  "Platform fee amount in USD"
+        tests:
+          - dbt_utils.accepted_range:
+            max_value: 10,000,000,000
+            config:
+              severity: warn
       - &platform_fee_percentage
         name: platform_fee_percentage
         description:  "Platform fee in % of the amount paid for a given trade"
@@ -131,6 +141,11 @@ models:
       - &royalty_fee_amount_usd
         name: royalty_fee_amount_usd
         description:  "Royalty fee amount in USD"
+        tests:
+          - dbt_utils.accepted_range:
+            max_value: 10,000,000,000
+            config:
+              severity: warn
       - &royalty_fee_percentage
         name: royalty_fee_percentage
         description:  "Royalty fee in % of the amount paid for a given trade"
