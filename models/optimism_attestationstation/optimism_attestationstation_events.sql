@@ -1,5 +1,5 @@
 {{ config(
-    alias = 'optimism_attestationstation',
+    alias = 'events',
     partition_by = ['block_date'],
     materialized = 'incremental',
     file_format = 'delta',
@@ -29,8 +29,8 @@ select
         )
     ) as key 
     ,val as val_raw
-    ,unhex(substring(val, 3)) as val
-from {{source('optimism_attestationstation','OptimismAttestationStation_evt_AttestationSubmitted')}}
+    ,split(unhex(substring(val, 3)), ",") as val
+from {{source('optimism_attestationstation','AttestationStation_evt_AttestationCreated')}}
 where 
     true
     {% if is_incremental() %}
