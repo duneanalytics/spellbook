@@ -87,7 +87,7 @@ perps AS (
 		,'1' AS version
 		,INITCAP(IFNULL(DECODE(UNHEX(SUBSTRING(tr.trackingCode, 3)), 'UTF-8'), 'Unspecified')) AS frontend
 		,s.account AS trader
-		,s.tradeSize AS volume_raw
+		,cast(s.tradeSize as double) AS volume_raw
 		,s.evt_tx_hash AS tx_hash
 		,s.evt_index
 	FROM {{ source('synthetix_optimism', 'FuturesMarket_evt_PositionModified') }} AS s
