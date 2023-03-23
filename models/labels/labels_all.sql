@@ -17,8 +17,6 @@ SELECT * FROM {{ ref('labels_cex') }}
 UNION ALL
 SELECT * FROM {{ ref('labels_contracts') }}
 UNION ALL
-SELECT * FROM {{ ref('labels_funds') }}
-UNION ALL
 SELECT * FROM {{ ref('labels_hackers_ethereum') }}
 UNION ALL
 SELECT * FROM {{ ref('labels_ofac_sanctionned_ethereum') }}
@@ -28,6 +26,10 @@ UNION ALL
 SELECT * FROM {{ ref('labels_safe_ethereum') }}
 UNION ALL
 SELECT * FROM {{ ref('labels_tornado_cash') }}
+UNION ALL
+SELECT * FROM {{ ref('labels_quest_participants') }}
+UNION ALL
+SELECT * FROM {{ ref('labels_cex_users') }}
 
 -- new/standardized labels
 UNION ALL

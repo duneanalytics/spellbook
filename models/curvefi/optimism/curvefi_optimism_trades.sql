@@ -48,8 +48,8 @@ SELECT
             t.contract_address as project_contract_address,
             t.evt_tx_hash AS tx_hash,
             '' AS trace_address,
-            t.evt_index, 
-            bought_id, 
+            t.evt_index,
+            bought_id,
             sold_id
         FROM {{ source('curvefi_optimism', 'StableSwap_evt_TokenExchange') }} t
         {% if is_incremental() %}
@@ -71,14 +71,14 @@ SELECT
             t.contract_address as project_contract_address,
             t.evt_tx_hash AS tx_hash,
             '' AS trace_address,
-            t.evt_index, 
-            bought_id, 
+            t.evt_index,
+            bought_id,
             sold_id
         FROM {{ source('curvefi_optimism', 'MetaPoolSwap_evt_TokenExchangeUnderlying') }} t
         {% if is_incremental() %}
         WHERE t.evt_block_time >= date_trunc('day', now() - interval '1 week')
         {% endif %}
-    
+
 
         UNION ALL
 
@@ -88,7 +88,7 @@ SELECT
             'basic' as pool_type,
             block_time,
             block_number,
-            substring(topic2,25,40) AS taker,
+            '0x' || substring(l.topic2, 27,40) AS taker,
             '' AS maker,
             conv(substring(data,3+64*3,64),16,10) as token_bought_amount_raw, --2nd bought
             conv(substring(data,3+64*1,64),16,10) as token_sold_amount_raw, --1st sold
