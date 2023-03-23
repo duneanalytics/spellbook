@@ -1438,3 +1438,8 @@ seeds:
         +column_types:
           hex: string
           dec: string
+
+    dydx:
+      +schema: dydx
+      ethereum:
+        +schema: dydx_ethereum

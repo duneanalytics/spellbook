@@ -12,7 +12,8 @@
 'compound_v2_ethereum_votes',
 'gitcoin_ethereum_votes',
 'ens_ethereum_votes',
-'aave_ethereum_votes'
+'aave_ethereum_votes',
+'dydx_ethereum_votes'
 ] %}
 
 
