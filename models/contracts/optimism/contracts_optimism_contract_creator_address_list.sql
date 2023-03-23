@@ -424,6 +424,7 @@ FROM (
       ,('0x1874028262f1f4b2dd1f2700a72ee8b9b7c69090', 'Kyberswap')
       ,('0x76d84163bc0bbf58d6d3f2332f8a9c5b339df983', 'Otterspace')
       ,('0x5e9Bf1dD74b4d25B7009AF11582f537b08eA3d3c', 'Layer Zero')
+      ,('0xac789308a29783f507f1f3baacbd43326c5767f4', 'Gamma')
 
   ) as temp_table (creator_address, contract_project)
 
