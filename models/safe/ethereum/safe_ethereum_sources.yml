@@ -169,3 +169,136 @@ sources:
           - &singleton
             name: singleton
             description: "Singleton"
+      - name: Safev0_1_0_call_setup
+        loaded_at_field: call_block_time
+        description: "Safe v0.1.0 setup events"
+        columns:
+          - &_owners
+            name: _owners
+            description: "Owners"
+          - &_threshold
+            name: _threshold
+            description: "Threshold"
+          - *call_tx_hash
+          - *contract_address
+          - *data
+          - &to
+            name: to
+            description: "To"
+          - *call_block_number
+          - *call_block_time
+          - *call_success
+          - *call_trace_address
+      - name: Safev0_1_0_evt_ChangedThreshold
+        loaded_at_field: call_block_time
+        description: "Safe v0.1.0 changed threshold events"
+        columns:
+          - *call_block_number
+          - *call_block_time
+          - *call_success
+          - *call_trace_address
+          - *call_tx_hash
+          - *contract_address
+          - *_threshold
+      - name: Safev1_0_0_call_setup
+        loaded_at_field: call_block_time
+        description: "Safe v1.0.0 setup events"
+        columns:
+          - *_owners
+          - *_threshold
+          - *call_tx_hash
+          - *contract_address
+          - *data
+          - &payment
+            name: payment
+            description: "Payment"
+          - &paymentReceiver
+            name: paymentReceiver
+            description: "Payment Receiver"
+          - &paymentToken
+            name: paymentToken
+            description: "Payment Token"
+          - *to
+          - *call_block_number
+          - *call_block_time
+          - *call_success
+          - *call_trace_address
+      - name: Safev1_0_0_evt_ChangedThreshold
+        loaded_at_field: call_block_time
+        description: "Safe v1.0.0 changed threshold events"
+        columns:
+          - *call_block_number
+          - *call_block_time
+          - *call_success
+          - *call_trace_address
+          - *call_tx_hash
+          - *contract_address
+          - *threshold
+      - name: Safev1_1_0_call_setup
+        loaded_at_field: call_block_time
+        description: "Safe v1.1.0 setup events"
+        columns:
+          - *_owners
+          - *_threshold
+          - *call_tx_hash
+          - *contract_address
+          - *data
+          - *fallbackHandler
+          - *paymentToken
+          - *to
+          - *payment
+          - *paymentReceiver
+          - *call_block_number
+          - *call_block_time
+          - *call_success
+          - *call_trace_address
+      - name: Safev1_1_0_evt_ChangedThreshold
+        loaded_at_field: call_block_time
+        description: "Safe v1.1.0 changed threshold events"
+        columns:
+          - *call_block_number
+          - *call_block_time
+          - *call_success
+          - *call_trace_address
+          - *call_tx_hash
+          - *contract_address
+          - *threshold
+      - name: Safev1_1_1_call_setup
+        loaded_at_field: call_block_time
+        description: "Safe v1.1.1 setup events"
+        columns:
+          - *_owners
+          - *_threshold
+          - *call_tx_hash
+          - *contract_address
+          - *data
+          - *fallbackHandler
+          - *payment
+          - *paymentReceiver
+          - *paymentToken
+          - *to
+          - *call_block_number
+          - *call_block_time
+          - *call_success
+          - *call_trace_address
+      - name: Safev1_1_1_evt_ChangedThreshold
+        loaded_at_field: call_block_time
+        description: "Safe v1.1.1 changed threshold events"
+        columns:
+          - *call_block_number
+          - *call_block_time
+          - *call_success
+          - *call_trace_address
+          - *call_tx_hash
+          - *contract_address
+          - *threshold
+      - name: GnosisSafev1_3_0_evt_ChangedThreshold
+        loaded_at_field: call_block_time
+        description: "Safe v1.3.0 changed threshold events"
+        columns:
+          - *contract_address
+          - *threshold
+          - *evt_block_number
+          - *evt_block_time
+          - *evt_index
+          - *evt_tx_hash
