@@ -73,6 +73,8 @@ from (
     ,('powerbomb','Powerbomb Finance')
     ,('lemma_finance','Lemma Finance')
     ,('lemma','Lemma Finance')
+    ,('arrakis','Arrakis Finance')
+    ,('arrakis_finance','Arrakis Finance')
     ,('collab_land_dao_pass', 'Collab Land')
     ,('Llama', 'Llamapay')
     ) as temp_table (dune_name, mapped_name)
