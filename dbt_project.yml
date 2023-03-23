@@ -888,6 +888,11 @@ models:
       polygon:
         +schema: rarible_polygon
 
+    dydx:
+      +schema: dydx
+      ethereum:
+        +schema: dydx_ethereum
+
 seeds:
   spellbook:
     +schema: test_data
@@ -1438,8 +1443,3 @@ seeds:
         +column_types:
           hex: string
           dec: string
-
-    dydx:
-      +schema: dydx
-      ethereum:
-        +schema: dydx_ethereum
