@@ -147,3 +147,37 @@ models:
       - &sample_size
         name: sample_size
         description: "Number of times the token was traded within the coressponding hour"
+  
+  - name: dex_incentive_mappings
+    meta:
+      blockchain: optimism
+      sector: dex
+      contributors: msilb7
+    config:
+      tags: ['optimism', 'amm', 'trades', 'dex', 'cross-chain','incentives']
+    description: >
+      Mappings for DEX incentives contracts (i.e. gauges, bribes) to liquidity pools on all chains across all contracts and versions
+    columns:
+      - *blockchain
+      - *project
+      - *version
+      - &pool_contract
+        name: pool_contract
+        description: "Address of the liquidity pool contract"
+      - &incentives_contract
+        name: incentives_contract
+        description: "Address of the contract where incentives are stored and emitted."
+      - &incentives_type
+        name: incentives_type
+        description: "Description of the incentives address type."
+      - &evt_block_time
+        name: evt_block_time
+        description: 'Block time in UTC'
+      - &evt_block_number
+        name: evt_block_number
+        description: 'Block Number'
+      - *contract_address
+      - &evt_tx_hash
+        name: evt_tx_hash
+        description: 'Tx Hash'
+      - *evt_index
