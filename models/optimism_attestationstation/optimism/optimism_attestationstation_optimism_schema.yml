@@ -4,7 +4,7 @@ models:
   - name: optimism_attestation_optimism_events
     meta:
       blockchain: optimism
-      project: optimism_attestation
+      project: optimism_attestationstation
       contributors: chuxin
     config:
       tags: ['optimism','attestation', 'attestationstation']
