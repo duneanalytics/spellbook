@@ -33,4 +33,3 @@ sources:
           - &val
             name: val
             description: "What is the value of the attestation."
-  
