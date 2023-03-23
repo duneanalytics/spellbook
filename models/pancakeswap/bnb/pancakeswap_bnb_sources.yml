@@ -10,7 +10,7 @@ sources:
           warn_after: { count: 12, period: hour }
         loaded_at_field: evt_block_time
         description: >
-          Pancake swap v2 trades event table
+          Pancakeswap v2 trades event table
         columns:
           - &contract_address
             name: contract_address
@@ -66,3 +66,7 @@ sources:
             name: token1
             description: "Token1 contract address"
       - name: ERC721NFTMarketV1_evt_Trade
+      - name: PancakeSwapMMPool_evt_Swap
+      - name: PancakeStableSwap_evt_TokenExchange
+      - name: PancakeStableSwapTwoPool_evt_TokenExchange
+      - name: PancakeStableSwapFactory_evt_NewStableSwapPair
