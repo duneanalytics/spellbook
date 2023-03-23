@@ -54,7 +54,8 @@ FROM (
         block_number,
         tx_from,
         tx_to,
-        unique_trade_id
+        unique_trade_id,
+        date_trunc('day', block_time)  as block_date
     FROM {{ nft_model }}
     {% if not loop.last %}
     {% if is_incremental() %}
