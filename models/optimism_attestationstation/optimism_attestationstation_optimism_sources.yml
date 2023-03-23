@@ -24,9 +24,6 @@ sources:
           - &evt_block_time
             name: evt_block_time
             description: "Block timestamp."
-          - &evt_block_time
-            name: evt_block_time
-            description: "Block timestamp."
           - &evt_index
             name: evt_index
             description: "Event index."
