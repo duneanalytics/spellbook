@@ -912,4 +912,4 @@ models:
     optimism_attestationstation:
       +schema: optimism_attestationstation
       optimism:
-        +schema: optimism_attestationstation
+        +schema: optimism_attestationstation_optimism
