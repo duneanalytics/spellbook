@@ -99,7 +99,8 @@ FROM (
         block_number,
         tx_from,
         tx_to,
-        unique_trade_id
+        unique_trade_id,
+        date_trunc('day', block_time)  as block_date
     FROM {{ native_mint }} as n
 	LEFT JOIN (select block_number as p_block_number, tx_hash as p_tx_hash from project_mints) p
 	 ON n.block_number = p_block_number
