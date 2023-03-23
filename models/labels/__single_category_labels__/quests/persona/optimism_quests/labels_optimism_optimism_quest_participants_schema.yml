@@ -1,31 +1,36 @@
 version: 2
 
 models:
-  - name: labels_social
+  - name: labels_optimism_optimism_quest_participants
     meta:
-      blockchain: ethereum
+      blockchain: optimism
       sector: labels
-      category: social
-      contributors: ilemi
+      category: quest_participants
+      contributors: msilb7
     config:
-      tags: ["labels", "social", "ens", "lens"]
-    description: "all social labels"
+      tags: ['labels', 'quests','coinbase','optimism']
+    description: "DEX traders query labels across chains"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - address
+            - name
+            - category
+            - blockchain
+    
     columns:
       - &blockchain
         name: blockchain
-        description: "Blockchain"
+        description: "Blockchain"   
       - &address
         name: address
-        description: "Label address"
+        description: "Address"
       - &name
         name: name
         description: "Label name"
       - &category
         name: category
         description: "Label category"
-        tests:
-          - accepted_values:
-              values: ["social"]
       - &contributor
         name: contributor
         description: "Wizard(s) contributing to labels"
