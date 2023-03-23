@@ -15,7 +15,7 @@ with sent_transfers as (
     select 'send'           as transfer_type,
            evt_tx_hash,
            evt_index,
-           `to`             as wallet_address,
+           to             as wallet_address,
            contract_address as token_address,
            evt_block_time,
            value            as amount_raw
@@ -29,7 +29,7 @@ received_transfers as (
     select 'receive'                          as transfer_type,
            evt_tx_hash,
            evt_index,
-           `from`                             as wallet_address,
+           "from"                             as wallet_address,
            contract_address                   as token_address,
            evt_block_time,
            '-' || CAST(value AS VARCHAR(100)) as amount_raw
@@ -54,7 +54,7 @@ deposited_wmatic as (
     {% endif %}
 ),
 withdrawn_wmatic as (
-    select 'withdrawn'                      as transfer_type,
+    select 'withdraw'                      as transfer_type,
            evt_tx_hash,
            evt_index,
            src                              as wallet_address,
