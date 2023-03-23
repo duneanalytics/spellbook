@@ -199,9 +199,7 @@ sources:
           - *call_trace_address
           - *call_tx_hash
           - *contract_address
-          - &_threshold
-            name: threshold
-            description: "Threshold"
+          - *_threshold
       - name: Safev1_0_0_call_setup
         loaded_at_field: call_block_time
         description: "Safe v1.0.0 setup events"
