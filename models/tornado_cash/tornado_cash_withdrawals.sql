@@ -24,11 +24,13 @@ FROM (
         , currency_symbol
         , blockchain
         , tornado_version
-        , withdrawalor
+        , tx_from
+        , nullifier
+        , fee
+        , relayer
+        , recipient
         , contract_address
-        , amount
         , tx_hash
-        , leaf_index
         , evt_index
         , block_date
     FROM {{ tornado_cash_withdrawals_model }}
