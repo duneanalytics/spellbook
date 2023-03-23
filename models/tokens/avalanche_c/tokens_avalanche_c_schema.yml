@@ -76,7 +76,7 @@ models:
     description: >
       NFT contract standards
     columns:
-      - name: nft_contract_address
+      - name: contract_address
         description: "the NFT contract address"
         tests:
           - unique

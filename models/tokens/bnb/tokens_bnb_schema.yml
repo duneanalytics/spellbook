@@ -43,7 +43,7 @@ models:
       sector: nft
       contributors: 0xRob
     config:
-      tags: [ 'tokens', 'bnb', 'nft', 'erc721', 'erc1155' ]
+      tags: [ 'tokens', 'bnb', 'nft', 'bep721', 'bep1155' ]
     description: >
       Selection of NFT token addresses.
     columns:
@@ -56,7 +56,7 @@ models:
       - name: standard
         tests:
           - accepted_values:
-              values: [ 'erc721', 'erc1155']
+              values: [ 'bep721', 'bep1155']
         description: >
           The token standard. This is the set of rules that the contract must respect 
           to be compatible with the common standards. Accepted values are presently standards represented.
@@ -80,4 +80,4 @@ models:
         description: "The NFT standard erc721/erc1155/..."
         tests:
           - accepted_values:
-              values: [ 'erc721', 'erc1155' ]
+              values: [ 'bep721', 'bep1155' ]
