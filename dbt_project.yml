@@ -437,6 +437,8 @@ models:
         +schema: transfers_bnb
       arbitrum:
         +schema: transfers_arbitrum
+      polygon:
+        +schema: transfers_polygon
       avalanche_c:
         +schema: transfers_avalanche_c
       fantom:
