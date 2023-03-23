@@ -1,5 +1,10 @@
 {{ config(
         alias ='trades',
+        partition_by = ['block_date'],
+        materialized = 'incremental',
+        file_format = 'delta',
+        incremental_strategy = 'merge',
+        unique_key = ['block_date', 'blockchain', 'project', 'version', 'tx_hash', 'evt_index', 'trace_address'],
         post_hook='{{ expose_spells(\'["ethereum","solana","bnb", "optimism","arbitrum","polygon"]\',
                                     "sector",
                                     "nft",
@@ -67,6 +72,9 @@ FROM (
         tx_to,
         unique_trade_id
     FROM {{ nft_model }}
+    {% if is_incremental() %}
+    WHERE block_time >= date_trunc("day", now() - interval '1 week')
+    {% endif %}
     {% if not loop.last %}
     UNION ALL
     {% endif %}
