@@ -39,7 +39,7 @@ models:
       - name: symbol
         description: "Token symbol"
 
-  - name: tokens_ethereum_nft_wizards_curated
+  - name: tokens_ethereum_nft_curated
     meta:
       blockchain: ethereum
       sector: nft
@@ -57,14 +57,6 @@ models:
         description: "NFT Project Name"
       - name: symbol
         description: "NFT Token Symbol"
-      - name: standard
-        tests:
-          - accepted_values:
-              values: ['erc721', 'erc1155' , 'erc20', 'cryptopunks','superrare', 'unknown']
-        description: >
-            The token standard. This is the set of rules that the contract must respect 
-            to be compatible with the common standards. Accepted values are presently standards represented.
-            If you are adding a token with a new standard, remember to add it the accepted valeus list.
 
   - name: tokens_ethereum_nft
     meta:
@@ -91,7 +83,7 @@ models:
         description: >
             The token standard. This is the set of rules that the contract must respect 
             to be compatible with the common standards. Accepted values are presently standards represented.
-            If you are adding a token with a new standard, remember to add it the accepted valeus list.
+            If you are adding a token with a new standard, remember to add it the accepted values list.
 
   - name: tokens_ethereum_erc20_stablecoins
     meta:
