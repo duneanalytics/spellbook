@@ -77,7 +77,8 @@ FROM (
         royalty_fee_amount,
         royalty_fee_amount_usd,
         royalty_fee_percentage,
-        unique_trade_id
+        unique_trade_id,
+        date_trunc('day', block_time)  as block_date
     FROM {{ nft_model }}
     {% if is_incremental() %}
     WHERE block_time >= date_trunc("day", now() - interval '1 week')
