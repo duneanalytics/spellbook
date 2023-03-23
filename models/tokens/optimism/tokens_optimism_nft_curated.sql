@@ -225,7 +225,7 @@ FROM
 ,('0xd348e05195a4695b5647b7e71cde96cc4932cb08', 'Xmas ABC')
 ,('0xe12103a2f6a41a812c1f58bd02afac93f3e43e6c', 'Galxe Stargator Warrior NFTs')
 ,('0x19287b85b215c043974860361f8559a3ce1c3543', 'OAYC Mutagen II')
-,('0x882d70db198d2207404b977be3fdb1f3893d5de2', 'Galxe OpenOcean World Cup NFT', 'other')
+,('0x882d70db198d2207404b977be3fdb1f3893d5de2', 'Galxe OpenOcean World Cup NFT')
 ,('0xB0b9AdBd7936E0c71e8c9bFEfad6ADb98cEe1E0E', 'Beers Cans')
 ,('0xc53D10086CAD61823a4ffE084a72B44B57fcc48F', 'OptiCows')
 ,('0x66deb6cc4d65dc9cb02875dc5e8751d71fa5d50e', 'L2 State of Mind')
