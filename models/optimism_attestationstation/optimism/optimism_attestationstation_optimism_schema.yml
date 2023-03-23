@@ -1,7 +1,7 @@
 version: 2
 
 models:
-  - name: optimism_attestation_events
+  - name: optimism_attestation_optimism_events
     meta:
       blockchain: optimism
       project: optimism_attestation

@@ -30,7 +30,7 @@ select
     ) as key 
     ,val as val_raw
     ,split(unhex(substring(val, 3)), ",") as val
-from {{ref('attestationstation_optimism','AttestationStation_evt_AttestationCreated')}}
+from {{source('attestationstation_optimism','AttestationStation_evt_AttestationCreated')}}
 where 
     true
     {% if is_incremental() %}
