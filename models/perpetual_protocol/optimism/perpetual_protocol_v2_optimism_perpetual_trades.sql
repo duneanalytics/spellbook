@@ -21,9 +21,9 @@ WITH perps AS (
 		,p.evt_block_number AS block_number
 		,p.baseToken
 		,pp.pool AS market_address
-		,ABS(cast(p.exchangedPositionNotional as double))/cast(1e18 as double) AS volume_usd
+		,ABS(p.exchangedPositionNotional)/1e18 AS volume_usd
 		,p.fee/1e18 AS fee_usd
-		,MAX(cast(co.output_0 as double))/cast(1e6 as double) AS margin_usd
+		,MAX(co.output_0)/1e6 AS margin_usd
 
 		,CASE
 		WHEN CAST(p.exchangedPositionSize AS DOUBLE) > 0 THEN 'long'

@@ -70,11 +70,10 @@ perps AS (
 
 		,DECODE(sm.marketKey, 'UTF-8') AS market
 		,s.contract_address AS market_address
-		,ABS(cast(s.tradeSize as double))/cast(1e18 as double) * p.price AS volume_usd
-		,cast(s.fee as double)/cast(1e18 as double) AS fee_usd
-		,cast(s.margin as double)/cast(1e18 as double) AS margin_usd
-		,(ABS(cast(s.tradeSize as double))/cast(1e18 as double) * p.price) 
-				/ (cast(s.margin as double)/cast(1e18 as double)) AS leverage_ratio
+		,ABS(s.tradeSize)/1e18 * p.price AS volume_usd
+		,s.fee/1e18 AS fee_usd
+		,s.margin/1e18 AS margin_usd
+		,(ABS(s.tradeSize)/1e18 * p.price) / (s.margin/1e18) AS leverage_ratio
 
 		,CASE
 		WHEN (CAST(s.margin AS DOUBLE) >= 0 AND CAST(s.size AS DOUBLE) = 0 AND CAST(s.tradeSize AS DOUBLE) < 0 AND s.size != s.tradeSize) THEN 'close'
