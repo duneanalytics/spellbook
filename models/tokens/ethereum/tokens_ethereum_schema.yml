@@ -105,3 +105,24 @@ models:
         description: "Number of decimals, refers to how divisible an ERC20 stablecoin token can be"
       - name: name
         description: "ERC20 stablecoin token name"
+
+  - name: tokens_ethereum_nft_standards
+    meta:
+      blockchain: ethereum
+      sector: nft
+      contributors: 0xRob
+    config:
+      tags: [ 'nft','ethereum' ]
+    description: >
+      NFT contract standards
+    columns:
+      - name: contract_address
+        description: "the NFT contract address"
+        tests:
+          - unique
+      - name: standard
+        description: "The NFT standard erc721/erc1155/..."
+        tests:
+          - accepted_values:
+              values: ['erc721', 'erc1155' , 'erc20', 'cryptopunks','superrare', 'unknown']
+

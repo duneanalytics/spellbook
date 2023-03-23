@@ -18,13 +18,13 @@ WITH reservoir_names as (
 )
 
 SELECT
-    c.nft_contract_address as contract_address
+    c.contract_address
   , coalesce(curated.name, reservoir.name) as name
   , curated.symbol
   , c.standard
-FROM {{ ref('nft_ethereum_contract_standards')}} c
+FROM {{ ref('tokens_ethereum_nft_standards')}} c
 LEFT JOIN  {{ref('tokens_ethereum_nft_curated')}} curated
-    ON c.nft_contract_address = curated.contract_address
+    ON c.contract_address = curated.contract_address
 LEFT JOIN reservoir_names reservoir
-    ON c.nft_contract_address = reservoir.contract_address
+    ON c.contract_address = reservoir.contract_address
 

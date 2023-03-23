@@ -8,10 +8,11 @@
         )
 }}
 
-SELECT c.nft_contract_address as contract_address
+SELECT
+    c.contract_address
   , t.name
   , t.symbol
   , c.standard
-  FROM {{ ref('nft_bnb_contract_standards')}} c
+  FROM {{ ref('tokens_bnb_nft_standards')}} c
 LEFT JOIN  {{ref('tokens_bnb_nft_curated')}} t
-ON s.nft_contract_address = t.contract_address
+ON c.contract_address = t.contract_address

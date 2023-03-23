@@ -66,3 +66,23 @@ models:
           to be compatible with the common standards. Accepted values are presently standards represented.
           If you are adding a token with a new standard, remember to add it the accepted values list.        
   
+
+  - name: tokens_gnosis_nft_standards
+    meta:
+      blockchain: gnosis
+      sector: nft
+      contributors: 0xRob
+    config:
+      tags: [ 'nft','gnosis' ]
+    description: >
+      NFT contract standards
+    columns:
+      - name: contract_address
+        description: "the NFT contract address"
+        tests:
+          - unique
+      - name: standard
+        description: "The NFT standard erc721/erc1155/..."
+        tests:
+          - accepted_values:
+              values: [ 'erc721', 'erc1155']
