@@ -29,7 +29,11 @@ select
         )
     ) as key 
     ,val as val_raw
-    ,split(unhex(substring(val, 3)), ",") as val
+    ,if(
+        unhex(substring(val, 3)) is null
+        ,null
+        ,split(unhex(substring(val, 3)), ",")
+        ) as val
 from {{source('attestationstation_optimism','AttestationStation_evt_AttestationCreated')}}
 where 
     true
