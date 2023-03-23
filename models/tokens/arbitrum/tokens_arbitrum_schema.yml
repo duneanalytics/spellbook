@@ -60,7 +60,7 @@ models:
       - name: standard
         tests:
           - accepted_values:
-              values: [ 'erc721', 'erc1155' , 'erc20', 'cryptopunks','superrare', 'unknown' ]
+              values: [ 'erc721', 'erc1155']
         description: >
           The token standard. This is the set of rules that the contract must respect 
           to be compatible with the common standards. Accepted values are presently standards represented.
