@@ -908,3 +908,8 @@ models:
       +schema: rarible
       polygon:
         +schema: rarible_polygon
+
+    optimism_attestationstation:
+      +schema: optimism_attestationstation
+      optimism:
+        +schema: optimism_attestationstation
