@@ -5,7 +5,7 @@
     post_hook='{{ expose_spells(\'["ethereum"]\',
                                 "sector",
                                 "labels",
-                                \'["ilemi"]\') }}')
+                                \'["ilemi", "hildobby"]\') }}')
 }}
 
 {% set infrastructure_models = [
@@ -13,9 +13,9 @@
  , ref('labels_miners')
  , ref('labels_system_addresses')
  , ref('labels_validators')
-
  , ref('labels_flashbots_ethereum')
  , ref('labels_mev_ethereum')
+ , ref('labels_stablecoins')
 ] %}
 
 SELECT *
