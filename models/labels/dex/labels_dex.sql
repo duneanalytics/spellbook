@@ -13,6 +13,7 @@
 ,ref('labels_dex_aggregator_traders')
 ,ref('labels_arbitrage_traders')
 ,ref('labels_dex_traders')
+,ref('labels_smart_dex_traders')
 ,ref('labels_trader_platforms')
 
 ,ref('labels_average_trade_values')
