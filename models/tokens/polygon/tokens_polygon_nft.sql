@@ -10,8 +10,8 @@
 
 SELECT
     c.contract_address
-  , coalesce(t.name,b.name) as name
-  , coalesce(t.symbol,b.symbol) as symbol
+  , t.name
+  , t.symbol
   , c.standard
 FROM {{ ref('tokens_polygon_nft_standards')}} c
 LEFT JOIN  {{ref('tokens_polygon_nft_curated')}} t
