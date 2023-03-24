@@ -37,7 +37,7 @@ WITH sender_transfer_rates AS (
 
 )
 
-, first_pass_throughput_filter AS (
+, first_pass_throughput_filter AS
 (
     -- Filter down this list a bit to help with later mappings
     SELECT sender, DATE_TRUNC('week',hr) AS wk, SUM(hr_txs) AS wk_txs, MAX(hr_txs) AS max_hr_txs, SUM(bot_concentration_txs) AS bot_concentration_txs,
