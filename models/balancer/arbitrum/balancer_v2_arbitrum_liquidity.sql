@@ -161,8 +161,8 @@ zipped_balance_changes AS (
             b.pool_id,
             b.token,
             symbol AS token_symbol,
-            cumulative_amount as token_amount_raw,
-            cumulative_amount / POWER(10, COALESCE(t.decimals, p1.decimals)) AS token_amount,
+            cumulative_amount as token_balance_raw,
+            cumulative_amount / POWER(10, COALESCE(t.decimals, p1.decimals)) AS token_balance,
             cumulative_amount / POWER(10, COALESCE(t.decimals, p1.decimals)) * COALESCE(p1.price, p2.price, 0) AS amount_usd
         FROM calendar c
         LEFT JOIN cumulative_balance b ON b.day <= c.day
@@ -195,8 +195,8 @@ SELECT
     p.pool_symbol,
     token AS token_address,
     token_symbol,
-    token_amount_raw,
-    token_amount,
+    token_balance_raw,
+    token_balance,
     coalesce(amount_usd, liquidity * normalized_weight) AS usd_amount
 FROM pool_liquidity_estimates b
 LEFT JOIN cumulative_usd_balance c ON c.day = b.day
