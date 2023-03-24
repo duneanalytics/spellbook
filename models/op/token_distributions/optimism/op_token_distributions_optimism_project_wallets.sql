@@ -45,6 +45,7 @@ FROM (values
     ,('0xA7EEb1b719ef7b40F79D2056900ee3Ca904F28F9', 'DefiEdge', 'Uniswap Grants')
     ,('0xfda462548ce04282f4b6d6619823a7c64fdc0185', 'Angle', 'Contract Deplopyer')
     ,('0x20f3880A281092dBC6699E5D5a0FF5FEB3D3db1A', 'Celer','Intermediate')
+    ,('0x4f09b919d969b58a96e8bd7673f12372d09395e8','Velodrome','Intermediate Disperser')
     --quix - should come from CB
     ,('0x5Ad4A019F77e82940f6Dd15A5215362AF061A742','Quix','Distributor')
     
@@ -71,7 +72,6 @@ SELECT LOWER(address) AS address, cast(proposal_name as varchar(100)) AS proposa
 FROM (values
      ('0xeA1e11E3D448F31C565d685115899A11Fd98E40E','1inch','Distributor')
     ,('0xc9e53bb96a8923051326b189bbf93ee9ed87888b','WePiggy','LockDrop')
-    ,('0x4f09b919d969b58a96e8bd7673f12372d09395e8','Velodrome','Distributor')
     ,('0x1470c87e2db5247a36c60de3d65d7c972c62ea0f','PoolTogether','Distributor')
     ,('0xf07108249edd2f59abd1d091a0778d58ecedbc49','Pika Protocol','Distributor')
     ,('0x6b473a82c4199dfaa4c31e69f07fc6f5eb73188e','Velodrome','Distributor')

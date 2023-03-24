@@ -88,6 +88,9 @@ models:
       - &op_incoming_clawback
         name: op_incoming_clawback
         description: "OP Amount - if marked as clawed back by the project"
+      - &op_incoming_other
+        name: op_incoming_other
+        description: "OP Amount - if marked as incoming from a non-project, non-OP source"
       - &og_to_name
         name: og_to_name
         description: "Orignal name for the to address (without additional mapping)"
