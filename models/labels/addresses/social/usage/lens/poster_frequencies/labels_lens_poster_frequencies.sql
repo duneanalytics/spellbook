@@ -81,6 +81,7 @@ FROM (
     FROM lens_addresses la
     INNER JOIN post_count  pc 
     ON la.profileId=pc.profileId 
+    GROUP BY 1
 )
 
 
