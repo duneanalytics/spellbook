@@ -67,7 +67,6 @@ SELECT
       WHEN posts_count >= (select p80 from percentile) THEN 'top 20% lens poster'
       WHEN posts_count <= (select p50 from percentile) THEN 'bottom 50% lens poster'
       ELSE 'between 50% to 80% lens posters' END AS name
-
  ,'social' AS category
  ,'scoffie' AS contributor
  ,'query' AS source
@@ -75,11 +74,14 @@ SELECT
  ,now() as updated_at
  ,'lens_poster_frequencies' as model_name
  ,'usage' as label_type
-FROM lens_addresses la
-
-INNER JOIN post_count  pc 
-ON la.profileId=pc.profileId 
-
+FROM (
+    SELECT 
+        address --make distinct
+        , sum(posts_count) as posts_count
+    FROM lens_addresses la
+    INNER JOIN post_count  pc 
+    ON la.profileId=pc.profileId 
+)
 
 
 
