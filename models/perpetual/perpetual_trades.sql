@@ -46,6 +46,9 @@ FROM (
 		,tx_to
 		,evt_index
     FROM {{ perpetual_model }}
+    {% if is_incremental() %}
+    WHERE block_time >= date_trunc("day", now() - interval '1 week')
+    {% endif %}
     {% if not loop.last %}
     UNION ALL
     {% endif %}
