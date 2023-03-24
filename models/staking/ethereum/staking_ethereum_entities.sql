@@ -122,7 +122,7 @@ FROM
                 , et.block_time
             FROM {{ source('ethereum', 'traces') }} et
             INNER JOIN {{ source('ethereum', 'traces') }} et2 ON et2.from=et.from
-                AND et2.to='0xa090e606e30bd747d4e6245a1517ebe430f0057e'
+                AND et2.to IN (SELECT address FROM {{ ref('addresses_ethereum_cex') }} WHERE cex_name = 'Coinbase')
                 {% if not is_incremental() %}
                 AND et2.block_time >= '2020-10-14'
                 {% endif %}

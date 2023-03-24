@@ -8,12 +8,12 @@ models:
       category: social
       contributors: ilemi
     config:
-      tags: ['labels', 'social','ens']
+      tags: ["labels", "social", "ens", "lens"]
     description: "all social labels"
     columns:
       - &blockchain
         name: blockchain
-        description: "Blockchain"   
+        description: "Blockchain"
       - &address
         name: address
         description: "Label address"
@@ -25,7 +25,7 @@ models:
         description: "Label category"
         tests:
           - accepted_values:
-              values: ['social']
+              values: ["social"]
       - &contributor
         name: contributor
         description: "Wizard(s) contributing to labels"

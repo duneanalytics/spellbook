@@ -88,6 +88,7 @@ SELECT  a.blockchain
       , a.type
       , a.swap_flag
       , b.fills_within
+      , a.contract_address 
 FROM fills_with_tx_fill_number a
 INNER JOIN deduped_bridge_fills b
     ON (a.tx_hash = b.tx_hash AND a.evt_index = b.evt_index)
