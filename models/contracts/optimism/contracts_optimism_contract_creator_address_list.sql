@@ -425,6 +425,7 @@ FROM (
       ,('0x76d84163bc0bbf58d6d3f2332f8a9c5b339df983', 'Otterspace')
       ,('0x5e9Bf1dD74b4d25B7009AF11582f537b08eA3d3c', 'Layer Zero')
       ,('0xac789308a29783f507f1f3baacbd43326c5767f4', 'Gamma')
+      ,('0xba32a3d407353fc3adaa6f7ec6264df5bca51c4b', 'Arcadia Finance')
 
   ) as temp_table (creator_address, contract_project)
 
