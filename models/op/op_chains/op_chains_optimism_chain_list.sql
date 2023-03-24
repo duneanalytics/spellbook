@@ -19,6 +19,6 @@ SELECT
 FROM(values
 
          ('optimism',   'Optimism Mainnet', 10, '2021-06-23',   1)
-        ,('base',       'Base Mainnet',     NULL,   NULL,   NULL,   1)
+        ,('base',       'Base Mainnet',     NULL,   NULL,       1)
 
 ) op (blockchain, blockchain_name, chain_id, start_date, is_superchain)
