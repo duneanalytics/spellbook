@@ -204,7 +204,7 @@ SELECT
     -- Tokens going from being deployed back to the project
     CASE WHEN from_label != 'Project' and to_label='Project' AND from_name = to_name THEN op_amount_decimal
         ELSE 0 END
-    AS op_incoming_clawback --Project's deployer back to the OG project wallet
+    AS op_incoming_clawback, --Project's deployer back to the OG project wallet
 
     -- Tokens coming from unkown wallets back to the project
     CASE WHEN from_label = 'Other' and to_label='Project' THEN op_amount_decimal
