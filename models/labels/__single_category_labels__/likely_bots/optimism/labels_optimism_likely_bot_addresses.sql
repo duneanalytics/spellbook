@@ -113,7 +113,7 @@ select
   'optimism' as blockchain,
   address,
   name,
-  'likely bots' AS category,
+  category,
   'msilb7' AS contributor,
   'query' AS source,
   timestamp('2023-03-11') as created_at,
