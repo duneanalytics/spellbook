@@ -1012,6 +1012,36 @@ seeds:
           token_id: string
           token_address: string
           token_type: string
+      offers: 
+        +column_types: 
+          blockchain: string
+          project: string
+          version: string
+          block_date: date
+          block_time: timestamp
+          block_number: int
+          tx_index: int
+          evt_index: int
+          sell_token_symbol: string
+          buy_token_symbol: string
+          token_pair: string
+          sell_amount: float
+          buy_amount: float
+          sell_amount_raw: double
+          buy_amount_raw: double
+          sold_amount: float
+          bought_amount: float
+          sold_amount_raw: double
+          bought_amount_raw: double
+          sell_amount_usd: float
+          buy_amount_usd: float
+          sold_amount_usd: float
+          bought_amount_usd: float
+          txn_cost_usd: float
+          project_contract_address: string
+          tx_hash: string
+          tx_from: string
+          tx_to: string
 
     sudoswap:
       sudoswap_ethereum_example_trades:
