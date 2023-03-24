@@ -62,6 +62,9 @@ FROM (
         unique_trade_id,
         date_trunc('day', block_time)  as block_date
     FROM {{ nft_model }}
+     {% if is_incremental() %}
+     WHERE block_time >= date_trunc("day", now() - interval '1 week')
+     {% endif %}
     {% if not loop.last %}
     UNION ALL
     {% endif %}
@@ -107,6 +110,9 @@ FROM (
 	 ON n.block_number = p_block_number
 	 AND n.tx_hash = p_tx_hash
 	WHERE p_tx_hash is null
+	{% if is_incremental() %}
+    AND block_time >= date_trunc("day", now() - interval '1 week')
+    {% endif %}
     {% if not loop.last %}
     UNION ALL
     {% endif %}
@@ -115,11 +121,5 @@ FROM (
 )
 
 SELECT * FROM project_mints
- {% if is_incremental() %}
-WHERE block_time >= date_trunc("day", now() - interval '1 week')
-{% endif %}
 UNION ALL
 SELECT * FROM native_mints
-{% if is_incremental() %}
-WHERE block_time >= date_trunc("day", now() - interval '1 week')
-{% endif %}
