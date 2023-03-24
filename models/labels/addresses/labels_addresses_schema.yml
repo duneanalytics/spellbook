@@ -1,7 +1,7 @@
 version: 2
 
 models:
-  - name: labels_all
+  - name: labels_addresses
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
