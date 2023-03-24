@@ -110,7 +110,6 @@ models:
       - *version
       - *block_date
       - *block_time
-        description: "UTC event block time of each DEX offer"
       - &block_number
         name: block_number
         description: "the block number of the block that the offer was created in"
