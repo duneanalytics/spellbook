@@ -70,7 +70,8 @@ FROM (
         block_number,
         tx_from,
         tx_to,
-        unique_trade_id
+        unique_trade_id,
+        date_trunc('day', block_time)  as block_date
     FROM {{ nft_model }}
     {% if is_incremental() %}
     WHERE block_time >= date_trunc("day", now() - interval '1 week')
