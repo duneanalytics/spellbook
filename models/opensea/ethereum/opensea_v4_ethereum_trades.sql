@@ -131,11 +131,12 @@ with source_ethereum_transactions as (
             , orderHash AS order_hash
             , posexplode(offer) as (offer_idx, offer_item)
         from {{ source('seaport_ethereum', 'Seaport_evt_OrderFulfilled') }}
+       where contract_address = '{{c_seaport_contract_address}}'
         {% if not is_incremental() %}
-        where evt_block_time >= date '{{c_seaport_first_date}}'  -- seaport first txn
+        and evt_block_time >= date '{{c_seaport_first_date}}'  -- seaport first txn
         {% endif %}
         {% if is_incremental() %}
-        where evt_block_time >= date_trunc("day", now() - interval '1 week')
+        and evt_block_time >= date_trunc("day", now() - interval '1 week')
         {% endif %}
     )
     union all
@@ -194,11 +195,12 @@ with source_ethereum_transactions as (
             , orderHash AS order_hash
             ,posexplode(consideration) as (consideration_idx, consideration_item)
         from {{ source('seaport_ethereum','Seaport_evt_OrderFulfilled') }}
+       where contract_address = '{{c_seaport_contract_address}}'
         {% if not is_incremental() %}
-        where evt_block_time >= date '{{c_seaport_first_date}}'  -- seaport first txn
+        and evt_block_time >= date '{{c_seaport_first_date}}'  -- seaport first txn
         {% endif %}
         {% if is_incremental() %}
-        where evt_block_time >= date_trunc("day", now() - interval '1 week')
+        and evt_block_time >= date_trunc("day", now() - interval '1 week')
         {% endif %}        
     )
 )
