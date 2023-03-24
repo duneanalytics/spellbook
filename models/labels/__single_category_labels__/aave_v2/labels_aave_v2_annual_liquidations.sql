@@ -25,7 +25,7 @@ SELECT
     , m.address AS liquidator
 FROM aave_v2_annual_liquidations a
 LEFT JOIN mev_addresses m ON m.address = a.liquidator
-LEFT JOIN prices.tokens p ON p.contract_address = a.collateralAsset
+LEFT JOIN {{ source('prices', 'tokens') }} p ON p.contract_address = a.collateralAsset
 )
 
 , final_base_label AS (
