@@ -19,10 +19,10 @@ WITH disperse_contracts AS (
             ,('0x714dc96eb217b511a882b6c472d106620ec5a4d2','MultiSend',NULL) --generic multisend
 
             ,('0xbe9a9b1b07f027130e56d8569d1aea5dd5a86013','OP Airdrop 2 Distributor','OP Airdrop 2 Distributor') --OP Airdrop 2 disperse
-        ) a (address, contract_name)
+        ) a (address, contract_name, override_name)
     )
 
 SELECT
-    contract_address, contract_name
+    contract_address, contract_name, override_name
 
  FROM disperse_contracts
