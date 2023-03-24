@@ -20,10 +20,11 @@ WITH pool_labels AS (
         SELECT
             date_trunc('day', minute) AS day,
             contract_address AS token,
+            decimals,
             AVG(price) AS price
         FROM {{ source('prices', 'usd') }}
         WHERE blockchain = "polygon"
-        GROUP BY 1, 2
+        GROUP BY 1, 2, 3
     ),
 
     dex_prices_1 AS (
@@ -160,7 +161,9 @@ zipped_balance_changes AS (
             b.pool_id,
             b.token,
             symbol AS token_symbol,
-            cumulative_amount / POWER(10, t.decimals) * COALESCE(p1.price, p2.price, 0) AS amount_usd
+            cumulative_amount as token_amount_raw,
+            cumulative_amount / POWER(10, COALESCE(t.decimals, p1.decimals)) AS token_amount,
+            cumulative_amount / POWER(10, COALESCE(t.decimals, p1.decimals)) * COALESCE(p1.price, p2.price, 0) AS amount_usd
         FROM calendar c
         LEFT JOIN cumulative_balance b ON b.day <= c.day
         AND c.day < b.day_of_next_change
@@ -182,6 +185,7 @@ zipped_balance_changes AS (
         FROM cumulative_usd_balance b
         LEFT JOIN {{ ref('balancer_v2_polygon_pools_tokens_weights') }} w ON b.pool_id = w.pool_id
         AND b.token = w.token_address
+        AND b.amount_usd > 0
         GROUP BY 1, 2
     )
 
@@ -191,6 +195,8 @@ SELECT
     p.pool_symbol,
     token AS token_address,
     token_symbol,
+    token_amount_raw,
+    token_amount,
     coalesce(amount_usd, liquidity * normalized_weight) AS usd_amount
 FROM pool_liquidity_estimates b
 LEFT JOIN cumulative_usd_balance c ON c.day = b.day
