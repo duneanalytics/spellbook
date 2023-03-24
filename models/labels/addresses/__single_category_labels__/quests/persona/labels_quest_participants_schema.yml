@@ -15,6 +15,7 @@ models:
           combination_of_columns:
             - address
             - name
+            - model_name
             - category
             - blockchain
     columns:

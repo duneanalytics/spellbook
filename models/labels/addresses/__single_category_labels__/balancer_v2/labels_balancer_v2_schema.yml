@@ -14,6 +14,10 @@ models:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - address
+            - name
+            - category
+            - model_name
+            - blockchain
     columns:
       - &blockchain
         name: blockchain
