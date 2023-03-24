@@ -4,7 +4,7 @@
         materialized = 'incremental',
         file_format = 'delta',
         incremental_strategy = 'merge',
-        unique_key = ['unique_trade_id', 'blockchain', 'project', 'version'],
+        unique_key = ['unique_trade_id', 'blockchain', 'block_date'],
         post_hook='{{ expose_spells(\'["ethereum","solana","bnb","optimism","arbitrum","polygon"]\',
                                     "sector",
                                     "nft",
