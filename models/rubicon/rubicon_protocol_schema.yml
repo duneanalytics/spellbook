@@ -123,9 +123,7 @@ models:
       - &buy_token_symbol
         name: buy_token_symbol
         description: "the token the offer is buying"
-      - &token_pair
-        name: token_pair
-        description: "Token symbol pair for each token involved in the transaction"
+      - *token_pair
       - &sell_amount
         name: sell_amount
         description: "the amount of the token that the maker is selling"
