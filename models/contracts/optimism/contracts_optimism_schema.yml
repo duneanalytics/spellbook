@@ -135,6 +135,3 @@ models:
     columns:
       - *contract_address
       - *contract_name
-      - &override_name
-        name: override_name
-        description: "Name to be used as an override when this disperse contract is used to map transactions (i.e. OP Distributions)"
