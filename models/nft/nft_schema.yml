@@ -25,6 +25,11 @@ models:
       tags: ['nft', 'opensea', 'looksrare', 'x2y2', 'magiceden', 'sudoswap', 'foundation', 'element', 'zora', 'ethereum', 'bnb', 'avalanche_c', 'solana', 'events', 'polygon', 'rarible', 'aavegotchi', 'oneplanet', 'fractal']
     description: >
         NFT events
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - unique_trade_id
+            - blockchain
     columns:
       - &blockchain
         name: blockchain
@@ -147,6 +152,11 @@ models:
       tags: ['nft', 'opensea', 'looksrare', 'x2y2', 'magiceden', 'sudoswap', 'foundation', 'element', 'zora', 'ethereum', 'bnb', 'avalanche_c', 'solana', 'trades','superrare', 'polygon', 'rarible', 'aavegotchi', 'oneplanet', 'fractal']
     description: >
         NFT trades
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - unique_trade_id
+            - blockchain
     columns:
       - *blockchain
       - *project
@@ -185,6 +195,11 @@ models:
       tags: ['nft', 'opensea', 'looksrare', 'x2y2', 'magiceden', 'foundation', 'element', 'zora', 'ethereum', 'bnb', 'avalanche_c', 'solana', 'mints', 'polygon', 'aavegotchi']
     description: >
         NFT mints
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - unique_trade_id
+            - blockchain
     columns:
       - *blockchain
       - *project
@@ -223,6 +238,11 @@ models:
       tags: ['nft', 'opensea', 'looksrare', 'x2y2', 'magiceden', 'foundation', 'element', 'zora', 'ethereum', 'bnb', 'avalanche_c', 'solana', 'burns']
     description: >
         NFT burns
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - unique_trade_id
+            - blockchain
     columns:
       - *blockchain
       - *project
