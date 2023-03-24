@@ -58,6 +58,9 @@ FROM (
          , trace_address --ensure field is explicitly cast as array<bigint> in base models
          , evt_index
     FROM {{ aggregator_model }}
+    {% if is_incremental() %}
+    WHERE block_date >= date_trunc("day", now() - interval '1 week')
+    {% endif %}
     {% if not loop.last %}
     UNION ALL
     {% endif %}
