@@ -90,7 +90,7 @@ FROM (
     FROM {{ dex_model }}
     {% if not loop.last %}
     {% if is_incremental() %}
-    WHERE block_time >= date_trunc("day", now() - interval '1 week')
+    WHERE block_date >= date_trunc("day", now() - interval '1 week')
     {% endif %}
     UNION ALL
     {% endif %}
