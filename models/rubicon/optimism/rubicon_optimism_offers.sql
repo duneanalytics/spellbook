@@ -145,7 +145,7 @@ SELECT
     txn.l1_fee_scalar AS l1_fee_scalar,
     ((CAST(txn.gas_used AS DECIMAL(38,0)) / power(10, 18)) * CAST(txn.gas_price AS decimal(38,0))) + ((CAST(txn.l1_gas_used AS DECIMAL(38,0)) / power(10, 18)) * CAST(txn.l1_gas_price AS decimal(38,0)) * CAST(txn.l1_fee_scalar AS decimal(38,0))) AS txn_cost_eth,
     eth.price AS eth_price,
-    ((CAST(txn.gas_used AS DECIMAL(38,0)) / power(10, 18)) * CAST(txn.gas_price AS decimal(38,0))) + ((CAST(txn.l1_gas_used AS DECIMAL(38,0)) / power(10, 18)) * CAST(txn.l1_gas_price AS decimal(38,0)) * CAST(txn.l1_fee_scalar AS decimal(38,0))) * eth.price AS txn_cost_usd
+    ((CAST(txn.gas_used AS DECIMAL(38,0)) / power(10, 18)) * CAST(txn.gas_price AS decimal(38,0))) + ((CAST(txn.l1_gas_used AS DECIMAL(38,0)) / power(10, 18)) * CAST(txn.l1_gas_price AS decimal(38,0)) * CAST(txn.l1_fee_scalar AS decimal(38,0))) * eth.price AS txn_cost_usd,
     offers.project_contract_address, 
     offers.tx_hash,
     txn.from AS tx_from,
