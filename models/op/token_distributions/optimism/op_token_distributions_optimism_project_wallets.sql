@@ -45,7 +45,7 @@ FROM (values
     ,('0xA7EEb1b719ef7b40F79D2056900ee3Ca904F28F9', 'DefiEdge', 'Uniswap Grants')
     ,('0xfda462548ce04282f4b6d6619823a7c64fdc0185', 'Angle', 'Contract Deplopyer')
     ,('0x20f3880A281092dBC6699E5D5a0FF5FEB3D3db1A', 'Celer','Intermediate')
-    ,('0x4f09b919d969b58a96e8bd7673f12372d09395e8','Velodrome','Intermediate Disperser')
+    ,('0x4f09b919d969b58a96e8bd7673f12372d09395e8', 'Velodrome','Intermediate Disperser')
     --quix - should come from CB
     ,('0x5Ad4A019F77e82940f6Dd15A5215362AF061A742','Quix','Distributor')
     

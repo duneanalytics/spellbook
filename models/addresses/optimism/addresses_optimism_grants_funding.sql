@@ -14,7 +14,8 @@ SELECT
 FROM (VALUES
 
  ('OP Foundation',	'0xfedfaf1a10335448b7fa0268f56d2b44dbd357de',	'Airdrop #1 Distributor',	'OP Foundation Airdrops')
-,('OP Foundation',	'0x2501c477D0A35545a387Aa4A3EEe4292A9a8B3F0',	'OP Foundation Wallet',	'OP Foundation Grants')
+,('OP Foundation',	'0x2501c477D0A35545a387Aa4A3EEe4292A9a8B3F0',	'OP Foundation Wallet',		'OP Foundation Grants')
+,('OP Foundation',	'0xbe9a9b1b07f027130e56d8569d1aea5dd5a86013',	'Airdrop #2 Distributor',	'OP Foundation Airdrops')
 ,('Project',	'0x0d162447b8df47c2e7910441bf3c8c1b55b9b124',	'Uniswap V3',	'Phase 0')
 ,('Project',	'0x1bd315e3f029083da8731a6b1c6f2959a0d15376',	'1inch',	'Phase 0')
 ,('Project',	'0xf5e9d550c3c50364d630edb4753be404cd109121',	'Celer',	'Phase 0')

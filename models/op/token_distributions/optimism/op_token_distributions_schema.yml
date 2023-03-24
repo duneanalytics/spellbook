@@ -88,6 +88,9 @@ models:
       - &op_incoming_clawback
         name: op_incoming_clawback
         description: "OP Amount - if marked as clawed back by the project"
+      - &op_to_utility_contract
+        name: op_to_utility_contract
+        description: "OP Amount - if sent to a utility contract which deploys tokens"
       - &op_incoming_other
         name: op_incoming_other
         description: "OP Amount - if marked as incoming from a non-project, non-OP source"

@@ -46,8 +46,7 @@ WITH all_labels AS (
                     ) 
                     AS from_type, --override if to an incentive tx address
             COALESCE(
-                    /*CASE WHEN tf.to = dc.address THEN lbl_from_util_tx.address_descriptor ELSE NULL END --if utility, mark as internal
-                    ,*/lbl_to.address_descriptor
+                    lbl_to.address_descriptor
                     ,'Other'
                     )
                     AS to_type,
@@ -58,22 +57,17 @@ WITH all_labels AS (
                     ) 
                     AS from_label, --override if to an incentive tx address
             COALESCE(
-                    /*txl.tx_type
-                    ,CASE WHEN tf.to = dc.address THEN lbl_from_util_tx.label ELSE NULL END --if utility, mark as internal
-                    ,*/lbl_to.label
+                    lbl_to.label
                     , 'Other') 
                     AS to_label,
                     
             COALESCE(
-                    dc.project_name,--if we have a name override, like airdrop 2
                     lbl_from_util_tx.project_name
                     ,lbl_from.project_name
                     ) 
                     AS from_name, --override if to an incentive tx address
             COALESCE(
-                    /*txl.tx_name
-                    ,*/CASE WHEN tf.to = dc.address THEN lbl_from_util_tx.project_name ELSE NULL END --if utility, mark as internal
-                    ,lbl_to.project_name
+                    lbl_to.project_name
                     ,'Other'
                     ) AS to_name,
                     
@@ -202,12 +196,19 @@ SELECT
     AS op_between_projects,
     
     -- Tokens going from being deployed back to the project
-    CASE WHEN from_label != 'Project' and to_label='Project' AND from_name = to_name THEN op_amount_decimal
+    CASE
+        WHEN from_label != 'Project' and to_label='Project' AND from_name = to_name THEN op_amount_decimal --Projects Clawback
+        WHEN from_type = 'OP Foundation Airdrops' AND to_label = 'OP Foundation' THEN op_amount_decimal --Airdrop Clawback
         ELSE 0 END
     AS op_incoming_clawback, --Project's deployer back to the OG project wallet
 
+    -- Tokens going to an intermediate utility contract to be deployed
+    CASE WHEN from_label = 'Project' and to_label= 'Utility' THEN op_amount_decimal
+        ELSE 0 END
+    AS op_to_utility_contract,
+
     -- Tokens coming from unkown wallets back to the project
-    CASE WHEN from_label = 'Other' and to_label='Project' THEN op_amount_decimal
+    CASE WHEN from_label = 'Other' and to_label IN ('Project','OP Foundation') THEN op_amount_decimal
         ELSE 0 END
     AS op_incoming_other
             
@@ -236,6 +237,7 @@ SELECT
     , cast(op_to_project as double) as op_to_project
     , cast(op_between_projects as double) as op_between_projects
     , cast(op_incoming_clawback as double) as op_incoming_clawback
+    , cast(op_to_utility_contract as double) AS op_to_utility_contract
     , cast(op_incoming_other as double) AS op_incoming_other
     --
     , d.to_name AS og_to_name --keep original name in case we want it
