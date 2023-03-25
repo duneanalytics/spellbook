@@ -200,7 +200,7 @@ LEFT JOIN {{ source('prices', 'usd') }} buy_token_price
 -- get the price of eth at the time of the offer 
 LEFT JOIN {{ source('prices', 'usd') }}  eth
     ON eth.minute = date_trunc('minute', offers.block_time)
-    AND cast(eth.contract_address AS varchar) = '0xdeaddeaddeaddeaddeaddeaddeaddeaddead0000' -- this is for optimism specifically
+    AND cast(eth.contract_address AS varchar(100)) = '0xdeaddeaddeaddeaddeaddeaddeaddeaddead0000' -- this is for optimism specifically
     AND eth.blockchain = 'optimism'
     {% if not is_incremental() %}
     AND eth.minute >= cast('{{ project_start_date }}' AS timestamp)
