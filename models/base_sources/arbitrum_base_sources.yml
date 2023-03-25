@@ -258,23 +258,24 @@ sources:
           - name: values
             description: "Amounts of ERC1155 token transferred"
 
-  - name: evt_transferbatch
-    description: "Transfers events for ERC721 tokens on Arbitrum."
-    tables:
-      - name: evt_transfer
+      - name: evt_transferbatch
         loaded_at_field: evt_block_time
-        description: "Transfers events for ERC721 tokens on Arbitrum."
+        description: "Batch transfers events for ERC1155 tokens on Arbitrum."
         columns:
           - name: contract_address
-            description: "ERC721 token contract address"
+            description: "ERC1155 token contract address"
           - *evt_tx_hash
           - *evt_index
           - *evt_block_time
           - *evt_block_number
+          - name: operator
+            description: "Addresses authorized (or approved) by a NFT owner to spend all of his token Ids."
           - *from
           - *to
-          - name: tokenId
-            description: "ERC721 token ID."
+          - name: ids
+            description: "ERC1155 token IDs"
+          - name: values
+            description: "Amounts of ERC1155 token transferred"
 
       - name: evt_ApprovalForAll
         loaded_at_field: evt_block_time
