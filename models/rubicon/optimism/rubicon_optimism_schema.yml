@@ -135,6 +135,12 @@ models:
       - &buy_token_symbol
         name: buy_token_symbol
         description: "the token the offer is buying"
+      - &sell_token_address
+        name: sell_token_address
+        description: "the address of the token the offer is selling"
+      - &buy_token_address
+        name: buy_token_address
+        description: "the address of the token the offer is buying"
       - *token_pair
       - &sell_amount
         name: sell_amount

@@ -60,6 +60,18 @@ WITH unit_test AS (
             ELSE FALSE
         END AS buy_token_symbol_test,
 
+        -- test the sell_token_address
+        CASE
+            WHEN LOWER(test.sell_token_address) = LOWER(actual.sell_token_address) THEN TRUE
+            ELSE FALSE
+        END AS sell_token_address_test,
+
+        -- test the buy_token_address
+        CASE
+            WHEN LOWER(test.buy_token_address) = LOWER(actual.buy_token_address) THEN TRUE
+            ELSE FALSE
+        END AS buy_token_address_test,
+
         -- test the token_pair
         CASE
             WHEN LOWER(test.token_pair) = LOWER(actual.token_pair) THEN TRUE
@@ -227,6 +239,8 @@ WHERE
     OR block_date_test = FALSE
     OR sell_token_symbol_test = FALSE
     OR buy_token_symbol_test = FALSE
+    OR sell_token_address_test = FALSE
+    OR buy_token_address_test = FALSE
     OR token_pair_test = FALSE
     OR sell_amount_test = FALSE
     OR buy_amount_test = FALSE

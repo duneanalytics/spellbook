@@ -122,6 +122,8 @@ SELECT
     offers.evt_index,
     erc20_sell.symbol AS sell_token_symbol,
     erc20_buy.symbol AS buy_token_symbol, 
+    offers.sell_token_address,
+    offers.buy_token_address,
     CASE -- create a common pair format for all tokens
         WHEN lower(erc20_sell.symbol) > lower(erc20_buy.symbol) THEN concat(erc20_buy.symbol, '-', erc20_sell.symbol)
         ELSE concat(erc20_sell.symbol, '-', erc20_buy.symbol)

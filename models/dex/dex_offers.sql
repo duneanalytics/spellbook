@@ -25,6 +25,8 @@ SELECT *
             evt_index,
             sell_token_symbol,
             buy_token_symbol,
+            sell_token_address,
+            buy_token_address,
             token_pair,
             sell_amount,
             buy_amount,
