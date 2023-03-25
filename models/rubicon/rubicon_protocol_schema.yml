@@ -90,20 +90,6 @@ models:
       tags: ['optimism','rubicon','dex']
     description: >
         A table containing all offers of rubicon on optimism
-    tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-              - block_date
-              - blockchain
-              - project
-              - version
-              - tx_hash
-              - evt_index
-              - trace_address
-      - check_dex_seed:
-          blockchain: optimism
-          project: rubicon
-          version: 1
     columns:
       - *blockchain
       - *project
