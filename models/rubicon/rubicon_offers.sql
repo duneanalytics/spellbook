@@ -20,7 +20,7 @@ FROM (
         version, 
         block_date, 
         block_time, 
-        block_number. 
+        block_number, 
         tx_index,
         evt_index, 
         sell_token_symbol,
