@@ -30,6 +30,15 @@ tests:
   spellbook:
     +store_failures: true  # store failures for all tests
 
+# Configureing seeds
+# Full documentation: https://docs.getdbt.com/reference/seed-configs
+# For configuring individual seeds (e.g. overriding column types) we recommend a yml file nested in the same folder as the seed
+# example: seeds/cryptopunks/schema.yml
+seeds:
+  spellbook:
+    +schema: test_data
+
+
 # Configuring models
 # Full documentation: https://docs.getdbt.com/docs/configuring-models
 models:
@@ -428,6 +437,12 @@ models:
         +schema: transfers_bnb
       arbitrum:
         +schema: transfers_arbitrum
+      polygon:
+        +schema: transfers_polygon
+      avalanche_c:
+        +schema: transfers_avalanche_c
+      fantom:
+        +schema: transfers_fantom
 
     sudoswap:
       +schema: sudoswap
@@ -608,6 +623,8 @@ models:
       +schema: clipper
       ethereum:
         +schema: clipper_ethereum
+      arbitrum:
+        +schema: clipper_arbitrum
 
     reaper:
       +schema: reaper
@@ -877,564 +894,23 @@ models:
 
     method_ids:
       +schema: method_ids
+      
+    coinbase_wallet_quests:
+      +schema: coinbase_wallet_quests
+      optimism:
+        +schema: coinbase_wallet_quests_optimism
+
+    optimism_quests:
+      +schema: optimism_quests
+      optimism:
+        +schema: optimism_quests_optimism
 
     fractal:
       +schema: fractal
       polygon:
         +schema: fractal_polygon
-        
+
     rarible:
       +schema: rarible
       polygon:
         +schema: rarible_polygon
-
-seeds:
-  spellbook:
-    +schema: test_data
-    balances:
-      ethereum:
-        balances_ethereum_erc20_latest_entries:
-          +column_types:
-            timestamp: timestamp
-            wallet_address: string
-            token_address: string
-            amount_raw: string
-        balances_ethereum_erc20_specific_wallet:
-          +column_types:
-            timestamp: timestamp
-            wallet_address: string
-            token_address: string
-            token_symbol: string
-            amount_raw: string
-            amount: string
-
-    oneplanet:
-      polygon:
-        oneplanet_polygon_trades_seed:
-          +column_types:
-            block_time: timestamp
-            tx_hash: string
-            price_amount_raw: string
-
-    opensea:
-      ethereum:
-        opensea_wyvern_trades_samples:
-          +column_types:
-            tx_hash: string
-            block_time: timestamp
-            token_id: string
-            amount_original: double
-            buyer: string
-            seller: string
-            platform_fee_amount: double
-            royalty_fee_amount: double
-      solana:
-        opensea_solana_trades_solscan:
-          +column_types:
-            block_time: timestamp
-            tx_hash: string
-            amount: string
-
-    seaport:
-      seaport_trades_seed:
-        +column_types:
-          blockchain: string
-          project: string
-          version: string
-          block_date: date
-          tx_hash: string
-          evt_index: int
-          nft_contract_address: string
-          token_id: string
-          sub_type: string
-          sub_idx: int
-          buyer: string
-          seller: string
-
-    magiceden:
-      solana:
-        magiceden_solana_trades_solscan:
-          +column_types:
-            block_time: timestamp
-            tx_hash: string
-            amount: string
-
-    sharky:
-      solana:
-        sharky_solana_loans_solscan:
-          +column_types:
-            block_time: timestamp
-            tx_hash: string
-            amount: double
-
-    ens:
-    dex:
-      trades:
-        +column_types:
-          blockchain: string
-          project: string
-          version: string
-          block_date: date
-          tx_hash: string
-          evt_index: int
-          token_bought_address: string
-          token_bought_amount: float
-          token_sold_address: string
-          token_sold_amount: float
-      aggregator:
-        +column_types:
-          blockchain: string
-          project: string
-          version: string
-          block_date: date
-          tx_hash: string
-          evt_index: int
-          token_bought_address: string
-          token_bought_amount: float
-          token_sold_address: string
-          token_sold_amount: float
-      pools:
-        +column_types:
-          blockchain: string
-          project: string
-          version: string
-          pool: string
-          token_id: string
-          token_address: string
-          token_type: string
-
-    sudoswap:
-      sudoswap_ethereum_example_trades:
-        +column_types:
-          block_number: long
-          tx_hash: string
-          trade_category: string
-          nft_contract_address: string
-          token_id: string
-          amount_original: double
-          platform_fee_amount: double
-          pool_fee_amount: double
-    bend_dao:
-      ethereum:
-        bend_dao_nft_lending:
-          +column_types:
-            block_number: long
-            tx_hash: string
-            evt_type: string
-            token_id: string
-            amount_original: double
-            address: string
-    cryptopunks:
-      cryptopunks_trades_buys_bids_seed:
-        +column_types:
-          test_description: string
-          blockchain: string
-          project: string
-          version: string
-          block_number: string
-          block_date: date
-          tx_hash: string
-          token_id: string
-          seller: string
-          buyer: string
-          amount_raw: string
-          currency_contract: string
-    dao:
-      dao_addresses_seed:
-        +column_types:
-          blockchain: string
-          dao_creator_tool: string
-          dao: string
-          dao_wallet_address: string
-          created_date: date
-      dao_transactions_seed:
-        +column_types:
-          blockchain: string
-          dao_creator_tool: string
-          dao: string
-          dao_wallet_address: string
-          value: float
-          block_date: date
-          tx_type: string
-          tx_hash: string
-    curvefi:
-      ethereum:
-
-    chainlink:
-      chainlink_get_price_seed:
-        +column_types:
-          blockchain: string
-          block_time: timestamp
-          block_number: int
-          feed_name: string
-          oracle_price: double
-          proxy_address: string
-          aggregator_address: string
-          underlying_token_address: string
-
-    nft:
-      nft_wash_trades_refactor_seed:
-        +column_types:
-          blockchain: string
-          project: string
-          version: string
-          nft_contract_address: string
-          token_id: bigint
-          token_standard: string
-          trade_category: string
-          buyer: string
-          seller: string
-          project_contract_address: string
-          aggregator_name: string
-          aggregator_address: string
-          tx_from: string
-          tx_to: string
-          block_time: string
-          block_date: string
-          block_number: bigint
-          tx_hash: string
-          unique_trade_id: string
-          buyer_first_funded_by: string
-          seller_first_funded_by: string
-          filter_1_same_buyer_seller: boolean
-          filter_2_back_and_forth_trade: boolean
-          filter_3_bought_or_sold_3x: boolean
-          filter_4_first_funded_by_same_wallet: boolean
-          is_wash_trade: boolean
-
-    nexusmutual:
-      ethereum:
-        nexusmutual_ethereum_trades_seed:
-          +column_types:
-            evt_tx_hash: string
-            block_date: date
-            evt_block_number: string
-            nonce: string
-            curr: string
-            sum_assured: string
-            premium: string
-            premium_nxm: string
-
-    perpetual:
-      trades:
-        +column_types:
-          blockchain: string
-          block_date: date
-          underlying_asset: string
-          market: string
-          market_address: string
-          trade: string
-          project: string
-          version: string
-          tx_hash: string
-    transfers:
-      bnb:
-        transfers_bnb_bep20_agg_day_v2:
-          +column_types:
-            blockchain: string
-            day: date
-            wallet_address: string
-            token_address: string
-            symbol: string
-            amount_raw: double
-            amount: double
-            tx_num: long
-        transfers_bnb_bep20_agg_hour_v2:
-          +column_types:
-            blockchain: string
-            hour: timestamp
-            wallet_address: string
-            token_address: string
-            symbol: string
-            amount_raw: double
-            amount: double
-            tx_num: long
-
-    quix:
-      quix_events_seed:
-        +column_types:
-          blockchain: string
-          project: string
-          version: string
-          block_date: date
-          block_time: timestamp
-          token_id: string
-          collection: string
-          token_standard: string
-          trade_type: string
-          number_of_items: int
-          trade_category: string
-          evt_type: string
-          seller: string
-          buyer: string
-          nft_contract_address: string
-          project_contract_address: string
-          tx_hash: string
-          evt_index: int
-          block_number: int
-          tx_from: string
-          tx_to: string
-          royalty_fee_receive_address: string
-
-    zeroex:
-      ethereum:
-        zeroex_ethereum_api_fills_deduped_sample:
-          +column_types:
-            blockchain: string
-            project: string
-            version: string
-            block_date: date
-            block_time: timestamp
-            taker_symbol: string
-            maker_symbol: string
-            token_pair: string
-            taker_token_amount: double
-            maker_token_amount: double
-            taker_token_amount_raw: string
-            maker_token_amount_raw: string
-            amount_usd: double
-            taker_token: string
-            maker_token: string
-            taker: string
-            maker: string
-            project_contract_address: string
-            tx_hash: string
-            tx_from: string
-            tx_to: string
-            trace_address: string
-            evt_index: int
-        zeroex_ethereum_api_fills_sample:
-          +column_types:
-            tx_hash: string
-            block_number: int
-            evt_index: int
-            contract_address: string
-            block_time: timestamp
-            maker: string
-            taker: string
-            taker_token: string
-            taker_symbol: string
-            maker_token: string
-            maker_symbol: string
-            token_pair: string
-            taker_token_amount: double
-            taker_token_amount_raw: string
-            maker_token_amount: double
-            maker_token_amount_raw: string
-            type: string
-            affiliate_address: string
-            swap_flag: boolean
-            matcha_limit_order_flag: boolean
-            volume_usd: double
-            tx_from: string
-            tx_to: string
-        zeroex_ethereum_nft_fills_sample:
-          +column_types:
-            block_time: timestamp
-            block_date: timestamp
-            evt_index: int
-            tx_hash: string
-            maker: string
-            taker: string
-            matcher: string
-            nft_address: string
-            nft_id: string
-            label: string
-            price_label: string
-            token: string
-            token_amount_raw: string
-            symbol: string
-            price_usd: double
-            token_amount: double
-            project_name: string
-      optimism:
-        zeroex_optimism_api_fills_sample:
-          +column_types:
-            tx_hash: string
-            evt_index: int
-            contract_address: string
-            block_time: timestamp
-            block_date: date
-            maker: string
-            taker: string
-            taker_token: string
-            maker_token: string
-            taker_token_amount: double
-            taker_token_amount_raw: double
-            maker_token_amount: double
-            maker_token_amount_raw: double
-            type: string
-            affiliate_address: string
-            swap_flag: boolean
-            matcha_limit_order_flag: boolean
-            volume_usd: double
-      polygon:
-        +enabled: true
-        +schema: test_data
-        zeroex_polygon_api_fills_sample:
-          +column_types:
-            tx_hash: string
-            evt_index: int
-            contract_address: string
-            block_time: timestamp
-            block_date: date
-            maker: string
-            taker: string
-            taker_token: string
-            maker_token: string
-            taker_token_amount: double
-            taker_token_amount_raw: double
-            maker_token_amount: double
-            maker_token_amount_raw: double
-            type: string
-            affiliate_address: string
-            swap_flag: boolean
-            matcha_limit_order_flag: boolean
-            volume_usd: double
-      avalanche_c:
-        +enabled: true
-        +schema: test_data
-        zeroex_avalanche_c_api_fills_sample:
-          +column_types:
-            tx_hash: string
-            evt_index: int
-            contract_address: string
-            block_time: timestamp
-            block_date: date
-            maker: string
-            taker: string
-            taker_token: string
-            maker_token: string
-            taker_token_amount: double
-            taker_token_amount_raw: double
-            maker_token_amount: double
-            maker_token_amount_raw: double
-            type: string
-            affiliate_address: string
-            swap_flag: boolean
-            matcha_limit_order_flag: boolean
-            volume_usd: double
-
-    gmx:
-      avalanche_c:
-        gmx_glp_aum_seed:
-          +column_types:
-            date: date
-            usdc_aum: double
-            usdc_e_aum: double
-
-    x2y2:
-      ethereum:
-        x2y2_ethereum_trades_etherscan:
-          +column_types:
-            block_number: long
-            tx_hash: string
-            token_id: string
-    pancakeswap:
-      bnb:
-        pancakeswap_nft_trades_samples:
-          column_types:
-            block_time: timestamp
-            token_id: int
-            seller: string
-            buyer: string
-            tx_hash: string
-            block_number: int
-            amount_original: double
-
-    liquidifty:
-      bnb:
-        liquidifty_bnb_nft_trades_samples:
-          column_types:
-            block_number: int
-            version: string
-            token_id: string
-            seller: string
-            buyer: string
-            tx_hash: string
-            amount_original: double
-      ethereum:
-        liquidifty_ethereum_nft_trades_samples:
-          column_types:
-            block_number: int
-            version: string
-            token_id: string
-            seller: string
-            buyer: string
-            tx_hash: string
-            amount_original: double
-
-    nftrade:
-      bnb:
-        nftrade_nft_trades_samples:
-           column_types:
-            block_number: int
-            token_id: string
-            seller: string
-            buyer: string
-            tx_hash: string
-            amount_original: double
-
-    tofu:
-      arbitrum:
-        tofu_arbitrum_nft_trades_samples:
-            column_types:
-              block_number: int
-              token_id: string
-              seller: string
-              buyer: string
-              tx_hash: string
-              amount_original: double
-
-    trove:
-      arbitrum:
-        trove_arbitrum_nft_trades_samples:
-            column_types:
-              block_number: int
-              token_id: string
-              seller: string
-              buyer: string
-              tx_hash: string
-              amount_original: double
-      ethereum:
-        trove_ethereum_nft_trades_samples:
-            column_types:
-              block_number: int
-              token_id: string
-              seller: string
-              buyer: string
-              tx_hash: string
-              amount_original: double
-
-    foundation:
-      ethereum:
-        foundation_trades_samples:
-          +column_types:
-            tx_hash: string
-            block_time: timestamp
-            token_id: string
-            amount_original: double
-            buyer: string
-            seller: string
-            platform_fee_amount: double
-            royalty_fee_amount: double
-
-    balancer:
-      balancer_transfers_bpt_seed:
-        +column_types:
-          blockchain: string
-          contract_address: string
-          evt_tx_hash: string
-          evt_index: int
-          evt_block_time: timestamp
-          block_date: timestamp
-          evt_block_number: int
-          from: string
-          to: string
-          value: double
-
-    udf:
-      bytea2numeric_samples:
-        +column_types:
-          hex: string
-          dec: string
