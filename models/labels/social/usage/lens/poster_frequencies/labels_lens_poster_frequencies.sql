@@ -1,11 +1,9 @@
-{{
-    config(
-        alias='lens_poster_frequencies',
-        post_hook='{{ expose_spells(\'["polygon"]\',
+{{config(alias='lens_poster_frequencies'
+
+    ,post_hook='{{ expose_spells(\'["polygon"]\',
                                     "sector",
                                     "labels",
-                                    \'["scoffie", "hosuke"]\') }}'
-    )
+                                    \'["scoffie"]\') }}')
 }}
 
 WITH lens_addresses as 
@@ -46,13 +44,11 @@ FROM {{ source('lens_polygon','LensHub_evt_ProfileCreated') }} pc
 )
 
 ,post_count as 
-(SELECT address
+(SELECT  distinct profileId 
        ,COUNT(post_id) as posts_count
 FROM post_data
-INNER JOIN lens_addresses USING (profileId)
-GROUP BY address
+GROUP BY 1
 )
-
 ,percentile as 
 (SELECT approx_percentile(posts_count, 0.99) as p99
         ,approx_percentile(posts_count, 0.95) as p95
@@ -79,7 +75,10 @@ SELECT
  ,now() as updated_at
  ,'lens_poster_frequencies' as model_name
  ,'usage' as label_type
-FROM post_count pc
+FROM lens_addresses la
+
+INNER JOIN post_count  pc 
+ON la.profileId=pc.profileId 
 
 
 
