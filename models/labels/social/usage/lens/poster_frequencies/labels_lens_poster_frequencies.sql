@@ -1,19 +1,17 @@
-{{
-    config(
-        alias='lens_poster_frequencies',
-        post_hook='{{ expose_spells(\'["polygon"]\',
+{{config(alias='lens_poster_frequencies'
+
+    ,post_hook='{{ expose_spells(\'["polygon"]\',
                                     "sector",
                                     "labels",
-                                    \'["scoffie", "hosuke"]\') }}'
-    )
+                                    \'["scoffie"]\') }}')
 }}
 
-WITH lens_addresses as
+WITH lens_addresses as 
 
 (SELECT to as address
        ,handle as name
        ,CAST (profileId AS string) AS profileId
-FROM {{ source('lens_polygon','LensHub_evt_ProfileCreated') }} pc
+FROM {{ source('lens_polygon','LensHub_evt_ProfileCreated') }} pc 
 
 
 
@@ -24,36 +22,34 @@ FROM {{ source('lens_polygon','LensHub_evt_ProfileCreated') }} pc
     SELECT
          output_0 as post_id
          ,CAST(get_json_object(vars, '$.profileId') AS string) as profileId
-
+ 
     FROM {{ source('lens_polygon','LensHub_call_post') }} cp1
-
-
+    
+ 
     WHERE 1=1
     AND call_success = true
 
-
+    
     union all
 
-
+    
     SELECT
         output_0 as post_id
         ,CAST(get_json_object(vars, '$.profileId') AS string) as profileId
     FROM {{ source('lens_polygon','LensHub_call_postWithSig') }} cp2
 
-
+  
     WHERE 1=1
     AND call_success = true
 )
 
-,post_count as
-(SELECT address
+,post_count as 
+(SELECT  distinct profileId 
        ,COUNT(post_id) as posts_count
 FROM post_data
-INNER JOIN lens_addresses USING (profileId)
-GROUP BY address
+GROUP BY 1
 )
-
-,percentile as
+,percentile as 
 (SELECT approx_percentile(posts_count, 0.99) as p99
         ,approx_percentile(posts_count, 0.95) as p95
         ,approx_percentile(posts_count, 0.90) as p90
@@ -62,8 +58,8 @@ GROUP BY address
 FROM  post_count
 )
 
-SELECT
-'polygon' as blockchain
+SELECT 
+'polygon' as blockchain 
 ,address
 ,CASE WHEN posts_count >= (select p99 from percentile) THEN 'top 1% lens poster'
       WHEN posts_count >= (select p95 from percentile) THEN 'top 5% lens poster'
@@ -79,7 +75,11 @@ SELECT
  ,now() as updated_at
  ,'lens_poster_frequencies' as model_name
  ,'usage' as label_type
-FROM post_count pc
+FROM lens_addresses la
+
+INNER JOIN post_count  pc 
+ON la.profileId=pc.profileId 
+
 
 
 
