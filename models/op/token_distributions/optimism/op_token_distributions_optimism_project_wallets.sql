@@ -46,6 +46,7 @@ FROM (values
     ,('0xfda462548ce04282f4b6d6619823a7c64fdc0185', 'Angle', 'Contract Deplopyer')
     ,('0x20f3880A281092dBC6699E5D5a0FF5FEB3D3db1A', 'Celer','Intermediate')
     ,('0x4f09b919d969b58a96e8bd7673f12372d09395e8', 'Velodrome','Intermediate Disperser')
+    ,('0xeC93157084dcE64F7E4c0F0EDF383114b5C805aA', 'Via Protocol', 'Intermediate')
     --quix - should come from CB
     ,('0x5Ad4A019F77e82940f6Dd15A5215362AF061A742','Quix','Distributor')
     
@@ -133,7 +134,6 @@ FROM (values
     ,('0x68a1d9a49b82c5A0a3431aAE6178F89Ad5214730','Synthetix','ETH/sETH: Velodrome')
     ,('0x1A3E5557039763425B00a2e1B0eB767B01d64756','Beefy Finance','Beefy Launchpool')
     ,('0x65F8a09A1C3581a02C8788a6959652E32a87FC77','Beefy Finance','Beefy Launchpool')
-    ,('0xda62d109064138c14d45085b6e49568e1c0b4e23','xToken Terminal / Gamma Strategies','Rewards Program')
     ,('0xf099FA1Bd92f8AAF4886e8927D7bd3c15bA0BbFd','xToken Terminal / Gamma Strategies','Rewarder')
 
     ,('0xAde63D643564AaA8C2A86F2244f43B5eB00ed5e6','Clipper','Distributor')
