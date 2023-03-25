@@ -15,7 +15,7 @@
 ,ref('fraxswap_trades')
 ,ref('curvefi_trades')
 ,ref('airswap_ethereum_trades')
-,ref('clipper_ethereum_trades')
+,ref('clipper_trades')
 ,ref('shibaswap_ethereum_trades')
 ,ref('swapr_ethereum_trades')
 ,ref('defiswap_ethereum_trades')
@@ -33,7 +33,7 @@
 ,ref('zigzag_trades')
 ,ref('nomiswap_bnb_trades')
 ,ref('gmx_trades')
-,ref('biswap_bnb_trades') 
+,ref('biswap_bnb_trades')
 ,ref('wombat_bnb_trades')
 ,ref('iziswap_bnb_trades')
 ,ref('babyswap_bnb_trades')
@@ -51,6 +51,7 @@
 ,ref('balancer_trades')
 ,ref('spiritswap_fantom_trades')
 ,ref('quickswap_trades')
+,ref('maverick_trades')
 ] %}
 
 

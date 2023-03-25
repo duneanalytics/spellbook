@@ -13,10 +13,10 @@
  , ref('labels_miners')
  , ref('labels_system_addresses')
  , ref('labels_validators')
-
  , ref('labels_flashbots_ethereum')
  , ref('labels_mev_ethereum')
  , ref('labels_contract_deployers')
+ , ref('labels_stablecoins')
 ] %}
 
 SELECT *
