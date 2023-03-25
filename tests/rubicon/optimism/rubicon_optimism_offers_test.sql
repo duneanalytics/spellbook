@@ -226,6 +226,10 @@ WITH unit_test AS (
         {{ ref('rubicon_optimism_offers') }} AS actual
         INNER JOIN {{ ref('rubicon_optimism_offers_test_data') }} AS test
         ON actual.tx_hash = test.tx_hash
+        AND actual.block_number = test.block_number
+        AND actual.tx_index = test.tx_index
+        AND actual.evt_index = test.evt_index
+
 )
 
 -- Return any FALSE results
