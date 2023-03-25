@@ -28,7 +28,6 @@ FROM
     ("badger-badger","arbitrum","BADGER","0xbfa641051ba0a0ad1b0acf549a89536a0d76472e",18),
     ("bal-balancer","arbitrum","BAL","0x040d1edc9569d4bab2d15287dc5a4f10f56a56b8",18),
     ("bond-barnbridge","arbitrum","BOND","0x0d81e50bc677fa67341c44d7eaa9228dee64a4e1",18),
-    ("celr-celertoken","arbitrum","CELR","0x3a8b787f78d775aecfeea15706d4221b40f345ab",18),
     ("cnfi-connect-financial","arbitrum","CNFI","0x6f5401c53e2769c858665621d22ddbf53d8d27c5",18),
     ("comp-compoundd","arbitrum","COMP","0x354a6da3fcde098f8389cad84b0182725c6c91de",18),
     ("coti-coti","arbitrum","COTI","0x6fe14d3cc2f7bddffba5cdb3bbe7467dd81ea101",18),
