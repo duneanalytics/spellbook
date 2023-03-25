@@ -16,7 +16,7 @@
 
  , ref('labels_flashbots_ethereum')
  , ref('labels_mev_ethereum')
- , ref('labels_contract_deployers_ethereum')
+ , ref('labels_contract_deployers')
 ] %}
 
 SELECT *
