@@ -77,7 +77,7 @@ WITH all_labels AS (
                 substring(tx.data,1,10) AS tx_method --bytearray_substring(tx.data, 1, 4) AS tx_method
                 
             FROM {{source('erc20_optimism','evt_transfer') }} tf
-            -- We want either the send or receiver to be the foundation or a project
+            -- We want either the send or receiver to be the foundation or a project (also includes utility transfers)
             INNER JOIN all_labels lbl_from
                 ON lbl_from.address = tf.`from`
             -- if the recipient is in this list to, then we track it
@@ -116,14 +116,29 @@ WITH all_labels AS (
             AND tf.evt_block_time >= cast('{{op_token_launch_date}}' as date)
             {% endif %}
             
-            AND 1= ( --exclude CEX to CEX or CEX withdrawals
+            -- For CEXs, exclude CEX to CEX or CEX withdrawals
+            AND 1= ( 
                 CASE
-                    WHEN lbl_from.label != 'CEX' THEN 1
+                    WHEN lbl_from.label != 'CEX' THEN 1 --when not a CEX, keep it
                     WHEN lbl_from.label = 'CEX' AND lbl_to.label = 'CEX' THEN 0
                     WHEN lbl_from.label = 'CEX' AND lbl_to.label IS NULL THEN 0
                     ELSE 1
                 END
                 )
+            -- for utility contracts, ensure that the tx_from is a project wallet
+            AND 1 = (
+                CASE
+                WHEN dc.address IS NULL THEN 1 -- when not a utility transfer, keep it
+                WHEN dc.address IS NOT NULL
+                    AND (
+                        tx.`from` IN (SELECT address FROM all_labels WHERE label != 'Utility')
+                        OR
+                        tf.`from` IN (SELECT address FROM all_labels WHERE label != 'Utility')
+                     ) THEN 1 --when utility, make sure the transaction or transfer is from a project wallet
+                ELSE 0
+                END
+
+            )
 
             GROUP BY 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17 --get uniques b/c of duplicated receiver addresses
             
