@@ -20,4 +20,4 @@ SELECT distinct 'fantom'             AS blockchain
               , 'persona'            AS label_type
 FROM {{ source('fantom', 'creation_traces') }} creation
 LEFT ANTI JOIN {{ source('fantom', 'creation_traces') }} anti_table 
-ON creation.address = anti_table.address
+ON creation.from = anti_table.address

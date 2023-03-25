@@ -20,4 +20,4 @@ SELECT distinct 'gnosis'             AS blockchain
               , 'persona'            AS label_type
 FROM {{ source('gnosis', 'creation_traces') }} creation
 LEFT ANTI JOIN {{ source('gnosis', 'creation_traces') }} anti_table
-ON creation.address = anti_table.address
+ON creation.from = anti_table.address

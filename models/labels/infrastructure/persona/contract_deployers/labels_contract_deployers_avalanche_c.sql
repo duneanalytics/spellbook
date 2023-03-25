@@ -20,4 +20,4 @@ SELECT distinct 'avalanche_c'        AS blockchain
               , 'persona'            as label_type
 FROM {{ source('avalanche_c', 'creation_traces') }} creation
 LEFT ANTI JOIN {{ source('avalanche_c', 'creation_traces') }} anti_table
-ON creation.address = anti_table.address
+ON creation.from = anti_table.address
