@@ -326,6 +326,11 @@ models:
       tags: ['ethereum','opensea','v4','trades']
     description: >
         OpenSea V4 trades on Ethereum
+    tests:
+      - check_opensea_seed:
+          blockchain: ethereum
+          project: opensea
+          version: v4
     columns:
       - *blockchain
       - *project
