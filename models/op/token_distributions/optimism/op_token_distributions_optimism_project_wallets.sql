@@ -46,7 +46,9 @@ FROM (values
     ,('0xfda462548ce04282f4b6d6619823a7c64fdc0185', 'Angle', 'Contract Deplopyer')
     ,('0x20f3880A281092dBC6699E5D5a0FF5FEB3D3db1A', 'Celer','Intermediate')
     ,('0x4f09b919d969b58a96e8bd7673f12372d09395e8', 'Velodrome','Intermediate Disperser')
-    ,('0xeC93157084dcE64F7E4c0F0EDF383114b5C805aA', 'Via Protocol', 'Intermediate')
+    ,('0xeC93157084dcE64F7E4c0F0EDF383114b5C805aA', 'Via Protocol', 'Multisig')
+    ,('0x649c2DFCA22a41D30F0ddEFEA53C4D5f4797051a', 'Clique', 'Team Multisig')
+
     --quix - should come from CB
     ,('0x5Ad4A019F77e82940f6Dd15A5215362AF061A742','Quix','Distributor')
     
@@ -154,6 +156,7 @@ FROM (values
     ,('0x8b50d942bb4effe0db32393a141ea083db0c4e7f', 'Alchemix', 'alETH/WETH: Velodrome')
     ,('0x4ea2e39626de031a011c3ca7360878202454ce75', 'Angle', 'OP/agEUR: Velodrome')
     ,('0x6333000289bc27a090b3d51e734c2f13e3edc4fd', 'Hundred Finance', 'Token Treasury')
+    ,('0x86c90fc464A668469A93Ca08D8B9872bdB16b356', 'Mux', 'TradingRebateDistributor')
     
     ,('0xeeab81526c9addb75ffffde0cd3f6f018cc39ac2','Synthetix','Multisig - Distributor')
     ,('0x09992dd7b32f7b35d347de9bdaf1919a57d38e82','Synthetix','SNX Bridge: Hop')
