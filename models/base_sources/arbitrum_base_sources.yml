@@ -241,25 +241,6 @@ sources:
 
       - name: evt_transferbatch
         loaded_at_field: evt_block_time
-        description: "Batch transfers events for ERC1155 tokens on Arbirtrum."
-        columns:
-          - name: contract_address
-            description: "ERC1155 token contract address"
-          - *evt_tx_hash
-          - *evt_index
-          - *evt_block_time
-          - *evt_block_number
-          - name: operator
-            description: "Addresses authorized (or approved) by a NFT owner to spend all of his token Ids."
-          - *from
-          - *to
-          - name: ids
-            description: "ERC1155 token IDs"
-          - name: values
-            description: "Amounts of ERC1155 token transferred"
-
-      - name: evt_transferbatch
-        loaded_at_field: evt_block_time
         description: "Batch transfers events for ERC1155 tokens on Arbitrum."
         columns:
           - name: contract_address
