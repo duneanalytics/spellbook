@@ -21,7 +21,7 @@ SELECT 'ethereum' AS blockchain
 , claimant AS recipient
 , contract_address
 , evt_tx_hash AS tx_hash
-, amount/POWER(10, 18) AS quantity
+, CAST(amount/POWER(10, 18) AS double) AS quantity
 , '0xc18360217d8f7ab5e7c516566761ea12ce7f9d72' AS token_address
 , 'ENS' AS token_symbol
 , evt_index

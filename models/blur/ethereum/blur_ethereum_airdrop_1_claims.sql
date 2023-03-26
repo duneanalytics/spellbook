@@ -20,7 +20,7 @@ SELECT 'ethereum' AS blockchain
 , account AS recipient
 , contract_address
 , evt_tx_hash AS tx_hash
-, amount/POWER(10, 18) AS quantity
+, CAST(amount/POWER(10, 18) AS double) AS quantity
 , '0x5283d291dbcf85356a21ba090e6db59121208b44' AS token_address
 , 'BLUR' AS token_symbol
 , evt_index

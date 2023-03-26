@@ -20,7 +20,7 @@ SELECT 'ethereum' AS blockchain
 , account AS recipient
 , contract_address
 , evt_tx_hash AS tx_hash
-, amount/POWER(10, 18) AS quantity
+, CAST(amount/POWER(10, 18) AS double) AS quantity
 , '0x3446dd70b2d52a6bf4a5a192d9b0a161295ab7f9' AS token_address
 , 'SUDO' AS token_symbol
 , evt_index

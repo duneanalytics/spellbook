@@ -20,7 +20,7 @@ SELECT 'ethereum' AS blockchain
 , to AS recipient
 , contract_address
 , evt_tx_hash AS tx_hash
-, value/POWER(10, 18) AS quantity
+, CAST(value/POWER(10, 18) AS double) AS quantity
 , '0x92d6c1e31e14520e676a687f0a93788b716beff5' AS token_address
 , 'DYDX' AS token_symbol
 , evt_index

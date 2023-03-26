@@ -12,7 +12,7 @@
     )
 }}
 
-SELECT 'optimism' AS blockchain
+SELECT 'ethereum' AS blockchain
 , evt_block_time AS block_time
 , evt_block_number AS block_number
 , 'Safe' AS project
@@ -20,7 +20,7 @@ SELECT 'optimism' AS blockchain
 , to AS recipient
 , contract_address
 , evt_tx_hash AS tx_hash
-, value/POWER(10, 18) AS quantity
+, CAST(value/POWER(10, 18) AS double) AS quantity
 , '0x5afe3855358e112b5647b952709e6165e1c1eeee' AS token_address
 , 'SAFE' AS token_symbol
 , evt_index

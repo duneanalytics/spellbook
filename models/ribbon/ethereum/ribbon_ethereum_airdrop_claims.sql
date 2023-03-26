@@ -21,7 +21,7 @@ SELECT 'ethereum' AS blockchain
 , account AS recipient
 , contract_address
 , evt_tx_hash AS tx_hash
-, amount/POWER(10, 18) AS quantity
+, CAST(amount/POWER(10, 18) AS double) AS quantity
 , '0x6123b0049f904d730db3c36a31167d9d4121fa6b' AS token_address
 , 'RBN' AS token_symbol
 , evt_index

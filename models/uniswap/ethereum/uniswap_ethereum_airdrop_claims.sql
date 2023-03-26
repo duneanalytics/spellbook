@@ -21,7 +21,7 @@ SELECT 'ethereum' AS blockchain
 , account AS recipient
 , contract_address
 , evt_tx_hash AS tx_hash
-, amount/POWER(10, 18) AS quantity
+, CAST(amount/POWER(10, 18) AS double) AS quantity
 , '0x1f9840a85d5af5bf1d1762f925bdaddc4201f984' AS token_address
 , 'UNI' AS token_symbol
 , evt_index

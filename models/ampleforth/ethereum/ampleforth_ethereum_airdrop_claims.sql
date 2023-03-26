@@ -20,14 +20,14 @@ SELECT 'ethereum' AS blockchain
 , to AS recipient
 , contract_address
 , evt_tx_hash AS tx_hash
-, value/POWER(10, 18) AS quantity
+, CAST(value/POWER(10, 18) AS double) AS quantity
 , '0x77fba179c79de5b7653f68b5039af940ada60ce0' AS token_address
 , 'FORTH' AS token_symbol
 , evt_index
 FROM {{ source('erc20_ethereum', 'evt_transfer') }}
 WHERE contract_address = '0x77fba179c79de5b7653f68b5039af940ada60ce0'
 AND from = '0xf497b83cfbd31e7ba1ab646f3b50ae0af52d03a1'
-AND evt_block_time > '2021-04-20'
+AND evt_block_time BETWEEN '2021-04-20' AND '2022-04-16'
 {% if is_incremental() %}
 AND evt_block_time >= date_trunc("day", now() - interval '1 week')
 {% endif %}

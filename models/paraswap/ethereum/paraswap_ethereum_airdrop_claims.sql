@@ -20,7 +20,7 @@ SELECT 'ethereum' AS blockchain
 , from AS recipient
 , contract_address
 , evt_tx_hash AS tx_hash
-, value/POWER(10, 18) AS quantity
+, CAST(value/POWER(10, 18) AS double) AS quantity
 , '0xcafe001067cdef266afb7eb5a286dcfd277f3de5' AS token_address
 , 'PSP' AS token_symbol
 , evt_index

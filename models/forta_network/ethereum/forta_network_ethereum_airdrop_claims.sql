@@ -20,7 +20,7 @@ SELECT 'ethereum' AS blockchain
 , recipient
 , contract_address
 , evt_tx_hash AS tx_hash
-, amount/POWER(10, 18) AS quantity
+, CAST(amount/POWER(10, 18) AS double) AS quantity
 , '0x41545f8b9472d758bb669ed8eaeeecd7a9c4ec29' AS token_address
 , 'FORT' AS token_symbol
 , evt_index

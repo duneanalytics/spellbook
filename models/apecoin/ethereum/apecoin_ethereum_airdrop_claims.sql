@@ -20,7 +20,7 @@ SELECT 'ethereum' AS blockchain
 , account AS recipient
 , contract_address
 , evt_tx_hash AS tx_hash
-, amount/POWER(10, 18) AS quantity
+, CAST(amount/POWER(10, 18) AS double) AS quantity
 , '0x4d224452801aced8b2f0aebe155379bb5d594381' AS token_address
 , 'APE' AS token_symbol
 , evt_index

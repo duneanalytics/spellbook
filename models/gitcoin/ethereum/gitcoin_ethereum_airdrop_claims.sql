@@ -20,7 +20,7 @@ SELECT 'ethereum' AS blockchain
 , account AS recipient
 , contract_address
 , evt_tx_hash AS tx_hash
-, amount/POWER(10, 18) AS quantity
+, CAST(amount/POWER(10, 18) AS double) AS quantity
 , '0xde30da39c46104798bb5aa3fe8b9e0e1f348163f' AS token_address
 , 'GTC' AS token_symbol
 , evt_index

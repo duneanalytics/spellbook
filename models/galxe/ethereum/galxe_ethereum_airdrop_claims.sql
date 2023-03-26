@@ -21,7 +21,7 @@ SELECT 'ethereum' AS blockchain
 , account AS recipient
 , contract_address
 , evt_tx_hash AS tx_hash
-, amount/POWER(10, 18) AS quantity
+, CAST(amount/POWER(10, 18) AS double) AS quantity
 , '0x5faa989af96af85384b8a938c2ede4a7378d9875' AS token_address
 , 'GAL' AS token_symbol
 , evt_index

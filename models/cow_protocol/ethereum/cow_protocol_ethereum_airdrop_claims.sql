@@ -21,7 +21,7 @@ SELECT 'ethereum' AS blockchain
 , claimant AS recipient
 , contract_address
 , evt_tx_hash AS tx_hash
-, claimedAmount/POWER(10, 18) AS quantity
+, CAST(claimedAmount/POWER(10, 18) AS double) AS quantity
 , '0xdef1ca1fb7fbcdc777520aa7f396b4e015f497ab' AS token_address
 , 'COW' AS token_symbol
 , evt_index

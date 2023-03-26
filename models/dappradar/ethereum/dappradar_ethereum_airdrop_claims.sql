@@ -21,7 +21,7 @@ SELECT 'ethereum' AS blockchain
 , recipient
 , contract_address
 , evt_tx_hash AS tx_hash
-, amount/POWER(10, 18) AS quantity
+, CAST(amount/POWER(10, 18) AS double) AS quantity
 , '0x44709a920fccf795fbc57baa433cc3dd53c44dbe' AS token_address
 , 'RADAR' AS token_symbol
 , evt_index
