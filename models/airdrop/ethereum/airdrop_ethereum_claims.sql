@@ -60,6 +60,9 @@ FROM (
     , recipient
     , contract_address
     , tx_hash
+    , amount_raw
+    , amount_original
+    , amount_usd
     , quantity
     , token_address
     , token_symbol

@@ -20,7 +20,9 @@ SELECT 'ethereum' AS blockchain
 , t.to AS recipient
 , t.contract_address
 , t.evt_tx_hash AS tx_hash
-, CAST(t.value/POWER(10, 18) AS double) AS quantity
+, CAST(t.value AS DECIMAL(38,0)) AS amount_raw
+, CAST(t.value/POWER(10, 18) AS double) AS amount_original
+, CAST(pu.price*t.value/POWER(10, 18) AS double) AS amount_usd
 , '0xa6dd98031551c23bb4a2fbe2c4d524e8f737c6f7' AS token_address
 , 'TKNFY' AS token_symbol
 , t.evt_index
@@ -29,6 +31,12 @@ INNER JOIN {{source( 'tokenfy_ethereum', 'Tokenfy_call_claim' ) }} c ON c.call_b
     AND c.call_tx_hash=t.evt_tx_hash
     {% if is_incremental() %}
     AND c.call_block_time >= date_trunc("day", now() - interval '1 week')
+    {% endif %} t
+LEFT JOIN {{ ref('prices_usd_forward_fill') }} pu ON pu.blockchain = 'ethereum'
+    AND pu.contract_address='0xa6dd98031551c23bb4a2fbe2c4d524e8f737c6f7'
+    AND pu.minute=date_trun('minute', t.evt_block_time)
+    {% if is_incremental() %}
+    AND pu.minute >= date_trunc("day", now() - interval '1 week')
     {% endif %}
 WHERE t.contract_address = '0xa6dd98031551c23bb4a2fbe2c4d524e8f737c6f7'
 AND t.from = '0x0000000000000000000000000000000000000000'

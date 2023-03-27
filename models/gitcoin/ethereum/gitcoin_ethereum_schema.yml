@@ -139,9 +139,15 @@ models:
       - &tx_hash
         name: tx_hash
         description: "Transaction hash"
-      - &quantity
-        name: quantity
-        description: "Quantity of claimed tokens"
+      - &amount_raw
+        name: amount_raw
+        description: "Raw amount of tokens"
+      - &amount_original
+        name: amount_original
+        description: "Original amount of tokens"
+      - &amount_usd
+        name: amount_usd
+        description: "USD value of tokens"
       - *token_address
       - *token_symbol
       - &evt_index

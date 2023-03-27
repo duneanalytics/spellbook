@@ -14,18 +14,26 @@
 
 
 SELECT 'ethereum' AS blockchain
-, evt_block_time AS block_time
-, evt_block_number AS block_number
+, t.evt_block_time AS block_time
+, t.evt_block_number AS block_number
 , 'Botto' AS project
 , 'Botto Airdrop' AS airdrop_identifier
-, to AS recipient
-, contract_address
-, evt_tx_hash AS tx_hash
-, CAST(amount/POWER(10, 18) AS double) AS quantity
+, t.to AS recipient
+, t.contract_address
+, t.evt_tx_hash AS tx_hash
+, CAST(t.amount AS DECIMAL(38,0)) AS amount_raw
+, CAST(t.amount/POWER(10, 18) AS double) AS amount_original
+, CAST(pu.price*t.amount/POWER(10, 18) AS double) AS amount_usd
 , '0x9dfad1b7102d46b1b197b90095b5c4e9f5845bba' AS token_address
 , 'BOTTO' AS token_symbol
-, evt_index
-FROM {{ source('botto_ethereum', 'BottoAirdrop_evt_AirdropTransfer') }}
+, t.evt_index
+FROM {{ source('botto_ethereum', 'BottoAirdrop_evt_AirdropTransfer') }} t
+LEFT JOIN {{ ref('prices_usd_forward_fill') }} pu ON pu.blockchain = 'ethereum'
+    AND pu.contract_address='0x9dfad1b7102d46b1b197b90095b5c4e9f5845bba'
+    AND pu.minute=date_trun('minute', t.evt_block_time)
+    {% if is_incremental() %}
+    AND pu.minute >= date_trunc("day", now() - interval '1 week')
+    {% endif %}
 {% if is_incremental() %}
-WHERE evt_block_time >= date_trunc("day", now() - interval '1 week')
+WHERE t.evt_block_time >= date_trunc("day", now() - interval '1 week')
 {% endif %}

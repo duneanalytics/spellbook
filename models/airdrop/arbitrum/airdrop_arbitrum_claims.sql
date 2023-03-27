@@ -25,7 +25,9 @@ FROM (
     , recipient
     , contract_address
     , tx_hash
-    , quantity
+    , amount_raw
+    , amount_original
+    , amount_usd
     , token_address
     , token_symbol
     , evt_index

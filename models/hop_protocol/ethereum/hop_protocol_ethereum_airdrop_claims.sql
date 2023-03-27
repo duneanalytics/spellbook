@@ -14,18 +14,26 @@
 
 
 SELECT 'ethereum' AS blockchain
-, evt_block_time AS block_time
-, evt_block_number AS block_number
+, t.evt_block_time AS block_time
+, t.evt_block_number AS block_number
 , 'Hop Protocol' AS project
 , 'Hop Protocol Airdrop' AS airdrop_identifier
-, claimant AS recipient
-, contract_address
-, evt_tx_hash AS tx_hash
-, amount/POWER(10, 18) AS quantity
+, t.claimant AS recipient
+, t.contract_address
+, t.evt_tx_hash AS tx_hash
+, CAST(t.amount AS DECIMAL(38,0)) AS amount_raw
+, CAST(t.amount/POWER(10, 18) AS double) AS amount_original
+, CAST(pu.price*t.amount/POWER(10, 18) AS double) AS amount_usd
 , '0xc5102fe9359fd9a28f877a67e36b0f050d81a3cc' AS token_address
 , 'HOP' AS token_symbol
-, evt_index
-FROM {{ source('hop_protocol_ethereum', 'HOPToken_evt_Claim') }}
+, t.evt_index
+FROM {{ source('hop_protocol_ethereum', 'HOPToken_evt_Claim') }} t
+LEFT JOIN {{ ref('prices_usd_forward_fill') }} pu ON pu.blockchain = 'ethereum'
+    AND pu.contract_address='0xc5102fe9359fd9a28f877a67e36b0f050d81a3cc'
+    AND pu.minute=date_trun('minute', t.evt_block_time)
+    {% if is_incremental() %}
+    AND pu.minute >= date_trunc("day", now() - interval '1 week')
+    {% endif %}
 {% if is_incremental() %}
-WHERE evt_block_time >= date_trunc("day", now() - interval '1 week')
+WHERE t.evt_block_time >= date_trunc("day", now() - interval '1 week')
 {% endif %}

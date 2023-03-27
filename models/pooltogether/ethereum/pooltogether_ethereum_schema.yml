@@ -127,8 +127,12 @@ models:
         description: "Contract addressed used"
       - name: tx_hash
         description: "Transaction hash"
-      - name: quantity
-        description: "Quantity of claimed tokens"
+      - name: amount_raw
+        description: "Raw amount of tokens"
+      - name: amount_raw
+        description: "Original amount of tokens"
+      - name: amount_raw
+        description: "USD value of tokens"
       - name: token_address
         description: "Token address"
       - name: token_symbol

@@ -359,9 +359,12 @@ models:
         name: contract_address
         description: "Contract addressed used"
       - *tx_hash
-      - &quantity
-        name: quantity
-        description: "Quantity of claimed tokens"
+      - name: amount_raw
+        description: "Raw amount of tokens"
+      - name: amount_original
+        description: "Original amount of tokens"
+      - name: amount_usd
+        description: "USD value of tokens"
       - *token_address
       - *token_symbol
       - *evt_index

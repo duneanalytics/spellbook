@@ -13,21 +13,29 @@
 }}
 
 SELECT 'ethereum' AS blockchain
-, evt_block_time AS block_time
-, evt_block_number AS block_number
+, t.evt_block_time AS block_time
+, t.evt_block_number AS block_number
 , 'Ampleforth' AS project
 , 'Ampleforth Forth Airdrop' AS airdrop_identifier
-, to AS recipient
-, contract_address
-, evt_tx_hash AS tx_hash
-, CAST(value/POWER(10, 18) AS double) AS quantity
+, t.to AS recipient
+, t.contract_address
+, t.evt_tx_hash AS tx_hash
+, CAST(t.value AS DECIMAL(38,0)) AS amount_raw
+, CAST(t.value/POWER(10, 18) AS double) AS amount_original
+, CAST(pu.price*t.value/POWER(10, 18) AS double) AS amount_usd
 , '0x77fba179c79de5b7653f68b5039af940ada60ce0' AS token_address
 , 'FORTH' AS token_symbol
-, evt_index
-FROM {{ source('erc20_ethereum', 'evt_transfer') }}
-WHERE contract_address = '0x77fba179c79de5b7653f68b5039af940ada60ce0'
+, t.evt_index
+FROM {{ source('erc20_ethereum', 'evt_transfer') }} t
+LEFT JOIN {{ ref('prices_usd_forward_fill') }} pu ON pu.blockchain = 'ethereum'
+    AND pu.contract_address='0x77fba179c79de5b7653f68b5039af940ada60ce0'
+    AND pu.minute=date_trun('minute', t.evt_block_time)
+    {% if is_incremental() %}
+    AND pu.minute >= date_trunc("day", now() - interval '1 week')
+    {% endif %}
+WHERE t.contract_address = '0x77fba179c79de5b7653f68b5039af940ada60ce0'
 AND from = '0xf497b83cfbd31e7ba1ab646f3b50ae0af52d03a1'
-AND evt_block_time BETWEEN '2021-04-20' AND '2022-04-16'
+AND t.evt_block_time BETWEEN '2021-04-20' AND '2022-04-16'
 {% if is_incremental() %}
-AND evt_block_time >= date_trunc("day", now() - interval '1 week')
+AND t.evt_block_time >= date_trunc("day", now() - interval '1 week')
 {% endif %}

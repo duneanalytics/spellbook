@@ -14,18 +14,26 @@
 
 
 SELECT 'ethereum' AS blockchain
-, evt_block_time AS block_time
-, evt_block_number AS block_number
+, t.evt_block_time AS block_time
+, t.evt_block_number AS block_number
 , 'SnowSwap' AS project
 , 'SnowSwap Airdrop' AS airdrop_identifier
-, account AS recipient
-, contract_address
-, evt_tx_hash AS tx_hash
-, CAST(amount/POWER(10, 18) AS double) AS quantity
+, t.account AS recipient
+, t.contract_address
+, t.evt_tx_hash AS tx_hash
+, CAST(t.amount AS DECIMAL(38,0)) AS amount_raw
+, CAST(t.amount/POWER(10, 18) AS double) AS amount_original
+, CAST(pu.price*t.amount/POWER(10, 18) AS double) AS amount_usd
 , '0xfe9a29ab92522d14fc65880d817214261d8479ae' AS token_address
 , 'SNOW' AS token_symbol
-, evt_index
-FROM {{ source('snowswap_ethereum', 'MerkleDistributor_evt_Claimed') }}
+, t.evt_index
+FROM {{ source('snowswap_ethereum', 'MerkleDistributor_evt_Claimed') }} t
+LEFT JOIN {{ ref('prices_usd_forward_fill') }} pu ON pu.blockchain = 'ethereum'
+    AND pu.contract_address='0xfe9a29ab92522d14fc65880d817214261d8479ae'
+    AND pu.minute=date_trun('minute', t.evt_block_time)
+    {% if is_incremental() %}
+    AND pu.minute >= date_trunc("day", now() - interval '1 week')
+    {% endif %}
 {% if is_incremental() %}
-WHERE evt_block_time >= date_trunc("day", now() - interval '1 week')
+WHERE t.evt_block_time >= date_trunc("day", now() - interval '1 week')
 {% endif %}
