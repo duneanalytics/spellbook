@@ -30,8 +30,8 @@ SELECT 'ethereum' AS blockchain
 , t.evt_tx_hash AS tx_hash
 , CAST(t.value AS DECIMAL(38,0)) AS amount_raw
 , CAST(t.value/POWER(10, 18) AS double) AS amount_original
-, CASE WHEN t.evt_block_time >= (SELECT minute FROM early_price) THEN CAST(pu.price*t.amount/POWER(10, 18) AS double)
-    ELSE CAST((SELECT price FROM early_price)*t.amount/POWER(10, 18) AS double)
+, CASE WHEN t.evt_block_time >= (SELECT minute FROM early_price) THEN CAST(pu.price*t.value/POWER(10, 18) AS double)
+    ELSE CAST((SELECT price FROM early_price)*t.value/POWER(10, 18) AS double)
     END AS amount_usd
 , '0xcafe001067cdef266afb7eb5a286dcfd277f3de5' AS token_address
 , 'PSP' AS token_symbol
