@@ -26,7 +26,7 @@ models:
       - name: is_counted_in_tvl
         description: "Is this a token whose value we should count in total value calculations? (i.e. we don't want to double count value)"
 
-  - name: tokens_optimism_nft
+  - name: tokens_optimism_nft_curated
     meta:
       blockchain: optimism
       sector: nft
@@ -43,6 +43,31 @@ models:
       - name: name
         description: "NFT Project Name"
 
+  - name: tokens_optimism_nft
+    meta:
+      blockchain: optimism
+      sector: nft
+      contributors: msilb7, dot2dotseurat
+    config:
+      tags: [ 'tokens', 'optimism', 'nft', 'erc721', 'erc1155' ]
+    description: >
+      Selection of NFT token addresses.
+    columns:
+      - name: contract_address
+        description: "The contract address is the unique address of where the NFTs are stored on Optimism."
+        tests:
+          - unique
+      - name: name
+        description: "NFT Project Name"
+      - name: standard
+        tests:
+          - accepted_values:
+              values: [ 'erc721', 'erc1155']
+        description: >
+          The token standard. This is the set of rules that the contract must respect 
+          to be compatible with the common standards. Accepted values are presently standards represented.
+          If you are adding a token with a new standard, remember to add it the accepted values list.   
+
   - name: tokens_optimism_nft_bridged_mapping
     meta:
       blockchain: optimism
@@ -53,15 +78,11 @@ models:
     description: >
         Selection of NFT token addresses bridged from Ethereum to Optimism.
     tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - contract_address
-            - contract_address_l1
     columns:
-      - name: category
-        description: "Category of the NFT Project"
       - name: contract_address
         description: "The contract address is the unique address of where the NFTs are stored on Optimism."
+        tests:
+          - unique
       - name: name
         description: "NFT Project name"
       - name: standard
@@ -70,6 +91,8 @@ models:
         description: "NFT Project symbol"
       - name: contract_address_l1
         description: "Bridged project contract address on L1"
+        tests:
+          - unique
 
   - name: tokens_optimism_erc20_bridged_mapping
     meta:
@@ -94,7 +117,7 @@ models:
         description: "Token Symbol on L1, if it's in the ethereum erc20 tokens table"
       - name: l1_decimals
         description: "Token Decimals on L1, if it's in the ethereum erc20 tokens table"
-  
+
   - name: tokens_optimism_erc20_stablecoins
     meta:
       blockchain: optimism
@@ -124,3 +147,24 @@ models:
         tests:
           - accepted_values:
               values: ['Crypto-Backed','Fiat-Backed','Algorithmic','Bridge-Backed']
+
+  - name: tokens_optimism_nft_standards
+    meta:
+      blockchain: optimism
+      sector: nft
+      contributors: 0xRob
+    config:
+      tags: [ 'nft','optimism' ]
+    description: >
+      NFT contract standards
+    columns:
+      - name: contract_address
+        description: "the NFT contract address"
+        tests:
+          - unique
+      - name: standard
+        description: "The NFT standard erc721/erc1155/..."
+        tests:
+          - accepted_values:
+              values: [ 'erc721', 'erc1155' ]
+

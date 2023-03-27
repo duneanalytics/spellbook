@@ -52,7 +52,7 @@ SELECT 'bnb' AS blockchain
 , t.to
 , bt.from AS executed_by
 , t.evt_tx_hash AS tx_hash
-, 'bnb' || t.evt_tx_hash || '-bep721-' || t.contract_address || '-' || t.id || '-' || t.from || '-' || t.to || '-' || t.value || '-' || t.evt_index AS unique_transfer_id
+, 'bnb' || t.evt_tx_hash || '-bep1155-' || t.contract_address || '-' || t.id || '-' || t.from || '-' || t.to || '-' || t.value || '-' || t.evt_index AS unique_transfer_id
 FROM {{ source('erc1155_bnb','evt_transfersingle') }} t
 {% if is_incremental() %}
     ANTI JOIN {{this}} anti_table
