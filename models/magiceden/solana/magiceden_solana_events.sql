@@ -8,6 +8,42 @@
     )
 }}
 
+WITH me_txs AS (
+    SELECT
+    id,
+    pre_balances,
+    post_balances,
+    block_slot,
+    block_date,
+    block_time,
+    account_keys,
+    log_messages,
+    instructions,
+    signatures,
+    signer,
+    filter(
+        instructions,
+        x -> (
+            x.executing_account = 'M2mx93ekt1fmXSVkTrUL9xVFHkmME8HTUi5Cyc5aF7K'
+            OR x.executing_account = 'CMZYPASGWeTz7RNGHaRJfCq2XQ5pYK6nDvVQxzkH51zb'
+        )
+    ) AS me_instructions
+    FROM {{ source('solana','transactions') }}
+    WHERE (
+         array_contains(account_keys, 'M2mx93ekt1fmXSVkTrUL9xVFHkmME8HTUi5Cyc5aF7K') -- magic eden v2
+         OR array_contains(account_keys, 'CMZYPASGWeTz7RNGHaRJfCq2XQ5pYK6nDvVQxzkH51zb')
+    )
+    AND success = 'True'
+    {% if not is_incremental() %}
+    AND block_date > '2022-01-05'
+    AND block_slot > 114980355
+    {% endif %}
+    {% if is_incremental() %}
+    -- this filter will only be applied on an incremental run
+    AND block_date >= date_trunc("day", now() - interval '1 week')
+    {% endif %}
+
+)
 SELECT
   'solana' as blockchain,
   'magiceden' as project,
@@ -51,10 +87,10 @@ SELECT
                OR array_contains(log_messages, 'Program log: Instruction: ExecuteSale')
                OR array_contains(log_messages, 'Program log: Instruction: Mip1ExecuteSaleV2')
           )
-         AND array_contains(log_messages, 'Program log: Instruction: Buy') THEN instructions[1].account_arguments[2]::string
+         AND array_contains(log_messages, 'Program log: Instruction: Buy') THEN me_instructions[1].account_arguments[2]::string
        WHEN (array_contains(account_keys, 'CMZYPASGWeTz7RNGHaRJfCq2XQ5pYK6nDvVQxzkH51zb'))
-         AND array_contains(log_messages, 'Program log: Instruction: SetAuthority') THEN COALESCE(instructions[6].account_arguments[9], instructions[5].account_arguments[9],
-         instructions[4].account_arguments[9], instructions[2].account_arguments[7], instructions[1].account_arguments[10], instructions[0].account_arguments[10])::string
+         AND array_contains(log_messages, 'Program log: Instruction: SetAuthority') THEN COALESCE(me_instructions[6].account_arguments[9], me_instructions[5].account_arguments[9],
+         me_instructions[4].account_arguments[9], me_instructions[2].account_arguments[7], me_instructions[1].account_arguments[10], me_instructions[0].account_arguments[10])::string
        END AS token_id,
   NULL::string as collection,
   CASE WHEN (array_contains(account_keys, 'M2mx93ekt1fmXSVkTrUL9xVFHkmME8HTUi5Cyc5aF7K'))
@@ -74,7 +110,7 @@ SELECT
                OR array_contains(log_messages, 'Program log: Instruction: ExecuteSale')
                OR array_contains(log_messages, 'Program log: Instruction: Mip1ExecuteSaleV2')
           )
-         AND array_contains(log_messages, 'Program log: Instruction: Buy') THEN instructions[2].account_arguments[1]::string
+         AND array_contains(log_messages, 'Program log: Instruction: Buy') THEN me_instructions[2].account_arguments[1]::string
        WHEN (array_contains(account_keys, 'CMZYPASGWeTz7RNGHaRJfCq2XQ5pYK6nDvVQxzkH51zb')) THEN '' END as seller,
   NULL::string as nft_contract_address,
   NULL::string as aggregator_name,
@@ -108,28 +144,15 @@ SELECT
           )         
           AND array_contains(log_messages, 'Program log: Instruction: Buy') THEN 'SOL'
          ELSE NULL::string END as royalty_fee_currency_symbol,
-  signatures[0] || '-' || id || '-' || instructions[0]::string as unique_trade_id,
+  signatures[0] || '-' || id || '-' || me_instructions[0]::string as unique_trade_id,
   instructions,
   signatures,
   log_messages
-FROM {{ source('solana','transactions') }}
-LEFT JOIN prices.usd p
+FROM me_txs
+LEFT JOIN {{ source('prices', 'usd') }} AS p
   ON p.minute = date_trunc('minute', block_time)
   AND p.blockchain is NULL
   AND p.symbol = 'SOL'
   {% if is_incremental() %}
   AND p.minute >= date_trunc("day", now() - interval '1 week')
   {% endif %}
-WHERE (
-     array_contains(account_keys, 'M2mx93ekt1fmXSVkTrUL9xVFHkmME8HTUi5Cyc5aF7K') -- magic eden v2
-     OR array_contains(account_keys, 'CMZYPASGWeTz7RNGHaRJfCq2XQ5pYK6nDvVQxzkH51zb')
-     )
-     AND success = 'True'
-     {% if not is_incremental() %}
-     AND block_date > '2022-01-05'
-     AND block_slot > 114980355
-     {% endif %}
-     {% if is_incremental() %}
-     -- this filter will only be applied on an incremental run
-     AND block_date >= date_trunc("day", now() - interval '1 week')
-     {% endif %}

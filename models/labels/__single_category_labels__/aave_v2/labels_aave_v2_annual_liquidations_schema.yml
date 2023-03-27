@@ -1,0 +1,43 @@
+version: 2
+
+models:
+  - name: labels_aave_v2_annual_liquidations
+    meta:
+      blockchain: ethereum
+      sector: labels
+      project: aave
+      contributors: paulx
+    config:
+      tags: ["labels", "ethereum", "aave", "liquidations", "mev"]
+    description: "MEV and non-MEV liquidations on Aave v2 over the past year."
+    columns:
+      - &blockchain
+        name: blockchain
+        description: "Blockchain"
+      - &address
+        name: address
+        description: "Address of liquidator"
+      - &name
+        name: name
+        description: "MEV or non-MEV"
+      - &category
+        name: category
+        description: "Liquidation type"
+      - &contributor
+        name: contributor
+        description: "Wizard contributing to labels"
+      - &source
+        name: source
+        description: "How were labels generated"
+      - &created_at
+        name: created_at
+        description: "When were labels created"
+      - &updated_at
+        name: updated_at
+        description: "When were labels updated for the last time"
+      - &model_name
+        name: model_name
+        description: "Aave_v2 annual liquidations"
+      - &label_type
+        name: label_type
+        description: "Personas"
