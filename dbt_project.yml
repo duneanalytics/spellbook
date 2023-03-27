@@ -846,6 +846,11 @@ models:
         +schema: op_token_distributions
         optimism:
           +schema: op_token_distributions_optimism
+      op_chains:
+        +schema: op_chains
+      op_token:
+        optimism:
+          +schema: op_token_optimism
 
     rubicon:
       +schema: rubicon
