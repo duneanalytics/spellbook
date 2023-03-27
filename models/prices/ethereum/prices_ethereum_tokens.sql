@@ -6,7 +6,7 @@
         tags=['static']
         )
 }}
-SELECT 
+SELECT
     TRIM(token_id) as token_id
     , LOWER(TRIM(blockchain)) as blockchain
     , TRIM(symbol) as symbol
@@ -644,7 +644,6 @@ FROM
     ('astra-astra-dao', 'ethereum', 'ASTRA', '0x7e9c15c43f0d6c4a12e6bdff7c7d55d0f80e3e23', 18),
     ('boring-boringdao', 'ethereum', 'BORING', '0xbc19712feb3a26080ebf6f2f7849b417fdd792ca', 18),
     ('bzn-benzene', 'ethereum', 'BZN', '0x6524b87960c2d573ae514fd4181777e7842435d4', 18),
-    ('cere-cere-network', 'ethereum', 'CERE', '0x2da719db753dfa10a62e140f436e1d67f2ddb0d6', 10),
     ('cfti-confetti', 'ethereum', 'CFTI', '0xcfef8857e9c80e3440a823971420f7fa5f62f020', 18),
     ('cirus-cirus', 'ethereum', 'CIRUS', '0xa01199c61841fce3b3dafb83fefc1899715c8756', 18),
     ('coredao-coredao', 'ethereum', 'COREDAO', '0xf66cd2f8755a21d3c8683a10269f795c0532dd58', 18),
@@ -1222,7 +1221,6 @@ FROM
     ('karma-karma-dao', 'ethereum', 'KARMA', '0xdfe691f37b6264a90ff507eb359c45d55037951c', 4),
     ('kng-kanga-exchange-token', 'ethereum', 'KNG', '0x471d113059324321749e097705197a2b44a070fc', 18),
     ('loc-locktrip', 'ethereum', 'LOC', '0x5e3346444010135322268a4630d2ed5f8d09446c', 18),
-    ('lto-lto-network-token', 'ethereum', 'LTO', '0xd01409314acb3b245cea9500ece3f6fd4d70ea30', 8),
     ('mp3-mp3', 'ethereum', 'MP3', '0x018fb5af9d015af25592a014c4266a84143de7a0', 18),
     ('n1-nftify', 'ethereum', 'N1', '0xacbd826394189cf2623c6df98a18b41fc8ffc16d', 18),
     ('nfts-nft-stars-coin', 'ethereum', 'NFTS', '0x08037036451c768465369431da5c671ad9b37dbc', 18),
@@ -1319,5 +1317,5 @@ FROM
     ("gt-gatechain-token","ethereum", "GT", "0xe66747a101bff2dba3697199dcce5b743b454759",18),
     ("stg-stargatetoken","ethereum","STG","0xaf5191b0de278c7286d6c7cc6ab6bb8a73ba2cd6",18),
     ("ico-axelar", "ethereum", "AXL", "0x467719ad09025fcc6cf6f8311755809d45a5e5f3", 6)
-    
+
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)
