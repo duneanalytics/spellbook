@@ -1316,6 +1316,13 @@ FROM
     ("vra-verasity", "ethereum", "VRA", "0xf411903cbc70a74d22900a5de66a2dda66507255", 18),
     ("gt-gatechain-token","ethereum", "GT", "0xe66747a101bff2dba3697199dcce5b743b454759",18),
     ("stg-stargatetoken","ethereum","STG","0xaf5191b0de278c7286d6c7cc6ab6bb8a73ba2cd6",18),
-    ("ico-axelar", "ethereum", "AXL", "0x467719ad09025fcc6cf6f8311755809d45a5e5f3", 6)
+    ("ico-axelar", "ethereum", "AXL", "0x467719ad09025fcc6cf6f8311755809d45a5e5f3", 6),
+    ("cmp-component", "ethereum", "CMP", "0x9f20ed5f919dc1c1695042542c13adcfc100dcab", 18),
+    ("gas-gas-dao", "ethereum", "GAS", "0x6bba316c48b49bd1eac44573c5c871ff02958469", 18),
+    ("fort-forta", "ethereum", "FORT", "0x41545f8b9472d758bb669ed8eaeeecd7a9c4ec29", 18),
+    ("tknfy-tokenfy", "ethereum", "TKNFY", "0xa6dd98031551c23bb4a2fbe2c4d524e8f737c6f7", 18),
+    ("ff-forefront", "ethereum", "FF", "0x7e9d8f07a64e363e97a648904a89fb4cd5fb94cd", 18),
+    ("pal-paladin-eth", "ethereum", "PAL", "0xab846fb6c81370327e784ae7cbb6d6a6af6ff4bf", 18),
+    ("sudo-sudo-governance-token", "ethereum", "SUDO", "0x3446dd70b2d52a6bf4a5a192d9b0a161295ab7f9", 18)
 
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)
