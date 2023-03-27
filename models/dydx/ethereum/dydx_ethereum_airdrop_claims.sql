@@ -25,7 +25,7 @@ SELECT 'ethereum' AS blockchain
 , CAST(pu.price*t.value/POWER(10, 18) AS double) AS amount_usd
 , '0x92d6c1e31e14520e676a687f0a93788b716beff5' AS token_address
 , 'DYDX' AS token_symbol
-, evt_index
+, t.evt_index
 FROM {{ source('erc20_ethereum', 'evt_transfer') }} t
 LEFT JOIN {{ ref('prices_usd_forward_fill') }} pu ON pu.blockchain = 'ethereum'
     AND pu.contract_address='0x92d6c1e31e14520e676a687f0a93788b716beff5'
@@ -33,9 +33,9 @@ LEFT JOIN {{ ref('prices_usd_forward_fill') }} pu ON pu.blockchain = 'ethereum'
     {% if is_incremental() %}
     AND pu.minute >= date_trunc("day", now() - interval '1 week')
     {% endif %}
-WHERE contract_address = '0x92d6c1e31e14520e676a687f0a93788b716beff5'
-AND from = '0x639192d54431f8c816368d3fb4107bc168d0e871'
-AND evt_block_time > '2021-09-08'
+WHERE t.contract_address = '0x92d6c1e31e14520e676a687f0a93788b716beff5'
+AND t.from = '0x639192d54431f8c816368d3fb4107bc168d0e871'
+AND t.evt_block_time > '2021-09-08'
 {% if is_incremental() %}
 AND t.evt_block_time >= date_trunc("day", now() - interval '1 week')
 {% endif %}

@@ -21,9 +21,9 @@ SELECT 'ethereum' AS blockchain
 , t.recipient
 , t.contract_address
 , t.evt_tx_hash AS tx_hash
-, CAST(t.claimedAmount AS DECIMAL(38,0)) AS amount_raw
-, CAST(t.claimedAmount/POWER(10, 18) AS double) AS amount_original
-, CAST(pu.price*t.claimedAmount/POWER(10, 18) AS double) AS amount_usd
+, CAST(t.amount AS DECIMAL(38,0)) AS amount_raw
+, CAST(t.amount/POWER(10, 18) AS double) AS amount_original
+, CAST(pu.price*t.amount/POWER(10, 18) AS double) AS amount_usd
 , '0x44709a920fccf795fbc57baa433cc3dd53c44dbe' AS token_address
 , 'RADAR' AS token_symbol
 , t.evt_index
