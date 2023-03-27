@@ -7,8 +7,8 @@
 with
     sent_transfers as (
         select
-            CAST('send' AS VARCHAR(4)) || CAST('-' AS VARCHAR(1)) || CAST(evt_tx_hash AS VARCHAR(100)) || CAST('-' AS VARCHAR(1)) || CAST(evt_index AS VARCHAR(100)) || CAST('-' AS VARCHAR(1)) || CAST(`to` AS VARCHAR(100)) as unique_transfer_id,
-            `to` as wallet_address,
+            'send-' || cast(evt_tx_hash as varchar(100)) || '-' || cast (evt_index as varchar(100)) || '-' || CAST(to AS VARCHAR(100)) as unique_transfer_id,
+            to as wallet_address,
             contract_address as token_address,
             evt_block_time,
             value as amount_raw
@@ -19,11 +19,11 @@ with
     ,
     received_transfers as (
         select
-        CAST('receive' AS VARCHAR(7)) || CAST('-' AS VARCHAR(1)) || CAST(evt_tx_hash AS VARCHAR(100)) || CAST('-' AS VARCHAR(1)) || CAST(evt_index AS VARCHAR(100)) || CAST('-' AS VARCHAR(1)) || CAST(`from` AS VARCHAR(100)) as unique_transfer_id,
-        `from` as wallet_address,
-        contract_address as token_address,
-        evt_block_time,
-        '-' || CAST(value AS VARCHAR(100)) as amount_raw
+            'receive-' || cast(evt_tx_hash as varchar(100)) || '-' || cast (evt_index as varchar(100)) || '-' || CAST("from" AS VARCHAR(100)) as unique_transfer_id,
+            "from" as wallet_address,
+            contract_address as token_address,
+            evt_block_time,
+            '-' || CAST(value AS VARCHAR(100)) as amount_raw
         from
             {{ source('erc20_gnosis', 'evt_transfer') }}
     )
@@ -31,7 +31,7 @@ with
     ,
     deposited_wxdai as (
         select
-            CAST('deposit' AS VARCHAR(7)) || CAST('-' AS VARCHAR(1)) || CAST(evt_tx_hash AS VARCHAR(100)) || CAST('-' AS VARCHAR(1)) || CAST(evt_index AS VARCHAR(100)) || CAST('-' AS VARCHAR(1)) || CAST(dst AS VARCHAR(100)) as unique_transfer_id,
+            'deposit-' || cast(evt_tx_hash as varchar(100)) || '-' || cast (evt_index as varchar(100)) || '-' ||  CAST(dst AS VARCHAR(100)) as unique_transfer_id,
             dst as wallet_address,
             contract_address as token_address,
             evt_block_time,
@@ -43,7 +43,7 @@ with
     ,
     withdrawn_wxdai as (
         select
-            CAST('withdrawn' AS VARCHAR(9)) || CAST('-' AS VARCHAR(1)) || CAST(evt_tx_hash AS VARCHAR(100)) || CAST('-' AS VARCHAR(1)) || CAST(evt_index AS VARCHAR(100)) || CAST('-' AS VARCHAR(1)) || CAST(src AS VARCHAR(100)) as unique_transfer_id,
+            'withdraw-' || cast(evt_tx_hash as varchar(100)) || '-' || cast (evt_index as varchar(100)) || '-' ||  CAST(src AS VARCHAR(100)) as unique_transfer_id,
             src as wallet_address,
             contract_address as token_address,
             evt_block_time,
