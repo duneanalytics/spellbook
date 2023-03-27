@@ -21,13 +21,16 @@ select
     ,creator as issuer
     ,contract_address
     ,key as key_raw
-    ,unhex(
-        if(
+    ,decode(
+        unhex(
+          if (
             substring(key, 1, 6) in ("0xab7e", "0x9e43"),
-            hex(key), 
+            hex(key),
             substring(key, 3)
-        )
-    ) as key 
+          )
+        ),
+        "utf8"
+      ) as key
     ,val as val_raw
     ,split(unhex(substring(val, 3)), ",") as val
 from {{source('attestationstation_optimism','AttestationStation_evt_AttestationCreated')}}
