@@ -63,7 +63,6 @@ FROM (
     , amount_raw
     , amount_original
     , amount_usd
-    , quantity
     , token_address
     , token_symbol
     , evt_index
