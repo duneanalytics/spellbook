@@ -15,16 +15,16 @@
 SELECT 'ethereum' AS blockchain
 , evt_block_time AS block_time
 , evt_block_number AS block_number
-, 'ApeCoin' AS project
-, 'ApeCoin Airdrop' AS airdrop_identifier
+, 'ShapeShift' AS project
+, 'ShapeShift Airdrop' AS airdrop_identifier
 , account AS recipient
 , contract_address
 , evt_tx_hash AS tx_hash
 , CAST(amount/POWER(10, 18) AS double) AS quantity
-, '0x4d224452801aced8b2f0aebe155379bb5d594381' AS token_address
-, 'APE' AS token_symbol
+, '0xc770eefad204b5180df6a14ee197d99d808ee52d' AS token_address
+, 'FOX' AS token_symbol
 , evt_index
-FROM {{ source('apecoin_ethereum', 'AirdropGrapesToken_evt_AirDrop') }}
+FROM {{ source('shapeshift_ethereum', 'TokenDistributor_evt_Claimed') }}
 {% if is_incremental() %}
 WHERE evt_block_time >= date_trunc("day", now() - interval '1 week')
 {% endif %}

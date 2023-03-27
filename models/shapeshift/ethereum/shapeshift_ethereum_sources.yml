@@ -5,5 +5,5 @@ sources:
     description: >
       ShapeShift ethereum contracts
     tables:
-      - name: AirdropGrapesToken_evt_AirDrop
+      - name: TokenDistributor_evt_Claimed
         loaded_at_field: evt_block_time
