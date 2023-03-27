@@ -108,17 +108,19 @@ plain_pools_deployed AS (
 ),
 meta_calls AS (
     SELECT
-        _name,
-        _symbol,
-        output_0,
-        call_tx_hash,
-        _base_pool,
-        _coin,
-        "_A",
-        _fee
+        *
     FROM
         (
-        SELECT * FROM 
+        SELECT         
+            _name,
+            _symbol,
+            output_0,
+            call_tx_hash,
+            _base_pool,
+            _coin,
+            "_A",
+            _fee 
+        FROM 
         {{ source(
             'curvefi_ethereum',
             'CurveFactory_call_deploy_metapool' 
@@ -126,7 +128,16 @@ meta_calls AS (
 
         UNION ALL 
 
-        SELECT * FROM 
+        SELECT         
+            _name,
+            _symbol,
+            output_0,
+            call_tx_hash,
+            _base_pool,
+            _coin,
+            "_A",
+            _fee 
+        FROM 
         {{ source(
             'curvefi_ethereum',
             'MetaPoolFactory_call_deploy_metapool' 
