@@ -3,7 +3,7 @@
 {% test check_opensea_seed(model, blockchain=None, project=None, version=None) %}
 
     {%- set seed_file = ref('opensea_trades_seed') -%}
-    {%- set seed_check_columns = ['buyer','seller','amount_raw','pltaform_fee_amount_raw','royalty_fee_amount_raw'] -%}
+    {%- set seed_check_columns = ['buyer','seller','amount_raw','platform_fee_amount_raw','royalty_fee_amount_raw'] -%}
     {%- set seed_matching_columns = ['block_date','blockchain','project','version','tx_hash','evt_index','sub_type','sub_idx','nft_contract_address','token_id'] -%}
     {%- set filter = {'blockchain':blockchain, 'project':project, 'version':version} -%}
 
