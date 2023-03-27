@@ -29,7 +29,7 @@ SELECT 'ethereum' AS blockchain
 FROM {{ source('looksrare_ethereum', 'LooksRareAirdrop_evt_AirdropRewardsClaim') }} t
 LEFT JOIN {{ ref('prices_usd_forward_fill') }} pu ON pu.blockchain = 'ethereum'
     AND pu.contract_address='0xf4d2888d29d722226fafa5d9b24f9164c092421e'
-    AND pu.minute=date_trun('minute', t.evt_block_time)
+    AND pu.minute=date_trunc('minute', t.evt_block_time)
     {% if is_incremental() %}
     AND pu.minute >= date_trunc("day", now() - interval '1 week')
     {% endif %}

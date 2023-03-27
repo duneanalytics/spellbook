@@ -30,7 +30,7 @@ SELECT 'ethereum' AS blockchain
 FROM {{ source('galaxy_ethereum', 'MerkleDistributor_Airdrop_evt_Claimed') }} t
 LEFT JOIN {{ ref('prices_usd_forward_fill') }} pu ON pu.blockchain = 'ethereum'
     AND pu.contract_address='0x5faa989af96af85384b8a938c2ede4a7378d9875'
-    AND pu.minute=date_trun('minute', t.evt_block_time)
+    AND pu.minute=date_trunc('minute', t.evt_block_time)
     {% if is_incremental() %}
     AND pu.minute >= date_trunc("day", now() - interval '1 week')
     {% endif %}

@@ -29,7 +29,7 @@ SELECT 'ethereum' AS blockchain
 FROM {{ source('sudoswap_ethereum', 'Astrodrop_evt_Claimed') }} t
 LEFT JOIN {{ ref('prices_usd_forward_fill') }} pu ON pu.blockchain = 'ethereum'
     AND pu.contract_address='0x3446dd70b2d52a6bf4a5a192d9b0a161295ab7f9'
-    AND pu.minute=date_trun('minute', t.evt_block_time)
+    AND pu.minute=date_trunc('minute', t.evt_block_time)
     {% if is_incremental() %}
     AND pu.minute >= date_trunc("day", now() - interval '1 week')
     {% endif %}

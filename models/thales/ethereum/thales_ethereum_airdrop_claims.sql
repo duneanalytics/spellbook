@@ -30,7 +30,7 @@ SELECT 'ethereum' AS blockchain
 FROM {{ source('thales_ethereum', 'Airdrop_evt_Claim') }} t
 LEFT JOIN {{ ref('prices_usd_forward_fill') }} pu ON pu.blockchain = 'ethereum'
     AND pu.contract_address='0x03e173ad8d1581a4802d3b532ace27a62c5b81dc'
-    AND pu.minute=date_trun('minute', t.evt_block_time)
+    AND pu.minute=date_trunc('minute', t.evt_block_time)
     {% if is_incremental() %}
     AND pu.minute >= date_trunc("day", now() - interval '1 week')
     {% endif %}

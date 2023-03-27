@@ -29,7 +29,7 @@ SELECT 'optimism' AS blockchain
 FROM {{ source('velodrome_optimism', 'MerkleClaim_evt_Claim') }} t
 LEFT JOIN {{ ref('prices_usd_forward_fill') }} pu ON pu.blockchain = 'optimism'
     AND pu.contract_address='0x3c8b650257cfb5f272f799f5e2b4e65093a11a05'
-    AND pu.minute=date_trun('minute', t.evt_block_time)
+    AND pu.minute=date_trunc('minute', t.evt_block_time)
     {% if is_incremental() %}
     AND pu.minute >= date_trunc("day", now() - interval '1 week')
     {% endif %}

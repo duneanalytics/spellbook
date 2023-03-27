@@ -29,7 +29,7 @@ SELECT 'ethereum' AS blockchain
 FROM {{ source('erc20_ethereum', 'evt_transfer') }} t
 LEFT JOIN {{ ref('prices_usd_forward_fill') }} pu ON pu.blockchain = 'ethereum'
     AND pu.contract_address='0x77fba179c79de5b7653f68b5039af940ada60ce0'
-    AND pu.minute=date_trun('minute', t.evt_block_time)
+    AND pu.minute=date_trunc('minute', t.evt_block_time)
     {% if is_incremental() %}
     AND pu.minute >= date_trunc("day", now() - interval '1 week')
     {% endif %}

@@ -30,7 +30,7 @@ SELECT 'ethereum' AS blockchain
 FROM {{ source('gearbox_ethereum', 'MerkleDistributor_evt_Claimed') }} t
 LEFT JOIN {{ ref('prices_usd_forward_fill') }} pu ON pu.blockchain = 'ethereum'
     AND pu.contract_address='0xba3335588d9403515223f109edc4eb7269a9ab5d'
-    AND pu.minute=date_trun('minute', t.evt_block_time)
+    AND pu.minute=date_trunc('minute', t.evt_block_time)
     {% if is_incremental() %}
     AND pu.minute >= date_trunc("day", now() - interval '1 week')
     {% endif %}

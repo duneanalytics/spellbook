@@ -30,7 +30,7 @@ SELECT 'ethereum' AS blockchain
 FROM {{ source('ethereumnameservice_ethereum', 'ENSToken_evt_Claim') }} t
 LEFT JOIN {{ ref('prices_usd_forward_fill') }} pu ON pu.blockchain = 'ethereum'
     AND pu.contract_address='0xc18360217d8f7ab5e7c516566761ea12ce7f9d72'
-    AND pu.minute=date_trun('minute', t.evt_block_time)
+    AND pu.minute=date_trunc('minute', t.evt_block_time)
     {% if is_incremental() %}
     AND pu.minute >= date_trunc("day", now() - interval '1 week')
     {% endif %}

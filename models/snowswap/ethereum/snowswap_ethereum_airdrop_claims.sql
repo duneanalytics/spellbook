@@ -30,7 +30,7 @@ SELECT 'ethereum' AS blockchain
 FROM {{ source('snowswap_ethereum', 'MerkleDistributor_evt_Claimed') }} t
 LEFT JOIN {{ ref('prices_usd_forward_fill') }} pu ON pu.blockchain = 'ethereum'
     AND pu.contract_address='0xfe9a29ab92522d14fc65880d817214261d8479ae'
-    AND pu.minute=date_trun('minute', t.evt_block_time)
+    AND pu.minute=date_trunc('minute', t.evt_block_time)
     {% if is_incremental() %}
     AND pu.minute >= date_trunc("day", now() - interval '1 week')
     {% endif %}

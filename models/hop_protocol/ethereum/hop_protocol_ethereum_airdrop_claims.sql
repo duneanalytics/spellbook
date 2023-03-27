@@ -30,7 +30,7 @@ SELECT 'ethereum' AS blockchain
 FROM {{ source('hop_protocol_ethereum', 'HOPToken_evt_Claim') }} t
 LEFT JOIN {{ ref('prices_usd_forward_fill') }} pu ON pu.blockchain = 'ethereum'
     AND pu.contract_address='0xc5102fe9359fd9a28f877a67e36b0f050d81a3cc'
-    AND pu.minute=date_trun('minute', t.evt_block_time)
+    AND pu.minute=date_trunc('minute', t.evt_block_time)
     {% if is_incremental() %}
     AND pu.minute >= date_trunc("day", now() - interval '1 week')
     {% endif %}

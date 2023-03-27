@@ -29,7 +29,7 @@ SELECT 'ethereum' AS blockchain
 FROM {{ source('forta_network_ethereum', 'Airdrop_evt_TokensReleased') }} t
 LEFT JOIN {{ ref('prices_usd_forward_fill') }} pu ON pu.blockchain = 'ethereum'
     AND pu.contract_address='0x41545f8b9472d758bb669ed8eaeeecd7a9c4ec29'
-    AND pu.minute=date_trun('minute', t.evt_block_time)
+    AND pu.minute=date_trunc('minute', t.evt_block_time)
     {% if is_incremental() %}
     AND pu.minute >= date_trunc("day", now() - interval '1 week')
     {% endif %}

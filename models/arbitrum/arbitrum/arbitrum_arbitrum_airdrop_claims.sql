@@ -29,7 +29,7 @@ SELECT 'arbitrum' AS blockchain
 FROM {{ source('arbitrum_airdrop_arbitrum', 'TokenDistributor_evt_HasClaimed') }} t
 LEFT JOIN {{ ref('prices_usd_forward_fill') }} pu ON pu.blockchain = 'arbitrum'
     AND pu.contract_address='0x912ce59144191c1204e64559fe8253a0e49e6548'
-    AND pu.minute=date_trun('minute', t.evt_block_time)
+    AND pu.minute=date_trunc('minute', t.evt_block_time)
     {% if is_incremental() %}
     AND pu.minute >= date_trunc("day", now() - interval '1 week')
     {% endif %}

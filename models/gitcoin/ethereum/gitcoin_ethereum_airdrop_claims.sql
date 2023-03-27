@@ -29,7 +29,7 @@ SELECT 'ethereum' AS blockchain
 FROM {{ source('gitcoin_ethereum', 'TokenDistributor_evt_Claimed') }} t
 LEFT JOIN {{ ref('prices_usd_forward_fill') }} pu ON pu.blockchain = 'ethereum'
     AND pu.contract_address='0xde30da39c46104798bb5aa3fe8b9e0e1f348163f'
-    AND pu.minute=date_trun('minute', t.evt_block_time)
+    AND pu.minute=date_trunc('minute', t.evt_block_time)
     {% if is_incremental() %}
     AND pu.minute >= date_trunc("day", now() - interval '1 week')
     {% endif %}
