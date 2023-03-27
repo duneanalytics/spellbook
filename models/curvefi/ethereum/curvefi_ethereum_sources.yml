@@ -11,6 +11,8 @@ sources:
         loaded_at_field: call_block_time
       - name: CurveFactory_call_deploy_metapool
         loaded_at_field: call_block_time
+      - name: MetaPoolFactory_call_deploy_metapool
+        loaded_at_field: call_block_time
       - name: CurveFactory_call_deploy_gauge
         loaded_at_field: call_block_time
       - name: CurveFactoryV2_evt_CryptoPoolDeployed
