@@ -26,7 +26,7 @@ SELECT 'ethereum' AS blockchain
 , '0xc770eefad204b5180df6a14ee197d99d808ee52d' AS token_address
 , 'FOX' AS token_symbol
 , t.evt_index
-FROM {{ source('shapeshift_ethereum', 'TokenDistributor_evt_Claimed') }}t
+FROM {{ source('shapeshift_ethereum', 'TokenDistributor_evt_Claimed') }} t
 LEFT JOIN {{ ref('prices_usd_forward_fill') }} pu ON pu.blockchain = 'ethereum'
     AND pu.contract_address='0xc770eefad204b5180df6a14ee197d99d808ee52d'
     AND pu.minute=date_trunc('minute', t.evt_block_time)

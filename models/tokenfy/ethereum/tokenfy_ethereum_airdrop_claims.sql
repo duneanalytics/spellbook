@@ -31,7 +31,7 @@ INNER JOIN {{source( 'tokenfy_ethereum', 'Tokenfy_call_claim' ) }} c ON c.call_b
     AND c.call_tx_hash=t.evt_tx_hash
     {% if is_incremental() %}
     AND c.call_block_time >= date_trunc("day", now() - interval '1 week')
-    {% endif %} t
+    {% endif %}
 LEFT JOIN {{ ref('prices_usd_forward_fill') }} pu ON pu.blockchain = 'ethereum'
     AND pu.contract_address='0xa6dd98031551c23bb4a2fbe2c4d524e8f737c6f7'
     AND pu.minute=date_trunc('minute', t.evt_block_time)
