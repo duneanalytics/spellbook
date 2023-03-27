@@ -12,6 +12,14 @@
     )
 }}
 
+WITH early_price AS (
+    SELECT MIN(minute) AS minute
+    , MIN_BY(price, minute) AS price
+    FROM {{ source('prices', 'usd') }}
+    WHERE blockchain = 'ethereum'
+    AND contract_address='0x6bba316c48b49bd1eac44573c5c871ff02958469'
+    )
+
 SELECT 'ethereum' AS blockchain
 , t.evt_block_time AS block_time
 , t.evt_block_number AS block_number
@@ -22,7 +30,9 @@ SELECT 'ethereum' AS blockchain
 , t.evt_tx_hash AS tx_hash
 , CAST(t.amount AS DECIMAL(38,0)) AS amount_raw
 , CAST(t.amount/POWER(10, 18) AS double) AS amount_original
-, CAST(pu.price*t.amount/POWER(10, 18) AS double) AS amount_usd
+, CASE WHEN t.evt_block_time >= (SELECT minute FROM early_price) THEN CAST(pu.price*t.amount/POWER(10, 18) AS double)
+    ELSE CAST((SELECT price FROM early_price)*t.amount/POWER(10, 18) AS double)
+    END AS amount_usd
 , '0x6bba316c48b49bd1eac44573c5c871ff02958469' AS token_address
 , 'GAS' AS token_symbol
 , t.evt_index
