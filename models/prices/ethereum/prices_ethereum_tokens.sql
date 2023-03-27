@@ -242,6 +242,7 @@ FROM
     ("mta-meta", "ethereum", "MTA", "0xa3bed4e1c75d00fa6f4e5e6922db7261b5e9acd2", 18),
     ("mtl-metal", "ethereum", "MTL", "0xf433089366899d83a9f26a773d59ec7ecf30355e", 8),
     ("muse-muse", "ethereum", "MUSE", "0xb6ca7399b4f9ca56fc27cbff44f4d2e4eef1fc81", 18),
+    ("mute-mute", "ethereum", "MUTE", "0xa49d7499271ae71cd8ab9ac515e6694c755d400c", 18),
     ("nas-nebulas", "ethereum", "NAS", "0x5d65d971895edc438f465c17db6992698a52318d", 18),
     ("ncash-nucleus-vision", "ethereum", "nCash", "0x809826cceab68c387726af962713b64cb5cb3cca", 18),
     ("ndx-indexed-finance", "ethereum", "ndx", "0x86772b1409b61c639eaac9ba0acfbb6e238e5f83", 18),
