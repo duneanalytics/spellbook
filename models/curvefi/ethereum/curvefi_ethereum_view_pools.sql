@@ -121,16 +121,16 @@ meta_calls AS (
         SELECT * FROM 
         {{ source(
             'curvefi_ethereum',
-            'CurveFactory_call_deploy_metapool' --https://etherscan.io/address/0xb9fc157394af804a3578134a6585c0dc9cc990d4
-        ) }}
+            'CurveFactory_call_deploy_metapool' 
+        ) }} --https://etherscan.io/address/0xb9fc157394af804a3578134a6585c0dc9cc990d4
 
         UNION ALL 
 
         SELECT * FROM 
         {{ source(
             'curvefi_ethereum',
-            'MetaPoolFactory_call_deploy_metapool' --https://etherscan.io/address/0x0959158b6040d32d04c301a72cbfd6b39e21c9ae
-        ) }}
+            'MetaPoolFactory_call_deploy_metapool' 
+        ) }} --https://etherscan.io/address/0x0959158b6040d32d04c301a72cbfd6b39e21c9ae
         )
     WHERE
         call_success
