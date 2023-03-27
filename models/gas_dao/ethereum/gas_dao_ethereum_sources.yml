@@ -3,7 +3,7 @@ version: 2
 sources: 
   - name: gas_dao_ethereum
     description: >
-      $GAS airdrop claims
+      Gas DAO ethereum contracts
     tables:
       - name: GASToken_evt_Claim
         loaded_at_field: evt_block_time

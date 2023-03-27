@@ -1,0 +1,9 @@
+version: 2
+
+sources: 
+  - name: value_defi_ethereum
+    description: >
+      Value DeFi ethereum contracts
+    tables:
+      - name: MerkleDistributor_evt_Claimed
+        loaded_at_field: evt_block_time

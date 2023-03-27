@@ -90,6 +90,9 @@ models:
       optimism:
         +schema: airdrop_optimism
         +materialized: table
+      arbitrum:
+        +schema: airdrop_arbitrum
+        +materialized: table
 
     staking:
       +schema: staking
@@ -809,6 +812,66 @@ models:
       +schema: galxe
       ethereum:
         +schema: galxe_ethereum
+
+    gearbox:
+      +schema: gearbox
+      ethereum:
+        +schema: gearbox_ethereum
+
+    snowswap:
+      +schema: snowswap
+      ethereum:
+        +schema: snowswap_ethereum
+
+    arbitrum:
+      +schema: arbitrum
+      arbitrum:
+        +schema: arbitrum_arbitrum
+
+    forefront:
+      +schema: forefront
+      ethereum:
+        +schema: forefront_ethereum
+
+    component:
+      +schema: component
+      ethereum:
+        +schema: component_ethereum
+
+    alchemydao:
+      +schema: alchemydao
+      ethereum:
+        +schema: alchemydao_ethereum
+
+    tokenfy:
+      +schema: tokenfy
+      ethereum:
+        +schema: tokenfy_ethereum
+
+    thales:
+      +schema: thales
+      ethereum:
+        +schema: thales_ethereum
+
+    shapeshift:
+      +schema: shapeshift
+      ethereum:
+        +schema: shapeshift_ethereum
+
+    value_defi:
+      +schema: value_defi
+      ethereum:
+        +schema: value_defi_ethereum
+
+    botto:
+      +schema: botto
+      ethereum:
+        +schema: botto_ethereum
+
+    notional:
+      +schema: notional
+      ethereum:
+        +schema: notional_ethereum
       
     dydx:
       +schema: dydx

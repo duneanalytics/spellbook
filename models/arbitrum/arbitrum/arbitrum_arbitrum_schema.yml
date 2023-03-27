@@ -1,16 +1,15 @@
 version: 2
 
 models:
-  - name: airdrop_ethereum_claims
+  - name: arbitrum_arbitrum_airdrop_claims
     meta:
-      blockchain: ethereum
+      blockchain: arbitrum
       sector: airdrop
-      sector: airdrop
-      project: airdrop
+      project: arbitrum
       contributors: hildobby
     config:
-      tags: ['table', 'airdrop', 'ethereum', 'claim']
-    description: "List of airdrop claim transactions on Ethereum"
+      tags: ['table', 'airdrop', 'arbitrum', 'claim']
+    description: "List of claim transactions for the $ARB airdrop"
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:

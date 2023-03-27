@@ -1,6 +1,6 @@
 {{ config(
         alias ='claims',
-        post_hook='{{ expose_spells(\'["ethereum", "optimism", "arbitrum"]\',
+        post_hook='{{ expose_spells(\'["arbitrum"]\',
                                       "sector",
                                       "airdrop",
                                     \'["hildobby"]\') }}'
@@ -9,9 +9,7 @@
 
 
 {% set airdrop_claims_models = [
-    ref('airdrop_ethereum_claims')
-    , ref('airdrop_optimism_claims')
-    , ref('airdrop_arbitrum_claims')
+    ref('arbitrum_arbitrum_airdrop_claims')
 ] %}
 
 

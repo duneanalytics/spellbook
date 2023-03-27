@@ -9,7 +9,7 @@ models:
       contributors: hildobby
     config:
       tags: ['table', 'airdrop', 'optimism', 'claim']
-    description: "List of claim transactions for the $OP airdrop"
+    description: "List of airdrop claim transactions on Optimism"
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:

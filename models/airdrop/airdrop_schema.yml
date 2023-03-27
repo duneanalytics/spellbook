@@ -3,12 +3,12 @@ version: 2
 models:
   - name: airdrop_claims
     meta:
-      blockchain: ethereum, optimism
+      blockchain: ethereum, optimism, arbitrum
       sector: airdrop
       project: addresses
       contributors: hildobby
     config:
-      tags: ['table', 'airdrop', 'ethereum', 'optimism', 'claim']
+      tags: ['table', 'airdrop', 'ethereum', 'optimism', 'arbitrum', 'claim']
     description: "List of claim transactions for all airdrops"
     tests:
       - dbt_utils.unique_combination_of_columns:

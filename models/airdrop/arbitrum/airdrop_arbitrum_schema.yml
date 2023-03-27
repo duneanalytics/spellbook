@@ -1,16 +1,15 @@
 version: 2
 
 models:
-  - name: airdrop_ethereum_claims
+  - name: airdrop_arbitrum_claims
     meta:
-      blockchain: ethereum
+      blockchain: arbitrum
       sector: airdrop
-      sector: airdrop
-      project: airdrop
+      project: arbitrum
       contributors: hildobby
     config:
-      tags: ['table', 'airdrop', 'ethereum', 'claim']
-    description: "List of airdrop claim transactions on Ethereum"
+      tags: ['table', 'airdrop', 'arbitrum', 'claim']
+    description: "List of airdrop claim transactions on Arbitrum"
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -44,7 +43,7 @@ models:
         description: "Transaction hash"
       - &quantity
         name: quantity
-        description: "Quantity of claimed tokens"
+        description: "Quantity of claim tokens"
       - &token_address
         name: token_address
         description: "Token address"

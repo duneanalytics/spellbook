@@ -33,6 +33,18 @@
     , ref('tornado_cash_ethereum_airdrop_claims')
     , ref('uniswap_ethereum_airdrop_claims')
     , ref('x2y2_ethereum_airdrop_claims')
+    , ref('pooltogether_ethereum_airdrop_claims')
+    , ref('gearbox_ethereum_airdrop_claims')
+    , ref('notional_ethereum_airdrop_claims')
+    , ref('snowswap_ethereum_airdrop_claims')
+    , ref('botto_ethereum_airdrop_claims')
+    , ref('thales_ethereum_airdrop_claims')
+    , ref('shapeshift_ethereum_airdrop_claims')
+    , ref('value_defi_ethereum_airdrop_claims')
+    , ref('tokenfy_ethereum_airdrop_claims')
+    , ref('component_ethereum_airdrop_claims')
+    , ref('forefront_ethereum_airdrop_claims')
+    , ref('alchemydao_ethereum_airdrop_claims')
 ] %}
 
 
