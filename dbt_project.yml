@@ -231,6 +231,11 @@ models:
       +schema: blur
       ethereum:
         +schema: blur_ethereum
+        
+    stealcam:
+      +schema: stealcam
+      ethereum:
+        +schema: stealcam_arbitrum
 
     gas:
       +schema: gas
