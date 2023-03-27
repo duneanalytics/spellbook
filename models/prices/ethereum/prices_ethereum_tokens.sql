@@ -89,6 +89,7 @@ FROM
     ("crv-curve-dao-token", "ethereum", "CRV", "0xd533a949740bb3306d119cc777fa900ba034cd52", 18),
     ("ctxc-cortex", "ethereum", "CTXC", "0xea11755ae41d889ceec39a63e6ff75a02bc1c00d", 18),
     ("cusdt-compound-usdt", "ethereum", "cUSDT", "0xf650c3d88d12db855b8bf7d11be6c55a4e07dcc9", 8),
+    ("cusdc-compound-usd-coin", "ethereum", "cUSDC", "0x39aa39c021dfbae8fac545936693ac917d5e7563", 8),
     ("cvc-civic", "ethereum", "CVC", "0x41e5560054824ea6b0732e656e3ad64e20e94e45", 8),
     ("cvt-cybervein", "ethereum", "CVT", "0xbe428c3867f05dea2a89fc76a102b544eac7f772", 18),
     ("cvx-convex-finance", "ethereum", "CVX", "0x4e3fbd56cd56c3e72c1403e103b45db9da5b9d2b", 18),
