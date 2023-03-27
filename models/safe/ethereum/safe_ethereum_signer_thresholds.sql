@@ -18,9 +18,9 @@ with safes as (
     where
         s.call_success = true
         and et.success = true
-        AND substring(et.input, 0, 4) in ('0x0ec78d9e') -- setup methods of v0_1_0
+        AND substring(cast(et.input as varchar(100)), 0, 4) in ('0x0ec78d9e') -- setup methods of v0_1_0
         AND et.call_type = 'delegatecall' -- the delegate call to the master copy is the Safe address
-        AND et.to in ('0x8942595A2dC5181Df0465AF0D7be08c8f23C93af') -- mastercopy address v0_1_0
+        AND cast(et.to as varchar(100)) in ('0x8942595A2dC5181Df0465AF0D7be08c8f23C93af') -- mastercopy address v0_1_0
     union all
     select
         call_block_time as block_time,
