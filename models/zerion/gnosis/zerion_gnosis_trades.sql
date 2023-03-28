@@ -28,10 +28,9 @@ SELECT 'gnosis' AS blockchain
 FROM {{ source('zerion_gnosis', 'Router_evt_Executed') }} swap
 INNER JOIN {{ source('gnosis','transactions') }} gt ON gt.block_number=swap.evt_block_number
     AND gt.hash=swap.evt_tx_hash
-WHERE swap.evt_block_time > NOW() - interval '4' hour
 {% if not is_incremental() %}
-AND swap.evt_block_time >= '{{project_start_date}}'
+WHERE swap.evt_block_time >= '{{project_start_date}}'
 {% endif %}
 {% if is_incremental() %}
-AND swap.evt_block_time >= date_trunc("day", now() - interval '1 week')
+WHERE swap.evt_block_time >= date_trunc("day", now() - interval '1 week')
 {% endif %}

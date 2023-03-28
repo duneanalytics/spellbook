@@ -30,12 +30,11 @@ SELECT 'bnb' AS blockchain
 FROM {{ source('zerion_bnb', 'Router_evt_Executed') }} swap
 INNER JOIN {{ source('bnb','transactions') }} bt ON bt.block_number=swap.evt_block_number
     AND bt.hash=swap.evt_tx_hash
-WHERE swap.evt_block_time > NOW() - interval '4' hour
 {% if not is_incremental() %}
-AND swap.evt_block_time >= '{{project_start_date}}'
+WHERE swap.evt_block_time >= '{{project_start_date}}'
 {% endif %}
 {% if is_incremental() %}
-AND swap.evt_block_time >= date_trunc("day", now() - interval '1 week')
+WHERE swap.evt_block_time >= date_trunc("day", now() - interval '1 week')
 {% endif %}
 
 
