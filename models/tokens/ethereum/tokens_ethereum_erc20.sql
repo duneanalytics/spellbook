@@ -20938,5 +20938,16 @@ FROM (VALUES
         ('0xee4e100507a144e5c45af48d33491e3c8c6f0aa8', 'OC', 18),
         ('0xeee2f0c81c721b48636fc6955e41214e313f16d7', 'VY', 18),
         ('0xfa440439c959da402312b8d6d21e606a6b43d6a1', 'BRC20', 9),
-        ('0xfac77a24e52b463ba9857d6b758ba41ae20e31ff', 'LSD', 18)
+        ('0xfac77a24e52b463ba9857d6b758ba41ae20e31ff', 'LSD', 18),
+        ('0x051d7e5609917bd9b73f04bac0ded8dd46a74301', 'crvWSBTC', 18),
+        ('0x17488091a1c954bad8926001b4d8c76df4c3f901', 'oDOGE', 9),
+        ('0x32296969ef14eb0c6d29669c550d4a0449130230', 'B-stETH-STABLE', 18),
+        ('0x6aa40d02115090d40dc33c7c5f3cf05112fa4f83', 'PWRC', 18),
+        ('0x752b4c6e92d96467fe9b9a2522ef07228e00f87c', 'sdANGLE', 18),
+        ('0x819c1a1568934ee59d9f3c8b9640908556c44140', 'HOBBES', 18),
+        ('0x871a975512fdd19cc0d700f9e4fa67b885a5f70b', 'CLIPPY', 8),
+        ('0x8ea12d23f469543a61c4f6f7ffdfdbaa7635609d', 'FIRE', 9),
+        ('0xa876f27f13a9eb6e621202cefdd5afc4a90e6457', 'IC', 9),
+        ('0xc2b0a4a371b6edd7af0baaa09bdd0f849a48e1df', 'NWC', 18),
+        ('0xfbd5fd3f85e9f4c5e8b40eec9f8b8ab1caaa146b', 'TREAT', 18)
      ) AS temp_table (contract_address, symbol, decimals)
