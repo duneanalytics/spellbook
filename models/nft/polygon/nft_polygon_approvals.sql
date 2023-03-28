@@ -35,7 +35,8 @@ WHERE app.evt_block_time >= date_trunc("day", now() - interval '1 week')
 
 UNION ALL
 
-SELECT app.evt_block_time AS block_time
+SELECT 'polygon' AS blockchain
+, app.evt_block_time AS block_time
 , date_trunc('day', app.evt_block_time) AS block_date
 , app.evt_block_number AS block_number
 , app.owner AS address
@@ -62,7 +63,8 @@ WHERE app.evt_block_time >= date_trunc("day", now() - interval '1 week')
 
 UNION ALL
 
-SELECT app.evt_block_time AS block_time
+SELECT 'polygon' AS blockchain
+, app.evt_block_time AS block_time
 , date_trunc('day', app.evt_block_time) AS block_date
 , app.evt_block_number AS block_number
 , app.operator AS address
