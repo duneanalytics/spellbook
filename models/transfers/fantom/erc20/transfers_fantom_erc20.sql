@@ -17,12 +17,12 @@ with
             'send'as transfer_type,
             evt_tx_hash,
             evt_index,
-            to as wallet_address,
+            et.to as wallet_address,
             contract_address as token_address,
             evt_block_time,
             value as amount_raw
         from
-            {{ source('erc20_fantom', 'evt_transfer') }}
+            {{ source('erc20_fantom', 'evt_transfer') }} et
         {% if is_incremental() %}
             where evt_block_time >= date_trunc("day", now() - interval '1 week')
         {% endif %}
@@ -32,12 +32,12 @@ with
             'receive'as transfer_type,
             evt_tx_hash,
             evt_index,
-            from as wallet_address,
+            et.from as wallet_address,
             contract_address as token_address,
             evt_block_time,
             '-' || CAST(value AS VARCHAR(100)) as amount_raw
         from
-            {{ source('erc20_fantom', 'evt_transfer') }}
+            {{ source('erc20_fantom', 'evt_transfer') }} et
         {% if is_incremental() %}
             where evt_block_time >= date_trunc("day", now() - interval '1 week')
         {% endif %}
@@ -55,7 +55,9 @@ select
     evt_block_time,
     CAST(amount_raw AS VARCHAR(100)) as amount_raw
 from sent_transfers
+
 union
+
 select 
     transfer_type,
     'fantom' as blockchain, 
