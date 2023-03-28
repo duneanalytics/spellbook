@@ -122,12 +122,15 @@ models:
         description: "Indicates the trade's direction whether a short, long, of if a position is being closed"
       - *project
       - *version
+      - &frontend
+        name: frontend
+        description: "The frontend protocol/project where the specific swap was executed; built on top of the 'project' and defaults to the 'project' if no other frontend is specified"
       - &trader
         name: trader
         description: "The address which made the swap in the protocol"
       - &volume_raw
         name: volume_raw
-        description: "The size of the position in raw form, 18 decimals for Synthetix and Perpetual, 8 decimals for Pika"
+        description: "The size of the position in raw form"
       - *tx_hash
       - *tx_from
       - *tx_to
