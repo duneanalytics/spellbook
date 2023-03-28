@@ -327,6 +327,15 @@ models:
     description: >
         OpenSea V4 trades on Ethereum
     tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_date
+            - tx_hash
+            - evt_index
+            - nft_contract_address
+            - token_id
+            - sub_type
+            - sub_idx
       - check_opensea_seed:
           blockchain: ethereum
           project: opensea

@@ -5,7 +5,7 @@
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
-    unique_key = ['block_date', 'tx_hash', 'evt_index', 'nft_contract_address', 'token_id', 'sub_type', 'sub_idx'],
+    unique_key = ['block_date', 'tx_hash', 'evt_index', 'nft_contract_address', 'token_id', 'sub_type', 'sub_idx']
     )
 }}
 
@@ -13,7 +13,7 @@
 -- only some specified zone_address are recognized as opensea's
 -- project/version : opensea/v4
 -- contract_address : 0x00000000000001ad428e4906ae43d8f9852d0dd6 (Seaport v1.4)
--- materialize : view
+-- materialize : incremental table
 
 {% set c_seaport_first_date = "2023-02-01" %}
 {% set c_native_token_address = "0x0000000000000000000000000000000000000000" %}
