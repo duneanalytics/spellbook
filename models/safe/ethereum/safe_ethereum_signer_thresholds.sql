@@ -9,7 +9,7 @@
 with safes as (
     select
         call_block_time as block_time,
-        et.`from` as address,
+        et."from" as address,
         cardinality(_owners) as num_owners,
         _threshold as threshold
     from {{ source('gnosis_safe_ethereum', 'Safev0_1_0_call_setup') }} s
@@ -18,9 +18,9 @@ with safes as (
     where
         s.call_success = true
         and et.success = true
-        AND substring(cast(et.input as varchar(100)), 0, 4) in ('0x0ec78d9e') -- setup methods of v0_1_0
+        AND substring(cast(et.input as varchar(10)), 0, 4) in ('0x0ec78d9e') -- setup methods of v0_1_0
         AND et.call_type = 'delegatecall' -- the delegate call to the master copy is the Safe address
-        AND cast(et.to as varchar(100)) in ('0x8942595A2dC5181Df0465AF0D7be08c8f23C93af') -- mastercopy address v0_1_0
+        AND cast(et.to as varchar(42)) in ('0x8942595A2dC5181Df0465AF0D7be08c8f23C93af') -- mastercopy address v0_1_0
     union all
     select
         call_block_time as block_time,
