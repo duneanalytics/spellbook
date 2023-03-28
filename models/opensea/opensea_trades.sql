@@ -94,5 +94,5 @@ block_number,
 tx_hash,
 tx_from,
 tx_to,
-unique_trade_id
+concat(block_date, tx_hash, evt_index, nft_contract_address, token_id, sub_type, sub_idx)
 FROM {{ ref('seaport_optimism_trades') }}
