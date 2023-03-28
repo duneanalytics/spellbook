@@ -38,7 +38,7 @@ WITH last_block AS (
          -- how many tokens to emit per second (not decimal adjusted)
         sushiPerSecond AS tokens_per_second_raw,
 
-        lead(evt_block_number,1, (SELECT MAX_BT FROM MAX_BLOCK) )
+        lead(evt_block_number,1, (SELECT MAX_BT FROM LAST_BLOCK) )
                 OVER (PARTITION BY contract_address ORDER BY evt_block_number ASC) AS next_evt_number
 
         FROM {{ source('sushi_optimism','MiniChefV2_evt_LogSushiPerSecond') }}
@@ -48,7 +48,7 @@ WITH last_block AS (
 SELECT
 p.evt_block_time, p.evt_block_number, p.evt_index,
 p.contract_address, rewarder_address, c.reward_token, p.pid, lp_address, alloc_points,
-lead(evt_block_number,1, (SELECT MAX_BT FROM MAX_BLOCK) )
+lead(evt_block_number,1, (SELECT MAX_BT FROM LAST_BLOCK) )
         OVER (PARTITION BY p.contract_address, p.pid ORDER BY evt_block_number ASC) AS next_evt_number
 
 FROM pools p
