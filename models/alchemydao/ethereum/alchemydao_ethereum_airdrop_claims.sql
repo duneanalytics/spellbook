@@ -13,9 +13,17 @@
 }}
 
 WITH early_price AS (
-    SELECT MIN(minute) AS minute
-    , MIN_BY(price, minute) AS price
-    FROM {{ source('prices', 'usd') }}
+    SELECT MIN(hour) AS hour
+    , MIN_BY(median_price, hour) AS price
+    FROM {{ ref('dex_prices') }}
+    WHERE blockchain = 'ethereum'
+    AND contract_address='0x0000a1c00009a619684135b824ba02f7fbf3a572'
+    )
+
+, late_price AS (
+    SELECT MAX(hour) AS hour
+    , MAX_BY(median_price, hour) AS price
+    FROM {{ ref('dex_prices') }}
     WHERE blockchain = 'ethereum'
     AND contract_address='0x0000a1c00009a619684135b824ba02f7fbf3a572'
     )
@@ -30,18 +38,19 @@ SELECT 'ethereum' AS blockchain
 , t.evt_tx_hash AS tx_hash
 , CAST(t.amount AS DECIMAL(38,0)) AS amount_raw
 , CAST(t.amount/POWER(10, 18) AS double) AS amount_original
-, CASE WHEN t.evt_block_time >= (SELECT minute FROM early_price) THEN CAST(pu.price*t.amount/POWER(10, 18) AS double)
-    ELSE CAST((SELECT price FROM early_price)*t.amount/POWER(10, 18) AS double)
+, CASE WHEN t.evt_block_time >= (SELECT hour FROM early_price) AND t.evt_block_time <= (SELECT hour FROM late_price) THEN CAST(pu.median_price*t.amount/POWER(10, 18) AS double)
+    WHEN t.evt_block_time < (SELECT hour FROM early_price) THEN CAST((SELECT price FROM early_price)*t.amount/POWER(10, 18) AS double)
+    WHEN t.evt_block_time > (SELECT hour FROM late_price) THEN CAST((SELECT price FROM late_price)*t.amount/POWER(10, 18) AS double)
     END AS amount_usd
 , '0x0000a1c00009a619684135b824ba02f7fbf3a572' AS token_address
 , 'ALCH' AS token_symbol
 , t.evt_index
 FROM {{ source('alchemydao_ethereum', 'MerkleDistributor_evt_Claimed') }} t
-LEFT JOIN {{ ref('prices_usd_forward_fill') }} pu ON pu.blockchain = 'ethereum'
+LEFT JOIN {{ ref('dex_prices') }} pu ON pu.blockchain = 'ethereum'
     AND pu.contract_address='0x0000a1c00009a619684135b824ba02f7fbf3a572'
-    AND pu.minute=date_trunc('minute', t.evt_block_time)
+    AND pu.hour = date_trunc('hour', t.evt_block_time)
     {% if is_incremental() %}
-    AND pu.minute >= date_trunc("day", now() - interval '1 week')
+    AND pu.hour >= date_trunc("day", now() - interval '1 week')
     {% endif %}
 {% if is_incremental() %}
 WHERE t.evt_block_time >= date_trunc("day", now() - interval '1 week')
