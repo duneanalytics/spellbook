@@ -10,7 +10,7 @@ with safes as (
     select
         call_block_time as block_time,
         et.`from` as address,
-        size(_owners) as num_owners,
+        cardinality(_owners) as num_owners,
         _threshold as threshold
     from {{ source('gnosis_safe_ethereum', 'Safev0_1_0_call_setup') }} s
     join {{ source('ethereum', 'traces') }} et
@@ -25,7 +25,7 @@ with safes as (
     select
         call_block_time as block_time,
         contract_address as address,
-        size(_owners) as num_owners,
+        cardinality(_owners) as num_owners,
         _threshold as threshold
     from
         {{ source('gnosis_safe_ethereum', 'Safev1_0_0_call_setup') }}
@@ -35,7 +35,7 @@ with safes as (
     select
         call_block_time as block_time,
         contract_address as address,
-        size(_owners) as num_owners,
+        cardinality(_owners) as num_owners,
         _threshold as threshold
     from
         {{ source('gnosis_safe_ethereum', 'Safev1_1_0_call_setup') }}
@@ -45,7 +45,7 @@ with safes as (
     select
         call_block_time as block_time,
         contract_address as address,
-        size(_owners) as num_owners,
+        cardinality(_owners) as num_owners,
         _threshold as threshold
     from
         {{ source('gnosis_safe_ethereum', 'Safev1_1_1_call_setup') }}
@@ -55,7 +55,7 @@ with safes as (
     select
         evt_block_time as block_time,
         contract_address as address,
-        size(owners) as num_owners,
+        cardinality(owners) as num_owners,
         threshold
     from
         {{ source('gnosis_safe_ethereum', 'GnosisSafev1_3_0_evt_SafeSetup') }}
