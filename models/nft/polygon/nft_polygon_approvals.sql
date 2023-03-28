@@ -7,7 +7,8 @@
 )
 }}
 
-SELECT app.evt_block_time AS block_time
+SELECT 'polygon' AS blockchain
+, app.evt_block_time AS block_time
 , date_trunc('day', app.evt_block_time) AS block_date
 , app.evt_block_number AS block_number
 , app.owner AS address
