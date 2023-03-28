@@ -104,13 +104,13 @@ SELECT 'ethereum' AS blockchain
 , lr.token_id
 , tok.name AS collection
 , pu.price*lr.amount_raw/POWER(10, pu.decimals) AS amount_usd
-, tok.token_standard
+, tok.standard as token_standard
 , CASE WHEN lr.number_of_items > 1 THEN 'Bundle Trade' ELSE 'Single Item Trade' END AS trade_type
 , CAST(lr.number_of_items AS DECIMAL(38,0)) AS number_of_items
 , lr.trade_category
 , 'Trade' AS evt_type
-, CASE WHEN lr.seller=agg.contract_address THEN et.from ELSE lr.seller AS seller
-, CASE WHEN lr.buyer=agg.contract_address THEN et.from ELSE lr.buyer AS buyer
+, CASE WHEN lr.seller=agg.contract_address THEN et.from ELSE lr.seller END AS seller
+, CASE WHEN lr.buyer=agg.contract_address THEN et.from ELSE lr.buyer END AS buyer
 , lr.amount_raw/POWER(10, pu.decimals) AS amount_original
 , CAST(lr.amount_raw AS DECIMAL(38,0)) AS amount_raw
 , CASE WHEN lr.currency_contract='0x0000000000000000000000000000000000000000' THEN 'ETH' ELSE pu.symbol END AS currency_symbol
