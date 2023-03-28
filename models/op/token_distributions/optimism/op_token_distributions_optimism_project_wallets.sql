@@ -48,6 +48,10 @@ FROM (values
     ,('0x4f09b919d969b58a96e8bd7673f12372d09395e8', 'Velodrome','Intermediate Disperser')
     ,('0xeC93157084dcE64F7E4c0F0EDF383114b5C805aA', 'Via Protocol', 'Multisig')
     ,('0x649c2DFCA22a41D30F0ddEFEA53C4D5f4797051a', 'Clique', 'Team Multisig')
+    ,('0xCF9560305B23630f402965126D909Bf9786F1553', 'Rubicon', 'Multisig')
+    ,('0x85cbb0E8262815b4866b166C02f7eF876A49D8f6', 'Biconomy', 'Biconomy - Binance Depoist')
+    ,('0xeeab81526c9addb75ffffde0cd3f6f018cc39ac2', 'Synthetix','Multisig - Distributor')
+    ,('0x8314125c8b68af2afd0d151eb4a551e88128a2ae', 'Thales', 'Contract Deployer')
 
     --quix - should come from CB
     ,('0x5Ad4A019F77e82940f6Dd15A5215362AF061A742','Quix','Distributor')
@@ -137,6 +141,7 @@ FROM (values
     ,('0x1A3E5557039763425B00a2e1B0eB767B01d64756','Beefy Finance','Beefy Launchpool')
     ,('0x65F8a09A1C3581a02C8788a6959652E32a87FC77','Beefy Finance','Beefy Launchpool')
     ,('0xf099FA1Bd92f8AAF4886e8927D7bd3c15bA0BbFd','xToken Terminal / Gamma Strategies','Rewarder')
+    ,('0x320a04B981c092884a9783cdE907578F613EF773', 'Sushi', 'ComplexRewarderTime')
 
     ,('0xAde63D643564AaA8C2A86F2244f43B5eB00ed5e6','Clipper','Distributor')
     ,('0x9024d0C5d4709b98856CDaE02B955890A69f8007','Kwenta','Distributor')
@@ -158,7 +163,6 @@ FROM (values
     ,('0x6333000289bc27a090b3d51e734c2f13e3edc4fd', 'Hundred Finance', 'Token Treasury')
     ,('0x86c90fc464A668469A93Ca08D8B9872bdB16b356', 'Mux', 'TradingRebateDistributor')
     
-    ,('0xeeab81526c9addb75ffffde0cd3f6f018cc39ac2','Synthetix','Multisig - Distributor')
     ,('0x09992dd7b32f7b35d347de9bdaf1919a57d38e82','Synthetix','SNX Bridge: Hop')
 
     ,('0xf42279467D821bCDf40b50E9A5d2cACCc4Cf5b30','Quests on Coinbase Wallet','Quest 1 - DEX')
@@ -166,6 +170,10 @@ FROM (values
 
     --governance delegation
     ,('0x6a1e22c82be29eb96850158011b40fafbce1340c','Synthetix','SNXAmbassadors delegation')
+
+    --grants deployed
+    ,('0x05061c42d6f30c0dbc751b927a3909772c172568', 'Defillama', 'LlamaPay')
+    ,('0xC98786D5A7a03C1e74AffCb97fF7eF8a710DA09B', 'Karma', 'Karma - Grant')
     
     
     ) a (address, proposal_name, address_descriptor)
@@ -175,8 +183,15 @@ FROM (values
 )
 
 SELECT
-        fin.address, fin.label, fin.proposal_name, fin.address_descriptor,
-        COALESCE(pnm.project_name, fin.proposal_name) AS project_name
+        fin.address
+        -- handle for addresses that are used in multiple proposals (i.e. Season 1 and Season 3)
+        -- Here, we unify all labels together. In the future we may try to segment each proposal out
+        , concat_ws(',', ARRAY_AGG(DISTINCT fin.label) ) AS label
+        , concat_ws(',', ARRAY_AGG(DISTINCT fin.proposal_name) ) AS proposal_name
+        , concat_ws(',', ARRAY_AGG(DISTINCT fin.address_descriptor) ) address_descriptor
+        , concat_ws(',', ARRAY_AGG(DISTINCT 
+                COALESCE(pnm.project_name, fin.proposal_name) )
+         ) AS project_name
 FROM (
         SELECT address, label, proposal_name, address_descriptor, ROW_NUMBER() OVER(PARTITION BY address ORDER BY rnk ASC) AS choice_rank 
                 FROM (
@@ -198,4 +213,6 @@ FROM (
 LEFT JOIN {{ ref('op_token_distributions_optimism_project_name_mapping') }} pnm 
         ON pnm.proposal_name = fin.proposal_name
 
-WHERE choice_rank = 1 --remove dupes in preferred order
+GROUP BY fin.address
+
+-- WHERE choice_rank = 1 --old version: if we want to remove dupes in preferred order
