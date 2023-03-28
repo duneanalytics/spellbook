@@ -4,7 +4,7 @@
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
-    unique_key = ['block_date', 'unique_trade_id']
+    unique_key = ['block_date','unique_trade_id']
     )
 }}
 
@@ -144,7 +144,7 @@ SELECT
           )
           AND array_contains(log_messages, 'Program log: Instruction: Buy') THEN 'SOL'
          ELSE NULL::string END as royalty_fee_currency_symbol,
-  signatures[0] || '-' || id  as unique_trade_id,
+  id  as unique_trade_id,
   instructions,
   signatures,
   log_messages
