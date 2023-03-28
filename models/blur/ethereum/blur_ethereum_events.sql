@@ -114,7 +114,7 @@ SELECT
     , CAST(s.evt_block_time AS timestamp) AS block_time
     , CAST(s.evt_block_number AS double) AS block_number
     , CAST(get_json_object(s.offer[0], '$.identifier') AS string) AS token_id
-    , tr.standard AS token_standard
+    , nft_tok.standard AS token_standard
     , nft_tok.name AS collection
     , CASE WHEN get_json_object(s.offer[0], '$.amount')=1 THEN 'Single Item Trade' ELSE 'Bundle Trade' END AS trade_type
     , CAST(get_json_object(s.offer[0], '$.amount') AS DECIMAL(38,0)) AS number_of_items
@@ -167,16 +167,6 @@ LEFT JOIN {{ ref('prices_usd_forward_fill') }} pu ON ((pu.contract_address=get_j
     {% endif %}
     {% if not is_incremental() %}
     AND pu.minute >= '{{seaport_usage_start_date}}'
-    {% endif %}
-LEFT JOIN {{ ref('nft_ethereum_transfers') }} tr ON tr.block_time=s.evt_block_time
-    AND tr.contract_address=get_json_object(s.offer[0], '$.token')
-    AND tr.token_id=get_json_object(s.offer[0], '$.identifier')
-    AND tr.from=s.offerer
-    {% if is_incremental() %}
-    AND tr.block_time >= date_trunc("day", now() - interval '1 week')
-    {% endif %}
-    {% if not is_incremental() %}
-    AND tr.block_time >= '{{seaport_usage_start_date}}'
     {% endif %}
 WHERE s.zone='0x0000000000d80cfcb8dfcd8b2c4fd9c813482938'
 {% if is_incremental() %}
