@@ -15,7 +15,7 @@
 
 SELECT *
 FROM (
-    {% for dex_model in dex_pool_models %}
+    {% for dex_pool_model in dex_pool_models %}
     SELECT
         blockchain
         , project
@@ -27,7 +27,7 @@ FROM (
         , creation_block_time
         , creation_block_number
         , contract_address
-    FROM {{ dex_model }}
+    FROM {{ dex_pool_model }}
     {% if not loop.last %}
     UNION ALL
     {% endif %}
