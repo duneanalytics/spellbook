@@ -326,20 +326,6 @@ models:
       tags: ['ethereum','opensea','v4','trades']
     description: >
         OpenSea V4 trades on Ethereum
-    tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - block_date
-            - tx_hash
-            - evt_index
-            - nft_contract_address
-            - token_id
-            - sub_type
-            - sub_idx
-      - check_opensea_seed:
-          blockchain: ethereum
-          project: opensea
-          version: v4
     columns:
       - *blockchain
       - *project
@@ -385,8 +371,6 @@ models:
         description:  "Wallet addresses receiving fees from the transaction"
       - name: royalty_fee_receive_address_4
         description:  "Wallet addresses receiving fees from the transaction"
-      - name: royalty_fee_receive_address_5
-        description:  "Wallet addresses receiving fees from the transaction"
       - name: royalty_fee_amount_raw_1
         description:  "Wallet addresses receiving fees from the transaction"
       - name: royalty_fee_amount_raw_2
@@ -394,8 +378,6 @@ models:
       - name: royalty_fee_amount_raw_3
         description:  "Wallet addresses receiving fees from the transaction"
       - name: royalty_fee_amount_raw_4
-        description:  "Wallet addresses receiving fees from the transaction"
-      - name: royalty_fee_amount_raw_5
         description:  "Wallet addresses receiving fees from the transaction"
       - *aggregator_name
       - *aggregator_address
@@ -413,10 +395,6 @@ models:
         description: "True if it is bundle trade and dividened price"
       - name: is_private
         description: "True if it is private sale"
-      - name: sub_idx
-        description: "Generated value used in seaport internally"
-      - name: sub_type
-        description: "Generated value used in seaport internally"
       - name : unique_trade_id
         description:  "Unique trade ID"
 
