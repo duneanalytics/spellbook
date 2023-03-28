@@ -8,15 +8,15 @@
 }}
 
 {% set uniswap_models = [
-'uniswap_ethereum_pools'
-,'uniswap_arbitrum_pools'
-,'uniswap_polygon_pools'
+ref('uniswap_ethereum_pools')
+, ref('uniswap_arbitrum_pools')
+, ref('uniswap_polygon_pools')
 ] %}
 
 
 SELECT *
 FROM (
-    {% for dex_model in uniswap_models %}
+    {% for dex_pool_model in uniswap_models %}
     SELECT
         blockchain
         , project
@@ -28,7 +28,7 @@ FROM (
         , creation_block_time
         , creation_block_number
         , contract_address
-    FROM {{ ref(dex_model) }}
+    FROM {{ dex_pool_model }}
     {% if not loop.last %}
     UNION ALL
     {% endif %}
