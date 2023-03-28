@@ -23,7 +23,7 @@ SELECT
     , CAST(bm.evt_block_time AS timestamp) AS block_time
     , CAST(bm.evt_block_number AS double) AS block_number
     , CAST(get_json_object(bm.sell, '$.tokenId') AS string) AS token_id
-    , nft.token_standard AS token_standard
+    , nft.standard AS token_standard
     , nft.name AS collection
     , CASE WHEN get_json_object(bm.buy, '$.amount')=1 THEN 'Single Item Trade'
         ELSE 'Bundle Trade'
