@@ -5,11 +5,11 @@
 
 -- Get constructor arguments for each masterchef contract
 
-SELECT contract_address, reward_token, reward_per_second, masterchef_v2_address
+SELECT 'optimism' as blockchain, contract_address, reward_token, reward_per_second, masterchef_v2_address
 
-FROM (
+FROM (values
         -- https://optimistic.etherscan.io/address/0x320a04b981c092884a9783cde907578f613ef773#code
         ('0x320a04b981c092884a9783cde907578f613ef773','0x4200000000000000000000000000000000000042',0,'0xb25157bf349295a7cd31d1751973f426182070d6')
 
 
-) a (reward_token, reward_per_second, masterchef_v2_address)
+) a (contract_address, reward_token, reward_per_second, masterchef_v2_address)
