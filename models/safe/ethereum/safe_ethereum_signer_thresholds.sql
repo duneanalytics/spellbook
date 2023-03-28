@@ -9,7 +9,7 @@
 with safes as (
     select
         call_block_time as block_time,
-        et."from" as address,
+        et.`from` as address,
         cardinality(_owners) as num_owners,
         _threshold as threshold
     from {{ source('gnosis_safe_ethereum', 'Safev0_1_0_call_setup') }} s
