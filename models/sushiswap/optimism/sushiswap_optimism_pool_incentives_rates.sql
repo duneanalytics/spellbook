@@ -8,7 +8,13 @@
     )
 }}
 
-WITH pools AS (
+WITH last_block AS (
+        SELECT MAX(block_number) AS max_bt FROM optimism.transactions
+        WHERE block_time > NOW() - interval '7' day
+
+)
+
+, pools AS (
 
         SELECT
         evt_block_time, evt_block_number, evt_index,
@@ -32,7 +38,7 @@ WITH pools AS (
          -- how many tokens to emit per second (not decimal adjusted)
         sushiPerSecond AS tokens_per_second_raw,
 
-        lead(evt_block_number,1,NOW())
+        lead(evt_block_number,1, (SELECT MAX_BT FROM MAX_BLOCK) )
                 OVER (PARTITION BY contract_address ORDER BY evt_block_number ASC) AS next_evt_number
 
         FROM {{ source('sushi_optimism','MiniChefV2_evt_LogSushiPerSecond') }}
@@ -41,8 +47,8 @@ WITH pools AS (
 , pool_updates AS (
 SELECT
 p.evt_block_time, p.evt_block_number, p.evt_index,
-p.contract_address, rewarder_address, p.reward_token, p.pid, lp_address, alloc_points,
-lead(evt_block_number,1,NOW())
+p.contract_address, rewarder_address, c.reward_token, p.pid, lp_address, alloc_points,
+lead(evt_block_number,1, (SELECT MAX_BT FROM MAX_BLOCK) )
         OVER (PARTITION BY p.contract_address, p.pid ORDER BY evt_block_number ASC) AS next_evt_number
 
 FROM pools p
@@ -69,18 +75,19 @@ GROUP BY 1,2 -- get distinct event timestamps
 
 , joined as (
         SELECT 
-        e.evt_block_number, e.evt_block_time
+        DATE_TRUNC('day', evt_block_time) AS block_date
+        , e.evt_block_number, e.evt_block_time
         , COALESCE(pu.contract_address, ru.contract_address) AS contract_address
         , pu.rewarder_address, pu.reward_token, pu.pid, pu.lp_address, pu.alloc_points
-        , ru.tokens_per_second_raw
+        , COALESCE(ru.tokens_per_second_raw,0) AS tokens_per_second_raw
         , SUM(pu.alloc_points)
                 OVER (PARTITION BY e.evt_block_number, COALESCE(pu.contract_address, ru.contract_address)) AS total_alloc_points
 
 
         FROM events e
                 FULL OUTER JOIN pool_updates pu 
-                        ON e.evt_block_number >= ru.evt_block_number
-                        AND e.evt_block_number < ru.next_evt_number
+                        ON e.evt_block_number >= pu.evt_block_number
+                        AND e.evt_block_number < pu.next_evt_number
                 FULL OUTER JOIN rates_updates ru 
                         ON e.evt_block_number >= ru.evt_block_number
                         AND e.evt_block_number < ru.next_evt_number
@@ -89,14 +96,19 @@ GROUP BY 1,2 -- get distinct event timestamps
 )
 
 
-SELECT *
+SELECT 
+block_date, 'optimism' as blockchain,
+evt_block_time, evt_block_number
+, contract_address, rewarder_address, reward_token
+, pid, lp_address, alloc_points, total_alloc_points, alloc_point_share, tokens_per_second_raw
+
 , tokens_per_second_raw * alloc_point_share AS alloc_tokens_per_second_raw
-, cast(tokens_per_second_raw * alloc_point_share as double) / cast(power(10,decimals)) AS alloc_tokens_per_second
+, cast(tokens_per_second_raw * alloc_point_share as double) / cast(power(10,decimals) as double) AS alloc_tokens_per_second
 , symbol AS reward_token_symbol
 , decimals AS reward_token_decimals
 FROM (
         SELECT *
-        , cast(alloc_points as double) / cast(total_alloc_points as double) AS alloc_point_share,
+        , cast(alloc_points as double) / cast(total_alloc_points as double) AS alloc_point_share
 
         FROM joined
 ) a
