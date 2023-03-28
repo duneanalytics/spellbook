@@ -75,7 +75,7 @@ GROUP BY 1,2 -- get distinct event timestamps
 
 , joined as (
         SELECT 
-        DATE_TRUNC('day', evt_block_time) AS block_date
+        DATE_TRUNC('day', e.evt_block_time) AS block_date
         , e.evt_block_number, e.evt_block_time
         , COALESCE(pu.contract_address, ru.contract_address) AS contract_address
         , pu.rewarder_address, pu.reward_token, pu.pid, pu.lp_address, pu.alloc_points
