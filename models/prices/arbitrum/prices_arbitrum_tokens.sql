@@ -16,7 +16,6 @@ FROM
 (
     VALUES
 
-    ("arb-arbitrum","arbitrum","ARB","0x912ce59144191c1204e64559fe8253a0e49e6548",18),
     ("0xbtc-0xbitcoin","arbitrum","0xBTC","0x7cb16cb78ea464ad35c8a50abf95dff3c9e09d5d",8),
     ("aave-new","arbitrum","AAVE","0xba5ddd1f9d7f570dc94a51479a000e3bce967196",18),
     ("ageur-ageur","arbitrum","agEUR","0xfa5ed56a203466cbbc2430a43c66b9d8723528e7",18),
