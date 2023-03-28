@@ -80,10 +80,6 @@ SELECT 'goerli' AS blockchain
 , app.evt_index
 , 'goerli' || '-' || app.evt_tx_hash || '-' || app.evt_index AS unique_approval_id
 FROM {{ source('erc1155_goerli','evt_ApprovalForAll') }} app
-{% if is_incremental() %}
-ANTI JOIN {{this}} anti_table
-    ON .evt_tx_hash = anti_table.tx_hash
-{% endif %}
 INNER JOIN {{ source('goerli', 'transactions') }} et ON et.block_number=app.evt_block_number
     AND et.hash=app.evt_tx_hash
     {% if is_incremental() %}
