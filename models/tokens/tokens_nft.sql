@@ -1,77 +1,33 @@
 {{ config( alias='nft',
-        post_hook='{{ expose_spells(\'["avalanche_c","bnb","ethereum","optimism", "gnosis", "fantom","arbitrum"]\',
+        post_hook='{{ expose_spells(\'["avalanche_c","bnb","ethereum","optimism", "gnosis", "fantom","arbitrum","polygon"]\',
                                     "sector",
                                     "tokens",
-                                    \'["0xManny","hildobby","soispoke","dot2dotseurat"]\') }}')}}
+                                    \'["0xRob"]\') }}')}}
 
-SELECT 
-'avalanche_c' as blockchain, 
-contract_address, 
-name, 
-symbol,
-standard, 
-category 
-FROM  {{ ref('tokens_avalanche_c_nft') }}
-            UNION
-SELECT
-'ethereum' as blockchain, 
-contract_address, 
-name, 
-symbol,
-standard, 
-category 
-FROM  {{ ref('tokens_ethereum_nft') }}
-            UNION
-SELECT
-'gnosis' as blockchain, 
-contract_address, 
-name, 
-symbol,
-standard, 
-CAST(NULL AS VARCHAR(5)) as category
-FROM  {{ ref('tokens_gnosis_nft') }}
-            UNION
-SELECT
-'optimism' as blockchain, 
-contract_address, 
-name, 
-CAST(NULL AS VARCHAR(5)) as symbol,
-standard,
-CAST(NULL AS VARCHAR(5)) as category
-FROM  {{ ref('tokens_optimism_nft') }}
-            UNION
-SELECT
-'optimism' as blockchain, 
-contract_address, 
-name, 
-symbol,
-standard, 
-category 
-FROM  {{ ref('tokens_optimism_nft_bridged_mapping') }}
-            UNION
-SELECT
-'bnb' as blockchain, 
-contract_address, 
-name, 
-CAST(NULL AS VARCHAR(5)) as symbol,
-standard, 
-CAST(NULL AS VARCHAR(5)) as category
-FROM  {{ ref('tokens_bnb_nft') }}
-            UNION
-SELECT
-'fantom' as blockchain, 
-contract_address, 
-name, 
-symbol,
-standard, 
-category 
-FROM  {{ ref('tokens_fantom_nft') }}
-            UNION
-SELECT
-'arbitrum' as blockchain, 
-contract_address, 
-name, 
-symbol,
-standard, 
-category 
-FROM  {{ ref('tokens_arbitrum_nft') }}
+
+{% set sources = [
+     ('arbitrum',   ref('tokens_arbitrum_nft'))
+    ,('avalanche_c',ref('tokens_avalanche_c_nft'))
+    ,('bnb',        ref('tokens_bnb_nft'))
+    ,('ethereum',   ref('tokens_ethereum_nft'))
+    ,('fantom',     ref('tokens_fantom_nft'))
+    ,('gnosis',     ref('tokens_gnosis_nft'))
+    ,('optimism',   ref('tokens_optimism_nft'))
+    ,('polygon',    ref('tokens_polygon_nft'))
+] %}
+
+SELECT *
+FROM (
+    {% for source in sources %}
+    SELECT
+    '{{ source[0] }}' as blockchain,
+    contract_address,
+    name,
+    symbol,
+    standard
+    FROM {{ source[1] }}
+    {% if not loop.last %}
+    UNION ALL
+    {% endif %}
+    {% endfor %}
+)

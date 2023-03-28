@@ -231,6 +231,11 @@ models:
       +schema: blur
       ethereum:
         +schema: blur_ethereum
+        
+    stealcam:
+      +schema: stealcam
+      arbitrum:
+        +schema: stealcam_arbitrum
 
     gas:
       +schema: gas
@@ -437,6 +442,12 @@ models:
         +schema: transfers_bnb
       arbitrum:
         +schema: transfers_arbitrum
+      polygon:
+        +schema: transfers_polygon
+      avalanche_c:
+        +schema: transfers_avalanche_c
+      fantom:
+        +schema: transfers_fantom
 
     sudoswap:
       +schema: sudoswap
@@ -835,6 +846,11 @@ models:
         +schema: op_token_distributions
         optimism:
           +schema: op_token_distributions_optimism
+      op_chains:
+        +schema: op_chains
+      op_token:
+        optimism:
+          +schema: op_token_optimism
 
     rubicon:
       +schema: rubicon
@@ -908,3 +924,8 @@ models:
       +schema: rarible
       polygon:
         +schema: rarible_polygon
+
+    optimism_attestationstation:
+      +schema: optimism_attestationstation
+      optimism:
+        +schema: optimism_attestationstation_optimism

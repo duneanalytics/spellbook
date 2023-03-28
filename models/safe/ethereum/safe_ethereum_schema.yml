@@ -127,3 +127,25 @@ models:
       - &output
         name: output
         description: "Output data"
+
+  - name: safe_ethereum_signer_thresholds
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - address
+    meta:
+      blockchain: ethereum
+      project: safe
+      contributors: gentrexha
+    freshness:
+      warn_after: { count: 12, period: hour }
+      error_after: { count: 24, period: hour }
+    config:
+      tags: ['safe', 'ethereum']
+    description: "Safe signer thresholds"
+    columns:
+      - *blockchain
+      - *address
+      - &threshold
+        name: threshold
+        description: "Number of signer threshold"

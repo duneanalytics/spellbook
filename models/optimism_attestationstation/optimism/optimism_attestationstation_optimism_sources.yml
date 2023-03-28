@@ -1,0 +1,35 @@
+version: 2
+
+sources:
+  - name: attestationstation_optimism
+    freshness:
+      warn_after: { count: 12, period: hour }
+    tables:
+      - name: AttestationStation_evt_AttestationCreated
+        loaded_at_field: evt_block_time
+        description: "Attestation created events on Optimism."
+        columns:
+          - &about
+            name: about
+            description: "Who the attestations are about."
+          - &contract_address
+            name: contract_address
+            description: "Contract address."
+          - &creator
+            name: creator
+            description: "Who created the attestation."
+          - &evt_block_number
+            name: evt_block_number
+            description: "Block number."
+          - &evt_block_time
+            name: evt_block_time
+            description: "Block timestamp."
+          - &evt_index
+            name: evt_index
+            description: "Event index."
+          - &key
+            name: key
+            description: "What is being attested about."
+          - &val
+            name: val
+            description: "What is the value of the attestation."

@@ -7,7 +7,7 @@
   )
 }}
 
-{% set project_start_date = '2022-12-21' %}
+{% set project_start_date = '2022-04-26' %}
 
 -- Gamma pools don't come from a factory contract, so we manually map them
 with manual_mapping as (
