@@ -46,6 +46,7 @@ FROM
     ("thr-thorecoin", null, "THR", null, null),
     ("tomo-tomochain", null, "TOMO", null, null),
     ("trx-tron", null, "TRX", null, null),
+    ("xdai-xdai", null, "XDAI", null, null),
     ("xem-nem", null, "XEM", null, null),
     ("xlm-stellar", null, "XLM", null, null),
     ("xmr-monero", null, "XMR", null, null),
