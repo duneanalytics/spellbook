@@ -99,7 +99,7 @@ GROUP BY 1,2 -- get distinct event timestamps
 SELECT 
 block_date, 'optimism' as blockchain,
 evt_block_time, evt_block_number
-, contract_address, rewarder_address, reward_token
+, a.contract_address, rewarder_address, reward_token
 , pid, lp_address, alloc_points, total_alloc_points, alloc_point_share, tokens_per_second_raw
 
 , tokens_per_second_raw * alloc_point_share AS alloc_tokens_per_second_raw
