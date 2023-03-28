@@ -1,0 +1,10 @@
+version: 2
+
+sources:
+  - name: zerion_gnosis
+    description: "Zerion contracts on Gnosis"
+    freshness:
+      warn_after: { count: 12, period: hour }
+    tables:
+      - name: Router_evt_Executed
+        loaded_at_field: evt_block_time

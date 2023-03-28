@@ -180,6 +180,23 @@ models:
       optimism:
         +schema: sushiswap_optimism
 
+    zerion:
+      +schema: zerion
+      ethereum:
+        +schema: zerion_ethereum
+      bnb:
+        +schema: zerion_bnb
+      avalanche_c:
+        +schema: zerion_avalanche_c
+      gnosis:
+        +schema: zerion_gnosis
+      arbitrum:
+        +schema: zerion_arbitrum
+      optimism:
+        +schema: zerion_optimism
+      polygon:
+        +schema: zerion_polygon
+
     openocean:
       +schema: openocean
       fantom:
