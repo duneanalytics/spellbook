@@ -114,7 +114,7 @@ SELECT
     , CAST(s.evt_block_time AS timestamp) AS block_time
     , CAST(s.evt_block_number AS double) AS block_number
     , CAST(get_json_object(s.offer[0], '$.identifier') AS string) AS token_id
-    , tr.token_standard AS token_standard
+    , tr.standard AS token_standard
     , nft_tok.name AS collection
     , CASE WHEN get_json_object(s.offer[0], '$.amount')=1 THEN 'Single Item Trade' ELSE 'Bundle Trade' END AS trade_type
     , CAST(get_json_object(s.offer[0], '$.amount') AS DECIMAL(38,0)) AS number_of_items
