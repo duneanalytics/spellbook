@@ -44,7 +44,7 @@ SELECT
 
         ,split(unhex(substring(val, 3)), ",") as val
 
-        ,bytea2numeric(substring(val, 3)) AS val_byte2numeric
+        ,bytea2numeric_v3(substring(val, 3)) AS val_byte2numeric
 
     from {{source('attestationstation_optimism','AttestationStation_evt_AttestationCreated')}}
     where 
