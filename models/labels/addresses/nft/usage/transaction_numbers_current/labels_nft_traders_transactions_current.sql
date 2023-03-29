@@ -43,7 +43,7 @@ SELECT * FROM (
     'query' AS source,
     timestamp('2022-08-24') as created_at,
     now() as updated_at,
-    'nft_traders_transactions' as model_name,
+    'nft_traders_transactions_current' as model_name,
     'usage' as label_type
     FROM nft_trades
       JOIN total on total.address = nft_trades.address
