@@ -14,7 +14,8 @@
 {% set project_start_date = '2022-10-18' %}
 {% set seaport_usage_start_date = '2023-01-25' %}
 
-SELECT distinct
+
+SELECT
     'ethereum' AS blockchain
     , 'blur' AS project
     , 'v1' AS version
@@ -22,19 +23,20 @@ SELECT distinct
     , CAST(bm.evt_block_time AS timestamp) AS block_time
     , CAST(bm.evt_block_number AS double) AS block_number
     , CAST(get_json_object(bm.sell, '$.tokenId') AS string) AS token_id
-    , erct.token_standard AS token_standard
+    , nft.standard AS token_standard
     , nft.name AS collection
     , CASE WHEN get_json_object(bm.buy, '$.amount')=1 THEN 'Single Item Trade'
         ELSE 'Bundle Trade'
         END AS trade_type
     , CAST(get_json_object(bm.buy, '$.amount') AS DECIMAL(38,0)) AS number_of_items
     , 'Trade' AS evt_type
-    , COALESCE(seller_fix.from, get_json_object(bm.sell, '$.trader')) AS seller
-    , COALESCE(buyer_fix.to, get_json_object(bm.buy, '$.trader')) AS buyer
+    , CASE WHEN get_json_object(bm.sell, '$.trader') = agg.contract_address THEN et.from ELSE get_json_object(bm.sell, '$.trader') END AS seller
+    ,CASE WHEN get_json_object(bm.buy, '$.trader') = agg.contract_address THEN et.from ELSE get_json_object(bm.buy, '$.trader') END AS buyer
     , CASE WHEN get_json_object(bm.buy, '$.matchingPolicy') IN ('0x00000000006411739da1c40b106f8511de5d1fac', '0x0000000000dab4a563819e8fd93dba3b25bc3495') THEN 'Buy'
         WHEN get_json_object(bm.buy, '$.matchingPolicy') IN ('0x0000000000b92d5d043faf7cecf7e2ee6aaed232') THEN 'Offer Accepted'
-        WHEN et.from=buyer_fix.to OR et.from=COALESCE(buyer_fix.to, get_json_object(bm.buy, '$.trader')) THEN 'Buy'
-        ELSE 'Offer Accepted'
+        WHEN et.from=get_json_object(bm.buy, '$.trader') THEN 'Buy'
+        WHEN et.from=get_json_object(bm.sell, '$.trader') THEN 'Offer Accepted'
+        ELSE 'Unknown'
         END AS trade_category
     , CAST(get_json_object(bm.buy, '$.price') AS DECIMAL(38,0)) AS amount_raw
     , CASE WHEN get_json_object(bm.buy, '$.paymentToken') IN ('0x0000000000000000000000000000000000000000', '0x0000000000a39bb272e79075ade125fd351887ac') THEN CAST(get_json_object(bm.buy, '$.price')/POWER(10, 18) AS double)
@@ -97,48 +99,14 @@ LEFT JOIN {{ source('prices','usd') }} pu ON pu.blockchain='ethereum'
     AND pu.minute >= date_trunc("day", now() - interval '1 week')
     {% endif %}
 LEFT JOIN {{ ref('tokens_ethereum_nft') }} nft ON get_json_object(bm.buy, '$.collection')=nft.contract_address
-LEFT JOIN {{ ref('nft_ethereum_transfers') }} erct ON erct.block_time=bm.evt_block_time
-    AND get_json_object(bm.buy, '$.collection')=erct.contract_address
-    AND erct.tx_hash=bm.evt_tx_hash
-    AND get_json_object(bm.sell, '$.tokenId')=erct.token_id
-    AND erct.from=get_json_object(bm.sell, '$.trader')
-    {% if not is_incremental() %}
-    AND erct.block_time >= '{{project_start_date}}'
-    {% endif %}
-    {% if is_incremental() %}
-    AND erct.block_time >= date_trunc("day", now() - interval '1 week')
-    {% endif %}
-LEFT JOIN {{ ref('nft_ethereum_transfers') }} buyer_fix ON buyer_fix.block_time=bm.evt_block_time
-    AND get_json_object(bm.buy, '$.collection')=buyer_fix.contract_address
-    AND buyer_fix.tx_hash=bm.evt_tx_hash
-    AND get_json_object(bm.sell, '$.tokenId')=buyer_fix.token_id
-    AND get_json_object(bm.buy, '$.trader')=agg.contract_address
-    AND buyer_fix.from=agg.contract_address
-    {% if not is_incremental() %}
-    AND buyer_fix.block_time >= '{{project_start_date}}'
-    {% endif %}
-    {% if is_incremental() %}
-    AND buyer_fix.block_time >= date_trunc("day", now() - interval '1 week')
-    {% endif %}
-LEFT JOIN {{ ref('nft_ethereum_transfers') }} seller_fix ON seller_fix.block_time=bm.evt_block_time
-    AND get_json_object(bm.buy, '$.collection')=seller_fix.contract_address
-    AND seller_fix.tx_hash=bm.evt_tx_hash
-    AND get_json_object(bm.sell, '$.tokenId')=seller_fix.token_id
-    AND get_json_object(bm.sell, '$.trader')=agg.contract_address
-    AND seller_fix.to=agg.contract_address
-    {% if not is_incremental() %}
-    AND seller_fix.block_time >= '{{project_start_date}}'
-    {% endif %}
-    {% if is_incremental() %}
-    AND seller_fix.block_time >= date_trunc("day", now() - interval '1 week')
-    {% endif %}
 {% if is_incremental() %}
 WHERE bm.evt_block_time >= date_trunc("day", now() - interval '1 week')
 {% endif %}
 
 UNION ALL
 
-SELECT distinct
+
+SELECT
     'ethereum' AS blockchain
     , 'blur' AS project
     , 'v1' AS version
@@ -146,7 +114,7 @@ SELECT distinct
     , CAST(s.evt_block_time AS timestamp) AS block_time
     , CAST(s.evt_block_number AS double) AS block_number
     , CAST(get_json_object(s.offer[0], '$.identifier') AS string) AS token_id
-    , tr.token_standard AS token_standard
+    , nft_tok.standard AS token_standard
     , nft_tok.name AS collection
     , CASE WHEN get_json_object(s.offer[0], '$.amount')=1 THEN 'Single Item Trade' ELSE 'Bundle Trade' END AS trade_type
     , CAST(get_json_object(s.offer[0], '$.amount') AS DECIMAL(38,0)) AS number_of_items
@@ -199,16 +167,6 @@ LEFT JOIN {{ ref('prices_usd_forward_fill') }} pu ON ((pu.contract_address=get_j
     {% endif %}
     {% if not is_incremental() %}
     AND pu.minute >= '{{seaport_usage_start_date}}'
-    {% endif %}
-LEFT JOIN {{ ref('nft_ethereum_transfers') }} tr ON tr.block_time=s.evt_block_time
-    AND tr.contract_address=get_json_object(s.offer[0], '$.token')
-    AND tr.token_id=get_json_object(s.offer[0], '$.identifier')
-    AND tr.from=s.offerer
-    {% if is_incremental() %}
-    AND tr.block_time >= date_trunc("day", now() - interval '1 week')
-    {% endif %}
-    {% if not is_incremental() %}
-    AND tr.block_time >= '{{seaport_usage_start_date}}'
     {% endif %}
 WHERE s.zone='0x0000000000d80cfcb8dfcd8b2c4fd9c813482938'
 {% if is_incremental() %}
