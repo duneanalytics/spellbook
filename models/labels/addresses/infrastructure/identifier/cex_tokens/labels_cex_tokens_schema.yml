@@ -1,7 +1,7 @@
 version: 2
 
 models:
-  - name: cex_tokens
+  - name: labels_cex_tokens
     meta:
       blockchain: ethereum, bnb, polygon, solana, arbitrum, optimism, fantom, avalanche_c, gnosis
       sector: labels
