@@ -5,7 +5,7 @@
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
-    unique_key = ['block_date', 'tx_hash', 'evt_index', 'nft_contract_address', 'token_id', 'sub_type', 'sub_idx']
+    unique_key = ['block_date', 'unique_trade_id']
     )
 }}
 
@@ -82,7 +82,7 @@ with source_ethereum_transactions as (
             ,evt_index
             ,'offer' as sub_type
             ,offer_idx + 1 as sub_idx
-            ,case offer[0]:itemType 
+            ,case offer[0]:itemType
                 when '0' then 'native'
                 when '1' then 'erc20'
                 when '2' then 'erc721'
@@ -94,27 +94,27 @@ with source_ethereum_transactions as (
                 when '1' then 'erc20'
                 when '2' then 'erc721'
                 when '3' then 'erc1155'
-                else 'etc' 
+                else 'etc'
             end as consideration_first_item_type
             ,offerer
             ,recipient
             ,offerer as sender
             ,recipient as receiver
             ,zone
-            ,offer_item:token as token_contract_address 
+            ,offer_item:token as token_contract_address
             ,cast(offer_item:amount as numeric(38)) as original_amount
             ,case offer_item:itemType
                 when '0' then 'native'
                 when '1' then 'erc20'
                 when '2' then 'erc721'
                 when '3' then 'erc1155'
-                else 'etc' 
+                else 'etc'
             end as item_type
             ,offer_item:identifier as token_id
             ,contract_address as platform_contract_address
             ,size(offer) as offer_cnt
             ,size(consideration) as consideration_cnt
-            ,order_hash            
+            ,order_hash
             ,false as is_private -- will be deprecated in base_pairs
     from
     (
@@ -146,7 +146,7 @@ with source_ethereum_transactions as (
             ,evt_index
             ,'consideration' as sub_type
             ,consideration_idx + 1 as sub_idx
-            ,case offer[0]:itemType 
+            ,case offer[0]:itemType
                 when '0' then 'native'
                 when '1' then 'erc20'
                 when '2' then 'erc721'
@@ -158,8 +158,8 @@ with source_ethereum_transactions as (
                 when '1' then 'erc20'
                 when '2' then 'erc721'
                 when '3' then 'erc1155'
-                else 'etc' 
-            end as consideration_first_item_type          
+                else 'etc'
+            end as consideration_first_item_type
             ,offerer
             ,recipient
             ,recipient as sender
@@ -201,7 +201,7 @@ with source_ethereum_transactions as (
         {% endif %}
         {% if is_incremental() %}
         and evt_block_time >= date_trunc("day", now() - interval '1 week')
-        {% endif %}        
+        {% endif %}
     )
 )
 ,iv_base_pairs as (
@@ -218,7 +218,7 @@ with source_ethereum_transactions as (
             ,a.sender
             ,a.receiver
             ,a.zone
-            ,a.token_contract_address 
+            ,a.token_contract_address
             ,a.original_amount
             ,a.item_type
             ,a.token_id
@@ -281,7 +281,7 @@ with source_ethereum_transactions as (
                 ,a.sender
                 ,a.receiver
                 ,a.zone
-                ,a.token_contract_address 
+                ,a.token_contract_address
                 ,a.original_amount
                 ,a.item_type
                 ,a.token_id
@@ -294,8 +294,8 @@ with source_ethereum_transactions as (
                 ,b.om_order_id
                 ,case when sender = receiver then true else false end is_self_trans
                 ,case when f.wallet_address is not null then true else false end as is_platform_fee
-                ,case when item_type in ('native','erc20') 
-                    then sum(case when item_type in ('native','erc20') then 1 end) over (partition by tx_hash, evt_index, sub_type order by sub_idx) 
+                ,case when item_type in ('native','erc20')
+                    then sum(case when item_type in ('native','erc20') then 1 end) over (partition by tx_hash, evt_index, sub_type order by sub_idx)
                 end as eth_erc_idx
                 ,sum(case when offer_first_item_type = 'erc20' and sub_type = 'consideration' and item_type in ('erc721','erc1155') then 1
                             when offer_first_item_type in ('erc721','erc1155') and sub_type = 'offer' and item_type in ('erc721','erc1155') then 1
@@ -307,7 +307,7 @@ with source_ethereum_transactions as (
                             when offer_first_item_type in ('erc721','erc1155') and sub_type = 'offer' and item_type in ('erc1155') then 1
                     end) over (partition by tx_hash, evt_index) as erc1155_cnt
             from iv_offer_consideration a
-                    left join iv_platform_fee_wallet f on f.wallet_address = a.receiver 
+                    left join iv_platform_fee_wallet f on f.wallet_address = a.receiver
                     left join iv_orders_matched b on b.om_tx_hash = a.tx_hash
                                                     and b.om_order_hash = a.order_hash
           ) a
