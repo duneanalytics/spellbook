@@ -17,7 +17,6 @@ SELECT distinct
         'optimism' as blockchain, '1' as version
         , a.pool AS pool_contract, a.gauge AS incentives_contract, 'rewards gauge' AS incentives_type
         , a.evt_block_time, a.evt_block_number, a.contract_address, a.evt_tx_hash, a.evt_index
-
 FROM (
     SELECT 
     _lp_token As pool, _gauge AS gauge,
