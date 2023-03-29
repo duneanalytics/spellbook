@@ -19,5 +19,6 @@ FROM (values
         ,('Quests on Coinbase Wallet - Quest #1 DEX Swap','Quests on Coinbase Wallet')
         ,('Quests on Coinbase Wallet - Quest #2 Delegation','Quests on Coinbase Wallet')
         ,('Uniswap V3','Uniswap')
+        ,('SushiSwap', 'Sushi')
         
 ) a (proposal_name, project_name)
