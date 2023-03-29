@@ -20,5 +20,6 @@ FROM (values
         ,('Quests on Coinbase Wallet - Quest #2 Delegation','Quests on Coinbase Wallet')
         ,('Uniswap V3','Uniswap')
         ,('SushiSwap', 'Sushi')
+        ,('Karma delegate registry', 'Karma')
         
 ) a (proposal_name, project_name)
