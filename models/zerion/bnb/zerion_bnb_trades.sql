@@ -38,8 +38,8 @@ WITH zerion_trades AS (
     , swap.evt_index
     , swap.marketplaceFeeAmount AS marketplace_fee_amount_raw
     , swap.protocolFeeAmount AS zerion_fee_amount_raw
-    , tok_sold_decimals
-    , tok_bought_decimals
+    , tok_sold.decimals AS tok_sold_decimals
+    , tok_bought.decimals AS tok_bought_decimals
     FROM {{ source('zerion_bnb', 'Router_evt_Executed') }} swap
     INNER JOIN {{ source('bnb','transactions') }} pt ON pt.block_number=swap.evt_block_number
         AND pt.hash=swap.evt_tx_hash
