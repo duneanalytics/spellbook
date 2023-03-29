@@ -372,7 +372,7 @@ all_tx AS (
     FROM otc_fills
 )
 
-SELECT
+SELECT distinct
         all_tx.tx_hash,
         tx.block_number,
         all_tx.evt_index,
