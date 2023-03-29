@@ -4,6 +4,7 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
+dbt-trino = "1.4.1"
 dbt-databricks = "1.2.1"
 numpy = "2.0.12"
 pre-commit = "2.20.0"
