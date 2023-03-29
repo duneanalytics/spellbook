@@ -42,8 +42,8 @@ FROM (
         , evt_index
         , marketplace_fee_amount_raw
         , marketplace_fee_amount_original
-        , protocol_fee_amount_raw
-        , protocol_fee_amount_original
+        , zerion_fee_amount_raw
+        , zerion_fee_amount_original
     FROM {{ zerion_model }}
     {% if not loop.last %}
     UNION ALL

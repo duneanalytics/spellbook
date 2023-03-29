@@ -81,8 +81,8 @@ models:
       - &marketplace_fee_amount_original
         name: marketplace_fee_amount_original
         description: "Original marketplace fee"
-      - &protocol_fee_amount_raw
-        name: protocol_fee_amount_raw
+      - &zerion_fee_amount_raw
+        name: zerion_fee_amount_raw
         description: "Raw protocol fee"
       - &protocol_fee_amount_original
         name: protocol_amount_fee_original
