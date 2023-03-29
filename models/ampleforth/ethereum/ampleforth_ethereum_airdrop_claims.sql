@@ -3,7 +3,7 @@
         alias='airdrop_claims',
         materialized = 'incremental',
         file_format = 'delta',
-        incremental_strategy = 'merge',
+        tags=['static'],
         unique_key = ['recipient', 'tx_hash', 'evt_index'],
         post_hook='{{ expose_spells(\'["ethereum"]\',
                                 "project",
@@ -40,12 +40,4 @@ FROM {{ source('erc20_ethereum', 'evt_transfer') }} t
 LEFT JOIN {{ ref('prices_usd_forward_fill') }} pu ON pu.blockchain = 'ethereum'
     AND pu.contract_address='0x77fba179c79de5b7653f68b5039af940ada60ce0'
     AND pu.minute=date_trunc('minute', t.evt_block_time)
-    {% if is_incremental() %}
-    AND pu.minute >= date_trunc("day", now() - interval '1 week')
-    {% endif %}
-WHERE t.contract_address = '0x77fba179c79de5b7653f68b5039af940ada60ce0'
-AND from = '0xf497b83cfbd31e7ba1ab646f3b50ae0af52d03a1'
-AND t.evt_block_time BETWEEN '2021-04-20' AND '2022-04-16'
-{% if is_incremental() %}
-AND t.evt_block_time >= date_trunc("day", now() - interval '1 week')
-{% endif %}
+WHERE t.evt_block_time BETWEEN '2021-04-20' AND '2022-04-16'

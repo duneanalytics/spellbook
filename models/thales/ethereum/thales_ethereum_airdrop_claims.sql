@@ -3,7 +3,7 @@
         alias='airdrop_claims',
         materialized = 'incremental',
         file_format = 'delta',
-        incremental_strategy = 'merge',
+        tags=['static'],
         unique_key = ['recipient', 'tx_hash', 'evt_index'],
         post_hook='{{ expose_spells(\'["ethereum"]\',
                                 "project",
@@ -47,11 +47,4 @@ SELECT 'ethereum' AS blockchain
 , t.evt_index
 FROM {{ source('thales_ethereum', 'Airdrop_evt_Claim') }} t
 LEFT JOIN {{ ref('dex_prices') }} pu ON pu.blockchain = 'ethereum'
-    AND pu.contract_address='0x03e173ad8d1581a4802d3b532ace27a62c5b81dc'
-    AND pu.hour = date_trunc('hour', t.evt_block_time)
-    {% if is_incremental() %}
-    AND pu.hour >= date_trunc("day", now() - interval '1 week')
-    {% endif %}
-{% if is_incremental() %}
-WHERE t.evt_block_time >= date_trunc("day", now() - interval '1 week')
-{% endif %}
+WHERE t.evt_block_time BETWEEN '2021-09-15' AND '2022-02-02'

@@ -3,7 +3,7 @@
         alias='airdrop_claims',
         materialized = 'incremental',
         file_format = 'delta',
-        incremental_strategy = 'merge',
+        tags=['static'],
         unique_key = ['recipient', 'tx_hash', 'evt_index'],
         post_hook='{{ expose_spells(\'["ethereum"]\',
                                 "project",
@@ -49,9 +49,5 @@ FROM {{ source('gearbox_ethereum', 'MerkleDistributor_evt_Claimed') }} t
 LEFT JOIN {{ ref('dex_prices') }} pu ON pu.blockchain = 'ethereum'
     AND pu.contract_address='0xba3335588d9403515223f109edc4eb7269a9ab5d'
     AND pu.hour = date_trunc('hour', t.evt_block_time)
-    {% if is_incremental() %}
-    AND pu.hour >= date_trunc("day", now() - interval '1 week')
-    {% endif %}
-{% if is_incremental() %}
-WHERE t.evt_block_time >= date_trunc("day", now() - interval '1 week')
-{% endif %}
+WHERE t.evt_block_time BETWEEN '	
+2022-04-05' AND '2022-07-22'
