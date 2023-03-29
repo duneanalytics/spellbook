@@ -355,10 +355,6 @@ all_tx AS (
     SELECT *
     FROM direct_uniswapv2
     UNION ALL SELECT *
-    FROM direct_uniswapv3
-    UNION ALL SELECT *
-    FROM direct_sushiswap
-    UNION ALL SELECT *
     FROM direct_PLP
     UNION ALL SELECT *
     FROM ERC20BridgeTransfer
@@ -367,7 +363,7 @@ all_tx AS (
     UNION ALL SELECT *
     FROM NewBridgeFill
     UNION ALL SELECT *
-    FROM v3_fills_no_bridge
+    FROM v2_fills_no_bridge
     UNION ALL SELECT *
     FROM v4_rfq_fills_no_bridge
     UNION ALL SELECT *
