@@ -1,6 +1,7 @@
  {{
   config(
         alias='trades')
+
 }}
 
 SELECT blockchain,
