@@ -14,6 +14,7 @@
 SELECT
   *
   , concat_ws(', ', val) AS val_string
+  
   FROM (
     select 
         date_trunc('day', evt_block_time) as block_date
