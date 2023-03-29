@@ -303,7 +303,7 @@ direct_PLP AS (
 
 ),
 uni_v2_swap as (
-SELECT   s.tx_hash tx_hash, s.tx_index evt_index, s.contract_address, s.block_time, 
+SELECT   s.tx_hash tx_hash, s.index evt_index, s.contract_address, s.block_time, 
     '0x' || substring(DATA, 27, 40) AS maker, 
     '0xdef1c0ded9bec7f1a1670819833240f027b25eff' AS taker,
                 '0x' || substring(DATA, 91, 40) AS taker_token,
