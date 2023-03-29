@@ -54,6 +54,7 @@ WITH zerion_trades AS (
 
 SELECT 'bnb' AS blockchain
 , trades.block_time
+, trades.block_date
 , trades.block_number
 , trades.trader
 , trades.token_sold_address
