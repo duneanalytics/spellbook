@@ -15,7 +15,7 @@ models:
           combination_of_columns:
             - block_time
             - tx_hash
-            - evt_index
+            - maker
       - check_seed:
           seed_file: ref('zeroex_bnb_api_fills_sample')
           match_columns:
