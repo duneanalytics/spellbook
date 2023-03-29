@@ -182,16 +182,14 @@ models:
 
     zerion:
       +schema: zerion
-      ethereum:
-        +schema: zerion_ethereum
-      bnb:
-        +schema: zerion_bnb
-      avalanche_c:
-        +schema: zerion_avalanche_c
-      gnosis:
-        +schema: zerion_gnosis
       arbitrum:
         +schema: zerion_arbitrum
+      avalanche_c:
+        +schema: zerion_avalanche_c
+      bnb:
+        +schema: zerion_bnb
+      gnosis:
+        +schema: zerion_gnosis
       optimism:
         +schema: zerion_optimism
       polygon:
