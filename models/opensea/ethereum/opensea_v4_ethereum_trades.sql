@@ -9,6 +9,7 @@
     )
 }}
 
+
 -- opensea.trades has the same columns as seaport.trades
 -- only some specified zone_address are recognized as opensea's
 -- project/version : opensea/v4
@@ -454,7 +455,7 @@ with source_ethereum_transactions as (
   left join ref_nft_aggregators agg on agg.contract_address = t.to
   left join ref_nft_aggregators_marks agg_m on right(t.data, agg_m.hash_marker_size) = agg_m.hash_marker
   where t.from != '0x110b2b128a9ed1be5ef3232d8e4e41640df5c2cd' -- this is a special address which transact English Auction, will handle later.
-  
+
 )
   -- Rename column to align other *.trades tables
   -- But the columns ordering is according to convenience.
