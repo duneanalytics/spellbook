@@ -47,7 +47,6 @@
     , ref('alchemydao_ethereum_airdrop_claims')
 ] %}
 
-
 SELECT *
 FROM (
     {% for airdrop_claims_model in airdrop_claims_models %}
