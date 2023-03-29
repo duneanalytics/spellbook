@@ -14,7 +14,7 @@
 SELECT
   *
   , concat_ws(', ', val) AS val_string
-  
+
   FROM (
     select 
         date_trunc('day', evt_block_time) as block_date
@@ -41,7 +41,11 @@ SELECT
         , '[[:cntrl:]]', '')
         as key
         ,val as val_raw
+
         ,split(unhex(substring(val, 3)), ",") as val
+
+        ,bytea2numeric(substring(val, 3)) AS val_byte2numeric
+
     from {{source('attestationstation_optimism','AttestationStation_evt_AttestationCreated')}}
     where 
         true
