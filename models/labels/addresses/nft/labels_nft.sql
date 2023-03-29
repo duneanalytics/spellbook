@@ -7,6 +7,10 @@
 
 SELECT * FROM {{ ref('labels_nft_traders_transactions') }}
 UNION ALL
+SELECT * FROM {{ ref('labels_nft_traders_transactions_current') }}
+UNION ALL
 SELECT * FROM {{ ref('labels_nft_traders_volume_usd') }}
+UNION ALL
+SELECT * FROM {{ ref('labels_nft_traders_volume_usd_current') }}
 UNION ALL
 SELECT * FROM {{ ref('labels_nft_users_platforms') }}
