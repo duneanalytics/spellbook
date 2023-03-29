@@ -98,7 +98,7 @@ WITH unit_test AS (
 
         -- test the buy_amount_raw
         CASE 
-            WHEN CAST(test.buy_amount_rawAS DECIMAL(38,0)) = CAST(actual.buy_amount_raw AS DECIMAL(38,0)) THEN TRUE
+            WHEN CAST(test.buy_amount_raw AS DECIMAL(38,0)) = CAST(actual.buy_amount_raw AS DECIMAL(38,0)) THEN TRUE
             ELSE FALSE
         END AS buy_amount_raw_test,
 
