@@ -23,6 +23,7 @@ FROM (
     SELECT
         blockchain
         , block_time
+        , block_date
         , block_number
         , trader
         , token_sold_address

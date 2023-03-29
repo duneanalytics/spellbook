@@ -12,6 +12,7 @@
 
 WITH zerion_trades AS (
     SELECT swap.evt_block_time AS block_time
+    , date_trunc('day', swap.evt_block_time) AS block_date
     , swap.evt_block_number AS block_number
     , swap.sender AS trader
     , CASE WHEN swap.inputToken='0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee' THEN '0xe91d153e0b41518a2ce8dd3d7944fa863463a97d'

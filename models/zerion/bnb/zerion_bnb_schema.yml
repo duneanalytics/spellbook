@@ -24,6 +24,9 @@ models:
       - &block_time
         name: block_time
         description: "UTC event block time of each DEX trade"
+      - &block_date
+        name: block_date
+        description: "UTC event block date of each DEX trade"
       - &block_number
         name: block_number
         description: "UTC event block number of each DEX trade"
