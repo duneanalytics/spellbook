@@ -172,7 +172,6 @@ FROM (values
     ,('0x6a1e22c82be29eb96850158011b40fafbce1340c','Synthetix','SNXAmbassadors delegation')
 
     --grants deployed
-    ,('0x05061c42d6f30c0dbc751b927a3909772c172568', 'Defillama', 'LlamaPay')
     ,('0xC98786D5A7a03C1e74AffCb97fF7eF8a710DA09B', 'Karma', 'Karma - Grant')
     
     
