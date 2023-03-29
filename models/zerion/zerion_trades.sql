@@ -8,12 +8,10 @@
 }}
 
 {% set zerion_models = [
---ref('zerion_ethereum_trades')
-ref('zerion_bnb_trades')
+ref('zerion_arbitrum_trades')
 , ref('zerion_avalanche_c_trades')
+, ref('zerion_bnb_trades')
 , ref('zerion_gnosis_trades')
-, ref('zerion_arbitrum_trades')
-, ref('zerion_fantom_trades')
 , ref('zerion_optimism_trades')
 , ref('zerion_polygon_trades')
 ] %}
@@ -28,16 +26,23 @@ FROM (
         , block_number
         , trader
         , token_sold_address
-        , token_sold_amount
+        , token_sold_symbol
+        , token_sold_amount_raw
+        , token_sold_amount_original
         , token_bought_address
-        , token_bought_amount
+        , token_bought_symbol
+        , token_bought_amount_raw
+        , token_bought_amount_original
+        , amount_usd
         , tx_from
         , tx_to
         , tx_hash
         , contract_address
         , evt_index
-        , marketplace_fee
-        , protocol_fee
+        , marketplace_fee_amount_raw
+        , marketplace_fee_amount_original
+        , protocol_fee_amount_raw
+        , protocol_fee_amount_original
     FROM {{ zerion_model }}
     {% if not loop.last %}
     UNION ALL

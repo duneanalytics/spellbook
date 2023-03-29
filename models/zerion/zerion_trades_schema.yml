@@ -33,15 +33,30 @@ models:
       - &token_sold_address
         name: token_sold_address
         description: "Contract address of sold token"
-      - &token_sold_amount
+      - &token_sold_symbol
+        name: token_sold_symbol
+        description: "Symbol of sold token"
+      - &token_sold_amount_raw
         name: token_sold_amount
-        description: "Amount of sold token"
+        description: "Raw amount of sold token"
+      - &token_sold_amount_original
+        name: token_sold_amount_original
+        description: "Original amount of sold token"
       - &token_bought_address
         name: token_bought_address
         description: "Contract address of bought token"
-      - &token_bought_amount
+      - &token_bought_symbol
         name: token_bought_symbol
-        description: "Amount of bought token"
+        description: "Symbol of bought token"
+      - &token_bought_amount_raw
+        name: token_bought_amount
+        description: "Raw amount of bought token"
+      - &token_bought_amount_original
+        name: token_bought_amount_original
+        description: "Original amount of bought token"
+      - &amount_usd
+        name: amount_usd
+        description: "USD Value of Trade"
       - &tx_from
         name: tx_from
         description: "Address that initiated the transaction"
@@ -57,9 +72,15 @@ models:
       - &evt_index
         name: evt_index
         description: "Event index"
-      - &marketplace_fee
-        name: marketplace_fee
-        description: "Marketplace fee"
-      - &protocol_fee
-        name: protocol_fee
-        description: "Protocol fee"
+      - &marketplace_fee_amount_raw
+        name: marketplace_fee_amount_raw
+        description: "Raw marketplace fee"
+      - &marketplace_fee_amount_original
+        name: marketplace_fee_amount_original
+        description: "Original marketplace fee"
+      - &protocol_fee_amount_raw
+        name: protocol_fee_amount_raw
+        description: "Raw protocol fee"
+      - &protocol_fee_amount_original
+        name: protocol_amount_fee_original
+        description: "Original protocol fee"
