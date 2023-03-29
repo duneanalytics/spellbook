@@ -53,3 +53,6 @@ models:
       - &val
         name: val
         description: "What is the value of the attestation."
+      - &val_string
+        name: val_string
+        description: "What is the value of the attestation - Array converted to a comma separated string."
