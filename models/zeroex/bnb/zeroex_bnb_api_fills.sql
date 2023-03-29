@@ -27,7 +27,7 @@ WITH zeroex_tx AS (
                         WHEN takerAddress = '0x63305728359c088a52b0b0eeec235db4d31a67fc' THEN takerAddress
                         ELSE NULL
                     END AS affiliate_address
-        FROM {{ source('zeroex_v3_bnb', 'Exchange_evt_Fill') }} v3
+        FROM {{ source('zeroex_v2_bnb', 'Exchange_evt_Fill') }} v3
         WHERE (  -- nuo
                 v3.takerAddress = '0x63305728359c088a52b0b0eeec235db4d31a67fc'
                 OR -- contains a bridge order

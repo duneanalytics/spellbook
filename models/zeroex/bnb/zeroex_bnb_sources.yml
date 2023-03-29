@@ -20,10 +20,5 @@ sources:
     loaded_at_field: evt_block_time
     tables:
       - name: Exchange_evt_Fill
-    # for native orders on v2
-  - name: zeroex_v3_bnb
-    description: "bnb decoded tables related to 0x v3 Exchange Contract"
-    loaded_at_field: evt_block_time
-    tables:
-      - name: Exchange_evt_Fill
+
   
