@@ -1,10 +1,7 @@
 {{ config(
     alias = 'pool_incentives_rates'
     ,partition_by = ['block_date']
-    ,materialized = 'incremental'
-    ,file_format = 'delta'
-    ,incremental_strategy = 'merge'
-    ,unique_key = ['block_date', 'blockchain', 'project', 'version', 'tx_hash', 'evt_index', 'trace_address']
+    ,materialized = 'table'
     )
 }}
 
@@ -62,10 +59,6 @@ LEFT JOIN {{ ref('sushiswap_optimism_pool_incentives_mappings') }} m
 , events AS (
 SELECT evt_block_number, evt_block_time
 FROM (
-        {% if is_incremental() %}
-        SELECT evt_block_number, evt_block_time FROM {{this}}
-        UNION ALL
-        {% endif %}
         SELECT evt_block_number, evt_block_time FROM rates_updates
         UNION ALL
         SELECT evt_block_number, evt_block_time FROM pool_updates
