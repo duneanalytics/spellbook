@@ -21,7 +21,6 @@ SELECT
 address,
 SUM(amount_usd) AS total_count
 FROM nft_trades
-WHERE block_time > NOW() - interval '14' day
 GROUP BY 1
 )
 
