@@ -445,4 +445,4 @@ AND mp.minute >= '{{zeroex_v3_start_date}}'
 {% endif %}
 
 LEFT OUTER JOIN {{ ref('tokens_erc20') }} ts ON ts.contract_address = taker_token and ts.blockchain = 'bnb'
-LEFT OUTER JOIN {{ ref('tokens_erc20') }} ms ON ms.contract_address = maker_token and ts.blockchain = 'bnb'
+LEFT OUTER JOIN {{ ref('tokens_erc20') }} ms ON ms.contract_address = maker_token and ms.blockchain = 'bnb'
