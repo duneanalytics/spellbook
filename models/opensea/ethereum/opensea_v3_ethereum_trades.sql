@@ -7,7 +7,6 @@
 -- project/version : opensea/v3
 -- contract_address : 0x00000000006c3852cbef3e08e8df289169ede581 (Seaport v1.1)
 -- materialize : view
--- trigger CI
 
 select blockchain
       ,'opensea' as project
@@ -66,4 +65,4 @@ select blockchain
                        ,'0x004c00500000ad104d7dbd00e3ae0a5c00560c00'
                        ,'0x110b2b128a9ed1be5ef3232d8e4e41640df5c2cd'
                        )
-   and version = 'v1'
+   and version = 'v1'                       

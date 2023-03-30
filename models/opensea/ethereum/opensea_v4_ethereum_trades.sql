@@ -479,7 +479,7 @@ select
         -- nft token info
         ,nft_contract_address
         ,nft_token_name as collection
-        ,cast(nft_token_id as varchar(100)) as token_id
+        ,nft_token_id as token_id
         ,nft_token_amount as number_of_items
         ,nft_token_standard as token_standard
 

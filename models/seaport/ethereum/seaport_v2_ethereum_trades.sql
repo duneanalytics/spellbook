@@ -140,7 +140,7 @@ with source_ethereum_transactions as (
    from iv_enh_base_pairs a
   where 1=1
     and eth_erc_idx > 0
-    and NOT(om_evt_index is not null and offerer = recipient) -- for matchAdvancedOrders/matchOrders
+    and NOT(om_evt_index is not null and offerer = recipient) -- for matchAdvancedOrders/matchOrders           
   group by 1,2,3,4
   having count(distinct token_contract_address) = 1  -- some private sale trade has more that one currencies
 )
@@ -188,7 +188,7 @@ with source_ethereum_transactions as (
                               and b.evt_index = a.evt_index
   where 1=1
     and a.is_traded_nft
-    and NOT(om_evt_index is not null and offerer = recipient) -- for matchAdvancedOrders/matchOrders
+    and NOT(om_evt_index is not null and offerer = recipient) -- for matchAdvancedOrders/matchOrders           
 )
 ,iv_trades as (
     select a.block_date
@@ -277,7 +277,7 @@ with source_ethereum_transactions as (
         -- nft token info
         ,nft_contract_address
         ,nft_token_name as collection
-        ,cast(nft_token_id as varchar(100)) as token_id
+        ,nft_token_id as token_id
         ,nft_token_amount as number_of_items
         ,nft_token_standard as token_standard
 

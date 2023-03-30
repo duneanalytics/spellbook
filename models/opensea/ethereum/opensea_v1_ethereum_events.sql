@@ -155,7 +155,7 @@ SELECT
   t.nft_contract_address,
   t.token_standard,
   nft.name AS collection,
-  cast(t.token_id as varchar(100)) as token_id,
+  t.token_id,
   CAST(t.amount_raw AS DECIMAL(38,0)) as amount_raw,
   t.amount_raw / power(10,erc20.decimals) as amount_original,
   t.amount_raw / power(10,erc20.decimals) * p.price AS amount_usd,
