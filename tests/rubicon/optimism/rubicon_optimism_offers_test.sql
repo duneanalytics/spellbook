@@ -92,13 +92,13 @@ WITH unit_test AS (
 
         -- test the sell_amount_raw
         CASE 
-            WHEN LOWER(CAST(test.sell_amount_raw AS VARCHAR(100))) = LOWER(CAST(actual.sell_amount_raw AS VARCHAR(100))) THEN TRUE
+            WHEN LOWER(CAST(CAST(test.sell_amount_raw AS DECIMAL(38,0)) AS VARCHAR(100))) = LOWER(CAST(CAST(actual.sell_amount_raw AS DECIMAL(38,0)) AS VARCHAR(100))) THEN TRUE
             ELSE FALSE
         END AS sell_amount_raw_test,
 
         -- test the buy_amount_raw
         CASE 
-            WHEN LOWER(CAST(test.buy_amount_raw AS VARCHAR(100))) = LOWER(CAST(actual.buy_amount_raw AS VARCHAR(100))) THEN TRUE
+            WHEN LOWER(CAST(CAST(test.buy_amount_raw AS DECIMAL(38,0)) AS VARCHAR(100))) = LOWER(CAST(CAST(actual.buy_amount_raw AS DECIMAL(38,0)) AS VARCHAR(100))) THEN TRUE
             ELSE FALSE
         END AS buy_amount_raw_test,
 
@@ -116,13 +116,13 @@ WITH unit_test AS (
 
         -- test the sold_amount_raw
         CASE 
-            WHEN LOWER(CAST(test.sold_amount_raw AS VARCHAR(100))) = LOWER(CAST(actual.sold_amount_raw AS VARCHAR(100))) THEN TRUE
+            WHEN LOWER(CAST(CAST(test.sold_amount_raw AS DECIMAL(38,0)) AS VARCHAR(100))) = LOWER(CAST(CAST(actual.sold_amount_raw AS DECIMAL(38,0)) AS VARCHAR(100))) THEN TRUE
             ELSE FALSE
         END AS sold_amount_raw_test,
 
         -- test the bought_amount_raw
         CASE 
-            WHEN LOWER(CAST(test.bought_amount_raw AS VARCHAR(100))) = LOWER(CAST(actual.bought_amount_raw AS VARCHAR(100))) THEN TRUE
+            WHEN LOWER(CAST(CAST(test.bought_amount_raw AS DECIMAL(38,0)) AS VARCHAR(100))) = LOWER(CAST(CAST(actual.bought_amount_raw AS DECIMAL(38,0)) AS VARCHAR(100))) THEN TRUE
             ELSE FALSE
         END AS bought_amount_raw_test,
 
