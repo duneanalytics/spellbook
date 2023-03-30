@@ -1,5 +1,5 @@
 {{  config(
-        alias='api_fillz',
+        alias='api_fills',
         materialized='incremental',
         partition_by = ['block_date'],
         unique_key = ['block_date', 'tx_hash', 'evt_index'],
@@ -99,7 +99,7 @@ v2_fills_no_bridge AS (
             (zeroex_tx.tx_hash IS NOT NULL)                                            AS swap_flag,
             (fills.feeRecipientAddress = '0x86003b044f70dac0abc80ac8957305b6370893ed') AS matcha_limit_order_flag
     FROM {{ source('zeroex_v2_bnb', 'Exchange_evt_Fill') }} fills
-    LEFT JOIN zeroex_tx ON zeroex_tx.tx_hash = fills.evt_tx_hash
+    JOIN zeroex_tx ON zeroex_tx.tx_hash = fills.evt_tx_hash
     WHERE (SUBSTRING(makerAssetData, 1, 10) != '0xdc1600f3')
         AND (zeroex_tx.tx_hash IS NOT NULL
         OR fills.feeRecipientAddress = '0x86003b044f70dac0abc80ac8957305b6370893ed')
@@ -129,7 +129,7 @@ v4_rfq_fills_no_bridge AS (
             (zeroex_tx.tx_hash IS NOT NULL) AS swap_flag,
             FALSE                           AS matcha_limit_order_flag
     FROM {{ source('zeroex_bnb', 'ExchangeProxy_evt_RfqOrderFilled') }} fills
-    LEFT JOIN zeroex_tx ON zeroex_tx.tx_hash = fills.evt_tx_hash
+    JOIN zeroex_tx ON zeroex_tx.tx_hash = fills.evt_tx_hash
 
     {% if is_incremental() %}
     WHERE evt_block_time >= date_trunc('day', now() - interval '1 week')
@@ -155,7 +155,7 @@ v4_limit_fills_no_bridge AS (
             (zeroex_tx.tx_hash IS NOT NULL) AS swap_flag,
             (fills.feeRecipient = '0x9b858be6e3047d88820f439b240deac2418a2551') AS matcha_limit_order_flag
     FROM {{ source('zeroex_bnb', 'ExchangeProxy_evt_LimitOrderFilled') }} fills
-    LEFT JOIN zeroex_tx ON zeroex_tx.tx_hash = fills.evt_tx_hash
+    JOIN zeroex_tx ON zeroex_tx.tx_hash = fills.evt_tx_hash
 
     {% if is_incremental() %}
     WHERE evt_block_time >= date_trunc('day', now() - interval '1 week')
@@ -181,7 +181,7 @@ otc_fills AS (
             (zeroex_tx.tx_hash IS NOT NULL) AS swap_flag,
             FALSE                           AS matcha_limit_order_flag
     FROM {{ source('zeroex_bnb', 'ExchangeProxy_evt_OtcOrderFilled') }} fills
-    LEFT JOIN zeroex_tx ON zeroex_tx.tx_hash = fills.evt_tx_hash
+    JOIN zeroex_tx ON zeroex_tx.tx_hash = fills.evt_tx_hash
 
     {% if is_incremental() %}
     WHERE evt_block_time >= date_trunc('day', now() - interval '1 week')
