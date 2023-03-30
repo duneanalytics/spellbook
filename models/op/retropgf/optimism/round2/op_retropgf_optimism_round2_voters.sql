@@ -1,6 +1,6 @@
 {{ config(
         schema = 'op_retropgf_optimism'
-        , alias='round2_recipients'
+        , alias='round2_voters'
         , materialized='table'
   )
 }}
