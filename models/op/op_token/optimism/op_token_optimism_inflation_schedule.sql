@@ -4,7 +4,7 @@
         , unique_key = ['schedule_confirmed_date', 'schedule_start_date']
         , post_hook='{{ expose_spells(\'["optimism"]\',
                                   "project",
-                                  "ovm_optimism",
+                                  "op_token",
                                   \'["msilb7"]\') }}'
   )
 }}

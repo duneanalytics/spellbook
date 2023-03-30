@@ -6,7 +6,7 @@
         , unique_key = ['allocation_category','allocation_subcategory']
         , post_hook='{{ expose_spells(\'["optimism"]\',
                                   "project",
-                                  "ovm_optimism",
+                                  "op_token",
                                   \'["msilb7"]\') }}'
   )
 }}
