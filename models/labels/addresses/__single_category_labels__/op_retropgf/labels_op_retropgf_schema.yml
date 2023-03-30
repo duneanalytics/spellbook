@@ -1,7 +1,7 @@
 version: 2
 
 models:
-  - name: labels_contracts
+  - name: labels_op_retropgf
     tests:
     - dbt_utils.unique_combination_of_columns:
         combination_of_columns:
@@ -11,20 +11,20 @@ models:
           - model_name
           - blockchain
     meta:
-      blockchain: ethereum, arbitrum, gnosis, optimism, bnb, avalanche_c, fantom, polygon
+      blockchain: optimism
       sector: labels
-      category: contracts
-      contributors:  soispoke
+      category: op_retropgf
+      contributors:  msilb7
     config:
-      tags: ['query', 'labels', 'ethereum', 'contracts']
-    description: "Dune contracts query labels across chains"
+      tags: ['query', 'labels', 'optimism', 'retropgf']
+    description: "Addresses related to OP Retroactive Public Goods Funding (RetroPGF)"
     columns:
       - name: blockchain
         description: "Blockchain"   
       - name: address
         description: "Label address"
       - name: name
-        description: "Label name (name and namespace) of the contract"
+        description: "Label name - RetroPGF Round and Role"
       - name: category
         description: "Label category"
       - name: contributor
