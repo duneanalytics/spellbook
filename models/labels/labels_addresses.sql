@@ -30,6 +30,8 @@ UNION ALL
 SELECT * FROM {{ ref('labels_quest_participants') }}
 UNION ALL
 SELECT * FROM {{ ref('labels_cex_users') }}
+UNION ALL
+SELECT * FROM {{ ref('labels_op_retropgf') }}
 
 -- new/standardized labels
 UNION ALL
