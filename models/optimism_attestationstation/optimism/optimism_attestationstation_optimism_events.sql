@@ -27,7 +27,7 @@ SELECT
         ,contract_address
         ,key as key_raw
         ,
-        REGEXP_REPLACE( --Replace invisible characters
+--         REGEXP_REPLACE( --Replace invisible characters
             decode(
                 unhex(
                   if (
@@ -38,7 +38,7 @@ SELECT
                 ),
                 "utf8"
               ) 
-        , '[[:cntrl:]]', '')
+--         , '[[:cntrl:]]', '')
         as key
         ,val as val_raw
 
