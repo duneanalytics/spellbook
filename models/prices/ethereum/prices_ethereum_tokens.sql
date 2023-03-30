@@ -1319,5 +1319,6 @@ FROM
     ("gt-gatechain-token","ethereum", "GT", "0xe66747a101bff2dba3697199dcce5b743b454759",18),
     ("stg-stargatetoken","ethereum","STG","0xaf5191b0de278c7286d6c7cc6ab6bb8a73ba2cd6",18),
     ("ico-axelar", "ethereum", "AXL", "0x467719ad09025fcc6cf6f8311755809d45a5e5f3", 6),
-    ("arb-arbitrum","ethereum","ARB","0xb50721bcf8d664c30412cfbc6cf7a15145234ad1",18)
+    ("arb-arbitrum","ethereum","ARB","0xb50721bcf8d664c30412cfbc6cf7a15145234ad1",18),
+    ("sclp-scallop", "ethereum", "SCLP","0x3f6d1649a1366b0e82173d33e365953f9f1cc84c",18)
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)

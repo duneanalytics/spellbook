@@ -330,16 +330,33 @@ models:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - block_date
-            - tx_hash
-            - evt_index
-            - nft_contract_address
-            - token_id
-            - sub_type
-            - sub_idx
-      - check_opensea_seed:
+            - unique_trade_id
+      - check_seaport_seed:
           blockchain: ethereum
           project: opensea
           version: v4
+      - check_seed:
+          seed_file: ref('opensea_trades_seed')
+          filter:
+            blockchain: ethereum
+            project: opensea
+            version: v4
+          check_columns:
+            - buyer
+            - seller
+            - amount_raw
+            - platform_fee_amount_raw
+            - royalty_fee_amount_raw
+          match_columns:
+            - block_date
+            - blockchain
+            - project
+            - version
+            - tx_hash
+            - evt_index
+            - sub_idx
+            - nft_contract_address
+            - token_id
     columns:
       - *blockchain
       - *project
