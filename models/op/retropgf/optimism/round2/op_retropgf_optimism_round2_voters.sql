@@ -12,12 +12,12 @@ with attestations as (
     FROM {{ ref('optimism_attestationstation_optimism_events') }}
     
     WHERE issuer = '0x60c5c9c98bcbd0b0f2fd89b24c16e533baa8cda3'
-    AND REGEXP_REPLACE(key, '[[:cntrl:]]', '') = 'retropgf.round-2.can_vote'
+    AND REGEXP_REPLACE(key, '[[:cntrl:]]', '') = 'retropgf.round-2.can-vote'
     AND block_date BETWEEN cast('2023-02-01' as date) AND cast('2023-04-01' as date)
     )
 
 
 SELECT 
-    v.block_date, v.recipient AS voter, nm.issuer, nm.val AS can_vote
+    v.block_date, v.recipient AS voter, v.issuer, v.val AS can_vote
     
-    FROM (SELECT * FROM attestations where key_mapped = 'retropgf.round-2.can_vote') v
+    FROM (SELECT * FROM attestations where key_mapped = 'retropgf.round-2.can-vote') v
