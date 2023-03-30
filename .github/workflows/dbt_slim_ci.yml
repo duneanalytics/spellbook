@@ -48,6 +48,9 @@ jobs:
       - name: dbt test initial model(s)
         run: "dbt test --select state:new state:modified --defer --state ."
 
+      - name: dbt run downstream view(s)
+        run: "dbt -x run --select state:modified+,config.materialized:view --defer --state ."
+
       - name: Set environment variable for incremental model count
         run: |
           echo "INC_MODEL_COUNT=$(echo dbt ls --select state:modified,config.materialized:incremental --state . --resource-type model  | wc -l)" >> $GITHUB_ENV
