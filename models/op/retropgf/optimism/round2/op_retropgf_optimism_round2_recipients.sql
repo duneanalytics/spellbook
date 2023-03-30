@@ -20,7 +20,7 @@ with attestations as (
 SELECT 
     nm.block_date, nm.recipient, nm.issuer
     , nm.val AS recipient_name, ca.val AS recipient_category, aw.val AS award_amount
-    , {{'op_token'}} AS award_token
+    , '{{op_token}}' AS award_token
     
     FROM (SELECT * FROM attestations where key = 'retropgf.round-2.name') nm
     LEFT JOIN (SELECT * FROM attestations where key = 'retropgf.round-2.award') aw
