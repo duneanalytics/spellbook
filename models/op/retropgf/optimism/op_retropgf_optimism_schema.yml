@@ -8,7 +8,7 @@ models:
       contributors: msilb7
 
     config:
-      tags: ['optimism', 'retropgf, 'rpgf', 'public goods', 'OP']
+      tags: ['optimism', 'retropgf', 'rpgf', 'public goods', 'OP']
     description: "Data from onchain attestations about Optimism Retroactive Public Goods Funding (RetroPGF) Recipients"
 
     columns:
@@ -47,7 +47,7 @@ models:
       contributors: msilb7
 
     config:
-      tags: ['optimism', 'retropgf, 'rpgf', 'public goods', 'OP']
+      tags: ['optimism', 'retropgf', 'rpgf', 'public goods', 'OP']
     description: "Data from onchain attestations about Optimism Retroactive Public Goods Funding (RetroPGF) Voters"
 
     columns:
