@@ -234,7 +234,7 @@ models:
         
     stealcam:
       +schema: stealcam
-      ethereum:
+      arbitrum:
         +schema: stealcam_arbitrum
 
     gas:

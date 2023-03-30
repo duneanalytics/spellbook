@@ -53,6 +53,8 @@ FROM
     ("gns-gains-network", "polygon", "GNS", "0xe5417af564e4bfda1c483642db72007871397896", 18),
     ("ico-axelar", "polygon", "AXL", "0x6e4e624106cb12e168e6533f8ec7c82263358940", 6),
     ("frax-frax", "polygon", "FRAX", "0x45c32fa6df82ead1e2ef74d17b76547eddfaff89", 18),
-    ("fxs-frax-share", "polygon", "FXS", "0x1a3acf6D19267E2d3e7f898f42803e90C9219062", 18)
+    ("fxs-frax-share", "polygon", "FXS", "0x1a3acf6D19267E2d3e7f898f42803e90C9219062", 18),
+    ("sand-the-sandbox", "polygon", "SAND", "0xbbba073c31bf03b8acf7c28ef0738decf3695683", 18),
+    ("wsteth-wrapped-liquid-staked-ether-20", "polygon", "WSTETH", "0x03b54a6e9a984069379fae1a4fc4dbae93b3bccd", 18)
     
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)
