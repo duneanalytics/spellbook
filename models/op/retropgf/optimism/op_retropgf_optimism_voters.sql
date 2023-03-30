@@ -15,7 +15,7 @@ SELECT *
 FROM (
     {% for source in sources %}
     SELECT
-    'optimism' AS blockchain
+    'optimism' AS blockchain,
     '{{ source[0] }}' as round_name,
     block_date,
     voter,
