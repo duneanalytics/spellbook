@@ -2,11 +2,6 @@
         schema = 'op_retropgf_optimism'
         , alias='round2_recipients'
         , materialized='table'
-        , unique_key = ['schedule_confirmed_date', 'schedule_start_date']
-        , post_hook='{{ expose_spells(\'["optimism"]\',
-                                  "project",
-                                  "op_retropgf",
-                                  \'["msilb7"]\') }}'
   )
 }}
 
@@ -15,15 +10,12 @@ with attestations as (
     FROM {{ ref('optimism_attestationstation_optimism_events') }}
     
     WHERE issuer = '0x60c5c9c98bcbd0b0f2fd89b24c16e533baa8cda3'
-    AND key = ('retropgf.round-2.can_vote')
+    AND key = 'retropgf.round-2.can_vote'
+    AND block_date BETWEEN cast('2023-02-01' as date) AND cast('2023-04-01' as date)
     )
 
 
 SELECT 
-    nm.block_date, nm.recipient, nm.issuer, nm.val AS recipient_name, ca.val AS recipient_category, aw.val AS award_amount
+    v.block_date, v.recipient AS voter, nm.issuer, nm.val AS can_vote
     
-    FROM (SELECT * FROM attestations where key = 'retropgf.round-2.name') nm
-    LEFT JOIN (SELECT * FROM attestations where key = 'retropgf.round-2.award') aw
-        ON aw.recipient = nm.recipient
-    LEFT JOIN (SELECT * FROM attestations where key = 'retropgf.round-2.category') ca
-        ON ca.recipient = nm.recipient
+    FROM (SELECT * FROM attestations where key = 'retropgf.round-2.can_vote') v
