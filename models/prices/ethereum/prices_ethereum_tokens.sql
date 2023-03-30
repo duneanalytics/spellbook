@@ -1327,4 +1327,5 @@ FROM
     ("ff-forefront", "ethereum", "FF", "0x7e9d8f07a64e363e97a648904a89fb4cd5fb94cd", 18),
     ("pal-paladin-eth", "ethereum", "PAL", "0xab846fb6c81370327e784ae7cbb6d6a6af6ff4bf", 18),
     ("sudo-sudo-governance-token", "ethereum", "SUDO", "0x3446dd70b2d52a6bf4a5a192d9b0a161295ab7f9", 18)
+    ("sclp-scallop", "ethereum", "SCLP","0x3f6d1649a1366b0e82173d33e365953f9f1cc84c",18)
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)
