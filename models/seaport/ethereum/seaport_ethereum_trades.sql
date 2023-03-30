@@ -6,6 +6,7 @@
                             \'["sohwak", "hildobby" ,"soispoke" ,"jeff-dude" ,"hosuke" ,"0xRob"]\') }}'
     )
 }}
+-- CI trigger
 
 select *
   from (
@@ -17,7 +18,7 @@ select *
               ,seller
               ,buyer
               ,trade_type
-              ,trade_category 
+              ,trade_category
               ,evt_type
               ,nft_contract_address
               ,collection
@@ -71,7 +72,7 @@ select *
               ,seller
               ,buyer
               ,trade_type
-              ,trade_category 
+              ,trade_category
               ,evt_type
               ,nft_contract_address
               ,collection
@@ -115,5 +116,5 @@ select *
               ,is_private
               ,sub_idx
               ,sub_type
-          from {{ ref('seaport_v2_ethereum_trades') }}                  
+          from {{ ref('seaport_v2_ethereum_trades') }}
         )
