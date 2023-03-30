@@ -21,7 +21,7 @@ FROM {{ ref('op_retropgf_optimism_recipients') }}
 UNION ALL
 
 SELECT blockchain,
-       recipient AS address, 
+       voter AS address, 
        'OP RetroPGF ' || round_name || ' Voter' as name,
        'op_retropgf' as category,
        'msilb7' as contributor,
