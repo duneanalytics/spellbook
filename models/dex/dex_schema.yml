@@ -10,6 +10,16 @@ models:
       tags: ['ethereum', 'amm', 'trades', 'dex', 'cross-chain','optimism']
     description: >
       DEX trades on all chains across all contracts and versions
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_date
+            - blockchain
+            - project
+            - version
+            - tx_hash
+            - evt_index
+            - trace_address
     columns:
       - &blockchain
         name: blockchain
@@ -90,6 +100,16 @@ models:
       tags: ['ethereum', 'gnosis', 'avalanche_c', 'fantom', 'aggregator', 'dex', 'trades', 'cross-chain']
     description: >
       Aggregator trades on all chains across all contracts and versions
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_date
+            - blockchain
+            - project
+            - version
+            - tx_hash
+            - evt_index
+            - trace_address
     columns:
       - *blockchain
       - *project
@@ -147,7 +167,7 @@ models:
       - &sample_size
         name: sample_size
         description: "Number of times the token was traded within the coressponding hour"
-  
+
   - name: dex_incentive_mappings
     meta:
       blockchain: optimism

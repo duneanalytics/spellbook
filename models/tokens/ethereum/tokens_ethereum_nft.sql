@@ -8,19 +8,23 @@
         )
 }}
 
-SELECT contract_address
-  , name
-  , symbol
-  , standard
-  , category
-  FROM {{ref('tokens_ethereum_nft_wizards_curated')}}
-UNION
-SELECT c.contract AS contract_address
-, MIN(c.name) AS name
-, NULL AS symbol
-, MIN(t.token_standard) AS standard
-, NULL AS category
-FROM {{source('reservoir','collections')}} c
-INNER JOIN {{ref('nft_ethereum_transfers')}} t ON c.contract=t.contract_address
-LEFT ANTI JOIN {{ref('tokens_ethereum_nft_wizards_curated')}} w ON w.contract_address=c.contract
-GROUP BY c.contract
+-- reservoir has multiple collection names for single contracts, we just take the first record
+WITH reservoir_names as (
+    select
+    contract as contract_address
+    ,min_by(name,created_at) as name
+    FROM {{source('reservoir','collections')}} c
+    group by 1
+)
+
+SELECT
+    c.contract_address
+  , coalesce(curated.name, reservoir.name) as name
+  , curated.symbol
+  , c.standard
+FROM {{ ref('tokens_ethereum_nft_standards')}} c
+LEFT JOIN  {{ref('tokens_ethereum_nft_curated')}} curated
+    ON c.contract_address = curated.contract_address
+LEFT JOIN reservoir_names reservoir
+    ON c.contract_address = reservoir.contract_address
+

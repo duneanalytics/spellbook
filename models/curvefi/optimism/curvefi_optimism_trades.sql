@@ -4,7 +4,7 @@
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
-    unique_key = ['block_date', 'blockchain', 'project', 'version', 'tx_hash', 'evt_index', 'trace_address'],
+    unique_key = ['block_date', 'blockchain', 'project', 'version', 'tx_hash', 'evt_index', 'trace_address']
     )
 }}
 
@@ -58,7 +58,7 @@ SELECT
 
         UNION ALL
 
-        -- MetaPoolSwap
+        -- MetaPoolSwap TokenExchangeUnderlying
         SELECT
             'meta' AS pool_type, -- has implications for decimals for curve
             t.evt_block_time AS block_time,
@@ -79,41 +79,47 @@ SELECT
         WHERE t.evt_block_time >= date_trunc('day', now() - interval '1 week')
         {% endif %}
 
-
         UNION ALL
 
-        --BasicPoolSwap --to replace with decoded contract eventually
-        --example https://optimistic.etherscan.io/address/0x3da3153e26a230d918bb9f9428a8d60349b73379#events
+        -- StableSwap - Mislabeled as MetaPoolSwap TokenExchange
         SELECT
-            'basic' as pool_type,
-            block_time,
-            block_number,
-            substring(topic2,25,40) AS taker,
+            'stable' AS pool_type, -- has implications for decimals for curve
+            t.evt_block_time AS block_time,
+            t.evt_block_number,
+            t.buyer AS taker,
             '' AS maker,
-            conv(substring(data,3+64*3,64),16,10) as token_bought_amount_raw, --2nd bought
-            conv(substring(data,3+64*1,64),16,10) as token_sold_amount_raw, --1st sold
-            contract_address AS project_contract_address,
-            l.tx_hash,
+            -- when amount0 is negative it means taker is buying token0 from the pool
+            tokens_bought AS token_bought_amount_raw,
+            tokens_sold AS token_sold_amount_raw,
+            t.contract_address as project_contract_address,
+            t.evt_tx_hash AS tx_hash,
             '' AS trace_address,
-            index AS evt_index,
-            conv(substring(data,3+64*2,64),16,10) AS bought_id,
-            conv(substring(data,3+64*0,64),16,10) AS sold_id
-        FROM {{ source('optimism', 'logs') }} l
-        INNER JOIN {{ ref('curvefi_optimism_pools') }} ta
-            ON l.contract_address = ta.pool
-            AND conv(substring(data,3+64*3,64),16,10) = ta.tokenid --t.bought_id = ta.tokenid
-            AND ta.version = 'Basic Pool'
-        INNER JOIN {{ ref('curvefi_optimism_pools') }} tb
-            ON l.contract_address = tb.pool
-            AND conv(substring(data,3+64*1,64),16,10) = tb.tokenid --t.sold_id = tb.tokenid
-            AND tb.version = 'Basic Pool'
-        WHERE l.topic1 = '0x8b3e96f2b889fa771c53c981b40daf005f63f637f1869f707052d15a3dd97140'
-        AND l.topic2 IS NOT NULL AND l.data IS NOT NULL
+            t.evt_index, 
+            bought_id, 
+            sold_id
+        FROM {{ source('curvefi_optimism', 'MetaPoolSwap_evt_TokenExchange') }} t
+        -- handle for dupes due to decoding issues
+        WHERE NOT EXISTS (
+            SELECT 1 FROM {{ source('curvefi_optimism', 'MetaPoolSwap_evt_TokenExchangeUnderlying') }} s 
+            WHERE t.evt_block_number = s.evt_block_number
+            AND t.evt_tx_hash = s.evt_tx_hash
+            AND t.evt_index = s.evt_index
+            {% if is_incremental() %}
+            AND s.evt_block_time >= date_trunc('day', now() - interval '1 week')
+            {% endif %}
+        )
+        AND NOT EXISTS (
+            SELECT 1 FROM {{ source('curvefi_optimism', 'StableSwap_evt_TokenExchange') }} s 
+            WHERE t.evt_block_number = s.evt_block_number
+            AND t.evt_tx_hash = s.evt_tx_hash
+            AND t.evt_index = s.evt_index
+            {% if is_incremental() %}
+            AND s.evt_block_time >= date_trunc('day', now() - interval '1 week')
+            {% endif %}
+        )
+        
         {% if is_incremental() %}
-        AND l.block_time >= date_trunc('day', now() - interval '1 week')
-        {% endif %}
-        {% if not is_incremental() %}
-        AND l.block_time >= '{{project_start_date}}'
+        AND t.evt_block_time >= date_trunc('day', now() - interval '1 week')
         {% endif %}
     ) cp
     INNER JOIN {{ ref('curvefi_optimism_pools') }} ta

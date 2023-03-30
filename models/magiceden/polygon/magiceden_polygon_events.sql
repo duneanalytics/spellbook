@@ -6,7 +6,7 @@
     file_format = 'delta',
     incremental_strategy = 'merge',
     unique_key = ['block_date', 'unique_trade_id'],
-    post_hook='{{ expose_spells(\'["polygon"]\'
+    post_hook='{{ expose_spells(\'["polygon"]\',
                               "project",
                               "magiceden",
                               \'["springzh"]\') }}'
@@ -31,7 +31,7 @@ WITH trades AS (
           1 AS number_of_items,
           'erc721' AS token_standard,
           CASE
-               WHEN erc20Token in ('0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee', '0x0000000000000000000000000000000000001010') 
+               WHEN erc20Token in ('0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee', '0x0000000000000000000000000000000000001010')
                THEN '0x0d500b1d8e8ef31e21c99d1db9a6444d3adf1270'
                ELSE erc20Token
           END AS currency_contract,
@@ -62,7 +62,7 @@ WITH trades AS (
           erc1155FillAmount AS number_of_items,
           'erc1155' AS token_standard,
           CASE
-               WHEN erc20Token in ('0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee', '0x0000000000000000000000000000000000001010') 
+               WHEN erc20Token in ('0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee', '0x0000000000000000000000000000000000001010')
                THEN '0x0d500b1d8e8ef31e21c99d1db9a6444d3adf1270'
                ELSE erc20Token
           END AS currency_contract,
@@ -92,7 +92,7 @@ trade_amount_detail as (
         {% if is_incremental() %}
         AND e.block_time >= date_trunc("day", now() - interval '1 week')
         {% endif %}
-    WHERE t.original_erc20_token IN ('0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee', '0x0000000000000000000000000000000000001010') 
+    WHERE t.original_erc20_token IN ('0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee', '0x0000000000000000000000000000000000001010')
         AND cast(e.value as double) > 0
         AND cardinality(trace_address) > 0 -- exclude the main call record
 
@@ -111,7 +111,7 @@ trade_amount_detail as (
         {% if is_incremental() %}
         AND e.evt_block_time >= date_trunc("day", now() - interval '1 week')
         {% endif %}
-    WHERE t.original_erc20_token NOT IN ('0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee', '0x0000000000000000000000000000000000001010') 
+    WHERE t.original_erc20_token NOT IN ('0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee', '0x0000000000000000000000000000000000001010')
 ),
 
 trade_amount_summary as (
@@ -160,7 +160,7 @@ SELECT
   CAST(s.royalty_fee_amount_raw / power(10, erc.decimals) AS double) AS royalty_fee_amount,
   CAST(s.royalty_fee_amount_raw / power(10, erc.decimals) * p.price AS double) AS royalty_fee_amount_usd,
   CAST(s.royalty_fee_amount_raw / s.amount_raw * 100 AS double) AS royalty_fee_percentage,
-  CAST(NULL AS double) AS royalty_fee_receive_address,
+  CAST(NULL AS varchar(5)) AS royalty_fee_receive_address,
   CAST(NULL AS string) AS royalty_fee_currency_symbol,
   a.evt_tx_hash || '-' || a.evt_type  || '-' || a.evt_index ||  '-' || a.token_id || '-' || cast(a.number_of_items as string) AS unique_trade_id
 FROM trades a
@@ -177,7 +177,7 @@ LEFT JOIN {{ ref('tokens_erc20') }} erc ON erc.blockchain = 'polygon' AND erc.co
 LEFT JOIN {{ source('prices', 'usd') }} p ON p.contract_address = a.currency_contract
     AND p.minute = date_trunc('minute', a.evt_block_time)
     {% if not is_incremental() %}
-    AND minute >= '{{nft_start_date}}' 
+    AND minute >= '{{nft_start_date}}'
     {% endif %}
     {% if is_incremental() %}
     AND minute >= date_trunc("day", now() - interval '1 week')
