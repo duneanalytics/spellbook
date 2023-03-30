@@ -31,6 +31,7 @@
 ,ref('nftearth_optimism_events')
 ,ref('rarible_polygon_events')
 ,ref('stealcam_arbitrum_events')
+,ref('test_marketplace_ethereum_events')
 ] %}
 
 SELECT *

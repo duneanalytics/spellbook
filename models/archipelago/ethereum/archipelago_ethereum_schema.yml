@@ -211,3 +211,13 @@ models:
       - *tx_from
       - *tx_to
       - name: unique_trade_id
+
+  - name: test_marketplace_ethereum_events
+    meta:
+      blockchain: ethereum
+      project: archipelago
+      contributors: 0xRob
+    config:
+      tags: [ 'ethereum','archipelago','v1','events' ]
+    description: >
+      Duplicate archipelago marketplace to test
