@@ -49,7 +49,7 @@ jobs:
         run: "dbt test --select state:new state:modified --defer --state ."
 
       - name: dbt run downstream view(s)
-        run: "dbt -x run --select state:modified+,config.materialized:view --defer --state ."
+        run: "dbt -x run --select state:modified+,config.materialized:view,+nft.trades state:modified+,config.materialized:view,+nft.events --defer --state ."
 
       - name: Set environment variable for incremental model count
         run: |
