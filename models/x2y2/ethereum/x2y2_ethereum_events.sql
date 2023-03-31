@@ -15,8 +15,6 @@
 {%- set project_start_date = '2022-02-04' %}
 {%- set eth_erc20_addr = '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2' %}
 {%- set fee_management_addr = '0xd823c605807cc5e6bd6fc0d7e4eea50d3e2d66cd' %}
-{%- set erc721_delegate = '0xf849de01b080adc3a814fabe1e2087475cf2e354' %}
-{%- set erc1155_delegate = '0x024ac22acdb367a3ae52a3d94ac6649fdc1f0779' %}
 
 -- base sources
 WITH
@@ -74,15 +72,6 @@ src_eth_transactions as  (
         {% endif %}
 ),
 
-src_nft_transfers as (
-    SELECT *
-    FROM {{ ref('nft_ethereum_transfers') }}
-    WHERE block_time > '{{project_start_date}}'
-        {% if is_incremental() %}
-        AND block_time >= date_trunc("day", now() - interval '1 week')
-        {% endif %}
-),
-
 src_prices_usd as (
     SELECT *
     FROM {{ source('prices','usd') }}
@@ -100,7 +89,7 @@ src_prices_usd as (
 
 
 -- results
-SELECT distinct 'ethereum' AS blockchain
+SELECT 'ethereum' AS blockchain
 , 'x2y2' AS project
 , 'v1' AS version
 , prof.evt_block_time AS block_time
@@ -111,18 +100,16 @@ SELECT distinct 'ethereum' AS blockchain
 , CAST(inv.price AS DECIMAL(38,0)) AS amount_raw
 , inv.price/POWER(10, currency_token.decimals) AS amount_original
 , pu.price*(inv.price/POWER(10, currency_token.decimals)) AS amount_usd
-, CASE WHEN inv.execution_delegate = '{{erc721_delegate}}' THEN 'erc721'
-    WHEN inv.execution_delegate = '{{erc1155_delegate}}' THEN 'erc1155'
-    END AS token_standard
+, nft_token.standard as token_standard
 , 'Single Item Trade' AS trade_type
 , CAST(1 AS DECIMAL(38,0)) AS number_of_items
 , CASE WHEN (inv.fees_0 IS NULL OR inv.fees_0_to != '{{fee_management_addr}}') AND (prof.evt_block_time < '2022-04-01' OR prof.evt_block_time >= '2022-05-01') THEN 'Private Sale'
-    WHEN et.from=COALESCE(seller_fix.from, inv.maker) THEN 'Offer Accepted'
+    WHEN (et.from=inv.maker or inv.maker = agg.contract_address) THEN 'Offer Accepted'
     ELSE 'Buy'
     END AS trade_category
 , 'Trade' AS evt_type
-, COALESCE(buyer_fix.to, inv.taker) AS buyer
-, COALESCE(seller_fix.from, inv.maker) AS seller
+, CASE WHEN inv.taker = agg.contract_address THEN et.from ELSE inv.taker END AS buyer
+, CASE WHEN inv.maker = agg.contract_address THEN et.from ELSE inv.maker END AS seller
 , CASE WHEN prof.is_native_eth THEN 'ETH'
     ELSE currency_token.symbol
     END AS currency_symbol
@@ -182,18 +169,6 @@ LEFT JOIN src_prices_usd pu
     ON pu.minute=date_trunc('minute', prof.evt_block_time)
     AND (pu.contract_address=prof.currency
         OR (prof.is_native_eth AND pu.contract_address='0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'))
-LEFT JOIN src_nft_transfers buyer_fix ON prof.evt_block_time=buyer_fix.block_time
-    AND prof.evt_tx_hash=buyer_fix.tx_hash
-    AND inv.nft_contract_address=buyer_fix.contract_address
-    AND buyer_fix.from=agg.contract_address
-    AND buyer_fix.from=inv.taker
-    AND buyer_fix.token_id=inv.token_id
-LEFT JOIN src_nft_transfers seller_fix ON prof.evt_block_time=seller_fix.block_time
-    AND prof.evt_tx_hash=seller_fix.tx_hash
-    AND inv.nft_contract_address=seller_fix.contract_address
-    AND seller_fix.to=agg.contract_address
-    AND seller_fix.to=inv.maker
-    AND seller_fix.token_id=inv.token_id
 LEFT JOIN {{ ref('nft_ethereum_aggregators_markers') }} agg_m
         ON RIGHT(et.data, agg_m.hash_marker_size) = agg_m.hash_marker
 

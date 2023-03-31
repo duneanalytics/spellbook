@@ -1,0 +1,8 @@
+version: 2
+
+seeds:
+  - name: nexusmutual_ethereum_trades_seed
+    config:
+      column_types:
+        premium: string
+        premium_nxm: string

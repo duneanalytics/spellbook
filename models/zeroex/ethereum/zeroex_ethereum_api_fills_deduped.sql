@@ -72,8 +72,8 @@ AS
 SELECT  a.blockchain
       , a.block_date
       , a.block_time
-      , COALESCE(b.taker_symbol,b.taker_token) AS taker_symbol
-      , COALESCE(b.maker_symbol,b.maker_token) AS maker_symbol
+      , b.taker_symbol AS taker_symbol
+      , b.maker_symbol AS maker_symbol
       , CASE WHEN lower(b.taker_symbol) > lower(b.maker_symbol) THEN concat(b.maker_symbol, '-', b.taker_symbol) ELSE concat(b.taker_symbol, '-', b.maker_symbol) END AS token_pair
       , b.taker_token_amount
       , b.maker_token_amount
