@@ -6,10 +6,17 @@ models:
       blockchain: fantom
       sector: transfers
       project: erc20
-      contributors: soispoke, dot2dotseurat, tschubotz
+      contributors: soispoke, dot2dotseurat, tschubotz, hosuke
     config:
       tags: ['transfers', 'fantom', 'erc20']
     description: "ERC20 Token Transfers on fantom. This table is updated every 30 minutes."
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - transfer_type
+            - evt_tx_hash
+            - evt_index
+            - wallet_address
     columns:
       - name: unique_transfer_id
         description: "Unique transfer ID (used for testing for duplicates)"
