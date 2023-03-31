@@ -3,6 +3,7 @@ version: 2
 sources:
   # Base Tables
   - name: gnosis
+    database: delta_prod
     description: "Gnosis raw tables including transactions, traces and logs."
     freshness:
       warn_after: { count: 12, period: hour }
@@ -44,9 +45,11 @@ sources:
             description: "Whether the transaction was completed successfully"
           - &from
             name: from
+            quote: true
             description: "Wallet address that initiated the transaction"
           - &to
             name: to
+            quote: true
             description: "Wallet address that received the transaction"
           - &block_hash
             name: block_hash
@@ -91,8 +94,10 @@ sources:
             name: tx_hash
             description: "Primary key of the transaction"
           - name: from
+            quote: true
             description: "Wallet address that initiated the trace"
           - name: to
+            quote: true
             description: "Wallet address that received the trace"
           - name: trace_address
             description: "All returned traces, gives the exact location in the call trace"
@@ -167,6 +172,7 @@ sources:
           - name: address
             description: "Address of the decoded contract"
           - name: from
+            quote: true
             description: "Address that created/deployed this contract"
           - name: code
             description: "Code for contract creation"
