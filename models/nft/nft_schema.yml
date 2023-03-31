@@ -281,6 +281,11 @@ models:
       tags: ['nft', 'opensea', 'looksrare', 'x2y2', 'magiceden', 'sudoswap', 'foundation', 'element', 'zora', 'ethereum', 'bnb', 'solana', 'fees','superrare', 'polygon', 'rarible', 'aavegotchi', 'oneplanet', 'fractal']
     description: >
         NFT fees
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - unique_trade_id
+            - blockchain
     columns:
       - *blockchain
       - *project
@@ -401,6 +406,11 @@ models:
       tags: ['nft', 'ethereum', 'polygon', 'bnb', 'avalanche_c', 'gnosis', 'optimism', 'arbitrum', 'fantom', 'goerli', 'transfers']
     description: >
         NFT transfers
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - unique_transfer_id
     columns:
       - *blockchain
       - name: block_time
@@ -447,6 +457,15 @@ models:
       tags: ['ethereum','nft', 'lending']
     description: >
         nft lending events (repay & borrow)
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_date
+            - blockchain
+            - project
+            - version
+            - tx_hash
+            - evt_index
     columns:
       - *blockchain
       - *project
