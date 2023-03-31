@@ -2,6 +2,7 @@ version: 2
 
 sources:
   - name: ovm_optimism
+    database: delta_prod
     description: "Decoded contracts for Optimism precompiles and system contracts"
     tables:
     - name: L2StandardTokenFactory_call_createStandardL2Token
