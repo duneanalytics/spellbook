@@ -104,6 +104,47 @@ models:
     description: >
         A table containing all offers of rubicon on optimism
     tests:
+      - check_seed:
+          seed_file: ref('rubicon_optimism_offers_test_data')
+          match_columns:
+            - block_number
+            - tx_hash
+            - evt_index
+            - tx_index
+          check_columns:
+            - blockchain
+            - project
+            - version
+            - block_date
+            - block_time
+            - block_number
+            - tx_index
+            - evt_index
+            - sell_token_symbol
+            - buy_token_symbol
+            - sell_token_address
+            - buy_token_address
+            - token_pair
+            - sell_amount
+            - buy_amount
+            - sold_amount
+            - bought_amount
+            - sell_amount_usd
+            - buy_amount_usd
+            - sold_amount_usd
+            - bought_amount_usd
+            - gas_price
+            - gas_used
+            - l1_gas_price
+            - l1_gas_used
+            - l1_fee_scalar
+            - txn_cost_eth
+            - eth_price 
+            - txn_cost_usd
+            - project_contract_address
+            - tx_hash
+            - tx_from
+            - tx_to
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
               - block_date
