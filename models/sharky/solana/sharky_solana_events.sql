@@ -121,7 +121,6 @@ WITH sharky_txs AS (
 )
 SELECT *,
        CASE
-           -- The smart contract was update around the 2022-12-01 and a new account was added before the loan id
            WHEN evt_type = 'Offer' THEN
                CASE
                    WHEN block_number > 164178914 THEN sharky_instructions[0].account_arguments[3] -- upgrade to version 3.0 2PXg25v2YGfvFCyX9najJ2mNS5QADvVYNUTtXYYhbyN3cHERqEgbnuDnVKnStaQAMa1edRhM9GAZaHYMPdR9jX8o
