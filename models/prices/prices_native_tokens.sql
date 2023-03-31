@@ -11,7 +11,7 @@ SELECT
     , LOWER(TRIM(blockchain)) as blockchain
     , TRIM(symbol) as symbol
     , LOWER(TRIM(contract_address)) as contract_address
-    , decimals
+    , CAST(decimals as int)
 FROM
 (
     VALUES
