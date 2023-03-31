@@ -1,0 +1,23 @@
+version: 2
+
+models:
+  - name: labels_flashloans_ethereum
+    meta:
+      blockchain: ethereum
+      sector: labels
+      project: flashloans
+      contributors: niftytable
+    config:
+      tags: ['labels', 'ethereum', 'flashloans']
+    description: "Known flashloan users on Ethereum"
+    columns:
+      - name: address
+        description: "Address of known flashloan user wallet"
+      - name: category
+        description: "Label category"
+      - name: model_name
+        description: "Name of the label model sourced from"
+      - name: blockchain
+        description: "Blockchain" 
+      - name: name
+        description: "Label name of the contract (e.g., Aave v3 Flashloan User)"
