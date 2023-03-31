@@ -14,7 +14,7 @@ SELECT DISTINCT
 FROM
   {{ source('aave_v2_ethereum','LendingPool_evt_FlashLoan') }}
 WHERE
-  amount != cast(0 as uint256)
+  amount != 0
 
 UNION ALL
 SELECT DISTINCT
@@ -27,7 +27,7 @@ SELECT DISTINCT
 FROM
   {{ source('aave_v3_ethereum','Pool_evt_FlashLoan') }}
 WHERE
-  amount != cast(0 as uint256)
+  amount != 0
 
 UNION ALL
 SELECT DISTINCT
@@ -40,7 +40,7 @@ SELECT DISTINCT
 FROM
   {{ source('balancer_v2_ethereum','Vault_evt_FlashLoan') }}
 WHERE
-  amount != cast(0 as uint256)
+  amount != 0
 
 UNION ALL
 SELECT DISTINCT
@@ -53,4 +53,4 @@ SELECT DISTINCT
 FROM
   {{ source('uniswap_v3_ethereum','Pair_evt_Flash') }}
 WHERE
-  amount0 != cast(0 as uint256)
+  amount0 != 0
