@@ -48,7 +48,7 @@ SELECT 'arbitrum' AS blockchain
 , CASE WHEN sc.value-(roy.value+not_fee.value) > 0 THEN 'ETH' ELSE NULL END AS royalty_fee_currency_symbol
 , CAST(COALESCE(roy.value, 0) AS double) AS royalty_fee_amount_raw
 , CAST(COALESCE(roy.value/POWER(10, 18), 0) AS double) AS royalty_fee_amount
-, CAST(COALESCE(roy.value/POWER(10, 18)/pu.price, 0) AS double) AS royalty_fee_amount_usd
+, CAST(COALESCE(roy.value/POWER(10, 18)*pu.price, 0) AS double) AS royalty_fee_amount_usd
 , CAST(COALESCE(100*roy.value/sc.value, 0) AS double) AS royalty_fee_percentage
 , m._creator AS royalty_fee_receive_address
 , 'arbitrum-stealcam-' || sc.evt_tx_hash || '-' || sc.evt_index AS unique_trade_id
