@@ -116,7 +116,6 @@ models:
             - project
             - version
             - block_date
-            - block_time
             - sell_token_symbol
             - buy_token_symbol
             - sell_token_address
@@ -134,7 +133,6 @@ models:
             - gas_used
             - l1_gas_price
             - l1_gas_used
-            - l1_fee_scalar
             - txn_cost_eth
             - eth_price 
             - txn_cost_usd
