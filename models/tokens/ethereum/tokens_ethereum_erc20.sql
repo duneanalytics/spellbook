@@ -12762,7 +12762,7 @@ FROM (VALUES
         ('0x9c28cf2f9f93e08d82c59df289ff3d900f0ec75e', 'AILIEN', 18),
         ('0x9c2c8910f113181783c249d8f6aa41b51cde0f0c', 'ibCHF+sCHF', 18),
         ('0x9c2dc0c3cc2badde84b0025cf4df1c5af288d835', 'COR', 18),
-        ('0x9c34ca54f03d6432aa28ea474aeef43b22af31bb', 'La\'eeb', 18),
+        ('0x9c34ca54f03d6432aa28ea474aeef43b22af31bb', 'La''eeb', 18),
         ('0x9c354503c38481a7a7a51629142963f98ecc12d0', 'OGV', 18),
         ('0x9c38688e5acb9ed6049c8502650db5ac8ef96465', 'LIF', 18),
         ('0x9c3bbb1d52250c8af0726a1337e7de376d3c7ba8', '$SHIBET', 18),
