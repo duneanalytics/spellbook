@@ -1,11 +1,6 @@
 {{ config(
         alias ='mints',
-        partition_by = ['block_date'],
-        materialized = 'incremental',
-        file_format = 'delta',
-        incremental_strategy = 'merge',
-        unique_key = ['unique_trade_id', 'blockchain'],
-        post_hook='{{ expose_spells(\'["ethereum","solana","bnb","optimism","polygon"]\',
+        post_hook='{{ expose_spells(\'["ethereum","solana","bnb","optimism","polygon", "arbitrum"]\',
                     "sector",
                     "nft",
                     \'["soispoke","umer_h_adil","hildobby","0xRob", "chuxin"]\') }}')
@@ -21,6 +16,7 @@ ref('opensea_mints')
 ,ref('blur_ethereum_mints')
 ,ref('zora_ethereum_mints')
 ,ref('nftb_bnb_mints')
+,ref('stealcam_arbitrum_mints')
 ] %}
 
 {% set native_mints = [

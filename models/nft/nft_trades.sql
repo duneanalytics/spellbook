@@ -8,7 +8,7 @@
         post_hook='{{ expose_spells(\'["ethereum","solana","bnb", "optimism","arbitrum","polygon"]\',
                                     "sector",
                                     "nft",
-                                    \'["soispoke", "0xRob"]\') }}')
+                                    \'["soispoke", "0xRob", "hildobby"]\') }}')
 }}
 
 
@@ -38,6 +38,7 @@ ref('aavegotchi_polygon_trades')
 ,ref('nftb_bnb_trades')
 ,ref('nftearth_optimism_trades')
 ,ref('rarible_polygon_trades')
+,ref('stealcam_arbitrum_trades')
 ] %}
 
 SELECT *

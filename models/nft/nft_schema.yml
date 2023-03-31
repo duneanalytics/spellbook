@@ -18,11 +18,11 @@ models:
 
   - name: nft_events
     meta:
-      blockchain: ethereum, solana, polygon
+      blockchain: ethereum, solana, bnb, optimism, arbitrum, polygon
       sector: nft
       contributors: soispoke, hildobby, ilemi, 0xRob, cat, umer_h_adil
     config:
-      tags: ['nft', 'opensea', 'looksrare', 'x2y2', 'magiceden', 'sudoswap', 'foundation', 'element', 'zora', 'ethereum', 'bnb', 'avalanche_c', 'solana', 'events', 'polygon', 'rarible', 'aavegotchi', 'oneplanet', 'fractal']
+      tags: ['nft', 'opensea', 'looksrare', 'x2y2', 'magiceden', 'sudoswap', 'foundation', 'element', 'zora', 'ethereum', 'bnb', 'solana', 'events', 'polygon', 'optimism', 'arbitrum', 'rarible', 'aavegotchi', 'oneplanet', 'fractal']
     description: >
         NFT events
     tests:
@@ -145,11 +145,11 @@ models:
 
   - name: nft_trades
     meta:
-      blockchain: ethereum, solana, polygon
+      blockchain: ethereum, solana, bnb, optimism, arbitrum, polygon
       sector: nft
       contributors: soispoke, hildobby, ilemi, cat
     config:
-      tags: ['nft', 'opensea', 'looksrare', 'x2y2', 'magiceden', 'sudoswap', 'foundation', 'element', 'zora', 'ethereum', 'bnb', 'avalanche_c', 'solana', 'trades','superrare', 'polygon', 'rarible', 'aavegotchi', 'oneplanet', 'fractal']
+      tags: ['nft', 'opensea', 'looksrare', 'x2y2', 'magiceden', 'sudoswap', 'foundation', 'element', 'zora', 'ethereum', 'bnb', 'solana', 'optimism', 'arbitrum', 'trades','superrare', 'polygon', 'rarible', 'aavegotchi', 'oneplanet', 'fractal']
     description: >
         NFT trades
     tests:
@@ -188,11 +188,11 @@ models:
 
   - name: nft_mints
     meta:
-      blockchain: ethereum, solana, polygon
+      blockchain: ethereum, solana, bnb, optimism, polygon, arbitrum
       sector: nft
       contributors: soispoke, hildobby, umer_h_adil
     config:
-      tags: ['nft', 'opensea', 'looksrare', 'x2y2', 'magiceden', 'foundation', 'element', 'zora', 'ethereum', 'bnb', 'avalanche_c', 'solana', 'mints', 'polygon', 'aavegotchi']
+      tags: ['nft', 'opensea', 'looksrare', 'x2y2', 'magiceden', 'foundation', 'element', 'zora', 'ethereum', 'bnb', 'solana', 'mints', 'polygon', 'aavegotchi', 'optimism', 'arbitrum', 'stealcam']
     description: >
         NFT mints
     tests:
@@ -235,7 +235,7 @@ models:
       sector: nft
       contributors: soispoke, hildobby
     config:
-      tags: ['nft', 'opensea', 'looksrare', 'x2y2', 'magiceden', 'foundation', 'element', 'zora', 'ethereum', 'bnb', 'avalanche_c', 'solana', 'burns']
+      tags: ['nft', 'opensea', 'looksrare', 'x2y2', 'magiceden', 'foundation', 'element', 'zora', 'ethereum', 'bnb', 'solana', 'burns']
     description: >
         NFT burns
     tests:
@@ -278,7 +278,7 @@ models:
       sector: nft
       contributors: soispoke, hildobby, ilemi, cat
     config:
-      tags: ['nft', 'opensea', 'looksrare', 'x2y2', 'magiceden', 'sudoswap', 'foundation', 'element', 'zora', 'ethereum', 'bnb', 'avalanche_c', 'solana', 'fees','superrare', 'polygon', 'rarible', 'aavegotchi', 'oneplanet', 'fractal']
+      tags: ['nft', 'opensea', 'looksrare', 'x2y2', 'magiceden', 'sudoswap', 'foundation', 'element', 'zora', 'ethereum', 'bnb', 'solana', 'fees','superrare', 'polygon', 'rarible', 'aavegotchi', 'oneplanet', 'fractal']
     description: >
         NFT fees
     columns:

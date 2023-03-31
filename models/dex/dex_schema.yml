@@ -167,7 +167,7 @@ models:
       - &sample_size
         name: sample_size
         description: "Number of times the token was traded within the coressponding hour"
-  
+
   - name: dex_incentive_mappings
     meta:
       blockchain: optimism

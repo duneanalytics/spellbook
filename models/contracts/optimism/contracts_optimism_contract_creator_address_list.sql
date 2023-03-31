@@ -419,6 +419,13 @@ FROM (
       ,('0x6453bD91C3B06DCC24F588FFfa384b0EEB0178B3', 'Beefy Finance')
       ,('0xd8693368d37b502ed54c315e38efde7eb3dcdb5c', 'FunDex')
       ,('0x4e59b44847b379578588920ca78fbf26c0b4956c', 'LlamaPay')
+      ,('0x30B12942912Cee5A719edec2dD147224fCC373A0', 'Mummy Finance')
+      ,('0xe61Bdef3FFF4C3CF7A07996DCB8802b5C85B665a', 'Exactly')
+      ,('0x1874028262f1f4b2dd1f2700a72ee8b9b7c69090', 'Kyberswap')
+      ,('0x76d84163bc0bbf58d6d3f2332f8a9c5b339df983', 'Otterspace')
+      ,('0x5e9Bf1dD74b4d25B7009AF11582f537b08eA3d3c', 'Layer Zero')
+      ,('0xac789308a29783f507f1f3baacbd43326c5767f4', 'Gamma')
+      ,('0xba32a3d407353fc3adaa6f7ec6264df5bca51c4b', 'Arcadia Finance')
 
   ) as temp_table (creator_address, contract_project)
 
