@@ -39,7 +39,7 @@ FROM (
             {% endif %}
 
         LEFT JOIN {{ref('tokens_ethereum_erc20')}} t
-            ON t.contract_address = c1._l1Token
+            ON t.contract_address = CAST(c1._l1Token AS varchar)
 
         WHERE call_success = true
             {% if is_incremental() %}
@@ -61,7 +61,7 @@ FROM (
             {% endif %}
 
         LEFT JOIN {{ref('tokens_ethereum_erc20')}} t
-            ON t.contract_address = c2._l1Token
+            ON t.contract_address = CAST(c2._l1Token AS varchar)
 
         WHERE call_success = true
             {% if is_incremental() %}
