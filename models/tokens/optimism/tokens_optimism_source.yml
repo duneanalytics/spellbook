@@ -2,6 +2,7 @@ version: 2
 
 sources:
   - name: optimism_ethereum
+    database: delta_prod
     description: "Optimism decoded tables related to bridges and sequencer"
     freshness:
       warn_after: { count: 12, period: hour }
