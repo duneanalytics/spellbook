@@ -82,7 +82,7 @@ models:
     config:
       tags: ['ethereum','pancakeswap_v3','trades', 'pancakeswap','dex']
     description: >
-        Pancakeswap V3 trades on Ethereum
+        Pancakeswap V3 AMM trades on Ethereum
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -154,7 +154,7 @@ models:
     config:
       tags: ['ethereum','pancakeswap_v2','trades', 'pancakeswap', 'dex']
     description: >
-        Pancakeswap V2 MMPool trades on Ethereum 
+        Pancakeswap MMPool trades on Ethereum 
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:

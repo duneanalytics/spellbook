@@ -226,7 +226,7 @@ models:
     config:
       tags: ['bnb','pancakeswap_v3','trades', 'pancakeswap','dex']
     description: >
-        Pancakeswap V3 trades on BNB chain
+        Pancakeswap V3 AMM trades on BNB chain
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
