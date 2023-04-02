@@ -3,7 +3,7 @@
     post_hook='{{ expose_spells(\'["ethereum","solana","bnb","optimism","arbitrum","polygon"]\',
                     "sector",
                     "nft",
-                    \'["soispoke","0xRob"]\') }}')
+                    \'["soispoke","0xRob", "hildobby"]\') }}')
 }}
 
 {% set nft_models = [
@@ -30,6 +30,7 @@
 ,ref('nftb_bnb_events')
 ,ref('nftearth_optimism_events')
 ,ref('rarible_polygon_events')
+,ref('stealcam_arbitrum_events')
 ] %}
 
 SELECT *

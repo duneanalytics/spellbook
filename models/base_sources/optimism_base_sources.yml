@@ -291,6 +291,26 @@ sources:
           - name: values
             description: "Amounts of ERC1155 token transferred"
 
+      - name: evt_ApprovalForAll
+        loaded_at_field: evt_block_time
+        description: "Approval for all events for ERC1155 tokens on Optimism."
+        columns:
+          - name: contract_address
+            description: "ERC1155 token contract address"
+          - *evt_tx_hash
+          - *evt_index
+          - *evt_block_time
+          - *evt_block_number
+          - &approved
+            name: approved
+            description: "Is approved"
+          - *owner
+          - name: account
+            description: "Account"
+          - &operator
+            name: operator
+            description: "Opperator"
+
   - name: erc721_optimism
     description: "Transfers events for ERC721 tokens on Optimism."
     tables:
@@ -308,3 +328,32 @@ sources:
           - *to
           - name: tokenId
             description: "ERC721 token ID."
+
+      - name: evt_Approval
+        loaded_at_field: evt_block_time
+        description: "Approval events for ERC721 tokens on Optimism."
+        columns:
+          - name: contract_address
+            description: "ERC721 token contract address"
+          - *evt_tx_hash
+          - *evt_index
+          - *evt_block_time
+          - *evt_block_number
+          - *approved
+          - *owner
+          - name: tokenId
+            description: "ERC721 token ID."
+
+      - name: evt_ApprovalForAll
+        loaded_at_field: evt_block_time
+        description: "Approval for all events for ERC721 tokens on Optimism."
+        columns:
+          - name: contract_address
+            description: "ERC721 token contract address"
+          - *evt_tx_hash
+          - *evt_index
+          - *evt_block_time
+          - *evt_block_number
+          - *approved
+          - *owner
+          - *operator
