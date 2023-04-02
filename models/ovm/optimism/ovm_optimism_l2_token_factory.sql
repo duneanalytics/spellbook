@@ -21,7 +21,7 @@ _symbol AS symbol,
 _name AS name,
 decimals,
 call_tx_hash,
-call_block_time,
+CAST(call_block_time AS timestamp(6) with time zone) AS call_block_time,
 call_block_number
 
 FROM (
