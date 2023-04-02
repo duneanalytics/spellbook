@@ -9,7 +9,7 @@
         post_hook='{{ expose_spells(\'["optimism"]\',
                                 "project", 
                                 "zeroex",
-                                \'["rantum", "danning.sui", "bakabhai993"]\') }}'
+                                \'["rantumBits", "sui414", "bakabhai993"]\') }}'
     )
 }} 
 {% set zeroex_v3_start_date = '2019-12-01' %}
