@@ -32,7 +32,7 @@ WITH dexs AS
         ,'' AS trace_address
         ,t.evt_index
     FROM
-        {{ source('pancakeswap_v3_ethereum', 'Pair_evt_Swap') }} t
+        {{ source('pancakeswap_v3_ethereum', 'PancakeV3Pool_evt_Swap') }} t
     INNER JOIN 
         {{ source('pancakeswap_v3_ethereum', 'PancakeV3Factory_evt_PoolCreated') }} f
         ON f.pool = t.contract_address

@@ -78,12 +78,12 @@ sources:
         ddescription: >
           Pancakeswap v3 pair swap events table
         columns:
-          - &amount1
-            name: amount1
-            description: "The delta of the token1 balance of the pool"
           - &amount0
             name: amount0
             description: "The delta of the token0 balance of the pool"
+          - &amount1
+            name: amount1
+            description: "The delta of the token1 balance of the pool"
           - *contract_address
           - *evt_block_number
           - *evt_block_time 
@@ -92,6 +92,10 @@ sources:
           - &liquidity
             name: liquidity
             description: "The liquidity of the pool after the swap"
+          - &protocolFeesToken0
+            name: protocolFeesToken0
+          - &protocolFeesToken1
+            name: protocolFeesToken1
           - &recipient
             name: recipient
             description: "The address that received the output of the swap"
