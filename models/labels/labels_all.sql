@@ -34,6 +34,7 @@ UNION ALL
 SELECT * FROM {{ ref('labels_cex_users') }}
 
 -- new/standardized labels
+
 UNION ALL
 SELECT * FROM {{ ref('labels_bridges') }}
 UNION ALL
