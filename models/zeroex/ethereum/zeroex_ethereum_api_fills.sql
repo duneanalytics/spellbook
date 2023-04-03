@@ -453,13 +453,13 @@ SELECT
             WHEN taker = '0xdef1c0ded9bec7f1a1670819833240f027b25eff' THEN tx.from
             ELSE taker
         END AS taker, -- fix the user masked by ProxyContract issue
-        taker_token,
+        cast(taker_token as varbinary) taker_token,
         ts.symbol AS taker_symbol,
-        maker_token,
+        cast(maker_token as varbinary) maker_token, 
         ms.symbol AS maker_symbol,
         CASE WHEN lower(ts.symbol) > lower(ms.symbol) THEN concat(ms.symbol, '-', ts.symbol) ELSE concat(ts.symbol, '-', ms.symbol) END AS token_pair,
         taker_token_amount_raw / pow(10, tp.decimals) AS taker_token_amount,
-        taker_token_amount_raw,
+        cast(taker_token_amount_raw as varchar(42)) as taker_token_amount_raw,
         maker_token_amount_raw / pow(10, mp.decimals) AS maker_token_amount,
         maker_token_amount_raw,
         all_tx.type,
