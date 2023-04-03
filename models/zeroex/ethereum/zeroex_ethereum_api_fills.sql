@@ -453,9 +453,9 @@ SELECT
             WHEN taker = '0xdef1c0ded9bec7f1a1670819833240f027b25eff' THEN tx.from
             ELSE taker
         END AS taker, -- fix the user masked by ProxyContract issue
-        cast(taker_token as varbinary) taker_token,
+        taker_token,
         ts.symbol AS taker_symbol,
-        cast(maker_token as varbinary) maker_token, 
+        maker_token, 
         ms.symbol AS maker_symbol,
         CASE WHEN lower(ts.symbol) > lower(ms.symbol) THEN concat(ms.symbol, '-', ts.symbol) ELSE concat(ts.symbol, '-', ms.symbol) END AS token_pair,
         taker_token_amount_raw / pow(10, tp.decimals) AS taker_token_amount,
