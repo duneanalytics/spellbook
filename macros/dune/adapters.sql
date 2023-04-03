@@ -1,5 +1,4 @@
 {% macro properties(properties, relation) %}
-  {% do log(relation, info=true) %}
 
   {% set s3_bucket = 'trino-dev-datasets-118330671040' %}
   {%- if properties is not none -%}
@@ -9,10 +8,6 @@
             {{ key }} = {{ value }}
             {%- if not loop.last -%}{{ ',\n  ' }}{%- endif -%}
           {%- endfor -%}
-      )
-  {%- else -%}
-      WITH (
-          location = 's3a://{{s3_bucket}}/hive/{{relation.schema}}/{{relation.identifier | replace("__dbt_tmp","")}}'
       )
   {%- endif -%}
 {%- endmacro -%}
