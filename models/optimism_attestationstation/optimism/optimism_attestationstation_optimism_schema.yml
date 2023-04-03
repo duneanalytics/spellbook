@@ -53,3 +53,9 @@ models:
       - &val
         name: val
         description: "What is the value of the attestation."
+      - &val_byte2numeric
+        name: val_byte2numeric
+        description: "For Error Handling: What is the value of the attestation - In bytea2numeric representation (if relevant format)."
+      - &val_string
+        name: val_string
+        description: "What is the value of the attestation - Array converted to a comma separated string."
