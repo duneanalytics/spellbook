@@ -28,6 +28,7 @@ spells to be added, once dunesql compatible
  ,ref('paraswap_trades')
  ,ref('lifi_trades')
  ,ref('yield_yak_avalanche_c_trades')
+ ,ref('zeroex_api_fills_deduped')
 ] %}
 
 SELECT *
