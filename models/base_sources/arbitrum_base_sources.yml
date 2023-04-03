@@ -3,6 +3,7 @@ version: 2
 sources:
   # Base Tables
   - name: arbitrum
+    database: delta_prod
     description: "Arbitrum raw tables including transactions, traces and logs."
     freshness:
       warn_after: { count: 12, period: hour }
