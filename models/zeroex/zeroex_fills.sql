@@ -24,8 +24,9 @@ FROM (
     *
     FROM {{ model }}
     {% if not loop.last %}
+     where type in ('OtcOrderFilled','LimitOrderFilled','RfqOrderFilled')
     UNION ALL
-    where type in ('OtcOrderFilled','LimitOrderFilled','RfqOrderFilled')
+   
     {% endif %}
     {% endfor %}
 )
