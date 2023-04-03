@@ -9,7 +9,7 @@
         post_hook='{{ expose_spells(\'["optimism"]\',
                                 "project", 
                                 "zeroex",
-                                \'["rantumBits", "sui414", "bakabhai993"]\') }}'
+                                \'["rantum", "danning.sui", "bakabhai993"]\') }}'
     )
 }} 
 {% set zeroex_v3_start_date = '2019-12-01' %}
@@ -99,7 +99,9 @@ v4_limit_fills_no_bridge AS (
             'LimitOrderFilled' AS type,
             COALESCE(zeroex_tx.affiliate_address, fills.feeRecipient) AS affiliate_address,
             (zeroex_tx.tx_hash IS NOT NULL) AS swap_flag,
-            (fills.feeRecipient = '0x86003b044f70dac0abc80ac8957305b6370893ed') AS matcha_limit_order_flag
+            (fills.feeRecipient in 
+                ('0x9b858be6e3047d88820f439b240deac2418a2551','0x86003b044f70dac0abc80ac8957305b6370893ed','0x5bc2419a087666148bfbe1361ae6c06d240c6131')) 
+                AS matcha_limit_order_flag 
     FROM {{ source('zeroex_optimism', 'ExchangeProxy_evt_LimitOrderFilled') }} fills
 
     INNER JOIN zeroex_tx ON zeroex_tx.tx_hash = fills.evt_tx_hash
@@ -113,7 +115,7 @@ v4_limit_fills_no_bridge AS (
     {% endif %}
 ),
 
-/*
+
 
 otc_fills AS (
     SELECT 
@@ -175,6 +177,7 @@ ERC20BridgeTransfer AS (
 
 
 ),
+/*
 BridgeFill AS (
     SELECT
 
@@ -307,27 +310,28 @@ all_tx AS (
     SELECT *
     FROM direct_PLP 
     UNION ALL
-    SELECT *
-    FROM ERC20BridgeTransfer
-    UNION ALL
+    
     SELECT *
 
     FROM BridgeFill
     UNION ALL */
+    
     SELECT *
     FROM NewBridgeFill 
-
+    UNION ALL
+    SELECT *
+    FROM ERC20BridgeTransfer
     UNION ALL 
     SELECT *
     FROM v4_rfq_fills_no_bridge
     UNION ALL 
     SELECT *
     FROM v4_limit_fills_no_bridge
-    /*
+    
     UNION ALL 
     SELECT *
     FROM otc_fills 
-    */
+    
 
 )
 

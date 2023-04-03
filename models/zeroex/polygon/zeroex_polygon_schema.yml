@@ -5,7 +5,7 @@ models:
     meta:
       blockchain: polygon
       project: zeroex
-      contributors: rantumBits, sui414, bakabhai993
+      contributors: rantum, danning.sui, bakabhai993
     config:
       tags: [polygon','0x','dex_aggregator','dex','aggregator']
     description: >
@@ -83,7 +83,7 @@ models:
     meta:
       blockchain: polygon
       project: zeroex
-      contributors: rantum,bakabhai993, sui414
+      contributors: rantum, bakabhai993, danning.sui
     config:
       tags: ['polygon','0x','nft']
     description: >
@@ -153,7 +153,7 @@ models:
     meta:
       blockchain: polygon
       project: zeroex
-      contributors: rantumBits, sui414, bakabhai993
+      contributors: rantum, danning.sui, bakabhai993
     config:
       tags: ['polygon','0x','dex_aggregator','dex','aggregator']
     description: >
@@ -201,6 +201,7 @@ models:
       - *evt_index               
       - *type
       - *swap_flag
+      - *contract_address
       - &fills_within
         name: fills_within
         description: "fills in then multihop, if present"          

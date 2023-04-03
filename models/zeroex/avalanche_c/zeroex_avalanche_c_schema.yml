@@ -5,7 +5,7 @@ models:
     meta:
       blockchain: avalanche_c
       project: zeroex
-      contributors: rantumBits
+      contributors: rantum
     config:
       tags: ['avalanche_c','0x','dex_aggregator','dex','aggregator']
     description: >
@@ -93,7 +93,7 @@ models:
     meta:
       blockchain: avalanche_c
       project: zeroex
-      contributors: rantumBits, sui414, bakabhai993
+      contributors: rantum, danning.sui, bakabhai993
     config:
       tags: ['avalanche_c','0x','dex_aggregator','dex','aggregator']
     description: >
@@ -141,6 +141,7 @@ models:
       - *evt_index     
       - *type
       - *swap_flag
+      - *contract_address
       - &fills_within
         name: fills_within
         description: "fills in then multihop, if present"          
