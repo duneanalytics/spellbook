@@ -6,7 +6,7 @@ models:
       blockchain: ethereum, optimism, polygon, arbitrum, fantom, avalanche
       sector: dex
       project: uniswap
-      contributors: rantumBits, bakabhai993
+      contributors: rantum, bakabhai993
     config:
       tags: ['ethereum', 'optimism', 'polygon', 'uniswap','trades', 'dex', 'jeff-dude','cross-chain']
     description: >
@@ -85,7 +85,7 @@ models:
     meta:
       blockchain: ethereum, optimism, polygon, arbitrum, fantom, avalanche
       project: zeroex
-      contributors: sui414, bakabhai993, hosuke
+      contributors: danning.sui, bakabhai993, hosuke
     config:
       tags: ['ethereum','0x','dex_aggregator','dex','aggregator']
     description: >

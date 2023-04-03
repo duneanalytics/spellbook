@@ -81,9 +81,9 @@ SELECT
 
         UNION ALL
 
-        -- MetaPoolSwap TokenExchange
+        -- StableSwap - Mislabeled as MetaPoolSwap TokenExchange
         SELECT
-            'meta' AS pool_type, -- has implications for decimals for curve
+            'stable' AS pool_type, -- has implications for decimals for curve
             t.evt_block_time AS block_time,
             t.evt_block_number,
             t.buyer AS taker,
@@ -108,6 +108,16 @@ SELECT
             AND s.evt_block_time >= date_trunc('day', now() - interval '1 week')
             {% endif %}
         )
+        AND NOT EXISTS (
+            SELECT 1 FROM {{ source('curvefi_optimism', 'StableSwap_evt_TokenExchange') }} s 
+            WHERE t.evt_block_number = s.evt_block_number
+            AND t.evt_tx_hash = s.evt_tx_hash
+            AND t.evt_index = s.evt_index
+            {% if is_incremental() %}
+            AND s.evt_block_time >= date_trunc('day', now() - interval '1 week')
+            {% endif %}
+        )
+        
         {% if is_incremental() %}
         AND t.evt_block_time >= date_trunc('day', now() - interval '1 week')
         {% endif %}
