@@ -20980,5 +20980,17 @@ FROM (VALUES
         ('0xe57402125e1fae01abb1d30d1efbec68a7ee5bd1', 'SFMC', 9),
         ('0xea63a4d9dc33969d655149353d630c4754a4282b', 'PACHA', 18),
         ('0xeb83c3bc5940ba7a13840002c4a4f55059761254', 'cSafemoon', 9),
-        ('0xf2a22b900dde3ba18ec2aef67d4c8c1a0dab6aac', 'MONKEYS', 9)
+        ('0xf2a22b900dde3ba18ec2aef67d4c8c1a0dab6aac', 'MONKEYS', 9),
+        ('0x148af0cada405380e8e3b2f694a6a7de848759b0', 'cNotes', 18),
+        ('0x447ddd4960d9fdbf6af9a790560d0af76795cb08', 'rETHwstETH-f', 18),
+        ('0x507ef31852cd2e107d21727d1e5ed40177d0c5e1', 'AGI', 9),
+        ('0x53011e93f21ec7a74cdfbb7e6548f1abce306833', 'LEXE', 18),
+        ('0x5a5696dddcc4a7c5215953bc704309eb4b3f7ae4', 'BRICS', 18),
+        ('0x5ee264d138505e18fba20cf18979e94d8aa3101d', 'DOGGA', 18),
+        ('0x65ebb39bd7a41094ca89e84378958081eaf1314a', '', 18),
+        ('0xbee709aa42375ace642338f7f657ff859a19c9bc', 'MCT', 18),
+        ('0xc6f432bab0db0e763e103825211945031d89a701', 'TAMAGO', 18),
+        ('0xe77f82f288a6a7eb4ac295a86fccb1f6d240499b', 'PLANB', 18),
+        ('0xf88baf18fab7e330fa0c4f83949e23f52fececce', 'GRAIN', 18),
+        ('0xfca89d55a768375ab7ca04485a35a964bea828dd', 'DELREY', 18)
      ) AS temp_table (contract_address, symbol, decimals)
