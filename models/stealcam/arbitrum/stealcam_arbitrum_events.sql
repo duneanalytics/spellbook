@@ -8,7 +8,7 @@
     post_hook='{{ expose_spells(\'["arbitrum"]\',
                                 "project",
                                 "stealcam",
-                                \'["hildobby"]\') }}')
+                                \'["hildobby","pandajackson42"]\') }}')
 }}
 
 
@@ -33,8 +33,8 @@ SELECT 'arbitrum' AS blockchain
 , '0x82af49447d8a07e3bd95bd0d56f35241523fbab1' AS currency_contract
 , 'ETH' AS currency_symbol
 , CAST(sc.value AS DECIMAL(38,0)) AS amount_raw
-, CAST(sc.value/POWER(10, 18) AS DECIMAL(38,0)) AS amount_original
-, CAST(pu.price*sc.value/POWER(10, 18) AS DECIMAL(38,0)) AS amount_usd
+, CAST(sc.value/POWER(10, 18) AS DOUBLE) AS amount_original
+, CAST(pu.price*sc.value/POWER(10, 18) AS DOUBLE) AS amount_usd
 , sc.contract_address AS project_contract_address
 , CAST(NULL AS string) AS aggregator_name
 , CAST(NULL AS string) AS aggregator_address

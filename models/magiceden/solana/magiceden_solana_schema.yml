@@ -10,6 +10,11 @@ models:
       tags: ['magiceden','solana','events']
     description: >
         Magic Eden events on Solana
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_date
+            - unique_trade_id
     columns:
       - &blockchain
         name: blockchain
@@ -88,6 +93,7 @@ models:
         description:  "Unique trade id, combination of signatures[0] and id"
         tests:
           - unique
+          - not_null
 
   - name: magiceden_solana_trades
     meta:
