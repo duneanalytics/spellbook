@@ -10,6 +10,16 @@ models:
       tags: ['ethereum', 'amm', 'trades', 'dex', 'cross-chain','optimism']
     description: >
       DEX trades on all chains across all contracts and versions
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_date
+            - blockchain
+            - project
+            - version
+            - tx_hash
+            - evt_index
+            - trace_address
     columns:
       - &blockchain
         name: blockchain
@@ -81,6 +91,50 @@ models:
         name: evt_index
         description: "Index of the corresponding trade event"
 
+  - name: dex_aggregator_trades
+    meta:
+      blockchain: ethereum, gnosis, avalanche_c, fantom
+      sector: dex_aggregator
+      contributors: bh2smith, Henrystats, jeff-dude
+    config:
+      tags: ['ethereum', 'gnosis', 'avalanche_c', 'fantom', 'aggregator', 'dex', 'trades', 'cross-chain']
+    description: >
+      Aggregator trades on all chains across all contracts and versions
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_date
+            - blockchain
+            - project
+            - version
+            - tx_hash
+            - evt_index
+            - trace_address
+    columns:
+      - *blockchain
+      - *project
+      - *version
+      - *block_date
+      - *block_time
+      - *token_bought_symbol
+      - *token_sold_symbol
+      - *token_pair
+      - *token_bought_amount
+      - *token_sold_amount
+      - *token_bought_amount_raw
+      - *token_sold_amount_raw
+      - *amount_usd
+      - *token_bought_address
+      - *token_sold_address
+      - *taker
+      - *maker
+      - *project_contract_address
+      - *tx_hash
+      - *tx_from
+      - *tx_to
+      - *trace_address
+      - *evt_index
+
   - name: dex_prices
     meta:
       blockchain: ethereum, bnb, avalanche_c, gnosis, optimism, arbitrum, fantom
@@ -113,3 +167,37 @@ models:
       - &sample_size
         name: sample_size
         description: "Number of times the token was traded within the coressponding hour"
+
+  - name: dex_incentive_mappings
+    meta:
+      blockchain: optimism
+      sector: dex
+      contributors: msilb7
+    config:
+      tags: ['optimism', 'amm', 'trades', 'dex', 'cross-chain','incentives']
+    description: >
+      Mappings for DEX incentives contracts (i.e. gauges, bribes) to liquidity pools on all chains across all contracts and versions
+    columns:
+      - *blockchain
+      - *project
+      - *version
+      - &pool_contract
+        name: pool_contract
+        description: "Address of the liquidity pool contract"
+      - &incentives_contract
+        name: incentives_contract
+        description: "Address of the contract where incentives are stored and emitted."
+      - &incentives_type
+        name: incentives_type
+        description: "Description of the incentives address type."
+      - &evt_block_time
+        name: evt_block_time
+        description: 'Block time in UTC'
+      - &evt_block_number
+        name: evt_block_number
+        description: 'Block Number'
+      - *contract_address
+      - &evt_tx_hash
+        name: evt_tx_hash
+        description: 'Tx Hash'
+      - *evt_index

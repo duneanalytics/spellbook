@@ -13,7 +13,7 @@ SELECT *
 FROM (
   select 
     lower(creator_address) as creator_address
-    ,contract_project
+    ,cast(contract_project as varchar(250)) AS contract_project
   from 
       (values
       ('0x932607335869cff6349ef450e74c83a3b871a9ff', 'Lyra V1')
@@ -33,11 +33,11 @@ FROM (
       ,('0x075da589886ba445d7c7e81c472059de7ae65250', 'Maker')
       ,('0x395ec94bf3e3dcd3afbd82cd03197731411e396b', 'Synthetix')
       ,('0x3c05b1239b223c969540fefc0270227a2b00e047', 'Synthetix')
-      ,('0x6c9fc64a53c1b71fb3f9af64d1ae3a4931a5f4e9', 'Uniswap V3')
+      ,('0x6c9fc64a53c1b71fb3f9af64d1ae3a4931a5f4e9', 'Uniswap')
       ,('0xdead1cb30b3ca13cd67d1d6f4e2790d12484fdd8', 'Chainlink')
       ,('0x03863f6ad36f1fcd908517e3c56c6b3fd3f50752', 'Chainlink')
-      ,('0x1e4e0e7dd2a854ea15f4ee852abb78a99c86357c', 'Uniswap V3')
-      ,('0xced01e7617bf6052a71154daa6d50d8b243f1b26', 'Uniswap V3')
+      ,('0x1e4e0e7dd2a854ea15f4ee852abb78a99c86357c', 'Uniswap')
+      ,('0xced01e7617bf6052a71154daa6d50d8b243f1b26', 'Uniswap')
       ,('0xd640037fa41436326e4a0e3fd0511aad83d2345c', 'Xchain')
       ,('0x1b9dfc56e38b0f92448659c114e2347bd803911c', 'Celer')
       ,('0x9a8f92a830a5cb89a3816e3d267cb7791c16b04d', 'Across')
@@ -115,7 +115,7 @@ FROM (
       ,('0x9841484a4a6c0b61c4eea71376d76453fd05ec9c', 'Thales')
       ,('0x8314125c8b68af2afd0d151eb4a551e88128a2ae', 'Thales')
       ,('0xde6d6f23aabbdc9469c8907ece7c379f98e4cb75', 'dForce')
-      ,('0x1b5caa1d3a1582a438e4cd93ee7a7e0e4d5624fb', 'Uniswap V3')
+      ,('0x1b5caa1d3a1582a438e4cd93ee7a7e0e4d5624fb', 'Uniswap')
       ,('0xc73567e09e1774f6e9e5f1f9de7fd0c3c4ce94fa', 'NFT for my bro')
       ,('0xa71405f7d11734f03f2616b93eaed22604c978bf', 'Mean Finance')
       ,('0x0f5b021bb7300a83b7ff74fe39b56908fc0929c3', 'The Cyber Inu')
@@ -344,7 +344,7 @@ FROM (
       ,('0x11F11121DF7256C40339393b0FB045321022ce44', 'LiFi')
       ,('0xcde47c1a5e2d60b9ff262b0a3b6d486048575ad9', 'OP')
       ,('0x59ca05674f5073f95f292aaca2d28a7dc80f12d6', 'Mirror')
-      ,('0xedcd79f34db8b78cd7a55e04dbf991ecd1a5c0f4', '0x')
+      ,('0xedcd79f34db8b78cd7a55e04dbf991ecd1a5c0f4', 'Zeroex (0x)')
       ,('0x48cff7ff77b2bf83e4a6f843b5b1709601671e83', 'Clipper')
       ,('0x1a3daa6f487a480c1ad312b90fd0244871940b66', 'Quix')
       ,('0x8df57e3d9ddde355dce1adb19ebce93419ffa0fb', 'Revert Finance')
@@ -393,7 +393,7 @@ FROM (
       ,('0x7D0831e0469e8b48e0F280459bC2CC44f23Ca7E4', '1Inch')
       ,('0xCb77b30841e1dEafFd88bA08B9654C667F80b80A', 'Quadrat')
       ,('0x001530e763FE9De4DCfe31BBd8548BCb579Ebf3A', 'Defiedge')
-      ,('0xD8fA8F87129c654a6Dd7F34EEDAf58379E176eb1', 'Uniswap V3')
+      ,('0xD8fA8F87129c654a6Dd7F34EEDAf58379E176eb1', 'Uniswap')
       ,('0xf09c27934A92c56c7C0dD6cBAc858C35fBd5170f', 'Scion Finance')
       ,('0x41BA3387E1a5a592E27B9EE33935957CE5F872C1', 'Avault')
       ,('0x86b86c24c7b1f404ada8b4000acbe04158e096bd', 'Defiedge')
@@ -406,6 +406,27 @@ FROM (
       ,('0xDcdE7a069dEEe7b73A795A76F97Eb9dca7f812d4', 'Connext')
       ,('0x42004661285881D4B0F245B1eD3774d8166CF314', 'Optimism Governor')
       ,('0xF285E70Ca2002b796A575E473285282BBf39D790', 'Omnisea')
+      ,('0xFbe304258DCf193b9a320541985e2078ddB34287', 'Decent')
+      ,('0x93798ef7e3a621d7c4eff22eda50b931fe57a3cf', 'QiDao')
+      ,('0xcD0b087E113152324FCA962488B4d9BeB6f4CaF6', 'NFTEarth')
+      ,('0x607291C9B3b03D8C2DC1F5f7F8db2B6A06C91183', 'Tide Protocol')
+      ,('0xEe312dDc7aCE9F08728241BF2693B67D3428271B', 'Aloe II')
+      ,('0x33d73cc0E060939476A10E47b86A4568c7DcF261', 'Coinvise')
+      ,('0xcD6596071e9CB8FC358796F2839A5704496795F9', 'Superfluid')
+      ,('0x71a15Ac12ee91BF7c83D08506f3a3588143898B5', 'Llamaswap')
+      ,('0xb48bC8FBB6283740389eF69eac58FBEE07d42f1A', 'Clipper')
+      ,('0xF26DdF26623e8Ae83f78012a48d24704AD175431', 'OpenOcean')
+      ,('0x6453bD91C3B06DCC24F588FFfa384b0EEB0178B3', 'Beefy Finance')
+      ,('0xd8693368d37b502ed54c315e38efde7eb3dcdb5c', 'FunDex')
+      ,('0x4e59b44847b379578588920ca78fbf26c0b4956c', 'LlamaPay')
+      ,('0x30B12942912Cee5A719edec2dD147224fCC373A0', 'Mummy Finance')
+      ,('0xe61Bdef3FFF4C3CF7A07996DCB8802b5C85B665a', 'Exactly')
+      ,('0x1874028262f1f4b2dd1f2700a72ee8b9b7c69090', 'Kyberswap')
+      ,('0x76d84163bc0bbf58d6d3f2332f8a9c5b339df983', 'Otterspace')
+      ,('0x5e9Bf1dD74b4d25B7009AF11582f537b08eA3d3c', 'Layer Zero')
+      ,('0xac789308a29783f507f1f3baacbd43326c5767f4', 'Gamma')
+      ,('0xba32a3d407353fc3adaa6f7ec6264df5bca51c4b', 'Arcadia Finance')
+
   ) as temp_table (creator_address, contract_project)
 
 ) f

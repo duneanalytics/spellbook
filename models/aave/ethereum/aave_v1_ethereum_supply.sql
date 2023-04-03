@@ -30,8 +30,8 @@ FROM (
     '1' AS version,
     'deposit' AS transaction_type,
     CASE
-        WHEN _reserve = '{{aave_mock_address}}' THEN '{{weth_address}}' --Using WETH instead of Aave "mock" address
-        ELSE _reserve
+        WHEN CAST(_reserve AS VARCHAR(100)) = '{{aave_mock_address}}' THEN '{{weth_address}}' --Using WETH instead of Aave "mock" address
+        ELSE CAST(_reserve AS VARCHAR(100))
     END AS token,
     _user AS depositor, 
     CAST(NULL AS VARCHAR(5)) AS withdrawn_to,
@@ -47,11 +47,11 @@ SELECT
     '1' AS version,
     'withdraw' AS transaction_type,
     CASE
-        WHEN _reserve = '{{aave_mock_address}}' THEN '{{weth_address}}' --Using WETH instead of Aave "mock" address
-        ELSE _reserve
+        WHEN CAST(_reserve AS VARCHAR(100)) = '{{aave_mock_address}}' THEN '{{weth_address}}' --Using WETH instead of Aave "mock" address
+        ELSE CAST(_reserve AS VARCHAR(100))
     END AS token,
     _user AS depositor,
-    _user AS withdrawn_to,
+    CAST(_user AS VARCHAR(100)) AS withdrawn_to,
     CAST(NULL AS VARCHAR(5)) AS liquidator,
     - CAST(_amount AS DECIMAL(38,0)) AS amount,
     evt_tx_hash,
@@ -64,12 +64,12 @@ SELECT
     '1' AS version,
     'deposit_liquidation' AS transaction_type,
     CASE
-        WHEN _collateral = '{{aave_mock_address}}' THEN '{{weth_address}}' --Using WETH instead of Aave "mock" address
-        ELSE _collateral
+        WHEN CAST(_collateral AS VARCHAR(100)) = '{{aave_mock_address}}' THEN '{{weth_address}}' --Using WETH instead of Aave "mock" address
+        ELSE CAST(_collateral AS VARCHAR(100))
     END AS token,
     _user AS depositor,
-    _liquidator AS withdrawn_to,
-    _liquidator AS liquidator,
+    CAST(_liquidator AS VARCHAR(100)) AS withdrawn_to,
+    CAST(_liquidator AS VARCHAR(100)) AS liquidator,
     - CAST(_liquidatedCollateralAmount AS DECIMAL(38,0)) AS amount,
     evt_tx_hash,
     evt_index,
@@ -81,6 +81,6 @@ LEFT JOIN {{ ref('tokens_ethereum_erc20') }} erc20
     ON deposit.token = erc20.contract_address
 LEFT JOIN {{ source('prices','usd') }} p 
     ON p.minute = date_trunc('minute', deposit.evt_block_time) 
-    AND p.contract_address = deposit.token 
+    AND CAST(p.contract_address AS VARCHAR(100)) = deposit.token 
     AND p.blockchain = 'ethereum'
 ;

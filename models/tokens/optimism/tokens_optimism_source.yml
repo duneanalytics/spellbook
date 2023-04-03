@@ -2,7 +2,7 @@ version: 2
 
 sources:
   - name: optimism_ethereum
-    description: "Optimism decoded tables related bridges and sequencer"
+    description: "Optimism decoded tables related to bridges and sequencer"
     freshness:
       warn_after: { count: 12, period: hour }
     tables:
@@ -38,3 +38,20 @@ sources:
           - &tokenId
             name: tokenId
             description: "NFT token id"
+
+      - name: L1StandardBridge_evt_ERC20DepositInitiated
+        loaded_at_field: evt_block_time
+        description: "Optimism ERC20 bridge transactions initiated from L1 to L2"
+
+      - name: OVM_L1StandardBridge_evt_ERC20DepositInitiated
+        loaded_at_field: evt_block_time
+        description: "Optimism ERC20 bridge transactions initiated from L1 to L2"
+
+  - name: ovm_optimism
+    description: "Optimism decoded tables related to bridges and sequencer on optimism"
+    freshness:
+      warn_after: { count: 12, period: hour }
+    tables:
+      - name: L2ERC721Bridge_evt_ERC721BridgeFinalized
+        loaded_at_field: evt_block_time
+        description: "Optimism NFT bridge transactions finalized on L2"

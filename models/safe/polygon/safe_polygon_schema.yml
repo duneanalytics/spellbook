@@ -47,6 +47,29 @@ models:
       - &tx_hash
         name: tx_hash
 
+  - name: safe_polygon_matic_transfers
+    config:
+      tags: ['safe', 'transfers', 'polygon']
+    description: "MATIC transfers into or out of Safes"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_date
+            - address
+            - tx_hash
+            - trace_address
+    columns:
+      - name: address
+        description: "Safe contract address"
+      - *block_date
+      - name: block_time
+        description: "Datetime of block"
+      - &amount_raw
+        name: amount_raw
+        description: "Raw amount of transferred MATIC"
+      - *tx_hash
+      - name: trace_address
+        description: ""
 
   - name: safe_polygon_transactions
     meta:

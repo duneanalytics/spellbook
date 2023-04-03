@@ -1,0 +1,44 @@
+version: 2
+
+sources: 
+  - name: nftearth_optimism
+    freshness:
+      warn_after: { count: 24, period: hour }
+    tables:
+      - name: Seaport_evt_OrderFulfilled
+        loaded_at_field: evt_block_time
+        description: "Events emitted from Seaport OrderFulfilled."
+        columns:
+          - &consideration
+            name: consideration
+            description: "The consideration contains an array of items that must be received in order to fulfill the order."
+          - &contract_address
+            name: contract_address
+            description: "Contract address."
+          - &evt_block_number
+            name: evt_block_number
+            description: "Block number"   
+          - &evt_block_time
+            name: evt_block_time
+            description: "Block time"  
+          - &evt_index
+            name: evt_index
+            description: "Event index."  
+          - &evt_tx_hash
+            name: evt_tx_hash
+            description: "Transaction hash."   
+          - &offer
+            name: offer
+            description: "The offer contains an array of items that may be transferred from the offerer's account."
+          - &offerer
+            name: offerer
+            description: "The address making the offer."
+          - &orderHash
+            name: orderHash
+            description: "Hash of the order."
+          - &recipient
+            name: recipient
+            description: "The recipient that will receive each item."
+          - &zone
+            name: zone
+            description: "Zone address."

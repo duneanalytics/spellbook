@@ -93,9 +93,15 @@ models:
       - &volume_usd
         name: volume_usd
         description: "Trading volume measured in USD value"
-        tests:
-          - zeroex_ethereum_fills_test:
-              seed_file: ref('zeroex_ethereum_api_fills_sample')
+      - &tx_from
+        name: tx_from
+        description: "Address which initiated the trade"
+      - &tx_to
+        name: tx_to
+        description: "Address which received the trade"
+      - &blockchain
+        name: blockchain
+        description: "Blockchain which the aggregator project is deployed"
               
   - name: zeroex_ethereum_api_fills_deduped
     meta:
@@ -113,15 +119,7 @@ models:
             - tx_hash
             - evt_index
     columns:
-      - &blockchain
-        name: blockchain
-        description: "Blockchain which the aggregator project is deployed"
-      - &project 
-        name: project 
-        description: "Name of aggregator project"
-      - &version
-        name: version
-        description: "Version of the contract built and deployed by the project"
+      - *blockchain
       - *block_date
       - *block_time
       - *taker_symbol
@@ -137,46 +135,18 @@ models:
       - *maker_token
       - *taker
       - *maker
-      - &project_contract_address
-        name: project_contract_address
-        description: "Project contract address which executed the trade on the blockchain"
+      - *affiliate_address
       - *tx_hash
-      - &tx_from
-        name: tx_from
-        description: "Address which initiated the trade"
-      - &tx_to
-        name: tx_to
-        description: "Address which received the trade"
-      - &trace_address
-        name: trace_address
-        tests:
-          - zeroex_ethereum_fills_deduped_test:
-              seed_file: ref('zeroex_ethereum_api_fills_deduped_sample')
+      - *tx_from
+      - *tx_to
       - *evt_index
-      - &token_bought_amount
-        name: token_bought_amount
-        description: "Value of the token bought at time of execution in the original currency"
-      - &token_sold_amount
-        name: token_sold_amount
-        description: "Value of the token sold at time of execution in the original currency"
-      - &token_bought_amount_raw
-        name: token_bought_amount_raw
-        description: "Raw value of the token bought at time of execution in the original currency"
-      - &token_sold_amount_raw
-        name: token_sold_amount_raw
-        description: "Raw value of the token sold at time of execution in the original currency"
-      - &token_bought_address
-        name: token_bought_address
-        description: "Contract address of the token bought"
-      - &token_sold_address
-        name: token_sold_address
-        description: "Contract address of the token sold"
-      - &token_bought_symbol
-        name: token_bought_symbol
-        description: "Token symbol for token bought in the trade"
-      - &token_sold_symbol
-        name: token_sold_symbol
-        description: "Token symbol for token sold in the trade"
+      - *type
+      - *swap_flag
+      - *contract_address
+      - &fills_within
+        name: fills_within
+        description: "fills in then multihop, if present"          
+
         
   - name: zeroex_ethereum_nft_fills
     meta:

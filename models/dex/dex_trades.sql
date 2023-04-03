@@ -1,5 +1,10 @@
 {{ config(
         alias ='trades',
+        partition_by = ['block_date'],
+        materialized = 'incremental',
+        file_format = 'delta',
+        incremental_strategy = 'merge',
+        unique_key = ['block_date', 'blockchain', 'project', 'version', 'tx_hash', 'evt_index', 'trace_address'],
         post_hook='{{ expose_spells(\'["ethereum", "bnb", "avalanche_c", "gnosis", "optimism", "arbitrum", "fantom", "polygon"]\',
                                 "sector",
                                 "dex",
@@ -7,14 +12,6 @@
         )
 }}
 
-/*
-list of models using old generic test, due to multiple versions in one model:
-    - curvefi_trades
-    - airswap_ethereum_trades
-    - dodo_ethereum_trades
-    - bancor_ethereum_trades
-    - mstable_ethereum_trades
-*/
 
 {% set dex_trade_models = [
  ref('uniswap_trades')
@@ -23,7 +20,7 @@ list of models using old generic test, due to multiple versions in one model:
 ,ref('fraxswap_trades')
 ,ref('curvefi_trades')
 ,ref('airswap_ethereum_trades')
-,ref('clipper_ethereum_trades')
+,ref('clipper_trades')
 ,ref('shibaswap_ethereum_trades')
 ,ref('swapr_ethereum_trades')
 ,ref('defiswap_ethereum_trades')
@@ -41,7 +38,7 @@ list of models using old generic test, due to multiple versions in one model:
 ,ref('zigzag_trades')
 ,ref('nomiswap_bnb_trades')
 ,ref('gmx_trades')
-,ref('biswap_bnb_trades') 
+,ref('biswap_bnb_trades')
 ,ref('wombat_bnb_trades')
 ,ref('iziswap_bnb_trades')
 ,ref('babyswap_bnb_trades')
@@ -58,6 +55,8 @@ list of models using old generic test, due to multiple versions in one model:
 ,ref('arbswap_trades')
 ,ref('balancer_trades')
 ,ref('spiritswap_fantom_trades')
+,ref('quickswap_trades')
+,ref('maverick_trades')
 ] %}
 
 
@@ -90,6 +89,9 @@ FROM (
         evt_index
     FROM {{ dex_model }}
     {% if not loop.last %}
+    {% if is_incremental() %}
+    WHERE block_date >= date_trunc("day", now() - interval '1 week')
+    {% endif %}
     UNION ALL
     {% endif %}
     {% endfor %}

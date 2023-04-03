@@ -10,8 +10,8 @@
 }}
 
 select 
-  dune_name
-  ,mapped_name
+  cast(dune_name as varchar(250)) AS dune_name
+  ,cast(mapped_name as varchar(250)) AS mapped_name
 from (
     values
     ('lyra_v1',	'Lyra')
@@ -19,9 +19,9 @@ from (
     ,('aave_v3', 'Aave')
     ,('perp_v2', 'Perpetual Protocol')
     ,('synthetix_futures', 'Kwenta')
-    ,('zeroex', '0x')
-    ,('uniswap_v3', 'Uniswap V3')
-    ,('Uniswap V3', 'Uniswap V3')
+    ,('zeroex', 'Zeroex (0x)' )
+    ,('uniswap_v3', 'Uniswap')
+    ,('Uniswap V3', 'Uniswap')
     ,('oneinch', '1inch')
     ,('pika_perp_v2', 'Pika Protocol')
     ,('quixotic_v1', 'Quix')
@@ -73,4 +73,8 @@ from (
     ,('powerbomb','Powerbomb Finance')
     ,('lemma_finance','Lemma Finance')
     ,('lemma','Lemma Finance')
+    ,('arrakis','Arrakis Finance')
+    ,('arrakis_finance','Arrakis Finance')
+    ,('collab_land_dao_pass', 'Collab Land')
+    ,('Llama', 'Llamapay')
     ) as temp_table (dune_name, mapped_name)
