@@ -22,9 +22,9 @@ SELECT 'polygon' AS blockchain
 , et.from AS tx_from
 , et.to AS tx_to
 , app.evt_index
-, 'ethereum' || '-' || app.evt_tx_hash || '-' || app.evt_index AS unique_approval_id
-FROM {{ source('erc721_ethereum','evt_Approval') }} app
-INNER JOIN {{ source('ethereum', 'transactions') }} et ON et.block_number=app.evt_block_number
+, 'polygon' || '-' || app.evt_tx_hash || '-' || app.evt_index AS unique_approval_id
+FROM {{ source('erc721_polygon','evt_Approval') }} app
+INNER JOIN {{ source('polygon', 'transactions') }} et ON et.block_number=app.evt_block_number
     AND et.hash=app.evt_tx_hash
     {% if is_incremental() %}
     AND et.block_time >= date_trunc("day", now() - interval '1 week')
@@ -50,9 +50,9 @@ SELECT 'polygon' AS blockchain
 , et.from AS tx_from
 , et.to AS tx_to
 , app.evt_index
-, 'ethereum' || '-' || app.evt_tx_hash || '-' || app.evt_index AS unique_approval_id
-FROM {{ source('erc721_ethereum','evt_ApprovalForAll') }} app
-INNER JOIN {{ source('ethereum', 'transactions') }} et ON et.block_number=app.evt_block_number
+, 'polygon' || '-' || app.evt_tx_hash || '-' || app.evt_index AS unique_approval_id
+FROM {{ source('erc721_polygon','evt_ApprovalForAll') }} app
+INNER JOIN {{ source('polygon', 'transactions') }} et ON et.block_number=app.evt_block_number
     AND et.hash=app.evt_tx_hash
     {% if is_incremental() %}
     AND et.block_time >= date_trunc("day", now() - interval '1 week')
@@ -78,9 +78,9 @@ SELECT 'polygon' AS blockchain
 , et.from AS tx_from
 , et.to AS tx_to
 , app.evt_index
-, 'ethereum' || '-' || app.evt_tx_hash || '-' || app.evt_index AS unique_approval_id
-FROM {{ source('erc1155_ethereum','evt_ApprovalForAll') }} app
-INNER JOIN {{ source('ethereum', 'transactions') }} et ON et.block_number=app.evt_block_number
+, 'polygon' || '-' || app.evt_tx_hash || '-' || app.evt_index AS unique_approval_id
+FROM {{ source('erc1155_polygon','evt_ApprovalForAll') }} app
+INNER JOIN {{ source('polygon', 'transactions') }} et ON et.block_number=app.evt_block_number
     AND et.hash=app.evt_tx_hash
     {% if is_incremental() %}
     AND et.block_time >= date_trunc("day", now() - interval '1 week')
