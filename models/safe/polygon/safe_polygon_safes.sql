@@ -49,3 +49,5 @@ where et.success = true
     {% if is_incremental() %}
     and et.block_time > date_trunc("day", now() - interval '1 week')
     {% endif %}
+    
+-- this spell ends till 10th March 2023.
