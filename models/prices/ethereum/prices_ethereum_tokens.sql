@@ -89,6 +89,7 @@ FROM
     ("crv-curve-dao-token", "ethereum", "CRV", "0xd533a949740bb3306d119cc777fa900ba034cd52", 18),
     ("ctxc-cortex", "ethereum", "CTXC", "0xea11755ae41d889ceec39a63e6ff75a02bc1c00d", 18),
     ("cusdt-compound-usdt", "ethereum", "cUSDT", "0xf650c3d88d12db855b8bf7d11be6c55a4e07dcc9", 8),
+    ("cusdc-compound-usd-coin", "ethereum", "cUSDC", "0x39aa39c021dfbae8fac545936693ac917d5e7563", 8),
     ("cvc-civic", "ethereum", "CVC", "0x41e5560054824ea6b0732e656e3ad64e20e94e45", 8),
     ("cvt-cybervein", "ethereum", "CVT", "0xbe428c3867f05dea2a89fc76a102b544eac7f772", 18),
     ("cvx-convex-finance", "ethereum", "CVX", "0x4e3fbd56cd56c3e72c1403e103b45db9da5b9d2b", 18),
@@ -242,6 +243,7 @@ FROM
     ("mta-meta", "ethereum", "MTA", "0xa3bed4e1c75d00fa6f4e5e6922db7261b5e9acd2", 18),
     ("mtl-metal", "ethereum", "MTL", "0xf433089366899d83a9f26a773d59ec7ecf30355e", 8),
     ("muse-muse", "ethereum", "MUSE", "0xb6ca7399b4f9ca56fc27cbff44f4d2e4eef1fc81", 18),
+    ("mute-mute", "ethereum", "MUTE", "0xa49d7499271ae71cd8ab9ac515e6694c755d400c", 18),
     ("nas-nebulas", "ethereum", "NAS", "0x5d65d971895edc438f465c17db6992698a52318d", 18),
     ("ncash-nucleus-vision", "ethereum", "nCash", "0x809826cceab68c387726af962713b64cb5cb3cca", 18),
     ("ndx-indexed-finance", "ethereum", "ndx", "0x86772b1409b61c639eaac9ba0acfbb6e238e5f83", 18),
@@ -1316,6 +1318,14 @@ FROM
     ("vra-verasity", "ethereum", "VRA", "0xf411903cbc70a74d22900a5de66a2dda66507255", 18),
     ("gt-gatechain-token","ethereum", "GT", "0xe66747a101bff2dba3697199dcce5b743b454759",18),
     ("stg-stargatetoken","ethereum","STG","0xaf5191b0de278c7286d6c7cc6ab6bb8a73ba2cd6",18),
-    ("ico-axelar", "ethereum", "AXL", "0x467719ad09025fcc6cf6f8311755809d45a5e5f3", 6)
-
+    ("ico-axelar", "ethereum", "AXL", "0x467719ad09025fcc6cf6f8311755809d45a5e5f3", 6),
+    ("arb-arbitrum","ethereum","ARB","0xb50721bcf8d664c30412cfbc6cf7a15145234ad1",18),
+    ("cmp-component", "ethereum", "CMP", "0x9f20ed5f919dc1c1695042542c13adcfc100dcab", 18),
+    ("gas-gas-dao", "ethereum", "GAS", "0x6bba316c48b49bd1eac44573c5c871ff02958469", 18),
+    ("fort-forta", "ethereum", "FORT", "0x41545f8b9472d758bb669ed8eaeeecd7a9c4ec29", 18),
+    ("tknfy-tokenfy", "ethereum", "TKNFY", "0xa6dd98031551c23bb4a2fbe2c4d524e8f737c6f7", 18),
+    ("ff-forefront", "ethereum", "FF", "0x7e9d8f07a64e363e97a648904a89fb4cd5fb94cd", 18),
+    ("pal-paladin-eth", "ethereum", "PAL", "0xab846fb6c81370327e784ae7cbb6d6a6af6ff4bf", 18),
+    ("sudo-sudo-governance-token", "ethereum", "SUDO", "0x3446dd70b2d52a6bf4a5a192d9b0a161295ab7f9", 18),
+    ("sclp-scallop", "ethereum", "SCLP","0x3f6d1649a1366b0e82173d33e365953f9f1cc84c",18)
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)
