@@ -73,9 +73,9 @@ sources:
     freshness:
       warn_after: { count: 12, period: hour }
     tables:
-      - name: Pair_evt_Swap
+      - name: PancakeV3Pool_evt_Swap
         loaded_at_field: evt_block_time
-        ddescription: >
+        description: >
           Pancakeswap v3 pair swap events table
         columns:
           - &amount0
@@ -106,6 +106,7 @@ sources:
           - &tick
             name: tick
             description: "the log base 1.0001 of price of the pool after the swap"
+
 
       - name: PancakeV3Factory_evt_PoolCreated
         loaded_at_field: evt_block_time
