@@ -9,14 +9,14 @@
         post_hook='{{ expose_spells(\'["bnb"]\',
                                 "project",
                                 "zeroex",
-                                \'["rantumBits", "bakabhai993", "hosuke"]\') }}'
+                                \'["rantum", "bakabhai993"]\') }}'
     )
 }}
 
 {% set zeroex_v3_start_date = '2019-12-01' %}
 {% set zeroex_v4_start_date = '2021-01-06' %}
 
--- Test Query here: https://dune.com/queries/1330551
+-- Test Query here: https://dune.com/queries/2274187
 WITH zeroex_tx AS (
     SELECT tx_hash,
            max(affiliate_address) as affiliate_address
