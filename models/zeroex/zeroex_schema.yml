@@ -85,7 +85,7 @@ models:
     meta:
       blockchain: ethereum, optimism, polygon, arbitrum, fantom, avalanche
       project: zeroex
-      contributors: danning.sui, bakabhai993, hosuke
+      contributors: danning.sui, bakabhai993, hosuke, rantum
     config:
       tags: ['ethereum','0x','dex_aggregator','dex','aggregator']
     description: >
@@ -179,7 +179,7 @@ models:
             - tx_hash
             - evt_index
       - check_seed:
-          seed_file: ref('zeroex_ethereum_api_fills_sample')
+          seed_file: ref('zeroex_fills_sample')
           match_columns:
             - tx_hash
             - evt_index
