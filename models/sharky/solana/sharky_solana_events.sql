@@ -16,7 +16,7 @@
 {%- set sharky_smart_contract = 'SHARKobtfF1bHhxD2eqftjHBdVSCbKo9JtgK71FhELP' %}
 
 WITH sharky_txs AS (
-        SELECT tx_id AS id,
+        SELECT DISTINCT tx_id AS id,
                block_time
         FROM {{ source('solana', 'account_activity') }}
         WHERE tx_success
