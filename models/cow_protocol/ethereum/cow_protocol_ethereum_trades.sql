@@ -221,7 +221,7 @@ valued_trades as (
            valid_to,
            flags,
            case when (flags % 2) = 0 then 'SELL' else 'BUY' end as order_type,
-           case when ((flags / 2) % 2) = 0 then 'Not partially fillable' else 'Partially fillable' end as partial_fill
+           case when ((flags / 2) % 2) = 0 then false else true end as partial_fill
     FROM trades_with_token_units trades
     JOIN uid_to_app_id
         ON uid = order_uid
