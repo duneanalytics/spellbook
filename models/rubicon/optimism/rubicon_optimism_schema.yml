@@ -94,6 +94,7 @@ models:
       - &evt_index
         name: evt_index
         description: "the event index of the trade"
+
   - name: rubicon_optimism_offers
     meta:
       blockchain: optimism

@@ -81,6 +81,7 @@ models:
       - &evt_index
         name: evt_index
         description: "the position of this event log within this transaction"
+
   - name: rubicon_offers
     meta:
       blockchain: optimism

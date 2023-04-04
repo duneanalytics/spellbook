@@ -50,6 +50,7 @@ sources:
           - &timestamp
             name: timestamp
             description: "the timestamp of the event creation"
+
       - name: RubiconMarket_evt_LogMake
         loaded_at_field: evt_block_time
         description: "a table of events triggered when a maker creates an offer" 
