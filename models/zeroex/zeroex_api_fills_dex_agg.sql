@@ -38,7 +38,7 @@ FROM (
       taker_token as token_sold_address,
       taker_token_amount  as token_sold_amount,
       taker_symbol  as  token_sold_symbol,
-      CAST(ARRAY[] as array<bigint>) as trace_address,
+      CAST(ARRAY() as array<bigint>) as trace_address,
       tx_from  as tx_from,
       tx_hash  as tx_hash,
       tx_to  as tx_to,
