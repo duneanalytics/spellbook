@@ -183,8 +183,12 @@ models:
             - token_sold_symbol
     columns:
       - *blockchain
-      - *project 
-      - *version
+      - &project 
+        name: project
+        description: "The project that the swap was made on"
+      - &version
+        name: version
+        description: "The version of the 0x API"
       - *block_date
       - *block_time
       - &token_bought_symbol
