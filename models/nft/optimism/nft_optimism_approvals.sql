@@ -13,11 +13,11 @@ SELECT 'optimism' AS blockchain
 , app.evt_block_number AS block_number
 , app.owner AS address
 , 'erc721' AS token_standard
-, false AS approval_for_all
+, CAST(false AS boolean) AS approval_for_all
 , app.contract_address
-, app.tokenId AS token_id
+, CAST(app.tokenId AS DECIMAL(38,0)) AS token_id
 , approved 
-, NULL AS approved_for_all
+, CAST(NULL AS boolean) AS approved_for_all
 , app.evt_tx_hash AS tx_hash
 , et.from AS tx_from
 , et.to AS tx_to
@@ -41,11 +41,11 @@ SELECT 'optimism' AS blockchain
 , app.evt_block_number AS block_number
 , app.owner AS address
 , 'erc721' AS token_standard
-, true AS approval_for_all
+, CAST(true AS boolean) AS approval_for_all
 , app.contract_address
-, NULL AS token_id
+, CAST(NULL AS DECIMAL(38,0)) AS token_id
 , NULL AS approved 
-, approved AS approved_for_all
+, CAST(approved AS boolean) AS approved_for_all
 , app.evt_tx_hash AS tx_hash
 , et.from AS tx_from
 , et.to AS tx_to
@@ -69,11 +69,11 @@ SELECT 'optimism' AS blockchain
 , app.evt_block_number AS block_number
 , app.operator AS address
 , 'erc1155' AS token_standard
-, true AS approval_for_all
+, CAST(true AS boolean) AS approval_for_all
 , app.contract_address
-, NULL AS token_id
+, CAST(NULL AS DECIMAL(38,0)) AS token_id
 , NULL AS approved 
-, approved AS approved_for_all
+, CAST(approved AS boolean) AS approved_for_all
 , app.evt_tx_hash AS tx_hash
 , et.from AS tx_from
 , et.to AS tx_to
