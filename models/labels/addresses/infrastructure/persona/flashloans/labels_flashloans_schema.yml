@@ -15,9 +15,6 @@ models:
           combination_of_columns:
             - address
     columns:
-      - &blockchain
-        name: blockchain
-        description: "Blockchain"
       - name: address
         description: "Address of known flashloan user wallet"
       - name: category
@@ -28,3 +25,15 @@ models:
         description: "Blockchain" 
       - name: name
         description: "Label name of the contract (e.g., Aave v3 Flashloan User)"
+      - &contributor
+        name: contributor
+        description: "Wizard(s) contributing to labels"
+      - &source
+        name: source
+        description: "How were labels generated (could be static or query)"
+      - &created_at
+        name: created_at
+        description: "When were labels created"
+      - &updated_at
+        name: updated_at
+        description: "When were labels updated for the last time"

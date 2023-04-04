@@ -7,8 +7,8 @@
     )
 }}
 
-SELECT DISTINCT 'ethereum'               AS blockchain,
-                target                   AS address,
+WITH basic_info AS (
+SELECT DISTINCT target                   AS address,
                 'flashloan'              AS category,
                 'persona'                AS label_type,
                 'flashloan_users'        AS model_name,
@@ -20,8 +20,7 @@ WHERE
     amount != 0
 
 UNION ALL
-SELECT DISTINCT 'ethereum'               AS blockchain,
-                target                   AS address,
+SELECT DISTINCT target                   AS address,
                 'flashloan'              AS category,
                 'persona'                AS label_type,
                 'flashloan_users'        AS model_name,
@@ -33,8 +32,7 @@ WHERE
     amount != 0
 
 UNION ALL
-SELECT DISTINCT 'ethereum'                   AS blockchain,
-                recipient                    AS address,
+SELECT DISTINCT recipient                    AS address,
                 'flashloan'                  AS category,
                 'persona'                    AS label_type,
                 'flashloan_users'            AS model_name,
@@ -46,8 +44,7 @@ WHERE
     amount != 0
 
 UNION ALL
-SELECT DISTINCT 'ethereum'                  AS blockchain,
-                recipient                   AS address,
+SELECT DISTINCT recipient                   AS address,
                 'flashloan'                 AS category,
                 'persona'                   AS label_type,
                 'flashloan_users'           AS model_name,
@@ -57,3 +54,12 @@ FROM
     {{ source('uniswap_v3_ethereum', 'Pair_evt_Flash') }}
 WHERE
     amount0 != 0
+)
+
+SELECT *
+     , 'niftytable'       AS contributor
+     , 'query'            AS source
+     , date('2022-10-08') AS created_at
+     , NOW()              AS modified_at
+FROM basic_info
+WHERE address IS NOT NULL
