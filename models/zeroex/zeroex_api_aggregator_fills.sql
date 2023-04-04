@@ -21,7 +21,7 @@ SELECT *
 FROM (
     {% for model in zeroex_models %}
     SELECT
-        volume_usd  as amount_usd,
+    volume_usd  as amount_usd,
       block_date  as block_date,
       block_time  as block_time,
       blockchain  as blockchain,
