@@ -26,5 +26,6 @@ FROM (values
   ,('0x4200000000000000000000000000000000000012',	'L2StandardTokenFactory')
   ,('0xeedA95f4513f950957Ae84E4da221ee260Fa2f40',	'Deterministic Factory')
   ,('0x4e59b44847b379578588920cA78FbF26c0B4956C', 'CREATE2 Factory')
+  ,('0xE21f6b2A09bB27149E1afec31D05675bcf581FEd', 'CREATE3Factory')
 
 ) a (creator_address, creator_name)

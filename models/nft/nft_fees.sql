@@ -3,7 +3,7 @@
         post_hook='{{ expose_spells(\'["ethereum","solana","bnb","optimism","arbitrum","polygon"]\',
                                     "sector",
                                     "nft",
-                                    \'["soispoke","0xRob"]\') }}')
+                                    \'["soispoke","0xRob", "hildobby"]\') }}')
 }}
 
 
@@ -30,6 +30,7 @@
 ,ref('nftb_bnb_fees')
 ,ref('tofu_fees')
 ,ref('nftearth_optimism_fees')
+,ref('stealcam_arbitrum_fees')
 ] %}
 
 
