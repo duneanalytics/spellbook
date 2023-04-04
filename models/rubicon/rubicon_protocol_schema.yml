@@ -3,7 +3,7 @@ version: 2
 models:
   - name: rubicon_trades
     meta:
-      blockchain: optimism,
+      blockchain: optimism
       sector: dex
       project: rubicon
       contributors: msilb7
