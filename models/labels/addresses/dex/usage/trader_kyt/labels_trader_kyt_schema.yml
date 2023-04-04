@@ -10,6 +10,11 @@ models:
     config:
       tags: ['labels', 'cross-chain', 'KYT', 'dex']
     description: "Trader category based on trader tx count and  trades value in the last 30 days"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - address
+            - name
     columns:
       - &blockchain
         name: blockchain
