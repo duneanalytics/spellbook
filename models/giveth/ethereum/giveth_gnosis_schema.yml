@@ -1,15 +1,15 @@
 version: 2
 
 models:
-  - name: airdrop_claims
+  - name: giveth_gnosis_airdrop_claims
     meta:
-      blockchain: ethereum, optimism, arbitrum, avalanche_c, bnb, gnosis
+      blockchain: gnosis
       sector: airdrop
-      project: addresses
+      project: giveth
       contributors: hildobby
     config:
-      tags: ['table', 'airdrop', 'ethereum', 'optimism', 'arbitrum', 'avalanche_c', 'bnb', 'gnosis', 'claim']
-    description: "List of claim transactions for all airdrops"
+      tags: ['table', 'airdrop', 'gnosis', 'claim', 'giveth']
+    description: "List of claim transactions for the $GIV airdrop"
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:

@@ -1,15 +1,15 @@
 version: 2
 
 models:
-  - name: airdrop_claims
+  - name: pangolin_avalanche_c_airdrop_claims
     meta:
-      blockchain: ethereum, optimism, arbitrum, avalanche_c, bnb, gnosis
+      blockchain: avalanche_c
       sector: airdrop
-      project: addresses
+      project: pangolin
       contributors: hildobby
     config:
-      tags: ['table', 'airdrop', 'ethereum', 'optimism', 'arbitrum', 'avalanche_c', 'bnb', 'gnosis', 'claim']
-    description: "List of claim transactions for all airdrops"
+      tags: ['table', 'airdrop', 'avalanche_c', 'claim', 'pangolin']
+    description: "List of claim transactions for the $PNG airdrop"
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:

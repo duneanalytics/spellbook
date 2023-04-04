@@ -1,6 +1,7 @@
 {{ config(
+        schema = 'airdrop_bnb',
         alias ='claims',
-        post_hook='{{ expose_spells(\'["ethereum", "optimism", "arbitrum", "avalanche_c", "bnb", "gnosis"]\',
+        post_hook='{{ expose_spells(\'["bnb"]\',
                                       "sector",
                                       "airdrop",
                                     \'["hildobby"]\') }}'
@@ -9,14 +10,8 @@
 
 
 {% set airdrop_claims_models = [
-    ref('airdrop_ethereum_claims')
-    , ref('airdrop_optimism_claims')
-    , ref('airdrop_arbitrum_claims')
-    , ref('airdrop_avalanche_c_claims')
-    , ref('airdrop_bnb_claims')
-    , ref('airdrop_gnosis_claims')
+    ref('ellipsis_finance_bnb_airdrop_claims')
 ] %}
-
 
 SELECT *
 FROM (

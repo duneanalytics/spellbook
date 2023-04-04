@@ -93,6 +93,15 @@ models:
       arbitrum:
         +schema: airdrop_arbitrum
         +materialized: table
+      avalanche_c:
+        +schema: airdrop_avalanche_c
+        +materialized: table
+      bnb:
+        +schema: airdrop_bnb
+        +materialized: table
+      gnosis:
+        +schema: airdrop_gnosis
+        +materialized: table
 
     staking:
       +schema: staking
@@ -797,6 +806,16 @@ models:
       +schema: apecoin
       ethereum:
         +schema: apecoin_ethereum
+
+    pangolin:
+      +schema: pangolin
+      avalanche_c:
+        +schema: pangolin_avalanche_c
+
+    giveth:
+      +schema: giveth
+      gnosis:
+        +schema: giveth_gnosis
 
     genie:
       +schema: genie

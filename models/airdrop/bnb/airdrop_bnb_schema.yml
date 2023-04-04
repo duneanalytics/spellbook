@@ -1,15 +1,16 @@
 version: 2
 
 models:
-  - name: airdrop_claims
+  - name: airdrop_bnb_claims
     meta:
-      blockchain: ethereum, optimism, arbitrum, avalanche_c, bnb, gnosis
+      blockchain: bnb
       sector: airdrop
-      project: addresses
+      sector: airdrop
+      project: airdrop
       contributors: hildobby
     config:
-      tags: ['table', 'airdrop', 'ethereum', 'optimism', 'arbitrum', 'avalanche_c', 'bnb', 'gnosis', 'claim']
-    description: "List of claim transactions for all airdrops"
+      tags: ['table', 'airdrop', 'bnb', 'claim']
+    description: "List of airdrop claim transactions on BNB"
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
