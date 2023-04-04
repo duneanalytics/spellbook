@@ -9,7 +9,7 @@
 
 WITH basic_info AS (
 SELECT DISTINCT target                   AS address,
-                'flashloan'              AS category,
+                'infrastructure'         AS category,
                 'persona'                AS label_type,
                 'flashloan_users'        AS model_name,
                 'ethereum'               AS blockchain,
@@ -21,7 +21,7 @@ WHERE
 
 UNION ALL
 SELECT DISTINCT target                   AS address,
-                'flashloan'              AS category,
+                'infrastructure'         AS category,
                 'persona'                AS label_type,
                 'flashloan_users'        AS model_name,
                 'ethereum'               AS blockchain,
@@ -33,7 +33,7 @@ WHERE
 
 UNION ALL
 SELECT DISTINCT recipient                    AS address,
-                'flashloan'                  AS category,
+                'infrastructure'             AS category,
                 'persona'                    AS label_type,
                 'flashloan_users'            AS model_name,
                 'ethereum'                   AS blockchain,
@@ -45,7 +45,7 @@ WHERE
 
 UNION ALL
 SELECT DISTINCT recipient                   AS address,
-                'flashloan'                 AS category,
+                'infrastructure'            AS category,
                 'persona'                   AS label_type,
                 'flashloan_users'           AS model_name,
                 'ethereum'                  AS blockchain,
