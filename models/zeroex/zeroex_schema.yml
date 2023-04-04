@@ -103,6 +103,7 @@ models:
       - &blockchain
         name: blockchain
         description: "Blockchain which the DEX is deployed"
+        
   - name: zeroex_api_fills_deduped
     meta: 
       blockchain: ethereum, optimism, polygon, arbitrum, fantom, avalanche
@@ -156,6 +157,7 @@ models:
       - *tx_to
       - *evt_index
       - *blockchain
+
   - name: zeroex_api_fills_dex_agg
     meta:
       blockchain: ethereum, optimism, polygon, arbitrum, fantom, avalanche
@@ -194,7 +196,7 @@ models:
       - &token_bought_symbol
         name: token_bought_symbol
         description: "Token symbol of the token bought by the taker"
-      - *token_sold_symbol
+      - &token_sold_symbol
         name: token_sold_symbol
         description: "Token symbol of the token sold by the taker"
       - *token_pair
