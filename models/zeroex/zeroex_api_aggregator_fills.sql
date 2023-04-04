@@ -45,8 +45,9 @@ FROM (
       cast(null as varchar(10)) version,
       maker_token_amount_raw  as token_bought_amount_raw
     FROM {{ model }}
+    where type not in ('OtcOrderFilled','LimitOrderFilled','RfqOrderFilled')
     {% if not loop.last %}
-     where type not in ('OtcOrderFilled','LimitOrderFilled','RfqOrderFilled')
+     
     UNION ALL
    
     {% endif %}
