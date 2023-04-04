@@ -10,6 +10,11 @@ models:
     config:
       tags: ['labels', 'cex', 'erc20', 'ethereum', 'bnb', 'polygon', 'solana', 'arbitrum', 'optimism', 'fantom', 'avalanche_c', 'gnosis']
     description: "CEX tokens contract addresses"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - address
     columns:
       - name: blockchain
         description: "Blockchain"   
