@@ -212,7 +212,7 @@ models:
       - *tx_to
       - *trace_address
       - *evt_index
-  - name: zeroex_aggregator_fills
+  - name: zeroex_api_aggregator_fills
     meta:
       blockchain: ethereum, optimism, polygon, arbitrum, fantom, avalanche
       project: zeroex
