@@ -17,7 +17,7 @@ models:
             - tx_hash
             - evt_index
       - check_seed:
-          seed_file: ref('zeroex_ethereum_api_fills_sample')
+          seed_file: ref('zeroex_api_fills_sample')
           match_columns:
             - tx_hash
             - evt_index
@@ -113,42 +113,6 @@ models:
       tags: ['ethereum', 'optimism', 'polygon', 'uniswap','trades', 'dex', 'jeff-dude','cross-chain']
     description: >
         Zeroex API on all chains across all contracts and versions. This table will load dex trades downstream.
-    columns:
-      columns:
-      - *tx_hash
-      - *block_number
-      - *contract_address
-      - *block_time
-      - *block_date
-      - *maker
-      - *taker
-      - *taker_token
-      - *taker_symbol
-      - *maker_token
-      - *maker_symbol      
-      - *token_pair
-      - *taker_token_amount
-      - *taker_token_amount_raw
-      - *maker_token_amount
-      - *maker_token_amount_raw
-      - *type
-      - *affiliate_address
-      - *swap_flag
-      - *matcha_limit_order_flag
-      - *volume_usd
-      - *tx_from
-      - *tx_to
-      - *evt_index
-      - *blockchain
-  - name: zeroex_native_fills 
-    meta:
-      blockchain: ethereum, optimism, polygon, arbitrum, fantom, avalanche
-      project: zeroex
-      contributors: rantum, danning.sui, bakabhai993 
-    config:
-      tags: ['ethereum','0x','dex_aggregator','dex','aggregator']
-    description: >
-        0x native swaps thru 0x exchange contracts (without using 0x API)
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -156,7 +120,7 @@ models:
             - tx_hash
             - evt_index
       - check_seed:
-          seed_file: ref('zeroex_native_sample')
+          seed_file: ref('zeroex_api_fills_deduped_sample')
           match_columns:
             - tx_hash
             - evt_index
@@ -166,6 +130,7 @@ models:
             - taker_symbol
             - maker_symbol
     columns:
+      columns:
       - *tx_hash
       - *block_number
       - *contract_address
@@ -207,7 +172,7 @@ models:
             - tx_hash
             - evt_index
       - check_seed:
-          seed_file: ref('zeroex_aggreagor_sample')
+          seed_file: ref('zeroex_api_fills_dex_agg_sample')
           match_columns:
             - tx_hash
             - evt_index
