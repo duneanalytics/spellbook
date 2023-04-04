@@ -103,7 +103,7 @@ models:
       - &blockchain
         name: blockchain
         description: "Blockchain which the DEX is deployed"
-        
+
   - name: zeroex_api_fills_deduped
     meta: 
       blockchain: ethereum, optimism, polygon, arbitrum, fantom, avalanche
@@ -131,7 +131,6 @@ models:
             - taker_symbol
             - maker_symbol
     columns:
-      columns:
       - *tx_hash
       - *block_number
       - *contract_address
