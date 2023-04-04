@@ -21,6 +21,7 @@
     , ref('forta_network_ethereum_airdrop_claims')
     , ref('galxe_ethereum_airdrop_claims')
     , ref('gas_dao_ethereum_airdrop_claims')
+    , ref('genie_ethereum_airdrop_claims')
     , ref('gitcoin_ethereum_airdrop_claims')
     , ref('hop_protocol_ethereum_airdrop_claims')
     , ref('looksrare_ethereum_airdrop_claims')

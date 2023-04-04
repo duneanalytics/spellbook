@@ -798,6 +798,11 @@ models:
       ethereum:
         +schema: apecoin_ethereum
 
+    genie:
+      +schema: genie
+      ethereum:
+        +schema: genie_ethereum
+
     forta_network:
       +schema: forta_network
       ethereum:
