@@ -311,8 +311,6 @@ models:
         +schema: transfers_optimism
       bnb:
         +schema: transfers_bnb
-      fantom:
-        +schema: transfers_fantom
 
     sudoswap:
       +schema: sudoswap
