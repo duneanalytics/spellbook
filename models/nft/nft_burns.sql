@@ -1,6 +1,6 @@
 {{ config(
         alias ='burns',
-        post_hook='{{ expose_spells_hide_trino(\'["ethereum","solana"]\',
+        post_hook='{{ expose_spells_hide_trino(\'["ethereum","solana","bnb"]\',
                                     "sector",
                                     "nft",
                                     \'["soispoke","0xRob"]\') }}')
@@ -15,6 +15,7 @@
 ,ref('opensea_burns')
 ,ref('x2y2_ethereum_burns')
 ,ref('zora_ethereum_burns')
+,ref('nftb_bnb_burns')
 ] %}
 
 

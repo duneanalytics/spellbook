@@ -1,9 +1,9 @@
 {{ config(
         alias ='trades',
-        post_hook='{{ expose_spells(\'["ethereum","avalanche_c","optimism"]\',
+        post_hook='{{ expose_spells(\'["ethereum","avalanche_c","optimism","fantom"]\',
                                 "project",
                                 "curvefi",
-                                \'["jeff-dude","yulesa","dsalv","Henrystats","msilb7"]\') }}'
+                                \'["jeff-dude","yulesa","dsalv","Henrystats","msilb7","ilemi","agaperste"]\') }}'
         )
 }}
 
@@ -11,6 +11,7 @@
  ref('curvefi_ethereum_trades')
 ,ref('curvefi_optimism_trades')
 ,ref('curvefi_avalanche_c_trades')
+,ref('curvefi_fantom_trades')
 ] %}
 
 
@@ -28,8 +29,8 @@ FROM (
         token_pair,
         token_bought_amount,
         token_sold_amount,
-        CAST(token_bought_amount_raw AS DECIMAL(38,0)) AS token_bought_amount_raw,
-        CAST(token_sold_amount_raw AS DECIMAL(38,0)) AS token_sold_amount_raw,
+        token_bought_amount_raw,
+        token_sold_amount_raw,
         amount_usd,
         token_bought_address,
         token_sold_address,

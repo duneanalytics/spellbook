@@ -8,9 +8,9 @@
         unique_key = ['pool_id', 'token_address'],
         post_hook='{{ expose_spells(\'["ethereum"]\',
                                     "project",
-                                    "balancer",
+                                    "balancer_v1",
                                     \'["metacrypto", "jacektrocinski"]\') }}'
-    ) 
+    )
 }}
 
 {% set bind_start_date = '2020-02-28' %}

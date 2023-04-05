@@ -44,9 +44,9 @@ SELECT distinct 'ethereum' AS blockchain
 , 'Mint' AS evt_type
 , nft_mints.from AS seller
 , nft_mints.to AS buyer
-, CAST(COALESCE(SUM(et.value), SUM(erc20s.value), 0)*(nft_mints.amount/nft_count.nfts_minted_in_tx) AS DECIMAL(38,0)) AS amount_raw
-, COALESCE(SUM(et.value)/POWER(10, 18), SUM(erc20s.value)/POWER(10, pu_erc20s.decimals))*(nft_mints.amount/nft_count.nfts_minted_in_tx) AS amount_original
-, COALESCE(pu_eth.price*SUM(et.value)/POWER(10, 18), pu_erc20s.price*SUM(erc20s.value)/POWER(10, pu_erc20s.decimals))*(nft_mints.amount/nft_count.nfts_minted_in_tx) AS amount_usd
+, CAST(COALESCE(SUM(CAST(et.value as DOUBLE)), SUM(CAST(erc20s.value as DOUBLE)), 0)*(nft_mints.amount/nft_count.nfts_minted_in_tx) AS DECIMAL(38,0)) AS amount_raw
+, COALESCE(SUM(CAST(et.value as DOUBLE))/POWER(10, 18), SUM(CAST(erc20s.value as DOUBLE))/POWER(10, pu_erc20s.decimals))*(nft_mints.amount/nft_count.nfts_minted_in_tx) AS amount_original
+, COALESCE(pu_eth.price*SUM(CAST(et.value as DOUBLE))/POWER(10, 18), pu_erc20s.price*SUM(CAST(erc20s.value as DOUBLE))/POWER(10, pu_erc20s.decimals))*(nft_mints.amount/nft_count.nfts_minted_in_tx) AS amount_usd
 , CASE WHEN et.success THEN 'ETH' ELSE pu_erc20s.symbol END AS currency_symbol
 , CASE WHEN et.success THEN '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2' ELSE erc20s.contract_address END AS currency_contract
 , nft_mints.contract_address AS nft_contract_address
@@ -66,7 +66,7 @@ SELECT distinct 'ethereum' AS blockchain
 , CAST(0 AS DOUBLE) AS royalty_fee_amount
 , CAST(0 AS DOUBLE) AS royalty_fee_amount_usd
 , CAST(0 AS DOUBLE) AS royalty_fee_percentage
-, 'ethereum' || '-' || COALESCE(ec.namespace, 'Unknown') || '-Mint-' || COALESCE(nft_mints.tx_hash, '-1') || '-' || COALESCE(nft_mints.to, '-1') || '-' ||  COALESCE(nft_mints.contract_address, '-1') || '-' || COALESCE(nft_mints.token_id, '-1') || '-' || COALESCE(erc20s.contract_address, '0x0000000000000000000000000000000000000000') || '-' || COALESCE(nft_mints.evt_index, '-1') AS unique_trade_id
+, 'ethereum' || '-' || COALESCE(ec.namespace, 'Unknown') || '-Mint-' || COALESCE(nft_mints.tx_hash, '-1') || '-' || COALESCE(nft_mints.to, '-1') || '-' ||  COALESCE(nft_mints.contract_address, '-1') || '-' || COALESCE(nft_mints.token_id, '-1') || '-' || COALESCE(nft_mints.amount, '-1') || '-'|| COALESCE(erc20s.contract_address, '0x0000000000000000000000000000000000000000') || '-' || COALESCE(nft_mints.evt_index, '-1') AS unique_trade_id
 FROM {{ ref('nft_ethereum_transfers') }} nft_mints
 LEFT JOIN nfts_per_tx nft_count ON nft_count.tx_hash=nft_mints.tx_hash
 LEFT JOIN {{ source('ethereum','traces') }} et ON et.block_time=nft_mints.block_time
@@ -74,7 +74,7 @@ LEFT JOIN {{ source('ethereum','traces') }} et ON et.block_time=nft_mints.block_
     AND et.from=nft_mints.to
     AND (et.call_type NOT IN ('delegatecall', 'callcode', 'staticcall') OR et.call_type IS NULL)
     AND et.success
-    AND et.value > 0  
+    AND CAST(et.value as DOUBLE) > 0
     {% if is_incremental() %}
     AND  et.block_time >= date_trunc("day", now() - interval '1 week')
     {% endif %}

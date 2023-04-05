@@ -36,8 +36,8 @@ select
 	, '1' as version
 	, date_trunc('DAY', s.evt_block_time) as block_date
 	, s.evt_block_time as block_time
-	, s.token_bought_amount_raw as token_bought_amount_raw
-	, s.token_sold_amount_raw as token_sold_amount_raw
+    , CAST(s.token_bought_amount_raw  AS DECIMAL(38,0)) AS token_bought_amount_raw
+    , CAST(s.token_sold_amount_raw AS DECIMAL(38,0)) AS token_sold_amount_raw
     , coalesce(
         (s.token_bought_amount_raw / power(10, prices_b.decimals)) * prices_b.price
         ,(s.token_sold_amount_raw / power(10, prices_s.decimals)) * prices_s.price
@@ -68,7 +68,7 @@ inner join {{ source('bnb', 'transactions') }} tx
     and tx.block_time >= '{{project_start_date}}'
     {% endif %}
     {% if is_incremental() %}
-    and tx.block_time = date_trunc("day", now() - interval '1 week')
+    and tx.block_time >= date_trunc("day", now() - interval '1 week')
     {% endif %}
 -- bought tokens
 left join {{ ref('tokens_erc20') }} erc20_b
