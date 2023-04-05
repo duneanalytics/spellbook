@@ -110,7 +110,7 @@ models:
             - tx_hash
             - evt_index
           check_columns:
-            - maker
+            - taker_token
             - taker
     columns:
       - *tx_hash
