@@ -46,7 +46,7 @@ models:
         description: "ETH Value of the accounting entry"
       - &token_price
         name: token_price
-        description: "Token price"
+        description: "Price of token"
       - &token_eth_price
         name: token_eth_price
         description: "ETH price"
