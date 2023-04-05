@@ -50,6 +50,3 @@ models:
       - &token_eth_price
         name: token_eth_price
         description: "ETH price"
-
-
-
