@@ -15,7 +15,7 @@ models:
           combination_of_columns:
             - block_date
             - tx_hash
-            - loan_id
+            - id
     columns:
       - &blockchain
         name: blockchain
