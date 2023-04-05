@@ -14,8 +14,9 @@ WITH
                   token_mint_address
                   , address 
             FROM {{ source('solana','account_activity') }}
+            WHERE token_mint_address is not null
             {% if is_incremental() %}
-            WHERE block_time >= date_trunc("day", now() - interval '1 week')
+            AND block_time >= date_trunc("day", now() - interval '1 week')
             {% endif %}
       )
       
