@@ -421,6 +421,11 @@ models:
         +schema: tokens_solana
         +materialized: table
         +file_format: delta
+      
+    solana_utils:
+      +schema: solana_token_accounts
+      +materialized: table
+      +file_format: delta
 
     trader_joe:
       +schema: trader_joe
