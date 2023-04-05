@@ -440,7 +440,7 @@ with source_ethereum_transactions as (
           ,a.platform_fee_amount_raw / power(10, e.decimals) * p.price as platform_fee_amount_usd
           ,a.creator_fee_amount_raw / power(10, e.decimals) as creator_fee_amount
           ,a.creator_fee_amount_raw / power(10, e.decimals) * p.price as creator_fee_amount_usd
-          ,coalesce(agg.name,agg_m.aggregator_name) as aggregator_name
+          ,coalesce(agg_m.aggregator_name, agg.name) as aggregator_name
           ,agg.contract_address AS aggregator_address
           ,sub_idx
   from iv_nfts a

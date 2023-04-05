@@ -291,7 +291,7 @@ WITH
         SELECT
             sc.*
             , tokens.name AS collection
-            , coalesce(agg.name,agg_m.aggregator_name) as aggregator_name
+            , coalesce(agg_m.aggregator_name, agg.name) as aggregator_name
             , agg.contract_address as aggregator_address
             , sc.amount_original*pu.price as amount_usd
             , sc.pool_fee_amount*pu.price as pool_fee_amount_usd
