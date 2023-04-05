@@ -31,6 +31,11 @@ models:
     config:
       tags: ['safe', 'polygon']
     description: "Safe addresses"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - address
+            - block_date
     columns:
       - &blockchain
         name: blockchain
