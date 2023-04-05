@@ -231,12 +231,17 @@ models:
       tags: ['optimism','op','grants','addresses']
     description: >
         A table containing unifying labels for tagged wallets that we want to track distributions for
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - label
+            - address
     columns:
-    - *address
-    - *label
-    - *proposal_name
-    - *address_descriptor
-    - *project_name
+      - *address
+      - *label
+      - *proposal_name
+      - *address_descriptor
+      - *project_name
   
   - name: op_token_distributions_optimism_other_tags
     meta:
