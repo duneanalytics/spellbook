@@ -24,17 +24,17 @@ WITH zeroex_tx_raw AS (
 
        SELECT DISTINCT
                 v3.evt_tx_hash AS tx_hash
-                , case when "takerAddress" = '0x63305728359c088a52b0b0eeec235db4d31a67fc' then "takerAddress"
+                , case when takerAddress = '0x63305728359c088a52b0b0eeec235db4d31a67fc' then takerAddress
                        else null
                 end as affiliate_address
         FROM {{ source('zeroex_v3_ethereum', 'Exchange_evt_Fill') }} v3
        WHERE
                 -- nuo
-                v3."takerAddress" = '0x63305728359c088a52b0b0eeec235db4d31a67fc'
+                v3.takerAddress = '0x63305728359c088a52b0b0eeec235db4d31a67fc'
                 OR
                 -- contains a bridge order
-                (v3."feeRecipientAddress" = '0x1000000000000000000000000000000000000011'
-                    AND SUBSTRING(v3."makerAssetData",1,4) = '0xdc1600f3')
+                (v3.feeRecipientAddress = '0x1000000000000000000000000000000000000011'
+                    AND SUBSTRING(v3.makerAssetData,1,4) = '0xdc1600f3')
 
             {% if is_incremental() %}
             AND evt_block_time >= date_trunc('day', now() - interval '1 week')
