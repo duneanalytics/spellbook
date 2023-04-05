@@ -48,7 +48,7 @@ WITH zeroex_tx_raw AS (
                 tx_hash
                 , affiliate_address as affiliate_address
             from {{ source('zeroex', 'api_fills') }} z 
-
+            where 1=1 
                 {% if is_incremental() %}
                 AND block_time >= date_trunc('day', now() - interval '1 week')
                 {% endif %}
@@ -57,6 +57,7 @@ WITH zeroex_tx_raw AS (
                 {% endif %}
     ) temp
     group by tx_hash
+
 
 ),
 zeroex_tx AS (
