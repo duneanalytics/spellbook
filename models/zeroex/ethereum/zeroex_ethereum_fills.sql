@@ -1,5 +1,5 @@
 {{  config(
-        alias='api_fills',
+        alias='fills',
         materialized='incremental',
         partition_by = ['block_date'],
         unique_key = ['block_date', 'tx_hash', 'evt_index'],
@@ -9,33 +9,32 @@
         post_hook='{{ expose_spells(\'["ethereum"]\',
                                 "project",
                                 "zeroex",
-                                \'["danning.sui", "bakabhai993", "hosuke"]\') }}'
+                                \'["danning.sui", "bakabhai993", "rantum"]\') }}'
     )
 }}
 
 {% set zeroex_v3_start_date = '2019-12-01' %}
 {% set zeroex_v4_start_date = '2021-01-06' %}
 
--- Test Query here: https://dune.com/queries/1330551
-WITH zeroex_tx AS (
+-- Test Query here: 
+WITH zeroex_tx_raw AS (
     SELECT tx_hash,
            max(affiliate_address) as affiliate_address
     FROM (
 
-        SELECT v3.evt_tx_hash AS tx_hash,
-                    CASE
-                        WHEN takerAddress = '0x63305728359c088a52b0b0eeec235db4d31a67fc' THEN takerAddress
-                        ELSE NULL
-                    END AS affiliate_address
+       SELECT DISTINCT
+                v3.evt_tx_hash AS tx_hash
+                , case when "takerAddress" = '0x63305728359c088a52b0b0eeec235db4d31a67fc' then "takerAddress"
+                       else null
+                end as affiliate_address
         FROM {{ source('zeroex_v3_ethereum', 'Exchange_evt_Fill') }} v3
-        WHERE (  -- nuo
-                v3.takerAddress = '0x63305728359c088a52b0b0eeec235db4d31a67fc'
-                OR -- contains a bridge order
-                (
-                    v3.feeRecipientAddress = '0x1000000000000000000000000000000000000011'
-                    AND SUBSTRING(v3.makerAssetData, 1, 10) = '0xdc1600f3'
-                )
-            )
+       WHERE
+                -- nuo
+                v3."takerAddress" = '0x63305728359c088a52b0b0eeec235db4d31a67fc'
+                OR
+                -- contains a bridge order
+                (v3."feeRecipientAddress" = '0x1000000000000000000000000000000000000011'
+                    AND SUBSTRING(v3."makerAssetData",1,4) = '0xdc1600f3')
 
             {% if is_incremental() %}
             AND evt_block_time >= date_trunc('day', now() - interval '1 week')
@@ -45,32 +44,10 @@ WITH zeroex_tx AS (
             {% endif %}
 
         UNION ALL
-        SELECT tr.tx_hash,
-                    '0x' || CASE
-                                WHEN POSITION('869584cd' IN INPUT) <> 0
-                                THEN SUBSTRING(INPUT
-                                        FROM (position('869584cd' IN INPUT) + 32)
-                                        FOR 40)
-                                WHEN POSITION('fbc019a7' IN INPUT) <> 0
-                                THEN SUBSTRING(INPUT
-                                        FROM (position('fbc019a7' IN INPUT) + 32)
-                                        FOR 40)
-                            END AS affiliate_address
-        FROM {{ source('ethereum', 'traces') }} tr
-        WHERE tr.to IN (
-                -- exchange contract
-                '0x61935cbdd02287b511119ddb11aeb42f1593b7ef',
-                -- forwarder addresses
-                '0x6958f5e95332d93d21af0d7b9ca85b8212fee0a5',
-                '0x4aa817c6f383c8e8ae77301d18ce48efb16fd2be',
-                '0x4ef40d1bf0983899892946830abf99eca2dbc5ce',
-                -- exchange proxy
-                '0xdef1c0ded9bec7f1a1670819833240f027b25eff'
-                )
-                AND (
-                        POSITION('869584cd' IN INPUT) <> 0
-                        OR POSITION('fbc019a7' IN INPUT) <> 0
-                    )
+        SELECT
+                tx_hash
+                , affiliate_address as affiliate_address
+            from {{ source('zeroex', 'api_fills') }} z 
 
                 {% if is_incremental() %}
                 AND block_time >= date_trunc('day', now() - interval '1 week')
@@ -82,6 +59,13 @@ WITH zeroex_tx AS (
     group by tx_hash
 
 ),
+zeroex_tx AS (
+                    SELECT
+                        tx_hash
+                        , MAX(affiliate_address) as affiliate_address
+                    from zeroex_tx_raw
+                    GROUP BY 1
+        ),
 v3_fills_no_bridge AS (
     SELECT
             fills.evt_tx_hash                                                          AS tx_hash,

@@ -218,7 +218,7 @@ models:
           - zeroex_ethereum_nft_test:
               seed_file: ref('zeroex_ethereum_nft_fills_sample')
 
-- name: zeroex_ethereum_fills 
+  - name: zeroex_ethereum_fills 
     meta:
       blockchain: ethereum
       project: zeroex
