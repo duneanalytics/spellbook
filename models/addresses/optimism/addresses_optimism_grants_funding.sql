@@ -121,6 +121,8 @@ FROM (VALUES
 ,('Project',	'0xb1ea5a3e5ea7fa1834d48058ecda26d8c59e8251',	'Quix',	'Partner Fund')
 ,('Project',	'0xf42279467d821bcdf40b50e9a5d2caccc4cf5b30',	'Quests on Coinbase Wallet - Quest #1 DEX Swap',	'Partner Fund') --Quest 1 - DEX
 ,('Project',	'0x9f4f2b8bda8d2d3832021b3119747470ea86a183',	'Quests on Coinbase Wallet - Quest #2 Delegation',	'Partner Fund') --Quest 2 - Delegation
+,('Project',	'0x1fe95e0497a0E38AFBE18Bd19B9a2b42116880f0',	'Quests on Coinbase Wallet - Quest #3 Attestation',	'Partner Fund') --Quest 2 - Attestation
+,('Project',	'0x23fd464e0b0ee21cedeb929b19cabf9bd5215019',	'Exactly',	'Partner Fund')
 
 
 

@@ -162,11 +162,22 @@ FROM (values
     ,('0x4ea2e39626de031a011c3ca7360878202454ce75', 'Angle', 'OP/agEUR: Velodrome')
     ,('0x6333000289bc27a090b3d51e734c2f13e3edc4fd', 'Hundred Finance', 'Token Treasury')
     ,('0x86c90fc464A668469A93Ca08D8B9872bdB16b356', 'Mux', 'TradingRebateDistributor')
+    ,('0xBd1ba78A3976cAB420A9203E6ef14D18C2B2E031', 'Exactly', 'Distributor Multisig')
+
+    ,('0xAfBB6c1a235e105e568CCD4FD915dfFF76C415E1', 'Gamma', 'Rewarder')
+    ,('0x93dcd773eb0301bd555fc5b0bd7bb5ca5f22fce5', 'Arrakis Finance', 'Staking Contract')
+    ,('0x4b5ed41488d3addcb1fb942d40d2fa99f90f48d5', 'Arrakis Finance', 'Staking Contract')
+    ,('0xe140e5def72fde807890d89ee4f987d316c25196', 'Arrakis Finance', 'Staking Contract')
+    ,('0xe49d19c155a8658f5744ed336f18b7c086979c34', 'Arrakis Finance', 'Staking Contract')
+    ,('0xdf50c6111f45132a1db5ec48bdcd1e8e6c7ce65d', 'Arrakis Finance', 'Staking Contract')
+    ,('0x62bdb9544a14dcd8804f7f2cc1479c82fb36c2a6', 'Arrakis Finance', 'Staking Contract')
+    ,('0x1b6a53991f257ac9dd1d0c061c37e1be36e0a8e6', 'Arrakis Finance', 'Staking Contract')
+    ,('0x87c7c885365700d157cd0f39a7803320fe86f0f5', 'Arrakis Finance', 'Staking Contract')
+    ,('0x57a2b0b2bb1e21fcb2df358fc832ae3f9f535b48', 'Arrakis Finance', 'Staking Contract')
+    ,('0x310b18daa9d351062c6d2ec0f0411d327206b4c3', 'Arrakis Finance', 'Staking Contract')
+    ,('0xd3a3fbae792c4ed0aa909ec032d3f14c999b2402', 'Arrakis Finance', 'Staking Contract')
     
     ,('0x09992dd7b32f7b35d347de9bdaf1919a57d38e82','Synthetix','SNX Bridge: Hop')
-
-    ,('0xf42279467D821bCDf40b50E9A5d2cACCc4Cf5b30','Quests on Coinbase Wallet','Quest 1 - DEX')
-    ,('0x9F4F2B8BdA8D2d3832021b3119747470ea86A183','Quests on Coinbase Wallet','Quest 2 - Delegation')
 
     --governance delegation
     ,('0x6a1e22c82be29eb96850158011b40fafbce1340c','Synthetix','SNXAmbassadors delegation')
