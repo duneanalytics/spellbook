@@ -57,6 +57,7 @@
 ,ref('spiritswap_fantom_trades')
 ,ref('quickswap_trades')
 ,ref('maverick_trades')
+,ref('verse_dex_ethereum_trades')
 ] %}
 
 
