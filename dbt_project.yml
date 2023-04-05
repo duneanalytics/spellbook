@@ -231,7 +231,7 @@ models:
       +schema: blur
       ethereum:
         +schema: blur_ethereum
-        
+
     stealcam:
       +schema: stealcam
       arbitrum:
@@ -886,7 +886,7 @@ models:
       +schema: oneinch
       ethereum:
         +schema: oneinch_ethereum
-        
+
     nftearth:
       +schema: nftearth
       optimism:
@@ -904,7 +904,7 @@ models:
 
     method_ids:
       +schema: method_ids
-      
+
     coinbase_wallet_quests:
       +schema: coinbase_wallet_quests
       optimism:
