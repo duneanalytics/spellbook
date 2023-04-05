@@ -165,11 +165,11 @@ dai_referral_payments_addr AS (
     SELECT _recipient AS address FROM {{ source('lido_ethereum', 'AllowedRecipientsRegistry_evt_RecipientAdded') }}
     WHERE
     (
-        NOT EXISTS (SELECT _recipient FROM {{ source('lido_ethereum', 'AllowedRecipientsRegistry_evt_RecipientRemoved') }}
+        NOT EXISTS (SELECT _recipient FROM {{ source('lido_ethereum', 'AllowedRecipientsRegistry_evt_RecipientRemoved') }})
         OR (
-            EXISTS (SELECT _recipient FROM {{ source('lido_ethereum', 'AllowedRecipientsRegistry_evt_RecipientRemoved') }}
+            EXISTS (SELECT _recipient FROM {{ source('lido_ethereum', 'AllowedRecipientsRegistry_evt_RecipientRemoved') }})
             AND 
-            _recipient NOT IN (SELECT _recipient FROM {{ source('lido_ethereum', 'AllowedRecipientsRegistry_evt_RecipientRemoved') }}
+            _recipient NOT IN (SELECT _recipient FROM {{ source('lido_ethereum', 'AllowedRecipientsRegistry_evt_RecipientRemoved') }})
         )
     ) 
     UNION ALL
