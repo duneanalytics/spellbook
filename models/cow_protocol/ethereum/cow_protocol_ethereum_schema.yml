@@ -138,7 +138,7 @@ models:
         description: "SELL/BUY string indicating if the trade was a sell or buy order"
       - &partial_fill
         name: partial_fill
-        description: "Boolean indicating if the order was partially filled"
+        description: "Boolean indicating if the order is partially fill-able"
 
   - name: cow_protocol_ethereum_batches
     meta:
