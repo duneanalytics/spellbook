@@ -107,7 +107,6 @@ sources:
             name: tick
             description: "the log base 1.0001 of price of the pool after the swap"
 
-
       - name: PancakeV3Factory_evt_PoolCreated
         loaded_at_field: evt_block_time
         description: >
