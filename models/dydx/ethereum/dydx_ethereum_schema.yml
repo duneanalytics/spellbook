@@ -10,6 +10,13 @@ models:
       tags:   ['ethereum', 'votes', 'dao']
    description: >
       DAO votes on all chains across all contracts and versions
+   tests:
+     - dbt_utils.unique_combination_of_columns:
+         combination_of_columns:
+           - blockchain
+           - project
+           - version
+           - tx_hash
    columns:
       - name: blockchain
       - name: project
@@ -61,6 +68,13 @@ models:
       tags: ['ethereum', 'proposals', 'dao']
    description: >
       DAO proposals on all chains across all contracts and versions
+   tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+              - blockchain
+              - project
+              - version
+              - tx_hash
    columns:
       - name: blockchain
       - name: project
