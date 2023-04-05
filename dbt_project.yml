@@ -231,6 +231,11 @@ models:
       +schema: blur
       ethereum:
         +schema: blur_ethereum
+        
+    stealcam:
+      +schema: stealcam
+      arbitrum:
+        +schema: stealcam_arbitrum
 
     gas:
       +schema: gas
@@ -841,6 +846,11 @@ models:
         +schema: op_token_distributions
         optimism:
           +schema: op_token_distributions_optimism
+      op_chains:
+        +schema: op_chains
+      op_token:
+        optimism:
+          +schema: op_token_optimism
 
     rubicon:
       +schema: rubicon
@@ -919,3 +929,8 @@ models:
       +schema: dydx
       ethereum:
         +schema: dydx_ethereum
+
+    optimism_attestationstation:
+      +schema: optimism_attestationstation
+      optimism:
+        +schema: optimism_attestationstation_optimism

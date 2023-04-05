@@ -1,0 +1,38 @@
+version: 2
+
+models:
+  - name: labels_burn_addresses
+    meta:
+      blockchain: ethereum
+      sector: labels
+      project: burn_addresses
+      contributors: hildobby
+    config:
+      tags: ['labels', 'burn_addresses', 'erc20', 'ethereum']
+    description: "Burn addresses"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - address
+            - blockchain
+    columns:
+      - name: blockchain
+        description: "Blockchain"   
+      - name: address
+        description: "Burn address"
+      - name: name
+        description: "Label name"
+      - name: category
+        description: "Label category"
+      - name: contributor
+        description: "Wizard(s) contributing to labels"
+      - name: source
+        description: "How were labels generated (could be static or query)"
+      - name: created_at
+        description: "When were labels created"
+      - name: updated_at
+        description: "When were labels updated for the last time"
+      - name: model_name
+        description: "Name of the label model sourced from"
+      - name: label_type
+        description: "Type of label (see labels overall readme)"

@@ -17,6 +17,7 @@ FROM
     VALUES
     
     --tokens not yet supported or are not active on coinpaprika are commented out
+    ("op-optimism", "optimism", "OP", "0x4200000000000000000000000000000000000042", 18),
     ("eth-ethereum", "optimism", "ETH", "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee", 18),
     ("eth-ethereum", "optimism","ETH", "0xdeaddeaddeaddeaddeaddeaddeaddeaddead0000",18),
     ("dai-dai", "optimism", "DAI", "0xda10009cbd5d07dd0cecc66161fc93d7c9000da1", 18),
