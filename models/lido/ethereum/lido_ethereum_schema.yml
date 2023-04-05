@@ -26,14 +26,14 @@ models:
       - &account
         name: account
         description: "Main label of the accounting entry"
-      - &category	
-        name: category	
+      - &category
+        name: category
         description: "Category of the accounting entry"
       - &value_base_token
         name: value_base_token
         description: "Value of the accounting entry in base token"
-      - &base_token	
-        name: base_token	
+      - &base_token
+        name: base_token
         description: "Base token of the accounting entry in base token"
       - &base_token_address
         name: base_token_address
