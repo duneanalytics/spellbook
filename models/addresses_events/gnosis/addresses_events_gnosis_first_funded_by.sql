@@ -10,8 +10,8 @@
 
 SELECT 'gnosis' AS blockchain
 , et.to AS address
-, MIN_BY(et.from, et.block_number) AS first_funded_by
-, MIN(et.block_time) AS block_time
+, MIN_BY(et."from", et.block_number) AS first_funded_by
+, MIN(CAST(et.block_time AS timestamp(6) with time zone)) AS block_time
 , MIN(et.block_number) AS block_number
 , MIN_BY(et.tx_hash, et.block_number) AS tx_hash
 FROM {{ source('gnosis', 'traces') }} et
@@ -25,4 +25,3 @@ AND CAST(et.value AS double) > 0
 AND et.block_time >= date_trunc('day', now() - interval '1 week')
 {% endif %}
 GROUP BY et.to
-;

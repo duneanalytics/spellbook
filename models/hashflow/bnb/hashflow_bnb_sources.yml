@@ -2,9 +2,10 @@ version: 2
 
 sources:
   - name: hashflow_bnb
+    database: delta_prod
     description: "BNB decoded tables related to Hashflow contract"
     freshness:
-      warn_after: { count: 12, period: hour }
+      warn_after: {count: 12, period: hour}
     tables:
       - name: Pool_evt_Trade
         loaded_at_field: evt_block_time
@@ -36,8 +37,7 @@ sources:
               - not_null
           - &fees
             name: fees
-          - &pool
-            name: pool
+          - name: pool
           - &trader
             name: trader
           - &txid
@@ -61,10 +61,8 @@ sources:
             name: dstPool
           - *evt_block_number
           - *quoteTokenAmount
-          - &srcChainId
-            name: srcChainId
-          - &srcPool
-            name: srcPool
+          - name: srcChainId
+          - name: srcPool
           - *trader
           - *txid
 

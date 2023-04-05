@@ -23,7 +23,7 @@ SELECT l1_token, l2_token
         ORDER BY COALESCE(et.decimals, map.decimals) ASC, COALESCE(map.symbol, et.symbol) DESC NULLS LAST) AS rnk
 FROM (
 
-        SELECT _l1Token AS l1_token, _l2Token AS l2_token, NULL AS symbol, NULL AS decimals
+        SELECT CAST(_l1Token AS varchar(42)) AS l1_token, CAST(_l2Token AS varchar(42)) AS l2_token, NULL AS symbol, NULL AS decimals
             FROM {{source( 'optimism_ethereum', 'L1StandardBridge_evt_ERC20DepositInitiated' ) }}
         {% if is_incremental() %}
         WHERE evt_block_time >= date_trunc("day", now() - interval '1 week')
@@ -31,7 +31,7 @@ FROM (
         GROUP BY 1,2
         
         UNION ALL
-        SELECT _l1Token, _l2Token, NULL AS symbol, NULL AS decimals
+        SELECT CAST(_l1Token AS varchar(42)) AS l1_token, CAST(_l2Token AS varchar(42)) AS l2_token, NULL AS symbol, NULL AS decimals
             FROM {{source( 'optimism_ethereum', 'OVM_L1StandardBridge_evt_ERC20DepositInitiated' ) }}
         {% if is_incremental() %}
         WHERE evt_block_time >= date_trunc("day", now() - interval '1 week')
@@ -39,7 +39,8 @@ FROM (
         GROUP BY 1,2
 
         UNION ALL
-        SELECT l1_token, l2_token, symbol, decimals FROM {{ ref('ovm_optimism_l2_token_factory') }} 
+        SELECT CAST(l1_token AS varchar(42)), CAST(l2_token AS varchar(42)), symbol, decimals
+            FROM {{ ref('ovm_optimism_l2_token_factory') }}
         {% if is_incremental() %}
         WHERE call_block_time >= date_trunc("day", now() - interval '1 week')
         {% endif %}   

@@ -3,7 +3,7 @@
     {%- set default_schema = target.schema -%}
     {%- if target.name == 'prod' or target.schema == 'wizard' and custom_schema_name is not none -%}
 
-        {{ custom_schema_name | trim }}
+        delta_prod.{{ custom_schema_name | trim }}
 
     {%- elif target.schema.startswith("git_") -%}
 

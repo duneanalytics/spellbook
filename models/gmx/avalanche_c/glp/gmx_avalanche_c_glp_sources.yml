@@ -2,8 +2,9 @@ version: 2
 
 sources:
   - name: gmx_avalanche_c
+    database: delta_prod
     freshness:
-          warn_after: { count: 12, period: hour }
+      warn_after: {count: 12, period: hour}
     description: >
       Decoded tables related to GMX, a decentralized exchange.
     tables:

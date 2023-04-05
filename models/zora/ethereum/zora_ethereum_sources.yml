@@ -2,9 +2,10 @@ version: 2
 
 sources:
   - name: zora_v3_ethereum
+    database: delta_prod
     freshness: # default freshness
-      warn_after: { count: 12, period: hour }
-      error_after: { count: 24, period: hour }
+      warn_after: {count: 12, period: hour}
+      error_after: {count: 24, period: hour}
     tables:
       - name: OffersV1_evt_ExchangeExecuted
         loaded_at_field: evt_block_time
@@ -51,8 +52,9 @@ sources:
       - name: ReserveAuctionListingErc20_evt_RoyaltyPayout
         loaded_at_field: evt_block_time
   - name: zora_ethereum
+    database: delta_prod
     freshness:
-      warn_after: { count: 24, period: hour }
+      warn_after: {count: 24, period: hour}
     tables:
       - name: Market_evt_BidFinalized
       - name: Media_evt_Transfer

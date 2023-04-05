@@ -1,0 +1,55 @@
+version: 2
+
+models:
+  - name: optimism_quests_optimism_nft_id_mapping
+    meta:
+      blockchain: optimism
+      project: optimism_quests
+      contributors: msilb7
+    config:
+      tags: ['optimism','quests']
+    description: >
+        A table containing quest NFT ID mapping to quest names.
+    columns:
+      - &contract_project
+        name: contract_project
+        description: "The project name as it appears in contracts mapping: `contracts_optimism.contract_mapping` "
+      - &quest_project
+        name: quest_project
+        description:  "The quest name as it appears in quests"
+      - &nft_id
+        name: nft_id
+        description:  "The NFT ID in function calls"
+
+  - name: optimism_quests_optimism_quest_completions
+    meta:
+      blockchain: optimism
+      project: optimism_quests
+      contributors: msilb7
+    config:
+      tags: ['optimism','quests']
+    description: >
+        A table containing all quest completion NFT mints for Optimism Quests, tagged by quest.
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+              - block_time
+              - tx_hash
+              - nft_id
+    columns:
+      - &block_date
+        name: block_date
+        description: "Date of the quest reward distribution"
+      - &quester_address
+        name: quester_address
+        description: "Address completing the quest"
+      - &tx_hash
+        name: tx_hash
+      - &block_number
+        name: block_number
+      - &block_time
+        name: block_time
+      - *nft_id
+      - *contract_project
+      - *quest_project
+      

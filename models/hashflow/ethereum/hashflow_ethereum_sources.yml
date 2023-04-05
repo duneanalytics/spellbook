@@ -1,22 +1,24 @@
 version: 2
 
-sources: 
+sources:
   - name: hashflow_ethereum
+    database: delta_prod
     description: "Hashflow non-decoded tables related to hashflow contracts"
     freshness: # default freshness
-      warn_after: { count: 12, period: hour }
-      error_after: { count: 24, period: hour }
+      warn_after: {count: 12, period: hour}
+      error_after: {count: 24, period: hour}
     tables:
       - name: pool_evt_trade
         freshness:
-          warn_after: { count: 120, period: hour }
+          warn_after: {count: 120, period: hour}
         loaded_at_field: evt_block_time
         description: "" # to-do
         columns:
           - name: baseToken
             description: "The contract address for the token the trader sells"
           - name: baseTokenAmount
-            description: "The raw amount of base tokens sold during the transaction in decimals"
+            description: "The raw amount of base tokens sold during the transaction\
+              \ in decimals"
           - &contract_address
             name: contract_address
             description: "TBC - The hashflow contract address"
@@ -35,16 +37,19 @@ sources:
           - name: pool
             description: "Contract address of the pool"
           - name: quoteToken
-            description:  "The contract address for the token the trader buys"
+            description: "The contract address for the token the trader buys"
           - name: quoteTokenAmount
-            description: "The raw amount of quote tokens bought during the transaction in decimals"
+            description: "The raw amount of quote tokens bought during the transaction\
+              \ in decimals"
           - name: trader
-            description: "The trader wallet address that will swap with the contract. This can be a proxy contract"
+            description: "The trader wallet address that will swap with the contract.\
+              \ This can be a proxy contract"
           - name: txid
             description: "Unique identifier of the quote"
       - name: router_call_tradesinglehop
         loaded_at_field: call_block_time
-        description: "Table containing details of tradeSingleHop calls made to the HashflowRouter contract" # to confirm
+        description: "Table containing details of tradeSingleHop calls made to the\
+          \ HashflowRouter contract"                                                                        # to confirm
         columns:
           - *contract_address
           - name: call_success
@@ -58,4 +63,5 @@ sources:
           - name: call_block_number
             description: "Block number which processed the unique transaction hash"
           - name: quote
-            description: "json object containing details related to the specific quote executed"
+            description: "json object containing details related to the specific quote\
+              \ executed"

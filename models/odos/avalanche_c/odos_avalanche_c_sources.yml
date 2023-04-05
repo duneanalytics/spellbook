@@ -1,9 +1,10 @@
 version: 2
 
-sources: 
+sources:
   - name: odos_avalanche_c
+    database: delta_prod
     freshness:
-          warn_after: { count: 12, period: hour }
+      warn_after: {count: 12, period: hour}
     description: >
       Decoded event table for swaps on odos
     tables:

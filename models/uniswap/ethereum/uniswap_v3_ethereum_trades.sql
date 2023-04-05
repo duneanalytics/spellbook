@@ -19,17 +19,17 @@ WITH dexs AS
 (
     --Uniswap v3
     SELECT
-        t.evt_block_time AS block_time
+        CAST(t.evt_block_time AS TIMESTAMP(6) WITH TIME ZONE) AS block_time
         ,t.recipient AS taker
         ,'' AS maker
-        ,CASE WHEN amount0 < '0' THEN abs(amount0) ELSE abs(amount1) END AS token_bought_amount_raw -- when amount0 is negative it means trader_a is buying token0 from the pool
-        ,CASE WHEN amount0 < '0' THEN abs(amount1) ELSE abs(amount0) END AS token_sold_amount_raw
+        ,CASE WHEN amount0 < CAST(0 AS INT256) THEN abs(amount0) ELSE abs(amount1) END AS token_bought_amount_raw -- when amount0 is negative it means trader_a is buying token0 from the pool
+        ,CASE WHEN amount0 < CAST(0 AS INT256) THEN abs(amount1) ELSE abs(amount0) END AS token_sold_amount_raw
         ,NULL AS amount_usd
-        ,CASE WHEN amount0 < '0' THEN f.token0 ELSE f.token1 END AS token_bought_address
-        ,CASE WHEN amount0 < '0' THEN f.token1 ELSE f.token0 END AS token_sold_address
-        ,CAST(t.contract_address as string) as project_contract_address
+        ,CASE WHEN amount0 < CAST(0 AS INT256) THEN f.token0 ELSE f.token1 END AS token_bought_address
+        ,CASE WHEN amount0 < CAST(0 AS INT256) THEN f.token1 ELSE f.token0 END AS token_sold_address
+        ,CAST(t.contract_address AS VARCHAR) as project_contract_address
         ,t.evt_tx_hash AS tx_hash
-        ,'' AS trace_address
+        ,CAST('' AS VARCHAR(42)) AS trace_address
         ,t.evt_index
     FROM
         {{ source('uniswap_v3_ethereum', 'Pair_evt_Swap') }} t
@@ -62,11 +62,11 @@ SELECT
     ) AS amount_usd
     ,dexs.token_bought_address
     ,dexs.token_sold_address
-    ,coalesce(dexs.taker, tx.from) AS taker -- subqueries rely on this COALESCE to avoid redundant joins with the transactions table
+    ,coalesce(dexs.taker, tx."from") AS taker -- subqueries rely on this COALESCE to avoid redundant joins with the transactions table
     ,dexs.maker
     ,dexs.project_contract_address
     ,dexs.tx_hash
-    ,tx.from AS tx_from
+    ,tx."from" AS tx_from
     ,tx.to AS tx_to
     ,dexs.trace_address
     ,dexs.evt_index
@@ -74,35 +74,34 @@ FROM dexs
 INNER JOIN {{ source('ethereum', 'transactions') }} tx
     ON tx.hash = dexs.tx_hash
     {% if not is_incremental() %}
-    AND tx.block_time >= '{{project_start_date}}'
+    AND tx.block_time >= CAST('{{project_start_date}}' AS TIMESTAMP(6) WITH TIME ZONE)
     {% endif %}
     {% if is_incremental() %}
-    AND tx.block_time >= date_trunc("day", now() - interval '1 week')
+    AND tx.block_time >= CAST(date_trunc("day", now() - interval '1 week') AS TIMESTAMP(6) WITH TIME ZONE)
     {% endif %}
 LEFT JOIN {{ ref('tokens_erc20') }} erc20a
-    ON erc20a.contract_address = dexs.token_bought_address 
+    ON erc20a.contract_address = CAST(dexs.token_bought_address as VARCHAR)
     AND erc20a.blockchain = 'ethereum'
 LEFT JOIN {{ ref('tokens_erc20') }} erc20b
-    ON erc20b.contract_address = dexs.token_sold_address
+    ON erc20b.contract_address = CAST(dexs.token_sold_address as VARCHAR)
     AND erc20b.blockchain = 'ethereum'
 LEFT JOIN {{ source('prices', 'usd') }} p_bought
-    ON p_bought.minute = date_trunc('minute', dexs.block_time)
-    AND p_bought.contract_address = dexs.token_bought_address
+    ON p_bought.minute = CAST(date_trunc('minute', dexs.block_time) AS TIMESTAMP(6) WITH TIME ZONE)
+    AND p_bought.contract_address = CAST(dexs.token_bought_address as VARCHAR)
     AND p_bought.blockchain = 'ethereum'
     {% if not is_incremental() %}
-    AND p_bought.minute >= '{{project_start_date}}'
+    AND p_bought.minute >= CAST('{{project_start_date}}' AS TIMESTAMP(6) WITH TIME ZONE)
     {% endif %}
     {% if is_incremental() %}
-    AND p_bought.minute >= date_trunc("day", now() - interval '1 week')
+    AND p_bought.minute >= CAST(date_trunc("day", now() - interval '1 week') AS TIMESTAMP(6) WITH TIME ZONE)
     {% endif %}
 LEFT JOIN {{ source('prices', 'usd') }} p_sold
-    ON p_sold.minute = date_trunc('minute', dexs.block_time)
-    AND p_sold.contract_address = dexs.token_sold_address
+    ON p_sold.minute = CAST(date_trunc('minute', dexs.block_time) AS TIMESTAMP(6) WITH TIME ZONE)
+    AND p_sold.contract_address = CAST(dexs.token_sold_address as VARCHAR)
     AND p_sold.blockchain = 'ethereum'
     {% if not is_incremental() %}
-    AND p_sold.minute >= '{{project_start_date}}'
+    AND p_sold.minute >= CAST('{{project_start_date}}' AS TIMESTAMP(6) WITH TIME ZONE)
     {% endif %}
     {% if is_incremental() %}
-    AND p_sold.minute >= date_trunc("day", now() - interval '1 week')
+    AND p_sold.minute >= CAST(date_trunc("day", now() - interval '1 week') AS TIMESTAMP(6) WITH TIME ZONE)
     {% endif %}
-;

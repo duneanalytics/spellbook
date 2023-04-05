@@ -2,8 +2,9 @@ version: 2
 
 sources:
   - name: nftb_bnb
+    database: delta_prod
     freshness:
-      warn_after: { count: 12, period: hour }
+      warn_after: {count: 12, period: hour}
     tables:
       - name: NFT_evt_Transfer
         loaded_at_field: evt_block_time

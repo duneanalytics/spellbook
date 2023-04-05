@@ -2,8 +2,9 @@ version: 2
 
 sources:
   - name: quixotic_v2_optimism
+    database: delta_prod
     freshness:
-      warn_after: { count: 24, period: hour }
+      warn_after: {count: 24, period: hour}
     tables:
       - name: ExchangeV2_evt_BuyOrderFilled
         loaded_at_field: evt_block_time
@@ -23,31 +24,30 @@ sources:
 
           - &evt_block_number
             name: evt_block_number
-            description: "Block number"   
+            description: "Block number"
 
           - &evt_block_time
             name: evt_block_time
-            description: "Block time"  
-          
+            description: "Block time"
           - &evt_index
             name: evt_index
-            description: "Event index."   
+            description: "Event index."
 
           - &evt_tx_hash
             name: evt_tx_hash
-            description: "Transaction hash."   
+            description: "Transaction hash."
 
           - &price
             name: price
-            description: "Price of the NFT token."   
+            description: "Price of the NFT token."
 
           - &seller
             name: seller
-            description: "Seller wallet address" 
+            description: "Seller wallet address"
 
           - &tokenId
             name: tokenId
-            description: "Token id." 
+            description: "Token id."
 
       - name: ExchangeV2_evt_DutchAuctionFilled
         loaded_at_field: evt_block_time
@@ -80,8 +80,9 @@ sources:
           - *tokenId
 
   - name: quixotic_v3_optimism
+    database: delta_prod
     freshness:
-      warn_after: { count: 24, period: hour }
+      warn_after: {count: 24, period: hour}
     tables:
       - name: ExchangeV3_evt_BuyOrderFilled
         loaded_at_field: evt_block_time
@@ -132,35 +133,32 @@ sources:
 
 
   - name: quixotic_optimism
+    database: delta_prod
     freshness:
-      warn_after: { count: 24, period: hour }
+      warn_after: {count: 24, period: hour}
     tables:
       - name: Seaport_evt_OrderFulfilled
         loaded_at_field: evt_block_time
         description: "Events emitted from Seaport OrderFulfilled."
         columns:
-          - &consideration
-            name: consideration
-            description: "The consideration contains an array of items that must be received in order to fulfill the order."
+          - name: consideration
+            description: "The consideration contains an array of items that must be\
+              \ received in order to fulfill the order."
           - *contract_address
           - *evt_block_number
           - *evt_block_time
           - *evt_index
           - *evt_tx_hash
-          - &offer
-            name: offer
-            description: "The offer contains an array of items that may be transferred from the offerer's account."
-          - &offerer
-            name: offerer
+          - name: offer
+            description: "The offer contains an array of items that may be transferred\
+              \ from the offerer's account."
+          - name: offerer
             description: "The address making the offer."
-          - &orderHash
-            name: orderHash
+          - name: orderHash
             description: "Hash of the order."
-          - &recipient
-            name: recipient
+          - name: recipient
             description: "The recipient that will receive each item."
-          - &zone
-            name: zone
+          - name: zone
             description: "Zone address."
 
       - name: Exchange_evt_SellOrderFilled
@@ -179,8 +177,9 @@ sources:
           - *tokenId
 
   - name: quixotic_v4_optimism
+    database: delta_prod
     freshness:
-      warn_after: { count: 24, period: hour }
+      warn_after: {count: 24, period: hour}
     tables:
       - name: ExchangeV4_evt_BuyOrderFilled
         loaded_at_field: evt_block_time
@@ -228,8 +227,9 @@ sources:
           - *tokenId
 
   - name: quixotic_v5_optimism
+    database: delta_prod
     freshness:
-      warn_after: { count: 24, period: hour }
+      warn_after: {count: 24, period: hour}
     tables:
       - name: ExchangeV5_evt_SellOrderFilled
         loaded_at_field: evt_block_time

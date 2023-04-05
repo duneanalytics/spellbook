@@ -1,9 +1,10 @@
 version: 2
 
-sources: 
+sources:
   - name: equalizer_exchange_fantom
+    database: delta_prod
     freshness:
-          warn_after: { count: 12, period: hour }
+      warn_after: {count: 12, period: hour}
     description: >
       Decoded event table for swaps and pairs created on equalizer exchange
     tables:

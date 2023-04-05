@@ -21,7 +21,7 @@ _symbol AS symbol,
 _name AS name,
 decimals,
 call_tx_hash,
-call_block_time,
+CAST(call_block_time AS timestamp(6) with time zone) AS call_block_time,
 call_block_number
 
 FROM (
@@ -39,7 +39,7 @@ FROM (
             {% endif %}
 
         LEFT JOIN {{ref('tokens_ethereum_erc20')}} t
-            ON t.contract_address = c1._l1Token
+            ON t.contract_address = CAST(c1._l1Token AS varchar)
 
         WHERE call_success = true
             {% if is_incremental() %}
@@ -61,7 +61,7 @@ FROM (
             {% endif %}
 
         LEFT JOIN {{ref('tokens_ethereum_erc20')}} t
-            ON t.contract_address = c2._l1Token
+            ON t.contract_address = CAST(c2._l1Token AS varchar)
 
         WHERE call_success = true
             {% if is_incremental() %}

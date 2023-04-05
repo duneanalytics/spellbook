@@ -2,8 +2,9 @@ version: 2
 
 sources:
   - name: zeroex_ethereum
+    database: delta_prod
     freshness:
-      warn_after: { count: 12, period: hour }
+      warn_after: {count: 12, period: hour}
     tables:
       - name: weth9_evt_deposit
         loaded_at_field: evt_block_time
@@ -12,8 +13,7 @@ sources:
           - &contract_address
             name: contract_address
             description: "Contract address for token"
-          - &dst
-            name: dst
+          - name: dst
             description: "Wallet address for WETH deposits"
           - &evt_block_number
             name: evt_block_number
@@ -30,14 +30,12 @@ sources:
           - &wad
             name: wad
             description: "Raw amount of WETH"
-            
       - name: weth9_evt_withdrawal
         loaded_at_field: evt_block_time
         description: "WETH withdrawals"
         columns:
           - *contract_address
-          - &src
-            name: src
+          - name: src
             description: "Wallet address for WETH withdrawals"
           - *evt_block_number
           - *evt_block_time
