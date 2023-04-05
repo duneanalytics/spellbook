@@ -1,9 +1,10 @@
 version: 2
 
-sources: 
+sources:
   - name: dfx_finance_ethereum
+    database: delta_prod
     freshness:
-          warn_after: { count: 12, period: hour }
+      warn_after: {count: 12, period: hour}
     description: >
       Decoded event table for swaps on dfx finance 
     tables:

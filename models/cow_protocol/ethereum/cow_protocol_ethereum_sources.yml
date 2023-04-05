@@ -2,10 +2,12 @@ version: 2
 
 sources:
   - name: gnosis_protocol_v2_ethereum
+    database: delta_prod
     description: "Ethereum decoded tables related to CoW Protocol contract"
     tables:
       - name: GPv2AllowListAuthentication_evt_SolverAdded
-        description: "GPv2AllowListAuthentication list of events when a Solver was added"
+        description: "GPv2AllowListAuthentication list of events when a Solver was\
+          \ added"
         columns:
           - &solver
             name: solver
@@ -28,7 +30,8 @@ sources:
             tests:
               - not_null
       - name: GPv2AllowListAuthentication_evt_SolverRemoved
-        description: "GPv2AllowListAuthentication list of events when a solver was removed"
+        description: "GPv2AllowListAuthentication list of events when a solver was\
+          \ removed"
         columns:
           - *solver
           - *contract_address
@@ -39,34 +42,31 @@ sources:
       - name: GPv2Settlement_evt_Trade
         description: "Trade events emitted by GPv2Settlement"
         columns:
-          - &feeAmount
-            name: feeAmount
+          - name: feeAmount
             description: "Amount (in sell token) in atoms of the trade fee"
-          - &buyAmount
-            name: buyAmount
+          - name: buyAmount
             description: "Amount (in atoms) of the buyToken bought"
-          - &buyToken
-            name: buyToken
-            description: "Contract address of token obtained in trade. 0xeee...ee represents native asset ETH"
+          - name: buyToken
+            description: "Contract address of token obtained in trade. 0xeee...ee\
+              \ represents native asset ETH"
           - *contract_address
           - *evt_block_number
           - *evt_block_time
           - *evt_index
           - *evt_tx_hash
-          - &orderUid
-            name: orderUid
-            description: "Unique identifier of order involved in trade. Note that partially fillable orders can be touched multiple times so this is not a unique ID for trade events."
-          - &owner
-            name: owner
+          - name: orderUid
+            description: "Unique identifier of order involved in trade. Note that\
+              \ partially fillable orders can be touched multiple times so this is\
+              \ not a unique ID for trade events."
+          - name: owner
             description: "Owner of the order being traded (aka trader address)"
-          - &sellAmount
-            name: sellAmount
+          - name: sellAmount
             description: "Amount in atoms of the sellToken sold"
-          - &sellToken
-            name: sellToken
+          - name: sellToken
             description: "Contract address of token sold in trade."
       - name: GPv2Settlement_call_settle
-        description: "Contains all calls to the settle method of GPv2Settlement (both successful and failed)"
+        description: "Contains all calls to the settle method of GPv2Settlement (both\
+          \ successful and failed)"
         columns:
           - &call_block_number
             name: call_block_number
@@ -82,19 +82,17 @@ sources:
             description: "Trace address of the call"
           - &call_tx_hash
             name: call_tx_hash
-            description: "Transaction hash of call (if successful, will result in a real transaction hash)."
-          - &clearingPrices
-            name: clearingPrices
-            description: "An array of relative token prices (matched with `tokens` by index)"
+            description: "Transaction hash of call (if successful, will result in\
+              \ a real transaction hash)."
+          - name: clearingPrices
+            description: "An array of relative token prices (matched with `tokens`\
+              \ by index)"
           - *contract_address
-          - &interactions
-            name: interactions
+          - name: interactions
             description: "An array of internal contract interactions"
-          - &tokens
-            name: tokens
+          - name: tokens
             description: "An array of token addresses (to be matched by index on `clearingPrices`)"
-          - &trades
-            name: trades
+          - name: trades
             description: "An array of order data for the trades being executed"
       - name: GPv2Settlement_evt_Settlement
         description: "Settlement events emitted by GPv2Settlement"
@@ -113,16 +111,14 @@ sources:
           - *evt_block_time
           - *evt_index
           - *evt_tx_hash
-          - &selector
-            name: selector
+          - name: selector
             description: Method ID of the contract being interacted with
-          - &target
-            name: target
+          - name: target
             description: Target contract address of the interaction
-          - &value
-            name: value
+          - name: value
             description: ETH amount (in WEI) being passed into contract interaction
   - name: cowswap
+    database: delta_prod
     tables:
       - name: raw_app_data
         columns:
@@ -134,6 +130,7 @@ sources:
           - name: data
           - name: order_uid
   - name: cow_protocol_ethereum
+    database: delta_prod
     description: "Ethereum decoded tables related to CoW Protocol contract's"
     tables:
       - name: CoWSwapEthFlow_evt_OrderPlacement
@@ -147,17 +144,15 @@ sources:
           - &order
             name: order
             description: "Contains json encoded data for an EthFlowOrder: https://github.com/cowprotocol/ethflowcontract/blob/main/src/libraries/EthFlowOrder.sol#L19-L45"
-          - &data
-            name: data
+          - name: data
             description: "Hex Encoded data containing quoteId and validTo: https://github.com/cowprotocol/ethflowcontract/blob/9c74c8ba36ff9ff3e255172b02454f831c066865/src/CoWSwapEthFlow.sol#L110-L113"
-          - &sender
-            name: sender
+          - name: sender
             description: "User who placed the order"
-          - &signature
-            name: signature
+          - name: signature
             description: "Onchain EIP1271 signature"
       - name: CoWSwapEthFlow_call_createOrder
-        description: "CoWSwapEthFlow createOrder function calls with input parameters and return value"
+        description: "CoWSwapEthFlow createOrder function calls with input parameters\
+          \ and return value"
         columns:
           - *call_block_number
           - *call_block_time
@@ -166,6 +161,6 @@ sources:
           - *call_tx_hash
           - *contract_address
           - *order
-          - &output_orderHash
-            name: output_orderHash
-            description: "ETH Flow Order Hash corresponds directly to a GPv2 Order Uid by concatenation with owner = contract_address and validTo = `ffffffff`"
+          - name: output_orderHash
+            description: "ETH Flow Order Hash corresponds directly to a GPv2 Order\
+              \ Uid by concatenation with owner = contract_address and validTo = `ffffffff`"

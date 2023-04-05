@@ -2,6 +2,7 @@ version: 2
 
 sources:
   - name: reservoir
+    database: delta_prod
     description: >
       Adding reservoir's external table
     tables:

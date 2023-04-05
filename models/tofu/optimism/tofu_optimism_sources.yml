@@ -2,8 +2,9 @@ version: 2
 
 sources:
   - name: tofu_nft_optimism
+    database: delta_prod
     freshness:
-      warn_after: { count: 24, period: hour }
+      warn_after: {count: 24, period: hour}
     tables:
       - name: MarketNG_call_run
         loaded_at_field: call_block_time

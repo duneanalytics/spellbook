@@ -2,6 +2,7 @@ version: 2
 
 sources:
   - name: liquidifty_ethereum
+    database: delta_prod
     description: "Decoded contracts of Liquidifty on ethereum"
 
     tables:

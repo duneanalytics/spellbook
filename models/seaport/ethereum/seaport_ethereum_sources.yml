@@ -1,9 +1,10 @@
 version: 2
 
-sources: 
+sources:
   - name: seaport_ethereum
+    database: delta_prod
     freshness:
-      warn_after: { count: 24, period: hour }
+      warn_after: {count: 24, period: hour}
     tables:
       - name: Seaport_call_fulfillAvailableAdvancedOrders
         loaded_at_field: call_block_time
@@ -23,4 +24,3 @@ sources:
         loaded_at_field: call_block_time
       - name: Seaport_evt_OrdersMatched
         loaded_at_field: evt_block_time
-        

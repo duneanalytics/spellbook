@@ -1,4 +1,3 @@
-
 version: 2
 
 sources:
@@ -6,7 +5,7 @@ sources:
     database: delta_prod
     description: "Prices tables across blockchains"
     freshness:
-      warn_after: { count: 12, period: hour }
+      warn_after: {count: 12, period: hour}
     tables:
       - name: usd
         loaded_at_field: minute

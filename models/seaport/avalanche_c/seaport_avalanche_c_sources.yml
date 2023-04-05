@@ -1,9 +1,10 @@
 version: 2
 
-sources: 
+sources:
   - name: seaport_avalanche_c
+    database: delta_prod
     freshness:
-      warn_after: { count: 24, period: hour }
+      warn_after: {count: 24, period: hour}
     tables:
       - name: Seaport_evt_OrderFulfilled
         loaded_at_field: evt_block_time

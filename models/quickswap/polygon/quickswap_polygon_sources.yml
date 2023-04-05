@@ -1,20 +1,19 @@
 version: 2
 
-sources: 
+sources:
   - name: quickswap_v3_polygon
+    database: delta_prod
     description: "Polygon decoded tables related to QuickSwap v3 contract"
     freshness:
-      warn_after: { count: 12, period: hour }
+      warn_after: {count: 12, period: hour}
     tables:
       - name: AlgebraPool_evt_Swap
         loaded_at_field: evt_block_time
         description: "" # to-do
         columns:
-          - &amount1
-            name: amount1
+          - name: amount1
             description: "The delta of the token1 balance of the pool"
-          - &amount0
-            name: amount0
+          - name: amount0
             description: "The delta of the token0 balance of the pool"
           - name: contract_address
             description: "Polygon address for the liquidity pool used in transaction"
@@ -32,20 +31,15 @@ sources:
             description: "Primary key of the transaction"
             tests:
               - not_null
-          - &liquidity
-            name: liquidity
+          - name: liquidity
             description: "The liquidity of the pool after the swap"
-          - &price
-            name: sqrtPriceX96
+          - name: sqrtPriceX96
             description: the sqt(price) of the pool after the swap"
-          - &recipient
-            name: recipient
+          - name: recipient
             description: "The address that received the output of the swap"
-          - &sender
-            name: sender
+          - name: sender
             description: "The address that initiated the swap call"
-          - &tick
-            name: tick
+          - name: tick
             description: the log base 1.0001 of price of the pool after the swap"
       - name: AlgebraFactory_evt_Pool
         loaded_at_field: evt_block_time
@@ -57,12 +51,9 @@ sources:
           - *evt_block_time
           - *evt_index
           - *evt_tx_hash
-          - &token0
-            name: token0
+          - name: token0
             description: "The first of the two tokens in the pool"
-          - &token1
-            name: token1
+          - name: token1
             description: "The second of the two tokens in the pool"
-          - &pool
-            name: pool
+          - name: pool
             description: "Polygon address for the liquidity pool created"

@@ -1,9 +1,10 @@
 version: 2
 
-sources: 
+sources:
   - name: nexusmutual_ethereum
+    database: delta_prod
     freshness:
-      warn_after: { count: 12, period: hour }
+      warn_after: {count: 12, period: hour}
     tables:
       - name: QuotationData_evt_CoverDetailsEvent
         loaded_at_field: evt_block_time

@@ -2,10 +2,11 @@ version: 2
 
 sources:
   - name: curvefi_ethereum
+    database: delta_prod
     description: "decoded events and function calls for curve.fi on ethereum"
     freshness: # default freshness
-      warn_after: { count: 12, period: hour }
-      error_after: { count: 24, period: hour }
+      warn_after: {count: 12, period: hour}
+      error_after: {count: 24, period: hour}
     tables:
       - name: CurveFactory_call_deploy_plain_pool
         loaded_at_field: call_block_time

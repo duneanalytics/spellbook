@@ -1,7 +1,8 @@
 version: 2
 
-sources: 
+sources:
   - name: nomad_ethereum
+    database: delta_prod
     tables:
       - name: BridgeRouter_evt_Send
         loaded_at_field: evt_block_time

@@ -2,10 +2,11 @@ version: 2
 
 sources:
   - name: oneinch_ethereum
+    database: delta_prod
     description: "decoded events and function calls for 1inch on ethereum"
     freshness:
-      warn_after: { count: 12, period: hour }
-      error_after: { count: 24, period: hour }
+      warn_after: {count: 12, period: hour}
+      error_after: {count: 24, period: hour}
     tables:
       - name: exchange_v1_call_aggregate
         loaded_at_field: call_block_time
@@ -53,21 +54,23 @@ sources:
         loaded_at_field: call_block_time
       - name: AggregationRouterV5_call_fillOrderRFQToWithPermit
         loaded_at_field: call_block_time
-  
+
   - name: oneinch_v2_ethereum
+    database: delta_prod
     description: "decoded events and function calls for 1inch v2 on ethereum"
     freshness:
-      warn_after: { count: 12, period: hour }
-      error_after: { count: 24, period: hour }
+      warn_after: {count: 12, period: hour}
+      error_after: {count: 24, period: hour}
     tables:
       - name: OneInchExchange_evt_Swapped
         loaded_at_field: evt_block_time
 
   - name: oneinch_v3_ethereum
+    database: delta_prod
     description: "decoded events and function calls for 1inch v3 on ethereum"
     freshness:
-      warn_after: { count: 12, period: hour }
-      error_after: { count: 24, period: hour }
+      warn_after: {count: 12, period: hour}
+      error_after: {count: 24, period: hour}
     tables:
       - name: AggregationRouterV3_evt_Swapped
         loaded_at_field: evt_block_time
@@ -81,10 +84,11 @@ sources:
         loaded_at_field: call_block_time
 
   - name: oneinch_v4_ethereum
+    database: delta_prod
     description: "decoded events and function calls for 1inch v4 on ethereum"
     freshness:
-      warn_after: { count: 12, period: hour }
-      error_after: { count: 24, period: hour }
+      warn_after: {count: 12, period: hour}
+      error_after: {count: 24, period: hour}
     tables:
       - name: AggregationRouterV4_call_swap
         loaded_at_field: call_block_time
@@ -112,10 +116,11 @@ sources:
         loaded_at_field: call_block_time
 
   - name: onesplit_ethereum
+    database: delta_prod
     description: "decoded events and function calls for onesplit on ethereum"
     freshness:
-      warn_after: { count: 12, period: hour }
-      error_after: { count: 24, period: hour }
+      warn_after: {count: 12, period: hour}
+      error_after: {count: 24, period: hour}
     tables:
       - name: OneSplit_call_swap
         loaded_at_field: call_block_time
@@ -123,19 +128,22 @@ sources:
         loaded_at_field: call_block_time
 
   - name: oneproto_ethereum
+    database: delta_prod
     description: "decoded events and function calls for oneproto on ethereum"
     freshness:
-      warn_after: { count: 12, period: hour }
-      error_after: { count: 24, period: hour }
+      warn_after: {count: 12, period: hour}
+      error_after: {count: 24, period: hour}
     tables:
       - name: OneSplitAudit_evt_Swapped
         loaded_at_field: evt_block_time
 
   - name: oneinch_lop_ethereum
-    description: "decoded events and function calls for limit order protocol v1 on ethereum"
+    database: delta_prod
+    description: "decoded events and function calls for limit order protocol v1 on\
+      \ ethereum"
     freshness:
-      warn_after: { count: 12, period: hour }
-      error_after: { count: 24, period: hour }
+      warn_after: {count: 12, period: hour}
+      error_after: {count: 24, period: hour}
     tables:
       - name: LimitOrderProtocol_call_fillOrder
         loaded_at_field: call_block_time
@@ -143,10 +151,12 @@ sources:
         loaded_at_field: call_block_time
 
   - name: oneinch_lop_v2_ethereum
-    description: "decoded events and function calls for limit order protocol v2 on ethereum"
+    database: delta_prod
+    description: "decoded events and function calls for limit order protocol v2 on\
+      \ ethereum"
     freshness:
-      warn_after: { count: 12, period: hour }
-      error_after: { count: 24, period: hour }
+      warn_after: {count: 12, period: hour}
+      error_after: {count: 24, period: hour}
     tables:
       - name: LimitOrderProtocol_call_fillOrder
         loaded_at_field: call_block_time

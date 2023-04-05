@@ -2,25 +2,22 @@ version: 2
 
 sources:
   - name: swapr_ethereum
+    database: delta_prod
     description: >
       Decoded tables related to Swapr dex.
     freshness: # default freshness
-      warn_after: { count: 12, period: hour }
-      error_after: { count: 24, period: hour }
+      warn_after: {count: 12, period: hour}
+      error_after: {count: 24, period: hour}
     tables:
       - name: DXswapPair_evt_Swap
         description: >
           Decoded table related to the Swapr swap events.
         loaded_at_field: evt_block_time
         columns:
-          - &amount0In
-            name: amount0In
-          - &amount0Out
-            name: amount0Out
-          - &amount1In
-            name: amount1In
-          - &amount1Out
-            name: amount1Out
+          - name: amount0In
+          - name: amount0Out
+          - name: amount1In
+          - name: amount1Out
           - &contract_address
             name: contract_address
             description: "Ethereum address for the liquidity pool used in transaction"
@@ -36,32 +33,25 @@ sources:
           - &evt_tx_hash
             name: evt_tx_hash
             description: "Primary key of the transaction"
-          - &sender
-            name: sender
+          - name: sender
             description: "msg.sender for the trace"
-          - &to
-            name: to
+          - name: to
             description: "Taker for the trade"
-            
       - name: DXswapFactory_evt_PairCreated
         description: >
           Decoded table related to the Swapr pair creations.
         loaded_at_field: evt_block_time
         columns:
-          - &_0
-            name: _0
+          - name: _0
             description: "Sequence id for pairs created"
           - *contract_address
           - *evt_block_number
-          - *evt_block_time 
+          - *evt_block_time
           - *evt_index
           - *evt_tx_hash
-          - &pair
-            name: pair
+          - name: pair
             description: "Address for the pair"
-          - &token0
-            name: token0
+          - name: token0
             description: "Address for token0"
-          - &token1
-            name: token1
+          - name: token1
             description: "Address for token1"

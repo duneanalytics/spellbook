@@ -2,10 +2,11 @@ version: 2
 
 sources:
   - name: curvefi_avalanche_c
+    database: delta_prod
     description: "decoded events for curve.fi on avalanche"
     freshness: # default freshness
-      warn_after: { count: 12, period: hour }
-      error_after: { count: 24, period: hour }
+      warn_after: {count: 12, period: hour}
+      error_after: {count: 24, period: hour}
     tables:
       - name: 3pool_evt_TokenExchange
         loaded_at_field: evt_block_time

@@ -1,9 +1,10 @@
 version: 2
 
-sources: 
+sources:
   - name: foundation_ethereum
+    database: delta_prod
     freshness:
-      warn_after: { count: 24, period: hour }
+      warn_after: {count: 24, period: hour}
     tables:
       - name: market_evt_ReserveAuctionFinalized
         loaded_at_field: evt_block_time

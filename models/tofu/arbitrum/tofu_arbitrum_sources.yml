@@ -2,8 +2,9 @@ version: 2
 
 sources:
   - name: tofunft_arbitrum
+    database: delta_prod
     freshness:
-      warn_after: { count: 12, period: hour }
+      warn_after: {count: 12, period: hour}
     tables:
       - name: MarketNG_call_run
         loaded_at_field: call_block_time
