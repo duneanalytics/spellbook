@@ -164,7 +164,7 @@ FROM (values
     ,('0x86c90fc464A668469A93Ca08D8B9872bdB16b356', 'Mux', 'TradingRebateDistributor')
     ,('0xBd1ba78A3976cAB420A9203E6ef14D18C2B2E031', 'Exactly', 'Distributor Multisig')
         --Parnter Uniswap LM Program
-    ,('0xAfBB6c1a235e105e568CCD4FD915dfFF76C415E1', 'Gamma', 'Rewarder')
+    ,('0xAfBB6c1a235e105e568CCD4FD915dfFF76C415E1', 'Gamma', 'Partner Fund')
     ,('0x93dcd773eb0301bd555fc5b0bd7bb5ca5f22fce5', 'Arrakis Finance', 'Partner Fund')
     ,('0x4b5ed41488d3addcb1fb942d40d2fa99f90f48d5', 'Arrakis Finance', 'Partner Fund')
     ,('0xe140e5def72fde807890d89ee4f987d316c25196', 'Arrakis Finance', 'Partner Fund')
