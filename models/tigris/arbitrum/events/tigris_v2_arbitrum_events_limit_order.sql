@@ -19,7 +19,8 @@ pairs as (
 ),
 
 {% set limit_order_trading_evt_tables = [
-    'Trading_evt_LimitOrderExecuted'
+    'Trading_evt_LimitOrderExecuted',
+    'TradingV2_evt_LimitOrderExecuted'
 ] %}
 
 limit_orders AS (
