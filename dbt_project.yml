@@ -203,6 +203,8 @@ models:
         +schema: opensea_ethereum
       solana:
         +schema: opensea_solana
+      optimism:
+        +schema: opensea_optimism
 
     element:
       +schema: element
