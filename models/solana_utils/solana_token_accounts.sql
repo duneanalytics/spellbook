@@ -1,6 +1,8 @@
  {{
   config(
         alias='token_accounts',
+        materialized='incremental',
+        file_format = 'delta',
         post_hook='{{ expose_spells(\'["solana"]\',
                                     "sector",
                                     "solana_utils",

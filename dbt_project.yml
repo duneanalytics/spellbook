@@ -424,8 +424,6 @@ models:
       
     solana_utils:
       +schema: solana_utils
-      +materialized: incremental
-      +file_format: delta
 
     trader_joe:
       +schema: trader_joe
