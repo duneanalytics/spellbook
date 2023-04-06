@@ -17,7 +17,7 @@ concurrency:
 jobs:
   dbt-test:
     runs-on: [ self-hosted, linux, spellbook ]
-    timeout-minutes: 120
+    timeout-minutes: 60
 
     steps:
       - name: Check out repository code
