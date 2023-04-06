@@ -104,3 +104,4 @@ WHERE sc.evt_block_time >= date_trunc("day", now() - interval '1 week')
 {% if not is_incremental() %}
 WHERE sc.evt_block_time >= '{{project_start_date}}'
 {% endif %}
+AND sc.to != '0xfd5caed0be9e2a62b5887676ff79466c5437f898' -- temp fix to hide duplicates
