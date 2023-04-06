@@ -485,6 +485,7 @@ FROM (VALUES
     , ('ethereum', '0x111cff45948819988857bbf1966a0399e0d1141e', 'bitFlyer 1', 'institution', 'hildobby', 'static', timestamp('2022-08-28'), now(), 'cex_ethereum', 'identifier') -- https://etherscan.io/address/0x111cff45948819988857bbf1966a0399e0d1141e
     -- Coinone
     , ('ethereum', '0x167a9333bf582556f35bd4d16a7e80e191aa6476', 'Coinone 1', 'institution', 'hildobby', 'static', timestamp('2022-08-28'), now(), 'cex_ethereum', 'identifier') -- https://etherscan.io/address/0x167a9333bf582556f35bd4d16a7e80e191aa6476
+    , ('ethereum', '0x1e2fcfd26d36183f1a5d90f0e6296915b02bcb40', 'Coinone 2', 'institution', 'hildobby', 'static', timestamp('2022-08-28'), now(), 'cex_ethereum', 'identifier') -- https://etherscan.io/address/0x167a9333bf582556f35bd4d16a7e80e191aa6476
     -- Bitkub
     , ('ethereum', '0xdb044b8298e04d442fdbe5ce01b8cc8f77130e33', 'Bitkub Hot Wallet 1', 'institution', 'hildobby', 'static', timestamp('2022-08-28'), now(), 'cex_ethereum', 'identifier') -- https://etherscan.io/address/0xdb044b8298e04d442fdbe5ce01b8cc8f77130e33
     , ('ethereum', '0x3d1d8a1d418220fd53c18744d44c182c46f47468', 'Bitkub Hot Wallet 2', 'institution', 'hildobby', 'static', timestamp('2022-08-28'), now(), 'cex_ethereum', 'identifier') -- https://etherscan.io/address/0x3d1d8a1d418220fd53c18744d44c182c46f47468
@@ -581,5 +582,100 @@ FROM (VALUES
     -- Beldex
     , ('ethereum', '0x258b7b9a1ba92f47f5f4f5e733293477620a82cb', 'Beldex 1', 'institution', 'hildobby', 'static', timestamp('2022-08-28'), now(), 'cex_ethereum', 'identifier') -- https://etherscan.io/address/0x258b7b9a1ba92f47f5f4f5e733293477620a82cb
     -- SouthXchange
-    , ('ethereum', '0x324cc2c9fb379ea7a0d1c0862c3b48ca28d174a4', 'SouthXchange 1', 'institution', 'hildobby', 'static', timestamp('2022-08-28'), now(), 'cex_ethereum', 'identifier') -- https://etherscan.io/address/0x324cc2c9fb379ea7a0d1c0862c3b48ca28d174a4     
+    , ('ethereum', '0x324cc2c9fb379ea7a0d1c0862c3b48ca28d174a4', 'SouthXchange 1', 'institution', 'hildobby', 'static', timestamp('2022-08-28'), now(), 'cex_ethereum', 'identifier') -- https://etherscan.io/address/0x324cc2c9fb379ea7a0d1c0862c3b48ca28d174a4
+    -- CamboChanger, source: https://github.com/dawsbot/evm-labels/blob/master/src/mainnet/exchange/all.csv
+    , ('ethereum', '0x4dc98c79a52968a6c20ce9a7a08d5e8d1c2d5605', 'CamboChanger 1', 'institution', 'hildobby', 'static', timestamp('2023-04-06'), now(), 'cex_ethereum', 'identifier')
+    , ('ethereum', '0x88988d6ef12d7084e34814b9edafa01ae0d05082', 'CamboChanger 2', 'institution', 'hildobby', 'static', timestamp('2023-04-06'), now(), 'cex_ethereum', 'identifier')
+    -- SimpleSwap, source: https://github.com/dawsbot/evm-labels/blob/master/src/mainnet/exchange/all.csv
+    , ('ethereum', '0xbb3fd383d1c5540e52ef0a7bcb9433375793aeaf', 'SimpleSwap', 'institution', 'hildobby', 'static', timestamp('2023-04-06'), now(), 'cex_ethereum', 'identifier')
+    -- Alcumex Exchange, source: https://github.com/dawsbot/evm-labels/blob/master/src/mainnet/exchange/all.csv
+    , ('ethereum', '0x2ddd202174a72514ed522e77972b461b03155525', 'Alcumex Exchange', 'institution', 'hildobby', 'static', timestamp('2023-04-06'), now(), 'cex_ethereum', 'identifier')
+    -- APROBIT, source: https://github.com/dawsbot/evm-labels/blob/master/src/mainnet/exchange/all.csv
+    , ('ethereum', '0xaecbe94703df39b49ac440feb177c7f1f782c064', 'APROBIT', 'institution', 'hildobby', 'static', timestamp('2023-04-06'), now(), 'cex_ethereum', 'identifier')
+    -- Artis Turba Exchange, source: https://github.com/dawsbot/evm-labels/blob/master/src/mainnet/exchange/all.csv
+    , ('ethereum', '0xf0c80fb9fb22bef8269cb6feb9a51130288a671f', 'Artis Turba Exchange 1', 'institution', 'hildobby', 'static', timestamp('2023-04-06'), now(), 'cex_ethereum', 'identifier')
+    , ('ethereum', '0x94597850916a49b3b152ee374e97260b99249f5b', 'Artis Turba Exchange 2', 'institution', 'hildobby', 'static', timestamp('2023-04-06'), now(), 'cex_ethereum', 'identifier')
+    -- ArzPaya.com, source: https://github.com/dawsbot/evm-labels/blob/master/src/mainnet/exchange/all.csv
+    , ('ethereum', '0x82a403c14483931b2ff6e4440c8373ccfee698b8', 'ArzPaya.com', 'institution', 'hildobby', 'static', timestamp('2023-04-06'), now(), 'cex_ethereum', 'identifier')
+    -- Azbit, source: https://github.com/dawsbot/evm-labels/blob/master/src/mainnet/exchange/all.csv
+    , ('ethereum', '0x92dbd8e0a46edd62aa42d1f7902d0e496bddc15a', 'Azbit', 'institution', 'hildobby', 'static', timestamp('2023-04-06'), now(), 'cex_ethereum', 'identifier')
+    -- Bidesk, source: https://github.com/dawsbot/evm-labels/blob/master/src/mainnet/exchange/all.csv
+    , ('ethereum', '0x0bb5de248dbbd31ee6c402c3c4a70293024acf74', 'Bidesk 2', 'institution', 'hildobby', 'static', timestamp('2023-04-06'), now(), 'cex_ethereum', 'identifier')
+    , ('ethereum', '0xed5cdb0d02152046e6f234ad578613831b9184d4', 'Bidesk 3', 'institution', 'hildobby', 'static', timestamp('2023-04-06'), now(), 'cex_ethereum', 'identifier')
+    -- Bitbee, source: https://github.com/dawsbot/evm-labels/blob/master/src/mainnet/exchange/all.csv
+    , ('ethereum', '0x2b49ce21ad2004cfb3d0b51b2e8ec0406d632513', 'Bitbee', 'institution', 'hildobby', 'static', timestamp('2023-04-06'), now(), 'cex_ethereum', 'identifier')
+    -- BiteBTC, source: https://github.com/dawsbot/evm-labels/blob/master/src/mainnet/exchange/all.csv
+    , ('ethereum', '0x28ebe764b8f9a853509840645216d3c2c0fd774b', 'BiteBTC', 'institution', 'hildobby', 'static', timestamp('2023-04-06'), now(), 'cex_ethereum', 'identifier')
+    -- Bitexlive, source: https://github.com/dawsbot/evm-labels/blob/master/src/mainnet/exchange/all.csv
+    , ('ethereum', '0x7217d64f77041ce320c356d1a2185bcb89798a0a', 'Bitexlive 1', 'institution', 'hildobby', 'static', timestamp('2023-04-06'), now(), 'cex_ethereum', 'identifier')
+    , ('ethereum', '0x57a47cfe647306a406118b6cf36459a1756823d0', 'Bitexlive 2', 'institution', 'hildobby', 'static', timestamp('2023-04-06'), now(), 'cex_ethereum', 'identifier')
+    -- BitKeep, source: https://github.com/dawsbot/evm-labels/blob/master/src/mainnet/exchange/all.csv
+    , ('ethereum', '0x603d022611bfe6a101dcdab207d96c527f1d4d8e', 'BitKeep', 'institution', 'hildobby', 'static', timestamp('2023-04-06'), now(), 'cex_ethereum', 'identifier')
+    -- BITStorage, source: https://github.com/dawsbot/evm-labels/blob/master/src/mainnet/exchange/all.csv
+    , ('ethereum', '0x1b8a38ea02ceda9440e00c1aeba26ee2dc570423', 'BITStorage', 'institution', 'hildobby', 'static', timestamp('2023-04-06'), now(), 'cex_ethereum', 'identifier')
+    -- BitUN.io, source: https://github.com/dawsbot/evm-labels/blob/master/src/mainnet/exchange/all.csv
+    , ('ethereum', '0xaa90b4aae74cee41e004bc45e45a427406c4dcae', 'BitUN.io 1', 'institution', 'hildobby', 'static', timestamp('2023-04-06'), now(), 'cex_ethereum', 'identifier')
+    , ('ethereum', '0xf8d04a720520d0bcbc722b1d21ca194aa22699f2', 'BitUN.io 2', 'institution', 'hildobby', 'static', timestamp('2023-04-06'), now(), 'cex_ethereum', 'identifier')
+    -- Bololex.com, source: https://github.com/dawsbot/evm-labels/blob/master/src/mainnet/exchange/all.csv
+    , ('ethereum', '0xdf8752caa319668006580ddf48db25a23728b926', 'Bololex.com', 'institution', 'hildobby', 'static', timestamp('2023-04-06'), now(), 'cex_ethereum', 'identifier')
+    -- BTC-Alpha Exchange, source: https://github.com/dawsbot/evm-labels/blob/master/src/mainnet/exchange/all.csv
+    , ('ethereum', '0x1c00d840ccaa67c494109f46e55cfeb2d8562f5c', 'BTC-Alpha Exchange', 'institution', 'hildobby', 'static', timestamp('2023-04-06'), now(), 'cex_ethereum', 'identifier')
+    -- C2CX, source: https://github.com/dawsbot/evm-labels/blob/master/src/mainnet/exchange/all.csv
+    , ('ethereum', '0xd7c866d0d536937bf9123e02f7c052446588189f', 'C2CX', 'institution', 'hildobby', 'static', timestamp('2023-04-06'), now(), 'cex_ethereum', 'identifier')
+    -- ChainX, source: https://github.com/dawsbot/evm-labels/blob/master/src/mainnet/exchange/all.csv
+    , ('ethereum', '0xfd648cc72f1b4e71cbdda7a0a91fe34d32abd656', 'ChainX', 'institution', 'hildobby', 'static', timestamp('2023-04-06'), now(), 'cex_ethereum', 'identifier')
+    -- Changelly, source: https://github.com/dawsbot/evm-labels/blob/master/src/mainnet/exchange/all.csv
+    , ('ethereum', '0x96fc4553a00c117c5b0bed950dd625d1c16dc894', 'Changelly', 'institution', 'hildobby', 'static', timestamp('2023-04-06'), now(), 'cex_ethereum', 'identifier')
+    -- Coindelta, source: https://github.com/dawsbot/evm-labels/blob/master/src/mainnet/exchange/all.csv
+    , ('ethereum', '0xb6ba1931e4e74fd080587688f6db10e830f810d5', 'Coindelta', 'institution', 'hildobby', 'static', timestamp('2023-04-06'), now(), 'cex_ethereum', 'identifier')
+    -- Coinswitch, source: https://github.com/dawsbot/evm-labels/blob/master/src/mainnet/exchange/all.csv
+    , ('ethereum', '0xd0808da05cc71a9f308d330bc9c5c81bbc26fc59', 'Coinswitch', 'institution', 'hildobby', 'static', timestamp('2023-04-06'), now(), 'cex_ethereum', 'identifier')
+    -- Eidoo, source: https://github.com/dawsbot/evm-labels/blob/master/src/mainnet/exchange/all.csv
+    , ('ethereum', '0xf1c525a488a848b58b95d79da48c21ce434290f7', 'Eidoo', 'institution', 'hildobby', 'static', timestamp('2023-04-06'), now(), 'cex_ethereum', 'identifier')
+    -- Eigen Fx, source: https://github.com/dawsbot/evm-labels/blob/master/src/mainnet/exchange/all.csv
+    , ('ethereum', '0x608f94df1c1d89ea13e5984d7bf107df137a6541', 'Eigen Fx 1', 'institution', 'hildobby', 'static', timestamp('2023-04-06'), now(), 'cex_ethereum', 'identifier')
+    , ('ethereum', '0xeb9ebf2c624ebee42e0853da6443ddc6c8020de7', 'Eigen Fx 2', 'institution', 'hildobby', 'static', timestamp('2023-04-06'), now(), 'cex_ethereum', 'identifier')
+    -- Eterbase, source: https://github.com/dawsbot/evm-labels/blob/master/src/mainnet/exchange/all.csv
+    , ('ethereum', '0x8d76166c22658a144c0211d87abf152e6a2d9d95', 'Eterbase', 'institution', 'hildobby', 'static', timestamp('2023-04-06'), now(), 'cex_ethereum', 'identifier')
+    -- Exchange A, source: https://github.com/dawsbot/evm-labels/blob/master/src/mainnet/exchange/all.csv
+    , ('ethereum', '0xd3808c5d48903be1490989f3fce2a2b3890e8eb6', 'Exchange A', 'institution', 'hildobby', 'static', timestamp('2023-04-06'), now(), 'cex_ethereum', 'identifier')
+    -- Faa.st, source: https://github.com/dawsbot/evm-labels/blob/master/src/mainnet/exchange/all.csv
+    , ('ethereum', '0x94fe3ad91dacba8ec4b82f56ff7c122181f1535d', 'Faa.st', 'institution', 'hildobby', 'static', timestamp('2023-04-06'), now(), 'cex_ethereum', 'identifier')
+    -- FCoin, source: https://github.com/dawsbot/evm-labels/blob/master/src/mainnet/exchange/all.csv
+    , ('ethereum', '0x915d7915f2b469bb654a7d903a5d4417cb8ea7df', 'FCoin', 'institution', 'hildobby', 'static', timestamp('2023-04-06'), now(), 'cex_ethereum', 'identifier')
+    -- Flybit, source: https://github.com/dawsbot/evm-labels/blob/master/src/mainnet/exchange/all.csv
+    , ('ethereum', '0x91e18ee76483fa2ec5cfe2959df46673c2565be0', 'Flybit', 'institution', 'hildobby', 'static', timestamp('2023-04-06'), now(), 'cex_ethereum', 'identifier')
+    -- Folgory Exchange, source: https://github.com/dawsbot/evm-labels/blob/master/src/mainnet/exchange/all.csv
+    , ('ethereum', '0x0021845f4c2604c58f9ba5b7bff58d16a2ab372c', 'Folgory Exchange', 'institution', 'hildobby', 'static', timestamp('2023-04-06'), now(), 'cex_ethereum', 'identifier')
+    -- GBX, source: https://github.com/dawsbot/evm-labels/blob/master/src/mainnet/exchange/all.csv
+    , ('ethereum', '0x9f5ca0012b9b72e8f3db57092a6f26bf4f13dc69', 'GBX', 'institution', 'hildobby', 'static', timestamp('2023-04-06'), now(), 'cex_ethereum', 'identifier')
+    -- GGBTC.com, source: https://github.com/dawsbot/evm-labels/blob/master/src/mainnet/exchange/all.csv
+    , ('ethereum', '0x9fb01a2584aac5aae3fab1ed25f86c5269b32999', 'GGBTC.com', 'institution', 'hildobby', 'static', timestamp('2023-04-06'), now(), 'cex_ethereum', 'identifier')
+    -- IndoEx LTD, source: https://github.com/dawsbot/evm-labels/blob/master/src/mainnet/exchange/all.csv
+    , ('ethereum', '0xb1a34309af7f29b4195a6b589737f86e14597ddc', 'IndoEx LTD', 'institution', 'hildobby', 'static', timestamp('2023-04-06'), now(), 'cex_ethereum', 'identifier')
+    -- Kryptono, source: https://github.com/dawsbot/evm-labels/blob/master/src/mainnet/exchange/all.csv
+    , ('ethereum', '0xe8a0e282e6a3e8023465accd47fae39dd5db010b', 'Kryptono 1', 'institution', 'hildobby', 'static', timestamp('2023-04-06'), now(), 'cex_ethereum', 'identifier')
+    , ('ethereum', '0x629a7144235259336ea2694167f3c8b856edd7dc', 'Kryptono 2', 'institution', 'hildobby', 'static', timestamp('2023-04-06'), now(), 'cex_ethereum', 'identifier')
+    , ('ethereum', '0x30b71d015f60e2f959743038ce0aaec9b4c1ea44', 'Kryptono 3', 'institution', 'hildobby', 'static', timestamp('2023-04-06'), now(), 'cex_ethereum', 'identifier')
+    -- Livecoin.net, source: https://github.com/dawsbot/evm-labels/blob/master/src/mainnet/exchange/all.csv
+    , ('ethereum', '0x243bec9256c9a3469da22103891465b47583d9f1', 'Livecoin.net', 'institution', 'hildobby', 'static', timestamp('2023-04-06'), now(), 'cex_ethereum', 'identifier')
+    -- MinedTrade.com, source: https://github.com/dawsbot/evm-labels/blob/master/src/mainnet/exchange/all.csv
+    , ('ethereum', '0xac338d9faac562df26d702880c796e1024e2698a', 'MinedTrade.com', 'institution', 'hildobby', 'static', timestamp('2023-04-06'), now(), 'cex_ethereum', 'identifier')
+    -- NEXBIT Pro, source: https://github.com/dawsbot/evm-labels/blob/master/src/mainnet/exchange/all.csv
+    , ('ethereum', '0xae7006588d03bd15d6954e3084a7e644596bc251', 'NEXBIT Pro', 'institution', 'hildobby', 'static', timestamp('2023-04-06'), now(), 'cex_ethereum', 'identifier')
+    -- Streamity, source: https://github.com/dawsbot/evm-labels/blob/master/src/mainnet/exchange/all.csv
+    , ('ethereum', '0x9bf25700727d10a857099d1033ce2cc493c3b61a', 'Streamity', 'institution', 'hildobby', 'static', timestamp('2023-04-06'), now(), 'cex_ethereum', 'identifier')
+    -- Switchain, source: https://github.com/dawsbot/evm-labels/blob/master/src/mainnet/exchange/all.csv
+    , ('ethereum', '0xa96b536eef496e21f5432fd258b6f78cf3673f74', 'Switchain', 'institution', 'hildobby', 'static', timestamp('2023-04-06'), now(), 'cex_ethereum', 'identifier')
+    -- TAGZ, source: https://github.com/dawsbot/evm-labels/blob/master/src/mainnet/exchange/all.csv
+    , ('ethereum', '0xea3a46bd1dbd0620d80037f70d0bf7c7dc5a837c', 'TAGZ 1', 'institution', 'hildobby', 'static', timestamp('2023-04-06'), now(), 'cex_ethereum', 'identifier')
+    , ('ethereum', '0xed8204345a0cf4639d2db61a4877128fe5cf7599', 'TAGZ 2', 'institution', 'hildobby', 'static', timestamp('2023-04-06'), now(), 'cex_ethereum', 'identifier')
+    -- Tokocrypto, source: https://github.com/dawsbot/evm-labels/blob/master/src/mainnet/exchange/all.csv
+    , ('ethereum', '0x0068eb681ec52dbd9944517d785727310b494575', 'Tokocrypto', 'institution', 'hildobby', 'static', timestamp('2023-04-06'), now(), 'cex_ethereum', 'identifier')
+    -- Vinex, source: https://github.com/dawsbot/evm-labels/blob/master/src/mainnet/exchange/all.csv
+    , ('ethereum', '0xb436c96c6de1f50a160ed307317c275424dbe4f2', 'Vinex', 'institution', 'hildobby', 'static', timestamp('2023-04-06'), now(), 'cex_ethereum', 'identifier')
+    -- Wintermute, source: https://github.com/dawsbot/evm-labels/blob/master/src/mainnet/exchange/all.csv
+    , ('ethereum', '0x0e5069514a3dd613350bab01b58fd850058e5ca4', 'Wintermute', 'institution', 'hildobby', 'static', timestamp('2023-04-06'), now(), 'cex_ethereum', 'identifier')
+    -- ZB.com, source: https://github.com/dawsbot/evm-labels/blob/master/src/mainnet/exchange/all.csv
+    , ('ethereum', '0x60d0cc2ae15859f69bf74dadb8ae3bd58434976b', 'ZB.com', 'institution', 'hildobby', 'static', timestamp('2023-04-06'), now(), 'cex_ethereum', 'identifier')
     ) AS x (blockchain, address, name, category, contributor, source, created_at, updated_at, model_name, label_type)
