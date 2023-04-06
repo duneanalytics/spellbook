@@ -10,6 +10,15 @@ models:
       tags: ['optimism', 'avalanche_c', 'arbitrum', 'perpetuals', 'perps', 'cross-chain', 'pika', 'perpetual-protocol', 'synthetix']
     description: >
       Perpetual swaps/trades table
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_date
+            - blockchain
+            - project
+            - version
+            - tx_hash
+            - evt_index
     columns:
       - &blockchain
         name: blockchain
