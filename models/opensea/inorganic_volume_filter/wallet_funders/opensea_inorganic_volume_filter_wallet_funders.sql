@@ -27,7 +27,7 @@ contracts as (
 funders as (
         SELECT 
             b.to as wallet, 
-            MIN(a.from) as funder, 
+            MIN(a.`from`) as funder, 
             MIN(a.block_time) as block_time,
             MIN(a.block_number) as block_number, 
             MIN(a.hash) as tx_hash 
@@ -43,10 +43,10 @@ funders as (
         INNER JOIN 
         {{ ref('opensea_inorganic_volume_filter_wallet_funders_wallets') }} wl 
         ON et.to = wl.wallet 
-        LEFT JOIN aggregators agg ON et.from = agg.aggregator_address
-        LEFT JOIN cex c ON et.from = c.cex_address
-        LEFT JOIN disperse d ON et.from = d.disperse_address
-        LEFT JOIN contracts c ON et.from = c.contract_address
+        LEFT JOIN aggregators agg ON et.`from` = agg.aggregator_address
+        LEFT JOIN cex c ON et.`from` = c.cex_address
+        LEFT JOIN disperse d ON et.`from` = d.disperse_address
+        LEFT JOIN contracts c ON et.`from` = c.contract_address
         WHERE agg.aggregator_address IS NULL 
         AND c.cex_address IS NULL 
         AND d.disperse_address IS NULL 

@@ -135,7 +135,9 @@ sources:
           description: "Wallet address of the repayer" 
         - *reserve
         - *user       
-        
+
+      - name: DefaultReserveInterestRateStrategy_call_calculateInterestRates
+
   - name: aave_ethereum
     description: "Decoded contracts for aave v1 on Ethereum"
 
