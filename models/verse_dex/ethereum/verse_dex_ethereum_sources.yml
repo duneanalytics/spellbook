@@ -7,7 +7,7 @@ sources:
     description: >
       Decoded event table for swaps & pairs created on verse dex
     tables:
-      - name: Pair_evt_Swap
+      - name: SwapsPair_evt_Swap
         loaded_at_field: evt_block_time
       - name: Factory_evt_PairCreated
         loaded_at_field: evt_block_time

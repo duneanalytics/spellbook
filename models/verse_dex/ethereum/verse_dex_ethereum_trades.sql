@@ -12,7 +12,7 @@
     )
 }}
 
-{% set project_start_date = '2022-06-14' %} -- min(evt_block_time) from verse_dex_ethereum.Pair_evt_Swap
+{% set project_start_date = '2022-06-14' %} -- min(evt_block_time) from verse_dex_ethereum.SwapsPair_evt_Swap
 
 with dexs as (
 
@@ -30,7 +30,7 @@ with dexs as (
         '' as trace_address,
         t.evt_index
     FROM
-        {{ source('verse_dex_ethereum', 'Pair_evt_Swap') }} t
+        {{ source('verse_dex_ethereum', 'SwapsPair_evt_Swap') }} t
         inner join {{ source('verse_dex_ethereum', 'Factory_evt_PairCreated') }} f 
             on f.pair = t.contract_address
     {% if is_incremental() %}
