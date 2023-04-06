@@ -58,6 +58,7 @@
 ,ref('quickswap_trades')
 ,ref('integral_trades')
 ,ref('maverick_trades')
+,ref('bebop_trades')
 ] %}
 
 
