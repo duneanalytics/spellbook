@@ -47,7 +47,7 @@ WITH
                     ELSE COALESCE((fills."makerAssetFilledAmount" / (10^mt.decimals))*mp.price,(fills."takerAssetFilledAmount" / (10^tt.decimals))*tp.price)
                 END AS volume_usd
             , fills."protocolFeePaid" / 1e18 AS protocol_fee_paid_eth
-        FROM zeroex_v3."Exchange_evt_Fill" fills
+       FROM {{ source('zeroex_v3_polygon', 'Exchange_evt_Fill') }} fills 
         LEFT JOIN prices.usd tp ON
             date_trunc('minute', evt_block_time) = tp.minute
             AND CASE
@@ -107,7 +107,7 @@ WITH
                     ELSE COALESCE((fills."makerTokenFilledAmount" / (10^mt.decimals))*mp.price,(fills."takerTokenFilledAmount" / (10^tt.decimals))*tp.price)
                 END AS volume_usd
             , fills."protocolFeePaid"/ 1e18 AS protocol_fee_paid_eth
-        FROM zeroex."ExchangeProxy_evt_LimitOrderFilled" fills
+        FROM {{ source('zeroex_polygon', 'ExchangeProxy_evt_LimitOrderFilled') }} fills
         LEFT JOIN prices.usd tp ON
             date_trunc('minute', evt_block_time) = tp.minute
             AND CASE
@@ -166,7 +166,7 @@ WITH
                   ELSE COALESCE((fills."makerTokenFilledAmount" / (10^mt.decimals))*mp.price,(fills."takerTokenFilledAmount" / (10^tt.decimals))*tp.price)
               END AS volume_usd
           , NULL::NUMERIC AS protocol_fee_paid_eth
-      FROM zeroex."ExchangeProxy_evt_RfqOrderFilled" fills
+      FROM {{ source('zeroex_polygon', 'ExchangeProxy_evt_RfqOrderFilled') }} fills
       LEFT JOIN prices.usd tp ON
           date_trunc('minute', evt_block_time) = tp.minute
           AND CASE
@@ -224,7 +224,7 @@ WITH
                   ELSE COALESCE((fills."makerTokenFilledAmount" / (10^mt.decimals))*mp.price,(fills."takerTokenFilledAmount" / (10^tt.decimals))*tp.price)
               END AS volume_usd
           , NULL::NUMERIC AS protocol_fee_paid_eth
-      FROM zeroex."ExchangeProxy_evt_OtcOrderFilled" fills
+        FROM {{ source('zeroex_polygon', 'ExchangeProxy_evt_OtcOrderFilled') }} fills
       LEFT JOIN prices.usd tp ON
           date_trunc('minute', evt_block_time) = tp.minute
           AND CASE

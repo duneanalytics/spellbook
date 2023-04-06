@@ -24,50 +24,50 @@ WITH
             , 'v3' AS protocol_version
             , fills.evt_tx_hash AS transaction_hash
             , fills.evt_index
-            , fills."makerAddress" AS maker_address
-            , fills."takerAddress" AS taker_address
-            , SUBSTRING(fills."makerAssetData",17,20) AS maker_token
+            , fills.makerAddress AS maker_address
+            , fills.takerAddress AS taker_address
+            , SUBSTRING(fills.makerAssetData,17,20) AS maker_token
             , mt.symbol AS maker_symbol
-            , fills."makerAssetFilledAmount" / (10^mt.decimals) AS maker_asset_filled_amount
-            , SUBSTRING(fills."takerAssetData",17,20) AS taker_token
+            , fills.makerAssetFilledAmount / (10^mt.decimals) AS maker_asset_filled_amount
+            , SUBSTRING(fills.takerAssetData,17,20) AS taker_token
             , tt.symbol AS taker_symbol
-            , fills."takerAssetFilledAmount" / (10^tt.decimals) AS taker_asset_filled_amount
-            , fills."feeRecipientAddress" AS fee_recipient_address
+            , fills.takerAssetFilledAmount / (10^tt.decimals) AS taker_asset_filled_amount
+            , fills.feeRecipientAddress AS fee_recipient_address
             , CASE
-                    WHEN tp.symbol = 'USDC' THEN (fills."takerAssetFilledAmount" / 1e6) --don't multiply by anything as these assets are USD
-                    WHEN mp.symbol = 'USDC' THEN (fills."makerAssetFilledAmount" / 1e6) --don't multiply by anything as these assets are USD
-                    WHEN tp.symbol = 'TUSD' THEN (fills."takerAssetFilledAmount" / 1e18) --don't multiply by anything as these assets are USD
-                    WHEN mp.symbol = 'TUSD' THEN (fills."makerAssetFilledAmount" / 1e18) --don't multiply by anything as these assets are USD
-                    WHEN tp.symbol = 'USDT' THEN (fills."takerAssetFilledAmount" / 1e6) * tp.price
-                    WHEN mp.symbol = 'USDT' THEN (fills."makerAssetFilledAmount" / 1e6) * mp.price
-                    WHEN tp.symbol = 'DAI' THEN (fills."takerAssetFilledAmount" / 1e18) * tp.price
-                    WHEN mp.symbol = 'DAI' THEN (fills."makerAssetFilledAmount" / 1e18) * mp.price
-                    WHEN tp.symbol = 'WETH' THEN (fills."takerAssetFilledAmount" / 1e18) * tp.price
-                    WHEN mp.symbol = 'WETH' THEN (fills."makerAssetFilledAmount" / 1e18) * mp.price
-                    ELSE COALESCE((fills."makerAssetFilledAmount" / (10^mt.decimals))*mp.price,(fills."takerAssetFilledAmount" / (10^tt.decimals))*tp.price)
+                    WHEN tp.symbol = 'USDC' THEN (fills.takerAssetFilledAmount / 1e6) --don't multiply by anything as these assets are USD
+                    WHEN mp.symbol = 'USDC' THEN (fills.makerAssetFilledAmount / 1e6) --don't multiply by anything as these assets are USD
+                    WHEN tp.symbol = 'TUSD' THEN (fills.takerAssetFilledAmount / 1e18) --don't multiply by anything as these assets are USD
+                    WHEN mp.symbol = 'TUSD' THEN (fills.makerAssetFilledAmount / 1e18) --don't multiply by anything as these assets are USD
+                    WHEN tp.symbol = 'USDT' THEN (fills.takerAssetFilledAmount / 1e6) * tp.price
+                    WHEN mp.symbol = 'USDT' THEN (fills.makerAssetFilledAmount / 1e6) * mp.price
+                    WHEN tp.symbol = 'DAI' THEN (fills.takerAssetFilledAmount / 1e18) * tp.price
+                    WHEN mp.symbol = 'DAI' THEN (fills.makerAssetFilledAmount / 1e18) * mp.price
+                    WHEN tp.symbol = 'WETH' THEN (fills.takerAssetFilledAmount / 1e18) * tp.price
+                    WHEN mp.symbol = 'WETH' THEN (fills.makerAssetFilledAmount / 1e18) * mp.price
+                    ELSE COALESCE((fills.makerAssetFilledAmount / (10^mt.decimals))*mp.price,(fills.takerAssetFilledAmount / (10^tt.decimals))*tp.price)
                 END AS volume_usd
             , fills."protocolFeePaid" / 1e18 AS protocol_fee_paid_eth
-        FROM zeroex_v3."Exchange_evt_Fill" fills
+        FROM {{ source('zeroex_v3_ethereum', 'Exchange_evt_Fill') }} fills 
         LEFT JOIN prices.usd tp ON
             date_trunc('minute', evt_block_time) = tp.minute
             AND CASE
                     -- Set Deversifi ETHWrapper to WETH
-                    WHEN SUBSTRING(fills."takerAssetData",17,20) IN ('0x50cb61afa3f023d17276dcfb35abf85c710d1cff','0xaa7427d8f17d87a28f5e1ba3adbb270badbe1011') THEN '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'
+                    WHEN SUBSTRING(fills.takerAssetData,17,20) IN ('0x50cb61afa3f023d17276dcfb35abf85c710d1cff','0xaa7427d8f17d87a28f5e1ba3adbb270badbe1011') THEN '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'
                     -- Set Deversifi USDCWrapper to USDC
-                    WHEN SUBSTRING(fills."takerAssetData",17,20) IN ('0x69391cca2e38b845720c7deb694ec837877a8e53') THEN '0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48'
-                    ELSE SUBSTRING(fills."takerAssetData",17,20)
+                    WHEN SUBSTRING(fills.takerAssetData,17,20) IN ('0x69391cca2e38b845720c7deb694ec837877a8e53') THEN '0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48'
+                    ELSE SUBSTRING(fills.takerAssetData,17,20)
                 END = tp.contract_address
         LEFT JOIN prices.usd mp ON
             DATE_TRUNC('minute', evt_block_time) = mp.minute
             AND CASE
                     -- Set Deversifi ETHWrapper to WETH
-                    WHEN SUBSTRING(fills."makerAssetData",17,20) IN ('0x50cb61afa3f023d17276dcfb35abf85c710d1cff','0xaa7427d8f17d87a28f5e1ba3adbb270badbe1011') THEN '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'
+                    WHEN SUBSTRING(fills.makerAssetData,17,20) IN ('0x50cb61afa3f023d17276dcfb35abf85c710d1cff','0xaa7427d8f17d87a28f5e1ba3adbb270badbe1011') THEN '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'
                     -- Set Deversifi USDCWrapper to USDC
-                    WHEN SUBSTRING(fills."makerAssetData",17,20) IN ('0x69391cca2e38b845720c7deb694ec837877a8e53') THEN '0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48'
-                    ELSE SUBSTRING(fills."makerAssetData",17,20)
+                    WHEN SUBSTRING(fills.makerAssetData,17,20) IN ('0x69391cca2e38b845720c7deb694ec837877a8e53') THEN '0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48'
+                    ELSE SUBSTRING(fills.makerAssetData,17,20)
                 END = mp.contract_address
-        LEFT JOIN erc20.tokens mt ON mt.contract_address = SUBSTRING(fills."makerAssetData",17,20)
-        LEFT JOIN erc20.tokens tt ON tt.contract_address = SUBSTRING(fills."takerAssetData",17,20)
+        LEFT JOIN erc20.tokens mt ON mt.contract_address = SUBSTRING(fills.makerAssetData,17,20)
+        LEFT JOIN erc20.tokens tt ON tt.contract_address = SUBSTRING(fills.takerAssetData,17,20)
          where 1=1 
                 {% if is_incremental() %}
                 AND block_time >= date_trunc('day', now() - interval '1 week')
@@ -82,50 +82,50 @@ WITH
             , 'v2' AS protocol_version
             , fills.evt_tx_hash AS transaction_hash
             , fills.evt_index
-            , fills."makerAddress" AS maker_address
-            , fills."takerAddress" AS taker_address
-            , SUBSTRING(fills."makerAssetData",17,20) AS maker_token
+            , fills.makerAddress AS maker_address
+            , fills.takerAddress AS taker_address
+            , SUBSTRING(fills.makerAssetData,17,20) AS maker_token
             , mt.symbol AS maker_symbol
-            , fills."makerAssetFilledAmount" / (10^mt.decimals) AS maker_asset_filled_amount
-            , SUBSTRING(fills."takerAssetData",17,20) AS taker_token
+            , fills.makerAssetFilledAmount / (10^mt.decimals) AS maker_asset_filled_amount
+            , SUBSTRING(fills.takerAssetData,17,20) AS taker_token
             , tt.symbol AS taker_symbol
-            , fills."takerAssetFilledAmount" / (10^tt.decimals) AS taker_asset_filled_amount
-            , fills."feeRecipientAddress" AS fee_recipient_address
+            , fills.takerAssetFilledAmount / (10^tt.decimals) AS taker_asset_filled_amount
+            , fills.feeRecipientAddress AS fee_recipient_address
             , CASE
-                    WHEN tp.symbol = 'USDC' THEN (fills."takerAssetFilledAmount" / 1e6) ----don't multiply by anything as these assets are USD
-                    WHEN mp.symbol = 'USDC' THEN (fills."makerAssetFilledAmount" / 1e6) ----don't multiply by anything as these assets are USD
-                    WHEN tp.symbol = 'TUSD' THEN (fills."takerAssetFilledAmount" / 1e18) --don't multiply by anything as these assets are USD
-                    WHEN mp.symbol = 'TUSD' THEN (fills."makerAssetFilledAmount" / 1e18) --don't multiply by anything as these assets are USD
-                    WHEN tp.symbol = 'USDT' THEN (fills."takerAssetFilledAmount" / 1e6) * tp.price
-                    WHEN mp.symbol = 'USDT' THEN (fills."makerAssetFilledAmount" / 1e6) * mp.price
-                    WHEN tp.symbol = 'DAI' THEN (fills."takerAssetFilledAmount" / 1e18) * tp.price
-                    WHEN mp.symbol = 'DAI' THEN (fills."makerAssetFilledAmount" / 1e18) * mp.price
-                    WHEN tp.symbol = 'WETH' THEN (fills."takerAssetFilledAmount" / 1e18) * tp.price
-                    WHEN mp.symbol = 'WETH' THEN (fills."makerAssetFilledAmount" / 1e18) * mp.price
-                    ELSE COALESCE((fills."makerAssetFilledAmount" / (10^mt.decimals))*mp.price,(fills."takerAssetFilledAmount" / (10^tt.decimals))*tp.price)
+                    WHEN tp.symbol = 'USDC' THEN (fills.takerAssetFilledAmount / 1e6) ----don't multiply by anything as these assets are USD
+                    WHEN mp.symbol = 'USDC' THEN (fills.makerAssetFilledAmount / 1e6) ----don't multiply by anything as these assets are USD
+                    WHEN tp.symbol = 'TUSD' THEN (fills.takerAssetFilledAmount / 1e18) --don't multiply by anything as these assets are USD
+                    WHEN mp.symbol = 'TUSD' THEN (fills.makerAssetFilledAmount / 1e18) --don't multiply by anything as these assets are USD
+                    WHEN tp.symbol = 'USDT' THEN (fills.takerAssetFilledAmount / 1e6) * tp.price
+                    WHEN mp.symbol = 'USDT' THEN (fills.makerAssetFilledAmount / 1e6) * mp.price
+                    WHEN tp.symbol = 'DAI' THEN (fills.takerAssetFilledAmount / 1e18) * tp.price
+                    WHEN mp.symbol = 'DAI' THEN (fills.makerAssetFilledAmount / 1e18) * mp.price
+                    WHEN tp.symbol = 'WETH' THEN (fills.takerAssetFilledAmount / 1e18) * tp.price
+                    WHEN mp.symbol = 'WETH' THEN (fills.makerAssetFilledAmount / 1e18) * mp.price
+                    ELSE COALESCE((fills.makerAssetFilledAmount / (10^mt.decimals))*mp.price,(fills.takerAssetFilledAmount / (10^tt.decimals))*tp.price)
                 END AS volume_usd
             , NULL::NUMERIC AS protocol_fee_paid_eth
-        FROM zeroex_v2."Exchange2.1_evt_Fill" fills
+        FROM {{ source('zeroex_v2_ethereum', 'Exchange2_1_evt_Fill') }} fills
         LEFT JOIN prices.usd tp ON
             date_trunc('minute', evt_block_time) = tp.minute
             AND CASE
                     -- Set Deversifi ETHWrapper to WETH
-                    WHEN SUBSTRING(fills."takerAssetData",17,20) IN ('0x50cb61afa3f023d17276dcfb35abf85c710d1cff','0xaa7427d8f17d87a28f5e1ba3adbb270badbe1011') THEN '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'
+                    WHEN SUBSTRING(fills.takerAssetData,17,20) IN ('0x50cb61afa3f023d17276dcfb35abf85c710d1cff','0xaa7427d8f17d87a28f5e1ba3adbb270badbe1011') THEN '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'
                     -- Set Deversifi USDCWrapper to USDC
-                    WHEN SUBSTRING(fills."takerAssetData",17,20) IN ('0x69391cca2e38b845720c7deb694ec837877a8e53') THEN '0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48'
-                    ELSE SUBSTRING(fills."takerAssetData",17,20)
+                    WHEN SUBSTRING(fills.takerAssetData,17,20) IN ('0x69391cca2e38b845720c7deb694ec837877a8e53') THEN '0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48'
+                    ELSE SUBSTRING(fills.takerAssetData,17,20)
                 END = tp.contract_address
         LEFT JOIN prices.usd mp ON
             DATE_TRUNC('minute', evt_block_time) = mp.minute
             AND CASE
                     -- Set Deversifi ETHWrapper to WETH
-                    WHEN SUBSTRING(fills."makerAssetData",17,20) IN ('0x50cb61afa3f023d17276dcfb35abf85c710d1cff','0xaa7427d8f17d87a28f5e1ba3adbb270badbe1011') THEN '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'
+                    WHEN SUBSTRING(fills.makerAssetData,17,20) IN ('0x50cb61afa3f023d17276dcfb35abf85c710d1cff','0xaa7427d8f17d87a28f5e1ba3adbb270badbe1011') THEN '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'
                     -- Set Deversifi USDCWrapper to USDC
-                    WHEN SUBSTRING(fills."makerAssetData",17,20) IN ('0x69391cca2e38b845720c7deb694ec837877a8e53') THEN '0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48'
-                    ELSE SUBSTRING(fills."makerAssetData",17,20)
+                    WHEN SUBSTRING(fills.makerAssetData,17,20) IN ('0x69391cca2e38b845720c7deb694ec837877a8e53') THEN '0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48'
+                    ELSE SUBSTRING(fills.makerAssetData,17,20)
                 END = mp.contract_address
-        LEFT JOIN erc20.tokens mt ON mt.contract_address = SUBSTRING(fills."makerAssetData",17,20)
-        LEFT JOIN erc20.tokens tt ON tt.contract_address = SUBSTRING(fills."takerAssetData",17,20)
+        LEFT JOIN erc20.tokens mt ON mt.contract_address = SUBSTRING(fills.makerAssetData,17,20)
+        LEFT JOIN erc20.tokens tt ON tt.contract_address = SUBSTRING(fills.takerAssetData,17,20)
          where 1=1 
                 {% if is_incremental() %}
                 AND block_time >= date_trunc('day', now() - interval '1 week')
@@ -141,50 +141,50 @@ WITH
             , 'v4' AS protocol_version
             , fills.evt_tx_hash AS transaction_hash
             , fills.evt_index
-            , fills."maker" AS maker_address
-            , fills."taker" AS taker_address
-            , fills."makerToken" AS maker_token
+            , fills.maker AS maker_address
+            , fills.taker AS taker_address
+            , fills.makerToken AS maker_token
             , mt.symbol AS maker_symbol
-            , fills."makerTokenFilledAmount" / (10^mt.decimals) AS maker_asset_filled_amount
-            , fills."takerToken" AS taker_token
+            , fills.makerTokenFilledAmount / (10^mt.decimals) AS maker_asset_filled_amount
+            , fills.takerToken AS taker_token
             , tt.symbol AS taker_symbol
-            , fills."takerTokenFilledAmount" / (10^tt.decimals) AS taker_asset_filled_amount
+            , fills.takerTokenFilledAmount / (10^tt.decimals) AS taker_asset_filled_amount
             , fills."feeRecipient" AS fee_recipient_address
             , CASE
-                    WHEN tp.symbol = 'USDC' THEN (fills."takerTokenFilledAmount" / 1e6) ----don't multiply by anything as these assets are USD
-                    WHEN mp.symbol = 'USDC' THEN (fills."makerTokenFilledAmount" / 1e6) ----don't multiply by anything as these assets are USD
-                    WHEN tp.symbol = 'TUSD' THEN (fills."takerTokenFilledAmount" / 1e18) --don't multiply by anything as these assets are USD
-                    WHEN mp.symbol = 'TUSD' THEN (fills."makerTokenFilledAmount" / 1e18) --don't multiply by anything as these assets are USD
-                    WHEN tp.symbol = 'USDT' THEN (fills."takerTokenFilledAmount" / 1e6) * tp.price
-                    WHEN mp.symbol = 'USDT' THEN (fills."makerTokenFilledAmount" / 1e6) * mp.price
-                    WHEN tp.symbol = 'DAI' THEN (fills."takerTokenFilledAmount" / 1e18) * tp.price
-                    WHEN mp.symbol = 'DAI' THEN (fills."makerTokenFilledAmount" / 1e18) * mp.price
-                    WHEN tp.symbol = 'WETH' THEN (fills."takerTokenFilledAmount" / 1e18) * tp.price
-                    WHEN mp.symbol = 'WETH' THEN (fills."makerTokenFilledAmount" / 1e18) * mp.price
-                    ELSE COALESCE((fills."makerTokenFilledAmount" / (10^mt.decimals))*mp.price,(fills."takerTokenFilledAmount" / (10^tt.decimals))*tp.price)
+                    WHEN tp.symbol = 'USDC' THEN (fills.takerTokenFilledAmount / 1e6) ----don't multiply by anything as these assets are USD
+                    WHEN mp.symbol = 'USDC' THEN (fills.makerTokenFilledAmount / 1e6) ----don't multiply by anything as these assets are USD
+                    WHEN tp.symbol = 'TUSD' THEN (fills.takerTokenFilledAmount / 1e18) --don't multiply by anything as these assets are USD
+                    WHEN mp.symbol = 'TUSD' THEN (fills.makerTokenFilledAmount / 1e18) --don't multiply by anything as these assets are USD
+                    WHEN tp.symbol = 'USDT' THEN (fills.takerTokenFilledAmount / 1e6) * tp.price
+                    WHEN mp.symbol = 'USDT' THEN (fills.makerTokenFilledAmount / 1e6) * mp.price
+                    WHEN tp.symbol = 'DAI' THEN (fills.takerTokenFilledAmount / 1e18) * tp.price
+                    WHEN mp.symbol = 'DAI' THEN (fills.makerTokenFilledAmount / 1e18) * mp.price
+                    WHEN tp.symbol = 'WETH' THEN (fills.takerTokenFilledAmount / 1e18) * tp.price
+                    WHEN mp.symbol = 'WETH' THEN (fills.makerTokenFilledAmount / 1e18) * mp.price
+                    ELSE COALESCE((fills.makerTokenFilledAmount / (10^mt.decimals))*mp.price,(fills.takerTokenFilledAmount / (10^tt.decimals))*tp.price)
                 END AS volume_usd
             , fills."protocolFeePaid"/ 1e18 AS protocol_fee_paid_eth
-        FROM zeroex."ExchangeProxy_evt_LimitOrderFilled" fills
+        FROM {{ source('zeroex_ethereum', 'ExchangeProxy_evt_LimitOrderFilled') }} fills
         LEFT JOIN prices.usd tp ON
             date_trunc('minute', evt_block_time) = tp.minute
             AND CASE
                     -- Set Deversifi ETHWrapper to WETH
-                    WHEN fills."takerToken" IN ('0x50cb61afa3f023d17276dcfb35abf85c710d1cff':,'0xaa7427d8f17d87a28f5e1ba3adbb270badbe1011':) THEN '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2':
+                    WHEN fills.takerToken IN ('0x50cb61afa3f023d17276dcfb35abf85c710d1cff','0xaa7427d8f17d87a28f5e1ba3adbb270badbe1011') THEN '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'
                     -- Set Deversifi USDCWrapper to USDC
-                    WHEN fills."takerToken" IN ('0x69391cca2e38b845720c7deb694ec837877a8e53':) THEN '0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48':
-                    ELSE fills."takerToken"
+                    WHEN fills.takerToken IN ('0x69391cca2e38b845720c7deb694ec837877a8e53') THEN '0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48'
+                    ELSE fills.takerToken
                 END = tp.contract_address
         LEFT JOIN prices.usd mp ON
             DATE_TRUNC('minute', evt_block_time) = mp.minute
             AND CASE
                     -- Set Deversifi ETHWrapper to WETH
-                    WHEN fills."makerToken" IN ('0x50cb61afa3f023d17276dcfb35abf85c710d1cff':,'0xaa7427d8f17d87a28f5e1ba3adbb270badbe1011':) THEN '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2':
+                    WHEN fills.makerToken IN ('0x50cb61afa3f023d17276dcfb35abf85c710d1cff','0xaa7427d8f17d87a28f5e1ba3adbb270badbe1011') THEN '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'
                     -- Set Deversifi USDCWrapper to USDC
-                    WHEN fills."makerToken" IN ('0x69391cca2e38b845720c7deb694ec837877a8e53':) THEN '0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48':
-                    ELSE fills."makerToken"
+                    WHEN fills.makerToken IN ('0x69391cca2e38b845720c7deb694ec837877a8e53') THEN '0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48'
+                    ELSE fills.makerToken
                 END = mp.contract_address
-        LEFT JOIN erc20.tokens mt ON mt.contract_address = fills."makerToken"
-        LEFT JOIN erc20.tokens tt ON tt.contract_address = fills."takerToken"
+        LEFT JOIN erc20.tokens mt ON mt.contract_address = fills.makerToken
+        LEFT JOIN erc20.tokens tt ON tt.contract_address = fills.takerToken
          where 1=1 
                 {% if is_incremental() %}
                 AND block_time >= date_trunc('day', now() - interval '1 week')
@@ -200,50 +200,50 @@ WITH
           , 'v4' AS protocol_version
           , fills.evt_tx_hash AS transaction_hash
           , fills.evt_index
-          , fills."maker" AS maker_address
-          , fills."taker" AS taker_address
-          , fills."makerToken" AS maker_token
+          , fills.maker AS maker_address
+          , fills.taker AS taker_address
+          , fills.makerToken AS maker_token
           , mt.symbol AS maker_symbol
-          , fills."makerTokenFilledAmount" / (10^mt.decimals) AS maker_asset_filled_amount
-          , fills."takerToken" AS taker_token
+          , fills.makerTokenFilledAmount / (10^mt.decimals) AS maker_asset_filled_amount
+          , fills.takerToken AS taker_token
           , tt.symbol AS taker_symbol
-          , fills."takerTokenFilledAmount" / (10^tt.decimals) AS taker_asset_filled_amount
+          , fills.takerTokenFilledAmount / (10^tt.decimals) AS taker_asset_filled_amount
           , NULL: AS fee_recipient_address
           , CASE
-                  WHEN tp.symbol = 'USDC' THEN (fills."takerTokenFilledAmount" / 1e6) ----don't multiply by anything as these assets are USD
-                  WHEN mp.symbol = 'USDC' THEN (fills."makerTokenFilledAmount" / 1e6) ----don't multiply by anything as these assets are USD
-                  WHEN tp.symbol = 'TUSD' THEN (fills."takerTokenFilledAmount" / 1e18) --don't multiply by anything as these assets are USD
-                  WHEN mp.symbol = 'TUSD' THEN (fills."makerTokenFilledAmount" / 1e18) --don't multiply by anything as these assets are USD
-                  WHEN tp.symbol = 'USDT' THEN (fills."takerTokenFilledAmount" / 1e6) * tp.price
-                  WHEN mp.symbol = 'USDT' THEN (fills."makerTokenFilledAmount" / 1e6) * mp.price
-                  WHEN tp.symbol = 'DAI' THEN (fills."takerTokenFilledAmount" / 1e18) * tp.price
-                  WHEN mp.symbol = 'DAI' THEN (fills."makerTokenFilledAmount" / 1e18) * mp.price
-                  WHEN tp.symbol = 'WETH' THEN (fills."takerTokenFilledAmount" / 1e18) * tp.price
-                  WHEN mp.symbol = 'WETH' THEN (fills."makerTokenFilledAmount" / 1e18) * mp.price
-                  ELSE COALESCE((fills."makerTokenFilledAmount" / (10^mt.decimals))*mp.price,(fills."takerTokenFilledAmount" / (10^tt.decimals))*tp.price)
+                  WHEN tp.symbol = 'USDC' THEN (fills.takerTokenFilledAmount / 1e6) ----don't multiply by anything as these assets are USD
+                  WHEN mp.symbol = 'USDC' THEN (fills.makerTokenFilledAmount / 1e6) ----don't multiply by anything as these assets are USD
+                  WHEN tp.symbol = 'TUSD' THEN (fills.takerTokenFilledAmount / 1e18) --don't multiply by anything as these assets are USD
+                  WHEN mp.symbol = 'TUSD' THEN (fills.makerTokenFilledAmount / 1e18) --don't multiply by anything as these assets are USD
+                  WHEN tp.symbol = 'USDT' THEN (fills.takerTokenFilledAmount / 1e6) * tp.price
+                  WHEN mp.symbol = 'USDT' THEN (fills.makerTokenFilledAmount / 1e6) * mp.price
+                  WHEN tp.symbol = 'DAI' THEN (fills.takerTokenFilledAmount / 1e18) * tp.price
+                  WHEN mp.symbol = 'DAI' THEN (fills.makerTokenFilledAmount / 1e18) * mp.price
+                  WHEN tp.symbol = 'WETH' THEN (fills.takerTokenFilledAmount / 1e18) * tp.price
+                  WHEN mp.symbol = 'WETH' THEN (fills.makerTokenFilledAmount / 1e18) * mp.price
+                  ELSE COALESCE((fills.makerTokenFilledAmount / (10^mt.decimals))*mp.price,(fills.takerTokenFilledAmount / (10^tt.decimals))*tp.price)
               END AS volume_usd
           , NULL::NUMERIC AS protocol_fee_paid_eth
-      FROM zeroex."ExchangeProxy_evt_RfqOrderFilled" fills
+      FROM {{ source('zeroex_ethereum', 'ExchangeProxy_evt_RfqOrderFilled') }} fills
       LEFT JOIN prices.usd tp ON
           date_trunc('minute', evt_block_time) = tp.minute
           AND CASE
                   -- Set Deversifi ETHWrapper to WETH
-                  WHEN fills."takerToken" IN ('0x50cb61afa3f023d17276dcfb35abf85c710d1cff':,'0xaa7427d8f17d87a28f5e1ba3adbb270badbe1011':) THEN '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2':
+                  WHEN fills.takerToken IN ('0x50cb61afa3f023d17276dcfb35abf85c710d1cff','0xaa7427d8f17d87a28f5e1ba3adbb270badbe1011') THEN '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'
                   -- Set Deversifi USDCWrapper to USDC
-                  WHEN fills."takerToken" IN ('0x69391cca2e38b845720c7deb694ec837877a8e53':) THEN '0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48':
-                  ELSE fills."takerToken"
+                  WHEN fills.takerToken IN ('0x69391cca2e38b845720c7deb694ec837877a8e53') THEN '0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48'
+                  ELSE fills.takerToken
               END = tp.contract_address
       LEFT JOIN prices.usd mp ON
           DATE_TRUNC('minute', evt_block_time) = mp.minute
           AND CASE
                   -- Set Deversifi ETHWrapper to WETH
-                  WHEN fills."makerToken" IN ('0x50cb61afa3f023d17276dcfb35abf85c710d1cff':,'0xaa7427d8f17d87a28f5e1ba3adbb270badbe1011':) THEN '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2':
+                  WHEN fills.makerToken IN ('0x50cb61afa3f023d17276dcfb35abf85c710d1cff','0xaa7427d8f17d87a28f5e1ba3adbb270badbe1011') THEN '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'
                   -- Set Deversifi USDCWrapper to USDC
-                  WHEN fills."makerToken" IN ('0x69391cca2e38b845720c7deb694ec837877a8e53':) THEN '0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48':
-                  ELSE fills."makerToken"
+                  WHEN fills.makerToken IN ('0x69391cca2e38b845720c7deb694ec837877a8e53') THEN '0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48'
+                  ELSE fills.makerToken
               END = mp.contract_address
-      LEFT JOIN erc20.tokens mt ON mt.contract_address = fills."makerToken"
-      LEFT JOIN erc20.tokens tt ON tt.contract_address = fills."takerToken"
+      LEFT JOIN erc20.tokens mt ON mt.contract_address = fills.makerToken
+      LEFT JOIN erc20.tokens tt ON tt.contract_address = fills.takerToken
        where 1=1 
                 {% if is_incremental() %}
                 AND block_time >= date_trunc('day', now() - interval '1 week')
@@ -258,50 +258,50 @@ WITH
           , 'v4' AS protocol_version
           , fills.evt_tx_hash AS transaction_hash
           , fills.evt_index
-          , fills."maker" AS maker_address
-          , fills."taker" AS taker_address
-          , fills."makerToken" AS maker_token
+          , fills.maker AS maker_address
+          , fills.taker AS taker_address
+          , fills.makerToken AS maker_token
           , mt.symbol AS maker_symbol
-          , fills."makerTokenFilledAmount" / (10^mt.decimals) AS maker_asset_filled_amount
-          , fills."takerToken" AS taker_token
+          , fills.makerTokenFilledAmount / (10^mt.decimals) AS maker_asset_filled_amount
+          , fills.takerToken AS taker_token
           , tt.symbol AS taker_symbol
-          , fills."takerTokenFilledAmount" / (10^tt.decimals) AS taker_asset_filled_amount
+          , fills.takerTokenFilledAmount / (10^tt.decimals) AS taker_asset_filled_amount
           , NULL: AS fee_recipient_address
           , CASE
-                  WHEN tp.symbol = 'USDC' THEN (fills."takerTokenFilledAmount" / 1e6) ----don't multiply by anything as these assets are USD
-                  WHEN mp.symbol = 'USDC' THEN (fills."makerTokenFilledAmount" / 1e6) ----don't multiply by anything as these assets are USD
-                  WHEN tp.symbol = 'TUSD' THEN (fills."takerTokenFilledAmount" / 1e18) --don't multiply by anything as these assets are USD
-                  WHEN mp.symbol = 'TUSD' THEN (fills."makerTokenFilledAmount" / 1e18) --don't multiply by anything as these assets are USD
-                  WHEN tp.symbol = 'USDT' THEN (fills."takerTokenFilledAmount" / 1e6) * tp.price
-                  WHEN mp.symbol = 'USDT' THEN (fills."makerTokenFilledAmount" / 1e6) * mp.price
-                  WHEN tp.symbol = 'DAI' THEN (fills."takerTokenFilledAmount" / 1e18) * tp.price
-                  WHEN mp.symbol = 'DAI' THEN (fills."makerTokenFilledAmount" / 1e18) * mp.price
-                  WHEN tp.symbol = 'WETH' THEN (fills."takerTokenFilledAmount" / 1e18) * tp.price
-                  WHEN mp.symbol = 'WETH' THEN (fills."makerTokenFilledAmount" / 1e18) * mp.price
-                  ELSE COALESCE((fills."makerTokenFilledAmount" / (10^mt.decimals))*mp.price,(fills."takerTokenFilledAmount" / (10^tt.decimals))*tp.price)
+                  WHEN tp.symbol = 'USDC' THEN (fills.takerTokenFilledAmount / 1e6) ----don't multiply by anything as these assets are USD
+                  WHEN mp.symbol = 'USDC' THEN (fills.makerTokenFilledAmount / 1e6) ----don't multiply by anything as these assets are USD
+                  WHEN tp.symbol = 'TUSD' THEN (fills.takerTokenFilledAmount / 1e18) --don't multiply by anything as these assets are USD
+                  WHEN mp.symbol = 'TUSD' THEN (fills.makerTokenFilledAmount / 1e18) --don't multiply by anything as these assets are USD
+                  WHEN tp.symbol = 'USDT' THEN (fills.takerTokenFilledAmount / 1e6) * tp.price
+                  WHEN mp.symbol = 'USDT' THEN (fills.makerTokenFilledAmount / 1e6) * mp.price
+                  WHEN tp.symbol = 'DAI' THEN (fills.takerTokenFilledAmount / 1e18) * tp.price
+                  WHEN mp.symbol = 'DAI' THEN (fills.makerTokenFilledAmount / 1e18) * mp.price
+                  WHEN tp.symbol = 'WETH' THEN (fills.takerTokenFilledAmount / 1e18) * tp.price
+                  WHEN mp.symbol = 'WETH' THEN (fills.makerTokenFilledAmount / 1e18) * mp.price
+                  ELSE COALESCE((fills.makerTokenFilledAmount / (10^mt.decimals))*mp.price,(fills.takerTokenFilledAmount / (10^tt.decimals))*tp.price)
               END AS volume_usd
           , NULL::NUMERIC AS protocol_fee_paid_eth
-      FROM zeroex."ExchangeProxy_evt_OtcOrderFilled" fills
+      FROM {{ source('zeroex_ethereum', 'ExchangeProxy_evt_OtcOrderFilled') }} fills
       LEFT JOIN prices.usd tp ON
           date_trunc('minute', evt_block_time) = tp.minute
           AND CASE
                   -- Set Deversifi ETHWrapper to WETH
-                  WHEN fills."takerToken" IN ('0x50cb61afa3f023d17276dcfb35abf85c710d1cff':,'0xaa7427d8f17d87a28f5e1ba3adbb270badbe1011':) THEN '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2':
+                  WHEN fills.takerToken IN ('0x50cb61afa3f023d17276dcfb35abf85c710d1cff','0xaa7427d8f17d87a28f5e1ba3adbb270badbe1011') THEN '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'
                   -- Set Deversifi USDCWrapper to USDC
-                  WHEN fills."takerToken" IN ('0x69391cca2e38b845720c7deb694ec837877a8e53':) THEN '0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48':
-                  ELSE fills."takerToken"
+                  WHEN fills.takerToken IN ('0x69391cca2e38b845720c7deb694ec837877a8e53') THEN '0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48'
+                  ELSE fills.takerToken
               END = tp.contract_address
       LEFT JOIN prices.usd mp ON
           DATE_TRUNC('minute', evt_block_time) = mp.minute
           AND CASE
                   -- Set Deversifi ETHWrapper to WETH
-                  WHEN fills."makerToken" IN ('0x50cb61afa3f023d17276dcfb35abf85c710d1cff':,'0xaa7427d8f17d87a28f5e1ba3adbb270badbe1011':) THEN '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2':
+                  WHEN fills.makerToken IN ('0x50cb61afa3f023d17276dcfb35abf85c710d1cff','0xaa7427d8f17d87a28f5e1ba3adbb270badbe1011') THEN '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'
                   -- Set Deversifi USDCWrapper to USDC
-                  WHEN fills."makerToken" IN ('0x69391cca2e38b845720c7deb694ec837877a8e53':) THEN '0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48':
-                  ELSE fills."makerToken"
+                  WHEN fills.makerToken IN ('0x69391cca2e38b845720c7deb694ec837877a8e53') THEN '0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48'
+                  ELSE fills.makerToken
               END = mp.contract_address
-      LEFT JOIN erc20.tokens mt ON mt.contract_address = fills."makerToken"
-      LEFT JOIN erc20.tokens tt ON tt.contract_address = fills."takerToken"
+      LEFT JOIN erc20.tokens mt ON mt.contract_address = fills.makerToken
+      LEFT JOIN erc20.tokens tt ON tt.contract_address = fills.takerToken
        where 1=1 
                 {% if is_incremental() %}
                 AND block_time >= date_trunc('day', now() - interval '1 week')
