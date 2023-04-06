@@ -28,6 +28,8 @@ WITH
             , fills.takerAddress AS taker_address
             , SUBSTRING(fills.makerAssetData,17,20) AS maker_token
             , mt.symbol AS maker_symbol
+            , fills.takerTokenFilledAmount as taker_token_filled_amount_raw
+            , fills.makerTokenFilledAmount as maker_token_filled_amount_raw
             , fills.makerAssetFilledAmount / (10^mt.decimals) AS maker_asset_filled_amount
             , SUBSTRING(fills.takerAssetData,17,20) AS taker_token
             , tt.symbol AS taker_symbol
@@ -71,10 +73,10 @@ WITH
         LEFT OUTER JOIN {{ ref('tokens_erc20') }} tt ON tt.contract_address = SUBSTRING(fills.takerAssetData,17,20)
          where 1=1 
                 {% if is_incremental() %}
-                AND block_time >= date_trunc('day', now() - interval '1 week')
+                AND evt_block_time >= date_trunc('day', now() - interval '1 week')
                 {% endif %}
                 {% if not is_incremental() %}
-                AND block_time >= '{{zeroex_v3_start_date}}'
+                AND evt_block_time >= '{{zeroex_v3_start_date}}'
                 {% endif %}
     )
     , v2_1_fills AS (
@@ -86,6 +88,8 @@ WITH
             , fills.makerAddress AS maker_address
             , fills.takerAddress AS taker_address
             , SUBSTRING(fills.makerAssetData,17,20) AS maker_token
+            , fills.takerTokenFilledAmount as taker_token_filled_amount_raw
+            , fills.makerTokenFilledAmount as maker_token_filled_amount_raw
             , mt.symbol AS maker_symbol
             , fills.makerAssetFilledAmount / (10^mt.decimals) AS maker_asset_filled_amount
             , SUBSTRING(fills.takerAssetData,17,20) AS taker_token
@@ -129,10 +133,10 @@ WITH
         LEFT OUTER JOIN {{ ref('tokens_erc20') }} tt ON tt.contract_address = SUBSTRING(fills.takerAssetData,17,20)
          where 1=1 
                 {% if is_incremental() %}
-                AND block_time >= date_trunc('day', now() - interval '1 week')
+                AND evt_block_time >= date_trunc('day', now() - interval '1 week')
                 {% endif %}
                 {% if not is_incremental() %}
-                AND block_time >= '{{zeroex_v3_start_date}}'
+                AND evt_block_time >= '{{zeroex_v3_start_date}}'
                 {% endif %}
     )
     , v4_limit_fills AS (
@@ -145,6 +149,8 @@ WITH
             , fills.maker AS maker_address
             , fills.taker AS taker_address
             , fills.makerToken AS maker_token
+            , fills.takerTokenFilledAmount as taker_token_filled_amount_raw
+            , fills.makerTokenFilledAmount as maker_token_filled_amount_raw
             , mt.symbol AS maker_symbol
             , fills.makerTokenFilledAmount / (10^mt.decimals) AS maker_asset_filled_amount
             , fills.takerToken AS taker_token
@@ -189,10 +195,10 @@ WITH
         LEFT OUTER JOIN {{ ref('tokens_erc20') }} tt ON tt.contract_address = fills.takerToken
          where 1=1 
                 {% if is_incremental() %}
-                AND block_time >= date_trunc('day', now() - interval '1 week')
+                AND evt_block_time >= date_trunc('day', now() - interval '1 week')
                 {% endif %}
                 {% if not is_incremental() %}
-                AND block_time >= '{{zeroex_v3_start_date}}'
+                AND evt_block_time >= '{{zeroex_v3_start_date}}'
                 {% endif %}
     )
 
@@ -205,6 +211,8 @@ WITH
           , fills.maker AS maker_address
           , fills.taker AS taker_address
           , fills.makerToken AS maker_token
+          , fills.takerTokenFilledAmount as taker_token_filled_amount_raw
+          , fills.makerTokenFilledAmount as maker_token_filled_amount_raw
           , mt.symbol AS maker_symbol
           , fills.makerTokenFilledAmount / (10^mt.decimals) AS maker_asset_filled_amount
           , fills.takerToken AS taker_token
@@ -249,10 +257,10 @@ WITH
       LEFT OUTER JOIN {{ ref('tokens_erc20') }} tt ON tt.contract_address = fills.takerToken
        where 1=1 
                 {% if is_incremental() %}
-                AND block_time >= date_trunc('day', now() - interval '1 week')
+                AND evt_block_time >= date_trunc('day', now() - interval '1 week')
                 {% endif %}
                 {% if not is_incremental() %}
-                AND block_time >= '{{zeroex_v3_start_date}}'
+                AND evt_block_time >= '{{zeroex_v3_start_date}}'
                 {% endif %}
     ), otc_fills as
     (
@@ -264,6 +272,8 @@ WITH
           , fills.maker AS maker_address
           , fills.taker AS taker_address
           , fills.makerToken AS maker_token
+          , fills.takerTokenFilledAmount as taker_token_filled_amount_raw
+          , fills.makerTokenFilledAmount as maker_token_filled_amount_raw
           , mt.symbol AS maker_symbol
           , fills.makerTokenFilledAmount / (10^mt.decimals) AS maker_asset_filled_amount
           , fills.takerToken AS taker_token
@@ -308,10 +318,10 @@ WITH
       LEFT OUTER JOIN {{ ref('tokens_erc20') }} tt ON tt.contract_address = fills.takerToken
        where 1=1 
                 {% if is_incremental() %}
-                AND block_time >= date_trunc('day', now() - interval '1 week')
+                AND evt_block_time >= date_trunc('day', now() - interval '1 week')
                 {% endif %}
                 {% if not is_incremental() %}
-                AND block_time >= '{{zeroex_v3_start_date}}'
+                AND evt_block_time >= '{{zeroex_v3_start_date}}'
                 {% endif %}
 
     ),
@@ -344,6 +354,8 @@ WITH
                 maker_address as maker,
                 taker_address as taker,
                 maker_token,
+                maker_token_amount_raw,
+                taker_token_amount_raw,
                 maker_symbol,
                 maker_asset_filled_amount maker_token_amount,
                 taker_token, 

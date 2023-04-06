@@ -70,10 +70,10 @@ WITH
         LEFT OUTER JOIN {{ ref('tokens_erc20') }} tt ON tt.contract_address = SUBSTRING(fills.takerAssetData,17,20)
          where 1=1 
                 {% if is_incremental() %}
-                AND block_time >= date_trunc('day', now() - interval '1 week')
+                AND evt_block_time >= date_trunc('day', now() - interval '1 week')
                 {% endif %}
                 {% if not is_incremental() %}
-                AND block_time >= '{{zeroex_v3_start_date}}'
+                AND evt_block_time >= '{{zeroex_v3_start_date}}'
                 {% endif %}
     )
    
@@ -130,10 +130,10 @@ WITH
         LEFT OUTER JOIN {{ ref('tokens_erc20') }}tt ON tt.contract_address = fills.takerToken
          where 1=1 
                 {% if is_incremental() %}
-                AND block_time >= date_trunc('day', now() - interval '1 week')
+                AND evt_block_time >= date_trunc('day', now() - interval '1 week')
                 {% endif %}
                 {% if not is_incremental() %}
-                AND block_time >= '{{zeroex_v3_start_date}}'
+                AND evt_block_time >= '{{zeroex_v3_start_date}}'
                 {% endif %}
     )
 
@@ -189,10 +189,10 @@ WITH
       LEFT OUTER JOIN {{ ref('tokens_erc20') }} tt ON tt.contract_address = fills.takerToken
        where 1=1 
                 {% if is_incremental() %}
-                AND block_time >= date_trunc('day', now() - interval '1 week')
+                AND evt_block_time >= date_trunc('day', now() - interval '1 week')
                 {% endif %}
                 {% if not is_incremental() %}
-                AND block_time >= '{{zeroex_v3_start_date}}'
+                AND evt_block_time >= '{{zeroex_v3_start_date}}'
                 {% endif %}
     ), otc_fills as
     (
@@ -247,10 +247,10 @@ WITH
       LEFT OUTER JOIN {{ ref('tokens_erc20') }} tt ON tt.contract_address = fills.takerToken
        where 1=1 
                 {% if is_incremental() %}
-                AND block_time >= date_trunc('day', now() - interval '1 week')
+                AND evt_block_time >= date_trunc('day', now() - interval '1 week')
                 {% endif %}
                 {% if not is_incremental() %}
-                AND block_time >= '{{zeroex_v3_start_date}}'
+                AND evt_block_time >= '{{zeroex_v3_start_date}}'
                 {% endif %}
 
     ),
