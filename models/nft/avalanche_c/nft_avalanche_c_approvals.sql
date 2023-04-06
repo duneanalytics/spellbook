@@ -3,7 +3,6 @@
         partition_by='block_date',
         materialized='incremental',
         file_format = 'delta',
-        incremental_strategy='append',
         unique_key = ['block_number','tx_hash','evt_index']
 )
 }}
