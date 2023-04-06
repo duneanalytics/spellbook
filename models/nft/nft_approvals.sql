@@ -38,7 +38,6 @@ FROM (
         --, tx_from
         --, tx_to
         , evt_index
-        , unique_approval_id
     FROM {{ nft_model }}
     {% if not loop.last %}
     UNION ALL
