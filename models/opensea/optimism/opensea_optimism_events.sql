@@ -43,4 +43,4 @@ select
     unique_trade_id
 from {{ ref('seaport_optimism_trades') }}
 where 
-    lower(platform_fee_receive_address) = '0x0000a26b00c1f0df003000390027140000faa719'
+    platform_fee_receive_address = '0x0000a26b00c1f0df003000390027140000faa719'
