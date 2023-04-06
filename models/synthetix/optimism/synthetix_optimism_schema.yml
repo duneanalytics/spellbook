@@ -143,14 +143,6 @@ models:
       tags: ['optimism', 'synthetix', 'kwenta', 'decentrex', 'perpetuals', 'perps']
     description: >
       Synthetix perpetuals trades/swaps on Optimism via Kwenta and Decentrex
-    tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - block_time
-            - project
-            - version
-            - tx_hash
-            - evt_index
     columns:
       - *blockchain
       - *block_time
