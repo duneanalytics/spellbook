@@ -38,7 +38,7 @@ WITH event_data as (
 SELECT
     'ethereum' AS blockchain
     ,'clipper' AS project
-    ,'3' AS version
+    ,'4' AS version
     ,TRY_CAST(date_trunc('DAY', e.block_time) AS date) AS block_date
     ,e.block_time
     ,t_bought.symbol AS token_bought_symbol
