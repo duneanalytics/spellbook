@@ -39,7 +39,7 @@ FROM (VALUES
     , ('bnb', '0xee5b5b923ffce93a870b3104b7ca09c3db80047a', 'Bybit 1', 'institution', 'hildobby', 'static', timestamp('2023-04-06'), now(), 'cex_bnb', 'identifier')
     , ('bnb', '0xf89d7b9c864f589bbf53a82105107622b35eaa40', 'Bybit 2', 'institution', 'hildobby', 'static', timestamp('2023-04-06'), now(), 'cex_bnb', 'identifier'),
     -- Crypto.com
-    ('bnb', '0x6262998ced04146fa42253a5c0af90ca02dfd2a3', 'Crypto.com 1', 'institution', 'soispoke', 'static', timestamp('2022-11-14'), now(), 'cex_bnb', 'identifier')
+    , ('bnb', '0x6262998ced04146fa42253a5c0af90ca02dfd2a3', 'Crypto.com 1', 'institution', 'soispoke', 'static', timestamp('2022-11-14'), now(), 'cex_bnb', 'identifier')
     , ('bnb', '0x46340b20830761efd32832a74d7169b29feb9758', 'Crypto.com 2', 'institution', 'soispoke', 'static', timestamp('2022-11-14'), now(), 'cex_bnb', 'identifier')
     , ('bnb', '0x72A53cDBBcc1b9efa39c834A540550e23463AAcB', 'Crypto.com 3', 'institution', 'soispoke', 'static', timestamp('2022-11-14'), now(), 'cex_bnb', 'identifier')
     , ('bnb', '0x7758e507850da48cd47df1fb5f875c23e3340c50', 'Crypto.com 4', 'institution', 'soispoke', 'static', timestamp('2022-11-14'), now(), 'cex_bnb', 'identifier')
