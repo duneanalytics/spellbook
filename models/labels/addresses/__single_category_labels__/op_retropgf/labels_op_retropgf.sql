@@ -6,8 +6,8 @@
 }}
 
 SELECT blockchain,
-       recipient AS address, 
-       'OP RetroPGF ' || round_name || ' Recipient' as name,
+       submitter_address AS address, 
+       'OP RetroPGF ' || round_name || ' Recipient - Submitter' as name,
        'op_retropgf' as category,
        'msilb7' as contributor,
        'query' AS source,
