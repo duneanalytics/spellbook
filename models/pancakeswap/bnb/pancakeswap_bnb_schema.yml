@@ -216,6 +216,7 @@ models:
         description: ""
       - name: evt_index
         description: "Index of the corresponding trade event"
+        
 
   - name: pancakeswap_v3_bnb_amm_trades
     meta:
