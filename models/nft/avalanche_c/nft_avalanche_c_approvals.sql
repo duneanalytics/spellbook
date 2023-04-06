@@ -17,7 +17,7 @@ SELECT 'avalanche_c' AS blockchain
 , CAST(false AS boolean) AS approval_for_all
 , app.contract_address
 , CAST(app.tokenId AS DECIMAL(38,0)) AS token_id
-, approved
+, CAST(approved AS boolean) AS approved
 , app.evt_tx_hash AS tx_hash
 --, et.from AS tx_from
 --, et.to AS tx_to
@@ -43,7 +43,7 @@ SELECT 'avalanche_c' AS blockchain
 , CAST(true AS boolean) AS approval_for_all
 , app.contract_address
 , CAST(NULL AS DECIMAL(38,0)) AS token_id
-, approved
+, CAST(approved AS boolean) AS approved
 , app.evt_tx_hash AS tx_hash
 --, et.from AS tx_from
 --, et.to AS tx_to
@@ -69,7 +69,7 @@ SELECT 'avalanche_c' AS blockchain
 , CAST(true AS boolean) AS approval_for_all
 , app.contract_address
 , CAST(NULL AS DECIMAL(38,0)) AS token_id
-, approved
+, CAST(approved AS boolean) AS approved
 , app.evt_tx_hash AS tx_hash
 --, et.from AS tx_from
 --, et.to AS tx_to

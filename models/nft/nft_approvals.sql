@@ -32,8 +32,8 @@ FROM (
         , approval_for_all
         , contract_address
         , token_id
-        , approved 
-        , approved_for_all
+        , CAST(approved AS boolean) AS approved 
+        , CAST(approved AS boolean) AS approved_for_all
         , tx_hash
         --, tx_from
         --, tx_to
