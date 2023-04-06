@@ -162,6 +162,12 @@ models:
       tags: ['nft', 'ethereum', 'approvals']
     description: >
         NFT approvals
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_number
+            - tx_hash
+            - evt_index
     columns:
       - name: blockchain
         description: "Blockchain"
@@ -179,6 +185,12 @@ models:
               values: ['erc721', 'erc1155']
       - name: approval_for_all
         description: "Was this an ApprovalForAll or a simple Approval?"
+      - name: contract_address
+        description: "Contract address"
+      - name: token_id
+        description: "NFT token ID"
+      - name: approved
+        description: "Approved"
       - name: tx_hash
         description: "Transaction hash"
       - name: tx_from
@@ -187,10 +199,6 @@ models:
         description: "Address that the transaction points to"
       - name: evt_index
         description: "Event index"
-      - name: unique_approval_id
-        tests:
-          - unique
-        description: "Unique approval ID"
 
   - name: nft_ethereum_aggregators_markers
     meta:

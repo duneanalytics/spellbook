@@ -3,7 +3,8 @@
         partition_by='block_date',
         materialized='incremental',
         file_format = 'delta',
-        unique_key = ['unique_approval_id']
+        incremental_strategy='append',
+        unique_key = ['block_number','tx_hash','evt_index']
 )
 }}
 
@@ -16,13 +17,11 @@ SELECT 'goerli' AS blockchain
 , CAST(false AS boolean) AS approval_for_all
 , app.contract_address
 , CAST(app.tokenId AS DECIMAL(38,0)) AS token_id
-, approved 
-, CAST(NULL AS boolean) AS approved_for_all
+, approved
 , app.evt_tx_hash AS tx_hash
 , et.from AS tx_from
 , et.to AS tx_to
 , app.evt_index
-, 'goerli' || '-' || app.evt_tx_hash || '-' || app.evt_index AS unique_approval_id
 FROM {{ source('erc721_goerli','evt_Approval') }} app
 INNER JOIN {{ source('goerli', 'transactions') }} et ON et.block_number=app.evt_block_number
     AND et.hash=app.evt_tx_hash
@@ -44,13 +43,11 @@ SELECT 'goerli' AS blockchain
 , CAST(true AS boolean) AS approval_for_all
 , app.contract_address
 , CAST(NULL AS DECIMAL(38,0)) AS token_id
-, NULL AS approved 
-, CAST(approved AS boolean) AS approved_for_all
+, approved
 , app.evt_tx_hash AS tx_hash
 , et.from AS tx_from
 , et.to AS tx_to
 , app.evt_index
-, 'goerli' || '-' || app.evt_tx_hash || '-' || app.evt_index AS unique_approval_id
 FROM {{ source('erc721_goerli','evt_ApprovalForAll') }} app
 INNER JOIN {{ source('goerli', 'transactions') }} et ON et.block_number=app.evt_block_number
     AND et.hash=app.evt_tx_hash
@@ -72,13 +69,11 @@ SELECT 'goerli' AS blockchain
 , CAST(true AS boolean) AS approval_for_all
 , app.contract_address
 , CAST(NULL AS DECIMAL(38,0)) AS token_id
-, NULL AS approved 
-, CAST(approved AS boolean) AS approved_for_all
+, approved
 , app.evt_tx_hash AS tx_hash
 , et.from AS tx_from
 , et.to AS tx_to
 , app.evt_index
-, 'goerli' || '-' || app.evt_tx_hash || '-' || app.evt_index AS unique_approval_id
 FROM {{ source('erc1155_goerli','evt_ApprovalForAll') }} app
 INNER JOIN {{ source('goerli', 'transactions') }} et ON et.block_number=app.evt_block_number
     AND et.hash=app.evt_tx_hash
