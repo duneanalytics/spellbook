@@ -14,7 +14,7 @@ SELECT
 FROM (VALUES
 
  --Foundation Distributor Wallets
-,('OP Foundation',	'0x2501c477d0a35545a387aa4a3eee4292a9a8b3f0',	'OP Foundation Wallet',		'OP Foundation Grants')
+ ('OP Foundation',	'0x2501c477d0a35545a387aa4a3eee4292a9a8b3f0',	'OP Foundation Wallet',		'OP Foundation Grants')
 ,('OP Foundation',	'0x19793c7824be70ec58bb673ca42d2779d12581be',	'OP Foundation Sentry Wallet',	'OP Foundation Grants')
 --Airdrop Distributor Wallets
 ,('OP Foundation',	'0xbe9a9b1b07f027130e56d8569d1aea5dd5a86013',	'Airdrop #2 Distributor',	'OP Foundation Airdrops')
