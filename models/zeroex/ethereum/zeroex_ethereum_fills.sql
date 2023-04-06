@@ -46,7 +46,8 @@ WITH
                     WHEN mp.symbol = 'WETH' THEN (fills.makerAssetFilledAmount / 1e18) * mp.price
                     ELSE COALESCE((fills.makerAssetFilledAmount / (10^mt.decimals))*mp.price,(fills.takerAssetFilledAmount / (10^tt.decimals))*tp.price)
                 END AS volume_usd
-            , fills."protocolFeePaid" / 1e18 AS protocol_fee_paid_eth
+            , fills."protocolFeePaid" / 1e18 AS protocol_fee_paid_eth,
+            fills.contract_address
         FROM {{ source('zeroex_v3_ethereum', 'Exchange_evt_Fill') }} fills 
         LEFT JOIN prices.usd tp ON
             date_trunc('minute', evt_block_time) = tp.minute
@@ -103,7 +104,7 @@ WITH
                     WHEN tp.symbol = 'WETH' THEN (fills.takerAssetFilledAmount / 1e18) * tp.price
                     WHEN mp.symbol = 'WETH' THEN (fills.makerAssetFilledAmount / 1e18) * mp.price
                     ELSE COALESCE((fills.makerAssetFilledAmount / (10^mt.decimals))*mp.price,(fills.takerAssetFilledAmount / (10^tt.decimals))*tp.price)
-                END AS volume_usd
+                END AS volume_usd, fills.contract_address
             , NULL::NUMERIC AS protocol_fee_paid_eth
         FROM {{ source('zeroex_v2_ethereum', 'Exchange2_1_evt_Fill') }} fills
         LEFT JOIN prices.usd tp ON
@@ -163,7 +164,8 @@ WITH
                     WHEN mp.symbol = 'WETH' THEN (fills.makerTokenFilledAmount / 1e18) * mp.price
                     ELSE COALESCE((fills.makerTokenFilledAmount / (10^mt.decimals))*mp.price,(fills.takerTokenFilledAmount / (10^tt.decimals))*tp.price)
                 END AS volume_usd
-            , fills."protocolFeePaid"/ 1e18 AS protocol_fee_paid_eth
+            , fills."protocolFeePaid"/ 1e18 AS protocol_fee_paid_eth,
+            fills.contract_address
         FROM {{ source('zeroex_ethereum', 'ExchangeProxy_evt_LimitOrderFilled') }} fills
         LEFT JOIN prices.usd tp ON
             date_trunc('minute', evt_block_time) = tp.minute
@@ -222,7 +224,8 @@ WITH
                   WHEN mp.symbol = 'WETH' THEN (fills.makerTokenFilledAmount / 1e18) * mp.price
                   ELSE COALESCE((fills.makerTokenFilledAmount / (10^mt.decimals))*mp.price,(fills.takerTokenFilledAmount / (10^tt.decimals))*tp.price)
               END AS volume_usd
-          , NULL::NUMERIC AS protocol_fee_paid_eth
+          , NULL::NUMERIC AS protocol_fee_paid_eth,
+          fills.contract_address
       FROM {{ source('zeroex_ethereum', 'ExchangeProxy_evt_RfqOrderFilled') }} fills
       LEFT JOIN prices.usd tp ON
           date_trunc('minute', evt_block_time) = tp.minute
@@ -281,6 +284,7 @@ WITH
                   ELSE COALESCE((fills.makerTokenFilledAmount / (10^mt.decimals))*mp.price,(fills.takerTokenFilledAmount / (10^tt.decimals))*tp.price)
               END AS volume_usd
           , NULL::NUMERIC AS protocol_fee_paid_eth
+          , fills.contract_address
       FROM {{ source('zeroex_ethereum', 'ExchangeProxy_evt_OtcOrderFilled') }} fills
       LEFT JOIN prices.usd tp ON
           date_trunc('minute', evt_block_time) = tp.minute
@@ -333,21 +337,21 @@ WITH
     SELECT * FROM otc_fills
     )
             SELECT
-                "timestamp",
-                protocol_version,
-                transaction_hash,
+                "timestamp" as block_time,
+                protocol_version as version,
+                transaction_hash as tx_hash,
                 evt_index,
-                maker_address,
-                taker_address,
+                maker_address as maker,
+                taker_address as taker,
                 maker_token,
                 maker_symbol,
-                maker_asset_filled_amount,
-                taker_token,
+                maker_asset_filled_amount maker_token_amount,
+                taker_token, 
                 taker_symbol,
-                taker_asset_filled_amount,
+                taker_asset_filled_amount taker_token_amount,
                 fee_recipient_address,
-                volume_usd,
+                volume_usd as amount_usd,
                 protocol_fee_paid_eth,
-                'ethereum' as blockchain
+                'polygon' as blockchain
             FROM all_fills
             ORDER BY "timestamp" DESC
