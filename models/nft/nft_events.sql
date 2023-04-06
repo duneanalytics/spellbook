@@ -1,5 +1,10 @@
 {{ config(
     alias ='events',
+    partition_by = ['block_date'],
+    materialized = 'incremental',
+    file_format = 'delta',
+    incremental_strategy = 'merge',
+    unique_key = ['unique_trade_id', 'blockchain'],
     post_hook='{{ expose_spells(\'["ethereum","solana","bnb","optimism","arbitrum","polygon"]\',
                     "sector",
                     "nft",
@@ -40,6 +45,7 @@ FROM (
         blockchain,
         project,
         version,
+        date_trunc('day', block_time)  as block_date,
         block_time,
         token_id,
         collection,
@@ -75,6 +81,9 @@ FROM (
         royalty_fee_percentage,
         unique_trade_id
     FROM {{ nft_model }}
+    {% if is_incremental() %}
+    WHERE block_time >= date_trunc("day", now() - interval '1 week')
+    {% endif %}
     {% if not loop.last %}
     UNION ALL
     {% endif %}
