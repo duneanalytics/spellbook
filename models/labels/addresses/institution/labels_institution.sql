@@ -1,5 +1,5 @@
 {{config(alias='institution',
-        post_hook='{{ expose_spells(\'["ethereum","bnb","fantom"]\',
+        post_hook='{{ expose_spells(\'["ethereum","bnb","fantom", "optimism", "bitcoin"]\',
                                     "sector",
                                     "labels",
                                     \'["ilemi"]\') }}'

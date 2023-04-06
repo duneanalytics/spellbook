@@ -7,6 +7,7 @@
 SELECT blockchain, lower(address) as address, name, category, contributor, source, created_at, updated_at, model_name, label_type
 FROM (VALUES
     -- Binance, Source: https://etherscan.io/accounts/label/binance
+    -- Binance Source 2: https://www.binance.com/en/blog/community/our-commitment-to-transparency-2895840147147652626
     ('ethereum','0x3f5ce5fbfe3e9af3971dd833d26ba9b5c936f0be', 'Binance 1', 'institution', 'hildobby', 'static', timestamp('2022-08-28'), now(), 'cex_ethereum', 'identifier')
     , ('ethereum', '0xd551234ae421e3bcba99a0da6d736074f22192ff', 'Binance 2', 'institution', 'hildobby', 'static', timestamp('2022-08-28'), now(), 'cex_ethereum', 'identifier')
     , ('ethereum', '0x564286362092d8e7936f0549571a803b203aaced', 'Binance 3', 'institution', 'hildobby', 'static', timestamp('2022-08-28'), now(), 'cex_ethereum', 'identifier')
@@ -33,6 +34,8 @@ FROM (VALUES
     , ('ethereum', '0xc3c8e0a39769e2308869f7461364ca48155d1d9e', 'Binance 24', 'institution', 'hildobby', 'static', timestamp('2022-08-28'), now(), 'cex_ethereum', 'identifier')
     , ('ethereum', '0x2e581a5ae722207aa59acd3939771e7c7052dd3d', 'Binance 25', 'institution', 'hildobby', 'static', timestamp('2022-08-28'), now(), 'cex_ethereum', 'identifier')
     , ('ethereum', '0x44592b81c05b4c35efb8424eb9d62538b949ebbf', 'Binance 26', 'institution', 'hildobby', 'static', timestamp('2022-08-28'), now(), 'cex_ethereum', 'identifier')
+    , ('ethereum', '0xa344c7ada83113b3b56941f6e85bf2eb425949f3', 'Binance 27', 'institution', 'hildobby', 'static', timestamp('2023-04-06'), now(), 'cex_ethereum', 'identifier')
+    , ('ethereum', '0x5a52e96bacdabb82fd05763e25335261b270efcb', 'Binance 28', 'institution', 'hildobby', 'static', timestamp('2023-04-06'), now(), 'cex_ethereum', 'identifier')
     , ('ethereum', '0x06a0048079ec6571cd1b537418869cde6191d42d', 'Binance 29', 'institution', 'hildobby', 'static', timestamp('2022-08-28'), now(), 'cex_ethereum', 'identifier')
     , ('ethereum', '0x892e9e24aea3f27f4c6e9360e312cce93cc98ebe', 'Binance 30', 'institution', 'hildobby', 'static', timestamp('2022-08-28'), now(), 'cex_ethereum', 'identifier')
     , ('ethereum', '0x00799bbc833d5b168f0410312d2a8fd9e0e3079c', 'Binance 31', 'institution', 'hildobby', 'static', timestamp('2022-08-28'), now(), 'cex_ethereum', 'identifier')
@@ -52,7 +55,25 @@ FROM (VALUES
     , ('ethereum', '0x9be89d2a4cd102d8fecc6bf9da793be995c22541', 'Binance: ETH and ERC20 tokens Proof of Assets', 'institution', 'soispoke', 'static', timestamp('2022-11-14'), now(), 'cex_ethereum', 'identifier')
     , ('ethereum', '0x7884f51dc1410387371ce61747cb6264e1daee0b', 'Binance: DOT Proof of Assets', 'institution', 'soispoke', 'static', timestamp('2022-11-14'), now(), 'cex_ethereum', 'identifier')
     , ('ethereum', '0xff0a024b66739357c4ed231fb3dbc0c8c22749f5', 'Binance: WRX Proof of Assets', 'institution', 'soispoke', 'static', timestamp('2022-11-14'), now(), 'cex_ethereum', 'identifier')
-    -- FTX, Source: https://etherscan.io/accounts/label/ftx
+    , ('ethereum', '0x47ac0fb4f2d84898e4d9e7b4dab3c24507a6d503', 'Binance: Binance-Peg Tokens', 'institution', 'hildobby', 'static', timestamp('2023-04-06'), now(), 'cex_ethereum', 'identifier')
+    -- Bybit, Source: https://raw.githubusercontent.com/js-kingdata/indicators_factory/fefe53bca88ecf331a71fc59e34aab319f3415c5/crawlers/address_tags/cex/bybit_address.txt
+    , ('ethereum', '0x1db92e2eebc8e0c075a02bea49a2935bcd2dfcf4', 'Bybit 1', 'institution', 'hildobby', 'static', timestamp('2023-04-06'), now(), 'cex_ethereum', 'identifier')
+    , ('ethereum', '0xa7a93fd0a276fc1c0197a5b5623ed117786eed06', 'Bybit 2', 'institution', 'hildobby', 'static', timestamp('2023-04-06'), now(), 'cex_ethereum', 'identifier')
+    , ('ethereum', '0xe1ab8c08294f8ee707d4efa458eab8bbeeb09215', 'Bybit 3', 'institution', 'hildobby', 'static', timestamp('2023-04-06'), now(), 'cex_ethereum', 'identifier')
+    , ('ethereum', '0xee5b5b923ffce93a870b3104b7ca09c3db80047a', 'Bybit 4', 'institution', 'hildobby', 'static', timestamp('2023-04-06'), now(), 'cex_ethereum', 'identifier')
+    , ('ethereum', '0xf89d7b9c864f589bbf53a82105107622b35eaa40', 'Bybit 5', 'institution', 'hildobby', 'static', timestamp('2023-04-06'), now(), 'cex_ethereum', 'identifier')
+    -- Derebit, Source: https://raw.githubusercontent.com/js-kingdata/indicators_factory/fefe53bca88ecf331a71fc59e34aab319f3415c5/crawlers/address_tags/cex/deribit_address.txt
+    , ('ethereum', '0x77021d475e36b3ab1921a0e3a8380f069d3263de', 'Derebit 1', 'institution', 'hildobby', 'static', timestamp('2023-04-06'), now(), 'cex_ethereum', 'identifier')
+    , ('ethereum', '0x5f397b62502e255f68382791947d54c4b2d37f09', 'Derebit 2', 'institution', 'hildobby', 'static', timestamp('2023-04-06'), now(), 'cex_ethereum', 'identifier')
+    , ('ethereum', '0xcfee6efec3471874022e205f4894733c42cbbf64', 'Derebit 3', 'institution', 'hildobby', 'static', timestamp('2023-04-06'), now(), 'cex_ethereum', 'identifier')
+    , ('ethereum', '0x2eed6a08fb89a5cd111efa33f8dca46cfdbe370f', 'Derebit 4', 'institution', 'hildobby', 'static', timestamp('2023-04-06'), now(), 'cex_ethereum', 'identifier')
+    , ('ethereum', '0x6b378be3c9642ccf25b1a27facb8ace24ac34a12', 'Derebit 5', 'institution', 'hildobby', 'static', timestamp('2023-04-06'), now(), 'cex_ethereum', 'identifier')
+    , ('ethereum', '0xa7e15ef7c01b58ebe5ef74aa73625ae4b11fe754', 'Derebit 6', 'institution', 'hildobby', 'static', timestamp('2023-04-06'), now(), 'cex_ethereum', 'identifier')
+    , ('ethereum', '0x062448f804191128d71fc72e10a1d13bd7308e7e', 'Derebit 7', 'institution', 'hildobby', 'static', timestamp('2023-04-06'), now(), 'cex_ethereum', 'identifier')
+    , ('ethereum', '0xa0f6121319a34f24653fb82addc8dd268af5b9e1', 'Derebit 8', 'institution', 'hildobby', 'static', timestamp('2023-04-06'), now(), 'cex_ethereum', 'identifier')
+    , ('ethereum', '0x904cc2b2694ffa78f04708d6f7de205108213126', 'Derebit 9', 'institution', 'hildobby', 'static', timestamp('2023-04-06'), now(), 'cex_ethereum', 'identifier')
+    , ('ethereum', '0x63f41034871535cee49996cc47719891fe03dff9', 'Derebit 10', 'institution', 'hildobby', 'static', timestamp('2023-04-06'), now(), 'cex_ethereum', 'identifier')
+     -- FTX, Source: https://etherscan.io/accounts/label/ftx
     , ('ethereum', '0x2faf487a4414fe77e2327f0bf4ae2a264a776ad2', 'FTX 1', 'institution', 'hildobby', 'static', timestamp('2022-08-28'), now(), 'cex_ethereum', 'identifier')
     , ('ethereum', '0xc098b2a3aa256d2140208c3de6543aaef5cd3a94', 'FTX 2', 'institution', 'hildobby', 'static', timestamp('2022-08-28'), now(), 'cex_ethereum', 'identifier')
     , ('ethereum', '0x25eaff5b179f209cf186b1cdcbfa463a69df4c45', 'FTX (formerly Blockfolio)', 'institution', 'hildobby', 'static', timestamp('2023-01-26'), now(), 'cex_ethereum', 'identifier')
@@ -177,7 +198,7 @@ FROM (VALUES
     , ('ethereum', '0x0d0707963952f2fba59dd06f2b425ace40b492fe', 'Gate.io 1', 'institution', 'hildobby', 'static', timestamp('2022-08-28'), now(), 'cex_ethereum', 'identifier')
     , ('ethereum', '0x7793cd85c11a924478d358d49b05b37e91b5810f', 'Gate.io 2', 'institution', 'hildobby', 'static', timestamp('2022-08-28'), now(), 'cex_ethereum', 'identifier')
     , ('ethereum', '0x1c4b70a3968436b9a0a9cf5205c787eb81bb558c', 'Gate.io 3', 'institution', 'hildobby', 'static', timestamp('2022-08-28'), now(), 'cex_ethereum', 'identifier')
-	, ('ethereum', '0xD793281182A0e3E023116004778F45c29fc14F19', 'Gate.io: Contract', 'institution', 'web3_data', 'static', timestamp('2023-02-07'), now(), 'cex_ethereum', 'identifier')
+	, ('ethereum', '0xd793281182a0e3e023116004778f45c29fc14f19', 'Gate.io: Contract', 'institution', 'web3_data', 'static', timestamp('2023-02-07'), now(), 'cex_ethereum', 'identifier')
 	, ('ethereum', '0x234ee9e35f8e9749a002fc42970d570db716453b', 'Gate.io 4', 'institution', 'web3_data', 'static', timestamp('2023-02-07'), now(), 'cex_ethereum', 'identifier')
 	, ('ethereum', '0xc882b111a75c0c657fc507c04fbfcd2cc984f071', 'Gate.io 5', 'institution', 'web3_data', 'static', timestamp('2023-02-07'), now(), 'cex_ethereum', 'identifier')
 	, ('ethereum', '0x6596da8b65995d5feacff8c2936f0b7a2051b0d0', 'Gate.io: Deposit Funde', 'institution', 'web3_data', 'static', timestamp('2023-02-07'), now(), 'cex_ethereum', 'identifier')
@@ -225,6 +246,20 @@ FROM (VALUES
     , ('ethereum', '0xcafb10ee663f465f9d10588ac44ed20ed608c11e', 'Bitfinex Old Address 1', 'institution', 'hildobby', 'static', timestamp('2022-08-28'), now(), 'cex_ethereum', 'identifier')
     , ('ethereum', '0x7180eb39a6264938fdb3effd7341c4727c382153', 'Bitfinex Old Address 2', 'institution', 'hildobby', 'static', timestamp('2022-08-28'), now(), 'cex_ethereum', 'identifier')
     , ('ethereum', '0x5754284f345afc66a98fbb0a0afe71e0f007b949', 'Bitfinex Tether Treasury', 'institution', 'hildobby', 'static', timestamp('2022-08-28'), now(), 'cex_ethereum', 'identifier')
+    -- Bitget, source: https://raw.githubusercontent.com/js-kingdata/indicators_factory/fefe53bca88ecf331a71fc59e34aab319f3415c5/crawlers/address_tags/cex/bitget_address.txt
+    , ('ethereum', '0x0639556f03714a74a5feeaf5736a4a64ff70d206', 'Bitget 1', 'institution', 'hildobby', 'static', timestamp('2023-04-06'), now(), 'cex_ethereum', 'identifier')
+    , ('ethereum', '0x97b9d2102a9a65a26e1ee82d59e42d1b73b68689', 'Bitget 2', 'institution', 'hildobby', 'static', timestamp('2023-04-06'), now(), 'cex_ethereum', 'identifier')
+    , ('ethereum', '0x1ae3739e17d8500f2b2d80086ed092596a116e0b', 'Bitget 3', 'institution', 'hildobby', 'static', timestamp('2023-04-06'), now(), 'cex_ethereum', 'identifier')
+    , ('ethereum', '0x2bf7494111a59bd51f731dcd4873d7d71f8feeec', 'Bitget 4', 'institution', 'hildobby', 'static', timestamp('2023-04-06'), now(), 'cex_ethereum', 'identifier')
+    , ('ethereum', '0x31a36512d4903635b7dd6828a934c3915a5809be', 'Bitget 5', 'institution', 'hildobby', 'static', timestamp('2023-04-06'), now(), 'cex_ethereum', 'identifier')
+    , ('ethereum', '0x461f6dcdd5be42d41fe71611154279d87c06b406', 'Bitget 6', 'institution', 'hildobby', 'static', timestamp('2023-04-06'), now(), 'cex_ethereum', 'identifier')
+    , ('ethereum', '0x5bdf85216ec1e38d6458c870992a69e38e03f7ef', 'Bitget 7', 'institution', 'hildobby', 'static', timestamp('2023-04-06'), now(), 'cex_ethereum', 'identifier')
+    , ('ethereum', '0x9e00816f61a709fa124d36664cd7b6f14c13ee05', 'Bitget 8', 'institution', 'hildobby', 'static', timestamp('2023-04-06'), now(), 'cex_ethereum', 'identifier')
+    , ('ethereum', '0xdfe4b89cf009bffa33d9bca1f19694fc2d4d943d', 'Bitget 9', 'institution', 'hildobby', 'static', timestamp('2023-04-06'), now(), 'cex_ethereum', 'identifier')
+    , ('ethereum', '0xe2b406ec9227143a8830229eeb3eb6e24b5c60be', 'Bitget 10', 'institution', 'hildobby', 'static', timestamp('2023-04-06'), now(), 'cex_ethereum', 'identifier')
+    , ('ethereum', '0xe6a421f24d330967a3af2f4cdb5c34067e7e4d75', 'Bitget 11', 'institution', 'hildobby', 'static', timestamp('2023-04-06'), now(), 'cex_ethereum', 'identifier')
+    , ('ethereum', '0xe80623a9d41f2f05780d9cd9cea0f797fd53062a', 'Bitget 12', 'institution', 'hildobby', 'static', timestamp('2023-04-06'), now(), 'cex_ethereum', 'identifier')
+    , ('ethereum', '0xf646d9b7d20babe204a89235774248ba18086dae', 'Bitget 13', 'institution', 'hildobby', 'static', timestamp('2023-04-06'), now(), 'cex_ethereum', 'identifier')
     -- KuCoin, Source: https://etherscan.io/accounts/label/kucoin
     , ('ethereum', '0x2b5634c42055806a59e9107ed44d43c426e58258', 'KuCoin 1', 'institution', 'hildobby', 'static', timestamp('2022-08-28'), now(), 'cex_ethereum', 'identifier')
     , ('ethereum', '0x689c56aef474df92d44a1b70850f808488f9769c', 'KuCoin 2', 'institution', 'hildobby', 'static', timestamp('2022-08-28'), now(), 'cex_ethereum', 'identifier')
@@ -547,5 +582,4 @@ FROM (VALUES
     , ('ethereum', '0x258b7b9a1ba92f47f5f4f5e733293477620a82cb', 'Beldex 1', 'institution', 'hildobby', 'static', timestamp('2022-08-28'), now(), 'cex_ethereum', 'identifier') -- https://etherscan.io/address/0x258b7b9a1ba92f47f5f4f5e733293477620a82cb
     -- SouthXchange
     , ('ethereum', '0x324cc2c9fb379ea7a0d1c0862c3b48ca28d174a4', 'SouthXchange 1', 'institution', 'hildobby', 'static', timestamp('2022-08-28'), now(), 'cex_ethereum', 'identifier') -- https://etherscan.io/address/0x324cc2c9fb379ea7a0d1c0862c3b48ca28d174a4     
-     
-     ) AS x (blockchain, address, name, category, contributor, source, created_at, updated_at, model_name, label_type)
+    ) AS x (blockchain, address, name, category, contributor, source, created_at, updated_at, model_name, label_type)

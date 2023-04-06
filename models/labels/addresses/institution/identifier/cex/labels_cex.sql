@@ -16,3 +16,19 @@ FROM {{ ref('addresses_optimism_cex') }}
 UNION All
 
 SELECT * FROM {{ ref('labels_cex_fantom') }}
+
+UNION All
+
+SELECT * FROM {{ ref('labels_cex_bitcoin') }}
+
+UNION All
+
+SELECT * FROM {{ ref('labels_cex_avalanche_c') }}
+
+UNION All
+
+SELECT * FROM {{ ref('labels_cex_arbitrum') }}
+
+UNION All
+
+SELECT * FROM {{ ref('labels_cex_polygon') }}

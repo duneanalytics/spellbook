@@ -2,7 +2,7 @@
         post_hook='{{ expose_spells(\'["bnb"]\',
                                     "sector",
                                     "labels",
-                                    \'["soispoke"]\') }}')}}
+                                    \'["soispoke", "hildobby"]\') }}')}}
 
 SELECT blockchain, lower(address) as address, name, category, contributor, source, created_at, updated_at, model_name, label_type
 FROM (VALUES
@@ -30,10 +30,23 @@ FROM (VALUES
     ('bnb', '0xBE0eB53F46cd790Cd13851d5EFf43D12404d33E8', 'Binance 21', 'institution', 'soispoke', 'static', timestamp('2022-08-28'), now(), 'cex_bnb', 'identifier'),
     ('bnb', '0x5a52e96bacdabb82fd05763e25335261b270efcb', 'Binance 22', 'institution', 'soispoke', 'static', timestamp('2022-08-28'), now(), 'cex_bnb', 'identifier'),
     ('bnb', '0xeb2d2f1b8c558a40207669291fda468e50c8a0bb', 'Binance Charity', 'institution', 'soispoke', 'static', timestamp('2022-08-28'), now(), 'cex_bnb', 'identifier'),
+    -- Bitget, source: https://raw.githubusercontent.com/js-kingdata/indicators_factory/fefe53bca88ecf331a71fc59e34aab319f3415c5/crawlers/address_tags/cex/bitget_address.txt
+    ('bnb', '0x0639556f03714a74a5feeaf5736a4a64ff70d206', 'Bitget 1', 'institution', 'hildobby', 'static', timestamp('2023-04-06'), now(), 'cex_bnb', 'identifier'),
+    ('bnb', '0x149ded7438caf5e5bfdc507a6c25436214d445e1', 'Bitget 2', 'institution', 'hildobby', 'static', timestamp('2023-04-06'), now(), 'cex_bnb', 'identifier'),
+    ('bnb', '0x3a7d1a8c3a8dc9d48a68e628432198a2ead4917c', 'Bitget 3', 'institution', 'hildobby', 'static', timestamp('2023-04-06'), now(), 'cex_bnb', 'identifier'),
+    ('bnb', '0x97b9d2102a9a65a26e1ee82d59e42d1b73b68689', 'Bitget 4', 'institution', 'hildobby', 'static', timestamp('2023-04-06'), now(), 'cex_bnb', 'identifier'),
+    -- Bybit, source: https://raw.githubusercontent.com/js-kingdata/indicators_factory/fefe53bca88ecf331a71fc59e34aab319f3415c5/crawlers/address_tags/cex/bybit_address.txt
+    ('bnb', '0xee5b5b923ffce93a870b3104b7ca09c3db80047a', 'Bybit 1', 'institution', 'hildobby', 'static', timestamp('2023-04-06'), now(), 'cex_bnb', 'identifier'),
+    ('bnb', '0xf89d7b9c864f589bbf53a82105107622b35eaa40', 'Bybit 2', 'institution', 'hildobby', 'static', timestamp('2023-04-06'), now(), 'cex_bnb', 'identifier'),
     -- Crypto.com
     ('bnb', '0x6262998ced04146fa42253a5c0af90ca02dfd2a3', 'Crypto.com 1', 'institution', 'soispoke', 'static', timestamp('2022-11-14'), now(), 'cex_bnb', 'identifier'),
     ('bnb', '0x46340b20830761efd32832a74d7169b29feb9758', 'Crypto.com 2', 'institution', 'soispoke', 'static', timestamp('2022-11-14'), now(), 'cex_bnb', 'identifier'),
     ('bnb', '0x72A53cDBBcc1b9efa39c834A540550e23463AAcB', 'Crypto.com 3', 'institution', 'soispoke', 'static', timestamp('2022-11-14'), now(), 'cex_bnb', 'identifier'),
     ('bnb', '0x7758e507850da48cd47df1fb5f875c23e3340c50', 'Crypto.com 4', 'institution', 'soispoke', 'static', timestamp('2022-11-14'), now(), 'cex_bnb', 'identifier'),
     ('bnb', '0xcffad3200574698b78f32232aa9d63eabd290703', 'Crypto.com 5', 'institution', 'soispoke', 'static', timestamp('2022-11-14'), now(), 'cex_bnb', 'identifier')
+    -- Gate.io, source: https://raw.githubusercontent.com/js-kingdata/indicators_factory/fefe53bca88ecf331a71fc59e34aab319f3415c5/crawlers/address_tags/cex/gate-io_address.txt
+    ('bnb', '0x0d0707963952f2fba59dd06f2b425ace40b492fe', 'Gate.io 1', 'institution', 'soispoke', 'static', timestamp('2022-11-14'), now(), 'cex_bnb', 'identifier')
+    ('bnb', '0x1c4b70a3968436b9a0a9cf5205c787eb81bb558c', 'Gate.io 2', 'institution', 'soispoke', 'static', timestamp('2022-11-14'), now(), 'cex_bnb', 'identifier')
+    ('bnb', '0xd793281182a0e3e023116004778f45c29fc14f19', 'Gate.io 3', 'institution', 'soispoke', 'static', timestamp('2022-11-14'), now(), 'cex_bnb', 'identifier')
+    ('bnb', '0xc882b111a75c0c657fc507c04fbfcd2cc984f071', 'Gate.io 4', 'institution', 'soispoke', 'static', timestamp('2022-11-14'), now(), 'cex_bnb', 'identifier')
     ) AS x (blockchain, address, name, category, contributor, source, created_at, updated_at, model_name, label_type)
