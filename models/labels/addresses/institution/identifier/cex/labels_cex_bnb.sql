@@ -45,8 +45,8 @@ FROM (VALUES
     , ('bnb', '0x7758e507850da48cd47df1fb5f875c23e3340c50', 'Crypto.com 4', 'institution', 'soispoke', 'static', timestamp('2022-11-14'), now(), 'cex_bnb', 'identifier')
     , ('bnb', '0xcffad3200574698b78f32232aa9d63eabd290703', 'Crypto.com 5', 'institution', 'soispoke', 'static', timestamp('2022-11-14'), now(), 'cex_bnb', 'identifier')
     -- Gate.io, source: https://raw.githubusercontent.com/js-kingdata/indicators_factory/fefe53bca88ecf331a71fc59e34aab319f3415c5/crawlers/address_tags/cex/gate-io_address.txt
-    , ('bnb', '0x0d0707963952f2fba59dd06f2b425ace40b492fe', 'Gate.io 1', 'institution', 'soispoke', 'static', timestamp('2022-11-14'), now(), 'cex_bnb', 'identifier')
-    , ('bnb', '0x1c4b70a3968436b9a0a9cf5205c787eb81bb558c', 'Gate.io 2', 'institution', 'soispoke', 'static', timestamp('2022-11-14'), now(), 'cex_bnb', 'identifier')
-    , ('bnb', '0xd793281182a0e3e023116004778f45c29fc14f19', 'Gate.io 3', 'institution', 'soispoke', 'static', timestamp('2022-11-14'), now(), 'cex_bnb', 'identifier')
-    , ('bnb', '0xc882b111a75c0c657fc507c04fbfcd2cc984f071', 'Gate.io 4', 'institution', 'soispoke', 'static', timestamp('2022-11-14'), now(), 'cex_bnb', 'identifier')
+    , ('bnb', '0x0d0707963952f2fba59dd06f2b425ace40b492fe', 'Gate.io 1', 'institution', 'hildobby', 'static', timestamp('2022-11-14'), now(), 'cex_bnb', 'identifier')
+    , ('bnb', '0x1c4b70a3968436b9a0a9cf5205c787eb81bb558c', 'Gate.io 2', 'institution', 'hildobby', 'static', timestamp('2022-11-14'), now(), 'cex_bnb', 'identifier')
+    , ('bnb', '0xd793281182a0e3e023116004778f45c29fc14f19', 'Gate.io 3', 'institution', 'hildobby', 'static', timestamp('2022-11-14'), now(), 'cex_bnb', 'identifier')
+    , ('bnb', '0xc882b111a75c0c657fc507c04fbfcd2cc984f071', 'Gate.io 4', 'institution', 'hildobby', 'static', timestamp('2022-11-14'), now(), 'cex_bnb', 'identifier')
     ) AS x (blockchain, address, name, category, contributor, source, created_at, updated_at, model_name, label_type)
