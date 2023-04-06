@@ -1,6 +1,6 @@
  {{
   config(
-        alias='solana_utils',
+        alias='token_accounts',
         post_hook='{{ expose_spells(\'["solana"]\',
                                     "sector",
                                     "solana_utils",

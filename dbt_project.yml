@@ -423,8 +423,8 @@ models:
         +file_format: delta
       
     solana_utils:
-      +schema: solana_token_accounts
-      +materialized: table
+      +schema: solana_utils
+      +materialized: incremental
       +file_format: delta
 
     trader_joe:
