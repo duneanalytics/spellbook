@@ -35,8 +35,8 @@ FROM (
         , approved 
         , approved_for_all
         , tx_hash
-        , tx_from
-        , tx_to
+        --, tx_from
+        --, tx_to
         , evt_index
         , unique_approval_id
     FROM {{ nft_model }}

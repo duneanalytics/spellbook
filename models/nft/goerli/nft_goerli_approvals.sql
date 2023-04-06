@@ -19,15 +19,15 @@ SELECT 'goerli' AS blockchain
 , CAST(app.tokenId AS DECIMAL(38,0)) AS token_id
 , approved
 , app.evt_tx_hash AS tx_hash
-, et.from AS tx_from
-, et.to AS tx_to
+--, et.from AS tx_from
+--, et.to AS tx_to
 , app.evt_index
 FROM {{ source('erc721_goerli','evt_Approval') }} app
-INNER JOIN {{ source('goerli', 'transactions') }} et ON et.block_number=app.evt_block_number
+/*INNER JOIN {{ source('goerli', 'transactions') }} et ON et.block_number=app.evt_block_number
     AND et.hash=app.evt_tx_hash
     {% if is_incremental() %}
     AND et.block_time >= date_trunc("day", now() - interval '1 week')
-    {% endif %}
+    {% endif %}*/
 {% if is_incremental() %}
 WHERE app.evt_block_time >= date_trunc("day", now() - interval '1 week')
 {% endif %}
@@ -45,15 +45,15 @@ SELECT 'goerli' AS blockchain
 , CAST(NULL AS DECIMAL(38,0)) AS token_id
 , approved
 , app.evt_tx_hash AS tx_hash
-, et.from AS tx_from
-, et.to AS tx_to
+--, et.from AS tx_from
+--, et.to AS tx_to
 , app.evt_index
 FROM {{ source('erc721_goerli','evt_ApprovalForAll') }} app
-INNER JOIN {{ source('goerli', 'transactions') }} et ON et.block_number=app.evt_block_number
+/*INNER JOIN {{ source('goerli', 'transactions') }} et ON et.block_number=app.evt_block_number
     AND et.hash=app.evt_tx_hash
     {% if is_incremental() %}
     AND et.block_time >= date_trunc("day", now() - interval '1 week')
-    {% endif %}
+    {% endif %}*/
 {% if is_incremental() %}
 WHERE app.evt_block_time >= date_trunc("day", now() - interval '1 week')
 {% endif %}
@@ -71,15 +71,15 @@ SELECT 'goerli' AS blockchain
 , CAST(NULL AS DECIMAL(38,0)) AS token_id
 , approved
 , app.evt_tx_hash AS tx_hash
-, et.from AS tx_from
-, et.to AS tx_to
+--, et.from AS tx_from
+--, et.to AS tx_to
 , app.evt_index
 FROM {{ source('erc1155_goerli','evt_ApprovalForAll') }} app
-INNER JOIN {{ source('goerli', 'transactions') }} et ON et.block_number=app.evt_block_number
+/*INNER JOIN {{ source('goerli', 'transactions') }} et ON et.block_number=app.evt_block_number
     AND et.hash=app.evt_tx_hash
     {% if is_incremental() %}
     AND et.block_time >= date_trunc("day", now() - interval '1 week')
-    {% endif %}
+    {% endif %}*/
 {% if is_incremental() %}
 WHERE app.evt_block_time >= date_trunc("day", now() - interval '1 week')
 {% endif %}
