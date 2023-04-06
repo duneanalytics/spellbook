@@ -17,486 +17,337 @@
 {% set zeroex_v4_start_date = '2021-01-06' %}
 
 -- Test Query here: 
-WITH zeroex_tx_raw AS (
-    SELECT tx_hash,
-           max(affiliate_address) as affiliate_address
-    FROM (
-
-       SELECT DISTINCT
-                v3.evt_tx_hash AS tx_hash
-                , case when takerAddress = '0x63305728359c088a52b0b0eeec235db4d31a67fc' then takerAddress
-                       else null
-                end as affiliate_address
-        FROM {{ source('zeroex_v3_ethereum', 'Exchange_evt_Fill') }} v3
-       WHERE
-                -- nuo
-                v3.takerAddress = '0x63305728359c088a52b0b0eeec235db4d31a67fc'
-                OR
-                -- contains a bridge order
-                (v3.feeRecipientAddress = '0x1000000000000000000000000000000000000011'
-                    AND SUBSTRING(v3.makerAssetData,1,4) = '0xdc1600f3')
-
-            {% if is_incremental() %}
-            AND evt_block_time >= date_trunc('day', now() - interval '1 week')
-            {% endif %}
-            {% if not is_incremental() %}
-            AND evt_block_time >= '{{zeroex_v3_start_date}}'
-            {% endif %}
-
-        UNION ALL
+WITH 
+    v3_fills AS (
         SELECT
-                tx_hash
-                , affiliate_address as affiliate_address
-            from {{ source('zeroex', 'api_fills') }} z 
-            where 1=1 
+            evt_block_time AS timestamp
+            , 'v3' AS protocol_version
+            , fills.evt_tx_hash AS transaction_hash
+            , fills.evt_index
+            , fills."makerAddress" AS maker_address
+            , fills."takerAddress" AS taker_address
+            , SUBSTRING(fills."makerAssetData",17,20) AS maker_token
+            , mt.symbol AS maker_symbol
+            , fills."makerAssetFilledAmount" / (10^mt.decimals) AS maker_asset_filled_amount
+            , SUBSTRING(fills."takerAssetData",17,20) AS taker_token
+            , tt.symbol AS taker_symbol
+            , fills."takerAssetFilledAmount" / (10^tt.decimals) AS taker_asset_filled_amount
+            , fills."feeRecipientAddress" AS fee_recipient_address
+            , CASE
+                    WHEN tp.symbol = 'USDC' THEN (fills."takerAssetFilledAmount" / 1e6) --don't multiply by anything as these assets are USD
+                    WHEN mp.symbol = 'USDC' THEN (fills."makerAssetFilledAmount" / 1e6) --don't multiply by anything as these assets are USD
+                    WHEN tp.symbol = 'TUSD' THEN (fills."takerAssetFilledAmount" / 1e18) --don't multiply by anything as these assets are USD
+                    WHEN mp.symbol = 'TUSD' THEN (fills."makerAssetFilledAmount" / 1e18) --don't multiply by anything as these assets are USD
+                    WHEN tp.symbol = 'USDT' THEN (fills."takerAssetFilledAmount" / 1e6) * tp.price
+                    WHEN mp.symbol = 'USDT' THEN (fills."makerAssetFilledAmount" / 1e6) * mp.price
+                    WHEN tp.symbol = 'DAI' THEN (fills."takerAssetFilledAmount" / 1e18) * tp.price
+                    WHEN mp.symbol = 'DAI' THEN (fills."makerAssetFilledAmount" / 1e18) * mp.price
+                    WHEN tp.symbol = 'WETH' THEN (fills."takerAssetFilledAmount" / 1e18) * tp.price
+                    WHEN mp.symbol = 'WETH' THEN (fills."makerAssetFilledAmount" / 1e18) * mp.price
+                    ELSE COALESCE((fills."makerAssetFilledAmount" / (10^mt.decimals))*mp.price,(fills."takerAssetFilledAmount" / (10^tt.decimals))*tp.price)
+                END AS volume_usd
+            , fills."protocolFeePaid" / 1e18 AS protocol_fee_paid_eth
+        FROM zeroex_v3."Exchange_evt_Fill" fills
+        LEFT JOIN prices.usd tp ON
+            date_trunc('minute', evt_block_time) = tp.minute
+            AND CASE
+                    -- Set Deversifi ETHWrapper to WETH
+                    WHEN SUBSTRING(fills."takerAssetData",17,20) IN ('0x50cb61afa3f023d17276dcfb35abf85c710d1cff','0xaa7427d8f17d87a28f5e1ba3adbb270badbe1011') THEN '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'
+                    -- Set Deversifi USDCWrapper to USDC
+                    WHEN SUBSTRING(fills."takerAssetData",17,20) IN ('0x69391cca2e38b845720c7deb694ec837877a8e53') THEN '0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48'
+                    ELSE SUBSTRING(fills."takerAssetData",17,20)
+                END = tp.contract_address
+        LEFT JOIN prices.usd mp ON
+            DATE_TRUNC('minute', evt_block_time) = mp.minute
+            AND CASE
+                    -- Set Deversifi ETHWrapper to WETH
+                    WHEN SUBSTRING(fills."makerAssetData",17,20) IN ('0x50cb61afa3f023d17276dcfb35abf85c710d1cff','0xaa7427d8f17d87a28f5e1ba3adbb270badbe1011') THEN '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'
+                    -- Set Deversifi USDCWrapper to USDC
+                    WHEN SUBSTRING(fills."makerAssetData",17,20) IN ('0x69391cca2e38b845720c7deb694ec837877a8e53') THEN '0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48'
+                    ELSE SUBSTRING(fills."makerAssetData",17,20)
+                END = mp.contract_address
+        LEFT JOIN erc20.tokens mt ON mt.contract_address = SUBSTRING(fills."makerAssetData",17,20)
+        LEFT JOIN erc20.tokens tt ON tt.contract_address = SUBSTRING(fills."takerAssetData",17,20)
+         where 1=1 
                 {% if is_incremental() %}
                 AND block_time >= date_trunc('day', now() - interval '1 week')
                 {% endif %}
                 {% if not is_incremental() %}
                 AND block_time >= '{{zeroex_v3_start_date}}'
                 {% endif %}
-    ) temp
-    group by tx_hash
+    )
+    , v2_1_fills AS (
+        SELECT
+            evt_block_time AS timestamp
+            , 'v2' AS protocol_version
+            , fills.evt_tx_hash AS transaction_hash
+            , fills.evt_index
+            , fills."makerAddress" AS maker_address
+            , fills."takerAddress" AS taker_address
+            , SUBSTRING(fills."makerAssetData",17,20) AS maker_token
+            , mt.symbol AS maker_symbol
+            , fills."makerAssetFilledAmount" / (10^mt.decimals) AS maker_asset_filled_amount
+            , SUBSTRING(fills."takerAssetData",17,20) AS taker_token
+            , tt.symbol AS taker_symbol
+            , fills."takerAssetFilledAmount" / (10^tt.decimals) AS taker_asset_filled_amount
+            , fills."feeRecipientAddress" AS fee_recipient_address
+            , CASE
+                    WHEN tp.symbol = 'USDC' THEN (fills."takerAssetFilledAmount" / 1e6) ----don't multiply by anything as these assets are USD
+                    WHEN mp.symbol = 'USDC' THEN (fills."makerAssetFilledAmount" / 1e6) ----don't multiply by anything as these assets are USD
+                    WHEN tp.symbol = 'TUSD' THEN (fills."takerAssetFilledAmount" / 1e18) --don't multiply by anything as these assets are USD
+                    WHEN mp.symbol = 'TUSD' THEN (fills."makerAssetFilledAmount" / 1e18) --don't multiply by anything as these assets are USD
+                    WHEN tp.symbol = 'USDT' THEN (fills."takerAssetFilledAmount" / 1e6) * tp.price
+                    WHEN mp.symbol = 'USDT' THEN (fills."makerAssetFilledAmount" / 1e6) * mp.price
+                    WHEN tp.symbol = 'DAI' THEN (fills."takerAssetFilledAmount" / 1e18) * tp.price
+                    WHEN mp.symbol = 'DAI' THEN (fills."makerAssetFilledAmount" / 1e18) * mp.price
+                    WHEN tp.symbol = 'WETH' THEN (fills."takerAssetFilledAmount" / 1e18) * tp.price
+                    WHEN mp.symbol = 'WETH' THEN (fills."makerAssetFilledAmount" / 1e18) * mp.price
+                    ELSE COALESCE((fills."makerAssetFilledAmount" / (10^mt.decimals))*mp.price,(fills."takerAssetFilledAmount" / (10^tt.decimals))*tp.price)
+                END AS volume_usd
+            , NULL::NUMERIC AS protocol_fee_paid_eth
+        FROM zeroex_v2."Exchange2.1_evt_Fill" fills
+        LEFT JOIN prices.usd tp ON
+            date_trunc('minute', evt_block_time) = tp.minute
+            AND CASE
+                    -- Set Deversifi ETHWrapper to WETH
+                    WHEN SUBSTRING(fills."takerAssetData",17,20) IN ('0x50cb61afa3f023d17276dcfb35abf85c710d1cff','0xaa7427d8f17d87a28f5e1ba3adbb270badbe1011') THEN '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'
+                    -- Set Deversifi USDCWrapper to USDC
+                    WHEN SUBSTRING(fills."takerAssetData",17,20) IN ('0x69391cca2e38b845720c7deb694ec837877a8e53') THEN '0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48'
+                    ELSE SUBSTRING(fills."takerAssetData",17,20)
+                END = tp.contract_address
+        LEFT JOIN prices.usd mp ON
+            DATE_TRUNC('minute', evt_block_time) = mp.minute
+            AND CASE
+                    -- Set Deversifi ETHWrapper to WETH
+                    WHEN SUBSTRING(fills."makerAssetData",17,20) IN ('0x50cb61afa3f023d17276dcfb35abf85c710d1cff','0xaa7427d8f17d87a28f5e1ba3adbb270badbe1011') THEN '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'
+                    -- Set Deversifi USDCWrapper to USDC
+                    WHEN SUBSTRING(fills."makerAssetData",17,20) IN ('0x69391cca2e38b845720c7deb694ec837877a8e53') THEN '0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48'
+                    ELSE SUBSTRING(fills."makerAssetData",17,20)
+                END = mp.contract_address
+        LEFT JOIN erc20.tokens mt ON mt.contract_address = SUBSTRING(fills."makerAssetData",17,20)
+        LEFT JOIN erc20.tokens tt ON tt.contract_address = SUBSTRING(fills."takerAssetData",17,20)
+         where 1=1 
+                {% if is_incremental() %}
+                AND block_time >= date_trunc('day', now() - interval '1 week')
+                {% endif %}
+                {% if not is_incremental() %}
+                AND block_time >= '{{zeroex_v3_start_date}}'
+                {% endif %}
+    )
+    , v4_limit_fills AS (
 
+        SELECT
+            fills.evt_block_time AS timestamp
+            , 'v4' AS protocol_version
+            , fills.evt_tx_hash AS transaction_hash
+            , fills.evt_index
+            , fills."maker" AS maker_address
+            , fills."taker" AS taker_address
+            , fills."makerToken" AS maker_token
+            , mt.symbol AS maker_symbol
+            , fills."makerTokenFilledAmount" / (10^mt.decimals) AS maker_asset_filled_amount
+            , fills."takerToken" AS taker_token
+            , tt.symbol AS taker_symbol
+            , fills."takerTokenFilledAmount" / (10^tt.decimals) AS taker_asset_filled_amount
+            , fills."feeRecipient" AS fee_recipient_address
+            , CASE
+                    WHEN tp.symbol = 'USDC' THEN (fills."takerTokenFilledAmount" / 1e6) ----don't multiply by anything as these assets are USD
+                    WHEN mp.symbol = 'USDC' THEN (fills."makerTokenFilledAmount" / 1e6) ----don't multiply by anything as these assets are USD
+                    WHEN tp.symbol = 'TUSD' THEN (fills."takerTokenFilledAmount" / 1e18) --don't multiply by anything as these assets are USD
+                    WHEN mp.symbol = 'TUSD' THEN (fills."makerTokenFilledAmount" / 1e18) --don't multiply by anything as these assets are USD
+                    WHEN tp.symbol = 'USDT' THEN (fills."takerTokenFilledAmount" / 1e6) * tp.price
+                    WHEN mp.symbol = 'USDT' THEN (fills."makerTokenFilledAmount" / 1e6) * mp.price
+                    WHEN tp.symbol = 'DAI' THEN (fills."takerTokenFilledAmount" / 1e18) * tp.price
+                    WHEN mp.symbol = 'DAI' THEN (fills."makerTokenFilledAmount" / 1e18) * mp.price
+                    WHEN tp.symbol = 'WETH' THEN (fills."takerTokenFilledAmount" / 1e18) * tp.price
+                    WHEN mp.symbol = 'WETH' THEN (fills."makerTokenFilledAmount" / 1e18) * mp.price
+                    ELSE COALESCE((fills."makerTokenFilledAmount" / (10^mt.decimals))*mp.price,(fills."takerTokenFilledAmount" / (10^tt.decimals))*tp.price)
+                END AS volume_usd
+            , fills."protocolFeePaid"/ 1e18 AS protocol_fee_paid_eth
+        FROM zeroex."ExchangeProxy_evt_LimitOrderFilled" fills
+        LEFT JOIN prices.usd tp ON
+            date_trunc('minute', evt_block_time) = tp.minute
+            AND CASE
+                    -- Set Deversifi ETHWrapper to WETH
+                    WHEN fills."takerToken" IN ('0x50cb61afa3f023d17276dcfb35abf85c710d1cff':,'0xaa7427d8f17d87a28f5e1ba3adbb270badbe1011':) THEN '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2':
+                    -- Set Deversifi USDCWrapper to USDC
+                    WHEN fills."takerToken" IN ('0x69391cca2e38b845720c7deb694ec837877a8e53':) THEN '0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48':
+                    ELSE fills."takerToken"
+                END = tp.contract_address
+        LEFT JOIN prices.usd mp ON
+            DATE_TRUNC('minute', evt_block_time) = mp.minute
+            AND CASE
+                    -- Set Deversifi ETHWrapper to WETH
+                    WHEN fills."makerToken" IN ('0x50cb61afa3f023d17276dcfb35abf85c710d1cff':,'0xaa7427d8f17d87a28f5e1ba3adbb270badbe1011':) THEN '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2':
+                    -- Set Deversifi USDCWrapper to USDC
+                    WHEN fills."makerToken" IN ('0x69391cca2e38b845720c7deb694ec837877a8e53':) THEN '0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48':
+                    ELSE fills."makerToken"
+                END = mp.contract_address
+        LEFT JOIN erc20.tokens mt ON mt.contract_address = fills."makerToken"
+        LEFT JOIN erc20.tokens tt ON tt.contract_address = fills."takerToken"
+         where 1=1 
+                {% if is_incremental() %}
+                AND block_time >= date_trunc('day', now() - interval '1 week')
+                {% endif %}
+                {% if not is_incremental() %}
+                AND block_time >= '{{zeroex_v3_start_date}}'
+                {% endif %}
+    )
 
-),
-zeroex_tx AS (
-                    SELECT
-                        tx_hash
-                        , MAX(affiliate_address) as affiliate_address
-                    from zeroex_tx_raw
-                    GROUP BY 1
-        ),
-v3_fills_no_bridge AS (
-    SELECT
-            fills.evt_tx_hash                                                          AS tx_hash,
-            fills.evt_index,
-            fills.contract_address,
-            evt_block_time                                                             AS block_time,
-            fills.makerAddress                                                         AS maker,
-            fills.takerAddress                                                         AS taker,
-            '0x' || SUBSTRING(fills.takerAssetData, 35, 40)                            AS taker_token,
-            '0x' || SUBSTRING(fills.makerAssetData, 35, 40)                            AS maker_token,
-            fills.takerAssetFilledAmount                                               AS taker_token_amount_raw,
-            fills.makerAssetFilledAmount                                               AS maker_token_amount_raw,
-            'Fill'                                                                     AS type,
-            COALESCE(zeroex_tx.affiliate_address, fills.feeRecipientAddress)           AS affiliate_address,
-            (zeroex_tx.tx_hash IS NOT NULL)                                            AS swap_flag,
-            (fills.feeRecipientAddress = '0x86003b044f70dac0abc80ac8957305b6370893ed') AS matcha_limit_order_flag
-    FROM {{ source('zeroex_v3_ethereum', 'Exchange_evt_Fill') }} fills
-    LEFT JOIN zeroex_tx ON zeroex_tx.tx_hash = fills.evt_tx_hash
-    WHERE (SUBSTRING(makerAssetData, 1, 10) != '0xdc1600f3')
-        AND (zeroex_tx.tx_hash IS NOT NULL
-        OR fills.feeRecipientAddress = '0x86003b044f70dac0abc80ac8957305b6370893ed')
+    , v4_rfq_fills AS (
+      SELECT
+          fills.evt_block_time AS timestamp
+          , 'v4' AS protocol_version
+          , fills.evt_tx_hash AS transaction_hash
+          , fills.evt_index
+          , fills."maker" AS maker_address
+          , fills."taker" AS taker_address
+          , fills."makerToken" AS maker_token
+          , mt.symbol AS maker_symbol
+          , fills."makerTokenFilledAmount" / (10^mt.decimals) AS maker_asset_filled_amount
+          , fills."takerToken" AS taker_token
+          , tt.symbol AS taker_symbol
+          , fills."takerTokenFilledAmount" / (10^tt.decimals) AS taker_asset_filled_amount
+          , NULL: AS fee_recipient_address
+          , CASE
+                  WHEN tp.symbol = 'USDC' THEN (fills."takerTokenFilledAmount" / 1e6) ----don't multiply by anything as these assets are USD
+                  WHEN mp.symbol = 'USDC' THEN (fills."makerTokenFilledAmount" / 1e6) ----don't multiply by anything as these assets are USD
+                  WHEN tp.symbol = 'TUSD' THEN (fills."takerTokenFilledAmount" / 1e18) --don't multiply by anything as these assets are USD
+                  WHEN mp.symbol = 'TUSD' THEN (fills."makerTokenFilledAmount" / 1e18) --don't multiply by anything as these assets are USD
+                  WHEN tp.symbol = 'USDT' THEN (fills."takerTokenFilledAmount" / 1e6) * tp.price
+                  WHEN mp.symbol = 'USDT' THEN (fills."makerTokenFilledAmount" / 1e6) * mp.price
+                  WHEN tp.symbol = 'DAI' THEN (fills."takerTokenFilledAmount" / 1e18) * tp.price
+                  WHEN mp.symbol = 'DAI' THEN (fills."makerTokenFilledAmount" / 1e18) * mp.price
+                  WHEN tp.symbol = 'WETH' THEN (fills."takerTokenFilledAmount" / 1e18) * tp.price
+                  WHEN mp.symbol = 'WETH' THEN (fills."makerTokenFilledAmount" / 1e18) * mp.price
+                  ELSE COALESCE((fills."makerTokenFilledAmount" / (10^mt.decimals))*mp.price,(fills."takerTokenFilledAmount" / (10^tt.decimals))*tp.price)
+              END AS volume_usd
+          , NULL::NUMERIC AS protocol_fee_paid_eth
+      FROM zeroex."ExchangeProxy_evt_RfqOrderFilled" fills
+      LEFT JOIN prices.usd tp ON
+          date_trunc('minute', evt_block_time) = tp.minute
+          AND CASE
+                  -- Set Deversifi ETHWrapper to WETH
+                  WHEN fills."takerToken" IN ('0x50cb61afa3f023d17276dcfb35abf85c710d1cff':,'0xaa7427d8f17d87a28f5e1ba3adbb270badbe1011':) THEN '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2':
+                  -- Set Deversifi USDCWrapper to USDC
+                  WHEN fills."takerToken" IN ('0x69391cca2e38b845720c7deb694ec837877a8e53':) THEN '0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48':
+                  ELSE fills."takerToken"
+              END = tp.contract_address
+      LEFT JOIN prices.usd mp ON
+          DATE_TRUNC('minute', evt_block_time) = mp.minute
+          AND CASE
+                  -- Set Deversifi ETHWrapper to WETH
+                  WHEN fills."makerToken" IN ('0x50cb61afa3f023d17276dcfb35abf85c710d1cff':,'0xaa7427d8f17d87a28f5e1ba3adbb270badbe1011':) THEN '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2':
+                  -- Set Deversifi USDCWrapper to USDC
+                  WHEN fills."makerToken" IN ('0x69391cca2e38b845720c7deb694ec837877a8e53':) THEN '0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48':
+                  ELSE fills."makerToken"
+              END = mp.contract_address
+      LEFT JOIN erc20.tokens mt ON mt.contract_address = fills."makerToken"
+      LEFT JOIN erc20.tokens tt ON tt.contract_address = fills."takerToken"
+       where 1=1 
+                {% if is_incremental() %}
+                AND block_time >= date_trunc('day', now() - interval '1 week')
+                {% endif %}
+                {% if not is_incremental() %}
+                AND block_time >= '{{zeroex_v3_start_date}}'
+                {% endif %}
+    ), otc_fills as
+    (
+      SELECT
+          fills.evt_block_time AS timestamp
+          , 'v4' AS protocol_version
+          , fills.evt_tx_hash AS transaction_hash
+          , fills.evt_index
+          , fills."maker" AS maker_address
+          , fills."taker" AS taker_address
+          , fills."makerToken" AS maker_token
+          , mt.symbol AS maker_symbol
+          , fills."makerTokenFilledAmount" / (10^mt.decimals) AS maker_asset_filled_amount
+          , fills."takerToken" AS taker_token
+          , tt.symbol AS taker_symbol
+          , fills."takerTokenFilledAmount" / (10^tt.decimals) AS taker_asset_filled_amount
+          , NULL: AS fee_recipient_address
+          , CASE
+                  WHEN tp.symbol = 'USDC' THEN (fills."takerTokenFilledAmount" / 1e6) ----don't multiply by anything as these assets are USD
+                  WHEN mp.symbol = 'USDC' THEN (fills."makerTokenFilledAmount" / 1e6) ----don't multiply by anything as these assets are USD
+                  WHEN tp.symbol = 'TUSD' THEN (fills."takerTokenFilledAmount" / 1e18) --don't multiply by anything as these assets are USD
+                  WHEN mp.symbol = 'TUSD' THEN (fills."makerTokenFilledAmount" / 1e18) --don't multiply by anything as these assets are USD
+                  WHEN tp.symbol = 'USDT' THEN (fills."takerTokenFilledAmount" / 1e6) * tp.price
+                  WHEN mp.symbol = 'USDT' THEN (fills."makerTokenFilledAmount" / 1e6) * mp.price
+                  WHEN tp.symbol = 'DAI' THEN (fills."takerTokenFilledAmount" / 1e18) * tp.price
+                  WHEN mp.symbol = 'DAI' THEN (fills."makerTokenFilledAmount" / 1e18) * mp.price
+                  WHEN tp.symbol = 'WETH' THEN (fills."takerTokenFilledAmount" / 1e18) * tp.price
+                  WHEN mp.symbol = 'WETH' THEN (fills."makerTokenFilledAmount" / 1e18) * mp.price
+                  ELSE COALESCE((fills."makerTokenFilledAmount" / (10^mt.decimals))*mp.price,(fills."takerTokenFilledAmount" / (10^tt.decimals))*tp.price)
+              END AS volume_usd
+          , NULL::NUMERIC AS protocol_fee_paid_eth
+      FROM zeroex."ExchangeProxy_evt_OtcOrderFilled" fills
+      LEFT JOIN prices.usd tp ON
+          date_trunc('minute', evt_block_time) = tp.minute
+          AND CASE
+                  -- Set Deversifi ETHWrapper to WETH
+                  WHEN fills."takerToken" IN ('0x50cb61afa3f023d17276dcfb35abf85c710d1cff':,'0xaa7427d8f17d87a28f5e1ba3adbb270badbe1011':) THEN '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2':
+                  -- Set Deversifi USDCWrapper to USDC
+                  WHEN fills."takerToken" IN ('0x69391cca2e38b845720c7deb694ec837877a8e53':) THEN '0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48':
+                  ELSE fills."takerToken"
+              END = tp.contract_address
+      LEFT JOIN prices.usd mp ON
+          DATE_TRUNC('minute', evt_block_time) = mp.minute
+          AND CASE
+                  -- Set Deversifi ETHWrapper to WETH
+                  WHEN fills."makerToken" IN ('0x50cb61afa3f023d17276dcfb35abf85c710d1cff':,'0xaa7427d8f17d87a28f5e1ba3adbb270badbe1011':) THEN '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2':
+                  -- Set Deversifi USDCWrapper to USDC
+                  WHEN fills."makerToken" IN ('0x69391cca2e38b845720c7deb694ec837877a8e53':) THEN '0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48':
+                  ELSE fills."makerToken"
+              END = mp.contract_address
+      LEFT JOIN erc20.tokens mt ON mt.contract_address = fills."makerToken"
+      LEFT JOIN erc20.tokens tt ON tt.contract_address = fills."takerToken"
+       where 1=1 
+                {% if is_incremental() %}
+                AND block_time >= date_trunc('day', now() - interval '1 week')
+                {% endif %}
+                {% if not is_incremental() %}
+                AND block_time >= '{{zeroex_v3_start_date}}'
+                {% endif %}
 
-        {% if is_incremental() %}
-         AND evt_block_time >= date_trunc('day', now() - interval '1 week')
-        {% endif %}
-        {% if not is_incremental() %}
-         AND evt_block_time >= '{{zeroex_v3_start_date}}'
-        {% endif %}
+    ),
 
-),
-v4_rfq_fills_no_bridge AS (
-    SELECT
-            fills.evt_tx_hash               AS tx_hash,
-            fills.evt_index,
-            fills.contract_address,
-            fills.evt_block_time            AS block_time,
-            fills.maker                     AS maker,
-            fills.taker                     AS taker,
-            fills.takerToken                AS taker_token,
-            fills.makerToken                AS maker_token,
-            fills.takerTokenFilledAmount    AS taker_token_amount_raw,
-            fills.makerTokenFilledAmount    AS maker_token_amount_raw,
-            'RfqOrderFilled'                AS type,
-            zeroex_tx.affiliate_address     AS affiliate_address,
-            (zeroex_tx.tx_hash IS NOT NULL) AS swap_flag,
-            FALSE                           AS matcha_limit_order_flag
-    FROM {{ source('zeroex_ethereum', 'ExchangeProxy_evt_RfqOrderFilled') }} fills
-    LEFT JOIN zeroex_tx ON zeroex_tx.tx_hash = fills.evt_tx_hash
+    all_fills as (
+    
+    SELECT * FROM v3_fills
 
-    {% if is_incremental() %}
-    WHERE evt_block_time >= date_trunc('day', now() - interval '1 week')
-    {% endif %}
-    {% if not is_incremental() %}
-    WHERE evt_block_time >= '{{zeroex_v4_start_date}}'
-    {% endif %}
-),
-v4_limit_fills_no_bridge AS (
-    SELECT
-            fills.evt_tx_hash AS tx_hash,
-            fills.evt_index,
-            fills.contract_address,
-            fills.evt_block_time AS block_time,
-            fills.maker AS maker,
-            fills.taker AS taker,
-            fills.takerToken AS taker_token,
-            fills.makerToken AS maker_token,
-            fills.takerTokenFilledAmount AS taker_token_amount_raw,
-            fills.makerTokenFilledAmount AS maker_token_amount_raw,
-            'LimitOrderFilled' AS type,
-            COALESCE(zeroex_tx.affiliate_address, fills.feeRecipient) AS affiliate_address,
-            (zeroex_tx.tx_hash IS NOT NULL) AS swap_flag,
-            (fills.feeRecipient = '0x9b858be6e3047d88820f439b240deac2418a2551') AS matcha_limit_order_flag
-    FROM {{ source('zeroex_ethereum', 'ExchangeProxy_evt_LimitOrderFilled') }} fills
-    LEFT JOIN zeroex_tx ON zeroex_tx.tx_hash = fills.evt_tx_hash
+    UNION ALL
 
-    {% if is_incremental() %}
-    WHERE evt_block_time >= date_trunc('day', now() - interval '1 week')
-    {% endif %}
-    {% if not is_incremental() %}
-    WHERE evt_block_time >= '{{zeroex_v4_start_date}}'
-    {% endif %}
-),
-otc_fills AS (
-    SELECT
-            fills.evt_tx_hash               AS tx_hash,
-            fills.evt_index,
-            fills.contract_address,
-            fills.evt_block_time            AS block_time,
-            fills.maker                     AS maker,
-            fills.taker                     AS taker,
-            fills.takerToken                AS taker_token,
-            fills.makerToken                AS maker_token,
-            fills.takerTokenFilledAmount    AS taker_token_amount_raw,
-            fills.makerTokenFilledAmount    AS maker_token_amount_raw,
-            'OtcOrderFilled'                AS type,
-            zeroex_tx.affiliate_address     AS affiliate_address,
-            (zeroex_tx.tx_hash IS NOT NULL) AS swap_flag,
-            FALSE                           AS matcha_limit_order_flag
-    FROM {{ source('zeroex_ethereum', 'ExchangeProxy_evt_OtcOrderFilled') }} fills
-    LEFT JOIN zeroex_tx ON zeroex_tx.tx_hash = fills.evt_tx_hash
+    SELECT * FROM v2_1_fills
 
-    {% if is_incremental() %}
-    WHERE evt_block_time >= date_trunc('day', now() - interval '1 week')
-    {% endif %}
-    {% if not is_incremental() %}
-    WHERE evt_block_time >= '{{zeroex_v4_start_date}}'
-    {% endif %}
+    UNION ALL
 
-),
-ERC20BridgeTransfer AS (
-    SELECT
-            logs.tx_hash,
-            INDEX                                   AS evt_index,
-            logs.contract_address,
-            block_time                              AS block_time,
-            '0x' || substring(DATA, 283, 40)        AS maker,
-            '0x' || substring(DATA, 347, 40)        AS taker,
-            '0x' || substring(DATA, 27, 40)         AS taker_token,
-            '0x' || substring(DATA, 91, 40)         AS maker_token,
-            bytea2numeric_v3(substring(DATA, 155, 40)) AS taker_token_amount_raw,
-            bytea2numeric_v3(substring(DATA, 219, 40)) AS maker_token_amount_raw,
-            'ERC20BridgeTransfer'                   AS type,
-            zeroex_tx.affiliate_address             AS affiliate_address,
-            TRUE                                    AS swap_flag,
-            FALSE                                   AS matcha_limit_order_flag
-    FROM {{ source('ethereum', 'logs') }} logs
-    JOIN zeroex_tx ON zeroex_tx.tx_hash = logs.tx_hash
-    WHERE topic1 = '0x349fc08071558d8e3aa92dec9396e4e9f2dfecd6bb9065759d1932e7da43b8a9'
+    SELECT * FROM v4_limit_fills
 
-    {% if is_incremental() %}
-    AND block_time >= date_trunc('day', now() - interval '1 week')
-    {% endif %}
-    {% if not is_incremental() %}
-    AND block_time >= '{{zeroex_v3_start_date}}'
-    {% endif %}
+    UNION ALL
 
-),
-BridgeFill AS (
-    SELECT
-            logs.tx_hash,
-            INDEX                                           AS evt_index,
-            logs.contract_address,
-            block_time                                      AS block_time,
-            '0x' || substring(DATA, 27, 40)                 AS maker,
-            '0xdef1c0ded9bec7f1a1670819833240f027b25eff'    AS taker,
-            '0x' || substring(DATA, 91, 40)                 AS taker_token,
-            '0x' || substring(DATA, 155, 40)                AS maker_token,
-            bytea2numeric_v3('0x' || substring(DATA, 219, 40)) AS taker_token_amount_raw,
-            bytea2numeric_v3('0x' || substring(DATA, 283, 40)) AS maker_token_amount_raw,
-            'BridgeFill'                                    AS type,
-            zeroex_tx.affiliate_address                     AS affiliate_address,
-            TRUE                                            AS swap_flag,
-            FALSE                                           AS matcha_limit_order_flag
-    FROM {{ source('ethereum', 'logs') }} logs
-    JOIN zeroex_tx ON zeroex_tx.tx_hash = logs.tx_hash
-    WHERE topic1 = '0xff3bc5e46464411f331d1b093e1587d2d1aa667f5618f98a95afc4132709d3a9'
-        AND contract_address = '0x22f9dcf4647084d6c31b2765f6910cd85c178c18'
+    SELECT * FROM v4_rfq_fills
 
-        {% if is_incremental() %}
-        AND block_time >= date_trunc('day', now() - interval '1 week')
-        {% endif %}
-        {% if not is_incremental() %}
-        AND block_time >= '{{zeroex_v4_start_date}}'
-        {% endif %}
-),
-NewBridgeFill AS (
-    SELECT
-            logs.tx_hash,
-            INDEX                                           AS evt_index,
-            logs.contract_address,
-            block_time                                      AS block_time,
-            '0x' || substring(DATA, 27, 40)                 AS maker,
-            '0xdef1c0ded9bec7f1a1670819833240f027b25eff'    AS taker,
-            '0x' || substring(DATA, 91, 40)                 AS taker_token,
-            '0x' || substring(DATA, 155, 40)                AS maker_token,
-            bytea2numeric_v3('0x' || substring(DATA, 219, 40)) AS taker_token_amount_raw,
-            bytea2numeric_v3('0x' || substring(DATA, 283, 40)) AS maker_token_amount_raw,
-            'NewBridgeFill'                                 AS type,
-            zeroex_tx.affiliate_address                     AS affiliate_address,
-            TRUE                                            AS swap_flag,
-            FALSE                                           AS matcha_limit_order_flag
-    FROM {{ source('ethereum' ,'logs') }} logs
-    JOIN zeroex_tx ON zeroex_tx.tx_hash = logs.tx_hash
-    WHERE topic1 = '0xe59e71a14fe90157eedc866c4f8c767d3943d6b6b2e8cd64dddcc92ab4c55af8'
-        AND contract_address = '0x22f9dcf4647084d6c31b2765f6910cd85c178c18'
-
-        {% if is_incremental() %}
-        AND block_time >= date_trunc('day', now() - interval '1 week')
-        {% endif %}
-        {% if not is_incremental() %}
-        AND block_time >= '{{zeroex_v4_start_date}}'
-        {% endif %}
-),
-direct_PLP AS (
-    SELECT
-            plp.evt_tx_hash,
-            plp.evt_index               AS evt_index,
-            plp.contract_address,
-            plp.evt_block_time          AS block_time,
-            provider                    AS maker,
-            recipient                   AS taker,
-            inputToken                  AS taker_token,
-            outputToken                 AS maker_token,
-            inputTokenAmount            AS taker_token_amount_raw,
-            outputTokenAmount           AS maker_token_amount_raw,
-            'LiquidityProviderSwap'     AS type,
-            zeroex_tx.affiliate_address AS affiliate_address,
-            TRUE                        AS swap_flag,
-            FALSE                       AS matcha_limit_order_flag
-    FROM {{ source('zeroex_ethereum', 'ExchangeProxy_evt_LiquidityProviderSwap') }} plp
-    JOIN zeroex_tx ON zeroex_tx.tx_hash = plp.evt_tx_hash
-
-    {% if is_incremental() %}
-    WHERE evt_block_time >= date_trunc('day', now() - interval '1 week')
-    {% endif %}
-    {% if not is_incremental() %}
-    WHERE evt_block_time >= '{{zeroex_v3_start_date}}'
-    {% endif %}
-
-),
-direct_uniswapv2 AS (
-    SELECT
-            swap.evt_tx_hash AS tx_hash,
-            swap.evt_index,
-            swap.contract_address,
-            swap.evt_block_time AS block_time,
-            swap.contract_address AS maker,
-            LAST_VALUE(swap.to) OVER ( PARTITION BY swap.evt_tx_hash ORDER BY swap.evt_index) AS taker,
-            CASE
-                WHEN CAST(swap.amount0In AS float) > CAST(swap.amount0Out AS float) THEN pair.token0
-                ELSE pair.token1
-            END AS taker_token,
-            CASE
-                WHEN CAST(swap.amount0In AS float) > CAST(swap.amount0Out AS float) THEN pair.token1
-                ELSE pair.token0
-            END AS maker_token,
-            CASE
-                WHEN CAST(swap.amount0In AS float) > CAST(swap.amount0Out AS float) THEN swap.amount0In - swap.amount0Out
-                ELSE swap.amount1In - swap.amount1Out
-            END AS taker_token_amount_raw,
-            CASE
-                WHEN CAST(swap.amount0In AS float) > CAST(swap.amount0Out AS float) THEN swap.amount1Out - swap.amount1In
-                ELSE swap.amount0Out - swap.amount0In
-            END AS maker_token_amount_raw,
-            'Uniswap V2 Direct' AS type,
-            zeroex_tx.affiliate_address AS affiliate_address,
-            TRUE AS swap_flag,
-            FALSE AS matcha_limit_order_flag
-    FROM {{ source('uniswap_v2_ethereum', 'Pair_evt_Swap') }} swap
-    LEFT JOIN {{ source('uniswap_v2_ethereum', 'Factory_evt_PairCreated') }} pair ON pair.pair = swap.contract_address
-    JOIN zeroex_tx ON zeroex_tx.tx_hash = swap.evt_tx_hash
-    WHERE sender = '0xdef1c0ded9bec7f1a1670819833240f027b25eff'
-
-        {% if is_incremental() %}
-        AND swap.evt_block_time >= date_trunc('day', now() - interval '1 week')
-        {% endif %}
-        {% if not is_incremental() %}
-        AND swap.evt_block_time >= '{{zeroex_v3_start_date}}'
-        {% endif %}
-
-),
-direct_sushiswap AS (
-    SELECT
-            swap.evt_tx_hash AS tx_hash,
-            swap.evt_index,
-            swap.contract_address,
-            swap.evt_block_time AS block_time,
-            swap.contract_address AS maker,
-            LAST_VALUE(swap.to) OVER (PARTITION BY swap.evt_tx_hash ORDER BY swap.evt_index) AS taker,
-            CASE
-                WHEN CAST(swap.amount0In AS float) > CAST(swap.amount0Out AS float) THEN pair.token0
-                ELSE pair.token1
-            END AS taker_token,
-            CASE
-                WHEN CAST(swap.amount0In AS float) > CAST(swap.amount0Out AS float) THEN pair.token1
-                ELSE pair.token0
-            END AS maker_token,
-            CASE
-                WHEN CAST(swap.amount0In AS float) > CAST(swap.amount0Out AS float) THEN swap.amount0In - swap.amount0Out
-                ELSE swap.amount1In - swap.amount1Out
-            END AS taker_token_amount_raw,
-            CASE
-                WHEN CAST(swap.amount0In AS float) > CAST(swap.amount0Out AS float) THEN swap.amount1Out - swap.amount1In
-                ELSE swap.amount0Out - swap.amount0In
-            END AS maker_token_amount_raw,
-            'Sushiswap Direct' AS type,
-            zeroex_tx.affiliate_address AS affiliate_address,
-            TRUE AS swap_flag,
-            FALSE AS matcha_limit_order_flag
-   FROM {{ source('sushi_ethereum', 'Pair_evt_Swap') }} swap
-   LEFT JOIN {{ source('sushi_ethereum', 'Factory_evt_PairCreated') }} pair ON pair.pair = swap.contract_address
-   JOIN zeroex_tx ON zeroex_tx.tx_hash = swap.evt_tx_hash
-   WHERE sender = '0xdef1c0ded9bec7f1a1670819833240f027b25eff'
-
-        {% if is_incremental() %}
-        AND swap.evt_block_time >= date_trunc('day', now() - interval '1 week')
-        {% endif %}
-        {% if not is_incremental() %}
-        AND swap.evt_block_time >= '{{zeroex_v3_start_date}}'
-        {% endif %}
-),
-direct_uniswapv3 AS (
-    SELECT
-            swap.evt_tx_hash                                                                        AS tx_hash,
-            swap.evt_index,
-            swap.contract_address,
-            swap.evt_block_time                                                                     AS block_time,
-            swap.contract_address                                                                   AS maker,
-            LAST_VALUE(swap.recipient) OVER (PARTITION BY swap.evt_tx_hash ORDER BY swap.evt_index) AS taker,
-            CASE WHEN amount0 < '0' THEN pair.token1 ELSE pair.token0 END                           AS taker_token,
-            CASE WHEN amount0 < '0' THEN pair.token0 ELSE pair.token1 END                           AS maker_token,
-            CASE
-                WHEN amount0 < '0' THEN abs(swap.amount1)
-                ELSE abs(swap.amount0) END                                                          AS taker_token_amount_raw,
-            CASE
-                WHEN amount0 < '0' THEN abs(swap.amount0)
-                ELSE abs(swap.amount1) END                                                          AS maker_token_amount_raw,
-            'Uniswap V3 Direct'                                                                     AS type,
-            zeroex_tx.affiliate_address                                                             AS affiliate_address,
-            TRUE                                                                                    AS swap_flag,
-            FALSE                                                                                   AS matcha_limit_order_flag
-    FROM {{ source('uniswap_v3_ethereum', 'Pair_evt_Swap') }} swap
-   LEFT JOIN {{ source('uniswap_v3_ethereum', 'Factory_evt_PoolCreated') }} pair ON pair.pool = swap.contract_address
-   JOIN zeroex_tx ON zeroex_tx.tx_hash = swap.evt_tx_hash
-   WHERE sender = '0xdef1c0ded9bec7f1a1670819833240f027b25eff'
-
-        {% if is_incremental() %}
-        AND swap.evt_block_time >= date_trunc('day', now() - interval '1 week')
-        {% endif %}
-        {% if not is_incremental() %}
-        AND swap.evt_block_time >= '{{zeroex_v4_start_date}}'
-        {% endif %}
-
-),
-all_tx AS (
-    SELECT *
-    FROM direct_uniswapv2
-    UNION ALL SELECT *
-    FROM direct_uniswapv3
-    UNION ALL SELECT *
-    FROM direct_sushiswap
-    UNION ALL SELECT *
-    FROM direct_PLP
-    UNION ALL SELECT *
-    FROM ERC20BridgeTransfer
-    UNION ALL SELECT *
-    FROM BridgeFill
-    UNION ALL SELECT *
-    FROM NewBridgeFill
-    UNION ALL SELECT *
-    FROM v3_fills_no_bridge
-    UNION ALL SELECT *
-    FROM v4_rfq_fills_no_bridge
-    UNION ALL SELECT *
-    FROM v4_limit_fills_no_bridge
-    UNION ALL SELECT *
-    FROM otc_fills
-)
-
-SELECT
-        all_tx.tx_hash,
-        tx.block_number,
-        all_tx.evt_index,
-        all_tx.contract_address,
-        all_tx.block_time,
-        try_cast(date_trunc('day', all_tx.block_time) AS date) AS block_date,
-        maker,
-        CASE
-            WHEN taker = '0xdef1c0ded9bec7f1a1670819833240f027b25eff' THEN tx.from
-            ELSE taker
-        END AS taker, -- fix the user masked by ProxyContract issue
-        taker_token,
-        ts.symbol AS taker_symbol,
-        maker_token,
-        ms.symbol AS maker_symbol,
-        CASE WHEN lower(ts.symbol) > lower(ms.symbol) THEN concat(ms.symbol, '-', ts.symbol) ELSE concat(ts.symbol, '-', ms.symbol) END AS token_pair,
-        taker_token_amount_raw / pow(10, tp.decimals) AS taker_token_amount,
-        taker_token_amount_raw,
-        maker_token_amount_raw / pow(10, mp.decimals) AS maker_token_amount,
-        maker_token_amount_raw,
-        all_tx.type,
-        affiliate_address,
-        swap_flag,
-        matcha_limit_order_flag,
-        CASE WHEN maker_token IN ('0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2','0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48','0xdac17f958d2ee523a2206206994597c13d831ec7','0x4fabb145d64652a948d72533023f6e7a623c7c53','0x6b175474e89094c44da98b954eedeac495271d0f')
-             THEN (all_tx.maker_token_amount_raw / pow(10, mp.decimals)) * mp.price
-             WHEN taker_token IN ('0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2','0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48','0xdac17f958d2ee523a2206206994597c13d831ec7','0x4fabb145d64652a948d72533023f6e7a623c7c53','0x6b175474e89094c44da98b954eedeac495271d0f')
-             THEN (all_tx.taker_token_amount_raw / pow(10, tp.decimals)) * tp.price
-             ELSE COALESCE((all_tx.maker_token_amount_raw / pow(10, mp.decimals)) * mp.price, (all_tx.taker_token_amount_raw / pow(10, tp.decimals)) * tp.price)
-             END AS volume_usd,
-        tx.from AS tx_from,
-        tx.to AS tx_to,
-        'ethereum' AS blockchain
-FROM all_tx
-INNER JOIN {{ source('ethereum', 'transactions')}} tx ON all_tx.tx_hash = tx.hash
-
-{% if is_incremental() %}
-AND tx.block_time >= date_trunc('day', now() - interval '1 week')
-{% endif %}
-{% if not is_incremental() %}
-AND tx.block_time >= '{{zeroex_v3_start_date}}'
-{% endif %}
-
-LEFT JOIN {{ source('prices', 'usd') }} tp ON date_trunc('minute', all_tx.block_time) = tp.minute
-AND CASE
-        WHEN all_tx.taker_token = '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee' THEN '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'
-        ELSE all_tx.taker_token
-    END = tp.contract_address
-AND tp.blockchain = 'ethereum'
-
-{% if is_incremental() %}
-AND tp.minute >= date_trunc('day', now() - interval '1 week')
-{% endif %}
-{% if not is_incremental() %}
-AND tp.minute >= '{{zeroex_v3_start_date}}'
-{% endif %}
-
-LEFT JOIN {{ source('prices', 'usd') }} mp ON DATE_TRUNC('minute', all_tx.block_time) = mp.minute
-AND CASE
-        WHEN all_tx.maker_token = '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee' THEN '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'
-        ELSE all_tx.maker_token
-    END = mp.contract_address
-AND mp.blockchain = 'ethereum'
-
-{% if is_incremental() %}
-AND mp.minute >= date_trunc('day', now() - interval '1 week')
-{% endif %}
-{% if not is_incremental() %}
-AND mp.minute >= '{{zeroex_v3_start_date}}'
-{% endif %}
-
-LEFT OUTER JOIN {{ ref('tokens_ethereum_erc20') }} ts ON ts.contract_address = taker_token
-LEFT OUTER JOIN {{ ref('tokens_ethereum_erc20') }} ms ON ms.contract_address = maker_token
+    UNION ALL
+    
+    SELECT * FROM otc_fills
+    )
+            SELECT
+                "timestamp",
+                protocol_version,
+                transaction_hash,
+                evt_index,
+                maker_address,
+                taker_address,
+                maker_token,
+                maker_symbol,
+                maker_asset_filled_amount,
+                taker_token,
+                taker_symbol,
+                taker_asset_filled_amount,
+                fee_recipient_address,
+                volume_usd,
+                protocol_fee_paid_eth,
+                'ethereum' as blockchain
+            FROM all_fills
+            ORDER BY "timestamp" DESC
