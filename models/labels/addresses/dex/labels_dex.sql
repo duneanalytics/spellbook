@@ -15,7 +15,7 @@
 ,ref('labels_dex_traders')
 ,ref('labels_smart_dex_traders')
 ,ref('labels_trader_platforms')
-
+,ref('labels_trader_kyt')
 ,ref('labels_average_trade_values')
 ,ref('labels_trader_age')
 ,ref('labels_trader_dex_diversity')
