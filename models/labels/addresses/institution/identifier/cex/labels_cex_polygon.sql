@@ -10,11 +10,10 @@ FROM (VALUES
     ('polygon', '0x082489a616ab4d46d1947ee3f912e080815b08da', 'Binance 1', 'institution', 'hildobby', 'static', timestamp('2023-04-06'), now(), 'cex_polygon', 'identifier')
     , ('polygon', '0xf977814e90da44bfa03b6295a0616a897441acec', 'Binance 2', 'institution', 'hildobby', 'static', timestamp('2023-04-06'), now(), 'cex_polygon', 'identifier')
     , ('polygon', '0xe7804c37c13166ff0b37f5ae0bb07a3aebb6e245', 'Binance 3', 'institution', 'hildobby', 'static', timestamp('2023-04-06'), now(), 'cex_polygon', 'identifier')
-    , ('polygon', '0x876eabf441b2ee5b5b0554fd502a8e0600950cfa', 'Bitfinex 1', 'institution', 'hildobby', 'static', timestamp('2023-04-06'), now(), 'cex_polygon', 'identifier')
-    , ('polygon', '0xd70250731a72c33bfb93016e3d1f0ca160df7e42', 'Huobi', 'institution', 'hildobby', 'static', timestamp('2023-04-06'), now(), 'cex_polygon', 'identifier')
     , ('polygon', '0x51e3d44172868acc60d68ca99591ce4230bc75e0', 'MEXC 1', 'institution', 'hildobby', 'static', timestamp('2023-04-06'), now(), 'cex_polygon', 'identifier')
     , ('polygon', '0x576b81f0c21edbc920ad63feeeb2b0736b018a58', 'MEXC 2', 'institution', 'hildobby', 'static', timestamp('2023-04-06'), now(), 'cex_polygon', 'identifier')
     -- Bitfinex, source: https://raw.githubusercontent.com/js-kingdata/indicators_factory/fefe53bca88ecf331a71fc59e34aab319f3415c5/crawlers/address_tags/cex/bitfinex_address.txt
+    , ('polygon', '0x876eabf441b2ee5b5b0554fd502a8e0600950cfa', 'Bitfinex 1', 'institution', 'hildobby', 'static', timestamp('2023-04-06'), now(), 'cex_polygon', 'identifier')
     , ('polygon', '0x77134cbc06cb00b66f4c7e623d5fdbf6777635ec', 'Bitfinex 2', 'institution', 'hildobby', 'static', timestamp('2023-04-06'), now(), 'cex_polygon', 'identifier')
     , ('polygon', '0x742d35Cc6634C0532925a3b844Bc454e4438f44e', 'Bitfinex 3', 'institution', 'hildobby', 'static', timestamp('2023-04-06'), now(), 'cex_polygon', 'identifier')
     -- Bitget, source: https://raw.githubusercontent.com/js-kingdata/indicators_factory/fefe53bca88ecf331a71fc59e34aab319f3415c5/crawlers/address_tags/cex/bitget_address.txt

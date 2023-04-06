@@ -7,7 +7,7 @@
 SELECT blockchain, lower(address) as address, name, category, contributor, source, created_at, updated_at, model_name, label_type
 FROM (VALUES
     -- Source: https://snowtrace.io/accounts/label/exchange
-    ('avalanche_c', '0x14aa1ad09664c33679ae5689d93085b8f7c84bd3', 'Coinsquare 1', 'institution', 'hildobby', 'static', timestamp('2023-04-06'), now(), 'cex_avalanche_c', 'identifier')
+    ('avalanche_c', '0x14aa1ad09664c33679ae5689d93085b8f7c84bd3', 'Coinsquare', 'institution', 'hildobby', 'static', timestamp('2023-04-06'), now(), 'cex_avalanche_c', 'identifier')
     , ('avalanche_c', '0xffb3118124cdaebd9095fa9a479895042018cac2', 'MEXC', 'institution', 'hildobby', 'static', timestamp('2023-04-06'), now(), 'cex_avalanche_c', 'identifier')
     -- Source: https://snowtrace.io/accounts/label/binance
     , ('avalanche_c', '0x9f8c163cba728e99993abe7495f06c0a3c8ac8b9', 'Binance', 'institution', 'hildobby', 'static', timestamp('2023-04-06'), now(), 'cex_avalanche_c', 'identifier')
