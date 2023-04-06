@@ -16,6 +16,7 @@
  , ref('labels_flashbots_ethereum')
  , ref('labels_mev_ethereum')
  , ref('labels_stablecoins')
+ , ref('labels_cex_tokens')
  , ref('labels_burn_addresses')
 ] %}
 
