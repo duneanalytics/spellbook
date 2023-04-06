@@ -9,7 +9,7 @@
         post_hook='{{ expose_spells(\'["optimism"]\',
                                 "project",
                                 "zeroex",
-                                \'["rantumBits","bakabhai993"]\') }}'
+                                \'["rantum","bakabhai993"]\') }}'
     )
 }}
 
@@ -65,12 +65,11 @@ AS
     FROM fills_first_last a
     GROUP BY  tx_hash,hop_count
 )
-SELECT  'optimism' AS blockchain
-      , '0x API' AS project 
+SELECT  a.blockchain
       , a.block_date
       , a.block_time
-      , COALESCE(b.taker_symbol,b.taker_token) AS taker_symbol
-      , COALESCE(b.maker_symbol,b.maker_token) AS maker_symbol
+      , b.taker_symbol AS taker_symbol
+      , b.maker_symbol AS maker_symbol
       , CASE WHEN lower(b.taker_symbol) > lower(b.maker_symbol) THEN concat(b.maker_symbol, '-', b.taker_symbol) ELSE concat(b.taker_symbol, '-', b.maker_symbol) END AS token_pair
       , b.taker_token_amount
       , b.maker_token_amount
@@ -86,6 +85,10 @@ SELECT  'optimism' AS blockchain
       , a.tx_from
       , a.tx_to
       , b.evt_index
+      , a.type
+      , a.swap_flag
+      , b.fills_within
+      , a.contract_address 
 FROM fills_with_tx_fill_number a
 INNER JOIN deduped_bridge_fills b
     ON (a.tx_hash = b.tx_hash AND a.evt_index = b.evt_index)

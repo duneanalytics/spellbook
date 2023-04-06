@@ -22,3 +22,5 @@ UNION ALL
 SELECT * FROM {{ ref('cow_protocol_tx_hash_labels_offramp') }}
 UNION ALL
 SELECT * FROM {{ ref('cow_protocol_tx_hash_labels_bluechip_investment') }}
+UNION ALL
+SELECT * FROM {{ ref('cow_protocol_tx_hash_labels_treasury_management') }}

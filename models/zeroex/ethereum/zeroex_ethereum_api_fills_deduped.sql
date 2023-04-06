@@ -69,40 +69,30 @@ AS
     FROM fills_first_last a
     GROUP BY  tx_hash,hop_count
 )
-SELECT  'ethereum' AS blockchain
-      , '0x API' AS project 
-      , '' AS version
+SELECT  a.blockchain
       , a.block_date
       , a.block_time
-      --what token did taker give
-      , COALESCE(b.taker_symbol,b.taker_token) AS taker_symbol
-      --what token did maker give
-      , COALESCE(b.maker_symbol,b.maker_token) AS maker_symbol
+      , b.taker_symbol AS taker_symbol
+      , b.maker_symbol AS maker_symbol
       , CASE WHEN lower(b.taker_symbol) > lower(b.maker_symbol) THEN concat(b.maker_symbol, '-', b.taker_symbol) ELSE concat(b.taker_symbol, '-', b.maker_symbol) END AS token_pair
       , b.taker_token_amount
       , b.maker_token_amount
       , CAST(b.taker_token_amount_raw AS DECIMAL(38,0)) AS taker_token_amount_raw
       , CAST(b.maker_token_amount_raw AS DECIMAL(38,0)) AS maker_token_amount_raw
-      , a.volume_usd AS amount_usd
+      , a.volume_usd
       , b.taker_token
       , b.maker_token
       , a.taker
       , a.maker
-      , a.affiliate_address AS project_contract_address
+      , a.affiliate_address
       , a.tx_hash
       , a.tx_from
       , a.tx_to
-      , '' AS trace_address
       , b.evt_index
-      -- for meta table
-      , COALESCE(b.taker_symbol,b.taker_token)          AS token_sold_symbol
-      , COALESCE(b.maker_symbol,b.maker_token)          AS token_bought_symbol
-      , b.taker_token_amount                            AS token_sold_amount
-      , b.maker_token_amount                            AS token_bought_amount
-      , CAST(b.taker_token_amount_raw AS DECIMAL(38,0)) AS token_sold_amount_raw
-      , CAST(b.maker_token_amount_raw AS DECIMAL(38,0)) AS token_bought_amount_raw
-      , b.taker_token                                   AS token_sold_address
-      , b.maker_token                                   AS token_bought_address
+      , a.type
+      , a.swap_flag
+      , b.fills_within
+      , a.contract_address 
 FROM fills_with_tx_fill_number a
 INNER JOIN deduped_bridge_fills b
     ON (a.tx_hash = b.tx_hash AND a.evt_index = b.evt_index)

@@ -1,17 +1,19 @@
 {{ config(
     alias ='events',
-    post_hook='{{ expose_spells(\'["ethereum","solana","bnb","optimism","arbitrum"]\',
+    post_hook='{{ expose_spells(\'["ethereum","solana","bnb","optimism","arbitrum","polygon"]\',
                     "sector",
                     "nft",
-                    \'["soispoke","0xRob"]\') }}')
+                    \'["soispoke","0xRob", "hildobby"]\') }}')
 }}
 
 {% set nft_models = [
- ref('archipelago_ethereum_events')
+ ref('aavegotchi_polygon_events')
+,ref('archipelago_ethereum_events')
 ,ref('blur_ethereum_events')
 ,ref('cryptopunks_ethereum_events')
 ,ref('element_events')
 ,ref('foundation_ethereum_events')
+,ref('fractal_polygon_events')
 ,ref('looksrare_ethereum_events')
 ,ref('magiceden_events')
 ,ref('opensea_events')
@@ -19,6 +21,7 @@
 ,ref('superrare_ethereum_events')
 ,ref('x2y2_ethereum_events')
 ,ref('zora_ethereum_events')
+,ref('oneplanet_polygon_events')
 ,ref('pancakeswap_bnb_nft_events')
 ,ref('tofu_events')
 ,ref('quix_optimism_events')
@@ -26,6 +29,8 @@
 ,ref('zonic_optimism_events')
 ,ref('nftb_bnb_events')
 ,ref('nftearth_optimism_events')
+,ref('rarible_polygon_events')
+,ref('stealcam_arbitrum_events')
 ] %}
 
 SELECT *
