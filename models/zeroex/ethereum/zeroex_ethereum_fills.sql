@@ -46,7 +46,7 @@ WITH
                     WHEN mp.symbol = 'WETH' THEN (fills.makerAssetFilledAmount / 1e18) * mp.price
                     ELSE COALESCE((fills.makerAssetFilledAmount / (10^mt.decimals))*mp.price,(fills.takerAssetFilledAmount / (10^tt.decimals))*tp.price)
                 END AS volume_usd
-            , fills."protocolFeePaid" / 1e18 AS protocol_fee_paid_eth,
+            , fills.protocolFeePaid / 1e18 AS protocol_fee_paid_eth,
             fills.contract_address
         FROM {{ source('zeroex_v3_ethereum', 'Exchange_evt_Fill') }} fills 
         LEFT JOIN prices.usd tp ON
@@ -164,7 +164,7 @@ WITH
                     WHEN mp.symbol = 'WETH' THEN (fills.makerTokenFilledAmount / 1e18) * mp.price
                     ELSE COALESCE((fills.makerTokenFilledAmount / (10^mt.decimals))*mp.price,(fills.takerTokenFilledAmount / (10^tt.decimals))*tp.price)
                 END AS volume_usd
-            , fills."protocolFeePaid"/ 1e18 AS protocol_fee_paid_eth,
+            , fills.protocolFeePaid/ 1e18 AS protocol_fee_paid_eth,
             fills.contract_address
         FROM {{ source('zeroex_ethereum', 'ExchangeProxy_evt_LimitOrderFilled') }} fills
         LEFT JOIN prices.usd tp ON
@@ -353,5 +353,6 @@ WITH
                 volume_usd as amount_usd,
                 protocol_fee_paid_eth,
                 'polygon' as blockchain
+                , contract_address as project_contract_address
             FROM all_fills
             ORDER BY "timestamp" DESC
