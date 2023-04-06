@@ -31,7 +31,7 @@ FROM (VALUES
     , ('bnb', '0x5a52e96bacdabb82fd05763e25335261b270efcb', 'Binance 22', 'institution', 'soispoke', 'static', timestamp('2022-08-28'), now(), 'cex_bnb', 'identifier')
     , ('bnb', '0xeb2d2f1b8c558a40207669291fda468e50c8a0bb', 'Binance Charity', 'institution', 'soispoke', 'static', timestamp('2022-08-28'), now(), 'cex_bnb', 'identifier'),
     -- Bitget, source: https://raw.githubusercontent.com/js-kingdata/indicators_factory/fefe53bca88ecf331a71fc59e34aab319f3415c5/crawlers/address_tags/cex/bitget_address.txt
-    ('bnb', '0x0639556f03714a74a5feeaf5736a4a64ff70d206', 'Bitget 1', 'institution', 'hildobby', 'static', timestamp('2023-04-06'), now(), 'cex_bnb', 'identifier')
+    , ('bnb', '0x0639556f03714a74a5feeaf5736a4a64ff70d206', 'Bitget 1', 'institution', 'hildobby', 'static', timestamp('2023-04-06'), now(), 'cex_bnb', 'identifier')
     , ('bnb', '0x149ded7438caf5e5bfdc507a6c25436214d445e1', 'Bitget 2', 'institution', 'hildobby', 'static', timestamp('2023-04-06'), now(), 'cex_bnb', 'identifier')
     , ('bnb', '0x3a7d1a8c3a8dc9d48a68e628432198a2ead4917c', 'Bitget 3', 'institution', 'hildobby', 'static', timestamp('2023-04-06'), now(), 'cex_bnb', 'identifier')
     , ('bnb', '0x97b9d2102a9a65a26e1ee82d59e42d1b73b68689', 'Bitget 4', 'institution', 'hildobby', 'static', timestamp('2023-04-06'), now(), 'cex_bnb', 'identifier'),
