@@ -121,6 +121,7 @@ FROM (values
     ,('0xe039f8102319af854fe11489a19d6b5d2799ada7','Pickle Finance','Distributor')
     ,('0x86690b9Dbb979850AE4622347aF81232bAa3C967','Revert Finance','Distributor')
     ,('0x35bA8C41CeEEA24F7c826015844F2b58aF3058a6','Revert Finance','Distributor')
+    ,('0x167829543510c13c792BD8F6a414f74D51E3A6d4','Revert Finance','Distributor')
     -- ,('0x40a58B5B735Ba6596d04c88E7b262f6E79100EBb','Angle','Distributor-velo bribe') --bribe used by multiple parties
     ,('0x0Cb199aF5F402506963A4df08B11053687e09802', 'Polynomial Protocol','Distributor')
     ,('0x7432A3A1545B2764367dA16a207A16475D4221bD', 'WePiggy','Distributor')
