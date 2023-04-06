@@ -18,7 +18,7 @@ FROM (
     'optimism' AS blockchain,
     '{{ source[0] }}' as round_name,
     block_date,
-    recipient,
+    submitter_address,
     issuer,
     recipient_name,
     recipient_category,

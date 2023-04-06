@@ -19,7 +19,7 @@ with attestations as (
 
 
 SELECT 
-    nm.block_date, nm.recipient, nm.issuer
+    nm.block_date, nm.recipient as submitter_address, nm.issuer
     , nm.val_string AS recipient_name, ca.val_string AS recipient_category
     , cast( regexp_replace(aw.val_string, '[^0-9\\.]+', '') AS double ) AS award_amount
     , '{{op_token}}' AS award_token

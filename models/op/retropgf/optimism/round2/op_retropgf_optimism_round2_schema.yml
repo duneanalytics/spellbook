@@ -15,9 +15,9 @@ models:
       - &block_date
         name: block_date
         description: "Date of the first attestation"
-      - &recipient
-        name: recipient
-        description: "Address of the recipient of the attestation (and recipient of funding)"
+      - &submitter_address
+        name: submitter_address
+        description: "Address of the recipient of the attestation (and form submitter address)"
       - &issuer
         name: issuer
         description: "Address issuing the attestation"
