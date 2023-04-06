@@ -67,8 +67,8 @@ WITH
                     WHEN SUBSTRING(fills.makerAssetData,17,20) IN ('0x69391cca2e38b845720c7deb694ec837877a8e53') THEN '0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48'
                     ELSE SUBSTRING(fills.makerAssetData,17,20)
                 END = mp.contract_address
-        LEFT JOIN erc20.tokens mt ON mt.contract_address = SUBSTRING(fills.makerAssetData,17,20)
-        LEFT JOIN erc20.tokens tt ON tt.contract_address = SUBSTRING(fills.takerAssetData,17,20)
+        LEFT OUTER JOIN {{ ref('tokens_erc20') }} mt ON mt.contract_address = SUBSTRING(fills.makerAssetData,17,20)
+        LEFT OUTER JOIN {{ ref('tokens_erc20') }} tt ON tt.contract_address = SUBSTRING(fills.takerAssetData,17,20)
          where 1=1 
                 {% if is_incremental() %}
                 AND block_time >= date_trunc('day', now() - interval '1 week')
@@ -125,8 +125,8 @@ WITH
                     WHEN SUBSTRING(fills.makerAssetData,17,20) IN ('0x69391cca2e38b845720c7deb694ec837877a8e53') THEN '0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48'
                     ELSE SUBSTRING(fills.makerAssetData,17,20)
                 END = mp.contract_address
-        LEFT JOIN erc20.tokens mt ON mt.contract_address = SUBSTRING(fills.makerAssetData,17,20)
-        LEFT JOIN erc20.tokens tt ON tt.contract_address = SUBSTRING(fills.takerAssetData,17,20)
+        LEFT OUTER JOIN {{ ref('tokens_erc20') }} mt ON mt.contract_address = SUBSTRING(fills.makerAssetData,17,20)
+        LEFT OUTER JOIN {{ ref('tokens_erc20') }} tt ON tt.contract_address = SUBSTRING(fills.takerAssetData,17,20)
          where 1=1 
                 {% if is_incremental() %}
                 AND block_time >= date_trunc('day', now() - interval '1 week')
@@ -185,8 +185,8 @@ WITH
                     WHEN fills.makerToken IN ('0x69391cca2e38b845720c7deb694ec837877a8e53') THEN '0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48'
                     ELSE fills.makerToken
                 END = mp.contract_address
-        LEFT JOIN erc20.tokens mt ON mt.contract_address = fills.makerToken
-        LEFT JOIN erc20.tokens tt ON tt.contract_address = fills.takerToken
+        LEFT OUTER JOIN {{ ref('tokens_erc20') }} mt ON mt.contract_address = fills.makerToken
+        LEFT OUTER JOIN {{ ref('tokens_erc20') }} tt ON tt.contract_address = fills.takerToken
          where 1=1 
                 {% if is_incremental() %}
                 AND block_time >= date_trunc('day', now() - interval '1 week')
@@ -245,8 +245,8 @@ WITH
                   WHEN fills.makerToken IN ('0x69391cca2e38b845720c7deb694ec837877a8e53') THEN '0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48'
                   ELSE fills.makerToken
               END = mp.contract_address
-      LEFT JOIN erc20.tokens mt ON mt.contract_address = fills.makerToken
-      LEFT JOIN erc20.tokens tt ON tt.contract_address = fills.takerToken
+      LEFT OUTER JOIN {{ ref('tokens_erc20') }} mt ON mt.contract_address = fills.makerToken
+      LEFT OUTER JOIN {{ ref('tokens_erc20') }} tt ON tt.contract_address = fills.takerToken
        where 1=1 
                 {% if is_incremental() %}
                 AND block_time >= date_trunc('day', now() - interval '1 week')
@@ -304,8 +304,8 @@ WITH
                   WHEN fills.makerToken IN ('0x69391cca2e38b845720c7deb694ec837877a8e53') THEN '0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48'
                   ELSE fills.makerToken
               END = mp.contract_address
-      LEFT JOIN erc20.tokens mt ON mt.contract_address = fills.makerToken
-      LEFT JOIN erc20.tokens tt ON tt.contract_address = fills.takerToken
+      LEFT OUTER JOIN {{ ref('tokens_erc20') }} mt ON mt.contract_address = fills.makerToken
+      LEFT OUTER JOIN {{ ref('tokens_erc20') }} tt ON tt.contract_address = fills.takerToken
        where 1=1 
                 {% if is_incremental() %}
                 AND block_time >= date_trunc('day', now() - interval '1 week')
