@@ -31,12 +31,12 @@ with
 
 select
   "ethereum" as blockchain,
-  concat(tx_hash, evt_index, project, version) as tx_hash_key,
+  concat(tx_hash, CAST(evt_index AS VARCHAR(100)), project, version) as tx_hash_key,
   "Treasury management" AS name,
   "tx_hash" AS category,
   "gentrexha" AS contributor,
   "query" AS source,
-  timestamp('2023-03-01') as created_at,
+  CAST('2023-03-01' AS TIMESTAMP) as created_at,
   now() as updated_at,
   "treasury_management" as model_name,
   "usage" as label_type
