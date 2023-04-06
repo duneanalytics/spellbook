@@ -52,6 +52,7 @@ FROM (values
     ,('0x85cbb0E8262815b4866b166C02f7eF876A49D8f6', 'Biconomy', 'Biconomy - Binance Depoist')
     ,('0xeeab81526c9addb75ffffde0cd3f6f018cc39ac2', 'Synthetix','Multisig - Distributor')
     ,('0x8314125c8b68af2afd0d151eb4a551e88128a2ae', 'Thales', 'Contract Deployer')
+    ,('0x5033823f27c5f977707b58f0351adcd732c955dd', 'Lido',     'Intermediate Wallet')
 
     --quix - should come from CB
     ,('0x5Ad4A019F77e82940f6Dd15A5215362AF061A742','Quix','Distributor')

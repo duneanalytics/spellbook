@@ -127,7 +127,7 @@ FROM (VALUES
 ,('Project',	'0x9f4f2b8bda8d2d3832021b3119747470ea86a183',	'Quests on Coinbase Wallet - Quest #2 Delegation',	'Partner Fund') --Quest 2 - Delegation
 ,('Project',	'0x1fe95e0497a0E38AFBE18Bd19B9a2b42116880f0',	'Quests on Coinbase Wallet - Quest #3 Attestation',	'Partner Fund') --Quest 2 - Attestation
 ,('Project',	'0x23fd464e0b0ee21cedeb929b19cabf9bd5215019',	'Exactly',	'Partner Fund')
-,('Project',	'0x5033823f27c5f977707b58f0351adcd732c955dd',	'Lido',		'Partner Fund')
+,('Project',	'0x91cE2F083d59B832f95f90aA0997168ae051a98A',	'Lido',		'Partner Fund')
 -- Distributions to Rewarder contracts are not listed
 
 
