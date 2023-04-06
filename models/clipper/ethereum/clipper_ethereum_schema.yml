@@ -199,7 +199,7 @@ models:
     meta:
       blockchain: ethereum
       sector: dex
-      project: clipper
+      project: clipper_v4
       contributors: amalashkevich
     config:
       tags: [ 'ethereum','dex','trades', 'clipper' ]
