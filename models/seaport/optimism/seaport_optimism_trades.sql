@@ -322,8 +322,8 @@ with source_optimism_transactions as (
     ,sub_type
   from iv_trades
 )
-select 
+select
   *
-  ,concat('block_date', 'tx_hash', 'evt_index', 'nft_contract_address', 'token_id', 'sub_type', 'sub_idx') as unique_trade_id
+  ,concat(block_date, tx_hash, evt_index, nft_contract_address, token_id, sub_type, sub_idx) as unique_trade_id
 from iv_columns
 ;
