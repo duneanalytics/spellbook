@@ -66,4 +66,23 @@ FROM (VALUES
     , ('bnb', '0xd7aed730a7c4cf8dfe313b16712af3406f6dca5b', 'MaskEX', 'MaskEX 12', 'hildobby', timestamp('2023-04-06'))
     , ('bnb', '0x6db133e840376555a5ad5c1d7616872ef57e7f13', 'MaskEX', 'MaskEX 13', 'hildobby', timestamp('2023-04-06'))
     , ('bnb', '0xDCa6951B82e82AF6AAB4bB9e90CA00F5760370e1', 'MaskEX', 'MaskEX 14', 'hildobby', timestamp('2023-04-06'))
+    -- WOO Network, source: https://github.com/DefiLlama/DefiLlama-Adapters/blob/main/projects/woo-cex/index.js
+    , ('bnb', '0x0d83f81bc9f1e8252f87a4109bbf0d90171c81df', 'WOO Network', 'WOO Network 1', 'hildobby', timestamp('2023-04-07'))
+    , ('bnb', '0x63DFE4e34A3bFC00eB0220786238a7C6cEF8Ffc4', 'WOO Network', 'WOO Network 2', 'hildobby', timestamp('2023-04-07'))
+    , ('bnb', '0xE505Bf08C03cc0FA4e0FDFa2487E2c11085b3FD9', 'WOO Network', 'WOO Network 3', 'hildobby', timestamp('2023-04-07'))
+    , ('bnb', '0xea319fd75766f5180018f8e760f51c3d3c457496', 'WOO Network', 'WOO Network 4', 'hildobby', timestamp('2023-04-07'))
+    -- CoinDCX, source: https://github.com/DefiLlama/DefiLlama-Adapters/blob/main/projects/coindcx/index.js
+    , ('bnb', '0x4D24EecEcb86041F47bca41265319e9f06aE2Fcb', 'CoinDCX', 'CoinDCX 1', 'hildobby', timestamp('2023-04-07'))
+    , ('bnb', '0x660e3Bd3bcDa11538fa331282666F1d001b87A42', 'CoinDCX', 'CoinDCX 2', 'hildobby', timestamp('2023-04-07'))
+    , ('bnb', '0x8c7Efd5B04331EFC618e8006f19019A3Dc88973e', 'CoinDCX', 'CoinDCX 3', 'hildobby', timestamp('2023-04-07'))
+    , ('bnb', '0xF25d1D2507ce1f956F5BAb45aD2341e3c0DB6d3C', 'CoinDCX', 'CoinDCX 4', 'hildobby', timestamp('2023-04-07'))
+    , ('bnb', '0xF379FcD9C996d85de025985bA9B1C9C96DAa4a72', 'CoinDCX', 'CoinDCX 5', 'hildobby', timestamp('2023-04-07'))
+    , ('bnb', '0xb79421720b92180487f71F13c5D5D8B9ecA27BF1', 'CoinDCX', 'CoinDCX 6', 'hildobby', timestamp('2023-04-07'))
+    -- Hotbit, source: https://github.com/DefiLlama/DefiLlama-Adapters/blob/main/projects/coindcx/index.js
+    , ('bnb', '0xC7029E939075F48fa2D5953381660c7d01570171', 'Hotbit', 'Hotbit 1', 'hildobby', timestamp('2023-04-07'))
+    , ('bnb', '0xb18fbfe3d34fdc227eb4508cde437412b6233121', 'Hotbit', 'Hotbit 2', 'hildobby', timestamp('2023-04-07'))
+    , ('bnb', '0x768f2a7ccdfde9ebdfd5cea8b635dd590cb3a3f1', 'Hotbit', 'Hotbit 3', 'hildobby', timestamp('2023-04-07'))
+    -- BitVenus, source: https://github.com/DefiLlama/DefiLlama-Adapters/blob/main/projects/bitvenus/index.js
+    , ('bnb', '0xef7a2610a7c9cfb2537d68916b6a87fea8acfec3', 'BitVenus', 'BitVenus 1', 'hildobby', timestamp('2023-04-07'))
+    , ('bnb', '0x4785e47aE7061632C2782384DA28B9F68a5647a3', 'BitVenus', 'BitVenus 2', 'hildobby', timestamp('2023-04-07'))
     ) AS x (blockchain, address, cex_name, distinct_name, added_by, added_date)

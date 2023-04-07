@@ -30,4 +30,12 @@ FROM (VALUES
     , ('arbitrum', '0xf3f094484ec6901ffc9681bcb808b96bafd0b8a8', 'KuCoin', 'KuCoin 3', 'hildobby', timestamp('2022-11-14'))
     -- OKX, source: https://raw.githubusercontent.com/js-kingdata/indicators_factory/fefe53bca88ecf331a71fc59e34aab319f3415c5/crawlers/address_tags/cex/okx_address.txt
     , ('arbitrum', '0x62383739d68dd0f844103db8dfb05a7eded5bbe6', 'OKX', 'OKX 1', 'hildobby', timestamp('2022-11-14'))
+    -- WOO Network, source: https://github.com/DefiLlama/DefiLlama-Adapters/blob/main/projects/woo-cex/index.js
+    , ('arbitrum', '0x0d83f81bc9f1e8252f87a4109bbf0d90171c81df', 'WOO Network', 'WOO Network 1', 'hildobby', timestamp('2023-04-07'))
+    , ('arbitrum', '0x63DFE4e34A3bFC00eB0220786238a7C6cEF8Ffc4', 'WOO Network', 'WOO Network 2', 'hildobby', timestamp('2023-04-07'))
+    , ('arbitrum', '0xE505Bf08C03cc0FA4e0FDFa2487E2c11085b3FD9', 'WOO Network', 'WOO Network 3', 'hildobby', timestamp('2023-04-07'))
+    , ('arbitrum', '0xea319fd75766f5180018f8e760f51c3d3c457496', 'WOO Network', 'WOO Network 4', 'hildobby', timestamp('2023-04-07'))
+    -- Hotbit, Source: https://etherscan.io/accounts/label/hotbit
+    , ('arbitrum', '0xd690a9DfD7e4B02898Cdd1a9E50eD1fd7D3d3442', 'Hotbit', 'Hotbit 1', 'hildobby', timestamp('2022-08-28'))
+    , ('arbitrum', '0x768f2a7ccdfde9ebdfd5cea8b635dd590cb3a3f1', 'Hotbit', 'Hotbit 2', 'hildobby', timestamp('2022-08-28'))
     ) AS x (blockchain, address, name, category, contributor, source, created_at, updated_at, model_name, label_type)

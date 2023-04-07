@@ -20,4 +20,12 @@ FROM (VALUES
     , ('fantom', '0x72a53cdbbcc1b9efa39c834a540550e23463aacb', 'Crypto.com', 'Crypto.com 2', 'hildobby', timestamp('2023-04-06'))
     , ('fantom', '0x7758e507850da48cd47df1fb5f875c23e3340c50', 'Crypto.com', 'Crypto.com 3', 'hildobby', timestamp('2023-04-06'))
     , ('fantom', '0xcffad3200574698b78f32232aa9d63eabd290703', 'Crypto.com', 'Crypto.com 4', 'hildobby', timestamp('2023-04-06'))
+    -- WOO Network, source: https://github.com/DefiLlama/DefiLlama-Adapters/blob/main/projects/woo-cex/index.js
+    , ('fantom', '0x0d83f81bc9f1e8252f87a4109bbf0d90171c81df', 'WOO Network', 'WOO Network 1', 'hildobby', timestamp('2023-04-07'))
+    , ('fantom', '0x63DFE4e34A3bFC00eB0220786238a7C6cEF8Ffc4', 'WOO Network', 'WOO Network 2', 'hildobby', timestamp('2023-04-07'))
+    , ('fantom', '0xE505Bf08C03cc0FA4e0FDFa2487E2c11085b3FD9', 'WOO Network', 'WOO Network 3', 'hildobby', timestamp('2023-04-07'))
+    , ('fantom', '0xea319fd75766f5180018f8e760f51c3d3c457496', 'WOO Network', 'WOO Network 4', 'hildobby', timestamp('2023-04-07'))
+    -- Hotbit, Source: https://etherscan.io/accounts/label/hotbit
+    , ('fantom', '0xc62A0781934744E05927ceABB94a3043CdCfEA89', 'Hotbit', 'Hotbit 1', 'hildobby', timestamp('2022-08-28'))
+    , ('fantom', '0x768f2a7ccdfde9ebdfd5cea8b635dd590cb3a3f1', 'Hotbit', 'Hotbit 2', 'hildobby', timestamp('2022-08-28'))
     ) AS x (blockchain, address, cex_name, distinct_name, added_by, added_date)
