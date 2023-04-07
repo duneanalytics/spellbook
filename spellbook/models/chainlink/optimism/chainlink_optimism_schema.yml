@@ -1,0 +1,136 @@
+version: 2
+
+models:
+  - name: chainlink_optimism_price_feeds
+    meta:
+      blockchain: optimism
+      project: chainlink
+      contributors: ["msilb7","0xroll"]
+    config:
+      tags: ['optimism','chainlink','oracle']
+    description: >
+        Table pulling price updates for known Chainlink oracle addresses
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+              - blockchain
+              - block_number
+              - proxy_address
+              - underlying_token_address
+      - check_seed:
+          seed_file: ref('chainlink_get_price_seed')
+          filter:
+            blockchain: optimism
+          match_columns:
+            - blockchain
+            - block_number
+            - proxy_address
+            - underlying_token_address
+          check_columns:
+            - aggregator_address
+            - feed_name
+            - oracle_price
+    columns:
+      - &blockchain
+        name: blockchain
+        description: "Blockchain of the oracle update"
+      - &block_time
+        name: block_time
+        description: "Block time of the oracle update"
+      - &block_date
+        name: block_date
+        description: "Block time of the oracle update - truncated to date"
+      - &block_number
+        name: block_number
+        description: "Block number of the oracle update"
+      - &feed_name
+        name: feed_name
+        description:  "Feed name from Chainlink docs"  
+      - &oracle_price
+        name: oracle_price
+        description:  "Price returned by Chainlink oracle update" 
+      - &proxy_address
+        name: proxy_address
+        description:  "Address of the proxy contract for the Chainlink oracle"
+      - &aggregator_address
+        name: aggregator_address
+        description:  "Address of the aggregator contract tied to the proxy for the Chainlink oracle (via Read Contract)"
+      - &underlying_token_address
+        name: underlying_token_address
+        description:  "Address of any underlying tokens associated with the Chainlink oracle (i.e. AAVE, sAAVE)"
+      - &underlying_token_price
+        name: underlying_token_price
+        description:  "Price of the underlying token, with extra decimal adjustments if needed"
+
+  - name: chainlink_optimism_price_feeds_hourly
+    meta:
+      blockchain: optimism
+      project: chainlink
+      contributors: msilb7
+    config:
+      tags: ['optimism','chainlink','oracle']
+    description: >
+        Table pulling price updates for known Chainlink oracle addresses, truncated to hourly average price for easier joining with other on-chain tables.
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+              - blockchain
+              - hour
+              - proxy_address
+              - aggregator_address
+              - underlying_token_address
+    columns:
+      - *blockchain
+      - &hour
+        name: hour
+        description: "Block time of the oracle update - truncated to hour"
+      - *block_date
+      - *feed_name
+      - *oracle_price
+      - *proxy_address
+      - *aggregator_address
+      - *underlying_token_address
+      - *underlying_token_price
+
+  - name: chainlink_optimism_oracle_token_mapping
+    meta:
+      blockchain: optimism
+      project: chainlink
+      contributors: msilb7
+    config:
+      tags: ['optimism','chainlink','oracle']
+    description: >
+        Manually updated table for mapping chainlink oracle addresses to underlying ERC20 token addresses.
+    columns:
+      - *blockchain
+      - *feed_name
+      - *oracle_price
+      - *proxy_address
+      - *aggregator_address
+      - *underlying_token_address
+      - &extra_decimals
+        name: extra_decimals
+        description:  "Additional decimals needed to adjust the Chainlink oracle answer to the underlying token (most often this is 0)"
+  
+  - name: chainlink_optimism_oracle_addresses
+    meta:
+      blockchain: optimism
+      project: chainlink
+      contributors: msilb7
+    config:
+      tags: ['optimism','chainlink','oracle']
+    description: >
+        Manually updated table for mapping chainlink feeds to proxy addresses and the aggregator addresses (where updates read to)
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+              - proxy_address
+              - aggregator_address
+    columns:
+      - *blockchain
+      - *feed_name 
+      - &decimals
+        name: decimals
+        description: "Decimal adjustment for the oracle answer"
+      - *proxy_address
+      - *aggregator_address

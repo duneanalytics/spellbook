@@ -1,0 +1,446 @@
+version: 2
+
+models:
+  - name: cryptopunks_ethereum_events
+    meta:
+      blockchain: ethereum
+      project: cryptopunks
+      contributors: [masquot, hildobby, cat]
+    config:
+      tags: ['ethereum', 'cryptopunks', 'events']
+    description: >
+        CryptoPunks events on Ethereum
+    columns:
+      - &blockchain
+        name: blockchain
+        description: "Blockchain"
+      - &project
+        name: project
+        description: "Project"
+      - &version
+        name: version
+        description: "Project version"
+      - &block_time
+        name: block_time
+        description: "UTC event block time"
+      - &token_id
+        name: token_id
+        description: "NFT Token ID"
+      - &collection
+        name: collection
+        description: "NFT collection name"
+      - &amount_usd
+        name: amount_usd
+        description: "USD value of the trade at time of execution"
+      - &token_standard
+        name: token_standard
+        description: "Token standard"
+      - &trade_type
+        name: trade_type
+        description: "Identify whether it was a single NFT trade or multiple NFTs traded"
+      - &number_of_items
+        name: number_of_items
+        description: "Number of items traded"
+      - &trade_category
+        name: trade_category
+        description: "How was this NFT traded ? (Direct buy, auction, etc...)"
+      - &evt_type
+        name: evt_type
+        description: "Event type (Trade, Mint, Burn)"
+      - &seller
+        name: seller
+        description: "Seller wallet address"
+        tests:
+          - compare_column_values_to_seed_values:
+              seed_file_location: ref('cryptopunks_trades_buys_bids_seed')
+      - &buyer
+        name: buyer
+        description: "Buyer wallet address"
+        tests:
+          - compare_column_values_to_seed_values:
+              seed_file_location: ref('cryptopunks_trades_buys_bids_seed')
+      - &amount_original
+        name: amount_original
+        description: "Traded amount in original currency"
+      - &amount_raw
+        name: amount_raw
+        description: "Traded amount in original currency before decimals correction"
+        tests:
+          - compare_column_values_to_seed_values:
+              seed_file_location: ref('cryptopunks_trades_buys_bids_seed')
+      - &currency_symbol
+        name: currency_symbol
+        description: "Symbol of original currency used for payment"
+      - &currency_contract
+        name: currency_contract
+        description: "Contract address of original token used for payment, with ETH contract address swapped for WETH"
+      - &nft_contract_address
+        name: nft_contract_address
+        description: "NFT contract address, only if 1 nft was transacted"
+      - &project_contract_address
+        name: project_contract_address
+        description: "Contract address used by the project, in this case wyvern contract"
+      - &aggregator_name
+        name: aggregator_name
+        description: "If the trade was performed via an aggregator, displays aggregator name"
+      - &aggregator_address
+        name: aggregator_address
+        description: "If the trade was performed via an aggregator, displays aggregator address"
+      - &tx_hash
+        name: tx_hash
+        description: "Transaction hash"
+      - &block_number
+        name: block_number
+        description: "Block number in which the transaction was executed "
+      - &tx_from
+        name: tx_from
+        description: "Address that initiated the transaction"
+      - &tx_to
+        name: tx_to
+        description: "Address that received the transaction"
+      - &platform_fee_amount_raw
+        name: platform_fee_amount_raw
+        description: "Raw numerical amount for platform fees"
+      - &platform_fee_amount
+        name: platform_fee_amount
+        description: "Platform fee amount in original token currency (properly formatted in decimals)"
+      - &platform_fee_amount_usd
+        name: platform_fee_amount_usd
+        description: "Platform fee amount in USD"
+      - &platform_fee_percentage
+        name: platform_fee_percentage
+        description: "Platform fee in % of the amount paid for a given trade"
+      - &royalty_fee_amount_raw
+        name: royalty_fee_amount_raw
+        description: "Raw numerical amount for royalty fees"
+      - &royalty_fee_amount
+        name: royalty_fee_amount
+        description: "Royalty fee amount in original token currency (properly formatted in decimals)"
+      - &royalty_fee_amount_usd
+        name: royalty_fee_amount_usd
+        description: "Royalty fee amount in USD"
+      - &royalty_fee_percentage
+        name: royalty_fee_percentage
+        description: "Royalty fee in % of the amount paid for a given trade"
+      - &royalty_fee_receive_address
+        name: royalty_fee_receive_address
+        description: "Wallet addresses receiving fees from the transaction"
+      - &royalty_fee_currency_symbol
+        name: royalty_fee_currency_symbol
+        description: "Symbol of the token in which fees are paid out"
+      - &unique_trade_id
+        name: unique_trade_id
+        description: "Unique trade ID"
+  - name: cryptopunks_ethereum_trades
+    meta:
+      blockchain: ethereum
+      project: cryptopunks
+      contributors: [masquot, hildobby, cat]
+    config:
+      tags: ['ethereum', 'cryptopunks', 'trades']
+    description: >
+        CryptoPunks trades on Ethereum
+    columns:
+      - *blockchain
+      - *project
+      - *version
+      - *block_time
+      - *token_id
+      - *collection
+      - *amount_usd
+      - *token_standard
+      - *trade_type
+      - *number_of_items
+      - *trade_category
+      - *evt_type
+      - *seller
+      - *buyer
+      - *amount_original
+      - *amount_raw
+      - *currency_symbol
+      - *currency_contract
+      - *nft_contract_address
+      - *project_contract_address
+      - *aggregator_name
+      - *aggregator_address
+      - *tx_hash
+      - *block_number
+      - *tx_from
+      - *tx_to
+      - *unique_trade_id
+
+  - name: cryptopunks_ethereum_metadata
+    meta:
+      blockchain: ethereum
+      project: cryptopunks
+      contributors: [cat]
+    config:
+      tags: ['ethereum', 'cryptopunks', 'metadata']
+    description: > 
+        CryptoPunks metadata
+    columns:
+      - name: punk_id
+        description: "CryptoPunk ID #"
+      - name: punk_type
+        description: "CryptoPunk type"
+      - name: attribute_count
+        description: "Number of attributes"
+      - name: attribute_list 
+        description: "Attribute list"
+
+  - name: cryptopunks_ethereum_current_listings
+    meta:
+      blockchain: ethereum
+      project: cryptopunks
+      contributors: [cat]
+    config:
+      tags: ['ethereum', 'cryptopunks', 'listings']
+    description: > 
+        CryptoPunks currently open listings
+    columns:
+      - name: punk_id
+        description: "CryptoPunk ID #"
+      - name: listed_price_eth
+        description: "Listed price (ETH)"
+      - name: listed_price_current_usd
+        description: "Listed price at current USD value"
+      - name: listing_created_at
+        description: "Time listings was created"
+
+  - name: cryptopunks_ethereum_current_owners_per_token
+    meta:
+      blockchain: ethereum
+      project: cryptopunks
+      contributors: [cat]
+    config:
+      tags: ['ethereum', 'cryptopunks', 'owners']
+    description: > 
+        CryptoPunks current owners per token id    
+    columns:
+      - name: punk_id
+        description: "CryptoPunk ID #"
+        tests:
+          - unique        
+      - name: current_owner
+        description: "Wallet that currently holds each CryptoPunk ID #"
+      - name: last_transfer_time
+        description: "Last recorded transfer"
+
+  - name: cryptopunks_ethereum_punk_transfers
+    meta:
+      blockchain: ethereum
+      project: cryptopunks
+      contributors: [cat]
+    config:
+      tags: ['ethereum', 'cryptopunks', 'transfers']
+    description: > 
+        All CryptoPunks transfers
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - evt_block_time_week
+            - punk_id
+            - evt_tx_hash
+            - evt_index
+    columns:
+      - name: from
+        description: "CryptoPunk transferred from"
+      - name: to
+        description: "CryptoPunk transferred to"
+      - name: evt_block_time
+        description: "Time of transfer"
+      - name: evt_block_time_week
+        description: "Week of transfer"
+      - name: evt_block_number
+        description: "Block number of transfer"
+      - name: evt_index
+        description: "Index of transfer"   
+      - name: punk_id
+        description: "Punk ID #"   
+      - name: evt_tx_hash
+        description: "Transfer transaction hash"
+
+  - name: cryptopunks_ethereum_listings_over_time
+    meta:
+      blockchain: ethereum
+      project: cryptopunks
+      contributors: [cat]
+    config:
+      tags: ['ethereum', 'cryptopunks', 'listings']
+    description: > 
+        CryptoPunks listings count per day over time
+    columns:
+      - name: day
+        description: "Day"
+      - name: listed_count
+        description: "# Punks listed for sale that day"
+
+  - name: cryptopunks_ethereum_owners_over_time
+    meta:
+      blockchain: ethereum
+      project: cryptopunks
+      contributors: [cat]
+    config:
+      tags: ['ethereum', 'cryptopunks', 'owners']
+    description: > 
+        CryptoPunks unique owners per day over time
+    columns:
+      - name: day
+        description: "Day"
+        tests:
+          - unique
+      - name: unique_wallets
+        description: "# unique Punk wallets that day"
+
+  - name: cryptopunks_ethereum_floor_price_over_time
+    meta:
+      blockchain: ethereum
+      project: cryptopunks
+      contributors: [cat]
+    config:
+      tags: ['ethereum', 'cryptopunks', 'floor']
+    description: > 
+        CryptoPunks floor price per day over time
+    columns:
+      - name: day
+        description: "Day"
+      - name: floor_price_eth
+        description: "Floor price in ETH that day"
+      - name: floor_price_usd
+        description: "Floor price in $ that day"
+
+  - name: cryptopunks_ethereum_punk_bid_events
+    meta:
+      blockchain: ethereum
+      project: cryptopunks
+      contributors: [cat]
+    config:
+      tags: ['ethereum', 'cryptopunks', 'bids']
+    description: > 
+        All CryptoPunks bid events
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - evt_block_time_week
+            - evt_tx_hash
+            - evt_index
+    columns:
+      - name: event_type
+        description: "Bid entered or withdrawn"
+      - name: punk_id
+        description: "Punk ID #"
+      - name: bidder
+        description: "Wallet that created bid"
+      - name: eth_amount
+        description: "ETH amount of bid"  
+      - name: usd_amount
+        description: "USD amount at time of bid"     
+      - name: evt_block_time
+        description: "Time of transfer"
+      - name: evt_block_time_week
+        description: "Week of transfer"
+      - name: evt_block_number
+        description: "Block number of transfer"
+      - name: evt_index
+        description: "Index of transfer"   
+      - name: evt_tx_hash
+        description: "Transfer transaction hash"
+
+  - name: cryptopunks_ethereum_current_bids
+    meta:
+      blockchain: ethereum
+      project: cryptopunks
+      contributors: [cat]
+    config:
+      tags: ['ethereum', 'cryptopunks', 'bids']
+    description: > 
+        CryptoPunks currently open bids
+    columns:
+      - name: bidder
+        description: "Wallet that placed bid"
+      - name: punk_id
+        description: "CryptoPunk ID #"
+        tests:
+          - unique
+      - name: bid_amount_eth
+        description: "Bid amount (ETH)"
+      - name: bid_amount_current_usd
+        description: "Bid amount converted to USD at current price"
+      - name: evt_block_time
+        description: "Time bid was placed"
+      - name: evt_block_number
+        description: "Block number"
+      - name: evt_index
+        description: "Event index"
+      - name: evt_tx_hash
+        description: "Event tx hash"
+
+  - name: cryptopunks_ethereum_punk_offer_events
+    meta:
+      blockchain: ethereum
+      project: cryptopunks
+      contributors: [cat]
+    config:
+      tags: ['ethereum', 'cryptopunks', 'offers']
+    description: > 
+        All CryptoPunks offer events
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - evt_block_time_week
+            - evt_tx_hash
+            - evt_index
+    columns:
+      - name: event_type
+        description: "Offer entered or withdrawn"
+      - name: punk_id
+        description: "Punk ID #"    
+      - name: from
+        description: "Wallet that initiated transaction"
+      - name: to
+        description: "If offered to specific address, otherwise null"
+      - name: eth_amount
+        description: "ETH amount of offer"  
+      - name: usd_amount
+        description: "USD amount at time of listing"     
+      - name: evt_block_time
+        description: "Time of transfer"
+      - name: evt_block_time_week
+        description: "Week of transfer"
+      - name: evt_block_number
+        description: "Block number of transfer"
+      - name: evt_index
+        description: "Index of transfer"   
+      - name: evt_tx_hash
+        description: "Transfer transaction hash"
+
+  - name: cryptopunks_ethereum_all_events
+    meta:
+      blockchain: ethereum
+      project: cryptopunks
+      contributors: [cat]
+    config:
+      tags: ['ethereum', 'cryptopunks']
+    description: > 
+        All CryptoPunks events
+    columns:
+      - name: evt_block_time
+        description: "Time of event"
+      - name: punk_id
+        description: "Punk ID #"    
+      - name: event_type
+        description: "Type of event"
+      - name: sale_type
+        description: "For sale events - bid accepted or regular sale"
+      - name: from
+        description: "Wallet that initiated transaction"
+      - name: to
+        description: "If transaction to another address"
+      - name: eth_amount
+        description: "ETH amount"   
+      - name: usd_amount
+        description: "USD amount at time of event"    
+      - name: evt_block_number
+        description: "Block number of event"
+      - name: evt_tx_hash
+        description: "Event transaction hash"

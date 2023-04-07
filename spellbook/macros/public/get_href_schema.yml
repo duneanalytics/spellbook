@@ -1,0 +1,5 @@
+version: 2
+
+macros:
+  - name: get_href
+    description: "Converts a link and text to the clickable href link"

@@ -1,0 +1,188 @@
+version: 2
+
+models:
+  - name: ironbank_ethereum_itokens
+    meta:
+      blockchain: ethereum
+      sector: lending
+      project: ironbank
+      contributors: michael
+    config:
+      tags: ['ethereum','ironbank','view']
+    description: >
+        IronBank itokens on Ethereum
+    columns:
+      - &symbol
+        name: symbol
+        description: "The symbol of the itoken"
+        tests:
+          - not_null
+      - &contract_address
+        name: contract_address
+        description: "The contract address of the itoken"
+        tests:
+          - not_null
+      - &decimals
+        name: decimals
+        description: "The decimals of the itoken"
+        tests:
+          - not_null
+      - &underlying_token_address
+        name: underlying_token_address
+        description: "The underlying address of the itoken"
+        tests:
+          - not_null
+      - &underlying_decimals
+        name: underlying_decimals
+        description: "The underlying decimals of the itoken"
+        tests:
+          - not_null
+      - &underlying_symbol
+        name: underlying_symbol
+        description: "The underlying symbol of the itoken"
+        tests:
+          - not_null
+  - name: ironbank_ethereum_borrow
+    meta:
+      blockchain: ethereum
+      sector: lending
+      project: ironbank
+      contributors: michael
+    config:
+      tags: ['ethereum','ironbank','view','borrow']
+    description: "Borrow data on ethereum"
+    columns:
+      - &project
+        name: project
+        description: "Project name"
+      - &version
+        name: version
+        description: "Protocol version"
+      - &block_number
+        name: block_number
+        description: "Block number in which the transaction was executed"
+      - &block_time
+        name: block_time
+        description: "UTC event block time"
+      - &tx_hash
+        name: tx_hash
+        description: "Unique transaction hash value tied to each transaction"
+      - &index
+        name: index
+        description: ""
+      - *contract_address
+      - &borrower
+        name: borrower
+        description: "The account which borrowed the asset"
+      - &underlying_address
+        name: underlying_address
+        description: "The address of Underlying token"
+      - &borrow_amount
+        name: borrow_amount
+        description: "The amount which was borrowed"
+      - &borrow_usd
+        name: borrow_usd
+        description: "The usd amount which was borrowed"
+  - name: ironbank_ethereum_mint
+    meta:
+      blockchain: ethereum
+      sector: lending
+      project: ironbank
+      contributors: michael
+    config:
+      tags: ['ethereum','ironbank','view','mint']
+    description: "Mint data on ethereum"
+    columns:
+      - *block_number
+      - *block_time
+      - *tx_hash
+      - *index
+      - *contract_address
+      - &minter
+        name: minter
+        description: "The account which minted the asset"
+      - *symbol
+      - *underlying_symbol
+      - *underlying_address
+      - &mint_amount
+        name: mint_amount
+        description: "The amount which was minted"
+      - &mint_usd
+        name: mint_usd
+        description: "The usd amount which was minted"
+  - name: ironbank_ethereum_repay
+    meta:
+      blockchain: ethereum
+      sector: lending
+      project: ironbank
+      contributors: michael
+    config:
+      tags: ['ethereum','ironbank','view','repay']
+    description: "Repay data on ethereum"
+    columns:
+      - *block_number
+      - *block_time
+      - *tx_hash
+      - *index
+      - *contract_address
+      - *borrower
+      - *symbol
+      - *underlying_symbol
+      - *underlying_address
+      - &repay_amount
+        name: repay_amount
+        description: "The amount which was repaid"
+      - &repay_usd
+        name: repay_usd
+        description: "The usd amount which was repaid"
+  - name: ironbank_ethereum_redeem
+    meta:
+      blockchain: ethereum
+      sector: lending
+      project: ironbank
+      contributors: michael
+    config:
+      tags: ['ethereum','ironbank','view','redeem underlying']
+    description: "Redeem data on ethereum"
+    columns:
+      - *block_number
+      - *block_time
+      - *tx_hash
+      - *index
+      - *contract_address
+      - &redeemer
+        name: redeemer
+        description: "The account which redeemed the asset"
+      - *symbol
+      - *underlying_symbol
+      - *underlying_address
+      - &redeem_amount
+        name: redeem_amount
+        description: "The amount which was redeemed"
+      - &redeem_usd
+        name: redeem_usd
+        description: "The usd amount which was redeemed"
+  - name: ironbank_ethereum_liquidation
+    meta:
+      blockchain: ethereum
+      sector: lending
+      project: ironbank
+      contributors: michael
+    config:
+      tags: ['ethereum','ironbank','view','liquidation']
+    description: "Liquidation data on ethereum"
+    columns:
+      - *block_number
+      - *block_time
+      - *tx_hash
+      - *index
+      - *contract_address
+      - *borrower
+      - *symbol
+      - *underlying_symbol
+      - *underlying_address
+      - &collateral_address
+        name: collateral_address
+        description: "The address of collateral token"
+      - *repay_amount
+      - *repay_usd

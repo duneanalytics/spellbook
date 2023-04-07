@@ -1,0 +1,52 @@
+version: 2
+
+sources:
+  - name: zonic_optimism
+    database: delta_prod
+    freshness:
+      warn_after: {count: 24, period: hour}
+    tables:
+      - name: ZonicMarketplace_evt_ZonicBasicOrderFulfilled
+        loaded_at_field: evt_block_time
+        description: "Events emitted from BasicOrderFulfilled."
+        columns:
+          - name: buyer
+            description: "Buyer wallet address."
+
+          - name: contract_address
+            description: "Contract address."
+
+          - name: creatorFee
+            description: "Creator fee."
+
+          - name: currency
+            description: "Currency address."
+
+          - name: evt_block_number
+            description: "Block number"
+
+          - name: evt_block_time
+            description: "Block time"
+          - name: evt_index
+            description: "Event index."
+
+          - name: evt_tx_hash
+            description: "Transaction hash."
+
+          - name: identifier
+            description: "Token id."
+
+          - name: marketplaceFee
+            description: "Marketplace fee."
+
+          - name: offerer
+            description: "The address making the offer."
+
+          - name: saleId
+            description: "Sale id."
+
+          - name: token
+            description: "Token address."
+
+          - name: totalPrice
+            description: "Total price."

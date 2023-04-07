@@ -1,0 +1,75 @@
+version: 2
+
+sources:
+  - name: gitcoin_ethereum
+    database: delta_prod
+    description: "Ethereum decoded tables related to Gitcoin contract"
+    freshness:
+      warn_after: {count: 12, period: hour}
+    tables:
+      - name: GovernorAlpha_evt_VoteCast
+        loaded_at_field: evt_block_time
+        columns:
+          - &contract_address
+            name: contract_address
+            description: "DAO governor contract address"
+          - &evt_block_number
+            name: evt_block_number
+          - &evt_block_time
+            name: evt_block_time
+            description: "UTC event block time of each DAO vote"
+          - &evt_index
+            name: evt_index
+          - &evt_tx_hash
+            name: evt_tx_hash
+            description: "Unique transaction hash value tied to each vote on the DAO"
+          - name: proposalId
+          - name: reason
+          - name: voter
+          - name: votes
+      - name: GovernorAlpha_evt_ProposalCreated
+        loaded_at_field: evt_block_time
+        columns:
+          - *contract_address
+          - *evt_block_number
+          - *evt_block_time
+          - *evt_index
+          - *evt_tx_hash
+          - name: calldatas
+          - name: description
+          - name: endBlock
+          - &id
+            name: id
+          - name: proposer
+          - name: signatures
+          - name: startBlock
+          - name: targets
+          - name: values
+      - name: GovernorAlpha_evt_ProposalCanceled
+        loaded_at_field: evt_block_time
+        columns:
+          - *contract_address
+          - *evt_block_number
+          - *evt_block_time
+          - *evt_index
+          - *evt_tx_hash
+          - *id
+      - name: GovernorAlpha_evt_ProposalExecuted
+        loaded_at_field: evt_block_time
+        columns:
+          - *contract_address
+          - *evt_block_number
+          - *evt_block_time
+          - *evt_index
+          - *evt_tx_hash
+          - *id
+      - name: GovernorAlpha_evt_ProposalQueued
+        loaded_at_field: evt_block_time
+        columns:
+          - *contract_address
+          - name: eta
+          - *evt_block_number
+          - *evt_block_time
+          - *evt_index
+          - *evt_tx_hash
+          - *id

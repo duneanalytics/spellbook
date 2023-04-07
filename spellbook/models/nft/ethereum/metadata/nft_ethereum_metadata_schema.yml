@@ -1,0 +1,448 @@
+version: 2
+
+models:
+  - name: nft_ethereum_metadata_ringers
+    meta:
+      blockchain: ethereum
+      project: nft
+      contributors: cat
+    config:
+      tags: [‘ethereum’,’nft’,’metadata’]
+    description: >
+        Metadata for Ringers by Dmitri Cherniak - Art Blocks Curated. Data provided by Dmmitri - spreadsheet shared in Art Blocks Discord
+    columns:
+      - name: token_id
+        description: "Token ID"
+        tests:
+          - unique
+      - &token_id_short
+        name: token_id_short
+        description: “Token ID as shown in collection (i.e. Ringer number excluding Art Blocks project code)”
+      - name: background
+        description: “Ringer background color”
+      - name: body
+        description: “Ringer body color”
+      - &extra_color
+        name: extra_color
+        description: “Extra color featured (if included)”
+      - &peg_layout
+        name: peg_layout
+        description: “Peg layout (different grid types, tiled layouts, and recursive)”
+      - &peg_scaling
+        name: peg_scaling
+        description: “Size of pegs”
+      - &peg_style
+        name: peg_style
+        description: “Peg style”
+      - &size 
+        name: size
+        description: “Size of Ringer”
+      - &wrap_orientation
+        name: wrap_orientation
+        description: “Wrap orientation”
+      - &wrap_style
+        name: wrap_style
+        description: “Wrap style (weave or loop)”
+      - &peg_count
+        name: peg_count 
+        description: “Number of pegs”
+      - &pegs_used 
+        name: pegs_used
+        description: “Number of pegs used”
+      - &padded_pegs
+        name: padded_pegs
+        description: “Padded pegs?”
+      - &dark_mode
+        name: dark_mode
+        description: “Dark mode?”
+
+  - name: nft_ethereum_metadata_chromie_squiggle
+    meta:
+      blockchain: ethereum
+      project: nft
+      contributors: cat
+    config:
+      tags: [‘ethereum’,’nft’,’metadata’]
+    description: >
+        Metadata for Chromie Squiggle by Snowfro - Art Blocks Curated
+    columns:
+      - name: token_id
+        description: "Token ID"
+        tests:
+          - unique
+      - &color_direction 
+        name: color_direction
+        description: "Color direction"
+      - &color_spread
+        name: color_spread
+        description: "Color spread"
+      - &end_color
+        name: end_color
+        description: "End color"
+      - &height
+        name: height
+        description: "Height"
+      - &segments
+        name: segments
+        description: "Segments"
+      - &spectrum
+        name: spectrum
+        description: "Spectrum"
+      - &start_color
+        name: start_color
+        description: "Start color"
+      - &steps_between
+        name: steps_between
+        description: "Steps between"
+      - &squiggle_type
+        name: squiggle_type
+        description: "Squiggle type"
+      - &day_zero
+        name: day_zero
+        description: "Day Zero?"
+      - &harmonic
+        name: harmonic
+        description: "Harmoninc?"
+
+  - name: nft_ethereum_metadata_terraforms
+    meta:
+      blockchain: ethereum
+      project: nft
+      contributors: cat
+    config:
+      tags: [‘ethereum’,’nft’,’metadata’]
+    description: >
+        Metadata for Terraforms by Mathcastles
+    columns:
+      - name: token_id
+        description: "Token ID"
+        tests:
+          - unique
+      - &mode
+        name: mode
+        description: "Mode - Origin"
+      - &chroma
+        name: chroma
+        description: "Chroma"        
+      - &biome
+        name: biome
+        description: "Biome"        
+      - &terraform_zone
+        name: terraform_zone
+        description: "Zone"        
+      - &x_coordinate
+        name: x_coordinate
+        description: "X Coordinate"     
+      - &y_coordinate
+        name: y_coordinate
+        description: "Y Coordinate"   
+      - &terraform_level
+        name: terraform_level
+        description: "Level"    
+      - &question_marks
+        name: question_marks
+        description: "??? Value"    
+      - &x_seed
+        name: x_seed
+        description: "X Seed"    
+      - &y_seed
+        name: y_seed
+        description: "Y Seed"    
+      - &lith0
+        name: lith0
+        description: "Lith0"    
+      - &spine
+        name: spine
+        description: "Spine parcels"    
+
+  - name: nft_ethereum_metadata_cryptodickbutts
+    meta:
+      blockchain: ethereum
+      project: nft
+      contributors: cat
+    config:
+      tags: [‘ethereum’,’nft’,’metadata’]
+    description: >
+        Metadata for Cryptodickbutts S3 collection 
+    columns:
+      - name: token_id
+        description: "Token ID"
+        tests:
+          - unique
+      - name: background
+        description: "background"
+      - name: body
+        description: "body"
+      - &butt
+        name: butt
+        description: "butt"
+      - &dick
+        name: dick
+        description: "dick"
+      - &eyes
+        name: eyes
+        description: "eyes"
+      - &hand
+        name: hand
+        description: "hand"
+      - &hat
+        name: hat
+        description: "hat"
+      - &legendary
+        name: legendary
+        description: "legendary"
+      - &mouth
+        name: mouth
+        description: "mouth"
+      - &nose
+        name: nose
+        description: "nose"
+      - &shoes
+        name: shoes
+        description: "shoes"
+      - &skin
+        name: skin
+        description: "skin"
+      - &special
+        name: special
+        description: "special"
+      - &trait_count
+        name: trait_count
+        description: "trait count"
+
+  - name: nft_ethereum_metadata_art_blocks_collections
+    meta:
+      blockchain: ethereum
+      sector: nft
+      contributors: cat
+    config:
+      tags: ['nft', 'ethereum', 'art_blocks']
+    description: >
+        All art blocks collections and details (project id, project type, name, artist)
+    columns:
+      - name: contract_address
+        description: "Collection contract address"
+      - name: project_id
+        description: "Project ID. Can use to join with token_ids on contract address"
+      - name: project_id_base_value
+        description: "Value used to join on other tables"
+      - name: collection_name
+        description: "Name of collection"
+      - name: artist_name
+        description: "Name of artist"
+      - name: art_blocks_project_type
+        description: "Curated, Playground, Factory"
+      - name: art_blocks_curated_season
+        description: "If Curated collection, season it was launched in. Else N/A"
+      - name: art_collection_unique_id
+        description: "Unique identifier - contract address and project id"
+        tests:
+          - unique
+
+  - name: nft_ethereum_metadata_bright_moments
+    meta:
+      blockchain: ethereum
+      sector: nft
+      contributors: cat
+    config:
+      tags: ['nft', 'ethereum', 'bright_moments', 'metadata']
+    description: >
+        Details for collections created on MOMENTS contract (project id, city, name, artist)
+    columns:
+      - name: contract_address
+        description: "Collection contract address"
+      - name: project_id
+        description: "Project ID. Can use to join with token_ids on contract address"
+      - name: project_id_base_value
+        description: "Value used to join on other tables"
+      - name: collection_name
+        description: "Name of collection"
+      - name: artist_name
+        description: "Name of artist"
+      - name: bright_moments_city
+        description: "City collection launched in, if applicable"
+      - name: art_collection_unique_id
+        description: "Unique identifier - contract address and project id"
+        tests:
+          - unique
+
+  - name: nft_ethereum_metadata_proof_grails_i
+    meta:
+      blockchain: ethereum
+      sector: nft
+      contributors: cat
+    config:
+      tags: ['nft', 'ethereum', 'proof_collective', 'proof_grails', 'metadata']
+    description: >
+        Details for PROOF Grails I contract (token id, edition name, artist)
+    columns:
+      - name: contract_address
+        description: "Collection contract address"
+      - name: project_id
+        description: "Project ID. Can use to join with token_ids on contract address"
+      - name: project_id_base_value
+        description: "Value used to join on other tables"
+      - name: collection_name
+        description: "Name of edition"
+      - name: artist_name
+        description: "Name of artist"
+      - name: grails_season
+        description: "PROOF Grails Season"
+      - name: grail_id 
+        description: "Grail ID pre-reveal"
+      - name: art_collection_unique_id
+        description: "Unique identifier - contract address and project id"
+        tests:
+          - unique
+
+  - name: nft_ethereum_metadata_proof_grails_ii
+    meta:
+      blockchain: ethereum
+      sector: nft
+      contributors: cat
+    config:
+      tags: ['nft', 'ethereum', 'proof_collective', 'proof_grails', 'metadata']
+    description: >
+        Details for PROOF Grails II contract (token id, edition name, artist)
+    columns:
+      - name: contract_address
+        description: "Collection contract address"
+      - name: project_id
+        description: "Project ID. Can use to join with token_ids on contract address"
+      - name: project_id_base_value
+        description: "Value used to join on other tables"
+      - name: collection_name
+        description: "Name of edition"
+      - name: artist_name
+        description: "Name of artist"
+      - name: grails_season
+        description: "PROOF Grails Season"
+      - name: grail_id 
+        description: "Grail ID pre-reveal"
+      - name: art_collection_unique_id
+        description: "Unique identifier - contract address and project id"
+        tests:
+          - unique
+        
+  - name: nft_ethereum_metadata_braindrops
+    meta:
+      blockchain: ethereum
+      sector: nft
+      contributors: cat
+    config:
+      tags: ['nft', 'ethereum', 'braindrops', 'metadata']
+    description: >
+        Details for BrainDrops collections (project id, collection name, artist)
+    columns:
+      - name: contract_address
+        description: "Collection contract address"
+      - name: project_id
+        description: "Project ID -- can be used to join with token IDs"
+      - name: project_id_base_value
+        description: "Value used to join on other tables"
+      - name: collection_name
+        description: "Name of collection"
+      - name: artist_name
+        description: "Name of artist"
+      - name: art_collection_unique_id
+        description: "Unique identifier - contract address and project id"
+        tests:
+          - unique
+
+  - name: nft_ethereum_metadata_verse
+    meta:
+      blockchain: ethereum
+      sector: nft
+      contributors: cat
+    config:
+      tags: ['nft', 'ethereum', 'verse', 'metadata']
+    description: >
+        Details for Verse collections (project id, collection name, artist)
+    columns:
+      - name: contract_address
+        description: "Collection contract address"
+      - name: project_id
+        description: "Project ID -- can be used to join with token IDs"
+      - name: project_id_base_value
+        description: "Value used to join on other tables"
+      - name: collection_name
+        description: "Name of collection"
+      - name: artist_name
+        description: "Name of artist"
+      - name: art_collection_unique_id
+        description: "Unique identifier - contract address and project id"
+        tests:
+          - unique
+
+  - name: nft_ethereum_metadata_fellowship_gallery
+    meta:
+      blockchain: ethereum
+      sector: nft
+      contributors: cat
+    config:
+      tags: ['nft', 'ethereum', 'fellowship', 'metadata']
+    description: >
+        Details for collections minted with Fellowship Gallery (collection address, collection name, artist)
+    columns:
+      - name: contract_address
+        description: "Collection contract address"
+        tests:
+          - unique        
+      - name: collection_name
+        description: "Name of collection"
+      - name: artist_name
+        description: "Name of artist"
+      - name: platform
+        description: "Name of platform minted on"
+      - name: website
+        description: "Link to collection"
+          
+  - name: nft_ethereum_metadata_mirage_gallery_curated
+    meta:
+      blockchain: ethereum
+      sector: nft
+      contributors: cat
+    config:
+      tags: ['nft', 'ethereum', 'mirage gallery curated', 'metadata']
+    description: >
+        Details for Mirage Gallery Curated collections (project id, collection name, artist)
+    columns:
+      - name: contract_address
+        description: "Collection contract address"
+      - name: project_id
+        description: "Project ID -- can be used to join with token IDs"
+      - name: project_id_base_value
+        description: "Value used to join on other tables"
+      - name: collection_name
+        description: "Mirage Gallery Curated Drop"
+      - name: artist_name
+        description: "Name of artist"
+      - name: mirage_project_name
+        description: "Name of project"
+      - name: art_collection_unique_id
+        description: "Unique identifier - contract address and project id"
+        tests:
+          - unique
+
+  - name: nft_ethereum_metadata_art_platform_collections
+    meta:
+      blockchain: ethereum
+      sector: nft
+      contributors: cat
+    config:
+      tags: ['nft', 'ethereum', 'metadata']
+    description: >
+        Details for Mirage Gallery Curated collections (project id, collection name, artist)
+    columns:
+      - name: contract_address
+        description: "Collection contract address"
+      - name: project_id
+        description: "Project ID -- can be used to join with token IDs"
+      - name: project_id_base_value
+        description: "Value used to join on other tables"
+      - name: collection_name
+        description: "Mirage Gallery Curated Drop"
+      - name: artist_name
+        description: "Name of artist"
+      - name: art_collection_unique_id
+        description: "Unique identifier - contract address and project id"

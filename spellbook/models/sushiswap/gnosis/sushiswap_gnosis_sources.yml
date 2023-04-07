@@ -1,0 +1,49 @@
+version: 2
+
+sources:
+  - name: sushiswap_gnosis
+    database: delta_prod
+    description: "Gnosis decoded tables related to Sushiswap contract"
+    freshness:
+      warn_after: {count: 12, period: hour}
+    tables:
+      - name: UniswapV2Pair_evt_Swap
+        loaded_at_field: evt_block_time
+        description: "Sushiswap swap events table on Gnosis chain"
+        columns:
+          - name: amount0In
+          - name: amount0Out
+          - name: amount1In
+          - name: amount1Out
+          - &contract_address
+            name: contract_address
+            description: "Gnosis address for the liquidity pool used in transaction"
+          - &evt_block_time
+            name: evt_block_time
+            description: "Timestamp for block event time in UTC"
+          - &evt_index
+            name: evt_index
+            description: "Index value of the transaction"
+          - &evt_tx_hash
+            name: evt_tx_hash
+            description: "Primary key of the transaction"
+            tests:
+              - not_null
+          - &evt_block_number
+            name: evt_block_number
+            description: "Block number which processed the unique transaction hash"
+          - name: sender
+          - name: to
+      - name: UniswapV2Factory_evt_PairCreated
+        loaded_at_field: evt_block_time
+        description: "Sushiswap pair created events table"
+        columns:
+          - name: _0
+          - *contract_address
+          - *evt_block_number
+          - *evt_block_time
+          - *evt_index
+          - *evt_tx_hash
+          - name: pair
+          - name: token0
+          - name: token1

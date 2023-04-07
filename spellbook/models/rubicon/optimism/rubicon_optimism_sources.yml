@@ -1,0 +1,32 @@
+version: 2
+
+sources:
+  - name: rubicon_optimism
+    database: delta_prod
+    description: "Optimism decoded tables related to rubicon's implementation of balancer\
+      \ contracts"
+    freshness:
+      warn_after: {count: 12, period: hour}
+    tables:
+      - name: RubiconMarket_evt_LogTake
+        loaded_at_field: evt_block_time
+        description: "" # to-do
+        columns:
+          - name: buy_gem
+          - name: contract_address
+          - name: evt_block_number
+            description: "Block number which processed the unique transaction hash"
+          - name: evt_block_time
+            description: "Timestamp for block event time in UTC"
+          - name: evt_index
+            description: "Index value of the transaction"
+          - name: evt_tx_hash
+            description: "Primary key of the transaction"
+          - name: give_amt
+          - name: id
+          - name: maker
+          - name: pair
+          - name: pay_gem
+          - name: take_amt
+          - name: taker
+          - name: timestamp

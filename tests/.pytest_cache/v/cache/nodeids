@@ -1,0 +1,14 @@
+[
+  "unit_tests.py::test_decimals_for_prices",
+  "unit_tests.py::test_example_aggregate_fns",
+  "unit_tests.py::test_example_alias",
+  "unit_tests.py::test_example_array_fns",
+  "unit_tests.py::test_example_cast_as_string",
+  "unit_tests.py::test_example_interval",
+  "unit_tests.py::test_example_json_object",
+  "unit_tests.py::test_example_percentiles",
+  "unit_tests.py::test_example_reserved_keywords",
+  "unit_tests.py::test_example_substrings",
+  "unit_tests.py::test_example_true_false",
+  "unit_tests.py::test_example_unnest"
+]
