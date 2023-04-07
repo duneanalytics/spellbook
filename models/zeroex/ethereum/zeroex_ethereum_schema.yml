@@ -233,6 +233,7 @@ models:
             - block_time
             - tx_hash
             - evt_index
+            - amount_usd
       - check_seed:
           seed_file: ref('zeroex_ethereum_fills_sample')
           match_columns:
