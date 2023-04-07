@@ -1,0 +1,27 @@
+version: 2
+
+sources:
+  - name: link3_ethereum
+    freshness:
+      warn_after: { count: 12, period: hour }
+    tables:
+      - name: ProfileNFT_evt_CreateProfile
+        loaded_at_field: evt_block_time
+      - name: ProfileNFT_evt_RegisterEssence
+        loaded_at_field: evt_block_time
+      - name: ProfileNFT_evt_CollectEssence
+        loaded_at_field: evt_block_time
+      - name: ProfileNFT_evt_Subscribe
+        loaded_at_field: evt_block_time
+  - name: link3_profile_bnb
+    freshness:
+      warn_after: { count: 12, period: hour }
+    tables:
+      - name: ProfileNFT_evt_CreateProfile
+        loaded_at_field: evt_block_time
+      - name: ProfileNFT_evt_RegisterEssence
+        loaded_at_field: evt_block_time
+      - name: ProfileNFT_evt_CollectEssence
+        loaded_at_field: evt_block_time
+      - name: ProfileNFT_evt_Subscribe
+        loaded_at_field: evt_block_time

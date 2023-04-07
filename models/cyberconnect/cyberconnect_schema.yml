@@ -1,0 +1,120 @@
+version: 2
+
+models:
+  - name: cyberconnect_events
+    meta:
+      project: cyberconnect
+      contributors: [NazihKalo]
+    config:
+      tags: ['ethereum','bnb', 'cyberconnect','v1','events']
+    description: >
+        CyberConnect v1 events on BNB & Ethereum
+    columns:
+      - &blockchain
+        name: blockchain
+        description: "The blockchain name" 
+      - &project
+        name: project
+        description: "The project name" 
+      - &action
+        name: action
+        description: "The type of action that was performed (collect, register, subscribe, create)" 
+      - &name
+        name: name
+        description: "Name of the event" 
+      - &contract_address
+        name: contract_address
+        description: "contract_address" 
+      - &evt_block_time
+        name: evt_block_time
+        description: "UTC event block time"
+      - &block_date
+        name: block_date
+        description: "block_date" 
+      - &evt_block_number
+        name: evt_block_number
+        description: "evt_block_number" 
+      - &evt_tx_hash
+        name: evt_tx_hash
+        description: "evt_tx_hash" 
+      - &evt_type
+        name: evt_type
+        description: "Event type (Trade, Mint, Burn)"
+      - &buyer
+        name: buyer
+        description: "The minter/collector of the NFT" 
+      - &seller
+        name: seller
+        description: "The seller/registerer of the NFT"
+      - &handle
+        name: handle
+        description: "Handle of the seller / registerer profile" 
+      - &profile_id
+        name: profile_id
+        description: "Profile ID of the seller / registerer profile, otherwise known as the NFT token ID" 
+      - &content_id
+        name: content_id
+        description: "Essence ID of the content. This ID increments for each new piece of content from the same profile" 
+      - &content_uri
+        name: content_uri
+        description: "URI of the content" 
+      - &unique_event_id
+        name: unique_event_id
+        description: "Unique event ID which is a concatenation of the chain, project, event type, event hash, event index" 
+        tests:
+          - unique
+  - name: cyberconnect_ethereum_events
+    meta:
+      blockchain: ethereum
+      project: cyberconnect
+      contributors: [NazihKalo]
+    config:
+      tags: ['ethereum', 'cyberconnect','v1','events']
+    description: >
+        CyberConnect v1 events on ethereum
+    columns:
+      - *blockchain
+      - *project
+      - *action
+      - *name
+      - *contract_address
+      - *evt_block_time
+      - *block_date
+      - *evt_block_number
+      - *evt_tx_hash
+      - *evt_type
+      - *buyer
+      - *seller
+      - *handle
+      - *profile_id
+      - *content_id
+      - *content_uri
+      - *unique_event_id
+  - name: cyberconnect_bnb_events
+    meta:
+      blockchain: bnb
+      project: cyberconnect
+      contributors: [NazihKalo]
+    config:
+      tags: ['bnb', 'cyberconnect','v1','events']
+    description: >
+        CyberConnect v1 events on bnb
+    columns:
+      - *blockchain
+      - *project
+      - *action
+      - *name
+      - *contract_address
+      - *evt_block_time
+      - *block_date
+      - *evt_block_number
+      - *evt_tx_hash
+      - *evt_type
+      - *buyer
+      - *seller
+      - *handle
+      - *profile_id
+      - *content_id
+      - *content_uri
+      - *unique_event_id
+      
