@@ -297,6 +297,7 @@ WITH raw_token_list AS (
     ,('0x8B21e9b7dAF2c4325bf3D18c1BeB79A347fE902A', 'COLLAB', 18, 'underlying')
     ,('0xc96f4F893286137aC17e07Ae7F217fFca5db3AB6', 'NFTE', 18, 'underlying')
     ,('0xd652776dE7Ad802be5EC7beBfafdA37600222B48', 'SLM', 18, 'underlying')
+    ,('0xaddb6a0412de1ba0f936dcaeb8aaa24578dcf3b2', 'cbETH', 18, 'underlying')
 
     ) AS temp_table (contract_address, symbol, decimals, token_type)
 )

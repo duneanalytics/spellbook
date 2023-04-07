@@ -113,5 +113,6 @@ FROM
     ("bob-bob", "optimism", "BOB", "0xb0b195aefa3650a6908f15cdac7d92f8a5791b0b", 18),
     ("bomb-fbomb","optimism","fBOMB","0x74ccbe53F77b08632ce0CB91D3A545bF6B8E0979",18),
     ("busd-binance-usd","optimism","BUSD","0x9c9e5fd8bbc25984b178fdce6117defa39d2db39",18)
+    ("cbeth-coinbase-wrapped-staked-eth","optimism","cbETH","0xaddb6a0412de1ba0f936dcaeb8aaa24578dcf3b2",18)
     
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)
