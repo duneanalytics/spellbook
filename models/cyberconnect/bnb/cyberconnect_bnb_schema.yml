@@ -1,14 +1,15 @@
 version: 2
 
 models:
-  - name: cyberconnect_events
+  - name: cyberconnect_bnb_events
     meta:
+      blockchain: bnb
       project: cyberconnect
       contributors: [NazihKalo]
     config:
-      tags: ['ethereum','bnb', 'cyberconnect','v1','events']
+      tags: ['bnb', 'cyberconnect','v1','events']
     description: >
-        CyberConnect v1 events on BNB & Ethereum
+        CyberConnect v1 events on bnb
     columns:
       - &blockchain
         name: blockchain
@@ -63,3 +64,4 @@ models:
         description: "Unique event ID which is a concatenation of the chain, project, event type, event hash, event index" 
         tests:
           - unique
+  
