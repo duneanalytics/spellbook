@@ -290,6 +290,7 @@ WITH
             SELECT
                 "timestamp" as block_time,
                 protocol_version as version,
+                date_trunc('day', "timestamp") as block_date,
                 transaction_hash as tx_hash,
                 evt_index,
                 maker_address as maker,

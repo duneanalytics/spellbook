@@ -353,6 +353,7 @@ WITH
     )
             SELECT
                 "timestamp" as block_time,
+                date_trunc('day', "timestamp") as block_date,
                 protocol_version as version,
                 transaction_hash as tx_hash,
                 evt_index,
