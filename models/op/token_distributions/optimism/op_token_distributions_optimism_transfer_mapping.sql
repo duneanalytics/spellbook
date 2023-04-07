@@ -46,8 +46,7 @@ WITH all_labels AS (
                     ) 
                     AS from_type, --override if to an incentive tx address
             COALESCE(
-                    CASE WHEN tf.to = dc.address THEN lbl_from_util_tx.address_descriptor ELSE NULL END --if utility, mark as internal
-                    ,lbl_to.address_descriptor
+                    lbl_to.address_descriptor
                     ,'Other'
                     )
                     AS to_type,
@@ -58,22 +57,17 @@ WITH all_labels AS (
                     ) 
                     AS from_label, --override if to an incentive tx address
             COALESCE(
-                    /*txl.tx_type
-                    ,*/CASE WHEN tf.to = dc.address THEN lbl_from_util_tx.label ELSE NULL END --if utility, mark as internal
-                    ,lbl_to.label
+                    lbl_to.label
                     , 'Other') 
                     AS to_label,
                     
             COALESCE(
-                    dc.project_name,--if we have a name override, like airdrop 2
                     lbl_from_util_tx.project_name
                     ,lbl_from.project_name
                     ) 
                     AS from_name, --override if to an incentive tx address
             COALESCE(
-                    /*txl.tx_name
-                    ,*/CASE WHEN tf.to = dc.address THEN lbl_from_util_tx.project_name ELSE NULL END --if utility, mark as internal
-                    ,lbl_to.project_name
+                    lbl_to.project_name
                     ,'Other'
                     ) AS to_name,
                     
@@ -83,7 +77,7 @@ WITH all_labels AS (
                 substring(tx.data,1,10) AS tx_method --bytearray_substring(tx.data, 1, 4) AS tx_method
                 
             FROM {{source('erc20_optimism','evt_transfer') }} tf
-            -- We want either the send or receiver to be the foundation or a project
+            -- We want either the send or receiver to be the foundation or a project (also includes utility transfers)
             INNER JOIN all_labels lbl_from
                 ON lbl_from.address = tf.`from`
             -- if the recipient is in this list to, then we track it
@@ -122,14 +116,29 @@ WITH all_labels AS (
             AND tf.evt_block_time >= cast('{{op_token_launch_date}}' as date)
             {% endif %}
             
-            AND 1= ( --exclude CEX to CEX or CEX withdrawals
+            -- For CEXs, exclude CEX to CEX or CEX withdrawals
+            AND 1= ( 
                 CASE
-                    WHEN lbl_from.label != 'CEX' THEN 1
+                    WHEN lbl_from.label != 'CEX' THEN 1 --when not a CEX, keep it
                     WHEN lbl_from.label = 'CEX' AND lbl_to.label = 'CEX' THEN 0
                     WHEN lbl_from.label = 'CEX' AND lbl_to.label IS NULL THEN 0
                     ELSE 1
                 END
                 )
+            -- for utility contracts, ensure that the tx_from is a project wallet
+            AND 1 = (
+                CASE
+                WHEN dc.address IS NULL THEN 1 -- when not a utility transfer, keep it
+                WHEN dc.address IS NOT NULL
+                    AND (
+                        tx.`from` IN (SELECT address FROM all_labels WHERE label != 'Utility')
+                        OR
+                        tf.`from` IN (SELECT address FROM all_labels WHERE label != 'Utility')
+                     ) THEN 1 --when utility, make sure the transaction or transfer is from a project wallet
+                ELSE 0
+                END
+
+            )
 
             GROUP BY 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17 --get uniques b/c of duplicated receiver addresses
             
@@ -181,25 +190,42 @@ SELECT
     , from_name, to_name
     , op_amount_decimal, tx_method,
 
+    -- Assume 'Other' addresses (i.e. an unknown address) are end users.
     CASE WHEN to_label = 'Other' THEN op_amount_decimal ELSE 0 END AS op_claimed,
     
+    -- When tokens go to a 'Deployed' address, we assume deployed. Or to an end user from an address we don't already know to be deployed.
     CASE WHEN  to_label IN ('Other','Deployed') AND from_label != 'Deployed' THEN op_amount_decimal
          WHEN (from_name != to_name) AND from_label = 'Project' AND to_label = 'Project' THEN op_amount_decimal --handle for distirbutions to other projects (i.e. Uniswap to Gamma)
         ELSE 0 END
     AS op_deployed,
     
+    -- When from the foundation grants wallets to a project, we mark as "op to project"
     CASE WHEN from_label = '{{foundation_label}}' AND from_type = '{{grants_descriptor}}' AND to_label = 'Project' THEN op_amount_decimal
         ELSE 0 END
     AS op_to_project,
     
+    -- Tokens being transferred between projects (i.e. Uniswap to Gamma)
     CASE WHEN from_label = 'Project' AND to_label = 'Project'
             AND from_name != to_name THEN op_amount_decimal
         ELSE 0 END
     AS op_between_projects,
-            
-    CASE WHEN from_label='Deployed' and to_label='Project' AND from_name = to_name THEN op_amount_decimal
+    
+    -- Tokens going from being deployed back to the project
+    CASE
+        WHEN from_label != 'Project' and to_label='Project' AND from_name = to_name THEN op_amount_decimal --Projects Clawback
+        WHEN from_type = 'OP Foundation Airdrops' AND to_label = 'OP Foundation' THEN op_amount_decimal --Airdrop Clawback
         ELSE 0 END
-    AS op_incoming_clawback --Project's deployer back to the OG project wallet
+    AS op_incoming_clawback, --Project's deployer back to the OG project wallet
+
+    -- Tokens going to an intermediate utility contract to be deployed
+    CASE WHEN from_label = 'Project' and to_label= 'Utility' THEN op_amount_decimal
+        ELSE 0 END
+    AS op_to_utility_contract,
+
+    -- Tokens coming from unkown wallets back to the project
+    CASE WHEN from_label = 'Other' and to_label IN ('Project','OP Foundation') THEN op_amount_decimal
+        ELSE 0 END
+    AS op_incoming_other
             
     FROM outgoing_distributions od
 
@@ -226,6 +252,8 @@ SELECT
     , cast(op_to_project as double) as op_to_project
     , cast(op_between_projects as double) as op_between_projects
     , cast(op_incoming_clawback as double) as op_incoming_clawback
+    , cast(op_to_utility_contract as double) AS op_to_utility_contract
+    , cast(op_incoming_other as double) AS op_incoming_other
     --
     , d.to_name AS og_to_name --keep original name in case we want it
     , d.from_name AS og_from_name --keep original name in case we want it
