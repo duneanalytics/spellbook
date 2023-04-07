@@ -427,6 +427,7 @@ FROM (
       ,('0xac789308a29783f507f1f3baacbd43326c5767f4', 'Gamma')
       ,('0xba32a3d407353fc3adaa6f7ec6264df5bca51c4b', 'Arcadia Finance')
       ,('0x280333C41A9302448EbC070eD0300ad2Ed4B8244' ,'Transit Finance')
+      ,('0x8a700FdB6121A57C59736041D9aa21dfd8820660', 'Orbiter Finance')
 
   ) as temp_table (creator_address, contract_project)
 
