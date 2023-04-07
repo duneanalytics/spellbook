@@ -27,18 +27,18 @@ WITH
       ex.contract_address,
       json_extract("order", '$.expiry') AS expiry,
       cast(
-        json_extract("order", '$.taker_address') AS VARCHAR
+        json_extract("order", '$.taker_address') AS VARCHAR(42)
       ) AS taker_address,
       array_distinct(
         cast(
-          json_extract("order", '$.maker_addresses') AS array < VARCHAR >
+          json_extract("order", '$.maker_addresses') AS array < VARCHAR(42) >
         )
       ) AS maker_addresses,
       zip(
         array_distinct(
           flatten(
             cast(
-              json_extract("order", '$.taker_tokens') AS array < array < VARCHAR > >
+              json_extract("order", '$.taker_tokens') AS array < array < VARCHAR(42) > >
             )
           )
         ),
@@ -54,7 +54,7 @@ WITH
         array_distinct(
           flatten(
             cast(
-              json_extract("order", '$.maker_tokens') AS array < array < VARCHAR > >
+              json_extract("order", '$.maker_tokens') AS array < array < VARCHAR(42) > >
             )
           )
         ),
@@ -81,9 +81,9 @@ WITH
   bebop_raw_trades AS (
     SELECT
       concat(
-        cast(cardinality(taker_tokens) as varchar),
+        cast(cardinality(taker_tokens) as VARCHAR(42)),
         '-',
-        cast(cardinality(maker_tokens) as varchar)
+        cast(cardinality(maker_tokens) as VARCHAR(42))
       ) as order_type,
       expiry,
       taker_address,
