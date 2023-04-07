@@ -1,0 +1,6 @@
+{
+  "unit_tests.py::test_example_interval": true,
+  "unit_tests.py::test_example_aggregate_fns": true,
+  "unit_tests.py::test_example_json_object": true,
+  "unit_tests.py::test_example_unnest": true
+}

@@ -1,0 +1,6 @@
+Replace tokens table with a blockchain specific one.
+Example: SELECT decimals FROM prices.tokens -> SELECT decimals FROM tokens_[blockchain].erc20
+SELECT decimals FROM prices.tokens -> SELECT decimals FROM tokens_ethereum.erc20
+If you cannot determine the correct blockchain, use the placeholder one tokens_[blockchain].erc20 and
+add the following inline comment:
+# USER INPUT REQUIRED: blockchain name is unknown, please specify it manually

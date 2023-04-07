@@ -1,0 +1,4 @@
+Error: mismatched input 'WITHIN'. Expecting: '%', ')', '*', '+', ',', '-', '.', '/', 'AND', 'AT', 'FILTER', 'IGNORE', 'OR', 'OVER', 'RESPECT', '[', '||', <predicate>
+and the use of PERCENTILE_CONT,
+Use approx_percentile to calculate percentiles in a group including median.
+ERule: xample: PERCENTILE_CONT(0.5) WITHIN GROUP(ORDER BY x) -> approx_percentile(x, 0.5)
