@@ -14,7 +14,7 @@ from line_mapper import LineMapper
 from prompts import spell_prompt_template
 
 parser = argparse.ArgumentParser(description="SQL translation tool with rules vector db")
-parser.add_argument('model_path', type=str, nargs='?', help="Path to model", default="models/aave/ethereum/aave_ethereum_votes.sql")
+parser.add_argument('model_path', type=str, nargs='?', help="Path to model", default="models/blur/ethereum/blur_ethereum_events.sql.sql")
 args = parser.parse_args()
 
 model_path = args.model_path
@@ -86,10 +86,8 @@ output = "".join(sql)
 with open(model_path, "w") as f:
     f.write(output)
 
-os.chdir("spellbook")
 print("Compiling model")
 subprocess.run("dbt compile", shell=True, stdout=subprocess.PIPE)
-os.chdir("..")
 
 new_explainer, new_line_no, new_snippet = get_query_artifacts(model_path)
 
