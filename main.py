@@ -11,7 +11,7 @@ from line_mapper import LineMapper
 from prompts import spell_prompt_template
 
 parser = argparse.ArgumentParser(description="SQL translation tool with rules vector db")
-parser.add_argument('model_path', type=str, nargs='?', help="Path to model", default="spellbook/models/aave/ethereum/aave_ethereum_votes.sql")
+parser.add_argument('model_path', type=str, nargs='?', help="Path to model", default="models/aave/ethereum/aave_ethereum_votes.sql")
 args = parser.parse_args()
 
 model_path = args.model_path
@@ -32,7 +32,7 @@ def load_chain():
 
 chain = load_chain()
 
-explainer = Explain_n_Executer(model_path=f"spellbook/target/compiled/{model_path}")
+explainer = Explain_n_Executer(model_path=f"target/compiled/{model_path}")
 explainer.explain()
 
 # If NONE exit
@@ -53,7 +53,7 @@ if result['answer'] == "No answer found":
     exit()
 
 line_mapper = LineMapper(spell_path=model_path,
-                         compiled_path=f"spellbook/target/compiled/{model_path}",
+                         compiled_path=f"target/compiled/{model_path}",
                          start=line_no,
                          end=line_no+1)
 spell_line_no = line_mapper.main()

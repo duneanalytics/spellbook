@@ -1,5 +1,0 @@
-version: 2
-
-macros:
-  - name: bytea2numeric_v3
-    description: "Creates the bytea2numeric_v3 function, which converts a hex string to a numeric value and supports up to 64 hex chars"
