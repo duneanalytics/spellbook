@@ -172,8 +172,8 @@ WITH
                     WHEN mp.symbol = 'WETH' THEN (fills.makerTokenFilledAmount / 1e18) * mp.price
                     ELSE COALESCE((fills.makerTokenFilledAmount / (10^mt.decimals))*mp.price,(fills.takerTokenFilledAmount / (10^tt.decimals))*tp.price)
                 END AS volume_usd
-            , fills.protocolFeePaid/ 1e18 AS protocol_fee_paid_eth,
-            fills.contract_address,
+            , fills.protocolFeePaid/ 1e18 AS protocol_fee_paid_eth
+            , fills.contract_address
             , 'limit' as native_order_type
         FROM {{ source('zeroex_ethereum', 'ExchangeProxy_evt_LimitOrderFilled') }} fills
         LEFT JOIN prices.usd tp ON
