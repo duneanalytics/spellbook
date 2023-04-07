@@ -232,12 +232,8 @@ models:
             - taker_token
     columns:
       - *tx_hash
-      - &block_number
-        name: block_number
-        description: "Block number of the transaction"
       - *contract_address
       - *block_time
-      - *block_date
       - *maker
       - *taker
       - *taker_token
@@ -249,12 +245,17 @@ models:
       - *taker_token_amount_raw
       - *maker_token_amount
       - *maker_token_amount_raw
-      - *type
-      - *affiliate_address
-      - *swap_flag
-      - *matcha_limit_order_flag
       - *volume_usd
       - *tx_from
       - *tx_to
       - *evt_index
       - *blockchain
+      - &native_fill_type
+        name: native_fill_type
+        description: "type of native fill - RFQ, limit order, OTC, fill"
+      - &fee_recipient_address
+        name: fee_recipient_address
+        description: "The recipient address of the fee, or the applications that is using 0x API, for receiving fee"
+      - &protocol_fee_paid_eth
+        name: protocol_fee_paid_eth
+        description: "The protocol fee paid in ETH"
