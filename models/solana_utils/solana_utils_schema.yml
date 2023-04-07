@@ -1,0 +1,23 @@
+version: 2
+
+models:
+  - name: solana_utils_token_accounts
+    meta:
+      blockchain: solana
+      contributors: [ilemi]
+    config:
+      tags: ['solana','token_accounts']
+    description: >
+        unique token_mint_address and address pairs from solana.account_activity
+    tests:
+        - dbt_utils.unique_combination_of_columns:
+            combination_of_columns:
+                - token_mint_address
+                - address
+    columns:
+      - &token_mint_address
+        name: token_mint_address
+      - &address
+        name: address
+      - &updated_at
+        name: updated_at

@@ -60,6 +60,7 @@ models:
       sector: transfers
       project: erc20
       contributors: soispoke, dot2dotseurat
+    description: "ERC20 Token Transfers on Ethereum per hour."
     config:
       tags: ['transfers', 'ethereum', 'erc20', 'rolling_hour', 'soispoke', 'dot2dotseurat']
     columns:
@@ -108,6 +109,7 @@ models:
       sector: transfers
       project: erc20
       contributors: soispoke, dot2dotseurat
+    description: "ERC20 Token Transfers on Ethereum per day."
     config:
       tags: ['transfers', 'ethereum', 'erc20', 'rolling_day', 'soispoke', 'dot2dotseurat']
     columns:

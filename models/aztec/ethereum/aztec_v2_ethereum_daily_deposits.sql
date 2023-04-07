@@ -1,7 +1,7 @@
 {{ config(
     schema = 'aztec_v2_ethereum',
     alias = 'daily_deposits',
-    post_hook='{{ expose_spells_hide_trino(\'["ethereum"]\',
+    post_hook='{{ expose_spells(\'["ethereum"]\',
                                 "project",
                                 "aztec_v2",
                                 \'["Henrystats"]\') }}'
@@ -39,7 +39,7 @@ token_prices_token as (
         AVG(p.price) as price
     FROM 
     {{ source('prices', 'usd') }} p 
-    WHERE p.minute >= '{{first_transfer_date}}'
+    WHERE p.minute >= CAST('{{first_transfer_date}}' AS TIMESTAMP)
     AND p.contract_address IN (SELECT token_address FROM token_addresses)
     AND p.blockchain = 'ethereum'
     GROUP BY 1, 2, 3 
@@ -52,7 +52,7 @@ token_prices_eth as (
         1 as price_eth
     FROM 
     {{ source('prices', 'usd') }} p 
-    WHERE p.minute >= '{{first_transfer_date}}'
+    WHERE p.minute >= CAST('{{first_transfer_date}}' AS TIMESTAMP)
     AND p.blockchain = 'ethereum'
     AND p.symbol = 'WETH'
     GROUP BY 1, 3 
