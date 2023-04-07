@@ -123,13 +123,13 @@ SELECT
     WHEN lower(t_bought.symbol) > lower(t_sold.symbol) THEN concat(t_sold.symbol, '-', t_bought.symbol)
     ELSE concat(t_bought.symbol, '-', t_sold.symbol)
   END AS token_pair,
-  cast(t.maker_amount AS DECIMAL (38, 0)) / power(10, t_bought.decimals) AS token_bought_amount,
-  cast(t.taker_amount AS DECIMAL (38, 0)) / power(10, t_sold.decimals) AS token_sold_amount,
+  cast(t.maker_amount AS DECIMAL (38, 0)) / power(10, coalesce(t_bought.decimals, 0)) AS token_bought_amount,
+  cast(t.taker_amount AS DECIMAL (38, 0)) / power(10, coalesce(t_sold.decimals, 0)) AS token_sold_amount,
   maker_amount AS token_bought_amount_raw,
   taker_amount AS token_sold_amount_raw,
   coalesce(
-    (maker_amount / power(10, p_bought.decimals)) * p_bought.price,
-    (taker_amount / power(10, p_sold.decimals)) * p_sold.price
+    (maker_amount / power(10, coalesce(p_bought.decimals, 0))) * p_bought.price,
+    (taker_amount / power(10, coalesce(p_sold.decimals, 0))) * p_sold.price
   ) AS amount_usd,
   t_bought.contract_address AS token_bought_address,
   t_sold.contract_address AS token_sold_address,
@@ -143,12 +143,12 @@ SELECT
   t.evt_index
 FROM
   simple_trades t
-  LEFT JOIN {{ ref('tokens_erc20') }} t_bought ON cast(t_bought.contract_address AS varchar) = t.maker_token
+  LEFT JOIN {{ ref('tokens_erc20') }} t_bought ON cast(t_bought.contract_address AS VARCHAR(42)) = t.maker_token
   AND t_bought.blockchain = 'polygon'
-  LEFT JOIN {{ ref('tokens_erc20') }} t_sold ON cast(t_sold.contract_address AS varchar) = t.taker_token
+  LEFT JOIN {{ ref('tokens_erc20') }} t_sold ON cast(t_sold.contract_address AS VARCHAR(42)) = t.taker_token
   AND t_sold.blockchain = 'polygon'
   LEFT JOIN {{ source('prices', 'usd') }} p_bought ON p_bought.minute = date_trunc('minute', t.block_time)
-  AND cast(p_bought.contract_address AS varchar) = t.maker_token
+  AND cast(p_bought.contract_address AS VARCHAR(42)) = t.maker_token
   AND p_bought.blockchain = 'polygon'
   {% if not is_incremental() %}
   AND p_bought.minute >= '{{project_start_date}}'
@@ -157,7 +157,7 @@ FROM
   AND p_bought.minute >= date_trunc("day", now() - interval '1 week')
   {% endif %}
   LEFT JOIN {{ source('prices', 'usd') }} p_sold ON p_sold.minute = date_trunc('minute', t.block_time)
-  AND cast(p_sold.contract_address AS varchar) = t.taker_token
+  AND cast(p_sold.contract_address AS VARCHAR(42)) = t.taker_token
   AND p_sold.blockchain = 'polygon'
   {% if not is_incremental() %}
   AND p_sold.minute >= '{{project_start_date}}'

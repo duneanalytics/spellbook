@@ -10,6 +10,11 @@ models:
     config:
       tags: [ 'ethereum','bebop','trades','dex' ]
     description: Bebop contract trades on ethereum - formatted for dex.trades
+    tests:
+      - check_dex_seed:
+          blockchain: ethereum
+          project: bebop
+          version: 1
     columns:
       - &blockchain
         name: blockchain
