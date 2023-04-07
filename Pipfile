@@ -19,6 +19,7 @@ tiktoken = "0.3.3"
 pytest = "7.2.2"
 boto3 = "1.26.108"
 trino = "0.322.0"
+dbt-trino = "1.4.1"
 
 [requires]
 python_version = "3.10"

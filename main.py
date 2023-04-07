@@ -6,10 +6,12 @@ import faiss
 from langchain import OpenAI
 from langchain.chains import RetrievalQAWithSourcesChain
 
-from translation_docstore.prompts import spell_prompt_template
+from explain_cls import Explain_n_Executer
+from line_mapper import LineMapper
+from prompts import spell_prompt_template
 
 parser = argparse.ArgumentParser(description="SQL translation tool with rules vector db")
-parser.add_argument('model_path', type=str, nargs='?', help="model_path", default=default_snippet)
+parser.add_argument('model_path', type=str, nargs='?', help="Path to model", default="spellbook/models/aave/ethereum/aave_ethereum_votes.sql")
 args = parser.parse_args()
 
 model_path = args.model_path
@@ -23,17 +25,48 @@ def load_chain():
         store = pickle.load(f)
 
     store.index = index
-    chain = RetrievalQAWithSourcesChain.from_chain_type(OpenAI(model_name='gpt-3.5-turbo', temperature=0), chain_type="stuff",
+    chain = RetrievalQAWithSourcesChain.from_chain_type(OpenAI(temperature=0), chain_type="stuff",
                                                         retriever=store.as_retriever())
     return chain
 
-def get_sql_snippet_and_error(model_path):
-    with open(model_path, 'r') as f:
-        snippet = f.readline()
-        error = f.readline()
-    return snippet, error
 
-prompt = spell_prompt_template.format(snippet=snippet, error=error, syntax=syntax)
+chain = load_chain()
+
+explainer = Explain_n_Executer(model_path=f"spellbook/target/compiled/{model_path}")
+explainer.explain()
+
+# If NONE exit
+if not explainer.explanation:
+    print("No Syntax Error")
+    exit()
+
+line_no = int(explainer.explanation.split("line ")[1].split(":")[0]) - 1 # Line no. one off because we added the EXPLAIN statement.
+sql_lines = explainer.sql.splitlines()
+snippet = sql_lines[line_no]
+
+prompt = spell_prompt_template.format(snippet=snippet, error=explainer.explanation, syntax=snippet)
 result = chain({"question": prompt}, return_only_outputs=True)
-print(f"Answer: {result['answer']}")
-print(f"Sources: {result['sources']}")
+
+# If chatgpt returns no answer, exit
+if result['answer'] == "No answer found":
+    print("No answer found")
+    exit()
+
+line_mapper = LineMapper(spell_path=model_path,
+                         compiled_path=f"spellbook/target/compiled/{model_path}",
+                         start=line_no,
+                         end=line_no+1)
+spell_line_no = line_mapper.main()
+
+# Get SQL from Spell
+with open(model_path, 'r') as f:
+    sql = f.readlines()
+
+# Replace spell line with LLM correction
+sql[spell_line_no] = result['answer']
+
+# Join SQL line to SQL string and write to file
+print("overwriting model with corrected SQL")
+output = "".join(sql)
+with open(model_path, "w") as f:
+    f.write(output)

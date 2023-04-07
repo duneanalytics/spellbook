@@ -70,14 +70,17 @@ class LineMapper:
         return self.compiled[self.start:self.end]
 
     def return_spell_lines(self):
+        """
+        Return the line number and matching lines from the spell
+        """
         map = [val for key, val in self.mapping if key == self.start]
         assert len(map) == 1, f"Expected 1 line, got {len(map)}"
-        return self.spell[map[0]:map[0] + self.end - self.start]
+        return map[0], self.spell[map[0]:map[0] + self.end - self.start]
 
     def main(self):
         self.get_mapping()
         compiled_lines = self.return_compiled_lines()
-        spell_lines = self.return_spell_lines()
+        line_no, spell_lines = self.return_spell_lines()
         assert compiled_lines == spell_lines, f"Lines don't match:\n{compiled_lines}\n{spell_lines}"
-        return self.return_spell_lines()
+        return line_no
 

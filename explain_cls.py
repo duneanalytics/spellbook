@@ -12,7 +12,7 @@ class Explain_n_Executer:
     def __init__(self, model_path):
         self.model_path = model_path
 
-    def execute_query(self):
+    def execute_query(self, explain_stmt):
         """
         Function that executes a query passed as a string against the trino server. We would like to use aws secrets
         manager to authenticate.
@@ -32,12 +32,13 @@ class Explain_n_Executer:
         # try executing the query and returning the response. return error if it fails.
         try:
             cursor = conn.cursor()
-            cursor.execute(self.sql)
-            return cursor.fetchall()
+            cursor.execute(explain_stmt)
+            return None
         except TrinoUserError as e:
-            return f"error: {e.message}"
+            return e.message
         except Exception as e:
-            return f"NON_TRINO_ERROR : {e}"
+            print(f"NON_TRINO_ERROR : {e}")
+            return None
 
 
     def get_sql(self):
@@ -45,8 +46,7 @@ class Explain_n_Executer:
         Function that returns the SQL query from a model path.
         """
         with open(self.model_path, 'r') as f:
-            sql = f.read()
-        self.sql = sql.replace("`", "").replace(".from", '."from"')
+            self.sql = f.read()
 
 
     @staticmethod
@@ -69,5 +69,9 @@ class Explain_n_Executer:
         """
         resp = self.execute_query("EXPLAIN (TYPE LOGICAL, FORMAT JSON) " + self.sql)
         if type(resp) == str:
-            return resp
-        self.explain = json.loads(resp[0][0])
+            self.explanation = resp
+
+    def explain(self):
+        self.get_sql()
+        self.explain_query()
+
