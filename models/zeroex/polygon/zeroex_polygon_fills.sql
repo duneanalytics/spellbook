@@ -127,7 +127,7 @@ WITH
                     ELSE fills.makerToken
                 END = mp.contract_address
         LEFT OUTER JOIN {{ ref('tokens_erc20') }} mt ON mt.contract_address = fills.makerToken
-        LEFT OUTER JOIN {{ ref('tokens_erc20') }}tt ON tt.contract_address = fills.takerToken
+        LEFT OUTER JOIN {{ ref('tokens_erc20') }} tt ON tt.contract_address = fills.takerToken
          where 1=1 
                 {% if is_incremental() %}
                 AND evt_block_time >= date_trunc('day', now() - interval '1 week')
