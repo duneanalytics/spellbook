@@ -90,7 +90,7 @@ models:
     config:
       tags: ['optimism','rubicon','dex']
     description: >
-        A table containing all offers of rubicon on optimism
+        A table containing all offers of rubicon
     columns:
       - *blockchain
       - *project

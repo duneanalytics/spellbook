@@ -106,17 +106,15 @@ models:
         A table containing all offers of rubicon on optimism
     tests:
       - check_seed:
-          seed_file: ref('rubicon_optimism_offers_test_data')
+          seed_file: ref('dex_offers_seed')
           match_columns:
-            - block_number
-            - tx_hash
-            - evt_index
-            - tx_index
-          check_columns:
+            - block_date
             - blockchain
             - project
             - version
-            - block_date
+            - tx_hash
+            - evt_index
+          check_columns:
             - sell_token_symbol
             - buy_token_symbol
             - sell_token_address

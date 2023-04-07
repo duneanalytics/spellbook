@@ -224,10 +224,12 @@ WITH unit_test AS (
 
     FROM
         {{ ref('rubicon_optimism_offers') }} AS actual
-        INNER JOIN {{ ref('rubicon_optimism_offers_test_data') }} AS test
-        ON actual.tx_hash = test.tx_hash
-        AND actual.block_number = test.block_number
-        AND actual.tx_index = test.tx_index
+    INNER JOIN {{ ref('dex_offers_seed') }} AS test
+        ON actual.block_date = test.block_date
+        AND actual.blockchain = test.blockchain
+        AND actual.project = test.project
+        AND actual.version = test.version
+        AND actual.tx_hash = test.tx_hash
         AND actual.evt_index = test.evt_index
 
 )

@@ -1,5 +1,4 @@
 {{ config(
-    schema = 'rubicon_optimism',
     alias = 'offers',
     partition_by = ['block_date'],
     materialized = 'incremental',
@@ -60,10 +59,12 @@ trades AS
     -- get the relevant sell token data
     LEFT JOIN {{ ref('tokens_erc20') }} erc20_sell
         ON erc20_sell.contract_address = t.pay_gem
+        AND erc20_sell.blockchain = 'optimism'
 
     -- get the relevant buy token data
     LEFT JOIN {{ ref('tokens_erc20') }} erc20_buy
         ON erc20_buy.contract_address = t.buy_gem
+        AND erc20_buy.blockchain = 'optimism'
 
     -- get the sell token price
     LEFT JOIN {{ source('prices', 'usd') }} sell_token_price
@@ -130,12 +131,12 @@ SELECT
     END AS token_pair,
     CAST(offers.sell_amount_raw AS DECIMAL(38, 0)) / power(10, erc20_sell.decimals) AS sell_amount,
     cast(offers.buy_amount_raw AS DECIMAL(38, 0)) / power(10, erc20_buy.decimals) AS buy_amount,
-    offers.sell_amount_raw,
-    offers.buy_amount_raw,
+    CAST(offers.sell_amount_raw AS DECIMAL(38,0)) AS sell_amount_raw,
+    CAST(offers.buy_amount_raw AS DECIMAL(38,0)) AS buy_amount_raw,
     trades.sold_amount AS sold_amount,
     trades.bought_amount AS bought_amount,
-    trades.sold_amount_raw AS sold_amount_raw,
-    trades.bought_amount_raw AS bought_amount_raw,
+    CAST(trades.sold_amount_raw AS DECIMAL(38,0)) AS sold_amount_raw,
+    CAST(trades.bought_amount_raw AS DECIMAL(38,0)) AS bought_amount_raw,
     cast(offers.sell_amount_raw AS DECIMAL(38, 0)) / power(10, erc20_sell.decimals) * sell_token_price.price AS sell_amount_usd,
     cast(offers.buy_amount_raw AS DECIMAL(38, 0)) / power(10, erc20_buy.decimals) * buy_token_price.price AS buy_amount_usd,
     trades.sold_amount_usd AS sold_amount_usd,
