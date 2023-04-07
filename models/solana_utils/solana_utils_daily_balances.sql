@@ -19,7 +19,7 @@ WITH
                   , token_mint_address
                   , post_balance as sol_balance
                   , post_token_balance as token_balance
-                  row_number() OVER (partition by address, date_trunc('day', block_time) order by block_slot desc) as latest_balance
+                  , row_number() OVER (partition by address, date_trunc('day', block_time) order by block_slot desc) as latest_balance
             FROM {{ source('solana','account_activity') }}
             WHERE tx_success 
             {% if is_incremental() %}
