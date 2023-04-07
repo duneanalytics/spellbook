@@ -22,6 +22,7 @@ WITH
         SELECT
             evt_block_time AS timestamp
             , 'v3' AS protocol_version
+            , 'fills' as native_order_type
             , fills.evt_tx_hash AS transaction_hash
             , fills.evt_index
             , fills.makerAddress AS maker_address
@@ -85,6 +86,7 @@ WITH
         SELECT
             fills.evt_block_time AS timestamp
             , 'v4' AS protocol_version
+            , 'limit' as native_order_type
             , fills.evt_tx_hash AS transaction_hash
             , fills.evt_index
             , fills.maker AS maker_address
@@ -147,6 +149,7 @@ WITH
       SELECT
           fills.evt_block_time AS timestamp
           , 'v4' AS protocol_version
+          , 'rfq' as native_order_type
           , fills.evt_tx_hash AS transaction_hash
           , fills.evt_index
           , fills.maker AS maker_address
@@ -207,6 +210,7 @@ WITH
     (
       SELECT
           fills.evt_block_time AS timestamp
+          , 'otc' as native_order_type
           , 'v4' AS protocol_version
           , fills.evt_tx_hash AS transaction_hash
           , fills.evt_index
