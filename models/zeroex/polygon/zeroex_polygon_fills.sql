@@ -307,7 +307,7 @@ WITH
                 tx.from AS tx_from,
                 tx.to AS tx_to
             FROM all_fills
-            INNER JOIN {{ source('polygon', 'transactions')}} tx ON all_fills.tx_hash = tx.hash
+            INNER JOIN {{ source('polygon', 'transactions')}} tx ON all_fills.transaction_hash = tx.hash
             ORDER BY "timestamp" DESC
 
             
