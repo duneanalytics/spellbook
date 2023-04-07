@@ -35,6 +35,7 @@ models:
             combination_of_columns:
                 - token_mint_address
                 - address
+                - day
     columns:
       - &day
         name: day
