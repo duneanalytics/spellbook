@@ -8,11 +8,11 @@
     post_hook='{{ expose_spells(\'["ethereum"]\',
                                 "project",
                                 "kyberswap",
-                                \'["pipistrella", "zergil1397"]\') }}'
+                                \'["ppclunghe", "gregshestakovlido"]\') }}'
     )
 }}
 
-{% set project_start_date = '2021-08-31' %} 
+{% set project_start_date = '2021-04-05' %} 
 
 WITH
 
@@ -29,6 +29,7 @@ kyberswap_dex AS (
         ,t.contract_address                                                 AS project_contract_address
         ,t.evt_tx_hash                                                      AS tx_hash
         ,''                                                                 AS trace_address
+        ,'classic'                                                          AS version
         ,t.evt_index
 
     FROM {{ source('kyber_ethereum', 'DMMPool_evt_Swap') }} t
@@ -56,6 +57,7 @@ kyberswap_dex AS (
         ,t.contract_address                                                            AS project_contract_address
         ,t.evt_tx_hash                                                                 AS tx_hash
         ,''                                                                            AS trace_address
+        ,'elastic'                                                                     AS version	
         ,t.evt_index
 
     FROM {{ source('kyber_ethereum', 'Elastic_Pool_evt_swap') }} t
@@ -73,7 +75,7 @@ kyberswap_dex AS (
 SELECT
     'ethereum'                                                         AS blockchain
     ,'kyberswap'                                                          AS project
-    ,'dmm'                                                                AS version
+    ,version                                                               AS version
     ,try_cast(date_trunc('DAY', kyberswap_dex.block_time) AS date)        AS block_date
     ,kyberswap_dex.block_time
     ,erc20a.symbol                                                        AS token_bought_symbol
