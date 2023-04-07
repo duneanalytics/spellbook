@@ -351,9 +351,9 @@ WITH
     
     SELECT * FROM otc_fills
     )
-            SELECT
-                "timestamp" as block_time,
-                date_trunc('day', "timestamp") as block_date,
+            SELECT distinct 
+                timestamp as block_time,
+                date_trunc('day', timestamp) as block_date,
                 protocol_version as version,
                 transaction_hash as tx_hash,
                 evt_index,
@@ -377,4 +377,4 @@ WITH
                 tx.to AS tx_to
             FROM all_fills
             INNER JOIN {{ source('ethereum', 'transactions')}} tx ON all_fills.transaction_hash = tx.hash
-            ORDER BY "timestamp" DESC
+            ORDER BY timestamp DESC

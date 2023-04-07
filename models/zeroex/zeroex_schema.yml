@@ -185,8 +185,8 @@ models:
           check_columns:
             - maker
             - taker
-            - taker_symbol
-            - maker_symbol
+            - maker_token
+            - taker_token
     columns:
       - *tx_hash
       - *contract_address

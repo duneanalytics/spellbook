@@ -287,10 +287,10 @@ WITH
     
     SELECT * FROM otc_fills
     )
-            SELECT
-                "timestamp" as block_time,
+            SELECT distinct 
+                timestamp as block_time,
                 protocol_version as version,
-                date_trunc('day', "timestamp") as block_date,
+                date_trunc('day', timestamp) as block_date,
                 transaction_hash as tx_hash,
                 evt_index,
                 maker_address as maker,
@@ -313,6 +313,6 @@ WITH
                 tx.to AS tx_to
             FROM all_fills
             INNER JOIN {{ source('polygon', 'transactions')}} tx ON all_fills.transaction_hash = tx.hash
-            ORDER BY "timestamp" DESC
+            ORDER BY timestamp DESC
 
             
