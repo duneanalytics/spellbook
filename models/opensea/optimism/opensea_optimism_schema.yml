@@ -122,7 +122,8 @@ models:
       - &unique_trade_id
         name: unique_trade_id
         description:  "Unique trade ID"
-        tests: unique
+        tests:
+          - unique
 
 
   - name: opensea_optimism_trades
