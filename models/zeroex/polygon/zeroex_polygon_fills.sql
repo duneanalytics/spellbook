@@ -29,7 +29,7 @@ WITH
             , SUBSTRING(fills.makerAssetData,17,20) AS maker_token
             , fills.takerAssetFilledAmount as taker_token_filled_amount_raw
             , fills.makerAssetFilledAmount as maker_token_filled_amount_raw
-            , contract_address 
+            , fills.contract_address 
             , mt.symbol AS maker_symbol
             , fills.makerAssetFilledAmount / (10^mt.decimals) AS maker_asset_filled_amount
             , SUBSTRING(fills.takerAssetData,17,20) AS taker_token
@@ -92,7 +92,7 @@ WITH
             , fills.makerToken AS maker_token
             , fills.takerTokenFilledAmount as taker_token_filled_amount_raw
             , fills.makerTokenFilledAmount as maker_token_filled_amount_raw
-            , contract_address 
+            , fills.contract_address 
             , mt.symbol AS maker_symbol
             , fills.makerTokenFilledAmount / (10^mt.decimals) AS maker_asset_filled_amount
             , fills.takerToken AS taker_token
@@ -154,7 +154,7 @@ WITH
           , fills.makerToken AS maker_token
           , fills.takerTokenFilledAmount as taker_token_filled_amount_raw
           , fills.makerTokenFilledAmount as maker_token_filled_amount_raw
-          , contract_address 
+          , fills.contract_address 
           , mt.symbol AS maker_symbol
           , fills.makerTokenFilledAmount / (10^mt.decimals) AS maker_asset_filled_amount
           , fills.takerToken AS taker_token
@@ -215,7 +215,7 @@ WITH
           , fills.makerToken AS maker_token
           , fills.takerTokenFilledAmount as taker_token_filled_amount_raw
           , fills.makerTokenFilledAmount as maker_token_filled_amount_raw
-          , contract_address 
+          , fills.contract_address 
           , mt.symbol AS maker_symbol
           , fills.makerTokenFilledAmount / (10^mt.decimals) AS maker_asset_filled_amount
           , fills.takerToken AS taker_token
