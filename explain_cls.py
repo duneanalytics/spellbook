@@ -10,7 +10,7 @@ from trino.exceptions import TrinoUserError
 
 class Explain_n_Executer:
     def __init__(self, model_path):
-        self.model_path = model_path
+        self.model_path = os.path.join(os.getcwd(), model_path)
 
     def execute_query(self, explain_stmt):
         """

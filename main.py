@@ -32,7 +32,7 @@ def load_chain():
 
 chain = load_chain()
 
-explainer = Explain_n_Executer(model_path=f"target/compiled/{model_path}")
+explainer = Explain_n_Executer(model_path=f"target/compiled/spellbook/{model_path}")
 explainer.explain()
 
 # If NONE exit
