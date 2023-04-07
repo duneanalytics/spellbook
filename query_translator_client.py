@@ -3,7 +3,7 @@ Client to run compile models against the dunesql query translator.
 
 The query translator needs to be running on localhost:8000.
 
-Instructions here:
+Instructions here: https://github.com/duneanalytics/query-translator#local-development
 """
 import json
 import requests
