@@ -353,7 +353,7 @@ WITH
     )
             SELECT distinct 
                 all_fills.block_time as block_time,
-                date_trunc('day', block_time) as block_date,
+                date_trunc('day', all_fills.block_time) as block_date,
                 protocol_version as version,
                 transaction_hash as tx_hash,
                 evt_index,
