@@ -203,6 +203,8 @@ models:
         +schema: opensea_ethereum
       solana:
         +schema: opensea_solana
+      optimism:
+        +schema: opensea_optimism
 
     element:
       +schema: element
@@ -421,6 +423,9 @@ models:
         +schema: tokens_solana
         +materialized: table
         +file_format: delta
+      
+    solana_utils:
+      +schema: solana_utils
 
     trader_joe:
       +schema: trader_joe
@@ -558,6 +563,13 @@ models:
       +schema: archipelago
       ethereum:
         +schema: archipelago_ethereum
+
+    integral:
+      +schema: integral
+      arbitrum:
+        +schema: integral_arbitrum
+      ethereum:
+        +schema: integral_ethereum
 
     integration_test:
       +schema: integration_test
