@@ -585,6 +585,13 @@ models:
       fantom:
         +schema: curvefi_fantom
 
+    cyberconnect:
+      +schema: cyberconnect
+      ethereum:
+        +schema: cyberconnect_ethereum
+      bnb:
+        +schema: cyberconnect_bnb
+
     cow_protocol:
       +schema: cow_protocol
       ethereum:
