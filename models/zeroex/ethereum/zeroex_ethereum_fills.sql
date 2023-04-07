@@ -89,8 +89,8 @@ WITH
             , fills.makerAddress AS maker_address
             , fills.takerAddress AS taker_address
             , SUBSTRING(fills.makerAssetData,17,20) AS maker_token
-            , fills.takerTokenFilledAmount as taker_token_filled_amount_raw
-            , fills.makerTokenFilledAmount as maker_token_filled_amount_raw
+            , fills.takerAssetFilledAmount as taker_token_filled_amount_raw
+            , fills.makerAssetFilledAmount as maker_token_filled_amount_raw
             , mt.symbol AS maker_symbol
             , fills.makerAssetFilledAmount / (10^mt.decimals) AS maker_asset_filled_amount
             , SUBSTRING(fills.takerAssetData,17,20) AS taker_token
