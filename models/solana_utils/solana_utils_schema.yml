@@ -38,14 +38,11 @@ models:
     columns:
       - &day
         name: day
-      - &token_mint_address
-        name: token_mint_address
-      - &address
-        name: address
+      - *token_mint_address
+      - *address
       - &sol_balance 
         name: sol_balance
       - &token_balance
         name: token_balance
-      - &updated_at
-        name: updated_at
+      - *updated_at
 
