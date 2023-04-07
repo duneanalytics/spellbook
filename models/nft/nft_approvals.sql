@@ -36,8 +36,7 @@ FROM (
         , approval_for_all
         , contract_address
         , token_id
-        , approved 
-        , approved_for_all
+        , approved
         , tx_hash
         --, tx_from
         --, tx_to
