@@ -2,7 +2,7 @@
         post_hook='{{ expose_spells(\'["optimism"]\',
                                     "sector",
                                     "cex",
-                                    \'["msilb7", "hildobby"]\', 'msilb7', timestamp('2022-10-10')) }}', 'msilb7', timestamp('2022-10-10'))}}
+                                    \'["msilb7", "hildobby"]\') }}')}}
 
 SELECT blockchain, LOWER(address) AS address, cex_name, distinct_name, added_by, added_date
 FROM (VALUES
