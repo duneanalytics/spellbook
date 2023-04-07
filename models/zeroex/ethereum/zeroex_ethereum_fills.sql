@@ -28,8 +28,8 @@ WITH
             , fills.takerAddress AS taker_address
             , SUBSTRING(fills.makerAssetData,17,20) AS maker_token
             , mt.symbol AS maker_symbol
-            , fills.takerTokenFilledAmount as taker_token_filled_amount_raw
-            , fills.makerTokenFilledAmount as maker_token_filled_amount_raw
+            , fills.takerAssetFilledAmount as taker_token_filled_amount_raw
+            , fills.makerAssetFilledAmount as maker_token_filled_amount_raw
             , fills.makerAssetFilledAmount / (10^mt.decimals) AS maker_asset_filled_amount
             , SUBSTRING(fills.takerAssetData,17,20) AS taker_token
             , tt.symbol AS taker_symbol
@@ -50,6 +50,7 @@ WITH
                 END AS volume_usd
             , fills.protocolFeePaid / 1e18 AS protocol_fee_paid_eth,
             fills.contract_address
+            , 'fills' as native_order_type
         FROM {{ source('zeroex_v3_ethereum', 'Exchange_evt_Fill') }} fills 
         LEFT JOIN prices.usd tp ON
             date_trunc('minute', evt_block_time) = tp.minute
@@ -110,6 +111,7 @@ WITH
                     ELSE COALESCE((fills.makerAssetFilledAmount / (10^mt.decimals))*mp.price,(fills.takerAssetFilledAmount / (10^tt.decimals))*tp.price)
                 END AS volume_usd, fills.contract_address
             , NULL::NUMERIC AS protocol_fee_paid_eth
+            , 'fills' as native_order_type
         FROM {{ source('zeroex_v2_ethereum', 'Exchange2_1_evt_Fill') }} fills
         LEFT JOIN prices.usd tp ON
             date_trunc('minute', evt_block_time) = tp.minute
@@ -171,7 +173,8 @@ WITH
                     ELSE COALESCE((fills.makerTokenFilledAmount / (10^mt.decimals))*mp.price,(fills.takerTokenFilledAmount / (10^tt.decimals))*tp.price)
                 END AS volume_usd
             , fills.protocolFeePaid/ 1e18 AS protocol_fee_paid_eth,
-            fills.contract_address
+            fills.contract_address,
+            , 'limit' as native_order_type
         FROM {{ source('zeroex_ethereum', 'ExchangeProxy_evt_LimitOrderFilled') }} fills
         LEFT JOIN prices.usd tp ON
             date_trunc('minute', evt_block_time) = tp.minute
@@ -234,6 +237,7 @@ WITH
               END AS volume_usd
           , NULL::NUMERIC AS protocol_fee_paid_eth,
           fills.contract_address
+          , 'rfq' as native_order_type
       FROM {{ source('zeroex_ethereum', 'ExchangeProxy_evt_RfqOrderFilled') }} fills
       LEFT JOIN prices.usd tp ON
           date_trunc('minute', evt_block_time) = tp.minute
@@ -295,6 +299,7 @@ WITH
               END AS volume_usd
           , NULL::NUMERIC AS protocol_fee_paid_eth
           , fills.contract_address
+          , 'otc' as native_order_type
       FROM {{ source('zeroex_ethereum', 'ExchangeProxy_evt_OtcOrderFilled') }} fills
       LEFT JOIN prices.usd tp ON
           date_trunc('minute', evt_block_time) = tp.minute
@@ -354,8 +359,8 @@ WITH
                 maker_address as maker,
                 taker_address as taker,
                 maker_token,
-                maker_token_amount_raw,
-                taker_token_amount_raw,
+                maker_token_filled_amount_raw as maker_token_amount_raw,
+                taker_token_filled_amount_raw as taker_token_amount_raw,
                 maker_symbol,
                 maker_asset_filled_amount maker_token_amount,
                 taker_token, 
@@ -364,7 +369,11 @@ WITH
                 fee_recipient_address,
                 volume_usd as amount_usd,
                 protocol_fee_paid_eth,
-                'polygon' as blockchain
-                , contract_address as project_contract_address
+                'polygon' as blockchain,
+                contract_address as project_contract_address
+                native_order_type,
+                tx.from AS tx_from,
+                tx.to AS tx_to
             FROM all_fills
+            INNER JOIN {{ source('ethereum', 'transactions')}} tx ON all_fills.tx_hash = tx.hash
             ORDER BY "timestamp" DESC

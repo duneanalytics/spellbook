@@ -27,6 +27,9 @@ WITH
             , fills.makerAddress AS maker_address
             , fills.takerAddress AS taker_address
             , SUBSTRING(fills.makerAssetData,17,20) AS maker_token
+            , fills.takerAssetFilledAmount as taker_token_filled_amount_raw
+            , fills.makerAssetFilledAmount as maker_token_filled_amount_raw
+            , contract_address 
             , mt.symbol AS maker_symbol
             , fills.makerAssetFilledAmount / (10^mt.decimals) AS maker_asset_filled_amount
             , SUBSTRING(fills.takerAssetData,17,20) AS taker_token
@@ -87,6 +90,9 @@ WITH
             , fills.maker AS maker_address
             , fills.taker AS taker_address
             , fills.makerToken AS maker_token
+            , fills.takerTokenFilledAmount as taker_token_filled_amount_raw
+            , fills.makerTokenFilledAmount as maker_token_filled_amount_raw
+            , contract_address 
             , mt.symbol AS maker_symbol
             , fills.makerTokenFilledAmount / (10^mt.decimals) AS maker_asset_filled_amount
             , fills.takerToken AS taker_token
@@ -146,6 +152,9 @@ WITH
           , fills.maker AS maker_address
           , fills.taker AS taker_address
           , fills.makerToken AS maker_token
+          , fills.takerTokenFilledAmount as taker_token_filled_amount_raw
+          , fills.makerTokenFilledAmount as maker_token_filled_amount_raw
+          , contract_address 
           , mt.symbol AS maker_symbol
           , fills.makerTokenFilledAmount / (10^mt.decimals) AS maker_asset_filled_amount
           , fills.takerToken AS taker_token
@@ -204,6 +213,9 @@ WITH
           , fills.maker AS maker_address
           , fills.taker AS taker_address
           , fills.makerToken AS maker_token
+          , fills.takerTokenFilledAmount as taker_token_filled_amount_raw
+          , fills.makerTokenFilledAmount as maker_token_filled_amount_raw
+          , contract_address 
           , mt.symbol AS maker_symbol
           , fills.makerTokenFilledAmount / (10^mt.decimals) AS maker_asset_filled_amount
           , fills.takerToken AS taker_token
@@ -279,6 +291,8 @@ WITH
                 maker_address as maker,
                 taker_address as taker,
                 maker_token,
+                maker_token_filled_amount_raw as maker_token_amount_raw,
+                taker_token_filled_amount_raw as taker_token_amount_raw,
                 maker_symbol,
                 maker_asset_filled_amount maker_token_amount,
                 taker_token,
@@ -288,7 +302,12 @@ WITH
                 volume_usd,
                 protocol_fee_paid_eth,
                 'polygon' as blockchain
+                contract_address as project_contract_address
+                native_order_type,
+                tx.from AS tx_from,
+                tx.to AS tx_to
             FROM all_fills
+            INNER JOIN {{ source('polygon', 'transactions')}} tx ON all_fills.tx_hash = tx.hash
             ORDER BY "timestamp" DESC
 
             
