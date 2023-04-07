@@ -301,7 +301,7 @@ WITH
                 fee_recipient_address,
                 volume_usd,
                 protocol_fee_paid_eth,
-                'polygon' as blockchain
+                'polygon' as blockchain,
                 contract_address as project_contract_address
                 native_order_type,
                 tx.from AS tx_from,
