@@ -5,21 +5,21 @@
     file_format = 'delta',
     incremental_strategy = 'merge',
     unique_key = ['block_date', 'unique_event_id'],
-    post_hook='{{ expose_spells(\'["bnb"]\',
+    post_hook='{{ expose_spells(\'["ethereum"]\',
                                 "project",
                                 "cyberconnect",
                                 \'["NazihKalo"]\') }}')
 }}
 
 
-{% set project_start_date = '2022-09-11' %}
+{% set project_start_date = '2022-07-17' %}
 
 with 
 -------CYBERCONNECT
 cyberconnect_profile_create as 
 (
   select 
-            'bnb' as blockchain,
+            'ethereum' as blockchain,
             'cyberconnect' project,
             'create' action,
             'CreateProfile' name,
@@ -49,7 +49,7 @@ cyberconnect_profile_create as
     
 cyberconnect_essence_register as (
     select 
-            'bnb' as blockchain,
+            'ethereum' as blockchain,
             'cyberconnect' project,
             'create' action,
             'RegisterEssence' name,
@@ -80,7 +80,7 @@ cyberconnect_essence_register as (
 -- essence collect by profile or address
 cyberconnect_essence_collect as (
     select 
-            'bnb' as blockchain,
+            'ethereum' as blockchain,
             'cyberconnect' project,
             'collect' action,
             'CollectEssence' name,
@@ -111,7 +111,7 @@ cyberconnect_essence_collect as (
 
 cyberconnect_subscribe as (
     select 
-            'bnb' as blockchain,
+            'ethereum' as blockchain,
             'cyberconnect' project,
             'collect' action,
             'Subscribe' name,

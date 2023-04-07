@@ -1,9 +1,9 @@
 {{ config(
         alias ='cyberconnect_events',
-        post_hook='{{ expose_spells(\'["optimism","polygon","bnb"]\',
+        post_hook='{{ expose_spells(\'["ethereum","bnb"]\',
                                 "project",
                                 "cyberconnect",
-                                \'["msilb7","0xroll"]\') }}'
+                                \'["NazihKalo"]\') }}'
         )
 }}
 
