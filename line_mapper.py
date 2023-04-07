@@ -24,8 +24,8 @@ class LineMapper:
                  compiled_path,
                  start,
                  end):
-        self.spell_path = f"../{spell_path}"
-        self.compiled_path = f"../{compiled_path}"
+        self.spell_path = spell_path
+        self.compiled_path = compiled_path
         self.start = start
         self.end = end
 

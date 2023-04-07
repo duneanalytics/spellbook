@@ -14,7 +14,7 @@ from line_mapper import LineMapper
 from prompts import spell_prompt_template
 
 parser = argparse.ArgumentParser(description="SQL translation tool with rules vector db")
-parser.add_argument('model_path', type=str, nargs='?', help="Path to model", default="models/blur/ethereum/blur_ethereum_events.sql.sql")
+parser.add_argument('model_path', type=str, nargs='?', help="Path to model", default="models/blur/ethereum/blur_ethereum_events.sql")
 args = parser.parse_args()
 
 model_path = args.model_path
@@ -36,7 +36,7 @@ def load_chain():
 chain = load_chain()
 
 def get_query_artifacts(model_path):
-    explainer = Explain_n_Executer(model_path=f"spellbook/target/compiled/{model_path}")
+    explainer = Explain_n_Executer(model_path=f"target/compiled/spellbook/{model_path}")
     explainer.explain()
 
     # If NONE exit
@@ -58,14 +58,14 @@ prompt = spell_prompt_template.format(snippet=snippet, error=explainer.explanati
 result = chain({"question": prompt}, return_only_outputs=True)
 
 # If chatgpt returns no answer, exit
-if result['answer'] == "No answer found":
+if "No answer found" in result['answer']:
     print("No answer found")
     exit()
 
 print(f"Corrected SQL: {result['answer']}")
 
 line_mapper = LineMapper(spell_path=model_path,
-                         compiled_path=f"spellbook/target/compiled/{model_path}",
+                         compiled_path=f"target/compiled/spellbook/{model_path}",
                          start=line_no,
                          end=line_no+1)
 spell_line_no = line_mapper.main()
