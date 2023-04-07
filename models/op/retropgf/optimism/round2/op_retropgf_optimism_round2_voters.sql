@@ -18,6 +18,6 @@ with attestations as (
 
 
 SELECT 
-    v.block_date, v.recipient AS voter, v.issuer, v.val AS can_vote
+    v.block_date, v.recipient AS voter, v.issuer, v.val_string AS can_vote
     
     FROM (SELECT * FROM attestations where key_mapped = 'retropgf.round-2.can-vote') v
