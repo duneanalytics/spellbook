@@ -3238,7 +3238,7 @@ FROM (VALUES
         ('0x26fed67c97776baf1bdd9f40097686a904b25ef9', 'INVIS', 18),
         ('0x26ff6d16549a00ba8b36ce3159b5277e6e798d18', 'CHIHUA', 18),
         ('0x2700bb35cc0965de65f24934976d54a8291ceaa4', 'CAT', 8),
-        ('0x27015e5df08a390565259195781d5217e65f3654', 'CAKE', 18),
+        ('0x27015e5df08a390565259195781d5217e65f3654', 'Piece of (CAKE)', 18),
         ('0x270371c58d9d775ed73971dd414656107384f235', 'BTAP', 18),
         ('0x270467b76f2abe16ed0b0e94f58d171b1488c6d6', 'DC', 9),
         ('0x27054b13b1b798b345b591a4d22e6562d47ea75a', 'AST', 4),
@@ -20980,5 +20980,6 @@ FROM (VALUES
         ('0xe57402125e1fae01abb1d30d1efbec68a7ee5bd1', 'SFMC', 9),
         ('0xea63a4d9dc33969d655149353d630c4754a4282b', 'PACHA', 18),
         ('0xeb83c3bc5940ba7a13840002c4a4f55059761254', 'cSafemoon', 9),
-        ('0xf2a22b900dde3ba18ec2aef67d4c8c1a0dab6aac', 'MONKEYS', 9)
+        ('0xf2a22b900dde3ba18ec2aef67d4c8c1a0dab6aac', 'MONKEYS', 9),
+        ('0x152649ea73beab28c5b49b26eb48f7ead6d4c898', 'CAKE', 18)
      ) AS temp_table (contract_address, symbol, decimals)

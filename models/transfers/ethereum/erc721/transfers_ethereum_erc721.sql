@@ -2,8 +2,8 @@
 
 with
     received_transfers as (
-        select 'receive' || '-' ||  evt_tx_hash || '-' || evt_index || '-' || `to` as unique_tx_id,
-            to as wallet_address,
+        select 'receive' || '-' ||  evt_tx_hash || '-' || CAST(evt_index AS VARCHAR(100)) || '-' || `to` as unique_tx_id,
+            `to` as wallet_address,
             contract_address as token_address,
             evt_block_time,
             tokenId,
@@ -14,8 +14,8 @@ with
 
     ,
     sent_transfers as (
-        select 'send' || '-' || evt_tx_hash || '-' || evt_index || '-' || `from` as unique_tx_id,
-            from as wallet_address,
+        select 'send' || '-' || evt_tx_hash || '-' || CAST(evt_index AS VARCHAR(100)) || '-' || `from` as unique_tx_id,
+            `from` as wallet_address,
             contract_address as token_address,
             evt_block_time,
             tokenId,
