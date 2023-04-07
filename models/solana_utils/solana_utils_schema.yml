@@ -21,3 +21,29 @@ models:
         name: address
       - &updated_at
         name: updated_at
+  
+  - name: solana_utils_latest_balances
+    meta:
+      blockchain: solana
+      contributors: [ilemi]
+    config:
+      tags: ['solana','balances']
+    description: >
+        keep latest balances up to date for each address
+    tests:
+        - dbt_utils.unique_combination_of_columns:
+            combination_of_columns:
+                - token_mint_address
+                - address
+    columns:
+      - &token_mint_address
+        name: token_mint_address
+      - &address
+        name: address
+      - &sol_balance 
+        name: sol_balance
+      - &token_balance
+        name: token_balance
+      - &updated_at
+        name: updated_at
+
