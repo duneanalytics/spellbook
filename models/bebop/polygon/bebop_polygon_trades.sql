@@ -22,7 +22,6 @@ WITH
       call_block_time AS block_time,
       call_block_number AS block_number,
       call_tx_hash AS tx_hash,
-      '' AS trace_address,
       evt_index,
       ex.contract_address,
       get_json_object(order, '$.expiry') AS expiry,
@@ -81,14 +80,14 @@ WITH
   explode_taker_tokens_data as (
     SELECT
       *,
-      explode (taker_tokens) as taker_token_pair
+      posexplode (taker_tokens) as (taker_ind, taker_token_pair)
     FROM
       bebop_raw_data
   ),
   explode_tokens_data as (
     SELECT
       *,
-      explode (maker_tokens) as maker_token_pair
+      posexplode (maker_tokens) as (maker_ind, maker_token_pair)
     FROM
       explode_taker_tokens_data
   ),
@@ -98,9 +97,9 @@ WITH
       block_number,
       contract_address,
       tx_hash,
-      trace_address,
       evt_index,
       taker_address,
+      concat(taker_ind, '-', maker_ind) as trace_address,
       taker_token_pair.`0` as taker_token,
       (taker_token_pair.`1` / cardinality(maker_tokens)) as taker_amount,
       maker_token_pair.`0` as maker_token,
