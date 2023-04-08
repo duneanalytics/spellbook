@@ -70,6 +70,8 @@ AS
     GROUP BY  tx_hash,hop_count
 )
 SELECT  a.blockchain
+      , '0x API'  as project
+      , cast(null as varchar(10)) as version
       , a.block_date
       , a.block_time
       , b.taker_symbol AS taker_symbol
@@ -89,6 +91,7 @@ SELECT  a.blockchain
       , a.tx_from
       , a.tx_to
       , b.evt_index
+      , CAST(ARRAY() as array<bigint>) as trace_address
       , a.type
       , a.swap_flag
       , b.fills_within
