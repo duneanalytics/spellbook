@@ -41,3 +41,17 @@ models:
         name: token_balance
       - *updated_at
 
+  - name: solana_utils_latest_balance
+    meta:
+      blockchain: solana
+      contributors: [ilemi]
+    config:
+      tags: ['solana','balances']
+    description: >
+        get the latest balances for each address
+    columns:
+      - *token_mint_address
+      - *address
+      - *sol_balance
+      - *token_balance
+      - *updated_at

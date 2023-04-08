@@ -1,10 +1,10 @@
  {{
   config(
-        alias='daily_balances',
+        alias='latest_balances',
         materialized='incremental',
         file_format = 'delta',
         incremental_strategy='merge',
-        unique_key = ['token_mint_address', 'address','day'],
+        unique_key = ['token_mint_address', 'address'],
         post_hook='{{ expose_spells(\'["solana"]\',
                                     "sector",
                                     "solana_utils",
@@ -17,19 +17,17 @@ WITH
                   address 
                   , date_trunc('day', block_time) as day
                   , token_mint_address
-                  , post_balance as sol_balance
-                  , post_token_balance as token_balance
-                  , row_number() OVER (partition by address, date_trunc('day', block_time) order by block_slot desc) as latest_balance
-            FROM {{ source('solana','account_activity') }}
-            WHERE tx_success 
+                  , sol_balance
+                  , token_balance
+                  , row_number() OVER (partition by address order by day desc) as latest_balance
+            FROM {{ ref('solana_utils_daily_balances') }}
             {% if is_incremental() %}
-            AND block_time >= date_trunc("day", now() - interval '1 week')
+            WHERE block_time >= date_trunc("day", now() - interval '1 week')
             {% endif %}
       )
 
 SELECT 
-      day
-      , address
+      address
       , token_mint_address
       , sol_balance
       , token_balance
