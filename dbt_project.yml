@@ -775,17 +775,16 @@ models:
         +schema: zeroex_ethereum
       optimism:
         +schema: zeroex_optimism
-
       polygon:
         +schema: zeroex_polygon
-
       avalanche_c:
         +schema: zeroex_avalanche_c
       fantom:
         +schema: zeroex_fantom
-
       arbitrum:
         +schema: zeroex_arbitrum
+      bnb:
+        +schema: zeroex_bnb
 
 
     wombat:

@@ -1,12 +1,11 @@
 WITH unit_tests as
-(SELECT case when test.taker_symbol = actual.taker_symbol 
+(SELECT case when test.maker_token = actual.maker_token 
                
-                and test.maker_symbol = actual.maker_symbol
+                and test.taker_token = actual.taker_token
 then True else False end as test
-FROM {{ ref('zeroex_api_fills') }} actual 
-JOIN {{ ref('zeroex_api_fills') }} test 
+FROM {{ ref('zeroex_bnb_api_fills') }} actual
+JOIN {{ ref('zeroex_bnb_api_fills_sample') }} test 
     ON test.tx_hash = actual.tx_hash AND test.evt_index = actual.evt_index
-    where test.taker_symbol is not null and test.maker_symbol is not null
 )
 select count(case when test = false then 1 else null end)/count(*) as pct_mismatch, count(*) as count_rows
 from unit_tests
