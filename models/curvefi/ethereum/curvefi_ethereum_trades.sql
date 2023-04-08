@@ -79,7 +79,7 @@ WITH dexs AS
     FROM {{ source('ethereum', 'logs') }} l
     JOIN  {{ ref('curvefi_ethereum_view_pools') }} p
         ON l.contract_address = p.pool_address
-        AND p.version = 'Factory V2'
+        AND (p.version = 'Factory V2' or p.version = 'Regular') --some Regular pools are new and use the below topic instead
     WHERE l.topic1 = "0xb2e76ae99761dc136e598d4a629bb347eccb9532a5f8bbd72e18467c3c34cc98" --TokenExchange
         {% if not is_incremental() %}
         AND l.block_time >= '{{project_start_date}}'
