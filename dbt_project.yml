@@ -94,6 +94,58 @@ models:
     dex:
       +schema: dex
 
+    airdrop:
+      +schema: airdrop
+      +materialized: table
+      ethereum:
+        +schema: airdrop_ethereum
+        +materialized: table
+      optimism:
+        +schema: airdrop_optimism
+        +materialized: table
+      arbitrum:
+        +schema: airdrop_arbitrum
+        +materialized: table
+      avalanche_c:
+        +schema: airdrop_avalanche_c
+        +materialized: table
+      bnb:
+        +schema: airdrop_bnb
+        +materialized: table
+      gnosis:
+        +schema: airdrop_gnosis
+        +materialized: table
+
+    giveth:
+      +schema: giveth
+      gnosis:
+        +schema: giveth_gnosis
+
+    ellipsis_finance:
+      +schema: ellipsis_finance
+      bnb:
+        +schema: ellipsis_finance_bnb
+
+    arbitrum:
+      +schema: arbitrum
+      arbitrum:
+        +schema: arbitrum_arbitrum
+
+    pangolin:
+      +schema: pangolin
+      avalanche_c:
+        +schema: pangolin_avalanche_c
+
+    ampleforth:
+      +schema: ampleforth
+      ethereum:
+        +schema: ampleforth_ethereum
+
+    velodrome:
+      +schema: velodrome
+      optimism:
+        +schema: velodrome_optimism
+
     nft:
       +schema: nft
       arbitrum:
