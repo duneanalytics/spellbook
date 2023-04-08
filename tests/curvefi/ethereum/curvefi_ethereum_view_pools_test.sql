@@ -25,13 +25,13 @@ WITH unit_tests AS (
             curvefi_view_pools.pool_address
         )
     --these were wrong in postgres data
-    WHERE curvefi_view_pools.pool_address NOT IN (
-        '0x43b4FdFD4Ff969587185cDB6f0BD875c5Fc83f8c'
-        ,'0x4807862AA8b2bF68830e4C8dc86D0e9A998e085A'
-        ,'0xd632f22692FaC7611d2AA1C0D552930D43CAEd3B'
-        ,'0xEd279fDD11cA84bEef15AF5D39BB4d4bEE23F0cA'
-        ,'0x5a6A4D54456819380173272A5E8E9B9904BdF41B'
-        ,'0xecd5e75afb02efa118af914515d6521aabd189f1'
+    WHERE lower(curvefi_view_pools.pool_address) NOT IN (
+        lower('0x43b4FdFD4Ff969587185cDB6f0BD875c5Fc83f8c')
+        ,lower('0x4807862AA8b2bF68830e4C8dc86D0e9A998e085A')
+        ,lower('0xd632f22692FaC7611d2AA1C0D552930D43CAEd3B')
+        ,lower('0xEd279fDD11cA84bEef15AF5D39BB4d4bEE23F0cA')
+        ,lower('0x5a6A4D54456819380173272A5E8E9B9904BdF41B')
+        ,lower('0xecd5e75afb02efa118af914515d6521aabd189f1')
         )
 )
 SELECT
