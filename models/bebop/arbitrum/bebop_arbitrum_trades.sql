@@ -22,7 +22,7 @@ WITH
       call_block_time AS block_time,
       call_block_number AS block_number,
       call_tx_hash AS tx_hash,
-      call_trace_address AS trace_address,
+      '' AS trace_address,
       evt_index,
       ex.contract_address,
       get_json_object(order, '$.expiry') AS expiry,
