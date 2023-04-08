@@ -1,7 +1,7 @@
 version: 2
 
 sources:
-  - name: bebop_ethereum
+  - name: bebop_v3_ethereum
     description: "Bebop decoded tables related to Bebop"
     freshness: # default freshness
       warn_after: { count: 12, period: hour }

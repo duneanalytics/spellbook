@@ -25,50 +25,50 @@ WITH
       call_trace_address AS trace_address,
       evt_index,
       ex.contract_address,
-      json_extract("order", '$.expiry') AS expiry,
+      get_json_object(order, '$.expiry') AS expiry,
       cast(
-        json_extract("order", '$.taker_address') AS VARCHAR(42)
+        get_json_object(order, '$.taker_address') AS string
       ) AS taker_address,
       array_distinct(
-        cast(
-          json_extract("order", '$.maker_addresses') AS array < VARCHAR(42) >
+        from_json(
+          get_json_object(order, '$.maker_addresses'), 'array<string>'
         )
       ) AS maker_addresses,
-      zip(
+      arrays_zip(
         array_distinct(
           flatten(
-            cast(
-              json_extract("order", '$.taker_tokens') AS array < array < VARCHAR(42) > >
+            from_json(
+              get_json_object(order, '$.taker_tokens') , 'array<array<string>>'
             )
           )
         ),
         array_distinct(
           flatten(
-            cast(
-              json_extract("order", '$.taker_amounts') AS array < array < DECIMAL (38, 0) > >
+            from_json(
+              get_json_object(order, '$.taker_amounts') , 'array<array<DECIMAL(38, 0)>>'
             )
           )
         )
       ) AS taker_tokens,
-      zip(
+      arrays_zip(
         array_distinct(
           flatten(
-            cast(
-              json_extract("order", '$.maker_tokens') AS array < array < VARCHAR(42) > >
+            from_json(
+              get_json_object(order, '$.maker_tokens') , 'array<array<string>>'
             )
           )
         ),
         array_distinct(
           flatten(
-            cast(
-              json_extract("order", '$.maker_amounts') AS array < array < DECIMAL (38, 0) > >
+            from_json(
+              get_json_object(order, '$.maker_amounts') , 'array<array<DECIMAL(38, 0)>>'
             )
           )
         )
       ) AS maker_tokens
     FROM
-      {{ source('bebop_ethereum', 'BebopAggregationContract_evt_AggregateOrderExecuted') }}
-      LEFT JOIN {{ source('bebop_ethereum', 'BebopAggregationContract_call_SettleAggregateOrder') }} ex ON ex.call_tx_hash = evt_tx_hash
+      {{ source('bebop_v3_ethereum', 'BebopAggregationContract_evt_AggregateOrderExecuted') }}
+      LEFT JOIN {{ source('bebop_v3_ethereum', 'BebopAggregationContract_call_SettleAggregateOrder') }} ex ON ex.call_tx_hash = evt_tx_hash
     WHERE
       call_success = true
       {% if not is_incremental() %}
@@ -78,20 +78,19 @@ WITH
       AND evt_block_time >= date_trunc("day", now() - interval '1 week')
       {% endif %}
   ),
-  bebop_raw_trades AS (
+  explode_taker_tokens_data as (
     SELECT
-      concat(
-        cast(cardinality(taker_tokens) as VARCHAR(42)),
-        '-',
-        cast(cardinality(maker_tokens) as VARCHAR(42))
-      ) as order_type,
-      expiry,
-      taker_address,
-      maker_addresses,
-      taker_tokens,
-      maker_tokens
+      *,
+      explode (taker_tokens) as taker_token_pair
     FROM
       bebop_raw_data
+  ),
+  explode_tokens_data as (
+    SELECT
+      *,
+      explode (maker_tokens) as maker_token_pair
+    FROM
+      explode_taker_tokens_data
   ),
   simple_trades as (
     SELECT
@@ -102,14 +101,12 @@ WITH
       trace_address,
       evt_index,
       taker_address,
-      taker_token,
-      (taker_amount / cardinality(maker_tokens)) as taker_amount,
-      maker_token,
-      (maker_amount / cardinality(taker_tokens)) as maker_amount
+      taker_token_pair.`0` as taker_token,
+      (taker_token_pair.`1` / cardinality(maker_tokens)) as taker_amount,
+      maker_token_pair.`0` as maker_token,
+      (maker_token_pair.`1` / cardinality(taker_tokens)) as maker_amount
     FROM
-      bebop_raw_data
-      CROSS JOIN UNNEST (taker_tokens) as un (taker_token, taker_amount)
-      CROSS JOIN UNNEST (maker_tokens) as un (maker_token, maker_amount)
+      explode_tokens_data
   )
 SELECT
   'ethereum' AS blockchain,
@@ -143,12 +140,12 @@ SELECT
   t.evt_index
 FROM
   simple_trades t
-  LEFT JOIN {{ ref('tokens_erc20') }} t_bought ON cast(t_bought.contract_address AS VARCHAR(42)) = t.maker_token
+  LEFT JOIN {{ ref('tokens_erc20') }} t_bought ON cast(t_bought.contract_address AS string) = t.maker_token
   AND t_bought.blockchain = 'ethereum'
-  LEFT JOIN {{ ref('tokens_erc20') }} t_sold ON cast(t_sold.contract_address AS VARCHAR(42)) = t.taker_token
+  LEFT JOIN {{ ref('tokens_erc20') }} t_sold ON cast(t_sold.contract_address AS string) = t.taker_token
   AND t_sold.blockchain = 'ethereum'
   LEFT JOIN {{ source('prices', 'usd') }} p_bought ON p_bought.minute = date_trunc('minute', t.block_time)
-  AND cast(p_bought.contract_address AS VARCHAR(42)) = t.maker_token
+  AND cast(p_bought.contract_address AS string) = t.maker_token
   AND p_bought.blockchain = 'ethereum'
   {% if not is_incremental() %}
   AND p_bought.minute >= '{{project_start_date}}'
@@ -157,7 +154,7 @@ FROM
   AND p_bought.minute >= date_trunc("day", now() - interval '1 week')
   {% endif %}
   LEFT JOIN {{ source('prices', 'usd') }} p_sold ON p_sold.minute = date_trunc('minute', t.block_time)
-  AND cast(p_sold.contract_address AS VARCHAR(42)) = t.taker_token
+  AND cast(p_sold.contract_address AS string) = t.taker_token
   AND p_sold.blockchain = 'ethereum'
   {% if not is_incremental() %}
   AND p_sold.minute >= '{{project_start_date}}'
