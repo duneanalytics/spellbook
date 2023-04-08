@@ -12,7 +12,7 @@ models:
     description: Bebop contract trades on Polygon - formatted for dex.trades
     tests:
       - check_dex_seed:
-          blockchain: ethereum
+          blockchain: polygon
           project: bebop
           version: 1
     columns:
