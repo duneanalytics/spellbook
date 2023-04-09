@@ -41,7 +41,7 @@ models:
         name: token_balance
       - *updated_at
 
-  - name: solana_utils_latest_balance
+  - name: solana_utils_latest_balances
     meta:
       blockchain: solana
       contributors: [ilemi]
