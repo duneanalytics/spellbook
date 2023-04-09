@@ -15,7 +15,7 @@ WITH
       updated_balances as (
             SELECT
                   address 
-                  , date_trunc('day', block_time) as day
+                  , day
                   , token_mint_address
                   , sol_balance
                   , token_balance
