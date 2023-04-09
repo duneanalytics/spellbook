@@ -17,8 +17,8 @@ WITH
                   address 
                   , date_trunc('day', block_time) as day
                   , token_mint_address
-                  , post_balance as sol_balance
-                  , post_token_balance as token_balance
+                  , cast(post_balance as double)/1e9 as sol_balance --lamport -> sol 
+                  , post_token_balance as token_balance --tokens are already correct decimals in this table
                   , row_number() OVER (partition by address, date_trunc('day', block_time) order by block_slot desc) as latest_balance
             FROM {{ source('solana','account_activity') }}
             WHERE tx_success 
