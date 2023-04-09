@@ -23,7 +23,7 @@ WITH
             FROM {{ source('solana','account_activity') }}
             WHERE tx_success 
             {% if is_incremental() %}
-            AND block_time >= date_trunc("day", now() - interval '1 week')
+            AND block_time >= date_trunc("day", now() - interval '1 day')
             {% endif %}
       )
 

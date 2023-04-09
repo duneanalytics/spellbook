@@ -22,7 +22,7 @@ WITH
                   , row_number() OVER (partition by address order by day desc) as latest_balance
             FROM {{ ref('solana_utils_daily_balances') }}
             {% if is_incremental() %}
-            WHERE block_time >= date_trunc("day", now() - interval '1 week')
+            WHERE block_time >= date_trunc("day", now() - interval '1 day')
             {% endif %}
       )
 
