@@ -936,6 +936,11 @@ models:
       polygon:
         +schema: rarible_polygon
 
+    dydx:
+      +schema: dydx
+      ethereum:
+        +schema: dydx_ethereum
+
     optimism_attestationstation:
       +schema: optimism_attestationstation
       optimism:
