@@ -53,7 +53,7 @@ WITH
             , 'fills' as native_order_type
         FROM {{ source('zeroex_v3_ethereum', 'Exchange_evt_Fill') }} fills 
         LEFT JOIN prices.usd tp ON
-            date_trunc('minute', evt_block_time) = tp.minute
+            date_trunc('minute', evt_block_time) = tp.minute and tp.blockchain = 'ethereum'
             AND CASE
                     -- Set Deversifi ETHWrapper to WETH
                     WHEN SUBSTRING(fills.takerAssetData,17,20) IN ('0x50cb61afa3f023d17276dcfb35abf85c710d1cff','0xaa7427d8f17d87a28f5e1ba3adbb270badbe1011') THEN '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'
@@ -62,7 +62,7 @@ WITH
                     ELSE SUBSTRING(fills.takerAssetData,17,20)
                 END = tp.contract_address
         LEFT JOIN prices.usd mp ON
-            DATE_TRUNC('minute', evt_block_time) = mp.minute and mp.blockchain = fills.blockchain 
+            DATE_TRUNC('minute', evt_block_time) = mp.minute and mp.blockchain = 'ethereum' 
             AND CASE
                     -- Set Deversifi ETHWrapper to WETH
                     WHEN SUBSTRING(fills.makerAssetData,17,20) IN ('0x50cb61afa3f023d17276dcfb35abf85c710d1cff','0xaa7427d8f17d87a28f5e1ba3adbb270badbe1011') THEN '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'
@@ -123,7 +123,7 @@ WITH
                     ELSE SUBSTRING(fills.takerAssetData,17,20)
                 END = tp.contract_address
         LEFT JOIN prices.usd mp ON
-            DATE_TRUNC('minute', evt_block_time) = mp.minute and mp.blockchain = fills.blockchain 
+            DATE_TRUNC('minute', evt_block_time) = mp.minute and mp.blockchain = 'ethereum'
             AND CASE
                     -- Set Deversifi ETHWrapper to WETH
                     WHEN SUBSTRING(fills.makerAssetData,17,20) IN ('0x50cb61afa3f023d17276dcfb35abf85c710d1cff','0xaa7427d8f17d87a28f5e1ba3adbb270badbe1011') THEN '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'
@@ -186,7 +186,7 @@ WITH
                     ELSE fills.takerToken
                 END = tp.contract_address
         LEFT JOIN prices.usd mp ON 
-            DATE_TRUNC('minute', evt_block_time) = mp.minute and mp.blockchain = fills.blockchain 
+            DATE_TRUNC('minute', evt_block_time) = mp.minute and mp.blockchain = 'ethereum'
             AND CASE
                     -- Set Deversifi ETHWrapper to WETH
                     WHEN fills.makerToken IN ('0x50cb61afa3f023d17276dcfb35abf85c710d1cff','0xaa7427d8f17d87a28f5e1ba3adbb270badbe1011') THEN '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'
@@ -249,7 +249,7 @@ WITH
                   ELSE fills.takerToken
               END = tp.contract_address
       LEFT JOIN prices.usd mp ON
-          DATE_TRUNC('minute', evt_block_time) = mp.minute and mp.blockchain = fills.blockchain 
+          DATE_TRUNC('minute', evt_block_time) = mp.minute and mp.blockchain = 'ethereum'
           AND CASE
                   -- Set Deversifi ETHWrapper to WETH
                   WHEN fills.makerToken IN ('0x50cb61afa3f023d17276dcfb35abf85c710d1cff','0xaa7427d8f17d87a28f5e1ba3adbb270badbe1011') THEN '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'
@@ -302,7 +302,7 @@ WITH
           , 'otc' as native_order_type
       FROM {{ source('zeroex_ethereum', 'ExchangeProxy_evt_OtcOrderFilled') }} fills
       LEFT JOIN prices.usd tp ON
-          date_trunc('minute', evt_block_time) = tp.minute and mp.blockchain = fills.blockchain 
+          date_trunc('minute', evt_block_time) = tp.minute and mp.blockchain = 'ethereum'
           AND CASE
                   -- Set Deversifi ETHWrapper to WETH
                   WHEN fills.takerToken IN ('0x50cb61afa3f023d17276dcfb35abf85c710d1cff','0xaa7427d8f17d87a28f5e1ba3adbb270badbe1011') THEN '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'
@@ -311,7 +311,7 @@ WITH
                   ELSE fills.takerToken
               END = tp.contract_address
       LEFT JOIN prices.usd mp ON
-          DATE_TRUNC('minute', evt_block_time) = mp.minute  and mp.blockchain = fills.blockchain 
+          DATE_TRUNC('minute', evt_block_time) = mp.minute  and mp.blockchain = 'ethereum'
           AND CASE
                   -- Set Deversifi ETHWrapper to WETH
                   WHEN fills.makerToken IN ('0x50cb61afa3f023d17276dcfb35abf85c710d1cff','0xaa7427d8f17d87a28f5e1ba3adbb270badbe1011') THEN '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'
