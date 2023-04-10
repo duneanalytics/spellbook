@@ -31,8 +31,7 @@ FROM (
         handle,
         profile_id,
         content_id,
-        content_uri,
-        unique_event_id
+        content_uri
     FROM {{ model }}
     {% if not loop.last %}
     UNION ALL
