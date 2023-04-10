@@ -6,11 +6,11 @@
         on_schema_change='sync_all_columns',
         file_format ='delta',
         incremental_strategy='merge',
-        post_hook='{{ expose_spells(\'["polygon"]\',
+        post_hook='{{ expose_spells(\'["bnb"]\',
                                 "project",
                                 "zeroex",
-                                \'["rantum","bakabhai993"]\') }}'
-    )
+                                \'["rantum","bakabhai993","danning.sui"]\') }}'
+    ) 
 }}
 
 {% set zeroex_v3_start_date = '2019-12-01' %}
@@ -20,7 +20,7 @@ AS
 (
     SELECT   row_number() OVER ( partition BY tx_hash ORDER BY evt_index ASC ) AS tx_fill_number
            , *
-    FROM {{ ref('zeroex_polygon_api_fills') }}
+    FROM {{ ref('zeroex_bnb_api_fills') }}
     WHERE 1=1
     AND swap_flag = 1
     {% if is_incremental() %}
@@ -28,7 +28,7 @@ AS
     {% endif %}
     {% if not is_incremental() %}
     AND block_time >= '{{zeroex_v3_start_date}}'
-    {% endif %}    
+    {% endif %}
 )
 , fills_first_last
 AS
