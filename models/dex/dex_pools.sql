@@ -33,6 +33,9 @@ FROM (
         , contract_address
     FROM {{ dex_pool_model }}
     {% if not loop.last %}
+    {% if is_incremental() %}
+    WHERE creation_block_time >= date_trunc("day", now() - interval '1 week')
+    {% endif %}
     UNION ALL
     {% endif %}
     {% endfor %}
