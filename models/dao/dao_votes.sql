@@ -8,11 +8,12 @@
 }}
 
 {% set dao_votes_models = [
-'uniswap_v3_ethereum_votes',
-'compound_v2_ethereum_votes',
-'gitcoin_ethereum_votes',
-'ens_ethereum_votes',
-'aave_ethereum_votes'
+ref('uniswap_v3_ethereum_votes')
+, ref('compound_v2_ethereum_votes')
+, ref('gitcoin_ethereum_votes')
+, ref('ens_ethereum_votes')
+, ref('aave_ethereum_votes')
+, ref('dydx_ethereum_votes')
 ] %}
 
 
@@ -36,7 +37,7 @@ FROM (
         voter_address,
         support,
         reason
-    FROM {{ ref(dao_model) }}
+    FROM {{ dao_model }}
     {% if not loop.last %}
     UNION ALL
     {% endif %}
