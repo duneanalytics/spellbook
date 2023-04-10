@@ -8,8 +8,8 @@
 }}
 
 {% set cyberconnect_models = [
-'cyberconnect_bnb_events'
-,'cyberconnect_ethereum_events'
+ref('cyberconnect_bnb_events')
+, ref('cyberconnect_ethereum_events')
 
 ] %}
 
@@ -34,7 +34,7 @@ FROM (
         content_id,
         content_uri,
         unique_event_id
-    FROM {{ ref(model) }}
+    FROM {{ model }}
     {% if not loop.last %}
     UNION ALL
     {% endif %}
