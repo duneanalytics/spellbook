@@ -712,7 +712,7 @@ models:
       optimism:
         +schema: kyberswap_optimism
       ethereum:
-        +schema:kyberswap_ethereum
+        +schema: kyberswap_ethereum
 
     hubble_exchange:
       +schema: hubble_exchange
