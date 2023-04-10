@@ -41,24 +41,3 @@ models:
       - &label_type
         name: label_type
         description: "Type of label (see labels overall readme)"
-
-  - name: labels_trader_dex_diversity_ethereum
-    meta:
-      blockchain: ethereum
-      sector: labels
-      category: trader_dex_diversity
-      contributors: gentrexha
-    config:
-      tags: ['labels', 'ethereum', 'trader_dex_diversity', 'dex', 'dex_aggregator']
-    description:  "Number of different dex-es used by addresses who use dex and dex aggregators"
-    columns:
-      - *blockchain
-      - *address
-      - *name
-      - *category
-      - *contributor
-      - *source
-      - *created_at
-      - *updated_at
-      - *model_name
-      - *label_type
