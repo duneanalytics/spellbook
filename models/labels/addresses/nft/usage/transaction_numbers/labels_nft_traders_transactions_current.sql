@@ -1,4 +1,5 @@
-{{config(alias='nft_traders_transactions')}}
+
+{{config(alias='nft_traders_transactions_current')}}
 
 WITH nft_trades AS (
 SELECT
@@ -6,6 +7,7 @@ SELECT
     tx_hash,
     buyer AS address
 FROM {{ ref('nft_trades') }}
+WHERE block_time > NOW() - interval '14' day
 
 UNION
 
@@ -14,6 +16,7 @@ SELECT
     tx_hash,
     seller AS address
 FROM {{ ref('nft_trades') }}
+WHERE block_time > NOW() - interval '14' day
 ),
 
 total as (
@@ -30,18 +33,18 @@ SELECT * FROM (
     nft_trades.address,
     CASE WHEN ((ROW_NUMBER() OVER(ORDER BY COUNT(tx_hash) DESC)) / total_count * 100) <= 10
               AND ((ROW_NUMBER() OVER(ORDER BY COUNT(tx_hash) DESC)) / total_count * 100) > 5
-            THEN 'Top 10% NFT Trader (Transactions)'
+            THEN 'Current Top 10% NFT Trader (Transactions)'
          WHEN ((ROW_NUMBER() OVER(ORDER BY COUNT(tx_hash) DESC)) / total_count * 100) <= 5
               AND ((ROW_NUMBER() OVER(ORDER BY COUNT(tx_hash) DESC)) / total_count * 100) > 1
-            THEN 'Top 5% NFT Trader (Transactions)'
+            THEN 'Current Top 5% NFT Trader (Transactions)'
          WHEN ((ROW_NUMBER() OVER(ORDER BY COUNT(tx_hash) DESC)) / total_count * 100) <= 1
-            THEN 'Top 1% NFT Trader (Transactions)' END AS name,
+            THEN 'Current Top 1% NFT Trader (Transactions)' END AS name,
     'nft' AS category,
-    'soispoke' AS contributor,
+    'hildobby' AS contributor,
     'query' AS source,
     timestamp('2022-08-24') as created_at,
     now() as updated_at,
-    'nft_traders_transactions' as model_name,
+    'nft_traders_transactions_current' as model_name,
     'usage' as label_type
     FROM nft_trades
       JOIN total on total.address = nft_trades.address
