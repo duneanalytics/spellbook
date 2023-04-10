@@ -61,3 +61,38 @@ models:
       - &can_vote
         name: can_vote
         description: "Is the voter address eligible to vote (true/false)"
+
+  - name: op_retropgf_optimism_round2_recipients
+    meta:
+      blockchain: optimism
+      project: op_retropgf
+      contributors: msilb7
+
+    config:
+      tags: ['optimism', 'retropgf', 'rpgf', 'public goods', 'OP']
+    description: "Data from onchain attestations about Optimism Retroactive Public Goods Funding (RetroPGF) Round#2 Recipients"
+
+    columns:
+      - *block_date
+      - *submitter_address
+      - *issuer
+      - *recipient_name
+      - *recipient_category
+      - *award_amount
+      - *award_token
+  
+  - name: op_retropgf_optimism_round2_voters
+    meta:
+      blockchain: optimism
+      project: op_retropgf
+      contributors: msilb7
+
+    config:
+      tags: ['optimism', 'retropgf', 'rpgf', 'public goods', 'OP']
+    description: "Data from onchain attestations about Optimism Retroactive Public Goods Funding (RetroPGF) Round#2 Voters"
+
+    columns:
+      - *block_date
+      - *voter
+      - *issuer
+      - *can_vote

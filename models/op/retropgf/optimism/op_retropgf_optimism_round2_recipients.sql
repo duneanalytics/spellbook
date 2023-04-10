@@ -2,6 +2,7 @@
         schema = 'op_retropgf_optimism'
         , alias='round2_recipients'
         , materialized='table'
+        , tags=['static']
   )
 }}
 
