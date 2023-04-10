@@ -10,7 +10,6 @@
 {% set cyberconnect_models = [
 ref('cyberconnect_bnb_events')
 , ref('cyberconnect_ethereum_events')
-
 ] %}
 
 SELECT *
