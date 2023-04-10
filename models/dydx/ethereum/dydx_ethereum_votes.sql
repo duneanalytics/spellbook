@@ -8,7 +8,7 @@
     unique_key = ['tx_hash', 'voter_address'],
     post_hook='{{ expose_spells(\'["ethereum"]\',
                                 "project",
-                                "dydx_ethereum",
+                                "dydx",
                                 \'["ivigamberdiev"]\') }}'
     )
 }}
