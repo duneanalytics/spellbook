@@ -11,7 +11,7 @@ WITH lpda_bid AS (
         'LPDA' AS type,
         CAST(_price AS DOUBLE) /POWER(10,18) AS price,
         _quantity AS amount,
-        CAST(_price AS DOUBLE) /POWER(10,18)*_quantity AS volume,
+        CAST(_price AS DOUBLE) /POWER(10,18) * CAST(_quantity AS DOUBLE) AS volume,
         evt_block_time AS block_time,
         evt_tx_hash AS tx_hash
     FROM

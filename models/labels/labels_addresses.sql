@@ -27,11 +27,16 @@ SELECT * FROM {{ ref('labels_safe_ethereum') }}
 UNION ALL
 SELECT * FROM {{ ref('labels_tornado_cash') }}
 UNION ALL
+SELECT * FROM {{ ref('labels_likely_bot_labels') }}
+UNION ALL
 SELECT * FROM {{ ref('labels_quest_participants') }}
 UNION ALL
 SELECT * FROM {{ ref('labels_cex_users') }}
+UNION ALL
+SELECT * FROM {{ ref('labels_op_retropgf') }}
 
 -- new/standardized labels
+
 UNION ALL
 SELECT * FROM {{ ref('labels_bridges') }}
 UNION ALL

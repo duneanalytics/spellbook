@@ -15,7 +15,13 @@ SELECT
 FROM
 (
     VALUES
-
+    ("ftt-ftx-token","solana","FTT","AGFEad2et2ZJif9jaGpdMixQqvW5i81aBdvKe7PHNfz3",6),
+    ("forge-blocksmith-labs-forge","solana","FORGE","FoRGERiW7odcCBGU1bztZi16osPBHjxharvDathL5eds",9),
+    ("gmt-stepn","solana","STEPN-GMT","7i5KKsX2weiTkry7jA4ZwSuXGhs5eJBEjY8vVxR4pfRx",9),
+    ("bonk-bonk","solana","BONK","DezXAZ8z7PnrnRJjz3wXBoRgixCa6xjnB7YaB1pPB263",5),
+    ("rlb-rollbit-coin","solana","RLB","RLBxxFkseAZ4RgJH3Sqn8jXxhmGoz9jWxDNJMh8pL7a",6),
+    ("orca-orca","solana","ORCA","orcaEKTdK7LKz57vaAYr9QeNsVEPfiu6QeMU1kektZE",6),
+    ("uxd-uxd-stablecoin","solana","UXD","7kbnvuGBxxj8AG9qp8Scn56muWGaRaFqxg1FsRp3PaFT",6),
     ("aury-aurory", "solana", "AURY", "AURYydfxJib1ZkTir1Jn1J9ECYUtjb6rKQVmtYaixWPP", 9),
     ("btc-bitcoin", "solana", "BTC", "9n4nbM75f5Ui33ZbPYXn59EwSgE8CGsHtAeTH5YFeJ9E", 6),
     ("cope-cope", "solana", "COPE", "8HGyAAB1yoM1ttS7pXjHMa3dukTFGQggnFFH3hJZgzQh", 6),
