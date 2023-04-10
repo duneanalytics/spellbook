@@ -4,7 +4,7 @@ WITH unit_tests as
                 and test.maker_symbol = actual.maker_symbol
 then True else False end as test
 FROM {{ ref('zeroex_api_fills') }} actual 
-JOIN {{ ref('zeroex_api_fills_test') }} test 
+JOIN {{ ref('zeroex_api_fills_sample') }} test 
     ON test.tx_hash = actual.tx_hash AND test.evt_index = actual.evt_index
     where test.token_bought_symbol is not null and test.token_sold_symbol is not null
 )
