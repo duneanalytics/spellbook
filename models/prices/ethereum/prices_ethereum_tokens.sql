@@ -198,6 +198,7 @@ FROM
     ("iotx-iotex", "ethereum", "IOTX", "0x6fb3e0a217407efff7ca062d46c26e5d60a14d69", 18),
     ("isla-insula", "ethereum", "ISLA", "0x697ef32b4a3f5a4c39de1cb7563f24ca7bfc5947", 18),
     ("itc-iot-chain", "ethereum", "ITC", "0x5e6b6d9abad9093fdc861ea1600eba1b355cd940", 18),
+    ("itgr-integral1132", "ethereum", "ITGR", "0xd502f487e1841fdc805130e13eae80c61186bc98", 18),
     ("jpeg-jpeg39d", "ethereum", "JPEG", "0xe80c0cd204d654cebe8dd64a4857cab6be8345a3", 18),
     ("jrt-jarvis-reward-token", "ethereum", "JRT", "0x8a9c67fee641579deba04928c4bc45f66e26343a", 18),
     ("kawa-kawa", "ethereum", "KAWA", "0x546aed37d202d607f45cbd2b8c0cad0d25fbe339", 18),
@@ -1319,5 +1320,13 @@ FROM
     ("gt-gatechain-token","ethereum", "GT", "0xe66747a101bff2dba3697199dcce5b743b454759",18),
     ("stg-stargatetoken","ethereum","STG","0xaf5191b0de278c7286d6c7cc6ab6bb8a73ba2cd6",18),
     ("ico-axelar", "ethereum", "AXL", "0x467719ad09025fcc6cf6f8311755809d45a5e5f3", 6),
-    ("arb-arbitrum","ethereum","ARB","0xb50721bcf8d664c30412cfbc6cf7a15145234ad1",18)
+    ("arb-arbitrum","ethereum","ARB","0xb50721bcf8d664c30412cfbc6cf7a15145234ad1",18),
+    ("cmp-component", "ethereum", "CMP", "0x9f20ed5f919dc1c1695042542c13adcfc100dcab", 18),
+    ("gas-gas-dao", "ethereum", "GAS", "0x6bba316c48b49bd1eac44573c5c871ff02958469", 18),
+    ("fort-forta", "ethereum", "FORT", "0x41545f8b9472d758bb669ed8eaeeecd7a9c4ec29", 18),
+    ("tknfy-tokenfy", "ethereum", "TKNFY", "0xa6dd98031551c23bb4a2fbe2c4d524e8f737c6f7", 18),
+    ("ff-forefront", "ethereum", "FF", "0x7e9d8f07a64e363e97a648904a89fb4cd5fb94cd", 18),
+    ("pal-paladin-eth", "ethereum", "PAL", "0xab846fb6c81370327e784ae7cbb6d6a6af6ff4bf", 18),
+    ("sudo-sudo-governance-token", "ethereum", "SUDO", "0x3446dd70b2d52a6bf4a5a192d9b0a161295ab7f9", 18),
+    ("sclp-scallop", "ethereum", "SCLP","0x3f6d1649a1366b0e82173d33e365953f9f1cc84c",18)
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)
