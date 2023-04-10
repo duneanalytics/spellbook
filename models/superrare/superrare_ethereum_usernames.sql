@@ -3183,7 +3183,7 @@ FROM (VALUES
     ('ethereum','0x888f9b2d893356de0d2e1f5ecae7f1ecab8b5b3b', 'jasonseife', 'superrare', 'cat', 'static', date('2022-10-01'), now()),
     ('ethereum','0x6d1ec4d3d8c12489a048608ae9951825d1c432b9', 'richeyd', 'superrare', 'cat', 'static', date('2022-10-01'), now()),
     ('ethereum','0x597d709fd3b6f39b78578f0536955ae86bc062ca', 'kirk', 'superrare', 'cat', 'static', date('2022-10-01'), now()),
-    ('ethereum','0x8f903cfc0af3c2ec0d872c57538af5e071544a57', 'rantumbits', 'superrare', 'cat', 'static', date('2022-10-01'), now()),
+    ('ethereum','0x8f903cfc0af3c2ec0d872c57538af5e071544a57', 'rantum', 'superrare', 'cat', 'static', date('2022-10-01'), now()),
     ('ethereum','0x3a6e99d804746f7ec5bc2cafe9ca5670607dfa84', 'hexeosis', 'superrare', 'cat', 'static', date('2022-10-01'), now()),
     ('ethereum','0xea65bdadd02cf5d85f2e857c1badda2af608a5e9', 'nadiia', 'superrare', 'cat', 'static', date('2022-10-01'), now()),
     ('ethereum','0xf731b47a3699c1c59adba55efd4f7dacab3aa0bf', 'urp_said', 'superrare', 'cat', 'static', date('2022-10-01'), now()),

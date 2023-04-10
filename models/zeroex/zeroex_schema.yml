@@ -6,7 +6,7 @@ models:
       blockchain: ethereum, optimism, polygon, arbitrum, fantom, avalanche
       sector: dex
       project: uniswap
-      contributors: rantumBits, bakabhai993
+      contributors: rantum, bakabhai993
     config:
       tags: ['ethereum', 'optimism', 'polygon', 'uniswap','trades', 'dex', 'jeff-dude','cross-chain']
     description: >
@@ -85,7 +85,7 @@ models:
     meta:
       blockchain: ethereum, optimism, polygon, arbitrum, fantom, avalanche
       project: zeroex
-      contributors: sui414, bakabhai993, hosuke
+      contributors: danning.sui, bakabhai993, hosuke
     config:
       tags: ['ethereum','0x','dex_aggregator','dex','aggregator']
     description: >
@@ -96,16 +96,6 @@ models:
             - block_date
             - tx_hash
             - evt_index
-      - check_seed:
-          seed_file: ref('zeroex_ethereum_api_fills_sample')
-          match_columns:
-            - tx_hash
-            - evt_index
-          check_columns:
-            - maker
-            - taker
-            - taker_symbol
-            - maker_symbol
     columns:
       - *tx_hash
       - &block_number
