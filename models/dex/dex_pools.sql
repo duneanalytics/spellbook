@@ -1,5 +1,9 @@
 {{ config(
         alias ='pools',
+        materialized = 'incremental',
+        file_format = 'delta',
+        incremental_strategy = 'merge',
+        unique_key = ['blockchain', 'pool'],
         post_hook='{{ expose_spells(\'["ethereum", "arbitrum", "polygon"]\',
                                 "sector",
                                 "dex",
