@@ -119,8 +119,8 @@ SELECT
   END AS token_pair,
   cast(t.maker_amount AS DECIMAL (38, 0)) / power(10, coalesce(t_bought.decimals, 0)) AS token_bought_amount,
   cast(t.taker_amount AS DECIMAL (38, 0)) / power(10, coalesce(t_sold.decimals, 0)) AS token_sold_amount,
-  maker_amount AS token_bought_amount_raw,
-  taker_amount AS token_sold_amount_raw,
+  cast(t.maker_amount AS DECIMAL (38, 0)) AS token_bought_amount_raw,
+  cast(t.taker_amount AS DECIMAL (38, 0)) AS token_sold_amount_raw,
   coalesce(
     (maker_amount / power(10, coalesce(p_bought.decimals, 0))) * p_bought.price,
     (taker_amount / power(10, coalesce(p_sold.decimals, 0))) * p_sold.price
