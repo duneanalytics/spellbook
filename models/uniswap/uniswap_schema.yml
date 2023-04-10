@@ -122,13 +122,18 @@ models:
 
   - name: uniswap_pools
     meta:
-      blockchain: ethereum, optimism, polygon, arbitrum
+      blockchain: ethereum, polygon, arbitrum
       sector: dex
       contributors: hildobby
     config:
-      tags: ['ethereum']
+      tags: ['ethereum', 'polygon', 'arbitrum', 'pools']
     description: >
       Uniswap DEX pools
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - pool
     columns:
       - *blockchain
       - *project

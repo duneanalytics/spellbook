@@ -204,11 +204,11 @@ models:
 
   - name: dex_pools
     meta:
-      blockchain: ethereum, gnosis, avalanche_c, fantom
+      blockchain: ethereum, arbitrum, polygon
       sector: dex
       contributors: hildobby
     config:
-      tags: ['ethereum', 'gnosis', 'avalanche_c', 'fantom', 'aggregator', 'dex', 'trades', 'cross-chain']
+      tags: ['ethereum', 'arbitrum', 'polygon', 'dex', 'cross-chain', 'pools']
     description: >
       DEX pools on all chains across all contracts and versions
     tests:
