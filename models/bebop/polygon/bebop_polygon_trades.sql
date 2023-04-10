@@ -105,57 +105,60 @@ WITH
     FROM
       explode_tokens_data
   )
-SELECT
-  'polygon' AS blockchain,
-  'bebop' AS project,
-  '1' AS version,
-  TRY_CAST(date_trunc('DAY', t.block_time) AS date) AS block_date,
-  t.block_time AS block_time,
-  t_bought.symbol AS token_bought_symbol,
-  t_sold.symbol AS token_sold_symbol,
-  CASE
-    WHEN lower(t_bought.symbol) > lower(t_sold.symbol) THEN concat(t_sold.symbol, '-', t_bought.symbol)
-    ELSE concat(t_bought.symbol, '-', t_sold.symbol)
-  END AS token_pair,
-  cast(t.maker_amount AS DECIMAL (38, 0)) / power(10, coalesce(t_bought.decimals, 0)) AS token_bought_amount,
-  cast(t.taker_amount AS DECIMAL (38, 0)) / power(10, coalesce(t_sold.decimals, 0)) AS token_sold_amount,
-  maker_amount AS token_bought_amount_raw,
-  taker_amount AS token_sold_amount_raw,
-  coalesce(
-    (maker_amount / power(10, coalesce(p_bought.decimals, 0))) * p_bought.price,
-    (taker_amount / power(10, coalesce(p_sold.decimals, 0))) * p_sold.price
-  ) AS amount_usd,
-  t_bought.contract_address AS token_bought_address,
-  t_sold.contract_address AS token_sold_address,
-  t.taker_address AS taker,
-  t.contract_address AS maker,
-  t.contract_address AS project_contract_address,
-  t.tx_hash,
-  t.taker_address AS tx_from,
-  t.contract_address AS tx_to,
-  t.trace_address,
-  t.evt_index
+SELECT 'polygon'                                                                          AS blockchain,
+       'bebop'                                                                            AS project,
+       '1'                                                                                AS version,
+       TRY_CAST(date_trunc('DAY', t.block_time) AS date)                                  AS block_date,
+       t.block_time                                                                       AS block_time,
+       t_bought.symbol                                                                    AS token_bought_symbol,
+       t_sold.symbol                                                                      AS token_sold_symbol,
+       CASE
+           WHEN lower(t_bought.symbol) > lower(t_sold.symbol) THEN concat(t_sold.symbol, '-', t_bought.symbol)
+           ELSE concat(t_bought.symbol, '-', t_sold.symbol)
+           END                                                                            AS token_pair,
+       cast(t.maker_amount AS DECIMAL(38, 0)) / power(10, coalesce(t_bought.decimals, 0)) AS token_bought_amount,
+       cast(t.taker_amount AS DECIMAL(38, 0)) / power(10, coalesce(t_sold.decimals, 0))   AS token_sold_amount,
+       CAST(maker_amount AS DECIMAL(38, 0))                                               AS token_bought_amount_raw,
+       CAST(taker_amount AS DECIMAL(38, 0))                                               AS token_sold_amount_raw,
+       coalesce(
+                   (maker_amount / power(10, coalesce(p_bought.decimals, 0))) * p_bought.price,
+                   (taker_amount / power(10, coalesce(p_sold.decimals, 0))) * p_sold.price
+           )                                                                              AS amount_usd,
+       t_bought.contract_address                                                          AS token_bought_address,
+       t_sold.contract_address                                                            AS token_sold_address,
+       t.taker_address                                                                    AS taker,
+       t.contract_address                                                                 AS maker,
+       t.contract_address                                                                 AS project_contract_address,
+       t.tx_hash,
+       t.taker_address                                                                    AS tx_from,
+       t.contract_address                                                                 AS tx_to,
+       t.trace_address,
+       t.evt_index
 FROM
   simple_trades t
-  LEFT JOIN {{ ref('tokens_erc20') }} t_bought ON cast(t_bought.contract_address AS string) = t.maker_token
-  AND t_bought.blockchain = 'polygon'
-  LEFT JOIN {{ ref('tokens_erc20') }} t_sold ON cast(t_sold.contract_address AS string) = t.taker_token
-  AND t_sold.blockchain = 'polygon'
-  LEFT JOIN {{ source('prices', 'usd') }} p_bought ON p_bought.minute = date_trunc('minute', t.block_time)
-  AND cast(p_bought.contract_address AS string) = t.maker_token
-  AND p_bought.blockchain = 'polygon'
-  {% if not is_incremental() %}
-  AND p_bought.minute >= '{{project_start_date}}'
-  {% endif %}
-  {% if is_incremental() %}
-  AND p_bought.minute >= date_trunc("day", now() - interval '1 week')
-  {% endif %}
-  LEFT JOIN {{ source('prices', 'usd') }} p_sold ON p_sold.minute = date_trunc('minute', t.block_time)
-  AND cast(p_sold.contract_address AS string) = t.taker_token
-  AND p_sold.blockchain = 'polygon'
-  {% if not is_incremental() %}
-  AND p_sold.minute >= '{{project_start_date}}'
-  {% endif %}
-  {% if is_incremental() %}
-  AND p_sold.minute >= date_trunc("day", now() - interval '1 week')
-  {% endif %}
+LEFT JOIN {{ ref('tokens_erc20') }} t_bought
+    ON cast(t_bought.contract_address AS string) = t.maker_token
+    AND t_bought.blockchain = 'polygon'
+LEFT JOIN {{ ref('tokens_erc20') }} t_sold
+    ON cast(t_sold.contract_address AS string) = t.taker_token
+    AND t_sold.blockchain = 'polygon'
+LEFT JOIN {{ source('prices', 'usd') }} p_bought
+    ON p_bought.minute = date_trunc('minute', t.block_time)
+    AND cast(p_bought.contract_address AS string) = t.maker_token
+    AND p_bought.blockchain = 'polygon'
+    {% if not is_incremental() %}
+    AND p_bought.minute >= '{{project_start_date}}'
+    {% endif %}
+    {% if is_incremental() %}
+    AND p_bought.minute >= date_trunc("day", now() - interval '1 week')
+    {% endif %}
+LEFT JOIN {{ source('prices', 'usd') }} p_sold
+    ON p_sold.minute = date_trunc('minute', t.block_time)
+    AND cast(p_sold.contract_address AS string) = t.taker_token
+    AND p_sold.blockchain = 'polygon'
+    {% if not is_incremental() %}
+    AND p_sold.minute >= '{{project_start_date}}'
+    {% endif %}
+    {% if is_incremental() %}
+    AND p_sold.minute >= date_trunc("day", now() - interval '1 week')
+    {% endif %}
