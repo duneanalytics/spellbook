@@ -22,29 +22,7 @@ SELECT *
 FROM (
     {% for model in zeroex_models %}
     SELECT
-      volume_usd  as amount_usd,
-      block_date  as block_date,
-      block_time  as block_time,
-      blockchain  as blockchain,
-      evt_index  as evt_index, 
-      maker  as maker, 
-      project,
-      contract_address  as project_contract_address,
-      taker  as taker, 
-      maker_symbol as  token_bought_symbol, 
-      token_pair  as token_pair,
-      taker_token as token_sold_address,
-      taker_token_amount  as token_sold_amount,
-      taker_symbol  as  token_sold_symbol,
-      trace_address,
-      tx_from  as tx_from,
-      tx_hash  as tx_hash,
-      tx_to  as tx_to,
-      taker_token_amount_raw  as token_sold_amount_raw,
-      maker_token  as token_bought_address, 
-      maker_token_amount  as token_bought_amount, 
-      version,
-      maker_token_amount_raw  as token_bought_amount_raw
+      *
     FROM {{ model }}
     {% if not loop.last %}
     UNION ALL

@@ -1,7 +1,7 @@
 WITH unit_tests as
-(SELECT case when test.taker_symbol = actual.token_sold_symbol 
+(SELECT case when test.taker_symbol = actual.taker_symbol 
                
-                and test.maker_symbol = actual.token_bought_symbol
+                and test.maker_symbol = actual.maker_symbol
 then True else False end as test
 FROM {{ ref('zeroex_api_fills_deduped') }} actual 
 JOIN {{ ref('zeroex_api_fills_deduped_sample') }} test 
