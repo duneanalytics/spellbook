@@ -1,4 +1,3 @@
-Error: mismatched input '1'. Expecting: '%', '(', ')', '*', '+', ',', '-', '->', '.', '/', 'AND', 'AT', 'OR', 'ORDER', 'OVER', '[', '||', <predicate>, <string>
 Rule: when explode is used in the query, replace explode with unnest
 SELECT explode(array) FROM table -> SELECT vals.val FROM table1, unnest(arrayFromTable1) as vals(val)
 Example:

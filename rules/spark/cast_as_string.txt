@@ -1,4 +1,2 @@
-Error: Unknown type: string at line
 Rule: replace string cast with varchar cast
-cast([col] as string) -> cast([col]  as varchar)
 Example: cast(address as string) ->	cast(address as varchar)

@@ -1,3 +1,2 @@
-Error: mismatched input 'true'. Expecting: 'DISTINCT', 'NOT', 'NULL' at
 Rule: Use equal (=) to filter on boolean value (True/False)
 Example: X is true ->	X = true

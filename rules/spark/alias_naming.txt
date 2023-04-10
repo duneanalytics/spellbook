@@ -1,4 +1,3 @@
-Error: backquoted identifiers are not supported; use double quotes to quote identifiers
 Rule: Only for aliases that contain a space, replace backticks around aliases with double quotes.
 Example: sum(users) over (partition by day) as `daily active user` > sum(users) over (partition by day) as "daily active user"
 Counter Example (no change needed): sum(users) over (partition by day) as daily_active_user > sum(users) over (partition by day) as daily_active_user

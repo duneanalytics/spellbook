@@ -1,3 +1,2 @@
-Error: mismatched input 'left'. Expecting: '*', 'ALL', 'DISTINCT', <expression>, replace left with substr
 Rule: left([string],[length]) -> substr([string], [start], [length])
 Example: left(address, 10) -> substr(address, 1, 10)

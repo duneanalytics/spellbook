@@ -1,16 +1,3 @@
-Error: ` Function 'get_json_object' not registered`
-Rule: Update json object syntax to use json_query or json_extract_scalar
-Example:
-get_json_object(get_json_object(takerOutputUpdate,'\(.deltaWei'),'\).value')'0x'
-->
-json_query(json_query(takerOutputUpdate, 'lax $.deltaWei' omit quotes), 'lax $.value')
-Example:
-get_json_object(m.loanTerms,'$.loanStartTime')::numeric as loanStartTime,
-DATE_TRUNC('day',m.evt_block_time) as datestr,
-evt_block_time,
-get_json_object(m.loanTerms,'$.loanPrincipalAmount')/1e18 AS loan_principal, /* the total USD Principal of WETH loans */
-->
-CAST(JSON_EXTRACT_SCALAR (m.loanTerms, '$.loanStartTime') AS UINT256) AS loanStartTime,
-DATE_TRUNC('day', m.evt_block_time) AS datestr,
-evt_block_time,
-CAST(JSON_EXTRACT_SCALAJSON_EXTRACT_SCALARR (m.loanTerms, '$.loanPrincipalAmount') as DOUBLE)/ 1e18 AS loan_principal /* the total USD Principal of WETH loans */,
+Rule: Replace get_json_object with json_query or json_extract_scalar
+Example: get_json_object(get_json_object(takerOutputUpdate,'\(.deltaWei'),'\).value')'0x' -> json_query(json_query(takerOutputUpdate, 'lax $.deltaWei' omit quotes), 'lax $.value')
+Example: get_json_object(m.loanTerms,'$.loanStartTime')::numeric as loanStartTime, ->CAST(JSON_EXTRACT_SCALAR (m.loanTerms, '$.loanStartTime') AS UINT256) AS loanStartTime,

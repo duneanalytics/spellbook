@@ -1,4 +1,3 @@
-Error:
 Rule: Replace backticks around reserved keywords with double quotes or add double quotes if no backticks.
 Example: coalesce(dexs.taker, tx.from) AS taker -> coalesce(dexs.taker, tx."from") AS taker
 Example: coalesce(dexs.taker, tx.`from`) AS taker -> coalesce(dexs.taker, tx."from") AS taker
