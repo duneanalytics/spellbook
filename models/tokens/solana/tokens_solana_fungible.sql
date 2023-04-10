@@ -12965,5 +12965,15 @@ FROM
   'CXLBjMMcwkc17GfJtBos6rQCo1ypeH6eDbB82Kby4MRm',
   'ustc',
   9
+),
+(  
+  'DezXAZ8z7PnrnRJjz3wXBoRgixCa6xjnB7YaB1pPB263',
+  'bonk',
+  5
+),
+( 
+  'BWXrrYFhT7bMHmNBFoQFWdsSgA3yXoAnMhDK6Fn1eSEn',
+  'HADES',
+  9
 )
 ) AS temp_table (token_mint_address, symbol, decimals)
