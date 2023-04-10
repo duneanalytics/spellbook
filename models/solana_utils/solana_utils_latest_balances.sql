@@ -1,10 +1,10 @@
  {{
   config(
-        alias='daily_balances',
+        alias='latest_balances',
         materialized='incremental',
         file_format = 'delta',
         incremental_strategy='merge',
-        unique_key = ['token_mint_address', 'address','day'],
+        unique_key = ['token_mint_address', 'address'],
         post_hook='{{ expose_spells(\'["solana"]\',
                                     "sector",
                                     "solana_utils",
@@ -15,25 +15,23 @@ WITH
       updated_balances as (
             SELECT
                   address 
-                  , date_trunc('day', block_time) as day
+                  , day
+                  , sol_balance
                   , token_mint_address
-                  , cast(post_balance as double)/1e9 as sol_balance --lamport -> sol 
-                  , post_token_balance as token_balance --tokens are already correct decimals in this table
+                  , token_balance
                   , token_balance_owner
-                  , row_number() OVER (partition by address, date_trunc('day', block_time) order by block_slot desc) as latest_balance
-            FROM {{ source('solana','account_activity') }}
-            WHERE tx_success 
+                  , row_number() OVER (partition by address order by day desc) as latest_balance
+            FROM {{ ref('solana_utils_daily_balances') }}
             {% if is_incremental() %}
-            AND block_time >= date_trunc("day", now() - interval '1 day')
+            WHERE day >= date_trunc("day", now() - interval '1 day')
             {% endif %}
       )
 
 SELECT 
-      day
-      , address
+      address
       , sol_balance
-      , token_mint_address
       , token_balance
+      , token_mint_address
       , token_balance_owner
       , now() as updated_at 
 FROM updated_balances
