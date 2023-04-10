@@ -39,6 +39,8 @@ models:
         name: sol_balance
       - &token_balance
         name: token_balance
+      - &token_balance_owner
+        name: token_balance_owner
       - *updated_at
 
   - name: solana_utils_latest_balances
@@ -50,8 +52,10 @@ models:
     description: >
         get the latest balances for each address
     columns:
-      - *token_mint_address
       - *address
       - *sol_balance
       - *token_balance
+      - *token_mint_address
+      - *token_balance_owner
       - *updated_at
+

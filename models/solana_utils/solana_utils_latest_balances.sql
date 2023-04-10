@@ -16,9 +16,10 @@ WITH
             SELECT
                   address 
                   , day
-                  , token_mint_address
                   , sol_balance
+                  , token_mint_address
                   , token_balance
+                  , token_balance_owner
                   , row_number() OVER (partition by address order by day desc) as latest_balance
             FROM {{ ref('solana_utils_daily_balances') }}
             {% if is_incremental() %}
@@ -28,9 +29,10 @@ WITH
 
 SELECT 
       address
-      , token_mint_address
       , sol_balance
       , token_balance
+      , token_mint_address
+      , token_balance_owner
       , now() as updated_at 
 FROM updated_balances
 WHERE latest_balance = 1
