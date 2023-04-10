@@ -7,7 +7,9 @@ SELECT
     buyer AS address
 FROM {{ ref('nft_trades') }}
 WHERE block_time > NOW() - interval '14' day
-        UNION
+
+UNION
+
 SELECT
     blockchain,
     amount_usd,

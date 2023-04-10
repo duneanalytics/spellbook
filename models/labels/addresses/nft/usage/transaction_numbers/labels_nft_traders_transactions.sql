@@ -1,4 +1,3 @@
-
 {{config(alias='nft_traders_transactions')}}
 
 WITH nft_trades AS (
@@ -7,7 +6,9 @@ SELECT
     tx_hash,
     buyer AS address
 FROM {{ ref('nft_trades') }}
-        UNION
+
+UNION
+
 SELECT
     blockchain,
     tx_hash,
