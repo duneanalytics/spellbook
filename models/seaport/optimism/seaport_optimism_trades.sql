@@ -4,7 +4,7 @@
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
-    unique_key = ['block_date', 'tx_hash', 'evt_index', 'nft_contract_address', 'token_id', 'sub_type', 'sub_idx'],
+    unique_key = ['unique_trade_id'],
     post_hook='{{ expose_spells(\'["optimism"]\',
                             "project",
                             "seaport",
@@ -322,6 +322,8 @@ with source_optimism_transactions as (
     ,sub_type
   from iv_trades
 )
-select *
+select
+  *
+  ,concat(block_date, tx_hash, evt_index, nft_contract_address, token_id, sub_type, sub_idx) as unique_trade_id
 from iv_columns
 ;

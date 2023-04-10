@@ -62,4 +62,3 @@ jobs:
 
       - name: Run DuneSQL Check
         run: "/runner/dunesql_check.py --schema test_schema --pr_schema git_$GIT_SHA"
-        continue-on-error: true
