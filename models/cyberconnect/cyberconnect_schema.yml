@@ -57,9 +57,4 @@ models:
         description: "Essence ID of the content. This ID increments for each new piece of content from the same profile" 
       - &content_uri
         name: content_uri
-        description: "URI of the content" 
-      - &unique_event_id
-        name: unique_event_id
-        description: "Unique event ID which is a concatenation of the chain, project, event type, event hash, event index" 
-        tests:
-          - unique
+        description: "URI of the content"
