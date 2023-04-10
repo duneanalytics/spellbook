@@ -1,26 +1,40 @@
 version: 2
 
 models:
-  - name: kyberswap_trades
+  - name: kyberswap_ethereum_trades
     meta:
-      blockchain: avalanche_c, optimism,ethereum
+      blockchain: ethereum
       sector: dex
       project: kyberswap
-      contributors: zhongyiio
+      contributors: 
     config:
-      tags: ['avalanche_c', 'optimism','ethereum','trades', 'dex', 'kyberswap', 'zhongyiio', 'hosuke']
+      tags: ['ethereum','dex','trades', 'kyberswap', 'ppclunghe', 'gregshestakovlido']
     description: >
-        Kyberswap trades on all chains across all contracts and versions. This table will load dex trades downstream.
+        Kyberswap trades on Ethereum across all contracts and versions. This table will load dex trades downstream.
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_date
+            - blockchain
+            - project
+            - version
+            - tx_hash
+            - evt_index
+            - trace_address
+      - check_dex_seed:
+          blockchain: ethereum
+          project: kyberswap
+          version: elastic
     columns:
       - &blockchain
         name: blockchain
         description: "Blockchain which the DEX is deployed"
-      - &project 
+      - &project
         name: project
-        description: "Project name of the DEX"  
+        description: "Project name of the DEX"
       - &version
         name: version
-        description: "Version of the contract built and deployed by the DEX project"  
+        description: "Version of the contract built and deployed by the DEX project"
       - &block_date
         name: block_date
         description: "UTC event block date of each DEX trade"
