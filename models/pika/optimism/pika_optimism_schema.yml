@@ -14,7 +14,8 @@ models:
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
-            - block_time
+            - block_date
+            - blockchain
             - project
             - version
             - tx_hash
@@ -97,7 +98,8 @@ models:
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
-            - block_time
+            - block_date
+            - blockchain
             - project
             - version
             - tx_hash
@@ -136,7 +138,8 @@ models:
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
-            - block_time
+            - block_date
+            - blockchain
             - project
             - version
             - tx_hash
