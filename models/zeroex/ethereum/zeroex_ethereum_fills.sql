@@ -53,7 +53,7 @@ WITH
             , 'fills' as native_order_type
         FROM {{ source('zeroex_v3_ethereum', 'Exchange_evt_Fill') }} fills 
         LEFT JOIN prices.usd tp ON
-            date_trunc('minute', evt_block_time) = tp.minute and tp.blockchain = 'ethereum'
+            date_trunc('minute', evt_block_time) = tp.minute 
             AND CASE
                     -- Set Deversifi ETHWrapper to WETH
                     WHEN SUBSTRING(fills.takerAssetData,17,20) IN ('0x50cb61afa3f023d17276dcfb35abf85c710d1cff','0xaa7427d8f17d87a28f5e1ba3adbb270badbe1011') THEN '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'
@@ -62,7 +62,7 @@ WITH
                     ELSE SUBSTRING(fills.takerAssetData,17,20)
                 END = tp.contract_address
         LEFT JOIN prices.usd mp ON
-            DATE_TRUNC('minute', evt_block_time) = mp.minute and mp.blockchain = 'ethereum' 
+            DATE_TRUNC('minute', evt_block_time) = mp.minute  
             AND CASE
                     -- Set Deversifi ETHWrapper to WETH
                     WHEN SUBSTRING(fills.makerAssetData,17,20) IN ('0x50cb61afa3f023d17276dcfb35abf85c710d1cff','0xaa7427d8f17d87a28f5e1ba3adbb270badbe1011') THEN '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'
@@ -72,7 +72,7 @@ WITH
                 END = mp.contract_address
         LEFT OUTER JOIN {{ ref('tokens_erc20') }} mt ON mt.contract_address = SUBSTRING(fills.makerAssetData,17,20)
         LEFT OUTER JOIN {{ ref('tokens_erc20') }} tt ON tt.contract_address = SUBSTRING(fills.takerAssetData,17,20)
-         where 1=1 
+         where 1=1  and and mp.blockchain = 'ethereum' and tp.blockchain = 'ethereum'
                 {% if is_incremental() %}
                 AND evt_block_time >= date_trunc('day', now() - interval '1 week')
                 {% endif %}
@@ -114,7 +114,7 @@ WITH
             , 'fills' as native_order_type
         FROM {{ source('zeroex_v2_ethereum', 'Exchange2_1_evt_Fill') }} fills
         LEFT JOIN prices.usd tp ON
-            date_trunc('minute', evt_block_time) = tp.minute and tp.blockchain = 'ethereum'
+            date_trunc('minute', evt_block_time) = tp.minute 
             AND CASE
                     -- Set Deversifi ETHWrapper to WETH
                     WHEN SUBSTRING(fills.takerAssetData,17,20) IN ('0x50cb61afa3f023d17276dcfb35abf85c710d1cff','0xaa7427d8f17d87a28f5e1ba3adbb270badbe1011') THEN '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'
@@ -123,7 +123,7 @@ WITH
                     ELSE SUBSTRING(fills.takerAssetData,17,20)
                 END = tp.contract_address
         LEFT JOIN prices.usd mp ON
-            DATE_TRUNC('minute', evt_block_time) = mp.minute and mp.blockchain = 'ethereum'
+            DATE_TRUNC('minute', evt_block_time) = mp.minute 
             AND CASE
                     -- Set Deversifi ETHWrapper to WETH
                     WHEN SUBSTRING(fills.makerAssetData,17,20) IN ('0x50cb61afa3f023d17276dcfb35abf85c710d1cff','0xaa7427d8f17d87a28f5e1ba3adbb270badbe1011') THEN '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'
@@ -133,7 +133,7 @@ WITH
                 END = mp.contract_address
         LEFT OUTER JOIN {{ ref('tokens_erc20') }} mt ON mt.contract_address = SUBSTRING(fills.makerAssetData,17,20)
         LEFT OUTER JOIN {{ ref('tokens_erc20') }} tt ON tt.contract_address = SUBSTRING(fills.takerAssetData,17,20)
-         where 1=1 
+         where 1=1  and and mp.blockchain = 'ethereum' and tp.blockchain = 'ethereum'
                 {% if is_incremental() %}
                 AND evt_block_time >= date_trunc('day', now() - interval '1 week')
                 {% endif %}
@@ -177,7 +177,7 @@ WITH
             , 'limit' as native_order_type
         FROM {{ source('zeroex_ethereum', 'ExchangeProxy_evt_LimitOrderFilled') }} fills
         LEFT JOIN prices.usd tp ON 
-            date_trunc('minute', evt_block_time) = tp.minute and tp.blockchain = 'ethereum'
+            date_trunc('minute', evt_block_time) = tp.minute 
             AND CASE
                     -- Set Deversifi ETHWrapper to WETH
                     WHEN fills.takerToken IN ('0x50cb61afa3f023d17276dcfb35abf85c710d1cff','0xaa7427d8f17d87a28f5e1ba3adbb270badbe1011') THEN '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'
@@ -186,7 +186,7 @@ WITH
                     ELSE fills.takerToken
                 END = tp.contract_address
         LEFT JOIN prices.usd mp ON 
-            DATE_TRUNC('minute', evt_block_time) = mp.minute and mp.blockchain = 'ethereum'
+            DATE_TRUNC('minute', evt_block_time) = mp.minute 
             AND CASE
                     -- Set Deversifi ETHWrapper to WETH
                     WHEN fills.makerToken IN ('0x50cb61afa3f023d17276dcfb35abf85c710d1cff','0xaa7427d8f17d87a28f5e1ba3adbb270badbe1011') THEN '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'
@@ -196,7 +196,7 @@ WITH
                 END = mp.contract_address
         LEFT OUTER JOIN {{ ref('tokens_erc20') }} mt ON mt.contract_address = fills.makerToken
         LEFT OUTER JOIN {{ ref('tokens_erc20') }} tt ON tt.contract_address = fills.takerToken
-         where 1=1 
+         where 1=1  and and mp.blockchain = 'ethereum' and tp.blockchain = 'ethereum'
                 {% if is_incremental() %}
                 AND evt_block_time >= date_trunc('day', now() - interval '1 week')
                 {% endif %}
@@ -240,7 +240,7 @@ WITH
           , 'rfq' as native_order_type
       FROM {{ source('zeroex_ethereum', 'ExchangeProxy_evt_RfqOrderFilled') }} fills
       LEFT JOIN prices.usd tp ON
-          date_trunc('minute', evt_block_time) = tp.minute and tp.blockchain = 'ethereum'
+          date_trunc('minute', evt_block_time) = tp.minute 
           AND CASE
                   -- Set Deversifi ETHWrapper to WETH
                   WHEN fills.takerToken IN ('0x50cb61afa3f023d17276dcfb35abf85c710d1cff','0xaa7427d8f17d87a28f5e1ba3adbb270badbe1011') THEN '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'
@@ -249,7 +249,7 @@ WITH
                   ELSE fills.takerToken
               END = tp.contract_address
       LEFT JOIN prices.usd mp ON
-          DATE_TRUNC('minute', evt_block_time) = mp.minute and mp.blockchain = 'ethereum'
+          DATE_TRUNC('minute', evt_block_time) = mp.minute 
           AND CASE
                   -- Set Deversifi ETHWrapper to WETH
                   WHEN fills.makerToken IN ('0x50cb61afa3f023d17276dcfb35abf85c710d1cff','0xaa7427d8f17d87a28f5e1ba3adbb270badbe1011') THEN '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'
@@ -259,7 +259,7 @@ WITH
               END = mp.contract_address
       LEFT OUTER JOIN {{ ref('tokens_erc20') }} mt ON mt.contract_address = fills.makerToken
       LEFT OUTER JOIN {{ ref('tokens_erc20') }} tt ON tt.contract_address = fills.takerToken
-       where 1=1 
+       where 1=1  and and mp.blockchain = 'ethereum' and tp.blockchain = 'ethereum'
                 {% if is_incremental() %}
                 AND evt_block_time >= date_trunc('day', now() - interval '1 week')
                 {% endif %}
@@ -302,7 +302,7 @@ WITH
           , 'otc' as native_order_type
       FROM {{ source('zeroex_ethereum', 'ExchangeProxy_evt_OtcOrderFilled') }} fills
       LEFT JOIN prices.usd tp ON
-          date_trunc('minute', evt_block_time) = tp.minute and tp.blockchain = 'ethereum'
+          date_trunc('minute', evt_block_time) = tp.minute 
           AND CASE
                   -- Set Deversifi ETHWrapper to WETH
                   WHEN fills.takerToken IN ('0x50cb61afa3f023d17276dcfb35abf85c710d1cff','0xaa7427d8f17d87a28f5e1ba3adbb270badbe1011') THEN '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'
@@ -311,7 +311,7 @@ WITH
                   ELSE fills.takerToken
               END = tp.contract_address
       LEFT JOIN prices.usd mp ON
-          DATE_TRUNC('minute', evt_block_time) = mp.minute  and mp.blockchain = 'ethereum'
+          DATE_TRUNC('minute', evt_block_time) = mp.minute  
           AND CASE
                   -- Set Deversifi ETHWrapper to WETH
                   WHEN fills.makerToken IN ('0x50cb61afa3f023d17276dcfb35abf85c710d1cff','0xaa7427d8f17d87a28f5e1ba3adbb270badbe1011') THEN '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'
@@ -321,7 +321,7 @@ WITH
               END = mp.contract_address
       LEFT OUTER JOIN {{ ref('tokens_erc20') }} mt ON mt.contract_address = fills.makerToken
       LEFT OUTER JOIN {{ ref('tokens_erc20') }} tt ON tt.contract_address = fills.takerToken
-       where 1=1 
+       where 1=1  and and mp.blockchain = 'ethereum' and tp.blockchain = 'ethereum'
                 {% if is_incremental() %}
                 AND evt_block_time >= date_trunc('day', now() - interval '1 week')
                 {% endif %}
