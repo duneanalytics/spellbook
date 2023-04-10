@@ -25,6 +25,7 @@ FROM (
         block_date,
         evt_block_number,
         evt_tx_hash,
+        evt_index,
         evt_type,
         buyer,
         seller,

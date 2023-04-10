@@ -46,7 +46,10 @@ models:
         description: "evt_block_number" 
       - &evt_tx_hash
         name: evt_tx_hash
-        description: "evt_tx_hash" 
+        description: "evt_tx_hash"
+      - &evt_index
+        name: evt_index
+        description: "evt_index"
       - &evt_type
         name: evt_type
         description: "Event type (Trade, Mint, Burn)"
