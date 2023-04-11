@@ -2,6 +2,7 @@
 import argparse
 import difflib
 import os
+import re
 import shutil
 
 import openai
@@ -88,6 +89,13 @@ def write_output(output, model_path):
     with open(model_path, 'w') as f:
         f.write(output)
 
+def process_input(choice):
+    try:
+        return choice.split("```")[1]
+    except IndexError:
+        print("Error processing input: " + choice)
+        return choice
+
 
 max_tokens = 1000
 # This endpoint is in beta and is currently free
@@ -111,8 +119,9 @@ for i, input_piece in enumerate(inputs):
     print(f'Iterating: {round(100*(i/len(inputs)), 3)}%')
     input = "\n".join(input_piece)
     response = chat_request(model, instructions, input)
-    input = response["choices"][0]['message']['content']
-    output.append(input)
+    choice = response["choices"][0]['message']['content']
+    processed_choice = process_input(choice)
+    output.append(processed_choice)
 
 write_output("".join(output), model_path + ".new")
 print(f'Diffing {model_path} and {model_path + ".new"}')

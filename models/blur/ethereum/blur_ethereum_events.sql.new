@@ -1,6 +1,4 @@
-Here is the translated dbt model snippet with valid Trino SQL:
 
-```yaml
 {{ config(
     alias = 'events',
     partition_by = ['block_date'],
@@ -16,6 +14,7 @@ Here is the translated dbt model snippet with valid Trino SQL:
 
 {% set project_start_date = '2022-10-18' %}
 {% set seaport_usage_start_date = '2023-01-25' %}
+
 
 SELECT
     'ethereum' AS blockchain
@@ -35,11 +34,7 @@ SELECT
     , CASE WHEN json_extract_scalar(bm.sell, '$.trader') = agg.contract_address THEN et."from" ELSE json_extract_scalar(bm.sell, '$.trader') END AS seller
     ,CASE WHEN json_extract_scalar(bm.buy, '$.trader') = agg.contract_address THEN et."from" ELSE json_extract_scalar(bm.buy, '$.trader') END AS buyer
     , CASE WHEN json_extract_scalar(bm.buy, '$.matchingPolicy') IN ('0x00000000006411739da1c40b106f8511de5d1fac', '0x0000000000dab4a563819e8fd93dba3b25bc3495') THEN 'Buy'
-```
 
-I have replaced the get_json_object function with json_extract_scalar and updated the reserved keyword "from" with double quotes.Here is the translated dbt model snippet with valid Trino SQL:
-
-```sql
 WHEN json_extract_scalar(bm.buy, '$.matchingPolicy') IN ('0x0000000000b92d5d043faf7cecf7e2ee6aaed232') THEN 'Offer Accepted'
 WHEN et."from"=json_extract_scalar(bm.buy, '$.trader') THEN 'Buy'
 WHEN et."from"=json_extract_scalar(bm.sell, '$.trader') THEN 'Offer Accepted'
@@ -64,7 +59,7 @@ END AS trade_category
 , agg.contract_address AS aggregator_address
 , bm.evt_tx_hash AS tx_hash
 , et."from" AS tx_from
-, et.to AS tx_to
+, et."to" AS tx_to
 , CAST(0 AS DOUBLE) AS platform_fee_amount_raw
 , CAST(0 AS DOUBLE) AS platform_fee_amount
 , CAST(0 AS DOUBLE) AS platform_fee_amount_usd
@@ -75,11 +70,7 @@ END AS trade_category
     END AS royalty_fee_amount
 , CASE WHEN json_extract_scalar(bm.buy, '$.paymentToken') IN ('0x0000000000000000000000000000000000000000', '0x0000000000a39bb272e79075ade125fd351887ac') THEN CAST(COALESCE(pu.price*json_extract_scalar(bm.buy, '$.price')/POWER(10, 18)*json_extract_scalar(json_extract(bm.sell, '$.fees[0]'), '$.rate')/10000, 0) AS DOUBLE)
     ELSE CAST(COALESCE(pu.price*json_extract_scalar(bm.buy, '$.price')/POWER(10, pu.decimals)*json_extract_scalar(json_extract(bm.sell, '$.fees[0]'), '$.rate')/10000, 0) AS DOUBLE)
-```
 
-You can insert this snippet into your original dbt model.Here is the translated dbt model snippet with valid Trino SQL:
-
-```sql
 END AS royalty_fee_amount_usd
 , CAST(COALESCE(json_extract_scalar(json_extract(bm.sell, '$.fees[0]'), '$.rate')/100, 0) AS DOUBLE) AS royalty_fee_percentage
 , json_extract_scalar(json_extract(bm.sell, '$.fees[0]'), '$.recipient') AS royalty_fee_receive_address
@@ -114,9 +105,6 @@ LEFT JOIN {{ ref('tokens_ethereum_nft') }} nft ON json_extract_scalar(bm.buy, '$
 {% if is_incremental() %}
 WHERE bm.evt_block_time >= date_trunc('day', now() - interval '1' week)
 {% endif %}
-```
-
-I have replaced the get_json_object function with json_extract and json_extract_scalar functions, and updated the interval syntax. You can now insert this snippet into your original dbt model.Here is the translated dbt model snippet for Trino SQL:
 
 UNION ALL
 
@@ -130,16 +118,16 @@ SELECT
     , CAST(json_extract_scalar(s.offer[0], '$.identifier') AS varchar) AS token_id
     , nft_tok.standard AS token_standard
     , nft_tok.name AS collection
-    , CASE WHEN json_extract_scalar(s.offer[0], '$.amount') = '1' THEN 'Single Item Trade' ELSE 'Bundle Trade' END AS trade_type
+    , CASE WHEN json_extract_scalar(s.offer[0], '$.amount')=1 THEN 'Single Item Trade' ELSE 'Bundle Trade' END AS trade_type
     , CAST(json_extract_scalar(s.offer[0], '$.amount') AS DECIMAL(38,0)) AS number_of_items
     , 'Trade' AS evt_type
     , s.offerer AS seller
     , s.recipient AS buyer
     , 'Buy' AS trade_category
-    , CAST(json_extract_scalar(s.consideration[0], '$.amount') + json_extract_scalar(s.consideration[1], '$.amount') AS DECIMAL(38,0)) AS amount_raw
-    , CAST((json_extract_scalar(s.consideration[0], '$.amount') + json_extract_scalar(s.consideration[1], '$.amount')) / POWER(10, 18) AS double) AS amount_original
-    , CAST(pu.price * (json_extract_scalar(s.consideration[0], '$.amount') + json_extract_scalar(s.consideration[1], '$.amount')) / POWER(10, 18) AS double) AS amount_usd
-    , CASE WHEN json_extract_scalar(s.consideration[0], '$.token') = '0x0000000000000000000000000000000000000000' THEN 'ETH' ELSE currency_tok.symbol END AS currency_symbol
+    , CAST(json_extract_scalar(s.consideration[0], '$.amount')+json_extract_scalar(s.consideration[1], '$.amount') AS DECIMAL(38,0)) AS amount_raw
+    , CAST((json_extract_scalar(s.consideration[0], '$.amount')+json_extract_scalar(s.consideration[1], '$.amount'))/POWER(10, 18) AS double) AS amount_original
+    , CAST(pu.price*(json_extract_scalar(s.consideration[0], '$.amount')+json_extract_scalar(s.consideration[1], '$.amount'))/POWER(10, 18) AS double) AS amount_usd
+    , CASE WHEN json_extract_scalar(s.consideration[0], '$.token')='0x0000000000000000000000000000000000000000' THEN 'ETH' ELSE currency_tok.symbol END AS currency_symbol
     , json_extract_scalar(s.consideration[0], '$.token') AS currency_contract
     , s.contract_address AS project_contract_address
     , json_extract_scalar(s.offer[0], '$.token') AS nft_contract_address
@@ -151,9 +139,8 @@ SELECT
     , CAST(0 AS DOUBLE) AS platform_fee_amount_raw
     , CAST(0 AS DOUBLE) AS platform_fee_amount
     , CAST(0 AS DOUBLE) AS platform_fee_amount_usd
-    , CAST(0 AS DOUBLE) AS platform_fee_percentageHere is the translated dbt model snippet with valid Trino SQL:
+    , CAST(0 AS DOUBLE) AS platform_fee_percentage
 
-```
 , LEAST(CAST(JSON_EXTRACT_SCALAR(s.consideration[0], '$.amount') AS DOUBLE), CAST(JSON_EXTRACT_SCALAR(s.consideration[1], '$.amount') AS DOUBLE)) AS royalty_fee_amount_raw
 , LEAST(CAST(JSON_EXTRACT_SCALAR(s.consideration[0], '$.amount') AS DOUBLE), CAST(JSON_EXTRACT_SCALAR(s.consideration[1], '$.amount') AS DOUBLE))/POWER(10, 18) AS royalty_fee_amount
 , pu.price*LEAST(CAST(JSON_EXTRACT_SCALAR(s.consideration[0], '$.amount') AS DOUBLE), CAST(JSON_EXTRACT_SCALAR(s.consideration[1], '$.amount') AS DOUBLE))/POWER(10, 18) AS royalty_fee_amount_usd
@@ -164,6 +151,3 @@ SELECT
     ELSE JSON_EXTRACT_SCALAR(s.consideration[1], '$.recipient')
     END AS royalty_fee_receive_address
 , CAST('ethereum-blur-v1-' || s.evt_block_number || '-' || s.evt_tx_hash || '-' || s.evt_index AS varchar) AS unique_trade_id
-```
-
-Please note that I have replaced `get_json_object` with `JSON_EXTRACT_SCALAR` and `string` with `varchar`. You can insert this snippet into the original dbt model.
