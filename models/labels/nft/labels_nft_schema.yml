@@ -24,6 +24,9 @@ models:
       - &category
         name: category
         description: "Label category (NFT here)"
+        tests:
+          - accepted_values:
+              values: ['nft']
       - &contributor
         name: contributor
         description: "Wizard(s) contributing to labels"
@@ -36,7 +39,13 @@ models:
       - &updated_at
         name: updated_at
         description: "When were labels updated for the last time"
-  
+      - &model_name
+        name: model_name
+        description: "Name of the label model sourced from"
+      - &label_type
+        name: label_type
+        description: "Type of label (see labels overall readme)"
+
   - name: labels_nft_users_platforms
     meta:
       blockchain: ethereum, solana
@@ -58,7 +67,9 @@ models:
       - *source
       - *created_at
       - *updated_at
-        
+      - *model_name
+      - *label_type
+
   - name: labels_nft_traders_transactions
     meta:
       blockchain: ethereum, solana
@@ -80,7 +91,9 @@ models:
       - *source
       - *created_at
       - *updated_at
-
+      - *model_name
+      - *label_type
+      
   - name: labels_nft_traders_volume_usd
     meta:
       blockchain: ethereum, solana
@@ -101,3 +114,5 @@ models:
       - *source
       - *created_at
       - *updated_at
+      - *model_name
+      - *label_type

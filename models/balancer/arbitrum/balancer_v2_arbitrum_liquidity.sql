@@ -2,7 +2,7 @@
     config(
         schema='balancer_v2_arbitrum',
         alias='liquidity',
-        post_hook='{{ expose_spells(\'["arbitrum"]\',
+        post_hook='{{ expose_spells_hide_trino(\'["arbitrum"]\',
                                     "project",
                                     "balancer_v2",
                                     \'["stefenon"]\') }}'

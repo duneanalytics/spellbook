@@ -30,7 +30,7 @@ WITH
               call_success,
               tokenRecipient as call_from,
               'Sell' as trade_category
-            FROM 
+            FROM
                 {{ source('sudo_amm_ethereum','LSSVMPair_general_call_swapNFTsForToken') }}
                 join pairs_created pc ON contract_address = pc.pair_address
             where
@@ -82,7 +82,7 @@ WITH
     SELECT
       COUNT(distinct tx_hash) as num_txs
     FROM
-        {{ ref('nft_trades') }} nft
+        {{ ref('sudoswap_ethereum_events') }} nft
     WHERE
       blockchain = 'ethereum'
       AND project = 'sudoswap'

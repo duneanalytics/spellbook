@@ -78,9 +78,9 @@ sources:
           - name: evt_block_time
             description: 'Timestamp for block event time in UTC'
 
-      - name: DPP_evt_DODOSwap
+      - name: DPPOracle_evt_DODOSwap
         description: >
-          Decoded table related to DPP DODOSwap contract events.
+          Decoded table related to DPPOracle DODOSwap contract events.
         loaded_at_field: evt_block_time
         columns:
           - name: contract_address

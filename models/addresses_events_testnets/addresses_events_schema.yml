@@ -1,0 +1,31 @@
+version: 2
+
+models:
+  - name: addresses_events_testnets_first_funded_by
+    meta:
+      blockchain: goerli
+      sector: addresses_events_testnets
+      project: addresses
+      contributors: hildobby
+    config:
+      tags: ['table', 'funded', 'addresses_events', 'testnets']
+    description: "Table showing who first funded each address in its native asset on every testnet chain"
+    columns:
+      - &blockchain
+        name: blockchain
+        description: "Name of the blockchain"
+      - &address
+        name: address
+        description: "Concerned address"
+      - &first_funded_by
+        name: first_funded_by
+        description: "Which address first funded the address with the native asset on that chain"
+      - &block_time
+        name: block_time
+        description: "The block time on which the address was first funded with the native asset on that chain"
+      - &block_number
+        name: block_number
+        description: "The block number on which the address was first funded with the native asset on that chain"
+      - &tx_hash
+        name: tx_hash
+        description: "The transaction hash on which the address was first funded with the native asset on that chain"

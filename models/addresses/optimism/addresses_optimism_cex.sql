@@ -40,5 +40,5 @@ FROM (VALUES
     ,("0xf89d7b9c864f589bbF53a82105107622B35EaA40", "Bybit", "Bybit 1")
     ,("0x0639556F03714A74a5fEEaF5736a4A64fF70D206", "Bitget", "Bitget 1")
     ,("0x5bdf85216ec1e38d6458c870992a69e38e03f7ef", "Bitget", "Bitget 2")
-    ,("0x97b9d2102a9a65a26e1ee82d59e42d1b73b6868", "Bitget", "Bitget 3")
+    ,("0x97b9d2102a9a65a26e1ee82d59e42d1b73b68689", "Bitget", "Bitget 3")
     ) AS x (address, cex_name, distinct_name)

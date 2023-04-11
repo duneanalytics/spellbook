@@ -123,7 +123,7 @@ WITH dodo_view_markets (market_contract_address, base_token_symbol, quote_token_
 
         UNION ALL
 
-        -- dodov2 dpp
+        -- dodov2 dppOracle
         SELECT
             evt_block_time AS block_time,
             'DODO' AS project,
@@ -140,7 +140,7 @@ WITH dodo_view_markets (market_contract_address, base_token_symbol, quote_token_
             '' AS trace_address,
             evt_index
         FROM
-            {{ source('dodo_arbitrum', 'DPP_evt_DODOSwap')}}
+            {{ source('dodo_arbitrum', 'DPPOracle_evt_DODOSwap')}}
         WHERE {% for dodo_proxy in dodo_proxies %}
         trader <> '{{dodo_proxy}}'
         {% if not loop.last %}

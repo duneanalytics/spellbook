@@ -3,14 +3,14 @@ version: 2
 models:
   - name: pancakeswap_trades
     meta:
-      blockchain: bnb
+      blockchain: bnb, ethereum
       sector: dex
       project: pancakeswap
-      contributors: hosuke
+      contributors: hosuke, chef_seaweed
     config:
-      tags: ['bnb', 'pancakeswap','trades', 'dex', 'hosuke']
+      tags: ['bnb', 'ethereum', 'pancakeswap','trades', 'dex', 'hosuke', 'chef_seaweed']
     description: >
-        Pancake Swap trades on BNB smart chain across all contracts and versions. This table will load dex trades downstream.
+        PancakeSwap trades on BNB smart chain and Ethereum across all contracts and versions. This table will load dex trades downstream.
     columns:
       - &blockchain
         name: blockchain

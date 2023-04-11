@@ -1,14 +1,15 @@
 {{ config(
         alias ='trades',
-        post_hook='{{ expose_spells(\'["optimism"]\',
+        post_hook='{{ expose_spells(\'["fantom"]\',
                                 "project",
                                 "beethoven_x",
                                 \'["msilb7"]\') }}'
         )
 }}
 
+-- ref('beethoven_x_optimism_trades'), --Do not include this, the volume should be attributed to Balancer for Optimism (per Balancer team)
 {% set beets_models = [
-ref('beethoven_x_optimism_trades')
+ref('beethoven_x_fantom_trades')
 ] %}
 
 

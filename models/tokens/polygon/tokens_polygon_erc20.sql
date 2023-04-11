@@ -47,7 +47,7 @@ SELECT LOWER(contract_address) AS contract_address, symbol, decimals
 ,('0xfa68fb4628dff1028cfec22b4162fccd0d45efb6', 'MaticX', 18)
 ,('0x48e6b98ef6329f8f0a30ebb8c7c960330d648085', 'bb-am-usd', 18)
 ,('0x0503dd6b2d3dd463c9bef67fb5156870af63393e', 'bb-a-DAI', 18)
-,('x8a819a4cabd6efcb4e5504fe8679a1abd831dd8f', 'bb-a-USDT', 18)
+,('0x8a819a4cabd6efcb4e5504fe8679a1abd831dd8f', 'bb-a-USDT', 18)
 ,('0x1aafc31091d93c3ff003cff5d2d8f7ba2e728425', 'LP-USDC-USD+', 18)
 ,('0x221836a597948dce8f3568e044ff123108acc42a', 'amUSDC', 6)
 ,('0x19c60a251e525fa88cd6f3768416a8024e98fc19', 'amUSDT', 6)

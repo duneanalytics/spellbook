@@ -21,7 +21,7 @@ disperse as (
 
 contracts as (
         SELECT address as contract_address FROM {{ ref('labels_contracts') }}
-        WHERE blockchain = array('ethereum')
+        WHERE blockchain = 'ethereum'
 ), 
 
 funders as (

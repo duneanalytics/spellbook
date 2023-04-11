@@ -8,7 +8,7 @@ WITH lpda_fees AS (
         _vault AS vault,
         _receiver AS receiver,
         'LPDA' AS source,
-        _amount/POWER(10, 18) AS amount,
+        CAST(_amount AS DOUBLE)/POWER(10, 18) AS amount,
         evt_block_time AS block_time,
         evt_tx_hash AS tx_hash
     FROM

@@ -729,7 +729,7 @@ models:
   - name: quix_optimism_fees
     meta:
       blockchain: optimism
-      project: opensea
+      project: quix
       contributors: chuxin
     config:
       tags: ['optimism','nft','fees','quix','chuxin']

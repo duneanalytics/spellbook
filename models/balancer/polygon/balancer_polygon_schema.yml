@@ -298,3 +298,26 @@ models:
         description: 'Symbol of the token'
       - name: usd_amount
         description: 'Liquidity of the token in the pool in USD'
+  
+  - name: balancer_v2_polygon_lbps
+    meta:
+      blockchain: polygon
+      project: balancer_v2
+      contributors: stefenon
+    config:
+      tags: ['polygon', 'balancer', 'lbp']
+    description: >
+      Record of the Liquidity Boostrapping Pools (LBP) of Balancer, an automated portfolio manager and trading platform, on Polygon.
+    columns:
+      - name: name
+        description: 'Name of the LBP'
+      - name: pool_id
+        description: 'ID of the LBP'
+      - name: token_sold
+        description: 'Contract address of the token sold by the LBP'
+      - name: token_symbol
+        description: 'Symbol of the token sold by the LBP'
+      - name: start_time
+        description: 'LBP start time'
+      - name: end_time
+        description: 'LBP end time'

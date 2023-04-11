@@ -141,6 +141,8 @@ models:
         description: "Address that sent the token(s)"
       - name: to
         description: "Address that received the token(s)"
+      - name: executed_by
+        description: "Address that executed the transaction"
       - name: tx_hash
         description: "Transaction hash"
       - name: unique_transfer_id
@@ -168,3 +170,112 @@ models:
         description: "Name of protocol that routed this trade using the aggregator, is NULL if it's the same as aggregator_name"
       - name: hash_marker_size
         description: "Number of characters the hash_marker is made of, can be useful on joins"
+
+  - name: nft_ethereum_top_sales
+    meta:
+      blockchain: ethereum
+      sector: nft
+      contributors: Henrystats
+    config:
+      tags: ['nft', 'ethereum', 'top sales']
+    description: >
+        Top 50 NFT sales
+    columns:
+      - name: nft_contract_address
+        description: "nft contract address"
+      - name: nft_token_id
+        description: "nft token id"
+      - name: seller
+        description: "seller address"
+      - name: price
+        description: "value of trade in eth"
+      - name: tx_hash
+        description: "Unique trade blockchain tx_hash"
+      - name: rn
+        description: "row number"
+
+  - name: nft_ethereum_top_minters
+    meta:
+      blockchain: ethereum
+      sector: nft
+      contributors: Henrystats
+    config:
+      tags: ['nft', 'ethereum', 'top minters']
+    description: >
+        Top 50 NFT minters
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - nft_contract_address
+            - minter
+    columns:
+      - name: nft_contract_address
+        description: "nft contract address"
+      - name: minter
+        description: "Address that minted the nft"
+      - name: eth_spent
+        description: "Total eth spent by minter"
+      - name: no_minted
+        description: "Number of nft's minted"
+      - name: last_updated
+        description: "Last time spell was updated"
+
+  - name: nft_ethereum_wallet_pnl
+    meta:
+      blockchain: ethereum
+      sector: nft
+      contributors: Henrystats
+    config:
+      tags: ['nft', 'ethereum', 'wallet pnl']
+    description: >
+        Top 50 nft traders based on profit from nft.trades
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - wallet
+            - nft_contract_address
+    columns:
+      - name: wallet
+        description: "Trader wallet address"
+      - name: nft_contract_address
+        description: "nft contract address"
+      - name: eth_spent
+        description: "eth spent to buy nfts"
+      - name: eth_received
+        description: "eth received from selling nfts"
+      - name: pnl
+        description: "pnl from selling/buying nfts, measured in eth"
+      - name: trades
+        description: "number of trades"
+      - name: last_updated
+        description: "Last time spell was updated"
+        
+  - name: nft_ethereum_collection_stats
+    meta:
+      blockchain: ethereum
+      sector: nft
+      contributors: Henrystats
+    config:
+      tags: ['nft','ethereum', 'sales stats','volume']
+    description: >
+        This spell aggregates nft collections trading stats (volume, floor price) and pulls the data from nft.trades
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_date
+            - nft_contract_address
+    columns:
+      - name: block_date
+        description: "Block date"
+      - name: nft_contract_address
+        description: "NFT contract address"
+      - name: volume_eth
+        description: "daily nft collection volume Measured in ETH"
+      - name: trades
+        description: "daily nft collection number of trades"
+      - name: price_p5_eth
+        description: "5th percentile nft trade price Measured in ETH"
+      - name: price_min_eth
+        description: "Min NFT trade price Measured in ETH"
+      - name: price_max_eth
+        description: "Max NFT trade price Measured in ETH"

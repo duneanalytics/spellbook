@@ -187,6 +187,46 @@ sources:
           - name: cashDelta
             description: 'Change in the amount of token cashed the vault'
 
+      - name: LiquidityBootstrappingPool_evt_GradualWeightUpdateScheduled
+        description: >
+          Decoded table related to scheduled gradual weight updates on the Balancer LiquidityBootstrappingPool contract.
+        loaded_at_field: evt_block_time
+        columns:
+          - name: contract_address
+            description: 'LBP contract address'
+          - *evt_tx_hash
+          - *evt_index
+          - *evt_block_time
+          - *evt_block_number
+          - &endTime
+            name: endTime
+            description: 'Unix timestamp of the LBP end time'
+          - &endWeights
+            name: endWeights
+            description: 'Array with the weights of the LBP tokens at the end of the LBP'
+          - &startTime
+            name: startTime
+            description: 'Unix timestamp of the LBP start time'
+          - &startWeights
+            name: startWeights
+            description: 'Array with the weights of the LBP tokens at the start of the LBP'
+
+      - name: NoProtocolFeeLiquidityBootstrappingPool_evt_GradualWeightUpdateScheduled
+        description: >
+          Decoded table related to scheduled gradual weight updates on the Balancer NoProtocolFeeLiquidityBootstrappingPool contract.
+        loaded_at_field: evt_block_time
+        columns:
+          - name: contract_address
+            description: 'LBP contract address'
+          - *evt_tx_hash
+          - *evt_index
+          - *evt_block_time
+          - *evt_block_number
+          - *endTime
+          - *endWeights
+          - *startTime
+          - *startWeights
+
   - name: balancer_v1_ethereum
     description: >
       Decoded tables related to Balancer V1, an automated portfolio manager and trading platform, on Ethereum.

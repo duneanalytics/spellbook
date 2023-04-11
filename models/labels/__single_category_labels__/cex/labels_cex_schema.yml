@@ -1,0 +1,106 @@
+version: 2
+
+models:
+  - name: labels_cex
+    meta:
+      blockchain: ethereum, bnb, fantom, optimism
+      sector: labels
+      project: cex
+      contributors: hildobby, soispoke, Henrystats, msilb7
+    config:
+      tags: ['labels', 'ethereum', 'fantom', 'bnb', 'optimism', 'cex']
+    description: "Known centralised exchange addresses across chains"
+    columns:
+      - &blockchain
+        name: blockchain
+        description: "Blockchain"   
+      - &address
+        name: address
+        description: "Address of known CEX"
+      - &name
+        name: name
+        description: "Label name of centralised exchange"
+      - &category
+        name: category
+        description: "Label category"
+      - &contributor
+        name: contributor
+        description: "Wizard(s) contributing to labels"
+      - &source
+        name: source
+        description: "How were labels generated (could be static or query)"
+      - &created_at
+        name: created_at
+        description: "When were labels created"
+      - &updated_at
+        name: updated_at
+        description: "When were labels updated for the last time"
+      - &model_name
+        name: model_name
+        description: "Name of the label model sourced from"
+      - &label_type
+        name: label_type
+        description: "Type of label (see labels overall readme)"
+
+  - name: labels_cex_ethereum
+    meta:
+      blockchain: ethereum
+      sector: labels
+      project: cex
+      contibutors: hildobby, soispoke, ilemi
+    config:
+      tags: ['labels', 'ethereum', 'cex']
+    description: "Known centralised exchange addresses on Ethereum"
+    columns:
+      - *blockchain
+      - *address
+      - *name
+      - *category
+      - *contributor
+      - *source
+      - *created_at
+      - *updated_at
+      - *model_name
+      - *label_type
+
+  - name: labels_cex_bnb
+    meta:
+      blockchain: bnb
+      sector: labels
+      project: cex
+      contributors: soispoke
+    config:
+      tags: ['labels', 'bnb', 'cex']
+    description: "Known centralised exchange addresses on BNB chain"
+    columns:
+      - *blockchain
+      - *address
+      - *name
+      - *category
+      - *contributor
+      - *source
+      - *created_at
+      - *updated_at
+      - *model_name
+      - *label_type
+
+  - name: labels_cex_fantom
+    meta:
+      blockchain: fantom
+      sector: labels
+      project: cex
+      contributors: Henrystats
+    config:
+      tags: ['labels', 'fantom', 'cex']
+    description: "Known centralised exchange addresses on Fantom chain"
+    columns:
+      - *blockchain
+      - *address
+      - *name
+      - *category
+      - *contributor
+      - *source
+      - *created_at
+      - *updated_at
+      - *model_name
+      - *label_type

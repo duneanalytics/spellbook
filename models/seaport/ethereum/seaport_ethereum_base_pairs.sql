@@ -34,7 +34,9 @@ with iv_offer_consideration as (
                 when '2' then 'erc721'
                 when '3' then 'erc1155'
                 else 'etc' 
-            end as consideration_first_item_type          
+            end as consideration_first_item_type
+            ,offerer
+            ,recipient
             ,offerer as sender
             ,recipient as receiver
             ,zone
@@ -51,9 +53,10 @@ with iv_offer_consideration as (
             ,contract_address as platform_contract_address
             ,size(offer) as offer_cnt
             ,size(consideration) as consideration_cnt
+            ,order_hash            
             ,case when recipient = '0x0000000000000000000000000000000000000000' then true
                 else false
-            end as is_private
+            end as is_private -- will be deprecated in base_pairs
     from
     (
         select consideration
@@ -66,6 +69,7 @@ with iv_offer_consideration as (
             , offerer
             , recipient
             , zone
+            , orderHash AS order_hash
             , posexplode(offer) as (offer_idx, offer_item)
         from {{ source('seaport_ethereum', 'Seaport_evt_OrderFulfilled') }}
         {% if not is_incremental() %}
@@ -96,6 +100,8 @@ with iv_offer_consideration as (
                 when '3' then 'erc1155'
                 else 'etc' 
             end as consideration_first_item_type          
+            ,offerer
+            ,recipient
             ,recipient as sender
             ,consideration_item:recipient as receiver
             ,zone
@@ -112,9 +118,10 @@ with iv_offer_consideration as (
             ,contract_address as platform_contract_address
             ,size(offer) as offer_cnt
             ,size(consideration) as consideration_cnt
+            ,order_hash
             ,case when recipient = '0x0000000000000000000000000000000000000000' then true
                 else false
-            end as is_private
+            end as is_private -- will be deprecated in base_pairs
     from
     (
         select consideration
@@ -124,8 +131,10 @@ with iv_offer_consideration as (
             , evt_index
             , evt_tx_hash
             , offer
+            , offerer
             , recipient
             , zone
+            , orderHash AS order_hash
             ,posexplode(consideration) as (consideration_idx, consideration_item)
         from {{ source('seaport_ethereum','Seaport_evt_OrderFulfilled') }}
         {% if not is_incremental() %}
