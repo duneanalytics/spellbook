@@ -198,6 +198,7 @@ FROM
     ("iotx-iotex", "ethereum", "IOTX", "0x6fb3e0a217407efff7ca062d46c26e5d60a14d69", 18),
     ("isla-insula", "ethereum", "ISLA", "0x697ef32b4a3f5a4c39de1cb7563f24ca7bfc5947", 18),
     ("itc-iot-chain", "ethereum", "ITC", "0x5e6b6d9abad9093fdc861ea1600eba1b355cd940", 18),
+    ("itgr-integral1132", "ethereum", "ITGR", "0xd502f487e1841fdc805130e13eae80c61186bc98", 18),
     ("jpeg-jpeg39d", "ethereum", "JPEG", "0xe80c0cd204d654cebe8dd64a4857cab6be8345a3", 18),
     ("jrt-jarvis-reward-token", "ethereum", "JRT", "0x8a9c67fee641579deba04928c4bc45f66e26343a", 18),
     ("kawa-kawa", "ethereum", "KAWA", "0x546aed37d202d607f45cbd2b8c0cad0d25fbe339", 18),

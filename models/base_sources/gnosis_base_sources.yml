@@ -187,6 +187,20 @@ sources:
                   values: ["factory", "base", "dynamic"]
           - name: created_at
             description: "Timestamp for contract creation"
+          
+      - name: creation_traces
+        loaded_at_field: block_time
+        description: "Gnosis creation traces"
+        columns:
+          - *block_time
+          - *block_number
+          - *tx_hash
+          - name: address
+            description: "Contract address created"
+          - name: from
+            description: "Contract creator address"
+          - name: code
+            description: "Contract code"
 
   # ERC Transfer Tables
   - name: erc20_gnosis

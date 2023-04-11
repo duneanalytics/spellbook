@@ -1,5 +1,10 @@
 {{ config(
         alias ='lending',
+        partition_by = ['block_date'],
+        materialized = 'incremental',
+        file_format = 'delta',
+        incremental_strategy = 'merge',
+        unique_key = ['block_date', 'blockchain', 'project', 'version', 'tx_hash', 'evt_index'],
         post_hook='{{ expose_spells(\'["ethereum"]\',
                                     "sector",
                                     "nft",
@@ -38,6 +43,9 @@ FROM (
         tx_to,
         evt_index
     FROM {{ nft_model }}
+    {% if is_incremental() %}
+    WHERE block_time >= date_trunc("day", now() - interval '1 week')
+    {% endif %}
     {% if not loop.last %}
     UNION ALL
     {% endif %}

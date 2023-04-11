@@ -82,6 +82,8 @@ models:
       contributors: hosuke
     config:
       tags: [ 'transfers', 'bnb', 'bep20', 'rolling_hour', 'hosuke' ]
+    description: >
+      BEP20 Token Transfers on bnb smart chain per hour.
     columns:
       - *blockchain
       - *hour
@@ -107,6 +109,8 @@ models:
       contributors: hosuke
     config:
       tags: [ 'transfers', 'bnb', 'bep20', 'rolling_day', 'hosuke' ]
+    description: >
+      BEP20 Token Transfers on bnb smart chain per day.
     columns:
       - *blockchain
       - *day
