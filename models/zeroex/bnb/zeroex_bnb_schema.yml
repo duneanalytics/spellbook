@@ -155,7 +155,7 @@ models:
             - tx_hash
             - evt_index
       - check_seed:
-          seed_file: ref('zeroex_bnb_fills_sample')
+          seed_file: ref('  ')
           match_columns:
             - tx_hash
             - evt_index
