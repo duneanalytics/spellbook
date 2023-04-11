@@ -110,7 +110,7 @@ instructions = get_instructions(rules_directory)
 instruction_tokens = check_tokens(instructions)
 tokens = check_tokens(input)
 if tokens > max_tokens - instruction_tokens:
-    inputs = chunk_string_by_token_limit(input, n=5)
+    inputs = chunk_string_by_token_limit(input, n=7)
 else:
     inputs = [input]
 
