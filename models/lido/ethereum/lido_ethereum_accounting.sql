@@ -314,7 +314,7 @@ SELECT  DATE_TRUNC('day', prices.usd.minute) AS period,
             '3.2.3.2. Deposit Referrals' AS category,
             -COALESCE(CAST(amount_token AS DOUBLE), 0),
             token
-    FROM {{ref('lido_ethereum_accounting_revenue')}}
+    FROM {{ref('lido_ethereum_accounting_ldo_referral_payment')}}
     
     UNION ALL
     
