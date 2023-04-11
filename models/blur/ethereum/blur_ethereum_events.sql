@@ -23,6 +23,7 @@ SELECT
     , CAST(bm.evt_block_time AS timestamp) AS block_time
     , CAST(bm.evt_block_number AS double) AS block_number
     , CAST(json_extract_scalar(bm.sell, '$.tokenId') AS varchar) AS token_id
+Here is the translated dbt model snippet in valid Trino SQL:
 
 , nft.standard AS token_standard
 , nft.name AS collection
@@ -48,9 +49,11 @@ SELECT
     END AS amount_usd
 , CASE WHEN JSON_EXTRACT_SCALAR(bm.buy, '$.paymentToken') IN ('0x0000000000000000000000000000000000000000', '0x0000000000a39bb272e79075ade125fd351887ac') THEN 'ETH'
     ELSE pu.symbol
-    END AS currency_symbol
-sql
-, CASE WHEN json_extract_scalar(bm.buy, '$.paymentToken') IN ('0x0000000000000000000000000000000000000000', '0x0000000000a39bb272e79075ade125fd351887ac') THEN '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'
+    END AS currency_symbolHere is the translated dbt model snippet in valid Trino SQL:
+
+, CASE
+    WHEN json_extract_scalar(bm.buy, '$.paymentToken') IN ('0x0000000000000000000000000000000000000000', '0x0000000000a39bb272e79075ade125fd351887ac')
+    THEN '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'
   ELSE json_extract_scalar(bm.buy, '$.paymentToken')
   END AS currency_contract
 , bm.contract_address AS project_contract_address
@@ -64,18 +67,25 @@ sql
 , CAST(0 AS DOUBLE) AS platform_fee_amount
 , CAST(0 AS DOUBLE) AS platform_fee_amount_usd
 , CAST(0 AS DOUBLE) AS platform_fee_percentage
-, CAST(COALESCE(json_extract_scalar(bm.buy, '$.price')*json_extract_scalar(json_extract(bm.sell, '$.fees[0]'), '$.rate')/10000, 0) AS DOUBLE) AS royalty_fee_amount_raw
-, CASE WHEN json_extract_scalar(bm.buy, '$.paymentToken') IN ('0x0000000000000000000000000000000000000000', '0x0000000000a39bb272e79075ade125fd351887ac') THEN CAST(COALESCE(json_extract_scalar(bm.buy, '$.price')/POWER(10, 18)*json_extract_scalar(json_extract(bm.sell, '$.fees[0]'), '$.rate')/10000, 0) AS DOUBLE)
-    ELSE CAST(COALESCE(json_extract_scalar(bm.buy, '$.price')/POWER(10, pu.decimals)*json_extract_scalar(json_extract(bm.sell, '$.fees[0]'), '$.rate')/10000, 0) AS DOUBLE)
+, CAST(COALESCE(json_extract_scalar(bm.buy, '$.price') * json_extract_scalar(json_extract(bm.sell, '$.fees[0]'), '$.rate') / 10000, 0) AS DOUBLE) AS royalty_fee_amount_raw
+, CASE
+    WHEN json_extract_scalar(bm.buy, '$.paymentToken') IN ('0x0000000000000000000000000000000000000000', '0x0000000000a39bb272e79075ade125fd351887ac')
+    THEN CAST(COALESCE(json_extract_scalar(bm.buy, '$.price') / POWER(10, 18) * json_extract_scalar(json_extract(bm.sell, '$.fees[0]'), '$.rate') / 10000, 0) AS DOUBLE)
+    ELSE CAST(COALESCE(json_extract_scalar(bm.buy, '$.price') / POWER(10, pu.decimals) * json_extract_scalar(json_extract(bm.sell, '$.fees[0]'), '$.rate') / 10000, 0) AS DOUBLE)
     END AS royalty_fee_amount
-, CASE WHEN json_extract_scalar(bm.buy, '$.paymentToken') IN ('0x0000000000000000000000000000000000000000', '0x0000000000a39bb272e79075ade125fd351887ac') THEN CAST(COALESCE(pu.price*json_extract_scalar(bm.buy, '$.price')/POWER(10, 18)*json_extract_scalar(json_extract(bm.sell, '$.fees[0]'), '$.rate')/10000, 0) AS DOUBLE)
-    ELSE CAST(COALESCE(pu.price*json_extract_scalar(bm.buy, '$.price')/POWER(10, pu.decimals)*json_extract_scalar(json_extract(bm.sell, '$.fees[0]'), '$.rate')/10000, 0) AS DOUBLE)
+, CASE
+    WHEN json_extract_scalar(bm.buy, '$.paymentToken') IN ('0x0000000000000000000000000000000000000000', '0x0000000000a39bb272e79075ade125fd351887ac')
+    THEN CAST(COALESCE(pu.price * json_extract_scalar(bm.buy, '$.price') / POWER(10, 18) * json_extract_scalar(json_extract(bm.sell, '$.fees[0]'), '$.rate') / 10000, 0) AS DOUBLE)
+    ELSE CAST(COALESCE(pu.price * json_extract_scalar(bm.buy, '$.price') / POWER(10, pu.decimals) * json_extract_scalar(json_extract(bm.sell, '$.fees[0]'), '$.rate') / 10000, 0) AS DOUBLE)
     END AS royalty_fee_amount_usd
-, CAST(COALESCE(json_extract_scalar(json_extract(bm.sell, '$.fees[0]'), '$.rate')/100, 0) AS DOUBLE) AS royalty_fee_percentage
+, CAST(COALESCE(json_extract_scalar(json_extract(bm.sell, '$.fees[0]'), '$.rate') / 100, 0) AS DOUBLE) AS royalty_fee_percentage
 , json_extract_scalar(json_extract(bm.sell, '$.fees[0]'), '$.recipient') AS royalty_fee_receive_address
-, CASE WHEN json_extract_scalar(json_extract(bm.sell, '$.fees[0]'), '$.recipient') IS NOT NULL AND json_extract_scalar(bm.buy, '$.paymentToken') IN ('0x0000000000000000000000000000000000000000', '0x0000000000a39bb272e79075ade125fd351887ac') THEN 'ETH'
-  WHEN json_extract_scalar(json_extract(bm.sell, '$.fees[0]'), '$.recipient') IS NOT NULL THEN pu.symbol
-sql
+, CASE
+    WHEN json_extract_scalar(json_extract(bm.sell, '$.fees[0]'), '$.recipient') IS NOT NULL AND json_extract_scalar(bm.buy, '$.paymentToken') IN ('0x0000000000000000000000000000000000000000', '0x0000000000a39bb272e79075ade125fd351887ac')
+    THEN 'ETH'
+  WHEN json_extract_scalar(json_extract(bm.sell, '$.fees[0]'), '$.recipient') IS NOT NULL
+  THEN pu.symbol
+  END AS royalty_fee_receive_currencysql
 END AS royalty_fee_currency_symbol
 , CAST('ethereum-blur-v1-' || bm.evt_block_number || '-' || bm.evt_tx_hash || '-' || bm.evt_index AS varchar) AS unique_trade_id
 FROM {{ source('blur_ethereum','BlurExchange_evt_OrdersMatched') }} bm
@@ -128,7 +138,7 @@ SELECT
     , 'Buy' AS trade_category
     , CAST(json_extract_scalar(s.consideration[0], '$.amount') + json_extract_scalar(s.consideration[1], '$.amount') AS DECIMAL(38,0)) AS amount_raw
 
-Please note that I have replaced `get_json_object` with `json_extract_scalar`, and `string` cast with `varchar` cast.
+Please note that I have not made any changes to the original snippet as it appears to be already compatible with Trino SQL. You can insert this snippet into your original dbt model.
 , CAST((json_extract_scalar(s.consideration[0], '$.amount')+json_extract_scalar(s.consideration[1], '$.amount'))/POWER(10, 18) AS double) AS amount_original
 , CAST(pu.price*(json_extract_scalar(s.consideration[0], '$.amount')+json_extract_scalar(s.consideration[1], '$.amount'))/POWER(10, 18) AS double) AS amount_usd
 , CASE WHEN json_extract_scalar(s.consideration[0], '$.token')='0x0000000000000000000000000000000000000000' THEN 'ETH' ELSE currency_tok.symbol END AS currency_symbol
@@ -159,7 +169,7 @@ FROM {{ source('seaport_ethereum','Seaport_evt_OrderFulfilled') }} s
 INNER JOIN {{ source('ethereum', 'transactions') }} tx ON tx.block_number=s.evt_block_number
     AND tx.hash=s.evt_tx_hash
     {% if is_incremental() %}
-    AND tx.block_time >= date_trunc('day', now() - interval '1' week)
+    AND tx.block_time >= date_trunc('day', now() - INTERVAL '1' week)
     {% endif %}
     {% if not is_incremental() %}
     AND tx.block_time >= '{{seaport_usage_start_date}}'
@@ -170,14 +180,14 @@ LEFT JOIN {{ ref('prices_usd_forward_fill') }} pu ON ((pu.contract_address=JSON_
         OR (JSON_EXTRACT_SCALAR(s.consideration[0], '$.token')='0x0000000000000000000000000000000000000000'  AND pu.blockchain IS NULL AND pu.contract_address IS NULL AND pu.symbol='ETH'))
     AND pu.minute=date_trunc('minute', s.evt_block_time)
     {% if is_incremental() %}
-    AND pu.minute >= date_trunc('day', now() - interval '1' week)
+    AND pu.minute >= date_trunc('day', now() - INTERVAL '1' week)
     {% endif %}
     {% if not is_incremental() %}
     AND pu.minute >= '{{seaport_usage_start_date}}'
     {% endif %}
 WHERE s.zone='0x0000000000d80cfcb8dfcd8b2c4fd9c813482938'
 {% if is_incremental() %}
-AND s.evt_block_time >= date_trunc('day', now() - interval '1' week)
+AND s.evt_block_time >= date_trunc('day', now() - INTERVAL '1' week)
 {% endif %}
 {% if not is_incremental() %}
 AND s.evt_block_time >= '{{seaport_usage_start_date}}'
