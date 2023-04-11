@@ -8,7 +8,7 @@ Instructions here: https://github.com/duneanalytics/query-translator#local-devel
 import json
 import os
 from fnmatch import fnmatch
-
+import sqlfluff
 import requests
 
 
@@ -24,14 +24,31 @@ def get_sql(query_path):
 class QueryTranslatorClient:
     def __init__(self):
         self.host = "http://localhost:8000"
-        self.spark_spells_dir = os.path.join(os.getcwd(), "models")
-        self.trino_spells_dir = os.path.join(os.getcwd(), "trinomodels")
+        self.spark_spells_dir = os.path.join(os.getcwd(), "target/compiled/spellbook/models")
+        # set containing all the queries that have been translated
+        self.translated_queries = self.get_translated_queries()
+
+    def get_translated_queries(self):
+        """
+        Returns a set containing all the queries that have been translated
+        """
+        translated_queries = set()
+        for path, subdirs, files in os.walk(self.spark_spells_dir.replace("target", "trinotarget")):
+            for name in files:
+                if fnmatch(name, "*.sql"):
+                    query_path = os.path.join(path, name)
+                    translated_queries.add(query_path)
+        return translated_queries
+
 
     def translate(self, query_path):
         """
-        Trtanslate query at query path. Returns translated sql text.
+        Translate query at query path. Returns translated sql text.
         """
         sql_query = get_sql(query_path)
+        if sql_query.count("\n") > 500:
+            print(f"Skipping {query_path} because it has more than 500 lines")
+            return -1
         payload = {
             "query": sql_query,
             "dataset": "spark",
@@ -41,29 +58,41 @@ class QueryTranslatorClient:
         response = requests.post(self.host, json=payload)
         if response.status_code == 200:
             translated_query = json.loads(response.text)["translated"]
-            return translated_query
+            print(query_path)
+            try:
+                return sqlfluff.fix(translated_query)
+            except Exception as e:
+                print(f"Error sqlfluff: {e}")
+                return translated_query
+
         else:
-            print(f"Request failed with error code {response.status_code}")
-            print(json.loads(response.text))
+            print(f"{query_path}; {json.loads(response.text)}")
             return -1
 
     def translate_all_spells(self):
         """
-        Finds all *.sql files in provided directory and
+        Finds all *.sql files in compiled directory and translates them.
+
+        NOTE: this will be slow!
         """
         pattern = "*.sql"
         for path, subdirs, files in os.walk(self.spark_spells_dir):
             for name in files:
                 if fnmatch(name, pattern):
-                    # print(os.path.join(path, name))
-                    translated = self.translate(os.path.join(path, name))
-                    if translated != -1:
-                        # Write translated sql to trino directory
-                        with open(os.path.join(path, name), "w") as f:
-                            f.write(translated)
+                    to_translate = os.path.join(path, name)
+                    translated_path = to_translate.replace("target", "trinotarget")
+                    # only translate if we haven't translated it before
+                    if translated_path not in self.translated_queries:
+                        translated = self.translate(to_translate)
+                        if translated != -1:
+                            # Write translated sql to trino directory
+                            # Create all directories if they don't exist
+                            os.makedirs(os.path.dirname(translated_path), exist_ok=True)
+                            with open(translated_path, "w") as f:
+                                f.write(translated)
+                            self.translated_queries.add(translated_path)
 
 
 c = QueryTranslatorClient()
-# QueryTranslatorClient().translate_all_spells()
-c.translate("/Users/couralex/src/spellbook/target/compiled/spellbook/models/apeswap/ethereum/apeswap_ethereum_trades.sql")
-# print(c.translation)
+QueryTranslatorClient().translate_all_spells()
+# print(c.translate("/Users/couralex/src/spellbook/target/compiled/spellbook/models/apeswap/ethereum/apeswap_ethereum_trades.sql"))
