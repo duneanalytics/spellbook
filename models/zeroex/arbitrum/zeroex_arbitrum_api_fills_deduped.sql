@@ -9,7 +9,7 @@
         post_hook='{{ expose_spells(\'["arbitrum"]\',
                                 "project",
                                 "zeroex",
-                                \'["rantumBits","bakabhai993"]\') }}'
+                                \'["rantum","bakabhai993"]\') }}'
     )
 }}
 
@@ -66,10 +66,12 @@ AS
     GROUP BY  tx_hash,hop_count
 )
 SELECT  a.blockchain
+      , '0x API'  as project
+      , cast(null as varchar(10)) as version
       , a.block_date
       , a.block_time
-      , COALESCE(b.taker_symbol,b.taker_token) AS taker_symbol
-      , COALESCE(b.maker_symbol,b.maker_token) AS maker_symbol
+      , b.taker_symbol AS taker_symbol
+      , b.maker_symbol AS maker_symbol
       , CASE WHEN lower(b.taker_symbol) > lower(b.maker_symbol) THEN concat(b.maker_symbol, '-', b.taker_symbol) ELSE concat(b.taker_symbol, '-', b.maker_symbol) END AS token_pair
       , b.taker_token_amount
       , b.maker_token_amount
@@ -85,6 +87,7 @@ SELECT  a.blockchain
       , a.tx_from
       , a.tx_to
       , b.evt_index
+      , CAST(ARRAY() as array<bigint>) as trace_address
       , a.type
       , a.swap_flag
       , b.fills_within

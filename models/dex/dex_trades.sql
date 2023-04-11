@@ -1,5 +1,10 @@
 {{ config(
         alias ='trades',
+        partition_by = ['block_date'],
+        materialized = 'incremental',
+        file_format = 'delta',
+        incremental_strategy = 'merge',
+        unique_key = ['block_date', 'blockchain', 'project', 'version', 'tx_hash', 'evt_index', 'trace_address'],
         post_hook='{{ expose_spells(\'["ethereum", "bnb", "avalanche_c", "gnosis", "optimism", "arbitrum", "fantom", "polygon"]\',
                                 "sector",
                                 "dex",
@@ -51,6 +56,7 @@
 ,ref('balancer_trades')
 ,ref('spiritswap_fantom_trades')
 ,ref('quickswap_trades')
+,ref('integral_trades')
 ,ref('maverick_trades')
 ] %}
 
@@ -84,6 +90,9 @@ FROM (
         evt_index
     FROM {{ dex_model }}
     {% if not loop.last %}
+    {% if is_incremental() %}
+    WHERE block_date >= date_trunc("day", now() - interval '1 week')
+    {% endif %}
     UNION ALL
     {% endif %}
     {% endfor %}

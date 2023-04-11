@@ -5528,4 +5528,5 @@ SELECT LOWER(contract_address) AS contract_address, symbol, decimals
 ,('0x223f6a3b8d087741bf99a2531dc53cd15745eba7', 'CWETHLP', 18)
 ,('0x4268b8f0b87b6eae5d897996e6b845ddbd99adf3', 'axlUSDC', 6)     
 ,('0xc2E9d07F66A89c44062459A47a0D2Dc038E4fb16', 'stkBNB', 18)
+,('0x2dfF88A56767223A5529eA5960Da7A3F5f766406', 'ID', 18)
 ) AS temp_table (contract_address, symbol, decimals)

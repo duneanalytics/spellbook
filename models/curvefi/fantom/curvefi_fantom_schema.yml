@@ -52,7 +52,7 @@ models:
       blockchain: fantom
       sector: dex
       project: curvefi
-      contributors: Henrystats 0xRob
+      contributors: Henrystats, 0xRob
     config:
       tags: ['fantom','trades', 'curvefi','dex']
     description: >

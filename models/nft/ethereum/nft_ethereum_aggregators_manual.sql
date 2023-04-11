@@ -46,6 +46,8 @@ FROM
     , ('0x1ed3d33b41e392014e0c9d8125369aba4e09798f', 'Alpha Sharks') -- Magically (Alpha Sharks)
     , ('0x04898894a0b6c094a920eafd180ef4ac30f00a43', 'Alpha Sharks') -- Magically (Alpha Sharks)
     , ('0xef1c6e67703c7bd7107eed8303fbe6ec2554bf6b', 'Uniswap') -- Uniswap's Universal Router
+    , ('0x4c60051384bd2d3c01bfc845cf5f4b44bcbe9de5', 'Uniswap') -- Uniswap's Universal Router (New)
+    , ('0x00000000005228b791a99a61f36a130d50600106', 'LooksRare') -- LooksRare Aggregator
     , ('0x36ab1c395b3711d3d5ed2af8ac8371cc991aa06c', 'Flip') -- Flip
     , ('0x7db11e30ae8ad7495668701c3f2c1b6d60587eda', 'Flip') -- Flip's LooksRare Checkout
     , ('0xb123504fa220ba482768dd1e798594c1af88d7dc', 'Tiny Astro') -- Tiny Astro

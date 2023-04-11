@@ -16,6 +16,8 @@ sources:
         loaded_at_field: evt_block_time
       - name: MetaPoolSwap_evt_TokenExchangeUnderlying
         loaded_at_field: evt_block_time
+      - name: MetaPoolSwap_evt_TokenExchange
+        loaded_at_field: evt_block_time
       - name: Vyper_contract_evt_DeployedGauge
         loaded_at_field: evt_block_time
       - name: PoolFactory_evt_LiquidityGaugeDeployed

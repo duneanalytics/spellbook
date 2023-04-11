@@ -6,7 +6,7 @@
         tags=['static']
         )
 }}
-SELECT 
+SELECT
     TRIM(token_id) as token_id
     , LOWER(TRIM(blockchain)) as blockchain
     , TRIM(symbol) as symbol
@@ -28,7 +28,6 @@ FROM
     ("badger-badger","arbitrum","BADGER","0xbfa641051ba0a0ad1b0acf549a89536a0d76472e",18),
     ("bal-balancer","arbitrum","BAL","0x040d1edc9569d4bab2d15287dc5a4f10f56a56b8",18),
     ("bond-barnbridge","arbitrum","BOND","0x0d81e50bc677fa67341c44d7eaa9228dee64a4e1",18),
-    ("celr-celertoken","arbitrum","CELR","0x3a8b787f78d775aecfeea15706d4221b40f345ab",18),
     ("cnfi-connect-financial","arbitrum","CNFI","0x6f5401c53e2769c858665621d22ddbf53d8d27c5",18),
     ("comp-compoundd","arbitrum","COMP","0x354a6da3fcde098f8389cad84b0182725c6c91de",18),
     ("coti-coti","arbitrum","COTI","0x6fe14d3cc2f7bddffba5cdb3bbe7467dd81ea101",18),
@@ -96,6 +95,6 @@ FROM
     ("yfi-yearnfinance","arbitrum","YFI","0x82e3a8f066a6989666b031d916c43672085b1582",18),
     ("zz-zigzag","arbitrum","ZZ","0xada42bb73b42e0472a994218fb3799dfcda21237",18),
     ("ico-axelar","arbitrum","AXL","0x23ee2343b892b1bb63503a4fabc840e0e2c6810f",6),
-    ("relay-relay-token","arbitrum","RELAY","0x1426cf37caa89628c4da2864e40cf75e6d66ac6b",18)
-    
+    ("relay-relay-token","arbitrum","RELAY","0x1426cf37caa89628c4da2864e40cf75e6d66ac6b",18),
+    ("arb-arbitrum","arbitrum","ARB","0x912ce59144191c1204e64559fe8253a0e49e6548",18)
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)
