@@ -1,2 +1,3 @@
 Rule: left([string],[length]) -> substr([string], [start], [length])
 Example: left(address, 10) -> substr(address, 1, 10)
+Example: right(address, 10) -> substr(address, 1, 10)

@@ -9,7 +9,7 @@ def chat_request(model, instructions, input):
     initial_message = {"role": "system", "content": "You are a helpful assistant."}
     messages = [initial_message]
     for instruction in instructions:
-        messages.append({"role": "assistant", "content": f"I know this translation rule {instruction}"})
+        messages.append({"role": "assistant", "content": f"I know this translation {instruction}"})
     messages.append({"role": "user", "content": question})
     response = openai.ChatCompletion.create(
         model=model,

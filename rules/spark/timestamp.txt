@@ -1,0 +1,3 @@
+Rule: Add timestamp to date literals
+Exmaple: AND et.block_time >= '2022-10-18' > AND et.block_time >= timestamp '2022-10-18'
+Example: pu.minute >= '{{start_date}}' > pu.minute >= timestamp '{{start_date}}'
