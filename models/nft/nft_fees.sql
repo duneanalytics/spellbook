@@ -1,19 +1,27 @@
 {{ config(
         alias ='fees',
-        post_hook='{{ expose_spells(\'["ethereum","solana","bnb","optimism","arbitrum"]\',
+        partition_by = ['block_date'],
+        materialized = 'incremental',
+        file_format = 'delta',
+        incremental_strategy = 'merge',
+        unique_key = ['unique_trade_id', 'blockchain'],
+        post_hook='{{ expose_spells(\'["ethereum","solana","bnb", "optimism","arbitrum","polygon"]\',
                                     "sector",
                                     "nft",
-                                    \'["soispoke","0xRob"]\') }}')
+                                    \'["soispoke", "0xRob", "hildobby"]\') }}')
 }}
 
 
 {% set nft_models = [
- ref('archipelago_ethereum_fees')
+ ref('aavegotchi_polygon_fees')
+,ref('archipelago_ethereum_fees')
 ,ref('blur_ethereum_fees')
 ,ref('element_fees')
 ,ref('foundation_ethereum_fees')
+,ref('fractal_polygon_fees')
 ,ref('looksrare_ethereum_fees')
 ,ref('magiceden_fees')
+,ref('oneplanet_polygon_fees')
 ,ref('opensea_fees')
 ,ref('sudoswap_ethereum_fees')
 ,ref('superrare_ethereum_fees')
@@ -21,11 +29,13 @@
 ,ref('zora_ethereum_fees')
 ,ref('pancakeswap_bnb_nft_fees')
 ,ref('quix_optimism_fees')
+,ref('rarible_polygon_fees')
 ,ref('nftrade_bnb_fees')
 ,ref('zonic_optimism_fees')
 ,ref('nftb_bnb_fees')
 ,ref('tofu_fees')
 ,ref('nftearth_optimism_fees')
+,ref('stealcam_arbitrum_fees')
 ] %}
 
 
@@ -36,6 +46,7 @@ FROM (
         blockchain,
         project,
         version,
+        date_trunc('day', block_time)  as block_date,
         block_time,
         token_id,
         collection,
@@ -66,6 +77,9 @@ FROM (
         tx_to,
         unique_trade_id
     FROM {{ nft_model }}
+    {% if is_incremental() %}
+    WHERE block_time >= date_trunc("day", now() - interval '1 week')
+    {% endif %}
     {% if not loop.last %}
     UNION ALL
     {% endif %}

@@ -57,6 +57,7 @@ WITH dao_wallet AS (
         , (LOWER('0x5F5c328732c9E52DfCb81067b8bA56459b33921f'), 'Foundation Reserves', 'Fixed', 'DAIF-001')
         , (LOWER('0x478c7ce3e1df09130f8d65a23ad80e05b352af62'), 'Gelato Keepers', 'Variable', 'GELATO')
         --, (LOWER('0x0048FC4357DB3c0f45AdEA433a07A20769dDB0CF'), 'DSS Blow', 'Variable', 'BLOW')
+        , (LOWER('0xb386Bc4e8bAE87c3F67ae94Da36F385C100a370a'), 'New Risk Multisig', 'Fixed', 'RISK-001')
     ) AS  t(wallet_address, wallet_label, varfix, code)
 )
 
@@ -129,7 +130,7 @@ WITH dao_wallet AS (
            'PSM-GUSD-A'                                           AS ilk
 )
 , ilk_list_manual_input (ilk, begin_dt, end_dt, asset_code, equity_code, apr) AS (
-    --every RWA needs to be listed here to be counted.
+    --every RWA needs to be listed here to be counted (or it defaults to off-chain private credit)
     --PSMs not listed will be assumed non-yield-bearing
     --Any ilk listed in here must have complete history (a row with null as the begin month/yr and a row with null as the end month/year, can be same row)
     values
@@ -237,7 +238,7 @@ WITH dao_wallet AS (
     (31810, 'Equity', 'Reserved MKR Surplus', 'MKR Token Expenses', 'Direct MKR Token Expenses', 'Direct MKR Token Expenses'),
     (32810, 'Equity', 'Proprietary Treasury', 'Holdings', 'Treasury Assets', 'DS Pause Proxy'),
     (33110, 'Equity', 'Reserved MKR Surplus', 'MKR Token Expenses', 'Vested MKR Token Expenses', 'Vested MKR Token Expenses'),
-    (34110, 'Equity', 'MKR Contra Equity', 'MKR Contra Equity', 'MKR Contra Equity', 'MKR Contra Equity'), 
+    (34110, 'Equity', 'Reserved MKR Surplus', 'MKR Contra Equity', 'MKR Contra Equity', 'MKR Contra Equity'), 
     (39999, 'Equity', 'Currency Translation to Presentation Token', 'Currency Translation to Presentation Token', 'Currency Translation to Presentation Token', 'Currency Translation to Presentation Token')
 )
 
@@ -367,6 +368,54 @@ WITH dao_wallet AS (
          , ilk
     FROM psm_yield_preunioned
 )
+, hvb_yield_trxns AS (
+    SELECT call_tx_hash
+        , CASE WHEN usr = '0x6c6d4be2223b5d202263515351034861dd9afdb6'
+            THEN 'RWA009-A' 
+        END AS ilk
+    FROM {{ source('maker_ethereum', 'dai_call_burn') }}
+    WHERE call_success
+      AND usr IN ('0x6c6d4be2223b5d202263515351034861dd9afdb6') --HVB RWA JAR
+    --   {% if is_incremental() %}
+    --   AND call_block_time >= date_trunc("day", now() - interval '1 week')
+    --   {% endif %}
+    GROUP BY call_tx_hash
+        , ilk
+)
+, hvb_yield_preunioned AS (
+    SELECT vat.call_block_time           ts
+         , vat.call_tx_hash              hash
+         , ilk
+         , SUM(vat.rad / POW(10, 45)) AS value
+    FROM {{ source('maker_ethereum', 'vat_call_move') }} vat
+    JOIN hvb_yield_trxns tx
+        ON vat.call_tx_hash = tx.call_tx_hash
+    WHERE vat.dst = '0xa950524441892a31ebddf91d3ceefa04bf454466' -- vow
+      AND vat.call_success
+    --   {% if is_incremental() %}
+    --   AND vat.call_block_time >= date_trunc("day", now() - interval '1 week')
+    --   {% endif %}
+    GROUP BY vat.call_block_time
+        , vat.call_tx_hash
+        , ilk
+)
+, hvb_yield AS (
+    SELECT ts
+         , hash
+         , 31170 AS code
+         , value --increased equity
+         , ilk
+    FROM hvb_yield_preunioned
+
+    UNION ALL
+
+    SELECT ts
+         , hash
+         , 21120  AS code
+         , -value AS value--decreased liability
+         , ilk
+    FROM hvb_yield_preunioned
+)
 , liquidation_revenues AS (
     SELECT call_block_time           ts
          , call_tx_hash              hash
@@ -380,6 +429,7 @@ WITH dao_wallet AS (
       AND call_tx_hash NOT IN (SELECT tx_hash FROM liquidation_excluded_tx) -- Exclude Flop income (coming directly from users wallets)
       AND call_tx_hash NOT IN (SELECT call_tx_hash FROM team_dai_burns_tx)
       AND call_tx_hash NOT IN (SELECT call_tx_hash FROM psm_yield_trxns)
+      AND call_tx_hash NOT IN (SELECT call_tx_hash FROM hvb_yield_trxns)
     --   {% if is_incremental() %}
     --   AND call_block_time >= date_trunc("day", now() - interval '1 week')
     --   {% endif %}
@@ -919,7 +969,7 @@ WITH dao_wallet AS (
     LEFT JOIN ilk_list_labeled
         ON loan_actions_2.ilk = ilk_list_labeled.ilk
         AND CAST(loan_actions_2.ts AS DATE) BETWEEN COALESCE(ilk_list_labeled.begin_dt, '2000-01-01') AND COALESCE(ilk_list_labeled.end_dt, '2222-12-31') --if null, ensure its not restrictive
-    --WHERE COALESCE(dart,0) <> 0  --this illogically breaks the query....
+    --WHERE COALESCE(dart+0,0) <> 0  --this would prob work now but query works just fine without
     GROUP BY 1,2,3,5
     HAVING SUM(dart*rate)/POW(10,45) <> 0
     
@@ -931,7 +981,7 @@ WITH dao_wallet AS (
          , SUM(dart * rate) / POW(10, 45) AS value
          , loan_actions_2.ilk
     FROM loan_actions_2
-    --WHERE COALESCE(dart,0) <> 0 --this illogically breaks the query....
+    --WHERE COALESCE(dart+0,0) <> 0 --this would prob work now but query works just fine without
     GROUP BY 1,2,5
     HAVING SUM(dart*rate)/POW(10,45) <> 0
 ), create_mkr_vests_raw AS
@@ -1297,6 +1347,18 @@ WITH dao_wallet AS (
             , 'MKR Pause Proxy Trxns' AS descriptor
             , NULL AS ilk
         FROM pause_proxy_mkr_trxns
+
+        UNION ALL
+
+        SELECT ts
+            , hash
+            , code
+            , value
+            , 'DAI' AS token
+            , 'HVB Yield' AS descriptor
+            , ilk
+        FROM hvb_yield
+
 
         UNION ALL
 

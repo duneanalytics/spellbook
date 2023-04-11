@@ -6,7 +6,7 @@ models:
       blockchain: bnb
       sector: dex
       project: ellipsis_finance
-      contributors: Henrystats, OxRob
+      contributors: Henrystats, 0xRob
     config:
       tags: ['bnb','pool_tokens', 'ellipsis','dex']
     description: >
@@ -52,7 +52,7 @@ models:
       blockchain: bnb
       sector: dex
       project: ellipsis_finance
-      contributors: Henrystats 0xRob
+      contributors: Henrystats, 0xRob
     config:
       tags: ['bnb','trades', 'ellipsis_finance','dex']
     description: >

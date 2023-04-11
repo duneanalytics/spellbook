@@ -5,7 +5,7 @@ models:
     meta:
       blockchain: fantom
       project: zeroex
-      contributors: rantumBits, sui414, bakabhai993
+      contributors: rantum, danning.sui, bakabhai993
     config:
       tags: [fantom','0x','dex_aggregator','dex','aggregator']
     description: >
@@ -93,7 +93,7 @@ models:
     meta:
       blockchain: fantom
       project: zeroex
-      contributors: rantumBits, sui414, bakabhai993
+      contributors: rantum, danning.sui, bakabhai993
     config:
       tags: ['fantom','0x','dex_aggregator','dex','aggregator']
     description: >
@@ -114,9 +114,6 @@ models:
             - taker
     columns:
       - *blockchain
-      - &project 
-        name: project 
-        description: "Name of aggregator project"
       - *block_date
       - *block_time
       - &taker_symbol
@@ -142,3 +139,9 @@ models:
       - *tx_from
       - *tx_to
       - *evt_index       
+      - *type
+      - *swap_flag
+      - *contract_address
+      - &fills_within
+        name: fills_within
+        description: "fills in then multihop, if present"          

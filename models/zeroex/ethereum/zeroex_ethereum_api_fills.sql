@@ -9,7 +9,7 @@
         post_hook='{{ expose_spells(\'["ethereum"]\',
                                 "project",
                                 "zeroex",
-                                \'["sui414", "bakabhai993", "hosuke"]\') }}'
+                                \'["danning.sui", "bakabhai993", "hosuke"]\') }}'
     )
 }}
 
@@ -90,8 +90,8 @@ v3_fills_no_bridge AS (
             evt_block_time                                                             AS block_time,
             fills.makerAddress                                                         AS maker,
             fills.takerAddress                                                         AS taker,
-            SUBSTRING(fills.takerAssetData, 34, 40)                                    AS taker_token,
-            SUBSTRING(fills.makerAssetData, 34, 40)                                    AS maker_token,
+            '0x' || SUBSTRING(fills.takerAssetData, 35, 40)                            AS taker_token,
+            '0x' || SUBSTRING(fills.makerAssetData, 35, 40)                            AS maker_token,
             fills.takerAssetFilledAmount                                               AS taker_token_amount_raw,
             fills.makerAssetFilledAmount                                               AS maker_token_amount_raw,
             'Fill'                                                                     AS type,
@@ -153,7 +153,7 @@ v4_limit_fills_no_bridge AS (
             'LimitOrderFilled' AS type,
             COALESCE(zeroex_tx.affiliate_address, fills.feeRecipient) AS affiliate_address,
             (zeroex_tx.tx_hash IS NOT NULL) AS swap_flag,
-            (fills.feeRecipient = '0x9b858Be6E3047D88820f439B240deaC2418a2551') AS matcha_limit_order_flag
+            (fills.feeRecipient = '0x9b858be6e3047d88820f439b240deac2418a2551') AS matcha_limit_order_flag
     FROM {{ source('zeroex_ethereum', 'ExchangeProxy_evt_LimitOrderFilled') }} fills
     LEFT JOIN zeroex_tx ON zeroex_tx.tx_hash = fills.evt_tx_hash
 
@@ -311,19 +311,19 @@ direct_uniswapv2 AS (
             swap.contract_address AS maker,
             LAST_VALUE(swap.to) OVER ( PARTITION BY swap.evt_tx_hash ORDER BY swap.evt_index) AS taker,
             CASE
-                WHEN swap.amount0In > swap.amount0Out THEN pair.token0
+                WHEN CAST(swap.amount0In AS float) > CAST(swap.amount0Out AS float) THEN pair.token0
                 ELSE pair.token1
             END AS taker_token,
             CASE
-                WHEN swap.amount0In > swap.amount0Out THEN pair.token1
+                WHEN CAST(swap.amount0In AS float) > CAST(swap.amount0Out AS float) THEN pair.token1
                 ELSE pair.token0
             END AS maker_token,
             CASE
-                WHEN swap.amount0In > swap.amount0Out THEN swap.amount0In - swap.amount0Out
+                WHEN CAST(swap.amount0In AS float) > CAST(swap.amount0Out AS float) THEN swap.amount0In - swap.amount0Out
                 ELSE swap.amount1In - swap.amount1Out
             END AS taker_token_amount_raw,
             CASE
-                WHEN swap.amount0In > swap.amount0Out THEN swap.amount1Out - swap.amount1In
+                WHEN CAST(swap.amount0In AS float) > CAST(swap.amount0Out AS float) THEN swap.amount1Out - swap.amount1In
                 ELSE swap.amount0Out - swap.amount0In
             END AS maker_token_amount_raw,
             'Uniswap V2 Direct' AS type,
@@ -352,19 +352,19 @@ direct_sushiswap AS (
             swap.contract_address AS maker,
             LAST_VALUE(swap.to) OVER (PARTITION BY swap.evt_tx_hash ORDER BY swap.evt_index) AS taker,
             CASE
-                WHEN swap.amount0In > swap.amount0Out THEN pair.token0
+                WHEN CAST(swap.amount0In AS float) > CAST(swap.amount0Out AS float) THEN pair.token0
                 ELSE pair.token1
             END AS taker_token,
             CASE
-                WHEN swap.amount0In > swap.amount0Out THEN pair.token1
+                WHEN CAST(swap.amount0In AS float) > CAST(swap.amount0Out AS float) THEN pair.token1
                 ELSE pair.token0
             END AS maker_token,
             CASE
-                WHEN swap.amount0In > swap.amount0Out THEN swap.amount0In - swap.amount0Out
+                WHEN CAST(swap.amount0In AS float) > CAST(swap.amount0Out AS float) THEN swap.amount0In - swap.amount0Out
                 ELSE swap.amount1In - swap.amount1Out
             END AS taker_token_amount_raw,
             CASE
-                WHEN swap.amount0In > swap.amount0Out THEN swap.amount1Out - swap.amount1In
+                WHEN CAST(swap.amount0In AS float) > CAST(swap.amount0Out AS float) THEN swap.amount1Out - swap.amount1In
                 ELSE swap.amount0Out - swap.amount0In
             END AS maker_token_amount_raw,
             'Sushiswap Direct' AS type,

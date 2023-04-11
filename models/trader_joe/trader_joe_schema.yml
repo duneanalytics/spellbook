@@ -6,7 +6,7 @@ models:
       blockchain: avalanche_c
       sector: dex
       project: trader_joe
-      contributors: jeff-dude, mtitus6
+      contributors: jeff-dude, mtitus6, Henrystats
     config:
       tags: ['avalanche_c', 'trader_joe','trades', 'dex']
     description: >

@@ -32,7 +32,7 @@ dexs_raw as (
             END as token_sold_address, 
             contract_address as project_contract_address, 
             evt_tx_hash as tx_hash, 
-            '' as trace_address, 
+            CAST(ARRAY() as array<bigint>) AS trace_address,
             evt_index
         FROM 
         {{ source('odos_avalanche_c', 'OdosRouter_evt_Swapped') }}

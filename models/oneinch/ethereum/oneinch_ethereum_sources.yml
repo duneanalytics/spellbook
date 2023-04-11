@@ -1,0 +1,162 @@
+version: 2
+
+sources:
+  - name: oneinch_ethereum
+    description: "decoded events and function calls for 1inch on ethereum"
+    freshness:
+      warn_after: { count: 12, period: hour }
+      error_after: { count: 24, period: hour }
+    tables:
+      - name: exchange_v1_call_aggregate
+        loaded_at_field: call_block_time
+      - name: exchange_v2_call_aggregate
+        loaded_at_field: call_block_time
+      - name: exchange_v3_call_aggregate
+        loaded_at_field: call_block_time
+      - name: exchange_v4_call_aggregate
+        loaded_at_field: call_block_time
+      - name: exchange_v5_call_aggregate
+        loaded_at_field: call_block_time
+      - name: exchange_v6_call_aggregate
+        loaded_at_field: call_block_time
+      - name: exchange_v7_call_swap
+        loaded_at_field: call_block_time
+      - name: OneInchExchange_call_swap
+        loaded_at_field: call_block_time
+      - name: AggregationRouterV5_call_swap
+        loaded_at_field: call_block_time
+      - name: AggregationRouterV5_call_unoswap
+        loaded_at_field: call_block_time
+      - name: AggregationRouterV5_call_unoswapToWithPermit
+        loaded_at_field: call_block_time
+      - name: AggregationRouterV5_call_uniswapV3Swap
+        loaded_at_field: call_block_time
+      - name: AggregationRouterV5_call_uniswapV3SwapTo
+        loaded_at_field: call_block_time
+      - name: AggregationRouterV5_call_uniswapV3SwapToWithPermit
+        loaded_at_field: call_block_time
+      - name: AggregationRouterV5_call_clipperSwap
+        loaded_at_field: call_block_time
+      - name: AggregationRouterV5_call_clipperSwapTo
+        loaded_at_field: call_block_time
+      - name: AggregationRouterV5_call_clipperSwapToWithPermit
+        loaded_at_field: call_block_time
+      - name: AggregationRouterV5_call_fillOrderTo
+        loaded_at_field: call_block_time
+      - name: AggregationRouterV5_call_fillOrderToWithPermit
+        loaded_at_field: call_block_time
+      - name: AggregationRouterV5_call_fillOrder
+        loaded_at_field: call_block_time
+      - name: AggregationRouterV5_call_fillOrderRFQ
+        loaded_at_field: call_block_time
+      - name: AggregationRouterV5_call_fillOrderRFQTo
+        loaded_at_field: call_block_time
+      - name: AggregationRouterV5_call_fillOrderRFQToWithPermit
+        loaded_at_field: call_block_time
+  
+  - name: oneinch_v2_ethereum
+    description: "decoded events and function calls for 1inch v2 on ethereum"
+    freshness:
+      warn_after: { count: 12, period: hour }
+      error_after: { count: 24, period: hour }
+    tables:
+      - name: OneInchExchange_evt_Swapped
+        loaded_at_field: evt_block_time
+
+  - name: oneinch_v3_ethereum
+    description: "decoded events and function calls for 1inch v3 on ethereum"
+    freshness:
+      warn_after: { count: 12, period: hour }
+      error_after: { count: 24, period: hour }
+    tables:
+      - name: AggregationRouterV3_evt_Swapped
+        loaded_at_field: evt_block_time
+      - name: AggregationRouterV3_call_unoswap
+        loaded_at_field: call_block_time
+      - name: AggregationRouterV3_call_unoswapWithPermit
+        loaded_at_field: call_block_time
+      - name: AggregationRouterV4_call_unoswap
+        loaded_at_field: call_block_time
+      - name: AggregationRouterV4_call_unoswapWithPermit
+        loaded_at_field: call_block_time
+
+  - name: oneinch_v4_ethereum
+    description: "decoded events and function calls for 1inch v4 on ethereum"
+    freshness:
+      warn_after: { count: 12, period: hour }
+      error_after: { count: 24, period: hour }
+    tables:
+      - name: AggregationRouterV4_call_swap
+        loaded_at_field: call_block_time
+      - name: AggregationRouterV4_call_uniswapV3Swap
+        loaded_at_field: call_block_time
+      - name: AggregationRouterV4_call_uniswapV3SwapTo
+        loaded_at_field: call_block_time
+      - name: AggregationRouterV4_call_uniswapV3SwapToWithPermit
+        loaded_at_field: call_block_time
+      - name: AggregationRouterV4_call_clipperSwap
+        loaded_at_field: call_block_time
+      - name: AggregationRouterV4_call_clipperSwapTo
+        loaded_at_field: call_block_time
+      - name: AggregationRouterV4_call_clipperSwapToWithPermit
+        loaded_at_field: call_block_time
+      - name: AggregationRouterV4_call_fillOrderRFQ
+        loaded_at_field: call_block_time
+      - name: AggregationRouterV4_call_fillOrderRFQTo
+        loaded_at_field: call_block_time
+      - name: AggregationRouterV4_call_fillOrderRFQToWithPermit
+        loaded_at_field: call_block_time
+      - name: AggregationRouterV4_call_unoswap
+        loaded_at_field: call_block_time
+      - name: AggregationRouterV4_call_unoswapWithPermit
+        loaded_at_field: call_block_time
+
+  - name: onesplit_ethereum
+    description: "decoded events and function calls for onesplit on ethereum"
+    freshness:
+      warn_after: { count: 12, period: hour }
+      error_after: { count: 24, period: hour }
+    tables:
+      - name: OneSplit_call_swap
+        loaded_at_field: call_block_time
+      - name: OneSplit_call_goodSwap
+        loaded_at_field: call_block_time
+
+  - name: oneproto_ethereum
+    description: "decoded events and function calls for oneproto on ethereum"
+    freshness:
+      warn_after: { count: 12, period: hour }
+      error_after: { count: 24, period: hour }
+    tables:
+      - name: OneSplitAudit_evt_Swapped
+        loaded_at_field: evt_block_time
+
+  - name: oneinch_lop_ethereum
+    description: "decoded events and function calls for limit order protocol v1 on ethereum"
+    freshness:
+      warn_after: { count: 12, period: hour }
+      error_after: { count: 24, period: hour }
+    tables:
+      - name: LimitOrderProtocol_call_fillOrder
+        loaded_at_field: call_block_time
+      - name: LimitOrderProtocol_call_fillOrderRFQ
+        loaded_at_field: call_block_time
+
+  - name: oneinch_lop_v2_ethereum
+    description: "decoded events and function calls for limit order protocol v2 on ethereum"
+    freshness:
+      warn_after: { count: 12, period: hour }
+      error_after: { count: 24, period: hour }
+    tables:
+      - name: LimitOrderProtocol_call_fillOrder
+        loaded_at_field: call_block_time
+      - name: LimitOrderProtocol_call_fillOrderTo
+        loaded_at_field: call_block_time
+      - name: LimitOrderProtocol_call_fillOrderToWithPermit
+        loaded_at_field: call_block_time
+      - name: LimitOrderProtocol_call_fillOrderRFQ
+        loaded_at_field: call_block_time
+      - name: LimitOrderProtocol_call_fillOrderRFQTo
+        loaded_at_field: call_block_time
+      - name: LimitOrderProtocol_call_fillOrderRFQToWithPermit
+        loaded_at_field: call_block_time

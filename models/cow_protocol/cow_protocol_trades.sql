@@ -31,7 +31,7 @@ FROM
             tx_hash,
             trader AS tx_from,
             receiver AS tx_to,
-            '' AS trace_address,
+            trace_address,
             evt_index
         FROM {{ ref('cow_protocol_ethereum_trades') }}
 
@@ -60,7 +60,7 @@ FROM
             tx_hash,
             trader AS tx_from,
             receiver AS tx_to,
-            '' AS trace_address,
+            trace_address,
             evt_index
         FROM {{ ref('cow_protocol_gnosis_trades') }}
 )

@@ -13,7 +13,7 @@ SELECT *
 FROM (
   select 
     lower(creator_address) as creator_address
-    ,contract_project
+    ,cast(contract_project as varchar(250)) AS contract_project
   from 
       (values
       ('0x932607335869cff6349ef450e74c83a3b871a9ff', 'Lyra V1')
@@ -344,7 +344,7 @@ FROM (
       ,('0x11F11121DF7256C40339393b0FB045321022ce44', 'LiFi')
       ,('0xcde47c1a5e2d60b9ff262b0a3b6d486048575ad9', 'OP')
       ,('0x59ca05674f5073f95f292aaca2d28a7dc80f12d6', 'Mirror')
-      ,('0xedcd79f34db8b78cd7a55e04dbf991ecd1a5c0f4', '0x')
+      ,('0xedcd79f34db8b78cd7a55e04dbf991ecd1a5c0f4', 'Zeroex (0x)')
       ,('0x48cff7ff77b2bf83e4a6f843b5b1709601671e83', 'Clipper')
       ,('0x1a3daa6f487a480c1ad312b90fd0244871940b66', 'Quix')
       ,('0x8df57e3d9ddde355dce1adb19ebce93419ffa0fb', 'Revert Finance')
@@ -419,6 +419,15 @@ FROM (
       ,('0x6453bD91C3B06DCC24F588FFfa384b0EEB0178B3', 'Beefy Finance')
       ,('0xd8693368d37b502ed54c315e38efde7eb3dcdb5c', 'FunDex')
       ,('0x4e59b44847b379578588920ca78fbf26c0b4956c', 'LlamaPay')
+      ,('0x30B12942912Cee5A719edec2dD147224fCC373A0', 'Mummy Finance')
+      ,('0xe61Bdef3FFF4C3CF7A07996DCB8802b5C85B665a', 'Exactly')
+      ,('0x1874028262f1f4b2dd1f2700a72ee8b9b7c69090', 'Kyberswap')
+      ,('0x76d84163bc0bbf58d6d3f2332f8a9c5b339df983', 'Otterspace')
+      ,('0x5e9Bf1dD74b4d25B7009AF11582f537b08eA3d3c', 'Layer Zero')
+      ,('0xac789308a29783f507f1f3baacbd43326c5767f4', 'Gamma')
+      ,('0xba32a3d407353fc3adaa6f7ec6264df5bca51c4b', 'Arcadia Finance')
+      ,('0x280333C41A9302448EbC070eD0300ad2Ed4B8244' ,'Transit Finance')
+      ,('0x8a700FdB6121A57C59736041D9aa21dfd8820660', 'Orbiter Finance')
 
   ) as temp_table (creator_address, contract_project)
 

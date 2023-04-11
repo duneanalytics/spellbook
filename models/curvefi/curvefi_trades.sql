@@ -1,6 +1,6 @@
 {{ config(
         alias ='trades',
-        post_hook='{{ expose_spells(\'["ethereum","avalanche_c","optimism"]\',
+        post_hook='{{ expose_spells(\'["ethereum","avalanche_c","optimism","fantom"]\',
                                 "project",
                                 "curvefi",
                                 \'["jeff-dude","yulesa","dsalv","Henrystats","msilb7","ilemi","agaperste"]\') }}'
@@ -11,6 +11,7 @@
  ref('curvefi_ethereum_trades')
 ,ref('curvefi_optimism_trades')
 ,ref('curvefi_avalanche_c_trades')
+,ref('curvefi_fantom_trades')
 ] %}
 
 
