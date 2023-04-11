@@ -1,21 +1,17 @@
--- Check that the accounting table provided a 0 net balance for 2022 and the correct amount
-with balance_2022 as (
-  select sum(case when left(primary_label, 1) = '1' then value_usd else -value_usd end) as balance,
-         sum(abs(value_usd))                                               as abs_balance
-  from {{ ref('lido_ethereum_accounting') }} --?? как у нас будет называться схема
-  where extract(year from period) = 2022
-),
-tests as (
-  select 
-    'Check balance is 0 for 2022' as test_name, 
-    case when abs(balance) < 0.01 then true else false end as success
-  from balance_2022
-  union all
-  select 
-    'Check abs sum of value is 17,781,439,848.176 for 2022' as test_name, 
-    case when abs(abs_balance - 17781439848.176) < 1 then true else false end as success
-  from balance_2022
+with  tests as (
+select  'Check Lido deposits' as test_name, 
+case when amount_staked = 224000000000000000000 then true else false end as success
+from {{ref('lido_ethereum_accounting_deposits')}}
+where tx_hash = lower('0xada597e877c290f1f942f2c13820f5a7c584ad56b84e71ccf053ecab81c54b4b')
+union all
+select 'Check Lido revenue' as test_name, 
+case when total = 709756144576347800000 then true else false end as success
+from {{ref('lido_ethereum_accounting_revenue')}}
+where evt_tx_hash = lower('0x43c5987e0283da0184e66497fbccaffa9c2fdf2be876abc28c9c65bead5a7c89')
 )
+
+
+
 select *
 from tests
 where success is false
