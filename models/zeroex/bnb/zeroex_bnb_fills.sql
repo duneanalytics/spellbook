@@ -6,7 +6,7 @@
         on_schema_change='sync_all_columns',
         file_format ='delta',
         incremental_strategy='merge',
-        post_hook='{{ expose_spells(\'["optimism"]\',
+        post_hook='{{ expose_spells(\'["bnb"]\',
                                 "project",
                                 "zeroex",
                                 \'["danning.sui", "bakabhai993", "rantum"]\') }}'
@@ -53,9 +53,9 @@ WITH
                     ELSE COALESCE((fills.makerTokenFilledAmount / (10^mt.decimals))*mp.price,(fills.takerTokenFilledAmount / (10^tt.decimals))*tp.price)
                 END AS volume_usd
             , fills.protocolFeePaid/ 1e18 AS protocol_fee_paid_eth
-        FROM {{ source('zeroex_optimism', 'ExchangeProxy_evt_LimitOrderFilled') }} fills
+        FROM {{ source('zeroex_bnb', 'ExchangeProxy_evt_LimitOrderFilled') }} fills
         LEFT JOIN prices.usd tp ON
-            date_trunc('minute', evt_block_time) = tp.minute and  tp.blockchain = 'optimism'
+            date_trunc('minute', evt_block_time) = tp.minute and  tp.blockchain = 'bnb'
             AND CASE
                     -- Set Deversifi ETHWrapper to WETH
                     WHEN fills.takerToken IN ('0x50cb61afa3f023d17276dcfb35abf85c710d1cff','0xaa7427d8f17d87a28f5e1ba3adbb270badbe1011') THEN '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'
@@ -74,7 +74,7 @@ WITH
                 END = mp.contract_address
         LEFT OUTER JOIN {{ ref('tokens_erc20') }} mt ON mt.contract_address = fills.makerToken
         LEFT OUTER JOIN {{ ref('tokens_erc20') }} tt ON tt.contract_address = fills.takerToken
-         where 1=1  and mp.blockchain = 'optimism' and tp.blockchain = 'optimism'  
+         where 1=1  and mp.blockchain = 'bnb' and tp.blockchain = 'bnb'  
                 {% if is_incremental() %}
                 AND evt_block_time >= date_trunc('day', now() - interval '1 week')
                 {% endif %}
@@ -116,7 +116,7 @@ WITH
                   ELSE COALESCE((fills.makerTokenFilledAmount / (10^mt.decimals))*mp.price,(fills.takerTokenFilledAmount / (10^tt.decimals))*tp.price)
               END AS volume_usd
           , NULL::NUMERIC AS protocol_fee_paid_eth
-      FROM {{ source('zeroex_optimism', 'ExchangeProxy_evt_RfqOrderFilled') }} fills
+      FROM {{ source('zeroex_bnb', 'ExchangeProxy_evt_RfqOrderFilled') }} fills
       LEFT JOIN prices.usd tp ON
           date_trunc('minute', evt_block_time) = tp.minute 
           AND CASE
@@ -137,7 +137,7 @@ WITH
               END = mp.contract_address
       LEFT OUTER JOIN {{ ref('tokens_erc20') }} mt ON mt.contract_address = fills.makerToken
       LEFT OUTER JOIN {{ ref('tokens_erc20') }} tt ON tt.contract_address = fills.takerToken
-       where 1=1  and  mp.blockchain = 'optimism' and tp.blockchain = 'optimism'
+       where 1=1  and  mp.blockchain = 'bnb' and tp.blockchain = 'bnb'
                 {% if is_incremental() %}
                 AND evt_block_time >= date_trunc('day', now() - interval '1 week')
                 {% endif %}
@@ -178,7 +178,7 @@ WITH
                   ELSE COALESCE((fills.makerTokenFilledAmount / (10^mt.decimals))*mp.price,(fills.takerTokenFilledAmount / (10^tt.decimals))*tp.price)
               END AS volume_usd
           , NULL::NUMERIC AS protocol_fee_paid_eth
-        FROM {{ source('zeroex_optimism', 'ExchangeProxy_evt_OtcOrderFilled') }} fills
+        FROM {{ source('zeroex_bnb', 'ExchangeProxy_evt_OtcOrderFilled') }} fills
       LEFT JOIN prices.usd tp ON
           date_trunc('minute', evt_block_time) = tp.minute 
           AND CASE
@@ -199,7 +199,7 @@ WITH
               END = mp.contract_address
       LEFT OUTER JOIN {{ ref('tokens_erc20') }} mt ON mt.contract_address = fills.makerToken
       LEFT OUTER JOIN {{ ref('tokens_erc20') }} tt ON tt.contract_address = fills.takerToken
-       where 1=1  and mp.blockchain = 'optimism' and tp.blockchain = 'optimism'  
+       where 1=1  and mp.blockchain = 'bnb' and tp.blockchain = 'bnb'  
                 {% if is_incremental() %}
                 AND evt_block_time >= date_trunc('day', now() - interval '1 week')
                 {% endif %}
@@ -211,7 +211,7 @@ WITH
 
     all_fills as (
     
-   
+    
 
     SELECT * FROM v4_limit_fills
 
@@ -242,12 +242,12 @@ WITH
                 fee_recipient_address,
                 volume_usd,
                 protocol_fee_paid_eth,
-                'optimism' as blockchain,
+                'bnb' as blockchain,
                 contract_address,
                 native_order_type,
                 tx.from AS tx_from,
                 tx.to AS tx_to
             FROM all_fills
-            INNER JOIN {{ source('optimism', 'transactions')}} tx ON all_fills.transaction_hash = tx.hash
+            INNER JOIN {{ source('bnb', 'transactions')}} tx ON all_fills.transaction_hash = tx.hash
 
             

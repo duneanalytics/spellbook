@@ -11,6 +11,7 @@
 ref('zeroex_ethereum_fills')
 ,ref('zeroex_polygon_fills')
 ,ref('zeroex_optimism_fills')
+,ref('zeroex_arbitrum_fills')
 ] %}
 
 

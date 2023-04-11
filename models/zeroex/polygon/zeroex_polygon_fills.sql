@@ -273,9 +273,7 @@ WITH
 
     all_fills as (
     
-    SELECT * FROM v3_fills
 
-    UNION ALL
 
     SELECT * FROM v4_limit_fills
 
