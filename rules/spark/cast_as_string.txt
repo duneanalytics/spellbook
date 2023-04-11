@@ -1,2 +1,2 @@
-Rule: replace string cast with varchar cast
-Example: cast(address as string) ->	cast(address as varchar)
+Rule: do not string cast
+Example: cast(address as string) ->	address

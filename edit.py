@@ -2,10 +2,7 @@
 import argparse
 import difflib
 import os
-import re
 import shutil
-
-import openai
 
 from chat import chat_request
 
@@ -32,7 +29,7 @@ def chunk_string_by_token_limit(input, n):
     # Create a list of sublists
     sublists = []
     for i in range(n):
-        if i < n-1:
+        if i < n - 1:
             sublist = string_list[i * sublist_length:(i + 1) * sublist_length]
         else:
             sublist = string_list[i * sublist_length:]
@@ -65,6 +62,7 @@ def diff_files(file1_path, file2_path, output_file_path_html, output_file_path_t
     with open(output_file_path_txt, 'w') as output_file:
         output_file.write(differences)
 
+
 def get_input(model_path):
     with open(model_path, 'r') as f:
         input = f.read()
@@ -88,6 +86,7 @@ def copy_model(model_path):
 def write_output(output, model_path):
     with open(model_path, 'w') as f:
         f.write(output)
+
 
 def process_input(choice):
     try:
@@ -116,7 +115,7 @@ else:
 
 output = []
 for i, input_piece in enumerate(inputs):
-    print(f'Iterating: {round(100*(i/len(inputs)), 3)}%')
+    print(f'Iterating: {round(100 * (i / len(inputs)), 3)}%')
     input = "\n".join(input_piece)
     response = chat_request(model, instructions, input)
     choice = response["choices"][0]['message']['content']
@@ -125,4 +124,4 @@ for i, input_piece in enumerate(inputs):
 
 write_output("".join(output), model_path + ".new")
 print(f'Diffing {model_path} and {model_path + ".new"}')
-diff_files(model_path, model_path + ".new", model_path + ".diff.html", model_path + ".diff.txt" )
+diff_files(model_path, model_path + ".new", model_path + ".diff.html", model_path + ".diff.txt")
