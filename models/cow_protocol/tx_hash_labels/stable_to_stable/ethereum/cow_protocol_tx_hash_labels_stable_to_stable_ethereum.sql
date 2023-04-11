@@ -25,12 +25,12 @@ with
 
 select
   "ethereum" as blockchain,
-  concat(tx_hash, evt_index, project, version) as tx_hash_key,
+  concat(tx_hash, CAST(evt_index AS VARCHAR(100)), project, version) as tx_hash_key,
   "Stable to stable" AS name,
   "tx_hash" AS category,
   "gentrexha" AS contributor,
   "query" AS source,
-  timestamp('2022-11-16') as created_at,
+  CAST('2022-11-16' AS TIMESTAMP) as created_at,
   now() as updated_at,
   "stable_to_stable" as model_name,
   "usage" as label_type
