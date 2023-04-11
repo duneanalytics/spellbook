@@ -91,7 +91,7 @@ dai_referral_payments_addr AS (
     (
         NOT EXISTS (SELECT _recipient FROM {{source('lido_ethereum','AllowedRecipientsRegistry_evt_RecipientRemoved')}})
         OR (
-            EXISTS (SELECT _recipient FROM{{source('lido_ethereum','AllowedRecipientsRegistry_evt_RecipientRemoved')}})
+            EXISTS (SELECT _recipient FROM {{source('lido_ethereum','AllowedRecipientsRegistry_evt_RecipientRemoved')}})
             AND 
             _recipient NOT IN (SELECT _recipient FROM {{source('lido_ethereum','AllowedRecipientsRegistry_evt_RecipientRemoved')}})
         )
@@ -100,7 +100,7 @@ dai_referral_payments_addr AS (
     SELECT LOWER('0xaf8aE6955d07776aB690e565Ba6Fbc79B8dE3a5d') --rhino
 ),
 
-operating_expenses_txns AS ( --all transfers out of recognized entities multisigs (3.2.4.1.)
+operating_expenses_txns AS ( 
     SELECT
         evt_block_time, 
         CAST(value AS DOUBLE) AS value, 
