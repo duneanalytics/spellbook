@@ -270,7 +270,7 @@ with source_ethereum_transactions as (
             ,case when offer_first_item_type in ('erc721','erc1155') and sub_type = 'consideration' and item_type in ('erc721','erc1155') then true
                 else false
             end is_moved_nft
-            ,f.wallet_name as fee_wallet_name
+            ,fee_wallet_name
     from  (select a.block_time
                 ,a.block_number
                 ,a.tx_hash
@@ -295,6 +295,7 @@ with source_ethereum_transactions as (
                 ,a.is_private
                 ,b.om_evt_index
                 ,b.om_order_id
+                ,f.wallet_name as fee_wallet_name
                 ,case when sender = receiver then true else false end is_self_trans
                 ,case when f.wallet_address is not null then true else false end as is_platform_fee
                 ,case when item_type in ('native','erc20')
