@@ -7,7 +7,7 @@ import shutil
 from chat import chat_request
 
 parser = argparse.ArgumentParser(description="SQL translation tool")
-parser.add_argument('model_path', type=str, nargs='?', help="Path to model",
+parser.add_argument('--model_path', type=str, nargs='?', help="Path to model",
                     default="models/blur/ethereum/blur_ethereum_events.sql")
 args = parser.parse_args()
 
