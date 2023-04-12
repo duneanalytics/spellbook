@@ -35,7 +35,7 @@ FROM (
       token_pair  as token_pair,
       maker_token_amount  as token_bought_amount, 
       taker_token_amount  as token_sold_amount,
-      maker_token_amount_raw  as token_bought_amount_raw
+      maker_token_amount_raw  as token_bought_amount_raw,
       taker_token_amount_raw  as token_sold_amount_raw,
       volume_usd  as amount_usd,
       maker_token  as token_bought_address,
