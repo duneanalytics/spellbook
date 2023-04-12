@@ -202,6 +202,38 @@ models:
         description: 'Tx Hash'
       - *evt_index
 
+  - name: dex_pools
+    meta:
+      blockchain: ethereum, arbitrum, polygon
+      sector: dex
+      contributors: hildobby
+    config:
+      tags: ['ethereum', 'arbitrum', 'polygon', 'dex', 'cross-chain', 'pools']
+    description: >
+      DEX pools on all chains across all contracts and versions
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - pool
+    columns:
+      - *blockchain
+      - *project
+      - *version
+      - name: pool
+        description: "DEX pool smart contract address"
+      - name: fee
+        description: "Defined fee"
+      - name: token0
+        description: "First token in pool"
+      - name: token1
+        description: "Second token in pool"
+      - name: creation_block_time
+        description: "Block time of pool creation"
+      - name: creation_block_number
+        description: "Block number of pool creation"
+      - name: contract_address
+        description: "Contract address used to create the pool"
 
   - name: dex_offers
     meta: 

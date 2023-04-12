@@ -119,3 +119,36 @@ models:
       - &token1
         name: token1
         description:  "Token1 contract address"
+
+  - name: uniswap_pools
+    meta:
+      blockchain: ethereum, polygon, arbitrum
+      sector: dex
+      contributors: hildobby
+    config:
+      tags: ['ethereum', 'polygon', 'arbitrum', 'pools']
+    description: >
+      Uniswap DEX pools
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - pool
+    columns:
+      - *blockchain
+      - *project
+      - *version
+      - name: pool
+        description: "DEX pool smart contract address"
+      - name: fee
+        description: "Defined fee"
+      - name: token0
+        description: "First token in pool"
+      - name: token1
+        description: "Second token in pool"
+      - name: creation_block_time
+        description: "Block time of pool creation"
+      - name: creation_block_number
+        description: "Block number of pool creation"
+      - name: contract_address
+        description: "Contract address used to create the pool"
