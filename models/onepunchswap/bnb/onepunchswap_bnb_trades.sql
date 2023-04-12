@@ -69,6 +69,7 @@ SELECT
     , bep20a.symbol                                              AS token_bought_symbol
     , bep20b.symbol                                              AS token_sold_symbol
     , dexs.token_bought_address                                  AS token_bought_address
+    , dexs.token_sold_address                                    AS token_sold_address
     , case
           when lower(bep20a.symbol) > lower(bep20b.symbol) then concat(bep20b.symbol, '-', bep20a.symbol)
           else concat(bep20a.symbol, '-', bep20b.symbol)
