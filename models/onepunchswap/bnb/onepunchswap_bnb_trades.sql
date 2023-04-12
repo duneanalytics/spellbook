@@ -89,7 +89,7 @@ SELECT
     , dexs.trace_address
     , dexs.evt_index
 FROM dexs
-INNER JOIN{{ source('bnb', 'transactions') }} tx
+INNER JOIN {{ source('bnb', 'transactions') }} tx
     ON dexs.tx_hash = tx.hash
     {% if not is_incremental() %}
     AND tx.block_time >= '{{project_start_date}}'
