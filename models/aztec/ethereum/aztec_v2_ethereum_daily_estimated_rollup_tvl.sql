@@ -100,8 +100,8 @@ rollup_balance_changes as (
     , b.balance * COALESCE(p.price_usd, bb.price) as tvl_usd
     , b.balance * COALESCE(p.price_eth, bb.price_eth) as tvl_eth
   FROM token_balances_filled b
-  LEFT join token_prices p on b.date = p.day and b.token_address = p.token_address AND b.token_address != '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee' 
-  LEFT JOIN token_prices_eth bb on b.date = bb.day AND b.token_address = '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee' -- using this to get price for missing ETH token 
+  LEFT join token_prices p on b.date = p.day and b.token_address = p.token_address AND b.token_address != 0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee 
+  LEFT JOIN token_prices_eth bb on b.date = bb.day AND b.token_address = 0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee -- using this to get price for missing ETH token 
   
 )
 select * from token_tvls 

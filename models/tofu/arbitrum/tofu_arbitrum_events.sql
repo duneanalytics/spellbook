@@ -11,7 +11,7 @@
                                 \'["Henrystats"]\') }}')
 }}
 
-{%- set ARETH_ERC20_ADDRESS = '0x82af49447d8a07e3bd95bd0d56f35241523fbab1' %}
+{%- set ARETH_ERC20_ADDRESS = 0x82af49447d8a07e3bd95bd0d56f35241523fbab1 %}
 {% set project_start_date = '2021-12-09' %}
 
 WITH tff AS (
@@ -50,11 +50,11 @@ WITH tff AS (
                 get_json_object(inventory, '$.buyer')    as buyer,
                 get_json_object(inventory, '$.kind')     as kind,
                 get_json_object(inventory, '$.price')    as price,
-                CASE WHEN get_json_object(inventory, '$.currency') = '0x0000000000000000000000000000000000000000'
+                CASE WHEN get_json_object(inventory, '$.currency') = 0x0000000000000000000000000000000000000000
                   THEN '{{ARETH_ERC20_ADDRESS}}'
                   ELSE get_json_object(inventory, '$.currency')
                 END as currency,
-                (get_json_object(inventory, '$.currency') = '0x0000000000000000000000000000000000000000') as native_eth,
+                (get_json_object(inventory, '$.currency') = 0x0000000000000000000000000000000000000000) as native_eth,
                 contract_address
          from {{ source('tofunft_arbitrum', 'MarketNG_evt_EvInventoryUpdate') }}
          where get_json_object(inventory, '$.status') = '1'

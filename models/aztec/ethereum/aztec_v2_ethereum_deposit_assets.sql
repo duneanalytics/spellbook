@@ -12,7 +12,7 @@ WITH
 assets_added as (
         SELECT
             CAST('0' AS VARCHAR(5)) as asset_id,
-            '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee' as asset_address,
+            0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee as asset_address,
             null as asset_gas_limit,
             null as date_added
 

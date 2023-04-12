@@ -11,7 +11,7 @@
 }}
 
 {% set project_start_date = '2021-06-08' %} --for testing, use small subset of data
-{% set burn_address = '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee' %} --according to etherscan label
+{% set burn_address = 0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee %} --according to etherscan label
 {% set blockchain = 'ethereum' %}
 {% set blockchain_symbol = 'ETH' %}
 

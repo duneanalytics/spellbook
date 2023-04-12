@@ -43,8 +43,8 @@ trades_with_prices AS (
              LEFT OUTER JOIN {{ source('prices', 'usd') }} as pb
                              ON pb.contract_address = (
                                  CASE
-                                     WHEN buyToken = '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee'
-                                         THEN '0xe91d153e0b41518a2ce8dd3d7944fa863463a97d'
+                                     WHEN buyToken = 0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee
+                                         THEN 0xe91d153e0b41518a2ce8dd3d7944fa863463a97d
                                      ELSE buyToken
                                      END)
                                  AND pb.minute = date_trunc('minute', evt_block_time)
@@ -73,7 +73,7 @@ trades_with_token_units as (
            buy_token                         as buy_token_address,
            (CASE
                 WHEN tb.symbol IS NULL THEN buy_token
-                WHEN buy_token = '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee' THEN 'xDAI'
+                WHEN buy_token = 0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee THEN 'xDAI'
                 ELSE tb.symbol
                END)                          as buy_token,
            sell_amount / pow(10, ts.decimals) as units_sold,
@@ -91,8 +91,8 @@ trades_with_token_units as (
              LEFT OUTER JOIN {{ ref('tokens_gnosis_erc20') }} tb
                              ON tb.contract_address =
                                 (CASE
-                                     WHEN buy_token = '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee'
-                                         THEN '0xe91d153e0b41518a2ce8dd3d7944fa863463a97d'
+                                     WHEN buy_token = 0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee
+                                         THEN 0xe91d153e0b41518a2ce8dd3d7944fa863463a97d
                                      ELSE buy_token
                                     END)
 ),
@@ -200,7 +200,7 @@ valued_trades as (
            END)                                            as fee_usd,
            app_data,
            case
-              when receiver = '0x0000000000000000000000000000000000000000'
+              when receiver = 0x0000000000000000000000000000000000000000
               then trader
               else receiver
            end                                    as receiver,

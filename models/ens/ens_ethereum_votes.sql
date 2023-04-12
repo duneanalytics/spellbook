@@ -16,7 +16,7 @@
 {% set blockchain = 'ethereum' %}
 {% set project = 'ens' %}
 {% set dao_name = 'DAO: ENS' %}
-{% set dao_address = '0x323a76393544d5ecca80cd6ef2a560c6a395b7e3' %}
+{% set dao_address = 0x323a76393544d5ecca80cd6ef2a560c6a395b7e3 %}
 
 WITH cte_sum_votes as 
 (SELECT sum(weight/1e18) as sum_votes, 

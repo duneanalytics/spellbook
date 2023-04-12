@@ -90,7 +90,7 @@ WITH zora_trades AS (
     , get_json_object(z3_rafe_ae.auction, '$.seller') AS seller
     , get_json_object(z3_rafe_ae.auction, '$.highestBidder') AS buyer
     , get_json_object(z3_rafe_ae.auction, '$.highestBid') AS amount_raw
-    , '0x0000000000000000000000000000000000000000' AS currency_contract
+    , 0x0000000000000000000000000000000000000000 AS currency_contract
     , z3_rafe_ae.tokenContract AS nft_contract_address
     , z3_rafe_ae.contract_address AS project_contract_address
     , z3_rafe_ae.evt_tx_hash AS tx_hash
@@ -113,7 +113,7 @@ WITH zora_trades AS (
     , get_json_object(z3_ape_af.ask, '$.seller') AS seller
     , get_json_object(z3_ape_af.ask, '$.buyer') AS buyer
     , get_json_object(z3_ape_af.ask, '$.price') AS amount_raw
-    , '0x0000000000000000000000000000000000000000' AS currency_contract
+    , 0x0000000000000000000000000000000000000000 AS currency_contract
     , z3_ape_af.tokenContract AS nft_contract_address
     , z3_ape_af.contract_address AS project_contract_address
     , z3_ape_af.evt_tx_hash AS tx_hash
@@ -136,7 +136,7 @@ WITH zora_trades AS (
     , z3_ace_af.seller AS seller
     , z3_ace_af.buyer AS buyer
     , z3_ace_af.price AS amount_raw
-    , '0x0000000000000000000000000000000000000000' AS currency_contract
+    , 0x0000000000000000000000000000000000000000 AS currency_contract
     , z3_ace_af.tokenContract AS nft_contract_address
     , z3_ace_af.contract_address AS project_contract_address
     , z3_ace_af.evt_tx_hash AS tx_hash
@@ -159,7 +159,7 @@ WITH zora_trades AS (
     , get_json_object(z3_race_ae.auction, '$.seller') AS seller
     , get_json_object(z3_race_ae.auction, '$.highestBidder') AS buyer
     , get_json_object(z3_race_ae.auction, '$.highestBid') AS amount_raw
-    , '0x0000000000000000000000000000000000000000' AS currency_contract
+    , 0x0000000000000000000000000000000000000000 AS currency_contract
     , z3_race_ae.tokenContract AS nft_contract_address
     , z3_race_ae.contract_address AS project_contract_address
     , z3_race_ae.evt_tx_hash AS tx_hash
@@ -228,7 +228,7 @@ WITH zora_trades AS (
     , get_json_object(z3_rale_ae.auction, '$.seller') AS seller
     , get_json_object(z3_rale_ae.auction, '$.highestBidder') AS buyer
     , get_json_object(z3_rale_ae.auction, '$.highestBid') AS amount_raw
-    , '0x0000000000000000000000000000000000000000' AS currency_contract
+    , 0x0000000000000000000000000000000000000000 AS currency_contract
     , z3_rale_ae.tokenContract AS nft_contract_address
     , z3_rale_ae.contract_address AS project_contract_address
     , z3_rale_ae.evt_tx_hash AS tx_hash
@@ -294,7 +294,7 @@ WITH zora_trades AS (
     , get_json_object(z1_bf.bid, '$.recipient') AS buyer
     , get_json_object(z1_bf.bid, '$.amount') AS amount_raw
     , get_json_object(z1_bf.bid, '$.currency') AS currency_contract
-    , '0xabefbc9fd2f806065b4f3c237d4b59d9a97bcac7' AS nft_contract_address
+    , 0xabefbc9fd2f806065b4f3c237d4b59d9a97bcac7 AS nft_contract_address
     , z1_bf.contract_address AS project_contract_address
     , z1_bf.evt_tx_hash AS tx_hash
     , 0 AS royalty_fee_amount_raw
@@ -306,7 +306,7 @@ WITH zora_trades AS (
     {% if is_incremental() %}
     AND z1_mt.evt_block_time >= date_trunc("day", now() - interval '1 week')
     {% endif %}
-    WHERE get_json_object(z1_bf.bid, '$.bidder') != '0xe468ce99444174bd3bbbed09209577d25d1ad673'
+    WHERE get_json_object(z1_bf.bid, '$.bidder') != 0xe468ce99444174bd3bbbed09209577d25d1ad673
     )
 
 SELECT 'ethereum' AS blockchain
@@ -317,7 +317,7 @@ SELECT 'ethereum' AS blockchain
     , zt.block_number
     , zt.token_id
     , nft.name AS collection
-    , CASE WHEN zt.currency_contract='0x0000000000000000000000000000000000000000' THEN zt.amount_raw/POWER(10, 18)*pu.price
+    , CASE WHEN zt.currency_contract=0x0000000000000000000000000000000000000000 THEN zt.amount_raw/POWER(10, 18)*pu.price
         ELSE zt.amount_raw/POWER(10, pu.decimals)*pu.price END AS amount_usd
     , CASE WHEN erc721.evt_index IS NOT NULL THEN 'erc721' ELSE 'erc1155' END AS token_standard
     , CASE WHEN agg.name IS NOT NULL THEN 'Bundle Trade' ELSE 'Single Item Trade' END AS trade_type
@@ -326,12 +326,12 @@ SELECT 'ethereum' AS blockchain
     , 'Trade' AS evt_type
     , zt.seller
     , zt.buyer
-    , CASE WHEN zt.currency_contract='0x0000000000000000000000000000000000000000' THEN zt.amount_raw/POWER(10, 18)
+    , CASE WHEN zt.currency_contract=0x0000000000000000000000000000000000000000 THEN zt.amount_raw/POWER(10, 18)
         ELSE zt.amount_raw/POWER(10, pu.decimals) END AS amount_original
     , CAST(zt.amount_raw AS DECIMAL(38,0)) AS amount_raw
-    , CASE WHEN zt.currency_contract='0x0000000000000000000000000000000000000000' THEN 'ETH'
+    , CASE WHEN zt.currency_contract=0x0000000000000000000000000000000000000000 THEN 'ETH'
         ELSE pu.symbol END AS currency_symbol
-    , CASE WHEN zt.currency_contract='0x0000000000000000000000000000000000000000' THEN '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'
+    , CASE WHEN zt.currency_contract=0x0000000000000000000000000000000000000000 THEN 0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2
         ELSE zt.currency_contract END AS currency_contract
     , zt.nft_contract_address
     , zt.project_contract_address
@@ -345,13 +345,13 @@ SELECT 'ethereum' AS blockchain
     , CAST(0 AS DOUBLE) AS platform_fee_amount_usd
     , CAST(0 AS DOUBLE) AS platform_fee_percentage
     , CAST(SUM(zt.royalty_fee_amount_raw) AS DOUBLE) AS royalty_fee_amount_raw
-    , CASE WHEN zt.currency_contract='0x0000000000000000000000000000000000000000' THEN COALESCE(SUM(zt.royalty_fee_amount_raw)/POWER(10, 18), 0)
+    , CASE WHEN zt.currency_contract=0x0000000000000000000000000000000000000000 THEN COALESCE(SUM(zt.royalty_fee_amount_raw)/POWER(10, 18), 0)
         ELSE COALESCE(SUM(zt.royalty_fee_amount_raw)/POWER(10, pu.decimals), 0) END AS royalty_fee_amount
-    , CASE WHEN zt.currency_contract='0x0000000000000000000000000000000000000000' THEN COALESCE(SUM(zt.royalty_fee_amount_raw)/POWER(10, 18)*pu.price, 0)
+    , CASE WHEN zt.currency_contract=0x0000000000000000000000000000000000000000 THEN COALESCE(SUM(zt.royalty_fee_amount_raw)/POWER(10, 18)*pu.price, 0)
         ELSE COALESCE(SUM(zt.royalty_fee_amount_raw)/POWER(10, pu.decimals)*pu.price, 0) END AS royalty_fee_amount_usd
     , CAST(COALESCE(100.0*SUM(zt.royalty_fee_amount_raw)/zt.amount_raw, 0) AS DOUBLE) AS royalty_fee_percentage
     , FIRST(zt.royalty_fee_receive_address) AS royalty_fee_receive_address
-    , CASE WHEN zt.currency_contract='0x0000000000000000000000000000000000000000' THEN 'ETH'
+    , CASE WHEN zt.currency_contract=0x0000000000000000000000000000000000000000 THEN 'ETH'
         ELSE pu.symbol END AS royalty_fee_currency_symbol
     , 'ethereumzora' || COALESCE(version, '-1') || COALESCE(zt.tx_hash, '-1') || COALESCE(zt.nft_contract_address, '-1') || COALESCE(zt.token_id, '-1') || COALESCE(zt.buyer, '-1') || COALESCE(zt.seller, '-1') AS unique_trade_id
 FROM zora_trades zt
@@ -373,8 +373,8 @@ LEFT JOIN {{ source('erc721_ethereum','evt_transfer') }} erc721 ON erc721.evt_bl
 LEFT JOIN {{ source('prices','usd') }} pu ON pu.blockchain='ethereum'
     AND pu.minute=date_trunc('minute', zt.block_time)
     AND (pu.contract_address=zt.currency_contract
-    OR (pu.contract_address='0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'
-    AND zt.currency_contract='0x0000000000000000000000000000000000000000'))
+    OR (pu.contract_address=0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2
+    AND zt.currency_contract=0x0000000000000000000000000000000000000000))
     {% if is_incremental() %}
     AND pu.minute >= date_trunc("day", now() - interval '1 week')
     {% endif %}

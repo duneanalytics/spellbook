@@ -17,7 +17,7 @@
 {% set project = 'compound' %}
 {% set project_version = 'v2' %}
 {% set dao_name = 'DAO: Compound' %}
-{% set dao_address = '0xc0da02939e1441f497fd74f78ce7decb17b66529' %}
+{% set dao_address = 0xc0da02939e1441f497fd74f78ce7decb17b66529 %}
 
 WITH cte_sum_votes as 
 (SELECT sum(votes/1e18) as sum_votes, 

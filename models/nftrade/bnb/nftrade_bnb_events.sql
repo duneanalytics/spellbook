@@ -115,7 +115,7 @@ source_inventory_enriched as (
         src.buyer,
         src.seller,
         'BNB' as currency_symbol,
-        LOWER('0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c') as currency_contract,
+        LOWER(0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c) as currency_contract,
         src.nft_contract_address,
         src.contract_address as project_contract_address,
         agg.name as aggregator_name,
@@ -154,7 +154,7 @@ source_inventory_enriched as (
     {{ source('prices','usd') }} p
         ON p.blockchain = 'bnb'
         AND p.minute = date_trunc('minute', src.evt_block_time)
-        AND p.contract_address = '0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c'
+        AND p.contract_address = 0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c
         {% if not is_incremental() %}
         AND p.minute >= '{{project_start_date}}'
         {% endif %}

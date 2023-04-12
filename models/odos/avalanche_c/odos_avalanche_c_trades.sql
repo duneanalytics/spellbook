@@ -26,8 +26,8 @@ dexs_raw as (
             CAST(amountsOut[0] as double) as token_bought_amount_raw, 
             CAST(NULL as double) as amount_usd, 
             CASE 
-                WHEN CAST(tokensIn[0] as string) IN ('0', 'O', '0x0000000000000000000000000000000000000000')
-                THEN '0xb31f66aa3c1e785363f0875a1b74e27b85fd66c7' -- WAVAX 
+                WHEN CAST(tokensIn[0] as string) IN ('0', 'O', 0x0000000000000000000000000000000000000000)
+                THEN 0xb31f66aa3c1e785363f0875a1b74e27b85fd66c7 -- WAVAX 
                 ELSE CAST(tokensIn[0] as string)
             END as token_sold_address, 
             contract_address as project_contract_address, 
@@ -46,8 +46,8 @@ dexs as (
             *, 
             CAST(data_value:receiver as string) as taker, 
             CASE 
-                WHEN CAST(data_value:tokenAddress as string) IN ('0', 'O', '0x0000000000000000000000000000000000000000')
-                THEN '0xb31f66aa3c1e785363f0875a1b74e27b85fd66c7' -- WAVAX 
+                WHEN CAST(data_value:tokenAddress as string) IN ('0', 'O', 0x0000000000000000000000000000000000000000)
+                THEN 0xb31f66aa3c1e785363f0875a1b74e27b85fd66c7 -- WAVAX 
                 ELSE CAST(data_value:tokenAddress as string)
             END as token_bought_address
         FROM 

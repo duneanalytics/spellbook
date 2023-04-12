@@ -183,11 +183,11 @@ with p1_call as (
             ELSE concat('0x',substr(buyer,3,40)) END AS buyer
           ,a.original_amount / power(10,t1.decimals) as amount_original
           ,a.original_amount as amount_raw
-          ,case when a.original_currency_contract = '0x0000000000000000000000000000000000000000' then 'ETH'
+          ,case when a.original_currency_contract = 0x0000000000000000000000000000000000000000 then 'ETH'
                 else t1.symbol
            end as currency_symbol
-          ,case when a.original_currency_contract = '0x0000000000000000000000000000000000000000' then
-          '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'
+          ,case when a.original_currency_contract = 0x0000000000000000000000000000000000000000 then
+          0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2
                 else a.original_currency_contract
            end as currency_contract
           ,nft_contract_address
@@ -207,7 +207,7 @@ with p1_call as (
           ,(a.royalty_amount / a.original_amount * 100)::string  AS royalty_fee_percentage
           ,a.royalty_receive_address as royalty_fee_receive_address
           ,case when royalty_amount > 0 and a.original_currency_contract =
-          '0x0000000000000000000000000000000000000000' then 'ETH'
+          0x0000000000000000000000000000000000000000 then 'ETH'
                 when royalty_amount > 0 then t1.symbol
           end as royalty_fee_currency_symbol
           ,a.tx_hash || '-' || a.nft_token_id || '-' || a.original_amount::string || '-' ||  concat('0x',substr(seller,3,40)) || '-' ||
@@ -253,15 +253,15 @@ with p1_call as (
             {% endif %}
         left join {{ ref('tokens_erc20') }} t1
             on t1.contract_address =
-                case when a.original_currency_contract = '0x0000000000000000000000000000000000000000'
-                then '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'
+                case when a.original_currency_contract = 0x0000000000000000000000000000000000000000
+                then 0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2
                 else a.original_currency_contract
                 end
             and t1.blockchain = 'ethereum'
           left join {{ source('prices', 'usd') }} p1
             on p1.contract_address =
-                case when a.original_currency_contract = '0x0000000000000000000000000000000000000000'
-                then '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'
+                case when a.original_currency_contract = 0x0000000000000000000000000000000000000000
+                then 0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2
                 else a.original_currency_contract
                 end
             and p1.minute = date_trunc('minute', a.block_time)
@@ -413,11 +413,11 @@ with p1_call as (
           ,a.attempt_amount / power(10,t1.decimals) as amount_original
           ,a.attempt_amount as amount_raw
           ,case when concat('0x',substr(a.price_token,3,40)) =
-          '0x0000000000000000000000000000000000000000' then 'ETH'
+          0x0000000000000000000000000000000000000000 then 'ETH'
                 else t1.symbol
            end as currency_symbol
           ,case when concat('0x',substr(a.price_token,3,40)) =
-          '0x0000000000000000000000000000000000000000' then '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'
+          0x0000000000000000000000000000000000000000 then 0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2
                 else concat('0x',substr(a.price_token,3,40))
            end as currency_contract
           ,concat('0x',substr(a.nft_address,3,40)) as nft_contract_address
@@ -438,7 +438,7 @@ with p1_call as (
           ,case when evt_royalty_amount > 0 then concat('0x',substr(evt_royalty_recipient,3,40)) end as
           royalty_fee_receive_address
           ,case when evt_royalty_amount > 0 and concat('0x',substr(a.evt_royalty_token,3,40)) =
-          '0x0000000000000000000000000000000000000000' then 'ETH'
+          0x0000000000000000000000000000000000000000 then 'ETH'
                 when evt_royalty_amount > 0 then t1.symbol
           end as royalty_fee_currency_symbol
           ,a.tx_hash || '-' || a.nft_token_id || '-' || a.attempt_amount::string || '-' ||  concat('0x',substr(seller,3,40)) || '-' ||
@@ -484,14 +484,14 @@ with p1_call as (
             on n.contract_address = concat('0x',substr(a.nft_address,3,40)) and n.blockchain = 'ethereum'
         left join {{ ref('tokens_erc20') }} t1
             on t1.contract_address =
-                case when concat('0x',substr(a.price_token,3,40)) = '0x0000000000000000000000000000000000000000'
-                then '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'
+                case when concat('0x',substr(a.price_token,3,40)) = 0x0000000000000000000000000000000000000000
+                then 0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2
                 else concat('0x',substr(a.price_token,3,40))
                 end and t1.blockchain = 'ethereum'
           left join {{ source('prices', 'usd') }} p1
             on p1.contract_address =
-                case when concat('0x',substr(a.price_token,3,40)) = '0x0000000000000000000000000000000000000000'
-                then '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'
+                case when concat('0x',substr(a.price_token,3,40)) = 0x0000000000000000000000000000000000000000
+                then 0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2
                 else concat('0x',substr(a.price_token,3,40))
                 end
             and p1.minute = date_trunc('minute', a.block_time)
@@ -670,11 +670,11 @@ with p1_call as (
             ELSE concat('0x',substr(buyer,3,40)) END AS buyer
           ,a.attempt_amount / power(10,t1.decimals) as amount_original
           ,a.attempt_amount as amount_raw
-          ,case when a.original_currency_contract = '0x0000000000000000000000000000000000000000' then 'ETH'
+          ,case when a.original_currency_contract = 0x0000000000000000000000000000000000000000 then 'ETH'
                 else t1.symbol
            end as currency_symbol
-          ,case when a.original_currency_contract = '0x0000000000000000000000000000000000000000' then
-          '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'
+          ,case when a.original_currency_contract = 0x0000000000000000000000000000000000000000 then
+          0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2
                 else a.original_currency_contract
            end as currency_contract
           ,nft_contract_address
@@ -695,7 +695,7 @@ with p1_call as (
           ,case when royalty_amount > 0 then royalty_receive_address end as
           royalty_fee_receive_address
           ,case when royalty_amount > 0 and a.original_currency_contract =
-          '0x0000000000000000000000000000000000000000' then 'ETH'
+          0x0000000000000000000000000000000000000000 then 'ETH'
           when royalty_amount > 0 then t1.symbol
           end as royalty_fee_currency_symbol
           ,a.tx_hash || '-' || a.attempt_amount::string || '-' || a.nft_token_id || '-' ||  concat('0x',substr(seller,3,40)) || '-' ||
@@ -741,15 +741,15 @@ with p1_call as (
             {% endif %}
         left join {{ ref('tokens_erc20') }} t1
             on t1.contract_address =
-                case when a.original_currency_contract = '0x0000000000000000000000000000000000000000'
-                then '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'
+                case when a.original_currency_contract = 0x0000000000000000000000000000000000000000
+                then 0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2
                 else a.original_currency_contract
                 end
             and t1.blockchain = 'ethereum'
           left join {{ source('prices', 'usd') }} p1
             on p1.contract_address =
-                case when a.original_currency_contract = '0x0000000000000000000000000000000000000000'
-                then '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'
+                case when a.original_currency_contract = 0x0000000000000000000000000000000000000000
+                then 0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2
                 else a.original_currency_contract
                 end
             and p1.minute = date_trunc('minute', a.block_time)
@@ -902,11 +902,11 @@ with p1_call as (
           ,a.attempt_amount / power(10,t1.decimals) as amount_original
           ,a.attempt_amount as amount_raw
           ,case when concat('0x',substr(a.price_token,3,40)) =
-          '0x0000000000000000000000000000000000000000' then 'ETH'
+          0x0000000000000000000000000000000000000000 then 'ETH'
                 else t1.symbol
            end as currency_symbol
           ,case when concat('0x',substr(a.price_token,3,40)) =
-          '0x0000000000000000000000000000000000000000' then '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'
+          0x0000000000000000000000000000000000000000 then 0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2
                 else concat('0x',substr(a.price_token,3,40))
            end as currency_contract
           ,concat('0x',substr(a.nft_address,3,40)) as nft_contract_address
@@ -927,7 +927,7 @@ with p1_call as (
           ,case when evt_royalty_amount > 0 then concat('0x',substr(evt_royalty_recipient,3,40)) end as
           royalty_fee_receive_address
           ,case when evt_royalty_amount > 0 and concat('0x',substr(a.evt_royalty_token,3,40)) =
-          '0x0000000000000000000000000000000000000000' then 'ETH'
+          0x0000000000000000000000000000000000000000 then 'ETH'
                 when evt_royalty_amount > 0 then t1.symbol
           end as royalty_fee_currency_symbol
           ,a.tx_hash || '-' || a.nft_token_id || '-' || a.attempt_amount::string || '-' || concat('0x',substr(seller,3,40)) || '-' || cast(row_number () over (partition by a.tx_hash order by sub_idx) as
@@ -972,15 +972,15 @@ with p1_call as (
         on n.contract_address = concat('0x',substr(a.nft_address,3,40)) and n.blockchain = 'ethereum'
     left join {{ ref('tokens_erc20') }} t1
         on t1.contract_address =
-            case when concat('0x',substr(a.price_token,3,40)) = '0x0000000000000000000000000000000000000000'
-            then '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'
+            case when concat('0x',substr(a.price_token,3,40)) = 0x0000000000000000000000000000000000000000
+            then 0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2
             else concat('0x',substr(a.price_token,3,40))
             end
         and t1.blockchain = 'ethereum'
         left join {{ source('prices', 'usd') }} p1
         on p1.contract_address =
-            case when concat('0x',substr(a.price_token,3,40)) = '0x0000000000000000000000000000000000000000'
-            then '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'
+            case when concat('0x',substr(a.price_token,3,40)) = 0x0000000000000000000000000000000000000000
+            then 0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2
             else concat('0x',substr(a.price_token,3,40))
             end
         and p1.minute = date_trunc('minute', a.block_time)

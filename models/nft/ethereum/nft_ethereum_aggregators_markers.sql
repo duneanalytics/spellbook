@@ -13,10 +13,10 @@
     , regexp_replace(data, '^.*00', '') AS hash_marker
     FROM {{ source('ethereum','transactions') }}
     WHERE to IN (
-        '0x00000000006c3852cbef3e08e8df289169ede581', --seaport
-        '0x74312363e45dcaba76c59ec49a7aa8a65a67eed3', --x2y2
-        '0x59728544b08ab483533076417fbbb2fd0b17ce3a', --looksrare
-        '0x9ebfb53fa8526906738856848a27cb11b0285c3f'  --reservoir
+        0x00000000006c3852cbef3e08e8df289169ede581, --seaport
+        0x74312363e45dcaba76c59ec49a7aa8a65a67eed3, --x2y2
+        0x59728544b08ab483533076417fbbb2fd0b17ce3a, --looksrare
+        0x9ebfb53fa8526906738856848a27cb11b0285c3f  --reservoir
     )
     AND `RIGHT`(data, 2) = '1f'
     AND `LEFT`(regexp_replace(data, '^.*00', ''), 2)='1f'
@@ -40,7 +40,7 @@
         ,CASE WHEN router_website='ens.vision' THEN 'ENS.Vision'
             WHEN router_website='alphasharks.io' THEN 'Alpha Sharks'
             WHEN router_website='nftnerds.ai' THEN 'NFTNerds'
-            WHEN router_website='0xba5ed0773240626366a7eb3a4bea22f0dd46b1b5' THEN 'Unknown'
+            WHEN router_website=0xba5ed0773240626366a7eb3a4bea22f0dd46b1b5 THEN 'Unknown'
             WHEN router_website='rare.id' THEN 'Rare.ID'
             WHEN router_website='sound.xyz' THEN 'Sound'
             WHEN router_website='freshdrops.io' THEN 'freshdrops'

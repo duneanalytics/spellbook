@@ -29,7 +29,7 @@ WITH trades AS (
         erc721TokenId AS token_id,
         cast(1 as bigint) AS number_of_items,
         'erc721' AS token_standard,
-        '0x385eeac5cb85a38a9a07a70c73e0a3271cfb54a7' AS currency_contract, -- All sale are in GHST
+        0x385eeac5cb85a38a9a07a70c73e0a3271cfb54a7 AS currency_contract, -- All sale are in GHST
         priceInWei AS amount_raw,
         category,
         `time` AS executed_time
@@ -57,7 +57,7 @@ WITH trades AS (
         erc1155TypeId AS token_id,
         cast(_quantity as bigint) AS number_of_items,
         'erc1155' AS token_standard,
-        '0x385eeac5cb85a38a9a07a70c73e0a3271cfb54a7' AS currency_contract, -- All sale are in GHST
+        0x385eeac5cb85a38a9a07a70c73e0a3271cfb54a7 AS currency_contract, -- All sale are in GHST
         priceInWei AS amount_raw,
         category,
         `time` AS executed_time

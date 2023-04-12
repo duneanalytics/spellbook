@@ -25,10 +25,10 @@ WITH dexs AS
         quoteTokenAmount                                                                AS token_bought_amount_raw,
         baseTokenAmount                                                                 AS token_sold_amount_raw,
         cast(NULL as double)                                                            AS amount_usd,
-        CASE WHEN quotetoken  = '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee' 
-             THEN '0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c' ELSE quotetoken END      AS token_bought_address,
-        CASE WHEN basetoken  = '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee' 
-             THEN '0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c' ELSE basetoken END       AS token_sold_address,     
+        CASE WHEN quotetoken  = 0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee 
+             THEN 0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c ELSE quotetoken END      AS token_bought_address,
+        CASE WHEN basetoken  = 0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee 
+             THEN 0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c ELSE basetoken END       AS token_sold_address,     
         t.contract_address                                                              AS project_contract_address,
         t.evt_tx_hash                                                                   AS tx_hash,
         ''                                                                              AS trace_address,

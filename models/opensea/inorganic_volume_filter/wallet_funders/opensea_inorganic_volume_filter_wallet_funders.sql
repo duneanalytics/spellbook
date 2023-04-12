@@ -15,7 +15,7 @@ cex as (
 ), 
 
 disperse as (
-        SELECT LOWER('0xD152f549545093347A162Dce210e7293f1452150') as disperse_address
+        SELECT LOWER(0xD152f549545093347A162Dce210e7293f1452150) as disperse_address
 
 ), 
 

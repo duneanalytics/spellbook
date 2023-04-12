@@ -17,7 +17,7 @@
 {% set project = 'compound' %}
 {% set project_version = 'v2' %}
 {% set dao_name = 'DAO: Compound' %}
-{% set dao_address = '0xc0da02939e1441f497fd74f78ce7decb17b66529' %}
+{% set dao_address = 0xc0da02939e1441f497fd74f78ce7decb17b66529 %}
 
 with cte_support as (SELECT 
         voter as voter,

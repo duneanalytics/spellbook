@@ -11,7 +11,7 @@
 }}
 
 {% set project_start_date = '2018-09-05' %} --for testing, use small subset of data
-{% set burn_address = '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee' %} --according to etherscan label
+{% set burn_address = 0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee %} --according to etherscan label
 {% set blockchain = 'ethereum' %}
 {% set blockchain_symbol = 'ETH' %}
 
@@ -35,8 +35,8 @@ WITH zeroex AS
     WHERE
         feeRecipientAddress IN
         (
-            '0x910bf2d50fa5e014fd06666f456182d4ab7c8bd2'
-            ,'0x68a17b587caf4f9329f0e372e3a78d23a46de6b5'
+            0x910bf2d50fa5e014fd06666f456182d4ab7c8bd2
+            ,0x68a17b587caf4f9329f0e372e3a78d23a46de6b5
         )
         {% if is_incremental() %}
         AND evt_block_time >= date_trunc("day", now() - interval '1 week')
@@ -64,8 +64,8 @@ WITH zeroex AS
     WHERE
         feeRecipientAddress IN
         (
-            '0x910bf2d50fa5e014fd06666f456182d4ab7c8bd2'
-            ,'0x68a17b587caf4f9329f0e372e3a78d23a46de6b5'
+            0x910bf2d50fa5e014fd06666f456182d4ab7c8bd2
+            ,0x68a17b587caf4f9329f0e372e3a78d23a46de6b5
         )
         {% if is_incremental() %}
         AND evt_block_time >= date_trunc("day", now() - interval '1 week')
@@ -93,8 +93,8 @@ WITH zeroex AS
     WHERE
         feeRecipientAddress IN
         (
-            '0x910bf2d50fa5e014fd06666f456182d4ab7c8bd2'
-            ,'0x68a17b587caf4f9329f0e372e3a78d23a46de6b5'
+            0x910bf2d50fa5e014fd06666f456182d4ab7c8bd2
+            ,0x68a17b587caf4f9329f0e372e3a78d23a46de6b5
         )
         {% if is_incremental() %}
         AND evt_block_time >= date_trunc("day", now() - interval '1 week')
@@ -122,8 +122,8 @@ WITH zeroex AS
     WHERE
         feeRecipient IN
         (
-            '0x910bf2d50fa5e014fd06666f456182d4ab7c8bd2'
-            ,'0x68a17b587caf4f9329f0e372e3a78d23a46de6b5'
+            0x910bf2d50fa5e014fd06666f456182d4ab7c8bd2
+            ,0x68a17b587caf4f9329f0e372e3a78d23a46de6b5
         )
         {% if is_incremental() %}
         AND evt_block_time >= date_trunc("day", now() - interval '1 week')

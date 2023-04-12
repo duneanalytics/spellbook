@@ -29,7 +29,7 @@ WITH trades AS (
         CAST(bytea2numeric_v3(substr(leftAsset:data, 3 + 64, 64)) AS string) AS token_id,
         newRightFill AS number_of_items,
         CASE WHEN leftAsset:assetClass = '0x73ad2146' THEN 'erc721' ELSE 'erc1155' END AS token_standard, -- 0x73ad2146: erc721; 0x973bb640: erc1155
-        CASE WHEN rightAsset:assetClass = '0xaaaebeba' THEN '0x0d500b1d8e8ef31e21c99d1db9a6444d3adf1270'
+        CASE WHEN rightAsset:assetClass = '0xaaaebeba' THEN 0x0d500b1d8e8ef31e21c99d1db9a6444d3adf1270
             ELSE '0x' || right(substring(rightAsset:data, 3, 64), 40)
         END AS currency_contract,
         newLeftFill AS amount_raw
@@ -57,7 +57,7 @@ WITH trades AS (
         CAST(bytea2numeric_v3(substr(rightAsset:data, 3 + 64, 64)) AS string) AS token_id,
         newLeftFill AS number_of_items,
         CASE WHEN rightAsset:assetClass = '0x73ad2146' THEN 'erc721' ELSE 'erc1155' END AS token_standard, -- 0x73ad2146: erc721; 0x973bb640: erc1155
-        CASE WHEN leftAsset:assetClass = '0xaaaebeba' THEN '0x0d500b1d8e8ef31e21c99d1db9a6444d3adf1270'
+        CASE WHEN leftAsset:assetClass = '0xaaaebeba' THEN 0x0d500b1d8e8ef31e21c99d1db9a6444d3adf1270
             ELSE '0x' || right(substring(leftAsset:data, 3, 64), 40)
         END AS currency_contract,
         newRightFill AS amount_raw
@@ -86,7 +86,7 @@ trade_amount_detail as (
         {% if is_incremental() %}
         AND e.block_time >= date_trunc("day", now() - interval '1 week')
         {% endif %}
-    WHERE t.currency_contract = '0x0d500b1d8e8ef31e21c99d1db9a6444d3adf1270'
+    WHERE t.currency_contract = 0x0d500b1d8e8ef31e21c99d1db9a6444d3adf1270
         AND cast(e.value as double) > 0
         AND cardinality(trace_address) > 0 -- exclude the main call record
 
@@ -105,7 +105,7 @@ trade_amount_detail as (
         {% if is_incremental() %}
         AND e.evt_block_time >= date_trunc("day", now() - interval '1 week')
         {% endif %}
-    WHERE t.currency_contract <> '0x0d500b1d8e8ef31e21c99d1db9a6444d3adf1270'
+    WHERE t.currency_contract <> 0x0d500b1d8e8ef31e21c99d1db9a6444d3adf1270
 ),
 
 trade_amount_summary as (

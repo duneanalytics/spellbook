@@ -12,6 +12,6 @@ SELECT distinct
     'validators_ethereum' as model_name,
     'identifier' as label_type
 FROM {{ source('ethereum','traces') }}
-WHERE to = lower('0x00000000219ab540356cBB839Cbe05303d7705Fa')
+WHERE to = lower(0x00000000219ab540356cBB839Cbe05303d7705Fa)
 AND success
 AND value > 0

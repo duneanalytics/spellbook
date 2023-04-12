@@ -19,7 +19,7 @@ WITH looksrare_trades AS (
         SELECT ta.evt_block_time AS block_time
         , ta.tokenId AS token_id
         , ta.amount AS number_of_items
-        , CASE WHEN ta.strategy='0x58d83536d3efedb9f7f2a1ec3bdaad2b1a4dd98c' THEN 'Private Sale' ELSE 'Buy' END AS trade_category
+        , CASE WHEN ta.strategy=0x58d83536d3efedb9f7f2a1ec3bdaad2b1a4dd98c THEN 'Private Sale' ELSE 'Buy' END AS trade_category
         , ta.maker AS seller
         , ta.taker AS buyer
         , ta.price AS amount_raw
@@ -40,7 +40,7 @@ WITH looksrare_trades AS (
         SELECT tb.evt_block_time AS block_time
         , tb.tokenId AS token_id
         , tb.amount AS number_of_items
-        , CASE WHEN tb.strategy='0x58d83536d3efedb9f7f2a1ec3bdaad2b1a4dd98c' THEN 'Private Sale' ELSE 'Offer Accepted' END AS trade_category
+        , CASE WHEN tb.strategy=0x58d83536d3efedb9f7f2a1ec3bdaad2b1a4dd98c THEN 'Private Sale' ELSE 'Offer Accepted' END AS trade_category
         , tb.maker AS seller
         , tb.taker AS buyer
         , tb.price AS amount_raw
@@ -113,7 +113,7 @@ SELECT 'ethereum' AS blockchain
 , CASE WHEN lr.buyer=agg.contract_address THEN et.from ELSE lr.buyer END AS buyer
 , lr.amount_raw/POWER(10, pu.decimals) AS amount_original
 , CAST(lr.amount_raw AS DECIMAL(38,0)) AS amount_raw
-, CASE WHEN lr.currency_contract='0x0000000000000000000000000000000000000000' THEN 'ETH' ELSE pu.symbol END AS currency_symbol
+, CASE WHEN lr.currency_contract=0x0000000000000000000000000000000000000000 THEN 'ETH' ELSE pu.symbol END AS currency_symbol
 , lr.currency_contract
 , lr.nft_contract_address
 , lr.project_contract_address
@@ -128,7 +128,7 @@ SELECT 'ethereum' AS blockchain
 , COALESCE((pf.fee_percentage/100)*pu.price*lr.amount_raw/POWER(10, pu.decimals), 0) platform_fee_amount_usd
 , CAST(COALESCE(pf.fee_percentage, 0) AS DOUBLE) AS platform_fee_percentage
 , roy.royaltyRecipient AS royalty_fee_receive_address
-, CASE WHEN lr.currency_contract='0x0000000000000000000000000000000000000000' THEN 'ETH' ELSE pu.symbol END AS royalty_fee_currency_symbol
+, CASE WHEN lr.currency_contract=0x0000000000000000000000000000000000000000 THEN 'ETH' ELSE pu.symbol END AS royalty_fee_currency_symbol
 , CAST(COALESCE(roy.amount, 0) AS DOUBLE) AS royalty_fee_amount_raw
 , COALESCE(roy.amount/POWER(10, pu.decimals), 0) AS royalty_fee_amount
 , COALESCE(pu.price*roy.amount/POWER(10, pu.decimals), 0) royalty_fee_amount_usd
@@ -138,7 +138,7 @@ FROM looksrare_trades lr
 LEFT JOIN {{ source('prices','usd') }} pu ON pu.blockchain='ethereum'
     AND pu.minute=date_trunc('minute', lr.block_time)
     AND (pu.contract_address=lr.currency_contract
-        OR (pu.contract_address='0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2' AND lr.currency_contract='0x0000000000000000000000000000000000000000'))
+        OR (pu.contract_address=0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2 AND lr.currency_contract=0x0000000000000000000000000000000000000000))
     {% if is_incremental() %}
     AND pu.minute >= date_trunc("day", NOW() - interval '1 week')
     {% endif %}

@@ -54,7 +54,7 @@ with iv_offer_consideration as (
             ,size(offer) as offer_cnt
             ,size(consideration) as consideration_cnt
             ,order_hash            
-            ,case when recipient = '0x0000000000000000000000000000000000000000' then true
+            ,case when recipient = 0x0000000000000000000000000000000000000000 then true
                 else false
             end as is_private -- will be deprecated in base_pairs
     from
@@ -119,7 +119,7 @@ with iv_offer_consideration as (
             ,size(offer) as offer_cnt
             ,size(consideration) as consideration_cnt
             ,order_hash
-            ,case when recipient = '0x0000000000000000000000000000000000000000' then true
+            ,case when recipient = 0x0000000000000000000000000000000000000000 then true
                 else false
             end as is_private -- will be deprecated in base_pairs
     from

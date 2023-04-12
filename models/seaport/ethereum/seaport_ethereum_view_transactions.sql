@@ -50,7 +50,7 @@ with iv_availadv as (
                 ,posexplode(offer) as (rn, each_offer)
             from {{ source('seaport_ethereum','Seaport_evt_OrderFulfilled') }}  a
            where 1=1
-            and recipient != '0x0000000000000000000000000000000000000000'
+            and recipient != 0x0000000000000000000000000000000000000000
          )
     union all
     select 'normal' as main_type
@@ -72,7 +72,7 @@ with iv_availadv as (
                   ,posexplode(consideration) as (rn, each_consideration)
               from {{ source('seaport_ethereum','Seaport_evt_OrderFulfilled') }} a
              where 1=1
-              and recipient != '0x0000000000000000000000000000000000000000'
+              and recipient != 0x0000000000000000000000000000000000000000
           )
     union all
     select 'advanced' as main_type
@@ -94,13 +94,13 @@ with iv_availadv as (
                   ,posexplode(consideration) as (rn, each_consideration)
               from {{ source('seaport_ethereum','Seaport_evt_OrderFulfilled') }} a
              where 1=1
-               and recipient = '0x0000000000000000000000000000000000000000'
+               and recipient = 0x0000000000000000000000000000000000000000
            ) a
           inner join  (select *
                               ,posexplode(offer) as (rn, each_offer)
                           from {{ source('seaport_ethereum','Seaport_evt_OrderFulfilled') }} a
                          where 1=1
-                           and recipient = '0x0000000000000000000000000000000000000000'
+                           and recipient = 0x0000000000000000000000000000000000000000
                        ) e on a.recipient = e.recipient 
                           and a.evt_tx_hash = e.evt_tx_hash
                           and a.each_consideration:token = e.each_offer:token
@@ -142,8 +142,8 @@ with iv_availadv as (
           ,case when max(case when category = 'auction' and sub_idx in (1,2) then token_contract_address
                             when category = 'offer accepted' and sub_type = 'offer' and sub_idx = 1 then token_contract_address
                             when category = 'click buy now' and sub_type = 'consideration' then token_contract_address
-                      end) = '0x0000000000000000000000000000000000000000'
-                then '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'
+                      end) = 0x0000000000000000000000000000000000000000
+                then 0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2
                 else max(case when category = 'auction' and sub_idx in (1,2) then token_contract_address
                             when category = 'offer accepted' and sub_type = 'offer' and sub_idx = 1 then token_contract_address
                             when category = 'click buy now' and sub_type = 'consideration' then token_contract_address
@@ -164,8 +164,8 @@ with iv_availadv as (
           ,case when max(case when category = 'auction' and sub_idx = 2 then token_contract_address
                             when category = 'offer accepted' and sub_type = 'consideration' and item_type = '1' then token_contract_address
                             when category = 'click buy now' and sub_type = 'consideration' and sub_idx = 2 then token_contract_address
-                      end) = '0x0000000000000000000000000000000000000000'
-                then '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'
+                      end) = 0x0000000000000000000000000000000000000000
+                then 0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2
                 else max(case when category = 'auction' and sub_idx = 2 then token_contract_address
                             when category = 'offer accepted' and sub_type = 'consideration' and item_type = '1' then token_contract_address
                             when category = 'click buy now' and sub_type = 'consideration' and sub_idx = 2 then token_contract_address
@@ -203,15 +203,15 @@ with iv_availadv as (
                 when erc721_transfer_count = 0 and erc1155_transfer_count > 0 then 'erc1155'
                 when erc721_transfer_count > 0 and erc1155_transfer_count > 0 then 'mixed'
            end as erc_standard
-          ,case when a.zone in ('0xf397619df7bfd4d1657ea9bdd9df7ff888731a11'
-                               ,'0x9b814233894cd227f561b78cc65891aa55c62ad2'
-                               ,'0x004c00500000ad104d7dbd00e3ae0a5c00560c00'
+          ,case when a.zone in (0xf397619df7bfd4d1657ea9bdd9df7ff888731a11
+                               ,0x9b814233894cd227f561b78cc65891aa55c62ad2
+                               ,0x004c00500000ad104d7dbd00e3ae0a5c00560c00
                                )
                 then 'OpenSea'
            end as platform
-          ,case when a.zone in ('0xf397619df7bfd4d1657ea9bdd9df7ff888731a11'
-                               ,'0x9b814233894cd227f561b78cc65891aa55c62ad2'
-                               ,'0x004c00500000ad104d7dbd00e3ae0a5c00560c00'
+          ,case when a.zone in (0xf397619df7bfd4d1657ea9bdd9df7ff888731a11
+                               ,0x9b814233894cd227f561b78cc65891aa55c62ad2
+                               ,0x004c00500000ad104d7dbd00e3ae0a5c00560c00
                                )
                 then 3
            end as platform_version
@@ -225,7 +225,7 @@ with iv_availadv as (
           ,buyer
           ,a.original_amount / power(10, e1.decimals) as original_amount
           ,a.original_amount as original_amount_raw
-          ,case when a.original_currency_contract = '0x0000000000000000000000000000000000000000' then 'ETH'
+          ,case when a.original_currency_contract = 0x0000000000000000000000000000000000000000 then 'ETH'
                 else p1.symbol 
           end as original_currency
           ,a.original_currency_contract
@@ -239,7 +239,7 @@ with iv_availadv as (
           ,a.evt_index
           ,1 as trade_id
           ,a.fee_receive_address
-          ,case when a.fee_currency_contract = '0x0000000000000000000000000000000000000000' then 'ETH'
+          ,case when a.fee_currency_contract = 0x0000000000000000000000000000000000000000 then 'ETH'
                 else p2.symbol 
           end as fee_currency
           ,a.fee_amount as fee_amount_raw
@@ -258,7 +258,7 @@ with iv_availadv as (
                 when spc2.call_tx_hash is not null and spc2.parameters:basicOrderType::integer between 0 and 15 then 'Buy' -- Buy it directly
                 when spc2.call_tx_hash is not null and spc2.parameters:basicOrderType::integer between 16 and 23 and spc2.parameters:considerationIdentifier = a.nft_token_id then 'Individual Offer Accepted'
                 when spc2.call_tx_hash is not null then 'Buy'
-                when spc3.call_tx_hash is not null and a.original_currency_contract = '0x0000000000000000000000000000000000000000' then 'Buy'
+                when spc3.call_tx_hash is not null and a.original_currency_contract = 0x0000000000000000000000000000000000000000 then 'Buy'
                 when spc3.call_tx_hash is not null then 'Collection/Trait Offer Accepted' -- offer for collection
                 when spc4.call_tx_hash is not null then 'Bulk Purchase' -- bundles of NFTs are purchased through aggregators or in a cart 
                 when spc5.call_tx_hash is not null then 'Bulk Purchase' -- bundles of NFTs are purchased through aggregators or in a cart 

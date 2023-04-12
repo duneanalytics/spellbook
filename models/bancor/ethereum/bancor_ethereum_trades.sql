@@ -13,7 +13,7 @@
 }}
 
 {% set project_start_date = '2020-01-09' %}
-{% set weth_address = '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2' %}
+{% set weth_address = 0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2 %}
 
 WITH conversions AS (
     SELECT  t.evt_block_time,
@@ -120,11 +120,11 @@ SELECT
     t._fromAmount AS token_sold_amount_raw,
     CAST(NULL as double) AS amount_usd,
     CASE
-        WHEN t._toToken = '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee' THEN '{{weth_address}}'
+        WHEN t._toToken = 0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee THEN '{{weth_address}}'
         ELSE t._toToken
     END AS token_bought_address,
     CASE
-        WHEN t._fromToken = '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee' THEN '{{weth_address}}'
+        WHEN t._fromToken = 0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee THEN '{{weth_address}}'
         ELSE t._fromToken
     END AS token_sold_address,
     t.contract_address AS project_contract_address,
@@ -145,11 +145,11 @@ SELECT
     t.sourceAmount AS token_sold_amount_raw,
     CAST(NULL as double) AS amount_usd,
     CASE
-        WHEN t.targetToken = '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee' THEN '{{weth_address}}'
+        WHEN t.targetToken = 0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee THEN '{{weth_address}}'
         ELSE t.targetToken
     END AS token_bought_address,
     CASE
-        WHEN t.sourceToken = '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee' THEN '{{weth_address}}'
+        WHEN t.sourceToken = 0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee THEN '{{weth_address}}'
         ELSE t.sourceToken
     END AS token_sold_address,
     t.contract_address AS project_contract_address,

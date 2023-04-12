@@ -17,7 +17,7 @@
 {% set project = 'uniswap' %}
 {% set project_version = 'v3' %}
 {% set dao_name = 'DAO: Uniswap' %}
-{% set dao_address = '0x408ed6354d4973f66138c91495f2f2fcbd8724c3' %}
+{% set dao_address = 0x408ed6354d4973f66138c91495f2f2fcbd8724c3 %}
 
 with cte_support as (SELECT 
         voter as voter,

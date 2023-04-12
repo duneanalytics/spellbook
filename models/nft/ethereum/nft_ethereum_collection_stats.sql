@@ -25,7 +25,7 @@ WITH src_data as
         {{ ref('nft_trades') }} 
     WHERE blockchain = 'ethereum'
         AND number_of_items = 1
-        AND tx_from != LOWER('0x0000000000000000000000000000000000000000')
+        AND tx_from != LOWER(0x0000000000000000000000000000000000000000)
         AND amount_raw > 0
         {% if is_incremental() %}
         AND block_time >= date_trunc("day", now() - interval '1 week')

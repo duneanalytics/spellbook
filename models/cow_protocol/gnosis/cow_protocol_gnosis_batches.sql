@@ -53,7 +53,7 @@ batch_values as (
         price           as eth_price
     from {{ ref('cow_protocol_gnosis_trades') }}
         left outer join {{ source('prices', 'usd') }} as p
-            on p.contract_address = '0xe91d153e0b41518a2ce8dd3d7944fa863463a97d'
+            on p.contract_address = 0xe91d153e0b41518a2ce8dd3d7944fa863463a97d
             and p.minute = date_trunc('minute', block_time)
             and blockchain = 'gnosis'
     {% if is_incremental() %}

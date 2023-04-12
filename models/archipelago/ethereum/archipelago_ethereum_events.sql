@@ -63,8 +63,8 @@ WITH
             , micros / pow(10,4) as fee_percentage
             , tradeId as unique_trade_id
             , case when (
-                upper(recipient) = upper('0xA76456bb6aBC50FB38e17c042026bc27a95C3314')
-                or upper(recipient) = upper('0x1fC12C9f68A6B0633Ba5897A40A8e61ed9274dC9')
+                upper(recipient) = upper(0xA76456bb6aBC50FB38e17c042026bc27a95C3314)
+                or upper(recipient) = upper(0x1fC12C9f68A6B0633Ba5897A40A8e61ed9274dC9)
                 ) then true else false end
                 as is_protocol_fee
         FROM {{ source('archipelago_ethereum','ArchipelagoMarket_evt_RoyaltyPayment') }}

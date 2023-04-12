@@ -30,13 +30,13 @@ with minute as -- This CTE generates a series of minute values
                     decimals
              from (
                       values
-                          ('0xb97ef9ef8734c71904d8002f8b6bc66dd9c48a6e', 'USDC', 6.0),
-                          ('0x49d5c2bdffac6ce2bfdb6640f4f80f226bc10bab', 'WETH.e', 18.0),
-                          ('0xa7d7079b0fead91f3e65f86e8915cb59c1a4c664', 'USDC.e', 6.0),
-                          ('0xb31f66aa3c1e785363f0875a1b74e27b85fd66c7', 'WAVAX', 18.0),
-                          ('0x50b7545627a5162f82a992c33b87adc75187b218', 'WBTC.e', 8.0),
-                          ('0x130966628846bfd36ff31a822705796e8cb8c18d', 'MIM', 18.0),
-                          ('0x152b9d0fdc40c096757f570a51e494bd4b943e50', 'BTC.b', 8.0) )
+                          (0xb97ef9ef8734c71904d8002f8b6bc66dd9c48a6e, 'USDC', 6.0),
+                          (0x49d5c2bdffac6ce2bfdb6640f4f80f226bc10bab, 'WETH.e', 18.0),
+                          (0xa7d7079b0fead91f3e65f86e8915cb59c1a4c664, 'USDC.e', 6.0),
+                          (0xb31f66aa3c1e785363f0875a1b74e27b85fd66c7, 'WAVAX', 18.0),
+                          (0x50b7545627a5162f82a992c33b87adc75187b218, 'WBTC.e', 8.0),
+                          (0x130966628846bfd36ff31a822705796e8cb8c18d, 'MIM', 18.0),
+                          (0x152b9d0fdc40c096757f570a51e494bd4b943e50, 'BTC.b', 8.0) )
                       as t(token, symbol, decimals)
          ),
      minute_token as -- This CTE combine tokens and a series of minute values

@@ -174,6 +174,6 @@ LEFT JOIN {{ source('prices', 'usd') }} p_sold
     {% else %}
     AND p_sold.minute >= '{{project_start_date}}'
     {% endif %}
-WHERE kyberswap_dex.token_bought_address != '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee'
-    OR kyberswap_dex.token_sold_address != '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee'
+WHERE kyberswap_dex.token_bought_address != 0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee
+    OR kyberswap_dex.token_sold_address != 0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee
 ;
