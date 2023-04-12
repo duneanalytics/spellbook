@@ -241,7 +241,7 @@ WITH
                 taker_asset_filled_amount taker_token_amount,
                 fee_recipient_address,
                 volume_usd,
-                protocol_fee_paid_eth,
+                cast(protocol_fee_paid_eth as double),
                 'bnb' as blockchain,
                 contract_address,
                 native_order_type,
