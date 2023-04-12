@@ -27,7 +27,7 @@ def get_sql(query_path):
 class QueryTranslatorClient:
     def __init__(self):
         self.host = "http://localhost:8000"
-        self.spark_spells_dir = os.path.join(os.getcwd(), "target/compiled/spellbook/models")
+        self.spark_spells_dir = os.path.join(os.getcwd(), "target/compiled/spellbook")
         # set containing all the queries that have been translated
         self.translated_queries = self.get_translated_queries()
 
@@ -44,13 +44,14 @@ class QueryTranslatorClient:
         return translated_queries
 
 
-    def translate(self, query_path):
+    def translate(self, spell_path):
         """
         Translate query at query path. Returns translated sql text.
         """
-        sql_query = get_sql(query_path)
+        full_path = os.path.join(self.spark_spells_dir, spell_path)
+        sql_query = get_sql(full_path)
         if sql_query.count("\n") > 500:
-            print(f"Skipping {query_path} because it has more than 500 lines")
+            print(f"Skipping {spell_path} because it has more than 500 lines")
             return -1
         payload = {
             "query": sql_query,
@@ -61,7 +62,6 @@ class QueryTranslatorClient:
         response = requests.post(self.host, json=payload)
         if response.status_code == 200:
             translated_query = json.loads(response.text)["translated"]
-            print(query_path)
             try:
                 return sqlfluff.fix(translated_query)
             except Exception as e:
@@ -69,7 +69,7 @@ class QueryTranslatorClient:
                 return translated_query
 
         else:
-            print(f"{query_path}; {json.loads(response.text)}")
+            print(f"{spell_path}; {json.loads(response.text)}")
             return -1
 
     def translate_all_spells(self):
@@ -99,5 +99,5 @@ class QueryTranslatorClient:
 if __name__ == "__main__":
     client = QueryTranslatorClient()
     # get file path from command line argument
-    client.translate(sys.argv[1])
+    print(client.translate(sys.argv[1]))
 
