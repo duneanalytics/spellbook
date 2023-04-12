@@ -41,10 +41,6 @@ SELECT LOWER(contract_address) AS contract_address
       , decimals
       , token_type
       , token_mapping_source
-      , CASE WHEN token_type IN ('underlying') THEN 1
-        ELSE 0 --double counted (breakdown, receipt) or no price
-      END
-      AS is_counted_in_tvl
 
     FROM (
       SELECT contract_address, symbol, decimals, token_type, token_mapping_source
