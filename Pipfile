@@ -1,4 +1,5 @@
 # Pipfile for translation doctstore (to be replaced with docker-compose)
+
 [[source]]
 url = "https://pypi.org/simple"
 verify_ssl = true
@@ -20,6 +21,7 @@ pytest = "7.2.2"
 boto3 = "1.26.108"
 trino = "0.322.0"
 dbt-trino = "1.4.1"
+sqlfluff = "*"
 
 [requires]
 python_version = "3.10"
