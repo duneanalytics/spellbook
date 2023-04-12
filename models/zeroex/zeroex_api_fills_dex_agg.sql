@@ -39,14 +39,14 @@ FROM (
       taker_token as token_sold_address,
       taker_token_amount  as token_sold_amount,
       taker_symbol  as  token_sold_symbol,
-      CAST(ARRAY() as array<bigint>) as trace_address,
+      trace_address,
       tx_from  as tx_from,
       tx_hash  as tx_hash,
       tx_to  as tx_to,
       taker_token_amount_raw  as token_sold_amount_raw,
       maker_token  as token_bought_address, 
       maker_token_amount  as token_bought_amount, 
-      cast(null as varchar(10)) version,
+      version,
       maker_token_amount_raw  as token_bought_amount_raw
     FROM {{ model }}
     {% if not loop.last %}
