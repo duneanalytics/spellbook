@@ -22,20 +22,9 @@ def check_tokens(input):
     return int(len(input) / 4)
 
 
-def chunk_string_by_token_limit(input, n):
-    string_list = input.split('\n')
-    sublist_length = len(string_list) // n
-
-    # Create a list of sublists
-    sublists = []
-    for i in range(n):
-        if i < n - 1:
-            sublist = string_list[i * sublist_length:(i + 1) * sublist_length]
-        else:
-            sublist = string_list[i * sublist_length:]
-        sublists.append(sublist)
-    # parts = [input[i:i + n] for i in range(0, len(input), n)]
-    return sublists
+def chunk_string_by_token_limit(input, n=30):
+    lst = input.split('\n')
+    return [lst[i:i + n] for i in range(0, len(lst), n)]
 
 
 def diff_files(file1_path, file2_path, output_file_path_html, output_file_path_txt):
@@ -96,7 +85,6 @@ def process_input(choice):
         return choice
 
 
-max_tokens = 1000
 # This endpoint is in beta and is currently free
 # https://openai.com/blog/gpt-3-edit-insert
 model = "gpt-4"
@@ -105,13 +93,8 @@ input = get_input(model_path)
 
 rules_directory = "rules/spark"
 instructions = get_instructions(rules_directory)
+inputs = chunk_string_by_token_limit(input)
 
-instruction_tokens = check_tokens(instructions)
-tokens = check_tokens(input)
-if tokens > max_tokens - instruction_tokens:
-    inputs = chunk_string_by_token_limit(input, n=7)
-else:
-    inputs = [input]
 
 output = []
 for i, input_piece in enumerate(inputs):
