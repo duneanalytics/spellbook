@@ -21,7 +21,7 @@ FROM (
     SELECT
     LOWER(atoken_address) AS contract_address, atoken_symbol AS symbol, atoken_decimals as decimals
     , 'receipt' as token_type, 'aave factory' AS token_mapping_source
-    FROM {{ ref('aave_v3_tokens') }} -- to be refd
+    FROM {{ ref('aave_v3_tokens') }}
       WHERE blockchain = 'optimism'
     
     UNION ALL
@@ -29,7 +29,7 @@ FROM (
     SELECT
     LOWER(atoken_address) AS contract_address, atoken_symbol AS symbol, atoken_decimals as decimals
     , 'receipt' as token_type, 'the granary factory' AS token_mapping_source
-    FROM {{ ref('the_granary_optimism_tokens') }} -- to be refd
+    FROM {{ ref('the_granary_optimism_tokens') }}
       WHERE blockchain = 'optimism'
     
   ) a
