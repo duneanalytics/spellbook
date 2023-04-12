@@ -11,7 +11,7 @@
   t.contract_address
 , max(t.evt_block_time) AS latest_transfer
 -- ideally we'd have decimals and symbols here, but these aren't easily accessible onchain
-FROM {{ ref('transfers_erc20') }} t
+FROM {{ source('erc20_optimism'.'evt_Transfer') }} t
     {% if is_incremental() %}
        WHERE t.evt_block_time >= date_trunc("day", now() - interval '1 week')
     {% endif %}
