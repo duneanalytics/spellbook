@@ -2,6 +2,7 @@
 import argparse
 import difflib
 import os
+import re
 import shutil
 
 from chat import chat_request
@@ -76,6 +77,9 @@ def write_output(output, model_path):
     with open(model_path, 'w') as f:
         f.write(output)
 
+def remove_quotes(sql):
+    sql = re.sub(r"\'(0x[a-fA-F0-9]{40})\'", r"\1", sql)
+    return sql
 
 def process_input(choice):
     try:
