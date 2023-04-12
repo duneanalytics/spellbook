@@ -48,6 +48,23 @@ models:
       - *token_type
       - *token_mapping_source
       - *is_counted_in_tvl
+  
+  - name: tokens_optimism_erc20_generated
+    meta:
+      blockchain: optimism
+      sector: tokens
+      project: erc20
+      contributors: msilb7
+    config:
+      tags: ['table', 'erc20', 'optimism']
+    description: "Query generated ERC20 Token Addresses, Symbols and Decimals"
+    columns:
+      - *contract_address
+      - *symbol
+      - *decimals
+      - *token_type
+      - *token_mapping_source
+      - *is_counted_in_tvl
     
   - name: tokens_optimism_erc20_transfer_source
     meta:
