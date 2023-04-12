@@ -3,6 +3,7 @@ import argparse
 import difflib
 import os
 import shutil
+import sqlfluff
 
 from chat import chat_request
 
@@ -74,8 +75,14 @@ def copy_model(model_path):
 
 def write_output(output, model_path):
     with open(model_path, 'w') as f:
-        f.write(output)
+        f.write(format(output))
 
+def format(sql):
+    try:
+        return sqlfluff.fix(sql, rules=["L019", "L020", "L021", "L022"])
+    except Exception as e:
+        print(e)
+        return sql
 
 def process_input(choice):
     try:
@@ -85,26 +92,29 @@ def process_input(choice):
         return choice
 
 
-# This endpoint is in beta and is currently free
-# https://openai.com/blog/gpt-3-edit-insert
-model = "gpt-4"
-copy_model(model_path)
-input = get_input(model_path)
+# # This endpoint is in beta and is currently free
+# # https://openai.com/blog/gpt-3-edit-insert
+# model = "gpt-4"
+# copy_model(model_path)
+# input = get_input(model_path)
+#
+# rules_directory = "rules/spark"
+# instructions = get_instructions(rules_directory)
+# inputs = chunk_string_by_token_limit(input)
+#
+#
+# output = []
+# for i, input_piece in enumerate(inputs):
+#     print(f'Iterating: {round(100 * (i / len(inputs)), 3)}%')
+#     input = "\n".join(input_piece)
+#     response = chat_request(model, instructions, input)
+#     choice = response["choices"][0]['message']['content']
+#     processed_choice = process_input(choice)
+#     output.append(processed_choice)
+#
+# write_output("".join(output), model_path + ".new")
+# print(f'Diffing {model_path} and {model_path + ".new"}')
+# diff_files(model_path, model_path + ".new", model_path + ".diff.html", model_path + ".diff.txt")
 
-rules_directory = "rules/spark"
-instructions = get_instructions(rules_directory)
-inputs = chunk_string_by_token_limit(input)
-
-
-output = []
-for i, input_piece in enumerate(inputs):
-    print(f'Iterating: {round(100 * (i / len(inputs)), 3)}%')
-    input = "\n".join(input_piece)
-    response = chat_request(model, instructions, input)
-    choice = response["choices"][0]['message']['content']
-    processed_choice = process_input(choice)
-    output.append(processed_choice)
-
-write_output("".join(output), model_path + ".new")
-print(f'Diffing {model_path} and {model_path + ".new"}')
-diff_files(model_path, model_path + ".new", model_path + ".diff.html", model_path + ".diff.txt")
+with open("models/blur/ethereum/blur_ethereum_events.sql", 'r') as f:
+    print(format(f.read()))
