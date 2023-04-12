@@ -1,0 +1,2 @@
+Rule: remove varchar cast
+Example: cast(token as varchar) ->	token

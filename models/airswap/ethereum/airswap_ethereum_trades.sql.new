@@ -121,6 +121,8 @@ END as token_pair
     dexs.amount_usd
     ,(dexs.token_bought_amount_raw / power(10, p_bought.decimals)) * p_bought.price
     ,(dexs.token_sold_amount_raw / power(10, p_sold.decimals)) * p_sold.price
+)
+
 ) AS amount_usd
 ,dexs.token_bought_address
 ,dexs.token_sold_address
@@ -136,7 +138,7 @@ FROM dexs
 INNER JOIN {{ source('ethereum', 'transactions') }} tx
     ON dexs.tx_hash = tx.hash
     {% if not is_incremental() %}
-    AND tx.block_time >=  CAST('{{project_start_date}}' AS timestamp(6) with time zone)
+    AND tx.block_time >= timestamp '{{project_start_date}}'
     {% endif %}
     {% if is_incremental() %}
     AND tx.block_time >= date_trunc('day', now() - interval '1' week)
@@ -149,11 +151,10 @@ LEFT JOIN {{ ref('tokens_erc20') }} erc20b
     AND erc20b.blockchain = 'ethereum'
 LEFT JOIN {{ source('prices', 'usd') }} p_bought
     ON p_bought.minute = date_trunc('minute', dexs.block_time)
-    -- TODO: remove cast when we fix the type of contract_address in the prices table
-    AND cast(p_bought.contract_address as varbinary) = dexs.token_bought_address
+    AND p_bought.contract_address = dexs.token_bought_address
     {% if not is_incremental() %}
 
-AND p_bought.minute >= CAST('{{project_start_date}}' AS timestamp(6) with time zone)
+AND p_bought.minute >= timestamp '{{project_start_date}}'
 {% endif %}
 {% if is_incremental() %}
 AND p_bought.minute >= date_trunc('day', now() - interval '1' week)
@@ -161,11 +162,12 @@ AND p_bought.minute >= date_trunc('day', now() - interval '1' week)
 AND p_bought.blockchain = 'ethereum'
 LEFT JOIN {{ source('prices', 'usd') }} p_sold
     ON p_sold.minute = date_trunc('minute', dexs.block_time)
-    AND cast(p_sold.contract_address as varbinary) = dexs.token_sold_address
+    AND p_sold.contract_address = dexs.token_sold_address
     {% if not is_incremental() %}
-    AND p_sold.minute >=  CAST('{{project_start_date}}' AS timestamp(6) with time zone)
+    AND p_sold.minute >= timestamp '{{project_start_date}}'
     {% endif %}
     {% if is_incremental() %}
     AND p_sold.minute >= date_trunc('day', now() - interval '1' week)
     {% endif %}
     AND p_sold.blockchain = 'ethereum'
+;

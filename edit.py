@@ -22,7 +22,7 @@ def check_tokens(input):
     return int(len(input) / 4)
 
 
-def chunk_string_by_token_limit(input, n=30):
+def chunk_string_by_token_limit(input, n=25):
     lst = input.split('\n')
     return [lst[i:i + n] for i in range(0, len(lst), n)]
 
@@ -79,7 +79,11 @@ def write_output(output, model_path):
 
 def process_input(choice):
     try:
-        return choice.split("```")[1]
+        code_block = choice.split("```")[1]
+        if code_block.startswith('sql'):
+            # Sometimes code blocks are prefaced with sql. Removing if so.
+            code_block = code_block[len('sql'):]
+        return code_block
     except IndexError:
         print("Error processing input: " + choice)
         return choice

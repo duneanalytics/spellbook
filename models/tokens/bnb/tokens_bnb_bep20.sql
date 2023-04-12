@@ -1,6 +1,6 @@
 {{ config( alias='bep20', tags=['static'])}}
 
-SELECT LOWER(contract_address) AS contract_address, symbol, decimals
+SELECT contract_address, symbol, decimals
   FROM (VALUES 
   
 (0x111111111117dc0aa78b770fa6a738034120c302, '1INCH', 18)

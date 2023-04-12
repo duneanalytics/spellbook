@@ -1,6 +1,6 @@
 {{ config( alias='erc20', tags=['static'])}}
 
-SELECT LOWER(contract_address) as contract_address, symbol, decimals 
+SELECT contract_address, symbol, decimals
 FROM (VALUES
         (0xb502B79c9Ec490C4EEE130A03370d490b069E59b, '$AirdropinCake(MultiChain)', 8),
         (0xe52A9eB2505A072324984c818C0F49C19c8B6ABB, '0Casino.io', 8),

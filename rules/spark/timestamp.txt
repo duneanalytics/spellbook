@@ -1,3 +1,3 @@
 Rule: Add timestamp to date literals
-Exmaple: AND et.block_time >= '2022-10-18' > AND et.block_time >= timestamp '2022-10-18'
-Example: pu.minute >= '{{start_date}}' > pu.minute >= timestamp '{{start_date}}'
+Exmaple: AND et.block_time >= '2022-10-18' > AND et.block_time >= CAST('2022-10-18' AS timestamp(6) with time zone)
+Example: pu.minute >= '{{start_date}}' > pu.minute >= CAST('{{start_date}}' AS timestamp(6) with time zone)

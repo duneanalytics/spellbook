@@ -8,7 +8,7 @@
   )
 }}
 
-SELECT LOWER(contract_address) as contract_address, symbol, decimals, name
+SELECT contract_address, symbol, decimals, name
 FROM (VALUES
           (0xbc6da0fe9ad5f3b0d58160288917aa56653660e9, 'alUSD',	18,	'Alchemix USD'),
           (0xd46ba6d942050d489dbd938a2c909a5d5039a161, 'AMPL',	9,	'Ampleforth'),
