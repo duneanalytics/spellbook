@@ -108,21 +108,44 @@ plain_pools_deployed AS (
 ),
 meta_calls AS (
     SELECT
-        _name,
-        _symbol,
-        output_0,
-        call_tx_hash,
-        _base_pool,
-        _coin,
-        "_A",
-        _fee
-    FROM
+        *
+    FROM (
+        SELECT         
+            _name,
+            _symbol,
+            output_0,
+            call_tx_hash,
+            _base_pool,
+            _coin,
+            "_A",
+            _fee 
+        FROM 
         {{ source(
             'curvefi_ethereum',
-            'CurveFactory_call_deploy_metapool'
-        ) }}
-    WHERE
+            'CurveFactory_call_deploy_metapool' 
+        ) }} --https://etherscan.io/address/0xb9fc157394af804a3578134a6585c0dc9cc990d4
+        WHERE
         call_success
+
+        UNION ALL 
+
+        SELECT         
+            _name,
+            _symbol,
+            output_0,
+            call_tx_hash,
+            _base_pool,
+            _coin,
+            "_A",
+            _fee 
+        FROM 
+        {{ source(
+            'curvefi_ethereum',
+            'MetaPoolFactory_call_deploy_metapool' 
+        ) }} --https://etherscan.io/address/0x0959158b6040d32d04c301a72cbfd6b39e21c9ae
+        WHERE
+        call_success
+    ) a
 ),
 meta_pools_deployed AS (
     SELECT

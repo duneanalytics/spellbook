@@ -4,7 +4,7 @@
         , unique_key = ['contract_address']
         , post_hook='{{ expose_spells(\'["optimism"]\',
                                   "project",
-                                  "ovm_optimism",
+                                  "op_token",
                                   \'["msilb7"]\') }}'
   )
 }}

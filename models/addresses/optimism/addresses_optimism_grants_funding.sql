@@ -13,8 +13,13 @@ SELECT
 
 FROM (VALUES
 
- ('OP Foundation',	'0xfedfaf1a10335448b7fa0268f56d2b44dbd357de',	'Airdrop #1 Distributor',	'OP Foundation Airdrops')
-,('OP Foundation',	'0x2501c477D0A35545a387Aa4A3EEe4292A9a8B3F0',	'OP Foundation Wallet',	'OP Foundation Grants')
+ --Foundation Distributor Wallets
+ ('OP Foundation',	'0x2501c477d0a35545a387aa4a3eee4292a9a8b3f0',	'OP Foundation Wallet',		'OP Foundation Grants')
+,('OP Foundation',	'0x19793c7824be70ec58bb673ca42d2779d12581be',	'OP Foundation Sentry Wallet',	'OP Foundation Grants')
+--Airdrop Distributor Wallets
+,('OP Foundation',	'0xbe9a9b1b07f027130e56d8569d1aea5dd5a86013',	'Airdrop #2 Distributor',	'OP Foundation Airdrops')
+,('OP Foundation',	'0xfedfaf1a10335448b7fa0268f56d2b44dbd357de',	'Airdrop #1 Distributor',	'OP Foundation Airdrops')
+--Project Distribution to Wallets
 ,('Project',	'0x0d162447b8df47c2e7910441bf3c8c1b55b9b124',	'Uniswap V3',	'Phase 0')
 ,('Project',	'0x1bd315e3f029083da8731a6b1c6f2959a0d15376',	'1inch',	'Phase 0')
 ,('Project',	'0xf5e9d550c3c50364d630edb4753be404cd109121',	'Celer',	'Phase 0')
@@ -120,6 +125,10 @@ FROM (VALUES
 ,('Project',	'0xb1ea5a3e5ea7fa1834d48058ecda26d8c59e8251',	'Quix',	'Partner Fund')
 ,('Project',	'0xf42279467d821bcdf40b50e9a5d2caccc4cf5b30',	'Quests on Coinbase Wallet - Quest #1 DEX Swap',	'Partner Fund') --Quest 1 - DEX
 ,('Project',	'0x9f4f2b8bda8d2d3832021b3119747470ea86a183',	'Quests on Coinbase Wallet - Quest #2 Delegation',	'Partner Fund') --Quest 2 - Delegation
+,('Project',	'0x1fe95e0497a0E38AFBE18Bd19B9a2b42116880f0',	'Quests on Coinbase Wallet - Quest #3 Attestation',	'Partner Fund') --Quest 2 - Attestation
+,('Project',	'0x23fd464e0b0ee21cedeb929b19cabf9bd5215019',	'Exactly',	'Partner Fund')
+,('Project',	'0x91cE2F083d59B832f95f90aA0997168ae051a98A',	'Lido',		'Partner Fund')
+-- Distributions to Rewarder contracts are not listed
 
 
 
