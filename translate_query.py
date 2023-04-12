@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 """
 Client to run compile models against the dunesql query translator.
 
@@ -10,6 +12,7 @@ import os
 from fnmatch import fnmatch
 import sqlfluff
 import requests
+import sys
 
 
 def get_sql(query_path):
@@ -93,6 +96,8 @@ class QueryTranslatorClient:
                             self.translated_queries.add(translated_path)
 
 
-c = QueryTranslatorClient()
-QueryTranslatorClient().translate_all_spells()
-# print(c.translate("/Users/couralex/src/spellbook/target/compiled/spellbook/models/apeswap/ethereum/apeswap_ethereum_trades.sql"))
+if __name__ == "__main__":
+    client = QueryTranslatorClient()
+    # get file path from command line argument
+    client.translate(sys.argv[1])
+
