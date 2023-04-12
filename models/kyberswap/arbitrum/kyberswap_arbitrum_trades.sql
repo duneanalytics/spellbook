@@ -1,5 +1,5 @@
 {{ config(
-    alias = 'trades_arbitrum',
+    alias = 'trades',
     partition_by = ['block_date'],
     materialized = 'incremental',
     file_format = 'delta',
@@ -72,36 +72,35 @@ kyberswap_dex AS (
 
 )
 
-SELECT
-    'arbitrum'                                                         AS blockchain
-    ,'kyberswap'                                                          AS project
-    ,version                                                               AS version
-    ,try_cast(date_trunc('DAY', kyberswap_dex.block_time) AS date)        AS block_date
-    ,kyberswap_dex.block_time
-    ,erc20a.symbol                                                        AS token_bought_symbol
-    ,erc20b.symbol                                                        AS token_sold_symbol
-    ,CASE
-         WHEN lower(erc20a.symbol) > lower(erc20b.symbol) THEN concat(erc20b.symbol, '-', erc20a.symbol)
-         ELSE concat(erc20a.symbol, '-', erc20b.symbol)
-     END                                                                  AS token_pair
-    ,kyberswap_dex.token_bought_amount_raw / power(10, erc20a.decimals)   AS token_bought_amount
-    ,kyberswap_dex.token_sold_amount_raw / power(10, erc20b.decimals)     AS token_sold_amount
-    ,CAST(kyberswap_dex.token_bought_amount_raw AS DECIMAL(38,0)) AS token_bought_amount_raw
-    ,CAST(kyberswap_dex.token_sold_amount_raw AS DECIMAL(38,0)) AS token_sold_amount_raw
-    ,coalesce(kyberswap_dex.amount_usd
-            ,(kyberswap_dex.token_bought_amount_raw / power(10, p_bought.decimals)) * p_bought.price
-            ,(kyberswap_dex.token_sold_amount_raw / power(10, p_sold.decimals)) * p_sold.price
-     )                                                                   AS amount_usd
-    ,kyberswap_dex.token_bought_address
-    ,kyberswap_dex.token_sold_address
-    ,coalesce(kyberswap_dex.taker, tx.from)                              AS taker
-    ,kyberswap_dex.maker
-    ,kyberswap_dex.project_contract_address
-    ,kyberswap_dex.tx_hash
-    ,tx.from                                                             AS tx_from
-    ,tx.to                                                               AS tx_to
-    ,kyberswap_dex.trace_address
-    ,kyberswap_dex.evt_index
+SELECT 'arbitrum'                                                         AS blockchain
+     , 'kyberswap'                                                        AS project
+     , version                                                            AS version
+     , try_cast(date_trunc('DAY', kyberswap_dex.block_time) AS date)      AS block_date
+     , kyberswap_dex.block_time
+     , erc20a.symbol                                                      AS token_bought_symbol
+     , erc20b.symbol                                                      AS token_sold_symbol
+     , CASE
+           WHEN lower(erc20a.symbol) > lower(erc20b.symbol) THEN concat(erc20b.symbol, '-', erc20a.symbol)
+           ELSE concat(erc20a.symbol, '-', erc20b.symbol)
+    END                                                                   AS token_pair
+     , kyberswap_dex.token_bought_amount_raw / power(10, erc20a.decimals) AS token_bought_amount
+     , kyberswap_dex.token_sold_amount_raw / power(10, erc20b.decimals)   AS token_sold_amount
+     , CAST(kyberswap_dex.token_bought_amount_raw AS DECIMAL(38, 0))      AS token_bought_amount_raw
+     , CAST(kyberswap_dex.token_sold_amount_raw AS DECIMAL(38, 0))        AS token_sold_amount_raw
+     , coalesce(kyberswap_dex.amount_usd
+    , (kyberswap_dex.token_bought_amount_raw / power(10, p_bought.decimals)) * p_bought.price
+    , (kyberswap_dex.token_sold_amount_raw / power(10, p_sold.decimals)) * p_sold.price
+    )                                                                     AS amount_usd
+     , kyberswap_dex.token_bought_address
+     , kyberswap_dex.token_sold_address
+     , coalesce(kyberswap_dex.taker, tx.from)                             AS taker
+     , kyberswap_dex.maker
+     , kyberswap_dex.project_contract_address
+     , kyberswap_dex.tx_hash
+     , tx.from                                                            AS tx_from
+     , tx.to                                                              AS tx_to
+     , kyberswap_dex.trace_address
+     , kyberswap_dex.evt_index
 FROM kyberswap_dex
 INNER JOIN {{ source('arbitrum', 'transactions') }} tx
     ON kyberswap_dex.tx_hash = tx.hash
