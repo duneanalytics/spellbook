@@ -6,7 +6,7 @@ models:
       blockchain: arbitrum
       sector: dex
       project: kyberswap
-      contributors: 
+      contributors: ppclunghe, gregshestakovlido
     config:
       tags: ['arbitrum','dex','trades', 'kyberswap', 'ppclunghe', 'gregshestakovlido']
     description: >
