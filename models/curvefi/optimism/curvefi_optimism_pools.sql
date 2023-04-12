@@ -70,7 +70,7 @@ WITH base_pools AS (
     -- the exchange address appears as an erc20 minted to itself (not in the deploymeny event)
     INNER JOIN {{ source('erc20_optimism','evt_transfer') }} et
         ON et.evt_tx_hash = mps.evt_tx_hash
-        AND et.from = '0x0000000000000000000000000000000000000000'
+        AND et.from = 0x0000000000000000000000000000000000000000
         AND et.to = et.contract_address
         AND et.evt_block_number = mps.evt_block_number
         {% if not is_incremental() %}
@@ -109,15 +109,15 @@ WITH base_pools AS (
     SELECT version, tokenid, LOWER(token) AS token, lower(pool) AS pool
     FROM (values
             --wstETH/ETH
-             ('Basic Pool','0','0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee','0xb90b9b1f91a01ea22a182cd84c1e22222e39b415')
-            ,('Basic Pool','1','0x1F32b1c2345538c0c6f582fCB022739c4A194Ebb','0xb90b9b1f91a01ea22a182cd84c1e22222e39b415')
+             ('Basic Pool','0',0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee,0xb90b9b1f91a01ea22a182cd84c1e22222e39b415)
+            ,('Basic Pool','1',0x1F32b1c2345538c0c6f582fCB022739c4A194Ebb,0xb90b9b1f91a01ea22a182cd84c1e22222e39b415)
             --aPool
-            ,('Basic Pool','0','0x82E64f49Ed5EC1bC6e43DAD4FC8Af9bb3A2312EE','0x66b5792ed50a2a7405ea75c4b6b1913ef4e46661')
-            ,('Basic Pool','1','0x625E7708f30cA75bfd92586e17077590C60eb4cD','0x66b5792ed50a2a7405ea75c4b6b1913ef4e46661')
-            ,('Basic Pool','2','0x6ab707Aca953eDAeFBc4fD23bA73294241490620','0x66b5792ed50a2a7405ea75c4b6b1913ef4e46661')
+            ,('Basic Pool','0',0x82E64f49Ed5EC1bC6e43DAD4FC8Af9bb3A2312EE,0x66b5792ed50a2a7405ea75c4b6b1913ef4e46661)
+            ,('Basic Pool','1',0x625E7708f30cA75bfd92586e17077590C60eb4cD,0x66b5792ed50a2a7405ea75c4b6b1913ef4e46661)
+            ,('Basic Pool','2',0x6ab707Aca953eDAeFBc4fD23bA73294241490620,0x66b5792ed50a2a7405ea75c4b6b1913ef4e46661)
             --sUSD/FRAX
-            ,('Basic Pool','0','0x8c6f28f2F1A3C87F0f938b96d27520d9751ec8d9','0x54dcfe120d608551f9010d3b66620d230fd5c11b')
-            ,('Basic Pool','1','0x29A3d66B30Bc4AD674A4FDAF27578B64f6afbFe7','0x54dcfe120d608551f9010d3b66620d230fd5c11b')
+            ,('Basic Pool','0',0x8c6f28f2F1A3C87F0f938b96d27520d9751ec8d9,0x54dcfe120d608551f9010d3b66620d230fd5c11b)
+            ,('Basic Pool','1',0x29A3d66B30Bc4AD674A4FDAF27578B64f6afbFe7,0x54dcfe120d608551f9010d3b66620d230fd5c11b)
         ) a (version, tokenid, token, pool)
 
     )

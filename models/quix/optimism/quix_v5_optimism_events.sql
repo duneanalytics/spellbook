@@ -29,7 +29,7 @@ with events_raw as (
         ,price as amount_raw
         ,evt_index
     from {{ source('quixotic_v5_optimism','ExchangeV5_evt_SellOrderFilled') }}
-    where contractAddress != lower('0xbe81eabdbd437cba43e4c1c330c63022772c2520') -- --exploit contract
+    where contractAddress != lower(0xbe81eabdbd437cba43e4c1c330c63022772c2520) -- --exploit contract
     {% if is_incremental() %} 
     and evt_block_time >= date_trunc("day", now() - interval '1 week')
     {% endif %}
@@ -54,9 +54,9 @@ with events_raw as (
         lower('{{quix_fee_address_address}}') --qx platform fee address
         ,er.seller
         ,er.project_contract_address
-        ,lower('0x0000000000000000000000000000000000000000') -- v3 first few txs misconfigured to send fee to null address
-        ,lower('0x942f9ce5d9a33a82f88d233aeb3292e680230348') -- v4 there are txs via Ambire Wallet Contract Deployer to be excluded 
-        ,lower('0xdf95dc47753c94771f52444a2517f4bae7c6046d') -- v5 another contract that creates mutiple internal transfers, e.g. https://optimistic.etherscan.io/tx/0x7c7daf30bf3fa829c22428fd275bbe7b30b62f7ccebd2a8e4aaa396904f01b78
+        ,lower(0x0000000000000000000000000000000000000000) -- v3 first few txs misconfigured to send fee to null address
+        ,lower(0x942f9ce5d9a33a82f88d233aeb3292e680230348) -- v4 there are txs via Ambire Wallet Contract Deployer to be excluded 
+        ,lower(0xdf95dc47753c94771f52444a2517f4bae7c6046d) -- v5 another contract that creates mutiple internal transfers, e.g. https://optimistic.etherscan.io/tx/0x7c7daf30bf3fa829c22428fd275bbe7b30b62f7ccebd2a8e4aaa396904f01b78
       )
       {% if not is_incremental() %}
       -- smallest block number for source tables above
@@ -87,9 +87,9 @@ with events_raw as (
         lower('{{quix_fee_address_address}}') --qx platform fee address
         ,er.seller
         ,er.project_contract_address
-        ,lower('0x0000000000000000000000000000000000000000') -- v3 first few txs misconfigured to send fee to null address
-        ,lower('0x942f9ce5d9a33a82f88d233aeb3292e680230348') -- v4 there are txs via Ambire Wallet Contract Deployer to be excluded 
-        ,lower('0xdf95dc47753c94771f52444a2517f4bae7c6046d') -- v5 another contract that creates mutiple internal transfers, e.g. https://optimistic.etherscan.io/tx/0x7c7daf30bf3fa829c22428fd275bbe7b30b62f7ccebd2a8e4aaa396904f01b78
+        ,lower(0x0000000000000000000000000000000000000000) -- v3 first few txs misconfigured to send fee to null address
+        ,lower(0x942f9ce5d9a33a82f88d233aeb3292e680230348) -- v4 there are txs via Ambire Wallet Contract Deployer to be excluded 
+        ,lower(0xdf95dc47753c94771f52444a2517f4bae7c6046d) -- v5 another contract that creates mutiple internal transfers, e.g. https://optimistic.etherscan.io/tx/0x7c7daf30bf3fa829c22428fd275bbe7b30b62f7ccebd2a8e4aaa396904f01b78
       )
       {% if not is_incremental() %}
       -- smallest block number for source tables above
@@ -141,13 +141,13 @@ with events_raw as (
         ,er.amount_raw / power(10, t1.decimals) as amount_original
         ,cast(er.amount_raw as decimal(38, 0)) as amount_raw
         ,case 
-            when (erc20.contract_address = '0x0000000000000000000000000000000000000000' or erc20.contract_address is null)
+            when (erc20.contract_address = 0x0000000000000000000000000000000000000000 or erc20.contract_address is null)
                 then 'ETH'
                 else t1.symbol
             end as currency_symbol
         ,case 
-            when (erc20.contract_address = '0x0000000000000000000000000000000000000000' or erc20.contract_address is null) 
-                then '0xdeaddeaddeaddeaddeaddeaddeaddeaddead0000'
+            when (erc20.contract_address = 0x0000000000000000000000000000000000000000 or erc20.contract_address is null) 
+                then 0xdeaddeaddeaddeaddeaddeaddeaddeaddead0000
                 else erc20.contract_address
             end as currency_contract
         ,er.nft_contract_address
@@ -169,7 +169,7 @@ with events_raw as (
         ,(tr.value / er.amount_raw * 100) as royalty_fee_percentage
         ,case when tr.value is not null then tr.to end as royalty_fee_receive_address
         ,case when tr.value is not null
-            then case when (erc20.contract_address = '0x0000000000000000000000000000000000000000' or erc20.contract_address is null) 
+            then case when (erc20.contract_address = 0x0000000000000000000000000000000000000000 or erc20.contract_address is null) 
                 then 'ETH' else t1.symbol end
             end as royalty_fee_currency_symbol
     from events_raw as er 
@@ -228,15 +228,15 @@ with events_raw as (
         {% endif %}
     left join {{ ref('tokens_erc20') }} as t1
         on t1.contract_address =
-            case when (erc20.contract_address = '0x0000000000000000000000000000000000000000' or erc20.contract_address is null)
-            then '0xdeaddeaddeaddeaddeaddeaddeaddeaddead0000'
+            case when (erc20.contract_address = 0x0000000000000000000000000000000000000000 or erc20.contract_address is null)
+            then 0xdeaddeaddeaddeaddeaddeaddeaddeaddead0000
             else erc20.contract_address
             end 
         and t1.blockchain = 'optimism'
     left join {{ source('prices', 'usd') }} as p1
         on p1.contract_address =
-            case when (erc20.contract_address = '0x0000000000000000000000000000000000000000' or erc20.contract_address is null)
-            then '0xdeaddeaddeaddeaddeaddeaddeaddeaddead0000'
+            case when (erc20.contract_address = 0x0000000000000000000000000000000000000000 or erc20.contract_address is null)
+            then 0xdeaddeaddeaddeaddeaddeaddeaddeaddead0000
             else erc20.contract_address
             end
         and p1.minute = date_trunc('minute', er.block_time)

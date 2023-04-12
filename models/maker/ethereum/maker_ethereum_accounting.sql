@@ -12,74 +12,74 @@
 
 WITH dao_wallet AS (
     SELECT * FROM (VALUES
-        (LOWER('0x9e1585d9CA64243CE43D42f7dD7333190F66Ca09'), 'RWF Core Unit Multisig + Operational 1', 'Fixed', 'RWF-001')
-        , (LOWER('0xD1505ee500791490DE8642353BA6A5b92e3550F7'), 'RWF Core Unit Multisig + Operational 2', 'Fixed', 'RWF-001')
-        , (LOWER('0xe2c16c308b843eD02B09156388Cb240cEd58C01c'), 'PE Core Unit Multisig + PE Continuous Ops Multisig 1', 'Fixed', 'PE-001')
-        , (LOWER('0x83e36aaa1c7b99e2d3d07789f7b70fce46f0d45e'), 'PE Core Unit Multisig + PE Continuous Ops Multisig 2', 'Fixed', 'PE-001')
-        , (LOWER('0x01D26f8c5cC009868A4BF66E268c17B057fF7A73'), 'GovAlpha Multisig', 'Fixed', 'GOV-001')
-        , (LOWER('0xDCAF2C84e1154c8DdD3203880e5db965bfF09B60'), 'Content Prod Multisig 1', 'Fixed', 'OLD-001')
-        , (LOWER('0x6a0ce7dbb43fe537e3fd0be12dc1882393895237'), 'Content Prod Multisig 2', 'Fixed', 'OLD-001')
-        , (LOWER('0x1eE3ECa7aEF17D1e74eD7C447CcBA61aC76aDbA9'), 'GovCom Multisig + Continuous Operation 1', 'Fixed', 'COM-001')
-        , (LOWER('0x99E1696A680c0D9f426Be20400E468089E7FDB0f'), 'GovCom Multisig + Continuous Operation 2', 'Fixed', 'COM-001')
-        , (LOWER('0x7800C137A645c07132886539217ce192b9F0528e'), 'Growth Emergency Multisig', 'Fixed', 'GRO-001')
-        , (LOWER('0xb5eB779cE300024EDB3dF9b6C007E312584f6F4f'), 'SES Multisigs (Permanent Team, Incubation, Grants) 1', 'Fixed', 'SES-001')
-        , (LOWER('0x7c09Ff9b59BAAebfd721cbDA3676826aA6d7BaE8'), 'SES Multisigs (Permanent Team, Incubation, Grants) 2', 'Fixed', 'SES-001')
-        , (LOWER('0xf95eB8eC63D6059bA62b0A8A7F843c7D92f41de2'), 'SES Multisigs (Permanent Team, Incubation, Grants) 3', 'Fixed', 'SES-001')
-        , (LOWER('0xd98ef20520048a35EdA9A202137847A62120d2d9'), 'Risk Multisig', 'Fixed', 'RISK-001')
-        , (LOWER('0x8Cd0ad5C55498Aacb72b6689E1da5A284C69c0C7'), 'DUX Team Wallet', 'Fixed', 'DUX-001')
-        , (LOWER('0x6D348f18c88D45243705D4fdEeB6538c6a9191F1'), 'StarkNet Team Wallet', 'Fixed', 'SNE-001')
-        , (LOWER('0x955993Df48b0458A01cfB5fd7DF5F5DCa6443550'), 'Strategic Happiness Wallet 1', 'Fixed', 'SH-001') --prior primary wallet, still uses for smaller payments
-        , (LOWER('0xc657ac882fb2d6ccf521801da39e910f8519508d'), 'Strategic Happiness Wallet 2', 'Fixed', 'SH-001') --multisig for most expenses
-        , (LOWER('0xD740882B8616B50d0B317fDFf17Ec3f4f853F44f'), 'CES Team Wallet', 'Fixed', 'CES-001')
-        , (LOWER('0x56349A38e09f36039f6AF77309690d217Beaf0bF'), 'DECO Ops + DECO Protocol Wallets 1', 'Fixed', 'DECO-001')
-        , (LOWER('0xA78F1F5698f8d345a14d7323745C6c56fB8227F0'), 'DECO Ops + DECO Protocol Wallets 2', 'Fixed', 'DECO-001')
-        , (LOWER('0x465AA62a82E220B331f5ECcA697c20E89554B298'), 'SAS Team Wallet', 'Fixed', 'SAS-001')
-        , (LOWER('0x124c759D1084E67B19a206ab85c4527Fab26c342'), 'IS Ops Wallet', 'Fixed', 'IS-001')
-        , (LOWER('0x7327Aed0Ddf75391098e8753512D8aEc8D740a1F'), 'Data Insights Wallet', 'Fixed', 'DIN-001')
-        , (LOWER('0x2dC0420A736D1F40893B9481D8968E4D7424bC0B'), 'TechOps', 'Fixed', 'TECH-001')
-        , (LOWER('0x2B6180b413511ce6e3DA967Ec503b2Cc19B78Db6'), 'Oracle Gas Cost Multisig + Emergency Fund 1', 'Variable', 'GAS')
-        , (LOWER('0x1A5B692029b157df517b7d21a32c8490b8692b0f'), 'Oracle Gas Cost Multisig + Emergency Fund 2', 'Variable', 'GAS')
-        , (LOWER('0x53CCAA8E3beF14254041500aCC3f1D4edb5B6D24'), 'Oracle Multisig, Emergency Multisig 1', 'Fixed', 'ORA-001')
-        , (LOWER('0x2d09B7b95f3F312ba6dDfB77bA6971786c5b50Cf'), 'Oracle Multisig, Emergency Multisig 2', 'Fixed', 'ORA-001')
-        , (LOWER('0xf737C76D2B358619f7ef696cf3F94548fEcec379'), 'Strategic Finance Multisig', 'Fixed', 'SF-001')
-        , (LOWER('0x3d274fbac29c92d2f624483495c0113b44dbe7d2'), 'Events Multisig', 'Fixed', 'EVENTS-001')
-        , (LOWER('0x34d8d61050ef9d2b48ab00e6dc8a8ca6581c5d63'), 'Foundation Operational Wallet', 'Fixed', 'DAIF-001')
-        , (LOWER('0xbe8e3e3618f7474f8cb1d074a26affef007e98fb'), 'DS Pause Proxy', 'Variable', 'DSPP')
-        , (LOWER('0x73f09254a81e1f835ee442d1b3262c1f1d7a13ff'), 'Interim Multisig', 'Fixed', 'INTERIM')
-        , (LOWER('0x87AcDD9208f73bFc9207e1f6F0fDE906bcA95cc6'), 'SES Multisig (Auditor)', 'Fixed', 'SES-001')
-        , (LOWER('0x5A994D8428CCEbCC153863CCdA9D2Be6352f89ad'), 'DUX Auditor Wallet', 'Fixed', 'DUX-001')
-        , (LOWER('0x25307aB59Cd5d8b4E2C01218262Ddf6a89Ff86da'), 'CES Auditor Wallet', 'Fixed', 'CES-001')
-        , (LOWER('0xf482d1031e5b172d42b2daa1b6e5cbf6519596f7'), 'DECO Auditor Wallet', 'Fixed', 'DECO-001')
-        , (LOWER('0xb1f950a51516a697e103aaa69e152d839182f6fe'), 'SAS Auditor Wallet', 'Fixed', 'SAS-001')
-        , (LOWER('0xd1f2eef8576736c1eba36920b957cd2af07280f4'), 'IS Auditor Wallet', 'Fixed', 'IS-001')
-        , (LOWER('0x96d7b01Cc25B141520C717fa369844d34FF116ec'), 'RWF Auditor Wallet', 'Fixed', 'RWF-001')
-        , (LOWER('0x1a3da79ee7db30466ca752de6a75def5e635b2f6'), 'TechOps Auditor Wallet', 'Fixed', 'TECH-001')
-        , (LOWER('0x5F5c328732c9E52DfCb81067b8bA56459b33921f'), 'Foundation Reserves', 'Fixed', 'DAIF-001')
-        , (LOWER('0x478c7ce3e1df09130f8d65a23ad80e05b352af62'), 'Gelato Keepers', 'Variable', 'GELATO')
-        --, (LOWER('0x0048FC4357DB3c0f45AdEA433a07A20769dDB0CF'), 'DSS Blow', 'Variable', 'BLOW')
-        , (LOWER('0xb386Bc4e8bAE87c3F67ae94Da36F385C100a370a'), 'New Risk Multisig', 'Fixed', 'RISK-001')
+        (LOWER(0x9e1585d9CA64243CE43D42f7dD7333190F66Ca09), 'RWF Core Unit Multisig + Operational 1', 'Fixed', 'RWF-001')
+        , (LOWER(0xD1505ee500791490DE8642353BA6A5b92e3550F7), 'RWF Core Unit Multisig + Operational 2', 'Fixed', 'RWF-001')
+        , (LOWER(0xe2c16c308b843eD02B09156388Cb240cEd58C01c), 'PE Core Unit Multisig + PE Continuous Ops Multisig 1', 'Fixed', 'PE-001')
+        , (LOWER(0x83e36aaa1c7b99e2d3d07789f7b70fce46f0d45e), 'PE Core Unit Multisig + PE Continuous Ops Multisig 2', 'Fixed', 'PE-001')
+        , (LOWER(0x01D26f8c5cC009868A4BF66E268c17B057fF7A73), 'GovAlpha Multisig', 'Fixed', 'GOV-001')
+        , (LOWER(0xDCAF2C84e1154c8DdD3203880e5db965bfF09B60), 'Content Prod Multisig 1', 'Fixed', 'OLD-001')
+        , (LOWER(0x6a0ce7dbb43fe537e3fd0be12dc1882393895237), 'Content Prod Multisig 2', 'Fixed', 'OLD-001')
+        , (LOWER(0x1eE3ECa7aEF17D1e74eD7C447CcBA61aC76aDbA9), 'GovCom Multisig + Continuous Operation 1', 'Fixed', 'COM-001')
+        , (LOWER(0x99E1696A680c0D9f426Be20400E468089E7FDB0f), 'GovCom Multisig + Continuous Operation 2', 'Fixed', 'COM-001')
+        , (LOWER(0x7800C137A645c07132886539217ce192b9F0528e), 'Growth Emergency Multisig', 'Fixed', 'GRO-001')
+        , (LOWER(0xb5eB779cE300024EDB3dF9b6C007E312584f6F4f), 'SES Multisigs (Permanent Team, Incubation, Grants) 1', 'Fixed', 'SES-001')
+        , (LOWER(0x7c09Ff9b59BAAebfd721cbDA3676826aA6d7BaE8), 'SES Multisigs (Permanent Team, Incubation, Grants) 2', 'Fixed', 'SES-001')
+        , (LOWER(0xf95eB8eC63D6059bA62b0A8A7F843c7D92f41de2), 'SES Multisigs (Permanent Team, Incubation, Grants) 3', 'Fixed', 'SES-001')
+        , (LOWER(0xd98ef20520048a35EdA9A202137847A62120d2d9), 'Risk Multisig', 'Fixed', 'RISK-001')
+        , (LOWER(0x8Cd0ad5C55498Aacb72b6689E1da5A284C69c0C7), 'DUX Team Wallet', 'Fixed', 'DUX-001')
+        , (LOWER(0x6D348f18c88D45243705D4fdEeB6538c6a9191F1), 'StarkNet Team Wallet', 'Fixed', 'SNE-001')
+        , (LOWER(0x955993Df48b0458A01cfB5fd7DF5F5DCa6443550), 'Strategic Happiness Wallet 1', 'Fixed', 'SH-001') --prior primary wallet, still uses for smaller payments
+        , (LOWER(0xc657ac882fb2d6ccf521801da39e910f8519508d), 'Strategic Happiness Wallet 2', 'Fixed', 'SH-001') --multisig for most expenses
+        , (LOWER(0xD740882B8616B50d0B317fDFf17Ec3f4f853F44f), 'CES Team Wallet', 'Fixed', 'CES-001')
+        , (LOWER(0x56349A38e09f36039f6AF77309690d217Beaf0bF), 'DECO Ops + DECO Protocol Wallets 1', 'Fixed', 'DECO-001')
+        , (LOWER(0xA78F1F5698f8d345a14d7323745C6c56fB8227F0), 'DECO Ops + DECO Protocol Wallets 2', 'Fixed', 'DECO-001')
+        , (LOWER(0x465AA62a82E220B331f5ECcA697c20E89554B298), 'SAS Team Wallet', 'Fixed', 'SAS-001')
+        , (LOWER(0x124c759D1084E67B19a206ab85c4527Fab26c342), 'IS Ops Wallet', 'Fixed', 'IS-001')
+        , (LOWER(0x7327Aed0Ddf75391098e8753512D8aEc8D740a1F), 'Data Insights Wallet', 'Fixed', 'DIN-001')
+        , (LOWER(0x2dC0420A736D1F40893B9481D8968E4D7424bC0B), 'TechOps', 'Fixed', 'TECH-001')
+        , (LOWER(0x2B6180b413511ce6e3DA967Ec503b2Cc19B78Db6), 'Oracle Gas Cost Multisig + Emergency Fund 1', 'Variable', 'GAS')
+        , (LOWER(0x1A5B692029b157df517b7d21a32c8490b8692b0f), 'Oracle Gas Cost Multisig + Emergency Fund 2', 'Variable', 'GAS')
+        , (LOWER(0x53CCAA8E3beF14254041500aCC3f1D4edb5B6D24), 'Oracle Multisig, Emergency Multisig 1', 'Fixed', 'ORA-001')
+        , (LOWER(0x2d09B7b95f3F312ba6dDfB77bA6971786c5b50Cf), 'Oracle Multisig, Emergency Multisig 2', 'Fixed', 'ORA-001')
+        , (LOWER(0xf737C76D2B358619f7ef696cf3F94548fEcec379), 'Strategic Finance Multisig', 'Fixed', 'SF-001')
+        , (LOWER(0x3d274fbac29c92d2f624483495c0113b44dbe7d2), 'Events Multisig', 'Fixed', 'EVENTS-001')
+        , (LOWER(0x34d8d61050ef9d2b48ab00e6dc8a8ca6581c5d63), 'Foundation Operational Wallet', 'Fixed', 'DAIF-001')
+        , (LOWER(0xbe8e3e3618f7474f8cb1d074a26affef007e98fb), 'DS Pause Proxy', 'Variable', 'DSPP')
+        , (LOWER(0x73f09254a81e1f835ee442d1b3262c1f1d7a13ff), 'Interim Multisig', 'Fixed', 'INTERIM')
+        , (LOWER(0x87AcDD9208f73bFc9207e1f6F0fDE906bcA95cc6), 'SES Multisig (Auditor)', 'Fixed', 'SES-001')
+        , (LOWER(0x5A994D8428CCEbCC153863CCdA9D2Be6352f89ad), 'DUX Auditor Wallet', 'Fixed', 'DUX-001')
+        , (LOWER(0x25307aB59Cd5d8b4E2C01218262Ddf6a89Ff86da), 'CES Auditor Wallet', 'Fixed', 'CES-001')
+        , (LOWER(0xf482d1031e5b172d42b2daa1b6e5cbf6519596f7), 'DECO Auditor Wallet', 'Fixed', 'DECO-001')
+        , (LOWER(0xb1f950a51516a697e103aaa69e152d839182f6fe), 'SAS Auditor Wallet', 'Fixed', 'SAS-001')
+        , (LOWER(0xd1f2eef8576736c1eba36920b957cd2af07280f4), 'IS Auditor Wallet', 'Fixed', 'IS-001')
+        , (LOWER(0x96d7b01Cc25B141520C717fa369844d34FF116ec), 'RWF Auditor Wallet', 'Fixed', 'RWF-001')
+        , (LOWER(0x1a3da79ee7db30466ca752de6a75def5e635b2f6), 'TechOps Auditor Wallet', 'Fixed', 'TECH-001')
+        , (LOWER(0x5F5c328732c9E52DfCb81067b8bA56459b33921f), 'Foundation Reserves', 'Fixed', 'DAIF-001')
+        , (LOWER(0x478c7ce3e1df09130f8d65a23ad80e05b352af62), 'Gelato Keepers', 'Variable', 'GELATO')
+        --, (LOWER(0x0048FC4357DB3c0f45AdEA433a07A20769dDB0CF), 'DSS Blow', 'Variable', 'BLOW')
+        , (LOWER(0xb386Bc4e8bAE87c3F67ae94Da36F385C100a370a), 'New Risk Multisig', 'Fixed', 'RISK-001')
     ) AS  t(wallet_address, wallet_label, varfix, code)
 )
 
 -- ********** Helper Tables *********** 
 , treasury_erc20s AS (
-    SELECT '0xc18360217d8f7ab5e7c516566761ea12ce7f9d72' AS contract_address,
-           '0xc18360217d8f7ab5e7c516566761ea12ce7f9d72' AS price_address,
+    SELECT 0xc18360217d8f7ab5e7c516566761ea12ce7f9d72 AS contract_address,
+           0xc18360217d8f7ab5e7c516566761ea12ce7f9d72 AS price_address,
            18                                           AS decimals,
            'ENS'                                        AS token
     UNION ALL
-    SELECT '0x4da27a545c0c5b758a6ba100e3a049001de870f5' AS contract_address,
-           '0x7fc66500c84a76ad7e9c93437bfc5ac33e2ddae9' AS price_address,
+    SELECT 0x4da27a545c0c5b758a6ba100e3a049001de870f5 AS contract_address,
+           0x7fc66500c84a76ad7e9c93437bfc5ac33e2ddae9 AS price_address,
            18                                           AS decimals,
            'stkAAVE'                                    AS token
     UNION ALL
-    SELECT '0x7fc66500c84a76ad7e9c93437bfc5ac33e2ddae9' AS contract_address,
-           '0x7fc66500c84a76ad7e9c93437bfc5ac33e2ddae9' AS price_address,
+    SELECT 0x7fc66500c84a76ad7e9c93437bfc5ac33e2ddae9 AS contract_address,
+           0x7fc66500c84a76ad7e9c93437bfc5ac33e2ddae9 AS price_address,
            18                                           AS decimals,
            'AAVE'                                       AS token
     UNION ALL
-    SELECT '0xc00e94cb662c3520282e6f5717214004a7f26888' AS contract_address,
-           '0xc00e94cb662c3520282e6f5717214004a7f26888' AS price_address,
+    SELECT 0xc00e94cb662c3520282e6f5717214004a7f26888 AS contract_address,
+           0xc00e94cb662c3520282e6f5717214004a7f26888 AS price_address,
            18                                           AS decimals,
            'COMP'                                       AS token
 )
@@ -283,7 +283,7 @@ WITH dao_wallet AS (
          , usr
     FROM {{ source('maker_ethereum', 'dai_call_burn') }}
     WHERE call_success
-      AND (usr = '0x0048fc4357db3c0f45adea433a07a20769ddb0cf' OR usr IN (SELECT wallet_address FROM dao_wallet))
+      AND (usr = 0x0048fc4357db3c0f45adea433a07a20769ddb0cf OR usr IN (SELECT wallet_address FROM dao_wallet))
     --   {% if is_incremental() %}
     --   AND call_block_time >= date_trunc("day", now() - interval '1 week')
     --   {% endif %}
@@ -297,7 +297,7 @@ WITH dao_wallet AS (
     FROM {{ source('maker_ethereum', 'vat_call_move') }} vat
     JOIN team_dai_burns_tx tx -- Flop income (coming directly from users wallets)
         ON vat.call_tx_hash = tx.call_tx_hash
-    WHERE vat.dst = '0xa950524441892a31ebddf91d3ceefa04bf454466' -- vow
+    WHERE vat.dst = 0xa950524441892a31ebddf91d3ceefa04bf454466 -- vow
       AND vat.call_success
     --   {% if is_incremental() %}
     --   AND vat.call_block_time >= date_trunc("day", now() - interval '1 week')
@@ -322,12 +322,12 @@ WITH dao_wallet AS (
 )
 , psm_yield_trxns AS (
     SELECT call_tx_hash
-        , CASE WHEN usr = '0xf2e7a5b83525c3017383deed19bb05fe34a62c27'
+        , CASE WHEN usr = 0xf2e7a5b83525c3017383deed19bb05fe34a62c27
             THEN 'PSM-GUSD-A' 
         END AS ilk
     FROM {{ source('maker_ethereum', 'dai_call_burn') }}
     WHERE call_success
-      AND usr IN ('0xf2e7a5b83525c3017383deed19bb05fe34a62c27') --GUSD interest payment contract
+      AND usr IN (0xf2e7a5b83525c3017383deed19bb05fe34a62c27) --GUSD interest payment contract
     --   {% if is_incremental() %}
     --   AND call_block_time >= date_trunc("day", now() - interval '1 week')
     --   {% endif %}
@@ -342,7 +342,7 @@ WITH dao_wallet AS (
     FROM {{ source('maker_ethereum', 'vat_call_move') }} vat
     JOIN psm_yield_trxns tx
         ON vat.call_tx_hash = tx.call_tx_hash
-    WHERE vat.dst = '0xa950524441892a31ebddf91d3ceefa04bf454466' -- vow
+    WHERE vat.dst = 0xa950524441892a31ebddf91d3ceefa04bf454466 -- vow
       AND vat.call_success
     --   {% if is_incremental() %}
     --   AND vat.call_block_time >= date_trunc("day", now() - interval '1 week')
@@ -370,12 +370,12 @@ WITH dao_wallet AS (
 )
 , hvb_yield_trxns AS (
     SELECT call_tx_hash
-        , CASE WHEN usr = '0x6c6d4be2223b5d202263515351034861dd9afdb6'
+        , CASE WHEN usr = 0x6c6d4be2223b5d202263515351034861dd9afdb6
             THEN 'RWA009-A' 
         END AS ilk
     FROM {{ source('maker_ethereum', 'dai_call_burn') }}
     WHERE call_success
-      AND usr IN ('0x6c6d4be2223b5d202263515351034861dd9afdb6') --HVB RWA JAR
+      AND usr IN (0x6c6d4be2223b5d202263515351034861dd9afdb6) --HVB RWA JAR
     --   {% if is_incremental() %}
     --   AND call_block_time >= date_trunc("day", now() - interval '1 week')
     --   {% endif %}
@@ -390,7 +390,7 @@ WITH dao_wallet AS (
     FROM {{ source('maker_ethereum', 'vat_call_move') }} vat
     JOIN hvb_yield_trxns tx
         ON vat.call_tx_hash = tx.call_tx_hash
-    WHERE vat.dst = '0xa950524441892a31ebddf91d3ceefa04bf454466' -- vow
+    WHERE vat.dst = 0xa950524441892a31ebddf91d3ceefa04bf454466 -- vow
       AND vat.call_success
     --   {% if is_incremental() %}
     --   AND vat.call_block_time >= date_trunc("day", now() - interval '1 week')
@@ -421,11 +421,11 @@ WITH dao_wallet AS (
          , call_tx_hash              hash
          , SUM(rad / POW(10, 45)) AS value
     FROM {{ source('maker_ethereum', 'vat_call_move') }}
-    WHERE dst = '0xa950524441892a31ebddf91d3ceefa04bf454466'                -- vow
+    WHERE dst = 0xa950524441892a31ebddf91d3ceefa04bf454466                -- vow
       AND call_success
       AND src NOT IN (SELECT contract_address FROM contracts)               -- contract_type = 'PSM' should be enough but letting it wider
-      AND src NOT IN ('0xa13c0c8eb109f5a13c6c90fc26afb23beb3fb04a'
-        , '0x621fe4fde2617ea8ffade08d0ff5a862ad287ec2')                     --aave v2 d3m, compound v2 d3m
+      AND src NOT IN (0xa13c0c8eb109f5a13c6c90fc26afb23beb3fb04a
+        , 0x621fe4fde2617ea8ffade08d0ff5a862ad287ec2)                     --aave v2 d3m, compound v2 d3m
       AND call_tx_hash NOT IN (SELECT tx_hash FROM liquidation_excluded_tx) -- Exclude Flop income (coming directly from users wallets)
       AND call_tx_hash NOT IN (SELECT call_tx_hash FROM team_dai_burns_tx)
       AND call_tx_hash NOT IN (SELECT call_tx_hash FROM psm_yield_trxns)
@@ -477,14 +477,14 @@ WITH dao_wallet AS (
     SELECT call_block_time                                                                             ts
          , call_tx_hash                                                                                hash
          , CASE
-               WHEN src = '0xa13c0c8eb109f5a13c6c90fc26afb23beb3fb04a' THEN 'DIRECT-AAVEV2-DAI'
-               WHEN src = '0x621fe4fde2617ea8ffade08d0ff5a862ad287ec2' THEN 'DIRECT-COMPV2-DAI' END AS ilk
+               WHEN src = 0xa13c0c8eb109f5a13c6c90fc26afb23beb3fb04a THEN 'DIRECT-AAVEV2-DAI'
+               WHEN src = 0x621fe4fde2617ea8ffade08d0ff5a862ad287ec2 THEN 'DIRECT-COMPV2-DAI' END AS ilk
          , SUM(rad) / POW(10, 45)                                                                   AS value
     FROM {{ source('maker_ethereum', 'vat_call_move') }}
     WHERE call_success
-      AND src IN ('0xa13c0c8eb109f5a13c6c90fc26afb23beb3fb04a'
-                  , '0x621fe4fde2617ea8ffade08d0ff5a862ad287ec2') --aave d3m, compound v2 d3m
-      AND dst = '0xa950524441892a31ebddf91d3ceefa04bf454466'    --vow
+      AND src IN (0xa13c0c8eb109f5a13c6c90fc26afb23beb3fb04a
+                  , 0x621fe4fde2617ea8ffade08d0ff5a862ad287ec2) --aave d3m, compound v2 d3m
+      AND dst = 0xa950524441892a31ebddf91d3ceefa04bf454466    --vow
     --   {% if is_incremental() %}
     --   AND call_block_time >= date_trunc("day", now() - interval '1 week')
     --   {% endif %}
@@ -519,7 +519,7 @@ WITH dao_wallet AS (
     INNER JOIN psms
         ON vat.src = psms.psm_address
     WHERE vat.call_success
-      AND vat.dst = '0xa950524441892a31ebddf91d3ceefa04bf454466' -- Vow
+      AND vat.dst = 0xa950524441892a31ebddf91d3ceefa04bf454466 -- Vow
     --   {% if is_incremental() %}
     --   AND vat.call_block_time >= date_trunc("day", now() - interval '1 week')
     --   {% endif %}
@@ -551,7 +551,7 @@ WITH dao_wallet AS (
         FROM liquidation_excluded_tx
     ) tx -- Flop income (coming directly from users wallets)
         ON vat.call_tx_hash = tx.tx_hash
-    WHERE vat.dst = '0xa950524441892a31ebddf91d3ceefa04bf454466' -- vow
+    WHERE vat.dst = 0xa950524441892a31ebddf91d3ceefa04bf454466 -- vow
       AND vat.call_success
       AND vat.src NOT IN (SELECT contract_address FROM contracts WHERE contract_type = 'PSM')
     --   {% if is_incremental() %}
@@ -579,7 +579,7 @@ WITH dao_wallet AS (
          , call_tx_hash              hash
          , SUM(rad / POW(10, 45)) AS value
     FROM {{ source('maker_ethereum', 'vat_call_move') }}
-    WHERE src = '0xa950524441892a31ebddf91d3ceefa04bf454466' -- vow
+    WHERE src = 0xa950524441892a31ebddf91d3ceefa04bf454466 -- vow
       AND call_success
     --   {% if is_incremental() %}
     --   AND call_block_time >= date_trunc("day", now() - interval '1 week')
@@ -688,10 +688,10 @@ WITH dao_wallet AS (
     SELECT suck.call_tx_hash
     FROM {{ source('maker_ethereum', 'vat_call_suck') }} suck
     WHERE suck.call_success
-      AND suck.u = '0xa950524441892a31ebddf91d3ceefa04bf454466'
-      AND suck.v IN ('0xbe8e3e3618f7474f8cb1d074a26affef007e98fb'
-                , '0x2cc583c0aacdac9e23cb601fda8f1a0c56cdcb71'
-                , '0xa4c22f0e25c6630b2017979acf1f865e94695c4b')
+      AND suck.u = 0xa950524441892a31ebddf91d3ceefa04bf454466
+      AND suck.v IN (0xbe8e3e3618f7474f8cb1d074a26affef007e98fb
+                , 0x2cc583c0aacdac9e23cb601fda8f1a0c56cdcb71
+                , 0xa4c22f0e25c6630b2017979acf1f865e94695c4b)
     --   {% if is_incremental() %}
     --   AND suck.call_block_time >= date_trunc("day", now() - interval '1 week')
     --   {% endif %}
@@ -738,8 +738,8 @@ WITH dao_wallet AS (
          , 31610                   AS code
          , -SUM(rad) / POW(10, 45) AS value --reduced equity
     FROM {{ source('maker_ethereum', 'vat_call_suck') }}
-    WHERE u = '0xa950524441892a31ebddf91d3ceefa04bf454466' -- Vow
-      AND v = '0x197e90f9fad81970ba7976f33cbd77088e5d7cf7' -- Pot
+    WHERE u = 0xa950524441892a31ebddf91d3ceefa04bf454466 -- Vow
+      AND v = 0x197e90f9fad81970ba7976f33cbd77088e5d7cf7 -- Pot
       AND call_success
     --   {% if is_incremental() %}
     --   AND call_block_time >= date_trunc("day", now() - interval '1 week')
@@ -753,8 +753,8 @@ WITH dao_wallet AS (
             , 21110 AS code
             , SUM(rad)/POW(10, 45) AS value --increased liability
     FROM {{ source('maker_ethereum', 'vat_call_suck') }}
-    WHERE u = '0xa950524441892a31ebddf91d3ceefa04bf454466' -- Vow
-      AND v = '0x197e90f9fad81970ba7976f33cbd77088e5d7cf7' -- Pot
+    WHERE u = 0xa950524441892a31ebddf91d3ceefa04bf454466 -- Vow
+      AND v = 0x197e90f9fad81970ba7976f33cbd77088e5d7cf7 -- Pot
       AND call_success
     --   {% if is_incremental() %}
     --   AND call_block_time >= date_trunc("day", now() - interval '1 week')
@@ -767,11 +767,11 @@ WITH dao_wallet AS (
          , 31520                   AS code
          , -SUM(rad) / POW(10, 45) AS value --reduced equity
     FROM {{ source('maker_ethereum', 'vat_call_suck') }}
-    WHERE u = '0xa950524441892a31ebddf91d3ceefa04bf454466' -- Vow
-      AND v NOT IN ('0x197e90f9fad81970ba7976f33cbd77088e5d7cf7'
-        , '0xbe8e3e3618f7474f8cb1d074a26affef007e98fb'
-        , '0x2cc583c0aacdac9e23cb601fda8f1a0c56cdcb71'
-        , '0xa4c22f0e25c6630b2017979acf1f865e94695c4b')    -- dsr, opex
+    WHERE u = 0xa950524441892a31ebddf91d3ceefa04bf454466 -- Vow
+      AND v NOT IN (0x197e90f9fad81970ba7976f33cbd77088e5d7cf7
+        , 0xbe8e3e3618f7474f8cb1d074a26affef007e98fb
+        , 0x2cc583c0aacdac9e23cb601fda8f1a0c56cdcb71
+        , 0xa4c22f0e25c6630b2017979acf1f865e94695c4b)    -- dsr, opex
       AND call_success
     --   {% if is_incremental() %}
     --   AND call_block_time >= date_trunc("day", now() - interval '1 week')
@@ -785,11 +785,11 @@ WITH dao_wallet AS (
             , 21120 AS code
             , SUM(rad)/POW(10, 45) AS value --increased liability
     FROM {{ source('maker_ethereum', 'vat_call_suck') }}
-    WHERE u = '0xa950524441892a31ebddf91d3ceefa04bf454466' -- Vow
-      AND v NOT IN ('0x197e90f9fad81970ba7976f33cbd77088e5d7cf7'
-        , '0xbe8e3e3618f7474f8cb1d074a26affef007e98fb'
-        , '0x2cc583c0aacdac9e23cb601fda8f1a0c56cdcb71'
-        , '0xa4c22f0e25c6630b2017979acf1f865e94695c4b')    -- dsr, opex
+    WHERE u = 0xa950524441892a31ebddf91d3ceefa04bf454466 -- Vow
+      AND v NOT IN (0x197e90f9fad81970ba7976f33cbd77088e5d7cf7
+        , 0xbe8e3e3618f7474f8cb1d074a26affef007e98fb
+        , 0x2cc583c0aacdac9e23cb601fda8f1a0c56cdcb71
+        , 0xa4c22f0e25c6630b2017979acf1f865e94695c4b)    -- dsr, opex
       AND call_success
     --   {% if is_incremental() %}
     --   AND call_block_time >= date_trunc("day", now() - interval '1 week')
@@ -802,7 +802,7 @@ WITH dao_wallet AS (
          , 31510                  AS code
          , SUM(rad) / POW(10, 45) AS value --increased equity
     FROM {{ source('maker_ethereum', 'vat_call_suck') }}
-    WHERE v = '0xa950524441892a31ebddf91d3ceefa04bf454466' -- Vow
+    WHERE v = 0xa950524441892a31ebddf91d3ceefa04bf454466 -- Vow
       AND call_success
     --   {% if is_incremental() %}
     --   AND call_block_time >= date_trunc("day", now() - interval '1 week')
@@ -816,7 +816,7 @@ WITH dao_wallet AS (
             , 21120 AS code
             , -SUM(rad)/POW(10, 45) AS value --decreased liability
     FROM {{ source('maker_ethereum', 'vat_call_suck') }}
-    WHERE v = '0xa950524441892a31ebddf91d3ceefa04bf454466' -- Vow
+    WHERE v = 0xa950524441892a31ebddf91d3ceefa04bf454466 -- Vow
       AND call_success
     --   {% if is_incremental() %}
     --   AND call_block_time >= date_trunc("day", now() - interval '1 week')
@@ -829,7 +829,7 @@ WITH dao_wallet AS (
          , -rad / POW(10, 45) AS dsr_flow
     FROM {{ source('maker_ethereum', 'vat_call_move') }} m
     WHERE call_success
-      AND src = '0x197e90f9fad81970ba7976f33cbd77088e5d7cf7'
+      AND src = 0x197e90f9fad81970ba7976f33cbd77088e5d7cf7
     --   {% if is_incremental() %}
     --   AND call_block_time >= date_trunc("day", now() - interval '1 week')
     --   {% endif %}
@@ -841,7 +841,7 @@ WITH dao_wallet AS (
             , rad/POW(10, 45) AS dsr_flow
     FROM {{ source('maker_ethereum', 'vat_call_move') }} m
     WHERE call_success
-      AND dst = '0x197e90f9fad81970ba7976f33cbd77088e5d7cf7'
+      AND dst = 0x197e90f9fad81970ba7976f33cbd77088e5d7cf7
     --   {% if is_incremental() %}
     --   AND call_block_time >= date_trunc("day", now() - interval '1 week')
     --   {% endif %}
@@ -869,7 +869,7 @@ WITH dao_wallet AS (
     FROM {{ source('erc20_ethereum', 'evt_transfer') }} evt
     JOIN treasury_erc20s t
         ON evt.contract_address = t.contract_address
-    WHERE evt.to = '0xbe8e3e3618f7474f8cb1d074a26affef007e98fb'
+    WHERE evt.to = 0xbe8e3e3618f7474f8cb1d074a26affef007e98fb
         -- {% if is_incremental() %}
         -- AND evt.evt_block_time >= date_trunc("day", now() - interval '1 week')
         -- {% endif %}
@@ -884,7 +884,7 @@ WITH dao_wallet AS (
     FROM {{ source('erc20_ethereum', 'evt_transfer') }} evt
     JOIN treasury_erc20s t
         ON evt.contract_address = t.contract_address
-    WHERE evt.from = '0xbe8e3e3618f7474f8cb1d074a26affef007e98fb'
+    WHERE evt.from = 0xbe8e3e3618f7474f8cb1d074a26affef007e98fb
         -- {% if is_incremental() %}
         -- AND evt.evt_block_time >= date_trunc("day", now() - interval '1 week')
         -- {% endif %}
@@ -1066,8 +1066,8 @@ WITH dao_wallet AS (
         , value         AS      expense --positive expense which is a reduction in equity
         , `to`          AS      address
     FROM {{ source('maker_ethereum', 'mkr_evt_transfer') }}
-    WHERE `from` = '0xbe8e3e3618f7474f8cb1d074a26affef007e98fb'
-    AND `to` <> '0xbe8e3e3618f7474f8cb1d074a26affef007e98fb' --one transaction both to and from pause proxy, ignoring this one
+    WHERE `from` = 0xbe8e3e3618f7474f8cb1d074a26affef007e98fb
+    AND `to` <> 0xbe8e3e3618f7474f8cb1d074a26affef007e98fb --one transaction both to and from pause proxy, ignoring this one
     
     UNION ALL
     
@@ -1076,9 +1076,9 @@ WITH dao_wallet AS (
         , -value        AS      expense --negative expense, increase in equity
         , `from`        AS      address
     FROM {{ source('maker_ethereum', 'mkr_evt_transfer') }}
-    WHERE `to` = '0xbe8e3e3618f7474f8cb1d074a26affef007e98fb'
-    AND `from` NOT IN ('0x8ee7d9235e01e6b42345120b5d270bdb763624c7'
-                       , '0xbe8e3e3618f7474f8cb1d074a26affef007e98fb') --filtering out initial transfers in; also one transaction both to and from pause proxy, ignoring this one
+    WHERE `to` = 0xbe8e3e3618f7474f8cb1d074a26affef007e98fb
+    AND `from` NOT IN (0x8ee7d9235e01e6b42345120b5d270bdb763624c7
+                       , 0xbe8e3e3618f7474f8cb1d074a26affef007e98fb) --filtering out initial transfers in; also one transaction both to and from pause proxy, ignoring this one
 ), pause_proxy_mkr_trxns_preunion AS
 (
     SELECT ts
@@ -1116,7 +1116,7 @@ WITH dao_wallet AS (
     (
         SELECT token, price_address FROM treasury_erc20s
         UNION ALL
-        SELECT 'DAI' AS token, '0x6b175474e89094c44da98b954eedeac495271d0f' AS price_address
+        SELECT 'DAI' AS token, 0x6b175474e89094c44da98b954eedeac495271d0f AS price_address
     ) tokens
     ON p.contract_address = tokens.price_address
     WHERE blockchain = 'ethereum'
@@ -1133,9 +1133,9 @@ WITH dao_wallet AS (
     (
         SELECT token, price_address FROM treasury_erc20s
         UNION ALL
-        SELECT 'MKR' AS token, '0x9f8f72aa9304c8b593d555f12ef6589cc3a579a2' AS price_address
+        SELECT 'MKR' AS token, 0x9f8f72aa9304c8b593d555f12ef6589cc3a579a2 AS price_address
         UNION ALL
-        SELECT 'ETH' AS token, '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2' AS price_address
+        SELECT 'ETH' AS token, 0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2 AS price_address
     ) tokens 
     ON p.contract_address = tokens.price_address
     WHERE blockchain = 'ethereum'

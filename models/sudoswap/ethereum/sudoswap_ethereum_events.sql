@@ -262,7 +262,7 @@ WITH
             , trade_price as amount_raw
             , trade_price/1e18 as amount_original
             , 'ETH' as currency_symbol
-            , '0x0000000000000000000000000000000000000000' as currency_contract --ETH
+            , 0x0000000000000000000000000000000000000000 as currency_contract --ETH
             , nftcontractaddress as nft_contract_address
             , project_contract_address -- This is either the router or the pool address if called directly
             , call_tx_hash as tx_hash

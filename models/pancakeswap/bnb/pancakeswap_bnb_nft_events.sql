@@ -28,7 +28,7 @@ WITH events AS (
         askPrice AS amount_raw,
         0.02 AS platform_fee_percentage,
         case when askPrice > 0 and (netPrice/askPrice)<0.98 then (askPrice-netPrice)/askPrice - 0.02 else 0.0 end AS royalty_fee_percentage,
-        '0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c' AS currency_contract,
+        0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c AS currency_contract,
         CASE when withBNB then 'BNB' else 'WBNB' end AS currency_symbol,
         collection AS nft_contract_address,
         contract_address AS project_contract_address,

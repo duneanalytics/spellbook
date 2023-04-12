@@ -23,9 +23,9 @@ WITH element_txs AS (
         , ee.maker AS seller
         , ee.taker AS buyer
         , ee.erc20TokenAmount AS amount_raw
-        , CASE WHEN ee.erc20Token='0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee' THEN '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'
+        , CASE WHEN ee.erc20Token=0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee THEN 0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2
             ELSE ee.erc20Token END AS currency_contract
-        , CASE WHEN ee.erc20Token='0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee' THEN 'ETH' END AS currency_symbol
+        , CASE WHEN ee.erc20Token=0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee THEN 'ETH' END AS currency_symbol
         , ee.erc721Token AS nft_contract_address
         , ee.contract_address AS project_contract_address
         , ee.evt_tx_hash AS tx_hash
@@ -50,9 +50,9 @@ WITH element_txs AS (
         , ee.taker AS seller
         , ee.maker AS buyer
         , ee.erc20TokenAmount AS amount_raw
-        , CASE WHEN ee.erc20Token='0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee' THEN '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'
+        , CASE WHEN ee.erc20Token=0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee THEN 0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2
             ELSE ee.erc20Token END AS currency_contract
-        , CASE WHEN ee.erc20Token='0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee' THEN 'ETH' END AS currency_symbol
+        , CASE WHEN ee.erc20Token=0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee THEN 'ETH' END AS currency_symbol
         , ee.erc721Token AS nft_contract_address
         , ee.contract_address AS project_contract_address
         , ee.evt_tx_hash AS tx_hash
@@ -77,9 +77,9 @@ WITH element_txs AS (
         , ee.maker AS seller
         , ee.taker AS buyer
         , ee.erc20FillAmount AS amount_raw
-        , CASE WHEN ee.erc20Token='0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee' THEN '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'
+        , CASE WHEN ee.erc20Token=0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee THEN 0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2
             ELSE ee.erc20Token END AS currency_contract
-        , CASE WHEN ee.erc20Token='0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee' THEN 'ETH' END AS currency_symbol
+        , CASE WHEN ee.erc20Token=0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee THEN 'ETH' END AS currency_symbol
         , ee.erc1155Token AS nft_contract_address
         , ee.contract_address AS project_contract_address
         , ee.evt_tx_hash AS tx_hash
@@ -104,9 +104,9 @@ WITH element_txs AS (
         , ee.taker AS seller
         , ee.maker AS buyer
         , ee.erc20FillAmount AS amount_raw
-        , CASE WHEN ee.erc20Token='0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee' THEN '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'
+        , CASE WHEN ee.erc20Token=0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee THEN 0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2
             ELSE ee.erc20Token END AS currency_contract
-        , CASE WHEN ee.erc20Token='0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee' THEN 'ETH' END AS currency_symbol
+        , CASE WHEN ee.erc20Token=0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee THEN 'ETH' END AS currency_symbol
         , ee.erc1155Token AS nft_contract_address
         , ee.contract_address AS project_contract_address
         , ee.evt_tx_hash AS tx_hash

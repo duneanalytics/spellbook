@@ -11,8 +11,8 @@
 }}
 
 {% set project_start_date = '2021-11-07' %} --for testing, use small subset of data
-{% set generic_null_address = '0x0000000000000000000000000000000000000000' %} --according to etherscan label
-{% set burn_address = '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee' %} --according to etherscan label
+{% set generic_null_address = 0x0000000000000000000000000000000000000000 %} --according to etherscan label
+{% set burn_address = 0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee %} --according to etherscan label
 {% set blockchain = 'ethereum' %}
 {% set blockchain_symbol = 'ETH' %}
 
@@ -73,7 +73,7 @@ WITH unoswap AS
         src.amount AS token_sold_amount_raw,
         CAST(NULL as double) AS amount_usd,
         CASE
-            WHEN ll.to = '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'
+            WHEN ll.to = 0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2
                 AND SUBSTRING(src.pools[ARRAY_SIZE(src.pools) - 1], 1, 4) IN ('0xc0', '0x40') --spark uses 0-based array index, subtract 1 from size output
             THEN '{{burn_address}}'
             ELSE ll.to

@@ -29,7 +29,7 @@ LEFT JOIN {{ ref('staking_ethereum_entities')}} ete
 --    ON et.block_time=eth2.evt_block_time
 --    AND et.tx_hash=eth2.evt_tx_hash
 --    AND et.evt_index=eth2.evt_index
-WHERE et.to='0x00000000219ab540356cbb839cbe05303d7705fa'
+WHERE et.to=0x00000000219ab540356cbb839cbe05303d7705fa
     {% if not is_incremental() %}
     AND et.block_time >= '2020-10-14'
     {% endif %}

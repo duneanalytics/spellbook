@@ -51,7 +51,7 @@ with iv_offer_consideration as (
             ,contract_address as platform_contract_address
             ,size(offer) as offer_cnt
             ,size(consideration) as consideration_cnt
-            ,case when recipient = '0x0000000000000000000000000000000000000000' then true
+            ,case when recipient = 0x0000000000000000000000000000000000000000 then true
                 else false
             end as is_private
     from
@@ -113,7 +113,7 @@ with iv_offer_consideration as (
             ,contract_address as platform_contract_address
             ,size(offer) as offer_cnt
             ,size(consideration) as consideration_cnt
-            ,case when recipient = '0x0000000000000000000000000000000000000000' then true
+            ,case when recipient = 0x0000000000000000000000000000000000000000 then true
                 else false
             end as is_private
     from

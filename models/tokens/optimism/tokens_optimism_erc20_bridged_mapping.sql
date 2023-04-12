@@ -47,10 +47,10 @@ FROM (
         GROUP BY 1,2,3,4
 
         -- Manual adds
-        UNION ALL SELECT '0xc011a73ee8576fb46f5e1c5751ca3b9fe0af2a6f' AS l1_token, '0x8700daec35af8ff88c16bdf0418774cb3d7599b4' AS l2_token, NULL, NULL -- SNX
-        UNION ALL SELECT '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee' AS l1_token,'0xdeaddeaddeaddeaddeaddeaddeaddeaddead0000' AS l2_token, NULL, NULL -- ETH
-        UNION ALL SELECT '0x6b175474e89094c44da98b954eedeac495271d0f' AS l1_token,'0xda10009cbd5d07dd0cecc66161fc93d7c9000da1' AS l2_token, NULL, NULL -- DAI
-        UNION ALL SELECT '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2' AS l1_token, '0x4200000000000000000000000000000000000006' AS l2_token, NULL, NULL --WETH
+        UNION ALL SELECT 0xc011a73ee8576fb46f5e1c5751ca3b9fe0af2a6f AS l1_token, 0x8700daec35af8ff88c16bdf0418774cb3d7599b4 AS l2_token, NULL, NULL -- SNX
+        UNION ALL SELECT 0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee AS l1_token,0xdeaddeaddeaddeaddeaddeaddeaddeaddead0000 AS l2_token, NULL, NULL -- ETH
+        UNION ALL SELECT 0x6b175474e89094c44da98b954eedeac495271d0f AS l1_token,0xda10009cbd5d07dd0cecc66161fc93d7c9000da1 AS l2_token, NULL, NULL -- DAI
+        UNION ALL SELECT 0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2 AS l1_token, 0x4200000000000000000000000000000000000006 AS l2_token, NULL, NULL --WETH
 
     ) map
 

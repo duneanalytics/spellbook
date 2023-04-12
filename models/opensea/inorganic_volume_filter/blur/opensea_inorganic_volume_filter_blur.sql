@@ -195,7 +195,7 @@ circular_buyer as (
         trades t 
         WHERE t.project = 'blur'
         AND token_standard = 'erc721'
-        AND buyer <> LOWER('0x39da41747a83aee658334415666f3ef92dd0d541')
+        AND buyer <> LOWER(0x39da41747a83aee658334415666f3ef92dd0d541)
         GROUP BY 2, 3, 4 
         ) foo 
         WHERE cnt >= 2 
@@ -216,7 +216,7 @@ circular_seller as (
         trades t 
         WHERE t.project = 'blur'
         AND token_standard = 'erc721'
-        AND buyer <> LOWER('0x39da41747a83aee658334415666f3ef92dd0d541')
+        AND buyer <> LOWER(0x39da41747a83aee658334415666f3ef92dd0d541)
         GROUP BY 2, 3, 4 
         ) foo 
         WHERE cnt >= 2 

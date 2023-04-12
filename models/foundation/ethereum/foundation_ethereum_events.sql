@@ -27,7 +27,7 @@ WITH all_foundation_trades AS (
     , (f.creatorRev+f.totalFees+f.sellerRev)/POWER(10, 18) AS amount_original
     , f.creatorRev+f.totalFees+f.sellerRev AS amount_raw
     , 'ETH' currency_symbol
-    , '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2' AS currency_contract
+    , 0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2 AS currency_contract
     , f.contract_address AS project_contract_address
     , c.nftContract AS nft_contract_address
     , f.evt_tx_hash AS tx_hash
@@ -56,7 +56,7 @@ WITH all_foundation_trades AS (
     , (creatorRev+totalFees+sellerRev)/POWER(10, 18) AS amount_original
     , creatorRev+totalFees+sellerRev AS amount_raw
     , 'ETH' AS currency_symbol
-    , '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2' AS currency_contract
+    , 0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2 AS currency_contract
     , contract_address AS project_contract_address
     , nftContract AS nft_contract_address
     , evt_tx_hash AS tx_hash
@@ -84,7 +84,7 @@ WITH all_foundation_trades AS (
     , (creatorRev+totalFees+sellerRev)/POWER(10, 18) AS amount_original
     , creatorRev+totalFees+sellerRev AS amount_raw
     , 'ETH' AS currency_symbol
-    , '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2' AS currency_contract
+    , 0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2 AS currency_contract
     , contract_address AS project_contract_address
     , nftContract AS nft_contract_address
     , evt_tx_hash AS tx_hash
@@ -112,7 +112,7 @@ WITH all_foundation_trades AS (
     , (creatorFee+protocolFee+sellerRev)/POWER(10, 18) AS amount_original
     , creatorFee+protocolFee+sellerRev AS amount_raw
     , 'ETH' AS currency_symbol
-    , '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2' AS currency_contract
+    , 0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2 AS currency_contract
     , contract_address AS project_contract_address
     , nftContract AS nft_contract_address
     , evt_tx_hash AS tx_hash

@@ -16,7 +16,7 @@
 {% set blockchain = 'ethereum' %}
 {% set project = 'gitcoin' %}
 {% set dao_name = 'DAO: Gitcoin' %}
-{% set dao_address = '0xdbd27635a534a3d3169ef0498beb56fb9c937489' %}
+{% set dao_address = 0xdbd27635a534a3d3169ef0498beb56fb9c937489 %}
 
 WITH cte_sum_votes as 
 (SELECT sum(votes/1e18) as sum_votes, 

@@ -34,8 +34,8 @@ WITH dexs as
             ,evt_index
         FROM
             {{ source('woofi_bnb', 'WooPP_evt_WooSwap')}}
-        WHERE from NOT IN ('0xcef5be73ae943b77f9bc08859367d923c030a269' -- woorouterV2
-                          ,'0x114f84658c99aa6ea62e3160a87a16deaf7efe83') -- woorouterV1
+        WHERE from NOT IN (0xcef5be73ae943b77f9bc08859367d923c030a269 -- woorouterV2
+                          ,0x114f84658c99aa6ea62e3160a87a16deaf7efe83) -- woorouterV1
         
 
         {% if is_incremental() %}
@@ -111,22 +111,22 @@ SELECT
         dexs.amount_usd
         , (dexs.token_bought_amount_raw
             / power(10, (CASE dexs.token_bought_address
-                             WHEN '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee' THEN 18
+                             WHEN 0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee THEN 18
                              ELSE p_bought.decimals
                 END))
               )
             * (CASE dexs.token_bought_address
-                   WHEN '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee' THEN p_bnb.price
+                   WHEN 0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee THEN p_bnb.price
                    ELSE p_bought.price
                 END)
         , (dexs.token_sold_amount_raw
             / power(10, (CASE dexs.token_sold_address
-                             WHEN '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee' THEN 18
+                             WHEN 0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee THEN 18
                              ELSE p_sold.decimals
                 END))
               )
             * (CASE dexs.token_sold_address
-                   WHEN '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee' THEN p_bnb.price
+                   WHEN 0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee THEN p_bnb.price
                    ELSE p_sold.price
                 END)
     ) as amount_usd

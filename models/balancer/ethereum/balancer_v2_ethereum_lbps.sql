@@ -18,11 +18,11 @@
                                 source('balancer_v2_ethereum', 'LiquidityBootstrappingPool_evt_GradualWeightUpdateScheduled'),
                                 source('balancer_v2_ethereum', 'NoProtocolFeeLiquidityBootstrappingPool_evt_GradualWeightUpdateScheduled')
                                 ] %}
-{% set non_lbp_tokens = ('0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2',
-                        '0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48',
-                        '0x6b175474e89094c44da98b954eedeac495271d0f',
-                        '0x88acdd2a6425c3faae4bc9650fd7e27e0bebb7ab',
-                        '0x64aa3364f17a4d01c6f1751fd97c2bd3d7e7f1d5'
+{% set non_lbp_tokens = (0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2,
+                        0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48,
+                        0x6b175474e89094c44da98b954eedeac495271d0f,
+                        0x88acdd2a6425c3faae4bc9650fd7e27e0bebb7ab,
+                        0x64aa3364f17a4d01c6f1751fd97c2bd3d7e7f1d5
                         ) %} -- WETH, USDC, DAI, MIST & OHM
 
 WITH lbps_call_create AS (

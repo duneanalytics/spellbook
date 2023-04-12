@@ -38,7 +38,7 @@ from
                         {% if is_incremental() %}
                         and b.block_time >= date_trunc('day', now() - interval '1 week')
                         {% endif %}
-        where a.contract_address = lower('0xb47e3cd837dDF8e4c57F05d70Ab865de6e193BBB') -- cryptopunks contract
+        where a.contract_address = lower(0xb47e3cd837dDF8e4c57F05d70Ab865de6e193BBB) -- cryptopunks contract
                 and topic1 in   ( '0x58e5d5a525e3b40bc15abaa38b5882678db1ee68befd2f60bafe3a7fd06db9e3' -- PunkBought
                                 , '0x05af636b70da6819000c49f85b21fa82081c632069bb626f30932034099107d8' -- PunkTransfer
                                 )
@@ -49,7 +49,7 @@ from
 
         union all
 
-        select  '0x0000000000000000000000000000000000000000' as from
+        select  0x0000000000000000000000000000000000000000 as from
                 , to
                 , evt_block_time
                 , date_trunc('week',evt_block_time) as evt_block_time_week

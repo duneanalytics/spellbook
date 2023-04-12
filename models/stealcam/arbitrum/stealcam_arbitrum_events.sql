@@ -30,7 +30,7 @@ SELECT 'arbitrum' AS blockchain
 , sc.id AS token_id
 , 'erc721' AS token_standard
 , CAST(1 AS DECIMAL(38,0)) AS number_of_items
-, '0x82af49447d8a07e3bd95bd0d56f35241523fbab1' AS currency_contract
+, 0x82af49447d8a07e3bd95bd0d56f35241523fbab1 AS currency_contract
 , 'ETH' AS currency_symbol
 , CAST(sc.value AS DECIMAL(38,0)) AS amount_raw
 , CAST(sc.value/POWER(10, 18) AS DECIMAL(38,0)) AS amount_original
@@ -62,7 +62,7 @@ INNER JOIN {{ source('arbitrum', 'transactions') }} at ON at.block_number=sc.evt
     AND at.block_time >= '{{project_start_date}}'
     {% endif %}
 LEFT JOIN {{ ref('prices_usd_forward_fill') }} pu ON pu.blockchain = 'ethereum'
-    AND pu.contract_address='0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'
+    AND pu.contract_address=0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2
     AND pu.minute=date_trunc('minute', sc.evt_block_time)
     {% if is_incremental() %}
     AND pu.minute >= date_trunc("day", now() - interval '1 week')

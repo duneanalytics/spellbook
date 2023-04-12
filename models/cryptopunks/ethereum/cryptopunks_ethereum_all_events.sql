@@ -72,7 +72,7 @@ from
             , block_number
             , tx_hash
     from {{ ref('nft_trades') }}
-    where nft_contract_address = lower('0xb7f7f6c52f2e2fdb1963eab30438024864c313f6') -- wrapped punk contract
+    where nft_contract_address = lower(0xb7f7f6c52f2e2fdb1963eab30438024864c313f6) -- wrapped punk contract
         and blockchain = 'ethereum'
 
     union all
@@ -89,15 +89,15 @@ from
             , evt_block_number
             , evt_tx_hash
     from {{ source('rarible_v1_ethereum','ERC721Sale_v2_evt_Buy') }}
-    where token = lower('0xb7f7f6c52f2e2fdb1963eab30438024864c313f6')
+    where token = lower(0xb7f7f6c52f2e2fdb1963eab30438024864c313f6)
 
     union all 
 
     select  evt_block_time
             , punk_id 
-            , case  when from = '0x0000000000000000000000000000000000000000' then 'Claimed' 
-                    when from = '0xb7f7f6c52f2e2fdb1963eab30438024864c313f6' then 'Unwrap'
-                    when to = '0xb7f7f6c52f2e2fdb1963eab30438024864c313f6' then 'Wrap'
+            , case  when from = 0x0000000000000000000000000000000000000000 then 'Claimed' 
+                    when from = 0xb7f7f6c52f2e2fdb1963eab30438024864c313f6 then 'Unwrap'
+                    when to = 0xb7f7f6c52f2e2fdb1963eab30438024864c313f6 then 'Wrap'
                 else 'Transfer' end as event_type
             , cast(NULL as varchar(5)) as sale_type
             , from

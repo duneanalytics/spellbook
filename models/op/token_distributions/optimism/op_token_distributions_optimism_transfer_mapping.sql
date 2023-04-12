@@ -13,7 +13,7 @@
 }}
 
 
-{% set op_token_address = '0x4200000000000000000000000000000000000042' %}
+{% set op_token_address = 0x4200000000000000000000000000000000000042 %}
 {% set op_token_launch_date = '2022-05-31'  %}
 {% set foundation_label = 'OP Foundation'  %}
 {% set grants_descriptor = 'OP Foundation Grants'  %}
@@ -112,9 +112,9 @@ WITH all_labels AS (
                 
             WHERE tf.contract_address = '{{op_token_address}}'
             --exclude Wintermute funding tfers
-            AND NOT (tf.`from` = '0x2501c477d0a35545a387aa4a3eee4292a9a8b3f0'
-                    and tf.to IN ('0x4f3a120e72c76c22ae802d129f599bfdbc31cb81'
-                            ,'0x51d3a2f94e60cbecdce05ab41b61d7ce5240b8ff')
+            AND NOT (tf.`from` = 0x2501c477d0a35545a387aa4a3eee4292a9a8b3f0
+                    and tf.to IN (0x4f3a120e72c76c22ae802d129f599bfdbc31cb81
+                            ,0x51d3a2f94e60cbecdce05ab41b61d7ce5240b8ff)
                     )
             {% if is_incremental() %} 
             and tf.evt_block_time >= date_trunc('day', now() - interval '1 week')

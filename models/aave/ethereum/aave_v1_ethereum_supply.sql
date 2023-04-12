@@ -8,8 +8,8 @@
   )
 }}
 
-{% set aave_mock_address = '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee' %}
-{% set weth_address = '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2' %}
+{% set aave_mock_address = 0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee %}
+{% set weth_address = 0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2 %}
 
 SELECT 
       version,

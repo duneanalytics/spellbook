@@ -31,8 +31,8 @@ WITH trades AS (
           1 AS number_of_items,
           'erc721' AS token_standard,
           CASE
-               WHEN erc20Token in ('0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee', '0x0000000000000000000000000000000000001010')
-               THEN '0x0d500b1d8e8ef31e21c99d1db9a6444d3adf1270'
+               WHEN erc20Token in (0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee, 0x0000000000000000000000000000000000001010)
+               THEN 0x0d500b1d8e8ef31e21c99d1db9a6444d3adf1270
                ELSE erc20Token
           END AS currency_contract,
           erc20TokenAmount AS amount_raw,
@@ -62,8 +62,8 @@ WITH trades AS (
           erc1155FillAmount AS number_of_items,
           'erc1155' AS token_standard,
           CASE
-               WHEN erc20Token in ('0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee', '0x0000000000000000000000000000000000001010')
-               THEN '0x0d500b1d8e8ef31e21c99d1db9a6444d3adf1270'
+               WHEN erc20Token in (0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee, 0x0000000000000000000000000000000000001010)
+               THEN 0x0d500b1d8e8ef31e21c99d1db9a6444d3adf1270
                ELSE erc20Token
           END AS currency_contract,
           erc20FillAmount AS amount_raw,
@@ -92,7 +92,7 @@ trade_amount_detail as (
         {% if is_incremental() %}
         AND e.block_time >= date_trunc("day", now() - interval '1 week')
         {% endif %}
-    WHERE t.original_erc20_token IN ('0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee', '0x0000000000000000000000000000000000001010')
+    WHERE t.original_erc20_token IN (0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee, 0x0000000000000000000000000000000000001010)
         AND cast(e.value as double) > 0
         AND cardinality(trace_address) > 0 -- exclude the main call record
 
@@ -111,7 +111,7 @@ trade_amount_detail as (
         {% if is_incremental() %}
         AND e.evt_block_time >= date_trunc("day", now() - interval '1 week')
         {% endif %}
-    WHERE t.original_erc20_token NOT IN ('0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee', '0x0000000000000000000000000000000000001010')
+    WHERE t.original_erc20_token NOT IN (0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee, 0x0000000000000000000000000000000000001010)
 ),
 
 trade_amount_summary as (

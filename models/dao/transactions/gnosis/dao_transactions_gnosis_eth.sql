@@ -27,7 +27,7 @@ transactions as (
         SELECT 
             block_time, 
             tx_hash, 
-            LOWER('0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee') as token, 
+            LOWER(0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee) as token, 
             value as value, 
             to as dao_wallet_address, 
             'tx-in' as tx_type, 
@@ -52,7 +52,7 @@ transactions as (
         SELECT 
             block_time, 
             tx_hash, 
-            LOWER('0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee') as token, 
+            LOWER(0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee) as token, 
             value as value, 
             from as dao_wallet_address, 
             'tx_out' as tx_type, 
@@ -109,7 +109,7 @@ LEFT JOIN
 LEFT JOIN 
 {{ ref('dex_prices') }} dp 
     ON dp.hour = date_trunc('hour', t.block_time)
-    AND dp.contract_address = LOWER('0xe91d153e0b41518a2ce8dd3d7944fa863463a97d')
+    AND dp.contract_address = LOWER(0xe91d153e0b41518a2ce8dd3d7944fa863463a97d)
     AND dp.blockchain = 'gnosis'
     AND dp.hour >= '{{transactions_start_date}}'
     {% if is_incremental() %}

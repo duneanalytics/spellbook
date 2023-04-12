@@ -11,7 +11,7 @@
                                 \'["theachenyj"]\') }}')
 }}
 
-{%- set BNB_ERC20_ADDRESS = '0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c' %}
+{%- set BNB_ERC20_ADDRESS = 0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c %}
 
 WITH tff AS (
     SELECT call_block_time,
@@ -49,11 +49,11 @@ WITH tff AS (
                 get_json_object(inventory, '$.buyer')    as buyer,
                 get_json_object(inventory, '$.kind')     as kind,
                 get_json_object(inventory, '$.price')    as price,
-                CASE WHEN get_json_object(inventory, '$.currency') = '0x0000000000000000000000000000000000000000'
+                CASE WHEN get_json_object(inventory, '$.currency') = 0x0000000000000000000000000000000000000000
                   THEN '{{BNB_ERC20_ADDRESS}}'
                   ELSE get_json_object(inventory, '$.currency')
                 END as currency,
-                (get_json_object(inventory, '$.currency') = '0x0000000000000000000000000000000000000000') as native_bnb,
+                (get_json_object(inventory, '$.currency') = 0x0000000000000000000000000000000000000000) as native_bnb,
                 contract_address
          from {{ source('tofu_nft_bnb', 'MarketNG_evt_EvInventoryUpdate') }}
          where get_json_object(inventory, '$.status') = '1'

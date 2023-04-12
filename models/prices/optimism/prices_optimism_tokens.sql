@@ -90,7 +90,7 @@ FROM
     ("ubi-universal-basic-income", "optimism", "UBI", "0xbb586ed34974b15049a876fd5366a4c2d1203115", 18),
     ("krom-kromatikafinance", "optimism", "KROM", "0xf98dcd95217e15e05d8638da4c91125e59590b07", 18),
     ("knc-kyber-network", "optimism", "KNC", "0xa00E3A3511aAC35cA78530c85007AFCd31753819", 18),
-    ('dht-dhedge', 'optimism', 'DHT', '0xAF9fE3B5cCDAe78188B1F8b9a49Da7ae9510F151', 18),
+    ('dht-dhedge', 'optimism', 'DHT', 0xAF9fE3B5cCDAe78188B1F8b9a49Da7ae9510F151, 18),
     ("crv-curve-dao-token", "optimism", "CRV", "0x0994206dfe8de6ec6920ff4d779b0d950605fb53", 18),
     ("oath-oath", "optimism", "OATH", "0x39FdE572a18448F8139b7788099F0a0740f51205", 18),
     ("hop-hop-protocol", "optimism", "HOP", "0xc5102fE9359FD9a28f877a67E36B0F050d81a3CC", 18),

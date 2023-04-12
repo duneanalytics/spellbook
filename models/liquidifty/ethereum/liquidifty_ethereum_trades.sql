@@ -11,7 +11,7 @@
                                     \'["bizzyvinci"]\') }}'
 )}}
 
-{% set weth_address = '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2' %}
+{% set weth_address = 0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2 %}
 
 with v2 as (
     select
@@ -26,7 +26,7 @@ with v2 as (
         buyer,
         price as amount_raw,
         case
-            when currency = '0x0000000000000000000000000000000000000000' then '{{ weth_address }}'
+            when currency = 0x0000000000000000000000000000000000000000 then '{{ weth_address }}'
             else currency
         end as currency_contract,
         collection as nft_contract_address,
@@ -35,7 +35,7 @@ with v2 as (
         evt_block_number as block_number,
         evt_index as in_tx_id,
         case
-            when currency = '0x0000000000000000000000000000000000000000' then 'native'
+            when currency = 0x0000000000000000000000000000000000000000 then 'native'
             else 'erc20'
         end as currency_token_standard,
         '1' as orderType
@@ -57,7 +57,7 @@ stack as (
         buyer,
         price as amount_raw,
         case
-            when currency = '0x0000000000000000000000000000000000000000' then '{{ weth_address }}'
+            when currency = 0x0000000000000000000000000000000000000000 then '{{ weth_address }}'
             else currency
         end as currency_contract,
         collection as nft_contract_address,
@@ -66,7 +66,7 @@ stack as (
         evt_block_number as block_number,
         evt_index as in_tx_id,
         case
-            when currency = '0x0000000000000000000000000000000000000000' then 'native'
+            when currency = 0x0000000000000000000000000000000000000000 then 'native'
             else 'erc20'
         end as currency_token_standard,
         '1' as orderType

@@ -16,7 +16,7 @@
 {% set blockchain = 'ethereum' %}
 {% set project = 'aave' %}
 {% set dao_name = 'DAO: AAVE' %}
-{% set dao_address = '0xec568fffba86c094cf06b22134b23074dfe2252c' %}
+{% set dao_address = 0xec568fffba86c094cf06b22134b23074dfe2252c %}
 
 with cte_latest_block as (
 SELECT MAX(b.number) AS latest_block

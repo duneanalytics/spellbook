@@ -39,7 +39,7 @@ with nomad_bridge_domains(domain_id, domain_name, domain_type) as (
           ,toDomain as domain_id
           ,d.domain_name as domain_name
           ,fastLiquidityEnabled as fast_liquidity_enabled
-          ,'0x0000000000000000000000000000000000000000' as liquidity_provider
+          ,0x0000000000000000000000000000000000000000 as liquidity_provider
       from {{ source('nomad_ethereum','BridgeRouter_evt_Send') }} s
       inner join nomad_bridge_domains d on d.domain_id = s.toDomain
       left join {{ ref('tokens_erc20') }} e1 on e1.contract_address = s.token and e1.blockchain = 'ethereum'

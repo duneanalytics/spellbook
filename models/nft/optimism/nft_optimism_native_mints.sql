@@ -65,7 +65,7 @@ select
     , cast(0 as double) as royalty_fee_amount
     , cast(0 as double) as royalty_fee_amount_usd
     , cast(0 as double) as royalty_fee_percentage
-    , 'optimism' || '-' || coalesce(ec.namespace, 'Unknown') || '-Mint-' || coalesce(nft_mints.tx_hash, '-1') || '-' || coalesce(nft_mints.to, '-1') || '-' ||  coalesce(nft_mints.contract_address, '-1') || '-' || coalesce(nft_mints.token_id, '-1') || '-' || coalesce(nft_mints.amount, '-1') || '-'|| coalesce(erc20s.contract_address, '0x0000000000000000000000000000000000000000') || '-' || coalesce(nft_mints.evt_index, '-1') as unique_trade_id
+    , 'optimism' || '-' || coalesce(ec.namespace, 'Unknown') || '-Mint-' || coalesce(nft_mints.tx_hash, '-1') || '-' || coalesce(nft_mints.to, '-1') || '-' ||  coalesce(nft_mints.contract_address, '-1') || '-' || coalesce(nft_mints.token_id, '-1') || '-' || coalesce(nft_mints.amount, '-1') || '-'|| coalesce(erc20s.contract_address, 0x0000000000000000000000000000000000000000) || '-' || coalesce(nft_mints.evt_index, '-1') as unique_trade_id
     , cast(coalesce(sum(tr.value), sum(cast(erc20s.value as double)), 0)*(nft_mints.amount/nft_count.nfts_minted_in_tx) as decimal(38,0)) as amount_raw
     , coalesce(sum(tr.value_decimal), sum(cast(erc20s.value as double))/power(10, pu_erc20s.decimals))*(nft_mints.amount/nft_count.nfts_minted_in_tx) as amount_original
     , coalesce(pu_eth.price*sum(tr.value_decimal), pu_erc20s.price*sum(cast(erc20s.value as double))/power(10, pu_erc20s.decimals))*(nft_mints.amount/nft_count.nfts_minted_in_tx) as amount_usd
@@ -111,7 +111,7 @@ left join {{ ref('nft_optimism_aggregators') }} as agg
 left join nfts_per_tx as nft_count 
     on nft_count.tx_hash=nft_mints.tx_hash
 where 
-    nft_mints.from = '0x0000000000000000000000000000000000000000'
+    nft_mints.from = 0x0000000000000000000000000000000000000000
     {% if is_incremental() %}
     and nft_mints.block_time >= date_trunc("day", now() - interval '1 week')
     {% endif %}

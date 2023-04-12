@@ -27,7 +27,7 @@ WITH quo_evt AS (
            premiumNXM,
            scAdd,
            sumAssured,
-           '0xd7c49cee7e9188cca6ad8ff264c1da2e69d4cf3b' as token
+           0xd7c49cee7e9188cca6ad8ff264c1da2e69d4cf3b as token
     FROM
         {{ source('nexusmutual_ethereum', 'QuotationData_evt_CoverDetailsEvent') }}
     {% if not is_incremental() %}

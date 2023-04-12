@@ -34,7 +34,7 @@ WITH dexs as
             ,evt_index
         FROM
             {{ source('woofi_avalanche_c', 'WooPP_evt_WooSwap')}}
-        WHERE from <> '0x5aa6a4e96a9129562e2fc06660d07feddaaf7854' -- woorouter
+        WHERE from <> 0x5aa6a4e96a9129562e2fc06660d07feddaaf7854 -- woorouter
 
         {% if is_incremental() %}
         AND evt_block_time >= date_trunc("day", now() - interval '1 week')
@@ -88,22 +88,22 @@ SELECT
         dexs.amount_usd
         , (dexs.token_bought_amount_raw
             / power(10, (CASE dexs.token_bought_address
-                             WHEN '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee' THEN 18
+                             WHEN 0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee THEN 18
                              ELSE p_bought.decimals
                 END))
               )
             * (CASE dexs.token_bought_address
-                   WHEN '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee' THEN p_avx.price
+                   WHEN 0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee THEN p_avx.price
                    ELSE p_bought.price
                 END)
         , (dexs.token_sold_amount_raw
             / power(10, (CASE dexs.token_sold_address
-                             WHEN '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee' THEN 18
+                             WHEN 0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee THEN 18
                              ELSE p_sold.decimals
                 END))
               )
             * (CASE dexs.token_sold_address
-                   WHEN '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee' THEN p_avx.price
+                   WHEN 0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee THEN p_avx.price
                    ELSE p_sold.price
                 END)
     ) as amount_usd

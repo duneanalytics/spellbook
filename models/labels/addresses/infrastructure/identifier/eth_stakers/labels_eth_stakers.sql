@@ -32,7 +32,7 @@ WITH identified_stakers AS (
     FROM {{ source('ethereum', 'traces') }} et
     LEFT ANTI JOIN identified_stakers is
         ON et.from = is.address
-    WHERE et.to = '0x00000000219ab540356cbb839cbe05303d7705fa'
+    WHERE et.to = 0x00000000219ab540356cbb839cbe05303d7705fa
     AND et.success
     AND CAST(et.value AS double) > 0
     GROUP BY et.from

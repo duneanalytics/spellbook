@@ -13,15 +13,15 @@
 }}
 
 {%- set project_start_date = '2022-02-04' %}
-{%- set eth_erc20_addr = '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2' %}
-{%- set fee_management_addr = '0xd823c605807cc5e6bd6fc0d7e4eea50d3e2d66cd' %}
+{%- set eth_erc20_addr = 0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2 %}
+{%- set fee_management_addr = 0xd823c605807cc5e6bd6fc0d7e4eea50d3e2d66cd %}
 
 -- base sources
 WITH
 src_evt_profit as (
     SELECT
      *
-     , CASE WHEN currency='0x0000000000000000000000000000000000000000'
+     , CASE WHEN currency=0x0000000000000000000000000000000000000000
         THEN true ELSE false END as is_native_eth
     FROM {{ source('x2y2_ethereum','X2Y2_r1_evt_EvProfit') }}
     WHERE evt_block_time >= '{{project_start_date}}'
@@ -163,12 +163,12 @@ INNER JOIN src_eth_transactions et
       AND et.hash=prof.evt_tx_hash
 LEFT JOIN {{ ref('tokens_ethereum_nft') }} nft_token ON inv.nft_contract_address = nft_token.contract_address
 LEFT JOIN {{ ref('tokens_ethereum_erc20') }} currency_token ON currency_token.contract_address=prof.currency
-        OR (prof.is_native_eth AND currency_token.contract_address='0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2')
+        OR (prof.is_native_eth AND currency_token.contract_address=0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2)
 LEFT JOIN {{ ref('nft_ethereum_aggregators') }} agg ON agg.contract_address=et.to
 LEFT JOIN src_prices_usd pu
     ON pu.minute=date_trunc('minute', prof.evt_block_time)
     AND (pu.contract_address=prof.currency
-        OR (prof.is_native_eth AND pu.contract_address='0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'))
+        OR (prof.is_native_eth AND pu.contract_address=0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2))
 LEFT JOIN {{ ref('nft_ethereum_aggregators_markers') }} agg_m
         ON RIGHT(et.data, agg_m.hash_marker_size) = agg_m.hash_marker
 

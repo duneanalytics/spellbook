@@ -21,14 +21,14 @@ dao_tmp as (
         FROM 
         {{ ref('dao_addresses_ethereum') }}
         WHERE dao_wallet_address IS NOT NULL
-        AND dao_wallet_address NOT IN ('0x0000000000000000000000000000000000000001', '0x000000000000000000000000000000000000dead')
+        AND dao_wallet_address NOT IN (0x0000000000000000000000000000000000000001, 0x000000000000000000000000000000000000dead)
 ), 
 
 transactions as (
         SELECT 
             block_time, 
             tx_hash, 
-            LOWER('0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee') as token, 
+            LOWER(0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee) as token, 
             value as value, 
             to as dao_wallet_address, 
             'tx_in' as tx_type, 
@@ -53,7 +53,7 @@ transactions as (
         SELECT 
             block_time, 
             tx_hash, 
-            LOWER('0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee') as token, 
+            LOWER(0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee) as token, 
             value as value, 
             from as dao_wallet_address, 
             'tx_out' as tx_type,
@@ -110,7 +110,7 @@ LEFT JOIN
 LEFT JOIN 
 {{ ref('dex_prices') }} dp 
     ON dp.hour = date_trunc('hour', t.block_time)
-    AND dp.contract_address = LOWER('0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2')
+    AND dp.contract_address = LOWER(0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2)
     AND dp.blockchain = 'ethereum'
     AND dp.hour >= '{{transactions_start_date}}'
     {% if is_incremental() %}

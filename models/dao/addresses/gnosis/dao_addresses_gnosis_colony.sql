@@ -26,7 +26,7 @@ get_colony_wallets as ( -- getting colonies created through colony
         WHERE block_time >= date_trunc("day", now() - interval '1 week')
         {% endif %}
         AND topic1 = '0x1904953a6126b2f999ad2661494642bfc63346430965de35cdcd7b5d4e6787ae' -- colony added event that is emitted when a colony is created 
-        AND contract_address = '0x78163f593d1fa151b4b7cacd146586ad2b686294' -- colony factory contract address 
+        AND contract_address = 0x78163f593d1fa151b4b7cacd146586ad2b686294 -- colony factory contract address 
 )
 
 SELECT 

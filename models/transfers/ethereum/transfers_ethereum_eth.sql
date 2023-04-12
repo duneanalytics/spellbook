@@ -16,7 +16,7 @@ with eth_transfers as (
         r.from
         ,r.to
         --Using the ETH placeholder address to match with prices tables
-        ,lower('0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee') as contract_address
+        ,lower(0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee) as contract_address
         ,cast(r.value as double) AS value
         ,cast(r.value as double)/1e18 as value_decimal
         ,r.tx_hash

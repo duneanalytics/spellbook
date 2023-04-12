@@ -70,10 +70,10 @@ with source_ethereum_transactions as (
      where contract_address = '{{c_seaport_contract_address}}'
 )
 ,iv_platform_fee_wallet (wallet_address, wallet_name) as (
-    values   ('0x5b3256965e7c3cf26e11fcaf296dfc8807c01073','opensea')
-            ,('0x8de9c5a032463c561423387a9648c5c7bcc5bc90','opensea')
-            ,('0x34ba0f2379bf9b81d09f7259892e26a8b0885095','opensea')
-            ,('0x0000a26b00c1f0df003000390027140000faa719','opensea')
+    values   (0x5b3256965e7c3cf26e11fcaf296dfc8807c01073,'opensea')
+            ,(0x8de9c5a032463c561423387a9648c5c7bcc5bc90,'opensea')
+            ,(0x34ba0f2379bf9b81d09f7259892e26a8b0885095,'opensea')
+            ,(0x0000a26b00c1f0df003000390027140000faa719,'opensea')
 )
 ,iv_offer_consideration as (
     select evt_block_time as block_time
@@ -531,9 +531,9 @@ select
         ,sub_type
         ,'seaport-' || CAST(tx_hash AS VARCHAR(100)) || '-' || cast(evt_index as VARCHAR(10)) || '-' || CAST(nft_contract_address AS VARCHAR(100)) || '-' || cast(nft_token_id as VARCHAR(100)) || '-' || cast(sub_idx as VARCHAR(10)) as unique_trade_id
   from   iv_trades
- where CAST(zone AS VARCHAR(100)) in ('0xf397619df7bfd4d1657ea9bdd9df7ff888731a11'
-                                    ,'0x9b814233894cd227f561b78cc65891aa55c62ad2'
-                                    ,'0x004c00500000ad104d7dbd00e3ae0a5c00560c00'
-                                    ,'0x110b2b128a9ed1be5ef3232d8e4e41640df5c2cd'
-                                    ,'0x000000e7ec00e7b300774b00001314b8610022b8' -- newly added on seaport v1.4
+ where CAST(zone AS VARCHAR(100)) in (0xf397619df7bfd4d1657ea9bdd9df7ff888731a11
+                                    ,0x9b814233894cd227f561b78cc65891aa55c62ad2
+                                    ,0x004c00500000ad104d7dbd00e3ae0a5c00560c00
+                                    ,0x110b2b128a9ed1be5ef3232d8e4e41640df5c2cd
+                                    ,0x000000e7ec00e7b300774b00001314b8610022b8 -- newly added on seaport v1.4
                                     )
