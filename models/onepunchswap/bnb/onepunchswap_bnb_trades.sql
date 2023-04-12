@@ -14,13 +14,13 @@
 }}
 
 {% set project_start_date = '2023-01-01' %}
-{% set hashflow_bnb_evt_trade_tables = [
+{% set onepunchswap_bnb_evt_trade_tables = [
     source('onepunch_normal_bnb', 'DexLiquidityProvider_evt_QuoteAccepted')
     , source('onepunch_quick_bnb', 'QuickLiquidityProvider_evt_QuoteAccepted')
 ] %}
 
 WITH dexs AS(
-  {% for evt_trade_table in hashflow_bnb_evt_trade_tables %}
+  {% for evt_trade_table in onepunchswap_bnb_evt_trade_tables %}
     SELECT
         evt_block_time                AS block_time,
         user                          AS taker,
