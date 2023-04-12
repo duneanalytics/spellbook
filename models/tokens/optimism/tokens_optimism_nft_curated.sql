@@ -269,5 +269,6 @@ FROM
 ,('0x1af7bBb04793E6eb5F7eCB7A0f5B2f697d0398C4', 'Pixel Pooly')
 ,('0x8dbc32a6a29c1398184256a83553d038ae74db62', 'CyberNerds')
 ,('0xd312c1e723961164916ef2ebb767e53fbdff4094', 'ApeTown WTF')
+,('0xC66A1EE3be858E7041DdA9bd1Ea2fbd3ce07F63e', 'Ganland GALXE')
 
 ) as temp_table (contract_address, name)
