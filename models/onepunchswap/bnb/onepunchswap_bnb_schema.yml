@@ -8,7 +8,7 @@ models:
       project: onepunchswap
       contributors: sunopar
     config:
-      tags: ['bnb','onepunchswap','trades','dex', 'onepunchteam']
+      tags: ['bnb','onepunchswap','trades','dex', 'sunopar']
     description: >
         OnePunchSwap trades on BNB chain
     tests:
