@@ -253,6 +253,8 @@ models:
       +schema: opensea
       ethereum:
         +schema: opensea_ethereum
+      polygon:
+        +schema: opensea_polygon
       solana:
         +schema: opensea_solana
       optimism:
@@ -763,6 +765,8 @@ models:
         +schema: kyberswap_avalanche_c
       optimism:
         +schema: kyberswap_optimism
+      ethereum:
+        +schema: kyberswap_ethereum
 
     hubble_exchange:
       +schema: hubble_exchange
@@ -827,17 +831,16 @@ models:
         +schema: zeroex_ethereum
       optimism:
         +schema: zeroex_optimism
-
       polygon:
         +schema: zeroex_polygon
-
       avalanche_c:
         +schema: zeroex_avalanche_c
       fantom:
         +schema: zeroex_fantom
-
       arbitrum:
         +schema: zeroex_arbitrum
+      bnb:
+        +schema: zeroex_bnb
 
 
     wombat:
@@ -988,6 +991,11 @@ models:
       +schema: rarible
       polygon:
         +schema: rarible_polygon
+
+    dydx:
+      +schema: dydx
+      ethereum:
+        +schema: dydx_ethereum
 
     optimism_attestationstation:
       +schema: optimism_attestationstation
