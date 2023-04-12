@@ -1,0 +1,2 @@
+Rule: wrap RIGHT in quotes
+Example: right(data, 10) -> "right"(data, 10)

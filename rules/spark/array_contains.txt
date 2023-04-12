@@ -1,4 +1,3 @@
-Error: "Function 'array_contains' not registered"
 Rule: replace array_contains(array, value) with contains(array, value) or contains_sequence(array, array[values])
 Example: AND NOT ARRAY_CONTAINS(account_keys, "Vote111111111111111111111111111111111111111") -> AND NOT CONTAINS (account_keys, 'Vote111111111111111111111111111111111111111')
 Example:  WHERE array_contains(account_keys, 'ATV2GHq2eCaHVbTrbMCP8MWATWnH8BzmsNMq5rXZ9DNC') -> WHERE CONTAINS (account_keys, 'ATV2GHq2eCaHVbTrbMCP8MWATWnH8BzmsNMq5rXZ9DNC')

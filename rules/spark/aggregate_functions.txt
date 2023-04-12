@@ -1,4 +1,3 @@
-Error: "Function 'collect_list' not registered", "Function 'collect_set' not registered"
 Rule: Replace the aggregate function collect_list or collect_set with the array_agg.
 Example: collect_list(col) -> array_agg(col)
 Example: collect_set(col) -> array_agg(col)

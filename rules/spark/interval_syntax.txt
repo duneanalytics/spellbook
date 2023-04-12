@@ -1,3 +1,2 @@
-Error: "Io.trino.spi.TrinoException: line 3:35: Unknown resolvedType: Interval"
 Rule: Replace interval syntax that only quotes the number in the interval
 Example: Interval '1 day' -> Interval '1' day
