@@ -83,9 +83,96 @@ models:
     config:
       tags: ['trove', 'treasure', 'nft', 'trades']
     description: "NFT trades on trove on arbitrum blockchain"
+    columns:
+      - *blockchain
+      - *project
+      - *version
+      - *block_time
+      - *token_id
+      - *collection
+      - *amount_usd
+      - *token_standard
+      - *trade_type
+      - *number_of_items
+      - *trade_category
+      - *evt_type
+      - *seller
+      - *buyer
+      - *amount_original
+      - *amount_raw
+      - *currency_symbol
+      - *currency_contract
+      - *nft_contract_address
+      - *project_contract_address
+      - *aggregator_name
+      - *aggregator_address
+      - *tx_hash
+      - *block_number
+      - *tx_from
+      - *tx_to
+      - *unique_trade_id
+
+  - name: trove_v2_arbitrum_trades
+    meta:
+      blockchain: arbitrum
+      sector: nft
+      project: trove
+      contributors: bizzyvinci
+    config:
+      tags: ['trove', 'treasure', 'nft', 'trades']
+    description: "NFT trades on trove v2 on arbitrum blockchain"
     tests:
       - check_seed:
-          seed_file: ref('trove_arbitrum_nft_trades_samples')
+          seed_file: ref('trove_v2_arbitrum_nft_trades_samples')
+          match_columns:
+            - block_number
+            - tx_hash
+            - token_id
+          check_columns:
+            - amount_original
+            - buyer
+            - seller
+    columns:
+      - *blockchain
+      - *project
+      - *version
+      - *block_time
+      - *token_id
+      - *collection
+      - *amount_usd
+      - *token_standard
+      - *trade_type
+      - *number_of_items
+      - *trade_category
+      - *evt_type
+      - *seller
+      - *buyer
+      - *amount_original
+      - *amount_raw
+      - *currency_symbol
+      - *currency_contract
+      - *nft_contract_address
+      - *project_contract_address
+      - *aggregator_name
+      - *aggregator_address
+      - *tx_hash
+      - *block_number
+      - *tx_from
+      - *tx_to
+      - *unique_trade_id
+
+  - name: trove_v1_arbitrum_trades
+    meta:
+      blockchain: arbitrum
+      sector: nft
+      project: trove
+      contributors: bizzyvinci
+    config:
+      tags: ['trove', 'treasure', 'nft', 'trades']
+    description: "NFT trades on trove v1 on arbitrum blockchain"
+    tests:
+      - check_seed:
+          seed_file: ref('trove_v1_arbitrum_nft_trades_samples')
           match_columns:
             - block_number
             - tx_hash
