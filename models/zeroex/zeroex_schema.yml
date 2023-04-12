@@ -173,7 +173,7 @@ models:
             - tx_hash
             - evt_index
       - check_seed:
-          seed_file: ref('zeroex_api_fills_dex_agg_sample')
+          seed_file: ref('zeroex_trades_sample')
           match_columns:
             - tx_hash
             - evt_index
