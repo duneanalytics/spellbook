@@ -431,6 +431,7 @@ FROM (
       ,('0xe00691e65Cd4400c84a174a4C56f20bA43dffD89', 'Ethos Reserve')
       ,('0x4bb4c1b0745ef7b4642feeccd0740dec417ca0a0', 'Sushi')
       ,('0x15051107651f3420144d3a2412d49402c2fac3c0', 'zkBridge')
+      ,('0x2313f80d53c649c7b2c9c4d101b796f34cbe80f3', 'Wido')
 
   ) as temp_table (creator_address, contract_project)
 
