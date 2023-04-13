@@ -26,7 +26,16 @@ SELECT *
 FROM (
     {% for infrastructure_model in infrastructure_models %}
     SELECT
-        *
+        blockchain
+        , address
+        , name
+        , category
+        , contributor
+        , source
+        , created_at
+        , updated_at
+        , model_name
+        , label_type
     FROM {{ infrastructure_model }}
     {% if not loop.last %}
     UNION ALL
