@@ -466,6 +466,11 @@ models:
       fantom:
         +schema: equalizer_exchange_fantom
 
+    glacier_exchange:
+      +schema: glacier_exchange
+      fantom:
+        +schema: glacier_exchange_avalanche_c
+
     safe:
       +schema: safe
       ethereum:
