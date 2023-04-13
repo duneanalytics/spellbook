@@ -1,4 +1,4 @@
- {{
+{{
   config(
     alias='erc20_bridged_mapping'
     , materialized = 'incremental'
@@ -23,38 +23,39 @@ SELECT l1_token, l2_token
         ORDER BY COALESCE(et.decimals, map.decimals) ASC, COALESCE(map.symbol, et.symbol) DESC NULLS LAST) AS rnk
 FROM (
 
-        SELECT CAST(_l1Token AS varchar(42)) AS l1_token, CAST(_l2Token AS varchar(42)) AS l2_token, NULL AS symbol, NULL AS decimals
-            FROM {{source( 'optimism_ethereum', 'L1StandardBridge_evt_ERC20DepositInitiated' ) }}
-        {% if is_incremental() %}
-        WHERE evt_block_time >= date_trunc("day", now() - interval '1 week')
-        {% endif %}   
-        GROUP BY 1,2
-        
-        UNION ALL
-        SELECT CAST(_l1Token AS varchar(42)) AS l1_token, CAST(_l2Token AS varchar(42)) AS l2_token, NULL AS symbol, NULL AS decimals
-            FROM {{source( 'optimism_ethereum', 'OVM_L1StandardBridge_evt_ERC20DepositInitiated' ) }}
-        {% if is_incremental() %}
-        WHERE evt_block_time >= date_trunc("day", now() - interval '1 week')
-        {% endif %}   
-        GROUP BY 1,2
+SELECT _l1Token AS l1_token, _l2Token AS l2_token, NULL AS symbol, NULL AS decimals
+FROM {{source( 'optimism_ethereum', 'L1StandardBridge_evt_ERC20DepositInitiated' ) }}
+{% if is_incremental() %}
+WHERE evt_block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
+{% endif %}
+GROUP BY 1,2
 
-        UNION ALL
-        SELECT CAST(l1_token AS varchar(42)), CAST(l2_token AS varchar(42)), symbol, decimals
-            FROM {{ ref('ovm_optimism_l2_token_factory') }}
-        {% if is_incremental() %}
-        WHERE call_block_time >= date_trunc("day", now() - interval '1 week')
-        {% endif %}   
-        GROUP BY 1,2,3,4
+UNION ALL
+SELECT _l1Token AS l1_token, _l2Token AS l2_token, NULL AS symbol, NULL AS decimals
+FROM {{source( 'optimism_ethereum', 'OVM_L1StandardBridge_evt_ERC20DepositInitiated' ) }}
+{% if is_incremental() %}
+WHERE evt_block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
+{% endif %}
+GROUP BY 1,2
 
-        -- Manual adds
+UNION ALL
+SELECT l1_token, l2_token, symbol, decimals
+FROM {{ ref('ovm_optimism_l2_token_factory') }}
+{% if is_incremental() %}
+WHERE call_block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
+{% endif %}
+GROUP BY 1,2,3,4
+
+-- Manual adds
         UNION ALL SELECT 0xc011a73ee8576fb46f5e1c5751ca3b9fe0af2a6f AS l1_token, 0x8700daec35af8ff88c16bdf0418774cb3d7599b4 AS l2_token, NULL, NULL -- SNX
         UNION ALL SELECT 0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee AS l1_token,0xdeaddeaddeaddeaddeaddeaddeaddeaddead0000 AS l2_token, NULL, NULL -- ETH
         UNION ALL SELECT 0x6b175474e89094c44da98b954eedeac495271d0f AS l1_token,0xda10009cbd5d07dd0cecc66161fc93d7c9000da1 AS l2_token, NULL, NULL -- DAI
         UNION ALL SELECT 0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2 AS l1_token, 0x4200000000000000000000000000000000000006 AS l2_token, NULL, NULL --WETH
 
-    ) map
+) map
 
 LEFT JOIN {{ ref('tokens_ethereum_erc20') }} et
+--    ON et.contract_address = cast(map.l1_token as varbinary)
     ON et.contract_address = map.l1_token
-) fin 
-WHERE rnk =1
+) fin
+WHERE rnk = 1

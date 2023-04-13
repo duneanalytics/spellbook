@@ -10,12 +10,12 @@
   -- na: This is a placeholder token that does not have a price
 
 WITH raw_token_list AS (
- SELECT 
- LOWER(contract_address) AS contract_address
+ SELECT
+ contract_address
       , symbol
       , decimals
       , token_type
-    FROM (VALUES 
+    FROM (VALUES
      (0x4200000000000000000000000000000000000006, 'WETH', 18, 'underlying')
     ,(0xda10009cbd5d07dd0cecc66161fc93d7c9000da1, 'DAI', 18, 'underlying')
     ,(0x68f180fcce6836688e9084f035309e29bf0a2095, 'WBTC', 8, 'underlying')
@@ -287,7 +287,7 @@ WITH raw_token_list AS (
     ,(0x74ccbe53F77b08632ce0CB91D3A545bF6B8E0979, 'fBOMB', 18, 'underlying')
     ,(0x9C9e5fD8bbc25984B178FdCE6117Defa39d2db39, 'BUSD', 18, 'underlying')
     ,(0xb12a1be740b99d845af98098965af761be6bd7fe, 'CUSDCLP', 18, 'receipt')
-    ,(0x3c12765d3cfac132de161bc6083c886b2cd94934, 'CWETHLP', 18, 'receipt') 
+    ,(0x3c12765d3cfac132de161bc6083c886b2cd94934, 'CWETHLP', 18, 'receipt')
     ,(0x6806411765Af15Bddd26f8f544A34cC40cb9838B, 'frxETH', 18, 'underlying')
     ,(0x484c2D6e3cDd945a8B2DF735e079178C1036578c, 'sfrxETH', 18, 'receipt')
     ,(0x340fE1D898ECCAad394e2ba0fC1F93d27c7b717A, 'wUSDR', 9, 'underlying')
@@ -308,7 +308,7 @@ SELECT contract_address, symbol, MIN(decimals) AS decimals, token_type, token_ma
 FROM (
 
     SELECT
-    LOWER(l2_token) AS contract_address, l1_symbol AS symbol, l1_decimals as decimals
+    l2_token AS contract_address, l1_symbol AS symbol, l1_decimals as decimals
     , 'underlying' as token_type, 'l2 bridge mapping' AS token_mapping_source
     FROM {{ ref('tokens_optimism_erc20_bridged_mapping') }}
     WHERE l1_symbol IS NOT NULL
@@ -320,7 +320,7 @@ FROM (
     -- , 'receipt' as token_type, 'aave factory' AS token_mapping_source
     -- FROM {{ ('aave_v3_tokens') }} -- to be refd
     --   WHERE blockchain = 'optimism'
-    
+
     -- UNION ALL
 
     -- SELECT
@@ -333,7 +333,7 @@ FROM (
   GROUP BY contract_address, symbol, token_type, token_mapping_source --get uniques & handle if L2 token factory gets decimals wrong
 )
 
-SELECT LOWER(contract_address) AS contract_address
+SELECT contract_address
       , symbol
       , decimals
       , token_type
@@ -348,6 +348,6 @@ SELECT LOWER(contract_address) AS contract_address
         FROM raw_token_list
       UNION ALL
       SELECT contract_address, symbol, decimals, token_type, token_mapping_source
-        FROM generated_tokens_list  
+        FROM generated_tokens_list
         WHERE contract_address NOT IN (SELECT contract_address FROM raw_token_list) -- do not duplicate if manually mapped
     ) a

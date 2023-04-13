@@ -46,7 +46,7 @@ WITH
             WHERE call_success = true
             {% if is_incremental() %}
             -- this filter will only be applied on an incremental run. We only want to update with new swaps.
-            AND call_block_time >= date_trunc("day", now() - interval '1 week')
+            AND call_block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
             {% endif %}
 
             UNION ALL
@@ -65,7 +65,7 @@ WITH
             WHERE call_success = true
             {% if is_incremental() %}
             -- this filter will only be applied on an incremental run. We only want to update with new swaps.
-            AND call_block_time >= date_trunc("day", now() - interval '1 week')
+            AND call_block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
             {% endif %}
 
             UNION ALL
@@ -84,7 +84,7 @@ WITH
             WHERE call_success = true
             {% if is_incremental() %}
             -- this filter will only be applied on an incremental run. We only want to update with new swaps.
-            AND call_block_time >= date_trunc("day", now() - interval '1 week')
+            AND call_block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
             {% endif %}
         ) s
     )
@@ -99,7 +99,7 @@ WITH
         ON tr.success and s.call_block_number = tr.block_number and s.call_tx_hash = tr.tx_hash and s.call_trace_address = tr.trace_address
         {% if is_incremental() %}
         -- this filter will only be applied on an incremental run. We only want to update with new swaps.
-        AND tr.block_time >= date_trunc("day", now() - interval '1 week')
+        AND tr.block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
         {% endif %}
         {% if not is_incremental() %}
         AND tr.block_time >= '2022-4-1'
@@ -228,7 +228,7 @@ WITH
                 OR cardinality(call_trace_address) = 0 -- In this case the swap function was called directly, all traces are thus subtraces of that call (like 0x34a52a94fce15c090cc16adbd6824948c731ecb19a39350633590a9cd163658b).
                 )
             {% if is_incremental() %}
-            AND tr.block_time >= date_trunc("day", now() - interval '1 week')
+            AND tr.block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
             {% endif %}
             {% if not is_incremental() %}
             AND tr.block_time >= '2022-4-1'
@@ -302,7 +302,7 @@ WITH
         INNER JOIN {{ source('ethereum', 'transactions') }} tx
             ON tx.block_number=sc.block_number and tx.hash=sc.tx_hash
             {% if is_incremental() %}
-            AND tx.block_time >= date_trunc("day", now() - interval '1 week')
+            AND tx.block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
             {% endif %}
             {% if not is_incremental() %}
             AND tx.block_time >= '2022-4-1'
@@ -311,7 +311,7 @@ WITH
             AND date_trunc('minute', pu.minute)=date_trunc('minute', sc.block_time)
             AND symbol = 'WETH'
             {% if is_incremental() %}
-            AND pu.minute >= date_trunc("day", now() - interval '1 week')
+            AND pu.minute >= date_add('week', -1, CURRENT_TIMESTAMP(6))
             {% endif %}
             {% if not is_incremental() %}
             AND pu.minute >= '2022-4-1'

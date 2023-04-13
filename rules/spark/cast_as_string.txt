@@ -1,2 +1,2 @@
-Rule: do not string cast
+Rule: remove string cast
 Example: cast(address as string) ->	address

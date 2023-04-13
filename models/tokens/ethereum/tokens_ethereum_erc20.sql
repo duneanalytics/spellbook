@@ -1,6 +1,6 @@
 {{ config( alias='erc20', tags=['static'])}}
 
-SELECT LOWER(contract_address) as contract_address, trim(symbol) as symbol, decimals
+SELECT contract_address, trim(symbol) as symbol, decimals
 FROM (VALUES
         (0x00000000000045166c45af0fc6e4cf31d9e14b9a, 'BID', 18),
         (0x0000000000004946c0e9f43f4dee607b0ef1fa1c, 'CHI', 0),

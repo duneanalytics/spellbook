@@ -30,7 +30,7 @@ modify_margin_v5 as (
             AND mm.evt_tx_hash = am.call_tx_hash
             AND am.call_success = true 
             {% if is_incremental() %}
-            AND am.call_block_time >= date_trunc("day", now() - interval '1 week')
+            AND am.call_block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
             {% endif %}
         LEFT JOIN 
         {{ source('tigristrade_polygon', 'TradingV5_call_removeMargin') }} rm 
@@ -38,10 +38,10 @@ modify_margin_v5 as (
             AND mm.evt_tx_hash = rm.call_tx_hash
             AND rm.call_success = true 
             {% if is_incremental() %}
-            AND rm.call_block_time >= date_trunc("day", now() - interval '1 week')
+            AND rm.call_block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
             {% endif %}
         {% if is_incremental() %}
-        WHERE mm.evt_block_time >= date_trunc("day", now() - interval '1 week')
+        WHERE mm.evt_block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
         {% endif %}
 ),
 
@@ -65,7 +65,7 @@ modify_margin_v6 as (
             AND mm.evt_tx_hash = am.call_tx_hash
             AND am.call_success = true 
             {% if is_incremental() %}
-            AND am.call_block_time >= date_trunc("day", now() - interval '1 week')
+            AND am.call_block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
             {% endif %}
         LEFT JOIN 
         {{ source('tigristrade_polygon', 'TradingV6_call_removeMargin') }} rm 
@@ -73,10 +73,10 @@ modify_margin_v6 as (
             AND mm.evt_tx_hash = rm.call_tx_hash
             AND rm.call_success = true 
             {% if is_incremental() %}
-            AND rm.call_block_time >= date_trunc("day", now() - interval '1 week')
+            AND rm.call_block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
             {% endif %}
         {% if is_incremental() %}
-        WHERE mm.evt_block_time >= date_trunc("day", now() - interval '1 week')
+        WHERE mm.evt_block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
         {% endif %}
 ),
 
@@ -100,7 +100,7 @@ modify_margin_v7 as (
             AND mm.evt_tx_hash = am.call_tx_hash
             AND am.call_success = true 
             {% if is_incremental() %}
-            AND am.call_block_time >= date_trunc("day", now() - interval '1 week')
+            AND am.call_block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
             {% endif %}
         LEFT JOIN 
         {{ source('tigristrade_polygon', 'TradingV7_call_removeMargin') }} rm 
@@ -108,10 +108,10 @@ modify_margin_v7 as (
             AND mm.evt_tx_hash = rm.call_tx_hash
             AND rm.call_success = true 
             {% if is_incremental() %}
-            AND rm.call_block_time >= date_trunc("day", now() - interval '1 week')
+            AND rm.call_block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
             {% endif %}
         {% if is_incremental() %}
-        WHERE mm.evt_block_time >= date_trunc("day", now() - interval '1 week')
+        WHERE mm.evt_block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
         {% endif %}
 ),
 
@@ -139,7 +139,7 @@ modify_margin_v8 as (
             AND mm.evt_tx_hash = am.call_tx_hash
             AND am.call_success = true 
             {% if is_incremental() %}
-            AND am.call_block_time >= date_trunc("day", now() - interval '1 week')
+            AND am.call_block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
             {% endif %}
         LEFT JOIN 
         {{ source('tigristrade_polygon', 'TradingV8_call_removeMargin') }} rm 
@@ -147,10 +147,10 @@ modify_margin_v8 as (
             AND mm.evt_tx_hash = rm.call_tx_hash
             AND rm.call_success = true 
             {% if is_incremental() %}
-            AND rm.call_block_time >= date_trunc("day", now() - interval '1 week')
+            AND rm.call_block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
             {% endif %}
         {% if is_incremental() %}
-        WHERE mm.evt_block_time >= date_trunc("day", now() - interval '1 week')
+        WHERE mm.evt_block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
         {% endif %}
         ) t 
         WHERE t.evt_tx_hash NOT IN ('0x561cde89720f8af596bf8958dd96339d8b3923094d6d27dd8bf14f5326c9ae25', '0x17e49a19c4feaf014bf485ee2277bfa09375bde9931da9a95222de7a1e704d70', '0x146e22e33c8218ac8c70502b292bbc6d9334983135a1e70ffe0125784bfdcc91')

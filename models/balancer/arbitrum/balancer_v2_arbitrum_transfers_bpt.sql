@@ -23,7 +23,7 @@ WITH registered_pools AS (
     FROM
       {{ source('balancer_v2_arbitrum', 'Vault_evt_PoolRegistered') }}
     {% if is_incremental() %}
-    WHERE evt_block_time >= DATE_TRUNC('day', NOW() - interval '1 week')
+    WHERE evt_block_time >= DATE_TRUNC('day', NOW() - interval '7 day')
     {% endif %}
   )
 
@@ -45,5 +45,5 @@ SELECT DISTINCT * FROM (
         AND logs.block_time >= '{{ project_start_date }}'
         {% endif %}
         {% if is_incremental() %}
-        AND logs.block_time >= DATE_TRUNC('day', NOW() - interval '1 week')
+        AND logs.block_time >= DATE_TRUNC('day', NOW() - interval '7 day')
         {% endif %} ) transfers

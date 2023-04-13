@@ -44,7 +44,7 @@ FROM {{ ref('sudoswap_ethereum_events') }}
     WHERE block_date >= '{{project_start_date}}'
     {% endif %}
     {% if is_incremental() %}
-    WHERE block_date >= date_trunc("day", now() - interval '1 week')
+    WHERE block_date >= date_add('week', -1, CURRENT_TIMESTAMP(6))
     {% endif %}
 GROUP BY 1,2
 ;

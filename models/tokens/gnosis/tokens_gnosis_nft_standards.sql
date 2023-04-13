@@ -12,6 +12,6 @@
 , max_by(t.token_standard, t.block_time) AS standard
 FROM {{ ref('nft_gnosis_transfers') }} t
     {% if is_incremental() %}
-       WHERE t.block_time >= date_trunc("day", now() - interval '1 week')
+       WHERE t.block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
     {% endif %}
 GROUP BY 1

@@ -48,7 +48,7 @@ WITH oneinch_events AS
         {{ source('oneinch_v2_ethereum', 'OneInchExchange_evt_Swapped') }}
     {% if is_incremental() %}
     WHERE
-        evt_block_time >= date_trunc("day", now() - interval '1 week')
+        evt_block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
     {% else %}
     WHERE
         evt_block_time >= '{{project_start_date}}'
@@ -158,7 +158,7 @@ INNER JOIN {{ source('ethereum', 'transactions') }} as tx
     ON src.tx_hash = tx.hash
     AND src.block_number = tx.block_number
     {% if is_incremental() %}
-    AND tx.block_time >= date_trunc("day", now() - interval '1 week')
+    AND tx.block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
     {% else %}
     AND tx.block_time >= '{{project_start_date}}'
     {% endif %}
@@ -173,7 +173,7 @@ LEFT JOIN {{ source('prices', 'usd') }} as prices_bought
     AND prices_bought.contract_address = src.token_bought_address
     AND prices_bought.blockchain = '{{blockchain}}'
     {% if is_incremental() %}
-    AND prices_bought.minute >= date_trunc("day", now() - interval '1 week')
+    AND prices_bought.minute >= date_add('week', -1, CURRENT_TIMESTAMP(6))
     {% else %}
     AND prices_bought.minute >= '{{project_start_date}}'
     {% endif %}
@@ -182,7 +182,7 @@ LEFT JOIN {{ source('prices', 'usd') }} as prices_sold
     AND prices_sold.contract_address = src.token_sold_address
     AND prices_sold.blockchain = '{{blockchain}}'
     {% if is_incremental() %}
-    AND prices_sold.minute >= date_trunc("day", now() - interval '1 week')
+    AND prices_sold.minute >= date_add('week', -1, CURRENT_TIMESTAMP(6))
     {% else %}
     AND prices_sold.minute >= '{{project_start_date}}'
     {% endif %}
@@ -191,7 +191,7 @@ LEFT JOIN {{ source('prices', 'usd') }} as prices_eth
     AND prices_eth.blockchain is null
     AND prices_eth.symbol = '{{blockchain_symbol}}'
     {% if is_incremental() %}
-    AND prices_eth.minute >= date_trunc("day", now() - interval '1 week')
+    AND prices_eth.minute >= date_add('week', -1, CURRENT_TIMESTAMP(6))
     {% else %}
     AND prices_eth.minute >= '{{project_start_date}}'
     {% endif %}

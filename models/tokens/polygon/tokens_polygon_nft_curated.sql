@@ -1,7 +1,7 @@
 {{ config(alias='nft_curated', tags=['static']) }}
 
 SELECT
-  LOWER(contract_address) AS contract_address, name, '' as symbol
+  contract_address, name, '' as symbol
 FROM
   (VALUES
  (0xdb46d1dc155634fbc732f92e853b10b288ad5a1d,	'Lens Protocol Profiles')

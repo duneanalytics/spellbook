@@ -1,6 +1,6 @@
 {{ config( alias='nft_curated', tags=['static']) }}
 
-SELECT LOWER(contract_address) AS contract_address, name, symbol
+SELECT contract_address, name, symbol
 FROM (VALUES
         (0x08804C13D21Da41D2F1D6334B80F3241Ca72D2b7, 'ARB ID Transferable', 'ARBID'),
         (0x41a10e0b2C8068ad99919B795468769e46709384, 'Trader Joe`s Arbitrum Adventure', 'Arbitrum Adventure'),

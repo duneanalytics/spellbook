@@ -30,7 +30,7 @@ with tff_raw as (
     where 
         call_success = true 
         {% if is_incremental() %}
-        and call_block_time >= date_trunc("day", now() - interval '1 week')
+        and call_block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
         {% endif %}
 )
 ,tff as (
@@ -72,7 +72,7 @@ with tff_raw as (
     where 
         get_json_object(inventory, '$.status') = '1'
         {% if is_incremental() %}
-        and evt_block_time >= date_trunc("day", now() - interval '1 week')
+        and evt_block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
         {% endif %}
 )
 select
@@ -128,7 +128,7 @@ inner join {{ source('optimism', 'transactions') }} as tx
     {% if not is_incremental() %}
     and tx.block_time >= '{{project_start_date}}'
     {% else %}
-    and tx.block_time >= date_trunc("day", now() - interval '1 week')
+    and tx.block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
     {% endif %}
 left join {{ ref('tokens_nft') }} as nft 
     on nft.contract_address = tff.token
@@ -140,7 +140,7 @@ left join {{ source('prices', 'usd') }} as pu
     {% if not is_incremental() %}
     and pu.minute >= '{{project_start_date}}'
     {% else %}
-    and pu.minute >= date_trunc("day", now() - interval '1 week')
+    and pu.minute >= date_add('week', -1, CURRENT_TIMESTAMP(6))
     {% endif %}
 left join {{ ref('nft_aggregators') }} as agg
     on agg.contract_address = tx.to 

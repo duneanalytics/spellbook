@@ -27,7 +27,7 @@ dex_trades as (
     WHERE d.amount_usd > 0 
         AND d.token_bought_amount_raw > 0 
         {% if is_incremental() %}
-        AND d.block_time >= date_trunc("day", now() - interval '1 week')
+        AND d.block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
         {% endif %}
 
     UNION ALL
@@ -44,7 +44,7 @@ dex_trades as (
     WHERE d.amount_usd > 0 
         AND d.token_bought_amount_raw > 0 
         {% if is_incremental() %}
-        AND d.block_time >= date_trunc("day", now() - interval '1 week')
+        AND d.block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
         {% endif %}
 )
 

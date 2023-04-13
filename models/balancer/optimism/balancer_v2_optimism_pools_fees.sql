@@ -38,7 +38,7 @@ WHERE logs.topic1 = '{{ event_signature }}'
     AND logs.block_time >= '{{ project_start_date }}'
     {% endif %}
     {% if is_incremental() %}
-    AND logs.block_time >= DATE_TRUNC('day', NOW() - interval '1 week')
+    AND logs.block_time >= DATE_TRUNC('day', NOW() - interval '7 day')
     {% endif %}
 ;
 

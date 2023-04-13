@@ -11,7 +11,7 @@
 }}
 
 WITH calendar AS (
-        SELECT explode(sequence(to_date('2022-04-07'), CURRENT_DATE, interval 1 week)) AS start_date
+        SELECT explode(sequence(to_date('2022-04-07'), CURRENT_DATE, interval 7 days)) AS start_date
     ),
     
     rounds_info AS (

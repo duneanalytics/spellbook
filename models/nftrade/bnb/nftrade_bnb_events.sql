@@ -45,7 +45,7 @@ source_inventory as (
     {{ source('nftrade_bnb', 'NiftyProtocol_evt_Fill') }}
     WHERE evt_block_time >= '{{project_start_date}}'
     {% if is_incremental() %}
-    AND evt_block_time >= date_trunc("day", now() - interval '1 week')
+    AND evt_block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
     {% endif %}
 ),
 
@@ -145,7 +145,7 @@ source_inventory_enriched as (
         AND btx.block_time >= '{{project_start_date}}'
         {% endif %}
         {% if is_incremental() %}
-        AND btx.block_time >= date_trunc("day", now() - interval '1 week')
+        AND btx.block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
         {% endif %}
     LEFT JOIN
     {{ ref('tokens_bnb_nft') }} nft_token
@@ -159,7 +159,7 @@ source_inventory_enriched as (
         AND p.minute >= '{{project_start_date}}'
         {% endif %}
         {% if is_incremental() %}
-        AND p.minute >= date_trunc("day", now() - interval '1 week')
+        AND p.minute >= date_add('week', -1, CURRENT_TIMESTAMP(6))
         {% endif %}
     LEFT JOIN
     {{ ref('nft_bnb_aggregators') }} agg
@@ -175,7 +175,7 @@ source_inventory_enriched as (
         AND erc721.evt_block_time >= '{{project_start_date}}'
         {% endif %}
         {% if is_incremental() %}
-        AND erc721.evt_block_time >= date_trunc("day", now() - interval '1 week')
+        AND erc721.evt_block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
         {% endif %}
 
 

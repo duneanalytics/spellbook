@@ -27,7 +27,7 @@ WITH sushiswap_dex AS (
     INNER JOIN {{ source('sushiswap_v2_avalanche_c', 'SushiV2Factory_evt_PairCreated') }} p
         ON t.contract_address = p.pair
     {% if is_incremental() %}
-    WHERE t.evt_block_time >= date_trunc("day", now() - interval '1 week')
+    WHERE t.evt_block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
     {% else %}
     WHERE t.evt_block_time >= '{{ project_start_date }}'
     {% endif %}
@@ -68,7 +68,7 @@ FROM sushiswap_dex
 INNER JOIN {{ source('avalanche_c', 'transactions') }} tx
     ON sushiswap_dex.tx_hash = tx.hash
     {% if is_incremental() %}
-    AND tx.block_time >= date_trunc("day", now() - interval '1 week')
+    AND tx.block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
     {% else %}
     AND tx.block_time >= '{{project_start_date}}'
     {% endif %}
@@ -83,7 +83,7 @@ LEFT JOIN {{ source('prices', 'usd') }} p_bought
     AND p_bought.contract_address = sushiswap_dex.token_bought_address
     AND p_bought.blockchain = 'avalanche_c'
     {% if is_incremental() %}
-    AND p_bought.minute >= date_trunc("day", now() - interval '1 week')
+    AND p_bought.minute >= date_add('week', -1, CURRENT_TIMESTAMP(6))
     {% else %}
     AND p_bought.minute >= '{{project_start_date}}'
     {% endif %}
@@ -92,7 +92,7 @@ LEFT JOIN {{ source('prices', 'usd') }} p_sold
     AND p_sold.contract_address = sushiswap_dex.token_sold_address
     AND p_sold.blockchain = 'avalanche_c'
     {% if is_incremental() %}
-    AND p_sold.minute >= date_trunc("day", now() - interval '1 week')
+    AND p_sold.minute >= date_add('week', -1, CURRENT_TIMESTAMP(6))
     {% else %}
     AND p_sold.minute >= '{{project_start_date}}'
     {% endif %}

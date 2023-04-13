@@ -39,7 +39,7 @@ open_positions_v2 as (
         pairs ta 
             ON t._tradeInfo:asset = ta.asset_id 
         {% if is_incremental() %}
-        WHERE t.evt_block_time >= date_trunc("day", now() - interval '1 week')
+        WHERE t.evt_block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
         {% endif %}
 ), 
 
@@ -65,7 +65,7 @@ open_positions_v3 as (
         pairs ta 
             ON t._tradeInfo:asset = ta.asset_id 
         {% if is_incremental() %}
-        WHERE t.evt_block_time >= date_trunc("day", now() - interval '1 week')
+        WHERE t.evt_block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
         {% endif %}
 ), 
 
@@ -91,7 +91,7 @@ open_positions_v4 as (
         pairs ta 
             ON t._tradeInfo:asset = ta.asset_id 
         {% if is_incremental() %}
-        WHERE t.evt_block_time >= date_trunc("day", now() - interval '1 week')
+        WHERE t.evt_block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
         {% endif %}
 ),
 
@@ -117,7 +117,7 @@ open_positions_v5 as (
         pairs ta 
             ON t._tradeInfo:asset = ta.asset_id 
         {% if is_incremental() %}
-        WHERE t.evt_block_time >= date_trunc("day", now() - interval '1 week')
+        WHERE t.evt_block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
         {% endif %}
 )
 

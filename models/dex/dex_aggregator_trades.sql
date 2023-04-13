@@ -59,7 +59,7 @@ FROM (
          , evt_index
     FROM {{ aggregator_model }}
     {% if is_incremental() %}
-    WHERE block_date >= date_trunc("day", now() - interval '1 week')
+    WHERE block_date >= date_add('week', -1, CURRENT_TIMESTAMP(6))
     {% endif %}
     {% if not loop.last %}
     UNION ALL

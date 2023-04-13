@@ -34,7 +34,7 @@ WITH
     WHERE et.evt_block_time >= '{{project_start_date}}'
     {% endif %}
     {% if is_incremental() %}
-    WHERE et.evt_block_time >= date_trunc("day", now() - interval '1 week')
+    WHERE et.evt_block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
     {% endif %}
     GROUP BY
       1,2
@@ -65,7 +65,7 @@ WITH
           AND tr.block_time > '{{project_start_date}}'
           {% endif %}
           {% if is_incremental() %}
-          AND tr.block_time >= date_trunc("day", now() - interval '1 week')
+          AND tr.block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
           {% endif %}
         GROUP BY
           1,2
@@ -90,7 +90,7 @@ WITH
           AND tr.block_time > '{{project_start_date}}'
           {% endif %}
           {% if is_incremental() %}
-          AND tr.block_time >= date_trunc("day", now() - interval '1 week')
+          AND tr.block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
           {% endif %}
         GROUP BY
           1,2

@@ -1,6 +1,6 @@
 {{ config( alias='nft_curated', tags=['static']) }}
 
-SELECT LOWER(contract_address) AS contract_address, name, symbol
+SELECT contract_address, name, symbol
 FROM (VALUES
         (0x8bb765AE3e2320fd9447889D10b9DC7CE4970DA5, 'TinyDaemons', 'TINYDMN'),
         (0x8073a39bc8f89d9def372fABc20C5E4b200684ba, 'WaveDaemons', 'WAVEDMN'),

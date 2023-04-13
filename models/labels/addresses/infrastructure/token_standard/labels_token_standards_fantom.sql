@@ -17,7 +17,7 @@ SELECT distinct 'fantom' AS blockchain
 FROM {{ source('erc20_fantom', 'evt_transfer') }} erc20
 {% if is_incremental() %}
 LEFT ANTI JOIN this t ON t.address = erc20.contract_address
-WHERE erc20.evt_block_time >= date_trunc('day', now() - interval '1 week')
+WHERE erc20.evt_block_time >= date_trunc('day', now() - interval '7 day')
 {% endif %}
 
 UNION ALL
@@ -35,5 +35,5 @@ SELECT distinct 'fantom' AS blockchain
 FROM {{ ref('nft_fantom_transfers') }} nft
 {% if is_incremental() %}
 LEFT ANTI JOIN this t ON t.address = nft.contract_address
-WHERE nft.block_time >= date_trunc('day', now() - interval '1 week')
+WHERE nft.block_time >= date_trunc('day', now() - interval '7 day')
 {% endif %}

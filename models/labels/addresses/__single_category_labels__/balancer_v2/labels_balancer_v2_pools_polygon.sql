@@ -20,8 +20,8 @@ WITH pools AS (
         ON c.evt_tx_hash = cc.call_tx_hash
         AND SUBSTRING(c.poolId, 0, 42) = cc.output_0
         {% if is_incremental() %}
-        WHERE c.evt_block_time >= date_trunc("day", now() - interval '1 week')
-            AND cc.call_block_time >= date_trunc("day", now() - interval '1 week')
+        WHERE c.evt_block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
+            AND cc.call_block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
         {% endif %}
     )
 
@@ -35,8 +35,8 @@ WITH pools AS (
         ON c.evt_tx_hash = cc.call_tx_hash
         AND SUBSTRING(c.poolId, 0, 42) = cc.output_0
         {% if is_incremental() %}
-        WHERE c.evt_block_time >= date_trunc("day", now() - interval '1 week')
-            AND cc.call_block_time >= date_trunc("day", now() - interval '1 week')
+        WHERE c.evt_block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
+            AND cc.call_block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
     {%   endif %}
     )
 
@@ -50,8 +50,8 @@ WITH pools AS (
         ON c.evt_tx_hash = cc.call_tx_hash
         AND SUBSTRING(c.poolId, 0, 42) = cc.output_0
         {% if is_incremental() %}
-        WHERE c.evt_block_time >= date_trunc("day", now() - interval '1 week')
-            AND cc.call_block_time >= date_trunc("day", now() - interval '1 week')
+        WHERE c.evt_block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
+            AND cc.call_block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
         {% endif %}
     )
 
@@ -65,8 +65,8 @@ WITH pools AS (
         ON c.evt_tx_hash = cc.call_tx_hash
         AND SUBSTRING(c.poolId, 0, 42) = cc.output_0
         {% if is_incremental() %}
-        WHERE c.evt_block_time >= date_trunc("day", now() - interval '1 week')
-            AND cc.call_block_time >= date_trunc("day", now() - interval '1 week')
+        WHERE c.evt_block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
+            AND cc.call_block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
         {% endif %}
     )
 
@@ -78,8 +78,8 @@ WITH pools AS (
     ON c.evt_tx_hash = cc.call_tx_hash
     AND SUBSTRING(c.poolId, 0, 42) = cc.output_0
     {% if is_incremental() %}
-    WHERE c.evt_block_time >= date_trunc("day", now() - interval '1 week')
-        AND cc.call_block_time >= date_trunc("day", now() - interval '1 week')
+    WHERE c.evt_block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
+        AND cc.call_block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
     {% endif %}
 
     UNION ALL
@@ -90,8 +90,8 @@ WITH pools AS (
     ON c.evt_tx_hash = cc.call_tx_hash
     AND SUBSTRING(c.poolId, 0, 42) = cc.output_0
     {% if is_incremental() %}
-    WHERE c.evt_block_time >= date_trunc("day", now() - interval '1 week')
-        AND cc.call_block_time >= date_trunc("day", now() - interval '1 week')
+    WHERE c.evt_block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
+        AND cc.call_block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
     {% endif %}
 
 
@@ -103,8 +103,8 @@ WITH pools AS (
     ON c.evt_tx_hash = cc.call_tx_hash
     AND SUBSTRING(c.poolId, 0, 42) = cc.output_0
     {% if is_incremental() %}
-    WHERE c.evt_block_time >= date_trunc("day", now() - interval '1 week')
-        AND cc.call_block_time >= date_trunc("day", now() - interval '1 week')
+    WHERE c.evt_block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
+        AND cc.call_block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
     {% endif %}
 
     UNION ALL
@@ -115,8 +115,8 @@ WITH pools AS (
     ON c.evt_tx_hash = cc.call_tx_hash
     AND SUBSTRING(c.poolId, 0, 42) = cc.output_0
     {% if is_incremental() %}
-    WHERE c.evt_block_time >= date_trunc("day", now() - interval '1 week')
-        AND cc.call_block_time >= date_trunc("day", now() - interval '1 week')
+    WHERE c.evt_block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
+        AND cc.call_block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
     {% endif %}
 
     UNION ALL
@@ -127,8 +127,8 @@ WITH pools AS (
     ON c.evt_tx_hash = cc.call_tx_hash
     AND SUBSTRING(c.poolId, 0, 42) = cc.output_0
     {% if is_incremental() %}
-    WHERE c.evt_block_time >= date_trunc("day", now() - interval '1 week')
-        AND cc.call_block_time >= date_trunc("day", now() - interval '1 week')
+    WHERE c.evt_block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
+        AND cc.call_block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
     {% endif %}
 
     UNION ALL
@@ -139,8 +139,8 @@ WITH pools AS (
     ON c.evt_tx_hash = cc.call_tx_hash
     AND SUBSTRING(c.poolId, 0, 42) = cc.output_0
     {% if is_incremental() %}
-    WHERE c.evt_block_time >= date_trunc("day", now() - interval '1 week')
-        AND cc.call_block_time >= date_trunc("day", now() - interval '1 week')
+    WHERE c.evt_block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
+        AND cc.call_block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
     {% endif %}
 
     UNION ALL
@@ -151,8 +151,8 @@ WITH pools AS (
     ON c.evt_tx_hash = cc.call_tx_hash
     AND SUBSTRING(c.poolId, 0, 42) = cc.output_0
     {% if is_incremental() %}
-    WHERE c.evt_block_time >= date_trunc("day", now() - interval '1 week')
-        AND cc.call_block_time >= date_trunc("day", now() - interval '1 week')
+    WHERE c.evt_block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
+        AND cc.call_block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
     {% endif %}
 ),
 

@@ -35,7 +35,7 @@ FROM (
                aTokenName        AS atoken_name
         FROM {{source( 'the_granary_optimism', 'AToken_evt_Initialized' ) }}
             {% if is_incremental() %}
-            WHERE evt_block_time >= date_trunc("day", now() - interval '1 week')
+            WHERE evt_block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
             {% endif %}
 
         UNION ALL
@@ -53,7 +53,7 @@ FROM (
             debtTokenName       AS atoken_name
         FROM {{source( 'the_granary_optimism', 'DebtToken_evt_Initialized' ) }}
             {% if is_incremental() %}
-            WHERE evt_block_time >= date_trunc("day", now() - interval '1 week')
+            WHERE evt_block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
             {% endif %}
         ) a
 LEFT JOIN {{ ref('tokens_erc20') }} et

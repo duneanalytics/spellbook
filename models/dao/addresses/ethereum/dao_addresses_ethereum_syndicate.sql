@@ -21,7 +21,7 @@ syndicatev2_daos as ( -- decoded event on dune for syndicate v2, this returns in
         WHERE evt_block_time >= '{{project_start_date}}'
         {% endif %}
         {% if is_incremental() %}
-        WHERE evt_block_time >= date_trunc("day", now() - interval '1 week')
+        WHERE evt_block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
         {% endif %}
 ), 
 
@@ -35,7 +35,7 @@ syndicatev1_daos as ( -- getting investment clubs created on dune v1
         WHERE block_time >= '{{project_start_date}}'
         {% endif %}
         {% if is_incremental() %}
-        WHERE block_time >= date_trunc("day", now() - interval '1 week')
+        WHERE block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
         {% endif %}
         AND topic1 = '0x5fb43bb458994f457693950959aff3a8815320c4da2fb30aa66137420808172e' -- syndicate investment club created event 
 ), 
@@ -57,7 +57,7 @@ ownership_transferred as ( -- whenever an investment club is created, the owners
         WHERE block_time >= '{{project_start_date}}'
         {% endif %}
         {% if is_incremental() %}
-        WHERE block_time >= date_trunc("day", now() - interval '1 week')
+        WHERE block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
         {% endif %}
         AND topic1 = '0x8be0079c531659141344cd1fd0a4f28419497f9722a3daafe3b4186f6b6457e0' -- ownership transferred event 
         AND contract_address IN (SELECT dao FROM all_syndicate_daos)

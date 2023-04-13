@@ -24,7 +24,7 @@ with source_arbitrum_transactions as (
     where block_time >= date '{{c_seaport_first_date}}'  -- seaport first txn
     {% endif %}
     {% if is_incremental() %}
-    where block_time >= date_trunc("day", now() - interval '1 week')
+    where block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
     {% endif %}
 )
 ,ref_seaport_arbitrum_base_pairs as (
@@ -32,7 +32,7 @@ with source_arbitrum_transactions as (
       from {{ ref('seaport_arbitrum_base_pairs') }}
       where 1=1
       {% if is_incremental() %}
-            and block_time >= date_trunc("day", now() - interval '1 week')
+            and block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
       {% endif %}
 )
 ,ref_tokens_nft as (
@@ -58,7 +58,7 @@ with source_arbitrum_transactions as (
       and minute >= date '{{c_seaport_first_date}}'  -- seaport first txn
     {% endif %}
     {% if is_incremental() %} 
-      and minute >= date_trunc("day", now() - interval '1 week')
+      and minute >= date_add('week', -1, CURRENT_TIMESTAMP(6))
     {% endif %}
 )
 ,iv_base_pairs_priv as (

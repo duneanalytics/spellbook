@@ -32,7 +32,7 @@ borrow_events as (
         FROM 
         {{source('bend_ethereum', 'LendingPool_evt_Borrow')}}
         {% if is_incremental() %}
-        WHERE evt_block_time >= date_trunc("day", now() - interval '1 week')
+        WHERE evt_block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
         {% endif %}
 ), 
 
@@ -52,7 +52,7 @@ repay_events as (
         FROM 
         {{source('bend_ethereum', 'LendingPool_evt_Repay')}}
         {% if is_incremental() %}
-        WHERE evt_block_time >= date_trunc("day", now() - interval '1 week')
+        WHERE evt_block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
         {% endif %}
 ), 
 
@@ -97,7 +97,7 @@ INNER JOIN
     AND et.block_time >= '{{project_start_date}}'
     {% endif %}
     {% if is_incremental() %}
-    AND et.block_time >= date_trunc("day", now() - interval '1 week')
+    AND et.block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
     {% endif %}
 LEFT JOIN 
 {{ ref('tokens_ethereum_nft') }} nft_token
@@ -114,5 +114,5 @@ LEFT JOIN
     AND p.minute >= '{{project_start_date}}'
     {% endif %}
     {% if is_incremental() %}
-    AND p.minute >= date_trunc("day", now() - interval '1 week')
+    AND p.minute >= date_add('week', -1, CURRENT_TIMESTAMP(6))
     {% endif %}

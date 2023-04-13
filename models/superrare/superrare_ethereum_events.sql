@@ -24,7 +24,7 @@ with all_superrare_sales as (
             , '' as currencyAddress
     from {{ source('superrare_ethereum','SuperRareMarketAuction_evt_Sold') }}
     {% if is_incremental() %}
-    where evt_block_time >= date_trunc("day", now() - interval '1 week')
+    where evt_block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
     {% endif %}
 
     union all
@@ -39,7 +39,7 @@ with all_superrare_sales as (
             , ''
     from {{ source('superrare_ethereum','SuperRare_evt_Sold') }}
     {% if is_incremental() %}
-    where evt_block_time >= date_trunc("day", now() - interval '1 week')
+    where evt_block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
     {% endif %}
 
     union all
@@ -54,7 +54,7 @@ with all_superrare_sales as (
             , ''
     from {{ source('superrare_ethereum','SuperRareMarketAuction_evt_AcceptBid') }}
     {% if is_incremental() %}
-    where evt_block_time >= date_trunc("day", now() - interval '1 week')
+    where evt_block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
     {% endif %}
 
     union all
@@ -69,7 +69,7 @@ with all_superrare_sales as (
             , ''
     from {{ source('superrare_ethereum','SuperRare_evt_AcceptBid') }}
     {% if is_incremental() %}
-    where evt_block_time >= date_trunc("day", now() - interval '1 week')
+    where evt_block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
     {% endif %}
 
     union all
@@ -84,7 +84,7 @@ with all_superrare_sales as (
             , `_currencyAddress`
     from {{ source('superrare_ethereum','SuperRareBazaar_evt_AcceptOffer') }}
     {% if is_incremental() %}
-    where evt_block_time >= date_trunc("day", now() - interval '1 week')
+    where evt_block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
     {% endif %}
 
     union all
@@ -99,7 +99,7 @@ with all_superrare_sales as (
             , `_currencyAddress`
     from {{ source('superrare_ethereum','SuperRareBazaar_evt_AuctionSettled') }}
     {% if is_incremental() %}
-    where evt_block_time >= date_trunc("day", now() - interval '1 week')
+    where evt_block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
     {% endif %}
 
     union all
@@ -114,7 +114,7 @@ with all_superrare_sales as (
             , `_currencyAddress`
     from {{ source('superrare_ethereum','SuperRareBazaar_evt_Sold') }}
     {% if is_incremental() %}
-    where evt_block_time >= date_trunc("day", now() - interval '1 week')
+    where evt_block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
     {% endif %}
 
     union all
@@ -131,7 +131,7 @@ with all_superrare_sales as (
     where contract_address = lower(0x8c9f364bf7a56ed058fc63ef81c6cf09c833e656)
         and topic1 = lower('0xea6d16c6bfcad11577aef5cc6728231c9f069ac78393828f8ca96847405902a9')
         {% if is_incremental() %}
-        and block_time >= date_trunc("day", now() - interval '1 week')
+        and block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
         {% endif %}
 
     union all
@@ -150,7 +150,7 @@ with all_superrare_sales as (
                         , lower('0x5764dbcef91eb6f946584f4ea671217c686fa7e858ce4f9f42d08422b86556a9')
                       )
         {% if is_incremental() %}
-        and block_time >= date_trunc("day", now() - interval '1 week')
+        and block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
         {% endif %}
 )
 -- some items are sold in RARE currency on superrare. not available on coinpaprika, so using dex data to be able to convert to USD. usuing weekly average since dex data isn't fully populated on v2 right now (~1/8 of data vs. v1). switch back to daily once full data is available
@@ -181,7 +181,7 @@ with all_superrare_sales as (
             else token_sold_amount * 1.0 / nullif(token_bought_amount, 0)
             end < 0.001
         {% if is_incremental() %}
-        and block_date >= date_trunc("day", now() - interval '1 week')
+        and block_date >= date_add('week', -1, CURRENT_TIMESTAMP(6))
         {% endif %}
     group by
         1
@@ -205,7 +205,7 @@ with all_superrare_sales as (
         and evt.tokenId = tsfa.tokenId
         and tsfa.seller = lower(0x8c9f364bf7a56ed058fc63ef81c6cf09c833e656)
     {% if is_incremental() %}
-    where evt.evt_block_time >= date_trunc("day", now() - interval '1 week')
+    where evt.evt_block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
     {% endif %}
 )
 SELECT distinct
@@ -321,7 +321,7 @@ left outer join
         where blockchain = 'ethereum'
             and symbol = 'WETH'
             {% if is_incremental() %}
-            and minute >= date_trunc("day", now() - interval '1 week')
+            and minute >= date_add('week', -1, CURRENT_TIMESTAMP(6))
             {% endif %}
     ) ep
     on date_trunc('minute', a.evt_block_time) = ep.minute
@@ -330,21 +330,21 @@ left outer join rare_token_price_eth rp
 inner join {{ source('ethereum','transactions') }} t
     on a.evt_tx_hash = t.hash
     {% if is_incremental() %}
-    and t.block_time >= date_trunc("day", now() - interval '1 week')
+    and t.block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
     {% endif %}
 left outer join {{ source('erc721_ethereum','evt_transfer') }} evt on evt.contract_address = a.contract_address
     and evt.tokenId = a.tokenId
     and evt."from" = 0x0000000000000000000000000000000000000000
     and evt.evt_tx_hash = a.evt_tx_hash
     {% if is_incremental() %}
-    and evt.evt_block_time >= date_trunc("day", now() - interval '1 week')
+    and evt.evt_block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
     {% endif %}
 left outer join {{ source('erc20_ethereum','evt_transfer') }} erc20 on erc20.contract_address = a.contract_address
     and erc20.value = a.tokenId
     and erc20."from" = 0x0000000000000000000000000000000000000000
     and erc20.evt_tx_hash = a.evt_tx_hash
     {% if is_incremental() %}
-    and erc20.evt_block_time >= date_trunc("day", now() - interval '1 week')
+    and erc20.evt_block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
     {% endif %}
 left outer join transfers_for_tokens_sold_from_auction po -- if sold from auction house previous owner
     on a.evt_tx_hash = po.evt_tx_hash

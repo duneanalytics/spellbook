@@ -46,7 +46,7 @@ INNER JOIN {{source('nftb_bnb', 'NFT_evt_Mint')}} m
 ON tr.evt_tx_hash=m.evt_tx_hash
 WHERE tr.evt_block_time >= '{{project_start_date}}'
 {% if is_incremental() %}
-AND tr.evt_block_time >= date_trunc("day", now() - interval '1 week')
+AND tr.evt_block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
 {% endif %}
 )
 
@@ -76,7 +76,7 @@ WHERE 1=1
 AND to=0x0000000000000000000000000000000000000000
 AND  tr.evt_block_time >= '{{project_start_date}}'
 {% if is_incremental() %}
-AND tr.evt_block_time >= date_trunc("day", now() - interval '1 week')
+AND tr.evt_block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
 {% endif %}
 
 )
@@ -131,7 +131,7 @@ ON tr1.hash=tr.evt_tx_hash
 AND tr1.block_time >= '{{project_start_date}}'
 {% endif %}
 {% if is_incremental() %}
-AND tr1.block_time >= date_trunc("day", now() - interval '1 week')
+AND tr1.block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
 {% endif %}
 LEFT JOIN (SELECT 
                    bt."from" as address
@@ -149,7 +149,7 @@ LEFT JOIN (SELECT
             AND bt.block_time >= '{{project_start_date}}'
             {% endif %}
             {% if is_incremental() %}
-            AND bt.block_time >= date_trunc("day", now() - interval '1 week')
+            AND bt.block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
             {% endif %}
             GROUP BY 1,2
             ) tra1 
@@ -162,7 +162,7 @@ AND l1.topic1='0x7a9edcf72fda2a090305f15fe2f1d8d881c849c4a142e8847734fe93542c64e
 AND l1.block_time >= '{{project_start_date}}'
 {% endif %}
 {% if is_incremental() %}
-AND l1.block_time >= date_trunc("day", now() - interval '1 week')
+AND l1.block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
 {% endif %}
 
 LEFT JOIN {{ source('bnb','logs')}} l2 
@@ -173,7 +173,7 @@ AND l2.topic1='0x7df6bafa53a0e01e6995efd8c0c627e532d2fb130178b2261d619f256db0d65
 AND l2.block_time >= '{{project_start_date}}'
 {% endif %}
 {% if is_incremental() %}
-AND l2.block_time >= date_trunc("day", now() - interval '1 week')
+AND l2.block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
 {% endif %}
 
 LEFT JOIN {{ source('bnb','logs')}} l3 
@@ -184,12 +184,12 @@ AND l3.topic1='0x3966e47923a4243aaa12fcf3bb231f645e3c8c5e70985cd00c689ec364cf4da
 AND l3.block_time >= '{{project_start_date}}'
 {% endif %}
 {% if is_incremental() %}
-AND l3.block_time >= date_trunc("day", now() - interval '1 week')
+AND l3.block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
 {% endif %}
 
 WHERE tr.evt_block_time >= '{{project_start_date}}'
 {% if is_incremental() %}
-AND tr.evt_block_time >= date_trunc("day", now() - interval '1 week')
+AND tr.evt_block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
 {% endif %}
 )
 
@@ -257,7 +257,7 @@ AND btx.hash = ae.tx_hash
 AND btx.block_time >= '{{project_start_date}}'
 {% endif %}
 {% if is_incremental() %}
-AND btx.block_time >= date_trunc("day", now() - interval '1 week')
+AND btx.block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
 {% endif %}
 
 LEFT JOIN {{ source('prices','usd') }} p
@@ -268,7 +268,7 @@ AND p.contract_address = 0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c
 AND p.minute >= '{{project_start_date}}'
 {% endif %}
 {% if is_incremental() %}
-AND p.minute >= date_trunc("day", now() - interval '1 week')
+AND p.minute >= date_add('week', -1, CURRENT_TIMESTAMP(6))
 {% endif %}
 
 LEFT JOIN {{ source('erc721_ethereum','evt_transfer') }} erc721
@@ -281,7 +281,7 @@ AND erc721.to = ae.buyer
 AND erc721.evt_block_time >= '{{project_start_date}}'
 {% endif %}
 {% if is_incremental() %}
-AND erc721.evt_block_time >= date_trunc("day", now() - interval '1 week')
+AND erc721.evt_block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
 {% endif %}
 
 

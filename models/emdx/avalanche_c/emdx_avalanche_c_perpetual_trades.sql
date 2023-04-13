@@ -36,7 +36,7 @@ perp_events as (
     WHERE evt_block_time >= '{{project_start_date}}'
     {% endif %}
     {% if is_incremental() %}
-    WHERE evt_block_time >= date_trunc("day", now() - interval '1 week')
+    WHERE evt_block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
     {% endif %}
 ), 
 
@@ -52,7 +52,7 @@ trade_data as (
     AND call_block_time >= '{{project_start_date}}'
     {% endif %}
     {% if is_incremental() %}
-    AND call_block_time >= date_trunc("day", now() - interval '1 week')
+    AND call_block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
     {% endif %}
 
     UNION ALL 
@@ -69,7 +69,7 @@ trade_data as (
     AND call_block_time >= '{{project_start_date}}'
     {% endif %}
     {% if is_incremental() %}
-    AND call_block_time >= date_trunc("day", now() - interval '1 week')
+    AND call_block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
     {% endif %}
 
     UNION ALL 
@@ -86,7 +86,7 @@ trade_data as (
     AND evt_block_time >= '{{project_start_date}}'
     {% endif %}
     {% if is_incremental() %}
-    AND evt_block_time >= date_trunc("day", now() - interval '1 week')
+    AND evt_block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
     {% endif %}
 )
 
@@ -123,7 +123,7 @@ INNER JOIN
     AND txns.block_time >= '{{project_start_date}}'
     {% endif %}
     {% if is_incremental() %}
-    AND txns.block_time >= date_trunc("day", now() - interval '1 week')
+    AND txns.block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
     {% endif %}
 LEFT JOIN 
 trade_data td 

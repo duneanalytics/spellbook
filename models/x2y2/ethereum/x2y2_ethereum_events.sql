@@ -26,7 +26,7 @@ src_evt_profit as (
     FROM {{ source('x2y2_ethereum','X2Y2_r1_evt_EvProfit') }}
     WHERE evt_block_time >= '{{project_start_date}}'
         {% if is_incremental() %}
-        AND evt_block_time >= date_trunc("day", now() - interval '1 week')
+        AND evt_block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
         {% endif %}
 ),
 
@@ -59,7 +59,7 @@ src_evt_inventory as (
     FROM {{ source('x2y2_ethereum','X2Y2_r1_evt_EvInventory') }} inv
     WHERE evt_block_time >= '{{project_start_date}}'
         {% if is_incremental() %}
-        AND evt_block_time >= date_trunc("day", now() - interval '1 week')
+        AND evt_block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
         {% endif %}
 ),
 
@@ -68,7 +68,7 @@ src_eth_transactions as  (
     FROM {{ source('ethereum','transactions') }}
     WHERE block_time > '{{project_start_date}}'
         {% if is_incremental() %}
-        AND block_time >= date_trunc("day", now() - interval '1 week')
+        AND block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
         {% endif %}
 ),
 
@@ -78,7 +78,7 @@ src_prices_usd as (
     WHERE blockchain = 'ethereum'
         AND minute > '{{project_start_date}}'
         {% if is_incremental() %}
-        AND minute >= date_trunc("day", now() - interval '1 week')
+        AND minute >= date_add('week', -1, CURRENT_TIMESTAMP(6))
         {% endif %}
 
 )

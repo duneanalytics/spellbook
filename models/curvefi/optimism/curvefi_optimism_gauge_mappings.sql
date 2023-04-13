@@ -24,7 +24,7 @@ FROM (
     evt_block_time, evt_block_number, contract_address, evt_tx_hash, evt_index
     FROM {{ source ('curvefi_optimism', 'Vyper_contract_evt_DeployedGauge') }}
     {% if is_incremental() %}
-    WHERE evt_block_time >= NOW() - interval '1 week'
+    WHERE evt_block_time >= NOW() - interval '7 day'
     {% endif %}
 
     UNION ALL 
@@ -34,7 +34,7 @@ FROM (
     evt_block_time, evt_block_number, contract_address, evt_tx_hash, evt_index
     FROM {{ source ('curvefi_optimism', 'PoolFactory_evt_LiquidityGaugeDeployed') }}
     {% if is_incremental() %}
-    WHERE evt_block_time >= NOW() - interval '1 week'
+    WHERE evt_block_time >= NOW() - interval '7 day'
     {% endif %}
 ) a
 

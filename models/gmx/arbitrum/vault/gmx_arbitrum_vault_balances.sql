@@ -23,7 +23,7 @@ WITH minute AS  -- This CTE generates a series of minute values
         SELECT explode(sequence(TIMESTAMP '{{project_start_date}}', CURRENT_TIMESTAMP, INTERVAL 1 minute)) AS minute -- 2021-08-31 08:13 is the timestamp of the first vault transaction
         {% endif %}
         {% if is_incremental() %}
-        SELECT explode(sequence(date_trunc("day", now() - interval '1 week'), CURRENT_TIMESTAMP, INTERVAL 1 minute)) AS minute
+        SELECT explode(sequence(date_add('week', -1, CURRENT_TIMESTAMP(6)), CURRENT_TIMESTAMP, INTERVAL 1 minute)) AS minute
         {% endif %}
         )
     ),
@@ -54,7 +54,7 @@ vault_balances_frax AS -- This CTE returns the balance of FRAX tokens in the GMX
                 AND evt_block_time >= '{{project_start_date}}'
                 {% endif %}
                 {% if is_incremental() %}
-                AND evt_block_time >= date_trunc("day", now() - interval '1 week')
+                AND evt_block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
                 {% endif %}
     
             UNION ALL
@@ -69,7 +69,7 @@ vault_balances_frax AS -- This CTE returns the balance of FRAX tokens in the GMX
                 AND evt_block_time >= '{{project_start_date}}'
                 {% endif %}
                 {% if is_incremental() %}
-                AND evt_block_time >= date_trunc("day", now() - interval '1 week')
+                AND evt_block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
                 {% endif %}
             ) a
         GROUP BY a.minute
@@ -98,7 +98,7 @@ vault_balances_usdt AS -- This CTE returns the balance of USDT tokens in the GMX
                 AND evt_block_time >= '{{project_start_date}}'
                 {% endif %}
                 {% if is_incremental() %}
-                AND evt_block_time >= date_trunc("day", now() - interval '1 week')
+                AND evt_block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
                 {% endif %}
 
             UNION ALL
@@ -113,7 +113,7 @@ vault_balances_usdt AS -- This CTE returns the balance of USDT tokens in the GMX
                 AND evt_block_time >= '{{project_start_date}}'
                 {% endif %}
                 {% if is_incremental() %}
-                AND evt_block_time >= date_trunc("day", now() - interval '1 week')
+                AND evt_block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
                 {% endif %}
             ) a
         GROUP BY a.minute
@@ -142,7 +142,7 @@ vault_balances_wbtc AS -- This CTE returns the balance of WBTC tokens in the GMX
             AND evt_block_time >= '{{project_start_date}}'
             {% endif %}
             {% if is_incremental() %}
-            AND evt_block_time >= date_trunc("day", now() - interval '1 week')
+            AND evt_block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
             {% endif %}
 
             UNION ALL
@@ -157,7 +157,7 @@ vault_balances_wbtc AS -- This CTE returns the balance of WBTC tokens in the GMX
             AND evt_block_time >= '{{project_start_date}}'
             {% endif %}
             {% if is_incremental() %}
-            AND evt_block_time >= date_trunc("day", now() - interval '1 week')
+            AND evt_block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
             {% endif %}
             ) a
         GROUP BY a.minute
@@ -186,7 +186,7 @@ vault_balances_usdc AS -- This CTE returns the balance of USDC tokens in the GMX
             AND evt_block_time >= '{{project_start_date}}'
             {% endif %}
             {% if is_incremental() %}
-            AND evt_block_time >= date_trunc("day", now() - interval '1 week')
+            AND evt_block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
             {% endif %}
 
             UNION ALL
@@ -201,7 +201,7 @@ vault_balances_usdc AS -- This CTE returns the balance of USDC tokens in the GMX
             AND evt_block_time >= '{{project_start_date}}'
             {% endif %}
             {% if is_incremental() %}
-            AND evt_block_time >= date_trunc("day", now() - interval '1 week')
+            AND evt_block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
             {% endif %}
             ) a
         GROUP BY a.minute
@@ -230,7 +230,7 @@ vault_balances_uni AS -- This CTE returns the balance of UNI tokens in the GMX A
             AND evt_block_time >= '{{project_start_date}}'
             {% endif %}
             {% if is_incremental() %}
-            AND evt_block_time >= date_trunc("day", now() - interval '1 week')
+            AND evt_block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
             {% endif %}
 
             UNION ALL
@@ -245,7 +245,7 @@ vault_balances_uni AS -- This CTE returns the balance of UNI tokens in the GMX A
             AND evt_block_time >= '{{project_start_date}}'
             {% endif %}
             {% if is_incremental() %}
-            AND evt_block_time >= date_trunc("day", now() - interval '1 week')
+            AND evt_block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
             {% endif %}
             ) a
         GROUP BY a.minute
@@ -274,7 +274,7 @@ vault_balances_link AS -- This CTE returns the balance of LINK tokens in the GMX
             AND evt_block_time >= '{{project_start_date}}'
             {% endif %}
             {% if is_incremental() %}
-            AND evt_block_time >= date_trunc("day", now() - interval '1 week')
+            AND evt_block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
             {% endif %}
 
             UNION ALL
@@ -289,7 +289,7 @@ vault_balances_link AS -- This CTE returns the balance of LINK tokens in the GMX
             AND evt_block_time >= '{{project_start_date}}'
             {% endif %}
             {% if is_incremental() %}
-            AND evt_block_time >= date_trunc("day", now() - interval '1 week')
+            AND evt_block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
             {% endif %}
             ) a
         GROUP BY a.minute
@@ -318,7 +318,7 @@ vault_balances_weth AS -- This CTE returns the balance of WETH tokens in the GMX
             AND evt_block_time >= '{{project_start_date}}'
             {% endif %}
             {% if is_incremental() %}
-            AND evt_block_time >= date_trunc("day", now() - interval '1 week')
+            AND evt_block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
             {% endif %}
 
             UNION ALL
@@ -333,7 +333,7 @@ vault_balances_weth AS -- This CTE returns the balance of WETH tokens in the GMX
             AND evt_block_time >= '{{project_start_date}}'
             {% endif %}
             {% if is_incremental() %}
-            AND evt_block_time >= date_trunc("day", now() - interval '1 week')
+            AND evt_block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
             {% endif %}
             ) a
         GROUP BY a.minute
@@ -362,7 +362,7 @@ vault_balances_dai AS -- This CTE returns the balance of DAI tokens in the GMX A
             AND evt_block_time >= '{{project_start_date}}'
             {% endif %}
             {% if is_incremental() %}
-            AND evt_block_time >= date_trunc("day", now() - interval '1 week')
+            AND evt_block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
             {% endif %}
 
             UNION ALL
@@ -377,7 +377,7 @@ vault_balances_dai AS -- This CTE returns the balance of DAI tokens in the GMX A
             AND evt_block_time >= '{{project_start_date}}'
             {% endif %}
             {% if is_incremental() %}
-            AND evt_block_time >= date_trunc("day", now() - interval '1 week')
+            AND evt_block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
             {% endif %}
             ) a
         GROUP BY a.minute

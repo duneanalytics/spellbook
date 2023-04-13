@@ -49,7 +49,7 @@ WITH
         AND tx.block_time >= '{{project_start_date}}'
         {% endif %}
         {% if is_incremental() %}
-        AND tx.block_time >= date_trunc("day", now() - interval '1 week')
+        AND tx.block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
         {% endif %}
     WHERE
       call_success

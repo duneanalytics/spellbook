@@ -33,7 +33,7 @@ WITH zora_trades AS (
         AND get_json_object(z3_o1_ee.a, '$.tokenContract')=z3_o1_rp.tokenContract
         AND get_json_object(z3_o1_ee.a, '$.tokenId')=z3_o1_rp.tokenId
         {% if is_incremental() %}
-        AND z3_o1_rp.evt_block_time >= date_trunc("day", now() - interval '1 week')
+        AND z3_o1_rp.evt_block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
         {% endif %}
     UNION ALL
     SELECT 'v3' AS version
@@ -56,7 +56,7 @@ WITH zora_trades AS (
         AND get_json_object(z3_a0_ee.a, '$.tokenContract')=z3_a0_rp.tokenContract
         AND get_json_object(z3_a0_ee.a, '$.tokenId')=z3_a0_rp.tokenId
         {% if is_incremental() %}
-        AND z3_a0_rp.evt_block_time >= date_trunc("day", now() - interval '1 week')
+        AND z3_a0_rp.evt_block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
         {% endif %}
     UNION ALL
     SELECT 'v3' AS version
@@ -79,7 +79,7 @@ WITH zora_trades AS (
         AND get_json_object(z3_a1_ee.a, '$.tokenContract')=z3_a1_rp.tokenContract
         AND get_json_object(z3_a1_ee.a, '$.tokenId')=z3_a1_rp.tokenId
         {% if is_incremental() %}
-        AND z3_a1_rp.evt_block_time >= date_trunc("day", now() - interval '1 week')
+        AND z3_a1_rp.evt_block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
         {% endif %}
     UNION ALL
     SELECT 'v3' AS version
@@ -102,7 +102,7 @@ WITH zora_trades AS (
         AND z3_rafe_ae.tokenContract=z3_rafe_rp.tokenContract
         AND z3_rafe_ae.tokenId=z3_rafe_rp.tokenId
         {% if is_incremental() %}
-        AND z3_rafe_rp.evt_block_time >= date_trunc("day", now() - interval '1 week')
+        AND z3_rafe_rp.evt_block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
         {% endif %}
     UNION ALL
     SELECT 'v3' AS version
@@ -125,7 +125,7 @@ WITH zora_trades AS (
         AND z3_ape_af.tokenContract=z3_ape_rp.tokenContract
         AND z3_ape_af.tokenId=z3_ape_rp.tokenId
         {% if is_incremental() %}
-        AND z3_ape_rp.evt_block_time >= date_trunc("day", now() - interval '1 week')
+        AND z3_ape_rp.evt_block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
         {% endif %}
     UNION ALL
     SELECT 'v3' AS version
@@ -148,7 +148,7 @@ WITH zora_trades AS (
         AND z3_ace_af.tokenContract=z3_ace_rp.tokenContract
         AND z3_ace_af.tokenId=z3_ace_rp.tokenId
         {% if is_incremental() %}
-        AND z3_ace_rp.evt_block_time >= date_trunc("day", now() - interval '1 week')
+        AND z3_ace_rp.evt_block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
         {% endif %}
     UNION ALL
     SELECT 'v3' AS version
@@ -171,7 +171,7 @@ WITH zora_trades AS (
         AND z3_race_ae.tokenContract=z3_race_rp.tokenContract
         AND z3_race_ae.tokenId=z3_race_rp.tokenId
         {% if is_incremental() %}
-        AND z3_race_rp.evt_block_time >= date_trunc("day", now() - interval '1 week')
+        AND z3_race_rp.evt_block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
         {% endif %}
     UNION ALL
     SELECT 'v3' AS version
@@ -194,7 +194,7 @@ WITH zora_trades AS (
         AND z3_racerc_ae.tokenContract=z3_racerc_rp.tokenContract
         AND z3_racerc_ae.tokenId=z3_racerc_rp.tokenId
         {% if is_incremental() %}
-        AND z3_racerc_rp.evt_block_time >= date_trunc("day", now() - interval '1 week')
+        AND z3_racerc_rp.evt_block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
         {% endif %}
     UNION ALL
     SELECT 'v3' AS version
@@ -217,7 +217,7 @@ WITH zora_trades AS (
         AND z3_raferc_ae.tokenContract=z3_raferc_rp.tokenContract
         AND z3_raferc_ae.tokenId=z3_raferc_rp.tokenId
         {% if is_incremental() %}
-        AND z3_raferc_rp.evt_block_time >= date_trunc("day", now() - interval '1 week')
+        AND z3_raferc_rp.evt_block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
         {% endif %}
     UNION ALL
     SELECT 'v3' AS version
@@ -240,7 +240,7 @@ WITH zora_trades AS (
         AND z3_rale_ae.tokenContract=z3_rale_rp.tokenContract
         AND z3_rale_ae.tokenId=z3_rale_rp.tokenId
         {% if is_incremental() %}
-        AND z3_rale_rp.evt_block_time >= date_trunc("day", now() - interval '1 week')
+        AND z3_rale_rp.evt_block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
         {% endif %}
     UNION ALL
     SELECT 'v3' AS version
@@ -263,7 +263,7 @@ WITH zora_trades AS (
         AND z3_rale_ae.tokenContract=z3_rale_rp.tokenContract
         AND z3_rale_ae.tokenId=z3_rale_rp.tokenId
         {% if is_incremental() %}
-        AND z3_rale_rp.evt_block_time >= date_trunc("day", now() - interval '1 week')
+        AND z3_rale_rp.evt_block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
         {% endif %}
     UNION ALL
     SELECT 'v2' AS version
@@ -282,7 +282,7 @@ WITH zora_trades AS (
     , NULL AS royalty_fee_receive_address
     FROM {{ source('zora_ethereum','AuctionHouse_evt_AuctionEnded') }} z2_ae
     {% if is_incremental() %}
-    WHERE z2_ae.evt_block_time >= date_trunc("day", now() - interval '1 week')
+    WHERE z2_ae.evt_block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
     {% endif %}
     UNION ALL
     SELECT 'v1' AS version
@@ -304,7 +304,7 @@ WITH zora_trades AS (
         AND z1_bf.evt_tx_hash = z1_mt.evt_tx_hash
         AND z1_bf.tokenId = z1_mt.tokenId
     {% if is_incremental() %}
-    AND z1_mt.evt_block_time >= date_trunc("day", now() - interval '1 week')
+    AND z1_mt.evt_block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
     {% endif %}
     WHERE get_json_object(z1_bf.bid, '$.bidder') != 0xe468ce99444174bd3bbbed09209577d25d1ad673
     )
@@ -358,7 +358,7 @@ FROM zora_trades zt
 LEFT JOIN {{ source('ethereum','transactions') }} et ON et.block_time=zt.block_time
     AND et.hash=zt.tx_hash
     {% if is_incremental() %}
-    AND et.block_time >= date_trunc("day", now() - interval '1 week')
+    AND et.block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
     {% endif %}
 LEFT JOIN {{ ref('nft_aggregators') }} agg ON agg.blockchain='ethereum'
     AND agg.contract_address=et.to
@@ -368,7 +368,7 @@ LEFT JOIN {{ source('erc721_ethereum','evt_transfer') }} erc721 ON erc721.evt_bl
     AND erc721.tokenId=zt.token_id
     AND erc721.to=zt.buyer
     {% if is_incremental() %}
-    AND erc721.evt_block_time >= date_trunc("day", now() - interval '1 week')
+    AND erc721.evt_block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
     {% endif %}
 LEFT JOIN {{ source('prices','usd') }} pu ON pu.blockchain='ethereum'
     AND pu.minute=date_trunc('minute', zt.block_time)
@@ -376,7 +376,7 @@ LEFT JOIN {{ source('prices','usd') }} pu ON pu.blockchain='ethereum'
     OR (pu.contract_address=0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2
     AND zt.currency_contract=0x0000000000000000000000000000000000000000))
     {% if is_incremental() %}
-    AND pu.minute >= date_trunc("day", now() - interval '1 week')
+    AND pu.minute >= date_add('week', -1, CURRENT_TIMESTAMP(6))
     {% endif %}
 LEFT JOIN {{ ref('tokens_nft') }}  nft ON nft.blockchain='ethereum'
     AND nft.contract_address=zt.nft_contract_address
