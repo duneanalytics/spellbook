@@ -515,6 +515,15 @@ models:
       fantom:
         +schema: lifi_fantom
 
+    aragon:
+      +schema: aragon
+      ethereum:
+        +schema: aragon_ethereum
+      gnosis:
+        +schema: aragon_gnosis
+      polygon:
+        +schema: aragon_polygon
+
     spiritswap:
       +schema: spiritswap
       fantom:
