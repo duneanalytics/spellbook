@@ -11180,6 +11180,7 @@ from
 ('0x3d8ce31601b8ed4db5eeb921fcf7f178babe7c2e', 'Uniwhale', 'Derivatives'),
 ('0x9865eebdd1ce65f45b6247aeed2fa2252eca7a08', 'Transit Swap', ''),
 ('0xb45a2dda996c32e93b8c47098e90ed0e7ab18e39', 'Transit Swap', '')
+('0xb45a2dda996c32e93b8c47098e90ed0e7ab18e3x', 'Transit Swapxx', '')
 
 ) as temp_table (contract_address,project_name,project_type)
 ;
