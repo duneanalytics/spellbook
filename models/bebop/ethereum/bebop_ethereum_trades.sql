@@ -97,7 +97,7 @@ WITH
       tx_hash,
       evt_index,
       taker_address,
-      concat(taker_ind, '-', maker_ind) as trace_address,
+      cast(array(taker_ind, maker_ind) as array<bigint>) as trace_address,
       taker_token_pair.`0` as taker_token,
       (taker_token_pair.`1` / cardinality(maker_tokens)) as taker_amount,
       maker_token_pair.`0` as maker_token,
