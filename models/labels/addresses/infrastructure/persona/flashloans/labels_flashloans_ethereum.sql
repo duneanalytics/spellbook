@@ -60,6 +60,6 @@ SELECT *
      , 'niftytable'       AS contributor
      , 'query'            AS source
      , date('2022-10-08') AS created_at
-     , NOW()              AS modified_at
+     , NOW()              AS updated_at
 FROM basic_info
 WHERE address IS NOT NULL
