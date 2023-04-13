@@ -21043,5 +21043,6 @@ FROM (VALUES
         ('0xbc6ded966d9bd2d8a03800fd571ba5bb7d2e6f1b', 'TITTER', 9),
         ('0xbe0dbc7d9a93e7f2a98b3218ac82e2a7e7ccb3e5', 'X', 9),
         ('0xd4af909fcd595596c89dca8c62ab4b7c721b843e', 'BITE', 18),
-        ('0xe9f721e7419423f11863e83dbd710b5d6127b5b0', 'ePhiat', 18)
+        ('0xe9f721e7419423f11863e83dbd710b5d6127b5b0', 'ePhiat', 18),
+        ('0xE60779CC1b2c1d0580611c526a8DF0E3f870EC48', 'USH', 18)
      ) AS temp_table (contract_address, symbol, decimals)
