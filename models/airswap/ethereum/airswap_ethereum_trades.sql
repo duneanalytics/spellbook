@@ -102,6 +102,7 @@ WHERE evt_block_time >= CAST(date_add('week', -1, CURRENT_TIMESTAMP(6)) AS TIMES
 {% endif %}
 )
 SELECT
+
 'ethereum' AS blockchain
 ,'airswap' AS project
 ,version
