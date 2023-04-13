@@ -39,7 +39,7 @@ WITH trades AS (
         AND evt_block_time >= '{{nft_start_date}}'
         {% endif %}
         {% if is_incremental() %}
-        AND evt_block_time >= date_trunc("day", now() - interval '7 day')
+        AND evt_block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
         {% endif %}
 
     UNION ALL
@@ -67,7 +67,7 @@ WITH trades AS (
         AND evt_block_time >= '{{nft_start_date}}'
         {% endif %}
         {% if is_incremental() %}
-        AND evt_block_time >= date_trunc("day", now() - interval '7 day')
+        AND evt_block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
         {% endif %}
 )
 
@@ -118,7 +118,7 @@ INNER JOIN {{ source('polygon','transactions') }} t ON a.evt_block_number = t.bl
     AND t.block_time >= '{{nft_start_date}}'
     {% endif %}
     {% if is_incremental() %}
-    AND t.block_time >= date_trunc("day", now() - interval '7 day')
+    AND t.block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
     {% endif %}
 LEFT JOIN {{ ref('tokens_erc20') }} erc
     ON erc.blockchain = 'polygon'
@@ -128,7 +128,7 @@ LEFT JOIN {{ source('prices', 'usd') }} p
     ON p.blockchain = 'polygon'
     AND p.contract_address = a.currency_contract
     {% if is_incremental() %}
-    AND p.minute >= date_trunc("day", now() - interval '7 day')
+    AND p.minute >= date_add('week', -1, CURRENT_TIMESTAMP(6))
     {% endif %}
     AND p.minute = date_trunc('minute', a.evt_block_time)
 LEFT JOIN {{ ref('nft_aggregators') }} agg ON agg.blockchain = 'polygon' AND agg.contract_address = t.`to`

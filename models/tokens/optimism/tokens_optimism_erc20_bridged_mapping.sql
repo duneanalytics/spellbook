@@ -55,6 +55,7 @@ GROUP BY 1,2,3,4
 ) map
 
 LEFT JOIN {{ ref('tokens_ethereum_erc20') }} et
+--    ON et.contract_address = cast(map.l1_token as varbinary)
     ON et.contract_address = map.l1_token
 ) fin
 WHERE rnk = 1

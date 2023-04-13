@@ -55,7 +55,7 @@ SELECT
     dai_current_price
 FROM {{ref('gmx_arbitrum_glp_components_base')}}
 {% if is_incremental() %}
-WHERE minute >= date_trunc("day", now() - interval '7 day')
+WHERE minute >= date_add('week', -1, CURRENT_TIMESTAMP(6))
 {% endif %}
 {% if not is_incremental() %}
 WHERE minute >= '{{project_start_date}}'

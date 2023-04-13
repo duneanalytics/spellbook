@@ -90,7 +90,7 @@ WITH dao_wallet AS (
         SELECT i AS ilk
         FROM {{ source('maker_ethereum', 'vat_call_frob') }}
         -- {% if is_incremental() %}
-        -- WHERE call_block_time >= date_trunc("day", now() - interval '7 day')
+        -- WHERE call_block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
         -- {% endif %}
         GROUP BY i
 
@@ -99,7 +99,7 @@ WITH dao_wallet AS (
         SELECT ilk
         FROM {{ source('maker_ethereum', 'spot_call_file') }}
         -- {% if is_incremental() %}
-        -- WHERE call_block_time >= date_trunc("day", now() - interval '7 day')
+        -- WHERE call_block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
         -- {% endif %}
         GROUP BY ilk
 
@@ -108,7 +108,7 @@ WITH dao_wallet AS (
         SELECT ilk
         FROM {{ source('maker_ethereum', 'jug_call_file') }}
         -- {% if is_incremental() %}
-        -- WHERE call_block_time >= date_trunc("day", now() - interval '7 day')
+        -- WHERE call_block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
         -- {% endif %}
         GROUP BY ilk
     )
@@ -251,7 +251,7 @@ WITH dao_wallet AS (
     WHERE LEFT(data, 2) = '0x'
         AND call_success
         -- {% if is_incremental() %}
-        -- AND call_block_time >= date_trunc("day", now() - interval '7 day')
+        -- AND call_block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
         -- {% endif %}
     GROUP BY data
 
@@ -263,7 +263,7 @@ WITH dao_wallet AS (
     WHERE STRING(UNHEX(TRIM('0', RIGHT(i, LENGTH(i)-2)))) LIKE 'PSM%'
         AND call_success
         -- {% if is_incremental() %}
-        -- AND call_block_time >= date_trunc("day", now() - interval '7 day')
+        -- AND call_block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
         -- {% endif %}
     GROUP BY u
 )
@@ -274,7 +274,7 @@ WITH dao_wallet AS (
         ON t."from" = c.contract_address
         AND c.contract_type IN ('FlapFlop')
     -- {% if is_incremental() %}
-    -- WHERE t.block_time >= date_trunc("day", now() - interval '7 day')
+    -- WHERE t.block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
     -- {% endif %}
     GROUP BY t.tx_hash
 )
@@ -285,7 +285,7 @@ WITH dao_wallet AS (
     WHERE call_success
       AND (usr = 0x0048fc4357db3c0f45adea433a07a20769ddb0cf OR usr IN (SELECT wallet_address FROM dao_wallet))
     --   {% if is_incremental() %}
-    --   AND call_block_time >= date_trunc("day", now() - interval '7 day')
+    --   AND call_block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
     --   {% endif %}
     GROUP BY call_tx_hash
         , usr
@@ -300,7 +300,7 @@ WITH dao_wallet AS (
     WHERE vat.dst = 0xa950524441892a31ebddf91d3ceefa04bf454466 -- vow
       AND vat.call_success
     --   {% if is_incremental() %}
-    --   AND vat.call_block_time >= date_trunc("day", now() - interval '7 day')
+    --   AND vat.call_block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
     --   {% endif %}
     GROUP BY vat.call_block_time
         , vat.call_tx_hash
@@ -329,7 +329,7 @@ WITH dao_wallet AS (
     WHERE call_success
       AND usr IN (0xf2e7a5b83525c3017383deed19bb05fe34a62c27) --GUSD interest payment contract
     --   {% if is_incremental() %}
-    --   AND call_block_time >= date_trunc("day", now() - interval '7 day')
+    --   AND call_block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
     --   {% endif %}
     GROUP BY call_tx_hash
         , ilk
@@ -345,7 +345,7 @@ WITH dao_wallet AS (
     WHERE vat.dst = 0xa950524441892a31ebddf91d3ceefa04bf454466 -- vow
       AND vat.call_success
     --   {% if is_incremental() %}
-    --   AND vat.call_block_time >= date_trunc("day", now() - interval '7 day')
+    --   AND vat.call_block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
     --   {% endif %}
     GROUP BY vat.call_block_time
         , vat.call_tx_hash
@@ -377,7 +377,7 @@ WITH dao_wallet AS (
     WHERE call_success
       AND usr IN (0x6c6d4be2223b5d202263515351034861dd9afdb6) --HVB RWA JAR
     --   {% if is_incremental() %}
-    --   AND call_block_time >= date_trunc("day", now() - interval '7 day')
+    --   AND call_block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
     --   {% endif %}
     GROUP BY call_tx_hash
         , ilk
@@ -393,7 +393,7 @@ WITH dao_wallet AS (
     WHERE vat.dst = 0xa950524441892a31ebddf91d3ceefa04bf454466 -- vow
       AND vat.call_success
     --   {% if is_incremental() %}
-    --   AND vat.call_block_time >= date_trunc("day", now() - interval '7 day')
+    --   AND vat.call_block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
     --   {% endif %}
     GROUP BY vat.call_block_time
         , vat.call_tx_hash
@@ -431,7 +431,7 @@ WITH dao_wallet AS (
       AND call_tx_hash NOT IN (SELECT call_tx_hash FROM psm_yield_trxns)
       AND call_tx_hash NOT IN (SELECT call_tx_hash FROM hvb_yield_trxns)
     --   {% if is_incremental() %}
-    --   AND call_block_time >= date_trunc("day", now() - interval '7 day')
+    --   AND call_block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
     --   {% endif %}
     GROUP BY call_block_time
         , call_tx_hash
@@ -443,7 +443,7 @@ WITH dao_wallet AS (
     FROM {{ source('maker_ethereum', 'vow_call_fess') }}
     WHERE call_success
     --   {% if is_incremental() %}
-    --   AND call_block_time >= date_trunc("day", now() - interval '7 day')
+    --   AND call_block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
     --   {% endif %}
     GROUP BY call_block_time
         , call_tx_hash
@@ -486,7 +486,7 @@ WITH dao_wallet AS (
                   , 0x621fe4fde2617ea8ffade08d0ff5a862ad287ec2) --aave d3m, compound v2 d3m
       AND dst = 0xa950524441892a31ebddf91d3ceefa04bf454466    --vow
     --   {% if is_incremental() %}
-    --   AND call_block_time >= date_trunc("day", now() - interval '7 day')
+    --   AND call_block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
     --   {% endif %}
     GROUP BY 1, 2, 3
 )
@@ -506,7 +506,7 @@ WITH dao_wallet AS (
         , LENGTH(i)-2)))) LIKE 'PSM-%'
       AND call_success
     --   {% if is_incremental() %}
-    --   AND call_block_time >= date_trunc("day", now() - interval '7 day')
+    --   AND call_block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
     --   {% endif %}
     GROUP BY 1, 2
 )
@@ -521,7 +521,7 @@ WITH dao_wallet AS (
     WHERE vat.call_success
       AND vat.dst = 0xa950524441892a31ebddf91d3ceefa04bf454466 -- Vow
     --   {% if is_incremental() %}
-    --   AND vat.call_block_time >= date_trunc("day", now() - interval '7 day')
+    --   AND vat.call_block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
     --   {% endif %}
     GROUP BY 1, 2, 3
 )
@@ -555,7 +555,7 @@ WITH dao_wallet AS (
       AND vat.call_success
       AND vat.src NOT IN (SELECT contract_address FROM contracts WHERE contract_type = 'PSM')
     --   {% if is_incremental() %}
-    --   AND vat.call_block_time >= date_trunc("day", now() - interval '7 day')
+    --   AND vat.call_block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
     --   {% endif %}
     GROUP BY 1, 2
 )
@@ -582,7 +582,7 @@ WITH dao_wallet AS (
     WHERE src = 0xa950524441892a31ebddf91d3ceefa04bf454466 -- vow
       AND call_success
     --   {% if is_incremental() %}
-    --   AND call_block_time >= date_trunc("day", now() - interval '7 day')
+    --   AND call_block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
     --   {% endif %}
     GROUP BY 1, 2
 )
@@ -612,7 +612,7 @@ WITH dao_wallet AS (
     WHERE call_success
       AND dart <> 0.0
     --   {% if is_incremental() %}
-    --   AND call_block_time >= date_trunc("day", now() - interval '7 day')
+    --   AND call_block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
     --   {% endif %}
 
     UNION ALL
@@ -627,7 +627,7 @@ WITH dao_wallet AS (
     WHERE call_success
       AND dart <> 0.0
     --   {% if is_incremental() %}
-    --   AND call_block_time >= date_trunc("day", now() - interval '7 day')
+    --   AND call_block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
     --   {% endif %}
 
     UNION ALL
@@ -642,7 +642,7 @@ WITH dao_wallet AS (
     WHERE call_success
       AND rate <> 0.0
     --   {% if is_incremental() %}
-    --   AND call_block_time >= date_trunc("day", now() - interval '7 day')
+    --   AND call_block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
     --   {% endif %}
 )
 , interest_accruals_2 AS (
@@ -693,7 +693,7 @@ WITH dao_wallet AS (
                 , 0x2cc583c0aacdac9e23cb601fda8f1a0c56cdcb71
                 , 0xa4c22f0e25c6630b2017979acf1f865e94695c4b)
     --   {% if is_incremental() %}
-    --   AND suck.call_block_time >= date_trunc("day", now() - interval '7 day')
+    --   AND suck.call_block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
     --   {% endif %}
     GROUP BY 1
 )
@@ -714,7 +714,7 @@ WITH dao_wallet AS (
         ON dai.usr = dao_wallet.wallet_address
     WHERE dai.call_success
         -- {% if is_incremental() %}
-        -- AND dai.call_block_time >= date_trunc("day", now() - interval '7 day')
+        -- AND dai.call_block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
         -- {% endif %}
 )
 , opex AS (
@@ -742,7 +742,7 @@ WITH dao_wallet AS (
       AND v = 0x197e90f9fad81970ba7976f33cbd77088e5d7cf7 -- Pot
       AND call_success
     --   {% if is_incremental() %}
-    --   AND call_block_time >= date_trunc("day", now() - interval '7 day')
+    --   AND call_block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
     --   {% endif %}
     GROUP BY 1,2
     
@@ -757,7 +757,7 @@ WITH dao_wallet AS (
       AND v = 0x197e90f9fad81970ba7976f33cbd77088e5d7cf7 -- Pot
       AND call_success
     --   {% if is_incremental() %}
-    --   AND call_block_time >= date_trunc("day", now() - interval '7 day')
+    --   AND call_block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
     --   {% endif %}
     GROUP BY 1,2
 )
@@ -774,7 +774,7 @@ WITH dao_wallet AS (
         , 0xa4c22f0e25c6630b2017979acf1f865e94695c4b)    -- dsr, opex
       AND call_success
     --   {% if is_incremental() %}
-    --   AND call_block_time >= date_trunc("day", now() - interval '7 day')
+    --   AND call_block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
     --   {% endif %}
     GROUP BY 1,2
     
@@ -792,7 +792,7 @@ WITH dao_wallet AS (
         , 0xa4c22f0e25c6630b2017979acf1f865e94695c4b)    -- dsr, opex
       AND call_success
     --   {% if is_incremental() %}
-    --   AND call_block_time >= date_trunc("day", now() - interval '7 day')
+    --   AND call_block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
     --   {% endif %}
     GROUP BY 1,2
 )
@@ -805,7 +805,7 @@ WITH dao_wallet AS (
     WHERE v = 0xa950524441892a31ebddf91d3ceefa04bf454466 -- Vow
       AND call_success
     --   {% if is_incremental() %}
-    --   AND call_block_time >= date_trunc("day", now() - interval '7 day')
+    --   AND call_block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
     --   {% endif %}
     GROUP BY 1,2
     
@@ -819,7 +819,7 @@ WITH dao_wallet AS (
     WHERE v = 0xa950524441892a31ebddf91d3ceefa04bf454466 -- Vow
       AND call_success
     --   {% if is_incremental() %}
-    --   AND call_block_time >= date_trunc("day", now() - interval '7 day')
+    --   AND call_block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
     --   {% endif %}
     GROUP BY 1,2
 )
@@ -831,7 +831,7 @@ WITH dao_wallet AS (
     WHERE call_success
       AND src = 0x197e90f9fad81970ba7976f33cbd77088e5d7cf7
     --   {% if is_incremental() %}
-    --   AND call_block_time >= date_trunc("day", now() - interval '7 day')
+    --   AND call_block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
     --   {% endif %}
 
     UNION ALL
@@ -843,7 +843,7 @@ WITH dao_wallet AS (
     WHERE call_success
       AND dst = 0x197e90f9fad81970ba7976f33cbd77088e5d7cf7
     --   {% if is_incremental() %}
-    --   AND call_block_time >= date_trunc("day", now() - interval '7 day')
+    --   AND call_block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
     --   {% endif %}
 )
 , dsr_flows AS (
@@ -871,7 +871,7 @@ WITH dao_wallet AS (
         ON evt.contract_address = t.contract_address
     WHERE evt.to = 0xbe8e3e3618f7474f8cb1d074a26affef007e98fb
         -- {% if is_incremental() %}
-        -- AND evt.evt_block_time >= date_trunc("day", now() - interval '7 day')
+        -- AND evt.evt_block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
         -- {% endif %}
     GROUP BY 1, 2, 3
     
@@ -886,7 +886,7 @@ WITH dao_wallet AS (
         ON evt.contract_address = t.contract_address
     WHERE evt."from" = 0xbe8e3e3618f7474f8cb1d074a26affef007e98fb
         -- {% if is_incremental() %}
-        -- AND evt.evt_block_time >= date_trunc("day", now() - interval '7 day')
+        -- AND evt.evt_block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
         -- {% endif %}
     GROUP BY 1, 2, 3
 )
@@ -918,7 +918,7 @@ WITH dao_wallet AS (
     WHERE call_success
       AND dart <> 0.0
     --   {% if is_incremental() %}
-    --   AND call_block_time >= date_trunc("day", now() - interval '7 day')
+    --   AND call_block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
     --   {% endif %}
 
     UNION ALL
@@ -932,7 +932,7 @@ WITH dao_wallet AS (
     WHERE call_success
       AND dart <> 0.0
     --   {% if is_incremental() %}
-    --   AND call_block_time >= date_trunc("day", now() - interval '7 day')
+    --   AND call_block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
     --   {% endif %}
 
     UNION ALL
@@ -946,7 +946,7 @@ WITH dao_wallet AS (
     WHERE call_success
       AND rate <> 0.0
     --   {% if is_incremental() %}
-    --   AND call_block_time >= date_trunc("day", now() - interval '7 day')
+    --   AND call_block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
     --   {% endif %}
 )
 */

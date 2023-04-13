@@ -27,7 +27,7 @@ INNER JOIN {{ source('balancer_v2_polygon', 'WeightedPoolFactory_call_create') }
     LATERAL VIEW posexplode(call_create.weights) weights AS pos, normalized_weight
 WHERE tokens.pos = weights.pos
     {% if is_incremental() %}
-    AND registered.evt_block_time >= date_trunc("day", now() - interval '7 day')
+    AND registered.evt_block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
     {% endif %}
 UNION ALL
 
@@ -42,7 +42,7 @@ INNER JOIN {{ source('balancer_v2_polygon', 'WeightedPool2TokensFactory_call_cre
     LATERAL VIEW posexplode(call_create.weights) weights AS pos, normalized_weight
 WHERE tokens.pos = weights.pos
     {% if is_incremental() %}
-    AND registered.evt_block_time >= date_trunc("day", now() - interval '7 day')
+    AND registered.evt_block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
     {% endif %}
 UNION ALL
 
@@ -57,6 +57,6 @@ INNER JOIN {{ source('balancer_v2_polygon', 'WeightedPoolV2Factory_call_create')
     LATERAL VIEW posexplode(call_create.normalizedWeights) weights AS pos, normalized_weight
 WHERE tokens.pos = weights.pos
     {% if is_incremental() %}
-    AND registered.evt_block_time >= date_trunc("day", now() - interval '7 day')
+    AND registered.evt_block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
     {% endif %}
 ;

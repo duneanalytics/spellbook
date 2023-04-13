@@ -32,7 +32,7 @@ with v2 as (
         where s.evt_block_time >= '{{project_start_date}}'
     {% endif %}
     {% if is_incremental() %}
-        where s.evt_block_time >= date_trunc("day", now() - interval '7 day')
+        where s.evt_block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
     {% endif %}
 ),
 prices as (
@@ -42,7 +42,7 @@ prices as (
         and minute >= '{{project_start_date}}'
     {% endif %}
     {% if is_incremental() %}
-        and minute >= date_trunc("day", now() - interval '7 day')
+        and minute >= date_add('week', -1, CURRENT_TIMESTAMP(6))
     {% endif %}
 )
 
@@ -84,7 +84,7 @@ inner join {{ source('gnosis', 'transactions') }} tx
     and tx.block_time >= '{{project_start_date}}'
     {% endif %}
     {% if is_incremental() %}
-    and tx.block_time >= date_trunc("day", now() - interval '7 day')
+    and tx.block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
     {% endif %}
 left join {{ ref('tokens_erc20') }} erc20a
     on trades.token_bought_address = erc20a.contract_address

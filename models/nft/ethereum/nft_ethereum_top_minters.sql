@@ -20,7 +20,7 @@ WITH weekly_unique_minter_nft_address AS
     FROM 
         {{ ref('nft_mints') }}
     WHERE 
-        block_time >= date_trunc("day", now() - interval '7 day')
+        block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
         AND blockchain = 'ethereum'
         AND currency_symbol IN ('WETH', 'ETH')
         AND amount_original IS NOT NULL

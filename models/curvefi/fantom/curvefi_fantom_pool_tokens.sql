@@ -16,7 +16,7 @@ base_pools as ( -- this gets the base pools deployed on curvefi
         FROM 
         {{ source('curvefi_fantom', 'StableSwap_Factory_evt_BasePoolAdded') }}
         {% if is_incremental() %}
-        WHERE evt_block_time >= date_trunc("day", now() - interval '7 day')
+        WHERE evt_block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
         {% endif %}
 ), 
 
@@ -118,7 +118,7 @@ plain_pools as ( -- getting plain pools data
             {{ source('curvefi_fantom', 'StableSwap_Factory_call_deploy_plain_pool') }}
             WHERE call_success = true 
             {% if is_incremental() %}
-            AND call_block_time >= date_trunc("day", now() - interval '7 day')
+            AND call_block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
             {% endif %}
         ) x 
         WHERE x.pool IS NOT NULL -- some pools are weirdly having a null output_0 so will enter them manually
@@ -175,7 +175,7 @@ meta_pools as ( -- getting meta pools and their base pools
             {{ source('curvefi_fantom', 'StableSwap_Factory_call_deploy_metapool') }}
             WHERE call_success = true 
             {% if is_incremental() %}
-            AND call_block_time >= date_trunc("day", now() - interval '7 day')
+            AND call_block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
             {% endif %}
 
             UNION ALL
@@ -192,7 +192,7 @@ meta_pools as ( -- getting meta pools and their base pools
                 ON a._base_pool = b.pool
                 AND a.call_success = true 
                 {% if is_incremental() %}
-                AND a.call_block_time >= date_trunc("day", now() - interval '7 day')
+                AND a.call_block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
                 {% endif %}
         ) x 
 ), 

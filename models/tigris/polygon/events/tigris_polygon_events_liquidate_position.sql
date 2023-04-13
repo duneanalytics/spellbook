@@ -25,7 +25,7 @@ liquidate_position_v1 as (
             ON pl._id = op.position_id
             AND op.version = 'v1'
         {% if is_incremental() %}
-        WHERE pl.evt_block_time >= date_trunc("day", now() - interval '7 day')
+        WHERE pl.evt_block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
         {% endif %}
 ),
 
@@ -44,7 +44,7 @@ liquidate_position_v2 as (
             ON pl._id = op.position_id
             AND op.version = 'v2'
         {% if is_incremental() %}
-        WHERE pl.evt_block_time >= date_trunc("day", now() - interval '7 day')
+        WHERE pl.evt_block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
         {% endif %}
 ),
 
@@ -63,7 +63,7 @@ liquidate_position_v3 as (
             ON pl._id = op.position_id
             AND op.version = 'v3'
         {% if is_incremental() %}
-        WHERE pl.evt_block_time >= date_trunc("day", now() - interval '7 day')
+        WHERE pl.evt_block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
         {% endif %}
 ),
 
@@ -82,7 +82,7 @@ liquidate_position_v4 as (
             ON pl._id = op.position_id
             AND op.version = 'v4'
         {% if is_incremental() %}
-        WHERE pl.evt_block_time >= date_trunc("day", now() - interval '7 day')
+        WHERE pl.evt_block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
         {% endif %}
 ),
 
@@ -97,7 +97,7 @@ liquidate_position_v5 as (
         FROM 
         {{ source('tigristrade_polygon', 'TradingV5_evt_PositionLiquidated') }}
         {% if is_incremental() %}
-        WHERE evt_block_time >= date_trunc("day", now() - interval '7 day')
+        WHERE evt_block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
         {% endif %}
 ),
 
@@ -112,7 +112,7 @@ liquidate_position_v6 as (
         FROM 
         {{ source('tigristrade_polygon', 'TradingV6_evt_PositionLiquidated') }}
         {% if is_incremental() %}
-        WHERE evt_block_time >= date_trunc("day", now() - interval '7 day')
+        WHERE evt_block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
         {% endif %}
 ),
 
@@ -127,7 +127,7 @@ liquidate_position_v7 as (
         FROM 
         {{ source('tigristrade_polygon', 'TradingV7_evt_PositionLiquidated') }}
         {% if is_incremental() %}
-        WHERE evt_block_time >= date_trunc("day", now() - interval '7 day')
+        WHERE evt_block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
         {% endif %}
 ),
 
@@ -142,7 +142,7 @@ liquidate_position_v8 as (
         FROM 
         {{ source('tigristrade_polygon', 'TradingV8_evt_PositionLiquidated') }}
         {% if is_incremental() %}
-        WHERE evt_block_time >= date_trunc("day", now() - interval '7 day')
+        WHERE evt_block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
         {% endif %}
 )
 

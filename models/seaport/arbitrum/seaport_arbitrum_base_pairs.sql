@@ -72,7 +72,7 @@ with iv_offer_consideration as (
         where evt_block_time >= date '{{c_seaport_first_date}}'  -- seaport first txn
         {% endif %}
         {% if is_incremental() %}
-        where evt_block_time >= date_trunc("day", now() - interval '7 day')
+        where evt_block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
         {% endif %}
     )
     union all
@@ -132,7 +132,7 @@ with iv_offer_consideration as (
         where evt_block_time >= date '{{c_seaport_first_date}}'  -- seaport first txn
         {% endif %}
         {% if is_incremental() %}
-        where evt_block_time >= date_trunc("day", now() - interval '7 day')
+        where evt_block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
         {% endif %}        
     )
 )

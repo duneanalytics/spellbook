@@ -25,7 +25,7 @@ with source_optimism_transactions as (
     where block_number >= {{min_block_number}}  -- zonic first txn
     {% endif %}
     {% if is_incremental() %}
-    where block_time >= date_trunc("day", now() - interval '7 day')
+    where block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
     {% endif %}
 )
 ,ref_tokens_nft as (
@@ -51,7 +51,7 @@ with source_optimism_transactions as (
       and minute >= '{{project_start_date}}'  -- first txn
     {% endif %}
     {% if is_incremental() %}
-      and minute >= date_trunc("day", now() - interval '7 day')
+      and minute >= date_add('week', -1, CURRENT_TIMESTAMP(6))
     {% endif %}
 )
 ,events_raw as (
@@ -78,7 +78,7 @@ with source_optimism_transactions as (
     where evt_block_time >= '{{project_start_date}}'  -- zonic first txn
     {% endif %}
     {% if is_incremental() %}
-    where evt_block_time >= date_trunc("day", now() - interval '7 day')
+    where evt_block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
     {% endif %}
 )
 ,transfers_raw as (
@@ -107,7 +107,7 @@ with source_optimism_transactions as (
       and tr.tx_block_number >= {{min_block_number}}
       {% endif %}
       {% if is_incremental() %}
-      and tr.tx_block_time >= date_trunc("day", now() - interval '7 day')
+      and tr.tx_block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
       {% endif %}
 
     union all
@@ -137,7 +137,7 @@ with source_optimism_transactions as (
       and erc20.evt_block_number >= {{min_block_number}}
       {% endif %}
       {% if is_incremental() %}
-      and erc20.evt_block_time >= date_trunc("day", now() - interval '7 day')
+      and erc20.evt_block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
       {% endif %}
 )
 ,transfers as (
@@ -227,7 +227,7 @@ left join {{ source('erc721_optimism','evt_transfer') }} as erct2
     and erct2.evt_block_number >= {{min_block_number}}
     {% endif %}
     {% if is_incremental() %}
-    and erct2.evt_block_time >= date_trunc("day", now() - interval '7 day')
+    and erct2.evt_block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
     {% endif %}
 left join {{ source('erc1155_optimism','evt_transfersingle') }} as erc1155
     on erc1155.evt_block_time=er.block_time
@@ -240,7 +240,7 @@ left join {{ source('erc1155_optimism','evt_transfersingle') }} as erc1155
     and erc1155.evt_block_number >= '{{min_block_number}}'
     {% endif %}
     {% if is_incremental() %}
-    and erc1155.evt_block_time >= date_trunc("day", now() - interval '7 day')
+    and erc1155.evt_block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
     {% endif %}
 left join transfers as tr
     on tr.tx_hash = er.tx_hash

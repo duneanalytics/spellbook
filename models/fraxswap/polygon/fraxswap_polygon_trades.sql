@@ -34,7 +34,7 @@ fraxswap_dex AS (
     INNER JOIN {{ source('fraxswap_polygon', 'FraxswapFactory_evt_PairCreated') }} p
         ON t.contract_address = p.pair
     {% if is_incremental() %}
-    WHERE t.evt_block_time >= date_trunc("day", now() - interval '7 day')
+    WHERE t.evt_block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
     {% endif %}
     {% if not is_incremental() %}
     WHERE t.evt_block_time >= '{{ project_start_date }}'
@@ -75,7 +75,7 @@ FROM fraxswap_dex
 INNER JOIN {{ source('polygon', 'transactions') }} tx
     ON fraxswap_dex.tx_hash = tx.hash
     {% if is_incremental() %}
-    AND tx.block_time >= date_trunc("day", now() - interval '7 day')
+    AND tx.block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
     {% endif %}
     {% if not is_incremental() %}
     AND tx.block_time >= '{{project_start_date}}'
@@ -91,7 +91,7 @@ LEFT JOIN {{ source('prices', 'usd') }} p_bought
     AND p_bought.contract_address = fraxswap_dex.token_bought_address
     AND p_bought.blockchain = 'polygon'
     {% if is_incremental() %}
-    AND p_bought.minute >= date_trunc("day", now() - interval '7 day')
+    AND p_bought.minute >= date_add('week', -1, CURRENT_TIMESTAMP(6))
     {% endif %}
     {% if not is_incremental() %}
     AND p_bought.minute >= '{{project_start_date}}'
@@ -101,7 +101,7 @@ LEFT JOIN {{ source('prices', 'usd') }} p_sold
     AND p_sold.contract_address = fraxswap_dex.token_sold_address
     AND p_sold.blockchain = 'polygon'
     {% if is_incremental() %}
-    AND p_sold.minute >= date_trunc("day", now() - interval '7 day')
+    AND p_sold.minute >= date_add('week', -1, CURRENT_TIMESTAMP(6))
     {% endif %}
     {% if not is_incremental() %}
     AND p_sold.minute >= '{{project_start_date}}'

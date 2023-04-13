@@ -52,7 +52,7 @@ LEFT JOIN {{ source('prices', 'usd') }} p ON p.minute = date_trunc('minute', evt
     AND p.symbol = 'UNI'
     AND p.blockchain ='ethereum'
     {% if is_incremental() %}
-    AND p.minute >= date_trunc("day", now() - interval '7 day')
+    AND p.minute >= date_add('week', -1, CURRENT_TIMESTAMP(6))
     {% endif %}
 {% if is_incremental() %}
 WHERE evt_block_time > (select max(block_time) from {{ this }})

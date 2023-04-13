@@ -25,7 +25,7 @@ with registrations as (
         ,evt_index
     from {{ ref('ens_view_registrations') }}
     {% if is_incremental() %}
-    WHERE evt_block_time >= date_trunc("day", now() - interval '7 day')
+    WHERE evt_block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
     {% endif %}
 )
 
@@ -39,7 +39,7 @@ with registrations as (
         ,evt_index
     from {{ source('ethereumnameservice_ethereum','PublicResolver_evt_AddrChanged') }}
     {% if is_incremental() %}
-    WHERE evt_block_time >= date_trunc("day", now() - interval '7 day')
+    WHERE evt_block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
     {% endif %}
 )
 

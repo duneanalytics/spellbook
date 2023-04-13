@@ -41,7 +41,7 @@ with v2 as (
         '1' as orderType
     from {{ source('liquidifty_ethereum', 'MarketplaceV2_5_evt_Buy') }}
     {% if is_incremental() %}
-    where evt_block_time >= date_trunc("day", now() - interval '7 day')
+    where evt_block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
     {% endif %}
 ),
 stack as (
@@ -72,7 +72,7 @@ stack as (
         '1' as orderType
     from {{ source('liquidifty_ethereum', 'PoolSell_evt_Buy') }}
     {% if is_incremental() %}
-    where evt_block_time >= date_trunc("day", now() - interval '7 day')
+    where evt_block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
     {% endif %}
 ),
 v3 as (
@@ -133,13 +133,13 @@ v3 as (
                 select *, explode(orders) as order
                 from {{ source('liquidifty_ethereum', 'MarketplaceV3_call_buy') }}
                 {% if is_incremental() %}
-                where call_block_time >= date_trunc("day", now() - interval '7 day')
+                where call_block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
                 {% endif %}
                 union all
                 select *, explode(orders) as order
                 from {{ source('liquidifty_ethereum', 'MarketplaceV3_deprecated_call_buy') }}
                 {% if is_incremental() %}
-                where call_block_time >= date_trunc("day", now() - interval '7 day')
+                where call_block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
                 {% endif %}
             )
             where call_success
@@ -197,11 +197,11 @@ left join {{ source('prices', 'usd') }} as prices
     and prices.contract_address = buys.currency_contract
     and prices.blockchain = 'ethereum'
     {% if is_incremental() %}
-    and prices.minute >= date_trunc("day", now() - interval '7 day')
+    and prices.minute >= date_add('week', -1, CURRENT_TIMESTAMP(6))
     {% endif %}
 inner join {{ source('ethereum', 'transactions') }} transactions
     on transactions.block_number = buys.block_number
     and transactions.hash = buys.tx_hash
     {% if is_incremental() %}
-    and transactions.block_time >= date_trunc("day", now() - interval '7 day')
+    and transactions.block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
     {% endif %}

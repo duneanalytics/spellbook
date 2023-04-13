@@ -23,7 +23,7 @@ with namespaces as (
         ,count(*) as nfts_minted_in_tx
         from {{ ref('nft_optimism_transfers') }}
         {% if is_incremental() %}
-        where block_time >= date_trunc("day", now() - interval '7 day')
+        where block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
         {% endif %}
     group by 1
 )
@@ -74,7 +74,7 @@ left join {{ source('optimism','transactions') }} as etxs
     on etxs.block_time=nft_mints.block_time
     and etxs.hash=nft_mints.tx_hash
     {% if is_incremental() %}
-    and etxs.block_time >= date_trunc("day", now() - interval '7 day')
+    and etxs.block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
     {% endif %}
 left join {{ ref('tokens_optimism_nft') }} as tok 
     on tok.contract_address=nft_mints.contract_address
@@ -89,20 +89,20 @@ left join {{ source('prices','usd') }} as pu_eth
     and pu_eth.minute=date_trunc('minute', tr.tx_block_time)
     and pu_eth.contract_address='{{eth_address}}'
     {% if is_incremental() %}
-    and pu_eth.minute >= date_trunc("day", now() - interval '7 day')
+    and pu_eth.minute >= date_add('week', -1, CURRENT_TIMESTAMP(6))
     {% endif %}
 left join {{ source('erc20_ethereum','evt_transfer') }} as erc20s 
     on erc20s.evt_block_time=nft_mints.block_time
     and erc20s."from"=nft_mints.to
     {% if is_incremental() %}
-    and erc20s.evt_block_time >= date_trunc("day", now() - interval '7 day')
+    and erc20s.evt_block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
     {% endif %}
 left join {{ source('prices','usd') }} as pu_erc20s 
     on pu_erc20s.blockchain = 'optimism'
     and pu_erc20s.minute = date_trunc('minute', erc20s.evt_block_time)
     and erc20s.contract_address = pu_erc20s.contract_address
     {% if is_incremental() %}
-    and pu_erc20s.minute >= date_trunc("day", now() - interval '7 day')
+    and pu_erc20s.minute >= date_add('week', -1, CURRENT_TIMESTAMP(6))
     {% endif %}
 left join namespaces as ec 
     on etxs.to=ec.address
@@ -113,7 +113,7 @@ left join nfts_per_tx as nft_count
 where 
     nft_mints."from" = 0x0000000000000000000000000000000000000000
     {% if is_incremental() %}
-    and nft_mints.block_time >= date_trunc("day", now() - interval '7 day')
+    and nft_mints.block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
     {% endif %}
     -- to exclude bridged L1 NFT collections to L2
     and bm.contract_address is null 

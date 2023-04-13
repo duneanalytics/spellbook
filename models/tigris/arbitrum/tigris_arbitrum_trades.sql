@@ -31,7 +31,7 @@ open_position as (
         'open_position' as trade_type 
     FROM {{ ref('tigris_arbitrum_events_open_position') }}
     {% if is_incremental() %}
-    WHERE evt_block_time >= date_trunc("day", now() - interval '7 day')
+    WHERE evt_block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
     {% endif %}
 ), 
 
@@ -56,7 +56,7 @@ limit_order as (
         'limit_order' as trade_type 
     FROM {{ ref('tigris_arbitrum_events_limit_order') }}
     {% if is_incremental() %}
-    WHERE evt_block_time >= date_trunc("day", now() - interval '7 day')
+    WHERE evt_block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
     {% endif %}
 ), 
 
@@ -88,7 +88,7 @@ close_position as (
         limit_order lo
         ON c.position_id = lo.position_id
     {% if is_incremental() %}
-    WHERE c.evt_block_time >= date_trunc("day", now() - interval '7 day')
+    WHERE c.evt_block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
     {% endif %}
 
 ), 
@@ -121,7 +121,7 @@ liquidate_position as (
         limit_order lo 
         ON lp.position_id = lo.position_id 
     {% if is_incremental() %}
-    WHERE lp.evt_block_time >= date_trunc("day", now() - interval '7 day')
+    WHERE lp.evt_block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
     {% endif %}
 ),
 
@@ -170,10 +170,10 @@ add_margin as (
                 ON am.position_id = l.position_id 
                 AND am.evt_block_time > l.evt_block_time
                 {% if is_incremental() %}
-                AND l.evt_block_time >= date_trunc("day", now() - interval '7 day')
+                AND l.evt_block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
                 {% endif %}
             {% if is_incremental() %}
-            WHERE am.evt_block_time >= date_trunc("day", now() - interval '7 day')
+            WHERE am.evt_block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
             {% endif %}
             GROUP BY 2, 3, 4, 5, 6, 7, 8, 9, 10, 11
         ) tmp 
@@ -182,7 +182,7 @@ add_margin as (
             ON tmp.position_id = l.position_id
             AND tmp.latest_leverage_time = l.evt_block_time
             {% if is_incremental() %}
-            AND l.evt_block_time >= date_trunc("day", now() - interval '7 day')
+            AND l.evt_block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
             {% endif %}
     ) am  
     LEFT JOIN 
@@ -221,7 +221,7 @@ modify_margin as (
         limit_order lo 
         ON mm.position_id = lo.position_id 
     {% if is_incremental() %}
-    WHERE mm.evt_block_time >= date_trunc("day", now() - interval '7 day')
+    WHERE mm.evt_block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
     {% endif %}
 )
 

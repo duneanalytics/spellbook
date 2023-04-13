@@ -32,7 +32,7 @@ WITH element_txs AS (
         , ee.evt_block_number AS block_number
         FROM {{ source('element_ex_bnb','OrdersFeature_evt_ERC721SellOrderFilled') }} ee
         {% if is_incremental() %}
-        WHERE ee.evt_block_time >= date_trunc("day", now() - interval '7 day')
+        WHERE ee.evt_block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
         {% endif %}
 
         UNION ALL
@@ -59,7 +59,7 @@ WITH element_txs AS (
         , ee.evt_block_number AS block_number
         FROM {{ source('element_ex_bnb','OrdersFeature_evt_ERC721BuyOrderFilled') }} ee
         {% if is_incremental() %}
-        WHERE ee.evt_block_time >= date_trunc("day", now() - interval '7 day')
+        WHERE ee.evt_block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
         {% endif %}
 
         UNION ALL
@@ -86,7 +86,7 @@ WITH element_txs AS (
         , ee.evt_block_number AS block_number
         FROM {{ source('element_ex_bnb','OrdersFeature_evt_ERC1155SellOrderFilled') }} ee
         {% if is_incremental() %}
-        WHERE ee.evt_block_time >= date_trunc("day", now() - interval '7 day')
+        WHERE ee.evt_block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
         {% endif %}
 
         UNION ALL
@@ -113,7 +113,7 @@ WITH element_txs AS (
         , ee.evt_block_number AS block_number
         FROM {{ source('element_ex_bnb','OrdersFeature_evt_ERC1155BuyOrderFilled') }} ee
         {% if is_incremental() %}
-        WHERE ee.evt_block_time >= date_trunc("day", now() - interval '7 day')
+        WHERE ee.evt_block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
         {% endif %}
         )
 
@@ -162,10 +162,10 @@ LEFT JOIN {{ ref('tokens_nft') }} bnb_nft_tokens ON bnb_nft_tokens.contract_addr
 LEFT JOIN {{ source('prices', 'usd') }} prices ON prices.minute=date_trunc('minute', alet.block_time)
     AND (prices.contract_address=alet.currency_contract AND prices.blockchain=alet.blockchain)
         {% if is_incremental() %}
-        AND prices.minute >= date_trunc("day", now() - interval '7 day')
+        AND prices.minute >= date_add('week', -1, CURRENT_TIMESTAMP(6))
         {% endif %}
 LEFT JOIN {{ source('bnb','transactions') }} bt ON bt.hash=alet.tx_hash
     AND bt.block_time=alet.block_time
         {% if is_incremental() %}
-        AND bt.block_time >= date_trunc("day", now() - interval '7 day')
+        AND bt.block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
         {% endif %}

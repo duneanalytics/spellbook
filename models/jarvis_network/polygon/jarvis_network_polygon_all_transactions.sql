@@ -64,7 +64,7 @@ FROM
             evt_index
     FROM {{ source('jarvis_network_polygon','SynthereumMultiLpLiquidityPool_evt_Minted') }}
     {% if is_incremental() %}
-    WHERE evt_block_time >= date_trunc("day", now() - interval '7 day')
+    WHERE evt_block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
     {% endif %}
     {% if not is_incremental() %}
     WHERE evt_block_time >= '{{ project_start_date }}'
@@ -85,7 +85,7 @@ FROM
             evt_index
     FROM {{ source('jarvis_network_polygon','SynthereumMultiLpLiquidityPool_evt_Redeemed') }}
     {% if is_incremental() %}
-    WHERE evt_block_time >= date_trunc("day", now() - interval '7 day')
+    WHERE evt_block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
     {% endif %}
     {% if not is_incremental() %}
     WHERE evt_block_time >= '{{ project_start_date }}'
@@ -106,7 +106,7 @@ FROM
             evt_index
     FROM {{ source('jarvis_network_polygon','SynthereumPoolOnChainPriceFeed_evt_Mint') }}
     {% if is_incremental() %}
-    WHERE evt_block_time >= date_trunc("day", now() - interval '7 day')
+    WHERE evt_block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
     {% endif %}
     {% if not is_incremental() %}
     WHERE evt_block_time >= '{{ project_start_date }}'
@@ -127,7 +127,7 @@ FROM
             evt_index
     FROM {{ source('jarvis_network_polygon','SynthereumPoolOnChainPriceFeed_evt_Redeem') }}
     {% if is_incremental() %}
-    WHERE evt_block_time >= date_trunc("day", now() - interval '7 day')
+    WHERE evt_block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
     {% endif %}
     {% if not is_incremental() %}
     WHERE evt_block_time >= '{{ project_start_date }}'
@@ -148,7 +148,7 @@ FROM
             evt_index
     FROM {{ source('jarvis_network_polygon','SynthereumPoolOnChainPriceFeed_evt_Exchange') }}
     {% if is_incremental() %}
-    WHERE evt_block_time >= date_trunc("day", now() - interval '7 day')
+    WHERE evt_block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
     {% endif %}
     {% if not is_incremental() %}
     WHERE evt_block_time >= '{{ project_start_date }}'
@@ -166,7 +166,7 @@ FROM
       AND pu.minute >= '{{project_start_date}}'
       {% endif %}
       {% if is_incremental() %}
-      AND pu.minute >= date_trunc("day", now() - interval '7 day')
+      AND pu.minute >= date_add('week', -1, CURRENT_TIMESTAMP(6))
       {% endif %}
 ) p
 ;

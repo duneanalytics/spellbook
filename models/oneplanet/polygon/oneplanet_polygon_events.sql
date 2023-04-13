@@ -23,7 +23,7 @@ with source_polygon_transactions as (
     where block_time >= date '{{c_oneplanet_first_date}}'
     {% endif %}
     {% if is_incremental() %}
-    where block_time >= date_trunc("day", now() - interval '7 day')
+    where block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
     {% endif %}
 )
 ,ref_oneplanet_polygon_base_pairs as (
@@ -31,7 +31,7 @@ with source_polygon_transactions as (
       from {{ ref('oneplanet_polygon_base_pairs') }}
       where 1=1
       {% if is_incremental() %}
-            and block_time >= date_trunc("day", now() - interval '7 day')
+            and block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
       {% endif %}
 )
 ,ref_tokens_nft as (
@@ -57,7 +57,7 @@ with source_polygon_transactions as (
       and minute >= date '{{c_oneplanet_first_date}}'
     {% endif %}
     {% if is_incremental() %}
-      and minute >= date_trunc("day", now() - interval '7 day')
+      and minute >= date_add('week', -1, CURRENT_TIMESTAMP(6))
     {% endif %}
 )
 ,iv_base_pairs_priv as (

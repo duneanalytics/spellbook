@@ -22,7 +22,7 @@ WITH namespaces AS (
     , COUNT(*) AS nfts_minted_in_tx
     FROM {{ ref('nft_ethereum_transfers') }}
     {% if is_incremental() %}
-    WHERE block_time >= date_trunc("day", now() - interval '7 day')
+    WHERE block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
     {% endif %}
     GROUP BY tx_hash
     )
@@ -76,29 +76,29 @@ LEFT JOIN {{ source('ethereum','traces') }} et ON et.block_time=nft_mints.block_
     AND et.success
     AND CAST(et.value as DOUBLE) > 0
     {% if is_incremental() %}
-    AND  et.block_time >= date_trunc("day", now() - interval '7 day')
+    AND  et.block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
     {% endif %}
 LEFT JOIN {{ source('prices','usd') }} pu_eth ON pu_eth.blockchain='ethereum'
     AND pu_eth.minute=date_trunc('minute', et.block_time)
     AND pu_eth.contract_address=0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2
     {% if is_incremental() %}
-    AND  pu_eth.minute >= date_trunc("day", now() - interval '7 day')
+    AND  pu_eth.minute >= date_add('week', -1, CURRENT_TIMESTAMP(6))
     {% endif %}
 LEFT JOIN {{ source('erc20_ethereum','evt_transfer') }} erc20s ON erc20s.evt_block_time=nft_mints.block_time
     AND erc20s."from"=nft_mints.to
     {% if is_incremental() %}
-    AND  erc20s.evt_block_time >= date_trunc("day", now() - interval '7 day')
+    AND  erc20s.evt_block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
     {% endif %}
 LEFT JOIN {{ source('prices','usd') }} pu_erc20s ON pu_erc20s.blockchain='ethereum'
     AND pu_erc20s.minute=date_trunc('minute', erc20s.evt_block_time)
     AND erc20s.contract_address=pu_erc20s.contract_address
     {% if is_incremental() %}
-    AND  pu_erc20s.minute >= date_trunc("day", now() - interval '7 day')
+    AND  pu_erc20s.minute >= date_add('week', -1, CURRENT_TIMESTAMP(6))
     {% endif %}
 LEFT JOIN {{ source('ethereum','transactions') }} etxs ON etxs.block_time=nft_mints.block_time
     AND etxs.hash=nft_mints.tx_hash
     {% if is_incremental() %}
-    AND  etxs.block_time >= date_trunc("day", now() - interval '7 day')
+    AND  etxs.block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
     {% endif %}
 LEFT JOIN {{ ref('nft_ethereum_aggregators') }} agg ON etxs.to=agg.contract_address
 LEFT JOIN {{ ref('tokens_ethereum_nft') }} tok ON tok.contract_address=nft_mints.contract_address
@@ -110,7 +110,7 @@ LEFT ANTI JOIN {{this}} anti_txs ON anti_txs.block_time=nft_mints.block_time
 WHERE nft_mints."from"=0x0000000000000000000000000000000000000000
 AND nft_mints.contract_address NOT IN (SELECT address FROM {{ ref('addresses_ethereum_defi') }})
 {% if is_incremental() %}
-AND nft_mints.block_time >= date_trunc("day", now() - interval '7 day')
+AND nft_mints.block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
 {% endif %}
 GROUP BY nft_mints.block_time, nft_mints.block_number, nft_mints.token_id, nft_mints.token_standard
 , nft_mints.amount, nft_mints."from", nft_mints.to, nft_mints.contract_address, etxs.to, nft_mints.evt_index

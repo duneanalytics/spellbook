@@ -41,7 +41,7 @@ WITH limit_order_protocol_rfq_v1 AS
         AND call.call_trace_address = ts.trace_address
         AND call.call_block_number = ts.block_number
         {% if is_incremental() %}
-        AND ts.block_time >= date_trunc("day", now() - interval '7 day')
+        AND ts.block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
         {% else %}
         AND ts.block_time >= '{{project_start_date}}'
         {% endif %}
@@ -51,7 +51,7 @@ WITH limit_order_protocol_rfq_v1 AS
         AND call.call_block_number = tf1.block_number
         AND CONCAT(COALESCE(call.call_trace_address, CAST(ARRAY() as array<long>)), ARRAY((ts.sub_traces - 2))) = tf1.trace_address
         {% if is_incremental() %}
-        AND tf1.block_time >= date_trunc("day", now() - interval '7 day')
+        AND tf1.block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
         {% else %}
         AND tf1.block_time >= '{{project_start_date}}'
         {% endif %}
@@ -61,14 +61,14 @@ WITH limit_order_protocol_rfq_v1 AS
         AND call.call_block_number = tf2.block_number
         AND CONCAT(COALESCE(call.call_trace_address, CAST(ARRAY() as array<long>)), ARRAY((ts.sub_traces - 1))) = tf2.trace_address
         {% if is_incremental() %}
-        AND tf2.block_time >= date_trunc("day", now() - interval '7 day')
+        AND tf2.block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
         {% else %}
         AND tf2.block_time >= '{{project_start_date}}'
         {% endif %}
     WHERE
         call.call_success
         {% if is_incremental() %}
-        AND call.call_block_time >= date_trunc("day", now() - interval '7 day')
+        AND call.call_block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
         {% else %}
         AND call.call_block_time >= '{{project_start_date}}'
         {% endif %}
@@ -140,7 +140,7 @@ INNER JOIN {{ source('ethereum', 'transactions') }} as tx
     ON src.tx_hash = tx.hash
     AND src.block_number = tx.block_number
     {% if is_incremental() %}
-    AND tx.block_time >= date_trunc("day", now() - interval '7 day')
+    AND tx.block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
     {% else %}
     AND tx.block_time >= '{{project_start_date}}'
     {% endif %}
@@ -155,7 +155,7 @@ LEFT JOIN {{ source('prices', 'usd') }} as prices_bought
     AND prices_bought.contract_address = src.token_bought_address
     AND prices_bought.blockchain = '{{blockchain}}'
     {% if is_incremental() %}
-    AND prices_bought.minute >= date_trunc("day", now() - interval '7 day')
+    AND prices_bought.minute >= date_add('week', -1, CURRENT_TIMESTAMP(6))
     {% else %}
     AND prices_bought.minute >= '{{project_start_date}}'
     {% endif %}
@@ -164,7 +164,7 @@ LEFT JOIN {{ source('prices', 'usd') }} as prices_sold
     AND prices_sold.contract_address = src.token_sold_address
     AND prices_sold.blockchain = '{{blockchain}}'
     {% if is_incremental() %}
-    AND prices_sold.minute >= date_trunc("day", now() - interval '7 day')
+    AND prices_sold.minute >= date_add('week', -1, CURRENT_TIMESTAMP(6))
     {% else %}
     AND prices_sold.minute >= '{{project_start_date}}'
     {% endif %}
@@ -173,7 +173,7 @@ LEFT JOIN {{ source('prices', 'usd') }} as prices_eth
     AND prices_eth.blockchain is null
     AND prices_eth.symbol = '{{blockchain_symbol}}'
     {% if is_incremental() %}
-    AND prices_eth.minute >= date_trunc("day", now() - interval '7 day')
+    AND prices_eth.minute >= date_add('week', -1, CURRENT_TIMESTAMP(6))
     {% else %}
     AND prices_eth.minute >= '{{project_start_date}}'
     {% endif %}

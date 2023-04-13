@@ -34,7 +34,7 @@ WHERE et.to=0x00000000219ab540356cbb839cbe05303d7705fa
     AND et.block_time >= '2020-10-14'
     {% endif %}
     {% if is_incremental() %}
-    AND et.block_time >= date_trunc("day", now() - interval '7 day')
+    AND et.block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
     {% endif %}
     AND et.value/POWER(10, 18) > 0
 GROUP BY block_time, et.block_number, et."from", ete.entity, ete.entity_unique_name, ete.category, et.tx_hash

@@ -29,10 +29,10 @@ FROM {{ source('erc721_avalanche_c','evt_transfer') }} t
 INNER JOIN {{ source('avalanche_c', 'transactions') }} at ON at.block_number = t.evt_block_number
     AND at.hash = t.evt_tx_hash
     {% if is_incremental() %}
-    AND at.block_time >= date_trunc("day", now() - interval '7 day')
+    AND at.block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
     {% endif %}
 {% if is_incremental() %}
-WHERE t.evt_block_time >= date_trunc("day", now() - interval '7 day')
+WHERE t.evt_block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
 {% endif %}
 
 UNION ALL
@@ -60,10 +60,10 @@ FROM {{ source('erc1155_avalanche_c','evt_transfersingle') }} t
 INNER JOIN {{ source('avalanche_c', 'transactions') }} at ON at.block_number = t.evt_block_number
     AND at.hash = t.evt_tx_hash
     {% if is_incremental() %}
-    AND at.block_time >= date_trunc("day", now() - interval '7 day')
+    AND at.block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
     {% endif %}
 {% if is_incremental() %}
-WHERE t.evt_block_time >= date_trunc("day", now() - interval '7 day')
+WHERE t.evt_block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
 {% endif %}
 
 UNION ALL
@@ -92,14 +92,14 @@ FROM (
             ON t.evt_tx_hash = anti_table.tx_hash
     {% endif %}
     {% if is_incremental() %}
-    WHERE t.evt_block_time >= date_trunc("day", now() - interval '7 day')
+    WHERE t.evt_block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
     {% endif %}
     GROUP BY t.evt_block_time, t.evt_block_number, t.evt_tx_hash, t.contract_address, t."from", t.to, t.evt_index, t.values, t.ids
     ) t
 INNER JOIN  {{ source('avalanche_c', 'transactions') }} at ON at.block_number = t.evt_block_number
     AND at.hash = t.evt_tx_hash
     {% if is_incremental() %}
-    AND at.block_time >= date_trunc("day", now() - interval '7 day')
+    AND at.block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
     {% endif %}
 WHERE ids_and_count.values > 0
 GROUP BY blockchain, t.evt_block_time, t.evt_block_number, t.evt_tx_hash, t.contract_address, t."from", t.to, at."from", t.evt_index, token_id, amount

@@ -34,8 +34,8 @@ WITH events AS (
         AND tx.block_time >= '{{bind_start_date}}'
         {% endif %}
         {% if is_incremental() %}
-        AND bind.call_block_time >= date_trunc("day", now() - interval '7 day')
-        AND tx.block_time >= date_trunc("day", now() - interval '7 day')
+        AND bind.call_block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
+        AND tx.block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
         {% endif %}
 
     UNION ALL
@@ -56,8 +56,8 @@ WITH events AS (
         AND tx.block_time >= '{{bind_start_date}}'
         {% endif %}
         {% if is_incremental() %}
-        AND rebind.call_block_time >= date_trunc("day", now() - interval '7 day')
-        AND tx.block_time >= date_trunc("day", now() - interval '7 day')
+        AND rebind.call_block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
+        AND tx.block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
         {% endif %}
     
     UNION ALL
@@ -78,8 +78,8 @@ WITH events AS (
         AND tx.block_time >= '{{bind_start_date}}'
         {% endif %}
         {% if is_incremental() %}
-        AND unbind.call_block_time >= date_trunc("day", now() - interval '7 day')
-        AND tx.block_time >= date_trunc("day", now() - interval '7 day')
+        AND unbind.call_block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
+        AND tx.block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
         {% endif %}
 ),
 state_with_gaps AS (

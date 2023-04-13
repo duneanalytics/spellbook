@@ -25,7 +25,7 @@ with source_optimism_transactions as (
     where block_time >= '{{c_seaport_first_date}}'  -- seaport first txn
     {% endif %}
     {% if is_incremental() %}
-    where block_time >= date_trunc("day", now() - interval '7 day')
+    where block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
     {% endif %}
 )
 ,ref_nftearth_optimism_base_pairs as (
@@ -33,7 +33,7 @@ with source_optimism_transactions as (
       from {{ ref('nftearth_optimism_base_pairs') }}
       where 1=1
       {% if is_incremental() %}
-            and block_time >= date_trunc("day", now() - interval '7 day')
+            and block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
       {% endif %}
 )
 ,ref_tokens_nft as (
@@ -59,7 +59,7 @@ with source_optimism_transactions as (
       and minute >= '{{c_seaport_first_date}}'  -- seaport first txn
     {% endif %}
     {% if is_incremental() %}
-      and minute >= date_trunc("day", now() - interval '7 day')
+      and minute >= date_add('week', -1, CURRENT_TIMESTAMP(6))
     {% endif %}
 )
 ,iv_base_pairs_priv as (
@@ -264,7 +264,7 @@ with source_optimism_transactions as (
     and evt_block_time >= '{{c_seaport_first_date}}'  -- seaport first txn
     {% endif %}
     {% if is_incremental() %}
-    and evt_block_time >= date_trunc("day", now() - interval '7 day')
+    and evt_block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
     {% endif %}
 )
 ,erc1155_transfer as (
@@ -284,7 +284,7 @@ with source_optimism_transactions as (
     and evt_block_time >= '{{c_seaport_first_date}}'  -- seaport first txn
     {% endif %}
     {% if is_incremental() %}
-    and evt_block_time >= date_trunc("day", now() - interval '7 day')
+    and evt_block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
     {% endif %}
 )
 ,all_transfers as (

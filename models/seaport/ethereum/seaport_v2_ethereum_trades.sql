@@ -27,7 +27,7 @@ with source_ethereum_transactions as (
     where block_time >= date '{{c_seaport_first_date}}'  -- seaport first txn
     {% endif %}
     {% if is_incremental() %}
-    where block_time >= date_trunc("day", now() - interval '7 day')
+    where block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
     {% endif %}
 )
 ,ref_seaport_ethereum_base_pairs as (
@@ -35,7 +35,7 @@ with source_ethereum_transactions as (
       from {{ ref('seaport_ethereum_base_pairs') }}
       where 1=1
       {% if is_incremental() %}
-            and block_time >= date_trunc("day", now() - interval '7 day')
+            and block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
       {% endif %}
 )
 ,ref_tokens_nft as (
@@ -65,7 +65,7 @@ with source_ethereum_transactions as (
       and minute >= date '{{c_seaport_first_date}}'  -- seaport first txn
     {% endif %}
     {% if is_incremental() %}
-      and minute >= date_trunc("day", now() - interval '7 day')
+      and minute >= date_add('week', -1, CURRENT_TIMESTAMP(6))
     {% endif %}
 )
 ,iv_orders_matched AS (

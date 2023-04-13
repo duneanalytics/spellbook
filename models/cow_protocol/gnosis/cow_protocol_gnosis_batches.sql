@@ -34,12 +34,12 @@ batch_counts as (
         left outer join {{ source('gnosis_protocol_v2_gnosis', 'GPv2Settlement_evt_Interaction') }} i
             on i.evt_tx_hash = s.evt_tx_hash
             {% if is_incremental() %}
-            AND i.evt_block_time >= date_trunc("day", now() - interval '7 day')
+            AND i.evt_block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
             {% endif %}
         join cow_protocol_gnosis.solvers
             on solver = address
     {% if is_incremental() %}
-    WHERE s.evt_block_time >= date_trunc("day", now() - interval '7 day')
+    WHERE s.evt_block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
     {% endif %}
     group by s.evt_tx_hash, solver, s.evt_block_time, name
 ),
@@ -57,7 +57,7 @@ batch_values as (
             and p.minute = date_trunc('minute', block_time)
             and blockchain = 'gnosis'
     {% if is_incremental() %}
-    WHERE block_time >= date_trunc("day", now() - interval '7 day')
+    WHERE block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
     {% endif %}
     group by tx_hash, price
 ),
@@ -94,7 +94,7 @@ combined_batch_info as (
         inner join {{ source('gnosis', 'transactions') }} tx
             on evt_tx_hash = hash
             {% if is_incremental() %}
-            AND tx.block_time >= date_trunc("day", now() - interval '7 day')
+            AND tx.block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
             {% endif %}
     where num_trades > 0 --! Exclude Withdraw Batches
 )

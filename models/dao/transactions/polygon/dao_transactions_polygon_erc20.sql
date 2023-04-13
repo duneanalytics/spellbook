@@ -40,7 +40,7 @@ transactions as (
         WHERE evt_block_time >= '{{transactions_start_date}}'
         {% endif %}
         {% if is_incremental() %}
-        WHERE evt_block_time >= date_trunc("day", now() - interval '7 day')
+        WHERE evt_block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
         {% endif %}
         AND to IN (SELECT dao_wallet_address FROM dao_tmp)
 
@@ -62,7 +62,7 @@ transactions as (
         WHERE evt_block_time >= '{{transactions_start_date}}'
         {% endif %}
         {% if is_incremental() %}
-        WHERE evt_block_time >= date_trunc("day", now() - interval '7 day')
+        WHERE evt_block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
         {% endif %}
         AND from IN (SELECT dao_wallet_address FROM dao_tmp)
 )
@@ -102,7 +102,7 @@ LEFT JOIN
     AND p.minute >= '{{transactions_start_date}}'
     {% endif %}
     {% if is_incremental() %}
-    AND p.minute >= date_trunc("day", now() - interval '7 day')
+    AND p.minute >= date_add('week', -1, CURRENT_TIMESTAMP(6))
     {% endif %}
 LEFT JOIN 
 {{ ref('dex_prices') }} dp 
@@ -111,5 +111,5 @@ LEFT JOIN
     AND dp.blockchain = 'polygon'
     AND dp.hour >= '{{transactions_start_date}}'
     {% if is_incremental() %}
-    AND dp.hour >= date_trunc("day", now() - interval '7 day')
+    AND dp.hour >= date_add('week', -1, CURRENT_TIMESTAMP(6))
     {% endif %}

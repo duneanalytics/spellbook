@@ -22,6 +22,6 @@ where buyer is not null
     and seller is not null
     and blockchain is not null
 {% if is_incremental() %}
-and block_time >= date_trunc("day", now() - interval '7 day')
+and block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
 {% endif %}
 GROUP BY 1,2,3

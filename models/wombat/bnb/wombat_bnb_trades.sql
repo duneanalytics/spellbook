@@ -35,7 +35,7 @@ with wombat_swaps_all_pools as (
                 , contract_address
         from {{ swap_evt_table }} t
         {% if is_incremental() %}
-        where evt_block_time >= date_trunc("day", now() - interval '7 day')
+        where evt_block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
         {% endif %}
 
         {% if not loop.last %}
@@ -83,7 +83,7 @@ inner join {{ source('bnb', 'transactions') }} tx
     and tx.block_time >= '{{project_start_date}}'
     {% endif %}
     {% if is_incremental() %}
-    and tx.block_time >= date_trunc("day", now() - interval '7 day')
+    and tx.block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
     {% endif %}
 -- bought tokens
 left join {{ ref('tokens_erc20') }} erc20_b
@@ -102,7 +102,7 @@ left join {{ source('prices', 'usd') }} prices_b
     and prices_b.minute >= '{{project_start_date}}'
     {% endif %}
     {% if is_incremental() %}
-    and prices_b.minute >= date_trunc("day", now() - interval '7 day')
+    and prices_b.minute >= date_add('week', -1, CURRENT_TIMESTAMP(6))
     {% endif %}
 -- price of sold tokens
 left join {{ source('prices', 'usd') }} prices_s
@@ -113,10 +113,10 @@ left join {{ source('prices', 'usd') }} prices_s
     and prices_s.minute >= '{{project_start_date}}'
     {% endif %}
     {% if is_incremental() %}
-    and prices_s.minute >= date_trunc("day", now() - interval '7 day')
+    and prices_s.minute >= date_add('week', -1, CURRENT_TIMESTAMP(6))
     {% endif %}
 where 1 = 1
     {% if is_incremental() %}
-    and s.evt_block_time >= date_trunc("day", now() - interval '7 day')
+    and s.evt_block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
     {% endif %}
 ;

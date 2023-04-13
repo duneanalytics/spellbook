@@ -21,7 +21,7 @@ WITH prices AS (
         FROM {{ source('prices', 'usd') }}
         WHERE blockchain = 'ethereum'
         {% if is_incremental() %}
-        AND minute >= date_trunc("day", now() - interval '7 day')
+        AND minute >= date_add('week', -1, CURRENT_TIMESTAMP(6))
         {% endif %}
         GROUP BY 1, 2
     ),
@@ -35,7 +35,7 @@ WITH prices AS (
         FROM {{ ref('dex_prices') }}
         WHERE blockchain = 'ethereum'
         {% if is_incremental() %}
-        AND hour >= date_trunc("day", now() - interval '7 day')
+        AND hour >= date_add('week', -1, CURRENT_TIMESTAMP(6))
         {% endif %}
         GROUP BY 1, 2
         HAVING SUM(sample_size) > 5
@@ -61,7 +61,7 @@ WITH prices AS (
             cumulative_amount
         FROM {{ ref('balancer_ethereum_balances') }} b
         {% if is_incremental() %}
-        WHERE day >= date_trunc("day", now() - interval '7 day')
+        WHERE day >= date_add('week', -1, CURRENT_TIMESTAMP(6))
         {% endif %}
     ),
     

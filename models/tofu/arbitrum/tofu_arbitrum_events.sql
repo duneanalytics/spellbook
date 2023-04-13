@@ -37,7 +37,7 @@ WITH tff AS (
           FROM {{ source('tofunft_arbitrum', 'MarketNG_call_run') }}
           WHERE call_success = true
               {% if is_incremental() %}
-              and call_block_time >= date_trunc("day", now() - interval '7 day')
+              and call_block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
               {% endif %}
          ) as tmp
 ),
@@ -59,7 +59,7 @@ WITH tff AS (
          from {{ source('tofunft_arbitrum', 'MarketNG_evt_EvInventoryUpdate') }}
          where get_json_object(inventory, '$.status') = '1'
               {% if is_incremental() %}
-              and evt_block_time >= date_trunc("day", now() - interval '7 day')
+              and evt_block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
               {% endif %}
      )
 SELECT 'arbitrum'                                 as blockchain
@@ -126,7 +126,7 @@ FROM tfe
                        AND tx.block_time >= '{{project_start_date}}'
                        {% endif %}
                        {% if is_incremental() %}
-                       and tx.block_time >= date_trunc("day", now() - interval '7 day')
+                       and tx.block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
                        {% endif %}
          LEFT JOIN {{ ref('tokens_nft') }} nft
                    ON tff.token = nft.contract_address
@@ -139,7 +139,7 @@ FROM tfe
                        AND pu.minute >= '{{project_start_date}}'
                        {% endif %}
                        {% if is_incremental() %}
-                       AND pu.minute >= date_trunc("day", now() - interval '7 day')
+                       AND pu.minute >= date_add('week', -1, CURRENT_TIMESTAMP(6))
                        {% endif %}
          LEFT JOIN {{ ref('nft_aggregators')}} agg
                    ON agg.contract_address = tx.`to`

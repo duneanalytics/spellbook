@@ -47,5 +47,5 @@ where et.success = true
     and et.block_time > '2018-11-24' -- for initial query optimisation    
     {% endif %}
     {% if is_incremental() %}
-    and et.block_time > date_trunc("day", now() - interval '7 day')
+    and et.block_time > date_add('week', -1, CURRENT_TIMESTAMP(6))
     {% endif %}

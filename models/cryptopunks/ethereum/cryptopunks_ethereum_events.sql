@@ -146,7 +146,7 @@ from
 
 inner join {{ source('ethereum','transactions') }} tx on a.evt_tx_hash = tx.hash
 {% if is_incremental() %}
-    and tx.block_time >= date_trunc("day", now() - interval '7 day')
+    and tx.block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
 {% endif %}
 
 left join {{ source('prices', 'usd') }} p on p.minute = date_trunc('minute', a.evt_block_time)

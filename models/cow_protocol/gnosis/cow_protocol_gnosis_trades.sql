@@ -38,7 +38,7 @@ trades_with_prices AS (
                                  AND ps.minute = date_trunc('minute', evt_block_time)
                                  AND ps.blockchain = 'gnosis'
                                  {% if is_incremental() %}
-                                 AND ps.minute >= date_trunc("day", now() - interval '7 day')
+                                 AND ps.minute >= date_add('week', -1, CURRENT_TIMESTAMP(6))
                                  {% endif %}
              LEFT OUTER JOIN {{ source('prices', 'usd') }} as pb
                              ON pb.contract_address = (
@@ -50,10 +50,10 @@ trades_with_prices AS (
                                  AND pb.minute = date_trunc('minute', evt_block_time)
                                  AND pb.blockchain = 'gnosis'
                                  {% if is_incremental() %}
-                                 AND pb.minute >= date_trunc("day", now() - interval '7 day')
+                                 AND pb.minute >= date_add('week', -1, CURRENT_TIMESTAMP(6))
                                  {% endif %}
     {% if is_incremental() %}
-    WHERE evt_block_time >= date_trunc("day", now() - interval '7 day')
+    WHERE evt_block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
     {% endif %}
 ),
 -- Second subquery gets token symbol and decimals from tokens.erc20 (to display units bought and sold)
@@ -103,7 +103,7 @@ order_ids as (
     from (  select orderUid, evt_tx_hash, evt_index
             from {{ source('gnosis_protocol_v2_gnosis', 'GPv2Settlement_evt_Trade') }}
              {% if is_incremental() %}
-             where evt_block_time >= date_trunc("day", now() - interval '7 day')
+             where evt_block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
              {% endif %}
                      sort by evt_index
          ) as _
@@ -131,7 +131,7 @@ trade_data as (
     from {{ source('gnosis_protocol_v2_gnosis', 'GPv2Settlement_call_settle') }}
     where call_success = true
     {% if is_incremental() %}
-    AND call_block_time >= date_trunc("day", now() - interval '7 day')
+    AND call_block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
     {% endif %}
 ),
 
