@@ -61,11 +61,11 @@ SELECT
         )                                                             AS amount_usd,
     nomiswap_dex.token_bought_address,
     nomiswap_dex.token_sold_address,
-    coalesce(nomiswap_dex.taker, tx.from)                             AS taker,
+    coalesce(nomiswap_dex.taker, tx."from")                             AS taker,
     nomiswap_dex.maker,
     nomiswap_dex.project_contract_address,
     nomiswap_dex.tx_hash,
-    tx.from                                                           AS tx_from,
+    tx."from"                                                           AS tx_from,
     tx.to                                                             AS tx_to,
     nomiswap_dex.trace_address,
     nomiswap_dex.evt_index

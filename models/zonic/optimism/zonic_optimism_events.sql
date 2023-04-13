@@ -96,7 +96,7 @@ with source_optimism_transactions as (
       on er.tx_hash = tr.tx_hash
       and er.block_number = tr.tx_block_number
       and tr.value_decimal > 0
-      and tr.from in (er.project_contract_address, er.buyer) -- only include transfer from zonic or buyer to royalty fee address
+      and tr."from" in (er.project_contract_address, er.buyer) -- only include transfer from zonic or buyer to royalty fee address
       and tr.to not in (
         lower('{{zonic_fee_address_address}}') --platform fee address
         ,er.seller
@@ -126,7 +126,7 @@ with source_optimism_transactions as (
       on er.tx_hash = erc20.evt_tx_hash
       and er.block_number = erc20.evt_block_number
       and erc20.value is not null
-      and erc20.from in (er.project_contract_address, er.buyer) -- only include transfer from zonic to royalty fee address
+      and erc20."from" in (er.project_contract_address, er.buyer) -- only include transfer from zonic to royalty fee address
       and erc20.to not in (
         lower('{{zonic_fee_address_address}}') --platform fee address
         ,er.seller
@@ -189,7 +189,7 @@ select
     ,er.tx_hash
     ,er.evt_index as evt_index
     ,er.block_number
-    ,tx.from as tx_from
+    ,tx."from" as tx_from
     ,tx.to as tx_to
     ,er.platform_fee_amount_raw
     ,er.platform_fee_amount_raw / power(10, t1.decimals) as platform_fee_amount

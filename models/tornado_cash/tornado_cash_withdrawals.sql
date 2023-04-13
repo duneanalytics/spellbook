@@ -31,7 +31,7 @@ FROM
         , 'ETH' AS currency_symbol
         , 'ethereum' AS blockchain
         , 'classic' AS tornado_version
-        , et.from AS tx_from
+        , et."from" AS tx_from
         , tc.nullifierHash AS nullifier
         , tc.fee/POWER(10, 18) AS fee
         , tc.relayer
@@ -113,7 +113,7 @@ FROM
                 END AS currency_symbol
         , 'ethereum' AS blockchain
         , 'classic' AS tornado_version
-        , et.from AS tx_from
+        , et."from" AS tx_from
         , tc.nullifierHash AS nullifier
         , tc.fee/POWER(10, 18) AS fee
         , tc.relayer
@@ -213,7 +213,7 @@ FROM
                 END AS currency_symbol
         , 'ethereum' AS blockchain
         , 'classic' AS tornado_version
-        , et.from AS tx_from
+        , et."from" AS tx_from
         , tc.nullifierHash AS nullifier
         , tc.fee/POWER(10, 18) AS fee
         , tc.relayer
@@ -269,7 +269,7 @@ FROM
         , 'BNB' AS currency_symbol
         , 'bnb' AS blockchain
         , 'classic' AS tornado_version
-        , bt.from AS tx_from
+        , bt."from" AS tx_from
         , tc.nullifierHash AS nullifier
         , tc.fee/POWER(10, 18) AS fee
         , tc.relayer
@@ -307,7 +307,7 @@ FROM
         , 'xDAI' AS currency_symbol
         , 'gnosis' AS blockchain
         , 'classic' AS tornado_version
-        , gt.from AS tx_from
+        , gt."from" AS tx_from
         , nullifierHash AS nullifier
         , tc.fee/POWER(10, 18) AS fee
         , tc.relayer
@@ -345,7 +345,7 @@ FROM
         , 'ETH' AS currency_symbol
         , 'optimism' AS blockchain
         , 'classic' AS tornado_version
-        , ot.from AS tx_from
+        , ot."from" AS tx_from
         , tc.nullifierHash AS nullifier
         , tc.fee/POWER(10, 18) AS fee
         , tc.relayer
@@ -383,7 +383,7 @@ FROM
         , 'AVAX' AS currency_symbol
         , 'avalanche_c' AS blockchain
         , 'classic' AS tornado_version
-        , at.from AS tx_from
+        , at."from" AS tx_from
         , tc.nullifierHash AS nullifier
         , tc.fee/POWER(10, 18) AS fee
         , tc.relayer
@@ -420,7 +420,7 @@ FROM
         , 'ETH' AS currency_symbol
         , 'arbitrum' AS blockchain
         , 'classic' AS tornado_version
-        , at.from AS tx_from
+        , at."from" AS tx_from
         , tc.nullifierHash AS nullifier
         , tc.fee/POWER(10, 18) AS fee
         , tc.relayer
@@ -458,7 +458,7 @@ FROM
         , 'MATIC' AS currency_symbol
         , 'polygon' AS blockchain
         , 'classic' AS tornado_version
-        , pt.from AS tx_from
+        , pt."from" AS tx_from
         , tc.nullifierHash AS nullifier
         , tc.fee/POWER(10, 18) AS fee
         , tc.relayer

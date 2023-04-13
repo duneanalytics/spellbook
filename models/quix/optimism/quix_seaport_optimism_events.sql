@@ -216,7 +216,7 @@ with source_optimism_transactions as (
 ,iv_trades as (
   select a.*
           ,n.name AS nft_token_name
-          ,t.from as tx_from
+          ,t."from" as tx_from
           ,t.to as tx_to
           ,right(t.data,8) as right_hash
           ,case when a.token_contract_address = '{{c_native_token_address}}' then '{{c_native_symbol}}'
@@ -342,7 +342,7 @@ with source_optimism_transactions as (
     and t.block_number = erc.evt_block_number
     and t.nft_token_id = erc.tokenId
     and t.nft_contract_address = erc.contract_address
-    and t.buyer = erc.from
+    and t.buyer = erc."from"
 )
 select
   *

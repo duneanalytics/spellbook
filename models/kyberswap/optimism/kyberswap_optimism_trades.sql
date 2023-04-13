@@ -162,11 +162,11 @@ SELECT
      )                                                                   AS amount_usd
     ,kyberswap_dex.token_bought_address
     ,kyberswap_dex.token_sold_address
-    ,coalesce(kyberswap_dex.taker, tx.from)                              AS taker
+    ,coalesce(kyberswap_dex.taker, tx."from")                              AS taker
     ,kyberswap_dex.maker
     ,kyberswap_dex.project_contract_address
     ,kyberswap_dex.tx_hash
-    ,tx.from                                                             AS tx_from
+    ,tx."from"                                                             AS tx_from
     ,tx.to                                                               AS tx_to
     ,kyberswap_dex.trace_address
     ,kyberswap_dex.evt_index

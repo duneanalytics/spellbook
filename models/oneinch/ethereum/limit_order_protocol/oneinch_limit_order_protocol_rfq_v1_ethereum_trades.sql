@@ -22,7 +22,7 @@ WITH limit_order_protocol_rfq_v1 AS
         call_block_time as block_time,
         '1inch Limit Order Protocol' AS project,
         'RFQ v1' AS version,
-        ts.from as taker,
+        ts."from" as taker,
         CONCAT('0x', substring(get_json_object(order,'$.makerAssetData'), 35, 40)) AS maker,
         bytea2numeric_v3(substring(tf2.input, 139, 64)) AS token_bought_amount_raw,
         bytea2numeric_v3(substring(tf1.input, 139, 64)) AS token_sold_amount_raw,
@@ -127,11 +127,11 @@ SELECT
     ) AS amount_usd
     ,src.token_bought_address
     ,src.token_sold_address
-    ,coalesce(src.taker, tx.from) AS taker
+    ,coalesce(src.taker, tx."from") AS taker
     ,src.maker
     ,src.project_contract_address
     ,src.tx_hash
-    ,tx.from AS tx_from
+    ,tx."from" AS tx_from
     ,tx.to AS tx_to
     ,CAST(src.trace_address as array<long>) as trace_address
     ,src.evt_index

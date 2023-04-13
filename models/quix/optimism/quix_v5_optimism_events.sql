@@ -49,7 +49,7 @@ with events_raw as (
       on er.tx_hash = tr.tx_hash 
       and er.block_number = tr.tx_block_number
       and tr.value_decimal > 0
-      and tr.from in (er.project_contract_address, er.buyer) -- only include transfer from qx or buyer to royalty fee address
+      and tr."from" in (er.project_contract_address, er.buyer) -- only include transfer from qx or buyer to royalty fee address
       and tr.to not in (
         lower('{{quix_fee_address_address}}') --qx platform fee address
         ,er.seller
@@ -82,7 +82,7 @@ with events_raw as (
       on er.tx_hash = erc20.evt_tx_hash 
       and er.block_number = erc20.evt_block_number 
       and erc20.value is not null 
-      and erc20.from in (er.project_contract_address, er.buyer) -- only include transfer from qx to royalty fee address
+      and erc20."from" in (er.project_contract_address, er.buyer) -- only include transfer from qx to royalty fee address
       and erc20.to not in (
         lower('{{quix_fee_address_address}}') --qx platform fee address
         ,er.seller
@@ -157,7 +157,7 @@ with events_raw as (
         ,er.tx_hash
         ,coalesce(erct2.evt_index,erc1155.evt_index, 1) as evt_index
         ,er.block_number
-        ,tx.from as tx_from
+        ,tx."from" as tx_from
         ,tx.to as tx_to
         ,ROUND((2.5*(er.amount_raw)/100),7) as platform_fee_amount_raw
         ,ROUND((2.5*((er.amount_raw / power(10,t1.decimals)))/100),7) AS platform_fee_amount

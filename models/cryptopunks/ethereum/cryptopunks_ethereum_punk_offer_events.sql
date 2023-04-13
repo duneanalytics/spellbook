@@ -23,7 +23,7 @@ from
 (
         select  'Offered' as event_type
             , punkIndex as punk_id
-            , b.from 
+            , b."from"
             , case when toAddress = 0x0000000000000000000000000000000000000000 then cast(NULL as varchar(5))
                 else toAddress end as to
             , minValue/1e18 as eth_amount
@@ -46,7 +46,7 @@ from
 
         select  'Offer Withdrawn' as event_type
                 , a.punkIndex
-                , b.from  
+                , b."from"
                 , cast(NULL as varchar(5)) as to 
                 , cast(NULL as double) as eth_amount
                 , a.evt_block_time

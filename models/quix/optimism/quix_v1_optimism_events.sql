@@ -125,7 +125,7 @@ with events_raw as (
         ,er.tx_hash
         ,coalesce(erct2.evt_index,1) as evt_index
         ,er.block_number
-        ,tx.from as tx_from
+        ,tx."from" as tx_from
         ,tx.to as tx_to
         ,ROUND((2.5*(er.amount_raw)/100),7) as platform_fee_amount_raw
         ,ROUND((2.5*((er.amount_raw / power(10,t1.decimals)))/100),7) AS platform_fee_amount

@@ -41,7 +41,7 @@ with
       erc1155_values_batch.explode_value,
       erc1155_ids_batch.evt_tx_hash,
       erc1155_ids_batch.to,
-      erc1155_ids_batch.from,
+      erc1155_ids_batch."from",
       erc1155_ids_batch.contract_address,
       erc1155_ids_batch.evt_index,
       erc1155_ids_batch.evt_block_time

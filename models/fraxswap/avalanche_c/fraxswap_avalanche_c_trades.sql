@@ -63,11 +63,11 @@ SELECT
      )                                                                  AS amount_usd
     ,fraxswap_dex.token_bought_address
     ,fraxswap_dex.token_sold_address
-    ,coalesce(fraxswap_dex.taker, tx.from)                              AS taker
+    ,coalesce(fraxswap_dex.taker, tx."from")                              AS taker
     ,fraxswap_dex.maker
     ,fraxswap_dex.project_contract_address
     ,fraxswap_dex.tx_hash
-    ,tx.from                                                            AS tx_from
+    ,tx."from"                                                            AS tx_from
     ,tx.to                                                              AS tx_to
     ,fraxswap_dex.trace_address
     ,fraxswap_dex.evt_index

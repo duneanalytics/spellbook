@@ -17,11 +17,11 @@
 , t.contract_address
 , t.tokenId AS token_id
 , 1 AS amount
-, t.from
+, t."from"
 , t.to
-, gt.from AS executed_by
+, gt."from" AS executed_by
 , t.evt_tx_hash AS tx_hash
-, 'gnosis' || t.evt_tx_hash || '-erc721-' || t.contract_address || '-' || t.tokenId || '-' || t.from || '-' || t.to || '-' || '1' || '-' || t.evt_index AS unique_transfer_id
+, 'gnosis' || t.evt_tx_hash || '-erc721-' || t.contract_address || '-' || t.tokenId || '-' || t."from" || '-' || t.to || '-' || '1' || '-' || t.evt_index AS unique_transfer_id
 FROM {{ source('erc721_gnosis','evt_transfer') }} t
 {% if is_incremental() %}
     ANTI JOIN {{this}} anti_table
@@ -48,11 +48,11 @@ SELECT 'gnosis' as blockchain
 , t.contract_address
 , t.id AS token_id
 , t.value AS amount
-, t.from
+, t."from"
 , t.to
-, gt.from AS executed_by
+, gt."from" AS executed_by
 , t.evt_tx_hash AS tx_hash
-, 'gnosis' || t.evt_tx_hash || '-erc1155-' || t.contract_address || '-' || t.id || '-' || t.from || '-' || t.to || '-' || t.value || '-' || t.evt_index AS unique_transfer_id
+, 'gnosis' || t.evt_tx_hash || '-erc1155-' || t.contract_address || '-' || t.id || '-' || t."from" || '-' || t.to || '-' || t.value || '-' || t.evt_index AS unique_transfer_id
 FROM {{ source('erc1155_gnosis','evt_transfersingle') }} t
 {% if is_incremental() %}
     ANTI JOIN {{this}} anti_table
@@ -79,13 +79,13 @@ SELECT 'gnosis' as blockchain
 , t.contract_address
 , t.ids_and_count.ids AS token_id
 , t.ids_and_count.values AS amount
-, t.from
+, t."from"
 , t.to
-, gt.from AS executed_by
+, gt."from" AS executed_by
 , t.evt_tx_hash AS tx_hash
-, 'gnosis' || t.evt_tx_hash || '-erc1155-' || t.contract_address || '-' || t.ids_and_count.ids || '-' || t.from || '-' || t.to || '-' || t.ids_and_count.values || '-' || t.evt_index AS unique_transfer_id
+, 'gnosis' || t.evt_tx_hash || '-erc1155-' || t.contract_address || '-' || t.ids_and_count.ids || '-' || t."from" || '-' || t.to || '-' || t.ids_and_count.values || '-' || t.evt_index AS unique_transfer_id
 FROM (
-    SELECT t.evt_block_time, t.evt_block_number, t.evt_tx_hash, t.contract_address, t.from, t.to, t.evt_index
+    SELECT t.evt_block_time, t.evt_block_number, t.evt_tx_hash, t.contract_address, t."from", t.to, t.evt_index
     , explode(arrays_zip(t.values, t.ids)) AS ids_and_count
     FROM {{ source('erc1155_gnosis', 'evt_transferbatch') }} t
     {% if is_incremental() %}
@@ -95,7 +95,7 @@ FROM (
     {% if is_incremental() %}
     WHERE t.evt_block_time >= date_trunc("day", now() - interval '1 week')
     {% endif %}
-    GROUP BY t.evt_block_time, t.evt_block_number, t.evt_tx_hash, t.contract_address, t.from, t.to, t.evt_index, t.values, t.ids
+    GROUP BY t.evt_block_time, t.evt_block_number, t.evt_tx_hash, t.contract_address, t."from", t.to, t.evt_index, t.values, t.ids
     ) t
 INNER JOIN {{ source('gnosis', 'transactions') }} gt ON gt.block_number = t.evt_block_number
     AND gt.hash = t.evt_tx_hash
@@ -103,4 +103,4 @@ INNER JOIN {{ source('gnosis', 'transactions') }} gt ON gt.block_number = t.evt_
     AND gt.block_time >= date_trunc("day", now() - interval '1 week')
     {% endif %}
 WHERE t.ids_and_count.values > 0
-GROUP BY blockchain, t.evt_block_time, t.evt_block_number, t.evt_tx_hash, t.contract_address, t.from, t.to, gt.from, t.evt_index, token_id, amount
+GROUP BY blockchain, t.evt_block_time, t.evt_block_number, t.evt_tx_hash, t.contract_address, t."from", t.to, gt."from", t.evt_index, token_id, amount

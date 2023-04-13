@@ -40,7 +40,7 @@ select
     end as method
 from {{ source('goerli', 'traces') }} tr 
 join {{ ref('safe_goerli_safes') }} s
-    on s.address = tr.from
+    on s.address = tr."from"
 join {{ ref('safe_goerli_singletons') }} ss
     on tr.to = ss.address
 where substring(tr.input, 0, 10) in (

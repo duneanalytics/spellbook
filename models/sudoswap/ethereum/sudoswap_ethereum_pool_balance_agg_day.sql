@@ -29,7 +29,7 @@ WITH
     FROM
       {{ source('erc721_ethereum','evt_transfer') }} et
       INNER JOIN pools p ON p.nft_contract_address = et.contract_address
-      AND (et.to = p.pool_address OR et.from = p.pool_address)
+      AND (et.to = p.pool_address OR et."from" = p.pool_address)
     {% if not is_incremental() %}
     WHERE et.evt_block_time >= '{{project_start_date}}'
     {% endif %}
@@ -79,7 +79,7 @@ WITH
           , SUM(tr.value/1e18) as eth_balance_out
         FROM
           {{ source('ethereum','traces') }} tr
-          INNER JOIN pools pc ON pc.pool_address = tr.from
+          INNER JOIN pools pc ON pc.pool_address = tr."from"
         WHERE tr.success = true
           AND tr.type = 'call'
           AND (

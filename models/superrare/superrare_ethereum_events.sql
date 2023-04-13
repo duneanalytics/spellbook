@@ -191,9 +191,9 @@ with all_superrare_sales as (
             , evt.tokenId
             , evt.evt_tx_hash
             , evt.to
-            , evt.from
-            , lag(evt.from) OVER (PARTITION BY evt.contract_address, evt.tokenId ORDER BY evt.evt_block_time asc) as previous_owner
-            , case  when evt.from = lower(0x8c9f364bf7a56ed058fc63ef81c6cf09c833e656)
+            , evt."from"
+            , lag(evt."from") OVER (PARTITION BY evt.contract_address, evt.tokenId ORDER BY evt.evt_block_time asc) as previous_owner
+            , case  when evt."from" = lower(0x8c9f364bf7a56ed058fc63ef81c6cf09c833e656)
                         then 'From Auction House'
                     when evt.to = lower(0x8c9f364bf7a56ed058fc63ef81c6cf09c833e656)
                         then 'To Auction House'
@@ -246,7 +246,7 @@ SELECT distinct
     '' as aggregator_address,
     a.evt_tx_hash as tx_hash,
     t.block_number as block_number,
-    t.from as tx_from,
+    t."from" as tx_from,
     t.to as tx_to,
     ROUND((3 * (a.amount) / 100), 7) as platform_fee_amount_raw,
     ROUND((3 * ((a.amount / 1e18)) / 100), 7) platform_fee_amount,
@@ -334,14 +334,14 @@ inner join {{ source('ethereum','transactions') }} t
     {% endif %}
 left outer join {{ source('erc721_ethereum','evt_transfer') }} evt on evt.contract_address = a.contract_address
     and evt.tokenId = a.tokenId
-    and evt.from = 0x0000000000000000000000000000000000000000
+    and evt."from" = 0x0000000000000000000000000000000000000000
     and evt.evt_tx_hash = a.evt_tx_hash
     {% if is_incremental() %}
     and evt.evt_block_time >= date_trunc("day", now() - interval '1 week')
     {% endif %}
 left outer join {{ source('erc20_ethereum','evt_transfer') }} erc20 on erc20.contract_address = a.contract_address
     and erc20.value = a.tokenId
-    and erc20.from = 0x0000000000000000000000000000000000000000
+    and erc20."from" = 0x0000000000000000000000000000000000000000
     and erc20.evt_tx_hash = a.evt_tx_hash
     {% if is_incremental() %}
     and erc20.evt_block_time >= date_trunc("day", now() - interval '1 week')

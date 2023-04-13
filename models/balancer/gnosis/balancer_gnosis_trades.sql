@@ -69,11 +69,11 @@ select
     ) AS amount_usd,
     token_bought_address,
     token_sold_address,
-    tx.from as taker,
+    tx."from" as taker,
     cast(null as varchar(5)) as maker,
     project_contract_address,
     evt_tx_hash as tx_hash,
-    tx.from as tx_from,
+    tx."from" as tx_from,
     tx.to as tx_to,
     evt_index,
     '' as trace_address

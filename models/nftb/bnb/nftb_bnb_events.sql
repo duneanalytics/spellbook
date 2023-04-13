@@ -91,21 +91,21 @@ AND tr.evt_block_time >= date_trunc("day", now() - interval '1 week')
       --,tr.to 
        ,tr.tokenId as token_id
        ,tr.to as buyer
-       ,CASE WHEN tr.from= 0xdc2f08364ebc6cebe0b487fc47823b1e83ce8550 --- claim contract address
+       ,CASE WHEN tr."from"= 0xdc2f08364ebc6cebe0b487fc47823b1e83ce8550 --- claim contract address
              THEN CONCAT('0x',substr(l1.topic3, 27, 40))
-             WHEN tr.from= 0xe22c90e7816db4344f33c651c7b0a01fcd51a327 -- buy function contract address (explicitly stated)
+             WHEN tr."from"= 0xe22c90e7816db4344f33c651c7b0a01fcd51a327 -- buy function contract address (explicitly stated)
              THEN CONCAT('0x',substr(l2.topic3, 27, 40))
-             WHEN tr.from=0xebd4232e4c1999bc9562802eae01b431d5053e65 -- auction settled contract address (withdraw function)
+             WHEN tr."from"=0xebd4232e4c1999bc9562802eae01b431d5053e65 -- auction settled contract address (withdraw function)
              THEN CONCAT('0x',substr(l3.topic3, 27, 40))
-             ELSE tr.from 
+             ELSE tr."from"
         END  as seller
             
        ,'Trade' as evt_type
        ,CAST(1 AS DECIMAL(38,0)) AS number_of_items
        ,'Single Item Trade' as trade_type
-       ,CASE WHEN tr.from=0xebd4232e4c1999bc9562802eae01b431d5053e65
+       ,CASE WHEN tr."from"=0xebd4232e4c1999bc9562802eae01b431d5053e65
               THEN 'Auction Settled'
-              WHEN tr.from=0xdc2f08364ebc6cebe0b487fc47823b1e83ce8550
+              WHEN tr."from"=0xdc2f08364ebc6cebe0b487fc47823b1e83ce8550
               THEN 'Claim'
               ELSE 'Buy' END as trade_category
        ,'BNB' as currency_symbol
@@ -134,14 +134,14 @@ AND tr1.block_time >= '{{project_start_date}}'
 AND tr1.block_time >= date_trunc("day", now() - interval '1 week')
 {% endif %}
 LEFT JOIN (SELECT 
-                   bt.from as address
+                   bt."from" as address
                   ,tx_hash
                   ,SUM(CAST (value AS DECIMAL(38,0))) AS value
             FROM {{ source ('bnb','traces')}} bt
             WHERE 1=1
-            AND (bt.from=0xebd4232e4c1999bc9562802eae01b431d5053e65 --seller contract address when withdraw function is called
+            AND (bt."from"=0xebd4232e4c1999bc9562802eae01b431d5053e65 --seller contract address when withdraw function is called
             OR
-            bt.from=0xdc2f08364ebc6cebe0b487fc47823b1e83ce8550-- seller contract address when claim function is called
+            bt."from"=0xdc2f08364ebc6cebe0b487fc47823b1e83ce8550-- seller contract address when claim function is called
             )
             AND bt.input='0x'
             AND bt.call_type='call'
@@ -231,7 +231,7 @@ SELECT 'bnb' as blockchain
        , agg.name as aggregator_name
        , agg.contract_address as aggregator_address
         ,ae.tx_hash 
-        ,btx.from as tx_from 
+        ,btx."from" as tx_from
         ,btx.to as tx_to
        
 

@@ -14,7 +14,7 @@ SELECT
     block_number,
     block_time,
     txns.hash AS tx_hash,
-    txns.from AS tx_sender, 
+    txns."from" AS tx_sender,
     txns.to AS tx_receiver,
     'BNB' as native_token_symbol,
     value/1e18 AS tx_amount_native,

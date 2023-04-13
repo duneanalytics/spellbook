@@ -42,7 +42,7 @@ SELECT distinct 'ethereum' AS blockchain
 , CAST(nft_mints.amount AS DECIMAL(38,0)) AS number_of_items
 , 'Mint' AS trade_category
 , 'Mint' AS evt_type
-, nft_mints.from AS seller
+, nft_mints."from" AS seller
 , nft_mints.to AS buyer
 , CAST(COALESCE(SUM(CAST(et.value as DOUBLE)), SUM(CAST(erc20s.value as DOUBLE)), 0)*(nft_mints.amount/nft_count.nfts_minted_in_tx) AS DECIMAL(38,0)) AS amount_raw
 , COALESCE(SUM(CAST(et.value as DOUBLE))/POWER(10, 18), SUM(CAST(erc20s.value as DOUBLE))/POWER(10, pu_erc20s.decimals))*(nft_mints.amount/nft_count.nfts_minted_in_tx) AS amount_original
@@ -54,7 +54,7 @@ SELECT distinct 'ethereum' AS blockchain
 , agg.name AS aggregator_name
 , agg.contract_address AS aggregator_address
 , nft_mints.tx_hash AS tx_hash
-, etxs.from AS tx_from
+, etxs."from" AS tx_from
 , etxs.to AS tx_to
 , CAST(0 AS DOUBLE) AS platform_fee_amount_raw
 , CAST(0 AS DOUBLE) AS platform_fee_amount
@@ -71,7 +71,7 @@ FROM {{ ref('nft_ethereum_transfers') }} nft_mints
 LEFT JOIN nfts_per_tx nft_count ON nft_count.tx_hash=nft_mints.tx_hash
 LEFT JOIN {{ source('ethereum','traces') }} et ON et.block_time=nft_mints.block_time
     AND et.tx_hash=nft_mints.tx_hash
-    AND et.from=nft_mints.to
+    AND et."from"=nft_mints.to
     AND (et.call_type NOT IN ('delegatecall', 'callcode', 'staticcall') OR et.call_type IS NULL)
     AND et.success
     AND CAST(et.value as DOUBLE) > 0
@@ -85,7 +85,7 @@ LEFT JOIN {{ source('prices','usd') }} pu_eth ON pu_eth.blockchain='ethereum'
     AND  pu_eth.minute >= date_trunc("day", now() - interval '1 week')
     {% endif %}
 LEFT JOIN {{ source('erc20_ethereum','evt_transfer') }} erc20s ON erc20s.evt_block_time=nft_mints.block_time
-    AND erc20s.from=nft_mints.to
+    AND erc20s."from"=nft_mints.to
     {% if is_incremental() %}
     AND  erc20s.evt_block_time >= date_trunc("day", now() - interval '1 week')
     {% endif %}
@@ -107,12 +107,12 @@ LEFT JOIN namespaces ec ON etxs.to=ec.address
 LEFT ANTI JOIN {{this}} anti_txs ON anti_txs.block_time=nft_mints.block_time
     AND anti_txs.tx_hash=nft_mints.tx_hash
 {% endif %}
-WHERE nft_mints.from=0x0000000000000000000000000000000000000000
+WHERE nft_mints."from"=0x0000000000000000000000000000000000000000
 AND nft_mints.contract_address NOT IN (SELECT address FROM {{ ref('addresses_ethereum_defi') }})
 {% if is_incremental() %}
 AND nft_mints.block_time >= date_trunc("day", now() - interval '1 week')
 {% endif %}
 GROUP BY nft_mints.block_time, nft_mints.block_number, nft_mints.token_id, nft_mints.token_standard
-, nft_mints.amount, nft_mints.from, nft_mints.to, nft_mints.contract_address, etxs.to, nft_mints.evt_index
-, nft_mints.tx_hash, etxs.from, ec.namespace, tok.name, pu_erc20s.decimals, pu_eth.price, pu_erc20s.price
+, nft_mints.amount, nft_mints."from", nft_mints.to, nft_mints.contract_address, etxs.to, nft_mints.evt_index
+, nft_mints.tx_hash, etxs."from", ec.namespace, tok.name, pu_erc20s.decimals, pu_eth.price, pu_erc20s.price
 , agg.name, agg.contract_address, nft_count.nfts_minted_in_tx, pu_erc20s.symbol, erc20s.contract_address, et.success

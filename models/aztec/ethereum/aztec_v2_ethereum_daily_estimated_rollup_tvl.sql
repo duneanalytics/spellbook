@@ -16,9 +16,9 @@ rollup_balance_changes as (
   select date_trunc('day', t.evt_block_time) as date
     , t.symbol
     , t.contract_address as token_address
-    , sum(case when t.from_type = 'Rollup' then -1 * value_norm when t.to_type = 'Rollup' then value_norm else 0 end) as net_value_norm
+    , sum(case when t."from"_type = 'Rollup' then -1 * value_norm when t.to_type = 'Rollup' then value_norm else 0 end) as net_value_norm
   from {{ref('aztec_v2_ethereum_rollupbridge_transfers')}} t
-  where t.from_type = 'Rollup' or t.to_type = 'Rollup'
+  where t."from"_type = 'Rollup' or t.to_type = 'Rollup'
   group by 1,2,3
 )
 

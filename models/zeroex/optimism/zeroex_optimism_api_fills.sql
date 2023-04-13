@@ -344,7 +344,7 @@ SELECT
         try_cast(date_trunc('day', all_tx.block_time) AS date) AS block_date,
         maker,
         CASE
-            WHEN taker = 0xdef1abe32c034e558cdd535791643c58a13acc10 THEN tx.from
+            WHEN taker = 0xdef1abe32c034e558cdd535791643c58a13acc10 THEN tx."from"
             ELSE taker
         END AS taker, -- fix the user masked by ProxyContract issue
         taker_token,
@@ -367,7 +367,7 @@ SELECT
              THEN (all_tx.taker_token_amount_raw / pow(10, tp.decimals)) * tp.price
              ELSE COALESCE((all_tx.maker_token_amount_raw / pow(10, mp.decimals)) * mp.price, (all_tx.taker_token_amount_raw / pow(10, tp.decimals)) * tp.price)
              END AS volume_usd, 
-        tx.from AS tx_from,
+        tx."from" AS tx_from,
         tx.to AS tx_to,
         'optimism' AS blockchain
 FROM all_tx

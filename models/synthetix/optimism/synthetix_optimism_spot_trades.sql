@@ -24,7 +24,7 @@ WITH dexs AS
         ,'toAddress' AS taker
         ,'' AS maker
         ,t.toAmount AS token_bought_amount_raw 
-        ,t.fromAmount AS token_sold_amount_raw
+        ,t."from"Amount AS token_sold_amount_raw
         ,cast(NULL as double) AS amount_usd
         ,'' AS token_bought_address
         ,'' AS token_sold_address
@@ -66,11 +66,11 @@ SELECT
     ) AS amount_usd
     ,erc20a.contract_address AS token_bought_address
     ,erc20b.contract_address AS token_sold_address
-    ,tx.from AS taker -- subqueries rely on this COALESCE to avoid redundant joins with the transactions table
+    ,tx."from" AS taker -- subqueries rely on this COALESCE to avoid redundant joins with the transactions table
     ,dexs.maker
     ,dexs.project_contract_address
     ,dexs.tx_hash
-    ,tx.from AS tx_from
+    ,tx."from" AS tx_from
     ,tx.to AS tx_to
     ,dexs.trace_address
     ,dexs.evt_index

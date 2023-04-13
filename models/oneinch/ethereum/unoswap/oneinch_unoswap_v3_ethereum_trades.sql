@@ -67,7 +67,7 @@ WITH unoswap AS
         src.call_block_time as block_time,
         '1inch' AS project,
         'UNI v2' AS version,
-        tx.from AS taker,
+        tx."from" AS taker,
         CAST(NULL as string) as maker,
         src.output_returnAmount AS token_bought_amount_raw,
         src.amount AS token_sold_amount_raw,
@@ -87,7 +87,7 @@ WITH unoswap AS
         src.call_tx_hash as tx_hash,
         src.call_trace_address AS trace_address,
         CAST(-1 as integer) AS evt_index,
-        tx.from AS tx_from,
+        tx."from" AS tx_from,
         tx.to AS tx_to
     FROM
         unoswap as src

@@ -153,11 +153,11 @@ SELECT
     ) AS amount_usd
     ,src.token_bought_address
     ,src.token_sold_address
-    ,coalesce(src.taker, tx.from) AS taker
+    ,coalesce(src.taker, tx."from") AS taker
     ,src.maker
     ,src.project_contract_address
     ,src.tx_hash
-    ,tx.from AS tx_from
+    ,tx."from" AS tx_from
     ,tx.to AS tx_to
     ,CAST(src.trace_address as array<long>) as trace_address
     ,src.evt_index

@@ -24,8 +24,8 @@ select
     et.tx_hash,
     array_join(et.trace_address, ',') as trace_address
 from {{ source('optimism', 'traces') }} et
-inner join {{ ref('safe_optimism_safes') }} s on et.from = s.address
-    and et.from != et.to -- exclude calls to self to guarantee unique key property
+inner join {{ ref('safe_optimism_safes') }} s on et."from" = s.address
+    and et."from" != et.to -- exclude calls to self to guarantee unique key property
     and et.success = true
     and (lower(et.call_type) not in ('delegatecall', 'callcode', 'staticcall') or et.call_type is null)
     and et.value > '0' -- value is of type string. exclude 0 value traces
@@ -48,7 +48,7 @@ select
     array_join(et.trace_address, ',') as trace_address
 from {{ source('optimism', 'traces') }} et
 inner join {{ ref('safe_optimism_safes') }} s on et.to = s.address
-    and et.from != et.to -- exclude calls to self to guarantee unique key property
+    and et."from" != et.to -- exclude calls to self to guarantee unique key property
     and et.success = true
     and (lower(et.call_type) not in ('delegatecall', 'callcode', 'staticcall') or et.call_type is null)
     and et.value > '0' -- value is of type string. exclude 0 value traces
@@ -95,7 +95,7 @@ select
     cast(array(r.evt_index) as string) as trace_address
 from {{ source('erc20_optimism', 'evt_Transfer') }} r
 inner join {{ ref('safe_optimism_safes') }} s
-    on r.from = s.address
+    on r."from" = s.address
 where 
     r.contract_address = lower(0xDeadDeAddeAddEAddeadDEaDDEAdDeaDDeAD0000)
     and r.value > '0'

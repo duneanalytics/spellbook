@@ -163,7 +163,7 @@ select
     'Trade' as evt_type,
     buys.seller,
     case
-        when buys.version = 'v3' then transactions.from
+        when buys.version = 'v3' then transactions."from"
         else buys.buyer
     end as buyer,
     cast(buys.amount_raw as decimal(38, 0)) / power(10, erc20.decimals) as amount_original,
@@ -176,7 +176,7 @@ select
     cast(null as varchar(5)) as aggregator_address,
     buys.tx_hash,
     buys.block_number,
-    transactions.from as tx_from,
+    transactions."from" as tx_from,
     transactions.to as tx_to,
     concat(cast(buys.block_number as varchar(5)), '-',buys.tx_hash,'-', cast(in_tx_id as varchar(5))) as unique_trade_id,
     buys.currency_token_standard,

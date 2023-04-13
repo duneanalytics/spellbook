@@ -33,7 +33,7 @@ with node_names as (
 
 --static Node <> Address relations
 , address_nodes as (select distinct
-    tr.from as address,
+    tr."from" as address,
     output as node
     from {{ source('ethereum', 'traces') }} tr
     where success
