@@ -12,7 +12,7 @@ SELECT 'ethereum' as blockchain,
        'soispoke' as contributor,
        'query' AS source,
        date('2022-09-26') as created_at,
-       now() as modified_at,
+       now() as updated_at,
         'contracts' as model_name,
        'identifier' as label_type
 FROM {{ source('ethereum','contracts') }} 
@@ -24,7 +24,7 @@ SELECT 'gnosis' as blockchain,
        'soispoke' as contributor,
        'query' AS source,
        date('2022-09-26') as created_at,
-       now() as modified_at,
+       now() as updated_at,
         'contracts' as model_name,
        'identifier' as label_type
 FROM {{ source('gnosis','contracts') }} 
@@ -36,7 +36,7 @@ SELECT 'avalanche_c' as blockchain,
        'soispoke' as contributor,
        'query' AS source,
        date('2022-09-26') as created_at,
-       now() as modified_at,
+       now() as updated_at,
         'contracts' as model_name,
        'identifier' as label_type
 FROM {{ source('avalanche_c','contracts') }} 
@@ -48,7 +48,7 @@ SELECT 'arbitrum' as blockchain,
        'soispoke' as contributor,
        'query' AS source,
        date('2022-09-26') as created_at,
-       now() as modified_at,
+       now() as updated_at,
        'contracts' as model_name,
        'identifier' as label_type
 FROM {{ source('arbitrum','contracts') }} 
@@ -60,7 +60,7 @@ SELECT 'bnb' as blockchain,
        'soispoke' as contributor,
        'query' AS source,
        date('2022-09-26') as created_at,
-       now() as modified_at,
+       now() as updated_at,
        'contracts' as model_name,
        'identifier' as label_type
 FROM {{ source('bnb','contracts') }} 
@@ -72,7 +72,7 @@ SELECT 'optimism' as blockchain,
        'soispoke' as contributor,
        'query' AS source,
        date('2022-09-26') as created_at,
-       now() as modified_at,
+       now() as updated_at,
        'contracts' as model_name,
        'identifier' as label_type
 FROM {{ source('optimism','contracts') }} 
@@ -84,7 +84,7 @@ SELECT 'fantom' as blockchain,
        'Henrystats' as contributor,
        'query' AS source,
        date('2022-12-18') as created_at,
-       now() as modified_at,
+       now() as updated_at,
        'contracts' as model_name,
        'identifier' as label_type
 FROM {{ source('fantom','contracts') }} 
@@ -96,7 +96,7 @@ SELECT 'polygon' as blockchain,
        'Henrystats' as contributor,
        'query' AS source,
        date('2023-01-27') as created_at,
-       now() as modified_at,
+       now() as updated_at,
        'contracts' as model_name,
        'identifier' as label_type
 FROM {{ source('polygon','contracts') }} 
