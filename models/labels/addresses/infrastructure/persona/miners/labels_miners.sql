@@ -6,7 +6,7 @@
 }}
 
 SELECT DISTINCT 'ethereum' as blockchain,
-       miner, 
+       miner as address,
        'Ethereum Miner' as name,
        'infrastructure' as category,
        'soispoke' as contributor,
@@ -18,7 +18,7 @@ SELECT DISTINCT 'ethereum' as blockchain,
 FROM {{ source('ethereum','blocks') }} 
 UNION 
 SELECT DISTINCT 'gnosis' as blockchain,
-       miner, 
+       miner as address,
        'Gnosis Miner' as name,
        'infrastructure' as category,
        'soispoke' as contributor,
@@ -30,7 +30,7 @@ SELECT DISTINCT 'gnosis' as blockchain,
 FROM {{ source('gnosis','blocks') }} 
 UNION 
 SELECT DISTINCT 'avalanche_c' as blockchain,
-       miner, 
+       miner as address,
        'Avalanche Miner' as name,
        'infrastructure' as category,
        'soispoke' as contributor,
@@ -42,7 +42,7 @@ SELECT DISTINCT 'avalanche_c' as blockchain,
 FROM {{ source('avalanche_c','blocks') }} 
 UNION 
 SELECT DISTINCT 'arbitrum' as blockchain,
-       miner, 
+       miner as address,
        'Arbitrum Miner' as name,
        'infrastructure' as category,
        'soispoke' as contributor,
@@ -54,7 +54,7 @@ SELECT DISTINCT 'arbitrum' as blockchain,
 FROM {{ source('arbitrum','blocks') }} 
 UNION 
 SELECT DISTINCT 'bnb' as blockchain,
-       miner, 
+       miner as address,
        'BNB Chain Miner' as name,
        'infrastructure' as category,
        'soispoke' as contributor,
@@ -66,7 +66,7 @@ SELECT DISTINCT 'bnb' as blockchain,
 FROM {{ source('bnb','blocks') }} 
 UNION 
 SELECT DISTINCT 'optimism' as blockchain,
-       miner, 
+       miner as address,
        'Optimism Miner' as name,
        'infrastructure' as category,
        'soispoke' as contributor,
@@ -78,7 +78,7 @@ SELECT DISTINCT 'optimism' as blockchain,
 FROM {{ source('optimism','blocks') }} 
 UNION 
 SELECT DISTINCT 'fantom' as blockchain,
-       miner, 
+       miner as address,
        'Fantom Miner' as name,
        'infrastructure' as category,
        'soispoke' as contributor,
@@ -90,7 +90,7 @@ SELECT DISTINCT 'fantom' as blockchain,
 FROM {{ source('fantom','blocks') }} 
 UNION 
 SELECT DISTINCT 'polygon' as blockchain,
-       miner, 
+       miner as address,
        'Polygon Miner' as name,
        'infrastructure' as category,
        'soispoke' as contributor,
