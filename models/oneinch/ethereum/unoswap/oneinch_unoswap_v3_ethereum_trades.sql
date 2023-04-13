@@ -33,7 +33,7 @@ WITH unoswap AS
     WHERE
         call_success
         {% if is_incremental() %}
-        AND call_block_time >= date_trunc("day", now() - interval '1 week')
+        AND call_block_time >= date_trunc("day", now() - interval '7 day')
         {% else %}
         AND call_block_time >= '{{project_start_date}}'
         {% endif %}
@@ -55,7 +55,7 @@ WITH unoswap AS
     WHERE
         call_success
         {% if is_incremental() %}
-        AND call_block_time >= date_trunc("day", now() - interval '1 week')
+        AND call_block_time >= date_trunc("day", now() - interval '7 day')
         {% else %}
         AND call_block_time >= '{{project_start_date}}'
         {% endif %}
@@ -67,7 +67,7 @@ WITH unoswap AS
         src.call_block_time as block_time,
         '1inch' AS project,
         'UNI v2' AS version,
-        tx.from AS taker,
+        tx."from" AS taker,
         CAST(NULL as string) as maker,
         src.output_returnAmount AS token_bought_amount_raw,
         src.amount AS token_sold_amount_raw,
@@ -87,7 +87,7 @@ WITH unoswap AS
         src.call_tx_hash as tx_hash,
         src.call_trace_address AS trace_address,
         CAST(-1 as integer) AS evt_index,
-        tx.from AS tx_from,
+        tx."from" AS tx_from,
         tx.to AS tx_to
     FROM
         unoswap as src
@@ -95,7 +95,7 @@ WITH unoswap AS
         ON src.call_tx_hash = tx.hash
         AND src.call_block_number = tx.block_number
         {% if is_incremental() %}
-        AND tx.block_time >= date_trunc("day", now() - interval '1 week')
+        AND tx.block_time >= date_trunc("day", now() - interval '7 day')
         {% else %}
         AND tx.block_time >= '{{project_start_date}}'
         {% endif %}
@@ -119,7 +119,7 @@ WITH unoswap AS
             )
         )
         {% if is_incremental() %}
-        AND ll.block_time >= date_trunc("day", now() - interval '1 week')
+        AND ll.block_time >= date_trunc("day", now() - interval '7 day')
         {% else %}
         AND ll.block_time >= '{{project_start_date}}'
         {% endif %}
@@ -199,7 +199,7 @@ LEFT JOIN {{ source('prices', 'usd') }} as prices_bought
     AND prices_bought.contract_address = src.token_bought_address
     AND prices_bought.blockchain = '{{blockchain}}'
     {% if is_incremental() %}
-    AND prices_bought.minute >= date_trunc("day", now() - interval '1 week')
+    AND prices_bought.minute >= date_trunc("day", now() - interval '7 day')
     {% else %}
     AND prices_bought.minute >= '{{project_start_date}}'
     {% endif %}
@@ -208,7 +208,7 @@ LEFT JOIN {{ source('prices', 'usd') }} as prices_sold
     AND prices_sold.contract_address = src.token_sold_address
     AND prices_sold.blockchain = '{{blockchain}}'
     {% if is_incremental() %}
-    AND prices_sold.minute >= date_trunc("day", now() - interval '1 week')
+    AND prices_sold.minute >= date_trunc("day", now() - interval '7 day')
     {% else %}
     AND prices_sold.minute >= '{{project_start_date}}'
     {% endif %}
@@ -217,7 +217,7 @@ LEFT JOIN {{ source('prices', 'usd') }} as prices_eth
     AND prices_eth.blockchain is null
     AND prices_eth.symbol = '{{blockchain_symbol}}'
     {% if is_incremental() %}
-    AND prices_eth.minute >= date_trunc("day", now() - interval '1 week')
+    AND prices_eth.minute >= date_trunc("day", now() - interval '7 day')
     {% else %}
     AND prices_eth.minute >= '{{project_start_date}}'
     {% endif %}

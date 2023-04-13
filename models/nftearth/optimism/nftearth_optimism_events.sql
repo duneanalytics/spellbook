@@ -25,7 +25,7 @@ with source_optimism_transactions as (
     where block_time >= '{{c_seaport_first_date}}'  -- seaport first txn
     {% endif %}
     {% if is_incremental() %}
-    where block_time >= date_trunc("day", now() - interval '1 week')
+    where block_time >= date_trunc("day", now() - interval '7 day')
     {% endif %}
 )
 ,ref_nftearth_optimism_base_pairs as (
@@ -33,7 +33,7 @@ with source_optimism_transactions as (
       from {{ ref('nftearth_optimism_base_pairs') }}
       where 1=1
       {% if is_incremental() %}
-            and block_time >= date_trunc("day", now() - interval '1 week')
+            and block_time >= date_trunc("day", now() - interval '7 day')
       {% endif %}
 )
 ,ref_tokens_nft as (
@@ -59,7 +59,7 @@ with source_optimism_transactions as (
       and minute >= '{{c_seaport_first_date}}'  -- seaport first txn
     {% endif %}
     {% if is_incremental() %}
-      and minute >= date_trunc("day", now() - interval '1 week')
+      and minute >= date_trunc("day", now() - interval '7 day')
     {% endif %}
 )
 ,iv_base_pairs_priv as (
@@ -216,7 +216,7 @@ with source_optimism_transactions as (
 ,iv_trades as (
   select a.*
           ,n.name AS nft_token_name
-          ,t.from as tx_from
+          ,t."from" as tx_from
           ,t.to as tx_to
           ,right(t.data,8) as right_hash
           ,case when a.token_contract_address = '{{c_native_token_address}}' then '{{c_native_symbol}}'
@@ -264,7 +264,7 @@ with source_optimism_transactions as (
     and evt_block_time >= '{{c_seaport_first_date}}'  -- seaport first txn
     {% endif %}
     {% if is_incremental() %}
-    and evt_block_time >= date_trunc("day", now() - interval '1 week')
+    and evt_block_time >= date_trunc("day", now() - interval '7 day')
     {% endif %}
 )
 ,erc1155_transfer as (
@@ -284,7 +284,7 @@ with source_optimism_transactions as (
     and evt_block_time >= '{{c_seaport_first_date}}'  -- seaport first txn
     {% endif %}
     {% if is_incremental() %}
-    and evt_block_time >= date_trunc("day", now() - interval '1 week')
+    and evt_block_time >= date_trunc("day", now() - interval '7 day')
     {% endif %}
 )
 ,all_transfers as (
@@ -309,7 +309,7 @@ with source_optimism_transactions as (
     -- order info
     ,t.block_date
     ,t.block_time
-    ,case when t.seller = '{{non_buyer_address}}' then erc2.from else t.seller end as seller
+    ,case when t.seller = '{{non_buyer_address}}' then erc2."from" else t.seller end as seller
     ,case when t.buyer = '{{non_buyer_address}}' then erc.to else t.buyer end as buyer
     ,initcap(t.trade_type) as trade_type
     ,initcap(t.order_type) as trade_category -- Buy / Offer Accepted
@@ -379,7 +379,7 @@ with source_optimism_transactions as (
     and t.block_number = erc.evt_block_number
     and t.nft_token_id = erc.tokenId
     and t.nft_contract_address = erc.contract_address
-    and t.buyer = erc.from
+    and t.buyer = erc."from"
   left join all_transfers as erc2
     on t.tx_hash = erc2.evt_tx_hash
     and t.block_number = erc2.evt_block_number

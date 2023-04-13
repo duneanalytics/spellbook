@@ -39,7 +39,7 @@ open_positions_v1 as (
         pairs ta 
             ON t._tradeInfo:asset = ta.asset_id 
         {% if is_incremental() %}
-        WHERE t.evt_block_time >= date_trunc("day", now() - interval '1 week')
+        WHERE t.evt_block_time >= date_trunc("day", now() - interval '7 day')
         {% endif %}
 ), 
 
@@ -65,7 +65,7 @@ open_positions_v2 as (
         pairs ta 
             ON t._tradeInfo:asset = ta.asset_id 
         {% if is_incremental() %}
-        WHERE t.evt_block_time >= date_trunc("day", now() - interval '1 week')
+        WHERE t.evt_block_time >= date_trunc("day", now() - interval '7 day')
         {% endif %}
 ), 
 
@@ -91,7 +91,7 @@ open_positions_v3 as (
         pairs ta 
             ON t._tradeInfo:asset = ta.asset_id 
         {% if is_incremental() %}
-        WHERE t.evt_block_time >= date_trunc("day", now() - interval '1 week')
+        WHERE t.evt_block_time >= date_trunc("day", now() - interval '7 day')
         {% endif %}
 ), 
 
@@ -117,7 +117,7 @@ open_positions_v4 as (
         pairs ta 
             ON t._tradeInfo:asset = ta.asset_id 
         {% if is_incremental() %}
-        WHERE t.evt_block_time >= date_trunc("day", now() - interval '1 week')
+        WHERE t.evt_block_time >= date_trunc("day", now() - interval '7 day')
         {% endif %}
 ),
 
@@ -143,7 +143,7 @@ open_positions_v5 as (
         pairs ta 
             ON t._tradeInfo:asset = ta.asset_id 
         {% if is_incremental() %}
-        WHERE t.evt_block_time >= date_trunc("day", now() - interval '1 week')
+        WHERE t.evt_block_time >= date_trunc("day", now() - interval '7 day')
         {% endif %}
 ), 
 
@@ -169,7 +169,7 @@ open_positions_v6 as (
         pairs ta 
             ON t._tradeInfo:asset = ta.asset_id 
         {% if is_incremental() %}
-        WHERE t.evt_block_time >= date_trunc("day", now() - interval '1 week')
+        WHERE t.evt_block_time >= date_trunc("day", now() - interval '7 day')
         {% endif %}
 ), 
 
@@ -195,7 +195,7 @@ open_positions_v7 as (
         pairs ta 
             ON t._tradeInfo:asset = ta.asset_id 
         {% if is_incremental() %}
-        WHERE t.evt_block_time >= date_trunc("day", now() - interval '1 week')
+        WHERE t.evt_block_time >= date_trunc("day", now() - interval '7 day')
         {% endif %}
 ),
 
@@ -221,7 +221,7 @@ open_positions_v8 as (
         pairs ta 
             ON t._tradeInfo:asset = ta.asset_id 
         {% if is_incremental() %}
-        WHERE t.evt_block_time >= date_trunc("day", now() - interval '1 week')
+        WHERE t.evt_block_time >= date_trunc("day", now() - interval '7 day')
         {% endif %}
 )
 

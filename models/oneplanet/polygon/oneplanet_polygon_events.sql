@@ -23,7 +23,7 @@ with source_polygon_transactions as (
     where block_time >= date '{{c_oneplanet_first_date}}'
     {% endif %}
     {% if is_incremental() %}
-    where block_time >= date_trunc("day", now() - interval '1 week')
+    where block_time >= date_trunc("day", now() - interval '7 day')
     {% endif %}
 )
 ,ref_oneplanet_polygon_base_pairs as (
@@ -31,7 +31,7 @@ with source_polygon_transactions as (
       from {{ ref('oneplanet_polygon_base_pairs') }}
       where 1=1
       {% if is_incremental() %}
-            and block_time >= date_trunc("day", now() - interval '1 week')
+            and block_time >= date_trunc("day", now() - interval '7 day')
       {% endif %}
 )
 ,ref_tokens_nft as (
@@ -57,7 +57,7 @@ with source_polygon_transactions as (
       and minute >= date '{{c_oneplanet_first_date}}'
     {% endif %}
     {% if is_incremental() %}
-      and minute >= date_trunc("day", now() - interval '1 week')
+      and minute >= date_trunc("day", now() - interval '7 day')
     {% endif %}
 )
 ,iv_base_pairs_priv as (
@@ -215,7 +215,7 @@ with source_polygon_transactions as (
 ,iv_trades as (
   select a.*
           ,n.name AS nft_token_name
-          ,t.from as tx_from
+          ,t."from" as tx_from
           ,t.to as tx_to
           ,right(t.data,8) as right_hash
           ,case when a.token_contract_address = '{{c_native_token_address}}' then '{{c_native_symbol}}'

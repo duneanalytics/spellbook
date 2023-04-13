@@ -22,7 +22,7 @@ with sent_transfers as (
     from
         {{ source('erc20_polygon', 'evt_transfer') }}
     {% if is_incremental() %}
-    where evt_block_time >= date_trunc("day", now() - interval '1 week')
+    where evt_block_time >= date_trunc("day", now() - interval '7 day')
     {% endif %}
 ),
 received_transfers as (
@@ -36,7 +36,7 @@ received_transfers as (
     from
         {{ source('erc20_polygon', 'evt_transfer') }}
     {% if is_incremental() %}
-    where evt_block_time >= date_trunc("day", now() - interval '1 week')
+    where evt_block_time >= date_trunc("day", now() - interval '7 day')
     {% endif %}
 ),
 deposited_wmatic as (
@@ -50,7 +50,7 @@ deposited_wmatic as (
     from
         {{ source('mahadao_polygon', 'wmatic_evt_deposit') }}
     {% if is_incremental() %}
-    where evt_block_time >= date_trunc("day", now() - interval '1 week')
+    where evt_block_time >= date_trunc("day", now() - interval '7 day')
     {% endif %}
 ),
 withdrawn_wmatic as (
@@ -64,7 +64,7 @@ withdrawn_wmatic as (
     from
         {{ source('mahadao_polygon', 'wmatic_evt_withdrawal') }}
     {% if is_incremental() %}
-    where evt_block_time >= date_trunc("day", now() - interval '1 week')
+    where evt_block_time >= date_trunc("day", now() - interval '7 day')
     {% endif %}
 )
     

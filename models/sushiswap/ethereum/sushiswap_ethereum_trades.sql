@@ -31,7 +31,7 @@ with dexs as (
         inner join {{ source('sushi_ethereum', 'Factory_evt_PairCreated') }} f 
             on f.pair = t.contract_address
     {% if is_incremental() %}
-    WHERE t.evt_block_time >= date_trunc("day", now() - interval '1 week')
+    WHERE t.evt_block_time >= date_trunc("day", now() - interval '7 day')
     {% else %}
     WHERE t.evt_block_time >= '{{ project_start_date }}'
     {% endif %}
@@ -59,11 +59,11 @@ select
     ) AS amount_usd,
     dexs.token_bought_address,
     dexs.token_sold_address,
-    coalesce(dexs.taker, tx.from) AS taker,
+    coalesce(dexs.taker, tx."from") AS taker,
     dexs.maker,
     dexs.project_contract_address,
     dexs.tx_hash,
-    tx.from AS tx_from,
+    tx."from" AS tx_from,
     tx.to AS tx_to,
     dexs.trace_address,
     dexs.evt_index
@@ -74,7 +74,7 @@ inner join {{ source('ethereum', 'transactions') }} tx
     and tx.block_time >= '{{project_start_date}}'
     {% endif %}
     {% if is_incremental() %}
-    and tx.block_time >= date_trunc("day", now() - interval '1 week')
+    and tx.block_time >= date_trunc("day", now() - interval '7 day')
     {% endif %}
 left join {{ ref('tokens_erc20') }} erc20a 
     on erc20a.contract_address = dexs.token_bought_address 
@@ -90,7 +90,7 @@ left join {{ source('prices', 'usd') }} p_bought
     and p_bought.minute >= '{{project_start_date}}'
     {% endif %}
     {% if is_incremental() %}
-    and p_bought.minute >= date_trunc("day", now() - interval '1 week')
+    and p_bought.minute >= date_trunc("day", now() - interval '7 day')
     {% endif %}
 left join {{ source('prices', 'usd') }} p_sold 
     on p_sold.minute = date_trunc('minute', dexs.block_time)
@@ -100,6 +100,6 @@ left join {{ source('prices', 'usd') }} p_sold
     and p_sold.minute >= '{{project_start_date}}'
     {% endif %}
     {% if is_incremental() %}
-    and p_sold.minute >= date_trunc("day", now() - interval '1 week')
+    and p_sold.minute >= date_trunc("day", now() - interval '7 day')
     {% endif %}
     

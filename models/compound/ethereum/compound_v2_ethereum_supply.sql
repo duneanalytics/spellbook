@@ -32,12 +32,12 @@ with mints as (
     from (
         select * from {{ source('compound_v2_ethereum', 'cErc20_evt_Mint') }}
         {% if is_incremental() %}
-		where evt_block_time >= date_trunc("day", now() - interval '1 week')
+		where evt_block_time >= date_trunc("day", now() - interval '7 day')
 		{% endif %}
         union all
         select * from {{ source('compound_v2_ethereum', 'cEther_evt_Mint') }}
         {% if is_incremental() %}
-		where evt_block_time >= date_trunc("day", now() - interval '1 week')
+		where evt_block_time >= date_trunc("day", now() - interval '7 day')
 		{% endif %}
     ) evt_mint
     left join {{ ref('compound_v2_ethereum_ctokens') }} ctokens
@@ -47,7 +47,7 @@ with mints as (
         and p.contract_address = ctokens.asset_address
         and p.blockchain = 'ethereum'
         {% if is_incremental() %}
-        and p.minute >= date_trunc("day", now() - interval '1 week')
+        and p.minute >= date_trunc("day", now() - interval '7 day')
         {% endif %}
 ),
 redeems as (
@@ -69,12 +69,12 @@ redeems as (
     from (
         select * from {{ source('compound_v2_ethereum', 'cErc20_evt_Redeem') }}
         {% if is_incremental() %}
-		where evt_block_time >= date_trunc("day", now() - interval '1 week')
+		where evt_block_time >= date_trunc("day", now() - interval '7 day')
 		{% endif %}
         union all
         select * from {{ source('compound_v2_ethereum', 'cEther_evt_Redeem') }}
         {% if is_incremental() %}
-		where evt_block_time >= date_trunc("day", now() - interval '1 week')
+		where evt_block_time >= date_trunc("day", now() - interval '7 day')
 		{% endif %}
     ) evt_mint
     left join {{ ref('compound_v2_ethereum_ctokens') }} ctokens
@@ -84,7 +84,7 @@ redeems as (
         and p.contract_address = ctokens.asset_address
         and p.blockchain = 'ethereum'
         {% if is_incremental() %}
-        and p.minute >= date_trunc("day", now() - interval '1 week')
+        and p.minute >= date_trunc("day", now() - interval '7 day')
         {% endif %}
 )
 

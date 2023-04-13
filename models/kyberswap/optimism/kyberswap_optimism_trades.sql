@@ -35,7 +35,7 @@ kyberswap_dex AS (
     INNER JOIN {{ source('kyberswap_optimism', 'DMM_Factory_evt_PoolCreated') }} p
         ON t.contract_address = p.pool
     {% if is_incremental() %}
-    WHERE t.evt_block_time >= date_trunc("day", now() - interval '1 week')
+    WHERE t.evt_block_time >= date_trunc("day", now() - interval '7 day')
     {% else %}
     WHERE t.evt_block_time >= '{{ project_start_date }}'
     {% endif %}
@@ -62,7 +62,7 @@ kyberswap_dex AS (
     INNER JOIN {{ source('kyber_optimism', 'Elastic_Factory_evt_PoolCreated') }} p
         ON t.contract_address = p.pool
     {% if is_incremental() %}
-    WHERE t.evt_block_time >= date_trunc("day", now() - interval '1 week')
+    WHERE t.evt_block_time >= date_trunc("day", now() - interval '7 day')
     {% else %}
     WHERE t.evt_block_time >= '{{ project_start_date }}'
     {% endif %}
@@ -86,7 +86,7 @@ kyberswap_dex AS (
     FROM {{ source('kyber_optimism', 'AggregationRouterV3_evt_Swapped') }}
     WHERE
         {% if is_incremental() %}
-        evt_block_time >= date_trunc("day", now() - interval '1 week')
+        evt_block_time >= date_trunc("day", now() - interval '7 day')
         {% else %}
         evt_block_time >= '{{ project_start_date }}'
         {% endif %}
@@ -110,7 +110,7 @@ kyberswap_dex AS (
     FROM {{ source('kyber_optimism', 'MetaAggregationRouter_evt_Swapped') }}
     WHERE
         {% if is_incremental() %}
-        evt_block_time >= date_trunc("day", now() - interval '1 week')
+        evt_block_time >= date_trunc("day", now() - interval '7 day')
         {% else %}
         evt_block_time >= '{{ project_start_date }}'
         {% endif %}
@@ -134,7 +134,7 @@ kyberswap_dex AS (
     FROM {{ source('kyberswap_optimism', 'MetaAggregationRouter_evt_Swapped') }}
     WHERE
         {% if is_incremental() %}
-        evt_block_time >= date_trunc("day", now() - interval '1 week')
+        evt_block_time >= date_trunc("day", now() - interval '7 day')
         {% else %}
         evt_block_time >= '{{ project_start_date }}'
         {% endif %}
@@ -162,11 +162,11 @@ SELECT
      )                                                                   AS amount_usd
     ,kyberswap_dex.token_bought_address
     ,kyberswap_dex.token_sold_address
-    ,coalesce(kyberswap_dex.taker, tx.from)                              AS taker
+    ,coalesce(kyberswap_dex.taker, tx."from")                              AS taker
     ,kyberswap_dex.maker
     ,kyberswap_dex.project_contract_address
     ,kyberswap_dex.tx_hash
-    ,tx.from                                                             AS tx_from
+    ,tx."from"                                                             AS tx_from
     ,tx.to                                                               AS tx_to
     ,kyberswap_dex.trace_address
     ,kyberswap_dex.evt_index
@@ -174,7 +174,7 @@ FROM kyberswap_dex
 INNER JOIN {{ source('optimism', 'transactions') }} tx
     ON kyberswap_dex.tx_hash = tx.hash
     {% if is_incremental() %}
-    AND tx.block_time >= date_trunc("day", now() - interval '1 week')
+    AND tx.block_time >= date_trunc("day", now() - interval '7 day')
     {% else %}
     AND tx.block_time >= '{{project_start_date}}'
     {% endif %}
@@ -189,7 +189,7 @@ LEFT JOIN {{ source('prices', 'usd') }} p_bought
     AND p_bought.contract_address = kyberswap_dex.token_bought_address
     AND p_bought.blockchain = 'optimism'
     {% if is_incremental() %}
-    AND p_bought.minute >= date_trunc("day", now() - interval '1 week')
+    AND p_bought.minute >= date_trunc("day", now() - interval '7 day')
     {% else %}
     AND p_bought.minute >= '{{project_start_date}}'
     {% endif %}
@@ -198,7 +198,7 @@ LEFT JOIN {{ source('prices', 'usd') }} p_sold
     AND p_sold.contract_address = kyberswap_dex.token_sold_address
     AND p_sold.blockchain = 'optimism'
     {% if is_incremental() %}
-    AND p_sold.minute >= date_trunc("day", now() - interval '1 week')
+    AND p_sold.minute >= date_trunc("day", now() - interval '7 day')
     {% else %}
     AND p_sold.minute >= '{{project_start_date}}'
     {% endif %}

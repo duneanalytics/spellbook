@@ -39,7 +39,7 @@ perp_events as (
     WHERE evt_block_time >= '{{project_start_date}}'
     {% endif %}
     {% if is_incremental() %}
-    WHERE evt_block_time >= date_trunc("day", now() - interval '1 week')
+    WHERE evt_block_time >= date_trunc("day", now() - interval '7 day')
     {% endif %}
 
     UNION ALL 
@@ -66,7 +66,7 @@ perp_events as (
     WHERE evt_block_time >= '{{project_start_date}}'
     {% endif %}
     {% if is_incremental() %}
-    WHERE evt_block_time >= date_trunc("day", now() - interval '1 week')
+    WHERE evt_block_time >= date_trunc("day", now() - interval '7 day')
     {% endif %}
 
     UNION ALL 
@@ -93,7 +93,7 @@ perp_events as (
     WHERE evt_block_time >= '{{project_start_date}}'
     {% endif %}
     {% if is_incremental() %}
-    WHERE evt_block_time >= date_trunc("day", now() - interval '1 week')
+    WHERE evt_block_time >= date_trunc("day", now() - interval '7 day')
     {% endif %}
 )
 
@@ -123,7 +123,7 @@ SELECT
     pe.volume_raw,
     pe.tx_hash,
     txns.to as tx_to,
-    txns.from as tx_from,
+    txns."from" as tx_from,
     pe.evt_index
 FROM 
 perp_events pe 
@@ -134,7 +134,7 @@ INNER JOIN {{ source('arbitrum', 'transactions') }} txns
     AND txns.block_time >= '{{project_start_date}}'
     {% endif %}
     {% if is_incremental() %}
-    AND txns.block_time >= date_trunc("day", now() - interval '1 week')
+    AND txns.block_time >= date_trunc("day", now() - interval '7 day')
     {% endif %}
 LEFT JOIN {{ ref('tokens_erc20') }} erc20a
     ON erc20a.contract_address = pe.virtual_asset

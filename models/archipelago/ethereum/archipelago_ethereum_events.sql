@@ -26,7 +26,7 @@ WITH
             , tradeId as unique_trade_id
         FROM {{ source('archipelago_ethereum','ArchipelagoMarket_evt_Trade') }}
         {% if is_incremental() %}
-        WHERE evt_block_time >= date_trunc("day", now() - interval '1 week')
+        WHERE evt_block_time >= date_trunc("day", now() - interval '7 day')
         {% endif %}
         {% if not is_incremental() %}
         WHERE evt_block_time >= '2022-6-20'
@@ -44,7 +44,7 @@ WITH
             , tradeId as unique_trade_id
         FROM {{ source('archipelago_ethereum','ArchipelagoMarket_evt_TokenTrade') }}
         {% if is_incremental() %}
-        WHERE evt_block_time >= date_trunc("day", now() - interval '1 week')
+        WHERE evt_block_time >= date_trunc("day", now() - interval '7 day')
         {% endif %}
         {% if not is_incremental() %}
         WHERE evt_block_time >= '2022-6-20'
@@ -69,7 +69,7 @@ WITH
                 as is_protocol_fee
         FROM {{ source('archipelago_ethereum','ArchipelagoMarket_evt_RoyaltyPayment') }}
         {% if is_incremental() %}
-        WHERE evt_block_time >= date_trunc("day", now() - interval '1 week')
+        WHERE evt_block_time >= date_trunc("day", now() - interval '7 day')
         {% endif %}
         {% if not is_incremental() %}
         WHERE evt_block_time >= '2022-6-20'
@@ -98,7 +98,7 @@ WITH
             e.*
             , t.nft_contract_address
             , t.token_id
-            , tx.from as tx_from
+            , tx."from" as tx_from
             , tx.to  as tx_to
         from trade_events e
         inner join token_events t
@@ -106,7 +106,7 @@ WITH
         inner join {{ source('ethereum', 'transactions') }} tx
             ON e.block_number = tx.block_number and e.tx_hash = tx.hash
             {% if is_incremental() %}
-            AND tx.block_time >= date_trunc("day", now() - interval '1 week')
+            AND tx.block_time >= date_trunc("day", now() - interval '7 day')
             {% endif %}
             {% if not is_incremental() %}
             AND tx.block_time >= '2022-6-20'
@@ -169,7 +169,7 @@ WITH
             AND p.symbol = 'WETH' -- currently we only have ETH trades
             AND date_trunc('minute', p.minute)=date_trunc('minute', t.block_time)
             {% if is_incremental() %}
-            AND p.minute >= date_trunc("day", now() - interval '1 week')
+            AND p.minute >= date_trunc("day", now() - interval '7 day')
             {% endif %}
             {% if not is_incremental() %}
             AND p.minute >= '2022-4-1'
@@ -202,9 +202,9 @@ SELECT
     , te.token_standard
     , CAST(1 AS DECIMAL(38,0)) as number_of_items
     , 'Single Item Trade' as trade_type
-    , case when te.tx_from = COALESCE(seller_fix.from, te.seller) then 'Offer Accepted' else 'Buy' end as trade_category
+    , case when te.tx_from = COALESCE(seller_fix."from", te.seller) then 'Offer Accepted' else 'Buy' end as trade_category
     , 'Trade' as evt_type
-    , COALESCE(seller_fix.from, te.seller) AS seller
+    , COALESCE(seller_fix."from", te.seller) AS seller
     , COALESCE(buyer_fix.to, te.buyer) AS buyer
     , CAST(te.amount_raw AS DECIMAL(38,0)) AS amount_raw
     , te.amount_original
@@ -236,9 +236,9 @@ left join {{ ref('nft_ethereum_transfers') }} buyer_fix on buyer_fix.block_time=
     and buyer_fix.tx_hash=te.tx_hash
     and te.token_id=buyer_fix.token_id
     and te.buyer=te.aggregator_address
-    and buyer_fix.from=te.aggregator_address
+    and buyer_fix."from"=te.aggregator_address
     {% if is_incremental() %}
-    and buyer_fix.block_time >= date_trunc("day", now() - interval '1 week')
+    and buyer_fix.block_time >= date_trunc("day", now() - interval '7 day')
     {% endif %}
 left join {{ ref('nft_ethereum_transfers') }} seller_fix on seller_fix.block_time=te.block_time
     and te.nft_contract_address=seller_fix.contract_address
@@ -247,5 +247,5 @@ left join {{ ref('nft_ethereum_transfers') }} seller_fix on seller_fix.block_tim
     and te.seller=te.aggregator_address
     and seller_fix.to=te.aggregator_address
     {% if is_incremental() %}
-    and seller_fix.block_time >= date_trunc("day", now() - interval '1 week')
+    and seller_fix.block_time >= date_trunc("day", now() - interval '7 day')
     {% endif %}

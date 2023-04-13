@@ -31,7 +31,7 @@ prize_distribution AS (
       {{ source('pooltogether_v4_ethereum', 'PrizeTierHistoryV2_call_getPrizeTier')}}
     WHERE call_success = true
     {% if is_incremental() %}
-      AND call_block_time >= date_trunc("day", now() - interval '1 week')
+      AND call_block_time >= date_trunc("day", now() - interval '7 day')
     {% endif %}
 
     UNION ALL
@@ -53,7 +53,7 @@ prize_distribution AS (
       {{ source('pooltogether_v4_ethereum', 'PrizeDistributionBuffer_evt_PrizeDistributionSet')}}
     WHERE drawID < 447 --DPR On Ethereum started on draw 447
     {% if is_incremental() %}
-      AND evt_block_time >= date_trunc("day", now() - interval '1 week')
+      AND evt_block_time >= date_trunc("day", now() - interval '7 day')
     {% endif %}
 ),
 

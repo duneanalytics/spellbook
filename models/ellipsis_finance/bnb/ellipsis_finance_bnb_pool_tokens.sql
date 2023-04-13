@@ -18,7 +18,7 @@ base_pools as ( -- this gets the base pools deployed on ellipsis
         {{ source('ellipsis_finance_bnb', 'FactoryPool_call_add_base_pool') }}
         WHERE call_success = true 
         {% if is_incremental() %}
-        AND call_block_time >= date_trunc("day", now() - interval '1 week')
+        AND call_block_time >= date_trunc("day", now() - interval '7 day')
         {% endif %}
 
         
@@ -31,7 +31,7 @@ base_pools as ( -- this gets the base pools deployed on ellipsis
         {{ source('ellipsis_finance_bnb', 'FactoryPool_v2_call_add_base_pool') }}
         WHERE call_success = true 
         {% if is_incremental() %}
-        AND call_block_time >= date_trunc("day", now() - interval '1 week')
+        AND call_block_time >= date_trunc("day", now() - interval '7 day')
         {% endif %}
 
         UNION ALL -- manually importanting base pools that weren't created by the factory (no events emitted for them)
@@ -153,7 +153,7 @@ plain_pools as ( -- getting plain pools data
             FROM
             {{ source('ellipsis_finance_bnb', 'FactoryPool_evt_PlainPoolDeployed') }}
             {% if is_incremental() %}
-            WHERE evt_block_time >= date_trunc("day", now() - interval '1 week')
+            WHERE evt_block_time >= date_trunc("day", now() - interval '7 day')
             {% endif %}
 
             UNION ALL
@@ -165,7 +165,7 @@ plain_pools as ( -- getting plain pools data
             FROM
             {{ source('ellipsis_finance_bnb', 'FactoryPool_v2_evt_PlainPoolDeployed') }}
             {% if is_incremental() %}
-            WHERE evt_block_time >= date_trunc("day", now() - interval '1 week')
+            WHERE evt_block_time >= date_trunc("day", now() - interval '7 day')
             {% endif %}
         ) x 
 ), 
@@ -194,7 +194,7 @@ meta_pools as ( -- getting meta pools and their base pools
             FROM
             {{ source('ellipsis_finance_bnb', 'FactoryPool_evt_MetaPoolDeployed') }}
             {% if is_incremental() %}
-            WHERE evt_block_time >= date_trunc("day", now() - interval '1 week')
+            WHERE evt_block_time >= date_trunc("day", now() - interval '7 day')
             {% endif %}
 
             UNION ALL
@@ -206,7 +206,7 @@ meta_pools as ( -- getting meta pools and their base pools
             FROM
             {{ source('ellipsis_finance_bnb', 'FactoryPool_v2_evt_MetaPoolDeployed') }}
             {% if is_incremental() %}
-            WHERE evt_block_time >= date_trunc("day", now() - interval '1 week')
+            WHERE evt_block_time >= date_trunc("day", now() - interval '7 day')
             {% endif %}
         ) x 
 ), 
@@ -323,7 +323,7 @@ crypto_pools as ( -- getting crypto pools
             FROM
             {{ source('ellipsis_finance_bnb', 'FactoryPool_v3_evt_CryptoPoolDeployed') }}
             {% if is_incremental() %}
-            WHERE evt_block_time >= date_trunc("day", now() - interval '1 week')
+            WHERE evt_block_time >= date_trunc("day", now() - interval '7 day')
             {% endif %}
 
             UNION ALL
@@ -335,7 +335,7 @@ crypto_pools as ( -- getting crypto pools
             FROM
             {{ source('ellipsis_finance_bnb', 'FactoryPool_v4_evt_CryptoPoolDeployed') }}
             {% if is_incremental() %}
-            WHERE evt_block_time >= date_trunc("day", now() - interval '1 week')
+            WHERE evt_block_time >= date_trunc("day", now() - interval '7 day')
             {% endif %}
         ) x 
 ), 

@@ -46,7 +46,7 @@ INNER JOIN {{source('nftb_bnb', 'NFT_evt_Mint')}} m
 ON tr.evt_tx_hash=m.evt_tx_hash
 WHERE tr.evt_block_time >= '{{project_start_date}}'
 {% if is_incremental() %}
-AND tr.evt_block_time >= date_trunc("day", now() - interval '1 week')
+AND tr.evt_block_time >= date_trunc("day", now() - interval '7 day')
 {% endif %}
 )
 
@@ -76,7 +76,7 @@ WHERE 1=1
 AND to=0x0000000000000000000000000000000000000000
 AND  tr.evt_block_time >= '{{project_start_date}}'
 {% if is_incremental() %}
-AND tr.evt_block_time >= date_trunc("day", now() - interval '1 week')
+AND tr.evt_block_time >= date_trunc("day", now() - interval '7 day')
 {% endif %}
 
 )
@@ -91,21 +91,21 @@ AND tr.evt_block_time >= date_trunc("day", now() - interval '1 week')
       --,tr.to 
        ,tr.tokenId as token_id
        ,tr.to as buyer
-       ,CASE WHEN tr.from= 0xdc2f08364ebc6cebe0b487fc47823b1e83ce8550 --- claim contract address
+       ,CASE WHEN tr."from"= 0xdc2f08364ebc6cebe0b487fc47823b1e83ce8550 --- claim contract address
              THEN CONCAT('0x',substr(l1.topic3, 27, 40))
-             WHEN tr.from= 0xe22c90e7816db4344f33c651c7b0a01fcd51a327 -- buy function contract address (explicitly stated)
+             WHEN tr."from"= 0xe22c90e7816db4344f33c651c7b0a01fcd51a327 -- buy function contract address (explicitly stated)
              THEN CONCAT('0x',substr(l2.topic3, 27, 40))
-             WHEN tr.from=0xebd4232e4c1999bc9562802eae01b431d5053e65 -- auction settled contract address (withdraw function)
+             WHEN tr."from"=0xebd4232e4c1999bc9562802eae01b431d5053e65 -- auction settled contract address (withdraw function)
              THEN CONCAT('0x',substr(l3.topic3, 27, 40))
-             ELSE tr.from 
+             ELSE tr."from"
         END  as seller
             
        ,'Trade' as evt_type
        ,CAST(1 AS DECIMAL(38,0)) AS number_of_items
        ,'Single Item Trade' as trade_type
-       ,CASE WHEN tr.from=0xebd4232e4c1999bc9562802eae01b431d5053e65
+       ,CASE WHEN tr."from"=0xebd4232e4c1999bc9562802eae01b431d5053e65
               THEN 'Auction Settled'
-              WHEN tr.from=0xdc2f08364ebc6cebe0b487fc47823b1e83ce8550
+              WHEN tr."from"=0xdc2f08364ebc6cebe0b487fc47823b1e83ce8550
               THEN 'Claim'
               ELSE 'Buy' END as trade_category
        ,'BNB' as currency_symbol
@@ -131,17 +131,17 @@ ON tr1.hash=tr.evt_tx_hash
 AND tr1.block_time >= '{{project_start_date}}'
 {% endif %}
 {% if is_incremental() %}
-AND tr1.block_time >= date_trunc("day", now() - interval '1 week')
+AND tr1.block_time >= date_trunc("day", now() - interval '7 day')
 {% endif %}
 LEFT JOIN (SELECT 
-                   bt.from as address
+                   bt."from" as address
                   ,tx_hash
                   ,SUM(CAST (value AS DECIMAL(38,0))) AS value
             FROM {{ source ('bnb','traces')}} bt
             WHERE 1=1
-            AND (bt.from=0xebd4232e4c1999bc9562802eae01b431d5053e65 --seller contract address when withdraw function is called
+            AND (bt."from"=0xebd4232e4c1999bc9562802eae01b431d5053e65 --seller contract address when withdraw function is called
             OR
-            bt.from=0xdc2f08364ebc6cebe0b487fc47823b1e83ce8550-- seller contract address when claim function is called
+            bt."from"=0xdc2f08364ebc6cebe0b487fc47823b1e83ce8550-- seller contract address when claim function is called
             )
             AND bt.input='0x'
             AND bt.call_type='call'
@@ -149,7 +149,7 @@ LEFT JOIN (SELECT
             AND bt.block_time >= '{{project_start_date}}'
             {% endif %}
             {% if is_incremental() %}
-            AND bt.block_time >= date_trunc("day", now() - interval '1 week')
+            AND bt.block_time >= date_trunc("day", now() - interval '7 day')
             {% endif %}
             GROUP BY 1,2
             ) tra1 
@@ -162,7 +162,7 @@ AND l1.topic1='0x7a9edcf72fda2a090305f15fe2f1d8d881c849c4a142e8847734fe93542c64e
 AND l1.block_time >= '{{project_start_date}}'
 {% endif %}
 {% if is_incremental() %}
-AND l1.block_time >= date_trunc("day", now() - interval '1 week')
+AND l1.block_time >= date_trunc("day", now() - interval '7 day')
 {% endif %}
 
 LEFT JOIN {{ source('bnb','logs')}} l2 
@@ -173,7 +173,7 @@ AND l2.topic1='0x7df6bafa53a0e01e6995efd8c0c627e532d2fb130178b2261d619f256db0d65
 AND l2.block_time >= '{{project_start_date}}'
 {% endif %}
 {% if is_incremental() %}
-AND l2.block_time >= date_trunc("day", now() - interval '1 week')
+AND l2.block_time >= date_trunc("day", now() - interval '7 day')
 {% endif %}
 
 LEFT JOIN {{ source('bnb','logs')}} l3 
@@ -184,12 +184,12 @@ AND l3.topic1='0x3966e47923a4243aaa12fcf3bb231f645e3c8c5e70985cd00c689ec364cf4da
 AND l3.block_time >= '{{project_start_date}}'
 {% endif %}
 {% if is_incremental() %}
-AND l3.block_time >= date_trunc("day", now() - interval '1 week')
+AND l3.block_time >= date_trunc("day", now() - interval '7 day')
 {% endif %}
 
 WHERE tr.evt_block_time >= '{{project_start_date}}'
 {% if is_incremental() %}
-AND tr.evt_block_time >= date_trunc("day", now() - interval '1 week')
+AND tr.evt_block_time >= date_trunc("day", now() - interval '7 day')
 {% endif %}
 )
 
@@ -231,7 +231,7 @@ SELECT 'bnb' as blockchain
        , agg.name as aggregator_name
        , agg.contract_address as aggregator_address
         ,ae.tx_hash 
-        ,btx.from as tx_from 
+        ,btx."from" as tx_from
         ,btx.to as tx_to
        
 
@@ -257,7 +257,7 @@ AND btx.hash = ae.tx_hash
 AND btx.block_time >= '{{project_start_date}}'
 {% endif %}
 {% if is_incremental() %}
-AND btx.block_time >= date_trunc("day", now() - interval '1 week')
+AND btx.block_time >= date_trunc("day", now() - interval '7 day')
 {% endif %}
 
 LEFT JOIN {{ source('prices','usd') }} p
@@ -268,7 +268,7 @@ AND p.contract_address = 0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c
 AND p.minute >= '{{project_start_date}}'
 {% endif %}
 {% if is_incremental() %}
-AND p.minute >= date_trunc("day", now() - interval '1 week')
+AND p.minute >= date_trunc("day", now() - interval '7 day')
 {% endif %}
 
 LEFT JOIN {{ source('erc721_ethereum','evt_transfer') }} erc721
@@ -281,7 +281,7 @@ AND erc721.to = ae.buyer
 AND erc721.evt_block_time >= '{{project_start_date}}'
 {% endif %}
 {% if is_incremental() %}
-AND erc721.evt_block_time >= date_trunc("day", now() - interval '1 week')
+AND erc721.evt_block_time >= date_trunc("day", now() - interval '7 day')
 {% endif %}
 
 

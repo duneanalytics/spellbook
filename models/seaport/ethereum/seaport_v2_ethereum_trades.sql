@@ -27,7 +27,7 @@ with source_ethereum_transactions as (
     where block_time >= date '{{c_seaport_first_date}}'  -- seaport first txn
     {% endif %}
     {% if is_incremental() %}
-    where block_time >= date_trunc("day", now() - interval '1 week')
+    where block_time >= date_trunc("day", now() - interval '7 day')
     {% endif %}
 )
 ,ref_seaport_ethereum_base_pairs as (
@@ -35,7 +35,7 @@ with source_ethereum_transactions as (
       from {{ ref('seaport_ethereum_base_pairs') }}
       where 1=1
       {% if is_incremental() %}
-            and block_time >= date_trunc("day", now() - interval '1 week')
+            and block_time >= date_trunc("day", now() - interval '7 day')
       {% endif %}
 )
 ,ref_tokens_nft as (
@@ -65,7 +65,7 @@ with source_ethereum_transactions as (
       and minute >= date '{{c_seaport_first_date}}'  -- seaport first txn
     {% endif %}
     {% if is_incremental() %}
-      and minute >= date_trunc("day", now() - interval '1 week')
+      and minute >= date_trunc("day", now() - interval '7 day')
     {% endif %}
 )
 ,iv_orders_matched AS (
@@ -224,7 +224,7 @@ with source_ethereum_transactions as (
           ,a.sub_type
           ,a.sub_idx
           ,n.name AS nft_token_name
-          ,t.from as tx_from
+          ,t."from" as tx_from
           ,t.to as tx_to
           ,right(t.data,8) as right_hash
           ,case when a.token_contract_address = '{{c_native_token_address}}' then '{{c_native_symbol}}'

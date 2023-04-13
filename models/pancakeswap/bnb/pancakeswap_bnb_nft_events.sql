@@ -37,7 +37,7 @@ WITH events AS (
         evt_index
     FROM {{source('pancakeswap_v2_bnb','ERC721NFTMarketV1_evt_Trade')}}
     {% if is_incremental() %}
-    WHERE evt_block_time >= date_trunc("day", now() - interval '1 week')
+    WHERE evt_block_time >= date_trunc("day", now() - interval '7 day')
     {% endif %}
 )
     SELECT
@@ -66,7 +66,7 @@ WITH events AS (
         CASE WHEN agg.name IS NOT NULL THEN agg.contract_address END AS aggregator_address,
         events.tx_hash,
         events.block_number,
-        bt.from AS tx_from,
+        bt."from" AS tx_from,
         bt.to AS tx_to,
         CAST(amount_raw * platform_fee_percentage AS DOUBLE) AS platform_fee_amount_raw,
         (amount_raw * platform_fee_percentage)/POWER(10, bnb_bep20_tokens.decimals) AS platform_fee_amount,
@@ -87,10 +87,10 @@ WITH events AS (
     LEFT JOIN {{ source('prices', 'usd') }} prices ON prices.minute=date_trunc('minute', events.block_time)
     AND (prices.contract_address=events.currency_contract AND prices.blockchain=events.blockchain)
         {% if is_incremental() %}
-        AND prices.minute >= date_trunc("day", now() - interval '1 week')
+        AND prices.minute >= date_trunc("day", now() - interval '7 day')
         {% endif %}
     INNER JOIN {{ source('bnb','transactions') }} bt ON bt.hash=events.tx_hash
     AND bt.block_time=events.block_time
         {% if is_incremental() %}
-        AND bt.block_time >= date_trunc("day", now() - interval '1 week')
+        AND bt.block_time >= date_trunc("day", now() - interval '7 day')
         {% endif %}

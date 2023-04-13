@@ -27,7 +27,7 @@ with iziswap_swaps as (
 	from 
 		{{ source('izumi_bnb', 'iZiSwapPool_evt_Swap') }}
 	{% if is_incremental() %}
-    where evt_block_time >= date_trunc("day", now() - interval '1 week')
+    where evt_block_time >= date_trunc("day", now() - interval '7 day')
     {% endif %}
 )
 select
@@ -52,11 +52,11 @@ select
     end as token_pair
 	, s.token_bought_amount_raw / power(10, erc20_b.decimals) as token_bought_amount
 	, s.token_sold_amount_raw / power(10, erc20_s.decimals) as token_sold_amount
-    , tx.from as taker
+    , tx."from" as taker
 	, '' as maker
 	, cast(s.contract_address as string) as project_contract_address
 	, s.evt_tx_hash as tx_hash
-    , tx.from as tx_from
+    , tx."from" as tx_from
     , tx.to as tx_to
 	, '' as trace_address
 	, s.evt_index as evt_index
@@ -68,7 +68,7 @@ inner join {{ source('bnb', 'transactions') }} tx
     and tx.block_time >= '{{project_start_date}}'
     {% endif %}
     {% if is_incremental() %}
-    and tx.block_time >= date_trunc("day", now() - interval '1 week')
+    and tx.block_time >= date_trunc("day", now() - interval '7 day')
     {% endif %}
 -- bought tokens
 left join {{ ref('tokens_erc20') }} erc20_b
@@ -87,7 +87,7 @@ left join {{ source('prices', 'usd') }} prices_b
     and prices_b.minute >= '{{project_start_date}}'
     {% endif %}
     {% if is_incremental() %}
-    and prices_b.minute >= date_trunc("day", now() - interval '1 week')
+    and prices_b.minute >= date_trunc("day", now() - interval '7 day')
     {% endif %}
 -- price of sold tokens
 left join {{ source('prices', 'usd') }} prices_s
@@ -98,6 +98,6 @@ left join {{ source('prices', 'usd') }} prices_s
     and prices_s.minute >= '{{project_start_date}}'
     {% endif %}
     {% if is_incremental() %}
-    and prices_s.minute >= date_trunc("day", now() - interval '1 week')
+    and prices_s.minute >= date_trunc("day", now() - interval '7 day')
     {% endif %}
 ;

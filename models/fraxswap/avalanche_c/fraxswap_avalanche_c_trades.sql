@@ -34,7 +34,7 @@ fraxswap_dex AS (
     INNER JOIN {{ source('fraxswap_avalanche_c', 'FraxswapFactory_evt_PairCreated') }} p
         ON t.contract_address = p.pair
     {% if is_incremental() %}
-    WHERE t.evt_block_time >= date_trunc("day", now() - interval '1 week')
+    WHERE t.evt_block_time >= date_trunc("day", now() - interval '7 day')
     {% endif %}
     {% if not is_incremental() %}
     WHERE t.evt_block_time >= '{{ project_start_date }}'
@@ -63,11 +63,11 @@ SELECT
      )                                                                  AS amount_usd
     ,fraxswap_dex.token_bought_address
     ,fraxswap_dex.token_sold_address
-    ,coalesce(fraxswap_dex.taker, tx.from)                              AS taker
+    ,coalesce(fraxswap_dex.taker, tx."from")                              AS taker
     ,fraxswap_dex.maker
     ,fraxswap_dex.project_contract_address
     ,fraxswap_dex.tx_hash
-    ,tx.from                                                            AS tx_from
+    ,tx."from"                                                            AS tx_from
     ,tx.to                                                              AS tx_to
     ,fraxswap_dex.trace_address
     ,fraxswap_dex.evt_index
@@ -75,7 +75,7 @@ FROM fraxswap_dex
 INNER JOIN {{ source('avalanche_c', 'transactions') }} tx
     ON fraxswap_dex.tx_hash = tx.hash
     {% if is_incremental() %}
-    AND tx.block_time >= date_trunc("day", now() - interval '1 week')
+    AND tx.block_time >= date_trunc("day", now() - interval '7 day')
     {% endif %}
     {% if not is_incremental() %}
     AND tx.block_time >= '{{project_start_date}}'
@@ -91,7 +91,7 @@ LEFT JOIN {{ source('prices', 'usd') }} p_bought
     AND p_bought.contract_address = fraxswap_dex.token_bought_address
     AND p_bought.blockchain = 'avalanche_c'
     {% if is_incremental() %}
-    AND p_bought.minute >= date_trunc("day", now() - interval '1 week')
+    AND p_bought.minute >= date_trunc("day", now() - interval '7 day')
     {% endif %}
     {% if not is_incremental() %}
     AND p_bought.minute >= '{{project_start_date}}'
@@ -101,7 +101,7 @@ LEFT JOIN {{ source('prices', 'usd') }} p_sold
     AND p_sold.contract_address = fraxswap_dex.token_sold_address
     AND p_sold.blockchain = 'avalanche_c'
     {% if is_incremental() %}
-    AND p_sold.minute >= date_trunc("day", now() - interval '1 week')
+    AND p_sold.minute >= date_trunc("day", now() - interval '7 day')
     {% endif %}
     {% if not is_incremental() %}
     AND p_sold.minute >= '{{project_start_date}}'

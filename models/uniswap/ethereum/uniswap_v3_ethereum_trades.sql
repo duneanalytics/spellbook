@@ -36,7 +36,7 @@ WITH dexs AS
     INNER JOIN {{ source('uniswap_v3_ethereum', 'Factory_evt_PoolCreated') }} f
         ON f.pool = t.contract_address
     {% if is_incremental() %}
-    WHERE t.evt_block_time >= date_trunc("day", now() - interval '1 week')
+    WHERE t.evt_block_time >= date_trunc("day", now() - interval '7 day')
     {% endif %}
 )
 SELECT
@@ -77,7 +77,7 @@ INNER JOIN {{ source('ethereum', 'transactions') }} tx
     AND tx.block_time >= CAST('{{project_start_date}}' AS TIMESTAMP(6) WITH TIME ZONE)
     {% endif %}
     {% if is_incremental() %}
-    AND tx.block_time >= CAST(date_trunc("day", now() - interval '1 week') AS TIMESTAMP(6) WITH TIME ZONE)
+    AND tx.block_time >= CAST(date_trunc("day", now() - interval '7 day') AS TIMESTAMP(6) WITH TIME ZONE)
     {% endif %}
 LEFT JOIN {{ ref('tokens_erc20') }} erc20a
     ON erc20a.contract_address = CAST(dexs.token_bought_address as VARCHAR)
@@ -93,7 +93,7 @@ LEFT JOIN {{ source('prices', 'usd') }} p_bought
     AND p_bought.minute >= CAST('{{project_start_date}}' AS TIMESTAMP(6) WITH TIME ZONE)
     {% endif %}
     {% if is_incremental() %}
-    AND p_bought.minute >= CAST(date_trunc("day", now() - interval '1 week') AS TIMESTAMP(6) WITH TIME ZONE)
+    AND p_bought.minute >= CAST(date_trunc("day", now() - interval '7 day') AS TIMESTAMP(6) WITH TIME ZONE)
     {% endif %}
 LEFT JOIN {{ source('prices', 'usd') }} p_sold
     ON p_sold.minute = CAST(date_trunc('minute', dexs.block_time) AS TIMESTAMP(6) WITH TIME ZONE)
@@ -103,5 +103,5 @@ LEFT JOIN {{ source('prices', 'usd') }} p_sold
     AND p_sold.minute >= CAST('{{project_start_date}}' AS TIMESTAMP(6) WITH TIME ZONE)
     {% endif %}
     {% if is_incremental() %}
-    AND p_sold.minute >= CAST(date_trunc("day", now() - interval '1 week') AS TIMESTAMP(6) WITH TIME ZONE)
+    AND p_sold.minute >= CAST(date_trunc("day", now() - interval '7 day') AS TIMESTAMP(6) WITH TIME ZONE)
     {% endif %}

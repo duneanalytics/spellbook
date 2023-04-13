@@ -49,7 +49,7 @@ WITH zeroex_tx AS (
                     )
                 
                 {% if is_incremental() %}
-                AND tr.block_time >= date_trunc('day', now() - interval '1 week') 
+                AND tr.block_time >= date_trunc('day', now() - interval '7 day')
                 {% endif %}
                 {% if not is_incremental() %}
                 AND tr.block_time >= '{{zeroex_v3_start_date}}'
@@ -79,7 +79,7 @@ v4_rfq_fills_no_bridge AS (
         ON zeroex_tx.tx_hash = fills.evt_tx_hash
         AND zeroex_tx.block_number = fills.evt_block_number
     {% if is_incremental() %}
-    WHERE evt_block_time >= date_trunc('day', now() - interval '1 week')
+    WHERE evt_block_time >= date_trunc('day', now() - interval '7 day')
     {% endif %}
     {% if not is_incremental() %}
     WHERE evt_block_time >= '{{zeroex_v4_start_date}}'
@@ -110,7 +110,7 @@ v4_limit_fills_no_bridge AS (
         AND zeroex_tx.block_number = fills.evt_block_number
 
     {% if is_incremental() %}
-    WHERE evt_block_time >= date_trunc('day', now() - interval '1 week')
+    WHERE evt_block_time >= date_trunc('day', now() - interval '7 day')
     {% endif %}
     {% if not is_incremental() %}
     WHERE evt_block_time >= '{{zeroex_v4_start_date}}'
@@ -139,7 +139,7 @@ otc_fills AS (
         AND zeroex_tx.block_number = fills.evt_block_number
 
     {% if is_incremental() %}
-    WHERE evt_block_time >= date_trunc('day', now() - interval '1 week')
+    WHERE evt_block_time >= date_trunc('day', now() - interval '7 day')
     {% endif %}
     {% if not is_incremental() %}
     WHERE evt_block_time >= '{{zeroex_v4_start_date}}'
@@ -168,7 +168,7 @@ ERC20BridgeTransfer AS (
     WHERE topic1 = '0x349fc08071558d8e3aa92dec9396e4e9f2dfecd6bb9065759d1932e7da43b8a9'
     
     {% if is_incremental() %}
-    AND block_time >= date_trunc('day', now() - interval '1 week')
+    AND block_time >= date_trunc('day', now() - interval '7 day')
     {% endif %}
     {% if not is_incremental() %}
   --  AND block_time >= '{{zeroex_v3_start_date}}'
@@ -197,7 +197,7 @@ BridgeFill AS (
         AND contract_address = 0xdb6f1920a889355780af7570773609bd8cb1f498
 
         {% if is_incremental() %}
-        AND block_time >= date_trunc('day', now() - interval '1 week')
+        AND block_time >= date_trunc('day', now() - interval '7 day')
         {% endif %}
         {% if not is_incremental() %}
   --      AND block_time >= '{{zeroex_v4_start_date}}'
@@ -228,7 +228,7 @@ NewBridgeFill AS (
         AND contract_address = 0xdb6f1920a889355780af7570773609bd8cb1f498
 
         {% if is_incremental() %}
-        AND block_time >= date_trunc('day', now() - interval '1 week')
+        AND block_time >= date_trunc('day', now() - interval '7 day')
         {% endif %}
         {% if not is_incremental() %}
         AND block_time >= '{{zeroex_v4_start_date}}'
@@ -258,7 +258,7 @@ direct_PLP AS (
         AND zeroex_tx.block_number = plp.evt_block_number
 
     {% if is_incremental() %}
-    WHERE evt_block_time >= date_trunc('day', now() - interval '1 week')
+    WHERE evt_block_time >= date_trunc('day', now() - interval '7 day')
     {% endif %}
     {% if not is_incremental() %}
     WHERE evt_block_time >= '{{zeroex_v3_start_date}}'
@@ -288,7 +288,7 @@ SELECT
         try_cast(date_trunc('day', all_tx.block_time) AS date) AS block_date,
         maker,
         CASE
-            WHEN taker = 0xdef1c0ded9bec7f1a1670819833240f027b25eff THEN tx.from
+            WHEN taker = 0xdef1c0ded9bec7f1a1670819833240f027b25eff THEN tx."from"
             ELSE taker
         END AS taker, -- fix the user masked by ProxyContract issue
         taker_token,
@@ -310,14 +310,14 @@ SELECT
              THEN (all_tx.taker_token_amount_raw / pow(10, tp.decimals)) * tp.price
              ELSE COALESCE((all_tx.maker_token_amount_raw / pow(10, mp.decimals)) * mp.price, (all_tx.taker_token_amount_raw / pow(10, tp.decimals)) * tp.price)
              END AS volume_usd,
-        tx.from AS tx_from,
+        tx."from" AS tx_from,
         tx.to AS tx_to,
          'arbitrum' AS blockchain
 FROM all_tx
 INNER JOIN {{ source('arbitrum', 'transactions')}} tx ON all_tx.tx_hash = tx.hash
     AND all_tx.block_number = tx.block_number
 {% if is_incremental() %}
-AND tx.block_time >= date_trunc('day', now() - interval '1 week')
+AND tx.block_time >= date_trunc('day', now() - interval '7 day')
 {% endif %}
 {% if not is_incremental() %}
 AND tx.block_time >= '{{zeroex_v3_start_date}}'
@@ -331,7 +331,7 @@ AND CASE
 AND tp.blockchain = 'arbitrum'
 
 {% if is_incremental() %}
-AND tp.minute >= date_trunc('day', now() - interval '1 week')
+AND tp.minute >= date_trunc('day', now() - interval '7 day')
 {% endif %}
 {% if not is_incremental() %}
 AND tp.minute >= '{{zeroex_v3_start_date}}'
@@ -345,7 +345,7 @@ AND CASE
 AND mp.blockchain = 'arbitrum'
 
 {% if is_incremental() %}
-AND mp.minute >= date_trunc('day', now() - interval '1 week')
+AND mp.minute >= date_trunc('day', now() - interval '7 day')
 {% endif %}
 {% if not is_incremental() %}
 AND mp.minute >= '{{zeroex_v3_start_date}}'

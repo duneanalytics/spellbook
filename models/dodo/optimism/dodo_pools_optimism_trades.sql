@@ -49,7 +49,7 @@ WITH dexs AS
             {% endif %}
         {% endfor %}
         {% if is_incremental() %}
-        AND evt_block_time >= date_trunc("day", now() - interval '1 week')
+        AND evt_block_time >= date_trunc("day", now() - interval '7 day')
         {% endif %}
 
         UNION ALL
@@ -80,7 +80,7 @@ WITH dexs AS
             {% endif %}
         {% endfor %}
         {% if is_incremental() %}
-        AND evt_block_time >= date_trunc("day", now() - interval '1 week')
+        AND evt_block_time >= date_trunc("day", now() - interval '7 day')
         {% endif %}
 
         UNION ALL
@@ -111,7 +111,7 @@ WITH dexs AS
             {% endif %}
         {% endfor %}
         {% if is_incremental() %}
-        AND evt_block_time >= date_trunc("day", now() - interval '1 week')
+        AND evt_block_time >= date_trunc("day", now() - interval '7 day')
         {% endif %}
 )
 SELECT
@@ -137,11 +137,11 @@ SELECT
     ) as amount_usd
     ,dexs.token_bought_address
     ,dexs.token_sold_address
-    ,coalesce(dexs.taker, tx.from) AS taker -- subqueries rely on this COALESCE to avoid redundant joins with the transactions table
+    ,coalesce(dexs.taker, tx."from") AS taker -- subqueries rely on this COALESCE to avoid redundant joins with the transactions table
     ,dexs.maker
     ,dexs.project_contract_address
     ,dexs.tx_hash
-    ,tx.from AS tx_from
+    ,tx."from" AS tx_from
     ,tx.to AS tx_to
     ,dexs.trace_address
     ,dexs.evt_index
@@ -152,7 +152,7 @@ INNER JOIN {{ source('optimism', 'transactions')}} tx
     AND tx.block_time >= '{{project_start_date}}'
     {% endif %}
     {% if is_incremental() %}
-    AND tx.block_time >= date_trunc("day", now() - interval '1 week')
+    AND tx.block_time >= date_trunc("day", now() - interval '7 day')
     {% endif %}
 LEFT JOIN {{ ref('tokens_erc20') }} erc20a
     ON erc20a.contract_address = dexs.token_bought_address
@@ -168,7 +168,7 @@ LEFT JOIN {{ source('prices', 'usd') }} p_bought
     AND p_bought.minute >= '{{project_start_date}}'
     {% endif %}
     {% if is_incremental() %}
-    AND p_bought.minute >= date_trunc("day", now() - interval '1 week')
+    AND p_bought.minute >= date_trunc("day", now() - interval '7 day')
     {% endif %}
 LEFT JOIN {{ source('prices', 'usd') }} p_sold
     ON p_sold.minute = date_trunc('minute', dexs.block_time)
@@ -178,7 +178,7 @@ LEFT JOIN {{ source('prices', 'usd') }} p_sold
     AND p_sold.minute >= '{{project_start_date}}'
     {% endif %}
     {% if is_incremental() %}
-    AND p_sold.minute >= date_trunc("day", now() - interval '1 week')
+    AND p_sold.minute >= date_trunc("day", now() - interval '7 day')
     {% endif %}
 LEFT JOIN {{ source('prices', 'usd') }} p_eth
     ON p_eth.minute = date_trunc('minute', dexs.block_time)
@@ -188,7 +188,7 @@ LEFT JOIN {{ source('prices', 'usd') }} p_eth
     AND p_eth.minute >= '{{project_start_date}}'
     {% endif %}
     {% if is_incremental() %}
-    AND p_eth.minute >= date_trunc("day", now() - interval '1 week')
+    AND p_eth.minute >= date_trunc("day", now() - interval '7 day')
     {% endif %}
 WHERE dexs.token_bought_address <> dexs.token_sold_address
 ;

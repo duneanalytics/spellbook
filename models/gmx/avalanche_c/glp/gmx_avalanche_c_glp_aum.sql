@@ -30,7 +30,7 @@ SELECT -- This query calculates the AUM of each component of GLP
     (btc_b_available_assets * btc_b_current_price) + (btc_b_longs) + (btc_b_current_price - btc_b_shorts_entry_price) * COALESCE((btc_b_shorts_outstanding_notional / btc_b_current_price),0) AS btc_b_aum -- Removes null values derrived from 0 divided 0
 FROM {{ref('gmx_avalanche_c_glp_components')}}
 {% if is_incremental() %}
-WHERE minute >= date_trunc("day", now() - interval '1 day')
+WHERE minute >= date_add('day', -1, CURRENT_TIMESTAMP(6))
 {% endif %}
 {% if not is_incremental() %}
 WHERE minute >= '{{project_start_date}}'

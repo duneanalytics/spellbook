@@ -25,7 +25,7 @@ with node_names as (
         from {{ source('ethereumnameservice_ethereum', 'DefaultReverseResolver_call_setName') }}
         where call_success
         {% if is_incremental() %}
-        AND call_block_time >= date_trunc("day", now() - interval '1 week')
+        AND call_block_time >= date_trunc("day", now() - interval '7 day')
         {% endif %}
     ) foo
     where ordering = 1
@@ -33,7 +33,7 @@ with node_names as (
 
 --static Node <> Address relations
 , address_nodes as (select distinct
-    tr.from as address,
+    tr."from" as address,
     output as node
     from {{ source('ethereum', 'traces') }} tr
     where success
@@ -46,7 +46,7 @@ with node_names as (
             ,'0x1e83409a' -- claim(address)
             )
         {% if is_incremental() %}
-        AND block_time >= date_trunc("day", now() - interval '1 week')
+        AND block_time >= date_trunc("day", now() - interval '7 day')
         {% endif %}
 
 )

@@ -31,7 +31,7 @@ WITH nomiswap_dex AS (
     INNER JOIN {{ source('nomiswap_bnb', 'NomiswapFactory_evt_PairCreated') }} p
         ON t.contract_address = p.pair
     {% if is_incremental() %}
-    WHERE t.evt_block_time >= date_trunc("day", now() - interval '1 week')
+    WHERE t.evt_block_time >= date_trunc("day", now() - interval '7 day')
     {% endif %}
     {% if not is_incremental() %}
     WHERE t.evt_block_time >= '{{ project_start_date }}'
@@ -61,11 +61,11 @@ SELECT
         )                                                             AS amount_usd,
     nomiswap_dex.token_bought_address,
     nomiswap_dex.token_sold_address,
-    coalesce(nomiswap_dex.taker, tx.from)                             AS taker,
+    coalesce(nomiswap_dex.taker, tx."from")                             AS taker,
     nomiswap_dex.maker,
     nomiswap_dex.project_contract_address,
     nomiswap_dex.tx_hash,
-    tx.from                                                           AS tx_from,
+    tx."from"                                                           AS tx_from,
     tx.to                                                             AS tx_to,
     nomiswap_dex.trace_address,
     nomiswap_dex.evt_index
@@ -73,7 +73,7 @@ FROM nomiswap_dex
 INNER JOIN {{ source('bnb', 'transactions') }} tx
     ON nomiswap_dex.tx_hash = tx.hash
     {% if is_incremental() %}
-    AND tx.block_time >= date_trunc("day", now() - interval '1 week')
+    AND tx.block_time >= date_trunc("day", now() - interval '7 day')
     {% endif %}
     {% if not is_incremental() %}
     AND tx.block_time >= '{{project_start_date}}'
@@ -89,7 +89,7 @@ LEFT JOIN {{ source('prices', 'usd') }} p_bought
     AND p_bought.contract_address = nomiswap_dex.token_bought_address
     AND p_bought.blockchain = 'bnb'
     {% if is_incremental() %}
-    AND p_bought.minute >= date_trunc("day", now() - interval '1 week')
+    AND p_bought.minute >= date_trunc("day", now() - interval '7 day')
     {% endif %}
     {% if not is_incremental() %}
     AND p_bought.minute >= '{{project_start_date}}'
@@ -99,7 +99,7 @@ LEFT JOIN {{ source('prices', 'usd') }} p_sold
     AND p_sold.contract_address = nomiswap_dex.token_sold_address
     AND p_sold.blockchain = 'bnb'
     {% if is_incremental() %}
-    AND p_sold.minute >= date_trunc("day", now() - interval '1 week')
+    AND p_sold.minute >= date_trunc("day", now() - interval '7 day')
     {% endif %}
     {% if not is_incremental() %}
     AND p_sold.minute >= '{{project_start_date}}'

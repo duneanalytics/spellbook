@@ -40,7 +40,7 @@ transactions as (
         WHERE block_time >= '{{transactions_start_date}}'
         {% endif %}
         {% if is_incremental() %}
-        WHERE block_time >= date_trunc("day", now() - interval '1 week')
+        WHERE block_time >= date_trunc("day", now() - interval '7 day')
         {% endif %}
         AND to IN (SELECT dao_wallet_address FROM dao_tmp)
         AND (LOWER(call_type) NOT IN ('delegatecall', 'callcode', 'staticcall') or call_type IS NULL)
@@ -65,7 +65,7 @@ transactions as (
         WHERE block_time >= '{{transactions_start_date}}'
         {% endif %}
         {% if is_incremental() %}
-        WHERE block_time >= date_trunc("day", now() - interval '1 week')
+        WHERE block_time >= date_trunc("day", now() - interval '7 day')
         {% endif %}
         AND from IN (SELECT dao_wallet_address FROM dao_tmp)
         AND (LOWER(call_type) NOT IN ('delegatecall', 'callcode', 'staticcall') or call_type IS NULL)
@@ -104,7 +104,7 @@ LEFT JOIN
     AND p.minute >= '{{transactions_start_date}}'
     {% endif %}
     {% if is_incremental() %}
-    AND p.minute >= date_trunc("day", now() - interval '1 week')
+    AND p.minute >= date_trunc("day", now() - interval '7 day')
     {% endif %}
 LEFT JOIN 
 {{ ref('dex_prices') }} dp 
@@ -113,5 +113,5 @@ LEFT JOIN
     AND dp.blockchain = 'gnosis'
     AND dp.hour >= '{{transactions_start_date}}'
     {% if is_incremental() %}
-    AND dp.hour >= date_trunc("day", now() - interval '1 week')
+    AND dp.hour >= date_trunc("day", now() - interval '7 day')
     {% endif %}

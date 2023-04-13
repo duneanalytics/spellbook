@@ -24,7 +24,7 @@ SELECT 'v3'                    as version,
        evt_index
 FROM {{source('spaceid_bnb', 'BNBRegistrarControllerV3_evt_NameRegistered')}}
 {% if is_incremental() %}
-WHERE evt_block_time >= date_trunc("day", now() - interval '1 week')
+WHERE evt_block_time >= date_trunc("day", now() - interval '7 day')
 {% endif %}
 
 UNION ALL
@@ -42,7 +42,7 @@ SELECT 'v4'                    as version,
        evt_index
 FROM {{source('spaceid_bnb', 'BNBRegistrarControllerV4_evt_NameRegistered')}}
 {% if is_incremental() %}
-WHERE evt_block_time >= date_trunc("day", now() - interval '1 week')
+WHERE evt_block_time >= date_trunc("day", now() - interval '7 day')
 {% endif %}
 
 UNION ALL
@@ -60,7 +60,7 @@ SELECT 'v5'                    as version,
        evt_index
 FROM {{source('spaceid_bnb', 'BNBRegistrarControllerV5_evt_NameRegistered')}}
 {% if is_incremental() %}
-WHERE evt_block_time >= date_trunc("day", now() - interval '1 week')
+WHERE evt_block_time >= date_trunc("day", now() - interval '7 day')
 {% endif %}
 
 UNION ALL
@@ -78,7 +78,7 @@ SELECT 'v6'                    as version,
        evt_index
 FROM {{source('spaceid_bnb', 'BNBRegistrarControllerV6_evt_NameRegistered')}}
 {% if is_incremental() %}
-WHERE evt_block_time >= date_trunc("day", now() - interval '1 week')
+WHERE evt_block_time >= date_trunc("day", now() - interval '7 day')
 {% endif %}
 
 UNION ALL
@@ -96,7 +96,7 @@ SELECT 'v7'                    as version,
        evt_index
 FROM {{source('spaceid_bnb', 'BNBRegistrarControllerV7_evt_NameRegistered')}}
 {% if is_incremental() %}
-WHERE evt_block_time >= date_trunc("day", now() - interval '1 week')
+WHERE evt_block_time >= date_trunc("day", now() - interval '7 day')
 {% endif %}
 
 UNION ALL
@@ -114,7 +114,7 @@ SELECT 'v8'                    as version,
        evt_index
 FROM {{source('spaceid_bnb', 'BNBRegistrarControllerV8_evt_NameRegistered')}}
 {% if is_incremental() %}
-WHERE evt_block_time >= date_trunc("day", now() - interval '1 week')
+WHERE evt_block_time >= date_trunc("day", now() - interval '7 day')
 {% endif %}
 
 UNION ALL
@@ -136,5 +136,5 @@ LEFT JOIN {{source('spaceid_bnb', 'BNBRegistrarControllerV5_evt_NameRegistered')
     ON v9.name = v5.name
 WHERE v5.name is null
   {% if is_incremental() %}
-  AND v9.evt_block_time >= date_trunc("day", now() - interval '1 week')
+  AND v9.evt_block_time >= date_trunc("day", now() - interval '7 day')
   {% endif %}

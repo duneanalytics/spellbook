@@ -35,7 +35,7 @@ with wombat_swaps_all_pools as (
                 , contract_address
         from {{ swap_evt_table }} t
         {% if is_incremental() %}
-        where evt_block_time >= date_trunc("day", now() - interval '1 week')
+        where evt_block_time >= date_trunc("day", now() - interval '7 day')
         {% endif %}
 
         {% if not loop.last %}
@@ -52,13 +52,13 @@ select
 	, date_trunc('DAY', s.evt_block_time) as block_date
 	, s.evt_block_time as block_time
     , CAST(s.toAmount AS DECIMAL(38,0)) AS token_bought_amount_raw
-    , CAST(s.fromAmount AS DECIMAL(38,0)) AS token_sold_amount_raw
+    , CAST(s."from"Amount AS DECIMAL(38,0)) AS token_sold_amount_raw
     , coalesce(
         (s.toAmount / power(10, prices_b.decimals)) * prices_b.price
-        ,(s.fromAmount / power(10, prices_s.decimals)) * prices_s.price
+        ,(s."from"Amount / power(10, prices_s.decimals)) * prices_s.price
     ) as amount_usd	
 	, s.toToken as token_bought_address
-	, s.fromToken as token_sold_address
+	, s."from"Token as token_sold_address
 	, erc20_b.symbol as token_bought_symbol
 	, erc20_s.symbol as token_sold_symbol
 	, case
@@ -66,12 +66,12 @@ select
         else concat(erc20_b.symbol, '-', erc20_s.symbol)
     end as token_pair
 	, s.toAmount / power(10, erc20_b.decimals) as token_bought_amount
-	, s.fromAmount / power(10, erc20_s.decimals) as token_sold_amount
-    , coalesce(s.to, tx.from) AS taker
+	, s."from"Amount / power(10, erc20_s.decimals) as token_sold_amount
+    , coalesce(s.to, tx."from") AS taker
 	, '' as maker
 	, cast(s.contract_address as string) as project_contract_address
 	, s.evt_tx_hash as tx_hash
-    , tx.from as tx_from
+    , tx."from" as tx_from
     , tx.to as tx_to
 	, '' as trace_address
 	, s.evt_index as evt_index
@@ -83,7 +83,7 @@ inner join {{ source('bnb', 'transactions') }} tx
     and tx.block_time >= '{{project_start_date}}'
     {% endif %}
     {% if is_incremental() %}
-    and tx.block_time >= date_trunc("day", now() - interval '1 week')
+    and tx.block_time >= date_trunc("day", now() - interval '7 day')
     {% endif %}
 -- bought tokens
 left join {{ ref('tokens_erc20') }} erc20_b
@@ -91,7 +91,7 @@ left join {{ ref('tokens_erc20') }} erc20_b
     and erc20_b.blockchain = 'bnb'
 -- sold tokens
 left join {{ ref('tokens_erc20') }} erc20_s
-    on erc20_s.contract_address = s.fromToken
+    on erc20_s.contract_address = s."from"Token
     and erc20_s.blockchain = 'bnb'
 -- price of bought tokens
 left join {{ source('prices', 'usd') }} prices_b
@@ -102,21 +102,21 @@ left join {{ source('prices', 'usd') }} prices_b
     and prices_b.minute >= '{{project_start_date}}'
     {% endif %}
     {% if is_incremental() %}
-    and prices_b.minute >= date_trunc("day", now() - interval '1 week')
+    and prices_b.minute >= date_trunc("day", now() - interval '7 day')
     {% endif %}
 -- price of sold tokens
 left join {{ source('prices', 'usd') }} prices_s
     on prices_s.minute = date_trunc('minute', s.evt_block_time)
-    and prices_s.contract_address = s.fromToken
+    and prices_s.contract_address = s."from"Token
     and prices_s.blockchain = 'bnb'
 	{% if not is_incremental() %}
     and prices_s.minute >= '{{project_start_date}}'
     {% endif %}
     {% if is_incremental() %}
-    and prices_s.minute >= date_trunc("day", now() - interval '1 week')
+    and prices_s.minute >= date_trunc("day", now() - interval '7 day')
     {% endif %}
 where 1 = 1
     {% if is_incremental() %}
-    and s.evt_block_time >= date_trunc("day", now() - interval '1 week')
+    and s.evt_block_time >= date_trunc("day", now() - interval '7 day')
     {% endif %}
 ;

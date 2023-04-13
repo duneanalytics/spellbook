@@ -31,7 +31,7 @@ WITH apeswap_dex AS (
     INNER JOIN {{ source('apeswap_bnb', 'ApeFactory_evt_PairCreated') }} f
         ON f.pair = t.contract_address
     {% if is_incremental() %}
-    WHERE t.evt_block_time >= date_trunc("day", now() - interval '1 week')
+    WHERE t.evt_block_time >= date_trunc("day", now() - interval '7 day')
     {% endif %}
     {% if not is_incremental() %}
     WHERE t.evt_block_time >= '{{ project_start_date }}'
@@ -60,11 +60,11 @@ SELECT 'bnb'                                                            AS block
            )                                                            AS amount_usd,
        apeswap_dex.token_bought_address,
        apeswap_dex.token_sold_address,
-       coalesce(apeswap_dex.taker, tx.from)                             AS taker,
+       coalesce(apeswap_dex.taker, tx."from")                             AS taker,
        apeswap_dex.maker,
        apeswap_dex.project_contract_address,
        apeswap_dex.tx_hash,
-       tx.from                                                          AS tx_from,
+       tx."from"                                                          AS tx_from,
        tx.to                                                            AS tx_to,
        apeswap_dex.trace_address,
        apeswap_dex.evt_index
@@ -75,7 +75,7 @@ INNER JOIN {{ source('bnb', 'transactions') }} tx
     AND tx.block_time >= '{{project_start_date}}'
     {% endif %}
     {% if is_incremental() %}
-    AND tx.block_time >= date_trunc("day", now() - interval '1 week')
+    AND tx.block_time >= date_trunc("day", now() - interval '7 day')
     {% endif %}
 LEFT JOIN {{ ref('tokens_erc20') }} erc20a
     ON erc20a.contract_address = apeswap_dex.token_bought_address
@@ -91,7 +91,7 @@ LEFT JOIN {{ source('prices', 'usd') }} p_bought
     AND p_bought.minute >= '{{project_start_date}}'
     {% endif %}
     {% if is_incremental() %}
-    AND p_bought.minute >= date_trunc("day", now() - interval '1 week')
+    AND p_bought.minute >= date_trunc("day", now() - interval '7 day')
     {% endif %}
 LEFT JOIN {{ source('prices', 'usd') }} p_sold
     ON p_sold.minute = date_trunc('minute', apeswap_dex.block_time)
@@ -101,7 +101,7 @@ LEFT JOIN {{ source('prices', 'usd') }} p_sold
     AND p_sold.minute >= '{{project_start_date}}'
     {% endif %}
     {% if is_incremental() %}
-    AND p_sold.minute >= date_trunc("day", now() - interval '1 week')
+    AND p_sold.minute >= date_trunc("day", now() - interval '7 day')
     {% endif %}
 ;
     

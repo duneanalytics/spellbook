@@ -33,7 +33,7 @@ LEFT JOIN {{ source('prices', 'usd') }} p
   AND p.blockchain is null
   AND p.symbol = 'SOL'
   {% if is_incremental() %}
-  AND p.minute >= date_trunc("day", now() - interval '1 week')
+  AND p.minute >= date_trunc("day", now() - interval '7 day')
   {% endif %}
 WHERE (array_contains(account_keys, '3o9d13qUvEuuauhFrVom1vuCzgNsJifeaBYDPquaT73Y')
        OR array_contains(account_keys, 'pAHAKoTJsAAe2ZcvTZUxoYzuygVAFAmbYmJYdWT886r'))
@@ -42,5 +42,5 @@ AND block_date > '2022-04-06'
 AND block_slot > 128251864
 {% endif %}
 {% if is_incremental() %}
-AND block_date >= date_trunc("day", now() - interval '1 week')
+AND block_date >= date_trunc("day", now() - interval '7 day')
 {% endif %}

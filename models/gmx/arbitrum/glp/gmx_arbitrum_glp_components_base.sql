@@ -19,7 +19,7 @@ WITH minute AS  -- This CTE generates a series of minute values
         SELECT explode(sequence(TIMESTAMP '{{project_start_date}}', CURRENT_TIMESTAMP, INTERVAL 1 minute)) AS minute -- 2021-08-31 08:13 is the timestamp of the first vault transaction
         {% endif %}
         {% if is_incremental() %}
-        SELECT explode(sequence(date_trunc("day", now() - interval '1 week'), CURRENT_TIMESTAMP, INTERVAL 1 minute)) AS minute
+        SELECT explode(sequence(date_trunc("day", now() - interval '7 day'), CURRENT_TIMESTAMP, INTERVAL 1 minute)) AS minute
         {% endif %}
         )
     ),
@@ -45,7 +45,7 @@ glp_frax_poolAmounts AS -- This CTE returns the average amount of FRAX tokens in
             AND call_block_time >= '{{project_start_date}}'
             {% endif %}
             {% if is_incremental() %}
-            AND call_block_time >= date_trunc("day", now() - interval '1 week')
+            AND call_block_time >= date_trunc("day", now() - interval '7 day')
             {% endif %}
         ) a
     GROUP BY a.minute
@@ -67,7 +67,7 @@ glp_usdt_poolAmounts AS -- This CTE returns the average amount of USDT tokens in
             AND call_block_time >= '{{project_start_date}}'
             {% endif %}
             {% if is_incremental() %}
-            AND call_block_time >= date_trunc("day", now() - interval '1 week')
+            AND call_block_time >= date_trunc("day", now() - interval '7 day')
             {% endif %}
         ) a
     GROUP BY a.minute
@@ -89,7 +89,7 @@ glp_wbtc_poolAmounts AS -- This CTE returns the average amount of WBTC tokens in
             AND call_block_time >= '{{project_start_date}}'
             {% endif %}
             {% if is_incremental() %}
-            AND call_block_time >= date_trunc("day", now() - interval '1 week')
+            AND call_block_time >= date_trunc("day", now() - interval '7 day')
             {% endif %}
         ) a
     GROUP BY a.minute
@@ -111,7 +111,7 @@ glp_usdc_poolAmounts AS -- This CTE returns the average amount of USDC tokens in
             AND call_block_time >= '{{project_start_date}}'
             {% endif %}
             {% if is_incremental() %}
-            AND call_block_time >= date_trunc("day", now() - interval '1 week')
+            AND call_block_time >= date_trunc("day", now() - interval '7 day')
             {% endif %}
         ) a
     GROUP BY a.minute
@@ -133,7 +133,7 @@ glp_uni_poolAmounts AS -- This CTE returns the average amount of UNI tokens in t
             AND call_block_time >= '{{project_start_date}}'
             {% endif %}
             {% if is_incremental() %}
-            AND call_block_time >= date_trunc("day", now() - interval '1 week')
+            AND call_block_time >= date_trunc("day", now() - interval '7 day')
             {% endif %}
         ) a
     GROUP BY a.minute
@@ -155,7 +155,7 @@ glp_link_poolAmounts AS -- This CTE returns the average amount of LINK tokens in
             AND call_block_time >= '{{project_start_date}}'
             {% endif %}
             {% if is_incremental() %}
-            AND call_block_time >= date_trunc("day", now() - interval '1 week')
+            AND call_block_time >= date_trunc("day", now() - interval '7 day')
             {% endif %}
         ) a
     GROUP BY a.minute
@@ -177,7 +177,7 @@ glp_weth_poolAmounts AS -- This CTE returns the average amount of WETH tokens in
             AND call_block_time >= '{{project_start_date}}'
             {% endif %}
             {% if is_incremental() %}
-            AND call_block_time >= date_trunc("day", now() - interval '1 week')
+            AND call_block_time >= date_trunc("day", now() - interval '7 day')
             {% endif %}
         ) a
     GROUP BY a.minute
@@ -199,7 +199,7 @@ glp_dai_poolAmounts AS -- This CTE returns the average amount of DAI tokens in t
             AND call_block_time >= '{{project_start_date}}'
             {% endif %}
             {% if is_incremental() %}
-            AND call_block_time >= date_trunc("day", now() - interval '1 week')
+            AND call_block_time >= date_trunc("day", now() - interval '7 day')
             {% endif %}
         ) a
     GROUP BY a.minute
@@ -226,7 +226,7 @@ glp_wbtc_reservedAmounts AS -- This CTE returns the average amount of reserved W
             AND call_block_time >= '{{project_start_date}}'
             {% endif %}
             {% if is_incremental() %}
-            AND call_block_time >= date_trunc("day", now() - interval '1 week')
+            AND call_block_time >= date_trunc("day", now() - interval '7 day')
             {% endif %}
         ) a
     GROUP BY a.minute
@@ -248,7 +248,7 @@ glp_uni_reservedAmounts AS -- This CTE returns the average amount of reserved UN
             AND call_block_time >= '{{project_start_date}}'
             {% endif %}
             {% if is_incremental() %}
-            AND call_block_time >= date_trunc("day", now() - interval '1 week')
+            AND call_block_time >= date_trunc("day", now() - interval '7 day')
             {% endif %}
         ) a
     GROUP BY a.minute
@@ -270,7 +270,7 @@ glp_link_reservedAmounts AS -- This CTE returns the average amount of reserved L
             AND call_block_time >= '{{project_start_date}}'
             {% endif %}
             {% if is_incremental() %}
-            AND call_block_time >= date_trunc("day", now() - interval '1 week')
+            AND call_block_time >= date_trunc("day", now() - interval '7 day')
             {% endif %}
         ) a
     GROUP BY a.minute
@@ -292,7 +292,7 @@ glp_weth_reservedAmounts AS -- This CTE returns the average amount of reserved W
             AND call_block_time >= '{{project_start_date}}'
             {% endif %}
             {% if is_incremental() %}
-            AND call_block_time >= date_trunc("day", now() - interval '1 week')
+            AND call_block_time >= date_trunc("day", now() - interval '7 day')
             {% endif %}
         ) a
     GROUP BY a.minute
@@ -320,7 +320,7 @@ glp_wbtc_guaranteedUsd AS -- This CTE returns the guaranteed USD amount against 
                 AND call_block_time >= '{{project_start_date}}'
                 {% endif %}
                 {% if is_incremental() %}
-                AND call_block_time >= date_trunc("day", now() - interval '1 week')
+                AND call_block_time >= date_trunc("day", now() - interval '7 day')
                 {% endif %}
             ) a
         GROUP BY a.minute
@@ -342,7 +342,7 @@ glp_uni_guaranteedUsd AS -- This CTE returns the guaranteed USD amount against U
                 AND call_block_time >= '{{project_start_date}}'
                 {% endif %}
                 {% if is_incremental() %}
-                AND call_block_time >= date_trunc("day", now() - interval '1 week')
+                AND call_block_time >= date_trunc("day", now() - interval '7 day')
                 {% endif %}
             ) a
         GROUP BY a.minute
@@ -364,7 +364,7 @@ glp_link_guaranteedUsd AS -- This CTE returns the guaranteed USD amount against 
                 AND call_block_time >= '{{project_start_date}}'
                 {% endif %}
                 {% if is_incremental() %}
-                AND call_block_time >= date_trunc("day", now() - interval '1 week')
+                AND call_block_time >= date_trunc("day", now() - interval '7 day')
                 {% endif %}
             ) a
         GROUP BY a.minute
@@ -386,7 +386,7 @@ glp_weth_guaranteedUsd AS -- This CTE returns the guaranteed USD amount against 
                 AND call_block_time >= '{{project_start_date}}'
                 {% endif %}
                 {% if is_incremental() %}
-                AND call_block_time >= date_trunc("day", now() - interval '1 week')
+                AND call_block_time >= date_trunc("day", now() - interval '7 day')
                 {% endif %}
             ) a
         GROUP BY a.minute
@@ -412,7 +412,7 @@ glp_frax_getMaxPrice AS -- This CTE returns the maximum price of FRAX tokens in 
                 AND call_block_time >= '{{project_start_date}}'
                 {% endif %}
                 {% if is_incremental() %}
-                AND call_block_time >= date_trunc("day", now() - interval '1 week')
+                AND call_block_time >= date_trunc("day", now() - interval '7 day')
                 {% endif %}
             ) a
         GROUP BY a.minute
@@ -434,7 +434,7 @@ glp_usdt_getMaxPrice AS -- This CTE returns the maximum price of USDT tokens in 
                 AND call_block_time >= '{{project_start_date}}'
                 {% endif %}
                 {% if is_incremental() %}
-                AND call_block_time >= date_trunc("day", now() - interval '1 week')
+                AND call_block_time >= date_trunc("day", now() - interval '7 day')
                 {% endif %}
             ) a
         GROUP BY a.minute
@@ -456,7 +456,7 @@ glp_wbtc_getMaxPrice AS -- This CTE returns the maximum price of WBTC tokens in 
                 AND call_block_time >= '{{project_start_date}}'
                 {% endif %}
                 {% if is_incremental() %}
-                AND call_block_time >= date_trunc("day", now() - interval '1 week')
+                AND call_block_time >= date_trunc("day", now() - interval '7 day')
                 {% endif %}
             ) a
         GROUP BY a.minute
@@ -478,7 +478,7 @@ glp_usdc_getMaxPrice AS -- This CTE returns the maximum price of USDC tokens in 
                 AND call_block_time >= '{{project_start_date}}'
                 {% endif %}
                 {% if is_incremental() %}
-                AND call_block_time >= date_trunc("day", now() - interval '1 week')
+                AND call_block_time >= date_trunc("day", now() - interval '7 day')
                 {% endif %}
             ) a
         GROUP BY a.minute
@@ -500,7 +500,7 @@ glp_uni_getMaxPrice AS -- This CTE returns the maximum price of UNI tokens in th
                 AND call_block_time >= '{{project_start_date}}'
                 {% endif %}
                 {% if is_incremental() %}
-                AND call_block_time >= date_trunc("day", now() - interval '1 week')
+                AND call_block_time >= date_trunc("day", now() - interval '7 day')
                 {% endif %}
             ) a
         GROUP BY a.minute
@@ -522,7 +522,7 @@ glp_link_getMaxPrice AS -- This CTE returns the maximum price of LINK tokens in 
                 AND call_block_time >= '{{project_start_date}}'
                 {% endif %}
                 {% if is_incremental() %}
-                AND call_block_time >= date_trunc("day", now() - interval '1 week')
+                AND call_block_time >= date_trunc("day", now() - interval '7 day')
                 {% endif %}
             ) a
         GROUP BY a.minute
@@ -544,7 +544,7 @@ glp_weth_getMaxPrice AS -- This CTE returns the maximum price of WETH tokens in 
                 AND call_block_time >= '{{project_start_date}}'
                 {% endif %}
                 {% if is_incremental() %}
-                AND call_block_time >= date_trunc("day", now() - interval '1 week')
+                AND call_block_time >= date_trunc("day", now() - interval '7 day')
                 {% endif %}
             ) a
         GROUP BY a.minute
@@ -566,7 +566,7 @@ glp_dai_getMaxPrice AS -- This CTE returns the maximum price of DAI tokens in th
                 AND call_block_time >= '{{project_start_date}}'
                 {% endif %}
                 {% if is_incremental() %}
-                AND call_block_time >= date_trunc("day", now() - interval '1 week')
+                AND call_block_time >= date_trunc("day", now() - interval '7 day')
                 {% endif %}
             ) a
         GROUP BY a.minute
@@ -592,7 +592,7 @@ glp_frax_getMinPrice AS -- This CTE returns the minimum price of FRAX tokens in 
                 AND call_block_time >= '{{project_start_date}}'
                 {% endif %}
                 {% if is_incremental() %}
-                AND call_block_time >= date_trunc("day", now() - interval '1 week')
+                AND call_block_time >= date_trunc("day", now() - interval '7 day')
                 {% endif %}
             ) a
         GROUP BY a.minute
@@ -614,7 +614,7 @@ glp_usdt_getMinPrice AS -- This CTE returns the minimum price of USDT tokens in 
                 AND call_block_time >= '{{project_start_date}}'
                 {% endif %}
                 {% if is_incremental() %}
-                AND call_block_time >= date_trunc("day", now() - interval '1 week')
+                AND call_block_time >= date_trunc("day", now() - interval '7 day')
                 {% endif %}
             ) a
         GROUP BY a.minute
@@ -636,7 +636,7 @@ glp_wbtc_getMinPrice AS -- This CTE returns the minimum price of WBTC tokens in 
                 AND call_block_time >= '{{project_start_date}}'
                 {% endif %}
                 {% if is_incremental() %}
-                AND call_block_time >= date_trunc("day", now() - interval '1 week')
+                AND call_block_time >= date_trunc("day", now() - interval '7 day')
                 {% endif %}
             ) a
         GROUP BY a.minute
@@ -658,7 +658,7 @@ glp_usdc_getMinPrice AS -- This CTE returns the minimum price of USDC tokens in 
                 AND call_block_time >= '{{project_start_date}}'
                 {% endif %}
                 {% if is_incremental() %}
-                AND call_block_time >= date_trunc("day", now() - interval '1 week')
+                AND call_block_time >= date_trunc("day", now() - interval '7 day')
                 {% endif %}
             ) a
         GROUP BY a.minute
@@ -680,7 +680,7 @@ glp_uni_getMinPrice AS -- This CTE returns the minimum price of UNI tokens in th
                 AND call_block_time >= '{{project_start_date}}'
                 {% endif %}
                 {% if is_incremental() %}
-                AND call_block_time >= date_trunc("day", now() - interval '1 week')
+                AND call_block_time >= date_trunc("day", now() - interval '7 day')
                 {% endif %}
             ) a
         GROUP BY a.minute
@@ -702,7 +702,7 @@ glp_link_getMinPrice AS -- This CTE returns the minimum price of LINK tokens in 
                 AND call_block_time >= '{{project_start_date}}'
                 {% endif %}
                 {% if is_incremental() %}
-                AND call_block_time >= date_trunc("day", now() - interval '1 week')
+                AND call_block_time >= date_trunc("day", now() - interval '7 day')
                 {% endif %}
             ) a
         GROUP BY a.minute
@@ -724,7 +724,7 @@ glp_weth_getMinPrice AS -- This CTE returns the minimum price of WETH tokens in 
                 AND call_block_time >= '{{project_start_date}}'
                 {% endif %}
                 {% if is_incremental() %}
-                AND call_block_time >= date_trunc("day", now() - interval '1 week')
+                AND call_block_time >= date_trunc("day", now() - interval '7 day')
                 {% endif %}
             ) a
         GROUP BY a.minute
@@ -746,7 +746,7 @@ glp_dai_getMinPrice AS -- This CTE returns the minimum price of DAI tokens in th
                 AND call_block_time >= '{{project_start_date}}'
                 {% endif %}
                 {% if is_incremental() %}
-                AND call_block_time >= date_trunc("day", now() - interval '1 week')
+                AND call_block_time >= date_trunc("day", now() - interval '7 day')
                 {% endif %}
             ) a
         GROUP BY a.minute
@@ -773,7 +773,7 @@ glp_wbtc_globalShortAveragePrices AS -- This CTE returns volume weighted average
             AND call_block_time >= '{{project_start_date}}'
             {% endif %}
             {% if is_incremental() %}
-            AND call_block_time >= date_trunc("day", now() - interval '1 week')
+            AND call_block_time >= date_trunc("day", now() - interval '7 day')
             {% endif %}
         ) a
     GROUP BY a.minute
@@ -795,7 +795,7 @@ glp_uni_globalShortAveragePrices AS -- This CTE returns volume weighted average 
             AND call_block_time >= '{{project_start_date}}'
             {% endif %}
             {% if is_incremental() %}
-            AND call_block_time >= date_trunc("day", now() - interval '1 week')
+            AND call_block_time >= date_trunc("day", now() - interval '7 day')
             {% endif %}
         ) a
     GROUP BY a.minute
@@ -817,7 +817,7 @@ glp_link_globalShortAveragePrices AS -- This CTE returns volume weighted average
             AND call_block_time >= '{{project_start_date}}'
             {% endif %}
             {% if is_incremental() %}
-            AND call_block_time >= date_trunc("day", now() - interval '1 week')
+            AND call_block_time >= date_trunc("day", now() - interval '7 day')
             {% endif %}
         ) a
     GROUP BY a.minute
@@ -839,7 +839,7 @@ glp_weth_globalShortAveragePrices AS -- This CTE returns volume weighted average
             AND call_block_time >= '{{project_start_date}}'
             {% endif %}
             {% if is_incremental() %}
-            AND call_block_time >= date_trunc("day", now() - interval '1 week')
+            AND call_block_time >= date_trunc("day", now() - interval '7 day')
             {% endif %}
         ) a
     GROUP BY a.minute
@@ -866,7 +866,7 @@ glp_wbtc_globalShortSizes AS -- This CTE returns average sum of all WBTC shorts 
             AND call_block_time >= '{{project_start_date}}'
             {% endif %}
             {% if is_incremental() %}
-            AND call_block_time >= date_trunc("day", now() - interval '1 week')
+            AND call_block_time >= date_trunc("day", now() - interval '7 day')
             {% endif %}
         ) a
     GROUP BY a.minute
@@ -888,7 +888,7 @@ glp_uni_globalShortSizes AS -- This CTE returns average sum of all UNI shorts fo
             AND call_block_time >= '{{project_start_date}}'
             {% endif %}
             {% if is_incremental() %}
-            AND call_block_time >= date_trunc("day", now() - interval '1 week')
+            AND call_block_time >= date_trunc("day", now() - interval '7 day')
             {% endif %}
         ) a
     GROUP BY a.minute
@@ -910,7 +910,7 @@ glp_link_globalShortSizes AS -- This CTE returns average sum of all LINK shorts 
             AND call_block_time >= '{{project_start_date}}'
             {% endif %}
             {% if is_incremental() %}
-            AND call_block_time >= date_trunc("day", now() - interval '1 week')
+            AND call_block_time >= date_trunc("day", now() - interval '7 day')
             {% endif %}
         ) a
     GROUP BY a.minute
@@ -932,7 +932,7 @@ glp_weth_globalShortSizes AS -- This CTE returns average sum of all WETH shorts 
             AND call_block_time >= '{{project_start_date}}'
             {% endif %}
             {% if is_incremental() %}
-            AND call_block_time >= date_trunc("day", now() - interval '1 week')
+            AND call_block_time >= date_trunc("day", now() - interval '7 day')
             {% endif %}
         ) a
     GROUP BY a.minute

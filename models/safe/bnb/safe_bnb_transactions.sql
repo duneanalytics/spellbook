@@ -40,7 +40,7 @@ select
     end as method
 from {{ source('bnb', 'traces') }} tr 
 join {{ ref('safe_bnb_safes') }} s
-    on s.address = tr.from
+    on s.address = tr."from"
 join {{ ref('safe_bnb_singletons') }} ss
     on tr.to = ss.address
 where substring(tr.input, 0, 10) in (
@@ -53,5 +53,5 @@ where substring(tr.input, 0, 10) in (
     and tr.block_time > '2021-01-26' -- for initial query optimisation     
     {% endif %}
     {% if is_incremental() %}
-    and tr.block_time > date_trunc("day", now() - interval '1 week')
+    and tr.block_time > date_trunc("day", now() - interval '7 day')
     {% endif %}

@@ -21,7 +21,7 @@ WITH
     SELECT
       output_pair AS pool_address,
       _nft AS nft_contract_address,
-      tx.from AS creator_address,
+      tx."from" AS creator_address,
       CASE
         WHEN lower(_bondingCurve) = '{{linear_bonding_address}}' THEN 'linear'
         WHEN lower(_bondingCurve) = '{{exponential_bonding_address}}' THEN 'exponential'
@@ -49,7 +49,7 @@ WITH
         AND tx.block_time >= '{{project_start_date}}'
         {% endif %}
         {% if is_incremental() %}
-        AND tx.block_time >= date_trunc("day", now() - interval '1 week')
+        AND tx.block_time >= date_trunc("day", now() - interval '7 day')
         {% endif %}
     WHERE
       call_success

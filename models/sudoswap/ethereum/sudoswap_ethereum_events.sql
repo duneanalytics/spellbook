@@ -46,7 +46,7 @@ WITH
             WHERE call_success = true
             {% if is_incremental() %}
             -- this filter will only be applied on an incremental run. We only want to update with new swaps.
-            AND call_block_time >= date_trunc("day", now() - interval '1 week')
+            AND call_block_time >= date_trunc("day", now() - interval '7 day')
             {% endif %}
 
             UNION ALL
@@ -65,7 +65,7 @@ WITH
             WHERE call_success = true
             {% if is_incremental() %}
             -- this filter will only be applied on an incremental run. We only want to update with new swaps.
-            AND call_block_time >= date_trunc("day", now() - interval '1 week')
+            AND call_block_time >= date_trunc("day", now() - interval '7 day')
             {% endif %}
 
             UNION ALL
@@ -84,7 +84,7 @@ WITH
             WHERE call_success = true
             {% if is_incremental() %}
             -- this filter will only be applied on an incremental run. We only want to update with new swaps.
-            AND call_block_time >= date_trunc("day", now() - interval '1 week')
+            AND call_block_time >= date_trunc("day", now() - interval '7 day')
             {% endif %}
         ) s
     )
@@ -92,14 +92,14 @@ WITH
     -- this join should be removed in the future when more call trace info is added to the _call_ tables, we need the call_from field to track down the eth traces.
     , swaps_with_calldata as (
         select s.*
-        , tr.from as call_from
-        , CASE WHEN called_from_router = true THEN tr.from ELSE tr.to END as project_contract_address -- either the router or the pool if called directly
+        , tr."from" as call_from
+        , CASE WHEN called_from_router = true THEN tr."from" ELSE tr.to END as project_contract_address -- either the router or the pool if called directly
         from swaps s
         inner join {{ source('ethereum', 'traces') }} tr
         ON tr.success and s.call_block_number = tr.block_number and s.call_tx_hash = tr.tx_hash and s.call_trace_address = tr.trace_address
         {% if is_incremental() %}
         -- this filter will only be applied on an incremental run. We only want to update with new swaps.
-        AND tr.block_time >= date_trunc("day", now() - interval '1 week')
+        AND tr.block_time >= date_trunc("day", now() - interval '7 day')
         {% endif %}
         {% if not is_incremental() %}
         AND tr.block_time >= '2022-4-1'
@@ -193,11 +193,11 @@ WITH
             , SUM(
                 CASE WHEN sb.trade_category = 'Buy' -- caller buys, AMM sells
                 THEN (
-                    CASE WHEN tr.from = sb.call_from THEN value -- amount of ETH payed
+                    CASE WHEN tr."from" = sb.call_from THEN value -- amount of ETH payed
                     WHEN (tr.to = sb.call_from AND sb.call_from != sb.asset_recip) THEN -value --refunds unless the caller is also the asset recipient, no way to discriminate there.
                     ELSE 0 END)
                 ELSE ( -- caller sells, AMM buys
-                    CASE WHEN tr.from = sb.pair_address THEN value -- all ETH leaving the pool, nothing should be coming in on a sell.
+                    CASE WHEN tr."from" = sb.pair_address THEN value -- all ETH leaving the pool, nothing should be coming in on a sell.
                     ELSE 0 END)
                 END ) as trade_price -- what the buyer paid (incl all fees)
             , SUM(
@@ -228,7 +228,7 @@ WITH
                 OR cardinality(call_trace_address) = 0 -- In this case the swap function was called directly, all traces are thus subtraces of that call (like 0x34a52a94fce15c090cc16adbd6824948c731ecb19a39350633590a9cd163658b).
                 )
             {% if is_incremental() %}
-            AND tr.block_time >= date_trunc("day", now() - interval '1 week')
+            AND tr.block_time >= date_trunc("day", now() - interval '7 day')
             {% endif %}
             {% if not is_incremental() %}
             AND tr.block_time >= '2022-4-1'
@@ -296,13 +296,13 @@ WITH
             , sc.amount_original*pu.price as amount_usd
             , sc.pool_fee_amount*pu.price as pool_fee_amount_usd
             , sc.platform_fee_amount*pu.price as platform_fee_amount_usd
-            , tx.from as tx_from
+            , tx."from" as tx_from
             , tx.to as tx_to
         FROM swaps_cleaned sc
         INNER JOIN {{ source('ethereum', 'transactions') }} tx
             ON tx.block_number=sc.block_number and tx.hash=sc.tx_hash
             {% if is_incremental() %}
-            AND tx.block_time >= date_trunc("day", now() - interval '1 week')
+            AND tx.block_time >= date_trunc("day", now() - interval '7 day')
             {% endif %}
             {% if not is_incremental() %}
             AND tx.block_time >= '2022-4-1'
@@ -311,7 +311,7 @@ WITH
             AND date_trunc('minute', pu.minute)=date_trunc('minute', sc.block_time)
             AND symbol = 'WETH'
             {% if is_incremental() %}
-            AND pu.minute >= date_trunc("day", now() - interval '1 week')
+            AND pu.minute >= date_trunc("day", now() - interval '7 day')
             {% endif %}
             {% if not is_incremental() %}
             AND pu.minute >= '2022-4-1'

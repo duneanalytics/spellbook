@@ -49,7 +49,7 @@ WITH oneinch_calls AS
     WHERE
         call_success
         {% if is_incremental() %}
-        AND call_block_time >= date_trunc("day", now() - interval '1 week')
+        AND call_block_time >= date_trunc("day", now() - interval '7 day')
         {% else %}
         AND call_block_time >= '{{project_start_date}}'
         {% endif %}
@@ -145,11 +145,11 @@ SELECT
     ) AS amount_usd
     ,src.token_bought_address
     ,src.token_sold_address
-    ,coalesce(src.taker, tx.from) AS taker
+    ,coalesce(src.taker, tx."from") AS taker
     ,src.maker
     ,src.project_contract_address
     ,src.tx_hash
-    ,tx.from AS tx_from
+    ,tx."from" AS tx_from
     ,tx.to AS tx_to
     ,CAST(src.trace_address as array<long>) as trace_address
     ,src.evt_index
@@ -158,7 +158,7 @@ INNER JOIN {{ source('ethereum', 'transactions') }} as tx
     ON src.tx_hash = tx.hash
     AND src.block_number = tx.block_number
     {% if is_incremental() %}
-    AND tx.block_time >= date_trunc("day", now() - interval '1 week')
+    AND tx.block_time >= date_trunc("day", now() - interval '7 day')
     {% else %}
     AND tx.block_time >= '{{project_start_date}}'
     {% endif %}
@@ -173,7 +173,7 @@ LEFT JOIN {{ source('prices', 'usd') }} as prices_bought
     AND prices_bought.contract_address = src.token_bought_address
     AND prices_bought.blockchain = '{{blockchain}}'
     {% if is_incremental() %}
-    AND prices_bought.minute >= date_trunc("day", now() - interval '1 week')
+    AND prices_bought.minute >= date_trunc("day", now() - interval '7 day')
     {% else %}
     AND prices_bought.minute >= '{{project_start_date}}'
     {% endif %}
@@ -182,7 +182,7 @@ LEFT JOIN {{ source('prices', 'usd') }} as prices_sold
     AND prices_sold.contract_address = src.token_sold_address
     AND prices_sold.blockchain = '{{blockchain}}'
     {% if is_incremental() %}
-    AND prices_sold.minute >= date_trunc("day", now() - interval '1 week')
+    AND prices_sold.minute >= date_trunc("day", now() - interval '7 day')
     {% else %}
     AND prices_sold.minute >= '{{project_start_date}}'
     {% endif %}
@@ -191,7 +191,7 @@ LEFT JOIN {{ source('prices', 'usd') }} as prices_eth
     AND prices_eth.blockchain is null
     AND prices_eth.symbol = 'ETH'
     {% if is_incremental() %}
-    AND prices_eth.minute >= date_trunc("day", now() - interval '1 week')
+    AND prices_eth.minute >= date_trunc("day", now() - interval '7 day')
     {% else %}
     AND prices_eth.minute >= '{{project_start_date}}'
     {% endif %}

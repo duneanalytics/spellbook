@@ -32,7 +32,7 @@ with v2 as (
         where s.evt_block_time >= '{{project_start_date}}'
     {% endif %}
     {% if is_incremental() %}
-        where s.evt_block_time >= date_trunc("day", now() - interval '1 week')
+        where s.evt_block_time >= date_trunc("day", now() - interval '7 day')
     {% endif %}
 ),
 prices as (
@@ -42,7 +42,7 @@ prices as (
         and minute >= '{{project_start_date}}'
     {% endif %}
     {% if is_incremental() %}
-        and minute >= date_trunc("day", now() - interval '1 week')
+        and minute >= date_trunc("day", now() - interval '7 day')
     {% endif %}
 )
 
@@ -69,11 +69,11 @@ select
     ) AS amount_usd,
     token_bought_address,
     token_sold_address,
-    tx.from as taker,
+    tx."from" as taker,
     cast(null as varchar(5)) as maker,
     project_contract_address,
     evt_tx_hash as tx_hash,
-    tx.from as tx_from,
+    tx."from" as tx_from,
     tx.to as tx_to,
     evt_index,
     '' as trace_address
@@ -84,7 +84,7 @@ inner join {{ source('optimism', 'transactions') }} tx
     and tx.block_time >= '{{project_start_date}}'
     {% endif %}
     {% if is_incremental() %}
-    and tx.block_time >= date_trunc("day", now() - interval '1 week')
+    and tx.block_time >= date_trunc("day", now() - interval '7 day')
     {% endif %}
 left join {{ ref('tokens_erc20') }} erc20a
     on trades.token_bought_address = erc20a.contract_address

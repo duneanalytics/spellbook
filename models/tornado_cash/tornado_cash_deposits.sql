@@ -31,7 +31,7 @@ FROM
         , 'ETH' AS currency_symbol
         , 'ethereum' AS blockchain
         , 'classic' AS tornado_version
-        , et.from AS depositor
+        , et."from" AS depositor
         , tc.contract_address AS contract_address
         , CASE WHEN tc.contract_address=0x12d66f87a04a9e220743712ce6d9bb1b5616b8fc THEN 0.1
                 WHEN tc.contract_address=0x47ce0c6ed5b0ce3d3a51fdb1c52dc66a7c3c2936 THEN 1
@@ -49,13 +49,13 @@ FROM
                 AND et.block_time >= '{{ethereum_start_date}}'
                 {% endif %}
                 {% if is_incremental() %}
-                AND et.block_time >= date_trunc("day", now() - interval '1 week')
+                AND et.block_time >= date_trunc("day", now() - interval '7 day')
                 {% endif %}
         {% if not is_incremental() %}
         WHERE tc.evt_block_time >= '{{ethereum_start_date}}'
         {% endif %}
         {% if is_incremental() %}
-        WHERE tc.evt_block_time >= date_trunc("day", now() - interval '1 week')
+        WHERE tc.evt_block_time >= date_trunc("day", now() - interval '7 day')
         {% endif %}
 
         UNION
@@ -110,7 +110,7 @@ FROM
                 END AS currency_symbol
         , 'ethereum' AS blockchain
         , 'classic' AS tornado_version
-        , et.from AS depositor
+        , et."from" AS depositor
         , tc.contract_address AS contract_address
         , CASE WHEN tc.contract_address=0xd4b88df4d29f5cedd6857912842cff3b20c8cfa3 THEN 100
                 WHEN tc.contract_address=0xfd8610d20aa15b7b2e3be39b396a1bc3516c7144 THEN 1000
@@ -146,13 +146,13 @@ FROM
                 AND et.block_time >= '{{eth_erc20_pt1_start_date}}'
                 {% endif %}
                 {% if is_incremental() %}
-                AND et.block_time >= date_trunc("day", now() - interval '1 week')
+                AND et.block_time >= date_trunc("day", now() - interval '7 day')
                 {% endif %}
         {% if not is_incremental() %}
         WHERE tc.evt_block_time >= '{{eth_erc20_pt1_start_date}}'
         {% endif %}
         {% if is_incremental() %}
-        WHERE tc.evt_block_time >= date_trunc("day", now() - interval '1 week')
+        WHERE tc.evt_block_time >= date_trunc("day", now() - interval '7 day')
         {% endif %}
 
         UNION
@@ -207,7 +207,7 @@ FROM
                 END AS currency_symbol
         , 'ethereum' AS blockchain
         , 'classic' AS tornado_version
-        , et.from AS depositor
+        , et."from" AS depositor
         , tc.contract_address AS contract_address
         , CASE WHEN tc.contract_address=0xd4b88df4d29f5cedd6857912842cff3b20c8cfa3 THEN 100
                 WHEN tc.contract_address=0xfd8610d20aa15b7b2e3be39b396a1bc3516c7144 THEN 1000
@@ -243,13 +243,13 @@ FROM
                 AND et.block_time >= '{{eth_erc20_pt2_start_date}}'
                 {% endif %}
                 {% if is_incremental() %}
-                AND et.block_time >= date_trunc("day", now() - interval '1 week')
+                AND et.block_time >= date_trunc("day", now() - interval '7 day')
                 {% endif %}
         {% if not is_incremental() %}
         WHERE tc.evt_block_time >= '{{eth_erc20_pt2_start_date}}'
         {% endif %}
         {% if is_incremental() %}
-        WHERE tc.evt_block_time >= date_trunc("day", now() - interval '1 week')
+        WHERE tc.evt_block_time >= date_trunc("day", now() - interval '7 day')
         {% endif %}
 
         UNION
@@ -260,7 +260,7 @@ FROM
         , 'BNB' AS currency_symbol
         , 'bnb' AS blockchain
         , 'classic' AS tornado_version
-        , bt.from AS depositor
+        , bt."from" AS depositor
         , tc.contract_address AS contract_address
         , CASE WHEN tc.contract_address=0x84443cfd09a48af6ef360c6976c5392ac5023a1f THEN 0.1
                 WHEN tc.contract_address=0xd47438c816c9e7f2e2888e060936a499af9582b3 THEN 1
@@ -278,13 +278,13 @@ FROM
                 AND bt.block_time >= '{{bnb_start_date}}'
                 {% endif %}
                 {% if is_incremental() %}
-                AND bt.block_time >= date_trunc("day", now() - interval '1 week')
+                AND bt.block_time >= date_trunc("day", now() - interval '7 day')
                 {% endif %}
         {% if not is_incremental() %}
         WHERE tc.evt_block_time >= '{{bnb_start_date}}'
         {% endif %}
         {% if is_incremental() %}
-        WHERE tc.evt_block_time >= date_trunc("day", now() - interval '1 week')
+        WHERE tc.evt_block_time >= date_trunc("day", now() - interval '7 day')
         {% endif %}
 
         UNION
@@ -295,7 +295,7 @@ FROM
         , 'xDAI' AS currency_symbol
         , 'gnosis' AS blockchain
         , 'classic' AS tornado_version
-        , gt.from AS depositor
+        , gt."from" AS depositor
         , tc.contract_address AS contract_address
         , CASE WHEN tc.contract_address=0x1e34a77868e19a6647b1f2f47b51ed72dede95dd THEN 100
                 WHEN tc.contract_address=0xdf231d99ff8b6c6cbf4e9b9a945cbacef9339178 THEN 1000
@@ -313,13 +313,13 @@ FROM
                 AND gt.block_time >= '{{gnosis_start_date}}'
                 {% endif %}
                 {% if is_incremental() %}
-                AND gt.block_time >= date_trunc("day", now() - interval '1 week')
+                AND gt.block_time >= date_trunc("day", now() - interval '7 day')
                 {% endif %}
         {% if not is_incremental() %}
         WHERE tc.evt_block_time >= '{{gnosis_start_date}}'
         {% endif %}
         {% if is_incremental() %}
-        WHERE tc.evt_block_time >= date_trunc("day", now() - interval '1 week')
+        WHERE tc.evt_block_time >= date_trunc("day", now() - interval '7 day')
         {% endif %}
 
         UNION
@@ -330,7 +330,7 @@ FROM
         , 'ETH' AS currency_symbol
         , 'optimism' AS blockchain
         , 'classic' AS tornado_version
-        , ot.from AS depositor
+        , ot."from" AS depositor
         , tc.contract_address AS contract_address
         , CASE WHEN tc.contract_address=0x84443cfd09a48af6ef360c6976c5392ac5023a1f THEN 0.1
                 WHEN tc.contract_address=0xb529a618ffedefe5cfa4df8dbb0b32d8c29ca2e8 THEN 0.1
@@ -349,13 +349,13 @@ FROM
                 AND ot.block_time >= '{{optimism_start_date}}'
                 {% endif %}
                 {% if is_incremental() %}
-                AND ot.block_time >= date_trunc("day", now() - interval '1 week')
+                AND ot.block_time >= date_trunc("day", now() - interval '7 day')
                 {% endif %}
         {% if not is_incremental() %}
         WHERE tc.evt_block_time >= '{{optimism_start_date}}'
         {% endif %}
         {% if is_incremental() %}
-        WHERE tc.evt_block_time >= date_trunc("day", now() - interval '1 week')
+        WHERE tc.evt_block_time >= date_trunc("day", now() - interval '7 day')
         {% endif %}
 
         UNION
@@ -366,7 +366,7 @@ FROM
         , 'AVAX' AS currency_symbol
         , 'avalanche_c' AS blockchain
         , 'classic' AS tornado_version
-        , at.from AS depositor
+        , at."from" AS depositor
         , tc.contract_address AS contract_address
         , CASE WHEN tc.contract_address=0x330bdfade01ee9bf63c209ee33102dd334618e0a THEN 10
                 WHEN tc.contract_address=0x1e34a77868e19a6647b1f2f47b51ed72dede95dd THEN 100
@@ -383,13 +383,13 @@ FROM
                 AND at.block_time >= '{{avalanche_start_date}}'
                 {% endif %}
                 {% if is_incremental() %}
-                AND at.block_time >= date_trunc("day", now() - interval '1 week')
+                AND at.block_time >= date_trunc("day", now() - interval '7 day')
                 {% endif %}
         {% if not is_incremental() %}
         WHERE tc.evt_block_time >= '{{avalanche_start_date}}'
         {% endif %}
         {% if is_incremental() %}
-        WHERE tc.evt_block_time >= date_trunc("day", now() - interval '1 week')
+        WHERE tc.evt_block_time >= date_trunc("day", now() - interval '7 day')
         {% endif %}
 
         UNION
@@ -400,7 +400,7 @@ FROM
         , 'ETH' AS currency_symbol
         , 'arbitrum' AS blockchain
         , 'classic' AS tornado_version
-        , at.from AS depositor
+        , at."from" AS depositor
         , tc.contract_address AS contract_address
         , CASE WHEN tc.contract_address=0x84443cfd09a48af6ef360c6976c5392ac5023a1f THEN 0.1
                 WHEN tc.contract_address=0xd47438c816c9e7f2e2888e060936a499af9582b3 THEN 1
@@ -418,13 +418,13 @@ FROM
                 AND at.block_time >= '{{arbitrum_start_date}}'
                 {% endif %}
                 {% if is_incremental() %}
-                AND at.block_time >= date_trunc("day", now() - interval '1 week')
+                AND at.block_time >= date_trunc("day", now() - interval '7 day')
                 {% endif %}
         {% if not is_incremental() %}
         WHERE tc.evt_block_time >= '{{arbitrum_start_date}}'
         {% endif %}
         {% if is_incremental() %}
-        WHERE tc.evt_block_time >= date_trunc("day", now() - interval '1 week')
+        WHERE tc.evt_block_time >= date_trunc("day", now() - interval '7 day')
         {% endif %}
         
         UNION
@@ -435,7 +435,7 @@ FROM
         , 'MATIC' AS currency_symbol
         , 'polygon' AS blockchain
         , 'classic' AS tornado_version
-        , pt.from AS depositor
+        , pt."from" AS depositor
         , tc.contract_address AS contract_address
         , CASE WHEN tc.contract_address=0x1e34a77868e19a6647b1f2f47b51ed72dede95dd THEN 100
             WHEN tc.contract_address=0xdf231d99ff8b6c6cbf4e9b9a945cbacef9339178 THEN 1000
@@ -453,12 +453,12 @@ FROM
                 AND pt.block_time >= '{{polygon_start_date}}'
                 {% endif %}
                 {% if is_incremental() %}
-                AND pt.block_time >= date_trunc("day", now() - interval '1 week')
+                AND pt.block_time >= date_trunc("day", now() - interval '7 day')
                 {% endif %}
         {% if not is_incremental() %}
         WHERE tc.evt_block_time >= '{{polygon_start_date}}'
         {% endif %}
         {% if is_incremental() %}
-        WHERE tc.evt_block_time >= date_trunc("day", now() - interval '1 week')
+        WHERE tc.evt_block_time >= date_trunc("day", now() - interval '7 day')
         {% endif %}
 )

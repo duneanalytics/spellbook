@@ -20,7 +20,7 @@ with minute as -- This CTE generates a series of minute values
             SELECT explode(sequence(TIMESTAMP '{{project_start_date}}', CURRENT_TIMESTAMP, INTERVAL 1 minute)) AS minute
             {% endif %}
             {% if is_incremental() %}
-            SELECT explode(sequence(date_trunc("day", now() - interval '1 week'), CURRENT_TIMESTAMP, INTERVAL 1 minute)) AS minute
+            SELECT explode(sequence(date_trunc("day", now() - interval '7 day'), CURRENT_TIMESTAMP, INTERVAL 1 minute)) AS minute
             {% endif %}
          ),
      token as -- This CTE create tokens which in GLP pool on Avalanche
@@ -54,7 +54,7 @@ with minute as -- This CTE generates a series of minute values
                  FROM {{source('gmx_avalanche_c', 'Vault_call_poolAmounts')}}
                  where call_success = true
                  {% if is_incremental() %}
-                 AND call_block_time >= date_trunc("day", now() - interval '1 week')
+                 AND call_block_time >= date_trunc("day", now() - interval '7 day')
                  {% endif %}
                  {% if not is_incremental() %}
                  AND call_block_time >= '{{project_start_date}}'
@@ -75,7 +75,7 @@ with minute as -- This CTE generates a series of minute values
                  FROM {{source('gmx_avalanche_c', 'Vault_call_reservedAmounts')}}
                  where call_success = true
                  {% if is_incremental() %}
-                 AND call_block_time >= date_trunc("day", now() - interval '1 week')
+                 AND call_block_time >= date_trunc("day", now() - interval '7 day')
                  {% endif %}
                  {% if not is_incremental() %}
                  AND call_block_time >= '{{project_start_date}}'
@@ -96,7 +96,7 @@ with minute as -- This CTE generates a series of minute values
                  FROM {{source('gmx_avalanche_c', 'Vault_call_guaranteedUsd')}}
                  where call_success = true
                  {% if is_incremental() %}
-                 AND call_block_time >= date_trunc("day", now() - interval '1 week')
+                 AND call_block_time >= date_trunc("day", now() - interval '7 day')
                  {% endif %}
                  {% if not is_incremental() %}
                  AND call_block_time >= '{{project_start_date}}'
@@ -117,7 +117,7 @@ with minute as -- This CTE generates a series of minute values
                  FROM {{source('gmx_avalanche_c', 'Vault_call_getMaxPrice')}}
                  where call_success = true
                  {% if is_incremental() %}
-                 AND call_block_time >= date_trunc("day", now() - interval '1 week')
+                 AND call_block_time >= date_trunc("day", now() - interval '7 day')
                  {% endif %}
                  {% if not is_incremental() %}
                  AND call_block_time >= '{{project_start_date}}'
@@ -138,7 +138,7 @@ with minute as -- This CTE generates a series of minute values
                  FROM {{source('gmx_avalanche_c', 'Vault_call_getMinPrice')}}
                  where call_success = true
                  {% if is_incremental() %}
-                 AND call_block_time >= date_trunc("day", now() - interval '1 week')
+                 AND call_block_time >= date_trunc("day", now() - interval '7 day')
                  {% endif %}
                  {% if not is_incremental() %}
                  AND call_block_time >= '{{project_start_date}}'
@@ -160,7 +160,7 @@ with minute as -- This CTE generates a series of minute values
                  FROM {{source('gmx_avalanche_c', 'Vault_call_globalShortAveragePrices')}}
                  where call_success = true
                  {% if is_incremental() %}
-                 AND call_block_time >= date_trunc("day", now() - interval '1 week')
+                 AND call_block_time >= date_trunc("day", now() - interval '7 day')
                  {% endif %}
                  {% if not is_incremental() %}
                  AND call_block_time >= '{{project_start_date}}'
@@ -181,7 +181,7 @@ with minute as -- This CTE generates a series of minute values
                  FROM {{source('gmx_avalanche_c', 'Vault_call_globalShortSizes')}}
                  where call_success = true
                  {% if is_incremental() %}
-                 AND call_block_time >= date_trunc("day", now() - interval '1 week')
+                 AND call_block_time >= date_trunc("day", now() - interval '7 day')
                  {% endif %}
                  {% if not is_incremental() %}
                  AND call_block_time >= '{{project_start_date}}'

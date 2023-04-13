@@ -95,7 +95,7 @@ WITH all_labels AS (
                 ON tx.hash = tf.evt_tx_hash
                 AND tx.block_number = tf.evt_block_number
                 {% if is_incremental() %} 
-                and tx.block_time >= date_trunc('day', now() - interval '1 week')
+                and tx.block_time >= date_trunc('day', now() - interval '7 day')
                 {% else %}
                 AND tx.block_time >= cast('{{op_token_launch_date}}' as date)
                 {% endif %}
@@ -117,7 +117,7 @@ WITH all_labels AS (
                             ,0x51d3a2f94e60cbecdce05ab41b61d7ce5240b8ff)
                     )
             {% if is_incremental() %} 
-            and tf.evt_block_time >= date_trunc('day', now() - interval '1 week')
+            and tf.evt_block_time >= date_trunc('day', now() - interval '7 day')
             {% else %}
             AND tf.evt_block_time >= cast('{{op_token_launch_date}}' as date)
             {% endif %}
@@ -141,15 +141,15 @@ WITH all_labels AS (
             from_type, to_type, from_label, from_name, to_label, o.to_name, op_amount_decimal, tx_method
         FROM {{ ref('op_token_distributions_optimism_other_distributions_claims') }} o
         {% if is_incremental() %} 
-            where o.evt_block_time >= date_trunc('day', now() - interval '1 week')
+            where o.evt_block_time >= date_trunc('day', now() - interval '7 day')
         {% endif %}
 
         UNION ALL
         
         SELECT
             t.evt_block_time, t.evt_block_number, t.evt_index,
-            t.from_address, t.to_address, t.tx_to_address, t.tx_from_address, t.evt_tx_hash,
-            t.from_type, t.to_type, t.from_label, t.from_name, t.to_label, t.to_name, t.op_amount_decimal, t.tx_method
+            t."from"_address, t.to_address, t.tx_to_address, t.tx_from_address, t.evt_tx_hash,
+            t."from"_type, t.to_type, t."from"_label, t."from"_name, t.to_label, t.to_name, t.op_amount_decimal, t.tx_method
         
         FROM tfers t
         LEFT JOIN {{ ref('op_token_distributions_optimism_other_distributions_claims') }} o --don't double count - at the amount level b/c there could be multiple claims in one tx
@@ -162,7 +162,7 @@ WITH all_labels AS (
                 t.evt_tfer_index = o.max_evt_tfer_index
                 )
             {% if is_incremental() %} 
-            and o.evt_block_time >= date_trunc('day', now() - interval '1 week')
+            and o.evt_block_time >= date_trunc('day', now() - interval '7 day')
             {% endif %}
         WHERE o.evt_block_number IS NULL
 )
@@ -215,8 +215,8 @@ SELECT
     , tx_to_address, tx_from_address
     --
     , from_type, to_type
-    , d.from_label, d.to_label
-    , COALESCE(dfrom.address_name, d.from_name) AS from_name
+    , d."from"_label, d.to_label
+    , COALESCE(dfrom.address_name, d."from"_name) AS from_name
     , COALESCE(dto.address_name, dtxto.address_name, d.to_name) AS to_name
     --
     , op_amount_decimal, tx_method
@@ -228,7 +228,7 @@ SELECT
     , cast(op_incoming_clawback as double) as op_incoming_clawback
     --
     , d.to_name AS og_to_name --keep original name in case we want it
-    , d.from_name AS og_from_name --keep original name in case we want it
+    , d."from"_name AS og_from_name --keep original name in case we want it
     
 FROM distributions d
 -- read in other tags
@@ -239,5 +239,5 @@ LEFT JOIN other_tags dtxto
     ON dtxto.address = d.tx_to_address
     AND d.to_name = 'Other' -- don't overwrite existing mapping
 LEFT JOIN other_tags dfrom
-    ON dfrom.address = d.from_address
-    AND d.from_name = 'Other' -- don't overwrite existing mapping
+    ON dfrom.address = d."from"_address
+    AND d."from"_name = 'Other' -- don't overwrite existing mapping

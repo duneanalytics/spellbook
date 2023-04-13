@@ -28,7 +28,7 @@ WITH src_data as
         AND tx_from != LOWER(0x0000000000000000000000000000000000000000)
         AND amount_raw > 0
         {% if is_incremental() %}
-        AND block_time >= date_trunc("day", now() - interval '1 week')
+        AND block_time >= date_trunc("day", now() - interval '7 day')
         {% endif %}
 ),
 
@@ -49,7 +49,7 @@ days as
         {% if is_incremental() %}
         explode(
             sequence(
-                date_trunc("day", now() - interval '1 week'), date_trunc('day', now()), interval 1 day
+                date_trunc("day", now() - interval '7 day'), date_trunc('day', now()), interval 1 day
             )
         ) as day
         {% else %}
@@ -76,7 +76,7 @@ prices as
         AND prices.blockchain = 'ethereum'
         AND prices.minute >= '2017-06-23' --first trade date
         {% if is_incremental() %}
-        AND prices.minute >= date_trunc("day", now() - interval '1 week')
+        AND prices.minute >= date_trunc("day", now() - interval '7 day')
         {% endif %}
 ), 
 

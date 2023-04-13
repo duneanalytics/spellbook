@@ -46,7 +46,7 @@ WITH base_pools AS (
         INNER JOIN base_pools bp
             ON mp.base_pool = bp.pool
         {% if is_incremental() %}
-        WHERE mp.evt_block_time >= date_trunc('day', now() - interval '1 week')
+        WHERE mp.evt_block_time >= date_trunc('day', now() - interval '7 day')
         {% endif %}
         GROUP BY
             mp.evt_tx_hash, (bp.tokenid + 1), bp.token, mp.evt_block_number --unique
@@ -62,7 +62,7 @@ WITH base_pools AS (
         INNER JOIN base_pools bp
             ON mp.base_pool = bp.pool
         {% if is_incremental() %}
-        WHERE mp.evt_block_time >= date_trunc('day', now() - interval '1 week')
+        WHERE mp.evt_block_time >= date_trunc('day', now() - interval '7 day')
         {% endif %}
         GROUP BY
             mp.evt_tx_hash, mp.coin, mp.evt_block_number --unique
@@ -70,14 +70,14 @@ WITH base_pools AS (
     -- the exchange address appears as an erc20 minted to itself (not in the deploymeny event)
     INNER JOIN {{ source('erc20_optimism','evt_transfer') }} et
         ON et.evt_tx_hash = mps.evt_tx_hash
-        AND et.from = 0x0000000000000000000000000000000000000000
+        AND et."from" = 0x0000000000000000000000000000000000000000
         AND et.to = et.contract_address
         AND et.evt_block_number = mps.evt_block_number
         {% if not is_incremental() %}
         AND et.evt_block_time >= '{{project_start_date}}'
         {% endif %}
         {% if is_incremental() %}
-        AND et.evt_block_time >= date_trunc('day', now() - interval '1 week')
+        AND et.evt_block_time >= date_trunc('day', now() - interval '7 day')
         {% endif %}
     GROUP BY
         tokenid, token, et.contract_address --unique
@@ -96,7 +96,7 @@ WITH base_pools AS (
         FROM {{ source('curvefi_optimism', 'PoolFactory_call_deploy_plain_pool') }}
         WHERE call_success
         {% if is_incremental() %}
-        AND call_block_time >= date_trunc('day', now() - interval '1 week')
+        AND call_block_time >= date_trunc('day', now() - interval '7 day')
         {% endif %}
     ) a
     GROUP BY

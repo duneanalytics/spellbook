@@ -31,7 +31,7 @@ FROM
         , 'ETH' AS currency_symbol
         , 'ethereum' AS blockchain
         , 'classic' AS tornado_version
-        , et.from AS tx_from
+        , et."from" AS tx_from
         , tc.nullifierHash AS nullifier
         , tc.fee/POWER(10, 18) AS fee
         , tc.relayer
@@ -52,13 +52,13 @@ FROM
                 AND et.block_time >= '{{ethereum_start_date}}'
                 {% endif %}
                 {% if is_incremental() %}
-                AND et.block_time >= date_trunc("day", now() - interval '1 week')
+                AND et.block_time >= date_trunc("day", now() - interval '7 day')
                 {% endif %}
         {% if not is_incremental() %}
         WHERE tc.evt_block_time >= '{{ethereum_start_date}}'
         {% endif %}
         {% if is_incremental() %}
-        WHERE tc.evt_block_time >= date_trunc("day", now() - interval '1 week')
+        WHERE tc.evt_block_time >= date_trunc("day", now() - interval '7 day')
         {% endif %}
 
         UNION
@@ -113,7 +113,7 @@ FROM
                 END AS currency_symbol
         , 'ethereum' AS blockchain
         , 'classic' AS tornado_version
-        , et.from AS tx_from
+        , et."from" AS tx_from
         , tc.nullifierHash AS nullifier
         , tc.fee/POWER(10, 18) AS fee
         , tc.relayer
@@ -152,13 +152,13 @@ FROM
                 AND et.block_time >= '{{eth_erc20_pt1_start_date}}'
                 {% endif %}
                 {% if is_incremental() %}
-                AND et.block_time >= date_trunc("day", now() - interval '1 week')
+                AND et.block_time >= date_trunc("day", now() - interval '7 day')
                 {% endif %}
         {% if not is_incremental() %}
         WHERE tc.evt_block_time >= '{{eth_erc20_pt1_start_date}}'
         {% endif %}
         {% if is_incremental() %}
-        WHERE tc.evt_block_time >= date_trunc("day", now() - interval '1 week')
+        WHERE tc.evt_block_time >= date_trunc("day", now() - interval '7 day')
         {% endif %}
 
         UNION
@@ -213,7 +213,7 @@ FROM
                 END AS currency_symbol
         , 'ethereum' AS blockchain
         , 'classic' AS tornado_version
-        , et.from AS tx_from
+        , et."from" AS tx_from
         , tc.nullifierHash AS nullifier
         , tc.fee/POWER(10, 18) AS fee
         , tc.relayer
@@ -252,13 +252,13 @@ FROM
                 AND et.block_time >= '{{eth_erc20_pt2_start_date}}'
                 {% endif %}
                 {% if is_incremental() %}
-                AND et.block_time >= date_trunc("day", now() - interval '1 week')
+                AND et.block_time >= date_trunc("day", now() - interval '7 day')
                 {% endif %}
         {% if not is_incremental() %}
         WHERE tc.evt_block_time >= '{{eth_erc20_pt2_start_date}}'
         {% endif %}
         {% if is_incremental() %}
-        WHERE tc.evt_block_time >= date_trunc("day", now() - interval '1 week')
+        WHERE tc.evt_block_time >= date_trunc("day", now() - interval '7 day')
         {% endif %}
 
         UNION
@@ -269,7 +269,7 @@ FROM
         , 'BNB' AS currency_symbol
         , 'bnb' AS blockchain
         , 'classic' AS tornado_version
-        , bt.from AS tx_from
+        , bt."from" AS tx_from
         , tc.nullifierHash AS nullifier
         , tc.fee/POWER(10, 18) AS fee
         , tc.relayer
@@ -290,13 +290,13 @@ FROM
                 AND bt.block_time >= '{{bnb_start_date}}'
                 {% endif %}
                 {% if is_incremental() %}
-                AND bt.block_time >= date_trunc("day", now() - interval '1 week')
+                AND bt.block_time >= date_trunc("day", now() - interval '7 day')
                 {% endif %}
         {% if not is_incremental() %}
         WHERE tc.evt_block_time >= '{{bnb_start_date}}'
         {% endif %}
         {% if is_incremental() %}
-        WHERE tc.evt_block_time >= date_trunc("day", now() - interval '1 week')
+        WHERE tc.evt_block_time >= date_trunc("day", now() - interval '7 day')
         {% endif %}
 
         UNION
@@ -307,7 +307,7 @@ FROM
         , 'xDAI' AS currency_symbol
         , 'gnosis' AS blockchain
         , 'classic' AS tornado_version
-        , gt.from AS tx_from
+        , gt."from" AS tx_from
         , nullifierHash AS nullifier
         , tc.fee/POWER(10, 18) AS fee
         , tc.relayer
@@ -328,13 +328,13 @@ FROM
                 AND gt.block_time >= '{{gnosis_start_date}}'
                 {% endif %}
                 {% if is_incremental() %}
-                AND gt.block_time >= date_trunc("day", now() - interval '1 week')
+                AND gt.block_time >= date_trunc("day", now() - interval '7 day')
                 {% endif %}
         {% if not is_incremental() %}
         WHERE tc.evt_block_time >= '{{gnosis_start_date}}'
         {% endif %}
         {% if is_incremental() %}
-        WHERE tc.evt_block_time >= date_trunc("day", now() - interval '1 week')
+        WHERE tc.evt_block_time >= date_trunc("day", now() - interval '7 day')
         {% endif %}
 
         UNION
@@ -345,7 +345,7 @@ FROM
         , 'ETH' AS currency_symbol
         , 'optimism' AS blockchain
         , 'classic' AS tornado_version
-        , ot.from AS tx_from
+        , ot."from" AS tx_from
         , tc.nullifierHash AS nullifier
         , tc.fee/POWER(10, 18) AS fee
         , tc.relayer
@@ -366,13 +366,13 @@ FROM
                 AND ot.block_time >= '{{optimism_start_date}}'
                 {% endif %}
                 {% if is_incremental() %}
-                AND ot.block_time >= date_trunc("day", now() - interval '1 week')
+                AND ot.block_time >= date_trunc("day", now() - interval '7 day')
                 {% endif %}
         {% if not is_incremental() %}
         WHERE tc.evt_block_time >= '{{optimism_start_date}}'
         {% endif %}
         {% if is_incremental() %}
-        WHERE tc.evt_block_time >= date_trunc("day", now() - interval '1 week')
+        WHERE tc.evt_block_time >= date_trunc("day", now() - interval '7 day')
         {% endif %}
 
         UNION
@@ -383,7 +383,7 @@ FROM
         , 'AVAX' AS currency_symbol
         , 'avalanche_c' AS blockchain
         , 'classic' AS tornado_version
-        , at.from AS tx_from
+        , at."from" AS tx_from
         , tc.nullifierHash AS nullifier
         , tc.fee/POWER(10, 18) AS fee
         , tc.relayer
@@ -403,13 +403,13 @@ FROM
                 AND at.block_time >= '{{avalanche_start_date}}'
                 {% endif %}
                 {% if is_incremental() %}
-                AND at.block_time >= date_trunc("day", now() - interval '1 week')
+                AND at.block_time >= date_trunc("day", now() - interval '7 day')
                 {% endif %}
         {% if not is_incremental() %}
         WHERE tc.evt_block_time >= '{{avalanche_start_date}}'
         {% endif %}
         {% if is_incremental() %}
-        WHERE tc.evt_block_time >= date_trunc("day", now() - interval '1 week')
+        WHERE tc.evt_block_time >= date_trunc("day", now() - interval '7 day')
         {% endif %}
 
         UNION
@@ -420,7 +420,7 @@ FROM
         , 'ETH' AS currency_symbol
         , 'arbitrum' AS blockchain
         , 'classic' AS tornado_version
-        , at.from AS tx_from
+        , at."from" AS tx_from
         , tc.nullifierHash AS nullifier
         , tc.fee/POWER(10, 18) AS fee
         , tc.relayer
@@ -441,13 +441,13 @@ FROM
                 AND at.block_time >= '{{arbitrum_start_date}}'
                 {% endif %}
                 {% if is_incremental() %}
-                AND at.block_time >= date_trunc("day", now() - interval '1 week')
+                AND at.block_time >= date_trunc("day", now() - interval '7 day')
                 {% endif %}
         {% if not is_incremental() %}
         WHERE tc.evt_block_time >= '{{arbitrum_start_date}}'
         {% endif %}
         {% if is_incremental() %}
-        WHERE tc.evt_block_time >= date_trunc("day", now() - interval '1 week')
+        WHERE tc.evt_block_time >= date_trunc("day", now() - interval '7 day')
         {% endif %}
         
         UNION
@@ -458,7 +458,7 @@ FROM
         , 'MATIC' AS currency_symbol
         , 'polygon' AS blockchain
         , 'classic' AS tornado_version
-        , pt.from AS tx_from
+        , pt."from" AS tx_from
         , tc.nullifierHash AS nullifier
         , tc.fee/POWER(10, 18) AS fee
         , tc.relayer
@@ -479,13 +479,13 @@ FROM
                 AND pt.block_time >= '{{polygon_start_date}}'
                 {% endif %}
                 {% if is_incremental() %}
-                AND pt.block_time >= date_trunc("day", now() - interval '1 week')
+                AND pt.block_time >= date_trunc("day", now() - interval '7 day')
                 {% endif %}
         {% if not is_incremental() %}
         WHERE tc.evt_block_time >= '{{polygon_start_date}}'
         {% endif %}
         {% if is_incremental() %}
-        WHERE tc.evt_block_time >= date_trunc("day", now() - interval '1 week')
+        WHERE tc.evt_block_time >= date_trunc("day", now() - interval '7 day')
         {% endif %}
 
 )

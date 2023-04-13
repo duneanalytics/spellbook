@@ -37,7 +37,7 @@ WITH tff AS (
           FROM {{ source('tofunft_arbitrum', 'MarketNG_call_run') }}
           WHERE call_success = true
               {% if is_incremental() %}
-              and call_block_time >= date_trunc("day", now() - interval '1 week')
+              and call_block_time >= date_trunc("day", now() - interval '7 day')
               {% endif %}
          ) as tmp
 ),
@@ -59,7 +59,7 @@ WITH tff AS (
          from {{ source('tofunft_arbitrum', 'MarketNG_evt_EvInventoryUpdate') }}
          where get_json_object(inventory, '$.status') = '1'
               {% if is_incremental() %}
-              and evt_block_time >= date_trunc("day", now() - interval '1 week')
+              and evt_block_time >= date_trunc("day", now() - interval '7 day')
               {% endif %}
      )
 SELECT 'arbitrum'                                 as blockchain
@@ -97,7 +97,7 @@ SELECT 'arbitrum'                                 as blockchain
      , agg.name                                                                     as aggregator_name
      , agg.contract_address                                                         as aggregator_address
      , tfe.evt_tx_hash                                                              as tx_hash
-     , tx.from                                                                      as tx_from
+     , tx."from"                                                                      as tx_from
      , tx.to                                                                        as tx_to
      , CAST(tfe.price * tff.fee_rate AS DOUBLE)                                     as platform_fee_amount_raw
      , CAST(tfe.price * tff.fee_rate / power(10, pu.decimals) AS DOUBLE)            as platform_fee_amount
@@ -126,7 +126,7 @@ FROM tfe
                        AND tx.block_time >= '{{project_start_date}}'
                        {% endif %}
                        {% if is_incremental() %}
-                       and tx.block_time >= date_trunc("day", now() - interval '1 week')
+                       and tx.block_time >= date_trunc("day", now() - interval '7 day')
                        {% endif %}
          LEFT JOIN {{ ref('tokens_nft') }} nft
                    ON tff.token = nft.contract_address
@@ -139,7 +139,7 @@ FROM tfe
                        AND pu.minute >= '{{project_start_date}}'
                        {% endif %}
                        {% if is_incremental() %}
-                       AND pu.minute >= date_trunc("day", now() - interval '1 week')
+                       AND pu.minute >= date_trunc("day", now() - interval '7 day')
                        {% endif %}
          LEFT JOIN {{ ref('nft_aggregators')}} agg
                    ON agg.contract_address = tx.`to`

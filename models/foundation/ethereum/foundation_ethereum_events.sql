@@ -39,7 +39,7 @@ WITH all_foundation_trades AS (
     FROM {{ source('foundation_ethereum','market_evt_ReserveAuctionFinalized') }} f
     LEFT JOIN {{ source('foundation_ethereum','market_evt_ReserveAuctionCreated') }} c ON c.auctionId=f.auctionId AND c.evt_block_time<=f.evt_block_time
      {% if is_incremental() %} -- this filter will only be applied on an incremental run
-     WHERE f.evt_block_time >= date_trunc("day", now() - interval '1 week')
+     WHERE f.evt_block_time >= date_trunc("day", now() - interval '7 day')
      {% endif %}
     UNION ALL
     SELECT 'ethereum' AS blockchain
@@ -67,7 +67,7 @@ WITH all_foundation_trades AS (
     , evt_index
     FROM {{ source('foundation_ethereum','market_evt_BuyPriceAccepted') }} f
      {% if is_incremental() %} -- this filter will only be applied on an incremental run
-     WHERE f.evt_block_time >= date_trunc("day", now() - interval '1 week')
+     WHERE f.evt_block_time >= date_trunc("day", now() - interval '7 day')
      {% endif %}
     UNION ALL
     SELECT 'ethereum' AS blockchain
@@ -95,7 +95,7 @@ WITH all_foundation_trades AS (
     , evt_index
     FROM {{ source('foundation_ethereum','market_evt_OfferAccepted') }} f
      {% if is_incremental() %} -- this filter will only be applied on an incremental run
-     WHERE f.evt_block_time >= date_trunc("day", now() - interval '1 week')
+     WHERE f.evt_block_time >= date_trunc("day", now() - interval '7 day')
      {% endif %}
     UNION ALL
     SELECT 'ethereum' AS blockchain
@@ -123,7 +123,7 @@ WITH all_foundation_trades AS (
     , evt_index
     FROM {{ source('foundation_ethereum','market_evt_PrivateSaleFinalized') }} f
      {% if is_incremental() %} -- this filter will only be applied on an incremental run
-     WHERE f.evt_block_time >= date_trunc("day", now() - interval '1 week')
+     WHERE f.evt_block_time >= date_trunc("day", now() - interval '7 day')
      {% endif %}
     )
 
@@ -156,7 +156,7 @@ SELECT t.blockchain
 , agg.name AS aggregator_name
 , agg.contract_address aggregator_address
 , t.tx_hash
-, et.from AS tx_from
+, et."from" AS tx_from
 , et.to AS tx_to
 , CAST(t.platform_fee_amount_raw AS DOUBLE) AS platform_fee_amount_raw
 , t.platform_fee_amount
@@ -183,12 +183,12 @@ LEFT JOIN {{ source('foundation_ethereum','market_evt_SellerReferralPaid') }} se
 LEFT JOIN {{ source('erc721_ethereum','evt_transfer') }} nft_t ON nft_t.evt_block_time=t.block_time
     AND nft_t.evt_tx_hash=t.tx_hash
     AND nft_t.tokenId=t.token_id
-    AND nft_t.from=t.seller
+    AND nft_t."from"=t.seller
     AND nft_t.to=t.buyer
     AND nft_t.contract_address = t.nft_contract_address
     {% if is_incremental() %}
     -- this filter will only be applied on an incremental run
-    AND nft_t.evt_block_time >=  date_trunc("day", now() - interval '1 week')
+    AND nft_t.evt_block_time >=  date_trunc("day", now() - interval '7 day')
     {% endif %}
 LEFT JOIN {{ source('ethereum','transactions') }} et ON et.block_time=t.block_time
     AND et.hash=t.tx_hash
@@ -196,18 +196,18 @@ LEFT JOIN {{ source('ethereum','transactions') }} et ON et.block_time=t.block_ti
     AND et.block_time > '2021-02-01'
     {% endif %}
     {% if is_incremental() %}
-    AND et.block_time >= date_trunc("day", now() - interval '1 week')
+    AND et.block_time >= date_trunc("day", now() - interval '7 day')
     {% endif %}
 LEFT JOIN {{ ref('nft_ethereum_aggregators') }} agg ON agg.contract_address=et.to
 LEFT JOIN {{ source('prices', 'usd') }} pu ON pu.minute=date_trunc('minute', t.block_time)
     AND pu.blockchain='ethereum'
     AND pu.contract_address=t.currency_contract
     {% if is_incremental() %}
-    AND pu.minute >= date_trunc("day", now() - interval '1 week')
+    AND pu.minute >= date_trunc("day", now() - interval '7 day')
     {% endif %}
 LEFT JOIN {{ source('ethereum','traces') }} ett ON ett.block_time=t.block_time
     AND ett.tx_hash=t.tx_hash
-    AND ett.from = t.project_contract_address
+    AND ett."from" = t.project_contract_address
     AND cast(ett.value as string) = cast(t.royalty_fee_amount_raw as string)
     AND call_type = 'call'
     AND ett.to!= t.project_contract_address
@@ -216,9 +216,9 @@ LEFT JOIN {{ source('ethereum','traces') }} ett ON ett.block_time=t.block_time
     and ett.success = true
     {% if is_incremental() %}
     -- this filter will only be applied on an incremental run
-    AND ett.block_time >=  date_trunc("day", now() - interval '1 week')
+    AND ett.block_time >=  date_trunc("day", now() - interval '7 day')
     {% endif %}
 {% if is_incremental() %}
 -- this filter will only be applied on an incremental run
-AND t.block_time >=  date_trunc("day", now() - interval '1 week')
+AND t.block_time >=  date_trunc("day", now() - interval '7 day')
 {% endif %}

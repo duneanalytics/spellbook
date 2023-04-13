@@ -32,7 +32,7 @@ WITH element_txs AS (
         , ee.evt_block_number AS block_number
         FROM {{ source('element_ex_ethereum','OrdersFeature_evt_ERC721SellOrderFilled') }} ee
         {% if is_incremental() %}
-        WHERE ee.evt_block_time >= date_trunc("day", now() - interval '1 week')
+        WHERE ee.evt_block_time >= date_trunc("day", now() - interval '7 day')
         {% endif %}
 
         UNION ALL
@@ -59,7 +59,7 @@ WITH element_txs AS (
         , ee.evt_block_number AS block_number
         FROM {{ source('element_ex_ethereum','OrdersFeature_evt_ERC721BuyOrderFilled') }} ee
         {% if is_incremental() %}
-        WHERE ee.evt_block_time >= date_trunc("day", now() - interval '1 week')
+        WHERE ee.evt_block_time >= date_trunc("day", now() - interval '7 day')
         {% endif %}
 
         UNION ALL
@@ -86,7 +86,7 @@ WITH element_txs AS (
         , ee.evt_block_number AS block_number
         FROM {{ source('element_ex_ethereum','OrdersFeature_evt_ERC1155SellOrderFilled') }} ee
         {% if is_incremental() %}
-        WHERE ee.evt_block_time >= date_trunc("day", now() - interval '1 week')
+        WHERE ee.evt_block_time >= date_trunc("day", now() - interval '7 day')
         {% endif %}
 
         UNION ALL
@@ -113,7 +113,7 @@ WITH element_txs AS (
         , ee.evt_block_number AS block_number
         FROM {{ source('element_ex_ethereum','OrdersFeature_evt_ERC1155BuyOrderFilled') }} ee
         {% if is_incremental() %}
-        WHERE ee.evt_block_time >= date_trunc("day", now() - interval '1 week')
+        WHERE ee.evt_block_time >= date_trunc("day", now() - interval '7 day')
         {% endif %}
         )
 
@@ -142,7 +142,7 @@ SELECT alet.blockchain
 , CASE WHEN agg.name IS NOT NULL THEN agg.contract_address END AS aggregator_address
 , alet.tx_hash
 , alet.block_number
-, et.from AS tx_from
+, et."from" AS tx_from
 , et.to AS tx_to
 , CAST(0 AS DOUBLE) AS platform_fee_amount_raw
 , CAST(0 AS DOUBLE) AS platform_fee_amount
@@ -162,10 +162,10 @@ LEFT JOIN {{ ref('tokens_erc20') }} eth_erc20_tokens ON eth_erc20_tokens.contrac
 LEFT JOIN {{ source('prices', 'usd') }} prices ON prices.minute=date_trunc('minute', alet.block_time)
     AND (prices.contract_address=alet.currency_contract AND prices.blockchain=alet.blockchain)
         {% if is_incremental() %}
-        AND prices.minute >= date_trunc("day", now() - interval '1 week')
+        AND prices.minute >= date_trunc("day", now() - interval '7 day')
         {% endif %}
 LEFT JOIN {{ source('ethereum','transactions') }} et ON et.hash=alet.tx_hash
     AND et.block_time=alet.block_time
         {% if is_incremental() %}
-        AND et.block_time >= date_trunc("day", now() - interval '1 week')
+        AND et.block_time >= date_trunc("day", now() - interval '7 day')
         {% endif %}

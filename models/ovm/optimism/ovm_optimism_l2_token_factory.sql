@@ -35,7 +35,7 @@ INNER JOIN {{source( 'ovm_optimism', 'L2StandardTokenFactory_evt_StandardL2Token
     ON c1.call_block_number = tc.evt_block_number
     AND c1.call_tx_hash = tc.evt_tx_hash
     {% if is_incremental() %}
-    AND tc.evt_block_time >= date_trunc('day', now() - interval '1' week)
+    AND tc.evt_block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
     {% endif %}
 
 LEFT JOIN {{ref('tokens_ethereum_erc20')}} t
@@ -43,7 +43,7 @@ LEFT JOIN {{ref('tokens_ethereum_erc20')}} t
 
 WHERE call_success = true
     {% if is_incremental() %}
-    AND c1.call_block_time >= date_trunc('day', now() - interval '1' week)
+    AND c1.call_block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
     {% endif %}
 
 UNION ALL
@@ -57,7 +57,7 @@ INNER JOIN {{source( 'ovm_optimism', 'OVM_L2StandardTokenFactory_evt_StandardL2T
     ON c2.call_block_number = tc.evt_block_number
     AND c2.call_tx_hash = tc.evt_tx_hash
     {% if is_incremental() %}
-    AND tc.evt_block_time >= date_trunc('day', now() - interval '1' week)
+    AND tc.evt_block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
     {% endif %}
 
 LEFT JOIN {{ ref('tokens_ethereum_erc20') }} t
@@ -65,6 +65,6 @@ LEFT JOIN {{ ref('tokens_ethereum_erc20') }} t
 
 WHERE call_success = true
     {% if is_incremental() %}
-    AND c2.call_block_time >= date_trunc('day', now() - INTERVAL '1' week)
+    AND c2.call_block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
     {% endif %}
 ) a

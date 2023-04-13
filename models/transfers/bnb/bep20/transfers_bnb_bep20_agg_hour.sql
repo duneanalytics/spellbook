@@ -22,7 +22,7 @@ with
         from
             {{ source('erc20_bnb', 'evt_Transfer') }}
         {% if is_incremental() %}
-        where evt_block_time >= date_trunc('day', now() - interval '1 week')
+        where evt_block_time >= date_trunc('day', now() - interval '7 day')
         {% endif %}
     )
     ,
@@ -35,7 +35,7 @@ with
         from
             {{ source('erc20_bnb', 'evt_Transfer') }}
         {% if is_incremental() %}
-        where evt_block_time >= date_trunc('day', now() - interval '1 week')
+        where evt_block_time >= date_trunc('day', now() - interval '7 day')
         {% endif %}
     )
     ,
@@ -48,7 +48,7 @@ with
         from
             {{ source('bnb_bnb', 'WBNB_evt_Deposit') }}
         {% if is_incremental() %}
-        where evt_block_time >= date_trunc('day', now() - interval '1 week')
+        where evt_block_time >= date_trunc('day', now() - interval '7 day')
         {% endif %}
     )
     ,
@@ -61,7 +61,7 @@ with
         from
             {{ source('bnb_bnb', 'WBNB_evt_Withdrawal') }}
         {% if is_incremental() %}
-        where evt_block_time >= date_trunc('day', now() - interval '1 week')
+        where evt_block_time >= date_trunc('day', now() - interval '7 day')
         {% endif %}
     )
     ,

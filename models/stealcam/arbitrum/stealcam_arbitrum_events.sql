@@ -23,7 +23,7 @@ SELECT 'arbitrum' AS blockchain
 , 'Single Item Trade' AS trade_type
 , 'Buy' AS trade_category
 , CASE WHEN sc.value=0 THEN 'Mint' ELSE 'Trade' END AS evt_type
-, sc.from AS seller
+, sc."from" AS seller
 , sc.to AS buyer
 , sc.contract_address AS nft_contract_address
 , 'Stealcam' AS collection
@@ -39,7 +39,7 @@ SELECT 'arbitrum' AS blockchain
 , CAST(NULL AS string) AS aggregator_name
 , CAST(NULL AS string) AS aggregator_address
 , sc.evt_tx_hash AS tx_hash
-, at.from AS tx_from
+, at."from" AS tx_from
 , at.to AS tx_to
 , CAST(COALESCE(sc.value-(roy.value+not_fee.value), 0) AS double) AS platform_fee_amount_raw
 , CAST(COALESCE((sc.value-(roy.value+not_fee.value))/POWER(10, 18), 0) AS double) AS platform_fee_amount
@@ -56,7 +56,7 @@ FROM {{ source('stealcam_arbitrum', 'Stealcam_evt_Stolen') }} sc
 INNER JOIN {{ source('arbitrum', 'transactions') }} at ON at.block_number=sc.evt_block_number
     AND at.hash=sc.evt_tx_hash
     {% if is_incremental() %}
-    AND at.block_time >= date_trunc("day", now() - interval '1 week')
+    AND at.block_time >= date_trunc("day", now() - interval '7 day')
     {% endif %}
     {% if not is_incremental() %}
     AND at.block_time >= '{{project_start_date}}'
@@ -65,7 +65,7 @@ LEFT JOIN {{ ref('prices_usd_forward_fill') }} pu ON pu.blockchain = 'ethereum'
     AND pu.contract_address=0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2
     AND pu.minute=date_trunc('minute', sc.evt_block_time)
     {% if is_incremental() %}
-    AND pu.minute >= date_trunc("day", now() - interval '1 week')
+    AND pu.minute >= date_trunc("day", now() - interval '7 day')
     {% endif %}
     {% if not is_incremental() %}
     AND pu.minute >= '{{project_start_date}}'
@@ -73,33 +73,33 @@ LEFT JOIN {{ ref('prices_usd_forward_fill') }} pu ON pu.blockchain = 'ethereum'
 INNER JOIN {{ source('stealcam_arbitrum', 'Stealcam_call_mint') }} m ON m.call_success
     AND m.id=sc.id
     {% if is_incremental() %}
-    AND m.call_block_time >= date_trunc("day", now() - interval '1 week')
+    AND m.call_block_time >= date_trunc("day", now() - interval '7 day')
     {% endif %}
     {% if not is_incremental() %}
     AND m.call_block_time >= '{{project_start_date}}'
     {% endif %}
 LEFT JOIN {{ source('arbitrum', 'traces') }} roy ON roy.block_number=sc.evt_block_number
     AND roy.tx_hash=sc.evt_tx_hash
-    AND roy.from=sc.contract_address
+    AND roy."from"=sc.contract_address
     AND roy.to=m._creator
     {% if is_incremental() %}
-    AND roy.block_time >= date_trunc("day", now() - interval '1 week')
+    AND roy.block_time >= date_trunc("day", now() - interval '7 day')
     {% endif %}
     {% if not is_incremental() %}
     AND roy.block_time >= '{{project_start_date}}'
     {% endif %}
 LEFT JOIN {{ source('arbitrum', 'traces') }} not_fee ON not_fee.block_number=sc.evt_block_number
     AND not_fee.tx_hash=sc.evt_tx_hash
-    AND not_fee.from=sc.contract_address
-    AND not_fee.to=sc.from
+    AND not_fee."from"=sc.contract_address
+    AND not_fee.to=sc."from"
     {% if is_incremental() %}
-    AND not_fee.block_time >= date_trunc("day", now() - interval '1 week')
+    AND not_fee.block_time >= date_trunc("day", now() - interval '7 day')
     {% endif %}
     {% if not is_incremental() %}
     AND not_fee.block_time >= '{{project_start_date}}'
     {% endif %}
 {% if is_incremental() %}
-WHERE sc.evt_block_time >= date_trunc("day", now() - interval '1 week')
+WHERE sc.evt_block_time >= date_trunc("day", now() - interval '7 day')
 {% endif %}
 {% if not is_incremental() %}
 WHERE sc.evt_block_time >= '{{project_start_date}}'

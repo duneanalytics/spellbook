@@ -35,7 +35,7 @@ with v1 as (
         '1' as orderType
     from {{ source('liquidifty_bnb', 'MarketplaceV1_evt_Buy') }}
     {% if is_incremental() %}
-    where evt_block_time >= date_trunc("day", now() - interval '1 week')
+    where evt_block_time >= date_trunc("day", now() - interval '7 day')
     {% endif %}
 ),
 v2 as (
@@ -68,19 +68,19 @@ v2 as (
         select *
         from {{ source('liquidifty_bnb', 'MarketplaceV2_evt_Buy') }}
         {% if is_incremental() %}
-        where evt_block_time >= date_trunc("day", now() - interval '1 week')
+        where evt_block_time >= date_trunc("day", now() - interval '7 day')
         {% endif %}
         union all
         select *
         from {{ source('liquidifty_bnb', 'MarketplaceV2_1_evt_Buy') }}
         {% if is_incremental() %}
-        where evt_block_time >= date_trunc("day", now() - interval '1 week')
+        where evt_block_time >= date_trunc("day", now() - interval '7 day')
         {% endif %}
         union all
         select *
         from {{ source('liquidifty_bnb', 'MarketplaceV2_5_evt_Buy') }}
         {% if is_incremental() %}
-        where evt_block_time >= date_trunc("day", now() - interval '1 week')
+        where evt_block_time >= date_trunc("day", now() - interval '7 day')
         {% endif %}
     ) a
 ),
@@ -112,7 +112,7 @@ stack as (
         '1' as orderType
     from {{ source('liquidifty_bnb', 'MultipleSell_evt_Buy') }}
     {% if is_incremental() %}
-    where evt_block_time >= date_trunc("day", now() - interval '1 week')
+    where evt_block_time >= date_trunc("day", now() - interval '7 day')
     {% endif %}
 ),
 v3 as (
@@ -173,13 +173,13 @@ v3 as (
                 select *, explode(orders) as order
                 from {{ source('liquidifty_bnb', 'MarketplaceV3_call_buy') }}
                 {% if is_incremental() %}
-                where call_block_time >= date_trunc("day", now() - interval '1 week')
+                where call_block_time >= date_trunc("day", now() - interval '7 day')
                 {% endif %}
                 union all
                 select *, explode(orders) as order
                 from {{ source('liquidifty_bnb', 'MarketplaceV3_deprecated_call_buy') }}
                 {% if is_incremental() %}
-                where call_block_time >= date_trunc("day", now() - interval '1 week')
+                where call_block_time >= date_trunc("day", now() - interval '7 day')
                 {% endif %})
             where call_success
         )
@@ -202,7 +202,7 @@ select
     'Trade' as evt_type,
     buys.seller,
     case
-        when buys.version = 'v3' then transactions.from
+        when buys.version = 'v3' then transactions."from"
         else buys.buyer
     end as buyer,
     cast(buys.amount_raw as decimal(38, 0)) / power(10, bep20.decimals) as amount_original,
@@ -215,7 +215,7 @@ select
     cast(null as varchar(5)) as aggregator_address,
     buys.tx_hash,
     buys.block_number,
-    transactions.from as tx_from,
+    transactions."from" as tx_from,
     transactions.to as tx_to,
     concat(cast(buys.block_number as varchar(5)), '-',buys.tx_hash,'-', cast(in_tx_id as varchar(5))) as unique_trade_id,
     buys.currency_token_standard,
@@ -238,11 +238,11 @@ left join {{ source('prices', 'usd') }} as prices
     and prices.contract_address = buys.currency_contract
     and prices.blockchain = 'bnb'
     {% if is_incremental() %}
-    and prices.minute >= date_trunc("day", now() - interval '1 week')
+    and prices.minute >= date_trunc("day", now() - interval '7 day')
     {% endif %}
 inner join {{ source('bnb', 'transactions') }} transactions
     on transactions.block_number = buys.block_number
     and transactions.hash = buys.tx_hash
     {% if is_incremental() %}
-    and transactions.block_time >= date_trunc("day", now() - interval '1 week')
+    and transactions.block_time >= date_trunc("day", now() - interval '7 day')
     {% endif %}

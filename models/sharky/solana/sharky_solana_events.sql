@@ -23,7 +23,7 @@ WITH sharky_txs AS (
             {% if not is_incremental() %}
             AND block_time >= '{{ project_start_date }}'
             {% else %}
-            AND block_time >= date_trunc("day", now() - interval '1 week')
+            AND block_time >= date_trunc("day", now() - interval '7 day')
             {% endif %}
             AND address = '{{sharky_smart_contract}}'
     ),
@@ -37,7 +37,7 @@ WITH sharky_txs AS (
             {% if not is_incremental() %}
             AND minute >= '{{ project_start_date }}'
             {% else %}
-            AND minute >= date_trunc("day", now() - interval '1 week')
+            AND minute >= date_trunc("day", now() - interval '7 day')
             {% endif %}
     ),
     filtered_txs AS (
@@ -54,7 +54,7 @@ WITH sharky_txs AS (
         {% if not is_incremental() %}
         WHERE tx.block_time >= '{{ project_start_date }}'
         {% else %}
-        WHERE tx.block_time >= date_trunc("day", now() - interval '1 week')
+        WHERE tx.block_time >= date_trunc("day", now() - interval '7 day')
         {% endif %}
     ),
     raw_events AS (

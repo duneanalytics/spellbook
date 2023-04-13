@@ -46,7 +46,7 @@ FROM
         AND l.block_time >= '{{project_start_date}}'
         {% endif %}
         {% if is_incremental() %}
-        AND l.block_time >= date_trunc("day", now() - interval '1 week')
+        AND l.block_time >= date_trunc("day", now() - interval '7 day')
         {% endif %}
     GROUP BY
         l.block_time,

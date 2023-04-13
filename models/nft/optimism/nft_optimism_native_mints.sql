@@ -23,7 +23,7 @@ with namespaces as (
         ,count(*) as nfts_minted_in_tx
         from {{ ref('nft_optimism_transfers') }}
         {% if is_incremental() %}
-        where block_time >= date_trunc("day", now() - interval '1 week')
+        where block_time >= date_trunc("day", now() - interval '7 day')
         {% endif %}
     group by 1
 )
@@ -44,7 +44,7 @@ select
     , cast(nft_mints.amount as decimal(38,0)) as number_of_items
     , 'Mint' as trade_category
     , 'Mint' as evt_type
-    , nft_mints.from as seller
+    , nft_mints."from" as seller
     , nft_mints.to as buyer
     , case when tr.tx_hash is not null then 'ETH' else pu_erc20s.symbol end as currency_symbol
     , case when tr.tx_hash is not null then '{{eth_address}}' else erc20s.contract_address end as currency_contract
@@ -53,7 +53,7 @@ select
     , agg.name as aggregator_name
     , agg.contract_address as aggregator_address
     , nft_mints.tx_hash as tx_hash
-    , etxs.from as tx_from
+    , etxs."from" as tx_from
     , etxs.to as tx_to
     , cast(0 as double) as platform_fee_amount_raw
     , cast(0 as double) as platform_fee_amount
@@ -74,7 +74,7 @@ left join {{ source('optimism','transactions') }} as etxs
     on etxs.block_time=nft_mints.block_time
     and etxs.hash=nft_mints.tx_hash
     {% if is_incremental() %}
-    and etxs.block_time >= date_trunc("day", now() - interval '1 week')
+    and etxs.block_time >= date_trunc("day", now() - interval '7 day')
     {% endif %}
 left join {{ ref('tokens_optimism_nft') }} as tok 
     on tok.contract_address=nft_mints.contract_address
@@ -89,20 +89,20 @@ left join {{ source('prices','usd') }} as pu_eth
     and pu_eth.minute=date_trunc('minute', tr.tx_block_time)
     and pu_eth.contract_address='{{eth_address}}'
     {% if is_incremental() %}
-    and pu_eth.minute >= date_trunc("day", now() - interval '1 week')
+    and pu_eth.minute >= date_trunc("day", now() - interval '7 day')
     {% endif %}
 left join {{ source('erc20_ethereum','evt_transfer') }} as erc20s 
     on erc20s.evt_block_time=nft_mints.block_time
-    and erc20s.from=nft_mints.to
+    and erc20s."from"=nft_mints.to
     {% if is_incremental() %}
-    and erc20s.evt_block_time >= date_trunc("day", now() - interval '1 week')
+    and erc20s.evt_block_time >= date_trunc("day", now() - interval '7 day')
     {% endif %}
 left join {{ source('prices','usd') }} as pu_erc20s 
     on pu_erc20s.blockchain = 'optimism'
     and pu_erc20s.minute = date_trunc('minute', erc20s.evt_block_time)
     and erc20s.contract_address = pu_erc20s.contract_address
     {% if is_incremental() %}
-    and pu_erc20s.minute >= date_trunc("day", now() - interval '1 week')
+    and pu_erc20s.minute >= date_trunc("day", now() - interval '7 day')
     {% endif %}
 left join namespaces as ec 
     on etxs.to=ec.address
@@ -111,13 +111,13 @@ left join {{ ref('nft_optimism_aggregators') }} as agg
 left join nfts_per_tx as nft_count 
     on nft_count.tx_hash=nft_mints.tx_hash
 where 
-    nft_mints.from = 0x0000000000000000000000000000000000000000
+    nft_mints."from" = 0x0000000000000000000000000000000000000000
     {% if is_incremental() %}
-    and nft_mints.block_time >= date_trunc("day", now() - interval '1 week')
+    and nft_mints.block_time >= date_trunc("day", now() - interval '7 day')
     {% endif %}
     -- to exclude bridged L1 NFT collections to L2
     and bm.contract_address is null 
     group by nft_mints.block_time, nft_mints.block_number, nft_mints.token_id, nft_mints.token_standard
-    , nft_mints.amount, nft_mints.from, nft_mints.to, nft_mints.contract_address, etxs.to, nft_mints.evt_index
-    , nft_mints.tx_hash, etxs.from, ec.namespace, tok.name, pu_erc20s.decimals, pu_eth.price, pu_erc20s.price
+    , nft_mints.amount, nft_mints."from", nft_mints.to, nft_mints.contract_address, etxs.to, nft_mints.evt_index
+    , nft_mints.tx_hash, etxs."from", ec.namespace, tok.name, pu_erc20s.decimals, pu_eth.price, pu_erc20s.price
     , agg.name, agg.contract_address, nft_count.nfts_minted_in_tx, pu_erc20s.symbol, erc20s.contract_address, tr.tx_hash

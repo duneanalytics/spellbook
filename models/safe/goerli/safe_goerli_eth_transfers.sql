@@ -24,8 +24,8 @@ select
     et.tx_hash,
     array_join(et.trace_address, ',') as trace_address
 from {{ source('goerli', 'traces') }} et
-join {{ ref('safe_goerli_safes') }} s on et.from = s.address
-    and et.from != et.to -- exclude calls to self to guarantee unique key property
+join {{ ref('safe_goerli_safes') }} s on et."from" = s.address
+    and et."from" != et.to -- exclude calls to self to guarantee unique key property
     and et.success = true
     and (lower(et.call_type) not in ('delegatecall', 'callcode', 'staticcall') or et.call_type is null)
     and et.value > '0' -- value is of type string. exclude 0 value traces
@@ -48,7 +48,7 @@ select
     array_join(et.trace_address, ',') as trace_address
 from {{ source('goerli', 'traces') }} et
 join {{ ref('safe_goerli_safes') }} s on et.to = s.address
-    and et.from != et.to -- exclude calls to self to guarantee unique key property
+    and et."from" != et.to -- exclude calls to self to guarantee unique key property
     and et.success = true
     and (lower(et.call_type) not in ('delegatecall', 'callcode', 'staticcall') or et.call_type is null)
     and et.value > '0' -- value is of type string. exclude 0 value traces

@@ -23,7 +23,7 @@ get_zodiac_wallets as ( -- getting the gnosis safes created using zodiac's reali
         WHERE block_time >= '{{project_start_date}}'
         {% endif %}
         {% if is_incremental() %}
-        WHERE block_time >= date_trunc("day", now() - interval '1 week')
+        WHERE block_time >= date_trunc("day", now() - interval '7 day')
         {% endif %}
         AND topic1 = '0x8b8abdce7435e63696dbae9e46dc2ee5036195638ecfc5b45a3c45bcd7e3ed34' -- module set up event emitted when a reality.eth module is set up 
 )

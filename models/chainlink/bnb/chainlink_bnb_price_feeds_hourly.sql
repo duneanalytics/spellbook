@@ -28,7 +28,7 @@ WITH gs AS (
                             DATE_TRUNC('hour', cast('{{project_start_date}}' as date)),
                         {% endif %}
                         {% if is_incremental() %}
-                            DATE_TRUNC('hour', now() - interval '1 week'),
+                            DATE_TRUNC('hour', now() - interval '7 day'),
                         {% endif %}
                         DATE_TRUNC('hour', NOW()),
                         interval '1 hour'
@@ -108,7 +108,7 @@ FROM (
                 gs.hr >= '{{project_start_date}}'
                 {% endif %}
                 {% if is_incremental() %}
-                gs.hr >= date_trunc('hour', now() - interval '1 week')
+                gs.hr >= date_trunc('hour', now() - interval '7 day')
                 {% endif %}
             GROUP BY
                 gs.hr,

@@ -47,7 +47,7 @@ with marketplace as (
                bidder as buyer
         from {{ source('treasure_trove_arbitrum', 'TreasureMarketplaceV2_evt_BidAccepted') }}
         {% if is_incremental() %}
-        where evt_block_time >= date_trunc("day", now() - interval '1 week')
+        where evt_block_time >= date_trunc("day", now() - interval '7 day')
         {% else %}
         where evt_block_time >= '{{project_start_date}}'
         {% endif %}
@@ -66,7 +66,7 @@ with marketplace as (
                buyer
         from {{ source('treasure_trove_arbitrum', 'TreasureMarketplaceV2_evt_ItemSold') }}
         {% if is_incremental() %}
-        where evt_block_time >= date_trunc("day", now() - interval '1 week')
+        where evt_block_time >= date_trunc("day", now() - interval '7 day')
         {% else %}
         where evt_block_time >= '{{project_start_date}}'
         {% endif %}
@@ -108,7 +108,7 @@ inner join {{ source('arbitrum', 'transactions') }} tx
     on tx.block_number = mp.block_number
     and tx.hash = mp.tx_hash
     {% if is_incremental() %}
-    and tx.block_time >= date_trunc("day", now() - interval '1 week')
+    and tx.block_time >= date_trunc("day", now() - interval '7 day')
     {% else %}
     and tx.block_time >= '{{project_start_date}}'
     {% endif %}
@@ -121,7 +121,7 @@ left join {{ source('prices', 'usd') }} as prices
     and prices.contract_address = mp.currency_contract
     and prices.blockchain = 'arbitrum'
     {% if is_incremental() %}
-    and prices.minute >= date_trunc("day", now() - interval '1 week')
+    and prices.minute >= date_trunc("day", now() - interval '7 day')
     {% else %}
     and prices.minute >= '{{project_start_date}}'
     {% endif %}

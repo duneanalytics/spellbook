@@ -35,7 +35,7 @@ WITH dexs AS
     INNER JOIN {{ source('swapr_ethereum', 'DXswapFactory_evt_PairCreated') }} f ON f.pair = t.contract_address
     {% if is_incremental() %}
     WHERE
-    t.evt_block_time >= date_trunc("day", now() - interval '1 week')
+    t.evt_block_time >= date_trunc("day", now() - interval '7 day')
     {% endif %}
 )
 
@@ -62,7 +62,7 @@ SELECT
     ) AS amount_usd,
     dexs.token_bought_address,
     dexs.token_sold_address,
-    coalesce(dexs.taker, tx.from) AS taker, -- subqueries rely on this COALESCE to avoid redundant joins with the transactions table
+    coalesce(dexs.taker, tx."from") AS taker, -- subqueries rely on this COALESCE to avoid redundant joins with the transactions table
     dexs.maker,
     dexs.project_contract_address,
     dexs.tx_hash,
@@ -77,7 +77,7 @@ INNER JOIN {{ source('ethereum', 'transactions') }} tx
     AND tx.block_time >= '{{project_start_date}}'
     {% endif %}
     {% if is_incremental() %}
-    AND tx.block_time >= date_trunc("day", now() - interval '1 week')
+    AND tx.block_time >= date_trunc("day", now() - interval '7 day')
     {% endif %}
 LEFT JOIN {{ ref('tokens_erc20') }} erc20a 
     ON erc20a.contract_address = dexs.token_bought_address 
@@ -93,7 +93,7 @@ LEFT JOIN {{ source('prices', 'usd') }} pa
     AND pa.minute >= '{{project_start_date}}'
     {% endif %}
     {% if is_incremental() %}
-    AND pa.minute >= date_trunc("day", now() - interval '1 week')
+    AND pa.minute >= date_trunc("day", now() - interval '7 day')
     {% endif %}
 LEFT JOIN {{ source('prices', 'usd') }} pb 
     ON pb.minute = date_trunc('minute', dexs.block_time)
@@ -103,5 +103,5 @@ LEFT JOIN {{ source('prices', 'usd') }} pb
     AND pb.minute >= '{{project_start_date}}'
     {% endif %}
     {% if is_incremental() %}
-    AND pb.minute >= date_trunc("day", now() - interval '1 week')
+    AND pb.minute >= date_trunc("day", now() - interval '7 day')
     {% endif %}
