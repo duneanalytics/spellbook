@@ -49,13 +49,13 @@ FROM
                 AND et.block_time >= '{{ethereum_start_date}}'
                 {% endif %}
                 {% if is_incremental() %}
-                AND et.block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
+                AND et.block_time >= date_trunc('day', now() - interval '7' day)
                 {% endif %}
         {% if not is_incremental() %}
         WHERE tc.evt_block_time >= '{{ethereum_start_date}}'
         {% endif %}
         {% if is_incremental() %}
-        WHERE tc.evt_block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
+        WHERE tc.evt_block_time >= date_trunc('day', now() - interval '7' day)
         {% endif %}
 
         UNION
@@ -146,13 +146,13 @@ FROM
                 AND et.block_time >= '{{eth_erc20_pt1_start_date}}'
                 {% endif %}
                 {% if is_incremental() %}
-                AND et.block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
+                AND et.block_time >= date_trunc('day', now() - interval '7' day)
                 {% endif %}
         {% if not is_incremental() %}
         WHERE tc.evt_block_time >= '{{eth_erc20_pt1_start_date}}'
         {% endif %}
         {% if is_incremental() %}
-        WHERE tc.evt_block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
+        WHERE tc.evt_block_time >= date_trunc('day', now() - interval '7' day)
         {% endif %}
 
         UNION
@@ -243,13 +243,13 @@ FROM
                 AND et.block_time >= '{{eth_erc20_pt2_start_date}}'
                 {% endif %}
                 {% if is_incremental() %}
-                AND et.block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
+                AND et.block_time >= date_trunc('day', now() - interval '7' day)
                 {% endif %}
         {% if not is_incremental() %}
         WHERE tc.evt_block_time >= '{{eth_erc20_pt2_start_date}}'
         {% endif %}
         {% if is_incremental() %}
-        WHERE tc.evt_block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
+        WHERE tc.evt_block_time >= date_trunc('day', now() - interval '7' day)
         {% endif %}
 
         UNION
@@ -278,13 +278,13 @@ FROM
                 AND bt.block_time >= '{{bnb_start_date}}'
                 {% endif %}
                 {% if is_incremental() %}
-                AND bt.block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
+                AND bt.block_time >= date_trunc('day', now() - interval '7' day)
                 {% endif %}
         {% if not is_incremental() %}
         WHERE tc.evt_block_time >= '{{bnb_start_date}}'
         {% endif %}
         {% if is_incremental() %}
-        WHERE tc.evt_block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
+        WHERE tc.evt_block_time >= date_trunc('day', now() - interval '7' day)
         {% endif %}
 
         UNION
@@ -313,13 +313,13 @@ FROM
                 AND gt.block_time >= '{{gnosis_start_date}}'
                 {% endif %}
                 {% if is_incremental() %}
-                AND gt.block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
+                AND gt.block_time >= date_trunc('day', now() - interval '7' day)
                 {% endif %}
         {% if not is_incremental() %}
         WHERE tc.evt_block_time >= '{{gnosis_start_date}}'
         {% endif %}
         {% if is_incremental() %}
-        WHERE tc.evt_block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
+        WHERE tc.evt_block_time >= date_trunc('day', now() - interval '7' day)
         {% endif %}
 
         UNION
@@ -349,13 +349,13 @@ FROM
                 AND ot.block_time >= '{{optimism_start_date}}'
                 {% endif %}
                 {% if is_incremental() %}
-                AND ot.block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
+                AND ot.block_time >= date_trunc('day', now() - interval '7' day)
                 {% endif %}
         {% if not is_incremental() %}
         WHERE tc.evt_block_time >= '{{optimism_start_date}}'
         {% endif %}
         {% if is_incremental() %}
-        WHERE tc.evt_block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
+        WHERE tc.evt_block_time >= date_trunc('day', now() - interval '7' day)
         {% endif %}
 
         UNION
@@ -383,13 +383,13 @@ FROM
                 AND at.block_time >= '{{avalanche_start_date}}'
                 {% endif %}
                 {% if is_incremental() %}
-                AND at.block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
+                AND at.block_time >= date_trunc('day', now() - interval '7' day)
                 {% endif %}
         {% if not is_incremental() %}
         WHERE tc.evt_block_time >= '{{avalanche_start_date}}'
         {% endif %}
         {% if is_incremental() %}
-        WHERE tc.evt_block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
+        WHERE tc.evt_block_time >= date_trunc('day', now() - interval '7' day)
         {% endif %}
 
         UNION
@@ -418,13 +418,13 @@ FROM
                 AND at.block_time >= '{{arbitrum_start_date}}'
                 {% endif %}
                 {% if is_incremental() %}
-                AND at.block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
+                AND at.block_time >= date_trunc('day', now() - interval '7' day)
                 {% endif %}
         {% if not is_incremental() %}
         WHERE tc.evt_block_time >= '{{arbitrum_start_date}}'
         {% endif %}
         {% if is_incremental() %}
-        WHERE tc.evt_block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
+        WHERE tc.evt_block_time >= date_trunc('day', now() - interval '7' day)
         {% endif %}
         
         UNION
@@ -453,12 +453,12 @@ FROM
                 AND pt.block_time >= '{{polygon_start_date}}'
                 {% endif %}
                 {% if is_incremental() %}
-                AND pt.block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
+                AND pt.block_time >= date_trunc('day', now() - interval '7' day)
                 {% endif %}
         {% if not is_incremental() %}
         WHERE tc.evt_block_time >= '{{polygon_start_date}}'
         {% endif %}
         {% if is_incremental() %}
-        WHERE tc.evt_block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
+        WHERE tc.evt_block_time >= date_trunc('day', now() - interval '7' day)
         {% endif %}
 )

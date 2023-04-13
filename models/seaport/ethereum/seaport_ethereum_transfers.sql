@@ -221,7 +221,7 @@ with p1_call as (
             and tx.block_number > 14801608
             {% endif %}
             {% if is_incremental() %}
-            and tx.block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
+            and tx.block_time >= date_trunc('day', now() - interval '7' day)
             {% endif %}
         left join {{ ref('nft_ethereum_aggregators_markers') }} agg_m
                 ON RIGHT(tx.data, agg_m.hash_marker_size) = agg_m.hash_marker
@@ -238,7 +238,7 @@ with p1_call as (
             and erct2.evt_block_number > 14801608
             {% endif %}
             {% if is_incremental() %}
-            and erct2.evt_block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
+            and erct2.evt_block_time >= date_trunc('day', now() - interval '7' day)
             {% endif %}
         LEFT JOIN {{ source('erc1155_ethereum','evt_transfersingle') }} erct3 ON erct3.evt_block_time=a.block_time
             AND nft_contract_address=erct3.contract_address
@@ -249,7 +249,7 @@ with p1_call as (
             and erct3.evt_block_number > 14801608
             {% endif %}
             {% if is_incremental() %}
-            and erct3.evt_block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
+            and erct3.evt_block_time >= date_trunc('day', now() - interval '7' day)
             {% endif %}
         left join {{ ref('tokens_erc20') }} t1
             on t1.contract_address =
@@ -267,7 +267,7 @@ with p1_call as (
             and p1.minute = date_trunc('minute', a.block_time)
             and p1.blockchain = 'ethereum'
             {% if is_incremental() %}
-            and p1.minute >= date_add('week', -1, CURRENT_TIMESTAMP(6))
+            and p1.minute >= date_trunc('day', now() - interval '7' day)
             {% endif %}
             )
 
@@ -452,7 +452,7 @@ with p1_call as (
             and tx.block_number > 14801608
             {% endif %}
             {% if is_incremental() %}
-            and tx.block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
+            and tx.block_time >= date_trunc('day', now() - interval '7' day)
             {% endif %}
         LEFT JOIN {{ source('erc721_ethereum','evt_transfer') }} erct2 ON erct2.evt_block_time=a.block_time
             AND concat('0x',substr(a.nft_address,3,40))=erct2.contract_address
@@ -463,7 +463,7 @@ with p1_call as (
             and erct2.evt_block_number > 14801608
             {% endif %}
             {% if is_incremental() %}
-            and erct2.evt_block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
+            and erct2.evt_block_time >= date_trunc('day', now() - interval '7' day)
             {% endif %}
         LEFT JOIN {{ source('erc1155_ethereum','evt_transfersingle') }} erct3 ON erct3.evt_block_time=a.block_time
             AND concat('0x',substr(a.nft_address,3,40))=erct3.contract_address
@@ -474,7 +474,7 @@ with p1_call as (
             and erct3.evt_block_number > 14801608
             {% endif %}
             {% if is_incremental() %}
-            and erct3.evt_block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
+            and erct3.evt_block_time >= date_trunc('day', now() - interval '7' day)
             {% endif %}
         left join {{ ref('nft_ethereum_aggregators_markers') }} agg_m
                 ON RIGHT(tx.data, agg_m.hash_marker_size) = agg_m.hash_marker
@@ -497,7 +497,7 @@ with p1_call as (
             and p1.minute = date_trunc('minute', a.block_time)
             and p1.blockchain = 'ethereum'
             {% if is_incremental() %}
-            and p1.minute >= date_add('week', -1, CURRENT_TIMESTAMP(6))
+            and p1.minute >= date_trunc('day', now() - interval '7' day)
             {% endif %}
             )
 
@@ -709,7 +709,7 @@ with p1_call as (
             and tx.block_number > 14801608
             {% endif %}
             {% if is_incremental() %}
-            and tx.block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
+            and tx.block_time >= date_trunc('day', now() - interval '7' day)
             {% endif %}
         left join {{ ref('nft_aggregators') }} agg
             ON agg.contract_address = tx.to AND agg.blockchain = 'ethereum'
@@ -726,7 +726,7 @@ with p1_call as (
             and erct2.evt_block_number > 14801608
             {% endif %}
             {% if is_incremental() %}
-            and erct2.evt_block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
+            and erct2.evt_block_time >= date_trunc('day', now() - interval '7' day)
             {% endif %}
         LEFT JOIN {{ source('erc1155_ethereum','evt_transfersingle') }} erct3 ON erct3.evt_block_time=a.block_time
             AND nft_contract_address=erct3.contract_address
@@ -737,7 +737,7 @@ with p1_call as (
             and erct3.evt_block_number > 14801608
             {% endif %}
             {% if is_incremental() %}
-            and erct3.evt_block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
+            and erct3.evt_block_time >= date_trunc('day', now() - interval '7' day)
             {% endif %}
         left join {{ ref('tokens_erc20') }} t1
             on t1.contract_address =
@@ -755,7 +755,7 @@ with p1_call as (
             and p1.minute = date_trunc('minute', a.block_time)
             and p1.blockchain = 'ethereum'
             {% if is_incremental() %}
-            and p1.minute >= date_add('week', -1, CURRENT_TIMESTAMP(6))
+            and p1.minute >= date_trunc('day', now() - interval '7' day)
             {% endif %}
             )
 
@@ -940,7 +940,7 @@ with p1_call as (
         and tx.block_number > 14801608
         {% endif %}
         {% if is_incremental() %}
-        and tx.block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
+        and tx.block_time >= date_trunc('day', now() - interval '7' day)
         {% endif %}
     LEFT JOIN {{ source('erc721_ethereum','evt_transfer') }} erct2 ON erct2.evt_block_time=a.block_time
         AND concat('0x',substr(a.nft_address,3,40))=erct2.contract_address
@@ -951,7 +951,7 @@ with p1_call as (
         and erct2.evt_block_number > 14801608
         {% endif %}
         {% if is_incremental() %}
-        and erct2.evt_block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
+        and erct2.evt_block_time >= date_trunc('day', now() - interval '7' day)
         {% endif %}
     LEFT JOIN {{ source('erc1155_ethereum','evt_transfersingle') }} erct3 ON erct3.evt_block_time=a.block_time
         AND concat('0x',substr(a.nft_address,3,40))=erct3.contract_address
@@ -962,7 +962,7 @@ with p1_call as (
         and erct3.evt_block_number > 14801608
         {% endif %}
         {% if is_incremental() %}
-        and erct3.evt_block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
+        and erct3.evt_block_time >= date_trunc('day', now() - interval '7' day)
         {% endif %}
         left join {{ ref('nft_ethereum_aggregators_markers') }} agg_m
                 ON RIGHT(tx.data, agg_m.hash_marker_size) = agg_m.hash_marker
@@ -986,7 +986,7 @@ with p1_call as (
         and p1.minute = date_trunc('minute', a.block_time)
         and p1.blockchain = 'ethereum'
         {% if is_incremental() %}
-        and p1.minute >= date_add('week', -1, CURRENT_TIMESTAMP(6))
+        and p1.minute >= date_trunc('day', now() - interval '7' day)
         {% endif %}
             )
 

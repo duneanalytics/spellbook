@@ -53,7 +53,7 @@ SELECT
             sold_id
         FROM {{ source('curvefi_optimism', 'StableSwap_evt_TokenExchange') }} t
         {% if is_incremental() %}
-        WHERE t.evt_block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
+        WHERE t.evt_block_time >= date_trunc('day', now() - interval '7' day)
         {% endif %}
 
         UNION ALL
@@ -76,7 +76,7 @@ SELECT
             sold_id
         FROM {{ source('curvefi_optimism', 'MetaPoolSwap_evt_TokenExchangeUnderlying') }} t
         {% if is_incremental() %}
-        WHERE t.evt_block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
+        WHERE t.evt_block_time >= date_trunc('day', now() - interval '7' day)
         {% endif %}
 
         UNION ALL
@@ -105,11 +105,11 @@ SELECT
             AND t.evt_tx_hash = s.evt_tx_hash
             AND t.evt_index = s.evt_index
             {% if is_incremental() %}
-            AND s.evt_block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
+            AND s.evt_block_time >= date_trunc('day', now() - interval '7' day)
             {% endif %}
         )
         {% if is_incremental() %}
-        AND t.evt_block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
+        AND t.evt_block_time >= date_trunc('day', now() - interval '7' day)
         {% endif %}
     ) cp
     INNER JOIN {{ ref('curvefi_optimism_pools') }} ta
@@ -182,7 +182,7 @@ LEFT JOIN {{ source('prices', 'usd') }} p_bought
     AND p_bought.minute >= '{{project_start_date}}'
     {% endif %}
     {% if is_incremental() %}
-    AND p_bought.minute >= date_add('week', -1, CURRENT_TIMESTAMP(6))
+    AND p_bought.minute >= date_trunc('day', now() - interval '7' day)
     {% endif %}
 LEFT JOIN {{ source('prices', 'usd') }} p_sold
     ON p_sold.minute = date_trunc('minute', dexs.block_time)
@@ -192,6 +192,6 @@ LEFT JOIN {{ source('prices', 'usd') }} p_sold
     AND p_sold.minute >= '{{project_start_date}}'
     {% endif %}
     {% if is_incremental() %}
-    AND p_sold.minute >= date_add('week', -1, CURRENT_TIMESTAMP(6))
+    AND p_sold.minute >= date_trunc('day', now() - interval '7' day)
     {% endif %}
 ;

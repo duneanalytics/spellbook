@@ -25,7 +25,7 @@ aragon_daos as (
         WHERE block_time >= '{{project_start_date}}'
         {% endif %}
         {% if is_incremental() %}
-        WHERE block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
+        WHERE block_time >= date_trunc('day', now() - interval '7' day)
         {% endif %}
         AND topic1 = '0x3a7eb042a769adf51e9be78b68ed7af0ad7b379246536efc376ed2ca01238282' -- deploy dao event on aragon
 ),
@@ -51,7 +51,7 @@ get_aragon_wallets as (
         WHERE block_time >= '{{project_start_date}}'
         {% endif %}
         {% if is_incremental() %}
-        WHERE block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
+        WHERE block_time >= date_trunc('day', now() - interval '7' day)
         {% endif %}
         AND topic1 = LOWER('0xd880e726dced8808d727f02dd0e6fdd3a945b24bfee77e13367bcbe61ddbaf47')
         AND CONCAT('0x', SUBSTRING(data, 131, 64)) IN (SELECT app_id FROM app_ids)

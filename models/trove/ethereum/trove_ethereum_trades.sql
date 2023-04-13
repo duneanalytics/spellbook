@@ -38,7 +38,7 @@ with marketplace as (
             contract_address, bidder as buyer
         from {{ source('treasure_trove_ethereum', 'TreasureMarketplace_evt_BidAccepted') }}
         {% if is_incremental() %}
-        where evt_block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
+        where evt_block_time >= date_trunc('day', now() - interval '7' day)
         {% else %}
         where evt_block_time >= '{{project_start_date}}'
         {% endif %}
@@ -48,7 +48,7 @@ with marketplace as (
             contract_address, buyer
         from {{ source('treasure_trove_ethereum', 'TreasureMarketplace_evt_ItemSold') }}
         {% if is_incremental() %}
-        where evt_block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
+        where evt_block_time >= date_trunc('day', now() - interval '7' day)
         {% else %}
         where evt_block_time >= '{{project_start_date}}'
         {% endif %}
@@ -90,7 +90,7 @@ inner join {{ source('ethereum', 'transactions') }} tx
     on tx.block_number = mp.block_number
     and tx.hash = mp.tx_hash
     {% if is_incremental() %}
-    and tx.block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
+    and tx.block_time >= date_trunc('day', now() - interval '7' day)
     {% else %}
     and tx.block_time >= '{{project_start_date}}'
     {% endif %}
@@ -103,7 +103,7 @@ left join {{ source('prices', 'usd') }} as prices
     and prices.contract_address = mp.currency_contract
     and prices.blockchain = 'ethereum'
     {% if is_incremental() %}
-    and prices.minute >= date_add('week', -1, CURRENT_TIMESTAMP(6))
+    and prices.minute >= date_trunc('day', now() - interval '7' day)
     {% else %}
     and prices.minute >= '{{project_start_date}}'
     {% endif %}

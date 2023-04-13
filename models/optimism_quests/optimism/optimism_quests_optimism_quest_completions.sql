@@ -32,5 +32,5 @@ INNER JOIN {{ref('optimism_quests_optimism_nft_id_mapping')}} nft
 WHERE call_success = true
 AND call_block_time >= cast( '{{project_start_date}}' as timestamp)
 {% if is_incremental() %}
-AND call_block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
+AND call_block_time >= date_trunc('day', now() - interval '7' day)
 {% endif %}

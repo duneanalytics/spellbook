@@ -27,7 +27,7 @@ with v1 as (
         where evt_block_time >= '{{project_start_date}}'
     {% endif %}
     {% if is_incremental() %}
-        where evt_block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
+        where evt_block_time >= date_trunc('day', now() - interval '7' day)
     {% endif %}
 ),
 prices as (
@@ -37,7 +37,7 @@ prices as (
         and minute >= '{{project_start_date}}'
     {% endif %}
     {% if is_incremental() %}
-        and minute >= date_add('week', -1, CURRENT_TIMESTAMP(6))
+        and minute >= date_trunc('day', now() - interval '7' day)
     {% endif %}
 )
 
@@ -79,7 +79,7 @@ inner join {{ source('ethereum', 'transactions') }} tx
     and tx.block_time >= '{{project_start_date}}'
     {% endif %}
     {% if is_incremental() %}
-    and tx.block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
+    and tx.block_time >= date_trunc('day', now() - interval '7' day)
     {% endif %}
 left join {{ ref('tokens_erc20') }} erc20a
     on trades.token_bought_address = erc20a.contract_address

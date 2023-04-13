@@ -37,5 +37,5 @@ from {{source('attestationstation_optimism','AttestationStation_evt_AttestationC
 where 
     true
     {% if is_incremental() %}
-    and evt_block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
+    and evt_block_time >= date_trunc('day', now() - interval '7' day)
     {% endif %}

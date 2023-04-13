@@ -160,7 +160,7 @@ FROM {{ source('seaport_ethereum','Seaport_evt_OrderFulfilled') }} s
 INNER JOIN {{ source('ethereum', 'transactions') }} tx ON tx.block_number=s.evt_block_number
     AND tx.hash=s.evt_tx_hash
     {% if is_incremental() %}
-    AND tx.block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
+    AND tx.block_time >= date_trunc('day', now() - interval '7' day)
     {% endif %}
     {% if not is_incremental() %}
     AND tx.block_time >= timestamp '{{seaport_usage_start_date}}'
@@ -171,14 +171,14 @@ LEFT JOIN {{ ref('prices_usd_forward_fill') }} pu ON ((pu.contract_address=JSON_
         OR (JSON_EXTRACT_SCALAR(s.consideration[0], '$.token')=0x0000000000000000000000000000000000000000  AND pu.blockchain IS NULL AND pu.contract_address IS NULL AND pu.symbol='ETH'))
     AND pu.minute=date_trunc('minute', s.evt_block_time)
     {% if is_incremental() %}
-    AND pu.minute >= date_add('week', -1, CURRENT_TIMESTAMP(6))
+    AND pu.minute >= date_trunc('day', now() - interval '7' day)
     {% endif %}
     {% if not is_incremental() %}
     AND pu.minute >= timestamp '{{seaport_usage_start_date}}'
     {% endif %}
 WHERE s.zone=0x0000000000d80cfcb8dfcd8b2c4fd9c813482938
 {% if is_incremental() %}
-AND s.evt_block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
+AND s.evt_block_time >= date_trunc('day', now() - interval '7' day)
 {% endif %}
 {% if not is_incremental() %}
 AND s.evt_block_time >= timestamp '{{seaport_usage_start_date}}'

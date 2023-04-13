@@ -73,7 +73,7 @@ erc20_tfers as (
         WHERE evt_block_time >= '{{first_transfer_date}}'
         {% endif %}
         {% if is_incremental() %}
-        WHERE evt_block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
+        WHERE evt_block_time >= date_trunc('day', now() - interval '7' day)
         {% endif %}
         AND `from` IN (SELECT contract_address FROM all_bridges)
         
@@ -87,7 +87,7 @@ erc20_tfers as (
         WHERE evt_block_time >= '{{first_transfer_date}}'
         {% endif %}
         {% if is_incremental() %}
-        WHERE evt_block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
+        WHERE evt_block_time >= date_trunc('day', now() - interval '7' day)
         {% endif %}
         AND `to` IN (SELECT contract_address FROM all_bridges)
 ),
@@ -101,7 +101,7 @@ eth_tfers as (
         WHERE block_time >= '{{first_transfer_date}}'
         {% endif %}
         {% if is_incremental() %}
-        WHERE block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
+        WHERE block_time >= date_trunc('day', now() - interval '7' day)
         {% endif %}
         AND `from` IN (SELECT contract_address FROM all_bridges)
         AND (LOWER(call_type) NOT IN ('delegatecall', 'callcode', 'staticcall') or call_type IS NULL)
@@ -117,7 +117,7 @@ eth_tfers as (
         WHERE block_time >= '{{first_transfer_date}}'
         {% endif %}
         {% if is_incremental() %}
-        WHERE block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
+        WHERE block_time >= date_trunc('day', now() - interval '7' day)
         {% endif %}
         AND `to` IN (SELECT contract_address FROM all_bridges)
         AND (LOWER(call_type) NOT IN ('delegatecall', 'callcode', 'staticcall') or call_type IS NULL)

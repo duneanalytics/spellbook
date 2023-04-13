@@ -12,6 +12,6 @@
 , max_by(t.token_standard, t.block_time) AS standard
 FROM {{ ref('nft_polygon_transfers') }} t
     {% if is_incremental() %}
-       WHERE t.block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
+       WHERE t.block_time >= date_trunc('day', now() - interval '7' day)
     {% endif %}
 GROUP BY 1
