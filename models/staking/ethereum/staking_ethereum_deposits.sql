@@ -19,7 +19,7 @@ WITH deposit_events AS (
         SUBSTR(d.amount, 7, 2) || SUBSTR(d.amount, 5, 2) || SUBSTR(d.amount, 3, 2))/POWER(10, 9) AS DOUBLE) AS amount
     , d.contract_address
     , CAST(bytea2numeric_v3('0x' || SUBSTR(d.index, 15, 2) || SUBSTR(d.index, 13, 2) || SUBSTR(d.index, 11, 2) || SUBSTR(d.index, 9, 2) ||
-        SUBSTR(d.index, 7, 2) || SUBSTR(d.index, 5, 2) || SUBSTR(d.index, 3, 2)) AS DECIMAL(38,0) AS deposit_index
+        SUBSTR(d.index, 7, 2) || SUBSTR(d.index, 5, 2) || SUBSTR(d.index, 3, 2)) AS DECIMAL(38,0)) AS deposit_index
     , d.pubkey
     , d.signature
     , CAST(substring(d.withdrawal_credentials, 1, 4) AS string) AS withdrawal_credentials_type
