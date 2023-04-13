@@ -38,3 +38,6 @@ models:
       - &updated_at
         name: updated_at
         description: "When were labels updated for the last time"
+      - &label_type
+        name: label_type
+        description: "Type of label (see labels overall readme)"
