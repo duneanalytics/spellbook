@@ -724,6 +724,8 @@ models:
         +schema: kyberswap_optimism
       ethereum:
         +schema: kyberswap_ethereum
+      arbitrum:
+        +schema: kyberswap_arbitrum
 
     hubble_exchange:
       +schema: hubble_exchange
