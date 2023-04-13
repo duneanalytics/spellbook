@@ -1,7 +1,7 @@
 {{config(alias='dao_addresses')}}
 
 {% set aragon_models = [
-ref('aragon_polygon_client_dao_addresses')
+ref('aragon_gnosis_client_dao_addresses')
 ] %}
 
 
