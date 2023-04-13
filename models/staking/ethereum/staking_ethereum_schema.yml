@@ -37,7 +37,6 @@ models:
           combination_of_columns:
             - block_time
             - tx_hash
-            - depositor_address
             - deposit_index
     columns:
       - name: block_time
