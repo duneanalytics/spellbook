@@ -50,7 +50,7 @@ WITH zeroex_tx AS (
                     )
                 
                 {% if is_incremental() %}
-                AND block_time >= date_trunc('day', now() - interval '7 day')
+                AND block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
                 {% endif %}
                 {% if not is_incremental() %}
                 AND block_time >= '{{zeroex_v3_start_date}}'
@@ -80,7 +80,7 @@ v4_rfq_fills_no_bridge AS (
     LEFT JOIN zeroex_tx ON zeroex_tx.tx_hash = fills.evt_tx_hash
 
     {% if is_incremental() %}
-    WHERE evt_block_time >= date_trunc('day', now() - interval '7 day')
+    WHERE evt_block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
     {% endif %}
     {% if not is_incremental() %}
     WHERE evt_block_time >= '{{zeroex_v4_start_date}}'
@@ -106,7 +106,7 @@ v4_limit_fills_no_bridge AS (
     LEFT JOIN zeroex_tx ON zeroex_tx.tx_hash = fills.evt_tx_hash
 
     {% if is_incremental() %}
-    WHERE evt_block_time >= date_trunc('day', now() - interval '7 day')
+    WHERE evt_block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
     {% endif %}
     {% if not is_incremental() %}
     WHERE evt_block_time >= '{{zeroex_v4_start_date}}'
@@ -132,7 +132,7 @@ otc_fills AS (
     LEFT JOIN zeroex_tx ON zeroex_tx.tx_hash = fills.evt_tx_hash
 
     {% if is_incremental() %}
-    WHERE evt_block_time >= date_trunc('day', now() - interval '7 day')
+    WHERE evt_block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
     {% endif %}
     {% if not is_incremental() %}
     WHERE evt_block_time >= '{{zeroex_v4_start_date}}'
@@ -162,7 +162,7 @@ ERC20BridgeTransfer AS (
     WHERE topic1 = '0x349fc08071558d8e3aa92dec9396e4e9f2dfecd6bb9065759d1932e7da43b8a9'
     
     {% if is_incremental() %}
-    AND block_time >= date_trunc('day', now() - interval '7 day')
+    AND block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
     {% endif %}
     {% if not is_incremental() %}
     AND block_time >= '{{zeroex_v3_start_date}}'
@@ -192,7 +192,7 @@ BridgeFill AS (
         AND contract_address = 0xb4d961671cadfed687e040b076eee29840c142e5
 
         {% if is_incremental() %}
-        AND block_time >= date_trunc('day', now() - interval '7 day')
+        AND block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
         {% endif %}
         {% if not is_incremental() %}
         AND block_time >= '{{zeroex_v4_start_date}}'
@@ -221,7 +221,7 @@ NewBridgeFill AS (
         AND contract_address = 0xb4d961671cadfed687e040b076eee29840c142e5
 
         {% if is_incremental() %}
-        AND block_time >= date_trunc('day', now() - interval '7 day')
+        AND block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
         {% endif %}
         {% if not is_incremental() %}
         AND block_time >= '{{zeroex_v4_start_date}}'
@@ -248,7 +248,7 @@ direct_PLP AS (
     INNER JOIN zeroex_tx ON zeroex_tx.tx_hash = plp.evt_tx_hash
 
     {% if is_incremental() %}
-    WHERE evt_block_time >= date_trunc('day', now() - interval '7 day')
+    WHERE evt_block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
     {% endif %}
     {% if not is_incremental() %}
     WHERE evt_block_time >= '{{zeroex_v3_start_date}}'
@@ -306,7 +306,7 @@ FROM all_tx
 INNER JOIN {{ source('fantom', 'transactions')}} tx ON all_tx.tx_hash = tx.hash
 
 {% if is_incremental() %}
-AND tx.block_time >= date_trunc('day', now() - interval '7 day')
+AND tx.block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
 {% endif %}
 {% if not is_incremental() %}
 AND tx.block_time >= '{{zeroex_v3_start_date}}'
@@ -320,7 +320,7 @@ AND CASE
 AND tp.blockchain = 'fantom'
 
 {% if is_incremental() %}
-AND tp.minute >= date_trunc('day', now() - interval '7 day')
+AND tp.minute >= date_add('week', -1, CURRENT_TIMESTAMP(6))
 {% endif %}
 {% if not is_incremental() %}
 AND tp.minute >= '{{zeroex_v3_start_date}}'
@@ -334,7 +334,7 @@ AND CASE
 AND mp.blockchain = 'fantom'
 
 {% if is_incremental() %}
-AND mp.minute >= date_trunc('day', now() - interval '7 day')
+AND mp.minute >= date_add('week', -1, CURRENT_TIMESTAMP(6))
 {% endif %}
 {% if not is_incremental() %}
 AND mp.minute >= '{{zeroex_v3_start_date}}'

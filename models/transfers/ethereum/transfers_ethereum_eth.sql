@@ -37,8 +37,8 @@ with eth_transfers as (
         and r.success
         and r.value > '0'
         {% if is_incremental() %} -- this filter will only be applied on an incremental run 
-        and r.block_time >= date_trunc('day', now() - interval '7 day')
-        and t.block_time >= date_trunc('day', now() - interval '7 day')
+        and r.block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
+        and t.block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
         {% endif %}
 )
 select *

@@ -18,7 +18,7 @@ select
 from {{ ref('transfers_ethereum_erc721') }}
 {% if is_incremental() %}
 -- this filter will only be applied on an incremental run
-where evt_block_time >= date_trunc('day', now() - interval '7 day')
+where evt_block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
 {% endif %}
 group by 1,2,3,4,5,6
 -- having sum(amount) = 1 -- commenting this out as it seems to affect the rolling models 

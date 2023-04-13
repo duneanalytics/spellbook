@@ -36,10 +36,10 @@ from
         inner join {{ source('ethereum','transactions') }} b
                 on a.evt_tx_hash = b.hash
                 {% if is_incremental() %}
-                and b.block_time >= date_trunc('day', now() - interval '7 day')
+                and b.block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
                 {% endif %}
         {% if is_incremental() %}
-        where a.evt_block_time >= date_trunc('day', now() - interval '7 day')
+        where a.evt_block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
         {% endif %}
 
         union all 
@@ -58,18 +58,18 @@ from
         inner join {{ source('ethereum','transactions') }} b
                 on a.evt_tx_hash = b.hash
                 {% if is_incremental() %}
-                and b.block_time >= date_trunc('day', now() - interval '7 day')
+                and b.block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
                 {% endif %}
         where a.evt_tx_hash not in (select distinct tx_hash from {{ ref('cryptopunks_ethereum_trades') }} )
                 and a.evt_tx_hash not in (select distinct evt_tx_hash from {{ ref('cryptopunks_ethereum_punk_transfers') }} )
                 {% if is_incremental() %}
-                and a.evt_block_time >= date_trunc('day', now() - interval '7 day')
+                and a.evt_block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
                 {% endif %}
 ) a 
 left join {{ source('prices', 'usd') }} p on p.minute = date_trunc('minute', a.evt_block_time)
         and p.contract_address = 0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2
         and p.blockchain = 'ethereum'
         {% if is_incremental() %}
-        and p.minute >= date_trunc('day', now() - interval '7 day')
+        and p.minute >= date_add('week', -1, CURRENT_TIMESTAMP(6))
         {% endif %}
 ;

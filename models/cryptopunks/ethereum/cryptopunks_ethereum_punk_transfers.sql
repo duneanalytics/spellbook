@@ -36,13 +36,13 @@ from
         inner join {{ source('ethereum','logs') }} b
                         on a.evt_tx_hash = b.tx_hash
                         {% if is_incremental() %}
-                        and b.block_time >= date_trunc('day', now() - interval '7 day')
+                        and b.block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
                         {% endif %}
         where a.contract_address = lower(0xb47e3cd837dDF8e4c57F05d70Ab865de6e193BBB) -- cryptopunks contract
                 and topic1 in   ( '0x58e5d5a525e3b40bc15abaa38b5882678db1ee68befd2f60bafe3a7fd06db9e3' -- PunkBought
                                 , '0x05af636b70da6819000c49f85b21fa82081c632069bb626f30932034099107d8' -- PunkTransfer
                                 )
-                {% if is_incremental() %} and a.evt_block_time >= date_trunc('day', now() - interval '7 day') {% endif %}
+                {% if is_incremental() %} and a.evt_block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6)) {% endif %}
 
         ) c
         group by 1,2,3,4,5,6,7,8
@@ -58,7 +58,7 @@ from
                 , punkIndex as punk_id
                 , evt_tx_hash
         from {{ source('cryptopunks_ethereum','CryptoPunksMarket_evt_Assign') }}
-        {% if is_incremental() %} where evt_block_time >= date_trunc('day', now() - interval '7 day') {% endif %}
+        {% if is_incremental() %} where evt_block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6)) {% endif %}
 
 ) d
 order by evt_block_number desc, evt_index desc
