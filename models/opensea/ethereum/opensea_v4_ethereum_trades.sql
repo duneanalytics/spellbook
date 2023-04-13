@@ -337,8 +337,7 @@ with source_ethereum_transactions as (
         ,max(case when is_creator_fee and creator_fee_idx = 3 then receiver end) as creator_fee_receiver_3
         ,max(case when is_creator_fee and creator_fee_idx = 4 then receiver end) as creator_fee_receiver_4
         ,max(case when is_creator_fee and creator_fee_idx = 5 then receiver end) as creator_fee_receiver_5
-        ,max(a.fee_wallet_name) as a.fee_wallet_name
-
+        ,max(a.fee_wallet_name) as fee_wallet_name
    from iv_base_pairs a
   where 1=1
     and eth_erc_idx > 0
