@@ -38,6 +38,7 @@ models:
             - block_time
             - tx_hash
             - depositor_address
+            - deposit_index
     columns:
       - name: block_time
         description: "Block time of deposit transaction"
