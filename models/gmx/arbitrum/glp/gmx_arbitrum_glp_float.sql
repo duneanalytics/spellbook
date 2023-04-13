@@ -23,7 +23,7 @@ WITH minute AS  -- This CTE generates a series of minute values
         SELECT explode(sequence(TIMESTAMP '{{project_start_date}}', CURRENT_TIMESTAMP, INTERVAL 1 minute)) AS minute -- 2021-08-31 08:13 is the timestamp of the first vault transaction
         {% endif %}
         {% if is_incremental() %}
-        SELECT explode(sequence(date_add('week', -1, CURRENT_TIMESTAMP(6)), CURRENT_TIMESTAMP, INTERVAL 1 minute)) AS minute
+        SELECT explode(sequence(date_trunc('day', now() - interval '7' day), CURRENT_TIMESTAMP, INTERVAL 1 minute)) AS minute
         {% endif %}
         )
     ),
@@ -54,7 +54,7 @@ glp_balances AS -- This CTE returns the accuals of WETH tokens in the Fee GLP co
             WHERE evt_block_time >= '{{project_start_date}}'
             {% endif %}
             {% if is_incremental() %}
-            WHERE evt_block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
+            WHERE evt_block_time >= date_trunc('day', now() - interval '7' day)
             {% endif %}
 
             UNION
@@ -67,7 +67,7 @@ glp_balances AS -- This CTE returns the accuals of WETH tokens in the Fee GLP co
             WHERE evt_block_time >= '{{project_start_date}}'
             {% endif %}
             {% if is_incremental() %}
-            WHERE evt_block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
+            WHERE evt_block_time >= date_trunc('day', now() - interval '7' day)
             {% endif %}
             ) a
         GROUP BY a.minute
@@ -97,7 +97,7 @@ FROM
         WHERE minute >= '{{project_start_date}}'
         {% endif %}
         {% if is_incremental() %}
-        WHERE minute >= date_add('week', -1, CURRENT_TIMESTAMP(6))
+        WHERE minute >= date_trunc('day', now() - interval '7' day)
         {% endif %}
         ) b
         ON a.minute = b.minute

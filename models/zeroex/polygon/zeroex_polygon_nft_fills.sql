@@ -38,7 +38,7 @@ WITH tbl_cte_transaction AS
     FROM {{ source ('zeroex_polygon', 'ExchangeProxy_evt_ERC721OrderFilled') }}
     WHERE 1 = 1 
         {% if is_incremental() %}
-        AND evt_block_time >= date_trunc('day', now() - interval '7 day')
+        AND evt_block_time >= date_trunc('day', now() - interval '7' day)
         {% endif %}
         {% if not is_incremental() %}
         AND evt_block_time >= '{{zeroex_v4_nft_start_date}}'
@@ -66,7 +66,7 @@ WITH tbl_cte_transaction AS
     FROM {{ source ('zeroex_polygon', 'ExchangeProxy_evt_ERC1155OrderFilled') }}
     WHERE 1 = 1 
         {% if is_incremental() %}
-        AND evt_block_time >= date_trunc('day', now() - interval '7 day')
+        AND evt_block_time >= date_trunc('day', now() - interval '7' day)
         {% endif %}
         {% if not is_incremental() %}
         AND evt_block_time >= '{{zeroex_v4_nft_start_date}}'

@@ -25,7 +25,7 @@ with source_optimism_transactions as (
     where block_time >= '{{c_seaport_first_date}}'  -- seaport first txn
     {% endif %}
     {% if is_incremental() %}
-    where block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
+    where block_time >= date_trunc('day', now() - interval '7' day)
     {% endif %}
 )
 ,ref_quix_seaport_optimism_base_pairs as (
@@ -33,7 +33,7 @@ with source_optimism_transactions as (
       from {{ ref('quix_seaport_optimism_base_pairs') }}
       where 1=1
       {% if is_incremental() %}
-            and block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
+            and block_time >= date_trunc('day', now() - interval '7' day)
       {% endif %}
 )
 ,ref_tokens_nft as (
@@ -59,7 +59,7 @@ with source_optimism_transactions as (
       and minute >= '{{c_seaport_first_date}}'  -- seaport first txn
     {% endif %}
     {% if is_incremental() %}
-      and minute >= date_add('week', -1, CURRENT_TIMESTAMP(6))
+      and minute >= date_trunc('day', now() - interval '7' day)
     {% endif %}
 )
 ,iv_base_pairs_priv as (
@@ -256,7 +256,7 @@ with source_optimism_transactions as (
     and evt_block_time >= '{{c_seaport_first_date}}'  -- seaport first txn
     {% endif %}
     {% if is_incremental() %}
-    and evt_block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
+    and evt_block_time >= date_trunc('day', now() - interval '7' day)
     {% endif %}
 )
 ,iv_columns as (

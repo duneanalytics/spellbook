@@ -56,7 +56,7 @@ FROM {{ source('stealcam_arbitrum', 'Stealcam_evt_Stolen') }} sc
 INNER JOIN {{ source('arbitrum', 'transactions') }} at ON at.block_number=sc.evt_block_number
     AND at.hash=sc.evt_tx_hash
     {% if is_incremental() %}
-    AND at.block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
+    AND at.block_time >= date_trunc('day', now() - interval '7' day)
     {% endif %}
     {% if not is_incremental() %}
     AND at.block_time >= '{{project_start_date}}'
@@ -65,7 +65,7 @@ LEFT JOIN {{ ref('prices_usd_forward_fill') }} pu ON pu.blockchain = 'ethereum'
     AND pu.contract_address=0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2
     AND pu.minute=date_trunc('minute', sc.evt_block_time)
     {% if is_incremental() %}
-    AND pu.minute >= date_add('week', -1, CURRENT_TIMESTAMP(6))
+    AND pu.minute >= date_trunc('day', now() - interval '7' day)
     {% endif %}
     {% if not is_incremental() %}
     AND pu.minute >= '{{project_start_date}}'
@@ -73,7 +73,7 @@ LEFT JOIN {{ ref('prices_usd_forward_fill') }} pu ON pu.blockchain = 'ethereum'
 INNER JOIN {{ source('stealcam_arbitrum', 'Stealcam_call_mint') }} m ON m.call_success
     AND m.id=sc.id
     {% if is_incremental() %}
-    AND m.call_block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
+    AND m.call_block_time >= date_trunc('day', now() - interval '7' day)
     {% endif %}
     {% if not is_incremental() %}
     AND m.call_block_time >= '{{project_start_date}}'
@@ -83,7 +83,7 @@ LEFT JOIN {{ source('arbitrum', 'traces') }} roy ON roy.block_number=sc.evt_bloc
     AND roy."from"=sc.contract_address
     AND roy.to=m._creator
     {% if is_incremental() %}
-    AND roy.block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
+    AND roy.block_time >= date_trunc('day', now() - interval '7' day)
     {% endif %}
     {% if not is_incremental() %}
     AND roy.block_time >= '{{project_start_date}}'
@@ -93,13 +93,13 @@ LEFT JOIN {{ source('arbitrum', 'traces') }} not_fee ON not_fee.block_number=sc.
     AND not_fee."from"=sc.contract_address
     AND not_fee.to=sc."from"
     {% if is_incremental() %}
-    AND not_fee.block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
+    AND not_fee.block_time >= date_trunc('day', now() - interval '7' day)
     {% endif %}
     {% if not is_incremental() %}
     AND not_fee.block_time >= '{{project_start_date}}'
     {% endif %}
 {% if is_incremental() %}
-WHERE sc.evt_block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
+WHERE sc.evt_block_time >= date_trunc('day', now() - interval '7' day)
 {% endif %}
 {% if not is_incremental() %}
 WHERE sc.evt_block_time >= '{{project_start_date}}'

@@ -42,7 +42,7 @@ FROM {{ source('erc20_optimism', 'evt_Approval') }} a
         ON t.hash = a.evt_tx_hash
         AND t.block_number = a.evt_block_number
         {% if is_incremental() %} 
-        AND t.block_time >= date_trunc('day', now() - interval '7 day')
+        AND t.block_time >= date_trunc('day', now() - interval '7' day)
         {% else %}
         AND t.block_time >= cast( '{{approvals_start_date}}' as date )
         {% endif %}
@@ -54,7 +54,7 @@ WHERE
     a.contract_address = '{{op_token_address}}' --OP Token
     AND owner in (SELECT address FROM project_labels WHERE label = '{{foundation_label}}' AND address_descriptor = '{{grants_descriptor}}')
     {% if is_incremental() %} 
-    AND a.evt_block_time >= date_trunc('day', now() - interval '7 day')
+    AND a.evt_block_time >= date_trunc('day', now() - interval '7' day)
     {% else %}
     AND a.evt_block_time >= cast( '{{approvals_start_date}}' as date )
     {% endif %}

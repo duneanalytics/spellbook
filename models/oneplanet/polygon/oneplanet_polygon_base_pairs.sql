@@ -73,7 +73,7 @@ with iv_offer_consideration as (
         where evt_block_time >= date '{{c_oneplanet_first_date}}'  -- oneplanet first txn
         {% endif %}
         {% if is_incremental() %}
-        where evt_block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
+        where evt_block_time >= date_trunc('day', now() - interval '7' day)
         {% endif %}
     )
     union all
@@ -135,7 +135,7 @@ with iv_offer_consideration as (
         where evt_block_time >= date '{{c_oneplanet_first_date}}'  -- oneplanet first txn
         {% endif %}
         {% if is_incremental() %}
-        where evt_block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
+        where evt_block_time >= date_trunc('day', now() - interval '7' day)
         {% endif %}
     )
 )

@@ -17,7 +17,7 @@ SELECT distinct 'polygon' AS blockchain
 FROM {{ source('erc20_polygon', 'evt_transfer') }} erc20
 {% if is_incremental() %}
 LEFT ANTI JOIN this t ON t.address = erc20.contract_address
-WHERE erc20.evt_block_time >= date_trunc('day', now() - interval '7 day')
+WHERE erc20.evt_block_time >= date_trunc('day', now() - interval '7' day)
 {% endif %}
 
 UNION ALL
@@ -35,5 +35,5 @@ SELECT distinct 'polygon' AS blockchain
 FROM {{ ref('nft_polygon_transfers') }} nft
 {% if is_incremental() %}
 LEFT ANTI JOIN this t ON t.address = nft.contract_address
-WHERE nft.block_time >= date_trunc('day', now() - interval '7 day')
+WHERE nft.block_time >= date_trunc('day', now() - interval '7' day)
 {% endif %}

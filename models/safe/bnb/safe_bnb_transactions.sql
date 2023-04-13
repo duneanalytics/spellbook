@@ -53,5 +53,5 @@ where substring(tr.input, 0, 10) in (
     and tr.block_time > '2021-01-26' -- for initial query optimisation     
     {% endif %}
     {% if is_incremental() %}
-    and tr.block_time > date_add('week', -1, CURRENT_TIMESTAMP(6))
+    and tr.block_time > date_trunc('day', now() - interval '7' day)
     {% endif %}

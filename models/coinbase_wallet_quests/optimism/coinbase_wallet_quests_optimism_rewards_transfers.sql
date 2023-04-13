@@ -34,7 +34,7 @@ WHERE evt_block_time >= cast('{{project_start_date}}' as timestamp) --arbitrary
 {% if is_incremental() %}
 -- for quest addresses we've seen before, pull incremental, else pull everything (controls for if we first see a distributor address later)
 AND 1 = (
-        CASE WHEN evt_block_time >= date_trunc('day', now() - interval '7 day') THEN 1
+        CASE WHEN evt_block_time >= date_trunc('day', now() - interval '7' day) THEN 1
              WHEN distributor_address NOT IN (SELECT distributor_address FROM {{this}} GROUP BY 1) THEN 1--we don't have this loaded in yet.
              ELSE 0
         END

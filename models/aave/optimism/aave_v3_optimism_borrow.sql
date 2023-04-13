@@ -46,7 +46,7 @@ SELECT
     evt_block_number
 FROM {{ source('aave_v3_optimism','Pool_evt_Borrow') }} 
 {% if is_incremental() %}
-    WHERE evt_block_time >= date_trunc('day', now() - interval '7 day')
+    WHERE evt_block_time >= date_trunc('day', now() - interval '7' day)
 {% endif %}
 UNION ALL 
 SELECT 
@@ -64,7 +64,7 @@ SELECT
     evt_block_number
 FROM {{ source('aave_v3_optimism','Pool_evt_Repay') }}
 {% if is_incremental() %}
-    WHERE evt_block_time >= date_trunc('day', now() - interval '7 day')
+    WHERE evt_block_time >= date_trunc('day', now() - interval '7' day)
 {% endif %}
 UNION ALL
 SELECT 
@@ -82,7 +82,7 @@ SELECT
     evt_block_number
 FROM {{ source('aave_v3_optimism','Pool_evt_LiquidationCall') }}
 {% if is_incremental() %}
-    WHERE evt_block_time >= date_trunc('day', now() - interval '7 day')
+    WHERE evt_block_time >= date_trunc('day', now() - interval '7' day)
 {% endif %}
 ) borrow
 LEFT JOIN {{ ref('tokens_optimism_erc20') }} erc20
@@ -93,5 +93,5 @@ LEFT JOIN {{ source('prices','usd') }} p
     AND p.contract_address = borrow.token
     AND p.blockchain = 'optimism'
     {% if is_incremental() %}
-    AND p.minute >= date_trunc('day', now() - interval '7 day')
+    AND p.minute >= date_trunc('day', now() - interval '7' day)
     {% endif %}

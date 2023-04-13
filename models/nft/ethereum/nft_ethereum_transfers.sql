@@ -30,10 +30,10 @@ FROM {{ source('erc721_ethereum','evt_transfer') }} t
 INNER JOIN {{ source('ethereum', 'transactions') }} et ON et.block_number = t.evt_block_number
     AND et.hash = t.evt_tx_hash
     {% if is_incremental() %}
-    AND et.block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
+    AND et.block_time >= date_trunc('day', now() - interval '7' day)
     {% endif %}
 {% if is_incremental() %}
-WHERE t.evt_block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
+WHERE t.evt_block_time >= date_trunc('day', now() - interval '7' day)
 {% endif %}
 
 UNION ALL
@@ -61,10 +61,10 @@ FROM {{ source('erc1155_ethereum','evt_transfersingle') }} t
 INNER JOIN {{ source('ethereum', 'transactions') }} et ON et.block_number = t.evt_block_number
     AND et.hash = t.evt_tx_hash
     {% if is_incremental() %}
-    AND et.block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
+    AND et.block_time >= date_trunc('day', now() - interval '7' day)
     {% endif %}
 {% if is_incremental() %}
-WHERE t.evt_block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
+WHERE t.evt_block_time >= date_trunc('day', now() - interval '7' day)
 {% endif %}
 
 UNION ALL
@@ -93,14 +93,14 @@ FROM (
             ON t.evt_tx_hash = anti_table.tx_hash
     {% endif %}
     {% if is_incremental() %}
-    WHERE t.evt_block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
+    WHERE t.evt_block_time >= date_trunc('day', now() - interval '7' day)
     {% endif %}
     GROUP BY t.evt_block_time, t.evt_block_number, t.evt_tx_hash, t.contract_address, t."from", t.to, t.evt_index, t.values, t.ids
     ) t
 INNER JOIN {{ source('ethereum', 'transactions') }} et ON et.block_number = t.evt_block_number
     AND et.hash = t.evt_tx_hash
     {% if is_incremental() %}
-    AND et.block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
+    AND et.block_time >= date_trunc('day', now() - interval '7' day)
     {% endif %}
 WHERE t.ids_and_count.values > 0
 GROUP BY blockchain, t.evt_block_time, t.evt_block_number, t.evt_tx_hash, t.contract_address, t."from", t.to, et."from", t.evt_index, token_id, amount

@@ -40,7 +40,7 @@ WITH me_txs AS (
     {% endif %}
     {% if is_incremental() %}
     -- this filter will only be applied on an incremental run
-    AND block_date >= date_add('week', -1, CURRENT_TIMESTAMP(6))
+    AND block_date >= date_trunc('day', now() - interval '7' day)
     {% endif %}
 
 )
@@ -154,5 +154,5 @@ LEFT JOIN {{ source('prices', 'usd') }} AS p
   AND p.blockchain is NULL
   AND p.symbol = 'SOL'
   {% if is_incremental() %}
-  AND p.minute >= date_add('week', -1, CURRENT_TIMESTAMP(6))
+  AND p.minute >= date_trunc('day', now() - interval '7' day)
   {% endif %}

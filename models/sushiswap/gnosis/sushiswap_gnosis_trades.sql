@@ -27,7 +27,7 @@ WITH sushiswap_dex AS (
     INNER JOIN {{ source('sushiswap_gnosis', 'UniswapV2Factory_evt_PairCreated') }} f
         ON f.pair = t.contract_address
     {% if is_incremental() %}
-    WHERE t.evt_block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
+    WHERE t.evt_block_time >= date_trunc('day', now() - interval '7' day)
     {% else %}
     WHERE t.evt_block_time >= '{{ project_start_date }}'
     {% endif %}
@@ -70,7 +70,7 @@ INNER JOIN {{ source('gnosis', 'transactions') }} tx
     {% if not is_incremental() %}
     AND tx.block_time >= '{{project_start_date}}'
     {% else %}
-    AND tx.block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
+    AND tx.block_time >= date_trunc('day', now() - interval '7' day)
     {% endif %}
 LEFT JOIN {{ ref('tokens_erc20') }} erc20a
     ON erc20a.contract_address = sushiswap_dex.token_bought_address
@@ -85,7 +85,7 @@ LEFT JOIN {{ source('prices', 'usd') }} p_bought
     {% if not is_incremental() %}
     AND p_bought.minute >= '{{project_start_date}}'
     {% else %}
-    AND p_bought.minute >= date_add('week', -1, CURRENT_TIMESTAMP(6))
+    AND p_bought.minute >= date_trunc('day', now() - interval '7' day)
     {% endif %}
 LEFT JOIN {{ source('prices', 'usd') }} p_sold
     ON p_sold.minute = date_trunc('minute', sushiswap_dex.block_time)
@@ -94,7 +94,7 @@ LEFT JOIN {{ source('prices', 'usd') }} p_sold
     {% if not is_incremental() %}
     AND p_sold.minute >= '{{project_start_date}}'
     {% else %}
-    AND p_sold.minute >= date_add('week', -1, CURRENT_TIMESTAMP(6))
+    AND p_sold.minute >= date_trunc('day', now() - interval '7' day)
     {% endif %}
 ;
     

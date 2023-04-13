@@ -27,7 +27,7 @@ get_daohaus_molochs as (
         WHERE block_time >= '{{moloch_start_date}}'
         {% endif %}
         {% if is_incremental() %}
-        WHERE block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
+        WHERE block_time >= date_trunc('day', now() - interval '7' day)
         {% endif %}
         AND topic1 = '0x099e0b09e056ad33e22e4d35de2e837a30ba249f33d912abb7e1e273bbf9d650'
         AND contract_address = 0x0f50b2f3165db96614fbb6e4262716acc9f9e098
@@ -43,7 +43,7 @@ get_minion_creations as (
         WHERE block_time >= '{{minion_start_date}}'
         {% endif %}
         {% if is_incremental() %}
-        WHERE block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
+        WHERE block_time >= date_trunc('day', now() - interval '7' day)
         {% endif %}
         AND topic1 = '0xbaefe449c0963ab3bd87eb56115a3f8420fbefae45878f063cc59a6cb99d3ae0'
         AND contract_address IN (LOWER(0xA1b97D22e22507498B350A9edeA85c44bA7DBC01), LOWER(0xBD090EF169c0C8589Acb33406C29C20d22bb4a55))

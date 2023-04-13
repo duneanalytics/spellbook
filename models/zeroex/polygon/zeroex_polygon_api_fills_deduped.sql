@@ -24,7 +24,7 @@ AS
     WHERE 1=1
     AND swap_flag = 1
     {% if is_incremental() %}
-    AND block_time >= date_trunc('day', now() - interval '7 day')
+    AND block_time >= date_trunc('day', now() - interval '7' day)
     {% endif %}
     {% if not is_incremental() %}
     AND block_time >= '{{zeroex_v3_start_date}}'

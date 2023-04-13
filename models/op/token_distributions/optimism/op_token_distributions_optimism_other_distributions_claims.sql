@@ -70,7 +70,7 @@ FROM (
                 AND tf.contract_address = r.reward
                 AND value = amount
                 {% if is_incremental() %} 
-                and tf.evt_block_time >= date_trunc('day', now() - interval '7 day')
+                and tf.evt_block_time >= date_trunc('day', now() - interval '7' day)
                 {% else %}
                 and tf.evt_block_time >= cast('{{op_token_launch_date}}' as date)
                 {% endif %}
@@ -84,7 +84,7 @@ FROM (
                 AND tx.block_number = tf.evt_block_number
                 AND lbl_to.label IS NULL -- don't try if we have a label on the to transfer
                 {% if is_incremental() %} 
-                AND tx.block_time >= date_trunc('day', now() - interval '7 day')
+                AND tx.block_time >= date_trunc('day', now() - interval '7' day)
                 {% else %}
                 AND tx.block_time >= cast('{{op_token_launch_date}}' as date)
                 {% endif %}
@@ -94,7 +94,7 @@ FROM (
         and cast(amount as double)/cast(1e18 as double) > 0
         AND lbl_from.label = '{{foundation_label}}'
         {% if is_incremental() %} 
-        and r.evt_block_time >= date_trunc('day', now() - interval '7 day')
+        and r.evt_block_time >= date_trunc('day', now() - interval '7' day)
         {% endif %}
 
     ) a

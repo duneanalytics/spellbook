@@ -30,7 +30,7 @@ from
                 , evt_tx_hash 
         from {{ source('cryptopunks_ethereum','CryptoPunksMarket_evt_PunkBidEntered') }}
         {% if is_incremental() %}
-        where evt_block_time >= date_trunc('day', now() - interval '7 day')
+        where evt_block_time >= date_trunc('day', now() - interval '7' day)
         {% endif %}
 
         union all 
@@ -46,13 +46,13 @@ from
                 , evt_tx_hash 
         from {{ source('cryptopunks_ethereum','CryptoPunksMarket_evt_PunkBidWithdrawn') }}
         {% if is_incremental() %}
-        where evt_block_time >= date_trunc('day', now() - interval '7 day')
+        where evt_block_time >= date_trunc('day', now() - interval '7' day)
         {% endif %}
 ) a 
 left join {{ source('prices', 'usd') }} p on p.minute = date_trunc('minute', a.evt_block_time)
         and p.contract_address = 0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2
         and p.blockchain = 'ethereum'
         {% if is_incremental() %}
-        and p.minute >= date_trunc('day', now() - interval '7 day')
+        and p.minute >= date_trunc('day', now() - interval '7' day)
         {% endif %}
 ;

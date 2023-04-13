@@ -21,7 +21,7 @@ all_syndicate_daos as (
         WHERE evt_block_time >= '{{project_start_date}}'
         {% endif %}
         {% if is_incremental() %}
-        WHERE evt_block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
+        WHERE evt_block_time >= date_trunc('day', now() - interval '7' day)
         {% endif %}
         
         UNION ALL 
@@ -34,7 +34,7 @@ all_syndicate_daos as (
         WHERE evt_block_time >= '{{project_start_date}}'
         {% endif %}
         {% if is_incremental() %}
-        WHERE evt_block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
+        WHERE evt_block_time >= date_trunc('day', now() - interval '7' day)
         {% endif %}
         
         UNION ALL 
@@ -47,7 +47,7 @@ all_syndicate_daos as (
         WHERE evt_block_time >= '{{project_start_date}}'
         {% endif %}
         {% if is_incremental() %}
-        WHERE evt_block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
+        WHERE evt_block_time >= date_trunc('day', now() - interval '7' day)
         {% endif %}
 ),
 
@@ -62,7 +62,7 @@ ownership_transferred as ( -- whenever an investment club is created, the owners
         WHERE block_time >= '{{project_start_date}}'
         {% endif %}
         {% if is_incremental() %}
-        WHERE block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
+        WHERE block_time >= date_trunc('day', now() - interval '7' day)
         {% endif %}
         AND topic1 = '0x8be0079c531659141344cd1fd0a4f28419497f9722a3daafe3b4186f6b6457e0' -- ownership transferred event 
         AND contract_address IN (SELECT dao FROM all_syndicate_daos)

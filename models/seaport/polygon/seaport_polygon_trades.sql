@@ -24,7 +24,7 @@ with source_polygon_transactions as (
     where block_time >= date '{{c_seaport_first_date}}'  -- seaport first txn
     {% endif %}
     {% if is_incremental() %}
-    where block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
+    where block_time >= date_trunc('day', now() - interval '7' day)
     {% endif %}
 )
 ,ref_seaport_polygon_base_pairs as (
@@ -32,7 +32,7 @@ with source_polygon_transactions as (
       from {{ ref('seaport_polygon_base_pairs') }}
       where 1=1
       {% if is_incremental() %}
-            and block_time >= date_add('week', -1, CURRENT_TIMESTAMP(6))
+            and block_time >= date_trunc('day', now() - interval '7' day)
       {% endif %}
 )
 ,ref_tokens_nft as (
@@ -58,7 +58,7 @@ with source_polygon_transactions as (
       and minute >= date '{{c_seaport_first_date}}'  -- seaport first txn
     {% endif %}
     {% if is_incremental() %}
-      and minute >= date_add('week', -1, CURRENT_TIMESTAMP(6))
+      and minute >= date_trunc('day', now() - interval '7' day)
     {% endif %}
 )
 ,iv_base_pairs_priv as (
