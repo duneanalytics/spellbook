@@ -11,6 +11,8 @@
 -- single category labels (no subsets), needs label_type and model_name added still.
 SELECT blockchain, address, name, category, contributor, source, created_at, updated_at, model_name, label_type FROM {{ ref('labels_aztec_v2_contracts_ethereum') }}
 UNION ALL
+SELECT * FROM {{ ref('labels_balancer_v1_pools') }}
+UNION ALL
 SELECT * FROM {{ ref('labels_balancer_v2_pools') }}
 UNION ALL
 SELECT * FROM {{ ref('labels_cex') }}
@@ -27,11 +29,16 @@ SELECT * FROM {{ ref('labels_safe_ethereum') }}
 UNION ALL
 SELECT * FROM {{ ref('labels_tornado_cash') }}
 UNION ALL
+SELECT * FROM {{ ref('labels_likely_bot_labels') }}
+UNION ALL
 SELECT * FROM {{ ref('labels_quest_participants') }}
 UNION ALL
 SELECT * FROM {{ ref('labels_cex_users') }}
+UNION ALL
+SELECT * FROM {{ ref('labels_op_retropgf') }}
 
 -- new/standardized labels
+
 UNION ALL
 SELECT * FROM {{ ref('labels_bridges') }}
 UNION ALL

@@ -110,7 +110,7 @@ models:
       blockchain: bitcoin
       sector: labels
       project: cex
-      contributors: hildobby
+      contributors: hildobby, ilemi
     config:
       tags: ['labels', 'bitcoin', 'cex']
     description: "Known centralised exchange addresses on Bitcoin"

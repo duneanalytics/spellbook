@@ -541,9 +541,9 @@ models:
         description: "Approved"
       - name: tx_hash
         description: "Transaction hash"
-      - name: tx_from
-        description: "Address that initiated the transaction"
-      - name: tx_to
-        description: "Address that the transaction points to"
+      # - name: tx_from
+      #   description: "Address that initiated the transaction"
+      # - name: tx_to
+      #   description: "Address that the transaction points to"
       - name: evt_index
         description: "Event index"

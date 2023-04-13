@@ -45,6 +45,15 @@ FROM (values
     ,('0xA7EEb1b719ef7b40F79D2056900ee3Ca904F28F9', 'DefiEdge', 'Uniswap Grants')
     ,('0xfda462548ce04282f4b6d6619823a7c64fdc0185', 'Angle', 'Contract Deplopyer')
     ,('0x20f3880A281092dBC6699E5D5a0FF5FEB3D3db1A', 'Celer','Intermediate')
+    ,('0x4f09b919d969b58a96e8bd7673f12372d09395e8', 'Velodrome','Intermediate Disperser')
+    ,('0xeC93157084dcE64F7E4c0F0EDF383114b5C805aA', 'Via Protocol', 'Multisig')
+    ,('0x649c2DFCA22a41D30F0ddEFEA53C4D5f4797051a', 'Clique', 'Team Multisig')
+    ,('0xCF9560305B23630f402965126D909Bf9786F1553', 'Rubicon', 'Multisig')
+    ,('0x85cbb0E8262815b4866b166C02f7eF876A49D8f6', 'Biconomy', 'Biconomy - Binance Depoist')
+    ,('0xeeab81526c9addb75ffffde0cd3f6f018cc39ac2', 'Synthetix','Multisig - Distributor')
+    ,('0x8314125c8b68af2afd0d151eb4a551e88128a2ae', 'Thales', 'Contract Deployer')
+    ,('0x5033823f27c5f977707b58f0351adcd732c955dd', 'Lido',     'Intermediate Wallet')
+
     --quix - should come from CB
     ,('0x5Ad4A019F77e82940f6Dd15A5215362AF061A742','Quix','Distributor')
     
@@ -71,7 +80,6 @@ SELECT LOWER(address) AS address, cast(proposal_name as varchar(100)) AS proposa
 FROM (values
      ('0xeA1e11E3D448F31C565d685115899A11Fd98E40E','1inch','Distributor')
     ,('0xc9e53bb96a8923051326b189bbf93ee9ed87888b','WePiggy','LockDrop')
-    ,('0x4f09b919d969b58a96e8bd7673f12372d09395e8','Velodrome','Distributor')
     ,('0x1470c87e2db5247a36c60de3d65d7c972c62ea0f','PoolTogether','Distributor')
     ,('0xf07108249edd2f59abd1d091a0778d58ecedbc49','Pika Protocol','Distributor')
     ,('0x6b473a82c4199dfaa4c31e69f07fc6f5eb73188e','Velodrome','Distributor')
@@ -113,6 +121,7 @@ FROM (values
     ,('0xe039f8102319af854fe11489a19d6b5d2799ada7','Pickle Finance','Distributor')
     ,('0x86690b9Dbb979850AE4622347aF81232bAa3C967','Revert Finance','Distributor')
     ,('0x35bA8C41CeEEA24F7c826015844F2b58aF3058a6','Revert Finance','Distributor')
+    ,('0x167829543510c13c792BD8F6a414f74D51E3A6d4','Revert Finance','Distributor')
     -- ,('0x40a58B5B735Ba6596d04c88E7b262f6E79100EBb','Angle','Distributor-velo bribe') --bribe used by multiple parties
     ,('0x0Cb199aF5F402506963A4df08B11053687e09802', 'Polynomial Protocol','Distributor')
     ,('0x7432A3A1545B2764367dA16a207A16475D4221bD', 'WePiggy','Distributor')
@@ -133,8 +142,8 @@ FROM (values
     ,('0x68a1d9a49b82c5A0a3431aAE6178F89Ad5214730','Synthetix','ETH/sETH: Velodrome')
     ,('0x1A3E5557039763425B00a2e1B0eB767B01d64756','Beefy Finance','Beefy Launchpool')
     ,('0x65F8a09A1C3581a02C8788a6959652E32a87FC77','Beefy Finance','Beefy Launchpool')
-    ,('0xda62d109064138c14d45085b6e49568e1c0b4e23','xToken Terminal / Gamma Strategies','Rewards Program')
     ,('0xf099FA1Bd92f8AAF4886e8927D7bd3c15bA0BbFd','xToken Terminal / Gamma Strategies','Rewarder')
+    ,('0x320a04B981c092884a9783cdE907578F613EF773', 'Sushi', 'ComplexRewarderTime')
 
     ,('0xAde63D643564AaA8C2A86F2244f43B5eB00ed5e6','Clipper','Distributor')
     ,('0x9024d0C5d4709b98856CDaE02B955890A69f8007','Kwenta','Distributor')
@@ -154,15 +163,30 @@ FROM (values
     ,('0x8b50d942bb4effe0db32393a141ea083db0c4e7f', 'Alchemix', 'alETH/WETH: Velodrome')
     ,('0x4ea2e39626de031a011c3ca7360878202454ce75', 'Angle', 'OP/agEUR: Velodrome')
     ,('0x6333000289bc27a090b3d51e734c2f13e3edc4fd', 'Hundred Finance', 'Token Treasury')
+    ,('0x86c90fc464A668469A93Ca08D8B9872bdB16b356', 'Mux', 'TradingRebateDistributor')
+    ,('0xBd1ba78A3976cAB420A9203E6ef14D18C2B2E031', 'Exactly', 'Distributor Multisig')
+        --Parnter Uniswap LM Program
+    ,('0xAfBB6c1a235e105e568CCD4FD915dfFF76C415E1', 'Gamma', 'Partner Fund')
+    ,('0x93dcd773eb0301bd555fc5b0bd7bb5ca5f22fce5', 'Arrakis Finance', 'Partner Fund')
+    ,('0x4b5ed41488d3addcb1fb942d40d2fa99f90f48d5', 'Arrakis Finance', 'Partner Fund')
+    ,('0xe140e5def72fde807890d89ee4f987d316c25196', 'Arrakis Finance', 'Partner Fund')
+    ,('0xe49d19c155a8658f5744ed336f18b7c086979c34', 'Arrakis Finance', 'Partner Fund')
+    ,('0xdf50c6111f45132a1db5ec48bdcd1e8e6c7ce65d', 'Arrakis Finance', 'Partner Fund')
+    ,('0x62bdb9544a14dcd8804f7f2cc1479c82fb36c2a6', 'Arrakis Finance', 'Partner Fund')
+    ,('0x1b6a53991f257ac9dd1d0c061c37e1be36e0a8e6', 'Arrakis Finance', 'Partner Fund')
+    ,('0x87c7c885365700d157cd0f39a7803320fe86f0f5', 'Arrakis Finance', 'Partner Fund')
+    ,('0x57a2b0b2bb1e21fcb2df358fc832ae3f9f535b48', 'Arrakis Finance', 'Partner Fund')
+    ,('0x310b18daa9d351062c6d2ec0f0411d327206b4c3', 'Arrakis Finance', 'Partner Fund')
+    ,('0xd3a3fbae792c4ed0aa909ec032d3f14c999b2402', 'Arrakis Finance', 'Partner Fund')
     
-    ,('0xeeab81526c9addb75ffffde0cd3f6f018cc39ac2','Synthetix','Multisig - Distributor')
     ,('0x09992dd7b32f7b35d347de9bdaf1919a57d38e82','Synthetix','SNX Bridge: Hop')
-
     ,('0xf42279467D821bCDf40b50E9A5d2cACCc4Cf5b30','Quests on Coinbase Wallet','Quest 1 - DEX')
     ,('0x9F4F2B8BdA8D2d3832021b3119747470ea86A183','Quests on Coinbase Wallet','Quest 2 - Delegation')
-
     --governance delegation
     ,('0x6a1e22c82be29eb96850158011b40fafbce1340c','Synthetix','SNXAmbassadors delegation')
+
+    --grants deployed
+    ,('0xC98786D5A7a03C1e74AffCb97fF7eF8a710DA09B', 'Karma', 'Karma - Grant')
     
     
     ) a (address, proposal_name, address_descriptor)
@@ -172,8 +196,15 @@ FROM (values
 )
 
 SELECT
-        fin.address, fin.label, fin.proposal_name, fin.address_descriptor,
-        COALESCE(pnm.project_name, fin.proposal_name) AS project_name
+        fin.address
+        -- handle for addresses that are used in multiple proposals (i.e. Season 1 and Season 3)
+        -- Here, we unify all labels together. In the future we may try to segment each proposal out
+        , concat_ws(',', ARRAY_AGG(DISTINCT fin.label) ) AS label
+        , concat_ws(',', ARRAY_AGG(DISTINCT fin.proposal_name) ) AS proposal_name
+        , concat_ws(',', ARRAY_AGG(DISTINCT fin.address_descriptor) ) address_descriptor
+        , concat_ws(',', ARRAY_AGG(DISTINCT 
+                COALESCE(pnm.project_name, fin.proposal_name) )
+         ) AS project_name
 FROM (
         SELECT address, label, proposal_name, address_descriptor, ROW_NUMBER() OVER(PARTITION BY address ORDER BY rnk ASC) AS choice_rank 
                 FROM (
@@ -195,4 +226,6 @@ FROM (
 LEFT JOIN {{ ref('op_token_distributions_optimism_project_name_mapping') }} pnm 
         ON pnm.proposal_name = fin.proposal_name
 
-WHERE choice_rank = 1 --remove dupes in preferred order
+GROUP BY fin.address
+
+-- WHERE choice_rank = 1 --old version: if we want to remove dupes in preferred order

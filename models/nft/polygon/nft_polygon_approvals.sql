@@ -2,8 +2,8 @@
         alias ='approvals',
         partition_by='block_date',
         materialized='incremental',
+        incremental_strategy='merge',
         file_format = 'delta',
-        incremental_strategy='append',
         unique_key = ['blockchain', 'block_number','tx_hash','evt_index']
 )
 }}

@@ -24,12 +24,14 @@ FROM (VALUES
     -- Binance, source: https://raw.githubusercontent.com/js-kingdata/indicators_factory/fefe53bca88ecf331a71fc59e34aab319f3415c5/crawlers/address_tags/cex/binance_address.txt
     , ('bitcoin', '', 'Coinbase', 'Coinbase 12', 'hildobby', timestamp('2023-04-06'))
     -- Binance, source: https://raw.githubusercontent.com/js-kingdata/indicators_factory/fefe53bca88ecf331a71fc59e34aab319f3415c5/crawlers/address_tags/cex/binance_address.txt
-    , ('bitcoin', '34xp4vRoCGJym3xR7yCVPFHoCNxv4Twseo', 'Binance', 'Binance 1', 'hildobby', timestamp('2023-04-06'))
-    , ('bitcoin', '3LYJfcfHPXYJreMsASk2jkn69LWEYKzexb', 'Binance', 'Binance 2', 'hildobby', timestamp('2023-04-06'))
-    , ('bitcoin', '3M219KR5vEneNb47ewrPfWyb5jQ2DjxRP6', 'Binance', 'Binance 3', 'hildobby', timestamp('2023-04-06'))
-    , ('bitcoin', '3JJmF63ifcamPLiAmLgG96RA599yNtY3EQ', 'Binance', 'Binance 4', 'hildobby', timestamp('2023-04-06'))
-    , ('bitcoin', '3HdGoUTbcztBnS7UzY4vSPYhwr424CiWAA', 'Binance', 'Binance 5', 'hildobby', timestamp('2023-04-06'))
-    , ('bitcoin', 'bc1qm34lsc65zpw79lxes69zkqmk6ee3ewf0j77s3h', 'Binance', 'Binance 6', 'hildobby', timestamp('2023-04-06'))
+    , ('bitcoin', '34xp4vRoCGJym3xR7yCVPFHoCNxv4Twseo', 'Binance', 'Binance 1', 'ilemi', timestamp('2023-03-28'))
+    , ('bitcoin', '38ztxG7GL1LEEbC9gKpqEKEh7WZ3KDTLMi', 'Binance', 'Binance 2', 'ilemi', timestamp('2023-03-28'))
+    , ('bitcoin', '399QCnqVzAt4HGU1SV7PfVPYovb1BX3u9Y', 'Binance', 'Binance 3', 'ilemi', timestamp('2023-03-28'))
+    , ('bitcoin', '3HdGoUTbcztBnS7UzY4vSPYhwr424CiWAA', 'Binance', 'Binance 4', 'ilemi', timestamp('2023-03-28'))
+    , ('bitcoin', '3LYJfcfHPXYJreMsASk2jkn69LWEYKzexb', 'Binance', 'Binance 5', 'hildobby', timestamp('2023-04-06'))
+    , ('bitcoin', '3M219KR5vEneNb47ewrPfWyb5jQ2DjxRP6', 'Binance', 'Binance 6', 'hildobby', timestamp('2023-04-06'))
+    , ('bitcoin', '3JJmF63ifcamPLiAmLgG96RA599yNtY3EQ', 'Binance', 'Binance 7', 'hildobby', timestamp('2023-04-06'))
+    , ('bitcoin', 'bc1qm34lsc65zpw79lxes69zkqmk6ee3ewf0j77s3h', 'Binance', 'Binance 8', 'hildobby', timestamp('2023-04-06'))
     -- Binance, source: https://github.com/jacobgreen4477/btc_img_realtime_prediction/blob/2966dc59630b15f70e3cdb90366c67afb9a6a3db/data/btc_known_addr_list.csv
     , ('bitcoin', '37tRFZw7n94Jddq6TfVs3MbCXmDX6eMfeY', 'Binance', 'Binance 7', 'hildobby', timestamp('2023-04-06'))
     , ('bitcoin', '3JurbUwpsAPqvUkwLM5CtwnEWrNnUKJNoD', 'Binance', 'Binance 8', 'hildobby', timestamp('2023-04-06'))
