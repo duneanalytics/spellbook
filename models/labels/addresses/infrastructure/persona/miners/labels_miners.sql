@@ -12,7 +12,7 @@ SELECT DISTINCT 'ethereum' as blockchain,
        'soispoke' as contributor,
        'query' AS source,
        date('2022-09-28') as created_at,
-       now() as modified_at,
+       now() as updated_at,
        'miners' AS model_name,
        'persona' as label_type
 FROM {{ source('ethereum','blocks') }} 
@@ -24,7 +24,7 @@ SELECT DISTINCT 'gnosis' as blockchain,
        'soispoke' as contributor,
        'query' AS source,
        date('2022-09-28') as created_at,
-       now() as modified_at,
+       now() as updated_at,
        'miners' AS model_name,
        'persona' as label_type
 FROM {{ source('gnosis','blocks') }} 
@@ -36,7 +36,7 @@ SELECT DISTINCT 'avalanche_c' as blockchain,
        'soispoke' as contributor,
        'query' AS source,
        date('2022-09-28') as created_at,
-       now() as modified_at,
+       now() as updated_at,
        'miners' AS model_name,
        'persona' as label_type
 FROM {{ source('avalanche_c','blocks') }} 
@@ -48,7 +48,7 @@ SELECT DISTINCT 'arbitrum' as blockchain,
        'soispoke' as contributor,
        'query' AS source,
        date('2022-09-28') as created_at,
-       now() as modified_at,
+       now() as updated_at,
        'miners' AS model_name,
        'persona' as label_type
 FROM {{ source('arbitrum','blocks') }} 
@@ -60,7 +60,7 @@ SELECT DISTINCT 'bnb' as blockchain,
        'soispoke' as contributor,
        'query' AS source,
        date('2022-09-28') as created_at,
-       now() as modified_at,
+       now() as updated_at,
         'miners' AS model_name,
        'persona' as label_type
 FROM {{ source('bnb','blocks') }} 
@@ -72,7 +72,7 @@ SELECT DISTINCT 'optimism' as blockchain,
        'soispoke' as contributor,
        'query' AS source,
        date('2022-09-28') as created_at,
-       now() as modified_at,
+       now() as updated_at,
         'miners' AS model_name,
        'persona' as label_type
 FROM {{ source('optimism','blocks') }} 
@@ -84,7 +84,7 @@ SELECT DISTINCT 'fantom' as blockchain,
        'soispoke' as contributor,
        'query' AS source,
        date('2023-01-25') as created_at,
-       now() as modified_at,
+       now() as updated_at,
         'miners' AS model_name,
        'persona' as label_type
 FROM {{ source('fantom','blocks') }} 
@@ -96,7 +96,7 @@ SELECT DISTINCT 'polygon' as blockchain,
        'soispoke' as contributor,
        'query' AS source,
        date('2023-01-25') as created_at,
-       now() as modified_at,
-        'miners' AS model_name,
+       now() as updated_at,
+       'miners' AS model_name,
        'persona' as label_type
 FROM {{ source('polygon','blocks') }} 
