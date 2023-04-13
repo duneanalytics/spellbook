@@ -28,10 +28,10 @@ WITH deposit_events AS (
     , ROW_NUMBER() OVER (PARTITION BY d.evt_block_number, d.evt_tx_hash, d.amount ORDER BY d.evt_block_number) AS table_merging_deposits_id
     FROM {{ source('eth2_ethereum', 'DepositContract_evt_DepositEvent') }} d
     {% if not is_incremental() %}
-    AND d.evt_block_time >= '2020-10-14'
+    WHERE d.evt_block_time >= '2020-10-14'
     {% endif %}
     {% if is_incremental() %}
-    AND d.evt_block_time >= date_trunc("day", now() - interval '1 week')
+    WHERE d.evt_block_time >= date_trunc("day", now() - interval '1 week')
     {% endif %}
     )
     
