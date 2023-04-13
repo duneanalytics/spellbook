@@ -5,7 +5,6 @@
                                     \'["msilb7"]\') }}')}}
 
 
-
 SELECT *,
 CASE WHEN token_type IN ('underlying') THEN 1
 ELSE 0 --double counted (breakdown, receipt) or no price

@@ -5,7 +5,7 @@
         file_format = 'delta',
         incremental_strategy = 'merge',
         unique_key = ['unique_trade_id', 'blockchain'],
-        post_hook='{{ expose_spells_hide_trino(\'["ethereum","solana","bnb"]\',
+        post_hook='{{ expose_spells(\'["ethereum","solana","bnb"]\',
                                     "sector",
                                     "nft",
                                     \'["soispoke","0xRob"]\') }}')
