@@ -156,7 +156,7 @@ SELECT t.blockchain
 , agg.name AS aggregator_name
 , agg.contract_address aggregator_address
 , t.tx_hash
-, et.from AS tx_from
+, et."from" AS tx_from
 , et.to AS tx_to
 , CAST(t.platform_fee_amount_raw AS DOUBLE) AS platform_fee_amount_raw
 , t.platform_fee_amount
@@ -183,7 +183,7 @@ LEFT JOIN {{ source('foundation_ethereum','market_evt_SellerReferralPaid') }} se
 LEFT JOIN {{ source('erc721_ethereum','evt_transfer') }} nft_t ON nft_t.evt_block_time=t.block_time
     AND nft_t.evt_tx_hash=t.tx_hash
     AND nft_t.tokenId=t.token_id
-    AND nft_t.from=t.seller
+    AND nft_t."from"=t.seller
     AND nft_t.to=t.buyer
     AND nft_t.contract_address = t.nft_contract_address
     {% if is_incremental() %}
@@ -207,7 +207,7 @@ LEFT JOIN {{ source('prices', 'usd') }} pu ON pu.minute=date_trunc('minute', t.b
     {% endif %}
 LEFT JOIN {{ source('ethereum','traces') }} ett ON ett.block_time=t.block_time
     AND ett.tx_hash=t.tx_hash
-    AND ett.from = t.project_contract_address
+    AND ett."from" = t.project_contract_address
     AND cast(ett.value as string) = cast(t.royalty_fee_amount_raw as string)
     AND call_type = 'call'
     AND ett.to!= t.project_contract_address

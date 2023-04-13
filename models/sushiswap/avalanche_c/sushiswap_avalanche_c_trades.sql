@@ -56,11 +56,11 @@ SELECT
         )                                                              AS amount_usd,
     sushiswap_dex.token_bought_address,
     sushiswap_dex.token_sold_address,
-    coalesce(sushiswap_dex.taker, tx.from)                             AS taker,
+    coalesce(sushiswap_dex.taker, tx."from")                             AS taker,
     sushiswap_dex.maker,
     sushiswap_dex.project_contract_address,
     sushiswap_dex.tx_hash,
-    tx.from                                                            AS tx_from,
+    tx."from"                                                            AS tx_from,
     tx.to                                                              AS tx_to,
     sushiswap_dex.trace_address,
     sushiswap_dex.evt_index

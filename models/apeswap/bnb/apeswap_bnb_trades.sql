@@ -60,11 +60,11 @@ SELECT 'bnb'                                                            AS block
            )                                                            AS amount_usd,
        apeswap_dex.token_bought_address,
        apeswap_dex.token_sold_address,
-       coalesce(apeswap_dex.taker, tx.from)                             AS taker,
+       coalesce(apeswap_dex.taker, tx."from")                             AS taker,
        apeswap_dex.maker,
        apeswap_dex.project_contract_address,
        apeswap_dex.tx_hash,
-       tx.from                                                          AS tx_from,
+       tx."from"                                                          AS tx_from,
        tx.to                                                            AS tx_to,
        apeswap_dex.trace_address,
        apeswap_dex.evt_index

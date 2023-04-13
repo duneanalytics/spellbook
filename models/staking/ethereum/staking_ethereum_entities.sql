@@ -118,10 +118,10 @@ FROM
     , 'CEX' AS category
     FROM (
             SELECT
-                et.from AS address
+                et."from" AS address
                 , et.block_time
             FROM {{ source('ethereum', 'traces') }} et
-            INNER JOIN {{ source('ethereum', 'traces') }} et2 ON et2.from=et.from
+            INNER JOIN {{ source('ethereum', 'traces') }} et2 ON et2."from"=et."from"
                 AND et2.to IN (SELECT address FROM {{ ref('addresses_ethereum_cex') }} WHERE cex_name = 'Coinbase')
                 {% if not is_incremental() %}
                 AND et2.block_time >= '2020-10-14'
@@ -137,7 +137,7 @@ FROM
                 {% if is_incremental() %}
                 AND et.block_time >= date_trunc("day", now() - interval '1 week')
                 {% endif %}
-            GROUP BY et.from, et.block_time
+            GROUP BY et."from", et.block_time
         ) coinbase
     GROUP BY coinbase.address
 
@@ -165,7 +165,7 @@ FROM
         GROUP BY to
     ) binance
     INNER JOIN {{ source('ethereum', 'traces') }} t
-        ON binance.address=t.from
+        ON binance.address=t."from"
         AND t.to=0x00000000219ab540356cbb839cbe05303d7705fa
         {% if not is_incremental() %}
         AND t.block_time >= '2020-10-14'
@@ -182,7 +182,7 @@ FROM
     , entity || ' ' || ROW_NUMBER() OVER (PARTITION BY entity ORDER BY first_used) AS entity_unique_name
     , category AS category
     FROM (
-        SELECT traces.from AS address
+        SELECT traces."from" AS address
         , c.entity
         , c.category
         , MIN(txs.block_time) AS first_used

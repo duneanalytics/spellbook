@@ -13,7 +13,7 @@
 }}
 with eth_transfers as (
     select 
-        r.from
+        r."from"
         ,r.to
         --Using the ETH placeholder address to match with prices tables
         ,lower(0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee) as contract_address

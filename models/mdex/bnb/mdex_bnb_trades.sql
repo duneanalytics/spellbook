@@ -61,11 +61,11 @@ SELECT
         )                                                         AS amount_usd,
     mdex_dex.token_bought_address,
     mdex_dex.token_sold_address,
-    coalesce(mdex_dex.taker, tx.from)                             AS taker,
+    coalesce(mdex_dex.taker, tx."from")                             AS taker,
     mdex_dex.maker,
     mdex_dex.project_contract_address,
     mdex_dex.tx_hash,
-    tx.from                                                       AS tx_from,
+    tx."from"                                                       AS tx_from,
     tx.to                                                         AS tx_to,
     mdex_dex.trace_address,
     mdex_dex.evt_index

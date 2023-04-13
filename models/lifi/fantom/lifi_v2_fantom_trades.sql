@@ -76,11 +76,11 @@ SELECT
     ) AS amount_usd,
     dexs.token_bought_address,
     dexs.token_sold_address,
-    tx.from AS taker, -- no taker in swap event
+    tx."from" AS taker, -- no taker in swap event
     dexs.maker,
     dexs.project_contract_address,
     dexs.tx_hash,
-    tx.from AS tx_from,
+    tx."from" AS tx_from,
     tx.to AS tx_to,
     dexs.trace_address,
     dexs.evt_index

@@ -111,7 +111,7 @@ SELECT 'avalanche_c'                    as blockchain,
        pe.volume_raw,
        pe.tx_hash,
        txns.to                          as tx_to,
-       txns.from                        as tx_from,
+       txns."from"                        as tx_from,
        pe.evt_index
 FROM 
 perp_events pe 

@@ -61,7 +61,7 @@ with cryptopunks_bids_and_sales as (
             , a.punk_id 
             , max(c.bid_amount) as sale_price -- max bid from buyer pre-sale 
             , b.to as to_address -- for bids accepted, look up who the seller transferred to in the same block with 1 offset index 
-            , a.from_address 
+            , a."from"_address
             , a.evt_block_number 
             , a.evt_index
             , a.evt_block_time
@@ -69,7 +69,7 @@ with cryptopunks_bids_and_sales as (
     from cryptopunks_bids_and_sales a 
     
     join {{ source('cryptopunks_ethereum','CryptoPunksMarket_evt_Transfer') }} b
-    on a.from_address = b.from and a.evt_block_number = b.evt_block_number and a.evt_index = (b.evt_index+1)
+    on a."from"_address = b."from" and a.evt_block_number = b.evt_block_number and a.evt_index = (b.evt_index+1)
     
     left outer join cryptopunks_bids_and_sales c
     on a.punk_id = c.punk_id and c.event_type = "PunkBidEntered" and c.punk_id_event_number < a.punk_id_event_number and c.bid_from_address = b.to
@@ -84,7 +84,7 @@ with cryptopunks_bids_and_sales as (
             , case when a.toAddress = 0x83c8f28c26bf6aaca652df1dbbe0e1b56f8baba2 -- gem 
                 then b.to
                 else a.toAddress end as to_address
-            , a.fromAddress as from_address 
+            , a."from"Address as from_address
             , a.evt_block_number 
             , a.evt_index
             , a.evt_block_time
@@ -92,8 +92,8 @@ with cryptopunks_bids_and_sales as (
     from {{ source('cryptopunks_ethereum','CryptoPunksMarket_evt_PunkBought') }} a
     left outer join {{ source('cryptopunks_ethereum','CryptoPunksMarket_evt_PunkTransfer') }} b
     on a.punkIndex = b.punkIndex
-        and a.toAddress = b.from 
-        and b.from = 0x83c8f28c26bf6aaca652df1dbbe0e1b56f8baba2
+        and a.toAddress = b."from"
+        and b."from" = 0x83c8f28c26bf6aaca652df1dbbe0e1b56f8baba2
         and a.evt_tx_hash = b.evt_tx_hash
 
     where a.value != 0 or a.toAddress != 0x0000000000000000000000000000000000000000 -- only include sales here 
@@ -125,7 +125,7 @@ select  "ethereum" as blockchain
         , a.evt_block_number as block_number
         , a.evt_index as evt_index
         , a.evt_tx_hash as tx_hash
-        , tx.from as tx_from
+        , tx."from" as tx_from
         , tx.to as tx_to
         , cast(0 as double) as platform_fee_amount_raw
         , cast(0 as double) as platform_fee_amount
@@ -137,7 +137,7 @@ select  "ethereum" as blockchain
         , cast(0 as double) as royalty_fee_percentage
         , '' as royalty_fee_receive_address
         , '' as royalty_fee_currency_symbol
-        , "cryptopunks" || '-' || a.evt_tx_hash || '-' || a.punk_id || '-' ||  a.from_address || '-' || a.evt_index || '-' || "" as unique_trade_id
+        , "cryptopunks" || '-' || a.evt_tx_hash || '-' || a.punk_id || '-' ||  a."from"_address || '-' || a.evt_index || '-' || "" as unique_trade_id
 from
 (   select * from bid_sales 
     union all 

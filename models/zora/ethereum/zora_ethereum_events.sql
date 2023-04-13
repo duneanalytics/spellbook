@@ -290,7 +290,7 @@ WITH zora_trades AS (
     , z1_bf.evt_block_number AS block_number
     , z1_bf.tokenId AS token_id
     , 'Buy' AS trade_category
-    , z1_mt.from AS seller
+    , z1_mt."from" AS seller
     , get_json_object(z1_bf.bid, '$.recipient') AS buyer
     , get_json_object(z1_bf.bid, '$.amount') AS amount_raw
     , get_json_object(z1_bf.bid, '$.currency') AS currency_contract
@@ -338,7 +338,7 @@ SELECT 'ethereum' AS blockchain
     , agg.name AS aggregator_name
     , agg.contract_address AS aggregator_address
     , zt.tx_hash
-    , et.from AS tx_from
+    , et."from" AS tx_from
     , et.to AS tx_to
     , CAST(0 AS DOUBLE) AS platform_fee_amount_raw
     , CAST(0 AS DOUBLE) AS platform_fee_amount
@@ -380,4 +380,4 @@ LEFT JOIN {{ source('prices','usd') }} pu ON pu.blockchain='ethereum'
     {% endif %}
 LEFT JOIN {{ ref('tokens_nft') }}  nft ON nft.blockchain='ethereum'
     AND nft.contract_address=zt.nft_contract_address
-GROUP BY zt.version, zt.block_time, zt.block_number, zt.token_id, nft.name, pu.price, erc721.evt_index, agg.name, zt.trade_category, zt.seller, zt.buyer, zt.amount_raw, pu.decimals, pu.symbol, zt.currency_contract, zt.nft_contract_address, zt.project_contract_address, agg.name, agg.contract_address, zt.tx_hash, et.from, et.to
+GROUP BY zt.version, zt.block_time, zt.block_number, zt.token_id, nft.name, pu.price, erc721.evt_index, agg.name, zt.trade_category, zt.seller, zt.buyer, zt.amount_raw, pu.decimals, pu.symbol, zt.currency_contract, zt.nft_contract_address, zt.project_contract_address, agg.name, agg.contract_address, zt.tx_hash, et."from", et.to

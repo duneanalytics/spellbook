@@ -195,7 +195,7 @@ with p1_call as (
           ,coalesce(agg_m.aggregator_name, agg.name) as aggregator_name
           ,agg.contract_address as aggregator_address
           ,a.tx_hash
-          ,tx.from as tx_from
+          ,tx."from" as tx_from
           ,tx.to as tx_to
           ,ROUND((2.5*(a.original_amount)/100),7) AS platform_fee_amount_raw
           ,ROUND((2.5*((a.original_amount / power(10,t1.decimals)))/100),7) AS platform_fee_amount
@@ -233,7 +233,7 @@ with p1_call as (
             AND nft_contract_address=erct2.contract_address
             AND erct2.evt_tx_hash=a.tx_hash
             AND erct2.tokenId=a.nft_token_id
-            AND erct2.from=concat('0x',substr(buyer,3,40))
+            AND erct2."from"=concat('0x',substr(buyer,3,40))
             {% if not is_incremental() %}
             and erct2.evt_block_number > 14801608
             {% endif %}
@@ -244,7 +244,7 @@ with p1_call as (
             AND nft_contract_address=erct3.contract_address
             AND erct3.evt_tx_hash=a.tx_hash
             AND erct3.id=a.nft_token_id
-            AND erct3.from=concat('0x',substr(buyer,3,40))
+            AND erct3."from"=concat('0x',substr(buyer,3,40))
             {% if not is_incremental() %}
             and erct3.evt_block_number > 14801608
             {% endif %}
@@ -425,7 +425,7 @@ with p1_call as (
           ,coalesce(agg_m.aggregator_name, agg.name) as aggregator_name
           ,agg.contract_address as aggregator_address
           ,a.tx_hash
-          ,tx.from as tx_from
+          ,tx."from" as tx_from
           ,tx.to as tx_to
           ,ROUND((2.5*(a.attempt_amount)/100),7) AS platform_fee_amount_raw
           ,ROUND((2.5*((a.attempt_amount / power(10,t1.decimals)))/100),7) AS platform_fee_amount
@@ -458,7 +458,7 @@ with p1_call as (
             AND concat('0x',substr(a.nft_address,3,40))=erct2.contract_address
             AND erct2.evt_tx_hash=a.tx_hash
             AND erct2.tokenId=a.nft_token_id
-            AND erct2.from=concat('0x',substr(buyer,3,40))
+            AND erct2."from"=concat('0x',substr(buyer,3,40))
             {% if not is_incremental() %}
             and erct2.evt_block_number > 14801608
             {% endif %}
@@ -469,7 +469,7 @@ with p1_call as (
             AND concat('0x',substr(a.nft_address,3,40))=erct3.contract_address
             AND erct3.evt_tx_hash=a.tx_hash
             AND erct3.id=a.nft_token_id
-            AND erct3.from=concat('0x',substr(buyer,3,40))
+            AND erct3."from"=concat('0x',substr(buyer,3,40))
             {% if not is_incremental() %}
             and erct3.evt_block_number > 14801608
             {% endif %}
@@ -682,7 +682,7 @@ with p1_call as (
           ,coalesce(agg_m.aggregator_name, agg.name) as aggregator_name
           ,agg.contract_address as aggregator_address
           ,a.tx_hash
-          ,tx.from as tx_from
+          ,tx."from" as tx_from
           ,tx.to as tx_to
           ,ROUND((2.5*(a.attempt_amount)/100),7) AS platform_fee_amount_raw
           ,ROUND((2.5*((a.attempt_amount / power(10,t1.decimals)))/100),7) AS platform_fee_amount
@@ -721,7 +721,7 @@ with p1_call as (
             AND nft_contract_address=erct2.contract_address
             AND erct2.evt_tx_hash=a.tx_hash
             AND erct2.tokenId=a.nft_token_id
-            AND erct2.from=concat('0x',substr(buyer,3,40))
+            AND erct2."from"=concat('0x',substr(buyer,3,40))
             {% if not is_incremental() %}
             and erct2.evt_block_number > 14801608
             {% endif %}
@@ -732,7 +732,7 @@ with p1_call as (
             AND nft_contract_address=erct3.contract_address
             AND erct3.evt_tx_hash=a.tx_hash
             AND erct3.id=a.nft_token_id
-            AND erct3.from=concat('0x',substr(buyer,3,40))
+            AND erct3."from"=concat('0x',substr(buyer,3,40))
             {% if not is_incremental() %}
             and erct3.evt_block_number > 14801608
             {% endif %}
@@ -914,7 +914,7 @@ with p1_call as (
           ,coalesce(agg_m.aggregator_name, agg.name) as aggregator_name
           ,agg.contract_address as aggregator_address
           ,a.tx_hash
-          ,tx.from as tx_from
+          ,tx."from" as tx_from
           ,tx.to as tx_to
           ,ROUND((2.5*(a.attempt_amount)/100),7) AS platform_fee_amount_raw
           ,ROUND((2.5*((a.attempt_amount / power(10,t1.decimals)))/100),7) AS platform_fee_amount
@@ -946,7 +946,7 @@ with p1_call as (
         AND concat('0x',substr(a.nft_address,3,40))=erct2.contract_address
         AND erct2.evt_tx_hash=a.tx_hash
         AND erct2.tokenId=a.nft_token_id
-        AND erct2.from=concat('0x',substr(buyer,3,40))
+        AND erct2."from"=concat('0x',substr(buyer,3,40))
         {% if not is_incremental() %}
         and erct2.evt_block_number > 14801608
         {% endif %}
@@ -957,7 +957,7 @@ with p1_call as (
         AND concat('0x',substr(a.nft_address,3,40))=erct3.contract_address
         AND erct3.evt_tx_hash=a.tx_hash
         AND erct3.id=a.nft_token_id
-        AND erct3.from=concat('0x',substr(buyer,3,40))
+        AND erct3."from"=concat('0x',substr(buyer,3,40))
         {% if not is_incremental() %}
         and erct3.evt_block_number > 14801608
         {% endif %}

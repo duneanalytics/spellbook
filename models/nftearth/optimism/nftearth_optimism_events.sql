@@ -216,7 +216,7 @@ with source_optimism_transactions as (
 ,iv_trades as (
   select a.*
           ,n.name AS nft_token_name
-          ,t.from as tx_from
+          ,t."from" as tx_from
           ,t.to as tx_to
           ,right(t.data,8) as right_hash
           ,case when a.token_contract_address = '{{c_native_token_address}}' then '{{c_native_symbol}}'
@@ -309,7 +309,7 @@ with source_optimism_transactions as (
     -- order info
     ,t.block_date
     ,t.block_time
-    ,case when t.seller = '{{non_buyer_address}}' then erc2.from else t.seller end as seller
+    ,case when t.seller = '{{non_buyer_address}}' then erc2."from" else t.seller end as seller
     ,case when t.buyer = '{{non_buyer_address}}' then erc.to else t.buyer end as buyer
     ,initcap(t.trade_type) as trade_type
     ,initcap(t.order_type) as trade_category -- Buy / Offer Accepted
@@ -379,7 +379,7 @@ with source_optimism_transactions as (
     and t.block_number = erc.evt_block_number
     and t.nft_token_id = erc.tokenId
     and t.nft_contract_address = erc.contract_address
-    and t.buyer = erc.from
+    and t.buyer = erc."from"
   left join all_transfers as erc2
     on t.tx_hash = erc2.evt_tx_hash
     and t.block_number = erc2.evt_block_number

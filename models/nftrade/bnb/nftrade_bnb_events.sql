@@ -121,7 +121,7 @@ source_inventory_enriched as (
         agg.name as aggregator_name,
         agg.contract_address as aggregator_address,
         src.evt_tx_hash as tx_hash,
-        btx.from as tx_from,
+        btx."from" as tx_from,
         btx.to as tx_to,
         CAST(src.protocol_fees_raw AS DOUBLE) as platform_fee_amount_raw,
         CAST(src.protocol_fees AS DOUBLE) as platform_fee_amount,

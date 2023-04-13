@@ -62,7 +62,7 @@ SELECT
     ,e.maker
     ,e.project_contract_address
     ,e.tx_hash
-    ,tx.from AS tx_from
+    ,tx."from" AS tx_from
     ,tx.to AS tx_to
     ,e.trace_address
     ,e.evt_index

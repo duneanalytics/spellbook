@@ -271,7 +271,7 @@ WITH dao_wallet AS (
     SELECT t.tx_hash
     FROM {{ source('ethereum', 'traces') }} t
     JOIN contracts c
-        ON t.from = c.contract_address
+        ON t."from" = c.contract_address
         AND c.contract_type IN ('FlapFlop')
     -- {% if is_incremental() %}
     -- WHERE t.block_time >= date_trunc("day", now() - interval '1 week')
@@ -884,7 +884,7 @@ WITH dao_wallet AS (
     FROM {{ source('erc20_ethereum', 'evt_transfer') }} evt
     JOIN treasury_erc20s t
         ON evt.contract_address = t.contract_address
-    WHERE evt.from = 0xbe8e3e3618f7474f8cb1d074a26affef007e98fb
+    WHERE evt."from" = 0xbe8e3e3618f7474f8cb1d074a26affef007e98fb
         -- {% if is_incremental() %}
         -- AND evt.evt_block_time >= date_trunc("day", now() - interval '1 week')
         -- {% endif %}

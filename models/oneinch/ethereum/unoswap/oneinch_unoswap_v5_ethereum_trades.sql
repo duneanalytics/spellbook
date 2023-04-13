@@ -104,7 +104,7 @@ WITH unoswap AS
             , unoswap.call_block_time
             , unoswap.contract_address
             , traces.to
-            , traces.from
+            , traces."from"
             , ROW_NUMBER() OVER (
                 PARTITION BY unoswap.call_tx_hash, unoswap.call_trace_address
                 ORDER BY traces.trace_address desc
@@ -115,7 +115,7 @@ WITH unoswap AS
             {{ source('ethereum', 'traces') }} AS traces
             ON traces.tx_hash = unoswap.call_tx_hash
             AND traces.block_number = unoswap.call_block_number
-            AND traces.from != unoswap.contract_address
+            AND traces."from" != unoswap.contract_address
             AND COALESCE(unoswap.call_trace_address, CAST(ARRAY() as array<bigint>)) = SLICE(traces.trace_address, 1, COALESCE(array_size(unoswap.call_trace_address), 0))
             AND COALESCE(array_size(unoswap.call_trace_address), 0) + 2 = COALESCE(array_size(traces.trace_address), 0)
             AND SUBSTRING(traces.input,1,10) = '0xa9059cbb' --find the token address that transfer() was called on
@@ -207,11 +207,11 @@ SELECT
     ) AS amount_usd
     ,src.token_bought_address
     ,src.token_sold_address
-    ,coalesce(src.taker, tx.from) AS taker
+    ,coalesce(src.taker, tx."from") AS taker
     ,src.maker
     ,src.project_contract_address
     ,src.tx_hash
-    ,tx.from AS tx_from
+    ,tx."from" AS tx_from
     ,tx.to AS tx_to
     ,CAST(src.trace_address as array<long>) as trace_address
     ,src.evt_index

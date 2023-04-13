@@ -109,8 +109,8 @@ SELECT 'ethereum' AS blockchain
 , CAST(lr.number_of_items AS DECIMAL(38,0)) AS number_of_items
 , lr.trade_category
 , 'Trade' AS evt_type
-, CASE WHEN lr.seller=agg.contract_address THEN et.from ELSE lr.seller END AS seller
-, CASE WHEN lr.buyer=agg.contract_address THEN et.from ELSE lr.buyer END AS buyer
+, CASE WHEN lr.seller=agg.contract_address THEN et."from" ELSE lr.seller END AS seller
+, CASE WHEN lr.buyer=agg.contract_address THEN et."from" ELSE lr.buyer END AS buyer
 , lr.amount_raw/POWER(10, pu.decimals) AS amount_original
 , CAST(lr.amount_raw AS DECIMAL(38,0)) AS amount_raw
 , CASE WHEN lr.currency_contract=0x0000000000000000000000000000000000000000 THEN 'ETH' ELSE pu.symbol END AS currency_symbol
@@ -121,7 +121,7 @@ SELECT 'ethereum' AS blockchain
 , agg.contract_address AS aggregator_address
 , lr.tx_hash
 , lr.block_number
-, et.from AS tx_from
+, et."from" AS tx_from
 , et.to AS tx_to
 , COALESCE((pf.fee_percentage/100)*lr.amount_raw, 0) AS platform_fee_amount_raw
 , COALESCE((pf.fee_percentage/100)*lr.amount_raw/POWER(10, pu.decimals), 0) AS platform_fee_amount

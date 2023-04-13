@@ -44,7 +44,7 @@ select
     , cast(nft_mints.amount as decimal(38,0)) as number_of_items
     , 'Mint' as trade_category
     , 'Mint' as evt_type
-    , nft_mints.from as seller
+    , nft_mints."from" as seller
     , nft_mints.to as buyer
     , case when tr.tx_hash is not null then 'ETH' else pu_erc20s.symbol end as currency_symbol
     , case when tr.tx_hash is not null then '{{eth_address}}' else erc20s.contract_address end as currency_contract
@@ -53,7 +53,7 @@ select
     , agg.name as aggregator_name
     , agg.contract_address as aggregator_address
     , nft_mints.tx_hash as tx_hash
-    , etxs.from as tx_from
+    , etxs."from" as tx_from
     , etxs.to as tx_to
     , cast(0 as double) as platform_fee_amount_raw
     , cast(0 as double) as platform_fee_amount
@@ -93,7 +93,7 @@ left join {{ source('prices','usd') }} as pu_eth
     {% endif %}
 left join {{ source('erc20_ethereum','evt_transfer') }} as erc20s 
     on erc20s.evt_block_time=nft_mints.block_time
-    and erc20s.from=nft_mints.to
+    and erc20s."from"=nft_mints.to
     {% if is_incremental() %}
     and erc20s.evt_block_time >= date_trunc("day", now() - interval '1 week')
     {% endif %}
@@ -111,13 +111,13 @@ left join {{ ref('nft_optimism_aggregators') }} as agg
 left join nfts_per_tx as nft_count 
     on nft_count.tx_hash=nft_mints.tx_hash
 where 
-    nft_mints.from = 0x0000000000000000000000000000000000000000
+    nft_mints."from" = 0x0000000000000000000000000000000000000000
     {% if is_incremental() %}
     and nft_mints.block_time >= date_trunc("day", now() - interval '1 week')
     {% endif %}
     -- to exclude bridged L1 NFT collections to L2
     and bm.contract_address is null 
     group by nft_mints.block_time, nft_mints.block_number, nft_mints.token_id, nft_mints.token_standard
-    , nft_mints.amount, nft_mints.from, nft_mints.to, nft_mints.contract_address, etxs.to, nft_mints.evt_index
-    , nft_mints.tx_hash, etxs.from, ec.namespace, tok.name, pu_erc20s.decimals, pu_eth.price, pu_erc20s.price
+    , nft_mints.amount, nft_mints."from", nft_mints.to, nft_mints.contract_address, etxs.to, nft_mints.evt_index
+    , nft_mints.tx_hash, etxs."from", ec.namespace, tok.name, pu_erc20s.decimals, pu_eth.price, pu_erc20s.price
     , agg.name, agg.contract_address, nft_count.nfts_minted_in_tx, pu_erc20s.symbol, erc20s.contract_address, tr.tx_hash

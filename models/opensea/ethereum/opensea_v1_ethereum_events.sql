@@ -127,7 +127,7 @@ enhanced_trades as (
     nft.token_id,
     nft.amount as number_of_items,
     nft.to as nft_to,
-    nft.from as nft_from,
+    nft."from" as nft_from,
     total_amount_raw*amount/(sum(nft.amount) over (partition by o.block_number, o.tx_hash, o.order_evt_index)) as amount_raw,
     case when count(nft.evt_index) over (partition by o.block_number, o.tx_hash, o.order_evt_index) > 1
         then concat('Bundle trade: ',sale_type)
@@ -138,7 +138,7 @@ enhanced_trades as (
     inner join nft_transfers nft
     ON o.block_number = nft.block_number
         AND o.tx_hash = nft.tx_hash
-        AND ((trade_category = 'Buy' AND nft.from = o.seller) OR (trade_category = 'Sell' AND nft.to = o.buyer))
+        AND ((trade_category = 'Buy' AND nft."from" = o.seller) OR (trade_category = 'Sell' AND nft.to = o.buyer))
         AND nft.evt_index <= o.order_evt_index and (prev_order_evt_index is null OR nft.evt_index > o.prev_order_evt_index )
 )
 
@@ -169,7 +169,7 @@ SELECT
   t.currency_contract,
   agg.name as aggregator_name,
   agg.contract_address as aggregator_address,
-  tx.from as tx_from,
+  tx."from" as tx_from,
   tx.to as tx_to,
   -- some complex price calculations, (t.amount_raw/t.price_correction) is the original base price for fees.
   CAST(round((100 * platform_fee),4) AS DOUBLE) AS platform_fee_percentage,

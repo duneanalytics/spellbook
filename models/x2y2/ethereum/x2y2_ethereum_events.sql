@@ -104,12 +104,12 @@ SELECT 'ethereum' AS blockchain
 , 'Single Item Trade' AS trade_type
 , CAST(1 AS DECIMAL(38,0)) AS number_of_items
 , CASE WHEN (inv.fees_0 IS NULL OR inv.fees_0_to != '{{fee_management_addr}}') AND (prof.evt_block_time < '2022-04-01' OR prof.evt_block_time >= '2022-05-01') THEN 'Private Sale'
-    WHEN (et.from=inv.maker or inv.maker = agg.contract_address) THEN 'Offer Accepted'
+    WHEN (et."from"=inv.maker or inv.maker = agg.contract_address) THEN 'Offer Accepted'
     ELSE 'Buy'
     END AS trade_category
 , 'Trade' AS evt_type
-, CASE WHEN inv.taker = agg.contract_address THEN et.from ELSE inv.taker END AS buyer
-, CASE WHEN inv.maker = agg.contract_address THEN et.from ELSE inv.maker END AS seller
+, CASE WHEN inv.taker = agg.contract_address THEN et."from" ELSE inv.taker END AS buyer
+, CASE WHEN inv.maker = agg.contract_address THEN et."from" ELSE inv.maker END AS seller
 , CASE WHEN prof.is_native_eth THEN 'ETH'
     ELSE currency_token.symbol
     END AS currency_symbol
@@ -121,7 +121,7 @@ SELECT 'ethereum' AS blockchain
 , COALESCE(agg_m.aggregator_name, agg.name) AS aggregator_name
 , agg.contract_address AS aggregator_address
 , prof.evt_tx_hash AS tx_hash
-, et.from AS tx_from
+, et."from" AS tx_from
 , et.to AS tx_to
 , CASE WHEN inv.fees_0_to='{{fee_management_addr}}' THEN ROUND(COALESCE(inv.price*inv.platform_fee_percentage/1e6, 0), 0)
     ELSE 0

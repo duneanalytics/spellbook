@@ -20,7 +20,7 @@ from
                 , punk_id
                 , evt_tx_hash
         from
-        (   select  a.from
+        (   select  a."from"
                 , a.to
                 , a.evt_block_time
                 , date_trunc('week',a.evt_block_time) as evt_block_time_week
