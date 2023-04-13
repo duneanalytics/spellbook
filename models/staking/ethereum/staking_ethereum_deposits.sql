@@ -13,17 +13,17 @@
 WITH deposit_events AS (
     SELECT d.evt_block_time AS block_time
     , d.evt_block_number AS block_number
-    , d.evt_index
+    , CAST(d.evt_index AS VARCHAR(100)) AS evt_index
     , d.evt_tx_hash AS tx_hash
-    , bytea2numeric_v3('0x' || SUBSTR(d.amount, 15, 2) || SUBSTR(d.amount, 13, 2) || SUBSTR(d.amount, 11, 2) || SUBSTR(d.amount, 9, 2) ||
-        SUBSTR(d.amount, 7, 2) || SUBSTR(d.amount, 5, 2) || SUBSTR(d.amount, 3, 2))/POWER(10, 9) AS amount
+    , CAST(bytea2numeric_v3('0x' || SUBSTR(d.amount, 15, 2) || SUBSTR(d.amount, 13, 2) || SUBSTR(d.amount, 11, 2) || SUBSTR(d.amount, 9, 2) ||
+        SUBSTR(d.amount, 7, 2) || SUBSTR(d.amount, 5, 2) || SUBSTR(d.amount, 3, 2))/POWER(10, 9) AS DOUBLE) AS amount
     , d.contract_address
-    , bytea2numeric_v3('0x' || SUBSTR(d.index, 15, 2) || SUBSTR(d.index, 13, 2) || SUBSTR(d.index, 11, 2) || SUBSTR(d.index, 9, 2) ||
-        SUBSTR(d.index, 7, 2) || SUBSTR(d.index, 5, 2) || SUBSTR(d.index, 3, 2)) AS deposit_index
+    , CAST(bytea2numeric_v3('0x' || SUBSTR(d.index, 15, 2) || SUBSTR(d.index, 13, 2) || SUBSTR(d.index, 11, 2) || SUBSTR(d.index, 9, 2) ||
+        SUBSTR(d.index, 7, 2) || SUBSTR(d.index, 5, 2) || SUBSTR(d.index, 3, 2)) AS DECIMAL(38,0) AS deposit_index
     , d.pubkey
     , d.signature
-    , substring(d.withdrawal_credentials, 1, 4) AS withdrawal_credentials_type
-    , CASE WHEN substring(d.withdrawal_credentials, 1, 4) = '0x01' THEN '0x' || substring(d.withdrawal_credentials, -40, 40) END AS withdrawal_address
+    , CAST(substring(d.withdrawal_credentials, 1, 4) AS string) AS withdrawal_credentials_type
+    , CASE WHEN substring(d.withdrawal_credentials, 1, 4) = '0x01' THEN CAST('0x' || substring(d.withdrawal_credentials, -40, 40) AS string) ELSE CAST(NULL AS string) END AS withdrawal_address
     , d.withdrawal_credentials
     , ROW_NUMBER() OVER (PARTITION BY d.evt_block_number, d.evt_tx_hash, d.amount ORDER BY d.evt_block_number) AS table_merging_deposits_id
     FROM {{ source('eth2_ethereum', 'DepositContract_evt_DepositEvent') }} d
