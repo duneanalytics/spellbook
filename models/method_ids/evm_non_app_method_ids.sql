@@ -39,7 +39,7 @@ SELECT NULL as blockchains, method_id, method_descriptor
 
 UNION ALL --Optimism-Specific Methods
 
-SELECT array('optimism') AS blockchains, method_id, method_descriptor
+SELECT 'optimism' AS blockchains, method_id, method_descriptor
     FROM (values
          ('0xcbd4ece9','Bridge In (L1 to L2)') --'Bridge In (L1 to L2)'
         ,('0x32b7006d','Bridge Out (L2 to L1)') --'Bridge Out (L2 to L1)'
@@ -49,7 +49,7 @@ SELECT array('optimism') AS blockchains, method_id, method_descriptor
 
 UNION ALL --Arbitrum-Specific Methods
 
-SELECT array('arbitrum') AS blockchains, method_id, method_descriptor
+SELECT 'arbitrum' AS blockchains, method_id, method_descriptor
     FROM (values
          ('0x6bf6a42d','ARBOS System Transaction') --ARBOS System Transaction
         ,('0xc9f95d32', 'Submit Retryable Tx') --Arb RetryableTx
@@ -57,7 +57,6 @@ SELECT array('arbitrum') AS blockchains, method_id, method_descriptor
         ,('0x7b3a3c8b','Bridge Out (L2 to L1)') --OutboundTransfer (ERC20)
         ,('0x2e567b36','Bridge In (L1 to L2)') --finalizeInboundTransfer (ERC20)
         ) a (method_id, method_descriptor)
-
 
 )
 
@@ -69,7 +68,7 @@ FROM (
     FROM aggrregate_methods
     WHERE
         blockchains IS NULL --If Null, make an entry for all chains
-        OR array_contains(blockchains,'{{chain}}')
+        OR blockchains = '{{chain}}'
     {% if not loop.last %}
     UNION ALL
     {% endif %}

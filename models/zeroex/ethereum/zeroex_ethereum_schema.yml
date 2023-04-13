@@ -5,7 +5,7 @@ models:
     meta:
       blockchain: ethereum
       project: zeroex
-      contributors: sui414, bakabhai993, hosuke
+      contributors: danning.sui, bakabhai993, hosuke
     config:
       tags: ['ethereum','0x','dex_aggregator','dex','aggregator']
     description: >
@@ -142,6 +142,7 @@ models:
       - *evt_index
       - *type
       - *swap_flag
+      - *contract_address
       - &fills_within
         name: fills_within
         description: "fills in then multihop, if present"          
@@ -151,7 +152,7 @@ models:
     meta:
       blockchain: ethereum
       project: zeroex
-      contributors: bakabhai993, sui414
+      contributors: bakabhai993, danning.sui
     config:
       tags: ['ethereum','0x','nft']
     description: >

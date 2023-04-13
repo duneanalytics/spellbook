@@ -106,3 +106,32 @@ models:
       - &output
         name: output
         description: "Output data"
+
+  - name: safe_gnosis_xdai_transfers
+    meta:
+      blockchain: gnosis
+      project: safe
+      contributors: tschubotz
+    freshness:
+      warn_after: { count: 12, period: hour }
+      error_after: { count: 24, period: hour }
+    config:
+      tags: ['safe', 'transfers', 'gnosis']
+    description: "xDAI transfers into or out of Safes"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_date
+            - address
+            - tx_hash
+            - trace_address
+    columns:
+      - name: address
+        description: "Safe contract address"
+      - *block_date
+      - *block_time
+      - &amount_raw
+        name: amount_raw
+        description: "Raw amount of transferred xDAI"
+      - *tx_hash
+      - *trace_address

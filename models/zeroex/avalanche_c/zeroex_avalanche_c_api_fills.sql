@@ -9,7 +9,7 @@
         post_hook='{{ expose_spells(\'["avalanche_c"]\',
                                 "project",
                                 "zeroex",
-                                \'["rantumBits",  "bakabhai993", "sui414"]\') }}'
+                                \'["rantum",  "bakabhai993", "danning.sui"]\') }}'
     )
 }}
 
@@ -101,7 +101,9 @@ v4_limit_fills_no_bridge AS (
             'LimitOrderFilled' AS type,
             COALESCE(zeroex_tx.affiliate_address, fills.feeRecipient) AS affiliate_address,
             (zeroex_tx.tx_hash IS NOT NULL) AS swap_flag,
-            (fills.feeRecipient = '0x86003b044f70dac0abc80ac8957305b6370893ed') AS matcha_limit_order_flag
+            (fills.feeRecipient in 
+                ('0x9b858be6e3047d88820f439b240deac2418a2551','0x86003b044f70dac0abc80ac8957305b6370893ed','0x5bc2419a087666148bfbe1361ae6c06d240c6131')) 
+                AS matcha_limit_order_flag 
     FROM {{ source('zeroex_avalanche_c', 'ExchangeProxy_evt_LimitOrderFilled') }} fills
     INNER JOIN zeroex_tx 
         ON zeroex_tx.tx_hash = fills.evt_tx_hash
@@ -302,9 +304,11 @@ SELECT
         affiliate_address,
         swap_flag,
         matcha_limit_order_flag,
-        CASE WHEN maker_token IN ('0x9702230a8ea53601f5cd2dc00fdbc13d4df4a8c7','0xa7d7079b0fead91f3e65f86e8915cb59c1a4c664','0xc7198437980c041c805a1edcba50c1ce5db95118','0xb31f66aa3c1e785363f0875a1b74e27b85fd66c7','0xd586e7f844cea2f87f50152665bcbc2c279d8d70', '0x49d5c2bdffac6ce2bfdb6640f4f80f226bc10bab')
+        CASE WHEN maker_token IN ('0x9702230a8ea53601f5cd2dc00fdbc13d4df4a8c7','0xa7d7079b0fead91f3e65f86e8915cb59c1a4c664','0xc7198437980c041c805a1edcba50c1ce5db95118',
+            '0xb31f66aa3c1e785363f0875a1b74e27b85fd66c7','0xd586e7f844cea2f87f50152665bcbc2c279d8d70', '0x49d5c2bdffac6ce2bfdb6640f4f80f226bc10bab') AND  mp.price IS NOT NULL
              THEN (all_tx.maker_token_amount_raw / pow(10, mp.decimals)) * mp.price
-             WHEN taker_token IN ('0x9702230a8ea53601f5cd2dc00fdbc13d4df4a8c7','0xa7d7079b0fead91f3e65f86e8915cb59c1a4c664','0xc7198437980c041c805a1edcba50c1ce5db95118','0xb31f66aa3c1e785363f0875a1b74e27b85fd66c7','0xd586e7f844cea2f87f50152665bcbc2c279d8d70', '0x49d5c2bdffac6ce2bfdb6640f4f80f226bc10bab')    
+             WHEN taker_token IN ('0x9702230a8ea53601f5cd2dc00fdbc13d4df4a8c7','0xa7d7079b0fead91f3e65f86e8915cb59c1a4c664','0xc7198437980c041c805a1edcba50c1ce5db95118',
+                '0xb31f66aa3c1e785363f0875a1b74e27b85fd66c7','0xd586e7f844cea2f87f50152665bcbc2c279d8d70', '0x49d5c2bdffac6ce2bfdb6640f4f80f226bc10bab')    AND  tp.price IS NOT NULL
              THEN (all_tx.taker_token_amount_raw / pow(10, tp.decimals)) * tp.price
              ELSE COALESCE((all_tx.maker_token_amount_raw / pow(10, mp.decimals)) * mp.price, (all_tx.taker_token_amount_raw / pow(10, tp.decimals)) * tp.price)
              END AS volume_usd, 

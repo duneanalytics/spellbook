@@ -1,27 +1,30 @@
 {{ config(alias='trade_slippage',
-        post_hook='{{ expose_spells_hide_trino(\'["ethereum"]\',
+        post_hook='{{ expose_spells(\'["ethereum"]\',
                                     "project",
                                     "cow_protocol",
                                     \'["bh2smith", "gentrexha", "josojo"]\') }}'
 )}}
 
+-- PoC Query: https://dune.com/queries/2279196
 with 
 raw_data as (
-    select
+select
     order_uid,
     block_number,
     block_time,
-    case when (flags % 2) = 0 then 'SELL' else 'BUY' end  as order_type,
-    CASE when (flags % 2) = 0 THEN (limit_buy_amount / (1.0 - (slippage_bips / 10000.0))) else (limit_buy_amount) end as buy_quote,
+    order_type,
+    CASE when order_type = 'SELL'
+        THEN (cast(limit_buy_amount as double) / (1.0 - (cast(slippage_bips as double) / 10000.0)))
+        else cast(limit_buy_amount as double) end as buy_quote,
     atoms_bought,
-    CASE when (flags % 2) = 1 THEN (limit_sell_amount / (1.0 + (slippage_bips / 10000.0))) else (limit_sell_amount) end as sell_quote,
+    CASE when order_type = 'BUY'
+        THEN (cast(limit_sell_amount as double) / (1.0 + (cast(slippage_bips as double) / 10000.0)))
+        else cast(limit_sell_amount as double) end as sell_quote,
     atoms_sold,
     usd_value as trade_usd_value,
     slippage_bips as tolerance_bips
 from {{ref('cow_protocol_ethereum_app_data')}} as ad
 inner join {{ ref('cow_protocol_ethereum_trades') }} as t on t.app_data = ad.app_hash
-left join (select * from {{ ref('tokens_erc20') }} where blockchain = 'ethereum') A ON A.contract_address=t.buy_token_address
-left join (select * from {{ ref('tokens_erc20') }} where blockchain = 'ethereum') B ON B.contract_address=t.sell_token_address
 where slippage_bips is not null
 ),
 

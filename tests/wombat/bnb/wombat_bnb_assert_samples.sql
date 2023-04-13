@@ -15,29 +15,28 @@ with trades as (
 )
 , examples as (
     select * from {{ ref('dex_trades_seed') }}
-	where blockchain = 'bnb' and project='wombat' and version='1'
+	where blockchain = 'bnb' and project = 'wombat' and version = '1'
 )
 , matched as (
     select
         block_date
 		, tr.tx_hash as tr_tx_hash
 		, ex.tx_hash as ex_tx_hash
-		, '|' as `|1|`
 		, tr.evt_index as tr_evt_index
 		, ex.evt_index as ex_evt_index
-		, '|' as `|2|`
+		, '|' as bounght_amount_test
 		, case when abs(tr.token_bought_amount - ex.token_bought_amount) < 0.01 then true else false end as correct_bought_amount
 		, tr.token_bought_amount as tr_token_bought_amount
 		, ex.token_bought_amount as ex_token_bought_amount
-		, tr.token_bought_amount - ex.token_bought_amount as `Δ_token_bought_amount`
-		, '|' as `|3|`
+		, tr.token_bought_amount - ex.token_bought_amount as delta_token_bought_amount
+		, '|' as sold_amount_test
 		, case when abs(tr.token_sold_amount - ex.token_sold_amount) < 0.01 then true else false end as correct_sold_amount
 		, tr.token_sold_amount as tr_token_sold_amount
 		, ex.token_sold_amount as ex_token_sold_amount
-		, tr.token_sold_amount - ex.token_sold_amount as `Δ_token_sold_amount`
+		, tr.token_sold_amount - ex.token_sold_amount as delta_token_sold_amount
     from trades tr
     full outer join examples ex
-		on tr.tx_hash=ex.tx_hash and tr.evt_index=ex.evt_index
+		on tr.tx_hash = ex.tx_hash and tr.evt_index = ex.evt_index
 )
 select * from matched
 where not (correct_bought_amount and correct_sold_amount)

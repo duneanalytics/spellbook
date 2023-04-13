@@ -17,7 +17,7 @@ models:
         description: "ERC20 Token's symbol"
       - name: decimals
         description: "ERC20 Token's number of decimals"
-  
+
   - name: tokens_nft
     meta:
       blockchain: avalanche_c, bnb, ethereum, gnosis, optimism, fantom
@@ -30,10 +30,12 @@ models:
     columns:
       - name: contract_address
         description: "NFT Token's contract address"
+      - name: name
+        description: "NFT collection name"
       - name: symbol
-        description: "NFT Token's symbol"
-      - name: decimals
-        description: "NFT Token's number of decimals"
+        description: "NFT collection symbol"
+      - name: standard
+        description: "NFT collection standard"
 
   - name: tokens_native
     meta:
@@ -46,7 +48,7 @@ models:
         The chain native token and symbol, and the prices.usd symbol/address that is closest.
     columns:
       - name: chain
-        description: "the chain, as it's named in Dune" 
+        description: "the chain, as it's named in Dune"
       - name: symbol
         description: "Token's symbol"
       - name: price_symbol
