@@ -1,5 +1,5 @@
 {{ config(
-    alias = 'addresses_ethereum_aragon',
+    alias = 'client_dao_addresses',
     partition_by = ['created_date'],
     materialized = 'incremental',
     file_format = 'delta',
@@ -60,7 +60,8 @@ SELECT
     ad.dao, 
     gw.dao_wallet_address, 
     ad.created_block_time,
-    TRY_CAST(ad.created_date as DATE) as created_date
+    TRY_CAST(ad.created_date as DATE) as created_date, 
+    'aragon_client' as product
 FROM 
 aragon_daos ad 
 LEFT JOIN 
