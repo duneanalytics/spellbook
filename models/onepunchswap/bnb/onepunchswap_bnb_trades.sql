@@ -1,6 +1,5 @@
 {{ config(
-    schema = 'onepunchswap_bnb',
-    alias = 'swap_trades',
+    alias = 'trades',
     partition_by = ['block_date'],
     materialized = 'incremental',
     file_format = 'delta',
@@ -57,38 +56,39 @@ WITH dexs AS(
     {% endfor %}
 )
 
-SELECT
-    'bnb'                                                        AS blockchain
-    , 'onepunchswap'                                             AS project
-    , case
-        when dexs.project_contract_address = '0xeeb28c597dc67ed4a337c14b20b0a5c353e38253' then 'quick'
-        else 'normal'
-      end                                                        AS version           
-    , TRY_CAST(date_trunc('DAY', dexs.block_time) AS date)       AS block_date
-    , dexs.block_time
-    , bep20a.symbol                                              AS token_bought_symbol
-    , bep20b.symbol                                              AS token_sold_symbol
-    , dexs.token_bought_address                                  AS token_bought_address
-    , dexs.token_sold_address                                    AS token_sold_address
-    , case
-          when lower(bep20a.symbol) > lower(bep20b.symbol) then concat(bep20b.symbol, '-', bep20a.symbol)
-          else concat(bep20a.symbol, '-', bep20b.symbol)
-      end                                                       AS token_pair
-    , dexs.token_bought_amount_raw / power(10, bep20a.decimals)  AS token_bought_amount
-    , dexs.token_sold_amount_raw / power(10, bep20b.decimals)    AS token_sold_amount
-    , CAST(dexs.token_bought_amount_raw AS DECIMAL(38,0))        AS token_bought_amount_raw
-    , CAST(dexs.token_sold_amount_raw AS DECIMAL(38,0))          AS token_sold_amount_raw
-    , coalesce(
+SELECT 'bnb'                                                     AS blockchain
+     , 'onepunchswap'                                            AS project
+     , case
+           when dexs.project_contract_address = '0xeeb28c597dc67ed4a337c14b20b0a5c353e38253' then 'quick'
+           else 'normal'
+    end                                                          AS version
+     , TRY_CAST(date_trunc('DAY', dexs.block_time) AS date)      AS block_date
+     , dexs.block_time
+     , bep20a.symbol                                             AS token_bought_symbol
+     , bep20b.symbol                                             AS token_sold_symbol
+     , dexs.token_bought_address                                 AS token_bought_address
+     , dexs.token_sold_address                                   AS token_sold_address
+     , case
+           when lower(bep20a.symbol) > lower(bep20b.symbol) then concat(bep20b.symbol, '-', bep20a.symbol)
+           else concat(bep20a.symbol, '-', bep20b.symbol)
+    end                                                          AS token_pair
+     , dexs.token_bought_amount_raw / power(10, bep20a.decimals) AS token_bought_amount
+     , dexs.token_sold_amount_raw / power(10, bep20b.decimals)   AS token_sold_amount
+     , CAST(dexs.token_bought_amount_raw AS DECIMAL(38, 0))      AS token_bought_amount_raw
+     , CAST(dexs.token_sold_amount_raw AS DECIMAL(38, 0))        AS token_sold_amount_raw
+     , coalesce(
         dexs.amount_usd
-        , (dexs.token_bought_amount_raw / power(10, p_bought.decimals)) * p_bought.price
-    )                                                           AS amount_usd
-    , dexs.maker
-    , dexs.project_contract_address
-    , dexs.tx_hash
-    , tx.from                                                   AS tx_from
-    , tx.to                                                    AS tx_to
-    , dexs.trace_address
-    , dexs.evt_index
+    , (dexs.token_bought_amount_raw / power(10, p_bought.decimals)) * p_bought.price
+    )                                                            AS amount_usd
+     , dexs.maker
+     , dexs.taker
+     , dexs.taker
+     , dexs.project_contract_address
+     , dexs.tx_hash
+     , tx.from                                                   AS tx_from
+     , tx.to                                                     AS tx_to
+     , dexs.trace_address
+     , dexs.evt_index
 FROM dexs
 INNER JOIN {{ source('bnb', 'transactions') }} tx
     ON dexs.tx_hash = tx.hash

@@ -215,7 +215,7 @@ SELECT distinct
     cast(date_trunc('day', a.evt_block_time) AS date) AS block_date,
     a.evt_block_time as block_time,
     a.tokenId as token_id,
-    '' as collection,
+    cast(NULL as varchar(1)) as collection,
     case
     when a.currencyAddress = '0xba5bde662c17e2adff1075610382b9b691296350' then (a.amount / 1e18) * average_price_that_day_eth_per_rare * ep.price
     else (a.amount / 1e18) * ep.price
@@ -241,9 +241,9 @@ SELECT distinct
     else '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'
     end as currency_contract,
     a.contract_address as nft_contract_address,
-    '' as project_contract_address,
-    '' as aggregator_name,
-    '' as aggregator_address,
+    cast(NULL as varchar(1)) as project_contract_address,
+    cast(NULL as varchar(1)) as aggregator_name,
+    cast(NULL as varchar(1)) as aggregator_address,
     a.evt_tx_hash as tx_hash,
     t.block_number as block_number,
     t.from as tx_from,

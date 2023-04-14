@@ -336,7 +336,7 @@ models:
           project: opensea
           version: v4
       - check_seed:
-          seed_file: ref('opensea_trades_seed')
+          seed_file: ref('opensea_trade_seed')
           filter:
             blockchain: ethereum
             project: opensea

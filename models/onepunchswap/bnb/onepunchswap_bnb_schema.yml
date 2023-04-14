@@ -24,7 +24,11 @@ models:
       - check_dex_seed:
           blockchain: bnb
           project: onepunchswap
-          version: 1
+          version: quick
+      - check_dex_seed:
+          blockchain: bnb
+          project: onepunchswap
+          version: normal
     columns:
       - &blockchain
         name: blockchain
