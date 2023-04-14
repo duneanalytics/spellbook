@@ -13,7 +13,7 @@
     )
 }}
 
--- Find the PoC Query here: https://dune.com/queries/1779431
+-- Find the PoC Query here: https://dune.com/queries/2360196
 WITH
 -- First subquery joins buy and sell token prices from prices.usd
 -- Also deducts fee from sell amount
@@ -220,7 +220,8 @@ valued_trades as (
            limit_buy_amount,
            valid_to,
            flags,
-           case when (flags % 2) = 0 then 'SELL' else 'BUY' end as order_type
+           case when (flags % 2) = 0 then 'SELL' else 'BUY' end as order_type,
+           cast(cast(flags as int) & 2 as boolean) as partial_fill
     FROM trades_with_token_units trades
     JOIN uid_to_app_id
         ON uid = order_uid
