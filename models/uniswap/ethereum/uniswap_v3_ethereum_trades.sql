@@ -97,7 +97,7 @@ LEFT JOIN {{ source('prices', 'usd') }} p_bought
     {% endif %}
 LEFT JOIN {{ source('prices', 'usd') }} p_sold
     ON p_sold.minute = CAST(date_trunc('minute', dexs.block_time) AS TIMESTAMP(6) WITH TIME ZONE)
-    AND p_sold.contract_address = CAST(dexs.token_sold_address as VARCHAR)
+    AND CAST(p_sold.contract_address AS VARBINARY) = dexs.token_sold_address
     AND p_sold.blockchain = 'ethereum'
     {% if not is_incremental() %}
     AND p_sold.minute >= CAST('{{project_start_date}}' AS TIMESTAMP(6) WITH TIME ZONE)

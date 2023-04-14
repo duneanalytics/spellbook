@@ -19,7 +19,8 @@ WITH dexs AS
 (
     --Uniswap v3
     SELECT
-        t.evt_block_time AS block_time
+        CAST(t.evt_block_time AS TIMESTAMP(6) WITH TIME ZONE)
+         AS block_time
         ,t.recipient AS taker
         ,'' AS maker
         ,CASE WHEN CAST(amount0 AS DOUBLE) < 0 THEN abs(amount0) ELSE abs(amount1) END AS token_bought_amount_raw -- when amount0 is negative it means trader_a is buying token0 from the pool
@@ -89,7 +90,7 @@ LEFT JOIN {{ ref('tokens_erc20') }} erc20b
     AND erc20b.blockchain = 'bnb'
 LEFT JOIN {{ source('prices', 'usd') }} p_bought
     ON p_bought.minute = date_trunc('minute', dexs.block_time)
-    AND p_bought.contract_address = dexs.token_bought_address
+    AND CAST(p_bought.contract_address as VARBINARY) = dexs.token_bought_address
     AND p_bought.blockchain = 'bnb'
     {% if not is_incremental() %}
     AND p_bought.minute >= CAST('{{project_start_date}}' AS TIMESTAMP(6) WITH TIME ZONE)
@@ -99,7 +100,7 @@ LEFT JOIN {{ source('prices', 'usd') }} p_bought
     {% endif %}
 LEFT JOIN {{ source('prices', 'usd') }} p_sold
     ON p_sold.minute = date_trunc('minute', dexs.block_time)
-    AND p_sold.contract_address = dexs.token_sold_address
+    AND CAST(p_sold.contract_address AS VARBINARY) = dexs.token_sold_address
     AND p_sold.blockchain = 'bnb'
     {% if not is_incremental() %}
     AND p_sold.minute >= CAST('{{project_start_date}}' AS TIMESTAMP(6) WITH TIME ZONE)
