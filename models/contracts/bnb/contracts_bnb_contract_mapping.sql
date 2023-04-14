@@ -11861,5 +11861,6 @@ from (values ('0xf23bad605e94de0e3b60c9718a43a94a5af43915', 'Pancake', 'DEXs'),
              ('0x4af6850b0d6dc2cc6118d959b3b0b9a4553c486b', 'PRDT Finance', ''),
              ('0xc6f252c2cdd4087e30608a35c022ce490b58179b', 'CryptoBlades', 'Gaming'),
              ('0x7994107e966e979f8400310097faa581c2a739d9', 'SoftDrink', 'Assets')
+             (xxx)
 ) as temp_table (contract_address,project_name,project_type)
 ;
