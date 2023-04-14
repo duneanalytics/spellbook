@@ -1,6 +1,6 @@
 with  tests as (
 select  'Check Lido deposits' as test_name, 
-case when amount_staked = 224000000000000000000 then true else false end as success
+case when sum(amount_staked) = 224000000000000000000 then true else false end as success
 from {{ref('lido_ethereum_accounting_deposits')}}
 where tx_hash = lower('0xada597e877c290f1f942f2c13820f5a7c584ad56b84e71ccf053ecab81c54b4b')
 union all
