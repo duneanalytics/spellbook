@@ -172,7 +172,7 @@ models:
       - *model_name
       - *label_type
 
-  - name: labels_nft_smart_trader_ROI_eth
+  - name: labels_nft_smart_trader_roi_eth
     meta:
       blockchain: ethereum
       sector: labels
@@ -180,7 +180,7 @@ models:
       contributors: NazihKalo
     config:
       tags: ['labels', 'nft_traders', 'ethereum']
-    description: '{{ doc("labels_nft_smart_trader_ROI_eth") }}'
+    description: '{{ doc("labels_nft_smart_trader_roi_eth") }}'
     columns:
       - *blockchain
       - name: address

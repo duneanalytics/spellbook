@@ -133,33 +133,35 @@ buys_and_sells_nft_trades_no_wash_w_mints as
 ----- FLOOR PRICES -------
 ----- FIRST SOURCE: Reservoir - includes offchain sources
 reservoir_floors as (
-select contract,
-       price_decimal,
-       row_number() over (partition by contract order by created_at desc) rn_desc
--- TODO: Change this to a source table once Dune employee updates the source file for reservoir
-from reservoir.collection_floor_ask_events
-where 1 = 1
-  and valid_until_dt > current_date
+    select contract,
+        price_decimal,
+        row_number() over (partition by contract order by created_at desc) rn_desc
+    from {{source('reservoir', 'collection_floor_ask_events')}}
+    where 1 = 1
+    and valid_until_dt > current_date
 ),
 reservoir_floors_latest_avg as
-(select contract, avg(price_decimal) avg_floor_price
-from reservoir_floors
--- use avg of latest 3 floor prices
-where rn_desc <= 3
-group by 1),
+(
+    select contract
+        , avg(price_decimal) avg_floor_price
+    from reservoir_floors
+    -- use avg of latest 3 floor prices
+    where rn_desc <= 3
+    group by 1
+),
 ----- SECOND SOURCE: nft_ethereum.collection_stats - based on {{ref('nft_trades')}} 5th percentile of latest traded day
 eth_collection_stats_floor as (
-select nft_contract_address,
-       price_p5_eth,
-       row_number() over (partition by nft_contract_address order by block_date desc) rn
-from {{ref('nft_ethereum_collection_stats')}}
+    select nft_contract_address,
+        price_p5_eth,
+        row_number() over (partition by nft_contract_address order by block_date desc) rn
+    from {{ref('nft_ethereum_collection_stats')}}
 ),
 
 eth_collection_stats_latest_floor as (
-select nft_contract_address,
-       price_p5_eth
-from eth_collection_stats_floor
-where rn = 1
+    select nft_contract_address,
+        price_p5_eth
+    from eth_collection_stats_floor
+    where rn = 1
 ),
 
 buys_and_sells_w_index as (
@@ -266,11 +268,11 @@ select wallet,
        sum(sell_amount_eth_or_floor)                                                         gained_eth,
        sum(sell_amount_eth)                                                                  gained_eth_realized,
        sum(case when nft_was_sold = 0 then floor_eth else 0 end)                             gained_eth_unrealized,
-       ((sum(sell_amount_eth_or_floor) * 1.00 / sum(buy_amount_eth * -1)) - 1)               ROI_eth,
+       ((sum(sell_amount_eth_or_floor) * 1.00 / sum(buy_amount_eth * -1)) - 1)               roi_eth,
        ((sum(sell_amount_eth) * 1.00 / sum((case when nft_was_sold = 1 then buy_amount_eth else 0 end) * -1)) -
-        1)                                                                                   ROI_eth_realized,
+        1)                                                                                   roi_eth_realized,
        ((sum(floor_eth) * 1.00 / sum((case when nft_was_sold = 0 then buy_amount_eth else 0 end) * -1)) -
-        1)                                                                                   ROI_eth_unrealized,
+        1)                                                                                   roi_eth_unrealized,
        sum(eth_profit)                                                                       eth_profit,
        sum(eth_profit_realized)                                                              eth_profit_realized,
        sum(eth_profit_unrealized)                                                            eth_profit_unrealized,

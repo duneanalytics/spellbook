@@ -1,4 +1,4 @@
-{{config(alias='nft_smart_trader_ROI_eth')}}
+{{config(alias='nft_smart_trader_roi_eth')}}
 
 with  
 
@@ -9,12 +9,12 @@ aggregated_wallet_trading_stats AS (
         and unique_collections_traded >= 3
         and spent_eth >= 1
         and spent_eth_realized >= 1
-        and ROI_eth > 0
+        and roi_eth > 0
 ),
 
      
 aggregated_wallet_trading_stats_w_ranks AS (
-    select ROW_NUMBER() OVER (ORDER BY ROI_eth_realized DESC) rank_roi,
+    select ROW_NUMBER() OVER (ORDER BY roi_eth_realized DESC) rank_roi,
            count(1) over () AS                                total_count,
            *
     from aggregated_wallet_trading_stats
@@ -42,7 +42,7 @@ aggregated_wallet_trading_stats_w_label AS (
            'usage'                                                                    AS label_type
            -- uncomment line below to see stats on the trader 
            -- , *  
-    from aggregated_wallet_trading_stats_w_ranks order by ROI_eth_realized desc
+    from aggregated_wallet_trading_stats_w_ranks order by roi_eth_realized desc
 )
 
 select *

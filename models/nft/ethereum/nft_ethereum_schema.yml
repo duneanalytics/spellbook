@@ -329,13 +329,14 @@ models:
         description: "Min NFT trade price Measured in ETH"
       - name: price_max_eth
         description: "Max NFT trade price Measured in ETH"
+
   - name: nft_ethereum_wallet_metrics
     meta:
       blockchain: ethereum
       sector: nft
       contributors: NazihKalo
     config:
-      tags: ['nft','ethereum', 'wallet stats','smart nft trader', 'ROI', 'profit', 'loss', 'win', 'spend', 'gain']
+      tags: ['nft','ethereum', 'wallet stats','smart nft trader', 'roi', 'profit', 'loss', 'win', 'spend', 'gain']
     description: >
         This spell aggregates nft trading stats (profit, ROI, spend, gain, loss/win %, collections traded) per wallet and filters out wash trades. 
     columns:
@@ -373,11 +374,11 @@ models:
         description: "Amount of ETH gained from NFTs sold"
       - name: gained_eth_unrealized 
         description: "Amount of ETH gained from appreication of currently held NFTs based on floor price"
-      - name: ROI_eth 
+      - name: roi_eth 
         description: "Percent ETH ROI from appreciation+sales over buy amount (range 0-1)"
-      - name: ROI_eth_realized 
+      - name: roi_eth_realized 
         description: "Percent ETH ROI from sales over buy amount on those sales (range 0-1)"
-      - name: ROI_eth_unrealized 
+      - name: roi_eth_unrealized 
         description: "Percent ETH ROI from appreciation over buy amount on unsold NFTs (range 0-1)"
       - name: eth_profit 
         description: "Total of realized + unrealized profit from NFTs (i.e. (sale_price-buy_price) for sold nfts + (current_floor_price - buy_price) for unsold NFTs)"
@@ -390,9 +391,10 @@ models:
       - name: avg_loss_size
         description: "Average size of loss from protitable NFT trades"
       - name: unique_weeks_buying
-        description: "Unique weeks the trader bought NFTs in "
+        description: "Unique weeks the trader bought NFTs in"
       - name: unique_weeks_selling
-        description: "Unique weeks the trader sold NFTs in "
+        description: "Unique weeks the trader sold NFTs in"
+
   - name: nft_ethereum_wash_trades
     meta:
       blockchain: ethereum

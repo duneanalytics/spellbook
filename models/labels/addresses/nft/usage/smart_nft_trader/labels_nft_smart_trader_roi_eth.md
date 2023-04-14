@@ -1,4 +1,4 @@
-{% docs labels_nft_smart_trader_ROI_eth %}
+{% docs labels_nft_smart_trader_roi_eth %}
 
 The model itself is fundamentally an ROI-based ranking of NFT traders. The ranking of ROI is based on “realized” ROI, which is defined as ((ETH Gained from sales of NFTs) / (ETH Spent on buying those NFTS)) - 1. This could have easily been calculated from nft.trades with one or two CTEs, but the length of the query was intended to cover many edge cases that would make a trader not as “smart”. The query makes some opinionated decisions about what kind of traders to be filtered out, namely I filter for wallets:
 
