@@ -48,7 +48,6 @@ FROM
     ("mimatic-mimatic", "avalanche_c", "MAI", "0x5c49b268c9841aff1cc3b0a418ff5c3442ee3f3b", 18),
     ("luna-luna-wormhole", "avalanche_c", "LUNA", "0x70928e5b188def72817b7775f0bf6325968e563b", 6),
     ("ust-terrausd-wormhole", "avalanche_c", "UST", "0xb599c3590f42f8f995ecfa0f85d2980b76862fc1", 6),
-    ("ico-axelar", "avalanche_c", "AXL", "0x44c784266cf024a60e8acf2427b9857ace194c5d", 6),
-    ("jeff-test", "avalanche_c", "jeff", "0x44c784266cf024a60e8arf2427b9857ace194c5d", 6)
+    ("ico-axelar", "avalanche_c", "AXL", "0x44c784266cf024a60e8acf2427b9857ace194c5d", 6)
     
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)
