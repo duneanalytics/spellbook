@@ -82,6 +82,7 @@ SELECT 'bnb'                                                     AS blockchain
     )                                                            AS amount_usd
      , dexs.maker
      , dexs.taker
+     , dexs.taker
      , dexs.project_contract_address
      , dexs.tx_hash
      , tx.from                                                   AS tx_from
