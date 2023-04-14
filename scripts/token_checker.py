@@ -67,6 +67,7 @@ class TokenChecker:
             api_token = self.tokens_by_id[token['id']]
         except KeyError:
             logging.warning(f"WARN: Line: {new_line} token_id not found in CoinPaprika API")
+            raise
         # Confirm Symbol
         if token['symbol']:
             assert api_token['symbol'].lower() == token['symbol'].lower() \
