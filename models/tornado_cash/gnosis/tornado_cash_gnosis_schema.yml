@@ -3,21 +3,20 @@ version: 2
 
 
 models:
-  - name: tornado_cash_deposits
+  - name: tornado_cash_gnosis_deposits
     meta:
-      blockchain: ethereum, bnb, avalanche_c, gnosis, optimism, arbitrum , polygon
+      blockchain: gnosis
       project: tornado_cash
       contributors: [hildobby, dot2dotseurat]
     config:
-      tags: ['tornado_cash', 'deposits', 'ethereum', 'bnb', 'avalanche_c', 'gnosis', 'optimism', 'arbitrum', 'polygon']
-    description: "Tornado Cash Deposits"
+      tags: ['tornado_cash', 'deposits', 'gnosis']
+    description: "Tornado Cash Deposits on Gnosis"
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - block_date
             - tx_hash
             - evt_index
-            - blockchain
     columns:
       - &block_time
         name: block_time
@@ -32,7 +31,7 @@ models:
         name: blockchain
         tests:
           - accepted_values:
-              values: ['ethereum', 'bnb', 'avalanche_c', 'gnosis', 'optimism', 'arbitrum']
+              values: ['gnosis']
         description: "Blockchain"
       - &tornado_version
         name: tornado_version
@@ -52,21 +51,20 @@ models:
         name: evt_index
         description: "Event index"
 
-  - name: tornado_cash_withdrawals
+  - name: tornado_cash_gnosis_withdrawals
     meta:
-      blockchain: ethereum, bnb, avalanche, gnosis, optimism, arbitrum , polygon
+      blockchain: gnosis
       project: tornado_cash
       contributors:  [hildobby, dot2dotseurat]
     config:
-      tags: ['tornado_cash', 'withdrawals', 'ethereum', 'bnb', 'avalanche', 'gnosis', 'optimism', 'arbitrum', 'polygon']
-    description: "Tornado Cash Withdrawals"
+      tags: ['tornado_cash', 'withdrawals', 'gnosis']
+    description: "Tornado Cash Withdrawals on Gnosis"
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - block_date
             - tx_hash
             - evt_index
-            - blockchain
     columns:
       - *block_time
       - *currency_contract

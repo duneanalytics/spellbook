@@ -551,6 +551,18 @@ models:
 
     tornado_cash:
       +schema: tornado_cash
+      arbitrum:
+        +schema: tornado_cash_arbitrum
+      avalanche_c:
+        +schema: tornado_cash_avalanche_c
+      bnb:
+        +schema: tornado_cash_bnb
+      ethereum:
+        +schema: tornado_cash_ethereum
+      gnosis:
+        +schema: tornado_cash_gnosis
+      optimism:
+        +schema: tornado_cash_optimism
 
     perpetual:
       +schema: perpetual
