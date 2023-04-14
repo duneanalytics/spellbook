@@ -69,20 +69,20 @@ WITH dexs AS (
             tokens_sold AS token_sold_amount_raw,
             CAST(NULL as double) as amount_usd,
             CASE
-                WHEN bought_id = 0 THEN '{{ust_wormhole_avalanche_c_token}}'
-                WHEN bought_id = 1 THEN '{{usdc_avalanche_c_token}}'
-                WHEN bought_id = 2 THEN '{{usdt_avalanche_c_token}}'
+                WHEN bought_id = 0 THEN from_hex('{{ust_wormhole_avalanche_c_token}}')
+                WHEN bought_id = 1 THEN from_hex('{{usdc_avalanche_c_token}}')
+                WHEN bought_id = 2 THEN from_hex('{{usdt_avalanche_c_token}}')
             END as token_bought_address,
             CASE
-                WHEN sold_id = 0 THEN '{{ust_wormhole_avalanche_c_token}}'
-                WHEN sold_id = 1 THEN '{{usdc_avalanche_c_token}}'
-                WHEN sold_id = 2 THEN '{{usdt_avalanche_c_token}}'
+                WHEN sold_id = 0 THEN from_hex('{{ust_wormhole_avalanche_c_token}}')
+                WHEN sold_id = 1 THEN from_hex('{{usdc_avalanche_c_token}}')
+                WHEN sold_id = 2 THEN from_hex('{{usdt_avalanche_c_token}}')
             END as token_sold_address,
             contract_address AS project_contract_address,
             evt_tx_hash AS tx_hash,
             '' AS trace_address,
             evt_index
-            FROM {{ source('curvefi_avalanche_c', '3pool_evt_TokenExchange') }}
+            FROM "{{ source('curvefi_avalanche_c', '3pool_evt_TokenExchange') }}"
             {% if is_incremental() %}
             WHERE evt_block_time >= date_trunc('day', now() - interval '7' day)
             {% endif %}
@@ -99,14 +99,14 @@ WITH dexs AS (
             tokens_sold AS token_sold_amount_raw,
             CAST(NULL as double) as amount_usd,
             CASE
-                WHEN bought_id = 0 THEN '{{mim_avalanche_c_token}}'
-                WHEN bought_id = 1 THEN '{{usdt_e_avalanche_c_token}}'
-                WHEN bought_id = 2 THEN '{{usdc_e_avalanche_c_token}}'
+                WHEN bought_id = 0 THEN from_hex('{{mim_avalanche_c_token}}')
+                WHEN bought_id = 1 THEN from_hex('{{usdt_e_avalanche_c_token}}')
+                WHEN bought_id = 2 THEN from_hex('{{usdc_e_avalanche_c_token}}')
             END as token_bought_address,
             CASE
-                WHEN sold_id = 0 THEN '{{mim_avalanche_c_token}}'
-                WHEN sold_id = 1 THEN '{{usdt_e_avalanche_c_token}}'
-                WHEN sold_id = 2 THEN '{{usdc_e_avalanche_c_token}}'
+                WHEN sold_id = 0 THEN from_hex('{{mim_avalanche_c_token}}')
+                WHEN sold_id = 1 THEN from_hex('{{usdt_e_avalanche_c_token}}')
+                WHEN sold_id = 2 THEN from_hex('{{usdc_e_avalanche_c_token}}')
             END as token_sold_address,
             contract_address AS project_contract_address,
             evt_tx_hash AS tx_hash,
@@ -129,14 +129,14 @@ WITH dexs AS (
             tokens_sold AS token_sold_amount_raw,
             CAST(NULL as double) as amount_usd,
             CASE
-                WHEN bought_id = 0 THEN '{{aave_dai_avalanche_c_token}}'
-                WHEN bought_id = 1 THEN '{{aave_usdc_avalanche_c_token}}'
-                WHEN bought_id = 2 THEN '{{aave_usdt_avalanche_c_token}}'
+                WHEN bought_id = 0 THEN from_hex('{{aave_dai_avalanche_c_token}}')
+                WHEN bought_id = 1 THEN from_hex('{{aave_usdc_avalanche_c_token}}')
+                WHEN bought_id = 2 THEN from_hex('{{aave_usdt_avalanche_c_token}}')
             END as token_bought_address,
             CASE
-                WHEN sold_id = 0 THEN '{{aave_dai_avalanche_c_token}}'
-                WHEN sold_id = 1 THEN '{{aave_usdc_avalanche_c_token}}'
-                WHEN sold_id = 2 THEN '{{aave_usdt_avalanche_c_token}}'
+                WHEN sold_id = 0 THEN from_hex('{{aave_dai_avalanche_c_token}}')
+                WHEN sold_id = 1 THEN from_hex('{{aave_usdc_avalanche_c_token}}')
+                WHEN sold_id = 2 THEN from_hex('{{aave_usdt_avalanche_c_token}}')
             END as token_sold_address,
             contract_address AS project_contract_address,
             evt_tx_hash AS tx_hash,
@@ -159,14 +159,14 @@ WITH dexs AS (
             tokens_sold AS token_sold_amount_raw,
             CAST(NULL as double) as amount_usd,
             CASE
-                WHEN bought_id = 0 THEN '{{dai_e_avalanche_c_token}}'
-                WHEN bought_id = 1 THEN '{{usdc_e_avalanche_c_token}}'
-                WHEN bought_id = 2 THEN '{{usdt_e_avalanche_c_token}}'
+                WHEN bought_id = 0 THEN from_hex('{{dai_e_avalanche_c_token}}')
+                WHEN bought_id = 1 THEN from_hex('{{usdc_e_avalanche_c_token}}')
+                WHEN bought_id = 2 THEN from_hex('{{usdt_e_avalanche_c_token}}')
             END as token_bought_address,
             CASE
-                WHEN sold_id = 0 THEN '{{dai_e_avalanche_c_token}}'
-                WHEN sold_id = 1 THEN '{{usdc_e_avalanche_c_token}}'
-                WHEN sold_id = 2 THEN '{{usdt_e_avalanche_c_token}}'
+                WHEN sold_id = 0 THEN from_hex('{{dai_e_avalanche_c_token}}')
+                WHEN sold_id = 1 THEN from_hex('{{usdc_e_avalanche_c_token}}')
+                WHEN sold_id = 2 THEN from_hex('{{usdt_e_avalanche_c_token}}')
             END as token_sold_address,
             contract_address AS project_contract_address,
             evt_tx_hash AS tx_hash,
@@ -189,14 +189,14 @@ WITH dexs AS (
             tokens_sold AS token_sold_amount_raw,
             CAST(NULL as double) as amount_usd,
             CASE
-                WHEN bought_id = 0 THEN '{{dai_e_avalanche_c_token}}'
-                WHEN bought_id = 1 THEN '{{usdc_avalanche_c_token}}'
-                WHEN bought_id = 2 THEN '{{usdt_avalanche_c_token}}'
+                WHEN bought_id = 0 THEN from_hex('{{dai_e_avalanche_c_token}}')
+                WHEN bought_id = 1 THEN from_hex('{{usdc_avalanche_c_token}}')
+                WHEN bought_id = 2 THEN from_hex('{{usdt_avalanche_c_token}}')
             END as token_bought_address,
             CASE
-                WHEN sold_id = 0 THEN '{{dai_e_avalanche_c_token}}'
-                WHEN sold_id = 1 THEN '{{usdc_avalanche_c_token}}'
-                WHEN sold_id = 2 THEN '{{usdt_avalanche_c_token}}'
+                WHEN sold_id = 0 THEN from_hex('{{dai_e_avalanche_c_token}}')
+                WHEN sold_id = 1 THEN from_hex('{{usdc_avalanche_c_token}}')
+                WHEN sold_id = 2 THEN from_hex('{{usdt_avalanche_c_token}}')
             END as token_sold_address,
             contract_address AS project_contract_address,
             evt_tx_hash AS tx_hash,
@@ -219,12 +219,12 @@ WITH dexs AS (
             tokens_sold AS token_sold_amount_raw,
             CAST(NULL as double) as amount_usd,
             CASE
-                WHEN bought_id = 0 THEN '{{agEUR_avalanche_c_token}}'
-                WHEN bought_id = 1 THEN '{{jEUR_avalanche_c_token}}'
+                WHEN bought_id = 0 THEN from_hex('{{agEUR_avalanche_c_token}}')
+                WHEN bought_id = 1 THEN from_hex('{{jEUR_avalanche_c_token}}')
             END as token_bought_address,
             CASE
-                WHEN sold_id = 0 THEN '{{agEUR_avalanche_c_token}}'
-                WHEN sold_id = 1 THEN '{{jEUR_avalanche_c_token}}'
+                WHEN sold_id = 0 THEN from_hex('{{agEUR_avalanche_c_token}}')
+                WHEN sold_id = 1 THEN from_hex('{{jEUR_avalanche_c_token}}')
             END as token_sold_address,
             contract_address AS project_contract_address,
             evt_tx_hash AS tx_hash,
@@ -247,14 +247,14 @@ WITH dexs AS (
             tokens_sold AS token_sold_amount_raw,
             CAST(NULL as double) as amount_usd,
             CASE
-                WHEN bought_id = 0 THEN '{{arUSD_avalanche_c_token}}'
-                WHEN bought_id = 1 THEN '{{usdc_avalanche_c_token}}'
-                WHEN bought_id = 2 THEN '{{usdt_avalanche_c_token}}'
+                WHEN bought_id = 0 THEN from_hex('{{arUSD_avalanche_c_token}}')
+                WHEN bought_id = 1 THEN from_hex('{{usdc_avalanche_c_token}}')
+                WHEN bought_id = 2 THEN from_hex('{{usdt_avalanche_c_token}}')
             END as token_bought_address,
             CASE
-                WHEN sold_id = 0 THEN '{{arUSD_avalanche_c_token}}'
-                WHEN sold_id = 1 THEN '{{usdc_avalanche_c_token}}'
-                WHEN sold_id = 2 THEN '{{usdt_avalanche_c_token}}'
+                WHEN sold_id = 0 THEN from_hex('{{arUSD_avalanche_c_token}}')
+                WHEN sold_id = 1 THEN from_hex('{{usdc_avalanche_c_token}}')
+                WHEN sold_id = 2 THEN from_hex('{{usdt_avalanche_c_token}}')
             END as token_sold_address,
             contract_address AS project_contract_address,
             evt_tx_hash AS tx_hash,
@@ -277,14 +277,14 @@ WITH dexs AS (
             tokens_sold AS token_sold_amount_raw,
             CAST(NULL as double) as amount_usd,
             CASE
-                WHEN bought_id = 0 THEN '{{av3CRV_avalanche_c_token}}'
-                WHEN bought_id = 1 THEN '{{aave_wbtc_avalanche_c_token}}'
-                WHEN bought_id = 2 THEN '{{aave_weth_avalanche_c_token}}'
+                WHEN bought_id = 0 THEN from_hex('{{av3CRV_avalanche_c_token}}')
+                WHEN bought_id = 1 THEN from_hex('{{aave_wbtc_avalanche_c_token}}')
+                WHEN bought_id = 2 THEN from_hex('{{aave_weth_avalanche_c_token}}')
             END as token_bought_address,
             CASE
-                WHEN sold_id = 0 THEN '{{av3CRV_avalanche_c_token}}'
-                WHEN sold_id = 1 THEN '{{aave_wbtc_avalanche_c_token}}'
-                WHEN sold_id = 2 THEN '{{aave_weth_avalanche_c_token}}'
+                WHEN sold_id = 0 THEN from_hex('{{av3CRV_avalanche_c_token}}')
+                WHEN sold_id = 1 THEN from_hex('{{aave_wbtc_avalanche_c_token}}')
+                WHEN sold_id = 2 THEN from_hex('{{aave_weth_avalanche_c_token}}')
             END as token_sold_address,
             contract_address AS project_contract_address,
             evt_tx_hash AS tx_hash,
@@ -307,14 +307,14 @@ WITH dexs AS (
             tokens_sold AS token_sold_amount_raw,
             CAST(NULL as double) as amount_usd,
             CASE
-                WHEN bought_id = 0 THEN '{{dai_e_avalanche_c_token}}'
-                WHEN bought_id = 1 THEN '{{usdc_avalanche_c_token}}'
-                WHEN bought_id = 2 THEN '{{usdt_avalanche_c_token}}'
+                WHEN bought_id = 0 THEN from_hex('{{dai_e_avalanche_c_token}}')
+                WHEN bought_id = 1 THEN from_hex('{{usdc_avalanche_c_token}}')
+                WHEN bought_id = 2 THEN from_hex('{{usdt_avalanche_c_token}}')
             END as token_bought_address,
             CASE
-                WHEN sold_id = 0 THEN '{{dai_e_avalanche_c_token}}'
-                WHEN sold_id = 1 THEN '{{usdc_avalanche_c_token}}'
-                WHEN sold_id = 2 THEN '{{usdt_avalanche_c_token}}'
+                WHEN sold_id = 0 THEN from_hex('{{dai_e_avalanche_c_token}}')
+                WHEN sold_id = 1 THEN from_hex('{{usdc_avalanche_c_token}}')
+                WHEN sold_id = 2 THEN from_hex('{{usdt_avalanche_c_token}}')
             END as token_sold_address,
             contract_address AS project_contract_address,
             evt_tx_hash AS tx_hash,
@@ -337,12 +337,12 @@ WITH dexs AS (
             tokens_sold AS token_sold_amount_raw,
             CAST(NULL as double) as amount_usd,
             CASE
-                WHEN bought_id = 0 THEN '{{axlUSDC_avalanche_c_token}}'
-                WHEN bought_id = 1 THEN '{{usdc_avalanche_c_token}}'
+                WHEN bought_id = 0 THEN from_hex('{{axlUSDC_avalanche_c_token}}')
+                WHEN bought_id = 1 THEN from_hex('{{usdc_avalanche_c_token}}')
             END as token_bought_address,
             CASE
-                WHEN sold_id = 0 THEN '{{axlUSDC_avalanche_c_token}}'
-                WHEN sold_id = 1 THEN '{{usdc_avalanche_c_token}}'
+                WHEN sold_id = 0 THEN from_hex('{{axlUSDC_avalanche_c_token}}')
+                WHEN sold_id = 1 THEN from_hex('{{usdc_avalanche_c_token}}')
             END as token_sold_address,
             contract_address AS project_contract_address,
             evt_tx_hash AS tx_hash,
@@ -365,12 +365,12 @@ WITH dexs AS (
             tokens_sold AS token_sold_amount_raw,
             CAST(NULL as double) as amount_usd,
             CASE
-                WHEN bought_id = 0 THEN '{{axlUSDC_avalanche_c_token}}'
-                WHEN bought_id = 1 THEN '{{usdc_e_avalanche_c_token}}'
+                WHEN bought_id = 0 THEN from_hex('{{axlUSDC_avalanche_c_token}}')
+                WHEN bought_id = 1 THEN from_hex('{{usdc_e_avalanche_c_token}}')
             END as token_bought_address,
             CASE
-                WHEN sold_id = 0 THEN '{{axlUSDC_avalanche_c_token}}'
-                WHEN sold_id = 1 THEN '{{usdc_e_avalanche_c_token}}'
+                WHEN sold_id = 0 THEN from_hex('{{axlUSDC_avalanche_c_token}}')
+                WHEN sold_id = 1 THEN from_hex('{{usdc_e_avalanche_c_token}}')
             END as token_sold_address,
             contract_address AS project_contract_address,
             evt_tx_hash AS tx_hash,
@@ -393,14 +393,14 @@ WITH dexs AS (
             tokens_sold AS token_sold_amount_raw,
             CAST(NULL as double) as amount_usd,
             CASE
-                WHEN bought_id = 0 THEN '{{blizz_dai_avalanche_c_token}}'
-                WHEN bought_id = 1 THEN '{{blizz_usdc_avalanche_c_token}}'
-                WHEN bought_id = 2 THEN '{{blizz_usdt_avalanche_c_token}}'
+                WHEN bought_id = 0 THEN from_hex('{{blizz_dai_avalanche_c_token}}')
+                WHEN bought_id = 1 THEN from_hex('{{blizz_usdc_avalanche_c_token}}')
+                WHEN bought_id = 2 THEN from_hex('{{blizz_usdt_avalanche_c_token}}')
             END as token_bought_address,
             CASE
-                WHEN sold_id = 0 THEN '{{blizz_dai_avalanche_c_token}}'
-                WHEN sold_id = 1 THEN '{{blizz_usdc_avalanche_c_token}}'
-                WHEN sold_id = 2 THEN '{{blizz_usdt_avalanche_c_token}}'
+                WHEN sold_id = 0 THEN from_hex('{{blizz_dai_avalanche_c_token}}')
+                WHEN sold_id = 1 THEN from_hex('{{blizz_usdc_avalanche_c_token}}')
+                WHEN sold_id = 2 THEN from_hex('{{blizz_usdt_avalanche_c_token}}')
             END as token_sold_address,
             contract_address AS project_contract_address,
             evt_tx_hash AS tx_hash,
@@ -423,12 +423,12 @@ WITH dexs AS (
             tokens_sold AS token_sold_amount_raw,
             CAST(NULL as double) as amount_usd,
             CASE
-                WHEN bought_id = 0 THEN '{{dd_avalanche_c_token}}'
-                WHEN bought_id = 1 THEN '{{usdc_e_avalanche_c_token}}'
+                WHEN bought_id = 0 THEN from_hex('{{dd_avalanche_c_token}}')
+                WHEN bought_id = 1 THEN from_hex('{{usdc_e_avalanche_c_token}}')
             END as token_bought_address,
             CASE
-                WHEN sold_id = 0 THEN '{{dd_avalanche_c_token}}'
-                WHEN sold_id = 1 THEN '{{usdc_e_avalanche_c_token}}'
+                WHEN sold_id = 0 THEN from_hex('{{dd_avalanche_c_token}}')
+                WHEN sold_id = 1 THEN from_hex('{{usdc_e_avalanche_c_token}}')
             END as token_sold_address,
             contract_address AS project_contract_address,
             evt_tx_hash AS tx_hash,
@@ -451,16 +451,16 @@ WITH dexs AS (
             tokens_sold AS token_sold_amount_raw,
             CAST(NULL as double) as amount_usd,
             CASE
-                WHEN bought_id = 0 THEN '{{debridge_usdc_avalanche_c_token}}'
-                WHEN bought_id = 1 THEN '{{dai_e_avalanche_c_token}}'
-                WHEN bought_id = 2 THEN '{{usdc_e_avalanche_c_token}}'
-                WHEN bought_id = 3 THEN '{{usdt_e_avalanche_c_token}}'
+                WHEN bought_id = 0 THEN from_hex('{{debridge_usdc_avalanche_c_token}}')
+                WHEN bought_id = 1 THEN from_hex('{{dai_e_avalanche_c_token}}')
+                WHEN bought_id = 2 THEN from_hex('{{usdc_e_avalanche_c_token}}')
+                WHEN bought_id = 3 THEN from_hex('{{usdt_e_avalanche_c_token}}')
             END as token_bought_address,
             CASE
-                WHEN sold_id = 0 THEN '{{debridge_usdc_avalanche_c_token}}'
-                WHEN sold_id = 1 THEN '{{av3CRV_avalanche_c_token}}'
-                WHEN sold_id = 2 THEN '{{av3CRV_avalanche_c_token}}'
-                WHEN sold_id = 3 THEN '{{av3CRV_avalanche_c_token}}'
+                WHEN sold_id = 0 THEN from_hex('{{debridge_usdc_avalanche_c_token}}')
+                WHEN sold_id = 1 THEN from_hex('{{av3CRV_avalanche_c_token}}')
+                WHEN sold_id = 2 THEN from_hex('{{av3CRV_avalanche_c_token}}')
+                WHEN sold_id = 3 THEN from_hex('{{av3CRV_avalanche_c_token}}')
             END as token_sold_address,
             contract_address AS project_contract_address,
             evt_tx_hash AS tx_hash,
@@ -483,12 +483,12 @@ WITH dexs AS (
             tokens_sold AS token_sold_amount_raw,
             CAST(NULL as double) as amount_usd,
             CASE
-                WHEN bought_id = 0 THEN '{{defrost_h20_avalanche_c_token}}'
-                WHEN bought_id = 1 THEN '{{av3CRV_avalanche_c_token}}'
+                WHEN bought_id = 0 THEN from_hex('{{defrost_h20_avalanche_c_token}}')
+                WHEN bought_id = 1 THEN from_hex('{{av3CRV_avalanche_c_token}}')
             END as token_bought_address,
             CASE
-                WHEN sold_id = 0 THEN '{{defrost_h20_avalanche_c_token}}'
-                WHEN sold_id = 1 THEN '{{av3CRV_avalanche_c_token}}'
+                WHEN sold_id = 0 THEN from_hex('{{defrost_h20_avalanche_c_token}}')
+                WHEN sold_id = 1 THEN from_hex('{{av3CRV_avalanche_c_token}}')
             END as token_sold_address,
             contract_address AS project_contract_address,
             evt_tx_hash AS tx_hash,
@@ -511,16 +511,16 @@ WITH dexs AS (
             tokens_sold AS token_sold_amount_raw,
             CAST(NULL as double) as amount_usd,
             CASE
-                WHEN bought_id = 0 THEN '{{defrost_h20_avalanche_c_token}}'
-                WHEN bought_id = 1 THEN '{{dai_e_avalanche_c_token}}'
-                WHEN bought_id = 2 THEN '{{usdc_e_avalanche_c_token}}'
-                WHEN bought_id = 3 THEN '{{usdt_e_avalanche_c_token}}'
+                WHEN bought_id = 0 THEN from_hex('{{defrost_h20_avalanche_c_token}}')
+                WHEN bought_id = 1 THEN from_hex('{{dai_e_avalanche_c_token}}')
+                WHEN bought_id = 2 THEN from_hex('{{usdc_e_avalanche_c_token}}')
+                WHEN bought_id = 3 THEN from_hex('{{usdt_e_avalanche_c_token}}')
             END as token_bought_address,
             CASE
-                WHEN sold_id = 0 THEN '{{defrost_h20_avalanche_c_token}}'
-                WHEN sold_id = 1 THEN '{{av3CRV_avalanche_c_token}}'
-                WHEN sold_id = 2 THEN '{{av3CRV_avalanche_c_token}}'
-                WHEN sold_id = 3 THEN '{{av3CRV_avalanche_c_token}}'
+                WHEN sold_id = 0 THEN from_hex('{{defrost_h20_avalanche_c_token}}')
+                WHEN sold_id = 1 THEN from_hex('{{av3CRV_avalanche_c_token}}')
+                WHEN sold_id = 2 THEN from_hex('{{av3CRV_avalanche_c_token}}')
+                WHEN sold_id = 3 THEN from_hex('{{av3CRV_avalanche_c_token}}')
             END as token_sold_address,
             contract_address AS project_contract_address,
             evt_tx_hash AS tx_hash,
@@ -543,12 +543,12 @@ WITH dexs AS (
             tokens_sold AS token_sold_amount_raw,
             CAST(NULL as double) as amount_usd,
             CASE
-                WHEN bought_id = 0 THEN '{{eEUR_avalanche_c_token}}'
-                WHEN bought_id = 1 THEN '{{jEUR_avalanche_c_token}}'
+                WHEN bought_id = 0 THEN from_hex('{{eEUR_avalanche_c_token}}')
+                WHEN bought_id = 1 THEN from_hex('{{jEUR_avalanche_c_token}}')
             END as token_bought_address,
             CASE
-                WHEN sold_id = 0 THEN '{{eEUR_avalanche_c_token}}'
-                WHEN sold_id = 1 THEN '{{jEUR_avalanche_c_token}}'
+                WHEN sold_id = 0 THEN from_hex('{{eEUR_avalanche_c_token}}')
+                WHEN sold_id = 1 THEN from_hex('{{jEUR_avalanche_c_token}}')
             END as token_sold_address,
             contract_address AS project_contract_address,
             evt_tx_hash AS tx_hash,
@@ -571,12 +571,12 @@ WITH dexs AS (
             tokens_sold AS token_sold_amount_raw,
             CAST(NULL as double) as amount_usd,
             CASE
-                WHEN bought_id = 0 THEN '{{frax_avalanche_c_token}}'
-                WHEN bought_id = 1 THEN '{{av3CRV_guage_avalanche_c_token}}'
+                WHEN bought_id = 0 THEN from_hex('{{frax_avalanche_c_token}}')
+                WHEN bought_id = 1 THEN from_hex('{{av3CRV_guage_avalanche_c_token}}')
             END as token_bought_address,
             CASE
-                WHEN sold_id = 0 THEN '{{frax_avalanche_c_token}}'
-                WHEN sold_id = 1 THEN '{{av3CRV_guage_avalanche_c_token}}'
+                WHEN sold_id = 0 THEN from_hex('{{frax_avalanche_c_token}}')
+                WHEN sold_id = 1 THEN from_hex('{{av3CRV_guage_avalanche_c_token}}')
             END as token_sold_address,
             contract_address AS project_contract_address,
             evt_tx_hash AS tx_hash,
@@ -599,16 +599,16 @@ WITH dexs AS (
             tokens_sold AS token_sold_amount_raw,
             CAST(NULL as double) as amount_usd,
             CASE
-                WHEN bought_id = 0 THEN '{{frax_avalanche_c_token}}'
-                WHEN bought_id = 1 THEN '{{dai_e_avalanche_c_token}}'
-                WHEN bought_id = 2 THEN '{{usdc_e_avalanche_c_token}}'
-                WHEN bought_id = 3 THEN '{{usdt_e_avalanche_c_token}}'
+                WHEN bought_id = 0 THEN from_hex('{{frax_avalanche_c_token}}')
+                WHEN bought_id = 1 THEN from_hex('{{dai_e_avalanche_c_token}}')
+                WHEN bought_id = 2 THEN from_hex('{{usdc_e_avalanche_c_token}}')
+                WHEN bought_id = 3 THEN from_hex('{{usdt_e_avalanche_c_token}}')
             END as token_bought_address,
             CASE
-                WHEN sold_id = 0 THEN '{{frax_avalanche_c_token}}'
-                WHEN sold_id = 1 THEN '{{av3CRV_avalanche_c_token}}'
-                WHEN sold_id = 2 THEN '{{av3CRV_avalanche_c_token}}'
-                WHEN sold_id = 3 THEN '{{av3CRV_avalanche_c_token}}'
+                WHEN sold_id = 0 THEN from_hex('{{frax_avalanche_c_token}}')
+                WHEN sold_id = 1 THEN from_hex('{{av3CRV_avalanche_c_token}}')
+                WHEN sold_id = 2 THEN from_hex('{{av3CRV_avalanche_c_token}}')
+                WHEN sold_id = 3 THEN from_hex('{{av3CRV_avalanche_c_token}}')
             END as token_sold_address,
             contract_address AS project_contract_address,
             evt_tx_hash AS tx_hash,
@@ -631,12 +631,12 @@ WITH dexs AS (
             tokens_sold AS token_sold_amount_raw,
             CAST(NULL as double) as amount_usd,
             CASE
-                WHEN bought_id = 0 THEN '{{fusd_avalanche_c_token}}'
-                WHEN bought_id = 1 THEN '{{mim_avalanche_c_token}}'
+                WHEN bought_id = 0 THEN from_hex('{{fusd_avalanche_c_token}}')
+                WHEN bought_id = 1 THEN from_hex('{{mim_avalanche_c_token}}')
             END as token_bought_address,
             CASE
-                WHEN sold_id = 0 THEN '{{fusd_avalanche_c_token}}'
-                WHEN sold_id = 1 THEN '{{mim_avalanche_c_token}}'
+                WHEN sold_id = 0 THEN from_hex('{{fusd_avalanche_c_token}}')
+                WHEN sold_id = 1 THEN from_hex('{{mim_avalanche_c_token}}')
             END as token_sold_address,
             contract_address AS project_contract_address,
             evt_tx_hash AS tx_hash,
@@ -659,12 +659,12 @@ WITH dexs AS (
             tokens_sold AS token_sold_amount_raw,
             CAST(NULL as double) as amount_usd,
             CASE
-                WHEN bought_id = 0 THEN '{{fusd_avalanche_c_token}}'
-                WHEN bought_id = 1 THEN '{{usdc_e_avalanche_c_token}}'
+                WHEN bought_id = 0 THEN from_hex('{{fusd_avalanche_c_token}}')
+                WHEN bought_id = 1 THEN from_hex('{{usdc_e_avalanche_c_token}}')
             END as token_bought_address,
             CASE
-                WHEN sold_id = 0 THEN '{{fusd_avalanche_c_token}}'
-                WHEN sold_id = 1 THEN '{{usdc_e_avalanche_c_token}}'
+                WHEN sold_id = 0 THEN from_hex('{{fusd_avalanche_c_token}}')
+                WHEN sold_id = 1 THEN from_hex('{{usdc_e_avalanche_c_token}}')
             END as token_sold_address,
             contract_address AS project_contract_address,
             evt_tx_hash AS tx_hash,
@@ -687,12 +687,12 @@ WITH dexs AS (
             tokens_sold AS token_sold_amount_raw,
             CAST(NULL as double) as amount_usd,
             CASE
-                WHEN bought_id = 0 THEN '{{wavax_avalanche_c_token}}'
-                WHEN bought_id = 1 THEN '{{ankr_aAVAXb_avalanche_c_token}}'
+                WHEN bought_id = 0 THEN from_hex('{{wavax_avalanche_c_token}}')
+                WHEN bought_id = 1 THEN from_hex('{{ankr_aAVAXb_avalanche_c_token}}')
             END as token_bought_address,
             CASE
-                WHEN sold_id = 0 THEN '{{wavax_avalanche_c_token}}'
-                WHEN sold_id = 1 THEN '{{ankr_aAVAXb_avalanche_c_token}}'
+                WHEN sold_id = 0 THEN from_hex('{{wavax_avalanche_c_token}}')
+                WHEN sold_id = 1 THEN from_hex('{{ankr_aAVAXb_avalanche_c_token}}')
             END as token_sold_address,
             contract_address AS project_contract_address,
             evt_tx_hash AS tx_hash,
@@ -715,12 +715,12 @@ WITH dexs AS (
             tokens_sold AS token_sold_amount_raw,
             CAST(NULL as double) as amount_usd,
             CASE
-                WHEN bought_id = 0 THEN '{{mai_avalanche_c_token}}'
-                WHEN bought_id = 1 THEN '{{av3CRV_avalanche_c_token}}'
+                WHEN bought_id = 0 THEN from_hex('{{mai_avalanche_c_token}}')
+                WHEN bought_id = 1 THEN from_hex('{{av3CRV_avalanche_c_token}}')
             END as token_bought_address,
             CASE
-                WHEN sold_id = 0 THEN '{{mai_avalanche_c_token}}'
-                WHEN sold_id = 1 THEN '{{av3CRV_avalanche_c_token}}'
+                WHEN sold_id = 0 THEN from_hex('{{mai_avalanche_c_token}}')
+                WHEN sold_id = 1 THEN from_hex('{{av3CRV_avalanche_c_token}}')
             END as token_sold_address,
             contract_address AS project_contract_address,
             evt_tx_hash AS tx_hash,
@@ -743,16 +743,16 @@ WITH dexs AS (
             tokens_sold AS token_sold_amount_raw,
             CAST(NULL as double) as amount_usd,
             CASE
-                WHEN bought_id = 0 THEN '{{mai_avalanche_c_token}}'
-                WHEN bought_id = 1 THEN '{{dai_e_avalanche_c_token}}'
-                WHEN bought_id = 2 THEN '{{usdc_e_avalanche_c_token}}'
-                WHEN bought_id = 3 THEN '{{usdt_e_avalanche_c_token}}'
+                WHEN bought_id = 0 THEN from_hex('{{mai_avalanche_c_token}}')
+                WHEN bought_id = 1 THEN from_hex('{{dai_e_avalanche_c_token}}')
+                WHEN bought_id = 2 THEN from_hex('{{usdc_e_avalanche_c_token}}')
+                WHEN bought_id = 3 THEN from_hex('{{usdt_e_avalanche_c_token}}')
             END as token_bought_address,
             CASE
-                WHEN sold_id = 0 THEN '{{mai_avalanche_c_token}}'
-                WHEN sold_id = 1 THEN '{{av3CRV_avalanche_c_token}}'
-                WHEN sold_id = 2 THEN '{{av3CRV_avalanche_c_token}}'
-                WHEN sold_id = 3 THEN '{{av3CRV_avalanche_c_token}}'
+                WHEN sold_id = 0 THEN from_hex('{{mai_avalanche_c_token}}')
+                WHEN sold_id = 1 THEN from_hex('{{av3CRV_avalanche_c_token}}')
+                WHEN sold_id = 2 THEN from_hex('{{av3CRV_avalanche_c_token}}')
+                WHEN sold_id = 3 THEN from_hex('{{av3CRV_avalanche_c_token}}')
             END as token_sold_address,
             contract_address AS project_contract_address,
             evt_tx_hash AS tx_hash,
@@ -775,12 +775,12 @@ WITH dexs AS (
             tokens_sold AS token_sold_amount_raw,
             CAST(NULL as double) as amount_usd,
             CASE
-                WHEN bought_id = 0 THEN '{{mim_avalanche_c_token}}'
-                WHEN bought_id = 1 THEN '{{av3CRV_avalanche_c_token}}'
+                WHEN bought_id = 0 THEN from_hex('{{mim_avalanche_c_token}}')
+                WHEN bought_id = 1 THEN from_hex('{{av3CRV_avalanche_c_token}}')
             END as token_bought_address,
             CASE
-                WHEN sold_id = 0 THEN '{{mim_avalanche_c_token}}'
-                WHEN sold_id = 1 THEN '{{av3CRV_avalanche_c_token}}'
+                WHEN sold_id = 0 THEN from_hex('{{mim_avalanche_c_token}}')
+                WHEN sold_id = 1 THEN from_hex('{{av3CRV_avalanche_c_token}}')
             END as token_sold_address,
             contract_address AS project_contract_address,
             evt_tx_hash AS tx_hash,
@@ -803,16 +803,16 @@ WITH dexs AS (
             tokens_sold AS token_sold_amount_raw,
             CAST(NULL as double) as amount_usd,
             CASE
-                WHEN bought_id = 0 THEN '{{mim_avalanche_c_token}}'
-                WHEN bought_id = 1 THEN '{{dai_e_avalanche_c_token}}'
-                WHEN bought_id = 2 THEN '{{usdc_e_avalanche_c_token}}'
-                WHEN bought_id = 3 THEN '{{usdt_e_avalanche_c_token}}'
+                WHEN bought_id = 0 THEN from_hex('{{mim_avalanche_c_token}}')
+                WHEN bought_id = 1 THEN from_hex('{{dai_e_avalanche_c_token}}')
+                WHEN bought_id = 2 THEN from_hex('{{usdc_e_avalanche_c_token}}')
+                WHEN bought_id = 3 THEN from_hex('{{usdt_e_avalanche_c_token}}')
             END as token_bought_address,
             CASE
-                WHEN sold_id = 0 THEN '{{mim_avalanche_c_token}}'
-                WHEN sold_id = 1 THEN '{{av3CRV_avalanche_c_token}}'
-                WHEN sold_id = 2 THEN '{{av3CRV_avalanche_c_token}}'
-                WHEN sold_id = 3 THEN '{{av3CRV_avalanche_c_token}}'
+                WHEN sold_id = 0 THEN from_hex('{{mim_avalanche_c_token}}')
+                WHEN sold_id = 1 THEN from_hex('{{av3CRV_avalanche_c_token}}')
+                WHEN sold_id = 2 THEN from_hex('{{av3CRV_avalanche_c_token}}')
+                WHEN sold_id = 3 THEN from_hex('{{av3CRV_avalanche_c_token}}')
             END as token_sold_address,
             contract_address AS project_contract_address,
             evt_tx_hash AS tx_hash,
@@ -835,12 +835,12 @@ WITH dexs AS (
             tokens_sold AS token_sold_amount_raw,
             CAST(NULL as double) as amount_usd,
             CASE
-                WHEN bought_id = 0 THEN '{{moremoney_avalanche_c_token}}'
-                WHEN bought_id = 1 THEN '{{av3CRV_avalanche_c_token}}'
+                WHEN bought_id = 0 THEN from_hex('{{moremoney_avalanche_c_token}}')
+                WHEN bought_id = 1 THEN from_hex('{{av3CRV_avalanche_c_token}}')
             END as token_bought_address,
             CASE
-                WHEN sold_id = 0 THEN '{{moremoney_avalanche_c_token}}'
-                WHEN sold_id = 1 THEN '{{av3CRV_avalanche_c_token}}'
+                WHEN sold_id = 0 THEN from_hex('{{moremoney_avalanche_c_token}}')
+                WHEN sold_id = 1 THEN from_hex('{{av3CRV_avalanche_c_token}}')
             END as token_sold_address,
             contract_address AS project_contract_address,
             evt_tx_hash AS tx_hash,
@@ -863,16 +863,16 @@ WITH dexs AS (
             tokens_sold AS token_sold_amount_raw,
             CAST(NULL as double) as amount_usd,
             CASE
-                WHEN bought_id = 0 THEN '{{moremoney_avalanche_c_token}}'
-                WHEN bought_id = 1 THEN '{{dai_e_avalanche_c_token}}'
-                WHEN bought_id = 2 THEN '{{usdc_e_avalanche_c_token}}'
-                WHEN bought_id = 3 THEN '{{usdt_e_avalanche_c_token}}'
+                WHEN bought_id = 0 THEN from_hex('{{moremoney_avalanche_c_token}}')
+                WHEN bought_id = 1 THEN from_hex('{{dai_e_avalanche_c_token}}')
+                WHEN bought_id = 2 THEN from_hex('{{usdc_e_avalanche_c_token}}')
+                WHEN bought_id = 3 THEN from_hex('{{usdt_e_avalanche_c_token}}')
             END as token_bought_address,
             CASE
-                WHEN sold_id = 0 THEN '{{moremoney_avalanche_c_token}}'
-                WHEN sold_id = 1 THEN '{{av3CRV_avalanche_c_token}}'
-                WHEN sold_id = 2 THEN '{{av3CRV_avalanche_c_token}}'
-                WHEN sold_id = 3 THEN '{{av3CRV_avalanche_c_token}}'
+                WHEN sold_id = 0 THEN from_hex('{{moremoney_avalanche_c_token}}')
+                WHEN sold_id = 1 THEN from_hex('{{av3CRV_avalanche_c_token}}')
+                WHEN sold_id = 2 THEN from_hex('{{av3CRV_avalanche_c_token}}')
+                WHEN sold_id = 3 THEN from_hex('{{av3CRV_avalanche_c_token}}')
             END as token_sold_address,
             contract_address AS project_contract_address,
             evt_tx_hash AS tx_hash,
@@ -895,16 +895,16 @@ WITH dexs AS (
             tokens_sold AS token_sold_amount_raw,
             CAST(NULL as double) as amount_usd,
             CASE
-                WHEN bought_id = 0 THEN '{{nxusd_avalanche_c_token}}'
-                WHEN bought_id = 1 THEN '{{dai_e_avalanche_c_token}}'
-                WHEN bought_id = 2 THEN '{{usdc_e_avalanche_c_token}}'
-                WHEN bought_id = 3 THEN '{{usdt_e_avalanche_c_token}}'
+                WHEN bought_id = 0 THEN from_hex('{{nxusd_avalanche_c_token}}')
+                WHEN bought_id = 1 THEN from_hex('{{dai_e_avalanche_c_token}}')
+                WHEN bought_id = 2 THEN from_hex('{{usdc_e_avalanche_c_token}}')
+                WHEN bought_id = 3 THEN from_hex('{{usdt_e_avalanche_c_token}}')
             END as token_bought_address,
             CASE
-                WHEN sold_id = 0 THEN '{{nxusd_avalanche_c_token}}'
-                WHEN sold_id = 1 THEN '{{av3CRV_avalanche_c_token}}'
-                WHEN sold_id = 2 THEN '{{av3CRV_avalanche_c_token}}'
-                WHEN sold_id = 3 THEN '{{av3CRV_avalanche_c_token}}'
+                WHEN sold_id = 0 THEN from_hex('{{nxusd_avalanche_c_token}}')
+                WHEN sold_id = 1 THEN from_hex('{{av3CRV_avalanche_c_token}}')
+                WHEN sold_id = 2 THEN from_hex('{{av3CRV_avalanche_c_token}}')
+                WHEN sold_id = 3 THEN from_hex('{{av3CRV_avalanche_c_token}}')
             END as token_sold_address,
             contract_address AS project_contract_address,
             evt_tx_hash AS tx_hash,
@@ -927,12 +927,12 @@ WITH dexs AS (
             tokens_sold AS token_sold_amount_raw,
             CAST(NULL as double) as amount_usd,
             CASE
-                WHEN bought_id = 0 THEN '{{aave_wbtc_avalanche_c_token}}'
-                WHEN bought_id = 1 THEN '{{renBTC_avalanche_c_token}}'
+                WHEN bought_id = 0 THEN from_hex('{{aave_wbtc_avalanche_c_token}}')
+                WHEN bought_id = 1 THEN from_hex('{{renBTC_avalanche_c_token}}')
             END as token_bought_address,
             CASE
-                WHEN sold_id = 0 THEN '{{aave_wbtc_avalanche_c_token}}'
-                WHEN sold_id = 1 THEN '{{renBTC_avalanche_c_token}}'
+                WHEN sold_id = 0 THEN from_hex('{{aave_wbtc_avalanche_c_token}}')
+                WHEN sold_id = 1 THEN from_hex('{{renBTC_avalanche_c_token}}')
             END as token_sold_address,
             contract_address AS project_contract_address,
             evt_tx_hash AS tx_hash,
@@ -955,12 +955,12 @@ WITH dexs AS (
             tokens_sold AS token_sold_amount_raw,
             CAST(NULL as double) as amount_usd,
             CASE
-                WHEN bought_id = 0 THEN '{{wbtc_e_avalanche_c_token}}'
-                WHEN bought_id = 1 THEN '{{renBTC_avalanche_c_token}}'
+                WHEN bought_id = 0 THEN from_hex('{{wbtc_e_avalanche_c_token}}')
+                WHEN bought_id = 1 THEN from_hex('{{renBTC_avalanche_c_token}}')
             END as token_bought_address,
             CASE
-                WHEN sold_id = 0 THEN '{{wbtc_e_avalanche_c_token}}'
-                WHEN sold_id = 1 THEN '{{renBTC_avalanche_c_token}}'
+                WHEN sold_id = 0 THEN from_hex('{{wbtc_e_avalanche_c_token}}')
+                WHEN sold_id = 1 THEN from_hex('{{renBTC_avalanche_c_token}}')
             END as token_sold_address,
             contract_address AS project_contract_address,
             evt_tx_hash AS tx_hash,
@@ -983,16 +983,16 @@ WITH dexs AS (
             tokens_sold AS token_sold_amount_raw,
             CAST(NULL as double) as amount_usd,
             CASE
-                WHEN bought_id = 0 THEN '{{usdl_avalanche_c_token}}'
-                WHEN bought_id = 1 THEN '{{dai_e_avalanche_c_token}}'
-                WHEN bought_id = 2 THEN '{{usdc_e_avalanche_c_token}}'
-                WHEN bought_id = 3 THEN '{{usdt_e_avalanche_c_token}}'
+                WHEN bought_id = 0 THEN from_hex('{{usdl_avalanche_c_token}}')
+                WHEN bought_id = 1 THEN from_hex('{{dai_e_avalanche_c_token}}')
+                WHEN bought_id = 2 THEN from_hex('{{usdc_e_avalanche_c_token}}')
+                WHEN bought_id = 3 THEN from_hex('{{usdt_e_avalanche_c_token}}')
             END as token_bought_address,
             CASE
-                WHEN sold_id = 0 THEN '{{usdl_avalanche_c_token}}'
-                WHEN sold_id = 1 THEN '{{av3CRV_avalanche_c_token}}'
-                WHEN sold_id = 2 THEN '{{av3CRV_avalanche_c_token}}'
-                WHEN sold_id = 3 THEN '{{av3CRV_avalanche_c_token}}'
+                WHEN sold_id = 0 THEN from_hex('{{usdl_avalanche_c_token}}')
+                WHEN sold_id = 1 THEN from_hex('{{av3CRV_avalanche_c_token}}')
+                WHEN sold_id = 2 THEN from_hex('{{av3CRV_avalanche_c_token}}')
+                WHEN sold_id = 3 THEN from_hex('{{av3CRV_avalanche_c_token}}')
             END as token_sold_address,
             contract_address AS project_contract_address,
             evt_tx_hash AS tx_hash,
@@ -1015,12 +1015,12 @@ WITH dexs AS (
             tokens_sold AS token_sold_amount_raw,
             CAST(NULL as double) as amount_usd,
             CASE
-                WHEN bought_id = 0 THEN '{{usdc_e_avalanche_c_token}}'
-                WHEN bought_id = 1 THEN '{{ust_wormhole_avalanche_c_token}}'
+                WHEN bought_id = 0 THEN from_hex('{{usdc_e_avalanche_c_token}}')
+                WHEN bought_id = 1 THEN from_hex('{{ust_wormhole_avalanche_c_token}}')
             END as token_bought_address,
             CASE
-                WHEN sold_id = 0 THEN '{{usdc_e_avalanche_c_token}}'
-                WHEN sold_id = 1 THEN '{{ust_wormhole_avalanche_c_token}}'
+                WHEN sold_id = 0 THEN from_hex('{{usdc_e_avalanche_c_token}}')
+                WHEN sold_id = 1 THEN from_hex('{{ust_wormhole_avalanche_c_token}}')
             END as token_sold_address,
             contract_address AS project_contract_address,
             evt_tx_hash AS tx_hash,
@@ -1043,12 +1043,12 @@ WITH dexs AS (
             tokens_sold AS token_sold_amount_raw,
             CAST(NULL as double) as amount_usd,
             CASE
-                WHEN bought_id = 0 THEN '{{usdc_e_avalanche_c_token}}'
-                WHEN bought_id = 1 THEN '{{usdc_avalanche_c_token}}'
+                WHEN bought_id = 0 THEN from_hex('{{usdc_e_avalanche_c_token}}')
+                WHEN bought_id = 1 THEN from_hex('{{usdc_avalanche_c_token}}')
             END as token_bought_address,
             CASE
-                WHEN sold_id = 0 THEN '{{usdc_e_avalanche_c_token}}'
-                WHEN sold_id = 1 THEN '{{usdc_avalanche_c_token}}'
+                WHEN sold_id = 0 THEN from_hex('{{usdc_e_avalanche_c_token}}')
+                WHEN sold_id = 1 THEN from_hex('{{usdc_avalanche_c_token}}')
             END as token_sold_address,
             contract_address AS project_contract_address,
             evt_tx_hash AS tx_hash,
@@ -1071,16 +1071,16 @@ WITH dexs AS (
             tokens_sold AS token_sold_amount_raw,
             CAST(NULL as double) as amount_usd,
             CASE
-                WHEN bought_id = 0 THEN '{{usds_avalanche_c_token}}'
-                WHEN bought_id = 1 THEN '{{dai_e_avalanche_c_token}}'
-                WHEN bought_id = 2 THEN '{{usdc_e_avalanche_c_token}}'
-                WHEN bought_id = 3 THEN '{{usdt_e_avalanche_c_token}}'
+                WHEN bought_id = 0 THEN from_hex('{{usds_avalanche_c_token}}')
+                WHEN bought_id = 1 THEN from_hex('{{dai_e_avalanche_c_token}}')
+                WHEN bought_id = 2 THEN from_hex('{{usdc_e_avalanche_c_token}}')
+                WHEN bought_id = 3 THEN from_hex('{{usdt_e_avalanche_c_token}}')
             END as token_bought_address,
             CASE
-                WHEN sold_id = 0 THEN '{{usds_avalanche_c_token}}'
-                WHEN sold_id = 1 THEN '{{av3CRV_avalanche_c_token}}'
-                WHEN sold_id = 2 THEN '{{av3CRV_avalanche_c_token}}'
-                WHEN sold_id = 3 THEN '{{av3CRV_avalanche_c_token}}'
+                WHEN sold_id = 0 THEN from_hex('{{usds_avalanche_c_token}}')
+                WHEN sold_id = 1 THEN from_hex('{{av3CRV_avalanche_c_token}}')
+                WHEN sold_id = 2 THEN from_hex('{{av3CRV_avalanche_c_token}}')
+                WHEN sold_id = 3 THEN from_hex('{{av3CRV_avalanche_c_token}}')
             END as token_sold_address,
             contract_address AS project_contract_address,
             evt_tx_hash AS tx_hash,
@@ -1103,14 +1103,14 @@ WITH dexs AS (
             tokens_sold AS token_sold_amount_raw,
             CAST(NULL as double) as amount_usd,
             CASE
-                WHEN bought_id = 0 THEN '{{yusd_avalanche_c_token}}'
-                WHEN bought_id = 1 THEN '{{usdc_avalanche_c_token}}'
-                WHEN bought_id = 2 THEN '{{usdt_avalanche_c_token}}'
+                WHEN bought_id = 0 THEN from_hex('{{yusd_avalanche_c_token}}')
+                WHEN bought_id = 1 THEN from_hex('{{usdc_avalanche_c_token}}')
+                WHEN bought_id = 2 THEN from_hex('{{usdt_avalanche_c_token}}')
             END as token_bought_address,
             CASE
-                WHEN sold_id = 0 THEN '{{yusd_avalanche_c_token}}'
-                WHEN sold_id = 1 THEN '{{usdc_avalanche_c_token}}'
-                WHEN sold_id = 2 THEN '{{usdt_avalanche_c_token}}'
+                WHEN sold_id = 0 THEN from_hex('{{yusd_avalanche_c_token}}')
+                WHEN sold_id = 1 THEN from_hex('{{usdc_avalanche_c_token}}')
+                WHEN sold_id = 2 THEN from_hex('{{usdt_avalanche_c_token}}')
             END as token_sold_address,
             contract_address AS project_contract_address,
             evt_tx_hash AS tx_hash,
@@ -1157,7 +1157,7 @@ FROM dexs
 INNER JOIN {{ source('avalanche_c', 'transactions') }} tx
     ON tx.hash = dexs.tx_hash
     {% if not is_incremental() %}
-    AND tx.block_time >= '{{project_start_date}}'
+    AND tx.block_time >= from_hex('{{project_start_date}}')
     {% endif %}
     {% if is_incremental() %}
     AND tx.block_time >= date_trunc('day', now() - interval '7' day)
@@ -1173,7 +1173,7 @@ LEFT JOIN {{ source('prices', 'usd') }} p_bought
     AND p_bought.contract_address = dexs.token_bought_address
     AND p_bought.blockchain = 'avalanche_c'
     {% if not is_incremental() %}
-    AND p_bought.minute >= '{{project_start_date}}'
+    AND p_bought.minute >= from_hex('{{project_start_date}}')
     {% endif %}
     {% if is_incremental() %}
     AND p_bought.minute >= date_trunc('day', now() - interval '7' day)
@@ -1183,7 +1183,7 @@ LEFT JOIN {{ source('prices', 'usd') }} p_sold
     AND p_sold.contract_address = dexs.token_sold_address
     AND p_sold.blockchain = 'avalanche_c'
     {% if not is_incremental() %}
-    AND p_sold.minute >= '{{project_start_date}}'
+    AND p_sold.minute >= from_hex('{{project_start_date}}')
     {% endif %}
     {% if is_incremental() %}
     AND p_sold.minute >= date_trunc('day', now() - interval '7' day)

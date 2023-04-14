@@ -106,7 +106,7 @@ WITH base_pools AS (
     -- info from contract reads 'coins' https://optimistic.etherscan.io/address/0xb90b9b1f91a01ea22a182cd84c1e22222e39b415#readContract
     -- TODO/TOLINK: Query to check for Curve Pools with swap events that aren't mapped here
     , custom_pools AS (
-    SELECT version, tokenid, CAST(token as VARBINARY) as token, CAST(pool as VARBINARY) as pool
+    SELECT version, CAST(tokenid AS INT), CAST(token as VARBINARY) as token, CAST(pool as VARBINARY) as pool
     FROM (values
             --wstETH/ETH
              ('Basic Pool','0','0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee','0xb90b9b1f91a01ea22a182cd84c1e22222e39b415')
@@ -132,21 +132,21 @@ WITH base_pools AS (
     (
         SELECT
             'Base Pool' AS version
-            , tokenid
+            , cast(tokenid as int)
             , token
             , pool
         FROM base_pools
         UNION ALL
         SELECT
             'Meta Pool' AS version
-            , tokenid
+            , cast(tokenid as int)
             , token
             , pool
         FROM meta_pools
         UNION ALL
         SELECT
             'Basic Pool' AS version
-            , tokenid
+            , cast(tokenid as int)
             , token
             , pool
         FROM basic_pools
@@ -154,7 +154,7 @@ WITH base_pools AS (
     GROUP BY
         version, cast(tokenid as int), token, pool --unique
 )
-SELECT version, CAST(tokenid AS string) AS tokenid, token, pool FROM agg_pools
+SELECT version, CAST(tokenid AS int) AS tokenid, token, pool FROM agg_pools
     UNION ALL
-SELECT version, CAST(tokenid AS string) AS tokenid, token, pool FROM custom_pools
-    WHERE pool NOT IN (SELECT pool FROM agg_pools) --avoid dupes that are caught by factories
+SELECT version, CAST(tokenid AS int) AS tokenid, token, pool FROM custom_pools
+    WHERE pool NOT IN (SELECT pool FROM aggcurvefi_ethereum_view_pools.sql_pools) --avoid dupes that are caught by factories
