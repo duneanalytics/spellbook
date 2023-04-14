@@ -81,6 +81,7 @@ SELECT 'bnb'                                                     AS blockchain
     , (dexs.token_bought_amount_raw / power(10, p_bought.decimals)) * p_bought.price
     )                                                            AS amount_usd
      , dexs.maker
+     , dexs.taker
      , dexs.project_contract_address
      , dexs.tx_hash
      , tx.from                                                   AS tx_from
