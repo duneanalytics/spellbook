@@ -960,3 +960,12 @@ models:
       +schema: optimism_attestationstation
       optimism:
         +schema: optimism_attestationstation_optimism
+
+    bebop:
+      +schema: bebop
+      ethereum:
+        +schema: bebop_ethereum
+      polygon:
+        +schema: bebop_polygon
+      arbitrum:
+        +schema: bebop_arbitrum
