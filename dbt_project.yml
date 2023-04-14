@@ -201,6 +201,8 @@ models:
       +schema: opensea
       ethereum:
         +schema: opensea_ethereum
+      polygon:
+        +schema: opensea_polygon
       solana:
         +schema: opensea_solana
       optimism:
@@ -513,6 +515,15 @@ models:
       fantom:
         +schema: lifi_fantom
 
+    aragon:
+      +schema: aragon
+      ethereum:
+        +schema: aragon_ethereum
+      gnosis:
+        +schema: aragon_gnosis
+      polygon:
+        +schema: aragon_polygon
+
     spiritswap:
       +schema: spiritswap
       fantom:
@@ -711,6 +722,10 @@ models:
         +schema: kyberswap_avalanche_c
       optimism:
         +schema: kyberswap_optimism
+      ethereum:
+        +schema: kyberswap_ethereum
+      arbitrum:
+        +schema: kyberswap_arbitrum
 
     hubble_exchange:
       +schema: hubble_exchange
@@ -940,6 +955,11 @@ models:
       +schema: rarible
       polygon:
         +schema: rarible_polygon
+
+    dydx:
+      +schema: dydx
+      ethereum:
+        +schema: dydx_ethereum
 
     optimism_attestationstation:
       +schema: optimism_attestationstation

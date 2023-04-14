@@ -96,5 +96,6 @@ FROM
     ("zz-zigzag","arbitrum","ZZ","0xada42bb73b42e0472a994218fb3799dfcda21237",18),
     ("ico-axelar","arbitrum","AXL","0x23ee2343b892b1bb63503a4fabc840e0e2c6810f",6),
     ("relay-relay-token","arbitrum","RELAY","0x1426cf37caa89628c4da2864e40cf75e6d66ac6b",18),
-    ("arb-arbitrum","arbitrum","ARB","0x912ce59144191c1204e64559fe8253a0e49e6548",18)
+    ("arb-arbitrum","arbitrum","ARB","0x912ce59144191c1204e64559fe8253a0e49e6548",18),
+    ("agi-auragi","arbitrum","AGI","0xff191514a9baba76bfd19e3943a4d37e8ec9a111",18)
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)
