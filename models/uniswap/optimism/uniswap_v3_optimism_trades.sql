@@ -23,11 +23,11 @@ WITH dexs AS
         , t.evt_block_number
         , t.recipient AS taker
         ,'' AS maker
-        ,CASE WHEN amount0 < '0' THEN abs(amount0) ELSE abs(amount1) END AS token_bought_amount_raw -- when amount0 is negative it means trader_a is buying token0 from the pool
-        ,CASE WHEN amount0 < '0' THEN abs(amount1) ELSE abs(amount0) END AS token_sold_amount_raw
+        ,CASE WHEN CAST(amount0 AS DOUBLE) < '0' THEN abs(amount0) ELSE abs(amount1) END AS token_bought_amount_raw -- when amount0 is negative it means trader_a is buying token0 from the pool
+        ,CASE WHEN CAST(amount0 AS DOUBLE) < '0' THEN abs(amount1) ELSE abs(amount0) END AS token_sold_amount_raw
         ,NULL AS amount_usd
-        ,LOWER(CASE WHEN amount0 < '0' THEN f.token0 ELSE f.token1 END) AS token_bought_address
-        ,LOWER(CASE WHEN amount0 < '0' THEN f.token1 ELSE f.token0 END) AS token_sold_address
+        ,CASE WHEN CAST(amount0 AS DOUBLE) < '0' THEN f.token0 ELSE f.token1 END AS token_bought_address
+        ,CASE WHEN CAST(amount0 AS DOUBLE) < '0' THEN f.token1 ELSE f.token0 END AS token_sold_address
         ,CAST(t.contract_address as string) as project_contract_address
         ,t.evt_tx_hash AS tx_hash
         ,'' AS trace_address
@@ -76,7 +76,7 @@ INNER JOIN {{ source('optimism', 'transactions') }} tx
     ON tx.hash = dexs.tx_hash
     AND tx.block_number = dexs.evt_block_number
     {% if not is_incremental() %}
-    AND tx.block_time >= '{{project_start_date}}'
+    AND tx.block_time >= CAST('{{project_start_date}}' AS TIMESTAMP(6) WITH TIME ZONE)
     {% endif %}
     {% if is_incremental() %}
     AND tx.block_time >= date_trunc('day', now() - interval '1' week)
@@ -92,7 +92,7 @@ LEFT JOIN {{ source('prices', 'usd') }} p_bought
     AND p_bought.contract_address = dexs.token_bought_address
     AND p_bought.blockchain = 'optimism'
     {% if not is_incremental() %}
-    AND p_bought.minute >= '{{project_start_date}}'
+    AND p_bought.minute >= CAST('{{project_start_date}}' AS TIMESTAMP(6) WITH TIME ZONE)
     {% endif %}
     {% if is_incremental() %}
     AND p_bought.minute >= date_trunc('day', now() - interval '7' day)
@@ -102,9 +102,8 @@ LEFT JOIN {{ source('prices', 'usd') }} p_sold
     AND p_sold.contract_address = dexs.token_sold_address
     AND p_sold.blockchain = 'optimism'
     {% if not is_incremental() %}
-    AND p_sold.minute >= '{{project_start_date}}'
+    AND p_sold.minute >= CAST('{{project_start_date}}' AS TIMESTAMP(6) WITH TIME ZONE)
     {% endif %}
     {% if is_incremental() %}
     AND p_sold.minute >= date_trunc('day', now() - interval '7' day)
     {% endif %}
-;
