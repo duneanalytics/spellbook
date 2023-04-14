@@ -1,5 +1,5 @@
 Rule: when explode is used in the query, replace explode with unnest
-SELECT explode(array) FROM table -> SELECT vals.val FROM table1, unnest(arrayFromTable1) as vals(val)
+SELECT posexplode(array) FROM table -> SELECT vals.val FROM table1, unnest(arrayFromTable1) as vals(val)
 Example:
 select explode(sequence(to_date('2022-09-01'), now(), interval 1 day)) as day
 ->
