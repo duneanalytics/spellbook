@@ -36,6 +36,7 @@ FROM (
         , relayer
         , recipient
         , contract_address
+        , amount
         , tx_hash
         , evt_index
         , block_date
