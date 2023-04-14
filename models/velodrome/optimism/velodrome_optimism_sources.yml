@@ -10,3 +10,11 @@ sources:
         loaded_at_field: evt_block_time
       - name: PairFactory_evt_PairCreated
         loaded_at_field: evt_block_time
+      - name: BribeFactory_call_createExternalBribe
+        loaded_at_field: call_block_time
+      - name: GaugeFactory_call_createGauge
+        loaded_at_field: call_block_time
+      - name: BribeFactory_call_createInternalBribe
+        loaded_at_field: call_block_time
+      - name: WrappedExternalBribeFactory_call_createBribe
+        loaded_at_field: call_block_time

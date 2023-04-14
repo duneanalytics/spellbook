@@ -16,7 +16,7 @@
 {%- set sharky_smart_contract = 'SHARKobtfF1bHhxD2eqftjHBdVSCbKo9JtgK71FhELP' %}
 
 WITH sharky_txs AS (
-        SELECT tx_id AS id,
+        SELECT DISTINCT tx_id AS id,
                block_time
         FROM {{ source('solana', 'account_activity') }}
         WHERE tx_success
@@ -112,23 +112,29 @@ WITH sharky_txs AS (
                             startswith(first_ix_data, 'CB5477E28901B417') -- ForecloseLoan
                             OR startswith(first_ix_data, 'DAF5ED6D2ECE0D0E') -- ForecloseLoanEscrow
                         ) THEN 'Foreclose'
+               WHEN (
+                            startswith(first_ix_data, '02D0DEBE6D94F775') -- ExtendLoan
+                            OR startswith(first_ix_data, '35BC6DD273220509') -- ExtendLoanEscrow
+                        ) THEN 'Extend'
             END AS evt_type
     FROM decoded_events
 )
 SELECT *,
        CASE
-           -- The smart contract was update around the 2022-12-01 and a new account was added before the loan id
-           WHEN evt_type = 'Offer' THEN IF(
-                       sharky_instructions[0].account_arguments[2] = 'So11111111111111111111111111111111111111112',
-                       sharky_instructions[0].account_arguments[3],
-                       sharky_instructions[0].account_arguments[2]
-               )
-           WHEN evt_type = 'Take' THEN IF(
-                       sharky_instructions[0].account_arguments[4] = 'So11111111111111111111111111111111111111112',
-                       sharky_instructions[0].account_arguments[6],
-                       sharky_instructions[0].account_arguments[5]
-               )
-           WHEN (evt_type = 'Rescind' OR evt_type = 'Repay' OR evt_type = 'Foreclose')
+           WHEN evt_type = 'Offer' THEN
+               CASE
+                   WHEN block_number > 164178914 THEN sharky_instructions[0].account_arguments[3] -- upgrade to version 3.0 2PXg25v2YGfvFCyX9najJ2mNS5QADvVYNUTtXYYhbyN3cHERqEgbnuDnVKnStaQAMa1edRhM9GAZaHYMPdR9jX8o
+                   ELSE sharky_instructions[0].account_arguments[2]
+               END
+           WHEN evt_type = 'Take' THEN
+               CASE
+                   WHEN block_number > 184280858 THEN sharky_instructions[0].account_arguments[4] -- upgrade to version 5.0 5BjeJ7Wnf7QxHSBEhXN4htn4mECD36SfsEUZbMvzhAF5sMPMCCV1jcu2rigNV8SZohVL7J3ctLLgXZ4gVzzPkmJ7
+                   WHEN block_number > 177070316 THEN sharky_instructions[0].account_arguments[5] -- upgrade to version 4.0 zFA9ffgu3Z1ETH2LdH3o6C6xzKWdJFcgA3qoXo84S6zQ2iJyaRfe61VXw6BBFGM5rFsHFm9fKSUrxEuUTy7grWR
+                   WHEN block_number > 164178914 THEN sharky_instructions[0].account_arguments[6] -- upgrade to version 3.0 2PXg25v2YGfvFCyX9najJ2mNS5QADvVYNUTtXYYhbyN3cHERqEgbnuDnVKnStaQAMa1edRhM9GAZaHYMPdR9jX8o
+                   WHEN block_number > 132405709 THEN sharky_instructions[0].account_arguments[5] -- upgrade to version 2.0 2oNjJSxAM72Y6t7ALKXBiMDjtwhmxEfbk8jBz4es3U6XpBfw2Jvgcu3pSvxuHUkDWbVE48xxpjwgpuxrNnPFjvxm
+                   ELSE sharky_instructions[0].account_arguments[6]
+               END
+           WHEN (evt_type = 'Rescind' OR evt_type = 'Repay' OR evt_type = 'Foreclose' OR evt_type = 'Extend')
                THEN sharky_instructions[0].account_arguments[0]
            END as loan_id
 FROM events

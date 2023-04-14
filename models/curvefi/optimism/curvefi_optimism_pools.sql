@@ -25,7 +25,7 @@ WITH base_pools AS (
         , output_0 AS token
         , contract_address AS pool
     FROM {{ source('curvefi_optimism', 'StableSwap_call_coins') }}
-    WHERE call_success
+    WHERE call_success and output_0 is not null
     GROUP BY
         arg0, output_0, contract_address --unique
 )
@@ -50,9 +50,9 @@ WITH base_pools AS (
         {% endif %}
         GROUP BY
             mp.evt_tx_hash, (bp.tokenid + 1), bp.token, mp.evt_block_number --unique
-    
+
         UNION ALL
-        
+
         SELECT
             mp.evt_tx_hash
             , 0 AS tokenid
@@ -90,7 +90,7 @@ WITH base_pools AS (
         , pool
     FROM
     (
-        SELECT 
+        SELECT
             posexplode(_coins)
             , output_0 AS pool
         FROM {{ source('curvefi_optimism', 'PoolFactory_call_deploy_plain_pool') }}
@@ -119,7 +119,7 @@ WITH base_pools AS (
             ,('Basic Pool','0','0x8c6f28f2F1A3C87F0f938b96d27520d9751ec8d9','0x54dcfe120d608551f9010d3b66620d230fd5c11b')
             ,('Basic Pool','1','0x29A3d66B30Bc4AD674A4FDAF27578B64f6afbFe7','0x54dcfe120d608551f9010d3b66620d230fd5c11b')
         ) a (version, tokenid, token, pool)
-    
+
     )
 
 , agg_pools AS (
@@ -127,14 +127,14 @@ WITH base_pools AS (
         version
         , cast(tokenid as int) AS tokenid
         , token
-        , pool 
+        , pool
     FROM
     (
         SELECT
             'Base Pool' AS version
             , tokenid
             , token
-            , pool 
+            , pool
         FROM base_pools
         UNION ALL
         SELECT

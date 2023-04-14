@@ -60,4 +60,6 @@ SELECT LOWER(contract_address) AS contract_address, symbol, decimals
 ,('0x85955046df4668e1dd369d2de9f3aeb98dd2a369', 'DPI', 18)
 ,('0xef1348dac70e8349513e4ae7498f302e27102101', 'CWETHLP', 18)
 ,('0xa03258b76ef13af716370529358f6a79eb03ec12', 'CUSDCLP', 18)
+,('0x62f594339830b90ae4c084ae7d223ffafd9658a7', 'SPHERE', 18)
+,('0x255707B70BF90aa112006E1b07B9AeA6De021424', 'TETU', 18)
 ) AS temp_table (contract_address, symbol, decimals)

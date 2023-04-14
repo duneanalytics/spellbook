@@ -1,7 +1,7 @@
 version: 2
 
 models:
-  - name: pika_v1_optimism_trades
+  - name: pika_v1_optimism_perpetual_trades
     meta:
       blockchain: optimism
       sector: perpetual
@@ -14,7 +14,8 @@ models:
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
-            - block_time
+            - block_date
+            - blockchain
             - project
             - version
             - tx_hash
@@ -58,16 +59,19 @@ models:
         description: "Indicates the trade's direction whether a short, long, of if a position is being closed"
       - &project
         name: project
-        description: "The protocol/project where the swap took place"
+        description: "The underlying protocol/project where the swap took place"
       - &version
         name: version
         description: "The version of the protocol/project"
+      - &frontend
+        name: frontend
+        description: "The frontend protocol/project where the specific swap was executed; built on top of the 'project' and defaults to the 'project' if no other frontend is specified"
       - &trader
         name: trader
         description: "The address which made the swap in the protocol"
       - &volume_raw
         name: volume_raw
-        description: "The size of the position in raw form, 18 decimals for Synthetix and Perpetual, 8 decimals for Pika"
+        description: "The size of the position in raw form"
       - &tx_hash
         name: tx_hash
         description: "The hash of the transaction"
@@ -81,7 +85,7 @@ models:
         name: evt_index
         description: "Event index number"
 
-  - name: pika_v2_optimism_trades
+  - name: pika_v2_optimism_perpetual_trades
     meta:
       blockchain: optimism
       sector: perpetual
@@ -94,7 +98,8 @@ models:
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
-            - block_time
+            - block_date
+            - blockchain
             - project
             - version
             - tx_hash
@@ -112,6 +117,7 @@ models:
       - *trade
       - *project
       - *version
+      - *frontend
       - *trader
       - *volume_raw
       - *tx_hash
@@ -119,7 +125,7 @@ models:
       - *tx_to
       - *evt_index
     
-  - name: pika_v3_optimism_trades
+  - name: pika_v3_optimism_perpetual_trades
     meta:
       blockchain: optimism
       sector: perpetual
@@ -132,7 +138,8 @@ models:
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
-            - block_time
+            - block_date
+            - blockchain
             - project
             - version
             - tx_hash
@@ -150,6 +157,7 @@ models:
       - *trade
       - *project
       - *version
+      - *frontend
       - *trader
       - *volume_raw
       - *tx_hash
@@ -157,7 +165,7 @@ models:
       - *tx_to
       - *evt_index
 
-  - name: pika_optimism_trades
+  - name: pika_optimism_perpetual_trades
     meta:
       blockchain: optimism
       sector: perpetual
@@ -180,6 +188,7 @@ models:
       - *trade
       - *project
       - *version
+      - *frontend
       - *trader
       - *volume_raw
       - *tx_hash

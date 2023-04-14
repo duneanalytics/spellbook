@@ -1,15 +1,17 @@
 {{ config(
         alias ='trades',
-        post_hook='{{ expose_spells(\'["avalanche_c","optimism"]\',
+        post_hook='{{ expose_spells(\'["avalanche_c","optimism","ethereum","arbitrum"]\',
                                 "project",
                                 "kyberswap",
-                                \'["zhongyiio", "hosuke"]\') }}'
+                                \'["zhongyiio", "hosuke", "ppclunghe", "gregshestakovlido"]\') }}'
         )
 }}
 
 {% set kyber_models = [
  ref('kyberswap_avalanche_c_trades')
 ,ref('kyberswap_optimism_trades')
+,ref('kyberswap_ethereum_trades')
+,ref('kyberswap_arbitrum_trades')
 ] %}
 
 
@@ -27,8 +29,8 @@ FROM (
         token_pair,
         token_bought_amount,
         token_sold_amount,
-        CAST(token_bought_amount_raw AS DECIMAL(38,0)) AS token_bought_amount_raw,
-        CAST(token_sold_amount_raw AS DECIMAL(38,0)) AS token_sold_amount_raw,
+        token_bought_amount_raw,
+        token_sold_amount_raw,
         amount_usd,
         token_bought_address,
         token_sold_address,

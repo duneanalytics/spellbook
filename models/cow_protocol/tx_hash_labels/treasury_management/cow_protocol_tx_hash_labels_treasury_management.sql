@@ -1,7 +1,7 @@
 {{
     config(
         alias='tx_hash_labels_treasury_management',
-        post_hook='{{ expose_spells_hide_trino(\'["ethereum"]\', "sector", "tx_hash_labels", \'["gentrexha"]\') }}'
+        post_hook='{{ expose_spells(\'["ethereum"]\', "sector", "tx_hash_labels", \'["gentrexha"]\') }}'
     )
 }}
 

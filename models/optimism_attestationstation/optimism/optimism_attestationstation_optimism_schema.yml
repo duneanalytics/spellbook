@@ -1,0 +1,61 @@
+version: 2
+
+models:
+  - name: optimism_attestationstation_optimism_events
+    meta:
+      blockchain: optimism
+      project: optimism_attestationstation
+      contributors: chuxin
+    config:
+      tags: ['optimism','attestation', 'attestationstation']
+    description: >
+        A table containing creation events of AttestationStation on Optimism.
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_time
+            - tx_hash
+            - evt_index
+    columns:
+      - &block_date
+        name: block_date
+        description: "Block date of the creation event."
+      - &tx_hash
+        name: tx_hash
+        description: "Transaction hash of the creation event."
+      - &block_number
+        name: block_number
+        description: "Block number."
+      - &block_time
+        name: block_time
+        description: "Block timestamp."
+      - &evt_index
+        name: evt_index
+        description: "Event index."
+      - &recipient
+        name: recipient
+        description: "Who the issuer is attesting about."
+      - &issuer
+        name: issuer
+        description: "Who is attesting."
+      - &contract_address
+        name: contract_address
+        description: "Contract address."
+      - &key_raw
+        name: key_raw
+        description: "Hashed key of the attestation."
+      - &key
+        name: key
+        description: "What is being attested about."
+      - &val_raw 
+        name: val_raw
+        description: "Hashed value of the attestation."
+      - &val
+        name: val
+        description: "What is the value of the attestation."
+      - &val_byte2numeric
+        name: val_byte2numeric
+        description: "For Error Handling: What is the value of the attestation - In bytea2numeric representation (if relevant format)."
+      - &val_string
+        name: val_string
+        description: "What is the value of the attestation - Array converted to a comma separated string."
