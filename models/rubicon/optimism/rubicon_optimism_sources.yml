@@ -2,13 +2,13 @@ version: 2
 
 sources:
   - name: rubicon_optimism
-    description: "Optimism decoded tables related to rubicon's implementation of balancer contracts"
+    description: "Optimism decoded tables related to rubicon's implementation of OasisDEX"
     freshness:
-      warn_after: { count: 12, period: hour }
+      warn_after: { count: 12, period: hour } 
     tables:
       - name: RubiconMarket_evt_LogTake
         loaded_at_field: evt_block_time
-        description: "" # to-do
+        description: "a table of events triggered when a taker fills an outstanding offer" 
         columns:
           - &buy_gem
             name: buy_gem
@@ -28,17 +28,47 @@ sources:
             description: "Primary key of the transaction"
           - &give_amt
             name: give_amt
+            description: "the amount of the token that the taker payed with"
           - &id
             name: id
+            description: "the unique id of the offer"
           - &maker
             name: maker
+            description: "the address of the maker"
           - &pair
             name: pair
+            description: "the pair of the offer"
           - &pay_gem
             name: pay_gem
+            description: "the token the offer is selling"
           - &take_amt
             name: take_amt
+            description: "the amount of the token that the taker received"
           - &taker
             name: taker
+            description: "the address of the taker"
           - &timestamp
             name: timestamp
+            description: "the timestamp of the event creation"
+
+      - name: RubiconMarket_evt_LogMake
+        loaded_at_field: evt_block_time
+        description: "a table of events triggered when a maker creates an offer" 
+        columes: 
+          - *contract_address
+          - *evt_tx_hash
+          - *evt_index
+          - *evt_block_time
+          - *evt_block_number
+          - *id
+          - *pair
+          - *pay_gem
+          - *buy_gem
+          - &pay_amt
+            name: pay_amt
+            description: "the amount of the token being sold"
+          - &buy_amt
+            name: buy_amt
+            description: "the amount of the token being bought"
+          - *maker
+          - *timestamp

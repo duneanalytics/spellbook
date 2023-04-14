@@ -53,7 +53,7 @@ SELECT
         END AS currency_contract
     , bm.contract_address AS project_contract_address
     , get_json_object(bm.buy, '$.collection') AS nft_contract_address
-    , coalesce(agg.name,agg_m.aggregator_name) AS aggregator_name
+    , coalesce(agg_m.aggregator_name, agg.name) AS aggregator_name
     , agg.contract_address AS aggregator_address
     , bm.evt_tx_hash AS tx_hash
     , et.from AS tx_from
