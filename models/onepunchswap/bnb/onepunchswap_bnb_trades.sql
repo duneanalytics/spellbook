@@ -23,10 +23,10 @@ WITH dexs AS(
     SELECT
         evt_block_time                AS block_time,
         user                          AS taker,
-        ''                              AS maker,
+        ''                            AS maker,
         cast(get_json_object(quoteInfo,'$.toAmount') as double) as token_bought_amount_raw,
         cast(get_json_object(quoteInfo,'$.fromAmount') as double) as token_sold_amount_raw,
-        cast(NULL as double)            AS amount_usd,
+        cast(NULL as double)          AS amount_usd,
         case 
             when get_json_object(quoteInfo,'$.toAsset') = '0x0000000000000000000000000000000000000000' then '0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c'
             else get_json_object(quoteInfo,'$.toAsset')
@@ -38,7 +38,7 @@ WITH dexs AS(
 
         contract_address              AS project_contract_address,
         evt_tx_hash                   AS tx_hash,
-        ''                              AS trace_address,
+        ''                            AS trace_address,
         evt_index
       FROM
         {{ evt_trade_table }}
@@ -81,7 +81,6 @@ SELECT 'bnb'                                                     AS blockchain
     , (dexs.token_bought_amount_raw / power(10, p_bought.decimals)) * p_bought.price
     )                                                            AS amount_usd
      , dexs.maker
-     , dexs.taker
      , dexs.taker
      , dexs.project_contract_address
      , dexs.tx_hash
