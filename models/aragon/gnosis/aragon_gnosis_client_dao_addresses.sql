@@ -1,5 +1,5 @@
 {{ config(
-    alias = 'addresses_gnosis_aragon',
+    alias = 'client_dao_addresses',
     partition_by = ['created_date'],
     materialized = 'incremental',
     file_format = 'delta',
@@ -57,15 +57,16 @@ get_aragon_wallets as (
         AND CONCAT('0x', SUBSTRING(data, 131, 64)) IN (SELECT app_id FROM app_ids)
 )
 
-SELECT
-    'gnosis' as blockchain,
-    'aragon' as dao_creator_tool,
-    ad.dao,
-    gw.dao_wallet_address,
+SELECT 
+    'gnosis' as blockchain, 
+    'aragon' as dao_creator_tool, 
+    ad.dao, 
+    gw.dao_wallet_address, 
     ad.created_block_time,
-    TRY_CAST(ad.created_date as DATE) as created_date
-FROM
-aragon_daos ad
-LEFT JOIN
-get_aragon_wallets gw
-    ON ad.dao = gw.dao
+    TRY_CAST(ad.created_date as DATE) as created_date, 
+    'aragon_client' as product
+FROM 
+aragon_daos ad 
+LEFT JOIN 
+get_aragon_wallets gw  -- left join to get the dao address mapped to the app address
+    ON ad.dao = gw.dao 

@@ -455,7 +455,7 @@ SELECT
         END AS taker, -- fix the user masked by ProxyContract issue
         taker_token,
         ts.symbol AS taker_symbol,
-        maker_token,
+        maker_token, 
         ms.symbol AS maker_symbol,
         CASE WHEN lower(ts.symbol) > lower(ms.symbol) THEN concat(ms.symbol, '-', ts.symbol) ELSE concat(ts.symbol, '-', ms.symbol) END AS token_pair,
         taker_token_amount_raw / pow(10, tp.decimals) AS taker_token_amount,
