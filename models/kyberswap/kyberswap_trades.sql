@@ -1,6 +1,6 @@
 {{ config(
         alias ='trades',
-        post_hook='{{ expose_spells(\'["avalanche_c","optimism","ethereum"]\',
+        post_hook='{{ expose_spells(\'["avalanche_c","optimism","ethereum","arbitrum"]\',
                                 "project",
                                 "kyberswap",
                                 \'["zhongyiio", "hosuke", "ppclunghe", "gregshestakovlido"]\') }}'
@@ -11,6 +11,7 @@
  ref('kyberswap_avalanche_c_trades')
 ,ref('kyberswap_optimism_trades')
 ,ref('kyberswap_ethereum_trades')
+,ref('kyberswap_arbitrum_trades')
 ] %}
 
 

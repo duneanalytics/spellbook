@@ -22,7 +22,7 @@ models:
         description: "Category of entity"
         tests:
           - accepted_values:
-              values: ['CEX', 'Staking Pools', 'Liquid Staking', 'Individuals', 'Others']
+              values: ['CEX', 'Staking Pools', 'Liquid Staking', 'Independent Staker', 'Batch Staking Contract', 'Others']
 
   - name: staking_ethereum_deposits
     meta:
@@ -37,7 +37,7 @@ models:
           combination_of_columns:
             - block_time
             - tx_hash
-            - depositor_address
+            - deposit_index
     columns:
       - name: block_time
         description: "Block time of deposit transaction"
@@ -55,9 +55,21 @@ models:
         description: "Category of depositor if identified"
       - name: tx_hash
         description: "Transaction hash of deposit"
-      #- name: pubkey
-      #  description: "Public key"
-      #- name: signature
-      #  description: "Signature"
-      #- name: withdrawal_credentials
-      #  description: "Withdrawal credentials"
+      - name: tx_from
+        description: "The address that executed the transaction"
+      - name: deposit_index
+        description: "Deposit index"
+      - name: pubkey
+        description: "Public key"
+      - name: signature
+        description: "Signature"
+      - name: withdrawal_credentials_type
+        description: "Withdrawal credentials type"
+        tests:
+          - accepted_values:
+              values: ['0x00', '0x01']
+      - name: withdrawal_address
+        description: "Defined withdrawal address"
+      - name: withdrawal_credentials
+        description: "Withdrawal credentials"
+      - name: evt_index
