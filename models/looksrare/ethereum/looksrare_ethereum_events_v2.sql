@@ -71,6 +71,7 @@ WITH looksrare_v2_trades AS (
 SELECT 'looksrare' AS project
 , 'v2' AS version
 , lt.block_time
+, date_trunc('day', lt.block_time) AS block_date
 , lt.block_number
 , lt.trade_category
 , lt.seller
