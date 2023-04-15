@@ -1,12 +1,5 @@
 {{ config(
         alias ='approvals',
-<<<<<<< HEAD
-        post_hook='{{ expose_spells(\'["ethereum", "bnb", "avalanche_c", "gnosis", "optimism", "arbitrum", "polygon", "fantom", "goerli"]\',
-                                    "sector",
-                                    "nft",
-                                    \'["hildobby"]\') }}'
-)
-=======
         partition_by = ['block_date'],
         materialized = 'incremental',
         file_format = 'delta',
@@ -16,7 +9,6 @@
                                     "sector",
                                     "nft",
                                     \'["hildobby"]\') }}')
->>>>>>> main
 }}
 
 {% set nft_models = [
@@ -44,27 +36,16 @@ FROM (
         , approval_for_all
         , contract_address
         , token_id
-<<<<<<< HEAD
-        , CAST(approved AS boolean) AS approved 
-        , CAST(approved AS boolean) AS approved_for_all
-=======
         , approved
->>>>>>> main
         , tx_hash
         --, tx_from
         --, tx_to
         , evt_index
-<<<<<<< HEAD
-        , unique_approval_id
-    FROM {{ nft_model }}
-    {% if not loop.last %}
-=======
     FROM {{ nft_model }}
     {% if not loop.last %}
     {% if is_incremental() %}
     WHERE block_time >= date_trunc("day", now() - interval '1 week')
     {% endif %}
->>>>>>> main
     UNION ALL
     {% endif %}
     {% endfor %}
