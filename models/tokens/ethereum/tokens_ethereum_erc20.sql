@@ -21043,5 +21043,18 @@ FROM (VALUES
         ('0xbc6ded966d9bd2d8a03800fd571ba5bb7d2e6f1b', 'TITTER', 9),
         ('0xbe0dbc7d9a93e7f2a98b3218ac82e2a7e7ccb3e5', 'X', 9),
         ('0xd4af909fcd595596c89dca8c62ab4b7c721b843e', 'BITE', 18),
-        ('0xe9f721e7419423f11863e83dbd710b5d6127b5b0', 'ePhiat', 18)
+        ('0xe9f721e7419423f11863e83dbd710b5d6127b5b0', 'ePhiat', 18),
+        ('0x1fd6dfe10d14bc2dc77f68eaad06e96bd82edc1a', 'FYFI', 18),
+        ('0x247dc9cbbaadabce6e30e2a84ec6c53a419913ad', 'EMS', 18),
+        ('0x26f01fe3be55361b0643bc9d5d60980e37a2770d', 'sdAPW', 18),
+        ('0x41c21693e60fc1a5dbb7c50e54e7a6016aa44c99', 'SIMP', 18),
+        ('0x4bc3263eb5bb2ef7ad9ab6fb68be80e43b43801f', 'vETH', 18),
+        ('0x4d792599b8f119f6b764f69e42ee0cfa8989e6b7', 'FTX2.0', 9),
+        ('0x68b429161ec09a6c1d65ba70727ab1faa5bc4026', 'oDoge', 18),
+        ('0xa4c5cf93cbc87b82fba152e0ede4bbc5264c24ef', 'PLSIOU', 18),
+        ('0xa6f548df93de924d73be7d25dc02554c6bd66db5', 'B-50WBTC-50WETH', 18),
+        ('0xba3436fd341f2c8a928452db3c5a3670d1d5cc73', 'agEUREUROC-f', 18),
+        ('0xf9835375f6b268743ea0a54d742aa156947f8c06', 'CNCETH-f', 18),
+        ('0xfb19c8f2fe488ffbd51ae89a08e189d7a18e668b', 'HAWKER', 9),
+        ('0xfd414e39155f91e94443a9fe97e856569d0f5eec', 'SERP', 9)
      ) AS temp_table (contract_address, symbol, decimals)
