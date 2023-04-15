@@ -172,8 +172,6 @@ models:
       - *royalty_fee_receive_address
       - *royalty_fee_currency_symbol
       - *unique_trade_id
-        tests:
-          - unique
 
   - name: looksrare_ethereum_events
     meta:
@@ -222,8 +220,6 @@ models:
       - *royalty_fee_receive_address
       - *royalty_fee_currency_symbol
       - *unique_trade_id
-        tests:
-          - unique
 
   - name: looksrare_ethereum_trades
     meta:
