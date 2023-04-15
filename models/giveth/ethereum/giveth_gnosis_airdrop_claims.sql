@@ -1,7 +1,7 @@
 {{
     config(
         alias='airdrop_claims',
-        materialized = 'incremental',
+        materialized = 'table',
         file_format = 'delta',
         tags=['static'],
         unique_key = ['recipient', 'tx_hash', 'evt_index'],

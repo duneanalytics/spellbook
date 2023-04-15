@@ -1,5 +1,9 @@
 {{ config(
         alias ='claims',
+        partition_by = ['blockchain', 'tx_hash', 'evt_index'],
+        materialized = 'incremental',
+        file_format = 'delta',
+        incremental_strategy = 'merge',
         post_hook='{{ expose_spells(\'["ethereum", "optimism", "arbitrum", "avalanche_c", "bnb", "gnosis"]\',
                                       "sector",
                                       "airdrop",
@@ -37,6 +41,9 @@ FROM (
     , token_symbol
     , evt_index
     FROM {{ airdrop_claims_model }}
+    {% if is_incremental() %}
+    WHERE block_time >= date_trunc("day", now() - interval '1 week')
+    {% endif %}
     {% if not loop.last %}
     UNION ALL
     {% endif %}
