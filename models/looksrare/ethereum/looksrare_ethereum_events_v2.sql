@@ -25,7 +25,7 @@ WITH looksrare_v2_trades AS (
     , element_at(l.amounts, 1) AS number_of_items
     , l.currency
     , l.itemIds[0] AS token_id
-    , l.contract_address
+    , l.contract_address AS project_contract_address
     , l.evt_tx_hash AS tx_hash
     , l.evt_index
     , l.feeAmounts[1] AS royalty_fee_amount_raw
@@ -52,7 +52,7 @@ WITH looksrare_v2_trades AS (
     , element_at(l.amounts, 1) AS number_of_items
     , l.currency
     , l.itemIds[0] AS token_id
-    , l.contract_address
+    , l.contract_address AS project_contract_address
     , l.evt_tx_hash AS tx_hash
     , l.evt_index
     , l.feeAmounts[1] AS royalty_fee_amount_raw
@@ -68,12 +68,14 @@ WITH looksrare_v2_trades AS (
     {% endif %}
     )
 
-SELECT 'looksrare' AS project
+SELECT 'ethereum' AS blockchain
+, 'looksrare' AS project
 , 'v2' AS version
 , lt.block_time
 , date_trunc('day', lt.block_time) AS block_date
 , lt.block_number
 , lt.trade_category
+, 'Trade' AS evt_type
 , lt.seller
 , lt.buyer
 , lt.amount_raw
@@ -83,6 +85,7 @@ SELECT 'looksrare' AS project
 , CASE WHEN lt.currency='0x0000000000000000000000000000000000000000' THEN pu.price*lt.amount_raw/POWER(10, 18)
     ELSE pu.price*lt.amount_raw/POWER(10, pu.decimals)
     END AS amount_usd
+, nft.standard AS token_standard
 , CASE WHEN lt.currency='0x0000000000000000000000000000000000000000' THEN 'ETH' ELSE pu.symbol END AS currency_symbol
 , lt.nft_contract_address
 , COALESCE(agg.name, agg_m.aggregator_name) AS aggregator_name
@@ -94,7 +97,7 @@ SELECT 'looksrare' AS project
     ELSE lt.currency
     END AS currency_contract
 , lt.token_id
-, lt.contract_address
+, lt.project_contract_address
 , lt.tx_hash
 , lt.evt_index
 , et.from AS tx_from
