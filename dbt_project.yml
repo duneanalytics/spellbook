@@ -563,6 +563,8 @@ models:
         +schema: tornado_cash_gnosis
       optimism:
         +schema: tornado_cash_optimism
+      polygon:
+        +schema: tornado_cash_polygon
 
     perpetual:
       +schema: perpetual
