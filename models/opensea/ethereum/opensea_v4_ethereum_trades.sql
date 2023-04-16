@@ -261,7 +261,7 @@ with source_ethereum_transactions as (
         , case 
             when sender = receiver then true 
             else false 
-        end is_self_trans
+        end as is_self_trans
 
         , case 
             when f.wallet_address is not null then true 
@@ -313,14 +313,14 @@ with source_ethereum_transactions as (
             when offer_first_item_type = 'erc20' and sub_type = 'offer' and item_type = 'erc20' then true
             when offer_first_item_type in ('erc721','erc1155') and sub_type = 'consideration' and item_type in ('native','erc20') then true
             else false
-        end is_price
+        end as is_price
 
         ,case 
             when om_order_id = 1 then false
             when offer_first_item_type = 'erc20' and sub_type = 'consideration' and eth_erc_idx = 0 then true  -- offer accepted has no price at all. it has to be calculated.
             when offer_first_item_type in ('erc721','erc1155') and sub_type = 'consideration' and eth_erc_idx = 1 then true
             else false
-        end is_netprice
+        end as is_netprice
 
         , case 
             when is_platform_fee then false
@@ -328,7 +328,7 @@ with source_ethereum_transactions as (
             when offer_first_item_type in ('erc721','erc1155') and sub_type = 'consideration' and eth_erc_idx > 1 then true
             when om_order_id = 1 and item_type = 'erc20' then true  -- hard code for order-matched joined additional creator fee, condition : 2nd order + erc20
             else false
-        end is_creator_fee
+        end as is_creator_fee
 
         , sum(
             case 
@@ -345,12 +345,12 @@ with source_ethereum_transactions as (
             when offer_first_item_type = 'erc20' and sub_type = 'consideration' and item_type in ('erc721','erc1155') then true
             when offer_first_item_type in ('erc721','erc1155') and sub_type = 'offer' and item_type in ('erc721','erc1155') then true
             else false
-        end is_traded_nft
+        end as is_traded_nft
 
         , case 
             when offer_first_item_type in ('erc721','erc1155') and sub_type = 'consideration' and item_type in ('erc721','erc1155') then true
             else false
-        end is_moved_nft
+        end as is_moved_nft
 
         , fee_wallet_name
     from iv_offer_consideration a
@@ -359,7 +359,7 @@ with source_ethereum_transactions as (
     left join iv_orders_matched b 
         on b.om_tx_hash = a.tx_hash
         and b.om_order_hash = a.order_hash
-    where not is_self_trans
+    where sender != receiver
 )
 
 , iv_volume as (
