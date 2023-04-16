@@ -70,7 +70,7 @@ with source_ethereum_transactions as (
     where contract_address = '{{c_seaport_contract_address}}'
 )
 
-, iv_orders_fulfilled AS (
+, iv_offers_exploded AS (
     select 
           consideration
         , contract_address
@@ -84,6 +84,29 @@ with source_ethereum_transactions as (
         , zone
         , orderHash AS order_hash
         , posexplode(offer) as (offer_idx, offer_item)
+    from {{ source('seaport_ethereum', 'Seaport_evt_OrderFulfilled') }}
+    where contract_address = '{{c_seaport_contract_address}}'
+    {% if not is_incremental() %}
+        and evt_block_time >= date '{{c_seaport_first_date}}'  -- seaport first txn
+    {% endif %}
+    {% if is_incremental() %}
+        and evt_block_time >= date_trunc("day", now() - interval '1 week')
+    {% endif %}
+)
+
+, iv_considerations_exploded AS (
+    select 
+          consideration
+        , contract_address
+        , evt_block_number
+        , evt_block_time
+        , evt_index
+        , evt_tx_hash
+        , offer
+        , offerer
+        , recipient
+        , zone
+        , orderHash AS order_hash
         , posexplode(consideration) as (consideration_idx, consideration_item)
     from {{ source('seaport_ethereum', 'Seaport_evt_OrderFulfilled') }}
     where contract_address = '{{c_seaport_contract_address}}'
@@ -102,7 +125,7 @@ with source_ethereum_transactions as (
             ,('0x0000a26b00c1f0df003000390027140000faa719','opensea')
 )
 
-, iv_offer as (
+, iv_offers as (
     select 
           evt_block_time as block_time
         , evt_block_number as block_number
@@ -149,10 +172,10 @@ with source_ethereum_transactions as (
         , size(consideration) as consideration_cnt
         , order_hash
         , false as is_private -- will be deprecated in base_pairs
-    from iv_orders_fulfilled
+    from iv_offers_exploded
 )
 
-, iv_consideration as (
+, iv_considerations as (
     select 
           evt_block_time as block_time
         , evt_block_number as block_number
@@ -199,13 +222,13 @@ with source_ethereum_transactions as (
         , size(consideration) as consideration_cnt
         , order_hash
         , false as is_private -- will be deprecated in base_pairs
-    from iv_orders_fulfilled
+    from iv_considerations_exploded
 )
 
 , iv_offer_consideration as (
-    select * from iv_offer
+    select * from iv_offers
     union all
-    select * from iv_consideration
+    select * from iv_considerations
 )
 
 , iv_base_pairs as (
