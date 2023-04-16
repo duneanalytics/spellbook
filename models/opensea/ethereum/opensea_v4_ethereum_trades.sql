@@ -236,7 +236,7 @@ with source_ethereum_transactions as (
           a.block_time
         , a.block_number
         , a.tx_hash
-        , coalesce(a.om_evt_index, a.evt_index) as evt_index  -- when order_matched exists, then replace evt_index to its
+        , coalesce(b.om_evt_index, a.evt_index) as evt_index  -- when order_matched exists, then replace evt_index to its
         , a.sub_type
         , a.sub_idx
         , a.offer_first_item_type
@@ -255,7 +255,7 @@ with source_ethereum_transactions as (
         , a.consideration_cnt
         , a.order_hash
         , a.is_private
-        , a.om_evt_index
+        , b.om_evt_index
         , a.om_order_id
 
         , case 
