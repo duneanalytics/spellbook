@@ -256,7 +256,7 @@ with source_ethereum_transactions as (
         , a.order_hash
         , a.is_private
         , b.om_evt_index
-        , a.om_order_id
+        , b.om_order_id
 
         , case 
             when sender = receiver then true 
