@@ -32,7 +32,7 @@ models:
         name: blockchain
         tests:
           - accepted_values:
-              values: ['ethereum', 'bnb', 'avalanche_c', 'gnosis', 'optimism', 'arbitrum']
+              values: ['ethereum', 'bnb', 'avalanche_c', 'gnosis', 'optimism', 'arbitrum', 'polygon']
         description: "Blockchain"
       - &tornado_version
         name: tornado_version
