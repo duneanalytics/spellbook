@@ -468,7 +468,7 @@ models:
 
     glacier_exchange:
       +schema: glacier_exchange
-      fantom:
+      avalanche_c:
         +schema: glacier_exchange_avalanche_c
 
     safe:
