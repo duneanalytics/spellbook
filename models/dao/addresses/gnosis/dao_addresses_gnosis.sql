@@ -4,7 +4,7 @@ WITH
 
 mapping as (
         SELECT blockchain, dao_creator_tool, dao, dao_wallet_address, created_block_time, created_date
-        FROM {{ ref('dao_addresses_gnosis_aragon') }}
+        FROM {{ ref('aragon_gnosis_dao_addresses') }}
 
         UNION ALL 
 

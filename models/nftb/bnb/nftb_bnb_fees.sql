@@ -39,4 +39,4 @@ tx_hash,
 tx_from,
 tx_to,
 unique_trade_id
-FROM {{ ref('nftrade_bnb_events') }}
+FROM {{ ref('nftb_bnb_events') }}
