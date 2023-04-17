@@ -123,13 +123,13 @@ SELECT 'ethereum' AS blockchain
 , lr.block_number
 , et.from AS tx_from
 , et.to AS tx_to
-, COALESCE((pf.fee_percentage/100)*lr.amount_raw, 0) AS platform_fee_amount_raw
+, CAST(COALESCE((pf.fee_percentage/100)*lr.amount_raw, 0) as DECIMAL(38,0)) AS platform_fee_amount_raw
 , COALESCE((pf.fee_percentage/100)*lr.amount_raw/POWER(10, pu.decimals), 0) AS platform_fee_amount
 , COALESCE((pf.fee_percentage/100)*pu.price*lr.amount_raw/POWER(10, pu.decimals), 0) platform_fee_amount_usd
 , CAST(COALESCE(pf.fee_percentage, 0) AS DOUBLE) AS platform_fee_percentage
 , roy.royaltyRecipient AS royalty_fee_receive_address
 , CASE WHEN lr.currency_contract='0x0000000000000000000000000000000000000000' THEN 'ETH' ELSE pu.symbol END AS royalty_fee_currency_symbol
-, CAST(COALESCE(roy.amount, 0) AS DOUBLE) AS royalty_fee_amount_raw
+, CAST(COALESCE(roy.amount, 0) AS DECIMAL(38,0)) AS royalty_fee_amount_raw
 , COALESCE(roy.amount/POWER(10, pu.decimals), 0) AS royalty_fee_amount
 , COALESCE(pu.price*roy.amount/POWER(10, pu.decimals), 0) royalty_fee_amount_usd
 , CAST(COALESCE(ROUND(100*roy.amount/lr.amount_raw, 2), 0) AS DOUBLE) AS royalty_fee_percentage

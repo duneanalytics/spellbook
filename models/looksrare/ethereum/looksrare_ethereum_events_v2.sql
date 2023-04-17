@@ -39,9 +39,9 @@ WITH looksrare_v2_trades AS (
     {% if not is_incremental() %}
     WHERE l.evt_block_time >= '{{looksrare_v2_start_date}}'
     {% endif %}
-    
+
     UNION ALL
-    
+
     SELECT l.evt_block_time AS block_time
     , l.evt_block_number AS block_number
     , 'Buy' AS trade_category
@@ -78,7 +78,7 @@ SELECT 'ethereum' AS blockchain
 , 'Trade' AS evt_type
 , lt.seller
 , lt.buyer
-, lt.amount_raw
+, CAST(lt.amount_raw as DECIMAL(38,0)) as amount_raw
 , CASE WHEN lt.currency='0x0000000000000000000000000000000000000000' THEN lt.amount_raw/POWER(10, 18)
     ELSE lt.amount_raw/POWER(10, pu.decimals)
     END AS amount_original
