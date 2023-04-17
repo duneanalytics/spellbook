@@ -7,7 +7,7 @@
     ,unique_key = ['block_date', 'blockchain', 'project', 'version', 'tx_hash', 'evt_index', 'trace_address']
     ,post_hook='{{ expose_spells(\'["avalanche_c"]\',
                                       "project",
-                                      "glacier_exchange",
+                                      "glacier",
                                     \'["discochuck"]\') }}'
     )
 }}
@@ -30,7 +30,7 @@ with dexs as (
         '' as trace_address,
         t.evt_index
     FROM
-        {{ source('glacier_exchange_avalanche_c', 'Pair_evt_Swap') }} t
+        {{ source('glacier_avalanche_c', 'Pair_evt_Swap') }} t
         inner join {{ source('glacier_avalanche_c', 'PairFactory_evt_PairCreated') }} f 
             on f.pair = t.contract_address
     {% if is_incremental() %}
@@ -39,7 +39,7 @@ with dexs as (
 )
 select
     'avalanche_c' as blockchain,
-    'glacier_exchange' as project,
+    'glacier' as project,
     '1' as version,
     try_cast(date_trunc('DAY', dexs.block_time) as date) as block_date,
     dexs.block_time,
