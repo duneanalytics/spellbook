@@ -16,35 +16,35 @@
 {% set polygon_start_date = '2021-06-28' %}
 
 SELECT tc.evt_block_time AS block_time
-, '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2' AS currency_contract
-, 'ETH' AS currency_symbol
-, 'optimism' AS blockchain
+, '0x7d1afa7b718fb893db30a3abc0cfc608aacfebb0' AS currency_contract
+, 'MATIC' AS currency_symbol
+, 'polygon' AS blockchain
 , 'classic' AS tornado_version
-, ot.from AS tx_from
+, pt.from AS tx_from
 , tc.nullifierHash AS nullifier
 , tc.fee/POWER(10, 18) AS fee
 , tc.relayer
 , tc.to AS recipient
 , tc.contract_address AS contract_address
-, CASE WHEN tc.contract_address='0x84443cfd09a48af6ef360c6976c5392ac5023a1f' THEN 0.1
-        WHEN tc.contract_address='0xd47438c816c9e7f2e2888e060936a499af9582b3' THEN 1
-        WHEN tc.contract_address='0x330bdfade01ee9bf63c209ee33102dd334618e0a' THEN 10
-        WHEN tc.contract_address='0x1e34a77868e19a6647b1f2f47b51ed72dede95dd' THEN 100
+, CASE WHEN tc.contract_address='0x1e34a77868e19a6647b1f2f47b51ed72dede95dd' THEN 0.1
+        WHEN tc.contract_address='0xdf231d99ff8b6c6cbf4e9b9a945cbacef9339178' THEN 1
+        WHEN tc.contract_address='0xaf4c0b70b2ea9fb7487c7cbb37ada259579fe040' THEN 10
+        WHEN tc.contract_address='0xa5c2254e4253490c54cef0a4347fddb8f75a4998' THEN 100
         END AS amount
 , tc.evt_tx_hash AS tx_hash
 , tc.evt_index
 , TRY_CAST(date_trunc('DAY', tc.evt_block_time) AS date) AS block_date
-FROM {{ source('tornado_cash_optimism','ETHTornado_evt_Withdrawal') }} tc
-INNER JOIN {{ source('optimism','transactions') }} ot
-        ON ot.hash=tc.evt_tx_hash
+FROM {{ source('tornado_cash_polygon','TornadoCashMatic_evt_Withdrawal') }} tc
+INNER JOIN {{ source('polygon','transactions') }} pt
+        ON pt.hash=tc.evt_tx_hash
         {% if not is_incremental() %}
-        AND ot.block_time >= '{{optimism_start_date}}'
+        AND pt.block_time >= '{{polygon_start_date}}'
         {% endif %}
         {% if is_incremental() %}
-        AND ot.block_time >= date_trunc("day", now() - interval '1 week')
+        AND pt.block_time >= date_trunc("day", now() - interval '1 week')
         {% endif %}
 {% if not is_incremental() %}
-WHERE tc.evt_block_time >= '{{optimism_start_date}}'
+WHERE tc.evt_block_time >= '{{polygon_start_date}}'
 {% endif %}
 {% if is_incremental() %}
 WHERE tc.evt_block_time >= date_trunc("day", now() - interval '1 week')
