@@ -12,7 +12,7 @@
 
 WITH sushiswap_dex AS (
     SELECT  t.evt_block_time                                             AS block_time,
-            `to`                                                         AS taker,
+            to                                                           AS taker,
             sender                                                       AS maker,
             CASE WHEN amount0Out = 0 THEN amount1Out ELSE amount0Out END AS token_bought_amount_raw,
             CASE WHEN amount0In = 0 THEN amount1In ELSE amount0In END    AS token_sold_amount_raw,
