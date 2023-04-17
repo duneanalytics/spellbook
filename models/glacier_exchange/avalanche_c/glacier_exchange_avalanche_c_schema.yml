@@ -5,10 +5,10 @@ models:
     meta:
       blockchain: avalanche_c 
       sector: dex
-      project: glacier 
+      project: glacier_exchange
       contributors: discochuck 
     config:
-      tags: ['avalanche_c','glacier','trades','dex']
+      tags: ['avalanche_c','glacier_exchange','trades','dex']
     description: >
         glacier_exchange contract trades on avalanche_c 
     tests:
@@ -23,7 +23,7 @@ models:
             - trace_address
       - check_dex_seed:
           blockchain: avalanche_c 
-          project: glacier
+          project: glacier_exchange
           version: 1
     columns:
       - &blockchain
