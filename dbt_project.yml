@@ -515,6 +515,15 @@ models:
       fantom:
         +schema: lifi_fantom
 
+    aragon:
+      +schema: aragon
+      ethereum:
+        +schema: aragon_ethereum
+      gnosis:
+        +schema: aragon_gnosis
+      polygon:
+        +schema: aragon_polygon
+
     spiritswap:
       +schema: spiritswap
       fantom:
@@ -542,6 +551,18 @@ models:
 
     tornado_cash:
       +schema: tornado_cash
+      arbitrum:
+        +schema: tornado_cash_arbitrum
+      avalanche_c:
+        +schema: tornado_cash_avalanche_c
+      bnb:
+        +schema: tornado_cash_bnb
+      ethereum:
+        +schema: tornado_cash_ethereum
+      gnosis:
+        +schema: tornado_cash_gnosis
+      optimism:
+        +schema: tornado_cash_optimism
 
     perpetual:
       +schema: perpetual
@@ -722,6 +743,8 @@ models:
         +schema: kyberswap_optimism
       ethereum:
         +schema: kyberswap_ethereum
+      arbitrum:
+        +schema: kyberswap_arbitrum
 
     hubble_exchange:
       +schema: hubble_exchange
@@ -956,3 +979,12 @@ models:
       +schema: optimism_attestationstation
       optimism:
         +schema: optimism_attestationstation_optimism
+
+    bebop:
+      +schema: bebop
+      ethereum:
+        +schema: bebop_ethereum
+      polygon:
+        +schema: bebop_polygon
+      arbitrum:
+        +schema: bebop_arbitrum
