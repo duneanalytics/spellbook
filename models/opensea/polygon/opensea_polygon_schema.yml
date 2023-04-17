@@ -193,7 +193,7 @@ models:
         name: fee_wallet_name
         description: "Address name when a specific pre-specified fee address is included."
 
-  - name: opensea_polygon_v2_events
+  - name: opensea_v2_polygon_events
     meta:
       blockchain: polygon
       project: opensea
@@ -240,7 +240,7 @@ models:
       - *royalty_fee_currency_symbol
       - *unique_trade_id
 
-  - name: opensea_polygon_v3_events
+  - name: opensea_v3_polygon_events
     meta:
       blockchain: polygon
       project: opensea
@@ -304,7 +304,7 @@ models:
       - *sub_idx
       - *sub_type
 
-  - name: opensea_polygon_v4_events
+  - name: opensea_v4_polygon_events
     meta:
       blockchain: polygon
       project: opensea
