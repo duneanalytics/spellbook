@@ -10,6 +10,21 @@ models:
       tags: ['ethereum','looksrare','v1','events']
     description: >
         LooksRare v1 events on Ethereum
+    tests:
+      - check_seed:
+          seed_file: ref('looksrare_ethereum_v1_trades')
+          match_columns:
+            - block_number
+            - tx_hash
+            - nft_contract_address
+            - token_id
+          check_columns:
+            - buyer
+            - seller
+            - amount_raw
+            - platform_fee_amount_raw
+            - royalty_fee_amount_raw
+
     columns:
       - &blockchain
         name: blockchain
@@ -134,6 +149,20 @@ models:
       tags: ['ethereum','looksrare','v2','events']
     description: >
         LooksRare v2 events on Ethereum
+    tests:
+      - check_seed:
+          seed_file: ref('looksrare_ethereum_v2_trades')
+          match_columns:
+            - block_number
+            - tx_hash
+            - nft_contract_address
+            - token_id
+          check_columns:
+            - buyer
+            - seller
+            - amount_raw
+            - platform_fee_amount_raw
+            - royalty_fee_amount_raw
     columns:
       - *blockchain
       - *project
