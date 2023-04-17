@@ -27,7 +27,7 @@ FROM (
     'persona' as label_type
 
     FROM {{source('erc20_' + chain, 'evt_transfer')}} t
-        INNER JOIN {{ref('addresses_'+ chain +'_cex')}} c
+        INNER JOIN {{ref('cex_'+ chain +'_addresses')}} c
         ON t.`from` = c.address
 
     UNION ALL
