@@ -615,6 +615,8 @@ models:
         +schema: tornado_cash_gnosis
       optimism:
         +schema: tornado_cash_optimism
+      polygon:
+        +schema: tornado_cash_polygon
 
     perpetual:
       +schema: perpetual
@@ -1024,6 +1026,11 @@ models:
       +schema: optimism_attestationstation
       optimism:
         +schema: optimism_attestationstation_optimism
+
+    onepunchswap:
+      +schema: onepunchswap
+      bnb:
+        +schema: onepunchswap_bnb
 
     bebop:
       +schema: bebop
