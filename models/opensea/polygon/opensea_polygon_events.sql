@@ -9,6 +9,7 @@ SELECT *
         SELECT   blockchain
                 ,project
                 ,version
+                ,block_date
                 ,block_time
                 ,token_id
                 ,collection
@@ -68,6 +69,7 @@ SELECT *
         SELECT   blockchain
                 ,project
                 ,version
+                ,block_date
                 ,block_time
                 ,token_id
                 ,collection
@@ -163,6 +165,7 @@ SELECT *
                ,royalty_fee_receive_address
                ,royalty_fee_currency_symbol
                ,unique_trade_id 
+               ,NULL
                ,NULL
                ,NULL
                ,NULL
