@@ -1,7 +1,7 @@
 version: 2
 
 sources: 
-  - name: glacier_exchange_avalanche_c
+  - name: glacier_avalanche_c
     freshness:
           warn_after: { count: 12, period: hour }
     description: >
