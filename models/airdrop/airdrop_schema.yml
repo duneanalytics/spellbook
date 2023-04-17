@@ -13,9 +13,10 @@ models:
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
+            - blockchain
             - tx_hash
-            - recipient
             - evt_index
+            - recipient
     columns:
       - &blockchain
         name: blockchain

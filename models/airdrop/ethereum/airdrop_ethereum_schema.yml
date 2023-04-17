@@ -5,18 +5,10 @@ models:
     meta:
       blockchain: ethereum
       sector: airdrop
-      sector: airdrop
-      project: airdrop
       contributors: hildobby
     config:
-      tags: ['table', 'airdrop', 'ethereum', 'claim']
+      tags: ['airdrop', 'ethereum', 'claim']
     description: "List of airdrop claim transactions on Ethereum"
-    tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - recipient
-            - evt_index
     columns:
       - &blockchain
         name: blockchain
