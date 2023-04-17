@@ -16,7 +16,7 @@
 {% set optimism_start_date = '2021-12-14' %}
 
 SELECT tc.evt_block_time AS block_time
-, '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2' AS currency_contract
+, '0x4200000000000000000000000000000000000006' AS currency_contract
 , 'ETH' AS currency_symbol
 , 'optimism' AS blockchain
 , 'classic' AS tornado_version
