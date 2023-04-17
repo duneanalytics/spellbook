@@ -183,5 +183,5 @@ SELECT *
                ,NULL
                ,NULL
                ,NULL
-        FROM {{ ref('opensea_v1_polygon_events') }}
+        FROM {{ ref('opensea_v2_polygon_events') }}
        )
