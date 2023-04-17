@@ -1,7 +1,7 @@
 version: 2
 
 models:
-  - name: glacier_avalanche_c_trades
+  - name: glacier_exchange_avalanche_c_trades
     meta:
       blockchain: avalanche_c 
       sector: dex
