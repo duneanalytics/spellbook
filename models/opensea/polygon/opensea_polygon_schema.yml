@@ -132,8 +132,8 @@ models:
       - &original_currency_contract
         name:  original_currency_contract
         description: "original currency"
-      - &currency_decimal
-        name:  currency_decimal
+      - &currency_decimals
+        name:  currency_decimals
         description:  "Token Decimal"
       - &platform_fee_receive_address
         name: platform_fee_receive_address
