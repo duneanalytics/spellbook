@@ -320,6 +320,7 @@ WITH raw_token_list AS (
     ,('0xb1c9ac57594e9b1ec0f3787d9f6744ef4cb0a024', 'BPT-USD+', 18, 'receipt')
     ,('0x7b50775383d3d6f0215a8f290f2c9e2eebbeceb2', 'BPT-WSTETH-WETH', 18, 'receipt')
     ,('0x739ca6d71365a08f584c8fc4e1029045fa8abc4b', 'anyDOLA', 18, 'receipt')
+    ,('0xdb4ea87ff83eb1c80b8976fc47731da6a31d35e5', 'wTBT', 18, 'underlying')
 
     ) AS temp_table (contract_address, symbol, decimals, token_type)
 )
