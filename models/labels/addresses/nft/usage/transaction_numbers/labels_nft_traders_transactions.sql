@@ -1,4 +1,3 @@
-
 {{config(alias='nft_traders_transactions')}}
 
 WITH nft_trades AS (
@@ -7,7 +6,9 @@ SELECT
     tx_hash,
     buyer AS address
 FROM {{ ref('nft_trades') }}
-        UNION
+
+UNION
+
 SELECT
     blockchain,
     tx_hash,
@@ -29,7 +30,7 @@ SELECT * FROM (
     nft_trades.address,
     CASE WHEN ((ROW_NUMBER() OVER(ORDER BY COUNT(tx_hash) DESC)) / total_count * 100) <= 10
               AND ((ROW_NUMBER() OVER(ORDER BY COUNT(tx_hash) DESC)) / total_count * 100) > 5
-            THEN 'Top 10% NFT Trader (Transaction)'
+            THEN 'Top 10% NFT Trader (Transactions)'
          WHEN ((ROW_NUMBER() OVER(ORDER BY COUNT(tx_hash) DESC)) / total_count * 100) <= 5
               AND ((ROW_NUMBER() OVER(ORDER BY COUNT(tx_hash) DESC)) / total_count * 100) > 1
             THEN 'Top 5% NFT Trader (Transactions)'

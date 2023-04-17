@@ -428,6 +428,10 @@ FROM (
       ,('0xba32a3d407353fc3adaa6f7ec6264df5bca51c4b', 'Arcadia Finance')
       ,('0x280333C41A9302448EbC070eD0300ad2Ed4B8244' ,'Transit Finance')
       ,('0x8a700FdB6121A57C59736041D9aa21dfd8820660', 'Orbiter Finance')
+      ,('0xe00691e65Cd4400c84a174a4C56f20bA43dffD89', 'Ethos Reserve')
+      ,('0x4bb4c1b0745ef7b4642feeccd0740dec417ca0a0', 'Sushi')
+      ,('0x15051107651f3420144d3a2412d49402c2fac3c0', 'zkBridge')
+      ,('0x2313f80d53c649c7b2c9c4d101b796f34cbe80f3', 'Wido')
 
   ) as temp_table (creator_address, contract_project)
 
