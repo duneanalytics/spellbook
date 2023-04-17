@@ -6,7 +6,8 @@
 }}
 
 WITH last_block AS (
-        SELECT MAX(block_number) AS max_bt FROM optimism.transactions
+        SELECT MAX(block_number) AS max_bt
+        FROM {{ source('optimism','transactions') }}
         WHERE block_time > NOW() - interval '7' day
 
 )
