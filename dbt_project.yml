@@ -973,6 +973,11 @@ models:
       optimism:
         +schema: optimism_attestationstation_optimism
 
+    onepunchswap:
+      +schema: onepunchswap
+      bnb:
+        +schema: onepunchswap_bnb
+
     bebop:
       +schema: bebop
       ethereum:
