@@ -14,14 +14,14 @@
 with dexs as (
     -- Sushiswap
     SELECT
-        t.evt_block_time as block_time,
+        CAST(t.evt_block_time AS TIMESTAMP(6) WITH TIME ZONE) as block_time,
         t.to as taker,
-        '' as maker,
-        case when amount0Out  = 0 then amount1Out else amount0Out end as token_bought_amount_raw,
-        case when amount0In = 0 then amount1In else amount0In end as token_sold_amount_raw,
+        CAST('' AS VARBINARY) as maker,
+        case when CAST(amount0Out as DOUBLE)  = 0 then amount1Out else amount0Out end as token_bought_amount_raw,
+        case when CAST(amount0In as DOUBLE) = 0 then amount1In else amount0In end as token_sold_amount_raw,
         null as amount_usd,
-        case when amount0Out  = 0 then f.token1 else f.token0 end as token_bought_address,
-        case when amount0In = 0 then f.token1 else f.token0 end as token_sold_address,
+        case when CAST(amount0Out as DOUBLE)  = 0 then f.token1 else f.token0 end as token_bought_address,
+        case when CAST(amount0In as DOUBLE) = 0 then f.token1 else f.token0 end as token_sold_address,
         t.contract_address as project_contract_address,
         t.evt_tx_hash as tx_hash,
         '' as trace_address,
@@ -50,8 +50,8 @@ select
     end as token_pair,
     dexs.token_bought_amount_raw / power(10, erc20a.decimals) AS token_bought_amount,
     dexs.token_sold_amount_raw / power(10, erc20b.decimals) AS token_sold_amount,
-    CAST(dexs.token_bought_amount_raw AS DECIMAL(38,0)) AS token_bought_amount_raw,
-    CAST(dexs.token_sold_amount_raw AS DECIMAL(38,0)) AS token_sold_amount_raw,
+    CAST(dexs.token_bought_amount_raw AS DOUBLE) AS token_bought_amount_raw,
+    CAST(dexs.token_sold_amount_raw AS DOUBLE) AS token_sold_amount_raw,
     coalesce(
         dexs.amount_usd
         ,(dexs.token_bought_amount_raw / power(10, p_bought.decimals)) * p_bought.price
@@ -84,7 +84,7 @@ left join {{ ref('tokens_erc20') }} erc20b
     and erc20b.blockchain = 'ethereum'
 left join {{ source('prices', 'usd') }} p_bought 
     on p_bought.minute = date_trunc('minute', dexs.block_time)
-    and p_bought.contract_address = dexs.token_bought_address
+    and from_hex(p_bought.contract_address) = dexs.token_bought_address
     and p_bought.blockchain = 'ethereum'
     {% if not is_incremental() %}
     and p_bought.minute >= CAST('{{project_start_date}}' AS TIMESTAMP(6) WITH TIME ZONE)
@@ -94,7 +94,7 @@ left join {{ source('prices', 'usd') }} p_bought
     {% endif %}
 left join {{ source('prices', 'usd') }} p_sold 
     on p_sold.minute = date_trunc('minute', dexs.block_time)
-    and p_sold.contract_address = dexs.token_sold_address
+    and from_hex(p_sold.contract_address) = dexs.token_sold_address
     and p_sold.blockchain = 'ethereum'
     {% if not is_incremental() %}
     and p_sold.minute >= CAST('{{project_start_date}}' AS TIMESTAMP(6) WITH TIME ZONE)
