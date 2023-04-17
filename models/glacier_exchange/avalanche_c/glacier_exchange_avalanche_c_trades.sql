@@ -31,7 +31,7 @@ with dexs as (
         t.evt_index
     FROM
         {{ source('glacier_exchange_avalanche_c', 'Pair_evt_Swap') }} t
-        inner join {{ source('glacier_exchange_avalanche_c', 'PairFactory_evt_PairCreated') }} f 
+        inner join {{ source('glacier_avalanche_c', 'PairFactory_evt_PairCreated') }} f 
             on f.pair = t.contract_address
     {% if is_incremental() %}
     WHERE t.evt_block_time >= date_trunc("day", now() - interval '1 week')
