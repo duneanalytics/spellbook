@@ -58,6 +58,7 @@
 ,ref('quickswap_trades')
 ,ref('integral_trades')
 ,ref('maverick_trades')
+,ref('verse_dex_ethereum_trades')
 ,ref('onepunchswap_bnb_trades')
 ] %}
 
