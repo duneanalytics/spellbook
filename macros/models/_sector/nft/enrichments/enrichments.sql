@@ -5,7 +5,7 @@
 -- 3. add ERC20 token information + handle ERC20 decimals
 -- 4. handle USD columns
 -- 5. add aggregator columns
--- 6. fix buyer or seller for aggregator tx
+-- 6. fix buyer or seller for aggregator txs
 -- 7. calculate platform and royalty rates
 
 WITH base_union as (
@@ -101,5 +101,7 @@ LEFT JOIN {{ aggregator_markers }} agg_mark
 ON RIGHT(tx.data, agg_mark.hash_marker_size) = agg_mark.hash_marker
 {% endif %}
 )
+
+
 select * from enrichments
 {% endmacro %}

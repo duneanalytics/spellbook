@@ -72,7 +72,7 @@ FROM trade_events trade
 INNER JOIN token_events tok
 ON trade.evt_block_number = tok.evt_block_number
     AND trade.tradeId = tok.tradeId
-INNER JOIN fee_events fee
+LEFT JOIN fee_events fee
 ON trade.evt_block_number = fee.evt_block_number
     AND trade.tradeId = fee.tradeId
 
