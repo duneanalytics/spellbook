@@ -21,7 +21,7 @@ WITH dexs AS
     SELECT
         CAST(t.evt_block_time AS TIMESTAMP(6) WITH TIME ZONE) AS block_time
         ,t.recipient AS taker
-        ,'' AS maker
+        ,CAST('' AS VARBINARY)
         ,CASE WHEN CAST(amount0 AS DOUBLE) < 0 THEN abs(amount0) ELSE abs(amount1) END AS token_bought_amount_raw -- when amount0 is negative it means trader_a is buying token0 from the pool
         ,CASE WHEN CAST(amount0 AS DOUBLE) < 0 THEN abs(amount1) ELSE abs(amount0) END AS token_sold_amount_raw
         ,NULL AS amount_usd
@@ -76,7 +76,7 @@ INNER JOIN
     {{ source('polygon', 'transactions') }} tx
     ON tx.hash = dexs.tx_hash
     {% if not is_incremental() %}
-    AND tx.block_time >= CAST('{{project_start_date}}' AS TIMESTAMP(6) WITH TIME ZONE)
+    AND tx.block_time >= CAST(CAST('{{project_start_date}}' AS TIMESTAMP(6) WITH TIME ZONE) AS TIMESTAMP(6) WITH TIME ZONE)
     {% endif %}
     {% if is_incremental() %}
     AND tx.block_time >= date_trunc('day', now() - interval '7' day)
@@ -92,7 +92,7 @@ LEFT JOIN {{ source('prices', 'usd') }} p_bought
     AND CAST(p_bought.contract_address as VARBINARY) = dexs.token_bought_address
     AND p_bought.blockchain = 'polygon'
     {% if not is_incremental() %}
-    AND p_bought.minute >= CAST('{{project_start_date}}' AS TIMESTAMP(6) WITH TIME ZONE)
+    AND p_bought.minute >= CAST(CAST('{{project_start_date}}' AS TIMESTAMP(6) WITH TIME ZONE) AS TIMESTAMP(6) WITH TIME ZONE)
     {% endif %}
     {% if is_incremental() %}
     AND p_bought.minute >= date_trunc('day', now() - interval '7' day)
@@ -102,7 +102,7 @@ LEFT JOIN {{ source('prices', 'usd') }} p_sold
     AND CAST(p_sold.contract_address AS VARBINARY) = dexs.token_sold_address
     AND p_sold.blockchain = 'polygon'
     {% if not is_incremental() %}
-    AND p_sold.minute >= CAST('{{project_start_date}}' AS TIMESTAMP(6) WITH TIME ZONE)
+    AND p_sold.minute >= CAST(CAST('{{project_start_date}}' AS TIMESTAMP(6) WITH TIME ZONE) AS TIMESTAMP(6) WITH TIME ZONE)
     {% endif %}
     {% if is_incremental() %}
     AND p_sold.minute >= date_trunc('day', now() - interval '7' day)

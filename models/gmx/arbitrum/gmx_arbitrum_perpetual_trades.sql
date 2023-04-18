@@ -36,7 +36,7 @@ perp_events as (
     FROM 
     {{ source('gmx_arbitrum', 'Vault_evt_DecreasePosition') }}
     {% if not is_incremental() %}
-    WHERE evt_block_time >= '{{project_start_date}}'
+    WHERE evt_block_time >= CAST('{{project_start_date}}' AS TIMESTAMP(6) WITH TIME ZONE)
     {% endif %}
     {% if is_incremental() %}
     WHERE evt_block_time >= date_trunc('day', now() - interval '7' day)
@@ -63,7 +63,7 @@ perp_events as (
     FROM 
     {{ source('gmx_arbitrum', 'Vault_evt_IncreasePosition') }}
     {% if not is_incremental() %}
-    WHERE evt_block_time >= '{{project_start_date}}'
+    WHERE evt_block_time >= CAST('{{project_start_date}}' AS TIMESTAMP(6) WITH TIME ZONE)
     {% endif %}
     {% if is_incremental() %}
     WHERE evt_block_time >= date_trunc('day', now() - interval '7' day)
@@ -90,7 +90,7 @@ perp_events as (
     FROM 
     {{ source('gmx_arbitrum', 'Vault_evt_LiquidatePosition') }}
     {% if not is_incremental() %}
-    WHERE evt_block_time >= '{{project_start_date}}'
+    WHERE evt_block_time >= CAST('{{project_start_date}}' AS TIMESTAMP(6) WITH TIME ZONE)
     {% endif %}
     {% if is_incremental() %}
     WHERE evt_block_time >= date_trunc('day', now() - interval '7' day)
@@ -131,7 +131,7 @@ INNER JOIN {{ source('arbitrum', 'transactions') }} txns
     ON pe.tx_hash = txns.hash
     AND pe.block_number = txns.block_number
     {% if not is_incremental() %}
-    AND txns.block_time >= '{{project_start_date}}'
+    AND txns.block_time >= CAST('{{project_start_date}}' AS TIMESTAMP(6) WITH TIME ZONE)
     {% endif %}
     {% if is_incremental() %}
     AND txns.block_time >= date_trunc('day', now() - interval '7' day)

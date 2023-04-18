@@ -435,4 +435,4 @@ FROM (
 WHERE f.creator_address NOT IN (
    SELECT creator_address FROM {{ ref('contracts_optimism_nondeterministic_contract_creators') }}
 )
-;
+

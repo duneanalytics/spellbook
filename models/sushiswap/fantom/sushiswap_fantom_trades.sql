@@ -33,7 +33,7 @@ with dexs as (
     WHERE t.evt_block_time >= date_trunc('day', now() - interval '7' day)
     {% endif %}
     {% if not is_incremental() %}
-    WHERE t.evt_block_time >= CAST('{{project_start_date}}' AS TIMESTAMP(6) WITH TIME ZONE)
+    WHERE t.evt_block_time >= CAST(CAST('{{project_start_date}}' AS TIMESTAMP(6) WITH TIME ZONE) AS TIMESTAMP(6) WITH TIME ZONE)
     {% endif %}
 )
 select
@@ -71,7 +71,7 @@ from dexs
 inner join {{ source('fantom', 'transactions') }} tx
     on dexs.tx_hash = tx.hash
     {% if not is_incremental() %}
-    and tx.block_time >= CAST('{{project_start_date}}' AS TIMESTAMP(6) WITH TIME ZONE)
+    and tx.block_time >= CAST(CAST('{{project_start_date}}' AS TIMESTAMP(6) WITH TIME ZONE) AS TIMESTAMP(6) WITH TIME ZONE)
     {% endif %}
     {% if is_incremental() %}
     and tx.block_time >= date_trunc('day', now() - interval '7' day)
@@ -87,7 +87,7 @@ left join {{ source('prices', 'usd') }} p_bought
     and from_hex(p_bought.contract_address) = dexs.token_bought_address
     and p_bought.blockchain = 'fantom'
     {% if not is_incremental() %}
-    and p_bought.minute >= CAST('{{project_start_date}}' AS TIMESTAMP(6) WITH TIME ZONE)
+    and p_bought.minute >= CAST(CAST('{{project_start_date}}' AS TIMESTAMP(6) WITH TIME ZONE) AS TIMESTAMP(6) WITH TIME ZONE)
     {% endif %}
     {% if is_incremental() %}
     and p_bought.minute >= date_trunc('day', now() - interval '7' day)
@@ -97,7 +97,7 @@ left join {{ source('prices', 'usd') }} p_sold
     and from_hex(p_sold.contract_address) = dexs.token_sold_address
     and p_sold.blockchain = 'fantom'
     {% if not is_incremental() %}
-    and p_sold.minute >= CAST('{{project_start_date}}' AS TIMESTAMP(6) WITH TIME ZONE)
+    and p_sold.minute >= CAST(CAST('{{project_start_date}}' AS TIMESTAMP(6) WITH TIME ZONE) AS TIMESTAMP(6) WITH TIME ZONE)
     {% endif %}
     {% if is_incremental() %}
     and p_sold.minute >= date_trunc('day', now() - interval '7' day)

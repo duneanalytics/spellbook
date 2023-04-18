@@ -22,7 +22,7 @@ WITH dexs AS
     SELECT
         CAST(t.evt_block_time as TIMESTAMP(6) WITH TIME ZONE) AS block_time
         ,t.buyer AS taker
-        ,'' AS maker
+        ,CAST('' AS VARBINARY)
         ,t.tokens_bought AS token_bought_amount_raw
         ,t.eth_sold AS token_sold_amount_raw
         ,NULL AS amount_usd
@@ -46,7 +46,7 @@ WITH dexs AS
     SELECT
         t.evt_block_time AS block_time
         ,t.buyer AS taker
-        ,'' AS maker
+        ,CAST('' AS VARBINARY)
         ,t.eth_bought AS token_bought_amount_raw
         ,t.tokens_sold AS token_sold_amount_raw
         ,NULL AS amount_usd
@@ -99,7 +99,7 @@ FROM dexs
 INNER JOIN {{ source('ethereum', 'transactions') }} tx
     ON tx.hash = dexs.tx_hash
     {% if not is_incremental() %}
-    AND tx.block_time >= CAST('{{project_start_date}}' AS TIMESTAMP(6) WITH TIME ZONE)
+    AND tx.block_time >= CAST(CAST('{{project_start_date}}' AS TIMESTAMP(6) WITH TIME ZONE) AS TIMESTAMP(6) WITH TIME ZONE)
     {% endif %}
     {% if is_incremental() %}
     AND tx.block_time >= CAST(date_trunc('day', now() - interval '7' day) AS TIMESTAMP(6) WITH TIME ZONE)
@@ -115,7 +115,7 @@ LEFT JOIN {{ source('prices', 'usd') }} p_bought
     AND from_hex(p_bought.contract_address) = dexs.token_bought_address
     AND p_bought.blockchain = 'ethereum'
     {% if not is_incremental() %}
-    AND p_bought.minute >= CAST('{{project_start_date}}' AS TIMESTAMP(6) WITH TIME ZONE)
+    AND p_bought.minute >= CAST(CAST('{{project_start_date}}' AS TIMESTAMP(6) WITH TIME ZONE) AS TIMESTAMP(6) WITH TIME ZONE)
     {% endif %}
     {% if is_incremental() %}
     AND p_bought.minute >= CAST(date_trunc('day', now() - interval '7' day) AS TIMESTAMP(6) WITH TIME ZONE)
@@ -125,7 +125,7 @@ LEFT JOIN {{ source('prices', 'usd') }} p_sold
     AND from_hex(p_sold.contract_address) = dexs.token_sold_address
     AND p_sold.blockchain = 'ethereum'
     {% if not is_incremental() %}
-    AND p_sold.minute >= CAST('{{project_start_date}}' AS TIMESTAMP(6) WITH TIME ZONE)
+    AND p_sold.minute >= CAST(CAST('{{project_start_date}}' AS TIMESTAMP(6) WITH TIME ZONE) AS TIMESTAMP(6) WITH TIME ZONE)
     {% endif %}
     {% if is_incremental() %}
     AND p_sold.minute >= CAST(date_trunc('day', now() - interval '7' day) AS TIMESTAMP(6) WITH TIME ZONE)

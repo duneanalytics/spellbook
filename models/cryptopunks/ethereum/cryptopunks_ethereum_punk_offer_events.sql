@@ -72,4 +72,3 @@ left join {{ source('prices', 'usd') }} p on p.minute = date_trunc('minute', a.e
         {% if is_incremental() %}
         and p.minute >= date_trunc('day', now() - interval '7' day)
         {% endif %}
-;

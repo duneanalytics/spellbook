@@ -20,7 +20,7 @@ WITH minute AS  -- This CTE generates a series of minute values
     FROM
         (
         {% if not is_incremental() %}
-        SELECT explode(sequence(TIMESTAMP '{{project_start_date}}', CURRENT_TIMESTAMP, INTERVAL 1 minute)) AS minute -- 2021-08-31 08:13 is the timestamp of the first vault transaction
+        SELECT explode(sequence(TIMESTAMP CAST('{{project_start_date}}' AS TIMESTAMP(6) WITH TIME ZONE), CURRENT_TIMESTAMP, INTERVAL 1 minute)) AS minute -- 2021-08-31 08:13 is the timestamp of the first vault transaction
         {% endif %}
         {% if is_incremental() %}
         SELECT explode(sequence(date_trunc('day', now() - interval '7' day), CURRENT_TIMESTAMP, INTERVAL 1 minute)) AS minute
@@ -51,7 +51,7 @@ glp_balances AS -- This CTE returns the accuals of WETH tokens in the Fee GLP co
                 mintAmount/1e18 AS mint_burn_value
             FROM {{source('gmx_arbitrum', 'GlpManager_evt_AddLiquidity')}}
             {% if not is_incremental() %}
-            WHERE evt_block_time >= '{{project_start_date}}'
+            WHERE evt_block_time >= CAST('{{project_start_date}}' AS TIMESTAMP(6) WITH TIME ZONE)
             {% endif %}
             {% if is_incremental() %}
             WHERE evt_block_time >= date_trunc('day', now() - interval '7' day)
@@ -64,7 +64,7 @@ glp_balances AS -- This CTE returns the accuals of WETH tokens in the Fee GLP co
                 (-1 * glpAmount)/1e18 AS mint_burn_value
             FROM {{source('gmx_arbitrum', 'GlpManager_evt_RemoveLiquidity')}}
             {% if not is_incremental() %}
-            WHERE evt_block_time >= '{{project_start_date}}'
+            WHERE evt_block_time >= CAST('{{project_start_date}}' AS TIMESTAMP(6) WITH TIME ZONE)
             {% endif %}
             {% if is_incremental() %}
             WHERE evt_block_time >= date_trunc('day', now() - interval '7' day)
@@ -94,7 +94,7 @@ FROM
             glp_cum_balance
         FROM glp_balances
         {% if not is_incremental() %}
-        WHERE minute >= '{{project_start_date}}'
+        WHERE minute >= CAST('{{project_start_date}}' AS TIMESTAMP(6) WITH TIME ZONE)
         {% endif %}
         {% if is_incremental() %}
         WHERE minute >= date_trunc('day', now() - interval '7' day)

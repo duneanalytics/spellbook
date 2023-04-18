@@ -21,7 +21,7 @@ WITH sharky_txs AS (
         FROM {{ source('solana', 'account_activity') }}
         WHERE tx_success
             {% if not is_incremental() %}
-            AND block_time >= '{{ project_start_date }}'
+            AND block_time >= CAST('{{project_start_date}}' AS TIMESTAMP(6) WITH TIME ZONE)
             {% else %}
             AND block_time >= date_trunc('day', now() - interval '7' day)
             {% endif %}
@@ -35,7 +35,7 @@ WITH sharky_txs AS (
             blockchain IS NULL
             AND symbol = 'SOL'
             {% if not is_incremental() %}
-            AND minute >= '{{ project_start_date }}'
+            AND minute >= CAST('{{project_start_date}}' AS TIMESTAMP(6) WITH TIME ZONE)
             {% else %}
             AND minute >= date_trunc('day', now() - interval '7' day)
             {% endif %}
@@ -52,7 +52,7 @@ WITH sharky_txs AS (
                id
         FROM {{ source('solana','transactions') }} tx
         {% if not is_incremental() %}
-        WHERE tx.block_time >= '{{ project_start_date }}'
+        WHERE tx.block_time >= CAST('{{project_start_date}}' AS TIMESTAMP(6) WITH TIME ZONE)
         {% else %}
         WHERE tx.block_time >= date_trunc('day', now() - interval '7' day)
         {% endif %}
@@ -132,4 +132,3 @@ SELECT *,
                THEN sharky_instructions[0].account_arguments[0]
            END as loan_id
 FROM events
-;

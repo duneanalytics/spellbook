@@ -161,7 +161,7 @@ INNER JOIN {{ source('optimism', 'transactions') }} AS tx
 	ON perps.tx_hash = tx.hash
 	AND perps.block_number = tx.block_number
 	{% if not is_incremental() %}
-	AND tx.block_time >= '{{project_start_date}}'
+	AND tx.block_time >= CAST('{{project_start_date}}' AS TIMESTAMP(6) WITH TIME ZONE)
 	{% endif %}
 	{% if is_incremental() %}
 	AND tx.block_time >= DATE_TRUNC("DAY", NOW() - INTERVAL '1 WEEK')

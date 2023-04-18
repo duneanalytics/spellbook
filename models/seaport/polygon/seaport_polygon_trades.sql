@@ -325,4 +325,4 @@ with source_polygon_transactions as (
 )
 select *
 from iv_columns
-;
+

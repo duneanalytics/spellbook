@@ -24,7 +24,7 @@ with v1 as (
         evt_index
     from {{ source('balancer_v1_ethereum', 'BPool_evt_LOG_SWAP') }}
     {% if not is_incremental() %}
-        where evt_block_time >= '{{project_start_date}}'
+        where evt_block_time >= CAST('{{project_start_date}}' AS TIMESTAMP(6) WITH TIME ZONE)
     {% endif %}
     {% if is_incremental() %}
         where evt_block_time >= date_trunc('day', now() - interval '7' day)
@@ -34,7 +34,7 @@ prices as (
     select * from {{ source('prices', 'usd') }}
     where blockchain = 'ethereum'
     {% if not is_incremental() %}
-        and minute >= '{{project_start_date}}'
+        and minute >= CAST('{{project_start_date}}' AS TIMESTAMP(6) WITH TIME ZONE)
     {% endif %}
     {% if is_incremental() %}
         and minute >= date_trunc('day', now() - interval '7' day)
@@ -76,7 +76,7 @@ from v1 trades
 inner join {{ source('ethereum', 'transactions') }} tx
     on trades.evt_tx_hash = tx.hash
     {% if not is_incremental() %}
-    and tx.block_time >= '{{project_start_date}}'
+    and tx.block_time >= CAST('{{project_start_date}}' AS TIMESTAMP(6) WITH TIME ZONE)
     {% endif %}
     {% if is_incremental() %}
     and tx.block_time >= date_trunc('day', now() - interval '7' day)

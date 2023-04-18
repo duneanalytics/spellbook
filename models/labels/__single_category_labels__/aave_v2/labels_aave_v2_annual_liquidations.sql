@@ -61,4 +61,4 @@ SELECT
     , model_name
     , label_type
 FROM final_base_label
-;
+

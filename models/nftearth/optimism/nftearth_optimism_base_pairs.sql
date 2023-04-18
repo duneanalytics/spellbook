@@ -221,4 +221,4 @@ with iv_offer_consideration_raw as (
 )
 select *
 from iv_base_pairs
-;
+

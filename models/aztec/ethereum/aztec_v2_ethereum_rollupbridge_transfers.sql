@@ -199,4 +199,3 @@ tfers_categorized as (
 ) 
 SELECT * FROM tfers_categorized
 WHERE value_norm != 0
-;

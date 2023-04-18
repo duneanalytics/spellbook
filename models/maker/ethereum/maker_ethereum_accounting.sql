@@ -165,7 +165,7 @@ WITH dao_wallet AS (
         WHEN ilk LIKE 'UNIV2%' THEN 11141
         WHEN ilk LIKE 'DIRECT%' THEN 11210
         WHEN ilk LIKE 'RWA%' THEN 12310 --default rwa into off-chain private credit in case an RWA is not manually listed
-        WHEN ilk LIKE 'PSM%' THEN 13410 --defaulting PSMS to non-yielding; exceptions should be listed in manual entry table
+        WHEN ilk LIKE 'PSM%' THEN 13410 --defaulting PSMS to non-yielding exceptions should be listed in manual entry table
         WHEN ilk IN ('USDC-A','USDC-B', 'USDT-A', 'TUSD-A','GUSD-A','PAXUSD-A') THEN 11510
         ELSE 11199 --other crypto loans category. all other categories are accounted for in the above logic. SAI included here
         END AS asset_code
@@ -176,7 +176,7 @@ WITH dao_wallet AS (
         WHEN ilk LIKE 'UNIV2%' THEN 31141
         WHEN ilk LIKE 'DIRECT%' THEN 31160
         WHEN ilk LIKE 'RWA%' THEN 31170 --default rwa into off-chain private credit in case an RWA is not manually listed
-        WHEN ilk LIKE 'PSM%' THEN CAST(NULL AS NUMERIC(38)) --defaulting PSMS to non-yielding; exceptions should be listed in manual entry table
+        WHEN ilk LIKE 'PSM%' THEN CAST(NULL AS NUMERIC(38)) --defaulting PSMS to non-yielding exceptions should be listed in manual entry table
         WHEN ilk IN ('USDC-A','USDC-B', 'USDT-A', 'TUSD-A','GUSD-A','PAXUSD-A') THEN 31190
         ELSE 31150 --other crypto loans category. all other categories are accounted for in the above logic. SAI included here
         END AS equity_code
@@ -1078,7 +1078,7 @@ WITH dao_wallet AS (
     FROM {{ source('maker_ethereum', 'mkr_evt_transfer') }}
     WHERE `to` = 0xbe8e3e3618f7474f8cb1d074a26affef007e98fb
     AND `from` NOT IN (0x8ee7d9235e01e6b42345120b5d270bdb763624c7
-                       , 0xbe8e3e3618f7474f8cb1d074a26affef007e98fb) --filtering out initial transfers in; also one transaction both to and from pause proxy, ignoring this one
+                       , 0xbe8e3e3618f7474f8cb1d074a26affef007e98fb) --filtering out initial transfers in also one transaction both to and from pause proxy, ignoring this one
 ), pause_proxy_mkr_trxns_preunion AS
 (
     SELECT ts
@@ -1471,4 +1471,4 @@ SELECT *
 FROM final
 WHERE ( COALESCE(value, 0) <> 0 OR dai_value <> 0 OR eth_value <> 0 )
 AND ts <= (SELECT MAX(ts) + INTERVAL 59 SECONDS FROM eth_prices) --excludes blocks for which we can't price in eth yet (last 30 min or so). 59 second interval is to accomodate the entire minute. Might have to be more restrictive even in the spell depending on how execution works
-;
+

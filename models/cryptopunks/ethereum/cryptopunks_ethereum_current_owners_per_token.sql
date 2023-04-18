@@ -17,4 +17,3 @@ from
 ) a
 where punk_id_tx_rank = 1 
 order by cast(punk_id as int) asc
-;

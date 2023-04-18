@@ -11182,4 +11182,3 @@ from
 (0xb45a2dda996c32e93b8c47098e90ed0e7ab18e39, 'Transit Swap', '')
 
 ) as temp_table (contract_address,project_name,project_type)
-;

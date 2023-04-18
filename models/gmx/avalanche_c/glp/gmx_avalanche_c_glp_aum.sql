@@ -33,5 +33,5 @@ FROM {{ref('gmx_avalanche_c_glp_components')}}
 WHERE minute >= date_add('day', -1, CURRENT_TIMESTAMP(6))
 {% endif %}
 {% if not is_incremental() %}
-WHERE minute >= '{{project_start_date}}'
+WHERE minute >= CAST('{{project_start_date}}' AS TIMESTAMP(6) WITH TIME ZONE)
 {% endif %}

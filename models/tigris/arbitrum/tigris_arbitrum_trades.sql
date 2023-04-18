@@ -264,4 +264,3 @@ SELECT
     'arbitrum' as blockchain,
     *
 FROM limit_order
-;

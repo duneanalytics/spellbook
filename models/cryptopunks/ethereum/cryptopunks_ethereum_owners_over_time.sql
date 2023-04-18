@@ -63,4 +63,3 @@ select day
 from combined_table
 group by 1
 order by day desc
-;

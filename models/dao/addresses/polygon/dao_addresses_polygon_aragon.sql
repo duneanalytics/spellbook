@@ -19,7 +19,7 @@ aragon_daos as ( -- decoded table for aragon on dune that returns the address of
             dao 
         FROM {{ source('aragon_polygon', 'dao_factory_evt_DeployDAO') }}
         {% if not is_incremental() %}
-        WHERE evt_block_time >= '{{project_start_date}}'
+        WHERE evt_block_time >= CAST('{{project_start_date}}' AS TIMESTAMP(6) WITH TIME ZONE)
         {% endif %}
         {% if is_incremental() %}
         WHERE evt_block_time >= date_trunc('day', now() - interval '7' day)
@@ -44,7 +44,7 @@ get_aragon_wallets as ( -- this is getting the app address that is deployed for 
         FROM 
         {{ source('polygon', 'logs') }}
         {% if not is_incremental() %}
-        WHERE block_time >= '{{project_start_date}}'
+        WHERE block_time >= CAST('{{project_start_date}}' AS TIMESTAMP(6) WITH TIME ZONE)
         {% endif %}
         {% if is_incremental() %}
         WHERE block_time >= date_trunc('day', now() - interval '7' day)

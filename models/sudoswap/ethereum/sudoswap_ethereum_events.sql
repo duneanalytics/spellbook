@@ -417,4 +417,4 @@ SELECT
     , royalty_fee_receive_address
     , 'sudoswap-' || tx_hash || '-' || nft_contract_address ||'-'|| token_id || '-' || seller || 'Trade' AS unique_trade_id
 FROM swaps_exploded
-;
+

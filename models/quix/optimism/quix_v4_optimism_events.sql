@@ -312,7 +312,7 @@ with events_raw as (
         and p1.minute >= date_trunc('day', now() - interval '7' day)
         {% endif %}
         {% if not is_incremental() %}
-        and p1.minute >= '{{project_start_date}}'
+        and p1.minute >= CAST('{{project_start_date}}' AS TIMESTAMP(6) WITH TIME ZONE)
         {% endif %}
     left join fill_missing_op_price as fop 
     on fop.contract_address = erc20.contract_address

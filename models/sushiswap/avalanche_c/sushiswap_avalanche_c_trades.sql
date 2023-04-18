@@ -29,7 +29,7 @@ WITH sushiswap_dex AS (
     {% if is_incremental() %}
     WHERE t.evt_block_time >= date_trunc('day', now() - interval '7' day)
     {% else %}
-    WHERE t.evt_block_time >= CAST('{{project_start_date}}' AS TIMESTAMP(6) WITH TIME ZONE)
+    WHERE t.evt_block_time >= CAST(CAST('{{project_start_date}}' AS TIMESTAMP(6) WITH TIME ZONE) AS TIMESTAMP(6) WITH TIME ZONE)
     {% endif %}
 )
 
@@ -70,7 +70,7 @@ INNER JOIN {{ source('avalanche_c', 'transactions') }} tx
     {% if is_incremental() %}
     AND tx.block_time >= date_trunc('day', now() - interval '7' day)
     {% else %}
-    AND tx.block_time >= CAST('{{project_start_date}}' AS TIMESTAMP(6) WITH TIME ZONE)
+    AND tx.block_time >= CAST(CAST('{{project_start_date}}' AS TIMESTAMP(6) WITH TIME ZONE) AS TIMESTAMP(6) WITH TIME ZONE)
     {% endif %}
 LEFT JOIN {{ ref('tokens_erc20') }} erc20a
     ON erc20a.contract_address = sushiswap_dex.token_bought_address
@@ -85,7 +85,7 @@ LEFT JOIN {{ source('prices', 'usd') }} p_bought
     {% if is_incremental() %}
     AND p_bought.minute >= date_trunc('day', now() - interval '7' day)
     {% else %}
-    AND p_bought.minute >= CAST('{{project_start_date}}' AS TIMESTAMP(6) WITH TIME ZONE)
+    AND p_bought.minute >= CAST(CAST('{{project_start_date}}' AS TIMESTAMP(6) WITH TIME ZONE) AS TIMESTAMP(6) WITH TIME ZONE)
     {% endif %}
 LEFT JOIN {{ source('prices', 'usd') }} p_sold
     ON p_sold.minute = date_trunc('minute', sushiswap_dex.block_time)
@@ -94,5 +94,5 @@ LEFT JOIN {{ source('prices', 'usd') }} p_sold
     {% if is_incremental() %}
     AND p_sold.minute >= date_trunc('day', now() - interval '7' day)
     {% else %}
-    AND p_sold.minute >= CAST('{{project_start_date}}' AS TIMESTAMP(6) WITH TIME ZONE)
+    AND p_sold.minute >= CAST(CAST('{{project_start_date}}' AS TIMESTAMP(6) WITH TIME ZONE) AS TIMESTAMP(6) WITH TIME ZONE)
     {% endif %}

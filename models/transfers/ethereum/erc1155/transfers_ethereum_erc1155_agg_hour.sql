@@ -22,4 +22,3 @@ where date_trunc('hour', evt_block_time) > now() - interval 2 days
 {% endif %}
 group by
     date_trunc('hour', evt_block_time), wallet_address, token_address, tokenId, unique_tx_id
-;

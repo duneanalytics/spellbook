@@ -43,4 +43,3 @@ INNER JOIN days d ON b.day <= d.day AND d.day < b.next_day
 LEFT JOIN {{ ref('tokens_nft') }} nft_tokens ON nft_tokens.contract_address = b.token_address
 AND nft_tokens.blockchain = 'ethereum'
 where b.amount = 1
-;

@@ -64,4 +64,3 @@ FROM
   ,(0x56756c847B027a27703aaD58c732C041f4e5f033, 'rfvAMM-SONNE-USDC', 18)
   ,(0x6045E787688C7550bCc3dec551c54c57f13E6204, 'rfvAMM-BOND-WETH', 18)
 ) AS temp_table (contract_address, symbol, decimals)
-;

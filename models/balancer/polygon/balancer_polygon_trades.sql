@@ -29,7 +29,7 @@ with v2 as (
     inner join {{ source('balancer_v2_polygon', 'Vault_evt_PoolRegistered') }} p
     on s.poolId = p.poolId
     {% if not is_incremental() %}
-        where s.evt_block_time >= '{{project_start_date}}'
+        where s.evt_block_time >= CAST('{{project_start_date}}' AS TIMESTAMP(6) WITH TIME ZONE)
     {% endif %}
     {% if is_incremental() %}
         where s.evt_block_time >= date_trunc('day', now() - interval '7' day)
@@ -39,7 +39,7 @@ prices as (
     select * from {{ source('prices', 'usd') }}
     where blockchain = 'polygon'
     {% if not is_incremental() %}
-        and minute >= '{{project_start_date}}'
+        and minute >= CAST('{{project_start_date}}' AS TIMESTAMP(6) WITH TIME ZONE)
     {% endif %}
     {% if is_incremental() %}
         and minute >= date_trunc('day', now() - interval '7' day)
@@ -81,7 +81,7 @@ from v2 trades
 inner join {{ source('polygon', 'transactions') }} tx
     on trades.evt_tx_hash = tx.hash
     {% if not is_incremental() %}
-    and tx.block_time >= '{{project_start_date}}'
+    and tx.block_time >= CAST('{{project_start_date}}' AS TIMESTAMP(6) WITH TIME ZONE)
     {% endif %}
     {% if is_incremental() %}
     and tx.block_time >= date_trunc('day', now() - interval '7' day)

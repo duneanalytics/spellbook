@@ -163,4 +163,3 @@ SELECT *, 'v4' as version FROM modify_margin_v4
 UNION ALL
 
 SELECT *, 'v5' as version FROM modify_margin_v5
-;

@@ -37,7 +37,7 @@ fraxswap_dex AS (
     WHERE t.evt_block_time >= date_trunc('day', now() - interval '7' day)
     {% endif %}
     {% if not is_incremental() %}
-    WHERE t.evt_block_time >= '{{ project_start_date }}'
+    WHERE t.evt_block_time >= CAST('{{project_start_date}}' AS TIMESTAMP(6) WITH TIME ZONE)
     {% endif %}
 )
 
@@ -78,7 +78,7 @@ INNER JOIN {{ source('bnb', 'transactions') }} tx
     AND tx.block_time >= date_trunc('day', now() - interval '7' day)
     {% endif %}
     {% if not is_incremental() %}
-    AND tx.block_time >= '{{project_start_date}}'
+    AND tx.block_time >= CAST('{{project_start_date}}' AS TIMESTAMP(6) WITH TIME ZONE)
     {% endif %}
 LEFT JOIN {{ ref('tokens_erc20') }} erc20a
     ON erc20a.contract_address = fraxswap_dex.token_bought_address
@@ -94,7 +94,7 @@ LEFT JOIN {{ source('prices', 'usd') }} p_bought
     AND p_bought.minute >= date_trunc('day', now() - interval '7' day)
     {% endif %}
     {% if not is_incremental() %}
-    AND p_bought.minute >= '{{project_start_date}}'
+    AND p_bought.minute >= CAST('{{project_start_date}}' AS TIMESTAMP(6) WITH TIME ZONE)
     {% endif %}
 LEFT JOIN {{ source('prices', 'usd') }} p_sold
     ON p_sold.minute = date_trunc('minute', fraxswap_dex.block_time)
@@ -104,6 +104,5 @@ LEFT JOIN {{ source('prices', 'usd') }} p_sold
     AND p_sold.minute >= date_trunc('day', now() - interval '7' day)
     {% endif %}
     {% if not is_incremental() %}
-    AND p_sold.minute >= '{{project_start_date}}'
+    AND p_sold.minute >= CAST('{{project_start_date}}' AS TIMESTAMP(6) WITH TIME ZONE)
     {% endif %}
-;

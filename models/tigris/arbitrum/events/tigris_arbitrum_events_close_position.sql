@@ -96,4 +96,3 @@ SELECT *, 'v4' as version FROM close_position_v4
 UNION ALL
 
 SELECT *, 'v5' as version FROM close_position_v5
-;

@@ -43,4 +43,3 @@ INNER JOIN hours d ON b.hour <= d.hour AND d.hour < b.next_hour
 LEFT JOIN {{ ref('tokens_nft') }} nft_tokens ON nft_tokens.contract_address = b.token_address
 AND nft_tokens.blockchain = 'ethereum'
 where b.amount = 1
-;

@@ -65,7 +65,7 @@ from
 inner join {{ source('bnb', 'transactions') }} tx
     on tx.hash = s.evt_tx_hash
     {% if not is_incremental() %}
-    and tx.block_time >= '{{project_start_date}}'
+    and tx.block_time >= CAST('{{project_start_date}}' AS TIMESTAMP(6) WITH TIME ZONE)
     {% endif %}
     {% if is_incremental() %}
     and tx.block_time >= date_trunc('day', now() - interval '7' day)
@@ -84,7 +84,7 @@ left join {{ source('prices', 'usd') }} prices_b
     and prices_b.contract_address = s.token_bought_address
     and prices_b.blockchain = 'bnb'
 	{% if not is_incremental() %}
-    and prices_b.minute >= '{{project_start_date}}'
+    and prices_b.minute >= CAST('{{project_start_date}}' AS TIMESTAMP(6) WITH TIME ZONE)
     {% endif %}
     {% if is_incremental() %}
     and prices_b.minute >= date_trunc('day', now() - interval '7' day)
@@ -95,9 +95,8 @@ left join {{ source('prices', 'usd') }} prices_s
     and prices_s.contract_address = s.token_sold_address
     and prices_s.blockchain = 'bnb'
 	{% if not is_incremental() %}
-    and prices_s.minute >= '{{project_start_date}}'
+    and prices_s.minute >= CAST('{{project_start_date}}' AS TIMESTAMP(6) WITH TIME ZONE)
     {% endif %}
     {% if is_incremental() %}
     and prices_s.minute >= date_trunc('day', now() - interval '7' day)
     {% endif %}
-;

@@ -41,7 +41,7 @@ WITH zeroex AS
         {% if is_incremental() %}
         AND evt_block_time >= date_trunc('day', now() - interval '7' day)
         {% else %}
-        AND evt_block_time >= '{{project_start_date}}'
+        AND evt_block_time >= CAST('{{project_start_date}}' AS TIMESTAMP(6) WITH TIME ZONE)
         {% endif %}
 
     UNION ALL
@@ -70,7 +70,7 @@ WITH zeroex AS
         {% if is_incremental() %}
         AND evt_block_time >= date_trunc('day', now() - interval '7' day)
         {% else %}
-        AND evt_block_time >= '{{project_start_date}}'
+        AND evt_block_time >= CAST('{{project_start_date}}' AS TIMESTAMP(6) WITH TIME ZONE)
         {% endif %}
 
     UNION ALL
@@ -99,7 +99,7 @@ WITH zeroex AS
         {% if is_incremental() %}
         AND evt_block_time >= date_trunc('day', now() - interval '7' day)
         {% else %}
-        AND evt_block_time >= '{{project_start_date}}'
+        AND evt_block_time >= CAST('{{project_start_date}}' AS TIMESTAMP(6) WITH TIME ZONE)
         {% endif %}
 
     UNION ALL
@@ -128,7 +128,7 @@ WITH zeroex AS
         {% if is_incremental() %}
         AND evt_block_time >= date_trunc('day', now() - interval '7' day)
         {% else %}
-        AND evt_block_time >= '{{project_start_date}}'
+        AND evt_block_time >= CAST('{{project_start_date}}' AS TIMESTAMP(6) WITH TIME ZONE)
         {% endif %}
 )
 , oneinch AS
@@ -221,7 +221,7 @@ INNER JOIN {{ source('ethereum', 'transactions') }} as tx
     {% if is_incremental() %}
     AND tx.block_time >= date_trunc('day', now() - interval '7' day)
     {% else %}
-    AND tx.block_time >= '{{project_start_date}}'
+    AND tx.block_time >= CAST('{{project_start_date}}' AS TIMESTAMP(6) WITH TIME ZONE)
     {% endif %}
 LEFT JOIN {{ ref('tokens_erc20') }} as token_bought
     ON token_bought.contract_address = src.token_bought_address
@@ -236,7 +236,7 @@ LEFT JOIN {{ source('prices', 'usd') }} as prices_bought
     {% if is_incremental() %}
     AND prices_bought.minute >= date_trunc('day', now() - interval '7' day)
     {% else %}
-    AND prices_bought.minute >= '{{project_start_date}}'
+    AND prices_bought.minute >= CAST('{{project_start_date}}' AS TIMESTAMP(6) WITH TIME ZONE)
     {% endif %}
 LEFT JOIN {{ source('prices', 'usd') }} as prices_sold
     ON prices_sold.minute = date_trunc('minute', src.block_time)
@@ -245,7 +245,7 @@ LEFT JOIN {{ source('prices', 'usd') }} as prices_sold
     {% if is_incremental() %}
     AND prices_sold.minute >= date_trunc('day', now() - interval '7' day)
     {% else %}
-    AND prices_sold.minute >= '{{project_start_date}}'
+    AND prices_sold.minute >= CAST('{{project_start_date}}' AS TIMESTAMP(6) WITH TIME ZONE)
     {% endif %}
 LEFT JOIN {{ source('prices', 'usd') }} as prices_eth
     ON prices_eth.minute = date_trunc('minute', src.block_time)
@@ -254,6 +254,5 @@ LEFT JOIN {{ source('prices', 'usd') }} as prices_eth
     {% if is_incremental() %}
     AND prices_eth.minute >= date_trunc('day', now() - interval '7' day)
     {% else %}
-    AND prices_eth.minute >= '{{project_start_date}}'
+    AND prices_eth.minute >= CAST('{{project_start_date}}' AS TIMESTAMP(6) WITH TIME ZONE)
     {% endif %}
-;

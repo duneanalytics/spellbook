@@ -31,7 +31,7 @@ WITH
       INNER JOIN pools p ON p.nft_contract_address = et.contract_address
       AND (et.to = p.pool_address OR et."from" = p.pool_address)
     {% if not is_incremental() %}
-    WHERE et.evt_block_time >= '{{project_start_date}}'
+    WHERE et.evt_block_time >= CAST('{{project_start_date}}' AS TIMESTAMP(6) WITH TIME ZONE)
     {% endif %}
     {% if is_incremental() %}
     WHERE et.evt_block_time >= date_trunc('day', now() - interval '7' day)
@@ -62,7 +62,7 @@ WITH
             OR tr.call_type IS null
           )
           {% if not is_incremental() %}
-          AND tr.block_time > '{{project_start_date}}'
+          AND tr.block_time > CAST('{{project_start_date}}' AS TIMESTAMP(6) WITH TIME ZONE)
           {% endif %}
           {% if is_incremental() %}
           AND tr.block_time >= date_trunc('day', now() - interval '7' day)
@@ -87,7 +87,7 @@ WITH
             OR tr.call_type IS null
           )
           {% if not is_incremental() %}
-          AND tr.block_time > '{{project_start_date}}'
+          AND tr.block_time > CAST('{{project_start_date}}' AS TIMESTAMP(6) WITH TIME ZONE)
           {% endif %}
           {% if is_incremental() %}
           AND tr.block_time >= date_trunc('day', now() - interval '7' day)
@@ -108,4 +108,4 @@ FROM eth_deltas e
 FULL JOIN erc721_deltas n
     ON e.day = n.day
     AND e.pool_address = n.pool_address
-;
+

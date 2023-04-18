@@ -19,5 +19,5 @@ WITH lpda_bid AS (
 )
 
 SELECT *
-FROM lpda_bid;
+FROM lpda_bid
 -- union with future distribution modules
