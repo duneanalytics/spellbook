@@ -58,7 +58,7 @@ SELECT DISTINCT
     csv.votes_abstain,
     csv.votes_total,
     csv.number_of_voters,
-    csv.votes_total / 1e9 * 100 AS participation, -- Total votes / Total supply (1B for Uniswap)
+    csv.votes_total / 16e6 * 100 AS participation, -- Total votes / Total supply (16M for Aave)
     pcr.startBlock as start_block,
     pcr.endBlock as end_block,
     CASE 

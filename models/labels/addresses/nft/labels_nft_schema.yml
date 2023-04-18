@@ -101,6 +101,30 @@ models:
       - *updated_at
       - *model_name
       - *label_type
+
+  - name: labels_nft_traders_transactions_current
+    meta:
+      blockchain: ethereum, solana
+      sector: labels
+      category: nft
+      project: ['labels','opensea', 'looksrare', 'x2y2', 'magiceden']
+      contributors: hildobby
+    config:
+      tags: ['labels', 'nft_traders', 'ethereum', 'solana', 'opensea', 'looksrare', 'x2y2', 'magiceden']
+    description: "Top NFT traders based on the number of transactions across chains in the past 14 days"   
+    columns:
+      - *blockchain
+      - name: address
+        description: "Address of NFT traders"
+      - name: name
+        description: "Label name NFT trader (Top 1, 5, 10% or simply NFT Trader when an address has traded NFTs but is not in top top 10 or above)"
+      - *category
+      - *contributor
+      - *source
+      - *created_at
+      - *updated_at
+      - *model_name
+      - *label_type
       
   - name: labels_nft_traders_volume_usd
     meta:
@@ -117,6 +141,52 @@ models:
         description: "Address of NFT traders"
       - name: name
         description: "Label name NFT trader (Top 1, 5, 10% or simply NFT Trader when an address has traded NFTs but is not in top top 10 or above)"
+      - *category
+      - *contributor
+      - *source
+      - *created_at
+      - *updated_at
+      - *model_name
+      - *label_type
+      
+  - name: labels_nft_traders_volume_usd_current
+    meta:
+      blockchain: ethereum, solana
+      sector: labels
+      project: ['labels','opensea', 'looksrare', 'x2y2', 'magiceden']
+      contributors: hildobby
+    config:
+      tags: ['labels', 'nft_traders', 'ethereum', 'solana', 'opensea', 'looksrare', 'x2y2', 'magiceden']
+    description: "Top NFT traders based on volume in USD across chains in the past 14 days"   
+    columns:
+      - *blockchain
+      - name: address
+        description: "Address of NFT traders"
+      - name: name
+        description: "Label name NFT trader (Top 1, 5, 10% or simply NFT Trader when an address has traded NFTs but is not in top top 10 or above)"
+      - *category
+      - *contributor
+      - *source
+      - *created_at
+      - *updated_at
+      - *model_name
+      - *label_type
+
+  - name: labels_nft_smart_trader_roi_eth
+    meta:
+      blockchain: ethereum
+      sector: labels
+      project: ['labels']
+      contributors: NazihKalo
+    config:
+      tags: ['labels', 'nft_traders', 'ethereum']
+    description: '{{ doc("labels_nft_smart_trader_roi_eth") }}'
+    columns:
+      - *blockchain
+      - name: address
+        description: "Address of NFT traders"
+      - name: name
+        description: "Label name `Top 1/2/3% Smart NFT Trader (ROI Realized in ETH w filters)` for NFT traders with ROI realized in ETH that met filter conditions mentioned in the description"
       - *category
       - *contributor
       - *source
