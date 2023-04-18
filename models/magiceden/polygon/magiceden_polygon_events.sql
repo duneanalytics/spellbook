@@ -36,8 +36,7 @@ WITH trades AS (
                ELSE erc20Token
           END AS currency_contract,
           erc20TokenAmount AS amount_raw,
-          erc20Token as original_erc20_token,
-          row_number() over (partition by evt_tx_hash order by evt_index) as trade_index
+          erc20Token as original_erc20_token
     FROM {{ source ('zeroex_polygon', 'ExchangeProxy_evt_ERC721OrderFilled') }}
     WHERE substring(nonce, 1, 38) = '{{magic_eden_nonce}}'
         {% if not is_incremental() %}
@@ -68,8 +67,7 @@ WITH trades AS (
                ELSE erc20Token
           END AS currency_contract,
           erc20FillAmount AS amount_raw,
-          erc20Token as original_erc20_token,
-          row_number() over (partition by evt_tx_hash order by evt_index) as trade_index
+          erc20Token as original_erc20_token
     FROM {{ source ('zeroex_polygon', 'ExchangeProxy_evt_ERC1155OrderFilled') }}
     WHERE substring(nonce, 1, 38) = '{{magic_eden_nonce}}'
         {% if not is_incremental() %}
@@ -80,56 +78,80 @@ WITH trades AS (
         {% endif %}
 ),
 
--- there can be multiple trace calls when buying multiple tokens together, use trace_address[1] to get correct item_index
--- native token sample: https://polygonscan.com/tx/0x443c3a57a1b8b53e24834c36d27922cddb53d99ba12b61b1a037533240679ea0
--- erc20 token sample: https://polygonscan.com/tx/0x4f3e3fe7a633fc602d9ac92aa88262586bcc15dba93a4b59fb3f2cc13562bbb5
-trade_amount_detail as (
+-- There are orders purchase multiple tokens using native MATIC as currency. There is no good way to track total payment for each token using traces table.
+-- So here we find the "order_amount_percentage" and then use it to calculate total amount_raw, platform_fee_amount_raw and royalty_fee_amount_raw
+-- Max platform fee percentage is set to 2% and max royalty fee percentage is set to 0.5%.
+-- This can be updated if a better solution is found.
+
+native_order_summary AS (
     SELECT evt_block_number,
         evt_tx_hash,
-        currency_contract,
-        amount_raw,
-        row_number() OVER (PARTITION BY evt_tx_hash, first_trace_address ORDER BY trace_address) AS item_index,
-        dense_rank() OVER (PARTITION BY evt_tx_hash ORDER BY first_trace_address) AS trade_index -- Used to join back to CTE trades above
+        sum(cast(amount_raw AS decimal(38, 0))) AS order_amount_raw
+    FROM trades
+    WHERE original_erc20_token IN ('0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee', '0x0000000000000000000000000000000000001010')
+    GROUP BY 1, 2
+),
+
+-- For ERC1155 order, there are returned amount to buyer. This need be excluded when calculat total transaction amount
+-- Sample: https://polygonscan.com/tx/0xf5cdac86703bd70ad0f5e70be6faf77e1187badbef6edd69dd9c3e8346584832
+native_order_return_amount AS (
+    SELECT evt_block_number,
+        evt_tx_hash,
+        sum(return_amount_raw) AS return_amount_raw
     FROM (
-        -- There is no enough condition to join a single trade to single trace call. So here use "DISTINCT" and get item_index in outer query
-        SELECT DISTINCT e.block_number AS evt_block_number,
-            e.tx_hash AS evt_tx_hash,
-            t.currency_contract,
-            cast(e.value AS double) as amount_raw,
-            trace_address[0] as first_trace_address,
-            trace_address
-        FROM {{ source('polygon', 'traces') }} e
-        INNER JOIN {{ source('polygon', 'transactions') }} tx ON e.block_number = tx.block_number
-            AND e.tx_hash = tx.hash
-            {% if not is_incremental() %}
-            AND e.block_time >= '{{nft_start_date}}'
-            {% endif %}
-            {% if not is_incremental() %}
-            AND tx.block_time >= '{{nft_start_date}}'
-            {% endif %}
-        INNER JOIN trades t ON e.block_number = t.evt_block_number
-            AND e.tx_hash = t.evt_tx_hash
-            {% if not is_incremental() %}
-            AND e.block_time >= '{{nft_start_date}}'
-            {% endif %}
-            {% if is_incremental() %}
-            AND e.block_time >= date_trunc("day", now() - interval '1 week')
-            {% endif %}
-        WHERE t.original_erc20_token IN ('0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee', '0x0000000000000000000000000000000000001010')
-            AND cast(e.value as double) > 0
-            AND cardinality(trace_address) > 0 -- exclude the main call record
-            AND sub_traces = 0 -- exclude middle level traces call
-            AND e.`to` <> tx.`to` -- exclude transfer to contract, which is just a temp transfer
-    )
+        SELECT DISTINCT t.evt_block_number,
+            t.evt_tx_hash,
+            cast(tc.value as decimal(38, 0)) as return_amount_raw
+        FROM trades t
+        INNER JOIN {{ source('polygon', 'traces') }} tc ON t.evt_block_number = tc.block_number
+            AND t.evt_tx_hash = tc.tx_hash
+        WHERE tc.`to` = t.buyer
+    ) t
+    GROUP BY 1, 2
+),
 
-    UNION ALL
+native_order_total_amount AS (
+    SELECT o.evt_block_number,
+        o.evt_tx_hash,
+        o.order_amount_raw,
+        cast(t.value AS decimal(38, 0)) - coalesce(r.return_amount_raw, 0) AS transaction_amount_raw,
+        o.order_amount_raw / (cast(t.value AS decimal(38, 0)) - coalesce(r.return_amount_raw, 0)) AS order_amount_percentage
+    FROM native_order_summary o
+    INNER JOIN {{ source('polygon', 'transactions') }} t ON o.evt_block_number = t.block_number
+        AND o.evt_tx_hash = t.hash
+        AND t.block_time >= '{{nft_start_date}}'
+    LEFT JOIN native_order_return_amount r ON o.evt_block_number = r.evt_block_number
+        AND o.evt_tx_hash = r.evt_tx_hash
+),
 
+native_trade_amount_summary AS (
+    SELECT t.evt_block_number,
+        t.evt_tx_hash,
+        t.token_id,
+        t.currency_contract,
+        cast(t.amount_raw AS decimal(38, 0)) / o.order_amount_percentage as amount_raw,
+        -- When the payment to seller is less than 98%, we hard code platform fee to 2%
+        (CASE WHEN 1.0 - o.order_amount_percentage >= 0.02 THEN cast(t.amount_raw AS decimal(38, 0)) / o.order_amount_percentage * 0.02
+            ELSE cast(t.amount_raw AS decimal(38, 0)) / o.order_amount_percentage * (1.0 - o.order_amount_percentage)
+        END) AS platform_fee_amount_raw,
+        -- When there is still remaining exclude payment to seller and platform fee, we set royalty fee
+        (CASE WHEN 1.0 - o.order_amount_percentage >= 0.025 THEN cast(t.amount_raw AS decimal(38, 0)) / o.order_amount_percentage * 0.005
+            WHEN 1.0 - o.order_amount_percentage >= 0.02 THEN cast(t.amount_raw AS decimal(38, 0)) / o.order_amount_percentage - cast(t.amount_raw AS decimal(38, 0)) - cast(t.amount_raw AS decimal(38, 0)) / o.order_amount_percentage * 0.02
+            ELSE 0
+        END) AS royalty_fee_amount_raw
+    FROM trades t
+    INNER JOIN native_order_total_amount o ON t.evt_block_number = o.evt_block_number
+        AND o.evt_tx_hash = t.evt_tx_hash
+    WHERE t.original_erc20_token IN ('0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee', '0x0000000000000000000000000000000000001010')
+),
+
+erc20_trade_amount_detail as (
     SELECT e.evt_block_number,
         e.evt_tx_hash,
+        t.token_id,
         t.currency_contract,
         CAST(e.value as double) AS amount_raw,
-        row_number() OVER (PARTITION BY e.evt_tx_hash, e.contract_address ORDER BY e.evt_index) AS item_index,
-        1 AS trade_index -- When use same erc20 currency buy multiple tokens, still may has problem. No good solution here so far (About 29 tx match condition in cte trades above)
+        row_number() OVER (PARTITION BY e.evt_tx_hash, e.contract_address ORDER BY e.evt_index) AS item_index
     FROM {{ source('erc20_polygon', 'evt_transfer') }} e
     INNER JOIN {{ source('polygon', 'transactions') }} tx ON e.evt_block_number = tx.block_number
         AND e.evt_tx_hash = tx.hash
@@ -151,16 +173,38 @@ trade_amount_detail as (
         AND e.`to` <> tx.`to` -- exclude transfer to contract, which is just a temp transfer
 ),
 
-trade_amount_summary as (
+erc20_trade_amount_summary AS (
     SELECT evt_block_number,
         evt_tx_hash,
+        token_id,
         currency_contract,
-        trade_index,
         sum(amount_raw) AS amount_raw,
         sum(case when item_index = 2 then amount_raw else 0 end) AS platform_fee_amount_raw,
         sum(case when item_index = 3 then amount_raw else 0 end) AS royalty_fee_amount_raw
-    FROM trade_amount_detail
+    FROM erc20_trade_amount_detail
     GROUP BY 1, 2, 3, 4
+),
+
+trade_amount_summary AS (
+    SELECT evt_block_number,
+        evt_tx_hash,
+        token_id,
+        currency_contract,
+        amount_raw,
+        platform_fee_amount_raw,
+        royalty_fee_amount_raw
+    FROM native_trade_amount_summary
+
+    UNION ALL
+
+    SELECT evt_block_number,
+        evt_tx_hash,
+        token_id,
+        currency_contract,
+        amount_raw,
+        platform_fee_amount_raw,
+        royalty_fee_amount_raw
+    FROM erc20_trade_amount_summary
 )
 
 SELECT
@@ -176,7 +220,7 @@ SELECT
   CAST(s.amount_raw as decimal(38,0)) AS amount_raw,
   CASE WHEN erc.symbol = 'WMATIC' THEN 'MATIC' ELSE erc.symbol END AS currency_symbol,
   a.currency_contract,
-  token_id,
+  a.token_id,
   token_standard,
   a.contract_address AS project_contract_address,
   evt_type,
@@ -212,9 +256,9 @@ INNER JOIN {{ source('polygon','transactions') }} t ON a.evt_block_number = t.bl
     AND t.block_time >= date_trunc("day", now() - interval '1 week')
     {% endif %}
 LEFT JOIN trade_amount_summary s ON a.evt_block_number = s.evt_block_number
-    AND a.evt_tx_hash = s.evt_tx_hash -- There are 0 amount trades
+    AND a.evt_tx_hash = s.evt_tx_hash
+    AND a.token_id = s.token_id
     AND a.currency_contract = s.currency_contract
-    AND a.trade_index = s.trade_index
 LEFT JOIN {{ ref('tokens_erc20') }} erc ON erc.blockchain = 'polygon' AND erc.contract_address = a.currency_contract
 LEFT JOIN {{ source('prices', 'usd') }} p ON p.contract_address = a.currency_contract
     AND p.minute = date_trunc('minute', a.evt_block_time)
