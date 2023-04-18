@@ -59,6 +59,7 @@
 ,ref('integral_trades')
 ,ref('maverick_trades')
 ,ref('onepunchswap_bnb_trades')
+,ref('glacier_avalanche_c_trades')
 ] %}
 
 
