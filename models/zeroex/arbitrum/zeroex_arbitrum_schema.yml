@@ -146,7 +146,7 @@ models:
         name: fills_within
         description: "fills in then multihop, if present"          
 
-  - name: zeroex_arbitrum_fills 
+  - name: zeroex_arbitrum_native_fills 
     meta:
       blockchain: arbitrum
       project: zeroex
