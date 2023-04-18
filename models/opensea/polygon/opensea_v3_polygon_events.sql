@@ -35,10 +35,12 @@ select blockchain
       ,platform_fee_amount_raw
       ,platform_fee_amount
       ,platform_fee_amount_usd
+      ,case when amount_raw > 0 then CAST ((platform_fee_amount_raw / amount_raw * 100) AS DOUBLE) end platform_fee_percentage
       ,royalty_fee_receive_address
       ,royalty_fee_amount_raw
       ,royalty_fee_amount
       ,royalty_fee_amount_usd
+      ,case when amount_raw > 0 then CAST((royalty_fee_amount_raw / amount_raw * 100) AS DOUBLE) end royalty_fee_percentage
       ,royalty_fee_receive_address_1
       ,royalty_fee_receive_address_2
       ,royalty_fee_receive_address_3
