@@ -491,14 +491,14 @@ select  -- basic info
         ,platform_fee_amount_raw
         ,platform_fee_amount
         ,platform_fee_amount_usd
-        ,case when amount_raw > 0 then CAST ((platform_fee_amount_raw / price_amount_raw * 100) AS DOUBLE) end platform_fee_percentage
+        ,case when price_amount_raw > 0 then CAST ((platform_fee_amount_raw / price_amount_raw * 100) AS DOUBLE) end platform_fee_percentage
 
         -- royalty info
         ,creator_fee_receiver_1 as royalty_fee_receive_address
         ,creator_fee_amount_raw as royalty_fee_amount_raw
         ,creator_fee_amount as royalty_fee_amount
         ,creator_fee_amount_usd as royalty_fee_amount_usd
-        ,case when amount_raw > 0 then CAST((royalty_fee_amount_raw / price_amount_raw * 100) AS DOUBLE) end royalty_fee_percentage
+        ,case when price_amount_raw > 0 then CAST((royalty_fee_amount_raw / price_amount_raw * 100) AS DOUBLE) end royalty_fee_percentage
         ,creator_fee_receiver_1 as royalty_fee_receive_address_1
         ,creator_fee_receiver_2 as royalty_fee_receive_address_2
         ,creator_fee_receiver_3 as royalty_fee_receive_address_3
