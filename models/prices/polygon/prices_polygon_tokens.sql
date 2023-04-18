@@ -56,5 +56,6 @@ FROM
     ("fxs-frax-share", "polygon", "FXS", "0x1a3acf6D19267E2d3e7f898f42803e90C9219062", 18),
     ("sand-the-sandbox", "polygon", "SAND", "0xbbba073c31bf03b8acf7c28ef0738decf3695683", 18),
     ("wsteth-wrapped-liquid-staked-ether-20", "polygon", "WSTETH", "0x03b54a6e9a984069379fae1a4fc4dbae93b3bccd", 18),
+    ("lcd-lucidao", "polygon", "LCD", "0xc2a45fe7d40bcac8369371b08419ddafd3131b4a", 18),
     ("revv-revv", "polygon", "REVV", "0x70c006878a5a50ed185ac4c87d837633923de296", 18)
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)
