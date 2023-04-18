@@ -866,6 +866,11 @@ models:
       bnb:
         +schema: wombat_bnb
 
+    verse_dex:
+      +schema: verse_dex
+      ethereum:
+        +schema: verse_dex_ethereum
+
     iziswap:
       +schema: iziswap
       bnb:
