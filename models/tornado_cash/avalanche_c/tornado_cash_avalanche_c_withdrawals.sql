@@ -16,7 +16,7 @@
 {% set avalanche_start_date = '2021-09-17' %}
 
 SELECT tc.evt_block_time AS block_time
-, '0x85f138bfee4ef8e540890cfb48f620571d67eda3' AS currency_contract
+, '0xb31f66aa3c1e785363f0875a1b74e27b85fd66c7' AS currency_contract
 , 'AVAX' AS currency_symbol
 , 'avalanche_c' AS blockchain
 , 'classic' AS tornado_version
