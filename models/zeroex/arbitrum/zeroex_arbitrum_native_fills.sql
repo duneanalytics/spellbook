@@ -48,7 +48,7 @@ WITH
                     WHEN mp.symbol = 'WETH' THEN (fills.makerTokenFilledAmount / 1e18) * mp.price
                     ELSE COALESCE((fills.makerTokenFilledAmount / (10^mt.decimals))*mp.price,(fills.takerTokenFilledAmount / (10^tt.decimals))*tp.price)
                 END AS volume_usd
-            , fills. / 1e18 AS protocol_fee_paid_eth
+            , fills.protocolFeePaid / 1e18 AS protocol_fee_paid_eth
         FROM {{ source('zeroex_arbitrum', 'ExchangeProxy_evt_LimitOrderFilled') }} fills
         LEFT JOIN prices.usd tp ON
             date_trunc('minute', evt_block_time) = tp.minute and  tp.blockchain = 'arbitrum'
