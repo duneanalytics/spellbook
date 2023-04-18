@@ -230,4 +230,58 @@ models:
       - &trace_address
         name: trace_address
         description: "The trace address of the transaction"
-      - *evt_index               
+      - *evt_index  
+
+  - name: zeroex_fills 
+    meta:
+      blockchain: ethereum,polygon
+      project: zeroex
+      contributors: rantum, danning.sui, bakabhai993
+    config:
+      tags: ['ethereum','polygon','0x','native_fills']
+    description: >
+        0x native swaps thru 0x exchange contracts (without using 0x API) on Ethereum & Polygon
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_date
+            - tx_hash
+            - evt_index
+      - check_seed:
+          seed_file: ref('zeroex_fills_sample')
+          match_columns:
+            - tx_hash
+            - evt_index
+          check_columns:
+            - maker
+            - taker
+            - taker_symbol
+            - maker_symbol
+    columns:
+      - *tx_hash
+      - *contract_address
+      - *block_time
+      - *maker
+      - *taker
+      - *taker_token
+      - *taker_symbol
+      - *maker_token
+      - *maker_symbol      
+      - *token_pair
+      - *taker_token_amount
+      - *taker_token_amount_raw
+      - *maker_token_amount
+      - *maker_token_amount_raw
+      - *volume_usd
+      - *tx_from
+      - *tx_to
+      - *evt_index
+      - *blockchain
+      - &native_fill_type
+        name: native_fill_type
+        description: "type of native fill - RFQ, limit order, OTC, fill"
+      - &fee_recipient_address
+        name: fee_recipient_address
+        description: "The recipient address of the fee, or the applications that is using 0x API, for receiving fee"
+      - &protocol_fee_paid_eth
+        name: protocol_fee_paid_eth
