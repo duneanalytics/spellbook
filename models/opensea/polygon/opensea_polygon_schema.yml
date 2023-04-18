@@ -203,6 +203,26 @@ models:
     description: >
         Opensea Wyvern trades on Polygon
     tests:
+      - check_seed:
+          seed_file: ref('opensea_polygon_zeroex_trades_samples')
+          filter:
+            blockchain: polygon
+            project: opensea
+            version: v2
+          check_columns:
+            - buyer
+            - seller
+            - amount_raw
+            - platform_fee_amount_raw
+            - royalty_fee_amount_raw
+          match_columns:
+            - block_date
+            - blockchain
+            - project
+            - version
+            - tx_hash
+            - nft_contract_address
+            - token_id        
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - block_date
@@ -259,16 +279,12 @@ models:
           combination_of_columns:
             - block_date
             - unique_trade_id
-      - check_seaport_seed:
-          blockchain: ethereum
-          project: opensea
-          version: v4
       - check_seed:
           seed_file: ref('opensea_trade_seed')
           filter:
-            blockchain: ethereum
+            blockchain: polygon
             project: opensea
-            version: v4
+            version: v3
           check_columns:
             - buyer
             - seller
