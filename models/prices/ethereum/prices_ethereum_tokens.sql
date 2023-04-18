@@ -1336,7 +1336,6 @@ FROM
     ('btrfly-redacted', 'ethereum', 'BTRFLY', '0xc55126051B22eBb829D00368f4B12Bde432de5Da', 18),
     ('icsa-icosa', 'ethereum', 'ICSA', '0xfc4913214444aF5c715cc9F7b52655e788A569ed', 9),
     ('asic-asic-token', 'ethereum', 'ASIC', '0x347a96a5BD06D2E15199b032F46fB724d6c73047', 12),
-    ('caw-a-hunters-dream', 'ethereum', 'CAW', '0xf3b9569F82B18aEf890De263B84189bd33EBe452', 18),
     ('acx-across-protocol', 'ethereum', 'ACX', '0x44108f0223A3C3028F5Fe7AEC7f9bb2E66beF82F', 18),
     ('psp-paraswap', 'ethereum', 'PSP', '0xcAfE001067cDEF266AfB7Eb5A286dCFD277f3dE5', 18),
     ('plsb-pulsebitcoin', 'ethereum', 'PLSB', '0x5EE84583f67D5EcEa5420dBb42b462896E7f8D06', 12),
@@ -1641,4 +1640,5 @@ FROM
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)
 where contract_address not in (
     '0x841fb148863454a3b3570f515414759be9091465' -- SHIH has bad price feed.
+    ,'0xf3b9569f82b18aef890de263b84189bd33ebe452' -- CAW has bad price feed.
 )
