@@ -21056,5 +21056,22 @@ FROM (VALUES
         ('0xba3436fd341f2c8a928452db3c5a3670d1d5cc73', 'agEUREUROC-f', 18),
         ('0xf9835375f6b268743ea0a54d742aa156947f8c06', 'CNCETH-f', 18),
         ('0xfb19c8f2fe488ffbd51ae89a08e189d7a18e668b', 'HAWKER', 9),
-        ('0xfd414e39155f91e94443a9fe97e856569d0f5eec', 'SERP', 9)
+        ('0xfd414e39155f91e94443a9fe97e856569d0f5eec', 'SERP', 9),
+        ('0x05da3cbe304d42174f760d4c99a8f63f5faafcbe', 'APU', 9),
+        ('0x092fa97ec3860dd8f8f6df8c517a026e0225b885', 'PEEPO', 18),
+        ('0x0a13a5929e5f0ff0eaba4bd9e9512c91fce40280', 'XAI', 9),
+        ('0x13817e7433e51273ff6e7b427e445b0edc014828', 'EP', 18),
+        ('0x25644ea5be09d1266b5df3f96559ecdc2d0ad69b', 'yShori', 18),
+        ('0x2ab6578239ed541ef7cc7d11a45d740ce9f0a1f4', 'yvCurve-CTR-ETH-f', 18),
+        ('0x474458ee83accd0ce0583fc67628917bbd9695b9', 'TIANA', 8),
+        ('0x5903cb31b6d62d0c474159e45886c446bfe0efd6', 'X-GPT', 18),
+        ('0x5c6d51ecba4d8e4f20373e3ce96a62342b125d6d', 'ELFI', 18),
+        ('0x5f17b7dfa191c75911a01e03a40397eb4a766fc8', 'MTM', 18),
+        ('0x6982508145454ce325ddbe47a25d4ec3d2311933', 'PEPE', 18),
+        ('0x6d6b11219a15aefc32a430ac7ad6429ad36748c9', 'SHUGGI', 18),
+        ('0x7690202e2c2297bcd03664e31116d1dffe7e3b73', 'boxETH', 18),
+        ('0x96889af723ac5b082930c418a82a84bbbc8a495d', 'CXAI', 9),
+        ('0x97a627177634d839968ca935a79bed1e2c9c06f9', 'George', 9),
+        ('0xafe084cdaad09c921fcf9ecb548a7e6c1cb2075b', 'GROYP', 18),
+        ('0xcf0e9c455b659f26038e998940ded929d3910f3d', 'FYR', 9)
      ) AS temp_table (contract_address, symbol, decimals)

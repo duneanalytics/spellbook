@@ -5,7 +5,7 @@
         file_format = 'delta',
         incremental_strategy = 'merge',
         unique_key = ['blockchain', 'block_date', 'tx_hash', 'evt_index'],
-        post_hook='{{ expose_spells(\'["ethereum", "bnb", "avalanche_c", "gnosis", "optimism", "arbitrum"]\',
+        post_hook='{{ expose_spells(\'["ethereum", "bnb", "avalanche_c", "gnosis", "optimism", "arbitrum", "polygon"]\',
                                     "project",
                                     "tornado_cash",
                                     \'["hildobby", "dot2dotseurat"]\') }}'
@@ -20,6 +20,7 @@ ref('tornado_cash_arbitrum_withdrawals')
 ,ref('tornado_cash_ethereum_withdrawals')
 ,ref('tornado_cash_gnosis_withdrawals')
 ,ref('tornado_cash_optimism_withdrawals')
+,ref('tornado_cash_polygon_withdrawals')
 ] %}
 
 SELECT *
