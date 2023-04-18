@@ -1640,4 +1640,5 @@ FROM
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)
 where contract_address not in (
     '0x841fb148863454a3b3570f515414759be9091465' -- SHIH has bad price feed.
+    ,'0xf3b9569f82b18aef890de263b84189bd33ebe452' -- CAW has bad price feed.
 )
