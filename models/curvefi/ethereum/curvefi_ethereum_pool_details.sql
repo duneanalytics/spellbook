@@ -6,18 +6,18 @@ SELECT
     version,
     name,
     symbol,
-    pool_address AS pool_address,
-    token_address AS token_address,
-    gauge_contract AS gauge_contract,
-    coin0 AS coin0,
-    coin1 AS coin1,
-    coin2 AS coin2,
-    undercoin0 AS undercoin0,
-    undercoin1 AS undercoin1,
-    undercoin2 AS undercoin2,
-    undercoin3 AS undercoin3,
-    deposit_contract AS deposit_contract,
-    coin3 AS coin3
+    pool_address,
+    token_address,
+    gauge_contract,
+    coin0,
+    coin1,
+    coin2,
+    undercoin0,
+    undercoin1,
+    undercoin2,
+    undercoin3,
+    deposit_contract,
+    coin3
 FROM
     (
         VALUES
