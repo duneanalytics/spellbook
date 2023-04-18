@@ -205,7 +205,7 @@ models:
       - &fills_within
         name: fills_within
         description: "fills in then multihop, if present"          
-  - name: zeroex_polygon_fills 
+  - name: zeroex_polygon_native_fills 
     meta:
       blockchain: polygon
       project: zeroex
@@ -221,7 +221,7 @@ models:
             - tx_hash
             - evt_index
       - check_seed:
-          seed_file: ref('zeroex_polygon_fills_sample')
+          seed_file: ref('zeroex_polygon_native_fills_sample')
           match_columns:
             - tx_hash
             - evt_index

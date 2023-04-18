@@ -139,7 +139,7 @@ models:
       - *evt_index
       - *blockchain
 
-  - name: zeroex_bnb_fills 
+  - name: zeroex_bnb_native_fills 
     meta:
       blockchain: bnb
       project: zeroex
@@ -155,7 +155,7 @@ models:
             - tx_hash
             - evt_index
       - check_seed:
-          seed_file: ref('zeroex_bnb_fills_sample')
+          seed_file: ref('zeroex_bnb_native_fills_sample')
           match_columns:
             - tx_hash
             - evt_index

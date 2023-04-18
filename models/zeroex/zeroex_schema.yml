@@ -232,15 +232,15 @@ models:
         description: "The trace address of the transaction"
       - *evt_index  
 
-  - name: zeroex_fills 
+  - name: zeroex_native_fills 
     meta:
-      blockchain: ethereum,polygon
+      blockchain: ethereum,polygon,arbitrum,optimism,bnb
       project: zeroex
       contributors: rantum, danning.sui, bakabhai993
     config:
-      tags: ['ethereum','polygon','0x','native_fills']
+      tags: ['ethereum','polygon','0x','optimism','arbitrum','fantom','bnb','dex']
     description: >
-        0x native swaps thru 0x exchange contracts (without using 0x API) on Ethereum & Polygon
+        0x native swaps thru 0x exchange contracts (without using 0x API) on Ethereum & Polygon & Arbitrum & Fantom & BNB
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -248,7 +248,7 @@ models:
             - tx_hash
             - evt_index
       - check_seed:
-          seed_file: ref('zeroex_fills_sample')
+          seed_file: ref('zeroex_native_fills_sample')
           match_columns:
             - tx_hash
             - evt_index
