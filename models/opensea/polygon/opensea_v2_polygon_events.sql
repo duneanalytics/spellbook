@@ -1,5 +1,5 @@
 {{ config(
-    schema = 'opensea_polygon',
+    schema = 'opensea_v2_polygon',
     alias = 'events',
     partition_by = ['block_date'],
     materialized = 'incremental',
