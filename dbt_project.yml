@@ -466,11 +466,6 @@ models:
       fantom:
         +schema: equalizer_exchange_fantom
 
-    glacier_exchange:
-      +schema: glacier_exchange
-      avalanche_c:
-        +schema: glacier_exchange_avalanche_c
-
     safe:
       +schema: safe
       ethereum:
@@ -993,3 +988,8 @@ models:
         +schema: bebop_polygon
       arbitrum:
         +schema: bebop_arbitrum
+
+    glacier:
+      +schema: glacier
+      avalanche_c:
+        +schema: glacier_avalanche_c

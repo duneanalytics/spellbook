@@ -1,16 +1,16 @@
 version: 2
 
 models:
-  - name: glacier_exchange_avalanche_c_trades
+  - name: glacier_avalanche_c_trades
     meta:
       blockchain: avalanche_c 
       sector: dex
-      project: glacier_exchange
+      project: glacier
       contributors: discochuck 
     config:
-      tags: ['avalanche_c','glacier_exchange','trades','dex']
+      tags: ['avalanche_c','glacier','trades','dex']
     description: >
-        glacier_exchange contract trades on avalanche_c 
+        glacier contract trades on avalanche_c
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -23,7 +23,7 @@ models:
             - trace_address
       - check_dex_seed:
           blockchain: avalanche_c 
-          project: glacier_exchange
+          project: glacier
           version: 1
     columns:
       - &blockchain
