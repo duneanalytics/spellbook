@@ -13,7 +13,7 @@
 WITH regular_pools AS (
     SELECT
         version,
-        `name`,
+        name,
         symbol,
         pool_address,
         token_address,
@@ -33,17 +33,17 @@ WITH regular_pools AS (
 regular_pools_deployed AS (
     SELECT
         version,
-        `name`,
+        name,
         symbol,
         pool_address,
         CAST(
-            NULL AS VARCHAR(5)
+            NULL AS VARBINARY
         ) AS A,
         CAST(
-            NULL AS VARCHAR(5)
+            NULL AS VARBINARY
         ) AS mid_fee,
         CAST(
-            NULL AS VARCHAR(5)
+            NULL AS VARBINARY
         ) AS out_fee,
         token_address,
         deposit_contract,
@@ -66,7 +66,7 @@ plain_calls AS (
         _symbol,
         output_0,
         _coins,
-        `_A`,
+        _A,
         _fee
     FROM
         {{ source(
@@ -79,7 +79,7 @@ plain_calls AS (
 plain_pools_deployed AS (
     SELECT
         'Factory V1 Plain' AS version,
-        _name AS `name`,
+        _name AS name,
         _symbol AS symbol,
         output_0 AS pool_address,
         "_A" AS A,
@@ -92,16 +92,16 @@ plain_pools_deployed AS (
         _coins [2] AS coin2,
         _coins [3] AS coin3,
         CAST(
-            NULL AS VARCHAR(5)
+            NULL AS VARBINARY
         ) AS undercoin0,
         CAST(
-            NULL AS VARCHAR(5)
+            NULL AS VARBINARY
         ) AS undercoin1,
         CAST(
-            NULL AS VARCHAR(5)
+            NULL AS VARBINARY
         ) AS undercoin2,
         CAST(
-            NULL AS VARCHAR(5)
+            NULL AS VARBINARY
         ) AS undercoin3
     FROM
         plain_calls
@@ -127,7 +127,7 @@ meta_calls AS (
 meta_pools_deployed AS (
     SELECT
         'Factory V1 Meta' AS version,
-        _name AS `name`,
+        _name AS name,
         _symbol AS symbol,
         output_0 AS pool_address,
         "_A" AS A,
@@ -138,10 +138,10 @@ meta_pools_deployed AS (
         _coin AS coin0,
         r.token_address as coin1, --reference the token address of the base pool as coin1. meta pools swap into the base pool token, and then another swap is conducted.
         CAST(
-            NULL AS VARCHAR(5)
+            NULL AS VARBINARY
         ) AS coin2,
         CAST(
-            NULL AS VARCHAR(5)
+            NULL AS VARBINARY
         ) AS coin3,
         _coin AS undercoin0,
         --Listing underlying coins for the ExchangeUnderlying function
@@ -167,10 +167,10 @@ v1_pools_deployed AS(
 v2_pools_deployed AS (
     SELECT
         'Factory V2' AS version,
-        _name AS `name`,
+        _name AS name,
         _symbol AS symbol,
         output_0 AS pool_address,
-        p.`A` AS A,
+        p.A AS A,
         p.mid_fee AS mid_fee,
         p.out_fee AS out_fee,
         p.token AS token_address,
@@ -180,16 +180,16 @@ v2_pools_deployed AS (
         coins [2] AS coin2,
         coins [3] AS coin3,
         CAST(
-            NULL AS VARCHAR(5)
+            NULL AS VARBINARY
         ) AS undercoin0,
         CAST(
-            NULL AS VARCHAR(5)
+            NULL AS VARBINARY
         ) AS undercoin1,
         CAST(
-            NULL AS VARCHAR(5)
+            NULL AS VARBINARY
         ) AS undercoin2,
         CAST(
-            NULL AS VARCHAR(5)
+            NULL AS VARBINARY
         ) AS undercoin3
     FROM
         {{ source(

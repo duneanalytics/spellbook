@@ -126,7 +126,7 @@ inner join {{ source('optimism', 'transactions') }} as tx
     on tx.block_time = tfe.evt_block_time
     and tx.hash = tfe.evt_tx_hash
     {% if not is_incremental() %}
-    and tx.block_time >= '{{project_start_date}}'
+    and tx.block_time >= CAST('{{project_start_date}}' AS TIMESTAMP(6) WITH TIME ZONE)
     {% else %}
     and tx.block_time >= date_trunc('day', now() - interval '7' day)
     {% endif %}
@@ -138,7 +138,7 @@ left join {{ source('prices', 'usd') }} as pu
     and pu.minute = date_trunc('minute', tfe.evt_block_time)
     and pu.contract_address = tfe.currency
     {% if not is_incremental() %}
-    and pu.minute >= '{{project_start_date}}'
+    and pu.minute >= CAST('{{project_start_date}}' AS TIMESTAMP(6) WITH TIME ZONE)
     {% else %}
     and pu.minute >= date_trunc('day', now() - interval '7' day)
     {% endif %}

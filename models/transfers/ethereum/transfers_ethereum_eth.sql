@@ -43,4 +43,3 @@ with eth_transfers as (
 )
 select *
 from eth_transfers
-;

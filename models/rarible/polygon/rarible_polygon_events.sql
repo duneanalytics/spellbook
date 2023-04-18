@@ -28,13 +28,13 @@ WITH trades AS (
         '0x' || right(substring(leftAsset:data, 3, 64), 40) AS nft_contract_address,
         CAST(bytea2numeric_v3(substr(leftAsset:data, 3 + 64, 64)) AS string) AS token_id,
         newRightFill AS number_of_items,
-        CASE WHEN leftAsset:assetClass = '0x73ad2146' THEN 'erc721' ELSE 'erc1155' END AS token_standard, -- 0x73ad2146: erc721; 0x973bb640: erc1155
+        CASE WHEN leftAsset:assetClass = '0x73ad2146' THEN 'erc721' ELSE 'erc1155' END AS token_standard, -- 0x73ad2146: erc721 0x973bb640: erc1155
         CASE WHEN rightAsset:assetClass = '0xaaaebeba' THEN 0x0d500b1d8e8ef31e21c99d1db9a6444d3adf1270
             ELSE '0x' || right(substring(rightAsset:data, 3, 64), 40)
         END AS currency_contract,
         newLeftFill AS amount_raw
     FROM {{ source ('rarible_polygon', 'Exchange_evt_Match') }}
-    WHERE rightAsset:assetClass in ('0xaaaebeba', '0x8ae85d84') -- 0xaaaebeba: MATIC; 0x8ae85d84: ERC20 TOKEN
+    WHERE rightAsset:assetClass in ('0xaaaebeba', '0x8ae85d84') -- 0xaaaebeba: MATIC 0x8ae85d84: ERC20 TOKEN
         {% if not is_incremental() %}
         AND evt_block_time >= '{{nft_start_date}}'
         {% endif %}
@@ -56,13 +56,13 @@ WITH trades AS (
         '0x' || right(substring(rightAsset:data, 3, 64), 40) AS nft_contract_address,
         CAST(bytea2numeric_v3(substr(rightAsset:data, 3 + 64, 64)) AS string) AS token_id,
         newLeftFill AS number_of_items,
-        CASE WHEN rightAsset:assetClass = '0x73ad2146' THEN 'erc721' ELSE 'erc1155' END AS token_standard, -- 0x73ad2146: erc721; 0x973bb640: erc1155
+        CASE WHEN rightAsset:assetClass = '0x73ad2146' THEN 'erc721' ELSE 'erc1155' END AS token_standard, -- 0x73ad2146: erc721 0x973bb640: erc1155
         CASE WHEN leftAsset:assetClass = '0xaaaebeba' THEN 0x0d500b1d8e8ef31e21c99d1db9a6444d3adf1270
             ELSE '0x' || right(substring(leftAsset:data, 3, 64), 40)
         END AS currency_contract,
         newRightFill AS amount_raw
     FROM {{ source ('rarible_polygon', 'Exchange_evt_Match') }}
-    WHERE leftAsset:assetClass in ('0xaaaebeba', '0x8ae85d84') -- 0xaaaebeba: MATIC; 0x8ae85d84: ERC20 TOKEN
+    WHERE leftAsset:assetClass in ('0xaaaebeba', '0x8ae85d84') -- 0xaaaebeba: MATIC 0x8ae85d84: ERC20 TOKEN
         {% if not is_incremental() %}
         AND evt_block_time >= '{{nft_start_date}}'
         {% endif %}

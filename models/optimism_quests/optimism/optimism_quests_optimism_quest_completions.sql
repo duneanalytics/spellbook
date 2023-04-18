@@ -30,7 +30,7 @@ INNER JOIN {{ref('optimism_quests_optimism_nft_id_mapping')}} nft
     ON cast(m.cid as varchar(4)) = nft.nft_id
 
 WHERE call_success = true
-AND call_block_time >= cast( '{{project_start_date}}' as timestamp)
+AND call_block_time >= cast( CAST('{{project_start_date}}' AS TIMESTAMP(6) WITH TIME ZONE) as timestamp)
 {% if is_incremental() %}
 AND call_block_time >= date_trunc('day', now() - interval '7' day)
 {% endif %}

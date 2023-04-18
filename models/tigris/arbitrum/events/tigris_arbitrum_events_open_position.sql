@@ -134,4 +134,3 @@ SELECT *, 'v4' as version FROM open_positions_v4
 UNION ALL
 
 SELECT *, 'v5' as version FROM open_positions_v5
-;

@@ -89,7 +89,7 @@ from dexs
 inner join {{ source('fantom', 'transactions') }} tx
     on dexs.tx_hash = tx.hash
     {% if not is_incremental() %}
-    and tx.block_time >= '{{project_start_date}}'
+    and tx.block_time >= CAST('{{project_start_date}}' AS TIMESTAMP(6) WITH TIME ZONE)
     {% endif %}
     {% if is_incremental() %}
     and tx.block_time >= date_trunc('day', now() - interval '7' day)
@@ -105,7 +105,7 @@ left join {{ source('prices', 'usd') }} p_bought
     and p_bought.contract_address = dexs.token_bought_address
     and p_bought.blockchain = 'fantom'
     {% if not is_incremental() %}
-    and p_bought.minute >= '{{project_start_date}}'
+    and p_bought.minute >= CAST('{{project_start_date}}' AS TIMESTAMP(6) WITH TIME ZONE)
     {% endif %}
     {% if is_incremental() %}
     and p_bought.minute >= date_trunc('day', now() - interval '7' day)
@@ -115,7 +115,7 @@ left join {{ source('prices', 'usd') }} p_sold
     and p_sold.contract_address = dexs.token_sold_address
     and p_sold.blockchain = 'fantom'
     {% if not is_incremental() %}
-    and p_sold.minute >= '{{project_start_date}}'
+    and p_sold.minute >= CAST('{{project_start_date}}' AS TIMESTAMP(6) WITH TIME ZONE)
     {% endif %}
     {% if is_incremental() %}
     and p_sold.minute >= date_trunc('day', now() - interval '7' day)

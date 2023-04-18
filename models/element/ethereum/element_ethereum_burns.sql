@@ -34,4 +34,3 @@ SELECT
       unique_trade_id
 FROM {{ ref('element_ethereum_events') }}
 WHERE evt_type = 'Burn'
-;

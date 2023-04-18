@@ -29,7 +29,7 @@ WITH gs AS (
                 sequence(
                     DATE_TRUNC('hour', 
                     {% if not is_incremental() %}
-                        '{{project_start_date}}'::date
+                        CAST('{{project_start_date}}' AS TIMESTAMP(6) WITH TIME ZONE)::date
                     {% endif %}
                     {% if is_incremental() %}
                         date_trunc('hour', now() - interval '7 day')
@@ -97,7 +97,7 @@ FROM
                 AND gs.aggregator_address = f.aggregator_address
             WHERE
                 {% if not is_incremental() %}
-                gs.hr >= '{{project_start_date}}'
+                gs.hr >= CAST('{{project_start_date}}' AS TIMESTAMP(6) WITH TIME ZONE)
                 {% endif %}
                 {% if is_incremental() %}
                 gs.hr >= date_trunc('hour', now() - interval '7 day')
@@ -112,4 +112,3 @@ FROM
     ) b
 ) c
 WHERE oracle_price_avg IS NOT NULL --don't overwrite where we don't have a value
-;

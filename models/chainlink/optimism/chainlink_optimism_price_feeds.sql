@@ -47,7 +47,7 @@ FROM
 	    ON l.contract_address = cfa.aggregator_address
 	WHERE l.topic1 = '{{answer_updated}}'
         {% if not is_incremental() %}
-        AND l.block_time >= '{{project_start_date}}'
+        AND l.block_time >= CAST('{{project_start_date}}' AS TIMESTAMP(6) WITH TIME ZONE)
         {% endif %}
         {% if is_incremental() %}
         AND l.block_time >= date_trunc('day', now() - interval '7' day)
@@ -62,4 +62,3 @@ FROM
 ) c
 LEFT JOIN {{ ref('chainlink_optimism_oracle_token_mapping') }} o
 	ON c.proxy_address = o.proxy_address
-;

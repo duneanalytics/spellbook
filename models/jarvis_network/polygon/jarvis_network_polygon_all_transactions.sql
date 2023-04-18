@@ -67,7 +67,7 @@ FROM
     WHERE evt_block_time >= date_trunc('day', now() - interval '7' day)
     {% endif %}
     {% if not is_incremental() %}
-    WHERE evt_block_time >= '{{ project_start_date }}'
+    WHERE evt_block_time >= CAST('{{project_start_date}}' AS TIMESTAMP(6) WITH TIME ZONE)
     {% endif %}
 
     UNION ALL
@@ -88,7 +88,7 @@ FROM
     WHERE evt_block_time >= date_trunc('day', now() - interval '7' day)
     {% endif %}
     {% if not is_incremental() %}
-    WHERE evt_block_time >= '{{ project_start_date }}'
+    WHERE evt_block_time >= CAST('{{project_start_date}}' AS TIMESTAMP(6) WITH TIME ZONE)
     {% endif %}
 
     UNION ALL
@@ -109,7 +109,7 @@ FROM
     WHERE evt_block_time >= date_trunc('day', now() - interval '7' day)
     {% endif %}
     {% if not is_incremental() %}
-    WHERE evt_block_time >= '{{ project_start_date }}'
+    WHERE evt_block_time >= CAST('{{project_start_date}}' AS TIMESTAMP(6) WITH TIME ZONE)
     {% endif %}
 
     UNION ALL
@@ -130,7 +130,7 @@ FROM
     WHERE evt_block_time >= date_trunc('day', now() - interval '7' day)
     {% endif %}
     {% if not is_incremental() %}
-    WHERE evt_block_time >= '{{ project_start_date }}'
+    WHERE evt_block_time >= CAST('{{project_start_date}}' AS TIMESTAMP(6) WITH TIME ZONE)
     {% endif %}
 
     UNION ALL
@@ -151,7 +151,7 @@ FROM
     WHERE evt_block_time >= date_trunc('day', now() - interval '7' day)
     {% endif %}
     {% if not is_incremental() %}
-    WHERE evt_block_time >= '{{ project_start_date }}'
+    WHERE evt_block_time >= CAST('{{project_start_date}}' AS TIMESTAMP(6) WITH TIME ZONE)
     {% endif %}
   ) x
   INNER JOIN {{ ref('jarvis_network_polygon_jfiat_address_mapping') }}    am
@@ -163,10 +163,9 @@ FROM
       AND cm.jfiat_collateral_symbol = pu.symbol
       AND date_trunc('minute',x.evt_block_time) = pu.minute
       {% if not is_incremental() %}
-      AND pu.minute >= '{{project_start_date}}'
+      AND pu.minute >= CAST('{{project_start_date}}' AS TIMESTAMP(6) WITH TIME ZONE)
       {% endif %}
       {% if is_incremental() %}
       AND pu.minute >= date_trunc('day', now() - interval '7' day)
       {% endif %}
 ) p
-;

@@ -42,7 +42,7 @@ SELECT DISTINCT * FROM (
     INNER JOIN registered_pools p ON p.pool_address = logs.contract_address
     WHERE logs.topic1 = '{{ event_signature }}'
         {% if not is_incremental() %}
-        AND logs.block_time >= '{{ project_start_date }}'
+        AND logs.block_time >= CAST('{{project_start_date}}' AS TIMESTAMP(6) WITH TIME ZONE)
         {% endif %}
         {% if is_incremental() %}
         AND logs.block_time >= DATE_TRUNC('day', NOW() - interval '7 day')

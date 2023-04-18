@@ -16,5 +16,5 @@ WITH lpda_fees AS (
 )
 
 SELECT *
-FROM lpda_fees;
+FROM lpda_fees
 -- union with future sources

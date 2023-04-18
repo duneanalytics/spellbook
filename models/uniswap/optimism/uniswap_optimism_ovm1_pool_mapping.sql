@@ -11,11 +11,11 @@
   )
 }}
 with ovm1_legacy_pools_raw as (
-  select 
-    explode(
-      from_json(
+  SELECT *
+  FROM UNNEST (
+    CAST (
+      JSON
         '[
-          
           {
             "oldAddress": "0x2e9c575206288f2219409289035facac0b670c2f",
             "newAddress": "0x03af20bdaaffb4cc0a521796a223f7d85e2aac31",
@@ -744,14 +744,15 @@ with ovm1_legacy_pools_raw as (
             "token1": "0xe0BB0D3DE8c10976511e5030cA403dBf4c25165B",
             "fee": 10000
           }
-        ]','array<struct<oldAddress:string,newAddress:string,token0:string, token1:string, fee:int>>'
-      )  
+        ]'
+      AS ARRAY(ROW(oldAddress VARCHAR, newAddress VARCHAR, token0 VARCHAR, token1 VARCHAR, fee INT))
     )
+  )
 )
-select 
-   col.oldAddress
-  ,col.newAddress
-  ,col.token0
-  ,col.token1
-  ,col.fee
+select
+   CAST(oldAddress AS VARBINARY) AS oldAddress
+  ,CAST(newAddress AS VARBINARY) AS newAddress
+  ,CAST(token0 AS VARBINARY) AS token0
+  ,CAST(token1 AS VARBINARY) AS token1
+  ,fee
 from ovm1_legacy_pools_raw

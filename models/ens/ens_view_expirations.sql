@@ -23,4 +23,4 @@ FROM (
         evt_block_time
     FROM {{source('ethereumnameservice_ethereum', 'BaseRegistrarImplementation_evt_NameRenewed')}}
 ) AS r
-GROUP BY label ;
+GROUP BY label

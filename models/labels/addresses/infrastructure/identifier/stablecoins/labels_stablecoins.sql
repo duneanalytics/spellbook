@@ -195,4 +195,3 @@ FROM
     -- Iron
     , ('polygon', 0xd86b5923f3ad7b585ed81b448170ae026c65ae9a, 'Hybrid stablecoin', 'infrastructure', 'hildobby', 'static', timestamp('2023-03-02'), now(), 'stablecoins', 'identifier')
     ) AS temp_table (blockchain, address, name, category, contributor, source, created_at, updated_at, model_name, label_type)
-;

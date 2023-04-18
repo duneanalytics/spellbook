@@ -324,4 +324,3 @@ with source_arbitrum_transactions as (
 )
 select *
 from iv_columns
-;

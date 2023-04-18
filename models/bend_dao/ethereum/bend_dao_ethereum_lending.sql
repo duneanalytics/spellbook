@@ -94,7 +94,7 @@ INNER JOIN
     ON et.block_time = ae.evt_block_time
     AND et.hash = ae.evt_tx_hash
     {% if not is_incremental() %}
-    AND et.block_time >= '{{project_start_date}}'
+    AND et.block_time >= CAST('{{project_start_date}}' AS TIMESTAMP(6) WITH TIME ZONE)
     {% endif %}
     {% if is_incremental() %}
     AND et.block_time >= date_trunc('day', now() - interval '7' day)
@@ -111,7 +111,7 @@ LEFT JOIN
     AND p.contract_address = ae.collateral_currency_contract
     AND p.blockchain = 'ethereum'
     {% if not is_incremental() %}
-    AND p.minute >= '{{project_start_date}}'
+    AND p.minute >= CAST('{{project_start_date}}' AS TIMESTAMP(6) WITH TIME ZONE)
     {% endif %}
     {% if is_incremental() %}
     AND p.minute >= date_trunc('day', now() - interval '7' day)

@@ -33,4 +33,3 @@ SELECT
       unique_trade_id
 FROM {{ ref('element_bnb_events') }}
 WHERE evt_type = 'Trade'
-;

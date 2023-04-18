@@ -40,7 +40,7 @@ with marketplace as (
         {% if is_incremental() %}
         where evt_block_time >= date_trunc('day', now() - interval '7' day)
         {% else %}
-        where evt_block_time >= '{{project_start_date}}'
+        where evt_block_time >= CAST('{{project_start_date}}' AS TIMESTAMP(6) WITH TIME ZONE)
         {% endif %}
         union all
         select evt_block_time,evt_index, tokenId, quantity, seller, pricePerItem,
@@ -50,7 +50,7 @@ with marketplace as (
         {% if is_incremental() %}
         where evt_block_time >= date_trunc('day', now() - interval '7' day)
         {% else %}
-        where evt_block_time >= '{{project_start_date}}'
+        where evt_block_time >= CAST('{{project_start_date}}' AS TIMESTAMP(6) WITH TIME ZONE)
         {% endif %}
     )
 )
@@ -92,7 +92,7 @@ inner join {{ source('ethereum', 'transactions') }} tx
     {% if is_incremental() %}
     and tx.block_time >= date_trunc('day', now() - interval '7' day)
     {% else %}
-    and tx.block_time >= '{{project_start_date}}'
+    and tx.block_time >= CAST('{{project_start_date}}' AS TIMESTAMP(6) WITH TIME ZONE)
     {% endif %}
 left join {{ ref('tokens_ethereum_erc20') }} erc20
     on erc20.contract_address = mp.currency_contract
@@ -105,6 +105,6 @@ left join {{ source('prices', 'usd') }} as prices
     {% if is_incremental() %}
     and prices.minute >= date_trunc('day', now() - interval '7' day)
     {% else %}
-    and prices.minute >= '{{project_start_date}}'
+    and prices.minute >= CAST('{{project_start_date}}' AS TIMESTAMP(6) WITH TIME ZONE)
     {% endif %}
 

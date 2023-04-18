@@ -64,4 +64,4 @@ SELECT
     ,symbol
     ,price
 FROM forward_fill
-;
+

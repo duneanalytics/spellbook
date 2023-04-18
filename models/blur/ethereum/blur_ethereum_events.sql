@@ -88,7 +88,7 @@ FROM {{ source('blur_ethereum','BlurExchange_evt_OrdersMatched') }} bm
 JOIN {{ source('ethereum','transactions') }} et ON et.block_number=bm.evt_block_number
     AND et.hash=bm.evt_tx_hash
     {% if not is_incremental() %}
-    AND et.block_time >= timestamp '{{project_start_date}}'
+    AND et.block_time >= timestamp CAST('{{project_start_date}}' AS TIMESTAMP(6) WITH TIME ZONE)
     {% endif %}
     {% if is_incremental() %}
     AND et.block_time >= date_trunc('day', now() - interval '1' week)
@@ -102,7 +102,7 @@ LEFT JOIN {{ source('prices','usd') }} pu ON pu.blockchain='ethereum'
         OR (pu.contract_address=0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2 AND JSON_EXTRACT_SCALAR(bm.buy, '$.paymentToken')=0x0000000000000000000000000000000000000000)
         OR (pu.contract_address=0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2 AND JSON_EXTRACT_SCALAR(bm.buy, '$.paymentToken')=0x0000000000a39bb272e79075ade125fd351887ac))
     {% if not is_incremental() %}
-    AND pu.minute >= timestamp '{{project_start_date}}'
+    AND pu.minute >= timestamp CAST('{{project_start_date}}' AS TIMESTAMP(6) WITH TIME ZONE)
 {% endif %}
 {% if is_incremental() %}
 AND pu.minute >= date_trunc('day', now() - interval '1' week)
@@ -183,4 +183,3 @@ AND s.evt_block_time >= date_trunc('day', now() - interval '7' day)
 {% if not is_incremental() %}
 AND s.evt_block_time >= timestamp '{{seaport_usage_start_date}}'
 {% endif %}
-;

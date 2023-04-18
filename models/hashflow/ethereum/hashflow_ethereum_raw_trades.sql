@@ -20,7 +20,7 @@ with ethereum_traces as (
     where `to` in (0x455a3b3be6e7c8843f2b03a1ca22a5a5727ef5c4,0x9d4fc735e1a596420d24a266b7b5402fe4ec153c,
                    0x2405cb057a9baf85daa11ce9832baed839b6871c,0x043389f397ad72619d05946f5f35426a7ace6613,
                    0xa18607ca4a3804cc3cd5730eafefcc47a7641643, 0x6ad3dac99c9a4a480748c566ce7b3503506e3d71)
-        and block_time >= '{{ project_start_date }}'
+        and block_time >= CAST('{{project_start_date}}' AS TIMESTAMP(6) WITH TIME ZONE)
     {% if is_incremental() %}
         and block_time >= date_trunc('day', now() - interval '10 days')
     {% endif %}
@@ -29,7 +29,7 @@ with ethereum_traces as (
 ethereum_transactions as (
     select *
     from {{ source('ethereum', 'transactions') }}
-    where block_time >= '{{ project_start_date }}'
+    where block_time >= CAST('{{project_start_date}}' AS TIMESTAMP(6) WITH TIME ZONE)
     {% if is_incremental() %}
         and block_time >= date_trunc('day', now() - interval '10 days')
     {% endif %}
@@ -38,7 +38,7 @@ ethereum_transactions as (
 prices_usd as (
     select *
     from {{ source('prices', 'usd') }}
-    where `minute` >= '{{ project_start_date }}'
+    where `minute` >= CAST('{{project_start_date}}' AS TIMESTAMP(6) WITH TIME ZONE)
         and blockchain = 'ethereum'
     {% if is_incremental() %}
         and `minute` >= date_trunc('day', now() - interval '10 days')
@@ -54,7 +54,7 @@ erc20_tokens as (
 hashflow_pool_evt_trade as (
     select *
     from {{ source('hashflow_ethereum', 'pool_evt_trade') }}
-    where evt_block_time >= '{{ project_start_date }}'
+    where evt_block_time >= CAST('{{project_start_date}}' AS TIMESTAMP(6) WITH TIME ZONE)
     {% if is_incremental() %}
         and evt_block_time >= date_trunc('day', now() - interval '10 days')
     {% endif %}
@@ -64,7 +64,7 @@ hashflow_pool_evt_trade as (
 ethereum_logs as (
     select *
     from {{ source('ethereum', 'logs') }}
-    where block_time >= '{{ project_start_date }}'
+    where block_time >= CAST('{{project_start_date}}' AS TIMESTAMP(6) WITH TIME ZONE)
         and block_number <= 13974528 -- block of last trade of all legacy routers
 ),
 
@@ -416,4 +416,3 @@ select
     amount_usd
 from all_trades
 where fill_status is true
-;

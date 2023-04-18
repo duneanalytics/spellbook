@@ -21,7 +21,7 @@ dexs as (
         SELECT 
             evt_block_time as block_time, 
             trader as taker, 
-            '' as maker, 
+            CAST('' AS VARBINARY) as maker,
             originAmount as token_sold_amount_raw, 
             targetAmount as token_bought_amount_raw, 
             CAST(NULL as double) as amount_usd, 
@@ -34,7 +34,7 @@ dexs as (
         FROM 
         {{ source('dfx_finance_ethereum', 'Curve_evt_Trade') }}
         {% if not is_incremental() %}
-        WHERE evt_block_time >= '{{project_start_date}}'
+        WHERE evt_block_time >= CAST('{{project_start_date}}' AS TIMESTAMP(6) WITH TIME ZONE)
         {% endif %}
         {% if is_incremental() %}
         WHERE evt_block_time >= date_trunc('day', now() - interval '7' day)
@@ -76,7 +76,7 @@ FROM dexs
 INNER JOIN {{ source('ethereum', 'transactions') }} tx
     ON tx.hash = dexs.tx_hash
     {% if not is_incremental() %}
-    AND tx.block_time >= '{{project_start_date}}'
+    AND tx.block_time >= CAST('{{project_start_date}}' AS TIMESTAMP(6) WITH TIME ZONE)
     {% endif %}
     {% if is_incremental() %}
     AND tx.block_time >= date_trunc('day', now() - interval '7' day)
@@ -92,7 +92,7 @@ LEFT JOIN {{ source('prices', 'usd') }} p_bought
     AND p_bought.contract_address = dexs.token_bought_address
     AND p_bought.blockchain = 'ethereum'
     {% if not is_incremental() %}
-    AND p_bought.minute >= '{{project_start_date}}'
+    AND p_bought.minute >= CAST('{{project_start_date}}' AS TIMESTAMP(6) WITH TIME ZONE)
     {% endif %}
     {% if is_incremental() %}
     AND p_bought.minute >= date_trunc('day', now() - interval '7' day)
@@ -102,9 +102,8 @@ LEFT JOIN {{ source('prices', 'usd') }} p_sold
     AND p_sold.contract_address = dexs.token_sold_address
     AND p_sold.blockchain = 'ethereum'
     {% if not is_incremental() %}
-    AND p_sold.minute >= '{{project_start_date}}'
+    AND p_sold.minute >= CAST('{{project_start_date}}' AS TIMESTAMP(6) WITH TIME ZONE)
     {% endif %}
     {% if is_incremental() %}
     AND p_sold.minute >= date_trunc('day', now() - interval '7' day)
     {% endif %}
-;

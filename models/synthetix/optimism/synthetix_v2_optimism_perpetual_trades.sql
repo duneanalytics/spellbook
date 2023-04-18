@@ -37,7 +37,7 @@ WITH asset_price AS (
 synthetix_markets AS (
 	SELECT DISTINCT
 		--finds the position of the first occurence '00' in the hex string which indicates null characters/padded zeroes
-		--characters before this position should be taken to get the asset's hex name; use 'unhex' to get the readable text
+		--characters before this position should be taken to get the asset's hex name use 'unhex' to get the readable text
 
 		--if the position is on an even number, that means the first '0' is part of the hexed version of the asset's last letter
 		--in this case, this zero should be included in the hex characters to be unhexed to get the complete asset's name
@@ -132,7 +132,7 @@ INNER JOIN {{ source('optimism', 'transactions') }} AS tx
 	ON perps.tx_hash = tx.hash
 	AND perps.block_number = tx.block_number
 	{% if not is_incremental() %}
-	AND tx.block_time >= '{{project_start_date}}'
+	AND tx.block_time >= CAST('{{project_start_date}}' AS TIMESTAMP(6) WITH TIME ZONE)
 	{% endif %}
 	{% if is_incremental() %}
 	AND tx.block_time >= DATE_TRUNC("DAY", NOW() - INTERVAL '1 WEEK')

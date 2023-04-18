@@ -74,7 +74,7 @@ WITH base_pools AS (
         AND et.to = et.contract_address
         AND et.evt_block_number = mps.evt_block_number
         {% if not is_incremental() %}
-        AND et.evt_block_time >= '{{project_start_date}}'
+        AND et.evt_block_time >= CAST(CAST('{{project_start_date}}' AS TIMESTAMP(6) WITH TIME ZONE) AS TIMESTAMP(6) WITH TIME ZONE)
         {% endif %}
         {% if is_incremental() %}
         AND et.evt_block_time >= date_trunc('day', now() - interval '7' day)
@@ -106,18 +106,18 @@ WITH base_pools AS (
     -- info from contract reads 'coins' https://optimistic.etherscan.io/address/0xb90b9b1f91a01ea22a182cd84c1e22222e39b415#readContract
     -- TODO/TOLINK: Query to check for Curve Pools with swap events that aren't mapped here
     , custom_pools AS (
-    SELECT version, tokenid, LOWER(token) AS token, lower(pool) AS pool
+    SELECT version, tokenid, CAST(token as VARBINARY) as token, CAST(pool as VARBINARY) as pool
     FROM (values
             --wstETH/ETH
-             ('Basic Pool','0',0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee,0xb90b9b1f91a01ea22a182cd84c1e22222e39b415)
-            ,('Basic Pool','1',0x1F32b1c2345538c0c6f582fCB022739c4A194Ebb,0xb90b9b1f91a01ea22a182cd84c1e22222e39b415)
+             ('Basic Pool',0,'0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee','0xb90b9b1f91a01ea22a182cd84c1e22222e39b415')
+            ,('Basic Pool',1,'0x1F32b1c2345538c0c6f582fCB022739c4A194Ebb','0xb90b9b1f91a01ea22a182cd84c1e22222e39b415')
             --aPool
-            ,('Basic Pool','0',0x82E64f49Ed5EC1bC6e43DAD4FC8Af9bb3A2312EE,0x66b5792ed50a2a7405ea75c4b6b1913ef4e46661)
-            ,('Basic Pool','1',0x625E7708f30cA75bfd92586e17077590C60eb4cD,0x66b5792ed50a2a7405ea75c4b6b1913ef4e46661)
-            ,('Basic Pool','2',0x6ab707Aca953eDAeFBc4fD23bA73294241490620,0x66b5792ed50a2a7405ea75c4b6b1913ef4e46661)
+            ,('Basic Pool',0,'0x82E64f49Ed5EC1bC6e43DAD4FC8Af9bb3A2312EE','0x66b5792ed50a2a7405ea75c4b6b1913ef4e46661')
+            ,('Basic Pool',1,'0x625E7708f30cA75bfd92586e17077590C60eb4cD','0x66b5792ed50a2a7405ea75c4b6b1913ef4e46661')
+            ,('Basic Pool',2,'0x6ab707Aca953eDAeFBc4fD23bA73294241490620','0x66b5792ed50a2a7405ea75c4b6b1913ef4e46661')
             --sUSD/FRAX
-            ,('Basic Pool','0',0x8c6f28f2F1A3C87F0f938b96d27520d9751ec8d9,0x54dcfe120d608551f9010d3b66620d230fd5c11b)
-            ,('Basic Pool','1',0x29A3d66B30Bc4AD674A4FDAF27578B64f6afbFe7,0x54dcfe120d608551f9010d3b66620d230fd5c11b)
+            ,('Basic Pool',0,'0x8c6f28f2F1A3C87F0f938b96d27520d9751ec8d9','0x54dcfe120d608551f9010d3b66620d230fd5c11b')
+            ,('Basic Pool',1,'0x29A3d66B30Bc4AD674A4FDAF27578B64f6afbFe7','0x54dcfe120d608551f9010d3b66620d230fd5c11b')
         ) a (version, tokenid, token, pool)
 
     )
@@ -125,7 +125,7 @@ WITH base_pools AS (
 , agg_pools AS (
     SELECT
         version
-        , cast(tokenid as int) AS tokenid
+        , tokenid AS tokenid
         , token
         , pool
     FROM
@@ -152,10 +152,9 @@ WITH base_pools AS (
         FROM basic_pools
     ) a
     GROUP BY
-        version, cast(tokenid as int), token, pool --unique
+        version, tokenid, token, pool --unique
 )
-SELECT version, CAST(tokenid AS string) AS tokenid, token, pool FROM agg_pools
+SELECT version, tokenid, token, pool FROM agg_pools
     UNION ALL
-SELECT version, CAST(tokenid AS string) AS tokenid, token, pool FROM custom_pools
-    WHERE pool NOT IN (SELECT pool FROM agg_pools) --avoid dupes that are caught by factories
-;
+SELECT version, tokenid, token, pool FROM custom_pools
+    WHERE pool NOT IN (SELECT pool FROM aggcurvefi_ethereum_view_pools.sql_pools) --avoid dupes that are caught by factories

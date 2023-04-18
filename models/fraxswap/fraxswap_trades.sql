@@ -50,5 +50,5 @@ FROM (
     {% endif %}
     {% endfor %}
 )
-;
+
 

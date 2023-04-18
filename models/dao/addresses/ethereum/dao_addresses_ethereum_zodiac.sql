@@ -20,7 +20,7 @@ get_zodiac_wallets as ( -- getting the gnosis safes created using zodiac's reali
         FROM 
         {{ source('ethereum', 'logs') }}
         {% if not is_incremental() %}
-        WHERE block_time >= '{{project_start_date}}'
+        WHERE block_time >= CAST('{{project_start_date}}' AS TIMESTAMP(6) WITH TIME ZONE)
         {% endif %}
         {% if is_incremental() %}
         WHERE block_time >= date_trunc('day', now() - interval '7' day)

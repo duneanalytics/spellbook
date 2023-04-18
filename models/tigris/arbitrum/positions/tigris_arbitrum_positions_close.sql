@@ -38,4 +38,3 @@ latest_leverage as (
 )
 
 SELECT * FROM latest_leverage
-;

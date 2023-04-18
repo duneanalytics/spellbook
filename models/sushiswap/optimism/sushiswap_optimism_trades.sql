@@ -14,9 +14,9 @@ with dexs as (
     -- Constant Product Pool
     SELECT
         'trident-cpp' as version,
-        t.evt_block_time as block_time,
+        CAST(t.evt_block_time AS TIMESTAMP(6) WITH TIME ZONE) as block_time,
         recipient as taker,
-        '' as maker,
+        CAST('' AS VARBINARY) as maker,
         amountOut as token_bought_amount_raw,
         amountIn as token_sold_amount_raw,
         null as amount_usd,
@@ -31,16 +31,16 @@ with dexs as (
     {% if is_incremental() %}
     WHERE t.evt_block_time >= date_trunc('day', now() - interval '7' day)
     {% else %}
-    WHERE t.evt_block_time >= '{{ project_start_date }}'
+    WHERE t.evt_block_time >= CAST(CAST('{{project_start_date}}' AS TIMESTAMP(6) WITH TIME ZONE) AS TIMESTAMP(6) WITH TIME ZONE)
     {% endif %}
 
     UNION ALL
     -- Stable Pool
     SELECT
         'trident-sp' as version,
-        t.evt_block_time as block_time,
+        CAST(t.evt_block_time AS TIMESTAMP(6) WITH TIME ZONE) as block_time,
         recipient as taker,
-        '' as maker,
+        CAST('' AS VARBINARY) as maker,
         amountOut as token_bought_amount_raw,
         amountIn as token_sold_amount_raw,
         null as amount_usd,
@@ -55,7 +55,7 @@ with dexs as (
     {% if is_incremental() %}
     WHERE t.evt_block_time >= date_trunc('day', now() - interval '7' day)
     {% else %}
-    WHERE t.evt_block_time >= '{{ project_start_date }}'
+    WHERE t.evt_block_time >= CAST(CAST('{{project_start_date}}' AS TIMESTAMP(6) WITH TIME ZONE) AS TIMESTAMP(6) WITH TIME ZONE)
     {% endif %}
 )
 select
@@ -72,8 +72,8 @@ select
     end as token_pair,
     dexs.token_bought_amount_raw / power(10, erc20a.decimals) AS token_bought_amount,
     dexs.token_sold_amount_raw / power(10, erc20b.decimals) AS token_sold_amount,
-    CAST(dexs.token_bought_amount_raw AS DECIMAL(38,0)) AS token_bought_amount_raw,
-    CAST(dexs.token_sold_amount_raw AS DECIMAL(38,0)) AS token_sold_amount_raw,
+    CAST(dexs.token_bought_amount_raw AS DOUBLE) AS token_bought_amount_raw,
+    CAST(dexs.token_sold_amount_raw AS DOUBLE) AS token_sold_amount_raw,
     coalesce(
         dexs.amount_usd
         ,(dexs.token_bought_amount_raw / power(10, p_bought.decimals)) * p_bought.price
@@ -93,7 +93,7 @@ from dexs
 inner join {{ source('optimism', 'transactions') }} tx
     on dexs.tx_hash = tx.hash
     {% if not is_incremental() %}
-    and tx.block_time >= '{{project_start_date}}'
+    and tx.block_time >= CAST(CAST('{{project_start_date}}' AS TIMESTAMP(6) WITH TIME ZONE) AS TIMESTAMP(6) WITH TIME ZONE)
     {% endif %}
     {% if is_incremental() %}
     and tx.block_time >= date_trunc('day', now() - interval '7' day)
@@ -106,20 +106,20 @@ left join {{ ref('tokens_erc20') }} erc20b
     and erc20b.blockchain = 'optimism'
 left join {{ source('prices', 'usd') }} p_bought
     on p_bought.minute = date_trunc('minute', dexs.block_time)
-    and p_bought.contract_address = dexs.token_bought_address
+    and from_hex(p_bought.contract_address) = dexs.token_bought_address
     and p_bought.blockchain = 'optimism'
     {% if not is_incremental() %}
-    and p_bought.minute >= '{{project_start_date}}'
+    and p_bought.minute >= CAST(CAST('{{project_start_date}}' AS TIMESTAMP(6) WITH TIME ZONE) AS TIMESTAMP(6) WITH TIME ZONE)
     {% endif %}
     {% if is_incremental() %}
     and p_bought.minute >= date_trunc('day', now() - interval '7' day)
     {% endif %}
 left join {{ source('prices', 'usd') }} p_sold
     on p_sold.minute = date_trunc('minute', dexs.block_time)
-    and p_sold.contract_address = dexs.token_sold_address
+    and from_hex(p_sold.contract_address) = dexs.token_sold_address
     and p_sold.blockchain = 'optimism'
     {% if not is_incremental() %}
-    and p_sold.minute >= '{{project_start_date}}'
+    and p_sold.minute >= CAST(CAST('{{project_start_date}}' AS TIMESTAMP(6) WITH TIME ZONE) AS TIMESTAMP(6) WITH TIME ZONE)
     {% endif %}
     {% if is_incremental() %}
     and p_sold.minute >= date_trunc('day', now() - interval '7' day)

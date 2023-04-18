@@ -50,4 +50,3 @@ bridges_creation bc
 LEFT JOIN 
 bridges_label bl 
     ON bl.contract_address = bc.bridgeAddress
-; 

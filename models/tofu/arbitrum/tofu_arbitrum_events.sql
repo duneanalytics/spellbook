@@ -123,7 +123,7 @@ FROM tfe
                    ON tx.block_time = tfe.evt_block_time
                        AND tx.hash = tfe.evt_tx_hash
                        {% if not is_incremental() %}
-                       AND tx.block_time >= '{{project_start_date}}'
+                       AND tx.block_time >= CAST('{{project_start_date}}' AS TIMESTAMP(6) WITH TIME ZONE)
                        {% endif %}
                        {% if is_incremental() %}
                        and tx.block_time >= date_trunc('day', now() - interval '7' day)
@@ -136,7 +136,7 @@ FROM tfe
                        AND pu.minute = date_trunc('minute', tfe.evt_block_time)
                        AND pu.contract_address = tfe.currency
                        {% if not is_incremental() %}
-                       AND pu.minute >= '{{project_start_date}}'
+                       AND pu.minute >= CAST('{{project_start_date}}' AS TIMESTAMP(6) WITH TIME ZONE)
                        {% endif %}
                        {% if is_incremental() %}
                        AND pu.minute >= date_trunc('day', now() - interval '7' day)

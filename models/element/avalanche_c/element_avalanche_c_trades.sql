@@ -34,4 +34,4 @@ SELECT
       unique_trade_id
 FROM {{ ref('element_avalanche_c_events') }}
 WHERE evt_type = 'Trade'
-;
+

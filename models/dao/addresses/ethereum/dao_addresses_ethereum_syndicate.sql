@@ -18,7 +18,7 @@ syndicatev2_daos as ( -- decoded event on dune for syndicate v2, this returns in
             tokenAddress as dao 
         FROM {{ source('syndicate_v2_ethereum', 'ERC20ClubFactory_evt_ERC20ClubCreated') }}
         {% if not is_incremental() %}
-        WHERE evt_block_time >= '{{project_start_date}}'
+        WHERE evt_block_time >= CAST('{{project_start_date}}' AS TIMESTAMP(6) WITH TIME ZONE)
         {% endif %}
         {% if is_incremental() %}
         WHERE evt_block_time >= date_trunc('day', now() - interval '7' day)
@@ -32,7 +32,7 @@ syndicatev1_daos as ( -- getting investment clubs created on dune v1
         FROM 
         {{ source('ethereum', 'logs') }}
         {% if not is_incremental() %}
-        WHERE block_time >= '{{project_start_date}}'
+        WHERE block_time >= CAST('{{project_start_date}}' AS TIMESTAMP(6) WITH TIME ZONE)
         {% endif %}
         {% if is_incremental() %}
         WHERE block_time >= date_trunc('day', now() - interval '7' day)
@@ -54,7 +54,7 @@ ownership_transferred as ( -- whenever an investment club is created, the owners
         FROM 
         {{ source('ethereum', 'logs') }}
         {% if not is_incremental() %}
-        WHERE block_time >= '{{project_start_date}}'
+        WHERE block_time >= CAST('{{project_start_date}}' AS TIMESTAMP(6) WITH TIME ZONE)
         {% endif %}
         {% if is_incremental() %}
         WHERE block_time >= date_trunc('day', now() - interval '7' day)

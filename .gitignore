@@ -145,3 +145,9 @@ logs/
 !target/manifest.json
 !target/run_results.json
 !target/sources.json
+
+# translation tooling
+*.sql.backup
+*.sql.diff.html
+*.sql.diff.txt
+*.sql.new

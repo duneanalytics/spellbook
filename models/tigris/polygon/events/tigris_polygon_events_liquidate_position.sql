@@ -175,4 +175,3 @@ SELECT *, 'v7' as version FROM liquidate_position_v7
 UNION ALL
 
 SELECT *, 'v8' as version FROM liquidate_position_v8
-;

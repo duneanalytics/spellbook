@@ -324,4 +324,3 @@ with source_bnb_transactions as (
 )
 select *
 from iv_columns
-;

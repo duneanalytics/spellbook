@@ -24,7 +24,7 @@ src_evt_profit as (
      , CASE WHEN currency=0x0000000000000000000000000000000000000000
         THEN true ELSE false END as is_native_eth
     FROM {{ source('x2y2_ethereum','X2Y2_r1_evt_EvProfit') }}
-    WHERE evt_block_time >= '{{project_start_date}}'
+    WHERE evt_block_time >= CAST('{{project_start_date}}' AS TIMESTAMP(6) WITH TIME ZONE)
         {% if is_incremental() %}
         AND evt_block_time >= date_trunc('day', now() - interval '7' day)
         {% endif %}
@@ -57,7 +57,7 @@ src_evt_inventory as (
         +COALESCE(get_json_object(get_json_object(inv.detail, '$.fees[3]'), '$.percentage'), 0)
       as all_fee_percentage
     FROM {{ source('x2y2_ethereum','X2Y2_r1_evt_EvInventory') }} inv
-    WHERE evt_block_time >= '{{project_start_date}}'
+    WHERE evt_block_time >= CAST('{{project_start_date}}' AS TIMESTAMP(6) WITH TIME ZONE)
         {% if is_incremental() %}
         AND evt_block_time >= date_trunc('day', now() - interval '7' day)
         {% endif %}
@@ -66,7 +66,7 @@ src_evt_inventory as (
 src_eth_transactions as  (
     SELECT *
     FROM {{ source('ethereum','transactions') }}
-    WHERE block_time > '{{project_start_date}}'
+    WHERE block_time > CAST('{{project_start_date}}' AS TIMESTAMP(6) WITH TIME ZONE)
         {% if is_incremental() %}
         AND block_time >= date_trunc('day', now() - interval '7' day)
         {% endif %}
@@ -76,7 +76,7 @@ src_prices_usd as (
     SELECT *
     FROM {{ source('prices','usd') }}
     WHERE blockchain = 'ethereum'
-        AND minute > '{{project_start_date}}'
+        AND minute > CAST('{{project_start_date}}' AS TIMESTAMP(6) WITH TIME ZONE)
         {% if is_incremental() %}
         AND minute >= date_trunc('day', now() - interval '7' day)
         {% endif %}

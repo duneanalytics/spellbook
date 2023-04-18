@@ -21,7 +21,7 @@ WITH dexs AS
         t.evt_block_time AS block_time
         ,t.evt_block_number
         ,t.to AS taker
-        ,'' AS maker
+        ,CAST('' AS VARBINARY)
         -- logic from ethereum/dex/trades/insert_uniswap_v2
 	    ,CASE WHEN amount0Out = '0' THEN amount1Out ELSE amount0Out END AS token_bought_amount_raw -- when amount0 is negative it means trader_a is buying token0 from the pool
 	    ,CASE WHEN amount0In = '0' OR amount1Out = '0' THEN amount1In ELSE amount0In END AS token_sold_amount_raw
@@ -76,7 +76,7 @@ INNER JOIN {{ source('optimism', 'transactions') }} tx
     ON tx.hash = dexs.tx_hash
     AND tx.block_number = dexs.evt_block_number
     {% if not is_incremental() %}
-    AND tx.block_time >= '{{project_start_date}}'
+    AND tx.block_time >= CAST('{{project_start_date}}' AS TIMESTAMP(6) WITH TIME ZONE)
     {% endif %}
     {% if is_incremental() %}
     AND tx.block_time >= date_trunc('day', now() - interval '1' week)
@@ -92,7 +92,7 @@ LEFT JOIN {{ source('prices', 'usd') }} p_bought
     AND p_bought.contract_address = dexs.token_bought_address
     AND p_bought.blockchain = 'optimism'
     {% if not is_incremental() %}
-    AND p_bought.minute >= '{{project_start_date}}'
+    AND p_bought.minute >= CAST('{{project_start_date}}' AS TIMESTAMP(6) WITH TIME ZONE)
     {% endif %}
     {% if is_incremental() %}
     AND p_bought.minute >= date_trunc('day', now() - interval '7' day)
@@ -102,9 +102,8 @@ LEFT JOIN {{ source('prices', 'usd') }} p_sold
     AND p_sold.contract_address = dexs.token_sold_address
     AND p_sold.blockchain = 'optimism'
     {% if not is_incremental() %}
-    AND p_sold.minute >= '{{project_start_date}}'
+    AND p_sold.minute >= CAST('{{project_start_date}}' AS TIMESTAMP(6) WITH TIME ZONE)
     {% endif %}
     {% if is_incremental() %}
     AND p_sold.minute >= date_trunc('day', now() - interval '7' day)
     {% endif %}
-;

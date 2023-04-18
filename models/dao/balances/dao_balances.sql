@@ -57,7 +57,7 @@ balances_all as (
 days as (
         select explode(
                        sequence(
-                               to_date('{{project_start_date}}'), date_trunc('day', now()), interval 1 day
+                               to_date(CAST('{{project_start_date}}' AS TIMESTAMP(6) WITH TIME ZONE)), date_trunc('day', now()), interval 1 day
                            )
                    ) as day
 ),

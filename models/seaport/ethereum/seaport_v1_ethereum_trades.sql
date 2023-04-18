@@ -361,4 +361,4 @@ with source_ethereum_transactions as (
         ,sub_idx
         ,sub_type
     from iv_trades
-;
+

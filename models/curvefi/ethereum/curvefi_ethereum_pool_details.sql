@@ -4,20 +4,20 @@
 
 SELECT
     version,
-    `name`,
+    name,
     symbol,
-    lower(pool_address) AS pool_address,
-    lower(token_address) AS token_address,
-    lower(gauge_contract) AS gauge_contract,
-    lower(coin0) AS coin0,
-    lower(coin1) AS coin1,
-    lower(coin2) AS coin2,
-    lower(undercoin0) AS undercoin0,
-    lower(undercoin1) AS undercoin1,
-    lower(undercoin2) AS undercoin2,
-    lower(undercoin3) AS undercoin3,
-    lower(deposit_contract) AS deposit_contract,
-    lower(coin3) AS coin3
+    pool_address,
+    token_address,
+    gauge_contract,
+    coin0,
+    coin1,
+    coin2,
+    undercoin0,
+    undercoin1,
+    undercoin2,
+    undercoin3,
+    deposit_contract,
+    coin3
 FROM
     (
         VALUES
@@ -876,7 +876,7 @@ FROM
 
     ) AS temp_table (
         version,
-        `name`,
+        name,
         symbol,
         pool_address,
         token_address,

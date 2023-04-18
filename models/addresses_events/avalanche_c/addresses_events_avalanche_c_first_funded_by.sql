@@ -25,4 +25,3 @@ AND CAST(et.value AS double) > 0
 AND et.block_time >= date_trunc('day', now() - interval '7' day)
 {% endif %}
 GROUP BY et.to
-;

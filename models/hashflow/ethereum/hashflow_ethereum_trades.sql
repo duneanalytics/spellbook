@@ -26,7 +26,7 @@ with hashflow_trades as (
 ethereum_transactions as (
     select *
     from {{ source('ethereum', 'transactions') }}
-    where block_time >= '{{ project_start_date }}'
+    where block_time >= CAST('{{project_start_date}}' AS TIMESTAMP(6) WITH TIME ZONE)
     {% if is_incremental() %}
         and block_time >= date_trunc('day', now() - interval '10 days')
     {% endif %}
@@ -71,4 +71,3 @@ left join erc20_tokens erc20a
     on erc20a.contract_address = hashflow_trades.maker_token
 left join erc20_tokens erc20b
     on erc20b.contract_address = hashflow_trades.taker_token
-;

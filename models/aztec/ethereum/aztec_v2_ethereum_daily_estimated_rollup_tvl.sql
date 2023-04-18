@@ -105,4 +105,3 @@ rollup_balance_changes as (
   
 )
 select * from token_tvls 
-;

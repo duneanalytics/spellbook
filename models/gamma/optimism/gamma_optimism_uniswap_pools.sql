@@ -53,10 +53,10 @@ SELECT distinct
     INNER JOIN {{ source('optimism', 'creation_traces') }} ct 
         ON ct.address = mm.contract_address
         -- only pull new contract creations
-        AND ct.block_time >= '{{project_start_date}}'
+        AND ct.block_time >= CAST('{{project_start_date}}' AS TIMESTAMP(6) WITH TIME ZONE)
     INNER JOIN {{ source('optimism', 'transactions') }} t 
         ON t.to = mm.contract_address
-        AND t.block_time >= '{{project_start_date}}'
+        AND t.block_time >= CAST('{{project_start_date}}' AS TIMESTAMP(6) WITH TIME ZONE)
         AND t.block_time >= ct.block_time
         AND t.block_time < ct.block_time + interval '1 month'
         AND substring(t.data,1,10) IN ('0x85919c5d','0xa8559872') --on rebalances & withdrawals, we can pull the uniswap pool
@@ -66,6 +66,6 @@ SELECT distinct
         AND t.block_time = l.block_time
         AND l.block_time >= ct.block_time
         AND l.block_time < ct.block_time + interval '1 month'
-        AND l.block_time >= '{{project_start_date}}'
+        AND l.block_time >= CAST('{{project_start_date}}' AS TIMESTAMP(6) WITH TIME ZONE)
     INNER JOIN {{ ref('uniswap_optimism_pools') }} up
         ON up.pool = l.contract_address

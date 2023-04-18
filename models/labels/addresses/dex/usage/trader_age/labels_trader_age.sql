@@ -43,4 +43,3 @@ select blockchain,
        "trader_age"            AS model_name,
        "usage"                 AS label_type
 from trader_age
-; 

@@ -44,4 +44,3 @@ FROM
             evt_block_number  
       FROM {{ ref('aave_v2_ethereum_borrow') }} 
 )
-;

@@ -73,7 +73,7 @@ FROM dexs
 INNER JOIN {{ source('ethereum', 'transactions') }} tx
     ON dexs.tx_hash = tx.hash
     {% if not is_incremental() %}
-    AND tx.block_time >= '{{project_start_date}}'
+    AND tx.block_time >= CAST('{{project_start_date}}' AS TIMESTAMP(6) WITH TIME ZONE)
     {% endif %}
     {% if is_incremental() %}
     AND tx.block_time >= date_trunc('day', now() - interval '7' day)
@@ -89,7 +89,7 @@ LEFT JOIN {{ source('prices', 'usd') }} pa
     AND pa.contract_address = dexs.token_bought_address
     AND pa.blockchain = 'ethereum'
     {% if not is_incremental() %}
-    AND pa.minute >= '{{project_start_date}}'
+    AND pa.minute >= CAST('{{project_start_date}}' AS TIMESTAMP(6) WITH TIME ZONE)
     {% endif %}
     {% if is_incremental() %}
     AND pa.minute >= date_trunc('day', now() - interval '7' day)
@@ -99,9 +99,8 @@ LEFT JOIN {{ source('prices', 'usd') }} pb
     AND pb.contract_address = dexs.token_sold_address
     AND pb.blockchain = 'ethereum' 
     {% if not is_incremental() %}
-    AND pb.minute >= '{{project_start_date}}'
+    AND pb.minute >= CAST('{{project_start_date}}' AS TIMESTAMP(6) WITH TIME ZONE)
     {% endif %}
     {% if is_incremental() %}
     AND pb.minute >= date_trunc('day', now() - interval '7' day)
     {% endif %}
-;

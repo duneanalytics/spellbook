@@ -64,7 +64,7 @@ from
 inner join {{ source('avalanche_c', 'transactions') }} tx
     ON tx.hash = s.evt_tx_hash
     {% if not is_incremental() %}
-    AND tx.block_time >= '{{project_start_date}}'
+    AND tx.block_time >= CAST('{{project_start_date}}' AS TIMESTAMP(6) WITH TIME ZONE)
     {% endif %}
     {% if is_incremental() %}
     AND tx.block_time >= date_trunc('day', now() - interval '7' day)
@@ -83,7 +83,7 @@ left join {{ source('prices', 'usd') }} prices_b
     and prices_b.contract_address = s.toToken
     and prices_b.blockchain = 'avalanche_c'
 	{% if not is_incremental() %}
-    and prices_b.minute >= '{{project_start_date}}'
+    and prices_b.minute >= CAST('{{project_start_date}}' AS TIMESTAMP(6) WITH TIME ZONE)
     {% endif %}
     {% if is_incremental() %}
     and prices_b.minute >= date_trunc('day', now() - interval '7' day)
@@ -94,7 +94,7 @@ left join {{ source('prices', 'usd') }} prices_s
     and prices_s.contract_address = s."from"Token
     and prices_s.blockchain = 'avalanche_c'
 	{% if not is_incremental() %}
-    and prices_s.minute >= '{{project_start_date}}'
+    and prices_s.minute >= CAST('{{project_start_date}}' AS TIMESTAMP(6) WITH TIME ZONE)
     {% endif %}
     {% if is_incremental() %}
     and prices_s.minute >= date_trunc('day', now() - interval '7' day)
@@ -103,4 +103,3 @@ where 1 = 1
     {% if is_incremental() %}
     and s.evt_block_time >= date_trunc('day', now() - interval '7' day)
     {% endif %}
-;

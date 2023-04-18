@@ -121,4 +121,4 @@ FROM (VALUES
     , ('ethereum', 0x76943c0d61395d8f2edf9060e1533529cae05de6, 'Optimism: Lido Bridge', 'bridge', 'msilb7', 'static', timestamp('2022-10-12'), now(), 'bridges_ethereum', 'identifier')
     , ('ethereum', 0x324c7ec7fb2bc61646ac2f22f6d06ab29b6c87a3, 'Optimism: Teleportr v1', 'bridge', 'msilb7', 'static', timestamp('2022-10-12'), now(), 'bridges_ethereum', 'identifier')
     , ('ethereum', 0x52ec2f3d7c5977a8e558c8d9c6000b615098e8fc, 'Optimism: Teleportr v2', 'bridge', 'msilb7', 'static', timestamp('2022-10-12'), now(), 'bridges_ethereum', 'identifier')
-    ) AS x (blockchain, address, name, category, contributor, source, created_at, updated_at, model_name, label_type);
+    ) AS x (blockchain, address, name, category, contributor, source, created_at, updated_at, model_name, label_type)

@@ -17,5 +17,5 @@ WITH lpda_creations AS (
 )
 
 SELECT *
-FROM lpda_creations;
+FROM lpda_creations
 -- union with future distribution modules

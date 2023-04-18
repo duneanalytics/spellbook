@@ -137,7 +137,7 @@ FROM dexs
 INNER JOIN {{ source('ethereum', 'transactions') }} tx
     ON dexs.tx_hash = tx.hash
     {% if not is_incremental() %}
-    AND tx.block_time >=  CAST('{{project_start_date}}' AS timestamp(6) with time zone)
+    AND tx.block_time >=  CAST(CAST('{{project_start_date}}' AS TIMESTAMP(6) WITH TIME ZONE) AS timestamp(6) with time zone)
     {% endif %}
     {% if is_incremental() %}
     AND tx.block_time >= CAST(date_trunc('day', now() - interval '7' day) AS TIMESTAMP(6) WITH TIME ZONE)
@@ -154,7 +154,7 @@ LEFT JOIN {{ source('prices', 'usd') }} p_bought
     AND cast(p_bought.contract_address as varbinary) = dexs.token_bought_address
     {% if not is_incremental() %}
 
-AND p_bought.minute >= CAST('{{project_start_date}}' AS timestamp(6) with time zone)
+AND p_bought.minute >= CAST(CAST('{{project_start_date}}' AS TIMESTAMP(6) WITH TIME ZONE) AS timestamp(6) with time zone)
 {% endif %}
 {% if is_incremental() %}
 AND p_bought.minute >= CAST(date_trunc('day', now() - interval '7' day) AS TIMESTAMP(6) WITH TIME ZONE)
@@ -164,7 +164,7 @@ LEFT JOIN {{ source('prices', 'usd') }} p_sold
     ON p_sold.minute = date_trunc('minute', dexs.block_time)
     AND cast(p_sold.contract_address as varbinary) = dexs.token_sold_address
     {% if not is_incremental() %}
-    AND p_sold.minute >=  CAST('{{project_start_date}}' AS timestamp(6) with time zone)
+    AND p_sold.minute >=  CAST(CAST('{{project_start_date}}' AS TIMESTAMP(6) WITH TIME ZONE) AS timestamp(6) with time zone)
     {% endif %}
     {% if is_incremental() %}
     AND p_sold.minute >= CAST(date_trunc('day', now() - interval '7' day) AS TIMESTAMP(6) WITH TIME ZONE)
