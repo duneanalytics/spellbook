@@ -78,7 +78,7 @@ models:
   - name: prices_usd_forward_fill
     meta:
       sector: prices
-      contributors: 0xRob
+      contributors: 0xRob, hildobby
     config:
       tags: [ 'prices', 'usd', 'forward_fill' ]
     description: "View on prices that does a forward fill on the last 24h till the current timestamp"
