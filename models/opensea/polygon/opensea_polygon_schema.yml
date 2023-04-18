@@ -212,9 +212,9 @@ models:
           check_columns:
             - buyer
             - seller
-            - amount_raw
-            - platform_fee_amount_raw
-            - royalty_fee_amount_raw
+            - amount_original
+            - platform_fee_amount
+            - royalty_fee_amount
           match_columns:
             - block_date
             - blockchain
