@@ -17,7 +17,7 @@
 with stealcam as (
 select
     *
-    ,(value-(0.001*pow(10,18)))/11.0+(0.001*pow(10,18)) as surplus_value
+    ,case when value > 0 then (value-(0.001*pow(10,18)))/11.0+(0.001*pow(10,18)) else 0 end as surplus_value
 FROM {{ source('stealcam_arbitrum', 'Stealcam_evt_Stolen') }} sc
 {% if is_incremental() %}
 WHERE evt_block_time >= date_trunc("day", now() - interval '1 week')
@@ -58,12 +58,12 @@ SELECT 'arbitrum' AS blockchain
 , CAST(0.1*surplus AS DECIMAL(38,0)) AS platform_fee_amount_raw
 , CAST(0.1*surplus/POWER(10, 18) AS double) AS platform_fee_amount
 , CAST(pu.price*0.1*surplus/POWER(10, 18) AS double) AS platform_fee_amount_usd
-, CAST(100*(0.1*surplus/sc.value) AS double) AS platform_fee_percentage
+, CAST(coalesce(100*(0.1*surplus_value/sc.value),0) AS double) AS platform_fee_percentage
 , 'ETH' as royalty_fee_currency_symbol
 , CAST(0.45*surplus AS DECIMAL(38,0)) AS royalty_fee_amount_raw
 , CAST(0.45*surplus/POWER(10, 18) AS double) AS royalty_fee_amount
 , CAST(pu.price*0.45*surplus/POWER(10, 18) AS double) AS royalty_fee_amount_usd
-, CAST(100*(0.45*surplus/sc.value) AS double) AS royalty_fee_percentage
+, CAST(coalesce(100*(0.45*surplus_value/sc.value),0) AS double) AS royalty_fee_percentage
 , m._creator AS royalty_fee_receive_address
 , 'arbitrum-stealcam-' || sc.evt_tx_hash || '-' || sc.evt_index AS unique_trade_id
 FROM stealcam sc
