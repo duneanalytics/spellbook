@@ -94,6 +94,51 @@ models:
     dex:
       +schema: dex
 
+    airdrop:
+      +schema: airdrop
+      ethereum:
+        +schema: airdrop_ethereum
+      optimism:
+        +schema: airdrop_optimism
+      arbitrum:
+        +schema: airdrop_arbitrum
+      avalanche_c:
+        +schema: airdrop_avalanche_c
+      bnb:
+        +schema: airdrop_bnb
+      gnosis:
+        +schema: airdrop_gnosis
+
+    giveth:
+      +schema: giveth
+      gnosis:
+        +schema: giveth_gnosis
+
+    ellipsis_finance:
+      +schema: ellipsis_finance
+      bnb:
+        +schema: ellipsis_finance_bnb
+
+    arbitrum:
+      +schema: arbitrum
+      arbitrum:
+        +schema: arbitrum_arbitrum
+
+    pangolin:
+      +schema: pangolin
+      avalanche_c:
+        +schema: pangolin_avalanche_c
+
+    ampleforth:
+      +schema: ampleforth
+      ethereum:
+        +schema: ampleforth_ethereum
+
+    velodrome:
+      +schema: velodrome
+      optimism:
+        +schema: velodrome_optimism
+
     nft:
       +schema: nft
       arbitrum:
@@ -201,8 +246,12 @@ models:
       +schema: opensea
       ethereum:
         +schema: opensea_ethereum
+      polygon:
+        +schema: opensea_polygon
       solana:
         +schema: opensea_solana
+      optimism:
+        +schema: opensea_optimism
 
     element:
       +schema: element
@@ -421,6 +470,9 @@ models:
         +schema: tokens_solana
         +materialized: table
         +file_format: delta
+      
+    solana_utils:
+      +schema: solana_utils
 
     trader_joe:
       +schema: trader_joe
@@ -508,6 +560,15 @@ models:
       fantom:
         +schema: lifi_fantom
 
+    aragon:
+      +schema: aragon
+      ethereum:
+        +schema: aragon_ethereum
+      gnosis:
+        +schema: aragon_gnosis
+      polygon:
+        +schema: aragon_polygon
+
     spiritswap:
       +schema: spiritswap
       fantom:
@@ -535,6 +596,20 @@ models:
 
     tornado_cash:
       +schema: tornado_cash
+      arbitrum:
+        +schema: tornado_cash_arbitrum
+      avalanche_c:
+        +schema: tornado_cash_avalanche_c
+      bnb:
+        +schema: tornado_cash_bnb
+      ethereum:
+        +schema: tornado_cash_ethereum
+      gnosis:
+        +schema: tornado_cash_gnosis
+      optimism:
+        +schema: tornado_cash_optimism
+      polygon:
+        +schema: tornado_cash_polygon
 
     perpetual:
       +schema: perpetual
@@ -558,6 +633,13 @@ models:
       +schema: archipelago
       ethereum:
         +schema: archipelago_ethereum
+
+    integral:
+      +schema: integral
+      arbitrum:
+        +schema: integral_arbitrum
+      ethereum:
+        +schema: integral_ethereum
 
     integration_test:
       +schema: integration_test
@@ -699,6 +781,10 @@ models:
         +schema: kyberswap_avalanche_c
       optimism:
         +schema: kyberswap_optimism
+      ethereum:
+        +schema: kyberswap_ethereum
+      arbitrum:
+        +schema: kyberswap_arbitrum
 
     hubble_exchange:
       +schema: hubble_exchange
@@ -763,23 +849,27 @@ models:
         +schema: zeroex_ethereum
       optimism:
         +schema: zeroex_optimism
-
       polygon:
         +schema: zeroex_polygon
-
       avalanche_c:
         +schema: zeroex_avalanche_c
       fantom:
         +schema: zeroex_fantom
-
       arbitrum:
         +schema: zeroex_arbitrum
+      bnb:
+        +schema: zeroex_bnb
 
 
     wombat:
       +schema: wombat
       bnb:
         +schema: wombat_bnb
+
+    verse_dex:
+      +schema: verse_dex
+      ethereum:
+        +schema: verse_dex_ethereum
 
     iziswap:
       +schema: iziswap
@@ -925,7 +1015,31 @@ models:
       polygon:
         +schema: rarible_polygon
 
+    dydx:
+      +schema: dydx
+      ethereum:
+        +schema: dydx_ethereum
+
     optimism_attestationstation:
       +schema: optimism_attestationstation
       optimism:
         +schema: optimism_attestationstation_optimism
+    
+    lido:
+      +schema: lido
+      ethereum:
+       +schema: lido_ethereum
+
+    onepunchswap:
+      +schema: onepunchswap
+      bnb:
+        +schema: onepunchswap_bnb
+
+    bebop:
+      +schema: bebop
+      ethereum:
+        +schema: bebop_ethereum
+      polygon:
+        +schema: bebop_polygon
+      arbitrum:
+        +schema: bebop_arbitrum
