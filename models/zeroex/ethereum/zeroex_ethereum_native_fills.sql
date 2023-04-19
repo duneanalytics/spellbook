@@ -366,7 +366,7 @@ WITH
                 taker_symbol,
                 taker_asset_filled_amount taker_token_amount,
                 fee_recipient_address,
-                volume_usd as amount_usd,
+                volume_usd,
                 cast(protocol_fee_paid_eth as double),
                 'ethereum' as blockchain,
                 all_fills.contract_address,
