@@ -198,5 +198,6 @@ FROM
     ("stg-stargatetoken","bnb","STG","0xb0d502e938ed5f4df2e681fe6e419ff29631d62b",18),
     ("ico-axelar", "bnb", "AXL", "0x8b1f4432f943c465a973fedc6d7aa50fc96f1f65", 6),
     ("lvl-level","bnb","LVL","0xb64e280e9d1b5dbec4accedb2257a87b400db149",18)
-    
+    ("lvl-level","bnb","GHNY","0xa045E37a0D1dd3A45fefb8803D22457abc0A728a",18)
+        
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)
