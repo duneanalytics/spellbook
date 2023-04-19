@@ -83,7 +83,7 @@ dai_referral_payment_txns AS (
             evt_tx_hash,  
             contract_address,
             value
-    FROM  {{source('erc20_ethereum','evt_Transfer')}}
+    FROM  {{source('erc20_ethereum','evt_transfer')}}
     WHERE `from` = LOWER('0x3e40D73EB977Dc6a537aF587D48316feE66E9C8c')
     AND `to` IN (
         SELECT address FROM dai_referral_payments_addr

@@ -108,7 +108,7 @@ operating_expenses_txns AS (
         contract_address, 
         `from`, 
         `to`
-    FROM {{source('erc20_ethereum','evt_Transfer')}}
+    FROM {{source('erc20_ethereum','evt_transfer')}}
     WHERE contract_address IN (SELECT address FROM tokens)
     AND `from` IN (
         SELECT 

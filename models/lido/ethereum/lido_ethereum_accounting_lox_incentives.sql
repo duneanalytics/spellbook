@@ -78,7 +78,7 @@ lox_incentives_txns AS (
         `to`, 
         `from`, 
         contract_address
-    FROM {{source('erc20_polygon','evt_Transfer')}}
+    FROM {{source('erc20_polygon','evt_transfer')}}
     WHERE  `from` IN (
         SELECT
             address 
@@ -96,7 +96,7 @@ lox_incentives_txns AS (
         `to`, 
         `from`, 
         contract_address 
-    FROM {{source('erc20_polygon','evt_Transfer')}}
+    FROM {{source('erc20_polygon','evt_transfer')}}
     WHERE `to` IN (
         SELECT 
             address 
@@ -112,7 +112,7 @@ lox_incentives_txns AS (
         `to`, 
         `from`, 
         contract_address
-    FROM {{source('erc20_polygon','evt_Transfer')}}
+    FROM {{source('erc20_polygon','evt_transfer')}}
     WHERE `from` IN (
         SELECT 
             address
@@ -132,7 +132,7 @@ lox_incentives_txns AS (
         `to`, 
         `from`, 
         contract_address
-    FROM {{source('erc20_polygon','evt_Transfer')}}
+    FROM {{source('erc20_polygon','evt_transfer')}}
     WHERE `to` IN (
         SELECT 
             address 
@@ -155,7 +155,7 @@ lox_incentives_txns AS (
         `to`, 
         `from`, 
         contract_address
-    FROM {{source('erc20_ethereum','evt_Transfer')}}
+    FROM {{source('erc20_ethereum','evt_transfer')}}
     WHERE `from` IN (
         SELECT 
             address 
@@ -176,7 +176,7 @@ lox_incentives_txns AS (
         `to`, 
         `from`, 
         contract_address 
-    FROM {{source('erc20_ethereum','evt_Transfer')}}
+    FROM {{source('erc20_ethereum','evt_transfer')}}
     WHERE `to` IN (
         SELECT 
             address 
@@ -198,7 +198,7 @@ lox_incentives_txns AS (
         `to`, 
         `from`, 
         contract_address
-    FROM {{source('erc20_ethereum','evt_Transfer')}}
+    FROM {{source('erc20_ethereum','evt_transfer')}}
     WHERE `from` IN (
         SELECT 
             address 
@@ -219,7 +219,7 @@ lox_incentives_txns AS (
         `to`, 
         `from`, 
         contract_address 
-    FROM {{source('erc20_ethereum','evt_Transfer')}}
+    FROM {{source('erc20_ethereum','evt_transfer')}}
     WHERE `to` IN (
         SELECT 
             address 

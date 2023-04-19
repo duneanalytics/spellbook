@@ -106,7 +106,7 @@ trp_expenses_txns AS (
         CAST(value AS DOUBLE) AS value, 
         evt_tx_hash, 
         contract_address
-    FROM {{source('erc20_ethereum','evt_Transfer')}}
+    FROM {{source('erc20_ethereum','evt_transfer')}}
     WHERE contract_address = LOWER('0x5a98fcbea516cf06857215779fd812ca3bef1b32')
         AND `from` IN (
             SELECT 

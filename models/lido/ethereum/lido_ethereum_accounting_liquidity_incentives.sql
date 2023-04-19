@@ -76,7 +76,7 @@ ethereum_liquidity_incentives_txns AS (
         `to`, 
         `from`, 
         contract_address
-    FROM  {{source('erc20_ethereum','evt_Transfer')}}
+    FROM  {{source('erc20_ethereum','evt_transfer')}}
     WHERE `from` IN (
         SELECT 
             address 
@@ -100,7 +100,7 @@ ethereum_liquidity_incentives_txns AS (
         `to`, 
         `from`, 
         contract_address 
-    FROM  {{source('erc20_ethereum','evt_Transfer')}}
+    FROM  {{source('erc20_ethereum','evt_transfer')}}
     WHERE `to` IN (
         SELECT 
             address 
@@ -125,7 +125,7 @@ ethereum_liquidity_incentives_txns AS (
         `to`, 
         `from`, 
         contract_address
-    FROM {{source('erc20_optimism','evt_Transfer')}}
+    FROM {{source('erc20_optimism','evt_transfer')}}
     WHERE  `from` IN (
         SELECT 
             address 
@@ -141,7 +141,7 @@ ethereum_liquidity_incentives_txns AS (
         `to`, 
         `from`, 
         contract_address 
-    FROM {{source('erc20_optimism','evt_Transfer')}}
+    FROM {{source('erc20_optimism','evt_transfer')}}
     WHERE `to` IN (
         SELECT 
             address 
@@ -160,7 +160,7 @@ ethereum_liquidity_incentives_txns AS (
         `to`, 
         `from`, 
         contract_address
-    FROM {{source('erc20_arbitrum','evt_Transfer')}}
+    FROM {{source('erc20_arbitrum','evt_transfer')}}
     WHERE `from` IN (
         SELECT 
             address 
@@ -176,7 +176,7 @@ ethereum_liquidity_incentives_txns AS (
         `to`, 
         `from`, 
         contract_address 
-    FROM {{source('erc20_arbitrum','evt_Transfer')}}
+    FROM {{source('erc20_arbitrum','evt_transfer')}}
     WHERE `to` IN (
         SELECT 
             address
