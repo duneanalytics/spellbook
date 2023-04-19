@@ -197,6 +197,6 @@ FROM
     ("ole-openleverage", "bnb", "OLE", "0xa865197a84e780957422237b5d152772654341f3", 18),
     ("stg-stargatetoken","bnb","STG","0xb0d502e938ed5f4df2e681fe6e419ff29631d62b",18),
     ("ico-axelar", "bnb", "AXL", "0x8b1f4432f943c465a973fedc6d7aa50fc96f1f65", 6),
-    ("lvl-level","bnb","LVL","0xb64e280e9d1b5dbec4accedb2257a87b400db149",18)
-    
+    ("lvl-level","bnb","LVL","0xb64e280e9d1b5dbec4accedb2257a87b400db149",18),
+    ("ghny-grizzly-honey","bnb","GHNY","0xa045e37a0d1dd3a45fefb8803d22457abc0a728a",18)
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)
