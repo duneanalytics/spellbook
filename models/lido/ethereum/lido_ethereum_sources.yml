@@ -14,3 +14,39 @@ sources:
       - name: steth_evt_FeeSet
       - name: steth_evt_FeeDistributionSet
       - name: LDO_evt_Transfer
+
+  - name: erc20_ethereum
+    description: "erc20 token transfers in ethereum"
+    loaded_at_field: evt_block_time 
+    freshness: # default freshness
+     warn_after: { count: 1, period: day }
+     error_after: { count: 7, period: day }
+    tables:
+     - name: evt_Transfer
+
+  - name: erc20_arbitrum
+    description: "erc20 token transfers in arbitrum"
+    loaded_at_field: evt_block_time 
+    freshness: # default freshness
+     warn_after: { count: 1, period: day }
+     error_after: { count: 7, period: day }
+    tables:
+     - name: evt_Transfer
+
+  - name: erc20_polygon
+    description: "erc20 token transfers in polygon"
+    loaded_at_field: evt_block_time  
+    freshness: # default freshness
+     warn_after: { count: 1, period: day }
+     error_after: { count: 7, period: day }
+    tables:
+     - name: evt_Transfer
+
+  - name: staking_ethereum
+    description: "Ethereum staking deposits"
+    loaded_at_field: block_time 
+    freshness: # default freshness
+     warn_after: { count: 1, period: day }
+     error_after: { count: 7, period: day }
+    tables:
+     - name: deposits   
