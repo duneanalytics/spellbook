@@ -12,19 +12,18 @@
 
 with dexs as (
     -- Sushiswap
-    SELECT
-        t.evt_block_time as block_time,
-        t.to as taker,
-        '' as maker,
-        case when amount0Out  = 0 then amount1Out else amount0Out end as token_bought_amount_raw,
-        case when amount0In = 0 then amount1In else amount0In end as token_sold_amount_raw,
-        null as amount_usd,
-        case when amount0Out  = 0 then f.token1 else f.token0 end as token_bought_address,
-        case when amount0In = 0 then f.token1 else f.token0 end as token_sold_address,
-        t.contract_address as project_contract_address,
-        t.evt_tx_hash as tx_hash,
-        '' as trace_address,
-        t.evt_index
+    SELECT t.evt_block_time                                             as block_time,
+           t.to                                                         as taker,
+           ''                                                           as maker,
+           case when amount0Out = 0 then amount1Out else amount0Out end as token_bought_amount_raw,
+           case when amount0In = 0 then amount1In else amount0In end    as token_sold_amount_raw,
+           cast(NULL as double)                                         as amount_usd,
+           case when amount0Out = 0 then f.token1 else f.token0 end     as token_bought_address,
+           case when amount0In = 0 then f.token1 else f.token0 end      as token_sold_address,
+           t.contract_address                                           as project_contract_address,
+           t.evt_tx_hash                                                as tx_hash,
+           ''                                                           as trace_address,
+           t.evt_index
     FROM
         {{ source('sushi_bnb', 'UniswapV2Pair_evt_Swap') }} t
         inner join {{ source('sushi_bnb', 'UniswapV2Factory_evt_PairCreated') }} f 
