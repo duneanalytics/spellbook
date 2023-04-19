@@ -359,6 +359,8 @@ WITH
                 maker_token_filled_amount_raw as maker_token_amount_raw,
                 taker_token_filled_amount_raw as taker_token_amount_raw,
                 maker_symbol,
+                CASE WHEN lower(ts.symbol) > lower(ms.symbol) THEN concat(ms.symbol, '-', ts.symbol) ELSE concat(ts.symbol, '-', ms.symbol) END AS token_pair,
+                CAST(ARRAY() as array<bigint>) as trace_address,
                 maker_asset_filled_amount maker_token_amount,
                 taker_token, 
                 taker_symbol,
@@ -373,3 +375,5 @@ WITH
                 tx.to AS tx_to
             FROM all_fills
             INNER JOIN {{ source('ethereum', 'transactions')}} tx ON all_fills.transaction_hash = tx.hash
+            LEFT OUTER JOIN {{ ref('tokens_erc20') }} ts ON ts.contract_address = taker_token and ts.blockchain = 'ethereum'
+            LEFT OUTER JOIN {{ ref('tokens_erc20') }} ms ON ms.contract_address = maker_token and ms.blockchain = 'ethereum'
