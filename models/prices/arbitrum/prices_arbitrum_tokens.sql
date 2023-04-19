@@ -75,7 +75,7 @@ FROM
     ("stg-stargatetoken","arbitrum","STG","0x6694340fc020c5e6b96567843da2df01b2ce1eb6",18),
     ("susd-susd","arbitrum","sUSD","0xa970af1a584579b618be4d69ad6f73459d112f95",18),
     ("sushi-sushi","arbitrum","SUSHI","0xd4d42f0b6def4ce0383636770ef773390d85c61a",18),
-    ("swpr-swappery-token","arbitrum","SWPR","0xde903e2712288a1da82942dddf2c20529565ac30",18),
+    -- ("swpr-swappery-token","arbitrum","SWPR","0xde903e2712288a1da82942dddf2c20529565ac30",18),
     ("snx-synthetix-network-token","arbitrum","SYN","0x080f6aed32fc474dd5717105dba5ea57268f46eb",18),
     ("tcr-tracer-dao","arbitrum","TCR","0xa72159fc390f0e3c6d415e658264c7c4051e9b87",18),
     ("tusd-trueusd","arbitrum","TUSD","0x4d15a3a2286d883af0aa1b3f21367843fac63e07",18),
