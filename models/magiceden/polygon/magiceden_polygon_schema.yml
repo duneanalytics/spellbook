@@ -22,7 +22,6 @@ models:
             - buyer
             - seller
             - amount_raw
-            - platform_fee_amount_raw
     columns:
       - &blockchain
         name: blockchain
