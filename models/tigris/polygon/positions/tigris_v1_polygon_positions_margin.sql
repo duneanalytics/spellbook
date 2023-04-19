@@ -1,4 +1,5 @@
 {{ config(
+    schema = 'tigris_v1_polygon',
     alias = 'positions_margin'
     )
  }}
@@ -13,7 +14,7 @@ margin as (
         version,
         evt_index
     FROM 
-    {{ ref('tigris_polygon_events_add_margin') }}
+    {{ ref('tigris_v1_polygon_events_add_margin') }}
 
     UNION ALL
 
@@ -24,7 +25,7 @@ margin as (
         version,
         evt_index
     FROM 
-    {{ ref('tigris_polygon_events_modify_margin') }}
+    {{ ref('tigris_v1_polygon_events_modify_margin') }}
 
     UNION ALL
 
@@ -35,7 +36,7 @@ margin as (
         version,
         evt_index
     FROM 
-    {{ ref('tigris_polygon_events_open_position') }}
+    {{ ref('tigris_v1_polygon_events_open_position') }}
 
     UNION ALL
 
@@ -46,7 +47,7 @@ margin as (
         version,
         evt_index
     FROM 
-    {{ ref('tigris_polygon_positions_close') }}
+    {{ ref('tigris_v1_polygon_positions_close') }}
 
     UNION ALL
 
@@ -57,7 +58,7 @@ margin as (
         version,
         evt_index
     FROM 
-    {{ ref('tigris_polygon_events_limit_order') }}
+    {{ ref('tigris_v1_polygon_events_limit_order') }}
 
 )
 
