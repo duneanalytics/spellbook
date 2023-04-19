@@ -8,7 +8,7 @@
 }}
 
 {% set sushi_models = [
-ref('sushiswap_ethereum_trades') --  
+ref('sushiswap_ethereum_trades')
 , ref('sushiswap_avalanche_c_trades')
 , ref('sushiswap_gnosis_trades')
 , ref('sushiswap_arbitrum_trades')
