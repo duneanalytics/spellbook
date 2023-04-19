@@ -160,7 +160,7 @@ ethereum_liquidity_incentives_txns AS (
         `to`, 
         `from`, 
         contract_address
-    FROM erc20_arbitrum.evt_Transfer
+    FROM {{source('erc20_arbitrum','evt_Transfer')}}
     WHERE `from` IN (
         SELECT 
             address 
