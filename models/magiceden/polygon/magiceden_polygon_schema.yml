@@ -16,12 +16,14 @@ models:
           match_columns:
             - block_number
             - tx_hash
+            - token_id
+            - currency_contract
           check_columns:
             - nft_contract_address
-            - token_id
             - buyer
             - seller
             - amount_raw
+            - platform_fee_amount_raw
     columns:
       - &blockchain
         name: blockchain
