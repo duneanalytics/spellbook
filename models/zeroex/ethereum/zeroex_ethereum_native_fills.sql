@@ -369,7 +369,7 @@ WITH
                 volume_usd as amount_usd,
                 cast(protocol_fee_paid_eth as double),
                 'ethereum' as blockchain,
-                contract_address,
+                all_fills.contract_address,
                 native_order_type,
                 tx.from AS tx_from,
                 tx.to AS tx_to
