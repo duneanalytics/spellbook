@@ -10,6 +10,8 @@ sources:
         loaded_at_field: evt_block_time
       - name: PairFactory_evt_PairCreated
         loaded_at_field: evt_block_time
+      - name: MerkleClaim_evt_Claim
+        loaded_at_field: evt_block_time
       - name: BribeFactory_call_createExternalBribe
         loaded_at_field: call_block_time
       - name: GaugeFactory_call_createGauge
