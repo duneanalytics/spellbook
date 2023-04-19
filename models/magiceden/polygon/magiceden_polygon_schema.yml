@@ -18,10 +18,10 @@ models:
             - tx_hash
             - token_id
             - currency_contract
-          check_columns:
-            - nft_contract_address
             - buyer
             - seller
+            - nft_contract_address
+          check_columns:
             - amount_raw
             - platform_fee_amount_raw
     columns:
