@@ -55,12 +55,12 @@ SELECT 'arbitrum' AS blockchain
 , sc.evt_tx_hash AS tx_hash
 , at.from AS tx_from
 , at.to AS tx_to
-, CAST(0.1*surplus AS double) AS platform_fee_amount_raw
+, CAST(0.1*surplus AS DECIMAL(38,0)) AS platform_fee_amount_raw
 , CAST(0.1*surplus/POWER(10, 18) AS double) AS platform_fee_amount
 , CAST(pu.price*0.1*surplus/POWER(10, 18) AS double) AS platform_fee_amount_usd
 , CAST(100*(0.1*surplus/sc.value) AS double) AS platform_fee_percentage
 , 'ETH' as royalty_fee_currency_symbol
-, CAST(0.45*surplus AS double) AS royalty_fee_amount_raw
+, CAST(0.45*surplus AS DECIMAL(38,0)) AS royalty_fee_amount_raw
 , CAST(0.45*surplus/POWER(10, 18) AS double) AS royalty_fee_amount
 , CAST(pu.price*0.45*surplus/POWER(10, 18) AS double) AS royalty_fee_amount_usd
 , CAST(100*(0.45*surplus/sc.value) AS double) AS royalty_fee_percentage
