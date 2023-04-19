@@ -66,7 +66,7 @@ SELECT 'arbitrum' AS blockchain
 , CAST(100*(0.45*surplus/sc.value) AS double) AS royalty_fee_percentage
 , m._creator AS royalty_fee_receive_address
 , 'arbitrum-stealcam-' || sc.evt_tx_hash || '-' || sc.evt_index AS unique_trade_id
-FROM {{ source('stealcam_arbitrum', 'Stealcam_evt_Stolen') }} sc
+FROM stealcam sc
 INNER JOIN {{ source('arbitrum', 'transactions') }} at ON at.block_number=sc.evt_block_number
     AND at.hash=sc.evt_tx_hash
     {% if is_incremental() %}
