@@ -16,7 +16,7 @@
 {% set gnosis_start_date = '2021-08-25' %}
 
 SELECT tc.evt_block_time AS block_time
-, '0x6b175474e89094c44da98b954eedeac495271d0f' AS currency_contract
+, '0xe91d153e0b41518a2ce8dd3d7944fa863463a97d' AS currency_contract
 , 'xDAI' AS currency_symbol
 , 'gnosis' AS blockchain
 , 'classic' AS tornado_version
