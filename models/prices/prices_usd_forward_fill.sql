@@ -4,34 +4,34 @@
         post_hook='{{ expose_spells_hide_trino(\'["ethereum", "solana", "arbitrum", "gnosis", "optimism", "bnb", "avalanche_c", "polygon"]\',
                                     "sector",
                                     "prices",
-                                    \'["0xRob", "hildobby"]\') }}'
+                                    \'["0xRob"]\') }}'
         )
 }}
 
 -- how much time we look back, anything before is considered finalized, anything after is forward filled.
 -- we could decrease this to optimize query performance but it's a tradeoff with resiliency to lateness.
-{%- set lookback_interval = '2' %}
+{%- set lookback_interval_days = 2 %}
 
 
 WITH
   finalized as (
     select *
     FROM {{ source('prices', 'usd') }}
-    where minute <= now() - interval {{lookback_interval}} day
+    where minute <= now() - interval '{{ lookback_interval_days }}' day
 )
 
 , unfinalized as (
     select *,
         lead(minute) over (partition by blockchain,contract_address,decimals,symbol order by minute asc) as next_update_minute
     FROM {{ source('prices', 'usd') }}
-    where minute > now() - interval {{lookback_interval}} day
+    where minute > now() - interval '{{ lookback_interval_days }}' day
 )
 
 , timeseries as (
     select explode(sequence(
-        date_trunc('minute', now() - interval {{lookback_interval}} day)
+        date_trunc('minute', now() - interval '{{ lookback_interval_days }}' day)
         ,date_trunc('minute', now())
-        ,interval 1 minute)) as minute
+        ,interval '1' minute)) as minute
 )
 
 , forward_fill as (
