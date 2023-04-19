@@ -21,7 +21,7 @@ WITH dexs AS
     SELECT
         CAST(t.evt_block_time AS TIMESTAMP(6) WITH TIME ZONE) AS block_time
         ,t.recipient AS taker
-        ,CAST('' AS VARBINARY)
+        ,CAST('' AS VARBINARY) as maker
         ,CASE WHEN CAST(amount0 AS DOUBLE) < 0 THEN abs(amount0) ELSE abs(amount1) END AS token_bought_amount_raw -- when amount0 is negative it means trader_a is buying token0 from the pool
         ,CASE WHEN CAST(amount0 AS DOUBLE) < 0 THEN abs(amount1) ELSE abs(amount0) END AS token_sold_amount_raw
         ,NULL AS amount_usd
