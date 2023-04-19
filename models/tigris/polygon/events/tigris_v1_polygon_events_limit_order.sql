@@ -1,4 +1,5 @@
 {{ config(
+    schema = 'tigris_v1_polygon',
     alias = 'events_limit_order',
     partition_by = ['day'],
     materialized = 'incremental',
@@ -14,20 +15,24 @@ pairs as (
         SELECT 
             * 
         FROM 
-        {{ ref('tigris_arbitrum_events_asset_added') }}
-),
+        {{ ref('tigris_polygon_events_asset_added') }}
+), 
 
 {% set limit_order_trading_evt_tables = [
-    'TradingV2_evt_LimitOrderExecuted'
+    'Tradingv1_evt_LimitOrderExecuted'
+    ,'TradingV2_evt_LimitOrderExecuted'
     ,'TradingV3_evt_LimitOrderExecuted'
     ,'TradingV4_evt_LimitOrderExecuted'
     ,'TradingV5_evt_LimitOrderExecuted'
+    ,'TradingV6_evt_LimitOrderExecuted'
+    ,'TradingV7_evt_LimitOrderExecuted'
+    ,'TradingV8_evt_LimitOrderExecuted'
 ] %}
 
 limit_orders AS (
     {% for limit_order_trading_evt in limit_order_trading_evt_tables %}
         SELECT
-            '{{ 'v' + (loop.index + 1) | string }}' as version,
+            '{{ 'v1.' + loop.index | string }}' as version,
             date_trunc('day', t.evt_block_time) as day,
             t.evt_block_time,
             t.evt_index,
@@ -42,7 +47,7 @@ limit_orders AS (
             CASE WHEN t._direction = true THEN 'true' ELSE 'false' END as direction,
             '' as referral,
             t._trader as trader
-        FROM {{ source('tigristrade_arbitrum', limit_order_trading_evt) }} t
+        FROM {{ source('tigristrade_polygon', limit_order_trading_evt) }} t
         INNER JOIN pairs ta
             ON t._asset = ta.asset_id
         {% if is_incremental() %}

@@ -1,4 +1,5 @@
 {{ config(
+    schema = 'tigris_v1_polygon',
     alias = 'events_open_position',
     partition_by = ['day'],
     materialized = 'incremental',
@@ -225,33 +226,33 @@ open_positions_v8 as (
         {% endif %}
 )
 
-SELECT *, 'v1' as version FROM open_positions_v1
+SELECT *, 'v1.1' as version FROM open_positions_v1
 
 UNION ALL
 
-SELECT *, 'v2' as version FROM open_positions_v2
+SELECT *, 'v1.2' as version FROM open_positions_v2
 
 UNION ALL
 
-SELECT *, 'v3' as version FROM open_positions_v3
+SELECT *, 'v1.3' as version FROM open_positions_v3
 
 UNION ALL
 
-SELECT *, 'v4' as version FROM open_positions_v4
+SELECT *, 'v1.4' as version FROM open_positions_v4
 
 UNION ALL
 
-SELECT *, 'v5' as version FROM open_positions_v5
+SELECT *, 'v1.5' as version FROM open_positions_v5
 
 UNION ALL
 
-SELECT *, 'v6' as version FROM open_positions_v6
+SELECT *, 'v1.6' as version FROM open_positions_v6
 
 UNION ALL
 
-SELECT *, 'v7' as version FROM open_positions_v7
+SELECT *, 'v1.7' as version FROM open_positions_v7
 
 UNION ALL
 
-SELECT *, 'v8' as version FROM open_positions_v8
+SELECT *, 'v1.8' as version FROM open_positions_v8
 ;
