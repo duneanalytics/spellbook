@@ -8,7 +8,7 @@
     unique_key = ['block_date', 'unique_trade_id'],
     post_hook='{{ expose_spells(\'["ethereum"]\',
                                 "project",
-                                "looksrare",
+                                "looksrare_v1",
                                 \'["soispoke", "hildobby", "denze"]\') }}'
     )
 }}
