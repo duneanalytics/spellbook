@@ -21,7 +21,7 @@ FROM (
     SELECT
       blockchain  as blockchain,
       '0x API'  as project,
-      '1' as version,
+      version,
       block_date  as block_date,
       block_time  as block_time,
       maker_symbol as  token_bought_symbol, 
@@ -40,7 +40,7 @@ FROM (
       tx_hash  as tx_hash,
       tx_from  as tx_from,
       tx_to  as tx_to,
-      CAST(ARRAY(-1) as array<bigint>) as trace_address,
+      trace_address,
       evt_index  as evt_index
 
     FROM {{ model }}
