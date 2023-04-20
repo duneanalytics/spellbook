@@ -7,10 +7,10 @@
         file_format = 'delta',
         incremental_strategy = 'merge',
         unique_key = ['block_date', 'blockchain', 'project', 'version', 'tx_hash', 'evt_index', 'trace_address'],
-        post_hook='{{ expose_spells(\'["ethereum", "gnosis", "avalanche_c", "fantom"]\',
+        post_hook='{{ expose_spells(\'["ethereum", "gnosis", "avalanche_c", "fantom", "bnb", "optimism", "arbitrum"]\',
                                 "sector",
                                 "dex_aggregator",
-                                \'["bh2smith", "Henrystats", "jeff-dude"]\') }}'
+                                \'["bh2smith", "Henrystats", "jeff-dude", "rantum" ]\') }}'
         )
 }}
 
