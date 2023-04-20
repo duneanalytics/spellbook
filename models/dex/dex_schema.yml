@@ -93,11 +93,11 @@ models:
 
   - name: dex_aggregator_trades
     meta:
-      blockchain: ethereum, gnosis, avalanche_c, fantom, arbitrum, optimism, bnb
+      blockchain: ethereum, gnosis, avalanche_c, fantom
       sector: dex_aggregator
-      contributors: bh2smith, Henrystats, jeff-dude, rantum
+      contributors: bh2smith, Henrystats, jeff-dude
     config:
-      tags: ['ethereum', 'gnosis', 'avalanche_c', 'fantom', 'optimism', 'bnb', 'arbitrum', 'aggregator', 'dex', 'trades', 'cross-chain']
+      tags: ['ethereum', 'gnosis', 'avalanche_c', 'fantom', 'aggregator', 'dex', 'trades', 'cross-chain']
     description: >
       Aggregator trades on all chains across all contracts and versions
     tests:
@@ -106,8 +106,10 @@ models:
             - block_date
             - blockchain
             - project
+            - version
             - tx_hash
             - evt_index
+            - trace_address
     columns:
       - *blockchain
       - *project
