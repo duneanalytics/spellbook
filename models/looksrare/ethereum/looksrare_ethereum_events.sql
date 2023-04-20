@@ -12,8 +12,8 @@
 }}
 
 {% set nft_models = [
- ref('looksrare_ethereum_events_v1')
-,ref('looksrare_ethereum_events_v2')
+ ref('looksrare_v1_ethereum_events')
+,ref('looksrare_v2_ethereum_events')
 ] %}
 
 SELECT *

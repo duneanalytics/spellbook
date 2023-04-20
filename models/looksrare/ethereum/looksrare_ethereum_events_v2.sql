@@ -1,5 +1,6 @@
 {{ config(
-    alias = 'events_v2',
+    schema = 'looksrare_v2_ethereum',
+    alias = 'events',
     partition_by = ['block_date'],
     materialized = 'incremental',
     file_format = 'delta',
