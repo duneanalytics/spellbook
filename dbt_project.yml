@@ -94,6 +94,51 @@ models:
     dex:
       +schema: dex
 
+    airdrop:
+      +schema: airdrop
+      ethereum:
+        +schema: airdrop_ethereum
+      optimism:
+        +schema: airdrop_optimism
+      arbitrum:
+        +schema: airdrop_arbitrum
+      avalanche_c:
+        +schema: airdrop_avalanche_c
+      bnb:
+        +schema: airdrop_bnb
+      gnosis:
+        +schema: airdrop_gnosis
+
+    giveth:
+      +schema: giveth
+      gnosis:
+        +schema: giveth_gnosis
+
+    ellipsis_finance:
+      +schema: ellipsis_finance
+      bnb:
+        +schema: ellipsis_finance_bnb
+
+    arbitrum:
+      +schema: arbitrum
+      arbitrum:
+        +schema: arbitrum_arbitrum
+
+    pangolin:
+      +schema: pangolin
+      avalanche_c:
+        +schema: pangolin_avalanche_c
+
+    ampleforth:
+      +schema: ampleforth
+      ethereum:
+        +schema: ampleforth_ethereum
+
+    velodrome:
+      +schema: velodrome
+      optimism:
+        +schema: velodrome_optimism
+
     nft:
       +schema: nft
       arbitrum:
@@ -821,6 +866,11 @@ models:
       bnb:
         +schema: wombat_bnb
 
+    verse_dex:
+      +schema: verse_dex
+      ethereum:
+        +schema: verse_dex_ethereum
+
     iziswap:
       +schema: iziswap
       bnb:
@@ -974,6 +1024,11 @@ models:
       +schema: optimism_attestationstation
       optimism:
         +schema: optimism_attestationstation_optimism
+    
+    lido:
+      +schema: lido
+      ethereum:
+       +schema: lido_ethereum
 
     onepunchswap:
       +schema: onepunchswap
