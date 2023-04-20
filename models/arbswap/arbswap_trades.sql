@@ -16,7 +16,7 @@
 
 WITH dexs AS
 (
-    -- Arbswap
+    -- Arbswap AMM
     SELECT
         t.evt_block_time AS block_time
         ,t.to AS taker
@@ -40,6 +40,34 @@ WITH dexs AS
     {% if not is_incremental() %}
     WHERE t.evt_block_time >= '{{ project_start_date }}'
     {% endif %}
+    
+    UNION ALL 
+    -- Arbswap Stableswap
+    SELECT
+        t.evt_block_time AS block_time
+        ,t.buyer AS taker
+        ,'' AS maker
+        ,tokens_bought AS token_bought_amount_raw
+        ,tokens_sold AS token_sold_amount_raw
+        ,NULL AS amount_usd
+        
+        ,CASE WHEN bought_id = 0 THEN f.tokenA ELSE f.tokenB END AS token_bought_address
+        ,CASE WHEN sold_id = 0 THEN f.tokenA ELSE f.tokenB END AS token_sold_address
+        ,t.contract_address AS project_contract_address
+        ,t.evt_tx_hash AS tx_hash
+        ,'' AS trace_address
+        ,t.evt_index
+    FROM
+        {{ source('arbswap_arbitrum', 'ArbswapStableSwapTwoPool_evt_TokenExchange') }} t
+    INNER JOIN {{ source('arbswap_arbitrum', 'ArbswapStableSwapFactory_evt_NewStableSwapPair') }} f
+        ON f.swapContract = t.contract_address
+    {% if is_incremental() %}
+    WHERE t.evt_block_time >= date_trunc("day", now() - interval '1 week')
+    {% endif %}
+    {% if not is_incremental() %}
+    WHERE t.evt_block_time >= '{{ project_start_date }}'
+    {% endif %}
+    
 )
 SELECT
     'arbitrum' AS blockchain
