@@ -97,7 +97,7 @@ models:
       sector: dex_aggregator
       contributors: bh2smith, Henrystats, jeff-dude, rantum
     config:
-      tags: ['ethereum', 'gnosis', 'avalanche_c', 'fantom', 'aggregator', 'dex', 'trades', 'cross-chain']
+      tags: ['ethereum', 'gnosis', 'avalanche_c', 'fantom', 'optimism', 'bnb', 'arbitrum', 'aggregator', 'dex', 'trades', 'cross-chain']
     description: >
       Aggregator trades on all chains across all contracts and versions
     tests:
