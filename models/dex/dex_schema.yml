@@ -106,7 +106,6 @@ models:
             - block_date
             - blockchain
             - project
-            - version
             - tx_hash
             - evt_index
             - trace_address
