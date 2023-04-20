@@ -1,11 +1,8 @@
- {{
+{{
   config(
-        schema = 'opensea_polygon',
-        alias='fees',
-        post_hook='{{ expose_spells(\'["polygon"]\',
-                                    "project",
-                                    "opensea",
-                                    \'["springzh"]\') }}')
+         schema = 'opensea_polygon',
+         alias='fees'
+        )
 }}
 
 SELECT blockchain,

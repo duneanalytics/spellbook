@@ -12,7 +12,7 @@ SELECT blockchain,
        'msilb7' as contributor,
        'query' AS source,
        date('2023-03-30') as created_at,
-       now() as modified_at,
+       now() as updated_at,
         'op_retropgf_recipients' as model_name,
        'identifier' as label_type
 
@@ -27,7 +27,7 @@ SELECT blockchain,
        'msilb7' as contributor,
        'query' AS source,
        date('2023-03-30') as created_at,
-       now() as modified_at,
+       now() as updated_at,
         'op_retropgf_voters' as model_name,
        'identifier' as label_type
 

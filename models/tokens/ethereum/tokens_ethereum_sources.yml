@@ -1,8 +1,0 @@
-version: 2
-
-sources:
-  - name: reservoir
-    description: >
-      Adding reservoir's external table
-    tables:
-      - name: collections
