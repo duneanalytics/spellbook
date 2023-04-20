@@ -48,6 +48,12 @@ WITH unit_test AS (
             ELSE FALSE
         END AS evt_index_test,
 
+        -- test the maker
+        CASE
+            WHEN LOWER(test.maker) = LOWER(actual.maker) THEN TRUE
+            ELSE FALSE
+        END AS maker_test,
+
         -- test the sell_token_symbol
         CASE
             WHEN LOWER(test.sell_token_symbol) = LOWER(actual.sell_token_symbol) THEN TRUE
@@ -243,6 +249,7 @@ WHERE
     blockchain_test = FALSE
     OR block_number_test = FALSE
     OR block_date_test = FALSE
+    OR maker_test = FALSE
     OR sell_token_symbol_test = FALSE
     OR buy_token_symbol_test = FALSE
     OR sell_token_address_test = FALSE
