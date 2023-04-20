@@ -1,0 +1,98 @@
+version: 2
+
+models:
+  - name: op_retropgf_optimism_recipients
+    meta:
+      blockchain: optimism
+      project: op_retropgf
+      contributors: msilb7
+
+    config:
+      tags: ['optimism', 'retropgf', 'rpgf', 'public goods', 'OP']
+    description: "Data from onchain attestations about Optimism Retroactive Public Goods Funding (RetroPGF) Recipients"
+
+    columns:
+      - &blockchain
+        name: blockchain
+        description: "Chain where the RetroPGF Round took place"
+      - &round_name
+        name: round_name
+        description: "Name of the RetroPGF Round"
+      - &block_date
+        name: block_date
+        description: "Date of the first attestation"
+      - &submitter_address
+        name: submitter_address
+        description: "Address of the recipient of the attestation (and form submitter address)"
+      - &issuer
+        name: issuer
+        description: "Address issuing the attestation"
+      - &recipient_name
+        name: recipient_name
+        description: "Submitted name of the recipient"
+      - &recipient_category
+        name: recipient_category
+        description: "Submitted name of the recipient"
+      - &award_amount
+        name: award_amount
+        description: "Amount of funding received"
+      - &award_token
+        name: award_token
+        description: "Token that the funding was paid out in"
+  
+  - name: op_retropgf_optimism_voters
+    meta:
+      blockchain: optimism
+      project: op_retropgf
+      contributors: msilb7
+
+    config:
+      tags: ['optimism', 'retropgf', 'rpgf', 'public goods', 'OP']
+    description: "Data from onchain attestations about Optimism Retroactive Public Goods Funding (RetroPGF) Voters"
+
+    columns:
+      - *blockchain
+      - *round_name
+      - *block_date
+      - &voter
+        name: voter
+        description: "Address of the recipient of the attestation (the voter)"
+      - *issuer
+      - &can_vote
+        name: can_vote
+        description: "Is the voter address eligible to vote (true/false)"
+
+  - name: op_retropgf_optimism_round2_recipients
+    meta:
+      blockchain: optimism
+      project: op_retropgf
+      contributors: msilb7
+
+    config:
+      tags: ['optimism', 'retropgf', 'rpgf', 'public goods', 'OP']
+    description: "Data from onchain attestations about Optimism Retroactive Public Goods Funding (RetroPGF) Round#2 Recipients"
+
+    columns:
+      - *block_date
+      - *submitter_address
+      - *issuer
+      - *recipient_name
+      - *recipient_category
+      - *award_amount
+      - *award_token
+  
+  - name: op_retropgf_optimism_round2_voters
+    meta:
+      blockchain: optimism
+      project: op_retropgf
+      contributors: msilb7
+
+    config:
+      tags: ['optimism', 'retropgf', 'rpgf', 'public goods', 'OP']
+    description: "Data from onchain attestations about Optimism Retroactive Public Goods Funding (RetroPGF) Round#2 Voters"
+
+    columns:
+      - *block_date
+      - *voter
+      - *issuer
+      - *can_vote
