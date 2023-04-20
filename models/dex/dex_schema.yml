@@ -257,6 +257,7 @@ models:
         name: tx_index
         description: "the transaction index of the transaction that the offer was created in"
       - *evt_index
+      - *maker
       - &sell_token_symbol
         name: sell_token_symbol
         description: "the token the offer is selling"
