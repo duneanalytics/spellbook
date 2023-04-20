@@ -20,24 +20,28 @@ erc721_balances as (
     GROUP BY 1, 2
 ), 
 
-erc721_ranked as (
+total_supply as (
     SELECT 
         wallet_address, 
         nft_contract_address, 
         balance, 
-        SUM(balance) OVER (PARTITION BY nft_contract_address) as total_supply, 
-        ROW_NUMBER() OVER (PARTITION BY nft_contract_address ORDER BY balance DESC) as rn 
+        SUM(balance) OVER (PARTITION BY nft_contract_address) as total_supply
     FROM 
     erc721_balances
-    QUALIFY rn <= 50 
 )
 
+SELECT 
+    * 
+FROM 
+(
  SELECT 
      wallet_address,
      nft_contract_address, 
      balance, 
      balance/total_supply as supply_share,
      total_supply, 
-     rn 
+    ROW_NUMBER() OVER (PARTITION BY nft_contract_address ORDER BY balance DESC) as rn
  FROM 
  erc721_ranked
+) x 
+WHERE rn <= 50 
