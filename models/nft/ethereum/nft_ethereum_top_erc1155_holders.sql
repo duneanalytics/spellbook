@@ -41,3 +41,4 @@
      rn 
  FROM 
  erc1155_ranked
+ ;
