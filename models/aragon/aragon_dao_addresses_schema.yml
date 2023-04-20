@@ -1,0 +1,34 @@
+version: 2
+
+models:
+  - name: aragon_dao_addresses
+    meta:
+      blockchain: polygon, ethereum, gnosis
+      project: aragon
+      contributors: Henrystats 
+    config:
+      tags: [ 'polygon', 'ethereum', 'gnosis', 'dao', 'aragon', 'dao creator tools', 'Henrystats', 'Aragon Client', 'Aragon App']
+    description: >
+      wallet addresses of daos created on aragon across all products & blockchains
+    columns:
+      - &blockchain
+        name: blockchain
+        description: "blockchain which the DAO is deployed"
+      - &dao_creator_tool
+        name: dao_creator_tool
+        description: "Name of creator tool used to create DAO"
+      - &dao
+        name: dao
+        description: "address of the dao deployed"
+      - &dao_wallet_address
+        name: dao_wallet_address
+        desciption: "wallet address used by DAO to receive & transfer funds"
+      - &created_date
+        name: created_date
+        description: "UTC event block date of DAO creation"
+      - &created_block_time
+        name: created_block_time
+        description: "UTC event block time of DAO creation"
+      - &product
+        name: product
+        description: "Aragon Product used to deploy DAO"
