@@ -42,6 +42,6 @@ FROM
      total_supply, 
     ROW_NUMBER() OVER (PARTITION BY nft_contract_address ORDER BY balance DESC) as rn
  FROM 
- erc721_ranked
+ total_supply
 ) x 
 WHERE rn <= 50 
