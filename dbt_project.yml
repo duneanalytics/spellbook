@@ -1024,6 +1024,11 @@ models:
       +schema: optimism_attestationstation
       optimism:
         +schema: optimism_attestationstation_optimism
+    
+    lido:
+      +schema: lido
+      ethereum:
+       +schema: lido_ethereum
 
     onepunchswap:
       +schema: onepunchswap

@@ -121,6 +121,7 @@ SELECT
     offers.block_number,
     txn.index AS tx_index,
     offers.evt_index,
+    offers.maker,
     erc20_sell.symbol AS sell_token_symbol,
     erc20_buy.symbol AS buy_token_symbol, 
     offers.sell_token_address,
