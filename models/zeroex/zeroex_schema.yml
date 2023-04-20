@@ -302,7 +302,7 @@ models:
             - tx_hash
             - evt_index
       - check_seed:
-          seed_file: ref('zeroex_native_fills_sample')
+          seed_file: ref('zeroex_native_trades_sample')
           match_columns:
             - tx_hash
             - evt_index
