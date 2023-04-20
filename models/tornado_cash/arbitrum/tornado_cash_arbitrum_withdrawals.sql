@@ -16,7 +16,7 @@
 {% set arbitrum_start_date = '2021-11-29' %}
 
 SELECT tc.evt_block_time AS block_time
-, '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2' AS currency_contract
+, '0x82af49447d8a07e3bd95bd0d56f35241523fbab1' AS currency_contract
 , 'ETH' AS currency_symbol
 , 'arbitrum' AS blockchain
 , 'classic' AS tornado_version
