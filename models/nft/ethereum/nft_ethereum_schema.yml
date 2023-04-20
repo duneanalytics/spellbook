@@ -516,7 +516,7 @@ models:
         description: "Aggregator project's name"
 
 
-  - name: nft_ethereum_top_erc1155_holders
+  - name: nft_ethereum_top_erc721_holders
     meta:
       blockchain: ethereum
       sector: nft
@@ -524,7 +524,7 @@ models:
     config:
       tags: ['nft', 'ethereum', 'top Holder']
     description: >
-        Top 50 erc1155 Holders
+        Top 50 erc721 Holders
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
