@@ -223,18 +223,18 @@ SELECT  DATE_TRUNC('day', prices.usd.minute) AS period,
     
     UNION ALL
     
-    -- ========================================================= Provisions for slashing insurance set aside 
+    -- ========================================================= Provisions for slashing set aside 
     -- On the same side of the balance sheet, a decrease in equity must be associated with an increase in liabilities to balance
-    -- Slashing insurance should go to an effective liability account through the following steps:
+    -- Slashing provision should go to an effective liability account through the following steps:
     -- 1. Recognize the expense and the contra asset account 
-    -- 2. Recognize the insurance liability and the associated asset account
+    -- 2. Recognize the slashing liability and the associated asset account
     
     SELECT  period,
             evt_tx_hash,
             '3. Surplus' AS primary_label,
             '3.2. Operating Performance' AS secondary_label,
             '3.2.2. Cost of Revenue' AS account,
-            '3.2.2.2. Provision for slashing insurance (-)' AS category,            
+            '3.2.2.2. Provision for slashing (-)' AS category,            
             -COALESCE(insurance_revenue,0),
             coalesce(token,LOWER('0xae7ab96520DE3A18E5e111B5EaAb095312D7fE84')) AS token
     FROM {{ref('lido_ethereum_accounting_revenue')}}
@@ -244,8 +244,8 @@ SELECT  DATE_TRUNC('day', prices.usd.minute) AS period,
     SELECT  period,
             evt_tx_hash,
             '1. Assets' AS primary_label,
-            '1.2. Slashing Insurance Fund' AS secondary_label,
-            '1.2.2. Slashing Insurance Contra Assets' AS account,
+            '1.2. Slashing Provision' AS secondary_label,
+            '1.2.2. Slashing Provision Contra Assets' AS account,
             '-' AS category,
             -COALESCE(insurance_revenue,0),
             coalesce(token,LOWER('0xae7ab96520DE3A18E5e111B5EaAb095312D7fE84')) AS token
@@ -256,8 +256,8 @@ SELECT  DATE_TRUNC('day', prices.usd.minute) AS period,
     SELECT  period,
             evt_tx_hash,
             '2. Liabilities' AS primary_label,
-            '2.2. Slashing Insurance Fund' AS secondary_label,
-            '2.2.1. Slashing Insurance' AS account,
+            '2.2. Slashing Provision' AS secondary_label,
+            '2.2.1. Slashing Provision' AS account,
             '-' AS category,
             COALESCE(insurance_revenue,0),
             coalesce(token,LOWER('0xae7ab96520DE3A18E5e111B5EaAb095312D7fE84')) AS token
@@ -268,8 +268,8 @@ SELECT  DATE_TRUNC('day', prices.usd.minute) AS period,
     SELECT  period,
             evt_tx_hash,
             '1. Assets' AS primary_label,
-            '1.2. Slashing Insurance Fund' AS secondary_label,
-            '1.2.1. Slashing Insurance Assets' AS account,
+            '1.2. Slashing Provision' AS secondary_label,
+            '1.2.1. Slashing Provision' AS account,
             '-' AS category,
             COALESCE(insurance_revenue,0),
             coalesce(token,LOWER('0xae7ab96520DE3A18E5e111B5EaAb095312D7fE84')) AS token
@@ -680,10 +680,10 @@ SELECT  DATE_TRUNC('day', prices.usd.minute) AS period,
             '3.1. Protocol Capital' AS secondary_label,
             '3.1.1. Protocol Assets' AS account,
             CASE
-                WHEN token = LOWER('0xae7ab96520DE3A18E5e111B5EaAb095312D7fE84') THEN '1.3.1.1. stETH'
-                WHEN token = LOWER('0x6B175474E89094C44Da98b954EedeAC495271d0F') THEN '1.3.1.2. DAI'
-                WHEN token = LOWER('0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2') THEN '1.3.1.3. ETH'
-                ELSE '1.3.1.4. Other'
+                WHEN token = LOWER('0xae7ab96520DE3A18E5e111B5EaAb095312D7fE84') THEN '3.1.1.1. stETH'
+                WHEN token = LOWER('0x6B175474E89094C44Da98b954EedeAC495271d0F') THEN '3.1.1.2. DAI'
+                WHEN token = LOWER('0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2') THEN '3.1.1.3. ETH'
+                ELSE '3.1.1.4. Other'
             END AS category,
             CAST(amount_token AS DOUBLE),
             token
