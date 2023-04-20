@@ -44,4 +44,4 @@ FROM
  FROM 
  total_supply
 ) x 
--- WHERE rn <= 50 
+WHERE rn <= 50 
