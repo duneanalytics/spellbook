@@ -91,7 +91,7 @@ fundraising_txs AS (
         value AS amount_token,
         evt_tx_hash
     FROM fundraising_txs
-    WHERE value != 0
+    
     
     UNION ALL
     --ETH inflow
