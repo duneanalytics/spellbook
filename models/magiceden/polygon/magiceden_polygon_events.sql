@@ -105,6 +105,12 @@ native_order_return_amount AS (
         FROM trades t
         INNER JOIN {{ source('polygon', 'traces') }} tc ON t.evt_block_number = tc.block_number
             AND t.evt_tx_hash = tc.tx_hash
+            {% if not is_incremental() %}
+            AND tc.block_time >= '{{nft_start_date}}'
+            {% endif %}
+            {% if is_incremental() %}
+            AND tc.block_time >= date_trunc("day", now() - interval '1 week')
+            {% endif %}
         WHERE tc.`to` = t.buyer
     ) t
     GROUP BY 1, 2
@@ -119,7 +125,12 @@ native_order_total_amount AS (
     FROM native_order_summary o
     INNER JOIN {{ source('polygon', 'transactions') }} t ON o.evt_block_number = t.block_number
         AND o.evt_tx_hash = t.hash
+        {% if not is_incremental() %}
         AND t.block_time >= '{{nft_start_date}}'
+        {% endif %}
+        {% if is_incremental() %}
+        AND t.block_time >= date_trunc("day", now() - interval '1 week')
+        {% endif %}
     LEFT JOIN native_order_return_amount r ON o.evt_block_number = r.evt_block_number
         AND o.evt_tx_hash = r.evt_tx_hash
 ),
@@ -156,10 +167,10 @@ erc20_trade_amount_detail as (
     INNER JOIN {{ source('polygon', 'transactions') }} tx ON e.evt_block_number = tx.block_number
         AND e.evt_tx_hash = tx.hash
         {% if not is_incremental() %}
-        AND e.evt_block_time >= '{{nft_start_date}}'
-        {% endif %}
-        {% if not is_incremental() %}
         AND tx.block_time >= '{{nft_start_date}}'
+        {% endif %}
+        {% if is_incremental() %}
+        AND tx.block_time >= date_trunc("day", now() - interval '1 week')
         {% endif %}
     INNER JOIN trades t ON e.evt_block_number = t.evt_block_number and t.currency_contract = e.contract_address
         AND e.evt_tx_hash = t.evt_tx_hash
@@ -263,9 +274,9 @@ LEFT JOIN {{ ref('tokens_erc20') }} erc ON erc.blockchain = 'polygon' AND erc.co
 LEFT JOIN {{ source('prices', 'usd') }} p ON p.contract_address = a.currency_contract
     AND p.minute = date_trunc('minute', a.evt_block_time)
     {% if not is_incremental() %}
-    AND minute >= '{{nft_start_date}}'
+    AND p.minute >= '{{nft_start_date}}'
     {% endif %}
     {% if is_incremental() %}
-    AND minute >= date_trunc("day", now() - interval '1 week')
+    AND p.minute >= date_trunc("day", now() - interval '1 week')
     {% endif %}
 LEFT JOIN {{ ref('nft_aggregators') }} agg ON agg.blockchain = 'polygon' AND agg.contract_address = t.`to`
