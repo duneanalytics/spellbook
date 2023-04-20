@@ -11,5 +11,14 @@ sources:
        
       - name: StablePool_evt_Swap
         loaded_at_field: evt_block_time
+      
+      - name: MiniChefV2_evt_LogPoolAddition
+        loaded_at_field: evt_block_time
+      
+      - name: MiniChefV2_evt_LogSetPool
+        loaded_at_field: evt_block_time
+      
+      - name: MiniChefV2_evt_LogSushiPerSecond
+        loaded_at_field: evt_block_time
 
       
