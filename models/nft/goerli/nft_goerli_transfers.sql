@@ -52,7 +52,7 @@ SELECT 'goerli' as blockchain
 , t.to
 , gt.from AS executed_by
 , t.evt_tx_hash AS tx_hash
-, 'goerli' || t.evt_tx_hash || '-erc721-' || t.contract_address || '-' || t.id || '-' || t.from || '-' || t.to || '-' || t.value || '-' || t.evt_index AS unique_transfer_id
+, 'goerli' || t.evt_tx_hash || '-erc1155-' || t.contract_address || '-' || t.id || '-' || t.from || '-' || t.to || '-' || t.value || '-' || t.evt_index AS unique_transfer_id
 FROM {{ source('erc1155_goerli','evt_transfersingle') }} t
 {% if is_incremental() %}
     ANTI JOIN {{this}} anti_table

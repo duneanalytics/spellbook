@@ -189,13 +189,14 @@ FROM
     ("mdb-milliondollarbaby", "bnb", "MDB", "0x0557a288a93ed0df218785f2787dac1cd077f8f3", 18),
     ("walv-alvey-chain", "bnb", "wALV", "0x256d1fce1b1221e8398f65f9b36033ce50b2d497", 18),
     ("loop-loopnetwork", "bnb", "LOOP", "0xce186ad6430e2fe494a22c9edbd4c68794a28b35", 18),
-    ("phantom-protocol", "bnb", "PHM", "0x4399AE7538c33cA24edD4C28C5dd7Ce9a80acF81", 18),
+    ("phm-phantom-protocol", "bnb", "PHM", "0x4399AE7538c33cA24edD4C28C5dd7Ce9a80acF81", 18),
     ("drip-drip-network", "bnb", "DRIP", "0x20f663CEa80FaCE82ACDFA3aAE6862d246cE0333", 18),
     ("fur-furio", "bnb", "$FUR", "0x48378891d6E459ca9a56B88b406E8F4eAB2e39bF", 18),
     ("pstn-piston", "bnb", "PSTN", "0xBfACD29427fF376FF3BC22dfFB29866277cA5Fb4", 18),
     ("ocean-ocean-protocol", "bnb", "OCEAN", "0x3516141b1ac8751c2042a8a1bc411ab8655464ac", 18),
     ("ole-openleverage", "bnb", "OLE", "0xa865197a84e780957422237b5d152772654341f3", 18),
     ("stg-stargatetoken","bnb","STG","0xb0d502e938ed5f4df2e681fe6e419ff29631d62b",18),
-    ("ico-axelar", "bnb", "AXL", "0x8b1f4432f943c465a973fedc6d7aa50fc96f1f65", 6)
-    
+    ("ico-axelar", "bnb", "AXL", "0x8b1f4432f943c465a973fedc6d7aa50fc96f1f65", 6),
+    ("lvl-level","bnb","LVL","0xb64e280e9d1b5dbec4accedb2257a87b400db149",18),
+    ("ghny-grizzly-honey","bnb","GHNY","0xa045e37a0d1dd3a45fefb8803d22457abc0a728a",18)
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)

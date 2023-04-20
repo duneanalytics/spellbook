@@ -1,0 +1,43 @@
+version: 2
+
+models:
+  - name: labels_aave_v2_daily_deposit_size
+    meta:
+      blockchain: ethereum
+      sector: labels
+      project: aave
+      contributors: paulx
+    config:
+      tags: ["labels", "ethereum", "aave", "deposit"]
+    description: "Daily deposit sizes into Aave v2 lending pools."
+    columns:
+      - &blockchain
+        name: blockchain
+        description: "Blockchain"
+      - &address
+        name: address
+        description: "Depositor address"
+      - &name
+        name: name
+        description: "Small, Sizeable or Large Depositor"
+      - &category
+        name: category
+        description: "Deposit size"
+      - &contributor
+        name: contributor
+        description: "Wizard contributing to labels"
+      - &source
+        name: source
+        description: "How were labels generated"
+      - &created_at
+        name: created_at
+        description: "When were labels created"
+      - &updated_at
+        name: updated_at
+        description: "When were labels updated for the last time"
+      - &model_name
+        name: model_name
+        description: "Aave_v2 daily deposit size"
+      - &label_type
+        name: label_type
+        description: "Personas"

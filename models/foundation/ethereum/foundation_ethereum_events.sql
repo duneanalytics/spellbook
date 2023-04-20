@@ -127,7 +127,7 @@ WITH all_foundation_trades AS (
      {% endif %}
     )
 
-SELECT DISTINCT t.blockchain
+SELECT t.blockchain
 , t.project
 , version
 , date_trunc('day', t.block_time) AS block_date

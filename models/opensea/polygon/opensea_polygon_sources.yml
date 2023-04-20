@@ -1,0 +1,19 @@
+version: 2
+
+sources:
+  - name: opensea_polygon_v2_polygon
+    freshness:
+      warn_after: { count: 12, period: hour }
+      error_after: { count: 24, period: hour }
+    tables:
+      - name: ZeroExFeeWrapper_call_matchOrders
+        loaded_at_field: call_block_time
+
+  - name: seaportv1_4polygon_polygon
+    freshness:
+      warn_after: { count: 24, period: hour }
+    tables:
+      - name: Seaport_evt_OrderFulfilled
+        loaded_at_field: evt_block_time
+      - name: Seaport_evt_OrdersMatched
+        loaded_at_field: evt_block_time

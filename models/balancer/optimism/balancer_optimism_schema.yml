@@ -298,3 +298,36 @@ models:
         description: 'Symbol of the token'
       - name: usd_amount
         description: 'Liquidity of the token in the pool in USD'
+
+  - name: balancer_optimism_gauge_mappings
+    meta:
+      blockchain: optimism
+      project: balancer
+      contributors: msilb7
+    config:
+      tags: ['optimism', 'balancer', 'gauges', 'incentives']
+    description: >
+      Balancer gauge to pool mappings on Optimism.
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - pool_contract
+            - incentives_contract
+    columns:
+      - *blockchain
+      - *version
+      - &pool_contract
+        name: pool_contract
+        description: "Address of the liquidity pool contract"
+      - *pool_id
+      - &incentives_contract
+        name: incentives_contract
+        description: "Address of the contract where incentives are stored and emitted."
+      - &incentives_type
+        name: incentives_type
+        description: "Description of the incentives address type."
+      - *evt_block_time
+      - *evt_block_number
+      - *contract_address
+      - *evt_tx_hash
+      - *evt_index

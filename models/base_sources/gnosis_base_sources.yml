@@ -187,6 +187,20 @@ sources:
                   values: ["factory", "base", "dynamic"]
           - name: created_at
             description: "Timestamp for contract creation"
+          
+      - name: creation_traces
+        loaded_at_field: block_time
+        description: "Gnosis creation traces"
+        columns:
+          - *block_time
+          - *block_number
+          - *tx_hash
+          - name: address
+            description: "Contract address created"
+          - name: from
+            description: "Contract creator address"
+          - name: code
+            description: "Contract code"
 
   # ERC Transfer Tables
   - name: erc20_gnosis
@@ -259,6 +273,28 @@ sources:
           - name: values
             description: "Amounts of ERC1155 token transferred"
 
+      - name: evt_ApprovalForAll
+        loaded_at_field: evt_block_time
+        description: "Approval for all events for ERC1155 tokens on Gnosis."
+        columns:
+          - name: contract_address
+            description: "ERC1155 token contract address"
+          - *evt_tx_hash
+          - *evt_index
+          - *evt_block_time
+          - *evt_block_number
+          - &approved
+            name: approved
+            description: "Is approved"
+          - &owner
+            name: owner
+            description: "Owner"
+          - name: account
+            description: "Account"
+          - &operator
+            name: operator
+            description: "Opperator"
+
   - name: erc721_gnosis
     description: "Transfers events for ERC721 tokens on Gnosis."
     tables:
@@ -266,8 +302,7 @@ sources:
         loaded_at_field: evt_block_time
         description: "Transfers events for ERC721 tokens on Gnosis."
         columns:
-          - &contract_address
-            name: contract_address
+          - name: contract_address
             description: "ERC721 token contract address"
           - *evt_tx_hash
           - *evt_index
@@ -277,3 +312,32 @@ sources:
           - *to
           - name: tokenId
             description: "ERC721 token ID."
+            
+      - name: evt_Approval
+        loaded_at_field: evt_block_time
+        description: "Approval events for ERC721 tokens on Gnosis."
+        columns:
+          - name: contract_address
+            description: "ERC721 token contract address"
+          - *evt_tx_hash
+          - *evt_index
+          - *evt_block_time
+          - *evt_block_number
+          - *approved
+          - *owner
+          - name: tokenId
+            description: "ERC721 token ID."
+
+      - name: evt_ApprovalForAll
+        loaded_at_field: evt_block_time
+        description: "Approval for all events for ERC721 tokens on Gnosis."
+        columns:
+          - name: contract_address
+            description: "ERC721 token contract address"
+          - *evt_tx_hash
+          - *evt_index
+          - *evt_block_time
+          - *evt_block_number
+          - *approved
+          - *owner
+          - *operator

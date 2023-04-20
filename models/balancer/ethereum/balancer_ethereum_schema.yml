@@ -542,3 +542,30 @@ models:
         description: 'LBP start time'
       - name: end_time
         description: 'LBP end time'
+
+  - name: balancer_v1_ethereum_liquidity
+    meta:
+      blockchain: ethereum
+      project: balancer_v1
+      contributors: markusbkoch, mendesfabio, victorstefenon
+    config:
+      tags: ['ethereum', 'balancer', 'pools', 'liquidity']
+    description: >
+      Balancer v1 pools liquidity by token in Ethereum.
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - day
+            - pool_id
+            - token_address
+    columns:
+      - name: day
+        description: 'UTC event block time truncated to the day mark'
+      - *pool_id
+      # - name: pool_symbol
+      #   description: 'Symbol of the pool, consisting of the symbol of its tokens and their respective weights'
+      - *token_address
+      - name: token_symbol
+        description: 'Symbol of the token'
+      - name: usd_amount
+        description: 'Liquidity of the token in the pool in USD'
