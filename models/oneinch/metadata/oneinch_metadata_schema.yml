@@ -1,0 +1,22 @@
+version: 2
+
+models:
+  - name: oneinch_metadata_contract_addresses
+    meta:
+      blockchain: ['ethereum','optimism','polygon','arbitrum','avalanche_c','gnosis','bnb','fantom']
+      sector: oneinch
+      contributors: [grkhr]
+    config:
+    description: >
+        (dictionary) contract addresses of 1inch and other projects for internal use
+    columns:
+      - &blockchain
+        name: blockchain
+      - &project
+        name: project
+      - &contract_name
+        name: contract_name
+      - &type
+        name: type
+      - &address
+        name: address
