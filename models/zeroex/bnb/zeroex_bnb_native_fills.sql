@@ -54,7 +54,7 @@ WITH
             date_trunc('minute', evt_block_time) = tp.minute and  tp.blockchain = 'bnb'
             AND CASE
                     -- set native token to wrapped version
-                    WHEN fills.taker_token = '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee' THEN '0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c'
+                    WHEN fills.takerToken = '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee' THEN '0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c'
                     ELSE fills.takerToken
                 END = tp.contract_address
         LEFT JOIN prices.usd mp ON
@@ -113,7 +113,7 @@ WITH
           date_trunc('minute', evt_block_time) = tp.minute 
           AND CASE
                   -- set native token to wrapped version
-                    WHEN fills.taker_token = '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee' THEN '0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c'
+                    WHEN fills.takerToken = '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee' THEN '0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c'
                     ELSE fills.takerToken
               END = tp.contract_address
       LEFT JOIN prices.usd mp ON
