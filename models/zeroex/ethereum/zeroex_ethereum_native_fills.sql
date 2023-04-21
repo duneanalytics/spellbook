@@ -52,18 +52,14 @@ WITH
             date_trunc('minute', evt_block_time) = tp.minute 
             AND CASE
                     -- Set Deversifi ETHWrapper to WETH
-                    WHEN SUBSTRING(fills.takerAssetData,17,20) IN ('0x50cb61afa3f023d17276dcfb35abf85c710d1cff','0xaa7427d8f17d87a28f5e1ba3adbb270badbe1011') THEN '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'
-                    -- Set Deversifi USDCWrapper to USDC
-                    WHEN SUBSTRING(fills.takerAssetData,17,20) IN ('0x69391cca2e38b845720c7deb694ec837877a8e53') THEN '0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48'
+                    WHEN SUBSTRING(fills.takerAssetData,17,20) IN ('0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee') THEN '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'
                     ELSE SUBSTRING(fills.takerAssetData,17,20)
                 END = tp.contract_address
         LEFT JOIN prices.usd mp ON
             DATE_TRUNC('minute', evt_block_time) = mp.minute  
             AND CASE
                     -- Set Deversifi ETHWrapper to WETH
-                    WHEN SUBSTRING(fills.makerAssetData,17,20) IN ('0x50cb61afa3f023d17276dcfb35abf85c710d1cff','0xaa7427d8f17d87a28f5e1ba3adbb270badbe1011') THEN '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'
-                    -- Set Deversifi USDCWrapper to USDC
-                    WHEN SUBSTRING(fills.makerAssetData,17,20) IN ('0x69391cca2e38b845720c7deb694ec837877a8e53') THEN '0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48'
+                    WHEN SUBSTRING(fills.makerAssetData,17,20) IN ('0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee') THEN '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'
                     ELSE SUBSTRING(fills.makerAssetData,17,20)
                 END = mp.contract_address
         LEFT OUTER JOIN {{ ref('tokens_erc20') }} mt ON mt.contract_address = SUBSTRING(fills.makerAssetData,17,20)
@@ -113,18 +109,14 @@ WITH
             date_trunc('minute', evt_block_time) = tp.minute 
             AND CASE
                     -- Set Deversifi ETHWrapper to WETH
-                    WHEN SUBSTRING(fills.takerAssetData,17,20) IN ('0x50cb61afa3f023d17276dcfb35abf85c710d1cff','0xaa7427d8f17d87a28f5e1ba3adbb270badbe1011') THEN '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'
-                    -- Set Deversifi USDCWrapper to USDC
-                    WHEN SUBSTRING(fills.takerAssetData,17,20) IN ('0x69391cca2e38b845720c7deb694ec837877a8e53') THEN '0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48'
+                    WHEN SUBSTRING(fills.takerAssetData,17,20) IN ('0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee') THEN '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'
                     ELSE SUBSTRING(fills.takerAssetData,17,20)
                 END = tp.contract_address
         LEFT JOIN prices.usd mp ON
             DATE_TRUNC('minute', evt_block_time) = mp.minute 
             AND CASE
                     -- Set Deversifi ETHWrapper to WETH
-                    WHEN SUBSTRING(fills.makerAssetData,17,20) IN ('0x50cb61afa3f023d17276dcfb35abf85c710d1cff','0xaa7427d8f17d87a28f5e1ba3adbb270badbe1011') THEN '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'
-                    -- Set Deversifi USDCWrapper to USDC
-                    WHEN SUBSTRING(fills.makerAssetData,17,20) IN ('0x69391cca2e38b845720c7deb694ec837877a8e53') THEN '0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48'
+                    WHEN SUBSTRING(fills.makerAssetData,17,20) IN ('0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee') THEN '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'
                     ELSE SUBSTRING(fills.makerAssetData,17,20)
                 END = mp.contract_address
         LEFT OUTER JOIN {{ ref('tokens_erc20') }} mt ON mt.contract_address = SUBSTRING(fills.makerAssetData,17,20)
@@ -176,18 +168,14 @@ WITH
             date_trunc('minute', evt_block_time) = tp.minute 
             AND CASE
                     -- Set Deversifi ETHWrapper to WETH
-                    WHEN fills.takerToken IN ('0x50cb61afa3f023d17276dcfb35abf85c710d1cff','0xaa7427d8f17d87a28f5e1ba3adbb270badbe1011') THEN '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'
-                    -- Set Deversifi USDCWrapper to USDC
-                    WHEN fills.takerToken IN ('0x69391cca2e38b845720c7deb694ec837877a8e53') THEN '0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48'
+                    WHEN fills.takerToken IN ('0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee') THEN '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'
                     ELSE fills.takerToken
                 END = tp.contract_address
         LEFT JOIN prices.usd mp ON 
             DATE_TRUNC('minute', evt_block_time) = mp.minute 
             AND CASE
                     -- Set Deversifi ETHWrapper to WETH
-                    WHEN fills.makerToken IN ('0x50cb61afa3f023d17276dcfb35abf85c710d1cff','0xaa7427d8f17d87a28f5e1ba3adbb270badbe1011') THEN '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'
-                    -- Set Deversifi USDCWrapper to USDC
-                    WHEN fills.makerToken IN ('0x69391cca2e38b845720c7deb694ec837877a8e53') THEN '0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48'
+                    WHEN fills.makerToken IN ('0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee') THEN '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'
                     ELSE fills.makerToken
                 END = mp.contract_address
         LEFT OUTER JOIN {{ ref('tokens_erc20') }} mt ON mt.contract_address = fills.makerToken
@@ -239,19 +227,15 @@ WITH
           date_trunc('minute', evt_block_time) = tp.minute 
           AND CASE
                   -- Set Deversifi ETHWrapper to WETH
-                  WHEN fills.takerToken IN ('0x50cb61afa3f023d17276dcfb35abf85c710d1cff','0xaa7427d8f17d87a28f5e1ba3adbb270badbe1011') THEN '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'
-                  -- Set Deversifi USDCWrapper to USDC
-                  WHEN fills.takerToken IN ('0x69391cca2e38b845720c7deb694ec837877a8e53') THEN '0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48'
-                  ELSE fills.takerToken
+                    WHEN fills.takerToken IN ('0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee') THEN '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'
+                    ELSE fills.takerToken
               END = tp.contract_address
       LEFT JOIN prices.usd mp ON
           DATE_TRUNC('minute', evt_block_time) = mp.minute 
           AND CASE
                   -- Set Deversifi ETHWrapper to WETH
-                  WHEN fills.makerToken IN ('0x50cb61afa3f023d17276dcfb35abf85c710d1cff','0xaa7427d8f17d87a28f5e1ba3adbb270badbe1011') THEN '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'
-                  -- Set Deversifi USDCWrapper to USDC
-                  WHEN fills.makerToken IN ('0x69391cca2e38b845720c7deb694ec837877a8e53') THEN '0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48'
-                  ELSE fills.makerToken
+                    WHEN fills.makerToken IN ('0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee') THEN '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'
+                    ELSE fills.makerToken
               END = mp.contract_address
       LEFT OUTER JOIN {{ ref('tokens_erc20') }} mt ON mt.contract_address = fills.makerToken
       LEFT OUTER JOIN {{ ref('tokens_erc20') }} tt ON tt.contract_address = fills.takerToken
@@ -301,19 +285,15 @@ WITH
           date_trunc('minute', evt_block_time) = tp.minute 
           AND CASE
                   -- Set Deversifi ETHWrapper to WETH
-                  WHEN fills.takerToken IN ('0x50cb61afa3f023d17276dcfb35abf85c710d1cff','0xaa7427d8f17d87a28f5e1ba3adbb270badbe1011') THEN '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'
-                  -- Set Deversifi USDCWrapper to USDC
-                  WHEN fills.takerToken IN ('0x69391cca2e38b845720c7deb694ec837877a8e53') THEN '0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48'
-                  ELSE fills.takerToken
+                    WHEN fills.takerToken IN ('0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee') THEN '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'
+                    ELSE fills.takerToken
               END = tp.contract_address
       LEFT JOIN prices.usd mp ON
           DATE_TRUNC('minute', evt_block_time) = mp.minute  
           AND CASE
                   -- Set Deversifi ETHWrapper to WETH
-                  WHEN fills.makerToken IN ('0x50cb61afa3f023d17276dcfb35abf85c710d1cff','0xaa7427d8f17d87a28f5e1ba3adbb270badbe1011') THEN '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'
-                  -- Set Deversifi USDCWrapper to USDC
-                  WHEN fills.makerToken IN ('0x69391cca2e38b845720c7deb694ec837877a8e53') THEN '0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48'
-                  ELSE fills.makerToken
+                    WHEN fills.makerToken IN ('0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee') THEN '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'
+                    ELSE fills.makerToken
               END = mp.contract_address
       LEFT OUTER JOIN {{ ref('tokens_erc20') }} mt ON mt.contract_address = fills.makerToken
       LEFT OUTER JOIN {{ ref('tokens_erc20') }} tt ON tt.contract_address = fills.takerToken
