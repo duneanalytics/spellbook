@@ -1,5 +1,5 @@
 WITH unit_tests as
-(SELECT case when test.maker_token = actual.maker_token 
+(SELECT case when test.taker = actual.taker 
                
                 and test.taker_token = actual.taker_token
 then True else False end as test
