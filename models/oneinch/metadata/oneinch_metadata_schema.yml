@@ -7,6 +7,7 @@ models:
       sector: oneinch
       contributors: [grkhr]
     config:
+      tags: ['oneinch', 'metadata']
     description: >
         (dictionary) contract addresses of 1inch and other projects for internal use
     columns:
