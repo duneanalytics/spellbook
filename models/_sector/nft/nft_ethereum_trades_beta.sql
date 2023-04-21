@@ -10,6 +10,7 @@
 }}
 
 {% set base_models = [
+    -- (project, project_version, model)
     ('archipelago',    'v1',   ref('archipelago_ethereum_trades_base'))
 ] %}
 
