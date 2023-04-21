@@ -21080,7 +21080,7 @@ FROM (VALUES
         ,('0x97a627177634d839968ca935a79bed1e2c9c06f9', 'George', 9)
         ,('0xafe084cdaad09c921fcf9ecb548a7e6c1cb2075b', 'GROYP', 18)
         ,('0xcf0e9c455b659f26038e998940ded929d3910f3d', 'FYR', 9)
-        ('0x04b77a1be2981c1ca353aaf251b0f11398413bfa', 'DOOMER', 18),
+        ,('0x04b77a1be2981c1ca353aaf251b0f11398413bfa', 'DOOMER', 18),
         ('0x069516f60816bc1ddb362048c015dd814353f74b', 'WAIFU', 18),
         ('0x07399f96e648ae6b3ad27a567b0546ca69fe870f', 'JOINT', 18),
         ('0x07b9c0964d3e8734d65aea20c37334c2528ca601', 'POGGERS', 18),
