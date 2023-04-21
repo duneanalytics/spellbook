@@ -27,7 +27,6 @@ spells with issues, to be excluded in short term:
  ,ref('lifi_trades')
  ,ref('yield_yak_avalanche_c_trades')
  ,ref('bebop_trades')
- ,ref('zeroex_trades')
 ] %}
 
 SELECT *
