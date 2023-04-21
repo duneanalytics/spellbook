@@ -36,7 +36,7 @@ WITH deposit_events AS (
     )
     
 , traces AS (
-    SELECT t.block_number
+    SELECT distinct t.block_number
     , t.tx_hash AS tx_hash
     , t.value/POWER(10, 18) AS amount
     , t.from AS depositor_address
