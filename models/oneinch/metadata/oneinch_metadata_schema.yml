@@ -17,7 +17,7 @@ models:
         name: project
       - &contract_name
         name: contract_name
-      - &type
-        name: type
+      - &contract_type
+        name: contract_type
       - &address
         name: address

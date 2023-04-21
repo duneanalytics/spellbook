@@ -178,7 +178,7 @@ with routers as (
     as t (blockchain
         , project
         , contract_name
-        , "type"
+        , contract_type
         , address)
 ) 
 
