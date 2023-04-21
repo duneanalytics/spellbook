@@ -24,13 +24,13 @@ WITH base_union as (
         seller,
         nft_contract_address,
         nft_token_id,
-        number_of_items,                -- always 1 for erc721
-        amount_raw,
+        nft_amount,                -- always 1 for erc721
+        price_raw,
         currency_contract,
         platform_fee_amount_raw,
         royalty_fee_amount_raw,
-        platform_fee_receive_address,   -- optional
-        royalty_fee_receive_address,    -- optional
+        platform_fee_address,   -- optional
+        royalty_fee_address,    -- optional
         sub_tx_trade_id
     FROM {{ nft_model[2] }}
     {% if not loop.last %}
@@ -55,23 +55,23 @@ SELECT
     case when base.seller != agg.contract_address then base.seller else tx.from end as seller,
     base.nft_contract_address,
     base.nft_token_id,
-    base.number_of_items,
-    base.amount_raw,
+    base.nft_amount,
+    base.price_raw,
     base.currency_contract,
     base.platform_fee_amount_raw,
     base.royalty_fee_amount_raw,
-    base.platform_fee_receive_address,
-    base.royalty_fee_receive_address,
+    base.platform_fee_address,
+    base.royalty_fee_address,
     tx.block_time,
     tx.from as tx_from,
     tx.to as tx_to,
-    nft.name as collection,
-    nft.standard as token_standard,
+    nft.name as nft_collection,
+    nft.standard as nft_standard,
     erc20.symbol as currency_symbol,
-    base.amount_raw/pow(10,coalesce(erc20.decimals,18)) as amount_original,
+    base.price_raw/pow(10,coalesce(erc20.decimals,18)) as price,
     base.platform_fee_amount_raw/pow(10,coalesce(erc20.decimals,18)) as platform_fee_amount,
     base.royalty_fee_amount_raw/pow(10,coalesce(erc20.decimals,18)) as royalty_fee_amount,
-    base.amount_raw/pow(10,coalesce(erc20.decimals,18))*p.price as amount_usd,
+    base.price_raw/pow(10,coalesce(erc20.decimals,18))*p.price as price_usd,
     base.platform_fee_amount_raw/pow(10,coalesce(erc20.decimals,18))*p.price as platform_fee_amount_usd,
     base.royalty_fee_amount_raw/pow(10,coalesce(erc20.decimals,18))*p.price as royalty_fee_amount_usd,
     agg.contract_address as aggregator_address,

@@ -14,8 +14,10 @@
     ('archipelago',    'v1',   ref('archipelago_ethereum_trades_base'))
 ] %}
 
+
+-- macros/models/sector/nft
 {{
-    enrichments(
+    enrich_trades(
         blockchain='ethereum',
         models=base_models,
         transactions_model=source('ethereum','transactions'),

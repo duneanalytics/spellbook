@@ -17,3 +17,19 @@ models:
          compare_model: source('archipelago_ethereum','ArchipelagoMarket_evt_Trade')
      - dbt_utils.equal_rowcount:
          compare_model: ref('archipelago_ethereum_events')
+
+
+ - name: superrare_ethereum_trades_base
+   meta:
+     blockchain: ethereum
+     sector: nft
+     project: superrare
+     contributors: ['0xRob', 'cat']
+   config:
+     tags: [ 'ethereum', 'nft', 'trades', 'superrare' ]
+   description: "Superrare base trades"
+   tests:
+     - dbt_utils.unique_combination_of_columns:
+         combination_of_columns: [ 'block_number','tx_hash','sub_tx_trade_id' ]
+     - dbt_utils.equal_rowcount:
+         compare_model: ref('superrare_ethereum_events')

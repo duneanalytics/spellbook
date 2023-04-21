@@ -1,6 +1,6 @@
 {{ config(
     schema = 'archipelago',
-    alias ='events_base',
+    alias ='trades_base',
     partition_by = ['block_date'],
     materialized = 'incremental',
     file_format = 'delta',

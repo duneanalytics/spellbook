@@ -1,0 +1,210 @@
+{{ config(
+    schema = 'superrare',
+    alias ='trades_base',
+    partition_by = ['block_date'],
+    materialized = 'incremental',
+    file_format = 'delta',
+    incremental_strategy = 'merge',
+    unique_key = ['block_number','tx_hash','sub_tx_trade_id'],
+    )
+}}
+{% set project_start_date='2018-04-05' %}
+
+-- raw data table with all sales on superrare platform -- both primary and secondary
+with all_superrare_sales as (
+    select  evt_block_time as block_time
+            , evt_block_number as block_number
+            , `_originContract` as contract_address
+            , `_tokenId` as nft_token_id
+            , `_seller` as seller
+            , `_buyer` as buyer
+            , `_amount` as price_raw
+            , evt_tx_hash
+            , '' as currency_contract
+    from {{ source('superrare_ethereum','SuperRareMarketAuction_evt_Sold') }}
+    {% if is_incremental() %}
+    where evt_block_time >= date_trunc("day", now() - interval '1 week')
+    {% endif %}
+
+    union all
+
+    select evt_block_time
+            , evt_block_number
+            , contract_address
+            , `_tokenId`
+            , `_seller`
+            , `_buyer`
+            , `_amount`
+            , evt_tx_hash
+            , ''
+    from {{ source('superrare_ethereum','SuperRare_evt_Sold') }}
+    {% if is_incremental() %}
+    where evt_block_time >= date_trunc("day", now() - interval '1 week')
+    {% endif %}
+
+    union all
+
+    select evt_block_time
+            , evt_block_number
+            , `_originContract` as contract_address
+            , `_tokenId`
+            , `_seller`
+            , `_bidder`
+            , `_amount`
+            , evt_tx_hash
+            , ''
+    from {{ source('superrare_ethereum','SuperRareMarketAuction_evt_AcceptBid') }}
+    {% if is_incremental() %}
+    where evt_block_time >= date_trunc("day", now() - interval '1 week')
+    {% endif %}
+
+    union all
+
+    select evt_block_time
+            , evt_block_number
+            , contract_address
+            , `_tokenId`
+            , `_seller`
+            , `_bidder`
+            , `_amount`
+            , evt_tx_hash
+            , ''
+    from {{ source('superrare_ethereum','SuperRare_evt_AcceptBid') }}
+    {% if is_incremental() %}
+    where evt_block_time >= date_trunc("day", now() - interval '1 week')
+    {% endif %}
+
+    union all
+
+    select evt_block_time
+            , evt_block_number
+            , `_originContract`
+            , `_tokenId`
+            , `_seller`
+            , `_bidder`
+            , `_amount`
+            , evt_tx_hash
+            , `_currencyAddress`
+    from {{ source('superrare_ethereum','SuperRareBazaar_evt_AcceptOffer') }}
+    {% if is_incremental() %}
+    where evt_block_time >= date_trunc("day", now() - interval '1 week')
+    {% endif %}
+
+    union all
+
+    select evt_block_time
+            , evt_block_number
+            , `_contractAddress`
+            , `_tokenId`
+            , `_seller`
+            , `_bidder`
+            , `_amount`
+            , evt_tx_hash
+            , `_currencyAddress`
+    from {{ source('superrare_ethereum','SuperRareBazaar_evt_AuctionSettled') }}
+    {% if is_incremental() %}
+    where evt_block_time >= date_trunc("day", now() - interval '1 week')
+    {% endif %}
+
+    union all
+
+    select evt_block_time
+            , evt_block_number
+            , `_originContract`
+            , `_tokenId`
+            , `_seller`
+            , `_buyer`
+            , `_amount`
+            , evt_tx_hash
+            , `_currencyAddress`
+    from {{ source('superrare_ethereum','SuperRareBazaar_evt_Sold') }}
+    {% if is_incremental() %}
+    where evt_block_time >= date_trunc("day", now() - interval '1 week')
+    {% endif %}
+
+    union all
+
+    -- Superrare AuctionHouse (not decoded)
+    select  block_time
+            , block_number
+            , concat('0x',substring(topic2 from 27 for 40)) as contract_address
+            , bytea2numeric_v3(substring(topic4 from 3)) as nft_token_id
+            , lower('0x8c9f364bf7a56ed058fc63ef81c6cf09c833e656') as seller -- all sent from auction house contract
+            , concat('0x',substring(topic3 from 27 for 40)) as buyer
+            , bytea2numeric_v3(substring(data from 67 for 64)) as price_raw
+            , tx_hash
+            , ''
+    from {{ source('ethereum','logs') }}
+    where contract_address = lower('0x8c9f364bf7a56ed058fc63ef81c6cf09c833e656')
+        and topic1 = lower('0xea6d16c6bfcad11577aef5cc6728231c9f069ac78393828f8ca96847405902a9')
+        {% if is_incremental() %}
+        and block_time >= date_trunc("day", now() - interval '1 week')
+        {% else %}
+        and block_time >= '{{ project_start_date }}'
+        {% endif %}
+
+    union all
+
+    -- Superrare Marketplace (not decoded)
+    select block_time
+            , block_number
+            , concat('0x',substring(topic2 from 27 for 40)) as contract_address
+            , bytea2numeric_v3(substring(data from 67 for 64)) as nft_token_id
+            , concat('0x',substring(topic4 from 27 for 40)) as seller
+            , concat('0x',substring(topic3 from 27 for 40)) as buyer
+            , bytea2numeric_v3(substring(data from 3 for 64)) as price_raw
+            , tx_hash
+            , ''
+    from {{ source('ethereum','logs') }}
+    where contract_address =  lower('0x65b49f7aee40347f5a90b714be4ef086f3fe5e2c')
+        and topic1 in (lower('0x2a9d06eec42acd217a17785dbec90b8b4f01a93ecd8c127edd36bfccf239f8b6')
+                        , lower('0x5764dbcef91eb6f946584f4ea671217c686fa7e858ce4f9f42d08422b86556a9')
+                      )
+        {% if is_incremental() %}
+        and block_time >= date_trunc("day", now() - interval '1 week')
+        {% else %}
+        and block_time >= '{{ project_start_date }}'
+        {% endif %}
+)
+
+SELECT
+    'ethereum' as blockchain,
+    'superrare' as project,
+    'v1' as version,
+    cast(date_trunc('day', a.block_time) AS date) AS block_date,
+    a.block_time,
+    a.block_number,
+    a.nft_token_id,
+    CAST(1 AS DECIMAL(38,0)) as nft_amount,
+    'Buy' as trade_category,
+    a.seller,
+    a.buyer,
+    CAST(a.price_raw AS DECIMAL(38,0)) as price_raw,
+    case
+    when a.currency_contract = '0xba5bde662c17e2adff1075610382b9b691296350' then a.currency_contract -- RARE
+    else '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'   -- WETH
+    end as currency_contract,
+    a.contract_address as nft_contract_address,
+    cast(NULL as varchar(1)) as project_contract_address,
+    a.evt_tx_hash as tx_hash,
+    case
+        when a.seller = minter.to
+        then 'primary'
+        else 'secondary'
+    end as trade_type,
+    ROUND(0.03 * (a.price_raw)) as platform_fee_amount_raw, -- fixed 3%
+    case
+        when a.seller = minter.to
+        then a.price_raw/10 -- fixed 10%
+        else 0
+    end as royalty_fee_amount_raw,
+    null as royalty_fee_receive_address,
+from all_superrare_sales a
+left outer join {{ source('erc721_ethereum','evt_transfer') }} minter on minter.contract_address = a.contract_address
+    and minter.tokenId = a.nft_token_id
+    and minter.from = '0x0000000000000000000000000000000000000000'
+    {% if is_incremental() %}
+    and minter.evt_block_time >= date_trunc("day", now() - interval '1 week')
+    {% endif %}
+where (a.price_raw) > 0
+

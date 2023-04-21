@@ -1,8 +1,6 @@
 # Sector: NFT
 
-## 1. nft.trades
-
-Table schema
+## `nft.trades`
 
 - partition_by: `[blockchain, block_date]` 
 - unique_key: `[blockchain, project, project_version, block_number,tx_hash, sub_tx_trade_id]`
@@ -47,8 +45,10 @@ The data is also available in chain specific models:
 - `nft_ethereum.trades`
 - `nft_optimism.trades`
 - ...
+- 
+### Contributing
 
-### Base marketplace models
+#### Base marketplace models
 
 Base table schema (to be implemented by marketplace models):
 
@@ -80,11 +80,11 @@ The enrichment logic can be found in `macros/models/sector/nft`
 
 
 
-## Migration
+### Migration
 
 #### User changelog
 
-These changes affect the users:
+The following changes affect the users:
 
 ##### models:
 - [deprecated] `nft.events`, use `nft.trades` instead
@@ -110,12 +110,12 @@ These changes affect the users:
 
 
 
-The migration for each protocol consists of 2 parts.
+The migration for each protocol consists of 3 parts.
 1. distilling the existing model to the base schema
 2. validating the migration
 2. purging the older model
 
-### Ethereum
+#### Ethereum
 | Platform    | Version | Trades (21/4/2023) | Migrated | Validated | Purged |
 |-------------|:-------:|-------------------:|:--------:|:---------:|:------:|
 | archipelago |   v1    |                561 |   [x]    |    [x]    |        |
@@ -135,12 +135,12 @@ The migration for each protocol consists of 2 parts.
 | zora        |   v2    |              3,491 |          |           |        |
 | zora        |   v3    |              7,149 |          |           |        |
 
-### Optimism
+#### Optimism
 
-### Arbitrum
+#### Arbitrum
 
-### Polygon
+#### Polygon
 
-### BNB
+#### BNB
 
-### Solana
+#### Solana
