@@ -28,6 +28,7 @@ SELECT *
             block_number,
             tx_index,
             evt_index,
+            maker,
             sell_token_symbol,
             buy_token_symbol,
             sell_token_address,

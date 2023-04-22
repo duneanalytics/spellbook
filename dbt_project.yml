@@ -224,6 +224,10 @@ models:
         +schema: sushiswap_fantom
       optimism:
         +schema: sushiswap_optimism
+      polygon:
+        +schema: sushiswap_polygon
+      bnb:
+        +schema: sushiswap_bnb
 
     openocean:
       +schema: openocean
@@ -1024,6 +1028,11 @@ models:
       +schema: optimism_attestationstation
       optimism:
         +schema: optimism_attestationstation_optimism
+    
+    lido:
+      +schema: lido
+      ethereum:
+       +schema: lido_ethereum
 
     onepunchswap:
       +schema: onepunchswap
