@@ -62,7 +62,8 @@ WITH tff AS (
               and evt_block_time >= date_trunc("day", now() - interval '1 week')
               {% endif %}
      )
-SELECT 'polygon'                                 as blockchain
+SELECT DISTINCT
+       'polygon'                                 as blockchain
      , 'tofu'                                as project
      , 'v1'                                  as version
      , date_trunc('day', tfe.evt_block_time) as block_date
