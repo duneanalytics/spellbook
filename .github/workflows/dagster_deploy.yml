@@ -32,7 +32,7 @@ jobs:
 
     - name: Set environment variables
       run: |
-        echo "GIT_SHA=$(echo ${{ github.sha }} | tr - _ | cut -c1-8)" >> $GITHUB_ENV
+        echo "GIT_SHA=$(echo ${{ github.sha }} | tr - _ | cut -c1-7)" >> $GITHUB_ENV
 
     - name: upload git_sha versioned previous manifest (for manual catchup if jobs fail)
       run: "aws s3 cp previous_manifest.json s3://manifest-spellbook/manifest_$GIT_SHA.json"

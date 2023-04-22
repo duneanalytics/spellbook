@@ -133,6 +133,12 @@ models:
       - &surplus_usd
         name: surplus_usd
         description: "USD value of surplus (difference between limit and executed price)"
+      - &order_type
+        name: order_type
+        description: "SELL/BUY string indicating if the trade was a sell or buy order"
+      - &partial_fill
+        name: partial_fill
+        description: "Boolean indicating if the order is partially fill-able"
 
   - name: cow_protocol_ethereum_batches
     meta:
@@ -299,6 +305,7 @@ models:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - order_uid
+            - block_number
     columns:
       - *order_uid
       - *block_time
@@ -311,6 +318,8 @@ models:
         name: tolerance_bips
       - &trade_usd_value
         name: trade_usd_value
+      - &fill_proportion
+        name: fill_proportion
       - &amount_atoms
         name: amount_atoms
       - &amount_percentage

@@ -155,6 +155,7 @@ valued_trades as (
            block_time,
            tx_hash,
            evt_index,
+           CAST(ARRAY() as array<bigint>) AS trace_address,
            project_contract_address,
            order_uid,
            trader,

@@ -187,3 +187,15 @@ sources:
           - name: cashDelta
             description: 'Change in the amount of token cashed the vault'
           - *tokens
+      
+      - name: ChildChainLiquidityGaugeFactory_evt_RewardsOnlyGaugeCreated
+        description: "Rewards gauges created on Balancer on Optimism"
+        loaded_at_field: evt_block_time
+  
+  - name: balancer_optimism
+    description: >
+      Decoded tables related to Balancer V2, an automated portfolio manager and trading platform, on Optimism.
+    tables:
+      - name: ChildChainLiquidityGaugeFactory_evt_RewardsOnlyGaugeCreated
+        description: "Rewards gauges created on Balancer on Optimism"
+        loaded_at_field: evt_block_time

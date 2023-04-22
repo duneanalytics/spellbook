@@ -17,10 +17,16 @@ WITH contracts AS (
     ('0xdcd51fc5cd918e0461b9b7fb75967fdfd10dae2f', 'RocketPool (Minipool)', 'Staking Pools')
     , ('0x1cc9cf5586522c6f483e84a19c3c2b0b6d027bf0', 'RocketPool (Minipool)', 'Staking Pools')
     , ('0x9b8c989ff27e948f55b53bb19b3cc1947852e394', 'Kiln', 'Staking Pools')
+    , ('0x1e68238ce926dec62b3fbc99ab06eb1d85ce0270', 'Kiln', 'Staking Pools')
     , ('0x2421a0af8badfae12e1c1700e369747d3db47b09', 'SenseiNode', 'Staking Pools')
     , ('0x10e02a656b5f9de2c44c687787c36a2c4801cc40', 'Tranchess', 'Liquid Staking')
     , ('0x447c3ee829a3B506ad0a66Ff1089F30181c42637', 'KingHash', 'Liquid Staking')
     , ('0xa8f50a6c41d67685b820b4fe6bed7e549e54a949', 'Eth2Stake', 'Staking Pools')
+    , ('0xf243a92eb7d4b4f6a00a57888b887bd01ec6fd12', 'MyEtherWallet', 'Staking Pools')
+    , ('0x73fd39ba4fb23c9b080fca0fcbe4c8c7a2d630d0', 'MyEtherWallet', 'Staking Pools')
+    , ('0xe7b385fb5d81259280b7d639df81513ab8b005e4', 'MyEtherWallet', 'Staking Pools')
+    , ('0x82ce843130ff0ae069c54118dfbfa6a5ea17158e', 'Gemini', 'CEX')
+    , ('0x24d729aae93a05a729e68504e5ccdfa3bb876491', 'Gemini', 'CEX')
         ) 
         x (address, entity, category)
     )
@@ -49,7 +55,7 @@ FROM
     , ('0xbf1556a7d625654e3d64d1f0466a60a697fac178', 'InfStones', 'InfStones', 'Staking Pools')
     , ('0xbca3b7b87dcb15f0efa66136bc0e4684a3e5da4d', 'SharedStake', 'SharedStake', 'Liquid Staking')
     , ('0xeadcba8bf9aca93f627f31fb05470f5a0686ceca', 'StakeWise Solos', 'StakeWise Solos', 'Staking Pools')
-    , ('0xfa5f9eaa65ffb2a75de092eb7f3fc84fc86b5b18', 'Abyss Finance', 'Abyss Finance', 'Staking Pools')
+    , ('0xfa5f9eaa65ffb2a75de092eb7f3fc84fc86b5b18', 'Abyss Finance', 'Abyss Finance', 'Batch Staking Contract')
     , ('0x66827bcd635f2bb1779d68c46aeb16541bca6ba8', 'PieDAO', 'PieDAO', 'Staking Pools')
     , ('0xd6216fc19db775df9774a6e33526131da7d19a2c', 'KuCoin', 'KuCoin 1', 'CEX')
     , ('0x1692e170361cefd1eb7240ec13d048fd9af6d667', 'KuCoin', 'KuCoin 2', 'CEX')
@@ -66,8 +72,8 @@ FROM
     , ('0xa54be2edaa143e969a63fc744bbd2d511b50cbc3', 'neukind.com', 'neukind.com 2', 'Staking Pools')
     , ('0xac29ef7a7f4325ffa564de9abf67e5ace46c88f8', 'neukind.com', 'neukind.com 3', 'Staking Pools')
     , ('0xc3003f8b89f35a7bf3cb3a6ec3d8e4c3c8ce7cce', 'neukind.com', 'neukind.com 4', 'Staking Pools')
-    --, ('0x8e1d8b147cc4c939a597dc501c47cc8b4ab26bd5', 'Tetranode', 'Tetranode', 'Individuals')
-    --, ('0x1db3439a222c519ab44bb1144fc28167b4fa6ee6', 'Vitalik Buterin', 'Vitalik Buterin', 'Individuals')
+    , ('0x8e1d8b147cc4c939a597dc501c47cc8b4ab26bd5', 'Tetranode', 'Tetranode', 'Independent Staker')
+    , ('0x1db3439a222c519ab44bb1144fc28167b4fa6ee6', 'Vitalik Buterin', 'Vitalik Buterin', 'Independent Staker')
     , ('0x49df3cca2670eb0d591146b16359fe336e476f29', 'stereum.net', 'stereum.net 1', 'Others')
     , ('0x62dfeb55fcbdcb921446168eecfd1406379a1ee1', 'stereum.net', 'stereum.net 2', 'Others')
     , ('0x2be0282532ad9fa7cc4c45aeaa1707d2e93357c2', 'Blockdaemon.com', 'Blockdaemon.com', 'Others')
@@ -100,7 +106,11 @@ FROM
     , ('0xec1d6163e05b3f5d0fb8f354881f6c8b793ad612', 'Bifrost', 'Bifrost', 'Liquid Staking')
     , ('0xf79caa45612fb183c4e258ed449bfa632d7400b9', 'Everstake Pool', 'Everstake', 'Staking Pools')
     , ('0xcf07df57a6b338a20d50114a79fee09d28b13d72', 'cryptostake.com', 'cryptostake.com', 'Staking Pools')
-    , ('0x2915f91dcff0be7b60df411f164827d517caca67', 'TokenPocket', 'TokenPocket', 'Others')   
+    , ('0x2915f91dcff0be7b60df411f164827d517caca67', 'TokenPocket', 'TokenPocket', 'Others')
+    , ('0xfcd50905214325355a57ae9df084c5dd40d5d478', 'Sigma Prime Team', 'Sigma Prime Team', 'Independent Staker')
+    , ('0x7badde47f41ceb2c0889091c8fc69e4d9059fb19', 'Prysm Team', 'Prysm Team', 'Independent Staker')
+    , ('0x43a0927a6361258e6cbaed415df275a412c543b5', 'Teku Team', 'Teku Team', 'Independent Staker')
+    , ('0x5efaefd5f8a42723bb095194c9202bf2b83d8eb6', 'Nimbus Team', 'Nimbus Team', 'Independent Staker')
     ) 
     x (address, entity, entity_unique_name, category)
 
@@ -116,7 +126,7 @@ FROM
                 , et.block_time
             FROM {{ source('ethereum', 'traces') }} et
             INNER JOIN {{ source('ethereum', 'traces') }} et2 ON et2.from=et.from
-                AND et2.to='0xa090e606e30bd747d4e6245a1517ebe430f0057e'
+                AND et2.to IN (SELECT address FROM {{ ref('addresses_ethereum_cex') }} WHERE cex_name = 'Coinbase')
                 {% if not is_incremental() %}
                 AND et2.block_time >= '2020-10-14'
                 {% endif %}
