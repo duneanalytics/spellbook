@@ -85,3 +85,4 @@ INNER JOIN traces ett ON ett.block_number=d.block_number
     AND ett.table_merging_traces_id=d.table_merging_deposits_id
 LEFT JOIN {{ ref('staking_ethereum_entities')}} ete
     ON ett.depositor_address=ete.address
+    
