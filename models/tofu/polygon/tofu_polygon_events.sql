@@ -17,11 +17,11 @@
 WITH tff AS (
     SELECT call_block_time,
            call_tx_hash,
+           id,
            fee_rate,
            royalty_rate,
            fee_address,
            royalty_address,
-           id,
            bundle_size,
            get_json_object(t, '$.token')   as token,
            get_json_object(t, '$.tokenId') as token_id,
@@ -29,11 +29,11 @@ WITH tff AS (
            i as bundle_index
     FROM (SELECT call_block_time,
                  call_tx_hash,
+                 get_json_object(detail, '$.id')                                                     as id,
                  get_json_object(get_json_object(detail, '$.settlement'), '$.feeRate') / 1000000     as fee_rate,
                  get_json_object(get_json_object(detail, '$.settlement'), '$.royaltyRate') / 1000000 as royalty_rate,
                  get_json_object(get_json_object(detail, '$.settlement'), '$.feeAddress')            as fee_address,
                  get_json_object(get_json_object(detail, '$.settlement'), '$.royaltyAddress')        as royalty_address,
-                 get_json_object(get_json_object(detail, '$.settlement'), '$.id')                    as id,
                  posexplode(from_json(get_json_object(detail, '$.bundle'), 'array<string>'))         as (i,t),
                  json_array_length(get_json_object(detail, '$.bundle'))                              as bundle_size
           FROM {{ source('tofu_nft_polygon', 'MarketNG_call_run') }}
