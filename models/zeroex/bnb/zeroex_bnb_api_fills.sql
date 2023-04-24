@@ -27,8 +27,8 @@ WITH zeroex_tx AS (
                         WHEN takerAddress = '0x63305728359c088a52b0b0eeec235db4d31a67fc' THEN takerAddress
                         ELSE NULL
                     END AS affiliate_address,
-                SUBSTRING(v3.takerAssetData, 34, 40) taker_token,
-                SUBSTRING(v3.makerAssetData, 34, 40) maker_token
+                SUBSTRING(v3.takerAssetData, 34, 40) as taker_token,
+                SUBSTRING(v3.makerAssetData, 34, 40) as maker_token
         FROM {{ source('zeroex_v2_bnb', 'Exchange_evt_Fill') }} v3
         WHERE (  -- nuo
                 v3.takerAddress = '0x63305728359c088a52b0b0eeec235db4d31a67fc'
@@ -310,8 +310,8 @@ uni_v2_swap as (
 SELECT   s.tx_hash tx_hash, s.index evt_index, s.contract_address, s.block_time, 
     '0x' || substring(DATA, 27, 40) AS maker, 
     '0xdef1c0ded9bec7f1a1670819833240f027b25eff' AS taker,
-            z.taker_token,
-            z.maker_token,
+            taker_token,
+            maker_token,
             bytea2numeric_v3('0x' || substring(DATA, 219, 40)) AS taker_token_amount_raw,
             bytea2numeric_v3('0x' || substring(DATA, 283, 40)) AS maker_token_amount_raw,
             'direct_uniswapv2' AS TYPE,
