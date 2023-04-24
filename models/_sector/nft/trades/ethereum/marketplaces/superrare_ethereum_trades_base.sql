@@ -221,5 +221,4 @@ left join {{ source('erc721_ethereum','evt_transfer') }} minter on minter.contra
     {% if is_incremental() %}
     and minter.evt_block_time >= date_trunc("day", now() - interval '1 week')
     {% endif %}
---where (a.price_raw) > 0
 
