@@ -36,7 +36,7 @@ WITH deposit_events AS (
     )
     
 , traces AS (
-    SELECT distinct t.block_number
+    SELECT t.block_number
     , t.tx_hash AS tx_hash
     , t.value/POWER(10, 18) AS amount
     , t.from AS depositor_address
@@ -85,4 +85,3 @@ INNER JOIN traces ett ON ett.block_number=d.block_number
     AND ett.table_merging_traces_id=d.table_merging_deposits_id
 LEFT JOIN {{ ref('staking_ethereum_entities')}} ete
     ON ett.depositor_address=ete.address
-    
