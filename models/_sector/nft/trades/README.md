@@ -129,7 +129,7 @@ The migration for each protocol consists of 3 parts.
 | opensea     |   v3    |         14,110,690 |          |           |        |
 | opensea     |   v4    |          1,619,188 |          |           |        |
 | sudoswap    |   v1    |            300,750 |          |           |        |
-| superrare   |   v1    |             38,864 |          |           |        |
+| superrare   |   v1    |             38,864 |   [x]    |    [x]    |        |
 | x2y2        |   v1    |          1,843,487 |          |           |        |
 | zora        |   v1    |              2,976 |          |           |        |
 | zora        |   v2    |              3,491 |          |           |        |
