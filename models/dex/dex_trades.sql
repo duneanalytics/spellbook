@@ -60,6 +60,7 @@
 ,ref('maverick_trades')
 ,ref('verse_dex_ethereum_trades')
 ,ref('onepunchswap_bnb_trades')
+,ref('glacier_avalanche_c_trades')
 ] %}
 
 
