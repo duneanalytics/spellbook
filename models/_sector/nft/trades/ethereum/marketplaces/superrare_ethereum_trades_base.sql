@@ -201,11 +201,15 @@ SELECT
         then 'primary'
         else 'secondary'
     end as trade_type,
-    ROUND(0.03 * (a.price_raw)) as platform_fee_amount_raw, -- fixed 3%
     case
         when a.seller = minter.to
-        then a.price_raw/10 -- fixed 10%
-        else 0
+        then ROUND((0.03+0.15) * (a.price_raw)) -- superrare takes fixed 3% fee + 15% commission on primary sales
+        else ROUND(0.03 * (a.price_raw))    -- fixed 3% fee
+    end as platform_fee_amount_raw,
+    case
+        when a.seller = minter.to
+        then 0
+        else ROUND(0.10 * (a.price_raw))  -- fixed 10% royalty fee on secondary sales
     end as royalty_fee_amount_raw,
     cast(NULL as varchar(1)) as royalty_fee_address,
     cast(NULL as varchar(1)) as platform_fee_address,
