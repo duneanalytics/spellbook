@@ -271,9 +271,9 @@ models:
       project: opensea
       contributors: sohwak
     config:
-      tags: ['polygon','opensea','trades']
+      tags: ['polygon','opensea','events']
     description: >
-        Opensea trades on Polygon, from Seaport v1.1
+        Opensea events on Polygon, from Seaport v1.1
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -362,9 +362,9 @@ models:
       project: opensea
       contributors: sohwak
     config:
-      tags: ['polygon','opensea','trades']
+      tags: ['polygon','opensea','events']
     description: >
-        Opensea trades on Polygon, from Seaport v1.4
+        Opensea events on Polygon, from Seaport v1.4
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -458,7 +458,7 @@ models:
     config:
       tags: ['polygon','opensea','trades']
     description: >
-        Opensea Wyvern trades on Polygon
+        Opensea trades on Polygon
     columns:
       - *blockchain
       - *project
@@ -496,7 +496,7 @@ models:
     config:
       tags: ['polygon','opensea','fees']
     description: >
-        Opensea Wyvern fees on Polygon
+        Opensea fees on Polygon
     columns:
       - *blockchain
       - *project

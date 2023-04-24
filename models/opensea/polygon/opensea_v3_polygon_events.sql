@@ -20,7 +20,7 @@ select blockchain
       ,evt_type
       ,nft_contract_address
       ,collection
-      ,cast(token_id as varchar) as token_id
+      ,cast(token_id as varchar(100)) as token_id
       ,number_of_items
       ,token_standard
       ,amount_original
