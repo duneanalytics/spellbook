@@ -198,7 +198,8 @@ SELECT
         then a.price_raw/10 -- fixed 10%
         else 0
     end as royalty_fee_amount_raw,
-    null as royalty_fee_receive_address
+    cast(NULL as varchar(1)) as royalty_fee_address,
+    cast(NULL as varchar(1)) as platform_fee_address
 from all_superrare_sales a
 left outer join {{ source('erc721_ethereum','evt_transfer') }} minter on minter.contract_address = a.contract_address
     and minter.tokenId = a.nft_token_id
