@@ -21,6 +21,7 @@ with all_superrare_sales as (
             , `_amount` as price_raw
             , evt_tx_hash
             , '' as currency_contract
+            , evt_index as sub_tx_trade_id
     from {{ source('superrare_ethereum','SuperRareMarketAuction_evt_Sold') }}
     {% if is_incremental() %}
     where evt_block_time >= date_trunc("day", now() - interval '1 week')
@@ -37,6 +38,7 @@ with all_superrare_sales as (
             , `_amount`
             , evt_tx_hash
             , ''
+            , evt_index
     from {{ source('superrare_ethereum','SuperRare_evt_Sold') }}
     {% if is_incremental() %}
     where evt_block_time >= date_trunc("day", now() - interval '1 week')
@@ -53,6 +55,7 @@ with all_superrare_sales as (
             , `_amount`
             , evt_tx_hash
             , ''
+            , evt_index
     from {{ source('superrare_ethereum','SuperRareMarketAuction_evt_AcceptBid') }}
     {% if is_incremental() %}
     where evt_block_time >= date_trunc("day", now() - interval '1 week')
@@ -69,6 +72,7 @@ with all_superrare_sales as (
             , `_amount`
             , evt_tx_hash
             , ''
+            , evt_index
     from {{ source('superrare_ethereum','SuperRare_evt_AcceptBid') }}
     {% if is_incremental() %}
     where evt_block_time >= date_trunc("day", now() - interval '1 week')
@@ -85,6 +89,7 @@ with all_superrare_sales as (
             , `_amount`
             , evt_tx_hash
             , `_currencyAddress`
+            , evt_index
     from {{ source('superrare_ethereum','SuperRareBazaar_evt_AcceptOffer') }}
     {% if is_incremental() %}
     where evt_block_time >= date_trunc("day", now() - interval '1 week')
@@ -101,6 +106,7 @@ with all_superrare_sales as (
             , `_amount`
             , evt_tx_hash
             , `_currencyAddress`
+            , evt_index
     from {{ source('superrare_ethereum','SuperRareBazaar_evt_AuctionSettled') }}
     {% if is_incremental() %}
     where evt_block_time >= date_trunc("day", now() - interval '1 week')
@@ -117,6 +123,7 @@ with all_superrare_sales as (
             , `_amount`
             , evt_tx_hash
             , `_currencyAddress`
+            , evt_index
     from {{ source('superrare_ethereum','SuperRareBazaar_evt_Sold') }}
     {% if is_incremental() %}
     where evt_block_time >= date_trunc("day", now() - interval '1 week')
@@ -134,6 +141,7 @@ with all_superrare_sales as (
             , bytea2numeric_v3(substring(data from 67 for 64)) as price_raw
             , tx_hash
             , ''
+            , index
     from {{ source('ethereum','logs') }}
     where contract_address = lower('0x8c9f364bf7a56ed058fc63ef81c6cf09c833e656')
         and topic1 = lower('0xea6d16c6bfcad11577aef5cc6728231c9f069ac78393828f8ca96847405902a9')
@@ -155,6 +163,7 @@ with all_superrare_sales as (
             , bytea2numeric_v3(substring(data from 3 for 64)) as price_raw
             , tx_hash
             , ''
+            , index
     from {{ source('ethereum','logs') }}
     where contract_address =  lower('0x65b49f7aee40347f5a90b714be4ef086f3fe5e2c')
         and topic1 in (lower('0x2a9d06eec42acd217a17785dbec90b8b4f01a93ecd8c127edd36bfccf239f8b6')
@@ -199,7 +208,8 @@ SELECT
         else 0
     end as royalty_fee_amount_raw,
     cast(NULL as varchar(1)) as royalty_fee_address,
-    cast(NULL as varchar(1)) as platform_fee_address
+    cast(NULL as varchar(1)) as platform_fee_address,
+    sub_tx_trade_id
 from all_superrare_sales a
 left outer join {{ source('erc721_ethereum','evt_transfer') }} minter on minter.contract_address = a.contract_address
     and minter.tokenId = a.nft_token_id
