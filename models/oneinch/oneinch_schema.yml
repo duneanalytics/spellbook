@@ -10,6 +10,11 @@ models:
       tags: ['oneinch', 'metadata']
     description: >
         (dictionary) contract addresses of 1inch and other projects for internal use
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - address
     columns:
       - &blockchain
         name: blockchain
@@ -24,5 +29,3 @@ models:
         name: contract_type
       - &address
         name: address
-        tests:
-          - unique
