@@ -60,7 +60,7 @@ SELECT
     ,trade.seller
     ,tok.tokenAddress as nft_contract_address
     ,tok.tokenId as nft_token_id
-    ,1 as number_of_items
+    ,1 as nft_amount
     ,trade.currency as currency_contract
     ,trade.cost as amount_raw
     ,coalesce(fee.platform_amount,0) as platform_fee_amount_raw
