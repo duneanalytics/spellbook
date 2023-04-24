@@ -1,5 +1,5 @@
 {{ config(schema='opensea_v3_polygon'
-         ,alias='trades')
+         ,alias='events')
 }}
 
 -- opensea.trades has the same columns as seaport.trades
@@ -20,7 +20,7 @@ select blockchain
       ,evt_type
       ,nft_contract_address
       ,collection
-      ,token_id
+      ,cast(token_id as varchar(100)) as token_id
       ,number_of_items
       ,token_standard
       ,amount_original
