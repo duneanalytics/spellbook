@@ -26,7 +26,7 @@ WITH zeroex_tx AS (
                     CASE
                         WHEN takerAddress = '0x63305728359c088a52b0b0eeec235db4d31a67fc' THEN takerAddress
                         ELSE NULL
-                    END AS affiliate_address
+                    END AS affiliate_address,
                 SUBSTRING(v3.takerAssetData, 34, 40) taker_token,
                 SUBSTRING(v3.makerAssetData, 34, 40) maker_token
         FROM {{ source('zeroex_v2_bnb', 'Exchange_evt_Fill') }} v3
