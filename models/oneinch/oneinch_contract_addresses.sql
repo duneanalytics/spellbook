@@ -1,4 +1,4 @@
-{{ config(materialized='view', alias='metadata_contract_addresses') }}
+{{ config(materialized='view', alias='contract_addresses') }}
 
 -- last updated 2023-03-21
 with routers as (
@@ -187,5 +187,5 @@ select
   , project
   , contract_name
   , contract_type
-  , lower(address)
+  , lower(address) as address
 from routers
