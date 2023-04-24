@@ -84,7 +84,7 @@ FROM base_union base
 INNER JOIN {{ transactions_model }} tx
 ON tx.block_number = base.block_number
     AND tx.hash = base.tx_hash
-INNER JOIN {{ tokens_nft_model }} nft
+LEFT JOIN {{ tokens_nft_model }} nft
 ON nft.contract_address = base.nft_contract_address
 LEFT JOIN {{ tokens_erc20_model }} erc20
 ON erc20.contract_address = base.currency_contract

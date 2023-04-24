@@ -197,17 +197,17 @@ SELECT
     cast(NULL as varchar(1)) as project_contract_address,
     a.evt_tx_hash as tx_hash,
     case
-        when a.seller = minter.to
+        when a.seller = coalesce(minter.to, minter_superrare.to)
         then 'primary'
         else 'secondary'
     end as trade_type,
     case
-        when a.seller = minter.to
+        when a.seller = coalesce(minter.to, minter_superrare.to)
         then ROUND((0.03+0.15) * (a.price_raw)) -- superrare takes fixed 3% fee + 15% commission on primary sales
         else ROUND(0.03 * (a.price_raw))    -- fixed 3% fee
     end as platform_fee_amount_raw,
     case
-        when a.seller = minter.to
+        when a.seller = coalesce(minter.to, minter_superrare.to)
         then 0
         else ROUND(0.10 * (a.price_raw))  -- fixed 10% royalty fee on secondary sales
     end as royalty_fee_amount_raw,
@@ -220,5 +220,11 @@ left join {{ source('erc721_ethereum','evt_transfer') }} minter on minter.contra
     and minter.from = '0x0000000000000000000000000000000000000000'
     {% if is_incremental() %}
     and minter.evt_block_time >= date_trunc("day", now() - interval '1 week')
+    {% endif %}
+left join {{ source('erc20_ethereum','evt_transfer') }} minter_superrare on minter_superrare.contract_address = a.contract_address
+    and minter_superrare.value = a.nft_token_id
+    and minter_superrare.from = '0x0000000000000000000000000000000000000000'
+    {% if is_incremental() %}
+    and minter_superrare.evt_block_time >= date_trunc("day", now() - interval '1 week')
     {% endif %}
 
