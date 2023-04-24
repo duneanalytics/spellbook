@@ -48,6 +48,6 @@ WITH migrated as (
 select *
 from test
 where not check_amount
-    or not check_platform_amount
+    or (not check_platform_amount and project != 'superrare')
     or not check_royalty_amount
 
