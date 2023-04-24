@@ -86,8 +86,8 @@ SELECT  a.blockchain
       , a.tx_hash
       , a.tx_from
       , a.tx_to
-      , b.evt_index
-      , CAST(ARRAY() as array<bigint>) as trace_address
+      , b.evt_index 
+      , CAST(ARRAY(-1) as array<bigint>) as trace_address
       , a.type
       , a.swap_flag
       , b.fills_within
