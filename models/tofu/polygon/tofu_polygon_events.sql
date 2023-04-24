@@ -21,6 +21,7 @@ WITH tff AS (
            royalty_rate,
            fee_address,
            royalty_address,
+           id,
            bundle_size,
            get_json_object(t, '$.token')   as token,
            get_json_object(t, '$.tokenId') as token_id,
@@ -32,6 +33,7 @@ WITH tff AS (
                  get_json_object(get_json_object(detail, '$.settlement'), '$.royaltyRate') / 1000000 as royalty_rate,
                  get_json_object(get_json_object(detail, '$.settlement'), '$.feeAddress')            as fee_address,
                  get_json_object(get_json_object(detail, '$.settlement'), '$.royaltyAddress')        as royalty_address,
+                 get_json_object(get_json_object(detail, '$.settlement'), '$.id')                    as id,
                  posexplode(from_json(get_json_object(detail, '$.bundle'), 'array<string>'))         as (i,t),
                  json_array_length(get_json_object(detail, '$.bundle'))                              as bundle_size
           FROM {{ source('tofu_nft_polygon', 'MarketNG_call_run') }}
@@ -46,6 +48,7 @@ WITH tff AS (
                 evt_block_time,
                 evt_block_number,
                 evt_index,
+                id,
                 get_json_object(inventory, '$.seller')   as seller,
                 get_json_object(inventory, '$.buyer')    as buyer,
                 get_json_object(inventory, '$.kind')     as kind,
@@ -62,8 +65,7 @@ WITH tff AS (
               and evt_block_time >= date_trunc("day", now() - interval '1 week')
               {% endif %}
      )
-SELECT DISTINCT
-       'polygon'                                 as blockchain
+SELECT 'polygon'                                 as blockchain
      , 'tofu'                                as project
      , 'v1'                                  as version
      , date_trunc('day', tfe.evt_block_time) as block_date
@@ -114,12 +116,13 @@ SELECT DISTINCT
            else pu.symbol
       end                                    as royalty_fee_currency_symbol
     , tff.bundle_index
-    , concat('polygon-tofu-v1-', tfe.evt_block_number, tfe.evt_tx_hash, tfe.evt_index, tff.bundle_index) as unique_trade_id
+    , concat('polygon-tofu-v1-', tfe.evt_block_number, '-', tfe.evt_tx_hash, '-', tfe.evt_index, '-', tff.bundle_index) as unique_trade_id
     , tfe.evt_index
 FROM tfe
          INNER JOIN tff
               ON tfe.evt_tx_hash = tff.call_tx_hash
                   AND tfe.evt_block_time = tff.call_block_time
+                  and tfe.id = tff.id
          LEFT JOIN {{ source('polygon', 'transactions') }} tx
                    ON tx.block_time = tfe.evt_block_time
                        AND tx.hash = tfe.evt_tx_hash
