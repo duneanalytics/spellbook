@@ -8,9 +8,9 @@
     unique_key = ['project','project_version','tx_hash','sub_tx_trade_id']
     )
 }}
-
+-- (project, project_version, model)
+--    ,('superrare',    'v1',   ref('superrare_ethereum_trades_base'))
 {% set base_models = [
-    -- (project, project_version, model)
     ('archipelago',    'v1',   ref('archipelago_ethereum_trades_base'))
     ,('superrare',    'v1',   ref('superrare_ethereum_trades_base'))
 ] %}
