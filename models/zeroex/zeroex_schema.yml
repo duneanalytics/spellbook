@@ -162,7 +162,7 @@ models:
       project: zeroex
       contributors: rantum, danning.sui, bakabhai993 
     config:
-      tags: ['ethereum','optimism', 'polygon', 'abitrum', 'fantom', 'avalanche', 'bnb', '0x','dex_aggregator','dex','aggregator']
+      tags: ['ethereum','optimism', 'polygon', 'abitrum', 'fafntom', 'avalanche', 'bnb', '0x','dex_aggregator','dex','aggregator']
     description: >
         0x aggreator swaps thru 0x 0x API
     tests:

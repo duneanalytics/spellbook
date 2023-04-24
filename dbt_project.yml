@@ -1047,3 +1047,8 @@ models:
         +schema: bebop_polygon
       arbitrum:
         +schema: bebop_arbitrum
+
+    glacier:
+      +schema: glacier
+      avalanche_c:
+        +schema: glacier_avalanche_c
