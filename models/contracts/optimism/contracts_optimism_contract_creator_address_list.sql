@@ -16,8 +16,8 @@ FROM (
     ,cast(contract_project as varchar(250)) AS contract_project
   from 
       (values
-      ('0x932607335869cff6349ef450e74c83a3b871a9ff', 'Lyra V1')
-      ,('0x41a742d0cb523b0c313518309ade763fb609da25', 'Lyra V1')
+      ('0x932607335869cff6349ef450e74c83a3b871a9ff', 'Lyra')
+      ,('0x41a742d0cb523b0c313518309ade763fb609da25', 'Lyra')
       ,('0x924ac9910c09a0215b06458653b30471a152022f', 'Hop Protocol')
       ,('0xfefec7d3eb14a004029d278393e6ab8b46fb4fca', 'Hop Protocol')
       ,('0x0e0e3d2c5c292161999474247956ef542cabf8dd', 'Hop Protocol')
@@ -140,7 +140,6 @@ FROM (
       ,('0x8602ee2f8aaeb671e409b26d48e36dd8cc3b7ed7', 'ZipSwap')
       ,('0xf7c1daf7443d7307df13c81f5f0328d4c7803e7b', 'BoringDAO')
       ,('0x38e63793993ae54be374d129f34a3faf2c382e97', 'TokenFunder')
-      -- ,('0xbb6e024b9cffacb947a71991e386681b1cd1477d', 'NULL')
       ,('0x512472840327530ea03cce6f58966b221f3a8b6a', 'Perpetual Protocol')
       ,('0x56cf1fa9185e42e90205e955e299f33b6204da59', 'DoraHacks')
       ,('0x6336cf6f9a7abb9efa86c04ac29541f015dd58b1', 'XmasBook')
@@ -365,7 +364,7 @@ FROM (
       ,('0x370880694995Aa8A53F71645F7Bec3b0e7bb25d9', 'OneRing')
       ,('0xfc8367ef6bcfc10746e5b9b034314812db8d7213', 'OpenXSwap')
       ,('0xafd91ef047189f7e894d0fac71dcce8687e9b893', 'ECC Domains')
-      ,('0x0E1B5AB67aF1c99F8c7Ebc71f41f75D4D6211e53', 'Rainbow')
+      ,('0x0E1B5AB67aF1c99F8c7Ebc71f41f75D4D6211e53', 'Socket')
       ,('0xd531795282a1d7857faf43416b4c135759db45c4', 'Sided Finance')
       ,('0x2dA7e3a7F21cCE79efeb66f3b082196EA0A8B9af', 'OmniSwap')
       ,('0x0c6c8f014d1B3E37F470d39356379E220e4Beb67', 'Resonate')
