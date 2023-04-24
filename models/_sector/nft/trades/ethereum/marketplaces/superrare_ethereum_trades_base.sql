@@ -211,11 +211,11 @@ SELECT
     cast(NULL as varchar(1)) as platform_fee_address,
     sub_tx_trade_id
 from all_superrare_sales a
-left outer join {{ source('erc721_ethereum','evt_transfer') }} minter on minter.contract_address = a.contract_address
+left join {{ source('erc721_ethereum','evt_transfer') }} minter on minter.contract_address = a.contract_address
     and minter.tokenId = a.nft_token_id
     and minter.from = '0x0000000000000000000000000000000000000000'
     {% if is_incremental() %}
     and minter.evt_block_time >= date_trunc("day", now() - interval '1 week')
     {% endif %}
-where (a.price_raw) > 0
+--where (a.price_raw) > 0
 
