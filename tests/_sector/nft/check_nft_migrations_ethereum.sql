@@ -14,7 +14,7 @@ WITH migrated as (
     select
     project
     , version as project_version
-    ,sum(price_raw/pow(10,18)) as ref_total_amount
+    ,sum(amount_raw/pow(10,18)) as ref_total_amount
     ,sum(platform_fee_amount_raw/pow(10,18)) as ref_total_platform_amount
     ,sum(royalty_fee_amount_raw/pow(10,18)) as ref_total_royalty_amount
 
