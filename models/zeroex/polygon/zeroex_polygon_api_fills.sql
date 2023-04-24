@@ -403,7 +403,8 @@ AND tx.block_time >= '{{zeroex_v3_start_date}}'
 
 LEFT JOIN {{ source('prices', 'usd') }} tp ON date_trunc('minute', all_tx.block_time) = tp.minute
 AND CASE
-        WHEN all_tx.taker_token = '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee' THEN '0x0d500b1d8e8ef31e21c99d1db9a6444d3adf1270'
+        WHEN all_tx.taker_token = '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee' THEN '0x0000000000000000000000000000000000001010'
+        WHEN all_tx.taker_token = '0x0d500b1d8e8ef31e21c99d1db9a6444d3adf1270' THEN '0x0000000000000000000000000000000000001010'
         ELSE all_tx.taker_token
     END = tp.contract_address
 AND tp.blockchain = 'polygon'
@@ -417,7 +418,8 @@ AND tp.minute >= '{{zeroex_v3_start_date}}'
 
 LEFT JOIN {{ source('prices', 'usd') }} mp ON DATE_TRUNC('minute', all_tx.block_time) = mp.minute
 AND CASE
-        WHEN all_tx.maker_token = '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee' THEN '0x0d500b1d8e8ef31e21c99d1db9a6444d3adf1270'
+        WHEN all_tx.maker_token = '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee' THEN '0x0000000000000000000000000000000000001010'
+        WHEN all_tx.taker_token = '0x0d500b1d8e8ef31e21c99d1db9a6444d3adf1270' THEN '0x0000000000000000000000000000000000001010'
         ELSE all_tx.maker_token
     END = mp.contract_address
 AND mp.blockchain = 'polygon'
