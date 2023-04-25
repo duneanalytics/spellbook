@@ -32,6 +32,14 @@ FROM (
     FROM {{ ref('the_granary_optimism_tokens') }}
       WHERE blockchain = 'optimism'
     
+    UNION ALL
+
+    SELECT
+    LOWER(vault_token) AS contract_address, vault_symbol AS symbol, 18 as decimals
+    , 'receipt' as token_type, 'yearn vault factory' AS token_mapping_source
+    FROM {{ ref('yearn_optimism_vaults') }}
+      WHERE blockchain = 'optimism'
+    
   ) a
   GROUP BY contract_address, symbol, token_type, token_mapping_source --get uniques & handle if L2 token factory gets decimals wrong
 )
