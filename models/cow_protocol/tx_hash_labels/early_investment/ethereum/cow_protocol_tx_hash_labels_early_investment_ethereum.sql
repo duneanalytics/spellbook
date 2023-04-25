@@ -42,7 +42,7 @@ with
 
 select
   "ethereum" as blockchain,
-  concat(tx_hash, evt_index, project, version) as tx_hash_key,
+  concat(tx_hash, evt_index, project, version, tx_to) as tx_hash_key,
   "Early investment" AS name,
   "tx_hash" AS category,
   "gentrexha" AS contributor,

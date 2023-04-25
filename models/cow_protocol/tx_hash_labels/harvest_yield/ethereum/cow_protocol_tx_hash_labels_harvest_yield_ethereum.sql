@@ -41,7 +41,7 @@ with
 
 select
   "ethereum" as blockchain,
-  concat(tx_hash, CAST(evt_index AS VARCHAR(100)), project, version) as tx_hash_key,
+  concat(tx_hash, CAST(evt_index AS VARCHAR(100)), project, version, tx_to) as tx_hash_key,
   "Offramp to stable" AS name,
   "tx_hash" AS category,
   "gentrexha" AS contributor,
