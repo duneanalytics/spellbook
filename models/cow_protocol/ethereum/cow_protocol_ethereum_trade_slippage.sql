@@ -13,6 +13,11 @@ select
     block_number,
     block_time,
     order_type,
+    CASE
+        when order_type = 'SELL'
+        then cast(atoms_sold as double) / cast(limit_sell_amount as double)
+        else cast(atoms_bought as double) / cast(limit_buy_amount as double)
+        end as fill_proportion,
     CASE when order_type = 'SELL'
         THEN (cast(limit_buy_amount as double) / (1.0 - (cast(slippage_bips as double) / 10000.0)))
         else cast(limit_buy_amount as double) end as buy_quote,
@@ -36,19 +41,20 @@ results as (
            sell_quote,
            tolerance_bips,
            trade_usd_value,
+           fill_proportion,
            CASE
-               WHEN order_type = 'SELL' THEN (atoms_bought - buy_quote)
-               ELSE (sell_quote - atoms_sold)
+               WHEN order_type = 'SELL' THEN (atoms_bought - (buy_quote * fill_proportion))
+               ELSE ((sell_quote * fill_proportion) - atoms_sold)
                END  AS amount_atoms,
            100.0 * (CASE
                         WHEN order_type = 'SELL'
-                            THEN ((atoms_bought - buy_quote) / buy_quote)
-                        ELSE ((sell_quote - atoms_sold) / sell_quote)
+                            THEN (atoms_bought - (buy_quote * fill_proportion)) / (buy_quote * fill_proportion)
+                        ELSE ((sell_quote * fill_proportion) - atoms_sold) / (sell_quote * fill_proportion)
                END) AS amount_percentage,
            CASE
                WHEN order_type = 'SELL'
-                   THEN (atoms_bought - buy_quote) * (trade_usd_value / atoms_bought)
-               ELSE (sell_quote - atoms_sold) * (trade_usd_value / atoms_sold)
+                   THEN (atoms_bought - (buy_quote * fill_proportion)) * (trade_usd_value / atoms_bought)
+               ELSE ((sell_quote * fill_proportion) - atoms_sold) * (trade_usd_value / atoms_sold)
                END  AS amount_usd
     from raw_data
 )
