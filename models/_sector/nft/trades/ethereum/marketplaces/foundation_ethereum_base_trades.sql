@@ -110,7 +110,7 @@ SELECT
 , cast( null as string) as trade_type
 , t.seller
 , t.buyer
-, t.amount_raw
+, t.price_raw
 , '{{ var("ETH_ERC20_ADDRESS") }}' AS currency_contract -- all trades are in ETH
 , t.project_contract_address
 , t.nft_contract_address
