@@ -45,7 +45,7 @@ sources:
       - name: PairFactoryUpgradeable_evt_Pool
         loaded_at_field: evt_block_time
         description: >
-          Thena Fushion Factory PoolCreated events table
+          Thena fusion Factory PoolCreated events table
         columns:
           - *contract_address
           - *evt_tx_hash
@@ -55,8 +55,12 @@ sources:
           - &pool
             name: pool
             description: "BNB chain address for the liquidity pool created"
-          - *token0
-          - *token1     
+          - &token0
+            name: token0
+            description: "Token0 contract address"
+          - &token1
+            name: token1
+            description: "Token1 contract address"    
 
   - name: thena_bnb
     description: "BNB chain decoded tables related to Thena"
@@ -66,7 +70,7 @@ sources:
       - name: AlgebraPool_evt_Swap
         loaded_at_field: evt_block_time
         description: >
-          Thena Fushion pair swap events table
+          Thena fusion pair swap events table
         columns:
           - *contract_address
           - *evt_tx_hash
@@ -111,11 +115,7 @@ sources:
             description: "Pair contract address"
           - &stable
             name: stable
-          - &token0
-            name: token0
-            description: "Token0 contract address"
-          - &token1
-            name: token1
-            description: "Token1 contract address"
+          - *token0
+          - *token1 
 
   

@@ -1,6 +1,6 @@
 {{ config(
         alias ='trades',
-        post_hook='{{ expose_spells(\'["bnb","ethereum"]\',
+        post_hook='{{ expose_spells(\'["bnb"]\',
                                 "project",
                                 "thena",
                                 \'["hsrvc"]\') }}'
