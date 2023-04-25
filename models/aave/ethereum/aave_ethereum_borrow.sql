@@ -6,8 +6,7 @@
                                   \'["batwayne", "chuxin"]\') }}'
   )
 }}
-{#{{ trino_comment("aave", "borrow", [{"name": "version", "type": "uint256"}]) }} #}
-{{base64("hello")}}
+{{ trino_comment("aave", "borrow", [{"name": "version", "type": "uint256"}]) }}
 SELECT *
 FROM 
 (
