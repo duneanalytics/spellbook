@@ -431,6 +431,10 @@ FROM (
       ,('0x4bb4c1b0745ef7b4642feeccd0740dec417ca0a0', 'Sushi')
       ,('0x15051107651f3420144d3a2412d49402c2fac3c0', 'zkBridge')
       ,('0x2313f80d53c649c7b2c9c4d101b796f34cbe80f3', 'Wido')
+      ,('0x18606e2ABaA0bA15Cc1D0D3b55521bD2247e4d2E', 'Layer Zero')
+      ,('0x6879fAb591ed0d62537A3Cac9D7cd41218445a84', 'zeroex')
+      ,('0x076d6da60aAAC6c97A8a0fE8057f9564203Ee545', 'Aave') --BGD
+      ,('0x015D83637A6904CB13C93068a48887F9ACD7EEF5', 'Odos')
 
   ) as temp_table (creator_address, contract_project)
 
