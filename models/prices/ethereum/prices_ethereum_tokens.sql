@@ -1636,7 +1636,8 @@ FROM
     ('cnotes-community-notes', 'ethereum', 'CNOTES', '0x148af0CAda405380E8e3B2F694A6A7de848759b0', 18),
     ('imgnai-imgnai', 'ethereum', 'IMGNAI', '0xA735A3AF76CC30791C61c10d585833829d36CBe0', 9),
     ('woxen-wrapped-oxen', 'ethereum', 'WOXEN', '0xd1e2d5085b39B80C9948AeB1b9aA83AF6756bcc5', 9),
-    ('xrio-realio-network-utility-token-exchangable', 'ethereum', 'XRIO', '0x0B4AC2BA3D4924C9A06D9C1d08D7867059A39cC1', 18)
+    ('xrio-realio-network-utility-token-exchangable', 'ethereum', 'XRIO', '0x0B4AC2BA3D4924C9A06D9C1d08D7867059A39cC1', 18),
+    ('pepe-pepe1', 'ethereum', 'PEPE', '0x6982508145454Ce325dDbE47a25d4ec3d2311933', 18)      
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)
 where contract_address not in (
     '0x841fb148863454a3b3570f515414759be9091465' -- SHIH has bad price feed.
