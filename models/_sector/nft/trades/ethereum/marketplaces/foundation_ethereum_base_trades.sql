@@ -107,7 +107,7 @@ SELECT
 , t.nft_token_id
 , 1 AS nft_amount
 , t.trade_category
-, t.evt_type
+, cast( null as string) as evt_type
 , t.seller
 , t.buyer
 , t.amount_raw
