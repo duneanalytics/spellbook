@@ -11,8 +11,9 @@
 -- (project, project_version, model)
 --    ,('superrare',    'v1',   ref('superrare_ethereum_trades_base'))
 {% set base_models = [
-    ('archipelago',    'v1',   ref('archipelago_ethereum_trades_base'))
+     ('archipelago',    'v1',   ref('archipelago_ethereum_trades_base'))
     ,('superrare',    'v1',   ref('superrare_ethereum_trades_base'))
+    ,('foundation',    'v1',   ref('foundation_ethereum_trades_base'))
 ] %}
 
 

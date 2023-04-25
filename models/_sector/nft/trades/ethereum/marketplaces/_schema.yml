@@ -33,3 +33,20 @@ models:
          combination_of_columns: [ 'block_number','tx_hash','sub_tx_trade_id' ]
      - dbt_utils.equal_rowcount:
          compare_model: ref('superrare_ethereum_events')
+
+
+ - name: foundation_ethereum_trades_base
+   meta:
+     blockchain: ethereum
+     sector: nft
+     project: foundation
+     contributors: ['soispoke', 'hildobby', '0xRob']
+   config:
+     tags: [ 'ethereum', 'nft', 'trades', 'foundation' ]
+   description: "foundation base trades"
+   tests:
+     - dbt_utils.unique_combination_of_columns:
+         combination_of_columns: [ 'block_number','tx_hash','sub_tx_trade_id' ]
+     - dbt_utils.equal_rowcount:
+         compare_model: ref('foundation_ethereum_events')
+

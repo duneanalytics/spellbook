@@ -1,5 +1,5 @@
 {{ config(
-    schema = 'archipelago',
+    schema = 'archipelago_ethereum',
     alias ='trades_base',
     partition_by = ['block_date'],
     materialized = 'incremental',
