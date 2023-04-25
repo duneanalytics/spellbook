@@ -8,7 +8,7 @@
 }}
 
 WITH basic_info AS (
-SELECT DISTINCT target                   AS address,
+SELECT DISTINCT _target                   AS address,
                 'infrastructure'         AS category,
                 'persona'                AS label_type,
                 'flashloan_users'        AS model_name,
