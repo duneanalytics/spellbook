@@ -19,7 +19,7 @@
 -- Test Query here: https://dune.com/queries/2274187
 WITH zeroex_tx AS (
     SELECT tx_hash,
-           max(affiliate_address) as affiliate_address
+           max(affiliate_address) as affiliate_address, taker_token, maker_token 
     FROM (
 
         SELECT v3.evt_tx_hash AS tx_hash,
