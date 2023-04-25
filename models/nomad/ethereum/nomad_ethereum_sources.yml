@@ -1,9 +1,0 @@
-version: 2
-
-sources: 
-  - name: nomad_ethereum
-    tables:
-      - name: BridgeRouter_evt_Send
-        loaded_at_field: evt_block_time
-      - name: BridgeRouter_evt_Receive
-        loaded_at_field: evt_block_time
