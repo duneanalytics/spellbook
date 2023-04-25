@@ -83,7 +83,7 @@ WITH zeroex_tx AS (
                 AND block_time >= '{{zeroex_v3_start_date}}'
                 {% endif %}
     ) temp
-    group by tx_hash
+    group by tx_hash, taker_token, maker_token
 
 ),
 v2_fills_no_bridge AS (
