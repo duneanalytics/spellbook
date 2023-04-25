@@ -83,7 +83,7 @@ WITH all_foundation_trades AS (
     , evt_block_number AS block_number
     , tokenId AS nft_token_id
     , 'Private Sale' AS trade_category
-    , case when (sellerRev = 0 and creatorRev > 0 ) then 'primary' else 'secondary' end as trade_type
+    , case when (sellerRev = 0 and creatorFee > 0 ) then 'primary' else 'secondary' end as trade_type
     , seller
     , buyer
     , creatorFee+protocolFee+sellerRev AS price_raw
@@ -91,7 +91,7 @@ WITH all_foundation_trades AS (
     , nftContract AS nft_contract_address
     , evt_tx_hash AS tx_hash
     , protocolFee AS platform_fee_amount_raw
-    , case when (sellerRev = 0 and creatorRev > 0 ) then 0 else creatorRev end AS royalty_fee_amount_raw
+    , case when (sellerRev = 0 and creatorFee > 0 ) then 0 else creatorFee end AS royalty_fee_amount_raw
     , evt_index as sub_tx_trade_id
     FROM {{ source('foundation_ethereum','market_evt_PrivateSaleFinalized') }} f
      {% if is_incremental() %} -- this filter will only be applied on an incremental run
