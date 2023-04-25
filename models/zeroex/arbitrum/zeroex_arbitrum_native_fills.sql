@@ -170,7 +170,7 @@ WITH
               END AS volume_usd
           , cast(NULL as numeric) AS protocol_fee_paid_eth
         FROM {{ source('zeroex_arbitrum', 'ExchangeProxy_evt_OtcOrderFilled') }} fills
-      LEFT JOIN {{ source('prices', 'usd') }} tp ON tp.blockchain = 'arbitrum'  
+      LEFT JOIN {{ source('prices', 'usd') }} tp ON tp.blockchain = 'arbitrum'  and 
           date_trunc('minute', evt_block_time) = tp.minute 
           AND CASE
                   -- set native token to wrapped version
