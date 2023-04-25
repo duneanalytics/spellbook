@@ -1,6 +1,6 @@
 {{ config(
     schema = 'aave_v1_ethereum'
-    , alias='borrow'
+    , alias='flashloans'
     , post_hook='{{ expose_spells(\'["ethereum"]\',
                                   "project",
                                   "aave_v1",

@@ -1,9 +1,9 @@
 {{ config(
-    schema = 'aave_v2_ethereum'
+    schema = 'aave_v3_ethereum'
     , alias='flashloans'
     , post_hook='{{ expose_spells(\'["ethereum"]\',
                                   "project",
-                                  "aave_v2",
+                                  "aave_v3",
                                   \'["hildobby"]\') }}'
   )
 }}
@@ -24,13 +24,13 @@ WITH flashloans AS (
     , CASE WHEN flash.asset='{{aave_mock_address}}' THEN 18 ELSE erc20.decimals END AS currency_decimals
     , flash.target AS contract_address
     , flash.contract_address AS router_contract
-    FROM {{ source('aave_v2_ethereum','LendingPool_evt_FlashLoan') }} flash
+    FROM {{ source('aave_v3_ethereum','Pool_evt_FlashLoan') }} flash
     LEFT JOIN {{ ref('tokens_ethereum_erc20') }} erc20 ON flash.asset = erc20.contract_address
     )
     
 SELECT 'ethereum' AS blockchain
 , 'Aave' AS project
-, 'v2' AS version
+, 'v3' AS version
 , flash.block_time
 , flash.block_number
 , flash.amount_raw/POWER(10, flash.currency_decimals) AS amount
