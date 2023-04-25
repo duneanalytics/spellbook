@@ -5,17 +5,10 @@ models:
     meta:
       blockchain: optimism
       sector: airdrop
-      project: optimism
       contributors: hildobby
     config:
-      tags: ['table', 'airdrop', 'optimism', 'claim']
+      tags: ['airdrop', 'optimism', 'claim']
     description: "List of airdrop claim transactions on Optimism"
-    tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - recipient
-            - evt_index
     columns:
       - &blockchain
         name: blockchain

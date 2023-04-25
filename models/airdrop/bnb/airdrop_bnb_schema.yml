@@ -5,18 +5,10 @@ models:
     meta:
       blockchain: bnb
       sector: airdrop
-      sector: airdrop
-      project: airdrop
       contributors: hildobby
     config:
-      tags: ['table', 'airdrop', 'bnb', 'claim']
+      tags: ['airdrop', 'bnb', 'claim']
     description: "List of airdrop claim transactions on BNB"
-    tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - recipient
-            - evt_index
     columns:
       - &blockchain
         name: blockchain

@@ -1,7 +1,7 @@
 {{
     config(
         alias='airdrop_claims',
-        materialized = 'incremental',
+        materialized = 'table',
         file_format = 'delta',
         tags=['static'],
         unique_key = ['recipient', 'tx_hash', 'evt_index'],
@@ -12,12 +12,14 @@
     )
 }}
 
+{% set eps_token_address = '0xa7f552078dcc247c2684336020c03648500c6d9f' %}
+
 WITH early_price AS (
     SELECT MIN(minute) AS minute
     , MIN_BY(price, minute) AS price
     FROM {{ source('prices', 'usd') }}
     WHERE blockchain = 'bnb'
-    AND contract_address='0xa7f552078dcc247c2684336020c03648500c6d9f'
+    AND contract_address='{{eps_token_address}}'
     )
 
 SELECT 'bnb' AS blockchain
@@ -33,11 +35,11 @@ SELECT 'bnb' AS blockchain
 , CASE WHEN t.evt_block_time >= (SELECT minute FROM early_price) THEN CAST(pu.price*t.amount/POWER(10, 18) AS double)
     ELSE CAST((SELECT price FROM early_price)*t.amount/POWER(10, 18) AS double)
     END AS amount_usd
-, '0xa7f552078dcc247c2684336020c03648500c6d9f' AS token_address
+, '{{eps_token_address}}' AS token_address
 , 'EPS' AS token_symbol
 , t.evt_index
 FROM {{ source('ellipsis_finance_bnb', 'AirdropClaim_evt_Claimed') }} t
 LEFT JOIN {{ ref('prices_usd_forward_fill') }} pu ON pu.blockchain = 'bnb'
-    AND pu.contract_address='0xa7f552078dcc247c2684336020c03648500c6d9f'
+    AND pu.contract_address='{{eps_token_address}}'
     AND pu.minute=date_trunc('minute', t.evt_block_time)
 WHERE t.evt_block_time BETWEEN '2021-03-24' AND '2022-04-01'
