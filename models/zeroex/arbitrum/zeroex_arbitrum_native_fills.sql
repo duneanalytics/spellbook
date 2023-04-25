@@ -95,7 +95,7 @@ WITH
           , fills.takerToken AS taker_token
           , tt.symbol AS taker_symbol
           , fills.takerTokenFilledAmount / (10^tt.decimals) AS taker_asset_filled_amount
-          , cast(NULL as varbinary) AS fee_recipient_address
+          , cast(NULL as bytea) AS fee_recipient_address
           , CASE
                   WHEN tp.symbol = 'USDC' THEN (fills.takerTokenFilledAmount / 1e6) ----don't multiply by anything as these assets are USD
                   WHEN mp.symbol = 'USDC' THEN (fills.makerTokenFilledAmount / 1e6) ----don't multiply by anything as these assets are USD
@@ -154,7 +154,7 @@ WITH
           , fills.takerToken AS taker_token
           , tt.symbol AS taker_symbol
           , fills.takerTokenFilledAmount / (10^tt.decimals) AS taker_asset_filled_amount
-          , cast(NULL as varbinary) AS fee_recipient_address
+          , cast(NULL as bytea) AS fee_recipient_address
           , CASE
                   WHEN tp.symbol = 'USDC' THEN (fills.takerTokenFilledAmount / 1e6) ----don't multiply by anything as these assets are USD
                   WHEN mp.symbol = 'USDC' THEN (fills.makerTokenFilledAmount / 1e6) ----don't multiply by anything as these assets are USD
