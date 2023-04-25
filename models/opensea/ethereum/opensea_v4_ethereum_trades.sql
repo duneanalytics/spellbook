@@ -231,6 +231,18 @@ with source_ethereum_transactions as (
     select * from iv_considerations
 )
 
+, iv_offer_consideration_with_eth_erc_idx as (
+    select *
+         , case
+               when a.item_type in ('native', 'erc20')
+                   then sum(case when a.item_type in ('native', 'erc20') then 1 end) over (
+                   partition by tx_hash, evt_index, sub_type
+                   order by sub_idx
+                   )
+        end as eth_erc_idx
+    from iv_offer_consideration a
+)
+
 , iv_base_pairs as (
     select 
           a.block_time
@@ -268,16 +280,10 @@ with source_ethereum_transactions as (
             else false 
         end as is_platform_fee
 
-        , case 
-            when item_type in ('native','erc20')
-            then sum(case when item_type in ('native','erc20') then 1 end) over (
-                partition by tx_hash, evt_index, sub_type 
-                order by sub_idx
-                )
-        end as eth_erc_idx
+        , a.eth_erc_idx
         
-         , sum(
-             case 
+        , sum(
+            case
                 when offer_first_item_type = 'erc20' and sub_type = 'consideration' and item_type in ('erc721','erc1155') then 1
                 when offer_first_item_type in ('erc721','erc1155') and sub_type = 'offer' and item_type in ('erc721','erc1155') then 1
             end) over (
@@ -353,7 +359,7 @@ with source_ethereum_transactions as (
         end as is_moved_nft
 
         , fee_wallet_name
-    from iv_offer_consideration a
+    from iv_offer_consideration_with_eth_erc_idx a
     left join iv_platform_fee_wallet f 
         on f.wallet_address = a.receiver
     left join iv_orders_matched b 
