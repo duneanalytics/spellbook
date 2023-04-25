@@ -1,7 +1,7 @@
 version: 2
 
 models:
- - name: archipelago_ethereum_trades_base
+ - name: archipelago_ethereum_base_trades
    meta:
      blockchain: ethereum
      sector: nft
@@ -19,7 +19,7 @@ models:
          compare_model: ref('archipelago_ethereum_events')
 
 
- - name: superrare_ethereum_trades_base
+ - name: superrare_ethereum_base_trades
    meta:
      blockchain: ethereum
      sector: nft
@@ -35,7 +35,7 @@ models:
          compare_model: ref('superrare_ethereum_events')
 
 
- - name: foundation_ethereum_trades_base
+ - name: foundation_ethereum_base_trades
    meta:
      blockchain: ethereum
      sector: nft

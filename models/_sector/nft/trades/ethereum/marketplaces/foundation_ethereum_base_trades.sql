@@ -1,6 +1,6 @@
 {{ config(
     schema = 'foundation_ethereum',
-    alias ='trades_base',
+    alias ='base_trades',
     partition_by = ['block_date'],
     materialized = 'incremental',
     file_format = 'delta',
