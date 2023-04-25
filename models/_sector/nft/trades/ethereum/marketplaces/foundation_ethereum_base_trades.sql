@@ -12,7 +12,7 @@
 
 WITH all_foundation_trades AS (
     SELECT
-    , f.evt_block_time AS block_time
+     f.evt_block_time AS block_time
     , f.evt_block_number AS block_number
     , c.tokenId AS nft_token_id
     , 'Auction Settled' AS trade_category
