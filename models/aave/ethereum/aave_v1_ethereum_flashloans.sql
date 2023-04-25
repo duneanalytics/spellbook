@@ -26,7 +26,7 @@ WITH flashloans AS (
     , flash.contract_address AS contract_address
     FROM {{ source('aave_ethereum','LendingPool_evt_FlashLoan') }} flash
     LEFT JOIN {{ ref('tokens_ethereum_erc20') }} erc20 ON flash._reserve = erc20.contract_address
-    WHERE evt_block_time > NOW() - interval '1' year
+    WHERE flash._amount > 0
     )
     
 SELECT 'ethereum' AS blockchain

@@ -18,7 +18,7 @@ SELECT DISTINCT _target                   AS address,
 FROM
     {{ source('aave_ethereum', 'LendingPool_evt_FlashLoan') }}
 WHERE
-    amount != 0
+    _amount != 0
 
 UNION ALL
 SELECT DISTINCT target                   AS address,
