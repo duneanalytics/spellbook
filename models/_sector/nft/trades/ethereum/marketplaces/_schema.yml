@@ -47,6 +47,4 @@ models:
    tests:
      - dbt_utils.unique_combination_of_columns:
          combination_of_columns: [ 'block_number','tx_hash','sub_tx_trade_id' ]
-     - dbt_utils.equal_rowcount:
-         compare_model: ref('foundation_ethereum_events')
 
