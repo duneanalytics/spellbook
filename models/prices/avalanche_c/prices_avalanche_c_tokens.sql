@@ -17,6 +17,7 @@ FROM
     VALUES
 
     ("aave-new","avalanche_c","AAVE.e","0x63a72806098bd3d9520cc43356dd78afe5d386d9",18),
+    ("glcr-glacier","avalanche_c","GLCR","0x3712871408a829C5cd4e86DA1f4CE727eFCD28F6",18),
     ("axlusdc-axelar-usd-coin", "avalanche_c", "axlUSDC", "0xfab550568c688d5d8a52c7d794cb93edc26ec0ec", 6),
     ("axlusdt-axelar-usd-tether", "avalanche_c", "axlUSDT", "0xf976ba91b6bb3468c91e4f02e68b37bc64a57e66", 6),
     ("axlatom-axelar-wrapped-atom", "avalanche_c", "axlATOM", "0x80d18b1c9ab0c9b5d6a6d5173575417457d00a12", 6),
