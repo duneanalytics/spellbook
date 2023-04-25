@@ -53,6 +53,12 @@ FROM (values
     ,('0xeeab81526c9addb75ffffde0cd3f6f018cc39ac2', 'Synthetix','Multisig - Distributor')
     ,('0x8314125c8b68af2afd0d151eb4a551e88128a2ae', 'Thales', 'Contract Deployer')
     ,('0x5033823f27c5f977707b58f0351adcd732c955dd', 'Lido',     'Intermediate Wallet')
+    ,('0x91c9D4373B077eF8082F468C7c97f2c499e36F5b', 'Kyberswap', 'KyberDAO Multisig')
+    ,('0xe8e91bdb63631b9f28668a221d6213c3d50d168a', 'Crypto LDFM', 'Team Wallet')
+    ,('0xf944069b489f1ebff4c3c6a6014d58cbef7c7009', 'Nested', 'Treasury Wallet')
+    ,('0x6668b635De8452a8613533c852b3d03FbD06DF9D', 'Geo Web', 'Team Multisig')
+    ,('0x5ad276439e3772fdb6696b6cb61401902d4e8b72', 'Geo Web', 'Protocol Treasury')
+    ,('0x94beC50afA856533603DF45639aC11c7E6A64c1f', 'Airgap Wallet', 'Team Wallet')
 
     --quix - should come from CB
     ,('0x5Ad4A019F77e82940f6Dd15A5215362AF061A742','Quix','Distributor')
