@@ -122,7 +122,7 @@ The migration for each protocol consists of 3 parts.
 | blur        |   v1    |          3,067,180 |          |           |        |
 | cryptopunks |   v1    |             23,054 |          |           |        |
 | element     |   v1    |            106,654 |          |           |        |
-| foundation  |   v1    |            137,246 |          |           |        |
+| foundation  |   v1    |            137,246 |   [x]    |           |        |
 | looksrare   |   v1    |            401,647 |          |           |        |
 | looksrare   |   v2    |              1,216 |          |           |        |
 | opensea     |   v1    |         20,245,583 |          |           |        |
