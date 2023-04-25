@@ -489,6 +489,17 @@ WITH dao_wallet AS (
     --   AND call_block_time >= date_trunc("day", now() - interval '1 week')
     --   {% endif %}
     GROUP BY 1, 2, 3
+
+    UNION ALL
+    
+    SELECT call_block_time ts
+        , call_tx_hash hash
+        , STRING(UNHEX(TRIM('0', RIGHT(i, LENGTH(i)-2)))) AS ilk
+        , SUM(dart)/1e18 AS value
+    FROM {{ source('maker_ethereum', 'vat_call_grab') }}
+    WHERE call_success
+    AND dart+0 > 0
+    GROUP BY 1, 2, 3
 )
 , d3m_revenues AS (
     SELECT ts, hash, 31160 AS code, value AS value, ilk
