@@ -16,7 +16,7 @@ WITH all_foundation_trades AS (
     , f.evt_block_number AS block_number
     , c.tokenId AS nft_token_id
     , 'Auction Settled' AS trade_category
-    , case when (f.sellerRev = 0 and f.creatorRev > 0 ) then 'primary' else 'secondary' as trade_type
+    , case when (f.sellerRev = 0 and f.creatorRev > 0 ) then 'primary' else 'secondary' end as trade_type
     , f.seller
     , f.bidder AS buyer
     , f.creatorRev+f.totalFees+f.sellerRev AS price_raw
@@ -39,7 +39,7 @@ WITH all_foundation_trades AS (
     , evt_block_number AS block_number
     , tokenId AS nft_token_id
     , 'Buy' AS trade_category
-    , case when (sellerRev = 0 and creatorRev > 0 ) then 'primary' else 'secondary' as trade_type
+    , case when (sellerRev = 0 and creatorRev > 0 ) then 'primary' else 'secondary' end as trade_type
     , seller
     , buyer
     , creatorRev+totalFees+sellerRev AS price_raw
@@ -61,7 +61,7 @@ WITH all_foundation_trades AS (
     , evt_block_number AS block_number
     , tokenId AS nft_token_id
     , 'Sell' AS trade_category
-    , case when (sellerRev = 0 and creatorRev > 0 ) then 'primary' else 'secondary' as trade_type
+    , case when (sellerRev = 0 and creatorRev > 0 ) then 'primary' else 'secondary' end as trade_type
     , seller
     , buyer
     , creatorRev+totalFees+sellerRev AS price_raw
@@ -83,7 +83,7 @@ WITH all_foundation_trades AS (
     , evt_block_number AS block_number
     , tokenId AS nft_token_id
     , 'Private Sale' AS trade_category
-    , case when (sellerRev = 0 and creatorRev > 0 ) then 'primary' else 'secondary' as trade_type
+    , case when (sellerRev = 0 and creatorRev > 0 ) then 'primary' else 'secondary' end as trade_type
     , seller
     , buyer
     , creatorFee+protocolFee+sellerRev AS price_raw
