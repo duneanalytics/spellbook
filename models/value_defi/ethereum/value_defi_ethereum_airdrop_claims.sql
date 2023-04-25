@@ -1,7 +1,7 @@
 {{
     config(
         alias='airdrop_claims',
-        materialized = 'incremental',
+        materialized = 'table',
         file_format = 'delta',
         tags=['static'],
         unique_key = ['recipient', 'tx_hash', 'evt_index'],
@@ -12,12 +12,14 @@
     )
 }}
 
+{% set vusd_token_address = '0x3479b0acf875405d7853f44142fe06470a40f6cc' %}
+
 WITH early_price AS (
     SELECT MIN(hour) AS hour
     , MIN_BY(median_price, hour) AS price
     FROM {{ ref('dex_prices') }}
     WHERE blockchain = 'ethereum'
-    AND contract_address='0x3479b0acf875405d7853f44142fe06470a40f6cc'
+    AND contract_address='{{vusd_token_address}}'
     )
 
 , late_price AS (
@@ -25,7 +27,7 @@ WITH early_price AS (
     , MAX_BY(median_price, hour) AS price
     FROM {{ ref('dex_prices') }}
     WHERE blockchain = 'ethereum'
-    AND contract_address='0x3479b0acf875405d7853f44142fe06470a40f6cc'
+    AND contract_address='{{vusd_token_address}}'
     )
 
 SELECT 'ethereum' AS blockchain
@@ -42,7 +44,7 @@ SELECT 'ethereum' AS blockchain
     WHEN t.evt_block_time < (SELECT hour FROM early_price) THEN CAST((SELECT price FROM early_price)*t.amount/POWER(10, 18) AS double)
     WHEN t.evt_block_time > (SELECT hour FROM late_price) THEN CAST((SELECT price FROM late_price)*t.amount/POWER(10, 18) AS double)
     END AS amount_usd
-, '0x3479b0acf875405d7853f44142fe06470a40f6cc' AS token_address
+, '{{vusd_token_address}}' AS token_address
 , 'vUSD' AS token_symbol
 , t.evt_index
 FROM {{ source('value_defi_ethereum', 'MerkleDistributor_evt_Claimed') }} t

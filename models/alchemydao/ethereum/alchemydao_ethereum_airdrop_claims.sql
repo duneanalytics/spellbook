@@ -1,7 +1,7 @@
 {{
     config(
         alias='airdrop_claims',
-        materialized = 'incremental',
+        materialized = 'table',
         file_format = 'delta',
         tags=['static'],
         unique_key = ['recipient', 'tx_hash', 'evt_index'],
@@ -12,12 +12,14 @@
     )
 }}
 
+{% set alch_token_address = '0x0000a1c00009a619684135b824ba02f7fbf3a572' %}
+
 WITH early_price AS (
     SELECT MIN(hour) AS hour
     , MIN_BY(median_price, hour) AS price
     FROM {{ ref('dex_prices') }}
     WHERE blockchain = 'ethereum'
-    AND contract_address='0x0000a1c00009a619684135b824ba02f7fbf3a572'
+    AND contract_address='{{alch_token_address}}'
     )
 
 , late_price AS (
@@ -25,7 +27,7 @@ WITH early_price AS (
     , MAX_BY(median_price, hour) AS price
     FROM {{ ref('dex_prices') }}
     WHERE blockchain = 'ethereum'
-    AND contract_address='0x0000a1c00009a619684135b824ba02f7fbf3a572'
+    AND contract_address='{{alch_token_address}}'
     )
 
 SELECT 'ethereum' AS blockchain
@@ -42,11 +44,11 @@ SELECT 'ethereum' AS blockchain
     WHEN t.evt_block_time < (SELECT hour FROM early_price) THEN CAST((SELECT price FROM early_price)*t.amount/POWER(10, 18) AS double)
     WHEN t.evt_block_time > (SELECT hour FROM late_price) THEN CAST((SELECT price FROM late_price)*t.amount/POWER(10, 18) AS double)
     END AS amount_usd
-, '0x0000a1c00009a619684135b824ba02f7fbf3a572' AS token_address
+, '{{alch_token_address}}' AS token_address
 , 'ALCH' AS token_symbol
 , t.evt_index
 FROM {{ source('alchemydao_ethereum', 'MerkleDistributor_evt_Claimed') }} t
 LEFT JOIN {{ ref('dex_prices') }} pu ON pu.blockchain = 'ethereum'
-    AND pu.contract_address='0x0000a1c00009a619684135b824ba02f7fbf3a572'
+    AND pu.contract_address='{{alch_token_address}}'
     AND pu.hour = date_trunc('hour', t.evt_block_time)
 WHERE t.evt_block_time BETWEEN '2021-03-28' AND '2021-04-19'

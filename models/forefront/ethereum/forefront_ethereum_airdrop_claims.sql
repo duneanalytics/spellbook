@@ -1,7 +1,7 @@
 {{
     config(
         alias='airdrop_claims',
-        materialized = 'incremental',
+        materialized = 'table',
         file_format = 'delta',
         tags=['static'],
         unique_key = ['recipient', 'tx_hash', 'evt_index'],
@@ -12,12 +12,14 @@
     )
 }}
 
+{% set ff_token_address = '0x7e9d8f07a64e363e97a648904a89fb4cd5fb94cd' %}
+
 WITH early_price AS (
     SELECT MIN(minute) AS minute
     , MIN_BY(price, minute) AS price
     FROM {{ source('prices', 'usd') }}
     WHERE blockchain = 'ethereum'
-    AND contract_address='0x7e9d8f07a64e363e97a648904a89fb4cd5fb94cd'
+    AND contract_address='{{ff_token_address}}'
     )
 
 SELECT 'ethereum' AS blockchain
@@ -33,11 +35,11 @@ SELECT 'ethereum' AS blockchain
 , CASE WHEN t.evt_block_time >= (SELECT minute FROM early_price) THEN CAST(pu.price*t.amount/POWER(10, 18) AS double)
     ELSE CAST((SELECT price FROM early_price)*t.amount/POWER(10, 18) AS double)
     END AS amount_usd
-, '0x7e9d8f07a64e363e97a648904a89fb4cd5fb94cd' AS token_address
+, '{{ff_token_address}}' AS token_address
 , 'FF' AS token_symbol
 , evt_index
 FROM {{ source('forefront_ethereum', 'ForefrontMerkle_evt_Claimed') }} t
 LEFT JOIN {{ ref('prices_usd_forward_fill') }} pu ON pu.blockchain = 'ethereum'
-    AND pu.contract_address='0x7e9d8f07a64e363e97a648904a89fb4cd5fb94cd'
+    AND pu.contract_address='{{ff_token_address}}'
     AND pu.minute=date_trunc('minute', t.evt_block_time)
 WHERE t.evt_block_time BETWEEN '2021-03-31' AND '2021-04-16'

@@ -1,7 +1,7 @@
 {{
     config(
         alias='airdrop_claims',
-        materialized = 'incremental',
+        materialized = 'table',
         file_format = 'delta',
         tags=['static'],
         unique_key = ['recipient', 'tx_hash', 'evt_index'],
@@ -12,12 +12,14 @@
     )
 }}
 
+{% set thales_token_address = '0x03e173ad8d1581a4802d3b532ace27a62c5b81dc' %}
+
 WITH early_price AS (
     SELECT MIN(hour) AS hour
     , MIN_BY(median_price, hour) AS price
     FROM {{ ref('dex_prices') }}
     WHERE blockchain = 'ethereum'
-    AND contract_address='0x03e173ad8d1581a4802d3b532ace27a62c5b81dc'
+    AND contract_address='{{thales_token_address}}'
     )
 
 , late_price AS (
@@ -25,7 +27,7 @@ WITH early_price AS (
     , MAX_BY(median_price, hour) AS price
     FROM {{ ref('dex_prices') }}
     WHERE blockchain = 'ethereum'
-    AND contract_address='0x03e173ad8d1581a4802d3b532ace27a62c5b81dc'
+    AND contract_address='{{thales_token_address}}'
     )
 
 SELECT 'ethereum' AS blockchain
@@ -42,7 +44,7 @@ SELECT 'ethereum' AS blockchain
     WHEN t.evt_block_time < (SELECT hour FROM early_price) THEN CAST((SELECT price FROM early_price)*t.amount/POWER(10, 18) AS double)
     WHEN t.evt_block_time > (SELECT hour FROM late_price) THEN CAST((SELECT price FROM late_price)*t.amount/POWER(10, 18) AS double)
     END AS amount_usd
-, '0x03e173ad8d1581a4802d3b532ace27a62c5b81dc' AS token_address
+, '{{thales_token_address}}' AS token_address
 , 'THALES' AS token_symbol
 , t.evt_index
 FROM {{ source('thales_ethereum', 'Airdrop_evt_Claim') }} t

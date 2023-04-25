@@ -12,12 +12,14 @@
     )
 }}
 
+{% set gear_token_address = '0xba3335588d9403515223f109edc4eb7269a9ab5d' %}
+
 WITH early_price AS (
     SELECT MIN(hour) AS hour
     , MIN_BY(median_price, hour) AS price
     FROM {{ ref('dex_prices') }}
     WHERE blockchain = 'ethereum'
-    AND contract_address='0xba3335588d9403515223f109edc4eb7269a9ab5d'
+    AND contract_address='{{gear_token_address}}'
     )
 
 , late_price AS (
@@ -25,7 +27,7 @@ WITH early_price AS (
     , MAX_BY(median_price, hour) AS price
     FROM {{ ref('dex_prices') }}
     WHERE blockchain = 'ethereum'
-    AND contract_address='0xba3335588d9403515223f109edc4eb7269a9ab5d'
+    AND contract_address='{{gear_token_address}}'
     )
 
 SELECT 'ethereum' AS blockchain
@@ -42,12 +44,12 @@ SELECT 'ethereum' AS blockchain
     WHEN t.evt_block_time < (SELECT hour FROM early_price) THEN CAST((SELECT price FROM early_price)*t.amount/POWER(10, 18) AS double)
     WHEN t.evt_block_time > (SELECT hour FROM late_price) THEN CAST((SELECT price FROM late_price)*t.amount/POWER(10, 18) AS double)
     END AS amount_usd
-, '0xba3335588d9403515223f109edc4eb7269a9ab5d' AS token_address
+, '{{gear_token_address}}' AS token_address
 , 'GEAR' AS token_symbol
 , t.evt_index
 FROM {{ source('gearbox_ethereum', 'MerkleDistributor_evt_Claimed') }} t
 LEFT JOIN {{ ref('dex_prices') }} pu ON pu.blockchain = 'ethereum'
-    AND pu.contract_address='0xba3335588d9403515223f109edc4eb7269a9ab5d'
+    AND pu.contract_address='{{gear_token_address}}'
     AND pu.hour = date_trunc('hour', t.evt_block_time)
 WHERE t.evt_block_time BETWEEN '	
 2022-04-05' AND '2022-07-22'

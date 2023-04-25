@@ -12,12 +12,14 @@
     )
 }}
 
+{% set op_token_address = '0x4200000000000000000000000000000000000042' %}
+
 WITH early_price AS (
     SELECT MIN(minute) AS minute
     , MIN_BY(price, minute) AS price
     FROM {{ source('prices', 'usd') }}
     WHERE blockchain = 'optimimsm'
-    AND contract_address='0x4200000000000000000000000000000000000042'
+    AND contract_address='{{op_token_address}}'
     )
 
 SELECT 'optimism' AS blockchain
@@ -33,12 +35,12 @@ SELECT 'optimism' AS blockchain
 , CASE WHEN t.evt_block_time >= (SELECT minute FROM early_price) THEN CAST(pu.price*t.amount/POWER(10, 18) AS double)
     ELSE CAST((SELECT price FROM early_price)*t.amount/POWER(10, 18) AS double)
     END AS amount_usd
-, '0x4200000000000000000000000000000000000042' AS token_address
+, '{{op_token_address}}' AS token_address
 , 'OP' AS token_symbol
 , t.evt_index
 FROM {{ source('op_optimism', 'MerkleDistributor_evt_Claimed') }} t
 LEFT JOIN {{ ref('prices_usd_forward_fill') }} pu ON pu.blockchain = 'optimism'
-    AND pu.contract_address='0x4200000000000000000000000000000000000042'
+    AND pu.contract_address='{{op_token_address}}'
     AND pu.minute=date_trunc('minute', t.evt_block_time)
     {% if is_incremental() %}
     AND pu.minute >= date_trunc("day", now() - interval '1 week')
