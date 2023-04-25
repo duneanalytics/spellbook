@@ -14,17 +14,11 @@
 
 {% set safe_token_address = '0x5afe3855358e112b5647b952709e6165e1c1eeee' %}
 
-WITH early_price AS (
-    SELECT MIN(hour) AS hour
-    , MIN_BY(median_price, hour) AS price
-    FROM {{ ref('dex_prices') }}
-    WHERE blockchain = 'ethereum'
-    AND contract_address='{{safe_token_address}}'
-    )
-
-, late_price AS (
-    SELECT MAX(hour) AS hour
-    , MAX_BY(median_price, hour) AS price
+WITH other_prices AS (
+    SELECT MIN(hour) AS min_hour
+    , MAX(hour) AS max_hour
+    , MIN_BY(median_price, hour) AS min_price
+    , MAX_BY(median_price, hour) AS max_price
     FROM {{ ref('dex_prices') }}
     WHERE blockchain = 'ethereum'
     AND contract_address='{{safe_token_address}}'
@@ -40,9 +34,9 @@ SELECT 'ethereum' AS blockchain
 , t.evt_tx_hash AS tx_hash
 , CAST(t.value AS DECIMAL(38,0)) AS amount_raw
 , CAST(t.value/POWER(10, 18) AS double) AS amount_original
-, CASE WHEN t.evt_block_time >= (SELECT hour FROM early_price) AND t.evt_block_time <= (SELECT hour FROM late_price) THEN CAST(pu.median_price*t.value/POWER(10, 18) AS double)
-    WHEN t.evt_block_time < (SELECT hour FROM early_price) THEN CAST((SELECT price FROM early_price)*t.value/POWER(10, 18) AS double)
-    WHEN t.evt_block_time > (SELECT hour FROM late_price) THEN CAST((SELECT price FROM late_price)*t.value/POWER(10, 18) AS double)
+, CASE WHEN t.evt_block_time >= (SELECT min_hour FROM more_prices) AND t.evt_block_time <= (SELECT max_hour FROM more_prices) THEN CAST(pu.median_price*t.value/POWER(10, 18) AS double)
+    WHEN t.evt_block_time < (SELECT min_hour FROM more_prices) THEN CAST((SELECT min_price FROM more_prices)*t.value/POWER(10, 18) AS double)
+    WHEN t.evt_block_time > (SELECT max_hour FROM more_prices) THEN CAST((SELECT max_price FROM more_prices)*t.value/POWER(10, 18) AS double)
     END AS amount_usd
 , '{{safe_token_address}}' AS token_address
 , 'SAFE' AS token_symbol
