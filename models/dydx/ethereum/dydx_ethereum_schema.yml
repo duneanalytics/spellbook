@@ -59,21 +59,22 @@ models:
       - &evt_index
         name: evt_index
         description: "Event index"
- - name: dydx_ethereum_votes
-   meta:
-    blockchain: ethereum
-    sector: dao
-    contributors: ivigamberdiev
-   config:
+
+  - name: dydx_ethereum_votes
+    meta:
+      blockchain: ethereum
+      sector: dao
+      contributors: ivigamberdiev
+    config:
       tags:   ['ethereum', 'votes', 'dao']
-   description: >
+    description: >
       DAO votes on all chains across all contracts and versions
-   tests:
-     - dbt_utils.unique_combination_of_columns:
+    tests:
+      - dbt_utils.unique_combination_of_columns:
          combination_of_columns:
            - tx_hash
            - voter_address
-   columns:
+    columns:
       - name: blockchain
       - name: project
         description: "Project name of the DAO"
@@ -97,9 +98,7 @@ models:
       - &votes_share
         name: votes_share
         description: "Votes share in percent for a given proposal"
-      - &token_symbol
-        name: token_symbol
-      - name: token_address
+      - *token_symbol
       - &votes_value_usd
         name: votes_value_usd
         description: "USD amount of governance tokens used at the time of the vote"
@@ -115,23 +114,23 @@ models:
         name: reason
         description: "Optional onchain commments to explain votes"
 
- - name: dydx_ethereum_proposals
-   meta:
-    blockchain: ethereum
-    sector: dao
-    contributors: ivigamberdiev
-   config:
+  - name: dydx_ethereum_proposals
+    meta:
+      blockchain: ethereum
+      sector: dao
+      contributors: ivigamberdiev
+    config:
       tags: ['ethereum', 'proposals', 'dao']
-   description: >
+    description: >
       DAO proposals on all chains across all contracts and versions
-   tests:
+    tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
               - blockchain
               - project
               - version
               - tx_hash
-   columns:
+    columns:
       - name: blockchain
       - name: project
         description: "Project name of the DAO"

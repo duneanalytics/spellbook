@@ -77,21 +77,14 @@ models:
             - tx_hash
             - evt_index
     columns:
-      - &block_time
-        name: block_time
-        description: "UTC event block time"
+      - *block_time
       - &currency_contract
         name: currency_contract
         description: "Currency contract address (on Ethereum mainnet) of currency deposited/withdrawn from Tornado Cash, with ETH contract address swapped for WETH"
       - &currency_symbol
         name: currency_symbol
         description: "Symbol of currency deposited/withdrawn from Tornado Cash"
-      - &blockchain
-        name: blockchain
-        tests:
-          - accepted_values:
-              values: ['ethereum']
-        description: "Blockchain"
+      - *blockchain
       - &tornado_version
         name: tornado_version
         tests:
@@ -101,14 +94,10 @@ models:
       - &depositor
         name: depositor
         description: "Address depositing into Tornado Cash"
-      - &contract_address
-        name: contract_address
-        description: "Contract Address of used Tornado Cash Pool"
+      - *contract_address
       - name: leaf_index
         description: "Leaf index"
-      - &evt_index
-        name: evt_index
-        description: "Event index"
+      - *evt_index
 
   - name: tornado_cash_ethereum_withdrawals
     meta:
