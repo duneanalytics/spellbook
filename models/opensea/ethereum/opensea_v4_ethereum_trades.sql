@@ -270,6 +270,7 @@ with source_ethereum_transactions as (
             ,case when offer_first_item_type in ('erc721','erc1155') and sub_type = 'consideration' and item_type in ('erc721','erc1155') then true
                 else false
             end is_moved_nft
+            ,fee_wallet_name
     from  (select a.block_time
                 ,a.block_number
                 ,a.tx_hash
@@ -294,6 +295,7 @@ with source_ethereum_transactions as (
                 ,a.is_private
                 ,b.om_evt_index
                 ,b.om_order_id
+                ,f.wallet_name as fee_wallet_name
                 ,case when sender = receiver then true else false end is_self_trans
                 ,case when f.wallet_address is not null then true else false end as is_platform_fee
                 ,case when item_type in ('native','erc20')
@@ -335,6 +337,8 @@ with source_ethereum_transactions as (
         ,max(case when is_creator_fee and creator_fee_idx = 3 then receiver end) as creator_fee_receiver_3
         ,max(case when is_creator_fee and creator_fee_idx = 4 then receiver end) as creator_fee_receiver_4
         ,max(case when is_creator_fee and creator_fee_idx = 5 then receiver end) as creator_fee_receiver_5
+        ,max(a.fee_wallet_name) as fee_wallet_name
+
    from iv_base_pairs a
   where 1=1
     and eth_erc_idx > 0
@@ -381,6 +385,7 @@ with source_ethereum_transactions as (
         ,sub_type
         ,sub_idx
         ,order_hash
+        ,b.fee_wallet_name
   from iv_base_pairs a
         left join iv_volume b on b.block_date = a.block_date  -- tx_hash and evt_index is PK, but for performance, block_time is included
                               and b.tx_hash = a.tx_hash
@@ -440,9 +445,10 @@ with source_ethereum_transactions as (
           ,a.platform_fee_amount_raw / power(10, e.decimals) * p.price as platform_fee_amount_usd
           ,a.creator_fee_amount_raw / power(10, e.decimals) as creator_fee_amount
           ,a.creator_fee_amount_raw / power(10, e.decimals) * p.price as creator_fee_amount_usd
-          ,coalesce(agg.name,agg_m.aggregator_name) as aggregator_name
+          ,coalesce(agg_m.aggregator_name, agg.name) as aggregator_name
           ,agg.contract_address AS aggregator_address
           ,sub_idx
+          ,a.fee_wallet_name
   from iv_nfts a
   inner join source_ethereum_transactions t on t.hash = a.tx_hash
   left join ref_tokens_nft n on n.contract_address = nft_contract_address
@@ -533,11 +539,14 @@ select
         ,is_private
         ,sub_idx
         ,sub_type
-        ,'seaport-' || CAST(tx_hash AS VARCHAR(100)) || '-' || cast(evt_index as VARCHAR(10)) || '-' || CAST(nft_contract_address AS VARCHAR(100)) || '-' || cast(nft_token_id as VARCHAR(100)) || '-' || cast(sub_idx as VARCHAR(10)) as unique_trade_id
+        ,fee_wallet_name
+        ,'seaport-' || CAST(tx_hash AS VARCHAR(100)) || '-' || cast(evt_index as VARCHAR(10)) || '-' || CAST(nft_contract_address AS VARCHAR(100)) || '-' || cast(nft_token_id as VARCHAR(100)) || '-' || cast(sub_type as VARCHAR(20)) || '-' || cast(sub_idx as VARCHAR(10)) as unique_trade_id
   from   iv_trades
- where CAST(zone AS VARCHAR(100)) in ('0xf397619df7bfd4d1657ea9bdd9df7ff888731a11'
-                                    ,'0x9b814233894cd227f561b78cc65891aa55c62ad2'
-                                    ,'0x004c00500000ad104d7dbd00e3ae0a5c00560c00'
-                                    ,'0x110b2b128a9ed1be5ef3232d8e4e41640df5c2cd'
-                                    ,'0x000000e7ec00e7b300774b00001314b8610022b8' -- newly added on seaport v1.4
-                                    )
+ where  (   CAST(zone AS VARCHAR(100)) in ('0xf397619df7bfd4d1657ea9bdd9df7ff888731a11'
+                                          ,'0x9b814233894cd227f561b78cc65891aa55c62ad2'
+                                          ,'0x004c00500000ad104d7dbd00e3ae0a5c00560c00'
+                                          ,'0x110b2b128a9ed1be5ef3232d8e4e41640df5c2cd'
+                                          ,'0x000000e7ec00e7b300774b00001314b8610022b8' -- newly added on seaport v1.4
+                                          )
+         or  fee_wallet_name = 'opensea'
+        ) 

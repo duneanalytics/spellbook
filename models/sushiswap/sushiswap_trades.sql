@@ -3,7 +3,7 @@
         post_hook='{{ expose_spells(\'["ethereum", "gnosis", "avalanche_c", "arbitrum", "fantom", "optimism"]\',
                         "project",
                         "sushiswap",
-                        \'["augustog", "hosuke", "Henrystats", "msilb7"]\') }}'
+                        \'["augustog", "hosuke", "Henrystats", "msilb7", "chrispearcx", "codingsh"]\') }}'
         )
 }}
 
@@ -14,6 +14,8 @@ ref('sushiswap_ethereum_trades')
 , ref('sushiswap_arbitrum_trades')
 , ref('sushiswap_fantom_trades')
 , ref('sushiswap_optimism_trades')
+, ref('sushiswap_polygon_trades')
+, ref('sushiswap_bnb_trades')
 ] %}
 
 

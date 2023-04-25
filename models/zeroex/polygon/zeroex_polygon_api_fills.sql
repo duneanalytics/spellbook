@@ -377,9 +377,11 @@ SELECT
         affiliate_address,
         swap_flag,
         matcha_limit_order_flag,
-        CASE WHEN maker_token IN ('0x2791bca1f2de4661ed88a30c99a7a9449aa84174','0x7ceb23fd6bc0add59e62ac25578270cff1b9f619','0x0d500b1d8e8ef31e21c99d1db9a6444d3adf1270','0xc2132d05d31c914a87c6611c10748aeb04b58e8f','0x1bfd67037b42cf73acf2047067bd4f2c47d9bfd6','0x8f3cf7ad23cd3cadbd9735aff958023239c6a063','0x3a58a54c066fdc0f2d55fc9c89f0415c92ebf3c4')
+        CASE WHEN maker_token IN ('0x2791bca1f2de4661ed88a30c99a7a9449aa84174','0x7ceb23fd6bc0add59e62ac25578270cff1b9f619','0x0d500b1d8e8ef31e21c99d1db9a6444d3adf1270','0xc2132d05d31c914a87c6611c10748aeb04b58e8f',
+            '0x1bfd67037b42cf73acf2047067bd4f2c47d9bfd6','0x8f3cf7ad23cd3cadbd9735aff958023239c6a063','0x3a58a54c066fdc0f2d55fc9c89f0415c92ebf3c4') AND  mp.price IS NOT NULL
              THEN (all_tx.maker_token_amount_raw / pow(10, mp.decimals)) * mp.price
-             WHEN taker_token IN ('0x2791bca1f2de4661ed88a30c99a7a9449aa84174','0x7ceb23fd6bc0add59e62ac25578270cff1b9f619','0x0d500b1d8e8ef31e21c99d1db9a6444d3adf1270','0xc2132d05d31c914a87c6611c10748aeb04b58e8f','0x1bfd67037b42cf73acf2047067bd4f2c47d9bfd6','0x8f3cf7ad23cd3cadbd9735aff958023239c6a063','0x3a58a54c066fdc0f2d55fc9c89f0415c92ebf3c4')   
+             WHEN taker_token IN ('0x2791bca1f2de4661ed88a30c99a7a9449aa84174','0x7ceb23fd6bc0add59e62ac25578270cff1b9f619','0x0d500b1d8e8ef31e21c99d1db9a6444d3adf1270','0xc2132d05d31c914a87c6611c10748aeb04b58e8f',
+                '0x1bfd67037b42cf73acf2047067bd4f2c47d9bfd6','0x8f3cf7ad23cd3cadbd9735aff958023239c6a063','0x3a58a54c066fdc0f2d55fc9c89f0415c92ebf3c4')  AND  tp.price IS NOT NULL
              THEN (all_tx.taker_token_amount_raw / pow(10, tp.decimals)) * tp.price
              ELSE COALESCE((all_tx.maker_token_amount_raw / pow(10, mp.decimals)) * mp.price, (all_tx.taker_token_amount_raw / pow(10, tp.decimals)) * tp.price)
              END AS volume_usd,
@@ -401,7 +403,7 @@ AND tx.block_time >= '{{zeroex_v3_start_date}}'
 
 LEFT JOIN {{ source('prices', 'usd') }} tp ON date_trunc('minute', all_tx.block_time) = tp.minute
 AND CASE
-        WHEN all_tx.taker_token = '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee' THEN '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'
+        WHEN all_tx.taker_token = '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee' THEN '0x0d500b1d8e8ef31e21c99d1db9a6444d3adf1270'
         ELSE all_tx.taker_token
     END = tp.contract_address
 AND tp.blockchain = 'polygon'
@@ -415,7 +417,7 @@ AND tp.minute >= '{{zeroex_v3_start_date}}'
 
 LEFT JOIN {{ source('prices', 'usd') }} mp ON DATE_TRUNC('minute', all_tx.block_time) = mp.minute
 AND CASE
-        WHEN all_tx.maker_token = '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee' THEN '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'
+        WHEN all_tx.maker_token = '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee' THEN '0x0d500b1d8e8ef31e21c99d1db9a6444d3adf1270'
         ELSE all_tx.maker_token
     END = mp.contract_address
 AND mp.blockchain = 'polygon'
