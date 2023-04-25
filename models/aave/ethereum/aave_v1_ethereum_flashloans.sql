@@ -15,10 +15,10 @@
 WITH flashloans AS (
     SELECT flash.evt_block_time AS block_time
     , flash.evt_block_number AS block_number
-    , flash._amount AS amount_raw
+    , CAST(flash._amount AS double) AS amount_raw
     , flash.evt_tx_hash AS tx_hash
     , flash.evt_index
-    , flash._totalFee AS fee
+    , CAST(flash._totalFee AS double) AS fee
     , CASE WHEN flash._reserve='{{aave_mock_address}}' THEN '{{weth_address}}' ELSE flash._reserve END AS currency_contract
     , CASE WHEN flash._reserve='{{aave_mock_address}}' THEN 'ETH' ELSE erc20.symbol END AS currency_symbol
     , CASE WHEN flash._reserve='{{aave_mock_address}}' THEN 18 ELSE erc20.decimals END AS currency_decimals
@@ -26,7 +26,7 @@ WITH flashloans AS (
     , flash.contract_address AS contract_address
     FROM {{ source('aave_ethereum','LendingPool_evt_FlashLoan') }} flash
     LEFT JOIN {{ ref('tokens_ethereum_erc20') }} erc20 ON flash._reserve = erc20.contract_address
-    WHERE flash._amount > 0
+    WHERE CAST(flash._amount AS double) > 0
     )
     
 SELECT 'ethereum' AS blockchain
