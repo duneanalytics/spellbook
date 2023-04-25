@@ -270,5 +270,6 @@ FROM
 ,('0x8dbc32a6a29c1398184256a83553d038ae74db62', 'CyberNerds')
 ,('0xd312c1e723961164916ef2ebb767e53fbdff4094', 'ApeTown WTF')
 ,('0xC66A1EE3be858E7041DdA9bd1Ea2fbd3ce07F63e', 'Ganland GALXE')
+,('0xba1231785a7b4ac0e8dc9a0403938c2182ce4a4e', 'Geo Web Parcel License')
 
 ) as temp_table (contract_address, name)
