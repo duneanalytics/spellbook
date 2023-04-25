@@ -9,13 +9,13 @@ with
     select
         *
     from (
-        select tx_hash, evt_index, project, version
+        select tx_hash, evt_index, project, version, tx_to
         from {{ ref('dex_aggregator_trades') }}
         where blockchain = 'ethereum'
         and token_bought_address in (select contract_address from {{ ref('tokens_ethereum_erc20_stablecoins') }})
         and token_sold_address in (select contract_address from {{ ref('tokens_ethereum_erc20_stablecoins') }})
         UNION ALL
-        select tx_hash, evt_index, project, version
+        select tx_hash, evt_index, project, version, tx_to
         from {{ ref('dex_trades') }}
         where blockchain = 'ethereum'
         and token_bought_address in (select contract_address from {{ ref('tokens_ethereum_erc20_stablecoins') }})

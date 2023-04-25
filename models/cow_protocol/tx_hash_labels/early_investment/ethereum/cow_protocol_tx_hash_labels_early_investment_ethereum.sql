@@ -27,11 +27,11 @@ with
     select
         *
     from (
-        select tx_hash, evt_index, project, version, block_date, token_bought_address
+        select tx_hash, evt_index, project, version, tx_to, block_date, token_bought_address
         from {{ ref('dex_aggregator_trades') }}
         where blockchain = 'ethereum'
         UNION ALL
-        select tx_hash, evt_index, project, version, block_date, token_bought_address
+        select tx_hash, evt_index, project, version, tx_to, block_date, token_bought_address
         from {{ ref('dex_trades') }}
         where blockchain = 'ethereum'
     ) t join project_starts p on t.token_bought_address = p.token_bought_address

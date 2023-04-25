@@ -30,12 +30,12 @@ with
     select
         *
     from (
-        select tx_hash, evt_index, project, version
+        select tx_hash, evt_index, project, version, tx_to
         from {{ ref('dex_aggregator_trades') }}
         where blockchain = 'ethereum'
         and token_bought_address in (select staking_token_address from staking_tokens)
         UNION ALL
-        select tx_hash, evt_index, project, version
+        select tx_hash, evt_index, project, version, tx_to
         from {{ ref('dex_trades') }}
         where blockchain = 'ethereum'
         and token_bought_address in (select staking_token_address from staking_tokens)
