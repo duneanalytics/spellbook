@@ -38,4 +38,4 @@ FROM (VALUES
     -- Hotbit, Source: https://etherscan.io/accounts/label/hotbit
     , ('arbitrum', '0xd690a9DfD7e4B02898Cdd1a9E50eD1fd7D3d3442', 'Hotbit', 'Hotbit 1', 'hildobby', timestamp('2022-08-28'))
     , ('arbitrum', '0x768f2a7ccdfde9ebdfd5cea8b635dd590cb3a3f1', 'Hotbit', 'Hotbit 2', 'hildobby', timestamp('2022-08-28'))
-    ) AS x (blockchain, address, name, category, contributor, source, created_at, updated_at, model_name, label_type)
+    ) AS x (blockchain, address, cex_name, distinct_name, added_by, added_date)

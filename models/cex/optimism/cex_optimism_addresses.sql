@@ -48,4 +48,4 @@ FROM (VALUES
     , ('optimism', '0xea319fd75766f5180018f8e760f51c3d3c457496', 'WOO Network', 'WOO Network 4', 'hildobby', timestamp('2023-04-07'))
     -- Hotbit, Source: https://etherscan.io/accounts/label/hotbit
     , ('optimism', '0xfa6cf22527d88270eea37f45af1808adbf3c1b17', 'Hotbit', 'Hotbit 1', 'hildobby', timestamp('2022-08-28'))
-    ) AS x (blockchain, address, name, category, contributor, source, created_at, updated_at, model_name, label_type)
+    ) AS x (blockchain, address, cex_name, distinct_name, added_by, added_date)
