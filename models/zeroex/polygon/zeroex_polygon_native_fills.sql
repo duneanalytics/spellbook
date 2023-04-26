@@ -159,9 +159,7 @@ WITH
           , fills.takerToken AS taker_token
           , tt.symbol AS taker_symbol
           , fills.takerTokenFilledAmount / (10^tt.decimals) AS taker_asset_filled_amount
-          , (fills.feeRecipient in 
-                ('0x9b858be6e3047d88820f439b240deac2418a2551','0x86003b044f70dac0abc80ac8957305b6370893ed','0x5bc2419a087666148bfbe1361ae6c06d240c6131')) 
-                AS matcha_limit_order_flag
+          , false AS matcha_limit_order_flag
           , CASE
                   WHEN tp.symbol = 'USDC' THEN (fills.takerTokenFilledAmount / 1e6) ----don't multiply by anything as these assets are USD
                   WHEN mp.symbol = 'USDC' THEN (fills.makerTokenFilledAmount / 1e6) ----don't multiply by anything as these assets are USD
@@ -175,7 +173,7 @@ WITH
                   WHEN mp.symbol = 'WETH' THEN (fills.makerTokenFilledAmount / 1e18) * mp.price
                   ELSE COALESCE((fills.makerTokenFilledAmount / (10^mt.decimals))*mp.price,(fills.takerTokenFilledAmount / (10^tt.decimals))*tp.price)
               END AS volume_usd
-          , NULL::NUMERIC AS protocol_fee_paid_eth
+          , cast(null as numeric) AS protocol_fee_paid_eth
       FROM {{ source('zeroex_polygon', 'ExchangeProxy_evt_RfqOrderFilled') }} fills
       LEFT JOIN prices.usd tp ON
           date_trunc('minute', evt_block_time) = tp.minute and tp.blockchain = 'polygon'
@@ -234,7 +232,7 @@ WITH
                   WHEN mp.symbol = 'WETH' THEN (fills.makerTokenFilledAmount / 1e18) * mp.price
                   ELSE COALESCE((fills.makerTokenFilledAmount / (10^mt.decimals))*mp.price,(fills.takerTokenFilledAmount / (10^tt.decimals))*tp.price)
               END AS volume_usd
-          , NULL::NUMERIC AS protocol_fee_paid_eth
+          , cast(null as numeric) AS protocol_fee_paid_eth
         FROM {{ source('zeroex_polygon', 'ExchangeProxy_evt_OtcOrderFilled') }} fills
       LEFT JOIN prices.usd tp ON
           date_trunc('minute', evt_block_time) = tp.minute and tp.blockchain = 'polygon'
