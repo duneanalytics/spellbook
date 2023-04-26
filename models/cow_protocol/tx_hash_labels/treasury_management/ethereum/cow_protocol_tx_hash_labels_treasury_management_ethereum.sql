@@ -17,12 +17,12 @@ with
     select
         *
     from (
-        select tx_hash, evt_index, project, version, tx_to
+        select tx_hash, evt_index, project, version, tx_from, tx_to, taker, maker
         from {{ ref('dex_aggregator_trades') }}
         where blockchain = 'ethereum'
         and taker in (select address from daos)
         UNION ALL
-        select tx_hash, evt_index, project, version, tx_to
+        select tx_hash, evt_index, project, version, tx_from, tx_to, taker, maker
         from {{ ref('dex_trades') }}
         where blockchain = 'ethereum'
         and taker in (select address from daos)
@@ -31,7 +31,7 @@ with
 
 select
   "ethereum" as blockchain,
-  concat(tx_hash, CAST(evt_index AS VARCHAR(100)), project, version, tx_to) as tx_hash_key,
+  concat(tx_hash, CAST(evt_index AS VARCHAR(100)), project, version, tx_from, tx_to, taker, maker) as tx_hash_key,
   "Treasury management" AS name,
   "tx_hash" AS category,
   "gentrexha" AS contributor,
