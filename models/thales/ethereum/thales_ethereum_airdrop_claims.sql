@@ -14,7 +14,7 @@
 
 {% set thales_token_address = '0x03e173ad8d1581a4802d3b532ace27a62c5b81dc' %}
 
-WITH other_prices AS (
+WITH more_prices AS (
     SELECT MIN(hour) AS min_hour
     , MAX(hour) AS max_hour
     , MIN_BY(median_price, hour) AS min_price

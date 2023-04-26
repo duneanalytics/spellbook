@@ -14,7 +14,7 @@
 
 {% set psp_token_address = '0xcafe001067cdef266afb7eb5a286dcfd277f3de5' %}
 
-WITH other_prices AS (
+WITH more_prices AS (
     SELECT MIN(hour) AS min_hour
     , MAX(hour) AS max_hour
     , MIN_BY(median_price, hour) AS min_price

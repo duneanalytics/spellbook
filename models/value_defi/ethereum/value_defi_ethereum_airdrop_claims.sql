@@ -14,7 +14,7 @@
 
 {% set vusd_token_address = '0x3479b0acf875405d7853f44142fe06470a40f6cc' %}
 
-WITH other_prices AS (
+WITH more_prices AS (
     SELECT MIN(hour) AS min_hour
     , MAX(hour) AS max_hour
     , MIN_BY(median_price, hour) AS min_price

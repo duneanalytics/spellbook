@@ -14,7 +14,7 @@
 
 {% set gear_token_address = '0xba3335588d9403515223f109edc4eb7269a9ab5d' %}
 
-WITH other_prices AS (
+WITH more_prices AS (
     SELECT MIN(hour) AS min_hour
     , MAX(hour) AS max_hour
     , MIN_BY(median_price, hour) AS min_price
