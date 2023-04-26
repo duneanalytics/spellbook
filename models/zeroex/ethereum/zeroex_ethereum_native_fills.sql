@@ -15,7 +15,7 @@
 -- Test Query here: 
 WITH 
     v3_fills AS (
-        SELECT
+        SELE
             evt_block_time AS block_time, fills.evt_block_number as block_number
             , 'v3' AS protocol_version
             , fills.evt_tx_hash AS transaction_hash
@@ -288,7 +288,7 @@ WITH
                   WHEN mp.symbol = 'WETH' THEN (fills.makerTokenFilledAmount / 1e18) * mp.price
                   ELSE COALESCE((fills.makerTokenFilledAmount / (10^mt.decimals))*mp.price,(fills.takerTokenFilledAmount / (10^tt.decimals))*tp.price)
               END AS volume_usd
-          , cast(null as numeric) AS protocol_fee_paid_eth,
+          , cast(null as numeric) AS protocol_fee_paid_eth
           , fills.contract_address
           , 'otc' as native_order_type
       FROM {{ source('zeroex_ethereum', 'ExchangeProxy_evt_OtcOrderFilled') }} fills
@@ -367,5 +367,3 @@ WITH
                 tx.to AS tx_to
             FROM all_fills
             INNER JOIN {{ source('ethereum', 'transactions')}} tx ON all_fills.transaction_hash = tx.hash
-            LEFT OUTER JOIN {{ ref('tokens_ethereum_erc20') }} ts ON ts.contract_address = taker_token  
-            LEFT OUTER JOIN {{ ref('tokens_ethereum_erc20') }} ms ON ms.contract_address = maker_token 
