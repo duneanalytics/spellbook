@@ -77,4 +77,8 @@ from (
     ,('arrakis_finance','Arrakis Finance')
     ,('collab_land_dao_pass', 'Collab Land')
     ,('Llama', 'Llamapay')
+    ,('Perpetualprotocol','Perpetual Protocol')
+    ,('perp_hottub','Perpetual Protocol')
+    ,('Avalon Lyra', 'Lyra')
+    ,('avalon_lyra', 'Lyra')
     ) as temp_table (dune_name, mapped_name)
