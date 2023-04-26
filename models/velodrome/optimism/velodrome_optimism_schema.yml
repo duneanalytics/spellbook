@@ -94,7 +94,7 @@ models:
       - &evt_index
         name: evt_index
         description: ""
-  
+
   - name: velodrome_optimism_bribe_mappings
     meta:
       blockchain: optimism
@@ -141,4 +141,48 @@ models:
       - &evt_tx_hash
         name: evt_tx_hash
         description: 'Tx Hash'
+      - *evt_index
+
+  - name: velodrome_optimism_airdrop_claims
+    meta:
+      blockchain: optimism
+      sector: airdrop
+      project: velodrome
+      contributors: hildobby
+    config:
+      tags: ['table', 'airdrop', 'optimism', 'claim', 'velodrome']
+    description: "List of claim transactions for the $VELO airdrop"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - recipient
+            - evt_index
+    columns:
+      - *blockchain
+      - *block_time
+      - &block_number
+        name: block_number
+        description: "Block number of transaction"
+      - *project
+      - &airdrop_identifier
+        name: airdrop_identifier
+        description: "Airdrop identifier name"
+      - &recipient
+        name: recipient
+        description: "Airdrop recipient"
+      - *contract_address
+      - *tx_hash
+      - name: amount_raw
+        description: "Raw amount of tokens"
+      - name: amount_original
+        description: "Original amount of tokens"
+      - name: amount_usd
+        description: "USD value of tokens"
+      - &token_address
+        name: token_address
+        description: "Token address"
+      - &token_symbol
+        name: token_symbol
+        description: "Token symbol"
       - *evt_index

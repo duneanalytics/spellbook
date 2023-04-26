@@ -105,6 +105,7 @@ models:
         description:  "Unique trade ID"
         tests:
           - unique
+
   - name: nft_ethereum_transfers
     meta:
       blockchain: ethereum
@@ -151,6 +152,53 @@ models:
         tests:
           - unique
         description: "Unique transfer ID"
+  
+  - name: nft_ethereum_approvals
+    meta:
+      blockchain: ethereum
+      sector: nft
+      contributors: hildobby
+    config:
+      tags: ['nft', 'ethereum', 'approvals']
+    description: >
+        NFT approvals
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_number
+            - tx_hash
+            - evt_index
+    columns:
+      - name: blockchain
+        description: "Blockchain"
+      - name: block_time
+        description: "UTC event block time"
+      - name: block_date
+        description: "UTC event block date"
+      - name: block_number
+        description: "Block number in which the transaction was executed"
+      - name: address
+        description: "Address for which NFTs were approved"
+      - name: token_standard
+        tests:
+          - accepted_values:
+              values: ['erc721', 'erc1155']
+      - name: approval_for_all
+        description: "Was this an ApprovalForAll or a simple Approval?"
+      - name: contract_address
+        description: "Contract address"
+      - name: token_id
+        description: "NFT token ID"
+      - name: approved
+        description: "Approved"
+      - name: tx_hash
+        description: "Transaction hash"
+      - name: tx_from
+        description: "Address that initiated the transaction"
+      - name: tx_to
+        description: "Address that the transaction points to"
+      - name: evt_index
+        description: "Event index"
 
   - name: nft_ethereum_aggregators_markers
     meta:
@@ -282,6 +330,71 @@ models:
       - name: price_max_eth
         description: "Max NFT trade price Measured in ETH"
 
+  - name: nft_ethereum_wallet_metrics
+    meta:
+      blockchain: ethereum
+      sector: nft
+      contributors: NazihKalo
+    config:
+      tags: ['nft','ethereum', 'wallet stats','smart nft trader', 'roi', 'profit', 'loss', 'win', 'spend', 'gain']
+    description: >
+        This spell aggregates nft trading stats (profit, ROI, spend, gain, loss/win %, collections traded) per wallet and filters out wash trades. 
+    columns:
+      - name: wallet
+        description: "NFT trader's wallet address"
+        tests:
+          - unique
+      - name: unique_collections_traded
+        description: "Count of unqiue collections/ERC721-contracts traded"
+      - name: buys_count
+        description: "Count of NFT buys or mints"
+      - name: sells_count
+        description: "Count of NFT sales"
+      - name: trades_count
+        description: "Count of Mints+Buys+Sells"
+      - name: profitable_trades_count
+        description: "Count of trades that were protitable (i.e. profit > 0)"
+      - name: unprofitable_trades_count
+        description: "Count of trades that were unprotitable (i.e. profit <= 0)"
+      - name: win_percentage
+        description: "Percent of sales that had positive profit"
+      - name: loss_percentage
+        description: "Percent of sales that had negative profit"
+      - name: breakeven_percentage
+        description: "Percent of sales that had breakeven profit"
+      - name: spent_eth
+        description: "Amount of ETH spent on NFTs (not including gas)"
+      - name: spent_eth_realized 
+        description: "Amount of ETH spent on NFTs that were later sold"
+      - name: spent_eth_unrealized 
+        description: "Amount of ETH spent on NFTs that have not been sold yet"
+      - name: gained_eth 
+        description: "Amount of ETH gained from NFTs sold or appreication of currently held NFTs based on floor price"
+      - name: gained_eth_realized 
+        description: "Amount of ETH gained from NFTs sold"
+      - name: gained_eth_unrealized 
+        description: "Amount of ETH gained from appreication of currently held NFTs based on floor price"
+      - name: roi_eth 
+        description: "Percent ETH ROI from appreciation+sales over buy amount (range 0-1)"
+      - name: roi_eth_realized 
+        description: "Percent ETH ROI from sales over buy amount on those sales (range 0-1)"
+      - name: roi_eth_unrealized 
+        description: "Percent ETH ROI from appreciation over buy amount on unsold NFTs (range 0-1)"
+      - name: eth_profit 
+        description: "Total of realized + unrealized profit from NFTs (i.e. (sale_price-buy_price) for sold nfts + (current_floor_price - buy_price) for unsold NFTs)"
+      - name: eth_profit_realized 
+        description: " Total of realized profit (in ETH) from sale of NFTs"
+      - name: eth_profit_unrealized 
+        description: "Total of unrealized profit (in ETH) from sale of NFTs"
+      - name: avg_win_size 
+        description: "Average size of profit from protitable NFT trades"
+      - name: avg_loss_size
+        description: "Average size of loss from protitable NFT trades"
+      - name: unique_weeks_buying
+        description: "Unique weeks the trader bought NFTs in"
+      - name: unique_weeks_selling
+        description: "Unique weeks the trader sold NFTs in"
+
   - name: nft_ethereum_wash_trades
     meta:
       blockchain: ethereum
@@ -401,3 +514,61 @@ models:
           - unique
       - name: name
         description: "Aggregator project's name"
+
+
+  - name: nft_ethereum_top_erc1155_holders
+    meta:
+      blockchain: ethereum
+      sector: nft
+      contributors: Henrystats
+    config:
+      tags: ['nft', 'ethereum', 'top Holder']
+    description: >
+        Top 50 erc1155 Holders
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - nft_contract_address
+            - rn
+    columns:
+      - name: nft_contract_address
+        description: "nft contract address"
+      - name: wallet_address
+        description: "Wallet Address that Holds the nft"
+      - name: balance
+        description: "Number of NFTs held"
+      - name: supply_share
+        description: "Share of NFT Total Supply"
+      - name: supply
+        description: "NFT Total Supply"
+      - name: rn
+        description: "row number"
+
+
+  - name: nft_ethereum_top_erc721_holders
+    meta:
+      blockchain: ethereum
+      sector: nft
+      contributors: Henrystats
+    config:
+      tags: ['nft', 'ethereum', 'top Holder']
+    description: >
+        Top 50 erc721 Holders
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - nft_contract_address
+            - rn
+    columns:
+      - name: nft_contract_address
+        description: "nft contract address"
+      - name: wallet_address
+        description: "Wallet Address that Holds the nft"
+      - name: balance
+        description: "Number of NFTs held"
+      - name: supply_share
+        description: "Share of NFT Total Supply"
+      - name: supply
+        description: "NFT Total Supply"
+      - name: rn
+        description: "row number"

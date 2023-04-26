@@ -77,3 +77,63 @@ models:
       - *tx_hash
       - name: trace_address
         description: ""
+
+  - name: safe_polygon_transactions
+    meta:
+      blockchain: polygon
+      project: safe
+      contributors: tschubotz
+    freshness:
+      warn_after: { count: 12, period: hour }
+      error_after: { count: 24, period: hour }
+    config:
+      tags: ['safe', 'polygon']
+    description: "Safe transactions"
+    columns:
+      - *blockchain
+      - *block_date
+      - &block_time
+        name: block_time
+        description: "Datetime of block"
+      - &block_number
+        name: block_number
+        description: "Number of block"
+      - *tx_hash
+      - name: address
+        description: "Safe contract address"
+      - &to
+        name: to
+        description: "Destination address"
+      - &value
+        name: value
+        description: "Value of transaction"
+      - &gas
+        name: gas 
+        description: "Gas limit set for transaction"
+      - &gas_used
+        name: gas_used
+        description: "Gas used during transaction"
+      - &tx_index
+        name: tx_index
+        description: "Transaction index"
+      - &sub_traces
+        name: sub_traces
+        description: "Number of sub traces"
+      - &trace_address
+        name: trace_address
+        description: ""
+      - &success
+        name: success
+        description: "Success state of transaction"
+      - &error
+        name: error
+        description: "Error of transaction if any"
+      - &code
+        name: code
+        description: "Code"
+      - &input
+        name: input
+        description: "Input data"
+      - &output
+        name: output
+        description: "Output data"
