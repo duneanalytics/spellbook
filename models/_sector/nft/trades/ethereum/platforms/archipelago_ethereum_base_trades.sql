@@ -62,9 +62,9 @@ SELECT
     ,tok.tokenId as nft_token_id
     ,1 as nft_amount
     ,trade.currency as currency_contract
-    ,trade.cost as price_raw
-    ,coalesce(fee.platform_amount,0) as platform_fee_amount_raw
-    ,coalesce(fee.royalty_amount,0) as royalty_fee_amount_raw
+    ,cast(trade.cost as decimal(38)) as price_raw
+    ,cast(coalesce(fee.platform_amount,0) as decimal(38)) as platform_fee_amount_raw
+    ,cast(coalesce(fee.royalty_amount,0) as decimal(38)) as royalty_fee_amount_raw
     ,CAST(null as varchar(5)) as platform_fee_address
     ,CAST(null as varchar(5)) as royalty_fee_address
     ,trade.evt_index as sub_tx_trade_id
