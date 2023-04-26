@@ -1,5 +1,7 @@
 # Sector: NFT
 
+We're migration the NFT sector spells to a new structure which will make implementing and maintaining marketplace abstractions a lot easier and more robust.
+
 ## `nft.trades`
 
 - partition_by: `[blockchain, block_date]` 
@@ -75,7 +77,15 @@ Base table schema (to be implemented by marketplace models):
 | royalty_fee_address      | The address to which the royalty fee was sent to (if applicable)           |
 
 Enrichment of these base tables is done in 1 model for each chain.
-The enrichment logic can be found in `macros/models/sector/nft` 
+The enrichment logic can be found in `macros/models/sector/nft` and includes:
+
+1. adding transaction information
+2. adding NFT token information
+3. adding ERC20 token information + handle ERC20 decimals
+4. handle USD columns
+5. adding aggregator columns
+6. fixing buyer or seller for aggregator txs
+7. calculating platform and royalty rates
 
 
 
@@ -122,7 +132,7 @@ The migration for each protocol consists of 3 parts.
 | blur        |   v1    |          3,067,180 |          |           |        |
 | cryptopunks |   v1    |             23,054 |          |           |        |
 | element     |   v1    |            106,654 |          |           |        |
-| foundation  |   v1    |            137,246 |   [x]    |           |        |
+| foundation  |   v1    |            137,246 |   [x]    |    [x]    |        |
 | looksrare   |   v1    |            401,647 |          |           |        |
 | looksrare   |   v2    |              1,216 |          |           |        |
 | opensea     |   v1    |         20,245,583 |          |           |        |

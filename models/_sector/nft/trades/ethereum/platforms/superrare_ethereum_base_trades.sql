@@ -137,7 +137,7 @@ with all_superrare_sales as (
             , concat('0x',substring(topic2 from 27 for 40)) as contract_address
             , bytea2numeric_v3(substring(topic4 from 3)) as nft_token_id
             , lower('0x8c9f364bf7a56ed058fc63ef81c6cf09c833e656') as seller -- all sent from auction house contract
-            , concat('0x',substring(topic3 from 27 for 40)) as buyer
+            , concat('0x',substring(data from 27 for 40)) as buyer
             , bytea2numeric_v3(substring(data from 67 for 64)) as price_raw
             , tx_hash
             , '{{ var("ETH_ERC20_ADDRESS") }}'
