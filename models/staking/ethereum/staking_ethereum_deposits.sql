@@ -43,7 +43,9 @@ WITH deposit_events AS (
     , ROW_NUMBER() OVER (PARTITION BY t.block_number, t.tx_hash, t.value ORDER BY t.block_number) AS table_merging_traces_id
     FROM {{ source('ethereum', 'traces') }} t
     WHERE t.to = '0x00000000219ab540356cbb839cbe05303d7705fa'
+    AND (call_type NOT IN ('delegatecall', 'callcode', 'staticcall') OR call_type IS NULL)
     AND CAST(t.value AS double) > 0
+    AND success
     {% if not is_incremental() %}
     AND t.block_time >= '2020-10-14'
     {% endif %}
