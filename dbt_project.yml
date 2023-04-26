@@ -243,6 +243,10 @@ models:
         +schema: sushiswap_fantom
       optimism:
         +schema: sushiswap_optimism
+      polygon:
+        +schema: sushiswap_polygon
+      bnb:
+        +schema: sushiswap_bnb
 
     openocean:
       +schema: openocean
@@ -1182,3 +1186,8 @@ models:
         +schema: bebop_polygon
       arbitrum:
         +schema: bebop_arbitrum
+
+    glacier:
+      +schema: glacier
+      avalanche_c:
+        +schema: glacier_avalanche_c
