@@ -29,15 +29,15 @@ FROM (VALUES
     , ('bnb', '0xf977814e90da44bfa03b6295a0616a897441acec', 'Binance', 'Binance 20', 'soispoke', timestamp('2022-08-28'))
     , ('bnb', '0xBE0eB53F46cd790Cd13851d5EFf43D12404d33E8', 'Binance', 'Binance 21', 'soispoke', timestamp('2022-08-28'))
     , ('bnb', '0x5a52e96bacdabb82fd05763e25335261b270efcb', 'Binance', 'Binance 22', 'soispoke', timestamp('2022-08-28'))
-    , ('bnb', '0xeb2d2f1b8c558a40207669291fda468e50c8a0bb', 'Binance', 'Binance Charity', 'soispoke', timestamp('2022-08-28')),
+    , ('bnb', '0xeb2d2f1b8c558a40207669291fda468e50c8a0bb', 'Binance', 'Binance Charity', 'soispoke', timestamp('2022-08-28'))
     -- Bitget, source: https://raw.githubusercontent.com/js-kingdata/indicators_factory/fefe53bca88ecf331a71fc59e34aab319f3415c5/crawlers/address_tags/cex/bitget_address.txt
     , ('bnb', '0x0639556f03714a74a5feeaf5736a4a64ff70d206', 'Bitget', 'Bitget 1', 'hildobby', timestamp('2023-04-06'))
     , ('bnb', '0x149ded7438caf5e5bfdc507a6c25436214d445e1', 'Bitget', 'Bitget 2', 'hildobby', timestamp('2023-04-06'))
     , ('bnb', '0x3a7d1a8c3a8dc9d48a68e628432198a2ead4917c', 'Bitget', 'Bitget 3', 'hildobby', timestamp('2023-04-06'))
-    , ('bnb', '0x97b9d2102a9a65a26e1ee82d59e42d1b73b68689', 'Bitget', 'Bitget 4', 'hildobby', timestamp('2023-04-06')),
+    , ('bnb', '0x97b9d2102a9a65a26e1ee82d59e42d1b73b68689', 'Bitget', 'Bitget 4', 'hildobby', timestamp('2023-04-06'))
     -- Bybit, source: https://raw.githubusercontent.com/js-kingdata/indicators_factory/fefe53bca88ecf331a71fc59e34aab319f3415c5/crawlers/address_tags/cex/bybit_address.txt
     , ('bnb', '0xee5b5b923ffce93a870b3104b7ca09c3db80047a', 'Bybit', 'Bybit 1', 'hildobby', timestamp('2023-04-06'))
-    , ('bnb', '0xf89d7b9c864f589bbf53a82105107622b35eaa40', 'Bybit', 'Bybit 2', 'hildobby', timestamp('2023-04-06')),
+    , ('bnb', '0xf89d7b9c864f589bbf53a82105107622b35eaa40', 'Bybit', 'Bybit 2', 'hildobby', timestamp('2023-04-06'))
     -- Crypto.com
     , ('bnb', '0x6262998ced04146fa42253a5c0af90ca02dfd2a3', 'Crypto.com', 'Crypto.com 1', 'soispoke', timestamp('2022-11-14'))
     , ('bnb', '0x46340b20830761efd32832a74d7169b29feb9758', 'Crypto.com', 'Crypto.com 2', 'soispoke', timestamp('2022-11-14'))
