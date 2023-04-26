@@ -165,6 +165,7 @@ models:
       - *tx_hash
       - *contract_address
       - *block_time
+      - *block_number
       - *maker
       - *taker
       - *taker_token
@@ -184,9 +185,7 @@ models:
       - &native_fill_type
         name: native_fill_type
         description: "type of native fill - RFQ, limit order, OTC, fill"
-      - &fee_recipient_address
-        name: fee_recipient_address
-        description: "The recipient address of the fee, or the applications that is using 0x API, for receiving fee"
+      - *matcha_limit_order_flag
       - &protocol_fee_paid_eth
         name: protocol_fee_paid_eth
         description: "The protocol fee paid in ETH"

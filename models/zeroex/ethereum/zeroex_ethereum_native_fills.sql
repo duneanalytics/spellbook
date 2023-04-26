@@ -16,7 +16,7 @@
 WITH 
     v3_fills AS (
         SELECT
-            evt_block_time AS block_time
+            evt_block_time AS block_time, fills.evt_block_number as block_number
             , 'v3' AS protocol_version
             , fills.evt_tx_hash AS transaction_hash
             , fills.evt_index
@@ -77,7 +77,7 @@ WITH
     )
     , v2_1_fills AS (
         SELECT
-            evt_block_time AS block_time
+            evt_block_time AS block_time, fills.evt_block_number as block_number
             , 'v2' AS protocol_version
             , fills.evt_tx_hash AS transaction_hash
             , fills.evt_index
@@ -138,7 +138,7 @@ WITH
     , v4_limit_fills AS (
 
         SELECT
-            fills.evt_block_time AS block_time
+            fills.evt_block_time AS block_time, fills.evt_block_number as block_number
             , 'v4' AS protocol_version
             , fills.evt_tx_hash AS transaction_hash
             , fills.evt_index
@@ -200,7 +200,7 @@ WITH
 
     , v4_rfq_fills AS (
       SELECT
-          fills.evt_block_time AS block_time
+          fills.evt_block_time AS block_time, fills.evt_block_number as block_number
           , 'v4' AS protocol_version
           , fills.evt_tx_hash AS transaction_hash
           , fills.evt_index
@@ -259,7 +259,7 @@ WITH
     ), otc_fills as
     (
       SELECT
-          fills.evt_block_time AS block_time
+          fills.evt_block_time AS block_time, fills.evt_block_number as block_number
           , 'v4' AS protocol_version
           , fills.evt_tx_hash AS transaction_hash
           , fills.evt_index
@@ -339,7 +339,8 @@ WITH
     SELECT * FROM otc_fills
     )
             SELECT distinct 
-                all_fills.block_time as block_time,
+                all_fills.block_time AS block_time, 
+                all_fills.block_number,
                 protocol_version as version,
                 date_trunc('day', all_fills.block_time) as block_date,
                 transaction_hash as tx_hash,

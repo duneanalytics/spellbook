@@ -18,7 +18,7 @@ WITH
     v4_limit_fills AS (
 
         SELECT
-            fills.evt_block_time AS block_time, fills.block_number as block_number
+            fills.evt_block_time AS block_time, fills.evt_block_number as block_number
             , 'v4' AS protocol_version
             , 'limit' as native_order_type
             , fills.evt_tx_hash AS transaction_hash
@@ -80,7 +80,7 @@ WITH
 
     , v4_rfq_fills AS (
       SELECT
-          fills.evt_block_time AS block_time, fills.block_number as block_number
+          fills.evt_block_time AS block_time, fills.evt_block_number as block_number
           , 'v4' AS protocol_version
           , 'rfq' as native_order_type
           , fills.evt_tx_hash AS transaction_hash
@@ -141,7 +141,7 @@ WITH
     ), otc_fills as
     (
       SELECT
-          fills.evt_block_time AS block_time, fills.block_number as block_number
+          fills.evt_block_time AS block_time, fills.evt_block_number as block_number
           , 'otc' as native_order_type
           , 'v4' AS protocol_version
           , fills.evt_tx_hash AS transaction_hash
@@ -214,7 +214,7 @@ WITH
     SELECT * FROM otc_fills
     )
             SELECT distinct 
-                all_fills.block_time AS block_time, fills.block_number as block_number,
+                all_fills.block_time AS block_time, fills.evt_block_number as block_number,
                 protocol_version as version,
                 date_trunc('day', all_fills.block_time) as block_date,
                 transaction_hash as tx_hash,
@@ -241,7 +241,7 @@ WITH
                 tx.to AS tx_to
             FROM all_fills
             INNER JOIN {{ source('arbitrum', 'transactions')}} tx ON all_fills.transaction_hash = tx.hash
-            AND all_fills.block_number = tx.block_number
+            AND all_fills.evt_block_number = tx.block_number
             {% if is_incremental() %}
             AND tx.block_time >= date_trunc('day', now() - interval '1 week')
             {% endif %}
