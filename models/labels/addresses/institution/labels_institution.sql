@@ -5,6 +5,28 @@
                                     \'["ilemi"]\') }}'
 )}}
 
-SELECT * FROM {{ ref('labels_cex') }}
-UNION ALL
-SELECT * FROM {{ ref('labels_funds') }}
+{% set institution_models = [
+ ref('labels_cex')
+ , ref('labels_funds')
+] %}
+
+SELECT *
+FROM (
+    {% for institution_model in institution_models %}
+    SELECT
+        blockchain
+        , address
+        , name
+        , category
+        , contributor
+        , source
+        , created_at
+        , updated_at
+        , model_name
+        , label_type
+    FROM {{ institution_model }}
+    {% if not loop.last %}
+    UNION ALL
+    {% endif %}
+    {% endfor %}
+)

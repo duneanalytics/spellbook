@@ -9,8 +9,7 @@
     )  
 }}
 
-SELECT *
-FROM (
+WITH curated_list AS (
   select 
     lower(creator_address) as creator_address
     ,cast(contract_project as varchar(250)) AS contract_project
@@ -57,8 +56,8 @@ FROM (
       ,('0xab0d90fde397a4362acbe1d3a1c17f24b5b53266', 'Gnosis Safe')
       ,('0x3e579180cf01f0e2abf6ff4d566b7891fbf9b868', 'BitBTC Protocol')
       ,('0xd15d5d0f5b1b56a4daef75cfe108cb825e97d015', 'Superfluid')
-      ,('0xbabe61887f1de2713c6f97e567623453d3c79f67', 'CurveFi')
-      ,('0x7eeac6cddbd1d0b8af061742d41877d7f707289a', 'CurveFi')
+      ,('0xbabe61887f1de2713c6f97e567623453d3c79f67', 'Curve')
+      ,('0x7eeac6cddbd1d0b8af061742d41877d7f707289a', 'Curve')
       ,('0x763b9dba40c3d03507df454823fe03517f84a5ab', 'WePiggy')
       ,('0x85671317830357f40188aa6a55e96a3338eb4d7d', 'Volmex')
       ,('0xee9801669c6138e84bd50deb500827b776777d28', 'O3 Swap')
@@ -236,7 +235,7 @@ FROM (
       ,('0xb49a6213da096f72c6f83c63a68f43caabb113ad', 'KEVoLUTION')
       ,('0x14719476c596fce28d381bd3ac12c3ce4698a1e9', 'Raid Project')
       ,('0xeb10511109053787b3ed6cc02d5cb67a265806cc', 'Party Panda')
-      ,('0x919124f5f5135d3020a0b075412679755545f7c5', 'Curvefi')
+      ,('0x919124f5f5135d3020a0b075412679755545f7c5', 'Curve')
       ,('0x244a807084a3eb9fd5fe88aa0b13aec8401577bd', 'dLab')
       ,('0xbe9228ce3b7ed30c8646143d0e56ee16fec6c07c', 'WardenSwap')
       ,('0xbb73463b88b0cb9681f176d6d43a12c2fea2c237', 'DeFiHelper')
@@ -382,7 +381,7 @@ FROM (
       ,('0xc82c018dB54B894853cACb878D0F3e481E8C6b96', 'Via Protocol')
       ,('0x4401A1667dAFb63Cff06218A69cE11537de9A101', 'Clique')
       ,('0xF3808680917524CD1346b12e4845830076eB7001', 'Teahouse')
-      ,('0x4dc45eAc9eE25Af88958c94461fd46175C47744a', 'Geoweb')
+      ,('0x4dc45eAc9eE25Af88958c94461fd46175C47744a', 'Geo Web')
       ,('0xade09131C6f43fe22C2CbABb759636C43cFc181e', 'Connext')
       ,('0x4b327372A347aD97e45881428af26a4C28840C66', 'Metamask')
       ,('0x75ee82787c548daeac58af6cba5bd2a9ff863d28', 'Flipside Crypto')
@@ -400,7 +399,7 @@ FROM (
       ,('0x221a8Da83f675f1Fd97105a5B2B3bb65916a5101', 'Rabbithole')
       ,('0x35a8e8ed19122f6707984e7c135c0d8943d4d750', 'OKX')
       ,('0xe2e2d9e31d7e1cc1178fe0d1c5950f6c809816a3', 'Wormhole')
-      ,('0x44cBfc3Ce762fC0Fee9Ddd6372804b7B660176bC', 'MUX')
+      ,('0x44cBfc3Ce762fC0Fee9Ddd6372804b7B660176bC', 'Mux')
       ,('0x7f4537349A0a40cd20ba5Af0D11fdC46dCFCBB3f', 'Zonic')
       ,('0xDcdE7a069dEEe7b73A795A76F97Eb9dca7f812d4', 'Connext')
       ,('0x42004661285881D4B0F245B1eD3774d8166CF314', 'Optimism Governor')
@@ -431,13 +430,55 @@ FROM (
       ,('0x4bb4c1b0745ef7b4642feeccd0740dec417ca0a0', 'Sushi')
       ,('0x15051107651f3420144d3a2412d49402c2fac3c0', 'zkBridge')
       ,('0x2313f80d53c649c7b2c9c4d101b796f34cbe80f3', 'Wido')
+      ,('0x18606e2ABaA0bA15Cc1D0D3b55521bD2247e4d2E', 'Layer Zero')
+      ,('0x6879fAb591ed0d62537A3Cac9D7cd41218445a84', 'zeroex')
+      ,('0x076d6da60aAAC6c97A8a0fE8057f9564203Ee545', 'Aave') --BGD
+      ,('0x015D83637A6904CB13C93068a48887F9ACD7EEF5', 'Odos')
+      ,('0x45208e8d6d09d6bfce5094083ab36f22bdfc8456', 'Layer Zero')
+      ,('0x014040C6A9cd6366f8fa858535b7DdfAc507dB20', 'Zerion')
+      ,('0x05182E579FDfCf69E4390c3411D8FeA1fb6467cf', 'Paraswap')
+      ,('0x86791C7b7Ea5F77b1612eCc300dD44ba3A1C9083', 'Socket')
+      ,('0xFBE184415F4893e4E9F918F5E0e22D759c9794a7', 'Socket')
+      ,('0xDc6d6f9aB5fcc398B92B017e8482749aE5afbF35', 'Hypercerts')
+      ,('0x39F0bD56c1439a22Ee90b4972c16b7868D161981', 'zkBOB')
+      ,('0x1Dc662D3D7De14a57CD369e3a9E774f8F80d4214', 'DODO')
+      ,('0x42f4802128C56740D77824046bb13E6a38874331', 'Chainlink')
+      ,('0xAf66c75FDA4ca9546920A4F7270265ADfB90F43D', 'Collab Land')
+      ,('0x02302cf47fa39f8ca2f1442259016befb3595c67', 'Optimism Name Service')
+      ,('0x3711Ae92429CCef7581C4C6eFE0cf6042bA0b1E2', 'Curve')
+      ,('0x51EdB9Cc0A86A32870753E4dE2C363aeFcC25D8C', 'Tellor')
+      ,('0x4BbbDF6562daf495Bc2eb8114b990aD95E1177F6', 'Via Protocol')
+      ,('0xe8dD38E673A93ccFC2E3d7053efcCb5c93F49365', 'Socket')
+      ,('0xa63e6102719a36562860a804f9020018c1683c7a', 'RedKoin')
+      ,('0xED20c81Dc8A28769eA14E3FfbD782967Cc53BB28', 'Layer Zero')
+      ,('0xa990077c3205cbDf861e17Fa532eeB069cE9fF96', 'ERC1820')
+      ,('0x81b7e9d8409b857d70ad14073e785c486945caf4', 'Optimism Ape Yacht Club')
+      ,('0x594da37b691ed83a994cE934C64844E94B9A1997', 'KyberSwap')
+      ,('0xd22044706DeA3c342f68396bEDBCf6a2536d951D', 'Eden Network')
+      ,('0x8FcBA7279af1d5d12C77e7062cAf1E09A0623f97', 'Hundred Finance')
 
   ) as temp_table (creator_address, contract_project)
 
-) f
+)
 
+, mapped_list AS (
+  SELECT
+    address AS creator_address, project_name AS contract_project
+    FROM {{ ref('addresses_optimism_grants_funding') }} pro
+)
+
+SELECT 
+  creator_address, contract_project
 --filter out creators that we never want to map
+  FROM (
+    SELECT creator_address, contract_project FROM curated_list cl
+    UNION ALL
+    SELECT creator_address, contract_project FROM mapped_list ml
+      WHERE ml.creator_address NOT IN (SELECT creator_address FROM curated_list)
+    ) f
 WHERE f.creator_address NOT IN (
    SELECT creator_address FROM {{ ref('contracts_optimism_nondeterministic_contract_creators') }}
 )
+
+GROUP BY 1,2
 ;
