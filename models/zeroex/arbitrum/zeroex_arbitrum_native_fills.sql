@@ -243,7 +243,7 @@ WITH
                 tx.to AS tx_to
             FROM all_fills
             INNER JOIN {{ source('arbitrum', 'transactions')}} tx ON all_fills.transaction_hash = tx.hash
-            AND all_fills.evt_block_number = tx.block_number
+            AND all_fills.block_number = tx.block_number
             {% if is_incremental() %}
             AND tx.block_time >= date_trunc('day', now() - interval '1 week')
             {% endif %}

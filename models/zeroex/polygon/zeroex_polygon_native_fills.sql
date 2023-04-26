@@ -303,4 +303,11 @@ WITH
                 tx.to AS tx_to
             FROM all_fills
             INNER JOIN {{ source('polygon', 'transactions')}} tx ON all_fills.transaction_hash = tx.hash
+            AND all_fills.block_number = tx.block_number
+            {% if is_incremental() %}
+            AND tx.block_time >= date_trunc('day', now() - interval '1 week')
+            {% endif %}
+            {% if not is_incremental() %}
+            AND tx.block_time >= '{{zeroex_v3_start_date}}'
+            {% endif %}
             
