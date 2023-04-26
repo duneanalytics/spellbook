@@ -28,6 +28,7 @@ from
     ,('0x00000000000076a84fef008cdabe6409d2fe638b', 'DelegateCash', 'delegationRegistry')
     ,('0x82E0b8cDD80Af5930c4452c684E71c861148Ec8A', 'Metamask', 'Metamask BridgeRouter')
     ,('0x81E792e5a9003CC1C8BF5569A00f34b65d75b017', 'Layer Zero', 'Relayer v2')
+    ,('0xA0Cc33Dd6f4819D473226257792AFe230EC3c67f', 'Layer Zero', 'LayerZero Oracle')
     --Non-Contract Labels
     ,('0x80C67432656d59144cEFf962E8fAF8926599bCF8', 'Orbiter Finance', 'Bridge')
     
