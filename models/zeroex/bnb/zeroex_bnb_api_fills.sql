@@ -26,7 +26,8 @@ WITH zeroex_tx AS (
                     CASE
                         WHEN takerAddress = '0x63305728359c088a52b0b0eeec235db4d31a67fc' THEN takerAddress
                         ELSE NULL
-                    END AS affiliate_address
+                    END AS affiliate_address,
+                    fills.makerAddress as maker 
         FROM {{ source('zeroex_v2_bnb', 'Exchange_evt_Fill') }} v3
         WHERE (  -- nuo
                 v3.takerAddress = '0x63305728359c088a52b0b0eeec235db4d31a67fc'
@@ -55,7 +56,8 @@ WITH zeroex_tx AS (
                                 THEN SUBSTRING(INPUT
                                         FROM (position('fbc019a7' IN INPUT) + 32)
                                         FOR 40)
-                            END AS affiliate_address
+                            END AS affiliate_address,
+                            '0x' || substring(INPUT, 99, 40) AS maker 
         FROM {{ source('bnb', 'traces') }} tr
         WHERE tr.to IN (
                 -- exchange contract
@@ -316,7 +318,7 @@ SELECT   s.tx_hash tx_hash, s.index evt_index, s.contract_address, s.block_time,
             FALSE AS matcha_limit_order_flag
     
     FROM {{ source('bnb', 'logs') }} s
-    JOIN zeroex_tx z on z.tx_hash = s.tx_hash
+    JOIN zeroex_tx z on z.tx_hash = s.tx_hash and ('0x' || substring(DATA, 27, 40)) = z.maker
     WHERE topic1 = '0xd78ad95fa46c994b6551d0da85fc275fe613ce37657fb8d5e3d130840159d822' -- all the uni v2 swap event
            and topic2 = '0x000000000000000000000000def1c0ded9bec7f1a1670819833240f027b25eff' -- 0x EP
         {% if is_incremental() %}
