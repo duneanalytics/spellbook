@@ -30,11 +30,14 @@ WITH
             , fills.makerTokenFilledAmount as maker_token_filled_amount_raw
             , fills.contract_address 
             , mt.symbol AS maker_symbol
+            , CASE WHEN lower(tt.symbol) > lower(mt.symbol) THEN concat(mt.symbol, '-', tt.symbol) ELSE concat(tt.symbol, '-', mt.symbol) END AS token_pair
             , fills.makerTokenFilledAmount / (10^mt.decimals) AS maker_asset_filled_amount
             , fills.takerToken AS taker_token
             , tt.symbol AS taker_symbol
             , fills.takerTokenFilledAmount / (10^tt.decimals) AS taker_asset_filled_amount
-            , fills.feeRecipient AS fee_recipient_address
+            , (fills.feeRecipient in 
+                ('0x9b858be6e3047d88820f439b240deac2418a2551','0x86003b044f70dac0abc80ac8957305b6370893ed','0x5bc2419a087666148bfbe1361ae6c06d240c6131')) 
+                AS matcha_limit_order_flag
             , CASE
                     WHEN tp.symbol = 'USDC' THEN (fills.takerTokenFilledAmount / 1e6) ----don't multiply by anything as these assets are USD
                     WHEN mp.symbol = 'USDC' THEN (fills.makerTokenFilledAmount / 1e6) ----don't multiply by anything as these assets are USD
@@ -50,23 +53,23 @@ WITH
                 END AS volume_usd
             , fills.protocolFeePaid/ 1e18 AS protocol_fee_paid_eth
         FROM {{ source('zeroex_bnb', 'ExchangeProxy_evt_LimitOrderFilled') }} fills
-        LEFT JOIN prices.usd tp ON
+        LEFT JOIN {{ source('prices', 'usd') }} tp ON
             date_trunc('minute', evt_block_time) = tp.minute and  tp.blockchain = 'bnb'
             AND CASE
                     -- set native token to wrapped version
                     WHEN fills.takerToken = '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee' THEN '0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c'
                     ELSE fills.takerToken
                 END = tp.contract_address
-        LEFT JOIN prices.usd mp ON
-            DATE_TRUNC('minute', evt_block_time) = mp.minute  
+        LEFT JOIN {{ source('prices', 'usd') }} mp ON 
+            DATE_TRUNC('minute', evt_block_time) = mp.minute  and  mp.blockchain = 'bnb'
             AND CASE
                     -- set native token to wrapped version
                     WHEN fills.makerToken = '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee' THEN '0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c'
                     ELSE fills.makerToken
                 END = mp.contract_address
-        LEFT OUTER JOIN {{ ref('tokens_erc20') }} mt ON mt.contract_address = fills.makerToken
-        LEFT OUTER JOIN {{ ref('tokens_erc20') }} tt ON tt.contract_address = fills.takerToken
-         where 1=1  and mp.blockchain = 'bnb' and tp.blockchain = 'bnb'  
+        LEFT OUTER JOIN {{ ref('tokens_erc20') }} mt ON mt.contract_address = fills.makerToken and mt.blockchain = 'bnb'
+        LEFT OUTER JOIN {{ ref('tokens_erc20') }} tt ON tt.contract_address = fills.takerToken and tt.blockchain = 'bnb'
+         where 1=1  
                 {% if is_incremental() %}
                 AND evt_block_time >= date_trunc('day', now() - interval '1 week')
                 {% endif %}
@@ -89,11 +92,14 @@ WITH
           , fills.makerTokenFilledAmount as maker_token_filled_amount_raw
           , fills.contract_address 
           , mt.symbol AS maker_symbol
+          , CASE WHEN lower(tt.symbol) > lower(mt.symbol) THEN concat(mt.symbol, '-', tt.symbol) ELSE concat(tt.symbol, '-', mt.symbol) END AS token_pair
           , fills.makerTokenFilledAmount / (10^mt.decimals) AS maker_asset_filled_amount
           , fills.takerToken AS taker_token
           , tt.symbol AS taker_symbol
           , fills.takerTokenFilledAmount / (10^tt.decimals) AS taker_asset_filled_amount
-          , NULL: AS fee_recipient_address
+          , (fills.feeRecipient in 
+                ('0x9b858be6e3047d88820f439b240deac2418a2551','0x86003b044f70dac0abc80ac8957305b6370893ed','0x5bc2419a087666148bfbe1361ae6c06d240c6131')) 
+                AS matcha_limit_order_flag
           , CASE
                   WHEN tp.symbol = 'USDC' THEN (fills.takerTokenFilledAmount / 1e6) ----don't multiply by anything as these assets are USD
                   WHEN mp.symbol = 'USDC' THEN (fills.makerTokenFilledAmount / 1e6) ----don't multiply by anything as these assets are USD
@@ -107,24 +113,31 @@ WITH
                   WHEN mp.symbol = 'WETH' THEN (fills.makerTokenFilledAmount / 1e18) * mp.price
                   ELSE COALESCE((fills.makerTokenFilledAmount / (10^mt.decimals))*mp.price,(fills.takerTokenFilledAmount / (10^tt.decimals))*tp.price)
               END AS volume_usd
-          , NULL::NUMERIC AS protocol_fee_paid_eth
+          , cast(NULL as numeric) AS protocol_fee_paid_eth
       FROM {{ source('zeroex_bnb', 'ExchangeProxy_evt_RfqOrderFilled') }} fills
-      LEFT JOIN prices.usd tp ON
-          date_trunc('minute', evt_block_time) = tp.minute 
+      LEFT JOIN {{ source('prices', 'usd') }} tp ON
+          date_trunc('minute', evt_block_time) = tp.minute and  tp.blockchain = 'bnb'
           AND CASE
                   -- set native token to wrapped version
                     WHEN fills.takerToken = '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee' THEN '0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c'
                     ELSE fills.takerToken
               END = tp.contract_address
-      LEFT JOIN prices.usd mp ON
+      LEFT JOIN {{ source('prices', 'usd') }} mp ON and  mp.blockchain = 'bnb'
           DATE_TRUNC('minute', evt_block_time) = mp.minute  
           AND CASE
                   -- set native token to wrapped version
                     WHEN fills.makerToken = '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee' THEN '0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c'
                     ELSE fills.makerToken
               END = mp.contract_address
-      LEFT OUTER JOIN {{ ref('tokens_erc20') }} mt ON mt.contract_address = fills.makerToken
-      LEFT OUTER JOIN {{ ref('tokens_erc20') }} tt ON tt.contract_address = fills.takerToken
+      LEFT OUTER JOIN {{ ref('tokens_erc20') }} mt ON mt.contract_address = fills.makerToken and mt.blockchain = 'bnb'
+      LEFT OUTER JOIN {{ ref('tokens_erc20') }} tt ON tt.contract_address = fills.takerToken and tt.blockchain = 'bnb'
+       where 1=1  
+                {% if is_incremental() %}
+                AND evt_block_time >= date_trunc('day', now() - interval '1 week')
+                {% endif %}
+                {% if not is_incremental() %}
+                AND evt_block_time >= '{{zeroex_v3_start_date}}'
+                {% endif %}
        where 1=1  and  mp.blockchain = 'bnb' and tp.blockchain = 'bnb'
                 {% if is_incremental() %}
                 AND evt_block_time >= date_trunc('day', now() - interval '1 week')
@@ -147,11 +160,12 @@ WITH
           , fills.makerTokenFilledAmount as maker_token_filled_amount_raw
           , fills.contract_address 
           , mt.symbol AS maker_symbol
+          , CASE WHEN lower(tt.symbol) > lower(mt.symbol) THEN concat(mt.symbol, '-', tt.symbol) ELSE concat(tt.symbol, '-', mt.symbol) END AS token_pair
           , fills.makerTokenFilledAmount / (10^mt.decimals) AS maker_asset_filled_amount
           , fills.takerToken AS taker_token
           , tt.symbol AS taker_symbol
           , fills.takerTokenFilledAmount / (10^tt.decimals) AS taker_asset_filled_amount
-          , NULL: AS fee_recipient_address
+          , FALSE AS matcha_limit_order_flag
           , CASE
                   WHEN tp.symbol = 'USDC' THEN (fills.takerTokenFilledAmount / 1e6) ----don't multiply by anything as these assets are USD
                   WHEN mp.symbol = 'USDC' THEN (fills.makerTokenFilledAmount / 1e6) ----don't multiply by anything as these assets are USD
@@ -167,23 +181,23 @@ WITH
               END AS volume_usd
           , NULL::NUMERIC AS protocol_fee_paid_eth
         FROM {{ source('zeroex_bnb', 'ExchangeProxy_evt_OtcOrderFilled') }} fills
-      LEFT JOIN prices.usd tp ON
-          date_trunc('minute', evt_block_time) = tp.minute 
+      LEFT JOIN {{ source('prices', 'usd') }} tp ON
+          date_trunc('minute', evt_block_time) = tp.minute and tp.blockchain = 'bnb'
           AND CASE
                   -- set native token to wrapped version
                     WHEN fills.takerToken = '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee' THEN '0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c'
                     ELSE fills.takerToken
               END = tp.contract_address
-      LEFT JOIN prices.usd mp ON
+      LEFT JOIN {{ source('prices', 'usd') }} mp ON and mp.blockchain = 'bnb'
           DATE_TRUNC('minute', evt_block_time) = mp.minute  
           AND CASE
                   -- set native token to wrapped version
                     WHEN fills.makerToken = '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee' THEN '0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c'
                     ELSE fills.makerToken
               END = mp.contract_address
-      LEFT OUTER JOIN {{ ref('tokens_erc20') }} mt ON mt.contract_address = fills.makerToken
-      LEFT OUTER JOIN {{ ref('tokens_erc20') }} tt ON tt.contract_address = fills.takerToken
-       where 1=1  and mp.blockchain = 'bnb' and tp.blockchain = 'bnb'  
+      LEFT OUTER JOIN {{ ref('tokens_erc20') }} mt ON mt.contract_address = fills.makerToken and mt.blockchain = 'bnb'
+      LEFT OUTER JOIN {{ ref('tokens_erc20') }} tt ON tt.contract_address = fills.takerToken and tt.blockchain = 'bnb'
+       where 1=1  
                 {% if is_incremental() %}
                 AND evt_block_time >= date_trunc('day', now() - interval '1 week')
                 {% endif %}
@@ -219,13 +233,13 @@ WITH
                 maker_token_filled_amount_raw as maker_token_amount_raw,
                 taker_token_filled_amount_raw as taker_token_amount_raw,
                 maker_symbol,
-                CASE WHEN lower(ts.symbol) > lower(ms.symbol) THEN concat(ms.symbol, '-', ts.symbol) ELSE concat(ts.symbol, '-', ms.symbol) END AS token_pair,
+                token_pair,
                 CAST(ARRAY() as array<bigint>) as trace_address,
                 maker_asset_filled_amount maker_token_amount,
                 taker_token,
                 taker_symbol,
                 taker_asset_filled_amount taker_token_amount,
-                fee_recipient_address,
+                matcha_limit_order_flag,
                 volume_usd,
                 cast(protocol_fee_paid_eth as double),
                 'bnb' as blockchain,
@@ -235,6 +249,11 @@ WITH
                 tx.to AS tx_to
             FROM all_fills
             INNER JOIN {{ source('bnb', 'transactions')}} tx ON all_fills.transaction_hash = tx.hash
-            LEFT OUTER JOIN {{ ref('tokens_erc20') }} ts ON ts.contract_address = taker_token and ts.blockchain = 'bnb'
-            LEFT OUTER JOIN {{ ref('tokens_erc20') }} ms ON ms.contract_address = maker_token and ms.blockchain = 'bnb'
+            AND all_fills.block_number = tx.block_number
+            {% if is_incremental() %}
+            AND tx.block_time >= date_trunc('day', now() - interval '1 week')
+            {% endif %}
+            {% if not is_incremental() %}
+            AND tx.block_time >= '{{zeroex_v3_start_date}}'
+            {% endif %}
             
