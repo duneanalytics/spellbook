@@ -141,9 +141,10 @@ WITH
     ), otc_fills as
     (
       SELECT
-          fills.evt_block_time AS block_time, fills.evt_block_number as block_number
-          , 'otc' as native_order_type
+          fills.evt_block_time AS block_time, 
+          fills.evt_block_number as block_number
           , 'v4' AS protocol_version
+          , 'otc' as native_order_type
           , fills.evt_tx_hash AS transaction_hash
           , fills.evt_index
           , fills.maker AS maker_address
@@ -157,6 +158,7 @@ WITH
           , fills.makerTokenFilledAmount / (10^mt.decimals) AS maker_asset_filled_amount
           , fills.takerToken AS taker_token
           , tt.symbol AS taker_symbol
+          , fills.takerTokenFilledAmount / (10^tt.decimals) AS taker_asset_filled_amount
           , FALSE  AS matcha_limit_order_flag
           , CASE
                   WHEN tp.symbol = 'USDC' THEN (fills.takerTokenFilledAmount / 1e6) ----don't multiply by anything as these assets are USD
