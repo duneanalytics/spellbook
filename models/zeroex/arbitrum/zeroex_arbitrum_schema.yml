@@ -165,7 +165,9 @@ models:
       - *tx_hash
       - *contract_address
       - *block_time
-      - *block_number
+      - &block_number
+        name: block_number
+        description: "Block number of the fill"
       - *maker
       - *taker
       - *taker_token
