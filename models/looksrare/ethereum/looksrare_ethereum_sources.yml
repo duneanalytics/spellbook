@@ -20,4 +20,12 @@ sources:
       - name: StrategyStandardSaleForFixedPriceV1B_call_viewProtocolFee
         loaded_at_field: call_block_time
       - name: StrategyAnyItemFromCollectionForFixedPriceV1B_call_viewProtocolFee
-        loaded_at_field: call_block_time
+        loaded_at_field: call_block_time 
+  - name: looksrare_v2_ethereum
+    freshness:
+      warn_after: { count: 12, period: hour }
+    tables:
+      - name: LooksRareProtocol_evt_TakerAsk
+        loaded_at_field: evt_block_time
+      - name: LooksRareProtocol_evt_TakerBid
+        loaded_at_field: evt_block_time

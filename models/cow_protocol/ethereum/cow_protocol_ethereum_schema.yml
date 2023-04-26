@@ -305,6 +305,7 @@ models:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - order_uid
+            - block_number
     columns:
       - *order_uid
       - *block_time
@@ -317,6 +318,8 @@ models:
         name: tolerance_bips
       - &trade_usd_value
         name: trade_usd_value
+      - &fill_proportion
+        name: fill_proportion
       - &amount_atoms
         name: amount_atoms
       - &amount_percentage
