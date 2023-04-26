@@ -296,6 +296,10 @@ models:
       - *token_address
       - name: token_symbol
         description: 'Symbol of the token'
+      - name: token_balance_raw
+        description: 'Raw balance of the token in the pool'
+      - name: token_balance
+        description: 'Scaled balance of the token in the pool'
       - name: usd_amount
         description: 'Liquidity of the token in the pool in USD'
 
