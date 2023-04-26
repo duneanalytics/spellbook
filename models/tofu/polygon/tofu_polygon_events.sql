@@ -148,3 +148,4 @@ FROM tfe
          LEFT JOIN {{ ref('nft_aggregators')}} agg
                    ON agg.contract_address = tx.`to`
                    AND agg.blockchain = 'polygon'
+
