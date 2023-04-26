@@ -188,3 +188,24 @@ models:
       - *updated_at
       - *model_name
       - *label_type
+
+  - name: labels_cex_optimism
+    meta:
+      blockchain: optimism
+      sector: labels
+      project: cex
+      contributors: hildobby, msilb7
+    config:
+      tags: ['labels', 'optimism', 'cex']
+    description: "Known centralised exchange addresses on Optimism"
+    columns:
+      - *blockchain
+      - *address
+      - *name
+      - *category
+      - *contributor
+      - *source
+      - *created_at
+      - *updated_at
+      - *model_name
+      - *label_type
