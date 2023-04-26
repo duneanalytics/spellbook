@@ -112,7 +112,7 @@ SELECT 'polygon'                                 as blockchain
      , CAST(100 * tff.royalty_rate AS DOUBLE)                                       as royalty_fee_percentage
      , tff.royalty_address                                                          as royalty_fee_receive_address
      , case
-           when tfe.native_eth THEN 'MATIC'
+           when tfe.native_matic THEN 'MATIC'
            else pu.symbol
       end                                    as royalty_fee_currency_symbol
     , tff.bundle_index
