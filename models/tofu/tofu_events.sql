@@ -1,9 +1,9 @@
 {{ config(
         alias ='events',
-        post_hook='{{ expose_spells(\'["arbitrum","bnb"]\',
+        post_hook='{{ expose_spells(\'["arbitrum","bnb","optimism","polygon"]\',
                                     "project",
                                     "tofu",
-                                    \'["Henrystats", "theachenyj", "chuxin"]\') }}')
+                                    \'["Henrystats", "theachenyj", "chuxin", "sohwak"]\') }}')
 }}
 
 
@@ -11,6 +11,7 @@
  ref('tofu_bnb_events')
 ,ref('tofu_arbitrum_events')
 ,ref('tofu_optimism_events')
+,ref('tofu_polygon_events')
 ] %}
 
 SELECT *

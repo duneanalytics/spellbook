@@ -1,15 +1,35 @@
 version: 2
 
 models:
-  - name: tofu_events
+  - name: tofu_polygon_events
     meta:
-      blockchain: arbitrum, bnb, optimism, polygon
+      blockchain: polygon
       project: tofu
-      contributors: [Henrystats, theachenyj, sohwak]
+      contributors: theachenyj, sohwak
     config:
-      tags: ['arbitrum', 'bnb', 'optimism', 'polygon', 'tofu','v1','events', 'cross-chain']
+      tags: ['polygon','tofu','v1','events']
     description: >
-        Tofu v1 events across all chains 
+        Tofu v1 events on Polygon
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_date
+            - blockchain
+            - project
+            - version
+            - tx_hash
+            - evt_index
+            - bundle_index
+      - check_seed:
+          seed_file: ref('tofu_polygon_nft_trades_samples')
+          match_columns:
+            - block_number
+            - tx_hash
+            - token_id
+          check_columns:
+            - amount_original
+            - buyer
+            - seller
     columns:
       - &blockchain
         name: blockchain
@@ -119,19 +139,25 @@ models:
       - &royalty_fee_currency_symbol
         name: royalty_fee_currency_symbol
         description: "Symbol of the token in which fees are paid out"
+      - &bundle_index
+        name: bundle_index
+        description:  "Index of a trades within a bundle trade which has multiple trades"
       - &unique_trade_id
         name: unique_trade_id
         description:  "Unique trade ID"
+      - &evt_index
+        name: evt_index
+        description:  "Unique trade index"
 
-  - name: tofu_trades
+  - name: tofu_polygon_trades
     meta:
-      blockchain: arbitrum, bnb
+      blockchain: polygon
       project: tofu
-      contributors: [Henrystats, theachenyj, sohwak]
+      contributors: theachenyj, sohwak
     config:
-      tags: ['arbitrum', 'bnb', 'optimism', 'polygon', 'tofu','trades', 'crosschain']
+      tags: ['polygon','tofu','trades']
     description: >
-        Tofu trades across all chains
+        Tofu trades on Polygon
     columns:
       - *blockchain
       - *project
@@ -161,15 +187,15 @@ models:
       - *tx_to
       - *unique_trade_id
 
-  - name: tofu_fees
+  - name: tofu_polygon_fees
     meta:
-      blockchain: arbitrum, bnb
+      blockchain: polygon
       project: tofu
-      contributors: [Henrystats, theachenyj, sohwak]
+      contributors: theachenyj, sohwak
     config:
-      tags: ['arbitrum', 'bnb', 'optimism', 'polygon', 'tofu','fees', 'crosschain']
+      tags: ['polygon','tofu','fees']
     description: >
-        Tofu fees across all chains
+        Tofu fees on Polygon
     columns:
       - *blockchain
       - *project
