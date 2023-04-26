@@ -9,8 +9,7 @@
     )  
 }}
 
-SELECT *
-FROM (
+WITH curated_list AS (
   select 
     lower(creator_address) as creator_address
     ,cast(contract_project as varchar(250)) AS contract_project
@@ -382,7 +381,7 @@ FROM (
       ,('0xc82c018dB54B894853cACb878D0F3e481E8C6b96', 'Via Protocol')
       ,('0x4401A1667dAFb63Cff06218A69cE11537de9A101', 'Clique')
       ,('0xF3808680917524CD1346b12e4845830076eB7001', 'Teahouse')
-      ,('0x4dc45eAc9eE25Af88958c94461fd46175C47744a', 'Geoweb')
+      ,('0x4dc45eAc9eE25Af88958c94461fd46175C47744a', 'Geo Web')
       ,('0xade09131C6f43fe22C2CbABb759636C43cFc181e', 'Connext')
       ,('0x4b327372A347aD97e45881428af26a4C28840C66', 'Metamask')
       ,('0x75ee82787c548daeac58af6cba5bd2a9ff863d28', 'Flipside Crypto')
@@ -400,7 +399,7 @@ FROM (
       ,('0x221a8Da83f675f1Fd97105a5B2B3bb65916a5101', 'Rabbithole')
       ,('0x35a8e8ed19122f6707984e7c135c0d8943d4d750', 'OKX')
       ,('0xe2e2d9e31d7e1cc1178fe0d1c5950f6c809816a3', 'Wormhole')
-      ,('0x44cBfc3Ce762fC0Fee9Ddd6372804b7B660176bC', 'MUX')
+      ,('0x44cBfc3Ce762fC0Fee9Ddd6372804b7B660176bC', 'Mux')
       ,('0x7f4537349A0a40cd20ba5Af0D11fdC46dCFCBB3f', 'Zonic')
       ,('0xDcdE7a069dEEe7b73A795A76F97Eb9dca7f812d4', 'Connext')
       ,('0x42004661285881D4B0F245B1eD3774d8166CF314', 'Optimism Governor')
@@ -431,13 +430,34 @@ FROM (
       ,('0x4bb4c1b0745ef7b4642feeccd0740dec417ca0a0', 'Sushi')
       ,('0x15051107651f3420144d3a2412d49402c2fac3c0', 'zkBridge')
       ,('0x2313f80d53c649c7b2c9c4d101b796f34cbe80f3', 'Wido')
+      ,('0x18606e2ABaA0bA15Cc1D0D3b55521bD2247e4d2E', 'Layer Zero')
+      ,('0x6879fAb591ed0d62537A3Cac9D7cd41218445a84', 'zeroex')
+      ,('0x076d6da60aAAC6c97A8a0fE8057f9564203Ee545', 'Aave') --BGD
+      ,('0x015D83637A6904CB13C93068a48887F9ACD7EEF5', 'Odos')
+      ,('0x45208e8d6d09d6bfce5094083ab36f22bdfc8456', 'Layer Zero')
 
   ) as temp_table (creator_address, contract_project)
 
-) f
+)
 
+, mapped_list AS (
+  SELECT
+    address AS creator_address, project_name AS contract_project
+    FROM {{ ref('addresses_optimism_grants_funding') }} pro
+)
+
+SELECT 
+  creator_address, contract_project
 --filter out creators that we never want to map
+  FROM (
+    SELECT creator_address, contract_project FROM curated_list cl
+    UNION ALL
+    SELECT creator_address, contract_project FROM mapped_list ml
+      WHERE ml.creator_address NOT IN (SELECT creator_address FROM curated_list)
+    ) f
 WHERE f.creator_address NOT IN (
    SELECT creator_address FROM {{ ref('contracts_optimism_nondeterministic_contract_creators') }}
 )
+
+GROUP BY 1,2
 ;

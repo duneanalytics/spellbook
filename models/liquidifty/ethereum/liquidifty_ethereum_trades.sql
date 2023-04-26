@@ -50,7 +50,7 @@ stack as (
         evt_block_time as block_time,
         cast(null as varchar(5)) as token_id,
         'erc721' as token_standard,
-        'Bundle Item Trade' as trade_type,
+        'Bundle Trade' as trade_type,
         CAST(amount as decimal(38,0)) as number_of_items,
         'Buy' as trade_category,
         owner as seller,
