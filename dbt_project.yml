@@ -1052,3 +1052,8 @@ models:
       +schema: glacier
       avalanche_c:
         +schema: glacier_avalanche_c
+
+    lido_liquidity:
+      +schema: lido_liqudity
+      kyberswap_ethereum:
+       +schema: lido_liquidity_kyberswap_ethereum
