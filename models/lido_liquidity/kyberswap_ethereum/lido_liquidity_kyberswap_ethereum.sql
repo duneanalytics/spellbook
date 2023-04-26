@@ -204,7 +204,7 @@ left join prices.tokens pt on t.token = pt.contract_address
         
     from dates d
     left join {{source('kyber_ethereum','Elastic_Pool_evt_swap')}} sw on d.hour = date_trunc('hour', sw.evt_block_time)
-    left join {{source('kyber_ethereum','Elastic_Factory_evt_PoolCreated')}}cr on sw.contract_address = cr.pool
+    left join {{source('kyber_ethereum','Elastic_Factory_evt_PoolCreated')}} cr on sw.contract_address = cr.pool
     where sw.contract_address in (select address from pools)
     group by 1,2,3,4
     union all
