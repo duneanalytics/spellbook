@@ -57,7 +57,7 @@ WITH tff AS (
                   THEN '{{MATIC_ADDRESS}}'
                   ELSE get_json_object(inventory, '$.currency')
                 END as currency,
-                (get_json_object(inventory, '$.currency') = '0x0000000000000000000000000000000000000000') as native_eth,
+                (get_json_object(inventory, '$.currency') = '0x0000000000000000000000000000000000000000') as native_matic,
                 contract_address
          from {{ source('tofu_nft_polygon', 'MarketNG_evt_EvInventoryUpdate') }}
          where get_json_object(inventory, '$.status') = '1'
