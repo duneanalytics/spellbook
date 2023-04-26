@@ -114,13 +114,13 @@ SELECT
 , cast( null as string) as trade_type
 , t.seller
 , t.buyer
-, t.price_raw
+, cast(t.price_raw as decimal(38)) as price_raw
 , '{{ var("ETH_ERC20_ADDRESS") }}' AS currency_contract -- all trades are in ETH
 , t.project_contract_address
 , t.nft_contract_address
 , t.tx_hash
-, t.platform_fee_amount_raw
-, t.royalty_fee_amount_raw
+, cast(t.platform_fee_amount_raw as decimal(38)) as platform_fee_amount_raw
+, cast(t.royalty_fee_amount_raw as decimal(38)) as royalty_fee_amount_raw
 , cast(NULL as string) AS royalty_fee_address
 , cast(NULL as string) AS platform_fee_address
 , t.sub_tx_trade_id
