@@ -454,6 +454,8 @@ WITH curated_list AS (
       ,('0xa990077c3205cbDf861e17Fa532eeB069cE9fF96', 'ERC1820')
       ,('0x81b7e9d8409b857d70ad14073e785c486945caf4', 'Optimism Ape Yacht Club')
       ,('0x594da37b691ed83a994cE934C64844E94B9A1997', 'KyberSwap')
+      ,('0xd22044706DeA3c342f68396bEDBCf6a2536d951D', 'Eden Network')
+      ,('0x8FcBA7279af1d5d12C77e7062cAf1E09A0623f97', 'Hundred Finance')
 
   ) as temp_table (creator_address, contract_project)
 
