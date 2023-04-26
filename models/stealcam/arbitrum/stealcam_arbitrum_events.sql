@@ -14,6 +14,20 @@
 
 {% set project_start_date = '2023-03-10' %}
 
+with stealcam as (
+select
+    *
+    ,case when value > 0 then (value-(0.001*pow(10,18)))/11.0+(0.001*pow(10,18)) else 0 end as surplus_value
+FROM {{ source('stealcam_arbitrum', 'Stealcam_evt_Stolen') }} sc
+{% if is_incremental() %}
+WHERE evt_block_time >= date_trunc("day", now() - interval '1 week')
+{% endif %}
+{% if not is_incremental() %}
+WHERE evt_block_time >= '{{project_start_date}}'
+{% endif %}
+
+)
+
 SELECT 'arbitrum' AS blockchain
 , 'Stealcam' AS project
 , 'v1' AS version
@@ -41,18 +55,18 @@ SELECT 'arbitrum' AS blockchain
 , sc.evt_tx_hash AS tx_hash
 , at.from AS tx_from
 , at.to AS tx_to
-, CAST(COALESCE(sc.value-(roy.value+not_fee.value), 0) AS double) AS platform_fee_amount_raw
-, CAST(COALESCE((sc.value-(roy.value+not_fee.value))/POWER(10, 18), 0) AS double) AS platform_fee_amount
-, CAST(COALESCE(pu.price*(sc.value-(roy.value+not_fee.value))/POWER(10, 18), 0) AS double) AS platform_fee_amount_usd
-, CAST(COALESCE(100*(sc.value-(roy.value+not_fee.value))/sc.value, 0) AS double) AS platform_fee_percentage
-, CASE WHEN sc.value-(roy.value+not_fee.value) > 0 THEN 'ETH' ELSE NULL END AS royalty_fee_currency_symbol
-, CAST(COALESCE(roy.value, 0) AS double) AS royalty_fee_amount_raw
-, CAST(COALESCE(roy.value/POWER(10, 18), 0) AS double) AS royalty_fee_amount
-, CAST(COALESCE(roy.value/POWER(10, 18)/pu.price, 0) AS double) AS royalty_fee_amount_usd
-, CAST(COALESCE(100*roy.value/sc.value, 0) AS double) AS royalty_fee_percentage
+, CAST(0.1*surplus_value AS DECIMAL(38,0)) AS platform_fee_amount_raw
+, CAST(0.1*surplus_value/POWER(10, 18) AS double) AS platform_fee_amount
+, CAST(pu.price*0.1*surplus_value/POWER(10, 18) AS double) AS platform_fee_amount_usd
+, CAST(coalesce(100*(0.1*surplus_value/sc.value),0) AS double) AS platform_fee_percentage
+, 'ETH' as royalty_fee_currency_symbol
+, CAST(0.45*surplus_value AS DECIMAL(38,0)) AS royalty_fee_amount_raw
+, CAST(0.45*surplus_value/POWER(10, 18) AS double) AS royalty_fee_amount
+, CAST(pu.price*0.45*surplus_value/POWER(10, 18) AS double) AS royalty_fee_amount_usd
+, CAST(coalesce(100*(0.45*surplus_value/sc.value),0) AS double) AS royalty_fee_percentage
 , m._creator AS royalty_fee_receive_address
 , 'arbitrum-stealcam-' || sc.evt_tx_hash || '-' || sc.evt_index AS unique_trade_id
-FROM {{ source('stealcam_arbitrum', 'Stealcam_evt_Stolen') }} sc
+FROM stealcam sc
 INNER JOIN {{ source('arbitrum', 'transactions') }} at ON at.block_number=sc.evt_block_number
     AND at.hash=sc.evt_tx_hash
     {% if is_incremental() %}
@@ -78,30 +92,3 @@ INNER JOIN {{ source('stealcam_arbitrum', 'Stealcam_call_mint') }} m ON m.call_s
     {% if not is_incremental() %}
     AND m.call_block_time >= '{{project_start_date}}'
     {% endif %}
-LEFT JOIN {{ source('arbitrum', 'traces') }} roy ON roy.block_number=sc.evt_block_number
-    AND roy.tx_hash=sc.evt_tx_hash
-    AND roy.from=sc.contract_address
-    AND roy.to=m._creator
-    {% if is_incremental() %}
-    AND roy.block_time >= date_trunc("day", now() - interval '1 week')
-    {% endif %}
-    {% if not is_incremental() %}
-    AND roy.block_time >= '{{project_start_date}}'
-    {% endif %}
-LEFT JOIN {{ source('arbitrum', 'traces') }} not_fee ON not_fee.block_number=sc.evt_block_number
-    AND not_fee.tx_hash=sc.evt_tx_hash
-    AND not_fee.from=sc.contract_address
-    AND not_fee.to=sc.from
-    {% if is_incremental() %}
-    AND not_fee.block_time >= date_trunc("day", now() - interval '1 week')
-    {% endif %}
-    {% if not is_incremental() %}
-    AND not_fee.block_time >= '{{project_start_date}}'
-    {% endif %}
-{% if is_incremental() %}
-WHERE sc.evt_block_time >= date_trunc("day", now() - interval '1 week')
-{% endif %}
-{% if not is_incremental() %}
-WHERE sc.evt_block_time >= '{{project_start_date}}'
-{% endif %}
-AND sc.to != '0xfd5caed0be9e2a62b5887676ff79466c5437f898' -- temp fix to hide duplicates

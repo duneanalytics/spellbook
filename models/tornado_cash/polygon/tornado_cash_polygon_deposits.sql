@@ -16,7 +16,7 @@
 {% set polygon_start_date = '2021-06-28' %}
 
 SELECT tc.evt_block_time AS block_time
-, '0x7d1afa7b718fb893db30a3abc0cfc608aacfebb0' AS currency_contract
+, '0x0000000000000000000000000000000000001010' AS currency_contract
 , 'MATIC' AS currency_symbol
 , 'polygon' AS blockchain
 , 'classic' AS tornado_version

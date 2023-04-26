@@ -1336,7 +1336,6 @@ FROM
     ('btrfly-redacted', 'ethereum', 'BTRFLY', '0xc55126051B22eBb829D00368f4B12Bde432de5Da', 18),
     ('icsa-icosa', 'ethereum', 'ICSA', '0xfc4913214444aF5c715cc9F7b52655e788A569ed', 9),
     ('asic-asic-token', 'ethereum', 'ASIC', '0x347a96a5BD06D2E15199b032F46fB724d6c73047', 12),
-    ('caw-a-hunters-dream', 'ethereum', 'CAW', '0xf3b9569F82B18aEf890De263B84189bd33EBe452', 18),
     ('acx-across-protocol', 'ethereum', 'ACX', '0x44108f0223A3C3028F5Fe7AEC7f9bb2E66beF82F', 18),
     ('psp-paraswap', 'ethereum', 'PSP', '0xcAfE001067cDEF266AfB7Eb5A286dCFD277f3dE5', 18),
     ('plsb-pulsebitcoin', 'ethereum', 'PLSB', '0x5EE84583f67D5EcEa5420dBb42b462896E7f8D06', 12),
@@ -1637,8 +1636,10 @@ FROM
     ('cnotes-community-notes', 'ethereum', 'CNOTES', '0x148af0CAda405380E8e3B2F694A6A7de848759b0', 18),
     ('imgnai-imgnai', 'ethereum', 'IMGNAI', '0xA735A3AF76CC30791C61c10d585833829d36CBe0', 9),
     ('woxen-wrapped-oxen', 'ethereum', 'WOXEN', '0xd1e2d5085b39B80C9948AeB1b9aA83AF6756bcc5', 9),
-    ('xrio-realio-network-utility-token-exchangable', 'ethereum', 'XRIO', '0x0B4AC2BA3D4924C9A06D9C1d08D7867059A39cC1', 18)
+    ('xrio-realio-network-utility-token-exchangable', 'ethereum', 'XRIO', '0x0B4AC2BA3D4924C9A06D9C1d08D7867059A39cC1', 18),
+    ('pepe-pepe1', 'ethereum', 'PEPE', '0x6982508145454Ce325dDbE47a25d4ec3d2311933', 18)      
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)
 where contract_address not in (
     '0x841fb148863454a3b3570f515414759be9091465' -- SHIH has bad price feed.
+    ,'0xf3b9569f82b18aef890de263b84189bd33ebe452' -- CAW has bad price feed.
 )
