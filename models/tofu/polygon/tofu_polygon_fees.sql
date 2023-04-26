@@ -1,7 +1,7 @@
 {{
  config(
        alias='fees',
-       post_hook='{{ expose_spells(\'["arbitrum"]\',
+       post_hook='{{ expose_spells(\'["polygon"]\',
                                    "project",
                                    "tofu",
                                    \'["Henrystats","sohwak"]\') }}')
