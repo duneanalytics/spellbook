@@ -2,7 +2,9 @@
     config(
         schema='balancer_v2_polygon',
         alias='liquidity',
-        post_hook='{{ expose_spells_hide_trino(\'["polygon"]\',
+        materialized = 'table',
+        file_format = 'delta',
+        post_hook='{{ expose_spells(\'["polygon"]\',
                                     "project",
                                     "balancer_v2",
                                     \'["stefenon"]\') }}'

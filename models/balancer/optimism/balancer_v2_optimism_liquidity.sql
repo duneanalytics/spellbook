@@ -2,7 +2,9 @@
     config(
         schema='balancer_v2_optimism',
         alias='liquidity',
-        post_hook='{{ expose_spells_hide_trino(\'["optimism"]\',
+        materialized = 'table',
+        file_format = 'delta',
+        post_hook='{{ expose_spells(\'["optimism"]\',
                                     "project",
                                     "balancer_v2",
                                     \'["stefenon"]\') }}'

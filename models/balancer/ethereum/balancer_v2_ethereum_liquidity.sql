@@ -2,7 +2,9 @@
     config(
         schema='balancer_v2_ethereum',
         alias='liquidity',
-        post_hook='{{ expose_spells_hide_trino(\'["ethereum"]\',
+        materialized = 'table',
+        file_format = 'delta',
+        post_hook='{{ expose_spells(\'["ethereum"]\',
                                     "project",
                                     "balancer_v2",
                                     \'["stefenon"]\') }}'
