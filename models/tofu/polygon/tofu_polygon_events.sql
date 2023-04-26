@@ -91,7 +91,7 @@ SELECT 'polygon'                                 as blockchain
      , tfe.price / power(10, pu.decimals)    as amount_original
      , pu.price * tfe.price / power(10, pu.decimals) as amount_usd
      , case
-           when tfe.native_eth THEN 'MATIC'
+           when tfe.native_matic THEN 'MATIC'
            else pu.symbol
        end                                                                          as currency_symbol
      , tfe.currency                                                                 as currency_contract
