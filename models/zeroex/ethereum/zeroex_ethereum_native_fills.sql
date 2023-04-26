@@ -31,7 +31,7 @@ WITH
             , SUBSTRING(fills.takerAssetData,17,20) AS taker_token
             , tt.symbol AS taker_symbol
             , fills.takerAssetFilledAmount / (10^tt.decimals) AS taker_asset_filled_amount
-            , (fills.feeRecipient in 
+            , (fills.feeRecipientAddress in 
                 ('0x9b858be6e3047d88820f439b240deac2418a2551','0x86003b044f70dac0abc80ac8957305b6370893ed','0x5bc2419a087666148bfbe1361ae6c06d240c6131')) 
                 AS matcha_limit_order_flag
             , CASE
@@ -92,7 +92,7 @@ WITH
             , SUBSTRING(fills.takerAssetData,17,20) AS taker_token
             , tt.symbol AS taker_symbol
             , fills.takerAssetFilledAmount / (10^tt.decimals) AS taker_asset_filled_amount
-            , (fills.feeRecipient in 
+            , (fills.feeRecipientAddress in 
                 ('0x9b858be6e3047d88820f439b240deac2418a2551','0x86003b044f70dac0abc80ac8957305b6370893ed','0x5bc2419a087666148bfbe1361ae6c06d240c6131')) 
                 AS matcha_limit_order_flag
             , CASE
