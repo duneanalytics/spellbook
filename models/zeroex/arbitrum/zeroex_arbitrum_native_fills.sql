@@ -216,7 +216,7 @@ WITH
     SELECT * FROM otc_fills
     )
             SELECT distinct 
-                all_fills.block_time AS block_time, fills.evt_block_number as block_number,
+                all_fills.block_time AS block_time, all_fills.evt_block_number as block_number,
                 protocol_version as version,
                 date_trunc('day', all_fills.block_time) as block_date,
                 transaction_hash as tx_hash,
