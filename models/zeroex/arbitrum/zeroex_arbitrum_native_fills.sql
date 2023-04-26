@@ -18,7 +18,8 @@ WITH
     v4_limit_fills AS (
 
         SELECT
-            fills.evt_block_time AS block_time, fills.evt_block_number as block_number
+            fills.evt_block_time AS block_time
+            , fills.evt_block_number as block_number
             , 'v4' AS protocol_version
             , 'limit' as native_order_type
             , fills.evt_tx_hash AS transaction_hash
@@ -80,7 +81,8 @@ WITH
 
     , v4_rfq_fills AS (
       SELECT
-          fills.evt_block_time AS block_time, fills.evt_block_number as block_number
+          fills.evt_block_time AS block_time
+          , fills.evt_block_number as block_number
           , 'v4' AS protocol_version
           , 'rfq' as native_order_type
           , fills.evt_tx_hash AS transaction_hash
