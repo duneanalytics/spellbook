@@ -15,7 +15,7 @@
 -- Test Query here: 
 WITH 
     v3_fills AS (
-        SELE
+        SELECT
             evt_block_time AS block_time, fills.evt_block_number as block_number
             , 'v3' AS protocol_version
             , fills.evt_tx_hash AS transaction_hash
