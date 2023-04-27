@@ -13,6 +13,7 @@
     ref('labels_aztec_v2_contracts_ethereum')
     , ref('labels_balancer_v1_pools')
     , ref('labels_balancer_v2_pools')
+    , ref('labels_balancer_v2_gauges')
     , ref('labels_cex')
     , ref('labels_contracts')
     , ref('labels_hackers_ethereum')
