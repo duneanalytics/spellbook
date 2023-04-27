@@ -89,7 +89,7 @@ base_trades as (
     from raw_trades t
     left join {{ ref('collectionswap_ethereum_pools') }} p
     on t.project_contract_address = p.pool_address
-),
+)
 
 
 
