@@ -329,7 +329,8 @@ INNER JOIN {{ source('avalanche_c', 'transactions')}} tx
 LEFT JOIN {{ source('prices', 'usd') }} tp 
     ON date_trunc('minute', all_tx.block_time) = tp.minute
     AND CASE
-            WHEN all_tx.taker_token = '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee' THEN '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'
+            WHEN all_tx.taker_token = '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee' THEN '0xb31f66aa3c1e785363f0875a1b74e27b85fd66c7'
+            WHEN all_tx.taker_token = '0xa7d7079b0fead91f3e65f86e8915cb59c1a4c664' THEN '0xb97ef9ef8734c71904d8002f8b6bc66dd9c48a6e'
             ELSE all_tx.taker_token
         END = tp.contract_address
     AND tp.blockchain = 'avalanche_c'
@@ -343,7 +344,8 @@ LEFT JOIN {{ source('prices', 'usd') }} tp
 LEFT JOIN {{ source('prices', 'usd') }} mp 
     ON DATE_TRUNC('minute', all_tx.block_time) = mp.minute
     AND CASE
-            WHEN all_tx.maker_token = '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee' THEN '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'
+            WHEN all_tx.maker_token = '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee' THEN '0xb31f66aa3c1e785363f0875a1b74e27b85fd66c7'
+            WHEN all_tx.maker_token = '0xa7d7079b0fead91f3e65f86e8915cb59c1a4c664' THEN '0xb97ef9ef8734c71904d8002f8b6bc66dd9c48a6e'
             ELSE all_tx.maker_token
         END = mp.contract_address
     AND mp.blockchain = 'avalanche_c'
