@@ -1,6 +1,10 @@
 {{ config(
         schema='collectionswap_ethereum',
-        alias = 'pools'
+        alias = 'pools',
+        materialized = 'incremental',
+        file_format = 'delta',
+        incremental_strategy = 'merge',
+        unique_key = ['pool_address']
         )
 }}
 
@@ -17,23 +21,38 @@ inner join (
     ,get_json_object(params, '$.token') AS token_address
     from {{ source('collectionswap_ethereum','CollectionPoolFactory_call_createPoolERC20') }}
     where call_success
+    {% if is_incremental() %}
+    and call_block_time >= date_trunc("day", now() - interval '1 week')
+    {% endif %}
     union all
     select
     output_pool
     ,'0x0000000000000000000000000000000000000000' AS token_address
     from {{ source('collectionswap_ethereum','CollectionPoolFactory_call_createPoolETH') }}
     where call_success
+    {% if is_incremental() %}
+    and call_block_time >= date_trunc("day", now() - interval '1 week')
+    {% endif %}
     union all
     select
     output_pool
     ,get_json_object(params, '$.token') AS token_address
     from {{ source('collectionswap_ethereum','CollectionPoolFactory_call_createPoolERC20Filtered') }}
     where call_success
+    {% if is_incremental() %}
+    and call_block_time >= date_trunc("day", now() - interval '1 week')
+    {% endif %}
     union all
     select
     output_pool
     ,'0x0000000000000000000000000000000000000000' AS token_address
     from {{ source('collectionswap_ethereum','CollectionPoolFactory_call_createPoolETHFiltered') }}
     where call_success
+    {% if is_incremental() %}
+    and call_block_time >= date_trunc("day", now() - interval '1 week')
+    {% endif %}
 ) c
 on e.poolAddress = c.output_pool
+{% if is_incremental() %}
+WHERE evt_block_time >= date_trunc("day", now() - interval '1 week')
+{% endif %}

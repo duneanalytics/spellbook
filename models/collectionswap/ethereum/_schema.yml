@@ -223,6 +223,8 @@ models:
       collectionswap v1 pools on ethereum
     columns:
       - name: pool_address
+        tests:
+          - unique
       - name: nft_contract_address
       - name: token_address
       - name: create_tx_hash
