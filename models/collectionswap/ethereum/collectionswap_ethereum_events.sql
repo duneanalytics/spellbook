@@ -131,6 +131,7 @@ select
     ,cast(null as varchar(1)) as aggregator_address
     ,tx.`from` as tx_from
     ,tx.`to` as tx_to
+    ,'Trade' as evt_type
 from base_trades t
 left join {{ ref('tokens_ethereum_nft') }} nft
     ON nft.contract_address = t.nft_contract_address
