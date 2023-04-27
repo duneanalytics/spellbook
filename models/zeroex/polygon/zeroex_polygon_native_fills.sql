@@ -5,8 +5,7 @@
         unique_key = ['block_date', 'tx_hash', 'evt_index'],
         on_schema_change='sync_all_columns',
         file_format ='delta',
-        incremental_strategy='merge'
-        
+        incremental_strategy='merge' 
     )
 }}
 
@@ -17,7 +16,8 @@
 WITH 
     v3_fills AS (
         SELECT
-            evt_block_time AS block_time, fills.evt_block_number as block_number
+            evt_block_time AS block_time
+            , fills.evt_block_number as block_number
             , 'v3' AS protocol_version
             , 'fills' as native_order_type
             , fills.evt_tx_hash AS transaction_hash
