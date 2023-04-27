@@ -47,7 +47,7 @@ raw_trades as (
                 ,get_json_object(royaltyDue[0], '$.recipient') as royalty_fee_receive_address
                 ,cast(tradeFee as decimal(38)) as trade_fee_amount_raw
                 ,contract_address as project_contract_address
-            from collectionswap_ethereum.CollectionPool_evt_SwapNFTOutPool e
+            from {{ source('collectionswap_ethereum','CollectionPool_evt_SwapNFTOutPool') }} e
             {% if is_incremental() %}
             WHERE evt_block_time >= date_trunc("day", now() - interval '1 week')
             {% else %}
@@ -70,7 +70,7 @@ raw_trades as (
                 ,get_json_object(royaltyDue[0], '$.recipient') as royalty_fee_receive_address
                 ,cast(tradeFee as decimal(38)) as trade_fee_amount_raw
                 ,contract_address as project_contract_address
-            from collectionswap_ethereum.CollectionPool_evt_SwapNFTInPool e
+            from {{ source('collectionswap_ethereum','CollectionPool_evt_SwapNFTInPool') }} e
             {% if is_incremental() %}
             WHERE evt_block_time >= date_trunc("day", now() - interval '1 week')
             {% else %}
@@ -150,7 +150,7 @@ left join {{ source('prices', 'usd') }} p
     {% else %}
     AND p.minute >= '{{project_start_date}}'
     {% endif %}
-left join {{ source('ethereum','transactions') }} tx
+inner join {{ source('ethereum','transactions') }} tx
     ON tx.block_number = t.block_number and tx.hash =  t.tx_hash
     {% if is_incremental() %}
     AND tx.block_time >= date_trunc("day", now() - interval '1 week')
