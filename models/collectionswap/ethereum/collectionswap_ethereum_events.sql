@@ -131,6 +131,8 @@ select
     ,trade_type
     ,cast(null as varchar(1)) as aggregator_name
     ,cast(null as varchar(1)) as aggregator_address
+    ,t.royalty_fee_receive_address
+    ,cast(null as varchar(1)) as platform_fee_receive_address
     ,tx.`from` as tx_from
     ,tx.`to` as tx_to
     ,'Trade' as evt_type
