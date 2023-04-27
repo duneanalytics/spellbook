@@ -27,5 +27,47 @@ models:
         name: contract_name
       - &contract_type
         name: contract_type
-      - &address
-        name: address
+      - &contract_address
+        name: contract_address
+
+  - name: oneinch_filter_tokens
+    meta:
+      blockchain: ['ethereum','optimism','polygon','arbitrum','avalanche_c','gnosis','bnb','fantom']
+      sector: oneinch
+      contributors: [grkhr]
+    config:
+      tags: ['oneinch', 'metadata']
+    description: >
+        (dictionary) tokens with broken prices to filter further
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - contract_address
+            - blockchain
+    columns:
+      - *contract_address
+      - *blockchain
+      - &symbol
+        name: symbol
+
+  - name: oneinch_fusion_resolvers
+    meta:
+      blockchain: ['ethereum','optimism','polygon','arbitrum','avalanche_c','gnosis','bnb','fantom']
+      sector: oneinch
+      contributors: [grkhr]
+    config:
+      tags: ['oneinch', 'metadata']
+    description: >
+        (dictionary) fusion resolvers names
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - contract_address
+            - blockchain
+    columns:
+      - &resolver_address
+        name: resolver_address
+        tests:
+          - unique
+      - &resolver_name
+        name: resolver_name
