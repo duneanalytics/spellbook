@@ -8,7 +8,7 @@
     unique_key = ['unique_trade_id']
 )}}
 
-{% set project_start_date = '2022-06-13' %}
+{% set project_start_date = '2022-03-12' %}
 
 with marketplace as (
     select
@@ -23,7 +23,10 @@ with marketplace as (
         seller,
         buyer,
         cast(pricePerItem as decimal(38, 0)) * cast(quantity as decimal(38, 0)) as amount_raw,
-        paymentToken as currency_contract,
+        case
+            when paymentToken is null then '0x539bde0d7dbd336b79148aa742883198bbf60342'
+            else paymentToken
+        end as currency_contract,
         nftAddress as nft_contract_address,
         contract_address as project_contract_address,
         evt_tx_hash as tx_hash,
