@@ -357,7 +357,7 @@ WITH
                 taker_token, 
                 taker_symbol,
                 taker_asset_filled_amount taker_token_amount,
-                fee_recipient_address,
+                matcha_limit_order_flag,
                 volume_usd,
                 cast(protocol_fee_paid_eth as double),
                 'ethereum' as blockchain,
