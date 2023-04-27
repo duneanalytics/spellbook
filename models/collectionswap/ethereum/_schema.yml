@@ -211,3 +211,19 @@ models:
       - *tx_from
       - *tx_to
       - name: unique_trade_id
+
+  - name: collectionswap_ethereum_pools
+    meta:
+      blockchain: ethereum
+      project: collectionswap
+      contributors: 0xRob
+    config:
+      tags: [ 'ethereum','collectionswap','v1','pools' ]
+    description: >
+      collectionswap v1 pools on ethereum
+    columns:
+      - name: pool_address
+      - name: nft_contract_address
+      - name: token_address
+      - name: create_tx_hash
+      - name: create_block_time
