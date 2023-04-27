@@ -21,4 +21,3 @@ LEFT JOIN {{ ref('balances_ethereum_erc721_noncompliant') }}  as nc
 WHERE recency_index = 1
 AND amount = 1
 AND nc.token_address IS NULL 
-;
