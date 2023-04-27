@@ -59,11 +59,6 @@ models:
       tags: ['oneinch', 'metadata']
     description: >
         (dictionary) fusion resolvers names
-    tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - contract_address
-            - blockchain
     columns:
       - &resolver_address
         name: resolver_address
