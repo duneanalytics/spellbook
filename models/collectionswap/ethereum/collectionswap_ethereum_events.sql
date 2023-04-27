@@ -13,69 +13,70 @@
 
 WITH
 raw_trades as (
-    select
-        block_number, block_time, evt_index, tx_hash, buyer, seller,
-        t.token_id,
-        t.sub_order_id,
-        amount_raw/number_of_items as amount_raw,
-        platform_fee_amount_raw/number_of_items as platform_fee_amount_raw,
-        royalty_fee_amount_raw/number_of_items as royalty_fee_amount_raw,
-        trade_fee_amount_raw/number_of_items as trade_fee_amount_raw,
-        royalty_fee_receive_address,
-        project_contract_address,
-        CASE WHEN number_of_items > 1 THEN 'Bundle Trade'
-                ELSE 'Single Item Trade'
-               END as trade_type,
-        trade_category,
-        row_number() over (partition by tx_hash order by evt_index asc, sub_order_id asc) as sub_tx_id
+    select *
+    , row_number() over (partition by tx_hash order by evt_index asc, sub_order_id asc) as sub_tx_id
     from(
         select
-            evt_block_number as block_number
-            ,evt_block_time as block_time
-            ,evt_index
-            ,evt_tx_hash as tx_hash
-            ,null as buyer
-            ,contract_address as seller
-            ,'Buy' as trade_category
-            ,nftIds as nft_id_array
-            ,cardinality(nftIds) as number_of_items
-            ,outputAmount as amount_raw
-            ,protocolFee as platform_fee_amount_raw
-            ,cast(json_extract_scalar(royaltyDue[1], '$.amount') as uint256) as royalty_fee_amount_raw
-            ,from_hex(trim(CAST(json_extract(royaltyDue[1], '$.recipient') as VARCHAR),'"')) as royalty_fee_receive_address
-            ,tradeFee as trade_fee_amount_raw
-            ,contract_address as project_contract_address
-        from collectionswap_ethereum.CollectionPool_evt_SwapNFTOutPool e
-        {% if is_incremental() %}
-        WHERE evt_block_time >= date_trunc("day", now() - interval '1 week')
-        {% else %}
-        WHERE evt_block_time >= '{{project_start_date}}'
-        {% endif %}
-        union all
-        select
-            evt_block_number as block_number
-            ,evt_block_time as block_time
-            ,evt_index
-            ,evt_tx_hash as tx_hash
-            ,contract_address as buyer
-            ,null as seller
-            ,'Sell' as trade_category
-            ,nftIds as nft_id_array
-            ,cardinality(nftIds) as number_of_items
-            ,inputAmount as amount_raw
-            ,protocolFee as platform_fee_amount_raw
-            ,cast(json_extract_scalar(royaltyDue[1], '$.amount') as uint256) as royalty_fee_amount_raw
-            ,from_hex(trim(CAST(json_extract(royaltyDue[1], '$.recipient') as VARCHAR),'"')) as royalty_fee_receive_address
-            ,tradeFee as trade_fee_amount_raw
-            ,contract_address as project_contract_address
-        from collectionswap_ethereum.CollectionPool_evt_SwapNFTInPool e
-        {% if is_incremental() %}
-        WHERE evt_block_time >= date_trunc("day", now() - interval '1 week')
-        {% else %}
-        WHERE evt_block_time >= '{{project_start_date}}'
-        {% endif %}
-        ) b
-    CROSS JOIN UNNEST(b.nft_id_array) WITH ORDINALITY AS t (token_id, sub_order_id)
+            block_number, block_time, evt_index, tx_hash, buyer, seller,
+            posexplode(nft_id_array) as (sub_order_id, token_id),
+            amount_raw/number_of_items as amount_raw,
+            platform_fee_amount_raw/number_of_items as platform_fee_amount_raw,
+            royalty_fee_amount_raw/number_of_items as royalty_fee_amount_raw,
+            trade_fee_amount_raw/number_of_items as trade_fee_amount_raw,
+            royalty_fee_receive_address,
+            project_contract_address,
+            CASE WHEN number_of_items > 1 THEN 'Bundle Trade'
+                    ELSE 'Single Item Trade'
+                   END as trade_type,
+            trade_category
+        from(
+            select
+                 evt_block_number as block_number
+                ,evt_block_time as block_time
+                ,evt_index
+                ,evt_tx_hash as tx_hash
+                ,null as buyer
+                ,contract_address as seller
+                ,'Buy' as trade_category
+                ,nftIds as nft_id_array
+                ,cardinality(nftIds) as number_of_items
+                ,cast(outputAmount as decimal(38)) as amount_raw
+                ,cast(protocolFee as decimal(38)) as platform_fee_amount_raw
+                ,get_json_object(royaltyDue[0], '$.amount') as royalty_fee_amount_raw
+                ,get_json_object(royaltyDue[0], '$.recipient') as royalty_fee_receive_address
+                ,cast(tradeFee as decimal(38)) as trade_fee_amount_raw
+                ,contract_address as project_contract_address
+            from collectionswap_ethereum.CollectionPool_evt_SwapNFTOutPool e
+            {% if is_incremental() %}
+            WHERE evt_block_time >= date_trunc("day", now() - interval '1 week')
+            {% else %}
+            WHERE evt_block_time >= '{{project_start_date}}'
+            {% endif %}
+            union all
+            select
+                evt_block_number as block_number
+                ,evt_block_time as block_time
+                ,evt_index
+                ,evt_tx_hash as tx_hash
+                ,contract_address as buyer
+                ,null as seller
+                ,'Sell' as trade_category
+                ,nftIds as nft_id_array
+                ,cardinality(nftIds) as number_of_items
+                ,cast(inputAmount as decimal(38))  as amount_raw
+                ,cast(protocolFee as decimal(38)) as platform_fee_amount_raw
+                ,get_json_object(royaltyDue[0], '$.amount') as royalty_fee_amount_raw
+                ,get_json_object(royaltyDue[0], '$.recipient') as royalty_fee_receive_address
+                ,cast(tradeFee as decimal(38)) as trade_fee_amount_raw
+                ,contract_address as project_contract_address
+            from collectionswap_ethereum.CollectionPool_evt_SwapNFTInPool e
+            {% if is_incremental() %}
+            WHERE evt_block_time >= date_trunc("day", now() - interval '1 week')
+            {% else %}
+            WHERE evt_block_time >= '{{project_start_date}}'
+            {% endif %}
+            )
+    )
 ),
 
 base_trades as (
