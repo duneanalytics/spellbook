@@ -112,6 +112,7 @@ FROM
     , ('0x7badde47f41ceb2c0889091c8fc69e4d9059fb19', 'Prysm Team', 'Prysm Team', 'Independent Staker')
     , ('0x43a0927a6361258e6cbaed415df275a412c543b5', 'Teku Team', 'Teku Team', 'Independent Staker')
     , ('0x5efaefd5f8a42723bb095194c9202bf2b83d8eb6', 'Nimbus Team', 'Nimbus Team', 'Independent Staker')
+    , ('0x4ca21e4d3a86e7399698f88686f5596dbe74adeb', 'P2P.org', 'P2P.org', 'Staking Pools')
     ) 
     x (address, entity, entity_unique_name, category)
 
