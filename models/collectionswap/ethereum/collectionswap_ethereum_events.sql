@@ -104,8 +104,8 @@ select
     ,t.tx_hash
     ,t.nft_contract_address
     ,t.token_id
-    ,coalesce(t.buyer, tx."from") as buyer
-    ,coalesce(t.seller, tx."from") as seller
+    ,coalesce(t.buyer, tx.`from`) as buyer
+    ,coalesce(t.seller, tx.`from`) as seller
     ,nft.name as collection
     ,nft.standard as token_standard
     ,t.currency_contract
@@ -127,8 +127,8 @@ select
     ,t.trade_category
     ,cast(null as varchar(1)) as aggregator_name
     ,cast(null as varchar(1)) as aggregator_address
-    ,tx."from" as tx_from
-    ,tx."to" as tx_to
+    ,tx.`from` as tx_from
+    ,tx.`to` as tx_to
 from base_trades t
 left join {{ ref('tokens_ethereum_nft') }} nft
     ON nft.contract_address = t.nft_contract_address
