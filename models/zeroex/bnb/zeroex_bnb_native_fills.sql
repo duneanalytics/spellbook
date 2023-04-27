@@ -120,8 +120,8 @@ WITH
                     WHEN fills.takerToken = '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee' THEN '0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c'
                     ELSE fills.takerToken
               END = tp.contract_address
-      LEFT JOIN {{ source('prices', 'usd') }} mp ON and  mp.blockchain = 'bnb'
-          DATE_TRUNC('minute', evt_block_time) = mp.minute  
+      LEFT JOIN {{ source('prices', 'usd') }} mp ON 
+          DATE_TRUNC('minute', evt_block_time) = mp.minute  and  mp.blockchain = 'bnb'
           AND CASE
                   -- set native token to wrapped version
                     WHEN fills.makerToken = '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee' THEN '0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c'
@@ -186,8 +186,8 @@ WITH
                     WHEN fills.takerToken = '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee' THEN '0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c'
                     ELSE fills.takerToken
               END = tp.contract_address
-      LEFT JOIN {{ source('prices', 'usd') }} mp ON and mp.blockchain = 'bnb'
-          DATE_TRUNC('minute', evt_block_time) = mp.minute  
+      LEFT JOIN {{ source('prices', 'usd') }} mp ON 
+          DATE_TRUNC('minute', evt_block_time) = mp.minute  and mp.blockchain = 'bnb'
           AND CASE
                   -- set native token to wrapped version
                     WHEN fills.makerToken = '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee' THEN '0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c'
