@@ -125,6 +125,8 @@ select
     ,cast(trade_fee_amount_raw as double)/pow(10,coalesce(erc20.decimals,18)) as trade_fee_amount
     ,cast(trade_fee_amount_raw as double)/pow(10,coalesce(erc20.decimals,18))*p.price as trade_fee_amount_usd
     ,t.trade_category
+    ,t.number_of_items
+    ,case when number_of_items > 1 then 'Bundle Trade' else 'Single Item Trade' end as trade_type
     ,cast(null as varchar(1)) as aggregator_name
     ,cast(null as varchar(1)) as aggregator_address
     ,tx.`from` as tx_from
