@@ -64,7 +64,7 @@ raw_trades as (
                 ,'Sell' as trade_category
                 ,nftIds as nft_id_array
                 ,cardinality(nftIds) as number_of_items
-                ,cast(inputAmount as decimal(38))  as amount_raw
+                ,cast(inputAmount + protocolFee + cast(get_json_object(royaltyDue[0], '$.amount') as decimal(38)) as decimal(38)) as amount_raw
                 ,cast(protocolFee as decimal(38)) as platform_fee_amount_raw
                 ,get_json_object(royaltyDue[0], '$.amount') as royalty_fee_amount_raw
                 ,get_json_object(royaltyDue[0], '$.recipient') as royalty_fee_receive_address
