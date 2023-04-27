@@ -133,7 +133,7 @@ from base_trades t
 left join {{ ref('tokens_ethereum_nft') }} nft
     ON nft.contract_address = t.nft_contract_address
 left join {{ ref('tokens_ethereum_erc20') }} erc20
-    ON erc20.contract_address = t.currency_contract AND erc20.blockchain = 'ethereum'
+    ON erc20.contract_address = t.currency_contract
 left join {{ source('prices', 'usd') }} p
     ON p.blockchain = 'ethereum' and p.minute = date_trunc('minute', t.block_time)
     AND p.contract_address = t.currency_contract
