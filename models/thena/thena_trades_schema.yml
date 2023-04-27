@@ -10,7 +10,7 @@ models:
     config:
       tags: ['bnb', 'thena','trades', 'dex', 'hsrvc']
     description: >
-        Thena trades on BNB chain across all contracts and versions. This table will load dex trades downstream.
+        Thena trades on all chain across all contracts and versions. This table will load dex trades downstream.
     columns:
       - &blockchain
         name: blockchain
