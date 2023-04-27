@@ -103,6 +103,7 @@ select
     ,t.block_number
     ,t.evt_index
     ,t.tx_hash
+    ,t.project_contract_address
     ,t.nft_contract_address
     ,t.token_id
     ,coalesce(t.buyer, tx.`from`) as buyer
@@ -133,6 +134,7 @@ select
     ,tx.`from` as tx_from
     ,tx.`to` as tx_to
     ,'Trade' as evt_type
+    ,concat(t.block_number,t.tx_hash, t.sub_tx_id) as unique_trade_id
 from base_trades t
 left join {{ ref('tokens_ethereum_nft') }} nft
     ON nft.contract_address = t.nft_contract_address
