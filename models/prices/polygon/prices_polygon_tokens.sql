@@ -58,7 +58,7 @@ FROM
     ("wsteth-wrapped-liquid-staked-ether-20", "polygon", "WSTETH", "0x03b54a6e9a984069379fae1a4fc4dbae93b3bccd", 18),
     ("lcd-lucidao", "polygon", "LCD", "0xc2a45fe7d40bcac8369371b08419ddafd3131b4a", 18),
     ("revv-revv", "polygon", "REVV", "0x70c006878a5a50ed185ac4c87d837633923de296", 18),
-    ("grain-grain","polygon","GRAIN","0x8429d0AFade80498EAdb9919E41437A14d45A00B",18),
+    ("grain-granary","polygon","GRAIN","0x8429d0AFade80498EAdb9919E41437A14d45A00B",18),
     ("oath-oath","polygon","OATH","0xC2C52FF5134596f5FF1b1204d3304228f2432836",18)
 
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)

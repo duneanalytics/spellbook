@@ -1638,7 +1638,7 @@ FROM
     ('woxen-wrapped-oxen', 'ethereum', 'WOXEN', '0xd1e2d5085b39B80C9948AeB1b9aA83AF6756bcc5', 9),
     ('xrio-realio-network-utility-token-exchangable', 'ethereum', 'XRIO', '0x0B4AC2BA3D4924C9A06D9C1d08D7867059A39cC1', 18),
     ('pepe-pepe1', 'ethereum', 'PEPE', '0x6982508145454Ce325dDbE47a25d4ec3d2311933', 18),   
-    ('grain-grain','ethereum','GRAIN','0xF88Baf18FAB7e330fa0C4F83949E23F52FECECce',18),
+    ('grain-granary','ethereum','GRAIN','0xF88Baf18FAB7e330fa0C4F83949E23F52FECECce',18),
     ('oath-oath','ethereum','OATH','0x6F9C26Fa731C7Ea4139Fa669962Cf8F1CE6C8b0B',18)
       
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)
