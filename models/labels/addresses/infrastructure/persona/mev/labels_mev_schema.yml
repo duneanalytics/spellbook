@@ -3,7 +3,7 @@ version: 2
 models:
   - name: labels_mev_ethereum
     meta:
-      blockchain: ethereum
+      blockchain: ethereum, optimism, polygon, arbitrum
       sector: labels
       project: mev
       contributors: hildobby
