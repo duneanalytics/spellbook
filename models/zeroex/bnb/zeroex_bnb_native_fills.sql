@@ -136,13 +136,7 @@ WITH
                 {% if not is_incremental() %}
                 AND evt_block_time >= '{{zeroex_v3_start_date}}'
                 {% endif %}
-       where 1=1  and  mp.blockchain = 'bnb' and tp.blockchain = 'bnb'
-                {% if is_incremental() %}
-                AND evt_block_time >= date_trunc('day', now() - interval '1 week')
-                {% endif %}
-                {% if not is_incremental() %}
-                AND evt_block_time >= '{{zeroex_v3_start_date}}'
-                {% endif %}
+       
     ), otc_fills as
     (
       SELECT
