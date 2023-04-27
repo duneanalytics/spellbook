@@ -3,4 +3,4 @@ version: 2
 sources:
   - name: archipelago_ethereum
   - name: superrare_ethereum
-#  sources are already defined in /archipelago and can't be defined twice..
+#  sources are already defined in the "older" directories and can't be defined twice. In the end we should migrate them to here.

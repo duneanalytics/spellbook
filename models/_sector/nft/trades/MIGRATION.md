@@ -1,6 +1,6 @@
 # Sector: NFT
 
-We're migration the NFT sector spells to a new structure which will make implementing and maintaining marketplace abstractions a lot easier and more robust.
+We're migrating the NFT sector spells to a new structure which will make implementing and maintaining marketplace abstractions a lot easier and more robust.
 
 ## `nft.trades`
 
