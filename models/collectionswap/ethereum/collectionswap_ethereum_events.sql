@@ -25,6 +25,7 @@ raw_trades as (
             trade_fee_amount_raw/number_of_items as trade_fee_amount_raw,
             royalty_fee_receive_address,
             project_contract_address,
+            number_of_items,
             CASE WHEN number_of_items > 1 THEN 'Bundle Trade'
                     ELSE 'Single Item Trade'
                    END as trade_type,
@@ -126,7 +127,7 @@ select
     ,cast(trade_fee_amount_raw as double)/pow(10,coalesce(erc20.decimals,18))*p.price as trade_fee_amount_usd
     ,t.trade_category
     ,t.number_of_items
-    ,case when number_of_items > 1 then 'Bundle Trade' else 'Single Item Trade' end as trade_type
+    ,trade_type
     ,cast(null as varchar(1)) as aggregator_name
     ,cast(null as varchar(1)) as aggregator_address
     ,tx.`from` as tx_from
