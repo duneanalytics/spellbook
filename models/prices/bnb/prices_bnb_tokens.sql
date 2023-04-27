@@ -200,3 +200,6 @@ FROM
     ("lvl-level","bnb","LVL","0xb64e280e9d1b5dbec4accedb2257a87b400db149",18),
     ("ghny-grizzly-honey","bnb","GHNY","0xa045e37a0d1dd3a45fefb8803d22457abc0a728a",18)
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)
+where contract_address not in (
+    '0x2ab0e9e4ee70fff1fb9d67031e44f6410170d00e' -- bXEN has bad price feed.
+)
