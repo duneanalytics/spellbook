@@ -98,6 +98,6 @@ FROM
     ("relay-relay-token","arbitrum","RELAY","0x1426cf37caa89628c4da2864e40cf75e6d66ac6b",18),
     ("arb-arbitrum","arbitrum","ARB","0x912ce59144191c1204e64559fe8253a0e49e6548",18),
     ("agi-auragi","arbitrum","AGI","0xff191514a9baba76bfd19e3943a4d37e8ec9a111",18),
-    ("grain-granary","arbitrum","GRAIN","0x80bB30D62a16e1F2084dEAE84dc293531c3AC3A1",18),
-    ("oath-oath","arbitrum","OATH","0xa1150db5105987CEC5Fd092273d1e3cbb22b378b",18)
+    ("grain-granary","arbitrum","GRAIN","0x80bb30d62a16e1f2084deae84dc293531c3ac3a1",18),
+    ("oath-oath","arbitrum","OATH","0xa1150db5105987cec5fd092273d1e3cbb22b378b",18)
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)
