@@ -49,16 +49,16 @@ models:
       name: underlying_symbol
       description: "Symbol for the underlying token"
 
- - name: aave_flashloans
-   meta:
-    blockchain: arbitrum, avalanche_c, optimism, polygon, ethereum, fantom
-    sector: lending
-    contributors: hildobby
-   config:
-      tags: ['arbitrum', 'flashloans']
-   description: >
-      All Aave flashloans on Arbitrum
-   columns:
+  - name: aave_flashloans
+    meta:
+      blockchain: arbitrum, avalanche_c, optimism, polygon, ethereum, fantom
+      sector: lending
+      contributors: hildobby
+    config:
+        tags: ['arbitrum', 'flashloans']
+    description: >
+        All Aave flashloans on Arbitrum
+    columns:
       - name: blockchain
       - name: project
       - name: version
