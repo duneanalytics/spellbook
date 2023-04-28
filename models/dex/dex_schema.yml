@@ -93,9 +93,9 @@ models:
 
   - name: dex_aggregator_trades
     meta:
-      blockchain: ethereum, gnosis, avalanche_c, fantom
+      blockchain: ethereum, gnosis, avalanche_c, fantom, optimism, arbitrum, bnb
       sector: dex_aggregator
-      contributors: bh2smith, Henrystats, jeff-dude
+      contributors: bh2smith, Henrystats, jeff-dude, rantum
     config:
       tags: ['ethereum', 'gnosis', 'avalanche_c', 'fantom', 'aggregator', 'dex', 'trades', 'cross-chain']
     description: >

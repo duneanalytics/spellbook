@@ -40,6 +40,36 @@ models:
         name: product
         description: "Aragon Product used to deploy DAO"
 
+  - name: aragon_polygon_app_dao_addresses
+    meta:
+      blockchain: polygon
+      project: aragon
+      contributors: Henrystats 
+    config:
+      tags: [ 'polygon', 'dao', 'aragon', 'dao creator tools', 'Henrystats', 'Aragon App']
+    description: >
+      wallet addresses of daos created on aragon app 
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - created_date
+            - blockchain
+            - dao_creator_tool
+            - dao
+            - dao_wallet_address
+    columns:
+      - *blockchain
+      - name: dao_creator_tool
+        description: "Name of creator tool used to create DAO"
+        tests:
+          - dao_addresses_creator_tool:
+              dao_addresses_seed: ref('dao_addresses_seed')
+      - *dao
+      - *dao_wallet_address
+      - *created_date
+      - *created_block_time
+      - *product
+
   - name: aragon_polygon_dao_addresses
     meta:
       blockchain: polygon

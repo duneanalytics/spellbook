@@ -1062,6 +1062,8 @@ models:
         +schema: tofu_arbitrum
       optimism:
         +schema: tofu_optimism
+      polygon:
+        +schema: tofu_polygon
 
     maker:
       +schema: maker
