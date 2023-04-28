@@ -232,7 +232,7 @@ group by 1,2
 )
 
 , all_metrics as (
-select l.pool, pools.chain as blockchain, pools.project, pools.fee, l.time, 
+select l.pool, pools.blockchain, pools.project, pools.fee, l.time, 
     case when token0 = LOWER('0x7f39C581F595B53c5cb19bD0b3f8dA6c935E2Ca0') then token0 else token1 end main_token,
     case when token0 = LOWER('0x7f39C581F595B53c5cb19bD0b3f8dA6c935E2Ca0') then t0.symbol else t1.symbol end main_token_symbol,
     case when token0 = LOWER('0x7f39C581F595B53c5cb19bD0b3f8dA6c935E2Ca0') then token1 else token0 end paired_token,
