@@ -3,11 +3,11 @@ version: 2
 models:
   - name: tofu_events
     meta:
-      blockchain: arbitrum, bnb
+      blockchain: arbitrum, bnb, optimism, polygon
       project: tofu
-      contributors: [Henrystats, theachenyj]
+      contributors: [Henrystats, theachenyj, sohwak]
     config:
-      tags: ['arbitrum', 'bnb', 'tofu','v1','events', 'cross-chain']
+      tags: ['arbitrum', 'bnb', 'optimism', 'polygon', 'tofu','v1','events', 'cross-chain']
     description: >
         Tofu v1 events across all chains 
     columns:
@@ -127,9 +127,9 @@ models:
     meta:
       blockchain: arbitrum, bnb
       project: tofu
-      contributors: [Henrystats, theachenyj]
+      contributors: [Henrystats, theachenyj, sohwak]
     config:
-      tags: ['arbitrum', 'bnb', 'tofu','trades', 'crosschain']
+      tags: ['arbitrum', 'bnb', 'optimism', 'polygon', 'tofu','trades', 'crosschain']
     description: >
         Tofu trades across all chains
     columns:
@@ -165,9 +165,9 @@ models:
     meta:
       blockchain: arbitrum, bnb
       project: tofu
-      contributors: [Henrystats, theachenyj]
+      contributors: [Henrystats, theachenyj, sohwak]
     config:
-      tags: ['arbitrum', 'bnb', 'tofu','fees', 'crosschain']
+      tags: ['arbitrum', 'bnb', 'optimism', 'polygon', 'tofu','fees', 'crosschain']
     description: >
         Tofu fees across all chains
     columns:

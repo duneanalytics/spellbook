@@ -36,6 +36,7 @@
 ,ref('tofu_fees')
 ,ref('nftearth_optimism_fees')
 ,ref('stealcam_arbitrum_fees')
+,ref('collectionswap_ethereum_fees')
 ] %}
 
 
