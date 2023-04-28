@@ -34,9 +34,9 @@ SELECT 'ethereum' AS blockchain
 , t.evt_tx_hash AS tx_hash
 , CAST(t.value AS DECIMAL(38,0)) AS amount_raw
 , CAST(t.value/POWER(10, 18) AS double) AS amount_original
-, CASE WHEN t.evt_block_time >= (SELECT min_hour FROM more_prices) AND t.evt_block_time <= (SELECT max_hour FROM more_prices) THEN CAST(pu.median_price*t.amount/POWER(10, 18) AS double)
-    WHEN t.evt_block_time < (SELECT min_hour FROM more_prices) THEN CAST((SELECT min_price FROM more_prices)*t.amount/POWER(10, 18) AS double)
-    WHEN t.evt_block_time > (SELECT max_hour FROM more_prices) THEN CAST((SELECT max_price FROM more_prices)*t.amount/POWER(10, 18) AS double)
+, CASE WHEN t.evt_block_time >= (SELECT min_hour FROM more_prices) AND t.evt_block_time <= (SELECT max_hour FROM more_prices) THEN CAST(pu.median_price*t.value/POWER(10, 18) AS double)
+    WHEN t.evt_block_time < (SELECT min_hour FROM more_prices) THEN CAST((SELECT min_price FROM more_prices)*t.value/POWER(10, 18) AS double)
+    WHEN t.evt_block_time > (SELECT max_hour FROM more_prices) THEN CAST((SELECT max_price FROM more_prices)*t.value/POWER(10, 18) AS double)
     END AS amount_usd
 , '{{psp_token_address}}' AS token_address
 , 'PSP' AS token_symbol
