@@ -131,43 +131,6 @@ models:
       - &unique_trade_id
         name: unique_trade_id
         description: "Unique trade ID"
-  - name: cryptopunks_ethereum_trades
-    meta:
-      blockchain: ethereum
-      project: cryptopunks
-      contributors: [masquot, hildobby, cat]
-    config:
-      tags: ['ethereum', 'cryptopunks', 'trades']
-    description: >
-        CryptoPunks trades on Ethereum
-    columns:
-      - *blockchain
-      - *project
-      - *version
-      - *block_time
-      - *token_id
-      - *collection
-      - *amount_usd
-      - *token_standard
-      - *trade_type
-      - *number_of_items
-      - *trade_category
-      - *evt_type
-      - *seller
-      - *buyer
-      - *amount_original
-      - *amount_raw
-      - *currency_symbol
-      - *currency_contract
-      - *nft_contract_address
-      - *project_contract_address
-      - *aggregator_name
-      - *aggregator_address
-      - *tx_hash
-      - *block_number
-      - *tx_from
-      - *tx_to
-      - *unique_trade_id
 
   - name: cryptopunks_ethereum_metadata
     meta:
@@ -185,7 +148,7 @@ models:
         description: "CryptoPunk type"
       - name: attribute_count
         description: "Number of attributes"
-      - name: attribute_list 
+      - name: attribute_list
         description: "Attribute list"
 
   - name: cryptopunks_ethereum_current_listings
@@ -215,12 +178,12 @@ models:
     config:
       tags: ['ethereum', 'cryptopunks', 'owners']
     description: > 
-        CryptoPunks current owners per token id    
+        CryptoPunks current owners per token id
     columns:
       - name: punk_id
         description: "CryptoPunk ID #"
         tests:
-          - unique        
+          - unique
       - name: current_owner
         description: "Wallet that currently holds each CryptoPunk ID #"
       - name: last_transfer_time
@@ -254,9 +217,9 @@ models:
       - name: evt_block_number
         description: "Block number of transfer"
       - name: evt_index
-        description: "Index of transfer"   
+        description: "Index of transfer"
       - name: punk_id
-        description: "Punk ID #"   
+        description: "Punk ID #"
       - name: evt_tx_hash
         description: "Transfer transaction hash"
 
@@ -332,9 +295,9 @@ models:
       - name: bidder
         description: "Wallet that created bid"
       - name: eth_amount
-        description: "ETH amount of bid"  
+        description: "ETH amount of bid"
       - name: usd_amount
-        description: "USD amount at time of bid"     
+        description: "USD amount at time of bid"
       - name: evt_block_time
         description: "Time of transfer"
       - name: evt_block_time_week
@@ -342,7 +305,7 @@ models:
       - name: evt_block_number
         description: "Block number of transfer"
       - name: evt_index
-        description: "Index of transfer"   
+        description: "Index of transfer"
       - name: evt_tx_hash
         description: "Transfer transaction hash"
 
@@ -394,15 +357,15 @@ models:
       - name: event_type
         description: "Offer entered or withdrawn"
       - name: punk_id
-        description: "Punk ID #"    
+        description: "Punk ID #"
       - name: from
         description: "Wallet that initiated transaction"
       - name: to
         description: "If offered to specific address, otherwise null"
       - name: eth_amount
-        description: "ETH amount of offer"  
+        description: "ETH amount of offer"
       - name: usd_amount
-        description: "USD amount at time of listing"     
+        description: "USD amount at time of listing"
       - name: evt_block_time
         description: "Time of transfer"
       - name: evt_block_time_week
@@ -410,7 +373,7 @@ models:
       - name: evt_block_number
         description: "Block number of transfer"
       - name: evt_index
-        description: "Index of transfer"   
+        description: "Index of transfer"
       - name: evt_tx_hash
         description: "Transfer transaction hash"
 
@@ -427,7 +390,7 @@ models:
       - name: evt_block_time
         description: "Time of event"
       - name: punk_id
-        description: "Punk ID #"    
+        description: "Punk ID #"
       - name: event_type
         description: "Type of event"
       - name: sale_type
@@ -437,9 +400,9 @@ models:
       - name: to
         description: "If transaction to another address"
       - name: eth_amount
-        description: "ETH amount"   
+        description: "ETH amount"
       - name: usd_amount
-        description: "USD amount at time of event"    
+        description: "USD amount at time of event"
       - name: evt_block_number
         description: "Block number of event"
       - name: evt_tx_hash

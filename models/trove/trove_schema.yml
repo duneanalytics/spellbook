@@ -1,7 +1,7 @@
 version: 2
 
 models:
-  - name: trove_trades
+  - name: trove_events
     meta:
       blockchain: arbitrum, ethereum
       sector: nft
@@ -74,7 +74,7 @@ models:
       - &unique_trade_id
         name: unique_trade_id
 
-  - name: trove_arbitrum_trades
+  - name: trove_arbitrum_events
     meta:
       blockchain: arbitrum
       sector: nft
@@ -112,7 +112,7 @@ models:
       - *tx_to
       - *unique_trade_id
 
-  - name: trove_v2_arbitrum_trades
+  - name: trove_v2_arbitrum_events
     meta:
       blockchain: arbitrum
       sector: nft
@@ -161,7 +161,7 @@ models:
       - *tx_to
       - *unique_trade_id
 
-  - name: trove_v1_arbitrum_trades
+  - name: trove_v1_arbitrum_events
     meta:
       blockchain: arbitrum
       sector: nft
@@ -210,7 +210,7 @@ models:
       - *tx_to
       - *unique_trade_id
 
-  - name: trove_ethereum_trades
+  - name: trove_ethereum_events
     meta:
       blockchain: ethereum
       sector: nft

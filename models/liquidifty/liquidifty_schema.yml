@@ -1,14 +1,14 @@
 version: 2
 
 models:
-  - name: liquidifty_trades
+  - name: liquidifty_events
     meta:
       blockchain: bnb, ethereum
       sector: nft
       project: liquidifty
       contributors: bizzyvinci
     config:
-      tags: ['liquidifty', 'nft', 'trades']
+      tags: ['liquidifty', 'nft', 'events']
     description: "NFT trades on liquidifty"
     columns:
       - &blockchain

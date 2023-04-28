@@ -1,7 +1,7 @@
 version: 2
 
 models:
-  - name: liquidifty_ethereum_trades
+  - name: liquidifty_ethereum_events
     meta:
       blockchain: ethereum
       sector: nft

@@ -1,22 +1,20 @@
 {{ config(
-        alias ='trades',
-        post_hook='{{ expose_spells(\'["arbitrum","bnb", "optimism","polygon"]\',
+    alias = 'events',
+    post_hook = '{{ expose_spells(\'["arbitrum"]\',
                                     "project",
-                                    "tofu",
-                                    \'["Henrystats", "theachenyj", "chuxin", "sohwak"]\') }}')
-}}
+                                    "trove",
+                                    \'["bizzyvinci"]\') }}'
+)}}
 
-
-{% set tofu_models = [
- ref('tofu_bnb_trades')
-,ref('tofu_arbitrum_trades')
-,ref('tofu_optimism_trades')
-,ref('tofu_polygon_trades')
+{% set trove_arbitrum_models = [
+    ref('trove_v2_arbitrum_events')
+    ,ref('trove_v1_arbitrum_events')
 ] %}
+
 
 SELECT *
 FROM (
-    {% for nft_model in tofu_models %}
+    {% for model in trove_arbitrum_models %}
     SELECT
         blockchain,
         project,
@@ -44,11 +42,20 @@ FROM (
         block_number,
         tx_from,
         tx_to,
+        platform_fee_amount_raw,
+        platform_fee_amount,
+        platform_fee_amount_usd,
+        platform_fee_percentage,
+        royalty_fee_amount_raw,
+        royalty_fee_amount,
+        royalty_fee_amount_usd,
+        royalty_fee_percentage,
+        royalty_fee_receive_address,
+        royalty_fee_currency_symbol,
         unique_trade_id
-    FROM {{ nft_model }}
+    FROM {{ model }}
     {% if not loop.last %}
     UNION ALL
     {% endif %}
     {% endfor %}
-
 )

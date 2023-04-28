@@ -1,20 +1,22 @@
 {{ config(
-    alias = 'trades',
-    post_hook = '{{ expose_spells(\'["arbitrum"]\',
-                                    "project",
-                                    "trove",
-                                    \'["bizzyvinci"]\') }}'
-)}}
+    schema = 'trove',
+    alias = 'events',
+    post_hook='{{ expose_spells(\'["arbitrum", "ethereum"]\',
+                                "project",
+                                "trove",
+                                \'["bizzyvinci"]\') }}'
+    )
+}}
 
-{% set trove_arbitrum_models = [
-    ref('trove_v2_arbitrum_trades')
-    ,ref('trove_v1_arbitrum_trades')
+{% set trove_models = [
+    ref('trove_arbitrum_events'),
+    ref('trove_ethereum_events')
 ] %}
 
 
 SELECT *
 FROM (
-    {% for model in trove_arbitrum_models %}
+    {% for model in trove_models %}
     SELECT
         blockchain,
         project,
@@ -42,6 +44,16 @@ FROM (
         block_number,
         tx_from,
         tx_to,
+        platform_fee_amount_raw,
+        platform_fee_amount,
+        platform_fee_amount_usd,
+        platform_fee_percentage,
+        royalty_fee_amount_raw,
+        royalty_fee_amount,
+        royalty_fee_amount_usd,
+        royalty_fee_percentage,
+        royalty_fee_receive_address,
+        royalty_fee_currency_symbol,
         unique_trade_id
     FROM {{ model }}
     {% if not loop.last %}

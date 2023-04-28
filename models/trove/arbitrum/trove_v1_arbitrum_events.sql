@@ -1,6 +1,6 @@
 {{ config(
     schema='trove_v1_arbitrum',
-    alias = 'trades',
+    alias = 'events',
     partition_by = ['block_date'],
     materialized = 'incremental',
     file_format = 'delta',
@@ -66,6 +66,16 @@ select
     mp.block_number,
     tx.`from` as tx_from,
     tx.to as tx_to,
+    cast(null as decimal(38)) as platform_fee_amount_raw,
+    cast(null as double) as platform_fee_amount,
+    cast(null as double) as platform_fee_amount_usd,
+    cast(null as double) as platform_fee_percentage,
+    cast(null as decimal(38)) as royalty_fee_amount_raw,
+    cast(null as double) as royalty_fee_amount,
+    cast(null as double) as royalty_fee_amount_usd,
+    cast(null as double) as royalty_fee_percentage,
+    cast(null as varchar(1)) as royalty_fee_receive_address,
+    erc20.symbol as royalty_fee_currency_symbol,
     mp.block_number || '-' || mp.tx_hash || '-' || mp.evt_index as unique_trade_id
 from marketplace mp
 inner join {{ source('arbitrum', 'transactions') }} tx

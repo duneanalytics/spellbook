@@ -1,7 +1,7 @@
 version: 2
 
 models:
-  - name: liquidifty_bnb_trades
+  - name: liquidifty_bnb_events
     meta:
       blockchain: bnb
       sector: nft
