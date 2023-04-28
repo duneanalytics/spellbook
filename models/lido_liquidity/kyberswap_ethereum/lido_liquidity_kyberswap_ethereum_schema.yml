@@ -13,21 +13,9 @@ models:
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
-            - pool_name
             - pool
-            - chain
-            - project
-            - fee
+            - blockchain
             - time
-            - main_token
-            - main_token_symbol
-            - paired_token
-            - paired_token_symbol
-            - main_token_reserve
-            - paired_token_reserve
-            - main_token_usd_reserve
-            - paired_token_usd_reserve
-            - trading_volume
     columns:
       - &pool_name
         name: pool_name
@@ -35,8 +23,8 @@ models:
       - &pool
         name: pool
         description: "Liquidity pool's address"
-      - &chain
-        name: chain
+      - &blockchain
+        name: blockchain
         description: "Blockchain which the DEX is deployed"
       - &project
         name: project

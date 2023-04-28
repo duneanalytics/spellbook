@@ -17,7 +17,7 @@ FROM (
     {% for k_model in lido_liquidity_models %}
     SELECT pool_name, 
            pool, 
-           chain, 
+           blockchain, 
            project, 
            fee, 
            time, 
