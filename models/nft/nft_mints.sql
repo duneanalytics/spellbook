@@ -53,7 +53,6 @@ WITH project_mints as
         {% if is_incremental() %}
         AND block_time >= date_trunc("day", now() - interval '1 week')
         {% endif %}
-    )
 )
 , native_mints AS
 (
