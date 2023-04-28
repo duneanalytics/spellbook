@@ -6,4 +6,3 @@ seeds:
       column_types:
         token_id: string
 
-  - name: opensea_trade_seed
