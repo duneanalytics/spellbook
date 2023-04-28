@@ -19,14 +19,17 @@
 -- Test Query here: https://dune.com/queries/2274187
 WITH zeroex_tx AS (
     SELECT tx_hash,
-           max(affiliate_address) as affiliate_address
+           max(affiliate_address) as affiliate_address, taker_token, maker_token, evt_index
     FROM (
 
         SELECT v3.evt_tx_hash AS tx_hash,
                     CASE
                         WHEN takerAddress = '0x63305728359c088a52b0b0eeec235db4d31a67fc' THEN takerAddress
                         ELSE NULL
-                    END AS affiliate_address
+                    END AS affiliate_address,
+                SUBSTRING(v3.takerAssetData, 34, 40) as taker_token,
+                SUBSTRING(v3.makerAssetData, 34, 40) as maker_token,
+                evt_index
         FROM {{ source('zeroex_v2_bnb', 'Exchange_evt_Fill') }} v3
         WHERE (  -- nuo
                 v3.takerAddress = '0x63305728359c088a52b0b0eeec235db4d31a67fc'
@@ -55,7 +58,10 @@ WITH zeroex_tx AS (
                                 THEN SUBSTRING(INPUT
                                         FROM (position('fbc019a7' IN INPUT) + 32)
                                         FOR 40)
-                            END AS affiliate_address
+                            END AS affiliate_address,
+                    '0x' || substring(INPUT, 355, 40) AS taker_token,
+                    '0x' || substring(INPUT, 419, 40) AS maker_token,
+                    tx_index AS evt_index
         FROM {{ source('bnb', 'traces') }} tr
         WHERE tr.to IN (
                 -- exchange contract
@@ -79,7 +85,7 @@ WITH zeroex_tx AS (
                 AND block_time >= '{{zeroex_v3_start_date}}'
                 {% endif %}
     ) temp
-    group by tx_hash
+    group by tx_hash, taker_token, maker_token, evt_index
 
 ),
 v2_fills_no_bridge AS (
@@ -306,8 +312,8 @@ uni_v2_swap as (
 SELECT   s.tx_hash tx_hash, s.index evt_index, s.contract_address, s.block_time, 
     '0x' || substring(DATA, 27, 40) AS maker, 
     '0xdef1c0ded9bec7f1a1670819833240f027b25eff' AS taker,
-                '0x' || substring(DATA, 91, 40) AS taker_token,
-            '0x' || substring(DATA, 155, 40) AS maker_token,
+            taker_token,
+            maker_token,
             bytea2numeric_v3('0x' || substring(DATA, 219, 40)) AS taker_token_amount_raw,
             bytea2numeric_v3('0x' || substring(DATA, 283, 40)) AS maker_token_amount_raw,
             'direct_uniswapv2' AS TYPE,
@@ -316,7 +322,7 @@ SELECT   s.tx_hash tx_hash, s.index evt_index, s.contract_address, s.block_time,
             FALSE AS matcha_limit_order_flag
     
     FROM {{ source('bnb', 'logs') }} s
-    JOIN zeroex_tx z on z.tx_hash = s.tx_hash
+    JOIN zeroex_tx z on z.tx_hash = s.tx_hash and z.evt_index = s.index
     WHERE topic1 = '0xd78ad95fa46c994b6551d0da85fc275fe613ce37657fb8d5e3d130840159d822' -- all the uni v2 swap event
            and topic2 = '0x000000000000000000000000def1c0ded9bec7f1a1670819833240f027b25eff' -- 0x EP
         {% if is_incremental() %}
