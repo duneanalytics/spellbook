@@ -1,26 +1,26 @@
 version: 2
 
 models:
-  - name: trader_joe_trades
+  - name: thena_trades
     meta:
-      blockchain: avalanche_c
+      blockchain: bnb
       sector: dex
-      project: trader_joe
-      contributors: jeff-dude, mtitus6, Henrystats, hsrvc
+      project: thena
+      contributors: hsrvc
     config:
-      tags: ['avalanche_c','bnb','trader_joe','trades', 'dex']
+      tags: ['bnb', 'thena','trades', 'dex', 'hsrvc']
     description: >
-        Trader Joe trades on all chains across all contracts and versions. This table will load dex trades downstream.
+        Thena trades on all chain across all contracts and versions. This table will load dex trades downstream.
     columns:
       - &blockchain
         name: blockchain
         description: "Blockchain which the DEX is deployed"
-      - &project 
+      - &project
         name: project
-        description: "Project name of the DEX"  
+        description: "Project name of the DEX"
       - &version
         name: version
-        description: "Version of the contract built and deployed by the DEX project"  
+        description: "Version of the contract built and deployed by the DEX project"
       - &block_date
         name: block_date
         description: "UTC event block date of each DEX trade"
