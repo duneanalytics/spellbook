@@ -39,6 +39,7 @@ ref('aavegotchi_polygon_trades')
 ,ref('nftearth_optimism_trades')
 ,ref('rarible_polygon_trades')
 ,ref('stealcam_arbitrum_trades')
+,ref('collectionswap_ethereum_trades')
 ] %}
 
 SELECT *
