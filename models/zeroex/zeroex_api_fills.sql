@@ -3,7 +3,7 @@
         post_hook='{{ expose_spells(\'["ethereum","arbitrum", "optimism", "polygon","fantom","avalanche_c"]\',
                                 "project",
                                 "zeroex",
-                                \'["rantumBits","bakabhai993"]\') }}'
+                                \'["rantum","bakabhai993"]\') }}'
         )
 }}
 
@@ -14,6 +14,7 @@ ref('zeroex_arbitrum_api_fills')
 ,ref('zeroex_fantom_api_fills')
 ,ref('zeroex_optimism_api_fills')
 ,ref('zeroex_polygon_api_fills')
+,ref('zeroex_bnb_api_fills')
 ] %}
 
 

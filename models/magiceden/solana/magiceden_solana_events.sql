@@ -4,7 +4,7 @@
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
-    unique_key = ['block_date', 'unique_trade_id']
+    unique_key = ['block_date','unique_trade_id']
     )
 }}
 
@@ -65,7 +65,7 @@ SELECT
        END as project_contract_address,
   CASE WHEN (array_contains(account_keys, 'M2mx93ekt1fmXSVkTrUL9xVFHkmME8HTUi5Cyc5aF7K'))
        AND (
-               array_contains(log_messages, 'Program log: Instruction: ExecuteSaleV2') 
+               array_contains(log_messages, 'Program log: Instruction: ExecuteSaleV2')
                OR array_contains(log_messages, 'Program log: Instruction: ExecuteSale')
                OR array_contains(log_messages, 'Program log: Instruction: Mip1ExecuteSaleV2')
           )
@@ -83,7 +83,7 @@ SELECT
   ELSE 'Other' END as evt_type,
   CASE WHEN (array_contains(account_keys, 'M2mx93ekt1fmXSVkTrUL9xVFHkmME8HTUi5Cyc5aF7K'))
          AND (
-               array_contains(log_messages, 'Program log: Instruction: ExecuteSaleV2') 
+               array_contains(log_messages, 'Program log: Instruction: ExecuteSaleV2')
                OR array_contains(log_messages, 'Program log: Instruction: ExecuteSale')
                OR array_contains(log_messages, 'Program log: Instruction: Mip1ExecuteSaleV2')
           )
@@ -95,7 +95,7 @@ SELECT
   NULL::string as collection,
   CASE WHEN (array_contains(account_keys, 'M2mx93ekt1fmXSVkTrUL9xVFHkmME8HTUi5Cyc5aF7K'))
          AND (
-               array_contains(log_messages, 'Program log: Instruction: ExecuteSaleV2') 
+               array_contains(log_messages, 'Program log: Instruction: ExecuteSaleV2')
                OR array_contains(log_messages, 'Program log: Instruction: ExecuteSale')
                OR array_contains(log_messages, 'Program log: Instruction: Mip1ExecuteSaleV2')
           )
@@ -106,7 +106,7 @@ SELECT
   signer as buyer,
   CASE WHEN (array_contains(account_keys, 'M2mx93ekt1fmXSVkTrUL9xVFHkmME8HTUi5Cyc5aF7K'))
          AND (
-               array_contains(log_messages, 'Program log: Instruction: ExecuteSaleV2') 
+               array_contains(log_messages, 'Program log: Instruction: ExecuteSaleV2')
                OR array_contains(log_messages, 'Program log: Instruction: ExecuteSale')
                OR array_contains(log_messages, 'Program log: Instruction: Mip1ExecuteSaleV2')
           )
@@ -138,13 +138,13 @@ SELECT
   NULL::double as royalty_fee_receive_address,
   CASE WHEN (array_contains(account_keys, 'M2mx93ekt1fmXSVkTrUL9xVFHkmME8HTUi5Cyc5aF7K'))
          AND (
-               array_contains(log_messages, 'Program log: Instruction: ExecuteSaleV2') 
+               array_contains(log_messages, 'Program log: Instruction: ExecuteSaleV2')
                OR array_contains(log_messages, 'Program log: Instruction: ExecuteSale')
                OR array_contains(log_messages, 'Program log: Instruction: Mip1ExecuteSaleV2')
-          )         
+          )
           AND array_contains(log_messages, 'Program log: Instruction: Buy') THEN 'SOL'
          ELSE NULL::string END as royalty_fee_currency_symbol,
-  signatures[0] || '-' || id || '-' || me_instructions[0]::string as unique_trade_id,
+  id  as unique_trade_id,
   instructions,
   signatures,
   log_messages

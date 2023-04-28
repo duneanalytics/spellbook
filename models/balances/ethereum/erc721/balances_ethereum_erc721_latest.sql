@@ -1,6 +1,6 @@
 {{ config(
         alias='erc721_latest',
-        post_hook='{{ expose_spells_hide_trino(\'["ethereum"]\',
+        post_hook='{{ expose_spells(\'["ethereum"]\',
                                             "sector",
                                             "balances",
                                             \'["hildobby","soispoke","dot2dotseurat"]\') }}'
@@ -21,4 +21,3 @@ LEFT JOIN {{ ref('balances_ethereum_erc721_noncompliant') }}  as nc
 WHERE recency_index = 1
 AND amount = 1
 AND nc.token_address IS NULL 
-;

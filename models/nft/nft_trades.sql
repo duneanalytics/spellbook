@@ -1,5 +1,10 @@
 {{ config(
         alias ='trades',
+        partition_by = ['block_date'],
+        materialized = 'incremental',
+        file_format = 'delta',
+        incremental_strategy = 'merge',
+        unique_key = ['unique_trade_id', 'blockchain'],
         post_hook='{{ expose_spells(\'["ethereum","solana","bnb", "optimism","arbitrum","polygon"]\',
                                     "sector",
                                     "nft",
@@ -34,6 +39,7 @@ ref('aavegotchi_polygon_trades')
 ,ref('nftearth_optimism_trades')
 ,ref('rarible_polygon_trades')
 ,ref('stealcam_arbitrum_trades')
+,ref('collectionswap_ethereum_trades')
 ] %}
 
 SELECT *
@@ -43,6 +49,7 @@ FROM (
         blockchain,
         project,
         version,
+        date_trunc('day', block_time)  as block_date,
         block_time,
         token_id,
         collection,
@@ -68,6 +75,9 @@ FROM (
         tx_to,
         unique_trade_id
     FROM {{ nft_model }}
+    {% if is_incremental() %}
+    WHERE block_time >= date_trunc("day", now() - interval '1 week')
+    {% endif %}
     {% if not loop.last %}
     UNION ALL
     {% endif %}

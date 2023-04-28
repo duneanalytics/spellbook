@@ -15,14 +15,27 @@
  , ref('labels_validators')
  , ref('labels_flashbots_ethereum')
  , ref('labels_mev_ethereum')
+ , ref('labels_contract_deployers')
  , ref('labels_stablecoins')
+ , ref('labels_cex_tokens')
+ , ref('labels_burn_addresses')
+ , ref('labels_flashloans_ethereum')
 ] %}
 
 SELECT *
 FROM (
     {% for infrastructure_model in infrastructure_models %}
     SELECT
-        *
+        blockchain
+        , address
+        , name
+        , category
+        , contributor
+        , source
+        , created_at
+        , updated_at
+        , model_name
+        , label_type
     FROM {{ infrastructure_model }}
     {% if not loop.last %}
     UNION ALL

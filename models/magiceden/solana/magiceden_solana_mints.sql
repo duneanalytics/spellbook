@@ -1,5 +1,6 @@
 {{ config(
         alias ='mints'
+
         )
 }}
 

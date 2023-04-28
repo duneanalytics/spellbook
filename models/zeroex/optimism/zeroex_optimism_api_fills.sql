@@ -9,7 +9,7 @@
         post_hook='{{ expose_spells(\'["optimism"]\',
                                 "project", 
                                 "zeroex",
-                                \'["rantumBits", "sui414", "bakabhai993"]\') }}'
+                                \'["rantum", "danning.sui", "bakabhai993"]\') }}'
     )
 }} 
 {% set zeroex_v3_start_date = '2019-12-01' %}
@@ -361,9 +361,11 @@ SELECT
         swap_flag,
         matcha_limit_order_flag,
         --COALESCE((all_tx.maker_token_amount_raw / pow(10, mp.decimals)) * mp.price, (all_tx.taker_token_amount_raw / pow(10, tp.decimals)) * tp.price) AS volume_usd
-        CASE WHEN maker_token IN ('0x7f5c764cbc14f9669b88837ca1490cca17c31607','0x4200000000000000000000000000000000000006','0xda10009cbd5d07dd0cecc66161fc93d7c9000da1','0x4200000000000000000000000000000000000042','0x94b008aa00579c1307b0ef2c499ad98a8ce58e58', '0x8c6f28f2f1a3c87f0f938b96d27520d9751ec8d9')
+        CASE WHEN maker_token IN ('0x7f5c764cbc14f9669b88837ca1490cca17c31607','0x4200000000000000000000000000000000000006','0xda10009cbd5d07dd0cecc66161fc93d7c9000da1',
+            '0x4200000000000000000000000000000000000042','0x94b008aa00579c1307b0ef2c499ad98a8ce58e58', '0x8c6f28f2f1a3c87f0f938b96d27520d9751ec8d9') AND  mp.price IS NOT NULL
              THEN (all_tx.maker_token_amount_raw / pow(10, mp.decimals)) * mp.price
-             WHEN taker_token IN ('0x7f5c764cbc14f9669b88837ca1490cca17c31607','0x4200000000000000000000000000000000000006','0xda10009cbd5d07dd0cecc66161fc93d7c9000da1','0x4200000000000000000000000000000000000042','0x94b008aa00579c1307b0ef2c499ad98a8ce58e58', '0x8c6f28f2f1a3c87f0f938b96d27520d9751ec8d9')     
+             WHEN taker_token IN ('0x7f5c764cbc14f9669b88837ca1490cca17c31607','0x4200000000000000000000000000000000000006','0xda10009cbd5d07dd0cecc66161fc93d7c9000da1',
+                '0x4200000000000000000000000000000000000042','0x94b008aa00579c1307b0ef2c499ad98a8ce58e58', '0x8c6f28f2f1a3c87f0f938b96d27520d9751ec8d9')    AND  tp.price IS NOT NULL
              THEN (all_tx.taker_token_amount_raw / pow(10, tp.decimals)) * tp.price
              ELSE COALESCE((all_tx.maker_token_amount_raw / pow(10, mp.decimals)) * mp.price, (all_tx.taker_token_amount_raw / pow(10, tp.decimals)) * tp.price)
              END AS volume_usd, 
@@ -381,7 +383,7 @@ AND tx.block_time >= '{{zeroex_v3_start_date}}'
 
 LEFT JOIN {{ source('prices', 'usd') }} tp ON date_trunc('minute', all_tx.block_time) = tp.minute
 AND CASE
-        WHEN all_tx.taker_token = '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee' THEN '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'
+        WHEN all_tx.taker_token = '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee' THEN '0x4200000000000000000000000000000000000006'
         ELSE all_tx.taker_token
     END = tp.contract_address
 AND tp.blockchain = 'optimism'
@@ -395,7 +397,7 @@ AND tp.minute >= '{{zeroex_v3_start_date}}'
 
 LEFT JOIN {{ source('prices', 'usd') }} mp ON DATE_TRUNC('minute', all_tx.block_time) = mp.minute
 AND CASE
-        WHEN all_tx.maker_token = '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee' THEN '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'
+        WHEN all_tx.maker_token = '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee' THEN '0x4200000000000000000000000000000000000006'
         ELSE all_tx.maker_token
     END = mp.contract_address
 AND mp.blockchain = 'optimism'

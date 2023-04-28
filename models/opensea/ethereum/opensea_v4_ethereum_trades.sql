@@ -5,15 +5,17 @@
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
-    unique_key = ['block_date', 'tx_hash', 'evt_index', 'nft_contract_address', 'token_id', 'sub_type', 'sub_idx']
+    unique_key = ['block_date', 'unique_trade_id']
     )
 }}
+
 
 -- opensea.trades has the same columns as seaport.trades
 -- only some specified zone_address are recognized as opensea's
 -- project/version : opensea/v4
 -- contract_address : 0x00000000000001ad428e4906ae43d8f9852d0dd6 (Seaport v1.4)
 -- materialize : incremental table
+
 
 {% set c_seaport_first_date = "2023-02-01" %}
 {% set c_native_token_address = "0x0000000000000000000000000000000000000000" %}
@@ -82,7 +84,7 @@ with source_ethereum_transactions as (
             ,evt_index
             ,'offer' as sub_type
             ,offer_idx + 1 as sub_idx
-            ,case offer[0]:itemType 
+            ,case offer[0]:itemType
                 when '0' then 'native'
                 when '1' then 'erc20'
                 when '2' then 'erc721'
@@ -94,27 +96,27 @@ with source_ethereum_transactions as (
                 when '1' then 'erc20'
                 when '2' then 'erc721'
                 when '3' then 'erc1155'
-                else 'etc' 
+                else 'etc'
             end as consideration_first_item_type
             ,offerer
             ,recipient
             ,offerer as sender
             ,recipient as receiver
             ,zone
-            ,offer_item:token as token_contract_address 
+            ,offer_item:token as token_contract_address
             ,cast(offer_item:amount as numeric(38)) as original_amount
             ,case offer_item:itemType
                 when '0' then 'native'
                 when '1' then 'erc20'
                 when '2' then 'erc721'
                 when '3' then 'erc1155'
-                else 'etc' 
+                else 'etc'
             end as item_type
             ,offer_item:identifier as token_id
             ,contract_address as platform_contract_address
             ,size(offer) as offer_cnt
             ,size(consideration) as consideration_cnt
-            ,order_hash            
+            ,order_hash
             ,false as is_private -- will be deprecated in base_pairs
     from
     (
@@ -146,7 +148,7 @@ with source_ethereum_transactions as (
             ,evt_index
             ,'consideration' as sub_type
             ,consideration_idx + 1 as sub_idx
-            ,case offer[0]:itemType 
+            ,case offer[0]:itemType
                 when '0' then 'native'
                 when '1' then 'erc20'
                 when '2' then 'erc721'
@@ -158,8 +160,8 @@ with source_ethereum_transactions as (
                 when '1' then 'erc20'
                 when '2' then 'erc721'
                 when '3' then 'erc1155'
-                else 'etc' 
-            end as consideration_first_item_type          
+                else 'etc'
+            end as consideration_first_item_type
             ,offerer
             ,recipient
             ,recipient as sender
@@ -201,7 +203,7 @@ with source_ethereum_transactions as (
         {% endif %}
         {% if is_incremental() %}
         and evt_block_time >= date_trunc("day", now() - interval '1 week')
-        {% endif %}        
+        {% endif %}
     )
 )
 ,iv_base_pairs as (
@@ -218,7 +220,7 @@ with source_ethereum_transactions as (
             ,a.sender
             ,a.receiver
             ,a.zone
-            ,a.token_contract_address 
+            ,a.token_contract_address
             ,a.original_amount
             ,a.item_type
             ,a.token_id
@@ -268,6 +270,7 @@ with source_ethereum_transactions as (
             ,case when offer_first_item_type in ('erc721','erc1155') and sub_type = 'consideration' and item_type in ('erc721','erc1155') then true
                 else false
             end is_moved_nft
+            ,fee_wallet_name
     from  (select a.block_time
                 ,a.block_number
                 ,a.tx_hash
@@ -281,7 +284,7 @@ with source_ethereum_transactions as (
                 ,a.sender
                 ,a.receiver
                 ,a.zone
-                ,a.token_contract_address 
+                ,a.token_contract_address
                 ,a.original_amount
                 ,a.item_type
                 ,a.token_id
@@ -292,10 +295,11 @@ with source_ethereum_transactions as (
                 ,a.is_private
                 ,b.om_evt_index
                 ,b.om_order_id
+                ,f.wallet_name as fee_wallet_name
                 ,case when sender = receiver then true else false end is_self_trans
                 ,case when f.wallet_address is not null then true else false end as is_platform_fee
-                ,case when item_type in ('native','erc20') 
-                    then sum(case when item_type in ('native','erc20') then 1 end) over (partition by tx_hash, evt_index, sub_type order by sub_idx) 
+                ,case when item_type in ('native','erc20')
+                    then sum(case when item_type in ('native','erc20') then 1 end) over (partition by tx_hash, evt_index, sub_type order by sub_idx)
                 end as eth_erc_idx
                 ,sum(case when offer_first_item_type = 'erc20' and sub_type = 'consideration' and item_type in ('erc721','erc1155') then 1
                             when offer_first_item_type in ('erc721','erc1155') and sub_type = 'offer' and item_type in ('erc721','erc1155') then 1
@@ -307,7 +311,7 @@ with source_ethereum_transactions as (
                             when offer_first_item_type in ('erc721','erc1155') and sub_type = 'offer' and item_type in ('erc1155') then 1
                     end) over (partition by tx_hash, evt_index) as erc1155_cnt
             from iv_offer_consideration a
-                    left join iv_platform_fee_wallet f on f.wallet_address = a.receiver 
+                    left join iv_platform_fee_wallet f on f.wallet_address = a.receiver
                     left join iv_orders_matched b on b.om_tx_hash = a.tx_hash
                                                     and b.om_order_hash = a.order_hash
           ) a
@@ -333,6 +337,8 @@ with source_ethereum_transactions as (
         ,max(case when is_creator_fee and creator_fee_idx = 3 then receiver end) as creator_fee_receiver_3
         ,max(case when is_creator_fee and creator_fee_idx = 4 then receiver end) as creator_fee_receiver_4
         ,max(case when is_creator_fee and creator_fee_idx = 5 then receiver end) as creator_fee_receiver_5
+        ,max(a.fee_wallet_name) as fee_wallet_name
+
    from iv_base_pairs a
   where 1=1
     and eth_erc_idx > 0
@@ -379,6 +385,7 @@ with source_ethereum_transactions as (
         ,sub_type
         ,sub_idx
         ,order_hash
+        ,b.fee_wallet_name
   from iv_base_pairs a
         left join iv_volume b on b.block_date = a.block_date  -- tx_hash and evt_index is PK, but for performance, block_time is included
                               and b.tx_hash = a.tx_hash
@@ -438,9 +445,10 @@ with source_ethereum_transactions as (
           ,a.platform_fee_amount_raw / power(10, e.decimals) * p.price as platform_fee_amount_usd
           ,a.creator_fee_amount_raw / power(10, e.decimals) as creator_fee_amount
           ,a.creator_fee_amount_raw / power(10, e.decimals) * p.price as creator_fee_amount_usd
-          ,coalesce(agg.name,agg_m.aggregator_name) as aggregator_name
+          ,coalesce(agg_m.aggregator_name, agg.name) as aggregator_name
           ,agg.contract_address AS aggregator_address
           ,sub_idx
+          ,a.fee_wallet_name
   from iv_nfts a
   inner join source_ethereum_transactions t on t.hash = a.tx_hash
   left join ref_tokens_nft n on n.contract_address = nft_contract_address
@@ -453,6 +461,8 @@ with source_ethereum_transactions as (
     and p.minute = date_trunc('minute', a.block_time)
   left join ref_nft_aggregators agg on agg.contract_address = t.to
   left join ref_nft_aggregators_marks agg_m on right(t.data, agg_m.hash_marker_size) = agg_m.hash_marker
+  where t.from != '0x110b2b128a9ed1be5ef3232d8e4e41640df5c2cd' -- this is a special address which transact English Auction, will handle later. test comment to force CI
+
 )
   -- Rename column to align other *.trades tables
   -- But the columns ordering is according to convenience.
@@ -529,11 +539,14 @@ select
         ,is_private
         ,sub_idx
         ,sub_type
-        ,'seaport-' || CAST(tx_hash AS VARCHAR(100)) || '-' || cast(evt_index as VARCHAR(10)) || '-' || CAST(nft_contract_address AS VARCHAR(100)) || '-' || cast(nft_token_id as VARCHAR(100)) || '-' || cast(sub_idx as VARCHAR(10)) as unique_trade_id
+        ,fee_wallet_name
+        ,'seaport-' || CAST(tx_hash AS VARCHAR(100)) || '-' || cast(evt_index as VARCHAR(10)) || '-' || CAST(nft_contract_address AS VARCHAR(100)) || '-' || cast(nft_token_id as VARCHAR(100)) || '-' || cast(sub_type as VARCHAR(20)) || '-' || cast(sub_idx as VARCHAR(10)) as unique_trade_id
   from   iv_trades
- where CAST(zone AS VARCHAR(100)) in ('0xf397619df7bfd4d1657ea9bdd9df7ff888731a11'
-                                    ,'0x9b814233894cd227f561b78cc65891aa55c62ad2'
-                                    ,'0x004c00500000ad104d7dbd00e3ae0a5c00560c00'
-                                    ,'0x110b2b128a9ed1be5ef3232d8e4e41640df5c2cd'
-                                    ,'0x000000e7ec00e7b300774b00001314b8610022b8' -- newly added on seaport v1.4
-                                    )
+ where  (   CAST(zone AS VARCHAR(100)) in ('0xf397619df7bfd4d1657ea9bdd9df7ff888731a11'
+                                          ,'0x9b814233894cd227f561b78cc65891aa55c62ad2'
+                                          ,'0x004c00500000ad104d7dbd00e3ae0a5c00560c00'
+                                          ,'0x110b2b128a9ed1be5ef3232d8e4e41640df5c2cd'
+                                          ,'0x000000e7ec00e7b300774b00001314b8610022b8' -- newly added on seaport v1.4
+                                          )
+         or  fee_wallet_name = 'opensea'
+        ) 

@@ -9,7 +9,7 @@
         post_hook='{{ expose_spells(\'["avalanche_c"]\',
                                 "project",
                                 "zeroex",
-                                \'["rantumBits",  "bakabhai993", "sui414"]\') }}'
+                                \'["rantum",  "bakabhai993", "danning.sui"]\') }}'
     )
 }}
 
@@ -304,9 +304,11 @@ SELECT
         affiliate_address,
         swap_flag,
         matcha_limit_order_flag,
-        CASE WHEN maker_token IN ('0x9702230a8ea53601f5cd2dc00fdbc13d4df4a8c7','0xa7d7079b0fead91f3e65f86e8915cb59c1a4c664','0xc7198437980c041c805a1edcba50c1ce5db95118','0xb31f66aa3c1e785363f0875a1b74e27b85fd66c7','0xd586e7f844cea2f87f50152665bcbc2c279d8d70', '0x49d5c2bdffac6ce2bfdb6640f4f80f226bc10bab')
+        CASE WHEN maker_token IN ('0x9702230a8ea53601f5cd2dc00fdbc13d4df4a8c7','0xa7d7079b0fead91f3e65f86e8915cb59c1a4c664','0xc7198437980c041c805a1edcba50c1ce5db95118',
+            '0xb31f66aa3c1e785363f0875a1b74e27b85fd66c7','0xd586e7f844cea2f87f50152665bcbc2c279d8d70', '0x49d5c2bdffac6ce2bfdb6640f4f80f226bc10bab') AND  mp.price IS NOT NULL
              THEN (all_tx.maker_token_amount_raw / pow(10, mp.decimals)) * mp.price
-             WHEN taker_token IN ('0x9702230a8ea53601f5cd2dc00fdbc13d4df4a8c7','0xa7d7079b0fead91f3e65f86e8915cb59c1a4c664','0xc7198437980c041c805a1edcba50c1ce5db95118','0xb31f66aa3c1e785363f0875a1b74e27b85fd66c7','0xd586e7f844cea2f87f50152665bcbc2c279d8d70', '0x49d5c2bdffac6ce2bfdb6640f4f80f226bc10bab')    
+             WHEN taker_token IN ('0x9702230a8ea53601f5cd2dc00fdbc13d4df4a8c7','0xa7d7079b0fead91f3e65f86e8915cb59c1a4c664','0xc7198437980c041c805a1edcba50c1ce5db95118',
+                '0xb31f66aa3c1e785363f0875a1b74e27b85fd66c7','0xd586e7f844cea2f87f50152665bcbc2c279d8d70', '0x49d5c2bdffac6ce2bfdb6640f4f80f226bc10bab')    AND  tp.price IS NOT NULL
              THEN (all_tx.taker_token_amount_raw / pow(10, tp.decimals)) * tp.price
              ELSE COALESCE((all_tx.maker_token_amount_raw / pow(10, mp.decimals)) * mp.price, (all_tx.taker_token_amount_raw / pow(10, tp.decimals)) * tp.price)
              END AS volume_usd, 
@@ -327,7 +329,8 @@ INNER JOIN {{ source('avalanche_c', 'transactions')}} tx
 LEFT JOIN {{ source('prices', 'usd') }} tp 
     ON date_trunc('minute', all_tx.block_time) = tp.minute
     AND CASE
-            WHEN all_tx.taker_token = '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee' THEN '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'
+            WHEN all_tx.taker_token = '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee' THEN '0xb31f66aa3c1e785363f0875a1b74e27b85fd66c7'
+            WHEN all_tx.taker_token = '0xa7d7079b0fead91f3e65f86e8915cb59c1a4c664' THEN '0xb97ef9ef8734c71904d8002f8b6bc66dd9c48a6e'
             ELSE all_tx.taker_token
         END = tp.contract_address
     AND tp.blockchain = 'avalanche_c'
@@ -341,7 +344,8 @@ LEFT JOIN {{ source('prices', 'usd') }} tp
 LEFT JOIN {{ source('prices', 'usd') }} mp 
     ON DATE_TRUNC('minute', all_tx.block_time) = mp.minute
     AND CASE
-            WHEN all_tx.maker_token = '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee' THEN '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'
+            WHEN all_tx.maker_token = '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee' THEN '0xb31f66aa3c1e785363f0875a1b74e27b85fd66c7'
+            WHEN all_tx.maker_token = '0xa7d7079b0fead91f3e65f86e8915cb59c1a4c664' THEN '0xb97ef9ef8734c71904d8002f8b6bc66dd9c48a6e'
             ELSE all_tx.maker_token
         END = mp.contract_address
     AND mp.blockchain = 'avalanche_c'
