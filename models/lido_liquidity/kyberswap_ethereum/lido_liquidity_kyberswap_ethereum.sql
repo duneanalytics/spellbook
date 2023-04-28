@@ -19,7 +19,7 @@ select explode(sequence(to_date('{{ project_start_date }}'), now(), interval 1 h
 )
  
 , pools as (
-select pool as address, 'Ethereum' as chain, 'Kyberswap' as project, swapFeeUnits/1000 as fee
+select pool as address, 'Ethereum' as blockchain, 'Kyberswap' as project, swapFeeUnits/1000 as fee
 from {{ source('kyber_ethereum', 'Elastic_Factory_evt_PoolCreated') }}
 where token0 = lower('0x7f39C581F595B53c5cb19bD0b3f8dA6c935E2Ca0') or token1 = lower('0x7f39C581F595B53c5cb19bD0b3f8dA6c935E2Ca0')
 )
@@ -251,5 +251,5 @@ left join tokens_prices_daily p1 on l.time = p1.time and l.token1 = p1.token
 left join trading_volume tv on l.time = tv.time and l.pool = tv.pool
 ) 
 
-select CONCAT(CONCAT(CONCAT(CONCAT(CONCAT(chain,CONCAT(' ', project)) ,' '), paired_token_symbol),':') , main_token_symbol, ' ', fee) as pool_name,* 
+select CONCAT(CONCAT(CONCAT(CONCAT(CONCAT(blockchain,CONCAT(' ', project)) ,' '), paired_token_symbol),':') , main_token_symbol, ' ', fee) as pool_name,* 
 from all_metrics
