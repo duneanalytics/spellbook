@@ -1,21 +1,18 @@
 {{ config(
-        alias ='trades',
-        post_hook='{{ expose_spells(\'["avalanche_c","bnb"]\',
-                                "project",
-                                "trader_joe",
-                                \'["jeff-dude","mtitus6","Henrystats","hsrvc"]\') }}'
+        alias ='trades'
         )
 }}
 
-{% set trader_joe_models = [
-    ref('trader_joe_avalanche_c_trades')
-,   ref('trader_joe_bnb_trades')
+
+{% set thena_models = [
+    ref('thena_fusion_bnb_trades')
+,   ref('thena_v1_bnb_trades')
 ] %}
 
 
 SELECT *
 FROM (
-    {% for dex_model in trader_joe_models %}
+    {% for dex_model in thena_models %}
     SELECT
         blockchain,
         project,
