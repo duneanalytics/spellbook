@@ -166,6 +166,13 @@ FROM (values
     ,('0x8801b45390095f7632C02392C4489985e0607E82', 'Overnight', 'BPT-USD+: Beethoven X')
     ,('0xB66D278b843dBE76ee73Da61182fF97100f97920', 'Overnight', 'USD+/DOLA: Velodrome')
     ,('0x41a7540ec8cb3afafe16a834abe0863f22016ec0', 'Overnight', 'USD+/LUSD: Velodrome')
+
+    ,('0x493b094a60f3e71e5f78eff6b17b4575c36513d0', 'Lido', 'wstETH/OP: Velodrome') --Pool: 0x3905870e647c97cb9c8d99db24384f480531b5b9
+    ,('0x28de5e6d26218a38f890c3767701d461d0fc7b48', 'Lido', 'wstETH/WETH: Velodrome') --Pool: 0xc6c1e8399c1c33a3f1959f2f77349d74a373345c
+    ,('0x45e759ddc06534b9d0950afe9b2e762afdd299b9', 'Lido', 'wstETH/USDC: Velodrome') --Pool: 0x794299137282e5d3af56616624ab918d1b2becf3
+
+    ,('0xd53ccbfed6577d8dc82987e766e75e3cb73a8563', 'Lido', 'wstETHCRV: Curve') --Pool: 0xEfDE221f306152971D8e9f181bFe998447975810
+
     ,('0x97a7E9726df22D6f28BB86679a0e5512A8c0E8A2', 'dHedge', 'Distributor')
     ,('0xC792980F2F3016F60bEd35926d21A43E140b99cC', 'dHedge', 'DHT/OP: Velodrome')
     ,('0xfCC293db3b7396a1c2477C9F24F5F948431EF6eC', 'Pika Protocol', 'Distributor')
