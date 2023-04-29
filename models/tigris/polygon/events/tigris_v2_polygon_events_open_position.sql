@@ -15,7 +15,7 @@ pairs as (
         SELECT 
             * 
         FROM 
-        {{ ref('tigris_polygon_events_asset_added') }}
+        {{ ref('tigris_v2_polygon_events_asset_added') }}
 ), 
 
 open_positions_v1 as (

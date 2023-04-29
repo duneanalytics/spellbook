@@ -110,6 +110,8 @@ sources:
         loaded_at_field: evt_block_time
       - name: TradingV8_evt_LimitOrderExecuted
         loaded_at_field: evt_block_time
+      - name: limit_order_trading_evt
+        loaded_at_field: evt_block_time
 
   - name: tigristrade_v2_polygon
     description: "tigris trade polygon decoded events & calls on v2"
@@ -147,4 +149,6 @@ sources:
       - name: TradingV2_evt_PositionOpened
         loaded_at_field: evt_block_time
       - name: limit_order_trading_evt
+        loaded_at_field: evt_block_time
+      - name: PairsContract_evt_AssetAdded
         loaded_at_field: evt_block_time
