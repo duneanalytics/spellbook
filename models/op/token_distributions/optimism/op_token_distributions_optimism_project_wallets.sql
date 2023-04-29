@@ -149,6 +149,7 @@ FROM (values
     ,('0x226805c401b879564fbd7eed8fd3b16952096a5d','Synthetix','USDC/SNX: Velodrome')
     ,('0x811ea6e0356d19d721d41189e21876eb51d64f70','Synthetix','ETH/sETH: Velodrome')
     ,('0x9fb1350539777d75702a2ddde4f20601579a0fac','Synthetix','USDC/sUSD: Velodrome')
+
     ,('0x1A3E5557039763425B00a2e1B0eB767B01d64756','Beefy Finance','Beefy Launchpool')
     ,('0x65F8a09A1C3581a02C8788a6959652E32a87FC77','Beefy Finance','Beefy Launchpool')
     ,('0xf099FA1Bd92f8AAF4886e8927D7bd3c15bA0BbFd','xToken Terminal / Gamma Strategies','Rewarder')
@@ -178,6 +179,7 @@ FROM (values
     ,('0xfCC293db3b7396a1c2477C9F24F5F948431EF6eC', 'Pika Protocol', 'Distributor')
     ,('0x8b50d942bb4effe0db32393a141ea083db0c4e7f', 'Alchemix', 'alETH/WETH: Velodrome')
     ,('0x4ea2e39626de031a011c3ca7360878202454ce75', 'Angle', 'OP/agEUR: Velodrome')
+    ,('0x3ef3d8ba38ebe18db133cec108f4d14ce00dd9ae', 'Angle', 'USDC/agEUR: Velodrome')
     ,('0x6333000289bc27a090b3d51e734c2f13e3edc4fd', 'Hundred Finance', 'Token Treasury')
     ,('0x86c90fc464A668469A93Ca08D8B9872bdB16b356', 'Mux', 'TradingRebateDistributor')
     ,('0xBd1ba78A3976cAB420A9203E6ef14D18C2B2E031', 'Exactly', 'Distributor Multisig')
