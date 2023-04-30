@@ -1,0 +1,15 @@
+version: 2 # Spells all have “version: 2” as that’s the version of our engine they use.
+
+sources:
+
+  - name: frax_finance_bnb
+
+    description: "bnb chain events related to bribe payment and reward collection of Frax finance for its pools on decentralized exchanges"  # right arrow > allows us to make a multi-line description
+
+    tables:
+
+      - name: thena_fi_bnb.Pair_call_tokens
+
+      - name: thena_fi_bnb.Pair_call_getReserves
+
+      - name: bnb.logs
