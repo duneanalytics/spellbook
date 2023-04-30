@@ -239,6 +239,12 @@ FROM (
 
                 SELECT address, 'Deployed' AS label, proposal_name, address_descriptor, 3 as rnk
                 FROM distributor_wallets
+
+		UNION ALL
+		--retropgf payouts
+		SELECT submitter_address AS address, 'RetroPGF' AS label, recipient_name AS proposal_name, 'RetroPGF - ' || round_name AS address_descriptor, 4 as rnk
+		FROM {{ref('op_retropgf_optimism_recipients')}}
+
                 ) do_choice_rank
         ) fin
 LEFT JOIN {{ ref('op_token_distributions_optimism_project_name_mapping') }} pnm 
