@@ -12,7 +12,7 @@
 
 SELECT
 
-LOWER(creator_address) AS creator_address, creator_name
+LOWER(creator_address) AS creator_address, cast(creator_name as varchar(250)) AS creator_name
 
 FROM (values
     ('0xbb6e024b9cffacb947a71991e386681b1cd1477d',	'singleton factory')
@@ -25,5 +25,7 @@ FROM (values
   ,('0x0000000000ffe8b47b3e2130213b802212439497',	'IMMUTABLE_CREATE2_FACTORY_ADDRESS')
   ,('0x4200000000000000000000000000000000000012',	'L2StandardTokenFactory')
   ,('0xeedA95f4513f950957Ae84E4da221ee260Fa2f40',	'Deterministic Factory')
+  ,('0x4e59b44847b379578588920cA78FbF26c0B4956C', 'CREATE2 Factory')
+  ,('0xE21f6b2A09bB27149E1afec31D05675bcf581FEd', 'CREATE3Factory')
 
 ) a (creator_address, creator_name)

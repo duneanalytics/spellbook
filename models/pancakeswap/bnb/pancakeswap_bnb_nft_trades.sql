@@ -1,7 +1,7 @@
  {{
   config(
-        alias='trades',
-        post_hook='{{ expose_spells(\'["ethereum"]\',
+        alias='nft_trades',
+        post_hook='{{ expose_spells(\'["bnb"]\',
                                     "project",
                                     "pancakeswap",
                                     \'["thb0301"]\') }}'

@@ -1,0 +1,37 @@
+version: 2
+
+models:
+  - name: op_chains_optimism_chain_list
+    meta:
+      blockchain: optimism
+      project: op_chains
+      contributors: msilb7
+
+    config:
+      tags: ['optimism', 'chains', 'superchain','op stack','op chains','op']
+    description: "Metadata about OP chains - Chains which build on the OP Stack and contirbute back to Optimism."
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+              - blockchain
+              - chain_id
+
+    columns:
+      - &blockchain
+        name: blockchain
+        description: "Blockchain name as it appears in Dune schema. This should match exactly with Dune's table schema (i.e. optimism)"
+      - &blockchain_name
+        name: blockchain_name
+        description: "User-Friendly Blockchain name, as it should appear in dashboards, visuals, etc (i.e. Optimism Mainnet)"
+      - &chain_id
+        name: chain_id
+        description: "Chain ID per EIP-155. See chainlist.org for a list."
+      - &launch_date
+        name: launch_date
+        description: "Launch Date of the chain"
+      - &is_superchain
+        name: is_superchain
+        description: "Binary flag if the chain is known to be Superchain aligned (does not exist yet - to be launched)."
+        tests:
+          - accepted_values:
+              values: [0,1]

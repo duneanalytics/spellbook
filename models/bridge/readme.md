@@ -6,7 +6,7 @@ Bridges are used by users who want to send information (often transferring asset
         - Deposits: Assets are sent and locked in the L1 bridge contract, then minted to the user on L2.
         - Withdrawals: Assets are burned on the L2 bridge, then the user claims on L1.
 - **Bridge Protocols:** Protocols that facilitate liquidity pools on multiple chains to handle transfers. ex: Hop, Stargate, Wormhole, etc
-        - Transfers: Assets are deposited in Chain A's liquidty pool. A stbaleswap and burn may occur (i.e. ETH/hETH). Assets are transferred to the user on Chain B.
+        - Transfers: Assets are deposited in Chain A's liquidity pool. A stableswap and burn may occur (i.e. ETH/hETH). Assets are transferred to the user on Chain B.
         - Rebalancing: These bridge protocols may rebalance assets between chains in order to handle for user's deposits and withdrawals.
 - **CEX / Fiat On/Off-Ramps:** Centralized entities that hold funds on either end of a bridge and facilitate user's directly depositing and withdrawing. ex: Coinbase, Binance, Ramp. (Debatable if we should include these as bridges, so for now we'll plan to do a separate On-Ramp transfers table).
 

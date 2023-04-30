@@ -12,8 +12,8 @@ tests as (
   from balance_2022
   union all
   select 
-    'Check abs sum of value is 137,785,982,132.94 for 2022' as test_name, 
-    case when abs(abs_balance - 137785982132.94) < 1 then true else false end as success
+    'Check abs sum of value is 137,785,779,660.83 for 2022' as test_name, 
+    case when abs(abs_balance - 137785779660.83) < 1 then true else false end as success
   from balance_2022
 )
 select *

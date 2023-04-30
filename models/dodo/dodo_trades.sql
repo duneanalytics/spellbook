@@ -1,6 +1,6 @@
 {{ config(
         alias ='trades',
-        post_hook='{{ expose_spells(\'["ethereum","bnb","polygon","arbitrum"]\',
+        post_hook='{{ expose_spells(\'["ethereum","bnb","polygon","arbitrum","optimism"]\',
                                 "project",
                                 "dodo",
                                 \'["scoffie", "owen05"]\') }}'
@@ -12,6 +12,7 @@ ref('dodo_ethereum_trades')
 , ref('dodo_bnb_trades')
 , ref('dodo_polygon_trades')
 , ref('dodo_arbitrum_trades')
+, ref('dodo_optimism_trades')
 ] %}
 
 

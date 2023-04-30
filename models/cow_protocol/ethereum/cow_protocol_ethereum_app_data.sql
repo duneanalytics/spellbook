@@ -1,5 +1,5 @@
 {{ config(alias='app_data',
-        post_hook='{{ expose_spells_hide_trino(\'["ethereum"]\',
+        post_hook='{{ expose_spells(\'["ethereum"]\',
                                     "project",
                                     "cow_protocol",
                                     \'["bh2smith"]\') }}'
@@ -37,7 +37,7 @@ results as (
         environment,
         order_class,
         referrer,
-        cast(quote.slippageBips as numeric) slippage_bips
+        cast(quote.slippageBips as integer) slippage_bips
         -- There is only one App Data using buyAmount/sellAmount fields.
         -- cast(quote.sellAmount as double) sell_amount,
         -- cast(quote.buyAmount as double) buy_amount

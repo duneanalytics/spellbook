@@ -65,6 +65,7 @@ known_solver_metadata (address, environment, name) as (
                  ('0xF5181183D43796120a004130d0CaeE5B2DF2D441', 'prod', 'DMA'),
                  ('0xbff9a1b539516f9e20c7b621163e676949959a66', 'prod', 'Raven'),
                  ('0x55A37A2E5e5973510Ac9D9C723aeC213fA161919', 'prod', 'Barter'),
+                 ('0x69f9365405762405cc17f7979aa8e94fd95c1e80', 'barn', 'Barter'),
                  ('0xFFC5E9d86c0e069f8B037c841ACc72cF94eeBaD8', 'barn', 'Barter'),
                  ('0x1857afb4da9bd4cc1c6e5287ad41cb5be469f14e', 'barn', 'Raven'),
                  ('0x5B2F5e5C94a5De698e2DeC7f30E90069eb3b12bb', 'barn', 'DMA'),
@@ -104,9 +105,9 @@ known_solver_metadata (address, environment, name) as (
          ) as _
 )
 -- Combining the metadata with current activation status for final table
-select solver as address,
+select CAST(solver AS VARCHAR(42)) as address,
       case when environment is not null then environment else 'new' end as environment,
       case when name is not null then name else 'Uncatalogued' end      as name,
       active
 from registered_solvers
-    left outer join known_solver_metadata on solver = lower(address);
+    left outer join known_solver_metadata on CAST(solver AS VARCHAR(42)) = lower(address);

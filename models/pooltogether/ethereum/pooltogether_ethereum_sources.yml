@@ -1,0 +1,64 @@
+version: 2
+
+sources: 
+  - name: pooltogether_v4_ethereum
+    description: "Ethereum decoded tables related to Pooltogether v4 contract"
+    freshness: # default freshness
+      warn_after: { count: 12, period: hour }
+      error_after: { count: 24, period: hour }
+    tables:
+      - name: PrizeTierHistoryV2_call_getPrizeTier
+        loaded_at_field: call_block_time
+        description: "Decoded function table that contains the prize structure for each drawId after DPR upgrade"
+        columns:
+          - &call_block_number
+            name: call_block_number
+            description: "Block number which processed the unique transaction hash"
+          - &call_block_time
+            name: call_block_time
+            description: "Timestamp for block event time in UTC"
+          - &call_success
+            name: call_success
+            description: "Boolean indicating if call was successfully processed"
+          - &call_trace_address
+            name: call_trace_address
+            description: ""
+          - &call_tx_hash
+            name: call_tx_hash
+            description: "Primary key of the transaction"
+            tests:
+              - not_null
+          - &contract_address
+            name: contract_address
+            description: "Ethereum address for the contract"
+          - &drawId
+            name: drawId
+            description: "Identifier of the drawID for which the prize structure is being pushed"
+          - &output_0
+            name: output_0
+            description: "Parameters that determine the prize structure (bitRangeSize, drawId, maxPickPerUser, expiryDuration, endTimestampOffset, dpr, prize, tiers)"
+      - name: PrizeDistributionBuffer_evt_PrizeDistributionSet
+        freshness:
+          warn_after: { count: 12, period: hour }
+        loaded_at_field: evt_block_time
+        description: "Decoded event table that contains the prize structure for each drawId (does not include dpr data)"
+        columns:
+          - *contract_address
+          - *drawId
+          - &evt_block_number
+            name: evt_block_number
+            description: "Block number which processed the unique transaction hash"
+          - &evt_block_time
+            name: evt_block_time
+            description: "Timestamp for block event time in UTC"
+          - &evt_index
+            name: evt_index
+            description: "Index value of the transaction"
+          - &evt_tx_hash
+            name: evt_tx_hash
+            description: "Primary key of the transaction"
+            tests:
+              - not_null
+          - &prizeDistrubution
+            name: prizeDistrubution
+            description: "Parameters that determine the prize structure (bitRangeSize, matchCardinality, startTimestampOffset, endTimestampOffset, maxPickPerUser, expiryDuration, numberOfPicks, tiers, prize)"

@@ -29,7 +29,7 @@ models:
         description: "Date/time of safe creation"
       - &tx_hash
         name: tx_hash
-  
+
   - name: safe_ethereum_eth_transfers
     meta:
       blockchain: ethereum
@@ -42,7 +42,7 @@ models:
       tags: ['safe', 'transfers', 'ethereum']
     description: "Eth transfers for safes"
     columns:
-      - *address        
+      - *address
       - *block_date
       - &block_time
         name: block_time
@@ -53,3 +53,99 @@ models:
       - *tx_hash
       - &trace_address
         name: trace_address
+
+  - name: safe_ethereum_singletons
+    meta:
+      blockchain: ethereum
+      project: safe
+      contributors: tschubotz
+    freshness:
+      warn_after: { count: 12, period: hour }
+      error_after: { count: 24, period: hour }
+    config:
+      tags: ['safe', 'singletons', 'ethereum']
+    description: "Singletons addresses used with Safes"
+    columns:
+      - name: address
+        description: "Safe contract address"
+        tests:
+          - unique
+          - not_null
+
+  - name: safe_ethereum_transactions
+    meta:
+      blockchain: ethereum
+      project: safe
+      contributors: tschubotz
+    freshness:
+      warn_after: { count: 12, period: hour }
+      error_after: { count: 24, period: hour }
+    config:
+      tags: ['safe', 'ethereum']
+    description: "Safe transactions"
+    columns:
+      - *blockchain
+      - *block_date
+      - *block_time
+      - &block_number
+        name: block_number
+        description: "Number of block"
+      - *tx_hash
+      - name: address
+        description: "Safe contract address"
+      - &to
+        name: to
+        description: "Destination address"
+      - &value
+        name: value
+        description: "Value of transaction"
+      - &gas
+        name: gas 
+        description: "Gas limit set for transaction"
+      - &gas_used
+        name: gas_used
+        description: "Gas used during transaction"
+      - &tx_index
+        name: tx_index
+        description: "Transaction index"
+      - &sub_traces
+        name: sub_traces
+        description: "Number of sub traces"
+      - *trace_address
+      - &success
+        name: success
+        description: "Success state of transaction"
+      - &error
+        name: error
+        description: "Error of transaction if any"
+      - &code
+        name: code
+        description: "Code"
+      - &input
+        name: input
+        description: "Input data"
+      - &output
+        name: output
+        description: "Output data"
+
+  - name: safe_ethereum_signer_thresholds
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - address
+    meta:
+      blockchain: ethereum
+      project: safe
+      contributors: gentrexha
+    freshness:
+      warn_after: { count: 12, period: hour }
+      error_after: { count: 24, period: hour }
+    config:
+      tags: ['safe', 'ethereum']
+    description: "Safe signer thresholds"
+    columns:
+      - *blockchain
+      - *address
+      - &threshold
+        name: threshold
+        description: "Number of signer threshold"

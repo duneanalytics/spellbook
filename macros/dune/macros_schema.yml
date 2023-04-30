@@ -45,3 +45,7 @@ macros:
       Overrides the core is_incremental marco to allow the usage of a force-incremental command line variable.
       This enables us to easily get the compiled incremental models. 
       Example usage: dbt compile --vars '{force-incremental: True}'
+
+  - name: mark_as_spell
+    description: >
+      Catch all macro to mark all models as spells even if they are not exposed in the data explorer

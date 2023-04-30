@@ -5,13 +5,10 @@ on:
   workflow_dispatch:
   pull_request:
     paths-ignore:
-      - 'deprecated-dune-v1-abstractions/**'
       - 'scripts/**'
       - 'Pipfile'
       - '.gitignore'
-  push:
-    branches:
-      - 'main'
+      - '.github/**'
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -39,6 +36,10 @@ jobs:
         run: "dbt deps"
       - name: dbt compile
         run: "dbt compile"
+      - name: check schemas
+        run: |
+          test=$(dbt --quiet --no-print ls --select config.schema:no_schema --output path)
+          [[ -z "$test" ]] && { echo "Success: All models have a custom schema"; exit 0; } || { echo "Found models without custom schema:"; echo "$test"; exit 1; }
       - uses: pre-commit/action@v3.0.0
         # Apologies for the hideously long line. Tried to get the Action to respect a multiline if but no dice.
         if: ${{ contains(steps.abc.outputs.added_modified, 'models') || contains(steps.abc.outputs.added_modified, 'test') || contains(steps.abc.outputs.added_modified, 'seeds') || contains(steps.abc.outputs.added_modified, 'macros')}}

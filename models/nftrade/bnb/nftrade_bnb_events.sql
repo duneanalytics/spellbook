@@ -28,10 +28,7 @@ source_inventory as (
         makerAssetAmount as maker_asset_amount_raw,
         makerAssetAmount/POW(10, 18) as maker_asset_amount,
         CONCAT('0x', SUBSTRING(makerAssetData, 35, 40)) as maker_asset_address,
-        coalesce(
-            CAST(bytea2numeric_v2(SUBSTRING(makerAssetData, 77, 64)) as decimal(38))
-            ,bytea2numeric_v2(SUBSTRING(makerAssetData, 77, 64)))
-            as maker_id,
+        CAST(bytea2numeric_v3(SUBSTRING(makerAssetData, 77, 64)) as decimal(38)) as maker_id,
         marketplaceIdentifier as marketplace_identifier,
         protocolFeePaid * 1 as protocol_fees_raw,
         protocolFeePaid/POW(10, 18) as protocol_fees,
@@ -43,10 +40,7 @@ source_inventory as (
         takerAssetAmount as taker_asset_amount_raw,
         takerAssetAmount/POW(10, 18) as taker_asset_amount,
         CONCAT('0x', SUBSTRING(takerAssetData, 35, 40)) as taker_asset_address,
-        coalesce(
-            CAST(bytea2numeric_v2(SUBSTRING(takerAssetData, 77, 64)) as decimal(38))
-             ,bytea2numeric_v2(SUBSTRING(takerAssetData, 77, 64)))
-             as taker_id
+        CAST(bytea2numeric_v3(SUBSTRING(takerAssetData, 77, 64)) as decimal(38)) as taker_id
     FROM
     {{ source('nftrade_bnb', 'NiftyProtocol_evt_Fill') }}
     WHERE evt_block_time >= '{{project_start_date}}'
@@ -171,7 +165,7 @@ source_inventory_enriched as (
     {{ ref('nft_bnb_aggregators') }} agg
         ON agg.contract_address = src.sender_address
     LEFT JOIN
-    {{ source('erc721_ethereum','evt_transfer') }} erc721
+    {{ source('erc721_bnb','evt_transfer') }} erc721
         ON erc721.evt_block_time = src.evt_block_time
         AND erc721.evt_tx_hash = src.evt_tx_hash
         AND erc721.contract_address = src.nft_contract_address

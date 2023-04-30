@@ -174,7 +174,7 @@ WITH raw_token_list AS (
     ,('0xeeeeeb57642040be42185f49c52f7e9b38f8eeee', 'ELK', 18, 'underlying')
     ,('0x56613f4b8f6f3aab660dae2f80649f9f8ef381b2', 'CLC', 0, 'underlying')
     ,('0x2daba57dd495212475b438dc41c7da82ecebf155', 'CLC', 18, 'underlying')
-    ,('0x0be27c140f9bdad3474beaff0a413ec7e19e9b93', 'MNYe', 18, 'underlying')
+    ,('0x0be27c140f9bdad3474beaff0a413ec7e19e9b93', 'MNYe', 18, 'receipt')
     ,('0x67c10c397dd0ba417329543c1a40eb48aaa7cd00', 'nUSD', 18, 'underlying')
     ,('0x4ac8bd1bdae47beef2d1c6aa62229509b962aa0d', 'ETHx', 18, 'receipt')
     ,('0x83ed2ee1e2744d27ffd949314f4098f13535292f', 'LOOC', 0, 'underlying')
@@ -191,8 +191,8 @@ WITH raw_token_list AS (
     ,('0x81ab7e0d570b01411fcc4afd3d50ec8c241cb74b', 'EQZ', 18, 'underlying')
     ,('0x117cfd9060525452db4a34d51c0b3b7599087f05', 'GYSR', 18, 'underlying')
     ,('0xfeaa9194f9f8c1b65429e31341a103071464907e', 'LRC', 18, 'underlying')
-    ,('0xf390830DF829cf22c53c8840554B98eafC5dCBc2', 'anyUSDC', 6, 'underlying')
-    ,('0x965f84d915a9efa2dd81b653e3ae736555d945f4', 'anyWETH', 18, 'underlying')
+    ,('0xf390830DF829cf22c53c8840554B98eafC5dCBc2', 'anyUSDC', 6, 'receipt')
+    ,('0x965f84d915a9efa2dd81b653e3ae736555d945f4', 'anyWETH', 18, 'receipt')
     ,('0x1ccca1ce62c62f7be95d4a67722a8fdbed6eecb4', 'Multichain alETH', 18, 'underlying')
     ,('0x922D641a426DcFFaeF11680e5358F34d97d112E1', 'anyFXS', 18, 'underlying')
     ,('0xa3A538EA5D5838dC32dde15946ccD74bDd5652fF', 'sINR', 18, 'underlying')
@@ -232,6 +232,7 @@ WITH raw_token_list AS (
     ,('0xd52f94df742a6f4b4c8b033369fe13a41782bf44', 'L2DAO', 18, 'underlying')
     ,('0x85f6583762bc76d775eab9a7456db344f12409f7', 'renBTC', 8, 'underlying')
     ,('0xde48b1b5853cc63b1d05e507414d3e02831722f8', 'stkLYRA', 18, 'receipt')
+    ,('0x0f5d45a7023612e9e244fe84fac5fcf3740d1492', 'stkLYRA', 18, 'receipt')
     ,('0x9e5aac1ba1a2e6aed6b32689dfcf62a509ca96f3', 'DF', 18, 'underlying')
     ,('0x9485aca5bbbe1667ad97c7fe7c4531a624c8b1ed', 'agEUR', 18, 'underlying')
     ,('0xAe31207aC34423C41576Ff59BFB4E036150f9cF7', 'SDL', 18, 'underlying')
@@ -282,9 +283,46 @@ WITH raw_token_list AS (
     ,('0x191c10aa4af7c30e871e70c95db0e4eb77237530', 'aOptLINK', 18, 'receipt')
     ,('0x6d80113e533a2c0fe82eabd35f1875dcea89ea97', 'aOptSUSD', 18, 'receipt')
     ,('0x078f358208685046a11c85e8ad32895ded33a249', 'aOptWBTC', 8, 'receipt')
+    ,('0x513c7E3a9c69cA3e22550eF58AC1C0088e918FFf', 'aOptOP', 18, 'receipt')
     ,('0x74ccbe53F77b08632ce0CB91D3A545bF6B8E0979', 'fBOMB', 18, 'underlying')
+    ,('0x9C9e5fD8bbc25984B178FdCE6117Defa39d2db39', 'BUSD', 18, 'underlying')
+    ,('0xb12a1be740b99d845af98098965af761be6bd7fe', 'CUSDCLP', 18, 'receipt')
+    ,('0x3c12765d3cfac132de161bc6083c886b2cd94934', 'CWETHLP', 18, 'receipt') 
+    ,('0x6806411765Af15Bddd26f8f544A34cC40cb9838B', 'frxETH', 18, 'underlying')
+    ,('0x484c2D6e3cDd945a8B2DF735e079178C1036578c', 'sfrxETH', 18, 'receipt')
+    ,('0x340fE1D898ECCAad394e2ba0fC1F93d27c7b717A', 'wUSDR', 9, 'underlying')
+    ,('0x5d47baba0d66083c52009271faf3f50dcc01023c', 'UNIDX', 18, 'underlying')
+    ,('0x46f21fda29f1339e0ab543763ff683d399e393ec', 'opxveVELO', 18, 'receipt')
+    ,('0x79af5dd14e855823fa3e9ecacdf001d99647d043', 'jEUR', 18, 'underlying')
+    ,('0x8B21e9b7dAF2c4325bf3D18c1BeB79A347fE902A', 'COLLAB', 18, 'underlying')
+    ,('0xc96f4f893286137ac17e07ae7f217ffca5db3ab6', 'NFTE', 18, 'underlying')
+    ,('0xd652776dE7Ad802be5EC7beBfafdA37600222B48', 'SLM', 18, 'underlying')
+    ,('0x840b25c87B626a259CA5AC32124fA752F0230a72', 'LZ-agEUR', 18, 'receipt')
+    ,('0xedcfaf390906a8f91fb35b7bac23f3111dbaee1c', 'bb-rf-soUSDC', 18, 'receipt')
+    ,('0xaddb6a0412de1ba0f936dcaeb8aaa24578dcf3b2', 'cbETH', 18, 'underlying')
+    ,('0xd20f6f1d8a675cdca155cb07b5dc9042c467153f', 'bOATH', 18, 'receipt')
+    ,('0xc5b001DC33727F8F26880B184090D3E252470D45', 'ERN', 18, 'underlying')
+    ,('0xdecc0c09c3b5f6e92ef4184125d5648a66e35298', 'S*USDC', 18, 'receipt')
+    ,('0xd22363e3762cA7339569F3d33EADe20127D5F98C', 'S*SGETH', 18, 'receipt')
+    ,('0xdd69db25f6d620a7bad3023c5d32761d353d3de9', 'GETH', 18, 'na')
+    ,('0x1337bedc9d22ecbe766df105c9623922a27963ec', '3CRV', 18, 'receipt')
+    ,('0xfdeffc7ad816bf7867c642df7ebc2cc5554ec265', 'beVELO', 18, 'receipt')
+    ,('0x86b3f23b6e90f5bbfac59b5b2661134ef8ffd255', 'anyUSDT', 6, 'receipt')
+    ,('0x47536f17f4ff30e64a96a7555826b8f9e66ec468', 'MMY', 18, 'underlying')
+    ,('0x0d8393cea30df4fafa7f00f333a62dee451935c1', 'esMMY', 18, 'receipt')
+    ,('0x7da25bc4cfaed3f29414c6779676e53b19a356f5', 'KOKO', 18, 'underlying')
+    ,('0xfd389dc9533717239856190f42475d3f263a270d', 'GRAIN', 18, 'underlying')
+    ,('0x139283255069ea5deef6170699aaef7139526f1f', 'OptiDoge', 18, 'underlying')
+    ,('0xf8e943f646816e4b51279b8934753821ed832dca', 'CTH', 18, 'underlying')
+    ,('0x970d50d09f3a656b43e11b0d45241a84e3a6e011', 'DAI+', 18,'underlying')
+    ,('0x43da214fab3315aA6c02e0B8f2BfB7Ef2E3C60A5', 'BPT-overnight-II', 18, 'receipt')
+    ,('0x65e66a61d0a8f1e686c2d6083ad611a10d84d97a', 'anyMAI', 18, 'receipt')
+    ,('0xb1c9ac57594e9b1ec0f3787d9f6744ef4cb0a024', 'BPT-USD+', 18, 'receipt')
+    ,('0x7b50775383d3d6f0215a8f290f2c9e2eebbeceb2', 'BPT-WSTETH-WETH', 18, 'receipt')
+    ,('0x739ca6d71365a08f584c8fc4e1029045fa8abc4b', 'anyDOLA', 18, 'receipt')
+    ,('0xdb4ea87ff83eb1c80b8976fc47731da6a31d35e5', 'wTBT', 18, 'underlying')
+    ,('0xd3594E879B358F430E20F82bea61e83562d49D48', 'PSP',  18, 'receipt')
     ) AS temp_table (contract_address, symbol, decimals, token_type)
-
 )
 
 -- Pull tokens deterministically generated by contracts
@@ -294,9 +332,10 @@ SELECT contract_address, symbol, MIN(decimals) AS decimals, token_type, token_ma
 FROM (
 
     SELECT
-    LOWER(l2_token) AS contract_address, symbol AS symbol, decimals as decimals
-    , 'underlying' as token_type, 'l2 token factory' AS token_mapping_source
-    FROM {{ ref('ovm_optimism_l2_token_factory') }}
+    LOWER(l2_token) AS contract_address, l1_symbol AS symbol, l1_decimals as decimals
+    , 'underlying' as token_type, 'l2 bridge mapping' AS token_mapping_source
+    FROM {{ ref('tokens_optimism_erc20_bridged_mapping') }}
+    WHERE l1_symbol IS NOT NULL
 /*
     -- UNION ALL
 

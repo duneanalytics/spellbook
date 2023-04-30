@@ -24,7 +24,7 @@ models:
           - not_null
       - &tx_hash
         name: tx_hash
-        description: ''
+        description: 'Transaction hash'
         tests:
           - not_null
       - &index
@@ -39,12 +39,12 @@ models:
           - not_null
       - &block_time
         name: block_time
-        description: ''
+        description: 'Block time in UTC'
         tests:
           - not_null
       - &block_number
         name: block_number
-        description: ''
+        description: 'Block number'
         tests:
           - not_null
       - &swap_fee_percentage
@@ -77,7 +77,7 @@ models:
       - &median_price
         name: median_price
         description: 'BPT median price'
-  
+
   - name: balancer_v2_optimism_transfers_bpt
     meta:
       blockchain: optimism
@@ -118,7 +118,7 @@ models:
           - not_null
       - &evt_index
         name: evt_index
-        description: 'Transaction index of transfer event'
+        description: 'Event index'
         tests:
           - not_null
       - &evt_block_time
@@ -185,3 +185,153 @@ models:
       - *pool_id
       - *token_address
       - *normalized_weight
+
+  - name: balancer_optimism_trades
+    meta:
+      blockchain: optimism
+      sector: dex
+      contributors: bizzyvinci
+    config:
+      tags: ['balancer', 'optimism', 'amm', 'trades', 'dex']
+    description: >
+      DEX trades on balancer on optimism
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_date
+            - blockchain
+            - project
+            - version
+            - tx_hash
+            - evt_index
+            - trace_address
+      - check_dex_seed:
+          blockchain: optimism
+          project: balancer
+          version: 2
+    columns:
+      - &blockchain
+        name: blockchain
+        description: "Blockchain"
+      - &project
+        name: project
+        description: "Project name (balancer)"
+      - &version
+        name: version
+        description: "Version of the project"
+      - *block_date
+      - *block_time
+      - &token_bought_symbol
+        name: token_bought_symbol
+        description: "Token symbol for token bought in the trade"
+      - &token_sold_symbol
+        name: token_sold_symbol
+        description: "Token symbol for token sold in the trade"
+      - &token_pair
+        name: token_pair
+        description: "Token symbol pair for each token involved in the trade"
+      - &token_bought_amount
+        name: token_bought_amount
+        description: "Value of the token bought at time of execution in the original currency"
+      - &token_sold_amount
+        name: token_sold_amount
+        description: "Value of the token sold at time of execution in the original currency"
+      - &token_bought_amount_raw
+        name: token_bought_amount_raw
+        description: "Raw value of the token bought at time of execution in the original currency"
+      - &token_sold_amount_raw
+        name: token_sold_amount_raw
+        description: "Raw value of the token sold at time of execution in the original currency"
+      - &amount_usd
+        name: amount_usd
+        description: "USD value of the trade at time of execution"
+      - &token_bought_address
+        name: token_bought_address
+        description: "Contract address of the token bought"
+      - &token_sold_address
+        name: token_sold_address
+        description: "Contract address of the token sold"
+      - &taker
+        name: taker
+        description: "Address of trader who purchased a token"
+      - &maker
+        name: maker
+        description: "Address of trader who sold a token"
+      - &project_contract_address
+        name: project_contract_address
+        description: "Pool address"
+      - *tx_hash
+      - &tx_from
+        name: tx_from
+        description: "transaction.from"
+      - &tx_to
+        name: tx_to
+        description: "transaction.to"
+      - &trace_address
+        name: trace_address
+        description: ""
+      - *evt_index
+
+  - name: balancer_v2_optimism_liquidity
+    meta:
+      blockchain: optimism
+      project: balancer_v2
+      contributors: victorstefenon
+    config:
+      tags: ['optimism', 'balancer', 'pools', 'liquidity']
+    description: >
+      Balancer v2 pools liquidity by token in Optimism.
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - day
+            - pool_id
+            - token_address
+    columns:
+      - name: day
+        description: 'UTC event block time truncated to the day mark'
+      - *pool_id
+      - name: pool_symbol
+        description: 'Symbol of the pool, consisting of the symbol of its tokens and their respective weights'
+      - *token_address
+      - name: token_symbol
+        description: 'Symbol of the token'
+      - name: token_balance_raw
+        description: 'Raw balance of the token in the pool'
+      - name: token_balance
+        description: 'Scaled balance of the token in the pool'
+      - name: usd_amount
+        description: 'Liquidity of the token in the pool in USD'
+
+  - name: balancer_optimism_gauge_mappings
+    meta:
+      blockchain: optimism
+      project: balancer
+      contributors: msilb7
+    config:
+      tags: ['optimism', 'balancer', 'gauges', 'incentives']
+    description: >
+      Balancer gauge to pool mappings on Optimism.
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - pool_contract
+            - incentives_contract
+    columns:
+      - *blockchain
+      - *version
+      - &pool_contract
+        name: pool_contract
+        description: "Address of the liquidity pool contract"
+      - *pool_id
+      - &incentives_contract
+        name: incentives_contract
+        description: "Address of the contract where incentives are stored and emitted."
+      - &incentives_type
+        name: incentives_type
+        description: "Description of the incentives address type."
+      - *evt_block_time
+      - *evt_block_number
+      - *contract_address
+      - *evt_tx_hash
+      - *evt_index

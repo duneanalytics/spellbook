@@ -26,10 +26,10 @@ models:
        description: "Hourly deposit interest rate value of the reserve"
      - &stable_borrow_apy
        name: stable_borrow_apy
-       description: "Hourly stable borrow interest rate value of the reserve" 
+       description: "Hourly stable borrow interest rate value of the reserve"
      - &variable_borrow_apy
        name: variable_borrow_apy
-       description: "Hourly variable borrow interest rate value of the reserve" 
+       description: "Hourly variable borrow interest rate value of the reserve"
 
  - name: aave_optimism_interest_rates
    meta:
@@ -40,6 +40,12 @@ models:
    config:
      tags: ['optimism', 'aave_v3', 'interest', 'aave', 'lending']
    description: "Hourly aave interest rates on optimism"
+   tests:
+     - dbt_utils.unique_combination_of_columns:
+         combination_of_columns:
+           - reserve
+           - symbol
+           - hour
    columns:
      - *reserve
      - *symbol
@@ -57,6 +63,14 @@ models:
    config:
      tags: ['ethereum', 'aave_v3', 'supply', 'aave', 'lending']
    description: "All aave v3 transactions involving supply transactions on optimism"
+   tests:
+     - dbt_utils.unique_combination_of_columns:
+         combination_of_columns:
+           - version
+           - token_address
+           - evt_tx_hash
+           - evt_block_number
+           - evt_index
    columns:
      - &version
        name: version
@@ -67,7 +81,7 @@ models:
      - *symbol
      - &token_address
        name: token_address
-       description: "Aave reserve contract address"  
+       description: "Aave reserve contract address"
      - &depositor
        name: depositor
        description: "Depositor wallet address"
@@ -79,16 +93,16 @@ models:
        description: "Liquidator wallet address"
      - &amount
        name: amount
-       description: "Token amount present in the transaction. Note: withdraw amounts may be more than deposited amounts due to interest" 
+       description: "Token amount present in the transaction. Note: withdraw amounts may be more than deposited amounts due to interest"
      - &usd_amount
        name: usd_amount
-       description: "Token amount in USD" 
+       description: "Token amount in USD"
      - &evt_tx_hash
        name: evt_tx_hash
        description: "Transaction hash of the event"
      - &evt_index
        name: evt_index
-       description: "Event index"   
+       description: "Event index"
      - &evt_block_time
        name: evt_block_time
        description: "Timestamp for block event time in UTC"
@@ -105,6 +119,14 @@ models:
    config:
      tags: ['ethereum', 'aave_v3', 'borrow', 'aave', 'lending']
    description: "All aave v3 transactions involving borrow transactions on optimism"
+   tests:
+     - dbt_utils.unique_combination_of_columns:
+         combination_of_columns:
+           - version
+           - token_address
+           - evt_tx_hash
+           - evt_block_number
+           - evt_index
    columns:
      - *version
      - *transaction_type
@@ -122,7 +144,7 @@ models:
      - *evt_tx_hash
      - *evt_index
      - *evt_block_time
-     - *evt_block_number       
+     - *evt_block_number
 
  - name: aave_optimism_supply
    meta:
@@ -146,7 +168,7 @@ models:
      - *evt_tx_hash
      - *evt_index
      - *evt_block_time
-     - *evt_block_number    
+     - *evt_block_number
 
  - name: aave_optimism_borrow
    meta:

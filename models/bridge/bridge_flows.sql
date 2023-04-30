@@ -4,7 +4,7 @@
         post_hook='{{ expose_spells_hide_trino(\'["optimism"]\',
                                 "sector",
                                 "bridge",
-                                \'["msilb7","soispoke]\') }}'
+                                \'["msilb7","soispoke"]\') }}'
         )
 }}
 

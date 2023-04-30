@@ -32,3 +32,9 @@ models:
       - &ilk
         name: ilk
         description: "Ilk that related to the accountring entry, if any"
+      - &dai_value
+        name: dai_value
+        description: "DAI Value of the accounting entry, positive (credit) or negative (debit)"
+      - &eth_value
+        name: eth_value
+        description: "ETH Value of the accounting entry, positive (credit) or negative (debit)"

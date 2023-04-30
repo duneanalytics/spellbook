@@ -1,0 +1,39 @@
+version: 2
+
+models:
+  - name: addresses_events_polygon_first_funded_by
+    meta:
+      blockchain: polygon
+      sector: addresses_events
+      project: addresses
+      contributors: hildobby
+    config:
+      tags: ['table', 'funded', 'addresses_events', 'polygon']
+    description: "Table showing who first funded each Polygon address in MATIC"
+    tests:
+      - check_seed:
+          seed_file: ref('first_funded_by_seed')
+          filter:
+            blockchain: polygon
+          match_columns:
+            - blockchain
+            - address
+          check_columns:
+            - first_funded_by
+            - block_number
+            - tx_hash
+    columns:
+      - name: blockchain
+        description: "Blockchain"
+      - name: address
+        description: "Concerned Polygon address"
+        tests:
+          - unique
+      - name: first_funded_by
+        description: "Which Polygon address first funded the address with MATIC"
+      - name: block_time
+        description: "The block time on which the address was first funded with MATIC"
+      - name: block_number
+        description: "The block number on which the address was first funded with MATIC"
+      - name: tx_hash
+        description: "The transaction hash on which the address was first funded with MATIC"

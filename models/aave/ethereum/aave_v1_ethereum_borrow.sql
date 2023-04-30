@@ -31,14 +31,14 @@ SELECT
     '1' AS version,
     'borrow' AS transaction_type,
     CASE 
-        WHEN _borrowRateMode = '1' THEN 'stable'
-        WHEN _borrowRateMode = '2' THEN 'variable'
+        WHEN CAST(_borrowRateMode AS VARCHAR(100)) = '1' THEN 'stable'
+        WHEN CAST(_borrowRateMode AS VARCHAR(100)) = '2' THEN 'variable'
     END AS loan_type,
     CASE
-        WHEN _reserve = '{{aave_mock_address}}' THEN '{{weth_address}}' --Using WETH instead of Aave "mock" address
-        ELSE _reserve
+        WHEN CAST(_reserve AS VARCHAR(100)) = '{{aave_mock_address}}' THEN '{{weth_address}}' --Using WETH instead of Aave "mock" address
+        ELSE CAST(_reserve AS VARCHAR(100))
     END AS token,
-    _user AS borrower,
+    CAST(_user AS VARCHAR(100)) AS borrower,
     CAST(NULL AS VARCHAR(5)) AS repayer,
     CAST(NULL AS VARCHAR(5)) AS liquidator,
     CAST(_amount AS DECIMAL(38,0)) AS amount,
@@ -53,11 +53,11 @@ SELECT
     'repay' AS transaction_type,
     NULL AS loan_type,
     CASE
-        WHEN _reserve = '{{aave_mock_address}}' THEN '{{weth_address}}' --Using WETH instead of Aave "mock" address
-        ELSE _reserve
+        WHEN CAST(_reserve AS VARCHAR(100)) = '{{aave_mock_address}}' THEN '{{weth_address}}' --Using WETH instead of Aave "mock" address
+        ELSE CAST(_reserve AS VARCHAR(100))
     END AS token,
-    _user AS borrower,
-    _repayer AS repayer,
+    CAST(_user AS VARCHAR(100)) AS borrower,
+    CAST(_repayer AS VARCHAR(100)) AS repayer,
     CAST(NULL AS VARCHAR(5)) AS liquidator,
     - CAST(_amountMinusFees AS DECIMAL(38,0)) AS amount,
     evt_tx_hash,
@@ -71,12 +71,12 @@ SELECT
     'borrow_liquidation' AS transaction_type,
     NULL AS loan_type,
     CASE
-        WHEN _reserve = '{{aave_mock_address}}' THEN '{{weth_address}}' --Using WETH instead of Aave "mock" address
-        ELSE _reserve
+        WHEN CAST(_reserve AS VARCHAR(100)) = '{{aave_mock_address}}' THEN '{{weth_address}}' --Using WETH instead of Aave "mock" address
+        ELSE CAST(_reserve AS VARCHAR(100))
     END AS token,
-    _user AS borrower,
-    _liquidator AS repayer,
-    _liquidator AS liquidator,
+    CAST(_user AS VARCHAR(100)) AS borrower,
+    CAST(_liquidator AS VARCHAR(100)) AS repayer,
+    CAST(_liquidator AS VARCHAR(100)) AS liquidator,
     - CAST(_purchaseAmount AS DECIMAL(38,0)) AS amount,
     evt_tx_hash,
     evt_index,
@@ -88,6 +88,6 @@ LEFT JOIN {{ ref('tokens_ethereum_erc20') }} erc20
     ON borrow.token = erc20.contract_address
 LEFT JOIN {{ source('prices','usd') }} p 
     ON p.minute = date_trunc('minute', borrow.evt_block_time) 
-    AND p.contract_address = borrow.token
+    AND CAST(p.contract_address AS VARCHAR(100)) = borrow.token
     AND p.blockchain = 'ethereum'    
 ;

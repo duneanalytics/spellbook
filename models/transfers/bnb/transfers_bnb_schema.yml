@@ -82,6 +82,8 @@ models:
       contributors: hosuke
     config:
       tags: [ 'transfers', 'bnb', 'bep20', 'rolling_hour', 'hosuke' ]
+    description: >
+      BEP20 Token Transfers on bnb smart chain per hour.
     columns:
       - *blockchain
       - *hour
@@ -107,6 +109,8 @@ models:
       contributors: hosuke
     config:
       tags: [ 'transfers', 'bnb', 'bep20', 'rolling_day', 'hosuke' ]
+    description: >
+      BEP20 Token Transfers on bnb smart chain per day.
     columns:
       - *blockchain
       - *day
@@ -117,3 +121,23 @@ models:
       - *amount
       - *last_updated
       - *recency_index
+
+  - name: transfers_bnb_bep20
+    meta:
+      blockchain: bnb
+      sector: transfers
+      project: bep20
+      contributors: soispoke, dot2dotseurat, tschubotz
+    config:
+      tags: ['transfers', 'bnb', 'bep20']
+    description: "BEP20 Token Transfers on bnb. This table is updated every 30 minutes."
+    columns:
+      - name: unique_transfer_id
+        description: "Unique transfer ID (used for testing for duplicates)"
+      - *blockchain
+      - *wallet_address
+      - *token_address
+      - &evt_block_time
+        name: evt_block_time
+        description: "Timestamp for block event time in UTC"
+      - *amount_raw

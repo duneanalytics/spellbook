@@ -132,3 +132,46 @@ models:
       - &evt_index
         name: evt_index
         description: ""
+      - &pool_type
+        name: pool_type
+        description: "What model the pool follows (i.e. meta pool, stable pool)"
+  
+  - name: curvefi_optimism_gauge_mappings
+    meta:
+      blockchain: optimism
+      sector: dex
+      contributors: msilb7
+    config:
+      tags: ['curve','curvefi', 'amm', 'trades', 'dex', 'incentives', 'optimism']
+    description: >
+      Gauge to Pool mappings for curve on optimism
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+              - pool_contract
+              - incentives_contract
+    columns:
+      - *blockchain
+      - *version
+      - &pool_contract
+        name: pool_contract
+        description: "Address of the liquidity pool contract"
+      - &incentives_contract
+        name: incentives_contract
+        description: "Address of the contract where incentives are stored and emitted."
+      - &incentives_type
+        name: incentives_type
+        description: "Description of the incentives address type."
+      - &evt_block_time
+        name: evt_block_time
+        description: 'Block time in UTC'
+      - &evt_block_number
+        name: evt_block_number
+        description: 'Block Number'
+      - &contract_address
+        name: contract_address
+        description: 'Gauge Creator Contract Address'
+      - &evt_tx_hash
+        name: evt_tx_hash
+        description: 'Tx Hash'
+      - *evt_index

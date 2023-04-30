@@ -35,14 +35,6 @@ select
 	, '1' as version
 	, date_trunc('DAY', s.evt_block_time) as block_date
 	, s.evt_block_time as block_time
-	, CAST(s.toAmount AS DECIMAL(38,0)) as token_bought_amount_raw
-	, CAST(s.fromAmount AS DECIMAL(38,0)) as token_sold_amount_raw
-    , coalesce(
-        (s.toAmount / power(10, prices_b.decimals)) * prices_b.price
-        ,(s.fromAmount / power(10, prices_s.decimals)) * prices_s.price
-    ) as amount_usd	
-	, s.toToken as token_bought_address
-	, s.fromToken as token_sold_address
 	, erc20_b.symbol as token_bought_symbol
 	, erc20_s.symbol as token_sold_symbol
 	, case
@@ -51,6 +43,14 @@ select
     end as token_pair
 	, s.toAmount / power(10, erc20_b.decimals) as token_bought_amount
 	, s.fromAmount / power(10, erc20_s.decimals) as token_sold_amount
+	, CAST(s.toAmount AS DECIMAL(38,0)) as token_bought_amount_raw
+	, CAST(s.fromAmount AS DECIMAL(38,0)) as token_sold_amount_raw
+    , coalesce(
+        (s.toAmount / power(10, prices_b.decimals)) * prices_b.price
+        ,(s.fromAmount / power(10, prices_s.decimals)) * prices_s.price
+    ) as amount_usd	
+	, s.toToken as token_bought_address
+	, s.fromToken as token_sold_address
     , coalesce(s.`to`, tx.from) AS taker
 	, '' as maker
 	, cast(s.contract_address as string) as project_contract_address
