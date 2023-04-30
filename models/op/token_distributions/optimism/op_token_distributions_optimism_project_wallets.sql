@@ -198,6 +198,7 @@ FROM (values
     ,('0xd3a3fbae792c4ed0aa909ec032d3f14c999b2402', 'Arrakis Finance', 'Partner Fund')
     
     ,('0x09992dd7b32f7b35d347de9bdaf1919a57d38e82','Synthetix','SNX Bridge: Hop')
+    ,('0x25fb92e505f752f730cad0bd4fa17ece4a384266','Synthetix','sUSD Bridge: Hop')
     ,('0xf42279467D821bCDf40b50E9A5d2cACCc4Cf5b30','Quests on Coinbase Wallet','Quest 1 - DEX')
     ,('0x9F4F2B8BdA8D2d3832021b3119747470ea86A183','Quests on Coinbase Wallet','Quest 2 - Delegation')
     --governance delegation
