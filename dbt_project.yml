@@ -482,6 +482,10 @@ models:
       +schema: trader_joe
       avalanche_c:
         +schema: trader_joe_avalanche_c
+      bnb:
+        +schema: trader_joe_bnb
+      arbitrum:
+        +schema: trader_joe_arbitrum
 
     odos:
       +schema: odos
@@ -1054,3 +1058,8 @@ models:
       +schema: glacier
       avalanche_c:
         +schema: glacier_avalanche_c
+    
+    thena:
+      +schema: thena
+      bnb:
+        +schema: thena_bnb

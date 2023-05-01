@@ -113,6 +113,7 @@ FROM
     ("bob-bob", "BOB", "0xb0b195aefa3650a6908f15cdac7d92f8a5791b0b", 18),
     ("bomb-fbomb","fBOMB","0x74ccbe53F77b08632ce0CB91D3A545bF6B8E0979",18),
     ("busd-binance-usd","BUSD","0x9c9e5fd8bbc25984b178fdce6117defa39d2db39",18),
-    ("cbeth-coinbase-wrapped-staked-eth","cbETH","0xaddb6a0412de1ba0f936dcaeb8aaa24578dcf3b2",18)
+    ("cbeth-coinbase-wrapped-staked-eth","cbETH","0xaddb6a0412de1ba0f936dcaeb8aaa24578dcf3b2",18),
+    ("grain-granary","GRAIN","0xfD389Dc9533717239856190F42475d3f263a270d",18)
 
 ) as temp (token_id, symbol, contract_address, decimals)
