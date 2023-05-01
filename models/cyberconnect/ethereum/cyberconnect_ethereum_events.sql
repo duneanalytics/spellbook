@@ -34,7 +34,7 @@ cyberconnect_profile_create as
             '0x0000000000000000000000000000000000000000' as seller,
             a.handle,
             a.profileId profile_id,
-            NULL as content_id,
+            cast(NULL as uint256) AS  content_id,            
             metadata content_uri
     from {{source('link3_ethereum', 'ProfileNFT_evt_CreateProfile')}} a
     WHERE 1=1
@@ -126,8 +126,8 @@ cyberconnect_subscribe as (
             b.to seller,
             b.handle,
             a.profile_id,
-            NULL AS  content_id,
-            NULL AS  content_uri
+            cast(NULL as uint256) AS  content_id,            
+            cast(NULL as varchar) AS  content_uri
     from  (select *, explode(profileIds) profile_id from {{source('link3_ethereum', 'ProfileNFT_evt_Subscribe')}}) a
     left join  {{source('link3_ethereum', 'ProfileNFT_evt_CreateProfile')}} b on a.profile_id = b.profileId
     WHERE 1=1
