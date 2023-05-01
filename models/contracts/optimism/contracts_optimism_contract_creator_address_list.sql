@@ -456,6 +456,9 @@ WITH curated_list AS (
       ,('0x594da37b691ed83a994cE934C64844E94B9A1997', 'KyberSwap')
       ,('0xd22044706DeA3c342f68396bEDBCf6a2536d951D', 'Eden Network')
       ,('0x8FcBA7279af1d5d12C77e7062cAf1E09A0623f97', 'Hundred Finance')
+      ,('0x01c28a1b29098175fd5c74f6dd9225b0853325fe', 'Layer Zero')
+      ,('0xb67c0cde9974275836e77fac65bcbb5055d356e9', 'Fire')
+      ,('0x98422d38f6c408d0224b8fa4588b807ca5e66b17', 'Galxe')
 
   ) as temp_table (creator_address, contract_project)
 
