@@ -151,4 +151,4 @@ select * from cyberconnect_essence_collect
 select * from cyberconnect_subscribe
 
 )
-select * from  UNIONED_DATA 
+select distinct * from  UNIONED_DATA 
