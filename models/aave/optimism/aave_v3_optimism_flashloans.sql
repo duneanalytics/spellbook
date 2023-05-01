@@ -9,7 +9,7 @@
 }}
 
 {% set aave_mock_address = '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee' %}
-{% set wmatic_address = '0x0d500b1d8e8ef31e21c99d1db9a6444d3adf1270' %}
+{% set weth_address = '0x4200000000000000000000000000000000000006' %}
 
 
 WITH flashloans AS (
@@ -19,8 +19,8 @@ WITH flashloans AS (
     , flash.evt_tx_hash AS tx_hash
     , flash.evt_index
     , CAST(flash.premium AS double) AS fee
-    , CASE WHEN flash.asset='{{aave_mock_address}}' THEN '{{wmatic_address}}' ELSE flash.asset END AS currency_contract
-    , CASE WHEN flash.asset='{{aave_mock_address}}' THEN 'MATIC' ELSE erc20.symbol END AS currency_symbol
+    , CASE WHEN flash.asset='{{aave_mock_address}}' THEN '{{weth_address}}' ELSE flash.asset END AS currency_contract
+    , CASE WHEN flash.asset='{{aave_mock_address}}' THEN 'ETH' ELSE erc20.symbol END AS currency_symbol
     , CASE WHEN flash.asset='{{aave_mock_address}}' THEN 18 ELSE erc20.decimals END AS currency_decimals
     , flash.target AS recipient
     , flash.contract_address
