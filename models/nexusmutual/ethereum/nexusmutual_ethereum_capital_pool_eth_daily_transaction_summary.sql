@@ -40,7 +40,7 @@ WITH
           '0xcafea8321b5109d22c53ac019d7a449c947701fb',
           '0xfd61352232157815cf7b71045557192bf0ce1884',
           '0x7cbe5682be6b648cc1100c76d4f6c96997f753d6',
-          '0xcafea112Db32436c2390F5EC988f3aDB96870627'
+          lower('0xcafea112Db32436c2390F5EC988f3aDB96870627')
         )
         OR `from` IN (
           '0xcafea7934490ef8b9d2572eaefeb9d48162ea5d8',
@@ -49,7 +49,7 @@ WITH
           '0xcafea8321b5109d22c53ac019d7a449c947701fb',
           '0xfd61352232157815cf7b71045557192bf0ce1884',
           '0x7cbe5682be6b648cc1100c76d4f6c96997f753d6',
-          '0xcafea112Db32436c2390F5EC988f3aDB96870627'
+          lower('0xcafea112Db32436c2390F5EC988f3aDB96870627')
         )
       )
       AND NOT (
@@ -78,7 +78,7 @@ SELECT DISTINCT
         '0xcafea8321b5109d22c53ac019d7a449c947701fb',
         '0xfd61352232157815cf7b71045557192bf0ce1884',
         '0x7cbe5682be6b648cc1100c76d4f6c96997f753d6',
-        '0xcafea112Db32436c2390F5EC988f3aDB96870627'
+        lower('0xcafea112Db32436c2390F5EC988f3aDB96870627')
       ) THEN eth_value * 1E-18
       ELSE 0
     END
@@ -95,7 +95,7 @@ SELECT DISTINCT
         '0xcafea8321b5109d22c53ac019d7a449c947701fb',
         '0xfd61352232157815cf7b71045557192bf0ce1884',
         '0x7cbe5682be6b648cc1100c76d4f6c96997f753d6',
-        '0xcafea112Db32436c2390F5EC988f3aDB96870627'
+        lower('0xcafea112Db32436c2390F5EC988f3aDB96870627')
       ) THEN eth_value * 1E-18
       ELSE 0
     END
