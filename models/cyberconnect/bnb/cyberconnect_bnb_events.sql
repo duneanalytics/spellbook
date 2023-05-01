@@ -34,7 +34,7 @@ cyberconnect_profile_create as
             '0x0000000000000000000000000000000000000000' as seller,
             a.handle,
             a.profileId profile_id,
-            cast(NULL as uint256) AS  content_id,            
+            cast(NULL as varchar) AS  content_id,            
             metadata content_uri
     from {{source('link3_profile_bnb', 'ProfileNFT_evt_CreateProfile')}} a
     WHERE 1=1
@@ -64,7 +64,7 @@ cyberconnect_essence_register as (
             '0x0000000000000000000000000000000000000000' as seller,
             b.handle,
             a.profileId profile_id,
-            a.essenceId content_id,
+            cast(a.essenceId as varchar) content_id,
             a.essenceTokenURI content_uri
     from {{source('link3_profile_bnb', 'ProfileNFT_evt_RegisterEssence')}} a
     left join {{source('link3_profile_bnb', 'ProfileNFT_evt_CreateProfile')}} b on a.profileId = b.profileId
@@ -95,7 +95,7 @@ cyberconnect_essence_collect as (
             c.to seller,
             c.handle,
             a.profileId profile_id,
-            a.essenceId content_id,
+            cast(a.essenceId as varchar) content_id,
             b.essenceTokenURI content_uri
     from {{source('link3_profile_bnb', 'ProfileNFT_evt_CollectEssence')}} a
     left join {{source('link3_profile_bnb', 'ProfileNFT_evt_RegisterEssence')}} b on a.essenceId = b.essenceId and a.profileId = b.profileId
@@ -126,7 +126,7 @@ cyberconnect_subscribe as (
             b.to seller,
             b.handle,
             a.profile_id,
-            cast(NULL as uint256) AS  content_id,
+            cast(NULL as varchar) AS  content_id,
             cast(NULL as varchar) AS  content_uri
     from  (select *, explode(profileIds) profile_id from {{source('link3_profile_bnb', 'ProfileNFT_evt_Subscribe')}}) a
     left join  {{source('link3_profile_bnb', 'ProfileNFT_evt_CreateProfile')}} b on a.profile_id = b.profileId
