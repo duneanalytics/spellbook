@@ -122,7 +122,7 @@ WITH
                     WHEN fills.takerToken = '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee' THEN '0x82af49447d8a07e3bd95bd0d56f35241523fbab1'
                     ELSE fills.takerToken
               END = tp.contract_address
-      LEFT JOIN prices.usd mp ON mp.blockchain = 'arbitrum' and
+      LEFT JOIN {{ source('prices', 'usd') }} mp ON mp.blockchain = 'arbitrum' and
           DATE_TRUNC('minute', evt_block_time) = mp.minute  
           AND CASE
                   -- set native token to wrapped version
@@ -182,7 +182,7 @@ WITH
                     WHEN fills.takerToken = '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee' THEN '0x82af49447d8a07e3bd95bd0d56f35241523fbab1'
                     ELSE fills.takerToken
               END = tp.contract_address
-      LEFT JOIN prices.usd mp ON mp.blockchain = 'arbitrum' and 
+      LEFT JOIN {{ source('prices', 'usd') }} mp ON mp.blockchain = 'arbitrum' and 
           DATE_TRUNC('minute', evt_block_time) = mp.minute  
           AND CASE
                   -- set native token to wrapped version

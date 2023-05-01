@@ -53,14 +53,14 @@ WITH
                 END AS volume_usd
             , fills.protocolFeePaid/ 1e18 AS protocol_fee_paid_eth
         FROM {{ source('zeroex_optimism', 'ExchangeProxy_evt_LimitOrderFilled') }} fills
-        LEFT JOIN prices.usd tp ON
+        LEFT JOIN {{ source('prices', 'usd') }} tp ON
             date_trunc('minute', evt_block_time) = tp.minute and  tp.blockchain = 'optimism'
             AND CASE
                     -- Set Deversifi ETHWrapper to WETH
                     WHEN fills.takerToken IN ('0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee') THEN '0x4200000000000000000000000000000000000006'
                     ELSE fills.takerToken
                 END = tp.contract_address
-        LEFT JOIN prices.usd mp ON
+        LEFT JOIN {{ source('prices', 'usd') }} mp ON
             DATE_TRUNC('minute', evt_block_time) = mp.minute  and mp.blockchain = 'optimism'
             AND CASE
                     -- Set Deversifi ETHWrapper to WETH
@@ -113,14 +113,14 @@ WITH
               END AS volume_usd
           , cast(null as numeric) AS protocol_fee_paid_eth
       FROM {{ source('zeroex_optimism', 'ExchangeProxy_evt_RfqOrderFilled') }} fills
-      LEFT JOIN prices.usd tp ON
+      LEFT JOIN {{ source('prices', 'usd') }} tp ON
           date_trunc('minute', evt_block_time) = tp.minute and tp.blockchain = 'optimism'
           AND CASE
                   -- Set Deversifi ETHWrapper to WETH
                     WHEN fills.takerToken IN ('0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee') THEN '0x4200000000000000000000000000000000000006'
                     ELSE fills.takerToken
               END = tp.contract_address
-      LEFT JOIN prices.usd mp ON
+      LEFT JOIN {{ source('prices', 'usd') }} mp ON
           DATE_TRUNC('minute', evt_block_time) = mp.minute  and mp.blockchain = 'optimism'
           AND CASE
                   -- Set Deversifi ETHWrapper to WETH
@@ -129,7 +129,7 @@ WITH
               END = mp.contract_address
       LEFT OUTER JOIN {{ ref('tokens_erc20') }} mt ON mt.contract_address = fills.makerToken and mt.blockchain = 'optimism'
       LEFT OUTER JOIN {{ ref('tokens_erc20') }} tt ON tt.contract_address = fills.takerToken and tt.blockchain = 'optimism'
-       where 1=1  and  mp.blockchain = 'optimism' and tp.blockchain = 'optimism'
+       where 1=1  
                 {% if is_incremental() %}
                 AND evt_block_time >= date_trunc('day', now() - interval '1 week')
                 {% endif %}
@@ -172,14 +172,14 @@ WITH
               END AS volume_usd
           ,cast(null as numeric) AS protocol_fee_paid_eth
         FROM {{ source('zeroex_optimism', 'ExchangeProxy_evt_OtcOrderFilled') }} fills
-      LEFT JOIN prices.usd tp ON
+      LEFT JOIN {{ source('prices', 'usd') }} tp ON
           date_trunc('minute', evt_block_time) = tp.minute and tp.blockchain = 'optimism'
           AND CASE
                   -- Set Deversifi ETHWrapper to WETH
                     WHEN fills.takerToken IN ('0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee') THEN '0x4200000000000000000000000000000000000006'
                     ELSE fills.takerToken
               END = tp.contract_address
-      LEFT JOIN prices.usd mp ON
+      LEFT JOIN {{ source('prices', 'usd') }} mp ON
           DATE_TRUNC('minute', evt_block_time) = mp.minute  and mp.blockchain = 'optimism'
           AND CASE
                   -- Set Deversifi ETHWrapper to WETH

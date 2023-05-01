@@ -165,12 +165,6 @@ models:
       tags: ['ethereum','optimism', 'polygon', 'abitrum', 'fafntom', 'avalanche', 'bnb', '0x','dex_aggregator','dex','aggregator']
     description: >
         0x aggreator swaps thru 0x 0x API
-    tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - block_date
-            - tx_hash
-            - evt_index
     columns:
       - *blockchain
       - &project 

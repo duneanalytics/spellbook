@@ -51,14 +51,14 @@ WITH
             fills.contract_address
             , 'fills' as native_order_type
         FROM {{ source('zeroex_v3_ethereum', 'Exchange_evt_Fill') }} fills 
-        LEFT JOIN prices.usd tp ON
+        LEFT JOIN {{ source('prices', 'usd') }} tp ON
             date_trunc('minute', evt_block_time) = tp.minute and tp.blockchain = 'ethereum'
             AND CASE
                     -- Set Deversifi ETHWrapper to WETH
                     WHEN SUBSTRING(fills.takerAssetData,17,20) IN ('0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee') THEN '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'
                     ELSE SUBSTRING(fills.takerAssetData,17,20)
                 END = tp.contract_address
-        LEFT JOIN prices.usd mp ON
+        LEFT JOIN {{ source('prices', 'usd') }} mp ON
             DATE_TRUNC('minute', evt_block_time) = mp.minute  and mp.blockchain = 'ethereum'
             AND CASE
                     -- Set Deversifi ETHWrapper to WETH
@@ -111,14 +111,14 @@ WITH
             , cast(null as numeric) as protocol_fee_paid_eth
             , 'fills' as native_order_type
         FROM {{ source('zeroex_v2_ethereum', 'Exchange2_1_evt_Fill') }} fills
-        LEFT JOIN prices.usd tp ON
+        LEFT JOIN {{ source('prices', 'usd') }} tp ON
             date_trunc('minute', evt_block_time) = tp.minute and tp.blockchain = 'ethereum'
             AND CASE
                     -- Set Deversifi ETHWrapper to WETH
                     WHEN SUBSTRING(fills.takerAssetData,17,20) IN ('0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee') THEN '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'
                     ELSE SUBSTRING(fills.takerAssetData,17,20)
                 END = tp.contract_address
-        LEFT JOIN prices.usd mp ON
+        LEFT JOIN {{ source('prices', 'usd') }} mp ON
             DATE_TRUNC('minute', evt_block_time) = mp.minute and mp.blockchain = 'ethereum'
             AND CASE
                     -- Set Deversifi ETHWrapper to WETH
@@ -173,14 +173,14 @@ WITH
             , fills.contract_address
             , 'limit' as native_order_type
         FROM {{ source('zeroex_ethereum', 'ExchangeProxy_evt_LimitOrderFilled') }} fills
-        LEFT JOIN prices.usd tp ON 
+        LEFT JOIN {{ source('prices', 'usd') }} tp ON 
             date_trunc('minute', evt_block_time) = tp.minute and tp.blockchain = 'ethereum'
             AND CASE
                     -- Set Deversifi ETHWrapper to WETH
                     WHEN fills.takerToken IN ('0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee') THEN '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'
                     ELSE fills.takerToken
                 END = tp.contract_address
-        LEFT JOIN prices.usd mp ON 
+        LEFT JOIN {{ source('prices', 'usd') }} mp ON 
             DATE_TRUNC('minute', evt_block_time) = mp.minute and    mp.blockchain = 'ethereum'
             AND CASE
                     -- Set Deversifi ETHWrapper to WETH
@@ -233,14 +233,14 @@ WITH
           fills.contract_address
           , 'rfq' as native_order_type
       FROM {{ source('zeroex_ethereum', 'ExchangeProxy_evt_RfqOrderFilled') }} fills
-      LEFT JOIN prices.usd tp ON
+      LEFT JOIN {{ source('prices', 'usd') }} tp ON
           date_trunc('minute', evt_block_time) = tp.minute 
           AND CASE
                   -- Set Deversifi ETHWrapper to WETH
                     WHEN fills.takerToken IN ('0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee') THEN '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'
                     ELSE fills.takerToken
               END = tp.contract_address
-      LEFT JOIN prices.usd mp ON
+      LEFT JOIN {{ source('prices', 'usd') }} mp ON
           DATE_TRUNC('minute', evt_block_time) = mp.minute 
           AND CASE
                   -- Set Deversifi ETHWrapper to WETH
@@ -292,14 +292,14 @@ WITH
           , fills.contract_address
           , 'otc' as native_order_type
       FROM {{ source('zeroex_ethereum', 'ExchangeProxy_evt_OtcOrderFilled') }} fills
-      LEFT JOIN prices.usd tp ON
+      LEFT JOIN {{ source('prices', 'usd') }} tp ON
           date_trunc('minute', evt_block_time) = tp.minute and tp.blockchain = 'ethereum'
           AND CASE
                   -- Set Deversifi ETHWrapper to WETH
                     WHEN fills.takerToken IN ('0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee') THEN '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'
                     ELSE fills.takerToken
               END = tp.contract_address
-      LEFT JOIN prices.usd mp ON
+      LEFT JOIN {{ source('prices', 'usd') }} mp ON
           DATE_TRUNC('minute', evt_block_time) = mp.minute  and mp.blockchain = 'ethereum'
           AND CASE
                   -- Set Deversifi ETHWrapper to WETH
