@@ -19,13 +19,13 @@ WITH
     SELECT
       block_time,
       DATE_TRUNC('day', block_time) AS day,
-      "to",
-      "from",
-      CAST(value AS DOUBLE) as eth_value
+      `to`,
+      `from`,
+      value AS eth_value
     FROM
       ethereum.traces
     WHERE
-      success = TRUE
+      success
 {% if not is_incremental() %}
        AND block_time >= '{{project_start_date}}'
 {% endif %}
@@ -33,37 +33,37 @@ WITH
       AND block_time >= date_trunc("day", now() - interval '1 week')
 {% endif %}
       AND (
-        "to" IN (
-          0xcafea7934490ef8b9d2572eaefeb9d48162ea5d8,
-          0xcafeada4d15bbc7592113d5d5af631b5dcd53dcb,
-          0xcafea35ce5a2fc4ced4464da4349f81a122fd12b,
-          0xcafea8321b5109d22c53ac019d7a449c947701fb,
-          0xfd61352232157815cf7b71045557192bf0ce1884,
-          0x7cbe5682be6b648cc1100c76d4f6c96997f753d6,
-          0xcafea112Db32436c2390F5EC988f3aDB96870627
+        `to` IN (
+          '0xcafea7934490ef8b9d2572eaefeb9d48162ea5d8',
+          '0xcafeada4d15bbc7592113d5d5af631b5dcd53dcb',
+          '0xcafea35ce5a2fc4ced4464da4349f81a122fd12b',
+          '0xcafea8321b5109d22c53ac019d7a449c947701fb',
+          '0xfd61352232157815cf7b71045557192bf0ce1884',
+          '0x7cbe5682be6b648cc1100c76d4f6c96997f753d6',
+          '0xcafea112Db32436c2390F5EC988f3aDB96870627'
         )
-        OR "from" IN (
-          0xcafea7934490ef8b9d2572eaefeb9d48162ea5d8,
-          0xcafeada4d15bbc7592113d5d5af631b5dcd53dcb,
-          0xcafea35ce5a2fc4ced4464da4349f81a122fd12b,
-          0xcafea8321b5109d22c53ac019d7a449c947701fb,
-          0xfd61352232157815cf7b71045557192bf0ce1884,
-          0x7cbe5682be6b648cc1100c76d4f6c96997f753d6,
-          0xcafea112Db32436c2390F5EC988f3aDB96870627
+        OR `from` IN (
+          '0xcafea7934490ef8b9d2572eaefeb9d48162ea5d8',
+          '0xcafeada4d15bbc7592113d5d5af631b5dcd53dcb',
+          '0xcafea35ce5a2fc4ced4464da4349f81a122fd12b',
+          '0xcafea8321b5109d22c53ac019d7a449c947701fb',
+          '0xfd61352232157815cf7b71045557192bf0ce1884',
+          '0x7cbe5682be6b648cc1100c76d4f6c96997f753d6',
+          '0xcafea112Db32436c2390F5EC988f3aDB96870627'
         )
       )
       AND NOT (
         (
-          "to" = 0xcafea35ce5a2fc4ced4464da4349f81a122fd12b
-          AND "from" = 0xcafea7934490ef8b9d2572eaefeb9d48162ea5d8
+          `to` = '0xcafea35ce5a2fc4ced4464da4349f81a122fd12b'
+          AND `from` = '0xcafea7934490ef8b9d2572eaefeb9d48162ea5d8'
         )
         OR (
-          "to" = 0xcafea7934490ef8b9d2572eaefeb9d48162ea5d8
-          AND "from" = 0xcafeada4d15bbc7592113d5d5af631b5dcd53dcb
+          `to` = '0xcafea7934490ef8b9d2572eaefeb9d48162ea5d8'
+          AND `from` = '0xcafeada4d15bbc7592113d5d5af631b5dcd53dcb'
         )
         OR (
-          "to" = 0xcafea7934490ef8b9d2572eaefeb9d48162ea5d8
-          AND "from" = 0xfd61352232157815cf7b71045557192bf0ce1884
+          `to` = '0xcafea7934490ef8b9d2572eaefeb9d48162ea5d8'
+          AND `from` = '0xfd61352232157815cf7b71045557192bf0ce1884'
         )
       )
   )
@@ -71,14 +71,14 @@ SELECT DISTINCT
   day,
   SUM(
     CASE
-      WHEN "to" IN (
-        0xcafea7934490ef8b9d2572eaefeb9d48162ea5d8,
-        0xcafeada4d15bbc7592113d5d5af631b5dcd53dcb,
-        0xcafea35ce5a2fc4ced4464da4349f81a122fd12b,
-        0xcafea8321b5109d22c53ac019d7a449c947701fb,
-        0xfd61352232157815cf7b71045557192bf0ce1884,
-        0x7cbe5682be6b648cc1100c76d4f6c96997f753d6,
-        0xcafea112Db32436c2390F5EC988f3aDB96870627
+      WHEN `to` IN (
+        '0xcafea7934490ef8b9d2572eaefeb9d48162ea5d8',
+        '0xcafeada4d15bbc7592113d5d5af631b5dcd53dcb',
+        '0xcafea35ce5a2fc4ced4464da4349f81a122fd12b',
+        '0xcafea8321b5109d22c53ac019d7a449c947701fb',
+        '0xfd61352232157815cf7b71045557192bf0ce1884',
+        '0x7cbe5682be6b648cc1100c76d4f6c96997f753d6',
+        '0xcafea112Db32436c2390F5EC988f3aDB96870627'
       ) THEN eth_value * 1E-18
       ELSE 0
     END
@@ -88,14 +88,14 @@ SELECT DISTINCT
   ) AS eth_ingress,
   SUM(
     CASE
-      WHEN "from" IN (
-        0xcafea7934490ef8b9d2572eaefeb9d48162ea5d8,
-        0xcafeada4d15bbc7592113d5d5af631b5dcd53dcb,
-        0xcafea35ce5a2fc4ced4464da4349f81a122fd12b,
-        0xcafea8321b5109d22c53ac019d7a449c947701fb,
-        0xfd61352232157815cf7b71045557192bf0ce1884,
-        0x7cbe5682be6b648cc1100c76d4f6c96997f753d6,
-        0xcafea112Db32436c2390F5EC988f3aDB96870627
+      WHEN `from` IN (
+        '0xcafea7934490ef8b9d2572eaefeb9d48162ea5d8',
+        '0xcafeada4d15bbc7592113d5d5af631b5dcd53dcb',
+        '0xcafea35ce5a2fc4ced4464da4349f81a122fd12b',
+        '0xcafea8321b5109d22c53ac019d7a449c947701fb',
+        '0xfd61352232157815cf7b71045557192bf0ce1884',
+        '0x7cbe5682be6b648cc1100c76d4f6c96997f753d6',
+        '0xcafea112Db32436c2390F5EC988f3aDB96870627'
       ) THEN eth_value * 1E-18
       ELSE 0
     END
