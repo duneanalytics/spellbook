@@ -94,6 +94,51 @@ models:
     dex:
       +schema: dex
 
+    airdrop:
+      +schema: airdrop
+      ethereum:
+        +schema: airdrop_ethereum
+      optimism:
+        +schema: airdrop_optimism
+      arbitrum:
+        +schema: airdrop_arbitrum
+      avalanche_c:
+        +schema: airdrop_avalanche_c
+      bnb:
+        +schema: airdrop_bnb
+      gnosis:
+        +schema: airdrop_gnosis
+
+    giveth:
+      +schema: giveth
+      gnosis:
+        +schema: giveth_gnosis
+
+    ellipsis_finance:
+      +schema: ellipsis_finance
+      bnb:
+        +schema: ellipsis_finance_bnb
+
+    arbitrum:
+      +schema: arbitrum
+      arbitrum:
+        +schema: arbitrum_arbitrum
+
+    pangolin:
+      +schema: pangolin
+      avalanche_c:
+        +schema: pangolin_avalanche_c
+
+    ampleforth:
+      +schema: ampleforth
+      ethereum:
+        +schema: ampleforth_ethereum
+
+    velodrome:
+      +schema: velodrome
+      optimism:
+        +schema: velodrome_optimism
+
     nft:
       +schema: nft
       arbitrum:
@@ -179,6 +224,10 @@ models:
         +schema: sushiswap_fantom
       optimism:
         +schema: sushiswap_optimism
+      polygon:
+        +schema: sushiswap_polygon
+      bnb:
+        +schema: sushiswap_bnb
 
     openocean:
       +schema: openocean
@@ -433,6 +482,10 @@ models:
       +schema: trader_joe
       avalanche_c:
         +schema: trader_joe_avalanche_c
+      bnb:
+        +schema: trader_joe_bnb
+      arbitrum:
+        +schema: trader_joe_arbitrum
 
     odos:
       +schema: odos
@@ -563,6 +616,8 @@ models:
         +schema: tornado_cash_gnosis
       optimism:
         +schema: tornado_cash_optimism
+      polygon:
+        +schema: tornado_cash_polygon
 
     perpetual:
       +schema: perpetual
@@ -826,6 +881,11 @@ models:
       bnb:
         +schema: wombat_bnb
 
+    verse_dex:
+      +schema: verse_dex
+      ethereum:
+        +schema: verse_dex_ethereum
+
     iziswap:
       +schema: iziswap
       bnb:
@@ -874,6 +934,8 @@ models:
         +schema: tofu_arbitrum
       optimism:
         +schema: tofu_optimism
+      polygon:
+        +schema: tofu_polygon
 
     maker:
       +schema: maker
@@ -979,6 +1041,16 @@ models:
       +schema: optimism_attestationstation
       optimism:
         +schema: optimism_attestationstation_optimism
+    
+    lido:
+      +schema: lido
+      ethereum:
+       +schema: lido_ethereum
+
+    onepunchswap:
+      +schema: onepunchswap
+      bnb:
+        +schema: onepunchswap_bnb
 
     bebop:
       +schema: bebop
@@ -988,3 +1060,13 @@ models:
         +schema: bebop_polygon
       arbitrum:
         +schema: bebop_arbitrum
+
+    glacier:
+      +schema: glacier
+      avalanche_c:
+        +schema: glacier_avalanche_c
+    
+    thena:
+      +schema: thena
+      bnb:
+        +schema: thena_bnb

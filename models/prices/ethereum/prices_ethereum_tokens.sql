@@ -72,6 +72,7 @@ FROM
     ("btt-bittorrent", "ethereum", "BTT", "0xfa456cf55250a839088b27ee32a424d7dacb54ff", 18),
     ("btu-btu-protocol", "ethereum", "BTU", "0xb683d83a532e2cb7dfa5275eed3698436371cc9f", 18),
     ("busd-binance-usd", "ethereum", "BUSD", "0x4fabb145d64652a948d72533023f6e7a623c7c53", 18),
+    ("cake-pancakeswap", "ethereum", "CAKE", "0x152649ea73beab28c5b49b26eb48f7ead6d4c898", 18),
     ("cel-celsius", "ethereum", "CEL", "0xaaaebe6fe48e54f431b0c390cfaf0b017d09d42d", 4),
     ("celr-celer-network", "ethereum", "CELR", "0x4f9254c83eb525f9fcf346490bbb3ed28a81c667", 18),
     ("cennz-centrality", "ethereum", "CENNZ", "0x1122b6a0e00dce0563082b6e2953f3a943855c1f", 18),
@@ -96,6 +97,7 @@ FROM
     ("dac-davinci-coin", "ethereum", "DAC", "0xaad54c9f27b876d2538455dda69207279ff673a5", 18),
     ("dai-dai", "ethereum", "DAI", "0x6b175474e89094c44da98b954eedeac495271d0f", 18),
     ("data-streamr-datacoin", "ethereum", "DATA", "0x0cf0ee63788a0849fe5297f3407f701e122cc023", 18),
+    ("db-dragon-blood", "ethereum", "DB", "0x5423a6a06dd64480ad17c46e42b95827da2719d9", 18),
     ("dent-dent", "ethereum", "DENT", "0x3597bfd533a99c9aa083587b074434e61eb0a258", 8),
     ("dfx-dfx-finance", "ethereum", "DFX", "0x888888435fde8e7d4c54cab67f206e4199454c60", 18),
     ("dgd-digixdao", "ethereum", "DGD", "0xe0b7927c4af23765cb51314a0e0521a9645f0e2a", 9),
@@ -884,7 +886,6 @@ FROM
     ('pussy-pussy-token', 'ethereum', 'PUSSY', '0x9196e18bc349b1f64bc08784eae259525329a1ad', 18),
     ('kuma-kuma-inu', 'ethereum', 'KUMA', '0x48c276e8d03813224bb1e55f953adb6d02fd3e02', 18),
     ('cor-coreto', 'ethereum', 'COR', '0x9c2dc0c3cc2badde84b0025cf4df1c5af288d835', 18),
-    -- ('shih-shih-tzu', 'ethereum', 'SHIH', '0x841fb148863454a3b3570f515414759be9091465', 18), Broken price feed
     ('cqt-covalent', 'ethereum', 'CQT', '0xd417144312dbf50465b1c641d016962017ef6240', 18),
     ('glq-graphlinq', 'ethereum', 'GLQ', '0x9f9c8ec3534c3ce16f928381372bfbfbfb9f4d24', 18),
     ('dfyn-dfyn-network', 'ethereum', 'DFYN', '0x9695e0114e12c0d3a3636fab5a18e6b737529023', 18),
@@ -1337,7 +1338,6 @@ FROM
     ('btrfly-redacted', 'ethereum', 'BTRFLY', '0xc55126051B22eBb829D00368f4B12Bde432de5Da', 18),
     ('icsa-icosa', 'ethereum', 'ICSA', '0xfc4913214444aF5c715cc9F7b52655e788A569ed', 9),
     ('asic-asic-token', 'ethereum', 'ASIC', '0x347a96a5BD06D2E15199b032F46fB724d6c73047', 12),
-    ('caw-a-hunters-dream', 'ethereum', 'CAW', '0xf3b9569F82B18aEf890De263B84189bd33EBe452', 18),
     ('acx-across-protocol', 'ethereum', 'ACX', '0x44108f0223A3C3028F5Fe7AEC7f9bb2E66beF82F', 18),
     ('psp-paraswap', 'ethereum', 'PSP', '0xcAfE001067cDEF266AfB7Eb5A286dCFD277f3dE5', 18),
     ('plsb-pulsebitcoin', 'ethereum', 'PLSB', '0x5EE84583f67D5EcEa5420dBb42b462896E7f8D06', 12),
@@ -1401,7 +1401,6 @@ FROM
     ('fund-teh-fund', 'ethereum', 'FUND', '0x7d8d7c26179b7A6aebbF66A91C38ED92d5B4996b', 18),
     ('swingby-swingby', 'ethereum', 'SWINGBY', '0x8287C7b963b405b7B8D467DB9d79eEC40625b13A', 18),
     ('punk-punk-vault', 'ethereum', 'PUNK', '0x269616D549D7e8Eaa82DFb17028d0B212D11232A', 18),
-    ('shih-shih-tzu', 'ethereum', 'SHIH', '0x841FB148863454A3b3570f515414759BE9091465', 18),
     ('odoge-ordinal-doge', 'ethereum', 'ODOGE', '0x796a4503b444A71b331c9556bEF0815237ddEaBC', 18),
     ('avt-aventus', 'ethereum', 'AVT', '0x0d88eD6E74bbFD96B831231638b66C05571e824F', 18),
     ('rug-rug-radio', 'ethereum', 'RUG', '0xD2d8D78087D0E43BC4804B6F946674b2Ee406b80', 18),
@@ -1639,5 +1638,12 @@ FROM
     ('cnotes-community-notes', 'ethereum', 'CNOTES', '0x148af0CAda405380E8e3B2F694A6A7de848759b0', 18),
     ('imgnai-imgnai', 'ethereum', 'IMGNAI', '0xA735A3AF76CC30791C61c10d585833829d36CBe0', 9),
     ('woxen-wrapped-oxen', 'ethereum', 'WOXEN', '0xd1e2d5085b39B80C9948AeB1b9aA83AF6756bcc5', 9),
-    ('xrio-realio-network-utility-token-exchangable', 'ethereum', 'XRIO', '0x0B4AC2BA3D4924C9A06D9C1d08D7867059A39cC1', 18)
+    ('xrio-realio-network-utility-token-exchangable', 'ethereum', 'XRIO', '0x0B4AC2BA3D4924C9A06D9C1d08D7867059A39cC1', 18),
+    ('pepe-pepe1', 'ethereum', 'PEPE', '0x6982508145454Ce325dDbE47a25d4ec3d2311933', 18),   
+    ('grain-granary','ethereum','GRAIN','0xf88baf18fab7e330fa0c4f83949e23f52fececce',18)
+      
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)
+where contract_address not in (
+    '0x841fb148863454a3b3570f515414759be9091465' -- SHIH has bad price feed.
+    ,'0xf3b9569f82b18aef890de263b84189bd33ebe452' -- CAW has bad price feed.
+)

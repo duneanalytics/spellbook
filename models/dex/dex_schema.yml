@@ -93,9 +93,9 @@ models:
 
   - name: dex_aggregator_trades
     meta:
-      blockchain: ethereum, gnosis, avalanche_c, fantom
+      blockchain: ethereum, gnosis, avalanche_c, fantom, optimism, arbitrum, bnb
       sector: dex_aggregator
-      contributors: bh2smith, Henrystats, jeff-dude
+      contributors: bh2smith, Henrystats, jeff-dude, rantum
     config:
       tags: ['ethereum', 'gnosis', 'avalanche_c', 'fantom', 'aggregator', 'dex', 'trades', 'cross-chain']
     description: >
@@ -257,6 +257,7 @@ models:
         name: tx_index
         description: "the transaction index of the transaction that the offer was created in"
       - *evt_index
+      - *maker
       - &sell_token_symbol
         name: sell_token_symbol
         description: "the token the offer is selling"
