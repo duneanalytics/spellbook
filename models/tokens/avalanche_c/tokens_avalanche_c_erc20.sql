@@ -191,4 +191,8 @@ FROM (VALUES
         ,('0x70928e5b188def72817b7775f0bf6325968e563b','LUNA',6)
         ,('0x9e15f045e44ea5a80e7fbc193a35287712cc5569','3ULL',18)
         ,('0x5c49b268c9841aff1cc3b0a418ff5c3442ee3f3b','MAI',18)
+        ,('0x3712871408a829C5cd4e86DA1f4CE727eFCD28F6','GLCR',18)
+        ,('0x2dc3Bb328000553D1D64ec1BEF00572F62B5Ec7C','XWLRS',18)
+        ,('0xfDECfC325B584A96E86caBD2eb492320467ed1d8','MIGHT',18)
+        ,('0xF7554D17d1c3F09899dCc8B404beCAE6dFA584Fa','MAGIK',18)
     ) AS temp_table (contract_address, symbol, decimals)
