@@ -146,6 +146,10 @@ FROM (values
     ,('0x4022e57784b2fF8DceE839c16161F283223aE87B','Synthetix','USDC/SNX: Velodrome')
     ,('0xBee1E4C4276687A8350C2E44eCBe79d676637f86','Synthetix','USDC/sUSD: Velodrome')
     ,('0x68a1d9a49b82c5A0a3431aAE6178F89Ad5214730','Synthetix','ETH/sETH: Velodrome')
+    ,('0x226805c401b879564fbd7eed8fd3b16952096a5d','Synthetix','USDC/SNX: Velodrome')
+    ,('0x811ea6e0356d19d721d41189e21876eb51d64f70','Synthetix','ETH/sETH: Velodrome')
+    ,('0x9fb1350539777d75702a2ddde4f20601579a0fac','Synthetix','USDC/sUSD: Velodrome')
+
     ,('0x1A3E5557039763425B00a2e1B0eB767B01d64756','Beefy Finance','Beefy Launchpool')
     ,('0x65F8a09A1C3581a02C8788a6959652E32a87FC77','Beefy Finance','Beefy Launchpool')
     ,('0xf099FA1Bd92f8AAF4886e8927D7bd3c15bA0BbFd','xToken Terminal / Gamma Strategies','Rewarder')
@@ -163,11 +167,19 @@ FROM (values
     ,('0x8801b45390095f7632C02392C4489985e0607E82', 'Overnight', 'BPT-USD+: Beethoven X')
     ,('0xB66D278b843dBE76ee73Da61182fF97100f97920', 'Overnight', 'USD+/DOLA: Velodrome')
     ,('0x41a7540ec8cb3afafe16a834abe0863f22016ec0', 'Overnight', 'USD+/LUSD: Velodrome')
+
+    ,('0x493b094a60f3e71e5f78eff6b17b4575c36513d0', 'Lido', 'wstETH/OP: Velodrome') --Pool: 0x3905870e647c97cb9c8d99db24384f480531b5b9
+    ,('0x28de5e6d26218a38f890c3767701d461d0fc7b48', 'Lido', 'wstETH/WETH: Velodrome') --Pool: 0xc6c1e8399c1c33a3f1959f2f77349d74a373345c
+    ,('0x45e759ddc06534b9d0950afe9b2e762afdd299b9', 'Lido', 'wstETH/USDC: Velodrome') --Pool: 0x794299137282e5d3af56616624ab918d1b2becf3
+
+    ,('0xd53ccbfed6577d8dc82987e766e75e3cb73a8563', 'Lido', 'wstETHCRV: Curve') --Pool: 0xEfDE221f306152971D8e9f181bFe998447975810
+
     ,('0x97a7E9726df22D6f28BB86679a0e5512A8c0E8A2', 'dHedge', 'Distributor')
     ,('0xC792980F2F3016F60bEd35926d21A43E140b99cC', 'dHedge', 'DHT/OP: Velodrome')
     ,('0xfCC293db3b7396a1c2477C9F24F5F948431EF6eC', 'Pika Protocol', 'Distributor')
     ,('0x8b50d942bb4effe0db32393a141ea083db0c4e7f', 'Alchemix', 'alETH/WETH: Velodrome')
     ,('0x4ea2e39626de031a011c3ca7360878202454ce75', 'Angle', 'OP/agEUR: Velodrome')
+    ,('0x3ef3d8ba38ebe18db133cec108f4d14ce00dd9ae', 'Angle', 'USDC/agEUR: Velodrome')
     ,('0x6333000289bc27a090b3d51e734c2f13e3edc4fd', 'Hundred Finance', 'Token Treasury')
     ,('0x86c90fc464A668469A93Ca08D8B9872bdB16b356', 'Mux', 'TradingRebateDistributor')
     ,('0xBd1ba78A3976cAB420A9203E6ef14D18C2B2E031', 'Exactly', 'Distributor Multisig')
@@ -186,6 +198,7 @@ FROM (values
     ,('0xd3a3fbae792c4ed0aa909ec032d3f14c999b2402', 'Arrakis Finance', 'Partner Fund')
     
     ,('0x09992dd7b32f7b35d347de9bdaf1919a57d38e82','Synthetix','SNX Bridge: Hop')
+    ,('0x25fb92e505f752f730cad0bd4fa17ece4a384266','Synthetix','sUSD Bridge: Hop')
     ,('0xf42279467D821bCDf40b50E9A5d2cACCc4Cf5b30','Quests on Coinbase Wallet','Quest 1 - DEX')
     ,('0x9F4F2B8BdA8D2d3832021b3119747470ea86A183','Quests on Coinbase Wallet','Quest 2 - Delegation')
     --governance delegation
@@ -227,6 +240,12 @@ FROM (
 
                 SELECT address, 'Deployed' AS label, proposal_name, address_descriptor, 3 as rnk
                 FROM distributor_wallets
+
+		UNION ALL
+		--retropgf payouts
+		SELECT submitter_address AS address, 'RetroPGF' AS label, recipient_name AS proposal_name, 'RetroPGF - ' || round_name AS address_descriptor, 4 as rnk
+		FROM {{ref('op_retropgf_optimism_recipients')}}
+
                 ) do_choice_rank
         ) fin
 LEFT JOIN {{ ref('op_token_distributions_optimism_project_name_mapping') }} pnm 

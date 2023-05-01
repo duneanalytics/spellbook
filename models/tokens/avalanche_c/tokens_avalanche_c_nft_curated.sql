@@ -2,6 +2,7 @@
 
 SELECT LOWER(contract_address) AS contract_address, name, symbol
 FROM (VALUES
+      ('0x36335Bda9a1e4224671B3fDF3e599DFbe083a7c1', 'Walrus Anglers Club', 'WAC'),
       ('0xdce4867e34f977619b296646b04bdb334b8f6950', 'Bananaz', 'NANAZ'),
       ('0xddccc21fc45e96a04d4213e3b0b9e54498107702', 'Scourge Apes', 'SAPE'),
       ('0x357928b721890ed007142e45502a323827caf812', 'CHAD DOGE', 'CHAD'),
