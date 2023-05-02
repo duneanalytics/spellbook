@@ -15,7 +15,7 @@ SELECT
 FROM
 (
     VALUES
-
+    ("eth-ethereum","ethereum","ETH","{{ var('ETH_ERC20_ADDRESS') }}",18),
     ("0xbtc-0xbitcoin", "ethereum", "0xBTC", "0xb6ed7644c69416d67b522e20bc294a9a9b405b31", 8),
     ("1inch-1inch", "ethereum", "1INCH", "0x111111111117dc0aa78b770fa6a738034120c302", 18),
     ("aave-new", "ethereum", "AAVE", "0x7fc66500c84a76ad7e9c93437bfc5ac33e2ddae9", 18),
@@ -1641,7 +1641,7 @@ FROM
     ('xrio-realio-network-utility-token-exchangable', 'ethereum', 'XRIO', '0x0B4AC2BA3D4924C9A06D9C1d08D7867059A39cC1', 18),
     ('pepe-pepe1', 'ethereum', 'PEPE', '0x6982508145454Ce325dDbE47a25d4ec3d2311933', 18),   
     ('grain-granary','ethereum','GRAIN','0xf88baf18fab7e330fa0c4f83949e23f52fececce',18)
-      
+    
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)
 where contract_address not in (
     '0x841fb148863454a3b3570f515414759be9091465' -- SHIH has bad price feed.
