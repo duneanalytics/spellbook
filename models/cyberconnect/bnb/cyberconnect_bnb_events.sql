@@ -67,7 +67,8 @@ cyberconnect_essence_register as (
             cast(a.essenceId as varchar(800)) content_id,
             a.essenceTokenURI content_uri
     from {{source('link3_profile_bnb', 'ProfileNFT_evt_RegisterEssence')}} a
-    left join {{source('link3_profile_bnb', 'ProfileNFT_evt_CreateProfile')}} b on a.profileId = b.profileId
+    left join {{source('link3_profile_bnb', 'ProfileNFT_evt_CreateProfile')}} b
+        on a.profileId = b.profileId
     WHERE 1=1
     {% if is_incremental() %}
     AND a.evt_block_time >= date_trunc("day", now() - interval '1 week')
@@ -98,8 +99,11 @@ cyberconnect_essence_collect as (
             cast(a.essenceId as varchar(800)) content_id,
             b.essenceTokenURI content_uri
     from {{source('link3_profile_bnb', 'ProfileNFT_evt_CollectEssence')}} a
-    left join {{source('link3_profile_bnb', 'ProfileNFT_evt_RegisterEssence')}} b on a.essenceId = b.essenceId and a.profileId = b.profileId
-    left join {{source('link3_profile_bnb', 'ProfileNFT_evt_CreateProfile')}} c on a.profileId = c.profileId
+    left join {{source('link3_profile_bnb', 'ProfileNFT_evt_RegisterEssence')}} b
+        on a.essenceId = b.essenceId
+        and a.profileId = b.profileId
+    left join {{source('link3_profile_bnb', 'ProfileNFT_evt_CreateProfile')}} c
+        on a.profileId = c.profileId
     WHERE 1=1
     {% if is_incremental() %}
     AND a.evt_block_time >= date_trunc("day", now() - interval '1 week')
@@ -128,8 +132,13 @@ cyberconnect_subscribe as (
             a.profile_id,
             cast(NULL as varchar(800)) AS  content_id,
             cast(NULL as varchar(800)) AS  content_uri
-    from  (select *, explode(profileIds) profile_id from {{source('link3_profile_bnb', 'ProfileNFT_evt_Subscribe')}}) a
-    left join  {{source('link3_profile_bnb', 'ProfileNFT_evt_CreateProfile')}} b on a.profile_id = b.profileId
+    from  (
+        select *,
+               explode(profileIds) profile_id
+        from {{source('link3_profile_bnb', 'ProfileNFT_evt_Subscribe')}}
+        ) a
+    left join  {{source('link3_profile_bnb', 'ProfileNFT_evt_CreateProfile')}} b
+        on a.profile_id = b.profileId
     WHERE 1=1
     {% if is_incremental() %}
     AND a.evt_block_time >= date_trunc("day", now() - interval '1 week')
