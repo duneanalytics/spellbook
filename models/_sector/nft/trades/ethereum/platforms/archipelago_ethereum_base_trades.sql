@@ -51,6 +51,7 @@ fee_events as (
 
 SELECT
     date_trunc('day',trade.evt_block_time) as block_date
+    ,trade.evt_block_timae as block_time
     ,trade.evt_block_number as block_number
     ,trade.evt_tx_hash as tx_hash
     ,trade.contract_address as project_contract_address

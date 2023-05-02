@@ -102,16 +102,13 @@ WITH all_foundation_trades AS (
     )
 
 SELECT
-  'ethereum' as blockchain
-, 'foundation' as project
-, 'v1' as version
-, date_trunc('day', t.block_time) AS block_date
+ date_trunc('day', t.block_time) AS block_date
 , t.block_time
 , t.block_number
 , t.nft_token_id
 , 1 AS nft_amount
 , t.trade_category
-, cast( null as string) as trade_type
+, t.trade_type
 , t.seller
 , t.buyer
 , cast(t.price_raw as decimal(38)) as price_raw

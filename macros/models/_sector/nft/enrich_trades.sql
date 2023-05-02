@@ -15,6 +15,7 @@ WITH base_union as (
         '{{ nft_model[0] }}' as project,
         '{{ nft_model[1] }}' as project_version,
         block_date,
+        block_time,
         block_number,
         tx_hash,
         project_contract_address,
@@ -45,6 +46,7 @@ SELECT
     base.project,
     base.project_version,
     base.block_date,
+    base.block_time,
     base.block_number,
     base.tx_hash,
     base.sub_tx_trade_id,
@@ -62,7 +64,6 @@ SELECT
     base.royalty_fee_amount_raw,
     base.platform_fee_address,
     base.royalty_fee_address,
-    tx.block_time,
     tx.from as tx_from,
     tx.to as tx_to,
     nft.name as nft_collection,
@@ -91,7 +92,7 @@ ON erc20.contract_address = base.currency_contract
 LEFT JOIN {{ prices_model }} p
 ON p.blockchain = base.blockchain
     AND p.contract_address = base.currency_contract
-    AND p.minute = date_trunc('minute',tx.block_time)
+    AND p.minute = date_trunc('minute',base.block_time)
 LEFT JOIN {{ aggregators }} agg
 ON tx.to = agg.contract_address
     OR base.buyer = agg.contract_address

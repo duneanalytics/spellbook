@@ -177,9 +177,6 @@ with all_superrare_sales as (
 )
 
 SELECT
-    'ethereum' as blockchain,
-    'superrare' as project,
-    'v1' as version,
     cast(date_trunc('day', a.block_time) AS date) AS block_date,
     a.block_time,
     a.block_number,
