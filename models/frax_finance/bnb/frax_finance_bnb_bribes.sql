@@ -13,21 +13,21 @@ with base_date as (
       ) AS t1(week_array)
       )
 ,
-pairs as 
+pairs as
 (
-select 
+select
 distinct
 contract_address,
 output_0 as token0,
 output_1 as token1
-from {{source('frax_finance_bnb','thena_fi_bnb.Pair_call_tokens')}} 
-where (output_0 in (0x90C97F71E18723b0Cf0dfa30ee176Ab653E89F40,0x64048A7eEcF3a2F1BA9e144aAc3D7dB6e58F555e) or 
+from {{source('thena_fi_bnb', 'Pair_call_tokens')}}
+where (output_0 in (0x90C97F71E18723b0Cf0dfa30ee176Ab653E89F40,0x64048A7eEcF3a2F1BA9e144aAc3D7dB6e58F555e) or
 output_1 in (0x90C97F71E18723b0Cf0dfa30ee176Ab653E89F40,0x64048A7eEcF3a2F1BA9e144aAc3D7dB6e58F555e))
 and date(call_block_time) = (
-    select max(date(call_block_time)) from thena_fi_bnb.Pair_call_tokens
-    where (output_0 in (0x90C97F71E18723b0Cf0dfa30ee176Ab653E89F40,0x64048A7eEcF3a2F1BA9e144aAc3D7dB6e58F555e) or 
+    select max(date(call_block_time)) from {{source('thena_fi_bnb', 'Pair_call_tokens')}}
+    where (output_0 in (0x90C97F71E18723b0Cf0dfa30ee176Ab653E89F40,0x64048A7eEcF3a2F1BA9e144aAc3D7dB6e58F555e) or
     output_1 in (0x90C97F71E18723b0Cf0dfa30ee176Ab653E89F40,0x64048A7eEcF3a2F1BA9e144aAc3D7dB6e58F555e))
-                            ) 
+                            )
 and call_success = true
 )
 ,
@@ -37,15 +37,15 @@ call_block_time,
 output__reserve0/cast(pow(10,18) as uint256) as reserve0,
 output__reserve1/cast(pow(10,18) as uint256) as reserve1,
 row_number() over(partition by date(call_block_time),contract_address order by call_block_time desc) as rn
-from {{source('frax_finance_bnb','thena_fi_bnb.Pair_call_getReserves')}} 
+from {{source('thena_fi_bnb', 'Pair_call_getReserves')}}
 where date(call_block_time) >= date('2023-01-04')
 and contract_address in (select distinct contract_address from pairs)
 ),
 TVL as (
-select 
+select
  a.call_block_time as block_time
-,a.contract_address 
-,b.token0 
+,a.contract_address
+,b.token0
 ,b.token1
 ,case when token0 = 0x90C97F71E18723b0Cf0dfa30ee176Ab653E89F40 then reserve0
  when token1 = 0x90C97F71E18723b0Cf0dfa30ee176Ab653E89F40 then reserve1
@@ -55,7 +55,7 @@ select
  end as FrxETH_reserve
 from reserves a
 left join pairs b
-on a.contract_address = b.contract_address 
+on a.contract_address = b.contract_address
 where rn = 1
 )
 ,
@@ -70,7 +70,7 @@ and date(hour)>= date('2023-01-04')
 ),
 
 prices as (
-select 
+select
 day
 ,contract_address
 ,median_price as price
@@ -86,7 +86,7 @@ Frax_reserve,
 FrxETH_reserve,
 cast(Frax_reserve as double) * b.price as Frax_TVL_USD,
 cast(FrxETH_reserve as double) * c.price as FrxETH_TVL_USD
-from TVL a 
+from TVL a
 left join (select day, price from prices where contract_address = 0x853d955acef822db058eb8505911ed77f175b99e) b
 on date(a.block_time) = b.day
 left join (select day, price from prices where contract_address = 0x5e8422345238f34275888049021821e8e08caa1f) c
@@ -104,7 +104,7 @@ group by 1
 )
 ,
 cte as (
-select * from (VALUES   
+select * from (VALUES
 (0x486B3cbE3fac82492220f646D890cA805BE2726a, 0x8a420aaca0c92e3f97cdcfdd852e01ac5b609452, 'sAMM-ETH/frxETH' ),
 (0xbA86cb779d30fe8Adcd64f15931A63f6bae261DD, 0x49ad051f4263517bd7204f75123b7c11af9fd31c, 'sAMM-MAI/FRAX'),
 (0x068875E5BBe89Ab1eF0A8E62e5650107875f0C39, 0xc2d245919db52ea4d5d269b0c710056639176ead, 'sAMM-sfrxETH/frxETH'),
@@ -119,15 +119,15 @@ select * from (VALUES
 )
 ,
 bribe_base as (
-select block_time, 
+select block_time,
 a.contract_address as bribe_address,
 b.contract_address as contract_address,
-b.contract_name, 
+b.contract_name,
 round(cast(bytearray_to_uint256(bytearray_substring(data,33,32)) as double)/pow(10,18)) as amount,
 from_unixtime(cast(bytearray_to_int256(bytearray_substring(data,65)) as double)) as start_time
-from {{source('frax_finance_bnb','bnb.logs')}}  a
+from {{source('bnb', 'logs')}}  a
 left join cte b
-on a.contract_address = b.bribe_address 
+on a.contract_address = b.bribe_address
 where topic0 = 0x6a6f77044107a33658235d41bedbbaf2fe9ccdceb313143c947a5e76e1ec8474
 and bytearray_substring(data,1,32) = 0x000000000000000000000000e48a3d7d0bc88d552f730b62c006bc925eadb9ee
 and a.contract_address in (select bribe_address from cte)
@@ -135,7 +135,7 @@ and a.contract_address in (select bribe_address from cte)
 ,
 
 bribes as (
-select 
+select
 a.start_time,
 sum(case when (token0 = 0x64048A7eEcF3a2F1BA9e144aAc3D7dB6e58F555e  and token1 = 0x90C97F71E18723b0Cf0dfa30ee176Ab653E89F40) then amount/2
 when token0 = 0x90C97F71E18723b0Cf0dfa30ee176Ab653E89F40 then amount
@@ -148,7 +148,7 @@ when token0 = 0x90C97F71E18723b0Cf0dfa30ee176Ab653E89F40 then amount
  end ) as FrxETH_bribe
  from bribe_base a
 left join pairs c
-on a.contract_address = c.contract_address 
+on a.contract_address = c.contract_address
 group by 1
 )
 ,
@@ -161,9 +161,9 @@ bytearray_substring(topic2,13,21) as reward_token_collected,
 round(cast(bytearray_to_uint256(data) as double)/pow(10,18)) as reward_amount,
 case when bytearray_substring(topic2,13,21) = 0xe48A3d7d0Bc88d552f730B62c006bC925eadB9eE then round(cast(bytearray_to_uint256(data) as double)/pow(10,18)*b.price)
 end as reward_amount_usd
-from {{source('frax_finance_bnb','bnb.logs')}} a 
+from {{source('bnb', 'logs')}} a
 left join (select * from prices where contract_address = 0x3432B6A60D23Ca0dFCa7761B7ab56459D9C964D0) b
-on date_trunc('day',a.block_time) = b.day
+on date_trunc('day', a.block_time) = b.day
 left join cte c
 on a.contract_address = c.bribe_address
 where topic0 = 0x540798df468d7b23d11f156fdb954cb19ad414d150722a7b6d55ba369dea792e
@@ -177,11 +177,11 @@ weekly_rewards as (
 select
 collection_time,
 sum(reward_amount_usd) as FXS_collected_usd
-from rewards_received 
+from rewards_received
 group by 1
 )
 
-select 
+select
 week_start,
 week_end,
 week,
@@ -205,7 +205,7 @@ on a.week_start = b.block_time
 left join TVL_sum c
 on a.week_end = c.block_time
 left join bribes d
-on a.week_start = d.start_time 
+on a.week_start = d.start_time
 left join (select day, price from prices where contract_address = 0x3432B6A60D23Ca0dFCa7761B7ab56459D9C964D0) e
 on date(a.week_start) = e.day
 left join weekly_rewards f
