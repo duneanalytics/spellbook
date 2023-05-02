@@ -99,7 +99,7 @@ models:
     meta:
       blockchain: optimism
       sector: nft
-      contributors: chuxin
+      contributors: chuxin, hildobby
     config:
       tags: ['nft', 'optimism', 'aggregators']
     description: >
