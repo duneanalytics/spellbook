@@ -9,6 +9,7 @@ profile: "spellbook"
 
 vars:
   DBT_ENV_CUSTOM_ENV_S3_BUCKET: "{{ env_var('DBT_ENV_CUSTOM_ENV_S3_BUCKET', 'local') }}"
+  ETH_ERC20_ADDRESS: '0x0000000000000000000000000000000000000000'
 
 # These configurations specify where dbt should look for different types of files.
 # You don't need to change these!
@@ -284,7 +285,7 @@ models:
       +schema: blur
       ethereum:
         +schema: blur_ethereum
-        
+
     stealcam:
       +schema: stealcam
       arbitrum:
@@ -474,7 +475,7 @@ models:
         +schema: tokens_solana
         +materialized: table
         +file_format: delta
-      
+
     solana_utils:
       +schema: solana_utils
 
@@ -986,7 +987,7 @@ models:
       +schema: oneinch
       ethereum:
         +schema: oneinch_ethereum
-        
+
     nftearth:
       +schema: nftearth
       optimism:
@@ -1004,7 +1005,7 @@ models:
 
     method_ids:
       +schema: method_ids
-      
+
     coinbase_wallet_quests:
       +schema: coinbase_wallet_quests
       optimism:

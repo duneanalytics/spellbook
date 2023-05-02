@@ -348,5 +348,4 @@ left outer join {{ source('erc20_ethereum','evt_transfer') }} erc20 on erc20.con
     {% endif %}
 left outer join transfers_for_tokens_sold_from_auction po -- if sold from auction house previous owner
     on a.evt_tx_hash = po.evt_tx_hash
-where (a.amount/1e18) > 0
 ;
