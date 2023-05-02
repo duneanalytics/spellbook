@@ -1,0 +1,92 @@
+version: 2
+
+models:
+ - name: archipelago_ethereum_base_trades
+   meta:
+     blockchain: ethereum
+     sector: nft
+     project: archipelago
+     contributors: 0xRob
+   config:
+     tags: ['ethereum', 'nft', 'trades', 'archipelago']
+   description: "Archipelago base trades"
+   tests:
+     - dbt_utils.unique_combination_of_columns:
+         combination_of_columns: ['block_number','tx_hash','sub_tx_trade_id']
+     - dbt_utils.equal_rowcount:
+         compare_model: source('archipelago_ethereum','ArchipelagoMarket_evt_Trade')
+     - dbt_utils.equal_rowcount:
+         compare_model: ref('archipelago_ethereum_events')
+     - check_seed:
+         seed_file: ref('archipelago_ethereum_base_trades_seed')
+         match_columns:
+           - block_number
+           - tx_hash
+           - sub_tx_trade_id
+         check_columns:
+           - buyer
+           - seller
+           - nft_contract_address
+           - nft_token_id
+           - price_raw
+           - platform_fee_amount_raw
+           - royalty_fee_amount_raw
+
+
+ - name: superrare_ethereum_base_trades
+   meta:
+     blockchain: ethereum
+     sector: nft
+     project: superrare
+     contributors: ['0xRob', 'cat']
+   config:
+     tags: [ 'ethereum', 'nft', 'trades', 'superrare' ]
+   description: "Superrare base trades"
+   tests:
+     - dbt_utils.unique_combination_of_columns:
+         combination_of_columns: [ 'block_number','tx_hash','sub_tx_trade_id' ]
+     - dbt_utils.equal_rowcount:
+         compare_model: ref('superrare_ethereum_events')
+     - check_seed:
+         seed_file: ref('superrare_ethereum_base_trades_seed')
+         match_columns:
+           - block_number
+           - tx_hash
+           - sub_tx_trade_id
+         check_columns:
+           - buyer
+           - seller
+           - nft_contract_address
+           - nft_token_id
+           - price_raw
+           - platform_fee_amount_raw
+           - royalty_fee_amount_raw
+
+
+ - name: foundation_ethereum_base_trades
+   meta:
+     blockchain: ethereum
+     sector: nft
+     project: foundation
+     contributors: ['soispoke', 'hildobby', '0xRob']
+   config:
+     tags: [ 'ethereum', 'nft', 'trades', 'foundation' ]
+   description: "foundation base trades"
+   tests:
+     - dbt_utils.unique_combination_of_columns:
+         combination_of_columns: [ 'block_number','tx_hash','sub_tx_trade_id' ]
+     - check_seed:
+         seed_file: ref('foundation_ethereum_base_trades_seed')
+         match_columns:
+           - block_number
+           - tx_hash
+           - sub_tx_trade_id
+         check_columns:
+           - buyer
+           - seller
+           - nft_contract_address
+           - nft_token_id
+           - price_raw
+           - platform_fee_amount_raw
+           - royalty_fee_amount_raw
+
