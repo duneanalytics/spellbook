@@ -27,10 +27,10 @@ WITH
             , CASE WHEN lower(tt.symbol) > lower(mt.symbol) THEN concat(mt.symbol, '-', tt.symbol) ELSE concat(tt.symbol, '-', mt.symbol) END AS token_pair
             , fills.takerAssetFilledAmount as taker_token_filled_amount_raw
             , fills.makerAssetFilledAmount as maker_token_filled_amount_raw
-            , fills.makerAssetFilledAmount / (10^mt.decimals) AS maker_asset_filled_amount
+            , fills.makerAssetFilledAmount / pow(10, mt.decimals) AS maker_asset_filled_amount
             , SUBSTRING(fills.takerAssetData,17,20) AS taker_token
             , tt.symbol AS taker_symbol
-            , fills.takerAssetFilledAmount / (10^tt.decimals) AS taker_asset_filled_amount
+            , fills.takerAssetFilledAmount / pow(10, tt.decimals) AS taker_asset_filled_amount
             , (fills.feeRecipientAddress in 
                 ('0x9b858be6e3047d88820f439b240deac2418a2551','0x86003b044f70dac0abc80ac8957305b6370893ed','0x5bc2419a087666148bfbe1361ae6c06d240c6131')) 
                 AS matcha_limit_order_flag
@@ -45,7 +45,7 @@ WITH
                     WHEN mp.symbol = 'DAI' THEN (fills.makerAssetFilledAmount / 1e18) * mp.price
                     WHEN tp.symbol = 'WETH' THEN (fills.takerAssetFilledAmount / 1e18) * tp.price
                     WHEN mp.symbol = 'WETH' THEN (fills.makerAssetFilledAmount / 1e18) * mp.price
-                    ELSE COALESCE((fills.makerAssetFilledAmount / (10^mt.decimals))*mp.price,(fills.takerAssetFilledAmount / (10^tt.decimals))*tp.price)
+                  ELSE COALESCE((fills.makerTokenFilledAmount / pow(10, mt.decimals))*mp.price,(fills.takerTokenFilledAmount / pow(10, tt.decimals))*tp.price)
                 END AS volume_usd
             , fills.protocolFeePaid / 1e18 AS protocol_fee_paid_eth,
             fills.contract_address
@@ -88,10 +88,10 @@ WITH
             , CASE WHEN lower(tt.symbol) > lower(mt.symbol) THEN concat(mt.symbol, '-', tt.symbol) ELSE concat(tt.symbol, '-', mt.symbol) END AS token_pair
             , fills.takerAssetFilledAmount as taker_token_filled_amount_raw
             , fills.makerAssetFilledAmount as maker_token_filled_amount_raw
-            , fills.makerAssetFilledAmount / (10^mt.decimals) AS maker_asset_filled_amount
+            , fills.makerAssetFilledAmount / pow(10, mt.decimals) AS maker_asset_filled_amount
             , SUBSTRING(fills.takerAssetData,17,20) AS taker_token
             , tt.symbol AS taker_symbol
-            , fills.takerAssetFilledAmount / (10^tt.decimals) AS taker_asset_filled_amount
+            , fills.takerAssetFilledAmount / pow(10, tt.decimals) AS taker_asset_filled_amount
             , (fills.feeRecipientAddress in 
                 ('0x9b858be6e3047d88820f439b240deac2418a2551','0x86003b044f70dac0abc80ac8957305b6370893ed','0x5bc2419a087666148bfbe1361ae6c06d240c6131')) 
                 AS matcha_limit_order_flag
@@ -106,7 +106,7 @@ WITH
                     WHEN mp.symbol = 'DAI' THEN (fills.makerAssetFilledAmount / 1e18) * mp.price
                     WHEN tp.symbol = 'WETH' THEN (fills.takerAssetFilledAmount / 1e18) * tp.price
                     WHEN mp.symbol = 'WETH' THEN (fills.makerAssetFilledAmount / 1e18) * mp.price
-                    ELSE COALESCE((fills.makerAssetFilledAmount / (10^mt.decimals))*mp.price,(fills.takerAssetFilledAmount / (10^tt.decimals))*tp.price)
+                  ELSE COALESCE((fills.makerTokenFilledAmount / pow(10, mt.decimals))*mp.price,(fills.takerTokenFilledAmount / pow(10, tt.decimals))*tp.price)
                 END AS volume_usd, fills.contract_address
             , cast(null as numeric) as protocol_fee_paid_eth
             , 'fills' as native_order_type
@@ -149,10 +149,10 @@ WITH
             , CASE WHEN lower(tt.symbol) > lower(mt.symbol) THEN concat(mt.symbol, '-', tt.symbol) ELSE concat(tt.symbol, '-', mt.symbol) END AS token_pair
             , fills.takerTokenFilledAmount as taker_token_filled_amount_raw
             , fills.makerTokenFilledAmount as maker_token_filled_amount_raw
-            , fills.makerTokenFilledAmount / (10^mt.decimals) AS maker_asset_filled_amount
+            , fills.makerTokenFilledAmount / pow(10, mt.decimals) AS maker_asset_filled_amount
             , fills.takerToken AS taker_token
             , tt.symbol AS taker_symbol
-            , fills.takerTokenFilledAmount / (10^tt.decimals) AS taker_asset_filled_amount
+            , fills.takerTokenFilledAmount / pow(10, tt.decimals) AS taker_asset_filled_amount
             , (fills.feeRecipient in 
                 ('0x9b858be6e3047d88820f439b240deac2418a2551','0x86003b044f70dac0abc80ac8957305b6370893ed','0x5bc2419a087666148bfbe1361ae6c06d240c6131')) 
                 AS matcha_limit_order_flag
@@ -167,7 +167,7 @@ WITH
                     WHEN mp.symbol = 'DAI' THEN (fills.makerTokenFilledAmount / 1e18) * mp.price
                     WHEN tp.symbol = 'WETH' THEN (fills.takerTokenFilledAmount / 1e18) * tp.price
                     WHEN mp.symbol = 'WETH' THEN (fills.makerTokenFilledAmount / 1e18) * mp.price
-                    ELSE COALESCE((fills.makerTokenFilledAmount / (10^mt.decimals))*mp.price,(fills.takerTokenFilledAmount / (10^tt.decimals))*tp.price)
+                  ELSE COALESCE((fills.makerTokenFilledAmount / pow(10, mt.decimals))*mp.price,(fills.takerTokenFilledAmount / pow(10, tt.decimals))*tp.price)
                 END AS volume_usd
             , fills.protocolFeePaid/ 1e18 AS protocol_fee_paid_eth
             , fills.contract_address
@@ -211,10 +211,10 @@ WITH
           , CASE WHEN lower(tt.symbol) > lower(mt.symbol) THEN concat(mt.symbol, '-', tt.symbol) ELSE concat(tt.symbol, '-', mt.symbol) END AS token_pair
           , fills.takerTokenFilledAmount as taker_token_filled_amount_raw
           , fills.makerTokenFilledAmount as maker_token_filled_amount_raw
-          , fills.makerTokenFilledAmount / (10^mt.decimals) AS maker_asset_filled_amount
+          , fills.makerTokenFilledAmount / pow(10, mt.decimals) AS maker_asset_filled_amount
           , fills.takerToken AS taker_token
           , tt.symbol AS taker_symbol
-          , fills.takerTokenFilledAmount / (10^tt.decimals) AS taker_asset_filled_amount
+          , fills.takerTokenFilledAmount / pow(10, tt.decimals) AS taker_asset_filled_amount
           , false as matcha_limit_order_flag
           , CASE
                   WHEN tp.symbol = 'USDC' THEN (fills.takerTokenFilledAmount / 1e6) ----don't multiply by anything as these assets are USD
@@ -227,7 +227,7 @@ WITH
                   WHEN mp.symbol = 'DAI' THEN (fills.makerTokenFilledAmount / 1e18) * mp.price
                   WHEN tp.symbol = 'WETH' THEN (fills.takerTokenFilledAmount / 1e18) * tp.price
                   WHEN mp.symbol = 'WETH' THEN (fills.makerTokenFilledAmount / 1e18) * mp.price
-                  ELSE COALESCE((fills.makerTokenFilledAmount / (10^mt.decimals))*mp.price,(fills.takerTokenFilledAmount / (10^tt.decimals))*tp.price)
+                  ELSE COALESCE((fills.makerTokenFilledAmount / pow(10, mt.decimals))*mp.price,(fills.takerTokenFilledAmount / pow(10, tt.decimals))*tp.price)
               END AS volume_usd
           , cast(null as numeric) AS protocol_fee_paid_eth,
           fills.contract_address
@@ -270,10 +270,10 @@ WITH
           , CASE WHEN lower(tt.symbol) > lower(mt.symbol) THEN concat(mt.symbol, '-', tt.symbol) ELSE concat(tt.symbol, '-', mt.symbol) END AS token_pair
           , fills.takerTokenFilledAmount as taker_token_filled_amount_raw
           , fills.makerTokenFilledAmount as maker_token_filled_amount_raw
-          , fills.makerTokenFilledAmount / (10^mt.decimals) AS maker_asset_filled_amount
+          , fills.makerTokenFilledAmount / pow(10, mt.decimals) AS maker_asset_filled_amount
           , fills.takerToken AS taker_token
           , tt.symbol AS taker_symbol
-          , fills.takerTokenFilledAmount / (10^tt.decimals) AS taker_asset_filled_amount
+          , fills.takerTokenFilledAmount / pow(10, tt.decimals) AS taker_asset_filled_amount
           , false as matcha_limit_order_flag
           , CASE
                   WHEN tp.symbol = 'USDC' THEN (fills.takerTokenFilledAmount / 1e6) ----don't multiply by anything as these assets are USD
@@ -286,7 +286,7 @@ WITH
                   WHEN mp.symbol = 'DAI' THEN (fills.makerTokenFilledAmount / 1e18) * mp.price
                   WHEN tp.symbol = 'WETH' THEN (fills.takerTokenFilledAmount / 1e18) * tp.price
                   WHEN mp.symbol = 'WETH' THEN (fills.makerTokenFilledAmount / 1e18) * mp.price
-                  ELSE COALESCE((fills.makerTokenFilledAmount / (10^mt.decimals))*mp.price,(fills.takerTokenFilledAmount / (10^tt.decimals))*tp.price)
+                  ELSE COALESCE((fills.makerTokenFilledAmount / pow(10, mt.decimals))*mp.price,(fills.takerTokenFilledAmount / pow(10, tt.decimals))*tp.price)
               END AS volume_usd
           , cast(null as numeric) AS protocol_fee_paid_eth
           , fills.contract_address
@@ -375,3 +375,4 @@ WITH
             AND tx.block_time >= '{{zeroex_v3_start_date}}'
             {% endif %}
             
+0x415565b0000000000000000000000000eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee00000000000000000000000067d012f731c23f0313cea1186d0121779c77fcfe0000000000000000000000000000000000000000000000000b1a2bc2ec50000000000000000000000000000000000000000000000000000000056e87be8638aa00000000000000000000000000000000000000000000000000000000000000a000000000000000000000000000000000000000000000000000000000000000040000000000000000000000000000000000000000000000000000000000000080000000000000000000000000000000000000000000000000000000000000012000000000000000000000000000000000000000000000000000000000000009400000000000000000000000000000000000000000000000000000000000000a40000000000000000000000000000000000000000000000000000000000000000400000000000000000000000000000000000000000000000000000000000000400000000000000000000000000000000000000000000000000000000000000040000000000000000000000000eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee0000000000000000000000000000000000000000000000000b1a2bc2ec5000000000000000000000000000000000000000000000000000000000000000000006000000000000000000000000000000000000000000000000000000000000004000000000000000000000000000000000000000000000000000000000000007c000000000000000000000000000000000000000000000000000000000000000200000000000000000000000000000000000000000000000000000000000000000000000000000000000000000bb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c00000000000000000000000067d012f731c23f0313cea1186d0121779c77fcfe00000000000000000000000000000000000000000000000000000000000001200000000000000000000000000000000000000000000000000000000000000780000000000000000000000000000000000000000000000000000000000000078000000000000000000000000000000000000000000000000000000000000007000000000000000000000000000000000000000000000000000b1a2bc2ec50000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000004000000000000000000000000000000000000000000000000000000000000008000000000000000000000000000000000000000000000000000000000000001c0000000000000000000000000000000000000000000000000000000000000032000000000000000000000000000000000000000000000000000000000000004800000000000000000000000000000000250616e63616b6553776170000000000000000000000000000000000000000000000000000000000008e793d8ef39c21400000000000000000000000000000000000000000000000000045ebbcc7e98db000000000000000000000000000000000000000000000000000000000000008000000000000000000000000000000000000000000000000000000000000000a000000000000000000000000005ff2b0db69458a0750badebc4f9e13add608c7f00000000000000000000000000000000000000000000000000000000000000400000000000000000000000000000000000000000000000000000000000000002000000000000000000000000bb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c00000000000000000000000067d012f731c23f0313cea1186d0121779c77fcfe000000000000000000000000000000024170655377617000000000000000000000000000000000000000000000000000000000000000000000a074f9b6ad1cef00000000000000000000000000000000000000000000000000005004563f2155000000000000000000000000000000000000000000000000000000000000008000000000000000000000000000000000000000000000000000000000000000c0000000000000000000000000c0788a3ad43d79aa53b09c2eacc313a787d1d60700000000000000000000000000000000000000000000000000000000000000400000000000000000000000000000000000000000000000000000000000000003000000000000000000000000bb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c000000000000000000000000e9e7cea3dedca5984780bafc599bd69add087d5600000000000000000000000067d012f731c23f0313cea1186d0121779c77fcfe0000000000000000000000000000000250616e63616b6553776170000000000000000000000000000000000000000000000000000000000000a074f9b6ad1cef00000000000000000000000000000000000000000000000000004ed8611a8f8c000000000000000000000000000000000000000000000000000000000000008000000000000000000000000000000000000000000000000000000000000000c000000000000000000000000005ff2b0db69458a0750badebc4f9e13add608c7f00000000000000000000000000000000000000000000000000000000000000400000000000000000000000000000000000000000000000000000000000000003000000000000000000000000bb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c000000000000000000000000e9e7cea3dedca5984780bafc599bd69add087d5600000000000000000000000067d012f731c23f0313cea1186d0121779c77fcfe00000000000000000000000000000002417065537761700000000000000000000000000000000000000000000000000000000000000000000148efccb67c7b500000000000000000000000000000000000000000000000000000a2592227065a000000000000000000000000000000000000000000000000000000000000008000000000000000000000000000000000000000000000000000000000000000a0000000000000000000000000c0788a3ad43d79aa53b09c2eacc313a787d1d60700000000000000000000000000000000000000000000000000000000000000400000000000000000000000000000000000000000000000000000000000000002000000000000000000000000bb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c00000000000000000000000067d012f731c23f0313cea1186d0121779c77fcfe000000000000000000000000000000000000000000000000000000000000000400000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000002000000000000000000000000000000000000000000000000000000000000004000000000000000000000000000000000000000000000000000000000000000a00000000000000000000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000000000000000000000000100000000000000000000000067d012f731c23f0313cea1186d0121779c77fcfe000000000000000000000000000000000000000000000000000006f3e0f3df0000000000000000000000000096c195f6643a3d797cb90cb6ba0ae2776d51b5f30000000000000000000000000000000000000000000000000000000000000001000000000000000000000000000000000000000000000000000000000000004000000000000000000000000000000000000000000000000000000000000000e00000000000000000000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000000000000000000000004000000000000000000000000000000000000000000000000000000000000000a00000000000000000000000000000000000000000000000000000000000000002000000000000000000000000bb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c000000000000000000000000eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee0000000000000000000000000000000000000000000000000000000000000000869584cd00000000000000000000000096c195f6643a3d797cb90cb6ba0ae2776d51b5f300000000000000000000000000000000000000000000001a64fa96426178746f
