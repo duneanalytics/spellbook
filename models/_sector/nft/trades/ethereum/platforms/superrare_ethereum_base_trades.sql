@@ -184,7 +184,7 @@ SELECT
     a.block_time,
     a.block_number,
     a.nft_token_id,
-    CAST(1 AS DECIMAL(38,0)) as nft_amount,
+    1 as nft_amount,
     'Buy' as trade_category,
     a.seller,
     a.buyer,
@@ -217,11 +217,16 @@ left join {{ source('erc721_ethereum','evt_transfer') }} minter on minter.contra
     and minter.from = '0x0000000000000000000000000000000000000000'
     {% if is_incremental() %}
     and minter.evt_block_time >= date_trunc("day", now() - interval '1 week')
+    {% else %}
+    and minter.evt_block_time >= '{{ project_start_date }}'
     {% endif %}
+
 left join {{ source('erc20_ethereum','evt_transfer') }} minter_superrare on minter_superrare.contract_address = a.contract_address
     and minter_superrare.value = a.nft_token_id
     and minter_superrare.from = '0x0000000000000000000000000000000000000000'
     {% if is_incremental() %}
     and minter_superrare.evt_block_time >= date_trunc("day", now() - interval '1 week')
+    {% else %}
+    and minter_superrare.evt_block_time >= '{{ project_start_date }}'
     {% endif %}
 
