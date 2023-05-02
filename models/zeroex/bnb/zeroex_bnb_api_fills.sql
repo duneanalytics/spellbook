@@ -316,8 +316,8 @@ SELECT   s.tx_hash tx_hash, s.index evt_index, s.contract_address, s.block_time,
             z.taker AS taker,
             z.taker_token,
             z.maker_token,
-            bytea2numeric_v3('0x' || substring(DATA, 219, 40)) AS taker_token_amount_raw,
-            bytea2numeric_v3('0x' || substring(DATA, 27, 40)) AS maker_token_amount_raw,
+            bytea2numeric_v3('0x' || substring(DATA, 27, 40)) AS taker_token_amount_raw,
+            bytea2numeric_v3('0x' || substring(DATA, 219, 40)) AS maker_token_amount_raw,
             'direct_uniswapv2' AS TYPE,
             z.affiliate_address AS affiliate_address,
             TRUE AS swap_flag,
@@ -397,19 +397,19 @@ SELECT distinct
         maker_token,
         ms.symbol AS maker_symbol,
         CASE WHEN lower(ts.symbol) > lower(ms.symbol) THEN concat(ms.symbol, '-', ts.symbol) ELSE concat(ts.symbol, '-', ms.symbol) END AS token_pair,
-        taker_token_amount_raw / pow(10, tp.decimals) AS taker_token_amount,
+        taker_token_amount_raw / pow(10, ts.decimals) AS taker_token_amount,
         taker_token_amount_raw,
-        maker_token_amount_raw / pow(10, mp.decimals) AS maker_token_amount,
+        maker_token_amount_raw / pow(10, ms.decimals) AS maker_token_amount,
         maker_token_amount_raw,
         all_tx.type,
         affiliate_address,
         swap_flag,
         matcha_limit_order_flag,
         CASE WHEN maker_token IN ('0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c','0x55d398326f99059ff775485246999027b3197955','0x8ac76a51cc950d9822d68b83fe1ad97b32cd580d','0x7083609fce4d1d8dc0c979aab8c869ea2c873402')
-             THEN (all_tx.maker_token_amount_raw / pow(10, mp.decimals)) * mp.price
+             THEN (all_tx.maker_token_amount_raw / pow(10, ms.decimals)) * mp.price
              WHEN taker_token IN ('0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c','0x55d398326f99059ff775485246999027b3197955','0x8ac76a51cc950d9822d68b83fe1ad97b32cd580d','0x7083609fce4d1d8dc0c979aab8c869ea2c873402')
-             THEN (all_tx.taker_token_amount_raw / pow(10, tp.decimals)) * tp.price
-             ELSE COALESCE((all_tx.maker_token_amount_raw / pow(10, mp.decimals)) * mp.price, (all_tx.taker_token_amount_raw / pow(10, tp.decimals)) * tp.price)
+             THEN (all_tx.taker_token_amount_raw / pow(10, ts.decimals)) * tp.price
+             ELSE COALESCE((all_tx.maker_token_amount_raw / pow(10, ms.decimals)) * mp.price, (all_tx.taker_token_amount_raw / pow(10, ts.decimals)) * tp.price)
              END AS volume_usd,
         tx.from AS tx_from,
         tx.to AS tx_to,
@@ -461,3 +461,5 @@ LEFT OUTER JOIN {{ ref('tokens_erc20') }} ms ON ms.contract_address =
                     WHEN all_tx.maker_token = '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee' THEN '0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c'
                     ELSE all_tx.maker_token end 
                 AND ms.blockchain = 'bnb'
+
+0x00000000000000000000000000000000000000000000000007654f231b08c0d60000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000002a23317dc609e6d79ef7cce2
