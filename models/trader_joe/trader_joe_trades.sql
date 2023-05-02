@@ -1,14 +1,15 @@
 {{ config(
         alias ='trades',
-        post_hook='{{ expose_spells(\'["avalanche_c"]\',
+        post_hook='{{ expose_spells(\'["avalanche_c","bnb"]\',
                                 "project",
                                 "trader_joe",
-                                \'["jeff-dude","mtitus6","Henrystats"]\') }}'
+                                \'["jeff-dude","mtitus6","Henrystats","hsrvc"]\') }}'
         )
 }}
 
 {% set trader_joe_models = [
-ref('trader_joe_avalanche_c_trades')
+    ref('trader_joe_avalanche_c_trades')
+,   ref('trader_joe_bnb_trades')
 ] %}
 
 
