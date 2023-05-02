@@ -15,8 +15,7 @@ trade_events as (
     SELECT * FROM {{ source('archipelago_ethereum','ArchipelagoMarket_evt_Trade') }}
     {% if is_incremental() %}
     WHERE evt_block_time >= date_trunc("day", now() - interval '1 week')
-    {% endif %}
-    {% if not is_incremental() %}
+    {% else %}
     WHERE evt_block_time >= '{{project_start_date}}'
     {% endif %}
 ),
@@ -24,8 +23,7 @@ token_events as (
     SELECT * FROM {{ source('archipelago_ethereum','ArchipelagoMarket_evt_TokenTrade') }}
     {% if is_incremental() %}
     WHERE evt_block_time >= date_trunc("day", now() - interval '1 week')
-    {% endif %}
-    {% if not is_incremental() %}
+    {% else %}
     WHERE evt_block_time >= '{{project_start_date}}'
     {% endif %}
 ),
@@ -42,8 +40,7 @@ fee_events as (
     FROM {{ source('archipelago_ethereum','ArchipelagoMarket_evt_RoyaltyPayment') }}
     {% if is_incremental() %}
     WHERE evt_block_time >= date_trunc("day", now() - interval '1 week')
-    {% endif %}
-    {% if not is_incremental() %}
+    {% else %}
     WHERE evt_block_time >= '{{project_start_date}}'
     {% endif %}
     GROUP BY evt_block_number, tradeId

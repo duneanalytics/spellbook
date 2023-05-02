@@ -34,6 +34,9 @@ WITH base_union as (
         royalty_fee_address,    -- optional
         sub_tx_trade_id
     FROM {{ nft_model[2] }}
+    {% if is_incremental() %}
+    WHERE block_time >= date_trunc("day", now() - interval '1 week')
+    {% endif %}
     {% if not loop.last %}
     UNION ALL
     {% endif %}
@@ -85,6 +88,9 @@ FROM base_union base
 INNER JOIN {{ transactions_model }} tx
 ON tx.block_number = base.block_number
     AND tx.hash = base.tx_hash
+    {% if is_incremental() %}
+    AND tx.block_time >= date_trunc("day", now() - interval '1 week')
+    {% endif %}
 LEFT JOIN {{ tokens_nft_model }} nft
 ON nft.contract_address = base.nft_contract_address
 LEFT JOIN {{ tokens_erc20_model }} erc20
@@ -93,6 +99,9 @@ LEFT JOIN {{ prices_model }} p
 ON p.blockchain = base.blockchain
     AND p.contract_address = base.currency_contract
     AND p.minute = date_trunc('minute',base.block_time)
+    {% if is_incremental() %}
+    AND p.minute >= date_trunc("day", now() - interval '1 week')
+    {% endif %}
 LEFT JOIN {{ aggregators }} agg
 ON tx.to = agg.contract_address
     OR base.buyer = agg.contract_address
