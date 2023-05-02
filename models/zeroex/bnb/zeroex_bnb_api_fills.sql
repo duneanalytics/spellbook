@@ -19,7 +19,7 @@
 -- Test Query here: https://dune.com/queries/2274187
 WITH zeroex_tx AS (
     SELECT tx_hash,
-           max(affiliate_address) as affiliate_address, taker_token, maker_token, evt_index
+           max(affiliate_address) as affiliate_address, taker_token, maker_token, evt_index, taker 
     FROM (
 
         SELECT v3.evt_tx_hash AS tx_hash,
@@ -87,7 +87,7 @@ WITH zeroex_tx AS (
                 AND block_time >= '{{zeroex_v3_start_date}}'
                 {% endif %}
     ) temp
-    group by tx_hash, taker_token, maker_token, evt_index
+    group by tx_hash, taker_token, maker_token, evt_index, taker 
 
 ),
 v2_fills_no_bridge AS (
