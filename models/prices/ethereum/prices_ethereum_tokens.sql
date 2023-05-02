@@ -15,7 +15,6 @@ SELECT
 FROM
 (
     VALUES
-    ("eth-ethereum","ethereum","ETH","{{ var('ETH_ERC20_ADDRESS') }}",18),
     ("0xbtc-0xbitcoin", "ethereum", "0xBTC", "0xb6ed7644c69416d67b522e20bc294a9a9b405b31", 8),
     ("1inch-1inch", "ethereum", "1INCH", "0x111111111117dc0aa78b770fa6a738034120c302", 18),
     ("aave-new", "ethereum", "AAVE", "0x7fc66500c84a76ad7e9c93437bfc5ac33e2ddae9", 18),
