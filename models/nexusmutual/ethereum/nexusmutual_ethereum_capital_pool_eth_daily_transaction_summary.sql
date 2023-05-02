@@ -19,11 +19,11 @@ WITH
     SELECT
       block_time,
       DATE_TRUNC('day', block_time) AS day,
-      `to`,
-      `from`,
+      t.to,
+      t.from,
       value AS eth_value
     FROM
-      ethereum.traces
+      {{ source('ethereum', 'traces') }} t
     WHERE
       success
 {% if not is_incremental() %}
@@ -33,37 +33,37 @@ WITH
       AND block_time >= date_trunc("day", now() - interval '1 week')
 {% endif %}
       AND (
-        `to` IN (
+        t.to IN (
           '0xcafea7934490ef8b9d2572eaefeb9d48162ea5d8',
           '0xcafeada4d15bbc7592113d5d5af631b5dcd53dcb',
           '0xcafea35ce5a2fc4ced4464da4349f81a122fd12b',
           '0xcafea8321b5109d22c53ac019d7a449c947701fb',
           '0xfd61352232157815cf7b71045557192bf0ce1884',
           '0x7cbe5682be6b648cc1100c76d4f6c96997f753d6',
-          lower('0xcafea112Db32436c2390F5EC988f3aDB96870627')
+          '0xcafea112db32436c2390f5ec988f3adb96870627'
         )
-        OR `from` IN (
+        OR t.from IN (
           '0xcafea7934490ef8b9d2572eaefeb9d48162ea5d8',
           '0xcafeada4d15bbc7592113d5d5af631b5dcd53dcb',
           '0xcafea35ce5a2fc4ced4464da4349f81a122fd12b',
           '0xcafea8321b5109d22c53ac019d7a449c947701fb',
           '0xfd61352232157815cf7b71045557192bf0ce1884',
           '0x7cbe5682be6b648cc1100c76d4f6c96997f753d6',
-          lower('0xcafea112Db32436c2390F5EC988f3aDB96870627')
+          '0xcafea112db32436c2390f5ec988f3adb96870627'
         )
       )
       AND NOT (
         (
-          `to` = '0xcafea35ce5a2fc4ced4464da4349f81a122fd12b'
-          AND `from` = '0xcafea7934490ef8b9d2572eaefeb9d48162ea5d8'
+          t.to = '0xcafea35ce5a2fc4ced4464da4349f81a122fd12b'
+          AND t.from = '0xcafea7934490ef8b9d2572eaefeb9d48162ea5d8'
         )
         OR (
-          `to` = '0xcafea7934490ef8b9d2572eaefeb9d48162ea5d8'
-          AND `from` = '0xcafeada4d15bbc7592113d5d5af631b5dcd53dcb'
+          t.to = '0xcafea7934490ef8b9d2572eaefeb9d48162ea5d8'
+          AND t.from = '0xcafeada4d15bbc7592113d5d5af631b5dcd53dcb'
         )
         OR (
-          `to` = '0xcafea7934490ef8b9d2572eaefeb9d48162ea5d8'
-          AND `from` = '0xfd61352232157815cf7b71045557192bf0ce1884'
+          t.to = '0xcafea7934490ef8b9d2572eaefeb9d48162ea5d8'
+          AND t.from = '0xfd61352232157815cf7b71045557192bf0ce1884'
         )
       )
   )
@@ -71,7 +71,7 @@ SELECT DISTINCT
   day,
   SUM(
     CASE
-      WHEN `to` IN (
+      WHEN t.to IN (
         '0xcafea7934490ef8b9d2572eaefeb9d48162ea5d8',
         '0xcafeada4d15bbc7592113d5d5af631b5dcd53dcb',
         '0xcafea35ce5a2fc4ced4464da4349f81a122fd12b',
@@ -88,7 +88,7 @@ SELECT DISTINCT
   ) AS eth_ingress,
   SUM(
     CASE
-      WHEN `from` IN (
+      WHEN t.from IN (
         '0xcafea7934490ef8b9d2572eaefeb9d48162ea5d8',
         '0xcafeada4d15bbc7592113d5d5af631b5dcd53dcb',
         '0xcafea35ce5a2fc4ced4464da4349f81a122fd12b',
@@ -104,4 +104,4 @@ SELECT DISTINCT
       day
   ) AS eth_egress
 FROM
-  ethereum_transactions
+  ethereum_transactions t
