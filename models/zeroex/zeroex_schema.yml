@@ -5,7 +5,7 @@ models:
     meta:
       blockchain: ethereum, optimism, polygon, arbitrum, fantom, avalanche, bnb
       project: zeroex
-      contributors: danning.sui, bakabhai993, hosuke, rantum
+      contributors: rantum, danning.sui, bakabhai993
     config:
       tags: ['ethereum','0x','dex_aggregator','dex','aggregator','optimism','polygon','arbitrum','fantom','avalanche','bnb']
     description: >
@@ -33,7 +33,6 @@ models:
       - &block_number
         name: block_number
         description: "Block Number of the fill"        
-        description: "Index of the corresponding fill/swap event"
       - &contract_address
         name: contract_address
         desctiption: "The address of the contract which fired the fill/swap event"
@@ -166,12 +165,6 @@ models:
       tags: ['ethereum','optimism', 'polygon', 'abitrum', 'fafntom', 'avalanche', 'bnb', '0x','dex_aggregator','dex','aggregator']
     description: >
         0x aggreator swaps thru 0x 0x API
-    tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - block_date
-            - tx_hash
-            - evt_index
     columns:
       - *blockchain
       - &project 
@@ -221,4 +214,88 @@ models:
       - &trace_address
         name: trace_address
         description: "The trace address of the transaction"
-      - *evt_index               
+      - *evt_index  
+
+  - name: zeroex_native_fills 
+    meta:
+      blockchain: ethereum,polygon,arbitrum,optimism,bnb
+      project: zeroex
+      contributors: rantum, danning.sui, bakabhai993
+    config:
+      tags: ['ethereum','polygon','0x','optimism','arbitrum','fantom','bnb','dex']
+    description: >
+        0x native swaps thru 0x exchange contracts (without using 0x API) on Ethereum & Polygon & Arbitrum & Fantom & BNB
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_date
+            - tx_hash
+            - evt_index
+    columns:
+      - *tx_hash
+      - *contract_address
+      - *block_time
+      - *maker
+      - *taker
+      - *taker_token
+      - *taker_symbol
+      - *maker_token
+      - *maker_symbol      
+      - *token_pair
+      - *taker_token_amount
+      - *taker_token_amount_raw
+      - *maker_token_amount
+      - *maker_token_amount_raw
+      - *volume_usd
+      - *tx_from
+      - *tx_to
+      - *evt_index
+      - *blockchain
+      - &native_fill_type
+        name: native_fill_type
+        description: "type of native fill - RFQ, limit order, OTC, fill"
+      - &fee_recipient_address
+        name: fee_recipient_address
+        description: "The recipient address of the fee, or the applications that is using 0x API, for receiving fee"
+      - &protocol_fee_paid_eth
+        name: protocol_fee_paid_eth
+
+  - name: zeroex_native_trades
+    meta:
+      blockchain: ethereum, optimism, polygon, arbitrum, fantom, bnb
+      project: zeroex
+      contributors: rantum, danning.sui, bakabhai993 
+    config:
+      tags: ['ethereum','optimism', 'polygon', 'abitrum', 'fantom', 'bnb', '0x','dex_aggregator','dex','aggregator']
+    description: >
+        0x native swaps thru 0x exchange contracts (without using 0x API) on Ethereum & Polygon & Arbitrum & Fantom & BNB
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_date
+            - tx_hash
+            - evt_index
+    columns:
+      - *blockchain
+      - *project 
+      - *version
+      - *block_date
+      - *block_time
+      - *token_bought_symbol
+      - *token_sold_symbol
+      - *token_pair
+      - *token_bought_amount
+      - *token_sold_amount
+      - *token_bought_amount_raw
+      - *token_sold_amount_raw
+      - *amount_usd
+      - *token_bought_address
+      - *token_sold_address
+      - *taker
+      - *maker
+      - *project_contract_address
+      - *tx_hash
+      - *tx_from
+      - *tx_to
+      - *trace_address
+      - *evt_index  
