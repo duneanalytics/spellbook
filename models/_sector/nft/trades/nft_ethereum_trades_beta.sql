@@ -27,10 +27,10 @@ WITH cte_prices_patch as (
         '{{ var("ETH_ERC20_ADDRESS") }}' as contract_address
         ,'ethereum' as blockchain
         ,18 as decimals
-        ,p.minute
-        ,p.price
+        ,minute
+        ,price
         ,'ETH' as symbol
-    FROM {{ ref('prices_usd_forward_fill') }} p
+    FROM {{ ref('prices_usd_forward_fill') }}
     WHERE blockchain is null AND symbol = 'ETH'
     {% if is_incremental() %}
     AND minute >= date_trunc("day", now() - interval '1 week')
