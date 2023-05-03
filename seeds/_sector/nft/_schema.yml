@@ -1,0 +1,24 @@
+version: 2
+
+seeds:
+  - name: archipelago_ethereum_base_trades_seed
+    config:
+      column_types:
+        price_raw: decimal(38)
+        platform_fee_amount_raw: decimal(38)
+        royalty_fee_amount_raw: decimal(38)
+
+  - name: foundation_ethereum_base_trades_seed
+    config:
+      column_types:
+        price_raw: decimal(38)
+        platform_fee_amount_raw: decimal(38)
+        royalty_fee_amount_raw: decimal(38)
+
+  - name: superrare_ethereum_base_trades_seed
+    config:
+      column_types:
+        price_raw: decimal(38)
+        platform_fee_amount_raw: decimal(38)
+        royalty_fee_amount_raw: decimal(38)
+
