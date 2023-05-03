@@ -15,7 +15,6 @@ SELECT
 FROM
 (
     VALUES
-
     ("0xbtc-0xbitcoin", "ethereum", "0xBTC", "0xb6ed7644c69416d67b522e20bc294a9a9b405b31", 8),
     ("1inch-1inch", "ethereum", "1INCH", "0x111111111117dc0aa78b770fa6a738034120c302", 18),
     ("aave-new", "ethereum", "AAVE", "0x7fc66500c84a76ad7e9c93437bfc5ac33e2ddae9", 18),
@@ -72,6 +71,7 @@ FROM
     ("btt-bittorrent", "ethereum", "BTT", "0xfa456cf55250a839088b27ee32a424d7dacb54ff", 18),
     ("btu-btu-protocol", "ethereum", "BTU", "0xb683d83a532e2cb7dfa5275eed3698436371cc9f", 18),
     ("busd-binance-usd", "ethereum", "BUSD", "0x4fabb145d64652a948d72533023f6e7a623c7c53", 18),
+    ("cake-pancakeswap", "ethereum", "CAKE", "0x152649ea73beab28c5b49b26eb48f7ead6d4c898", 18),
     ("cel-celsius", "ethereum", "CEL", "0xaaaebe6fe48e54f431b0c390cfaf0b017d09d42d", 4),
     ("celr-celer-network", "ethereum", "CELR", "0x4f9254c83eb525f9fcf346490bbb3ed28a81c667", 18),
     ("cennz-centrality", "ethereum", "CENNZ", "0x1122b6a0e00dce0563082b6e2953f3a943855c1f", 18),
@@ -1640,7 +1640,7 @@ FROM
     ('xrio-realio-network-utility-token-exchangable', 'ethereum', 'XRIO', '0x0B4AC2BA3D4924C9A06D9C1d08D7867059A39cC1', 18),
     ('pepe-pepe1', 'ethereum', 'PEPE', '0x6982508145454Ce325dDbE47a25d4ec3d2311933', 18),   
     ('grain-granary','ethereum','GRAIN','0xf88baf18fab7e330fa0c4f83949e23f52fececce',18)
-      
+    
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)
 where contract_address not in (
     '0x841fb148863454a3b3570f515414759be9091465' -- SHIH has bad price feed.

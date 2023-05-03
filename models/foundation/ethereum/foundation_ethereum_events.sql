@@ -12,6 +12,7 @@
     )
 }}
 
+
 WITH all_foundation_trades AS (
     SELECT 'ethereum' AS blockchain
     , 'foundation' AS project

@@ -6,7 +6,7 @@
         post_hook='{{ expose_spells(\'["ethereum"]\',
                                 "project",
                                 "lido",
-                                \'["pipistrella", "adcv", "zergil1397", "lido"]\') }}'
+                                \'["ppclunghe", "gregshestakovlido "]\') }}'
         )
 }}
 
@@ -77,17 +77,17 @@ SELECT  DATE_TRUNC('day', prices.usd.minute) AS period,
             accounts.account,
             accounts.category,
             
-            SUM(coalesce(accounts.token_amount, 0))/coalesce(POWER(10,tokens_prices.decimals),1) AS value_base_token,
+            SUM(coalesce(accounts.token_amount, 0))/coalesce(POWER(10,coalesce(tokens_prices.decimals, pt.decimals)),1) AS value_base_token,
             
             CASE WHEN pt.symbol = 'WETH' THEN 'ETH' 
                  WHEN tokens_prices.token = '7dHbWXmci3dT8UFYWYZweBLXgycu7Y3iL6trKn1Y7ARj' THEN 'stSOL'
                  ELSE pt.symbol END AS base_token,
             coalesce(tokens_prices.token, accounts.token) AS base_token_address,
             
-            coalesce(SUM(accounts.token_amount*tokens_prices.price)/POWER(10,tokens_prices.decimals), 0) AS value_usd,
+            coalesce(SUM(accounts.token_amount*tokens_prices.price)/POWER(10,coalesce(tokens_prices.decimals, pt.decimals)), 0) AS value_usd,
             case when coalesce(tokens_prices.token, accounts.token) = lower('0xae7ab96520de3a18e5e111b5eaab095312d7fe84') 
-                 then SUM(coalesce(accounts.token_amount, 0))/coalesce(POWER(10,tokens_prices.decimals),1) 
-                 else coalesce(SUM(accounts.token_amount*tokens_prices.token_eth_price)/POWER(10,tokens_prices.decimals), 0) 
+                 then SUM(coalesce(accounts.token_amount, 0))/coalesce(POWER(10,coalesce(tokens_prices.decimals, pt.decimals)),1) 
+                 else coalesce(SUM(accounts.token_amount*tokens_prices.token_eth_price)/POWER(10,coalesce(tokens_prices.decimals, pt.decimals)), 0) 
             end AS value_eth,
             coalesce(tokens_prices.price, 0) as token_price,
             coalesce(tokens_prices.token_eth_price, 0) as token_eth_price
@@ -725,7 +725,7 @@ SELECT  DATE_TRUNC('day', prices.usd.minute) AS period,
         )
     )
     LEFT JOIN {{ref('prices_tokens')}} pt ON accounts.token = pt.contract_address                     
-    GROUP BY 1,2,3,4,5,6,8,9, tokens_prices.decimals, tokens_prices.price, tokens_prices.token_eth_price
+    GROUP BY 1,2,3,4,5,6,8,9, tokens_prices.decimals, pt.decimals, tokens_prices.price, tokens_prices.token_eth_price
     ORDER BY period DESC
 
 
