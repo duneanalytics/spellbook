@@ -35,8 +35,8 @@ WITH cte_prices_patch as (
     {% if is_incremental() %}
     AND p.minute >= date_trunc("day", now() - interval '1 week')
     {% endif %}
-)
-
+),
+enriched_trades as (
 -- macros/models/sector/nft
 {{
     enrich_trades(
@@ -50,3 +50,6 @@ WITH cte_prices_patch as (
         aggregator_markers=ref('nft_ethereum_aggregators_markers')
     )
 }}
+)
+
+select * from enriched_trades
