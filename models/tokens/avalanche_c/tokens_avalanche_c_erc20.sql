@@ -195,4 +195,6 @@ FROM (VALUES
         ,('0x2dc3Bb328000553D1D64ec1BEF00572F62B5Ec7C','XWLRS',18)
         ,('0xfDECfC325B584A96E86caBD2eb492320467ed1d8','MIGHT',18)
         ,('0xF7554D17d1c3F09899dCc8B404beCAE6dFA584Fa','MAGIK',18)
+        ,('0x0da67235dD5787D67955420C84ca1cEcd4E5Bb3b','WMEMO',18)
+        ,('0xa41A879bcFdd75983a987FD6b68fae37777e8b28','XEX',18)
     ) AS temp_table (contract_address, symbol, decimals)
