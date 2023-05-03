@@ -20,7 +20,7 @@ WITH cte_prices_patch as (
     SELECT * FROM {{ ref('prices_usd_forward_fill') }}
     WHERE blockchain = 'ethereum'
     {% if is_incremental() %}
-    AND p.minute >= date_trunc("day", now() - interval '1 week')
+    AND minute >= date_trunc("day", now() - interval '1 week')
     {% endif %}
     UNION ALL
     SELECT
@@ -33,7 +33,7 @@ WITH cte_prices_patch as (
     FROM {{ ref('prices_usd_forward_fill') }} p
     WHERE blockchain is null AND symbol = 'ETH'
     {% if is_incremental() %}
-    AND p.minute >= date_trunc("day", now() - interval '1 week')
+    AND minute >= date_trunc("day", now() - interval '1 week')
     {% endif %}
 ),
 enriched_trades as (
