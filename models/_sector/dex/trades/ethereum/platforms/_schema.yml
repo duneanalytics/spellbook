@@ -1,0 +1,20 @@
+version: 2
+
+models:
+  - name: defiswap_ethereum_base_trades
+    meta:
+      blockchain: ethereum
+      sector: dex
+      project: defiswap
+      contributors: pandajackson42, 0xRob, hosuke
+    config:
+      tags: [ 'ethereum', 'dex', 'trades', 'defiswap' ]
+    description: "Defiswap ethereum base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+            - trace_address
+      - dbt_utils.equal_rowcount:
+          compare_model: ref('defiswap_ethereum_trades')
