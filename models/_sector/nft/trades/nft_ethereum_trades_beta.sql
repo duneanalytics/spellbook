@@ -24,7 +24,7 @@ WITH cte_prices_patch as (
         ,minute
         ,price
         ,symbol
-     FROM {{ ref('prices_usd_forward_fill') }}
+    FROM {{ ref('prices_usd_forward_fill') }}
     WHERE blockchain = 'ethereum'
     {% if is_incremental() %}
     AND minute >= date_trunc("day", now() - interval '1 week')
