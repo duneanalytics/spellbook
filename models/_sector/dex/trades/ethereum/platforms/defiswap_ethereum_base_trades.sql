@@ -39,6 +39,7 @@ SELECT TRY_CAST(date_trunc('DAY', dexs.block_time) AS date) AS block_date
      , dexs.block_time
      , CAST(dexs.token_bought_amount_raw AS DECIMAL(38, 0)) AS token_bought_amount_raw
      , CAST(dexs.token_sold_amount_raw AS DECIMAL(38, 0))   AS token_sold_amount_raw
+     , dexs.amount_usd
      , dexs.token_bought_address
      , dexs.token_sold_address
      , dexs.taker
