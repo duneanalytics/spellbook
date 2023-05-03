@@ -316,7 +316,7 @@ SELECT   s.tx_hash tx_hash, s.index evt_index, s.contract_address, s.block_time,
             z.taker AS taker,
             z.taker_token,
             z.maker_token,
-            bytea2numeric_v3('0x' || substring(DATA, 27, 40)) AS taker_token_amount_raw,
+            bytea2numeric_v3('0x' || substring(DATA, 91, 40)) AS taker_token_amount_raw,
             case when length(bytea2numeric_v3('0x' || substring(DATA, 27, 40))) < length(bytea2numeric_v3('0x' || substring(DATA, 219, 40))) 
                 then bytea2numeric_v3('0x' || substring(DATA, 27, 40)) else bytea2numeric_v3('0x' || substring(DATA, 219, 40)) end AS maker_token_amount_raw,
             'direct_uniswapv2' AS TYPE,
