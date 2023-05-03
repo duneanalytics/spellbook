@@ -59,9 +59,7 @@ models:
       - &evt_index
         name: evt_index
         description: "Event index"
-
-
-models:
+        
   - name: tornado_cash_ethereum_deposits
     meta:
       blockchain: ethereum
