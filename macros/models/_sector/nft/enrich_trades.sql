@@ -84,30 +84,30 @@ SELECT
     {% else %}
     agg.name as aggregator_name
     {% endif %}
-FROM base_union base
-INNER JOIN {{ transactions_model }} tx
+FROM base_union as base
+INNER JOIN {{ transactions_model }} as tx
 ON tx.block_number = base.block_number
     AND tx.hash = base.tx_hash
     {% if is_incremental() %}
     AND tx.block_time >= date_trunc("day", now() - interval '1 week')
     {% endif %}
-LEFT JOIN {{ tokens_nft_model }} nft
+LEFT JOIN {{ tokens_nft_model }} as nft
 ON nft.contract_address = base.nft_contract_address
 LEFT JOIN {{ tokens_erc20_model }} erc20
 ON erc20.contract_address = base.currency_contract
-LEFT JOIN {{ prices_model }} p
+LEFT JOIN {{ prices_model }} as p
 ON p.blockchain = base.blockchain
     AND p.contract_address = base.currency_contract
     AND p.minute = date_trunc('minute',base.block_time)
     {% if is_incremental() %}
     AND p.minute >= date_trunc("day", now() - interval '1 week')
     {% endif %}
-LEFT JOIN {{ aggregators }} agg
+LEFT JOIN {{ aggregators }}  as agg
 ON tx.to = agg.contract_address
     OR base.buyer = agg.contract_address
     OR base.seller = agg.contract_address
 {% if aggregator_markers != null %}
-LEFT JOIN {{ aggregator_markers }} agg_mark
+LEFT JOIN {{ aggregator_markers }} as agg_mark
 ON RIGHT(tx.data, agg_mark.hash_marker_size) = agg_mark.hash_marker
 {% endif %}
 )
