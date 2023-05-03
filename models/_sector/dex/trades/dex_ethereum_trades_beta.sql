@@ -16,7 +16,7 @@
 
 -- macros/models/sector/dex
 {{
-    enrich_trades(
+    dex_enrich_trades(
         blockchain = 'ethereum',
         models = base_models,
         transactions_model = source('ethereum','transactions'),

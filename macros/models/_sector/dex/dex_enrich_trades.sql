@@ -1,4 +1,4 @@
-{% macro enrich_trades(
+{% macro dex_enrich_trades(
     blockchain='',
     models=[],
     transactions_model=null,
