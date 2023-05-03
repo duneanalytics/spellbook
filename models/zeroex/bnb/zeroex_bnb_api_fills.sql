@@ -60,8 +60,8 @@ WITH zeroex_tx AS (
                                         FROM (position('fbc019a7' IN INPUT) + 32)
                                         FOR 40)
                             END AS affiliate_address,
-                    '0x' || substring(INPUT, 355, 40) AS maker_token,
-                '0x' || substring(INPUT, 419, 40) AS taker_token,
+                    '0x' || substring(INPUT, 355, 40) AS taker_token,
+                '0x' || substring(INPUT, 419, 40) AS maker_token,
                 '0x' || substring(INPUT, 491, 40) AS taker,
                     tx_index AS evt_index
         FROM {{ source('bnb', 'traces') }} tr
