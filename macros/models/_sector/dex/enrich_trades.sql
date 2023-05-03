@@ -3,7 +3,7 @@
     models=[],
     transactions_model=null,
     tokens_erc20_model=null,
-    prices_model=null,
+    prices_model=null
     )
 %}
 
