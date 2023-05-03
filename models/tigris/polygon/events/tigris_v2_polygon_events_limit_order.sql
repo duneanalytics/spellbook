@@ -15,7 +15,7 @@ pairs as (
         SELECT 
             * 
         FROM 
-        {{ ref('tigris_polygon_events_asset_added') }}
+        {{ ref('tigris_v2_polygon_events_asset_added') }}
 ),
 
 {% set limit_order_trading_evt_tables = [

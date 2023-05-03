@@ -1,9 +1,9 @@
 {{ config(
         alias ='fees',
-        post_hook='{{ expose_spells(\'["arbitrum","bnb"]\',
+        post_hook='{{ expose_spells(\'["arbitrum","bnb","optimism","polygon"]\',
                                     "project",
                                     "tofu",
-                                    \'["Henrystats", "theachenyj", "chuxin"]\') }}')
+                                    \'["Henrystats", "theachenyj", "chuxin", "sohwak"]\') }}')
 }}
 
 
@@ -11,6 +11,7 @@
  ref('tofu_bnb_fees')
 ,ref('tofu_arbitrum_fees')
 ,ref('tofu_optimism_fees')
+,ref('tofu_polygon_fees')
 ] %}
 
 SELECT *

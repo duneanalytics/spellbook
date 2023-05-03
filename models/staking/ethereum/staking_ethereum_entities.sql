@@ -14,8 +14,9 @@ WITH contracts AS (
     SELECT lower(trim(address)) as address, trim(entity) as entity, trim(category) as category
     FROM
     (VALUES
-    ('0xdcd51fc5cd918e0461b9b7fb75967fdfd10dae2f', 'RocketPool (Minipool)', 'Staking Pools')
-    , ('0x1cc9cf5586522c6f483e84a19c3c2b0b6d027bf0', 'RocketPool (Minipool)', 'Staking Pools')
+    ('0xdcd51fc5cd918e0461b9b7fb75967fdfd10dae2f', 'Rocket Pool', 'Liquid Staking')
+    , ('0x1cc9cf5586522c6f483e84a19c3c2b0b6d027bf0', 'Rocket Pool', 'Liquid Staking')
+    , ('0x2fb42ffe2d7df8381853e96304300c6a5e846905', 'Rocket Pool', 'Liquid Staking')
     , ('0x9b8c989ff27e948f55b53bb19b3cc1947852e394', 'Kiln', 'Staking Pools')
     , ('0x1e68238ce926dec62b3fbc99ab06eb1d85ce0270', 'Kiln', 'Staking Pools')
     , ('0x2421a0af8badfae12e1c1700e369747d3db47b09', 'SenseiNode', 'Staking Pools')
@@ -89,6 +90,7 @@ FROM
     , ('0xefe9a82d56cd965d7b332c7ac1feb15c53cd4340', 'stakefish', 'stakefish 2', 'Staking Pools')
     , ('0xeee27662c2b8eba3cd936a23f039f3189633e4c8', 'Celsius', 'Celsius', 'Staking Pools')
     , ('0xe0c8df4270f4342132ec333f6048cb703e7a9c77', 'Swell', 'Swell', 'Liquid Staking')
+    , ('0xb3d9cf8e163bbc840195a97e81f8a34e295b8f39', 'Swell', 'Swell', 'Liquid Staking')
     , ('0x5180db0237291a6449dda9ed33ad90a38787621c', 'Frax Finance', 'Frax Finance Investor Custodian', 'Liquid Staking')
     , ('0xaab27b150451726ec7738aa1d0a94505c8729bd1', 'Eden Network', 'Eden Network', 'Others')
     , ('0x234ee9e35f8e9749a002fc42970d570db716453b', 'Gate.io', 'Gate.io', 'CEX')
@@ -111,6 +113,7 @@ FROM
     , ('0x7badde47f41ceb2c0889091c8fc69e4d9059fb19', 'Prysm Team', 'Prysm Team', 'Independent Staker')
     , ('0x43a0927a6361258e6cbaed415df275a412c543b5', 'Teku Team', 'Teku Team', 'Independent Staker')
     , ('0x5efaefd5f8a42723bb095194c9202bf2b83d8eb6', 'Nimbus Team', 'Nimbus Team', 'Independent Staker')
+    , ('0x4ca21e4d3a86e7399698f88686f5596dbe74adeb', 'P2P.org', 'P2P.org', 'Staking Pools')
     ) 
     x (address, entity, entity_unique_name, category)
 
