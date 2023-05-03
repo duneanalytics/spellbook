@@ -17,7 +17,7 @@
 
 -- We should remove this CTE and include ETH into the general prices table once everything is migrated
 WITH cte_prices_patch as (
-    SELECT * FROM ref('prices_usd_forward_fill')
+    SELECT * FROM {{ ref('prices_usd_forward_fill') }}
     WHERE blockchain = 'ethereum'
     {% if is_incremental() %}
     AND p.minute >= date_trunc("day", now() - interval '1 week')
@@ -30,7 +30,7 @@ WITH cte_prices_patch as (
         ,p.minute
         ,p.price
         ,'ETH' as symbol
-    FROM ref('prices_usd_forward_fill') p
+    FROM {{ ref('prices_usd_forward_fill') }} p
     WHERE blockchain is null AND symbol = 'ETH'
     {% if is_incremental() %}
     AND p.minute >= date_trunc("day", now() - interval '1 week')
