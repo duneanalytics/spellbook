@@ -68,8 +68,7 @@ SELECT base.blockchain,
        base.evt_index
 FROM base_union base
 INNER JOIN {{ transactions_model }} tx
-ON tx.block_number = base.block_number
-    AND tx.hash = base.tx_hash
+    ON tx.hash = base.tx_hash
     {% if is_incremental() %}
     AND tx.block_time >= date_trunc("day", now() - interval '1 week')
     {% endif %}
