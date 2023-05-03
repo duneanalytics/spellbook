@@ -325,6 +325,11 @@ models:
       tags: ['ethereum', 'flashloans']
    description: >
       Aave v1 flashloans on Ethereum
+   tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
    columns:
       - name: blockchain
       - name: project
@@ -350,6 +355,11 @@ models:
       tags: ['ethereum', 'flashloans']
    description: >
       Aave v2 flashloans on Ethereum
+   tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
    columns:
       - name: blockchain
       - name: project
@@ -375,6 +385,11 @@ models:
       tags: ['ethereum', 'flashloans']
    description: >
       Aave v3 flashloans on Ethereum
+   tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
    columns:
       - name: blockchain
       - name: project
@@ -400,6 +415,11 @@ models:
       tags: ['ethereum', 'flashloans']
    description: >
       All Aave flashloans on Ethereum
+   tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
    columns:
       - name: blockchain
       - name: project

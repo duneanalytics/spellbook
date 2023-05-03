@@ -10,6 +10,11 @@ models:
       tags: ['arbitrum', 'flashloans']
    description: >
       Aave v3 flashloans on Arbitrum
+   tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
    columns:
       - name: blockchain
       - name: project
@@ -35,6 +40,11 @@ models:
       tags: ['arbitrum', 'flashloans']
    description: >
       All Aave flashloans on Arbitrum
+   tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
    columns:
       - name: blockchain
       - name: project

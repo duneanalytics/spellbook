@@ -10,6 +10,11 @@ models:
       tags: ['fantom', 'flashloans']
    description: >
       Aave v3 flashloans on Fantom
+   tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
    columns:
       - name: blockchain
       - name: project
@@ -35,6 +40,11 @@ models:
       tags: ['fantom', 'flashloans']
    description: >
       All Aave flashloans on Fantom
+   tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
    columns:
       - name: blockchain
       - name: project
