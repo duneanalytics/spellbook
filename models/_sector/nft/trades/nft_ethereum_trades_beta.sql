@@ -24,7 +24,7 @@ WITH cte_prices_patch as (
     {% endif %}
     UNION ALL
     SELECT
-        '{{ var(ETH_ERC20_ADDRESS) }}' as contract_address
+        '{{ var("ETH_ERC20_ADDRESS") }}' as contract_address
         ,'ethereum' as blockchain
         ,18 as decimals
         ,p.minute
