@@ -176,7 +176,6 @@ FROM
     ("hav-havven", "ethereum", "SNX", "0xc011a73ee8576fb46f5e1c5751ca3b9fe0af2a6f", 18),
     ("hedg-hedgetrade", "ethereum", "HEDG", "0xf1290473e210b2108a85237fbcd7b6eb42cc654f", 18),
     ("hegic-hegic", "ethereum", "HEGIC", "0x584bc13c7d411c00c01a62e8019472de68768430", 18),
-    --("hex-hex", "ethereum", "HEX", "0x2b591e99afe9f32eaa6214f7b7629768c40eeb39", 8),
     ("hot-holo", "ethereum", "HOT", "0x6c6ee5e31d828de241282b9606c8e98ea48526e2", 18),
     ("hpt-huobi-pool-token", "ethereum", "HPT", "0xa66daa57432024023db65477ba87d4e7f5f95213", 18),
     ("ht-huobi-token", "ethereum", "HT", "0x6f259637dcd74c767781e37bc6133cd6a68aa161", 18),
@@ -232,7 +231,6 @@ FROM
     ("mco-mco", "ethereum", "MCO", "0xb63b606ac810a52cca15e44bb630fd42d8d1d83d", 8),
     ("met-metronome", "ethereum", "MET", "0xa3d58c4e56fedcae3a7c43a725aee9a71f0ece4e", 18),
     ("mft-mainframe", "ethereum", "MFT", "0xdf2c7238198ad8b389666574f2d8bc411a4b7428", 18),
-    --("mim-magic-internet-money", "ethereum", "MIM", "0x99d8a9c45b2eca8864373a26d1459e3dff1e17f3", 18),
     ("mist-alchemist-coin", "ethereum", "MIST", "0x88acdd2a6425c3faae4bc9650fd7e27e0bebb7ab", 18),
     ("mkr-maker", "ethereum", "MKR", "0x9f8f72aa9304c8b593d555f12ef6589cc3a579a2", 18),
     ("mln-melon", "ethereum", "MLN", "0xec67005c4e498ec7f55e092bd1d35cbc47c91892", 18),
@@ -269,7 +267,6 @@ FROM
     ("ohmv2-olympus-v2", "ethereum", "OHM", "0x64aa3364f17a4d01c6f1751fd97c2bd3d7e7f1d5", 9),
     ("okb-okb", "ethereum", "OKB", "0x75231f58b43240c9718dd58b4967c5114342a86c", 18),
     ("ole-openleverage", "ethereum", "OLE", "0x92cfbec26c206c90aee3b7c66a9ae673754fab7e", 18),
-    --("omg-omisego", "ethereum", "OMG", "0xd26114cd6ee289accf82350c8d8487fedb8a0c07", 18),
     ("one-harmony", "ethereum", "ONE", "0x799a4202c12ca952cb311598a024c80ed371a41e", 18),
     ("orbs-orbs", "ethereum", "ORBS", "0xff56cc6b1e6ded347aa0b7676c85ab0b3d08b0fa", 18),
     ("osqth-opyn-squeeth", "ethereum", "oSQTH", "0xf1b99e3e573a1a9c5e6b2ce818b617f0e664e86b", 18),
@@ -286,7 +283,6 @@ FROM
     ("poe-poet", "ethereum", "POE", "0x0e0989b1f9b8a38983c2ba8053269ca62ec9b195", 8),
     ("poly-polymath", "ethereum", "POLY", "0x9992ec3cf6a55b00978cddf2b27bc6882d88d1ec", 18),
     ("pool-pooltogether", "ethereum", "POOL", "0x0cec1a9154ff802e7934fc916ed7ca50bde6844e", 18),
-    --("pop-pop-chest-token", "ethereum", "POP", "0x7fc3ec3574d408f3b59cd88709bacb42575ebf2b", 18),
     ("powr-power-ledger", "ethereum", "POWR", "0x595832f8fc6bf59c85c527fec3740a1b7a361269", 6),
     ("ppblz-pepemon-pepeballs", "ethereum", "PPBLZ", "0x4d2ee5dae46c86da2ff521f7657dad98834f97b8", 18),
     ("ppt-populous", "ethereum", "PPT", "0xd4fa1460f537bb9085d22c7bccb5dd450ef28e3a", 8),
@@ -333,7 +329,6 @@ FROM
     ("snt-status", "ethereum", "SNT", "0x744d70fdbe2ba4cf95131626614a1763df805b9e", 18),
     ("sos-opendao", "ethereum", "SOS", "0x3b484b82567a09e2588a13d54d032153f0c0aee0", 18),
     ("spank-spankchain", "ethereum", "SPANK", "0x42d6622dece394b54999fbd73d108123806f6a18", 18),
-    --("spell-spell-token", "ethereum", "SPELL", "0x090185f2135308bad17527004364ebcc2d37e5f6", 18),
     ("srm-serum", "ethereum", "SRM", "0x476c5e26a75bd202a9683ffd34359c0cc15be0ff", 6),
     ("srn-sirin-labs-token", "ethereum", "SRN", "0x68d57c9a1c35f63e2c83ee8e49a64e9d70528d25", 18),
     ("stake-xdai-stake", "ethereum", "STAKE", "0x0ae055097c6d159879521c384f1d2123d1f195e6", 18),
@@ -376,7 +371,6 @@ FROM
     ("unfi-unifi-protocol", "ethereum", "UNFI", "0x441761326490cacf7af299725b6292597ee822c2", 18),
     ("uni-uniswap", "ethereum", "UNI", "0x1f9840a85d5af5bf1d1762f925bdaddc4201f984", 18),
     ("uniq-uniqly", "ethereum", "UNIQ", "0x3758e00b100876c854636ef8db61988931bb8025", 18),
-    --("up-unifi-protocol", "ethereum", "UP", "0xb6c5c839cef46082a2b51164e8db649c121f147e", 18), broken price feed
     ("usdc-usd-coin", "ethereum", "USDC", "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48", 6),
     ("usdn-neutrino-usd", "ethereum", "USDN", "0x674c6ad92fd080e4004b2312b45f796a192d27a0", 18),
     ("usdt-tether", "ethereum", "USDT", "0xdac17f958d2ee523a2206206994597c13d831ec7", 6),
@@ -439,7 +433,6 @@ FROM
     ("x2y2-x2y2token", "ethereum", "X2Y2", "0x1e4ede388cbc9f4b5c79681b7f94d36a11abebc9", 18),
     ("tcr-tracer-dao", "ethereum", "TCR", "0x9c4a4204b79dd291d6b6571c5be8bbcd0622f050", 18),
     ("tsuka-dejitaru-tsuka", "ethereum", "TSUKA", "0xc5fb36dd2fb59d3b98deff88425a3f425ee469ed", 9),
-    -- ("caw-a-hunters-dream", "ethereum", "CAW", "0xf3b9569f82b18aef890de263b84189bd33ebe452", 18), Removed until feed fixed by cp
     ("inu-inu", "ethereum", "INU", "0x050d94685c6b0477e1fc555888af6e2bb8dfbda5", 18),
     ("metis-metis-token", "ethereum", "METIS", "0x9e32b13ce7f2e80a01932b42553652e053d6ed8e", 18),
     ("note-notional", "ethereum", "NOTE", "0xcfeaead4947f0705a14ec42ac3d44129e1ef3ed5", 8),
@@ -501,7 +494,6 @@ FROM
     ('multi-multichain', 'ethereum', 'MULTI', '0x65ef703f5594d2573eb71aaf55bc0cb548492df4', 18),
     ('c3-charli3', 'ethereum', 'C3', '0xf1a91c7d44768070f711c68f33a7ca25c8d30268', 18),
     ('panda-pandadao', 'ethereum', 'PANDA', '0x3cbb7f5d7499af626026e96a2f05df806f2200dc', 18),
-    --('btse-btse-token', 'ethereum', 'BTSE', '0x666d875c600aa06ac1cf15641361dec3b00432ef', 8),
     ('koi-the-dragon-gate', 'ethereum', 'KOI', '0x8ae340d333ffb274969f505a6520b91024bc856c', 9),
     ('ptf-powertrade-fuel', 'ethereum', 'PTF', '0xc57d533c50bc22247d49a368880fb49a1caa39f7', 18),
     ('rvst-revest-finance', 'ethereum', 'RVST', '0x120a3879da835a5af037bb2d1456bebd6b54d4ba', 18),
@@ -536,7 +528,6 @@ FROM
     ('dip-etherisc-dip-token', 'ethereum', 'DIP', '0xc719d010b63e5bbf2c0551872cd5316ed26acd83', 18),
     ('frin-fringe', 'ethereum', 'FRIN', '0xc9fe6e1c76210be83dc1b5b20ec7fd010b0b1d15', 18),
     ('game-x-consoles', 'ethereum', 'GAME', '0x882e5b370d595e50c24b2a0e7a94e87cc32adda1', 18),
-    ('joy-joystick-games', 'ethereum', 'JOY', '0xdb4d1099d53e92593430e33483db41c63525f55f', 18),
     ('arcona-arcona', 'ethereum', 'ARCONA', '0x0f71b8de197a1c84d31de0f1fa7926c365f052b3', 18),
     ('ionx-charged-particles', 'ethereum', 'IONX', '0x02d3a27ac3f55d5d91fb0f52759842696a864217', 18),
     ('isla-defiville-island', 'ethereum', 'ISLA', '0x20a68f9e34076b2dc15ce726d7eebb83b694702d', 18),
@@ -629,7 +620,6 @@ FROM
     ('swap-trustswap', 'ethereum', 'SWAP', '0xcc4304a31d09258b0029ea7fe63d032f52e44efe', 18),
     ('urqa-ureeqa', 'ethereum', 'URQA', '0x1735db6ab5baa19ea55d0adceed7bcdc008b3136', 18),
     ('wbind-wrapped-bind', 'ethereum', 'WBIND', '0x15334dcb171e8b65d6650321581dca83be870115', 8),
-    --('whale-whale', 'ethereum', 'WHALE', '0x9355372396e3f6daf13359b7b607a3374cc638e0', 4),
     ('thales-thales', 'ethereum', 'THALES', '0x8947da500eb47f82df21143d0c01a29862a8c3c5', 18),
     ('blxm-bloxmove', 'ethereum', 'BLXM', '0x38d9eb07a7b8df7d86f440a4a5c4a4c1a27e1a08', 18),
     ('boba-boba-network', 'ethereum', 'BOBA', '0x42bbfa2e77757c645eeaad1655e0911a7553efbc', 18),
@@ -697,13 +687,11 @@ FROM
     ('revv-revv', 'ethereum', 'REVV', '0x557b933a7c2c45672b610f8954a3deb39a51a8ca', 18),
     ('rvp-revolution-populi', 'ethereum', 'RVP', '0x17ef75aa22dd5f6c2763b8304ab24f40ee54d48a', 18),
     ('synr-syndicate-token', 'ethereum', 'SYNR', '0xbc6e06778708177a18210181b073da747c88490a', 18),
-    -- ('tbtc-tbtc', 'ethereum', 'TBTC', '0x8daebade922df735c38c80c7ebd708af50815faa', 18), Remove feed with price anomaly
     ('unn-union-protocol-governance-token', 'ethereum', 'UNN', '0x226f7b842e0f0120b7e194d05432b3fd14773a9d', 18),
     ('wstr-wrappedstar', 'ethereum', 'WSTR', '0xf0dc76c22139ab22618ddfb498be1283254612b1', 18),
     ('xcn-chain', 'ethereum', 'XCN', '0xa2cd3d43c775978a96bdbf12d733d5a1ed94fb18', 18),
     ('xcur-curate', 'ethereum', 'XCUR', '0xe1c7e30c42c24582888c758984f6e382096786bd', 8),
     ('xdefi-xdefi', 'ethereum', 'XDEFI', '0x72b886d09c117654ab7da13a14d603001de0b777', 18),
-    --('yel-yelfinance', 'ethereum', 'YEL', '0x7815bda662050d84718b988735218cffd32f75ea', 18),
     ('yld-yield', 'ethereum', 'YLD', '0xf94b5c5651c888d928439ab6514b93944eee6f48', 18),
     ('dg-decentral-games', 'ethereum', 'DG', '0xee06a81a695750e71a662b51066f2c74cf4478a0', 18),
     ('apy-apyfinance', 'ethereum', 'APY', '0x95a4492f028aa1fd432ea71146b433e7b4446611', 18),
@@ -711,7 +699,6 @@ FROM
     ('blocks-blocks', 'ethereum', 'BLOCKS', '0x8a6d4c8735371ebaf8874fbd518b56edd66024eb', 18),
     ('blood-impostors-blood', 'ethereum', 'BLOOD', '0x95392f142af1c12f6e39897ff9b09c599666b50c', 18),
     ('bst-blocksquare', 'ethereum', 'BST', '0x509a38b7a1cc0dcd83aa9d06214663d9ec7c7f4a', 18),
-    --('cgt-cache-gold', 'ethereum', 'CGT', '0xf5238462e7235c7b62811567e63dd17d12c2eaa0', 8),
     ('clny-colony-network-token', 'ethereum', 'CLNY', '0x3e828ac5c480069d4765654fb4b8733b910b13b2', 18),
     ('corx-corionx', 'ethereum', 'CORX', '0x26a604dffe3ddab3bee816097f81d3c4a2a4cf97', 8),
     ('dec-dark-energy-crystals', 'ethereum', 'DEC', '0x9393fdc77090f31c7db989390d43f454b1a6e7f3', 3),
@@ -806,7 +793,6 @@ FROM
     ('kst-ksm-starter', 'ethereum', 'KST', '0xbc17729fdf562723f0267f79ff25ade441056d87', 18),
     ('labs-labs-group', 'ethereum', 'LABS', '0x8b0e42f366ba502d787bb134478adfae966c8798', 18),
     ('lina-linear', 'ethereum', 'LINA', '0x3e9bc21c9b189c09df3ef1b824798658d5011937', 18),
-    --('lit-litentry', 'ethereum', 'LIT', '0xb59490ab09a0f526cc7305822ac65f2ab12f9723', 18),
     ('lith-lithium-finance', 'ethereum', 'LITH', '0x188e817b02e635d482ae4d81e25dda98a97c4a42', 18),
     ('love-ukrainedao-flag-nft', 'ethereum', 'LOVE', '0x5380442d3c4ec4f5777f551f5edd2fa0f691a27c', 18),
     ('lua-lua-swap', 'ethereum', 'LUA', '0xb1f66997a5760428d3a87d68b90bfe0ae64121cc', 18),
@@ -865,7 +851,6 @@ FROM
     ('squid-squiddao', 'ethereum', 'SQUID', '0x21ad647b8f4fe333212e735bfc1f36b4941e6ad2', 9),
     ('rare-superrare', 'ethereum', 'RARE', '0xba5bde662c17e2adff1075610382b9b691296350', 18),
     ('wgmi-wgmi', 'ethereum', 'WGMI', '0x20f6a313cb250062331fe70b9567e3ee5f01888b', 18),
-    --('luna-wrapped-luna-token', 'ethereum', 'LUNA', '0xd2877702675e6ceb975b4a1dff9fb7baf4c91ea9', 18),
     ('vrn-varen', 'ethereum', 'VRN', '0x72377f31e30a405282b522d588aebbea202b4f23', 18),
     ('maxi-maximus-dao', 'ethereum', 'MAXI', '0x0d86eb9f43c57f6ff3bc9e23d8f9d82503f0e84b', 8),
     ('zcx-unizen', 'ethereum', 'ZCX', '0xc52c326331e9ce41f04484d3b5e5648158028804', 18),
@@ -905,7 +890,6 @@ FROM
     ('anrx-anrkey-x', 'ethereum', 'ANRX', '0xcae72a7a0fd9046cf6b165ca54c9e3a3872109e0', 18),
     ('frm-ferrum-network', 'ethereum', 'FRM', '0xe5caef4af8780e59df925470b050fb23c43ca68c', 6),
     ('nfy-non-fungible-yearn', 'ethereum', 'NFY', '0x1cbb83ebcd552d5ebf8131ef8c9cd9d9bab342bc', 18),
-    --('rnbw-halodao', 'ethereum', 'RNBW', '0xe94b97b6b43639e238c851a7e693f50033efd75c', 18),
     ('ggtk-gg-token', 'ethereum', 'GGTK', '0xfa99a87b14b02e2240c79240c5a20f945ca5ef76', 18),
     ('vab-vabble', 'ethereum', 'VAB', '0xe7ae6d0c56cacaf007b7e4d312f9af686a9e9a04', 18),
     ('chain-chain-games', 'ethereum', 'CHAIN', '0xc4c2614e694cf534d407ee49f8e44d125e4681c4', 18),
@@ -932,7 +916,6 @@ FROM
     ('hati-hati', 'ethereum', 'HATI', '0x251457b7c5d85251ca1ab384361c821330be2520', 18),
     ('rss3-rss3', 'ethereum', 'RSS3', '0xc98d64da73a6616c42117b582e832812e7b8d57f', 18),
     ('leag-leaguedao-governance-token', 'ethereum', 'LEAG', '0x7b39917f9562c8bc83c7a6c2950ff571375d505d', 18),
-    --('pop-pop-chest-token', 'ethereum', 'POP', '0x5d858bcd53e085920620549214a8b27ce2f04670', 18),
     ('revo-revomon', 'ethereum', 'REVO', '0x155040625d7ae3e9cada9a73e3e44f76d3ed1409', 18),
     ('xp-polkafantasy', 'ethereum', 'XP', '0x948c70dc6169bfb10028fdbe96cbc72e9562b2ac', 18),
     ('cdai-compound-dai', 'ethereum', 'CDAI', '0x5d3a536e4d6dbd6114cc1ead35777bab948e3643', 8),
@@ -1033,7 +1016,6 @@ FROM
     ('wxeq-wrapped-equilibria-v2', 'ethereum', 'WXEQ', '0x4a5b3d0004454988c50e8de1bcfc921ee995ade3', 18),
     ('cvr-cvr', 'ethereum', 'CVR', '0x3c03b4ec9477809072ff9cc9292c9b25d4a8e6c6', 18),
     ('dows-shadows', 'ethereum', 'DOWS', '0x661ab0ed68000491d98c796146bcf28c20d7c559', 18),
-    --('lit-lit', 'ethereum', 'LIT', '0xc5b3d3231001a776123194cf1290068e8b0c783b', 18),
     ('og-oogear', 'ethereum', 'OG', '0xe89c20096b636ffec9fd26d1a623f42a33ead309', 18),
     ('riot-riot-racers', 'ethereum', 'RIOT', '0xf56408077487cb879c992909c5b5c66d68c02eb4', 18),
     ('time-chronotech', 'ethereum', 'TIME', '0x485d17a6f1b8780392d53d64751824253011a260', 8),
@@ -1330,7 +1312,6 @@ FROM
     ("sudo-sudo-governance-token", "ethereum", "SUDO", "0x3446dd70b2d52a6bf4a5a192d9b0a161295ab7f9", 18),
     ("sclp-scallop", "ethereum", "SCLP","0x3f6d1649a1366b0e82173d33e365953f9f1cc84c",18),
     ('hex-hex', 'ethereum', 'HEX', '0x2b591e99afE9f32eAA6214f7B7629768c40Eeb39', 8),
-    ('spell-spell-token', 'ethereum', 'SPELL', '0x090185f2135308BaD17527004364eBcC2D37e5F6', 18),
     ('mpl-maple-finance', 'ethereum', 'MPL', '0x33349B282065b0284d756F0577FB39c158F935e6', 18),
     ('lit-timeless', 'ethereum', 'LIT', '0xfd0205066521550D7d7AB19DA8F72bb004b4C341', 18),
     ('mim-magic-internet-money', 'ethereum', 'MIM', '0x99D8a9C45b2ecA8864373A26D1459e3Dff1e17F3', 18),
@@ -1348,7 +1329,6 @@ FROM
     ('swth-switcheo', 'ethereum', 'SWTH', '0xB4371dA53140417CBb3362055374B10D97e420bB', 8),
     ('roko-roko', 'ethereum', 'ROKO', '0x6f222E04F6c53Cc688FfB0Abe7206aAc66A8FF98', 18),
     ('geth-goerli-eth', 'ethereum', 'GETH', '0xdD69DB25F6D620A7baD3023c5d32761D353D3De9', 18),
-    ('robot-robot', 'ethereum', 'ROBOT', '0xfb5453340C03db5aDe474b27E68B6a9c6b2823Eb', 18),
     ('bytes-bytes', 'ethereum', 'BYTES', '0x7d647b1A0dcD5525e9C6B3D14BE58f27674f8c95', 18),
     ('dc-dogechain-token', 'ethereum', 'DC', '0x7B4328c127B85369D9f82ca0503B000D09CF9180', 18),
     ('luna-wrapped-luna-token', 'ethereum', 'LUNA', '0xd2877702675e6cEb975b4A1dFf9fb7BAF4C91ea9', 18),
@@ -1372,7 +1352,6 @@ FROM
     ('goo-art-gobblers-goo', 'ethereum', 'GOO', '0x600000000a36F3cD48407e35eB7C5c910dc1f7a8', 18),
     ('xfund-xfund', 'ethereum', 'XFUND', '0x892A6f9dF0147e5f079b0993F486F9acA3c87881', 9),
     ('ico-marlin', 'ethereum', 'POND', '0x57B946008913B82E4dF85f501cbAeD910e58D26C', 18),
-    ('starl-starlink', 'ethereum', 'STARL', '0x8E6cd950Ad6ba651F6DD608Dc70e5886B1AA6B24', 18),
     ('pp-poorpleb', 'ethereum', 'PP', '0x9565c2036963697786705120Fc59310F747bCfD0', 18),
     ('shik-shikoku', 'ethereum', 'SHIK', '0x24dA31e7BB182cb2cABfEF1d88db19C2AE1f5572', 18),
     ('cls-coldstack', 'ethereum', 'CLS', '0x675BBC7514013E2073DB7a919F6e4cbeF576de37', 18),
@@ -1433,7 +1412,6 @@ FROM
     ('btse-btse-token', 'ethereum', 'BTSE', '0x666d875C600AA06AC1cf15641361dEC3b00432Ef', 8),
     ('razor-razor-network', 'ethereum', 'RAZOR', '0x50DE6856358Cc35f3A9a57eAAA34BD4cB707d2cd', 18),
     ('blusd-boosted-lusd', 'ethereum', 'BLUSD', '0xB9D7DdDca9a4AC480991865EfEf82E01273F79C3', 18),
-    ('yel-yelfinance', 'ethereum', 'YEL', '0x7815bDa662050D84718B988735218CFfd32f75ea', 18),
     ('hapi-hapi', 'ethereum', 'HAPI', '0xD9c2D319Cd7e6177336b0a9c93c21cb48d84Fb54', 18),
     ('pup-pupper', 'ethereum', 'PUP', '0x81dBc1c8e40C3095071949Eda9800C2209a7279A', 18),
     ('raze-raze-network-erc-20', 'ethereum', 'RAZE', '0x5Eaa69B29f99C84Fe5dE8200340b4e9b4Ab38EaC', 18),
@@ -1451,7 +1429,6 @@ FROM
     ('ares-ares-protocol', 'ethereum', 'ARES', '0x358AA737e033F34df7c54306960a38d09AaBd523', 18),
     ('ogv-origin-dollar-governance', 'ethereum', 'OGV', '0x9c354503C38481a7A7a51629142963F98eCC12D0', 18),
     ('pdex-polkadex', 'ethereum', 'PDEX', '0xF59ae934f6fe444afC309586cC60a84a0F89Aaea', 18),
-    ('pop-pop-chest-token', 'ethereum', 'POP', '0x5D858bcd53E085920620549214a8b27CE2f04670', 18),
     ('superbid-superbid', 'ethereum', 'SUPERBID', '0x0563DCe613D559a47877fFD1593549fb9d3510D6', 18),
     ('xed-exeedme-erc-20', 'ethereum', 'XED', '0xee573a945B01B788B9287CE062A0CFC15bE9fd86', 18),
     ('dos-dos-network', 'ethereum', 'DOS', '0x0A913beaD80F321E7Ac35285Ee10d9d922659cB7', 18),
@@ -1577,7 +1554,6 @@ FROM
     ('oath-oath-token', 'ethereum', 'OATH', '0x6F9C26Fa731C7Ea4139Fa669962Cf8F1CE6C8b0B', 18),
     ('totm-totemfi', 'ethereum', 'TOTM', '0x6FF1BFa14A57594a5874B37ff6AC5efbD9F9599A', 18),
     ('bucc-buccaneer-v2', 'ethereum', 'BUCC', '0xd5a7d515Fb8B3337ACb9B053743E0BC18f50C855', 10),
-    ('dsd-dynamic-set-dollar', 'ethereum', 'DSD', '0xBD2F0Cd039E0BFcf88901C98c0bFAc5ab27566e3', 18),
     ('folo-follow', 'ethereum', 'FOLO', '0xB2a63A5Dd36C91eC2DA59B188ff047F66fac122a', 18),
     ('gos-goldonsteroids', 'ethereum', 'GOS', '0xc9393609A47f5744ce98369208b9dc66224E6b5d', 6),
     ('hai-hackenai', 'ethereum', 'HAI', '0x05Fb86775Fd5c16290f1E838F5caaa7342bD9a63', 8),
@@ -1643,6 +1619,18 @@ FROM
     
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)
 where contract_address not in (
-    '0x841fb148863454a3b3570f515414759be9091465' -- SHIH has bad price feed.
-    ,'0xf3b9569f82b18aef890de263b84189bd33ebe452' -- CAW has bad price feed.
+    -- bad price feeds
+    '0x841fb148863454a3b3570f515414759be9091465'    -- SHIH 
+    ,'0xf3b9569f82b18aef890de263b84189bd33ebe452'   -- CAW
+    ,'0x7815bDa662050D84718B988735218CFfd32f75ea'   -- YEL
+    ,'0x7fc3ec3574d408f3b59cd88709bacb42575ebf2b'   -- POP
+    ,'0x5D858bcd53E085920620549214a8b27CE2f04670'   -- POP
+    ,'0xb6c5c839cef46082a2b51164e8db649c121f147e'   -- UP
+    ,'0xf5238462e7235c7b62811567e63dd17d12c2eaa0'   -- CGT
+    ,'0xc5b3d3231001a776123194cf1290068e8b0c783b'   -- LIT
+    ,'0x8E6cd950Ad6ba651F6DD608Dc70e5886B1AA6B24'   -- STARL
+    ,'0xfb5453340C03db5aDe474b27E68B6a9c6b2823Eb'   -- ROBOT
+    ,'0xdb4d1099d53e92593430e33483db41c63525f55f'   -- JOY
+    ,'0xBD2F0Cd039E0BFcf88901C98c0bFAc5ab27566e3'   -- DSD
+    ,'0x090185f2135308BaD17527004364eBcC2D37e5F6'   -- SPELL
 )
