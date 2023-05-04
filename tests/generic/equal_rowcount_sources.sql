@@ -12,6 +12,7 @@
         from {{ source }}
         where evt_block_time <= (select max(block_time) from model)
         {% if not loop.last %} UNION ALL {% endif %}
+        {% endfor %}
         ) b
     )
 
