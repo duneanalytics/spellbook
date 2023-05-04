@@ -10,7 +10,7 @@
         {% for source in evt_sources %}
         select count(*) as count_b
         from {{ source }}
-        where evt_block_time <= (select max(block_time) from model)
+        where evt_block_time <= (select max(block_time) from {{ model }})
         {% if not loop.last %} UNION ALL {% endif %}
         {% endfor %}
         ) b
