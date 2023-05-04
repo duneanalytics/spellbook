@@ -21440,4 +21440,5 @@ FROM (VALUES
         ,('0xfa0656b66180d06df46fb180db609c6b1a92de72', 'KEKW', 18)
         ,('0xfaf49fb90e30ba8f86c7a336ab0f6339f4f1a1e3', 'BALAJI', 18)
         ,('0xfcec9696d036065fd25d660c6c600445d6ba6b19', 'POV', 18)
+        ,('0xa2e3356610840701bdf5611a53974510ae27e2e1', 'wBETH', 18)
      ) AS temp_table (contract_address, symbol, decimals)
