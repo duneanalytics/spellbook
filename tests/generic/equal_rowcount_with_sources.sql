@@ -2,7 +2,7 @@
 
     WITH
     model_count as (
-    select count(*) as count_a from model
+    select count(*) as count_a from {{ model }}
     )
     ,sources_count as (
     select sum(count_b) as count_b
