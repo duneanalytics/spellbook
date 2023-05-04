@@ -7,7 +7,7 @@
     ,sources_count as (
     select sum(count_b) as count_b
     from (
-        {% for source in sources %}
+        {% for source in evt_sources %}
         select count(*) as count_b
         from {{ source }}
         where evt_block_time <= (select max(block_time) from model)
