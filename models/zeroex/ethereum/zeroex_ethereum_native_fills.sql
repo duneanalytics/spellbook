@@ -27,10 +27,10 @@ WITH
             , CASE WHEN lower(tt.symbol) > lower(mt.symbol) THEN concat(mt.symbol, '-', tt.symbol) ELSE concat(tt.symbol, '-', mt.symbol) END AS token_pair
             , fills.takerAssetFilledAmount as taker_token_filled_amount_raw
             , fills.makerAssetFilledAmount as maker_token_filled_amount_raw
-            , fills.makerAssetFilledAmount / (10^mt.decimals) AS maker_asset_filled_amount
+            , fills.makerAssetFilledAmount / pow(10, mt.decimals) AS maker_asset_filled_amount
             , SUBSTRING(fills.takerAssetData,17,20) AS taker_token
             , tt.symbol AS taker_symbol
-            , fills.takerAssetFilledAmount / (10^tt.decimals) AS taker_asset_filled_amount
+            , fills.takerAssetFilledAmount / pow(10, tt.decimals) AS taker_asset_filled_amount
             , (fills.feeRecipientAddress in 
                 ('0x9b858be6e3047d88820f439b240deac2418a2551','0x86003b044f70dac0abc80ac8957305b6370893ed','0x5bc2419a087666148bfbe1361ae6c06d240c6131')) 
                 AS matcha_limit_order_flag
@@ -45,7 +45,7 @@ WITH
                     WHEN mp.symbol = 'DAI' THEN (fills.makerAssetFilledAmount / 1e18) * mp.price
                     WHEN tp.symbol = 'WETH' THEN (fills.takerAssetFilledAmount / 1e18) * tp.price
                     WHEN mp.symbol = 'WETH' THEN (fills.makerAssetFilledAmount / 1e18) * mp.price
-                    ELSE COALESCE((fills.makerAssetFilledAmount / (10^mt.decimals))*mp.price,(fills.takerAssetFilledAmount / (10^tt.decimals))*tp.price)
+                  ELSE COALESCE((fills.makerAssetFilledAmount / pow(10, mt.decimals))*mp.price,(fills.takerAssetFilledAmount / pow(10, tt.decimals))*tp.price)
                 END AS volume_usd
             , fills.protocolFeePaid / 1e18 AS protocol_fee_paid_eth,
             fills.contract_address
@@ -88,10 +88,10 @@ WITH
             , CASE WHEN lower(tt.symbol) > lower(mt.symbol) THEN concat(mt.symbol, '-', tt.symbol) ELSE concat(tt.symbol, '-', mt.symbol) END AS token_pair
             , fills.takerAssetFilledAmount as taker_token_filled_amount_raw
             , fills.makerAssetFilledAmount as maker_token_filled_amount_raw
-            , fills.makerAssetFilledAmount / (10^mt.decimals) AS maker_asset_filled_amount
+            , fills.makerAssetFilledAmount / pow(10, mt.decimals) AS maker_asset_filled_amount
             , SUBSTRING(fills.takerAssetData,17,20) AS taker_token
             , tt.symbol AS taker_symbol
-            , fills.takerAssetFilledAmount / (10^tt.decimals) AS taker_asset_filled_amount
+            , fills.takerAssetFilledAmount / pow(10, tt.decimals) AS taker_asset_filled_amount
             , (fills.feeRecipientAddress in 
                 ('0x9b858be6e3047d88820f439b240deac2418a2551','0x86003b044f70dac0abc80ac8957305b6370893ed','0x5bc2419a087666148bfbe1361ae6c06d240c6131')) 
                 AS matcha_limit_order_flag
@@ -106,7 +106,7 @@ WITH
                     WHEN mp.symbol = 'DAI' THEN (fills.makerAssetFilledAmount / 1e18) * mp.price
                     WHEN tp.symbol = 'WETH' THEN (fills.takerAssetFilledAmount / 1e18) * tp.price
                     WHEN mp.symbol = 'WETH' THEN (fills.makerAssetFilledAmount / 1e18) * mp.price
-                    ELSE COALESCE((fills.makerAssetFilledAmount / (10^mt.decimals))*mp.price,(fills.takerAssetFilledAmount / (10^tt.decimals))*tp.price)
+                  ELSE COALESCE((fills.makerAssetFilledAmount / pow(10, mt.decimals))*mp.price,(fills.takerAssetFilledAmount / pow(10, tt.decimals))*tp.price)
                 END AS volume_usd, fills.contract_address
             , cast(null as numeric) as protocol_fee_paid_eth
             , 'fills' as native_order_type
@@ -149,10 +149,10 @@ WITH
             , CASE WHEN lower(tt.symbol) > lower(mt.symbol) THEN concat(mt.symbol, '-', tt.symbol) ELSE concat(tt.symbol, '-', mt.symbol) END AS token_pair
             , fills.takerTokenFilledAmount as taker_token_filled_amount_raw
             , fills.makerTokenFilledAmount as maker_token_filled_amount_raw
-            , fills.makerTokenFilledAmount / (10^mt.decimals) AS maker_asset_filled_amount
+            , fills.makerTokenFilledAmount / pow(10, mt.decimals) AS maker_asset_filled_amount
             , fills.takerToken AS taker_token
             , tt.symbol AS taker_symbol
-            , fills.takerTokenFilledAmount / (10^tt.decimals) AS taker_asset_filled_amount
+            , fills.takerTokenFilledAmount / pow(10, tt.decimals) AS taker_asset_filled_amount
             , (fills.feeRecipient in 
                 ('0x9b858be6e3047d88820f439b240deac2418a2551','0x86003b044f70dac0abc80ac8957305b6370893ed','0x5bc2419a087666148bfbe1361ae6c06d240c6131')) 
                 AS matcha_limit_order_flag
@@ -167,7 +167,7 @@ WITH
                     WHEN mp.symbol = 'DAI' THEN (fills.makerTokenFilledAmount / 1e18) * mp.price
                     WHEN tp.symbol = 'WETH' THEN (fills.takerTokenFilledAmount / 1e18) * tp.price
                     WHEN mp.symbol = 'WETH' THEN (fills.makerTokenFilledAmount / 1e18) * mp.price
-                    ELSE COALESCE((fills.makerTokenFilledAmount / (10^mt.decimals))*mp.price,(fills.takerTokenFilledAmount / (10^tt.decimals))*tp.price)
+                  ELSE COALESCE((fills.makerTokenFilledAmount / pow(10, mt.decimals))*mp.price,(fills.takerTokenFilledAmount / pow(10, tt.decimals))*tp.price)
                 END AS volume_usd
             , fills.protocolFeePaid/ 1e18 AS protocol_fee_paid_eth
             , fills.contract_address
@@ -211,10 +211,10 @@ WITH
           , CASE WHEN lower(tt.symbol) > lower(mt.symbol) THEN concat(mt.symbol, '-', tt.symbol) ELSE concat(tt.symbol, '-', mt.symbol) END AS token_pair
           , fills.takerTokenFilledAmount as taker_token_filled_amount_raw
           , fills.makerTokenFilledAmount as maker_token_filled_amount_raw
-          , fills.makerTokenFilledAmount / (10^mt.decimals) AS maker_asset_filled_amount
+          , fills.makerTokenFilledAmount / pow(10, mt.decimals) AS maker_asset_filled_amount
           , fills.takerToken AS taker_token
           , tt.symbol AS taker_symbol
-          , fills.takerTokenFilledAmount / (10^tt.decimals) AS taker_asset_filled_amount
+          , fills.takerTokenFilledAmount / pow(10, tt.decimals) AS taker_asset_filled_amount
           , false as matcha_limit_order_flag
           , CASE
                   WHEN tp.symbol = 'USDC' THEN (fills.takerTokenFilledAmount / 1e6) ----don't multiply by anything as these assets are USD
@@ -227,7 +227,7 @@ WITH
                   WHEN mp.symbol = 'DAI' THEN (fills.makerTokenFilledAmount / 1e18) * mp.price
                   WHEN tp.symbol = 'WETH' THEN (fills.takerTokenFilledAmount / 1e18) * tp.price
                   WHEN mp.symbol = 'WETH' THEN (fills.makerTokenFilledAmount / 1e18) * mp.price
-                  ELSE COALESCE((fills.makerTokenFilledAmount / (10^mt.decimals))*mp.price,(fills.takerTokenFilledAmount / (10^tt.decimals))*tp.price)
+                  ELSE COALESCE((fills.makerTokenFilledAmount / pow(10, mt.decimals))*mp.price,(fills.takerTokenFilledAmount / pow(10, tt.decimals))*tp.price)
               END AS volume_usd
           , cast(null as numeric) AS protocol_fee_paid_eth,
           fills.contract_address
@@ -270,10 +270,10 @@ WITH
           , CASE WHEN lower(tt.symbol) > lower(mt.symbol) THEN concat(mt.symbol, '-', tt.symbol) ELSE concat(tt.symbol, '-', mt.symbol) END AS token_pair
           , fills.takerTokenFilledAmount as taker_token_filled_amount_raw
           , fills.makerTokenFilledAmount as maker_token_filled_amount_raw
-          , fills.makerTokenFilledAmount / (10^mt.decimals) AS maker_asset_filled_amount
+          , fills.makerTokenFilledAmount / pow(10, mt.decimals) AS maker_asset_filled_amount
           , fills.takerToken AS taker_token
           , tt.symbol AS taker_symbol
-          , fills.takerTokenFilledAmount / (10^tt.decimals) AS taker_asset_filled_amount
+          , fills.takerTokenFilledAmount / pow(10, tt.decimals) AS taker_asset_filled_amount
           , false as matcha_limit_order_flag
           , CASE
                   WHEN tp.symbol = 'USDC' THEN (fills.takerTokenFilledAmount / 1e6) ----don't multiply by anything as these assets are USD
@@ -286,7 +286,7 @@ WITH
                   WHEN mp.symbol = 'DAI' THEN (fills.makerTokenFilledAmount / 1e18) * mp.price
                   WHEN tp.symbol = 'WETH' THEN (fills.takerTokenFilledAmount / 1e18) * tp.price
                   WHEN mp.symbol = 'WETH' THEN (fills.makerTokenFilledAmount / 1e18) * mp.price
-                  ELSE COALESCE((fills.makerTokenFilledAmount / (10^mt.decimals))*mp.price,(fills.takerTokenFilledAmount / (10^tt.decimals))*tp.price)
+                  ELSE COALESCE((fills.makerTokenFilledAmount / pow(10, mt.decimals))*mp.price,(fills.takerTokenFilledAmount / pow(10, tt.decimals))*tp.price)
               END AS volume_usd
           , cast(null as numeric) AS protocol_fee_paid_eth
           , fills.contract_address
@@ -374,4 +374,3 @@ WITH
             {% if not is_incremental() %}
             AND tx.block_time >= '{{zeroex_v3_start_date}}'
             {% endif %}
-            
