@@ -165,7 +165,7 @@ with base_level as (
      COALESCE(oc.`from`,'0xdeaddeaddeaddeaddeaddeaddeaddeaddead0006') AS trace_creator_address
     ,COALESCE(oc.`from`,'0xdeaddeaddeaddeaddeaddeaddeaddeaddead0006') AS creator_address
     ,NULL AS contract_factory
-    ,c.address AS contract_address
+    ,l.contract_address
     ,oc.namespace as contract_project 
     ,oc.name as contract_name 
     ,COALESCE(oc.created_at, MIN(block_time)) AS created_time
