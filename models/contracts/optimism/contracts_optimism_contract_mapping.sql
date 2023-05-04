@@ -174,7 +174,7 @@ with base_level as (
     ,NULL AS creation_tx_hash
   from {{ source('optimism', 'logs') }} as l
     left join {{ source('optimism', 'contracts') }} as oc 
-      ON l.contract_address = c.address
+      ON l.contract_address = oc.address
   WHERE
     l.contract_address NOT IN (SELECT cc.contract_address FROM creator_contracts cc)
     {% if is_incremental() %} -- this filter will only be applied on an incremental run 
@@ -186,7 +186,7 @@ with base_level as (
             gc.contract_address = l.contract_address
         )
     {% endif %}
-  GROUP BY oc.`from`, c.address, oc.namespace, oc.name, oc.created_at
+  GROUP BY oc.`from`, l.contract_address, oc.namespace, oc.name, oc.created_at
 
   union all
   -- ovm 1.0 contracts
