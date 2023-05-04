@@ -16,7 +16,7 @@
         ) b
     )
 
-    unit_test as (
+    ,unit_test as (
     select count_a, count_b, (count_a - count_b) as diff_count
     from model_count
     full outer join sources_count
