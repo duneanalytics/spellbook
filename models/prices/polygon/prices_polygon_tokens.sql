@@ -59,6 +59,7 @@ FROM
     ("lcd-lucidao", "polygon", "LCD", "0xc2a45fe7d40bcac8369371b08419ddafd3131b4a", 18),
     ("revv-revv", "polygon", "REVV", "0x70c006878a5a50ed185ac4c87d837633923de296", 18),
     ("grain-granary","polygon","GRAIN","0x8429d0afade80498eadb9919e41437a14d45a00b",18),
-    ("oath-oath","polygon","OATH","0xc2c52ff5134596f5ff1b1204d3304228f2432836",18)
+    ("oath-oath","polygon","OATH","0xc2c52ff5134596f5ff1b1204d3304228f2432836",18),
+    ("tetu-tetu-reward-token","polygon","TETU","0x255707B70BF90aa112006E1b07B9AeA6De021424",18)  
 
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)
