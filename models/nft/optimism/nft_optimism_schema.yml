@@ -99,7 +99,7 @@ models:
     meta:
       blockchain: optimism
       sector: nft
-      contributors: chuxin
+      contributors: chuxin, hildobby
     config:
       tags: ['nft', 'optimism', 'aggregators']
     description: >
@@ -107,6 +107,8 @@ models:
     columns:
       - name: contract_address
         description: "Aggregator project's contract address"
+        tests:
+          - unique
       - name: name
         description: "Aggregator project's name"
 
