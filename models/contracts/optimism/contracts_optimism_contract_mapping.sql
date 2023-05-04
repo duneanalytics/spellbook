@@ -160,27 +160,33 @@ with base_level as (
     on cc.contract_address = oc.address 
 
   union all
-  -- missing decoded contracts
+  -- missing contracts
   select 
-     oc.`from` AS trace_creator_address
-    ,oc.`from` AS creator_address
+     COALESCE(oc.`from`,'0xdeaddeaddeaddeaddeaddeaddeaddeaddead0006') AS trace_creator_address
+    ,COALESCE(oc.`from`,'0xdeaddeaddeaddeaddeaddeaddeaddeaddead0006') AS creator_address
     ,NULL AS contract_factory
-    ,address AS contract_address
+    ,c.address AS contract_address
     ,oc.namespace as contract_project 
     ,oc.name as contract_name 
-    ,oc.created_at AS created_time
+    ,COALESCE(oc.created_at, MIN(block_time)) AS created_time
     ,false as is_self_destruct
-    ,'missing decoded contracts' as source
+    ,'missing contracts' as source
     ,NULL AS creation_tx_hash
-  from {{ source('optimism', 'contracts') }} as oc 
+  from {{ source('optimism', 'logs') }} as l
+    left join {{ source('optimism', 'contracts') }} as oc 
+      ON l.contract_address = c.address
   WHERE
-    oc.address NOT IN (SELECT cc.contract_address FROM creator_contracts cc)
-    and not exists (
-        select 1 
-        from {{ this }} as gc
-        where 
-          gc.contract_address = oc.address
-      )
+    l.contract_address NOT IN (SELECT cc.contract_address FROM creator_contracts cc)
+    {% if is_incremental() %} -- this filter will only be applied on an incremental run 
+      and l.block_time >= date_trunc('day', now() - interval '1 week')
+      and not exists (
+          select 1 
+          from {{ this }} as gc
+          where 
+            gc.contract_address = l.contract_address
+        )
+    {% endif %}
+  GROUP BY oc.`from`, c.address, oc.namespace, oc.name, oc.created_at
 
   union all
   -- ovm 1.0 contracts
