@@ -15,7 +15,35 @@
     ,('foundation',    'v1',   ref('foundation_ethereum_base_trades'))
 ] %}
 
-
+-- We should remove this CTE and include ETH into the general prices table once everything is migrated
+WITH cte_prices_patch as (
+    SELECT
+        contract_address
+        ,blockchain
+        ,decimals
+        ,minute
+        ,price
+        ,symbol
+    FROM {{ ref('prices_usd_forward_fill') }}
+    WHERE blockchain = 'ethereum'
+    {% if is_incremental() %}
+    AND minute >= date_trunc("day", now() - interval '1 week')
+    {% endif %}
+    UNION ALL
+    SELECT
+        '{{ var("ETH_ERC20_ADDRESS") }}' as contract_address
+        ,'ethereum' as blockchain
+        ,18 as decimals
+        ,minute
+        ,price
+        ,'ETH' as symbol
+    FROM {{ ref('prices_usd_forward_fill') }}
+    WHERE blockchain is null AND symbol = 'ETH'
+    {% if is_incremental() %}
+    AND minute >= date_trunc("day", now() - interval '1 week')
+    {% endif %}
+),
+enriched_trades as (
 -- macros/models/sector/nft
 {{
     enrich_trades(
@@ -24,8 +52,11 @@
         transactions_model=source('ethereum','transactions'),
         tokens_nft_model=ref('tokens_ethereum_nft'),
         tokens_erc20_model=ref('tokens_ethereum_erc20'),
-        prices_model=ref('prices_usd_forward_fill'),
+        prices_model='cte_prices_patch',
         aggregators=ref('nft_ethereum_aggregators'),
         aggregator_markers=ref('nft_ethereum_aggregators_markers')
     )
 }}
+)
+
+select * from enriched_trades
