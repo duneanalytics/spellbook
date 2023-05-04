@@ -58,6 +58,14 @@ models:
         +schema: aave_ethereum
       optimism:
         +schema: aave_optimism
+      arbitrum:
+        +schema: aave_arbitrum
+      avalanche_c:
+        +schema: aave_avalanche_c
+      polygon:
+        +schema: aave_polygon
+      fantom:
+        +schema: aave_fantom
 
     aavegotchi:
       +schema: aavegotchi
