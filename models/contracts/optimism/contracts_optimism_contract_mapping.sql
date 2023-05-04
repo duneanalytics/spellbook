@@ -160,6 +160,29 @@ with base_level as (
     on cc.contract_address = oc.address 
 
   union all
+  -- missing decoded contracts
+  select 
+     oc.`from` AS trace_creator_address
+    ,oc.`from` AS creator_address
+    ,NULL AS contract_factory
+    ,address AS contract_address
+    ,oc.namespace as contract_project 
+    ,oc.name as contract_name 
+    ,oc.created_at AS created_time
+    ,false as is_self_destruct
+    ,'missing decoded contracts' as source
+    ,NULL AS creation_tx_hash
+  from {{ source('optimism', 'contracts') }} as oc 
+  WHERE
+    oc.address NOT IN (SELECT cc.contract_address FROM creator_contracts cc)
+    and not exists (
+        select 1 
+        from {{ this }} as gc
+        where 
+          gc.contract_address = oc.address
+      )
+
+  union all
   -- ovm 1.0 contracts
 
   select 
