@@ -18,3 +18,6 @@ models:
             - trace_address
       - dbt_utils.equal_rowcount:
           compare_model: ref('defiswap_ethereum_trades')
+      - equal_rowcount_with_sources:
+          evt_source:
+            - source('defiswap_ethereum', 'CroDefiSwapPair_evt_Swap')
