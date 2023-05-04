@@ -32,10 +32,10 @@ WITH
             , fills.contract_address 
             , mt.symbol AS maker_symbol
             , CASE WHEN lower(tt.symbol) > lower(mt.symbol) THEN concat(mt.symbol, '-', tt.symbol) ELSE concat(tt.symbol, '-', mt.symbol) END AS token_pair
-            , fills.makerTokenFilledAmount / (10^mt.decimals) AS maker_asset_filled_amount
+            , fills.makerTokenFilledAmount / pow(10, mt.decimals) AS maker_asset_filled_amount
             , fills.takerToken AS taker_token
             , tt.symbol AS taker_symbol
-            , fills.takerTokenFilledAmount / (10^tt.decimals) AS taker_asset_filled_amount
+            , fills.takerTokenFilledAmount / pow(10, tt.decimals) AS taker_asset_filled_amount
             , (fills.feeRecipient in 
                 ('0x9b858be6e3047d88820f439b240deac2418a2551','0x86003b044f70dac0abc80ac8957305b6370893ed','0x5bc2419a087666148bfbe1361ae6c06d240c6131')) 
                 AS matcha_limit_order_flag
@@ -50,7 +50,7 @@ WITH
                     WHEN mp.symbol = 'DAI' THEN (fills.makerTokenFilledAmount / 1e18) * mp.price
                     WHEN tp.symbol = 'WETH' THEN (fills.takerTokenFilledAmount / 1e18) * tp.price
                     WHEN mp.symbol = 'WETH' THEN (fills.makerTokenFilledAmount / 1e18) * mp.price
-                    ELSE COALESCE((fills.makerTokenFilledAmount / (10^mt.decimals))*mp.price,(fills.takerTokenFilledAmount / (10^tt.decimals))*tp.price)
+                    ELSE COALESCE((fills.makerTokenFilledAmount / pow(10, mt.decimals))*mp.price,(fills.takerTokenFilledAmount / pow(10, tt.decimals))*tp.price)
                 END AS volume_usd
             , fills.protocolFeePaid / 1e18 AS protocol_fee_paid_eth
         FROM {{ source('zeroex_arbitrum', 'ExchangeProxy_evt_LimitOrderFilled') }} fills
@@ -95,10 +95,10 @@ WITH
           , fills.contract_address 
           , mt.symbol AS maker_symbol
           , CASE WHEN lower(tt.symbol) > lower(mt.symbol) THEN concat(mt.symbol, '-', tt.symbol) ELSE concat(tt.symbol, '-', mt.symbol) END AS token_pair
-          , fills.makerTokenFilledAmount / (10^mt.decimals) AS maker_asset_filled_amount
+          , fills.makerTokenFilledAmount / pow(10, mt.decimals) AS maker_asset_filled_amount
           , fills.takerToken AS taker_token
           , tt.symbol AS taker_symbol
-          , fills.takerTokenFilledAmount / (10^tt.decimals) AS taker_asset_filled_amount
+          , fills.takerTokenFilledAmount / pow(10, tt.decimals) AS taker_asset_filled_amount
           , false AS matcha_limit_order_flag
           , CASE
                   WHEN tp.symbol = 'USDC' THEN (fills.takerTokenFilledAmount / 1e6) ----don't multiply by anything as these assets are USD
@@ -111,7 +111,7 @@ WITH
                   WHEN mp.symbol = 'DAI' THEN (fills.makerTokenFilledAmount / 1e18) * mp.price
                   WHEN tp.symbol = 'WETH' THEN (fills.takerTokenFilledAmount / 1e18) * tp.price
                   WHEN mp.symbol = 'WETH' THEN (fills.makerTokenFilledAmount / 1e18) * mp.price
-                  ELSE COALESCE((fills.makerTokenFilledAmount / (10^mt.decimals))*mp.price,(fills.takerTokenFilledAmount / (10^tt.decimals))*tp.price)
+                ELSE COALESCE((fills.makerTokenFilledAmount / pow(10, mt.decimals))*mp.price,(fills.takerTokenFilledAmount / pow(10, tt.decimals))*tp.price)
               END AS volume_usd
           , cast(NULL as numeric) AS protocol_fee_paid_eth
       FROM {{ source('zeroex_arbitrum', 'ExchangeProxy_evt_RfqOrderFilled') }} fills
@@ -155,10 +155,10 @@ WITH
           , fills.contract_address 
           , mt.symbol AS maker_symbol
           , CASE WHEN lower(tt.symbol) > lower(mt.symbol) THEN concat(mt.symbol, '-', tt.symbol) ELSE concat(tt.symbol, '-', mt.symbol) END AS token_pair
-          , fills.makerTokenFilledAmount / (10^mt.decimals) AS maker_asset_filled_amount
+          , fills.makerTokenFilledAmount / pow(10, mt.decimals) AS maker_asset_filled_amount
           , fills.takerToken AS taker_token
           , tt.symbol AS taker_symbol
-          , fills.takerTokenFilledAmount / (10^tt.decimals) AS taker_asset_filled_amount
+          , fills.takerTokenFilledAmount / pow(10, tt.decimals) AS taker_asset_filled_amount
           , FALSE  AS matcha_limit_order_flag
           , CASE
                   WHEN tp.symbol = 'USDC' THEN (fills.takerTokenFilledAmount / 1e6) ----don't multiply by anything as these assets are USD
@@ -171,7 +171,7 @@ WITH
                   WHEN mp.symbol = 'DAI' THEN (fills.makerTokenFilledAmount / 1e18) * mp.price
                   WHEN tp.symbol = 'WETH' THEN (fills.takerTokenFilledAmount / 1e18) * tp.price
                   WHEN mp.symbol = 'WETH' THEN (fills.makerTokenFilledAmount / 1e18) * mp.price
-                  ELSE COALESCE((fills.makerTokenFilledAmount / (10^mt.decimals))*mp.price,(fills.takerTokenFilledAmount / (10^tt.decimals))*tp.price)
+                ELSE COALESCE((fills.makerTokenFilledAmount / pow(10, mt.decimals))*mp.price,(fills.takerTokenFilledAmount / pow(10, tt.decimals))*tp.price)
               END AS volume_usd
           , cast(NULL as numeric) AS protocol_fee_paid_eth
         FROM {{ source('zeroex_arbitrum', 'ExchangeProxy_evt_OtcOrderFilled') }} fills
