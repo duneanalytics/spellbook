@@ -89,7 +89,7 @@ SELECT
 from dexs
 inner join {{ source('fantom', 'transactions') }} tx
     on dexs.tx_hash = tx.hash
-    and dex.block_number = tx.block_number
+    and dexs.block_number = tx.block_number
     {% if not is_incremental() %}
     and tx.block_time >= '{{project_start_date}}'
     {% endif %}
