@@ -27,6 +27,7 @@ with v2 as (
         s.evt_index
     from {{ source('balancer_v2_optimism', 'Vault_evt_Swap') }} s
     inner join {{ source('balancer_v2_optimism', 'Vault_evt_PoolRegistered') }} p
+    on s.poolId = p.poolId
     WHERE tokenIn != poolAddress
         AND tokenOut != poolAddress
     {% if not is_incremental() %}
