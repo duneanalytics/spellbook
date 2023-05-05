@@ -22,11 +22,45 @@ models:
             - source('uniswap_ethereum', 'Exchange_evt_TokenPurchase')
             - source('uniswap_ethereum', 'Exchange_evt_EthPurchase')
       - check_seed:
-          seed_file: ref('defiswap_ethereum_base_trades_seed')
+          seed_file: ref('uniswap_ethereum_base_trades_seed')
           filter:
             blockchain: ethereum
             project: uniswap
             version: 1
+          match_columns:
+            - tx_hash
+            - evt_index
+          check_columns:
+            - token_bought_address
+            - token_sold_address
+            - token_bought_amount_raw
+            - token_sold_amount_raw
+
+  - name: uniswap_ethereum_v2_base_trades
+    meta:
+      blockchain: ethereum
+      sector: dex
+      project: uniswap
+      contributors: jeff-dude, masquot, soispoke, hosuke
+    config:
+      tags: [ 'ethereum', 'dex', 'trades', 'uniswap', 'v2' ]
+    description: "uniswap ethereum v2 base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - dbt_utils.equal_rowcount:
+          compare_model: ref('uniswap_v2_ethereum_trades')
+      - equal_rowcount_with_sources:
+          evt_sources:
+            - source('uniswap_v2_ethereum', 'Pair_evt_Swap')
+      - check_seed:
+          seed_file: ref('uniswap_ethereum_base_trades_seed')
+          filter:
+            blockchain: ethereum
+            project: uniswap
+            version: 2
           match_columns:
             - tx_hash
             - evt_index
