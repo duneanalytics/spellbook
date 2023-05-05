@@ -1,16 +1,16 @@
 version: 2
 
 models:
-  - name: paraswap_v5_polygon_trades
+  - name: paraswap_v4_polygon_trades
     meta:
       blockchain: polygon
       sector: dex
-      project: paraswap_v5
+      project: paraswap_v4
       contributors: springzh
     config:
-      tags: ['polygon','paraswap_v5','trades', 'paraswap','dex']
+      tags: ['polygon','paraswap_v4','trades', 'paraswap','dex']
     description: >
-        Paraswap V5 contract aggregator trades on polygon
+        Paraswap V4 contract aggregator trades on polygon
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -21,10 +21,10 @@ models:
             - tx_hash
             - evt_index
             - trace_address
-#      - check_dex_aggregator_seed:
-#          blockchain: polygon
-#          project: paraswap
-#          version: 5
+      - check_dex_aggregator_seed:
+          blockchain: polygon
+          project: paraswap
+          version: 4
     columns:
       - &blockchain
         name: blockchain
@@ -95,6 +95,55 @@ models:
       - &evt_index
         name: evt_index
         description: ""
+
+  - name: paraswap_v5_polygon_trades
+    meta:
+      blockchain: polygon
+      sector: dex
+      project: paraswap_v5
+      contributors: springzh
+    config:
+      tags: ['polygon','paraswap_v5','trades', 'paraswap','dex']
+    description: >
+        Paraswap V5 contract aggregator trades on polygon
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_date
+            - blockchain
+            - project
+            - version
+            - tx_hash
+            - evt_index
+            - trace_address
+      - check_dex_aggregator_seed:
+          blockchain: polygon
+          project: paraswap
+          version: 5
+    columns:
+      - *blockchain
+      - *project
+      - *version  
+      - *block_date
+      - *block_time
+      - *token_bought_symbol
+      - *token_sold_symbol
+      - *token_pair
+      - *token_bought_amount
+      - *token_sold_amount
+      - *token_bought_amount_raw
+      - *token_sold_amount_raw
+      - *amount_usd
+      - *token_bought_address
+      - *token_sold_address
+      - *taker
+      - *maker
+      - *project_contract_address
+      - *tx_hash
+      - *tx_from
+      - *tx_to
+      - *trace_address
+      - *evt_index
 
   - name: paraswap_polygon_trades
     meta:
