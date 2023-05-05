@@ -18,11 +18,13 @@ with accepted_bid_prices as (
     ,max_by(bid.value, evt_block_number) as latest_bid
     ,max_by(bid.fromAddress, evt_block_number) as latest_bidder
     from {{ source('cryptopunks_ethereum','CryptoPunksMarket_call_acceptBidForPunk')}} call
-    left join  {{ source('cryptopunks_ethereum','CryptoPunksMarket_evt_PunkBidEntered') }} bid
-        on call.block_number >= bid.block_number
+    left join {{ source('cryptopunks_ethereum','CryptoPunksMarket_evt_PunkBidEntered') }} bid
+        on call_success
+        and call.call_block_number >= bid.evt_block_number
         and call.punkIndex = bid.punkIndex
+    WHERE call_success
     {% if is_incremental() %}
-    WHERE call.call_block_time >= date_trunc("day", now() - interval '1 week')
+    AND call.call_block_time >= date_trunc("day", now() - interval '1 week')
     {% endif %}
     group by 1,2,3
 )
