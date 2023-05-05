@@ -54,7 +54,17 @@ known_solver_metadata (address, environment, name) as (
                  ('0xd2F50B092ec32623c4955cEF4AE30C4699353735', 'prod', 'Gnosis_1inch'),
                  ('0x68dEE65bB88d919463495E5CeA9870a81f1e9413', 'service', 'Withdraw'),
                  ('0xa03be496e67ec29bc62f01a428683d7f9c204930', 'service', 'Withdraw'),
-                 ('0x7524942F9283FBFa8F17b05CC0a9cBde397d25b3', 'test', 'Test 1')
+                 ('0x7524942F9283FBFa8F17b05CC0a9cBde397d25b3', 'test', 'Test 1'),
+                 ('0x8E747b386DcF81e7Fc888E1dDc2D3C1401bd34A3', 'prod', 'Naive'),
+                 ('0x5D665472e2026C405aAc65cC652470a1B8FCff08', 'prod', 'Baseline'),
+                 ('0xe71D3324E17E99B56c294067370D45111bc968D6', 'prod', 'Quasimodo'),
+                 ('0xa7c4C18106e92Cea479627D02FAb583D987f17d9', 'prod', 'Gnosis_1inch'),
+                 ('0x43e834BE774da64DDe12014e287539E910310255', 'barn', 'Legacy'),
+                 ('0xc605D77C083FeD57EbC70D0B1d8E0F0fe6a39a8C', 'barn', 'Naive'),
+                 ('0x2Dd00F9f614E2D8E3AB14FBAe1FDA36395E76b85', 'barn', 'Baseline'),
+                 ('0xF9E47818698A0E2588848B8aB0E631D84B86B852', 'barn', 'Quasimodo'),
+                 ('0x2D9412AF54A8d3514B75163F3ACB27a3B996602F', 'barn', 'Gnosis_1inch'),
+
          ) as _
 )
 -- Combining the metadata with current activation status for final table
