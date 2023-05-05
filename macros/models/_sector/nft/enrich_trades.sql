@@ -104,8 +104,6 @@ ON p.blockchain = base.blockchain
     {% endif %}
 LEFT JOIN {{ aggregators }} agg1
 ON tx.to = agg1.contract_address
-    OR base.buyer = agg1.contract_address
-    OR base.seller = agg1.contract_address
 LEFT JOIN {{ aggregators }} agg2
 ON agg1.contract_address is null    -- only match if agg1 produces no matches, this prevents duplicates
     AND (base.buyer = agg2.contract_address
