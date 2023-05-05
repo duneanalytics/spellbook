@@ -1,12 +1,6 @@
 version: 2
 
 sources:
-  - name: aave_v2_ethereum
-    tables:
-      - name: LendingPool_evt_FlashLoan
-  - name: aave_v3_ethereum
-    tables:
-      - name: Pool_evt_FlashLoan
   - name: balancer_v2_ethereum
     tables:
       - name: Vault_evt_FlashLoan
