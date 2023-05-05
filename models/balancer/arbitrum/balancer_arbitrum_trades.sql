@@ -30,9 +30,13 @@ with v2 as (
     on s.poolId = p.poolId
     {% if not is_incremental() %}
         where s.evt_block_time >= '{{project_start_date}}'
+        AND CAST( token_bought_address as VARCHAR) != CAST( project_contract_address AS VARCHAR)
+        AND CAST( token_sold_address as VARCHAR) != CAST( project_contract_address AS VARCHAR)
     {% endif %}
     {% if is_incremental() %}
         where s.evt_block_time >= date_trunc("day", now() - interval '1 week')
+        AND CAST( token_bought_address as VARCHAR) != CAST( project_contract_address AS VARCHAR)
+        AND CAST( token_sold_address as VARCHAR) != CAST( project_contract_address AS VARCHAR)
     {% endif %}
 ),
 prices as (
