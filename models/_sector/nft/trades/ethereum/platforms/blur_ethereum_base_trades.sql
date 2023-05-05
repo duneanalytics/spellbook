@@ -35,8 +35,9 @@ regular_blur_sales as (
         , bm.contract_address AS project_contract_address
         , bm.evt_tx_hash AS tx_hash
         , 0 AS platform_fee_amount_raw  -- Hardcoded 0% platform fee
-        , CAST(COALESCE(get_json_object(bm.buy, '$.price')*get_json_object(get_json_object(bm.sell, '$.fees[0]'), '$.rate')/10000, 0) AS DOUBLE) AS royalty_fee_amount_raw
+        , CAST(COALESCE(get_json_object(bm.buy, '$.price')*get_json_object(get_json_object(bm.sell, '$.fees[0]'), '$.rate')/10000, 0) AS DECIMAL(38,0)) AS royalty_fee_amount_raw
         , get_json_object(bm.sell, '$.fees[0].recipient') AS royalty_fee_address
+        , cast(NULL as varchar(1)) as platform_fee_address
         , bm.evt_index as sub_tx_trade_id
     FROM {{ source('blur_ethereum','BlurExchange_evt_OrdersMatched') }} bm
     {% if is_incremental() %}
@@ -62,7 +63,7 @@ SELECT
     , get_json_object(s.consideration[0], '$.token') AS currency_contract
     , s.contract_address AS project_contract_address
     , s.evt_tx_hash AS tx_hash
-    , CAST(0 AS DOUBLE) AS platform_fee_amount_raw -- Hardcoded 0% platform fee
+    , CAST(0 AS DECIMAL(38,0)) AS platform_fee_amount_raw -- Hardcoded 0% platform fee
     , LEAST(CAST(get_json_object(s.consideration[0], '$.amount') AS DECIMAL(38,0)), CAST(get_json_object(s.consideration[1], '$.amount') AS DECIMAL(38,0))) AS royalty_fee_amount_raw
     , CASE WHEN get_json_object(s.consideration[0], '$.recipient')!=s.recipient THEN get_json_object(s.consideration[0], '$.recipient')
         ELSE get_json_object(s.consideration[1], '$.recipient')
