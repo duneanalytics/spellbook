@@ -43,6 +43,7 @@ regular_blur_sales as (
     WHERE bm.evt_block_time >= date_trunc("day", now() - interval '1 week')
     {% else %}
     WHERE bm.evt_block_time >= '{{ project_start_date }}'
+    {% endif %}
 )
 
 , seaport_blur_sales as (
