@@ -1,0 +1,6 @@
+version: 2
+
+sources:
+  - name: uniswap_ethereum
+  - name: uniswap_v2_ethereum
+  - name: uniswap_v3_ethereum
