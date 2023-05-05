@@ -68,7 +68,7 @@ SELECT
         ELSE get_json_object(s.consideration[1], '$.recipient')
         END AS royalty_fee_address
     , cast(NULL as varchar(1)) as platform_fee_address
-    , bm.evt_index as sub_tx_trade_id
+    , s.evt_index as sub_tx_trade_id
 FROM {{ source('seaport_ethereum','Seaport_evt_OrderFulfilled') }} s
 WHERE s.zone='0x0000000000d80cfcb8dfcd8b2c4fd9c813482938'
     {% if is_incremental() %}
