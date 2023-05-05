@@ -217,7 +217,7 @@ ERC20BridgeTransfer AS (
             FALSE                                   AS matcha_limit_order_flag
     FROM {{ source('bnb', 'logs') }} logs
     JOIN zeroex_tx ON zeroex_tx.tx_hash = logs.tx_hash
-    WHERE topic1 = '0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef'
+    WHERE topic1 = '0xd78ad95fa46c994b6551d0da85fc275fe613ce37657fb8d5e3d130840159d822'
 
     {% if is_incremental() %}
     AND block_time >= date_trunc('day', now() - interval '1 week')
@@ -428,6 +428,7 @@ AND tx.block_time >= '{{zeroex_v3_start_date}}'
 LEFT JOIN {{ source('prices', 'usd') }} tp ON date_trunc('minute', all_tx.block_time) = tp.minute
 AND CASE
         WHEN all_tx.taker_token = '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee' THEN '0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c'
+        WHEN all_tx.taker_token = '0x0000000000000000000000000000000000000000' THEN '0x55d398326f99059ff775485246999027b3197955'
         ELSE all_tx.taker_token
     END = tp.contract_address
 AND tp.blockchain = 'bnb'
@@ -442,6 +443,7 @@ AND tp.minute >= '{{zeroex_v3_start_date}}'
 LEFT JOIN {{ source('prices', 'usd') }} mp ON DATE_TRUNC('minute', all_tx.block_time) = mp.minute
 AND CASE
         WHEN all_tx.maker_token = '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee' THEN '0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c'
+        WHEN all_tx.maker_token = '0x0000000000000000000000000000000000000000' THEN '0x55d398326f99059ff775485246999027b3197955'
         ELSE all_tx.maker_token
     END = mp.contract_address
 AND mp.blockchain = 'bnb'
@@ -455,10 +457,12 @@ AND mp.minute >= '{{zeroex_v3_start_date}}'
 
 LEFT OUTER JOIN {{ ref('tokens_erc20') }} ts  ON ts.contract_address = case 
                     WHEN all_tx.taker_token = '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee' THEN '0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c'
+                    WHEN all_tx.taker_token = '0x0000000000000000000000000000000000000000' THEN '0x55d398326f99059ff775485246999027b3197955'
                     ELSE all_tx.taker_token end
                 AND ts.blockchain = 'bnb'
 LEFT OUTER JOIN {{ ref('tokens_erc20') }} ms ON ms.contract_address = 
                 case 
                     WHEN all_tx.maker_token = '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee' THEN '0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c'
+                    WHEN all_tx.maker_token = '0x0000000000000000000000000000000000000000' THEN '0x55d398326f99059ff775485246999027b3197955'
                     ELSE all_tx.maker_token end 
                 AND ms.blockchain = 'bnb'
