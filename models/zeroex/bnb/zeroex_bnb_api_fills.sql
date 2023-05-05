@@ -201,7 +201,7 @@ otc_fills AS (
 ),
 ERC20BridgeTransfer AS (
     SELECT
-            logs.tx_hash,
+            distinct logs.tx_hash,
             INDEX                                   AS evt_index,
             logs.contract_address,
             block_time                              AS block_time,
@@ -229,7 +229,7 @@ ERC20BridgeTransfer AS (
 ),
 BridgeFill AS (
     SELECT
-            logs.tx_hash,
+            distinct logs.tx_hash,
             INDEX                                           AS evt_index,
             logs.contract_address,
             block_time                                      AS block_time,
