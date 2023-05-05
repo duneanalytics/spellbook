@@ -17,7 +17,7 @@ with accepted_bid_prices as (
     ,call.punkIndex
     ,max_by(bid.value, evt_block_number) as latest_bid
     ,max_by(bid.fromAddress, evt_block_number) as latest_bidder
-    {{ source('cryptopunks_ethereum','CryptoPunksMarket_call_acceptBidForPunk')}} call
+    from {{ source('cryptopunks_ethereum','CryptoPunksMarket_call_acceptBidForPunk')}} call
     left join  {{ source('cryptopunks_ethereum','CryptoPunksMarket_evt_PunkBidEntered') }} bid
         on call.block_number >= bid.block_number
         and call.punkIndex = bid.punkIndex
