@@ -16,6 +16,7 @@ with accepted_bid_prices as (
     ,call_tx_hash
     ,call.punkIndex
     ,max_by(bid.value, evt_block_number) as latest_bid
+    ,max_by(bid.fromAddress, evt_block_number) as latest_bidder
     {{ source('cryptopunks_ethereum','CryptoPunksMarket_call_acceptBidForPunk')}} call
     left join  {{ source('cryptopunks_ethereum','CryptoPunksMarket_evt_PunkBidEntered') }} bid
         on call.block_number >= bid.block_number
@@ -36,7 +37,7 @@ select  date_trunc('day',evt.evt_block_time) as block_date
             then 'Buy'
             else 'Bid accepted' end as trade_category
         , 'secondary' as trade_type
-        , evt.toAddress as buyer
+        , coalesce(call.latest_bidder,evt.toAddress) as buyer
         , evt.fromAddress as seller
         , evt.punkIndex as nft_token_id
         , 1 as nft_amount
