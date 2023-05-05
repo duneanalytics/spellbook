@@ -25,15 +25,13 @@ with v2 as (
     from {{ source('balancer_v2_ethereum', 'Vault_evt_Swap') }} s
     inner join {{ source('balancer_v2_ethereum', 'Vault_evt_PoolRegistered') }} p
     on s.poolId = p.poolId
+    WHERE tokenIn != poolAddress
+        AND tokenOut != poolAddress
     {% if not is_incremental() %}
-        where s.evt_block_time >= '{{project_start_date}}' 
-        AND CAST( token_bought_address as VARCHAR) != CAST( project_contract_address AS VARCHAR)
-        AND CAST( token_sold_address as VARCHAR) != CAST( project_contract_address AS VARCHAR)
+        AND s.evt_block_time >= '{{project_start_date}}'
     {% endif %}
     {% if is_incremental() %}
-        where s.evt_block_time >= date_trunc("day", now() - interval '1 week')
-        AND CAST( token_bought_address as VARCHAR) != CAST( project_contract_address AS VARCHAR)
-        AND CAST( token_sold_address as VARCHAR) != CAST( project_contract_address AS VARCHAR)
+        AND s.evt_block_time >= date_trunc("day", now() - interval '1 week')
     {% endif %}
 ),
 prices as (
