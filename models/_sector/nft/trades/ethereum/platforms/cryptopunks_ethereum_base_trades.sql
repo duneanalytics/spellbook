@@ -25,7 +25,7 @@ select  date_trunc('day',evt.evt_block_time) as block_date
         , evt.punkIndex as nft_token_id
         , 1 as nft_amount
         , evt.contract_address as nft_contract_address
-        , case when call.block_number is null
+        , case when call.call_block_number is null
             then cast(evt.value as DECIMAL(38))
             else cast(call.minPrice as DECIMAL(38)) end as price_raw
         , '{{ var("ETH_ERC20_ADDRESS") }}' AS currency_contract -- all trades are in ETH
@@ -40,7 +40,7 @@ on call_success
     and evt.evt_block_time >= date_trunc("day", now() - interval '1 week')
     and call.call_block_time >= date_trunc("day", now() - interval '1 week')
     {% endif %}
-    and evt.block_number = call.block_number
+    and evt.evt_block_number = call.call_block_number
     and evt.evt_tx_hash = call.call_tx_hash
     and evt.punkIndex = call.punkIndex
 where evt.evt_tx_hash not in ('0x92488a00dfa0746c300c66a716e6cc11ba9c0f9d40d8c58e792cc7fcebf432d0' -- flash loan https://twitter.com/cryptopunksnfts/status/1453903818308083720
