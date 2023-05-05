@@ -467,6 +467,7 @@ WITH curated_list AS (
       ,('0xd61fa937b8f237901d354f48f6b14995fe468bf2', 'Pixelpooly')
       ,('0x60e1980343558c4c9d8f323f45d3e0e256bdb16c', 'Mirror')
       ,('0x8321926c8aae281ef9d8520a772eb1d94a9ec6dd', 'Velodrome')
+      ,('0xc82Ea2afE1Fd1D61C4A12f5CeB3D7000f564F5C6', 'Valha')
 
   ) as temp_table (creator_address, contract_project)
 

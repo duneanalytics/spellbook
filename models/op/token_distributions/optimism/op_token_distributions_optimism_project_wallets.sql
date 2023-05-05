@@ -59,6 +59,7 @@ FROM (values
     ,('0x6668b635De8452a8613533c852b3d03FbD06DF9D', 'Geo Web', 'Team Multisig')
     ,('0x5ad276439e3772fdb6696b6cb61401902d4e8b72', 'Geo Web', 'Protocol Treasury')
     ,('0x94beC50afA856533603DF45639aC11c7E6A64c1f', 'Airgap Wallet', 'Team Wallet')
+    ,('0x5248be8b6c9b7257695275ebd7c3918326151ae6', 'Synthetix', 'Multisig')
 
     --quix - should come from CB
     ,('0x5Ad4A019F77e82940f6Dd15A5215362AF061A742','Quix','Distributor')
