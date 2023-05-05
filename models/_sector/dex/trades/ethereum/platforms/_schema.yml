@@ -21,3 +21,13 @@ models:
       - equal_rowcount_with_sources:
           evt_sources:
             - source('defiswap_ethereum', 'CroDefiSwapPair_evt_Swap')
+      - check_seed:
+          seed_file: ref('defiswap_ethereum_base_trades_seed')
+          match_columns:
+            - tx_hash
+            - evt_index
+          check_columns:
+            - token_bought_address
+            - token_sold_address
+            - token_bought_amount_raw
+            - token_sold_amount_raw
