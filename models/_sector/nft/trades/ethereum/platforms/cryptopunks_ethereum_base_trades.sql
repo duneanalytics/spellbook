@@ -10,13 +10,29 @@
 }}
 
 
+with accepted_bid_prices as (
+    select
+    call_block_number
+    ,call_tx_hash
+    ,call.punkIndex
+    ,max_by(bid.value, evt_block_number) as latest_bid
+    {{ source('cryptopunks_ethereum','CryptoPunksMarket_call_acceptBidForPunk')}} call
+    left join  {{ source('cryptopunks_ethereum','CryptoPunksMarket_evt_PunkBidEntered') }} bid
+        on call.block_number >= bid.block_number
+        and call.punkIndex = bid.punkIndex
+    {% if is_incremental() %}
+    WHERE call.call_block_time >= date_trunc("day", now() - interval '1 week')
+    {% endif %}
+    group by 1,2,3
+)
+
 select  date_trunc('day',evt.evt_block_time) as block_date
         , evt.evt_block_time as block_time
         , evt.evt_block_number as block_number
         , evt.evt_tx_hash as tx_hash
         , evt.contract_address as project_contract_address
         , evt.evt_index as sub_tx_trade_id
-        , case when call.call_block_number is null
+        , case when call.latest_bid is null
             then 'Buy'
             else 'Bid accepted' end as trade_category
         , 'secondary' as trade_type
@@ -25,23 +41,19 @@ select  date_trunc('day',evt.evt_block_time) as block_date
         , evt.punkIndex as nft_token_id
         , 1 as nft_amount
         , evt.contract_address as nft_contract_address
-        , case when call.call_block_number is null
-            then cast(evt.value as DECIMAL(38))
-            else cast(call.minPrice as DECIMAL(38)) end as price_raw
+        , cast(coalesce(call.latest_bid, evt.value) as DECIMAL(38)) as price_raw
         , '{{ var("ETH_ERC20_ADDRESS") }}' AS currency_contract -- all trades are in ETH
         , cast(0 as DECIMAL(38)) as platform_fee_amount_raw
         , cast(0 as DECIMAL(38)) as royalty_fee_amount_raw
         , cast(null as VARCHAR(1)) as platform_fee_address
         , cast(null as VARCHAR(1)) as royalty_fee_address
 from {{ source('cryptopunks_ethereum','CryptoPunksMarket_evt_PunkBought') }} evt
-left join {{ source('cryptopunks_ethereum','CryptoPunksMarket_call_acceptBidForPunk')}} call
-on call_success
-    {% if is_incremental() %}
-    and evt.evt_block_time >= date_trunc("day", now() - interval '1 week')
-    and call.call_block_time >= date_trunc("day", now() - interval '1 week')
-    {% endif %}
-    and evt.evt_block_number = call.call_block_number
+left join accepted_bid_prices call
+on evt.evt_block_number = call.call_block_number
     and evt.evt_tx_hash = call.call_tx_hash
     and evt.punkIndex = call.punkIndex
 where evt.evt_tx_hash not in ('0x92488a00dfa0746c300c66a716e6cc11ba9c0f9d40d8c58e792cc7fcebf432d0' -- flash loan https://twitter.com/cryptopunksnfts/status/1453903818308083720
                      )
+{% if is_incremental() %}
+and evt.evt_block_time >= date_trunc("day", now() - interval '1 week')
+{% endif %}
