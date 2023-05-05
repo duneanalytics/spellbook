@@ -102,7 +102,7 @@ models:
      blockchain: ethereum
      sector: nft
      project: blur
-     contributors: [ '0xRob', 'hildobby', 'pandajackson42'] ]
+     contributors: [ '0xRob', 'hildobby', 'pandajackson42']
    config:
      tags: [ 'ethereum', 'nft', 'trades', 'blur' ]
    description: "Blur base trades"
