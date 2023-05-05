@@ -208,6 +208,16 @@ models:
         +schema: paraswap_avalanche_c
       fantom:
         +schema: paraswap_fantom
+      arbitrum:
+        +schema: paraswap_arbitrum
+      bnb:
+        +schema: paraswap_bnb
+      ethereum:
+        +schema: paraswap_ethereum
+      optimism:
+        +schema: paraswap_optimism
+      polygon:
+        +schema: paraswap_polygon
 
     nomiswap:
       +schema: nomiswap
