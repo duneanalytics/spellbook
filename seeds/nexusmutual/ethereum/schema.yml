@@ -6,3 +6,10 @@ seeds:
       column_types:
         premium: string
         premium_nxm: string
+
+  - name: nexusmutual_ethereum_capital_pool_eth_daily_transaction_summary_seed
+    config:
+      column_types:
+        day: date
+        eth_ingress: double
+        eth_egress: double

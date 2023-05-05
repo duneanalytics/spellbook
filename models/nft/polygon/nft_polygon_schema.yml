@@ -13,6 +13,8 @@ models:
     columns:
       - name: contract_address
         description: "Aggregator project's contract address"
+        tests:
+          - unique
       - name: name
         description: "Aggregator project's name"
 
