@@ -16,7 +16,7 @@ select  date_trunc('day',evt.evt_block_time) as block_date
         , evt.evt_tx_hash as tx_hash
         , evt.contract_address as project_contract_address
         , evt.evt_index as sub_tx_trade_id
-        , case when call.block_number is null
+        , case when call.call_block_number is null
             then 'Buy'
             else 'Bid accepted' end as trade_category
         , 'secondary' as trade_type
