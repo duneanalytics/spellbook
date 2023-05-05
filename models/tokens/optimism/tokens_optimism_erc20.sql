@@ -194,7 +194,7 @@ WITH raw_token_list AS (
     ,('0xf390830DF829cf22c53c8840554B98eafC5dCBc2', 'anyUSDC', 6, 'receipt')
     ,('0x965f84d915a9efa2dd81b653e3ae736555d945f4', 'anyWETH', 18, 'receipt')
     ,('0x1ccca1ce62c62f7be95d4a67722a8fdbed6eecb4', 'Multichain alETH', 18, 'underlying')
-    ,('0x922D641a426DcFFaeF11680e5358F34d97d112E1', 'anyFXS', 18, 'underlying')
+    ,('0x922D641a426DcFFaeF11680e5358F34d97d112E1', 'anyFXS', 18, 'receipt')
     ,('0xa3A538EA5D5838dC32dde15946ccD74bDd5652fF', 'sINR', 18, 'underlying')
     ,('0xEe9801669C6138E84bD50dEB500827b776777d28', 'O3', 18, 'underlying')
     ,('0xb12c13e66AdE1F72f71834f2FC5082Db8C091358', 'ROOBEE', 18, 'underlying')
