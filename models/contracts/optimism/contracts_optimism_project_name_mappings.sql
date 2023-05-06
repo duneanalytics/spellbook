@@ -79,4 +79,6 @@ from (
     ,('Llama', 'Llamapay')
     ,('Perpetualprotocol','Perpetual Protocol')
     ,('perp_hottub','Perpetual Protocol')
+    ,('Avalon Lyra', 'Lyra')
+    ,('avalon_lyra', 'Lyra')
     ) as temp_table (dune_name, mapped_name)

@@ -9,6 +9,7 @@ profile: "spellbook"
 
 vars:
   DBT_ENV_CUSTOM_ENV_S3_BUCKET: "{{ env_var('DBT_ENV_CUSTOM_ENV_S3_BUCKET', 'local') }}"
+  ETH_ERC20_ADDRESS: '0x0000000000000000000000000000000000000000'
 
 # These configurations specify where dbt should look for different types of files.
 # You don't need to change these!
@@ -57,6 +58,14 @@ models:
         +schema: aave_ethereum
       optimism:
         +schema: aave_optimism
+      arbitrum:
+        +schema: aave_arbitrum
+      avalanche_c:
+        +schema: aave_avalanche_c
+      polygon:
+        +schema: aave_polygon
+      fantom:
+        +schema: aave_fantom
 
     aavegotchi:
       +schema: aavegotchi
@@ -303,7 +312,7 @@ models:
       +schema: blur
       ethereum:
         +schema: blur_ethereum
-        
+
     stealcam:
       +schema: stealcam
       arbitrum:
@@ -493,7 +502,7 @@ models:
         +schema: tokens_solana
         +materialized: table
         +file_format: delta
-      
+
     solana_utils:
       +schema: solana_utils
 
@@ -501,6 +510,10 @@ models:
       +schema: trader_joe
       avalanche_c:
         +schema: trader_joe_avalanche_c
+      bnb:
+        +schema: trader_joe_bnb
+      arbitrum:
+        +schema: trader_joe_arbitrum
 
     odos:
       +schema: odos
@@ -942,6 +955,8 @@ models:
         +schema: tofu_arbitrum
       optimism:
         +schema: tofu_optimism
+      polygon:
+        +schema: tofu_polygon
 
     maker:
       +schema: maker
@@ -999,7 +1014,7 @@ models:
       +schema: oneinch
       ethereum:
         +schema: oneinch_ethereum
-        
+
     nftearth:
       +schema: nftearth
       optimism:
@@ -1017,7 +1032,7 @@ models:
 
     method_ids:
       +schema: method_ids
-      
+
     coinbase_wallet_quests:
       +schema: coinbase_wallet_quests
       optimism:
@@ -1071,3 +1086,8 @@ models:
       +schema: glacier
       avalanche_c:
         +schema: glacier_avalanche_c
+    
+    thena:
+      +schema: thena
+      bnb:
+        +schema: thena_bnb

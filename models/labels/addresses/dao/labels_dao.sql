@@ -17,11 +17,19 @@ SELECT *
 FROM (
     {% for dao_model in dao_models %}
     SELECT
-        *
+        blockchain
+        , address
+        , name
+        , category
+        , contributor
+        , source
+        , created_at
+        , updated_at
+        , model_name
+        , label_type
     FROM {{ dao_model }}
     {% if not loop.last %}
     UNION ALL
-    
     {% endif %}
     {% endfor %}
 )
