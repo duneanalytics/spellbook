@@ -12,12 +12,13 @@
 }}
 
 WITH flashloans AS (
-    SELECT distinct d.evt_block_time AS block_time
+    SELECT d.evt_block_time AS block_time
     , d.evt_block_number AS block_number
-    , get_json_object(get_json_object(d.update, '$.deltaWei'), '$.value') AS amount_raw
+    , CAST(get_json_object(get_json_object(d.update, '$.deltaWei'), '$.value') AS DECIMAL(38,0)) AS amount_raw
     , d.evt_tx_hash AS tx_hash
     , d.evt_index
-    , get_json_object(get_json_object(d.update, '$.deltaWei'), '$.value') - get_json_object(get_json_object(w.update, '$.deltaWei'), '$.value') AS fee
+    , CASE WHEN MIN(CAST(get_json_object(get_json_object(d.update, '$.deltaWei'), '$.value') AS DECIMAL(38,0)) - CAST(get_json_object(get_json_object(w.update, '$.deltaWei'), '$.value') AS DECIMAL(38,0))) < 0 THEN 0
+        ELSE MIN(CAST(get_json_object(get_json_object(d.update, '$.deltaWei'), '$.value') AS DECIMAL(38,0)) - CAST(get_json_object(get_json_object(w.update, '$.deltaWei'), '$.value') AS DECIMAL(38,0))) END AS fee
     , CASE WHEN d.market = 0 THEN '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'
         WHEN d.market = 1 THEN '0x89d24a6b4ccb1b6faa2625fe562bdd9a23260359'
         WHEN d.market = 2 THEN '0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48'
@@ -36,6 +37,9 @@ WITH flashloans AS (
     INNER JOIN {{ source('dydx_ethereum','SoloMargin_evt_LogWithdraw') }} w ON w.evt_block_number=d.evt_block_number
         AND w.evt_tx_hash=d.evt_tx_hash
         AND w.market=d.market
+        AND d.accountOwner=w.accountOwner
+        AND w.evt_index<d.evt_index
+    GROUP BY 1, 2, 3, 4, 5, 7, 8, 9, 10
     )
 
 SELECT 'ethereum' AS blockchain
