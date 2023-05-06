@@ -12,7 +12,7 @@
 }}
 
 WITH flashloans AS (
-    SELECT d.evt_block_time AS block_time
+    SELECT distinct d.evt_block_time AS block_time
     , d.evt_block_number AS block_number
     , get_json_object(get_json_object(d.update, '$.deltaWei'), '$.value') AS amount_raw
     , d.evt_tx_hash AS tx_hash
