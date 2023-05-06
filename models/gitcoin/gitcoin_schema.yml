@@ -4,7 +4,7 @@ models:
   - name: gitcoin_grant_round_dates
     meta:
       blockchain: ethereum, polygon
-      sector: donate
+      sector: donation
       contributors: hildobby
     config:
         tags: ['ethereum', 'polygon', 'gitcoin', 'grant', 'round']
@@ -18,14 +18,14 @@ models:
       - name: round_name
       - name: start_date
       - name: end_date
-      
+
   - name: gitcoin_donations
     meta:
       blockchain: ethereum, polygon
-      sector: donate
+      sector: donation
       contributors: hildobby
     config:
-        tags: ['ethereum', 'polygon', 'gitcoin', 'donate']
+        tags: ['ethereum', 'polygon', 'gitcoin', 'donation']
     description: >
         All Gitcoin donations on Ethereum & Polygon
     tests:

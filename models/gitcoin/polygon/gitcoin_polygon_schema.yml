@@ -4,10 +4,10 @@ models:
   - name: gitcoin_polygon_donations
     meta:
       blockchain: polygon
-      sector: donate
+      sector: donation
       contributors: hildobby
     config:
-        tags: ['polygon', 'gitcoin', 'donate']
+        tags: ['polygon', 'gitcoin', 'donation']
     description: >
         All Gitcoin donations on Polygon
     tests:

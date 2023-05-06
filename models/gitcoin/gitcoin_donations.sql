@@ -7,7 +7,7 @@
         unique_key = ['unique_trade_id', 'blockchain'],
         post_hook='{{ expose_spells(\'["ethereum","polygon"]\',
                                     "sector",
-                                    "donate",
+                                    "donation",
                                     \'["hildobby"]\') }}')
 }}
 

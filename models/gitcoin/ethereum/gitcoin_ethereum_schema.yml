@@ -102,10 +102,10 @@ models:
   - name: gitcoin_ethereum_donations
     meta:
       blockchain: ethereum
-      sector: donate
+      sector: donation
       contributors: hildobby
     config:
-        tags: ['ethereum', 'gitcoin', 'donate']
+        tags: ['ethereum', 'gitcoin', 'donation']
     description: >
         All Gitcoin donations on Ethereum
     tests:
