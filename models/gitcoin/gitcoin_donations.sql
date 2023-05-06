@@ -1,0 +1,49 @@
+{{ config(
+        alias ='donations',
+        partition_by = ['block_date'],
+        materialized = 'incremental',
+        file_format = 'delta',
+        incremental_strategy = 'merge',
+        unique_key = ['unique_trade_id', 'blockchain'],
+        post_hook='{{ expose_spells(\'["ethereum","polygon"]\',
+                                    "sector",
+                                    "donate",
+                                    \'["hildobby"]\') }}')
+}}
+
+
+{% set gitcoin_models = [
+ref('gitcoin_ethereum_donations')
+, ref('gitcoin_polygon_donations')
+] %}
+
+SELECT *
+FROM (
+    {% for gitcoin_model in gitcoin_models %}
+    SELECT
+        blockchain,
+        project,
+        version,
+        grant_round,
+        block_date,
+        block_time,
+        block_number,
+        amount_raw,
+        amount_original,
+        donor,
+        recipient,
+        currency_contract,
+        currency_symbol,
+        evt_index,
+        contract_address,
+        tx_hash
+    FROM {{ gitcoin_model }}
+    {% if is_incremental() %}
+    WHERE block_time >= date_trunc("day", now() - interval '1 week')
+    {% endif %}
+    {% if not loop.last %}
+    UNION ALL
+    {% endif %}
+    {% endfor %}
+
+)
