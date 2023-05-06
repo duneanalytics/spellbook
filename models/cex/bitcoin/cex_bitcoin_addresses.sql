@@ -57,10 +57,10 @@ FROM (VALUES
     , ('bitcoin', '3HcSp9sR23w6MxeRrLqqyDzLqThtSMaypQ', 'Bitget', 'Bitget 4', 'hildobby', timestamp('2023-04-06'))
     , ('bitcoin', '3MdofQ2ouxom9MzC9kKazGUShoL5R3cVLG', 'Bitget', 'Bitget 5', 'hildobby', timestamp('2023-04-06'))
     -- Bitstamp, source: https://github.com/jacobgreen4477/btc_img_realtime_prediction/blob/2966dc59630b15f70e3cdb90366c67afb9a6a3db/data/btc_known_addr_list.csv
-    ('bitcoin', '35pgGeez3ou6ofrpjt8T7bvC9t6RrUK4p6', 'Bitstamp', 'Bitstamp 1', 'hildobby', timestamp('2023-04-06'))
-    ('bitcoin', '1LFg7FKFDa1bHDM5xVguUetpw42huik2ME', 'Bitstamp', 'Bitstamp 2', 'hildobby', timestamp('2023-04-06'))
-    ('bitcoin', '38gfemn6Ps54si7KeYZrPX3uLpiseuP7sX', 'Bitstamp', 'Bitstamp 3', 'hildobby', timestamp('2023-04-06'))
-    ('bitcoin', '3JaZdj2aQjCaG63bhL29cpm5ySxEthdhWX', 'Bitstamp', 'Bitstamp 4', 'hildobby', timestamp('2023-04-06'))
+    , ('bitcoin', '35pgGeez3ou6ofrpjt8T7bvC9t6RrUK4p6', 'Bitstamp', 'Bitstamp 1', 'hildobby', timestamp('2023-04-06'))
+    , ('bitcoin', '1LFg7FKFDa1bHDM5xVguUetpw42huik2ME', 'Bitstamp', 'Bitstamp 2', 'hildobby', timestamp('2023-04-06'))
+    , ('bitcoin', '38gfemn6Ps54si7KeYZrPX3uLpiseuP7sX', 'Bitstamp', 'Bitstamp 3', 'hildobby', timestamp('2023-04-06'))
+    , ('bitcoin', '3JaZdj2aQjCaG63bhL29cpm5ySxEthdhWX', 'Bitstamp', 'Bitstamp 4', 'hildobby', timestamp('2023-04-06'))
     -- Bittrex, source: https://github.com/jacobgreen4477/btc_img_realtime_prediction/blob/2966dc59630b15f70e3cdb90366c67afb9a6a3db/data/btc_known_addr_list.csv
     , ('bitcoin', '385cR5DM96n1HvBDMzLHPYcw89fZAXULJP', 'Bittrex', 'Bittrex 1', 'hildobby', timestamp('2023-04-06'))
     -- Bybit, source: https://raw.githubusercontent.com/js-kingdata/indicators_factory/fefe53bca88ecf331a71fc59e34aab319f3415c5/crawlers/address_tags/cex/bybit_address.txt
