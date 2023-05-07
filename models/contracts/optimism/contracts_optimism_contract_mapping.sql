@@ -164,14 +164,14 @@ with base_level as (
   select 
      COALESCE(oc.from,'0xdeaddeaddeaddeaddeaddeaddeaddeaddead0006') AS trace_creator_address
     ,COALESCE(oc.from,'0xdeaddeaddeaddeaddeaddeaddeaddeaddead0006') AS creator_address
-    ,NULL AS contract_factory
+    ,cast(NULL as string) as contract_factory
     ,l.contract_address
     ,oc.namespace as contract_project 
     ,oc.name as contract_name 
     ,COALESCE(oc.created_at, MIN(block_time)) AS created_time
     ,false as is_self_destruct
     ,'missing contracts' as source
-    ,NULL AS creation_tx_hash
+    ,cast(NULL as string) as creation_tx_hash
   from {{ source('optimism', 'logs') }} as l
     left join {{ source('optimism', 'contracts') }} as oc 
       ON l.contract_address = oc.address
@@ -194,14 +194,14 @@ with base_level as (
   select 
      creator_address AS trace_creator_address
     ,creator_address
-    ,NULL as contract_factory
+    ,cast(NULL as string) as contract_factory
     ,contract_address
     ,contract_project
     ,contract_name
     ,to_timestamp(created_time) as created_time
     ,false as is_self_destruct
     ,'ovm1 contracts' as source
-    ,NULL as creation_tx_hash
+    ,cast(NULL as string) as creation_tx_hash
   from {{ source('ovm1_optimism', 'contracts') }} as c
   where 
     true
@@ -222,9 +222,9 @@ with base_level as (
   --synthetix genesis contracts
 
   select 
-     NULL as trace_creator_address
-    ,NULL as creator_address
-    ,NULL as contract_factory
+     cast(NULL as string) as trace_creator_address
+    ,cast(NULL as string) as creator_address
+    ,cast(NULL as string) as contract_factory
     ,snx.contract_address
     ,'Synthetix' as contract_project
     ,contract_name
@@ -250,16 +250,16 @@ with base_level as (
   --uniswap pools from ovm1
 
   select 
-     NULL as trace_creator_address
-    ,NULL as creator_address
-    ,NULL as contract_factory
+     cast(NULL as string) as trace_creator_address
+    ,cast(NULL as string) as creator_address
+    ,cast(NULL as string) as contract_factory
     ,lower(newaddress) as contract_address
     ,'Uniswap' as contract_project
     ,'Pair' as contract_name
     ,to_timestamp('2021-11-11 00:00:00') as created_time
     ,false as is_self_destruct
     ,'ovm1 uniswap pools' as source
-    ,NULL as creation_tx_hash
+    ,cast(NULL as string) as creation_tx_hash
   from {{ ref('uniswap_optimism_ovm1_pool_mapping') }} as uni
   where 
     true
