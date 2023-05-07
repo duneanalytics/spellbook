@@ -15,6 +15,7 @@ with dexs as (
     SELECT
         'trident-cpp' as version,
         t.evt_block_time as block_time,
+        t.evt_block_number as block_number,
         recipient as taker,
         '' as maker,
         amountOut as token_bought_amount_raw,
@@ -38,7 +39,8 @@ with dexs as (
     -- Stable Pool
     SELECT
         'trident-sp' as version,
-        t.evt_block_time as block_time,
+        t.evt_block_time as block_time
+        t.evt_block_number as block_number,
         recipient as taker,
         '' as maker,
         amountOut as token_bought_amount_raw,
@@ -64,6 +66,7 @@ select
     version,
     try_cast(date_trunc('DAY', dexs.block_time) as date) as block_date,
     dexs.block_time,
+    dexs.block_number,
     erc20a.symbol as token_bought_symbol,
     erc20b.symbol as token_sold_symbol,
     case

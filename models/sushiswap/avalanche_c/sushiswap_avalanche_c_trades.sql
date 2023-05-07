@@ -12,6 +12,7 @@
 
 WITH sushiswap_dex AS (
     SELECT  t.evt_block_time                                             AS block_time,
+            t.evt_block_number                                           AS block_number,
             `to`                                                         AS taker,
             sender                                                       AS maker,
             CASE WHEN amount0Out = 0 THEN amount1Out ELSE amount0Out END AS token_bought_amount_raw,
@@ -39,6 +40,7 @@ SELECT
     '1'                                                                AS version,
     try_cast(date_trunc('DAY', sushiswap_dex.block_time) AS date)      AS block_date,
     sushiswap_dex.block_time,
+    sushiswap_dex.block_number,
     erc20a.symbol                                                      AS token_bought_symbol,
     erc20b.symbol                                                      AS token_sold_symbol,
     CASE

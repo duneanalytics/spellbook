@@ -23,6 +23,7 @@ WITH dexs AS
     -- Uniswap v2
     SELECT
         t.evt_block_time AS block_time
+        ,t.evt_block_number AS block_number
         ,t.to AS taker
         ,'' AS maker
         ,CASE WHEN amount0Out = 0 THEN amount1Out ELSE amount0Out END AS token_bought_amount_raw
@@ -52,6 +53,7 @@ SELECT
     ,'2' AS version
     ,TRY_CAST(date_trunc('DAY', dexs.block_time) AS date) AS block_date
     ,dexs.block_time
+    ,dexs.block_number
     ,erc20a.symbol AS token_bought_symbol
     ,erc20b.symbol AS token_sold_symbol
     ,case

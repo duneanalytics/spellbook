@@ -20,6 +20,7 @@ WITH dexs AS
     --Uniswap v3
     SELECT
         t.evt_block_time AS block_time
+        ,t.evt_block_number AS block_number
         ,t.recipient AS taker
         ,'' AS maker
         ,CASE WHEN amount0 < '0' THEN abs(amount0) ELSE abs(amount1) END AS token_bought_amount_raw -- when amount0 is negative it means trader_a is buying token0 from the pool
@@ -46,6 +47,7 @@ SELECT
     ,'3' AS version
     ,TRY_CAST(date_trunc('DAY', dexs.block_time) AS date) AS block_date
     ,dexs.block_time
+    ,dexs.block_number
     ,erc20a.symbol AS token_bought_symbol
     ,erc20b.symbol AS token_sold_symbol
     ,case

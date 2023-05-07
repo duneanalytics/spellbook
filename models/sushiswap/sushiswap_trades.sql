@@ -28,6 +28,7 @@ FROM (
         version,
         block_date,
         block_time,
+        block_number,
         token_bought_symbol,
         token_sold_symbol,
         token_pair,

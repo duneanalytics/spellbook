@@ -21,6 +21,7 @@ WITH dexs AS
     -- Uniswap v1 TokenPurchase
     SELECT
         t.evt_block_time AS block_time
+        ,t.evt_block_number AS block_number
         ,t.buyer AS taker
         ,'' AS maker
         ,t.tokens_bought AS token_bought_amount_raw
@@ -45,6 +46,7 @@ WITH dexs AS
     -- Uniswap v1 EthPurchase
     SELECT
         t.evt_block_time AS block_time
+        ,t.evt_block_number AS block_number
         ,t.buyer AS taker
         ,'' AS maker
         ,t.eth_bought AS token_bought_amount_raw
@@ -70,6 +72,7 @@ SELECT
     ,'1' AS version
     ,TRY_CAST(date_trunc('DAY', dexs.block_time) AS date) AS block_date
     ,dexs.block_time
+    ,dexs.block_number
     ,erc20a.symbol AS token_bought_symbol
     ,erc20b.symbol AS token_sold_symbol
     ,case

@@ -14,6 +14,7 @@ with dexs as (
     -- Sushiswap
     SELECT
         t.evt_block_time as block_time,
+        t.evt_block_number as block_number,
         t.to as taker,
         '' as maker,
         case when amount0Out  = 0 then amount1Out else amount0Out end as token_bought_amount_raw,
@@ -41,6 +42,7 @@ select
     '1' as version,
     try_cast(date_trunc('DAY', dexs.block_time) as date) as block_date,
     dexs.block_time,
+    dexs.block_number,
     erc20a.symbol as token_bought_symbol,
     erc20b.symbol as token_sold_symbol,
     case

@@ -19,6 +19,7 @@ WITH
 kyberswap_dex AS (
     SELECT
         t.evt_block_time                                                    AS block_time
+        ,t.evt_block_number                                                 AS block_number
         ,t.`to`                                                             AS taker
         ,''                                                                 AS maker
         ,CASE WHEN t.amount0Out = 0 THEN t.amount1Out ELSE t.amount0Out END AS token_bought_amount_raw
@@ -46,6 +47,7 @@ kyberswap_dex AS (
     -- deltaQty0 and deltaQty1, Negative numbers represent the sold amount, and positive numbers represent the buy amount
     SELECT
         t.evt_block_time                                                               AS block_time
+        ,t.evt_block_number                                                            AS block_number
         ,t.sender                                                                      AS taker
         ,t.recipient                                                                   AS maker
         ,if(startswith(t.deltaQty0, '-'), t.deltaQty1, t.deltaQty0)                    AS token_bought_amount_raw
@@ -71,6 +73,7 @@ kyberswap_dex AS (
 
     SELECT
         evt_block_time                                                     AS block_time
+        ,evt_block_number                                                  AS block_number
         ,sender                                                            AS taker
         ,''                                                                AS maker
         ,returnAmount                                                      AS token_bought_amount_raw
@@ -95,6 +98,7 @@ kyberswap_dex AS (
 
     SELECT
         evt_block_time                                                     AS block_time
+        ,evt_block_number                                                  AS block_number
         ,sender                                                            AS taker
         ,''                                                                AS maker
         ,returnAmount                                                      AS token_bought_amount_raw
@@ -119,6 +123,7 @@ kyberswap_dex AS (
 
     SELECT
         evt_block_time                                                     AS block_time
+        ,evt_block_number                                                  AS block_number
         ,sender                                                            AS taker
         ,''                                                                AS maker
         ,returnAmount                                                      AS token_bought_amount_raw
@@ -146,6 +151,7 @@ SELECT
     ,'dmm'                                                                AS version
     ,try_cast(date_trunc('DAY', kyberswap_dex.block_time) AS date)        AS block_date
     ,kyberswap_dex.block_time
+    ,kyberswap_dex.block_number
     ,erc20a.symbol                                                        AS token_bought_symbol
     ,erc20b.symbol                                                        AS token_sold_symbol
     ,CASE
