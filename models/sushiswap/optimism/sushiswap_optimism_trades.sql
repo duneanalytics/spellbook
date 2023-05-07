@@ -39,7 +39,7 @@ with dexs as (
     -- Stable Pool
     SELECT
         'trident-sp' as version,
-        t.evt_block_time as block_time
+        t.evt_block_time as block_time,
         t.evt_block_number as block_number,
         recipient as taker,
         '' as maker,
