@@ -22,7 +22,6 @@ FROM (VALUES
     , ('GR14', date('2022-06-08'), date('2022-06-23'))
     , ('GR15', date('2022-09-07'), date('2022-09-22'))
     , ('Unicef Round', date('2022-12-09'), date('2022-12-21'))
-    , ('Fantom Round', date('2022-12-09'), date('2023-01-02'))
     , ('Gitcoin Alpha Round', date('2023-01-17'), date('2023-01-31'))
     , ('Gitcoin Beta Round', date('2023-04-25'), date('2023-05-09'))
     ) AS temp_table (round_name, start_date, end_date)
