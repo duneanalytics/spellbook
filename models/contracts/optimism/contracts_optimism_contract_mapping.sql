@@ -38,7 +38,7 @@ with base_level as (
     ,is_self_destruct
   from (
     select 
-      ct.`from` as creator_address
+      ct.from as creator_address
       ,CAST(NULL AS string) as contract_factory
       ,ct.address as contract_address
       ,ct.block_time as created_time
@@ -162,8 +162,8 @@ with base_level as (
   union all
   -- missing contracts
   select 
-     COALESCE(oc.`from`,'0xdeaddeaddeaddeaddeaddeaddeaddeaddead0006') AS trace_creator_address
-    ,COALESCE(oc.`from`,'0xdeaddeaddeaddeaddeaddeaddeaddeaddead0006') AS creator_address
+     COALESCE(oc.from,'0xdeaddeaddeaddeaddeaddeaddeaddeaddead0006') AS trace_creator_address
+    ,COALESCE(oc.from,'0xdeaddeaddeaddeaddeaddeaddeaddeaddead0006') AS creator_address
     ,NULL AS contract_factory
     ,l.contract_address
     ,oc.namespace as contract_project 
@@ -186,7 +186,7 @@ with base_level as (
             gc.contract_address = l.contract_address
         )
     {% endif %}
-  GROUP BY oc.`from`, l.contract_address, oc.namespace, oc.name, oc.created_at
+  GROUP BY oc.from, l.contract_address, oc.namespace, oc.name, oc.created_at
 
   union all
   -- ovm 1.0 contracts
