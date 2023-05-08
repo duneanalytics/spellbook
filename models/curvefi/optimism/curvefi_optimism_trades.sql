@@ -146,9 +146,12 @@ SELECT
             WHERE t.evt_block_number = s.evt_block_number
             AND t.evt_tx_hash = s.evt_tx_hash
             AND t.evt_index = s.evt_index
+            {% if is_incremental() %}
+            AND s.evt_block_time >= date_trunc('day', now() - interval '1 week')
+            {% endif %}
         )
         {% if is_incremental() %}
-        AND s.evt_block_time >= date_trunc('day', now() - interval '1 week')
+        AND t.evt_block_time >= date_trunc('day', now() - interval '1 week')
         {% endif %}
 
     ) cp
