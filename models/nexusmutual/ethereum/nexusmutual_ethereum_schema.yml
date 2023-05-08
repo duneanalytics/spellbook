@@ -167,8 +167,6 @@ models:
             - contract_address
             - to
             - from
-            - ingress
-            - egress
     columns:
       - &erc20_tx_hash
         name: tx_hash

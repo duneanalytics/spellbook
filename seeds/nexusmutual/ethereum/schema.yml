@@ -23,5 +23,3 @@ seeds:
         contract_address: string
         to: string
         from: string
-        ingress: double
-        egress: double
