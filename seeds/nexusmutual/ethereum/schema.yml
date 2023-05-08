@@ -17,6 +17,7 @@ seeds:
   - name: nexusmutual_ethereum_capital_pool_erc20_transactions_seed
     config:
       column_types:
+        tx_hash: string
         block_time: date
         name: string
         contract_address: double
