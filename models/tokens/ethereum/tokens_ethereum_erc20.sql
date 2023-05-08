@@ -21558,7 +21558,7 @@ FROM (VALUES
         ,('0xfb272d3acfcbf3e0f92bd01ffbcde92575c371f9', 'JPOW', 9)
         ,('0xfca99bf40253563f619b5fbaed621021b2987a09', 'zjz', 18)
         ,('0xfe60fba03048effb4acf3f0088ec2f53d779d3bb', '3d3d', 18)
-                ,('0x235c8ee913d93c68d2902a8e0b5a643755705726', 'BAG', 18)
+        ,('0x235c8ee913d93c68d2902a8e0b5a643755705726', 'BAG', 18)
         ,('0x7bdf3ff2513a4f467bc25b7fd4b8404ad8126cb3', 'MUSK', 18)
         ,('0xf36c5f04127f7470834ed6f98bddc1be62aba48d', 'CAI', 18)
         ,('0x5a3e6a77ba2f983ec0d371ea3b475f8bc0811ad5', '0x0', 9)
