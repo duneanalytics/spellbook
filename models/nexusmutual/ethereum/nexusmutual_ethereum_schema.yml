@@ -5,7 +5,7 @@ models:
     meta:
       blockchain: ethereum
       project: nexusmutual
-      contributors: [guyhow]
+      contributors: [guyeth]
     description: >
         nexusmutual product information for v1
     tests:
@@ -121,7 +121,7 @@ models:
     meta:
       blockchain: ethereum
       project: nexusmutual
-      contributors: [guyhow]
+      contributors: [guyeth]
     config:
       tags: ['ethereum','nexusmutual','trades']
     description: >
@@ -146,3 +146,45 @@ models:
       - &eth_egress
         name: egress ethereum
         description: "Sum of outgoing transctions over the time covered by day"
+
+  - name: nexusmutual_ethereum_capital_pool_erc20_transactions
+    meta:
+      blockchain: ethereum
+      project: nexusmutual
+      contributors: [guyeth]
+    config:
+      tags: ['ethereum','nexusmutual','erc20']
+    description: >
+        ERC20 transactions from and to the capital pool
+    tests:
+      - check_seed:
+          seed_file: ref('nexusmutual_ethereum_capital_pool_erc20_transactions_seed')
+          match_columns:
+            - block_time
+          check_columns:
+            - contract_address
+            - to
+            - from
+            - ingress
+            - egress
+    columns:
+      - &block_time
+        name: block_time
+        description: "Table primary key: block_time of summarised transctions"
+        tests:
+          - unique
+      - &erc20_contract_address
+        name: contract_address
+        description: ERC20 address of token
+      - &to
+        name: receiving address
+        description: Address that the ERC20 token in sent to
+      - &from
+        name: sending address
+        description: Address that the ERC20 token in sent from
+      - &erc20_ingress
+        name: ingress
+        description: amount of erc20 token sent to capital pool
+      - &erc20_egress
+        name: egress
+        description: mount of erc20 token sent from capital pool
