@@ -162,17 +162,19 @@ models:
           match_columns:
             - tx_hash
           check_columns:
-            - ingress
-            - egress
             - block_time
             - name
             - contract_address
             - to
             - from
+            - ingress
+            - egress
     columns:
       - &erc20_tx_hash
         name: tx_hash
         description: unique transaction hash of erc20 transfer
+        test:
+          - unique
       - &block_time
         name: block_time
         description:  time of transaction

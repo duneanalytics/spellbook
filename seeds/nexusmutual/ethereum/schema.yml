@@ -20,7 +20,7 @@ seeds:
         tx_hash: string
         block_time: date
         name: string
-        contract_address: double
+        contract_address: string
         to: string
         from: string
         ingress: double
