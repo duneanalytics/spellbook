@@ -326,7 +326,7 @@ models:
       - name: end_time
         description: 'LBP end time'
 
-  - name: balancer_polygon_flashloans
+  - name: balancer_v2_polygon_flashloans
     meta:
       blockchain: polygon
       sector: lending

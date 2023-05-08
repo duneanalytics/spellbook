@@ -6,7 +6,7 @@
       , unique_key = ['tx_hash', 'evt_index']
       , post_hook='{{ expose_spells(\'["bnb"]\',
                                   "project",
-                                  "uniswap",
+                                  "uniswap_v3",
                                   \'["hildobby"]\') }}'
   )
 }}
@@ -31,7 +31,7 @@ WITH flashloans AS (
 
 SELECT 'bnb' AS blockchain
 , 'Uniswap' AS project
-, 'v3' AS version
+, '3' AS version
 , flash.block_time
 , flash.block_number
 , flash.amount_raw/POWER(10, flash.currency_decimals) AS amount

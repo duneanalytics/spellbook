@@ -4,9 +4,9 @@
       , file_format = 'delta'
       , incremental_strategy = 'merge'
       , unique_key = ['tx_hash', 'evt_index']
-      , post_hook='{{ expose_spells(\'["arbitrum"]\',
+      , post_hook='{{ expose_spells(\'["gnosis"]\',
                                   "project",
-                                  "balancer",
+                                  "balancer_v2",
                                   \'["hildobby"]\') }}'
   )
 }}
@@ -22,13 +22,13 @@ WITH flashloans AS (
     , erc20.symbol AS currency_symbol
     , erc20.decimals AS currency_decimals
     , f.contract_address
-    FROM {{ source('balancer_v2_arbitrum','Vault_evt_FlashLoan') }} f
-    LEFT JOIN {{ ref('tokens_arbitrum_erc20') }} erc20 ON f.token = erc20.contract_address
+    FROM {{ source('balancer_v2_gnosis','Vault_evt_FlashLoan') }} f
+    LEFT JOIN {{ ref('tokens_gnosis_erc20') }} erc20 ON f.token = erc20.contract_address
     )
 
-SELECT 'arbitrum' AS blockchain
+SELECT 'gnosis' AS blockchain
 , 'Balancer' AS project
-, 'v2' AS version
+, '2' AS version
 , flash.block_time
 , flash.block_number
 , flash.amount_raw/POWER(10, flash.currency_decimals) AS amount
@@ -40,6 +40,6 @@ SELECT 'arbitrum' AS blockchain
 , flash.currency_symbol
 , flash.contract_address
 FROM flashloans flash
-LEFT JOIN {{ source('prices','usd') }} pu ON pu.blockchain = 'arbitrum'  
+LEFT JOIN {{ source('prices','usd') }} pu ON pu.blockchain = 'gnosis'  
     AND pu.contract_address = flash.currency_contract
     AND pu.minute = date_trunc('minute', flash.block_time)

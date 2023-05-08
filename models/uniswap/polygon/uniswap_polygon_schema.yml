@@ -161,7 +161,7 @@ models:
       - name: contract_address
         description: "Contract address used to create the pool"
 
-  - name: uniswap_polygon_flashloans
+  - name: uniswap_v3_polygon_flashloans
     meta:
       blockchain: polygon
       sector: lending
@@ -169,7 +169,7 @@ models:
     config:
       tags: ['polygon', 'flashloans']
     description: >
-      All Uniswap flashloans on Polygon
+      All Uniswap v3 flashloans on Polygon
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:

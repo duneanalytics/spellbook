@@ -574,7 +574,7 @@ models:
       - name: usd_amount
         description: 'Liquidity of the token in the pool in USD'
 
-  - name: balancer_ethereum_flashloans
+  - name: balancer_v2_ethereum_flashloans
     meta:
       blockchain: ethereum
       sector: lending

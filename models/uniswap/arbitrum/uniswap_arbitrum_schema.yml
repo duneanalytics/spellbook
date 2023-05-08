@@ -161,7 +161,7 @@ models:
       - name: contract_address
         description: "Contract address used to create the pool"
 
-  - name: uniswap_arbitrum_flashloans
+  - name: uniswap_v3_arbitrum_flashloans
     meta:
       blockchain: arbitrum
       sector: lending
@@ -169,7 +169,7 @@ models:
     config:
       tags: ['arbitrum', 'flashloans']
     description: >
-      All Uniswap flashloans on Arbitrum
+      All Uniswap v3 flashloans on Arbitrum
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:

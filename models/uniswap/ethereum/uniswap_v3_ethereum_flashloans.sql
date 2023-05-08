@@ -6,7 +6,7 @@
       , unique_key = ['tx_hash', 'evt_index']
       , post_hook='{{ expose_spells(\'["ethereum"]\',
                                   "project",
-                                  "uniswap",
+                                  "uniswap_v3",
                                   \'["hildobby"]\') }}'
   )
 }}
@@ -22,16 +22,16 @@ WITH flashloans AS (
     , CASE WHEN f.amount0 = 0 THEN erc20b.symbol ELSE erc20a.symbol END AS currency_symbol
     , CASE WHEN f.amount0 = 0 THEN erc20b.decimals ELSE erc20a.decimals END AS currency_decimals
     , f.contract_address
-    FROM {{ source('uniswap_v3_polygon','UniswapV3Pool_evt_Flash') }} f
-        INNER JOIN {{ source('uniswap_v3_polygon','factory_polygon_evt_PoolCreated') }} p ON f.contract_address = p.pool
-    LEFT JOIN {{ ref('tokens_polygon_erc20') }} erc20a ON p.token0 = erc20a.contract_address
-    LEFT JOIN {{ ref('tokens_polygon_erc20') }} erc20b ON p.token1 = erc20b.contract_address
+    FROM {{ source('uniswap_v3_ethereum','Pair_evt_Flash') }} f
+        INNER JOIN {{ source('uniswap_v3_ethereum','Factory_evt_PoolCreated') }} p ON f.contract_address = p.pool
+    LEFT JOIN {{ ref('tokens_ethereum_erc20') }} erc20a ON p.token0 = erc20a.contract_address
+    LEFT JOIN {{ ref('tokens_ethereum_erc20') }} erc20b ON p.token1 = erc20b.contract_address
     WHERE f.evt_block_time > NOW() - interval '1' month
     )
 
-SELECT 'polygon' AS blockchain
+SELECT 'ethereum' AS blockchain
 , 'Uniswap' AS project
-, 'v3' AS version
+, '3' AS version
 , flash.block_time
 , flash.block_number
 , flash.amount_raw/POWER(10, flash.currency_decimals) AS amount
@@ -43,6 +43,6 @@ SELECT 'polygon' AS blockchain
 , flash.currency_symbol
 , flash.contract_address
 FROM flashloans flash
-LEFT JOIN {{ source('prices','usd') }} pu ON pu.blockchain = 'polygon'  
+LEFT JOIN {{ source('prices','usd') }} pu ON pu.blockchain = 'ethereum'  
     AND pu.contract_address = flash.currency_contract
     AND pu.minute = date_trunc('minute', flash.block_time)

@@ -131,7 +131,7 @@ models:
       - *trace_address
       - *evt_index
 
-  - name: uniswap_bnb_flashloans
+  - name: uniswap_v3_bnb_flashloans
     meta:
       blockchain: bnb
       sector: lending
@@ -139,7 +139,7 @@ models:
     config:
       tags: ['bnb', 'flashloans']
     description: >
-      All Uniswap flashloans on BNB
+      All Uniswap v3 flashloans on BNB
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:

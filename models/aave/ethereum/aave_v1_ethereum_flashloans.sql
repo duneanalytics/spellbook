@@ -31,7 +31,7 @@ WITH flashloans AS (
     
 SELECT 'ethereum' AS blockchain
 , 'Aave' AS project
-, 'v1' AS version
+, '1' AS version
 , flash.block_time
 , flash.block_number
 , flash.amount_raw/POWER(10, flash.currency_decimals) AS amount

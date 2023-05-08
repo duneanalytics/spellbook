@@ -95,7 +95,7 @@ models:
         name: evt_index
         description: "Event index"
 
-  - name: balancer_gnosis_flashloans
+  - name: balancer_v2_gnosis_flashloans
     meta:
       blockchain: gnosis
       sector: lending

@@ -303,7 +303,7 @@ models:
       - name: usd_amount
         description: 'Liquidity of the token in the pool in USD'
 
-  - name: balancer_arbitrum_flashloans
+  - name: balancer_v2_arbitrum_flashloans
     meta:
       blockchain: arbitrum
       sector: lending
@@ -311,7 +311,7 @@ models:
     config:
       tags: ['arbitrum', 'flashloans']
     description: >
-      All Balancer flashloans on Arbitrum
+      All Balancer v2 flashloans on Arbitrum
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:

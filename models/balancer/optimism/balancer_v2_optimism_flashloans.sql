@@ -6,7 +6,7 @@
       , unique_key = ['tx_hash', 'evt_index']
       , post_hook='{{ expose_spells(\'["optimism"]\',
                                   "project",
-                                  "balancer",
+                                  "balancer_v2",
                                   \'["hildobby"]\') }}'
   )
 }}
@@ -28,7 +28,7 @@ WITH flashloans AS (
 
 SELECT 'optimism' AS blockchain
 , 'Balancer' AS project
-, 'v2' AS version
+, '2' AS version
 , flash.block_time
 , flash.block_number
 , flash.amount_raw/POWER(10, flash.currency_decimals) AS amount

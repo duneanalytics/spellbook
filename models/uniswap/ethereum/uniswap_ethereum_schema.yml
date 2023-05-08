@@ -357,7 +357,7 @@ models:
       - name: contract_address
         description: "Contract address used to create the pool"
 
-  - name: uniswap_ethereum_flashloans
+  - name: uniswap_v3_ethereum_flashloans
     meta:
       blockchain: ethereum
       sector: lending
@@ -365,7 +365,7 @@ models:
     config:
       tags: ['ethereum', 'flashloans']
     description: >
-      All Uniswap flashloans on Ethereum
+      All Uniswap v3 flashloans on Ethereum
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:

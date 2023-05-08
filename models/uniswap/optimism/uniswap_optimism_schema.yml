@@ -178,7 +178,7 @@ models:
       - *trace_address
       - *evt_index
 
-  - name: uniswap_optimism_flashloans
+  - name: uniswap_v3_optimism_flashloans
     meta:
       blockchain: optimism
       sector: lending
@@ -186,7 +186,7 @@ models:
     config:
       tags: ['optimism', 'flashloans']
     description: >
-      All Uniswap flashloans on Optimism
+      All Uniswap v3 flashloans on Optimism
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:

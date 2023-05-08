@@ -336,7 +336,7 @@ models:
       - *evt_tx_hash
       - *evt_index
 
-  - name: balancer_optimism_flashloans
+  - name: balancer_v2_optimism_flashloans
     meta:
       blockchain: optimism
       sector: lending

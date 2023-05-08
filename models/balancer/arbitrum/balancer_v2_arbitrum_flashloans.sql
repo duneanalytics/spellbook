@@ -6,7 +6,7 @@
       , unique_key = ['tx_hash', 'evt_index']
       , post_hook='{{ expose_spells(\'["arbitrum"]\',
                                   "project",
-                                  "uniswap",
+                                  "balancer_v2",
                                   \'["hildobby"]\') }}'
   )
 }}
@@ -14,24 +14,21 @@
 WITH flashloans AS (
     SELECT f.evt_block_time AS block_time
     , f.evt_block_number AS block_number
-    , CASE WHEN f.amount0 = 0 THEN f.amount1 ELSE f.amount0 END AS amount_raw
+    , f.amount AS amount_raw
     , f.evt_tx_hash AS tx_hash
     , f.evt_index
-    , CASE WHEN f.amount0 = 0 THEN f.paid1 ELSE f.paid0 END AS fee
-    , CASE WHEN f.amount0 = 0 THEN p.token1 ELSE p.token0 END AS currency_contract
-    , CASE WHEN f.amount0 = 0 THEN erc20b.symbol ELSE erc20a.symbol END AS currency_symbol
-    , CASE WHEN f.amount0 = 0 THEN erc20b.decimals ELSE erc20a.decimals END AS currency_decimals
+    , f.feeAmount AS fee
+    , f.token AS currency_contract
+    , erc20.symbol AS currency_symbol
+    , erc20.decimals AS currency_decimals
     , f.contract_address
-    FROM {{ source('uniswap_v3_arbitrum','Pair_evt_Flash') }} f
-        INNER JOIN {{ source('uniswap_v3_arbitrum','UniswapV3Factory_evt_PoolCreated') }} p ON f.contract_address = p.pool
-    LEFT JOIN {{ ref('tokens_arbitrum_erc20') }} erc20a ON p.token0 = erc20a.contract_address
-    LEFT JOIN {{ ref('tokens_arbitrum_erc20') }} erc20b ON p.token1 = erc20b.contract_address
-    WHERE f.evt_block_time > NOW() - interval '1' month
+    FROM {{ source('balancer_v2_arbitrum','Vault_evt_FlashLoan') }} f
+    LEFT JOIN {{ ref('tokens_arbitrum_erc20') }} erc20 ON f.token = erc20.contract_address
     )
 
 SELECT 'arbitrum' AS blockchain
-, 'Uniswap' AS project
-, 'v3' AS version
+, 'Balancer' AS project
+, '2' AS version
 , flash.block_time
 , flash.block_number
 , flash.amount_raw/POWER(10, flash.currency_decimals) AS amount
