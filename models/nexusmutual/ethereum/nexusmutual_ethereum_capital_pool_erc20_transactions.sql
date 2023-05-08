@@ -48,9 +48,9 @@ SELECT
     ) THEN CAST(value AS DOUBLE) * 1E-18
     ELSE 0
   END AS egress
-  FROM 
+  FROM
   {{ source('erc20_ethereum', 'evt_transfer') }} as a
-  LEFT JOIN labels.all AS b ON a.contract_address = b.address
+  LEFT JOIN {{ ref('labels_contracts') }} AS b ON a.contract_address = b.address
 {% if not is_incremental() %}
   WHERE evt_block_time >= '{{project_start_date }}'
 {% endif %}
