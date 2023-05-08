@@ -19,7 +19,7 @@ seeds:
       column_types:
         block_time: date
         contract_address: double
-        to: varbinary
-        from: varbinary
+        to: string
+        from: string
         ingress: double
         egress: double
