@@ -18,6 +18,7 @@ seeds:
     config:
       column_types:
         block_time: date
+        name: string
         contract_address: double
         to: string
         from: string
