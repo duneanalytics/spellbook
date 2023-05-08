@@ -40,6 +40,7 @@ FROM (VALUES
       ,('0x73cb180bf0521828d8849bc8CF2B920918e23032', 'USD+', 'USD','Crypto-Backed')
       ,('0x9485aca5bbbe1667ad97c7fe7c4531a624c8b1ed', 'agEUR', 'EUR', 'Crypto-Backed')
       ,('0x79af5dd14e855823fa3e9ecacdf001d99647d043', 'Jarvis Synthetic Euro','EUR','Crypto-Backed')
+      ,('0x970d50d09f3a656b43e11b0d45241a84e3a6e011', 'DAI+', 'USD','Crypto-Backed')
 
       -- --Synthetix Tokens
       ,('0x8c6f28f2f1a3c87f0f938b96d27520d9751ec8d9', 'Synth sUSD', 'USD', 'Crypto-Backed')
