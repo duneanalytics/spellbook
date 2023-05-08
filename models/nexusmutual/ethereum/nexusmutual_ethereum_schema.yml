@@ -173,6 +173,9 @@ models:
         description: "Table primary key: block_time of summarised transctions"
         tests:
           - unique
+      - &erc20_name
+        name: name
+        description: Name of erc20 token
       - &erc20_contract_address
         name: contract_address
         description: ERC20 address of token
