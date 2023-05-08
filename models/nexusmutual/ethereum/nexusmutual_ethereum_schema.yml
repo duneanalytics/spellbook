@@ -161,18 +161,22 @@ models:
           seed_file: ref('nexusmutual_ethereum_capital_pool_erc20_transactions_seed')
           match_columns:
             - block_time
-          check_columns:
             - contract_address
             - to
             - from
+          check_columns:
             - ingress
             - egress
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_time
+            - contract_address
+            - to
+            - from
     columns:
       - &block_time
         name: block_time
         description: "Table primary key: block_time of summarised transctions"
-        tests:
-          - unique
       - &erc20_name
         name: name
         description: Name of erc20 token
