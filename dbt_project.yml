@@ -729,6 +729,8 @@ models:
         +schema: clipper_ethereum
       arbitrum:
         +schema: clipper_arbitrum
+      polygon:
+        +schema: clipper_polygon
 
     reaper:
       +schema: reaper
