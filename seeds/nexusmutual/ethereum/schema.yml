@@ -13,3 +13,13 @@ seeds:
         day: date
         eth_ingress: double
         eth_egress: double
+
+  - name: nexusmutual_ethereum_capital_pool_erc20_transactions_seed
+    config:
+      column_types:
+        block_time: date
+        contract_address: double
+        to: varbinary
+        from: varbinary
+        ingress: double
+        egress: double
