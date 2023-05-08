@@ -161,6 +161,7 @@ models:
           seed_file: ref('nexusmutual_ethereum_capital_pool_erc20_transactions_seed')
           match_columns:
             - block_time
+            - name
             - contract_address
             - to
             - from
