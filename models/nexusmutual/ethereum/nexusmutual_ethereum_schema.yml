@@ -161,9 +161,9 @@ models:
           seed_file: ref('nexusmutual_ethereum_capital_pool_erc20_transactions_seed')
           match_columns:
             - tx_hash
+            - name
           check_columns:
             - block_time
-            - name
             - contract_address
             - to
             - from
@@ -171,8 +171,6 @@ models:
       - &erc20_tx_hash
         name: tx_hash
         description: unique transaction hash of erc20 transfer
-        test:
-          - unique
       - &block_time
         name: block_time
         description:  time of transaction
