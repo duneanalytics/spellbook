@@ -16,6 +16,7 @@
 {% set project_start_date = '2019-05-12' %}
 
 SELECT
+  evt_tx_hash as tx_hash,
   evt_block_time as block_time,
   CASE
     WHEN a.contract_address = '0x27f23c710dd3d878fe9393d93465fed1302f2ebd' THEN 'nxmty'
