@@ -129,7 +129,6 @@ FROM (values
     ,('0x86690b9Dbb979850AE4622347aF81232bAa3C967','Revert Finance','Distributor')
     ,('0x35bA8C41CeEEA24F7c826015844F2b58aF3058a6','Revert Finance','Distributor')
     ,('0x167829543510c13c792BD8F6a414f74D51E3A6d4','Revert Finance','Distributor')
-    -- ,('0x40a58B5B735Ba6596d04c88E7b262f6E79100EBb','Angle','Distributor-velo bribe') --bribe used by multiple parties
     ,('0x0Cb199aF5F402506963A4df08B11053687e09802', 'Polynomial Protocol','Distributor')
     ,('0x7432A3A1545B2764367dA16a207A16475D4221bD', 'WePiggy','Distributor')
     ,('0xfCdb1A1AFAaB60230bBc55D8B3de27F47fB7053f','dForce','Distributor')
@@ -180,7 +179,12 @@ FROM (values
     ,('0xfCC293db3b7396a1c2477C9F24F5F948431EF6eC', 'Pika Protocol', 'Distributor')
     ,('0x8b50d942bb4effe0db32393a141ea083db0c4e7f', 'Alchemix', 'alETH/WETH: Velodrome')
     ,('0x4ea2e39626de031a011c3ca7360878202454ce75', 'Angle', 'OP/agEUR: Velodrome')
-    ,('0x3ef3d8ba38ebe18db133cec108f4d14ce00dd9ae', 'Angle', 'USDC/agEUR: Velodrome')
+    ,('0x3ef3d8ba38ebe18db133cec108f4d14ce00dd9ae', 'Angle', 'USDC/agEUR: Uniswap') -- merkl.angle.money
+    ,('0xd94e19d14e35ea2a37c321a220295e292986bfc2', 'Angle', 'USDC/agEUR: Velodrome') --Pool: 0x7866C6072B09539fC0FDE82963846b80203d7beb
+    ,('0xcfda7a75549d7917fd8d3c2c41a4fbaca7d67973', 'Angle', 'USDC/agEUR: Velodrome') --Pool: 0x7866C6072B09539fC0FDE82963846b80203d7beb
+    ,('0x40a58b5b735ba6596d04c88e7b262f6e79100ebb', 'Angle', 'agEUR/MAI: Velodrome') --Pool: 0x389d9aea762fd5f9fbd4434d8e11295f15097b67
+    ,('0x7866ac6595ea340352c2d64528641c083d1b9f17', 'Angle', 'agEUR/MAI: Velodrome') --Pool: 0x389d9aea762fd5f9fbd4434d8e11295f15097b67
+
     ,('0x6333000289bc27a090b3d51e734c2f13e3edc4fd', 'Hundred Finance', 'Token Treasury')
     ,('0x86c90fc464A668469A93Ca08D8B9872bdB16b356', 'Mux', 'TradingRebateDistributor')
     ,('0xBd1ba78A3976cAB420A9203E6ef14D18C2B2E031', 'Exactly', 'Distributor Multisig')
