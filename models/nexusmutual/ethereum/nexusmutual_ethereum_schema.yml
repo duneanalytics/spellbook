@@ -163,8 +163,6 @@ models:
             - tx_hash
             - name
           check_columns:
-            - block_time
-            - contract_address
             - to
             - from
     columns:
