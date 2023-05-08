@@ -1,7 +1,7 @@
 
 {{ config(
     alias ='capital_pool_erc20_transactions',
-    partition_by = ['day'],
+    partition_by = ['block_time'],
     materialized = 'incremental',
     incremental_strategy = 'merge',
     file_format = 'delta',
