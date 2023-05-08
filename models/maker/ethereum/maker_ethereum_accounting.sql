@@ -368,27 +368,27 @@ WITH dao_wallet AS (
          , ilk
     FROM psm_yield_preunioned
 )
-, hvb_yield_trxns AS (
+, rwa_yield_trxns AS (
     SELECT call_tx_hash
-        , CASE WHEN usr = '0x6c6d4be2223b5d202263515351034861dd9afdb6'
-            THEN 'RWA009-A' 
+        , CASE WHEN usr = '0x6c6d4be2223b5d202263515351034861dd9afdb6' THEN 'RWA009-A'
+            WHEN usr = '0xef1b095f700be471981aae025f92b03091c3ad47' THEN 'RWA007-A'
         END AS ilk
     FROM {{ source('maker_ethereum', 'dai_call_burn') }}
     WHERE call_success
-      AND usr IN ('0x6c6d4be2223b5d202263515351034861dd9afdb6') --HVB RWA JAR
+      AND usr IN ('0x6c6d4be2223b5d202263515351034861dd9afdb6', '0xef1b095f700be471981aae025f92b03091c3ad47') --HVB RWA JAR, MIP65 RWA JAR
     --   {% if is_incremental() %}
     --   AND call_block_time >= date_trunc("day", now() - interval '1 week')
     --   {% endif %}
     GROUP BY call_tx_hash
         , ilk
 )
-, hvb_yield_preunioned AS (
+, rwa_yield_preunioned AS (
     SELECT vat.call_block_time           ts
          , vat.call_tx_hash              hash
          , ilk
          , SUM(vat.rad / POW(10, 45)) AS value
     FROM {{ source('maker_ethereum', 'vat_call_move') }} vat
-    JOIN hvb_yield_trxns tx
+    JOIN rwa_yield_trxns tx
         ON vat.call_tx_hash = tx.call_tx_hash
     WHERE vat.dst = '0xa950524441892a31ebddf91d3ceefa04bf454466' -- vow
       AND vat.call_success
@@ -399,13 +399,15 @@ WITH dao_wallet AS (
         , vat.call_tx_hash
         , ilk
 )
-, hvb_yield AS (
+, rwa_yield AS (
     SELECT ts
          , hash
-         , 31170 AS code
+         , COALESCE(equity_code, 31170) AS code --default to off-chain private credit
          , value --increased equity
          , ilk
-    FROM hvb_yield_preunioned
+    FROM rwa_yield_preunioned
+    LEFT JOIN ilk_list_manual_input
+        USING (ilk)
 
     UNION ALL
 
@@ -414,7 +416,7 @@ WITH dao_wallet AS (
          , 21120  AS code
          , -value AS value--decreased liability
          , ilk
-    FROM hvb_yield_preunioned
+    FROM rwa_yield_preunioned
 )
 , liquidation_revenues AS (
     SELECT call_block_time           ts
@@ -429,7 +431,7 @@ WITH dao_wallet AS (
       AND call_tx_hash NOT IN (SELECT tx_hash FROM liquidation_excluded_tx) -- Exclude Flop income (coming directly from users wallets)
       AND call_tx_hash NOT IN (SELECT call_tx_hash FROM team_dai_burns_tx)
       AND call_tx_hash NOT IN (SELECT call_tx_hash FROM psm_yield_trxns)
-      AND call_tx_hash NOT IN (SELECT call_tx_hash FROM hvb_yield_trxns)
+      AND call_tx_hash NOT IN (SELECT call_tx_hash FROM rwa_yield_trxns)
     --   {% if is_incremental() %}
     --   AND call_block_time >= date_trunc("day", now() - interval '1 week')
     --   {% endif %}
@@ -488,6 +490,17 @@ WITH dao_wallet AS (
     --   {% if is_incremental() %}
     --   AND call_block_time >= date_trunc("day", now() - interval '1 week')
     --   {% endif %}
+    GROUP BY 1, 2, 3
+
+    UNION ALL
+    
+    SELECT call_block_time ts
+        , call_tx_hash hash
+        , STRING(UNHEX(TRIM('0', RIGHT(i, LENGTH(i)-2)))) AS ilk
+        , SUM(dart)/1e18 AS value
+    FROM {{ source('maker_ethereum', 'vat_call_grab') }}
+    WHERE call_success
+    AND dart+0 > 0
     GROUP BY 1, 2, 3
 )
 , d3m_revenues AS (
@@ -1355,9 +1368,9 @@ WITH dao_wallet AS (
             , code
             , value
             , 'DAI' AS token
-            , 'HVB Yield' AS descriptor
+            , 'RWA Yield' AS descriptor
             , ilk
-        FROM hvb_yield
+        FROM rwa_yield
 
 
         UNION ALL

@@ -9,7 +9,7 @@
         post_hook='{{ expose_spells(\'["polygon"]\',
                                 "project",
                                 "zeroex",
-                                \'["rantumBits", "sui414", "bakabhai993"]\') }}'
+                                \'["rantum", "danning.sui", "bakabhai993"]\') }}'
     )
 }}
 
@@ -92,7 +92,7 @@ v4_rfq_fills_no_bridge AS (
     WHERE evt_block_time >= '{{zeroex_v4_start_date}}'
     {% endif %}
 ),
-/*
+
 v4_limit_fills_no_bridge AS (
     SELECT 
             fills.evt_tx_hash AS tx_hash,
@@ -111,7 +111,9 @@ v4_limit_fills_no_bridge AS (
             zeroex_tx.from,
             zeroex_tx.block_number,
             (zeroex_tx.tx_hash IS NOT NULL) AS swap_flag,
-            (fills.feeRecipient = '0x86003b044f70dac0abc80ac8957305b6370893ed') AS matcha_limit_order_flag
+            (fills.feeRecipient in 
+                ('0x9b858be6e3047d88820f439b240deac2418a2551','0x86003b044f70dac0abc80ac8957305b6370893ed','0x5bc2419a087666148bfbe1361ae6c06d240c6131')) 
+                AS matcha_limit_order_flag 
     FROM {{ source('zeroex_polygon', 'ExchangeProxy_evt_LimitOrderFilled') }} fills
     INNER JOIN zeroex_tx
         ON zeroex_tx.tx_hash = fills.evt_tx_hash
@@ -125,7 +127,7 @@ v4_limit_fills_no_bridge AS (
     WHERE evt_block_time >= '{{zeroex_v4_start_date}}'
     {% endif %}
 ),
-*/
+
 otc_fills AS (
     SELECT 
             fills.evt_tx_hash               AS tx_hash,
@@ -159,13 +161,13 @@ otc_fills AS (
     {% endif %}
 
 ),
-/*
+
 ERC20BridgeTransfer AS (
     SELECT 
             logs.tx_hash,
             INDEX                                   AS evt_index,
             logs.contract_address,
-            block_time                              AS block_time,
+            zeroex_tx.block_time                    AS block_time,
             '0x' || substring(DATA, 283, 40)        AS maker,
             '0x' || substring(DATA, 347, 40)        AS taker,
             '0x' || substring(DATA, 27, 40)         AS taker_token,
@@ -174,6 +176,9 @@ ERC20BridgeTransfer AS (
             bytea2numeric(substring(DATA, 219, 40)) AS maker_token_amount_raw,
             'ERC20BridgeTransfer'                   AS type,
             zeroex_tx.affiliate_address             AS affiliate_address,
+            zeroex_tx.to, 
+            zeroex_tx.from,
+            zeroex_tx.block_number,
             TRUE                                    AS swap_flag,
             FALSE                                   AS matcha_limit_order_flag
     FROM {{ source('polygon', 'logs') }} logs
@@ -181,13 +186,14 @@ ERC20BridgeTransfer AS (
     WHERE topic1 = '0x349fc08071558d8e3aa92dec9396e4e9f2dfecd6bb9065759d1932e7da43b8a9'
     
     {% if is_incremental() %}
-    AND block_time >= date_trunc('day', now() - interval '1 week')
+    AND zeroex_tx.block_time >= date_trunc('day', now() - interval '1 week')
     {% endif %}
     {% if not is_incremental() %}
-    AND block_time >= '{{zeroex_v3_start_date}}'
+    AND zeroex_tx.block_time >= '{{zeroex_v3_start_date}}'
     {% endif %}
 
 ), 
+/*
 BridgeFill AS (
     SELECT 
             logs.tx_hash,
@@ -251,7 +257,7 @@ NewBridgeFill AS (
         AND logs.block_time >= '{{zeroex_v4_start_date}}'
         {% endif %}
 ),
-/*
+
 direct_PLP AS (
     SELECT 
             plp.evt_tx_hash             AS tx_hash,
@@ -284,7 +290,7 @@ direct_PLP AS (
     WHERE evt_block_time >= '{{zeroex_v3_start_date}}'
     {% endif %}
 ), 
-
+/*
 direct_uniswapv3 AS (
     SELECT 
             swap.evt_tx_hash                                                                        AS tx_hash,
@@ -323,18 +329,19 @@ all_tx AS (
     SELECT *
     FROM direct_uniswapv3
     UNION ALL
+    */
     SELECT *
     FROM direct_PLP
     UNION ALL
     SELECT *
     FROM ERC20BridgeTransfer
-    UNION ALL
+    /* UNION ALL
     SELECT *
-    FROM BridgeFill
-    UNION ALL
+    FROM BridgeFill */
+    UNION ALL 
     SELECT *
     FROM v4_limit_fills_no_bridge
-    */
+    UNION ALL 
     SELECT *
     FROM NewBridgeFill 
     UNION ALL
@@ -370,9 +377,11 @@ SELECT
         affiliate_address,
         swap_flag,
         matcha_limit_order_flag,
-        CASE WHEN maker_token IN ('0x2791bca1f2de4661ed88a30c99a7a9449aa84174','0x7ceb23fd6bc0add59e62ac25578270cff1b9f619','0x0d500b1d8e8ef31e21c99d1db9a6444d3adf1270','0xc2132d05d31c914a87c6611c10748aeb04b58e8f','0x1bfd67037b42cf73acf2047067bd4f2c47d9bfd6','0x8f3cf7ad23cd3cadbd9735aff958023239c6a063','0x3a58a54c066fdc0f2d55fc9c89f0415c92ebf3c4')
+        CASE WHEN maker_token IN ('0x2791bca1f2de4661ed88a30c99a7a9449aa84174','0x7ceb23fd6bc0add59e62ac25578270cff1b9f619','0x0d500b1d8e8ef31e21c99d1db9a6444d3adf1270','0xc2132d05d31c914a87c6611c10748aeb04b58e8f',
+            '0x1bfd67037b42cf73acf2047067bd4f2c47d9bfd6','0x8f3cf7ad23cd3cadbd9735aff958023239c6a063','0x3a58a54c066fdc0f2d55fc9c89f0415c92ebf3c4') AND  mp.price IS NOT NULL
              THEN (all_tx.maker_token_amount_raw / pow(10, mp.decimals)) * mp.price
-             WHEN taker_token IN ('0x2791bca1f2de4661ed88a30c99a7a9449aa84174','0x7ceb23fd6bc0add59e62ac25578270cff1b9f619','0x0d500b1d8e8ef31e21c99d1db9a6444d3adf1270','0xc2132d05d31c914a87c6611c10748aeb04b58e8f','0x1bfd67037b42cf73acf2047067bd4f2c47d9bfd6','0x8f3cf7ad23cd3cadbd9735aff958023239c6a063','0x3a58a54c066fdc0f2d55fc9c89f0415c92ebf3c4')   
+             WHEN taker_token IN ('0x2791bca1f2de4661ed88a30c99a7a9449aa84174','0x7ceb23fd6bc0add59e62ac25578270cff1b9f619','0x0d500b1d8e8ef31e21c99d1db9a6444d3adf1270','0xc2132d05d31c914a87c6611c10748aeb04b58e8f',
+                '0x1bfd67037b42cf73acf2047067bd4f2c47d9bfd6','0x8f3cf7ad23cd3cadbd9735aff958023239c6a063','0x3a58a54c066fdc0f2d55fc9c89f0415c92ebf3c4')  AND  tp.price IS NOT NULL
              THEN (all_tx.taker_token_amount_raw / pow(10, tp.decimals)) * tp.price
              ELSE COALESCE((all_tx.maker_token_amount_raw / pow(10, mp.decimals)) * mp.price, (all_tx.taker_token_amount_raw / pow(10, tp.decimals)) * tp.price)
              END AS volume_usd,
@@ -394,7 +403,8 @@ AND tx.block_time >= '{{zeroex_v3_start_date}}'
 
 LEFT JOIN {{ source('prices', 'usd') }} tp ON date_trunc('minute', all_tx.block_time) = tp.minute
 AND CASE
-        WHEN all_tx.taker_token = '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee' THEN '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'
+        WHEN all_tx.taker_token = '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee' THEN '0x0000000000000000000000000000000000001010'
+        WHEN all_tx.taker_token = '0x0d500b1d8e8ef31e21c99d1db9a6444d3adf1270' THEN '0x0000000000000000000000000000000000001010'
         ELSE all_tx.taker_token
     END = tp.contract_address
 AND tp.blockchain = 'polygon'
@@ -408,7 +418,8 @@ AND tp.minute >= '{{zeroex_v3_start_date}}'
 
 LEFT JOIN {{ source('prices', 'usd') }} mp ON DATE_TRUNC('minute', all_tx.block_time) = mp.minute
 AND CASE
-        WHEN all_tx.maker_token = '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee' THEN '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'
+        WHEN all_tx.maker_token = '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee' THEN '0x0000000000000000000000000000000000001010'
+        WHEN all_tx.taker_token = '0x0d500b1d8e8ef31e21c99d1db9a6444d3adf1270' THEN '0x0000000000000000000000000000000000001010'
         ELSE all_tx.maker_token
     END = mp.contract_address
 AND mp.blockchain = 'polygon'
@@ -422,3 +433,5 @@ AND mp.minute >= '{{zeroex_v3_start_date}}'
 
 LEFT OUTER JOIN {{ ref('tokens_erc20') }} ts ON ts.contract_address = taker_token and ts.blockchain = 'polygon'
 LEFT OUTER JOIN {{ ref('tokens_erc20') }} ms ON ms.contract_address = maker_token and ms.blockchain = 'polygon'
+
+WHERE all_tx.tx_hash != '0x34ee112f3d601e4bb2f19f7744e86f9b4f65ed6c44dfe48db1c560d6b1c34bef' -- exclude tx with wrong decimals data

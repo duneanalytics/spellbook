@@ -135,9 +135,17 @@ sources:
           description: "Wallet address of the repayer" 
         - *reserve
         - *user       
-        
+
+      - name: DefaultReserveInterestRateStrategy_call_calculateInterestRates
+
+      - name: LendingPool_evt_FlashLoan
+        loaded_at_field: evt_block_time
+
+  
+
+  
   - name: aave_ethereum
-    description: "Decoded contracts for aave v1 on Ethereum"
+    description: "Decoded contracts for Aave v1 on Ethereum"
 
     tables:
       - name: LendingPool_evt_Deposit
@@ -256,6 +264,7 @@ sources:
             name: voter
           - &votes
             name: votes
+
       - name: AaveGovernanceV2_evt_ProposalCreated
         loaded_at_field: evt_block_time
         columns:
@@ -284,6 +293,7 @@ sources:
             name: targets
           - &values
             name: values
+
       - name: AaveGovernanceV2_evt_ProposalCanceled
         loaded_at_field: evt_block_time
         columns:
@@ -293,6 +303,7 @@ sources:
           - *evt_index
           - *evt_tx_hash
           - *id
+
       - name: AaveGovernanceV2_evt_ProposalExecuted
         loaded_at_field: evt_block_time
         columns:
@@ -302,6 +313,7 @@ sources:
           - *evt_index
           - *evt_tx_hash
           - *id
+
       - name: AaveGovernanceV2_evt_ProposalQueued
         loaded_at_field: evt_block_time
         columns:
@@ -313,3 +325,15 @@ sources:
           - *evt_index
           - *evt_tx_hash
           - *id
+
+      - name: LendingPool_evt_FlashLoan
+        loaded_at_field: evt_block_time
+
+
+
+  - name: aave_v3_ethereum
+    description: "Decoded contracts for Aave v3 on Ethereum"
+
+    tables:
+      - name: Pool_evt_FlashLoan
+        loaded_at_field: evt_block_time

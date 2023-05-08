@@ -88,6 +88,15 @@ models:
       - &op_incoming_clawback
         name: op_incoming_clawback
         description: "OP Amount - if marked as clawed back by the project"
+      - &op_to_utility_contract
+        name: op_to_utility_contract
+        description: "OP Amount - if sent to a utility contract which deploys tokens"
+      - &op_incoming_other
+        name: op_incoming_other
+        description: "OP Amount - if marked as incoming from a non-project, non-OP source"
+      - &op_for_retropgf
+        name: op_for_retropgf
+        description: "OP Amount - if transferred from foundation grants wallet to a retropgf recipient (Note: This only captures if retroPGF was rewarded in OP - i.e. Round #2)"
       - &og_to_name
         name: og_to_name
         description: "Orignal name for the to address (without additional mapping)"
@@ -225,12 +234,17 @@ models:
       tags: ['optimism','op','grants','addresses']
     description: >
         A table containing unifying labels for tagged wallets that we want to track distributions for
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - label
+            - address
     columns:
-    - *address
-    - *label
-    - *proposal_name
-    - *address_descriptor
-    - *project_name
+      - *address
+      - *label
+      - *proposal_name
+      - *address_descriptor
+      - *project_name
   
   - name: op_token_distributions_optimism_other_tags
     meta:

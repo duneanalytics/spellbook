@@ -18,13 +18,18 @@ models:
 
   - name: nft_events
     meta:
-      blockchain: ethereum, solana
+      blockchain: ethereum, solana, bnb, optimism, arbitrum, polygon
       sector: nft
-      contributors: soispoke, hildobby, ilemi, 0xRob, cat, umer_h_adil, springzh
+      contributors: soispoke, hildobby, ilemi, 0xRob, cat, umer_h_adil
     config:
-      tags: ['nft', 'opensea', 'looksrare', 'x2y2', 'magiceden', 'sudoswap', 'foundation', 'element', 'zora', 'ethereum', 'bnb', 'avalanche_c', 'solana', 'events', 'polygon', 'aavegotchi']
+      tags: ['nft', 'opensea', 'looksrare', 'x2y2', 'magiceden', 'sudoswap', 'foundation', 'element', 'zora', 'ethereum', 'bnb', 'solana', 'events', 'polygon', 'optimism', 'arbitrum', 'rarible', 'aavegotchi', 'oneplanet', 'fractal']
     description: >
         NFT events
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - unique_trade_id
+            - blockchain
     columns:
       - &blockchain
         name: blockchain
@@ -47,6 +52,9 @@ models:
       - &amount_usd
         name: amount_usd
         description:  "USD value of the trade at time of execution"
+        tests:
+          - dbt_utils.accepted_range:
+              max_value: 1000000000 # $1b is an arbitrary number, intended to flag outlier amounts early
       - &token_standard
         name: token_standard
         description:  "Token standard"
@@ -140,13 +148,18 @@ models:
 
   - name: nft_trades
     meta:
-      blockchain: ethereum, solana
+      blockchain: ethereum, solana, bnb, optimism, arbitrum, polygon
       sector: nft
-      contributors: soispoke, hildobby, ilemi, cat, springzh
+      contributors: soispoke, hildobby, ilemi, cat
     config:
-      tags: ['nft', 'opensea', 'looksrare', 'x2y2', 'magiceden', 'sudoswap', 'foundation', 'element', 'zora', 'ethereum', 'bnb', 'avalanche_c', 'solana', 'trades','superrare', 'polygon', 'aavegotchi']
+      tags: ['nft', 'opensea', 'looksrare', 'x2y2', 'magiceden', 'sudoswap', 'foundation', 'element', 'zora', 'ethereum', 'bnb', 'solana', 'optimism', 'arbitrum', 'trades','superrare', 'polygon', 'rarible', 'aavegotchi', 'oneplanet', 'fractal']
     description: >
         NFT trades
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - unique_trade_id
+            - blockchain
     columns:
       - *blockchain
       - *project
@@ -178,13 +191,18 @@ models:
 
   - name: nft_mints
     meta:
-      blockchain: ethereum, solana
+      blockchain: ethereum, solana, bnb, optimism, polygon, arbitrum
       sector: nft
-      contributors: soispoke, hildobby, umer_h_adil, springzh
+      contributors: soispoke, hildobby, umer_h_adil
     config:
-      tags: ['nft', 'opensea', 'looksrare', 'x2y2', 'magiceden', 'foundation', 'element', 'zora', 'ethereum', 'bnb', 'avalanche_c', 'solana', 'mints', 'polygon', 'aavegotchi']
+      tags: ['nft', 'opensea', 'looksrare', 'x2y2', 'magiceden', 'foundation', 'element', 'zora', 'ethereum', 'bnb', 'solana', 'mints', 'polygon', 'aavegotchi', 'optimism', 'arbitrum', 'stealcam']
     description: >
         NFT mints
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - unique_trade_id
+            - blockchain
     columns:
       - *blockchain
       - *project
@@ -220,9 +238,14 @@ models:
       sector: nft
       contributors: soispoke, hildobby
     config:
-      tags: ['nft', 'opensea', 'looksrare', 'x2y2', 'magiceden', 'foundation', 'element', 'zora', 'ethereum', 'bnb', 'avalanche_c', 'solana', 'burns']
+      tags: ['nft', 'opensea', 'looksrare', 'x2y2', 'magiceden', 'foundation', 'element', 'zora', 'ethereum', 'bnb', 'solana', 'burns']
     description: >
         NFT burns
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - unique_trade_id
+            - blockchain
     columns:
       - *blockchain
       - *project
@@ -254,13 +277,18 @@ models:
 
   - name: nft_fees
     meta:
-      blockchain: ethereum, solana
+      blockchain: ethereum, solana, polygon
       sector: nft
-      contributors: soispoke, hildobby, ilemi, cat, springzh
+      contributors: soispoke, hildobby, ilemi, cat
     config:
-      tags: ['nft', 'opensea', 'looksrare', 'x2y2', 'magiceden', 'sudoswap', 'foundation', 'element', 'zora', 'ethereum', 'bnb', 'avalanche_c', 'solana', 'fees','superrare', 'polygon', 'aavegotchi']
+      tags: ['nft', 'opensea', 'looksrare', 'x2y2', 'magiceden', 'sudoswap', 'foundation', 'element', 'zora', 'ethereum', 'bnb', 'solana', 'fees','superrare', 'polygon', 'rarible', 'aavegotchi', 'oneplanet', 'fractal']
     description: >
         NFT fees
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - unique_trade_id
+            - blockchain
     columns:
       - *blockchain
       - *project
@@ -297,11 +325,11 @@ models:
 
   - name: nft_wash_trades
     meta:
-      blockchain: ethereum
+      blockchain: arbitrum, avalanche_c, bnb, ethereum, gnosis, optimism, polygon
       sector: nft
       contributors: hildobby
     config:
-      tags: ['nft', 'opensea', 'looksrare', 'x2y2', 'sudoswap', 'blur', 'ethereum', 'wash_trades']
+      tags: ['nft', 'opensea', 'looksrare', 'x2y2', 'magiceden', 'sudoswap', 'foundation', 'element', 'zora', 'arbitrum', 'avalanche_c', 'bnb', 'ethereum', 'gnosis', 'optimism', 'polygon', 'wash_trades']
     description: >
         NFT wash trades labelling
     columns:
@@ -381,6 +409,11 @@ models:
       tags: ['nft', 'ethereum', 'polygon', 'bnb', 'avalanche_c', 'gnosis', 'optimism', 'arbitrum', 'fantom', 'goerli', 'transfers']
     description: >
         NFT transfers
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - unique_transfer_id
     columns:
       - *blockchain
       - name: block_time
@@ -427,6 +460,15 @@ models:
       tags: ['ethereum','nft', 'lending']
     description: >
         nft lending events (repay & borrow)
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_date
+            - blockchain
+            - project
+            - version
+            - tx_hash
+            - evt_index
     columns:
       - *blockchain
       - *project
@@ -460,3 +502,51 @@ models:
       - &evt_index
         name: evt_index
         description: "Index of the corresponding lending event"
+  
+  - name: nft_approvals
+    meta:
+      blockchain: ethereum, polygon, bnb, avalanche_c, gnosis, optimism, arbitrum, fantom, goerli
+      sector: nft
+      contributors: hildobby
+    config:
+      tags: ['nft', 'ethereum', 'polygon', 'bnb', 'avalanche_c', 'gnosis', 'optimism', 'arbitrum', 'fantom', 'goerli', 'approvals']
+    description: >
+        NFT approvals
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - block_number
+            - tx_hash
+            - evt_index
+    columns:
+      - name: blockchain
+        description: "Blockchain"
+      - name: block_time
+        description: "UTC event block time"
+      - name: block_date
+        description: "UTC event block date"
+      - name: block_number
+        description: "Block number in which the transaction was executed"
+      - name: address
+        description: "Address for which NFTs were approved"
+      - name: token_standard
+        tests:
+          - accepted_values:
+              values: ['erc721', 'erc1155']
+      - name: approval_for_all
+        description: "Was this an ApprovalForAll or a simple Approval?"
+      - name: contract_address
+        description: "Contract address"
+      - name: token_id
+        description: "NFT token ID"
+      - name: approved
+        description: "Approved"
+      - name: tx_hash
+        description: "Transaction hash"
+      # - name: tx_from
+      #   description: "Address that initiated the transaction"
+      # - name: tx_to
+      #   description: "Address that the transaction points to"
+      - name: evt_index
+        description: "Event index"

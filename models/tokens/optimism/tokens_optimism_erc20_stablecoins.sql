@@ -29,7 +29,7 @@ FROM (VALUES
       ,('0xfb21b70922b9f6e3c6274bcd6cb1aa8a0fe20b80', 'Terra USD', 'USD', 'Algorithmic')
       ,('0x7113370218f31764c1b6353bdf6004d86ff6b9cc', 'Decentralized USD','USD','Algorithmic')
       ,('0xcb59a0a753fdb7491d5f3d794316f1ade197b21e', 'TrueUSD','USD','Fiat-Backed')
-      ,('0xcb8fa9a76b8e203d8c3797bf438d8fb81ea3326a', 'Alchemix USD','','Algorithmic')
+      ,('0xcb8fa9a76b8e203d8c3797bf438d8fb81ea3326a', 'Alchemix USD','USD','Algorithmic')
       ,('0xb0b195aefa3650a6908f15cdac7d92f8a5791b0b', 'BOB','USD','Crypto-Backed')
       ,('0xdfa46478f9e5ea86d57387849598dbfb2e964b02', 'Mai Stablecoin','USD','Crypto-Backed')
       ,('0x7fb688ccf682d58f86d7e38e03f9d22e7705448b', 'Rai Reflex Index','None','Crypto-Backed')
@@ -40,6 +40,7 @@ FROM (VALUES
       ,('0x73cb180bf0521828d8849bc8CF2B920918e23032', 'USD+', 'USD','Crypto-Backed')
       ,('0x9485aca5bbbe1667ad97c7fe7c4531a624c8b1ed', 'agEUR', 'EUR', 'Crypto-Backed')
       ,('0x79af5dd14e855823fa3e9ecacdf001d99647d043', 'Jarvis Synthetic Euro','EUR','Crypto-Backed')
+      ,('0x970d50d09f3a656b43e11b0d45241a84e3a6e011', 'DAI+', 'USD','Crypto-Backed')
 
       -- --Synthetix Tokens
       ,('0x8c6f28f2f1a3c87f0f938b96d27520d9751ec8d9', 'Synth sUSD', 'USD', 'Crypto-Backed')

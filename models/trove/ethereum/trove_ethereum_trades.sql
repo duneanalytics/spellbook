@@ -59,7 +59,7 @@ with marketplace as (
 select
     'ethereum' as blockchain,
     'trove' as project,
-    cast(null as varchar(5)) as version,
+    'v2' as version,
     date_trunc('day',mp.block_time) as block_date,
     mp.block_time,
     token_id,

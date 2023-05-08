@@ -1,0 +1,90 @@
+version: 2
+
+sources:
+  - name: dydx_protocol_ethereum
+    description: "Decoded contracts for dYdX on Ethereum"
+
+    tables:
+      - name: DydxGovernor_evt_VoteEmitted
+        loaded_at_field: evt_block_time
+        columns:
+          - &contract_address
+            name: contract_address
+            description: "DAO governor contract address"
+          - &evt_block_number
+            name: evt_block_number
+            description: "Event block number"
+          - &evt_block_time
+            name: evt_block_time
+            description: "Timestamp for block event time in UTC"
+          - &evt_index
+            name: evt_index
+            description: "Event index"
+          - &evt_tx_hash
+            name: evt_tx_hash
+            description: "Unique transaction hash value tied to each vote on the DAO"
+          - &proposalId
+            name: proposalId
+          - &reason
+            name: reason
+          - &voter
+            name: voter
+          - &votes
+            name: votes
+      - name: DydxGovernor_evt_ProposalCreated
+        loaded_at_field: evt_block_time
+        columns:
+          - name: contract_address
+            description: "DAO governor contract address"
+          - name: evt_block_number
+          - name: evt_block_time
+            description: "UTC event block time of each DAO vote"
+          - name: evt_index
+          - name: evt_tx_hash
+          - &calldatas
+            name: calldatas
+          - &description
+            name: description
+          - &endBlock
+            name: endBlock
+          - &id
+            name: id
+          - &proposer
+            name: proposer
+          - &signatures
+            name: signatures
+          - &startBlock
+            name: startBlock
+          - &targets
+            name: targets
+          - &values
+            name: values
+      - name: DydxGovernor_evt_ProposalCanceled
+        loaded_at_field: evt_block_time
+        columns:
+          - *contract_address
+          - *evt_block_number
+          - *evt_block_time
+          - *evt_index
+          - *evt_tx_hash
+          - *id
+      - name: DydxGovernor_evt_ProposalExecuted
+        loaded_at_field: evt_block_time
+        columns:
+          - *contract_address
+          - *evt_block_number
+          - *evt_block_time
+          - *evt_index
+          - *evt_tx_hash
+          - *id
+      - name: DydxGovernor_evt_ProposalQueued
+        loaded_at_field: evt_block_time
+        columns:
+          - *contract_address
+          - &eta
+            name: eta
+          - *evt_block_number
+          - *evt_block_time
+          - *evt_index
+          - *evt_tx_hash
+          - *id
