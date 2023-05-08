@@ -271,5 +271,8 @@ FROM
 ,('0xd312c1e723961164916ef2ebb767e53fbdff4094', 'ApeTown WTF')
 ,('0xC66A1EE3be858E7041DdA9bd1Ea2fbd3ce07F63e', 'Ganland GALXE')
 ,('0xba1231785a7b4ac0e8dc9a0403938c2182ce4a4e', 'Geo Web Parcel License')
+,('0xa67ea6d2e63265c0ac0a72de42fa67e0098c9433', 'ZONIC OG')
+,('0x9e8f79006069675ac0fe4b8d48e8514b213f1333', 'Gam Bots')
+,('0xfc1f4727b270718ea1dafba3466c63ded0c72e61', 'dabao2')
 
 ) as temp_table (contract_address, name)
