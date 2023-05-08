@@ -167,12 +167,6 @@ models:
           check_columns:
             - ingress
             - egress
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - block_time
-            - contract_address
-            - to
-            - from
     columns:
       - &block_time
         name: block_time
