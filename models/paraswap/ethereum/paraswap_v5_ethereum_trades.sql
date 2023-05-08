@@ -284,24 +284,25 @@ dexs AS (
 
     UNION ALL
 
-    SELECT block_time,
-        block_number,
-        taker, 
-        maker, 
-        token_bought_amount_raw,
-        token_sold_amount_raw,
-        amount_usd,
-        token_bought_address,
-        token_sold_address,
-        project_contract_address,
-        tx_hash, 
-        trace_address,
-        evt_index
-    FROM liqudity_swap
+    SELECT l.block_time,
+        l.block_number,
+        l.taker, 
+        l.maker, 
+        l.token_bought_amount_raw,
+        l.token_sold_amount_raw,
+        l.amount_usd,
+        l.token_bought_address,
+        l.token_sold_address,
+        l.project_contract_address,
+        l.tx_hash, 
+        l.trace_address,
+        l.evt_index
+    FROM liqudity_swap l
+    LEFT JOIN dex_swap d ON l.block_number = d.block_number AND l.tx_hash = d.tx_hash
+    WHERE d.tx_hash IS NULL
 
     UNION ALL
 
-    -- Here we need exclude those tx that already included in liquidity swap adapter
     SELECT c.block_time,
         c.block_number,
         c.taker, 
@@ -316,8 +317,10 @@ dexs AS (
         c.trace_address,
         c.evt_index
     FROM call_swap_without_event c
+    LEFT JOIN dex_swap d ON c.block_number = d.block_number AND c.tx_hash = d.tx_hash
     LEFT JOIN liqudity_swap l ON c.block_number = l.block_number AND c.tx_hash = l.tx_hash
-    WHERE l.tx_hash IS NULL
+    WHERE d.tx_hash IS NULL
+        AND l.tx_hash IS NULL
 )
 
 SELECT 'ethereum' AS blockchain,

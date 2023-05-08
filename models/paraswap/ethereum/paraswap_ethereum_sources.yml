@@ -11,6 +11,14 @@ sources:
         loaded_at_field: evt_block_time
       - name: AugustusSwapper5_0_evt_Swapped
         loaded_at_field: evt_block_time
+      - name: AugustusSwapper5_0_call_buyOnUniswap
+        loaded_at_field: call_block_time
+      - name: AugustusSwapper5_0_call_buyOnUniswapFork
+        loaded_at_field: call_block_time
+      - name: AugustusSwapper5_0_call_swapOnUniswap
+        loaded_at_field: call_block_time
+      - name: AugustusSwapper5_0_call_swapOnUniswapFork
+        loaded_at_field: call_block_time
       - name: AugustusSwapper6_0_evt_Bought
         loaded_at_field: evt_block_time
       - name: AugustusSwapper6_0_evt_Bought2
