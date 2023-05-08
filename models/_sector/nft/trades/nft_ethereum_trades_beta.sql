@@ -13,6 +13,7 @@
      ('archipelago',    'v1',   ref('archipelago_ethereum_base_trades'))
     ,('superrare',    'v1',   ref('superrare_ethereum_base_trades'))
     ,('foundation',    'v1',   ref('foundation_ethereum_base_trades'))
+    ,('element',    'v1',   ref('element_ethereum_base_trades'))
 ] %}
 
 -- We should remove this CTE and include ETH into the general prices table once everything is migrated
