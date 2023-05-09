@@ -42,6 +42,7 @@ SELECT lp_name, LOWER(addr) AS contract_address
                 ,('usdc.usdt.01.s', '0xF232353e39D6180D44981C6DA8784e733c87bc67')
                 ,('weth.wbtc.05.n', '0x34D4112D180e9fAf06f77c8C550bA20C9F61aE31')
                 ,('weth.wbtc.05.w', '0xe256C5Da9b75d4272C8fdC9d2818c18843a1b44C')
+                ,('wsteth.cbeth.01.s',    '0xaF7EF12D2e456cf38E149FdEF5B8c867F6680EfB')
         ) a (lp_name, addr)
 )
 

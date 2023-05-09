@@ -42,9 +42,3 @@ models:
     - &atoken_name
       name: atoken_name
       description: "Name for the atoken"
-    - &underlying_decimals
-      name: underlying_decimals
-      description: "Decimals for the underlying token"
-    - &underlying_symbol
-      name: underlying_symbol
-      description: "Symbol for the underlying token"
