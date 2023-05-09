@@ -81,7 +81,9 @@ call_swap_without_event AS (
             t.evt_block_time AS block_time,
             t.`from` AS user_address,
             t.contract_address AS tokenIn,
-            cast(t.value AS decimal(38, 0)) AS amountIn
+            cast(t.value AS decimal(38, 0)) AS amountIn,
+            CAST(ARRAY() AS array<bigint>) AS trace_address,
+            t.evt_index
         FROM no_event_call_transaction c
         INNER JOIN {{ source('erc20_ethereum','evt_transfer') }} t ON c.call_block_number = t.evt_block_number
             AND c.call_tx_hash = t.evt_tx_hash
@@ -102,6 +104,7 @@ call_swap_without_event AS (
             {% if not is_incremental() %}
             AND tx.block_time >= '{{project_start_date}}'
             {% endif %}
+            AND tx.value = 0 -- Swap ERC20 to other token
 
         UNION ALL
         
@@ -114,7 +117,9 @@ call_swap_without_event AS (
             sum(case
                 when t.`from` = tx.`from` then cast(t.value AS decimal(38, 0))
                 else -1 * cast(t.value AS decimal(38, 0))
-            end) AS amountIn
+            end) AS amountIn,
+            MAX(t.trace_address) AS trace_address,
+            CAST(0 AS bigint) AS evt_index
         FROM no_event_call_transaction c
         INNER JOIN {{ source('ethereum', 'traces') }} t ON c.call_block_number = t.block_number
             AND c.call_tx_hash = t.tx_hash
@@ -147,7 +152,9 @@ call_swap_without_event AS (
             t.evt_block_time AS block_time,
             t.`to` AS user_address,
             t.contract_address AS tokenOut,
-            cast(t.value AS decimal(38, 0)) AS amountOut
+            cast(t.value AS decimal(38, 0)) AS amountOut,
+            CAST(ARRAY() AS array<bigint>) AS trace_address,
+            t.evt_index
         FROM no_event_call_transaction c
         INNER JOIN {{ source('erc20_ethereum','evt_transfer') }} t ON c.call_block_number = t.evt_block_number
             AND c.call_tx_hash = t.evt_tx_hash
@@ -168,6 +175,7 @@ call_swap_without_event AS (
             {% if not is_incremental() %}
             AND tx.block_time >= '{{project_start_date}}'
             {% endif %}
+            AND tx.value = 0  -- Swap ERC20 to other token
 
         UNION ALL
         
@@ -176,7 +184,9 @@ call_swap_without_event AS (
             t.block_time,
             t.`to` AS user_address,
             '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2' AS tokenOut, -- WETH
-            cast(t.value AS decimal(38, 0)) AS amountOut
+            cast(t.value AS decimal(38, 0)) AS amountOut,
+            t.trace_address,
+            CAST(0 AS bigint) AS evt_index
         FROM no_event_call_transaction c
         INNER JOIN {{ source('ethereum', 'traces') }} t ON c.call_block_number = t.block_number
             AND c.call_tx_hash = t.tx_hash
@@ -199,7 +209,7 @@ call_swap_without_event AS (
             {% endif %}
             AND t.call_type = 'call'
             AND t.value > '0'
-            AND tx.value = 0 --  Swap other token to ETH
+            AND tx.value = 0  -- Swap ERC20 to ETH
     )
 
     SELECT i.block_time,
@@ -211,10 +221,10 @@ call_swap_without_event AS (
         CAST(NULL AS double) AS amount_usd,
         o.tokenOut AS token_bought_address,
         i.tokenIn AS token_sold_address,
-        '0xdef171fe48cf0115b1d80b88dc8eab59176fee57' AS project_contract_address,
+        '0x1bd435f3c054b6e901b7b108a0ab7617c808677b' AS project_contract_address,
         i.tx_hash,
-        CAST(ARRAY() AS array<bigint>) AS trace_address,
-        CAST(0 AS bigint) AS evt_index
+        greatest(i.trace_address, o.trace_address) AS trace_address,
+        greatest(i.evt_index, o.evt_index) AS evt_index
     FROM swap_detail_in i
     INNER JOIN swap_detail_out o ON i.block_number = o.block_number AND i.tx_hash = o.tx_hash
 ),
