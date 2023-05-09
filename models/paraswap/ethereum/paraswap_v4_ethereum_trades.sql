@@ -70,7 +70,7 @@ call_swap_without_event AS (
             AND call_block_time >= date_trunc("day", now() - interval '1 week')
             {% endif %}
             {% if not loop.last %}
-            UNION ALL
+            UNION -- There may be multiple calls in same tx
             {% endif %}
         {% endfor %}
     ),
@@ -93,7 +93,7 @@ call_swap_without_event AS (
                 cast(t.value AS decimal(38, 0)) AS amountIn,
                 CAST(ARRAY() AS array<bigint>) AS trace_address,
                 t.evt_index,
-                row_number() over (order by t.evt_index) as row_num
+                row_number() over (partition by t.evt_tx_hash order by t.evt_index) as row_num
             FROM no_event_call_transaction c
             INNER JOIN {{ source('erc20_ethereum','evt_transfer') }} t ON c.call_block_number = t.evt_block_number
                 AND c.call_tx_hash = t.evt_tx_hash
@@ -176,7 +176,7 @@ call_swap_without_event AS (
                 cast(t.value AS decimal(38, 0)) AS amountOut,
                 CAST(ARRAY() AS array<bigint>) AS trace_address,
                 t.evt_index,
-                row_number() over (order by t.evt_index) AS row_num
+                row_number() over (partition by t.evt_tx_hash order by t.evt_index) AS row_num
             FROM no_event_call_transaction c
             INNER JOIN {{ source('erc20_ethereum','evt_transfer') }} t ON c.call_block_number = t.evt_block_number
                 AND c.call_tx_hash = t.evt_tx_hash
