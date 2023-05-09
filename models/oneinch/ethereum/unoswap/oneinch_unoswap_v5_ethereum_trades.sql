@@ -33,7 +33,7 @@ WITH unoswap AS
     WHERE
         call_success
         /******************************************************************************************************************
-            - a few tx's don't fit into the join on line 122:
+            - a few tx's don't fit into the join on line 123:
                 AND COALESCE(array_size(unoswap.call_trace_address), 0) + 2 = COALESCE(array_size(traces.trace_address), 0)
             - the '+ 2' should apparently be '+ 3' for these tx's to correctly join to traces
             - on v1 engine, the tx's were forced to amount_usd = 0 via update statement, as full refresh is less common there
@@ -43,6 +43,7 @@ WITH unoswap AS
             , '0xce87a97efbf1c6c0491a72997d5239029ced77c9ef7413db66cc30b4da63fe86'
             , '0x62c833c1ab66d17c42aeb1407755c00894f9af8691da2c2ca0f14392e3a6334c'
             , '0x774ad4c15a6f776e71641fe4e9af3abd5bb80f7511c77548d130c2ee124ba80a'
+            , '0xad7d5814544440bdcb22760f8f2f0594958e9e6417249d96d92bf78cd05a80f5'
         )
         /***************************************************
             remove tx_hash filter if join is fixed
