@@ -19,8 +19,8 @@ WITH src_evt_inventory as (
     ,evt_block_number as block_number
     ,evt_tx_hash as tx_hash
     ,contract_address as project_contract_address
-    ,case when intent = 1 then taker else maker as buyer
-    ,case when intent = 1 then maker else taker as seller
+    ,case when intent = 1 then taker else maker end as buyer
+    ,case when intent = 1 then maker else taker end as seller
     ,'0x' || substring(get_json_object(inv.item, '$.data'), 155, 40) as nft_contract_address
     ,bytea2numeric_v3(substring(get_json_object(inv.item, '$.data'), 195,64)) as nft_token_id
     ,CAST(1 AS DECIMAL(38,0)) AS nft_amount
