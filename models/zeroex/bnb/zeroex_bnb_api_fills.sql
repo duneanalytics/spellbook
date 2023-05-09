@@ -356,6 +356,7 @@ direct_uniswapv2 as (
 
 select s.tx_hash, 
     s.evt_index,
+    s.contract_address,
     s.block_time,
     maker, 
     taker,
