@@ -55,7 +55,7 @@ WITH src_evt_inventory as (
     {% else %}
     WHERE evt_block_time >= '{{project_start_date}}'
     {% endif %}
-),
+)
 
 
 -- results
