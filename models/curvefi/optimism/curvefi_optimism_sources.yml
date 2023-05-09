@@ -22,3 +22,5 @@ sources:
         loaded_at_field: evt_block_time
       - name: PoolFactory_evt_LiquidityGaugeDeployed
         loaded_at_field: evt_block_time
+      - name: wstETH_swap_evt_TokenExchange
+        loaded_at_field: evt_block_time
