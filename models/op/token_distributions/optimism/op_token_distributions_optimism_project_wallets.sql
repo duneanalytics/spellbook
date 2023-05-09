@@ -59,6 +59,7 @@ FROM (values
     ,('0x6668b635De8452a8613533c852b3d03FbD06DF9D', 'Geo Web', 'Team Multisig')
     ,('0x5ad276439e3772fdb6696b6cb61401902d4e8b72', 'Geo Web', 'Protocol Treasury')
     ,('0x94beC50afA856533603DF45639aC11c7E6A64c1f', 'Airgap Wallet', 'Team Wallet')
+    ,('0x5248be8b6c9b7257695275ebd7c3918326151ae6', 'Synthetix', 'Multisig')
 
     --quix - should come from CB
     ,('0x5Ad4A019F77e82940f6Dd15A5215362AF061A742','Quix','Distributor')
@@ -128,7 +129,6 @@ FROM (values
     ,('0x86690b9Dbb979850AE4622347aF81232bAa3C967','Revert Finance','Distributor')
     ,('0x35bA8C41CeEEA24F7c826015844F2b58aF3058a6','Revert Finance','Distributor')
     ,('0x167829543510c13c792BD8F6a414f74D51E3A6d4','Revert Finance','Distributor')
-    -- ,('0x40a58B5B735Ba6596d04c88E7b262f6E79100EBb','Angle','Distributor-velo bribe') --bribe used by multiple parties
     ,('0x0Cb199aF5F402506963A4df08B11053687e09802', 'Polynomial Protocol','Distributor')
     ,('0x7432A3A1545B2764367dA16a207A16475D4221bD', 'WePiggy','Distributor')
     ,('0xfCdb1A1AFAaB60230bBc55D8B3de27F47fB7053f','dForce','Distributor')
@@ -179,7 +179,12 @@ FROM (values
     ,('0xfCC293db3b7396a1c2477C9F24F5F948431EF6eC', 'Pika Protocol', 'Distributor')
     ,('0x8b50d942bb4effe0db32393a141ea083db0c4e7f', 'Alchemix', 'alETH/WETH: Velodrome')
     ,('0x4ea2e39626de031a011c3ca7360878202454ce75', 'Angle', 'OP/agEUR: Velodrome')
-    ,('0x3ef3d8ba38ebe18db133cec108f4d14ce00dd9ae', 'Angle', 'USDC/agEUR: Velodrome')
+    ,('0x3ef3d8ba38ebe18db133cec108f4d14ce00dd9ae', 'Angle', 'USDC/agEUR: Uniswap') -- merkl.angle.money
+    ,('0xd94e19d14e35ea2a37c321a220295e292986bfc2', 'Angle', 'USDC/agEUR: Velodrome') --Pool: 0x7866C6072B09539fC0FDE82963846b80203d7beb
+    ,('0xcfda7a75549d7917fd8d3c2c41a4fbaca7d67973', 'Angle', 'USDC/agEUR: Velodrome') --Pool: 0x7866C6072B09539fC0FDE82963846b80203d7beb
+    ,('0x40a58b5b735ba6596d04c88e7b262f6e79100ebb', 'Angle', 'agEUR/MAI: Velodrome') --Pool: 0x389d9aea762fd5f9fbd4434d8e11295f15097b67
+    ,('0x7866ac6595ea340352c2d64528641c083d1b9f17', 'Angle', 'agEUR/MAI: Velodrome') --Pool: 0x389d9aea762fd5f9fbd4434d8e11295f15097b67
+
     ,('0x6333000289bc27a090b3d51e734c2f13e3edc4fd', 'Hundred Finance', 'Token Treasury')
     ,('0x86c90fc464A668469A93Ca08D8B9872bdB16b356', 'Mux', 'TradingRebateDistributor')
     ,('0xBd1ba78A3976cAB420A9203E6ef14D18C2B2E031', 'Exactly', 'Distributor Multisig')
@@ -196,6 +201,16 @@ FROM (values
     ,('0x57a2b0b2bb1e21fcb2df358fc832ae3f9f535b48', 'Arrakis Finance', 'Partner Fund')
     ,('0x310b18daa9d351062c6d2ec0f0411d327206b4c3', 'Arrakis Finance', 'Partner Fund')
     ,('0xd3a3fbae792c4ed0aa909ec032d3f14c999b2402', 'Arrakis Finance', 'Partner Fund')
+    ,('0xd3a3fbae792c4ed0aa909ec032d3f14c999b2402', 'Arrakis Finance', 'Partner Fund')
+    ,('0x212F71bFF67E5b7795952a916598c4b64bA48741', 'Arrakis Finance', 'Partner Fund')
+    ,('0x7E232AEed14446d427579B4f77251552B065dF00', 'Arrakis Finance', 'Partner Fund')
+    ,('0xC36681303c7A41b045636aF915486b22214B6292', 'Arrakis Finance', 'Partner Fund')
+    ,('0x24C95f333755bbeDBaE14B461770c9ec3F6E9d0D', 'Arrakis Finance', 'Partner Fund')
+    ,('0xDedD02E7Da507Fe2aC09C509DA10B94483e80Aa5', 'Arrakis Finance', 'Partner Fund')
+    ,('0xF78daF7A425098D255bD142D71bBdD8dCf43Ee6c', 'Arrakis Finance', 'Partner Fund')
+    ,('0x499B7CBd0f84318feE1edDeD7B5458f6F4500AB3', 'Arrakis Finance', 'Partner Fund')
+    ,('0x1535eC8C7477d38066326189f5b1C695c2846479', 'Arrakis Finance', 'Partner Fund')
+    ,('0x43667563725040fEBE9BF5164a38B7258105a210', 'Arrakis Finance', 'Partner Fund')
     
     ,('0x09992dd7b32f7b35d347de9bdaf1919a57d38e82','Synthetix','SNX Bridge: Hop')
     ,('0x25fb92e505f752f730cad0bd4fa17ece4a384266','Synthetix','sUSD Bridge: Hop')

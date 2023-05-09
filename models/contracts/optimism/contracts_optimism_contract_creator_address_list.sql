@@ -459,6 +459,17 @@ WITH curated_list AS (
       ,('0x01c28a1b29098175fd5c74f6dd9225b0853325fe', 'Layer Zero')
       ,('0xb67c0cde9974275836e77fac65bcbb5055d356e9', 'Fire')
       ,('0x98422d38f6c408d0224b8fa4588b807ca5e66b17', 'Galxe')
+      ,('0xcbd1c32a1b3961cc43868b8bae431ab0da65beeb', 'Union Protocol')
+      ,('0x4A21C588c93c38833BCf3c0fe0425bC114Fe8271', 'Socket')
+      ,('0xCbE0EDD07345A98542d779e1f6b897103eEa0aB5', 'Metamask')
+      ,('0xc522c16e88b6bf457389566d22550bce157d3875', 'Bitkeep')
+      ,('0x39cfca7b389529ac861cbb05add802e5b06e5101', 'Kwenta')
+      ,('0xd61fa937b8f237901d354f48f6b14995fe468bf2', 'Pixelpooly')
+      ,('0x60e1980343558c4c9d8f323f45d3e0e256bdb16c', 'Mirror')
+      ,('0x8321926c8aae281ef9d8520a772eb1d94a9ec6dd', 'Velodrome')
+      ,('0xc82Ea2afE1Fd1D61C4A12f5CeB3D7000f564F5C6', 'Valha')
+      ,('0x54812dBaB593674CD4F1216264895be48B55C5e3', 'Cask Protocol')
+      ,('0x74a3c8511e709b6463adeed6ec1b273886cefc13', 'nftperp')
 
   ) as temp_table (creator_address, contract_project)
 
