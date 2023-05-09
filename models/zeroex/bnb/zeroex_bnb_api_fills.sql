@@ -337,7 +337,9 @@ SELECT   s.tx_hash tx_hash, s.index evt_index, s.contract_address, s.block_time,
     
 )  
 , uni_v2_pair_creation as (
-    SELECT concat('0x', substring(cast(data as varchar(256)),27,40) ) pair
+    SELECT concat('0x', substring(cast(data as varchar(256)),27,40) ) pair,
+    cast(substring(topic3, 27, 40) as varchar(44)) AS  makerToken,
+    cast(substring(topic2, 27, 40) as varchar(44)) AS takerToken
     FROM {{ source('bnb', 'logs') }} creation
     
     WHERE creation.topic1 = '0x0d3648bd0f6ba80134a33ba9275ac585d9d315f0ad8355cddefde31afa28d0e9'  -- all the uni v2 pair creation event
@@ -352,7 +354,19 @@ SELECT   s.tx_hash tx_hash, s.index evt_index, s.contract_address, s.block_time,
 ) , 
 direct_uniswapv2 as (
 
-select s.* 
+select s.tx_hash, 
+    s.evt_index,
+    s.block_time,
+    maker, 
+    taker,
+    makerToken maker_token,
+    takerToken taker_token,
+    taker_token_amount_raw,
+    maker_token_amount_raw,
+    type,
+    affiliate_address,
+    swap_flag,
+    matcha_limit_order_flag
 
 from uni_v2_swap s 
 
