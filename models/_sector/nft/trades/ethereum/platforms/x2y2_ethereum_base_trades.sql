@@ -24,7 +24,7 @@ WITH src_evt_inventory as (
     ,'0x' || substring(get_json_object(inv.item, '$.data'), 155, 40) as nft_contract_address
     ,bytea2numeric_v3(substring(get_json_object(inv.item, '$.data'), 195,64)) as nft_token_id
     ,CAST(1 AS DECIMAL(38,0)) AS nft_amount
-    ,case when intent = 1 then 'Buy' else 'Offer Accepted' as trade_category
+    ,case when intent = 1 then 'Buy' else 'Offer Accepted' end as trade_category
     ,'secondary' as trade_type
     ,get_json_object(inv.item, '$.price') as price_raw
     ,get_json_object(get_json_object(inv.detail, '$.fees[0]'), '$.to') as fees_0_to
