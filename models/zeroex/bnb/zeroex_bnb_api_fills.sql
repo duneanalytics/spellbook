@@ -201,7 +201,6 @@ otc_fills AS (
 ),
 ERC20BridgeTransfer AS (
     SELECT
-            distinct logs.tx_hash,
             INDEX                                   AS evt_index,
             logs.contract_address,
             block_time                              AS block_time,
@@ -217,7 +216,7 @@ ERC20BridgeTransfer AS (
             FALSE                                   AS matcha_limit_order_flag
     FROM {{ source('bnb', 'logs') }} logs
     JOIN zeroex_tx ON zeroex_tx.tx_hash = logs.tx_hash
-    WHERE topic1 = '0xd78ad95fa46c994b6551d0da85fc275fe613ce37657fb8d5e3d130840159d822'
+    WHERE topic1 = '0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef'
 
     {% if is_incremental() %}
     AND block_time >= date_trunc('day', now() - interval '1 week')
