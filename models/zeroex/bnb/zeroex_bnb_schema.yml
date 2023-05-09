@@ -16,6 +16,7 @@ models:
             - block_time
             - tx_hash
             - evt_index
+            - type
       - check_seed:
           seed_file: ref('zeroex_bnb_api_fills_sample')
           match_columns:
@@ -154,7 +155,6 @@ models:
             - block_time
             - tx_hash
             - evt_index
-            - native_fill_type
       - check_seed:
           seed_file: ref('zeroex_bnb_native_fills_sample')
           match_columns:
