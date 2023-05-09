@@ -320,7 +320,6 @@ FROM
     ("san-santiment-network-token", "ethereum", "SAN", "0x7c5a0ce9267ed19b22f8cae653f198e3e8daf098", 18),
     ("sand-the-sandbox", "ethereum", "SAND", "0x3845badade8e6dff049820680d1f14bd3903a5d0", 18),
     ("sdao-singularitydao", "ethereum", "SDAO", "0x993864e43caa7f7f12953ad6feb1d1ca635b875f", 18),
-    ("sdt-stake-dao", "ethereum", "SDT", "0x73968b9a57c6e53d41345fd57a6e6ae27d6cdb2f", 18),
     ("sent-sentinel", "ethereum", "SENT", "0xa44e5137293e855b1b7bc7e2c6f8cd796ffcb037", 8),
     ("shib-shiba-inu", "ethereum", "SHIB", "0x95ad61b0a150d79219dcf64e1e6cc01f0b64c4ce", 18),
     ("skl-skale", "ethereum", "SKL", "0x00c83aecc790e8a4453e5dd3b0b4b3680501a7a7", 18),
@@ -1633,4 +1632,5 @@ where contract_address not in (
     ,'0xdb4d1099d53e92593430e33483db41c63525f55f'   -- JOY
     ,'0xBD2F0Cd039E0BFcf88901C98c0bFAc5ab27566e3'   -- DSD
     ,'0x090185f2135308BaD17527004364eBcC2D37e5F6'   -- SPELL
+    ,'0x73968b9a57c6e53d41345fd57a6e6ae27d6cdb2f'   -- SDT
 )
