@@ -217,7 +217,7 @@ ERC20BridgeTransfer AS (
             FALSE                                   AS matcha_limit_order_flag
     FROM {{ source('bnb', 'logs') }} logs
     JOIN zeroex_tx ON zeroex_tx.tx_hash = logs.tx_hash
-    WHERE topic1 = '0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef'
+    WHERE topic1 = '0x349fc08071558d8e3aa92dec9396e4e9f2dfecd6bb9065759d1932e7da43b8a9'
 
     {% if is_incremental() %}
     AND block_time >= date_trunc('day', now() - interval '1 week')
