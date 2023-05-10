@@ -173,5 +173,15 @@ models:
          combination_of_columns: [ 'block_number','tx_hash','sub_tx_trade_id' ]
      - equal_rowcount_with_sources:
          evt_sources:
-           -
+           - source('zora_v3_ethereum','OffersV1_evt_ExchangeExecuted')
+           - source('zora_v3_ethereum','AsksV1_0_evt_ExchangeExecuted')
+           - source('zora_v3_ethereum','AsksV1_1_evt_ExchangeExecuted')
+           - source('zora_v3_ethereum','ReserveAuctionFindersEth_evt_AuctionEnded')
+           - source('zora_v3_ethereum','ReserveAuctionFindersErc20_evt_AuctionEnded')
+           - source('zora_v3_ethereum','ReserveAuctionCoreEth_evt_AuctionEnded')
+           - source('zora_v3_ethereum','ReserveAuctionCoreErc20_evt_AuctionEnded')
+           - source('zora_v3_ethereum','ReserveAuctionListingEth_evt_AuctionEnded')
+           - source('zora_v3_ethereum','ReserveAuctionListingErc20_evt_AuctionEnded')
+           - source('zora_v3_ethereum','AsksPrivateEth_evt_AskFilled')
+           - source('zora_v3_ethereum','AsksCoreEth_evt_AskFilled')
 

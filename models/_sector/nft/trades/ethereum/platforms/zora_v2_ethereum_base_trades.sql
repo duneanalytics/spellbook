@@ -1,5 +1,5 @@
 {{ config(
-    schema = 'zora_v1_ethereum',
+    schema = 'zora_v2_ethereum',
     alias ='base_trades',
     partition_by = ['block_date'],
     materialized = 'incremental',
