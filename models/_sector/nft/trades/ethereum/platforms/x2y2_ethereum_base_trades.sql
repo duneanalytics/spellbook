@@ -27,6 +27,7 @@ WITH src_evt_inventory as (
     ,CAST(1 AS DECIMAL(38,0)) AS nft_amount
     ,case when intent = 1 then 'Buy' else 'Offer Accepted' end as trade_category
     ,'secondary' as trade_type
+    ,currency as currency_contract
     ,get_json_object(inv.item, '$.price') as price_raw
     ,get_json_object(get_json_object(inv.detail, '$.fees[0]'), '$.to') as fees_0_to
     ,get_json_object(get_json_object(inv.detail, '$.fees[1]'), '$.to') as fees_1_to
@@ -72,6 +73,7 @@ SELECT
 , nft_amount
 , trade_type
 , trade_category
+, currency_contract
 , price_raw
 , CAST(COALESCE(price_raw*platform_fee_percentage/1e6, 0) as decimal(38)) AS platform_fee_amount_raw
 , CAST(COALESCE(price_raw*royalty_fee_percentage/1e6, 0) as decimal(38)) AS royalty_fee_amount_raw
