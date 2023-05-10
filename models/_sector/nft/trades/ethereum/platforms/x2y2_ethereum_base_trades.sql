@@ -73,8 +73,8 @@ SELECT
 , trade_type
 , trade_category
 , price_raw
-, CAST(COALESCE(inv.price*inv.platform_fee_percentage/1e6, 0) as decimal(38)) AS platform_fee_amount_raw
-, CAST(COALESCE(inv.price*inv.royalty_fee_percentage/1e6, 0) as decimal(38)) AS royalty_fee_amount_raw
+, CAST(COALESCE(price_raw*platform_fee_percentage/1e6, 0) as decimal(38)) AS platform_fee_amount_raw
+, CAST(COALESCE(price_raw*royalty_fee_percentage/1e6, 0) as decimal(38)) AS royalty_fee_amount_raw
 , platform_fee_address
 , royalty_fee_address
 , sub_tx_trade_id
