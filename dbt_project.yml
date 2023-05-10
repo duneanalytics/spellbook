@@ -705,6 +705,11 @@ models:
       polygon:
         +schema: apeswap_polygon
 
+    camelot:
+      +schema: camelot
+      arbitrum:
+        +schema: camelot_arbitrum
+
     chainlink:
       +schema: chainlink
       optimism:
@@ -1045,7 +1050,7 @@ models:
       +schema: optimism_attestationstation
       optimism:
         +schema: optimism_attestationstation_optimism
-    
+
     lido:
       +schema: lido
       ethereum:
@@ -1069,7 +1074,7 @@ models:
       +schema: glacier
       avalanche_c:
         +schema: glacier_avalanche_c
-    
+
     thena:
       +schema: thena
       bnb:
