@@ -255,6 +255,9 @@ models:
       - *block_time
       - *block_number
       - *tx_hash
+      - &environment
+        name: environment
+        description: string representing the development environment the order was placed (prod or barn)
       - *valid_to
       - &quote_id
         name: quote_id
