@@ -1,14 +1,14 @@
 {{ config(
-        alias ='lido_liquidity',
+        alias ='general_view',
         post_hook='{{ expose_spells(\'["ethereum"]\',
                                 "project",
-                                "lido",
+                                "lido_liquidity",
                                 \'["ppclunghe", "gregshestakovlido"]\') }}'
         )
 }}
 
 {% set lido_liquidity_models = [
- ref('lido_liquidity_kyberswap_ethereum')
+ ref('lido_liquidity_kyberswap_ethereum_pools')
 ] %}
 
 

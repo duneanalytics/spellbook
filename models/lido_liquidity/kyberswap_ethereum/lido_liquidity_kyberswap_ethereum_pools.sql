@@ -1,13 +1,13 @@
 {{ config(
-    alias = 'lido_liquidity_kyberswap_ethereum',
+    alias = 'pools',
     partition_by = ['time'],
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
-    unique_key = ['pool', 'blockchain', 'time'],
+    unique_key = ['pool', 'time'],
     post_hook='{{ expose_spells(\'["ethereum"]\',
                                 "project",
-                                "lido",
+                                "lido_liquidity",
                                 \'["ppclunghe", "gregshestakovlido"]\') }}'
     )
 }}
@@ -19,26 +19,25 @@ select explode(sequence(to_date('{{ project_start_date }}'), now(), interval 1 h
 )
  
 , pools as (
-    select pool as address, 'Ethereum' as blockchain, 'Kyberswap' as project, swapFeeUnits/1000 as fee
-    from {{ source('kyber_ethereum', 'Elastic_Factory_evt_PoolCreated') }}
-    where token0 = lower('0x7f39C581F595B53c5cb19bD0b3f8dA6c935E2Ca0')
-    or token1 = lower('0x7f39C581F595B53c5cb19bD0b3f8dA6c935E2Ca0')
+select pool as address, 'ethereum' as blockchain, 'kyberswap' as project, swapFeeUnits/1000 as fee
+from {{ source('kyber_ethereum', 'Elastic_Factory_evt_PoolCreated') }}
+where token0 = lower('0x7f39C581F595B53c5cb19bD0b3f8dA6c935E2Ca0') or token1 = lower('0x7f39C581F595B53c5cb19bD0b3f8dA6c935E2Ca0')
 )
 
 , tokens as (
-    select distinct token as address, pt.symbol, pt.decimals
-    from (
-    select token1 as token
-    from {{ source('kyber_ethereum', 'Elastic_Factory_evt_PoolCreated') }}
-    where token0 = lower('0x7f39C581F595B53c5cb19bD0b3f8dA6c935E2Ca0')
-    union
-    select token0
-    from {{ source('kyber_ethereum', 'Elastic_Factory_evt_PoolCreated') }}
-    where token1 = lower('0x7f39C581F595B53c5cb19bD0b3f8dA6c935E2Ca0')
-    union
-    select lower('0x7f39C581F595B53c5cb19bD0b3f8dA6c935E2Ca0')
-    ) t
-    left join prices.tokens pt on t.token = pt.contract_address
+select distinct token as address, pt.symbol, pt.decimals 
+from (
+select token1 as token
+from {{ source('kyber_ethereum', 'Elastic_Factory_evt_PoolCreated') }}
+where token0 = lower('0x7f39C581F595B53c5cb19bD0b3f8dA6c935E2Ca0') 
+union
+select token0
+from {{ source('kyber_ethereum', 'Elastic_Factory_evt_PoolCreated') }}
+where token1 = lower('0x7f39C581F595B53c5cb19bD0b3f8dA6c935E2Ca0') 
+union 
+select lower('0x7f39C581F595B53c5cb19bD0b3f8dA6c935E2Ca0') 
+) t
+left join {{ref('prices_tokens')}} pt on t.token = pt.contract_address
 )
 
 , tokens_prices_daily AS (
@@ -47,19 +46,13 @@ select explode(sequence(to_date('{{ project_start_date }}'), now(), interval 1 h
         contract_address as token,
         avg(price) AS price
     FROM {{ source('prices', 'usd') }}
-
     {% if is_incremental() %}
-    WHERE date_trunc('day', minute) >= date_trunc("day", now() - interval '1 week')
-    and date_trunc('day', minute) < date_trunc('day', now())
-    and blockchain = 'ethereum'
-    and contract_address in (select address from tokens)
+    WHERE date_trunc('day', minute) >= date_trunc("day", now() - interval '1 week') and date_trunc('day', minute) < date_trunc('day', now())
     {% else %}
-    WHERE date_trunc('day', minute) >= '{{ project_start_date }}'
-    and date_trunc('day', minute) < date_trunc('day', now())
-    and blockchain = 'ethereum'
-    and contract_address in (select address from tokens)
+    WHERE date_trunc('day', minute) >= '{{ project_start_date }}' and date_trunc('day', minute) < date_trunc('day', now())
     {% endif %}
-
+    and blockchain = 'ethereum'
+    and contract_address in (select address from tokens)    
     group by 1,2
     union all
     SELECT distinct
@@ -80,16 +73,13 @@ select explode(sequence(to_date('{{ project_start_date }}'), now(), interval 1 h
         contract_address as token,
         last_value(price) over (partition by DATE_TRUNC('hour', minute), contract_address ORDER BY  minute range between unbounded preceding AND unbounded following) AS price
     FROM {{ source('prices', 'usd') }}
-
     {% if is_incremental() %}
     WHERE date_trunc('hour', minute) >= date_trunc("hour", now() - interval '7 days')
-    and blockchain = 'ethereum'
-    and contract_address in (select address from tokens)
     {% else %}
     WHERE date_trunc('hour', minute) >= '{{ project_start_date }}' 
+    {% endif %} 
     and blockchain = 'ethereum'
-    and contract_address in (select address from tokens)
-    {% endif %}    
+    and contract_address in (select address from tokens)   
 ) p
 )
 
@@ -103,17 +93,13 @@ select explode(sequence(to_date('{{ project_start_date }}'), now(), interval 1 h
         sum(cast(deltaQty1 as DOUBLE)) as amount1
         
     from {{ source('kyber_ethereum', 'Elastic_Pool_evt_swap') }} sw
-    left join {{ source('kyber_ethereum', 'Elastic_Factory_evt_PoolCreated') }} cr
-    on sw.contract_address = cr.pool
-
+    left join {{ source('kyber_ethereum', 'Elastic_Factory_evt_PoolCreated') }} cr on sw.contract_address = cr.pool
     {% if is_incremental() %}
     WHERE date_trunc('day', sw.evt_block_time) >= date_trunc("day", now() - interval '1 week') 
-    and sw.contract_address in (select address from pools)
     {% else %}
     WHERE date_trunc('day', sw.evt_block_time) >= '{{ project_start_date }}'
-    and sw.contract_address in (select address from pools)
-    {% endif %}
-
+    {% endif %} 
+    and sw.contract_address in (select address from pools)   
     group by 1,2,3,4
 ) 
     
@@ -125,17 +111,13 @@ select explode(sequence(to_date('{{ project_start_date }}'), now(), interval 1 h
         sum(cast(qty0 as DOUBLE)) as amount0,
         sum(cast(qty1 as DOUBLE)) as amount1
     from {{ source('kyber_ethereum', 'Elastic_Pool_evt_Mint') }} mt
-    left join {{ source('kyber_ethereum', 'Elastic_Factory_evt_PoolCreated') }} cr
-    on mt.contract_address = cr.pool
-
+    left join {{ source('kyber_ethereum', 'Elastic_Factory_evt_PoolCreated') }} cr on mt.contract_address = cr.pool
     {% if is_incremental() %}
     WHERE date_trunc('day', mt.evt_block_time) >= date_trunc("day", now() - interval '1 week') 
-    and mt.contract_address in (select address from pools)
     {% else %}
     WHERE date_trunc('day', mt.evt_block_time) >= '{{ project_start_date }}'
-    and mt.contract_address in (select address from pools)
     {% endif %}
-
+    and mt.contract_address in (select address from pools)    
     group by 1,2,3,4
     union all
     select d.day as time, cr.pool, cr.token0, cr.token1, 0, 0
@@ -155,11 +137,10 @@ select explode(sequence(to_date('{{ project_start_date }}'), now(), interval 1 h
     left join {{ source('kyber_ethereum', 'Elastic_Factory_evt_PoolCreated') }} cr on bn.contract_address = cr.pool
     {% if is_incremental() %}
     WHERE date_trunc('day', bn.evt_block_time) >= date_trunc("day", now() - interval '1 week') 
-    and bn.contract_address in (select address from pools)
     {% else %}
     WHERE date_trunc('day', bn.evt_block_time) >= '{{ project_start_date }}'
-    and bn.contract_address in (select address from pools)
-    {% endif %}    
+    {% endif %}
+    and bn.contract_address in (select address from pools)    
     group by 1,2,3,4
 
     union all
@@ -171,17 +152,13 @@ select explode(sequence(to_date('{{ project_start_date }}'), now(), interval 1 h
         (-1) * sum(cast(qty0 as double)) as amount0, 
         (-1) * sum(cast(qty1 as double)) as amount1 
     from {{ source('kyber_ethereum', 'Elastic_Pool_evt_BurnRTokens') }} bn
-    left join {{ source('kyber_ethereum', 'Elastic_Factory_evt_PoolCreated') }} cr
-    on bn.contract_address = cr.pool
-
+    left join {{ source('kyber_ethereum', 'Elastic_Factory_evt_PoolCreated') }} cr on bn.contract_address = cr.pool
     {% if is_incremental() %}
     WHERE date_trunc('day', bn.evt_block_time) >= date_trunc("day", now() - interval '1 week') 
-    and bn.contract_address in (select address from pools)
     {% else %}
     WHERE date_trunc('day', bn.evt_block_time) >= '{{ project_start_date }}'
-    and bn.contract_address in (select address from pools)
     {% endif %}
-
+    and bn.contract_address in (select address from pools)    
     group by 1,2,3,4
 )
 

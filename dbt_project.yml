@@ -1062,7 +1062,7 @@ models:
     lido_liquidity:
       +schema: lido_liqudity
       kyberswap_ethereum:
-       +schema: lido_liquidity_kyberswap_ethereum
+       +schema: lido_liqudity_kyberswap_ethereum
     
     thena:
       +schema: thena

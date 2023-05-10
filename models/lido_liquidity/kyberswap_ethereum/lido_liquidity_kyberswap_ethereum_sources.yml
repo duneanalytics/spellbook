@@ -13,3 +13,10 @@ sources:
         loaded_at_field: evt_block_time
       - name: Elastic_Pool_evt_BurnRTokens
         loaded_at_field: evt_block_time
+  - name: prices
+    description: "Prices tables across blockchains"
+    freshness:
+      warn_after: { count: 12, period: hour }
+    tables:
+      - name: tokens
+        loaded_at_field: minute      

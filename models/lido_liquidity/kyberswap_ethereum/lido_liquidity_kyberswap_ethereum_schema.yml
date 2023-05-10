@@ -1,14 +1,14 @@
 version: 2
 
 models:
-  - name: lido_liquidity_kyberswap_ethereum
+  - name: lido_liquidity_kyberswap_ethereum_pools
     meta:
       blockchain: ethereum
       project: lido
       contributors: gregshestakovlido, ppclunghe
     config:
       tags: ['ethereum','lido','liquidity']
-    description: >
+    description: 
         Lido wstETH liquidity pools on Kyberswap Ethereum
     tests:
       - dbt_utils.unique_combination_of_columns:
