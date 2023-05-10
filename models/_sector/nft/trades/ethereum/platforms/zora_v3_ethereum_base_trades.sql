@@ -106,7 +106,6 @@ WITH v3_trades as (
 , royalty_payouts as (
     SELECT
      evt_block_time
-    ,evt_block_number
     ,evt_tx_hash
     ,tokenContract
     ,tokenId
@@ -145,7 +144,7 @@ WITH v3_trades as (
         AND evt_block_time >= date_trunc("day", now() - interval '1 week')
         {% endif %}
     )
-    GROUP BY 1,2,3,4,5
+    GROUP BY 1,2,3,4
 )
 
 SELECT
