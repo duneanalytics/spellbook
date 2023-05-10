@@ -28,6 +28,7 @@ WITH dexs AS
         ,CASE WHEN amount0 < '0' THEN f.token0 ELSE f.token1 END AS token_bought_address
         ,CASE WHEN amount0 < '0' THEN f.token1 ELSE f.token0 END AS token_sold_address
         ,CAST(t.contract_address as string) as project_contract_address
+        ,f.fee -- field is unique to this model and will not affect downstream spells
         ,t.evt_tx_hash AS tx_hash
         ,'' AS trace_address
         ,t.evt_index
@@ -65,6 +66,7 @@ SELECT
     ,coalesce(dexs.taker, tx.from) AS taker -- subqueries rely on this COALESCE to avoid redundant joins with the transactions table
     ,dexs.maker
     ,dexs.project_contract_address
+    ,dexs.fee
     ,dexs.tx_hash
     ,tx.from AS tx_from
     ,tx.to AS tx_to
@@ -80,7 +82,7 @@ INNER JOIN {{ source('ethereum', 'transactions') }} tx
     AND tx.block_time >= date_trunc("day", now() - interval '1 week')
     {% endif %}
 LEFT JOIN {{ ref('tokens_erc20') }} erc20a
-    ON erc20a.contract_address = dexs.token_bought_address 
+    ON erc20a.contract_address = dexs.token_bought_address
     AND erc20a.blockchain = 'ethereum'
 LEFT JOIN {{ ref('tokens_erc20') }} erc20b
     ON erc20b.contract_address = dexs.token_sold_address
