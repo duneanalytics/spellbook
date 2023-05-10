@@ -37,18 +37,18 @@ WITH v3_trades as (
     {% endif %}
     UNION ALL
     SELECT
-    , evt_block_time AS block_time
-    , evt_block_number AS block_number
-    , tokenId AS nft_token_id
-    , 'Buy' AS trade_category
-    , get_json_object(auction, '$.seller') AS seller
-    , get_json_object(auction, '$.highestBidder') AS buyer
-    , get_json_object(auction, '$.highestBid') AS price_raw
-    , coalesce(get_json_object(z3_racerc_ae.auction, '$.currency'),'0x0000000000000000000000000000000000000000') AS currency_contract
-    , tokenContract AS nft_contract_address
-    , contract_address AS project_contract_address
-    , evt_tx_hash AS tx_hash
-    , evt_index AS sub_tx_trade_id
+          evt_block_time AS block_time
+        , evt_block_number AS block_number
+        , tokenId AS nft_token_id
+        , 'Buy' AS trade_category
+        , get_json_object(auction, '$.seller') AS seller
+        , get_json_object(auction, '$.highestBidder') AS buyer
+        , get_json_object(auction, '$.highestBid') AS price_raw
+        , coalesce(get_json_object(z3_racerc_ae.auction, '$.currency'),'0x0000000000000000000000000000000000000000') AS currency_contract
+        , tokenContract AS nft_contract_address
+        , contract_address AS project_contract_address
+        , evt_tx_hash AS tx_hash
+        , evt_index AS sub_tx_trade_id
     FROM (
         SELECT evt_block_time, evt_block_number, evt_tx_hash, evt_index, tokenId, auction, tokenContract, contract_address, amount, recipient
         FROM {{ source('zora_v3_ethereum','ReserveAuctionFindersEth_evt_AuctionEnded') }}
@@ -68,7 +68,7 @@ WITH v3_trades as (
     {% endif %}
     UNION ALL
     SELECT
-        , evt_block_time AS block_time
+          evt_block_time AS block_time
         , evt_block_number AS block_number
         , tokenId AS nft_token_id
         , 'Private Sale' AS trade_category
@@ -86,7 +86,7 @@ WITH v3_trades as (
     {% endif %}
     UNION ALL
     SELECT
-        , evt_block_time AS block_time
+          evt_block_time AS block_time
         , evt_block_number AS block_number
         , tokenId AS nft_token_id
         , 'Buy' AS trade_category
