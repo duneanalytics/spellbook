@@ -105,8 +105,19 @@ WITH v3_trades as (
     )
 
 , royalty_payouts as (
-    SELECT *
+    SELECT
+     evt_block_time
+    ,evt_block_number
+    ,evt_tx_hash
+    ,tokenContract
+    ,tokenId
+    ,sum(amount) as royalty_fee_amount_raw
+    ,case when count(distinct recipient) = 1
+      then min(recipient)
+      else cast(null as varchar(1))
+     end as royalty_fee_address
     FROM (
+    SELECT * FROM (
         SELECT evt_block_time, evt_tx_hash, tokenContract, tokenId, amount, recipient
         FROM {{ source('zora_v3_ethereum','OffersV1_evt_RoyaltyPayout') }}
         UNION ALL SELECT evt_block_time, evt_tx_hash, tokenContract, tokenId, amount, recipient
@@ -129,10 +140,13 @@ WITH v3_trades as (
         FROM {{ source('zora_v3_ethereum','ReserveAuctionListingEth_evt_RoyaltyPayout') }}
         UNION ALL SELECT evt_block_time, evt_tx_hash, tokenContract, tokenId, amount, recipient
         FROM {{ source('zora_v3_ethereum','ReserveAuctionListingErc20_evt_RoyaltyPayout') }}
+        )
+        WHERE amount > 0
+        {% if is_incremental() %}
+        AND evt_block_time >= date_trunc("day", now() - interval '1 week')
+        {% endif %}
     )
-    {% if is_incremental() %}
-    WHERE evt_block_time >= date_trunc("day", now() - interval '1 week')
-    {% endif %}
+    GROUP BY 1,2,3,4,5
 )
 
 SELECT
@@ -151,9 +165,9 @@ SELECT
     , CAST(price_raw as DECIMAL(38)) as price_raw
     , currency_contract
     , CAST(0 as DECIMAL(38)) AS platform_fee_amount_raw
-    , CAST(coalesce(roy.amount,0) as DECIMAL(38)) as royalty_fee_amount_raw
+    , CAST(coalesce(roy.royalty_fee_amount_raw,0) as DECIMAL(38)) as royalty_fee_amount_raw
     , CAST(NULL as VARCHAR(1)) AS platform_fee_address
-    , CAST(roy.recipient as VARCHAR(42)) as royalty_fee_address
+    , CAST(roy.royalty_fee_address as VARCHAR(42)) as royalty_fee_address
     , sub_tx_trade_id
 FROM v3_trades
 LEFT JOIN royalty_payouts roy
