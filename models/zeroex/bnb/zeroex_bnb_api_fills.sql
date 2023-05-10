@@ -370,7 +370,7 @@ select s.tx_hash,
 
 from uni_v2_swap s 
 
-join uni_v2_pair_creation creation on cast(s.contract_address as varchar(42))  = creation.pair 
+join uni_v2_pair_creation creation on cast(s.contract_address as varchar(42)) = creation.pair 
 ),  
 
 all_tx AS (
