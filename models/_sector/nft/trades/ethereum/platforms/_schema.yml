@@ -130,3 +130,32 @@ models:
            - platform_fee_amount_raw
            - royalty_fee_amount_raw
 
+ - name: zora_v1_ethereum_base_trades
+   meta:
+     blockchain: ethereum
+     sector: nft
+     project: zora
+     contributors: [ '0xRob' ]
+   config:
+     tags: [ 'ethereum', 'nft', 'trades', 'zora' ]
+   description: "zora v1 base trades"
+   tests:
+     - dbt_utils.unique_combination_of_columns:
+         combination_of_columns: [ 'block_number','tx_hash','sub_tx_trade_id' ]
+
+ - name: zora_v2_ethereum_base_trades
+   meta:
+     blockchain: ethereum
+     sector: nft
+     project: zora
+     contributors: [ '0xRob' ]
+   config:
+     tags: [ 'ethereum', 'nft', 'trades', 'zora' ]
+   description: "zora v2 base trades"
+   tests:
+     - dbt_utils.unique_combination_of_columns:
+         combination_of_columns: [ 'block_number','tx_hash','sub_tx_trade_id' ]
+     - equal_rowcount_with_sources:
+         evt_sources:
+           - source('zora_ethereum','AuctionHouse_evt_AuctionEnded')
+
