@@ -19,7 +19,7 @@
 -- Test Query here: https://dune.com/queries/2274187
 WITH zeroex_tx AS (
     SELECT tx_hash,
-           max(affiliate_address) as affiliate_address, taker_token, maker_token, evt_index, taker 
+           max(affiliate_address) as affiliate_address, taker_token, maker_token 
     FROM (
 
         SELECT v3.evt_tx_hash AS tx_hash,
@@ -28,9 +28,8 @@ WITH zeroex_tx AS (
                         ELSE NULL
                     END AS affiliate_address,
                 SUBSTRING(v3.takerAssetData, 34, 40) as taker_token,
-                SUBSTRING(v3.makerAssetData, 34, 40) as maker_token,
-                takerAddress AS taker,
-                evt_index
+                SUBSTRING(v3.makerAssetData, 34, 40) as maker_token
+                
         FROM {{ source('zeroex_v2_bnb', 'Exchange_evt_Fill') }} v3
         WHERE (  -- nuo
                 v3.takerAddress = '0x63305728359c088a52b0b0eeec235db4d31a67fc'
@@ -61,9 +60,8 @@ WITH zeroex_tx AS (
                                         FOR 40)
                             END AS affiliate_address,
                     '0x' || substring(INPUT, 355, 40) AS taker_token,
-                '0x' || substring(INPUT, 419, 40) AS maker_token,
-                '0x' || substring(INPUT, 491, 40) AS taker,
-                    tx_index AS evt_index
+                '0x' || substring(INPUT, 419, 40) AS maker_token
+                
         FROM {{ source('bnb', 'traces') }} tr
         WHERE tr.to IN (
                 -- exchange contract
@@ -87,7 +85,7 @@ WITH zeroex_tx AS (
                 AND block_time >= '{{zeroex_v3_start_date}}'
                 {% endif %}
     ) temp
-    group by tx_hash, taker_token, maker_token, evt_index, taker 
+    group by tx_hash, taker_token, maker_token
 
 ),
 v2_fills_no_bridge AS (
