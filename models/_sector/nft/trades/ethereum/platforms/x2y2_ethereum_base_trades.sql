@@ -12,7 +12,6 @@
 {%- set project_start_date = '2022-02-04' %}
 {%- set fee_management_addr = '0xd823c605807cc5e6bd6fc0d7e4eea50d3e2d66cd' %}
 
-
 WITH src_evt_inventory as (
     SELECT
      date_trunc('day',evt_block_time) as block_date
