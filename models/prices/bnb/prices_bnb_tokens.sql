@@ -17,7 +17,7 @@ FROM
     VALUES
 
     ("1inch-1inch", "bnb", "1INCH", "0x111111111117dc0aa78b770fa6a738034120c302", 18),
-    ("aave-aave-token", "bnb", "AAVE", "0xfb6115445bff7b52feb98650c87f44907e58f802", 18),
+    ("aave-new", "bnb", "AAVE", "0xfb6115445bff7b52feb98650c87f44907e58f802", 18),
     --("abnbc-abnbc", "bnb", "ABNBC", "0xe85afccdafbe7f2b096f268e31cce3da8da2990a", 18),
     ("ada-cardano", "bnb", "ADA", "0x3ee2200efb3400fabb9aacf31297cbdd1d435d47", 18),
     ("adx-adex", "bnb", "ADX", "0x6bff4fb161347ad7de4a625ae5aa3a1ca7077819", 18),

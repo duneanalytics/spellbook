@@ -15,7 +15,9 @@ SELECT 'ethereum' as blockchain, * FROM  {{ ref('tokens_ethereum_erc20') }}
 UNION ALL
 SELECT 'gnosis' as blockchain, * FROM  {{ ref('tokens_gnosis_erc20') }}
 UNION ALL
+-- Optimism adds extra fields and pulls in all ERC20 tokens (regardless of if mapping is known). So we curate here to match other chains.
 SELECT 'optimism' as blockchain, contract_address, symbol, decimals FROM  {{ ref('tokens_optimism_erc20') }}
+        WHERE symbol IS NOT NULL --This can be removed if/when all other chains show all ERC20 tokens, rather than only mapped ones.
 UNION ALL
 SELECT 'polygon' as blockchain, * FROM  {{ ref('tokens_polygon_erc20') }}
 UNION ALL
