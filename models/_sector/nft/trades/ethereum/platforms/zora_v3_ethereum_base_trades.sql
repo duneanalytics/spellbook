@@ -50,17 +50,17 @@ WITH v3_trades as (
         , evt_tx_hash AS tx_hash
         , evt_index AS sub_tx_trade_id
     FROM (
-        SELECT evt_block_time, evt_block_number, evt_tx_hash, evt_index, tokenId, auction, tokenContract, contract_address, amount, recipient
+        SELECT evt_block_time, evt_block_number, evt_tx_hash, evt_index, tokenId, auction, tokenContract, contract_address
         FROM {{ source('zora_v3_ethereum','ReserveAuctionFindersEth_evt_AuctionEnded') }}
-        UNION ALL SELECT evt_block_time, evt_block_number, evt_tx_hash, evt_index, tokenId, auction, tokenContract, contract_address, amount, recipient
+        UNION ALL SELECT evt_block_time, evt_block_number, evt_tx_hash, evt_index, tokenId, auction, tokenContract, contract_address
         FROM {{ source('zora_v3_ethereum','ReserveAuctionFindersErc20_evt_AuctionEnded') }}
-        UNION ALL SELECT evt_block_time, evt_block_number, evt_tx_hash, evt_index, tokenId, auction, tokenContract, contract_address, amount, recipient
+        UNION ALL SELECT evt_block_time, evt_block_number, evt_tx_hash, evt_index, tokenId, auction, tokenContract, contract_address
         FROM {{ source('zora_v3_ethereum','ReserveAuctionCoreEth_evt_AuctionEnded') }}
-        UNION ALL SELECT evt_block_time, evt_block_number, evt_tx_hash, evt_index, tokenId, auction, tokenContract, contract_address, amount, recipient
+        UNION ALL SELECT evt_block_time, evt_block_number, evt_tx_hash, evt_index, tokenId, auction, tokenContract, contract_address
         FROM {{ source('zora_v3_ethereum','ReserveAuctionCoreErc20_evt_AuctionEnded') }}
-        UNION ALL SELECT evt_block_time, evt_block_number, evt_tx_hash, evt_index, tokenId, auction, tokenContract, contract_address, amount, recipient
+        UNION ALL SELECT evt_block_time, evt_block_number, evt_tx_hash, evt_index, tokenId, auction, tokenContract, contract_address
         FROM {{ source('zora_v3_ethereum','ReserveAuctionListingEth_evt_AuctionEnded') }}
-        UNION ALL SELECT evt_block_time, evt_block_number, evt_tx_hash, evt_index, tokenId, auction, tokenContract, contract_address, amount, recipient
+        UNION ALL SELECT evt_block_time, evt_block_number, evt_tx_hash, evt_index, tokenId, auction, tokenContract, contract_address
         FROM {{ source('zora_v3_ethereum','ReserveAuctionListingErc20_evt_AuctionEnded') }}
     )
     {% if is_incremental() %}
