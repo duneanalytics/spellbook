@@ -58,7 +58,6 @@ WITH src_evt_inventory as (
     {% endif %}
 )
 
-
 -- results
 SELECT
   block_date
