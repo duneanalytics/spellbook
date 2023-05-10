@@ -9,7 +9,6 @@
     )
 }}
 
-
 WITH v3_trades as (
      SELECT
           evt_block_time AS block_time
