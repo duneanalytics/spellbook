@@ -1,6 +1,6 @@
 with unit_test as (
 
-select count_a, count_b, (count_a - count_b) as diff_count
+select count_a, count_b, abs(count_a - count_b) as diff_count
 from
     (select count(*) as count_a
      from {{ ref('superrare_ethereum_base_trades')}}
