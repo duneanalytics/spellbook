@@ -109,7 +109,7 @@ WITH v3_trades as (
     ,evt_tx_hash
     ,tokenContract
     ,tokenId
-    ,sum(amount) as royalty_fee_amount_raw
+    ,sum(cast(amount as decimal(38))) as royalty_fee_amount_raw
     ,case when count(distinct recipient) = 1
       then min(recipient)
       else cast(null as varchar(1))
@@ -139,7 +139,7 @@ WITH v3_trades as (
         UNION ALL SELECT evt_block_time, evt_tx_hash, tokenContract, tokenId, amount, recipient
         FROM {{ source('zora_v3_ethereum','ReserveAuctionListingErc20_evt_RoyaltyPayout') }}
         )
-        WHERE amount > 0
+        WHERE cast(amount as decimal(38)) > 0
         {% if is_incremental() %}
         AND evt_block_time >= date_trunc("day", now() - interval '1 week')
         {% endif %}
