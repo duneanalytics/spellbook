@@ -311,7 +311,7 @@ direct_PLP AS (
 uni_v2_swap as (
 SELECT   s.tx_hash tx_hash, s.index evt_index, s.contract_address, s.block_time, 
     '0x' || substring(DATA, 283, 40) AS maker, 
-            z.taker AS taker,
+            '0xdef1c0ded9bec7f1a1670819833240f027b25eff' AS taker,
             z.taker_token,
             z.maker_token,
             bytea2numeric_v3('0x' || substring(DATA, 91, 40)) AS taker_token_amount_raw,
