@@ -3,12 +3,12 @@
         schema = 'fractal',
         alias ='trades',
         materialized = 'view',
-        post_hook='{ expose_spells(\'["polygon"]\',
+        post_hook='{{ expose_spells(\'["polygon"]\',
                                     "sector",
                                     "nft",
-                                    \'["0xRob"]\') }')
+                                    \'["0xRob"]\') }}')
 }}
 
 SELECT *
-FROM { ref('nft_trades') }
+FROM {{ ref('nft_trades') }}
 WHERE project = "fractal"

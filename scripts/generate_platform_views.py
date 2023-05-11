@@ -1,5 +1,6 @@
 import os
 
+# make sure to set cwd to models/_sector/nft/trades/platform_views when running this
 current_directory = os.getcwd()
 
 
@@ -57,13 +58,13 @@ models:
         schema = '{platform[0]}',
         alias ='trades',
         materialized = 'view',
-        post_hook='{{ expose_spells(\\\'{platform[1]}\\\',
+        post_hook='{{{{ expose_spells(\\\'{platform[1]}\\\',
                                     "sector",
                                     "nft",
-                                    \\\'["0xRob"]\\\') }}')
+                                    \\\'["0xRob"]\\\') }}}}')
 }}}}
 
 SELECT *
-FROM {{ ref('nft_trades') }}
+FROM {{{{ ref('nft_trades') }}}}
 WHERE project = "{platform[0]}"
 """)

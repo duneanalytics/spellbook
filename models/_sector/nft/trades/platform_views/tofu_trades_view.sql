@@ -3,12 +3,12 @@
         schema = 'tofu',
         alias ='trades',
         materialized = 'view',
-        post_hook='{ expose_spells(\'["optimism", "arbitrum", "polygon", "bnb"]\',
+        post_hook='{{ expose_spells(\'["optimism", "arbitrum", "polygon", "bnb"]\',
                                     "sector",
                                     "nft",
-                                    \'["0xRob"]\') }')
+                                    \'["0xRob"]\') }}')
 }}
 
 SELECT *
-FROM { ref('nft_trades') }
+FROM {{ ref('nft_trades') }}
 WHERE project = "tofu"
