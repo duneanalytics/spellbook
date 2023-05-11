@@ -537,6 +537,6 @@ select  -- basic info
         ,fee_wallet_name
         ,'seaport-' || CAST(tx_hash AS VARCHAR(100)) || '-' || cast(evt_index as VARCHAR(10)) || '-' || CAST(nft_contract_address AS VARCHAR(100)) || '-' || cast(nft_token_id as VARCHAR(100)) || '-' || cast(sub_type as VARCHAR(20)) || '-' || cast(sub_idx as VARCHAR(10)) as unique_trade_id
    from  iv_trades
-  where  (   fee_wallet_name = 'opensea'
-          or right_hash = '360c6ebe'
+  where  (    fee_wallet_name = 'opensea'
+           or right_hash = '360c6ebe'
          )
