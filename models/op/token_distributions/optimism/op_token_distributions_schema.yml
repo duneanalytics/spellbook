@@ -94,6 +94,9 @@ models:
       - &op_incoming_other
         name: op_incoming_other
         description: "OP Amount - if marked as incoming from a non-project, non-OP source"
+      - &op_for_retropgf
+        name: op_for_retropgf
+        description: "OP Amount - if transferred from foundation grants wallet to a retropgf recipient (Note: This only captures if retroPGF was rewarded in OP - i.e. Round #2)"
       - &og_to_name
         name: og_to_name
         description: "Orignal name for the to address (without additional mapping)"

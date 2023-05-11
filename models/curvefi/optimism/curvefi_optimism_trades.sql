@@ -117,10 +117,43 @@ SELECT
             AND s.evt_block_time >= date_trunc('day', now() - interval '1 week')
             {% endif %}
         )
-        
         {% if is_incremental() %}
         AND t.evt_block_time >= date_trunc('day', now() - interval '1 week')
         {% endif %}
+
+        UNION ALL
+
+        -- Stableswap
+        SELECT
+            'stable' AS pool_type, -- has implications for decimals for curve
+            t.evt_block_time AS block_time,
+            t.evt_block_number AS block_number,
+            t.buyer AS taker,
+            '' AS maker,
+            -- when amount0 is negative it means taker is buying token0 from the pool
+            tokens_bought AS token_bought_amount_raw,
+            tokens_sold AS token_sold_amount_raw,
+            t.contract_address as project_contract_address,
+            t.evt_tx_hash AS tx_hash,
+            '' AS trace_address,
+            t.evt_index,
+            bought_id,
+            sold_id
+        FROM {{ source('curvefi_optimism', 'wstETH_swap_evt_TokenExchange') }} t --Should be Stableswap, but mis-decoded
+        
+        WHERE NOT EXISTS (
+            SELECT 1 FROM {{ source('curvefi_optimism', 'StableSwap_evt_TokenExchange') }} s 
+            WHERE t.evt_block_number = s.evt_block_number
+            AND t.evt_tx_hash = s.evt_tx_hash
+            AND t.evt_index = s.evt_index
+            {% if is_incremental() %}
+            AND s.evt_block_time >= date_trunc('day', now() - interval '1 week')
+            {% endif %}
+        )
+        {% if is_incremental() %}
+        AND t.evt_block_time >= date_trunc('day', now() - interval '1 week')
+        {% endif %}
+
     ) cp
     INNER JOIN {{ ref('curvefi_optimism_pools') }} ta
         ON cp.project_contract_address = ta.pool
