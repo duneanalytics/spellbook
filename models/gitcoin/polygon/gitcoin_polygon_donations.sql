@@ -1,5 +1,4 @@
 {{ config(
-    schema = 'gitcoin_polygon',
     alias = 'donations',
     partition_by = ['block_date'],
     materialized = 'incremental',

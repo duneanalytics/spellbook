@@ -1,5 +1,4 @@
 {{ config(
-    schema = 'gitcoin_ethereum',
     alias = 'donations',
     partition_by = ['block_date'],
     materialized = 'incremental',
@@ -31,7 +30,7 @@ WITH gitcoin_donations AS (
         ELSE gd.token
         END AS currency_contract
     , CASE WHEN gd.token = '{{eth_contract}}'
-        THEN 'ETH' 
+        THEN 'ETH'
         ELSE tok.symbol
         END AS currency_symbol
     , gd.evt_index
