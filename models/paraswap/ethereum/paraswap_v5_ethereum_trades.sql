@@ -178,7 +178,7 @@ call_swap_without_event AS (
                 else -1 * cast(t.value AS decimal(38, 0))
             end) AS amountIn,
             MAX(t.trace_address) AS trace_address,
-            CAST(0 AS bigint) AS evt_index
+            CAST(-1 as integer) AS evt_index
         FROM no_event_call_transaction c
         INNER JOIN {{ source('ethereum', 'traces') }} t ON c.call_block_number = t.block_number
             AND c.call_tx_hash = t.tx_hash
@@ -257,7 +257,7 @@ call_swap_without_event AS (
             '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2' AS tokenOut, -- WETH
             cast(t.value AS decimal(38, 0)) AS amountOut,
             t.trace_address,
-            CAST(0 AS bigint) AS evt_index
+            CAST(-1 as integer) AS evt_index
         FROM no_event_call_transaction c
         INNER JOIN {{ source('ethereum', 'traces') }} t ON c.call_block_number = t.block_number
             AND c.call_tx_hash = t.tx_hash
