@@ -40,6 +40,9 @@ WITH gitcoin_donations AS (
     FROM {{ source('gitcoin_ethereum', 'BulkCheckout_evt_DonationSent') }} gd
     LEFT JOIN {{ ref('tokens_ethereum_erc20') }} tok
         ON tok.contract_address=gd.token
+    {% if is_incremental() %}
+    WHERE gd.evt_block_time >= date_trunc("day", now() - interval '1 week')
+    {% endif %}
     )
 
 
