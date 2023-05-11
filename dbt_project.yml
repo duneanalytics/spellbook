@@ -820,6 +820,7 @@ models:
       # gnosis2:
       #   +schema: hop_gnosis
 
+
     chain_info:
       +schema: chain_info
 
