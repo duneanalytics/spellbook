@@ -81,4 +81,7 @@ from (
     ,('perp_hottub','Perpetual Protocol')
     ,('Avalon Lyra', 'Lyra')
     ,('avalon_lyra', 'Lyra')
+    ,('Collab Land', 'Collab.Land')
+    ,('collab_land', 'Collab.Land')
+    ,('Biconomy - Hyphen', 'Biconomy')
     ) as temp_table (dune_name, mapped_name)
