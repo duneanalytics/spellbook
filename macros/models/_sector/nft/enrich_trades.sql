@@ -56,8 +56,8 @@ SELECT
     base.project_contract_address,
     base.trade_category,
     base.trade_type,
-    case when base.buyer != agg.contract_address then base.buyer else tx.from end as buyer,
-    case when base.seller != agg.contract_address then base.seller else tx.from end as seller,
+    case when base.buyer != coalesce(agg1.contract_address,agg2.contract_address) then base.buyer else tx.from end as buyer,
+    case when base.seller != coalesce(agg1.contract_address,agg2.contract_address) then base.seller else tx.from end as seller,
     base.nft_contract_address,
     base.nft_token_id,
     base.nft_amount,
@@ -78,11 +78,11 @@ SELECT
     base.price_raw/pow(10,coalesce(erc20.decimals,18))*p.price as price_usd,
     base.platform_fee_amount_raw/pow(10,coalesce(erc20.decimals,18))*p.price as platform_fee_amount_usd,
     base.royalty_fee_amount_raw/pow(10,coalesce(erc20.decimals,18))*p.price as royalty_fee_amount_usd,
-    agg.contract_address as aggregator_address,
+    coalesce(agg1.contract_address,agg2.contract_address) as aggregator_address,
     {% if aggregator_markers != null %}
-    coalesce(agg_mark.aggregator_name, agg.name) as aggregator_name
+    coalesce(agg_mark.aggregator_name, agg1.name, agg2.name) as aggregator_name
     {% else %}
-    agg.name as aggregator_name
+    coalesce(agg1.name,agg2.name) as aggregator_name
     {% endif %}
 FROM base_union base
 INNER JOIN {{ transactions_model }} tx
@@ -102,10 +102,12 @@ ON p.blockchain = base.blockchain
     {% if is_incremental() %}
     AND p.minute >= date_trunc("day", now() - interval '1 week')
     {% endif %}
-LEFT JOIN {{ aggregators }} agg
-ON tx.to = agg.contract_address
-    OR base.buyer = agg.contract_address
-    OR base.seller = agg.contract_address
+LEFT JOIN {{ aggregators }} agg1
+ON (base.buyer = agg1.contract_address
+    OR base.seller = agg1.contract_address)
+LEFT JOIN {{ aggregators }} agg2
+ON agg1.contract_address is null    -- only match if agg1 produces no matches, this prevents duplicates
+    AND tx.to = agg2.contract_address
 {% if aggregator_markers != null %}
 LEFT JOIN {{ aggregator_markers }} agg_mark
 ON RIGHT(tx.data, agg_mark.hash_marker_size) = agg_mark.hash_marker
