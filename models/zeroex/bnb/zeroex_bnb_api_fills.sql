@@ -338,7 +338,8 @@ SELECT   s.tx_hash tx_hash, s.index evt_index, s.contract_address, s.block_time,
 , uni_v2_pair_creation as (
     SELECT concat('0x', substring(cast(data as varchar(256)),27,40) ) pair,
     cast(substring(topic3, 27, 40) as varchar(44)) AS  makerToken,
-    cast(substring(topic2, 27, 40) as varchar(44)) AS takerToken
+    cast(substring(topic2, 27, 40) as varchar(44)) AS takerToken,
+    rank() over (partition by substring(cast(data as varchar(256)),27,40) order by block_time asc) rnk
     FROM {{ source('bnb', 'logs') }} creation
     
     WHERE creation.topic1 = '0x0d3648bd0f6ba80134a33ba9275ac585d9d315f0ad8355cddefde31afa28d0e9'  -- all the uni v2 pair creation event
@@ -371,6 +372,7 @@ select s.tx_hash,
 from uni_v2_swap s 
 
 join uni_v2_pair_creation creation on cast(s.contract_address as varchar(42)) = creation.pair 
+where rnk = 1 
 ),  
 
 all_tx AS (
