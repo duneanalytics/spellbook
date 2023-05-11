@@ -2,6 +2,7 @@ import os
 
 current_directory = os.getcwd()
 
+
 platform_list = [
     ("aavegotchi", '["polygon"]'),
     ("archipelago", '["ethereum"]'),
@@ -30,7 +31,7 @@ platform_list = [
     ("zora", '["ethereum"]')
 ]
 
-with open(os.path.join(current_directory, 'models/_sector/nft/trades/old/platforms/_schema.yml'), "w") as schema:
+with open(os.path.join(current_directory, '_schema.yml'), "w") as schema:
     schema.write(
         """
 version: 2
@@ -39,7 +40,7 @@ models:
     )
 
     for platform in platform_list:
-        with open(os.path.join(current_directory, f"models/_sector/nft/trades/old/platforms/{platform[0]}_trades_view.sql"), "w") as p_file:
+        with open(os.path.join(current_directory, f"{platform[0]}_trades_view.sql"), "w") as p_file:
             schema.write(f"""
  - name: {platform[0]}_trades_view
    meta:
@@ -52,7 +53,7 @@ models:
 
 """)
             p_file.write(f"""
-{{ config(
+{{{{ config(
         schema = '{platform[0]}',
         alias ='trades',
         materialized = 'view',
@@ -60,7 +61,7 @@ models:
                                     "sector",
                                     "nft",
                                     \\\'["0xRob"]\\\') }}')
-}}
+}}}}
 
 SELECT *
 FROM {{ ref('nft_trades') }}

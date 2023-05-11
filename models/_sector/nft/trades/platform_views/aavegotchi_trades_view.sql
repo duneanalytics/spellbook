@@ -1,5 +1,5 @@
 
-{ config(
+{{ config(
         schema = 'aavegotchi',
         alias ='trades',
         materialized = 'view',
@@ -7,7 +7,7 @@
                                     "sector",
                                     "nft",
                                     \'["0xRob"]\') }')
-}
+}}
 
 SELECT *
 FROM { ref('nft_trades') }
