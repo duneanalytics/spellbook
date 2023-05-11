@@ -94,6 +94,7 @@ WITH trades AS (
     FROM {{ source('polygon', 'transactions') }}
     WHERE `to` = '0x12b3897a36fdb436dde2788c06eff0ffd997066e'
         AND substring(`data`, 1, 10) = '0x0d5f7d35' -- 0x0d5f7d35: directPurchase; 0x67d49a3b: directAcceptBid
+        AND success = true
         {% if not is_incremental() %}
         AND block_time >= '{{nft_start_date}}'
         {% endif %}
@@ -125,6 +126,7 @@ WITH trades AS (
     FROM {{ source('polygon','transactions') }}
     WHERE `to` = '0x12b3897a36fdb436dde2788c06eff0ffd997066e'
         AND substring(`data`, 1, 10) = '0x67d49a3b' -- 0x0d5f7d35: directPurchase; 0x67d49a3b: directAcceptBid
+        AND success = true
         {% if not is_incremental() %}
         AND block_time >= '{{nft_start_date}}'
         {% endif %}
