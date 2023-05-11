@@ -1,7 +1,7 @@
 version: 2
 
 sources:
-  - name: seaport_arbitrum
+  - name: opensea_arbitrum
     freshness:
       warn_after: { count: 24, period: hour }
     tables:
