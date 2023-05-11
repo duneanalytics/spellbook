@@ -16,7 +16,7 @@ models:
         description: "Solver's wallet address"
       - &environment
         name: environment
-        description: "Solver's environment"
+        description: "Development environment"
       - &name
         name: name
         description: "Solver's name"
@@ -255,6 +255,7 @@ models:
       - *block_time
       - *block_number
       - *tx_hash
+      - *environment
       - *valid_to
       - &quote_id
         name: quote_id
