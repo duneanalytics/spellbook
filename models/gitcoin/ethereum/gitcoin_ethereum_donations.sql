@@ -38,8 +38,8 @@ WITH gitcoin_donations AS (
     , gd.contract_address
     , gd.evt_tx_hash AS tx_hash
     FROM {{ source('gitcoin_ethereum', 'BulkCheckout_evt_DonationSent') }} gd
-    LEFT JOIN {{ ref('tokens_ethereum_erc20') }} tok ON tok.contract_address=gd.token
-    --LIMIT 1000
+    LEFT JOIN {{ ref('tokens_ethereum_erc20') }} tok
+        ON tok.contract_address=gd.token
     )
 
 

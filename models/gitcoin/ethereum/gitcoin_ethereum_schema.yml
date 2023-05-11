@@ -114,6 +114,9 @@ models:
             - blockchain
             - tx_hash
             - evt_index
+      - equal_rowcount_with_sources:
+          evt_sources:
+            - source('gitcoin_ethereum', 'BulkCheckout_evt_DonationSent')
     columns:
       - name: blockchain
       - name: project
