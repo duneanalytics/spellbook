@@ -1,23 +1,21 @@
 {{ config(
         alias ='trades',
-        post_hook='{{ expose_spells(\'["arbitrum", "ethereum"]\',
+        post_hook='{{ expose_spells(\'["arbitrum"]\',
                                 "project",
-                                "clipper",
-                                \'["0xRob", "amalashkevich"]\') }}'
+                                "camelot",
+                                \'["ytoast"]\') }}'
         )
 }}
 
-{% set clipper_models = [
-ref('clipper_ethereum_trades'),
-ref('clipper_arbitrum_trades'),
-ref('clipper_polygon_trades')
+{% set camelot_models = [
+ref('camelot_arbitrum_trades'),
 ] %}
 
 
 SELECT *
 
 FROM (
-    {% for dex_model in clipper_models %}
+    {% for dex_model in camelot_models %}
     SELECT
         blockchain,
         project,
