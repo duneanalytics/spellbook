@@ -433,8 +433,6 @@ models:
         +schema: trader_joe_avalanche_c
       bnb:
         +schema: trader_joe_bnb
-      arbitrum:
-        +schema: trader_joe_arbitrum
 
     odos:
       +schema: odos
@@ -486,18 +484,6 @@ models:
         +schema: safe_fantom
       arbitrum:
         +schema: safe_arbitrum
-
-    liquidifty:
-      +schema: liquidifty
-      bnb:
-        +schema: liquidifty_bnb
-      ethereum:
-        +schema: liquidifty_ethereum
-
-    nftrade:
-      +schema: nftrade
-      bnb:
-        +schema: nftrade_bnb
 
     lifi:
       +schema: lifi

@@ -1,4 +1,5 @@
 {{ config(
+    schema = 'tofu_optimism',
     alias = 'events',
     partition_by = ['block_date'],
     materialized = 'incremental',

@@ -1,11 +1,12 @@
 {{ config(
-    schema = 'stealcam_arbitrum'
+    schema = 'stealcam_arbitrum',
     alias = 'events',
     partition_by = ['block_date'],
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
     unique_key = ['block_date', 'unique_trade_id']
+    )
 }}
 
 

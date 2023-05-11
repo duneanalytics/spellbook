@@ -6,6 +6,7 @@
     file_format = 'delta',
     incremental_strategy = 'merge',
     unique_key = ['block_date', 'unique_trade_id']
+    )
 }}
 
 {% set project_start_date = '2022-10-18' %}

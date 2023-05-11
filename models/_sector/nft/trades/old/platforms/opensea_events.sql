@@ -1,5 +1,5 @@
 {{ config(
-        schema = 'opensea'
+        schema = 'opensea',
         alias ='events'
 )
 }}

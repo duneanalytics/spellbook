@@ -1,5 +1,5 @@
 {{ config(
-    schema = 'foundation_ethereum'
+    schema = 'foundation_ethereum',
     alias = 'events',
     partition_by = ['block_date'],
     materialized = 'incremental',

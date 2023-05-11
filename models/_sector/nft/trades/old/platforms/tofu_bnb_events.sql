@@ -1,10 +1,12 @@
 {{ config(
+    schema = 'tofu_bnb',
     alias = 'events',
     partition_by = ['block_date'],
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
     unique_key = ['block_date', 'unique_trade_id']
+    )
 }}
 
 {%- set BNB_ERC20_ADDRESS = '0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c' %}

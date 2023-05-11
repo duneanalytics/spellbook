@@ -1,11 +1,11 @@
 {{ config(
-    schema = 'nft'
+    schema = 'nft',
     alias ='events_old',
     partition_by = ['block_date'],
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
-    unique_key = ['unique_trade_id', 'blockchain']
+    unique_key = ['unique_trade_id', 'blockchain'])
 }}
 
 {% set nft_models = [

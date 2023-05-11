@@ -1,5 +1,5 @@
 {{ config(
-        schema = 'sudoswap_ethereum'
+        schema = 'sudoswap_ethereum',
         alias = 'events',
         partition_by = ['block_date'],
         materialized = 'incremental',

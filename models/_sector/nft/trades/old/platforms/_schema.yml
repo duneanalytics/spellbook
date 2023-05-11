@@ -2,7 +2,7 @@ version: 2
 
 models:
 
-  - name: nft_events_alpha
+  - name: nft_events_old
     meta:
       blockchain: ethereum, solana, bnb, optimism, arbitrum, polygon
       sector: nft

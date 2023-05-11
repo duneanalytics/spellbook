@@ -1,5 +1,5 @@
 {{ config(
-    schema = 'superrare_ethereum'
+    schema = 'superrare_ethereum',
     alias = 'events',
     partition_by = ['block_date'],
     materialized = 'incremental',

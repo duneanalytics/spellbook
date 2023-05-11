@@ -1,5 +1,5 @@
 {{ config(
-    schema = 'oneplanet_polygon'
+    schema = 'oneplanet_polygon',
     alias = 'events',
     materialized = 'incremental',
     file_format = 'delta',

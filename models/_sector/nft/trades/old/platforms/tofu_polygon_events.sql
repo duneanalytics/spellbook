@@ -1,10 +1,12 @@
 {{ config(
+    schema = 'tofu_polygon',
     alias = 'events',
     partition_by = ['block_date'],
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
     unique_key = ['block_date', 'blockchain', 'project', 'version', 'tx_hash', 'evt_index', 'bundle_index' ]
+    )
 }}
 
 {% set MATIC_ADDRESS = '0x0000000000000000000000000000000000001010' %}

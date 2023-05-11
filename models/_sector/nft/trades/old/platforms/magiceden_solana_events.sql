@@ -1,5 +1,5 @@
 {{ config(
-    schema = 'magiceden_solana'
+    schema = 'magiceden_solana',
     alias = 'events',
     partition_by = ['block_date'],
     materialized = 'incremental',

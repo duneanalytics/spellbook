@@ -1,5 +1,5 @@
 {{ config(
-    schema = 'pancekeswap_nft_bnb'
+    schema = 'pancekeswap_nft_bnb',
     alias = 'events',
     partition_by = ['block_date'],
     materialized = 'incremental',
