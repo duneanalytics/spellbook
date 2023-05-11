@@ -70,13 +70,15 @@ WITH trades AS (
         AND evt_block_time >= date_trunc("day", now() - interval '1 week')
         {% endif %}
 
+    UNION ALL
+
     -- directPurchase
     SELECT 'buy' AS trade_category,
         block_time AS evt_block_time,
         block_number AS evt_block_number,
         `hash` AS evt_tx_hash,
         `to` AS contract_address,
-        `index` AS evt_index,
+        CAST(-1 as integer) AS evt_index,
         'Trade' AS evt_type,
         `from` AS buyer,
         '0x' || right(substring(`data`, 11 + 64, 64), 40) AS seller,
@@ -107,7 +109,7 @@ WITH trades AS (
         block_number AS evt_block_number,
         `hash` AS evt_tx_hash,
         `to` AS contract_address,
-        `index` AS evt_index,
+        CAST(-1 as integer) AS evt_index,
         'Trade' AS evt_type,
         '0x' || right(substring(`data`, 11 + 64, 64), 40) AS buyer,
         `from` AS seller,
