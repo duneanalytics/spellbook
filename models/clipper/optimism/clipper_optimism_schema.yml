@@ -168,7 +168,7 @@ models:
       - check_dex_seed:
           blockchain: optimism
           project: clipper
-          version: coves_v1
+          version: coves1
     columns:
       - *blockchain
       - *project
