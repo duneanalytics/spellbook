@@ -73,14 +73,14 @@ SELECT
 , nft_token_id
 , nft_amount
 , trade_category
-, 'secondary' END AS trade_type
+, 'secondary' AS trade_type
 , buyer
 , seller
 , currency AS currency_contract
 , CAST(amount_raw as DECIMAL(38,0)) as price_raw
 , CAST(platform_fee_amount_raw as DECIMAL(38,0)) as platform_fee_amount_raw
 , CAST(royalty_fee_amount_raw as DECIMAL(38,0)) as royalty_fee_amount_raw
-,  royalty_fee_address
+, royalty_fee_address
 , CAST(null as VARCHAR(1)) as platform_fee_address
 , evt_index as sub_tx_trade_id
 FROM looksrare_v2_trades
