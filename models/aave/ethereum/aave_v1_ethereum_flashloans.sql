@@ -1,6 +1,10 @@
 {{ config(
     schema = 'aave_v1_ethereum'
     , alias='flashloans'
+    , materialized = 'incremental'
+    , file_format = 'delta'
+    , incremental_strategy = 'merge'
+    , unique_key = ['tx_hash', 'evt_index']
     , post_hook='{{ expose_spells(\'["ethereum"]\',
                                   "project",
                                   "aave_v1",
@@ -27,6 +31,9 @@ WITH flashloans AS (
     FROM {{ source('aave_ethereum','LendingPool_evt_FlashLoan') }} flash
     LEFT JOIN {{ ref('tokens_ethereum_erc20') }} erc20 ON flash._reserve = erc20.contract_address
     WHERE CAST(flash._amount AS double) > 0
+        {% if is_incremental() %}
+        AND flash.evt_block_time >= date_trunc("day", now() - interval '1 week')
+        {% endif %}
     )
     
 SELECT 'ethereum' AS blockchain
