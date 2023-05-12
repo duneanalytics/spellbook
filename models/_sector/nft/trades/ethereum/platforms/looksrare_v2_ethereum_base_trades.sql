@@ -77,7 +77,7 @@ SELECT
 , buyer
 , seller
 , currency AS currency_contract
-, CAST(amount_raw as DECIMAL(38,0)) as price_raw
+, CAST(price_raw as DECIMAL(38,0)) as price_raw
 , CAST(platform_fee_amount_raw as DECIMAL(38,0)) as platform_fee_amount_raw
 , CAST(royalty_fee_amount_raw as DECIMAL(38,0)) as royalty_fee_amount_raw
 , royalty_fee_address
