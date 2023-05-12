@@ -20,7 +20,7 @@ raw_trades as (
             block_number, block_time, evt_index, tx_hash, buyer, seller,
             posexplode(nft_id_array) as (sub_order_id, nft_token_id),
             cast(1 as int) as nft_amount,
-            amount_raw/number_of_items as amount_raw,
+            price_raw/number_of_items as price_raw,
             platform_fee_amount_raw/number_of_items as platform_fee_amount_raw,
             royalty_fee_amount_raw/number_of_items as royalty_fee_amount_raw,
             trade_fee_amount_raw/number_of_items as trade_fee_amount_raw,
@@ -40,7 +40,7 @@ raw_trades as (
                 ,'Buy' as trade_category
                 ,nftIds as nft_id_array
                 ,cardinality(nftIds) as number_of_items
-                ,cast(outputAmount as decimal(38)) as amount_raw
+                ,cast(outputAmount as decimal(38)) as price_raw
                 ,cast(protocolFee as decimal(38)) as platform_fee_amount_raw
                 ,get_json_object(royaltyDue[0], '$.amount') as royalty_fee_amount_raw
                 ,get_json_object(royaltyDue[0], '$.recipient') as royalty_fee_address
@@ -63,7 +63,7 @@ raw_trades as (
                 ,'Sell' as trade_category
                 ,nftIds as nft_id_array
                 ,cardinality(nftIds) as number_of_items
-                ,cast(inputAmount + protocolFee + cast(get_json_object(royaltyDue[0], '$.amount') as decimal(38)) as decimal(38)) as amount_raw
+                ,cast(inputAmount + protocolFee + cast(get_json_object(royaltyDue[0], '$.amount') as decimal(38)) as decimal(38)) as price_raw
                 ,cast(protocolFee as decimal(38)) as platform_fee_amount_raw
                 ,get_json_object(royaltyDue[0], '$.amount') as royalty_fee_amount_raw
                 ,get_json_object(royaltyDue[0], '$.recipient') as royalty_fee_address
@@ -104,7 +104,7 @@ SELECT
 , trade_type
 , trade_category
 , currency_contract
-, cast(amount_raw as decimal(38)) as amount_raw
+, cast(price_raw as decimal(38)) as price_raw
 , cast(platform_fee_amount_raw as decimal(38)) as platform_fee_amount_raw
 , cast(royalty_fee_amount_raw as decimal(38)) as royalty_fee_amount_raw
 , cast(null as varchar(1)) as platform_fee_address
