@@ -129,7 +129,7 @@ models:
            - price_raw
            - platform_fee_amount_raw
            - royalty_fee_amount_raw
-  
+
  - name: x2y2_ethereum_base_trades
    meta:
      blockchain: ethereum
@@ -159,4 +159,20 @@ models:
            - price_raw
            - platform_fee_amount_raw
            - royalty_fee_amount_raw
+
+ - name: collectionswap_ethereum_base_trades
+   meta:
+     blockchain: ethereum
+     sector: nft
+     project: collectionswap
+     contributors: [ '0xRob' ]
+   config:
+     tags: [ 'ethereum', 'nft', 'trades', 'collectionswap' ]
+   description: "collectionswap base trades"
+   tests:
+     - dbt_utils.unique_combination_of_columns:
+         combination_of_columns: [ 'block_number','tx_hash','sub_tx_trade_id' ]
+     - equal_rowcount_with_sources:
+         evt_sources:
+           - source('x2y2_ethereum','X2Y2_r1_evt_EvInventory')
 
