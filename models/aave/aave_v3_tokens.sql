@@ -28,8 +28,6 @@ SELECT distinct a.blockchain
               , a.arate_type
               , a.atoken_symbol
               , a.atoken_name
-              , et.decimals AS underlying_decimals
-              , et.symbol   AS underlying_symbol
 
 FROM (
     {% for aave_v3_chain in aave_v3_decoded_chains %}
@@ -86,6 +84,3 @@ FROM (
         {% endif %}
     {% endfor %}
     ) a
-LEFT JOIN {{ ref('tokens_erc20') }} et
-    ON a.underlying_address = et.contract_address
-    AND a.blockchain = et.blockchain
