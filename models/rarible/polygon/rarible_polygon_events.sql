@@ -74,64 +74,76 @@ WITH trades AS (
 
     -- directPurchase
     SELECT 'buy' AS trade_category,
-        block_time AS evt_block_time,
-        block_number AS evt_block_number,
-        `hash` AS evt_tx_hash,
-        `to` AS contract_address,
+        p.call_block_time AS evt_block_time,
+        p.call_block_number AS evt_block_number,
+        p.call_tx_hash AS evt_tx_hash,
+        p.contract_address,
         CAST(-1 as integer) AS evt_index,
         'Trade' AS evt_type,
-        `from` AS buyer,
-        '0x' || right(substring(`data`, 11 + 64, 64), 40) AS seller,
-        '0x' || right(substring(`data`, 11 + 64 * 17, 64), 40) AS nft_contract_address,
-        CAST(bytea2numeric_v3(substr(`data`, 11 + 64 * 18, 64)) AS string) AS token_id,
-        CAST(bytea2numeric_v3(substring(`data`, 11 + 64 * 14, 64)) AS DOUBLE) AS number_of_items,
-        CASE WHEN substring(`data`, 11 + 64 * 3, 8) = '73ad2146' THEN 'erc721' ELSE 'erc1155' END AS token_standard, -- 0x73ad2146: erc721; 0x973bb640: erc1155
-        CASE WHEN substring(`data`, 11 + 64 * 6, 64) = '0000000000000000000000000000000000000000000000000000000000000000'
+        t.`from` AS buyer,
+        p.direct:sellOrderMaker AS seller,
+        '0x' || right(substring(p.direct:nftData, 3, 64), 40) AS nft_contract_address,
+        CAST(bytea2numeric_v3(substr(p.direct:nftData, 3 + 64, 64)) AS string) AS token_id,
+        p.direct:buyOrderNftAmount AS number_of_items,
+        CASE WHEN p.direct:nftAssetClass = '0x73ad2146' THEN 'erc721' ELSE 'erc1155' END AS token_standard, -- 0x73ad2146: erc721; 0x973bb640: erc1155
+        CASE WHEN p.direct:paymentToken = '0x0000000000000000000000000000000000000000'
             THEN '0x0d500b1d8e8ef31e21c99d1db9a6444d3adf1270'
-            ELSE '0x' || right(substring(`data`, 11 + 64 * 6, 64), 40)
+            ELSE p.direct:paymentToken
         END AS currency_contract,
-        CAST(bytea2numeric_v3(substring(`data`, 11 + 64 * 13, 64)) AS DOUBLE) AS amount_raw
-    FROM {{ source('polygon', 'transactions') }}
-    WHERE `to` = '0x12b3897a36fdb436dde2788c06eff0ffd997066e'
-        AND substring(`data`, 1, 10) = '0x0d5f7d35' -- 0x0d5f7d35: directPurchase; 0x67d49a3b: directAcceptBid
-        AND success = true
+        p.direct:buyOrderPaymentAmount AS amount_raw
+    FROM {{ source ('rarible_polygon', 'ExchangeMetaV2_call_directPurchase') }} p
+    INNER JOIN {{ source('polygon','transactions') }} t ON t.block_number = p.call_block_number
+        AND t.hash = p.call_tx_hash
         {% if not is_incremental() %}
-        AND block_time >= '{{nft_start_date}}'
+        AND t.block_time >= '{{nft_start_date}}'
         {% endif %}
         {% if is_incremental() %}
-        AND block_time >= date_trunc("day", now() - interval '1 week')
+        AND t.block_time >= date_trunc("day", now() - interval '1 week')
+        {% endif %}
+    WHERE call_success = true
+        {% if not is_incremental() %}
+        AND p.call_block_time >= '{{nft_start_date}}'
+        {% endif %}
+        {% if is_incremental() %}
+        AND p.call_block_time >= date_trunc("day", now() - interval '1 week')
         {% endif %}
 
     UNION ALL
 
     -- directAcceptBid
     SELECT 'sell' AS trade_category,
-        block_time AS evt_block_time,
-        block_number AS evt_block_number,
-        `hash` AS evt_tx_hash,
-        `to` AS contract_address,
+        p.call_block_time AS evt_block_time,
+        p.call_block_number AS evt_block_number,
+        p.call_tx_hash AS evt_tx_hash,
+        p.contract_address,
         CAST(-1 as integer) AS evt_index,
         'Trade' AS evt_type,
-        '0x' || right(substring(`data`, 11 + 64, 64), 40) AS buyer,
-        `from` AS seller,
-        '0x' || right(substring(`data`, 11 + 64 * 17, 64), 40) AS nft_contract_address,
-        CAST(bytea2numeric_v3(substr(`data`, 11 + 64 * 18, 64)) AS string) AS token_id,
-        CAST(bytea2numeric_v3(substring(`data`, 11 + 64 * 14, 64)) AS DOUBLE) AS number_of_items,
-        CASE WHEN substring(`data`, 11 + 64 * 3, 8) = '73ad2146' THEN 'erc721' ELSE 'erc1155' END AS token_standard, -- 0x73ad2146: erc721; 0x973bb640: erc1155
-        CASE WHEN substring(`data`, 11 + 64 * 6, 64) = '0000000000000000000000000000000000000000000000000000000000000000'
+        p.direct:bidMaker AS buyer,
+        t.`from` AS seller,
+        '0x' || right(substring(p.direct:nftData, 3, 64), 40) AS nft_contract_address,
+        CAST(bytea2numeric_v3(substr(p.direct:nftData, 3 + 64, 64)) AS string) AS token_id,
+        p.direct:sellOrderNftAmount AS number_of_items,
+        CASE WHEN p.direct:nftAssetClass = '0x73ad2146' THEN 'erc721' ELSE 'erc1155' END AS token_standard, -- 0x73ad2146: erc721; 0x973bb640: erc1155
+        CASE WHEN p.direct:paymentToken = '0x0000000000000000000000000000000000000000'
             THEN '0x0d500b1d8e8ef31e21c99d1db9a6444d3adf1270'
-            ELSE '0x' || right(substring(`data`, 11 + 64 * 6, 64), 40)
-        END AS currency_contract, -- zero address: MATIC/WMATIC; other: ERC20 Token
-        CAST(bytea2numeric_v3(substring(`data`, 11 + 64 * 13, 64)) AS DOUBLE) AS amount_raw
-    FROM {{ source('polygon','transactions') }}
-    WHERE `to` = '0x12b3897a36fdb436dde2788c06eff0ffd997066e'
-        AND substring(`data`, 1, 10) = '0x67d49a3b' -- 0x0d5f7d35: directPurchase; 0x67d49a3b: directAcceptBid
-        AND success = true
+            ELSE p.direct:paymentToken
+        END AS currency_contract,
+        p.direct:sellOrderPaymentAmount AS amount_raw
+    FROM {{ source('rarible_polygon','ExchangeMetaV2_call_directAcceptBid') }} p
+    INNER JOIN {{ source('polygon','transactions') }} t ON t.block_number = p.call_block_number
+        AND t.hash = p.call_tx_hash
         {% if not is_incremental() %}
-        AND block_time >= '{{nft_start_date}}'
+        AND t.block_time >= '{{nft_start_date}}'
         {% endif %}
         {% if is_incremental() %}
-        AND block_time >= date_trunc("day", now() - interval '1 week')
+        AND t.block_time >= date_trunc("day", now() - interval '1 week')
+        {% endif %}
+    WHERE call_success = true
+        {% if not is_incremental() %}
+        AND p.call_block_time >= '{{nft_start_date}}'
+        {% endif %}
+        {% if is_incremental() %}
+        AND p.call_block_time >= date_trunc("day", now() - interval '1 week')
         {% endif %}
 ),
 
