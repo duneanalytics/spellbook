@@ -20,4 +20,4 @@ FROM (
     ('arbitrum', 42161),
     ('avalanche_c', 43114),
     ('solana', 1399811149)
-) dune_chain_name_to_chain_id  ('chain_id', 'dune_name')
+) dune_chain_name_to_chain_id("chain_id", "dune_name")
