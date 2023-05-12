@@ -3,8 +3,8 @@
 WITH unit_tests as
 (SELECT case when test_data.original_amount = lr_trades.amount_original then True else False end as price_test
 FROM (
-select * from {{ ref('looksrare_v1_ethereum_events') }}
-union all select * from {{ ref('looksrare_v2_ethereum_events') }}
+select tx_hash, original_amount from {{ ref('looksrare_v1_ethereum_events') }}
+union all select tx_hash, original_amount from {{ ref('looksrare_v2_ethereum_events') }}
 ) lr_trades
 JOIN {{ ref('looksrare_ethereum_trades_postgres') }} test_data ON test_data.tx_hash = lr_trades.tx_hash
 )
