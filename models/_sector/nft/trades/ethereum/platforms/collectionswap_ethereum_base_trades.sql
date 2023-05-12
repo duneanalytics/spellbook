@@ -83,7 +83,7 @@ base_trades as (
     select
     t.*,
     p.nft_contract_address,
-    p.token_address END as currency_contract
+    p.token_address as currency_contract
     from raw_trades t
     left join {{ ref('collectionswap_ethereum_pools') }} p
     on t.project_contract_address = p.pool_address
