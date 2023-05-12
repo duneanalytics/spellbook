@@ -14,7 +14,7 @@
 WITH
 raw_trades as (
     select *
-    , row_number() over (partition by tx_hash order by evt_index asc, sub_order_id asc) as sub_tx_id
+    , row_number() over (partition by tx_hash order by evt_index asc, sub_order_id asc) as sub_tx_trade_id
     from(
         select
             block_number, block_time, evt_index, tx_hash, buyer, seller,
