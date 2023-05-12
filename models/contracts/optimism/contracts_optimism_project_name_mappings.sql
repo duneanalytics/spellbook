@@ -42,7 +42,6 @@ from (
     ,('stargate', 'Stargate Finance')
     ,('quixotic_v5', 'Quix')
     ,('lyra_avalon', 'Lyra')
-    ,('Lyra', 'Avalon Lyra')
     ,('Unlock', 'Unlock Protocol')
     ,('Xy Finance', 'XY Finance')
     ,('Qidao', 'QiDao')
