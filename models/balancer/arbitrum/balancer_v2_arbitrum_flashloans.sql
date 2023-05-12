@@ -1,5 +1,6 @@
 {{ config(
-      alias='flashloans'
+      schema = 'balancer_v2_arbitrum'
+      , alias = 'flashloans'
       , materialized = 'incremental'
       , file_format = 'delta'
       , incremental_strategy = 'merge'
@@ -24,6 +25,9 @@ WITH flashloans AS (
     , f.contract_address
     FROM {{ source('balancer_v2_arbitrum','Vault_evt_FlashLoan') }} f
     LEFT JOIN {{ ref('tokens_arbitrum_erc20') }} erc20 ON f.token = erc20.contract_address
+        {% if is_incremental() %}
+        WHERE f.evt_block_time >= date_trunc("day", now() - interval '1 week')
+        {% endif %}
     )
 
 SELECT 'arbitrum' AS blockchain
