@@ -21,7 +21,7 @@ WITH looksrare_v2_trades AS (
     , l.collection AS nft_contract_address
     , element_at(l.amounts, 1) AS nft_amount
     , l.currency
-    , l.itemIds[0] AS nft_ nft_token_id
+    , l.itemIds[0] AS nft_token_id
     , l.contract_address AS project_contract_address
     , l.evt_tx_hash AS tx_hash
     , l.evt_index
@@ -47,7 +47,7 @@ WITH looksrare_v2_trades AS (
     , l.collection AS nft_contract_address
     , element_at(l.amounts, 1) AS nft_amount
     , l.currency
-    , l.itemIds[0] AS  nft_token_id
+    , l.itemIds[0] AS nft_token_id
     , l.contract_address AS project_contract_address
     , l.evt_tx_hash AS tx_hash
     , l.evt_index
