@@ -1,5 +1,6 @@
 {{ config(
-      alias='flashloans'
+      schema = 'uniswap_v3_bnb'
+      , alias='flashloans'
       , materialized = 'incremental'
       , file_format = 'delta'
       , incremental_strategy = 'merge'
@@ -27,6 +28,9 @@ WITH flashloans AS (
     LEFT JOIN {{ ref('tokens_bnb_bep20') }} bep20a ON p.token0 = bep20a.contract_address
     LEFT JOIN {{ ref('tokens_bnb_bep20') }} bep20b ON p.token1 = bep20b.contract_address
     WHERE f.evt_block_time > NOW() - interval '1' month
+        {% if is_incremental() %}
+        AND f.evt_block_time >= date_trunc("day", now() - interval '1 week')
+        {% endif %}
     )
 
 SELECT 'bnb' AS blockchain

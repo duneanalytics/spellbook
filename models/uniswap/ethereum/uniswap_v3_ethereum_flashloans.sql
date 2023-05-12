@@ -1,5 +1,6 @@
 {{ config(
-      alias='flashloans'
+      schema = 'uniswap_v3_ethereum'
+      , alias='flashloans'
       , materialized = 'incremental'
       , file_format = 'delta'
       , incremental_strategy = 'merge'
@@ -27,6 +28,9 @@ WITH flashloans AS (
     LEFT JOIN {{ ref('tokens_ethereum_erc20') }} erc20a ON p.token0 = erc20a.contract_address
     LEFT JOIN {{ ref('tokens_ethereum_erc20') }} erc20b ON p.token1 = erc20b.contract_address
     WHERE f.evt_block_time > NOW() - interval '1' month
+        {% if is_incremental() %}
+        AND f.evt_block_time >= date_trunc("day", now() - interval '1 week')
+        {% endif %}
     )
 
 SELECT 'ethereum' AS blockchain
