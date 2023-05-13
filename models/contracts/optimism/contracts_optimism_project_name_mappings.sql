@@ -85,5 +85,6 @@ from (
     ,('collab_land', 'Collab.Land')
     ,('Biconomy - Hyphen', 'Biconomy')
     ,('angle', 'Angle Protocol')
-    ,('overnight','Overnight+')
+    ,('overnight', 'Overnight+')
+
     ) as temp_table (dune_name, mapped_name)
