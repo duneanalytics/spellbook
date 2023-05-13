@@ -14,8 +14,8 @@ select
   ,cast(mapped_name as varchar(250)) AS mapped_name
 from (
     values
-    ('lyra_v1',	'Lyra')
-    ,('Lyra V1', 'Lyra')
+    ('lyra_v1',	'Lyra Finance')
+    ,('Lyra V1', 'Lyra Finance')
     ,('aave_v3', 'Aave')
     ,('perp_v2', 'Perpetual Protocol')
     ,('synthetix_futures', 'Kwenta')
@@ -41,7 +41,7 @@ from (
     ,('balancer_v2', 'Beethoven X')
     ,('stargate', 'Stargate Finance')
     ,('quixotic_v5', 'Quix')
-    ,('lyra_avalon', 'Lyra')
+    ,('lyra_avalon', 'Lyra Finance')
     ,('Unlock', 'Unlock Protocol')
     ,('Xy Finance', 'XY Finance')
     ,('Qidao', 'QiDao')
@@ -78,8 +78,9 @@ from (
     ,('Llama', 'Llamapay')
     ,('Perpetualprotocol','Perpetual Protocol')
     ,('perp_hottub','Perpetual Protocol')
-    ,('Avalon Lyra', 'Lyra')
-    ,('avalon_lyra', 'Lyra')
+    ,('Avalon Lyra', 'Lyra Finance')
+    ,('avalon_lyra', 'Lyra Finance')
+    ,('lyra', 'Lyra Finance')
     ,('Collab Land', 'Collab.Land')
     ,('collab_land', 'Collab.Land')
     ,('Biconomy - Hyphen', 'Biconomy')
