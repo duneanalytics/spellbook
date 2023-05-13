@@ -10,3 +10,17 @@ repos:
     exclude: ^tests/
   - id: check-model-has-properties-file
     exclude: ^tests/
+
+- repo: https://github.com/sqlfluff/sqlfluff
+  rev: 2.1.0
+  hooks:
+  - id: sqlfluff-fix
+    args: ['--force', '--dialect', 'databricks']
+    additional_dependencies:
+      - dbt-databricks==1.2.1
+      - sqlfluff-templater-dbt
+  - id: sqlfluff-lint
+    args: ['--dialect', 'databricks']
+    additional_dependencies:
+      - dbt-databricks==1.2.1
+      - sqlfluff-templater-dbt
