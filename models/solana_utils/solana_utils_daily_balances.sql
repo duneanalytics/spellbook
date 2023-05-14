@@ -20,11 +20,12 @@ WITH
                   , cast(post_balance as double)/1e9 as sol_balance --lamport -> sol 
                   , post_token_balance as token_balance --tokens are already correct decimals in this table
                   , token_balance_owner
+                  , block_time as last_updated_at
                   , row_number() OVER (partition by address, date_trunc('day', block_time) order by block_slot desc) as latest_balance
             FROM {{ source('solana','account_activity') }}
             WHERE tx_success 
             {% if is_incremental() %}
-            AND block_time >= date_trunc("day", now() - interval '1 day')
+            AND block_time > (SELECT max(last_updated_at) FROM {{this}})
             {% endif %}
       )
 
@@ -35,6 +36,7 @@ SELECT
       , token_mint_address
       , token_balance
       , token_balance_owner
+      , last_updated_at
       , now() as updated_at 
 FROM updated_balances
 WHERE latest_balance = 1
