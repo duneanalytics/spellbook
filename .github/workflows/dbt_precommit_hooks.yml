@@ -44,4 +44,4 @@ jobs:
         # Apologies for the hideously long line. Tried to get the Action to respect a multiline if but no dice.
         if: ${{ contains(steps.abc.outputs.added_modified, 'models') || contains(steps.abc.outputs.added_modified, 'test') || contains(steps.abc.outputs.added_modified, 'seeds') || contains(steps.abc.outputs.added_modified, 'macros')}}
         with:
-          extra_args: "--hook-stage manual --files $FILES"
+          extra_args: "--hook-stage push --files $FILES"
