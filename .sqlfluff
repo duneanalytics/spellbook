@@ -9,7 +9,7 @@ exclude_rules = RF04,ST06
 sql_file_exts = .sql
 max_line_length = 120
 ignore_templated_areas = True
-large_file_skip_byte_limit = 0
+large_file_skip_byte_limit = 20000
 
 [sqlfluff:templater:dbt]
 profile = spellbook
