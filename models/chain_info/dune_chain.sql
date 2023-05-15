@@ -1,14 +1,14 @@
 {{
   config(
     schema = 'chain_info',
+    tags=['static'],
     alias = 'dune_chains'
   )
 }}
 
 
-SELECT
-  'chain_id' AS chain_id,
-  'dune_name' AS dune_name,
+SELECT dune_name
+     , chain_id
 FROM (
   VALUES
     ('ethereum', 1),
@@ -20,4 +20,4 @@ FROM (
     ('arbitrum', 42161),
     ('avalanche_c', 43114),
     ('solana', 1399811149)
-) dune_chain_name_to_chain_id("chain_id", "dune_name")
+) AS dune_chain_name_to_chain_id (dune_name, chain_id)
