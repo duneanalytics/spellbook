@@ -52,7 +52,7 @@ models:
           combination_of_columns:
               - chain_id
     columns:
-      - *chain_id
       - &dune_name
         name: dune_name
         description: "Name of the blockchain used on Dune (prices table)"
+      - *chain_id
