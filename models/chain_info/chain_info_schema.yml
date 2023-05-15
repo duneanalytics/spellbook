@@ -1,7 +1,7 @@
 version: 2
 
 models:
-  - name: chain_ids
+  - name: chain_info_chain_ids
     meta:
       blockchain: ethereum, optimism, bnb, gnosis, polygon, fantom, arbitrum, avalanche_c, solana
       project: chain_info
@@ -38,7 +38,7 @@ models:
         name: explorer
         description:  "URL for each chain's main block explorer (first from the chainlist array)"
 
-  - name: dune_chains
+  - name: chain_info_dune_chains
     meta:
       blockchain: ethereum, optimism, bnb, gnosis, polygon, fantom, arbitrum, avalanche_c, solana
       project: chain_info
