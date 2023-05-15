@@ -5,7 +5,7 @@ models:
     meta:
       blockchain: ethereum,optimism,arbitrum,polygon
       project: lido
-      contributors: gregshestakovlido, ppclunghe
+      contributors: gregshestakovlido, ppclunghe, hosuke
     config:
       tags: ['ethereum','optimism','arbitrum','polygon','lido','liquidity']
     description: 

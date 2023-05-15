@@ -1,5 +1,5 @@
 {{ config(
-    alias = 'pools',
+    alias = 'kyberswap_pools',
     partition_by = ['time'],
     materialized = 'incremental',
     file_format = 'delta',

@@ -1055,6 +1055,10 @@ models:
       +schema: lido
       ethereum:
        +schema: lido_ethereum
+      liquidity:
+        +schema: lido_liquidity
+        ethereum:
+          +schema: lido_liquidity_ethereum
 
     onepunchswap:
       +schema: onepunchswap
@@ -1080,8 +1084,3 @@ models:
       +schema: thena
       bnb:
         +schema: thena_bnb
-        
-    lido_liquidity:
-      +schema: lido_liqudity
-      kyberswap_ethereum:
-        +schema: lido_liqudity_kyberswap_ethereum
