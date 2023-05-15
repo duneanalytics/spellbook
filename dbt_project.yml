@@ -1053,8 +1053,10 @@ models:
 
     lido:
       +schema: lido
-      ethereum:
-       +schema: lido_ethereum
+      accounting:
+        +schema: lido_accounting
+        ethereum:
+          +schema: lido_accounting_ethereum
       liquidity:
         +schema: lido_liquidity
         ethereum:
