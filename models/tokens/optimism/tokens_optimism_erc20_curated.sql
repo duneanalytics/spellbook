@@ -333,6 +333,7 @@ WITH raw_token_list AS (
     ,('0x678d8f4Ba8DFE6bad51796351824DcCECeAefF2B', 'veKWENTA',	18, 'receipt')
     ,('0x6e4cc0Ab2B4d2eDAfa6723cFA1582229F1Dd1Be1', 'ZUSD',	6, 'underlying')
     ,('0x384fabB05F28389Afc16fC8bcB08B55eD97Fa597', 'OPepe', 18, 'underlying')
+    ,('0x3Ebb31CB2888e0Acbb81cBE2FeC65AEE24be3BD4', 'AVT', 18, 'underlying')
 
     ) AS temp_table (contract_address, symbol, decimals, token_type)
 )

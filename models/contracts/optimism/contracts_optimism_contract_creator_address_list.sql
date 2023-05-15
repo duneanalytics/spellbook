@@ -470,6 +470,7 @@ WITH curated_list AS (
       ,('0xc82Ea2afE1Fd1D61C4A12f5CeB3D7000f564F5C6', 'Valha')
       ,('0x54812dBaB593674CD4F1216264895be48B55C5e3', 'Cask Protocol')
       ,('0x74a3c8511e709b6463adeed6ec1b273886cefc13', 'nftperp')
+      ,('0x904a08be742bd5bc6ad10f0924f06b0b23d1175c', 'AVT')
 
   ) as temp_table (creator_address, contract_project)
 
