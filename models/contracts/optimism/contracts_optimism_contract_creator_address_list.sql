@@ -471,6 +471,8 @@ WITH curated_list AS (
       ,('0x54812dBaB593674CD4F1216264895be48B55C5e3', 'Cask Protocol')
       ,('0x74a3c8511e709b6463adeed6ec1b273886cefc13', 'nftperp')
       ,('0x904a08be742bd5bc6ad10f0924f06b0b23d1175c', 'AVT')
+      ,('0x6102D098C063A1f282A9196428946D4E3a7BB754', 'Mirror')
+      ,('0x000039DdCF1F63Cf3555e62a8D32a11bD1E7E1E1', 'MesonFi')
 
   ) as temp_table (creator_address, contract_project)
 
