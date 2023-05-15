@@ -18,6 +18,5 @@ FROM (
     ('polygon', 137),
     ('fantom', 250),
     ('arbitrum', 42161),
-    ('avalanche_c', 43114),
-    ('solana', 1399811149)
+    ('avalanche_c', 43114)
 ) AS dune_chain_name_to_chain_id (dune_name, chain_id)
