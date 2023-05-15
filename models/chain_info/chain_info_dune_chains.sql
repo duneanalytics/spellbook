@@ -1,8 +1,8 @@
 {{
   config(
-    schema = 'chain_info',
-    alias = 'dune_chains'
-    tags=['static']
+    schema = 'chain_info'
+    , alias = 'dune_chains'
+    , tags=['static']
   )
 }}
 
