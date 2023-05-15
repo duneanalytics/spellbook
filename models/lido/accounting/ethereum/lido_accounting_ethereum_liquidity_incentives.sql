@@ -10,7 +10,7 @@
         )
 }}
 --https://dune.com/queries/2011977
---ref{{'lido_ethereum_accounting_liquidity_incentives'}}
+--ref{{'lido_accounting_ethereum_liquidity_incentives'}}
 
 with tokens AS (
 select * from (values 
