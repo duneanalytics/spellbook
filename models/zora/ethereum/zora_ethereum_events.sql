@@ -12,6 +12,7 @@
     )
 }}
 
+
 WITH zora_trades AS (
     SELECT 'v3' AS version
     , z3_o1_ee.evt_block_time AS block_time
