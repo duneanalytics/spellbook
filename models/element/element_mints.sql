@@ -1,9 +1,9 @@
 {{ config(
         alias ='mints',
-        post_hook='{{ expose_spells(\'["ethereum","bnb","avalanche_c"]\',
+        post_hook='{{ expose_spells(\'["ethereum","bnb","avalanche_c","polygon"]\',
                                             "project",
                                             "element",
-                                            \'["hildobby","soispoke"]\') }}'
+                                            \'["hildobby","soispoke","Henrystats"]\') }}'
 )
 }}
 
@@ -11,6 +11,7 @@
 'element_ethereum_mints'
 ,'element_avalanche_c_mints'
 ,'element_bnb_mints'
+,'element_polygon_mints'
 ] %}
 
 

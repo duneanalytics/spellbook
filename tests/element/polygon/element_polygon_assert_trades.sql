@@ -1,11 +1,11 @@
--- Check if all polygon Element trade events make it into the nft.trades
+-- Check if all BNB Element trade events make it into the nft.trades
 WITH raw_events AS (
   SELECT evt_block_time AS raw_block_time
   , evt_tx_hash AS raw_tx_hash
   , erc721Token AS raw_nft_contract_address
   , erc721TokenId AS raw_token_id
   , evt_tx_hash || erc721Token || erc721TokenId AS raw_unique_trade_id
-  FROM {{ source('element_ex_polygon','OrdersFeature_evt_ERC721SellOrderFilled') }}
+  FROM {{ source('element_ex_bnb','OrdersFeature_evt_ERC721SellOrderFilled') }}
   WHERE evt_block_time >= '2022-04-15'
   AND evt_block_time < NOW() - interval '1 day' -- allow some head desync
   UNION
@@ -14,7 +14,7 @@ WITH raw_events AS (
   , erc721Token AS raw_nft_contract_address
   , erc721TokenId AS raw_token_id
   , evt_tx_hash || erc721Token || erc721TokenId AS raw_unique_trade_id
-  FROM {{ source('element_ex_polygon','OrdersFeature_evt_ERC721BuyOrderFilled') }}
+  FROM {{ source('element_ex_bnb','OrdersFeature_evt_ERC721BuyOrderFilled') }}
   WHERE evt_block_time >= '2022-04-15'
   AND evt_block_time < NOW() - interval '1 day' -- allow some head desync
   UNION
@@ -23,7 +23,7 @@ WITH raw_events AS (
   , erc1155Token AS raw_nft_contract_address
   , erc1155TokenId AS raw_token_id
   , evt_tx_hash || erc1155Token || erc1155TokenId AS raw_unique_trade_id
-  FROM {{ source('element_ex_polygon','OrdersFeature_evt_ERC1155SellOrderFilled') }}
+  FROM {{ source('element_ex_bnb','OrdersFeature_evt_ERC1155SellOrderFilled') }}
   WHERE evt_block_time >= '2022-04-15'
   AND evt_block_time < NOW() - interval '1 day' -- allow some head desync
   UNION
@@ -32,7 +32,7 @@ WITH raw_events AS (
   , erc1155Token AS raw_nft_contract_address
   , erc1155TokenId AS raw_token_id
   , evt_tx_hash || erc1155Token || erc1155TokenId AS raw_unique_trade_id
-  FROM {{ source('element_ex_polygon','OrdersFeature_evt_ERC1155BuyOrderFilled') }}
+  FROM {{ source('element_ex_bnb','OrdersFeature_evt_ERC1155BuyOrderFilled') }}
   WHERE evt_block_time >= '2022-04-15'
   AND evt_block_time < NOW() - interval '1 day' -- allow some head desync
   )
@@ -43,8 +43,8 @@ WITH raw_events AS (
   , nft_contract_address AS processed_nft_contract_address
   , token_id AS processed_token_id
   , tx_hash || nft_contract_address || token_id AS processed_unique_trade_id
-  FROM {{ ref('element_polygon_events') }}
-  WHERE blockchain = 'polygon'
+  FROM {{ ref('element_bnb_events') }}
+  WHERE blockchain = 'bnb'
     AND project = 'element'
     AND version = 'v1'
     AND block_time >= '2022-04-15'

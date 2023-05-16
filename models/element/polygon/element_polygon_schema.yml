@@ -1,15 +1,15 @@
 version: 2
 
 models:
-  - name: element_events
+  - name: element_polygon_events
     meta:
-      blockchain: ethereum, bnb, avalanche_c, polygon
+      blockchain: polygon
       project: element
-      contributors: hildobby, Henrystats
+      contributors: Henrystats
     config:
-      tags: ['ethereum','bnb','avalanche_c','polygon','element','events']
+      tags: ['polygon','element','events']
     description: >
-       Element events on Ethereum, BNB, Polygon & Avalanche
+        Element events on polygon
     columns:
       - &blockchain
         name: blockchain
@@ -99,7 +99,7 @@ models:
         name: platform_fee_amount_usd
         description:  "Platform fee amount in USD"
       - &platform_fee_percentage
-        name: platform_fee_percentage
+        name: platform_fee_amount_usd
         description:  "Platform fee in % of the amount paid for a given trade"
       - &royalty_fee_amount_raw
         name: royalty_fee_amount_raw
@@ -123,15 +123,15 @@ models:
         name: unique_trade_id
         description:  "Unique trade ID"
 
-  - name: element_trades
+  - name: element_polygon_trades
     meta:
-      blockchain: ethereum, bnb, avalanche_c, polygon
+      blockchain: polygon
       project: element
-      contributors: hildobby, Henrystats
+      contributors: Henrystats
     config:
-      tags: ['ethereum','bnb','avalanche_c','polygon','element','trades']
+      tags: ['polygon','element','trades']
     description: >
-        Element trades on Ethereum, BNB, Polygon & Avalanche
+        Element trades on polygon
     columns:
       - *blockchain
       - *project
@@ -161,15 +161,15 @@ models:
       - *tx_to
       - *unique_trade_id
 
-  - name: element_mints
+  - name: element_polygon_mints
     meta:
-      blockchain: ethereum, bnb, avalanche_c, polygon
+      blockchain: polygon
       project: element
-      contributors: hildobby, Henrystats
+      contributors: Henrystats
     config:
-      tags: ['ethereum','bnb','avalanche_c','polygon','element','mints']
+      tags: ['polygon','element','mints']
     description: >
-        Element mints on Ethereum, BNB, Polygon & Avalanche
+        Element mints on polygon
     columns:
       - *blockchain
       - *project
@@ -199,15 +199,15 @@ models:
       - *tx_to
       - *unique_trade_id
 
-  - name: element_burns
+  - name: element_polygon_burns
     meta:
-      blockchain: ethereum, polygon, bnb, avalanche
+      blockchain: polygon
       project: element
-      contributors: hildobby, Henrystats
+      contributors: Henrystats
     config:
-      tags: ['ethereum','bnb','avalanche_c','polygon','element','burns']
+      tags: ['polygon','element','burns']
     description: >
-        Element burns on Ethereum, BNB, Polygon & Avalanche
+        Element burns on polygon
     columns:
       - *blockchain
       - *project
@@ -237,15 +237,15 @@ models:
       - *tx_to
       - *unique_trade_id
 
-  - name: element_fees
+  - name: element_polygon_fees
     meta:
-      blockchain: ethereum, polygon, bnb, avalanche_c
+      blockchain: polygon
       project: element
-      contributors: hildobby, Henrystats
+      contributors: Henrystats
     config:
-      tags: ['ethereum','bnb','avalanche_c','polygon', element','fees']
+      tags: ['polygon','element','fees']
     description: >
-        Element fees on Ethereum, BNB, Polygon & Avalanche
+        Element fees on polygon
     columns:
       - *blockchain
       - *project

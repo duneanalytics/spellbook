@@ -274,6 +274,8 @@ models:
         +schema: element_bnb
       avalanche_c:
         +schema: element_avalanche_c
+      polygon:
+        +schema: element_polygon
 
 
 #    abi:

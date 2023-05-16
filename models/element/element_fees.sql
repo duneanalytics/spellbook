@@ -1,9 +1,9 @@
 {{ config(
         alias ='fees',
-        post_hook='{{ expose_spells(\'["ethereum","bnb","avalanche_c"]\',
+        post_hook='{{ expose_spells(\'["ethereum","bnb","avalanche_c","polygon"]\',
                                             "project",
                                             "element",
-                                            \'["hildobby","soispoke"]\') }}'
+                                            \'["hildobby","soispoke","Henrystats"]\') }}'
 )
 }}
 
@@ -11,6 +11,7 @@
 'element_ethereum_fees'
 ,'element_avalanche_c_fees'
 ,'element_bnb_fees'
+,'element_polygon_fees'
 ] %}
 
 

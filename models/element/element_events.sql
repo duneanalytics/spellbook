@@ -1,9 +1,9 @@
 {{ config(
         alias ='events',
-        post_hook='{{ expose_spells(\'["ethereum","bnb","avalanche_c"]\',
+        post_hook='{{ expose_spells(\'["ethereum","bnb","avalanche_c","polygon"]\',
                                             "project",
                                             "element",
-                                            \'["hildobby","soispoke"]\') }}'
+                                            \'["hildobby","soispoke","Henrystats"]\') }}'
 )
 }}
 
@@ -11,6 +11,7 @@
 'element_ethereum_events'
 ,'element_bnb_events'
 ,'element_avalanche_c_events'
+,'element_polygon_events'
 ] %}
 
 

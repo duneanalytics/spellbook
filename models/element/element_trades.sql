@@ -1,9 +1,9 @@
 {{ config(
         alias ='trades',
-        post_hook='{{ expose_spells(\'["ethereum","bnb","avalanche_c"]\',
+        post_hook='{{ expose_spells(\'["ethereum","bnb","avalanche_c","polygon"]\',
                                             "project",
                                             "element",
-                                            \'["hildobby","soispoke"]\') }}'
+                                            \'["hildobby","soispoke","Henrystat"]\') }}'
 )
 }}
 
@@ -11,6 +11,7 @@
 'element_ethereum_trades'
 ,'element_avalanche_c_trades'
 ,'element_bnb_trades'
+,'element_polygon_trades'
 ] %}
 
 
