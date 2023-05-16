@@ -30,6 +30,12 @@ models:
       tags: ['solana','balances']
     description: >
         get the daily balances for each address, from which we can materialize a latest balance later on.
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - token_mint_address
+            - address
+            - day
     columns:
       - &day
         name: day
