@@ -66,8 +66,10 @@ with source_polygon_transactions as (
           ,evt_tx_hash as om_tx_hash
           ,evt_index as om_evt_index
           ,posexplode(orderhashes) as (om_order_id, om_order_hash)
-      from {{ source('seaportv1_4polygon_polygon','Seaport_evt_OrdersMatched') }}
-     where contract_address = '{{c_seaport_contract_address}}'
+      from {{ source('seaport_polygon','Seaport_evt_OrdersMatched') }}
+     where contract_address in ('0x00000000000001ad428e4906ae43d8f9852d0dd6' -- Seaport v1.4
+                               ,'0x00000000000000adc04c56bf30ac9d3c0aaf14dc' -- Seaport v1.5
+                               )  
 )
 ,iv_platform_fee_wallet (wallet_address, wallet_name) as (
     values   ('0x0000a26b00c1f0df003000390027140000faa719','opensea')
@@ -127,8 +129,10 @@ with source_polygon_transactions as (
             , zone
             , orderHash AS order_hash
             , posexplode(offer) as (offer_idx, offer_item)
-        from {{ source('seaportv1_4polygon_polygon', 'Seaport_evt_OrderFulfilled') }}
-       where contract_address = '{{c_seaport_contract_address}}'
+        from {{ source('seaport_polygon', 'Seaport_evt_OrderFulfilled') }}
+       where contract_address in ('0x00000000000001ad428e4906ae43d8f9852d0dd6' -- Seaport v1.4
+                                 ,'0x00000000000000adc04c56bf30ac9d3c0aaf14dc' -- Seaport v1.5
+                                 )  
        {% if not is_incremental() %}
          and evt_block_time >= date '{{c_seaport_first_date}}'  -- seaport first txn
        {% endif %}
@@ -191,8 +195,10 @@ with source_polygon_transactions as (
               ,zone
               ,orderHash AS order_hash
               ,posexplode(consideration) as (consideration_idx, consideration_item)
-          from {{ source('seaportv1_4polygon_polygon','Seaport_evt_OrderFulfilled') }}
-         where contract_address = '{{c_seaport_contract_address}}'
+          from {{ source('seaport_polygon','Seaport_evt_OrderFulfilled') }}
+       where contract_address in ('0x00000000000001ad428e4906ae43d8f9852d0dd6' -- Seaport v1.4
+                                 ,'0x00000000000000adc04c56bf30ac9d3c0aaf14dc' -- Seaport v1.5
+                                 )  
         {% if not is_incremental() %}
            and evt_block_time >= date '{{c_seaport_first_date}}'  -- seaport first txn
         {% endif %}
@@ -531,3 +537,6 @@ select  -- basic info
         ,fee_wallet_name
         ,'seaport-' || CAST(tx_hash AS VARCHAR(100)) || '-' || cast(evt_index as VARCHAR(10)) || '-' || CAST(nft_contract_address AS VARCHAR(100)) || '-' || cast(nft_token_id as VARCHAR(100)) || '-' || cast(sub_type as VARCHAR(20)) || '-' || cast(sub_idx as VARCHAR(10)) as unique_trade_id
    from  iv_trades
+  where  (    fee_wallet_name = 'opensea'
+           or right_hash = '360c6ebe'
+         )
