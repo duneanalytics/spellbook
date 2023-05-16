@@ -40,7 +40,8 @@ FROM
             ('iDAI', '0x8e595470ed749b85c6f7669de83eae304c2ec68f', 8, '0x6b175474e89094c44da98b954eedeac495271d0f', 18, 'DAI'),
             ('iWETH', '0x41c84c0e2ee0b740cf0d31f63f3b6f627dc6b393', 8, '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2', 18, 'WETH'),
             ('iSUSHI', '0x226f3738238932ba0db2319a8117d9555446102f', 8, '0x6b3595068778dd592e39a122f4f5a5cf09c90fe2', 18, 'SUSHI'),
-            ('iUNI', '0xfeeb92386a055e2ef7c2b598c872a4047a7db59f', 8, '0x1f9840a85d5af5bf1d1762f925bdaddc4201f984', 18, 'UNI')
+            ('iUNI', '0xfeeb92386a055e2ef7c2b598c872a4047a7db59f', 8, '0x1f9840a85d5af5bf1d1762f925bdaddc4201f984', 18, 'UNI'),
+            ('iWSTETH', '0xbc6b6c837560d1fe317ebb54e105c89f303d5afd', 8, '0x7f39c581f595b53c5cb19bd0b3f8da6c935e2ca0', 18, 'wstETH')
     ) AS temp_table (
         symbol, 
         contract_address, 
