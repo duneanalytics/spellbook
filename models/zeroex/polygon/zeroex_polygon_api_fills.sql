@@ -1,4 +1,5 @@
 {{  config(
+        tags=['prod_exclude'],
         alias='api_fills',
         materialized='incremental',
         partition_by = ['block_date'],
