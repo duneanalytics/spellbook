@@ -97,6 +97,7 @@ send_call_detail AS (
 ),
 
 transfer_amount_detail AS (
+    -- Native transfer
     SELECT s.source_chain_id,
         s.tx_hash,
         s.block_number,
@@ -112,13 +113,13 @@ transfer_amount_detail AS (
         s.local_contract_address,
         s.remote_contract_address,
         s.token_contract_address,
-        (s.amount_raw - t.value) AS amount_raw
+        (s.amount_raw - t.value) AS amount_raw -- The transfer amount is obtained by subtracting the gas fee from the transaction amount if it is native token transferred.
     FROM send_call_detail s
     INNER JOIN {{ source('ethereum', 'traces') }} t ON t.block_number = s.block_number
         AND t.tx_hash = s.tx_hash
         AND cast(t.value as double) > 0
-        AND cardinality(t.trace_address) > 0
-        AND t.to = '{{ endpoint_contract }}'
+        AND cardinality(t.trace_address) > 0  -- exclude the main call record
+        AND t.to = '{{ endpoint_contract }}' -- Use the value of traces transferred to the endpoint contract as gas fees.
         {% if not is_incremental() %}
         AND t.block_time >= '{{transaction_start_date}}'
         {% endif %}
@@ -129,6 +130,7 @@ transfer_amount_detail AS (
     
     UNION ALL
     
+    -- ERC20 transfer
     SELECT s.source_chain_id,
         s.tx_hash,
         s.block_number,
