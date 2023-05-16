@@ -1,3 +1,4 @@
+SELECT * FROM (
 SELECT
     blockchain,
     project,
@@ -81,3 +82,5 @@ SELECT
     unique_trade_id
 from {{ ref('nft_ethereum_trades_beta_ported') }}
 limit 1
+)
+WHERE 1=0
