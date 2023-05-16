@@ -1,5 +1,5 @@
 {{  config(
-        
+
         alias='api_fills',
         materialized='incremental',
         partition_by = ['block_date'],
@@ -353,7 +353,7 @@ all_tx AS (
     FROM otc_fills 
 )
 
-SELECT 
+SELECT distinct 
         all_tx.tx_hash,
         all_tx.block_number, 
         all_tx.evt_index,
@@ -375,7 +375,7 @@ SELECT
         maker_token_amount_raw / pow(10, mp.decimals) AS maker_token_amount,
         maker_token_amount_raw,
         all_tx.type,
-        affiliate_address,
+        max(affiliate_address) over (partition by all_tx.tx_hash) as affiliate_address,
         swap_flag,
         matcha_limit_order_flag,
         CASE WHEN maker_token IN ('0x2791bca1f2de4661ed88a30c99a7a9449aa84174','0x7ceb23fd6bc0add59e62ac25578270cff1b9f619','0x0d500b1d8e8ef31e21c99d1db9a6444d3adf1270','0xc2132d05d31c914a87c6611c10748aeb04b58e8f',
