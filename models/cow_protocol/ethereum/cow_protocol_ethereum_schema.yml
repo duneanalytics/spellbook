@@ -321,8 +321,7 @@ models:
         name: tolerance_bips
       - &trade_usd_value
         name: trade_usd_value
-      - &fill_proportion
-        name: fill_proportion
+      - *fill_proportion
       - &amount_atoms
         name: amount_atoms
       - &amount_percentage
