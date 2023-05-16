@@ -3,11 +3,11 @@
 SELECT
     blockchain,
     project,
-    version,
+    project_version as version,
     block_date,
     block_time,
     nft_token_id as token_id,
-    collection,
+    nft_collection as collection,
     price_usd as amount_usd,
     nft_standard as token_standard,
     trade_type,
