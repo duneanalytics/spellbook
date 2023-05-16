@@ -333,7 +333,22 @@ WITH raw_token_list AS (
     ,('0x678d8f4Ba8DFE6bad51796351824DcCECeAefF2B', 'veKWENTA',	18, 'receipt')
     ,('0x6e4cc0Ab2B4d2eDAfa6723cFA1582229F1Dd1Be1', 'ZUSD',	6, 'underlying')
     ,('0x384fabB05F28389Afc16fC8bcB08B55eD97Fa597', 'OPepe', 18, 'underlying')
-
+    ,('0x3Ebb31CB2888e0Acbb81cBE2FeC65AEE24be3BD4', 'AVT', 18, 'underlying')
+    ,('0xc4d4500326981eacD020e20A81b1c479c161c7EF', 'exaWETH', 18, 'receipt')
+    ,('0x1203cdcead2500bccd251811fd5fedb2026fb499', 'LAME', 18, 'underlying')
+    ,('0x641ff5d17178c3b9498133ebc264bb4170a04668', 'bnMMY', 18, 'receipt')
+    ,('0xe149164D8eca659E8912DbDEC35E3f7E71Fb5789', 'sbMMY', 18, 'receipt')
+    ,('0x04f23404553fcc388Ec73110A0206Dd2E76a6d95', 'sMMY', 18, 'receipt')
+    ,('0x7b26207457a9f8ff4fd21a7a0434066935f1d8e7', 'sbfMMY', 18, 'receipt')
+    ,('0xffb69477fee0daeb64e7de89b57846afa990e99c', 'fMMY', 18, 'receipt')
+    ,('0xcab2c0a41556149330f4223c9b76d93c610dafe6', 'MLP', 18, 'receipt')
+    ,('0x01e77288b38b416F972428d562454fb329350bAc', 'USDM', 18, 'receipt')
+    ,('0x2A3E489F713ab6F652aF930555b5bb3422711ac1', 'vMMY', 18, 'receipt')
+    ,('0xc35457e32e6fcd8d32019d3a46bc2ecc25faab87', 'OPDOGE', 6, 'underlying')
+    ,('0x67e51f46e8e14d4e4cab9df48c59ad8f512486dd', 'nextUSDC', 6, 'receipt')
+    ,('0x8430F084B939208E2eDEd1584889C9A66B90562f', 'USDCx', 18, 'receipt')
+    ,('0xc26921b5b9ee80773774d36c84328ccb22c3a819', 'wOptiDoge', 18, 'receipt')
+    
     ) AS temp_table (contract_address, symbol, decimals, token_type)
 )
 
