@@ -17,7 +17,7 @@ with oracle_txns AS (
         evt_block_time AS period,
         (CAST(postTotalPooledEther AS DOUBLE)-CAST(preTotalPooledEther AS DOUBLE)) lido_rewards,
         evt_tx_hash
-    FROM {{source('lido_ethereum','LidoOracle_evt_PostTotalShares')}}
+    FROM {{source('lido_ethereum','LegacyOracle_evt_PostTotalShares')}}
     ORDER BY 1 DESC
 ),
 
