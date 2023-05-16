@@ -129,7 +129,7 @@ models:
            - price_raw
            - platform_fee_amount_raw
            - royalty_fee_amount_raw
-  
+
  - name: x2y2_ethereum_base_trades
    meta:
      blockchain: ethereum
@@ -147,6 +147,103 @@ models:
            - source('x2y2_ethereum','X2Y2_r1_evt_EvInventory')
      - check_seed:
          seed_file: ref('x2y2_ethereum_base_trades_seed')
+         match_columns:
+           - block_number
+           - tx_hash
+           - sub_tx_trade_id
+         check_columns:
+           - buyer
+           - seller
+           - nft_contract_address
+           - nft_token_id
+           - price_raw
+           - platform_fee_amount_raw
+           - royalty_fee_amount_raw
+
+ - name: zora_v1_ethereum_base_trades
+   meta:
+     blockchain: ethereum
+     sector: nft
+     project: zora
+     contributors: [ '0xRob', 'hildobby' ]
+   config:
+     tags: [ 'ethereum', 'nft', 'trades', 'zora' ]
+   description: "zora v1 base trades"
+   tests:
+     - dbt_utils.unique_combination_of_columns:
+         combination_of_columns: [ 'block_number','tx_hash','sub_tx_trade_id' ]
+     - check_seed:
+         seed_file: ref('zora_v1_ethereum_base_trades_seed')
+         match_columns:
+           - block_number
+           - tx_hash
+           - sub_tx_trade_id
+         check_columns:
+           - buyer
+           - seller
+           - nft_contract_address
+           - nft_token_id
+           - price_raw
+           - platform_fee_amount_raw
+           - royalty_fee_amount_raw
+
+ - name: zora_v2_ethereum_base_trades
+   meta:
+     blockchain: ethereum
+     sector: nft
+     project: zora
+     contributors: [ '0xRob', 'hildobby' ]
+   config:
+     tags: [ 'ethereum', 'nft', 'trades', 'zora' ]
+   description: "zora v2 base trades"
+   tests:
+     - dbt_utils.unique_combination_of_columns:
+         combination_of_columns: [ 'block_number','tx_hash','sub_tx_trade_id' ]
+     - equal_rowcount_with_sources:
+         evt_sources:
+           - source('zora_ethereum','AuctionHouse_evt_AuctionEnded')
+     - check_seed:
+         seed_file: ref('zora_v2_ethereum_base_trades_seed')
+         match_columns:
+           - block_number
+           - tx_hash
+           - sub_tx_trade_id
+         check_columns:
+           - buyer
+           - seller
+           - nft_contract_address
+           - nft_token_id
+           - price_raw
+           - platform_fee_amount_raw
+           - royalty_fee_amount_raw
+
+ - name: zora_v3_ethereum_base_trades
+   meta:
+     blockchain: ethereum
+     sector: nft
+     project: zora
+     contributors: [ '0xRob', 'hildobby' ]
+   config:
+     tags: [ 'ethereum', 'nft', 'trades', 'zora' ]
+   description: "zora v3 base trades"
+   tests:
+     - dbt_utils.unique_combination_of_columns:
+         combination_of_columns: [ 'block_number','tx_hash','sub_tx_trade_id' ]
+     - equal_rowcount_with_sources:
+         evt_sources:
+           - source('zora_v3_ethereum','OffersV1_evt_ExchangeExecuted')
+           - source('zora_v3_ethereum','AsksV1_0_evt_ExchangeExecuted')
+           - source('zora_v3_ethereum','AsksV1_1_evt_ExchangeExecuted')
+           - source('zora_v3_ethereum','ReserveAuctionFindersEth_evt_AuctionEnded')
+           - source('zora_v3_ethereum','ReserveAuctionFindersErc20_evt_AuctionEnded')
+           - source('zora_v3_ethereum','ReserveAuctionCoreEth_evt_AuctionEnded')
+           - source('zora_v3_ethereum','ReserveAuctionCoreErc20_evt_AuctionEnded')
+           - source('zora_v3_ethereum','ReserveAuctionListingEth_evt_AuctionEnded')
+           - source('zora_v3_ethereum','ReserveAuctionListingErc20_evt_AuctionEnded')
+           - source('zora_v3_ethereum','AsksPrivateEth_evt_AskFilled')
+           - source('zora_v3_ethereum','AsksCoreEth_evt_AskFilled')
+     - check_seed:
+         seed_file: ref('zora_v3_ethereum_base_trades_seed')
          match_columns:
            - block_number
            - tx_hash
