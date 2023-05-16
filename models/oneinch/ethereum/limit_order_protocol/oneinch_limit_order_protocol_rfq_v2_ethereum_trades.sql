@@ -27,7 +27,7 @@ WITH limit_order_protocol_rfq_v2 AS
         call_tx_hash,
         call_trace_address
     FROM
-        {{ source('oneinch_lop_v2_ethereum', 'LimitOrderProtocol_call_fillOrderRFQ') }}
+        {{ source('oneinch_ethereum', 'LimitOrderProtocolV2_call_fillOrderRFQ') }}
     WHERE
         call_success
         {% if is_incremental() %}
@@ -48,7 +48,7 @@ WITH limit_order_protocol_rfq_v2 AS
         call_tx_hash,
         call_trace_address
     FROM
-        {{ source('oneinch_lop_v2_ethereum', 'LimitOrderProtocol_call_fillOrderRFQTo') }}
+        {{ source('oneinch_ethereum', 'LimitOrderProtocolV2_call_fillOrderRFQTo') }}
     WHERE
         call_success
         {% if is_incremental() %}
@@ -69,7 +69,7 @@ WITH limit_order_protocol_rfq_v2 AS
         call_tx_hash,
         call_trace_address
     FROM
-        {{ source('oneinch_lop_v2_ethereum', 'LimitOrderProtocol_call_fillOrderRFQToWithPermit') }}
+        {{ source('oneinch_ethereum', 'LimitOrderProtocolV2_call_fillOrderRFQToWithPermit') }}
     WHERE
         call_success
         {% if is_incremental() %}
