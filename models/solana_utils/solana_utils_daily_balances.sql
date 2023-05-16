@@ -20,6 +20,7 @@ WITH
                   , cast(post_balance as double)/1e9 as sol_balance --lamport -> sol 
                   , post_token_balance as token_balance --tokens are already correct decimals in this table
                   , token_balance_owner
+                  , block_slot
                   , row_number() OVER (partition by address, date_trunc('day', block_time) order by block_slot desc) as latest_balance
             FROM {{ source('solana','account_activity') }}
             WHERE tx_success 
