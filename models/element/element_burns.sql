@@ -8,10 +8,10 @@
 }}
 
 {% set element_models = [
-'element_ethereum_burns'
-,'element_avalanche_c_burns'
-,'element_bnb_burns'
-,'element_polygon_burns'
+ref('element_ethereum_burns')
+,ref('element_avalanche_c_burns')
+,ref('element_bnb_burns')
+,ref('element_polygon_burns')
 ] %}
 
 
@@ -46,7 +46,7 @@ FROM (
         tx_from,
         tx_to,
         unique_trade_id
-    FROM {{ ref(model) }}
+    FROM {{ model }}
     {% if not loop.last %}
     UNION ALL
     {% endif %}

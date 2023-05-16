@@ -8,10 +8,10 @@
 }}
 
 {% set element_models = [
-'element_ethereum_events'
-,'element_bnb_events'
-,'element_avalanche_c_events'
-,'element_polygon_events'
+ref('element_ethereum_events')
+,ref('element_bnb_events')
+,ref('element_avalanche_c_events')
+,ref('element_polygon_events')
 ] %}
 
 
@@ -56,7 +56,7 @@ FROM (
         royalty_fee_receive_address,
         royalty_fee_currency_symbol,
         unique_trade_id
-    FROM {{ ref(model) }}
+    FROM {{ model }}
     {% if not loop.last %}
     UNION ALL
     {% endif %}
