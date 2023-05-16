@@ -274,5 +274,7 @@ FROM
 ,('0xa67ea6d2e63265c0ac0a72de42fa67e0098c9433', 'ZONIC OG')
 ,('0x9e8f79006069675ac0fe4b8d48e8514b213f1333', 'Gam Bots')
 ,('0xfc1f4727b270718ea1dafba3466c63ded0c72e61', 'dabao2')
+,('0x6a886c76693ed6f4319a289e3fe2e670b803a2da', 'Optimistic World')
+,('0xCF9B53243Bf471B4c9BF97a78f780Dec2f237f40', 'Mirror Zorb')
 
 ) as temp_table (contract_address, name)
