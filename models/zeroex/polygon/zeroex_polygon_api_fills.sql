@@ -20,7 +20,7 @@
 -- Test Query here: https://dune.com/queries/1684477
 
 WITH zeroex_tx AS (
-    SELECT
+    SELECT distinct 
             tr.tx_hash,
             max('0x' || CASE
                         WHEN POSITION('869584cd' IN INPUT) <> 0
