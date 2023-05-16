@@ -183,6 +183,8 @@ models:
       +schema: gitcoin
       ethereum:
         +schema: gitcoin_ethereum
+      polygon:
+        +schema: gitcoin_polygon
 
     uniswap:
       +schema: uniswap
