@@ -5,7 +5,7 @@
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
-    unique_key = ['block_time', 'tx_hash', 'user_address'],
+    unique_key = ['block_time', 'tx_hash', 'user_address', 'trace_address', 'source_chain_id', 'destination_chain_id', 'currency_contract'],
     post_hook='{{ expose_spells(\'["ethereum"]\',
                               "project",
                               "layerzero",
@@ -13,7 +13,9 @@
     )
 }}
 
-{% set transaction_start_date = "2023-05-01" %}
+{% set transaction_start_date = "2022-03-15" %}
+{% set endpoint_contract = "0x66a71dcef29a0ffbdbe3c6a460a3b5bc225cd675" %}
+{% set native_token_contract = "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2" %}
 
 WITH chain_list(chain_name, chain_id, endpoint_address) as (
     values
@@ -43,22 +45,26 @@ WITH chain_list(chain_name, chain_id, endpoint_address) as (
     ('Moonriver', 167, '0x7004396c99d5690da76a7c59057c5f3a53e01704')
 ),
 send_call_detail AS (
-    SELECT 101 AS source_chain_id,
+    SELECT CAST(101 AS integer) AS source_chain_id,
         s.call_tx_hash as tx_hash,
         s.call_block_number as block_number,
         s._dstChainId AS destination_chain_id,
         s.contract_address,
         s.call_block_time AS block_time,
+        s.call_trace_address AS trace_address,
+        s._adapterParams AS adapter_params,
+        s._refundAddress AS refund_address,
+        s._zroPaymentAddress AS zro_payment_address,
         t.`from` AS user_address,
         t.`to` AS transaction_contract_address,
         CASE WHEN len(_destination) >= 82
             THEN '0x' || right(_destination, 40)
-            ELSE '' END AS local_contract_address,
+            ELSE '' END AS local_contract_address, -- 
         CASE WHEN len(_destination) >= 82
             THEN substring(_destination, 1, len(_destination) - 40)
             ELSE _destination END AS remote_contract_address,
         CASE WHEN et.evt_index IS NULL
-            THEN '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'
+            THEN '{{ native_token_contract }}'
             ELSE et.contract_address END AS token_contract_address,
         CASE WHEN et.evt_index IS NULL
             THEN t.value
@@ -97,6 +103,10 @@ transfer_amount_detail AS (
         s.destination_chain_id,
         s.contract_address,
         s.block_time,
+        s.trace_address,
+        s.adapter_params,
+        s.refund_address,
+        s.zro_payment_address,
         s.user_address,
         s.transaction_contract_address,
         s.local_contract_address,
@@ -108,14 +118,14 @@ transfer_amount_detail AS (
         AND t.tx_hash = s.tx_hash
         AND cast(t.value as double) > 0
         AND cardinality(t.trace_address) > 0
-        AND t.to = '0x66a71dcef29a0ffbdbe3c6a460a3b5bc225cd675'
+        AND t.to = '{{ endpoint_contract }}'
         {% if not is_incremental() %}
         AND t.block_time >= '{{transaction_start_date}}'
         {% endif %}
         {% if is_incremental() %}
         AND t.block_time >= date_trunc("day", now() - interval '1 week')
         {% endif %}
-    WHERE s.token_contract_address = '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'
+    WHERE s.token_contract_address = '{{ native_token_contract }}'
     
     UNION ALL
     
@@ -125,6 +135,10 @@ transfer_amount_detail AS (
         s.destination_chain_id,
         s.contract_address,
         s.block_time,
+        s.trace_address,
+        s.adapter_params,
+        s.refund_address,
+        s.zro_payment_address,
         s.user_address,
         s.transaction_contract_address,
         s.local_contract_address,
@@ -132,7 +146,7 @@ transfer_amount_detail AS (
         s.token_contract_address,
         s.amount_raw
     FROM send_call_detail s
-    WHERE s.token_contract_address <> '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'
+    WHERE s.token_contract_address <> '{{ native_token_contract }}'
 )
 
 SELECT s.source_chain_id,
@@ -143,6 +157,10 @@ SELECT s.source_chain_id,
     s.block_number,
     s.contract_address as endpoint_contract,
     date_trunc('day', s.block_time) AS block_date,
+    s.trace_address,
+    s.adapter_params,
+    s.refund_address,
+    s.zro_payment_address,
     s.block_time,
     s.user_address,
     s.transaction_contract_address AS transaction_contract,
