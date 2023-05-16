@@ -139,6 +139,8 @@ models:
       - &partial_fill
         name: partial_fill
         description: "Boolean indicating if the order is partially fill-able"
+      - &fill_proportion
+        name: fill_proportion
 
   - name: cow_protocol_ethereum_batches
     meta:
