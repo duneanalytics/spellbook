@@ -14,7 +14,6 @@
 {% set project_start_date = '2022-10-18' %}
 {% set seaport_usage_start_date = '2023-01-25' %}
 
-
 SELECT
     'ethereum' AS blockchain
     , 'blur' AS project
@@ -90,8 +89,7 @@ LEFT JOIN {{ ref('nft_ethereum_aggregators_markers') }} agg_m
 LEFT JOIN {{ source('prices','usd') }} pu ON pu.blockchain='ethereum'
     AND pu.minute=date_trunc('minute', bm.evt_block_time)
     AND (pu.contract_address=get_json_object(bm.buy, '$.paymentToken')
-        OR (pu.contract_address='0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2' AND get_json_object(bm.buy, '$.paymentToken')='0x0000000000000000000000000000000000000000')
-        OR (pu.contract_address='0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2' AND get_json_object(bm.buy, '$.paymentToken')='0x0000000000a39bb272e79075ade125fd351887ac'))
+        OR (pu.contract_address='0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2' AND get_json_object(bm.buy, '$.paymentToken')='0x0000000000000000000000000000000000000000'))
     {% if not is_incremental() %}
     AND pu.minute >= '{{project_start_date}}'
     {% endif %}
@@ -104,7 +102,6 @@ WHERE bm.evt_block_time >= date_trunc("day", now() - interval '1 week')
 {% endif %}
 
 UNION ALL
-
 
 SELECT
     'ethereum' AS blockchain
