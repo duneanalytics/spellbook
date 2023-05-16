@@ -32,8 +32,6 @@ WITH zeroex_tx AS (
                                 FROM (position('fbc019a7' IN INPUT) + 32)
                                 FOR 40)
             END) AS affiliate_address,
-            tr.to as to,
-            tr.from as from,
             tr.block_number as block_number,
             tr.block_time as block_time
         FROM {{ source('polygon', 'traces') }} tr
@@ -75,8 +73,6 @@ v4_rfq_fills_no_bridge AS (
             fills.makerTokenFilledAmount    AS maker_token_amount_raw,
             'RfqOrderFilled'                AS type,
             zeroex_tx.affiliate_address     AS affiliate_address,
-            zeroex_tx.to, 
-            zeroex_tx.from, 
             zeroex_tx.block_number,
             (zeroex_tx.tx_hash IS NOT NULL) AS swap_flag,
             FALSE                           AS matcha_limit_order_flag
@@ -108,8 +104,6 @@ v4_limit_fills_no_bridge AS (
             fills.makerTokenFilledAmount AS maker_token_amount_raw,
             'LimitOrderFilled' AS type,
             COALESCE(zeroex_tx.affiliate_address, fills.feeRecipient) AS affiliate_address,
-            zeroex_tx.to, 
-            zeroex_tx.from,
             zeroex_tx.block_number,
             (zeroex_tx.tx_hash IS NOT NULL) AS swap_flag,
             (fills.feeRecipient in 
@@ -143,8 +137,6 @@ otc_fills AS (
             fills.makerTokenFilledAmount    AS maker_token_amount_raw,
             'OtcOrderFilled'                AS type,
             zeroex_tx.affiliate_address     AS affiliate_address,
-            zeroex_tx.to, 
-            zeroex_tx.from,
             zeroex_tx.block_number,
             (zeroex_tx.tx_hash IS NOT NULL) AS swap_flag,
             FALSE                           AS matcha_limit_order_flag
@@ -177,8 +169,6 @@ ERC20BridgeTransfer AS (
             bytea2numeric(substring(DATA, 219, 40)) AS maker_token_amount_raw,
             'ERC20BridgeTransfer'                   AS type,
             zeroex_tx.affiliate_address             AS affiliate_address,
-            zeroex_tx.to, 
-            zeroex_tx.from,
             zeroex_tx.block_number,
             TRUE                                    AS swap_flag,
             FALSE                                   AS matcha_limit_order_flag
@@ -237,8 +227,6 @@ NewBridgeFill AS (
         bytea2numeric('0x' || substring(logs.DATA, 283, 40)) AS maker_token_amount_raw,
         'BridgeFill'                                         AS type,
         zeroex_tx.affiliate_address                          AS affiliate_address,
-        zeroex_tx.to, 
-        zeroex_tx.from,
         zeroex_tx.block_number,
         TRUE                                                 AS swap_flag,
         FALSE                                                AS matcha_limit_order_flag
@@ -273,8 +261,6 @@ direct_PLP AS (
             outputTokenAmount           AS maker_token_amount_raw,
             'LiquidityProviderSwap'     AS type,
             zeroex_tx.affiliate_address AS affiliate_address,
-            zeroex_tx.to, 
-            zeroex_tx.from,
             zeroex_tx.block_number,
             TRUE                        AS swap_flag,
             FALSE                       AS matcha_limit_order_flag
