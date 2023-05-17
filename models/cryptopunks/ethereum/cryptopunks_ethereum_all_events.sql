@@ -11,55 +11,55 @@ select  evt_block_time
         , punk_id
         , event_type
         , sale_type
-         , `from` 
-         , `to` 
+         , `from`
+         , `to`
         , eth_amount
         , usd_amount
         , evt_block_number
         , evt_tx_hash
-from 
+from
 (
     select  evt_block_time
             , punk_id
             , event_type
             , cast(NULL as varchar(5)) as sale_type
             , bidder as `from`
-            , cast(NULL as varchar(5)) as `to` 
+            , cast(NULL as varchar(5)) as `to`
             , eth_amount
             , usd_amount
             , evt_block_number
             , evt_tx_hash
     from {{ ref('cryptopunks_ethereum_punk_bid_events') }}
 
-    union all 
+    union all
 
     select  evt_block_time
             , punk_id
             , event_type
             , cast(NULL as varchar(5)) as sale_type
-             , `from` 
-             , `to` 
+             , `from`
+             , `to`
             , eth_amount
             , usd_amount
             , evt_block_number
-            , evt_tx_hash 
+            , evt_tx_hash
     from {{ ref('cryptopunks_ethereum_punk_offer_events') }}
 
-    union all 
+    union all
 
     select  block_time
-            , token_id 
+            , token_id
             , 'Sold' as event_type
             , case when trade_category = 'Offer Accepted' then 'Bid Accept' else trade_category end as sale_type -- convert nft.trades wording to match cryptopunks.app
             , seller
             , buyer
             , amount_original
             , amount_usd
-            , block_number 
+            , block_number
             , tx_hash
-    from {{ ref('cryptopunks_ethereum_trades') }}
+    from {{ ref('cryptopunks_ethereum_events') }}
 
-    union all 
+    union all
 
     select block_time
             , token_id
@@ -91,11 +91,11 @@ from
     from {{ source('rarible_v1_ethereum','ERC721Sale_v2_evt_Buy') }}
     where token = lower('0xb7f7f6c52f2e2fdb1963eab30438024864c313f6')
 
-    union all 
+    union all
 
     select  evt_block_time
-            , punk_id 
-            , case  when `from` = '0x0000000000000000000000000000000000000000' then 'Claimed' 
+            , punk_id
+            , case  when `from` = '0x0000000000000000000000000000000000000000' then 'Claimed'
                     when `from` = '0xb7f7f6c52f2e2fdb1963eab30438024864c313f6' then 'Unwrap'
                     when `to` = '0xb7f7f6c52f2e2fdb1963eab30438024864c313f6' then 'Wrap'
                 else 'Transfer' end as event_type
@@ -104,10 +104,10 @@ from
             , `to`
             , cast(NULL as double) as eth_amount
             , cast(NULL as double) as usd_amount
-            , evt_block_number 
+            , evt_block_number
             , evt_tx_hash
     from {{ ref('cryptopunks_ethereum_punk_transfers') }}
-    where evt_tx_hash not in (select distinct tx_hash from {{ ref('cryptopunks_ethereum_trades') }} )
-) a 
+    where evt_tx_hash not in (select distinct tx_hash from {{ ref('cryptopunks_ethereum_events') }} )
+) a
 group by 1,2,3,4,5,6,7,8,9,10
 order by evt_block_number desc
