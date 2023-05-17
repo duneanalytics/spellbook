@@ -345,3 +345,29 @@ models:
            - platform_fee_amount_raw
            - royalty_fee_amount_raw
 
+ - name: collectionswap_ethereum_base_trades
+   meta:
+     blockchain: ethereum
+     sector: nft
+     project: collectionswap
+     contributors: [ '0xRob' ]
+   config:
+     tags: [ 'ethereum', 'nft', 'trades', 'collectionswap' ]
+   description: "collectionswap base trades"
+   tests:
+     - dbt_utils.unique_combination_of_columns:
+         combination_of_columns: [ 'block_number','tx_hash','sub_tx_trade_id' ]
+     - check_seed:
+         seed_file: ref('collectionswap_ethereum_base_trades_seed')
+         match_columns:
+           - block_number
+           - tx_hash
+           - sub_tx_trade_id
+         check_columns:
+           - buyer
+           - seller
+           - nft_contract_address
+           - nft_token_id
+           - price_raw
+           - platform_fee_amount_raw
+           - royalty_fee_amount_raw
