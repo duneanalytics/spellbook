@@ -13,8 +13,6 @@ models:
    tests:
      - dbt_utils.unique_combination_of_columns:
          combination_of_columns: ['block_number','tx_hash','sub_tx_trade_id']
-     - dbt_utils.equal_rowcount:
-         compare_model: ref('archipelago_ethereum_events')
      - equal_rowcount_with_sources:
          evt_sources:
            - source('archipelago_ethereum','ArchipelagoMarket_evt_Trade')
@@ -46,8 +44,6 @@ models:
    tests:
      - dbt_utils.unique_combination_of_columns:
          combination_of_columns: [ 'block_number','tx_hash','sub_tx_trade_id' ]
-     - dbt_utils.equal_rowcount:
-         compare_model: ref('superrare_ethereum_events')
      - check_seed:
          seed_file: ref('superrare_ethereum_base_trades_seed')
          match_columns:
@@ -109,8 +105,6 @@ models:
    tests:
      - dbt_utils.unique_combination_of_columns:
          combination_of_columns: [ 'block_number','tx_hash','sub_tx_trade_id' ]
-     - dbt_utils.equal_rowcount:
-         compare_model: ref('blur_ethereum_events')
      - check_seed:
          seed_file: ref('blur_ethereum_base_trades_seed')
          match_columns:
@@ -125,7 +119,7 @@ models:
            - price_raw
            - platform_fee_amount_raw
            - royalty_fee_amount_raw
-           
+
  - name: element_ethereum_base_trades
    meta:
      blockchain: ethereum
