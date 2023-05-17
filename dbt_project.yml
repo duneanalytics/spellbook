@@ -67,11 +67,6 @@ models:
       fantom:
         +schema: aave_fantom
 
-    aavegotchi:
-      +schema: aavegotchi
-      polygon:
-        +schema: aavegotchi_polygon
-
     balancer:
       +schema: balancer
       arbitrum:
@@ -88,13 +83,6 @@ models:
     ens:
       +schema: ens
 
-    airdrop:
-      +schema: airdrop
-      +materialized: table
-      optimism:
-        +schema: airdrop_optimism
-        +materialized: table
-
     staking:
       +schema: staking
       ethereum:
@@ -105,6 +93,7 @@ models:
 
     airdrop:
       +schema: airdrop
+      +materialized: table
       ethereum:
         +schema: airdrop_ethereum
       optimism:
@@ -278,38 +267,9 @@ models:
       optimism:
         +schema: opensea_optimism
 
-    element:
-      +schema: element
-      ethereum:
-        +schema: element_ethereum
-      bnb:
-        +schema: element_bnb
-      avalanche_c:
-        +schema: element_avalanche_c
-
 
 #    abi:
 #      +schema: abi
-
-    superrare:
-      +schema: superrare
-    looksrare:
-      +schema: looksrare
-      ethereum:
-        +schema: looksrare_ethereum
-    foundation:
-      +schema: foundation
-      ethereum:
-        +schema: foundation_ethereum
-    blur:
-      +schema: blur
-      ethereum:
-        +schema: blur_ethereum
-
-    stealcam:
-      +schema: stealcam
-      arbitrum:
-        +schema: stealcam_arbitrum
 
     gas:
       +schema: gas
@@ -338,30 +298,10 @@ models:
       polygon:
         +schema: tigris_polygon
 
-    x2y2:
-      +schema: x2y2
-      ethereum:
-        +schema: x2y2_ethereum
-    zora:
-      +schema: zora
-      ethereum:
-        +schema: zora_ethereum
-    magiceden:
-      +schema: magiceden
-      polygon:
-        +schema: magiceden_polygon
-      solana:
-        +schema: magiceden_solana
-
     nomad:
       +schema: nomad
       ethereum:
         +schema: nomad_ethereum
-
-    ellipsis_finance:
-      +schema: ellipsis_finance
-      bnb:
-        +schema: ellipsis_finance_bnb
 
     wigoswap:
       +schema: wigoswap
@@ -505,8 +445,6 @@ models:
         +schema: trader_joe_avalanche_c
       bnb:
         +schema: trader_joe_bnb
-      arbitrum:
-        +schema: trader_joe_arbitrum
 
     odos:
       +schema: odos
@@ -558,31 +496,6 @@ models:
         +schema: safe_fantom
       arbitrum:
         +schema: safe_arbitrum
-
-    liquidifty:
-      +schema: liquidifty
-      bnb:
-        +schema: liquidifty_bnb
-      ethereum:
-        +schema: liquidifty_ethereum
-
-    nftb:
-      +schema: nftb
-      bnb:
-        +schema: nftb_bnb
-
-    nftrade:
-      +schema: nftrade
-      bnb:
-        +schema: nftrade_bnb
-
-
-    trove:
-      +schema: trove
-      arbitrum:
-        +schema: trove_arbitrum
-      ethereum:
-        +schema: trove_ethereum
 
     lifi:
       +schema: lifi
@@ -657,11 +570,6 @@ models:
       +schema: synthetix
       optimism:
         +schema: synthetix_optimism
-
-    archipelago:
-      +schema: archipelago
-      ethereum:
-        +schema: archipelago_ethereum
 
     integral:
       +schema: integral
@@ -788,11 +696,6 @@ models:
       +schema: shibaswap
       ethereum:
         +schema: shibaswap_ethereum
-
-    velodrome:
-      +schema: velodrome
-      optimism:
-        +schema: velodrome_optimism
 
     zigzag:
       +schema: zigzag
@@ -929,6 +832,7 @@ models:
       # gnosis2:
       #   +schema: hop_gnosis
 
+
     chain_info:
       +schema: chain_info
 
@@ -946,17 +850,6 @@ models:
       +schema: tessera
       ethereum:
         +schema: tessera_ethereum
-
-    tofu:
-      +schema: tofu
-      bnb:
-        +schema: tofu_bnb
-      arbitrum:
-        +schema: tofu_arbitrum
-      optimism:
-        +schema: tofu_optimism
-      polygon:
-        +schema: tofu_polygon
 
     maker:
       +schema: maker
@@ -1020,11 +913,6 @@ models:
       optimism:
         +schema: nftearth_optimism
 
-    zonic:
-      +schema: zonic
-      optimism:
-        +schema: zonic_optimism
-
     pooltogether:
       +schema: pooltogether
       ethereum:
@@ -1042,16 +930,6 @@ models:
       +schema: optimism_quests
       optimism:
         +schema: optimism_quests_optimism
-
-    fractal:
-      +schema: fractal
-      polygon:
-        +schema: fractal_polygon
-
-    rarible:
-      +schema: rarible
-      polygon:
-        +schema: rarible_polygon
 
     dydx:
       +schema: dydx
