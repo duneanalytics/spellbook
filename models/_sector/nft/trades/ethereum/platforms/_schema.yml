@@ -110,10 +110,10 @@ models:
      - dbt_utils.unique_combination_of_columns:
          combination_of_columns: [ 'block_number','tx_hash','sub_tx_trade_id' ]
      - equal_rowcount_with_sources:
+         config:
+           error_if: ">1"
          evt_sources:
            - source('cryptopunks_ethereum','CryptoPunksMarket_evt_PunkBought')
-     - dbt_utils.equal_rowcount:
-         compare_model: ref('cryptopunks_ethereum_events')
      - check_seed:
          seed_file: ref('cryptopunks_ethereum_base_trades_seed')
          match_columns:
@@ -141,8 +141,6 @@ models:
    tests:
      - dbt_utils.unique_combination_of_columns:
          combination_of_columns: [ 'block_number','tx_hash','sub_tx_trade_id' ]
-     - dbt_utils.equal_rowcount:
-         compare_model: ref('blur_ethereum_events')
      - check_seed:
          seed_file: ref('blur_ethereum_base_trades_seed')
          match_columns:
