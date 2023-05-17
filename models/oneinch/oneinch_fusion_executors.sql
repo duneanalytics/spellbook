@@ -55,8 +55,8 @@ chains as (
         tx_hash
         , "from" as resolver_address
         , substring(input, 49, 20) as resolver_executor
-        , cast(bytea2numeric(substring(input, 5, 32)) as double) as chain_id
-    from ethereum.traces
+        , cast(bytea2numeric_v3(substring(input, 5, 32)) as double) as chain_id
+    from {{ source('ethereum', 'traces') }}
     where "to" = '0xcb8308fcb7bc2f84ed1bea2c016991d34de5cc77'
         and substring(input, 1, 4) = '0xf204bdb9'
         and block_time >= timestamp '2022-12-25'
