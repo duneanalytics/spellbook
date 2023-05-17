@@ -110,7 +110,7 @@ models:
      - dbt_utils.unique_combination_of_columns:
          combination_of_columns: [ 'block_number','tx_hash','sub_tx_trade_id' ]
      - equal_rowcount_with_sources:
-         error_if: >1
+         error_if: ">1"
          evt_sources:
            - source('cryptopunks_ethereum','CryptoPunksMarket_evt_PunkBought')
      - check_seed:
