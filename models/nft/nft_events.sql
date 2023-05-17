@@ -11,6 +11,7 @@
                     \'["soispoke","0xRob", "hildobby"]\') }}')
 }}
 
+
 {% set nft_models = [
  ref('aavegotchi_polygon_events')
 ,ref('archipelago_ethereum_events')
