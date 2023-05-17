@@ -10,7 +10,7 @@ sources:
     tables:
       - name: AllowedRecipientsRegistry_evt_RecipientAdded
       - name: AllowedRecipientsRegistry_evt_RecipientRemoved
-      - name: LidoOracle_evt_PostTotalShares
+      - name: LegacyOracle_evt_PostTotalShares
       - name: steth_evt_FeeSet
       - name: steth_evt_FeeDistributionSet
       - name: LDO_evt_Transfer
