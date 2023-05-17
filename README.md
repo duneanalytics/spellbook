@@ -14,7 +14,7 @@ Looking for abstractions from the V1 engine? We moved them to [dune-v1-abstracti
 
 Write SQL to transform blockchain data into curated datasets on [dune.com](https://dune.com/home).
 
-First-time visitor? Check out how to [get started](#getting-started) below and visit the [Spellbook Getting Started Guide](https://dune.com/docs/spellbook/getting-started/). More tk.
+First-time visitor? Check out how to [get started](#getting-started) below and visit the [Spellbook Getting Started Guide](https://dune.com/docs/data-tables/spellbook/contributing/). More tk.
 
 Been here before? An archive of intermediate datasets that were contributed to Dune v1 can be consulted [here](https://github.com/duneanalytics/dune-v1-abstractions).
 
