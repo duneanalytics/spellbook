@@ -11,13 +11,15 @@
   )
 }}
 
+--Here is the query in DuneSQL for easy porting: https://dune.com/queries/2484193
+
 WITH flashloans AS (
     SELECT d.evt_block_time AS block_time
         , d.evt_block_number AS block_number
         , CAST(json_extract(json_extract(d.update, '$.deltaWei'), '$.value') AS DECIMAL(38,0)) AS amount_raw
         , d.evt_tx_hash AS tx_hash
         , d.evt_index
-        , CASE WHEN MIN(CAST(json_extract(json_extract(d.update, '$.deltaWei'), '$.value') AS DECIMAL(38,0)) - CAST(json_extract(json_extract(w.update, '$.deltaWei'), '$.value') AS DECIMAL(38,0))) < 0 THEN 0
+        , CASE WHEN MIN(CAST(json_extract(json_extract(d.update, '$.deltaWei'), '$.value') AS DECIMAL(38,0)) - CAST(json_extract(json_extract(w.update, '$.deltaWei'), '$.value') AS DECIMAL(38,0))) < CAST(0 AS DECIMAL(38,0)) THEN 0
             ELSE MIN(CAST(json_extract(json_extract(d.update, '$.deltaWei'), '$.value') AS DECIMAL(38,0)) - CAST(json_extract(json_extract(w.update, '$.deltaWei'), '$.value') AS DECIMAL(38,0))) END AS fee
         , CASE WHEN CAST(d.market AS int) = 0 THEN '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'
             WHEN CAST(d.market AS int) = 1 THEN '0x89d24a6b4ccb1b6faa2625fe562bdd9a23260359'
