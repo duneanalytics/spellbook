@@ -11,18 +11,6 @@
                     \'["soispoke","umer_h_adil","hildobby","0xRob", "chuxin"]\') }}')
 }}
 
-{% set nft_models = [
-ref('opensea_mints')
-,ref('magiceden_mints')
-,ref('looksrare_ethereum_mints')
-,ref('x2y2_ethereum_mints')
-,ref('element_mints')
-,ref('foundation_ethereum_mints')
-,ref('blur_ethereum_mints')
-,ref('zora_ethereum_mints')
-,ref('nftb_bnb_mints')
-,ref('stealcam_arbitrum_mints')
-] %}
 
 {% set native_mints = [
  ref('nft_ethereum_native_mints')
@@ -31,11 +19,7 @@ ref('opensea_mints')
 
 WITH project_mints as
 (
-    SELECT *
-    FROM
-    (
-        {% for nft_model in nft_models %}
-        SELECT
+    SELECT
             blockchain,
             project,
             version,
@@ -64,15 +48,11 @@ WITH project_mints as
             tx_from,
             tx_to,
             unique_trade_id
-        FROM {{ nft_model }}
+        FROM {{ ref('nft_events') }}
+        WHERE evt_type = "Mint"
         {% if is_incremental() %}
-        WHERE block_time >= date_trunc("day", now() - interval '1 week')
+        AND block_time >= date_trunc("day", now() - interval '1 week')
         {% endif %}
-        {% if not loop.last %}
-        UNION ALL
-        {% endif %}
-        {% endfor %}
-    )
 )
 , native_mints AS
 (
@@ -133,5 +113,5 @@ WITH project_mints as
 SELECT *
 FROM project_mints
 UNION ALL
-SELECT * 
+SELECT *
 FROM native_mints

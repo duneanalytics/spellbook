@@ -32,7 +32,7 @@ with all_listing_events as (
             , evt_index
             , block_time as evt_block_time
             , tx_hash as evt_tx_hash
-    from {{ ref('cryptopunks_ethereum_trades') }}
+    from {{ ref('cryptopunks_ethereum_events') }}
 )
 , all_transfers as (
     select  punk_id
@@ -49,7 +49,7 @@ with all_listing_events as (
 , base_data as (
     with all_days  as (select explode(sequence(to_date('2017-06-23'), to_date(now()), interval 1 day)) as day)
     , all_punk_ids as (select explode(sequence(0, 9999, 1)) as punk_id)
-    
+
     select  day
             , punk_id
     from all_days
@@ -58,53 +58,53 @@ with all_listing_events as (
 , all_punk_events as (
     select *
           , row_number() over (partition by punk_id order by evt_block_number asc, evt_index asc ) as punk_event_index
-    from 
+    from
     (
     select * from all_listing_events
     union all select * from all_buys
     union all select * from all_transfers
-    ) a 
+    ) a
 )
 , aggregated_punk_on_off_data as (
-    select date_trunc('day',a.evt_block_time) as day 
-            , a.punk_id 
+    select date_trunc('day',a.evt_block_time) as day
+            , a.punk_id
             , listed_price
             , case when event_sub_type = 'Public Listing' then 'Active' else 'Not Listed' end as listed_bool
-    from all_punk_events a 
-    inner join (    select date_trunc('day', evt_block_time) as day 
+    from all_punk_events a
+    inner join (    select date_trunc('day', evt_block_time) as day
                             , punk_id
                             , max(punk_event_index) as max_event
                     from all_punk_events
                     group by 1,2
-                ) b -- max event per punk per day 
+                ) b -- max event per punk per day
     on date_trunc('day',a.evt_block_time) = b.day and a.punk_id = b.punk_id and a.punk_event_index = b.max_event
 )
 
-select day 
+select day
         , floor_price_eth
         , floor_price_eth*1.0*p.price as floor_price_usd
-from 
-(   select day 
+from
+(   select day
             , min(price_fill_in) filter (where bool_fill_in = 'Active' and price_fill_in > 0) as floor_price_eth
-    from 
+    from
     (   select c.*
                 , last_value(listed_price,true) over (partition by punk_id order by day asc ) as price_fill_in
                 , last_value(listed_bool,true) over (partition by punk_id order by day asc ) as bool_fill_in
-        from 
+        from
         (   select a.day
-                    , a.punk_id 
+                    , a.punk_id
                     , listed_price
-                    , listed_bool 
+                    , listed_bool
             from base_data  a
-            left outer join aggregated_punk_on_off_data  b 
+            left outer join aggregated_punk_on_off_data  b
             on a.day = b.day and a.punk_id = b.punk_id
-        ) c 
-    ) d 
-    group by 1 
-) e 
+        ) c
+    ) d
+    group by 1
+) e
 
 left join {{ source('prices', 'usd') }} p on p.minute = date_trunc('minute', e.day)
     and p.contract_address = '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'
     and p.blockchain = 'ethereum'
 
-order by day desc 
+order by day desc
