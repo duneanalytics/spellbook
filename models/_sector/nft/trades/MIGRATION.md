@@ -129,8 +129,8 @@ The migration for each protocol consists of 3 parts.
 | Platform    | Version | Trades (21/4/2023) | Migrated | Validated | Purged |
 |-------------|:-------:|-------------------:|:--------:|:---------:|:------:|
 | archipelago |   v1    |                561 |   [x]    |    [x]    |        |
-| blur        |   v1    |          3,067,180 |          |           |        |
-| cryptopunks |   v1    |             23,054 |          |           |        |
+| blur        |   v1    |          3,067,180 |   [x]    |    [x]    |        |
+| cryptopunks |   v1    |             23,054 |   [x]    |    [x]    |        |
 | element     |   v1    |            106,654 |          |           |        |
 | foundation  |   v1    |            137,246 |   [x]    |    [x]    |        |
 | looksrare   |   v1    |            401,647 |          |           |        |
