@@ -1,4 +1,4 @@
-default_stages: [push]
+default_stages: [push, manual]
 exclude: ^deprecated-dune-v1-abstractions/
 repos:
 - repo: https://github.com/offbi/pre-commit-dbt
@@ -15,13 +15,11 @@ repos:
   rev: 2.1.0
   hooks:
   - id: sqlfluff-fix
-    stages: [manual]
     args: ['--force', '--dialect', 'databricks']
     additional_dependencies:
       - dbt-databricks==1.2.1
       - sqlfluff-templater-dbt
   - id: sqlfluff-lint
-    stages: [manual]
     args: ['--dialect', 'databricks']
     additional_dependencies:
       - dbt-databricks==1.2.1
