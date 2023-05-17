@@ -93,6 +93,37 @@ models:
            - platform_fee_amount_raw
            - royalty_fee_amount_raw
 
+ - name: cryptopunks_ethereum_base_trades
+   meta:
+     blockchain: ethereum
+     sector: nft
+     project: cyptopunks
+     contributors: [ 'cat', '0xRob' ]
+   config:
+     tags: [ 'ethereum', 'nft', 'trades', 'cyptopunks' ]
+   description: "cyptopunks base trades"
+   tests:
+     - dbt_utils.unique_combination_of_columns:
+         combination_of_columns: [ 'block_number','tx_hash','sub_tx_trade_id' ]
+     - equal_rowcount_with_sources:
+         error_if: ">1"
+         evt_sources:
+           - source('cryptopunks_ethereum','CryptoPunksMarket_evt_PunkBought')
+     - check_seed:
+         seed_file: ref('cryptopunks_ethereum_base_trades_seed')
+         match_columns:
+           - block_number
+           - tx_hash
+           - sub_tx_trade_id
+         check_columns:
+           - buyer
+           - seller
+           - nft_contract_address
+           - nft_token_id
+           - price_raw
+           - platform_fee_amount_raw
+           - royalty_fee_amount_raw
+
  - name: blur_ethereum_base_trades
    meta:
      blockchain: ethereum
@@ -183,6 +214,67 @@ models:
            - platform_fee_amount_raw
            - royalty_fee_amount_raw
 
+ - name: looksrare_v1_ethereum_base_trades
+   meta:
+     blockchain: ethereum
+     sector: nft
+     project: looksrare
+     contributors: [ '0xRob','soispoke', 'hildobby', 'denze' ]
+   config:
+     tags: [ 'ethereum', 'nft', 'trades', 'looksrare' ]
+   description: "looksrare v1 base trades"
+   tests:
+     - dbt_utils.unique_combination_of_columns:
+         combination_of_columns: [ 'block_number','tx_hash','sub_tx_trade_id' ]
+     - equal_rowcount_with_sources:
+         evt_sources:
+           - source('looksrare_ethereum','LooksRareExchange_evt_TakerAsk')
+           - source('looksrare_ethereum','LooksRareExchange_evt_TakerBid')
+     - check_seed:
+         seed_file: ref('looksrare_v1_ethereum_base_trades_seed')
+         match_columns:
+           - block_number
+           - tx_hash
+           - sub_tx_trade_id
+         check_columns:
+           - buyer
+           - seller
+           - nft_contract_address
+           - nft_token_id
+           - price_raw
+           - platform_fee_amount_raw
+           - royalty_fee_amount_raw
+
+ - name: looksrare_v2_ethereum_base_trades
+   meta:
+     blockchain: ethereum
+     sector: nft
+     project: looksrare
+     contributors: [ '0xRob','soispoke', 'hildobby', 'denze' ]
+   config:
+     tags: [ 'ethereum', 'nft', 'trades', 'looksrare' ]
+   description: "looksrare v2 base trades"
+   tests:
+     - dbt_utils.unique_combination_of_columns:
+         combination_of_columns: [ 'block_number','tx_hash','sub_tx_trade_id' ]
+     - equal_rowcount_with_sources:
+         evt_sources:
+           - source('looksrare_v2_ethereum','LooksRareProtocol_evt_TakerAsk')
+           - source('looksrare_v2_ethereum','LooksRareProtocol_evt_TakerBid')
+     - check_seed:
+         seed_file: ref('looksrare_v2_ethereum_base_trades_seed')
+         match_columns:
+           - block_number
+           - tx_hash
+           - sub_tx_trade_id
+         check_columns:
+           - buyer
+           - seller
+           - nft_contract_address
+           - nft_token_id
+           - price_raw
+           - platform_fee_amount_raw
+           - royalty_fee_amount_raw
  - name: zora_v1_ethereum_base_trades
    meta:
      blockchain: ethereum
@@ -280,3 +372,56 @@ models:
            - platform_fee_amount_raw
            - royalty_fee_amount_raw
 
+ - name: sudoswap_ethereum_base_trades
+   meta:
+     blockchain: ethereum
+     sector: nft
+     project: sudoswap
+     contributors: [ '0xRob','ilemi' ]
+   config:
+     tags: [ 'ethereum', 'nft', 'trades', 'sudoswap' ]
+   description: "sudoswap base trades"
+   tests:
+     - dbt_utils.unique_combination_of_columns:
+         combination_of_columns: [ 'block_number','tx_hash','sub_tx_trade_id' ]
+     - check_seed:
+         seed_file: ref('sudoswap_ethereum_base_trades_seed')
+         match_columns:
+           - block_number
+           - tx_hash
+           - sub_tx_trade_id
+         check_columns:
+           - buyer
+           - seller
+           - nft_contract_address
+           - nft_token_id
+           - price_raw
+           - platform_fee_amount_raw
+           - royalty_fee_amount_raw
+
+ - name: collectionswap_ethereum_base_trades
+   meta:
+     blockchain: ethereum
+     sector: nft
+     project: collectionswap
+     contributors: [ '0xRob' ]
+   config:
+     tags: [ 'ethereum', 'nft', 'trades', 'collectionswap' ]
+   description: "collectionswap base trades"
+   tests:
+     - dbt_utils.unique_combination_of_columns:
+         combination_of_columns: [ 'block_number','tx_hash','sub_tx_trade_id' ]
+     - check_seed:
+         seed_file: ref('collectionswap_ethereum_base_trades_seed')
+         match_columns:
+           - block_number
+           - tx_hash
+           - sub_tx_trade_id
+         check_columns:
+           - buyer
+           - seller
+           - nft_contract_address
+           - nft_token_id
+           - price_raw
+           - platform_fee_amount_raw
+           - royalty_fee_amount_raw

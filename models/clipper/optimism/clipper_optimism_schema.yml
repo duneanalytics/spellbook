@@ -1,16 +1,16 @@
 version: 2
 
 models:
-  - name: clipper_v1_polygon_trades
+  - name: clipper_v1_optimism_trades
     meta:
-      blockchain: polygon
+      blockchain: optimism
       sector: dex
       project: clipper
       contributors: amalashkevich
     config:
-      tags: [ 'polygon','dex','trades', 'clipper', 'amalashkevich']
+      tags: [ 'optimism','dex','trades', 'clipper', 'amalashkevich']
     description: >
-      Clipper trades on Polygon on a specific contract/version.
+      Clipper trades on Optimism on a specific contract/version.
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -22,7 +22,7 @@ models:
             - evt_index
             - trace_address
       - check_dex_seed:
-          blockchain: polygon
+          blockchain: optimism
           project: clipper
           version: 1
     columns:
@@ -96,16 +96,16 @@ models:
         name: evt_index
         description: ""
 
-  - name: clipper_v2_polygon_trades
+  - name: clipper_v2_optimism_trades
     meta:
-      blockchain: polygon
+      blockchain: optimism
       sector: dex
       project: clipper
       contributors: 0xRob
     config:
-      tags: [ 'polygon','dex','trades', 'clipper', 'amalashkevich' ]
+      tags: [ 'optimism','dex','trades', 'clipper', 'amalashkevich' ]
     description: >
-      Clipper trades on Polygon on a specific contract/version.
+      Clipper trades on Optimism on a specific contract/version.
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -117,7 +117,7 @@ models:
             - evt_index
             - trace_address
       - check_dex_seed:
-          blockchain: polygon
+          blockchain: optimism
           project: clipper
           version: 2
     columns:
@@ -145,16 +145,16 @@ models:
       - *trace_address
       - *evt_index
 
-  - name: clipper_coves_v1_polygon_trades
+  - name: clipper_coves_v1_optimism_trades
     meta:
-      blockchain: polygon
+      blockchain: optimism
       sector: dex
       project: clipper
-      contributors: 0xRob
+      contributors: amalashkevich
     config:
-      tags: [ 'polygon','dex','trades', 'clipper', 'amalashkevich' ]
+      tags: [ 'optimism','dex','trades', 'clipper', 'amalashkevich' ]
     description: >
-      Clipper trades on Polygon on a specific contract/version.
+      Clipper trades on Optimism on a specific contract/version.
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -166,7 +166,7 @@ models:
             - evt_index
             - trace_address
       - check_dex_seed:
-          blockchain: polygon
+          blockchain: optimism
           project: clipper
           version: coves1
     columns:
@@ -194,16 +194,16 @@ models:
       - *trace_address
       - *evt_index
 
-  - name: clipper_polygon_trades
+  - name: clipper_optimism_trades
     meta:
-      blockchain: polygon
+      blockchain: optimism
       sector: dex
       project: clipper
       contributors: amalashkevich
     config:
-      tags: ['polygon','clipper','trades','dex','amalashkevich']
+      tags: ['optimism','clipper','trades','dex','amalashkevich']
     description: >
-        Clipper trades on Polygon
+        Clipper trades on Optimism
     columns:
       - *blockchain
       - *project
