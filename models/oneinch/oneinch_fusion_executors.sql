@@ -54,12 +54,12 @@ chains as (
     select 
         tx_hash
         , "from" as resolver_address
-        , substring(input, 49, 20) as resolver_executor
-        , cast(bytea2numeric_v3(substring(input, 5, 32)) as double) as chain_id
+        , substring(input, 99, 40) as resolver_executor
+        , bytea2numeric_v3(substring(input, 11, 64)) as chain_id
     from {{ source('ethereum', 'traces') }}
     where "to" = '0xcb8308fcb7bc2f84ed1bea2c016991d34de5cc77'
-        and substring(input, 1, 4) = '0xf204bdb9'
-        and block_time >= timestamp '2022-12-25'
+        and substring(input, 1, 10) = '0xf204bdb9'
+        and block_time >= '2022-12-25'
         and tx_success
         and success
 )
@@ -127,7 +127,7 @@ chains as (
         , "from" as resolver_address
         , substr(input, 49, 20) as resolver_executor
         , cast(bytearray_to_uint256(substr(input, 5, 32)) as double) as chain_id
-    from ethereum.traces
+    from {{ source('ethereum', 'traces') }}
     where "to" = 0xcb8308fcb7bc2f84ed1bea2c016991d34de5cc77
         and substr(input, 1, 4) = 0xf204bdb9
         and block_time >= timestamp '2022-12-25'
