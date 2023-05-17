@@ -221,7 +221,11 @@ valued_trades as (
            valid_to,
            flags,
            case when (flags % 2) = 0 then 'SELL' else 'BUY' end as order_type,
-           cast(cast(flags as int) & 2 as boolean) as partial_fill
+           cast(cast(flags as int) & 2 as boolean) as partial_fill,
+           (case when (flags % 2) = 0
+              then atoms_sold / limit_sell_amount
+              else atoms_bought / limit_buy_amount
+            end) as fill_proportion
     FROM trades_with_token_units trades
     JOIN uid_to_app_id
         ON uid = order_uid
@@ -232,5 +236,5 @@ valued_trades as (
 select *,
   -- Relative surplus (in %) is the difference between limit price and executed price as a ratio of the limit price.
   -- Absolute surplus (in USD) is relative surplus multiplied with the value of the trade
-  usd_value * (((limit_sell_amount / limit_buy_amount) - (atoms_sold/atoms_bought)) / (limit_sell_amount / limit_buy_amount)) as surplus_usd
+  fill_proportion * usd_value * (atoms_bought * limit_sell_amount - atoms_sold * limit_buy_amount) / (atoms_bought * limit_sell_amount) as surplus_usd
 from valued_trades
