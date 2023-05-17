@@ -98,3 +98,39 @@ models:
       - &description
         name: description
         description: "Description of the proposal"
+
+  - name: gitcoin_ethereum_donations
+    meta:
+      blockchain: ethereum
+      sector: donation
+      contributors: hildobby
+    config:
+        tags: ['ethereum', 'gitcoin', 'donation']
+    description: >
+        All Gitcoin donations on Ethereum
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - tx_hash
+            - evt_index
+      - equal_rowcount_with_sources:
+          evt_sources:
+            - source('gitcoin_ethereum', 'BulkCheckout_evt_DonationSent')
+    columns:
+      - name: blockchain
+      - name: project
+      - name: version
+      - name: grant_round
+      - name: block_date
+      - name: block_time
+      - name: block_number
+      - name: amount_raw
+      - name: amount_original
+      - name: donor
+      - name: recipient
+      - name: currency_contract
+      - name: currency_symbol
+      - name: evt_index
+      - name: contract_address
+      - name: tx_hash
