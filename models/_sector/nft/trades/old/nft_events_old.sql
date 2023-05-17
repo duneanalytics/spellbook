@@ -8,6 +8,7 @@
     unique_key = ['unique_trade_id', 'blockchain'])
 }}
 
+
 {% set nft_models = [
  ref('aavegotchi_polygon_events')
 ,ref('archipelago_ethereum_events')
