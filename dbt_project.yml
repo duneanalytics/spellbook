@@ -183,6 +183,8 @@ models:
       +schema: gitcoin
       ethereum:
         +schema: gitcoin_ethereum
+      polygon:
+        +schema: gitcoin_polygon
 
     uniswap:
       +schema: uniswap
@@ -208,6 +210,16 @@ models:
         +schema: paraswap_avalanche_c
       fantom:
         +schema: paraswap_fantom
+      arbitrum:
+        +schema: paraswap_arbitrum
+      bnb:
+        +schema: paraswap_bnb
+      ethereum:
+        +schema: paraswap_ethereum
+      optimism:
+        +schema: paraswap_optimism
+      polygon:
+        +schema: paraswap_polygon
 
     nomiswap:
       +schema: nomiswap
@@ -705,6 +717,11 @@ models:
       polygon:
         +schema: apeswap_polygon
 
+    camelot:
+      +schema: camelot
+      arbitrum:
+        +schema: camelot_arbitrum
+
     chainlink:
       +schema: chainlink
       optimism:
@@ -729,6 +746,8 @@ models:
         +schema: clipper_ethereum
       arbitrum:
         +schema: clipper_arbitrum
+      polygon:
+        +schema: clipper_polygon
 
     reaper:
       +schema: reaper
@@ -1043,7 +1062,7 @@ models:
       +schema: optimism_attestationstation
       optimism:
         +schema: optimism_attestationstation_optimism
-    
+
     lido:
       +schema: lido
       ethereum:
@@ -1067,7 +1086,7 @@ models:
       +schema: glacier
       avalanche_c:
         +schema: glacier_avalanche_c
-    
+
     thena:
       +schema: thena
       bnb:
