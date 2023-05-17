@@ -19,6 +19,11 @@
     ,('zora',    'v1',   ref('zora_v1_ethereum_base_trades'))
     ,('zora',    'v2',   ref('zora_v2_ethereum_base_trades'))
     ,('zora',    'v3',   ref('zora_v3_ethereum_base_trades'))
+    ,('cryptopunks',    'v1',   ref('cryptopunks_ethereum_base_trades'))
+    ,('sudoswap',    'v1',   ref('sudoswap_ethereum_base_trades'))
+    ,('collectionswap',    'v1',   ref('collectionswap_ethereum_base_trades'))
+    ,('looksrare',    'v1',   ref('looksrare_v1_ethereum_base_trades'))
+    ,('looksrare',    'v2',   ref('looksrare_v2_ethereum_base_trades'))
 ] %}
 
 -- We should remove this CTE and include ETH into the general prices table once everything is migrated
