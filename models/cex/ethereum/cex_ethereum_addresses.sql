@@ -42,8 +42,7 @@ FROM (VALUES
     , ('ethereum', '0x50d669f43b484166680ecc3670e4766cdb0945ce', 'Binance', 'Binance 33', 'hildobby', timestamp('2022-08-28'))
     , ('ethereum', '0x2f7e209e0f5f645c7612d7610193fe268f118b28', 'Binance', 'Binance 34', 'hildobby', timestamp('2022-08-28'))
     , ('ethereum', '0xd9d93951896b4ef97d251334ef2a0e39f6f6d7d7', 'Binance', 'Binance 35', 'hildobby', timestamp('2022-08-28'))
-    , ('ethereum', '0xf35a6bd6e0459a4b53a27862c51a2a7292b383d1', 'Binance', 'Binance 36', 'soispoke', timestamp('2022-11-14'))
-    , ('ethereum', '0xf35a6bd6e0459a4b53a27862c51a2a7292b383d1', 'Binance', 'Binance 40', 'hildobby', timestamp('2022-08-28'))
+    --, ('ethereum', '0xf35a6bd6e0459a4b53a27862c51a2a7292b383d1', 'Binance', 'Binance 36', 'soispoke', timestamp('2022-11-14'))
     , ('ethereum', '0x294b9b133ca7bc8ed2cdd03ba661a4c6d3a834d9', 'Binance', 'Binance 41', 'hildobby', timestamp('2022-08-28'))
     , ('ethereum', '0x5d7f34372fa8708e09689d400a613eee67f75543', 'Binance', 'Binance 42', 'hildobby', timestamp('2022-08-28'))
     , ('ethereum', '0x8b99f3660622e21f2910ecca7fbe51d654a1517d', 'Binance', 'Binance Charity', 'hildobby', timestamp('2022-08-28'))
@@ -707,7 +706,7 @@ FROM (VALUES
     -- Phemex, source: https://phemex.com/proof-of-reserves
     , ('ethereum', '0xf7d13c7dbec85ff86ee815f6dcbb3dedac78ca49', 'Phemex', 'Phemex 1', 'hildobby', timestamp('2023-04-06'))
     -- Cake DeFi, source: https://cakedefi.com/transparency
-    , ('ethereum', '0xf7d13c7dbec85ff86ee815f6dcbb3dedac78ca49', 'Cake DeFi', 'Cake DeFi 1', 'hildobby', timestamp('2023-04-06'))
+    , ('ethereum', '0x94fa70d079d76279e1815ce403e9b985bccc82ac', 'Cake DeFi', 'Cake DeFi 1', 'hildobby', timestamp('2023-04-06'))
     -- MaskEX, source: https://github.com/DefiLlama/DefiLlama-Adapters/blob/main/projects/maskex/index.js
     , ('ethereum', '0x09b1806df13062b5f653beda6998972cabcf7009', 'MaskEX', 'MaskEX 1', 'hildobby', timestamp('2023-04-06'))
     , ('ethereum', '0x0c78fd926a8fc9cfc682bdc6b411942d9c7edb7a', 'MaskEX', 'MaskEX 2', 'hildobby', timestamp('2023-04-06'))

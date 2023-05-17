@@ -4,7 +4,7 @@
                                     "cex",
                                     \'["hildobby"]\') }}')}}
 
-SELECT blockchain, LOWER(address) AS address, cex_name, distinct_name, added_by, added_date
+SELECT blockchain, address, cex_name, distinct_name, added_by, added_date
 FROM (VALUES
     -- Coinbase, source: https://github.com/jacobgreen4477/btc_img_realtime_prediction/blob/2966dc59630b15f70e3cdb90366c67afb9a6a3db/data/btc_known_addr_list.csv
     ('bitcoin', '1FzWLkAahHooV3kzTgyx6qsswXJ6sCXkSR', 'Coinbase', 'Coinbase 1', 'hildobby', timestamp('2023-04-06'))
@@ -12,7 +12,7 @@ FROM (VALUES
     , ('bitcoin', '1Cb1G5qFK91fShyaPPZWVFwYFBtqRG7h8D', 'Coinbase', 'Coinbase 3', 'hildobby', timestamp('2023-04-06'))
     , ('bitcoin', '1LyTftu54VMYCv5pq3S4pMzPRMnsYKTESw', 'Coinbase', 'Coinbase 4', 'hildobby', timestamp('2023-04-06'))
     , ('bitcoin', '3FupZp77ySr7jwoLYEJ9mwzJpvoNBXsBnE', 'Coinbase', 'Coinbase 5', 'hildobby', timestamp('2023-04-06'))
-    , ('bitcoin', '1DSh7vX6ed2cgTeKPwufV5i4hSi4pp373h', 'Coinbase', 'Coinbase ', 'hildobby', timestamp('2023-04-06'))
+    , ('bitcoin', '1DSh7vX6ed2cgTeKPwufV5i4hSi4pp373h', 'Coinbase', 'Coinbase 6', 'hildobby', timestamp('2023-04-06'))
     , ('bitcoin', '3LtpFPpQhE4pc9MbaDsVqZNat2GeFUKCix', 'Coinbase', 'Coinbase 7', 'hildobby', timestamp('2023-04-06'))
     , ('bitcoin', '3FFgKaYkEf1M73QtzuY9DGqC7VeM2sAQhT', 'Coinbase', 'Coinbase 8', 'hildobby', timestamp('2023-04-06'))
     , ('bitcoin', 'bc1q3kgpr9ym5c3hu8wpgwaz6vudsp5wup8vfc6pk0', 'Coinbase', 'Coinbase 9', 'hildobby', timestamp('2023-04-06'))
@@ -190,19 +190,17 @@ FROM (VALUES
     , ('bitcoin', 'bc1qphk6rkypc8q64xesgy67l8n5780f2kuh286x9j5a5vje4p6mtgtqkzd2s8', 'OKX', 'OKX 25', 'hildobby', timestamp('2023-04-06'))
     -- OKX, source: https://github.com/tieugene/bcerq/blob/46274090d5fc3ed187bb92db430be5713b3ac5a8/sql/q1a/coldwallet.csv
     , ('bitcoin', '38UmuUqPCrFmQo4khkomQwZ4VbY2nZMJ67', 'OKX', 'OKX 1', 'hildobby', timestamp('2023-04-06'))
-    , ('bitcoin', '3Kzh9qAqVWQhEsfQz7zEQL1EuSx5tyNLNS', 'OKX', 'OKX 2', 'hildobby', timestamp('2023-04-06'))
-    , ('bitcoin', '3FupZp77ySr7jwoLYEJ9mwzJpvoNBXsBnE', 'OKX', 'OKX 3', 'hildobby', timestamp('2023-04-06'))
-    , ('bitcoin', '3HSMPBUuAPQf6CU5B3qa6fALrrZXswHaF1', 'OKX', 'OKX 4', 'hildobby', timestamp('2023-04-06'))
-    , ('bitcoin', '3DVJfEsDTPkGDvqPCLC41X85L1B1DQWDyh', 'OKX', 'OKX 5', 'hildobby', timestamp('2023-04-06'))
-    , ('bitcoin', '3ETUmNhL2JuCFFVNSpk8Bqx2eorxyP9FVh', 'OKX', 'OKX 6', 'hildobby', timestamp('2023-04-06'))
-    , ('bitcoin', '3DwVjwVeJa9Z5Pu15WHNfKcDxY5tFUGfdx', 'OKX', 'OKX 7', 'hildobby', timestamp('2023-04-06'))
-    , ('bitcoin', '36NkTqCAApfRJBKicQaqrdKs29g6hyE4LS', 'OKX', 'OKX 8', 'hildobby', timestamp('2023-04-06'))
-    , ('bitcoin', 'bc1quq29mutxkgxmjfdr7ayj3zd9ad0ld5mrhh89l2', 'OKX', 'OKX 9', 'hildobby', timestamp('2023-04-06'))
-    , ('bitcoin', '3ANziRvoBdNGkmGopgyhvzPuBvcL8sRL7S', 'OKX', 'OKX 10', 'hildobby', timestamp('2023-04-06'))
-    , ('bitcoin', '3FQ1j5SRRTBihpw97A5mWcaE8jn9u9YGoc', 'OKX', 'OKX 11', 'hildobby', timestamp('2023-04-06'))
-    , ('bitcoin', '3JmxvMqm35aLDUHXDbESy6rQz4M8MBQD32', 'OKX', 'OKX 12', 'hildobby', timestamp('2023-04-06'))
-    , ('bitcoin', '3BT3JFq8MGHK4YzsXfFWmEZ3bupJ1Cmgp8', 'OKX', 'OKX 13', 'hildobby', timestamp('2023-04-06'))
-    , ('bitcoin', 'bc1qsrnf7ad2t2x0hvf9qxtjufftshx5jjqqdaame8', 'OKX', 'OKX 14', 'hildobby', timestamp('2023-04-06'))
+    , ('bitcoin', '3HSMPBUuAPQf6CU5B3qa6fALrrZXswHaF1', 'OKX', 'OKX 2', 'hildobby', timestamp('2023-04-06'))
+    , ('bitcoin', '3DVJfEsDTPkGDvqPCLC41X85L1B1DQWDyh', 'OKX', 'OKX 3', 'hildobby', timestamp('2023-04-06'))
+    , ('bitcoin', '3ETUmNhL2JuCFFVNSpk8Bqx2eorxyP9FVh', 'OKX', 'OKX 4', 'hildobby', timestamp('2023-04-06'))
+    , ('bitcoin', '3DwVjwVeJa9Z5Pu15WHNfKcDxY5tFUGfdx', 'OKX', 'OKX 5', 'hildobby', timestamp('2023-04-06'))
+    , ('bitcoin', '36NkTqCAApfRJBKicQaqrdKs29g6hyE4LS', 'OKX', 'OKX 6', 'hildobby', timestamp('2023-04-06'))
+    , ('bitcoin', 'bc1quq29mutxkgxmjfdr7ayj3zd9ad0ld5mrhh89l2', 'OKX', 'OKX 7', 'hildobby', timestamp('2023-04-06'))
+    , ('bitcoin', '3ANziRvoBdNGkmGopgyhvzPuBvcL8sRL7S', 'OKX', 'OKX 8', 'hildobby', timestamp('2023-04-06'))
+    , ('bitcoin', '3FQ1j5SRRTBihpw97A5mWcaE8jn9u9YGoc', 'OKX', 'OKX 9', 'hildobby', timestamp('2023-04-06'))
+    , ('bitcoin', '3JmxvMqm35aLDUHXDbESy6rQz4M8MBQD32', 'OKX', 'OKX 10', 'hildobby', timestamp('2023-04-06'))
+    , ('bitcoin', '3BT3JFq8MGHK4YzsXfFWmEZ3bupJ1Cmgp8', 'OKX', 'OKX 11', 'hildobby', timestamp('2023-04-06'))
+    , ('bitcoin', 'bc1qsrnf7ad2t2x0hvf9qxtjufftshx5jjqqdaame8', 'OKX', 'OKX 12', 'hildobby', timestamp('2023-04-06'))
     -- Phemex, source: https://phemex.com/proof-of-reserves
     , ('bitcoin', '3PiGxVdpMjWSsH8X8BypdwcsmPW5cmE4Ta', 'Phemex', 'Phemex 1', 'hildobby', timestamp('2023-04-06'))
     -- Cake DeFi, source: https://cakedefi.com/transparency

@@ -18,7 +18,6 @@ FROM (VALUES
     , ('arbitrum', '0x6262998ced04146fa42253a5c0af90ca02dfd2a3', 'Crypto.com', 'Crypto.com 2', 'hildobby', timestamp('2023-04-06'))
     , ('arbitrum', '0x72a53cdbbcc1b9efa39c834a540550e23463aacb', 'Crypto.com', 'Crypto.com 3', 'hildobby', timestamp('2023-04-06'))
     , ('arbitrum', '0x7758e507850da48cd47df1fb5f875c23e3340c50', 'Crypto.com', 'Crypto.com 4', 'hildobby', timestamp('2023-04-06'))
-    , ('arbitrum', '0xcffad3200574698b78f32232aa9d63eabd290703', 'Crypto.com', 'Crypto.com 5', 'hildobby', timestamp('2023-04-06'))
     -- Gate.io, source: https://raw.githubusercontent.com/js-kingdata/indicators_factory/fefe53bca88ecf331a71fc59e34aab319f3415c5/crawlers/address_tags/cex/gate-io_address.txt
     , ('arbitrum', '0x0d0707963952f2fba59dd06f2b425ace40b492fe', 'Gate.io', 'Gate.io 1', 'hildobby', timestamp('2022-11-14'))
     , ('arbitrum', '0x1c4b70a3968436b9a0a9cf5205c787eb81bb558c', 'Gate.io', 'Gate.io 2', 'hildobby', timestamp('2022-11-14'))

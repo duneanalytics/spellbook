@@ -38,8 +38,6 @@ FROM (VALUES
     , ('avalanche_c', '0x63DFE4e34A3bFC00eB0220786238a7C6cEF8Ffc4', 'WOO Network', 'WOO Network 2', 'hildobby', timestamp('2023-04-07'))
     , ('avalanche_c', '0xE505Bf08C03cc0FA4e0FDFa2487E2c11085b3FD9', 'WOO Network', 'WOO Network 3', 'hildobby', timestamp('2023-04-07'))
     , ('avalanche_c', '0xea319fd75766f5180018f8e760f51c3d3c457496', 'WOO Network', 'WOO Network 4', 'hildobby', timestamp('2023-04-07'))
-    -- Coinsquare, source: https://github.com/DefiLlama/DefiLlama-Adapters/blob/main/projects/coinsquare/index.js
-    , ('avalanche_c', '0x14AA1AD09664c33679aE5689d93085B8F7c84bd3', 'Coinsquare', 'Coinsquare 1', 'hildobby', timestamp('2023-04-07'))
     -- Hotbit, Source: https://etherscan.io/accounts/label/hotbit
     , ('avalanche_c', '0x6C2e8d4F73f6A129843d1b3D2ACAFF1DB22E3366', 'Hotbit', 'Hotbit 1', 'hildobby', timestamp('2022-08-28'))
     , ('avalanche_c', '0x768f2a7ccdfde9ebdfd5cea8b635dd590cb3a3f1', 'Hotbit', 'Hotbit 2', 'hildobby', timestamp('2022-08-28'))
