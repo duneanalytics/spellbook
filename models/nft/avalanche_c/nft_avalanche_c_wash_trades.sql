@@ -130,6 +130,24 @@ WITH filter_1 AS (
         {% endif %}
     )
 
+filter_5 AS (
+    SELECT unique_trade_id
+    , CASE WHEN df.block_time IS NOT NULL
+        THEN true
+        ELSE false
+        END AS flashloan
+    FROM {{ ref('nft_trades') }} nftt
+    LEFT JOIN {{ ref('dex_flashloans') }} df ON df.blockchain='avalanche_c'
+        AND df.block_number=nftt.block_number
+        AND df.tx_hash=nftt.tx_hash
+    WHERE nftt.blockchain='avalanche_c'
+        AND nftt.unique_trade_id IS NOT NULL
+        AND df.tx_hash IS NULL
+        {% if is_incremental() %}
+        AND nftt.block_time >= date_trunc("day", NOW() - interval '1 week')
+        {% endif %}
+    )
+
 SELECT nftt.blockchain
 , nftt.project
 , nftt.version
