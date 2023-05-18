@@ -75,7 +75,6 @@ send_detail AS (
         AND t.block_time >= date_trunc("day", now() - interval '1 week')
         {% endif %}
     WHERE s.call_success
-        AND s.call_block_time >= '{{transaction_start_date}}'
         {% if not is_incremental() %}
         AND s.call_block_time >= '{{transaction_start_date}}'
         {% endif %}
@@ -143,7 +142,6 @@ native_transfer_value_summary AS (
         AND e.call_type = 'call'
         AND cast(e.value as double) > 0
         AND cardinality(e.trace_address) > 0
-        AND e.block_time >= '{{transaction_start_date}}'
         {% if not is_incremental() %}
         AND e.block_time >= '{{transaction_start_date}}'
         {% endif %}
@@ -174,7 +172,6 @@ trans_detail AS (
             AND dgs.amount_destination_gas = s.transaction_value
         INNER JOIN {{ source('erc20_ethereum', 'evt_transfer') }} et on et.evt_block_number = s.block_number
             AND et.evt_tx_hash = s.tx_hash
-            AND et.evt_block_time >= '{{transaction_start_date}}'
             {% if not is_incremental() %}
             AND et.evt_block_time >= '{{transaction_start_date}}'
             {% endif %}
