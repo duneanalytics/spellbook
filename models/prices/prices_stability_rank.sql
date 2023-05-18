@@ -105,6 +105,5 @@ WITH recent_dex_trades AS (
 )
 SELECT *
 FROM weighted_prices_usd_stability_rank
-WHERE stability_rank <= 1000
 ORDER BY stability_rank ASC
 ;
