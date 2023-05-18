@@ -38,7 +38,7 @@ SELECT
     royalty_fee_amount,
     royalty_fee_amount_usd,
     royalty_fee_percentage,
-    concat(cast(block_number as varchar(10)),'-',cast(tx_hash as varchar(42)),'-',cast(sub_tx_trade_id as varchar(10))) as unique_trade_id
+    concat(project,'-',cast(block_number as varchar(10)),'-',cast(tx_hash as varchar(42)),'-',cast(sub_tx_trade_id as varchar(10))) as unique_trade_id
 FROM {{ model }}
 
 {% endmacro %}
