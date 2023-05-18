@@ -93,6 +93,7 @@ WITH recent_dex_trades AS (
          , contract_address
          , symbol
          , rank() OVER (PARTITION BY blockchain ORDER BY weighted_stability DESC) AS chain_stab_rank
+         , weighted_stability
          , stability
          , avg_price
          , stddev_price

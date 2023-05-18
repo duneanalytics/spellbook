@@ -107,3 +107,41 @@ models:
       - name: price
         description: "USD price of a token"
         test: not_null
+
+  - name: prices_stability_rank
+    meta:
+      sector: prices
+      contributors: hosuke
+    config:
+      tags: [ 'prices', 'stability', 'rank' ]
+    description: "View on prices that ranks the stability of the price of a token over the last 7 days"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - contract_address
+    columns:
+      - name: blockchain
+        description: "Native blockchain of the token"
+      - name: contract_address
+        description: "Contract address of the token"
+      - name: symbol
+        description: "Token symbol"
+      - name: stability_rank
+        description: "Rank of the stability of the price of a token over the last 7 days"
+      - name: weighted_stability
+        description: "Weighted stability of the price of a token over the last 7 days"
+      - name: chain_stab_rank
+        description: "Rank of the stability of the price of a token over the last 7 days within the chain"
+      - name: stability
+        description: "Statistical stability of the price of a token over the last 7 days"
+      - name: avg_price
+        description: "Average price of a token over the last 7 days"
+      - name: stddev_price
+        description: "Standard deviation of the price of a token over the last 7 days"
+      - name: stat_stability_rank
+        description: "Rank of the statistical stability of the price of a token over the last 7 days"
+      - name: total_occurrences
+        description: "Total number of occurrences of a token traded over the last 7 days"
+      - name: occurrences_rank
+        description: "Rank of the total number of occurrences of a token traded over the last 7 days"
