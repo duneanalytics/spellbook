@@ -656,6 +656,8 @@ models:
         +schema: clipper_arbitrum
       polygon:
         +schema: clipper_polygon
+      optimism:
+        +schema: clipper_optimism
 
     reaper:
       +schema: reaper
