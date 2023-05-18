@@ -48,16 +48,16 @@ from
     union all
 
     select  block_time
-            , token_id
+            , nft_token_id as token_id
             , 'Sold' as event_type
             , case when trade_category = 'Offer Accepted' then 'Bid Accept' else trade_category end as sale_type -- convert nft.trades wording to match cryptopunks.app
             , seller
             , buyer
-            , amount_original
-            , amount_usd
+            , price as amount_original
+            , price_usd as amount_usd
             , block_number
             , tx_hash
-    from {{ ref('nft_ethereum_trades_beta_ported') }}
+    from {{ ref('nft_ethereum_trades_beta') }}
     where project = 'cryptopunks'
 
     union all

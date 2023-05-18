@@ -44,13 +44,13 @@ with combined_events_table as (
                 , cast(NULL as varchar(5)) as bidder
                 , seller as transfer_from
                 , buyer as transfer_to
-                , token_id as punk_id
-                , amount_original as eth_amount
+                , nft_token_id as punk_id
+                , price as eth_amount
                 , block_time
                 , block_number
-                , evt_index
+                , sub_tx_trade_id as evt_index
                 , tx_hash
-        from  {{ ref('nft_ethereum_trades_beta_ported') }}
+        from  {{ ref('nft_ethereum_trades_beta') }}
         WHERE project = 'cryptopunks'
     ) a
 )
