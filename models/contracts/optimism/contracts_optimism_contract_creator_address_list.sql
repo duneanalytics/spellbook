@@ -473,7 +473,8 @@ WITH curated_list AS (
       ,('0x904a08be742bd5bc6ad10f0924f06b0b23d1175c', 'AVT')
       ,('0x6102D098C063A1f282A9196428946D4E3a7BB754', 'Mirror')
       ,('0x000039DdCF1F63Cf3555e62a8D32a11bD1E7E1E1', 'MesonFi')
-
+      ,('0xaD031EeE55f595dF6Dbd61e9ef3B908FaD1B3671', 'Zora')
+      
   ) as temp_table (creator_address, contract_project)
 
 )
