@@ -1,9 +1,9 @@
 version: 2
 
 models:
-  - name: chain_ids
+  - name: chain_info_chain_ids
     meta:
-      blockchain: ethereum
+      blockchain: ethereum, optimism, bnb, gnosis, polygon, fantom, arbitrum, avalanche_c, solana
       project: chain_info
       contributors: msilb7
     config:
@@ -36,4 +36,23 @@ models:
         description:  "URL with information about the blockchain" 
       - &explorer
         name: explorer
-        description:  "URL for each chain's main block explorer (first from the chainlist array)" 
+        description:  "URL for each chain's main block explorer (first from the chainlist array)"
+
+  - name: chain_info_dune_chains
+    meta:
+      blockchain: ethereum, optimism, bnb, gnosis, polygon, fantom, arbitrum, avalanche_c, solana
+      project: chain_info
+      contributors: cc7768, msilb7
+    config:
+      tags: ['chains','cross-chain']
+    description: >
+        Table mapping chain IDs to names. Compatible/joinable with `prices` project.
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+              - chain_id
+    columns:
+      - &dune_name
+        name: dune_name
+        description: "Name of the blockchain used on Dune (prices table)"
+      - *chain_id
