@@ -11,7 +11,7 @@ SELECT
     price_usd as amount_usd,
     nft_standard as token_standard,
     trade_type,
-    nft_amount as number_of_items,
+    CASt(nft_amount as decimal(38)) as number_of_items,
     trade_category,
     'Trade' as evt_type,
     seller,
