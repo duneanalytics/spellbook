@@ -138,7 +138,7 @@ WITH filter_1 AS (
         END AS flashloan
     FROM {{ ref('nft_trades') }} nftt
     LEFT JOIN {{ ref('dex_flashloans') }} df ON df.blockchain='arbitrum'
-        AND df.block_number=nftt.block_number
+        AND df.block_time=nftt.block_time
         AND df.tx_hash=nftt.tx_hash
     WHERE nftt.blockchain='arbitrum'
         AND nftt.unique_trade_id IS NOT NULL
