@@ -50,7 +50,8 @@ with combined_events_table as (
                 , block_number
                 , evt_index
                 , tx_hash
-        from  {{ ref('cryptopunks_ethereum_events') }}
+        from  {{ ref('nft_events') }}
+        WHERE project = 'cryptopunks'
     ) a
 )
 , min_event_per_punk as (

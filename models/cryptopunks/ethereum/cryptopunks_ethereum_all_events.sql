@@ -57,7 +57,8 @@ from
             , amount_usd
             , block_number
             , tx_hash
-    from {{ ref('cryptopunks_ethereum_events') }}
+    from {{ ref('nft_events') }}
+    where project = 'cryptopunks'
 
     union all
 
@@ -107,7 +108,7 @@ from
             , evt_block_number
             , evt_tx_hash
     from {{ ref('cryptopunks_ethereum_punk_transfers') }}
-    where evt_tx_hash not in (select distinct tx_hash from {{ ref('cryptopunks_ethereum_events') }} )
+    where evt_tx_hash not in (select distinct evt_tx_hash from {{ source('cryptopunks_ethereum','CryptoPunksMarket_evt_PunkBought') }} )
 ) a
 group by 1,2,3,4,5,6,7,8,9,10
 order by evt_block_number desc

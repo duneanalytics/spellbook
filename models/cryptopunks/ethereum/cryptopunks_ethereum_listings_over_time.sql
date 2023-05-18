@@ -32,7 +32,8 @@ with all_listing_events as (
             , evt_index
             , block_time as evt_block_time
             , tx_hash as evt_tx_hash
-    from {{ ref('cryptopunks_ethereum_events') }}
+    from {{ ref('nft_events') }}
+    where project = 'cryptopunks'
 )
 , all_transfers as (
     select  punk_id
