@@ -6,7 +6,7 @@ models:
       blockchain: polygon
       sector: dex
       project: quickswap
-      contributors: jeff-dude, masquot, soispoke, 0xBoxer, Henrystats
+      contributors: jeff-dude, masquot, soispoke, 0xBoxer, Henrystats, maybeYonas
     config:
       tags: ['polygon', 'quickswap','trades', 'dex']
     description: >

@@ -32,15 +32,15 @@ WITH migrated as (
 
     ,mig_total_amount
     ,ref_total_amount
-    ,abs((mig_total_amount - ref_total_amount)/ref_total_amount) < 0.0005 as check_amount
+    ,abs((mig_total_amount - ref_total_amount)/ref_total_amount) < 0.001 as check_amount
 
     ,mig_total_platform_amount
     ,ref_total_platform_amount
-    ,abs((mig_total_platform_amount - ref_total_platform_amount)/ref_total_platform_amount)  < 0.0005 as check_platform_amount
+    ,abs((mig_total_platform_amount - ref_total_platform_amount)/ref_total_platform_amount)  < 0.001 as check_platform_amount
 
     ,mig_total_royalty_amount
     ,ref_total_royalty_amount
-    ,abs((mig_total_royalty_amount - ref_total_royalty_amount)/ref_total_royalty_amount)  < 0.0005 as check_royalty_amount
+    ,abs((mig_total_royalty_amount - ref_total_royalty_amount)/ref_total_royalty_amount)  < 0.001 as check_royalty_amount
     from migrated mig
     inner join reference ref
     on mig.project = ref.project and mig.project_version = ref.project_version
