@@ -28,11 +28,13 @@ with v2 as (
     from {{ source('balancer_v2_arbitrum', 'Vault_evt_Swap') }} s
     inner join {{ source('balancer_v2_arbitrum', 'Vault_evt_PoolRegistered') }} p
     on s.poolId = p.poolId
+    WHERE tokenIn != poolAddress
+        AND tokenOut != poolAddress
     {% if not is_incremental() %}
-        where s.evt_block_time >= '{{project_start_date}}'
+        AND s.evt_block_time >= '{{project_start_date}}'
     {% endif %}
     {% if is_incremental() %}
-        where s.evt_block_time >= date_trunc("day", now() - interval '1 week')
+        AND s.evt_block_time >= date_trunc("day", now() - interval '1 week')
     {% endif %}
 ),
 prices as (
