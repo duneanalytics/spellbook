@@ -10,7 +10,7 @@
         )
 }}
 --https://dune.com/queries/2011901
---ref{{'lido_ethereum_accounting_deposits'}} 
+--ref{{'lido_ethereum_accounting_deposits'}}
 
 	SELECT 
         block_time AS period,
