@@ -5,11 +5,7 @@
         unique_key = ['block_date', 'tx_hash', 'evt_index'],
         on_schema_change='sync_all_columns',
         file_format ='delta',
-        incremental_strategy='merge',
-        post_hook='{{ expose_spells(\'["avalanche_c"]\',
-                                "project",
-                                "zeroex",
-                                \'["rantum",  "bakabhai993", "danning.sui"]\') }}'
+        incremental_strategy='merge'
     )
 }}
 
@@ -329,7 +325,7 @@ INNER JOIN {{ source('avalanche_c', 'transactions')}} tx
 LEFT JOIN {{ source('prices', 'usd') }} tp 
     ON date_trunc('minute', all_tx.block_time) = tp.minute
     AND CASE
-            WHEN all_tx.taker_token = '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee' THEN '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'
+            WHEN all_tx.taker_token = '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee' THEN '0xb31f66aa3c1e785363f0875a1b74e27b85fd66c7'
             ELSE all_tx.taker_token
         END = tp.contract_address
     AND tp.blockchain = 'avalanche_c'
@@ -343,7 +339,7 @@ LEFT JOIN {{ source('prices', 'usd') }} tp
 LEFT JOIN {{ source('prices', 'usd') }} mp 
     ON DATE_TRUNC('minute', all_tx.block_time) = mp.minute
     AND CASE
-            WHEN all_tx.maker_token = '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee' THEN '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'
+            WHEN all_tx.maker_token = '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee' THEN '0xb31f66aa3c1e785363f0875a1b74e27b85fd66c7'
             ELSE all_tx.maker_token
         END = mp.contract_address
     AND mp.blockchain = 'avalanche_c'

@@ -225,7 +225,12 @@ SELECT
     -- Tokens coming from unkown wallets back to the project
     CASE WHEN from_label = 'Other' and to_label IN ('Project','OP Foundation') THEN op_amount_decimal
         ELSE 0 END
-    AS op_incoming_other
+    AS op_incoming_other,
+
+    -- Tag Retropgf distributions - if OP
+    CASE WHEN from_label = '{{foundation_label}}' AND from_type = '{{grants_descriptor}}' AND to_label = 'RetroPGF' THEN op_amount_decimal
+        ELSE 0 END
+    AS op_for_retropgf
             
     FROM outgoing_distributions od
 
@@ -254,6 +259,7 @@ SELECT
     , cast(op_incoming_clawback as double) as op_incoming_clawback
     , cast(op_to_utility_contract as double) AS op_to_utility_contract
     , cast(op_incoming_other as double) AS op_incoming_other
+    , cast(op_for_retropgf as double) AS op_for_retropgf
     --
     , d.to_name AS og_to_name --keep original name in case we want it
     , d.from_name AS og_from_name --keep original name in case we want it

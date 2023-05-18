@@ -60,6 +60,9 @@ models:
       - &amount_usd
         name: amount_usd
         description: "USD value of the trade at time of execution"
+        tests:
+          - dbt_utils.accepted_range:
+              max_value: 1000000000 # $1b is an arbitrary number, intended to flag outlier amounts early
       - &token_bought_address
         name: token_bought_address
         description: "Contract address of the token bought"
@@ -93,9 +96,9 @@ models:
 
   - name: dex_aggregator_trades
     meta:
-      blockchain: ethereum, gnosis, avalanche_c, fantom
+      blockchain: ethereum, gnosis, avalanche_c, fantom, optimism, arbitrum, bnb
       sector: dex_aggregator
-      contributors: bh2smith, Henrystats, jeff-dude
+      contributors: bh2smith, Henrystats, jeff-dude, rantum
     config:
       tags: ['ethereum', 'gnosis', 'avalanche_c', 'fantom', 'aggregator', 'dex', 'trades', 'cross-chain']
     description: >

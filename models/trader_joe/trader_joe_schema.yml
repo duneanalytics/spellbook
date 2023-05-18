@@ -6,9 +6,9 @@ models:
       blockchain: avalanche_c
       sector: dex
       project: trader_joe
-      contributors: jeff-dude, mtitus6, Henrystats
+      contributors: jeff-dude, mtitus6, Henrystats, hsrvc
     config:
-      tags: ['avalanche_c', 'trader_joe','trades', 'dex']
+      tags: ['avalanche_c','bnb','trader_joe','trades', 'dex']
     description: >
         Trader Joe trades on all chains across all contracts and versions. This table will load dex trades downstream.
     columns:

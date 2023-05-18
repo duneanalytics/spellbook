@@ -17,7 +17,7 @@ FROM
     VALUES
 
     ("1inch-1inch", "bnb", "1INCH", "0x111111111117dc0aa78b770fa6a738034120c302", 18),
-    ("aave-aave-token", "bnb", "AAVE", "0xfb6115445bff7b52feb98650c87f44907e58f802", 18),
+    ("aave-new", "bnb", "AAVE", "0xfb6115445bff7b52feb98650c87f44907e58f802", 18),
     --("abnbc-abnbc", "bnb", "ABNBC", "0xe85afccdafbe7f2b096f268e31cce3da8da2990a", 18),
     ("ada-cardano", "bnb", "ADA", "0x3ee2200efb3400fabb9aacf31297cbdd1d435d47", 18),
     ("adx-adex", "bnb", "ADX", "0x6bff4fb161347ad7de4a625ae5aa3a1ca7077819", 18),
@@ -182,7 +182,6 @@ FROM
     ("ppp-playposeidon-nft" ,"bnb" ,"PPP" ,"0xce355300b9d7909f577640a3fb179cf911a23fbb" ,18),
     ("ape-apecoin", "bnb" ,"APE" ,"0x0b079b33b6e72311c6be245f9f660cc385029fc3",18),
     ("metis-metis-token","bnb" ,"Metis" ,"0xe552fb52a4f19e44ef5a967632dbc320b0820639" ,18),
-    ("xen-xen-crypto", "bnb", "XEN", "0x2AB0e9e4eE70FFf1fB9D67031E44F6410170d00e", 18),
     ("bob-bob", "bnb", "BOB", "0xb0b195aefa3650a6908f15cdac7d92f8a5791b0b", 18),
     ("fb-fbbank", "bnb", "FB", "0x770F030FDBf63EBF1C939De8BCFf8943C2C2d454", 2),
     ("mdb-mdb", "bnb", "MDB+", "0x9f8bb16f49393eea4331a39b69071759e54e16ea", 18),
@@ -197,6 +196,11 @@ FROM
     ("ole-openleverage", "bnb", "OLE", "0xa865197a84e780957422237b5d152772654341f3", 18),
     ("stg-stargatetoken","bnb","STG","0xb0d502e938ed5f4df2e681fe6e419ff29631d62b",18),
     ("ico-axelar", "bnb", "AXL", "0x8b1f4432f943c465a973fedc6d7aa50fc96f1f65", 6),
-    ("lvl-level","bnb","LVL","0xb64e280e9d1b5dbec4accedb2257a87b400db149",18)
-    
+    ("lvl-level","bnb","LVL","0xb64e280e9d1b5dbec4accedb2257a87b400db149",18),
+    ("ghny-grizzly-honey","bnb","GHNY","0xa045e37a0d1dd3a45fefb8803d22457abc0a728a",18),
+    ("grain-granary","bnb","GRAIN","0x8f87a7d376821c7b2658a005aaf190ec778bf37a",18),
+    ("oath-oath","bnb","OATH","0xd3c6ceedd1cc7bd4304f72b011d53441d631e662",18)
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)
+where contract_address not in (
+    '0x2ab0e9e4ee70fff1fb9d67031e44f6410170d00e' -- bXEN has bad price feed.
+)

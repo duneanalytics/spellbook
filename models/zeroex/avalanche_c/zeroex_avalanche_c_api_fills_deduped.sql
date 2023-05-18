@@ -5,11 +5,7 @@
         unique_key = ['block_date', 'tx_hash', 'evt_index'],
         on_schema_change='sync_all_columns',
         file_format ='delta',
-        incremental_strategy='merge',
-        post_hook='{{ expose_spells(\'["avalanche_c"]\',
-                                "project",
-                                "zeroex",
-                                \'["rantum","bakabhai993"]\') }}'
+        incremental_strategy='merge'
     )
 }}
 
@@ -87,7 +83,7 @@ SELECT  a.blockchain
       , a.tx_from
       , a.tx_to
       , b.evt_index
-      , CAST(ARRAY() as array<bigint>) as trace_address
+      , CAST(ARRAY(-1) as array<bigint>) as trace_address
       , a.type
       , a.swap_flag
       , b.fills_within

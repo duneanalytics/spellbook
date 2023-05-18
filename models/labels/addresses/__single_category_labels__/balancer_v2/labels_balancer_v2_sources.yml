@@ -94,7 +94,7 @@ sources:
             description: 'Boolean which indicates if the oracle functionality is enabled in the created pool'
           - &rateProviders
             name: rateProviders
-            description: "Array with the contracts of the rate providers of the created pool"
+            description: 'Array with the contracts of the rate providers of the created pool'
           - &priceRateCacheDuration
             name: priceRateCacheDuration
             description: 'Array with the duration of the cached prices from RateProviders for each token'
@@ -706,3 +706,165 @@ sources:
           - *owner
           - *swapFeePercentage
           - *symbol
+
+  - name: balancer_ethereum
+    description: >
+      Decoded tables related to Balancer, an automated portfolio manager and trading platform, on Ethereum.
+    tables:
+      - name: LiquidityGaugeFactory_evt_GaugeCreated
+        columns:
+          - name: contract_address
+          - &evt_tx_hash
+            name: evt_tx_hash
+          - &evt_index
+            name: evt_index
+          - &evt_block_time
+            name: evt_block_time
+          - &evt_block_number
+            name: evt_block_number
+          - name: gauge
+          - name: pool
+
+      - name: CappedLiquidityGaugeFactory_evt_GaugeCreated
+        columns:
+          - name: contract_address
+          - *evt_tx_hash
+          - *evt_index
+          - *evt_block_time
+          - *evt_block_number
+          - name: gauge
+
+      - name: CappedLiquidityGaugeFactory_call_create
+        columns:
+          - name: contract_address
+          - *call_success
+          - *call_tx_hash
+          - *call_trace_address
+          - *call_block_time
+          - *call_block_number
+          - *output_0
+          - name: pool
+          - name: relativeWeightCap
+
+      - name: PolygonRootGaugeFactory_evt_PolygonRootGaugeCreated
+        columns:
+          - name: contract_address
+          - *evt_tx_hash
+          - *evt_index
+          - *evt_block_time
+          - *evt_block_number
+          - name: gauge
+          - name: recipient
+
+      - name: CappedPolygonRootGaugeFactory_evt_GaugeCreated
+        columns:
+          - name: contract_address
+          - *evt_tx_hash
+          - *evt_index
+          - *evt_block_time
+          - *evt_block_number
+          - name: gauge
+
+      - name: CappedPolygonRootGaugeFactory_call_create
+        columns:
+          - name: contract_address
+          - *call_success
+          - *call_tx_hash
+          - *call_trace_address
+          - *call_block_time
+          - *call_block_number
+          - *output_0
+          - name: recipient
+          - name: relativeWeightCap
+
+      - name: ArbitrumRootGaugeFactory_evt_ArbitrumRootGaugeCreated
+        columns:
+          - name: contract_address
+          - *evt_tx_hash
+          - *evt_index
+          - *evt_block_time
+          - *evt_block_number
+          - name: gauge
+          - name: recipient
+
+      - name: CappedArbitrumRootGaugeFactory_evt_GaugeCreated
+        columns:
+          - name: contract_address
+          - *evt_tx_hash
+          - *evt_index
+          - *evt_block_time
+          - *evt_block_number
+          - name: gauge
+
+      - name: CappedArbitrumRootGaugeFactory_call_create
+        columns:
+          - name: contract_address
+          - *call_success
+          - *call_tx_hash
+          - *call_trace_address
+          - *call_block_time
+          - *call_block_number
+          - *output_0
+          - name: recipient
+          - name: relativeWeightCap
+
+      - name: OptimismRootGaugeFactory_evt_OptimismRootGaugeCreated
+        columns:
+          - name: contract_address
+          - *evt_tx_hash
+          - *evt_index
+          - *evt_block_time
+          - *evt_block_number
+          - name: gauge
+          - name: recipient
+
+      - name: CappedOptimismRootGaugeFactory_evt_GaugeCreated
+        columns:
+          - name: contract_address
+          - *evt_tx_hash
+          - *evt_index
+          - *evt_block_time
+          - *evt_block_number
+          - name: gauge
+
+      - name: CappedOptimismRootGaugeFactory_call_create
+        columns:
+          - name: contract_address
+          - *call_success
+          - *call_tx_hash
+          - *call_trace_address
+          - *call_block_time
+          - *call_block_number
+          - *output_0
+          - name: recipient
+          - name: relativeWeightCap
+
+  - name: balancer_polygon
+    description: >
+      Decoded tables related to Balancer, an automated portfolio manager and trading platform, on Polygon.
+    tables:
+      - name: ChildChainLiquidityGaugeFactory_evt_RewardsOnlyGaugeCreated
+        columns:
+          - name: contract_address
+          - *evt_tx_hash
+          - *evt_index
+          - *evt_block_time
+          - *evt_block_number
+          - name: gauge
+          - name: pool
+          - name: streamer
+
+  - name: balancer_arbitrum
+    description: >
+      Decoded tables related to Balancer, an automated portfolio manager and trading platform, on Arbitrum.
+    tables:
+      - name: ChildChainLiquidityGaugeFactory_evt_RewardsOnlyGaugeCreated
+        columns:
+          - name: contract_address
+          - *evt_tx_hash
+          - *evt_index
+          - *evt_block_time
+          - *evt_block_number
+          - name: gauge
+          - name: pool
+          - name: streamer
