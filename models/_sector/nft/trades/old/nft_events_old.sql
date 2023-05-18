@@ -68,7 +68,7 @@ FROM (
         amount_usd,
         token_standard,
         trade_type,
-        number_of_items,
+        cast(number_of_items as decimal(38,0)) as number_of_items,
         trade_category,
         evt_type,
         seller,
