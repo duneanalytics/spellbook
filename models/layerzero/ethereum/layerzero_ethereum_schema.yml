@@ -61,6 +61,9 @@ models:
      - &destination_bridge_contract
        name: remote_bridge_contract
        description: "LayerZero remote bridge contract address"
+     - &transfer_type
+       name: transfer_type
+       description: "Transfer type, native or erc20"
      - &currency_symbol
        name: currency_symbol
        description: "Symbol of original currency used for transfer"
