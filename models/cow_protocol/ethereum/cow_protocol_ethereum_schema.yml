@@ -139,6 +139,8 @@ models:
       - &partial_fill
         name: partial_fill
         description: "Boolean indicating if the order is partially fill-able"
+      - &fill_proportion
+        name: fill_proportion
 
   - name: cow_protocol_ethereum_batches
     meta:
@@ -319,8 +321,7 @@ models:
         name: tolerance_bips
       - &trade_usd_value
         name: trade_usd_value
-      - &fill_proportion
-        name: fill_proportion
+      - *fill_proportion
       - &amount_atoms
         name: amount_atoms
       - &amount_percentage

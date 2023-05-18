@@ -19,7 +19,7 @@ WITH namespaces AS (
 
 , nfts_per_tx AS (
     SELECT tx_hash
-    , COUNT(*) AS nfts_minted_in_tx
+    , sum(amount) AS nfts_minted_in_tx
     FROM {{ ref('nft_ethereum_transfers') }}
     {% if is_incremental() %}
     WHERE block_time >= date_trunc("day", now() - interval '1 week')
