@@ -16,7 +16,8 @@ WITH recent_dex_trades AS (
 , prices_usd_stability AS (
     SELECT blockchain
          , contract_address
-         , 1 - stddev(price) / avg(price) AS stability
+         -- amplifying the effect of the stability metric, odd powers are used to preserve the sign
+         , power(1 - stddev(price) / avg(price), 7) AS stability
          , avg(price) AS avg_price
          , stddev(price) AS stddev_price
     FROM {{ source('prices', 'usd') }} p
@@ -80,7 +81,8 @@ WITH recent_dex_trades AS (
          , p.stat_stability_rank
          , o.total_occurances
          , o.occurances_rank
-         , p.stability * (o.total_occurances / m.max_occurances) AS weighted_stability
+         -- nomalizing frequency of occurance
+         , p.stability * sqrt(sqrt(o.total_occurances / m.max_occurances)) AS weighted_stability
     FROM prices_usd_stability_rank p
     LEFT JOIN token_occurances_rank o
         ON o.blockchain = p.blockchain
