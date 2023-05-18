@@ -177,7 +177,7 @@ with routers as (
         , project
         , contract_name
         , contract_type
-        , address)
+        , contract_address)
 ) 
 
 select 
@@ -185,5 +185,5 @@ select
   , project
   , contract_name
   , contract_type
-  , lower(address) as address
+  , lower(contract_address) as contract_address
 from routers
