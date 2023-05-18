@@ -50,7 +50,7 @@ with combined_events_table as (
                 , block_number
                 , evt_index
                 , tx_hash
-        from  {{ ref('nft_events') }}
+        from  {{ ref('nft_ethereum_trades_beta_ported') }}
         WHERE project = 'cryptopunks'
     ) a
 )

@@ -57,7 +57,7 @@ from
             , amount_usd
             , block_number
             , tx_hash
-    from {{ ref('nft_events') }}
+    from {{ ref('nft_ethereum_trades_beta_ported') }}
     where project = 'cryptopunks'
 
     union all

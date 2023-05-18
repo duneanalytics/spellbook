@@ -39,12 +39,12 @@ SELECT
         ELSE -1 * number_of_items
       END
     ) AS nft_change_trading
-FROM {{ ref('sudoswap_ethereum_events') }}
+FROM {{ ref('nft_ethereum_trades_beta_ported') }}
+    WHERE project = 'sudoswap'
     {% if not is_incremental() %}
-    WHERE block_date >= '{{project_start_date}}'
-    {% endif %}
-    {% if is_incremental() %}
-    WHERE block_date >= date_trunc("day", now() - interval '1 week')
+    AND block_date >= '{{project_start_date}}'
+    {% else %}
+    AND block_date >= date_trunc("day", now() - interval '1 week')
     {% endif %}
 GROUP BY 1,2
 ;
