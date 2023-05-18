@@ -1,8 +1,8 @@
 -- trades between block 15432470 and 15432500
 WITH trades as (
     select block_number,tx_hash,trade_category,nft_contract_address,token_id,amount_original,platform_fee_amount,pool_fee_amount
-    from {{ ref('sudoswap_ethereum_events') }}
-    where block_number >= 15432470 and block_number < 15432500
+    from {{ ref('nft_ethereum_trades_beta_ported') }}
+    where project = 'sudoswap' and block_number >= 15432470 and block_number < 15432500
 )
 , examples as (
     select * from {{ ref('sudoswap_ethereum_example_trades') }}
