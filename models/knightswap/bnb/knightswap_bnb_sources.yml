@@ -1,0 +1,13 @@
+version: 2
+
+sources:
+  - name: knightswap_bnb
+    description: "Knightswap decoded tables"
+    freshness:  # loose warning freshness
+      warn_after: { count: 24, period: hour }
+      error_after: { count: 72, period: hour }
+    tables:
+      - name: KnightPair_evt_Swap
+        loaded_at_field: evt_block_time
+      - name: KnightFactory_evt_PairCreated
+        loaded_at_field: evt_block_time

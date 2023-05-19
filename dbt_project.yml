@@ -715,7 +715,14 @@ models:
       +schema: bancor
       ethereum:
         +schema: bancor_ethereum
-
+    
+    knightswap:
+      +schema: knightswap
+      +materialized: view
+      bnb:
+        +schema: knightswap_bnb
+        +materialized: view
+  
     kyberswap:
       +schema: kyberswap
       avalanche_c:
