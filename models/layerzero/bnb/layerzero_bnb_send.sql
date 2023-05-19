@@ -208,7 +208,7 @@ INNER JOIN trans_detail t ON s.block_number = t.block_number
 LEFT JOIN chain_list cls ON cls.chain_id = s.source_chain_id
 LEFT JOIN chain_list cld ON cld.chain_id = s.destination_chain_id
 LEFT JOIN {{ ref('tokens_erc20') }} erc ON erc.blockchain = 'bnb' AND erc.contract_address = t.currency_contract
-LEFT JOIN {{ source('prices', 'usd') }} p ON p.contract_address = t.currency_contract
+LEFT JOIN {{ source('prices', 'usd') }} p ON p.blockchain = 'bnb' AND p.contract_address = t.currency_contract
     AND p.minute = date_trunc('minute', s.block_time)
     {% if not is_incremental() %}
     AND p.minute >= '{{transaction_start_date}}'
