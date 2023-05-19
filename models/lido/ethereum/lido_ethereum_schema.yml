@@ -51,256 +51,64 @@ models:
         name: token_eth_price
         description: "ETH price"
 
-  - name: lido_ethereum_accounting_dai_referral_payment
+  - name: lido_ethereum_liquidity
     meta:
-      blockchain: ethereum
-      sector: liquid_staking
+      blockchain: ethereum,optimism,arbitrum,polygon
       project: lido
-      contributors: [ pipistrella, adcv, zergil1397,lido ]
+      contributors: gregshestakovlido, ppclunghe, hosuke
     config:
-      tags: [ 'ethereum', 'lido', 'staking', 'accounting' ]
-    description: "Amount of DAI spend on referral programm"
+      tags: ['ethereum','optimism','arbitrum','polygon','lido','liquidity']
+    description: 
+        Lido wstETH liquidity pools
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - pool
+            - blockchain
+            - time
     columns:
-      - name: period
-        description: "Timestamp of the accounting entry"
-      - name: evt_tx_hash
-        description: "Transaction hash of the accounting entry"
-      - name: token
-        description: "Token name"
-      - name: amount_token
-        description: "Token amount"
-
-  - name: lido_ethereum_accounting_deposits
-    meta:
-      blockchain: ethereum
-      sector: liquid_staking
-      project: lido
-      contributors: [ pipistrella, adcv, zergil1397,lido ]
-    config:
-      tags: [ 'ethereum', 'lido', 'staking', 'accounting' ]
-    description: "ETH deposits to Lido"
-    columns:
-      - name: period
-        description: "Timestamp of the accounting entry"
-      - name: amount_staked
-        description: "How many ETH was staked"
-      - name: token
-        description: "Token name"
-      - name: amount_token
-        description: "Token Amount"
-                    
-  - name: lido_ethereum_accounting_fundraising
-    meta:
-      blockchain: ethereum
-      sector: liquid_staking
-      project: lido
-      contributors: [ pipistrella, adcv, zergil1397,lido ]
-    config:
-      tags: [ 'ethereum', 'lido', 'staking', 'accounting' ]
-    description: "Fundraised Lido funds"
-    columns:
-      - name: period
-        description: "Timestamp of the accounting entry"
-      - name: token
-        description: "Token name"
-      - name: value
-        description: "Token value"
-      - name: tx_hash
-        description: "Transaction hash"
-
-  - name: lido_ethereum_accounting_ldo_referral_payment
-    meta:
-      blockchain: ethereum
-      sector: liquid_staking
-      project: lido
-      contributors: [ pipistrella, adcv, zergil1397,lido ]
-    config:
-      tags: [ 'ethereum', 'lido', 'staking', 'accounting' ]
-    description: "LDO spent on refferral payments"
-    columns:
-      - name: period
-        description: "Timestamp of the accounting entry"
-      - name: evt_tx_hash,
-        description: "Transaction hash"
-      - name: token
-        description: "Token name"
-      - name: amount_token
-        description: "Token amount"
-
-  - name: lido_ethereum_accounting_lego_expenses
-    meta:
-      blockchain: ethereum
-      sector: liquid_staking
-      project: lido
-      contributors: [ pipistrella, adcv, zergil1397,lido ]
-    config:
-      tags: [ 'ethereum', 'lido', 'staking', 'accounting' ]
-    description: "LEGO expenses"
-    columns:
-      - name: period
-        description: "Timestamp of the accounting entry"
-      - name: token
-        description: "Token name"
-      - name: amount_token
-        description: "TToken amount"
-      - name: evt_tx_hash,
-        description: "Transaction hash"
-
-  - name: lido_ethereum_accounting_liquidity_incentives
-    meta:
-      blockchain: ethereum
-      sector: liquid_staking
-      project: lido
-      contributors: [ pipistrella, adcv, zergil1397,lido ]
-    config:
-      tags: [ 'ethereum', 'lido', 'staking', 'accounting' ]
-    description: "Amount of tokens spent on incentives"
-    columns:
-      - name: period
-        description: "Timestamp of the accounting entry"
-      - name: evt_tx_hash,
-        description: "Transaction hash"
-      - name: amount_token
-        description: "Token amount"
-      - name: token
-        description: "Token name"
-
-  - name: lido_ethereum_accounting_lox_incentives
-    meta:
-      blockchain: ethereum
-      sector: liquid_staking
-      project: lido
-      contributors: [ pipistrella, adcv, zergil1397,lido ]
-    config:
-      tags: [ 'ethereum', 'lido', 'staking', 'accounting' ]
-    description: "Incentives spend on lox"
-    columns:
-      - name: period
-        description: "Timestamp of the accounting entry"
-      - name: evt_tx_hash,
-        description: "Transaction hash"
-      - name: amount_token
-        description: "Token amount"
-      - name: token
-        description: "Token name"
-
-  - name: lido_ethereum_accounting_operating_expenses
-    meta:
-      blockchain: ethereum
-      sector: liquid_staking
-      project: lido
-      contributors: [ pipistrella, adcv, zergil1397,lido ]
-    config:
-      tags: [ 'ethereum', 'lido', 'staking', 'accounting' ]
-    description: "Operating expenses"
-    columns:
-      - name: period
-        description: "Timestamp of the accounting entry"
-      - name: token
-        description: "Token name"
-      - name: amount_token
-        description: "Token amount"
-      - name: evt_tx_hash,
-        description: "Transaction hash"
-
-  - name: lido_ethereum_accounting_other_expenses
-    meta:
-      blockchain: ethereum
-      sector: liquid_staking
-      project: lido
-      contributors: [ pipistrella, adcv, zergil1397,lido ]
-    config:
-      tags: [ 'ethereum', 'lido', 'staking', 'accounting' ]
-    description: "Other expenses"
-    columns:
-      - name: period
-        description: "Timestamp of the accounting entry"
-      - name: token
-        description: "Token name"
-      - name: amount_token
-        description: "Token amount"
-      - name: evt_tx_hash,
-        description: "Transaction hash"
-
-  - name: lido_ethereum_accounting_other_income
-    meta:
-      blockchain: ethereum
-      sector: liquid_staking
-      project: lido
-      contributors: [ pipistrella, adcv, zergil1397,lido ]
-    config:
-      tags: [ 'ethereum', 'lido', 'staking', 'accounting' ]
-    description: "Other income"
-    columns:
-      - name: period
-        description: "Timestamp of the accounting entry"
-      - name: token
-        description: "Token name"
-      - name: amount_token
-        description: "Token amount"
-      - name: evt_tx_hash,
-        description: "Transaction hash"
-
-  - name: lido_ethereum_accounting_revenue
-    meta:
-      blockchain: ethereum
-      sector: liquid_staking
-      project: lido
-      contributors: [ pipistrella, adcv, zergil1397,lido ]
-    config:
-      tags: [ 'ethereum', 'lido', 'staking', 'accounting' ]
-    description: "Raw revenue"
-    columns:
-      - name: period
-        description: "Timestamp of the accounting entry"
-      - name: evt_tx_hash,
-        description: "Transaction hash"
-      - name: token
-        description: "Token name"
-      - &total
-        name: total
-        description: "Total amount"
-      - &protocol_fee
-        name: protocol_fee
-        description: "Protocol fee"
-      - &insurance_fee
-        name: insurance_fee
-        description: "Insurance fee"
-      - &operators_fee
-        name: operators_fee
-        description: "Operators fee"
-      - &treasury_fee
-        name: treasury_fee
-        description: "Treasury fee"
-      - &depositors_revenue
-        name: depositors_revenue
-        description: "Depositors revenue"
-      - &treasury_revenue
-        name: treasury_revenue
-        description: "treasury revenue"
-      - &insurance_revenue
-        name: insurance_revenue
-        description: "Insurance revenue"
-      - &operators_revenue
-        name: operators_revenue
-        description: "Operators revenue"
-
-  - name: lido_ethereum_accounting_trp_expenses
-    meta:
-      blockchain: ethereum
-      sector: liquid_staking
-      project: lido
-      contributors: [ pipistrella, adcv, zergil1397,lido ]
-    config:
-      tags: [ 'ethereum', 'lido', 'staking', 'accounting' ]
-    description: "Trp expenses"
-    columns:
-      - name: period
-        description: "Timestamp of the accounting entry"
-      - name: token
-        description: "Token name"
-      - name: amount_token
-        description: "Token amount"
-      - name: evt_tx_hash,
-        description: "Transaction hash"
-
+      - &pool_name
+        name: pool_name
+        description: "Liquidity pool's name consisting of the its blockchain, DEX project, symbols of tokens and fee value"
+      - &pool
+        name: pool
+        description: "Liquidity pool's address"
+      - &blockchain
+        name: blockchain
+        description: "Blockchain which the DEX is deployed"
+      - &project
+        name: project
+        description: "Project name of the DEX"
+      - &fee
+        name: fee
+        description: "Liquidity pool's trading fee"
+      - &time
+        name: time
+        description: "UTC event block date truncated to the day mark"
+      - &main_token
+        name: main_token
+        description: "Main token's address"
+      - &main_token_symbol
+        name: main_token_symbol
+        description: "Token symbol for main pool's token"
+      - &paired_token
+        name: paired_token
+        description: "Paired token's address"
+      - &paired_token_symbol
+        name: paired_token_symbol
+        description: "Token symbol for paired pool's token"
+      - &main_token_reserve
+        name: main_token_reserve
+        description: "Liquidity reserve of the main token in the pool"
+      - &paired_token_reserve
+        name: paired_token_reserve
+        description: "Liquidity reserve of the paired token in the pool"
+      - &main_token_usd_reserve
+        name: main_token_usd_reserve
+        description: "Liquidity of the main token in the pool in USD"
+      - &paired_token_usd_reserve
+        name: paired_token_usd_reserve
+        description: "Liquidity of the paired token in the pool in USD"
+      - &trading_volume
+        name: trading_volume
+        description: "USD value of the trade"
