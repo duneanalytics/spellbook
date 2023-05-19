@@ -1,53 +1,56 @@
-{ { config(
-    alias = 'trades',
-    partition_by = ['block_date'],
-    materialized = 'incremental',
-    file_format = 'delta',
-    incremental_strategy = 'merge',
-    unique_key = ['block_date', 'blockchain', 'project', 'version', 'tx_hash', 'evt_index', 'trace_address'],
-    post_hook = '{{ expose_spells(\'["bnb"]\',
+{{ config(
+    alias = 'trades'
+    ,partition_by = ['block_date']
+    ,materialized = 'incremental'
+    ,file_format = 'delta'
+    ,incremental_strategy = 'merge'
+    ,unique_key = ['block_date', 'blockchain', 'project', 'version', 'tx_hash', 'evt_index', 'trace_address']
+    ,post_hook='{{ expose_spells(\'["bnb"]\',
                                       "project",
                                       "knightswap",
                                     \'["seungwookim08"]\') }}'
-) } } { %
-set
-    project_start_date = '2021-11-02' % } WITH knightswap_dex AS (
-        SELECT
-            t.evt_block_time AS block_time,
-            `to` AS taker,
-            sender AS maker,
-            CASE
-                WHEN amount0Out = 0 THEN amount1Out
-                ELSE amount0Out
-            END AS token_bought_amount_raw,
-            CASE
-                WHEN amount0In = 0 THEN amount1In
-                ELSE amount0In
-            END AS token_sold_amount_raw,
-            cast(NULL as double) AS amount_usd,
-            CASE
-                WHEN amount0Out = 0 THEN token1
-                ELSE token0
-            END AS token_bought_address,
-            CASE
-                WHEN amount0In = 0 THEN token1
-                ELSE token0
-            END AS token_sold_address,
-            t.contract_address AS project_contract_address,
-            t.evt_tx_hash AS tx_hash,
-            '' AS trace_address,
-            t.evt_index
-        FROM
-            { { source('knightswap_bnb', 'KnightPair_evt_Swap') } } t
-            INNER JOIN { { source(
-                'knightswap_bnb',
-                'KnightFactory_evt_PairCreated'
-            ) } } p ON t.contract_address = p.pair { % if is_incremental() % }
-        WHERE
-            t.evt_block_time >= date_trunc("day", now() - interval '1 week') { % endif % } { % if not is_incremental() % }
-        WHERE
-            t.evt_block_time >= '{{ project_start_date }}' { % endif % }
     )
+}}
+
+{ % set project_start_date = '2021-11-02' % }
+
+WITH knightswap_dex AS (
+    SELECT
+        t.evt_block_time AS block_time,
+        `to` AS taker,
+        sender AS maker,
+        CASE
+            WHEN amount0Out = 0 THEN amount1Out
+            ELSE amount0Out
+        END AS token_bought_amount_raw,
+        CASE
+            WHEN amount0In = 0 THEN amount1In
+            ELSE amount0In
+        END AS token_sold_amount_raw,
+        cast(NULL as double) AS amount_usd,
+        CASE
+            WHEN amount0Out = 0 THEN token1
+            ELSE token0
+        END AS token_bought_address,
+        CASE
+            WHEN amount0In = 0 THEN token1
+            ELSE token0
+        END AS token_sold_address,
+        t.contract_address AS project_contract_address,
+        t.evt_tx_hash AS tx_hash,
+        '' AS trace_address,
+        t.evt_index
+    FROM
+        { { source('knightswap_bnb', 'KnightPair_evt_Swap') } } t
+        INNER JOIN { { source(
+            'knightswap_bnb',
+            'KnightFactory_evt_PairCreated'
+        ) } } p ON t.contract_address = p.pair { % if is_incremental() % }
+    WHERE
+        t.evt_block_time >= date_trunc("day", now() - interval '1 week') { % endif % } { % if not is_incremental() % }
+    WHERE
+        t.evt_block_time >= '{{ project_start_date }}' { % endif % }
+)
 SELECT
     'bnb' AS blockchain,
     'knightswap' AS project,
