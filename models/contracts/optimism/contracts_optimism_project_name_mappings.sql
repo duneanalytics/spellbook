@@ -87,5 +87,9 @@ from (
     ,('angle', 'Angle Protocol')
     ,('overnight', 'Overnight+')
     ,('Frax Finance', 'Frax')
+    ,('frax_finance', 'Frax')
+    ,('fraxfinance', 'Frax')
+    ,('DeFi Saver', 'DeFiSaver')
+    ,('defi_saver', 'DeFiSaver')
 
     ) as temp_table (dune_name, mapped_name)

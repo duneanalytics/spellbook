@@ -217,7 +217,7 @@ WITH curated_list AS (
       ,('0x83a15cb9781458b421ad11def469586242cd06cb', 'Superfluid')
       ,('0x8b1727d9322e7bb82e87018f0a4f0d60a3d0866d', 'Superfluid')
       ,('0xcc59c42d05bd66fe22fba27016f783af43f68fa7', 'Aktionariat')
-      ,('0x322d58b9e75a6918f7e7849aee0ff09369977e08', 'DeFi Saver')
+      ,('0x322d58b9e75a6918f7e7849aee0ff09369977e08', 'DeFiSaver')
       ,('0x3527a204a5260a0e36ca695312379370328e4e6c', 'Mirror')
       ,('0x820f92c1b3ad8e962e6c6d9d7caf2a550aec46fb', 'Tipcc')
       ,('0xaa270c9cf88e3806bfa1e3cd983f34af339a7ffc', 'Synapse')
