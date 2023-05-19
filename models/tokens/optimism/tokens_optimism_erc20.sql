@@ -22,5 +22,6 @@ FROM (
 	ON c.contract_address = t.contract_address
 	FULL OUTER JOIN {{ ref('tokens_optimism_erc20_generated')}} b
 	ON c.contract_address = b.contract_address
+	OR t.contract_address = b.contract_address
 	-- Eventually we can also try to map sectors here (i.e. stablecoin, liquid staking)
 ) a
