@@ -1,17 +1,16 @@
 {{ config(
-        alias ='lego_expenses',
+        alias ='operating_expenses',
         partition_by = ['period'],
         materialized = 'table',
         file_format = 'delta',
         post_hook='{{ expose_spells(\'["ethereum"]\',
                                 "project",
-                                "lido",
+                                "lido_accounting",
                                 \'["pipistrella", "adcv", "zergil1397", "lido"]\') }}'
         )
 }}
---https://dune.com/queries/2012131
---ref{{'lido_accounting_lego_expenses'}}
-
+--https://dune.com/queries/2012094
+--ref{{'lido_accounting_operating_expenses'}}
 
 with tokens AS (
 select * from (values 
@@ -69,55 +68,93 @@ select * from  (values
 ) as list(address, name)
 ),
 
+ldo_referral_payments_addr AS (
+select * from  (values
+(LOWER('0x558247e365be655f9144e1a0140d793984372ef3')),
+(LOWER('0x6DC9657C2D90D57cADfFB64239242d06e6103E43')),
+(LOWER('0xDB2364dD1b1A733A690Bf6fA44d7Dd48ad6707Cd')),
+(LOWER('0x586b9b2F8010b284A0197f392156f1A7Eb5e86e9')),
+(LOWER('0xC976903918A0AF01366B31d97234C524130fc8B1')),
+(LOWER('0x53773e034d9784153471813dacaff53dbbb78e8c')),
+(LOWER('0x883f91D6F3090EA26E96211423905F160A9CA01d')),
+(LOWER('0xf6502Ea7E9B341702609730583F2BcAB3c1dC041')),
+(LOWER('0x82AF9d2Ea81810582657f6DC04B1d7d0D573F616')),
+(LOWER('0x351806B55e93A8Bcb47Be3ACAF71584deDEaB324')),
+(LOWER('0x9e2b6378ee8ad2A4A95Fe481d63CAba8FB0EBBF9')),
+(LOWER('0xaf8aE6955d07776aB690e565Ba6Fbc79B8dE3a5d')) --rhino
+) as list(address)
+),
 
-lego_expenses_txns AS (
-    select
-        evt_block_time,
+dai_referral_payments_addr AS (
+    SELECT _recipient AS address FROM {{source('lido_ethereum','AllowedRecipientsRegistry_evt_RecipientAdded')}}
+    WHERE
+    (
+        NOT EXISTS (SELECT _recipient FROM {{source('lido_ethereum','AllowedRecipientsRegistry_evt_RecipientRemoved')}})
+        OR (
+            EXISTS (SELECT _recipient FROM {{source('lido_ethereum','AllowedRecipientsRegistry_evt_RecipientRemoved')}})
+            AND 
+            _recipient NOT IN (SELECT _recipient FROM {{source('lido_ethereum','AllowedRecipientsRegistry_evt_RecipientRemoved')}})
+        )
+    ) 
+    UNION ALL
+    SELECT LOWER('0xaf8aE6955d07776aB690e565Ba6Fbc79B8dE3a5d') --rhino
+),
+
+operating_expenses_txns AS ( 
+    SELECT
+        evt_block_time, 
         CAST(value AS DOUBLE) AS value, 
         evt_tx_hash, 
-        contract_address 
+        contract_address, 
+        `from`, 
+        `to`
     FROM {{source('erc20_ethereum','evt_transfer')}}
     WHERE contract_address IN (SELECT address FROM tokens)
     AND `from` IN (
-        SELECT
-            address 
-        FROM multisigs_list 
-        WHERE name = 'LegoMsig' AND chain = 'Ethereum'
-    )
-    AND `to` NOT IN (SELECT address FROM multisigs_list
-    UNION ALL
-    SELECT address FROM intermediate_addresses
-    UNION ALL
-    SELECT address FROM diversifications_addresses    
-    )    
-    
-    UNION ALL
-    
-    SELECT  
-        evt_block_time, 
-        -CAST(value AS DOUBLE) AS value, 
-        evt_tx_hash, 
-        contract_address
-    FROM {{source('erc20_ethereum','evt_transfer')}}
-    WHERE contract_address IN (SELECT address FROM tokens)
-    AND `to` IN (
         SELECT 
             address 
         FROM multisigs_list 
-        WHERE name = 'LegoMsig' AND chain = 'Ethereum')
-    AND `from` NOT IN (SELECT address FROM multisigs_list
+        WHERE name IN ('ATCMsig', 'PMLMsig', 'RCCMsig') AND chain = 'Ethereum'
+    )
+    AND `to` NOT IN (
+        SELECT address FROM multisigs_list
+        UNION ALL
+        SELECT address FROM intermediate_addresses
+        UNION ALL
+        SELECT address FROM ldo_referral_payments_addr  
+        UNION ALL
+        SELECT LOWER('0x0000000000000000000000000000000000000000')
+        UNION ALL
+        SELECT address FROM diversifications_addresses    
+    )
     UNION ALL
-    SELECT address FROM intermediate_addresses
-    UNION ALL
-    SELECT address FROM diversifications_addresses    
-    )    
+    --ETH outflow
+    SELECT
+        block_time,
+        CAST(tr.value AS DOUBLE) AS value,
+        tx_hash,
+        LOWER('0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'), 
+        `from`, 
+        `to`
+    FROM {{source('ethereum','traces')}} tr
+    WHERE tr.`success`= True
+    AND tr.`from` IN (
+        SELECT 
+            address 
+        FROM multisigs_list 
+        WHERE name IN ('ATCMsig', 'PMLMsig', 'RCCMsig') AND chain = 'Ethereum'
+    )
+    AND tr.`type`='call'
+    AND (tr.`call_type` NOT IN ('delegatecall', 'callcode', 'staticcall') OR tr.`call_type` IS NULL)
+
 )
 
 
-    SELECT  
+    SELECT
         evt_block_time AS period, 
         contract_address AS token,
         value AS amount_token,
         evt_tx_hash
-    FROM lego_expenses_txns
+    FROM operating_expenses_txns
     WHERE contract_address IN (SELECT address FROM tokens)
+      AND value != 0

@@ -5,7 +5,7 @@
         file_format = 'delta',
         post_hook='{{ expose_spells(\'["ethereum"]\',
                                 "project",
-                                "lido",
+                                "lido_accounting",
                                 \'["ppclunghe", "gregshestakovlido "]\') }}'
         )
 }}

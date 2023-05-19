@@ -1,16 +1,17 @@
 {{ config(
-        alias ='ldo_referral_payment',
+        alias ='other_expenses',
         partition_by = ['period'],
         materialized = 'table',
         file_format = 'delta',
         post_hook='{{ expose_spells(\'["ethereum"]\',
                                 "project",
-                                "lido",
+                                "lido_accounting",
                                 \'["pipistrella", "adcv", "zergil1397", "lido"]\') }}'
         )
 }}
---https://dune.com/queries/2012004
---ref{{'lido_accounting_ldo_referral_payment'}}
+--https://dune.com/queries/2012205
+--ref{{'lido_accounting_other_expenses'}}
+
 
 with tokens AS (
 select * from (values 
@@ -48,6 +49,14 @@ select * from (values
         
 ),
 
+diversifications_addresses AS (
+select * from  (values
+(LOWER('0x489f04eeff0ba8441d42736549a1f1d6cca74775'), '1round_1'),
+(LOWER('0x689e03565e36b034eccf12d182c3dc38b2bb7d33'), '1round_2'),
+(LOWER('0xA9b2F5ce3aAE7374a62313473a74C98baa7fa70E'), '2round')
+) as list(address, name)
+),
+
 intermediate_addresses AS (
 select * from  (values
 (LOWER('0xe3224542066d3bbc02bc3d70b641be4bc6f40e36'), 'Jumpgate(Solana)'),
@@ -77,24 +86,84 @@ select * from  (values
 ) as list(address)
 ),
 
+dai_referral_payments_addr AS (
+    SELECT _recipient AS address FROM {{source('lido_ethereum','AllowedRecipientsRegistry_evt_RecipientAdded')}}
+    WHERE
+    (
+        NOT EXISTS (SELECT _recipient FROM {{source('lido_ethereum','AllowedRecipientsRegistry_evt_RecipientRemoved')}})
+        OR (
+            EXISTS (SELECT _recipient FROM {{source('lido_ethereum','AllowedRecipientsRegistry_evt_RecipientRemoved')}})
+            AND 
+            _recipient NOT IN (SELECT _recipient FROM {{source('lido_ethereum','AllowedRecipientsRegistry_evt_RecipientRemoved')}})
+        )
+    ) 
+    UNION ALL
+    SELECT LOWER('0xaf8aE6955d07776aB690e565Ba6Fbc79B8dE3a5d') --rhino
+),
 
 
-ldo_referral_payment_txns AS ( --only LDO referral program, need to add DAI referrals
-   SELECT evt_block_time, CAST(_amount AS DOUBLE) AS amnt, evt_tx_hash, _to, _from, contract_address
-    FROM {{source('lido_ethereum','LDO_evt_Transfer')}}
-    WHERE _from IN (
-        SELECT address FROM multisigs_list WHERE name IN ('Aragon', 'FinanceOpsMsig') AND chain = 'Ethereum'
+other_expenses_txns AS (
+    SELECT 
+        evt_block_time,
+        CAST(value AS DOUBLE) AS value, 
+        evt_tx_hash, 
+        contract_address
+    FROM {{source('erc20_ethereum','evt_transfer')}}
+    WHERE contract_address IN (SELECT address FROM tokens)
+        AND `from` IN (
+            SELECT 
+                address 
+            FROM multisigs_list
+            WHERE name IN ('Aragon','FinanceOpsMsig') AND chain = 'Ethereum'
+        )
+        AND `to` NOT IN (
+            SELECT address FROM multisigs_list
+            UNION ALL
+            SELECT address FROM intermediate_addresses
+            UNION ALL
+            SELECT address FROM ldo_referral_payments_addr
+            UNION ALL
+            SELECT address FROM dai_referral_payments_addr  
+            UNION ALL
+            SELECT LOWER('0x0000000000000000000000000000000000000000')
+            UNION ALL
+            SELECT address FROM diversifications_addresses    
+    )    
+    UNION ALL
+    --ETH outflow
+    SELECT  
+        block_time,
+        CAST(tr.value AS DOUBLE) AS value,
+        tx_hash,
+        LOWER('0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2')
+    FROM {{source('ethereum','traces')}} tr
+    WHERE  tr.`success` = True
+    AND tr.`from` IN (
+        SELECT 
+            address 
+        FROM multisigs_list 
+        WHERE name IN ('Aragon','FinanceOpsMsig') AND chain = 'Ethereum'
     )
-    AND _to IN (
-        SELECT address FROM ldo_referral_payments_addr
+    AND tr.`to` NOT IN (
+        SELECT 
+            address 
+        FROM multisigs_list
+        UNION ALL 
+        SELECT address FROM diversifications_addresses)
+        AND tr.`type`='call'
+        AND (tr.`call_type` NOT IN ('delegatecall', 'callcode', 'staticcall') OR tr.`call_type` IS NULL
     )
-    ORDER BY evt_block_time  
+
 
 )
 
-    SELECT  evt_block_time AS period,
-            evt_tx_hash,
-            contract_address AS token,
-            amnt AS amount_token
-    FROM ldo_referral_payment_txns 
+
+    SELECT  
+        evt_block_time AS period, 
+        contract_address AS token,
+        value AS amount_token,
+        evt_tx_hash
+    FROM other_expenses_txns
+    WHERE contract_address IN (SELECT address FROM tokens)
+    
 

@@ -1,17 +1,16 @@
 {{ config(
-        alias ='other_expenses',
+        alias ='trp_expenses',
         partition_by = ['period'],
         materialized = 'table',
         file_format = 'delta',
         post_hook='{{ expose_spells(\'["ethereum"]\',
                                 "project",
-                                "lido",
+                                "lido_accounting",
                                 \'["pipistrella", "adcv", "zergil1397", "lido"]\') }}'
         )
 }}
---https://dune.com/queries/2012205
---ref{{'lido_accounting_other_expenses'}}
-
+--https://dune.com/queries/2011914
+--ref{{'lido_accounting_trp_expenses'}}
 
 with tokens AS (
 select * from (values 
@@ -101,69 +100,34 @@ dai_referral_payments_addr AS (
     SELECT LOWER('0xaf8aE6955d07776aB690e565Ba6Fbc79B8dE3a5d') --rhino
 ),
 
-
-other_expenses_txns AS (
+trp_expenses_txns AS (
     SELECT 
         evt_block_time,
         CAST(value AS DOUBLE) AS value, 
         evt_tx_hash, 
         contract_address
     FROM {{source('erc20_ethereum','evt_transfer')}}
-    WHERE contract_address IN (SELECT address FROM tokens)
+    WHERE contract_address = LOWER('0x5a98fcbea516cf06857215779fd812ca3bef1b32')
         AND `from` IN (
             SELECT 
                 address 
             FROM multisigs_list
             WHERE name IN ('Aragon','FinanceOpsMsig') AND chain = 'Ethereum'
         )
-        AND `to` NOT IN (
-            SELECT address FROM multisigs_list
-            UNION ALL
-            SELECT address FROM intermediate_addresses
-            UNION ALL
-            SELECT address FROM ldo_referral_payments_addr
-            UNION ALL
-            SELECT address FROM dai_referral_payments_addr  
-            UNION ALL
-            SELECT LOWER('0x0000000000000000000000000000000000000000')
-            UNION ALL
-            SELECT address FROM diversifications_addresses    
+        AND `to` IN (
+            SELECT 
+                address 
+            FROM multisigs_list
+            WHERE name IN ('TRPMsig') AND chain = 'Ethereum'
     )    
-    UNION ALL
-    --ETH outflow
-    SELECT  
-        block_time,
-        CAST(tr.value AS DOUBLE) AS value,
-        tx_hash,
-        LOWER('0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2')
-    FROM {{source('ethereum','traces')}} tr
-    WHERE  tr.`success` = True
-    AND tr.`from` IN (
-        SELECT 
-            address 
-        FROM multisigs_list 
-        WHERE name IN ('Aragon','FinanceOpsMsig') AND chain = 'Ethereum'
-    )
-    AND tr.`to` NOT IN (
-        SELECT 
-            address 
-        FROM multisigs_list
-        UNION ALL 
-        SELECT address FROM diversifications_addresses)
-        AND tr.`type`='call'
-        AND (tr.`call_type` NOT IN ('delegatecall', 'callcode', 'staticcall') OR tr.`call_type` IS NULL
-    )
-
-
+    
 )
-
 
     SELECT  
         evt_block_time AS period, 
         contract_address AS token,
         value AS amount_token,
         evt_tx_hash
-    FROM other_expenses_txns
-    WHERE contract_address IN (SELECT address FROM tokens)
+    FROM trp_expenses_txns
     
 
