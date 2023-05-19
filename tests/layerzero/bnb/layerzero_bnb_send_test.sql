@@ -8,7 +8,7 @@ WITH raw_data AS (
         OR (call_block_number = 28337122 AND call_tx_hash = '0x0e174c31e25d1a7d884c9494f077bdcc982315e0ec696b2a6fc05dff8aa99c50')
         OR (call_block_number = 28337675 AND call_tx_hash = '0x7f74b34068ef67c75882cbd332a7bea7e34e816ef53f9e00b4be7f1cef1bd826')
         OR (call_block_number = 28337609 AND call_tx_hash = '0xef6d892eeb8d60a2c21491a8cbeb5c5fa7ca70a61a44948ef58a2a84882c30d0')
-)
+),
 
 processed_data AS (
     SELECT block_time,

@@ -8,7 +8,7 @@ models:
      contributors: bennyfeng
    config:
      tags: ['layerzero', 'endpoint', 'send', 'cross-chain', 'bennyfeng']
-   description: "LayerZero transaction on arbitrum"
+   description: "LayerZero message send call"
    columns:
      - &blockchain
        name: blockchain
