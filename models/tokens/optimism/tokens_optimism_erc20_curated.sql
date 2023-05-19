@@ -356,6 +356,14 @@ WITH raw_token_list AS (
     ,('0xc4b60eb182720e6b6e129e9f8428ea66c1461cab', 'OptiPepe', 18, 'underlying')
     ,('0x5130f6ce257b8f9bf7fac0a0b519bd588120ed40', 'CLPRDRPL', 18, 'receipt')
     ,('0x4518231a8fdf6ac553b9bbd51bbb86825b583263', 'KNC', 18, 'underlying')
+    ,('0x528CDc92eAB044E1E39FE43B9514bfdAB4412B98', 'GIV', 18, 'underlying')
+    ,('0x01B8b6384298D4848E3BE63D4C9D17830EeE488A', 'HAUS', 18, 'underlying')
+    ,('0x764ad60e1b81f6cacfec1a2926393d688d4493e6', 'aCRV', 18, 'receipt')
+    ,('0xC27D9BC194a648fE3069955a5126699C4e49351C', 'AMKT', 18, 'receipt')
+    ,('0xBB6BBaa0F6D839A00c82B10747aBc3b7E2eEcc82', 'IBEX', 18, 'underlying')
+    ,('0xeAeAdAC73baaF4cB8B024dE9D65B2eeFa722856C', 'RFWSTETH', 18, 'underlying')
+    ,('0x7d14206c937e70e19e3a5b94011faf0d5b3928e2', 'VITA', 18, 'underlying')
+
     
     ) AS temp_table (contract_address, symbol, decimals, token_type)
 )
