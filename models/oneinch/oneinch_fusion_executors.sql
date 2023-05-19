@@ -53,11 +53,11 @@ chains as (
 , traces as (
     select 
         tx_hash
-        , "from" as resolver_address
+        , `from` as resolver_address
         , substring(input, 99, 40) as resolver_executor
         , bytea2numeric_v3(substring(input, 11, 64)) as chain_id
     from {{ source('ethereum', 'traces') }}
-    where "to" = '0xcb8308fcb7bc2f84ed1bea2c016991d34de5cc77'
+    where `to` = '0xcb8308fcb7bc2f84ed1bea2c016991d34de5cc77'
         and substring(input, 1, 10) = '0xf204bdb9'
         and block_time >= '2022-12-25'
         and tx_success
@@ -83,6 +83,8 @@ order by resolver_name, resolver_executor
 ---- TRINO QUERY -----
 
 /*
+with
+
 chains as (
     select *
     from (values
