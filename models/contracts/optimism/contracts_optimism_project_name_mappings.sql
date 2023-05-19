@@ -86,5 +86,6 @@ from (
     ,('Biconomy - Hyphen', 'Biconomy')
     ,('angle', 'Angle Protocol')
     ,('overnight', 'Overnight+')
+    ,('Frax Finance', 'Frax')
 
     ) as temp_table (dune_name, mapped_name)
