@@ -1,5 +1,5 @@
 {{ config(
-    schema = 'layerzero_ethereum',
+    schema = 'layerzero_arbitrum',
     alias = 'send',
     partition_by = ['block_date'],
     materialized = 'incremental',
@@ -11,7 +11,7 @@
 
 {% set transaction_start_date = "2022-03-15" %}
 {% set endpoint_contract = "0x66a71dcef29a0ffbdbe3c6a460a3b5bc225cd675" %}
-{% set native_token_contract = "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2" %}
+{% set native_token_contract = "0x82af49447d8a07e3bd95bd0d56f35241523fbab1" %}
 
 WITH chain_list(chain_name, chain_id, endpoint_address) AS (
     values
@@ -42,7 +42,7 @@ WITH chain_list(chain_name, chain_id, endpoint_address) AS (
 ),
 
 send_detail AS (
-    SELECT CAST(101 AS integer) AS source_chain_id,
+    SELECT CAST(110 AS integer) AS source_chain_id,
         s.call_tx_hash as tx_hash,
         s.call_block_number as block_number,
         s._dstChainId AS destination_chain_id,
@@ -61,8 +61,8 @@ send_detail AS (
         CASE WHEN len(_destination) >= 82
             THEN substring(_destination, 1, len(_destination) - 40)
             ELSE _destination END AS remote_contract_address
-    FROM {{ source ('layerzero_ethereum', 'Endpoint_call_send') }} s
-    INNER JOIN {{ source('ethereum','transactions') }} t on t.block_number = s.call_block_number
+    FROM {{ source ('layerzero_arbitrum', 'Endpoint_call_send') }} s
+    INNER JOIN {{ source('arbitrum','transactions') }} t on t.block_number = s.call_block_number
         AND t.hash = s.call_tx_hash
         {% if not is_incremental() %}
         AND t.block_time >= '{{transaction_start_date}}'
@@ -96,7 +96,7 @@ destination_gas_detail AS (
         s.trace_address,
         CAST(e.value as double) AS destination_gas
     FROM send_detail s
-    INNER JOIN {{ source('ethereum', 'traces') }} e on e.block_number = s.block_number
+    INNER JOIN {{ source('arbitrum', 'traces') }} e on e.block_number = s.block_number
         AND e.tx_hash = s.tx_hash
         AND e.trace_address = s.trace_address
         {% if not is_incremental() %}
@@ -131,7 +131,7 @@ native_transfer_value_summary AS (
     FROM send_summary s
     INNER JOIN destination_trace_address_summary dg ON dg.block_number = s.block_number
         AND dg.tx_hash = s.tx_hash
-    INNER JOIN {{ source('ethereum', 'traces') }} e ON e.block_number = dg.block_number
+    INNER JOIN {{ source('arbitrum', 'traces') }} e ON e.block_number = dg.block_number
         AND e.tx_hash = dg.tx_hash
         AND ARRAY_CONTAINS(dg.endpoint_root_trace_address, e.trace_address[0]) IS NOT TRUE
         AND e.`from` = s.transaction_contract_address
@@ -166,7 +166,7 @@ trans_detail AS (
         INNER JOIN destination_gas_summary dgs ON dgs.block_number = s.block_number
             AND dgs.tx_hash = s.tx_hash
             AND dgs.amount_destination_gas = s.transaction_value
-        INNER JOIN {{ source('erc20_ethereum', 'evt_transfer') }} et on et.evt_block_number = s.block_number
+        INNER JOIN {{ source('erc20_arbitrum', 'evt_transfer') }} et on et.evt_block_number = s.block_number
             AND et.evt_tx_hash = s.tx_hash
             {% if not is_incremental() %}
             AND et.evt_block_time >= '{{transaction_start_date}}'
@@ -198,7 +198,7 @@ trans_detail AS (
     WHERE s.transaction_value = dgs.amount_destination_gas + nvs.amount_native_value
 )
 
-SELECT 'ethereum' AS blockchain,
+SELECT 'arbitrum' AS blockchain,
     s.source_chain_id,
     cls.chain_name AS source_chain_name,
     s.destination_chain_id,
@@ -229,7 +229,7 @@ INNER JOIN trans_detail t ON s.block_number = t.block_number
     AND s.tx_hash = t.tx_hash
 LEFT JOIN chain_list cls ON cls.chain_id = s.source_chain_id
 LEFT JOIN chain_list cld ON cld.chain_id = s.destination_chain_id
-LEFT JOIN tokens.erc20 erc ON erc.blockchain = 'ethereum' AND erc.contract_address = t.currency_contract
+LEFT JOIN tokens.erc20 erc ON erc.blockchain = 'arbitrum' AND erc.contract_address = t.currency_contract
 LEFT JOIN prices.usd p ON p.contract_address = t.currency_contract
     AND p.minute = date_trunc('minute', s.block_time)
     {% if not is_incremental() %}

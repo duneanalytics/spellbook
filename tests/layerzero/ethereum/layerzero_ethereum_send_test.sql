@@ -14,7 +14,7 @@ processed_data AS (
     SELECT block_time,
         tx_hash,
         trace_address,
-        _dstChainId AS destination_chain_id
+        destination_chain_id
     FROM {{ ref('layerzero_ethereum_send') }}
     WHERE (block_number = 17223223 AND tx_hash = '0x6166ba6961e44de378da178061543b37b44a8606061859956f26483d35918259')
         OR (block_number = 17224063 AND tx_hash = '0xe707457c57f5b135e8550a5033cc7ded4778eed810e10b230b8241414c4666ec')
