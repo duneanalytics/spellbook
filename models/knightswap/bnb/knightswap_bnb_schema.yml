@@ -20,10 +20,6 @@ models:
             - tx_hash
             - evt_index
             - trace_address
-      - check_dex_aggregator_seed:
-          blockchain: bnb
-          project: knightswap
-          version: 1
     columns:
       - &blockchain
         name: blockchain
