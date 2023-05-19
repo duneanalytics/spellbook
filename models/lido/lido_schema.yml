@@ -1,7 +1,7 @@
 version: 2
 
 models:
-  - name: lido_accounting_ethereum
+  - name: lido_accounting
     meta:
       blockchain: ethereum
       sector: liquid_staking
@@ -51,7 +51,7 @@ models:
         name: token_eth_price
         description: "ETH price"
 
-  - name: lido_liquidity_ethereum
+  - name: lido_liquidity
     meta:
       blockchain: ethereum,optimism,arbitrum,polygon
       project: lido
