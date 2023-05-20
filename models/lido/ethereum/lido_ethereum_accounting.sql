@@ -415,7 +415,7 @@ SELECT  DATE_TRUNC('day', prices.usd.minute) AS period,
             '3.2.3.3. Domain Incentives' AS category,
             -amount_token AS value,
             token
-    FROM {{ref('lido_ethereum_accounting_lox_incentives')}}    
+    FROM {{ref('lido_ethereum_accounting_lox_incentives')}}
 
     
     UNION ALL
