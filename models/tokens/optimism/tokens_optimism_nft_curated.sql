@@ -279,5 +279,6 @@ FROM
 ,('0xb0cd054ff1b233b366468331a898da7fd5c06988', 'OPTIBOAT')
 ,('0x1d46b0644f5a979de14e880d06b28094e9a43b2d', 'Myhome')
 ,('0x3b227fc544ec74e192631d8cffd536e854716062', 'Oppa Bear Evolution Gen.1')
+,('0x1d94BC0FEf20EF2E6332A5a46229f2B394fb5f58', 'OP-ARMY-DSBT')
 
 ) as temp_table (contract_address, name)
