@@ -333,69 +333,69 @@ models:
       - *version
       - *block_time
       - *block_number
-      - ratio_bought_sold
+      - &ratio_bought_sold
         name: ratio_bought_sold
         description: "Ratio of bought to sold tokens"
-      - profit_amount_raw
+      - &profit_amount_raw
         name: profit_amount_raw
         description: "Profit amount in raw units"
-      - profit_amount
+      - &profit_amount
         name: profit_amount
         description: "Profit amount in original units"
-      - currency_address
+      - &currency_address
         name: currency_address
         description: "Currency address"
-      - currency_symbol
+      - &currency_symbol
         name: currency_symbol
         description: "Currency symbol"
-      - profit_traded_currency_amount_raw
+      - &profit_traded_currency_amount_raw
         name: profit_traded_currency_amount_raw
         description: "Profit of traded currency amount in raw units"
-      - profit_traded_currency_amount
+      - &profit_traded_currency_amount
         name: profit_traded_currency_amount
         description: "Profit of traded currency amount in original units"
-      - traded_currency_address
+      - &traded_currency_address
         name: traded_currency_address
         description: "Traded currency address"
-      - traded_currency_symbol
+      - &traded_currency_symbol
         name: traded_currency_symbol
         description: "Traded currency symbol"
-      - frontrun_taker
+      - &frontrun_taker
         name: frontrun_taker
         description: "Frontrun taker"
-      - frontrun_tx_from
+      - &frontrun_tx_from
         name: frontrun_tx_from
         description: "Frontrun tx from"
-      - backrun_taker
+      - &backrun_taker
         name: backrun_taker
         description: "Backrun taker"
-      - backrun_tx_from
+      - &backrun_tx_from
         name: backrun_tx_from
         description: "Backrun tx from"
-      - frontrun_index
+      - &frontrun_index
         name: frontrun_index
         description: "Frontrun transaction index"
-      - backrun_index
+      - &backrun_index
         name: backrun_index
         description: "Frontrun transaction index"
-      - sandwiched_pool
+      - &sandwiched_pool
         name: sandwiched_pool
         description: "Sandwiched DEX pool"
-      - frontrun_tx_hash
+      - &frontrun_tx_hash
         name: frontrun_tx_hash
         description: "Frontrun transaction hash"
-      - backrun_tx_hash
+      - &backrun_tx_hash
         name: backrun_tx_hash
         description: "Backrun transaction hash"
-      - amount_trades_between
+      - &amount_trades_between
         name: amount_trades_between
         description: "Amount of trades between frontrun and backrun"
-      - gas_price
+      - &gas_price
         name: gas_price
         description: "Gas price"
-      - frontrun_tx_fee
+      - &frontrun_tx_fee
         name: frontrun_tx_fee
         description: "Frontrun transaction fee"
-      - backrun_tx_fee
+      - &backrun_tx_fee
         name: backrun_tx_fee
         description: "Backrun transaction fee"
