@@ -4,7 +4,7 @@
         materialized = 'incremental',
         file_format = 'delta',
         incremental_strategy = 'merge',
-        unique_key = ['blockchain', 'tx_hash', 'evt_index'],
+        unique_key = ['blockchain', 'frontrun_tx_hash', 'frontrun_index'],
         post_hook='{{ expose_spells(\'["ethereum", "bnb", "avalanche_c", "gnosis", "optimism", "arbitrum", "fantom", "polygon"]\',
                                 "sector",
                                 "dex",

@@ -327,6 +327,12 @@ models:
       tags: ['dex', 'mev', 'sandwiches', 'crosschain']
     description: >
       DEX MEV Sandwich Attacks across all chains
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - frontrun_tx_hash
+            - frontrun_index
     columns: 
       - *blockchain
       - *project
