@@ -23,47 +23,11 @@
     , 'polygon'
     ] %}
 
-SELECT *
-FROM (
-    {% for chain in chains %}
-    SELECT
-        blockchain,
-        project,
-        version,
-        block_date,
-        block_time,
-        token_bought_symbol,
-        token_sold_symbol,
-        token_pair,
-        token_bought_amount,
-        token_sold_amount,
-        token_bought_amount_raw,
-        token_sold_amount_raw,
-        amount_usd,
-        token_bought_address,
-        token_sold_address,
-        taker,
-        maker,
-        project_contract_address,
-        tx_hash,
-        tx_from,
-        tx_to,
-        trace_address,
-        evt_index
-    FROM {{ chain }}
-    {% if not loop.last %}
-    {% if is_incremental() %}
-    WHERE block_date >= date_trunc("day", now() - interval '1 week')
-    {% endif %}
-    UNION ALL
-    {% endif %}
-    {% endfor %}
-)
-
 WITH trades AS (
-    SELECT {{ chain }} AS blockchain
+    SELECT 'ethereum' AS blockchain
     , dt.project
     , dt.version
+    , date_trunc("day", dt.block_time) AS block_date
     , dt.block_time
     , t.block_number
     , dt.token_sold_address
@@ -84,17 +48,251 @@ WITH trades AS (
     , SUM(COALESCE(dt.token_bought_amount, 0)) AS token_bought_amount
     , SUM(COALESCE(dt.amount_usd, 0)) AS amount_usd
     FROM {{ ref('dex_trades') }} dt
-    INNER JOIN {{ source({{ chain }}, 'transactions') }} t ON t.block_time=dt.block_time
+    INNER JOIN {{ source('ethereum', 'transactions') }} t ON t.block_time=dt.block_time
         AND t.hash=dt.tx_hash
-    WHERE dt.blockchain = {{ chain }}
-    {% if not loop.last %}
+    WHERE dt.blockchain = 'ethereum'
     {% if is_incremental() %}
     AND block_date >= date_trunc("day", now() - interval '1 week')
     {% endif %}
-    GROUP BY 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14
+    GROUP BY 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16
+
     UNION ALL
+
+    SELECT 'bnb' AS blockchain
+    , dt.project
+    , dt.version
+    , date_trunc("day", dt.block_time) AS block_date
+    , dt.block_time
+    , t.block_number
+    , dt.token_sold_address
+    , dt.token_bought_address
+    , dt.token_sold_symbol
+    , dt.token_bought_symbol
+    , dt.taker
+    , dt.tx_hash
+    , dt.tx_from
+    , dt.project_contract_address
+    , dt.evt_index
+    , t.index
+    , MIN(et.gas_price) AS gas_price
+    , MIN((t.gas_price/POWER(10, 18))*t.gas_used) AS tx_fee
+    , SUM(COALESCE(dt.token_sold_amount_raw, 0)) AS token_sold_amount_raw
+    , SUM(COALESCE(dt.token_bought_amount_raw, 0)) AS token_bought_amount_raw
+    , SUM(COALESCE(dt.token_sold_amount, 0)) AS token_sold_amount
+    , SUM(COALESCE(dt.token_bought_amount, 0)) AS token_bought_amount
+    , SUM(COALESCE(dt.amount_usd, 0)) AS amount_usd
+    FROM {{ ref('dex_trades') }} dt
+    INNER JOIN {{ source('bnb', 'transactions') }} t ON t.block_time=dt.block_time
+        AND t.hash=dt.tx_hash
+    WHERE dt.blockchain = 'bnb'
+    {% if is_incremental() %}
+    AND block_date >= date_trunc("day", now() - interval '1 week')
     {% endif %}
-    {% endfor %}
+    GROUP BY 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16
+
+    UNION ALL
+
+    SELECT 'avalanche_c' AS blockchain
+    , dt.project
+    , dt.version
+    , date_trunc("day", dt.block_time) AS block_date
+    , dt.block_time
+    , t.block_number
+    , dt.token_sold_address
+    , dt.token_bought_address
+    , dt.token_sold_symbol
+    , dt.token_bought_symbol
+    , dt.taker
+    , dt.tx_hash
+    , dt.tx_from
+    , dt.project_contract_address
+    , dt.evt_index
+    , t.index
+    , MIN(et.gas_price) AS gas_price
+    , MIN((t.gas_price/POWER(10, 18))*t.gas_used) AS tx_fee
+    , SUM(COALESCE(dt.token_sold_amount_raw, 0)) AS token_sold_amount_raw
+    , SUM(COALESCE(dt.token_bought_amount_raw, 0)) AS token_bought_amount_raw
+    , SUM(COALESCE(dt.token_sold_amount, 0)) AS token_sold_amount
+    , SUM(COALESCE(dt.token_bought_amount, 0)) AS token_bought_amount
+    , SUM(COALESCE(dt.amount_usd, 0)) AS amount_usd
+    FROM {{ ref('dex_trades') }} dt
+    INNER JOIN {{ source('avalanche_c', 'transactions') }} t ON t.block_time=dt.block_time
+        AND t.hash=dt.tx_hash
+    WHERE dt.blockchain = 'avalanche_c'
+    {% if is_incremental() %}
+    AND block_date >= date_trunc("day", now() - interval '1 week')
+    {% endif %}
+    GROUP BY 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16
+
+    UNION ALL
+
+    SELECT 'gnosis' AS blockchain
+    , dt.project
+    , dt.version
+    , date_trunc("day", dt.block_time) AS block_date
+    , dt.block_time
+    , t.block_number
+    , dt.token_sold_address
+    , dt.token_bought_address
+    , dt.token_sold_symbol
+    , dt.token_bought_symbol
+    , dt.taker
+    , dt.tx_hash
+    , dt.tx_from
+    , dt.project_contract_address
+    , dt.evt_index
+    , t.index
+    , MIN(et.gas_price) AS gas_price
+    , MIN((t.gas_price/POWER(10, 18))*t.gas_used) AS tx_fee
+    , SUM(COALESCE(dt.token_sold_amount_raw, 0)) AS token_sold_amount_raw
+    , SUM(COALESCE(dt.token_bought_amount_raw, 0)) AS token_bought_amount_raw
+    , SUM(COALESCE(dt.token_sold_amount, 0)) AS token_sold_amount
+    , SUM(COALESCE(dt.token_bought_amount, 0)) AS token_bought_amount
+    , SUM(COALESCE(dt.amount_usd, 0)) AS amount_usd
+    FROM {{ ref('dex_trades') }} dt
+    INNER JOIN {{ source('gnosis', 'transactions') }} t ON t.block_time=dt.block_time
+        AND t.hash=dt.tx_hash
+    WHERE dt.blockchain = 'gnosis'
+    {% if is_incremental() %}
+    AND block_date >= date_trunc("day", now() - interval '1 week')
+    {% endif %}
+    GROUP BY 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16
+
+    UNION ALL
+
+    SELECT 'optimism' AS blockchain
+    , dt.project
+    , dt.version
+    , date_trunc("day", dt.block_time) AS block_date
+    , dt.block_time
+    , t.block_number
+    , dt.token_sold_address
+    , dt.token_bought_address
+    , dt.token_sold_symbol
+    , dt.token_bought_symbol
+    , dt.taker
+    , dt.tx_hash
+    , dt.tx_from
+    , dt.project_contract_address
+    , dt.evt_index
+    , t.index
+    , MIN(et.gas_price) AS gas_price
+    , MIN((t.gas_price/POWER(10, 18))*t.gas_used) AS tx_fee
+    , SUM(COALESCE(dt.token_sold_amount_raw, 0)) AS token_sold_amount_raw
+    , SUM(COALESCE(dt.token_bought_amount_raw, 0)) AS token_bought_amount_raw
+    , SUM(COALESCE(dt.token_sold_amount, 0)) AS token_sold_amount
+    , SUM(COALESCE(dt.token_bought_amount, 0)) AS token_bought_amount
+    , SUM(COALESCE(dt.amount_usd, 0)) AS amount_usd
+    FROM {{ ref('dex_trades') }} dt
+    INNER JOIN {{ source('optimism', 'transactions') }} t ON t.block_time=dt.block_time
+        AND t.hash=dt.tx_hash
+    WHERE dt.blockchain = 'optimism'
+    {% if is_incremental() %}
+    AND block_date >= date_trunc("day", now() - interval '1 week')
+    {% endif %}
+    GROUP BY 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16
+
+    UNION ALL
+
+    SELECT 'arbitrum' AS blockchain
+    , dt.project
+    , dt.version
+    , date_trunc("day", dt.block_time) AS block_date
+    , dt.block_time
+    , t.block_number
+    , dt.token_sold_address
+    , dt.token_bought_address
+    , dt.token_sold_symbol
+    , dt.token_bought_symbol
+    , dt.taker
+    , dt.tx_hash
+    , dt.tx_from
+    , dt.project_contract_address
+    , dt.evt_index
+    , t.index
+    , MIN(et.gas_price) AS gas_price
+    , MIN((t.gas_price/POWER(10, 18))*t.gas_used) AS tx_fee
+    , SUM(COALESCE(dt.token_sold_amount_raw, 0)) AS token_sold_amount_raw
+    , SUM(COALESCE(dt.token_bought_amount_raw, 0)) AS token_bought_amount_raw
+    , SUM(COALESCE(dt.token_sold_amount, 0)) AS token_sold_amount
+    , SUM(COALESCE(dt.token_bought_amount, 0)) AS token_bought_amount
+    , SUM(COALESCE(dt.amount_usd, 0)) AS amount_usd
+    FROM {{ ref('dex_trades') }} dt
+    INNER JOIN {{ source('arbitrum', 'transactions') }} t ON t.block_time=dt.block_time
+        AND t.hash=dt.tx_hash
+    WHERE dt.blockchain = 'arbitrum'
+    {% if is_incremental() %}
+    AND block_date >= date_trunc("day", now() - interval '1 week')
+    {% endif %}
+    GROUP BY 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16
+
+    UNION ALL
+
+    SELECT 'fantom' AS blockchain
+    , dt.project
+    , dt.version
+    , date_trunc("day", dt.block_time) AS block_date
+    , dt.block_time
+    , t.block_number
+    , dt.token_sold_address
+    , dt.token_bought_address
+    , dt.token_sold_symbol
+    , dt.token_bought_symbol
+    , dt.taker
+    , dt.tx_hash
+    , dt.tx_from
+    , dt.project_contract_address
+    , dt.evt_index
+    , t.index
+    , MIN(et.gas_price) AS gas_price
+    , MIN((t.gas_price/POWER(10, 18))*t.gas_used) AS tx_fee
+    , SUM(COALESCE(dt.token_sold_amount_raw, 0)) AS token_sold_amount_raw
+    , SUM(COALESCE(dt.token_bought_amount_raw, 0)) AS token_bought_amount_raw
+    , SUM(COALESCE(dt.token_sold_amount, 0)) AS token_sold_amount
+    , SUM(COALESCE(dt.token_bought_amount, 0)) AS token_bought_amount
+    , SUM(COALESCE(dt.amount_usd, 0)) AS amount_usd
+    FROM {{ ref('dex_trades') }} dt
+    INNER JOIN {{ source('fantom', 'transactions') }} t ON t.block_time=dt.block_time
+        AND t.hash=dt.tx_hash
+    WHERE dt.blockchain = 'fantom'
+    {% if is_incremental() %}
+    AND block_date >= date_trunc("day", now() - interval '1 week')
+    {% endif %}
+    GROUP BY 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16
+
+    UNION ALL
+
+    SELECT 'polygon' AS blockchain
+    , dt.project
+    , dt.version
+    , date_trunc("day", dt.block_time) AS block_date
+    , dt.block_time
+    , t.block_number
+    , dt.token_sold_address
+    , dt.token_bought_address
+    , dt.token_sold_symbol
+    , dt.token_bought_symbol
+    , dt.taker
+    , dt.tx_hash
+    , dt.tx_from
+    , dt.project_contract_address
+    , dt.evt_index
+    , t.index
+    , MIN(et.gas_price) AS gas_price
+    , MIN((t.gas_price/POWER(10, 18))*t.gas_used) AS tx_fee
+    , SUM(COALESCE(dt.token_sold_amount_raw, 0)) AS token_sold_amount_raw
+    , SUM(COALESCE(dt.token_bought_amount_raw, 0)) AS token_bought_amount_raw
+    , SUM(COALESCE(dt.token_sold_amount, 0)) AS token_sold_amount
+    , SUM(COALESCE(dt.token_bought_amount, 0)) AS token_bought_amount
+    , SUM(COALESCE(dt.amount_usd, 0)) AS amount_usd
+    FROM {{ ref('dex_trades') }} dt
+    INNER JOIN {{ source('polygon', 'transactions') }} t ON t.block_time=dt.block_time
+        AND t.hash=dt.tx_hash
+    WHERE dt.blockchain = 'polygon'
+    {% if is_incremental() %}
+    AND block_date >= date_trunc("day", now() - interval '1 week')
+    {% endif %}
+    GROUP BY 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16
     )
 
 , sandwiches AS (
