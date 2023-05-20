@@ -280,5 +280,6 @@ FROM
 ,('0x1d46b0644f5a979de14e880d06b28094e9a43b2d', 'Myhome')
 ,('0x3b227fc544ec74e192631d8cffd536e854716062', 'Oppa Bear Evolution Gen.1')
 ,('0x1d94BC0FEf20EF2E6332A5a46229f2B394fb5f58', 'OP-ARMY-DSBT')
+,('0x1846fb181a12644dec6af707b23b39d2d19c1879', 'Gitcoin Passport Score (Unaffiliated)')
 
 ) as temp_table (contract_address, name)
