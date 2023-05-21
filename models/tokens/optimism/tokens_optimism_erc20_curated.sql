@@ -358,7 +358,6 @@ WITH raw_token_list AS (
     ,('0x4518231a8fdf6ac553b9bbd51bbb86825b583263', 'KNC', 18, 'underlying')
     ,('0x528CDc92eAB044E1E39FE43B9514bfdAB4412B98', 'GIV', 18, 'underlying')
     ,('0x01B8b6384298D4848E3BE63D4C9D17830EeE488A', 'HAUS', 18, 'underlying')
-    ,('0x764ad60e1b81f6cacfec1a2926393d688d4493e6', 'aCRV', 18, 'receipt')
     ,('0xC27D9BC194a648fE3069955a5126699C4e49351C', 'AMKT', 18, 'receipt')
     ,('0xBB6BBaa0F6D839A00c82B10747aBc3b7E2eEcc82', 'IBEX', 18, 'underlying')
     ,('0xeAeAdAC73baaF4cB8B024dE9D65B2eeFa722856C', 'RFWSTETH', 18, 'underlying')
