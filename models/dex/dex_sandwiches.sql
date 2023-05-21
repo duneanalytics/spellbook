@@ -40,7 +40,7 @@ WITH trades AS (
     , dt.project_contract_address
     , dt.evt_index
     , t.index
-    , MIN(et.gas_price) AS gas_price
+    , MIN(t.gas_price) AS gas_price
     , MIN((t.gas_price/POWER(10, 18))*t.gas_used) AS tx_fee
     , SUM(COALESCE(dt.token_sold_amount_raw, 0)) AS token_sold_amount_raw
     , SUM(COALESCE(dt.token_bought_amount_raw, 0)) AS token_bought_amount_raw
@@ -74,7 +74,7 @@ WITH trades AS (
     , dt.project_contract_address
     , dt.evt_index
     , t.index
-    , MIN(et.gas_price) AS gas_price
+    , MIN(t.gas_price) AS gas_price
     , MIN((t.gas_price/POWER(10, 18))*t.gas_used) AS tx_fee
     , SUM(COALESCE(dt.token_sold_amount_raw, 0)) AS token_sold_amount_raw
     , SUM(COALESCE(dt.token_bought_amount_raw, 0)) AS token_bought_amount_raw
@@ -108,7 +108,7 @@ WITH trades AS (
     , dt.project_contract_address
     , dt.evt_index
     , t.index
-    , MIN(et.gas_price) AS gas_price
+    , MIN(t.gas_price) AS gas_price
     , MIN((t.gas_price/POWER(10, 18))*t.gas_used) AS tx_fee
     , SUM(COALESCE(dt.token_sold_amount_raw, 0)) AS token_sold_amount_raw
     , SUM(COALESCE(dt.token_bought_amount_raw, 0)) AS token_bought_amount_raw
@@ -142,7 +142,7 @@ WITH trades AS (
     , dt.project_contract_address
     , dt.evt_index
     , t.index
-    , MIN(et.gas_price) AS gas_price
+    , MIN(t.gas_price) AS gas_price
     , MIN((t.gas_price/POWER(10, 18))*t.gas_used) AS tx_fee
     , SUM(COALESCE(dt.token_sold_amount_raw, 0)) AS token_sold_amount_raw
     , SUM(COALESCE(dt.token_bought_amount_raw, 0)) AS token_bought_amount_raw
@@ -176,7 +176,7 @@ WITH trades AS (
     , dt.project_contract_address
     , dt.evt_index
     , t.index
-    , MIN(et.gas_price) AS gas_price
+    , MIN(t.gas_price) AS gas_price
     , MIN((t.gas_price/POWER(10, 18))*t.gas_used) AS tx_fee
     , SUM(COALESCE(dt.token_sold_amount_raw, 0)) AS token_sold_amount_raw
     , SUM(COALESCE(dt.token_bought_amount_raw, 0)) AS token_bought_amount_raw
@@ -210,7 +210,7 @@ WITH trades AS (
     , dt.project_contract_address
     , dt.evt_index
     , t.index
-    , MIN(et.gas_price) AS gas_price
+    , MIN(t.gas_price) AS gas_price
     , MIN((t.gas_price/POWER(10, 18))*t.gas_used) AS tx_fee
     , SUM(COALESCE(dt.token_sold_amount_raw, 0)) AS token_sold_amount_raw
     , SUM(COALESCE(dt.token_bought_amount_raw, 0)) AS token_bought_amount_raw
@@ -244,7 +244,7 @@ WITH trades AS (
     , dt.project_contract_address
     , dt.evt_index
     , t.index
-    , MIN(et.gas_price) AS gas_price
+    , MIN(t.gas_price) AS gas_price
     , MIN((t.gas_price/POWER(10, 18))*t.gas_used) AS tx_fee
     , SUM(COALESCE(dt.token_sold_amount_raw, 0)) AS token_sold_amount_raw
     , SUM(COALESCE(dt.token_bought_amount_raw, 0)) AS token_bought_amount_raw
@@ -278,7 +278,7 @@ WITH trades AS (
     , dt.project_contract_address
     , dt.evt_index
     , t.index
-    , MIN(et.gas_price) AS gas_price
+    , MIN(t.gas_price) AS gas_price
     , MIN((t.gas_price/POWER(10, 18))*t.gas_used) AS tx_fee
     , SUM(COALESCE(dt.token_sold_amount_raw, 0)) AS token_sold_amount_raw
     , SUM(COALESCE(dt.token_bought_amount_raw, 0)) AS token_bought_amount_raw
