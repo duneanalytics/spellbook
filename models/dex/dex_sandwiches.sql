@@ -288,6 +288,7 @@ WITH trades AS (
     SELECT s1.blockchain
     , s1.project
     , s1.version
+    , s1.block_date
     , s1.block_time
     , s1.block_number
     , CASE WHEN s1.token_bought_amount_raw > 0 THEN s2.token_sold_amount_raw/s1.token_bought_amount_raw END AS ratio_bought_sold
