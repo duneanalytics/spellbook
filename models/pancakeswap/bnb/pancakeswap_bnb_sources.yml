@@ -65,7 +65,6 @@ sources:
           - &token1
             name: token1
             description: "Token1 contract address"
-      - name: ERC721NFTMarketV1_evt_Trade
       - name: PancakeSwapMMPool_evt_Swap
       - name: PancakeStableSwap_evt_TokenExchange
       - name: PancakeStableSwapTwoPool_evt_TokenExchange
@@ -89,7 +88,7 @@ sources:
             description: "The delta of the token1 balance of the pool"
           - *contract_address
           - *evt_block_number
-          - *evt_block_time 
+          - *evt_block_time
           - *evt_index
           - *evt_tx_hash
           - &liquidity
@@ -132,4 +131,3 @@ sources:
           - *token0
           - *token1
 
-  

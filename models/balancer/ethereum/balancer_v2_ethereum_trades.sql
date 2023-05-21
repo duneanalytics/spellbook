@@ -22,14 +22,16 @@ WITH v2 AS (
         s.evt_block_time,
         s.evt_tx_hash,
         s.evt_index
-    FROM {{ source('balancer_v2_ethereum', 'Vault_evt_Swap') }} AS s
-    INNER JOIN {{ source('balancer_v2_ethereum', 'Vault_evt_PoolRegistered') }} AS p
-        ON s.poolid = p.poolid
+    from {{ source('balancer_v2_ethereum', 'Vault_evt_Swap') }} s
+    inner join {{ source('balancer_v2_ethereum', 'Vault_evt_PoolRegistered') }} p
+    on s.poolId = p.poolId
+    WHERE tokenIn != poolAddress
+        AND tokenOut != poolAddress
     {% if not is_incremental() %}
-        where s.evt_block_time >= '{{ project_start_date }}'
+        AND s.evt_block_time >= '{{project_start_date}}'
     {% endif %}
     {% if is_incremental() %}
-        WHERE s.evt_block_time >= DATE_TRUNC('day', NOW() - INTERVAL '1 week')
+        AND s.evt_block_time >= date_trunc("day", now() - interval '1 week')
     {% endif %}
 ),
 
