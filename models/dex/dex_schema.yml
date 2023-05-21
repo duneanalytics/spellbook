@@ -339,9 +339,12 @@ models:
       - *version
       - *block_time
       - *block_number
-      - &ratio_bought_sold
-        name: ratio_bought_sold
-        description: "Ratio of bought to sold tokens"
+      - &profit_percentage_of_initial
+        name: profit_percentage_of_initial
+        description: "Profit percentage of MEV target token"
+      - &ratio_traded_token
+        name: ratio_traded_token
+        description: "Ratio of bought to sold tokens for the traded token"
       - &profit_amount_raw
         name: profit_amount_raw
         description: "Profit amount in raw units"
