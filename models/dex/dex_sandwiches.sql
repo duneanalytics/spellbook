@@ -322,7 +322,7 @@ WITH trades AS (
         AND s1.token_sold_address=s2.token_bought_address
         AND s1.token_bought_address=s2.token_sold_address
         AND s2.token_sold_amount BETWEEN s1.token_bought_amount*0.9 AND s1.token_bought_amount*1.1
-        AND s2.token_bought_amount > s1.token_sold_amount
+        --AND s2.token_bought_amount > s1.token_sold_amount -- Removed to also include trades where the sandwiched trade was unprofitable
     INNER JOIN trades v ON v.block_time=s1.block_time
         AND v.project_contract_address=s2.project_contract_address
         AND v.evt_index>s1.evt_index
