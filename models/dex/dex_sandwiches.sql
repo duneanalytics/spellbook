@@ -12,17 +12,6 @@
         )
 }}
 
-{% set chains = [
-    'ethereum'
-    , 'bnb'
-    , 'avalanche_c'
-    , 'gnosis'
-    , 'optimism'
-    , 'arbitrum'
-    , 'fantom'
-    , 'polygon'
-    ] %}
-
 WITH trades AS (
     SELECT 'ethereum' AS blockchain
     , dt.project
