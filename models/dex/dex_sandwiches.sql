@@ -323,6 +323,7 @@ WITH trades AS (
     , s1.gas_price
     , s1.tx_fee AS frontrun_tx_fee
     , s2.tx_fee AS backrun_tx_fee
+    , CASE WHEN s2.token_bought_amount > s1.token_sold_amount THEN true ELSE false END AS is_profitable
     FROM trades s1
     INNER JOIN trades s2 ON s1.block_time=s2.block_time
         AND s1.tx_hash!=s2.tx_hash
