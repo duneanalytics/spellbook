@@ -8,7 +8,7 @@ models:
       project: timeswap
       contributors: raveena15, varunhawk19
     config:
-      tags: ['ethereum','timeswap','lending', 'borrowing']
+      tags: ['ethereum','timeswap','pools']
     description: >
         Timeswap pools on Ethereum
     columns:
@@ -45,3 +45,46 @@ models:
       - &lend_contract_address
         name: lend_contract_address
         description: "The lend contract address"
+
+  - name: timeswap_ethereum_lend
+    description: >
+        Timeswap lend transactions on Ethereum
+    columns:
+      - &Transaction_Hash
+        name: Transaction_Hash
+        description: "Primary key of the transaction"
+      - &Time
+        name: Time
+        description: "Timestamp for block event time in UTC"
+      - *maturity
+        
+      - *strike
+        
+      - &User_Address
+        name: User_Address
+        description: "The address of the user"
+      - &Pool_Pair
+        name: Pool_Pair
+        description: "The pool pair"
+      - &Chain 
+        name: Chain
+        description: "chain"
+      - &Token_Amount
+        name: Token_Amount
+        description: "The amount of token borrowed"
+      - &USD_Amount
+        name: USD_Amount
+        description: "The amount of token borrowed in USD"
+
+  - name: timeswap_ethereum_borrow
+    columns:  
+      - *Transaction_Hash
+      - *Time
+      - *maturity
+      - *strike
+      - *User_Address
+      - *Pool_Pair
+      - *Chain
+      - *Token_Amount
+      - *USD_Amount
+      
