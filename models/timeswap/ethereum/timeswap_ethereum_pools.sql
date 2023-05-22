@@ -1,10 +1,12 @@
-{ { config(
+{{ config(
     alias = 'pools',
-    post_hook = '{{ expose_spells('["ethereum"]',
-                            "project",
-                            "timeswap",
-                            '["RaveenaBhasin"]') }}'
-) } }
+    post_hook='{{ expose_spells(\'["ethereum"]\',
+                                "project",
+                                "timeswap",
+                                \'["raveena15, varunhawk19"]\') }}'
+    )
+}}
+
 SELECT
     token0_symbol,
     token1_symbol,

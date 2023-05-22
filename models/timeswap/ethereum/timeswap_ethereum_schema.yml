@@ -6,9 +6,9 @@ models:
       blockchain: ethereum
       sector: lending-borrowing
       project: timeswap
-      contributors: RaveenaBhasin
+      contributors: raveena15, varunhawk19
     config:
-      tags: ['ethereum','timeswap','view']
+      tags: ['ethereum','timeswap','lending', 'borrowing']
     description: >
         Timeswap pools on Ethereum
     columns:

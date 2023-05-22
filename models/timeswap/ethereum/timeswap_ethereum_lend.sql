@@ -1,10 +1,12 @@
-{ { config(
+{{ config(
     alias = 'lend',
-    post_hook = '{{ expose_spells('["ethereum"]',
-                            "project",
-                            "timeswap",
-                            '["RaveenaBhasin"]') }}'
-) } }
+    post_hook='{{ expose_spells(\'["ethereum"]\',
+                                "project",
+                                "timeswap",
+                                \'["raveena15, varunhawk19"]\') }}'
+    )
+}}
+
 SELECT
   l.evt_tx_hash as "Transaction_Hash",
   l.evt_block_time as "Time",
@@ -27,8 +29,8 @@ SELECT
     END as DOUBLE
   ) as "USD_Amount",
   FROM {{ source('timeswap_ethereum', 'TimeswapV2PeripheryUniswapV3LendGivenPrincipal_evt_LendGivenPrincipal') }} l
-  LEFT JOIN {{ ref('timeswap_ethereum_pools') }} i ON CAST(l.contract_address AS VARCHAR(100)) = i.borrow_contract_address
-  LEFT JOIN {{ source('prices', 'usd') }} p ON p.minute = date_trunc('minute', l.evt_block_time)
+  JOIN {{ ref('timeswap_ethereum_pools') }} i ON CAST(l.contract_address AS VARCHAR(100)) = i.borrow_contract_address
+  JOIN {{ source('prices', 'usd') }} p ON p.minute = date_trunc('minute', l.evt_block_time)
   WHERE p.symbol=i.token0_symbol AND p.blockchain = 'ethereum' AND l.isToken0 = true
 
 UNION
@@ -55,6 +57,6 @@ SELECT
     END as DOUBLE
   ) as "USD_Amount",
   FROM {{ source('timeswap_ethereum', 'TimeswapV2PeripheryUniswapV3LendGivenPrincipal_evt_LendGivenPrincipal') }} l
-  LEFT JOIN {{ ref('timeswap_ethereum_pools') }} i ON CAST(l.contract_address AS VARCHAR(100)) = i.borrow_contract_address
-  LEFT JOIN {{ source('prices', 'usd') }} p ON p.minute = date_trunc('minute', l.evt_block_time)
+  JOIN {{ ref('timeswap_ethereum_pools') }} i ON CAST(l.contract_address AS VARCHAR(100)) = i.borrow_contract_address
+  JOIN {{ source('prices', 'usd') }} p ON p.minute = date_trunc('minute', l.evt_block_time)
   WHERE p.symbol=i.token1_symbol AND p.blockchain = 'ethereum' AND l.isToken0 = false
