@@ -254,7 +254,7 @@ models:
       - name: evt_tx_hash,
         description: "Transaction hash"
 
-  - name: lido_ethereum_accounting_buffer_inflow
+  - name: lido_accounting_ethereum_buffer_inflow
     meta:
       blockchain: ethereum
       sector: liquid_staking
@@ -273,7 +273,7 @@ models:
       - name: evt_tx_hash,
         description: "Transaction hash"
 
-  - name: lido_ethereum_accounting_buffer_outflow
+  - name: lido_accounting_ethereum_buffer_outflow
     meta:
       blockchain: ethereum
       sector: liquid_staking
