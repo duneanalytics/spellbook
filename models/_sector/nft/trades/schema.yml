@@ -1,4 +1,5 @@
 version: 2
+
 models:
  - name: nft_ethereum_trades_beta
    meta:
@@ -275,3 +276,12 @@ models:
      - *tx_from
      - *tx_to
      - *unique_trade_id
+
+ - name: nft_ethereum_trades_beta_ported
+   meta:
+     blockchain: ethereum
+     sector: nft
+     contributors: 0xRob
+   config:
+     tags: ['ethereum', 'nft', 'trades', 'beta']
+   description: "backport of the new nft trades model"

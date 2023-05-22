@@ -96,12 +96,61 @@ models:
         name: evt_index
         description: ""
 
+  - name: quickswap_v2_polygon_trades
+    meta:
+      blockchain: polygon
+      sector: dex
+      project: quickswap_v2
+      contributors: maybeYonas
+    config:
+      tags: ['polygon','quickswap_v2','trades', 'quickswap','dex']
+    description: >
+        Quickswap V2 contract trades on Polygon
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_date
+            - blockchain
+            - project
+            - version
+            - tx_hash
+            - evt_index
+            - trace_address
+      - check_dex_seed:
+          blockchain: polygon
+          project: quickswap
+          version: 2
+    columns:
+      - *blockchain
+      - *project
+      - *version
+      - *block_date
+      - *block_time
+      - *token_bought_symbol
+      - *token_sold_symbol
+      - *token_pair
+      - *token_bought_amount
+      - *token_sold_amount
+      - *token_bought_amount_raw
+      - *token_sold_amount_raw
+      - *amount_usd
+      - *token_bought_address
+      - *token_sold_address
+      - *taker
+      - *maker
+      - *project_contract_address
+      - *tx_hash
+      - *tx_from
+      - *tx_to
+      - *trace_address
+      - *evt_index
+
   - name: quickswap_polygon_trades
     meta:
       blockchain: polygon
       sector: dex
       project: quickswap
-      contributors: sameepsi
+      contributors: sameepsi, maybeYonas
     config:
       tags: ['polygon','dex','trades', 'quickswap']
     description: >
