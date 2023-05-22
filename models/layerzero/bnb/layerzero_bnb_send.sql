@@ -13,14 +13,7 @@
 {% set endpoint_contract = "0x66a71dcef29a0ffbdbe3c6a460a3b5bc225cd675" %}
 {% set native_token_contract = "0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c" %}
 
-WITH chain_list AS (
-    SELECT chain_id,
-        chain_name,
-        endpoint_address
-    FROM {{ ref('layerzero_chains') }}
-),
-
-send_detail AS (
+WITH send_detail AS (
     SELECT CAST(102 AS integer) AS source_chain_id,
         s.call_tx_hash as tx_hash,
         s.call_block_number as block_number,
@@ -31,8 +24,8 @@ send_detail AS (
         s._adapterParams AS adapter_params,
         s._refundAddress AS refund_address,
         s._zroPaymentAddress AS zro_payment_address,
-        t.`from` AS user_address,
-        t.`to` AS transaction_contract_address,
+        t.from AS user_address,
+        t.to AS transaction_contract_address,
         CAST(t.value AS DOUBLE) AS transaction_value,
         CASE WHEN len(_destination) >= 82
             THEN '0x' || right(_destination, 40)
@@ -112,7 +105,7 @@ native_transfer_value_summary AS (
     INNER JOIN {{ source('bnb', 'traces') }} e ON e.block_number = dg.block_number
         AND e.tx_hash = dg.tx_hash
         AND ARRAY_CONTAINS(dg.endpoint_root_trace_address, e.trace_address[0]) IS NOT TRUE
-        AND e.`from` = s.transaction_contract_address
+        AND e.from = s.transaction_contract_address
         AND e.call_type = 'call'
         AND cast(e.value as double) > 0
         AND cardinality(e.trace_address) > 0
@@ -205,8 +198,8 @@ SELECT 'bnb' AS blockchain,
 FROM send_detail s
 INNER JOIN trans_detail t ON s.block_number = t.block_number
     AND s.tx_hash = t.tx_hash
-LEFT JOIN chain_list cls ON cls.chain_id = s.source_chain_id
-LEFT JOIN chain_list cld ON cld.chain_id = s.destination_chain_id
+LEFT JOIN {{ ref('layerzero_chains') }} cls ON cls.chain_id = s.source_chain_id
+LEFT JOIN {{ ref('layerzero_chains') }} cld ON cld.chain_id = s.destination_chain_id
 LEFT JOIN {{ ref('tokens_erc20') }} erc ON erc.blockchain = 'bnb' AND erc.contract_address = t.currency_contract
 LEFT JOIN {{ source('prices', 'usd') }} p ON p.blockchain = 'bnb' AND p.contract_address = t.currency_contract
     AND p.minute = date_trunc('minute', s.block_time)
