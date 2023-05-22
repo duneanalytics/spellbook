@@ -13,7 +13,7 @@ SELECT
   b.isToken0 as Token_0,
   b.maturity as maturity,
   b.strike as strike,
-  b.from as User_Address,
+  b."from" as User_Address,
   i.pool_pair as Pool_Pair,
   i.chain as Chain,
   CAST(
@@ -41,7 +41,7 @@ SELECT
   b.isToken0 as Token_0,
   b.maturity as maturity,
   b.strike as strike,
-  b.from as User_Address,
+  b."from" as User_Address,
   i.pool_pair as Pool_Pair,
   i.chain as Chain,
   CAST(
