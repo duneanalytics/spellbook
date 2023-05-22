@@ -188,6 +188,11 @@ models:
       bnb:
         +schema: uniswap_bnb
 
+    timeswap:
+      +schema: timeswap
+      ethereum:
+        +schema: timeswap_ethereum
+
     quickswap:
       +schema: quickswap
       polygon:

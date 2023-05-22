@@ -1,0 +1,47 @@
+version: 2
+
+models:
+  - name: timeswap_ethereum_pools
+    meta:
+      blockchain: ethereum
+      sector: lending-borrowing
+      project: timeswap
+      contributors: RaveenaBhasin
+    config:
+      tags: ['ethereum','timeswap','view']
+    description: >
+        Timeswap pools on Ethereum
+    columns:
+      - &token0_symbol
+        name: token0_symbol
+        description: "The symbol of the token0"
+      - &token1_symbol
+        name: token1_symbol
+        description: "The symbol of the token1"
+      - &token0_address
+        name: token0_address
+        description: "The address of the token0"
+      - &token1_address
+        name: token1_address
+        description: "The address of the token1"
+      - &token0_decimals
+        name: token0_decimals
+        description: "The decimals of the token0"
+      - &token1_decimals
+        name: token1_decimals
+        description: "The decimals of the token1"
+      - &strike
+        name: strike
+        description: "The strike rate"
+      - &maturity
+        name: maturity
+        description: "The maturity"
+      - &pool_pair
+        name: pool_pair
+        description: "The pool pair"
+      - &borrow_contract_address
+        name: borrow_contract_address
+        description: "The borrow contract address"
+      - &lend_contract_address
+        name: lend_contract_address
+        description: "The lend contract address"
