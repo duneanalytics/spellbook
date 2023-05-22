@@ -13,4 +13,7 @@ sources:
       - name: LegacyOracle_evt_PostTotalShares
       - name: steth_evt_FeeSet
       - name: steth_evt_FeeDistributionSet
+      - name: steth_evt_Transfer
       - name: LDO_evt_Transfer
+      - name: AccountingOracle_evt_ProcessingStarted
+      
