@@ -477,6 +477,7 @@ WITH curated_list AS (
       ,('0x6Cb6D9Fb673CfbF31b3A432F6316fE3196efd4aA', 'Mugen Finance')
       ,('0x0F26f9E5C297d411768D4daa43F12533f59BAEe7', 'Mugen Finance')
       ,('0x76EF4B28df1F590db4cD680675d734c27CAa32BA', 'Rocket Pool')
+      ,('0x6b8a8035601Da0c9d31c5fc11fA66Aae485654fc', 'Cozy Finance')
 
   ) as temp_table (creator_address, contract_project)
 
