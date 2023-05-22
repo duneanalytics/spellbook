@@ -1,7 +1,7 @@
 version: 2
 
 models:
- - name: layerzero_chains
+ - name: layerzero_chain_list
    meta:
      blockchain: ethereum, fantom, avalanche_c, arbitrum, gnosis, polygon, bnb, optimism
      project: layerzero

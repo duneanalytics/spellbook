@@ -1,6 +1,6 @@
 {{ config(
     schema='layerzero',
-    alias = 'chains',
+    alias = 'chain_list',
     )
 }}
 
