@@ -1,10 +1,14 @@
 {{ config(
     schema = 'aave_v3_arbitrum'
     , alias='flashloans'
+    , materialized = 'incremental'
+    , file_format = 'delta'
+    , incremental_strategy = 'merge'
+    , unique_key = ['tx_hash', 'evt_index']
     , post_hook='{{ expose_spells(\'["arbitrum"]\',
                                   "project",
                                   "aave_v3",
-                                  \'["hildobby"]\') }}'
+                                  \'["hildobby", "hosuke"]\') }}'
   )
 }}
 
@@ -25,24 +29,28 @@ WITH flashloans AS (
     , flash.target AS recipient
     , flash.contract_address
     FROM {{ source('aave_v3_arbitrum','L2Pool_evt_FlashLoan') }} flash
-    LEFT JOIN {{ ref('tokens_arbitrum_erc20') }} erc20 ON flash.asset = erc20.contract_address
+    LEFT JOIN {{ ref('tokens_arbitrum_erc20') }} erc20
+        ON flash.asset = erc20.contract_address
     WHERE CAST(flash.amount AS double) > 0
+        {% if is_incremental() %}
+        AND flash.evt_block_time >= date_trunc("day", now() - interval '1 week')
+        {% endif %}
     )
     
-SELECT 'arbitrum' AS blockchain
-, 'Aave' AS project
-, 'v3' AS version
-, flash.block_time
-, flash.block_number
-, flash.amount_raw/POWER(10, flash.currency_decimals) AS amount
-, pu.price*flash.amount_raw/POWER(10, flash.currency_decimals) AS amount_usd
-, flash.tx_hash
-, flash.evt_index
-, flash.fee/POWER(10, flash.currency_decimals) AS fee
-, flash.currency_contract
-, flash.currency_symbol
-, flash.recipient
-, flash.contract_address
+SELECT 'arbitrum'                                                       AS blockchain
+     , 'Aave'                                                           AS project
+     , '3'                                                              AS version
+     , flash.block_time
+     , flash.block_number
+     , flash.amount_raw / POWER(10, flash.currency_decimals)            AS amount
+     , pu.price * flash.amount_raw / POWER(10, flash.currency_decimals) AS amount_usd
+     , flash.tx_hash
+     , flash.evt_index
+     , flash.fee / POWER(10, flash.currency_decimals)                   AS fee
+     , flash.currency_contract
+     , flash.currency_symbol
+     , flash.recipient
+     , flash.contract_address
 FROM flashloans flash
 LEFT JOIN {{ source('prices','usd') }} pu ON pu.blockchain = 'arbitrum'  
     AND pu.contract_address = flash.currency_contract

@@ -8,7 +8,7 @@
 }}
 
 {% set lido_liquidity_models = [
- ref('lido_ethereum_liquidity_kyberswap_pools')
+ ref('lido_liquidity_ethereum_kyberswap_pools')
 ] %}
 
 
