@@ -23,7 +23,7 @@ SELECT *
 FROM (
     {% for model in layerzero_models %}
     SELECT
-        blockchain
+        blockchain,
         source_chain_id,
         source_chain_name,
         destination_chain_id,
