@@ -329,3 +329,27 @@ models:
       - &amount_usd
         name: amount_usd
 
+  - name: cow_protocol_ethereum_internal_imbalances
+    meta:
+      blockchain: ethereum
+      project: cow_protocol
+      contributors: bh2smith
+    config:
+      tags: ['ethereum','cow_protocol','solver', 'slippage', 'internalized transfers']
+    description: >
+        Solvers Optimize their transaction costs by flagging certain AMM interactions in their settlements
+        as "internalizable". This means that the settlement contract has sufficient balance "skip the pool" 
+        and utilize its own funds to facilitate trade and reduce execution costs. 
+        This results in what we refer to as "phantom transfers", which are transfers that did not happen, 
+        but would have if the settlement were not internalized. This table accounts for phantom transfers 
+        in order to give a more accurate account of "solver slippage". For more details on this project, 
+        please refer to https://github.com/cowprotocol/solver-rewards/tree/main/internal_transfers
+    columns:
+      - *block_number
+      - *tx_hash
+      - &token
+        name: token
+        description: "ERC20 token for which the imbalance occurs in"
+      - &amount
+        name: amount
+        description: "Wei amount of token imbalance (signed integer)"
