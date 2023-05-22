@@ -77,6 +77,8 @@ models:
         description: "The amount of token borrowed in USD"
 
   - name: timeswap_ethereum_borrow
+    description: >
+      Timeswap borrow transactions on Ethereum
     columns:  
       - *Transaction_Hash
       - *Time
