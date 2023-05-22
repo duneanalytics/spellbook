@@ -1,65 +1,15 @@
 version: 2
 
 models:
-  - name: lido_ethereum_accounting
+  - name: lido_liquidity_ethereum_kyberswap_pools
     meta:
       blockchain: ethereum
-      sector: liquid_staking
-      project: lido
-      contributors: [ pipistrella, adcv, zergil1397,lido ]
-    config:
-      tags: [ 'ethereum', 'lido', 'staking', 'accounting' ]
-    description: "Granular-level general ledger of LidoDAO with all accounting entries. Currently Work In Progress"
-    columns:
-      - &period
-        name: period
-        description: "Timestamp of the accounting entry"
-      - &hash
-        name: hash
-        description: "Transaction hash of the accounting entry"
-      - &primary_label
-        name: primary_label
-        description: "Primary label account of the accounting entry"
-      - &secondary_label
-        name: secondary_label
-        description: "Secondary label account of the accounting entry"
-      - &account
-        name: account
-        description: "Main label of the accounting entry"
-      - &category
-        name: category
-        description: "Category of the accounting entry"
-      - &value_base_token
-        name: value_base_token
-        description: "Value of the accounting entry in base token"
-      - &base_token
-        name: base_token
-        description: "Base token of the accounting entry in base token"
-      - &base_token_address
-        name: base_token_address
-        description: "Base token's address of the accounting entry in base token"
-      - &value_usd
-        name: value_usd
-        description: "USD Value of the accounting entry"
-      - &value_eth
-        name: value_eth
-        description: "ETH Value of the accounting entry"
-      - &token_price
-        name: token_price
-        description: "Price of token"
-      - &token_eth_price
-        name: token_eth_price
-        description: "ETH price"
-
-  - name: lido_ethereum_liquidity
-    meta:
-      blockchain: ethereum,optimism,arbitrum,polygon
       project: lido
       contributors: gregshestakovlido, ppclunghe, hosuke
     config:
-      tags: ['ethereum','optimism','arbitrum','polygon','lido','liquidity']
+      tags: ['ethereum','lido','liquidity']
     description: 
-        Lido wstETH liquidity pools
+        Lido wstETH liquidity pools on Kyberswap Ethereum
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:

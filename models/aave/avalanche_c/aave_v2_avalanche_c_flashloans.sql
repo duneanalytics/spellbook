@@ -1,6 +1,10 @@
 {{ config(
     schema = 'aave_v2_avalanche_c'
     , alias='flashloans'
+    , materialized = 'incremental'
+    , file_format = 'delta'
+    , incremental_strategy = 'merge'
+    , unique_key = ['tx_hash', 'evt_index']
     , post_hook='{{ expose_spells(\'["avalanche_c"]\',
                                   "project",
                                   "aave_v2",
@@ -27,22 +31,25 @@ WITH flashloans AS (
     FROM {{ source('aave_v2_avalanche_c','LendingPool_evt_FlashLoan') }} flash
     LEFT JOIN {{ ref('tokens_avalanche_c_erc20') }} erc20 ON flash.asset = erc20.contract_address
     WHERE CAST(flash.amount AS double) > 0
+        {% if is_incremental() %}
+        AND flash.evt_block_time >= date_trunc("day", now() - interval '1 week')
+        {% endif %}
     )
     
-SELECT 'avalanche_c' AS blockchain
-, 'Aave' AS project
-, 'v2' AS version
-, flash.block_time
-, flash.block_number
-, flash.amount_raw/POWER(10, flash.currency_decimals) AS amount
-, pu.price*flash.amount_raw/POWER(10, flash.currency_decimals) AS amount_usd
-, flash.tx_hash
-, flash.evt_index
-, flash.fee/POWER(10, flash.currency_decimals) AS fee
-, flash.currency_contract
-, flash.currency_symbol
-, flash.recipient
-, flash.contract_address
+SELECT 'avalanche_c'                                                    AS blockchain
+     , 'Aave'                                                           AS project
+     , '2'                                                              AS version
+     , flash.block_time
+     , flash.block_number
+     , flash.amount_raw / POWER(10, flash.currency_decimals)            AS amount
+     , pu.price * flash.amount_raw / POWER(10, flash.currency_decimals) AS amount_usd
+     , flash.tx_hash
+     , flash.evt_index
+     , flash.fee / POWER(10, flash.currency_decimals)                   AS fee
+     , flash.currency_contract
+     , flash.currency_symbol
+     , flash.recipient
+     , flash.contract_address
 FROM flashloans flash
 LEFT JOIN {{ source('prices','usd') }} pu ON pu.blockchain = 'avalanche_c'  
     AND pu.contract_address = flash.currency_contract

@@ -1,16 +1,17 @@
 {{ config(
-        alias ='ldo_referral_payment',
+        alias ='lego_expenses',
         partition_by = ['period'],
         materialized = 'table',
         file_format = 'delta',
         post_hook='{{ expose_spells(\'["ethereum"]\',
                                 "project",
-                                "lido",
+                                "lido_accounting",
                                 \'["pipistrella", "adcv", "zergil1397", "lido"]\') }}'
         )
 }}
---https://dune.com/queries/2012004
---ref{{'lido_accounting_ldo_referral_payment'}}
+--https://dune.com/queries/2012131
+--ref{{'lido_accounting_lego_expenses'}}
+
 
 with tokens AS (
 select * from (values 
@@ -48,6 +49,14 @@ select * from (values
         
 ),
 
+diversifications_addresses AS (
+select * from  (values
+(LOWER('0x489f04eeff0ba8441d42736549a1f1d6cca74775'), '1round_1'),
+(LOWER('0x689e03565e36b034eccf12d182c3dc38b2bb7d33'), '1round_2'),
+(LOWER('0xA9b2F5ce3aAE7374a62313473a74C98baa7fa70E'), '2round')
+) as list(address, name)
+),
+
 intermediate_addresses AS (
 select * from  (values
 (LOWER('0xe3224542066d3bbc02bc3d70b641be4bc6f40e36'), 'Jumpgate(Solana)'),
@@ -60,41 +69,55 @@ select * from  (values
 ) as list(address, name)
 ),
 
-ldo_referral_payments_addr AS (
-select * from  (values
-(LOWER('0x558247e365be655f9144e1a0140d793984372ef3')),
-(LOWER('0x6DC9657C2D90D57cADfFB64239242d06e6103E43')),
-(LOWER('0xDB2364dD1b1A733A690Bf6fA44d7Dd48ad6707Cd')),
-(LOWER('0x586b9b2F8010b284A0197f392156f1A7Eb5e86e9')),
-(LOWER('0xC976903918A0AF01366B31d97234C524130fc8B1')),
-(LOWER('0x53773e034d9784153471813dacaff53dbbb78e8c')),
-(LOWER('0x883f91D6F3090EA26E96211423905F160A9CA01d')),
-(LOWER('0xf6502Ea7E9B341702609730583F2BcAB3c1dC041')),
-(LOWER('0x82AF9d2Ea81810582657f6DC04B1d7d0D573F616')),
-(LOWER('0x351806B55e93A8Bcb47Be3ACAF71584deDEaB324')),
-(LOWER('0x9e2b6378ee8ad2A4A95Fe481d63CAba8FB0EBBF9')),
-(LOWER('0xaf8aE6955d07776aB690e565Ba6Fbc79B8dE3a5d')) --rhino
-) as list(address)
-),
 
-
-
-ldo_referral_payment_txns AS ( --only LDO referral program, need to add DAI referrals
-   SELECT evt_block_time, CAST(_amount AS DOUBLE) AS amnt, evt_tx_hash, _to, _from, contract_address
-    FROM {{source('lido_ethereum','LDO_evt_Transfer')}}
-    WHERE _from IN (
-        SELECT address FROM multisigs_list WHERE name IN ('Aragon', 'FinanceOpsMsig') AND chain = 'Ethereum'
+lego_expenses_txns AS (
+    select
+        evt_block_time,
+        CAST(value AS DOUBLE) AS value, 
+        evt_tx_hash, 
+        contract_address 
+    FROM {{source('erc20_ethereum','evt_transfer')}}
+    WHERE contract_address IN (SELECT address FROM tokens)
+    AND `from` IN (
+        SELECT
+            address 
+        FROM multisigs_list 
+        WHERE name = 'LegoMsig' AND chain = 'Ethereum'
     )
-    AND _to IN (
-        SELECT address FROM ldo_referral_payments_addr
-    )
-    ORDER BY evt_block_time  
-
+    AND `to` NOT IN (SELECT address FROM multisigs_list
+    UNION ALL
+    SELECT address FROM intermediate_addresses
+    UNION ALL
+    SELECT address FROM diversifications_addresses    
+    )    
+    
+    UNION ALL
+    
+    SELECT  
+        evt_block_time, 
+        -CAST(value AS DOUBLE) AS value, 
+        evt_tx_hash, 
+        contract_address
+    FROM {{source('erc20_ethereum','evt_transfer')}}
+    WHERE contract_address IN (SELECT address FROM tokens)
+    AND `to` IN (
+        SELECT 
+            address 
+        FROM multisigs_list 
+        WHERE name = 'LegoMsig' AND chain = 'Ethereum')
+    AND `from` NOT IN (SELECT address FROM multisigs_list
+    UNION ALL
+    SELECT address FROM intermediate_addresses
+    UNION ALL
+    SELECT address FROM diversifications_addresses    
+    )    
 )
 
-    SELECT  evt_block_time AS period,
-            evt_tx_hash,
-            contract_address AS token,
-            amnt AS amount_token
-    FROM ldo_referral_payment_txns 
 
+    SELECT  
+        evt_block_time AS period, 
+        contract_address AS token,
+        value AS amount_token,
+        evt_tx_hash
+    FROM lego_expenses_txns
+    WHERE contract_address IN (SELECT address FROM tokens)
