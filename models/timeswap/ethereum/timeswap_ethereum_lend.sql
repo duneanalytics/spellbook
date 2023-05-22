@@ -15,7 +15,7 @@ SELECT
   l.strike as "strike",
   l.from as "User_Address",
   i.pool_pair as "Pool_Pair",
-  i.chain as "Chain"
+  i.chain as "Chain",
   CAST(
     CASE
       WHEN CAST(l.isToken0 AS BOOLEAN) = true THEN CAST(l.tokenAmount AS DOUBLE) / power(10,i.token0_decimals)
@@ -27,7 +27,7 @@ SELECT
       WHEN CAST(l.isToken0 AS BOOLEAN) = true THEN CAST(l.tokenAmount AS DOUBLE) / power(10,i.token0_decimals) * p.price
       ELSE CAST(l.tokenAmount AS DOUBLE) / power(10,i.token1_decimals) * p.price
     END as DOUBLE
-  ) as "USD_Amount",
+  ) as "USD_Amount"
   FROM {{ source('timeswap_ethereum', 'TimeswapV2PeripheryUniswapV3LendGivenPrincipal_evt_LendGivenPrincipal') }} l
   JOIN {{ ref('timeswap_ethereum_pools') }} i ON CAST(l.contract_address AS VARCHAR(100)) = i.borrow_contract_address
   JOIN {{ source('prices', 'usd') }} p ON p.minute = date_trunc('minute', l.evt_block_time)
@@ -43,7 +43,7 @@ SELECT
   l.strike as "strike",
   l.from as "User_Address",
   i.pool_pair as "Pool_Pair",
-  i.chain as "Chain"
+  i.chain as "Chain",
   CAST(
     CASE
       WHEN CAST(l.isToken0 AS BOOLEAN) = true THEN CAST(l.tokenAmount AS DOUBLE) / power(10,i.token0_decimals)
@@ -55,7 +55,7 @@ SELECT
       WHEN CAST(l.isToken0 AS BOOLEAN) = true THEN CAST(l.tokenAmount AS DOUBLE) / power(10,i.token0_decimals) * p.price
       ELSE CAST(l.tokenAmount AS DOUBLE) / power(10,i.token1_decimals) * p.price
     END as DOUBLE
-  ) as "USD_Amount",
+  ) as "USD_Amount"
   FROM {{ source('timeswap_ethereum', 'TimeswapV2PeripheryUniswapV3LendGivenPrincipal_evt_LendGivenPrincipal') }} l
   JOIN {{ ref('timeswap_ethereum_pools') }} i ON CAST(l.contract_address AS VARCHAR(100)) = i.borrow_contract_address
   JOIN {{ source('prices', 'usd') }} p ON p.minute = date_trunc('minute', l.evt_block_time)
