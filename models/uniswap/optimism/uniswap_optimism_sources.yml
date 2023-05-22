@@ -38,6 +38,7 @@ sources:
             name: sqrtPriceX96
           - &tick
             name: tick
+
       - name: factory_evt_poolcreated
         loaded_at_field: evt_block_time
         description: "" # to-do
@@ -57,3 +58,6 @@ sources:
             name: token0
           - &token1
             name: token1
+
+      - name: Pair_evt_Flash
+        loaded_at_field: evt_block_time

@@ -1,16 +1,17 @@
 {{ config(
-        alias ='other_income',
+        alias ='other_expenses',
         partition_by = ['period'],
         materialized = 'table',
         file_format = 'delta',
         post_hook='{{ expose_spells(\'["ethereum"]\',
                                 "project",
-                                "lido",
+                                "lido_accounting",
                                 \'["pipistrella", "adcv", "zergil1397", "lido"]\') }}'
         )
 }}
---https://dune.com/queries/2011910
---ref{{'lido_accounting_other_income'}}
+--https://dune.com/queries/2012205
+--ref{{'lido_accounting_other_expenses'}}
+
 
 with tokens AS (
 select * from (values 
@@ -86,10 +87,10 @@ select * from  (values
 ),
 
 dai_referral_payments_addr AS (
-    SELECT _recipient AS address FROM  {{source('lido_ethereum','AllowedRecipientsRegistry_evt_RecipientAdded')}}
+    SELECT _recipient AS address FROM {{source('lido_ethereum','AllowedRecipientsRegistry_evt_RecipientAdded')}}
     WHERE
     (
-        NOT EXISTS (SELECT _recipient FROM {{source('lido_ethereum','AllowedRecipientsRegistry_evt_RecipientRemoved')}}) 
+        NOT EXISTS (SELECT _recipient FROM {{source('lido_ethereum','AllowedRecipientsRegistry_evt_RecipientRemoved')}})
         OR (
             EXISTS (SELECT _recipient FROM {{source('lido_ethereum','AllowedRecipientsRegistry_evt_RecipientRemoved')}})
             AND 
@@ -101,99 +102,68 @@ dai_referral_payments_addr AS (
 ),
 
 
-other_income_txns AS (
-    SELECT
-        evt_block_time, 
+other_expenses_txns AS (
+    SELECT 
+        evt_block_time,
         CAST(value AS DOUBLE) AS value, 
         evt_tx_hash, 
         contract_address
-    FROM  {{source('erc20_ethereum','evt_transfer')}}
+    FROM {{source('erc20_ethereum','evt_transfer')}}
     WHERE contract_address IN (SELECT address FROM tokens)
-    AND `to` IN (
+        AND `from` IN (
+            SELECT 
+                address 
+            FROM multisigs_list
+            WHERE name IN ('Aragon','FinanceOpsMsig') AND chain = 'Ethereum'
+        )
+        AND `to` NOT IN (
+            SELECT address FROM multisigs_list
+            UNION ALL
+            SELECT address FROM intermediate_addresses
+            UNION ALL
+            SELECT address FROM ldo_referral_payments_addr
+            UNION ALL
+            SELECT address FROM dai_referral_payments_addr  
+            UNION ALL
+            SELECT LOWER('0x0000000000000000000000000000000000000000')
+            UNION ALL
+            SELECT address FROM diversifications_addresses    
+    )    
+    UNION ALL
+    --ETH outflow
+    SELECT  
+        block_time,
+        CAST(tr.value AS DOUBLE) AS value,
+        tx_hash,
+        LOWER('0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2')
+    FROM {{source('ethereum','traces')}} tr
+    WHERE  tr.`success` = True
+    AND tr.`from` IN (
         SELECT 
             address 
         FROM multisigs_list 
         WHERE name IN ('Aragon','FinanceOpsMsig') AND chain = 'Ethereum'
     )
-    AND `from` NOT IN (
-        SELECT address FROM multisigs_list
-        UNION ALL
-        SELECT address FROM ldo_referral_payments_addr
-        UNION ALL
-        SELECT address FROM dai_referral_payments_addr  
-        UNION ALL
-        select LOWER('0x0000000000000000000000000000000000000000')
-        UNION ALL
-        SELECT address FROM diversifications_addresses    
-    )    
+    AND tr.`to` NOT IN (
+        SELECT 
+            address 
+        FROM multisigs_list
+        UNION ALL 
+        SELECT address FROM diversifications_addresses)
+        AND tr.`type`='call'
+        AND (tr.`call_type` NOT IN ('delegatecall', 'callcode', 'staticcall') OR tr.`call_type` IS NULL
+    )
 
-),
 
---Solana stSOL income--
-
-stsol_income_txs AS (
-    select 
-        tx_id, 
-        block_time AS period, 
-        block_slot, 
-        pre_token_balance, 
-        post_token_balance, 
-        token_balance_change AS delta
-    FROM {{source('solana','account_activity')}}
-    WHERE  block_time >= CAST('2021-11-01' AS TIMESTAMP)
-    AND pre_token_balance IS NOT NULL
-    AND token_mint_address =  '7dHbWXmci3dT8UFYWYZweBLXgycu7Y3iL6trKn1Y7ARj'
-    AND address =  'CYpYPtwY9QVmZsjCmguAud1ctQjXWKpWD7xeL5mnpcXk'
-    AND token_balance_change > 0
-    ORDER BY block_time DESC
-),
-
-stsol_income AS (
-    SELECT  
-            i.period AS period,
-            '7dHbWXmci3dT8UFYWYZweBLXgycu7Y3iL6trKn1Y7ARj' AS token,
-            COALESCE(delta,0) AS amount_token,
-            tx_id as evt_tx_hash
-    FROM  stsol_income_txs i 
-    
 )
 
 
-    SELECT
+    SELECT  
         evt_block_time AS period, 
         contract_address AS token,
         value AS amount_token,
         evt_tx_hash
-    FROM other_income_txns
+    FROM other_expenses_txns
+    WHERE contract_address IN (SELECT address FROM tokens)
     
-    UNION ALL
-    --ETH inflow
-    SELECT
-        block_time AS time,
-        LOWER('0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2') AS token,
-        CAST(tr.value AS DOUBLE),
-        tx_hash
-    FROM {{source('ethereum','traces')}} tr
-    WHERE tr.success = True
-    AND tr.`to` in (
-        SELECT 
-            address 
-        FROM multisigs_list 
-        WHERE name IN ('Aragon','FinanceOpsMsig') AND chain = 'Ethereum'
-    )
-    AND tr.`from` NOT IN ( 
-        SELECT address FROM multisigs_list
-        UNION ALL 
-        SELECT address FROM diversifications_addresses    
-    )
-    AND tr.`type`='call'
-    AND (tr.call_type NOT IN ('delegatecall', 'callcode', 'staticcall') OR tr.call_type IS NULL)
-    
-    UNION --stSOL to solana treasury
-    SELECT
-        period, 
-        '7dHbWXmci3dT8UFYWYZweBLXgycu7Y3iL6trKn1Y7ARj' AS token,
-        amount_token,
-        evt_tx_hash
-    FROM stsol_income
 

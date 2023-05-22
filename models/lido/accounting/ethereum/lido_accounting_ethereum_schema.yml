@@ -1,7 +1,7 @@
 version: 2
 
 models:
-  - name: lido_ethereum_accounting_dai_referral_payment
+  - name: lido_accounting_ethereum_dai_referral_payment
     meta:
       blockchain: ethereum
       sector: liquid_staking
@@ -20,7 +20,7 @@ models:
       - name: amount_token
         description: "Token amount"
 
-  - name: lido_ethereum_accounting_deposits
+  - name: lido_accounting_ethereum_deposits
     meta:
       blockchain: ethereum
       sector: liquid_staking
@@ -39,7 +39,7 @@ models:
       - name: amount_token
         description: "Token Amount"
                     
-  - name: lido_ethereum_accounting_fundraising
+  - name: lido_accounting_ethereum_fundraising
     meta:
       blockchain: ethereum
       sector: liquid_staking
@@ -58,7 +58,7 @@ models:
       - name: tx_hash
         description: "Transaction hash"
 
-  - name: lido_ethereum_accounting_ldo_referral_payment
+  - name: lido_accounting_ethereum_ldo_referral_payment
     meta:
       blockchain: ethereum
       sector: liquid_staking
@@ -77,7 +77,7 @@ models:
       - name: amount_token
         description: "Token amount"
 
-  - name: lido_ethereum_accounting_lego_expenses
+  - name: lido_accounting_ethereum_lego_expenses
     meta:
       blockchain: ethereum
       sector: liquid_staking
@@ -96,7 +96,7 @@ models:
       - name: evt_tx_hash,
         description: "Transaction hash"
 
-  - name: lido_ethereum_accounting_liquidity_incentives
+  - name: lido_accounting_ethereum_liquidity_incentives
     meta:
       blockchain: ethereum
       sector: liquid_staking
@@ -115,7 +115,7 @@ models:
       - name: token
         description: "Token name"
 
-  - name: lido_ethereum_accounting_lox_incentives
+  - name: lido_accounting_ethereum_lox_incentives
     meta:
       blockchain: ethereum
       sector: liquid_staking
@@ -134,7 +134,7 @@ models:
       - name: token
         description: "Token name"
 
-  - name: lido_ethereum_accounting_operating_expenses
+  - name: lido_accounting_ethereum_operating_expenses
     meta:
       blockchain: ethereum
       sector: liquid_staking
@@ -153,7 +153,7 @@ models:
       - name: evt_tx_hash,
         description: "Transaction hash"
 
-  - name: lido_ethereum_accounting_other_expenses
+  - name: lido_accounting_ethereum_other_expenses
     meta:
       blockchain: ethereum
       sector: liquid_staking
@@ -172,7 +172,7 @@ models:
       - name: evt_tx_hash,
         description: "Transaction hash"
 
-  - name: lido_ethereum_accounting_other_income
+  - name: lido_accounting_ethereum_other_income
     meta:
       blockchain: ethereum
       sector: liquid_staking
@@ -191,7 +191,7 @@ models:
       - name: evt_tx_hash,
         description: "Transaction hash"
 
-  - name: lido_ethereum_accounting_revenue
+  - name: lido_accounting_ethereum_revenue
     meta:
       blockchain: ethereum
       sector: liquid_staking
@@ -235,7 +235,7 @@ models:
         name: operators_revenue
         description: "Operators revenue"
 
-  - name: lido_ethereum_accounting_trp_expenses
+  - name: lido_accounting_ethereum_trp_expenses
     meta:
       blockchain: ethereum
       sector: liquid_staking
