@@ -8,7 +8,7 @@ models:
       project: timeswap
       contributors: raveena15, varunhawk19
     config:
-      tags: ['ethereum','timeswap','pools']
+      tags: ['ethereum','timeswap','pools', 'view']
     description: >
         Timeswap pools on Ethereum
     columns:
@@ -49,6 +49,8 @@ models:
   - name: timeswap_ethereum_lend
     description: >
         Timeswap lend transactions on Ethereum
+    config:
+      tags: ['ethereum','timeswap','lend', 'view']
     columns:
       - &Transaction_Hash
         name: Transaction_Hash
@@ -57,9 +59,7 @@ models:
         name: Time
         description: "Timestamp for block event time in UTC"
       - *maturity
-        
       - *strike
-        
       - &User_Address
         name: User_Address
         description: "The address of the user"
@@ -79,6 +79,8 @@ models:
   - name: timeswap_ethereum_borrow
     description: >
       Timeswap borrow transactions on Ethereum
+    config:
+      tags: ['ethereum','timeswap','borrow', 'view']
     columns:  
       - *Transaction_Hash
       - *Time
