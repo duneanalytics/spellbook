@@ -88,3 +88,12 @@ sources:
           - *evt_index
           - *evt_tx_hash
           - *id
+
+  - name: dydx_ethereum
+    description: "Decoded contracts for dYdX on Ethereum"
+
+    tables:
+      - name: SoloMargin_evt_LogDeposit
+        loaded_at_field: evt_block_time
+      - name: SoloMargin_evt_LogWithdraw
+        loaded_at_field: evt_block_time

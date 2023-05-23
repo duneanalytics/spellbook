@@ -298,7 +298,7 @@ models:
       - &bought_amount_raw
         name: bought_amount_raw
         description: "the raw amount of the token that the offer has bought"
-      - &sell_amount_usd: 
+      - &sell_amount_usd
         name: sell_amount_usd
         description: "the amount of the token that the maker is selling in USD (at the time of the offer creation)"
       - &buy_amount_usd
@@ -317,3 +317,35 @@ models:
       - *tx_hash
       - *tx_from
       - *tx_to
+
+  - name: dex_flashloans
+    meta:
+      blockchain: arbitrum, avalanche_c, optimism, polygon, ethereum, fantom
+      sector: lending
+      contributors: hildobby
+    config:
+        tags: ['arbitrum', 'avalanche_c', 'optimism', 'polygon', 'ethereum', 'fantom', 'flashloans']
+    description: >
+        All Flashloans
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - tx_hash
+            - evt_index
+    columns:
+      - name: blockchain
+      - name: project
+      - name: version
+      - name: block_time
+      - name: block_number
+      - name: amount
+      - name: amount_usd
+      - name: tx_hash
+      - name: evt_index
+      - name: fee
+      - name: currency_contract
+      - name: currency_symbol
+      - name: recipient
+      - name: contract_address
+

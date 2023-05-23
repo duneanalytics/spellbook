@@ -60,6 +60,8 @@ FROM
     ("revv-revv", "polygon", "REVV", "0x70c006878a5a50ed185ac4c87d837633923de296", 18),
     ("grain-granary","polygon","GRAIN","0x8429d0afade80498eadb9919e41437a14d45a00b",18),
     ("oath-oath","polygon","OATH","0xc2c52ff5134596f5ff1b1204d3304228f2432836",18),
-    ("tetu-tetu-reward-token","polygon","TETU","0x255707B70BF90aa112006E1b07B9AeA6De021424",18)  
-
+    ("tetu-tetu-reward-token","polygon","TETU","0x255707B70BF90aa112006E1b07B9AeA6De021424",18),
+    ("quick-quickswap","polygon","QUICK","0x831753dd7087cac61ab5644b308642cc1c33dc13",18),
+    ("dimo-dimo","polygon","DIMO","0xe261d618a959afffd53168cd07d12e37b26761db",18),
+    ("gddy-giddy","polygon","GDDY","0x67eb41a14c0fe5cd701fc9d5a3d6597a72f641a6",18)
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)

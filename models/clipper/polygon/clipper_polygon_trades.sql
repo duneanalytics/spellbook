@@ -10,6 +10,7 @@
 {% set clipper_models = [
 ref('clipper_v1_polygon_trades')
 , ref('clipper_v2_polygon_trades')
+, ref('clipper_coves_v1_polygon_trades')
 ] %}
 
 
