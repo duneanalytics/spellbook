@@ -7,7 +7,7 @@ WITH migrated as (
     ,sum(royalty_fee_amount_raw/pow(10,18)) as mig_total_royalty_amount
 
     from {{ ref('nft_ethereum_trades_beta')}}
-    where (project, project_version) in (select distinct project, version from {{ ref('nft_events') }})
+    where (project, project_version) in (select distinct project, version from {{ ref('nft_events_old') }})
     group by 1,2
 )
 
@@ -19,7 +19,7 @@ WITH migrated as (
     ,sum(platform_fee_amount_raw/pow(10,18)) as ref_total_platform_amount
     ,sum(royalty_fee_amount_raw/pow(10,18)) as ref_total_royalty_amount
 
-    from {{ ref('nft_events')}}
+    from {{ ref('nft_events_old')}}
     where blockchain = 'ethereum'
     and (project, version) in (select project, project_version from migrated)
     group by 1,2
