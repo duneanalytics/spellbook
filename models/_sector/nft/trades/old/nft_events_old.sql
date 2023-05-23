@@ -11,19 +11,11 @@
 
 {% set nft_models = [
  ref('aavegotchi_polygon_events')
-,ref('archipelago_ethereum_events')
-,ref('blur_ethereum_events')
-,ref('collectionswap_ethereum_events')
-,ref('cryptopunks_ethereum_events')
-,ref('element_ethereum_events')
 ,ref('element_bnb_events')
 ,ref('element_avalanche_c_events')
-,ref('foundation_ethereum_events')
 ,ref('fractal_polygon_events')
 ,ref('liquidifty_bnb_events')
 ,ref('liquidifty_ethereum_events')
-,ref('looksrare_v1_ethereum_events')
-,ref('looksrare_v2_ethereum_events')
 ,ref('magiceden_solana_events')
 ,ref('magiceden_polygon_events')
 ,ref('nftb_bnb_events')
@@ -40,8 +32,6 @@
 ,ref('quix_v5_optimism_events')
 ,ref('rarible_polygon_events')
 ,ref('stealcam_arbitrum_events')
-,ref('sudoswap_ethereum_events')
-,ref('superrare_ethereum_events')
 ,ref('tofu_arbitrum_events')
 ,ref('tofu_bnb_events')
 ,ref('tofu_optimism_events')
@@ -49,9 +39,7 @@
 ,ref('trove_ethereum_events')
 ,ref('trove_v1_arbitrum_events')
 ,ref('trove_v2_arbitrum_events')
-,ref('x2y2_ethereum_events')
 ,ref('zonic_optimism_events')
-,ref('zora_ethereum_events')
 ] %}
 
 SELECT *
