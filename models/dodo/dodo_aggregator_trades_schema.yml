@@ -1,15 +1,15 @@
 version: 2
-models:
-  - name: dodo_trades
+models:  
+  - name: dodo_aggregator_trades
     meta:
       blockchain: ethereum, bnb, polygon, arbitrum, optimism
       sector: dex
       project: dodo
-      contributors: scoffie, owen05
+      contributors: owen05
     config:
-      tags: ['ethereum','bnb', 'polygon', 'arbitrum', 'optimism', 'dex', 'aggregator', 'trades', 'dodo',]
+      tags:  ['ethereum','bnb', 'polygon', 'arbitrum', 'optimism', 'dex', 'aggregator', 'trades', 'dodo']
     description: >
-        dodo trades across five networks. This table will load dex trades downstream.
+        DODO Aggregator across five networks. This table will load dex_aggregator trades downstream.
     columns:
       - &blockchain
         name: blockchain
@@ -19,7 +19,7 @@ models:
         description: "Project name of the DEX (specify: DODO)"
       - &version
         name: version
-        description: "Version of dodo contracts (0 - dodo_aggregator, 1 - DODOV1, 2_dvm - DODOV2 public pool, 2_dsp - DODOV2 stable pool, 2_dpp - DODOV2 private pool)"
+        description: "Version of dodo contracts (0 - dodo_aggregator)"
       - &block_date
         name: block_date
         description: "UTC event block date of each DEX trade"
