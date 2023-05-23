@@ -32,7 +32,7 @@ SELECT
     END as DOUBLE
   ) as USD_Amount
   FROM {{ source('timeswap_ethereum', 'TimeswapV2PeripheryUniswapV3LendGivenPrincipal_evt_LendGivenPrincipal') }} l
-  JOIN {{ ref('timeswap_ethereum_pools') }} i ON CAST(l.maturity as VARCHAR) = i.maturity and cast(l.strike as VARCHAR) = i.strike
+  JOIN {{ ref('timeswap_ethereum_pools') }} i ON CAST(l.maturity as VARCHAR(100)) = i.maturity and cast(l.strike as VARCHAR(100)) = i.strike
   JOIN {{ source('prices', 'usd') }} p ON p.minute = date_trunc('minute', l.evt_block_time)
   WHERE p.symbol=i.token0_symbol AND p.blockchain = 'ethereum' AND l.isToken0 = true
   {% if is_incremental() %}
@@ -62,7 +62,7 @@ SELECT
     END as DOUBLE
   ) as USD_Amount
   FROM {{ source('timeswap_ethereum', 'TimeswapV2PeripheryUniswapV3LendGivenPrincipal_evt_LendGivenPrincipal') }} l
-  JOIN {{ ref('timeswap_ethereum_pools') }} i ON CAST(l.maturity as VARCHAR) = i.maturity and cast(l.strike as VARCHAR) = i.strike
+  JOIN {{ ref('timeswap_ethereum_pools') }} i ON CAST(l.maturity as VARCHAR(100)) = i.maturity and cast(l.strike as VARCHAR(100)) = i.strike
   JOIN {{ source('prices', 'usd') }} p ON p.minute = date_trunc('minute', l.evt_block_time)
   WHERE p.symbol=i.token1_symbol AND p.blockchain = 'ethereum' AND l.isToken0 = false
   {% if is_incremental() %}
