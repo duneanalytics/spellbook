@@ -1,12 +1,11 @@
 {{
     config(
-        alias="bnb_cross_chain_trades"
+        alias="avalanche_c_cross_chain_trades"
         ,partition_by = ['block_date']
         ,materialized='incremental'
         ,incremental_strategy = 'merge'
-        ,file_format = 'delta'
         ,unique_key = ['block_date', 'source_chain', 'tx_hash']
-        ,post_hook='{{ expose_spells(\'["bnb"]\',
+        ,post_hook='{{ expose_spells(\'["avalanche_c"]\',
                                         "project",
                                         "hashflow",
                                         \'["BroderickBonelli"]\') }}'
@@ -30,9 +29,9 @@ with cross_chain_trades AS (
                   WHEN dstChainId = 6 OR dstChainId = 106 THEN 'Avalanche'
                   WHEN dstChainId = 9 OR dstChainId = 109 THEN 'Polygon'
                   WHEN dstChainId = 2 OR dstChainId = 102 THEN 'BNB' END AS destination_chain
-            ,'BNB'                   AS source_chain
+            ,'Avalanche'                   AS source_chain
         FROM
-            {{ source('hashflow_bnb', 'Pool_evt_LzTrade') }}
+            {{ source('hashflow_avalanche_c', 'Pool_evt_LzTrade') }}
         {% if is_incremental() %}
             WHERE evt_block_time >= (SELECT MAX(block_time) FROM {{ this }})
         {% endif %}
@@ -54,9 +53,9 @@ with cross_chain_trades AS (
                   WHEN dstChainId = 4 THEN 'Avalanche'
                   WHEN dstChainId = 5 THEN 'Polygon'
                   WHEN dstChainId = 6 THEN 'BNB' END AS destination_chain
-            ,'BNB'                   AS source_chain
+            ,'Avalanche'                   AS source_chain
         FROM
-            {{ source('hashflow_bnb', 'Pool_evt_XChainTrade') }}
+            {{ source('hashflow_avalanche_c', 'Pool_evt_XChainTrade') }}
         {% if is_incremental() %}
             WHERE evt_block_time >= (SELECT MAX(block_time) FROM {{ this }})
         {% endif %}
@@ -90,14 +89,14 @@ LEFT JOIN {{ ref('tokens_erc20') }} erc20b
 LEFT JOIN {{ source('prices', 'usd') }} p_bought
     ON p_bought.minute = date_trunc('minute', cross_chain_trades.block_time)
     AND p_bought.contract_address = cross_chain_trades.token_bought_address
-    AND p_bought.blockchain = 'bnb'
+    AND p_bought.blockchain = 'avalanche_c'
     {% if is_incremental() %}
         WHERE minute >= (SELECT MAX(block_time) FROM {{ this }})
     {% endif %}
 LEFT JOIN {{ source('prices', 'usd') }} p_sold
     ON p_sold.minute = date_trunc('minute', cross_chain_trades.block_time)
     AND p_sold.contract_address = cross_chain_trades.token_sold_address
-    AND p_sold.blockchain = 'bnb'
+    AND p_sold.blockchain = 'avalanche_c'
     {% if is_incremental() %}
         WHERE minute >= (SELECT MAX(block_time) FROM {{ this }})
     {% endif %}
