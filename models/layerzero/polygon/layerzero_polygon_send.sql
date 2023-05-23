@@ -1,11 +1,10 @@
 {{ config(
-    schema = 'layerzero_polygon',
     alias = 'send',
     partition_by = ['block_date'],
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
-    unique_key = ['block_time', 'tx_hash', 'user_address', 'trace_address', 'source_chain_id', 'destination_chain_id', 'currency_contract'],
+    unique_key = ['block_time', 'tx_hash', 'user_address', 'trace_address', 'source_chain_id', 'destination_chain_id', 'currency_contract']
     )
 }}
 
