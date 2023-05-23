@@ -33,7 +33,7 @@ with cross_chain_trades AS (
         FROM
             {{ source('hashflow_avalanche_c', 'Pool_evt_LzTrade') }}
         {% if is_incremental() %}
-            WHERE evt_block_time >= (SELECT MAX(block_time) FROM {{ this }})
+            WHERE evt_block_time >= date_trunc("day", now() - interval '1 week')
         {% endif %}
         
         UNION
@@ -57,7 +57,7 @@ with cross_chain_trades AS (
         FROM
             {{ source('hashflow_avalanche_c', 'Pool_evt_XChainTrade') }}
         {% if is_incremental() %}
-            WHERE evt_block_time >= (SELECT MAX(block_time) FROM {{ this }})
+            WHERE evt_block_time >= date_trunc("day", now() - interval '1 week')
         {% endif %}
 )
 
@@ -91,13 +91,13 @@ LEFT JOIN {{ source('prices', 'usd') }} p_bought
     AND p_bought.contract_address = cross_chain_trades.token_bought_address
     AND p_bought.blockchain = 'avalanche_c'
     {% if is_incremental() %}
-        WHERE minute >= (SELECT MAX(block_time) FROM {{ this }})
+        WHERE minute >= date_trunc("day", now() - interval '1 week')
     {% endif %}
 LEFT JOIN {{ source('prices', 'usd') }} p_sold
     ON p_sold.minute = date_trunc('minute', cross_chain_trades.block_time)
     AND p_sold.contract_address = cross_chain_trades.token_sold_address
     AND p_sold.blockchain = 'avalanche_c'
     {% if is_incremental() %}
-        WHERE minute >= (SELECT MAX(block_time) FROM {{ this }})
+        WHERE minute >= date_trunc("day", now() - interval '1 week')
     {% endif %}
     
