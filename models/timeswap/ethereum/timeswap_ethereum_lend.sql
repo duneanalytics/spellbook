@@ -33,7 +33,7 @@ SELECT
     END as DOUBLE
   ) as USD_Amount
   FROM {{ source('timeswap_ethereum', 'TimeswapV2PeripheryUniswapV3LendGivenPrincipal_evt_LendGivenPrincipal') }} l
-  LEFT JOIN {{ ref('timeswap_ethereum_pools') }} i ON CAST(l.contract_address AS VARCHAR(100)) = i.borrow_contract_address
+  LEFT JOIN {{ ref('timeswap_ethereum_pools') }} i ON CAST(l.contract_address AS VARCHAR(100)) = i.lend_contract_address
   LEFT JOIN {{ source('prices', 'usd') }} p ON p.minute = date_trunc('minute', l.evt_block_time)
   WHERE p.symbol=i.token0_symbol AND p.blockchain = 'ethereum' AND l.isToken0 = true
   {% if is_incremental() %}
@@ -64,7 +64,7 @@ SELECT
     END as DOUBLE
   ) as USD_Amount
   FROM {{ source('timeswap_ethereum', 'TimeswapV2PeripheryUniswapV3LendGivenPrincipal_evt_LendGivenPrincipal') }} l
-  LEFT JOIN {{ ref('timeswap_ethereum_pools') }} i ON CAST(l.contract_address AS VARCHAR(100)) = i.borrow_contract_address
+  LEFT JOIN {{ ref('timeswap_ethereum_pools') }} i ON CAST(l.contract_address AS VARCHAR(100)) = i.lend_contract_address
   LEFT JOIN {{ source('prices', 'usd') }} p ON p.minute = date_trunc('minute', l.evt_block_time)
   WHERE p.symbol=i.token1_symbol AND p.blockchain = 'ethereum' AND l.isToken0 = false
   {% if is_incremental() %}
