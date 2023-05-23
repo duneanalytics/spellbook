@@ -44,6 +44,7 @@ UNION
 SELECT
   b.evt_tx_hash as Transaction_Hash,
   b.evt_block_time as Time,
+  b.isToken0 as Token_0,
   b.maturity as maturity,
   b.strike as strike,
   i.pool_pair as Pool_Pair,

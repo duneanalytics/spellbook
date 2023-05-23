@@ -192,6 +192,8 @@ models:
       +schema: timeswap
       ethereum:
         +schema: timeswap_ethereum
+      arbitrum:
+        +schema: timeswap_arbitrum
 
     quickswap:
       +schema: quickswap
