@@ -8971,5 +8971,23 @@ FROM (VALUES ('0x3f9463bdb502ec2079bf39da6c924d4022ff9f4c', 'biubiu.tools', 18),
 --           -- Using the "commonly accepted symbol and decimals for this OG token
              ('0xbb9bc244d798123fde783fcc1c72d3bb8c189413', 'TheDAO', 16),
              ('0x7ac5bbefae0459f007891f9bd245f6beaa91076c', 'CWETHLP', 18),
-             ('0xa639fb3f8c52e10e10a8623616484d41765d5f82', 'CUSDCLP', 18)
+             ('0xa639fb3f8c52e10e10a8623616484d41765d5f82', 'CUSDCLP', 18),
+             --- Going Left Comma Club
+            ('0x1e2c4fb7ede391d116e6b41cd0608260e8801d59', 'bCSPX', 18)
+            ,('0xff2a1866ecb13b67388c7a7dc1fdb3a5ff83fb23', 'wagWXDAI', 18)
+            ,('0x300abe8f7924beb7115093361c4a78b9d9327fb0', 'wagUSDC', 6)
+            ,('0x3a3e9715018d80916740e8ac300713fdf6614d19', 'hiveWATER', 18)
+            ,('0xe7f88d7d4ef2eb18fcf9dd7216ba7da1c46f3dd6', 'bb-ag-USDC', 18)
+            ,('0xfedb19ec000d38d92af4b21436870f115db22725', 'bb-ag-USD', 18)
+            ,('0x6c76971f98945ae98dd7d4dfca8711ebea946ea6', 'wstETH', 18)
+            ,('0x41211bba6d37f5a74b22e667533f080c7c7f3f13', 'bb-ag-WXDAI', 18)
+            ,('0x52d134c6db5889fad3542a09eaf7aa90c0fdf9e4', 'bIBTA', 18)
+            ,('0x6de572faa138048ce8142c4a206eb09a8ec39e45', 'HoG', 18)
+            ,('0xca30c93b02514f86d5c86a6e375e3a330b435fb5', 'bIB01', 18)
+            ,('0xbe39ac7330aff0552fdb230de80dc27dae2a7471', 'hiveWATER', 18)
+            ,('0xd16f72b02da5f51231fde542a8b9e2777a478c88', 'bb-ag-USDT', 18)
+            ,('0xffff76a3280e95dc855696111c2562da09db2ac0', 'bb-ag-GNO', 18)
+            ,('0xbb9cd48d33033f5effbedec9dd700c7d7e1dcf50', 'bb-ag-WETH', 18)
+            ,('0xd4015683b8153666190e0b2bec352580ebc4caca', 'bb-ag-WBTC', 18)
+            ,('0x647fb77077c145e859cbfaa3e027e308a26f2fca', 'CRC', 18)
      ) AS temp_table (contract_address, symbol, decimals)
