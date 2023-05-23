@@ -31,7 +31,7 @@ WITH dexs AS
             toToken AS token_sold_address,
             contract_address AS project_contract_address,
             evt_tx_hash AS tx_hash,
-            '' AS trace_address,
+            CAST(ARRAY() as array<bigint>) AS trace_address,
             evt_index
         FROM
             {{ source('dodo_v2_polygon','DODOV2Proxy02_evt_OrderHistory')}}
@@ -55,7 +55,7 @@ WITH dexs AS
             toToken AS token_sold_address,
             contract_address AS project_contract_address,
             evt_tx_hash AS tx_hash,
-            '' AS trace_address,
+            CAST(ARRAY() as array<bigint>) AS trace_address,
             evt_index
         FROM
             {{ source('dodo_v2_polygon','DODORouteProxy_evt_OrderHistory')}}
