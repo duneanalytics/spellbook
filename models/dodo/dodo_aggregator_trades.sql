@@ -8,11 +8,11 @@
 }}
 
 {% set dodo_models = [
-ref('dodo_ethereum_trades')
-, ref('dodo_bnb_trades')
-, ref('dodo_polygon_trades')
-, ref('dodo_arbitrum_trades')
-, ref('dodo_optimism_trades')
+ref('dodo_aggregator_ethereum_trades')
+, ref('dodo_aggregator_bnb_trades')
+, ref('dodo_aggregator_polygon_trades')
+, ref('dodo_aggregator_arbitrum_trades')
+, ref('dodo_aggregator_optimism_trades')
 ] %}
 
 
@@ -44,7 +44,9 @@ FROM (
         trace_address,
         evt_index
     FROM {{ dex_model }}
-    where version = '0'
+    {% if is_incremental() %}
+    WHERE block_date >= date_trunc("day", now() - interval '1 week')
+    {% endif %}
     {% if not loop.last %}
     UNION ALL
     {% endif %}

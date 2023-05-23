@@ -83,7 +83,7 @@ models:
   - name: dodo_aggregator_trades
     meta:
       blockchain: ethereum, bnb, polygon, arbitrum, optimism
-      sector: dex
+      sector: dex_aggregator
       project: dodo
       contributors: owen05
     config:
