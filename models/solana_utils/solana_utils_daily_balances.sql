@@ -24,7 +24,6 @@ WITH
                   , row_number() OVER (partition by address, date_trunc('day', block_time) order by block_slot desc) as latest_balance
             FROM {{ source('solana','account_activity') }}
             WHERE tx_success 
-            AND block_time > now() - interval '30' day
             {% if is_incremental() %}
             AND block_time > (SELECT max(day) FROM {{this}})
             {% endif %}
