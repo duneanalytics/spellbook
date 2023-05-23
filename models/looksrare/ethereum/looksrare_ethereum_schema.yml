@@ -17,33 +17,45 @@ models:
             - recipient
             - evt_index
     columns:
-      - *blockchain
-      - *block_time
-      - *block_number
-      - *project
-      - &airdrop_identifier
+     - &blockchain
+       name: blockchain
+       description: "Blockchain"
+     - &block_time
+       name: block_time
+       description: "UTC event block time"
+     - &block_number
+       name: block_number
+       description: "Event block number"
+     - &project
+       name: project
+       description: "Project"
+     - &airdrop_identifier
         name: airdrop_identifier
         description: "Airdrop identifier name"
-      - &recipient
+     - &recipient
         name: recipient
         description: "Airdrop recipient"
-      - &contract_address
+     - &contract_address
         name: contract_address
         description: "Contract addressed used"
-      - *tx_hash
-      - name: amount_raw
+     - &tx_hash
+       name: tx_hash
+       description: "Transaction hash"
+     - &amount_raw
         name: amount_raw
         description: "Raw amount of tokens"
-      - name: amount_original
+     - &amount_original
+        name: amount_original
         description: "Original amount of tokens"
-      - name: amount_usd
+     - &amount_usd
+        name: amount_usd
         description: "USD value of tokens"
-      - &token_address
+     - &token_address
         name: token_address
         description: "Token address"
-      - &token_symbol
+     - &token_symbol
         name: token_symbol
         description: "Token symbol"
-      - &evt_index
+     - &evt_index
         name: evt_index
         description: "Event index"
