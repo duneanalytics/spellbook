@@ -1,6 +1,10 @@
 {{ config(
     schema = 'aave_v2_polygon'
     , alias='flashloans'
+    , materialized = 'incremental'
+    , file_format = 'delta'
+    , incremental_strategy = 'merge'
+    , unique_key = ['tx_hash', 'evt_index']
     , post_hook='{{ expose_spells(\'["polygon"]\',
                                   "project",
                                   "aave_v2",
@@ -27,11 +31,14 @@ WITH flashloans AS (
     FROM {{ source('aave_v2_polygon','LendingPool_evt_FlashLoan') }} flash
     LEFT JOIN {{ ref('tokens_polygon_erc20') }} erc20 ON flash.asset = erc20.contract_address
     WHERE CAST(flash.amount AS double) > 0
+        {% if is_incremental() %}
+        AND flash.evt_block_time >= date_trunc("day", now() - interval '1 week')
+        {% endif %}
     )
     
 SELECT 'polygon' AS blockchain
 , 'Aave' AS project
-, 'v2' AS version
+, '2' AS version
 , flash.block_time
 , flash.block_number
 , flash.amount_raw/POWER(10, flash.currency_decimals) AS amount
