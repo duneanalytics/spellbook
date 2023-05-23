@@ -91,5 +91,6 @@ from (
     ,('fraxfinance', 'Frax')
     ,('DeFi Saver', 'DeFiSaver')
     ,('defi_saver', 'DeFiSaver')
+    ,('Decent', 'Decent.xyz')
 
     ) as temp_table (dune_name, mapped_name)
