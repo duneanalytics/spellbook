@@ -17,7 +17,6 @@ SELECT
   b.isToken0 as Token_0,
   b.maturity as maturity,
   b.strike as strike,
-  'b.from' as User_Address,
   i.pool_pair as Pool_Pair,
   i.chain as Chain,
   CAST(
@@ -33,8 +32,8 @@ SELECT
     END as DOUBLE
   ) as USD_Amount
   FROM {{ source('timeswap_ethereum', 'TimeswapV2PeripheryUniswapV3BorrowGivenPrincipal_evt_BorrowGivenPrincipal') }} b
-  LEFT JOIN {{ ref('timeswap_ethereum_pools') }} i ON CAST(b.contract_address AS VARCHAR(100)) = i.borrow_contract_address
-  LEFT JOIN {{ source('prices', 'usd') }} p ON p.minute = date_trunc('minute', b.evt_block_time)
+  JOIN {{ ref('timeswap_ethereum_pools') }} i ON CAST(b.maturity as VARCHAR) = i.maturity and cast(b.strike as VARCHAR) = i.strike
+  JOIN {{ source('prices', 'usd') }} p ON p.minute = date_trunc('minute', b.evt_block_time)
   WHERE p.symbol=i.token0_symbol AND p.blockchain = 'ethereum' AND b.isToken0 = true
   {% if is_incremental() %}
     AND b.evt_block_time >= date_trunc("day", now() - interval '1 week')
@@ -45,10 +44,8 @@ UNION
 SELECT
   b.evt_tx_hash as Transaction_Hash,
   b.evt_block_time as Time,
-  b.isToken0 as Token_0,
   b.maturity as maturity,
   b.strike as strike,
-  'b.from' as User_Address,
   i.pool_pair as Pool_Pair,
   i.chain as Chain,
   CAST(
@@ -64,8 +61,8 @@ SELECT
     END as DOUBLE
   ) as USD_Amount
   FROM {{ source('timeswap_ethereum', 'TimeswapV2PeripheryUniswapV3BorrowGivenPrincipal_evt_BorrowGivenPrincipal') }} b
-  LEFT JOIN {{ ref('timeswap_ethereum_pools') }} i ON CAST(b.contract_address AS VARCHAR(100)) = i.borrow_contract_address
-  LEFT JOIN {{ source('prices', 'usd') }} p ON p.minute = date_trunc('minute', b.evt_block_time)
+  JOIN {{ ref('timeswap_ethereum_pools') }} i ON CAST(b.maturity as VARCHAR) = i.maturity and cast(b.strike as VARCHAR) = i.strike
+  JOIN {{ source('prices', 'usd') }} p ON p.minute = date_trunc('minute', b.evt_block_time)
   WHERE p.symbol=i.token1_symbol AND p.blockchain = 'ethereum' AND b.isToken0 = false
   {% if is_incremental() %}
     AND b.evt_block_time >= date_trunc("day", now() - interval '1 week')
