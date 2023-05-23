@@ -5,12 +5,12 @@
         file_format = 'delta',
         post_hook='{{ expose_spells(\'["ethereum"]\',
                                 "project",
-                                "lido",
+                                "lido_accounting",
                                 \'["pipistrella", "adcv", "zergil1397", "lido"]\') }}'
         )
 }}
 --https://dune.com/queries/2011901
---ref{{'lido_ethereum_accounting_deposits'}}
+--ref{{'lido_accounting_ethereum_deposits'}}
 
 	SELECT 
         block_time AS period,
