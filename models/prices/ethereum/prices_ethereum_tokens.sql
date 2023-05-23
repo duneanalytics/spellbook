@@ -320,7 +320,6 @@ FROM
     ("san-santiment-network-token", "ethereum", "SAN", "0x7c5a0ce9267ed19b22f8cae653f198e3e8daf098", 18),
     ("sand-the-sandbox", "ethereum", "SAND", "0x3845badade8e6dff049820680d1f14bd3903a5d0", 18),
     ("sdao-singularitydao", "ethereum", "SDAO", "0x993864e43caa7f7f12953ad6feb1d1ca635b875f", 18),
-    ("sdt-stake-dao", "ethereum", "SDT", "0x73968b9a57c6e53d41345fd57a6e6ae27d6cdb2f", 18),
     ("sent-sentinel", "ethereum", "SENT", "0xa44e5137293e855b1b7bc7e2c6f8cd796ffcb037", 8),
     ("shib-shiba-inu", "ethereum", "SHIB", "0x95ad61b0a150d79219dcf64e1e6cc01f0b64c4ce", 18),
     ("skl-skale", "ethereum", "SKL", "0x00c83aecc790e8a4453e5dd3b0b4b3680501a7a7", 18),
@@ -1614,13 +1613,14 @@ FROM
     ('imgnai-imgnai', 'ethereum', 'IMGNAI', '0xA735A3AF76CC30791C61c10d585833829d36CBe0', 9),
     ('woxen-wrapped-oxen', 'ethereum', 'WOXEN', '0xd1e2d5085b39B80C9948AeB1b9aA83AF6756bcc5', 9),
     ('xrio-realio-network-utility-token-exchangable', 'ethereum', 'XRIO', '0x0B4AC2BA3D4924C9A06D9C1d08D7867059A39cC1', 18),
+    ('weth-weth', 'ethereum', 'bpETH', '0x0000000000a39bb272e79075ade125fd351887ac', 18),
     ('pepe-pepe1', 'ethereum', 'PEPE', '0x6982508145454Ce325dDbE47a25d4ec3d2311933', 18),   
-    ('grain-granary','ethereum','GRAIN','0xf88baf18fab7e330fa0c4f83949e23f52fececce',18)
-    
-) as temp (token_id, blockchain, symbol, contract_address, decimals)
+    ('grain-granary','ethereum','GRAIN','0xf88baf18fab7e330fa0c4f83949e23f52fececce',18),
+    ('verse-verse-token', 'ethereum', 'VERSE', '0x249ca82617ec3dfb2589c4c17ab7ec9765350a18', 18)
+    ) as temp (token_id, blockchain, symbol, contract_address, decimals)
 where contract_address not in (
     -- bad price feeds
-    '0x841fb148863454a3b3570f515414759be9091465'    -- SHIH 
+    '0x841fb148863454a3b3570f515414759be9091465'    -- SHIH
     ,'0xf3b9569f82b18aef890de263b84189bd33ebe452'   -- CAW
     ,'0x7815bDa662050D84718B988735218CFfd32f75ea'   -- YEL
     ,'0x7fc3ec3574d408f3b59cd88709bacb42575ebf2b'   -- POP
@@ -1633,4 +1633,5 @@ where contract_address not in (
     ,'0xdb4d1099d53e92593430e33483db41c63525f55f'   -- JOY
     ,'0xBD2F0Cd039E0BFcf88901C98c0bFAc5ab27566e3'   -- DSD
     ,'0x090185f2135308BaD17527004364eBcC2D37e5F6'   -- SPELL
+    ,'0x73968b9a57c6e53d41345fd57a6e6ae27d6cdb2f'   -- SDT
 )

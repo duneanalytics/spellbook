@@ -18,7 +18,7 @@ If you want to update/improve upon an existing label, start a discussion as well
 
 The schema of all models should follow this format: 
 
-![alt text](https://github.com/duneanalytics/spellbook/blob/main/models/labels/labels_schema.PNG)
+![alt text](https://github.com/duneanalytics/spellbook/blob/main/models/labels/addresses/labels_schema.PNG)
 
 You can add extra columns to the base label if it is helpful, but then make sure you select only the columns from the schema above when adding it to the top-level model of the category.
 
