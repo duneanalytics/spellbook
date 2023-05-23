@@ -1,17 +1,14 @@
 {{ config(
-        alias ='lego_expenses',
+        alias ='fundraising',
         partition_by = ['period'],
         materialized = 'table',
         file_format = 'delta',
         post_hook='{{ expose_spells(\'["ethereum"]\',
                                 "project",
-                                "lido",
+                                "lido_accounting",
                                 \'["pipistrella", "adcv", "zergil1397", "lido"]\') }}'
         )
 }}
---https://dune.com/queries/2012131
---ref{{'lido_accounting_lego_expenses'}}
-
 
 with tokens AS (
 select * from (values 
@@ -69,33 +66,10 @@ select * from  (values
 ) as list(address, name)
 ),
 
-
-lego_expenses_txns AS (
+fundraising_txs AS (
     select
-        evt_block_time,
-        CAST(value AS DOUBLE) AS value, 
-        evt_tx_hash, 
-        contract_address 
-    FROM {{source('erc20_ethereum','evt_transfer')}}
-    WHERE contract_address IN (SELECT address FROM tokens)
-    AND `from` IN (
-        SELECT
-            address 
-        FROM multisigs_list 
-        WHERE name = 'LegoMsig' AND chain = 'Ethereum'
-    )
-    AND `to` NOT IN (SELECT address FROM multisigs_list
-    UNION ALL
-    SELECT address FROM intermediate_addresses
-    UNION ALL
-    SELECT address FROM diversifications_addresses    
-    )    
-    
-    UNION ALL
-    
-    SELECT  
         evt_block_time, 
-        -CAST(value AS DOUBLE) AS value, 
+        value, 
         evt_tx_hash, 
         contract_address
     FROM {{source('erc20_ethereum','evt_transfer')}}
@@ -104,20 +78,37 @@ lego_expenses_txns AS (
         SELECT 
             address 
         FROM multisigs_list 
-        WHERE name = 'LegoMsig' AND chain = 'Ethereum')
-    AND `from` NOT IN (SELECT address FROM multisigs_list
-    UNION ALL
-    SELECT address FROM intermediate_addresses
-    UNION ALL
-    SELECT address FROM diversifications_addresses    
-    )    
+        WHERE name IN ('Aragon','FinanceOpsMsig') AND chain = 'Ethereum'
+    )
+    AND `from` IN (SELECT address FROM diversifications_addresses)    
+    AND  contract_address != LOWER('0x5A98FcBEA516Cf06857215779Fd812CA3beF1B32')
 )
 
 
-    SELECT  
+    SELECT
         evt_block_time AS period, 
         contract_address AS token,
         value AS amount_token,
         evt_tx_hash
-    FROM lego_expenses_txns
-    WHERE contract_address IN (SELECT address FROM tokens)
+    FROM fundraising_txs
+    
+    
+    UNION ALL
+    --ETH inflow
+    SELECT  
+        block_time AS period,
+        LOWER('0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2') AS token,
+        tr.value,
+        tx_hash
+    FROM {{source('ethereum','traces')}} tr
+    WHERE tr.success = True
+    AND tr.`to` IN (
+        SELECT 
+            address 
+        FROM multisigs_list 
+        WHERE name IN ('Aragon','FinanceOpsMsig') AND chain = 'Ethereum'
+    )
+    AND tr.`from` IN ( SELECT address FROM diversifications_addresses    )
+    AND tr.`type`='call'
+    AND (tr.call_type NOT IN ('delegatecall', 'callcode', 'staticcall') OR tr.call_type IS NULL)
+
