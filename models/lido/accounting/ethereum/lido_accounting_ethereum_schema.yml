@@ -272,6 +272,8 @@ models:
         description: "Token amount"
       - name: evt_tx_hash,
         description: "Transaction hash"
+      - name: day,
+        description: "Timestamp of the accounting entry truncated to the day mark"                
 
   - name: lido_accounting_ethereum_buffer_outflow
     meta:
@@ -290,5 +292,7 @@ models:
       - name: amount
         description: "Token amount"
       - name: evt_tx_hash,
-        description: "Transaction hash"      
+        description: "Transaction hash"
+      - name: day,
+        description: "Timestamp of the accounting entry truncated to the day mark"              
 
