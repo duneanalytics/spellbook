@@ -1,16 +1,16 @@
 {{ config(
-        alias ='liquidity_incentives',
+        alias ='other_income',
         partition_by = ['period'],
         materialized = 'table',
         file_format = 'delta',
         post_hook='{{ expose_spells(\'["ethereum"]\',
                                 "project",
-                                "lido",
+                                "lido_accounting",
                                 \'["pipistrella", "adcv", "zergil1397", "lido"]\') }}'
         )
 }}
---https://dune.com/queries/2011977
---ref{{'lido_ethereum_accounting_liquidity_incentives'}}
+--https://dune.com/queries/2011910
+--ref{{'lido_accounting_other_income'}}
 
 with tokens AS (
 select * from (values 
@@ -45,6 +45,7 @@ select * from (values
 (LOWER('0xde06d17db9295fa8c4082d4f73ff81592a3ac437'),  'Ethereum',  'RCCMsig'),
 (LOWER('0x834560f580764bc2e0b16925f8bf229bb00cb759'),  'Ethereum',  'TRPMsig')
 ) as list(address, chain, name)
+        
 ),
 
 diversifications_addresses AS (
@@ -67,138 +68,132 @@ select * from  (values
 ) as list(address, name)
 ),
 
-ethereum_liquidity_incentives_txns AS (
--- Ethereum Liq Incentives
-    SELECT 
+ldo_referral_payments_addr AS (
+select * from  (values
+(LOWER('0x558247e365be655f9144e1a0140d793984372ef3')),
+(LOWER('0x6DC9657C2D90D57cADfFB64239242d06e6103E43')),
+(LOWER('0xDB2364dD1b1A733A690Bf6fA44d7Dd48ad6707Cd')),
+(LOWER('0x586b9b2F8010b284A0197f392156f1A7Eb5e86e9')),
+(LOWER('0xC976903918A0AF01366B31d97234C524130fc8B1')),
+(LOWER('0x53773e034d9784153471813dacaff53dbbb78e8c')),
+(LOWER('0x883f91D6F3090EA26E96211423905F160A9CA01d')),
+(LOWER('0xf6502Ea7E9B341702609730583F2BcAB3c1dC041')),
+(LOWER('0x82AF9d2Ea81810582657f6DC04B1d7d0D573F616')),
+(LOWER('0x351806B55e93A8Bcb47Be3ACAF71584deDEaB324')),
+(LOWER('0x9e2b6378ee8ad2A4A95Fe481d63CAba8FB0EBBF9')),
+(LOWER('0xaf8aE6955d07776aB690e565Ba6Fbc79B8dE3a5d')) --rhino
+) as list(address)
+),
+
+dai_referral_payments_addr AS (
+    SELECT _recipient AS address FROM  {{source('lido_ethereum','AllowedRecipientsRegistry_evt_RecipientAdded')}}
+    WHERE
+    (
+        NOT EXISTS (SELECT _recipient FROM {{source('lido_ethereum','AllowedRecipientsRegistry_evt_RecipientRemoved')}}) 
+        OR (
+            EXISTS (SELECT _recipient FROM {{source('lido_ethereum','AllowedRecipientsRegistry_evt_RecipientRemoved')}})
+            AND 
+            _recipient NOT IN (SELECT _recipient FROM {{source('lido_ethereum','AllowedRecipientsRegistry_evt_RecipientRemoved')}})
+        )
+    ) 
+    UNION ALL
+    SELECT LOWER('0xaf8aE6955d07776aB690e565Ba6Fbc79B8dE3a5d') --rhino
+),
+
+
+other_income_txns AS (
+    SELECT
         evt_block_time, 
         CAST(value AS DOUBLE) AS value, 
         evt_tx_hash, 
-        `to`, 
-        `from`, 
         contract_address
     FROM  {{source('erc20_ethereum','evt_transfer')}}
-    WHERE `from` IN (
+    WHERE contract_address IN (SELECT address FROM tokens)
+    AND `to` IN (
         SELECT 
             address 
         FROM multisigs_list 
-        WHERE name in ('LiquidityRewardsMsig', 'LiquidityRewardMngr') AND chain = 'Ethereum'
-    )
-    AND `to` NOT IN (
-        SELECT address FROM multisigs_list
-        UNION ALL
-        SELECT address FROM intermediate_addresses
-        UNION ALL
-        SELECT address FROM diversifications_addresses    
-    )
-    
-    UNION ALL
-    
-    SELECT
-        evt_block_time, 
-        -CAST(value AS DOUBLE) AS value, 
-        evt_tx_hash, 
-        `to`, 
-        `from`, 
-        contract_address 
-    FROM  {{source('erc20_ethereum','evt_transfer')}}
-    WHERE `to` IN (
-        SELECT 
-            address 
-        FROM multisigs_list 
-        WHERE name IN ('LiquidityRewardsMsig', 'LiquidityRewardMngr') AND chain = 'Ethereum'
+        WHERE name IN ('Aragon','FinanceOpsMsig') AND chain = 'Ethereum'
     )
     AND `from` NOT IN (
         SELECT address FROM multisigs_list
         UNION ALL
-        SELECT address FROM intermediate_addresses
+        SELECT address FROM ldo_referral_payments_addr
+        UNION ALL
+        SELECT address FROM dai_referral_payments_addr  
+        UNION ALL
+        select LOWER('0x0000000000000000000000000000000000000000')
         UNION ALL
         SELECT address FROM diversifications_addresses    
-    )
-    
-    UNION ALL                 
-    
-    -- Optimism Incentives
-    SELECT 
-        evt_block_time, 
-        CAST(value AS DOUBLE) AS value, 
-        evt_tx_hash, 
-        `to`, 
-        `from`, 
-        contract_address
-    FROM {{source('erc20_optimism','evt_transfer')}}
-    WHERE  `from` IN (
-        SELECT 
-            address 
-        FROM multisigs_list
-        WHERE name IN  ('LiquidityRewardsMsig') AND chain = 'Optimism'
-    )
-    AND `to` != LOWER('0x0000000000000000000000000000000000000000')
-    UNION ALL
-    SELECT 
-        evt_block_time,
-        -CAST(value AS DOUBLE) AS value, 
-        evt_tx_hash, 
-        `to`, 
-        `from`, 
-        contract_address 
-    FROM {{source('erc20_optimism','evt_transfer')}}
-    WHERE `to` IN (
-        SELECT 
-            address 
-        FROM multisigs_list 
-        WHERE name IN ('LiquidityRewardsMsig') AND chain = 'Optimism'
-    )
-    AND `from` != LOWER('0x0000000000000000000000000000000000000000')
-    
-    UNION ALL
-    
-    -- Arbitrum Incentives
-    SELECT 
-        evt_block_time, 
-        CAST(value AS DOUBLE) AS value, 
-        evt_tx_hash, 
-        `to`, 
-        `from`, 
-        contract_address
-    FROM {{source('erc20_arbitrum','evt_transfer')}}
-    WHERE `from` IN (
-        SELECT 
-            address 
-        FROM multisigs_list 
-        WHERE name IN ('LiquidityRewardsMsig') AND chain = 'Arbitrum'
-    )
-    AND `to` != LOWER('0x0000000000000000000000000000000000000000')
-    UNION ALL
-    SELECT 
-        evt_block_time, 
-        -CAST(value AS DOUBLE) AS value, 
-        evt_tx_hash, 
-        `to`, 
-        `from`, 
-        contract_address 
-    FROM {{source('erc20_arbitrum','evt_transfer')}}
-    WHERE `to` IN (
-        SELECT 
-            address
-        FROM multisigs_list 
-        WHERE name IN ('LiquidityRewardsMsig') AND chain = 'Arbitrum'
-    )
-    and `from` != LOWER('0x0000000000000000000000000000000000000000')
+    )    
 
+),
+
+--Solana stSOL income--
+
+stsol_income_txs AS (
+    select 
+        tx_id, 
+        block_time AS period, 
+        block_slot, 
+        pre_token_balance, 
+        post_token_balance, 
+        token_balance_change AS delta
+    FROM {{source('solana','account_activity')}}
+    WHERE  block_time >= CAST('2021-11-01' AS TIMESTAMP)
+    AND pre_token_balance IS NOT NULL
+    AND token_mint_address =  '7dHbWXmci3dT8UFYWYZweBLXgycu7Y3iL6trKn1Y7ARj'
+    AND address =  'CYpYPtwY9QVmZsjCmguAud1ctQjXWKpWD7xeL5mnpcXk'
+    AND token_balance_change > 0
+    ORDER BY block_time DESC
+),
+
+stsol_income AS (
+    SELECT  
+            i.period AS period,
+            '7dHbWXmci3dT8UFYWYZweBLXgycu7Y3iL6trKn1Y7ARj' AS token,
+            COALESCE(delta,0) AS amount_token,
+            tx_id as evt_tx_hash
+    FROM  stsol_income_txs i 
+    
 )
 
 
-    SELECT 
+    SELECT
         evt_block_time AS period, 
-        evt_tx_hash,
+        contract_address AS token,
         value AS amount_token,
-        CASE 
-            WHEN contract_address = LOWER('0x0914d4ccc4154ca864637b0b653bc5fd5e1d3ecf') THEN LOWER('0x5a98fcbea516cf06857215779fd812ca3bef1b32') --anyLDO
-            WHEN contract_address = LOWER('0xfdb794692724153d1488ccdbe0c56c252596735f') THEN LOWER('0x5a98fcbea516cf06857215779fd812ca3bef1b32') --Opti LDO 
-            WHEN contract_address = LOWER('0x13ad51ed4f1b7e9dc168d8a00cb3f4ddd85efa60') THEN LOWER('0x5a98fcbea516cf06857215779fd812ca3bef1b32') --Arbi LDO 
-            ELSE contract_address
-        END AS token 
-    FROM ethereum_liquidity_incentives_txns
-    WHERE contract_address IN (SELECT address FROM tokens)
+        evt_tx_hash
+    FROM other_income_txns
     
+    UNION ALL
+    --ETH inflow
+    SELECT
+        block_time AS time,
+        LOWER('0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2') AS token,
+        CAST(tr.value AS DOUBLE),
+        tx_hash
+    FROM {{source('ethereum','traces')}} tr
+    WHERE tr.success = True
+    AND tr.`to` in (
+        SELECT 
+            address 
+        FROM multisigs_list 
+        WHERE name IN ('Aragon','FinanceOpsMsig') AND chain = 'Ethereum'
+    )
+    AND tr.`from` NOT IN ( 
+        SELECT address FROM multisigs_list
+        UNION ALL 
+        SELECT address FROM diversifications_addresses    
+    )
+    AND tr.`type`='call'
+    AND (tr.call_type NOT IN ('delegatecall', 'callcode', 'staticcall') OR tr.call_type IS NULL)
+    
+    UNION --stSOL to solana treasury
+    SELECT
+        period, 
+        '7dHbWXmci3dT8UFYWYZweBLXgycu7Y3iL6trKn1Y7ARj' AS token,
+        amount_token,
+        evt_tx_hash
+    FROM stsol_income
 
