@@ -130,7 +130,7 @@ WITH filter_1 AS (
         {% endif %}
     )
 
-filter_5 AS (
+, filter_5 AS (
     SELECT unique_trade_id
     , CASE WHEN df.block_time IS NOT NULL
         THEN true
