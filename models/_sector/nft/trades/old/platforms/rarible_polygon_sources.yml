@@ -8,3 +8,7 @@ sources:
     tables:
       - name: Exchange_evt_Match
         loaded_at_field: evt_block_time
+      - name: ExchangeMetaV2_call_directPurchase
+        loaded_at_field: call_block_time
+      - name: ExchangeMetaV2_call_directAcceptBid
+        loaded_at_field: call_block_time

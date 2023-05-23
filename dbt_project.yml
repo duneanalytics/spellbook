@@ -945,8 +945,14 @@ models:
 
     lido:
       +schema: lido
-      ethereum:
-       +schema: lido_ethereum
+      accounting:
+        +schema: lido_accounting
+        ethereum:
+          +schema: lido_accounting_ethereum
+      liquidity:
+        +schema: lido_liquidity
+        ethereum:
+          +schema: lido_liquidity_ethereum
 
     onepunchswap:
       +schema: onepunchswap
@@ -966,6 +972,7 @@ models:
       +schema: glacier
       avalanche_c:
         +schema: glacier_avalanche_c
+
 
     thena:
       +schema: thena
