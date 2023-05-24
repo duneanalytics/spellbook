@@ -297,7 +297,7 @@ SELECT
         maker_token_amount_raw / pow(10, mp.decimals) AS maker_token_amount,
         maker_token_amount_raw,
         all_tx.type,
-        affiliate_address,
+        max(affiliate_address) over (partition by all_tx.tx_hash) as affiliate_address,
         swap_flag,
         matcha_limit_order_flag,
        CASE WHEN maker_token IN ('0x82af49447d8a07e3bd95bd0d56f35241523fbab1','0xff970a61a04b1ca14834a43f5de4533ebddb5cc8','0xda10009cbd5d07dd0cecc66161fc93d7c9000da1',
