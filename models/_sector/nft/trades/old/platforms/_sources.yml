@@ -9,28 +9,6 @@ sources:
       - name: aavegotchi_diamond_evt_TransferSingle
       - name: aavegotchi_diamond_evt_TransferBatch
 
-  - name: archipelago_ethereum
-    tables:
-      - name: ArchipelagoMarket_evt_Trade
-      - name: ArchipelagoMarket_evt_TokenTrade
-      - name: ArchipelagoMarket_evt_RoyaltyPayment
-
-  - name: blur_ethereum
-    tables:
-      - name: BlurExchange_evt_OrdersMatched
-
-  - name: collectionswap_ethereum
-    tables:
-      - name: CollectionPool_evt_SwapNFTOutPool
-      - name: CollectionPool_evt_SwapNFTInPool
-
-  - name: element_ex_ethereum
-    tables:
-      - name: OrdersFeature_evt_ERC721SellOrderFilled
-      - name: OrdersFeature_evt_ERC721BuyOrderFilled
-      - name: OrdersFeature_evt_ERC1155SellOrderFilled
-      - name: OrdersFeature_evt_ERC1155BuyOrderFilled
-
   - name: element_ex_bnb
     tables:
       - name: OrdersFeature_evt_ERC721SellOrderFilled
