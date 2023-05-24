@@ -19,7 +19,7 @@ raw_trades as (
         select
             block_number, block_time, evt_index, tx_hash, buyer, seller,
             posexplode(nft_id_array) as (sub_order_id, nft_token_id),
-            cast(1 as int) as nft_amount,
+            cast(1 as DECIMAL(38,0)) as nft_amount,
             price_raw/number_of_items as price_raw,
             platform_fee_amount_raw/number_of_items as platform_fee_amount_raw,
             royalty_fee_amount_raw/number_of_items as royalty_fee_amount_raw,
