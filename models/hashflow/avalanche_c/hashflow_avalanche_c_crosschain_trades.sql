@@ -91,13 +91,13 @@ LEFT JOIN {{ source('prices', 'usd') }} p_bought
     AND p_bought.contract_address = cross_chain_trades.token_bought_address
     AND p_bought.blockchain = 'avalanche_c'
     {% if is_incremental() %}
-        AND minute >= date_trunc("day", now() - interval '1 week')
+        AND p_bought.minute >= date_trunc("day", now() - interval '1 week')
     {% endif %}
 LEFT JOIN {{ source('prices', 'usd') }} p_sold
     ON p_sold.minute = date_trunc('minute', cross_chain_trades.block_time)
     AND p_sold.contract_address = cross_chain_trades.token_sold_address
     AND p_sold.blockchain = 'avalanche_c'
     {% if is_incremental() %}
-        AND minute >= date_trunc("day", now() - interval '1 week')
+        AND p_sold.minute >= date_trunc("day", now() - interval '1 week')
     {% endif %}
     
