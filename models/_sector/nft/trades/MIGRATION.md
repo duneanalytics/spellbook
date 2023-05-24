@@ -128,22 +128,24 @@ The migration for each protocol consists of 3 parts.
 #### Ethereum
 | Platform    | Version | Trades (21/4/2023) | Migrated | Validated | Purged |
 |-------------|:-------:|-------------------:|:--------:|:---------:|:------:|
-| archipelago |   v1    |                561 |   [x]    |    [x]    |        |
-| blur        |   v1    |          3,067,180 |   [x]    |    [x]    |        |
-| cryptopunks |   v1    |             23,054 |   [x]    |    [x]    |        |
-| element     |   v1    |            106,654 |          |           |        |
-| foundation  |   v1    |            137,246 |   [x]    |    [x]    |        |
-| looksrare   |   v1    |            401,647 |          |           |        |
-| looksrare   |   v2    |              1,216 |          |           |        |
+| archipelago |   v1    |                561 |   [x]    |    [x]    |  [x]   |
+| blur        |   v1    |          3,067,180 |   [x]    |    [x]    |  [x]   |
+| cryptopunks |   v1    |             23,054 |   [x]    |    [x]    |  [x]   |
+| element     |   v1    |            106,654 |   [x]    |    [x]    |  [x]   |
+| foundation  |   v1    |            137,246 |   [x]    |    [x]    |  [x]   |
+| looksrare   |   v1    |            401,647 |   [x]    |    [x]    |  [x]   |
+| looksrare   |   v2    |              1,216 |   [x]    |    [x]    |  [x]   |
 | opensea     |   v1    |         20,245,583 |          |           |        |
 | opensea     |   v3    |         14,110,690 |          |           |        |
 | opensea     |   v4    |          1,619,188 |          |           |        |
-| sudoswap    |   v1    |            300,750 |          |           |        |
-| superrare   |   v1    |             38,864 |   [x]    |    [x]    |        |
-| x2y2        |   v1    |          1,843,487 |          |           |        |
-| zora        |   v1    |              2,976 |          |           |        |
-| zora        |   v2    |              3,491 |          |           |        |
-| zora        |   v3    |              7,149 |          |           |        |
+| sudoswap    |   v1    |            300,750 |   [x]    |    [x]    |  [x]   |
+| superrare   |   v1    |             38,864 |   [x]    |    [x]    |  [x]   |
+| x2y2        |   v1    |          1,843,487 |   [x]    |    [x]    |  [x]   |
+| zora        |   v1    |              2,976 |   [x]    |    [x]    |  [x]   |
+| zora        |   v2    |              3,491 |   [x]    |    [x]    |  [x]   |
+| zora        |   v3    |              7,149 |   [x]    |    [x]    |  [x]   |
+| trove       |         |                    |          |           |        |
+| liquidifty  |         |                    |          |           |        |
 
 #### Optimism
 
