@@ -17,8 +17,10 @@
 {% set trade_event_tables = [
     source('paraswap_bnb', 'AugustusSwapperV5_evt_Bought')
     ,source('paraswap_bnb', 'AugustusSwapperV5_evt_Bought2')
+    ,source('paraswap_bnb', 'AugustusSwapperV5_evt_BoughtV3')
     ,source('paraswap_bnb', 'AugustusSwapperV5_evt_Swapped')
     ,source('paraswap_bnb', 'AugustusSwapperV5_evt_Swapped2')
+    ,source('paraswap_bnb', 'AugustusSwapperV5_evt_SwappedV3')
 ] %}
 
 WITH dexs AS (
