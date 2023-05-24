@@ -202,5 +202,6 @@ FROM
     ("oath-oath","bnb","OATH","0xd3c6ceedd1cc7bd4304f72b011d53441d631e662",18)
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)
 where contract_address not in (
-    '0x2ab0e9e4ee70fff1fb9d67031e44f6410170d00e' -- bXEN has bad price feed.
+    '0x2ab0e9e4ee70fff1fb9d67031e44f6410170d00e', -- bXEN has bad price feed.
+    '0x43f3918ff115081cfbfb256a5bde1e8d181f2907' -- ANT (aragon) doesn't exists on BSC, it's a scam-token address.
 )
