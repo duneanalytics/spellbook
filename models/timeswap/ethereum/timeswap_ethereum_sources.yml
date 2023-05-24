@@ -61,41 +61,22 @@ sources:
           - &tokenAmount
             name: tokenAmount
             description: "The amount of token in wei"
-
-          - &uniswapV3Fee
-            name: uniswapV3Fee
-            description: ""
         
       - name: TimeswapV2PeripheryUniswapV3BorrowGivenPrincipal_evt_BorrowGivenPrincipal
         columns:
-          - *contract_address
-            
-          - *evt_tx_hash
-        
-          - *evt_index
-            
+          - *contract_address      
+          - *evt_tx_hash       
+          - *evt_index            
           - *evt_block_time
-
           - *evt_block_number
-
           - *from
-
           - *isToken0
-
           - *maturity
-
-          - *positionAmount
-
           - *strike
-
           - *to
-
           - *token0
-
           - *token1
-
           - *tokenAmount
 
-          - *uniswapV3Fee
 
       

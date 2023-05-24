@@ -52,24 +52,25 @@ models:
     config:
       tags: ['polygon','timeswap','lend', 'view']
     columns:
-      - &Transaction_Hash
+      - &transaction_hash
         name: Transaction_Hash
         description: "Primary key of the transaction"
-      - &Time
+      - &time
         name: Time
         description: "Timestamp for block event time in UTC"
+      - &token_0
+        name: token_0
+        description: "Value of isToken0"
       - *maturity
       - *strike
-      - &Pool_Pair
-        name: Pool_Pair
-        description: "The pool pair"
-      - &Chain 
+      - *pool_pair
+      - &chain 
         name: Chain
         description: "chain"
-      - &Token_Amount
+      - &token_amount
         name: Token_Amount
         description: "The amount of token borrowed"
-      - &USD_Amount
+      - &usd_amount
         name: USD_Amount
         description: "The amount of token borrowed in USD"
 
@@ -79,12 +80,13 @@ models:
     config:
       tags: ['polygon','timeswap','borrow', 'view']
     columns:  
-      - *Transaction_Hash
-      - *Time
+      - *transaction_hash
+      - *time
+      - *token_0
       - *maturity
       - *strike
-      - *Pool_Pair
-      - *Chain
-      - *Token_Amount
-      - *USD_Amount
+      - *pool_pair
+      - *chain
+      - *token_amount
+      - *usd_amount
       

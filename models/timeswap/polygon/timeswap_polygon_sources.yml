@@ -61,10 +61,6 @@ sources:
           - &tokenAmount
             name: tokenAmount
             description: "The amount of token in wei"
-
-          - &uniswapV3Fee
-            name: uniswapV3Fee
-            description: ""
         
       - name: TimeswapV2PeripheryUniswapV3BorrowGivenPrincipal_evt_BorrowGivenPrincipal
         columns:
@@ -146,5 +142,4 @@ sources:
           - *call_block_time 
           - *call_block_number
           - *param
-        
         
