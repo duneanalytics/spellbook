@@ -51,6 +51,24 @@ WITH dexs AS (
         UNION ALL
         {% endif %}
     {% endfor %}
+),
+
+-- WMATIC price are missing before 2022-02-05
+price_missed_previous AS (
+    SELECT minute, contract_address, decimals, symbol, price
+    FROM {{ source('prices', 'usd') }}
+    WHERE contract_address = '0x0d500b1d8e8ef31e21c99d1db9a6444d3adf1270' -- WMATIC
+    ORDER BY minute
+    LIMIT 1
+),
+
+--  WMATIC price may be missed for latest swaps
+price_missed_next AS (
+    SELECT minute, contract_address, decimals, symbol, price
+    FROM {{ source('prices', 'usd') }}
+    WHERE contract_address = '0x0d500b1d8e8ef31e21c99d1db9a6444d3adf1270' -- WMATIC
+    ORDER BY minute desc
+    LIMIT 1
 )
 
 SELECT 'polygon' AS blockchain,
@@ -70,8 +88,8 @@ SELECT 'polygon' AS blockchain,
     CAST(d.token_sold_amount_raw AS DECIMAL(38,0)) AS token_sold_amount_raw,
     coalesce(
         d.amount_usd
-        ,(d.token_bought_amount_raw / power(10, p1.decimals)) * p1.price
-        ,(d.token_sold_amount_raw / power(10, p2.decimals)) * p2.price
+        ,(d.token_bought_amount_raw / power(10, e1.decimals)) * coalesce(p1.price, p_prev1.price, p_next1.price)
+        ,(d.token_sold_amount_raw / power(10, e2.decimals)) * coalesce(p2.price, p_prev2.price, p_next2.price)
     ) AS amount_usd,
     d.token_bought_address,
     d.token_sold_address,
@@ -105,6 +123,10 @@ LEFT JOIN {{ source('prices', 'usd') }} p1 ON p1.minute = date_trunc('minute', d
     {% if is_incremental() %}
     AND p1.minute >= date_trunc("day", now() - interval '1 week')
     {% endif %}
+LEFT JOIN price_missed_previous p_prev1 ON d.token_bought_address = p_prev1.contract_address
+    AND d.block_time < p_prev1.minute -- Swap before first price record time
+LEFT JOIN price_missed_next p_next1 ON d.token_bought_address = p_next1.contract_address
+    AND d.block_time > p_next1.minute -- Swap after last price record time
 LEFT JOIN {{ source('prices', 'usd') }} p2 ON p2.minute = date_trunc('minute', d.block_time)
     AND p2.contract_address = d.token_sold_address
     AND p2.blockchain = 'polygon'
@@ -114,3 +136,7 @@ LEFT JOIN {{ source('prices', 'usd') }} p2 ON p2.minute = date_trunc('minute', d
     {% if is_incremental() %}
     AND p2.minute >= date_trunc("day", now() - interval '1 week')
     {% endif %}
+LEFT JOIN price_missed_previous p_prev2 ON d.token_sold_address = p_prev2.contract_address
+    AND d.block_time < p_prev2.minute -- Swap before first price record time
+LEFT JOIN price_missed_next p_next2 ON d.token_sold_address = p_next2.contract_address
+    AND d.block_time > p_next2.minute -- Swap after last price record time
