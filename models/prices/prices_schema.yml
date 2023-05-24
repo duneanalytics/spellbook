@@ -123,15 +123,19 @@ models:
     columns:
       - name: blockchain
         description: "Native blockchain of the token"
+        tests:
+          - not_null
       - name: contract_address
         description: "Contract address of the token"
+        tests:
+          - not_null
       - name: symbol
         description: "Token symbol"
       - name: stability_rank
         description: "Rank of the stability of the price of a token over the last 7 days"
       - name: weighted_stability
         description: "Weighted stability of the price of a token over the last 7 days"
-      - name: chain_stab_rank
+      - name: rank_in_chain
         description: "Rank of the stability of the price of a token over the last 7 days within the chain"
       - name: stability
         description: "Statistical stability of the price of a token over the last 7 days"

@@ -1,6 +1,10 @@
 {{ config(
         schema='prices',
         alias ='stability_rank',
+        materialized = 'incremental',
+        file_format = 'delta',
+        incremental_strategy = 'merge',
+        unique_key = ['blockchain', 'contract_address'],
         post_hook='{{ expose_spells(\'["ethereum", "solana", "arbitrum", "gnosis", "optimism", "bnb", "avalanche_c", "polygon", "fantom"]\',
                                     "sector",
                                     "prices",
@@ -12,6 +16,9 @@ WITH recent_dex_trades AS (
     SELECT *
     FROM {{ ref('dex_trades') }}
     WHERE block_date >= now() - interval '7 day'
+        {% if is_incremental() %} -- equivalent as view materialization
+        AND block_date >= date_trunc("day", now() - interval '1 week')
+        {% endif %}
 )
 , prices_usd_stability AS (
     SELECT blockchain
@@ -94,7 +101,7 @@ WITH recent_dex_trades AS (
     SELECT blockchain
          , contract_address
          , symbol
-         , rank() OVER (PARTITION BY blockchain ORDER BY weighted_stability DESC) AS chain_stab_rank
+         , rank() OVER (PARTITION BY blockchain ORDER BY weighted_stability DESC) AS rank_in_chain
          , weighted_stability
          , stability
          , avg_price
