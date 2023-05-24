@@ -25,7 +25,7 @@ WITH
             FROM {{ source('solana','account_activity') }}
             WHERE tx_success 
             {% if is_incremental() %}
-            AND block_time > (SELECT max(day) FROM {{this}}) 
+            AND block_time > (SELECT max(day) FROM {{this}})
             {% endif %}
       )
 

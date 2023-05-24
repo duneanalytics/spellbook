@@ -17,8 +17,12 @@ models:
     columns:
       - &token_mint_address
         name: token_mint_address
+        tests:
+          - not_null
       - &address
         name: address
+        tests:
+          - not_null
       - &updated_at
         name: updated_at
   
@@ -39,6 +43,8 @@ models:
     columns:
       - &day
         name: day
+        tests:
+          - not_null
       - *token_mint_address
       - *address
       - &sol_balance 
