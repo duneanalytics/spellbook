@@ -60,7 +60,7 @@ from
                 {% if is_incremental() %}
                 and b.block_time >= date_trunc('day', now() - interval '1 week')
                 {% endif %}
-        where a.evt_tx_hash not in (select distinct tx_hash from {{ ref('cryptopunks_ethereum_events') }} )
+        where a.evt_tx_hash not in (select distinct evt_tx_hash from {{ source('cryptopunks_ethereum','CryptoPunksMarket_evt_PunkBought') }} )
                 and a.evt_tx_hash not in (select distinct evt_tx_hash from {{ ref('cryptopunks_ethereum_punk_transfers') }} )
                 {% if is_incremental() %}
                 and a.evt_block_time >= date_trunc('day', now() - interval '1 week')
