@@ -35,15 +35,6 @@ union all
 select lower('0x8D6CeBD76f18E1558D4DB88138e2DeFB3909fAD6'),  lower('0xdfa46478f9e5ea86d57387849598dbfb2e964b02')
 ))
 
-, tokens_mapping as (
-select distinct address_l1, address_l2 from (
-select l1_token as address_l1, l2_token as address_l2 from tokens_optimism.erc20_bridged_mapping 
-union all 
-select lower('0x1a7e4e63778B4f12a199C062f3eFdD288afCBce8'),lower('0x9485aca5bbbe1667ad97c7fe7c4531a624c8b1ed') 
-union all 
-select lower('0x8D6CeBD76f18E1558D4DB88138e2DeFB3909fAD6'),  lower('0xdfa46478f9e5ea86d57387849598dbfb2e964b02')
-))
-
 , tokens as (
 select distinct token as address, pt.symbol, pt.decimals, tm.address_l1
 from (
@@ -247,7 +238,7 @@ group by 1,2
 )
 
 , all_metrics as (
-select l.pool, pools.chain, pools.project, pools.fee, l.time, 
+select l.pool, pools.blockchain, pools.project, pools.fee, l.time, 
     case when token0 = LOWER('0x1F32b1c2345538c0c6f582fCB022739c4A194Ebb') then token0 else token1 end main_token,
     case when token0 = LOWER('0x1F32b1c2345538c0c6f582fCB022739c4A194Ebb') then t0.symbol else t1.symbol end main_token_symbol,
     case when token0 = LOWER('0x1F32b1c2345538c0c6f582fCB022739c4A194Ebb') then token1 else token0 end paired_token,
