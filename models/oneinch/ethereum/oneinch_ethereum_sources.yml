@@ -53,7 +53,7 @@ sources:
         loaded_at_field: call_block_time
       - name: AggregationRouterV5_call_fillOrderRFQToWithPermit
         loaded_at_field: call_block_time
-  
+
   - name: oneinch_v2_ethereum
     description: "decoded events and function calls for 1inch v2 on ethereum"
     freshness:
@@ -142,21 +142,21 @@ sources:
       - name: LimitOrderProtocol_call_fillOrderRFQ
         loaded_at_field: call_block_time
 
-  - name: oneinch_lop_v2_ethereum
+  - name: oneinch_ethereum
     description: "decoded events and function calls for limit order protocol v2 on ethereum"
     freshness:
       warn_after: { count: 12, period: hour }
       error_after: { count: 24, period: hour }
     tables:
-      - name: LimitOrderProtocol_call_fillOrder
+      - name: LimitOrderProtocolV2_call_fillOrder
         loaded_at_field: call_block_time
-      - name: LimitOrderProtocol_call_fillOrderTo
+      - name: LimitOrderProtocolV2_call_fillOrderTo
         loaded_at_field: call_block_time
-      - name: LimitOrderProtocol_call_fillOrderToWithPermit
+      - name: LimitOrderProtocolV2_call_fillOrderToWithPermit
         loaded_at_field: call_block_time
-      - name: LimitOrderProtocol_call_fillOrderRFQ
+      - name: LimitOrderProtocolV2_call_fillOrderRFQ
         loaded_at_field: call_block_time
-      - name: LimitOrderProtocol_call_fillOrderRFQTo
+      - name: LimitOrderProtocolV2_call_fillOrderRFQTo
         loaded_at_field: call_block_time
-      - name: LimitOrderProtocol_call_fillOrderRFQToWithPermit
+      - name: LimitOrderProtocolV2_call_fillOrderRFQToWithPermit
         loaded_at_field: call_block_time

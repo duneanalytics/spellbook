@@ -78,6 +78,8 @@ SELECT
     base.price_raw/pow(10,coalesce(erc20.decimals,18))*p.price as price_usd,
     base.platform_fee_amount_raw/pow(10,coalesce(erc20.decimals,18))*p.price as platform_fee_amount_usd,
     base.royalty_fee_amount_raw/pow(10,coalesce(erc20.decimals,18))*p.price as royalty_fee_amount_usd,
+    coalesce(cast(100*base.platform_fee_amount_raw/base.price_raw as double),cast(0.0 as double)) as platform_fee_percentage,
+    coalesce(cast(100*base.royalty_fee_amount_raw/base.price_raw as double),cast(0.0 as double)) as royalty_fee_percentage,
     coalesce(agg1.contract_address,agg2.contract_address) as aggregator_address,
     {% if aggregator_markers != null %}
     coalesce(agg_mark.aggregator_name, agg1.name, agg2.name) as aggregator_name

@@ -5,11 +5,7 @@
         unique_key = ['block_date', 'tx_hash', 'evt_index'],
         on_schema_change='sync_all_columns',
         file_format ='delta',
-        incremental_strategy='merge',
-        post_hook='{{ expose_spells(\'["optimism"]\',
-                                "project", 
-                                "zeroex",
-                                \'["rantum", "danning.sui", "bakabhai993"]\') }}'
+        incremental_strategy='merge'
     )
 }} 
 {% set zeroex_v3_start_date = '2019-12-01' %}
@@ -357,7 +353,7 @@ SELECT
         maker_token_amount_raw / pow(10, mp.decimals) AS maker_token_amount,
         maker_token_amount_raw,
         all_tx.type,
-        affiliate_address,
+        max(affiliate_address) over (partition by all_tx.tx_hash) as affiliate_address,
         swap_flag,
         matcha_limit_order_flag,
         --COALESCE((all_tx.maker_token_amount_raw / pow(10, mp.decimals)) * mp.price, (all_tx.taker_token_amount_raw / pow(10, tp.decimals)) * tp.price) AS volume_usd
