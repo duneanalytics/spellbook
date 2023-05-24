@@ -206,10 +206,18 @@ models:
             - recipient
             - evt_index
     columns:
-      - *blockchain
-      - *block_time
-      - *block_number
-      - *project
+      - &blockchain
+        name: blockchain
+        description: "Blockchain"
+      - &block_time
+        name: block_time
+        description: "Block time of transaction"
+      - &block_number
+        name: block_number
+        description: "Block number of transaction"
+      - &project
+        name: project
+        description: "Project name"
       - &airdrop_identifier
         name: airdrop_identifier
         description: "Airdrop identifier name"
@@ -219,7 +227,9 @@ models:
       - &contract_address
         name: contract_address
         description: "Contract addressed used"
-      - *tx_hash
+      - &tx_hash
+        name: tx_hash
+        description: "Transaction hash"
       - name: amount_raw
         description: "Raw amount of tokens"
       - name: amount_original
@@ -232,5 +242,7 @@ models:
       - &token_symbol
         name: token_symbol
         description: "Token symbol"
-      - *evt_index
-
+      - &evt_index
+        name: evt_index
+        description: "Event index"
+        
