@@ -86,7 +86,6 @@ models:
       - *Time
       - *maturity
       - *strike
-      - *User_Address
       - *Pool_Pair
       - *Chain
       - *Token_Amount

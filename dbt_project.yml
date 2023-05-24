@@ -194,6 +194,8 @@ models:
         +schema: timeswap_ethereum
       arbitrum:
         +schema: timeswap_arbitrum
+      polygon:
+        +schema: timeswap_polygon
 
     quickswap:
       +schema: quickswap

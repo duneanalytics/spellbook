@@ -1,16 +1,16 @@
 version: 2
 
 models:
-  - name: timeswap_ethereum_pools
+  - name: timeswap_polygon_pools
     meta:
-      blockchain: ethereum
+      blockchain: polygon
       sector: lending-borrowing
       project: timeswap
       contributors: raveena15, varunhawk19
     config:
-      tags: ['ethereum','timeswap','pools', 'view']
+      tags: ['polygon','timeswap','pools', 'view']
     description: >
-        Timeswap pools on Ethereum
+        Timeswap pools on polygon
     columns:
       - &token0_symbol
         name: token0_symbol
@@ -46,11 +46,11 @@ models:
         name: lend_contract_address
         description: "The lend contract address"
 
-  - name: timeswap_ethereum_lend
+  - name: timeswap_polygon_lend
     description: >
-        Timeswap lend transactions on Ethereum
+        Timeswap lend transactions on polygon
     config:
-      tags: ['ethereum','timeswap','lend', 'view']
+      tags: ['polygon','timeswap','lend', 'view']
     columns:
       - &Transaction_Hash
         name: Transaction_Hash
@@ -60,9 +60,6 @@ models:
         description: "Timestamp for block event time in UTC"
       - *maturity
       - *strike
-      - &User_Address
-        name: User_Address
-        description: "The address of the user"
       - &Pool_Pair
         name: Pool_Pair
         description: "The pool pair"
@@ -76,11 +73,11 @@ models:
         name: USD_Amount
         description: "The amount of token borrowed in USD"
 
-  - name: timeswap_ethereum_borrow
+  - name: timeswap_polygon_borrow
     description: >
-      Timeswap borrow transactions on Ethereum
+      Timeswap borrow transactions on polygon
     config:
-      tags: ['ethereum','timeswap','borrow', 'view']
+      tags: ['polygon','timeswap','borrow', 'view']
     columns:  
       - *Transaction_Hash
       - *Time
