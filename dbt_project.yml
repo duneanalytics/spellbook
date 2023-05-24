@@ -177,6 +177,21 @@ models:
       polygon:
         +schema: gitcoin_polygon
 
+    blur:
+      +schema: blur
+      ethereum:
+        +schema: blur_ethereum
+
+    looksrare:
+      +schema: looksrare
+      ethereum:
+        +schema: looksrare_ethereum
+
+    x2y2:
+      +schema: x2y2
+      ethereum:
+        +schema: x2y2_ethereum
+
     uniswap:
       +schema: uniswap
       arbitrum:
