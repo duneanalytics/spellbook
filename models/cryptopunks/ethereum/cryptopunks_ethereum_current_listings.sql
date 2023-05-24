@@ -23,16 +23,17 @@ with all_listing_events as (
     from {{ ref('cryptopunks_ethereum_punk_offer_events') }}
 )
 , all_buys as (
-    select  token_id as punk_id
+    select  nft_token_id as punk_id
             , 'Punk Bought' as event_type
             , 'Punk Bought' as event_sub_type
             , cast(NULL as double) as listed_price
             , cast(NULL as varchar(5)) as listing_offered_to
             , block_number as evt_block_number
-            , evt_index
+            , sub_tx_trade_id as evt_index
             , block_time as evt_block_time
             , tx_hash as evt_tx_hash
-    from {{ ref('cryptopunks_ethereum_events') }}
+    from {{ ref('nft_ethereum_trades_beta') }}
+    where project = 'cryptopunks'
 )
 , all_transfers as (
     select  punk_id
