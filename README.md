@@ -3,7 +3,7 @@
 
 Welcome to your [Spellbook](https://youtu.be/o7p0BNt7NHs). Cast a magical incantation to tame the blockchain.
 
-📖 Documentation of models can be found [here](https://spellbook-docs.dune.com/#!/overview), with a full example contribution walkthrough [here](https://dune.com/docs/spellbook/getting-started/)
+📖 Documentation of models can be found [here](https://spellbook-docs.dune.com/#!/overview), with a full example contribution walkthrough [here](https://dune.com/docs/data-tables/spellbook/)
 
 ### Heads up
 Working on something new? Open a draft PR to let other wizards know you're working on it to help minimize duplicated work. 
@@ -192,6 +192,6 @@ If you fail to run `dbt compile`, here are some common error messages:
 
 - Learn more about dbt [in the docs](https://docs.getdbt.com/docs/introduction)
 - Check out [Discourse](https://discourse.getdbt.com/) for commonly asked questions and answers
-- Join the [chat](https://community.getdbt.com/) on Slack for live discussions and support
-- Find [dbt events](https://events.getdbt.com) near you
-- Check out [the blog](https://blog.getdbt.com/) for the latest news on dbt's development and best practices
+- Join the [chat](https://getdbt.com/community/join-the-community/) on Slack for live discussions and support
+- Find [dbt events](https://getdbt.com/events/) near you
+- Check out [the blog](https://getdbt.com/blog/) for the latest news on dbt's development and best practices
