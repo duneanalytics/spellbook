@@ -3,6 +3,10 @@ on:
   push:
     branches:
       - "main"
+
+concurrency:
+  group: ${{ github.workflow }}
+  cancel-in-progress: true
       
 jobs:
   commit_manifest:
@@ -39,26 +43,3 @@ jobs:
 
     - name: upload manifest
       run: "aws s3 cp manifest.json s3://manifest-spellbook/manifest.json"
-
-  dispatch:
-    runs-on: [ self-hosted, linux, spellbook ]
-    needs: commit_manifest
-    steps:
-    - name: Set pat token
-      id: set-pat-token
-      run: |
-          echo "token=$SPELLBOOK_PAT_TOKEN" >> $GITHUB_OUTPUT
-          exit 0
-    - uses: actions/github-script@v6
-      with:
-        github-token: ${{ steps.set-pat-token.outputs.token }}
-        script: |
-              await github.rest.actions.createWorkflowDispatch({
-                owner: 'duneanalytics',
-                repo: 'spellbook-dagster',
-                workflow_id: 'deploy.yml',
-                ref: 'main',
-                inputs: {
-                  git_sha: process.env.GIT_SHA,
-                },
-              });
