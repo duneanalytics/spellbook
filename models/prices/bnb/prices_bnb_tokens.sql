@@ -23,7 +23,6 @@ FROM
     ("adx-adex", "bnb", "ADX", "0x6bff4fb161347ad7de4a625ae5aa3a1ca7077819", 18),
     ("aggl-aggleio", "bnb", "AGGL", "0x1042aa383cab145dc77121ca75650804a5c134ff", 18),
     ("ankr-ankr-network", "bnb", "ANKR", "0xf307910a4c7bbc79691fd374889b36d8531b08e3", 18),
-    -- ("ant-aragon", "bnb", "ANT", "0x43f3918ff115081cfbfb256a5bde1e8d181f2907", 18), -- removed due to issue
     ("atom-cosmos", "bnb", "ATOM", "0x0eb3a705fc54725037cc9e008bdede697f62f335", 18),
     ("auto-auto", "bnb", "AUTO", "0x1cff458b364d0d328d4c9d59d10be7d22d01953d", 18),
     ("axlusdc-axelar-usd-coin", "bnb", "axlUSDC", "0x4268b8f0b87b6eae5d897996e6b845ddbd99adf3", 6),
