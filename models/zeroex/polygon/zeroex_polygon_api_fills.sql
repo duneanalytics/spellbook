@@ -1,5 +1,5 @@
 {{  config(
-        tags=['prod_exclude'],
+
         alias='api_fills',
         materialized='incremental',
         partition_by = ['block_date'],
@@ -16,7 +16,7 @@
 -- Test Query here: https://dune.com/queries/1684477
 
 WITH zeroex_tx AS (
-    SELECT
+    SELECT distinct 
             tr.tx_hash,
             max('0x' || CASE
                         WHEN POSITION('869584cd' IN INPUT) <> 0
@@ -28,8 +28,6 @@ WITH zeroex_tx AS (
                                 FROM (position('fbc019a7' IN INPUT) + 32)
                                 FOR 40)
             END) AS affiliate_address,
-            tr.to as to,
-            tr.from as from,
             tr.block_number as block_number,
             tr.block_time as block_time
         FROM {{ source('polygon', 'traces') }} tr
@@ -71,8 +69,6 @@ v4_rfq_fills_no_bridge AS (
             fills.makerTokenFilledAmount    AS maker_token_amount_raw,
             'RfqOrderFilled'                AS type,
             zeroex_tx.affiliate_address     AS affiliate_address,
-            zeroex_tx.to, 
-            zeroex_tx.from, 
             zeroex_tx.block_number,
             (zeroex_tx.tx_hash IS NOT NULL) AS swap_flag,
             FALSE                           AS matcha_limit_order_flag
@@ -104,8 +100,6 @@ v4_limit_fills_no_bridge AS (
             fills.makerTokenFilledAmount AS maker_token_amount_raw,
             'LimitOrderFilled' AS type,
             COALESCE(zeroex_tx.affiliate_address, fills.feeRecipient) AS affiliate_address,
-            zeroex_tx.to, 
-            zeroex_tx.from,
             zeroex_tx.block_number,
             (zeroex_tx.tx_hash IS NOT NULL) AS swap_flag,
             (fills.feeRecipient in 
@@ -139,8 +133,6 @@ otc_fills AS (
             fills.makerTokenFilledAmount    AS maker_token_amount_raw,
             'OtcOrderFilled'                AS type,
             zeroex_tx.affiliate_address     AS affiliate_address,
-            zeroex_tx.to, 
-            zeroex_tx.from,
             zeroex_tx.block_number,
             (zeroex_tx.tx_hash IS NOT NULL) AS swap_flag,
             FALSE                           AS matcha_limit_order_flag
@@ -173,8 +165,6 @@ ERC20BridgeTransfer AS (
             bytea2numeric(substring(DATA, 219, 40)) AS maker_token_amount_raw,
             'ERC20BridgeTransfer'                   AS type,
             zeroex_tx.affiliate_address             AS affiliate_address,
-            zeroex_tx.to, 
-            zeroex_tx.from,
             zeroex_tx.block_number,
             TRUE                                    AS swap_flag,
             FALSE                                   AS matcha_limit_order_flag
@@ -233,8 +223,6 @@ NewBridgeFill AS (
         bytea2numeric('0x' || substring(logs.DATA, 283, 40)) AS maker_token_amount_raw,
         'BridgeFill'                                         AS type,
         zeroex_tx.affiliate_address                          AS affiliate_address,
-        zeroex_tx.to, 
-        zeroex_tx.from,
         zeroex_tx.block_number,
         TRUE                                                 AS swap_flag,
         FALSE                                                AS matcha_limit_order_flag
@@ -269,8 +257,6 @@ direct_PLP AS (
             outputTokenAmount           AS maker_token_amount_raw,
             'LiquidityProviderSwap'     AS type,
             zeroex_tx.affiliate_address AS affiliate_address,
-            zeroex_tx.to, 
-            zeroex_tx.from,
             zeroex_tx.block_number,
             TRUE                        AS swap_flag,
             FALSE                       AS matcha_limit_order_flag
@@ -349,7 +335,7 @@ all_tx AS (
     FROM otc_fills 
 )
 
-SELECT 
+SELECT distinct 
         all_tx.tx_hash,
         all_tx.block_number, 
         all_tx.evt_index,
@@ -357,10 +343,7 @@ SELECT
         all_tx.block_time,
         try_cast(date_trunc('day', all_tx.block_time) AS date) AS block_date,
         maker,
-        CASE
-            WHEN taker = '0xdef1c0ded9bec7f1a1670819833240f027b25eff' THEN all_tx.from
-            ELSE taker
-        END AS taker, -- fix the user masked by ProxyContract issue
+        tx.from AS taker, -- fix the user masked by ProxyContract issue
         taker_token,
         ts.symbol AS taker_symbol,
         maker_token,
@@ -371,7 +354,7 @@ SELECT
         maker_token_amount_raw / pow(10, mp.decimals) AS maker_token_amount,
         maker_token_amount_raw,
         all_tx.type,
-        affiliate_address,
+        max(affiliate_address) over (partition by all_tx.tx_hash) as affiliate_address,
         swap_flag,
         matcha_limit_order_flag,
         CASE WHEN maker_token IN ('0x2791bca1f2de4661ed88a30c99a7a9449aa84174','0x7ceb23fd6bc0add59e62ac25578270cff1b9f619','0x0d500b1d8e8ef31e21c99d1db9a6444d3adf1270','0xc2132d05d31c914a87c6611c10748aeb04b58e8f',

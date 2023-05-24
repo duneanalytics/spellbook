@@ -39,6 +39,7 @@ sources:
           - &tokens_bought
             name: tokens_bought
             description: "Raw amount of tokens bought during transaction with the contract"
+
       - name: Factory_evt_NewExchange
         loaded_at_field: evt_block_time
         freshness: # default freshness
@@ -57,6 +58,7 @@ sources:
           - &token
             name: token
             description: "Token bought contract address"
+
       - name: Exchange_evt_EthPurchase
         loaded_at_field: evt_block_time
         description: "" # to-do
@@ -100,6 +102,7 @@ sources:
             name: sender
           - &to
             name: to
+
       - name: Factory_evt_PairCreated
         loaded_at_field: evt_block_time
         description: "" # to-do
@@ -145,6 +148,7 @@ sources:
             name: sqrtPriceX96
           - &tick
             name: tick
+
       - name: Factory_evt_PoolCreated
         loaded_at_field: evt_block_time
         description: "" # to-do
@@ -162,6 +166,7 @@ sources:
             name: tickSpacing
           - *token0
           - *token1
+
       - name: GovernorBravoDelegate_evt_VoteCast
         loaded_at_field: evt_block_time
         columns:
@@ -178,6 +183,7 @@ sources:
             name: voter
           - &votes
             name: votes
+
       - name: GovernorBravoDelegate_evt_ProposalCreated
         loaded_at_field: evt_block_time
         columns:
@@ -204,6 +210,7 @@ sources:
             name: targets
           - &values
             name: values
+
       - name: GovernorBravoDelegate_evt_ProposalCanceled
         loaded_at_field: evt_block_time
         columns:
@@ -213,6 +220,7 @@ sources:
           - *evt_index
           - *evt_tx_hash
           - *id
+
       - name: GovernorBravoDelegate_evt_ProposalExecuted
         loaded_at_field: evt_block_time
         columns:
@@ -222,6 +230,7 @@ sources:
           - *evt_index
           - *evt_tx_hash
           - *id
+
       - name: GovernorBravoDelegate_evt_ProposalQueued
         loaded_at_field: evt_block_time
         columns:
@@ -233,3 +242,6 @@ sources:
           - *evt_index
           - *evt_tx_hash
           - *id
+
+      - name: Pair_evt_Flash
+        loaded_at_field: evt_block_time
