@@ -1,5 +1,4 @@
 {{ config(
-    tags=['prod_exclude'],
     alias ='trades',
     partition_by = ['block_date'],
     materialized = 'incremental',
