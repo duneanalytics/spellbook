@@ -302,3 +302,34 @@ models:
         description: 'Scaled balance of the token in the pool'
       - name: usd_amount
         description: 'Liquidity of the token in the pool in USD'
+
+  - name: balancer_v2_arbitrum_flashloans
+    meta:
+      blockchain: arbitrum
+      sector: lending
+      contributors: hildobby
+    config:
+      tags: ['arbitrum', 'flashloans']
+    description: >
+      All Balancer v2 flashloans on Arbitrum
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - tx_hash
+            - evt_index
+    columns:
+      - name: blockchain
+      - name: project
+      - name: version
+      - name: block_time
+      - name: block_number
+      - name: amount
+      - name: amount_usd
+      - name: tx_hash
+      - name: evt_index
+      - name: fee
+      - name: currency_contract
+      - name: currency_symbol
+      - name: recipient
+      - name: contract_address

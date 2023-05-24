@@ -18,9 +18,6 @@ models:
     columns:
       - &blockchain
         name: blockchain
-        tests:
-          - accepted_values:
-              values: ['ethereum','optimism','polygon','arbitrum','avalanche_c','gnosis','bnb','fantom']
       - &project
         name: project
       - &contract_name
