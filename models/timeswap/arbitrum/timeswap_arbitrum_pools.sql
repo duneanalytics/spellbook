@@ -3,23 +3,24 @@
     post_hook='{{ expose_spells(\'["ethereum"]\',
                                 "project",
                                 "timeswap",
-                                \'["raveena15, varunhawk19"]\') }}'
+                                \'["raveena15, varunhawk19"]\') }}',
+     unique_key = ['pool_pair', 'maturity', 'strike']
     )
 }}
 
 SELECT
     token0_symbol,
     token1_symbol,
-    token0_address,
-    token1_address,
+    lower(token0_address) as token0_address,
+    lower(token1_address) as token1_address,
     token0_decimals,
     token1_decimals,
     strike,
     maturity,
     pool_pair,
     chain,
-    borrow_contract_address,
-    lend_contract_address
+    lower(borrow_contract_address) as borrow_contract_address,
+    lower(lend_contract_address) as lend_contract_address
 FROM
     (
         VALUES
@@ -204,6 +205,20 @@ FROM
                 'Arbitrum',
                 '0x275695f56e609cAD02C9898351386B4B0c1CFB3e',
                 '0x8C76Cbb88f5974A457a2258AA91B4d494735E021'
+            ),
+            (
+                'wstETH',
+                'USDC',
+                '0x5979D7b546E38E414F7E9822514be443A4800529',
+                '0xff970a61a04b1ca14834a43f5de4533ebddb5cc8',
+                18,
+                6,
+                '527437668727454618368230641519',
+                '1686398400',
+                'wstETH-USDC',
+                'Arbitrum',
+                '0xEbaDA7aA52C68Bdb6a2744F40AA2f3da76D469dc',
+                '0xE1cd819b5a2C8FC65D3D77BFE0D0A0FF5Bb54326'
             )
     ) AS temp_table (
         token0_symbol,

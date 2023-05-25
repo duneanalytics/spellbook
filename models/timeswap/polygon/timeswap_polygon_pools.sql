@@ -3,23 +3,24 @@
     post_hook='{{ expose_spells(\'["polygon"]\',
                                 "project",
                                 "timeswap",
-                                \'["raveena15, varunhawk19"]\') }}'
+                                \'["raveena15, varunhawk19"]\') }}',
+    unique_key = ['pool_pair', 'maturity', 'strike']
     )
 }}
 
 SELECT
     token0_symbol,
     token1_symbol,
-    token0_address,
-    token1_address,
+    lower(token0_address) as token0_address,
+    lower(token1_address) as token1_address,
     token0_decimals,
     token1_decimals,
     strike,
     maturity,
     pool_pair,
     chain,
-    borrow_contract_address,
-    lend_contract_address
+    lower(borrow_contract_address) as borrow_contract_address,
+    lower(lend_contract_address) as lend_contract_address
 FROM
     (
         VALUES
@@ -92,7 +93,21 @@ FROM
                 'Polygon',
                 '0xb9385AfC6Ddf565C0256116Aa3415EfdFca1E872',
                 '0x880D3fc39683Ecbfd7636cc48D5FCc34508ca7c3'
-            )  
+            ),
+            (
+                'USDC',
+                'dQUICK',
+                '0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174',
+                '0x958d208Cdf087843e9AD98d23823d32E17d723A1',
+                6,
+                18,
+                '3402823669209384634633746074317682114560000000000000',
+                '1687521600',
+                'USDC-dQUICK',
+                'Polygon',
+                '0xb9385AfC6Ddf565C0256116Aa3415EfdFca1E872',
+                '0x880D3fc39683Ecbfd7636cc48D5FCc34508ca7c3'
+            )
     ) AS temp_table (
         token0_symbol,
         token1_symbol,

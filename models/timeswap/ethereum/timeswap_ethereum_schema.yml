@@ -13,8 +13,10 @@ models:
         Timeswap pools on Ethereum
     tests:
       - dbt_utils.unique_combination_of_columns:
-          column_names:
-            - transaction_hash
+          combination_of_columns:
+            - pool_pair
+            - maturity
+            - strike
     columns:
       - &token0_symbol
         name: token0_symbol
@@ -57,8 +59,11 @@ models:
       tags: ['ethereum','timeswap','lend', 'view']
     tests:
       - dbt_utils.unique_combination_of_columns:
-          column_names:
+          combination_of_columns:
             - transaction_hash
+            - pool_pair
+            - maturity
+            - strike    
     columns:
       - &transaction_hash
         name: transaction_hash
@@ -89,8 +94,11 @@ models:
       tags: ['ethereum','timeswap','borrow', 'view']
     tests:
       - dbt_utils.unique_combination_of_columns:
-          column_names:
+          combination_of_columns:
             - transaction_hash
+            - pool_pair
+            - maturity
+            - strike
     columns:  
       - *transaction_hash
       - *time

@@ -3,23 +3,24 @@
     post_hook='{{ expose_spells(\'["ethereum"]\',
                                 "project",
                                 "timeswap",
-                                \'["raveena15, varunhawk19"]\') }}'
+                                \'["raveena15, varunhawk19"]\') }}',
+    unique_key = ['pool_pair', 'maturity', 'strike']
     )
 }}
 
 SELECT
     token0_symbol,
     token1_symbol,
-    token0_address,
-    token1_address,
+    lower(token0_address) as token0_address,
+    lower(token1_address) as token1_address,
     token0_decimals,
     token1_decimals,
     strike,
     maturity,
     pool_pair,
     chain,
-    borrow_contract_address,
-    lend_contract_address
+    lower(borrow_contract_address) as borrow_contract_address,
+    lower(lend_contract_address) as lend_contract_address
 FROM
     (
         VALUES
