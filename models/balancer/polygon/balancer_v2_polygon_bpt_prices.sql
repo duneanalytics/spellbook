@@ -2,6 +2,8 @@
     config(
         schema = 'balancer_v2_polygon',
         alias='bpt_prices',
+        materialized = 'table',
+        file_format = 'delta',
         post_hook='{{ expose_spells_hide_trino(\'["polygon"]\',
                                     "project",
                                     "balancer_v2",
