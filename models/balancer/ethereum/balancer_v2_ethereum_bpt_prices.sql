@@ -5,7 +5,7 @@
         post_hook='{{ expose_spells_hide_trino(\'["ethereum"]\',
                                     "project",
                                     "balancer_v2",
-                                    \'["victorstefenon"]\') }}'
+                                    \'["victorstefenon", "thetroyharris"]\') }}'
     )
 }}
 
