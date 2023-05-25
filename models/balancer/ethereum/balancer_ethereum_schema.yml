@@ -88,7 +88,7 @@ models:
     meta:
       blockchain: ethereum
       project: balancer_v2
-      contributors: victorstefenon
+      contributors: victorstefenon, thetroyharris
     config:
       tags: ['ethereum', 'bpt', 'prices']
     description: >
@@ -96,9 +96,13 @@ models:
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
+            - blockchain
             - hour
             - contract_address
     columns:
+      - &blockchain
+        name: blockchain
+        description: "Blockchain"
       - &hour
         name: hour
         description: 'UTC event block time truncated to the hour mark'
