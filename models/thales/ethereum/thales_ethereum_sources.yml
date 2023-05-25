@@ -1,9 +1,0 @@
-version: 2
-
-sources: 
-  - name: thales_ethereum
-    description: >
-      Thales ethereum contracts
-    tables:
-      - name: Airdrop_evt_Claim
-        loaded_at_field: evt_block_time
