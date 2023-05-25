@@ -16,4 +16,8 @@ sources:
       - name: steth_evt_Transfer
       - name: LDO_evt_Transfer
       - name: AccountingOracle_evt_ProcessingStarted
+      - name: steth_evt_Submitted
+      - name: steth_evt_ELRewardsReceived
+      - name: steth_evt_WithdrawalsReceived
+      - name: WithdrawalQueueERC721_evt_WithdrawalsFinalized
       
