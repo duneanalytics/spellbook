@@ -1,10 +1,10 @@
 {{
     config(
         schema = 'balancer_v2_arbitrum',
-        alias='bpt_prices',
-        materialized = 'table',
+        alias = 'bpt_prices',
+        materialized = 'view',
         file_format = 'delta',
-        post_hook='{{ expose_spells_hide_trino(\'["arbitrum"]\',
+        post_hook = '{{ expose_spells_hide_trino(\'["arbitrum"]\',
                                     "project",
                                     "balancer_v2",
                                     \'["victorstefenon", "thetroyharris"]\') }}'
