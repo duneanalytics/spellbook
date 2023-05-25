@@ -284,7 +284,8 @@ sources:
           - *evt_index
           - *evt_block_time
           - *evt_block_number
-          - *approved
+          - name: approved
+            description: "Approved"
           - name: owner
             description: "Owner"
           - name: spender
