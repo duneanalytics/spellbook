@@ -223,7 +223,7 @@ SELECT
     AS op_to_utility_contract,
 
     -- Tokens coming from unkown wallets back to the project
-    CASE WHEN from_label LIKE '%Other%' and (to_label LIKE '%Project%' OR to_label LIKE '%OP Foundation%') ) THEN op_amount_decimal
+    CASE WHEN from_label LIKE '%Other%' and (to_label LIKE '%Project%' OR to_label LIKE '%OP Foundation%') THEN op_amount_decimal
         ELSE 0 END
     AS op_incoming_other,
 
