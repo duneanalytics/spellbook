@@ -8,8 +8,7 @@
         'dune.data_explorer.category'='abstraction',
         'dune.data_explorer.abstraction.type'= '{{ spell_type }}', -- 'project' or 'sector'
         'dune.data_explorer.abstraction.name'= '{{ spell_name }}', -- 'aave' or 'uniswap'
-        'dune.data_explorer.contributors'= '{{ contributors }}',   -- e.g., ["soispoke","jeff_dude"]
-        'dune.vacuum' = '{"enabled":true}'
+        'dune.data_explorer.contributors'= '{{ contributors }}'   -- e.g., ["soispoke","jeff_dude"]
         )
 {%- else -%}
 {%- endif -%}
