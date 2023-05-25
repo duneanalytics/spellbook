@@ -136,6 +136,27 @@ sources:
             description: "Log index"
           - *tx_index
 
+      - name: logs_decoded
+        loaded_at_field: block_time
+        description: "A Fantom log can be used to describe an event within a smart contract, like a token transfer or a change of ownership. Those logs are decoded based on submitted smart contracts to make them human readable."
+        columns:
+          - *block_date
+          - *block_time
+          - *block_number
+          - name: index
+            description: "Log index"
+          - name: contract_address
+            description: "Address of the Fantom smart contract generating the log"
+          - name: contract_name
+            description: "Name of the Fantom smart contract generating the log"
+          - name: event_name
+            description: "Name of the Fantom smart contract event generating the log"
+          - name: namespace
+            description: "Namespace of the Fantom smart contract generating the log"
+          - name: signature
+            description: "Signature of the event"
+          - *tx_hash
+
       - name: blocks
         freshness:
           warn_after: { count: 1, period: day }
