@@ -1,0 +1,9 @@
+version: 2
+
+sources: 
+  - name: op_optimism
+    description: >
+      $OP airdrop claims
+    tables:
+      - name: MerkleDistributor_evt_Claimed
+        loaded_at_field: evt_block_time
