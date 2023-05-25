@@ -16,7 +16,10 @@ WITH
         OR CAST(tokenOut AS VARCHAR(66)) = SUBSTRING(CAST(poolId AS VARCHAR(66)), 1, 42)
     ), 
     
-    all_trades_given_bpt_tx AS (SELECT * FROM {{ source('balancer_v2_ethereum', 'Vault_evt_Swap') }} WHERE evt_tx_hash in (TABLE bpt_trades)), 
+    all_trades_given_bpt_tx AS (
+        SELECT * FROM {{ source('balancer_v2_ethereum', 'Vault_evt_Swap') }} 
+        WHERE evt_tx_hash in (TABLE bpt_trades)
+    ), 
     
     all_trades_info AS (
         SELECT 
@@ -36,8 +39,10 @@ WITH
             COALESCE(p2.symbol, t2.symbol) AS token_out_sym,
             COALESCE(p2.decimals, t2.decimals) AS token_out_decimals
         FROM all_trades_given_bpt_tx a
-        LEFT JOIN {{ source ('prices', 'usd') }} p1 ON p1.contract_address = a.tokenIn AND p1.blockchain = 'ethereum' AND  p1.minute = date_trunc('minute', a.evt_block_time)
-        LEFT JOIN {{ source ('prices', 'usd') }} p2 ON p2.contract_address = a.tokenOut AND p2.blockchain = 'ethereum' AND  p2.minute = date_trunc('minute', a.evt_block_time)
+        LEFT JOIN {{ source ('prices', 'usd') }} p1 ON p1.contract_address = a.tokenIn AND p1.blockchain = 'ethereum' 
+            AND  p1.minute = date_trunc('minute', a.evt_block_time)
+        LEFT JOIN {{ source ('prices', 'usd') }} p2 ON p2.contract_address = a.tokenOut AND p2.blockchain = 'ethereum'
+            AND  p2.minute = date_trunc('minute', a.evt_block_time)
         LEFT JOIN {{ ref ('tokens_erc20') }} t1 ON t1.contract_address = a.tokenIn AND t1.blockchain = 'ethereum'
         LEFT JOIN {{ ref ('tokens_erc20') }} t2 ON t2.contract_address = a.tokenOut AND t2.blockchain = 'ethereum'
         ORDER BY a.evt_block_number DESC, a.evt_index DESC
@@ -51,11 +56,17 @@ WITH
             (amount_out / POWER(10, COALESCE(token_out_decimals, 18))) / (amount_in / POWER(10, COALESCE(token_in_decimals, 18))) AS out_in_norm_rate,
             CASE
                 WHEN token_in_p IS NULL AND token_out_p IS NULL THEN NULL
-                ELSE COALESCE(token_in_p, (amount_out / POWER(10, COALESCE(token_out_decimals, 18))) / (amount_in / POWER(10, COALESCE(token_in_decimals, 18))) * token_out_p)
+                ELSE COALESCE(
+                        token_in_p,
+                        (amount_out / POWER(10, COALESCE(token_out_decimals, 18))) / (amount_in / POWER(10, COALESCE(token_in_decimals, 18))) * token_out_p
+                    )
             END AS token_in_price,
             CASE
                 WHEN token_in_p IS NULL AND token_out_p IS NULL THEN NULL
-                ELSE COALESCE(token_out_p, (amount_in / POWER(10, COALESCE(token_in_decimals, 18))) / (amount_out / POWER(10, COALESCE(token_out_decimals, 18))) * token_in_p) 
+                ELSE COALESCE(
+                        token_out_p,
+                        (amount_in / POWER(10, COALESCE(token_in_decimals, 18))) / (amount_out / POWER(10, COALESCE(token_out_decimals, 18))) * token_in_p
+                    ) 
             END AS token_out_price
         FROM all_trades_info
     ), 
