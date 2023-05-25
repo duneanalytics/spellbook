@@ -144,60 +144,6 @@ models:
     description: >
         Aavegotchi events on Polygon
 
-  - name: archipelago_ethereum_events
-    meta:
-      blockchain: ethereum
-      project: archipelago
-      contributors: 0xRob
-    config:
-      tags: [ 'ethereum','archipelago','v1','events' ]
-    description: >
-      Archipelago v1 events on ethereum
-
-  - name: blur_ethereum_events
-    meta:
-      blockchain: ethereum
-      project: blur
-      contributors: [ hildobby ]
-    config:
-      tags: [ 'ethereum','blur','v1','events' ]
-    description: >
-      Blur v1 events on Ethereum
-
-  - name: collectionswap_ethereum_events
-    meta:
-      blockchain: ethereum
-      project: collectionswap
-      contributors: 0xRob
-    config:
-      tags: [ 'ethereum','collectionswap','v1','events' ]
-    description: >
-      collectionswap v1 events on ethereum
-    tests:
-      - check_seed:
-          seed_file: ref('collectionswap_ethereum_trades_samples')
-          match_columns:
-            - block_number
-            - tx_hash
-          check_columns:
-            - buyer
-            - seller
-            - nft_contract_address
-            - token_id
-            - amount_raw
-            - platform_fee_amount_raw
-            - royalty_fee_amount_raw
-
-  - name: cryptopunks_ethereum_events
-    meta:
-      blockchain: ethereum
-      project: cryptopunks
-      contributors: [ masquot, hildobby, cat ]
-    config:
-      tags: [ 'ethereum', 'cryptopunks', 'events' ]
-    description: >
-      CryptoPunks events on Ethereum
-
   - name: element_avalanche_c_events
     meta:
       blockchain: avalanche_c
@@ -217,16 +163,6 @@ models:
       tags: [ 'bnb','element','events' ]
     description: >
       Element events on BNB
-
-  - name: element_ethereum_events
-    meta:
-      blockchain: ethereum
-      project: element
-      contributors: hildobby
-    config:
-      tags: [ 'ethereum','element','events' ]
-    description: >
-      Element events on Ethereum
 
   - name: nftearth_optimism_events
     meta:
