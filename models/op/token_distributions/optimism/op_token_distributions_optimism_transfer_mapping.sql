@@ -212,18 +212,18 @@ SELECT
     
     -- Tokens going from being deployed back to the project
     CASE
-        WHEN from_label NOT LIKE '%Project%' and to_label LIKE'%Project%' AND from_name = to_name THEN op_amount_decimal --Projects Clawback
+        WHEN from_label NOT LIKE '%Project%' and to_label LIKE '%Project%' AND from_name = to_name THEN op_amount_decimal --Projects Clawback
         WHEN from_type = 'OP Foundation Airdrops' AND to_label = '{{foundation_label}}' THEN op_amount_decimal --Airdrop Clawback
         ELSE 0 END
     AS op_incoming_clawback, --Project's deployer back to the OG project wallet
 
     -- Tokens going to an intermediate utility contract to be deployed
-    CASE WHEN from_label LIKE '%Project%' and to_label LIKE '%Utility%' THEN op_amount_decimal
+    CASE WHEN from_label LIKE '%Project%' and to_label = 'Utility' THEN op_amount_decimal
         ELSE 0 END
     AS op_to_utility_contract,
 
     -- Tokens coming from unkown wallets back to the project
-    CASE WHEN from_label LIKE '%Other%' and (to_label LIKE '%Project%' OR to_label LIKE '%OP Foundation%') THEN op_amount_decimal
+    CASE WHEN from_label LIKE '%Other%' and (to_label LIKE '%Project%' OR to_label = 'OP Foundation') THEN op_amount_decimal
         ELSE 0 END
     AS op_incoming_other,
 
