@@ -36,7 +36,7 @@ select lower('0x8D6CeBD76f18E1558D4DB88138e2DeFB3909fAD6'),  lower('0xdfa46478f9
 ))
 
 , tokens as (
-select distinct token as address, pt.symbol, pt.decimals, tm.address_l1
+select distinct lower(token) as address, pt.symbol, pt.decimals, tm.address_l1
 from (
 select token1 as token
 from {{ source('kyber_optimism', 'Elastic_Factory_evt_PoolCreated') }}
