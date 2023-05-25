@@ -296,3 +296,21 @@ models:
       - name: day,
         description: "Timestamp of the accounting entry truncated to the day mark"              
 
+  - name: lido_accounting_ethereum_withdrawals
+    meta:
+      blockchain: ethereum
+      sector: liquid_staking
+      project: lido
+      contributors: [ gregshestakovlido, ppclunghe, xadcv ]
+    config:
+      tags: [ 'ethereum', 'lido', 'staking', 'accounting' ]
+    description: "ETH principal withdrawals"
+    columns:
+      - name: period
+        description: "Timestamp of the accounting entry"
+      - name: amount
+        description: "Token amount"
+      - name: hash,
+        description: "Block hash"
+      - name: day,
+        description: "Timestamp of the accounting entry truncated to the day mark"              

@@ -1,6 +1,6 @@
 {{ config(
         alias ='withdrawals',
-        partition_by = ['period'],
+        partition_by = ['day'],
         materialized = 'table',
         file_format = 'delta',
         post_hook='{{ expose_spells(\'["ethereum"]\',
@@ -21,6 +21,6 @@ where address = lower('0xB9D7934878B5FB9610B3fE8A5e441e8fad7E293f')
 group by 1,2
 )
 
-select time as period, block_hash as hash,  withdrawn_principal*POWER(10,18) as amount
+select time as period, block_hash as hash,  withdrawn_principal*POWER(10,18) as amount , date_trunc('day', time) as day
 from withdrawals
 where  withdrawn_principal != 0
