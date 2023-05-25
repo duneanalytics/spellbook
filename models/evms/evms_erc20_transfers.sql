@@ -8,18 +8,18 @@
         )
 }}
 
-SELECT 'ethereum' AS blockchain, * FROM {{source('erc20_ethereum', 'evt_Transfer')}}
+SELECT 'ethereum' AS blockchain, * FROM {{source('erc20_ethereum', 'evt_transfer')}}
 UNION ALL
-SELECT 'polygon' AS blockchain, * FROM {{ source('erc20_polygon', 'evt_Transfer') }}
+SELECT 'polygon' AS blockchain, * FROM {{ source('erc20_polygon', 'evt_transfer') }}
 UNION ALL
-SELECT 'bnb' AS blockchain, * FROM {{ source('erc20_bnb', 'evt_Transfer') }}
+SELECT 'bnb' AS blockchain, * FROM {{ source('erc20_bnb', 'evt_transfer') }}
 UNION ALL
-SELECT 'avalanche_c' AS blockchain, * FROM {{ source('erc20_avalanche_c', 'evt_Transfer') }}
+SELECT 'avalanche_c' AS blockchain, * FROM {{ source('erc20_avalanche_c', 'evt_transfer') }}
 UNION ALL
-SELECT 'gnosis' AS blockchain, * FROM {{ source('erc20_gnosis', 'evt_Transfer') }}
+SELECT 'gnosis' AS blockchain, * FROM {{ source('erc20_gnosis', 'evt_transfer') }}
 UNION ALL
-SELECT 'fantom' AS blockchain, * FROM {{ source('erc20_fantom', 'evt_Transfer') }}
+SELECT 'fantom' AS blockchain, * FROM {{ source('erc20_fantom', 'evt_transfer') }}
 UNION ALL
-SELECT 'optimism' AS blockchain, * FROM {{ source('erc20_optimism', 'evt_Transfer') }}
+SELECT 'optimism' AS blockchain, * FROM {{ source('erc20_optimism', 'evt_transfer') }}
 UNION ALL
-SELECT 'arbitrum' AS blockchain, * FROM {{ source('erc20_arbitrum', 'evt_Transfer') }}
+SELECT 'arbitrum' AS blockchain, * FROM {{ source('erc20_arbitrum', 'evt_transfer') }}
