@@ -1,9 +1,0 @@
-version: 2
-
-sources: 
-  - name: looksrare_ethereum
-    freshness:
-      warn_after: { count: 12, period: hour }
-    tables:
-      - name: LooksRareAirdrop_evt_AirdropRewardsClaim
-        loaded_at_field: call_block_time
