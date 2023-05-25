@@ -11,6 +11,10 @@ models:
       tags: ['arbitrum','timeswap','pools', 'view']
     description: >
         Timeswap pools on arbitrum
+    tests:
+        - dbt_utils.unique_combination_of_columns:
+            column_names:
+              - transaction_hash
     columns:
       - &token0_symbol
         name: token0_symbol
@@ -51,6 +55,10 @@ models:
         Timeswap lend transactions on arbitrum
     config:
       tags: ['arbitrum','timeswap','lend', 'view']
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          column_names:
+            - transaction_hash
     columns:
       - &transaction_hash
         name: transaction_hash
@@ -79,6 +87,10 @@ models:
       Timeswap borrow transactions on arbitrum
     config:
       tags: ['arbitrum','timeswap','borrow', 'view']
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          column_names:
+            - transaction_hash
     columns:  
       - *transaction_hash
       - *time
