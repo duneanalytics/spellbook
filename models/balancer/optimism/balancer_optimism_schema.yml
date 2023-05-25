@@ -69,9 +69,7 @@ models:
             - hour
             - contract_address
     columns:
-      - &blockchain
-        name: blockchain
-        description: "Blockchain"
+      - *blockchain
       - &hour
         name: hour
         description: 'UTC event block time truncated to the hour mark'
