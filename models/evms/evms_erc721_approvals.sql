@@ -8,18 +8,18 @@
         )
 }}
 
-SELECT 'ethereum' AS blockchain, * FROM {{source('erc721_ethereum', 'evt_Approval')}}
+SELECT 'ethereum' AS blockchain, * FROM {{source('erc721_ethereum', 'evt_approval')}}
 UNION ALL
-SELECT 'polygon' AS blockchain, * FROM {{ source('erc721_polygon', 'evt_Approval') }}
+SELECT 'polygon' AS blockchain, * FROM {{ source('erc721_polygon', 'evt_approval') }}
 UNION ALL
-SELECT 'bnb' AS blockchain, * FROM {{ source('erc721_bnb', 'evt_Approval') }}
+SELECT 'bnb' AS blockchain, * FROM {{ source('erc721_bnb', 'evt_approval') }}
 UNION ALL
-SELECT 'avalanche_c' AS blockchain, * FROM {{ source('erc721_avalanche_c', 'evt_Approval') }}
+SELECT 'avalanche_c' AS blockchain, * FROM {{ source('erc721_avalanche_c', 'evt_approval') }}
 UNION ALL
-SELECT 'gnosis' AS blockchain, * FROM {{ source('erc721_gnosis', 'evt_Approval') }}
+SELECT 'gnosis' AS blockchain, * FROM {{ source('erc721_gnosis', 'evt_approval') }}
 UNION ALL
-SELECT 'fantom' AS blockchain, * FROM {{ source('erc721_fantom', 'evt_Approval') }}
+SELECT 'fantom' AS blockchain, * FROM {{ source('erc721_fantom', 'evt_approval') }}
 UNION ALL
-SELECT 'optimism' AS blockchain, * FROM {{ source('erc721_optimism', 'evt_Approval') }}
+SELECT 'optimism' AS blockchain, * FROM {{ source('erc721_optimism', 'evt_approval') }}
 UNION ALL
-SELECT 'arbitrum' AS blockchain, * FROM {{ source('erc721_arbitrum', 'evt_Approval') }}
+SELECT 'arbitrum' AS blockchain, * FROM {{ source('erc721_arbitrum', 'evt_approval') }}
