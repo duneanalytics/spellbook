@@ -274,6 +274,24 @@ sources:
           - name: value
             description: "Amount of ERC20 token transferred"
 
+      - name: evt_approval
+        loaded_at_field: evt_block_time
+        description: "Approval events for ERC20 tokens on Fantom."
+        columns:
+          - name: contract_address
+            description: "ERC20 token contract address"
+          - *evt_tx_hash
+          - *evt_index
+          - *evt_block_time
+          - *evt_block_number
+          - *approved
+          - name: owner
+            description: "Owner"
+          - name: spender
+            description: "Spender"
+          - name: value
+            description: "Amount of ERC20 token transferred"
+
   - name: erc1155_fantom
     description: "Transfers events for ERC1155 tokens on Fantom."
     tables:

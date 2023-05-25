@@ -20,6 +20,6 @@ SELECT 'gnosis' AS blockchain, * FROM {{ source('erc20_gnosis', 'evt_approval') 
 UNION ALL
 SELECT 'fantom' AS blockchain, * FROM {{ source('erc20_fantom', 'evt_approval') }}
 UNION ALL
-SELECT 'optimism' AS blockchain, * FROM {{ source('erc20_optimism', 'evt_approval') }}
+SELECT 'optimism' AS blockchain, * FROM {{ source('erc20_optimism', 'evt_Approval') }}
 UNION ALL
 SELECT 'arbitrum' AS blockchain, * FROM {{ source('erc20_arbitrum', 'evt_approval') }}
