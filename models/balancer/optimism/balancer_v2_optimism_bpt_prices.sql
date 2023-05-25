@@ -2,6 +2,8 @@
     config(
         schema = 'balancer_v2_optimism',
         alias='bpt_prices',
+        materialized = 'table',
+        file_format = 'delta',
         post_hook='{{ expose_spells_hide_trino(\'["optimism"]\',
                                     "project",
                                     "balancer_v2",
