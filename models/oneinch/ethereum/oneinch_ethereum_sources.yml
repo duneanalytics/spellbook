@@ -53,7 +53,9 @@ sources:
         loaded_at_field: call_block_time
       - name: AggregationRouterV5_call_fillOrderRFQToWithPermit
         loaded_at_field: call_block_time
-
+      - name: MerkleDistributor_evt_Claimed
+        loaded_at_field: evt_block_time
+  
   - name: oneinch_v2_ethereum
     description: "decoded events and function calls for 1inch v2 on ethereum"
     freshness:
