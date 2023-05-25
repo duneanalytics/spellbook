@@ -1,6 +1,6 @@
 {{ config(
     alias = 'pools',
-    post_hook='{{ expose_spells(\'["ethereum"]\',
+    post_hook='{{ expose_spells(\'["arbitrum"]\',
                                 "project",
                                 "timeswap",
                                 \'["raveena15, varunhawk19"]\') }}',
