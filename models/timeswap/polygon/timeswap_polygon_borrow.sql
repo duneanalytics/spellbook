@@ -16,6 +16,7 @@ SELECT
     l.call_tx_hash as transaction_hash,
     l.call_block_time as time,
     CAST(get_json_object(l.param, '$.isToken') AS BOOLEAN) AS token_0,
+    'Borrow' as transaction_type,
     get_json_object(l.param, '$.maturity') AS maturity,
     get_json_object(l.param, '$.strike') AS strike,
     i.pool_pair as pool_pair,
@@ -48,6 +49,7 @@ SELECT
     l.call_tx_hash as transaction_hash,
     l.call_block_time as time,
     CAST(get_json_object(l.param, '$.isToken') AS BOOLEAN) AS token_0,
+    'Borrow' as transaction_type,
     get_json_object(l.param, '$.maturity') AS maturity,
     get_json_object(l.param, '$.strike') AS strike,
     i.pool_pair as pool_pair,
@@ -78,12 +80,13 @@ UNION
 
 SELECT
   l.evt_tx_hash as transaction_hash,
-  l.evt_block_time as Time,
-  l.isToken0 as Token_0,
+  l.evt_block_time as time,
+  l.isToken0 as token_0,
+  'Borrow' as transaction_type,
   l.maturity as maturity,
   l.strike as strike, 
-  i.pool_pair as Pool_Pair,
-  i.chain as Chain,
+  i.pool_pair as pool_pair,
+  i.chain as chain,
   CAST(
     CASE
       WHEN CAST(l.isToken0 AS BOOLEAN) = true THEN CAST(l.tokenAmount AS DOUBLE) / power(10,i.token0_decimals)
@@ -108,12 +111,13 @@ UNION
  
 SELECT
   l.evt_tx_hash as transaction_hash,
-  l.evt_block_time as Time,
-  l.isToken0 as Token_0,
+  l.evt_block_time as time,
+  l.isToken0 as token_0,
+  'Borrow' as transaction_type,
   l.maturity as maturity,
   l.strike as strike,
-  i.pool_pair as Pool_Pair,
-  i.chain as Chain,
+  i.pool_pair as pool_pair,
+  i.chain as chain,
   CAST(
     CASE
       WHEN CAST(l.isToken0 AS BOOLEAN) = true THEN CAST(l.tokenAmount AS DOUBLE) / power(10,i.token0_decimals)
@@ -139,12 +143,13 @@ UNION
 
 SELECT
   l.evt_tx_hash as transaction_hash,
-  l.evt_block_time as Time,
-  l.isToken0 as Token_0,
+  l.evt_block_time as time,
+  l.isToken0 as token_0,
+  'Borrow' as transaction_type,
   l.maturity as maturity,
   l.strike as strike,
-  i.pool_pair as Pool_Pair,
-  i.chain as Chain,
+  i.pool_pair as pool_pair,
+  i.chain as chain,
   CAST(
     CASE
       WHEN CAST(l.isToken0 AS BOOLEAN) = true THEN CAST(l.tokenAmount AS DOUBLE) / power(10,i.token0_decimals)
@@ -169,12 +174,13 @@ UNION
  
 SELECT
   l.evt_tx_hash as transaction_hash,
-  l.evt_block_time as Time,
-  l.isToken0 as Token_0,
+  l.evt_block_time as time,
+  l.isToken0 as token_0,
+  'Borrow' as transaction_type,
   l.maturity as maturity,
   l.strike as strike,
-  i.pool_pair as Pool_Pair,
-  i.chain as Chain,
+  i.pool_pair as pool_pair,
+  i.chain as chain,
   CAST(
     CASE
       WHEN CAST(l.isToken0 AS BOOLEAN) = true THEN CAST(l.tokenAmount AS DOUBLE) / power(10,i.token0_decimals)

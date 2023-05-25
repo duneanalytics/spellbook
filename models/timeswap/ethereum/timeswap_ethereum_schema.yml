@@ -74,6 +74,9 @@ models:
       - &token_0
         name: token_0
         description: "Value of isToken0"
+      - &transaction_type
+        name: transaction_type
+        description: "Type of transaction"
       - *maturity
       - *strike
       - *pool_pair
@@ -103,6 +106,7 @@ models:
       - *transaction_hash
       - *time
       - *token_0
+      - *transaction_type
       - *maturity
       - *strike
       - *pool_pair
