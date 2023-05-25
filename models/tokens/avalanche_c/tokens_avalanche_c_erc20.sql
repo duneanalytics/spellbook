@@ -214,4 +214,5 @@ FROM (VALUES
         ,('0x1C1CDF8928824dac36d84B3486D598B9799bA6c0','aBASED',18)
         ,('0xAEC8318a9a59bAEb39861d10ff6C7f7bf1F96C57','agEUR',18)
         ,('0x8901cB2e82CC95c01e42206F8d1F417FE53e7Af0','YFX',18)
+        ,('0xDE5ed76E7c05eC5e4572CfC88d1ACEA165109E44','DEUS',18)
     ) AS temp_table (contract_address, symbol, decimals)
