@@ -18,7 +18,7 @@ WITH
     
     all_trades_given_bpt_tx AS (
         SELECT * FROM {{ source('balancer_v2_ethereum', 'Vault_evt_Swap') }} 
-        WHERE evt_tx_hash in (TABLE bpt_trades)
+        WHERE evt_tx_hash IN (TABLE bpt_trades)
     ), 
     
     all_trades_info AS (
