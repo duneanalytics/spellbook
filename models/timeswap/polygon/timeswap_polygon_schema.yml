@@ -53,7 +53,7 @@ models:
       tags: ['polygon','timeswap','lend', 'view']
     columns:
       - &transaction_hash
-        name: Transaction_Hash
+        name: transaction_hash
         description: "Primary key of the transaction"
       - &time
         name: Time

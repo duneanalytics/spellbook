@@ -3,7 +3,7 @@
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
-    unique_key = ['Transaction_Hash'],
+    unique_key = ['transaction_hash'],
     post_hook='{{ expose_spells(\'["polygon"]\',
                                 "project",
                                 "timeswap",
@@ -77,7 +77,7 @@ SELECT
 UNION
 
 SELECT
-  l.evt_tx_hash as Transaction_Hash,
+  l.evt_tx_hash as transaction_hash,
   l.evt_block_time as Time,
   l.isToken0 as Token_0,
   l.maturity as maturity,
@@ -107,7 +107,7 @@ SELECT
 UNION
  
 SELECT
-  l.evt_tx_hash as Transaction_Hash,
+  l.evt_tx_hash as transaction_hash,
   l.evt_block_time as Time,
   l.isToken0 as Token_0,
   l.maturity as maturity,
@@ -138,7 +138,7 @@ SELECT
 UNION
 
 SELECT
-  l.evt_tx_hash as Transaction_Hash,
+  l.evt_tx_hash as transaction_hash,
   l.evt_block_time as Time,
   l.isToken0 as Token_0,
   l.maturity as maturity,
@@ -168,7 +168,7 @@ SELECT
 UNION
  
 SELECT
-  l.evt_tx_hash as Transaction_Hash,
+  l.evt_tx_hash as transaction_hash,
   l.evt_block_time as Time,
   l.isToken0 as Token_0,
   l.maturity as maturity,

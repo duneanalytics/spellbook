@@ -3,7 +3,7 @@
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
-    unique_key = ['Transaction_Hash'],
+    unique_key = ['transaction_hash'],
     post_hook='{{ expose_spells(\'["ethereum"]\',
                                 "project",
                                 "timeswap",
