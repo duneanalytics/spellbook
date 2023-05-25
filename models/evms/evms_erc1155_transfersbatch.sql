@@ -8,18 +8,18 @@
         )
 }}
 
-SELECT 'ethereum' AS blockchain, * FROM {{source('erc1155_ethereum', 'evt_TransferBatch')}}
+SELECT 'ethereum' AS blockchain, * FROM {{source('erc1155_ethereum', 'evt_transferbatch')}}
 UNION ALL
-SELECT 'polygon' AS blockchain, * FROM {{ source('erc1155_polygon', 'evt_TransferBatch') }}
+SELECT 'polygon' AS blockchain, * FROM {{ source('erc1155_polygon', 'evt_transferbatch') }}
 UNION ALL
-SELECT 'bnb' AS blockchain, * FROM {{ source('erc1155_bnb', 'evt_TransferBatch') }}
+SELECT 'bnb' AS blockchain, * FROM {{ source('erc1155_bnb', 'evt_transferbatch') }}
 UNION ALL
-SELECT 'avalanche_c' AS blockchain, * FROM {{ source('erc1155_avalanche_c', 'evt_TransferBatch') }}
+SELECT 'avalanche_c' AS blockchain, * FROM {{ source('erc1155_avalanche_c', 'evt_transferbatch') }}
 UNION ALL
-SELECT 'gnosis' AS blockchain, * FROM {{ source('erc1155_gnosis', 'evt_TransferBatch') }}
+SELECT 'gnosis' AS blockchain, * FROM {{ source('erc1155_gnosis', 'evt_transferbatch') }}
 UNION ALL
-SELECT 'fantom' AS blockchain, * FROM {{ source('erc1155_fantom', 'evt_TransferBatch') }}
+SELECT 'fantom' AS blockchain, * FROM {{ source('erc1155_fantom', 'evt_transferbatch') }}
 UNION ALL
-SELECT 'optimism' AS blockchain, * FROM {{ source('erc1155_optimism', 'evt_TransferBatch') }}
+SELECT 'optimism' AS blockchain, * FROM {{ source('erc1155_optimism', 'evt_transferbatch') }}
 UNION ALL
-SELECT 'arbitrum' AS blockchain, * FROM {{ source('erc1155_arbitrum', 'evt_TransferBatch') }}
+SELECT 'arbitrum' AS blockchain, * FROM {{ source('erc1155_arbitrum', 'evt_transferbatch') }}

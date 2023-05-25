@@ -23,3 +23,4 @@ UNION ALL
 SELECT 'optimism' AS blockchain, * FROM {{ source('erc721_optimism', 'evt_ApprovalForAll') }}
 UNION ALL
 SELECT 'arbitrum' AS blockchain, * FROM {{ source('erc721_arbitrum', 'evt_ApprovalForAll') }}
+
