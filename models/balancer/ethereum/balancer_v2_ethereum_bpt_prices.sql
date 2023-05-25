@@ -130,4 +130,4 @@ FROM (
     FROM backfill_pricing_2 b2 WHERE b2.contract_address = b2.token_out
 )
 GROUP BY 1, 2, 3
-ORDER BY 1 DESC, 2
+ORDER BY 2 DESC, 3
