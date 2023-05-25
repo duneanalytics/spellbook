@@ -353,7 +353,7 @@ sources:
           - &approved
             name: approved
             description: "Is approved"
-          - *owner
+          - &owner
           - name: account
             description: "Account"
           - &operator
