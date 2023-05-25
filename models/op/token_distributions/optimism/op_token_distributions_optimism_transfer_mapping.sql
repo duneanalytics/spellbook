@@ -194,7 +194,7 @@ SELECT
     CASE WHEN to_label LIKE '%Other%' THEN op_amount_decimal ELSE 0 END AS op_claimed,
     
     -- When tokens go to a 'Deployed' address, we assume deployed. Or to an end user from an address we don't already know to be deployed.
-    CASE WHEN  ( to_label LIKE '%Other%' OR to_label LIKE '%Deployed%') ) AND from_label NOT LIKE '%Deployed%' THEN op_amount_decimal
+    CASE WHEN  ( to_label LIKE '%Other%' OR to_label LIKE '%Deployed%') AND from_label NOT LIKE '%Deployed%' THEN op_amount_decimal
          WHEN (from_name != to_name) AND from_label LIKE '%Project%' AND to_label LIKE '%Project%' THEN op_amount_decimal --handle for distirbutions to other projects (i.e. Uniswap to Gamma)
         ELSE 0 END
     AS op_deployed,
