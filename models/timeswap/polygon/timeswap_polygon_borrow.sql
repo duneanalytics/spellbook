@@ -45,7 +45,7 @@ SELECT
 UNION  
 
 SELECT
-    ll.call_tx_hash as transaction_hash,
+    l.call_tx_hash as transaction_hash,
     l.call_block_time as time,
     CAST(get_json_object(l.param, '$.isToken') AS BOOLEAN) AS token_0,
     get_json_object(l.param, '$.maturity') AS maturity,
