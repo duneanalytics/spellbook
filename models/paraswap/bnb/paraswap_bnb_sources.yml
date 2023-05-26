@@ -19,3 +19,7 @@ sources:
         loaded_at_field: evt_block_time
       - name: AugustusSwapperV5_evt_Swapped2
         loaded_at_field: evt_block_time
+      - name: AugustusSwapperV5_evt_BoughtV3
+        loaded_at_field: evt_block_time
+      - name: AugustusSwapperV5_evt_SwappedV3
+        loaded_at_field: evt_block_time
