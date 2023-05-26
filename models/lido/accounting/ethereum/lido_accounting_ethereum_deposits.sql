@@ -17,7 +17,7 @@
         LOWER('0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2') AS token,
         tx_hash,
         date_trunc('day', block_time) as day 
-        FROM  ethereum.traces
+        FROM  {{source('ethereum','traces')}} 
         WHERE to = LOWER('0x00000000219ab540356cbb839cbe05303d7705fa')
         AND call_type = 'call'
         AND success = True 
