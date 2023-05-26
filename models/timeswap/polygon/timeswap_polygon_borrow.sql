@@ -37,7 +37,16 @@ SELECT
     ) as usd_amount
     FROM {{ source('timeswap_polygon', 'TimeswapV2PeripheryUniswapV3BorrowGivenPrincipal_call_borrowGivenPrincipal') }} b
     JOIN {{ ref('timeswap_polygon_pools') }} i ON CAST(maturity as VARCHAR(100)) = i.maturity and cast(strike as VARCHAR(100)) = i.strike
-    JOIN {{ source('prices', 'usd') }} p ON p.minute = date_trunc('minute', b.call_block_time) and p.symbol=i.token0_symbol and p.blockchain = 'polygon' AND CAST(get_json_object(b.param, '$.isToken') AS BOOLEAN) = true AND b.call_success = true
+    JOIN {{ source('prices', 'usd') }} p 
+    ON p.symbol=i.token0_symbol 
+    and p.blockchain = 'polygon' 
+    and b.call_success = true
+    and CAST(get_json_object(b.param, '$.isToken') AS BOOLEAN) = true
+    AND p.minute = date_trunc('minute',b.call_block_time)
+    {% if is_incremental() %}
+    AND p.minute >= date_trunc("day", now() - interval '1 week')
+    WHERE b.call_block_time >= date_trunc("day", now() - interval '1 week')
+    {% endif %}
 
 UNION  
 
@@ -66,7 +75,16 @@ SELECT
     ) as usd_amount
     FROM {{ source('timeswap_polygon', 'TimeswapV2PeripheryUniswapV3BorrowGivenPrincipal_call_borrowGivenPrincipal') }} b
     JOIN {{ ref('timeswap_polygon_pools') }} i ON CAST(maturity as VARCHAR(100)) = i.maturity and cast(strike as VARCHAR(100)) = i.strike
-    JOIN {{ source('prices', 'usd') }} p ON p.minute = date_trunc('minute', b.call_block_time) AND p.symbol=i.token1_symbol AND p.blockchain = 'polygon' AND CAST(get_json_object(b.param, '$.isToken') AS BOOLEAN) = false AND b.call_success = true
+    JOIN {{ source('prices', 'usd') }} p 
+    ON p.symbol=i.token1_symbol 
+    and p.blockchain = 'polygon' 
+    and b.call_success = true
+    and CAST(get_json_object(b.param, '$.isToken') AS BOOLEAN) = false
+    AND p.minute = date_trunc('minute',b.call_block_time)
+    {% if is_incremental() %}
+    AND p.minute >= date_trunc("day", now() - interval '1 week')
+    WHERE b.call_block_time >= date_trunc("day", now() - interval '1 week')
+    {% endif %}
 
 UNION
 
