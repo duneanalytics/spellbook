@@ -40,7 +40,7 @@ jobs:
         run: "dbt compile"
 
       - name: dbt seed
-        run: "dbt seed --select @state:modified --state ."
+        run: "dbt seed --select state:modified --state ."
 
       - name: dbt run initial model(s)
         run: "dbt -x run --select state:modified --exclude tag:prod_exclude --defer --state ."
