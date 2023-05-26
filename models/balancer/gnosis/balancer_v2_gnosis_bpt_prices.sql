@@ -4,7 +4,7 @@
         alias = 'bpt_prices',
         materialized = 'view',
         file_format = 'delta',
-        post_hook = '{{ expose_spells_hide_trino(\'["gnosis"]\',
+        post_hook = '{{ expose_spells(\'["gnosis"]\',
                                     "project",
                                     "balancer_v2",
                                     \'["thetroyharris"]\') }}'
