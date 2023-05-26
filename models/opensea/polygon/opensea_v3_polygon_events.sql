@@ -264,10 +264,10 @@ with source_polygon_transactions as (
                    where call_success 
                      and contract_address = '0x00000000006c3852cbef3e08e8df289169ede581'  -- Seaport v1.1
                  {% if not is_incremental() %}
-                     and evt_block_time >= date '{{c_seaport_first_date}}'  -- seaport first txn
+                     and call_block_time >= date '{{c_seaport_first_date}}'  -- seaport first txn
                  {% endif %}
                  {% if is_incremental() %}
-                     and evt_block_time >= date_trunc("day", now() - interval '1 week')
+                     and call_block_time >= date_trunc("day", now() - interval '1 week')
                  {% endif %}
                 ) 
             union all
@@ -294,10 +294,10 @@ with source_polygon_transactions as (
                    where call_success 
                      and contract_address = '0x00000000006c3852cbef3e08e8df289169ede581'  -- Seaport v1.1
                  {% if not is_incremental() %}
-                     and evt_block_time >= date '{{c_seaport_first_date}}'  -- seaport first txn
+                     and call_block_time >= date '{{c_seaport_first_date}}'  -- seaport first txn
                  {% endif %}
                  {% if is_incremental() %}
-                     and evt_block_time >= date_trunc("day", now() - interval '1 week')
+                     and call_block_time >= date_trunc("day", now() - interval '1 week')
                  {% endif %}
                 ) 
 
