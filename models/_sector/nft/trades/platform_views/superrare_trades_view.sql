@@ -4,8 +4,8 @@
         alias ='trades',
         materialized = 'view',
         post_hook='{{ expose_spells(\'["ethereum"]\',
-                                    "sector",
-                                    "nft",
+                                    "project",
+                                    "superrare",
                                     \'["0xRob"]\') }}')
 }}
 
