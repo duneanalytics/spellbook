@@ -15,8 +15,8 @@ WITH curated_list AS (
     ,cast(contract_project as varchar(250)) AS contract_project
   from 
       (values
-      ('0x932607335869cff6349ef450e74c83a3b871a9ff', 'Lyra')
-      ,('0x41a742d0cb523b0c313518309ade763fb609da25', 'Lyra')
+      ('0x932607335869cff6349ef450e74c83a3b871a9ff', 'Lyra Finance')
+      ,('0x41a742d0cb523b0c313518309ade763fb609da25', 'Lyra Finance')
       ,('0x924ac9910c09a0215b06458653b30471a152022f', 'Hop Protocol')
       ,('0xfefec7d3eb14a004029d278393e6ab8b46fb4fca', 'Hop Protocol')
       ,('0x0e0e3d2c5c292161999474247956ef542cabf8dd', 'Hop Protocol')
@@ -478,7 +478,8 @@ WITH curated_list AS (
       ,('0x0F26f9E5C297d411768D4daa43F12533f59BAEe7', 'Mugen Finance')
       ,('0x76EF4B28df1F590db4cD680675d734c27CAa32BA', 'Rocket Pool')
       ,('0x6b8a8035601Da0c9d31c5fc11fA66Aae485654fc', 'Cozy Finance')
-      ,('0xa2bcad247c64da44739e141b491fe4238a4d0480', 'Lyra')
+      ,('0xa2bcad247c64da44739e141b491fe4238a4d0480', 'Lyra Finance')
+      ,('0x7d5501e0bc56d0e4de909b748f48c768c9fde841', 'fxdx')
 
   ) as temp_table (creator_address, contract_project)
 
