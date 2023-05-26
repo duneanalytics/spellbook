@@ -19,7 +19,7 @@ WITH looksrare_v2_trades AS (
     , l.askUser AS seller
     , l.bidUser AS buyer
     , l.collection AS nft_contract_address
-    , element_at(l.amounts, 1) AS nft_amount
+    , cast(element_at(l.amounts, 1) as DECIMAL(38,0)) AS nft_amount
     , l.currency
     , l.itemIds[0] AS nft_token_id
     , l.contract_address AS project_contract_address
