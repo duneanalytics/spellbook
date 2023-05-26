@@ -57,6 +57,8 @@ Simply write a query like you would for any of our live tables, and use the test
 
 You can find the exact names easily by looking at the logs from the `dbt slim ci` action, under `dbt run initial model(s)`.
 
+Please note: the test tables built in the CI pipeline will exist for ~24 hours. If your table doesn't exist, trigger the pipeline to run again and recreate the test table.
+
 ### Connecting with other wizards
 
 We use Discord to connect with our community. Head over to spellbook channel on Dune's Discord for questions or to ask for help with a particular PR. We encourage you to learn by doing, and leverage our vibrant community to help you get going.
