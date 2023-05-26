@@ -1,0 +1,23 @@
+version: 2
+
+models:
+ - name: layerzero_chain_list
+   meta:
+     blockchain: ethereum, fantom, avalanche_c, arbitrum, gnosis, polygon, bnb, optimism
+     project: layerzero
+     contributors: bennyfeng
+   config:
+     tags: ['layerzero', 'endpoint', 'send', 'cross-chain', 'bennyfeng']
+   description: "LayerZero chain ids and contracts"
+   columns:
+     - &chain_name
+       name: chain_name
+       description: "Layerzero's chain name"
+     - &chain_id
+       name: chain_id
+       description: "Layerzer's chain id"
+       tests:
+         - unique
+     - &endpoint_address
+       name: endpoint_address
+       description: "Layerzer's endpoint contract address"
