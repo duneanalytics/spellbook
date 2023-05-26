@@ -1,15 +1,15 @@
 version: 2
 
 models:
-  - name: lido_liquidity_ethereum_kyberswap_pools
+  - name: lido_liquidity_optimism_kyberswap_pools
     meta:
-      blockchain: ethereum
+      blockchain: optimism
       project: lido
-      contributors: gregshestakovlido, ppclunghe, hosuke
+      contributors: gregshestakovlido, ppclunghe
     config:
-      tags: ['ethereum','lido','liquidity']
+      tags: ['optimism','lido','liquidity']
     description: 
-        Lido wstETH liquidity pools on Kyberswap Ethereum
+        Lido wstETH liquidity pools on Kyberswap Optimism
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
