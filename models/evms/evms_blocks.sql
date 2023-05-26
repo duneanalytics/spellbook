@@ -8,18 +8,136 @@
         )
 }}
 
-SELECT 'ethereum' AS blockchain, * FROM {{source('ethereum', 'blocks')}}
+SELECT 'ethereum' AS blockchain
+, hash
+, miner
+, nonce
+, parent_hash
+, size
+, time
+, total_difficulty
+, number
+, base_fee_per_gas
+, difficulty
+, gas_limit
+, gas_used
+FROM {{source('ethereum', 'blocks')}}
+
 UNION ALL
-SELECT 'polygon' AS blockchain, * FROM {{ source('polygon', 'blocks') }}
+
+SELECT 'polygon' AS blockchain
+, hash
+, miner
+, nonce
+, parent_hash
+, size
+, time
+, total_difficulty
+, number
+, base_fee_per_gas
+, difficulty
+, gas_limit
+, gas_used
+FROM {{ source('polygon', 'blocks') }}
+
 UNION ALL
-SELECT 'bnb' AS blockchain, * FROM {{ source('bnb', 'blocks') }}
+
+SELECT 'bnb' AS blockchain
+, hash
+, miner
+, nonce
+, parent_hash
+, size
+, time
+, total_difficulty
+, number
+, base_fee_per_gas
+, difficulty
+, gas_limit
+, gas_used
+FROM {{ source('bnb', 'blocks') }}
+
 UNION ALL
-SELECT 'avalanche_c' AS blockchain, * FROM {{ source('avalanche_c', 'blocks') }}
+
+SELECT 'avalanche_c' AS blockchain
+, hash
+, miner
+, nonce
+, parent_hash
+, size
+, time
+, total_difficulty
+, number
+, base_fee_per_gas
+, difficulty
+, gas_limit
+, gas_used
+FROM {{ source('avalanche_c', 'blocks') }}
+
 UNION ALL
-SELECT 'gnosis' AS blockchain, * FROM {{ source('gnosis', 'blocks') }}
+
+SELECT 'gnosis' AS blockchain
+, hash
+, miner
+, nonce
+, parent_hash
+, size
+, time
+, CAST(total_difficulty AS DECIMAL(38, 0)) AS total_difficulty
+, number
+, base_fee_per_gas
+, CAST(difficulty AS BIGINT) AS difficulty
+, gas_limit
+, gas_used
+FROM {{ source('gnosis', 'blocks') }}
+
 UNION ALL
-SELECT 'fantom' AS blockchain, * FROM {{ source('fantom', 'blocks') }}
+
+SELECT 'fantom' AS blockchain
+, hash
+, miner
+, nonce
+, parent_hash
+, size
+, time
+, total_difficulty
+, number
+, base_fee_per_gas
+, difficulty
+, gas_limit
+, gas_used
+FROM {{ source('fantom', 'blocks') }}
+
 UNION ALL
-SELECT 'optimism' AS blockchain, * FROM {{ source('optimism', 'blocks') }}
+
+SELECT 'optimism' AS blockchain
+, hash
+, miner
+, nonce
+, parent_hash
+, size
+, time
+, total_difficulty
+, number
+, base_fee_per_gas
+, difficulty
+, gas_limit
+, gas_used
+FROM {{ source('optimism', 'blocks') }}
+
 UNION ALL
-SELECT 'arbitrum' AS blockchain, * FROM {{ source('arbitrum', 'blocks') }}
+
+SELECT 'arbitrum' AS blockchain
+, hash
+, miner
+, nonce
+, parent_hash
+, size
+, time
+, total_difficulty
+, number
+, base_fee_per_gas
+, difficulty
+, gas_limit
+, gas_used
+FROM {{ source('arbitrum', 'blocks') }}
