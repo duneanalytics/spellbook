@@ -36,3 +36,4 @@ FROM
     INNER JOIN {{ source('balancer_ethereum', 'CappedArbitrumRootGaugeFactory_call_create') }} call ON call.call_tx_hash = gauge.evt_tx_hash
     LEFT JOIN {{ source('balancer_arbitrum', 'ChildChainLiquidityGaugeFactory_evt_RewardsOnlyGaugeCreated') }} streamer ON streamer.streamer = call.recipient
     LEFT JOIN {{ ref('labels_balancer_v2_pools_arbitrum') }} pools ON pools.address = streamer.pool;
+    
