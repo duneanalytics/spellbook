@@ -61,6 +61,21 @@ models:
         description: "Transaction type"
       - name: access_list
         description: "Specifies a list of addresses and storage keys"
+      - name: l1_tx_origin
+        description: "L1 transaction origin address. This is not null for L1→L2 transactions: https://optimistic.etherscan.io/txsEnqueued"
+      - name: l1_fee_scalar
+        description: "This value covers the change in L1 gas price between the time the transaction is submitted and when it is published, as well as the income Optimism needs to keep the system running. Currently set at 1.0"
+      - name: l1_block_number
+        description: "Block number on L1"
+      - name: l1_fee
+        description: "L1 Fees that the Optimism protocol pays to submit L2 transactions to L1 (also referred to as L1 Security Fees or Security Costs)"
+      - name: l1_gas_price
+        description: "Gas price on L1"
+      - name: l1_gas_used
+        description: "The gas used on L1 to publish the transaction"
+      - name: l1_timestamp
+        description: "The timestamp when the transaction is batched and confirmed on L1"
+      - name: effective_gas_price
 
   - name: evms_traces
     meta:
