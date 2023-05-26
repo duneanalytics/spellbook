@@ -16,7 +16,7 @@
 -- opensea.trades has the same columns as seaport.trades
 -- only some specified zone_address are recognized as opensea's
 -- project/version : opensea/v3
--- contract_address : 0x00000000006c3852cbef3e08e8df289169ede581 (Seaport v1.3)
+-- contract_address : 0x00000000006c3852cbef3e08e8df289169ede581 (Seaport v1.1)
 -- materialize : incremental table
 
 {% set c_seaport_first_date = "2022-07-01" %}
@@ -258,13 +258,18 @@ with source_polygon_transactions as (
                   ,execution:item:identifier as token_id
                   ,execution:item:recipient as receiver
                   ,contract_address as platform_contract_address
-            from (select *, posexplode(output_executions) as (execution_idx, execution) 
-                    from seaport_polygon.Seaport_call_matchAdvancedOrders
+            from (select *
+                        ,posexplode(output_executions) as (execution_idx, execution) 
+                    from {{ source('seaport_polygon', 'Seaport_call_matchAdvancedOrders') }}
                    where call_success 
                      and contract_address = '0x00000000006c3852cbef3e08e8df289169ede581'  -- Seaport v1.1
-                     and call_block_time >= date '2023-01-24'  -- DATE
-                     and call_block_time < date '2023-01-25'  -- DATE
-                ) c
+                 {% if not is_incremental() %}
+                     and evt_block_time >= date '{{c_seaport_first_date}}'  -- seaport first txn
+                 {% endif %}
+                 {% if is_incremental() %}
+                     and evt_block_time >= date_trunc("day", now() - interval '1 week')
+                 {% endif %}
+                ) 
             union all
             select call_block_time as block_time
                   ,call_block_number as block_number
@@ -283,13 +288,20 @@ with source_polygon_transactions as (
                   ,execution:item:identifier as token_id
                   ,execution:item:recipient as receiver
                   ,contract_address as platform_contract_address
-            from (select *, posexplode(output_0) as (execution_idx, execution)  -- output_executions
-                    from seaport_polygon.Seaport_call_matchOrders
+            from (select *
+                        ,posexplode(output_0) as (execution_idx, execution)   -- output_executions
+                    from {{ source('seaport_polygon', 'Seaport_call_matchOrders') }}
                    where call_success 
                      and contract_address = '0x00000000006c3852cbef3e08e8df289169ede581'  -- Seaport v1.1
-                     and call_block_time >= date '2023-01-24'  -- DATE
-                     and call_block_time < date '2023-01-25'  -- DATE
+                 {% if not is_incremental() %}
+                     and evt_block_time >= date '{{c_seaport_first_date}}'  -- seaport first txn
+                 {% endif %}
+                 {% if is_incremental() %}
+                     and evt_block_time >= date_trunc("day", now() - interval '1 week')
+                 {% endif %}
                 ) 
+
+
     )
 )
 ,iv_base_pairs as (
