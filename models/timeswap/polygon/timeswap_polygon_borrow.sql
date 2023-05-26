@@ -13,6 +13,7 @@
 
 
 SELECT
+<<<<<<< HEAD
     b.call_tx_hash as transaction_hash,
     b.call_block_time as time,
     CAST(get_json_object(b.param, '$.isToken') AS BOOLEAN) AS token_0,
@@ -38,10 +39,49 @@ SELECT
     FROM {{ source('timeswap_polygon', 'TimeswapV2PeripheryUniswapV3BorrowGivenPrincipal_call_borrowGivenPrincipal') }} b
     JOIN {{ ref('timeswap_polygon_pools') }} i ON CAST(maturity as VARCHAR(100)) = i.maturity and cast(strike as VARCHAR(100)) = i.strike
     JOIN {{ source('prices', 'usd') }} p ON p.minute = date_trunc('minute', b.call_block_time) and p.symbol=i.token0_symbol and p.blockchain = 'polygon' AND CAST(get_json_object(b.param, '$.isToken') AS BOOLEAN) = true AND b.call_success = true
+=======
+  b.call_tx_hash as transaction_hash,
+  b.call_block_time as time,
+  CAST(get_json_object(b.param, '$.isToken') AS BOOLEAN) AS token_0,
+  'borrow' as transaction_type,
+  get_json_object(b.param, '$.maturity') AS maturity,
+  get_json_object(b.param, '$.strike') AS strike,
+  i.pool_pair as pool_pair,
+  i.chain as chain,
+  CAST(
+      CASE 
+          WHEN CAST(get_json_object(b.param, '$.isToken') AS BOOLEAN) = true 
+          THEN CAST(get_json_object(b.param, '$.tokenAmount') AS DOUBLE) / power(10,i.token0_decimals)
+          ELSE CAST(get_json_object(b.param, '$.tokenAmount') AS DOUBLE) / power(10,i.token1_decimals) 
+      END as DOUBLE
+  ) as token_amount,
+  CAST(
+      CASE 
+          WHEN CAST(get_json_object(b.param, '$.isToken') AS BOOLEAN) = true 
+          THEN CAST(get_json_object(b.param, '$.tokenAmount') AS DOUBLE) / power(10,i.token0_decimals) * p.price
+          ELSE CAST(get_json_object(b.param, '$.tokenAmount') AS DOUBLE) / power(10,i.token1_decimals) * p.price
+      END as DOUBLE
+  ) as usd_amount
+FROM {{ source('timeswap_polygon', 'TimeswapV2PeripheryUniswapV3BorrowGivenPrincipal_call_borrowGivenPrincipal') }} b
+JOIN {{ ref('timeswap_polygon_pools') }} i
+  ON CAST(maturity as VARCHAR(100)) = i.maturity 
+  and cast(strike as VARCHAR(100)) = i.strike
+JOIN {{ source('prices', 'usd') }} p
+  ON p.symbol=i.token0_symbol 
+  and p.blockchain = 'polygon' 
+  and CAST(get_json_object(b.param, '$.isToken') AS BOOLEAN) = true 
+  and b.call_success = true
+  AND p.minute = date_trunc('minute',b.call_block_time)
+  {% if is_incremental() %}
+  AND p.minute >= date_trunc("day", now() - interval '1 week')
+WHERE b.evt_block_time >= date_trunc("day", now() - interval '1 week')
+  {% endif %}
+>>>>>>> 2f8ded2f36d7b2a4c1faee5c5406a6865a2ea2c5
 
 UNION  
 
 SELECT
+<<<<<<< HEAD
     b.call_tx_hash as transaction_hash,
     b.call_block_time as time,
     CAST(get_json_object(b.param, '$.isToken') AS BOOLEAN) AS token_0,
@@ -67,6 +107,44 @@ SELECT
     FROM {{ source('timeswap_polygon', 'TimeswapV2PeripheryUniswapV3BorrowGivenPrincipal_call_borrowGivenPrincipal') }} b
     JOIN {{ ref('timeswap_polygon_pools') }} i ON CAST(maturity as VARCHAR(100)) = i.maturity and cast(strike as VARCHAR(100)) = i.strike
     JOIN {{ source('prices', 'usd') }} p ON p.minute = date_trunc('minute', b.call_block_time) AND p.symbol=i.token1_symbol AND p.blockchain = 'polygon' AND CAST(get_json_object(b.param, '$.isToken') AS BOOLEAN) = false AND b.call_success = true
+=======
+  b.call_tx_hash as transaction_hash,
+  b.call_block_time as time,
+  CAST(get_json_object(b.param, '$.isToken') AS BOOLEAN) AS token_0,
+  'borrow' as transaction_type,
+  get_json_object(b.param, '$.maturity') AS maturity,
+  get_json_object(b.param, '$.strike') AS strike,
+  i.pool_pair as pool_pair,
+  i.chain as chain,
+  CAST(
+      CASE 
+          WHEN CAST(get_json_object(b.param, '$.isToken') AS BOOLEAN) = true 
+          THEN CAST(get_json_object(b.param, '$.tokenAmount') AS DOUBLE) / power(10,i.token0_decimals)
+          ELSE CAST(get_json_object(b.param, '$.tokenAmount') AS DOUBLE) / power(10,i.token1_decimals) 
+      END as DOUBLE
+  ) as token_amount,
+  CAST(
+      CASE 
+          WHEN CAST(get_json_object(b.param, '$.isToken') AS BOOLEAN) = true 
+          THEN CAST(get_json_object(b.param, '$.tokenAmount') AS DOUBLE) / power(10,i.token0_decimals) * p.price
+          ELSE CAST(get_json_object(b.param, '$.tokenAmount') AS DOUBLE) / power(10,i.token1_decimals) * p.price
+      END as DOUBLE
+  ) as usd_amount
+FROM {{ source('timeswap_polygon', 'TimeswapV2PeripheryUniswapV3BorrowGivenPrincipal_call_borrowGivenPrincipal') }} b
+JOIN {{ ref('timeswap_polygon_pools') }} i 
+  ON CAST(maturity as VARCHAR(100)) = i.maturity 
+  and cast(strike as VARCHAR(100)) = i.strike
+JOIN {{ source('prices', 'usd') }} p 
+  ON p.symbol=i.token1_symbol 
+  and p.blockchain = 'polygon' 
+  and CAST(get_json_object(b.param, '$.isToken') AS BOOLEAN) = false 
+  and b.call_success = true
+  AND p.minute = date_trunc('minute',b.call_block_time)
+  {% if is_incremental() %}
+  AND p.minute >= date_trunc("day", now() - interval '1 week')
+WHERE b.evt_block_time >= date_trunc("day", now() - interval '1 week')
+  {% endif %}
+>>>>>>> 2f8ded2f36d7b2a4c1faee5c5406a6865a2ea2c5
 
 UNION
 
@@ -91,12 +169,18 @@ SELECT
       ELSE CAST(b.tokenAmount AS DOUBLE) / power(10,i.token1_decimals) * p.price
     END as DOUBLE
   ) as usd_amount
-  FROM {{ source('timeswap_polygon', 'TimeswapV2PeripheryUniswapV3BorrowGivenPrincipal_evt_BorrowGivenPrincipal') }} b
-  JOIN {{ ref('timeswap_polygon_pools') }} i ON CAST(b.maturity as VARCHAR(100)) = i.maturity and cast(b.strike as VARCHAR(100)) = i.strike
-  JOIN {{ source('prices', 'usd') }} p ON p.symbol=i.token0_symbol and p.blockchain = 'polygon' and b.isToken0 = true
+FROM {{ source('timeswap_polygon', 'TimeswapV2PeripheryUniswapV3BorrowGivenPrincipal_evt_BorrowGivenPrincipal') }} b
+JOIN {{ ref('timeswap_polygon_pools') }} i 
+  ON CAST(b.maturity as VARCHAR(100)) = i.maturity 
+  and cast(b.strike as VARCHAR(100)) = i.strike
+JOIN {{ source('prices', 'usd') }} p 
+  ON p.symbol=i.token0_symbol 
+  and p.blockchain = 'polygon' 
+  and b.isToken0 = true
   AND p.minute = date_trunc('minute',b.evt_block_time)
   {% if is_incremental() %}
   AND p.minute >= date_trunc("day", now() - interval '1 week')
+WHERE b.evt_block_time >= date_trunc("day", now() - interval '1 week')
   {% endif %}
 
 UNION
@@ -122,12 +206,18 @@ SELECT
       ELSE CAST(b.tokenAmount AS DOUBLE) / power(10,i.token1_decimals) * p.price
     END as DOUBLE
   ) as usd_Amount
-  FROM {{ source('timeswap_polygon', 'TimeswapV2PeripheryUniswapV3BorrowGivenPrincipal_evt_BorrowGivenPrincipal') }} b
-  JOIN {{ ref('timeswap_polygon_pools') }} i ON CAST(b.maturity as VARCHAR(100)) = i.maturity and cast(b.strike as VARCHAR(100)) = i.strike
-  JOIN {{ source('prices', 'usd') }} p ON p.symbol=i.token1_symbol and p.blockchain = 'polygon' and b.isToken0 = false
+FROM {{ source('timeswap_polygon', 'TimeswapV2PeripheryUniswapV3BorrowGivenPrincipal_evt_BorrowGivenPrincipal') }} b
+JOIN {{ ref('timeswap_polygon_pools') }} i 
+  ON CAST(b.maturity as VARCHAR(100)) = i.maturity 
+  and cast(b.strike as VARCHAR(100)) = i.strike
+JOIN {{ source('prices', 'usd') }} p 
+  ON p.symbol=i.token1_symbol 
+  and p.blockchain = 'polygon' 
+  and b.isToken0 = false
   AND p.minute = date_trunc('minute',b.evt_block_time)
   {% if is_incremental() %}
   AND p.minute >= date_trunc("day", now() - interval '1 week')
+WHERE b.evt_block_time >= date_trunc("day", now() - interval '1 week')
   {% endif %}
 
 
@@ -154,12 +244,18 @@ SELECT
       ELSE CAST(b.tokenAmount AS DOUBLE) / power(10,i.token1_decimals) * p.price
     END as DOUBLE
   ) as usd_amount
-  FROM {{ source('timeswap_polygon', 'TimeswapV2PeripheryNoDexBorrowGivenPrincipal_evt_BorrowGivenPrincipal') }} b
-  JOIN {{ ref('timeswap_polygon_pools') }} i ON CAST(b.maturity as VARCHAR(100)) = i.maturity and cast(b.strike as VARCHAR(100)) = i.strike
-  JOIN {{ source('prices', 'usd') }} p ON p.symbol=i.token0_symbol and p.blockchain = 'polygon' and b.isToken0 = true
+FROM {{ source('timeswap_polygon', 'TimeswapV2PeripheryNoDexBorrowGivenPrincipal_evt_BorrowGivenPrincipal') }} b
+JOIN {{ ref('timeswap_polygon_pools') }} i 
+  ON CAST(b.maturity as VARCHAR(100)) = i.maturity 
+  and cast(b.strike as VARCHAR(100)) = i.strike
+JOIN {{ source('prices', 'usd') }} p 
+  ON p.symbol=i.token0_symbol 
+  and p.blockchain = 'polygon' 
+  and b.isToken0 = true
   AND p.minute = date_trunc('minute',b.evt_block_time)
   {% if is_incremental() %}
   AND p.minute >= date_trunc("day", now() - interval '1 week')
+WHERE b.evt_block_time >= date_trunc("day", now() - interval '1 week')
   {% endif %}
 
 UNION
@@ -185,12 +281,18 @@ SELECT
       ELSE CAST(b.tokenAmount AS DOUBLE) / power(10,i.token1_decimals) * p.price
     END as DOUBLE
   ) as usd_amount
-  FROM {{ source('timeswap_polygon', 'TimeswapV2PeripheryNoDexBorrowGivenPrincipal_evt_BorrowGivenPrincipal') }} b
-  JOIN {{ ref('timeswap_polygon_pools') }} i ON CAST(b.maturity as VARCHAR(100)) = i.maturity and cast(b.strike as VARCHAR(100)) = i.strike
-  JOIN {{ source('prices', 'usd') }} p ON p.symbol=i.token1_symbol and p.blockchain = 'polygon' and b.isToken0 = false
+FROM {{ source('timeswap_polygon', 'TimeswapV2PeripheryNoDexBorrowGivenPrincipal_evt_BorrowGivenPrincipal') }} b
+JOIN {{ ref('timeswap_polygon_pools') }} i 
+  ON CAST(b.maturity as VARCHAR(100)) = i.maturity 
+  and cast(b.strike as VARCHAR(100)) = i.strike
+JOIN {{ source('prices', 'usd') }} p 
+  ON p.symbol=i.token1_symbol 
+  and p.blockchain = 'polygon' 
+  and b.isToken0 = false
   AND p.minute = date_trunc('minute',b.evt_block_time)
   {% if is_incremental() %}
   AND p.minute >= date_trunc("day", now() - interval '1 week')
+WHERE b.evt_block_time >= date_trunc("day", now() - interval '1 week')
   {% endif %}
 
 

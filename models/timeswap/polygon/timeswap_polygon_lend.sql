@@ -91,12 +91,18 @@ SELECT
       ELSE CAST(l.tokenAmount AS DOUBLE) / power(10,i.token1_decimals) * p.price
     END as DOUBLE
   ) as usd_amount
-  FROM {{ source('timeswap_polygon', 'TimeswapV2PeripheryUniswapV3LendGivenPrincipal_evt_LendGivenPrincipal') }} l
-  JOIN {{ ref('timeswap_polygon_pools') }} i ON CAST(l.maturity as VARCHAR(100)) = i.maturity and cast(l.strike as VARCHAR(100)) = i.strike
-  JOIN {{ source('prices', 'usd') }} p ON p.symbol=i.token0_symbol and p.blockchain = 'polygon' and l.isToken0 = true
+FROM {{ source('timeswap_polygon', 'TimeswapV2PeripheryUniswapV3LendGivenPrincipal_evt_LendGivenPrincipal') }} l
+JOIN {{ ref('timeswap_polygon_pools') }} i 
+  ON CAST(l.maturity as VARCHAR(100)) = i.maturity 
+  and cast(l.strike as VARCHAR(100)) = i.strike
+JOIN {{ source('prices', 'usd') }} p 
+  ON p.symbol=i.token0_symbol 
+  and p.blockchain = 'polygon' 
+  and l.isToken0 = true
   AND p.minute = date_trunc('minute',l.evt_block_time)
   {% if is_incremental() %}
   AND p.minute >= date_trunc("day", now() - interval '1 week')
+WHERE l.evt_block_time >= date_trunc("day", now() - interval '1 week')
   {% endif %}
 
 UNION
@@ -122,12 +128,18 @@ SELECT
       ELSE CAST(l.tokenAmount AS DOUBLE) / power(10,i.token1_decimals) * p.price
     END as DOUBLE
   ) as usd_amount
-  FROM {{ source('timeswap_polygon', 'TimeswapV2PeripheryUniswapV3LendGivenPrincipal_evt_LendGivenPrincipal') }} l
-  JOIN {{ ref('timeswap_polygon_pools') }} i ON CAST(l.maturity as VARCHAR(100)) = i.maturity and cast(l.strike as VARCHAR(100)) = i.strike
-  JOIN {{ source('prices', 'usd') }} p ON p.symbol=i.token1_symbol and p.blockchain = 'polygon' and l.isToken0 = false
+FROM {{ source('timeswap_polygon', 'TimeswapV2PeripheryUniswapV3LendGivenPrincipal_evt_LendGivenPrincipal') }} l
+JOIN {{ ref('timeswap_polygon_pools') }} i 
+  ON CAST(l.maturity as VARCHAR(100)) = i.maturity 
+  and cast(l.strike as VARCHAR(100)) = i.strike
+JOIN {{ source('prices', 'usd') }} p 
+  ON p.symbol=i.token1_symbol 
+  and p.blockchain = 'polygon' 
+  and l.isToken0 = false
   AND p.minute = date_trunc('minute',l.evt_block_time)
   {% if is_incremental() %}
   AND p.minute >= date_trunc("day", now() - interval '1 week')
+WHERE l.evt_block_time >= date_trunc("day", now() - interval '1 week')
   {% endif %}
 
 
@@ -154,12 +166,18 @@ SELECT
       ELSE CAST(l.tokenAmount AS DOUBLE) / power(10,i.token1_decimals) * p.price
     END as DOUBLE
   ) as usd_amount
-  FROM {{ source('timeswap_polygon', 'TimeswapV2PeripheryNoDexLendGivenPrincipal_evt_LendGivenPrincipal') }} l
-  JOIN {{ ref('timeswap_polygon_pools') }} i ON CAST(l.maturity as VARCHAR(100)) = i.maturity and cast(l.strike as VARCHAR(100)) = i.strike
-  JOIN {{ source('prices', 'usd') }} p ON p.symbol=i.token0_symbol and p.blockchain = 'polygon' and l.isToken0 = true
+FROM {{ source('timeswap_polygon', 'TimeswapV2PeripheryNoDexLendGivenPrincipal_evt_LendGivenPrincipal') }} l
+JOIN {{ ref('timeswap_polygon_pools') }} i 
+  ON CAST(l.maturity as VARCHAR(100)) = i.maturity 
+  and cast(l.strike as VARCHAR(100)) = i.strike
+JOIN {{ source('prices', 'usd') }} p 
+  ON p.symbol=i.token0_symbol 
+  and p.blockchain = 'polygon' 
+  and l.isToken0 = true
   AND p.minute = date_trunc('minute',l.evt_block_time)
   {% if is_incremental() %}
   AND p.minute >= date_trunc("day", now() - interval '1 week')
+WHERE l.evt_block_time >= date_trunc("day", now() - interval '1 week')
   {% endif %}
 
 UNION
@@ -185,12 +203,18 @@ SELECT
       ELSE CAST(l.tokenAmount AS DOUBLE) / power(10,i.token1_decimals) * p.price
     END as DOUBLE
   ) as usd_amount
-  FROM {{ source('timeswap_polygon', 'TimeswapV2PeripheryNoDexLendGivenPrincipal_evt_LendGivenPrincipal') }} l
-  JOIN {{ ref('timeswap_polygon_pools') }} i ON CAST(l.maturity as VARCHAR(100)) = i.maturity and cast(l.strike as VARCHAR(100)) = i.strike
-  JOIN {{ source('prices', 'usd') }} p ON p.symbol=i.token1_symbol and p.blockchain = 'polygon' and l.isToken0 = false
+FROM {{ source('timeswap_polygon', 'TimeswapV2PeripheryNoDexLendGivenPrincipal_evt_LendGivenPrincipal') }} l
+JOIN {{ ref('timeswap_polygon_pools') }} i 
+  ON CAST(l.maturity as VARCHAR(100)) = i.maturity 
+  and cast(l.strike as VARCHAR(100)) = i.strike
+JOIN {{ source('prices', 'usd') }} p 
+  ON p.symbol=i.token1_symbol 
+  and p.blockchain = 'polygon'
+  and l.isToken0 = false
   AND p.minute = date_trunc('minute',l.evt_block_time)
   {% if is_incremental() %}
   AND p.minute >= date_trunc("day", now() - interval '1 week')
+WHERE l.evt_block_time >= date_trunc("day", now() - interval '1 week')
   {% endif %}
 
 
