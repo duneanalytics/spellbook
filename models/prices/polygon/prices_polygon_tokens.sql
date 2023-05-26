@@ -26,6 +26,7 @@ FROM
     ("eurs-stasis-eurs","polygon","EURS","0xe111178a87a3bff0c8d18decba5798827539ae99",2),
     ("matic-polygon", "polygon", "MATIC", "0x0000000000000000000000000000000000001010", 18),
     ("dai-dai", "polygon", "DAI", "0x8f3cf7ad23cd3cadbd9735aff958023239c6a063", 18),
+    ("dquick-dragon39s-quick", "polygon", "dQUICK", "0x958d208Cdf087843e9AD98d23823d32E17d723A1", 18),
     ("usdc-usd-coin", "polygon", "USDC", "0x2791bca1f2de4661ed88a30c99a7a9449aa84174", 6),
     ("usdt-tether", "polygon", "USDT", "0xc2132d05d31c914a87c6611c10748aeb04b58e8f", 6),
     ("stmatic-lido-staked-matic","polygon","stMATIC","0x3a58a54c066fdc0f2d55fc9c89f0415c92ebf3c4",18),
