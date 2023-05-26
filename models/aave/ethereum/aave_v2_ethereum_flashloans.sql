@@ -5,10 +5,6 @@
     , file_format = 'delta'
     , incremental_strategy = 'merge'
     , unique_key = ['tx_hash', 'evt_index']
-    , post_hook='{{ expose_spells(\'["ethereum"]\',
-                                  "project",
-                                  "aave_v2",
-                                  \'["hildobby"]\') }}'
   )
 }}
 
