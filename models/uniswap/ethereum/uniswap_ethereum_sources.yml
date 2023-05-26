@@ -75,8 +75,6 @@ sources:
           - &tokens_sold
             name: tokens_sold
             description: "Raw amount of tokens sold during transaction with the contract"
-      - name: MerkleDistributor_evt_Claimed
-        loaded_at_field: evt_block_time
 
   - name: uniswap_v2_ethereum
     description: "Ethereum decoded tables related to Uniswap v2 contract"
