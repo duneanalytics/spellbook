@@ -333,7 +333,7 @@ WITH trades AS (
         AND v.token_bought_address=s1.token_bought_address
     )
 
-SELECT s1.*
+SELECT distinct s1.*
 FROM sandwiches s1
 LEFT JOIN sandwiches s2 ON s1.block_time=s2.block_time
     AND s1.frontrun_tx_hash=s2.backrun_tx_hash
