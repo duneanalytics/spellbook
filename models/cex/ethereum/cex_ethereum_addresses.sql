@@ -51,7 +51,6 @@ FROM (VALUES
     , ('ethereum', '0x4fabb145d64652a948d72533023f6e7a623c7c53', 'Binance', 'Binance USD', 'hildobby', timestamp('2022-08-28'))
     , ('ethereum', '0x2f47a1c2db4a3b78cda44eade915c3b19107ddcc', 'Binance', 'Binance Eth2 Depositor', 'hildobby', timestamp('2022-08-28'))
     , ('ethereum', '0xb3f923eabaf178fc1bd8e13902fc5c61d3ddef5b', 'Binance', 'Wintermute Binance Deposit', 'hildobby', timestamp('2022-08-28'))
-    , ('ethereum', '0xf977814e90da44bfa03b6295a0616a897441acec', 'Binance', 'Binance: BTC Proof of Assets', 'soispoke', timestamp('2022-11-14'))
     , ('ethereum', '0x47ac0fb4F2d84898e4d9e7b4dab3c24507a6d503', 'Binance', 'Binance: Stablecoin Proof of Assets', 'soispoke', timestamp('2022-11-14'))
     , ('ethereum', '0x9be89d2a4cd102d8fecc6bf9da793be995c22541', 'Binance', 'Binance: ETH and ERC20 tokens Proof of Assets', 'soispoke', timestamp('2022-11-14'))
     , ('ethereum', '0x7884f51dc1410387371ce61747cb6264e1daee0b', 'Binance', 'Binance: DOT Proof of Assets', 'soispoke', timestamp('2022-11-14'))
