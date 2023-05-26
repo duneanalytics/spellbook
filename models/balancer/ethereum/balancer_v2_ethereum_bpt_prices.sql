@@ -4,7 +4,7 @@
         alias = 'bpt_prices',
         materialized = 'view',
         file_format = 'delta',
-        post_hook = '{{ expose_spells_hide_trino(\'["ethereum"]\',
+        post_hook = '{{ expose_spells(\'["ethereum"]\',
                                     "project",
                                     "balancer_v2",
                                     \'["victorstefenon", "thetroyharris"]\') }}'
