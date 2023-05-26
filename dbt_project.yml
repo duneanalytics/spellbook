@@ -954,6 +954,25 @@ models:
         ethereum:
           +schema: lido_liquidity_ethereum
 
+    layerzero:
+      +schema: layerzero
+      ethereum:
+        +schema: layerzero_ethereum
+      avalanche_c:
+        +schema: layerzero_avalanche_c
+      gnosis:
+        +schema: layerzero_gnosis
+      arbitrum:
+        +schema: layerzero_arbitrum
+      fantom:
+        +schema: layerzero_fantom
+      optimism:
+        +schema: layerzero_optimism
+      polygon:
+        +schema: layerzero_polygon
+      bnb:
+        +schema: layerzero_bnb
+
     onepunchswap:
       +schema: onepunchswap
       bnb:
