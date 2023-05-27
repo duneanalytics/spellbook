@@ -2,10 +2,8 @@
     schema = 'ens_ethereum',
     alias = 'proposals',
     partition_by = ['block_date'],
-    materialized = 'incremental',
+    materialized = 'table',
     file_format = 'delta',
-    incremental_strategy = 'merge',
-    unique_key = ['created_at', 'blockchain', 'project', 'version', 'tx_hash'],
     post_hook='{{ expose_spells(\'["ethereum"]\',
                                 "project",
                                 "ens",
@@ -68,6 +66,3 @@ LEFT JOIN cte_sum_votes csv ON csv.proposalId = pcr.proposalId
 LEFT JOIN {{ source('ethereumnameservice_ethereum', 'ENSGovernor_evt_ProposalCanceled') }} pca ON pca.proposalId = pcr.proposalId
 LEFT JOIN {{ source('ethereumnameservice_ethereum', 'ENSGovernor_evt_ProposalExecuted') }} pex ON pex.proposalId = pcr.proposalId
 LEFT JOIN {{ source('ethereumnameservice_ethereum', 'ENSGovernor_evt_ProposalQueued') }} pqu ON pex.proposalId = pcr.proposalId
-{% if is_incremental() %}
-WHERE pcr.evt_block_time > (select max(created_at) from {{ this }})
-{% endif %}
