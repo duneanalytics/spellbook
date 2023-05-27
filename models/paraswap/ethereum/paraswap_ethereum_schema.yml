@@ -1,6 +1,65 @@
 version: 2
 
 models:
+  - name: paraswap_ethereum_airdrop_claims
+    meta:
+      blockchain: ethereum
+      sector: airdrop
+      project: paraswap
+      contributors: hildobby
+    config:
+      tags: ['table', 'airdrop', 'ethereum', 'claim', 'paraswap']
+    description: "List of claim transactions for the $PSP airdrop"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - recipient
+            - evt_index
+    columns:
+      - &blockchain
+        name: blockchain
+        description: "Blockchain"
+      - &block_time
+        name: block_time
+        description: "Block time of transaction"
+      - &block_number
+        name: block_number
+        description: "Block number of transaction"
+      - &project
+        name: project
+        description: "Project name"
+      - &airdrop_identifier
+        name: airdrop_identifier
+        description: "Airdrop identifier name"
+      - &recipient
+        name: recipient
+        description: "Airdrop recipient"
+      - &contract_address
+        name: contract_address
+        description: "Contract addressed used"
+      - &tx_hash
+        name: tx_hash
+        description: "Transaction hash"
+      - &amount_raw
+        name: amount_raw
+        description: "Raw amount of tokens"
+      - &amount_original
+        name: amount_original
+        description: "Original amount of tokens"
+      - &amount_usd
+        name: amount_usd
+        description: "USD value of tokens"
+      - &token_address
+        name: token_address
+        description: "Token address"
+      - &token_symbol
+        name: token_symbol
+        description: "Token symbol"
+      - &evt_index
+        name: evt_index
+        description: "Event index"
+        
   - name: paraswap_v4_ethereum_trades
     meta:
       blockchain: ethereum
@@ -26,21 +85,15 @@ models:
           project: paraswap
           version: 4
     columns:
-      - &blockchain
-        name: blockchain
-        description: "Blockchain which the DEX is deployed"
-      - &project 
-        name: project
-        description: "Project name of the DEX"  
+      - *blockchain
+      - *project
       - &version
         name: version
         description: "Version of the contract built and deployed by the DEX project"
       - &block_date
         name: block_date
         description: "UTC event block date of each DEX trade"
-      - &block_time
-        name: block_time
-        description: "UTC event block time of each DEX trade"
+      - *block_time
       - &token_bought_symbol
         name: token_bought_symbol
         description: "Token symbol for token bought in the transaction"
@@ -62,9 +115,7 @@ models:
       - &token_sold_amount_raw
         name: token_sold_amount_raw
         description: "Raw value of the token sold at time of execution in the original currency"
-      - &amount_usd
-        name: amount_usd
-        description: "USD value of the trade at time of execution"
+      - *amount_usd
       - &token_bought_address
         name: token_bought_address
         description: "Contract address of the token bought"
@@ -80,9 +131,7 @@ models:
       - &project_contract_address
         name: project_contract_address
         description: "Project contract address which executed the trade on the blockchain"
-      - &tx_hash
-        name: tx_hash
-        description: "Unique transaction hash value tied to each transaction on the DEX"
+      - *tx_hash
       - &tx_from
         name: tx_from
         description: "Address which initiated the transaction"
@@ -92,9 +141,7 @@ models:
       - &trace_address
         name: trace_address
         description: ""
-      - &evt_index
-        name: evt_index
-        description: ""
+      - *evt_index
 
   - name: paraswap_v5_ethereum_trades
     meta:
