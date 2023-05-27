@@ -1,5 +1,6 @@
 {{
     config(
+        schema = 'blur_ethereum',
         alias='airdrop_1_claims',
         materialized = 'incremental',
         file_format = 'delta',

@@ -1,6 +1,7 @@
 {{
     config(
-        alias='optimism_1',
+        schema = 'op_optimism',
+        alias='airdrop_1_claims',
         materialized = 'incremental',
         file_format = 'delta',
         incremental_strategy = 'merge',

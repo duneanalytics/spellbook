@@ -1,5 +1,6 @@
 {{
     config(
+        schema = 'dydx_ethereum',
         alias='airdrop_claims',
         materialized = 'incremental',
         file_format = 'delta',
