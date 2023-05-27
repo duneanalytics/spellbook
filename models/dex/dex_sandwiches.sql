@@ -291,30 +291,30 @@ WITH trades AS (
     , s1.block_date
     , s1.block_time
     , s1.block_number
-    , CASE WHEN s1.token_bought_amount_raw > 0 THEN s2.token_sold_amount_raw/s1.token_bought_amount_raw END AS ratio_traded_token
-    , CASE WHEN s1.token_sold_amount_raw > 0 THEN s2.token_bought_amount_raw/s1.token_sold_amount_raw END AS profit_percentage_of_initial
-    , s2.token_bought_amount_raw-s1.token_sold_amount_raw AS profit_amount_raw
-    , s2.token_bought_amount-s1.token_sold_amount AS profit_amount
+    , CASE WHEN s1.token_bought_amount_raw > 0 THEN MAX_BY(s2.token_sold_amount_raw, s2.index)/s1.token_bought_amount_raw END AS ratio_traded_token
+    , CASE WHEN s1.token_sold_amount_raw > 0 THEN MAX_BY(s2.token_bought_amount_raw, s2.index)/s1.token_sold_amount_raw END AS profit_percentage_of_initial
+    , MAX_BY(s2.token_bought_amount_raw, s2.index)-s1.token_sold_amount_raw AS profit_amount_raw
+    , MAX_BY(s2.token_bought_amount, s2.index)-s1.token_sold_amount AS profit_amount
     , s1.token_sold_address AS currency_address
     , s1.token_sold_symbol AS currency_symbol
-    , s1.token_bought_amount_raw-s2.token_sold_amount_raw AS profit_traded_currency_amount_raw
-    , s1.token_bought_amount-s2.token_sold_amount AS profit_traded_currency_amount
+    , s1.token_bought_amount_raw-MAX_BY(s2.token_sold_amount_raw, s2.index) AS profit_traded_currency_amount_raw
+    , s1.token_bought_amount-MAX_BY(s2.token_sold_amount, s2.index) AS profit_traded_currency_amount
     , s1.token_bought_address AS traded_currency_address
     , s1.token_bought_symbol AS traded_currency_symbol
     , s1.taker AS frontrun_taker
     , s1.tx_from AS frontrun_tx_from
-    , s2.taker AS backrun_taker
-    , s2.tx_from AS backrun_tx_from
+    , MAX_BY(s2.taker, s2.index) AS backrun_taker
+    , MAX_BY(s2.tx_from, s2.index) AS backrun_tx_from
     , s1.index AS frontrun_index
-    , s2.index AS backrun_index
+    , MAX_BY(s2.index, s2.index) AS backrun_index
     , s1.project_contract_address AS sandwiched_pool
     , s1.tx_hash AS frontrun_tx_hash
-    , s2.tx_hash AS backrun_tx_hash
-    , s2.index-s1.index-1 AS amount_trades_between
+    , MAX_BY(s2.tx_hash, s2.index) AS backrun_tx_hash
+    , MAX_BY(s2.index, s2.index)-s1.index-1 AS amount_trades_between
     , s1.gas_price
     , s1.tx_fee AS frontrun_tx_fee
-    , s2.tx_fee AS backrun_tx_fee
-    , CASE WHEN s2.token_bought_amount > s1.token_sold_amount THEN true ELSE false END AS is_profitable
+    , MAX_BY(s2.tx_fee, s2.index) AS backrun_tx_fee
+    , CASE WHEN MAX_BY(s2.token_bought_amount, s2.index) > s1.token_sold_amount THEN true ELSE false END AS is_profitable
     FROM trades s1
     INNER JOIN trades s2 ON s1.block_time=s2.block_time
         AND s1.tx_hash!=s2.tx_hash
@@ -331,6 +331,10 @@ WITH trades AS (
         AND v.evt_index<s2.evt_index
         AND v.token_sold_address=s1.token_sold_address
         AND v.token_bought_address=s1.token_bought_address
+    GROUP BY s1.blockchain, s1.project, s1.version, s1.block_date, s1.block_time, s1.block_number, s1.token_bought_amount_raw
+    , s1.token_sold_amount, s1.token_sold_amount_raw, s1.token_sold_address, s1.token_sold_symbol, s1.token_bought_amount
+    , s1.token_bought_address, s1.token_bought_symbol, s1.taker, s1.tx_from, s1.index, s1.project_contract_address, s1.tx_hash
+    , s1.gas_price, s1.tx_fee
     )
 
 SELECT distinct s1.*
