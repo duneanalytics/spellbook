@@ -67,7 +67,7 @@ models:
       - *address
       - *sol_balance
       - *token_balance
-      - *token_mint_address
+      - name: token_mint_address
       - *token_balance_owner
       - *updated_at
 
