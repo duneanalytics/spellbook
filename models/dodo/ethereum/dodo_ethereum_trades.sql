@@ -13,7 +13,6 @@
 }}
 
 {% set dodo_models = [
--- ref("dodo_aggregator_ethereum_trades"), 
 ref("dodo_pools_ethereum_trades")
 ] %}
 
