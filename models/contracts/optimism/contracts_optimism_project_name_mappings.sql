@@ -92,5 +92,6 @@ from (
     ,('DeFi Saver', 'DeFiSaver')
     ,('defi_saver', 'DeFiSaver')
     ,('Decent', 'Decent.xyz')
+    ,('pika_tge', 'Pika Protocol')
 
     ) as temp_table (dune_name, mapped_name)
