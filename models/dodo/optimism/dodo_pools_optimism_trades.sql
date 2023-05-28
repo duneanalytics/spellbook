@@ -16,10 +16,7 @@
 {% set project_start_date = '2022-04-18' %}
 
 -- dodo V1 & V2 adapters
-{% set dodo_proxies = [
-"0xdd0951b69bc0cf9d39111e5037685fb573204c86",
-"0x169ae3d5acc90f0895790f6321ee81cb040e8a6b"
-] %}
+{% set dodo_proxies = [] %}
 
 WITH dexs AS 
 (

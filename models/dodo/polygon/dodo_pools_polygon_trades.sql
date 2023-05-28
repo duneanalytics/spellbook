@@ -16,10 +16,7 @@
 {% set project_start_date = '2021-05-17' %}
 
 -- dodo V1 & V2 adapters
-{% set dodo_proxies = [
-"0xdbfaf391c37339c903503495395ad7d6b096e192",
-"0x6c30be15d88462b788dea7c6a860a2ccaf7b2670"
-] %}
+{% set dodo_proxies = [] %}
 
 WITH dodo_view_markets (market_contract_address, base_token_symbol, quote_token_symbol, base_token_address, quote_token_address) AS 
 (
