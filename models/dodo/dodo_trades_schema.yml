@@ -17,9 +17,11 @@ models:
       - &project
         name: project
         description: "Project name of the DEX (specify: DODO)"
-      - &version
-        name: version
+      - name: version
         description: "Version of dodo contracts (0 - dodo_aggregator, 1 - DODOV1, 2_dvm - DODOV2 public pool, 2_dsp - DODOV2 stable pool, 2_dpp - DODOV2 private pool)"
+        tests:
+          - dbt_utils.not_accepted_values:
+              values: [ 0 ]
       - &block_date
         name: block_date
         description: "UTC event block date of each DEX trade"
@@ -93,7 +95,8 @@ models:
     columns:
       - *blockchain
       - *project
-      - *version
+      - name: version
+        description: "Version of dodo contracts (0 - dodo_aggregator, 1 - DODOV1, 2_dvm - DODOV2 public pool, 2_dsp - DODOV2 stable pool, 2_dpp - DODOV2 private pool)"
       - *block_date
       - *block_time
       - *token_bought_symbol
