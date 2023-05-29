@@ -71,7 +71,7 @@ WITH dodo_view_markets (market_contract_address, base_token_symbol, quote_token_
         AND s.evt_block_time >= date_trunc("day", now() - interval '1 week')
         {% endif %}
     
-         UNION ALL
+        UNION ALL
 
         -- dodo v1 buy
         SELECT
