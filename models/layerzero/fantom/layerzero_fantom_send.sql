@@ -158,7 +158,7 @@ SELECT 'fantom' AS blockchain,
 FROM send_detail s
 LEFT JOIN trans_detail t ON s.block_number = t.block_number
     AND s.tx_hash = t.tx_hash
-    AND s.call_send_index = 1
+    AND s.call_send_index = 1 
 LEFT JOIN {{ ref('layerzero_chain_list') }} cls ON cls.chain_id = s.source_chain_id
 LEFT JOIN {{ ref('layerzero_chain_list') }} cld ON cld.chain_id = s.destination_chain_id
 LEFT JOIN {{ ref('tokens_erc20') }} erc ON erc.blockchain = 'fantom' AND erc.contract_address = t.currency_contract
