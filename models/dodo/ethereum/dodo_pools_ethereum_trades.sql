@@ -17,8 +17,6 @@
 --select min(evt_block_time) from dodo_ethereum.DODO_evt_BuyBaseToken;
 {% set project_start_date = '2020-08-10' %}
 
-{% set dodo_proxies = [] %}
-
 WITH dodo_view_markets (market_contract_address, base_token_symbol, quote_token_symbol, base_token_address, quote_token_address) AS 
 (
     VALUES
@@ -61,14 +59,8 @@ WITH dodo_view_markets (market_contract_address, base_token_symbol, quote_token_
             {{ source('dodo_ethereum', 'DODO_evt_SellBaseToken')}} s
         LEFT JOIN dodo_view_markets m
             on s.contract_address = m.market_contract_address
-        WHERE {% for dodo_proxy in dodo_proxies %}
-        s.seller <> '{{dodo_proxy}}'
-        {% if not loop.last %}
-        and
-        {% endif %}
-        {% endfor %}
         {% if is_incremental() %}
-        AND s.evt_block_time >= date_trunc("day", now() - interval '1 week')
+        WHERE s.evt_block_time >= date_trunc("day", now() - interval '1 week')
         {% endif %}
     
         UNION ALL
@@ -93,14 +85,8 @@ WITH dodo_view_markets (market_contract_address, base_token_symbol, quote_token_
             {{ source('dodo_ethereum','DODO_evt_BuyBaseToken')}} b
         LEFT JOIN dodo_view_markets m
             on b.contract_address = m.market_contract_address
-        WHERE {% for dodo_proxy in dodo_proxies %}
-        b.buyer <> '{{dodo_proxy}}'
-        {% if not loop.last %}
-        and
-        {% endif %}
-        {% endfor %}
         {% if is_incremental() %}
-        AND b.evt_block_time >= date_trunc("day", now() - interval '1 week')
+        WHERE b.evt_block_time >= date_trunc("day", now() - interval '1 week')
         {% endif %}
 
         UNION ALL
@@ -123,14 +109,8 @@ WITH dodo_view_markets (market_contract_address, base_token_symbol, quote_token_
             evt_index
         FROM
             {{ source('dodo_ethereum', 'DVM_evt_DODOSwap')}}
-        WHERE {% for dodo_proxy in dodo_proxies %}
-        trader <> '{{dodo_proxy}}'
-        {% if not loop.last %}
-        and
-        {% endif %}
-        {% endfor %}
         {% if is_incremental() %}
-        AND evt_block_time >= date_trunc("day", now() - interval '1 week')
+        WHERE evt_block_time >= date_trunc("day", now() - interval '1 week')
         {% endif %}
 
         UNION ALL
@@ -153,14 +133,8 @@ WITH dodo_view_markets (market_contract_address, base_token_symbol, quote_token_
             evt_index
         FROM
             {{ source('dodo_ethereum', 'DPP_evt_DODOSwap')}}
-        WHERE {% for dodo_proxy in dodo_proxies %}
-        trader <> '{{dodo_proxy}}'
-        {% if not loop.last %}
-        and
-        {% endif %}
-        {% endfor %}
         {% if is_incremental() %}
-        AND evt_block_time >= date_trunc("day", now() - interval '1 week')
+        WHERE evt_block_time >= date_trunc("day", now() - interval '1 week')
         {% endif %}
 
         UNION ALL
@@ -183,14 +157,8 @@ WITH dodo_view_markets (market_contract_address, base_token_symbol, quote_token_
             evt_index
         FROM
             {{ source('dodo_ethereum', 'DSP_evt_DODOSwap')}}
-        WHERE {% for dodo_proxy in dodo_proxies %}
-        trader <> '{{dodo_proxy}}'
-        {% if not loop.last %}
-        and
-        {% endif %}
-        {% endfor %}
         {% if is_incremental() %}
-        AND evt_block_time >= date_trunc("day", now() - interval '1 week')
+        WHERE evt_block_time >= date_trunc("day", now() - interval '1 week')
         {% endif %}
 )
 SELECT
