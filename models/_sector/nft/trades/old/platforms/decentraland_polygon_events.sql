@@ -55,7 +55,7 @@ SELECT
     'buy' AS trade_category,
     src.buyer, 
     src.seller, 
-    src.nftAddress as nft_contract_address
+    src.nftAddress as nft_contract_address,
     agg.name AS aggregator_name,
     agg.contract_address AS aggregator_address,
     t.`from` AS tx_from,
