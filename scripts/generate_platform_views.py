@@ -59,8 +59,8 @@ models:
         alias ='trades',
         materialized = 'view',
         post_hook='{{{{ expose_spells(\\\'{platform[1]}\\\',
-                                    "sector",
-                                    "nft",
+                                    "project",
+                                    "{platform[0]}",
                                     \\\'["0xRob"]\\\') }}}}')
 }}}}
 
