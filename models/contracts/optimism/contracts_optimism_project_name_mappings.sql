@@ -93,5 +93,7 @@ from (
     ,('defi_saver', 'DeFiSaver')
     ,('Decent', 'Decent.xyz')
     ,('pika_tge', 'Pika Protocol')
+    ,('holograph_factory', 'Holograph')
+    ,('holograph_operator', 'Holograph')
 
     ) as temp_table (dune_name, mapped_name)
