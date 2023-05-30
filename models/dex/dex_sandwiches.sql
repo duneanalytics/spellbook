@@ -285,7 +285,7 @@ WITH trades AS (
     )
 
 , sandwiches AS (
-    SELECT s1.blockchain
+    SELECT distinct s1.blockchain
     , s1.project
     , s1.version
     , s1.block_date
@@ -337,7 +337,7 @@ WITH trades AS (
     , s1.gas_price, s1.tx_fee
     )
 
-SELECT distinct s1.*
+SELECT s1.*
 FROM sandwiches s1
 LEFT JOIN sandwiches s2 ON s1.block_time=s2.block_time
     AND s1.frontrun_tx_hash=s2.backrun_tx_hash
