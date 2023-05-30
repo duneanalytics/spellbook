@@ -12,7 +12,7 @@ SELECT
 name AS chain_name
 ,chain AS chain_shortname
 ,nativeCurrency AS native_currency_symbol
-,CAST(chainId AS VARCHAR) AS chain_id
+,CAST(chainId AS VARCHAR(15)) AS chain_id
 ,networkId AS network_id
 ,infoURL AS info_url
 ,explorer AS explorer
