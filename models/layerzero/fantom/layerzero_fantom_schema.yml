@@ -1,0 +1,94 @@
+version: 2
+
+models:
+ - name: layerzero_fantom_send
+   meta:
+     blockchain: fantom
+     project: layerzero
+     contributors: bennyfeng
+   config:
+     tags: ['fantom', 'layerzero', 'send']
+   description: "LayerZero message send call on fantom"
+   tests:
+     - check_seed:
+         seed_file: ref('layerzero_fantom_send_samples')
+         check_columns:
+           - destination_chain_id
+           - user_address
+           - currency_contract
+         match_columns:
+           - block_number
+           - tx_hash
+           - trace_address
+     - dbt_utils.unique_combination_of_columns:
+         combination_of_columns: [ 'block_time', 'tx_hash', 'user_address', 'trace_address', 'source_chain_id', 'destination_chain_id', 'currency_contract' ]
+   columns:
+     - &blockchain
+       name: blockchain
+       description: "Blockchain which the Endpoint is deployed"
+     - &source_chain_id
+       name: source_chain_id
+       description: "Source chain id"
+     - &source_chain_name
+       name: source_chain_name
+       description: "Source chain name"
+     - &destination_chain_id
+       name: destination_chain_id
+       description: "Destination chain id"
+     - &destination_chain_name
+       name: destination_chain_name
+       description: "Destination chain name"
+     - &tx_hash
+       name: tx_hash
+       description: "Transaction hash" 
+     - &block_number
+       name: block_number
+       description: "Block number in which the transaction was executed"
+     - &endpoint_contract
+       name: endpoint_contract
+       description: "LayerZero endpoint contract address"
+     - &trace_address
+       name: trace_address
+       description: ""
+     - &adapter_params
+       name: adapter_params
+       description: "LayerZero parameters for custom functionality"
+     - &refund_address
+       name: refund_address
+       description: "Address for refund the additional amount"
+     - &zro_payment_address
+       name: zro_payment_address
+       description: "The address of the ZRO token holder who would pay for the transaction"
+     - &block_time
+       name: block_time
+       description: "UTC call block time"
+     - &user_address
+       name: user_address
+       description: "Address that initiated the transaction"
+     - &transaction_contract
+       name: transaction_contract
+       description: "LayerZero transaction contract address"
+     - &source_bridge_contract
+       name: local_bridge_contract
+       description: "LayerZero local bridge contract address"
+     - &destination_bridge_contract
+       name: remote_bridge_contract
+       description: "LayerZero remote bridge contract address"
+     - &transfer_type
+       name: transfer_type
+       description: "Transfer type, native or erc20"
+     - &currency_symbol
+       name: currency_symbol
+       description: "Symbol of original currency used for transfer"
+     - &currency_contract
+       name: currency_contract
+       description: "Contract address of original token used for transfer, with ETH contract address swapped for WETH"
+     - &amount_usd
+       name: amount_usd
+       description: "USD value of transfer at time of execution"
+     - &amount_original
+       name: amount_original
+       description: "Transferred amount in original currency"
+     - &amount_raw
+       name: amount_raw
+       description: "Transferred amount in original currency before decimals correction"

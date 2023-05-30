@@ -2,10 +2,8 @@
     schema = 'ens_ethereum',
     alias = 'votes',
     partition_by = ['block_date'],
-    materialized = 'incremental',
+    materialized = 'table',
     file_format = 'delta',
-    incremental_strategy = 'merge',
-    unique_key = ['block_time', 'blockchain', 'project', 'version', 'tx_hash'],
     post_hook='{{ expose_spells(\'["ethereum"]\',
                                 "project",
                                 "ens",
@@ -50,9 +48,3 @@ LEFT JOIN cte_sum_votes csv ON vc.proposalId = csv.proposalId
 LEFT JOIN {{ source('prices', 'usd') }} p ON p.minute = date_trunc('minute', evt_block_time)
     AND p.symbol = 'ENS'
     AND p.blockchain ='ethereum'
-    {% if is_incremental() %}
-    AND p.minute >= date_trunc("day", now() - interval '1 week')
-    {% endif %}
-{% if is_incremental() %}
-WHERE evt_block_time > (select max(block_time) from {{ this }})
-{% endif %}

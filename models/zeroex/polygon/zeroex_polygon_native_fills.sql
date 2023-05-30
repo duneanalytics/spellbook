@@ -202,8 +202,8 @@ WITH
     (
       SELECT
           fills.evt_block_time AS block_time, fills.evt_block_number as block_number
-          , 'otc' as native_order_type
           , 'v4' AS protocol_version
+          , 'otc' as native_order_type
           , fills.evt_tx_hash AS transaction_hash
           , fills.evt_index
           , fills.maker AS maker_address

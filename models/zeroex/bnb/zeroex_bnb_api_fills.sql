@@ -19,7 +19,7 @@
 -- Test Query here: https://dune.com/queries/2274187
 WITH zeroex_tx AS (
     SELECT tx_hash,
-           max(affiliate_address) as affiliate_address, taker_token, maker_token, evt_index, taker 
+           max(affiliate_address) as affiliate_address, taker_token, maker_token 
     FROM (
 
         SELECT v3.evt_tx_hash AS tx_hash,
@@ -28,9 +28,8 @@ WITH zeroex_tx AS (
                         ELSE NULL
                     END AS affiliate_address,
                 SUBSTRING(v3.takerAssetData, 34, 40) as taker_token,
-                SUBSTRING(v3.makerAssetData, 34, 40) as maker_token,
-                takerAddress AS taker,
-                evt_index
+                SUBSTRING(v3.makerAssetData, 34, 40) as maker_token
+                
         FROM {{ source('zeroex_v2_bnb', 'Exchange_evt_Fill') }} v3
         WHERE (  -- nuo
                 v3.takerAddress = '0x63305728359c088a52b0b0eeec235db4d31a67fc'
@@ -61,9 +60,8 @@ WITH zeroex_tx AS (
                                         FOR 40)
                             END AS affiliate_address,
                     '0x' || substring(INPUT, 355, 40) AS taker_token,
-                '0x' || substring(INPUT, 419, 40) AS maker_token,
-                '0x' || substring(INPUT, 491, 40) AS taker,
-                    tx_index AS evt_index
+                '0x' || substring(INPUT, 419, 40) AS maker_token
+                
         FROM {{ source('bnb', 'traces') }} tr
         WHERE tr.to IN (
                 -- exchange contract
@@ -87,7 +85,7 @@ WITH zeroex_tx AS (
                 AND block_time >= '{{zeroex_v3_start_date}}'
                 {% endif %}
     ) temp
-    group by tx_hash, taker_token, maker_token, evt_index, taker 
+    group by tx_hash, taker_token, maker_token
 
 ),
 v2_fills_no_bridge AS (
@@ -201,7 +199,7 @@ otc_fills AS (
 ),
 ERC20BridgeTransfer AS (
     SELECT
-            logs.tx_hash,
+            logs.tx_hash as tx_hash, 
             INDEX                                   AS evt_index,
             logs.contract_address,
             block_time                              AS block_time,
@@ -217,7 +215,7 @@ ERC20BridgeTransfer AS (
             FALSE                                   AS matcha_limit_order_flag
     FROM {{ source('bnb', 'logs') }} logs
     JOIN zeroex_tx ON zeroex_tx.tx_hash = logs.tx_hash
-    WHERE topic1 = '0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef'
+    WHERE topic1 = '0x349fc08071558d8e3aa92dec9396e4e9f2dfecd6bb9065759d1932e7da43b8a9'
 
     {% if is_incremental() %}
     AND block_time >= date_trunc('day', now() - interval '1 week')
@@ -229,7 +227,7 @@ ERC20BridgeTransfer AS (
 ),
 BridgeFill AS (
     SELECT
-            logs.tx_hash,
+            distinct logs.tx_hash,
             INDEX                                           AS evt_index,
             logs.contract_address,
             block_time                                      AS block_time,
@@ -313,7 +311,7 @@ direct_PLP AS (
 uni_v2_swap as (
 SELECT   s.tx_hash tx_hash, s.index evt_index, s.contract_address, s.block_time, 
     '0x' || substring(DATA, 283, 40) AS maker, 
-            z.taker AS taker,
+            '0xdef1c0ded9bec7f1a1670819833240f027b25eff' AS taker,
             z.taker_token,
             z.maker_token,
             bytea2numeric_v3('0x' || substring(DATA, 91, 40)) AS taker_token_amount_raw,
@@ -325,7 +323,7 @@ SELECT   s.tx_hash tx_hash, s.index evt_index, s.contract_address, s.block_time,
             FALSE AS matcha_limit_order_flag
     
     FROM {{ source('bnb', 'logs') }} s
-    JOIN zeroex_tx z on z.tx_hash = s.tx_hash and z.evt_index = s.index
+    JOIN zeroex_tx z on z.tx_hash = s.tx_hash 
     WHERE topic1 = '0xd78ad95fa46c994b6551d0da85fc275fe613ce37657fb8d5e3d130840159d822' -- all the uni v2 swap event
            and topic2 = '0x000000000000000000000000def1c0ded9bec7f1a1670819833240f027b25eff' -- 0x EP
         {% if is_incremental() %}
@@ -338,7 +336,10 @@ SELECT   s.tx_hash tx_hash, s.index evt_index, s.contract_address, s.block_time,
     
 )  
 , uni_v2_pair_creation as (
-    SELECT concat('0x', substring(cast(data as varchar(256)),27,40) ) pair
+    SELECT concat('0x', substring(cast(data as varchar(256)),27,40) ) pair,
+    cast(substring(topic3, 27, 40) as varchar(44)) AS  makerToken,
+    cast(substring(topic2, 27, 40) as varchar(44)) AS takerToken,
+    rank() over (partition by substring(cast(data as varchar(256)),27,40) order by block_time asc) rnk
     FROM {{ source('bnb', 'logs') }} creation
     
     WHERE creation.topic1 = '0x0d3648bd0f6ba80134a33ba9275ac585d9d315f0ad8355cddefde31afa28d0e9'  -- all the uni v2 pair creation event
@@ -353,11 +354,25 @@ SELECT   s.tx_hash tx_hash, s.index evt_index, s.contract_address, s.block_time,
 ) , 
 direct_uniswapv2 as (
 
-select s.* 
+select s.tx_hash, 
+    s.evt_index,
+    s.contract_address,
+    s.block_time,
+    maker, 
+    taker,
+    takerToken taker_token,
+    makerToken maker_token,
+    taker_token_amount_raw,
+    maker_token_amount_raw,
+    type,
+    affiliate_address,
+    swap_flag,
+    matcha_limit_order_flag
 
 from uni_v2_swap s 
 
-join uni_v2_pair_creation creation on cast(s.contract_address as varchar(42))  = creation.pair 
+join uni_v2_pair_creation creation on cast(s.contract_address as varchar(42)) = creation.pair 
+where rnk = 1 
 ),  
 
 all_tx AS (
@@ -428,6 +443,7 @@ AND tx.block_time >= '{{zeroex_v3_start_date}}'
 LEFT JOIN {{ source('prices', 'usd') }} tp ON date_trunc('minute', all_tx.block_time) = tp.minute
 AND CASE
         WHEN all_tx.taker_token = '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee' THEN '0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c'
+        WHEN all_tx.taker_token = '0x0000000000000000000000000000000000000000' THEN '0x55d398326f99059ff775485246999027b3197955'
         ELSE all_tx.taker_token
     END = tp.contract_address
 AND tp.blockchain = 'bnb'
@@ -442,6 +458,7 @@ AND tp.minute >= '{{zeroex_v3_start_date}}'
 LEFT JOIN {{ source('prices', 'usd') }} mp ON DATE_TRUNC('minute', all_tx.block_time) = mp.minute
 AND CASE
         WHEN all_tx.maker_token = '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee' THEN '0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c'
+        WHEN all_tx.maker_token = '0x0000000000000000000000000000000000000000' THEN '0x55d398326f99059ff775485246999027b3197955'
         ELSE all_tx.maker_token
     END = mp.contract_address
 AND mp.blockchain = 'bnb'
@@ -455,10 +472,12 @@ AND mp.minute >= '{{zeroex_v3_start_date}}'
 
 LEFT OUTER JOIN {{ ref('tokens_erc20') }} ts  ON ts.contract_address = case 
                     WHEN all_tx.taker_token = '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee' THEN '0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c'
+                    WHEN all_tx.taker_token = '0x0000000000000000000000000000000000000000' THEN '0x55d398326f99059ff775485246999027b3197955'
                     ELSE all_tx.taker_token end
                 AND ts.blockchain = 'bnb'
 LEFT OUTER JOIN {{ ref('tokens_erc20') }} ms ON ms.contract_address = 
                 case 
                     WHEN all_tx.maker_token = '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee' THEN '0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c'
+                    WHEN all_tx.maker_token = '0x0000000000000000000000000000000000000000' THEN '0x55d398326f99059ff775485246999027b3197955'
                     ELSE all_tx.maker_token end 
                 AND ms.blockchain = 'bnb'
