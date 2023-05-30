@@ -362,6 +362,7 @@ WITH raw_token_list AS (
     ,('0xBB6BBaa0F6D839A00c82B10747aBc3b7E2eEcc82', 'IBEX', 18, 'underlying')
     ,('0xeAeAdAC73baaF4cB8B024dE9D65B2eeFa722856C', 'RFWSTETH', 18, 'underlying')
     ,('0x7d14206c937e70e19e3a5b94011faf0d5b3928e2', 'VITA', 18, 'underlying')
+    ,('0x9A601C5bb360811d96A23689066af316a30c3027', 'PIKA', 18, 'underlying')
     
     ) AS temp_table (contract_address, symbol, decimals, token_type)
 )
