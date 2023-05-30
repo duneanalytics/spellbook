@@ -2,10 +2,8 @@
     schema = 'dydx_ethereum',
     alias = 'proposals',
     partition_by = ['block_date'],
-    materialized = 'incremental',
+    materialized = 'table',
     file_format = 'delta',
-    incremental_strategy = 'merge',
-    unique_key = ['blockchain', 'project', 'version', 'tx_hash'],
     post_hook='{{ expose_spells(\'["ethereum"]\',
                                 "project",
                                 "dydx",
@@ -74,6 +72,3 @@ LEFT JOIN cte_sum_votes csv ON csv.id = pcr.id
 LEFT JOIN {{ source('dydx_protocol_ethereum', 'DydxGovernor_evt_ProposalCanceled') }} pca ON pca.id = pcr.id
 LEFT JOIN {{ source('dydx_protocol_ethereum', 'DydxGovernor_evt_ProposalExecuted') }} pex ON pex.id = pcr.id
 LEFT JOIN {{ source('dydx_protocol_ethereum', 'DydxGovernor_evt_ProposalQueued') }} pqu ON pqu.id = pcr.id
-{% if is_incremental() %}
-WHERE pcr.evt_block_time > (select max(created_at) from {{ this }})
-{% endif %}
