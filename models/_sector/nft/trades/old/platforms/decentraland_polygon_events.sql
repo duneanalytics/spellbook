@@ -58,6 +58,7 @@ SELECT
     src.nftAddress as nft_contract_address,
     agg.name AS aggregator_name,
     agg.contract_address AS aggregator_address,
+    src.evt_tx_hash as tx_hash, 
     t.`from` AS tx_from,
     t.`to` AS tx_to,
     CAST(COALESCE(src.price_raw, 0) * 0.025 as double) as platform_fee_amount_raw, 
