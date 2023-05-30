@@ -366,6 +366,7 @@ models:
             - blockchain
             - frontrun_tx_hash
             - frontrun_index
+            - sandwiched_pool
     columns: 
       - *blockchain
       - *project
@@ -423,6 +424,8 @@ models:
       - &sandwiched_pool
         name: sandwiched_pool
         description: "Sandwiched DEX pool"
+        tests:
+          - not_null
       - &frontrun_tx_hash
         name: frontrun_tx_hash
         description: "Frontrun transaction hash"
