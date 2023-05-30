@@ -21,7 +21,7 @@ WITH dexs AS
     -- -- pay_gem corresponds with take_amt - this is what the taker is taking and what the maker is selling
     -- -- buy_gem corresponds with give_amt - this is what the taker is giving and what the maker is buying
 
-    --From the prespective of the taker
+    --From the prespective of the taker - LogTake
     SELECT
          t.evt_block_time AS block_time
         , t.evt_block_number
@@ -42,6 +42,31 @@ WITH dexs AS
     WHERE t.evt_block_time >= '{{project_start_date}}'
     {% if is_incremental() %}
     AND t.evt_block_time >= date_trunc('day', now() - interval '1 week')
+    {% endif %}
+
+    UNION 
+
+    --From the prespective of the taker - emitTake
+    SELECT
+         t2.evt_block_time AS block_time
+        , t2.evt_block_number
+        ,t2.taker AS taker
+        ,t2.maker AS maker
+        ,t2.take_amt AS token_bought_amount_raw
+        ,t2.give_amt AS token_sold_amount_raw
+        ,cast(NULL as double) AS amount_usd
+        ,t2.pay_gem AS token_bought_address
+        ,t2.buy_gem AS token_sold_address
+        ,t2.contract_address as project_contract_address
+        ,t2.evt_tx_hash AS tx_hash
+        ,'' AS trace_address
+        ,t2.evt_index
+    FROM
+        {{ source('rubicon_optimism', 'RubiconMarket_evt_emitTake') }} t2
+        
+    WHERE t2.evt_block_time >= '{{project_start_date}}'
+    {% if is_incremental() %}
+    AND t2.evt_block_time >= date_trunc('day', now() - interval '1 week')
     {% endif %}
 )
 SELECT
