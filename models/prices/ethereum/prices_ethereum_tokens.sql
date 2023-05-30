@@ -895,7 +895,6 @@ FROM
     ('coc-cocktailbarfinance', 'ethereum', 'COC', '0x22b6c31c2beb8f2d0d5373146eed41ab9ede3caf', 8),
     ('don-don-key', 'ethereum', 'DON', '0x217ddead61a42369a266f1fb754eb5d3ebadc88a', 18),
     ('tama-tamadoge', 'ethereum', 'TAMA', '0x12b6893ce26ea6341919fe289212ef77e51688c8', 18),
-    ('prxy-proxy', 'ethereum', 'PRXY', '0x22acaee85ddb83a3a33b7f0928a0e2c3bfdb6a4f', 18),
     ('dbuy-doont-buy', 'ethereum', 'DBUY', '0x4ece5c5cfb9b960a49aae739e15cdb6cfdcc5782', 9),
     ('qark-qanplatform', 'ethereum', 'QANX', '0xaaa7a10a8ee237ea61e8ac46c50a8db8bcc1baaa', 18),
     ('rvf-rocket-vault-rocketx', 'ethereum', 'RVF', '0xdc8af07a7861bedd104b8093ae3e9376fc8596d2', 18),
@@ -1393,7 +1392,6 @@ FROM
     ('omi-ecomi', 'ethereum', 'OMI', '0xeD35af169aF46a02eE13b9d79Eb57d6D68C1749e', 18),
     ('xtp-tap', 'ethereum', 'XTP', '0x6368e1E18c4C419DDFC608A0BEd1ccb87b9250fc', 18),
     ('cap-cap', 'ethereum', 'CAP', '0x43044f861ec040DB59A7e324c40507adDb673142', 18),
-    ('rnbw-halodao', 'ethereum', 'RNBW', '0xE94B97b6b43639E238c851A7e693F50033EfD75C', 18),
     ('ator-airtor-protocol', 'ethereum', 'ATOR', '0x0F7B3F5a8FeD821c5eb60049538a548dB2D479ce', 18),
     ('combo-furucombo', 'ethereum', 'COMBO', '0xfFffFffF2ba8F66D4e51811C5190992176930278', 18),
     ('bmi-bridge-mutual', 'ethereum', 'BMI', '0x725C263e32c72dDC3A19bEa12C5a0479a81eE688', 18),
@@ -1618,20 +1616,22 @@ FROM
     ('grain-granary','ethereum','GRAIN','0xf88baf18fab7e330fa0c4f83949e23f52fececce',18),
     ('verse-verse-token', 'ethereum', 'VERSE', '0x249ca82617ec3dfb2589c4c17ab7ec9765350a18', 18)
     ) as temp (token_id, blockchain, symbol, contract_address, decimals)
-where contract_address not in (
+where lower(trim(contract_address)) not in (
     -- bad price feeds
     '0x841fb148863454a3b3570f515414759be9091465'    -- SHIH
     ,'0xf3b9569f82b18aef890de263b84189bd33ebe452'   -- CAW
-    ,'0x7815bDa662050D84718B988735218CFfd32f75ea'   -- YEL
+    ,'0x7815bda662050d84718b988735218cffd32f75ea'   -- YEL
     ,'0x7fc3ec3574d408f3b59cd88709bacb42575ebf2b'   -- POP
-    ,'0x5D858bcd53E085920620549214a8b27CE2f04670'   -- POP
+    ,'0x5d858bcd53e085920620549214a8b27ce2f04670'   -- POP
     ,'0xb6c5c839cef46082a2b51164e8db649c121f147e'   -- UP
     ,'0xf5238462e7235c7b62811567e63dd17d12c2eaa0'   -- CGT
     ,'0xc5b3d3231001a776123194cf1290068e8b0c783b'   -- LIT
-    ,'0x8E6cd950Ad6ba651F6DD608Dc70e5886B1AA6B24'   -- STARL
-    ,'0xfb5453340C03db5aDe474b27E68B6a9c6b2823Eb'   -- ROBOT
+    ,'0x8e6cd950ad6ba651f6dd608dc70e5886b1aa6b24'   -- STARL
+    ,'0xfb5453340c03db5ade474b27e68b6a9c6b2823eb'   -- ROBOT
     ,'0xdb4d1099d53e92593430e33483db41c63525f55f'   -- JOY
-    ,'0xBD2F0Cd039E0BFcf88901C98c0bFAc5ab27566e3'   -- DSD
-    ,'0x090185f2135308BaD17527004364eBcC2D37e5F6'   -- SPELL
+    ,'0xbd2f0cd039e0bfcf88901c98c0bfac5ab27566e3'   -- DSD
+    ,'0x090185f2135308bad17527004364ebcc2d37e5f6'   -- SPELL
     ,'0x73968b9a57c6e53d41345fd57a6e6ae27d6cdb2f'   -- SDT
+    ,'0x22acaee85ddb83a3a33b7f0928a0e2c3bfdb6a4f'   -- PRXY
+    ,'0xe94b97b6b43639e238c851a7e693f50033efd75c'   -- RNBW
 )

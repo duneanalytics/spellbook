@@ -12,7 +12,7 @@
     )
 }}
 
-{% set project_start_date = '2022-11-23' %} -- min(evt_block_time) from equalizer_exchange_fantom.Pair_evt_Swap
+{% set project_start_date = '2022-11-03' %} -- min(evt_block_time) from equalizer_exchange_fantom.Pair_evt_Swap
 
 with dexs as (
     -- equalizer_exchange
