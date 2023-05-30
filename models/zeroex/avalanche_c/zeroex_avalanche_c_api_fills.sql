@@ -5,11 +5,7 @@
         unique_key = ['block_date', 'tx_hash', 'evt_index'],
         on_schema_change='sync_all_columns',
         file_format ='delta',
-        incremental_strategy='merge',
-        post_hook='{{ expose_spells(\'["avalanche_c"]\',
-                                "project",
-                                "zeroex",
-                                \'["rantum",  "bakabhai993", "danning.sui"]\') }}'
+        incremental_strategy='merge'
     )
 }}
 
@@ -301,7 +297,7 @@ SELECT
         maker_token_amount_raw / pow(10, mp.decimals) AS maker_token_amount,
         maker_token_amount_raw,
         all_tx.type,
-        affiliate_address,
+        max(affiliate_address) over (partition by all_tx.tx_hash) as affiliate_address,
         swap_flag,
         matcha_limit_order_flag,
         CASE WHEN maker_token IN ('0x9702230a8ea53601f5cd2dc00fdbc13d4df4a8c7','0xa7d7079b0fead91f3e65f86e8915cb59c1a4c664','0xc7198437980c041c805a1edcba50c1ce5db95118',

@@ -1,15 +1,12 @@
 {{  config(
+        tags=['prod_exclude'],
         alias='api_fills_deduped',
         materialized='incremental',
         partition_by = ['block_date'],
         unique_key = ['block_date', 'tx_hash', 'evt_index'],
         on_schema_change='sync_all_columns',
         file_format ='delta',
-        incremental_strategy='merge',
-        post_hook='{{ expose_spells(\'["polygon"]\',
-                                "project",
-                                "zeroex",
-                                \'["rantum","bakabhai993"]\') }}'
+        incremental_strategy='merge'
     )
 }}
 

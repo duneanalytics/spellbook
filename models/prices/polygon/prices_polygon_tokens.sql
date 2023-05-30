@@ -26,6 +26,7 @@ FROM
     ("eurs-stasis-eurs","polygon","EURS","0xe111178a87a3bff0c8d18decba5798827539ae99",2),
     ("matic-polygon", "polygon", "MATIC", "0x0000000000000000000000000000000000001010", 18),
     ("dai-dai", "polygon", "DAI", "0x8f3cf7ad23cd3cadbd9735aff958023239c6a063", 18),
+    ("dquick-dragon39s-quick", "polygon", "dQUICK", "0x958d208Cdf087843e9AD98d23823d32E17d723A1", 18),
     ("usdc-usd-coin", "polygon", "USDC", "0x2791bca1f2de4661ed88a30c99a7a9449aa84174", 6),
     ("usdt-tether", "polygon", "USDT", "0xc2132d05d31c914a87c6611c10748aeb04b58e8f", 6),
     ("stmatic-lido-staked-matic","polygon","stMATIC","0x3a58a54c066fdc0f2d55fc9c89f0415c92ebf3c4",18),
@@ -60,6 +61,8 @@ FROM
     ("revv-revv", "polygon", "REVV", "0x70c006878a5a50ed185ac4c87d837633923de296", 18),
     ("grain-granary","polygon","GRAIN","0x8429d0afade80498eadb9919e41437a14d45a00b",18),
     ("oath-oath","polygon","OATH","0xc2c52ff5134596f5ff1b1204d3304228f2432836",18),
-    ("tetu-tetu-reward-token","polygon","TETU","0x255707B70BF90aa112006E1b07B9AeA6De021424",18)  
-
+    ("tetu-tetu-reward-token","polygon","TETU","0x255707B70BF90aa112006E1b07B9AeA6De021424",18),
+    ("quick-quickswap","polygon","QUICK","0x831753dd7087cac61ab5644b308642cc1c33dc13",18),
+    ("dimo-dimo","polygon","DIMO","0xe261d618a959afffd53168cd07d12e37b26761db",18),
+    ("gddy-giddy","polygon","GDDY","0x67eb41a14c0fe5cd701fc9d5a3d6597a72f641a6",18)
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)
