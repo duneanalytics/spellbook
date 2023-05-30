@@ -1,5 +1,4 @@
 {{ config(
-    tags = ['prod_exclude'],
     schema='lido_liquidity_optimism',
     alias = 'kyberswap_pools',
     partition_by = ['time'],
@@ -29,11 +28,18 @@ where token0 = lower('0x1F32b1c2345538c0c6f582fCB022739c4A194Ebb') or token1 = l
 
 , tokens_mapping as (
 select distinct address_l1, address_l2 from (
-select l1_token as address_l1, l2_token as address_l2 from tokens_optimism.erc20_bridged_mapping
-union all
-select lower('0x1a7e4e63778B4f12a199C062f3eFdD288afCBce8'),lower('0x9485aca5bbbe1667ad97c7fe7c4531a624c8b1ed')
-union all
+select l1_token as address_l1, l2_token as address_l2 from tokens_optimism.erc20_bridged_mapping 
+where l1_token not in (select l1_token from tokens_optimism.erc20_bridged_mapping group by 1 having count(*) > 1)
+union all 
+select lower('0x1a7e4e63778B4f12a199C062f3eFdD288afCBce8'),lower('0x9485aca5bbbe1667ad97c7fe7c4531a624c8b1ed') 
+union all 
 select lower('0x8D6CeBD76f18E1558D4DB88138e2DeFB3909fAD6'),  lower('0xdfa46478f9e5ea86d57387849598dbfb2e964b02')
+union all
+select lower('0x7f39c581f595b53c5cb19bd0b3f8da6c935e2ca0'), lower('0x1F32b1c2345538c0c6f582fCB022739c4A194Ebb')
+union all
+select lower('0x6b175474e89094c44da98b954eedeac495271d0f'), lower('0xDA10009cBd5D07dd0CeCc66161FC93D7c9000da1')
+union all
+select lower('0x514910771af9ca656af840dff83e8264ecf986ca'), lower('0x350a791Bfc2C21F9Ed5d10980Dad2e2638ffa7f6')
 ))
 
 , tokens as (
@@ -259,5 +265,5 @@ left join trading_volume tv on l.time = tv.time and l.pool = tv.pool
 
 )
 
-select CONCAT(CONCAT(CONCAT(CONCAT(CONCAT(blockchain,CONCAT(' ', project)) ,' '), paired_token_symbol),':') , main_token_symbol, ' ', fee) as pool_name,*
+select CONCAT(CONCAT(CONCAT(CONCAT(CONCAT(blockchain,CONCAT(' ', project)) ,' '), coalesce(paired_token_symbol, 'unknown')),':') , main_token_symbol, ' ', fee) as pool_name,*
 from all_metrics
