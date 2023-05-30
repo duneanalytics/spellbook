@@ -10,6 +10,11 @@ models:
       tags: ['polygon','element','events']
     description: >
         Element events on polygon
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - unique_trade_id
+            - blockchain
     columns:
       - &blockchain
         name: blockchain
