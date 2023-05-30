@@ -1,24 +1,70 @@
 ![spellbook-logo@10x](https://user-images.githubusercontent.com/2520869/200791687-76f1bc4f-05d0-4384-a753-e3b5da0e7a4a.png#gh-light-mode-only)
 ![spellbook-logo-negative_10x](https://user-images.githubusercontent.com/2520869/200865128-426354af-8059-494d-83f7-46947aae271c.png#gh-dark-mode-only)
 
-Welcome to your [Spellbook](https://youtu.be/o7p0BNt7NHs). Cast a magical incantation to tame the blockchain.
+Welcome to [Spellbook](https://youtu.be/o7p0BNt7NHs). Cast a magical incantation to tame the blockchain.
 
-📖 Documentation of models can be found [here](https://spellbook-docs.dune.com/#!/overview), with a full example contribution walkthrough [here](https://dune.com/docs/spellbook/getting-started/)
 
-### Heads up
-Working on something new? Open a draft PR to let other wizards know you're working on it to help minimize duplicated work. 
+## TL;DR
+- Are you building something new? **Please make sure to open a Draft PR**, so we minimize duplicated work, and other wizards can help you if you need
+- Don't know where to start? The docs below will guide you, but as a summary:
+  - Want to make an incremental improvement to one of our spells? (add a new project, fix a bug you found), simply open a PR with your changes. 
+    - Follow the guide for [Submitting a PR](), [Setting up your dev environment]() and [Using dbt to write spells]() if you find yourself lost.
+    - Not sure how to start? Follow the walkthrough [here](https://dune.com/docs/data-tables/spellbook/contributing/).
+    - Make sure to open a draft PR if you will work on your spell for longer than a few days, to avoid duplicated work
+  - Do you want to get started building spells and you don't know what to build? Check [Issues]() to see what the community needs.
+  - Check the Discussions section to see what problems the community is trying to solve (i.e. non-incremental changes) or propose your own!
+- Have questions? Head over to #spellbook on our [disccord](https://discord.com/channels/757637422384283659/999683200563564655) and the community will be happy to help out!
+- Looking for abstractions from the V1 engine? We moved them to [dune-v1-abstractions](https://github.com/duneanalytics/dune-v1-abstractions).
 
-Looking for abstractions from the V1 engine? We moved them to [dune-v1-abstractions](https://github.com/duneanalytics/dune-v1-abstractions).
 
-## Intro
+## Table of Contents
 
-Write SQL to transform blockchain data into curated datasets on [dune.com](https://dune.com/home).
+- [Introduction](#introduction)
+- [How to contribute](#ways-to-contribute-to-spellbook)
+  - [Submitting a PR](#submitting-a-pr)
+  - [Testing your Spell](#testing-your-spell)
+  - [Connecting with other wizards](#connecting-with-other-wizards)
+- [Setting up your dev environment](#setting-up-your-local-dev-environment)
+- [Using dbt to write spells](#how-to-use-dbt-to-create-spells)
 
-First-time visitor? Check out how to [get started](#getting-started) below and visit the [Spellbook Getting Started Guide](https://dune.com/docs/data-tables/spellbook/contributing/). More tk.
 
-Been here before? An archive of intermediate datasets that were contributed to Dune v1 can be consulted [here](https://github.com/duneanalytics/dune-v1-abstractions).
+## Introduction
 
-## Getting Started
+Spellbook is Dune's interpretation layer, built for and by the community. With Spellbook, 
+
+Spellbook is a [dbt](https://docs.getdbt.com/docs/introduction) project. Each model is a simple SQL query with minor syntactic sugar (meant to capture dependencies and help build the resulting tables), and does a small part of the task of turning raw and decoded records into interpretable blockchain data.
+
+Spellbook is built for and by the community, you are welcome to close any gaps that you find by sending a PR, creating issues to propose small changes or track bugs, or participate in discussions to help steer the future of this project.
+
+## Ways to contribute to Spellbook
+
+- **Build** spells - if you want to write code, simply clone the repo, write your code, and open a PR
+  - If you already know what to build, there's no red tape to skip around, simply open a PR when you're ready. We advice opening draft PRs early, so we avoid duplication of efforts and you can get help from other wizards
+  - If you don't know where to start, check out Issues for ideas. We're always looking for help fixing small bugs or implementing spells for small projects
+- **Flag** gaps in spellbook - have you found a bug, or is there a project missing from one of the sectors that you'd like to add? You can create an [issue](https://github.com/duneanalytics/spellbook/issues) and bring other wizards to your aid.
+  - **Bugs**: Found a record on a Spell that doesn't reflect chain data correctly? Please make sure you link to a block explorer showing the expected value, and a dune query showing the wrong value. If there's multiple records affected, any sense of scale (how many rows, affected USD volume) will also be very helpful.
+- **Propose** changes to spellbook - [Discussions](https://github.com/duneanalytics/spellbook/discussions) are where we bring up, challenge and develop ideas to continue building spellbook. If you want to make a major change to a spell (e.g. major overhaul to a sector, launching a new sector, designing a new organic volume filter, etc.).
+
+### Submitting a PR
+Want to get right to work? Follow the guide [here](https://dune.com/docs/data-tables/spellbook/contributing/#7-steps-to-adding-a-spell) to get started.
+
+### Testing your spell
+You don't need a complex local setup to test spells against Dune's engine. Once you send a PR, our CI pipeline will run and test it, and, if the job finishes successfully, you'll be able to query the data your PR created directly from dune.com.
+
+Simply write a query like you would for any of our live tables, and use the test schema to fetch the tables your PR created.
+
+`test_schema.git_{{commit_hash}}_{{table_name}}` 
+
+You can find the exact names easily by looking at the logs from the `dbt slim ci` action, under `dbt run initial model(s)`.
+
+Please note: the test tables built in the CI pipeline will exist for ~24 hours. If your table doesn't exist, trigger the pipeline to run again and recreate the test table.
+
+### Connecting with other wizards
+
+We use Discord to connect with our community. Head over to spellbook channel on Dune's Discord for questions or to ask for help with a particular PR. We encourage you to learn by doing, and leverage our vibrant community to help you get going.
+
+
+## Setting up your Local Dev Environment
 
 ### Prerequisites
 
@@ -122,7 +168,7 @@ This in turn will help us deploy these spells faster and avoid any potential mis
 
 We are thinking about better solutions to make more dbt actions available directly but we also have to consider security.
 
-### How to use dbt to create spells
+## How to use dbt to create spells
 
 There are a couple of new concepts to consider when making spells in dbt. The most common ones wizards will encounter are refs, sources, freshness, and tests.
 
