@@ -1,6 +1,6 @@
 {{ config(
         alias ='liquidity',
-        post_hook='{{ expose_spells(\'["ethereum"]\',
+        post_hook='{{ expose_spells(\'["ethereum", "arbitrum", "optimism"]\',
                                 "project",
                                 "lido_liquidity",
                                 \'["ppclunghe", "gregshestakovlido", "hosuke"]\') }}'
@@ -8,7 +8,9 @@
 }}
 
 {% set lido_liquidity_models = [
- ref('lido_liquidity_ethereum_kyberswap_pools')
+ ref('lido_liquidity_ethereum_kyberswap_pools'),
+ ref('lido_liquidity_arbitrum_kyberswap_pools'),
+ ref('lido_liquidity_optimism_kyberswap_pools')
 ] %}
 
 
