@@ -24,7 +24,7 @@ src_data_enriched as (
         nftAddress, 
         seller, 
         totalPrice/POWER(10, 18) as price_converted, 
-        totalPrice as price_raw, 
+        totalPrice as price_raw 
         -- '0xa1c57f48f0deb89f569dfbe6e2b7f46d33606fd4' as token_address
     FROM 
     {{ source('decentraland_polygon','MarketplaceV2_evt_OrderSuccessful') }}
