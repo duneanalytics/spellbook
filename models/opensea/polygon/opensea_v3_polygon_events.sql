@@ -277,10 +277,10 @@ with source_polygon_transactions as (
                   ,dense_rank() over (partition by call_tx_hash order by call_trace_address) as evt_index
                   ,'match_ord' as sub_type
                   ,execution_idx + 1 as sub_idx
-                  ,_0[0]:parameters:zone as zone    -- TODO : column would be changed
-                  ,_0[0]:parameters:offerer as offerer
-                  ,_0[0]:parameters:offer[0]:itemType as offer_first_item
-                  ,_0[0]:parameters:consideration[0]:itemType as consider_first_item
+                  ,orders[0]:parameters:zone as zone    -- TODO : column would be changed
+                  ,orders[0]:parameters:offerer as offerer
+                  ,orders[0]:parameters:offer[0]:itemType as offer_first_item
+                  ,orders[0]:parameters:consideration[0]:itemType as consider_first_item
                   ,execution:offerer as sender
                   ,execution:item:token as token_contract_address
                   ,execution:item:amount as original_amount
@@ -289,7 +289,7 @@ with source_polygon_transactions as (
                   ,execution:item:recipient as receiver
                   ,contract_address as platform_contract_address
             from (select *
-                        ,posexplode(output_0) as (execution_idx, execution)   -- output_executions
+                        ,posexplode(output_executions) as (execution_idx, execution)   -- output_executions
                     from {{ source('seaport_polygon', 'Seaport_call_matchOrders') }}
                    where call_success 
                      and contract_address = '0x00000000006c3852cbef3e08e8df289169ede581'  -- Seaport v1.1
