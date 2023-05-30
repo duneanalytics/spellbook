@@ -368,6 +368,7 @@ models:
             - frontrun_index
             - sandwiched_pool
             - frontrun_taker
+            - currency_address
     columns: 
       - *blockchain
       - *project
