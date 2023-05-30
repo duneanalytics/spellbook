@@ -30,6 +30,7 @@ WITH element_txs AS (
         , ee.contract_address AS project_contract_address
         , ee.evt_tx_hash AS tx_hash
         , ee.evt_block_number AS block_number
+        , ee.evt_index
         FROM {{ source('element_ex_polygon','OrdersFeature_evt_ERC721SellOrderFilled') }} ee
         {% if is_incremental() %}
         WHERE ee.evt_block_time >= date_trunc("day", now() - interval '1 week')
@@ -57,6 +58,7 @@ WITH element_txs AS (
         , ee.contract_address AS project_contract_address
         , ee.evt_tx_hash AS tx_hash
         , ee.evt_block_number AS block_number
+        , ee.evt_index
         FROM {{ source('element_ex_polygon','OrdersFeature_evt_ERC721BuyOrderFilled') }} ee
         {% if is_incremental() %}
         WHERE ee.evt_block_time >= date_trunc("day", now() - interval '1 week')
@@ -84,6 +86,7 @@ WITH element_txs AS (
         , ee.contract_address AS project_contract_address
         , ee.evt_tx_hash AS tx_hash
         , ee.evt_block_number AS block_number
+        , ee.evt_index
         FROM {{ source('element_ex_polygon','OrdersFeature_evt_ERC1155SellOrderFilled') }} ee
         {% if is_incremental() %}
         WHERE ee.evt_block_time >= date_trunc("day", now() - interval '1 week')
@@ -111,6 +114,7 @@ WITH element_txs AS (
         , ee.contract_address AS project_contract_address
         , ee.evt_tx_hash AS tx_hash
         , ee.evt_block_number AS block_number
+        , ee.evt_index
         FROM {{ source('element_ex_polygon','OrdersFeature_evt_ERC1155BuyOrderFilled') }} ee
         {% if is_incremental() %}
         WHERE ee.evt_block_time >= date_trunc("day", now() - interval '1 week')
@@ -154,7 +158,7 @@ SELECT alet.blockchain
 , CAST(0 AS DOUBLE) AS royalty_fee_percentage
 , CAST('0' AS VARCHAR(5)) AS royalty_fee_receive_address
 , CAST('0' AS VARCHAR(5)) AS royalty_fee_currency_symbol
-, alet.blockchain || alet.project || alet.version || alet.tx_hash || alet.seller  || alet.buyer || alet.nft_contract_address || alet.token_id AS unique_trade_id
+, alet.blockchain || alet.project || alet.version || alet.tx_hash || alet.seller  || alet.buyer || alet.nft_contract_address || alet.token_id || alet.evt_index AS unique_trade_id
 FROM element_txs alet
 LEFT JOIN {{ ref('nft_aggregators') }} agg ON alet.buyer=agg.contract_address AND agg.blockchain='polygon'
 LEFT JOIN {{ ref('tokens_erc20') }} polygon_bep20_tokens ON polygon_bep20_tokens.contract_address=alet.currency_contract AND polygon_bep20_tokens.blockchain='polygon'
