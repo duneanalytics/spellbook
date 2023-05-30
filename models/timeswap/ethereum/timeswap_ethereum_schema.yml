@@ -1,0 +1,116 @@
+version: 2
+
+models:
+  - name: timeswap_ethereum_pools
+    meta:
+      blockchain: ethereum
+      sector: lending-borrowing
+      project: timeswap
+      contributors: raveena15, varunhawk19
+    config:
+      tags: ['ethereum','timeswap','pools', 'view']
+    description: >
+        Timeswap pools on Ethereum
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - pool_pair
+            - maturity
+            - strike
+    columns:
+      - &token0_symbol
+        name: token0_symbol
+        description: "The symbol of the token0"
+      - &token1_symbol
+        name: token1_symbol
+        description: "The symbol of the token1"
+      - &token0_address
+        name: token0_address
+        description: "The address of the token0"
+      - &token1_address
+        name: token1_address
+        description: "The address of the token1"
+      - &token0_decimals
+        name: token0_decimals
+        description: "The decimals of the token0"
+      - &token1_decimals
+        name: token1_decimals
+        description: "The decimals of the token1"
+      - &strike
+        name: strike
+        description: "The strike rate"
+      - &maturity
+        name: maturity
+        description: "The maturity"
+      - &pool_pair
+        name: pool_pair
+        description: "The pool pair"
+      - &borrow_contract_address
+        name: borrow_contract_address
+        description: "The borrow contract address"
+      - &lend_contract_address
+        name: lend_contract_address
+        description: "The lend contract address"
+
+  - name: timeswap_ethereum_lend
+    description: >
+        Timeswap lend transactions on Ethereum
+    config:
+      tags: ['ethereum','timeswap','lend', 'view']
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - transaction_hash
+            - pool_pair
+            - maturity
+            - strike    
+    columns:
+      - &transaction_hash
+        name: transaction_hash
+        description: "Primary key of the transaction"
+      - &time
+        name: Time
+        description: "Timestamp for block event time in UTC"
+      - &token_0
+        name: token_0
+        description: "Value of isToken0"
+      - &transaction_type
+        name: transaction_type
+        description: "Type of transaction"
+      - *maturity
+      - *strike
+      - *pool_pair
+      - &chain 
+        name: Chain
+        description: "chain"
+      - &token_amount
+        name: Token_Amount
+        description: "The amount of token borrowed"
+      - &usd_amount
+        name: USD_Amount
+        description: "The amount of token borrowed in USD"
+
+  - name: timeswap_ethereum_borrow
+    description: >
+      Timeswap borrow transactions on Ethereum
+    config:
+      tags: ['ethereum','timeswap','borrow', 'view']
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - transaction_hash
+            - pool_pair
+            - maturity
+            - strike
+    columns:  
+      - *transaction_hash
+      - *time
+      - *token_0
+      - *transaction_type
+      - *maturity
+      - *strike
+      - *pool_pair
+      - *chain
+      - *token_amount
+      - *usd_amount
+      
