@@ -367,6 +367,7 @@ models:
             - frontrun_tx_hash
             - frontrun_index
             - sandwiched_pool
+            - frontrun_taker
     columns: 
       - *blockchain
       - *project
