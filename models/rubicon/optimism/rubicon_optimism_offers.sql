@@ -70,23 +70,6 @@ trades AS
 
         -- select the trade data from the logTake event
         SELECT
-            t2.id AS offer_id,
-            t2.pay_gem AS sell_token_address,
-            t2.buy_gem AS buy_token_address,
-            CAST(t2.take_amt AS DECIMAL(38,0)) AS sold_amount_raw,
-            CAST(t2.give_amt AS DECIMAL(38,0)) AS bought_amount_raw,
-            erc20_sell.symbol AS sell_token_symbol,
-            erc20_buy.symbol AS buy_token_symbol,
-            CAST(t2.take_amt AS DECIMAL(38,0)) / power(10, erc20_sell.decimals) AS sold_amount,
-            CAST(t2.give_amt AS DECIMAL(38,0)) / power(10, erc20_buy.decimals) AS bought_amount,
-            (CAST(t2.take_amt AS DECIMAL(38,0)) / power(10, erc20_sell.decimals)) * sell_token_price.price AS sold_amount_usd,
-            (CAST(t2.give_amt AS DECIMAL(38,0)) / power(10, erc20_buy.decimals)) * buy_token_price.price AS bought_amount_usd
-        FROM {{ source('rubicon_optimism', 'RubiconMarket_evt_LogTake') }} t2 
-
-        UNION
-
-        -- select the trade data from the emitTake event
-        SELECTx\
             t1.id AS offer_id,
             t1.pay_gem AS sell_token_address,
             t1.buy_gem AS buy_token_address,
@@ -98,7 +81,24 @@ trades AS
             CAST(t1.give_amt AS DECIMAL(38,0)) / power(10, erc20_buy.decimals) AS bought_amount,
             (CAST(t1.take_amt AS DECIMAL(38,0)) / power(10, erc20_sell.decimals)) * sell_token_price.price AS sold_amount_usd,
             (CAST(t1.give_amt AS DECIMAL(38,0)) / power(10, erc20_buy.decimals)) * buy_token_price.price AS bought_amount_usd
-        FROM {{ source('rubicon_optimism', 'RubiconMarket_evt_emitTake') }} t1
+        FROM {{ source('rubicon_optimism', 'RubiconMarket_evt_LogTake') }} t1 
+
+        UNION
+
+        -- select the trade data from the emitTake event
+        SELECTx\
+            t2.id AS offer_id,
+            t2.pay_gem AS sell_token_address,
+            t2.buy_gem AS buy_token_address,
+            CAST(t2.take_amt AS DECIMAL(38,0)) AS sold_amount_raw,
+            CAST(t2.give_amt AS DECIMAL(38,0)) AS bought_amount_raw,
+            erc20_sell.symbol AS sell_token_symbol,
+            erc20_buy.symbol AS buy_token_symbol,
+            CAST(t2.take_amt AS DECIMAL(38,0)) / power(10, erc20_sell.decimals) AS sold_amount,
+            CAST(t2.give_amt AS DECIMAL(38,0)) / power(10, erc20_buy.decimals) AS bought_amount,
+            (CAST(t2.take_amt AS DECIMAL(38,0)) / power(10, erc20_sell.decimals)) * sell_token_price.price AS sold_amount_usd,
+            (CAST(t2.give_amt AS DECIMAL(38,0)) / power(10, erc20_buy.decimals)) * buy_token_price.price AS bought_amount_usd
+        FROM {{ source('rubicon_optimism', 'RubiconMarket_evt_emitTake') }} t2
 
     ) as t
 
