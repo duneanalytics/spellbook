@@ -71,12 +71,6 @@ raw_trades as (
         t1.evt_block_time
         CAST(t1.take_amt AS DECIMAL(38,0)) AS sold_amount_raw,
         CAST(t1.give_amt AS DECIMAL(38,0)) AS bought_amount_raw
-        -- erc20_sell.symbol AS sell_token_symbol,
-        -- erc20_buy.symbol AS buy_token_symbol,
-        -- CAST(t1.take_amt AS DECIMAL(38,0)) / power(10, erc20_sell.decimals) AS sold_amount,
-        -- CAST(t1.give_amt AS DECIMAL(38,0)) / power(10, erc20_buy.decimals) AS bought_amount,
-        -- (CAST(t1.take_amt AS DECIMAL(38,0)) / power(10, erc20_sell.decimals)) * sell_token_price.price AS sold_amount_usd,
-        -- (CAST(t1.give_amt AS DECIMAL(38,0)) / power(10, erc20_buy.decimals)) * buy_token_price.price AS bought_amount_usd
     FROM {{ source('rubicon_optimism', 'RubiconMarket_evt_LogTake') }} t1 
 
     UNION
@@ -89,12 +83,6 @@ raw_trades as (
         t2.evt_block_time,
         CAST(t2.take_amt AS DECIMAL(38,0)) AS sold_amount_raw,
         CAST(t2.give_amt AS DECIMAL(38,0)) AS bought_amount_raw
-        -- erc20_sell.symbol AS sell_token_symbol,
-        -- erc20_buy.symbol AS buy_token_symbol,
-        -- CAST(t2.take_amt AS DECIMAL(38,0)) / power(10, erc20_sell.decimals) AS sold_amount,
-        -- CAST(t2.give_amt AS DECIMAL(38,0)) / power(10, erc20_buy.decimals) AS bought_amount,
-        -- (CAST(t2.take_amt AS DECIMAL(38,0)) / power(10, erc20_sell.decimals)) * sell_token_price.price AS sold_amount_usd,
-        -- (CAST(t2.give_amt AS DECIMAL(38,0)) / power(10, erc20_buy.decimals)) * buy_token_price.price AS bought_amount_usd
     FROM {{ source('rubicon_optimism', 'RubiconMarket_evt_emitTake') }} t2
 ),
 
