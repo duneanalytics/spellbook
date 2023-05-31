@@ -369,6 +369,7 @@ models:
             - sandwiched_pool
             - frontrun_taker
             - currency_address
+            - ratio_traded_token
     columns: 
       - *blockchain
       - *project
