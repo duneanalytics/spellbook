@@ -1,4 +1,5 @@
 {{config(alias='addresses',
+        tags=['static'],
         post_hook='{{ expose_spells(\'["fantom"]\',
                                     "sector",
                                     "cex",
