@@ -1,7 +1,7 @@
 {{ config( alias='minutes', tags=['static'], materialized = 'table')}}
 
 select explode(sequence(
-         date_trunc('minute', now() - interval '20 year')
-        ,date_trunc('minute', now() + interval '20 year')
-        ,interval 1 day)) as minute
+          TIMESTAMP('2000-01-01')
+       ,  TIMESTAMP('2100-01-01')
+        ,interval 1 minute )) as minute
 order by minute asc
