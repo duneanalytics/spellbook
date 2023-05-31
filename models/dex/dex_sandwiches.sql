@@ -4,7 +4,7 @@
         materialized = 'incremental',
         file_format = 'delta',
         incremental_strategy = 'merge',
-        unique_key = ['blockchain', 'sandwiched_pool', 'frontrun_tx_hash', 'frontrun_taker', 'frontrun_index', 'currency_address', 'ratio_traded_token'],
+        unique_key = ['blockchain', 'sandwiched_pool', 'frontrun_tx_hash', 'frontrun_taker', 'frontrun_index', 'currency_address'],
         post_hook='{{ expose_spells(\'["ethereum", "bnb", "avalanche_c", "gnosis", "optimism", "arbitrum", "fantom", "polygon"]\',
                                 "sector",
                                 "dex",
@@ -13,7 +13,7 @@
 }}
 
 WITH trades AS (
-    SELECT 'ethereum' AS blockchain
+    SELECT distinct 'ethereum' AS blockchain
     , dt.project
     , dt.version
     , date_trunc("day", dt.block_time) AS block_date
@@ -47,7 +47,7 @@ WITH trades AS (
 
     UNION ALL
 
-    SELECT 'bnb' AS blockchain
+    SELECT distinct 'bnb' AS blockchain
     , dt.project
     , dt.version
     , date_trunc("day", dt.block_time) AS block_date
@@ -81,7 +81,7 @@ WITH trades AS (
 
     UNION ALL
 
-    SELECT 'avalanche_c' AS blockchain
+    SELECT distinct 'avalanche_c' AS blockchain
     , dt.project
     , dt.version
     , date_trunc("day", dt.block_time) AS block_date
@@ -115,7 +115,7 @@ WITH trades AS (
 
     UNION ALL
 
-    SELECT 'gnosis' AS blockchain
+    SELECT distinct 'gnosis' AS blockchain
     , dt.project
     , dt.version
     , date_trunc("day", dt.block_time) AS block_date
@@ -149,7 +149,7 @@ WITH trades AS (
 
     UNION ALL
 
-    SELECT 'optimism' AS blockchain
+    SELECT distinct 'optimism' AS blockchain
     , dt.project
     , dt.version
     , date_trunc("day", dt.block_time) AS block_date
@@ -183,7 +183,7 @@ WITH trades AS (
 
     UNION ALL
 
-    SELECT 'arbitrum' AS blockchain
+    SELECT distinct 'arbitrum' AS blockchain
     , dt.project
     , dt.version
     , date_trunc("day", dt.block_time) AS block_date
@@ -217,7 +217,7 @@ WITH trades AS (
 
     UNION ALL
 
-    SELECT 'fantom' AS blockchain
+    SELECT distinct 'fantom' AS blockchain
     , dt.project
     , dt.version
     , date_trunc("day", dt.block_time) AS block_date
@@ -251,7 +251,7 @@ WITH trades AS (
 
     UNION ALL
 
-    SELECT 'polygon' AS blockchain
+    SELECT distinct 'polygon' AS blockchain
     , dt.project
     , dt.version
     , date_trunc("day", dt.block_time) AS block_date
@@ -285,20 +285,20 @@ WITH trades AS (
     )
 
 , sandwiches AS (
-    SELECT distinct s1.blockchain
+    SELECT s1.blockchain
     , s1.project
     , s1.version
     , s1.block_date
     , s1.block_time
     , s1.block_number
-    , (COALESCE(MAX_BY(s2.token_sold_amount_raw, s2.index), 0)/s1.token_bought_amount_raw) AS ratio_traded_token
-    , (COALESCE(MAX_BY(s2.token_bought_amount_raw, s2.index), 0)/s1.token_sold_amount_raw) AS profit_percentage_of_initial
-    , MAX_BY(s2.token_bought_amount_raw, s2.index)-s1.token_sold_amount_raw AS profit_amount_raw
-    , MAX_BY(s2.token_bought_amount, s2.index)-s1.token_sold_amount AS profit_amount
+    , SUM(s2.token_sold_amount_raw)/SUM(s1.token_bought_amount_raw) AS ratio_traded_token
+    , SUM(s2.token_bought_amount_raw)/SUM(s1.token_sold_amount_raw) AS profit_percentage_of_initial
+    , SUM(s2.token_bought_amount_raw)-SUM(s1.token_sold_amount_raw) AS profit_amount_raw
+    , SUM(s2.token_bought_amount)-SUM(s1.token_sold_amount) AS profit_amount
     , s1.token_sold_address AS currency_address
     , s1.token_sold_symbol AS currency_symbol
-    , s1.token_bought_amount_raw-MAX_BY(s2.token_sold_amount_raw, s2.index) AS profit_traded_currency_amount_raw
-    , s1.token_bought_amount-MAX_BY(s2.token_sold_amount, s2.index) AS profit_traded_currency_amount
+    , SUM(s1.token_bought_amount_raw)-SUM(s2.token_sold_amount_raw) AS profit_traded_currency_amount_raw
+    , SUM(s1.token_bought_amount)-SUM(s2.token_sold_amount) AS profit_traded_currency_amount
     , s1.token_bought_address AS traded_currency_address
     , s1.token_bought_symbol AS traded_currency_symbol
     , s1.taker AS frontrun_taker
@@ -316,7 +316,10 @@ WITH trades AS (
     , MAX_BY(s2.tx_fee, s2.index) AS backrun_tx_fee
     , CASE WHEN MAX_BY(s2.token_bought_amount, s2.index) > s1.token_sold_amount THEN true ELSE false END AS is_profitable
     FROM trades s1
-    INNER JOIN trades s2 ON s1.block_time=s2.block_time
+    INNER JOIN trades s2 ON s1.blockchain=s2.blockchain
+        AND s1.block_time=s2.block_time
+        AND s1.project=s2.project
+        AND s1.version=s2.version
         AND s1.tx_hash!=s2.tx_hash
         AND s1.index<s2.index
         AND s1.project_contract_address=s2.project_contract_address
@@ -325,14 +328,16 @@ WITH trades AS (
         AND s1.token_bought_address=s2.token_sold_address
         AND s2.token_sold_amount BETWEEN s1.token_bought_amount*0.9 AND s1.token_bought_amount*1.1
         --AND s2.token_bought_amount > s1.token_sold_amount -- Removed to also include trades where the sandwiched trade was unprofitable
-    INNER JOIN trades v ON v.block_time=s1.block_time
+    INNER JOIN trades v ON v.blockchain=s1.blockchain
+        AND v.block_time=s1.block_time
+        AND v.project=s1.project
+        AND v.version=s1.version
         AND v.project_contract_address=s2.project_contract_address
         AND v.evt_index>s1.evt_index
         AND v.evt_index<s2.evt_index
         AND v.token_sold_address=s1.token_sold_address
         AND v.token_bought_address=s1.token_bought_address
-    GROUP BY s1.blockchain, s1.project, s1.version, s1.block_date, s1.block_time, s1.block_number, s1.token_bought_amount_raw
-    , s1.token_sold_amount, s1.token_sold_amount_raw, s1.token_sold_address, s1.token_sold_symbol, s1.token_bought_amount
+    GROUP BY s1.blockchain, s1.project, s1.version, s1.block_date, s1.block_time, s1.block_number, s1.token_sold_address, s1.token_sold_symbol
     , s1.token_bought_address, s1.token_bought_symbol, s1.taker, s1.tx_from, s1.index, s1.project_contract_address, s1.tx_hash
     , s1.gas_price, s1.tx_fee
     )
