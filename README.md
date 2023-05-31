@@ -15,7 +15,7 @@ Welcome to [Spellbook](https://youtu.be/o7p0BNt7NHs). Cast a magical incantation
   - Check the Discussions section to see what problems the community is trying to solve (i.e. non-incremental changes) or propose your own!
 - Have questions? Head over to #spellbook on our [disccord](https://discord.com/channels/757637422384283659/999683200563564655) and the community will be happy to help out!
 - Looking for abstractions from the V1 engine? We moved them to [dune-v1-abstractions](https://github.com/duneanalytics/dune-v1-abstractions).
-- Please review the Contributor License Agreement, where we clarify 
+- Like with most OSS projects, your contributions to Spellbook are your own IP, you can find more details in the [Contributor License Agreement](https://github.com/duneanalytics/spellbook/edit/main/CLA.md)
 
 
 ## Table of Contents
