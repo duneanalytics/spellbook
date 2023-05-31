@@ -291,8 +291,8 @@ WITH trades AS (
     , s1.block_date
     , s1.block_time
     , s1.block_number
-    , CASE WHEN s1.token_bought_amount_raw > 0 THEN MAX_BY(s2.token_sold_amount_raw, s2.index)/s1.token_bought_amount_raw END AS ratio_traded_token
-    , CASE WHEN s1.token_sold_amount_raw > 0 THEN MAX_BY(s2.token_bought_amount_raw, s2.index)/s1.token_sold_amount_raw END AS profit_percentage_of_initial
+    , TRY(MAX_BY(s2.token_sold_amount_raw, s2.index)/s1.token_bought_amount_raw) AS ratio_traded_token
+    , TRY(MAX_BY(s2.token_bought_amount_raw, s2.index)/s1.token_sold_amount_raw) AS profit_percentage_of_initial
     , MAX_BY(s2.token_bought_amount_raw, s2.index)-s1.token_sold_amount_raw AS profit_amount_raw
     , MAX_BY(s2.token_bought_amount, s2.index)-s1.token_sold_amount AS profit_amount
     , s1.token_sold_address AS currency_address
