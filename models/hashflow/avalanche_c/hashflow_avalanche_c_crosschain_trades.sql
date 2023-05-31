@@ -1,6 +1,6 @@
 {{
     config(
-        alias="avalanche_c_cross_chain_trades"
+        alias="cross_chain_trades"
         ,partition_by = ['block_date']
         ,materialized='incremental'
         ,incremental_strategy = 'merge'
