@@ -118,7 +118,6 @@ FROM
     , ('0x8103151e2377e78c04a3d2564e20542680ed3096', 'Node DAO', 'Node DAO', 'Liquid Staking')
     , ('0x4befa2aa9c305238aa3e0b5d17eb20c045269e9d', 'RockX', 'RockX', 'Staking Pools')
     , ('0xea674fdde714fd979de3edf0f56aa9716b898ec8', 'Ethermine', 'Ethermine', 'Staking Pools')
-    , ('0xf573d99385c05c23b24ed33de616ad16a43a0919', 'bloXroute', 'bloXroute', 'Staking Pools')
     , ('', '', '', '')
     ) 
     x (address, entity, entity_unique_name, category)
