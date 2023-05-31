@@ -236,5 +236,5 @@ valued_trades as (
 select *,
   -- Relative surplus (in %) is the difference between limit price and executed price as a ratio of the limit price.
   -- Absolute surplus (in USD) is relative surplus multiplied with the value of the trade
-  fill_proportion * usd_value * (atoms_bought * limit_sell_amount - atoms_sold * limit_buy_amount) / (atoms_bought * limit_sell_amount) as surplus_usd
+  usd_value * (atoms_bought * limit_sell_amount - atoms_sold * limit_buy_amount) / (atoms_bought * limit_sell_amount) as surplus_usd
 from valued_trades

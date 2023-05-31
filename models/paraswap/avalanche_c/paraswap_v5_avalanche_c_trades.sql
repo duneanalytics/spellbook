@@ -13,12 +13,16 @@
     )
 }}
 
-{% set project_start_date = '2022-06-15' %} -- min(evt_block_time) in bought & swapped events
+{% set project_start_date = '2021-09-08' %} -- min(evt_block_time) in bought & swapped events
 
 WITH 
 
 {% set trade_event_tables = [
-    source('paraswap_avalanche_c', 'AugustusSwapperV5_evt_BoughtV3')
+    source('paraswap_avalanche_c', 'AugustusSwapperV5_evt_Bought')
+    ,source('paraswap_avalanche_c', 'AugustusSwapperV5_evt_Swapped')
+    ,source('paraswap_avalanche_c', 'AugustusSwapperV5_evt_Bought2')
+    ,source('paraswap_avalanche_c', 'AugustusSwapperV5_evt_Swapped2')
+    ,source('paraswap_avalanche_c', 'AugustusSwapperV5_evt_BoughtV3')
     ,source('paraswap_avalanche_c', 'AugustusSwapperV5_evt_SwappedV3')
 ] %}
 
@@ -54,7 +58,62 @@ dexs as (
         UNION ALL
         {% endif %}
     {% endfor %}
+),
+
+-- USDC.e AND USDT.e price are missing before 2022-10
+price_missed_previous AS (
+    WITH usdc_price AS (
+        SELECT minute, contract_address, decimals, symbol, price
+        FROM {{ source('prices', 'usd') }}
+        WHERE contract_address = '0xa7d7079b0fead91f3e65f86e8915cb59c1a4c664' -- USDC.e
+        ORDER BY minute
+        LIMIT 1
+    ),
+
+    usdt_price AS (
+        SELECT minute, contract_address, decimals, symbol, price
+        FROM {{ source('prices', 'usd') }}
+        WHERE contract_address = '0xc7198437980c041c805a1edcba50c1ce5db95118' -- USDT.e
+        ORDER BY minute
+        LIMIT 1
+    )
+
+    SELECT minute, contract_address, decimals, symbol, price
+    FROM usdc_price
+
+    UNION ALL
+
+    SELECT minute, contract_address, decimals, symbol, price
+    FROM usdt_price
+),
+
+--  USDC.e AND USDT.e price may be missed for latest swaps
+price_missed_next AS (
+    WITH usdc_price AS (
+        SELECT minute, contract_address, decimals, symbol, price
+        FROM {{ source('prices', 'usd') }}
+        WHERE contract_address = '0xa7d7079b0fead91f3e65f86e8915cb59c1a4c664' -- USDC.e
+        ORDER BY minute DESC
+        LIMIT 1
+    ),
+
+    usdt_price AS (
+        SELECT minute, contract_address, decimals, symbol, price
+        FROM {{ source('prices', 'usd') }}
+        WHERE contract_address = '0xc7198437980c041c805a1edcba50c1ce5db95118' -- USDT.e
+        ORDER BY minute DESC
+        LIMIT 1
+    )
+
+    SELECT minute, contract_address, decimals, symbol, price
+    FROM usdc_price
+
+    UNION ALL
+    
+    SELECT minute, contract_address, decimals, symbol, price
+    FROM usdt_price
 )
+
 SELECT
     'avalanche_c' as blockchain,
     'paraswap' as project,
@@ -73,8 +132,8 @@ SELECT
     CAST(dexs.token_sold_amount_raw AS DECIMAL(38,0)) AS token_sold_amount_raw,
     coalesce(
         dexs.amount_usd
-        ,(dexs.token_bought_amount_raw / power(10, p_bought.decimals)) * p_bought.price
-        ,(dexs.token_sold_amount_raw / power(10, p_sold.decimals)) * p_sold.price
+        ,(dexs.token_bought_amount_raw / power(10, erc20a.decimals)) * coalesce(p_bought.price, p_prev1.price, p_next1.price)
+        ,(dexs.token_sold_amount_raw / power(10, erc20b.decimals)) * coalesce(p_sold.price, p_prev2.price, p_next2.price)
     ) AS amount_usd,
     dexs.token_bought_address,
     dexs.token_sold_address,
@@ -86,39 +145,47 @@ SELECT
     tx.to AS tx_to,
     dexs.trace_address,
     dexs.evt_index
-from dexs
-inner join {{ source('avalanche_c', 'transactions') }} tx
-    on dexs.tx_hash = tx.hash
-    and dexs.block_number = tx.block_number
+FROM dexs
+INNER JOIN {{ source('avalanche_c', 'transactions') }} tx
+    ON dexs.tx_hash = tx.hash
+    AND dexs.block_number = tx.block_number
     {% if not is_incremental() %}
-    and tx.block_time >= '{{project_start_date}}'
+    AND tx.block_time >= '{{project_start_date}}'
     {% endif %}
     {% if is_incremental() %}
-    and tx.block_time >= date_trunc("day", now() - interval '1 week')
+    AND tx.block_time >= date_trunc("day", now() - interval '1 week')
     {% endif %}
-left join {{ ref('tokens_erc20') }} erc20a
-    on erc20a.contract_address = dexs.token_bought_address
-    and erc20a.blockchain = 'avalanche_c'
-left join {{ ref('tokens_erc20') }} erc20b
-    on erc20b.contract_address = dexs.token_sold_address
-    and erc20b.blockchain = 'avalanche_c'
-left join {{ source('prices', 'usd') }} p_bought
-    on p_bought.minute = date_trunc('minute', dexs.block_time)
-    and p_bought.contract_address = dexs.token_bought_address
-    and p_bought.blockchain = 'avalanche_c'
+LEFT JOIN {{ ref('tokens_erc20') }} erc20a
+    ON erc20a.contract_address = dexs.token_bought_address
+    AND erc20a.blockchain = 'avalanche_c'
+LEFT JOIN {{ ref('tokens_erc20') }} erc20b
+    ON erc20b.contract_address = dexs.token_sold_address
+    AND erc20b.blockchain = 'avalanche_c'
+LEFT JOIN {{ source('prices', 'usd') }} p_bought
+    ON p_bought.minute = date_trunc('minute', dexs.block_time)
+    AND p_bought.contract_address = dexs.token_bought_address
+    AND p_bought.blockchain = 'avalanche_c'
     {% if not is_incremental() %}
-    and p_bought.minute >= '{{project_start_date}}'
+    AND p_bought.minute >= '{{project_start_date}}'
     {% endif %}
     {% if is_incremental() %}
-    and p_bought.minute >= date_trunc("day", now() - interval '1 week')
+    AND p_bought.minute >= date_trunc("day", now() - interval '1 week')
     {% endif %}
-left join {{ source('prices', 'usd') }} p_sold
-    on p_sold.minute = date_trunc('minute', dexs.block_time)
-    and p_sold.contract_address = dexs.token_sold_address
-    and p_sold.blockchain = 'avalanche_c'
+LEFT JOIN price_missed_previous p_prev1 ON dexs.token_bought_address = p_prev1.contract_address
+    AND dexs.block_time < p_prev1.minute -- Swap before first price record time
+LEFT JOIN price_missed_next p_next1 ON dexs.token_bought_address = p_next1.contract_address
+    AND dexs.block_time > p_next1.minute -- Swap after last price record time
+LEFT JOIN {{ source('prices', 'usd') }} p_sold
+    ON p_sold.minute = date_trunc('minute', dexs.block_time)
+    AND p_sold.contract_address = dexs.token_sold_address
+    AND p_sold.blockchain = 'avalanche_c'
     {% if not is_incremental() %}
-    and p_sold.minute >= '{{project_start_date}}'
+    AND p_sold.minute >= '{{project_start_date}}'
     {% endif %}
     {% if is_incremental() %}
-    and p_sold.minute >= date_trunc("day", now() - interval '1 week')
+    AND p_sold.minute >= date_trunc("day", now() - interval '1 week')
     {% endif %}
+LEFT JOIN price_missed_previous p_prev2 ON dexs.token_sold_address = p_prev2.contract_address
+    AND dexs.block_time < p_prev2.minute -- Swap before first price record time
+LEFT JOIN price_missed_next p_next2 ON dexs.token_sold_address = p_next2.contract_address
+    AND dexs.block_time > p_next2.minute -- Swap after last price record time
