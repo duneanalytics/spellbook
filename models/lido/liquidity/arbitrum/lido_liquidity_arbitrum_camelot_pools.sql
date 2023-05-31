@@ -20,7 +20,7 @@ select explode(sequence(to_date('{{ project_start_date }}'), now(), interval 1 h
 )
 
 , pools as (
-select pair as address, 'arbitrum' as blockchain, 'camelot' as project, '-' as fee
+select pair as address, 'arbitrum' as blockchain, 'camelot' as project, 0 as fee
 from {{ source('camelot_arbitrum','CamelotFactory_evt_PairCreated')}}
 where token0 = lower('0x5979D7b546E38E414F7E9822514be443A4800529') or token1 = lower('0x5979D7b546E38E414F7E9822514be443A4800529')
 )
