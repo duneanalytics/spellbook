@@ -15,6 +15,7 @@ Welcome to [Spellbook](https://youtu.be/o7p0BNt7NHs). Cast a magical incantation
   - Check the Discussions section to see what problems the community is trying to solve (i.e. non-incremental changes) or propose your own!
 - Have questions? Head over to #spellbook on our [disccord](https://discord.com/channels/757637422384283659/999683200563564655) and the community will be happy to help out!
 - Looking for abstractions from the V1 engine? We moved them to [dune-v1-abstractions](https://github.com/duneanalytics/dune-v1-abstractions).
+- Like with most OSS projects, your contributions to Spellbook are your own IP, you can find more details in the [Contributor License Agreement](https://github.com/duneanalytics/spellbook/edit/main/CLA.md)
 
 
 ## Table of Contents
@@ -61,7 +62,7 @@ Please note: the test tables built in the CI pipeline will exist for ~24 hours. 
 
 ### Connecting with other wizards
 
-We use Discord to connect with our community. Head over to spellbook channel on Dune's Discord for questions or to ask for help with a particular PR. We encourage you to learn by doing, and leverage our vibrant community to help you get going.
+We use Discord to connect with our community. Head over to spellbook channel on [Dune's Discord](https://discord.gg/dunecom) for questions or to ask for help with a particular PR. We encourage you to learn by doing, and leverage our vibrant community to help you get going.
 
 
 ## Setting up your Local Dev Environment
