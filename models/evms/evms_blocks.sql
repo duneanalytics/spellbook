@@ -15,10 +15,10 @@ SELECT 'ethereum' AS blockchain
 , parent_hash
 , size
 , time
-, total_difficulty
+, CAST(total_difficulty AS DECIMAL(38, 0)) AS total_difficulty
 , number
 , base_fee_per_gas
-, difficulty
+, CAST(difficulty AS DECIMAL(38,0)) AS difficulty
 , gas_limit
 , gas_used
 FROM {{source('ethereum', 'blocks')}}
@@ -32,10 +32,10 @@ SELECT 'polygon' AS blockchain
 , parent_hash
 , size
 , time
-, total_difficulty
+, CAST(total_difficulty AS DECIMAL(38, 0)) AS total_difficulty
 , number
 , base_fee_per_gas
-, difficulty
+, CAST(difficulty AS DECIMAL(38,0)) AS difficulty
 , gas_limit
 , gas_used
 FROM {{ source('polygon', 'blocks') }}
@@ -49,10 +49,10 @@ SELECT 'bnb' AS blockchain
 , parent_hash
 , size
 , time
-, total_difficulty
+, CAST(total_difficulty AS DECIMAL(38, 0)) AS total_difficulty
 , number
 , base_fee_per_gas
-, difficulty
+, CAST(difficulty AS DECIMAL(38,0)) AS difficulty
 , gas_limit
 , gas_used
 FROM {{ source('bnb', 'blocks') }}
@@ -66,10 +66,10 @@ SELECT 'avalanche_c' AS blockchain
 , parent_hash
 , size
 , time
-, total_difficulty
+, CAST(total_difficulty AS DECIMAL(38, 0)) AS total_difficulty
 , number
 , base_fee_per_gas
-, difficulty
+, CAST(difficulty AS DECIMAL(38,0)) AS difficulty
 , gas_limit
 , gas_used
 FROM {{ source('avalanche_c', 'blocks') }}
@@ -86,7 +86,7 @@ SELECT 'gnosis' AS blockchain
 , CAST(total_difficulty AS DECIMAL(38, 0)) AS total_difficulty
 , number
 , base_fee_per_gas
-, CAST(difficulty AS BIGINT) AS difficulty
+, CAST(difficulty AS DECIMAL(38,0)) AS difficulty
 , gas_limit
 , gas_used
 FROM {{ source('gnosis', 'blocks') }}
@@ -100,10 +100,10 @@ SELECT 'fantom' AS blockchain
 , parent_hash
 , size
 , time
-, total_difficulty
+, CAST(total_difficulty AS DECIMAL(38, 0)) AS total_difficulty
 , number
 , base_fee_per_gas
-, difficulty
+, CAST(difficulty AS DECIMAL(38,0)) AS difficulty
 , gas_limit
 , gas_used
 FROM {{ source('fantom', 'blocks') }}
@@ -117,10 +117,10 @@ SELECT 'optimism' AS blockchain
 , parent_hash
 , size
 , time
-, total_difficulty
+, CAST(total_difficulty AS DECIMAL(38, 0)) AS total_difficulty
 , number
 , base_fee_per_gas
-, difficulty
+, CAST(difficulty AS DECIMAL(38,0)) AS difficulty
 , gas_limit
 , gas_used
 FROM {{ source('optimism', 'blocks') }}
@@ -134,10 +134,10 @@ SELECT 'arbitrum' AS blockchain
 , parent_hash
 , size
 , time
-, total_difficulty
+, CAST(total_difficulty AS DECIMAL(38, 0)) AS total_difficulty
 , number
 , base_fee_per_gas
-, difficulty
+, CAST(difficulty AS DECIMAL(38,0)) AS difficulty
 , gas_limit
 , gas_used
 FROM {{ source('arbitrum', 'blocks') }}
