@@ -68,7 +68,7 @@ raw_trades as (
         t1.id AS offer_id,
         t1.pay_gem AS sell_token_address,
         t1.buy_gem AS buy_token_address,
-        t1.evt_block_time
+        t1.evt_block_time,
         CAST(t1.take_amt AS DECIMAL(38,0)) AS sold_amount_raw,
         CAST(t1.give_amt AS DECIMAL(38,0)) AS bought_amount_raw
     FROM {{ source('rubicon_optimism', 'RubiconMarket_evt_LogTake') }} t1 
