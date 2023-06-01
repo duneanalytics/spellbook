@@ -120,28 +120,28 @@ models:
       - name: tx_hash
         description: "Primary key of the transaction"
       - name: trace_from
-        description: ""
+        description: "Address address that initiated the trace"
       - name: trace_to
-        description: ""
+        description: "Address address that received the trace"
       - name: tx_from
-        description: ""
+        description: "Address address that initiated the transaction"
       - name: tx_to
-        description: ""
+        description: "Address address that received the transaction"
       - name: trace
-        description: ""
+        description: "Trace"
       - name: trace_method
-        description: ""
+        description: "Trace method"
       - name: tx_method
-        description: ""
+        description: "Function method"
       - name: gas_used
-        description: ""
+        description: "Gas used"
       - name: tx_gas_used
-        description: ""
+        description: "Total gas used in the transaction"
       - name: gas_used_tx_percentage
-        description: ""
+        description: "Percentage of the total gas used in the transaction"
       - name: tx_gas_price
-        description: ""
+        description: "Transaction gas price"
       - name: spent_gas_fee
-        description: ""
+        description: "Amount of ETH spent in gas fees"
       - name: spent_gas_fee_usd
-        description: ""
+        description: "USD value of the amount of ETH spent in gas fees"

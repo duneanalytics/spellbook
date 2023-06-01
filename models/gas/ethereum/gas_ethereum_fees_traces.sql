@@ -24,7 +24,7 @@ SELECT 'ethereum' AS blockchain
 , txs.gas_used AS tx_gas_used
 , SUM(traces.gas_used)/txs.gas_used AS gas_used_tx_percentage
 , txs.gas_price AS tx_gas_price
-, (SUM(traces.gas_used)*txs.gas_price)/1e18 AS spent_gas_fee
+, (SUM(traces.gas_used)*txs.gas_price)/POWER(10, 18) AS spent_gas_fee
 , (AVG(pu.price)*SUM(traces.gas_used)*txs.gas_price)/POWER(10, 18) AS spent_gas_fee_usd
 FROM (
      SELECT et.from
