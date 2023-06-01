@@ -27,7 +27,7 @@ SELECT 'ethereum' AS blockchain
 , priority_fee_per_gas
 , success
 , "type"
-, value
+, CAST(value AS double) AS value
 , NULL AS l1_tx_origin
 , CAST(NULL AS double) AS l1_fee_scalar
 , CAST(NULL AS DECIMAL(38,0)) AS l1_block_number
@@ -59,7 +59,7 @@ SELECT 'polygon' AS blockchain
 , priority_fee_per_gas
 , success
 , "type"
-, value
+, CAST(value AS double) AS value
 , NULL AS l1_tx_origin
 , CAST(NULL AS double) AS l1_fee_scalar
 , CAST(NULL AS DECIMAL(38,0)) AS l1_fee_scalar
@@ -92,7 +92,7 @@ SELECT 'bnb' AS blockchain
 , priority_fee_per_gas
 , success
 , "type"
-, value
+, CAST(value AS double) AS value
 , NULL AS l1_tx_origin
 , CAST(NULL AS double) AS l1_fee_scalar
 , CAST(NULL AS DECIMAL(38,0)) AS l1_fee_scalar
@@ -124,7 +124,7 @@ SELECT 'avalanche_c' AS blockchain
 , priority_fee_per_gas
 , success
 , "type"
-, value
+, CAST(value AS double) AS value
 , NULL AS l1_tx_origin
 , CAST(NULL AS double) AS l1_fee_scalar
 , CAST(NULL AS DECIMAL(38,0)) AS l1_fee_scalar
@@ -156,7 +156,7 @@ SELECT 'gnosis' AS blockchain
 , priority_fee_per_gas
 , success
 , "type"
-, value
+, CAST(value AS double) AS value
 , NULL AS l1_tx_origin
 , CAST(NULL AS double) AS l1_fee_scalar
 , CAST(NULL AS DECIMAL(38,0)) AS l1_fee_scalar
@@ -188,7 +188,7 @@ SELECT 'fantom' AS blockchain
 , priority_fee_per_gas
 , success
 , "type"
-, value
+, CAST(value AS double) AS value
 , NULL AS l1_tx_origin
 , CAST(NULL AS double) AS l1_fee_scalar
 , CAST(NULL AS DECIMAL(38,0)) AS l1_fee_scalar
@@ -220,7 +220,7 @@ SELECT 'optimism' AS blockchain
 , priority_fee_per_gas
 , success
 , "type"
-, value
+, CAST(value AS double) AS value
 ,l1_tx_origin
 , l1_fee_scalar
 , l1_block_number
@@ -252,7 +252,7 @@ SELECT 'arbitrum' AS blockchain
 , priority_fee_per_gas
 , success
 , "type"
-, value
+, CAST(value AS double) AS value
 , NULL AS l1_tx_origin
 , CAST(NULL AS double) AS l1_fee_scalar
 , CAST(NULL AS DECIMAL(38,0)) AS l1_fee_scalar
