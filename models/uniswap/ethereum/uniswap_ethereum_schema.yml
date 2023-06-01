@@ -412,9 +412,6 @@ models:
           project: uniswap
           version: 3
     columns:
-      - &last_updated
-        name: last_updated
-        description: "UTC timestamp when table was last updated"
       - &symbol0
         name: symbol0
         description: "ERC20 token symbol of the first of the two tokens of the pool"

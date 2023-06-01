@@ -81,6 +81,5 @@ FROM liquidity
 FROM cumulativevalues
 )
 
-SELECT current_timestamp() as last_updated
-,symbol0, symbol1, fee/POW(10,6) AS fee, block, lowerbound, upperbound, liquidity 
+SELECT symbol0, symbol1, fee/POW(10,6) AS fee, block, lowerbound, upperbound, liquidity 
 FROM finalvalues
