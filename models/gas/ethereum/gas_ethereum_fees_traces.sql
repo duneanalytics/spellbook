@@ -4,7 +4,7 @@
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
-    unique_key = ['tx_hash']
+    unique_key = ['tx_hash', 'trace'],
     )
 }}
 
