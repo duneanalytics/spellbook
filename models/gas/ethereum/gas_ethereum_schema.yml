@@ -114,7 +114,9 @@ models:
       - *blockchain
       - *block_time
       - *block_number
-      - *block_date
+      - &block_date
+        name: block_date
+        description: "UTC Date of transaction in UTC"
       - *tx_hash
       - name: trace_to
         description: ""
