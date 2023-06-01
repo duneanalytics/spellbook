@@ -15,7 +15,7 @@ WITH traces AS (
      , MAX(traces.from) AS trace_from
      , MAX(traces.to) AS trace_to
      , traces.trace
-     , bytearray_substring(traces.input,1,4) AS trace_method
+     , substring(traces.input,1,4) AS trace_method
      , SUM(traces.gas_used) AS gas_used
      FROM (
           SELECT et.from
@@ -67,7 +67,7 @@ SELECT 'ethereum' AS blockchain
 , txs.to AS tx_to
 , traces.trace
 , traces.trace_method
-, bytearray_substring(txs.data,1,4) AS tx_method
+, substring(txs.data,1,4) AS tx_method
 , traces.gas_used
 , txs.gas_used AS tx_gas_used
 , traces.gas_used/txs.gas_used AS gas_used_tx_percentage
