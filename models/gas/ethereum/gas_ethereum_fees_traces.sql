@@ -17,7 +17,7 @@ SELECT 'ethereum' AS blockchain
 , etg.trace
 , SUM(etg.gas_used) AS gas_used
 , (SUM(etg.gas_used)*etc.gas_price)/1e18 AS spent_gas_fee
-, (AVG(pu.price)*SUM(etg.gas_used)*etc.gas_price)/1e18 AS spent_gas_fee_usd
+, (AVG(pu.price)*SUM(etg.gas_used)*etc.gas_price)/POWER(10, 18) AS spent_gas_fee_usd
 FROM (
      SELECT et.to 
      , et.tx_hash
@@ -54,4 +54,5 @@ LEFT JOIN {{ source('prices', 'usd') }} pu ON pu.minute=date_trunc('minute', etg
      {% if is_incremental() %}
      AND pu.minute >= date_trunc("day", NOW() - interval '1' week)
      {% endif %}
-GROUP BY etg.tx_hash, etg.trace, etc.gas_price
+GROUP BY etg.tx_hash, etg.trace, etc.gas_price, etg.block_time, etg.block_number
+{% if is_incremental() %}
