@@ -1,4 +1,7 @@
-{ { config(alias = 'bribes') } } 
+{{ config(
+    alias = 'bribes'
+    )
+}}
 
 
 with base_date as (
