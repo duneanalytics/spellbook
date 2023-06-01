@@ -387,3 +387,52 @@ models:
       - name: currency_symbol
       - name: recipient
       - name: contract_address
+  
+  - name: uniswap_v3_ethereum_tick_interval_liquidity
+    meta:
+      blockchain: ethereum
+      sector: dex
+      project: uniswap_v3
+      contributors: carlotta
+    config:
+      tags: ['ethereum','uniswap_v3','liquidity', 'uniswap','dex']
+    description: >
+        Uniswap V3 liquidity per pool and tick interval on Ethereum
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - symbol0
+            - symbol1
+            - fee
+            - block
+            - lowerbound
+            - upperbound 
+      - check_dex_seed:
+          blockchain: ethereum
+          project: uniswap
+          version: 3
+    columns:
+      - &last_updated
+        name: last_updated
+        description: "UTC timestamp when table was last updated"
+      - &symbol0
+        name: symbol0
+        description: "ERC20 token symbol of the first of the two tokens of the pool"
+      - &symbol1
+        name: symbol1
+        description: "ERC20 token symbol of the second of the two tokens of the pool"
+      - &fee
+        name: fee
+        description: "Fee of the pool expressed as decimal "
+      - &block
+        name: block
+        description: "Block number"
+      - &lowerbound
+        name: lowerbound
+        description: "Lowerbound of the tick interval"
+      - &upperbound
+        name: upperbound
+        description: "Upperbound of the tick interval"
+      - &liquidity
+        name: liquidity
+        description: "Liquidity of a pool, uniquely defined by the combination of tokens and fee, of a given pool and tick interval"

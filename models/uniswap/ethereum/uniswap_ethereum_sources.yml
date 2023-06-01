@@ -245,3 +245,40 @@ sources:
 
       - name: Pair_evt_Flash
         loaded_at_field: evt_block_time
+      
+      - name: Pair_evt_Mint
+        loaded_at_field: evt_block_time
+        description: "" # to-do
+        columns:
+          - *amount1
+          - *amount0
+          - *contract_address
+          - *evt_block_number
+          - *evt_block_time 
+          - *evt_index
+          - *evt_tx_hash
+          - &amount
+            name: amount
+          - &owner
+            name: owner
+          - *sender
+          - &tickLower
+            name: tickLower
+          - &tickUpper
+            name: tickUpper
+
+      - name: Pair_evt_Burn
+        loaded_at_field: evt_block_time
+        description: "" # to-do
+        columns:
+          - *amount1
+          - *amount0
+          - *contract_address
+          - *evt_block_number
+          - *evt_block_time 
+          - *evt_index
+          - *evt_tx_hash
+          - *amount
+          - *owner
+          - *tickLower
+          - *tickUpper
