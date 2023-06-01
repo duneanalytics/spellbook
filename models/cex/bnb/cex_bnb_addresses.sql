@@ -17,7 +17,7 @@ FROM (VALUES
     , ('bnb', '0xe2fc31f816a9b94326492132018c3aecc4a93ae1', 'Binance', 'Binance 7', 'soispoke', timestamp '2022-08-28')
     , ('bnb', '0x3c783c21a0383057d128bae431894a5c19f9cf06', 'Binance', 'Binance 8', 'soispoke', timestamp '2022-08-28')
     , ('bnb', '0xdccf3b77da55107280bd850ea519df3705d1a75a', 'Binance', 'Binance 9', 'soispoke', timestamp '2022-08-28')
-    , ('bnb', '0x01c952174c24e1210d26961d456a77a39e1f0bb0', 'Binance', 'Binance 10', 'soispoke', timestamp '2022-22-14')
+    , ('bnb', '0x01c952174c24e1210d26961d456a77a39e1f0bb0', 'Binance', 'Binance 10', 'soispoke', timestamp '2022-12-14')
     , ('bnb', '0x161ba15a5f335c9f06bb5bbb0a9ce14076fbb645', 'Binance', 'Binance 11', 'soispoke', timestamp '2022-08-28')
     , ('bnb', '0x515b72ed8a97f42c568d6a143232775018f133c8', 'Binance', 'Binance 12', 'soispoke', timestamp '2022-08-28')
     , ('bnb', '0xbd612a3f30dca67bf60a39fd0d35e39b7ab80774', 'Binance', 'Binance 13', 'soispoke', timestamp '2022-08-28')
