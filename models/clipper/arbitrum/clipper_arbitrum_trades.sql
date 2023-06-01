@@ -9,6 +9,7 @@
 
 {% set clipper_models = [
 ref('clipper_v1_arbitrum_trades')
+, ref('clipper_coves_v1_arbitrum_trades')
 ] %}
 
 

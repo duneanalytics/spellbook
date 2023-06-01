@@ -271,5 +271,13 @@ FROM
 ,('0xd312c1e723961164916ef2ebb767e53fbdff4094', 'ApeTown WTF')
 ,('0xC66A1EE3be858E7041DdA9bd1Ea2fbd3ce07F63e', 'Ganland GALXE')
 ,('0xba1231785a7b4ac0e8dc9a0403938c2182ce4a4e', 'Geo Web Parcel License')
+,('0xa67ea6d2e63265c0ac0a72de42fa67e0098c9433', 'ZONIC OG')
+,('0x9e8f79006069675ac0fe4b8d48e8514b213f1333', 'Gam Bots')
+,('0xfc1f4727b270718ea1dafba3466c63ded0c72e61', 'dabao2')
+,('0x6a886c76693ed6f4319a289e3fe2e670b803a2da', 'Optimistic World')
+,('0xCF9B53243Bf471B4c9BF97a78f780Dec2f237f40', 'Mirror Zorb')
+,('0xb0cd054ff1b233b366468331a898da7fd5c06988', 'OPTIBOAT')
+,('0x1d46b0644f5a979de14e880d06b28094e9a43b2d', 'Myhome')
+,('0x3b227fc544ec74e192631d8cffd536e854716062', 'Oppa Bear Evolution Gen.1')
 
 ) as temp_table (contract_address, name)

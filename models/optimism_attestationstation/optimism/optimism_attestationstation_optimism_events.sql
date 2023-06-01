@@ -27,7 +27,7 @@ SELECT
         ,contract_address
         ,key as key_raw
         ,
---         REGEXP_REPLACE( --Replace invisible characters
+        REGEXP_REPLACE(--Replace invisible characters
             decode(
                 unhex(
                   if (
@@ -38,11 +38,20 @@ SELECT
                 ),
                 "utf8"
               ) 
---         , '[[:cntrl:]]', '')
+            , '[^\x20-\x7E]','')
         as key
+
         ,val as val_raw
 
-        ,split(unhex(substring(val, 3)), ",") as val
+        ,split(
+                REGEXP_REPLACE(--Replace invisible characters
+                        CASE WHEN cast( REGEXP_REPLACE(unhex(substring(val, 3)), '[^\x20-\x7E]','') as varchar(100)) != ""
+                            THEN cast(unhex(substring(val, 3)) as varchar(100))
+                            ELSE cast(bytea2numeric_v3(substring(val, 3)) as varchar(100))
+                        END  
+                  , '[^\x20-\x7E]','')
+              ,",") as val
+            
 
         ,bytea2numeric_v3(substring(val, 3)) AS val_byte2numeric
 
