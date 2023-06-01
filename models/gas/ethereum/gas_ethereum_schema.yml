@@ -11,7 +11,7 @@ models:
     description: >
         Gas Fees on Ethereum
     columns:
-      - &blokchain
+      - &blockchain
         name: blockchain
         description: "Blockchain name"    
       - &block_time
@@ -86,8 +86,7 @@ models:
       - &gas_price_usd
         name: gas_price_usd
         description: "Gas price (per gas unit) denoted in $USD"
-      - &gas_used
-        name: gas_used
+      - name: gas_used
         description: "Amount of gas units consumed by the transaction"
       - &gas_limit
         name: gas_limit
@@ -101,3 +100,29 @@ models:
       - &type
         name: type
         description: "Transaction type: Legacy (Pre EIP 1559) or DynamicFee (Post EIP-1559)"
+
+  - name: gas_ethereum_fees_traces
+    meta:
+      blockchain: ethereum
+      sector: gas
+      contributors: hildobby
+    config:
+      tags: ['ethereum', 'gas', 'fees', 'traces']
+    description: >
+        Gas Fees per Trace on Ethereum
+    columns:
+      - *blockchain
+      - *block_time
+      - *block_number
+      - *block_date
+      - *tx_hash
+      - name: trace_to
+        description: ""
+      - name: trace
+        description: ""
+      - name: gas_used
+        description: ""
+      - name: spent_gas_fee
+        description: ""
+      - name: spent_gas_fee_usd
+        description: ""
