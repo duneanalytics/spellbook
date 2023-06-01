@@ -447,6 +447,3 @@ models:
       - &backrun_tx_fee
         name: backrun_tx_fee
         description: "Backrun transaction fee"
-      - &is_profitable
-        name: is_profitable
-        description: "Is the sandwich profitable"

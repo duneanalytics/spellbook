@@ -314,7 +314,6 @@ WITH trades AS (
     , s1.gas_price
     , s1.tx_fee AS frontrun_tx_fee
     , MAX_BY(s2.tx_fee, s2.index) AS backrun_tx_fee
-    , CASE WHEN MAX_BY(s2.token_bought_amount, s2.index) > s1.token_sold_amount THEN true ELSE false END AS is_profitable
     FROM trades s1
     INNER JOIN trades s2 ON s1.blockchain=s2.blockchain
         AND s1.block_time=s2.block_time
