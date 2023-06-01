@@ -18,7 +18,7 @@ SELECT 'ethereum' AS blockchain
 , block_number
 , block_time
 , gas_limit
-,CAST(gas_price AS DECIMAL(38,0)) AS gas_price
+, CAST(gas_price AS double) AS gas_price
 , gas_used
 , index
 , max_fee_per_gas
@@ -50,7 +50,7 @@ SELECT 'polygon' AS blockchain
 , block_number
 , block_time
 , gas_limit
-,CAST(gas_price AS DECIMAL(38,0)) AS gas_price
+, CAST(gas_price AS double) AS gas_price
 , gas_used
 , index
 , max_fee_per_gas
@@ -83,7 +83,7 @@ SELECT 'bnb' AS blockchain
 , block_number
 , block_time
 , gas_limit
-,CAST(gas_price AS DECIMAL(38,0)) AS gas_price
+, CAST(gas_price AS double) AS gas_price
 , gas_used
 , index
 , max_fee_per_gas
@@ -115,7 +115,7 @@ SELECT 'avalanche_c' AS blockchain
 , block_number
 , block_time
 , gas_limit
-,CAST(gas_price AS DECIMAL(38,0)) AS gas_price
+, CAST(gas_price AS double) AS gas_price
 , gas_used
 , index
 , max_fee_per_gas
@@ -147,7 +147,7 @@ SELECT 'gnosis' AS blockchain
 , block_number
 , block_time
 , gas_limit
-,CAST(gas_price AS DECIMAL(38,0)) AS gas_price
+, CAST(gas_price AS double) AS gas_price
 , gas_used
 , index
 , max_fee_per_gas
@@ -179,7 +179,7 @@ SELECT 'fantom' AS blockchain
 , block_number
 , block_time
 , gas_limit
-,CAST(gas_price AS DECIMAL(38,0)) AS gas_price
+, CAST(gas_price AS double) AS gas_price
 , gas_used
 , index
 , max_fee_per_gas
@@ -211,7 +211,7 @@ SELECT 'optimism' AS blockchain
 , block_number
 , block_time
 , gas_limit
-,CAST(gas_price AS DECIMAL(38,0)) AS gas_price
+, CAST(gas_price AS double) AS gas_price
 , gas_used
 , index
 , max_fee_per_gas
@@ -243,7 +243,7 @@ SELECT 'arbitrum' AS blockchain
 , block_number
 , block_time
 , gas_limit
-,CAST(gas_price AS DECIMAL(38,0)) AS gas_price
+, CAST(gas_price AS double) AS gas_price
 , gas_used
 , index
 , max_fee_per_gas
