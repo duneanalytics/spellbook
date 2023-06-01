@@ -15,8 +15,10 @@
 }}
 
 /********************************************************
-spells with issues, to be excluded in short term:
--- ,ref('odos_trades') contains duplicates
+Note:
+ref('odos_trades') is not added into this spell. This
+protocol allows for batch swaps and will not conform to
+the current schema in this spell.
 ********************************************************/
 
 {% set dex_aggregator_models = [

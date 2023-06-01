@@ -6,7 +6,7 @@ models:
       blockchain: avalanche_c
       sector: dex
       project: odos
-      contributors: Henrystats
+      contributors: Henrystats, ytoast
     config:
       tags: ['avalanche_c', 'odos','trades', 'dex', 'aggregator']
     description: >
@@ -15,12 +15,12 @@ models:
       - &blockchain
         name: blockchain
         description: "Blockchain which the DEX is deployed"
-      - &project 
+      - &project
         name: project
-        description: "Project name of the DEX"  
+        description: "Project name of the DEX"
       - &version
         name: version
-        description: "Version of the contract built and deployed by the DEX project"  
+        description: "Version of the contract built and deployed by the DEX project"
       - &block_date
         name: block_date
         description: "UTC event block date of each DEX trade"
