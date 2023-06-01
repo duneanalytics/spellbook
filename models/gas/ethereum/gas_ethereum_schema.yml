@@ -113,17 +113,33 @@ models:
     columns:
       - *blockchain
       - *block_time
-      - *block_number
       - &block_date
         name: block_date
         description: "UTC Date of transaction in UTC"
+      - *block_number
       - name: tx_hash
         description: "Primary key of the transaction"
+      - name: trace_from
+        description: ""
       - name: trace_to
+        description: ""
+      - name: tx_from
+        description: ""
+      - name: tx_to
         description: ""
       - name: trace
         description: ""
+      - name: trace_method
+        description: ""
+      - name: tx_method
+        description: ""
       - name: gas_used
+        description: ""
+      - name: tx_gas_used
+        description: ""
+      - name: gas_used_tx_percentage
+        description: ""
+      - name: tx_gas_price
         description: ""
       - name: spent_gas_fee
         description: ""
