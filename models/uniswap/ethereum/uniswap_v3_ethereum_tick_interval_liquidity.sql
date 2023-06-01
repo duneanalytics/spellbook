@@ -10,8 +10,8 @@
 
 WITH pools AS (SELECT pool, fee, tickSpacing, token0, token1, te0.symbol AS symbol0, te1.symbol AS symbol1, te0.decimals AS decimals0, te1.decimals AS decimals1 
 FROM {{ source('uniswap_v3_ethereum', 'Factory_evt_PoolCreated') }} pl
-LEFT JOIN (SELECT * FROM {{ ref('tokens_ethereum_erc20') }} WHERE blockchain='ethereum') te0 ON pl.token0=te0.contract_address
-LEFT JOIN (SELECT * FROM {{ ref('tokens_ethereum_erc20') }} WHERE blockchain='ethereum') te1 ON pl.token1=te1.contract_address
+LEFT JOIN (SELECT * FROM {{ ref('tokens_erc20') }} WHERE blockchain='ethereum') te0 ON pl.token0=te0.contract_address
+LEFT JOIN (SELECT * FROM {{ ref('tokens_erc20') }} WHERE blockchain='ethereum') te1 ON pl.token1=te1.contract_address
 WHERE pool IN (
 lower('0xe6ff8b9a37b0fab776134636d9981aa778c4e718') --WBTC-WETH
 ,lower('0x4585fe77225b41b697c938b018e2ac67ac5a20c0')
