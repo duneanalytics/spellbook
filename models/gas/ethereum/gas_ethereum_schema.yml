@@ -117,7 +117,8 @@ models:
       - &block_date
         name: block_date
         description: "UTC Date of transaction in UTC"
-      - *tx_hash
+      - name: tx_hash
+        description: "Primary key of the transaction"
       - name: trace_to
         description: ""
       - name: trace
