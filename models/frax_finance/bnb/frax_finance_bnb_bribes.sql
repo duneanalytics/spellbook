@@ -284,7 +284,7 @@ bribe_base as (
         ) as start_time
     from
                    { { source('bnb', 'logs') } } a
-        left join all_addresses b on a.contract_address = b.bribe_address
+        join all_addresses b on a.contract_address = b.bribe_address
     where
         topic1 = '0x6a6f77044107a33658235d41bedbbaf2fe9ccdceb313143c947a5e76e1ec8474'
         and substring(data, 1, 66) = '0x000000000000000000000000e48a3d7d0bc88d552f730b62c006bc925eadb9ee'
@@ -332,7 +332,7 @@ bribes_received as (
             where
                 contract_address = '0x3432b6a60d23ca0dfca7761b7ab56459d9c964d0'
         ) b on date_trunc('day', a.block_time) = b.day
-        left join all_addresses c on a.contract_address = c.bribe_address
+        join all_addresses c on a.contract_address = c.bribe_address
     where
         topic1 = '0x540798df468d7b23d11f156fdb954cb19ad414d150722a7b6d55ba369dea792e'
         and topic2 = '0x0000000000000000000000008811da0385ccf1848b21475a42ea4d07fc5d964a'
@@ -380,7 +380,7 @@ fees_collected as (
         end as fee_reward_token1
     from
         bnb.logs  { { source('bnb', 'logs') } } a
-        left join all_addresses c on a.contract_address = c.bribe_address
+        join all_addresses c on a.contract_address = c.bribe_address
     where
         topic1 = '0x540798df468d7b23d11f156fdb954cb19ad414d150722a7b6d55ba369dea792e'
         and topic2 = '0x0000000000000000000000008811da0385ccf1848b21475a42ea4d07fc5d964a'
