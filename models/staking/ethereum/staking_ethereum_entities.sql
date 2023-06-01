@@ -87,7 +87,7 @@ FROM
     , ('0x4c2f150fc90fed3d8281114c2349f1906cde5346', 'Gemini', 'Gemini', 'CEX')
     , ('0xbb84d966c09264ce9a2104a4a20bb378369986db', 'WEX Exchange', 'WEX Exchange', 'CEX')
     , ('0xbafa44efe7901e04e39dad13167d089c559c1138', 'Frax Finance', 'Frax Finance', 'Liquid Staking')
-    , ('0xefe9a82d56cd965d7b332c7ac1feb15c53cd4340', 'stakefish', 'stakefish 2', 'Staking Pools')
+    --, ('0xefe9a82d56cd965d7b332c7ac1feb15c53cd4340', 'stakefish', 'stakefish 2', 'Staking Pools') -- fork of stakefish batch deposit contract that isn't controlled by stakefish
     , ('0xeee27662c2b8eba3cd936a23f039f3189633e4c8', 'Celsius', 'Celsius', 'Staking Pools')
     , ('0xe0c8df4270f4342132ec333f6048cb703e7a9c77', 'Swell', 'Swell', 'Liquid Staking')
     , ('0xb3d9cf8e163bbc840195a97e81f8a34e295b8f39', 'Swell', 'Swell', 'Liquid Staking')
