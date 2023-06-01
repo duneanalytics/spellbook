@@ -55,4 +55,3 @@ LEFT JOIN {{ source('prices', 'usd') }} pu ON pu.minute=date_trunc('minute', etg
      AND pu.minute >= date_trunc("day", NOW() - interval '1' week)
      {% endif %}
 GROUP BY etg.tx_hash, etg.trace, etc.gas_price, etg.block_time, etg.block_number
-{% if is_incremental() %}
