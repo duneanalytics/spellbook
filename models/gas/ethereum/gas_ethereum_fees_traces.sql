@@ -15,45 +15,39 @@ WITH traces AS (
      , MAX(traces.from) AS trace_from
      , MAX(traces.to) AS trace_to
      , traces.trace
-     , substring(traces.input,1,10) AS trace_method
+     , substring(MAX(traces.input),1,10) AS trace_method
      , SUM(traces.gas_used) AS gas_used
      FROM (
-          SELECT et.from
-          , et.to 
-          , et.tx_hash
-          , et.trace_address AS trace
-          , et.gas_used
-          , et.block_time
-          , et.block_number
-          FROM {{ source('ethereum','traces') }} et
+          SELECT from
+          , to 
+          , tx_hash
+          , trace_address AS trace
+          , gas_used
+          , block_time
+          , block_number
+          , input
+          FROM {{ source('ethereum','traces') }}
           {% if is_incremental() %}
-          AND et.block_time >= date_trunc("day", NOW() - interval '1' week)
+          AND block_time >= date_trunc("day", NOW() - interval '1' week)
           {% endif %}
           
           UNION ALL
           
           SELECT CAST(NULL AS varchar(1)) AS from 
           , CAST(NULL AS varchar(1)) AS to 
-          , et.tx_hash
-          , slice(et.trace_address, 1, cardinality(et.trace_address) - 1) AS trace
-          , -et.gas_used AS gas_used
-          , et.block_time
-          , et.block_number
-          FROM {{ source('ethereum','traces') }} et
-          WHERE cardinality(et.trace_address) > 0
+          , tx_hash
+          , slice(trace_address, 1, cardinality(trace_address) - 1) AS trace
+          , -gas_used AS gas_used
+          , block_time
+          , block_number
+          , CAST(NULL AS varchar(1)) AS input
+          FROM {{ source('ethereum','traces') }}
+          WHERE cardinality(trace_address) > 0
           {% if is_incremental() %}
-          AND et.block_time >= date_trunc("day", NOW() - interval '1' week)
+          AND block_time >= date_trunc("day", NOW() - interval '1' week)
           {% endif %}
           ) traces
-     LEFT JOIN {{ source('ethereum','transactions') }} txs ON txs.block_time=traces.block_time
-               AND txs.hash=traces.tx_hash
-     LEFT JOIN {{ source('prices', 'usd') }} pu ON pu.minute=date_trunc('minute', traces.block_time)
-          AND pu.blockchain='ethereum'
-          AND pu.contract_address='0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'
-          {% if is_incremental() %}
-          AND pu.minute >= date_trunc("day", NOW() - interval '1' week)
-          {% endif %}
-     GROUP BY traces.tx_hash, traces.trace, traces.block_time, traces.block_number, traces.input
+     GROUP BY traces.tx_hash, traces.trace, traces.block_time, traces.block_number
      )
 
 SELECT 'ethereum' AS blockchain
