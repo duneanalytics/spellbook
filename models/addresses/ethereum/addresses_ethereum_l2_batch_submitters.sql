@@ -14,6 +14,9 @@ FROM (VALUES
       ,("0x6887246668a3b87f54deb3b94ba47a6f63f32985", "Optimism", "Canonical Transaction Chain","from_address","","Optimism: Sequencer")
       ,("0xe969c2724d2448f1d1a6189d3e2aa1f37d5998c1", "Optimism", "State Commitment Chain","from_address","","Optimism: State Root Proposer")
 
+      ,("0xff00000000000000000000000000000000000010", "Optimism", "L1BatchInbox","to_address","Bedrock","Optimism: BatchInbox")
+      ,("0x70997970C51812dc3A010C7d01b50e0d17dc79C8", "Optimism", "L1BatchInbox","from_address","Bedrock","Optimism: BatchInbox")
+
       ,("0xa4b10ac61e79ea1e150df70b8dda53391928fd14", "Arbitrum","SequencerInbox","from_address","","Arbitrum: Sequencer")
       ,("0xcce5c6cff61c49b4d53dd6024f8295f3c5230513", "Arbitrum","SequencerInbox","from_address","","Arbitrum: Sequencer 2")
       ,("0x4c6f947ae67f572afa4ae0730947de7c874f95ef", "Arbitrum","SequencerInbox","to_address","1","Arbitrum: Old Sequencer Inbox")
