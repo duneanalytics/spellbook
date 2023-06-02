@@ -58,7 +58,7 @@ SELECT LOWER(contract_address) AS contract_address
     FROM (
       SELECT contract_address, symbol, decimals, token_type, token_mapping_source,
       -- ensure we don't have dupes with different symbols
-        ROW_NUMBER() OVER (PARTITION BY contract_address ORDER BY symbol ASC NULLS LAST) AS token_rank
+        ROW_NUMBER() OVER (PARTITION BY contract_address ORDER BY decimals ASC NULLS LAST, symbol ASC NULLS LAST) AS token_rank
         FROM generated_tokens_list  
     ) a
   WHERE token_rank = 1
