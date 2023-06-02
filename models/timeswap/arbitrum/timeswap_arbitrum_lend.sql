@@ -11,15 +11,17 @@
     )
 }}
 
+
 SELECT
   l.evt_tx_hash as transaction_hash,
   l.evt_block_time as time,
   l.isToken0 as token_0,
   'lend' as transaction_type,
   l.maturity as maturity,
-  l.strike as strike, 
+  l.strike as strike,
   i.pool_pair as pool_pair,
   i.chain as chain,
+  tx.from as user,
   CAST(
     CASE
       WHEN CAST(l.isToken0 AS BOOLEAN) = true THEN CAST(l.tokenAmount AS DOUBLE) / power(10,i.token0_decimals)
@@ -36,9 +38,14 @@ FROM {{ source('timeswap_arbitrum', 'TimeswapV2PeripheryUniswapV3LendGivenPrinci
 JOIN {{ ref('timeswap_arbitrum_pools') }} i
   ON CAST(l.maturity as VARCHAR(100)) = i.maturity
   AND cast(l.strike as VARCHAR(100)) = i.strike
+JOIN {{ source('arbitrum', 'transactions') }} tx
+    on l.evt_tx_hash = tx.hash
+    {% if is_incremental() %}
+    and tx.block_time >= date_trunc("day", now() - interval '1 week')
+    {% endif %}
 JOIN {{ source('prices', 'usd') }} p
   ON p.symbol=i.token0_symbol
-  AND p.blockchain = 'arbitrum' 
+  AND p.blockchain = 'arbitrum'
   AND l.isToken0 = true
   AND p.minute = date_trunc('minute',l.evt_block_time)
 {% if is_incremental() %}
@@ -46,7 +53,9 @@ JOIN {{ source('prices', 'usd') }} p
 WHERE l.evt_block_time >= date_trunc("day", now() - interval '1 week')
 {% endif %}
 
+
 UNION
+
 
 SELECT
   l.evt_tx_hash as transaction_hash,
@@ -54,9 +63,10 @@ SELECT
   l.isToken0 as token_0,
   'lend' as transaction_type,
   l.maturity as maturity,
-  l.strike as strike, 
+  l.strike as strike,
   i.pool_pair as pool_pair,
   i.chain as chain,
+  tx.from as user,
   CAST(
     CASE
       WHEN CAST(l.isToken0 AS BOOLEAN) = true THEN CAST(l.tokenAmount AS DOUBLE) / power(10,i.token0_decimals)
@@ -72,7 +82,12 @@ SELECT
 FROM {{ source('timeswap_arbitrum', 'TimeswapV2PeripheryUniswapV3LendGivenPrincipal_evt_LendGivenPrincipal') }} l
 JOIN {{ ref('timeswap_arbitrum_pools') }} i
   ON CAST(l.maturity as VARCHAR(100)) = i.maturity
-  AND cast(l.strike as VARCHAR(100)) = i.strike 
+  AND cast(l.strike as VARCHAR(100)) = i.strike
+JOIN {{ source('arbitrum', 'transactions') }} tx
+    on l.evt_tx_hash = tx.hash
+    {% if is_incremental() %}
+    and tx.block_time >= date_trunc("day", now() - interval '1 week')
+    {% endif %}
 JOIN {{ source('prices', 'usd') }} p
   ON p.symbol=i.token1_symbol
   AND p.blockchain = 'arbitrum'
@@ -83,7 +98,9 @@ JOIN {{ source('prices', 'usd') }} p
 WHERE l.evt_block_time >= date_trunc("day", now() - interval '1 week')
 {% endif %}
 
+
 UNION
+
 
 SELECT
   l.evt_tx_hash as transaction_hash,
@@ -91,9 +108,10 @@ SELECT
   l.isToken0 as token_0,
   'lend' as transaction_type,
   l.maturity as maturity,
-  l.strike as strike, 
+  l.strike as strike,
   i.pool_pair as pool_pair,
   i.chain as chain,
+  tx.from as user,
   CAST(
     CASE
       WHEN CAST(l.isToken0 AS BOOLEAN) = true THEN CAST(l.tokenAmount AS DOUBLE) / power(10,i.token0_decimals)
@@ -110,6 +128,11 @@ FROM {{ source('timeswap_arbitrum', 'TimeswapV2PeripheryNoDexLendGivenPrincipal_
 JOIN {{ ref('timeswap_arbitrum_pools') }} i
   ON CAST(l.maturity as VARCHAR(100)) = i.maturity
   AND cast(l.strike as VARCHAR(100)) = i.strike
+JOIN {{ source('arbitrum', 'transactions') }} tx
+    on l.evt_tx_hash = tx.hash
+    {% if is_incremental() %}
+    and tx.block_time >= date_trunc("day", now() - interval '1 week')
+    {% endif %}
 JOIN {{ source('prices', 'usd') }} p
   ON p.symbol=i.token0_symbol
   AND p.blockchain = 'arbitrum'
@@ -120,7 +143,9 @@ JOIN {{ source('prices', 'usd') }} p
 WHERE l.evt_block_time >= date_trunc("day", now() - interval '1 week')
 {% endif %}
 
+
 UNION
+
 
 SELECT
   l.evt_tx_hash as transaction_hash,
@@ -128,9 +153,10 @@ SELECT
   l.isToken0 as token_0,
   'lend' as transaction_type,
   l.maturity as maturity,
-  l.strike as strike, 
+  l.strike as strike,
   i.pool_pair as pool_pair,
   i.chain as chain,
+  tx.from as user,
   CAST(
     CASE
       WHEN CAST(l.isToken0 AS BOOLEAN) = true THEN CAST(l.tokenAmount AS DOUBLE) / power(10,i.token0_decimals)
@@ -147,6 +173,11 @@ FROM {{ source('timeswap_arbitrum', 'TimeswapV2PeripheryNoDexLendGivenPrincipal_
 JOIN {{ ref('timeswap_arbitrum_pools') }} i
   ON CAST(l.maturity as VARCHAR(100)) = i.maturity
   AND cast(l.strike as VARCHAR(100)) = i.strike
+JOIN {{ source('arbitrum', 'transactions') }} tx
+    on l.evt_tx_hash = tx.hash
+    {% if is_incremental() %}
+    and tx.block_time >= date_trunc("day", now() - interval '1 week')
+    {% endif %}
 JOIN {{ source('prices', 'usd') }} p
   ON p.symbol=i.token1_symbol
   AND p.blockchain = 'arbitrum'
@@ -156,6 +187,5 @@ JOIN {{ source('prices', 'usd') }} p
   AND p.minute >= date_trunc("day", now() - interval '1 week')
 WHERE l.evt_block_time >= date_trunc("day", now() - interval '1 week')
 {% endif %}
-
 
 
