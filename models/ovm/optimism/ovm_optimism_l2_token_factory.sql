@@ -13,7 +13,7 @@
   )
 }}
 
-SELECT distinct
+SELECT 
 contract_address AS factory_address,
 _l1Token AS l1_token,
 _l2Token AS l2_token,
