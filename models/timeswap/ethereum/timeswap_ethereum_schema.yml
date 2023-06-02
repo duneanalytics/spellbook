@@ -1,5 +1,6 @@
 version: 2
 
+
 models:
   - name: timeswap_ethereum_pools
     meta:
@@ -52,6 +53,7 @@ models:
         name: lend_contract_address
         description: "The lend contract address"
 
+
   - name: timeswap_ethereum_lend
     description: >
         Timeswap lend transactions on Ethereum
@@ -80,7 +82,7 @@ models:
       - *maturity
       - *strike
       - *pool_pair
-      - &chain 
+      - &chain
         name: Chain
         description: "chain"
       - &token_amount
@@ -89,6 +91,10 @@ models:
       - &usd_amount
         name: USD_Amount
         description: "The amount of token borrowed in USD"
+      - &user
+        name: User
+        description: "The user address"
+
 
   - name: timeswap_ethereum_borrow
     description: >
@@ -113,4 +119,4 @@ models:
       - *chain
       - *token_amount
       - *usd_amount
-      
+      - *user
