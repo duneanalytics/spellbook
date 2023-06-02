@@ -12,7 +12,7 @@ SELECT 'ethereum' AS blockchain
 , access_list
 , block_hash
 , data
-, from
+, `from`
 , hash
 , to
 , block_number
@@ -26,7 +26,7 @@ SELECT 'ethereum' AS blockchain
 , nonce
 , priority_fee_per_gas
 , success
-, type
+, `type`
 , CAST(value AS double) AS value
 , NULL AS l1_tx_origin
 , CAST(NULL AS double) AS l1_fee_scalar
@@ -44,7 +44,7 @@ SELECT 'polygon' AS blockchain
 , access_list
 , block_hash
 , data
-, from
+, `from`
 , hash
 , to
 , block_number
@@ -58,7 +58,7 @@ SELECT 'polygon' AS blockchain
 , nonce
 , priority_fee_per_gas
 , success
-, type
+, `type`
 , CAST(value AS double) AS value
 , NULL AS l1_tx_origin
 , CAST(NULL AS double) AS l1_fee_scalar
@@ -77,7 +77,7 @@ SELECT 'bnb' AS blockchain
 , access_list
 , block_hash
 , data
-, from
+, `from`
 , hash
 , to
 , block_number
@@ -91,7 +91,7 @@ SELECT 'bnb' AS blockchain
 , nonce
 , priority_fee_per_gas
 , success
-, type
+, `type`
 , CAST(value AS double) AS value
 , NULL AS l1_tx_origin
 , CAST(NULL AS double) AS l1_fee_scalar
@@ -109,7 +109,7 @@ SELECT 'avalanche_c' AS blockchain
 , access_list
 , block_hash
 , data
-, from
+, `from`
 , hash
 , to
 , block_number
@@ -123,7 +123,7 @@ SELECT 'avalanche_c' AS blockchain
 , nonce
 , priority_fee_per_gas
 , success
-, type
+, `type`
 , CAST(value AS double) AS value
 , NULL AS l1_tx_origin
 , CAST(NULL AS double) AS l1_fee_scalar
@@ -141,7 +141,7 @@ SELECT 'gnosis' AS blockchain
 , access_list
 , block_hash
 , data
-, from
+, `from`
 , hash
 , to
 , block_number
@@ -155,7 +155,7 @@ SELECT 'gnosis' AS blockchain
 , nonce
 , priority_fee_per_gas
 , success
-, type
+, `type`
 , CAST(value AS double) AS value
 , NULL AS l1_tx_origin
 , CAST(NULL AS double) AS l1_fee_scalar
@@ -173,7 +173,7 @@ SELECT 'fantom' AS blockchain
 , access_list
 , block_hash
 , data
-, from
+, `from`
 , hash
 , to
 , block_number
@@ -187,7 +187,7 @@ SELECT 'fantom' AS blockchain
 , nonce
 , priority_fee_per_gas
 , success
-, type
+, `type`
 , CAST(value AS double) AS value
 , NULL AS l1_tx_origin
 , CAST(NULL AS double) AS l1_fee_scalar
@@ -205,7 +205,7 @@ SELECT 'optimism' AS blockchain
 , access_list
 , block_hash
 , data
-, from
+, `from`
 , hash
 , to
 , block_number
@@ -219,7 +219,7 @@ SELECT 'optimism' AS blockchain
 , nonce
 , priority_fee_per_gas
 , success
-, type
+, `type`
 , CAST(value AS double) AS value
 ,l1_tx_origin
 , l1_fee_scalar
@@ -237,7 +237,7 @@ SELECT 'arbitrum' AS blockchain
 , access_list
 , block_hash
 , data
-, from
+, `from`
 , hash
 , to
 , block_number
@@ -251,7 +251,7 @@ SELECT 'arbitrum' AS blockchain
 , nonce
 , priority_fee_per_gas
 , success
-, type
+, `type`
 , CAST(value AS double) AS value
 , NULL AS l1_tx_origin
 , CAST(NULL AS double) AS l1_fee_scalar
