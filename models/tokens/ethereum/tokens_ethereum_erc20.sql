@@ -25990,7 +25990,7 @@ FROM (VALUES
         ,('0xdf72587909c0b5ed289e550cb128998c8d9cfc1b', 'LMAO', 9)
         ,('0xb44c0a4624eaed2c41eb8437d0fb5a28f91e7335', 'DAMBI', 18)
         ,('0x916b05e313d3c8507679ba2fa562af2aafef520e', 'PUMPIT', 9)
-,('0x82cd3090e966aa29617ee1b79bd8e9a0349396d9', '0xETH', 18)
+        ,('0x82cd3090e966aa29617ee1b79bd8e9a0349396d9', '0xETH', 18)
         ,('0x2a994d7d84677b75c07e4fc980931a7afe7415b7', 'NARCO', 18)
         ,('0x4eb66749b58a6220c9ce7c254d8c3df686281a87', 'HONGSE', 18)
         ,('0x4cf688ed5ebf8b56d85f2afccd66bdb29a11e88b', 'SPACE', 18)
