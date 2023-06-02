@@ -28,7 +28,7 @@ WITH traces AS (
           , input
           FROM {{ source('ethereum','traces') }}
           {% if is_incremental() %}
-          AND block_time >= date_trunc("day", NOW() - interval '1' week)
+          WHERE block_time >= date_trunc("day", NOW() - interval '1' week)
           {% endif %}
           
           UNION ALL
