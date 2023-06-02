@@ -28,7 +28,7 @@ pairs as (
         output_0 as token0,
         output_1 as token1
     from
-        { { source('thena_fi_bnb', 'Pair_call_tokens') } }
+        {{ source('thena_fi_bnb', 'Pair_call_tokens') }}
     where
         (
             output_0 in (
@@ -44,7 +44,7 @@ pairs as (
             select
                 max(date(call_block_time))
             from
-                { { source('thena_fi_bnb', 'Pair_call_tokens') } }
+                {{ source('thena_fi_bnb', 'Pair_call_tokens') }}
             where
                 (
                     output_0 in (
@@ -72,7 +72,7 @@ reserves as (
                 call_block_time desc
         ) as rn
     from
-        { { source('thena_fi_bnb', 'Pair_call_getReserves') } } a
+        {{ source('thena_fi_bnb', 'Pair_call_getReserves') }} a
         inner join pairs b on a.contract_address = b.contract_address
     where
         date(call_block_time) >= date('2023-01-04')
@@ -107,7 +107,7 @@ prices_raw as (
                 hour desc
         ) as rn
     from
-        { { ref('dex_prices') } }
+        {{ ref('dex_prices') }}
     where
         blockchain = 'ethereum'
         and contract_address in (
@@ -286,7 +286,7 @@ bribe_base as (
             from_unixtime(bytea2numeric_v3(substring(data, 131))) as timestamp
         ) as start_time
     from
-                   { { source('bnb', 'logs') } } a
+                   {{ source('bnb', 'logs') }} a
         join all_addresses b on a.contract_address = b.bribe_address
     where
         topic1 = '0x6a6f77044107a33658235d41bedbbaf2fe9ccdceb313143c947a5e76e1ec8474'
@@ -326,7 +326,7 @@ bribes_received as (
             )
         end as reward_amount_usd
     from
-        { { source('bnb', 'logs') } } a
+        {{ source('bnb', 'logs') }} a
         left join (
             select
                 *
@@ -382,7 +382,7 @@ fees_collected as (
             )
         end as fee_reward_token1
     from
-        bnb.logs  { { source('bnb', 'logs') } } a
+        bnb.logs  {{ source('bnb', 'logs') }} a
         join all_addresses c on a.contract_address = c.bribe_address
     where
         topic1 = '0x540798df468d7b23d11f156fdb954cb19ad414d150722a7b6d55ba369dea792e'
