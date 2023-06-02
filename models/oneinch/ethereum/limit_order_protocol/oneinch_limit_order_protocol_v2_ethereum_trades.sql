@@ -29,7 +29,7 @@ WITH limit_order_protocol AS
         call_tx_hash,
         call_trace_address
     FROM
-        {{ source('oneinch_lop_v2_ethereum', 'LimitOrderProtocol_call_fillOrder') }}
+        {{ source('oneinch_ethereum', 'LimitOrderProtocolV2_call_fillOrder') }}
     WHERE
         call_success
         {% if is_incremental() %}
@@ -52,7 +52,7 @@ WITH limit_order_protocol AS
         call_tx_hash,
         call_trace_address
     FROM
-        {{ source('oneinch_lop_v2_ethereum', 'LimitOrderProtocol_call_fillOrderTo') }}
+        {{ source('oneinch_ethereum', 'LimitOrderProtocolV2_call_fillOrderTo') }}
     WHERE
         call_success
         {% if is_incremental() %}
@@ -75,7 +75,7 @@ WITH limit_order_protocol AS
         call_tx_hash,
         call_trace_address
     FROM
-        {{ source('oneinch_lop_v2_ethereum', 'LimitOrderProtocol_call_fillOrderToWithPermit') }}
+        {{ source('oneinch_ethereum', 'LimitOrderProtocolV2_call_fillOrderToWithPermit') }}
     WHERE
         call_success
         {% if is_incremental() %}

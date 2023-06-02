@@ -8,5 +8,3 @@ sources:
       - name: CollectionPoolFactory_call_createPoolETH
       - name: CollectionPoolFactory_call_createPoolERC20Filtered
       - name: CollectionPoolFactory_call_createPoolETHFiltered
-      - name: CollectionPool_evt_SwapNFTOutPool
-      - name: CollectionPool_evt_SwapNFTInPool

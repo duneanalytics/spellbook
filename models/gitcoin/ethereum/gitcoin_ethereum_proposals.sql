@@ -2,10 +2,8 @@
     schema = 'gitcoin_ethereum',
     alias = 'proposals',
     partition_by = ['block_date'],
-    materialized = 'incremental',
+    materialized = 'table',
     file_format = 'delta',
-    incremental_strategy = 'merge',
-    unique_key = ['created_at', 'blockchain', 'project', 'version', 'tx_hash'],
     post_hook='{{ expose_spells(\'["ethereum"]\',
                                 "project",
                                 "gitcoin",
@@ -68,6 +66,3 @@ LEFT JOIN cte_sum_votes csv ON csv.proposalId = pcr.id
 LEFT JOIN {{ source('gitcoin_ethereum', 'GovernorAlpha_evt_ProposalCanceled') }} pca ON pca.id = pcr.id
 LEFT JOIN {{ source('gitcoin_ethereum', 'GovernorAlpha_evt_ProposalExecuted') }} pex ON pex.id = pcr.id
 LEFT JOIN {{ source('gitcoin_ethereum', 'GovernorAlpha_evt_ProposalQueued') }} pqu ON pex.id = pcr.id
-{% if is_incremental() %}
-WHERE pcr.evt_block_time > (select max(created_at) from {{ this }})
-{% endif %}

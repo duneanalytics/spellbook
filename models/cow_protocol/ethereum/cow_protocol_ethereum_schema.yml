@@ -16,7 +16,7 @@ models:
         description: "Solver's wallet address"
       - &environment
         name: environment
-        description: "Solver's environment"
+        description: "Development environment"
       - &name
         name: name
         description: "Solver's name"
@@ -139,6 +139,8 @@ models:
       - &partial_fill
         name: partial_fill
         description: "Boolean indicating if the order is partially fill-able"
+      - &fill_proportion
+        name: fill_proportion
 
   - name: cow_protocol_ethereum_batches
     meta:
@@ -255,6 +257,7 @@ models:
       - *block_time
       - *block_number
       - *tx_hash
+      - *environment
       - *valid_to
       - &quote_id
         name: quote_id
@@ -318,8 +321,7 @@ models:
         name: tolerance_bips
       - &trade_usd_value
         name: trade_usd_value
-      - &fill_proportion
-        name: fill_proportion
+      - *fill_proportion
       - &amount_atoms
         name: amount_atoms
       - &amount_percentage
