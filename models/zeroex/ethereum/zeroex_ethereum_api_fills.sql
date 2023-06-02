@@ -38,7 +38,7 @@ WITH zeroex_tx AS (
             {% endif %}
             {% if not is_incremental() %}
             AND evt_block_time >= '{{zeroex_v3_start_date}}'
-            {% endif %}
+            {% endif %} 
 
         UNION ALL
         SELECT tr.tx_hash,

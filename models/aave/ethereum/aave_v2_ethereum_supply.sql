@@ -1,10 +1,6 @@
 {{ config(
     schema = 'aave_v2_ethereum'
     , alias='supply'
-    , post_hook='{{ expose_spells(\'["ethereum"]\',
-                                  "project",
-                                  "aave_v2",
-                                  \'["batwayne", "chuxin"]\') }}'
   )
 }}
 
