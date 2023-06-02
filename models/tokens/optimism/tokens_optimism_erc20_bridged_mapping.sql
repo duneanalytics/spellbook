@@ -27,7 +27,7 @@ FROM (
             FROM {{source( 'optimism_ethereum', 'L1StandardBridge_evt_ERC20DepositInitiated' ) }}
         WHERE evt_tx_hash != '0x460965f169a99b3d372cd749621a3652ad232d1b1580fd77424eacc2e973b672' --bad event emitted
         {% if is_incremental() %}
-        WHERE evt_block_time >= date_trunc("day", now() - interval '1 week')
+        AND evt_block_time >= date_trunc("day", now() - interval '1 week')
         {% endif %}   
         GROUP BY 1,2
         
