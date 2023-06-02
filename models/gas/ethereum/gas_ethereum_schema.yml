@@ -133,14 +133,25 @@ models:
         description: "Trace method"
       - name: tx_method
         description: "Function method"
-      - name: gas_used
-        description: "Gas used"
+      - name: trace_input
+      - name: gas_used_original
+        description: "Gas used in trace and its subtraces"
+      - name: gas_used_trace
+        description: "Gas used in trace (excluding gas spent in subtraces)"
       - name: tx_gas_used
         description: "Total gas used in the transaction"
       - name: gas_used_tx_percentage
         description: "Percentage of the total gas used in the transaction"
       - name: tx_gas_price
         description: "Transaction gas price"
+      - name: trace_type
+        description: "Trace type"
+      - name: trace_value
+        description: "Trace value"
+      - name: trace_success
+        description: "Was the trace successful?"
+      - name: tx_success
+        description: "Was the transaction successful?"
       - name: spent_gas_fee
         description: "Amount of ETH spent in gas fees"
       - name: spent_gas_fee_usd

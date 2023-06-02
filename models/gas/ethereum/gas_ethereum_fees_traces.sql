@@ -17,7 +17,7 @@ WITH traces AS (
      , traces.trace
      , MAX(traces.input) AS trace_input
      , substring(MAX(traces.input),1,10) AS trace_method
-     , SUM(traces.gas_used) AS gas_used
+     , SUM(traces.gas_used_original) AS gas_used_original
      , SUM(traces.gas_used_trace) AS gas_used_trace
      , MAX(traces.trace_type) AS trace_type
      , MAX(traces.trace_value) AS trace_value
@@ -28,7 +28,7 @@ WITH traces AS (
           , to
           , tx_hash
           , trace_address AS trace
-          , gas_used
+          , gas_used AS gas_used_original
           , gas_used AS gas_used_trace
           , block_time
           , block_number
@@ -48,7 +48,7 @@ WITH traces AS (
           , CAST(NULL AS varchar(1)) AS to 
           , tx_hash
           , slice(trace_address, 1, cardinality(trace_address) - 1) AS trace
-          , CAST(NULL AS double) AS gas_used
+          , CAST(NULL AS double) AS gas_used_original
           , -gas_used AS gas_used_trace
           , block_time
           , block_number
@@ -77,9 +77,9 @@ SELECT 'ethereum' AS blockchain
 , txs.to AS tx_to
 , traces.trace
 , traces.trace_method
-, traces.trace_input
 , substring(txs.data,1,10) AS tx_method
-, traces.gas_used
+, traces.trace_input
+, traces.gas_used_original
 , traces.gas_used_trace
 , txs.gas_used AS tx_gas_used
 , traces.gas_used/txs.gas_used AS gas_used_tx_percentage
