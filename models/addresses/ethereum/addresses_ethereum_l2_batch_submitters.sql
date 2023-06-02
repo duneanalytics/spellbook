@@ -16,6 +16,7 @@ FROM (VALUES
 
       ,("0xff00000000000000000000000000000000000010", "Optimism", "L1BatchInbox","to_address","Bedrock","Optimism: BatchInbox")
       ,("0x6887246668a3b87F54DeB3b94Ba47a6f63F32985", "Optimism", "L1BatchInbox","from_address","Bedrock","Optimism: BatchInbox")
+--       ,("", "Optimism", "OutputOracle","to_address","Bedrock","Optimism: OutputOracle")
 
       ,("0xa4b10ac61e79ea1e150df70b8dda53391928fd14", "Arbitrum","SequencerInbox","from_address","","Arbitrum: Sequencer")
       ,("0xcce5c6cff61c49b4d53dd6024f8295f3c5230513", "Arbitrum","SequencerInbox","from_address","","Arbitrum: Sequencer 2")
