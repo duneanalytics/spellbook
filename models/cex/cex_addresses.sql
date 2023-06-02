@@ -7,7 +7,7 @@
 }}
 
 
-{% set nft_models = [
+{% set cex_models = [
 ref('cex_arbitrum_addresses')
 , ref('cex_avalanche_c_addresses')
 , ref('cex_bitcoin_addresses')
