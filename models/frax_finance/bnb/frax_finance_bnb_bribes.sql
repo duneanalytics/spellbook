@@ -382,7 +382,7 @@ fees_collected as (
             )
         end as fee_reward_token1
     from
-        bnb.logs  {{ source('bnb', 'logs') }} a
+         {{ source('bnb', 'logs') }} a
         join all_addresses c on a.contract_address = c.bribe_address
     where
         topic1 = '0x540798df468d7b23d11f156fdb954cb19ad414d150722a7b6d55ba369dea792e'
