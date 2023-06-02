@@ -20,7 +20,7 @@ ref('cex_arbitrum_addresses')
 
 SELECT *
 FROM (
-    {% for nft_model in nft_models %}
+    {% for cex_model in cex_models %}
     SELECT
         blockchain, 
         address,
@@ -28,7 +28,7 @@ FROM (
         distinct_name,
         added_by,
         added_date
-    FROM {{ nft_model }}
+    FROM {{ cex_model }}
     {% if not loop.last %}
     UNION ALL
     {% endif %}
