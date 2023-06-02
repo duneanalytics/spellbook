@@ -107,6 +107,20 @@ FROM
                 'Polygon',
                 '0xb9385AfC6Ddf565C0256116Aa3415EfdFca1E872',
                 '0x880D3fc39683Ecbfd7636cc48D5FCc34508ca7c3'
+            ),
+            (
+                'USDC',
+                'stMATIC',
+                '0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174',
+                '0x3A58a54C066FdC0f2D55FC9C89F0415C92eBf3C4',
+                6,
+                18,
+                '261755666862260356510288159562898624196923076923076',
+                '1688126400',
+                'USDC-stMATIC',
+                'Polygon',
+                '0xb9385AfC6Ddf565C0256116Aa3415EfdFca1E872',
+                '0x880D3fc39683Ecbfd7636cc48D5FCc34508ca7c3'
             )
     ) AS temp_table (
         token0_symbol,
