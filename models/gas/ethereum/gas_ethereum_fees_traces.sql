@@ -55,8 +55,8 @@ WITH traces AS (
           , CAST(NULL AS varchar(1)) AS input
           , CAST(NULL AS varchar(1)) AS trace_type
           , CAST(NULL AS varchar(1)) AS trace_value
-          , CAST(NULL AS varchar(1)) AS trace_success
-          , CAST(NULL AS varchar(1)) AS tx_success
+          , CAST(NULL AS boolean) AS trace_success
+          , CAST(NULL AS boolean) AS tx_success
           FROM {{ source('ethereum','traces') }}
           WHERE cardinality(trace_address) > 0
           {% if is_incremental() %}
