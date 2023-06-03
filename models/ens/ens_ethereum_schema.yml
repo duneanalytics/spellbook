@@ -29,7 +29,7 @@ models:
     meta:
       blockchain: ethereum
       project: ethereum_name_service
-      contributors: mewwts, antonio-mendes
+      contributors: mewwts, antonio-mendes, steakhouse
     config:
       tags: ['ethereum','ens','ethereum_name_service','ethereumnameservice']
     description: >
@@ -44,6 +44,9 @@ models:
       - &cost
         name: cost
         description: "Registration cost in Wei"
+      - &premium
+        name: premium
+        description: "Portion of registration cost in Wei due to premium"
       - &expires
         name: expires
         description: "Expiry data in epoch time"
@@ -67,7 +70,7 @@ models:
     meta:
       blockchain: ethereum
       project: ethereum_name_service
-      contributors: mewwts, antonio-mendes
+      contributors: mewwts, antonio-mendes, steakhouse
     config:
       tags: ['ethereum','ens','ethereum_name_service','ethereumnameservice']
     description: >
