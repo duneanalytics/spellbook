@@ -483,6 +483,7 @@ WITH curated_list AS (
       ,('0xdeadfed00b7848545d8fe5cb4e7c51ed37e5a2fa', 'Holograph')
       ,('0x0c8af56f7650a6e3685188d212044338c21d3f73', 'Holograph')
       ,('0x6dCB5E43B05918505f65BF423088af172C32be33', 'Symbiosis Finance')
+      ,('0x9088b976e9542d0A27f4F9ddc7A716c7714806ea', 'Extra Finance')
 
   ) as temp_table (creator_address, contract_project)
 
