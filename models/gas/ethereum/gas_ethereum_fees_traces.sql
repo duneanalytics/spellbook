@@ -82,14 +82,17 @@ SELECT 'ethereum' AS blockchain
 , traces.gas_used_original
 , traces.gas_used_trace
 , txs.gas_used AS tx_gas_used
-, traces.gas_used/txs.gas_used AS gas_used_tx_percentage
+, traces.gas_used_original/txs.gas_used AS gas_used_original_percentage
+, traces.gas_used_trace/txs.gas_used AS gas_used_trace_percentage
 , txs.gas_price AS tx_gas_price
 , traces.trace_type
 , traces.trace_value
 , traces.trace_success
 , traces.tx_success
-, (traces.gas_used*txs.gas_price)/POWER(10, 18) AS spent_gas_fee
-, (pu.price*traces.gas_used*txs.gas_price)/POWER(10, 18) AS spent_gas_fee_usd
+, (traces.gas_used_original*txs.gas_price)/POWER(10, 18) AS gas_fee_spent_original
+, (pu.price*traces.gas_used_original*txs.gas_price)/POWER(10, 18) AS gas_fee_spent_original_usd
+, (traces.gas_used_trace*txs.gas_price)/POWER(10, 18) AS gas_fee_spent_trace
+, (pu.price*traces.gas_used_trace*txs.gas_price)/POWER(10, 18) AS gas_fee_spent_trace_usd
 FROM traces
 LEFT JOIN {{ source('ethereum','transactions') }} txs ON txs.block_time=traces.block_time
      AND txs.hash=traces.tx_hash
