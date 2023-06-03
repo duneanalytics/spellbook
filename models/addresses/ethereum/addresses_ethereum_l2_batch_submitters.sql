@@ -4,7 +4,7 @@
                                     "addresses",
                                     \'["msilb7"]\') }}') }}
 
-SELECT lower(address) as address, protocol_name, submitter_type, role_type, version, description
+SELECT address, protocol_name, submitter_type, role_type, version, description
 FROM (VALUES
        ("0x5e4e65926ba27467555eb562121fac00d24e9dd2", 'Optimism', 'Canonical Transaction Chain','to_address','2','Optimism: Canonical Transaction Chain')
       ,("0xbe5dab4a2e9cd0f27300db4ab94bee3a233aeb19", "Optimism", "State Commitment Chain","to_address","2","Optimism: State Commitment Chain")
@@ -29,4 +29,5 @@ FROM (VALUES
       ,("0x56a76bcc92361f6df8d75476fed8843edc70e1c9", "Metis", "Canonical Transaction Chain","to_address","1","")
       ,("0x6a1db7d799fba381f2a518ca859ed30cb8e1d41a", "Metis", "Canonical Transaction Chain","to_address","2","")
       ,("0xf209815e595cdf3ed0aaf9665b1772e608ab9380", "Metis", "State Commitment Chain","to_address","","")
+      
       ) AS x (address, protocol_name, submitter_type, role_type, version, description)
