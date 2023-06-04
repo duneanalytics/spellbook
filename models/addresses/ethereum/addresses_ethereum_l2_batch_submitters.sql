@@ -36,4 +36,11 @@ FROM (VALUES
         ,("0x6a1db7d799fba381f2a518ca859ed30cb8e1d41a", "Metis", "Canonical Transaction Chain","to_address","2","")
         ,("0xf209815e595cdf3ed0aaf9665b1772e608ab9380", "Metis", "State Commitment Chain","to_address","","")
 
+
+        ,("0x253887577420cb7e7418cd4d50147743c8041b28", "Aevo", "L1BatchInbox","to_address","OP Stack","Aevo: L1BatchInbox")
+        ,("0x889e21d7ba3d6dd62e75d4980a4ad1349c61599d", "Aevo", "L1BatchInbox","from_address","OP Stack","Aevo: L1BatchInbox")
+
+        ,("0x75acb7ae6c76b3f5ca049431fe2c0797dd002b90", "Aevo", "L1OutputOracle","to_address","OP Stack","Aevo: L1OutputOracle")
+        ,("0x909e51211e959339efb14b36f5a50955a8ae3770", "Aevo", "L1OutputOracle","from_address","OP Stack","Aevo: L1OutputOracle")
+
         ) AS x (address, protocol_name, submitter_type, role_type, version, description)
