@@ -26,14 +26,16 @@ FROM (VALUES
         ,("0x1c479675ad559dc151f6ec7ed3fbf8cee79582b6", "Arbitrum","SequencerInbox","to_address","2","Arbitrum: Sequencer Inbox")
 
         ,("0xfa46908b587f9102e81ce6c43b7b41b52881c57f", "Boba", "Canonical Transaction Chain","from_address","2","")
-        ,("0x702ad5c5fb87aace54978143a707d565853d6fd5", "Boba", "Canonical Transaction Chain","from_address","","")
+        ,("0x702ad5c5fb87aace54978143a707d565853d6fd5", "Boba", "Canonical Transaction Chain","from_address","1","")
         ,("0xfbd2541e316948b259264c02f370ed088e04c3db", "Boba", "Canonical Transaction Chain","to_address","2","")
         ,("0x4b5d9e5a6b1a514eba15a2f949531dccd7c272f2", "Boba", "Canonical Transaction Chain","to_address","1","")
+        ,("0x5558c63d5bf229450995adc160c023C9F4d4bE80", "Boba", "State Commitment Chain","from_address","","")
+        ,("0xdE7355C971A5B733fe2133753Abd7e5441d441Ec", "Boba", "State Commitment Chain","to_address","","")
 
         ,("0xcdf02971871b7736874e20b8487c019d28090019", "Metis", "Canonical Transaction Chain","from_address","","")
-        ,("0x9cb01d516d930ef49591a05b09e0d33e6286689d", "Metis", "State Commitment Chain","from_address","","")
         ,("0x56a76bcc92361f6df8d75476fed8843edc70e1c9", "Metis", "Canonical Transaction Chain","to_address","1","")
         ,("0x6a1db7d799fba381f2a518ca859ed30cb8e1d41a", "Metis", "Canonical Transaction Chain","to_address","2","")
+        ,("0x9cb01d516d930ef49591a05b09e0d33e6286689d", "Metis", "State Commitment Chain","from_address","","")
         ,("0xf209815e595cdf3ed0aaf9665b1772e608ab9380", "Metis", "State Commitment Chain","to_address","","")
 
 
