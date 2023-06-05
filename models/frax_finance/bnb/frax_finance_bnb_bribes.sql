@@ -13,7 +13,7 @@ with base_date as (
         SELECT
             explode(
                 sequence(
-                    to_date('2023-01-05'),
+                    to_date('2023-01-05', 'yyyy-MM-dd'),
                     current_date,
                     interval '7 days'
                 )
