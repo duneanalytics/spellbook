@@ -15,7 +15,7 @@ with base_date as (
                 sequence(
                     to_date('2023-01-05'),
                     current_date,
-                    interval 7 days
+                    interval '7 days'
                 )
             ) AS week_array
     )
