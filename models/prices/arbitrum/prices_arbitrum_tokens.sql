@@ -88,6 +88,7 @@ FROM
     ("usdr-usd-reserve","arbitrum","USDR","0xbc60ff90497f99cbf6fb84ce1e31845637033445",18),
     ("usdt-tether", "arbitrum", "USDT", "0xfd086bc7cd5c481dcc9c85ebe478a1c0b69fcbb9", 6),
     ("ust-terrausd","arbitrum","USTC","0x13780e6d5696dd91454f6d3bbc2616687fea43d0",6),
+    ("ush-unsheth", "arbitrum", "unshETH", "0x0ae38f7e10a43b5b2fb064b42a2f4514cba909ef", 18),
     ("wad-warden","arbitrum","WAD","0x6374d87c5a48c41b309a1ab7b12eeb4fe30d8d8a",18),
     ("wbtc-wrapped-bitcoin", "arbitrum", "WBTC", "0x2f2a2543b76a4166549f7aab2e75bef0aefc5b0f", 8),
     ("weth-weth","arbitrum","WETH","0x82af49447d8a07e3bd95bd0d56f35241523fbab1",18),

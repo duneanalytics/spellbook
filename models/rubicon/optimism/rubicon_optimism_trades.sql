@@ -9,11 +9,11 @@
     post_hook='{{ expose_spells(\'["optimism"]\',
                                 "project",
                                 "rubicon",
-                                \'["msilb7"]\') }}'
+                                \'["msilb7", "denver"]\') }}'
     )
 }}
--- First swap event 2022-05-23
-{% set project_start_date = '2022-05-23' %}
+-- First trade event 2021-11-12
+{% set project_start_date = '2021-11-12' %}
 
 WITH dexs AS
 (
@@ -21,7 +21,7 @@ WITH dexs AS
     -- -- pay_gem corresponds with take_amt - this is what the taker is taking and what the maker is selling
     -- -- buy_gem corresponds with give_amt - this is what the taker is giving and what the maker is buying
 
-    --From the prespective of the taker
+    --From the prespective of the taker - LogTake
     SELECT
          t.evt_block_time AS block_time
         , t.evt_block_number
@@ -39,9 +39,34 @@ WITH dexs AS
     FROM
         {{ source('rubicon_optimism', 'RubiconMarket_evt_LogTake') }} t
         
-    WHERE t.evt_block_time >= '{{project_start_date}}'
+    WHERE t.evt_block_time >= cast('{{ project_start_date }}' AS timestamp)
     {% if is_incremental() %}
     AND t.evt_block_time >= date_trunc('day', now() - interval '1 week')
+    {% endif %}
+
+    UNION 
+
+    --From the prespective of the taker - emitTake
+    SELECT
+         t2.evt_block_time AS block_time
+        , t2.evt_block_number
+        ,t2.taker AS taker
+        ,t2.maker AS maker
+        ,t2.take_amt AS token_bought_amount_raw
+        ,t2.give_amt AS token_sold_amount_raw
+        ,cast(NULL as double) AS amount_usd
+        ,t2.pay_gem AS token_bought_address
+        ,t2.buy_gem AS token_sold_address
+        ,t2.contract_address as project_contract_address
+        ,t2.evt_tx_hash AS tx_hash
+        ,'' AS trace_address
+        ,t2.evt_index
+    FROM
+        {{ source('rubicon_optimism', 'RubiconMarket_evt_emitTake') }} t2
+        
+    WHERE t2.evt_block_time >= cast('{{ project_start_date }}' AS timestamp)
+    {% if is_incremental() %}
+    AND t2.evt_block_time >= date_trunc('day', now() - interval '1 week')
     {% endif %}
 )
 SELECT
@@ -80,7 +105,7 @@ INNER JOIN {{ source('optimism', 'transactions') }} tx
     ON tx.hash = dexs.tx_hash
     AND tx.block_number = dexs.evt_block_number
     {% if not is_incremental() %}
-    AND tx.block_time >= '{{project_start_date}}'
+    AND tx.block_time >= cast('{{ project_start_date }}' AS timestamp)
     {% endif %}
     {% if is_incremental() %}
     AND tx.block_time >= date_trunc('day', now() - interval '1' week)
@@ -96,7 +121,7 @@ LEFT JOIN {{ source('prices', 'usd') }} p_bought
     AND p_bought.contract_address = dexs.token_bought_address
     AND p_bought.blockchain = 'optimism'
     {% if not is_incremental() %}
-    AND p_bought.minute >= '{{project_start_date}}'
+    AND p_bought.minute >= cast('{{ project_start_date }}' AS timestamp)
     {% endif %}
     {% if is_incremental() %}
     AND p_bought.minute >= date_trunc('day', now() - interval '1 week')
@@ -106,7 +131,7 @@ LEFT JOIN {{ source('prices', 'usd') }} p_sold
     AND p_sold.contract_address = dexs.token_sold_address
     AND p_sold.blockchain = 'optimism'
     {% if not is_incremental() %}
-    AND p_sold.minute >= '{{project_start_date}}'
+    AND p_sold.minute >= cast('{{ project_start_date }}' AS timestamp)
     {% endif %}
     {% if is_incremental() %}
     AND p_sold.minute >= date_trunc('day', now() - interval '1 week')
