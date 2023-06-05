@@ -238,9 +238,7 @@
                 "sha256:08695f5cb7ed6e0531a20572697297273c47b8cae5a63ffc6d6ed5c201be6e44",
                 "sha256:4f1d9991f5acc0ca119f9d443620b77f9d6b33703e51011c16baf57afb285fc6"
             ],
-
             "markers": "python_version >= '2.7' and python_version not in '3.0, 3.1, 3.2, 3.3, 3.4, 3.5, 3.6'",
-
             "version": "==0.4.6"
         },
         "databricks-sql-connector": {
@@ -805,6 +803,14 @@
             "markers": "python_version >= '3.7'",
             "version": "==3.0.0"
         },
+        "pluggy": {
+            "hashes": [
+                "sha256:4224373bacce55f955a878bf9cfa763c1e360858e330072059e10bad68531159",
+                "sha256:74134bbf457f031a36d68416e1509f34bd5ccc019f0bcc952c7b909d06b37bd3"
+            ],
+            "markers": "python_version >= '3.6'",
+            "version": "==1.0.0"
+        },
         "pre-commit": {
             "hashes": [
                 "sha256:9e3255edb0c9e7fe9b4f328cb3dc86069f8fdc38026f1bf521018a05eaf4d67b",
@@ -986,7 +992,6 @@
         },
         "setuptools": {
             "hashes": [
-
                 "sha256:16ccf598aab3b506593c17378473978908a2734d7336755a8769b480906bec1c",
                 "sha256:b440ee5f7e607bb8c9de15259dba2583dd41a38879a7abc1d43a71c59524da48"
             ],
