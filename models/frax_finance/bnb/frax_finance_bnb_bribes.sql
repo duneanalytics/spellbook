@@ -1,5 +1,5 @@
 {{ config(
-    alias = 'bribes'
+    alias = 'bribes',
     post_hook='{{ expose_spells(\'["bnb"]\',
                                     "project",
                                     "frax_finance",
