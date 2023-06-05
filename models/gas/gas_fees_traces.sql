@@ -50,7 +50,7 @@ FROM (
         , gas_fee_spent_original_usd
         , gas_fee_spent_trace
         , gas_fee_spent_trace_usd
-    FROM {{ ref(gas_fees_traces_model) }}
+    FROM {{ gas_fees_traces_model }}
     {% if not loop.last %}
     UNION ALL
     {% endif %}
