@@ -30,4 +30,4 @@ models:
       - name: model_name
         description: "Name of the label model sourced from"
       - name: label_type
-        description: "Type of label (see labels overall readme)"
+        description: "Type of label"
