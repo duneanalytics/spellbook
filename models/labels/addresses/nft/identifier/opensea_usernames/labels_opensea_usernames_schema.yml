@@ -1,0 +1,33 @@
+version: 2
+
+models:
+  - name: labels_opensea_usernames
+    meta:
+      blockchain: ethereum
+      sector: labels
+      project: opensea_usernames
+      contributors: cryptuschrist
+    config:
+      tags: ["labels", "opensea_usernames", "nft", "ethereum"]
+    description: "OpenSea Wallet Usernames"
+    columns:
+      - name: blockchain
+        description: "Blockchain"
+      - name: address
+        description: "OpenSea Wallet Usernames"
+      - name: name
+        description: "Label name"
+      - name: category
+        description: "Label category"
+      - name: contributor
+        description: "Wizard(s) contributing to labels"
+      - name: source
+        description: "Static - OpenSea API"
+      - name: created_at
+        description: "When were labels created"
+      - name: updated_at
+        description: "When were labels updated for the last time"
+      - name: model_name
+        description: "Name of the label model sourced from"
+      - name: label_type
+        description: "Type of label (see labels overall readme)"
