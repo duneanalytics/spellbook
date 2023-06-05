@@ -9,7 +9,7 @@ FROM (VALUES
         ("0x5e4e65926ba27467555eb562121fac00d24e9dd2", 'Optimism', 'Canonical Transaction Chain','to_address','2','Optimism: Canonical Transaction Chain')
         ,("0xbe5dab4a2e9cd0f27300db4ab94bee3a233aeb19", "Optimism", "State Commitment Chain","to_address","2","Optimism: State Commitment Chain")
         ,("0x4bf681894abec828b212c906082b444ceb2f6cf6", "Optimism", "Canonical Transaction Chain","to_address","1","Optimism: OVM Canonical Transaction Chain")
-        ,("0x473300df21d047806a082244b417f96b32f13a33", "Optimism", "State Commitment Chain","to_address","1","Optimism: OVM State Commitment Chain")
+        ,("0x473300df21d047806a082244b417f96b32f13a33", "Optimism", "State Commitment Chain","from_address","1","Optimism: OVM State Commitment Chain")
 
         ,("0x6887246668a3b87f54deb3b94ba47a6f63f32985", "Optimism", "Canonical Transaction Chain","from_address","","Optimism: Sequencer")
         ,("0xe969c2724d2448f1d1a6189d3e2aa1f37d5998c1", "Optimism", "State Commitment Chain","from_address","","Optimism: State Root Proposer")
