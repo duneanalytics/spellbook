@@ -8,7 +8,7 @@
         )
 }}
 
-{% set gas_fees_models = [
+{% set gas_fees_traces_models = [
 'gas_arbitrum_fees_traces',
 'gas_avalanche_c_fees_traces',
 'gas_bnb_fees_traces',
@@ -21,7 +21,7 @@
 
 SELECT *
 FROM (
-    {% for gas_model in gas_fees_models %}
+    {% for gas_fees_traces_model in gas_fees_traces_models %}
     SELECT
         blockchain
         , block_time
@@ -50,7 +50,7 @@ FROM (
         , gas_fee_spent_original_usd
         , gas_fee_spent_trace
         , gas_fee_spent_trace_usd
-    FROM {{ ref(gas_model) }}
+    FROM {{ ref(gas_fees_traces_model) }}
     {% if not loop.last %}
     UNION ALL
     {% endif %}
