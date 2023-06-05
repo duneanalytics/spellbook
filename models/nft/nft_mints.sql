@@ -1,5 +1,4 @@
 {{ config(
-    tags=['prod_exclude'],
     alias ='mints',
     partition_by = ['block_date'],
     materialized = 'incremental',
@@ -18,9 +17,19 @@
 ,ref('nft_optimism_native_mints')
 ] %}
 
+
+{% set project_mints = [
+ ref('nftb_bnb_events')
+,ref('magiceden_solana_events')
+,ref('opensea_v1_ethereum_events')
+,ref('stealcam_arbitrum_events')
+] %}
+
 WITH project_mints as
 (
-    SELECT
+    SELECT * FROM(
+        {% for project_mint in project_mints %}
+        SELECT
             blockchain,
             project,
             version,
@@ -49,11 +58,16 @@ WITH project_mints as
             tx_from,
             tx_to,
             unique_trade_id
-        FROM {{ ref('nft_events') }}
+        FROM {{ project_mint }}
         WHERE evt_type = "Mint"
         {% if is_incremental() %}
         AND block_time >= date_trunc("day", now() - interval '1 week')
         {% endif %}
+        {% if not loop.last %}
+        UNION ALL
+        {% endif %}
+        {% endfor %}
+    )
 )
 , native_mints AS
 (
