@@ -1,6 +1,6 @@
 date_added,product_contract_address,product_name,product_type,syndicate
-2020-01-01,0xf5dce57282a584d2746faf1593d3121fcac444dc,Compound Sai,protocol,v1
-2020-01-01,0x8b3d70d628ebd30d4a2ea82db95ba2e906c71633,bZx v1,protocol,v1
-2020-01-01,0x5504a1d88005236147ec86c62cfb53043bd1276a,Unknown,protocol,v1
-2022-03-04,0x453d4ba9a2d594314df88564248497f7d74d6b2c,Beefy,protocol,v1
-2022-02-16,0x7e6d3b1161df9c9c7527f68d651b297d2fdb820b,Enzyme v3,protocol,v1
+2020-01-01,0xf5dce57282a584d2746faf1593d3121fcac444dc,Compound Sai,Protocol,v1
+2020-01-01,0x8b3d70d628ebd30d4a2ea82db95ba2e906c71633,bZx v1,Protocol,v1
+2020-01-01,0x5504a1d88005236147ec86c62cfb53043bd1276a,Unknown,Protocol,v1
+2022-03-04,0x453d4ba9a2d594314df88564248497f7d74d6b2c,Beefy,Protocol,v1
+2022-02-16,0x7e6d3b1161df9c9c7527f68d651b297d2fdb820b,Enzyme v3,Protocol,v1
