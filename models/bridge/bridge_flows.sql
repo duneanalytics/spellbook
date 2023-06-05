@@ -45,8 +45,8 @@ WITH bridge_protocols AS (
             , fee_amount_raw
             , token_address
             , fee_address
-            , source_chain_id
-            , destination_chain_id
+            , CAST(bmod.source_chain_id AS DECIMAL(38, 0)) AS source_chain_id
+            , CAST(bmod.destination_chain_id AS DECIMAL(38, 0)) AS destination_chain_id
             , cid_source.chain_name AS source_chain_name
             , cid_dest.chain_name AS destination_chain_name
             , is_native_bridge
@@ -97,8 +97,8 @@ WITH bridge_protocols AS (
             , fee_amount_raw
             , token_address
             , fee_address
-            , source_chain_id
-            , destination_chain_id
+            , CAST(bmod.source_chain_id AS DECIMAL(38, 0)) AS source_chain_id
+            , CAST(bmod.destination_chain_id AS DECIMAL(38, 0)) AS destination_chain_id
             , cid_source.chain_name AS source_chain_name
             , cid_dest.chain_name AS destination_chain_name
             , is_native_bridge
