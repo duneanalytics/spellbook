@@ -14,6 +14,7 @@
 
 {% set dex_pool_models = [
  ref('uniswap_pools')
+ ,ref('spookyswap_fantom_pools')
 ] %}
 
 
