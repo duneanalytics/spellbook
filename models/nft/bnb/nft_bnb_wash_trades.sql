@@ -130,6 +130,24 @@ WITH filter_1 AS (
         {% endif %}
     )
 
+, filter_5 AS (
+    SELECT unique_trade_id
+    , CASE WHEN df.block_time IS NOT NULL
+        THEN true
+        ELSE false
+        END AS flashloan
+    FROM {{ ref('nft_trades') }} nftt
+    LEFT JOIN {{ ref('dex_flashloans') }} df ON df.blockchain='bnb'
+        AND df.block_time=nftt.block_time
+        AND df.tx_hash=nftt.tx_hash
+    WHERE nftt.blockchain='bnb'
+        AND nftt.unique_trade_id IS NOT NULL
+        AND df.tx_hash IS NULL
+        {% if is_incremental() %}
+        AND nftt.block_time >= date_trunc("day", NOW() - interval '1 week')
+        {% endif %}
+    )
+
 SELECT nftt.blockchain
 , nftt.project
 , nftt.version
@@ -168,11 +186,16 @@ SELECT nftt.blockchain
     THEN true
     ELSE false
     END AS filter_4_first_funded_by_same_wallet
+, CASE WHEN filter_5.flashloan
+    THEN true
+    ELSE false
+    END AS filter_5_flashloan
 , CASE WHEN filter_1.same_buyer_seller
     OR filter_2.back_and_forth_trade
     OR filter_3_bought.bought_3x
     OR filter_3_sold.sold_3x
     OR filter_4.first_funded_by_same_wallet
+    OR filter_5.flashloan
     THEN true
     ELSE false
     END AS is_wash_trade
@@ -182,6 +205,7 @@ LEFT JOIN filter_2 ON nftt.unique_trade_id=filter_2.unique_trade_id
 LEFT JOIN filter_3_bought ON nftt.unique_trade_id=filter_3_bought.unique_trade_id
 LEFT JOIN filter_3_sold ON nftt.unique_trade_id=filter_3_sold.unique_trade_id
 LEFT JOIN filter_4 ON nftt.unique_trade_id=filter_4.unique_trade_id
+LEFT JOIN filter_5 ON nftt.unique_trade_id=filter_5.unique_trade_id
 WHERE nftt.blockchain='bnb'
     AND nftt.unique_trade_id IS NOT NULL
     {% if is_incremental() %}
