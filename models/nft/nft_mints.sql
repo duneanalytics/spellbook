@@ -1,5 +1,4 @@
 {{ config(
-    tags=['prod_exclude'],
     alias ='mints',
     partition_by = ['block_date'],
     materialized = 'incremental',
