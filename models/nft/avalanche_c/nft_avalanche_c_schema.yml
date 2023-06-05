@@ -151,6 +151,9 @@ models:
       - &filter_4_first_funded_by_same_wallet
         name: filter_4_first_funded_by_same_wallet
         description: "Did the same wallet first fund the seller and buyer's wallets in ETH?"
+      - &filter_5_flashloan
+        name: filter_5_flashloan
+        description: "Did the tx include a flashloan?"
       - &is_wash_trade
         name: is_wash_trade
         description: "Have any of the filters flag as true? Then it is labelled as a wash trade"
