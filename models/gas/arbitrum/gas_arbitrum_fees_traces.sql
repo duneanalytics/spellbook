@@ -1,5 +1,5 @@
 {{ config(
-    schema = 'gas_ethereum',
+    schema = 'gas_arbitrum',
     alias = 'fees_traces',
     partition_by = ['block_date'],
     materialized = 'incremental',
@@ -38,7 +38,7 @@ WITH traces AS (
           , value AS trace_value
           , success AS trace_success
           , tx_success
-          FROM {{ source('ethereum','traces') }}
+          FROM {{ source('arbitrum','traces') }}
           {% if is_incremental() %}
           WHERE block_time >= date_trunc("day", NOW() - interval '1' week)
           {% endif %}
@@ -58,7 +58,7 @@ WITH traces AS (
           , CAST(NULL AS varchar(1)) AS trace_value
           , CAST(NULL AS boolean) AS trace_success
           , CAST(NULL AS boolean) AS tx_success
-          FROM {{ source('ethereum','traces') }}
+          FROM {{ source('arbitrum','traces') }}
           WHERE cardinality(trace_address) > 0
           {% if is_incremental() %}
           AND block_time >= date_trunc("day", NOW() - interval '1' week)
@@ -67,7 +67,7 @@ WITH traces AS (
      GROUP BY traces.tx_hash, traces.trace, traces.block_time, traces.block_number
      )
 
-SELECT 'ethereum' AS blockchain
+SELECT 'arbitrum' AS blockchain
 , traces.block_time
 , date_trunc('day', traces.block_time) AS block_date
 , traces.block_number
@@ -95,14 +95,14 @@ SELECT 'ethereum' AS blockchain
 , (traces.gas_used_trace*txs.gas_price)/POWER(10, 18) AS gas_fee_spent_trace
 , (pu.price*traces.gas_used_trace*txs.gas_price)/POWER(10, 18) AS gas_fee_spent_trace_usd
 FROM traces
-LEFT JOIN {{ source('ethereum','transactions') }} txs ON txs.block_time=traces.block_time
+LEFT JOIN {{ source('arbitrum','transactions') }} txs ON txs.block_time=traces.block_time
      AND txs.hash=traces.tx_hash
      {% if is_incremental() %}
      AND txs.block_time >= date_trunc("day", NOW() - interval '1' week)
      {% endif %}
 LEFT JOIN {{ source('prices', 'usd') }} pu ON pu.minute=date_trunc('minute', traces.block_time)
-     AND pu.blockchain='ethereum'
-     AND pu.contract_address='0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'
+     AND pu.blockchain='arbitrum'
+     AND pu.contract_address='0x82af49447d8a07e3bd95bd0d56f35241523fbab1'
      {% if is_incremental() %}
      AND pu.minute >= date_trunc("day", NOW() - interval '1' week)
      {% endif %}

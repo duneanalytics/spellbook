@@ -111,12 +111,14 @@ models:
     description: >
         Gas Fees per Trace on Ethereum
     columns:
-      - *blockchain
-      - *block_time
-      - &block_date
-        name: block_date
+      - name: blockchain
+        description: "Blockchain name"  
+      - name: block_time
+        description: "Timestamp for block event time in UTC"
+      - name: block_date
         description: "UTC Date of transaction in UTC"
-      - *block_number
+      - name: block_number
+        description: "Block number"
       - name: tx_hash
         description: "Primary key of the transaction"
       - name: trace_from
