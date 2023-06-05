@@ -1,5 +1,7 @@
 {{ config(
     alias = 'bribes',
+    materialized = 'table',
+    unique_key = ['week_start', 'week_end', 'contract_address'],
     post_hook='{{ expose_spells(\'["bnb"]\',
                                     "project",
                                     "frax_finance",
