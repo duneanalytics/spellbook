@@ -74,7 +74,7 @@ models:
 
   - name: gas_fees_traces
     meta:
-      blockchain: arbitrum, avalanche_c, ethereum, bnb, fantom, optimism, arbitrum, polygon
+      blockchain: arbitrum, avalanche_c, ethereum, bnb, optimism, arbitrum, polygon
       sector: gas
       contributors: hildobby
     config:

@@ -313,8 +313,6 @@ models:
         +schema: gas_arbitrum
       gnosis:
         +schema: gas_gnosis
-      fantom:
-        +schema: gas_fantom
       polygon:
         +schema: gas_polygon
 
