@@ -128,6 +128,54 @@ models:
         name: output
         description: "Output data"
 
+  - name: safe_ethereum_airdrop_claims
+    meta:
+      blockchain: ethereum
+      sector: airdrop
+      project: safe
+      contributors: hildobby
+    config:
+      tags: ['table', 'airdrop', 'ethereum', 'claim', 'safe']
+    description: "List of claim transactions for the $SAFE airdrop"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - recipient
+            - evt_index
+    columns:
+      - *blockchain
+      - *block_time
+      - *block_number
+      - &project
+        name: project
+        description: "Project name"
+      - &airdrop_identifier
+        name: airdrop_identifier
+        description: "Airdrop identifier name"
+      - &recipient
+        name: recipient
+        description: "Airdrop recipient"
+      - &contract_address
+        name: contract_address
+        description: "Contract addressed used"
+      - *tx_hash
+      - name: amount_raw
+        description: "Raw amount of tokens"
+      - name: amount_original
+        description: "Original amount of tokens"
+      - name: amount_usd
+        description: "USD value of tokens"
+      - &token_address
+        name: token_address
+        description: "Token address"
+      - &token_symbol
+        name: token_symbol
+        description: "Token symbol"
+      - &evt_index
+        name: evt_index
+        description: "Event index"
+        
   - name: safe_ethereum_signer_thresholds
     tests:
       - dbt_utils.unique_combination_of_columns:
