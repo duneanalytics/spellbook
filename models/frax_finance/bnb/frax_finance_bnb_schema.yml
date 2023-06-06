@@ -3,23 +3,20 @@ version: 2
 models:
 
   - name: frax_finance_bnb_bribes
-
     meta:
-
       blockchain: bnb
-
       project: frax_finance
-
       contributors: herotat1
-
     config:
-
       tags: ["bnb", "frax_finance", "view"]
-
     description: This model shows the amount of bribe frax_finance is paying, at each epoch, to voters on a DEX who vote for frax pools. Since frax also partakes in voting, both for its pools and other pools, this model also tracks the bribes that it receives as reward. 
-
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - week_start
+            - week_end
+            - contract_address
     columns:
-
       - &week_start
         name: week_start
         description: "The start of the voting week on the dex"

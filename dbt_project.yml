@@ -773,10 +773,10 @@ models:
 
     frax_finance:
       +schema: frax_finance
-      +materialized: view
+      +materialized: table
       bnb:
         +schema: frax_finance_bnb
-        +materialized: view
+        +materialized: table
         
     mstable:
       +schema: mstable

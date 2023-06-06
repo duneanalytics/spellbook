@@ -1,6 +1,7 @@
 {{ config(
     alias = 'bribes',
     materialized = 'table',
+    file_format = 'delta',
     unique_key = ['week_start', 'week_end', 'contract_address'],
     post_hook='{{ expose_spells(\'["bnb"]\',
                                     "project",
@@ -92,11 +93,11 @@ TVL as (
 case
             when token0 = '0x90c97f71e18723b0cf0dfa30ee176ab653e89f40' then reserve0
             when token1 = '0x90c97f71e18723b0cf0dfa30ee176ab653e89f40' then reserve1
-        end as Frax_reserve,
+        end as frax_reserve,
 case
             when token0 = '0x64048a7eecf3a2f1ba9e144aac3d7db6e58f555e' then reserve0
             when token1 = '0x64048a7eecf3a2f1ba9e144aac3d7db6e58f555e' then reserve1
-        end as FrxETH_reserve
+        end as frxETH_reserve
     from
         reserves a
         left join pairs b on a.contract_address = b.contract_address
@@ -137,10 +138,10 @@ TVL_USD as (
     select
         date(block_time) as block_time,
         a.contract_address,
-        Frax_reserve,
-        FrxETH_reserve,
-        cast(Frax_reserve as double) * b.price as Frax_TVL_USD,
-        cast(FrxETH_reserve as double) * c.price as FrxETH_TVL_USD
+        frax_reserve,
+        frxETH_reserve,
+        cast(frax_reserve as double) * b.price as frax_tvl_usd,
+        cast(frxETH_reserve as double) * c.price as frxETH_tvl_usd
     from
         TVL a
         left join (
@@ -166,10 +167,10 @@ TVL_sum as (
     select
         date(block_time) as block_time,
         contract_address,
-        sum(Frax_reserve) as Frax_reserve,
-        sum(FrxETH_reserve) as FrxETH_reserve,
-        sum(Frax_TVL_USD) as Frax_TVL,
-        sum(FrxETH_TVL_USD) as FrxETH_TVL
+        sum(frax_reserve) as frax_reserve,
+        sum(frxETH_reserve) as frxETH_reserve,
+        sum(frax_tvl_usd) as frax_tvl,
+        sum(frxETH_tvl_usd) as frxETH_tvl
     from
         TVL_USD
     group by
@@ -360,8 +361,8 @@ weekly_rewards as (
         collection_time,
         bribe_address,
         contract_address,
-        sum(reward_amount_usd) as FXS_collected_usd,
-        sum(reward_amount) as FXS_collected
+        sum(reward_amount_usd) as fxs_collected_usd,
+        sum(reward_amount) as fxs_collected
     from
         bribes_received
     group by
@@ -425,22 +426,22 @@ select
     a.contract_address,
     a.contract_name,
     d.bribe as bribe_last_week,
-    round(d.bribe * e.price) as bribe_last_week_USD,
-    b.Frax_reserve as Start_Frax,
-    c.Frax_reserve as End_Frax,
-    f.FXS_collected_usd,
-    f.FXS_collected,
+    round(d.bribe * e.price) as bribe_last_week_usd,
+    b.frax_reserve as start_frax,
+    c.frax_reserve as end_frax,
+    f.fxs_collected_usd,
+    f.fxs_collected,
     round(
-        f.FXS_collected_usd - COALESCE((d.bribe * e.price), 0)
-    ) as Gross_profit,
+        f.fxs_collected_usd - COALESCE((d.bribe * e.price), 0)
+    ) as gross_profit,
     g.fee_reward_token0,
     g.fee_reward_token1,
-    b.FrxETH_reserve as Start_FrxETH,
-    c.FrxETH_reserve as End_FrxETH,
-    round(b.Frax_TVL) as Start_Frax_TVL,
-    round(c.Frax_TVL) as End_Frax_TVL,
-    round(b.FrxETH_TVL) as Start_FrxETH_TVL,
-    round(c.FrxETH_TVL) as End_FrxETH_TVL
+    b.frxETH_reserve as start_frxETH,
+    c.frxETH_reserve as end_frxETH,
+    round(b.frax_TVL) as start_frax_tvl,
+    round(c.frax_TVL) as end_frax_tvl,
+    round(b.frxETH_TVL) as start_frxETH_tvl,
+    round(c.frxETH_TVL) as end_frxETH_tvl
 from
     base_date_with_contracts a
     left join TVL_sum b on a.week_start = b.block_time
