@@ -3,7 +3,7 @@ version: 2
 models:
   - name: tokens_erc20
     meta:
-      blockchain: arbitrum, avalanche_c, bnb, ethereum, gnosis, optimism, fantom
+      blockchain: arbitrum, avalanche_c, bnb, ethereum, gnosis, optimism, fantom, polygon
       sector: tokens
       contributors: hildobby, 0xManny, dot2dotseurat, soispoke, mtitus6
     config:
