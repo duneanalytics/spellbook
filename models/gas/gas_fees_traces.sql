@@ -9,14 +9,14 @@
 }}
 
 {% set gas_fees_traces_models = [
-'gas_arbitrum_fees_traces',
-'gas_avalanche_c_fees_traces',
-'gas_bnb_fees_traces',
-'gas_ethereum_fees_traces',
-'gas_fantom_fees_traces',
-'gas_gnosis_fees_traces',
-'gas_optimism_fees_traces',
-'gas_polygon_fees_traces'
+ref('gas_arbitrum_fees_traces'),
+ref('gas_avalanche_c_fees_traces'),
+ref('gas_bnb_fees_traces'),
+ref('gas_ethereum_fees_traces'),
+ref('gas_fantom_fees_traces'),
+ref('gas_gnosis_fees_traces'),
+ref('gas_optimism_fees_traces'),
+ref('gas_polygon_fees_traces')
 ] %}
 
 SELECT *
