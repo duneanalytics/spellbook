@@ -31,4 +31,4 @@ for new_line in filtered_lines:
 
 if exceptions > 0:
     raise Exception(
-        f"{exceptions} exception/s. Review logs for details. Please rewrite these lines in to valid source/ref() format.")
+        f"{exceptions} exception/s. Review logs for details. Please rewrite these lines into valid source/ref() format.")
