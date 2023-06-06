@@ -109,7 +109,7 @@ sorted_orders as (
             evt_tx_hash,
             evt_block_number,
             orderUid
-        from gnosis_protocol_v2_ethereum.GPv2Settlement_evt_Trade
+        from {{ source('gnosis_protocol_v2_ethereum', 'GPv2Settlement_evt_Trade') }}
         {% if is_incremental() %}
         WHERE evt_block_time >= date_trunc("day", now() - interval '1 week')
         {% endif %}

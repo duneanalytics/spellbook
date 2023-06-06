@@ -6,12 +6,12 @@ with
       pools as (
         -- uni v2 pools
         select pair
-        from uniswap_v2_ethereum.Factory_evt_PairCreated
+        from {{ source('uniswap_v2_ethereum', 'Factory_evt_PairCreated') }}
         union
         
         -- uni v3 pools
         select pool as pair
-        from uniswap_v3_ethereum.Factory_evt_PoolCreated
+        from {{ source('uniswap_v3_ethereum', 'Factory_evt_PoolCreated') }}
       ),
       err_contracts as (
         select address
