@@ -1,0 +1,9 @@
+version: 2
+
+sources: 
+  - name: hop_protocol_ethereum
+    description: >
+      $HOP airdrop claims
+    tables:
+      - name: HOPToken_evt_Claim
+        loaded_at_field: evt_block_time
