@@ -127,5 +127,7 @@ FROM (VALUES ('0x8ed95d1746bf1e4dab58d8ed4724f1ef95b20db0', '0x', 'Erc20 Bridge 
   ,('0x76943c0d61395d8f2edf9060e1533529cae05de6', 'Optimism', 'Optimism: Lido Bridge')
   ,('0x324c7ec7fb2bc61646ac2f22f6d06ab29b6c87a3', 'Optimism', 'Optimism: Teleportr v1')
   ,('0x52ec2f3d7c5977a8e558c8d9c6000b615098e8fc', 'Optimism', 'Optimism: Teleportr v2')
+  ,('0x28a55488fef40005309e2DA0040DbE9D300a64AB', 'Optimism', 'Optimism: OptimismPortal')
+  ,('0xbeb5fc579115071764c7423a4f12edde41f106ed', 'Optimism', 'Optimism: OptimismPortalProxy')
   ,('0x40ec5b33f54e0e8a33a975908c5ba1c14e5bbbdf', 'Polygon', 'ERC20 Bridge')
   ) AS x (address, bridge_name, description)
