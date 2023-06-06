@@ -10,6 +10,13 @@ models:
     config:
       tags: ["labels", "opensea_usernames", "nft", "ethereum"]
     description: "OpenSea Wallet Usernames"
+    tests:
+      - check_seed:
+          seed_file: ref('labels_nft_opensea_usernames_seed')
+          check_columns:
+            - blockchain
+            - address
+            - name
     columns:
       - name: blockchain
         description: "Blockchain"
