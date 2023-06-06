@@ -29,7 +29,7 @@ where token0 = lower('0x1F32b1c2345538c0c6f582fCB022739c4A194Ebb') or token1 = l
 
 , tokens_mapping as (
 select distinct address_l1, address_l2 from (
-select l1_token as address_l1, l2_token as address_l2 from {{ source('tokens_optimism', 'erc20_bridged_mapping') }}
+select l1_token as address_l1, l2_token as address_l2 from {{ ref('tokens_optimism_erc20_bridged_mapping') }}
 union all
 select lower('0x1a7e4e63778B4f12a199C062f3eFdD288afCBce8'),lower('0x9485aca5bbbe1667ad97c7fe7c4531a624c8b1ed')
 union all
