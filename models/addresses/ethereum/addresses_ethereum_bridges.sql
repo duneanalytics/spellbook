@@ -116,7 +116,7 @@ FROM (VALUES ('0x8ed95d1746bf1e4dab58d8ed4724f1ef95b20db0', '0x', 'Erc20 Bridge 
 
   ,('0xcd9d4988c0ae61887b075ba77f08cbfad2b65068', 'Optimism', 'Synthetix: L2 Deposit')
   ,('0x5fd79d46eba7f351fe49bff9e87cdea6c821ef9f', 'Optimism', 'Synthetix: L2 Deposit Escrow')
-  -- ,('0x99c9fc46f92e8a1c0dec1b1747d010903e884be1', 'Optimism', 'Optimism: Gateway')
+  -- ,('0x99c9fc46f92e8a1c0dec1b1747d010903e884be1', 'Optimism', 'Optimism: Gateway') --duplicate & renamed
   ,('0xf20c38fcddf0c790319fd7431d17ea0c2bc9959c', 'Optimism', 'Optimism: Legacy Bridge')
   ,('0xe681f80966a8b1ffadecf8068bd6f99034791c95', 'Optimism', 'Optimism: Legacy Bridge')
   ,('0xc51f137e19f1ae6944887388fd12b2b6dfd12594', 'Optimism', 'Synthetix: Legacy Optimism Bridge')
