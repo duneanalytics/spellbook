@@ -57,9 +57,9 @@ WITH bridge_protocols AS (
             , trace_address
             , tx_method_id
         FROM {{ bridge_protocol_model }} bmod
-            LEFT JOIN {{ ref('chain_ids') }} cid_source
+            LEFT JOIN {{ ref('chain_info_chain_ids') }} cid_source
                 ON cid_source.chain_id = bmod.source_chain_id
-            LEFT JOIN {{ ref('chain_ids') }} cid_dest
+            LEFT JOIN {{ ref('chain_info_chain_ids') }} cid_dest
                 ON cid_dest.chain_id = bmod.destination_chain_id
         {% if not loop.last %}
         UNION ALL
@@ -109,9 +109,9 @@ WITH bridge_protocols AS (
             , trace_address
             , tx_method_id
         FROM {{ native_bridge_model }} bmod
-            LEFT JOIN {{ ref('chain_ids') }} cid_source
+            LEFT JOIN {{ ref('chain_info_chain_ids') }} cid_source
                 ON cid_source.chain_id = bmod.source_chain_id
-            LEFT JOIN {{ ref('chain_ids') }} cid_dest
+            LEFT JOIN {{ ref('chain_info_chain_ids') }} cid_dest
                 ON cid_dest.chain_id = bmod.destination_chain_id
         {% if not loop.last %}
         UNION ALL
