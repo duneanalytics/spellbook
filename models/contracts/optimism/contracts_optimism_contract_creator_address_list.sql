@@ -485,6 +485,7 @@ WITH curated_list AS (
       ,('0x6dcb5e43b05918505f65bf423088af172c32be33', 'Symbiosis Finance')
       ,('0x9088b976e9542d0a27f4f9ddc7a716c7714806ea', 'Extra Finance')
       ,('0x074a2bb7686da8dacad178aece2ad280b8d4c25d', 'Minereum')
+      ,('0xb6235eaeadfa5839cda207b454d98b328dfe2f3a', 'Syndicate')
 
   ) as temp_table (creator_address, contract_project)
 
