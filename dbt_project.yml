@@ -771,6 +771,13 @@ models:
       ethereum:
         +schema: fraxswap_ethereum
 
+    frax_finance:
+      +schema: frax_finance
+      +materialized: table
+      bnb:
+        +schema: frax_finance_bnb
+        +materialized: table
+        
     mstable:
       +schema: mstable
       ethereum:
