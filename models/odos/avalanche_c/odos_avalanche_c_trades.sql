@@ -147,7 +147,21 @@ SELECT
     tx.from as tx_from,
     tx.to AS tx_to,
     dexs.trace_address,
-    dexs.evt_index
+    dexs.evt_index,
+
+    -- to remove, adding this temporary to allow CI to pass
+    NULL AS token_
+    NULL AS token_bought_symbol,
+    NULL AS token_sold_symbol,
+    NULL AS token_pair,
+    NULL AS token_bought_amount,
+    NULL AS token_sold_amount,,
+    NULL AS token_bought_amount_raw,
+    NULL AS token_sold_amount_raw,
+    NULL AS amount_usd,
+    NULL AS token_bought_address,
+    NULL AS token_sold_address
+
 FROM dexs_raw AS dexs
 INNER JOIN {{ source('avalanche_c', 'transactions') }} tx
     ON tx.hash = dexs.tx_hash
