@@ -16,6 +16,7 @@
  ref('uniswap_pools')
  ,ref('spiritswap_fantom_pools')
  ,ref('spookyswap_fantom_pools')
+ ,ref('equalizer_exchange_fantom_pools')
  ,ref('wigoswap_fantom_pools')
  ,ref('spartacus_exchange_fantom_pools')
 ] %}
