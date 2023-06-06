@@ -1,6 +1,11 @@
 {{ config(
         schema = 'gas',
         alias ='fees_traces',
+        partition_by = ['block_date'],
+        materialized = 'incremental',
+        file_format = 'delta',
+        incremental_strategy = 'merge',
+        unique_key = ['blockchain', 'tx_hash', 'trace'],
         post_hook='{{ expose_spells(\'["arbitrum","avalanche_c","ethereum","bnb","fantom","optimism","arbitrum","polygon"]\',
                                 "sector",
                                 "gas",
@@ -51,6 +56,9 @@ FROM (
         , gas_fee_spent_trace
         , gas_fee_spent_trace_usd
     FROM {{ gas_fees_traces_model }}
+    {% if is_incremental() %}
+    WHERE block_time >= date_trunc("day", now() - interval '1 week')
+    {% endif %}
     {% if not loop.last %}
     UNION ALL
     {% endif %}
