@@ -34,6 +34,7 @@ FROM
     , ('0x8005488ff4f8982d2d8c1d602e6d747b1428dd41', 'Reservoir') -- Reservoir v4
     , ('0x9ebfb53fa8526906738856848a27cb11b0285c3f', 'Reservoir') -- Reservoir v5
     , ('0x178a86d36d89c7fdebea90b739605da7b131ff6a', 'Reservoir') -- Reservoir v6
+    , ('0xc2c862322e9c97d6244a3506655da95f05246fd8', 'Reservoir') -- Reservoir v6.0.1
     , ('0x39b6862c4783db2651d64bc160349dc9a15f1fb7', 'Rarity Garden') -- Rarity Garden v2
     , ('0x9d0a89bc35fb160a076de0341d9280830d3013ca', 'Rarity Garden') -- Rarity Garden v1.02
     , ('0x603d022611bfe6a101dcdab207d96c527f1d4d8e', 'BitKeep') -- BitKeep
