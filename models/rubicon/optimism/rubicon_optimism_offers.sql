@@ -37,39 +37,81 @@ WITH offers AS
     {% if is_incremental() %} -- only run this filter if it is an incremental run
     AND e.evt_block_time >= date_trunc('day', now() - interval '1 week')
     {% endif %}
+
+    UNION
+
+    -- select the offer data from the emitOffer event
+    SELECT 
+        o.evt_block_time AS block_time,
+        o.evt_block_number AS block_number,
+        o.pay_gem AS sell_token_address,
+        o.buy_gem AS buy_token_address,
+        o.pay_amt AS sell_amount_raw,
+        o.buy_amt AS buy_amount_raw,
+        o.contract_address AS project_contract_address,
+        o.evt_tx_hash AS tx_hash,
+        o.evt_index,
+        o.maker,
+        o.id AS offer_id
+    FROM {{ source('rubicon_optimism', 'RubiconMarket_evt_emitOffer') }} o
+
+    -- filter out offers that were created before the project start date
+    WHERE o.evt_block_time >= cast('{{ project_start_date }}' AS timestamp)
+    {% if is_incremental() %} -- only run this filter if it is an incremental run
+    AND o.evt_block_time >= date_trunc('day', now() - interval '1 week')
+    {% endif %}
+),
+
+raw_trades as (
+    -- select the trade data from the logTake event
+    SELECT
+        t1.id AS offer_id,
+        t1.pay_gem AS sell_token_address,
+        t1.buy_gem AS buy_token_address,
+        t1.evt_block_time,
+        CAST(t1.take_amt AS DECIMAL(38,0)) AS sold_amount_raw,
+        CAST(t1.give_amt AS DECIMAL(38,0)) AS bought_amount_raw
+    FROM {{ source('rubicon_optimism', 'RubiconMarket_evt_LogTake') }} t1 
+
+    UNION
+
+    -- select the trade data from the emitTake event
+    SELECT
+        t2.id AS offer_id,
+        t2.pay_gem AS sell_token_address,
+        t2.buy_gem AS buy_token_address,
+        t2.evt_block_time,
+        CAST(t2.take_amt AS DECIMAL(38,0)) AS sold_amount_raw,
+        CAST(t2.give_amt AS DECIMAL(38,0)) AS bought_amount_raw
+    FROM {{ source('rubicon_optimism', 'RubiconMarket_evt_emitTake') }} t2
 ),
 
 trades AS 
 (
-    -- select the trade data from the logTake event
-    SELECT
-        t.id AS offer_id,
-        t.pay_gem AS sell_token_address,
-        t.buy_gem AS buy_token_address,
-        CAST(t.take_amt AS DECIMAL(38,0)) AS sold_amount_raw,
-        CAST(t.give_amt AS DECIMAL(38,0)) AS bought_amount_raw,
+
+    SELECT t.*,  
         erc20_sell.symbol AS sell_token_symbol,
         erc20_buy.symbol AS buy_token_symbol,
-        CAST(t.take_amt AS DECIMAL(38,0)) / power(10, erc20_sell.decimals) AS sold_amount,
-        CAST(t.give_amt AS DECIMAL(38,0)) / power(10, erc20_buy.decimals) AS bought_amount,
-        (CAST(t.take_amt AS DECIMAL(38,0)) / power(10, erc20_sell.decimals)) * sell_token_price.price AS sold_amount_usd,
-        (CAST(t.give_amt AS DECIMAL(38,0)) / power(10, erc20_buy.decimals)) * buy_token_price.price AS bought_amount_usd
-    FROM {{ source('rubicon_optimism', 'RubiconMarket_evt_LogTake') }} t 
+        CAST(t.sold_amount_raw AS DECIMAL(38,0)) / power(10, erc20_sell.decimals) AS sold_amount,
+        CAST(t.bought_amount_raw AS DECIMAL(38,0)) / power(10, erc20_buy.decimals) AS bought_amount,
+        (CAST(t.sold_amount_raw AS DECIMAL(38,0)) / power(10, erc20_sell.decimals)) * sell_token_price.price AS sold_amount_usd,
+        (CAST(t.bought_amount_raw AS DECIMAL(38,0)) / power(10, erc20_buy.decimals)) * buy_token_price.price AS bought_amount_usd
+    FROM raw_trades t
 
     -- get the relevant sell token data
     LEFT JOIN {{ ref('tokens_erc20') }} erc20_sell
-        ON erc20_sell.contract_address = t.pay_gem
+        ON erc20_sell.contract_address = t.sell_token_address
         AND erc20_sell.blockchain = 'optimism'
 
     -- get the relevant buy token data
     LEFT JOIN {{ ref('tokens_erc20') }} erc20_buy
-        ON erc20_buy.contract_address = t.buy_gem
+        ON erc20_buy.contract_address = t.buy_token_address
         AND erc20_buy.blockchain = 'optimism'
 
     -- get the sell token price
     LEFT JOIN {{ source('prices', 'usd') }} sell_token_price
         ON sell_token_price.minute = date_trunc('minute', t.evt_block_time)
-        AND sell_token_price.contract_address = t.pay_gem
+        AND sell_token_price.contract_address = t.sell_token_address
         AND sell_token_price.blockchain = 'optimism'
         {% if not is_incremental() %} -- only run this filter if it is an incremental run
         AND sell_token_price.minute >= cast('{{ project_start_date }}' AS timestamp)
@@ -78,7 +120,7 @@ trades AS
     -- get the buy token price
     LEFT JOIN {{ source('prices', 'usd') }} buy_token_price
         ON buy_token_price.minute = date_trunc('minute', t.evt_block_time)
-        AND buy_token_price.contract_address = t.buy_gem
+        AND buy_token_price.contract_address = t.buy_token_address
         AND buy_token_price.blockchain = 'optimism'
         {% if not is_incremental() %} -- only run this filter if it is an incremental run
         AND buy_token_price.minute >= cast('{{ project_start_date }}' AS timestamp)
