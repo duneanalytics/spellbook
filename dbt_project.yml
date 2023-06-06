@@ -82,6 +82,8 @@ models:
 
     ens:
       +schema: ens
+      ethereum:
+        +schema: ens_ethereum
 
     staking:
       +schema: staking
@@ -175,6 +177,21 @@ models:
       polygon:
         +schema: gitcoin_polygon
 
+    blur:
+      +schema: blur
+      ethereum:
+        +schema: blur_ethereum
+
+    looksrare:
+      +schema: looksrare
+      ethereum:
+        +schema: looksrare_ethereum
+
+    x2y2:
+      +schema: x2y2
+      ethereum:
+        +schema: x2y2_ethereum
+
     uniswap:
       +schema: uniswap
       arbitrum:
@@ -204,6 +221,8 @@ models:
 
     paraswap:
       +schema: paraswap
+      ethereum:
+        +schema: paraswap_ethereum
       avalanche_c:
         +schema: paraswap_avalanche_c
       fantom:
@@ -811,6 +830,126 @@ models:
         +schema: zeroex_bnb
 
 
+    ampleforth:
+      +schema: ampleforth
+      ethereum:
+        +schema: ampleforth_ethereum
+
+    apecoin:
+      +schema: apecoin
+      ethereum:
+        +schema: apecoin_ethereum
+
+    pangolin:
+      +schema: pangolin
+      avalanche_c:
+        +schema: pangolin_avalanche_c
+
+    giveth:
+      +schema: giveth
+      gnosis:
+        +schema: giveth_gnosis
+
+    genie:
+      +schema: genie
+      ethereum:
+        +schema: genie_ethereum
+
+    forta_network:
+      +schema: forta_network
+      ethereum:
+        +schema: forta_network_ethereum
+
+    gas_dao:
+      +schema: gas_dao
+      ethereum:
+        +schema: gas_dao_ethereum
+
+    ribbon:
+      +schema: ribbon
+      ethereum:
+        +schema: ribbon_ethereum
+
+    galxe:
+      +schema: galxe
+      ethereum:
+        +schema: galxe_ethereum
+
+    gearbox:
+      +schema: gearbox
+      ethereum:
+        +schema: gearbox_ethereum
+
+    snowswap:
+      +schema: snowswap
+      ethereum:
+        +schema: snowswap_ethereum
+
+    arbitrum:
+      +schema: arbitrum
+      arbitrum:
+        +schema: arbitrum_arbitrum
+
+    forefront:
+      +schema: forefront
+      ethereum:
+        +schema: forefront_ethereum
+
+    component:
+      +schema: component
+      ethereum:
+        +schema: component_ethereum
+
+    alchemydao:
+      +schema: alchemydao
+      ethereum:
+        +schema: alchemydao_ethereum
+
+    tokenfy:
+      +schema: tokenfy
+      ethereum:
+        +schema: tokenfy_ethereum
+
+    thales:
+      +schema: thales
+      ethereum:
+        +schema: thales_ethereum
+
+    shapeshift:
+      +schema: shapeshift
+      ethereum:
+        +schema: shapeshift_ethereum
+
+    value_defi:
+      +schema: value_defi
+      ethereum:
+        +schema: value_defi_ethereum
+
+    botto:
+      +schema: botto
+      ethereum:
+        +schema: botto_ethereum
+
+    notional:
+      +schema: notional
+      ethereum:
+        +schema: notional_ethereum
+      
+    dydx:
+      +schema: dydx
+      ethereum:
+        +schema: dydx_ethereum
+
+    dappradar:
+      +schema: dappradar
+      ethereum:
+        +schema: dappradar_ethereum
+
+    paladin:
+      +schema: paladin
+      ethereum:
+        +schema: paladin_ethereum
+
     wombat:
       +schema: wombat
       bnb:
@@ -830,8 +969,8 @@ models:
       +schema: hop_protocol
       optimism:
         +schema: hop_protocol_optimism
-      # ethereum:
-      #   +schema: hop_protocol_ethereum
+      ethereum:
+        +schema: hop_protocol_ethereum
       # polygon:
       #   +schema: hop_protocol_polygon
       # polygon2:
