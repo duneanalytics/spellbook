@@ -1,5 +1,4 @@
 {{ config(
-    tags=['prod_exclude'],
     alias ='trades',
     partition_by = ['block_date'],
     materialized = 'incremental',
@@ -95,6 +94,27 @@ WITH dexs AS
         cast(NULL as double) AS amount_usd,
         evt_index
     FROM {{ source('airswap_ethereum', 'Swap_v3_evt_Swap')}} e
+    {% if is_incremental() %}
+    WHERE evt_block_time >= date_trunc("day", now() - interval '1 week')
+    {% endif %}
+
+    UNION ALL
+
+    SELECT
+        evt_block_time AS block_time,
+        'swap_erc20_v4' AS version,
+        e.senderWallet AS taker,
+        e.signerWallet AS maker,
+        e.senderAmount AS token_sold_amount_raw,
+        e.signerAmount AS token_bought_amount_raw,
+        e.senderToken AS token_sold_address,
+        e.signerToken AS token_bought_address,
+        contract_address AS project_contract_address,
+        evt_tx_hash AS tx_hash,
+        '' AS trace_address,
+        cast(NULL as double) AS amount_usd,
+        evt_index
+    FROM {{ source('airswap_ethereum', 'SwapERC20_v4_evt_SwapERC20')}} e
     {% if is_incremental() %}
     WHERE evt_block_time >= date_trunc("day", now() - interval '1 week')
     {% endif %}
