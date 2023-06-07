@@ -1,0 +1,80 @@
+version: 2
+
+models:
+
+  - name: frax_finance_bnb_bribes
+    meta:
+      blockchain: bnb
+      project: frax_finance
+      contributors: herotat1
+    config:
+      tags: ["bnb", "frax_finance", "view"]
+    description: This model shows the amount of bribe frax_finance is paying, at each epoch, to voters on a DEX who vote for frax pools. Since frax also partakes in voting, both for its pools and other pools, this model also tracks the bribes that it receives as reward. 
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - week_start
+            - week_end
+            - contract_address
+    columns:
+      - &week_start
+        name: week_start
+        description: "The start of the voting week on the dex"
+        tests:
+          - not_null
+      - &week_end
+        name: week_end
+        description: "The end of the voting week on the dex"
+        tests:
+          - not_null
+      - &week
+        name: week
+        description: "The number of the week since the start of Frax bribing program on the dex"
+        tests:
+          - not_null
+      - &bribe_last_week
+        name: bribe_last_week
+        description: "The amount of bribe, in the form of FXS token, that frax finance paid last week on its pools in the dex"
+      - &bribe_last_week_USD
+        name: bribe_last_week_USD
+        description: "The amount of bribe, in the form of FXS token denominated in USD, that frax finance paid last week on its pools in the dex"
+      - &Start_Frax
+        name: Start_Frax
+        description: "The TVL of FRAX pools at the start of the week on the dex"
+      - &End_Frax
+        name: End_Frax
+        description: "The TVL of FRAX pools at the end of the week on the dex"
+      - &Start_FrxETH
+        name: Start_FrxETH
+        description: "The TVL of FrxETH pools at the start of the week on the dex"
+      - &End_FrxETH
+        name: End_FrxETH
+        description: "The TVL of FrxETH pools at the end of the week on the dex"
+      - &FXS_collected
+        name: FXS_collected
+        description: "The amount of FXS rewards that Frax finance has collected on its pools at the end of epoch"
+      - &FXS_collected_usd 
+        name: FXS_collected_usd
+        description: "The amount of bribe, in the form of FXS token denominated in USD, that frax finance receives at the end of each week as a result of voting on its own pools"
+      - &Gross_profit
+        name: Gross_profit
+        description: "The amount of bribe that Frax finance paid on its pools minus the rewards it received in FXS"
+      - &fee_reward_token0
+        name: fee_reward_token0
+        description: "The amount of token0 fee that Frax finance received at the end of each epoch on dex"
+      - &fee_reward_token1
+        name: fee_reward_token1
+        description: "The amount of token1 fee that Frax finance received at the end of each epoch on dex"    
+      - &Start_frax_TVL
+        name: Start_frax_TVL
+        description: "The TVL of FRAX pools, in USD, at the beginning of the epoch"
+      - &End_frax_TVL
+        name: End_frax_TVL
+        description: "The TVL of FRAX pools, in USD, at the end of the epoch"
+      - &Start_frxETH_TVL
+        name: Start_frxETH_TVL
+        description: "The TVL of FrxETH pools, in USD, at the beginning of the epoch"
+      - &End_frxETH_TVL
+        name: End_frxETH_TVL
+        description: "The TVL of FrxETH pools, in USD, at the end of the epoch"    
+
