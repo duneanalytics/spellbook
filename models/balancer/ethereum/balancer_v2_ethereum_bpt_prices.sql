@@ -117,7 +117,7 @@ WITH
             in_out_norm_rate,
             out_in_norm_rate
         FROM backfill_pricing_1
-     ),
+    ),
 
     price_formulation AS (
         SELECT
