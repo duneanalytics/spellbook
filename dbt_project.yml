@@ -165,6 +165,25 @@ models:
       goerli:
         +schema: nft_goerli
 
+    cex:
+      +schema: cex
+      arbitrum:
+        +schema: cex_arbitrum
+      avalanche_c:
+        +schema: cex_avalanche_c
+      bnb:
+        +schema: cex_bnb
+      ethereum:
+        +schema: cex_ethereum
+      optimism:
+        +schema: cex_optimism
+      polygon:
+        +schema: cex_polygon
+      fantom:
+        +schema: cex_fantom
+      bitcoin:
+        +schema: cex_bitcoin
+
     compound:
       +schema: compound
       ethereum:
