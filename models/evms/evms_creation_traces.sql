@@ -23,7 +23,7 @@
 
 SELECT *
 FROM (
-        {% for creation_traces_models in creation_traces_models %}
+        {% for creation_traces_model in creation_traces_models %}
         SELECT
         '{{ creation_traces_model[0] }}' AS blockchain
         , *
