@@ -488,6 +488,7 @@ WITH curated_list AS (
       ,('0xb6235eaeadfa5839cda207b454d98b328dfe2f3a', 'Syndicate')
       ,('0x946E9C780F3c79D80e51e68d259d0D7E794F2124', 'Uniswap')
       ,('0x156D8FaC8cd3deB51AB194D906abfc81CF323c11', 'Minerva')
+      ,('0x169e2FfC1c6b229b04E65A431434bF0e8eD9563d', 'Vesper')
 
   ) as temp_table (creator_address, contract_project)
 
