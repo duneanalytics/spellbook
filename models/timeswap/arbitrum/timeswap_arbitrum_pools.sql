@@ -219,6 +219,20 @@ FROM
                 'Arbitrum',
                 '0xEbaDA7aA52C68Bdb6a2744F40AA2f3da76D469dc',
                 '0xE1cd819b5a2C8FC65D3D77BFE0D0A0FF5Bb54326'
+            ),
+            (
+                'unshETH',
+                'USDC',
+                '0x0ae38f7e10a43b5b2fb064b42a2f4514cba909ef',
+                '0xff970a61a04b1ca14834a43f5de4533ebddb5cc8',
+                18,
+                6,
+                '561465905419548464714568102262',
+                '1687179600',
+                'unshETH-USDC',
+                'Arbitrum',
+                '0xEbaDA7aA52C68Bdb6a2744F40AA2f3da76D469dc',
+                '0xE1cd819b5a2C8FC65D3D77BFE0D0A0FF5Bb54326'
             )
     ) AS temp_table (
         token0_symbol,
