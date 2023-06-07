@@ -1,8 +1,8 @@
-{{config(alias='cex_fantom',
-        post_hook='{{ expose_spells(\'["fantom"]\',
+{{config(alias='cex_arbitrum',
+        post_hook='{{ expose_spells(\'["arbitrum"]\',
                                     "sector",
                                     "labels",
-                                    \'["Henrystats"]\') }}')}}
+                                    \'["hildobby"]\') }}')}}
 
 SELECT blockchain
 , address
@@ -14,4 +14,4 @@ SELECT blockchain
 , NOW() AS updated_at
 , 'cex_' || blockchain AS model_name
 , 'identifier' AS label_type
-FROM {{ ref('cex_fantom_addresses') }}
+FROM {{ ref('cex_arbitrum_addresses') }}
