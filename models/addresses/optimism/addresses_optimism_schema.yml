@@ -1,25 +1,6 @@
 version: 2
 
 models:
-  - name: addresses_optimism_cex
-    meta:
-      blockchain: optimism
-      sector: cex
-      project: addresses
-      contributors: msilb7
-    config:
-      tags: ['table', 'cex', 'addresses', 'optimism']
-    description: "Known centralized exchange and on-ramp addresses"
-    columns:
-      - name: address
-        description: "Address of known CEX/On-Ramp"
-        tests:
-          - unique
-      - name: cex_name
-        description: "Name of centralized exchange/ on-ramp"
-      - name: distinct_name
-        description: "Distinct name of centralized exchange / on-ramp address"
-  
   - name: addresses_optimism_grants_funding
     meta:
       blockchain: optimism
