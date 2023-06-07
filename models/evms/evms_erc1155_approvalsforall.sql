@@ -1,25 +1,38 @@
 {{ config(
         alias ='erc1155_approvalsforall',
+        materialized = 'incremental',
+        file_format = 'delta',
         unique_key=['blockchain', 'tx_hash', 'evt_index'],
-        post_hook='{{ expose_spells_hide_trino(\'["ethereum", "polygon", "bnb", "avalanche_c", "gnosis", "fantom", "optimism", "arbitrum"]\',
+        post_hook='{{ expose_spells(\'["ethereum", "polygon", "bnb", "avalanche_c", "gnosis", "fantom", "optimism", "arbitrum"]\',
                                     "sector",
                                     "evms",
                                     \'["hildobby"]\') }}'
         )
 }}
 
-SELECT 'ethereum' AS blockchain, * FROM {{source('erc1155_ethereum', 'evt_ApprovalForAll')}}
-UNION ALL
-SELECT 'polygon' AS blockchain, * FROM {{ source('erc1155_polygon', 'evt_ApprovalForAll') }}
-UNION ALL
-SELECT 'bnb' AS blockchain, * FROM {{ source('erc1155_bnb', 'evt_ApprovalForAll') }}
-UNION ALL
-SELECT 'avalanche_c' AS blockchain, * FROM {{ source('erc1155_avalanche_c', 'evt_ApprovalForAll') }}
-UNION ALL
-SELECT 'gnosis' AS blockchain, * FROM {{ source('erc1155_gnosis', 'evt_ApprovalForAll') }}
-UNION ALL
-SELECT 'fantom' AS blockchain, * FROM {{ source('erc1155_fantom', 'evt_ApprovalForAll') }}
-UNION ALL
-SELECT 'optimism' AS blockchain, * FROM {{ source('erc1155_optimism', 'evt_ApprovalForAll') }}
-UNION ALL
-SELECT 'arbitrum' AS blockchain, * FROM {{ source('erc1155_arbitrum', 'evt_ApprovalForAll') }}
+{% set erc1155_approvalforalls_models = [
+     ('ethereum', source('erc1155_ethereum', 'evt_ApprovalForAll'))
+     , ('polygon', source('erc1155_polygon', 'evt_ApprovalForAll'))
+     , ('bnb', source('erc1155_bnb', 'evt_ApprovalForAll'))
+     , ('avalanche_c', source('erc1155_avalanche_c', 'evt_ApprovalForAll'))
+     , ('gnosis', source('erc1155_gnosis', 'evt_ApprovalForAll'))
+     , ('fantom', source('erc1155_fantom', 'evt_ApprovalForAll'))
+     , ('optimism', source('erc1155_optimism', 'evt_ApprovalForAll'))
+     , ('arbitrum', source('erc1155_arbitrum', 'evt_ApprovalForAll'))
+] %}
+
+SELECT *
+FROM (
+        {% for erc1155_approvalforalls_model in erc1155_approvalforalls_models %}
+        SELECT
+        '{{ erc1155_approvalforalls_model[0] }}' AS blockchain
+        , *
+        FROM {{ erc1155_approvalforalls_model[1] }}
+        {% if not loop.last %}
+        {% if is_incremental() %}
+        WHERE block_time >= date_trunc("day", now() - interval '1 week')
+        {% endif %}
+        UNION ALL
+        {% endif %}
+        {% endfor %}
+        );

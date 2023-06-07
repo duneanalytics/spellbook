@@ -1,25 +1,38 @@
 {{ config(
         alias ='erc1155_transferssingle',
+        materialized = 'incremental',
+        file_format = 'delta',
         unique_key=['blockchain', 'tx_hash', 'evt_index'],
-        post_hook='{{ expose_spells_hide_trino(\'["ethereum", "polygon", "bnb", "avalanche_c", "gnosis", "fantom", "optimism", "arbitrum"]\',
+        post_hook='{{ expose_spells(\'["ethereum", "polygon", "bnb", "avalanche_c", "gnosis", "fantom", "optimism", "arbitrum"]\',
                                     "sector",
                                     "evms",
                                     \'["hildobby"]\') }}'
         )
 }}
 
-SELECT 'ethereum' AS blockchain, * FROM {{source('erc1155_ethereum', 'evt_transfersingle')}}
-UNION ALL
-SELECT 'polygon' AS blockchain, * FROM {{ source('erc1155_polygon', 'evt_transfersingle') }}
-UNION ALL
-SELECT 'bnb' AS blockchain, * FROM {{ source('erc1155_bnb', 'evt_transfersingle') }}
-UNION ALL
-SELECT 'avalanche_c' AS blockchain, * FROM {{ source('erc1155_avalanche_c', 'evt_transfersingle') }}
-UNION ALL
-SELECT 'gnosis' AS blockchain, * FROM {{ source('erc1155_gnosis', 'evt_transfersingle') }}
-UNION ALL
-SELECT 'fantom' AS blockchain, * FROM {{ source('erc1155_fantom', 'evt_transfersingle') }}
-UNION ALL
-SELECT 'optimism' AS blockchain, * FROM {{ source('erc1155_optimism', 'evt_transfersingle') }}
-UNION ALL
-SELECT 'arbitrum' AS blockchain, * FROM {{ source('erc1155_arbitrum', 'evt_transfersingle') }}
+{% set erc1155_singletransfers_models = [
+     ('ethereum', source('erc1155_ethereum', 'evt_transfersingle'))
+     , ('polygon', source('erc1155_polygon', 'evt_transfersingle'))
+     , ('bnb', source('erc1155_bnb', 'evt_transfersingle'))
+     , ('avalanche_c', source('erc1155_avalanche_c', 'evt_transfersingle'))
+     , ('gnosis', source('erc1155_gnosis', 'evt_transfersingle'))
+     , ('fantom', source('erc1155_fantom', 'evt_transfersingle'))
+     , ('optimism', source('erc1155_optimism', 'evt_transfersingle'))
+     , ('arbitrum', source('erc1155_arbitrum', 'evt_transfersingle'))
+] %}
+
+SELECT *
+FROM (
+        {% for erc1155_singletransfers_model in erc1155_singletransfers_models %}
+        SELECT
+        '{{ erc1155_singletransfers_model[0] }}' AS blockchain
+        , *
+        FROM {{ erc1155_singletransfers_model[1] }}
+        {% if not loop.last %}
+        {% if is_incremental() %}
+        WHERE block_time >= date_trunc("day", now() - interval '1 week')
+        {% endif %}
+        UNION ALL
+        {% endif %}
+        {% endfor %}
+        );

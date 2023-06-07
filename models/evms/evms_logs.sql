@@ -1,25 +1,38 @@
 {{ config(
         alias ='logs',
+        materialized = 'incremental',
+        file_format = 'delta',
         unique_key=['blockchain', 'tx_hash'],
-        post_hook='{{ expose_spells_hide_trino(\'["ethereum", "polygon", "bnb", "avalanche_c", "gnosis", "fantom", "optimism", "arbitrum"]\',
+        post_hook='{{ expose_spells(\'["ethereum", "polygon", "bnb", "avalanche_c", "gnosis", "fantom", "optimism", "arbitrum"]\',
                                     "sector",
                                     "evms",
                                     \'["hildobby"]\') }}'
         )
 }}
 
-SELECT 'ethereum' AS blockchain, * FROM {{source('ethereum', 'logs')}}
-UNION ALL
-SELECT 'polygon' AS blockchain, * FROM {{ source('polygon', 'logs') }}
-UNION ALL
-SELECT 'bnb' AS blockchain, * FROM {{ source('bnb', 'logs') }}
-UNION ALL
-SELECT 'avalanche_c' AS blockchain, * FROM {{ source('avalanche_c', 'logs') }}
-UNION ALL
-SELECT 'gnosis' AS blockchain, * FROM {{ source('gnosis', 'logs') }}
-UNION ALL
-SELECT 'fantom' AS blockchain, * FROM {{ source('fantom', 'logs') }}
-UNION ALL
-SELECT 'optimism' AS blockchain, * FROM {{ source('optimism', 'logs') }}
-UNION ALL
-SELECT 'arbitrum' AS blockchain, * FROM {{ source('arbitrum', 'logs') }}
+{% set logs_models = [
+     ('ethereum', source('ethereum', 'logs'))
+     , ('polygon', source('polygon', 'logs'))
+     , ('bnb', source('bnb', 'logs'))
+     , ('avalanche_c', source('avalanche_c', 'logs'))
+     , ('gnosis', source('gnosis', 'logs'))
+     , ('fantom', source('fantom', 'logs'))
+     , ('optimism', source('optimism', 'logs'))
+     , ('arbitrum', source('arbitrum', 'logs'))
+] %}
+
+SELECT *
+FROM (
+        {% for logs_model in logs_models %}
+        SELECT
+        '{{ logs_model[0] }}' AS blockchain
+        , *
+        FROM {{ logs_model[1] }}
+        {% if not loop.last %}
+        {% if is_incremental() %}
+        WHERE block_time >= date_trunc("day", now() - interval '1 week')
+        {% endif %}
+        UNION ALL
+        {% endif %}
+        {% endfor %}
+        );

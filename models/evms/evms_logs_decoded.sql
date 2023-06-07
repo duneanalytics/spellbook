@@ -1,25 +1,38 @@
 {{ config(
         alias ='logs_decoded',
+        materialized = 'incremental',
+        file_format = 'delta',
         unique_key=['blockchain', 'tx_hash'],
-        post_hook='{{ expose_spells_hide_trino(\'["ethereum", "polygon", "bnb", "avalanche_c", "gnosis", "fantom", "optimism", "arbitrum"]\',
+        post_hook='{{ expose_spells(\'["ethereum", "polygon", "bnb", "avalanche_c", "gnosis", "fantom", "optimism", "arbitrum"]\',
                                     "sector",
                                     "evms",
                                     \'["hildobby"]\') }}'
         )
 }}
 
-SELECT 'ethereum' AS blockchain, * FROM {{source('ethereum', 'logs_decoded')}}
-UNION ALL
-SELECT 'polygon' AS blockchain, * FROM {{ source('polygon', 'logs_decoded') }}
-UNION ALL
-SELECT 'bnb' AS blockchain, * FROM {{ source('bnb', 'logs_decoded') }}
-UNION ALL
-SELECT 'avalanche_c' AS blockchain, * FROM {{ source('avalanche_c', 'logs_decoded') }}
-UNION ALL
-SELECT 'gnosis' AS blockchain, * FROM {{ source('gnosis', 'logs_decoded') }}
-UNION ALL
-SELECT 'fantom' AS blockchain, * FROM {{ source('fantom', 'logs_decoded') }}
-UNION ALL
-SELECT 'optimism' AS blockchain, * FROM {{ source('optimism', 'logs_decoded') }}
-UNION ALL
-SELECT 'arbitrum' AS blockchain, * FROM {{ source('arbitrum', 'logs_decoded') }}
+{% set decodedlogs_models = [
+     ('ethereum', source('ethereum', 'logs_decoded'))
+     , ('polygon', source('polygon', 'logs_decoded'))
+     , ('bnb', source('bnb', 'logs_decoded'))
+     , ('avalanche_c', source('avalanche_c', 'logs_decoded'))
+     , ('gnosis', source('gnosis', 'logs_decoded'))
+     , ('fantom', source('fantom', 'logs_decoded'))
+     , ('optimism', source('optimism', 'logs_decoded'))
+     , ('arbitrum', source('arbitrum', 'logs_decoded'))
+] %}
+
+SELECT *
+FROM (
+        {% for decodedlogs_model in decodedlogs_models %}
+        SELECT
+        '{{ decodedlogs_model[0] }}' AS blockchain
+        , *
+        FROM {{ decodedlogs_model[1] }}
+        {% if not loop.last %}
+        {% if is_incremental() %}
+        WHERE block_time >= date_trunc("day", now() - interval '1 week')
+        {% endif %}
+        UNION ALL
+        {% endif %}
+        {% endfor %}
+        );

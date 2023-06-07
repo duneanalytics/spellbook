@@ -1,25 +1,38 @@
 {{ config(
         alias ='erc20_transfers',
+        materialized = 'incremental',
+        file_format = 'delta',
         unique_key=['blockchain', 'tx_hash', 'evt_index'],
-        post_hook='{{ expose_spells_hide_trino(\'["ethereum", "polygon", "bnb", "avalanche_c", "gnosis", "fantom", "optimism", "arbitrum"]\',
+        post_hook='{{ expose_spells(\'["ethereum", "polygon", "bnb", "avalanche_c", "gnosis", "fantom", "optimism", "arbitrum"]\',
                                     "sector",
                                     "evms",
                                     \'["hildobby"]\') }}'
         )
 }}
 
-SELECT 'ethereum' AS blockchain, * FROM {{source('erc20_ethereum', 'evt_transfer')}}
-UNION ALL
-SELECT 'polygon' AS blockchain, * FROM {{ source('erc20_polygon', 'evt_transfer') }}
-UNION ALL
-SELECT 'bnb' AS blockchain, * FROM {{ source('erc20_bnb', 'evt_transfer') }}
-UNION ALL
-SELECT 'avalanche_c' AS blockchain, * FROM {{ source('erc20_avalanche_c', 'evt_transfer') }}
-UNION ALL
-SELECT 'gnosis' AS blockchain, * FROM {{ source('erc20_gnosis', 'evt_transfer') }}
-UNION ALL
-SELECT 'fantom' AS blockchain, * FROM {{ source('erc20_fantom', 'evt_transfer') }}
-UNION ALL
-SELECT 'optimism' AS blockchain, * FROM {{ source('erc20_optimism', 'evt_transfer') }}
-UNION ALL
-SELECT 'arbitrum' AS blockchain, * FROM {{ source('erc20_arbitrum', 'evt_transfer') }}
+{% set erc20_transfers_models = [
+     ('ethereum', source('erc20_ethereum', 'evt_transfer'))
+     , ('polygon', source('erc20_polygon', 'evt_transfer'))
+     , ('bnb', source('erc20_bnb', 'evt_transfer'))
+     , ('avalanche_c', source('erc20_avalanche_c', 'evt_transfer'))
+     , ('gnosis', source('erc20_gnosis', 'evt_transfer'))
+     , ('fantom', source('erc20_fantom', 'evt_transfer'))
+     , ('optimism', source('erc20_optimism', 'evt_transfer'))
+     , ('arbitrum', source('erc20_arbitrum', 'evt_transfer'))
+] %}
+
+SELECT *
+FROM (
+        {% for erc20_transfers_model in erc20_transfers_models %}
+        SELECT
+        '{{ erc20_transfers_model[0] }}' AS blockchain
+        , *
+        FROM {{ erc20_transfers_model[1] }}
+        {% if not loop.last %}
+        {% if is_incremental() %}
+        WHERE block_time >= date_trunc("day", now() - interval '1 week')
+        {% endif %}
+        UNION ALL
+        {% endif %}
+        {% endfor %}
+        );

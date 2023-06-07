@@ -1,25 +1,38 @@
 {{ config(
         alias ='erc20_approvals',
+        materialized = 'incremental',
+        file_format = 'delta',
         unique_key=['blockchain', 'tx_hash', 'evt_index'],
-        post_hook='{{ expose_spells_hide_trino(\'["ethereum", "polygon", "bnb", "avalanche_c", "gnosis", "fantom", "optimism", "arbitrum"]\',
+        post_hook='{{ expose_spells(\'["ethereum", "polygon", "bnb", "avalanche_c", "gnosis", "fantom", "optimism", "arbitrum"]\',
                                     "sector",
                                     "evms",
                                     \'["hildobby"]\') }}'
         )
 }}
 
-SELECT 'ethereum' AS blockchain, * FROM {{source('erc20_ethereum', 'evt_approval')}}
-UNION ALL
-SELECT 'polygon' AS blockchain, * FROM {{ source('erc20_polygon', 'evt_approval') }}
-UNION ALL
-SELECT 'bnb' AS blockchain, * FROM {{ source('erc20_bnb', 'evt_approval') }}
-UNION ALL
-SELECT 'avalanche_c' AS blockchain, * FROM {{ source('erc20_avalanche_c', 'evt_approval') }}
-UNION ALL
-SELECT 'gnosis' AS blockchain, * FROM {{ source('erc20_gnosis', 'evt_approval') }}
-UNION ALL
-SELECT 'fantom' AS blockchain, * FROM {{ source('erc20_fantom', 'evt_approval') }}
-UNION ALL
-SELECT 'optimism' AS blockchain, * FROM {{ source('erc20_optimism', 'evt_Approval') }}
-UNION ALL
-SELECT 'arbitrum' AS blockchain, * FROM {{ source('erc20_arbitrum', 'evt_approval') }}
+{% set erc20_approvals_models = [
+     ('ethereum', source('erc20_ethereum', 'evt_approval'))
+     , ('polygon', source('erc20_polygon', 'evt_approval'))
+     , ('bnb', source('erc20_bnb', 'evt_approval'))
+     , ('avalanche_c', source('erc20_avalanche_c', 'evt_approval'))
+     , ('gnosis', source('erc20_gnosis', 'evt_approval'))
+     , ('fantom', source('erc20_fantom', 'evt_approval'))
+     , ('optimism', source('erc20_optimism', 'evt_Approval'))
+     , ('arbitrum', source('erc20_arbitrum', 'evt_approval'))
+] %}
+
+SELECT *
+FROM (
+        {% for erc20_approvals_model in erc20_approvals_models %}
+        SELECT
+        '{{ erc20_approvals_model[0] }}' AS blockchain
+        , *
+        FROM {{ erc20_approvals_model[1] }}
+        {% if not loop.last %}
+        {% if is_incremental() %}
+        WHERE block_time >= date_trunc("day", now() - interval '1 week')
+        {% endif %}
+        UNION ALL
+        {% endif %}
+        {% endfor %}
+        );
