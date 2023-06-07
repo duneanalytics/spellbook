@@ -2,7 +2,7 @@
     config(
         schema = 'balancer_v2_gnosis',
         alias = 'bpt_prices',
-        materialized = 'view',
+        materialized = 'table',
         file_format = 'delta',
         post_hook = '{{ expose_spells(\'["gnosis"]\',
                                     "project",
