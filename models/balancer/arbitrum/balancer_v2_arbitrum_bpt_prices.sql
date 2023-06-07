@@ -2,7 +2,7 @@
     config(
         schema = 'balancer_v2_arbitrum',
         alias = 'bpt_prices',
-        materialized = 'view',
+        materialized = 'table',
         file_format = 'delta',
         post_hook = '{{ expose_spells(\'["arbitrum"]\',
                                     "project",
@@ -117,19 +117,39 @@ WITH
             in_out_norm_rate,
             out_in_norm_rate
         FROM backfill_pricing_1
+    ),
+
+    price_formulation AS (
+        SELECT
+            'arbitrum' AS blockchain,
+            date_trunc('hour', block_time) AS hour,
+            contract_address,
+            approx_percentile(price, 0.5) AS median_price
+        FROM (
+            SELECT block_time, contract_address, token_in_price AS price 
+            FROM backfill_pricing_2 b2 WHERE b2.contract_address = b2.token_in
+            UNION
+            SELECT block_time, contract_address, token_out_price AS price 
+            FROM backfill_pricing_2 b2 WHERE b2.contract_address = b2.token_out
+        )
+        GROUP BY 1, 2, 3
+        ORDER BY 2 DESC, 3
     )
 
 SELECT
-    'arbitrum' AS blockchain,
-    date_trunc('hour', block_time) AS hour,
+    blockchain,
+    hour,
     contract_address,
-    approx_percentile(price, 0.5) AS median_price
-FROM (
-    SELECT block_time, contract_address, token_in_price AS price 
-    FROM backfill_pricing_2 b2 WHERE b2.contract_address = b2.token_in
-    UNION
-    SELECT block_time, contract_address, token_out_price AS price 
-    FROM backfill_pricing_2 b2 WHERE b2.contract_address = b2.token_out
-)
-GROUP BY 1, 2, 3
+    CASE 
+        WHEN median_price IS NOT NULL THEN median_price
+        WHEN LEAD(median_price) OVER(PARTITION BY contract_address ORDER BY hour DESC) IS NOT NULL 
+        THEN LEAD(median_price) OVER(PARTITION BY contract_address ORDER BY hour DESC)
+        WHEN LAG(median_price) OVER(PARTITION BY contract_address ORDER BY hour DESC) IS NOT NULL 
+        THEN LAG(median_price) OVER(PARTITION BY contract_address ORDER BY hour DESC)
+        ELSE approx_percentile(median_price, 0.5) OVER(
+                PARTITION BY contract_address ORDER BY hour
+                ROWS BETWEEN 10 PRECEDING AND 10 FOLLOWING
+            )
+    END AS median_price
+FROM price_formulation
 ORDER BY 2 DESC, 3
