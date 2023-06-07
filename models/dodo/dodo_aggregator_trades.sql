@@ -1,19 +1,18 @@
 {{ config(
-        alias ='trades',
-        partition_by = ['block_date'],
-        materialized = 'incremental',
-        file_format = 'delta',
-        incremental_strategy = 'merge',
-        unique_key = ['block_date', 'blockchain', 'project', 'version', 'tx_hash', 'evt_index', 'trace_address'],
-        post_hook='{{ expose_spells(\'["ethereum"]\',
-                                    "project",
-                                    "dodo",
-                                    \'["scoffie","owen05"]\') }}'
+        alias ='aggregator_trades',
+        post_hook='{{ expose_spells(\'["ethereum","bnb","polygon","arbitrum","optimism"]\',
+                                "project",
+                                "dodo",
+                                \'["owen05"]\') }}'
         )
 }}
 
 {% set dodo_models = [
-ref("dodo_pools_ethereum_trades")
+ref('dodo_aggregator_ethereum_trades')
+, ref('dodo_aggregator_bnb_trades')
+, ref('dodo_aggregator_polygon_trades')
+, ref('dodo_aggregator_arbitrum_trades')
+, ref('dodo_aggregator_optimism_trades')
 ] %}
 
 
