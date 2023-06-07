@@ -157,7 +157,7 @@ models:
      sector: dex
      contributors: thetroyharris, victorstefenon
    config:
-     tags: ['balancer', 'amm', 'dex', 'bpt', 'prices']
+     tags: ['balancer', 'amm', 'dex', 'bpt', 'prices', 'ethereum', 'arbitrum', 'optimism', 'polygon', 'gnosis']
    description: >
      Balancer Pool Token (BPT) hourly median price by pool on Balancer, an automated portfolio manager and trading platform.
    tests:
