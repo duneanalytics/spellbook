@@ -39,7 +39,7 @@ WITH traces AS (
           , success AS trace_success
           , tx_success
           FROM {{ source('ethereum','traces') }}
-          WHERE block_time >= date_trunc("day", NOW() - interval '1' week)
+          WHERE block_time >= date_trunc("day", NOW() - interval '6' month)
           {% if is_incremental() %}
           AND block_time >= date_trunc("day", NOW() - interval '1' week)
           {% endif %}
@@ -61,7 +61,7 @@ WITH traces AS (
           , CAST(NULL AS boolean) AS tx_success
           FROM {{ source('ethereum','traces') }}
           WHERE cardinality(trace_address) > 0
-          AND block_time >= date_trunc("day", NOW() - interval '1' week)
+          AND block_time >= date_trunc("day", NOW() - interval '6' month)
           {% if is_incremental() %}
           AND block_time >= date_trunc("day", NOW() - interval '1' week)
           {% endif %}
