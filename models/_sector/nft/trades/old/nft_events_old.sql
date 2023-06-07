@@ -41,6 +41,7 @@
 ,ref('trove_v1_arbitrum_events')
 ,ref('trove_v2_arbitrum_events')
 ,ref('zonic_optimism_events')
+,ref('decentraland_polygon_events')
 ] %}
 
 SELECT *
