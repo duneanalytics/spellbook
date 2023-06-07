@@ -2,8 +2,10 @@
     config(
         schema = 'balancer_v2_arbitrum',
         alias = 'bpt_prices',
-        materialized = 'table',
+        materialized = 'incremental',
         file_format = 'delta',
+        incremental_strategy = 'merge',
+        unique_key = ['blockchain', 'hour','contract_address'],
         post_hook = '{{ expose_spells(\'["arbitrum"]\',
                                     "project",
                                     "balancer_v2",
@@ -13,9 +15,12 @@
 
 WITH
     bpt_trades AS (
-        SELECT evt_tx_hash FROM {{ source('balancer_v2_arbitrum', 'Vault_evt_Swap') }} 
+        SELECT evt_tx_hash FROM {{ source('balancer_v2_arbitrum', 'Vault_evt_Swap') }} v
         WHERE CAST(tokenIn AS VARCHAR(66)) = SUBSTRING(CAST(poolId AS VARCHAR(66)), 1, 42)
-        OR CAST(tokenOut AS VARCHAR(66)) = SUBSTRING(CAST(poolId AS VARCHAR(66)), 1, 42)
+        OR CAST(tokenOut AS VARCHAR(66)) = SUBSTRING(CAST(poolId AS VARCHAR(66)), 1, 42) 
+        {% if is_incremental() %}
+        AND v.evt_block_time >= date_trunc("day", now() - interval '1 week')
+        {% endif %} 
     ), 
     
     all_trades_given_bpt_tx AS (
