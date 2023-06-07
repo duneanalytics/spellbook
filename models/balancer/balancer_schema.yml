@@ -156,17 +156,17 @@ models:
       blockchain: ethereum, arbitrum, optimism, polygon, gnosis
       sector: dex
       contributors: thetroyharris, victorstefenon
-   config:
+    config:
       tags: ['balancer', 'amm', 'dex', 'bpt', 'prices', 'ethereum', 'arbitrum', 'optimism', 'polygon', 'gnosis']
-   description: >
+    description: >
       Balancer Pool Token (BPT) hourly median price by pool on Balancer, an automated portfolio manager and trading platform.
-   tests:
+    tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
             - hour
             - contract_address
-   columns:
+    columns:
       - name: blockchain
       - name: hour
       - name: contract_address
