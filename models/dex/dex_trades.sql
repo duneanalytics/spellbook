@@ -65,7 +65,7 @@
 ,ref('camelot_trades')
 
 ] %}
-
+ 
 
 SELECT *
 FROM (
