@@ -12,7 +12,7 @@
         )
 }}
 
-
+ 
 {% set dex_trade_models = [
  ref('uniswap_trades')
 ,ref('sushiswap_trades')
