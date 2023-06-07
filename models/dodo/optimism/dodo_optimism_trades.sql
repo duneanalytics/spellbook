@@ -13,8 +13,7 @@
 }}
 
 {% set dodo_models = [
-ref("dodo_aggregator_optimism_trades")
-, ref("dodo_pools_optimism_trades")
+ref("dodo_pools_optimism_trades")
 ] %}
 
 

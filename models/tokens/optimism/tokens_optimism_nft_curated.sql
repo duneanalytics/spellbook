@@ -279,5 +279,12 @@ FROM
 ,('0xb0cd054ff1b233b366468331a898da7fd5c06988', 'OPTIBOAT')
 ,('0x1d46b0644f5a979de14e880d06b28094e9a43b2d', 'Myhome')
 ,('0x3b227fc544ec74e192631d8cffd536e854716062', 'Oppa Bear Evolution Gen.1')
-
+,('0x4bAC21c040740d5add78FcdF10e205D7523fA2Ce', 'Optimistic Handstand')
+,('0x56f0ab29080d794cfbcf3d3c885cd814df014c2a', 'Blue Town')
+,('0x5735f4EEAA4E48Cf251714DA91142E661699C1CF', 'Animakami')
+,('0x86a50c928a603bc319ff0cb32d75e1f929146fc4', 'O to the P')
+,('0x3b022384b5127b4cd4aeeb96b0f53e979dfad3f3', 'Fall of Sybils')
+,('0x50AcdeA593801b190F33D3BA8b592cf5D7d116f7', 'Caravaggio Editions')
+,('0x867b32c8c09ee78fe50b5215739ecffb6393d3ba', ' _404/LostLayer')
+,('0xf51ef5655df445fe9ea2358e7db24c0c93c8fe6e', 'Wahoo')
 ) as temp_table (contract_address, name)
