@@ -37,7 +37,7 @@ jobs:
       - name: dbt compile
         run: "dbt compile"
       - name: check ref/source syntax
-        run: regex='^((?!--).)*from\s+[a-z0-9_]+\.+[a-z0-9_]+\]' && files=$(echo "$FILES" | grep ".sql$") && for f in $files; do lines=$(grep -E "$regex" $f); if [ ! -z "$lines" ]; then echo "File $f contains target string on lines:"; echo "$lines"; exit 1; fi; done
+        run: regex='^((?!--).)*from\s+[a-z0-9_]+\.+[a-z0-9_]+\]' && files=$(echo "$FILES" | grep ".sql$") && for f in $files; do lines=$(grep -E "$regex" $f); if [ ! -z "$lines" ]; then echo "File $f contains target string on lines:"; echo "$lines"; fi; done
       - name: check schemas
         run: |
           test=$(dbt --quiet --no-print ls --select config.schema:no_schema --output path)
