@@ -36,6 +36,7 @@ SELECT lower(trim(address)) as address, trim(entity) as entity, trim(entity_uniq
 FROM
 (VALUES
 ('0xae7ab96520de3a18e5e111b5eaab095312d7fe84', 'Lido', 'Lido', 'Liquid Staking')
+    , ('0xfddf38947afb03c621c71b06c9c70bce73f12999', 'Lido', 'Lido', 'Liquid Staking')
     , ('0x39dc6a99209b5e6b81dc8540c86ff10981ebda29', 'Staked.us', 'Staked.us', 'Staking Pools')
     , ('0x0194512e77d798e4871973d9cb9d7ddfc0ffd801', 'stakefish', 'stakefish 1', 'Staking Pools')
     , ('0xd4039ecc40aeda0582036437cf3ec02845da4c13', 'Kraken', 'Kraken 1', 'CEX')
@@ -114,6 +115,9 @@ FROM
     , ('0x43a0927a6361258e6cbaed415df275a412c543b5', 'Teku Team', 'Teku Team', 'Independent Staker')
     , ('0x5efaefd5f8a42723bb095194c9202bf2b83d8eb6', 'Nimbus Team', 'Nimbus Team', 'Independent Staker')
     , ('0x4ca21e4d3a86e7399698f88686f5596dbe74adeb', 'P2P.org', 'P2P.org', 'Staking Pools')
+    , ('0x8103151e2377e78c04a3d2564e20542680ed3096', 'Node DAO', 'Node DAO', 'Liquid Staking')
+    , ('0x4befa2aa9c305238aa3e0b5d17eb20c045269e9d', 'RockX', 'RockX', 'Staking Pools')
+    , ('0xea674fdde714fd979de3edf0f56aa9716b898ec8', 'Ethermine', 'Ethermine', 'Staking Pools')
     ) 
     x (address, entity, entity_unique_name, category)
 

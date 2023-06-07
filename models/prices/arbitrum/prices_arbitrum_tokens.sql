@@ -88,6 +88,7 @@ FROM
     ("usdr-usd-reserve","arbitrum","USDR","0xbc60ff90497f99cbf6fb84ce1e31845637033445",18),
     ("usdt-tether", "arbitrum", "USDT", "0xfd086bc7cd5c481dcc9c85ebe478a1c0b69fcbb9", 6),
     ("ust-terrausd","arbitrum","USTC","0x13780e6d5696dd91454f6d3bbc2616687fea43d0",6),
+    ("ush-unsheth", "arbitrum", "unshETH", "0x0ae38f7e10a43b5b2fb064b42a2f4514cba909ef", 18),
     ("wad-warden","arbitrum","WAD","0x6374d87c5a48c41b309a1ab7b12eeb4fe30d8d8a",18),
     ("wbtc-wrapped-bitcoin", "arbitrum", "WBTC", "0x2f2a2543b76a4166549f7aab2e75bef0aefc5b0f", 8),
     ("weth-weth","arbitrum","WETH","0x82af49447d8a07e3bd95bd0d56f35241523fbab1",18),
@@ -100,5 +101,6 @@ FROM
     ("arb-arbitrum","arbitrum","ARB","0x912ce59144191c1204e64559fe8253a0e49e6548",18),
     ("agi-auragi","arbitrum","AGI","0xff191514a9baba76bfd19e3943a4d37e8ec9a111",18),
     ("grain-granary","arbitrum","GRAIN","0x80bb30d62a16e1f2084deae84dc293531c3ac3a1",18),
-    ("oath-oath","arbitrum","OATH","0xa1150db5105987cec5fd092273d1e3cbb22b378b",18)
+    ("oath-oath","arbitrum","OATH","0xa1150db5105987cec5fd092273d1e3cbb22b378b",18),
+    ("winr-winr-protocol","arbitrum","WINR","0xd77b108d4f6cefaa0cae9506a934e825becca46e",18)
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)
