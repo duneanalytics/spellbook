@@ -39,8 +39,9 @@ WITH traces AS (
           , success AS trace_success
           , tx_success
           FROM {{ source('arbitrum','traces') }}
-          {% if is_incremental() %}
           WHERE block_time >= date_trunc("day", NOW() - interval '1' week)
+          {% if is_incremental() %}
+          AND block_time >= date_trunc("day", NOW() - interval '1' week)
           {% endif %}
           
           UNION ALL
@@ -60,6 +61,7 @@ WITH traces AS (
           , CAST(NULL AS boolean) AS tx_success
           FROM {{ source('arbitrum','traces') }}
           WHERE cardinality(trace_address) > 0
+          AND block_time >= date_trunc("day", NOW() - interval '1' week)
           {% if is_incremental() %}
           AND block_time >= date_trunc("day", NOW() - interval '1' week)
           {% endif %}
