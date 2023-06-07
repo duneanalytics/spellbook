@@ -63,9 +63,9 @@
 ,ref('glacier_avalanche_c_trades')
 ,ref('thena_trades')
 ,ref('camelot_trades')
-
+,ref('zeroex_native_trades')
 ] %}
- 
+
 
 SELECT *
 FROM (
