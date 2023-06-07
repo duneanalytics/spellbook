@@ -2,10 +2,8 @@
     schema = 'dydx_ethereum',
     alias = 'votes',
     partition_by = ['block_date'],
-    materialized = 'incremental',
+    materialized = 'table',
     file_format = 'delta',
-    incremental_strategy = 'merge',
-    unique_key = ['tx_hash', 'voter_address'],
     post_hook='{{ expose_spells(\'["ethereum"]\',
                                 "project",
                                 "dydx",
@@ -50,9 +48,3 @@ LEFT JOIN cte_sum_votes csv ON vc.id = csv.id
 LEFT JOIN {{ source('prices', 'usd') }} p ON p.minute = date_trunc('minute', evt_block_time)
     AND p.symbol = 'DYDX'
     AND p.blockchain ='ethereum'
-    {% if is_incremental() %}
-    AND p.minute >= date_trunc("day", now() - interval '1 week')
-    {% endif %}
-{% if is_incremental() %}
-WHERE evt_block_time > (select max(block_time) from {{ this }})
-{% endif %}
