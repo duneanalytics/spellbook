@@ -2,7 +2,7 @@
         alias ='contracts',
         materialized = 'incremental',
         file_format = 'delta',
-        unique_key=['blockchain', 'tx_hash', 'evt_index'],
+        unique_key=['blockchain', 'address', 'created_at'],
         post_hook='{{ expose_spells(\'["ethereum", "polygon", "bnb", "avalanche_c", "gnosis", "fantom", "optimism", "arbitrum"]\',
                                     "sector",
                                     "evms",

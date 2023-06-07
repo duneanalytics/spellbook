@@ -9,6 +9,12 @@ models:
     config:
       tags:   ['evms', 'transactions']
     description: "An EVM transaction refers to an action initiated by an externally-owned account (i.e., an account managed by a human, not a contract)."
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+         combination_of_columns:
+           - blockchain
+           - tx_hash
+           - evt_index
     columns:
       - &blockchain
         name: blockchain
@@ -85,6 +91,12 @@ models:
     config:
       tags:   ['evms', 'traces']
     description: "An EVM trace is a small atomic action that modify the internal state of the Ethereum Virtual Machine. The three main trace types are call, create, and suicide."
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+         combination_of_columns:
+           - blockchain
+           - tx_hash
+           - evt_index
     columns:
       - *blockchain
       - *block_date
@@ -139,6 +151,11 @@ models:
     config:
       tags:   ['evms', 'traces', 'decoded']
     description: "An EVM trace is a small atomic action that modify the internal state of the Ethereum Virtual Machine. The three main trace types are call, create, and suicide. Decoded traces include additional information based on submitted smart contracts and their ABI"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+         combination_of_columns:
+           - blockchain
+           - tx_hash
     columns:
       - *blockchain
       - *block_date
@@ -166,6 +183,11 @@ models:
     config:
       tags:   ['evms', 'logs']
     description: "An EVM log can be used to describe an event within a smart contract, like a token transfer or a change of ownership."
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+         combination_of_columns:
+           - blockchain
+           - tx_hash
     columns:
       - *blockchain
       - *block_date
@@ -197,6 +219,11 @@ models:
     config:
       tags:   ['evms', 'logs', 'decoded']
     description: "An EVM log can be used to describe an event within a smart contract, like a token transfer or a change of ownership. Those logs are decoded based on submitted smart contracts to make them human readable."
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+         combination_of_columns:
+           - blockchain
+           - tx_hash
     columns:
       - *blockchain
       - *block_date
@@ -224,6 +251,11 @@ models:
     config:
       tags:   ['evms', 'blocks']
     description: "Blocks are batches of transactions with a hash of the previous block in the chain. This links blocks together (in a chain) because hashes are cryptographically derived from the block data."
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+         combination_of_columns:
+           - blockchain
+           - number
     columns:
       - *blockchain
       - name: base_fee_per_gas
@@ -247,6 +279,12 @@ models:
     config:
       tags:   ['evms', 'contracts']
     description: "A view keeping track of what contracts are decoded across EVM chains on Dune; contains information associated with the decoded contract such as namespace, name, address, ABI."
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+         combination_of_columns:
+           - blockchain
+           - address
+           - created_at
     columns:
       - *blockchain
       - name: abi
@@ -283,6 +321,12 @@ models:
     config:
       tags:   ['evms', 'traces', 'creation', 'contracts']
     description: "EVM chains creation traces"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+         combination_of_columns:
+           - blockchain
+           - tx_hash
+           - evt_index
     columns:
       - *blockchain
       - *block_time
@@ -303,6 +347,12 @@ models:
     config:
       tags:   ['evms', 'erc20', 'transfers']
     description: "Transfers events for ERC20 tokens on EVM chains."
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+         combination_of_columns:
+           - blockchain
+           - tx_hash
+           - evt_index
     columns:
       - *blockchain
       - name: contract_address
@@ -332,6 +382,12 @@ models:
     config:
       tags:   ['evms', 'erc20', 'approvals']
     description: "Approval events for ERC20 tokens on EVM chains."
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+         combination_of_columns:
+           - blockchain
+           - tx_hash
+           - evt_index
     columns:
       - *blockchain
       - name: contract_address
@@ -357,6 +413,12 @@ models:
     config:
       tags:   ['evms', 'erc1155', 'transfers', 'single']
     description: "Single transfers events for ERC1155 tokens on EVM chains."
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+         combination_of_columns:
+           - blockchain
+           - tx_hash
+           - evt_index
     columns:
       - *blockchain
       - name: contract_address
@@ -382,6 +444,12 @@ models:
     config:
       tags:   ['evms', 'erc1155', 'transfers', 'batch']
     description: "Batch transfers events for ERC1155 tokens on EVM chains."
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+         combination_of_columns:
+           - blockchain
+           - tx_hash
+           - evt_index
     columns:
       - *blockchain
       - name: contract_address
@@ -407,6 +475,12 @@ models:
     config:
       tags:   ['evms', 'erc1155', 'approvals']
     description: "Approval for all events for ERC1155 tokens on EVM chains."
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+         combination_of_columns:
+           - blockchain
+           - tx_hash
+           - evt_index
     columns:
       - *blockchain
       - name: contract_address
@@ -435,6 +509,12 @@ models:
     config:
       tags:   ['evms', 'erc721', 'transfers']
     description: "Transfers events for ERC721 tokens on EVM chains."
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+         combination_of_columns:
+           - blockchain
+           - tx_hash
+           - evt_index
     columns:
       - *blockchain
       - name: contract_address
@@ -456,6 +536,12 @@ models:
     config:
       tags:   ['evms', 'erc721', 'approvals']
     description: "Approval events for ERC721 tokens on EVM chains."
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+         combination_of_columns:
+           - blockchain
+           - tx_hash
+           - evt_index
     columns:
       - *blockchain
       - name: contract_address
@@ -477,6 +563,12 @@ models:
     config:
       tags:   ['evms', 'erc721', 'approvals']
     description: "Approval for all events for ERC721 tokens on EVM chains."
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+         combination_of_columns:
+           - blockchain
+           - tx_hash
+           - evt_index
     columns:
       - *blockchain
       - name: contract_address
