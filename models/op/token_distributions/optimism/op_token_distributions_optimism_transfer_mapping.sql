@@ -191,39 +191,39 @@ SELECT
     , op_amount_decimal, tx_method,
 
     -- Assume 'Other' addresses (i.e. an unknown address) are end users.
-    CASE WHEN to_label = 'Other' THEN op_amount_decimal ELSE 0 END AS op_claimed,
+    CASE WHEN to_label LIKE '%Other%' THEN op_amount_decimal ELSE 0 END AS op_claimed,
     
     -- When tokens go to a 'Deployed' address, we assume deployed. Or to an end user from an address we don't already know to be deployed.
-    CASE WHEN  to_label IN ('Other','Deployed') AND from_label != 'Deployed' THEN op_amount_decimal
-         WHEN (from_name != to_name) AND from_label = 'Project' AND to_label = 'Project' THEN op_amount_decimal --handle for distirbutions to other projects (i.e. Uniswap to Gamma)
+    CASE WHEN  ( to_label LIKE '%Other%' OR to_label LIKE '%Deployed%') AND from_label NOT LIKE '%Deployed%' THEN op_amount_decimal
+         WHEN (from_name != to_name) AND from_label LIKE '%Project%' AND to_label LIKE '%Project%' THEN op_amount_decimal --handle for distirbutions to other projects (i.e. Uniswap to Gamma)
         ELSE 0 END
     AS op_deployed,
     
     -- When from the foundation grants wallets to a project, we mark as "op to project"
-    CASE WHEN from_label = '{{foundation_label}}' AND from_type = '{{grants_descriptor}}' AND to_label = 'Project' THEN op_amount_decimal
+    CASE WHEN from_label = '{{foundation_label}}' AND from_type = '{{grants_descriptor}}' AND to_label LIKE '%Project%' THEN op_amount_decimal
         ELSE 0 END
     AS op_to_project,
     
     -- Tokens being transferred between projects (i.e. Uniswap to Gamma)
-    CASE WHEN from_label = 'Project' AND to_label = 'Project'
+    CASE WHEN from_label LIKE '%Project%' AND to_label LIKE '%Project%'
             AND from_name != to_name THEN op_amount_decimal
         ELSE 0 END
     AS op_between_projects,
     
     -- Tokens going from being deployed back to the project
     CASE
-        WHEN from_label != 'Project' and to_label='Project' AND from_name = to_name THEN op_amount_decimal --Projects Clawback
-        WHEN from_type = 'OP Foundation Airdrops' AND to_label = 'OP Foundation' THEN op_amount_decimal --Airdrop Clawback
+        WHEN from_label NOT LIKE '%Project%' and to_label LIKE '%Project%' AND from_name = to_name THEN op_amount_decimal --Projects Clawback
+        WHEN from_type = 'OP Foundation Airdrops' AND to_label = '{{foundation_label}}' THEN op_amount_decimal --Airdrop Clawback
         ELSE 0 END
     AS op_incoming_clawback, --Project's deployer back to the OG project wallet
 
     -- Tokens going to an intermediate utility contract to be deployed
-    CASE WHEN from_label = 'Project' and to_label= 'Utility' THEN op_amount_decimal
+    CASE WHEN from_label LIKE '%Project%' and to_label = 'Utility' THEN op_amount_decimal
         ELSE 0 END
     AS op_to_utility_contract,
 
     -- Tokens coming from unkown wallets back to the project
-    CASE WHEN from_label = 'Other' and to_label IN ('Project','OP Foundation') THEN op_amount_decimal
+    CASE WHEN from_label LIKE '%Other%' and (to_label LIKE '%Project%' OR to_label = 'OP Foundation') THEN op_amount_decimal
         ELSE 0 END
     AS op_incoming_other,
 
