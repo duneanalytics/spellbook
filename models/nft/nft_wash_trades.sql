@@ -44,6 +44,7 @@ FROM (
     , filter_2_back_and_forth_trade
     , filter_3_bought_or_sold_3x
     , filter_4_first_funded_by_same_wallet
+    , filter_5_flashloan
     , is_wash_trade
     FROM {{ nft_wash_model }}
     {% if not loop.last %}
