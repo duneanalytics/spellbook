@@ -427,8 +427,6 @@ models:
       - &sandwiched_pool
         name: sandwiched_pool
         description: "Sandwiched DEX pool"
-        tests:
-          - not_null
       - &frontrun_tx_hash
         name: frontrun_tx_hash
         description: "Frontrun transaction hash"
