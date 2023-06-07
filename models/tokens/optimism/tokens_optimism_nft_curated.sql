@@ -289,4 +289,5 @@ FROM
 ,('0x50AcdeA593801b190F33D3BA8b592cf5D7d116f7', 'Caravaggio Editions')
 ,('0x867b32c8c09ee78fe50b5215739ecffb6393d3ba', ' _404/LostLayer')
 ,('0xf51ef5655df445fe9ea2358e7db24c0c93c8fe6e', 'Wahoo')
+,('0x56edafC97279c53a74c1c105AbeEBc79e0936C73', 'Treasure Fragments in Another World')
 ) as temp_table (contract_address, name)
