@@ -37,34 +37,34 @@ eth_prices as (
 
 tokens_prices AS (
 
-SELECT  DATE_TRUNC('day', prices.usd.minute) AS period, 
-        prices.usd.contract_address AS token,
-        prices.usd.symbol,
-        prices.usd.decimals,
-        prices.usd.price,
+SELECT  DATE_TRUNC('day', pusd.minute) AS period,
+        pusd.contract_address AS token,
+        pusd.symbol,
+        pusd.decimals,
+        pusd.price,
         eth_prices.price as eth_usd_price,
-        prices.usd.price/eth_prices.price as token_eth_price
-    FROM {{source('prices','usd')}}
-    left join eth_prices on DATE_TRUNC('day', prices.usd.minute) =  eth_prices.period
-    WHERE prices.usd.blockchain = 'ethereum'
-    AND prices.usd.contract_address IN (SELECT address FROM tokens)
-    AND EXTRACT(hour FROM prices.usd.minute) = 23
-    AND EXTRACT(minute FROM prices.usd.minute) = 59
+        pusd.price/eth_prices.price as token_eth_price
+    FROM {{source('prices','usd')}} pusd
+    left join eth_prices on DATE_TRUNC('day', pusd.minute) =  eth_prices.period
+    WHERE pusd.blockchain = 'ethereum'
+    AND pusd.contract_address IN (SELECT address FROM tokens)
+    AND EXTRACT(hour FROM pusd.minute) = 23
+    AND EXTRACT(minute FROM pusd.minute) = 59
     AND minute >= '2020-10-01'
 union all
 
-SELECT  DATE_TRUNC('day', prices.usd.minute) AS period, 
-        prices.usd.contract_address, --stSOL
+SELECT  DATE_TRUNC('day', pusd.minute) AS period,
+        pusd.contract_address, --stSOL
         'stSOL',
         0,
-        prices.usd.price,
-        prices.usd.price as eth_usd_price,
-        prices.usd.price/eth_prices.price as token_eth_price
-    FROM {{source('prices','usd')}}
-    left join eth_prices on DATE_TRUNC('day', prices.usd.minute) =  eth_prices.period
-    WHERE prices.usd.symbol = 'stSOL' 
-    AND EXTRACT(hour FROM prices.usd.minute) = 23
-    AND EXTRACT(minute FROM prices.usd.minute) = 59
+        pusd.price,
+        pusd.price as eth_usd_price,
+        pusd.price/eth_prices.price as token_eth_price
+    FROM {{source('prices','usd')}} pusd
+    left join eth_prices on DATE_TRUNC('day', pusd.minute) =  eth_prices.period
+    WHERE pusd.symbol = 'stSOL'
+    AND EXTRACT(hour FROM pusd.minute) = 23
+    AND EXTRACT(minute FROM pusd.minute) = 59
 
 )
 
