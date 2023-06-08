@@ -45,9 +45,7 @@ FROM (
         , `type`
         , CAST(value AS double) AS value
         , NULL AS l1_tx_origin
-        , CASE WHEN '{{ transactions_model[0] }}' = 'optimsm' THEN l1_fee_scalar
-                ELSE CAST(NULL AS double)
-                END AS l1_fee_scalar
+        , CAST(NULL AS double) AS l1_fee_scalar
         , CAST(NULL AS DECIMAL(38,0)) AS l1_block_number
         , CAST(NULL AS DECIMAL(38,0)) AS l1_fee
         , CAST(NULL AS DECIMAL(38,0)) AS l1_gas_price
