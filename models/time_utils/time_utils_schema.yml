@@ -1,0 +1,32 @@
+version: 2
+
+models:
+  - name: time_utils_days
+    meta:
+      blockchain: ethereum, solana, bnb, optimism, arbitrum, polygon
+      sector: time_utils
+      project: dates
+      contributors: dot2dotseurat
+    config:
+      tags: ['table']
+    description: "Days: Utility Tables for Time Series Analysis: +/- 20 years from creation"
+    columns:
+      - name: day
+        description: "a date field to left join to to guarantee a row for every day"
+        tests:
+          - unique
+
+  - name: time_utils_minutes
+    meta:
+      blockchain: ethereum, solana, bnb, optimism, arbitrum, polygon
+      sector: time_utils
+      project: minutes
+      contributors: dot2dotseurat
+    config:
+      tags: ['table']
+    description: "Minutes: Utility Tables for Time Series Analysis: +/- 20 years from creation"
+    columns:
+      - name: minute
+        description: "a minute (timestamp) field to left join to to guarantee a row for every minute"
+        tests:
+          - unique
