@@ -1,8 +1,8 @@
-{{config(alias='cex_fantom',
-        post_hook='{{ expose_spells(\'["fantom"]\',
+{{config(alias='cex_avalanche_c',
+        post_hook='{{ expose_spells(\'["avalanche_c"]\',
                                     "sector",
                                     "labels",
-                                    \'["Henrystats"]\') }}')}}
+                                    \'["hildobby"]\') }}')}}
 
 SELECT blockchain
 , address
@@ -14,4 +14,4 @@ SELECT blockchain
 , NOW() AS updated_at
 , 'cex_' || blockchain AS model_name
 , 'identifier' AS label_type
-FROM {{ ref('cex_fantom_addresses') }}
+FROM {{ ref('cex_avalanche_c_addresses') }}

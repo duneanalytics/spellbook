@@ -1,8 +1,11 @@
-{{config(alias='balancer_v2_gauges_arbitrum',
+{{config(
+        alias='balancer_v2_gauges_arbitrum',
         post_hook='{{ expose_spells(\'["arbitrum"]\',
                                     "sector",
                                     "labels",
-                                    \'["jacektrocinski"]\') }}')}}
+                                    \'["jacektrocinski"]\') }}'
+    )
+}}
 
     SELECT distinct
     'arbitrum' AS blockchain,
