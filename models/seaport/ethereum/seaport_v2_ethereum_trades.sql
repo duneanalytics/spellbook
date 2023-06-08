@@ -333,5 +333,5 @@ with source_ethereum_transactions as (
         ,sub_idx
         ,sub_type
       from iv_trades
-      where tx_hash != '0xff6ab6d78a69bd839ac4fa9e9347367075f3ba2d83216c561010f94291d0118c'
+      where tx_hash not in ('0xff6ab6d78a69bd839ac4fa9e9347367075f3ba2d83216c561010f94291d0118c', '0x3ffc50795ecaf51f14a330605d44e41e3aa3515326560037b61edb8990ff80e2')
 ;
