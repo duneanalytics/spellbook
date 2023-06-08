@@ -25,6 +25,7 @@ FROM
     ("bnb-binance-coin", null, "BNB", null, null),
     ("bsv-bitcoin-sv", null, "BSV", null, null),
     ("btc-bitcoin", null, "BTC", null, null),
+    ("celo-celo", null, "CELO", null, null),
     ("dash-dash", null, "DASH", null, null),
     ("dcr-decred", null, "DCR", null, null),
     ("doge-dogecoin", null, "DOGE", null, null),
