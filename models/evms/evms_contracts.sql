@@ -1,7 +1,5 @@
 {{ config(
         alias ='contracts',
-        materialized = 'incremental',
-        file_format = 'delta',
         unique_key=['blockchain', 'address', 'created_at'],
         post_hook='{{ expose_spells(\'["ethereum", "polygon", "bnb", "avalanche_c", "gnosis", "fantom", "optimism", "arbitrum"]\',
                                     "sector",
@@ -29,9 +27,6 @@ FROM (
         , *
         FROM {{ contracts_model[1] }}
         {% if not loop.last %}
-        {% if is_incremental() %}
-        WHERE block_time >= date_trunc("day", now() - interval '1 week')
-        {% endif %}
         UNION ALL
         {% endif %}
         {% endfor %}

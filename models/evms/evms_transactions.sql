@@ -1,7 +1,5 @@
 {{ config(
         alias ='transactions',
-        materialized = 'incremental',
-        file_format = 'delta',
         unique_key=['blockchain', 'tx_hash', 'evt_index'],
         post_hook='{{ expose_spells(\'["ethereum", "polygon", "bnb", "avalanche_c", "gnosis", "fantom", "optimism", "arbitrum"]\',
                                     "sector",
@@ -54,9 +52,6 @@ FROM (
         , CAST(NULL AS DECIMAL(38,0)) AS effective_gas_price
         FROM {{ transactions_model[1] }}
         {% if not loop.last %}
-        {% if is_incremental() %}
-        WHERE block_time >= date_trunc("day", now() - interval '1 week')
-        {% endif %}
         UNION ALL
         {% endif %}
         {% endfor %}
@@ -92,9 +87,6 @@ FROM (
         , l1_timestamp
         , CAST(NULL AS DECIMAL(38,0)) AS effective_gas_price
         FROM {{ source('optimism', 'transactions') }}
-        {% if is_incremental() %}
-        WHERE block_time >= date_trunc("day", now() - interval '1 week')
-        {% endif %}
 
         UNION ALL
 
@@ -127,7 +119,4 @@ FROM (
         , NULL AS l1_timestamp
         , effective_gas_price
         FROM {{ source('arbitrum', 'transactions') }}
-        {% if is_incremental() %}
-        WHERE block_time >= date_trunc("day", now() - interval '1 week')
-        {% endif %}
         );
