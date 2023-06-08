@@ -489,7 +489,9 @@ WITH curated_list AS (
       ,('0x946e9c780f3c79d80e51e68d259d0d7e794f2124', 'Uniswap')
       ,('0x156d8fac8cd3deb51ab194d906abfc81cf323c11', 'Minerva')
       ,('0x169e2ffc1c6b229b04e65a431434bf0e8ed9563d', 'Vesper')
-      ,('0xe7A9ECDb56af2Bb86fdaAa3e3B2D1F0f7a9Fe664', 'Another World')
+      ,('0xe7a9ecdb56af2bb86fdaaa3e3b2d1f0f7a9fe664', 'Another World')
+      ,('0x8ac863a9142781378ed302ab96105cada1697e85', 'Perpetual Protocol')
+      ,('0x8636fa411113d1b40b5d76f6766d16b3aa829d30', 'OmniX')
 
   ) as temp_table (creator_address, contract_project)
 
