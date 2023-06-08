@@ -4,7 +4,7 @@
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
-    unique_key = ['block_time', 'tx_hash', 'user_address', 'trace_address', 'source_chain_id', 'destination_chain_id', 'currency_contract']
+    unique_key = ['block_time', 'tx_hash', 'user_address', 'trace_address', 'source_chain_id', 'destination_chain_id']
     )
 }}
 
@@ -13,7 +13,8 @@
 {% set native_token_contract = "0xb31f66aa3c1e785363f0875a1b74e27b85fd66c7" %}
 
 WITH send_detail AS (
-    SELECT CAST(106 AS integer) AS source_chain_id,
+    SELECT ROW_NUMBER() OVER(PARTITION BY s.call_block_number,s.call_tx_hash ORDER BY s.call_trace_address ASC) AS call_send_index,
+        CAST(106 AS integer) AS source_chain_id,
         s.call_tx_hash as tx_hash,
         s.call_block_number as block_number,
         s._dstChainId AS destination_chain_id,
@@ -77,14 +78,6 @@ destination_gas_detail AS (
         {% endif %}
 ),
 
-destination_trace_address_summary AS (
-    SELECT block_number,
-        tx_hash,
-        array_agg(trace_address[0]) AS endpoint_root_trace_address
-    FROM destination_gas_detail
-    GROUP BY 1, 2
-),
-
 destination_gas_summary AS (
     SELECT block_number,
         tx_hash,
@@ -93,37 +86,10 @@ destination_gas_summary AS (
     GROUP BY 1, 2
 ),
 
-native_transfer_value_summary AS (
-    SELECT s.block_number,
-        s.tx_hash,
-        dg.endpoint_root_trace_address,
-        SUM(CAST(e.value as double)) AS amount_native_value
-    FROM send_summary s
-    INNER JOIN destination_trace_address_summary dg ON dg.block_number = s.block_number
-        AND dg.tx_hash = s.tx_hash
-    INNER JOIN {{ source('avalanche_c', 'traces') }} e ON e.block_number = dg.block_number
-        AND e.tx_hash = dg.tx_hash
-        AND ARRAY_CONTAINS(dg.endpoint_root_trace_address, e.trace_address[0]) IS NOT TRUE
-        AND e.from = s.transaction_contract_address
-        AND e.call_type = 'call'
-        AND cast(e.value as double) > 0
-        AND cardinality(e.trace_address) > 0
-        {% if not is_incremental() %}
-        AND e.block_time >= '{{transaction_start_date}}'
-        {% endif %}
-        {% if is_incremental() %}
-        AND e.block_time >= date_trunc("day", now() - interval '1 week')
-        {% endif %}
-    GROUP BY 1, 2, 3
-),
-
 trans_detail AS (
     -- ERC20 transfer: Endpoint send value is equal to transaction value
     SELECT t.block_number,
         t.tx_hash,
-        t.user_address,
-        t.transaction_contract_address,
-        t.transaction_value,
         'erc20' AS transfer_type,
         t.currency_contract,
         t.amount_raw
@@ -149,12 +115,9 @@ trans_detail AS (
     
     UNION ALL
 
-    -- Native transfer: The transaction amount != endpoint gas amount + transfer amount
+    -- Native transfer: The transaction amount > endpoint gas amount
     SELECT s.block_number,
         s.tx_hash,
-        s.user_address,
-        s.transaction_contract_address,
-        s.transaction_value,
         'native' AS transfer_type,
         '{{native_token_contract}}' AS currency_contract,
         s.transaction_value - dgs.amount_destination_gas AS amount_raw -- Transfer amount of the transaction
@@ -162,12 +125,10 @@ trans_detail AS (
     INNER JOIN destination_gas_summary dgs ON dgs.block_number = s.block_number
         AND dgs.tx_hash = s.tx_hash
         AND dgs.amount_destination_gas > 0
-    INNER JOIN native_transfer_value_summary nvs ON nvs.block_number = s.block_number
-        AND nvs.tx_hash = s.tx_hash
-        AND nvs.amount_native_value > 0
-    WHERE s.transaction_value = dgs.amount_destination_gas + nvs.amount_native_value
+    WHERE s.transaction_value > dgs.amount_destination_gas
 )
 
+-- Note: Ignored the amount of erc721
 SELECT 'avalanche_c' AS blockchain,
     s.source_chain_id,
     cls.chain_name AS source_chain_name,
@@ -195,8 +156,9 @@ SELECT 'avalanche_c' AS blockchain,
     COALESCE(t.amount_raw,0) / power(10, erc.decimals) AS amount_original,
     COALESCE(t.amount_raw,0) AS amount_raw
 FROM send_detail s
-INNER JOIN trans_detail t ON s.block_number = t.block_number
+LEFT JOIN trans_detail t ON s.block_number = t.block_number
     AND s.tx_hash = t.tx_hash
+    AND s.call_send_index = 1
 LEFT JOIN {{ ref('layerzero_chain_list') }} cls ON cls.chain_id = s.source_chain_id
 LEFT JOIN {{ ref('layerzero_chain_list') }} cld ON cld.chain_id = s.destination_chain_id
 LEFT JOIN {{ ref('tokens_erc20') }} erc ON erc.blockchain = 'avalanche_c' AND erc.contract_address = t.currency_contract

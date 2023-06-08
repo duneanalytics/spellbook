@@ -21,7 +21,7 @@ models:
            - tx_hash
            - trace_address
      - dbt_utils.unique_combination_of_columns:
-         combination_of_columns: [ 'block_time', 'tx_hash', 'user_address', 'trace_address', 'source_chain_id', 'destination_chain_id', 'currency_contract' ]
+         combination_of_columns: [ 'block_time', 'tx_hash', 'user_address', 'trace_address', 'source_chain_id', 'destination_chain_id' ]
    columns:
      - &blockchain
        name: blockchain
