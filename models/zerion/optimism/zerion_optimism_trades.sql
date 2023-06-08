@@ -9,24 +9,27 @@
 }}
 
 {% set project_start_date = '2021-06-01' %}
+{% set zerion_native_currency_address = '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee' %}
+{% set native_wrapped_currency_address = '0x4200000000000000000000000000000000000006' %}
+{% set native_currency_symbol = 'ETH' %}
 
 WITH zerion_trades AS (
     SELECT swap.evt_block_time AS block_time
     , date_trunc('day', swap.evt_block_time) AS block_date
     , swap.evt_block_number AS block_number
     , swap.sender AS trader
-    , CASE WHEN swap.inputToken='0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee' THEN '0x4200000000000000000000000000000000000006'
+    , CASE WHEN swap.inputToken='{{zerion_native_currency_address}}' THEN '{{native_wrapped_currency_address}}'
         ELSE swap.inputToken
         END AS token_sold_address
-    , CASE WHEN swap.inputToken='0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee' THEN 'ETH'
+    , CASE WHEN swap.inputToken='{{zerion_native_currency_address}}' THEN '{{native_currency_symbol}}'
         ELSE tok_sold.symbol
         END AS token_sold_symbol
     , swap.absoluteInputAmount AS token_sold_amount_raw
     , tok_sold.decimals AS tok_sold_decimals
-    , CASE WHEN swap.outputToken='0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee' THEN '0x4200000000000000000000000000000000000006'
+    , CASE WHEN swap.outputToken='{{zerion_native_currency_address}}' THEN '{{native_wrapped_currency_address}}'
         ELSE swap.outputToken
         END AS token_bought_address
-    , CASE WHEN swap.outputToken='0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee' THEN 'ETH'
+    , CASE WHEN swap.outputToken='{{zerion_native_currency_address}}' THEN '{{native_currency_symbol}}'
         ELSE tok_bought.symbol
         END AS token_bought_symbol
     , swap.absoluteOutputAmount AS token_bought_amount_raw
