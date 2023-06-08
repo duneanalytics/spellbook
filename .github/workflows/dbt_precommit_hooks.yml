@@ -38,8 +38,15 @@ jobs:
         run: "dbt compile"
       - name: check ref/source syntax
         run: |
-          test=$(regex='^((?!--).)*from\s+[a-z0-9_]+\.+[a-z0-9_]+\]' && files=$(echo "$FILES" | grep ".sql$") && for f in $files; do lines=$(grep -E "$regex" $f); if [ ! -z "$lines" ]; then echo "File $f contains target string on lines:"; echo "$lines"; fi; done)
-          [[ -z "$test" ]] && { echo "Success: No ref/source syntax errors found"; exit 0; } || { echo "Found ref/source syntax errors:"; echo "$test"; exit 1; }
+          files=$(echo "$FILES" | grep ".sql$")
+          for f in $files; do
+            lines=$(grep -E '.*[Ff][Rr][Oo][Mm][[:space:]]+[a-z0-9_]+\.[a-z0-9_]+' $f | grep -vE '.*--.*[Ff][Rr][Oo][Mm][[:space:]]+[a-z0-9_]+\.[a-z0-9_]+')
+            if [ ! -z "$lines" ]; then
+              echo "File $f may contain invalid ref/source syntax on lines:"   
+              echo "$lines"             
+              exit 1       
+            fi
+          done
       - name: check schemas
         run: |
           test=$(dbt --quiet --no-print ls --select config.schema:no_schema --output path)
