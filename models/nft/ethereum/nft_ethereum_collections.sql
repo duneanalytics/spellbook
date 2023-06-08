@@ -8,6 +8,8 @@
 )
 }}
 
+{% set ethereum_weth_address = '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2' %}
+
 WITH trades AS (
     SELECT ROW_NUMBER() OVER (ORDER BY SUM(nftt.amount_usd) DESC) AS volume_ranking
     , nftt.nft_contract_address AS contract_address
@@ -21,7 +23,7 @@ WITH trades AS (
         AND wt.block_time >= date_trunc("day", NOW() - interval '1 week')
         {% endif %}
     LEFT JOIN {{ source('prices', 'usd') }} pu ON pu.blockchain = 'ethereum'
-        AND pu.contract_address = '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'
+        AND pu.contract_address = '{{ ethereum_weth_address }}'
         AND pu.minute=date_trunc('minute', nftt.block_time)
     GROUP BY nftt.nft_contract_address
     )
@@ -38,7 +40,7 @@ WITH trades AS (
         AND wt.block_time >= date_trunc("day", NOW() - interval '1 week')
         {% endif %}
     LEFT JOIN {{ source('prices', 'usd') }} pu ON pu.blockchain = 'ethereum'
-        AND pu.contract_address = '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'
+        AND pu.contract_address = '{{ ethereum_weth_address }}'
         AND pu.minute=date_trunc('minute', nftt.block_time)
     GROUP BY nftt.nft_contract_address
     )
@@ -124,6 +126,7 @@ SELECT t.volume_ranking
 , tok.name
 , tok.standard
 , tok.symbol
+, '{{ ethereum_weth_address }}' AS native_currency_address
 , 'ETH' AS native_currency_symbol
 , COALESCE(t.volume_native_currency, 0) AS volume_native_currency
 , COALESCE(t.volume_usd, 0) AS volume_usd

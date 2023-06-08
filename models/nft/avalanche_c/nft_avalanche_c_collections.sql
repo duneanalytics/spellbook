@@ -8,6 +8,8 @@
 )
 }}
 
+{% set avalanche_c_wavax_address = '0xb31f66aa3c1e785363f0875a1b74e27b85fd66c7' %}
+
 WITH trades AS (
     SELECT ROW_NUMBER() OVER (ORDER BY SUM(nftt.amount_usd) DESC) AS volume_ranking
     , nftt.nft_contract_address AS contract_address
@@ -21,7 +23,7 @@ WITH trades AS (
         AND wt.block_time >= date_trunc("day", NOW() - interval '1 week')
         {% endif %}
     LEFT JOIN {{ source('prices', 'usd') }} pu ON pu.blockchain = 'avalanche_c'
-        AND pu.contract_address = '0xb31f66aa3c1e785363f0875a1b74e27b85fd66c7'
+        AND pu.contract_address = '{{ avalanche_c_wavax_address }}'
         AND pu.minute=date_trunc('minute', nftt.block_time)
     GROUP BY nftt.nft_contract_address
     )
@@ -38,7 +40,7 @@ WITH trades AS (
         AND wt.block_time >= date_trunc("day", NOW() - interval '1 week')
         {% endif %}
     LEFT JOIN {{ source('prices', 'usd') }} pu ON pu.blockchain = 'avalanche_c'
-        AND pu.contract_address = '0xb31f66aa3c1e785363f0875a1b74e27b85fd66c7'
+        AND pu.contract_address = '{{ avalanche_c_wavax_address }}'
         AND pu.minute=date_trunc('minute', nftt.block_time)
     GROUP BY nftt.nft_contract_address
     )
@@ -124,6 +126,7 @@ SELECT t.volume_ranking
 , tok.name
 , tok.standard
 , tok.symbol
+, '{{ avalanche_c_wavax_address }}' AS native_currency_address
 , 'AVAX' AS native_currency_symbol
 , COALESCE(t.volume_native_currency, 0) AS volume_native_currency
 , COALESCE(t.volume_usd, 0) AS volume_usd

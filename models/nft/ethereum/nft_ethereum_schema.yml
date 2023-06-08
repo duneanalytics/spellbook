@@ -602,6 +602,8 @@ models:
         description: "Token standard of the collection"
       - name: symbol
         description: "Token symbol of the collection"
+      - name: native_currency_address
+        description: "Address of the blockchain's native currency (wrapped)"
       - name: native_currency_symbol
         description: "Symbol of the blockchain's native currency"
       - name: volume_native_currency

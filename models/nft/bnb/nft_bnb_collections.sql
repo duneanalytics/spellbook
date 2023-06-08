@@ -8,6 +8,8 @@
 )
 }}
 
+{% set bnb_wbnb_address = '0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c' %}
+
 WITH trades AS (
     SELECT ROW_NUMBER() OVER (ORDER BY SUM(nftt.amount_usd) DESC) AS volume_ranking
     , nftt.nft_contract_address AS contract_address
@@ -18,7 +20,7 @@ WITH trades AS (
     INNER JOIN {{ ref('nft_bnb_wash_trades') }} wt ON wt.unique_trade_id=nftt.unique_trade_id
         AND wt.is_wash_trade = FALSE
     LEFT JOIN {{ source('prices', 'usd') }} pu ON pu.blockchain = 'bnb'
-        AND pu.contract_address = '0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c'
+        AND pu.contract_address = '{{ bnb_wbnb_address }}'
         AND pu.minute=date_trunc('minute', nftt.block_time)
     GROUP BY nftt.nft_contract_address
     )
@@ -32,7 +34,7 @@ WITH trades AS (
     INNER JOIN {{ ref('nft_bnb_wash_trades') }} wt ON wt.unique_trade_id=nftt.unique_trade_id
         AND wt.is_wash_trade = TRUE
     LEFT JOIN {{ source('prices', 'usd') }} pu ON pu.blockchain = 'bnb'
-        AND pu.contract_address = '0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c'
+        AND pu.contract_address = '{{ bnb_wbnb_address }}'
         AND pu.minute=date_trunc('minute', nftt.block_time)
     GROUP BY nftt.nft_contract_address
     )
@@ -118,6 +120,7 @@ SELECT t.volume_ranking
 , tok.name
 , tok.standard
 , tok.symbol
+, '{{ bnb_wbnb_address }}' AS native_currency_address
 , 'BNB' AS native_currency_symbol
 , COALESCE(t.volume_native_currency, 0) AS volume_native_currency
 , COALESCE(t.volume_usd, 0) AS volume_usd
