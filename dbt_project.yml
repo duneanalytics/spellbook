@@ -201,6 +201,11 @@ models:
       ethereum:
         +schema: blur_ethereum
 
+    blend:
+      +schema: blend
+      ethereum:
+        +schema: blend_ethereum
+
     looksrare:
       +schema: looksrare
       ethereum:
