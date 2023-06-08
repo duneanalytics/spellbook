@@ -37,12 +37,12 @@ WITH bridge_protocols AS (
                 ELSE 'na'
             END AS transfer_type
             , token_symbol
-            , token_amount
-            , token_amount_usd
-            , token_amount_raw
-            , fee_amount
-            , fee_amount_usd
-            , fee_amount_raw
+            , CAST(token_amount AS double) AS token_amount
+            , CAST(token_amount_usd AS double) AS token_amount_usd
+            , CAST(token_amount_raw AS double) AS token_amount_raw
+            , CAST(fee_amount AS double) AS fee_amount
+            , CAST(fee_amount_usd AS double) AS fee_amount_usd
+            , CAST(fee_amount_raw AS double) AS fee_amount_raw
             , token_address
             , fee_address
             , CAST(bmod.source_chain_id AS DECIMAL(38, 0)) AS source_chain_id
