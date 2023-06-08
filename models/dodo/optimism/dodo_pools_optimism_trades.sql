@@ -15,12 +15,6 @@
     
 {% set project_start_date = '2022-04-18' %}
 
--- dodo V1 & V2 adapters
-{% set dodo_proxies = [
-"0xdd0951b69bc0cf9d39111e5037685fb573204c86",
-"0x169ae3d5acc90f0895790f6321ee81cb040e8a6b"
-] %}
-
 WITH dexs AS 
 (
         -- dodov2 dvm
@@ -41,15 +35,8 @@ WITH dexs AS
             evt_index
         FROM
             {{ source('dodo_optimism', 'DVM_evt_DODOSwap')}}
-        WHERE
-        {% for dodo_proxy in dodo_proxies %}
-            trader <> '{{dodo_proxy}}'
-            {% if not loop.last %}
-            and
-            {% endif %}
-        {% endfor %}
         {% if is_incremental() %}
-        AND evt_block_time >= date_trunc("day", now() - interval '1 week')
+        WHERE evt_block_time >= date_trunc("day", now() - interval '1 week')
         {% endif %}
 
         UNION ALL
@@ -72,15 +59,8 @@ WITH dexs AS
             evt_index
         FROM
             {{ source('dodo_optimism', 'DPP_evt_DODOSwap')}}
-        WHERE
-        {% for dodo_proxy in dodo_proxies %}
-            trader <> '{{dodo_proxy}}'
-            {% if not loop.last %}
-            and
-            {% endif %}
-        {% endfor %}
         {% if is_incremental() %}
-        AND evt_block_time >= date_trunc("day", now() - interval '1 week')
+        WHERE evt_block_time >= date_trunc("day", now() - interval '1 week')
         {% endif %}
 
         UNION ALL
@@ -103,15 +83,8 @@ WITH dexs AS
             evt_index
         FROM
             {{ source('dodo_optimism', 'DSP_evt_DODOSwap')}}
-        WHERE
-        {% for dodo_proxy in dodo_proxies %}
-            trader <> '{{dodo_proxy}}'
-            {% if not loop.last %}
-            and
-            {% endif %}
-        {% endfor %}
         {% if is_incremental() %}
-        AND evt_block_time >= date_trunc("day", now() - interval '1 week')
+        WHERE evt_block_time >= date_trunc("day", now() - interval '1 week')
         {% endif %}
 )
 SELECT
