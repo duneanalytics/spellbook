@@ -15,7 +15,6 @@ ref('dodo_ethereum_trades')
 , ref('dodo_optimism_trades')
 ] %}
 
-
 SELECT *
 FROM (
     {% for dex_model in dodo_models %}
