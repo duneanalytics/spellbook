@@ -5,7 +5,7 @@
                                     \'["msilb7"]\') }}')}}
 
 -- https://github.com/ethereum-optimism/optimism/blob/develop/op-bindings/predeploys/addresses.go
-SELECT  address, vault_name
+SELECT  lower(address) as address, vault_name
 FROM (VALUES
       ("0x4200000000000000000000000000000000000011","SequencerFeeVault")
      ,("0x4200000000000000000000000000000000000019","BaseFeeVault")
