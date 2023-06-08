@@ -130,6 +130,9 @@ models:
       - &filter_4_first_funded_by_same_wallet
         name: filter_4_first_funded_by_same_wallet
         description: "Did the same wallet first fund the seller and buyer's wallets in ETH?"
+      - &filter_5_flashloan
+        name: filter_5_flashloan
+        description: "Did the tx include a flashloan?"
       - &is_wash_trade
         name: is_wash_trade
         description: "Have any of the filters flag as true? Then it is labelled as a wash trade"
@@ -180,3 +183,20 @@ models:
         description: "Address that the transaction points to"
       - name: evt_index
         description: "Event index"
+
+  - name: nft_arbitrum_aggregators
+    meta:
+      blockchain: arbitrum
+      sector: nft
+      contributors: hildobby
+    config:
+      tags: ['nft', 'arbitrum', 'aggregators']
+    description: >
+        NFT aggregators
+    columns:
+      - name: contract_address
+        description: "Aggregator project's contract address"
+        tests:
+          - unique
+      - name: name
+        description: "Aggregator project's name"

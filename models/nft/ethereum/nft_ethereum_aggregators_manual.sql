@@ -34,6 +34,7 @@ FROM
     , ('0x8005488ff4f8982d2d8c1d602e6d747b1428dd41', 'Reservoir') -- Reservoir v4
     , ('0x9ebfb53fa8526906738856848a27cb11b0285c3f', 'Reservoir') -- Reservoir v5
     , ('0x178a86d36d89c7fdebea90b739605da7b131ff6a', 'Reservoir') -- Reservoir v6
+    , ('0xc2c862322e9c97d6244a3506655da95f05246fd8', 'Reservoir') -- Reservoir v6.0.1
     , ('0x39b6862c4783db2651d64bc160349dc9a15f1fb7', 'Rarity Garden') -- Rarity Garden v2
     , ('0x9d0a89bc35fb160a076de0341d9280830d3013ca', 'Rarity Garden') -- Rarity Garden v1.02
     , ('0x603d022611bfe6a101dcdab207d96c527f1d4d8e', 'BitKeep') -- BitKeep
@@ -46,7 +47,8 @@ FROM
     , ('0x1ed3d33b41e392014e0c9d8125369aba4e09798f', 'Alpha Sharks') -- Magically (Alpha Sharks)
     , ('0x04898894a0b6c094a920eafd180ef4ac30f00a43', 'Alpha Sharks') -- Magically (Alpha Sharks)
     , ('0xef1c6e67703c7bd7107eed8303fbe6ec2554bf6b', 'Uniswap') -- Uniswap's Universal Router
-    , ('0x4c60051384bd2d3c01bfc845cf5f4b44bcbe9de5', 'Uniswap') -- Uniswap's Universal Router (New)
+    , ('0x4c60051384bd2d3c01bfc845cf5f4b44bcbe9de5', 'Uniswap') -- Uniswap's Universal Router 2
+    , ('0x3fc91a3afd70395cd496c647d5a6cc9d4b2b7fad', 'Uniswap') -- Uniswap's Universal Router 3
     , ('0x00000000005228b791a99a61f36a130d50600106', 'LooksRare') -- LooksRare Aggregator
     , ('0x36ab1c395b3711d3d5ed2af8ac8371cc991aa06c', 'Flip') -- Flip
     , ('0x7db11e30ae8ad7495668701c3f2c1b6d60587eda', 'Flip') -- Flip's LooksRare Checkout

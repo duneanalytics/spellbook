@@ -226,6 +226,9 @@ sources:
           - *endWeights
           - *startTime
           - *startWeights
+          
+      - name: Vault_evt_FlashLoan
+        loaded_at_field: evt_block_time
 
   - name: balancer_v1_ethereum
     description: >

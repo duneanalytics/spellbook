@@ -17,13 +17,12 @@ FROM
     VALUES
 
     ("1inch-1inch", "bnb", "1INCH", "0x111111111117dc0aa78b770fa6a738034120c302", 18),
-    ("aave-aave-token", "bnb", "AAVE", "0xfb6115445bff7b52feb98650c87f44907e58f802", 18),
+    ("aave-new", "bnb", "AAVE", "0xfb6115445bff7b52feb98650c87f44907e58f802", 18),
     --("abnbc-abnbc", "bnb", "ABNBC", "0xe85afccdafbe7f2b096f268e31cce3da8da2990a", 18),
     ("ada-cardano", "bnb", "ADA", "0x3ee2200efb3400fabb9aacf31297cbdd1d435d47", 18),
     ("adx-adex", "bnb", "ADX", "0x6bff4fb161347ad7de4a625ae5aa3a1ca7077819", 18),
     ("aggl-aggleio", "bnb", "AGGL", "0x1042aa383cab145dc77121ca75650804a5c134ff", 18),
     ("ankr-ankr-network", "bnb", "ANKR", "0xf307910a4c7bbc79691fd374889b36d8531b08e3", 18),
-    ("ant-aragon", "bnb", "ANT", "0x43f3918ff115081cfbfb256a5bde1e8d181f2907", 18),
     ("atom-cosmos", "bnb", "ATOM", "0x0eb3a705fc54725037cc9e008bdede697f62f335", 18),
     ("auto-auto", "bnb", "AUTO", "0x1cff458b364d0d328d4c9d59d10be7d22d01953d", 18),
     ("axlusdc-axelar-usd-coin", "bnb", "axlUSDC", "0x4268b8f0b87b6eae5d897996e6b845ddbd99adf3", 6),
@@ -197,8 +196,11 @@ FROM
     ("stg-stargatetoken","bnb","STG","0xb0d502e938ed5f4df2e681fe6e419ff29631d62b",18),
     ("ico-axelar", "bnb", "AXL", "0x8b1f4432f943c465a973fedc6d7aa50fc96f1f65", 6),
     ("lvl-level","bnb","LVL","0xb64e280e9d1b5dbec4accedb2257a87b400db149",18),
-    ("ghny-grizzly-honey","bnb","GHNY","0xa045e37a0d1dd3a45fefb8803d22457abc0a728a",18)
+    ("ghny-grizzly-honey","bnb","GHNY","0xa045e37a0d1dd3a45fefb8803d22457abc0a728a",18),
+    ("grain-granary","bnb","GRAIN","0x8f87a7d376821c7b2658a005aaf190ec778bf37a",18),
+    ("oath-oath","bnb","OATH","0xd3c6ceedd1cc7bd4304f72b011d53441d631e662",18)
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)
 where contract_address not in (
-    '0x2ab0e9e4ee70fff1fb9d67031e44f6410170d00e' -- bXEN has bad price feed.
+    '0x2ab0e9e4ee70fff1fb9d67031e44f6410170d00e', -- bXEN has bad price feed.
+    '0x43f3918ff115081cfbfb256a5bde1e8d181f2907' -- ANT (aragon) doesn't exists on BSC, it's a scam-token address.
 )

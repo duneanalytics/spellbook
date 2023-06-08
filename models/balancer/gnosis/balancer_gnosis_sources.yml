@@ -56,3 +56,6 @@ sources:
             description: 'Raw amount of the token provided to the pool'
           - name: amountOut
             description: 'Raw amount of the token bought from the pool'
+            
+      - name: Vault_evt_FlashLoan
+        loaded_at_field: evt_block_time

@@ -36,6 +36,7 @@ SELECT lower(trim(address)) as address, trim(entity) as entity, trim(entity_uniq
 FROM
 (VALUES
 ('0xae7ab96520de3a18e5e111b5eaab095312d7fe84', 'Lido', 'Lido', 'Liquid Staking')
+    , ('0xfddf38947afb03c621c71b06c9c70bce73f12999', 'Lido', 'Lido', 'Liquid Staking')
     , ('0x39dc6a99209b5e6b81dc8540c86ff10981ebda29', 'Staked.us', 'Staked.us', 'Staking Pools')
     , ('0x0194512e77d798e4871973d9cb9d7ddfc0ffd801', 'stakefish', 'stakefish 1', 'Staking Pools')
     , ('0xd4039ecc40aeda0582036437cf3ec02845da4c13', 'Kraken', 'Kraken 1', 'CEX')
@@ -87,9 +88,10 @@ FROM
     , ('0x4c2f150fc90fed3d8281114c2349f1906cde5346', 'Gemini', 'Gemini', 'CEX')
     , ('0xbb84d966c09264ce9a2104a4a20bb378369986db', 'WEX Exchange', 'WEX Exchange', 'CEX')
     , ('0xbafa44efe7901e04e39dad13167d089c559c1138', 'Frax Finance', 'Frax Finance', 'Liquid Staking')
-    , ('0xefe9a82d56cd965d7b332c7ac1feb15c53cd4340', 'stakefish', 'stakefish 2', 'Staking Pools')
+    --, ('0xefe9a82d56cd965d7b332c7ac1feb15c53cd4340', 'stakefish', 'stakefish 2', 'Staking Pools') -- fork of stakefish batch deposit contract that isn't controlled by stakefish
     , ('0xeee27662c2b8eba3cd936a23f039f3189633e4c8', 'Celsius', 'Celsius', 'Staking Pools')
     , ('0xe0c8df4270f4342132ec333f6048cb703e7a9c77', 'Swell', 'Swell', 'Liquid Staking')
+    , ('0xb3d9cf8e163bbc840195a97e81f8a34e295b8f39', 'Swell', 'Swell', 'Liquid Staking')
     , ('0x5180db0237291a6449dda9ed33ad90a38787621c', 'Frax Finance', 'Frax Finance Investor Custodian', 'Liquid Staking')
     , ('0xaab27b150451726ec7738aa1d0a94505c8729bd1', 'Eden Network', 'Eden Network', 'Others')
     , ('0x234ee9e35f8e9749a002fc42970d570db716453b', 'Gate.io', 'Gate.io', 'CEX')
@@ -113,6 +115,9 @@ FROM
     , ('0x43a0927a6361258e6cbaed415df275a412c543b5', 'Teku Team', 'Teku Team', 'Independent Staker')
     , ('0x5efaefd5f8a42723bb095194c9202bf2b83d8eb6', 'Nimbus Team', 'Nimbus Team', 'Independent Staker')
     , ('0x4ca21e4d3a86e7399698f88686f5596dbe74adeb', 'P2P.org', 'P2P.org', 'Staking Pools')
+    , ('0x8103151e2377e78c04a3d2564e20542680ed3096', 'Node DAO', 'Node DAO', 'Liquid Staking')
+    , ('0x4befa2aa9c305238aa3e0b5d17eb20c045269e9d', 'RockX', 'RockX', 'Staking Pools')
+    , ('0xea674fdde714fd979de3edf0f56aa9716b898ec8', 'Ethermine', 'Ethermine', 'Staking Pools')
     ) 
     x (address, entity, entity_unique_name, category)
 
@@ -128,7 +133,7 @@ FROM
                 , et.block_time
             FROM {{ source('ethereum', 'traces') }} et
             INNER JOIN {{ source('ethereum', 'traces') }} et2 ON et2.from=et.from
-                AND et2.to IN (SELECT address FROM {{ ref('addresses_ethereum_cex') }} WHERE cex_name = 'Coinbase')
+                AND et2.to IN (SELECT address FROM {{ ref('cex_ethereum_addresses') }} WHERE cex_name = 'Coinbase')
                 {% if not is_incremental() %}
                 AND et2.block_time >= '2020-10-14'
                 {% endif %}
