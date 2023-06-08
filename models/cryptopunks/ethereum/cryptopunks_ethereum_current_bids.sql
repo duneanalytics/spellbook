@@ -28,7 +28,7 @@ with combined_events_table as (
 
         select  'Transfer' as event_type
                 , cast(NULL as varchar(5)) as bidder
-                , from as transfer_from
+                , t.from as transfer_from
                 , to as transfer_to
                 , punk_id
                 , cast(NULL as double) as eth_amount
@@ -36,7 +36,7 @@ with combined_events_table as (
                 , evt_block_number
                 , evt_index
                 , evt_tx_hash
-        from  {{ ref('cryptopunks_ethereum_punk_transfers') }}
+        from  {{ ref('cryptopunks_ethereum_punk_transfers') }} t
 
         union all
 
