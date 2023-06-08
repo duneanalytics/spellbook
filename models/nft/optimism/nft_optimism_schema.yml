@@ -288,3 +288,56 @@ models:
         description:  "Unique trade ID"
         tests:
           - unique
+
+  - name: nft_optimism_collections
+    meta:
+      blockchain: optimism
+      sector: nft
+      contributors: hildobby
+    config:
+      tags: ['nft', 'optimism', 'collections']
+    description: >
+        NFT collections on Optimism
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - contract_address
+    columns:
+      - name: volume_ranking
+        description: "Ranking of the collection by volume"
+      - name: blockchain
+        description: "Blockchain"
+      - name: contract_address
+        description: "NFT collection contract address"
+      - name: name
+        description: "NFT collection name"
+      - name: standard
+        description: "Token standard of the collection"
+      - name: symbol
+        description: "Token symbol of the collection"
+      - name: volume_eth
+        description: "Volume in ETH of NFT trades of the collection"
+      - name: volume_usd
+        description: "Volume in USD of NFT trades of the collection"
+      - name: trade_count
+        description: "Trade count of the collection"
+      - name: wash_volume_eth
+        description: "Wash volume in ETH of NFT trades of the collection"
+      - name: wash_volume_usd
+        description: "Wash volume in USD of NFT trades of the collection"
+      - name: wash_trade_count
+        description: "Wash trade count of the collection"
+      - name: current_supply
+        description: "Current supply of the collection"
+      - name: minted_tokens
+        description: "Number of minted tokens in the collection"
+      - name: distinct_token_ids
+        description: "Number of distinct token IDs in the collection"
+      - name: holders
+        description: "Collection holders"
+      - name: first_mint
+        description: "First mint date of the collection"
+      - name: last_mint
+        description: "last mint date of the collection"
+      - name: burned_tokens
+        description: "Number of burned tokens in the collection"
