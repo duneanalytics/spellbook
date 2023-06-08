@@ -47,6 +47,12 @@ WITH zerion_trades AS (
     FROM {{ source('zerion_bnb', 'Router_evt_Executed') }} swap
     INNER JOIN {{ source('bnb','transactions') }} pt ON pt.block_number=swap.evt_block_number
         AND pt.hash=swap.evt_tx_hash
+        {% if not is_incremental() %}
+        AND pt.block_time >= '{{project_start_date}}'
+        {% endif %}
+        {% if is_incremental() %}
+        AND pt.block_time >= date_trunc("day", now() - interval '1 week')
+        {% endif %}
     LEFT JOIN {{ ref('tokens_bnb_bep20') }} tok_sold ON tok_sold.contract_address=swap.inputToken
     LEFT JOIN {{ ref('tokens_bnb_bep20') }} tok_bought ON tok_bought.contract_address=swap.outputToken
     {% if not is_incremental() %}
