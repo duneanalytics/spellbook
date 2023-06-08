@@ -21,7 +21,7 @@ WITH trades AS (
         AND wt.block_time >= date_trunc("day", NOW() - interval '1 week')
         {% endif %}
     LEFT JOIN {{ source('prices', 'usd') }} pu ON pu.blockchain = 'polygon'
-        AND pu.contract_address = '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'
+        AND pu.contract_address = '0x0d500b1d8e8ef31e21c99d1db9a6444d3adf1270'
         AND pu.minute=date_trunc('minute', nftt.block_time)
     GROUP BY nftt.nft_contract_address
     )
@@ -38,7 +38,7 @@ WITH trades AS (
         AND wt.block_time >= date_trunc("day", NOW() - interval '1 week')
         {% endif %}
     LEFT JOIN {{ source('prices', 'usd') }} pu ON pu.blockchain = 'polygon'
-        AND pu.contract_address = '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'
+        AND pu.contract_address = '0x0d500b1d8e8ef31e21c99d1db9a6444d3adf1270'
         AND pu.minute=date_trunc('minute', nftt.block_time)
     GROUP BY nftt.nft_contract_address
     )
