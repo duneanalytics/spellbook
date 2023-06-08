@@ -33,7 +33,7 @@ WITH trades AS (
     , SUM(nftt.amount_usd/pu.price) AS wash_volume_native_currency
     , SUM(nftt.amount_usd) AS wash_volume_usd
     , COUNT(*) AS wash_trade_count
-    FROM nft.trades nftt
+    FROM {{ ref('nft_trades') }} nftt
     INNER JOIN {{ ref('nft_polygon_wash_trades') }} wt ON wt.unique_trade_id=nftt.unique_trade_id
         AND wt.is_wash_trade = TRUE
         {% if is_incremental() %}
