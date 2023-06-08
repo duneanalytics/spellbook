@@ -52,7 +52,7 @@ WITH trades AS (
             SELECT contract_address
             , token_id
             , SUM(CAST(amount AS double)) AS supply
-            , CAST(SUM(amount) AS double) AS minted
+            , SUM(CAST(amount AS double)) AS minted
             FROM {{ ref('nft_avalanche_c_transfers') }}
             WHERE `from` = '0x0000000000000000000000000000000000000000'
             GROUP BY contract_address, token_id
