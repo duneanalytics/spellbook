@@ -3,12 +3,12 @@ version: 2
 models:
   - name: zerion_trades
     meta:
-      blockchain: ethereum, fantom, avalanche_c, arbitrum, gnosis
+      blockchain: polygon, optimism, bnb, avalanche_c, arbitrum, gnosis
       sector: dex
       project: zerion
       contributors: hildobby
     config:
-      tags: ['ethereum', 'zerion', 'trades', 'dex', 'ethereum', 'fantom', 'avalanche_c', 'arbitrum', 'gnosis']
+      tags: ['zerion', 'trades', 'dex', 'polygon', 'optimism', 'bnb', 'avalanche_c', 'arbitrum', 'gnosis']
     description: >
         Zerion DEX trades on all chains
     tests:
