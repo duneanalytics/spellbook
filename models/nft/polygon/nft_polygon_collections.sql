@@ -14,7 +14,7 @@
 WITH trades AS (
     SELECT ROW_NUMBER() OVER (ORDER BY SUM(nftt.amount_usd) DESC) AS volume_ranking
     , nftt.nft_contract_address AS contract_address
-    , SUM(nftt.amount_usd/pu.price) AS volume_eth
+    , SUM(nftt.amount_usd/pu.price) AS volume_native_currency
     , SUM(nftt.amount_usd) AS volume_usd
     , COUNT(*) AS trade_count
     FROM {{ ref('nft_trades') }} nftt
@@ -26,18 +26,12 @@ WITH trades AS (
     LEFT JOIN {{ ref('prices_usd_forward_fill') }} pu ON pu.blockchain = 'polygon'
         AND pu.contract_address = '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'
         AND pu.minute=date_trunc('minute', nftt.block_time)
-        {% if is_incremental() %}
-        AND pu.minute >= date_trunc("day", NOW() - interval '1 week')
-        {% endif %}
-    {% if is_incremental() %}
-    WHERE nftt.block_time >= date_trunc("day", NOW() - interval '1 week')
-    {% endif %}
     GROUP BY nftt.nft_contract_address
     )
 
 , wash_trades AS (
     SELECT nftt.nft_contract_address AS contract_address
-    , SUM(nftt.amount_usd/pu.price) AS wash_volume_eth
+    , SUM(nftt.amount_usd/pu.price) AS wash_volume_native_currency
     , SUM(nftt.amount_usd) AS wash_volume_usd
     , COUNT(*) AS wash_trade_count
     FROM nft.trades nftt
@@ -49,12 +43,6 @@ WITH trades AS (
     LEFT JOIN {{ ref('prices_usd_forward_fill') }} pu ON pu.blockchain = 'polygon'
         AND pu.contract_address = '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'
         AND pu.minute=date_trunc('minute', nftt.block_time)
-        {% if is_incremental() %}
-        AND pu.minute >= date_trunc("day", NOW() - interval '1 week')
-        {% endif %}
-    {% if is_incremental() %}
-    WHERE nftt.block_time >= date_trunc("day", NOW() - interval '1 week')
-    {% endif %}
     GROUP BY nftt.nft_contract_address
     )
 
@@ -70,9 +58,6 @@ WITH trades AS (
             , CAST(SUM(amount) AS double) AS minted
             FROM {{ ref('nft_polygon_transfers') }}
             WHERE `from` = '0x0000000000000000000000000000000000000000'
-            {% if is_incremental() %}
-            AND block_time >= date_trunc("day", NOW() - interval '1 week')
-            {% endif %}
             GROUP BY contract_address, token_id
             
             UNION ALL
@@ -83,9 +68,6 @@ WITH trades AS (
             , CAST(NULL AS double) AS minted
             FROM {{ ref('nft_polygon_transfers') }}
             WHERE `to` = '0x0000000000000000000000000000000000000000'
-            {% if is_incremental() %}
-            AND block_time >= date_trunc("day", NOW() - interval '1 week')
-            {% endif %}
             GROUP BY contract_address, token_id
             )
         GROUP BY contract_address
@@ -104,9 +86,6 @@ WITH trades AS (
             , COALESCE(SUM(CAST(amount AS double)), 0) AS quantity
             FROM {{ ref('nft_polygon_transfers') }}
             WHERE `to`!='0x0000000000000000000000000000000000000000'
-            {% if is_incremental() %}
-            AND block_time >= date_trunc("day", NOW() - interval '1 week')
-            {% endif %}
             GROUP BY contract_address, `to`
             UNION ALL
             SELECT contract_address AS contract_address
@@ -131,9 +110,6 @@ WITH trades AS (
     , MAX(block_time) AS last_mint
     FROM {{ ref('nft_polygon_transfers') }}
     WHERE `from` = '0x0000000000000000000000000000000000000000'
-    {% if is_incremental() %}
-    AND block_time >= date_trunc("day", NOW() - interval '1 week')
-    {% endif %}
     GROUP BY contract_address
     )
 
@@ -142,9 +118,6 @@ WITH trades AS (
     , SUM(amount) AS burned_tokens
     FROM {{ ref('nft_polygon_transfers') }}
     WHERE `to` = '0x0000000000000000000000000000000000000000'
-    {% if is_incremental() %}
-    AND block_time >= date_trunc("day", NOW() - interval '1 week')
-    {% endif %}
     GROUP BY contract_address
     )
 
@@ -154,10 +127,11 @@ SELECT t.volume_ranking
 , tok.name
 , tok.standard
 , tok.symbol
-, COALESCE(t.volume_eth, 0) AS volume_eth
+, 'MATIC' AS native_currency_symbol
+, COALESCE(t.volume_native_currency, 0) AS volume_native_currency
 , COALESCE(t.volume_usd, 0) AS volume_usd
 , COALESCE(t.trade_count, 0) AS trade_count
-, COALESCE(wt.wash_volume_eth, 0) AS wash_volume_eth
+, COALESCE(wt.wash_volume_native_currency, 0) AS wash_volume_native_currency
 , COALESCE(wt.wash_volume_usd, 0) AS wash_volume_usd
 , COALESCE(wt.wash_trade_count, 0) AS wash_trade_count
 , s.current_supply

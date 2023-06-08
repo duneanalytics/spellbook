@@ -227,13 +227,15 @@ models:
         description: "Token standard of the collection"
       - name: symbol
         description: "Token symbol of the collection"
-      - name: volume_eth
+      - name: native_currency_symbol
+        description: "Symbol of the blockchain's native currency"
+      - name: volume_native_currency
         description: "Volume in ETH of NFT trades of the collection"
       - name: volume_usd
         description: "Volume in USD of NFT trades of the collection"
       - name: trade_count
         description: "Trade count of the collection"
-      - name: wash_volume_eth
+      - name: wash_volume_native_currency
         description: "Wash volume in ETH of NFT trades of the collection"
       - name: wash_volume_usd
         description: "Wash volume in USD of NFT trades of the collection"
