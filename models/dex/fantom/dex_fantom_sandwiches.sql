@@ -13,7 +13,7 @@
 }}
 
 WITH trades AS (
-    SELECT distinct dt.project
+    SELECT dt.project
     , dt.version
     , date_trunc("day", dt.block_time) AS block_date
     , dt.block_time
