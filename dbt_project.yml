@@ -1171,3 +1171,6 @@ models:
       +schema: thena
       bnb:
         +schema: thena_bnb
+
+    time_utils:
+      +schema: time_utils
