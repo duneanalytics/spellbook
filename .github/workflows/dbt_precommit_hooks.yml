@@ -38,8 +38,7 @@ jobs:
         run: "dbt compile"
       - name: check ref/source syntax
         run: |
-          files=$(echo "$FILES" | grep ".sql")
-          for f in $files; do
+          for f in $FILES; do
             lines=$(grep -E '.*[Ff][Rr][Oo][Mm][[:space:]]+[a-z0-9_]+\.[a-z0-9_]+' $f | grep -vE '.*--.*[Ff][Rr][Oo][Mm][[:space:]]+[a-z0-9_]+\.[a-z0-9_]+')
             if [ ! -z "$lines" ]; then
               echo "File $f may contain invalid ref/source syntax on lines:"   
