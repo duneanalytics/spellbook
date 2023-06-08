@@ -6,7 +6,7 @@ repos:
   hooks:
   - id: dbt-compile
   - id: check-script-ref-and-source
-  - id: check_script_has_no_table_name
+  - id: check-script-has-no-table-name
   - id: check-model-has-description
     exclude: ^tests/
   - id: check-model-has-properties-file
