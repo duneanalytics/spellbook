@@ -16,4 +16,3 @@ FROM
     ,('optimism', '0xdeaddeaddeaddeaddeaddeaddeaddeaddead0001',   'Optimism - L1 Attributes Depositor Contract',        'infrastructure',   'msilb7',   'static',   timestamp('2022-12-28'),    now(), 'system_addresses', 'identifier')
     ,('optimism', '0x4200000000000000000000000000000000000015',   'Optimism - L1 Attributes Predeployed Contract',        'infrastructure',   'msilb7',   'static',   timestamp('2022-12-28'),    now(), 'system_addresses', 'identifier')
 ) AS temp_table (blockchain, address, name, category, contributor, source, created_at, updated_at, model_name, label_type)
-;
