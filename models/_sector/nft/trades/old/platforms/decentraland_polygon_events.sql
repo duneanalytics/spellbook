@@ -42,7 +42,7 @@ SELECT
     src.evt_block_number AS block_number,
     COALESCE(src.price_converted, 0) * p.price as amount_usd,
     COALESCE(src.price_converted, 0) as amount_original, 
-    COALESCE(src.price_raw, 0) as amount_raw, 
+    CAST(COALESCE(src.price_raw, 0) AS DECIMAL(38,0)) as amount_raw, 
     'MANA' as currency_symbol, 
     '0xa1c57f48f0deb89f569dfbe6e2b7f46d33606fd4' as currency_contract, 
     src.assetId as token_id, 
