@@ -15,17 +15,12 @@
 
 WITH
     bpt_trades AS (
-        SELECT evt_tx_hash FROM {{ source('balancer_v2_optimism', 'Vault_evt_Swap') }} v
+        SELECT * FROM {{ source('balancer_v2_optimism', 'Vault_evt_Swap') }} v
         WHERE CAST(tokenIn AS VARCHAR(66)) = SUBSTRING(CAST(poolId AS VARCHAR(66)), 1, 42)
         OR CAST(tokenOut AS VARCHAR(66)) = SUBSTRING(CAST(poolId AS VARCHAR(66)), 1, 42) 
         {% if is_incremental() %}
-        AND v.evt_block_time >= date_trunc("day", now() - interval '1 week')
+        AND v.evt_block_time >= date_trunc('day', now() - interval '1 week')
         {% endif %} 
-    ), 
-    
-    all_trades_given_bpt_tx AS (
-        SELECT * FROM {{ source('balancer_v2_optimism', 'Vault_evt_Swap') }} 
-        WHERE evt_tx_hash IN (TABLE bpt_trades)
     ), 
     
     all_trades_info AS (
@@ -45,11 +40,17 @@ WITH
             p2.price AS token_out_p,
             COALESCE(p2.symbol, t2.symbol) AS token_out_sym,
             COALESCE(p2.decimals, t2.decimals) AS token_out_decimals
-        FROM all_trades_given_bpt_tx a
+        FROM bpt_trades a
         LEFT JOIN {{ source ('prices', 'usd') }} p1 ON p1.contract_address = a.tokenIn AND p1.blockchain = 'optimism' 
             AND  p1.minute = date_trunc('minute', a.evt_block_time)
+            {% if is_incremental() %}
+            AND p1.minute >= date_trunc('day', now() - interval '1 week')
+            {% endif %} 
         LEFT JOIN {{ source ('prices', 'usd') }} p2 ON p2.contract_address = a.tokenOut AND p2.blockchain = 'optimism'
             AND  p2.minute = date_trunc('minute', a.evt_block_time)
+            {% if is_incremental() %}
+            AND p2.minute >= date_trunc('day', now() - interval '1 week')
+            {% endif %} 
         LEFT JOIN {{ ref ('tokens_erc20') }} t1 ON t1.contract_address = a.tokenIn AND t1.blockchain = 'optimism'
         LEFT JOIN {{ ref ('tokens_erc20') }} t2 ON t2.contract_address = a.tokenOut AND t2.blockchain = 'optimism'
         ORDER BY a.evt_block_number DESC, a.evt_index DESC
