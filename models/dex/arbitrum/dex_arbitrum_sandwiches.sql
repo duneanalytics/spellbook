@@ -1,4 +1,5 @@
 {{ config(
+        schema = 'dex_arbitrum',
         alias ='sandwiches',
         partition_by = ['block_date'],
         materialized = 'incremental',
@@ -87,14 +88,6 @@ WITH trades AS (
         AND s1.token_bought_address=s2.token_sold_address
         AND s2.token_sold_amount BETWEEN s1.token_bought_amount*0.9 AND s1.token_bought_amount*1.1
         --AND s2.token_bought_amount > s1.token_sold_amount -- Removed to also include trades where the sandwiched trade was unprofitable
-    INNER JOIN trades v ON v.block_time=s1.block_time
-        AND v.project=s1.project
-        AND v.version=s1.version
-        AND v.project_contract_address=s2.project_contract_address
-        AND v.evt_index>s1.evt_index
-        AND v.evt_index<s2.evt_index
-        AND v.token_sold_address=s1.token_sold_address
-        AND v.token_bought_address=s1.token_bought_address
     GROUP BY s1.project, s1.version, s1.block_date, s1.block_time, s1.block_number, s1.token_sold_address, s1.token_sold_symbol
     , s1.token_bought_address, s1.token_bought_symbol, s1.taker, s1.tx_from, s1.index, s1.project_contract_address, s1.tx_hash
     , s1.gas_price, s1.tx_fee
