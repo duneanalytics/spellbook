@@ -311,10 +311,6 @@ models:
         +schema: gas_optimism
       arbitrum:
         +schema: gas_arbitrum
-      gnosis:
-        +schema: gas_gnosis
-      polygon:
-        +schema: gas_polygon
 
     gmx:
       +schema: gmx
