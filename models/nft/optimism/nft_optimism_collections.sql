@@ -1,8 +1,5 @@
 {{ config(
         alias ='collections',
-        partition_by='block_date',
-        materialized='incremental',
-        file_format = 'delta',
         post_hook='{{ expose_spells(\'["optimism"]\',
                                     "sector",
                                     "nft",
