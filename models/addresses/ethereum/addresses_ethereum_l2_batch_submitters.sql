@@ -4,9 +4,9 @@
                                     "addresses",
                                     \'["msilb7"]\') }}') }}
 
-SELECT address, protocol_name, submitter_type, role_type, version, description
+SELECT lower(address) AS address, protocol_name, submitter_type, role_type, version, description
 FROM (VALUES
-        ("0x5e4e65926ba27467555eb562121fac00d24e9dd2", 'Optimism', 'Canonical Transaction Chain','to_address','2','Optimism: Canonical Transaction Chain')
+         ("0x5e4e65926ba27467555eb562121fac00d24e9dd2", 'Optimism', 'Canonical Transaction Chain','to_address','2','Optimism: Canonical Transaction Chain')
         ,("0xbe5dab4a2e9cd0f27300db4ab94bee3a233aeb19", "Optimism", "State Commitment Chain","to_address","2","Optimism: State Commitment Chain")
         ,("0x4bf681894abec828b212c906082b444ceb2f6cf6", "Optimism", "Canonical Transaction Chain","to_address","1","Optimism: OVM Canonical Transaction Chain")
         ,("0x473300df21d047806a082244b417f96b32f13a33", "Optimism", "State Commitment Chain","from_address","1","Optimism: OVM State Commitment Chain")
@@ -30,8 +30,8 @@ FROM (VALUES
         ,("0x702ad5c5fb87aace54978143a707d565853d6fd5", "Boba", "Canonical Transaction Chain","from_address","1","")
         ,("0xfbd2541e316948b259264c02f370ed088e04c3db", "Boba", "Canonical Transaction Chain","to_address","2","")
         ,("0x4b5d9e5a6b1a514eba15a2f949531dccd7c272f2", "Boba", "Canonical Transaction Chain","to_address","1","")
-        ,("0x5558c63d5bf229450995adc160c023C9F4d4bE80", "Boba", "State Commitment Chain","from_address","","")
-        ,("0xdE7355C971A5B733fe2133753Abd7e5441d441Ec", "Boba", "State Commitment Chain","to_address","","")
+        ,("0x5558c63d5bf229450995adc160c023c9f4d4be80", "Boba", "State Commitment Chain","from_address","","")
+        ,("0xde7355c971a5b733fe2133753abd7e5441d441ec", "Boba", "State Commitment Chain","to_address","","")
 
         ,("0xcdf02971871b7736874e20b8487c019d28090019", "Metis", "Canonical Transaction Chain","from_address","","")
         ,("0x56a76bcc92361f6df8d75476fed8843edc70e1c9", "Metis", "Canonical Transaction Chain","to_address","1","")
