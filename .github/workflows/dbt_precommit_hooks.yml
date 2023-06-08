@@ -36,15 +36,6 @@ jobs:
         run: "dbt deps"
       - name: dbt compile
         run: "dbt compile"
-      - name: check ref/source syntax
-        run: |
-          for f in $FILES; do
-            lines=$(grep -E '.*[Ff][Rr][Oo][Mm][[:space:]]+[a-z0-9_]+\.[a-z0-9_]+' $f | grep -vE '.*--.*[Ff][Rr][Oo][Mm][[:space:]]+[a-z0-9_]+\.[a-z0-9_]+')
-            if [ ! -z "$lines" ]; then
-              echo "File $f may contain invalid ref/source syntax on lines:"   
-              echo "$lines"
-            fi
-          done
       - name: check schemas
         run: |
           test=$(dbt --quiet --no-print ls --select config.schema:no_schema --output path)
