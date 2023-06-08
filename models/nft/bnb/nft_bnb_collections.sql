@@ -17,7 +17,7 @@ WITH trades AS (
     FROM {{ ref('nft_trades') }} nftt
     INNER JOIN {{ ref('nft_bnb_wash_trades') }} wt ON wt.unique_trade_id=nftt.unique_trade_id
         AND wt.is_wash_trade = FALSE
-    LEFT JOIN {{ ref('prices_usd_forward_fill') }} pu ON pu.blockchain = 'bnb'
+    LEFT JOIN {{ ref('prices_usd') }} pu ON pu.blockchain = 'bnb'
         AND pu.contract_address = '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'
         AND pu.minute=date_trunc('minute', nftt.block_time)
     GROUP BY nftt.nft_contract_address
@@ -31,7 +31,7 @@ WITH trades AS (
     FROM nft.trades nftt
     INNER JOIN {{ ref('nft_bnb_wash_trades') }} wt ON wt.unique_trade_id=nftt.unique_trade_id
         AND wt.is_wash_trade = TRUE
-    LEFT JOIN {{ ref('prices_usd_forward_fill') }} pu ON pu.blockchain = 'bnb'
+    LEFT JOIN {{ ref('prices_usd') }} pu ON pu.blockchain = 'bnb'
         AND pu.contract_address = '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'
         AND pu.minute=date_trunc('minute', nftt.block_time)
     GROUP BY nftt.nft_contract_address
@@ -45,7 +45,7 @@ WITH trades AS (
         FROM (
             SELECT contract_address
             , token_id
-            , SUM(amount) AS supply
+            , SUM(CAST(amount AS double)) AS supply
             , CAST(SUM(amount) AS double) AS minted
             FROM {{ ref('nft_bnb_transfers') }}
             WHERE `from` = '0x0000000000000000000000000000000000000000'
@@ -55,7 +55,7 @@ WITH trades AS (
             
             SELECT contract_address
             , token_id
-            , -SUM(amount) AS supply
+            , -SUM(CAST(amount AS double)) AS supply
             , CAST(NULL AS double) AS minted
             FROM {{ ref('nft_bnb_transfers') }}
             WHERE `to` = '0x0000000000000000000000000000000000000000'
@@ -131,7 +131,7 @@ SELECT t.volume_ranking
 , h.holders
 , m.first_mint
 , m.last_mint
-, COALESCE(b.burned_tokens, 0) AS burned_tokens
+, COALESCE(CAST(b.burned_tokens AS double), 0) AS burned_tokens
 FROM tokens_bnb.nft tok
 LEFT JOIN trades t ON t.contract_address=tok.contract_address
 LEFT JOIN wash_trades wt ON wt.contract_address=tok.contract_address
