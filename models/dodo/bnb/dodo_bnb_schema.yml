@@ -173,7 +173,7 @@ models:
             - tx_hash
             - evt_index
             - trace_address
-      - check_dex_seed:
+      - check_dex_aggregator_seed:
           blockchain: bnb
           project: DODO
           version: 0
