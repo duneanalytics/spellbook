@@ -112,7 +112,7 @@ WITH trades AS (
 
 , burns AS (
     SELECT contract_address
-    , SUM(amount) AS burned_tokens
+    , SUM(CAST(amount AS double)) AS burned_tokens
     FROM {{ ref('nft_arbitrum_transfers') }}
     WHERE `to` = '0x0000000000000000000000000000000000000000'
     GROUP BY contract_address
@@ -137,7 +137,7 @@ SELECT t.volume_ranking
 , h.holders
 , m.first_mint
 , m.last_mint
-, COALESCE(CAST(b.burned_tokens AS double), 0) AS burned_tokens
+, COALESCE(b.burned_tokens, 0) AS burned_tokens
 FROM tokens_arbitrum.nft tok
 LEFT JOIN trades t ON t.contract_address=tok.contract_address
 LEFT JOIN wash_trades wt ON wt.contract_address=tok.contract_address
