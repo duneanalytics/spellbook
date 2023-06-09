@@ -29,9 +29,6 @@ from
     ,('0x82E0b8cDD80Af5930c4452c684E71c861148Ec8A', 'Metamask', 'Metamask BridgeRouter')
     ,('0x81E792e5a9003CC1C8BF5569A00f34b65d75b017', 'Layer Zero', 'Relayer v2')
     ,('0xA0Cc33Dd6f4819D473226257792AFe230EC3c67f', 'Layer Zero', 'LayerZero Oracle')
-    ,('0x00000000006c3852cbEf3e08E8dF289169EdE581', 'Seaport', 'Seaport 1.1')
-    ,('0x00000000000001ad428e4906aE43D8F9852d0dD6', 'Seaport', 'Seaport 1.4')
-    ,('0x00000000000000ADc04C56Bf30aC9d3c0aAF14dC', 'Seaport', 'Seaport 1.5')
     --Non-Contract Labels
     ,('0x80C67432656d59144cEFf962E8fAF8926599bCF8', 'Orbiter Finance', 'Bridge')
     
