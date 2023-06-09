@@ -1,10 +1,11 @@
 {% test assert_type_decimal_38_0(model, column_name) %}
-    with all_values as (
+    with not_null_values as (
         select {{ column_name }}
         from {{ model }}
+        where {{ column_name }} is not null
     )
     , union_all_test as (
-        select {{ column_name }} from all_values
+        select {{ column_name }} from not_null_values
         union all
         select cast (0 as decimal (38, 0)) as {{ column_name }}
     )
