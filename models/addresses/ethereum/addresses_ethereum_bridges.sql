@@ -113,10 +113,9 @@ FROM (VALUES ('0x8ed95d1746bf1e4dab58d8ed4724f1ef95b20db0', '0x', 'Erc20 Bridge 
   ,('0x43298f9f91a4545df64748e78a2c777c580573d6', 'Across Protocol', 'Badger Bridge Pool')
   ,('0x30b44c676a05f1264d1de9cc31db5f2a945186b6', 'Across Protocol', 'Bridge Admin')
   ,('0xdfe0ec39291e3b60aca122908f86809c9ee64e90', 'Across Protocol', 'UMA Bridge Pool')
-
   ,('0xcd9d4988c0ae61887b075ba77f08cbfad2b65068', 'Optimism', 'Synthetix: L2 Deposit')
   ,('0x5fd79d46eba7f351fe49bff9e87cdea6c821ef9f', 'Optimism', 'Synthetix: L2 Deposit Escrow')
-  -- ,('0x99c9fc46f92e8a1c0dec1b1747d010903e884be1', 'Optimism', 'Optimism: Gateway') --duplicate & renamed
+  ,('0x99c9fc46f92e8a1c0dec1b1747d010903e884be1', 'Optimism', 'Optimism: Gateway')
   ,('0xf20c38fcddf0c790319fd7431d17ea0c2bc9959c', 'Optimism', 'Optimism: Legacy Bridge')
   ,('0xe681f80966a8b1ffadecf8068bd6f99034791c95', 'Optimism', 'Optimism: Legacy Bridge')
   ,('0xc51f137e19f1ae6944887388fd12b2b6dfd12594', 'Optimism', 'Synthetix: Legacy Optimism Bridge')
@@ -128,12 +127,5 @@ FROM (VALUES ('0x8ed95d1746bf1e4dab58d8ed4724f1ef95b20db0', '0x', 'Erc20 Bridge 
   ,('0x76943c0d61395d8f2edf9060e1533529cae05de6', 'Optimism', 'Optimism: Lido Bridge')
   ,('0x324c7ec7fb2bc61646ac2f22f6d06ab29b6c87a3', 'Optimism', 'Optimism: Teleportr v1')
   ,('0x52ec2f3d7c5977a8e558c8d9c6000b615098e8fc', 'Optimism', 'Optimism: Teleportr v2')
-  ,('0x28a55488fef40005309e2da0040dbe9d300a64ab', 'Optimism', 'Optimism: OptimismPortal')
-  ,('0xbeb5fc579115071764c7423a4f12edde41f106ed', 'Optimism', 'Optimism: OptimismPortalProxy')
-  ,('0xbfb731cd36d26c2a7287716de857e4380c73a64a', 'Optimism', 'Optimism: L1StandardBridge')
-  ,('0x99c9fc46f92e8a1c0dec1b1747d010903e884be1', 'Optimism', 'Optimism: L1StandardBridge Proxy')
-  ,('0x4afdd3a48e13b305e98d9eead67b1b5867e370df', 'Optimism', 'Optimism: L1ERC721Bridge')
-  ,('0x5a7749f83b81b301cab5f48eb8516b986daef23d', 'Optimism', 'Optimism: L1ERC721BridgeProxy')
-
   ,('0x40ec5b33f54e0e8a33a975908c5ba1c14e5bbbdf', 'Polygon', 'ERC20 Bridge')
   ) AS x (address, bridge_name, description)
