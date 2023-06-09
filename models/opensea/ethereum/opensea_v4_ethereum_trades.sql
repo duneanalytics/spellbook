@@ -319,7 +319,8 @@ with source_ethereum_transactions as (
             from iv_offer_consideration a
                     left join iv_platform_fee_wallet f on f.wallet_address = a.receiver
                     left join iv_orders_matched b on b.om_tx_hash = a.tx_hash
-                                                    and b.om_order_hash = a.order_hash
+                                                  and b.om_order_hash = a.order_hash
+                                                  and b.om_cnt = 2
           ) a
     where not is_self_trans
 )
