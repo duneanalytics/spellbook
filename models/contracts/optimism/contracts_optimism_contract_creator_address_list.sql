@@ -480,6 +480,10 @@ WITH curated_list AS (
       ,('0xa3E00f22EAa8e6f751a32FFED4010DCebD00450a', 'LuxsFi')
       ,('0xc9a88f94652bb5ec763e4cca7cf112d459e12c6b', 'Dexilla')
       ,('0x7754d8b057CC1d2D857d897461DAC6C3235B4aAe', 'Dyson Money')
+      ,('0x7DF0808CFD89Ea3995af99CB1374D2907C2399b6', 'Ante Finance')
+      ,('0x080f08076e8EAdC66006C3CbFEd28a34918A1fA6', 'RigoBlock')
+      ,('0xdeD212B8BAb662B98f49e757CbB409BB7808dc10', 'Swapline')
+      ,('0x0776752096BAfc4e86E5Aa46Cf8620c2e3Fb67cc', 'Steer Protocol')
 
   ) as temp_table (creator_address, contract_project)
 
