@@ -1,11 +1,8 @@
 {{ config(
     schema = 'nft',
     alias ='events_old',
-    partition_by = ['block_date'],
-    materialized = 'incremental',
-    file_format = 'delta',
-    incremental_strategy = 'merge',
-    unique_key = ['unique_trade_id', 'blockchain'])
+    materialized = 'view'
+    )
 }}
 
 
@@ -87,9 +84,6 @@ FROM (
         royalty_fee_percentage,
         unique_trade_id
     FROM {{ nft_model }}
-    {% if is_incremental() %}
-    WHERE block_time >= date_trunc("day", now() - interval '1 week')
-    {% endif %}
     {% if not loop.last %}
     UNION ALL
     {% endif %}
