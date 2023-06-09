@@ -27,6 +27,7 @@ with creates as (
       and block_time >= date_trunc('day', now() - interval '1 week')
       {% endif %}
 )
+
 select
   cr.created_time 
   ,cr.creation_tx_hash 
@@ -40,6 +41,7 @@ join {{ source('optimism', 'traces') }} as sd
   and sd.`type` = 'suicide'
   {% if is_incremental() %}
   and sd.block_time >= date_trunc('day', now() - interval '1 week')
+  and cr.contract_address NOT IN (SELECT contract_address FROM {{this}} ) --ensure no duplicates
   {% endif %}
 group by 1, 2, 3, 4
 ;
