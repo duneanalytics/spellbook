@@ -27,20 +27,3 @@ models:
         description: "The project name on the proposal mapping to the grant."
       - name: funding_source
         description: "Source of how the funding was received (i.e. governance seasons)"
-
-  - name: addresses_optimism_fee_vaults
-    meta:
-      blockchain: optimism
-      sector: fees
-      project: addresses
-      contributors: msilb7
-    config:
-      tags: ['table', 'fees', 'l2', 'addresses', 'optimism']
-    description: "Fee vault (receiver) addresses on Optimism Mainnet"
-    columns:
-      - name: address
-        description: "Address of the fee vault"
-        tests:
-          - unique
-      - name: vault_name
-        description: "Fee vault type"
