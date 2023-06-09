@@ -1,9 +1,10 @@
 {{ config(
         alias ='deposits',
-        partition_by = ['day'],
+        partition_by = ['period'],
         materialized = 'incremental',
         file_format = 'delta',
         incremental_strategy = 'merge',
+        unique_key = ['tx_hash'],
         post_hook='{{ expose_spells(\'["ethereum"]\',
                                 "project",
                                 "lido_accounting",
@@ -16,8 +17,7 @@
 	SELECT  block_time as period, 
         sum(cast(value as DOUBLE)) as amount_staked, 
         LOWER('0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2') AS token,
-        tx_hash,
-        date_trunc('day', block_time) as day 
+        tx_hash
         FROM  {{source('ethereum','traces')}} 
         {% if is_incremental() %}
         WHERE date_trunc('hour', block_time) >= date_trunc("hour", now() - interval '7 days')
