@@ -125,3 +125,34 @@ models:
       - name: currency_symbol
       - name: recipient
       - name: contract_address
+
+  - name: balancer_v2_gnosis_bpt_prices
+    meta:
+      blockchain: gnosis
+      project: balancer_v2
+      contributors: thetroyharris
+    config:
+      tags: ['ethereum', 'bpt', 'prices']
+    description: >
+      Balancer Pool Token (BPT) hourly median price by pool on Balancer, an automated portfolio manager and trading platform.
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - hour
+            - contract_address
+    columns:
+      - *blockchain
+      - &hour
+        name: hour
+        description: 'UTC event block time truncated to the hour mark'
+        tests:
+          - not_null
+      - &contract_address
+        name: contract_address
+        description: 'Gnosis address for the liquidity pool'
+        tests:
+          - not_null
+      - &median_price
+        name: median_price
+        description: 'BPT median price'
