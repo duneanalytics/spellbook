@@ -28,5 +28,5 @@
         AND call_type = 'call'
         AND success = True 
         AND `from` in (LOWER('0xae7ab96520de3a18e5e111b5eaab095312d7fe84'), LOWER('0xB9D7934878B5FB9610B3fE8A5e441e8fad7E293f'), LOWER('0xFdDf38947aFB03C621C71b06C9C70bce73f12999'))
-        group by 1,3,4,5
+        group by 1,3,4
                 
