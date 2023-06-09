@@ -6,7 +6,7 @@
         file_format = 'delta',
         incremental_strategy = 'merge',
         unique_key = ['block_number', 'tx_hash', 'index'],
-        post_hook='{{ expose_spells(\'["ethereum"]\',
+        post_hook='{{ expose_spells(\'["gnosis"]\',
                                     "project",
                                     "balancer_v2",
                                     \'["metacrypto", "jacektrocinski", "thetroyharris"]\') }}'
