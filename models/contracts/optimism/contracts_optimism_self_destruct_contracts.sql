@@ -31,6 +31,7 @@ with creates as (
 SELECT
 created_time, creation_tx_hash, contract_address, trace_element
 FROM (
+
   SELECT
   created_time, creation_tx_hash, contract_address, trace_element
       , ROW_NUMBER() OVER (PARTITION BY contract_address ORDER BY created_time DESC) as rn
@@ -76,4 +77,3 @@ FROM (
 
 ) a 
 WHERE rn = 1
-
