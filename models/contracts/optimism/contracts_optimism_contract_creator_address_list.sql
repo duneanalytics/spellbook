@@ -476,6 +476,10 @@ WITH curated_list AS (
       ,('0xaD031EeE55f595dF6Dbd61e9ef3B908FaD1B3671', 'Zora')
       ,('0x6Cb6D9Fb673CfbF31b3A432F6316fE3196efd4aA', 'Mugen Finance')
       ,('0x0F26f9E5C297d411768D4daa43F12533f59BAEe7', 'Mugen Finance')
+      ,('0xA2bb05D03E77978d01aa9AeC76eB162a1bDEbbd8', 'ReHold')
+      ,('0xa3E00f22EAa8e6f751a32FFED4010DCebD00450a', 'LuxsFi')
+      ,('0xc9a88f94652bb5ec763e4cca7cf112d459e12c6b', 'Dexilla')
+      ,('0x7754d8b057CC1d2D857d897461DAC6C3235B4aAe', 'Dyson Money')
 
   ) as temp_table (creator_address, contract_project)
 
