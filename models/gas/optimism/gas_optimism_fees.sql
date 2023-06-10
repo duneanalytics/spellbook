@@ -40,7 +40,18 @@ SELECT
      16 * (length( replace( decode(unhex(substring(data,3)), 'US-ASCII') , chr(0), ''))) --16 * nonzero bytes
      + 4 * ( length( decode(unhex(substring(data,3)), 'US-ASCII') ) - length(replace( decode(unhex(substring(data,3)), 'US-ASCII') , chr(0), '')) ) --4 * zero bytes
      as calldata_gas,
-     type as transaction_type
+     type as transaction_type,
+     l1_fee/1e18 AS l1_data_fee_native,
+     p.price * l1_fee/1e18 AS l1_data_fee_usd,
+     (COALESCE(b.base_fee_per_gas,t.gas_price)*gas_used)/1e18 AS l2_base_fee_native, --use gas price pre-Bedrock (no base fee)
+     p.price * (COALESCE(b.base_fee_per_gas,t.gas_price)*gas_used)/1e18 AS l2_base_fee_usd,
+     ,case when gas_price = 0 then 0 else
+        cast( (t.gas_price-b.base_fee_per_gas)*t.gas_used as double) / 1e18
+     end AS l2_priority_fee_native
+     ,case when gas_price = 0 then 0 else
+        p.price * cast( (t.gas_price-b.base_fee_per_gas)*t.gas_used as double) / 1e18
+     end AS l2_priority_fee_usd
+
 FROM {{ source('optimism','transactions') }} txns
 JOIN {{ source('optimism','blocks') }} blocks ON blocks.number = txns.block_number
 {% if is_incremental() %}
