@@ -43,13 +43,13 @@ SELECT
      type as transaction_type,
      l1_fee/1e18 AS l1_data_fee_native,
      p.price * l1_fee/1e18 AS l1_data_fee_usd,
-     (COALESCE(b.base_fee_per_gas,t.gas_price)*t.gas_used)/1e18 AS l2_base_fee_native, --use gas price pre-Bedrock (no base fee)
-     p.price * (COALESCE(b.base_fee_per_gas,t.gas_price)*t.gas_used)/1e18 AS l2_base_fee_usd,
-     case when t.gas_price = 0 then 0 else
-        cast( (t.gas_price-b.base_fee_per_gas)*t.gas_used as double) / 1e18
+     (COALESCE(blocks.base_fee_per_gas,txns.gas_price)*txns.gas_used)/1e18 AS l2_base_fee_native, --use gas price pre-Bedrock (no base fee)
+     p.price * (COALESCE(blocks.base_fee_per_gas,txns.gas_price)*txns.gas_used)/1e18 AS l2_base_fee_usd,
+     case when txns.gas_price = 0 then 0 else
+        cast( (txns.gas_price-blocks.base_fee_per_gas)*txns.gas_used as double) / 1e18
      end AS l2_priority_fee_native,
      case when gas_price = 0 then 0 else
-        p.price * cast( (t.gas_price-b.base_fee_per_gas)*t.gas_used as double) / 1e18
+        p.price * cast( (txns.gas_price-blocks.base_fee_per_gas)*txns.gas_used as double) / 1e18
      end AS l2_priority_fee_usd
 
 FROM {{ source('optimism','transactions') }} txns
