@@ -5,7 +5,7 @@ models:
     meta:
       blockchain: optimism
       sector: gas
-      contributors: soispoke
+      contributors: soispoke, msilb7
     config:
       tags: ['optimism', 'gas', 'fees']
     description: >
