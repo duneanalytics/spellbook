@@ -120,7 +120,7 @@ with base_level as (
   from base_level as bl 
   join {{ ref('tokens_optimism_erc20') }} as t
     on bl.contract_address = t.contract_address
-  group by 1, 2
+  group by 1, 2, 3
 
   union all 
 
@@ -131,7 +131,7 @@ with base_level as (
   from base_level as bl 
   join {{ ref('tokens_optimism_nft') }} as t
     on bl.contract_address = t.contract_address
-  group by 1, 2
+  group by 1, 2, 3
 )
 -- starting from 0 
 -- u = next level up contract (i.e. the factory)
