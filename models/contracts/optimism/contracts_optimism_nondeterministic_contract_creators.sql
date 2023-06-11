@@ -15,7 +15,7 @@ SELECT
 LOWER(creator_address) AS creator_address, cast(creator_name as varchar(250)) AS creator_name
 
 FROM (values
-    ('0xbb6e024b9cffacb947a71991e386681b1cd1477d',	'singleton factory')
+   ('0xbb6e024b9cffacb947a71991e386681b1cd1477d',	'singleton factory')
   ,('0xce0042B868300000d44A59004Da54A005ffdcf9f',	'singleton factory')
   ,('0x3fAB184622Dc19b6109349B94811493BF2a45362',	'Deterministic Deployment Factory')
   ,('0x11f11121df7256c40339393b0fb045321022ce44',	'create3 factory')
