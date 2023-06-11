@@ -22,6 +22,7 @@
     ,"contract_name"
     ,"creator_address"
     ,"created_time"
+    ,"created_block_number"
     ,"contract_factory"
     ,"is_self_destruct"
     ,"creation_tx_hash"
