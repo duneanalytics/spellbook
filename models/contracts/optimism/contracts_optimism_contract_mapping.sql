@@ -12,8 +12,8 @@
   )
 }}
 
--- set max number of levels to trace root contract
-{% set max_levels = 5 %}
+-- set max number of levels to trace root contract, eventually figure out how to make this properly recursive
+{% set max_levels = 10 %}
 -- set column names to loop through
 {% set cols = [
      "trace_creator_address"
@@ -34,7 +34,11 @@ with base_level as (
     ,contract_factory
     ,contract_address
     ,created_time
+    ,created_block_number
     ,creation_tx_hash
+    ,tx_from
+    ,tx_to
+    ,tx_method_id
     ,is_self_destruct
   from (
     select 
@@ -42,13 +46,26 @@ with base_level as (
       ,CAST(NULL AS string) as contract_factory
       ,ct.address as contract_address
       ,ct.block_time as created_time
+      ,ct.block_number as created_block_number
       ,ct.tx_hash as creation_tx_hash
+      ,t."from" AS tx_from
+      ,t.to AS tx_to
+      ,bytearray_substring(t.data,1,4) AS tx_method_id
+      ,bytearray_length(ct.code) AS code_bytelength
       ,coalesce(sd.contract_address is not NULL, false) as is_self_destruct
     from {{ source('optimism', 'creation_traces') }} as ct 
+    inner join {{ source('optimism', 'transactions') }} as t 
+      ON t.hash = ct.tx_hash
+      AND t.block_time = ct.created_time
+      AND t.block_number = ct.block_number
+      {% if is_incremental() %}
+      and sd.created_time >= date_trunc('day', now() - interval '1 week')
+      {% endif %}
     left join {{ ref('contracts_optimism_self_destruct_contracts') }} as sd 
       on ct.address = sd.contract_address
       and ct.tx_hash = sd.creation_tx_hash
       and ct.block_time = sd.created_time
+      and ct.block_number = sd.block_number
       {% if is_incremental() %}
       and sd.created_time >= date_trunc('day', now() - interval '1 week')
       {% endif %}
@@ -67,11 +84,16 @@ with base_level as (
       ,created_time
       ,creation_tx_hash
       ,is_self_destruct
+      ,tx_from
+      ,tx_to
+      ,tx_method_id
+      ,code_bytelength
     from {{ this }}
-      {% endif %} -- line 55 incremental filter
+      {% endif %} -- incremental filter
   ) as x
-  group by 1, 2, 3, 4, 5, 6, 7
+  group by 1, 2, 3, 4, 5, 6, 7, 8, 9, 10
 )
+
 ,tokens as (
   select 
     bl.contract_address
@@ -97,9 +119,12 @@ with base_level as (
     select
       {{i}} as level 
       ,b.trace_creator_address -- get the original contract creator address
-      ,coalesce(u.creator_address, b.creator_address) as creator_address -- get the highest-level creator we know of
+      ,
+      CASE WHEN 
+      coalesce(u.creator_address, b.creator_address) as creator_address -- get the highest-level creator we know of
       {% if loop.first -%}
-      ,case
+      ,case when b.creator_address IN (SELECT creator_address FROM {{ref('contracts_optimism_nondeterministic_contract_creators')}})
+        THEN b.tx_from --when non-deterministic creator, we take the tx sender
         when u.creator_address is NULL then NULL
         else b.creator_address
       end as contract_factory -- if factory created, maintain the original factory
@@ -109,6 +134,10 @@ with base_level as (
       ,b.contract_address
       ,b.created_time
       ,b.creation_tx_hash
+      ,b.created_block_number
+      ,b.tx_from
+      ,b.tx_to
+      ,b.tx_method_id
       ,b.is_self_destruct
     {% if loop.first -%}
     from base_level as b
@@ -134,8 +163,12 @@ with base_level as (
     ,f.contract_address
     ,coalesce(cc.contract_project, ccf.contract_project) as contract_project 
     ,f.created_time
-    ,f.is_self_destruct
     ,f.creation_tx_hash
+    ,f.created_block_number
+    ,f.tx_from
+    ,f.tx_to
+    ,f.tx_method_id
+    ,f.is_self_destruct
   from level{{max_levels - 1}} as f
   left join {{ ref('contracts_optimism_contract_creator_address_list') }} as cc 
     on f.creator_address = cc.creator_address
@@ -155,6 +188,10 @@ with base_level as (
     ,coalesce(cc.is_self_destruct, false) as is_self_destruct
     ,'creator contracts' as source
     ,cc.creation_tx_hash
+    ,cc.created_block_number
+    ,cc.tx_from
+    ,cc.tx_to
+    ,cc.tx_method_id
   from creator_contracts as cc 
   left join {{ source('optimism', 'contracts') }} as oc 
     on cc.contract_address = oc.address 
@@ -172,6 +209,10 @@ with base_level as (
     ,false as is_self_destruct
     ,'missing contracts' as source
     ,cast(NULL as string) as creation_tx_hash
+    ,cast(NULL as bigint) as created_block_number
+    ,cast(NULL as string) as tx_from
+    ,cast(NULL as string) as tx_to
+    ,cast(NULL as string) as tx_method_id
   from {{ source('optimism', 'logs') }} as l
     left join {{ source('optimism', 'contracts') }} as oc 
       ON l.contract_address = oc.address
@@ -202,6 +243,10 @@ with base_level as (
     ,false as is_self_destruct
     ,'ovm1 contracts' as source
     ,cast(NULL as string) as creation_tx_hash
+    ,cast(NULL as bigint) as created_block_number
+    ,cast(NULL as string) as tx_from
+    ,cast(NULL as string) as tx_to
+    ,cast(NULL as string) as tx_method_id
   from {{ source('ovm1_optimism', 'contracts') }} as c
   where 
     true
@@ -232,6 +277,10 @@ with base_level as (
     ,false as is_self_destruct
     ,'synthetix contracts' as source
     ,cast(NULL as string) as creation_tx_hash
+    ,cast(NULL as bigint) as created_block_number
+    ,cast(NULL as string) as tx_from
+    ,cast(NULL as string) as tx_to
+    ,cast(NULL as string) as tx_method_id
   from {{ source('ovm1_optimism', 'synthetix_genesis_contracts') }} as snx
   where 
     true
@@ -260,6 +309,10 @@ with base_level as (
     ,false as is_self_destruct
     ,'ovm1 uniswap pools' as source
     ,cast(NULL as string) as creation_tx_hash
+    ,cast(NULL as bigint) as created_block_number
+    ,cast(NULL as string) as tx_from
+    ,cast(NULL as string) as tx_to
+    ,cast(NULL as string) as tx_method_id
   from {{ ref('uniswap_optimism_ovm1_pool_mapping') }} as uni
   where 
     true
@@ -286,6 +339,10 @@ with base_level as (
     ,c.created_time 
     ,c.is_self_destruct
     ,c.creation_tx_hash
+    ,c.created_block_number
+    ,c.tx_from
+    ,c.tx_to
+    ,c.tx_method_id
   from combine as c 
   left join tokens as t 
     on c.contract_address = t.contract_address
@@ -331,6 +388,10 @@ select
   ) as contract_creator_if_factory
   ,coalesce(c.is_self_destruct, false) as is_self_destruct
   ,c.creation_tx_hash
+  ,c.created_block_number
+  ,c.tx_from
+  ,c.tx_to
+  ,c.tx_method_id
 from cleanup as c 
 left join {{ source('ovm1_optimism', 'contracts') }} as ovm1c
   on c.contract_address = ovm1c.contract_address --fill in any missing contract creators
