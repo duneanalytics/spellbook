@@ -169,7 +169,7 @@ with base_level as (
       on b.creator_address = u.contract_address
     {% endif %}
     -- is the creator non-deterministic?
-    left join {{ref('contracts_optimism_nondeterministic_contract_creators')}}) nd 
+    left join {{ref('contracts_optimism_nondeterministic_contract_creators')}} as nd 
       ON nd.creator_address = b.creator_address
 )
 {%- endfor %}
