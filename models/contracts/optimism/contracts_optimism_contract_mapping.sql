@@ -36,9 +36,12 @@ with base_level as (
     ,created_time
     ,created_block_number
     ,creation_tx_hash
-    ,tx_from
-    ,tx_to
-    ,tx_method_id
+    ,top_level_tx_from
+    ,top_level_tx_to
+    ,top_level_tx_method_id
+    ,created_tx_from
+    ,created_tx_to
+    ,created_tx_method_id
     ,is_self_destruct
   from (
     select 
@@ -48,9 +51,12 @@ with base_level as (
       ,ct.block_time as created_time
       ,ct.block_number as created_block_number
       ,ct.tx_hash as creation_tx_hash
-      ,t.from AS tx_from
-      ,t.to AS tx_to
-      ,bytearray_substring(t.data,1,4) AS tx_method_id
+      ,t.from AS top_level_tx_from
+      ,t.to AS top_level_tx_to
+      ,bytearray_substring(t.data,1,4) AS top_level_tx_method_id
+      ,t.from AS created_tx_from
+      ,t.to AS created_tx_to
+      ,bytearray_substring(t.data,1,4) AS created_tx_method_id
       ,bytearray_length(ct.code) AS code_bytelength
       ,coalesce(sd.contract_address is not NULL, false) as is_self_destruct
     from {{ source('optimism', 'creation_traces') }} as ct 
@@ -84,9 +90,12 @@ with base_level as (
       ,created_time
       ,creation_tx_hash
       ,is_self_destruct
-      ,tx_from
-      ,tx_to
-      ,tx_method_id
+      ,top_level_tx_from
+      ,top_level_tx_to
+      ,top_level_tx_method_id
+      ,created_tx_from
+      ,created_tx_to
+      ,created_tx_method_id
       ,code_bytelength
     from {{ this }}
       {% endif %} -- incremental filter
@@ -114,6 +123,8 @@ with base_level as (
   group by 1, 2
 )
 -- starting from 0 
+-- u = next level up contract (i.e. the factory)
+-- b = base-level contract
 {% for i in range(max_levels) -%}
 ,level{{i}} as (
     select
