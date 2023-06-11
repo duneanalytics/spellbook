@@ -61,6 +61,17 @@ models:
       - &created_block_number
         name: created_block_number
         description: "Contract creation block number"
+
+      - &top_level_time
+        name: top_level_time
+        description: "Top-Level contract creation transaction block time"
+      - &top_level_tx_hash
+        name: top_level_tx_hash
+        description: "Top-Level contract creation transaction hash"
+      - &top_level_block_number
+        name: top_level_block_number
+        description: "Top-Level contract creation transaction block number"
+
       - &top_level_tx_from
         name: top_level_tx_from
         description: "Top-Level contract creation transaction from address"

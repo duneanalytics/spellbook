@@ -26,6 +26,9 @@
     ,"contract_factory"
     ,"is_self_destruct"
     ,"creation_tx_hash"
+    ,"top_level_tx_hash"
+    ,"top_level_block_number"
+    ,"top_level_time"
     ,"top_level_tx_from"
     ,"top_level_tx_to"
     ,"top_level_tx_method_id"
@@ -42,15 +45,21 @@ with base_level as (
     ,creator_address
     ,contract_factory
     ,contract_address
+
     ,created_time
     ,created_block_number
     ,creation_tx_hash
-    ,top_level_tx_from
-    ,top_level_tx_to
-    ,top_level_tx_method_id
     ,created_tx_from
     ,created_tx_to
     ,created_tx_method_id
+
+    ,top_level_time
+    ,top_level_block_number
+    ,top_level_tx_hash
+    ,top_level_tx_from
+    ,top_level_tx_to
+    ,top_level_tx_method_id
+
     ,code_bytelength
     ,is_self_destruct
   from (
@@ -61,6 +70,9 @@ with base_level as (
       ,ct.block_time as created_time
       ,ct.block_number as created_block_number
       ,ct.tx_hash as creation_tx_hash
+      ,t.block_time as top_level_time
+      ,t.block_number as top_level_block_number
+      ,t.hash as top_level_tx_hash
       ,t.from AS top_level_tx_from
       ,t.to AS top_level_tx_to
       ,substring(t.data,1,10) AS top_level_tx_method_id
@@ -99,6 +111,9 @@ with base_level as (
       ,created_time
       ,created_block_number
       ,creation_tx_hash
+      ,top_level_time
+      ,top_level_block_number
+      ,top_level_tx_hash
       ,top_level_tx_from
       ,top_level_tx_to
       ,top_level_tx_method_id
@@ -110,7 +125,7 @@ with base_level as (
     from {{ this }}
       {% endif %} -- incremental filter
   ) as x
-  group by 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15
+  group by 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18
 )
 
 ,tokens as (
@@ -155,21 +170,30 @@ with base_level as (
       ,b.contract_factory -- if factory created, maintain the original factory
       {% endif %}
       ,b.contract_address
+      -- store the raw created data
       ,b.created_time
       ,b.creation_tx_hash
       ,b.created_block_number
-
-      -- when non-deterministic, pull the tx-level data
-      ,case when nd.creator_address IS NOT NULL
-        then b.created_tx_from ELSE u.created_tx_from END AS top_level_tx_from
-      ,case when nd.creator_address IS NOT NULL
-        then b.created_tx_to else u.created_tx_to end AS top_level_tx_to
-      ,case when nd.creator_address IS NOT NULL
-        then b.created_tx_method_id else u.created_tx_method_id end AS top_level_tx_method_id
-      -- store the raw created data
       ,b.created_tx_from AS created_tx_from
       ,b.created_tx_to AS created_tx_to
       ,b.created_tx_method_id AS created_tx_method_id
+
+      -- when non-deterministic, pull the tx-level data
+      ,case when nd.creator_address IS NOT NULL
+        then b.top_level_time ELSE COALESCE(u.top_level_time, b.top_level_time ) END AS top_level_time
+      ,case when nd.creator_address IS NOT NULL
+        then b.top_level_block_number else COALESCE(u.top_level_block_number, b.top_level_block_number ) end AS top_level_block_number
+      ,case when nd.creator_address IS NOT NULL
+        then b.top_level_tx_hash else COALESCE(u.top_level_tx_hash, b.top_level_tx_hash ) end AS top_level_tx_hash
+      ,case when nd.creator_address IS NOT NULL
+        then b.created_tx_from ELSE COALESCE(u.created_tx_from, b.created_tx_from ) END AS top_level_tx_from
+      ,case when nd.creator_address IS NOT NULL
+        then b.created_tx_to else COALESCE(u.created_tx_to, b.created_tx_to ) end AS top_level_tx_to
+      ,case when nd.creator_address IS NOT NULL
+        then b.created_tx_method_id else COALESCE(u.created_tx_method_id, b.created_tx_method_id ) end AS top_level_tx_method_id
+
+      
+      
       ,b.code_bytelength
       ,b.is_self_destruct
 
@@ -198,6 +222,9 @@ with base_level as (
     ,f.created_time
     ,f.creation_tx_hash
     ,f.created_block_number
+    ,f.top_level_time
+    ,f.top_level_tx_hash
+    ,f.top_level_block_number
     ,f.top_level_tx_from
     ,f.top_level_tx_to
     ,f.top_level_tx_method_id
@@ -226,6 +253,9 @@ with base_level as (
     ,'creator contracts' as source
     ,cc.creation_tx_hash
     ,cc.created_block_number
+    ,cc.top_level_time
+    ,cc.top_level_tx_hash
+    ,cc.top_level_block_number
     ,cc.top_level_tx_from
     ,cc.top_level_tx_to
     ,cc.top_level_tx_method_id
@@ -250,6 +280,9 @@ with base_level as (
     ,COALESCE(oc.created_at, MIN(block_time)) AS created_time
     ,false as is_self_destruct
     ,'missing contracts' as source
+    ,COALESCE(oc.created_at, MIN(block_time)) as top_level_time
+    ,cast(NULL as string) as top_level_tx_hash
+    ,cast(NULL as bigint) as top_level_block_number
     ,cast(NULL as string) as creation_tx_hash
     ,cast(NULL as bigint) as created_block_number
     ,cast(NULL as string) as top_level_tx_from
@@ -289,6 +322,9 @@ with base_level as (
     ,to_timestamp(coalesce( created_time, '2021-11-11 00:00:00')) as created_time
     ,false as is_self_destruct
     ,'ovm1 contracts' as source
+    ,to_timestamp(coalesce( created_time, '2021-11-11 00:00:00')) as top_level_time
+    ,cast(NULL as string) as top_level_tx_hash
+    ,cast(NULL as bigint) as top_level_block_number
     ,cast(NULL as string) as creation_tx_hash
     ,cast(NULL as bigint) as created_block_number
     ,cast(NULL as string) as top_level_tx_from
@@ -327,6 +363,9 @@ with base_level as (
     ,to_timestamp('2021-07-06 00:00:00') as created_time
     ,false as is_self_destruct
     ,'synthetix contracts' as source
+    ,to_timestamp('2021-07-06 00:00:00') as top_level_time
+    ,cast(NULL as string) as top_level_tx_hash
+    ,cast(NULL as bigint) as top_level_block_number
     ,cast(NULL as string) as creation_tx_hash
     ,cast(NULL as bigint) as created_block_number
     ,cast(NULL as string) as top_level_tx_from
@@ -363,6 +402,9 @@ with base_level as (
     ,to_timestamp('2021-11-11 00:00:00') as created_time
     ,false as is_self_destruct
     ,'ovm1 uniswap pools' as source
+    ,to_timestamp('2021-11-11 00:00:00') as top_level_time
+    ,cast(NULL as string) as top_level_tx_hash
+    ,cast(NULL as bigint) as top_level_block_number
     ,cast(NULL as string) as creation_tx_hash
     ,cast(NULL as bigint) as created_block_number
     ,cast(NULL as string) as top_level_tx_from
@@ -384,7 +426,7 @@ with base_level as (
         and gc.contract_project LIKE 'Uniswap%' --future proof in case this name changes
     )
     {% endif %}
-    group by 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18
+    group by 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21
 )
 ,get_contracts as (
   select 
@@ -397,14 +439,20 @@ with base_level as (
     ,c.creator_address
     ,c.created_time 
     ,c.is_self_destruct
+
     ,c.creation_tx_hash
     ,c.created_block_number
-    ,c.top_level_tx_from
-    ,c.top_level_tx_to
-    ,c.top_level_tx_method_id
     ,c.created_tx_from
     ,c.created_tx_to
     ,c.created_tx_method_id
+
+    ,c.top_level_time
+    ,c.top_level_tx_hash
+    ,c.top_level_block_number
+    ,c.top_level_tx_from
+    ,c.top_level_tx_to
+    ,c.top_level_tx_method_id
+
     ,c.code_bytelength
     ,t.token_standard AS token_standard
   from combine as c 
@@ -453,12 +501,17 @@ select
   ,coalesce(c.is_self_destruct, false) as is_self_destruct
   ,c.creation_tx_hash
   ,c.created_block_number
-  ,c.top_level_tx_from
-  ,c.top_level_tx_to
-  ,c.top_level_tx_method_id
   ,c.created_tx_from
   ,c.created_tx_to
   ,c.created_tx_method_id
+
+  ,c.top_level_time
+  ,c.top_level_tx_hash
+  ,c.top_level_block_number
+  ,c.top_level_tx_from
+  ,c.top_level_tx_to
+  ,c.top_level_tx_method_id
+  
   ,c.code_bytelength
   ,c.token_standard
 from cleanup as c 
