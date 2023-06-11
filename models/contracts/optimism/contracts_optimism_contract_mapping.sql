@@ -48,7 +48,7 @@ with base_level as (
       ,ct.block_time as created_time
       ,ct.block_number as created_block_number
       ,ct.tx_hash as creation_tx_hash
-      ,t."from" AS tx_from
+      ,t.from AS tx_from
       ,t.to AS tx_to
       ,bytearray_substring(t.data,1,4) AS tx_method_id
       ,bytearray_length(ct.code) AS code_bytelength
@@ -135,9 +135,12 @@ with base_level as (
       ,b.created_time
       ,b.creation_tx_hash
       ,b.created_block_number
-      ,b.tx_from
-      ,b.tx_to
-      ,b.tx_method_id
+      ,u.tx_from AS top_level_tx_from
+      ,u.tx_to AS top_level_tx_to
+      ,u.tx_method_id AS top_level_tx_method_id
+      ,b.tx_from AS created_tx_from
+      ,b.tx_to AS created_tx_to
+      ,b.tx_method_id AS created_tx_method_id
       ,b.is_self_destruct
     {% if loop.first -%}
     from base_level as b
@@ -165,9 +168,12 @@ with base_level as (
     ,f.created_time
     ,f.creation_tx_hash
     ,f.created_block_number
-    ,f.tx_from
-    ,f.tx_to
-    ,f.tx_method_id
+    ,f.top_level_tx_from
+    ,f.top_level_tx_to
+    ,f.top_level_tx_method_id
+    ,f.created_tx_from
+    ,f.created_tx_to
+    ,f.created_tx_method_id
     ,f.is_self_destruct
   from level{{max_levels - 1}} as f
   left join {{ ref('contracts_optimism_contract_creator_address_list') }} as cc 
@@ -189,9 +195,12 @@ with base_level as (
     ,'creator contracts' as source
     ,cc.creation_tx_hash
     ,cc.created_block_number
-    ,cc.tx_from
-    ,cc.tx_to
-    ,cc.tx_method_id
+    ,cc.top_level_tx_from
+    ,cc.top_level_tx_to
+    ,cc.top_level_tx_method_id
+    ,cc.created_tx_from
+    ,cc.created_tx_to
+    ,cc.created_tx_method_id
   from creator_contracts as cc 
   left join {{ source('optimism', 'contracts') }} as oc 
     on cc.contract_address = oc.address 
@@ -210,9 +219,13 @@ with base_level as (
     ,'missing contracts' as source
     ,cast(NULL as string) as creation_tx_hash
     ,cast(NULL as bigint) as created_block_number
-    ,cast(NULL as string) as tx_from
-    ,cast(NULL as string) as tx_to
-    ,cast(NULL as string) as tx_method_id
+    ,cast(NULL as string) as top_level_tx_from
+    ,cast(NULL as string) as top_level_tx_to
+    ,cast(NULL as string) as top_level_tx_method_id
+    ,cast(NULL as string) as created_tx_from
+    ,cast(NULL as string) as created_tx_to
+    ,cast(NULL as string) as created_tx_method_id
+    
   from {{ source('optimism', 'logs') }} as l
     left join {{ source('optimism', 'contracts') }} as oc 
       ON l.contract_address = oc.address
@@ -244,9 +257,12 @@ with base_level as (
     ,'ovm1 contracts' as source
     ,cast(NULL as string) as creation_tx_hash
     ,cast(NULL as bigint) as created_block_number
-    ,cast(NULL as string) as tx_from
-    ,cast(NULL as string) as tx_to
-    ,cast(NULL as string) as tx_method_id
+    ,cast(NULL as string) as top_level_tx_from
+    ,cast(NULL as string) as top_level_tx_to
+    ,cast(NULL as string) as top_level_tx_method_id
+    ,cast(NULL as string) as created_tx_from
+    ,cast(NULL as string) as created_tx_to
+    ,cast(NULL as string) as created_tx_method_id
   from {{ source('ovm1_optimism', 'contracts') }} as c
   where 
     true
@@ -278,9 +294,12 @@ with base_level as (
     ,'synthetix contracts' as source
     ,cast(NULL as string) as creation_tx_hash
     ,cast(NULL as bigint) as created_block_number
-    ,cast(NULL as string) as tx_from
-    ,cast(NULL as string) as tx_to
-    ,cast(NULL as string) as tx_method_id
+    ,cast(NULL as string) as top_level_tx_from
+    ,cast(NULL as string) as top_level_tx_to
+    ,cast(NULL as string) as top_level_tx_method_id
+    ,cast(NULL as string) as created_tx_from
+    ,cast(NULL as string) as created_tx_to
+    ,cast(NULL as string) as created_tx_method_id
   from {{ source('ovm1_optimism', 'synthetix_genesis_contracts') }} as snx
   where 
     true
@@ -310,9 +329,12 @@ with base_level as (
     ,'ovm1 uniswap pools' as source
     ,cast(NULL as string) as creation_tx_hash
     ,cast(NULL as bigint) as created_block_number
-    ,cast(NULL as string) as tx_from
-    ,cast(NULL as string) as tx_to
-    ,cast(NULL as string) as tx_method_id
+    ,cast(NULL as string) as top_level_tx_from
+    ,cast(NULL as string) as top_level_tx_to
+    ,cast(NULL as string) as top_level_tx_method_id
+    ,cast(NULL as string) as created_tx_from
+    ,cast(NULL as string) as created_tx_to
+    ,cast(NULL as string) as created_tx_method_id
   from {{ ref('uniswap_optimism_ovm1_pool_mapping') }} as uni
   where 
     true
@@ -340,9 +362,12 @@ with base_level as (
     ,c.is_self_destruct
     ,c.creation_tx_hash
     ,c.created_block_number
-    ,c.tx_from
-    ,c.tx_to
-    ,c.tx_method_id
+    ,c.top_level_tx_from
+    ,c.top_level_tx_to
+    ,c.top_level_tx_method_id
+    ,c.created_tx_from
+    ,c.created_tx_to
+    ,c.created_tx_method_id
   from combine as c 
   left join tokens as t 
     on c.contract_address = t.contract_address
@@ -389,9 +414,12 @@ select
   ,coalesce(c.is_self_destruct, false) as is_self_destruct
   ,c.creation_tx_hash
   ,c.created_block_number
-  ,c.tx_from
-  ,c.tx_to
-  ,c.tx_method_id
+  ,c.top_level_tx_from
+  ,c.top_level_tx_to
+  ,c.top_level_tx_method_id
+  ,c.created_tx_from
+  ,c.created_tx_to
+  ,c.created_tx_method_id
 from cleanup as c 
 left join {{ source('ovm1_optimism', 'contracts') }} as ovm1c
   on c.contract_address = ovm1c.contract_address --fill in any missing contract creators

@@ -61,14 +61,23 @@ models:
       - &created_block_number
         name: created_block_number
         description: "Contract creation block number"
-      - &tx_from
-        name: tx_from
+      - &top_level_tx_from
+        name: top_level_tx_from
+        description: "Top-Level contract creation transaction from address"
+      - &top_level_tx_to
+        name: top_level_tx_to
+        description: "Top-Level contract creation transaction to address"
+      - &top_level_tx_method_id
+        name: top_level_tx_method_id
+        description: "Method ID of the top-level transaction. This is useful for determining how the top-level contract was deployed (i.e Safe transaction vs traditional deployment)"
+      - &created_tx_from
+        name: created_tx_from
         description: "Contract creation transaction from address"
-      - &tx_to
-        name: tx_to
+      - &created_tx_to
+        name: created_tx_to
         description: "Contract creation transaction to address"
-      - &tx_method_id
-        name: tx_method_id
+      - &created_tx_method_id
+        name: created_tx_method_id
         description: "Method ID of the transaction. This is useful for determining how a contract was deployed (i.e Safe transaction vs traditional deployment)"
 
 
