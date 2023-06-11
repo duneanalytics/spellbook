@@ -57,7 +57,7 @@ with base_level as (
       ,t.from AS created_tx_from
       ,t.to AS created_tx_to
       ,substring(t.data,1,10) AS created_tx_method_id
-      ,bytearray_length(ct.code) AS code_bytelength
+      ,ceil( length(ct.code)/2 ) AS code_bytelength
       ,coalesce(sd.contract_address is not NULL, false) as is_self_destruct
     from {{ source('optimism', 'creation_traces') }} as ct 
     inner join {{ source('optimism', 'transactions') }} as t 
