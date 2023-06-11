@@ -251,9 +251,9 @@ with base_level as (
     ,cc.created_time
     ,coalesce(cc.is_self_destruct, false) as is_self_destruct
     ,'creator contracts' as source
+    ,cc.top_level_time
     ,cc.creation_tx_hash
     ,cc.created_block_number
-    ,cc.top_level_time
     ,cc.top_level_tx_hash
     ,cc.top_level_block_number
     ,cc.top_level_tx_from
@@ -266,7 +266,7 @@ with base_level as (
   from creator_contracts as cc 
   left join {{ source('optimism', 'contracts') }} as oc 
     on cc.contract_address = oc.address 
-  group by 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18
+  group by 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21
 
   union all
   -- missing contracts
