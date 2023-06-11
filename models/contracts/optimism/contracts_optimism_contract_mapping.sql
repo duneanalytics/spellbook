@@ -131,7 +131,7 @@ with base_level as (
       ,b.trace_creator_address -- get the original contract creator address
       ,
       case when b.creator_address IN (SELECT creator_address FROM {{ref('contracts_optimism_nondeterministic_contract_creators')}})
-        THEN b.tx_from --when non-deterministic creator, we take the tx sender
+        THEN b.created_tx_from --when non-deterministic creator, we take the tx sender
         ELSE coalesce(u.creator_address, b.creator_address)
       END as creator_address -- get the highest-level creator we know of
       {% if loop.first -%}
