@@ -72,6 +72,7 @@ with source_ethereum_transactions as (
           ,evt_tx_hash as om_tx_hash
           ,evt_index as om_evt_index
           ,posexplode(orderhashes) as (om_order_id, om_order_hash)
+          ,cardinality(orderHashes) as om_cnt
       from {{ source('seaport_ethereum','Seaport_evt_OrdersMatched') }}
      where contract_address in ('0x00000000000001ad428e4906ae43d8f9852d0dd6' -- Seaport v1.4
                                ,'0x00000000000000adc04c56bf30ac9d3c0aaf14dc' -- Seaport v1.5
@@ -118,6 +119,7 @@ with source_ethereum_transactions as (
       from ref_seaport_ethereum_base_pairs a
            left join iv_orders_matched b on b.om_order_hash = a.order_hash
                                          and b.om_tx_hash = a.tx_hash  -- order_hash is not unique in itself, so must join with tx_hash
+                                         and b.om_cnt = 2                                         
      where a.platform_contract_address in ('0x00000000000001ad428e4906ae43d8f9852d0dd6' -- Seaport v1.4
                                           ,'0x00000000000000adc04c56bf30ac9d3c0aaf14dc' -- Seaport v1.5
                                           )
@@ -333,5 +335,5 @@ with source_ethereum_transactions as (
         ,sub_idx
         ,sub_type
       from iv_trades
-      where tx_hash not in ('0xff6ab6d78a69bd839ac4fa9e9347367075f3ba2d83216c561010f94291d0118c', '0x3ffc50795ecaf51f14a330605d44e41e3aa3515326560037b61edb8990ff80e2')
+      -- where tx_hash not in ('0xff6ab6d78a69bd839ac4fa9e9347367075f3ba2d83216c561010f94291d0118c', '0x3ffc50795ecaf51f14a330605d44e41e3aa3515326560037b61edb8990ff80e2')
 ;
