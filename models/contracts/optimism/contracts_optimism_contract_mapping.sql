@@ -72,7 +72,7 @@ with base_level as (
       AND t.block_time = ct.block_time
       AND t.block_number = ct.block_number
       {% if is_incremental() %}
-      and sd.created_time >= date_trunc('day', now() - interval '1 week')
+      and t.block_time >= date_trunc('day', now() - interval '1 week')
       {% endif %}
     left join {{ ref('contracts_optimism_self_destruct_contracts') }} as sd 
       on ct.address = sd.contract_address
