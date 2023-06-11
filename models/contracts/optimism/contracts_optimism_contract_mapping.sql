@@ -286,7 +286,7 @@ with base_level as (
     ,contract_address
     ,contract_project
     ,contract_name
-    ,to_timestamp(created_time) as created_time
+    ,to_timestamp(coalesce( created_time, '2021-11-11 00:00:00')) as created_time
     ,false as is_self_destruct
     ,'ovm1 contracts' as source
     ,cast(NULL as string) as creation_tx_hash
