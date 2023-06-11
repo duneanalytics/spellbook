@@ -290,5 +290,6 @@ FROM
 ,('0x1e4e168c59033e6040eefe294c8d0a02aa770246', 'DRAGOLD')
 ,('0x2335022c740d17c2837f9C884Bfe4fFdbf0A95D5', 'Optimist NFT')
 ,('0x1B36291fF8F503CfB4E3baBe198a40398BCF54AD', 'Bedrock')
+,('0x1846fb181a12644dec6af707b23b39d2d19c1879', 'Gitcoin Passport Score')
 
 ) as temp_table (contract_address, name)

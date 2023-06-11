@@ -485,6 +485,10 @@ WITH curated_list AS (
       ,('0xdeD212B8BAb662B98f49e757CbB409BB7808dc10', 'Swapline')
       ,('0x0776752096BAfc4e86E5Aa46Cf8620c2e3Fb67cc', 'Steer Protocol')
       ,('0xa8863bf1c8933f649e7b03Eb72109E5E187505Ea', 'Manifold')
+      ,('0x8636fa411113d1b40b5d76f6766d16b3aa829d30', 'OmniX')
+      ,('0x8ac863a9142781378ed302ab96105cada1697e85', 'Perpetual Protocol')
+      ,('0x44FC6f6c8e7F4BE9e59a677BEE5Fe4FfB48AD07e', 'Optimistis World')
+      ,('0xfffffACc41E00f96F6af4AF0154AD18749C9d5eA', 'Kresko Fi')
 
   ) as temp_table (creator_address, contract_project)
 
