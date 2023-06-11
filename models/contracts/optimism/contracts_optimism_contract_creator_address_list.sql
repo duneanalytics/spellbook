@@ -503,6 +503,8 @@ WITH curated_list AS (
       ,('0x156d8fac8cd3deb51ab194d906abfc81cf323c11', 'Minerva')
       ,('0x169e2ffc1c6b229b04e65a431434bf0e8ed9563d', 'Vesper')
       ,('0xe7a9ecdb56af2bb86fdaaa3e3b2d1f0f7a9fe664', 'Another World')
+      ,('0x017F8Ad14A2E745ea0F756Bd57CD4852400be78c', 'Rabbithole')
+      ,('0x6a0a93cd6d6fb7a36bf6234ef4650bf9474e7682', 'Gelato')
 
   ) as temp_table (creator_address, contract_project)
 
