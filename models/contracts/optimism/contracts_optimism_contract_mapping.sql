@@ -25,6 +25,12 @@
     ,"contract_factory"
     ,"is_self_destruct"
     ,"creation_tx_hash"
+    ,"top_level_tx_from"
+    ,"top_level_tx_to"
+    ,"top_level_tx_method_id"
+    ,"created_tx_from"
+    ,"created_tx_to"
+    ,"created_tx_method_id"
 ] %}
 
 with base_level as (
