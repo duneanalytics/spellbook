@@ -53,10 +53,10 @@ with base_level as (
       ,ct.tx_hash as creation_tx_hash
       ,t.from AS top_level_tx_from
       ,t.to AS top_level_tx_to
-      ,bytearray_substring(t.data,1,4) AS top_level_tx_method_id
+      ,substring(t.data,1,10) AS top_level_tx_method_id
       ,t.from AS created_tx_from
       ,t.to AS created_tx_to
-      ,bytearray_substring(t.data,1,4) AS created_tx_method_id
+      ,substring(t.data,1,10) AS created_tx_method_id
       ,bytearray_length(ct.code) AS code_bytelength
       ,coalesce(sd.contract_address is not NULL, false) as is_self_destruct
     from {{ source('optimism', 'creation_traces') }} as ct 
