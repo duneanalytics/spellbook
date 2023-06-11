@@ -32,6 +32,8 @@
     ,"created_tx_from"
     ,"created_tx_to"
     ,"created_tx_method_id"
+    ,"code_bytelength"
+    ,"token_standard"
 ] %}
 
 with base_level as (
@@ -49,6 +51,7 @@ with base_level as (
     ,created_tx_from
     ,created_tx_to
     ,created_tx_method_id
+    ,code_bytelength
     ,is_self_destruct
   from (
     select 
@@ -113,6 +116,7 @@ with base_level as (
   select 
     bl.contract_address
     ,t.symbol
+    ,'erc20' as token_standard
   from base_level as bl 
   join {{ ref('tokens_optimism_erc20') }} as t
     on bl.contract_address = t.contract_address
@@ -123,6 +127,7 @@ with base_level as (
   select 
     bl.contract_address
     ,t.name as symbol
+    , standard AS token_standard
   from base_level as bl 
   join {{ ref('tokens_optimism_nft') }} as t
     on bl.contract_address = t.contract_address
@@ -164,6 +169,7 @@ with base_level as (
       ,b.created_tx_from AS created_tx_from
       ,b.created_tx_to AS created_tx_to
       ,b.created_tx_method_id AS created_tx_method_id
+      ,b.code_bytelength
       ,b.is_self_destruct
 
     {% if loop.first -%}
@@ -197,6 +203,7 @@ with base_level as (
     ,f.created_tx_from
     ,f.created_tx_to
     ,f.created_tx_method_id
+    ,f.code_bytelength
     ,f.is_self_destruct
   from level{{max_levels - 1}} as f
   left join {{ ref('contracts_optimism_contract_creator_address_list') }} as cc 
@@ -224,6 +231,7 @@ with base_level as (
     ,cc.created_tx_from
     ,cc.created_tx_to
     ,cc.created_tx_method_id
+    ,cc.code_bytelength
   from creator_contracts as cc 
   left join {{ source('optimism', 'contracts') }} as oc 
     on cc.contract_address = oc.address 
@@ -249,6 +257,7 @@ with base_level as (
     ,cast(NULL as string) as created_tx_from
     ,cast(NULL as string) as created_tx_to
     ,cast(NULL as string) as created_tx_method_id
+    ,cast(NULL as bigint) as code_bytelength
     
   from {{ source('optimism', 'logs') }} as l
     left join {{ source('optimism', 'contracts') }} as oc 
@@ -287,6 +296,7 @@ with base_level as (
     ,cast(NULL as string) as created_tx_from
     ,cast(NULL as string) as created_tx_to
     ,cast(NULL as string) as created_tx_method_id
+    ,cast(NULL as bigint) as code_bytelength
   from {{ source('ovm1_optimism', 'contracts') }} as c
   where 
     true
@@ -324,6 +334,7 @@ with base_level as (
     ,cast(NULL as string) as created_tx_from
     ,cast(NULL as string) as created_tx_to
     ,cast(NULL as string) as created_tx_method_id
+    ,cast(NULL as bigint) as code_bytelength
   from {{ source('ovm1_optimism', 'synthetix_genesis_contracts') }} as snx
   where 
     true
@@ -359,6 +370,7 @@ with base_level as (
     ,cast(NULL as string) as created_tx_from
     ,cast(NULL as string) as created_tx_to
     ,cast(NULL as string) as created_tx_method_id
+    ,cast(NULL as bigint) as code_bytelength
   from {{ ref('uniswap_optimism_ovm1_pool_mapping') }} as uni
   where 
     true
@@ -392,6 +404,8 @@ with base_level as (
     ,c.created_tx_from
     ,c.created_tx_to
     ,c.created_tx_method_id
+    ,c.code_bytelength
+    ,t.token_standard AS token_standard
   from combine as c 
   left join tokens as t 
     on c.contract_address = t.contract_address
@@ -444,6 +458,8 @@ select
   ,c.created_tx_from
   ,c.created_tx_to
   ,c.created_tx_method_id
+  ,c.code_bytelength
+  ,c.token_standard
 from cleanup as c 
 left join {{ source('ovm1_optimism', 'contracts') }} as ovm1c
   on c.contract_address = ovm1c.contract_address --fill in any missing contract creators
