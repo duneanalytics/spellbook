@@ -62,7 +62,7 @@ with base_level as (
     from {{ source('optimism', 'creation_traces') }} as ct 
     inner join {{ source('optimism', 'transactions') }} as t 
       ON t.hash = ct.tx_hash
-      AND t.block_time = ct.created_time
+      AND t.block_time = ct.block_time
       AND t.block_number = ct.block_number
       {% if is_incremental() %}
       and sd.created_time >= date_trunc('day', now() - interval '1 week')
