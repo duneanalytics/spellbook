@@ -307,8 +307,8 @@ with base_level as (
   --synthetix genesis contracts
 
   select 
-     cast(NULL as string) as trace_creator_address
-    ,cast(NULL as string) as creator_address
+     '0xdeaddeaddeaddeaddeaddeaddeaddeaddead0006' as trace_creator_address
+    ,'0xdeaddeaddeaddeaddeaddeaddeaddeaddead0006' as creator_address
     ,cast(NULL as string) as contract_factory
     ,snx.contract_address
     ,'Synthetix' as contract_project
@@ -342,8 +342,8 @@ with base_level as (
   --uniswap pools from ovm1
 
   select 
-     cast(NULL as string) as trace_creator_address
-    ,cast(NULL as string) as creator_address
+     '0xdeaddeaddeaddeaddeaddeaddeaddeaddead0006' as trace_creator_address
+    ,'0xdeaddeaddeaddeaddeaddeaddeaddeaddead0006' as creator_address
     ,cast(NULL as string) as contract_factory
     ,lower(newaddress) as contract_address
     ,'Uniswap' as contract_project
