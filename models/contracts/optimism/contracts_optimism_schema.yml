@@ -61,6 +61,15 @@ models:
       - &created_block_number
         name: created_block_number
         description: "Contract creation block number"
+      - &created_tx_from
+        name: created_tx_from
+        description: "Contract creation transaction from address"
+      - &created_tx_to
+        name: created_tx_to
+        description: "Contract creation transaction to address"
+      - &created_tx_method_id
+        name: created_tx_method_id
+        description: "Method ID of the transaction. This is useful for determining how a contract was deployed (i.e Safe transaction vs traditional deployment)"
 
       - &top_level_time
         name: top_level_time
@@ -71,7 +80,6 @@ models:
       - &top_level_block_number
         name: top_level_block_number
         description: "Top-Level contract creation transaction block number"
-
       - &top_level_tx_from
         name: top_level_tx_from
         description: "Top-Level contract creation transaction from address"
@@ -81,15 +89,7 @@ models:
       - &top_level_tx_method_id
         name: top_level_tx_method_id
         description: "Method ID of the top-level transaction. This is useful for determining how the top-level contract was deployed (i.e Safe transaction vs traditional deployment)"
-      - &created_tx_from
-        name: created_tx_from
-        description: "Contract creation transaction from address"
-      - &created_tx_to
-        name: created_tx_to
-        description: "Contract creation transaction to address"
-      - &created_tx_method_id
-        name: created_tx_method_id
-        description: "Method ID of the transaction. This is useful for determining how a contract was deployed (i.e Safe transaction vs traditional deployment)"
+      
       - &code_bytelength
         name: code_bytelength
         description: "Length of the deployed code, measured in bytes. This is used for spam filtering"
