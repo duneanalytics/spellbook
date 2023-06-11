@@ -145,12 +145,12 @@ with base_level as (
       ,b.created_time
       ,b.creation_tx_hash
       ,b.created_block_number
-      ,u.tx_from AS top_level_tx_from
-      ,u.tx_to AS top_level_tx_to
-      ,u.tx_method_id AS top_level_tx_method_id
-      ,b.tx_from AS created_tx_from
-      ,b.tx_to AS created_tx_to
-      ,b.tx_method_id AS created_tx_method_id
+      ,u.created_tx_from AS top_level_tx_from
+      ,u.created_tx_to AS top_level_tx_to
+      ,u.created_tx_method_id AS top_level_tx_method_id
+      ,b.created_tx_from AS created_tx_from
+      ,b.created_tx_to AS created_tx_to
+      ,b.created_tx_method_id AS created_tx_method_id
       ,b.is_self_destruct
     {% if loop.first -%}
     from base_level as b
