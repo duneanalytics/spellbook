@@ -97,8 +97,8 @@ with base_level as (
       ,contract_creator_if_factory as contract_factory
       ,contract_address
       ,created_time
+      ,created_block_number
       ,creation_tx_hash
-      ,is_self_destruct
       ,top_level_tx_from
       ,top_level_tx_to
       ,top_level_tx_method_id
@@ -106,6 +106,7 @@ with base_level as (
       ,created_tx_to
       ,created_tx_method_id
       ,code_bytelength
+      ,is_self_destruct
     from {{ this }}
       {% endif %} -- incremental filter
   ) as x
