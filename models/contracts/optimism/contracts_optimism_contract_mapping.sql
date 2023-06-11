@@ -145,26 +145,32 @@ with base_level as (
       ,b.created_time
       ,b.creation_tx_hash
       ,b.created_block_number
-      ,u.created_tx_from AS top_level_tx_from
-      ,u.created_tx_to AS top_level_tx_to
-      ,u.created_tx_method_id AS top_level_tx_method_id
+
+      -- when non-deterministic, pull the tx-level data
+      ,case when nd.creator_address IS NOT NULL
+        then b.created_tx_from ELSE u.created_tx_from END AS top_level_tx_from
+      ,case when nd.creator_address IS NOT NULL
+        then b.created_tx_to else u.created_tx_to end AS top_level_tx_to
+      ,case when nd.creator_address IS NOT NULL
+        then b.created_tx_method_id else u.created_tx_method_id end AS top_level_tx_method_id
+      -- store the raw created data
       ,b.created_tx_from AS created_tx_from
       ,b.created_tx_to AS created_tx_to
       ,b.created_tx_method_id AS created_tx_method_id
       ,b.is_self_destruct
+
     {% if loop.first -%}
     from base_level as b
     left join base_level as u --get info about the contract that created this contract
       on b.creator_address = u.contract_address
-      AND b.creator_address NOT IN -- don't map creators that we know are not deterministic
-        (SELECT creator_address FROM {{ref('contracts_optimism_nondeterministic_contract_creators')}})
     {% else -%}
     from level{{i-1}} as b
     left join base_level as u --get info about the contract that created this contract
       on b.creator_address = u.contract_address
-      AND b.creator_address NOT IN -- don't map creators that we know are not deterministic
-        (SELECT creator_address FROM {{ref('contracts_optimism_nondeterministic_contract_creators')}})
     {% endif %}
+    -- is the creator non-deterministic?
+    left join {{ref('contracts_optimism_nondeterministic_contract_creators')}}) nd 
+      ON nd.creator_address = b.creator_address
 )
 {%- endfor %}
 
