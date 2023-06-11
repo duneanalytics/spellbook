@@ -71,7 +71,6 @@ with base_level as (
       on ct.address = sd.contract_address
       and ct.tx_hash = sd.creation_tx_hash
       and ct.block_time = sd.created_time
-      and ct.block_number = sd.block_number
       {% if is_incremental() %}
       and sd.created_time >= date_trunc('day', now() - interval '1 week')
       {% endif %}
@@ -100,7 +99,7 @@ with base_level as (
     from {{ this }}
       {% endif %} -- incremental filter
   ) as x
-  group by 1, 2, 3, 4, 5, 6, 7, 8, 9, 10
+  group by 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14
 )
 
 ,tokens as (
