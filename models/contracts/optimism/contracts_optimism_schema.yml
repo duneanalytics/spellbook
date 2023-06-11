@@ -47,7 +47,7 @@ models:
         description: "Contract name"
       - &creator_address
         name: creator_address
-        description: "Highest-level contract creator address (i.e. which address created the factory)"
+        description: "Highest-level contract creator address (i.e. which address deployed the factory which deployed contracts), or the tx_from when the contract creator address is non-deterministic."
       - &created_time
         name: created_time
         description: "contract creation time"
@@ -58,6 +58,18 @@ models:
       - &creation_tx_hash
         name: creation_tx_hash
         description: "Contract creation transaction hash"
+      - &created_block_number
+        name: created_block_number
+        description: "Contract creation block number"
+      - &tx_from
+        name: tx_from
+        description: "Contract creation transaction from address"
+      - &tx_to
+        name: tx_to
+        description: "Contract creation transaction to address"
+      - &tx_method_id
+        name: tx_method_id
+        description: "Method ID of the transaction. This is useful for determining how a contract was deployed (i.e Safe transaction vs traditional deployment)"
 
 
   - name: contracts_optimism_contract_creator_address_list
