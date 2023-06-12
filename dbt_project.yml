@@ -85,6 +85,9 @@ models:
       ethereum:
         +schema: ens_ethereum
 
+    evms:
+      +schema: evms
+
     staking:
       +schema: staking
       ethereum:
