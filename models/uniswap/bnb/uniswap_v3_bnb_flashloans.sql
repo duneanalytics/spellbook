@@ -24,7 +24,7 @@ WITH flashloans AS (
     , CASE WHEN f.amount0 = 0 THEN bep20b.decimals ELSE bep20a.decimals END AS currency_decimals
     , f.contract_address
     FROM {{ source('uniswap_v3_bnb','Pair_evt_Flash') }} f
-        INNER JOIN {{ source('uniswap_v3_bnb','UniswapV3Factory_evt_PoolCreated') }} p ON f.contract_address = p.pool
+        INNER JOIN {{ source('uniswap_v3_bnb','Factory_evt_PoolCreated') }} p ON f.contract_address = p.pool
     LEFT JOIN {{ ref('tokens_bnb_bep20') }} bep20a ON p.token0 = bep20a.contract_address
     LEFT JOIN {{ ref('tokens_bnb_bep20') }} bep20b ON p.token1 = bep20b.contract_address
     WHERE f.evt_block_time > NOW() - interval '1' month

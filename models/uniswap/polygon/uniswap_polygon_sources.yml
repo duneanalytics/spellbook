@@ -1,6 +1,6 @@
 version: 2
 
-sources: 
+sources:
   - name: uniswap_v3_polygon
     description: "Polygon decoded tables related to Uniswap v3 contract"
     freshness:
@@ -48,7 +48,7 @@ sources:
             name: tick
             description: the log base 1.0001 of price of the pool after the swap"
 
-      - name: factory_polygon_evt_PoolCreated
+      - name: Factory_evt_PoolCreated
         loaded_at_field: evt_block_time
         description: "" # to-do
         columns:
