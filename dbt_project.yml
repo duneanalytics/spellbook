@@ -289,6 +289,23 @@ models:
       bnb:
         +schema: sushiswap_bnb
 
+    zerion:
+      +schema: zerion
+      arbitrum:
+        +schema: zerion_arbitrum
+      avalanche_c:
+        +schema: zerion_avalanche_c
+      bnb:
+        +schema: zerion_bnb
+      gnosis:
+        +schema: zerion_gnosis
+      optimism:
+        +schema: zerion_optimism
+      polygon:
+        +schema: zerion_polygon
+      fantom:
+        +schema: zerion_fantom
+
     openocean:
       +schema: openocean
       fantom:
