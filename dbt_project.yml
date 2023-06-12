@@ -1191,7 +1191,3 @@ models:
       +schema: thena
       bnb:
         +schema: thena_bnb
-    
-    traces:
-      optimism:
-        +schema: traces_optimism
