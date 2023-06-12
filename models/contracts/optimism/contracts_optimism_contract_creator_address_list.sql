@@ -512,6 +512,7 @@ WITH curated_list AS (
       ,('0x9ebC8E61f87A301fF25a606d7C06150f856F24E2', '0xSplits')
       ,('0x15bc81b35a8498cee37e2c7b857538b006cecaa5', 'Cinch Protocol')
       ,('0x7EEeF54Df0596633dbf6Fa3C88dEB1E3eA85ECE8', 'Metronome')
+      ,('0x5472Cf4F1bE2aA6ad27C6F93101f7899cCAdBaf7', 'Rhino.fi')
 
   ) as temp_table (creator_address, contract_project)
 
