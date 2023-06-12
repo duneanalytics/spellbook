@@ -511,6 +511,7 @@ WITH curated_list AS (
       ,('0xE86375704CDb8491a5Ed82D90DceCE02Ee0ac25F', 'Axelar')
       ,('0x9ebC8E61f87A301fF25a606d7C06150f856F24E2', '0xSplits')
       ,('0x15bc81b35a8498cee37e2c7b857538b006cecaa5', 'Cinch Protocol')
+      ,('0x7EEeF54Df0596633dbf6Fa3C88dEB1E3eA85ECE8', 'Metronome')
 
   ) as temp_table (creator_address, contract_project)
 
