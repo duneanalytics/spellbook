@@ -796,7 +796,7 @@ models:
       bnb:
         +schema: frax_finance_bnb
         +materialized: table
-        
+
     mstable:
       +schema: mstable
       ethereum:
@@ -960,7 +960,7 @@ models:
       +schema: notional
       ethereum:
         +schema: notional_ethereum
-      
+
     dydx:
       +schema: dydx
       ethereum:
