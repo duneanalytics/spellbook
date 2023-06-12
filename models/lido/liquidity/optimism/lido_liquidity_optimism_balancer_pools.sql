@@ -168,7 +168,7 @@ WHERE call_create.output_0 in (select distinct  SUBSTRING(pool_id, 0, 42) from p
     {% endif %}
     and blockchain = 'optimism'
     and contract_address = lower('0x7F5c764cBc14f9669B88837ca1490cCa17c31607')
-    group by 1,2,3,4
+    group by 1,2,3
 union all
     SELECT distinct
         DATE_TRUNC('day', minute), 
@@ -195,7 +195,7 @@ SELECT distinct
     {% endif %}
     and blockchain = 'optimism'
     and contract_address = lower('0x68f180fcCe6836688e9084f035309E29Bf0A2095')
-    group by 1,2,3,4
+    group by 1,2,3
 union all
     SELECT distinct
         DATE_TRUNC('day', minute), 
@@ -223,7 +223,7 @@ SELECT distinct
     
     and blockchain = 'optimism'
     and contract_address = lower('0x1F32b1c2345538c0c6f582fCB022739c4A194Ebb')
-    group by 1,2,3,4
+    group by 1,2,3
 union all
     SELECT distinct
         DATE_TRUNC('day', minute), 
