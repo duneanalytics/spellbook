@@ -515,6 +515,7 @@ WITH curated_list AS (
       ,('0x5472Cf4F1bE2aA6ad27C6F93101f7899cCAdBaf7', 'Rhino.fi')
       ,('0x8de39c1Fa14b6082053e7cD937d6Ebe58A69D6D2', 'KyberSwap')
       ,('0xfB3485c2e209A5cfBDC1447674256578f1A80eE3', 'Abracadabra')
+      ,('0x085909388fc0cE9E5761ac8608aF8f2F52cb8B89', 'Interest Protocol')
 
   ) as temp_table (creator_address, contract_project)
 
