@@ -92,6 +92,8 @@ models:
 
     dex:
       +schema: dex
+      ethereum:
+        +schema: dex_ethereum
 
     airdrop:
       +schema: airdrop
