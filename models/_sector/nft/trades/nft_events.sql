@@ -1,7 +1,11 @@
 {{ config(
     schema = 'nft',
     alias ='events',
-    materialized = 'view',
+    partition_by = ['block_date'],
+    materialized = 'incremental',
+    file_format = 'delta',
+    incremental_strategy = 'merge',
+    unique_key = ['unique_trade_id', 'blockchain'],
     post_hook='{{ expose_spells(\'["ethereum","solana","bnb","optimism","arbitrum","polygon"]\',
                     "sector",
                     "nft",
@@ -48,6 +52,9 @@ SELECT
     royalty_fee_percentage,
     unique_trade_id
 FROM {{ ref('nft_ethereum_trades_beta_ported')}}
+{% if is_incremental() %}
+WHERE block_time >= date_trunc("day", now() - interval '1 week')
+{% endif %}
 UNION ALL
 SELECT blockchain,
     project,
@@ -89,5 +96,8 @@ SELECT blockchain,
     unique_trade_id
 FROM {{ref('nft_events_old')}}
 WHERE (project, version) not in (SELECT distinct project, version FROM {{ref('nft_ethereum_trades_beta_ported')}})
+{% if is_incremental() %}
+AND block_time >= date_trunc("day", now() - interval '1 week')
+{% endif %}
 
 
