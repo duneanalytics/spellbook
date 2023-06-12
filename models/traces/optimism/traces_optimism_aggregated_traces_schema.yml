@@ -1,0 +1,103 @@
+version: 2
+
+models:
+  - name: traces_optimism_aggregated_traces
+    meta:
+      blockchain: optimism
+      project: traces
+      contributors: msilb7
+    config:
+      tags: ['optimism','traces','gas','aggregate']
+    description: >
+        A table containing trace data on Optimism, grouped by trace and transaction metadata, and with accurate gas per trace tracking. This table used for attirbuting gas usage by transaction and use case within a transaction, as well as providing a ~50% smaller trace table for runtime.
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+              - block_time
+              - block_number
+              - tx_hash
+              - tx_from
+              - tx_to
+              - tx_method_id
+              - tx_value
+              - tx_gas_used
+              - trace_from
+              - trace_to
+              - trace_method_id
+              - call_type
+    columns:
+      - &block_date
+        name: block_date
+        description: "Date of the block that the transaction was included in"
+      - &block_time
+        name: block_time
+        description: "Time of the block that the transaction was included in"
+      - &block_number
+        name: block_number
+        description: "Block Number that the transaction was included in"
+      - &tx_hash
+        name: tx_hash
+        description: "Transaction hash"
+      - &tx_from
+        name: tx_from
+        description: "Transaction sender address"
+      - &tx_to
+        name: tx_to
+        description:  "Transaction to address. When this is a contract, it's the contract that the user directly interacts with."
+      - &tx_method_id
+        name: tx_method_id
+        description: "First 4 bytes of transaction data. THe function called by the transaction."
+      - &tx_value
+        name: tx_value
+        description: "ETH Transferred in the transaction"
+      - &tx_l2_gas_used
+        name: tx_l2_gas_used
+        description: "Gas used by the transaction"
+      - &trace_from
+        name: trace_from
+        description: "Trace sender - what is calling the contract in trace_to"
+      - &trace_to
+        name: trace_to
+        description: "Trace to address - what contract is being called"
+      - &trace_method_id
+        name: trace_method_id
+        description: "First 4 bytes of trace input. THe function called in the trace."
+      - &call_type
+        name: call_type
+        description: "Call type"
+      - &tx_l1_gas_used
+        name: l1_gas_used
+        description: "L1 Gas Used + Overhead by the transaction"
+      - &tx_l1_gas_price
+        name: l1_gas_price
+        description: "L1 Gas Price at the time of the transaction"
+      - &tx_l1_fee
+        name: tx_l1_fee
+        description: "L1 Data Fee charged in the transaction (wei)"
+      - &tx_l2_gas_price
+        name: tx_l2_gas_price
+        description: "L2 Gas Price at the time of the transaction (wei)"
+      - &tx_l2_base_fee_price
+        name: tx_l2_base_fee_price
+        description: "Base Fee for L2 gas at the time of the transaction (wei)"
+      - &tx_l2_priority_fee_price
+        name: tx_l2_priority_fee_price
+        description: "Priority Fee paid by the user for L2 gas (wei)"
+      - &tx_gas_fee_eth
+        name: tx_gas_fee_eth
+        description: "Transaction total gas fee in ETH"
+      - &trace_value
+        name: trace_value
+        description: "ETH Transferred in the trace"
+      - &top_level_trace_gas_used
+        name: top_level_trace_gas_used
+        description: "How much gas the trace used, including all sub-traces (Note: This is NOT a true segment of toal gas)"
+      - &trace_gas_used
+        name: trace_gas_used
+        description: "How much gas the trace used, excluding all sub-traces. This is a better measure of how much gas each contract used."
+      - &pct_tx_trace_gas_used
+        name: pct_tx_trace_gas_used
+        description: "Pct of the total transaction's gas was used by the trace_gas_used"
+      - &num_traces
+        name: num_traces
+        description: "How many traces are summed together in this row"
