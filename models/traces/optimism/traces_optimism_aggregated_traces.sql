@@ -78,7 +78,8 @@ FROM (
 		ON r.tx_hash = sub_tr.tx_hash
 		AND r.block_number = sub_tr.block_number
 		AND r.block_time = sub_tr.block_time
-		AND r.trace_address = (CASE WHEN cardinality(sub_tr.trace_address) =0 THEN array[-1] ELSE slice(sub_tr.trace_address, 1, cardinality(sub_tr.trace_address) - 1) END)
+		--dunesql: AND r.trace_address = (CASE WHEN cardinality(sub_tr.trace_address) =0 THEN array[-1] ELSE slice(sub_tr.trace_address, 1, cardinality(sub_tr.trace_address) - 1) END)
+		AND r.trace_address = (CASE WHEN cardinality(sub_tr.trace_address) =0 THEN array(-1) ELSE slice(sub_tr.trace_address, 1, cardinality(sub_tr.trace_address) - 1) END)
 		{% if is_incremental() %}
         	AND sub_tr.block_time >= date_trunc('day', now() - interval '1 week')
         	{% endif %}
