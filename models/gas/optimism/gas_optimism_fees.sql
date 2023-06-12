@@ -43,12 +43,14 @@ SELECT
      type as transaction_type,
      l1_fee/1e18 AS l1_data_fee_native,
      p.price * l1_fee/1e18 AS l1_data_fee_usd,
-     (COALESCE(blocks.base_fee_per_gas,txns.gas_price)*txns.gas_used)/1e18 AS l2_base_fee_native, --use gas price pre-Bedrock (no base fee)
+      --use gas price pre-Bedrock (no base fee)
+     (COALESCE(blocks.base_fee_per_gas,txns.gas_price)*txns.gas_used)/1e18 AS l2_base_fee_native,
      p.price * (COALESCE(blocks.base_fee_per_gas,txns.gas_price)*txns.gas_used)/1e18 AS l2_base_fee_usd,
-     case when txns.gas_price = 0 then 0 else
+      --base_fee_per_gas was null pre-bedrock when there was no base fee
+     case when (txns.gas_price = 0) or (blocks.base_fee_per_gas IS NULL)then 0 else
         cast( (txns.gas_price-blocks.base_fee_per_gas)*txns.gas_used as double) / 1e18
      end AS l2_priority_fee_native,
-     case when gas_price = 0 then 0 else
+     case when (txns.gas_price = 0) or (blocks.base_fee_per_gas IS NULL)then 0 else
         p.price * cast( (txns.gas_price-blocks.base_fee_per_gas)*txns.gas_used as double) / 1e18
      end AS l2_priority_fee_usd
 
