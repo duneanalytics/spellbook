@@ -95,6 +95,20 @@ models:
 
     dex:
       +schema: dex
+      ethereum:
+        +schema: dex_ethereum
+      optimism:
+        +schema: dex_optimism
+      arbitrum:
+        +schema: dex_arbitrum
+      avalanche_c:
+        +schema: dex_avalanche_c
+      bnb:
+        +schema: dex_bnb
+      gnosis:
+        +schema: dex_gnosis
+      fantom:
+        +schema: dex_fantom
 
     airdrop:
       +schema: airdrop
@@ -1191,3 +1205,6 @@ models:
       +schema: thena
       bnb:
         +schema: thena_bnb
+
+    time_utils:
+      +schema: time_utils
