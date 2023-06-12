@@ -31,13 +31,13 @@ FROM (
         , t.block_number
         , t.hash AS tx_hash
     
-	, t."from" AS tx_from
+	, t.from AS tx_from
 	, t.to AS tx_to
 	, substring(t.data,1,10) AS tx_method_id --dunesql: bytearray_substring(t.data,1,4)
 	, t.value AS tx_value
 	, t.gas_used AS tx_l2_gas_used
 
-	, r."from" AS trace_from
+	, r.from AS trace_from
 	, r.to AS trace_to
 	, substring(r.input,1,10) AS trace_method_id --dunesql: bytearray_substring(r.input,1,4)
 	, r.value AS trace_value
