@@ -13,26 +13,3 @@ sources:
         loaded_at_field: evt_block_time
       - name: Elastic_Pool_evt_BurnRTokens
         loaded_at_field: evt_block_time  
-  - name: camelot_arbitrum
-    description: "Arbitrum decoded tables related to Camelot pools contracts"
-    freshness: # default freshness
-      warn_after: { count: 12, period: hour }
-      error_after: { count: 24, period: hour }
-    tables:
-      - name: CamelotPair_evt_Mint
-        loaded_at_field: evt_block_time
-      - name: CamelotPair_evt_Burn
-        loaded_at_field: evt_block_time
-
-  - name: uniswap_v3_arbitrum
-    description: "Arbitrum decoded tables related to Uniswap v3 pools contracts"
-    freshness: # default freshness
-      warn_after: { count: 12, period: hour }
-      error_after: { count: 24, period: hour }
-    tables:
-      - name: Pair_evt_Mint
-        loaded_at_field: evt_block_time
-      - name: Pair_evt_Burn
-        loaded_at_field: evt_block_time        
-      - name: Pair_evt_Collect
-        loaded_at_field: evt_block_time          
