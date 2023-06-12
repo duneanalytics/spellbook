@@ -505,6 +505,7 @@ WITH curated_list AS (
       ,('0xe7a9ecdb56af2bb86fdaaa3e3b2d1f0f7a9fe664', 'Another World')
       ,('0x017F8Ad14A2E745ea0F756Bd57CD4852400be78c', 'Rabbithole')
       ,('0x6a0a93cd6d6fb7a36bf6234ef4650bf9474e7682', 'Gelato')
+      ,('0xa66cdda1817c85ed3d232a5affd17673e933d8a7', 'Sound.xyz')
 
   ) as temp_table (creator_address, contract_project)
 

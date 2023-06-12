@@ -96,5 +96,7 @@ from (
     ,('pika_tge', 'Pika Protocol')
     ,('holograph_factory', 'Holograph')
     ,('holograph_operator', 'Holograph')
+    ,('sound_xyz', 'Sound.xyz')
+    ,('sound xyz', 'Sound.xyz')
 
     ) as temp_table (dune_name, mapped_name)
