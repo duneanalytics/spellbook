@@ -88,7 +88,7 @@ SELECT  blockchain,
         tx_from,
         tx_to,
         trace_address,
-        evt_index,
+        evt_index
 FROM (
     {% for dex_model in dex_trade_models %}
     SELECT
