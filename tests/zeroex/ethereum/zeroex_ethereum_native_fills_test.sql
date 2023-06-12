@@ -9,4 +9,4 @@ JOIN {{ ref('zeroex_ethereum_native_fills_sample') }} test
 )
 select count(case when test = false then 1 else null end)/count(*) as pct_mismatch, count(*) as count_rows
 from unit_tests
-having count(case when test = false then 1 else null end) > count(*)*0.1
+having count(case when test = false then 1 else null end) > count(*)*0.1 
