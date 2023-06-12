@@ -279,9 +279,35 @@ models:
 
  - name: nft_ethereum_trades_beta_ported
    meta:
-     blockchain: ethereum
+     blockchain: ethereum, solana, bnb, optimism, arbitrum, polygon
      sector: nft
      contributors: 0xRob
    config:
-     tags: ['ethereum', 'nft', 'trades', 'beta']
+     tags: [ 'nft', 'opensea', 'looksrare', 'x2y2', 'magiceden', 'sudoswap', 'foundation', 'element', 'zora', 'ethereum', 'bnb', 'solana', 'events', 'polygon', 'optimism', 'arbitrum', 'rarible', 'aavegotchi', 'oneplanet', 'fractal' ]
    description: "backport of the new nft trades model"
+
+ - name: nft_events_forward_ported
+   meta:
+     blockchain: ethereum, solana, bnb, optimism, arbitrum, polygon
+     sector: nft
+     contributors: dot2dotseurat
+   config:
+     tags: ['nft', 'opensea', 'looksrare', 'x2y2', 'magiceden', 'sudoswap', 'foundation', 'element', 'zora', 'ethereum', 'bnb', 'solana', 'events', 'polygon', 'optimism', 'arbitrum', 'rarible', 'aavegotchi', 'oneplanet', 'fractal' ]
+   description: > 
+        Forward port of the existing nft events model to match conventions of the new nft trades model. 
+        This forward port enables building nft_trades_unstable, which extends the nft_trades model with additional columns from the reservoir datasets. 
+        This model is intended to be removed when the nft_ethereum_trades_beta model is moved out of beta. 
+
+ - name: nft_trades_unstable
+   meta:
+     blockchain: ethereum, solana, bnb, optimism, arbitrum, polygon
+     sector: nft
+     contributors: dot2dotseurat
+   config:
+     tags: ['nft', 'opensea', 'looksrare', 'x2y2', 'magiceden', 'sudoswap', 'foundation', 'element', 'zora', 'ethereum', 'bnb', 'solana', 'events', 'polygon', 'optimism', 'arbitrum', 'rarible', 'aavegotchi', 'oneplanet', 'fractal', 'wand']
+   description: > 
+        This dataset is intended to provide a base table for asking natural language queries about NFTs on Dune.
+        Initially, it will extend the nft_trades model with additional columns from the reservoir datasets.
+        Why not apply these joins in the nft_trades model? Because we'd like to move fast and not break things! 
+        1) LLM models are extremely sensitive to things like column names. Which means we'll be doing some tweaking as we go.
+        2) We don't want people to build queries on this table which will be evolving over time.

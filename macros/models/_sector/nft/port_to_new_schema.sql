@@ -1,0 +1,45 @@
+{% macro port_to_new_schema(model) %}
+
+SELECT
+    blockchain,
+    project,
+    project_version as version,
+    block_date,
+    block_time,
+    nft_token_id as token_id,
+    nft_collection as collection,
+    price_usd as amount_usd,
+    nft_standard as token_standard,
+    case when evt_type = 'Mint' then 'primary' when evt_type = 'Trade' then 'secondary' else trade_type end as evt_type,
+    number_of_items as nft_amount,
+    trade_category,
+    evt_type,
+    seller,
+    buyer,
+    amount_original as price,
+    amount_raw as price_raw,
+    currency_symbol,
+    currency_contract,
+    nft_contract_address,
+    project_contract_address,
+    aggregator_name,
+    aggregator_address,
+    tx_hash,
+    block_number,
+    tx_from,
+    tx_to,
+    platform_fee_amount_raw,
+    Cplatform_fee_amount,
+    platform_fee_amount_usd,
+    platform_fee_percentage,
+    royalty_fee_address as royalty_fee_receive_address,
+    currency_symbol as royalty_fee_currency_symbol,
+    royalty_fee_amount_raw,
+    royalty_fee_amount,
+    royalty_fee_amount_usd,
+    royalty_fee_percentage,
+    concat(project,'-',cast(block_number as varchar(20)),'-',cast(tx_hash as varchar(66)),'-',cast(sub_tx_trade_id as varchar(20))) as unique_trade_id
+FROM {{ model }}
+where  evt_type in ('Mint','Trade')
+
+{% endmacro %}
