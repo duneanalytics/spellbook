@@ -29,6 +29,10 @@ models:
     config:
       tags: [ 'ethereum', 'lido', 'staking', 'accounting' ]
     description: "ETH deposits to Lido"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
     columns:
       - name: period
         description: "Timestamp of the accounting entry"
@@ -36,8 +40,9 @@ models:
         description: "How many ETH was staked"
       - name: token
         description: "Token name"
-      - name: amount_token
-        description: "Token Amount"
+      - name: tx_hash  
+        descripion: "Transaction hash"
+        
                     
   - name: lido_accounting_ethereum_fundraising
     meta:
@@ -296,3 +301,21 @@ models:
       - name: day,
         description: "Timestamp of the accounting entry truncated to the day mark"              
 
+  - name: lido_accounting_ethereum_withdrawals
+    meta:
+      blockchain: ethereum
+      sector: liquid_staking
+      project: lido
+      contributors: [ gregshestakovlido, ppclunghe, xadcv ]
+    config:
+      tags: [ 'ethereum', 'lido', 'staking', 'accounting' ]
+    description: "ETH principal withdrawals"
+    columns:
+      - name: period
+        description: "Timestamp of the accounting entry"
+      - name: amount
+        description: "Token amount"
+      - name: hash,
+        description: "Block hash"
+      - name: day,
+        description: "Timestamp of the accounting entry truncated to the day mark"              
