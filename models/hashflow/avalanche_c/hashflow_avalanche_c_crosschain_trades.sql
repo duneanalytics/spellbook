@@ -23,13 +23,13 @@ with cross_chain_trades AS (
             ,quoteToken              AS token_bought_address
             ,baseToken               AS token_sold_address
             ,evt_tx_hash             AS tx_hash
-            ,CASE WHEN dstChainId = 1 OR dstChainId = 101 THEN 'Ethereum'
-                  WHEN dstChainId = 10 OR dstChainId = 110 THEN 'Arbitrum'
-                  WHEN dstChainId = 11 OR dstChainId = 111 THEN 'Optimism'
-                  WHEN dstChainId = 6 OR dstChainId = 106 THEN 'Avalanche'
-                  WHEN dstChainId = 9 OR dstChainId = 109 THEN 'Polygon'
-                  WHEN dstChainId = 2 OR dstChainId = 102 THEN 'BNB' END AS destination_chain
-            ,'Avalanche'                   AS source_chain
+            ,CASE WHEN dstChainId = 1 OR dstChainId = 101 THEN 'ethereum'
+                  WHEN dstChainId = 10 OR dstChainId = 110 THEN 'arbitrum'
+                  WHEN dstChainId = 11 OR dstChainId = 111 THEN 'optimism'
+                  WHEN dstChainId = 6 OR dstChainId = 106 THEN 'avalanche'
+                  WHEN dstChainId = 9 OR dstChainId = 109 THEN 'polygon'
+                  WHEN dstChainId = 2 OR dstChainId = 102 THEN 'bnb' END AS destination_chain
+            ,'avalanche'                   AS source_chain
         FROM
             {{ source('hashflow_avalanche_c', 'Pool_evt_LzTrade') }}
         {% if is_incremental() %}
@@ -47,13 +47,13 @@ with cross_chain_trades AS (
             ,quoteToken              AS token_bought_address
             ,baseToken               AS token_sold_address
             ,evt_tx_hash             AS tx_hash
-            ,CASE WHEN dstChainId = 1 THEN 'Ethereum'
-                  WHEN dstChainId = 2 THEN 'Arbitrum'
-                  WHEN dstChainId = 3 THEN 'Optimism'
-                  WHEN dstChainId = 4 THEN 'Avalanche'
-                  WHEN dstChainId = 5 THEN 'Polygon'
-                  WHEN dstChainId = 6 THEN 'BNB' END AS destination_chain
-            ,'Avalanche'                   AS source_chain
+            ,CASE WHEN dstChainId = 1 THEN 'ethereum'
+                  WHEN dstChainId = 2 THEN 'arbitrum'
+                  WHEN dstChainId = 3 THEN 'optimism'
+                  WHEN dstChainId = 4 THEN 'avalanche'
+                  WHEN dstChainId = 5 THEN 'polygon'
+                  WHEN dstChainId = 6 THEN 'bnb' END AS destination_chain
+            ,'avalanche'                   AS source_chain
         FROM
             {{ source('hashflow_avalanche_c', 'Pool_evt_XChainTrade') }}
         {% if is_incremental() %}
