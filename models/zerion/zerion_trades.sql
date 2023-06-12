@@ -14,6 +14,7 @@ ref('zerion_arbitrum_trades')
 , ref('zerion_gnosis_trades')
 , ref('zerion_optimism_trades')
 , ref('zerion_polygon_trades')
+, ref('zerion_fantom_trades')
 ] %}
 
 

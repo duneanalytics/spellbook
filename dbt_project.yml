@@ -300,6 +300,8 @@ models:
         +schema: zerion_optimism
       polygon:
         +schema: zerion_polygon
+      fantom:
+        +schema: zerion_fantom
 
     openocean:
       +schema: openocean
