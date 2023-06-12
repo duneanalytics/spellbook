@@ -10,11 +10,7 @@
 {% set lido_liquidity_models = [
  ref('lido_liquidity_ethereum_kyberswap_pools'),
  ref('lido_liquidity_arbitrum_kyberswap_pools'),
- ref('lido_liquidity_optimism_kyberswap_pools'),
- ref('lido_liquidity_ethereum_uniswap_v3_pools'),
- ref('lido_liquidity_arbitrum_uniswap_v3_pools'),
- ref('lido_liquidity_optimism_uniswap_v3_pools'),
- ref('lido_liquidity_arbitrum_camelot_pools')
+ ref('lido_liquidity_optimism_kyberswap_pools')
 ] %}
 
 
