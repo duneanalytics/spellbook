@@ -20,4 +20,10 @@ sources:
       - name: steth_evt_ELRewardsReceived
       - name: steth_evt_WithdrawalsReceived
       - name: WithdrawalQueueERC721_evt_WithdrawalsFinalized
+  - name: ethereum
+    freshness: # default freshness
+      warn_after: { count: 1, period: day }
+      error_after: { count: 7, period: day }
+    tables:
+      - name: withdrawals   
       
