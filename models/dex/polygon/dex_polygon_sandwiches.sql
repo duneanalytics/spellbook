@@ -39,6 +39,9 @@ WITH trades AS (
     FROM {{ ref('dex_trades') }} dt
     INNER JOIN {{ source('polygon', 'transactions') }} t ON t.block_time=dt.block_time
         AND t.hash=dt.tx_hash
+        {% if is_incremental() %}
+        AND t.block_time >= date_trunc("day", now() - interval '1 week')
+        {% endif %}
     WHERE dt.blockchain = 'polygon'
     {% if is_incremental() %}
     AND block_date >= date_trunc("day", now() - interval '1 week')
