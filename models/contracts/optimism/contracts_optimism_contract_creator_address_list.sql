@@ -509,6 +509,7 @@ WITH curated_list AS (
       ,('0xB8Cd93C83A974649D76B1c19f311f639e62272BC', 'Axelar')
       ,('0x98b2920d53612483f91f12ed7754e51b4a77919e', 'Axelar')
       ,('0xE86375704CDb8491a5Ed82D90DceCE02Ee0ac25F', 'Axelar')
+      ,('0x9ebC8E61f87A301fF25a606d7C06150f856F24E2', 'Splits')
 
   ) as temp_table (creator_address, contract_project)
 
