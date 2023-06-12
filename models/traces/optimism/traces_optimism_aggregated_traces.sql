@@ -53,7 +53,7 @@ FROM (
 	, CASE WHEN b.base_fee_per_gas IS NULL THEN 0 ELSE
 		cast(t.gas_price as double) - cast(b.base_fee_per_gas as double)
 		END AS tx_l2_priority_fee_price
-	, case when t.gas_price = cast(0 as uint256) THEN 0 ELSE
+	, case when t.gas_price = 0 THEN 0 ELSE
 		cast(t.l1_fee + (t.gas_used * cast(t.gas_price as double)) as double)
 		END AS tx_gas_fee_eth
     
