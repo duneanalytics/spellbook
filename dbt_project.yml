@@ -1208,3 +1208,7 @@ models:
 
     time_utils:
       +schema: time_utils
+    
+    traces:
+      optimism:
+        +schema: traces_optimism
