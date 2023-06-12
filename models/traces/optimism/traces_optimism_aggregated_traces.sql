@@ -43,7 +43,7 @@ FROM (
 	, r.value AS trace_value
 	, r.type AS call_type
 	, r.gas_used AS top_level_trace_gas_used
-	, r.gas_used - sub_tr.gas_used AS trace_gas_used
+	, COALESCE( r.gas_used - sub_tr.gas_used , r.gas_used)	AS trace_gas_used --if no sub traces, then it's the lowest level trace
 
 	, t.l1_gas_used AS tx_l1_gas_used
 	, t.l1_gas_price AS tx_l1_gas_price
