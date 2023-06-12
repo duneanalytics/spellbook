@@ -372,6 +372,7 @@ WITH raw_token_list AS (
     ,('0x2e80259c9071b6176205ff5f5eb6f7ec8361b93f', 'HASH', 18, 'underlying')
     ,('0x1610e3c85dd44Af31eD7f33a63642012Dca0C5A5', 'msETH', 18, 'receipt')
     ,('0x9a2e53158e12BC09270Af10C16A466cb2b5D7836', 'MET', 18, 'underlying')
+    ,('0xB25EA095997F5bBaa6cEa962c4fBf3bfc3C09776', 'FIRE', 9, 'underlying')
     
     ) AS temp_table (contract_address, symbol, decimals, token_type)
 )
