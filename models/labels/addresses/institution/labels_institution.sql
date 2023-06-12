@@ -1,8 +1,8 @@
 {{config(alias='institution',
-        post_hook='{{ expose_spells(\'["ethereum","bnb","fantom"]\',
+        post_hook='{{ expose_spells(\'["ethereum", "bnb", "fantom", "optimism", "bitcoin", "polygon", "avalanche_c", "arbitrum"]\',
                                     "sector",
                                     "labels",
-                                    \'["ilemi"]\') }}'
+                                    \'["ilemi", "hildobby"]\') }}'
 )}}
 
 {% set institution_models = [
