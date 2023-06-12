@@ -34,7 +34,7 @@ WITH base_union as (
         platform_fee_address,   -- optional
         royalty_fee_address,    -- optional
         sub_tx_trade_id,
-        row_number() over (partition by tx_hash, sub_tx_trade_id) as duplicates_rank
+        row_number() over (partition by tx_hash, sub_tx_trade_id order by tx_hash) as duplicates_rank
     FROM {{ nft_model[2] }}
     {% if is_incremental() %}
     WHERE block_time >= date_trunc("day", now() - interval '1 week')

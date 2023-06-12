@@ -87,7 +87,7 @@ FROM (
         royalty_fee_amount_usd,
         royalty_fee_percentage,
         unique_trade_id,
-        row_number() over (partition by unique_trade_id) as duplicates_rank
+        row_number() over (partition by unique_trade_id order by tx_hash) as duplicates_rank
     FROM {{ nft_model }}
     {% if is_incremental() %}
     WHERE block_time >= date_trunc("day", now() - interval '1 week')
