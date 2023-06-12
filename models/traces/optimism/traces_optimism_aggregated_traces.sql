@@ -27,7 +27,7 @@ FROM (
 
 	SELECT
 
-        , t.block_time
+          t.block_time
         , t.block_number
         , t.hash AS tx_hash
     
