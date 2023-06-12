@@ -40,7 +40,7 @@ FROM (
       tx_hash  as tx_hash,
       tx_from  as tx_from,
       tx_to  as tx_to,
-      trace_address,
+      cast(trace_address as varchar(2)) as trace_address,
       evt_index  as evt_index
 
     FROM {{ model }}
