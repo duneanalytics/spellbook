@@ -1,0 +1,11 @@
+version: 2
+
+sources:
+  - name: reservoir
+    description: "Real-time and historical NFT market data and metadata from the Reservoir API."
+    freshness:
+      warn_after: { count: 12, period: hour }
+    tables:
+      - name: tokens
+        description: "NFT tokens’s metadata and statistics see https://docs.reservoir.tools/reference/gettokensv6"
+        loaded_at_field: updated_at

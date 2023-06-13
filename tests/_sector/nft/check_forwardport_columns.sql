@@ -1,0 +1,88 @@
+SELECT * FROM (
+SELECT * FROM (
+SELECT
+    blockchain,
+    project,
+    project_version,
+    block_date,
+    block_time,
+    block_number,
+    tx_hash,
+    sub_tx_trade_id,
+    project_contract_address,
+    trade_category,
+    trade_type,
+    buyer,
+    seller,
+    nft_contract_address,
+    nft_token_id,
+    nft_amount,
+    price_raw,
+    currency_contract,
+    platform_fee_amount_raw,
+    royalty_fee_amount_raw,
+    platform_fee_address,
+    royalty_fee_address,
+    tx_from,
+    tx_to,
+    nft_collection,
+    nft_standard,
+    currency_symbol,
+    price,
+    platform_fee_amount,
+    royalty_fee_amount,
+    price_usd,
+    platform_fee_amount_usd,
+    royalty_fee_amount_usd,
+    platform_fee_percentage,
+    royalty_fee_percentage,
+    aggregator_address,
+    aggregator_name
+from {{ ref('nft_ethereum_trades_beta') }}
+limit 1
+)
+union all
+SELECT * FROM (
+SELECT
+    blockchain,
+    project,
+    project_version,
+    block_date,
+    block_time,
+    block_number,
+    tx_hash,
+    sub_tx_trade_id,
+    project_contract_address,
+    trade_category,
+    trade_type,
+    buyer,
+    seller,
+    nft_contract_address,
+    nft_token_id,
+    nft_amount,
+    price_raw,
+    currency_contract,
+    platform_fee_amount_raw,
+    royalty_fee_amount_raw,
+    platform_fee_address,
+    royalty_fee_address,
+    tx_from,
+    tx_to,
+    nft_collection,
+    nft_standard,
+    currency_symbol,
+    price,
+    platform_fee_amount,
+    royalty_fee_amount,
+    price_usd,
+    platform_fee_amount_usd,
+    royalty_fee_amount_usd,
+    platform_fee_percentage,
+    royalty_fee_percentage,
+    aggregator_address,
+    aggregator_name
+from {{ ref('nft_trades_forward_ported') }}
+limit 1
+)
+)
+WHERE 1=0
