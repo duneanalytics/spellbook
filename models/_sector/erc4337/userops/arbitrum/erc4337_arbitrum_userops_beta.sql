@@ -1,6 +1,6 @@
 {{ config(
     schema ='erc4337_arbitrum',
-    alias = 'userops',
+    alias = 'userops_beta',
     partition_by = ['block_time'],
     materialized = 'incremental',
     file_format = 'delta',
