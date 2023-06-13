@@ -286,7 +286,7 @@ models:
      tags: ['ethereum', 'nft', 'trades', 'beta']
    description: "backport of the new nft trades model"
 
- - name: nft_events_forward_ported
+ - name: nft_trades_forward_ported
    meta:
      blockchain: ethereum, solana, bnb, optimism, arbitrum, polygon
      sector: nft
