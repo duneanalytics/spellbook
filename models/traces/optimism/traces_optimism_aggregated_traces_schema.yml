@@ -13,14 +13,7 @@ models:
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
-              - block_time
-              - block_number
               - tx_hash
-              - tx_from
-              - tx_to
-              - tx_method_id
-              - tx_value
-              - tx_l2_gas_used
               - trace_from
               - trace_to
               - trace_method_id
