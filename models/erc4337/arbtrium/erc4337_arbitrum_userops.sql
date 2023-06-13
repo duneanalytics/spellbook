@@ -32,13 +32,13 @@ FROM (
         , userop_hash
         , success
         , paymaster
-        , op_gas_cost
-        , op_gas_cost_usd
+        , op_fee
+        , op_fee_usd
         , bundler
         , tx_to
         , gas_symbol
-        , tx_gas_cost
-        , tx_gas_cost_usd
+        , tx_fee
+        , tx_fee_usd
         , beneficiary
     FROM {{ erc4337_model }}
     {% if is_incremental() %}

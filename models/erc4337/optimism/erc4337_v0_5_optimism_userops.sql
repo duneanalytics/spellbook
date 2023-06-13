@@ -34,7 +34,7 @@ with userop as (
         , userOpHash as userop_hash
         , success
         , paymaster
-        , actualGasCost as op_gas_cost
+        , actualGasCost as op_fee
         , actualGasUsed as op_gas_used
     from {{ source('erc4337_optimism','EntryPoint_evt_UserOperationEvent') }}
     {% if is_incremental() %}
@@ -55,7 +55,7 @@ with userop as (
         , '{{gas_symbol}}' as gas_symbol
         , cast(gas_price as bigint) as tx_gas_price
         , gas_used as tx_gas_used
-        , (gas_used * cast(gas_price as bigint)+l1_fee) as tx_gas_cost
+        , (gas_used * cast(gas_price as bigint)+l1_fee) as tx_fee
     from optimism.transactions 
     where hash in (
         select tx_hash from userop
@@ -85,13 +85,13 @@ select
     , userop.userop_hash
     , userop.success
     , userop.paymaster
-    , userop.op_gas_cost/1e18 as op_gas_cost
-    , userop.op_gas_cost*price.price/1e18 as op_gas_cost_usd
+    , userop.op_fee/1e18 as op_fee
+    , userop.op_fee*price.price/1e18 as op_fee_usd
     , txs.tx_from as bundler
     , txs.tx_to
     , txs.gas_symbol
-    , cast(txs.tx_gas_cost as double)/1e18 as tx_gas_cost
-    , cast(txs.tx_gas_cost as double)*price.price/1e18 as tx_gas_cost_usd
+    , cast(txs.tx_fee as double)/1e18 as tx_fee
+    , cast(txs.tx_fee as double)*price.price/1e18 as tx_fee_usd
     , handleops.beneficiary
 from userop 
 left join txs on userop.tx_hash = txs.tx_hash

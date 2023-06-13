@@ -37,11 +37,11 @@ models:
       - &paymaster
         name: paymaster
         description: "the address that pay for the user operation gas fees on behalf of the user"
-      - &op_gas_cost
-        name: op_gas_cost
+      - &op_fee
+        name: op_fee
         description: "The user operation gas paid by sender or paymaster. It’s depends on the chain gas setting."
-      - &op_gas_cost_usd
-        name: op_gas_cost_usd
+      - &op_fee_usd
+        name: op_fee_usd
         description: "The user operation gas (in usd) paid by sender or paymaster. "
       - &bundler
         name: bundler
@@ -52,11 +52,11 @@ models:
       - &gas_symbol
         name: gas_symbol
         description: "the gas symbol paied for the transaction"
-      - &tx_gas_cost
-        name: tx_gas_cost
+      - &tx_fee
+        name: tx_fee
         description: "the bundler paied gas value for the transaction"
-      - &tx_gas_cost_usd
-        name: tx_gas_cost_usd
+      - &tx_fee_usd
+        name: tx_fee_usd
         description: "the bundler paied gas (in usd) value for the transaction"
       - &beneficiary
         name: beneficiary
