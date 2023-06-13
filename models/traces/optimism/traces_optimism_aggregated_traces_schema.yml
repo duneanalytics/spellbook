@@ -20,7 +20,7 @@ models:
               - tx_to
               - tx_method_id
               - tx_value
-			        - tx_l2_gas_used
+              - tx_l2_gas_used
               - trace_from
               - trace_to
               - trace_method_id
