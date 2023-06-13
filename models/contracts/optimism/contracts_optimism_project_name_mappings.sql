@@ -98,5 +98,6 @@ from (
     ,('holograph_operator', 'Holograph')
     ,('sound_xyz', 'Sound.xyz')
     ,('sound xyz', 'Sound.xyz')
+    ,('splits','0xSplits')
 
     ) as temp_table (dune_name, mapped_name)
