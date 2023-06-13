@@ -5,7 +5,7 @@ WITH unit_test AS (
         END AS tx_hash_test,
         CASE
             WHEN LOWER( test.bundler ) = LOWER( actual.bundler ) THEN TRUE ELSE FALSE
-        END AS bundler_test,
+        END AS bundler_test
 
     FROM
         {{ ref('erc4337_v0_5_polygon_userops') }} AS actual
