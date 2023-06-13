@@ -44,6 +44,7 @@
 ,ref('decentraland_polygon_events')
 ] %}
 
+
 SELECT *
 FROM (
     {% for nft_model in nft_models %}
@@ -85,7 +86,8 @@ FROM (
         royalty_fee_amount,
         royalty_fee_amount_usd,
         royalty_fee_percentage,
-        unique_trade_id
+        unique_trade_id,
+        row_number() over (partition by unique_trade_id order by tx_hash) as duplicates_rank
     FROM {{ nft_model }}
     {% if is_incremental() %}
     WHERE block_time >= date_trunc("day", now() - interval '1 week')
@@ -95,3 +97,4 @@ FROM (
     {% endif %}
     {% endfor %}
 )
+WHERE duplicates_rank = 1

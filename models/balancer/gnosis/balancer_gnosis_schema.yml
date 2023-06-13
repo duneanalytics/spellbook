@@ -156,3 +156,27 @@ models:
       - &median_price
         name: median_price
         description: 'BPT median price'
+        
+  - name: balancer_v2_gnosis_pools_fees
+    meta:
+      blockchain: gnosis
+      project: balancer_v2
+      contributors: jacektrocinski, thetroyharris
+    config:
+      tags: ['gnosis', 'balancer', 'pools_fees']
+    description: >
+      Balancer v2 swap fees stored at the pool level.
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_number
+            - tx_hash
+            - index
+    columns:
+      - name: contract_address
+      - name: tx_hash
+      - name: index
+      - name: tx_index
+      - name: block_time
+      - name: block_number
+      - name: swap_fee_percentage
