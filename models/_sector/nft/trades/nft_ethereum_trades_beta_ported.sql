@@ -5,5 +5,4 @@
     )
 }}
 
-with nft_events_forward_ported as
 ({{ port_to_old_schema(ref('nft_events')) }})
