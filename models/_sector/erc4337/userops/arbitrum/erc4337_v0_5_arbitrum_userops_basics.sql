@@ -1,7 +1,7 @@
 {{ config
 (
-    schema = 'erc4337_v0_6_arbitrum',
-    alias ='userops',
+    schema = 'erc4337_v0_5_arbitrum',
+    alias ='userops_basics',
     partition_by = ['block_time'],
     materialized = 'incremental',
     file_format = 'delta',
@@ -17,16 +17,16 @@
 
 {% set chain = 'arbitrum' %}
 {% set gas_symbol = 'ETH' %}
-{% set wrapped_gas_address = '0x0d500b1d8e8ef31e21c99d1db9a6444d3adf1270' %}
-{% set version = 'v0.6' %}
+{% set wrapped_gas_address = '0x82af49447d8a07e3bd95bd0d56f35241523fbab1' %}
+{% set version = 'v0.5' %}
 {% set deployed_date = '2023-02-15' %}
 
 -- macros/models/sector/erc4337
 {{
     erc4337_userops_basics(
         blockchain = 'arbitrum',
-        version = 'v0.6',
-        userops_evt_model = source('erc4337_arbitrum','EntryPoint_v0_6_evt_UserOperationEvent'),
-        handleops_call_model = source('erc4337_arbitrum', 'EntryPoint_v0_6_call_handleOps')
+        version = 'v0.5',
+        userops_evt_model = source('erc4337_arbitrum','EntryPoint_v0_5_evt_UserOperationEvent'),
+        handleops_call_model = source('erc4337_arbitrum', 'EntryPoint_v0_5_call_handleOps')
     )
 }}

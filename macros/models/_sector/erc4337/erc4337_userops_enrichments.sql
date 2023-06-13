@@ -1,40 +1,50 @@
-{% macro erc4337_userops_trades(
+{% macro erc4337_userops_enrichments(
     blockchain='',
-    models=[],
-    userops_evt_model=null,
-    handleops_call_model=null,
+    base_models=[],
+    wrapped_gas_address='',
+    gas_symbol='',
+    deployed_date='',
     transactions_model=null,
-    tokens_erc20_model=null,
     prices_model=null
     )
 %}
 
-with userop as (
-    select
-          '{{chain}}' as blockchain
-        , '{{version}}' as version
-        , evt_block_time as block_time
-        , contract_address as entrypoint_contract
-        , evt_tx_hash as tx_hash
-        , sender
-        , userOpHash as userop_hash
-        , success
-        , paymaster
-        , actualGasCost as op_fee
-        , actualGasUsed as op_gas_used
-    from {{ userops_evt_model }}
-    {% if is_incremental() %}
-        WHERE evt_block_time >= date_trunc("day", now() - interval '1 week')
-    {% endif %}
+WITH userops_base_union AS (
+    SELECT      blockchain
+                , version
+                , block_time
+                , entrypoint_contract
+                , tx_hash
+                , sender
+                , userop_hash
+                , success
+                , paymaster
+                , op_fee
+                , beneficiary
+    FROM (
+        {% for erc4337_model in base_models %}
+          SELECT blockchain
+                , version
+                , block_time
+                , entrypoint_contract
+                , tx_hash
+                , sender
+                , userop_hash
+                , success
+                , paymaster
+                , op_fee
+                , beneficiary
+        FROM {{ erc4337_model }}
+        {% if is_incremental() %}
+        WHERE block_time >= date_trunc("day", now() - interval '1 week')
+        {% endif %}
+        {% if not loop.last %}
+        UNION ALL
+        {% endif %}
+        {% endfor %}
+    )
 )
-, handleops as (
-    select call_tx_hash as tx_hash,
-           beneficiary
-    from {{ handleops_call_model }}
-    {% if is_incremental() %}
-        WHERE call_block_time >= date_trunc("day", now() - interval '1 week')
-    {% endif %}
-)
+
 , txs as (
     select
           hash as tx_hash
@@ -46,7 +56,7 @@ with userop as (
         , effective_gas_price * gas_used as tx_fee
     from {{ transactions_model }} tx
     where hash in (
-        select tx_hash from userop
+        select tx_hash from userops_base_union
     )
     and block_time > timestamp '{{deployed_date}}'
     {% if is_incremental() %}
@@ -58,7 +68,7 @@ with userop as (
     from {{ prices_model }}
     where minute > timestamp  '{{deployed_date}}'
         and contract_address='{{wrapped_gas_address}}'
-        and blockchain='{{chain}}'
+        and blockchain='{{ blockchain }}'
     {% if is_incremental() %}
         and minute >= date_trunc("day", now() - interval '1 week')
     {% endif %}
@@ -81,8 +91,9 @@ select
     , txs.gas_symbol
     , cast(txs.tx_fee as double)/1e18 as tx_fee
     , cast(txs.tx_fee as double)*price.price/1e18 as tx_fee_usd
-    , handleops.beneficiary
-from userop
-left join txs on userop.tx_hash = txs.tx_hash
-left join handleops on userop.tx_hash = handleops.tx_hash
-left join price on date_trunc('minute', userop.block_time) = price.minute
+    , userop.beneficiary
+from userops_base_union userop
+left join txs
+    on userop.tx_hash = txs.tx_hash
+left join price
+    on date_trunc('minute', userop.block_time) = price.minute
