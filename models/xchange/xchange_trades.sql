@@ -10,7 +10,7 @@
 {% set xchange_models = [
 ref('xchange_ethereum_trades')
 , ref('xchange_optimism_trades')
-, ref('xchangge_arbitrum_trades')
+, ref('xchange_arbitrum_trades')
 , ref('xchange_polygon_trades')
 , ref('xchange_bnb_trades')
 ] %}
