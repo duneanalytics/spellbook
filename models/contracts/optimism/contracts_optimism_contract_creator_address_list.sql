@@ -351,7 +351,6 @@ WITH curated_list AS (
       ,('0xbf70200dd73d5f3aafa4f0d8adacdeaf3798b7f9', 'Cryptovania')
       ,('0x719dafe0be7abf7d2b6c67eed4fa18d970d3abb6', 'Unidex')
       ,('0x2c01f405e3c525c0cb867789aaf077f3553ccbb7', 'Lido')
-      ,('0x2e985acd6c8fa033a4c5209b0140940e24da7c5c', 'Kromatika')
       ,('0x302d2451d9f47620374b54c521423bf0403916a2', 'Synthetix')
       ,('0xfda462548ce04282f4b6d6619823a7c64fdc0185', 'Angle')
       ,('0x9aa99c23f67c81701c772b106b4f83f6e858dd2e', 'Hop Protocol')
