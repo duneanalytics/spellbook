@@ -1,6 +1,6 @@
 version: 2
 
-sources:
+sources: 
   - name: uniswap_v3_arbitrum
     description: "Arbitrum decoded tables related to Uniswap v3 contract"
     freshness:
@@ -47,8 +47,8 @@ sources:
           - &tick
             name: tick
             description: the log base 1.0001 of price of the pool after the swap"
-
-      - name: Factory_evt_PoolCreated
+            
+      - name: UniswapV3Factory_evt_PoolCreated
         loaded_at_field: evt_block_time
         description: "" # to-do
         columns:
