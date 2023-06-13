@@ -1,6 +1,6 @@
-{% macro erc4337_userops_trades(
-    blockchain='',
-    models=[],
+{% macro erc4337_userops_basics(
+    chain='',
+    version='',
     userops_evt_model=null,
     handleops_call_model=null,
     )
