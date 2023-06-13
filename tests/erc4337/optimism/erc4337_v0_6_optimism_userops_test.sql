@@ -22,4 +22,4 @@ FROM
     unit_test
 WHERE
     tx_hash_test = FALSE
-    OR bundler = FALSE
+    OR bundler_test = FALSE
