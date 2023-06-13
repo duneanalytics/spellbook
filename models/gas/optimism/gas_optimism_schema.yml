@@ -5,7 +5,7 @@ models:
     meta:
       blockchain: optimism
       sector: gas
-      contributors: soispoke
+      contributors: soispoke, msilb7
     config:
       tags: ['optimism', 'gas', 'fees']
     description: >
@@ -103,3 +103,21 @@ models:
       - &type
         name: type
         description: "Transaction type: Legacy (Pre EIP 1559) or DynamicFee (Post EIP-1559)"
+      - &l1_data_fee_native
+        name: l1_data_fee_native
+        description: "Gas Used for L1 Data Gas (data availability fee) in ETH"
+      - &l1_data_fee_usd
+        name: l1_data_fee_usd
+        description: "Gas Used for L1 Data Gas (data availability fee) in USD"
+      - &l2_base_fee_native
+        name: l2_base_fee_native
+        description: "Gas Used for L2 Execution Gas from the base fee gas price in ETH"
+      - &l2_base_fee_usd
+        name: l2_base_fee_usd
+        description: "Gas Used for L2 Execution Gas from the base fee gas price in USD"
+      - &l2_priority_fee_native
+        name: l2_priority_fee_native
+        description: "Gas Used for L2 Execution Gas from the priority fee paid in ETH"
+      - &l2_priority_fee_usd
+        name: l2_priority_fee_usd
+        description: "Gas Used for L2 Execution Gas from the priority fee paid in USD"

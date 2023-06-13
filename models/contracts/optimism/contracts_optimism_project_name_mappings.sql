@@ -77,7 +77,6 @@ from (
     ,('arrakis','Arrakis Finance')
     ,('arrakis_finance','Arrakis Finance')
     ,('collab_land_dao_pass', 'Collab Land')
-    ,('Llama', 'Llamapay')
     ,('Perpetualprotocol','Perpetual Protocol')
     ,('perp_hottub','Perpetual Protocol')
     ,('Collab Land', 'Collab.Land')
@@ -98,5 +97,6 @@ from (
     ,('holograph_operator', 'Holograph')
     ,('sound_xyz', 'Sound.xyz')
     ,('sound xyz', 'Sound.xyz')
+    ,('splits','0xSplits')
 
     ) as temp_table (dune_name, mapped_name)

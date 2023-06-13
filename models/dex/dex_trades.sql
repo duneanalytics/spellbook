@@ -67,7 +67,29 @@
 ] %}
 
 
-SELECT *
+SELECT  blockchain,
+        project,
+        version,
+        block_date,
+        block_time,
+        token_bought_symbol,
+        token_sold_symbol,
+        token_pair,
+        token_bought_amount,
+        token_sold_amount,
+        token_bought_amount_raw,
+        token_sold_amount_raw,
+        amount_usd,
+        token_bought_address,
+        token_sold_address,
+        taker,
+        maker,
+        project_contract_address,
+        tx_hash,
+        tx_from,
+        tx_to,
+        trace_address,
+        evt_index
 FROM (
     {% for dex_model in dex_trade_models %}
     SELECT
@@ -93,7 +115,8 @@ FROM (
         tx_from,
         tx_to,
         trace_address,
-        evt_index
+        evt_index,
+        row_number() over (partition by tx_hash, evt_index, trace_address order by tx_hash) as duplicates_rank
     FROM {{ dex_model }}
     {% if not loop.last %}
     {% if is_incremental() %}
@@ -103,3 +126,4 @@ FROM (
     {% endif %}
     {% endfor %}
 )
+WHERE duplicates_rank = 1
