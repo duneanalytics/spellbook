@@ -1,0 +1,51 @@
+{{ config
+(
+    schema = 'erc4337_ethereum',
+    alias ='userops',
+    partition_by = ['block_time'],
+    materialized = 'incremental',
+    file_format = 'delta',
+    incremental_strategy = 'merge',
+    unique_key = ['userop_hash', 'tx_hash'],
+    post_hook='{{ expose_spells(\'["ethereum"]\',
+                                    "project",
+                                    "erc4337",
+                                    \'["0xbitfly"]\') }}'
+)
+}}
+
+
+{% set erc4337_models = [
+ref('erc4337_v0_5_ethereum_userops')
+, ref('erc4337_v0_6_ethereum_userops')
+] %}
+
+SELECT *
+FROM (
+    {% for erc4337_model in erc4337_models %}
+      SELECT blockchain
+        , version
+        , block_time
+        , entrypoint_contract
+        , tx_hash
+        , sender
+        , userop_hash
+        , success
+        , paymaster
+        , op_gas_cost
+        , op_gas_cost_usd
+        , bundler
+        , tx_to
+        , gas_symbol
+        , tx_gas_cost
+        , tx_gas_cost_usd
+        , beneficiary
+    FROM {{ erc4337_model }}
+    {% if is_incremental() %}
+    WHERE block_time >= date_trunc("day", now() - interval '1 week')
+    {% endif %}
+    {% if not loop.last %}
+    UNION ALL
+    {% endif %}
+    {% endfor %} 
+)
