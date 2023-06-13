@@ -7,6 +7,7 @@
 -- 5. add aggregator columns
 -- 6. fix buyer or seller for aggregator txs
 -- 7. calculate platform and royalty rates
+-- 8. deduplicate based on sub_tx_trade_id
 
 WITH base_union as (
     {% for nft_model in models %}
@@ -32,7 +33,8 @@ WITH base_union as (
         royalty_fee_amount_raw,
         platform_fee_address,   -- optional
         royalty_fee_address,    -- optional
-        sub_tx_trade_id
+        sub_tx_trade_id,
+        row_number() over (partition by tx_hash, sub_tx_trade_id order by tx_hash) as duplicates_rank
     FROM {{ nft_model[2] }}
     {% if is_incremental() %}
     WHERE block_time >= date_trunc("day", now() - interval '1 week')
@@ -114,6 +116,7 @@ ON agg1.contract_address is null    -- only match if agg1 produces no matches, t
 LEFT JOIN {{ aggregator_markers }} agg_mark
 ON RIGHT(tx.data, agg_mark.hash_marker_size) = agg_mark.hash_marker
 {% endif %}
+WHERE base.duplicates_rank = 1
 )
 
 

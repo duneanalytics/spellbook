@@ -509,6 +509,13 @@ WITH curated_list AS (
       ,('0xB8Cd93C83A974649D76B1c19f311f639e62272BC', 'Axelar')
       ,('0x98b2920d53612483f91f12ed7754e51b4a77919e', 'Axelar')
       ,('0xE86375704CDb8491a5Ed82D90DceCE02Ee0ac25F', 'Axelar')
+      ,('0x9ebC8E61f87A301fF25a606d7C06150f856F24E2', '0xSplits')
+      ,('0x15bc81b35a8498cee37e2c7b857538b006cecaa5', 'Cinch Protocol')
+      ,('0x7EEeF54Df0596633dbf6Fa3C88dEB1E3eA85ECE8', 'Metronome')
+      ,('0x5472Cf4F1bE2aA6ad27C6F93101f7899cCAdBaf7', 'Rhino.fi')
+      ,('0x8de39c1Fa14b6082053e7cD937d6Ebe58A69D6D2', 'KyberSwap')
+      ,('0xfB3485c2e209A5cfBDC1447674256578f1A80eE3', 'Abracadabra')
+      ,('0x085909388fc0cE9E5761ac8608aF8f2F52cb8B89', 'Interest Protocol')
 
   ) as temp_table (creator_address, contract_project)
 
