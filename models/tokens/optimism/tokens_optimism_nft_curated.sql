@@ -291,5 +291,6 @@ FROM
 ,('0x2335022c740d17c2837f9C884Bfe4fFdbf0A95D5', 'Optimist NFT')
 ,('0x1B36291fF8F503CfB4E3baBe198a40398BCF54AD', 'Bedrock')
 ,('0x1846fb181a12644dec6af707b23b39d2d19c1879', 'Gitcoin Passport Score')
+,('0xA077FA66Cf4C8044Ca4680db80B07CE85E8Af0B4', 'Getaverse SBT')
 
 ) as temp_table (contract_address, name)
