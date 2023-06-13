@@ -34,7 +34,7 @@ WITH dexs AS
     FROM
         {{ source('uniswap_v3_arbitrum', 'Pair_evt_Swap') }} t
     INNER JOIN 
-        {{ source('uniswap_v3_arbitrum', 'Factory_evt_PoolCreated') }} f
+        {{ source('uniswap_v3_arbitrum', 'UniswapV3Factory_evt_PoolCreated') }} f
         ON f.pool = t.contract_address
     {% if is_incremental() %}
     WHERE t.evt_block_time >= date_trunc("day", now() - interval '1 week')

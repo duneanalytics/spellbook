@@ -1,6 +1,6 @@
 version: 2
 
-sources:
+sources: 
   - name: uniswap_v3_bnb
     description: "BNB chain decoded tables related to Uniswap v3 contract"
     freshness:
@@ -48,7 +48,7 @@ sources:
             name: tick
             description: the log base 1.0001 of price of the pool after the swap"
 
-      - name: Factory_evt_PoolCreated
+      - name: UniswapV3Factory_evt_PoolCreated
         loaded_at_field: evt_block_time
         description: "Uniswap v3 Factory PoolCreated events table"
         columns:
@@ -74,6 +74,6 @@ sources:
           - &token1
             name: token1
             description: "The second of the two tokens in the pool"
-
+            
       - name: Pair_evt_Flash
         loaded_at_field: evt_block_time
