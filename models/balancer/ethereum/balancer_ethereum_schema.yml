@@ -356,8 +356,11 @@ models:
           combination_of_columns:
             - block_date
             - blockchain
+            - project
+            - version
             - tx_hash
             - evt_index
+            - trace_address
       - check_dex_seed:
           blockchain: ethereum
           project: balancer
@@ -401,11 +404,8 @@ models:
           combination_of_columns:
             - block_date
             - blockchain
-            - project
-            - version
             - tx_hash
             - evt_index
-            - trace_address
       - check_dex_seed:
           blockchain: ethereum
           project: balancer
