@@ -1,29 +1,16 @@
-{{ config
-(
-    schema = 'erc4337_v0_5_arbitrum',
-    alias ='userops',
-    partition_by = ['block_time'],
-    materialized = 'incremental',
-    file_format = 'delta',
-    incremental_strategy = 'merge',
-    unique_key = ['userop_hash', 'tx_hash'],
-    post_hook='{{ expose_spells(\'["arbitrum"]\',
-                                    "project",
-                                    "erc4337",
-                                    \'["0xbitfly", "hosuke"]\') }}'
-)
-}}
-
-
-{% set chain = 'arbitrum' %}
-{% set gas_symbol = 'ETH' %}
-{% set wrapped_gas_address = '0x82af49447d8a07e3bd95bd0d56f35241523fbab1' %}
-{% set version = 'v0.5' %}
-{% set deployed_date = '2023-02-15' %}
-
+{% macro erc4337_userops_trades(
+    blockchain='',
+    models=[],
+    userops_evt_model=null,
+    handleops_call_model=null,
+    transactions_model=null,
+    tokens_erc20_model=null,
+    prices_model=null
+    )
+%}
 
 with userop as (
-    select 
+    select
           '{{chain}}' as blockchain
         , '{{version}}' as version
         , evt_block_time as block_time
@@ -35,27 +22,29 @@ with userop as (
         , paymaster
         , actualGasCost as op_fee
         , actualGasUsed as op_gas_used
-    from {{ source('erc4337_arbitrum','EntryPoint_v0_5_evt_UserOperationEvent') }}
+    from {{ userops_evt_model }}
     {% if is_incremental() %}
         WHERE evt_block_time >= date_trunc("day", now() - interval '1 week')
     {% endif %}
 )
 , handleops as (
-    select call_tx_hash as tx_hash, beneficiary from {{source('erc4337_arbitrum', 'EntryPoint_v0_5_call_handleOps')}}
+    select call_tx_hash as tx_hash,
+           beneficiary
+    from {{ handleops_call_model }}
     {% if is_incremental() %}
         WHERE call_block_time >= date_trunc("day", now() - interval '1 week')
     {% endif %}
 )
 , txs as (
-    select 
+    select
           hash as tx_hash
         , tx.from as tx_from
         , tx.to as tx_to
         , '{{gas_symbol}}' as gas_symbol
         , cast(gas_price as bigint) as tx_gas_price
         , gas_used as tx_gas_used
-        , effective_gas_price*gas_used as tx_fee
-    from {{ source('arbitrum', 'transactions') }} tx
+        , effective_gas_price * gas_used as tx_fee
+    from {{ transactions_model }} tx
     where hash in (
         select tx_hash from userop
     )
@@ -65,16 +54,17 @@ with userop as (
     {% endif %}
 )
 , price as (
-    select symbol, decimals, minute, price  
-    from {{source('prices','usd')}}
+    select symbol, decimals, minute, price
+    from {{ prices_model }}
     where minute > timestamp  '{{deployed_date}}'
         and contract_address='{{wrapped_gas_address}}'
         and blockchain='{{chain}}'
-        {% if is_incremental() %}
-         and minute >= date_trunc("day", now() - interval '1 week')
-        {% endif %}
+    {% if is_incremental() %}
+        and minute >= date_trunc("day", now() - interval '1 week')
+    {% endif %}
 )
-select 
+
+select
       userop.blockchain
     , userop.version
     , userop.block_time
@@ -92,7 +82,7 @@ select
     , cast(txs.tx_fee as double)/1e18 as tx_fee
     , cast(txs.tx_fee as double)*price.price/1e18 as tx_fee_usd
     , handleops.beneficiary
-from userop 
+from userop
 left join txs on userop.tx_hash = txs.tx_hash
 left join handleops on userop.tx_hash = handleops.tx_hash
 left join price on date_trunc('minute', userop.block_time) = price.minute
