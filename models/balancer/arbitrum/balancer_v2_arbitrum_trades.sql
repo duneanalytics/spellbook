@@ -13,7 +13,7 @@
     )
 }}
 
-{% set project_start_date = '2021-04-20' %}
+{% set project_start_date = '2021-08-27' %}
 
 WITH
     swap_fees AS (
