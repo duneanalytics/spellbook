@@ -279,7 +279,7 @@ models:
 
  - name: nft_ethereum_trades_beta_ported
    meta:
-     blockchain: ethereum, solana, bnb, optimism, arbitrum, polygon
+     blockchain: ethereum
      sector: nft
      contributors: 0xRob
    config:
