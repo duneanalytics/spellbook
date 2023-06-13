@@ -287,4 +287,9 @@ FROM
 ,('0x50AcdeA593801b190F33D3BA8b592cf5D7d116f7', 'Caravaggio Editions')
 ,('0x867b32c8c09ee78fe50b5215739ecffb6393d3ba', ' _404/LostLayer')
 ,('0xf51ef5655df445fe9ea2358e7db24c0c93c8fe6e', 'Wahoo')
+,('0x1e4e168c59033e6040eefe294c8d0a02aa770246', 'DRAGOLD')
+,('0x2335022c740d17c2837f9C884Bfe4fFdbf0A95D5', 'Optimist NFT')
+,('0x1B36291fF8F503CfB4E3baBe198a40398BCF54AD', 'Bedrock')
+,('0x1846fb181a12644dec6af707b23b39d2d19c1879', 'Gitcoin Passport Score')
+
 ) as temp_table (contract_address, name)
