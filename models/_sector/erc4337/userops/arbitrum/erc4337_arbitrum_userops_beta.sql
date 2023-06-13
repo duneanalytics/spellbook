@@ -27,7 +27,7 @@
         wrapped_gas_address = '0x82af49447d8a07e3bd95bd0d56f35241523fbab1',
         gas_symbol = 'ETH',
         deployed_date = '2023-02-15'
-        transactions_model = {{ source('arbitrum', 'transactions') }},
-        prices_model = {{ source('prices','usd') }}
+        transactions_model = source('arbitrum', 'transactions'),
+        prices_model = source('prices','usd')
     )
 }}
