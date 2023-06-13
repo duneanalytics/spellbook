@@ -283,7 +283,7 @@ models:
      sector: nft
      contributors: 0xRob
    config:
-     tags: [ 'nft', 'opensea', 'looksrare', 'x2y2', 'magiceden', 'sudoswap', 'foundation', 'element', 'zora', 'ethereum', 'bnb', 'solana', 'events', 'polygon', 'optimism', 'arbitrum', 'rarible', 'aavegotchi', 'oneplanet', 'fractal' ]
+     tags: ['ethereum', 'nft', 'trades', 'beta']
    description: "backport of the new nft trades model"
 
  - name: nft_events_forward_ported
