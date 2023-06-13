@@ -41,7 +41,7 @@ with userop as (
     {% endif %}
 )
 , handleops as (
-    select call_tx_hash as tx_hash, beneficiary from {{source('erc4337_arbitrum', 'EntryPoint_v0_6_call_handleOps')}}
+    select call_tx_hash as tx_hash, beneficiary from {{source('erc4337_arbitrum', 'EntryPoint_v0_5_call_handleOps')}}
     {% if is_incremental() %}
         WHERE call_block_time >= date_trunc("day", now() - interval '1 week')
     {% endif %}
@@ -49,7 +49,7 @@ with userop as (
 , txs as (
     select 
           hash as tx_hash
-        , "from" as tx_from
+        , `from` as tx_from
         , to as tx_to
         , '{{gas_symbol}}' as gas_symbol
         , cast(gas_price as bigint) as tx_gas_price

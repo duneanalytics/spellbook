@@ -50,7 +50,7 @@ with userop as (
 , txs as (
     select 
           hash as tx_hash
-        , "from" as tx_from
+        , `from` as tx_from
         , to as tx_to
         , '{{gas_symbol}}' as gas_symbol
         , cast(gas_price as bigint) as tx_gas_price
