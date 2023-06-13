@@ -2,7 +2,7 @@
     chain='',
     version='',
     userops_evt_model=null,
-    handleops_call_model=null,
+    handleops_call_model=null
     )
 %}
 
