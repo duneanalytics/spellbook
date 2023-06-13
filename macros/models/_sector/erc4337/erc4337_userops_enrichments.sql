@@ -97,3 +97,5 @@ left join txs
     on userop.tx_hash = txs.tx_hash
 left join price
     on date_trunc('minute', userop.block_time) = price.minute
+
+{% endmacro %}

@@ -47,3 +47,5 @@ select
     , handleops.beneficiary
 from userop
 left join handleops on userop.tx_hash = handleops.tx_hash
+
+{% endmacro %}
