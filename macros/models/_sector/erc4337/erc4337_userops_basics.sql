@@ -1,5 +1,5 @@
 {% macro erc4337_userops_basics(
-    chain='',
+    blockchain='',
     version='',
     userops_evt_model=null,
     handleops_call_model=null
@@ -8,8 +8,8 @@
 
 with userop as (
     select
-          '{{chain}}' as blockchain
-        , '{{version}}' as version
+          '{{ blockchain }}' as blockchain
+        , '{{ version }}' as version
         , evt_block_time as block_time
         , contract_address as entrypoint_contract
         , evt_tx_hash as tx_hash
