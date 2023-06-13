@@ -8,11 +8,11 @@
         post_hook='{{ expose_spells(\'["ethereum", "bnb", "avalanche_c", "gnosis", "optimism", "arbitrum", "fantom", "polygon"]\',
                                 "sector",
                                 "dex",
-                                \'["jeff-dude", "hosuke", "0xRob", "pandajackson42", "Henrystats", "scoffie", "zhongyiio", "justabi", "umer_h_adil", "mtitus6", "dbustos20", "tian7", "bh2smith"]\') }}'
+                                \'["jeff-dude", "hosuke", "0xRob", "pandajackson42", "Henrystats", "scoffie", "zhongyiio", "justabi", "umer_h_adil", "mtitus6", "dbustos20", "tian7", "bh2smith", "rantum"]\') }}'
         )
 }}
 
-
+ 
 {% set dex_trade_models = [
  ref('uniswap_trades')
 ,ref('sushiswap_trades')
@@ -63,6 +63,7 @@
 ,ref('glacier_avalanche_c_trades')
 ,ref('thena_trades')
 ,ref('camelot_trades')
+,ref('zeroex_native_trades')
 ] %}
 
 
