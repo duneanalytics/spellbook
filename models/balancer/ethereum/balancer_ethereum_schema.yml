@@ -394,7 +394,7 @@ models:
     meta:
       blockchain: ethereum
       sector: dex
-      contributors: bizzyvinci, mendesfabio, jacektrocinski, thetroyharris
+      contributors: bizzyvinci, thetroyharris
     config:
       tags: [ 'balancer', 'ethereum', 'amm', 'trades', 'dex' ]
     description: >
