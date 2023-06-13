@@ -71,7 +71,7 @@ with userop as (
         and contract_address='{{wrapped_gas_address}}'
         and blockchain='{{chain}}'
     {% if is_incremental() %}
-        and block_time >= date_trunc("day", now() - interval '1 week')
+        and minute >= date_trunc("day", now() - interval '1 week')
     {% endif %}
 )
 select 
