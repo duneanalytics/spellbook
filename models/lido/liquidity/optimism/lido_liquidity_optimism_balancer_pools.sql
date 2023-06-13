@@ -464,7 +464,7 @@ on main.day = paired4.day and main.pool_id = paired4.pool_id
         case when tokenOut in (lower('0x1F32b1c2345538c0c6f582fCB022739c4A194Ebb'), lower('0x7e9250cc13559eb50536859e8c076ef53e275fb3')) then wsteth_price.price*amountOut/1e18 
              when tokenIn in  (lower('0x1F32b1c2345538c0c6f582fCB022739c4A194Ebb'), lower('0x7e9250cc13559eb50536859e8c076ef53e275fb3')) then  wsteth_price.price*amountIn/1e18 
              else 0 end) as trading_volume
-    from balancer_v2_optimism.Vault_evt_Swap s
+    from {{source('balancer_v2_optimism','Vault_evt_Swap')}} s
     left join wsteth_prices_hourly wsteth_price on date_trunc('hour', s.evt_block_time) >= wsteth_price.time and date_trunc('hour', s.evt_block_time) < wsteth_price.next_time
     where s.poolId in (select pool_id from pools)
     group by 1,2
