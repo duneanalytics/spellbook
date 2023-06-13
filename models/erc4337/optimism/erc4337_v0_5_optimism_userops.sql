@@ -69,7 +69,7 @@ with userop as (
     select symbol, decimals, minute, price  
     from {{source('prices','usd')}}
     where minute > timestamp  '{{deployed_date}}'
-        and contract_address={{wrapped_gas_address}}
+        and contract_address='{{wrapped_gas_address}}'
         and blockchain='{{chain}}'
         {% if is_incremental() %}
          and minute >= date_trunc("day", now() - interval '1 week')
