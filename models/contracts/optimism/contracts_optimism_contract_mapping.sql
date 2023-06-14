@@ -393,6 +393,7 @@ WHERE contract_order = 1
   where 
     true
     {% if is_incremental() %} -- this filter will only be applied on an incremental run 
+    -- make sure we don't already have this mapped to the right project
     and not exists (
       select 1
       from {{ this }} as gc
