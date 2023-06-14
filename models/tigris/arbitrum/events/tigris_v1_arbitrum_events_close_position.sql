@@ -84,17 +84,17 @@ close_position_v5 as (
 )
 
 
-SELECT *, '1.2' as version FROM close_position_v2
+SELECT *, 'v1.2' as version FROM close_position_v2
 
 UNION ALL
 
-SELECT *, '1.3' as version FROM close_position_v3
+SELECT *, 'v1.3' as version FROM close_position_v3
 
 UNION ALL
 
-SELECT *, '1.4' as version FROM close_position_v4
+SELECT *, 'v1.4' as version FROM close_position_v4
 
 UNION ALL
 
-SELECT *, '1.5' as version FROM close_position_v5
+SELECT *, 'v1.5' as version FROM close_position_v5
 ;
