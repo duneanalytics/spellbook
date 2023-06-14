@@ -136,7 +136,7 @@ SELECT *
 
       ,CASE WHEN nd.creator_address IS NOT NULL THEN created_tx_to
         ELSE t.top_level_tx_to END AS top_level_tx_to
-        
+
       ,CASE WHEN nd.creator_address IS NOT NULL THEN created_tx_method_id
         ELSE t.top_level_tx_method_id END AS top_level_tx_method_id
       ---
@@ -156,13 +156,16 @@ SELECT *
       and t.creation_tx_hash = sd.creation_tx_hash
       and ct.created_time = sd.created_time
       and sd.created_time >= date_trunc('day', now() - interval '1 week')
+
     -- If the creator becomes marked as non-deterministic, we want to re-run it.
     left join {{ref('contracts_optimism_nondeterministic_contract_creators')}} as nd 
       ON nd.creator_address = t.creator_address
+
+    -- Don't pull contracts that are in the incremental group (prevent dupes)
     WHERE contract_address NOT IN (
-      -- Don't pull contracts that are in the incremental group (prevent dupes)
       SELECT address FROM {{ source('optimism', 'creation_traces') }} WHERE ct.block_time >= date_trunc('day', now() - interval '1 week')
     )
+    
       {% endif %} -- incremental filter
   ) as x
   group by 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, code
