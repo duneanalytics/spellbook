@@ -51,9 +51,14 @@ WITH userops_base_union AS (
         , tx.from as tx_from
         , tx.to as tx_to
         , '{{gas_symbol}}' as gas_symbol
-        , cast(gas_price as bigint) as tx_gas_price
-        , gas_used as tx_gas_used
-        , effective_gas_price * gas_used as tx_fee
+        case 
+            when {{ blockchain }} = 'arbitrum' then cast(gas_used as double) * gas_price / 1e18
+            when {{ blockchain }} = 'optimism' then (cast(gas_used as double)* gas_price )+l1_fee) / 1e18
+            else cast(gas_used as double) * gas_price
+        end as tx_fee
+        -- , cast(gas_used as double) * gas_price / 1e18 as tx_fee
+        -- , cast(gas_used as double) * effective_gas_price / 1e18 as tx_fee
+        -- , (cast(gas_used as double)* gas_price )+l1_fee) / 1e18 as tx_fee
     from {{ transactions_model }} tx
     where hash in (
         select tx_hash from userops_base_union
@@ -84,13 +89,13 @@ select
     , userop.userop_hash
     , userop.success
     , userop.paymaster
-    , userop.op_fee/1e18 as op_fee
-    , userop.op_fee*price.price/1e18 as op_fee_usd
+    , userop.op_fee
+    , userop.op_fee * price.price as op_fee_usd
     , txs.tx_from as bundler
     , txs.tx_to
     , txs.gas_symbol
-    , cast(txs.tx_fee as double)/1e18 as tx_fee
-    , cast(txs.tx_fee as double)*price.price/1e18 as tx_fee_usd
+    , txs.tx_fee
+    , txs.tx_fee * price.price as tx_fee_usd
     , userop.beneficiary
 from userops_base_union userop
 left join txs

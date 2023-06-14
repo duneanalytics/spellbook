@@ -17,8 +17,7 @@ with userop as (
         , userOpHash as userop_hash
         , success
         , paymaster
-        , actualGasCost as op_fee
-        , actualGasUsed as op_gas_used
+        , actualGasCost/1e18 as op_fee
     from {{ userops_evt_model }}
     {% if is_incremental() %}
         WHERE evt_block_time >= date_trunc("day", now() - interval '1 week')
@@ -43,7 +42,7 @@ select
     , userop.userop_hash
     , userop.success
     , userop.paymaster
-    , userop.op_fee/1e18 as op_fee
+    , userop.op_fee
     , handleops.beneficiary
 from userop
 left join handleops on userop.tx_hash = handleops.tx_hash
