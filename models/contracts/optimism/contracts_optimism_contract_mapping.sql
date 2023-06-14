@@ -386,7 +386,7 @@ WHERE contract_order = 1
     ,cast(NULL as string) as created_tx_from
     ,cast(NULL as string) as created_tx_to
     ,cast(NULL as string) as created_tx_method_id
-    ,l.tx_index AS created_tx_index
+    ,cast(NULL as integer) AS created_tx_index
     ,cast(NULL as bigint) as code_bytelength --todo
     ,1 as code_deploy_rank
   from {{ source('ovm1_optimism', 'contracts') }} as c
