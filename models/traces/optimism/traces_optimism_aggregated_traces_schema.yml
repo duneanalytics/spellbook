@@ -14,6 +14,7 @@ models:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
               - tx_hash
+              - block_number
               - trace_from
               - trace_to
               - trace_method_id
