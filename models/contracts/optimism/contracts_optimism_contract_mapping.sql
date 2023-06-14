@@ -581,6 +581,7 @@ select
   ,c.code_bytelength
   ,c.token_standard
   ,c.code_deploy_rank
+  ,CASE WHEN c.trace_creator_address = c.created_tx_from THEN 1 ELSE 0 END AS is_eoa_deployed
 
 from cleanup as c 
 left join {{ source('ovm1_optimism', 'contracts') }} as ovm1c

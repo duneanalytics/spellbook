@@ -101,6 +101,9 @@ models:
       - &code_deploy_rank
         name: code_deploy_rank
         description: "Was this the 1st, 2rd, 3rd, etc time the same exact bytecode was deployed? (1 = 1st). This can be used for spam filtering."
+      - &is_eoa_deployed
+        name: is_eoa_deployed
+        description: "Was the contract deployed by an EOA (test if the trace creator = the transaction sender)"
 
   - name: contracts_optimism_contract_creator_address_list
     meta:
