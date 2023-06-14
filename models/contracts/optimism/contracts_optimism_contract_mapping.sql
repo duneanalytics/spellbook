@@ -59,12 +59,12 @@ SELECT *
     ,created_tx_method_id
     ,created_tx_index
 
-    -- ,top_level_time
-    -- ,top_level_block_number
-    -- ,top_level_tx_hash
-    -- ,top_level_tx_from
-    -- ,top_level_tx_to
-    -- ,top_level_tx_method_id
+    ,top_level_time
+    ,top_level_block_number
+    ,top_level_tx_hash
+    ,top_level_tx_from
+    ,top_level_tx_to
+    ,top_level_tx_method_id
 
     ,code_bytelength
     ,is_self_destruct
@@ -165,7 +165,7 @@ SELECT *
     WHERE contract_address NOT IN (
       SELECT address FROM {{ source('optimism', 'creation_traces') }} WHERE ct.block_time >= date_trunc('day', now() - interval '1 week')
     )
-    
+
       {% endif %} -- incremental filter
   ) as x
   group by 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, code
