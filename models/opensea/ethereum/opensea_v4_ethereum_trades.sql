@@ -20,7 +20,7 @@
 {% set c_seaport_first_date = "2023-02-01" %}
 {% set c_native_token_address = "0x0000000000000000000000000000000000000000" %}
 {% set c_alternative_token_address = "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2" %}
-{% set c_native_symbol = "ETH" %}
+{% set c_alternative_symbol = "WETH" %}
 
 with source_ethereum_transactions as (
     select *
@@ -439,7 +439,7 @@ with source_ethereum_transactions as (
           ,t.from as tx_from
           ,t.to as tx_to
           ,right(t.data,8) as right_hash
-          ,case when a.token_contract_address = '{{c_native_token_address}}' then '{{c_native_symbol}}'
+          ,case when a.token_contract_address = '{{c_native_token_address}}' or a.token_contract_address is null then '{{c_alternative_symbol}}'
                 else e.symbol
            end as token_symbol
           ,case when a.token_contract_address = '{{c_native_token_address}}' or a.token_contract_address is null then '{{c_alternative_token_address}}'
