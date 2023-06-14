@@ -55,7 +55,7 @@ FROM (
       and sd.block_time >= date_trunc('day', now() - interval '1 week')
       and cr.contract_address NOT IN (SELECT contract_address FROM {{this}} ) --ensure no duplicates
       {% endif %}
-    group by 1, 2, 3, 4
+    group by 1, 2, 3, 4, 5
 
     UNION ALL
 
