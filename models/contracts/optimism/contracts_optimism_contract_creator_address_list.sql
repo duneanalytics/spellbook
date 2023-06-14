@@ -323,7 +323,7 @@ WITH curated_list AS (
       ,('0x685723b9dc89bdf28ba5f98f9a8c0ac899bd6e77', 'Jarvis Network')
       ,('0x1e7b390149Abb3B891e0a7027E111188032D4540', 'RadioShack Swap')
       ,('0x4C3490dF15edFa178333445ce568EC6D99b5d71c', 'Reaper Farm')
-      ,('0xf0974c239b7d08b7240b690b69ec3dd8ae783efc', 'Apetimism Launchapd')
+      ,('0xf0974c239b7d08b7240b690b69ec3dd8ae783efc', 'Apetimism Launchpad')
       ,('0x5cb01385d3097b6a189d1ac8ba3364d900666445', 'Overnight+')
       ,('0xA52fECFe3F0D4a77A572dec9B72277abC5dFD9c6', 'NEX')
       ,('0xb98d4d4e205aff4d4755e9df19bd0b8bd4e0f148', 'Fuji Finance')
