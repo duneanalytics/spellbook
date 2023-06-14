@@ -403,7 +403,7 @@ models:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
-            - block_date
+            - block_time
             - tx_hash
             - evt_index
       - check_dex_seed:
