@@ -78,12 +78,12 @@ SELECT *
       ,ct.block_time as created_time
       ,ct.block_number as created_block_number
       ,ct.tx_hash as creation_tx_hash
-      -- ,t.block_time as top_level_time
-      -- ,t.block_number as top_level_block_number
-      -- ,t.hash as top_level_tx_hash
-      -- ,t.from AS top_level_tx_from
-      -- ,t.to AS top_level_tx_to
-      -- ,substring(t.data,1,10) AS top_level_tx_method_id
+      ,t.block_time as top_level_time
+      ,t.block_number as top_level_block_number
+      ,t.hash as top_level_tx_hash
+      ,t.from AS top_level_tx_from
+      ,t.to AS top_level_tx_to
+      ,substring(t.data,1,10) AS top_level_tx_method_id
       ,t.from AS created_tx_from
       ,t.to AS created_tx_to
       ,substring(t.data,1,10) AS created_tx_method_id
@@ -121,12 +121,25 @@ SELECT *
       ,t.created_time
       ,t.created_block_number
       ,t.creation_tx_hash
-      -- ,t.top_level_time
-      -- ,t.top_level_block_number
-      -- ,t.top_level_tx_hash
-      -- ,t.top_level_tx_from
-      -- ,t.top_level_tx_to
-      -- ,t.top_level_tx_method_id
+      -- If the creator becomes marked as non-deterministic, we want to re-map
+      ,CASE WHEN nd.creator_address IS NOT NULL THEN t.created_time
+        ELSE t.top_level_time END AS top_level_time
+
+      ,CASE WHEN nd.creator_address IS NOT NULL THEN t.created_block_number
+        ELSE t.top_level_block_number END AS top_level_block_number
+
+      ,CASE WHEN nd.creator_address IS NOT NULL THEN t.creation_tx_hash
+        ELSE t.top_level_tx_hash END AS top_level_tx_hash
+
+      ,CASE WHEN nd.creator_address IS NOT NULL THEN created_tx_from
+        ELSE t.top_level_tx_from END AS top_level_tx_from
+
+      ,CASE WHEN nd.creator_address IS NOT NULL THEN created_tx_to
+        ELSE t.top_level_tx_to END AS top_level_tx_to
+        
+      ,CASE WHEN nd.creator_address IS NOT NULL THEN created_tx_method_id
+        ELSE t.top_level_tx_method_id END AS top_level_tx_method_id
+      ---
       ,t.created_tx_from
       ,t.created_tx_to
       ,t.created_tx_method_id
@@ -143,7 +156,13 @@ SELECT *
       and t.creation_tx_hash = sd.creation_tx_hash
       and ct.created_time = sd.created_time
       and sd.created_time >= date_trunc('day', now() - interval '1 week')
-
+    -- If the creator becomes marked as non-deterministic, we want to re-run it.
+    left join {{ref('contracts_optimism_nondeterministic_contract_creators')}} as nd 
+      ON nd.creator_address = t.creator_address
+    WHERE contract_address NOT IN (
+      -- Don't pull contracts that are in the incremental group (prevent dupes)
+      SELECT address FROM {{ source('optimism', 'creation_traces') }} WHERE ct.block_time >= date_trunc('day', now() - interval '1 week')
+    )
       {% endif %} -- incremental filter
   ) as x
   group by 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, code
@@ -181,7 +200,7 @@ WHERE contract_order = 1
       {{i}} as level 
       ,b.trace_creator_address -- get the original contract creator address
       ,
-      case when b.creator_address IN (SELECT creator_address FROM {{ref('contracts_optimism_nondeterministic_contract_creators')}})
+      case when nd.creator_address IS NOT NULL
         THEN b.created_tx_from --when non-deterministic creator, we take the tx sender
         ELSE coalesce(u.creator_address, b.creator_address)
       END as creator_address -- get the highest-level creator we know of
