@@ -94,3 +94,35 @@ models:
       - *main_token_usd_reserve
       - *paired_token_usd_reserve
       - *trading_volume
+
+  - name: lido_liquidity_optimism_balancer_pools
+    meta:
+      blockchain: optimism
+      project: lido
+      contributors: gregshestakovlido, ppclunghe
+    config:
+      tags: ['optimism','lido','liquidity']
+    description: 
+        Lido wstETH liquidity pools on Balancer Optimism
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - pool
+            - blockchain
+            - time
+    columns:
+      - *pool_name
+      - *pool
+      - *blockchain
+      - *project
+      - *fee
+      - *time
+      - *main_token
+      - *main_token_symbol
+      - *paired_token
+      - *paired_token_symbol
+      - *main_token_reserve
+      - *paired_token_reserve
+      - *main_token_usd_reserve
+      - *paired_token_usd_reserve
+      - *trading_volume      
