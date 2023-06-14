@@ -1,0 +1,172 @@
+version: 2
+
+models:
+
+  - name: erc4337_v0_5_optimism_userops_basics
+    meta:
+      blockchain: optimism
+      project: erc4337
+      contributors: 0xbitfly, hosuke
+    config:
+      tags: ["optimism", "erc4337", "account", "abstraction", "entrypoint"]
+    description: erc4337 v0.5 user operations on optimism
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - userop_hash
+            - tx_hash
+    columns:
+      - *blockchain
+      - *version
+      - *block_time
+      - *entrypoint_contract
+      - *tx_hash
+      - *sender
+      - *userop_hash
+      - *success
+      - *paymaster
+      - *op_fee
+      - *beneficiary
+
+  - name: erc4337_v0_6_optimism_userops_basics
+    meta:
+      blockchain: optimism
+      project: erc4337
+      contributors: 0xbitfly, hosuke
+    config:
+      tags: ["optimism", "erc4337", "account", "abstraction", "entrypoint"]
+    description: erc4337 v0.6 user operations on optimism
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - userop_hash
+            - tx_hash
+    columns:
+      - *blockchain
+      - *version
+      - *block_time
+      - *entrypoint_contract
+      - *tx_hash
+      - *sender
+      - *userop_hash
+      - *success
+      - *paymaster
+      - *op_fee
+      - *beneficiary
+
+  - name: erc4337_optimism_userops_beta
+    meta:
+      blockchain: optimism
+      project: erc4337
+      contributors: 0xbitfly, hosuke
+    config:
+      tags: ["optimism", "erc4337", "account", "abstraction", "entrypoint"]
+    description: erc4337 user operation on optimism
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - userop_hash
+            - tx_hash
+    columns:
+      - *blockchain
+      - *version
+      - *block_time
+      - *entrypoint_contract
+      - *tx_hash
+      - *sender
+      - *userop_hash
+      - *success
+      - *paymaster
+      - *op_fee
+      - *op_fee_usd
+      - *bundler
+      - *tx_to
+      - *gas_symbol
+      - *tx_fee
+      - *tx_fee_usd
+      - *beneficiary
+
+
+  - name: erc4337_v0_5_polygon_userops_basics
+    meta:
+      blockchain: polygon
+      project: erc4337
+      contributors: 0xbitfly, hosuke
+    config:
+      tags: ["polygon", "erc4337", "account", "abstraction", "entrypoint"]
+    description: erc4337 v0.5 user operations on polygon
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - userop_hash
+            - tx_hash
+    columns:
+      - *blockchain
+      - *version
+      - *block_time
+      - *entrypoint_contract
+      - *tx_hash
+      - *sender
+      - *userop_hash
+      - *success
+      - *paymaster
+      - *op_fee
+      - *beneficiary
+
+  - name: erc4337_v0_6_polygon_userops_basics
+    meta:
+      blockchain: polygon
+      project: erc4337
+      contributors: 0xbitfly, hosuke
+    config:
+      tags: ["polygon", "erc4337", "account", "abstraction", "entrypoint"]
+    description: erc4337 v0.6 user operations on polygon
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - userop_hash
+            - tx_hash
+    columns:
+      - *blockchain
+      - *version
+      - *block_time
+      - *entrypoint_contract
+      - *tx_hash
+      - *sender
+      - *userop_hash
+      - *success
+      - *paymaster
+      - *op_fee
+      - *beneficiary
+
+  - name: erc4337_polygon_userops_beta
+    meta:
+      blockchain: polygon
+      project: erc4337
+      contributors: 0xbitfly, hosuke
+    config:
+      tags: ["polygon", "erc4337", "account", "abstraction", "entrypoint"]
+    description: erc4337 user operation on polygon
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - userop_hash
+            - tx_hash
+    columns:
+      - *blockchain
+      - *version
+      - *block_time
+      - *entrypoint_contract
+      - *tx_hash
+      - *sender
+      - *userop_hash
+      - *success
+      - *paymaster
+      - *op_fee
+      - *op_fee_usd
+      - *bundler
+      - *tx_to
+      - *gas_symbol
+      - *tx_fee
+      - *tx_fee_usd
+      - *beneficiary
