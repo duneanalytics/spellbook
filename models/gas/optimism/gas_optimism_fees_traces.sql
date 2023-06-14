@@ -95,7 +95,7 @@ SELECT 'optimism' AS blockchain
 , (traces.gas_used_trace*txs.gas_price)/POWER(10, 18) AS gas_fee_spent_trace
 , (pu.price*traces.gas_used_trace*txs.gas_price)/POWER(10, 18) AS gas_fee_spent_trace_usd
 FROM traces
-LEFT JOIN {{ source('optimism','transactions') }} txs ON txs.block_time=traces.block_time
+INNER JOIN {{ source('optimism','transactions') }} txs ON txs.block_time=traces.block_time
      AND txs.hash=traces.tx_hash
      {% if is_incremental() %}
      AND txs.block_time >= date_trunc("day", NOW() - interval '1' week)
