@@ -47,8 +47,8 @@ close_position_v2 as (
         {% endif %}
 )
 
-SELECT *, '2.1' as version FROM close_position_v1
+SELECT *, 'v2.1' as version FROM close_position_v1
 
 UNION ALL 
 
-SELECT *, '2.2' as version FROM close_position_v2
+SELECT *, 'v2.2' as version FROM close_position_v2
