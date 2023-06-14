@@ -164,7 +164,7 @@ SELECT *
       ON nd.creator_address = t.creator_address
 
     -- Don't pull contracts that are in the incremental group (prevent dupes)
-    WHERE ct.ontract_address NOT IN (
+    WHERE t.contract_address NOT IN (
       SELECT address FROM {{ source('optimism', 'creation_traces') }} WHERE ct.block_time >= date_trunc('day', now() - interval '1 week')
     )
 
