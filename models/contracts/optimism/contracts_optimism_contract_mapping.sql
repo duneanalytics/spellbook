@@ -360,7 +360,7 @@ WHERE contract_order = 1
             gc.contract_address = l.contract_address
         )
     {% endif %}
-  GROUP BY oc.from, l.contract_address, oc.namespace, oc.name, oc.created_at
+  GROUP BY oc.from, l.contract_address, oc.namespace, oc.name, oc.created_at, l.tx_index, oc.code
 
   union all
   -- ovm 1.0 contracts
