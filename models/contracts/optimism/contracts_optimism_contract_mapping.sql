@@ -35,9 +35,12 @@
     ,"created_tx_from"
     ,"created_tx_to"
     ,"created_tx_method_id"
+    ,"created_tx_index"
     ,"code_bytelength"
     ,"token_standard"
+    ,"code_deploy_rank"
 ] %}
+    
 
 with base_level as (
   select 
@@ -52,6 +55,7 @@ with base_level as (
     ,created_tx_from
     ,created_tx_to
     ,created_tx_method_id
+    ,created_tx_index
 
     ,top_level_time
     ,top_level_block_number
@@ -62,6 +66,7 @@ with base_level as (
 
     ,code_bytelength
     ,is_self_destruct
+    ,ROW_NUMBER() OVER (PARTITION BY code ORDER BY created_block_number ASC, created_tx_index ASC) AS code_deploy_rank
   from (
     select 
       ct.from as creator_address
@@ -79,7 +84,9 @@ with base_level as (
       ,t.from AS created_tx_from
       ,t.to AS created_tx_to
       ,substring(t.data,1,10) AS created_tx_method_id
-      ,ceil( length(ct.code)/2 ) AS code_bytelength
+      ,t.index as created_tx_index
+      ,ct.code
+      ,ceil( length(ct.code)/2 ) AS code_bytelength --toreplace with bytearray_length in dunesql
       ,coalesce(sd.contract_address is not NULL, false) as is_self_destruct
     from {{ source('optimism', 'creation_traces') }} as ct 
     inner join {{ source('optimism', 'transactions') }} as t 
@@ -105,24 +112,29 @@ with base_level as (
     union all 
 
     select 
-      creator_address
-      ,contract_creator_if_factory as contract_factory
-      ,contract_address
-      ,created_time
-      ,created_block_number
-      ,creation_tx_hash
-      ,top_level_time
-      ,top_level_block_number
-      ,top_level_tx_hash
-      ,top_level_tx_from
-      ,top_level_tx_to
-      ,top_level_tx_method_id
-      ,created_tx_from
-      ,created_tx_to
-      ,created_tx_method_id
-      ,code_bytelength
-      ,is_self_destruct
-    from {{ this }}
+       t.creator_address
+      ,t.contract_creator_if_factory as contract_factory
+      ,t.contract_address
+      ,t.created_time
+      ,t.created_block_number
+      ,t.creation_tx_hash
+      ,t.top_level_time
+      ,t.top_level_block_number
+      ,t.top_level_tx_hash
+      ,t.top_level_tx_from
+      ,t.top_level_tx_to
+      ,t.top_level_tx_method_id
+      ,t.created_tx_from
+      ,t.created_tx_to
+      ,t.created_tx_method_id
+      ,t.created_tx_index
+      ,ct.code
+      ,t.code_bytelength
+      ,t.is_self_destruct
+    from {{ this }} t
+    left join {{ source('optimism', 'creation_traces') }} as ct
+      ON t.contract_address = ct.address
+      AND t.created_block_number = ct.block_number
       {% endif %} -- incremental filter
   ) as x
   group by 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18
@@ -174,9 +186,10 @@ with base_level as (
       ,b.created_time
       ,b.creation_tx_hash
       ,b.created_block_number
-      ,b.created_tx_from AS created_tx_from
-      ,b.created_tx_to AS created_tx_to
-      ,b.created_tx_method_id AS created_tx_method_id
+      ,b.created_tx_from
+      ,b.created_tx_to
+      ,b.created_tx_method_id
+      ,b.created_tx_index
 
       -- when non-deterministic, pull the tx-level data
       ,case when nd.creator_address IS NOT NULL
@@ -196,6 +209,7 @@ with base_level as (
       
       ,b.code_bytelength
       ,b.is_self_destruct
+      ,b.code_deploy_rank
 
     {% if loop.first -%}
     from base_level as b
@@ -231,8 +245,10 @@ with base_level as (
     ,f.created_tx_from
     ,f.created_tx_to
     ,f.created_tx_method_id
+    ,f.created_tx_index
     ,f.code_bytelength
     ,f.is_self_destruct
+    ,f.code_deploy_rank
   from level{{max_levels - 1}} as f
   left join {{ ref('contracts_optimism_contract_creator_address_list') }} as cc 
     on f.creator_address = cc.creator_address
@@ -262,7 +278,9 @@ with base_level as (
     ,cc.created_tx_from
     ,cc.created_tx_to
     ,cc.created_tx_method_id
+    ,cc.created_tx_index
     ,cc.code_bytelength
+    ,cc.code_deploy_rank
   from creator_contracts as cc 
   left join {{ source('optimism', 'contracts') }} as oc 
     on cc.contract_address = oc.address 
@@ -291,7 +309,9 @@ with base_level as (
     ,cast(NULL as string) as created_tx_from
     ,cast(NULL as string) as created_tx_to
     ,cast(NULL as string) as created_tx_method_id
-    ,cast(NULL as bigint) as code_bytelength
+    ,l.tx_index AS created_tx_index
+    ,ceil( length(oc.code)/2 ) as code_bytelength
+    ,1 as code_deploy_rank
     
   from {{ source('optimism', 'logs') }} as l
     left join {{ source('optimism', 'contracts') }} as oc 
@@ -333,7 +353,9 @@ with base_level as (
     ,cast(NULL as string) as created_tx_from
     ,cast(NULL as string) as created_tx_to
     ,cast(NULL as string) as created_tx_method_id
-    ,cast(NULL as bigint) as code_bytelength
+    ,l.tx_index AS created_tx_index
+    ,cast(NULL as bigint) as code_bytelength --todo
+    ,1 as code_deploy_rank
   from {{ source('ovm1_optimism', 'contracts') }} as c
   where 
     true
@@ -374,7 +396,9 @@ with base_level as (
     ,cast(NULL as string) as created_tx_from
     ,cast(NULL as string) as created_tx_to
     ,cast(NULL as string) as created_tx_method_id
-    ,cast(NULL as bigint) as code_bytelength
+    ,1 AS created_tx_index
+    ,cast(NULL as bigint) as code_bytelength --todo
+    ,1 as code_deploy_rank
   from {{ source('ovm1_optimism', 'synthetix_genesis_contracts') }} as snx
   where 
     true
@@ -413,7 +437,9 @@ with base_level as (
     ,cast(NULL as string) as created_tx_from
     ,cast(NULL as string) as created_tx_to
     ,cast(NULL as string) as created_tx_method_id
-    ,cast(NULL as bigint) as code_bytelength
+    ,1 AS created_tx_index
+    ,cast(NULL as bigint) as code_bytelength --todo
+    ,1 as code_deploy_rank
   from {{ ref('uniswap_optimism_ovm1_pool_mapping') }} as uni
   where 
     true
@@ -445,6 +471,7 @@ with base_level as (
     ,c.created_tx_from
     ,c.created_tx_to
     ,c.created_tx_method_id
+    ,c.created_tx_index
 
     ,c.top_level_time
     ,c.top_level_tx_hash
@@ -455,10 +482,12 @@ with base_level as (
 
     ,c.code_bytelength
     ,t.token_standard AS token_standard
+    ,c.code_deploy_rank
+
   from combine as c 
   left join tokens as t 
     on c.contract_address = t.contract_address
-  group by 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22
+  group by 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24
 )
 ,cleanup as (
 --grab the first non-null value for each, i.e. if we have the contract via both contract mapping and optimism.contracts
@@ -504,6 +533,7 @@ select
   ,c.created_tx_from
   ,c.created_tx_to
   ,c.created_tx_method_id
+  ,c.created_tx_index
 
   ,c.top_level_time
   ,c.top_level_tx_hash
@@ -514,6 +544,8 @@ select
   
   ,c.code_bytelength
   ,c.token_standard
+  ,c.code_deploy_rank
+
 from cleanup as c 
 left join {{ source('ovm1_optimism', 'contracts') }} as ovm1c
   on c.contract_address = ovm1c.contract_address --fill in any missing contract creators

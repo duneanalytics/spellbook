@@ -70,7 +70,9 @@ models:
       - &created_tx_method_id
         name: created_tx_method_id
         description: "Method ID of the transaction. This is useful for determining how a contract was deployed (i.e Safe transaction vs traditional deployment)"
-
+      - &created_tx_index
+        name: created_tx_index
+        dedscription: "Index of the contract creation transaction within its block"
       - &top_level_time
         name: top_level_time
         description: "Top-Level contract creation transaction block time"
@@ -96,6 +98,9 @@ models:
       - &token_standard
         name: token_standard
         description: "What token standard the contract is. For non-tokens, this field will be null."
+      - &code_deploy_rank
+        name: code_deploy_rank
+        description: "Was this the 1st, 2rd, 3rd, etc time the same exact bytecode was deployed? (1 = 1st). This can be used for spam filtering."
 
   - name: contracts_optimism_contract_creator_address_list
     meta:
