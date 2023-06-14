@@ -110,7 +110,6 @@ SELECT *
       true
       {% if is_incremental() %}
       and ct.block_time >= date_trunc('day', now() - interval '1 week')
-      AND ct.address NOT IN (SELECT contract_address FROM {{ this }} ) --don't 
 
     -- to get existing history of contract mapping
     union all 
@@ -134,11 +133,17 @@ SELECT *
       ,t.created_tx_index
       ,ct.code
       ,t.code_bytelength
-      ,t.is_self_destruct
+      ,coalesce(sd.contract_address is not NULL, false) as is_self_destruct
     from {{ this }} t
     left join {{ source('optimism', 'creation_traces') }} as ct
       ON t.contract_address = ct.address
       AND t.created_block_number = ct.block_number
+    left join {{ ref('contracts_optimism_self_destruct_contracts') }} as sd 
+      on t.contract_address = sd.contract_address
+      and t.creation_tx_hash = sd.creation_tx_hash
+      and ct.created_time = sd.created_time
+      and sd.created_time >= date_trunc('day', now() - interval '1 week')
+
       {% endif %} -- incremental filter
   ) as x
   group by 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, code
