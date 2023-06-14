@@ -43,6 +43,8 @@
     
 
 with base_level as (
+SELECT *
+  FROM (
   select 
      creator_address AS trace_creator_address -- get the original contract creator address
     ,creator_address
@@ -57,16 +59,17 @@ with base_level as (
     ,created_tx_method_id
     ,created_tx_index
 
-    ,top_level_time
-    ,top_level_block_number
-    ,top_level_tx_hash
-    ,top_level_tx_from
-    ,top_level_tx_to
-    ,top_level_tx_method_id
+    -- ,top_level_time
+    -- ,top_level_block_number
+    -- ,top_level_tx_hash
+    -- ,top_level_tx_from
+    -- ,top_level_tx_to
+    -- ,top_level_tx_method_id
 
     ,code_bytelength
     ,is_self_destruct
     ,ROW_NUMBER() OVER (PARTITION BY code ORDER BY created_block_number ASC, created_tx_index ASC) AS code_deploy_rank
+    ,ROW_NUMBER() OVER (PARTITION BY contract_address ORDER BY created_time ASC ) AS contract_order -- to ensure no dupes
   from (
     select 
       ct.from as creator_address
@@ -75,12 +78,12 @@ with base_level as (
       ,ct.block_time as created_time
       ,ct.block_number as created_block_number
       ,ct.tx_hash as creation_tx_hash
-      ,t.block_time as top_level_time
-      ,t.block_number as top_level_block_number
-      ,t.hash as top_level_tx_hash
-      ,t.from AS top_level_tx_from
-      ,t.to AS top_level_tx_to
-      ,substring(t.data,1,10) AS top_level_tx_method_id
+      -- ,t.block_time as top_level_time
+      -- ,t.block_number as top_level_block_number
+      -- ,t.hash as top_level_tx_hash
+      -- ,t.from AS top_level_tx_from
+      -- ,t.to AS top_level_tx_to
+      -- ,substring(t.data,1,10) AS top_level_tx_method_id
       ,t.from AS created_tx_from
       ,t.to AS created_tx_to
       ,substring(t.data,1,10) AS created_tx_method_id
@@ -107,6 +110,7 @@ with base_level as (
       true
       {% if is_incremental() %}
       and ct.block_time >= date_trunc('day', now() - interval '1 week')
+      AND ct.address NOT IN (SELECT contract_address FROM {{ this }} ) --don't 
 
     -- to get existing history of contract mapping
     union all 
@@ -118,12 +122,12 @@ with base_level as (
       ,t.created_time
       ,t.created_block_number
       ,t.creation_tx_hash
-      ,t.top_level_time
-      ,t.top_level_block_number
-      ,t.top_level_tx_hash
-      ,t.top_level_tx_from
-      ,t.top_level_tx_to
-      ,t.top_level_tx_method_id
+      -- ,t.top_level_time
+      -- ,t.top_level_block_number
+      -- ,t.top_level_tx_hash
+      -- ,t.top_level_tx_from
+      -- ,t.top_level_tx_to
+      -- ,t.top_level_tx_method_id
       ,t.created_tx_from
       ,t.created_tx_to
       ,t.created_tx_method_id
@@ -138,6 +142,8 @@ with base_level as (
       {% endif %} -- incremental filter
   ) as x
   group by 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, code
+) y 
+WHERE contract_order = 1
 )
 
 ,tokens as (
