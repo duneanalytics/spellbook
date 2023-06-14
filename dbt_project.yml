@@ -85,6 +85,11 @@ models:
       ethereum:
         +schema: ens_ethereum
 
+    euler:
+      +schema: euler
+      ethereum:
+        +schema: euler_ethereum
+
     evms:
       +schema: evms
 
