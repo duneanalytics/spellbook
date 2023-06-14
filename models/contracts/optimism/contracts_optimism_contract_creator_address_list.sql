@@ -515,7 +515,9 @@ WITH curated_list AS (
       ,('0xfB3485c2e209A5cfBDC1447674256578f1A80eE3', 'Abracadabra')
       ,('0x085909388fc0cE9E5761ac8608aF8f2F52cb8B89', 'Interest Protocol')
       ,('0x3d4316342acd2deD06507302404e9788fF5F4d02', 'Squid Router')
-      ,('0x19df27089a52ccfa444ce5a73ef86403d03210d4', 'Getaerse')
+      ,('0x19df27089a52ccfa444ce5a73ef86403d03210d4', 'Getaverse')
+      ,('0xBd9d5319691922e2e1F9DC69ce0Fd0B0ded51656', 'Manifold')
+      ,('0x3B52ad533687Ce908bA0485ac177C5fb42972962', 'Manifold')
 
   ) as temp_table (creator_address, contract_project)
 
