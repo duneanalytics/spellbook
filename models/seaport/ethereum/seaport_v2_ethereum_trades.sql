@@ -119,7 +119,7 @@ with source_ethereum_transactions as (
       from ref_seaport_ethereum_base_pairs a
            left join iv_orders_matched b on b.om_order_hash = a.order_hash
                                          and b.om_tx_hash = a.tx_hash  -- order_hash is not unique in itself, so must join with tx_hash
-                                         and b.om_cnt = 2                                         
+                                         and b.om_cnt = 2
      where a.platform_contract_address in ('0x00000000000001ad428e4906ae43d8f9852d0dd6' -- Seaport v1.4
                                           ,'0x00000000000000adc04c56bf30ac9d3c0aaf14dc' -- Seaport v1.5
                                           )
@@ -235,7 +235,7 @@ with source_ethereum_transactions as (
           ,case when a.token_contract_address = '{{c_native_token_address}}' then '{{c_native_symbol}}'
                 else e.symbol
            end as token_symbol
-          ,case when a.token_contract_address = '{{c_native_token_address}}' then '{{c_alternative_token_address}}'
+          ,case when a.token_contract_address = '{{c_native_token_address}}' or a.token_contract_address is null then '{{c_alternative_token_address}}'
                 else a.token_contract_address
            end as token_alternative_symbol
           ,e.decimals as price_token_decimals
