@@ -156,7 +156,7 @@ SELECT *
       on t.contract_address = sd.contract_address
       and t.creation_tx_hash = sd.creation_tx_hash
       and t.created_time = sd.created_time
-      AND t.created_block_number = sd.block_number
+      AND t.created_block_number = sd.created_block_number
       and sd.created_time >= date_trunc('day', now() - interval '1 week')
 
     -- If the creator becomes marked as non-deterministic, we want to re-run it.
