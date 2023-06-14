@@ -143,6 +143,7 @@ models:
     description: "A list of contracts that are self-destruct, with the time that they were most recently self-destructed."
     columns:
       - *created_time
+      - *created_block_number
       - *creation_tx_hash
       - *contract_address
       - name: trace_element

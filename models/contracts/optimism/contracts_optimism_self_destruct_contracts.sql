@@ -30,7 +30,7 @@ with creates as (
 )
 
 SELECT
-created_time, creation_tx_hash, contract_address, trace_element
+created_time, created_block_number, creation_tx_hash, contract_address, trace_element
 FROM (
 
   SELECT
