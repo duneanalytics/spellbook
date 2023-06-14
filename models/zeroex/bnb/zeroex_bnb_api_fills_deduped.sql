@@ -5,11 +5,7 @@
         unique_key = ['block_date', 'tx_hash', 'evt_index'],
         on_schema_change='sync_all_columns',
         file_format ='delta',
-        incremental_strategy='merge',
-        post_hook='{{ expose_spells(\'["bnb"]\',
-                                "project",
-                                "zeroex",
-                                \'["rantum","bakabhai993","danning.sui"]\') }}'
+        incremental_strategy='merge'
     ) 
 }}
 
