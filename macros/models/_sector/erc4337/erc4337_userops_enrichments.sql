@@ -51,14 +51,7 @@ WITH userops_base_union AS (
         , tx.from as tx_from
         , tx.to as tx_to
         , '{{gas_symbol}}' as gas_symbol
-        , case 
-            when '{{ blockchain }}' = 'arbitrum' then cast(gas_used as double) * gas_price / 1e18
-            when '{{ blockchain }}' = 'optimism' then ((cast(gas_used as double) * gas_price)+l1_fee) / 1e18
-            else cast(gas_used as double) * gas_price
-        end as tx_fee
-        -- , cast(gas_used as double) * gas_price / 1e18 as tx_fee
-        -- , cast(gas_used as double) * effective_gas_price / 1e18 as tx_fee
-        -- , (cast(gas_used as double)* gas_price )+l1_fee) / 1e18 as tx_fee
+        , cast(gas_used as double) * gas_price / 1e18 as tx_fee
     from {{ transactions_model }} tx
     where hash in (
         select tx_hash from userops_base_union

@@ -1,7 +1,7 @@
 {{ config
 (
     schema = 'erc4337_v0_6_optimism',
-    alias ='userops',
+    alias ='userops_basics',
     partition_by = ['block_time'],
     materialized = 'incremental',
     file_format = 'delta',
