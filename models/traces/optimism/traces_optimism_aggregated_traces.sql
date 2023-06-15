@@ -29,6 +29,7 @@ DATE_TRUNC('day', block_time) AS block_date
 	|| '-' || coalesce(cast(call_type as varchar(100)),'null_call_type')
 	|| '-' || coalesce(cast(trace_success as varchar(100)),'null_trace_success')
 	|| '-' || coalesce(cast(tx_success as varchar(100)),'null_tx_success')
+	|| '-' || coalesce(cast(rn_tx as varchar(100)),'null_row') --control for weird nulls errors
 as unique_id
 
 FROM (
