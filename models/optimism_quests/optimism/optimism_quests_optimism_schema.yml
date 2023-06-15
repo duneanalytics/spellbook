@@ -49,6 +49,10 @@ models:
         name: block_number
       - &block_time
         name: block_time
+      - &nft_contract_address
+        name: nft_contract_address
+      - &tokenId
+        name: tokenId
       - *nft_id
       - *contract_project
       - *quest_project

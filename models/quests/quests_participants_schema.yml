@@ -1,0 +1,25 @@
+version: 2
+
+models:
+  - name: quests_participants
+    meta:
+      blockchain: optimism
+      project: quests
+      contributors: msilb7
+    config:
+      tags: ['optimism','quests']
+    description: >
+        A table containing quest completions.
+    columns:
+      - &quester_address
+        name: quester_address
+      - &block_number
+        name: block_number
+      - &block_time
+        name: block_time
+      - &quest_name
+        name: quest_name
+      - &token_address
+        name: token_address
+      - &token_id
+        name: token_id

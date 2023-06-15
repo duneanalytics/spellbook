@@ -22,7 +22,9 @@ SELECT
     call_block_time AS block_time,
     nft_id,
     contract_project,
-    quest_project
+    quest_project,
+    contract_address AS nft_contract_address,
+    output_0 as tokenId
 
 FROM
     {{source('optimism_quest_optimism','StarNFTV4_call_mint')}} m
