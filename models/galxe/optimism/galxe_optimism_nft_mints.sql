@@ -22,7 +22,7 @@ SELECT
     t.from as tx_from,
     t.to as tx_to,
     t.hash AS tx_hash,
-    substring(t.data,1,10) AS tx_method_id
+    substring(t.data,1,10) AS tx_method_id,
     tfer.to AS token_transfer_to,
     tfer.contract_address AS nft_contract_address,
     tfer.tokenId
