@@ -659,6 +659,15 @@ models:
       ethereum:
         +schema: integral_ethereum
 
+    saddle_finance:
+      +schema: saddle_finance
+      arbitrum:
+        +schema: saddle_finance_arbitrum
+      ethereum:
+        +schema: saddle_finance_ethereum
+      optimism:
+        +schema: saddle_finance_optimism
+
     integration_test:
       +schema: integration_test
 

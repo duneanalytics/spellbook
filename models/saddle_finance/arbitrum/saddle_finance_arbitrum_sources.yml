@@ -1,0 +1,11 @@
+version: 2
+
+sources:
+  - name: saddle_finance_arbitrum
+    description: "Decoded contracts for Saddle on Arbitrum"
+
+    tables:
+      - name: SwapFlashLoan_evt_FlashLoan
+        loaded_at_field: evt_block_time
+      - name: PoolRegistry_evt_AddPool
+        loaded_at_field: evt_block_time
