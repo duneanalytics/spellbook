@@ -654,6 +654,23 @@ models:
       optimism:
         +schema: synthetix_optimism
 
+    synapse:
+      +schema: synapse
+      arbitrum:
+        +schema: synapse_arbitrum
+      avalanche_c:
+        +schema: synapse_avalanche_c
+      bnb:
+        +schema: synapse_bnb
+      ethereum:
+        +schema: synapse_ethereum
+      fantom:
+        +schema: synapse_fantom
+      optimism:
+        +schema: synapse_optimism
+      polygon:
+        +schema: synapse_polygon
+        
     fiat_dao:
       +schema: fiat_dao
       ethereum:
