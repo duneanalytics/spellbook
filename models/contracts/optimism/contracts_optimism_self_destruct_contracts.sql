@@ -31,23 +31,49 @@ with creates as (
 SELECT
 created_time, creation_tx_hash, contract_address, trace_element
 FROM (
-  select
-    cr.created_time 
-    ,cr.creation_tx_hash 
-    ,cr.contract_address 
-    ,cr.trace_element
-    , ROW_NUMBER() OVER (PARTITION BY cr.contract_address ORDER BY created_time ASC) as rn
-  from creates as cr
-  join {{ source('optimism', 'traces') }} as sd
-    on cr.creation_tx_hash = sd.tx_hash
-    and cr.created_time = sd.block_time
-    and cr.trace_element = sd.trace_address[0]
-    and sd.`type` = 'suicide'
-    {% if is_incremental() %}
-    and sd.block_time >= date_trunc('day', now() - interval '1 week')
-    and cr.contract_address NOT IN (SELECT contract_address FROM {{this}} ) --ensure no duplicates
-    {% endif %}
-  group by 1, 2, 3, 4
+
+  SELECT
+  created_time, creation_tx_hash, contract_address, trace_element
+      , ROW_NUMBER() OVER (PARTITION BY contract_address ORDER BY created_time DESC) as rn
+  FROM (
+    --self destruct method 1: same tx
+    select
+      cr.created_time 
+      ,cr.creation_tx_hash 
+      ,cr.contract_address 
+      ,cr.trace_element
+    from creates as cr
+    join {{ source('optimism', 'traces') }} as sd
+      on cr.creation_tx_hash = sd.tx_hash
+      and cr.created_time = sd.block_time
+      and cr.trace_element = sd.trace_address[0]
+      and sd.`type` = 'suicide'
+      {% if is_incremental() %}
+      and sd.block_time >= date_trunc('day', now() - interval '1 week')
+      and cr.contract_address NOT IN (SELECT contract_address FROM {{this}} ) --ensure no duplicates
+      {% endif %}
+    group by 1, 2, 3, 4
+
+    UNION ALL
+
+    --self destruct method 2: later tx
+    select
+      cr.created_time 
+      ,cr.creation_tx_hash 
+      ,cr.contract_address 
+      ,cr.trace_element
+    from creates as cr
+
+    JOIN {{ source('optimism', 'traces') }} as sds
+      ON cr.contract_address = sds.address
+      AND cr.created_time <= sds.block_time
+      AND sds.type = 'suicide'
+      AND sds.address IS NOT NULL
+      {% if is_incremental() %}
+      and sds.block_time >= date_trunc('day', now() - interval '1 week')
+      and cr.contract_address NOT IN (SELECT contract_address FROM {{this}} ) --ensure no duplicates
+      {% endif %}
+  ) inter
+
 ) a 
 WHERE rn = 1
-;
