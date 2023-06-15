@@ -364,6 +364,8 @@ models:
         +schema: gas_optimism
       arbitrum:
         +schema: gas_arbitrum
+      polygon:
+        +schema: gas_polygon
 
     gmx:
       +schema: gmx
@@ -663,6 +665,17 @@ models:
         +schema: integral_arbitrum
       ethereum:
         +schema: integral_ethereum
+
+    equalizer:
+      +schema: equalizer
+      bnb:
+        +schema: equalizer_bnb
+      ethereum:
+        +schema: equalizer_ethereum
+      optimism:
+        +schema: equalizer_optimism
+      polygon:
+        +schema: equalizer_polygon
 
     integration_test:
       +schema: integration_test
