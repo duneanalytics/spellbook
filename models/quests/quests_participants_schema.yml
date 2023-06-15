@@ -10,7 +10,17 @@ models:
       tags: ['optimism','quests']
     description: >
         A table containing quest completions.
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+              - blockchain
+              - token_address
+              - token_id
     columns:
+      - &blockchain
+        name: blockchain
+      - &platform
+        name: platform
       - &quester_address
         name: quester_address
       - &block_number
