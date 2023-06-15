@@ -23,7 +23,7 @@ DATE_TRUNC('day', block_time) AS block_date
 , cast(SUM(gas_used_trace) as double) / cast(tx_gas_used AS double) AS pct_tx_trace_gas_used
 , COUNT(*) AS num_traces
 
-coalesce(cast(tx_hash as varchar(100)), 'null_tx_hash')
+, coalesce(cast(tx_hash as varchar(100)), 'null_tx_hash')
 || '-' || coalesce(cast(trace_from as varchar(100)),'null_trace_from')
 || '-' || coalesce(cast(trace_to as varchar(100)),'null_trace_to')
 || '-' || coalesce(cast(trace_method as varchar(100)),'null_trace_method')
