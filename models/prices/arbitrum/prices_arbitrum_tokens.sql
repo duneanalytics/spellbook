@@ -103,5 +103,6 @@ FROM
     ("grain-granary","arbitrum","GRAIN","0x80bb30d62a16e1f2084deae84dc293531c3ac3a1",18),
     ("oath-oath","arbitrum","OATH","0xa1150db5105987cec5fd092273d1e3cbb22b378b",18),
     ("winr-winr-protocol","arbitrum","WINR","0xd77b108d4f6cefaa0cae9506a934e825becca46e",18),
-    ("ram-ramses-exchange","arbitrum","RAM","0xaaa6c1e32c55a7bfa8066a6fae9b42650f262418",18)
+    ("ram-ramses-exchange","arbitrum","RAM","0xaaa6c1e32c55a7bfa8066a6fae9b42650f262418",18),
+    ("ole-openleverage", "arbitrum", "OLE", "0xd4d026322c88c2d49942a75dff920fcfbc5614c1", 18)
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)
