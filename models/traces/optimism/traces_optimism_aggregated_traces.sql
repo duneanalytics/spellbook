@@ -68,7 +68,7 @@ FROM (
 	, r.success AS trace_success
 	, r.tx_success
 
-	, ROW_NUMBER() OVER (PARTITION BY tx_hash ORDER BY r.success desc nulls last, r.tx_success DESC nulls last) as rn_tx
+	, ROW_NUMBER() OVER (PARTITION BY r.tx_hash ORDER BY r.success desc nulls last, r.tx_success DESC nulls last) as rn_tx
     
 	FROM {{ source('optimism', 'traces') }} r
     
