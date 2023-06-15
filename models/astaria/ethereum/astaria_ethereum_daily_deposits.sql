@@ -107,7 +107,7 @@ SELECT
     db.daily_balance,
     nd.nft_collection,
     nd.nft_symbol,
-    nd.nft_token_id,
+    nd.nft_token_standard,
     ci.collateral_Id
 FROM 
     daily_balances db
