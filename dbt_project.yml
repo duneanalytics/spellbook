@@ -1207,3 +1207,6 @@ models:
       +schema: thena
       bnb:
         +schema: thena_bnb
+
+    quests:
+      +schema: quests
