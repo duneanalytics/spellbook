@@ -23,10 +23,10 @@ DATE_TRUNC('day', block_time) AS block_date
 , COUNT(*) AS num_traces
 
 , cast(tx_hash as varchar(100))
-	|| coalesce(cast(trace_from as varchar(100)),'')
-	|| coalesce(cast(trace_to as varchar(100)),'')
-	|| coalesce(cast(trace_method_id as varchar(100)),'')
-	|| coalesce(cast(call_type as varchar(100)),'')
+	|| coalesce(cast(trace_from as varchar(100)),'-null_trace_from-')
+	|| coalesce(cast(trace_to as varchar(100)),'null_trace_to')
+	|| coalesce(cast(trace_method_id as varchar(100)),'null_trace_method_id')
+	|| coalesce(cast(call_type as varchar(100)),'null_call_type')
 as unique_id
 
 FROM (
