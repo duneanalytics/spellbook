@@ -9,7 +9,7 @@ models:
       contributors: msilb7
     config:
       tags: ['labels', 'quests','coinbase','optimism']
-    description: "DEX traders query labels across chains"
+    description: "Coinbase Wallet Questers on Optimism"
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
