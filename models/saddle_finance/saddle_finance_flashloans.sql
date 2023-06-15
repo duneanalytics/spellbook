@@ -4,7 +4,7 @@
       , file_format = 'delta'
       , incremental_strategy = 'merge'
       , unique_key = ['blockchain', 'tx_hash', 'evt_index']
-      , post_hook='{{ expose_spells(\'["ethereum", "optimism", "arbitrum"]\',
+      , post_hook='{{ expose_spells(\'["ethereum", "optimism", "arbitrum", "fantom"]\',
                                   "project",
                                   "saddle_finance",
                                   \'["hildobby"]\') }}'
@@ -15,6 +15,7 @@
 ref('saddle_finance_arbitrum_flashloans')
 , ref('saddle_finance_ethereum_flashloans')
 , ref('saddle_finance_optimism_flashloans')
+, ref('saddle_finance_fantom_flashloans')
 ] %}
 
 SELECT *
