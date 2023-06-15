@@ -34,7 +34,7 @@ WITH all_labels AS (
         , distinct_name AS proposal_name
         , cex_name AS address_descriptor
         , cex_name AS project_name
-    FROM {{ ref('addresses_optimism_cex') }}
+    FROM {{ ref('cex_optimism_addresses') }}
     WHERE address NOT IN (SELECT address FROM {{ ref('op_token_distributions_optimism_project_wallets') }})
 )
 

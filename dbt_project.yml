@@ -85,6 +85,9 @@ models:
       ethereum:
         +schema: ens_ethereum
 
+    evms:
+      +schema: evms
+
     staking:
       +schema: staking
       ethereum:
@@ -92,6 +95,20 @@ models:
 
     dex:
       +schema: dex
+      ethereum:
+        +schema: dex_ethereum
+      optimism:
+        +schema: dex_optimism
+      arbitrum:
+        +schema: dex_arbitrum
+      avalanche_c:
+        +schema: dex_avalanche_c
+      bnb:
+        +schema: dex_bnb
+      gnosis:
+        +schema: dex_gnosis
+      fantom:
+        +schema: dex_fantom
 
     airdrop:
       +schema: airdrop
@@ -164,6 +181,25 @@ models:
         +schema: nft_fantom
       goerli:
         +schema: nft_goerli
+
+    cex:
+      +schema: cex
+      arbitrum:
+        +schema: cex_arbitrum
+      avalanche_c:
+        +schema: cex_avalanche_c
+      bnb:
+        +schema: cex_bnb
+      ethereum:
+        +schema: cex_ethereum
+      optimism:
+        +schema: cex_optimism
+      polygon:
+        +schema: cex_polygon
+      fantom:
+        +schema: cex_fantom
+      bitcoin:
+        +schema: cex_bitcoin
 
     compound:
       +schema: compound
@@ -267,6 +303,23 @@ models:
       bnb:
         +schema: sushiswap_bnb
 
+    zerion:
+      +schema: zerion
+      arbitrum:
+        +schema: zerion_arbitrum
+      avalanche_c:
+        +schema: zerion_avalanche_c
+      bnb:
+        +schema: zerion_bnb
+      gnosis:
+        +schema: zerion_gnosis
+      optimism:
+        +schema: zerion_optimism
+      polygon:
+        +schema: zerion_polygon
+      fantom:
+        +schema: zerion_fantom
+
     openocean:
       +schema: openocean
       fantom:
@@ -311,6 +364,8 @@ models:
         +schema: gas_optimism
       arbitrum:
         +schema: gas_arbitrum
+      polygon:
+        +schema: gas_polygon
 
     gmx:
       +schema: gmx
@@ -777,7 +832,7 @@ models:
       bnb:
         +schema: frax_finance_bnb
         +materialized: table
-        
+
     mstable:
       +schema: mstable
       ethereum:
@@ -941,7 +996,7 @@ models:
       +schema: notional
       ethereum:
         +schema: notional_ethereum
-      
+
     dydx:
       +schema: dydx
       ethereum:
