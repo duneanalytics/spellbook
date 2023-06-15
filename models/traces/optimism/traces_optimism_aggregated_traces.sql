@@ -23,14 +23,14 @@ DATE_TRUNC('day', block_time) AS block_date
 , cast(SUM(gas_used_trace) as double) / cast(tx_gas_used AS double) AS pct_tx_trace_gas_used
 , COUNT(*) AS num_traces
 
-, coalesce(cast(tx_hash as varchar(100)), 'null_tx_hash')
-|| '-' || coalesce(cast(trace_from as varchar(100)),'null_trace_from')
-|| '-' || coalesce(cast(trace_to as varchar(100)),'null_trace_to')
-|| '-' || coalesce(cast(trace_method as varchar(100)),'null_trace_method')
-|| '-' || coalesce(cast(trace_type as varchar(100)),'null_trace_type')
-|| '-' || coalesce(cast(trace_success as varchar(100)),'null_trace_success')
-|| '-' || coalesce(cast(tx_success as varchar(100)),'null_tx_success')
--- || '-' || coalesce(cast(rn_tx as varchar(100)),'null_row') --control for weird nulls errors
+, 'txh-' || coalesce(cast(tx_hash as varchar(100)), 'null_tx_hash')
+|| '-trf-' || coalesce(cast(trace_from as varchar(100)),'null_trace_from')
+|| '-trf-' || coalesce(cast(trace_to as varchar(100)),'null_trace_to')
+|| '-trm-' || coalesce(cast(trace_method as varchar(100)),'null_trace_method')
+|| '-trt-' || coalesce(cast(trace_type as varchar(100)),'null_trace_type')
+|| '-trs-' || coalesce(cast(trace_success as varchar(100)),'null_trace_success')
+|| '-txs-' || coalesce(cast(tx_success as varchar(100)),'null_tx_success')
+
 as unique_id
 
 FROM (
@@ -70,8 +70,6 @@ FROM (
 	, r.trace_success
 	, r.tx_success
 
-	-- , ROW_NUMBER() OVER (PARTITION BY r.tx_hash ORDER BY r.trace_success desc nulls last, r.tx_success DESC nulls last) as rn_tx
-    
 	FROM {{ ref('gas_optimism_fees_traces') }} r
     
         INNER JOIN {{ source('optimism', 'transactions') }} t
