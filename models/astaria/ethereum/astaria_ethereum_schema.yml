@@ -110,9 +110,7 @@ models:
         name: daily_balance
         description: "Daily balance (0 or 1)"
       - *nft_symbol
-      - &nft_token_standard
-        name: nft_token_standard
-        description:  "NFT Token standard"
+      - *nft_token_standard
       - &collateral_id
         name: collateral_id
         description: "Collateral ID tied to NFT Contract address "
