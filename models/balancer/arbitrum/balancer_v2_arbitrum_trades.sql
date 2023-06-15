@@ -15,7 +15,19 @@
 
 {% set project_start_date = '2021-08-27' %}
 
-WITH
+WITH    
+    fees_base AS (SELECT *, MAX(index) OVER(PARTITION BY tx_hash, contract_address) AS max_index_same_tx FROM balancer_v2_arbitrum.pools_fees),
+    most_case_fees AS (SELECT * FROM fees_base WHERE index = max_index_same_tx),
+    edge_case_fees AS (
+        SELECT 
+            s.evt_block_number,
+            s.evt_tx_hash,
+            s.evt_index,
+            f.swap_fee_percentage 
+        FROM balancer_v2_arbitrum.Vault_evt_Swap s
+        INNER JOIN fees_base f 
+        ON s.evt_tx_hash = f.tx_hash AND f.index < s.evt_index
+    ),
     swap_fees AS (
         SELECT
             swap.evt_block_number,
@@ -44,7 +56,7 @@ WITH
             swap.tokenIn AS token_sold_address,
             swap_fees.contract_address AS project_contract_address,
             swap.poolId AS poolId,
-            pools_fees.swap_fee_percentage / POWER(10, 18) AS swap_fee,
+            COALESCE(most.swap_fee_percentage, edge.swap_fee_percentage) / POWER(10, 18) AS swap_fee,
             swap.evt_tx_hash AS tx_hash,
             '' AS trace_address,
             swap.evt_index
@@ -54,9 +66,14 @@ WITH
                 ON swap.evt_block_number = swap_fees.evt_block_number
                 AND swap.evt_tx_hash = swap_fees.evt_tx_hash
                 AND swap.evt_index = swap_fees.evt_index
-            LEFT JOIN {{ ref('balancer_v2_arbitrum_pools_fees') }} pools_fees
-                ON pools_fees.contract_address = swap_fees.contract_address
-                AND pools_fees.block_time = swap_fees.max_fee_evt_block_time
+            LEFT JOIN most_case_fees most
+                ON most.contract_address = swap_fees.contract_address
+                AND most.block_time = swap_fees.max_fee_evt_block_time
+                AND most.tx_hash <> swap_fees.evt_tx_hash
+            LEFT JOIN edge_case_fees edge
+                ON edge.evt_block_number = swap_fees.evt_block_number
+                AND edge.evt_tx_hash = swap_fees.evt_tx_hash
+                AND edge.evt_index = swap_fees.evt_index
         WHERE
             swap.tokenIn <> swap_fees.contract_address
             AND swap.tokenOut <> swap_fees.contract_address
@@ -133,11 +150,10 @@ SELECT
     ) AS amount_usd,
     dexs.token_bought_address,
     dexs.token_sold_address,
-    -- Subqueries rely on this COALESCE to avoid redundant joins with the transactions table.
     COALESCE(dexs.taker, tx.`from`) AS taker,
     dexs.maker,
     dexs.project_contract_address,
-    dexs.poolId AS pool_id,
+    dexs.poolId,
     dexs.swap_fee,
     dexs.tx_hash,
     tx.`from` AS tx_from,
@@ -146,63 +162,63 @@ SELECT
     dexs.evt_index
 FROM
     dexs
-    INNER JOIN {{ source ('arbitrum', 'transactions') }} tx
-        ON tx.hash = dexs.tx_hash
-        {% if not is_incremental () %}
-        AND tx.block_time >= '{{ project_start_date }}'
-        {% endif %}
-        {% if is_incremental () %}
-        AND tx.block_time >= DATE_TRUNC("day", NOW() - interval '1 week')
-        {% endif %}
-    LEFT JOIN {{ ref ('tokens_erc20') }} erc20a
-        ON erc20a.contract_address = dexs.token_bought_address
-        AND erc20a.blockchain = 'arbitrum'
-    LEFT JOIN {{ ref ('tokens_erc20') }} erc20b
-        ON erc20b.contract_address = dexs.token_sold_address
-        AND erc20b.blockchain = 'arbitrum'
-    LEFT JOIN {{ source ('prices', 'usd') }} p_bought
-        ON p_bought.minute = DATE_TRUNC('minute', dexs.block_time)
-        AND p_bought.contract_address = dexs.token_bought_address
-        AND p_bought.blockchain = 'arbitrum'
-        {% if not is_incremental () %}
-        AND p_bought.minute >= '{{ project_start_date }}'
-        {% endif %}
-        {% if is_incremental () %}
-        AND p_bought.minute >= DATE_TRUNC("day", NOW() - interval '1 week')
-        {% endif %}
-    LEFT JOIN {{ source ('prices', 'usd') }} p_sold
-        ON p_sold.minute = DATE_TRUNC('minute', dexs.block_time)
-        AND p_sold.contract_address = dexs.token_sold_address
-        AND p_sold.blockchain = 'arbitrum'
-        {% if not is_incremental () %}
-        AND p_sold.minute >= '{{ project_start_date }}'
-        {% endif %}
-        {% if is_incremental () %}
-        AND p_sold.minute >= DATE_TRUNC("day", NOW() - interval '1 week')
-        {% endif %}
-    INNER JOIN bpa
-        ON bpa.evt_block_number = dexs.evt_block_number
-        AND bpa.tx_hash = dexs.tx_hash
-        AND bpa.evt_index = dexs.evt_index
-    LEFT JOIN {{ ref('balancer_v2_arbitrum_bpt_prices') }} bpa_bpt_prices
-        ON bpa_bpt_prices.contract_address = bpa.contract_address
-        AND bpa_bpt_prices.hour = bpa.bpa_max_block_time
-        {% if not is_incremental () %}
-        AND bpa_bpt_prices.hour >= '{{ project_start_date }}'
-        {% endif %}
-        {% if is_incremental () %}
-        AND bpa_bpt_prices.hour >= DATE_TRUNC("day", NOW() - interval '1 week')
-        {% endif %}
-    INNER JOIN bpb
-        ON bpb.evt_block_number = dexs.evt_block_number
-        AND bpb.tx_hash = dexs.tx_hash
-        AND bpb.evt_index = dexs.evt_index
-    LEFT JOIN {{ ref('balancer_v2_arbitrum_bpt_prices') }} bpb_bpt_prices
-        ON bpb_bpt_prices.contract_address = bpb.contract_address
-        AND bpb_bpt_prices.hour = bpb.bpb_max_block_time
-        {% if not is_incremental () %}
-        AND bpa_bpt_prices.hour >= '{{ project_start_date }}'
-        {% endif %}
-        {% if is_incremental () %}
-        AND bpa_bpt_prices.hour >= DATE_TRUNC("day", NOW() - interval '1 week')
-        {% endif %}
+INNER JOIN {{ source ('arbitrum', 'transactions') }} tx
+    ON tx.hash = dexs.tx_hash
+    {% if not is_incremental () %}
+    AND tx.block_time >= '{{ project_start_date }}'
+    {% endif %}
+    {% if is_incremental () %}
+    AND tx.block_time >= DATE_TRUNC("day", NOW() - interval '1 week')
+    {% endif %}
+LEFT JOIN {{ ref ('tokens_erc20') }} erc20a
+    ON erc20a.contract_address = dexs.token_bought_address
+    AND erc20a.blockchain = 'arbitrum'
+LEFT JOIN {{ ref ('tokens_erc20') }} erc20b
+    ON erc20b.contract_address = dexs.token_sold_address
+    AND erc20b.blockchain = 'arbitrum'
+LEFT JOIN {{ source ('prices', 'usd') }} p_bought
+    ON p_bought.minute = DATE_TRUNC('minute', dexs.block_time)
+    AND p_bought.contract_address = dexs.token_bought_address
+    AND p_bought.blockchain = 'arbitrum'
+    {% if not is_incremental () %}
+    AND p_bought.minute >= '{{ project_start_date }}'
+    {% endif %}
+    {% if is_incremental () %}
+    AND p_bought.minute >= DATE_TRUNC("day", NOW() - interval '1 week')
+    {% endif %}
+LEFT JOIN {{ source ('prices', 'usd') }} p_sold
+    ON p_sold.minute = DATE_TRUNC('minute', dexs.block_time)
+    AND p_sold.contract_address = dexs.token_sold_address
+    AND p_sold.blockchain = 'arbitrum'
+    {% if not is_incremental () %}
+    AND p_sold.minute >= '{{ project_start_date }}'
+    {% endif %}
+    {% if is_incremental () %}
+    AND p_sold.minute >= DATE_TRUNC("day", NOW() - interval '1 week')
+    {% endif %}
+INNER JOIN bpa
+    ON bpa.evt_block_number = dexs.evt_block_number
+    AND bpa.tx_hash = dexs.tx_hash
+    AND bpa.evt_index = dexs.evt_index
+LEFT JOIN {{ ref('balancer_v2_arbitrum_bpt_prices') }} bpa_bpt_prices
+    ON bpa_bpt_prices.contract_address = bpa.contract_address
+    AND bpa_bpt_prices.hour = bpa.bpa_max_block_time
+    {% if not is_incremental () %}
+    AND bpa_bpt_prices.hour >= '{{ project_start_date }}'
+    {% endif %}
+    {% if is_incremental () %}
+    AND bpa_bpt_prices.hour >= DATE_TRUNC("day", NOW() - interval '1 week')
+    {% endif %}
+INNER JOIN bpb
+    ON bpb.evt_block_number = dexs.evt_block_number
+    AND bpb.tx_hash = dexs.tx_hash
+    AND bpb.evt_index = dexs.evt_index
+LEFT JOIN {{ ref('balancer_v2_arbitrum_bpt_prices') }} bpb_bpt_prices
+    ON bpb_bpt_prices.contract_address = bpb.contract_address
+    AND bpb_bpt_prices.hour = bpb.bpb_max_block_time
+    {% if not is_incremental () %}
+    AND bpa_bpt_prices.hour >= '{{ project_start_date }}'
+    {% endif %}
+    {% if is_incremental () %}
+    AND bpa_bpt_prices.hour >= DATE_TRUNC("day", NOW() - interval '1 week')
+    {% endif %}
