@@ -180,7 +180,7 @@ with source_optimism_transactions as (
               ,zone
               ,orderHash AS order_hash
               ,posexplode(consideration) as (consideration_idx, consideration_item)
-          from {{ source('seaport_optimism','Seaport_evt_OrderFulfilled') }}
+          from {{ source('opensea_optimism','Seaport_evt_OrderFulfilled') }}
          where contract_address = '0x00000000006c3852cbef3e08e8df289169ede581'
            and recipient != '0x0000000000000000000000000000000000000000'
         {% if not is_incremental() %}
@@ -257,7 +257,7 @@ with source_optimism_transactions as (
                   ,contract_address as platform_contract_address
             from (select *
                         ,posexplode(output_executions) as (execution_idx, execution) 
-                    from {{ source('seaport_optimism', 'Seaport_call_matchAdvancedOrders') }}
+                    from {{ source('opensea_optimism', 'Seaport_call_matchAdvancedOrders') }}
                    where call_success 
                      and contract_address = '0x00000000006c3852cbef3e08e8df289169ede581'  -- Seaport v1.1
                  {% if not is_incremental() %}
@@ -287,7 +287,7 @@ with source_optimism_transactions as (
                   ,contract_address as platform_contract_address
             from (select *
                         ,posexplode(output_executions) as (execution_idx, execution)   -- output_executions
-                    from {{ source('seaport_optimism', 'Seaport_call_matchOrders') }}
+                    from {{ source('opensea_optimism', 'Seaport_call_matchOrders') }}
                    where call_success 
                      and contract_address = '0x00000000006c3852cbef3e08e8df289169ede581'  -- Seaport v1.1
                  {% if not is_incremental() %}
