@@ -30,7 +30,7 @@ DATE_TRUNC('day', block_time) AS block_date
 	|| '-' || coalesce(cast(trace_type as varchar(100)),'null_trace_type')
 	|| '-' || coalesce(cast(trace_success as varchar(100)),'null_trace_success')
 	|| '-' || coalesce(cast(tx_success as varchar(100)),'null_tx_success')
-	|| '-' || coalesce(cast(rn_tx as varchar(100)),'null_row') --control for weird nulls errors
+	-- || '-' || coalesce(cast(rn_tx as varchar(100)),'null_row') --control for weird nulls errors
 as unique_id
 
 FROM (
@@ -70,7 +70,7 @@ FROM (
 	, r.trace_success
 	, r.tx_success
 
-	, ROW_NUMBER() OVER (PARTITION BY r.tx_hash ORDER BY r.trace_success desc nulls last, r.tx_success DESC nulls last) as rn_tx
+	-- , ROW_NUMBER() OVER (PARTITION BY r.tx_hash ORDER BY r.trace_success desc nulls last, r.tx_success DESC nulls last) as rn_tx
     
 	FROM {{ ref('gas_optimism_fees_traces') }} r
     
