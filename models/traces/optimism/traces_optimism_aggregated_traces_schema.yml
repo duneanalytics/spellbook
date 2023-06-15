@@ -33,14 +33,14 @@ models:
       - &tx_to
         name: tx_to
         description:  "Transaction to address. When this is a contract, it's the contract that the user directly interacts with."
-      - &tx_method_id
-        name: tx_method_id
+      - &tx_method
+        name: tx_method
         description: "First 4 bytes of transaction data. THe function called by the transaction."
       - &tx_value
         name: tx_value
         description: "ETH Transferred in the transaction"
-      - &tx_l2_gas_used
-        name: tx_l2_gas_used
+      - &tx_gas_used
+        name: tx_gas_used
         description: "Gas used by the transaction"
       - &trace_from
         name: trace_from
@@ -48,11 +48,11 @@ models:
       - &trace_to
         name: trace_to
         description: "Trace to address - what contract is being called"
-      - &trace_method_id
-        name: trace_method_id
+      - &trace_method
+        name: trace_method
         description: "First 4 bytes of trace input. THe function called in the trace."
-      - &call_type
-        name: call_type
+      - &trace_type
+        name: trace_type
         description: "Call type"
       - &tx_l1_gas_used
         name: l1_gas_used
