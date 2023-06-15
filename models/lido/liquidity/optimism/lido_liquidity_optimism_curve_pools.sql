@@ -187,7 +187,7 @@ select explode(sequence(to_date('{{ project_start_date }}'), now(), interval 1 d
 
 , reserves as (
     select day
-        , d.pool
+        , coalesce(d.pool, w.pool, e.pool, '0xb90b9b1f91a01ea22a182cd84c1e22222e39b415') as pool
         , case when p2.token = '0x7f39c581f595b53c5cb19bd0b3f8da6c935e2ca0' then '0x1F32b1c2345538c0c6f582fCB022739c4A194Ebb' end as main_token
         , p2.symbol as main_token_symbol
         , p1.token as paired_token
