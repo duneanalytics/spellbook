@@ -27,8 +27,8 @@ DATE_TRUNC('day', block_time) AS block_date
 	|| '-' || coalesce(cast(trace_to as varchar(100)),'null_trace_to')
 	|| '-' || coalesce(cast(trace_method_id as varchar(100)),'null_trace_method_id')
 	|| '-' || coalesce(cast(call_type as varchar(100)),'null_call_type')
-	|| '-' || coalesce(cast(trace_success as varchar(100)),'null_call_type')
-	|| '-' || coalesce(cast(tx_success as varchar(100)),'null_call_type')
+	|| '-' || coalesce(cast(trace_success as varchar(100)),'null_trace_success')
+	|| '-' || coalesce(cast(tx_success as varchar(100)),'null_tx_success')
 as unique_id
 
 FROM (
@@ -67,6 +67,8 @@ FROM (
 	
 	, r.success AS trace_success
 	, r.tx_success
+
+	, ROW_NUMBER() OVER (PARTITION BY tx_hash ORDER BY r.success desc nulls last, r.tx_success DESC nulls last)
     
 	FROM {{ source('optimism', 'traces') }} r
     
