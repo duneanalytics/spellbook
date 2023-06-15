@@ -13,12 +13,7 @@ models:
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
-              - tx_hash
-              - block_number
-              - trace_from
-              - trace_to
-              - trace_method_id
-              - call_type
+              - unique_id
     columns:
       - &block_date
         name: block_date
@@ -95,3 +90,6 @@ models:
       - &num_traces
         name: num_traces
         description: "How many traces are summed together in this row"
+      - &unique_id
+        name: unique_id
+        description: "unique identifier"

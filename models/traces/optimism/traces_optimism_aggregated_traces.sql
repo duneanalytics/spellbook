@@ -4,7 +4,7 @@
 	materialized = 'incremental',
 	file_format = 'delta',
 	incremental_strategy = 'merge',
-	unique_key = ['tx_hash', 'block_number', 'trace_from', 'trace_to', 'trace_method_id', 'call_type']
+	unique_key = ['unique_id']
 	)
 }}
 
@@ -21,6 +21,13 @@ DATE_TRUNC('day', block_time) AS block_date
 , SUM(trace_gas_used) AS trace_gas_used
 , cast(SUM(trace_gas_used) as double) / cast(tx_l2_gas_used AS double) AS pct_tx_trace_gas_used
 , COUNT(*) AS num_traces
+
+, cast(tx_hash as varchar(100))
+	|| coalesce(cast(trace_from as varchar(100)),'')
+	|| coalesce(cast(trace_to as varchar(100)),'')
+	|| coalesce(cast(trace_method_id as varchar(100)),'')
+	|| coalesce(cast(call_type as varchar(100)),'')
+as unique_id
 
 FROM (
 
@@ -89,4 +96,4 @@ FROM (
 
 ) a
 
-GROUP BY 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20
+GROUP BY 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20, 26
