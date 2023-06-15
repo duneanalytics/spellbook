@@ -26958,4 +26958,5 @@ FROM (VALUES
         ,('0x421a312d1c443faa673ae47338c0c42fb40cdfd0', 'YAH', 9)
         ,('0xb25ea095997f5bbaa6cea962c4fbf3bfc3c09776', 'FIRE', 9)
         ,('0xa0c7dc8dd85d7366a61b167c5aa42242801a9256', 'BNB', 9)
+        ,('0x92cfbec26c206c90aee3b7c66a9ae673754fab7e', 'OLE', 18)
      ) AS temp_table (contract_address, symbol, decimals)
