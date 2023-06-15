@@ -369,6 +369,8 @@ models:
         +schema: gas_optimism
       arbitrum:
         +schema: gas_arbitrum
+      polygon:
+        +schema: gas_polygon
 
     gmx:
       +schema: gmx
@@ -657,12 +659,45 @@ models:
       optimism:
         +schema: synthetix_optimism
 
+    synapse:
+      +schema: synapse
+      arbitrum:
+        +schema: synapse_arbitrum
+      avalanche_c:
+        +schema: synapse_avalanche_c
+      bnb:
+        +schema: synapse_bnb
+      ethereum:
+        +schema: synapse_ethereum
+      fantom:
+        +schema: synapse_fantom
+      optimism:
+        +schema: synapse_optimism
+      polygon:
+        +schema: synapse_polygon
+        
+    fiat_dao:
+      +schema: fiat_dao
+      ethereum:
+        +schema: fiat_dao_ethereum
+
     integral:
       +schema: integral
       arbitrum:
         +schema: integral_arbitrum
       ethereum:
         +schema: integral_ethereum
+
+    equalizer:
+      +schema: equalizer
+      bnb:
+        +schema: equalizer_bnb
+      ethereum:
+        +schema: equalizer_ethereum
+      optimism:
+        +schema: equalizer_optimism
+      polygon:
+        +schema: equalizer_polygon
 
     integration_test:
       +schema: integration_test
