@@ -311,3 +311,13 @@ models:
         Why not apply these joins in the nft_trades model? Because we'd like to move fast and not break things! 
         1) LLM models are extremely sensitive to things like column names. Which means we'll be doing some tweaking as we go.
         2) We don't want people to build queries on this table which will be evolving over time.
+
+ - name: tokens_partitioned
+   meta:
+     blockchain: ethereum, solana, bnb, optimism, arbitrum, polygon
+     sector: nft
+     contributors: dot2dotseurat
+   config:
+     tags: ['reservoir', 'wand']
+   description: > 
+        Intermediate table used to help create nft_trades_unstable. Repartition of reservior.tokens.

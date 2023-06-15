@@ -22,7 +22,6 @@ with trades as (
         nft_standard,
         trade_type,
         nft_amount,
-        trade_category,
         seller,
         buyer,
         price,
@@ -67,7 +66,6 @@ with trades as (
         token_standard as nft_standard,
         'primary' as trade_type,
         number_of_items as nft_amount,
-        trade_category,
         seller,
         buyer,
         amount_original as price,
@@ -117,7 +115,6 @@ select
     e.nft_standard,
     e.trade_type,
     e.nft_amount,
-    e.trade_category,
     e.seller,
     e.buyer,
     e.price as price_original_currency,
@@ -140,18 +137,11 @@ select
     e.royalty_fee_amount_usd,
     e.royalty_fee_percentage,
     e.unique_trade_id,
-    rt.description as token_description,
-    rt.name as token_name,
-    rt.owner as current_token_owner,
     rc.description as collection_description,
     rc.name as collection_name,
-    rc.community as collection_community,
     rc.all_time_volume as collection_all_time_volume,
     rc.all_time_rank as collection_all_time_rank,
     rc.token_count as total_supply
   from events e
-  left join {{source('reservoir', 'tokens') }} rt
-  on e.nft_contract_address = rt.contract
-  and e.nft_token_id = rt.token_id
-  left join {{source('reservoir', 'collections') }} rc
+  left join {{ source('reservoir', 'collections') }} rc
   on e.nft_contract_address = rc.contract
