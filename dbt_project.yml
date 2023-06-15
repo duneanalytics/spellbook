@@ -394,6 +394,11 @@ models:
       ethereum:
         +schema: bend_dao_ethereum
 
+    astaria:
+      +schema: astaria
+      ethereum:
+        +schema: astaria_ethereum
+
     seaport:
       +schema: seaport
       ethereum:
