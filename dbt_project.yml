@@ -661,6 +661,17 @@ models:
       ethereum:
         +schema: integral_ethereum
 
+    equalizer:
+      +schema: equalizer
+      bnb:
+        +schema: equalizer_bnb
+      ethereum:
+        +schema: equalizer_ethereum
+      optimism:
+        +schema: equalizer_optimism
+      polygon:
+        +schema: equalizer_polygon
+
     integration_test:
       +schema: integration_test
 
