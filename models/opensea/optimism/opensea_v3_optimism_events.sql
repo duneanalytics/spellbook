@@ -115,7 +115,7 @@ with source_optimism_transactions as (
             , zone
             , orderHash AS order_hash
             , posexplode(offer) as (offer_idx, offer_item)
-        from {{ source('seaport_optimism', 'Seaport_evt_OrderFulfilled') }}
+        from {{ source('opensea_optimism', 'Seaport_evt_OrderFulfilled') }}
        where contract_address = '0x00000000006c3852cbef3e08e8df289169ede581'
          and recipient != '0x0000000000000000000000000000000000000000'
        {% if not is_incremental() %}
