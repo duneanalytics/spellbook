@@ -4,7 +4,7 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
-dbt-databricks = "1.2.1"
+dbt-databricks = "===1.4.1"
 numpy = "2.0.12"
 pre-commit = "2.20.0"
 pytest = "7.1.3"
