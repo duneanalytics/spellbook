@@ -16,6 +16,7 @@ ref('aave_flashloans')
 , ref('balancer_flashloans')
 , ref('dydx_ethereum_flashloans')
 , ref('uniswap_flashloans')
+, ref('fiat_dao_ethereum_flashloans')
 , ref('equalizer_flashloans')
 ] %}
 

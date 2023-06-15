@@ -654,6 +654,11 @@ models:
       optimism:
         +schema: synthetix_optimism
 
+    fiat_dao:
+      +schema: fiat_dao
+      ethereum:
+        +schema: fiat_dao_ethereum
+
     integral:
       +schema: integral
       arbitrum:
