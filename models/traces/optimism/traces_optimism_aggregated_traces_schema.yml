@@ -90,6 +90,13 @@ models:
       - &num_traces
         name: num_traces
         description: "How many traces are summed together in this row"
+      - &trace_success
+        name: trace_success
+      - &tx_success
+        name: tx_success
+      - &num_traces
+        name: num_traces
+        description: "How many traces are summed together in this row"
       - &unique_id
         name: unique_id
         description: "unique identifier"
