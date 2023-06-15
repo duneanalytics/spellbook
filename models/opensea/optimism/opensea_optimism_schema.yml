@@ -206,7 +206,7 @@ models:
           - check_seed:
           seed_file: ref('opensea_optimism_seaport_trades_samples')
           filter:
-            blockchain: polygon
+            blockchain: optimism
             project: opensea
             version: v3
           check_columns:
@@ -297,7 +297,7 @@ models:
       - check_seed:
           seed_file: ref('opensea_optimism_seaport_trades_samples')
           filter:
-            blockchain: polygon
+            blockchain: optimism
             project: opensea
             version: v4
           check_columns:
