@@ -1,0 +1,9 @@
+version: 2
+
+sources:
+  - name: equalizer_ethereum
+    description: "Decoded contracts for Equalizer on Ethereum"
+
+    tables:
+      - name: FlashLoanProvider_evt_FlashLoan
+        loaded_at_field: evt_block_time
