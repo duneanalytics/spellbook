@@ -1,0 +1,89 @@
+version: 2
+
+models:
+  - name: zerion_optimism_trades
+    meta:
+      blockchain: optimism
+      sector: dex
+      project: zerion
+      contributors: hildobby
+    config:
+      tags: ['optimism', 'zerion', 'zerion', 'trades', 'dex']
+    description: >
+        Zerion DEX trades on Optimism
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - tx_hash
+            - evt_index
+    columns:
+      - &blockchain
+        name: blockchain
+        description: "Blockchain which the DEX is deployed"
+      - &block_time
+        name: block_time
+        description: "UTC event block time of each DEX trade"
+      - &block_date
+        name: block_date
+        description: "UTC event block date of each DEX trade"
+      - &block_number
+        name: block_number
+        description: "UTC event block number of each DEX trade"
+      - &trader 
+        name: trader
+        description: "Trader behind the transaction"  
+      - &token_sold_address
+        name: token_sold_address
+        description: "Contract address of sold token"
+      - &token_sold_symbol
+        name: token_sold_symbol
+        description: "Symbol of sold token"
+      - &token_sold_amount_raw
+        name: token_sold_amount
+        description: "Raw amount of sold token"
+      - &token_sold_amount_original
+        name: token_sold_amount_original
+        description: "Original amount of sold token"
+      - &token_bought_address
+        name: token_bought_address
+        description: "Contract address of bought token"
+      - &token_bought_symbol
+        name: token_bought_symbol
+        description: "Symbol of bought token"
+      - &token_bought_amount_raw
+        name: token_bought_amount
+        description: "Raw amount of bought token"
+      - &token_bought_amount_original
+        name: token_bought_amount_original
+        description: "Original amount of bought token"
+      - &amount_usd
+        name: amount_usd
+        description: "USD Value of Trade"
+      - &tx_from
+        name: tx_from
+        description: "Address that initiated the transaction"
+      - &tx_to
+        name: tx_to
+        description: "Address that the transaction points to"
+      - &tx_hash
+        name: tx_hash
+        description: "Transaction hash"
+      - &contract_address
+        name: contract_address
+        description: "Contract address of router that executed the trade"
+      - &evt_index
+        name: evt_index
+        description: "Event index"
+      - &marketplace_fee_amount_raw
+        name: marketplace_fee_amount_raw
+        description: "Raw marketplace fee"
+      - &marketplace_fee_amount_original
+        name: marketplace_fee_amount_original
+        description: "Original marketplace fee"
+      - &zerion_fee_amount_raw
+        name: zerion_fee_amount_raw
+        description: "Raw protocol fee"
+      - &protocol_fee_amount_original
+        name: protocol_amount_fee_original
+        description: "Original protocol fee"

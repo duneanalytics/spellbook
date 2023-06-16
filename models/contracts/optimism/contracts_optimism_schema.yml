@@ -98,7 +98,7 @@ models:
       contributors: chuxin, msilb7
     config:
       tags: ['optimism', 'contracts', 'addresses']
-    description: "A list of contracts that are self-destruct."
+    description: "A list of contracts that are self-destruct, with the time that they were most recently self-destructed."
     columns:
       - *created_time
       - *creation_tx_hash
