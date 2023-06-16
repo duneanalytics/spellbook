@@ -69,6 +69,7 @@ FROM (
 	
 	, r.trace_success
 	, r.tx_success
+	, r.trace_address
 
 	FROM {{ ref('gas_optimism_fees_traces') }} r
     
@@ -90,6 +91,8 @@ FROM (
 	{% if is_incremental() %}
 	WHERE r.block_time >= date_trunc('day', now() - interval '1 week')
 	{% endif %}
+	-- handle duplicate trace errors
+	GROUP BY 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25
 
 ) a
 
