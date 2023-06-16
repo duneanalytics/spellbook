@@ -17,7 +17,7 @@
 
 {% set erc4337_base_models = [
     ref('erc4337_ethereum_v0_5_userops_basics')
-    , ref('erc4337_v0_6_ethereum_userops_basics')
+    , ref('erc4337_ethereum_v0_6_userops_basics')
 ] %}
 
 {{
