@@ -8,7 +8,7 @@ WITH unit_test AS (
         END AS bundler_test
 
     FROM
-        {{ ref('erc4337_gnosis_userops_beta') }} AS actual
+        {{ ref('erc4337_gnosis_userops') }} AS actual
         INNER JOIN {{ ref('erc4337_gnosis_userops_test_data') }} AS test
         ON LOWER(
             actual.userop_hash
