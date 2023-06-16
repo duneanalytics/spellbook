@@ -73,7 +73,7 @@ borrows as (
     INNER JOIN 
     {{ ref('tokens_ethereum_erc20') }} er 
         ON LOWER(b.lien_token) = LOWER(er.contract_address)
-        AND er.blockchain = 'ethereum'
+        -- AND er.blockchain = 'ethereum'
 ), 
 
 repays_table as (
