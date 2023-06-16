@@ -8,8 +8,8 @@
     )
 }}
 
-SELECT * FROM {{ ref('labels_optimism_coinbase_wallet_quest_participants') }}
+SELECT blockchain, address, name, category, contributor, source, created_at, updated_at, model_name, label_type FROM {{ ref('labels_optimism_coinbase_wallet_quest_participants') }}
 UNION ALL
-SELECT * FROM {{ ref('labels_optimism_optimism_quest_participants') }}
+SELECT blockchain, address, name, category, contributor, source, created_at, updated_at, model_name, label_type FROM {{ ref('labels_optimism_optimism_quest_participants') }}
 UNION ALL
-SELECT * FROM {{ ref('labels_optimism_galxe_quest_participants') }}
+SELECT blockchain, address, name, category, contributor, source, created_at, updated_at, model_name, label_type FROM {{ ref('labels_optimism_galxe_quest_participants') }}
