@@ -1,5 +1,6 @@
 {{ config
 (
+    schema = 'erc4337_v0_5_gnosis',
     alias ='userops_v0_5_basics',
     partition_by = ['block_time'],
     materialized = 'incremental',

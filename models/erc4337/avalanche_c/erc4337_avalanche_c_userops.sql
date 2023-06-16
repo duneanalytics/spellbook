@@ -1,4 +1,5 @@
 {{ config(
+    schema ='erc4337_avalanche_c',
     alias = 'userops',
     partition_by = ['block_time'],
     materialized = 'incremental',

@@ -1,7 +1,7 @@
 {{ config
 (
     schema = 'erc4337_v0_5_ethereum',
-    alias ='userops_basics',
+    alias ='userops_v0_5_basics',
     partition_by = ['block_time'],
     materialized = 'incremental',
     file_format = 'delta',
