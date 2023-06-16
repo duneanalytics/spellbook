@@ -1,0 +1,31 @@
+{{ config
+(
+    alias ='userops_v0_5_basics',
+    partition_by = ['block_time'],
+    materialized = 'incremental',
+    file_format = 'delta',
+    incremental_strategy = 'merge',
+    unique_key = ['userop_hash', 'tx_hash'],
+    post_hook='{{ expose_spells(\'["optimism"]\',
+                                    "project",
+                                    "erc4337",
+                                    \'["0xbitfly", "hosuke"]\') }}'
+)
+}}
+
+
+{% set chain = 'optimism' %}
+{% set gas_symbol = 'ETH' %}
+{% set wrapped_gas_address = '0x4200000000000000000000000000000000000006' %}
+{% set version = 'v0.5' %}
+{% set deployed_date = '2023-02-15' %}
+
+-- macros/models/sector/erc4337
+{{
+    erc4337_userops_basics(
+        blockchain = 'optimism',
+        version = 'v0.5',
+        userops_evt_model = source('erc4337_optimism','EntryPoint_evt_UserOperationEvent'),
+        handleops_call_model = source('erc4337_optimism', 'EntryPoint_call_handleOps')
+    )
+}}
