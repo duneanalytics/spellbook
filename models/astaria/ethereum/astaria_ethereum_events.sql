@@ -31,7 +31,7 @@ borrows_tmp as (
         stack:lien:details:liquidationInitialAsk as lien_details_liquidationInitialAsk,
         stack:point:amount as point_amount,
         stack:point:last as point_last, 
-        stack:point:end as point_end,
+        stack:point:end as point_end
     FROM
     {{source('astaria_ethereum', 'LienToken_evt_NewLien')}}
     {% if is_incremental() %}
