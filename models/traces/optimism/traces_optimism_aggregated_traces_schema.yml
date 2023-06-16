@@ -10,23 +10,27 @@ models:
       tags: ['optimism','traces','gas','aggregate']
     description: >
         A table containing trace data on Optimism, grouped by trace and transaction metadata, and with accurate gas per trace tracking. This table used for attirbuting gas usage by transaction and use case within a transaction, as well as providing a ~50% smaller trace table for runtime.
-    tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-              - unique_id
     columns:
       - &block_date
         name: block_date
         description: "Date of the block that the transaction was included in"
+        tests:
+          - not_null
       - &block_time
         name: block_time
         description: "Time of the block that the transaction was included in"
+        tests:
+          - not_null
       - &block_number
         name: block_number
         description: "Block Number that the transaction was included in"
+        tests:
+          - not_null
       - &tx_hash
         name: tx_hash
         description: "Transaction hash"
+        tests:
+          - not_null
       - &tx_from
         name: tx_from
         description: "Transaction sender address"
@@ -97,3 +101,6 @@ models:
       - &unique_id
         name: unique_id
         description: "unique identifier"
+        tests:
+          - unique
+          - not_null
