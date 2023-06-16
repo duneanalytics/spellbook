@@ -15,6 +15,6 @@ FROM {{ ref('xchange_ethereum_trades') }} xchange_ethereum_trades
 JOIN {{ ref('xchange_ethereum_trades_seed') }} test_data ON test_data.tx_hash = xchange_ethereum_trades.tx_hash
 
 )
-select count(case when test = false then 1 else null end)/count(*) as pct_mismatch, count(*) as count_rows
+select count(case when test = false then 1 else null end)/count(*) as pct_mismatch, count(*) as count_rows, sum(test_data.token_sold_amount) as debug
 from unit_tests
 having count(case when test = false then 1 else null end) > count(*)*0.1

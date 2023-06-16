@@ -22,7 +22,7 @@ models:
             - evt_index
             - trace_address
       - check_seed:
-          seed_file: ref('check_xchange_ethereum_trades')
+          seed_file: ref('check_xchange_ethereum_trades_seed')
           filter:
             blockchain: ethereum
             version: 1
