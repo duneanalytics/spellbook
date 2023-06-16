@@ -74,3 +74,63 @@ models:
       - &transaction_type
         name: transaction_type
         description: "Transaction type"
+
+  - name: gas_bnb_fees_traces
+    meta:
+      blockchain: bnb
+      sector: gas
+      contributors: hildobby
+    config:
+      tags: ['bnb', 'gas', 'fees', 'traces']
+    description: >
+        Gas Fees per Trace on BNB
+    columns:
+      - name: blockchain
+        description: "Blockchain name"  
+      - name: block_time
+        description: "Timestamp for block event time in UTC"
+      - name: block_date
+        description: "UTC Date of transaction in UTC"
+      - name: block_number
+        description: "Block number"
+      - name: tx_hash
+        description: "Primary key of the transaction"
+      - name: trace_from
+        description: "Address address that initiated the trace"
+      - name: trace_to
+        description: "Address address that received the trace"
+      - name: tx_from
+        description: "Address address that initiated the transaction"
+      - name: tx_to
+        description: "Address address that received the transaction"
+      - name: trace
+        description: "Trace"
+      - name: trace_method
+        description: "Trace method"
+      - name: tx_method
+        description: "Function method"
+      - name: trace_input
+      - name: gas_used_original
+        description: "Gas used in trace and its subtraces"
+      - name: gas_used_trace
+        description: "Gas used in trace (excluding gas spent in subtraces)"
+      - name: tx_gas_used
+        description: "Total gas used in the transaction"
+      - name: gas_used_original_percentage
+        description: "Percentage of trace (and subtraces) gas used out of the total gas used in the transaction"
+      - name: gas_used_trace_percentage
+        description: "Percentage of trace gas used out of the total gas used in the transaction"
+      - name: tx_gas_price
+        description: "Transaction gas price"
+      - name: trace_type
+        description: "Trace type"
+      - name: trace_value
+        description: "Trace value"
+      - name: trace_success
+        description: "Was the trace successful?"
+      - name: tx_success
+        description: "Was the transaction successful?"
+      - name: gas_fee_spent_trace
+        description: "Amount of ETH spent in gas fees"
+      - name: gas_fee_spent_trace_usd
+        description: "USD value of the amount of ETH spent in gas fees"
