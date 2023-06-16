@@ -69,7 +69,7 @@ FROM (
 	
 	, r.trace_success
 	, r.tx_success
-	, r.trace_address
+	, r.trace
 
 	FROM {{ ref('gas_optimism_fees_traces') }} r
     
