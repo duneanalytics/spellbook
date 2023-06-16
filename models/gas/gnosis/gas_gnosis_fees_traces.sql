@@ -61,7 +61,7 @@ WITH traces AS (
           FROM {{ source('gnosis','traces') }}
           WHERE cardinality(trace_address) > 0
           {% if is_incremental() %}
-          WHERE block_time >= date_trunc("day", NOW() - interval '1 days')
+          AND block_time >= date_trunc("day", NOW() - interval '1 days')
           {% endif %}
           ) traces
      GROUP BY traces.tx_hash, traces.trace, traces.block_time, traces.block_number
