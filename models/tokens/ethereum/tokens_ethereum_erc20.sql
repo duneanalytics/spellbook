@@ -26963,4 +26963,5 @@ FROM (VALUES
         ,('0xdbc7945c5403c589ec39a9aa8c5af234c706f6a2', 'XPEPE', 18)
         ,('0xb55099be10537da3daabcf757815fc7fb5aed031', 'REALM', 9)
         ,('0x117546d1467d80c6bde13910412c724383260cf9', 'XINU', 18)
+        ,('0x92cfbec26c206c90aee3b7c66a9ae673754fab7e', 'OLE', 18)
      ) AS temp_table (contract_address, symbol, decimals)
