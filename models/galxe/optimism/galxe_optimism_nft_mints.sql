@@ -38,7 +38,7 @@ INNER JOIN {{source('erc721_optimism','evt_transfer')}} tfer
     {% endif %}
 
 WHERE success = true
-    AND to = '{{spacestation}}'
+    AND t.to = '{{spacestation}}'
 AND block_time >= cast( '{{project_start_date}}' as timestamp)
 {% if is_incremental() %}
 AND block_time >= date_trunc('day', now() - interval '1 week')
