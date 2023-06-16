@@ -40,7 +40,7 @@ WITH traces AS (
           , tx_success
           FROM {{ source('ethereum','traces') }}
           {% if is_incremental() %}
-          WHERE block_time >= date_trunc("day", NOW() - interval '1 days')
+          WHERE block_time >= date_trunc("day", NOW() - interval '1' week)
           {% endif %}
           
           UNION ALL
@@ -61,7 +61,7 @@ WITH traces AS (
           FROM {{ source('ethereum','traces') }}
           WHERE cardinality(trace_address) > 0
           {% if is_incremental() %}
-          AND block_time >= date_trunc("day", NOW() - interval '1 days')
+          AND block_time >= date_trunc("day", NOW() - interval '1' week)
           {% endif %}
           ) traces
      GROUP BY traces.tx_hash, traces.trace, traces.block_time, traces.block_number
@@ -98,7 +98,7 @@ FROM traces
 INNER JOIN {{ source('ethereum','transactions') }} txs ON txs.block_time=traces.block_time
      AND txs.hash=traces.tx_hash
      {% if is_incremental() %}
-     AND txs.block_time >= date_trunc("day", NOW() - interval '1 days')
+     AND txs.block_time >= date_trunc("day", NOW() - interval '1' week)
      {% endif %}
 LEFT JOIN {{ source('prices', 'usd') }} pu ON pu.minute=date_trunc('minute', traces.block_time)
      AND pu.blockchain='ethereum'
