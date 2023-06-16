@@ -24,8 +24,9 @@ DATE_TRUNC('day', block_time) AS block_date
 , COUNT(*) AS num_traces
 
 , 'txh-' || coalesce(cast(tx_hash as varchar(100)), 'null_tx_hash')
+|| '-bn-' || coalesce(cast(block_number as varchar(100)),'null_block_number')
 || '-trf-' || coalesce(cast(trace_from as varchar(100)),'null_trace_from')
-|| '-trf-' || coalesce(cast(trace_to as varchar(100)),'null_trace_to')
+|| '-trt-' || coalesce(cast(trace_to as varchar(100)),'null_trace_to')
 || '-trm-' || coalesce(cast(trace_method as varchar(100)),'null_trace_method')
 || '-trt-' || coalesce(cast(trace_type as varchar(100)),'null_trace_type')
 || '-trs-' || coalesce(cast(trace_success as varchar(100)),'null_trace_success')
