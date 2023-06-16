@@ -14,6 +14,8 @@
 
 {%- set project_start_date = '2023-04-27' %}
 
+WITH
+
 borrows_tmp as (
     SELECT
         *, 
