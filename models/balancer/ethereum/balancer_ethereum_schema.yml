@@ -84,31 +84,6 @@ models:
         name: cumulative_amount
         description: 'Balance of a token'
 
-  - name: balancer_v2_ethereum_bpt_prices
-    meta:
-      blockchain: ethereum
-      project: balancer_v2
-      contributors: victorstefenon
-    config:
-      tags: ['ethereum', 'bpt', 'prices']
-    description: >
-      Balancer Pool Token (BPT) hourly median price by pool on Balancer, an automated portfolio manager and trading platform.
-    tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - hour
-            - contract_address
-    columns:
-      - &hour
-        name: hour
-        description: 'UTC event block time truncated to the hour mark'
-        tests:
-          - not_null
-      - *contract_address
-      - &median_price
-        name: median_price
-        description: 'BPT median price'
-
   - name: balancer_v2_ethereum_transfers_bpt
     meta:
       blockchain: ethereum
@@ -604,3 +579,30 @@ models:
       - name: currency_symbol
       - name: recipient
       - name: contract_address
+
+  - name: balancer_v2_ethereum_bpt_prices
+    meta:
+      blockchain: ethereum
+      project: balancer_v2
+      contributors: victorstefenon, thetroyharris
+    config:
+      tags: ['ethereum', 'bpt', 'prices']
+    description: >
+      Balancer Pool Token (BPT) hourly median price by pool on Balancer, an automated portfolio manager and trading platform.
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - hour
+            - contract_address
+    columns:
+      - *blockchain
+      - &hour
+        name: hour
+        description: 'UTC event block time truncated to the hour mark'
+        tests:
+          - not_null
+      - *contract_address
+      - &median_price
+        name: median_price
+        description: 'BPT median price'

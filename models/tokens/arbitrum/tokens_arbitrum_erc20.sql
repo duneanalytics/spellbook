@@ -118,4 +118,5 @@ FROM (VALUES
         ,('0x7a5D193fE4ED9098F7EAdC99797087C96b002907', 'plsARB', 18)
         ,('0x088cd8f5eF3652623c22D48b1605DCfE860Cd704', 'VELA', 18)
         ,('0xd77b108d4f6cefaa0cae9506a934e825becca46e', 'WINR', 18)
+        ,('0xd4d026322c88c2d49942a75dff920fcfbc5614c1', 'OLE', 18)
      ) AS temp_table (contract_address, symbol, decimals)

@@ -67,10 +67,11 @@ with source_ethereum_transactions as (
           ,evt_tx_hash as om_tx_hash
           ,evt_index as om_evt_index
           ,posexplode(orderhashes) as (om_order_id, om_order_hash)
+          ,cardinality(orderHashes) as om_cnt
       from {{ source('seaport_ethereum','Seaport_evt_OrdersMatched') }}
      where contract_address in ('0x00000000000001ad428e4906ae43d8f9852d0dd6' -- Seaport v1.4
                                ,'0x00000000000000adc04c56bf30ac9d3c0aaf14dc' -- Seaport v1.5
-                               )  
+                               )
 )
 ,iv_platform_fee_wallet (wallet_address, wallet_name) as (
     values   ('0x5b3256965e7c3cf26e11fcaf296dfc8807c01073','opensea')
@@ -136,7 +137,7 @@ with source_ethereum_transactions as (
         from {{ source('seaport_ethereum', 'Seaport_evt_OrderFulfilled') }}
        where contract_address in ('0x00000000000001ad428e4906ae43d8f9852d0dd6' -- Seaport v1.4
                                  ,'0x00000000000000adc04c56bf30ac9d3c0aaf14dc' -- Seaport v1.5
-                                 )  
+                                 )
         {% if not is_incremental() %}
         and evt_block_time >= date '{{c_seaport_first_date}}'  -- seaport first txn
         {% endif %}
@@ -202,7 +203,7 @@ with source_ethereum_transactions as (
         from {{ source('seaport_ethereum','Seaport_evt_OrderFulfilled') }}
        where contract_address in ('0x00000000000001ad428e4906ae43d8f9852d0dd6' -- Seaport v1.4
                                  ,'0x00000000000000adc04c56bf30ac9d3c0aaf14dc' -- Seaport v1.5
-                                 )  
+                                 )
         {% if not is_incremental() %}
         and evt_block_time >= date '{{c_seaport_first_date}}'  -- seaport first txn
         {% endif %}
@@ -318,7 +319,8 @@ with source_ethereum_transactions as (
             from iv_offer_consideration a
                     left join iv_platform_fee_wallet f on f.wallet_address = a.receiver
                     left join iv_orders_matched b on b.om_tx_hash = a.tx_hash
-                                                    and b.om_order_hash = a.order_hash
+                                                  and b.om_order_hash = a.order_hash
+                                                  and b.om_cnt = 2
           ) a
     where not is_self_trans
 )
@@ -554,5 +556,7 @@ select
                                           ,'0x000000e7ec00e7b300774b00001314b8610022b8' -- newly added on seaport v1.4
                                           )
          or  fee_wallet_name = 'opensea'
-        ) 
+        )
+        -- and tx_hash not in ('0xff6ab6d78a69bd839ac4fa9e9347367075f3ba2d83216c561010f94291d0118c', '0x3ffc50795ecaf51f14a330605d44e41e3aa3515326560037b61edb8990ff80e2')
+
 
