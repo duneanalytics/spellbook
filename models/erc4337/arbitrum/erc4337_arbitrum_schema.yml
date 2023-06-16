@@ -92,6 +92,26 @@ models:
           combination_of_columns:
             - userop_hash
             - tx_hash
+      - check_seed:
+          seed_file: ref('erc4337_userops_seed')
+          filter:
+            blockchain: arbitrum
+            version: v0.5
+          match_columns:
+            - userop_hash
+          check_columns:
+            - tx_hash
+            - bundler
+      - check_seed:
+          seed_file: ref('erc4337_userops_seed')
+          filter:
+            blockchain: arbitrum
+            version: v0.6
+          match_columns:
+            - userop_hash
+          check_columns:
+            - tx_hash
+            - bundler
     columns:
       - *blockchain
       - *version
