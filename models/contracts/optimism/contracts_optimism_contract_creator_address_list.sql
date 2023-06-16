@@ -323,7 +323,7 @@ WITH curated_list AS (
       ,('0x685723b9dc89bdf28ba5f98f9a8c0ac899bd6e77', 'Jarvis Network')
       ,('0x1e7b390149Abb3B891e0a7027E111188032D4540', 'RadioShack Swap')
       ,('0x4C3490dF15edFa178333445ce568EC6D99b5d71c', 'Reaper Farm')
-      ,('0xf0974c239b7d08b7240b690b69ec3dd8ae783efc', 'Apetimism Launchapd')
+      ,('0xf0974c239b7d08b7240b690b69ec3dd8ae783efc', 'Apetimism Launchpad')
       ,('0x5cb01385d3097b6a189d1ac8ba3364d900666445', 'Overnight+')
       ,('0xA52fECFe3F0D4a77A572dec9B72277abC5dFD9c6', 'NEX')
       ,('0xb98d4d4e205aff4d4755e9df19bd0b8bd4e0f148', 'Fuji Finance')
@@ -514,6 +514,12 @@ WITH curated_list AS (
       ,('0x8de39c1Fa14b6082053e7cD937d6Ebe58A69D6D2', 'KyberSwap')
       ,('0xfB3485c2e209A5cfBDC1447674256578f1A80eE3', 'Abracadabra')
       ,('0x085909388fc0cE9E5761ac8608aF8f2F52cb8B89', 'Interest Protocol')
+      ,('0x3d4316342acd2deD06507302404e9788fF5F4d02', 'Squid Router')
+      ,('0x19df27089a52ccfa444ce5a73ef86403d03210d4', 'Getaverse')
+      ,('0xBd9d5319691922e2e1F9DC69ce0Fd0B0ded51656', 'Manifold')
+      ,('0x3B52ad533687Ce908bA0485ac177C5fb42972962', 'Manifold')
+      ,('0xB8cEF765721A6da910f14Be93e7684e9a3714123', 'Allo Protocol') --Gitcoin Grants Stack
+      ,('0x123694886DBf5Ac94DDA07135349534536D14cAf', 'Threshold Network')
 
   ) as temp_table (creator_address, contract_project)
 
