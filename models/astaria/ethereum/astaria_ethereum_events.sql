@@ -91,8 +91,9 @@ repays_calls as (
         * 
     FROM 
     {{source('astaria_ethereum', 'LienToken_call_makePayment')}}
+    WHERE 1 = 1 
     {% if is_incremental() %}
-    WHERE call_block_time >= date_trunc("day", now() - interval '1 week')
+    AND call_block_time >= date_trunc("day", now() - interval '1 week')
     {% endif %}
     AND call_success = true 
 ), 
