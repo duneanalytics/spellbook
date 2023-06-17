@@ -1245,3 +1245,18 @@ models:
       +schema: thena
       bnb:
         +schema: thena_bnb
+
+    erc4337:
+      +schema: erc4337
+      ethereum:
+        +schema: erc4337_ethereum
+      avalanche_c:
+        +schema: erc4337_avalanche_c
+      arbitrum:
+        +schema: erc4337_arbitrum
+      optimism:
+        +schema: erc4337_optimism
+      polygon:
+        +schema: erc4337_polygon
+      gnosis:
+        +schema: erc4337_gnosis
