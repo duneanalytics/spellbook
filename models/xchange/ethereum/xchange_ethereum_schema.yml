@@ -10,7 +10,7 @@ models:
     config:
       tags: ['ethereum','xchange','x7finance','trades','dex']
     description: >
-        xchange contract trades on Ethereum
+        Xchange contract trades on Ethereum
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
