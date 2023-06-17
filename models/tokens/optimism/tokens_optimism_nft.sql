@@ -10,7 +10,7 @@
 
 SELECT
     c.contract_address
-  , coalesce(t.name,b.nam, g.namee) as name
+  , coalesce(t.name,b.name, g.name) as name
   , coalesce(t.symbol,b.symbol, g.symbol) as symbol
   , c.standard
 FROM {{ ref('tokens_optimism_nft_standards')}} c
