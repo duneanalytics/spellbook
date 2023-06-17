@@ -1,5 +1,4 @@
 {{ config(
-    schema ='erc4337_ethereum',
     alias = 'userops',
     partition_by = ['block_time'],
     materialized = 'incremental',
