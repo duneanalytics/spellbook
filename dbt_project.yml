@@ -384,10 +384,6 @@ models:
         +schema: gas_arbitrum
       polygon:
         +schema: gas_polygon
-      fantom:
-        +schema: gas_fantom
-      gnosis:
-        +schema: gas_gnosis
 
     gmx:
       +schema: gmx
