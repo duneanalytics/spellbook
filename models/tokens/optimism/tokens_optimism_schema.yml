@@ -218,4 +218,25 @@ models:
         tests:
           - accepted_values:
               values: [ 'erc721', 'erc1155' ]
+  
+  - name: tokens_optimism_nft_generated
+    meta:
+      blockchain: optimism
+      sector: nft
+      contributors: msilb7
+    config:
+      tags: ['tokens', 'optimism', 'nft']
+    description: >
+        Selection of NFT token addresses identified from other contracts (i.e. factoriees)
+    columns:
+      - name: contract_address
+        description: "The contract address is the unique address of where the NFTs are stored on Optimism."
+        tests:
+          - unique
+      - name: name
+        description: "NFT Project name"
+      - name: standard
+        description: "NFT Project standard, currently only erc721 tokens can be bridged"
+      - name: symbol
+        description: "NFT Project symbol"
 

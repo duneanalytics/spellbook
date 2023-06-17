@@ -1245,3 +1245,8 @@ models:
       +schema: thena
       bnb:
         +schema: thena_bnb
+    
+    sound_xyz:
+      +schema: sound_xyz
+      optimism:
+        +schema: sound_xyz_optimism
