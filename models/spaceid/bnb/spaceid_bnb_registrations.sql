@@ -11,7 +11,6 @@
                                     \'["springzh"]\') }}'
     )
 }}
-
 SELECT 'v3'                    as version,
        evt_block_time          as block_time,
        name,
