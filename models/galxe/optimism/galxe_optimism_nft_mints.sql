@@ -36,7 +36,6 @@ INNER JOIN {{source('erc721_optimism','evt_transfer')}} tfer
     {% if is_incremental() %}
     AND tfer.evt_block_time >= date_trunc('day', now() - interval '1 week')
     {% endif %}
-    
 
 WHERE success = true
     AND t.to = '{{spacestation}}'
