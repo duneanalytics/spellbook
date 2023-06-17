@@ -522,7 +522,6 @@ WITH curated_list AS (
       ,('0x123694886DBf5Ac94DDA07135349534536D14cAf', 'Threshold Network')
       
   ) as temp_table (creator_address, contract_project)
-
 )
 
 , mapped_list AS (
