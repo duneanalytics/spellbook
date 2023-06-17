@@ -1,7 +1,6 @@
 {{ config
 (
-    schema = 'erc4337_v0_6_gnosis',
-    alias ='userops_v0_6_basics',
+    alias ='v0_6_userops_basics',
     partition_by = ['block_time'],
     materialized = 'incremental',
     file_format = 'delta',

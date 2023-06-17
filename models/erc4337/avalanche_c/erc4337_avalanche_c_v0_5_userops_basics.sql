@@ -1,6 +1,5 @@
 {{ config(
-    schema = 'erc4337_v0_5_avalanche_c',
-    alias ='userops_v0_5_basics',
+    alias ='v0_5_userops_basics',
     partition_by = ['block_time'],
     materialized = 'incremental',
     file_format = 'delta',
