@@ -1,6 +1,6 @@
 {{ config(
         alias ='trades',
-        post_hook='{{ expose_spells(\'["ethereum","arbitrum", "optimism", "polygon", "bnb"]\',
+        post_hook='{{ expose_spells(\'["ethereum","arbitrum", /* "optimism", */ "polygon", "bnb"]\',
                                 "project",
                                 "xchange",
                                 \'["mike-x7f"]\') }}'
@@ -9,7 +9,7 @@
 
 {% set xchange_models = [
 ref('xchange_ethereum_trades')
-, ref('xchange_optimism_trades')
+--, ref('xchange_optimism_trades')
 , ref('xchange_arbitrum_trades')
 , ref('xchange_polygon_trades')
 , ref('xchange_bnb_trades')
