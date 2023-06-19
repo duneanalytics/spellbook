@@ -17,9 +17,9 @@
 -- contract_address : 0x00000000006c3852cbef3e08e8df289169ede581 (Seaport v1.1)
 
 {% set c_native_token_address = "0x0000000000000000000000000000000000000000" %}
-{% set c_alternative_token_address = "0x4200000000000000000000000000000000000006" %}  -- WETH
-{% set c_native_symbol = "ETH" %}
-{% set c_seaport_first_date = "2022-07-01" %}
+{% set c_alternative_token_address = "0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c" %}  -- WETH
+{% set c_native_symbol = "BNB" %}
+{% set c_seaport_first_date = "2022-06-01" %}
 
 with source_bnb_transactions as (
     select *
@@ -28,7 +28,7 @@ with source_bnb_transactions as (
      where block_time >= date '{{c_seaport_first_date}}'  -- seaport first txn
     {% endif %}
     {% if is_incremental() %}
-     where block_time >= date_trunc("day", now() - interval '3 week')
+     where block_time >= date_trunc("day", now() - interval '1 week')
     {% endif %}
 )
 ,ref_tokens_nft as (

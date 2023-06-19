@@ -19,8 +19,8 @@
 --    0x00000000000000adc04c56bf30ac9d3c0aaf14dc (Seaport v1.5)
 
 {% set c_native_token_address = "0x0000000000000000000000000000000000000000" %}
-{% set c_alternative_token_address = "0x4200000000000000000000000000000000000006" %}  -- MATIC
-{% set c_native_symbol = "ETH" %}
+{% set c_alternative_token_address = "0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c" %}  -- BNB
+{% set c_native_symbol = "BNB" %}
 {% set c_seaport_first_date = "2023-02-01" %}
 
 with source_bnb_transactions as (
