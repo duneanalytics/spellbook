@@ -13,7 +13,7 @@
 }}
 
 -- set max number of levels to trace root contract, eventually figure out how to make this properly recursive
-{% set max_levels = 10 %}
+{% set max_levels = 5 %}
 -- set column names to loop through
 {% set cols = [
      "trace_creator_address"
@@ -148,16 +148,17 @@ SELECT *
       ,t.code_bytelength
       ,coalesce(sd.contract_address is not NULL, false) as is_self_destruct
     from {{ this }} t
-    left join {{ source('optimism', 'creation_traces') }} as ct
-      ON t.contract_address = ct.address
-      AND t.created_time = ct.block_time
-      AND t.created_block_number = ct.block_number
     left join {{ ref('contracts_optimism_self_destruct_contracts') }} as sd 
       on t.contract_address = sd.contract_address
       and t.creation_tx_hash = sd.creation_tx_hash
       and t.created_time = sd.created_time
       AND t.created_block_number = sd.created_block_number
-      and sd.created_time >= date_trunc('day', now() - interval '1 week')
+    left join {{ source('optimism', 'creation_traces') }} as ct
+      ON t.contract_address = ct.address
+      AND t.created_time = ct.block_time
+      AND t.created_block_number = ct.block_number
+      AND t.creation_tx_hash ct.tx_hash
+      AND sd.contract_address IS NULL
 
     -- If the creator becomes marked as non-deterministic, we want to re-run it.
     left join {{ref('contracts_optimism_nondeterministic_contract_creators')}} as nd 
