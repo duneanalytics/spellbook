@@ -17,7 +17,7 @@
 -- contract_address : 0x00000000006c3852cbef3e08e8df289169ede581 (Seaport v1.1)
 -- materialize : incremental table
 
-{% set c_seaport_first_date = "2022-07-01" %}
+{% set c_seaport_first_date = "2022-06-01" %}
 {% set c_native_token_address = "0x0000000000000000000000000000000000000000" %}
 {% set c_alternative_token_address = "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2" %}
 {% set c_native_symbol = "ETH" %}
@@ -59,7 +59,7 @@ with source_ethereum_transactions as (
        and minute >= date '{{c_seaport_first_date}}'  -- seaport first txn
     {% endif %}
     {% if is_incremental() %}
-       and minute >= date_trunc("day", now() - interval '3 week')
+       and minute >= date_trunc("day", now() - interval '1 week')
     {% endif %}
 )
 ,iv_platform_fee_wallet (wallet_address, wallet_name) as (
