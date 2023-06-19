@@ -1,18 +1,19 @@
 {{
   config(
-        alias='oracle_addresses',
+        alias='price_feeds_oracle_addresses',
         post_hook='{{ expose_spells(\'["polygon"]\',
                                     "project",
                                     "chainlink",
-                                    \'["msilb7","0xroll"]\') }}'
+                                    \'["msilb7","0xroll","linkpool_ryan"]\') }}'
   )
 }}
 
-SELECT "polygon"                    AS blockchain,
-       feed_name,
-       CAST(decimals AS BIGINT)    AS decimals,
-       LOWER(proxy_address)         AS proxy_address,
-       LOWER(aggregator_address)    AS aggregator_address
+SELECT
+  'polygon' as blockchain,
+  feed_name,
+  CAST(decimals AS BIGINT) as decimals,
+  proxy_address,
+  aggregator_address
 FROM (values
         ("EUR / USD",8,"0x73366fe0aa0ded304479862808e02506fe556a98","0x310990e8091b5cf083fa55f500f140cfbb959016"),
         ("GBP / USD",8,"0x099a2540848573e94fb1ca0fa420b00acbbc845a","0x3f7f90e0f782e325401f6323ba93e717f519f382"),

@@ -1,21 +1,22 @@
 {{ config(
+        tags=['dunesql'],
         alias ='price_feeds_hourly',
-        post_hook='{{ expose_spells(\'["optimism","polygon","bnb"]\',
+        post_hook='{{ expose_spells(\'["bnb","optimism","polygon"]\',
                                 "project",
                                 "chainlink",
-                                \'["msilb7","0xroll"]\') }}'
+                                \'["msilb7","0xroll","linkpool_ryan"]\') }}'
         )
 }}
 
-{% set chainlink_models = [
-'chainlink_optimism_price_feeds_hourly'
-,'chainlink_polygon_price_feeds_hourly'
-,'chainlink_bnb_price_feeds_hourly'
+{% set models = [
+  'chainlink_optimism_price_feeds_hourly',
+  'chainlink_polygon_price_feeds_hourly',
+  'chainlink_bnb_price_feeds_hourly'
 ] %}
 
 SELECT *
 FROM (
-    {% for model in chainlink_models %}
+    {% for model in models %}
     SELECT
         blockchain,
         hour,
@@ -32,4 +33,3 @@ FROM (
     {% endif %}
     {% endfor %}
 )
-;

@@ -5,7 +5,7 @@ models:
     meta:
       blockchain: bnb
       project: chainlink
-      contributors: ["msilb7","0xroll"]
+      contributors: ["msilb7","0xroll","linkpool_ryan"]
     config:
       tags: ['bnb','chainlink','oracle']
     description: >
@@ -66,7 +66,7 @@ models:
     meta:
       blockchain: bnb
       project: chainlink
-      contributors: ["msilb7","0xroll"]
+      contributors: ["msilb7","0xroll","linkpool_ryan"]
     config:
       tags: ['bnb','chainlink','oracle']
     description: >
@@ -91,11 +91,11 @@ models:
       - *underlying_token_address
       - *underlying_token_price
 
-  - name: chainlink_bnb_oracle_token_mapping
+  - name: chainlink_bnb_price_feeds_oracle_token_mapping
     meta:
       blockchain: bnb
       project: chainlink
-      contributors: ["msilb7","0xroll"]
+      contributors: ["msilb7","0xroll","linkpool_ryan"]
     config:
       tags: ['bnb','chainlink','oracle']
     description: >
@@ -111,11 +111,11 @@ models:
         name: extra_decimals
         description:  "Additional decimals needed to adjust the Chainlink oracle answer to the underlying token (most often this is 0)"
 
-  - name: chainlink_bnb_oracle_addresses
+  - name: chainlink_bnb_price_feeds_oracle_addresses
     meta:
       blockchain: bnb
       project: chainlink
-      contributors: ["msilb7","0xroll"]
+      contributors: ["msilb7","0xroll","linkpool_ryan"]
     config:
       tags: ['bnb','chainlink','oracle']
     description: >

@@ -8,108 +8,119 @@
     post_hook='{{ expose_spells(\'["optimism"]\',
                                 "project",
                                 "chainlink",
-                                \'["msilb7","0xroll"]\') }}'
+                                \'["msilb7","0xroll","linkpool_ryan"]\') }}'
     )
 }}
--- OVM1 Launch
+
+{% set incremental_interval = '7' %}
 {% set project_start_date = '2021-06-23' %}
 
-
-WITH gs AS (
+WITH hourly_sequence AS (
     SELECT
-        oa.hr
-        , oa.feed_name
-        , oa.proxy_address
-        , oa.aggregator_address
-        , c.underlying_token_address
-    FROM
-    (
-        SELECT
-            explode(
+        oracle_addresses.hr,
+        oracle_addresses.feed_name,
+        oracle_addresses.proxy_address,
+        oracle_addresses.aggregator_address,
+        token_mapping.underlying_token_address
+    FROM (
+        SELECT explode(
                 sequence(
-                    DATE_TRUNC('hour', 
-                    {% if not is_incremental() %}
-                        '{{project_start_date}}'::date
-                    {% endif %}
-                    {% if is_incremental() %}
-                        date_trunc('hour', now() - interval '1 week')
-                    {% endif %}
-                    ),
-                    DATE_TRUNC('hour', NOW()),
-                    interval '1 hour'
-                )
-            ) AS hr
-            , feed_name
-            , proxy_address
-            , aggregator_address
-        FROM {{ ref('chainlink_optimism_oracle_addresses') }}
-    ) oa
-    LEFT JOIN {{ ref('chainlink_optimism_oracle_token_mapping') }} c
-        ON c.proxy_address = oa.proxy_address
+                        {% if not is_incremental() %}
+                            date_trunc('hour', CAST('{{project_start_date}}' AS TIMESTAMP)),
+                        {% endif %}
+                        {% if is_incremental() %}
+                            date_trunc('hour', now() - interval '{{incremental_interval}}' day),
+                        {% endif %}
+                            date_trunc('hour', now()),
+                            interval '1' hour
+                        )
+            ) AS hr, 
+                feed_name,
+                proxy_address,
+                aggregator_address
+        FROM {{ ref('chainlink_optimism_price_feeds_oracle_addresses') }}
+    ) oracle_addresses 
+    LEFT JOIN {{ ref('chainlink_optimism_price_feeds_oracle_token_mapping') }} token_mapping 
+    ON token_mapping.proxy_address = oracle_addresses.proxy_address
 )
 
-SELECT
-    'optimism' as blockchain
-    , hour
-    , DATE_TRUNC('day',hour) AS block_date
-    , feed_name
-    , proxy_address
-    , aggregator_address
-    , underlying_token_address
-    , oracle_price_avg
-    , underlying_token_price_avg
-FROM
-(
+SELECT 
+    'optimism' AS blockchain,
+    hour,
+    date_trunc('day', hour) AS block_date,
+    feed_name,
+    proxy_address,
+    aggregator_address,
+    underlying_token_address,
+    oracle_price_avg,
+    underlying_token_price_avg
+FROM (
     SELECT
-        hr AS hour
-        , feed_name
-        , proxy_address
-        , aggregator_address
-        , underlying_token_address
-        , first_value(oracle_price_avg) OVER (PARTITION BY feed_name, proxy_address, aggregator_address, underlying_token_address, grp ORDER BY hr) AS oracle_price_avg
-        , first_value(underlying_token_price_avg) OVER (PARTITION BY feed_name, proxy_address, aggregator_address, underlying_token_address, grp ORDER BY hr) AS underlying_token_price_avg
+        hr AS hour,
+        feed_name,
+        proxy_address,
+        aggregator_address,
+        underlying_token_address,
+        FIRST_VALUE(oracle_price_avg) 
+            OVER (
+                PARTITION BY feed_name, 
+                             proxy_address,
+                             aggregator_address,
+                             underlying_token_address,
+                             grp 
+                ORDER BY hr
+            ) AS oracle_price_avg,
+        FIRST_VALUE(underlying_token_price_avg) 
+            OVER (
+                PARTITION BY feed_name,
+                             proxy_address,
+                             aggregator_address,
+                             underlying_token_address,
+                             grp
+                ORDER BY hr
+            ) AS underlying_token_price_avg
     FROM
     (
         SELECT
-            hr
-            , feed_name
-            , proxy_address
-            , aggregator_address
-            , oracle_price_avg
-            , underlying_token_address
-            , underlying_token_price_avg
-            , count(oracle_price_avg) OVER (PARTITION BY feed_name, proxy_address, aggregator_address, underlying_token_address ORDER BY hr) AS grp
-        FROM
-        (
-            SELECT
-                gs.hr
-                , gs.feed_name
-                , gs.proxy_address
-                , gs.aggregator_address
-                , AVG(oracle_price) AS oracle_price_avg
-                , gs.underlying_token_address
-                , AVG(underlying_token_price) AS underlying_token_price_avg
-            FROM gs
-            LEFT JOIN {{ ref('chainlink_optimism_price_feeds') }} f
-                ON gs.hr = DATE_TRUNC('day',f.block_time)
-                AND gs.underlying_token_address = f.underlying_token_address
-                AND gs.proxy_address = f.proxy_address
-                AND gs.aggregator_address = f.aggregator_address
+            hr,
+            feed_name,
+            proxy_address,
+            aggregator_address,
+            underlying_token_address,
+            oracle_price_avg,
+            COUNT(oracle_price_avg) 
+                OVER (
+                    PARTITION BY feed_name,
+                                 proxy_address,
+                                 aggregator_address,
+                                 underlying_token_address
+                    ORDER BY hr
+                ) AS grp
+        FROM (
+            SELECT 
+                hourly_sequence.hr,
+                hourly_sequence.feed_name,
+                hourly_sequence.proxy_address,
+                hourly_sequence.aggregator_address,
+                hourly_sequence.underlying_token_address,
+                AVG(price_feeds.oracle_price) AS oracle_price_avg,
+                AVG(price_feeds.underlying_token_price) AS underlying_token_price_avg
+            FROM hourly_sequence 
+            LEFT JOIN {{ ref('chainlink_optimism_price_feeds') }} price_feeds 
+            ON hourly_sequence.hr = date_trunc('hour',price_feeds.block_time)
+            AND hourly_sequence.underlying_token_address = price_feeds.underlying_token_address
+            AND hourly_sequence.proxy_address = price_feeds.proxy_address
+            AND hourly_sequence.aggregator_address = price_feeds.aggregator_address
             WHERE
                 {% if not is_incremental() %}
-                gs.hr >= '{{project_start_date}}'
+                hourly_sequence.hr >= CAST('{{project_start_date}}' AS TIMESTAMP)
                 {% endif %}
                 {% if is_incremental() %}
-                gs.hr >= date_trunc('hour', now() - interval '1 week')
+                hourly_sequence.hr >= date_trunc('hour', now() - interval '{{incremental_interval}}' day)
                 {% endif %}
-            GROUP BY
-                gs.hr
-                , gs.feed_name
-                , gs.proxy_address
-                , gs.aggregator_address
-                , gs.underlying_token_address
-        ) a
-    ) b
-) c
-WHERE oracle_price_avg IS NOT NULL --don't overwrite where we don't have a value
-;
+            GROUP BY 
+                1, 2, 3, 4, 5
+        ) avg_prices
+    ) price_groups
+) price_with_non_null_avg
+WHERE oracle_price_avg IS NOT NULL
