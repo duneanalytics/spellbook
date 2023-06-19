@@ -21,6 +21,10 @@ models:
             - tx_hash
             - evt_index
             - trace_address         
+      - check_dex_seed:
+          blockchain: bnb
+          project: xchange
+          version: 1  
     columns:
       - &blockchain
         name: blockchain
