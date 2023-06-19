@@ -233,6 +233,19 @@ models:
       ethereum:
         +schema: x2y2_ethereum
 
+    xchange:
+      +schema: xchange
+      #arbitrum:
+      #  +schema: xchange_arbitrum
+      ethereum:
+        +schema: xchange_ethereum
+      #optimism:
+      #  +schema: xchange_optimism
+      #polygon:
+      #  +schema: xchange_polygon
+      #bnb:
+      #  +schema: xchange_bnb
+
     uniswap:
       +schema: uniswap
       arbitrum:
