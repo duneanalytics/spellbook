@@ -338,3 +338,4 @@ models:
       - *sub_idx
       - *sub_type
       - *fee_wallet_name
+
