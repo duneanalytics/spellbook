@@ -1,10 +1,10 @@
 {{
   config(
-        alias='oracle_addresses',
+        alias='price_feeds_oracle_addresses',
         post_hook='{{ expose_spells(\'["polygon"]\',
                                     "project",
                                     "chainlink",
-                                    \'["msilb7","0xroll"]\') }}'
+                                    \'["msilb7","0xroll","linkpool_ryan"]\') }}'
   )
 }}
 

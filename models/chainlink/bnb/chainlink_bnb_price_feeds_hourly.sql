@@ -8,7 +8,7 @@
     post_hook='{{ expose_spells(\'["bnb"]\',
                                 "project",
                                 "chainlink",
-                                \'["msilb7","0xroll"]\') }}'
+                                \'["msilb7","0xroll","linkpool_ryan"]\') }}'
     )
 }}
 
@@ -37,8 +37,8 @@ WITH gs AS (
                 feed_name,
                 proxy_address,
                 aggregator_address
-        FROM {{ ref('chainlink_bnb_oracle_addresses') }}
-    ) oa LEFT JOIN {{ ref('chainlink_bnb_oracle_token_mapping') }} c ON c.proxy_address = oa.proxy_address
+        FROM {{ ref('chainlink_bnb_price_feeds_oracle_addresses') }}
+    ) oa LEFT JOIN {{ ref('chainlink_bnb_price_feeds_oracle_token_mapping') }} c ON c.proxy_address = oa.proxy_address
 )
 
 SELECT 'bnb'                                                AS blockchain,

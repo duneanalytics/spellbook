@@ -1,0 +1,67 @@
+{{ config(
+    alias = 'ocr_gas_daily',
+    materialized = 'view',
+    post_hook='{{ expose_spells(\'["ethereum"]\',
+                                "sector",
+                                "chainlink",
+                                \'["linkpool_ryan"]\') }}'
+    )
+}}
+
+{% set truncate_by = 'day' %}
+
+WITH
+  ocr_gas_daily_meta AS (
+    SELECT
+      COALESCE(
+        date_trunc('{{truncate_by}}', fulfilled.block_time),
+        date_trunc('{{truncate_by}}', reverted.block_time)
+      ) AS "date_start",      
+      COALESCE(
+        fulfilled.node_address,
+        reverted.node_address
+      ) AS "node_address",
+      COALESCE(SUM(fulfilled.token_value), 0) as fulfilled_token_amount,
+      COALESCE(SUM(reverted.token_value), 0) as reverted_token_amount,
+      COALESCE(SUM(fulfilled.token_value * fulfilled.usd_value), 0) as fulfilled_usd_amount,
+      COALESCE(SUM(reverted.token_value * reverted.usd_value), 0) as reverted_usd_amount
+    FROM
+      {{ ref('chainlink_ethereum_ocr_fulfilled_transactions') }} fulfilled
+      FULL OUTER JOIN {{ ref('chainlink_ethereum_ocr_reverted_transactions') }} reverted ON
+        reverted.block_time = fulfilled.block_time AND
+        reverted.node_address = fulfilled.node_address
+    GROUP BY
+      1, 2
+    ORDER BY
+      1, 2
+  ),
+  ocr_gas_daily AS (
+    SELECT
+      'ethereum' as blockchain,
+      date_start,
+      ocr_gas_daily_meta.node_address as node_address,
+      operator_name,
+      fulfilled_token_amount,
+      fulfilled_usd_amount,
+      reverted_token_amount,
+      reverted_usd_amount,
+      fulfilled_token_amount + reverted_token_amount as total_token_amount,
+      fulfilled_usd_amount + reverted_usd_amount as total_usd_amount
+    FROM ocr_gas_daily_meta
+    LEFT JOIN {{ ref('chainlink_ethereum_ocr_operator_node_meta') }} ON LOWER(ocr_operator_node_meta.node_address) = LOWER(ocr_gas_daily_meta.node_address)
+  )
+SELECT 
+  blockchain,
+  date_start,
+  node_address,
+  operator_name,
+  fulfilled_token_amount,
+  fulfilled_usd_amount,
+  reverted_token_amount,
+  reverted_usd_amount,
+  total_token_amount,
+  total_usd_amount    
+FROM
+  ocr_gas_daily
+ORDER BY
+  "date_start"

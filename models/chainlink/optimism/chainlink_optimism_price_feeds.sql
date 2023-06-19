@@ -8,7 +8,7 @@
     post_hook='{{ expose_spells(\'["optimism"]\',
                                 "project",
                                 "chainlink",
-                                \'["msilb7","0xroll"]\') }}'
+                                \'["msilb7","0xroll","linkpool_ryan"]\') }}'
     )
 }}
 -- OVM1 Launch
@@ -43,7 +43,7 @@ FROM
 	    , cfa.proxy_address
         , cfa.aggregator_address
 	FROM {{ source('optimism', 'logs') }} l
-	INNER JOIN {{ ref('chainlink_optimism_oracle_addresses') }} cfa
+	INNER JOIN {{ ref('chainlink_optimism_price_feeds_oracle_addresses') }} cfa
 	    ON l.contract_address = cfa.aggregator_address
 	WHERE l.topic1 = '{{answer_updated}}'
         {% if not is_incremental() %}
@@ -60,6 +60,6 @@ FROM
         , cfa.proxy_address
         , cfa.aggregator_address
 ) c
-LEFT JOIN {{ ref('chainlink_optimism_oracle_token_mapping') }} o
+LEFT JOIN {{ ref('chainlink_optimism_price_feeds_oracle_token_mapping') }} o
 	ON c.proxy_address = o.proxy_address
 ;

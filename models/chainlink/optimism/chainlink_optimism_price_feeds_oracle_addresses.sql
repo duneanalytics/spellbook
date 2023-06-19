@@ -1,15 +1,19 @@
 {{
   config(
-        alias='oracle_addresses',
+        alias='price_feeds_oracle_addresses',
         post_hook='{{ expose_spells(\'["optimism"]\',
                                     "project",
                                     "chainlink",
-                                    \'["msilb7","0xroll"]\') }}'
+                                    \'["msilb7","0xroll","linkpool_ryan"]\') }}'
   )
 }}
 
-SELECT 'optimism' as blockchain, feed_name, CAST(decimals AS BIGINT) AS decimals, LOWER(proxy_address) AS proxy_address, LOWER(aggregator_address) AS aggregator_address
-
+SELECT
+  'optimism' as blockchain, 
+  feed_name, 
+  CAST(decimals AS BIGINT) AS decimals, 
+  LOWER(proxy_address) AS proxy_address, 
+  LOWER(aggregator_address) AS aggregator_address
 FROM (values
         ('AAVE / USD',8,'0x338ed6787f463394d24813b297401b9f05a8c9d1','0x81cc0c227bf9bfb8088b14755dfca65f7892203b')
         ,('BTC / USD',8,'0xd702dd976fb76fffc2d3963d037dfdae5b04e593','0x0c1272d2ac652d10d03bb4deb0d31f15ea3eab2b')

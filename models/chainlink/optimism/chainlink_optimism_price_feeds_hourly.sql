@@ -8,7 +8,7 @@
     post_hook='{{ expose_spells(\'["optimism"]\',
                                 "project",
                                 "chainlink",
-                                \'["msilb7","0xroll"]\') }}'
+                                \'["msilb7","0xroll","linkpool_ryan"]\') }}'
     )
 }}
 -- OVM1 Launch
@@ -42,9 +42,9 @@ WITH gs AS (
             , feed_name
             , proxy_address
             , aggregator_address
-        FROM {{ ref('chainlink_optimism_oracle_addresses') }}
+        FROM {{ ref('chainlink_optimism_price_feeds_oracle_addresses') }}
     ) oa
-    LEFT JOIN {{ ref('chainlink_optimism_oracle_token_mapping') }} c
+    LEFT JOIN {{ ref('chainlink_optimism_price_feeds_oracle_token_mapping') }} c
         ON c.proxy_address = oa.proxy_address
 )
 
