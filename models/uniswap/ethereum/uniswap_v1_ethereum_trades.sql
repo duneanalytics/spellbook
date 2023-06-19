@@ -1,5 +1,5 @@
 {{ config(
-    tags = ["dunesql"]
+    tags = ["dunesql"],
     schema = 'uniswap_v1_ethereum',
     alias = 'trades',
     partition_by = ['block_date'],
