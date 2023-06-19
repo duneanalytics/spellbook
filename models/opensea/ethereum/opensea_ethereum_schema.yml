@@ -269,6 +269,32 @@ models:
       tags: ['ethereum','opensea','v3','events']
     description: >
         OpenSea V3 events on Ethereum
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_date
+            - unique_trade_id
+      - check_seed:
+          seed_file: ref('opensea_ethereum_seaport_trades_samples')
+          filter:
+            blockchain: ethereum
+            project: opensea
+            version: v3
+          check_columns:
+            - buyer
+            - seller
+            - amount_raw
+            - platform_fee_amount_raw
+            - royalty_fee_amount_raw
+          match_columns:
+            - block_date
+            - blockchain
+            - project
+            - version
+            - tx_hash
+            - evt_index
+            - sub_idx
+            - nft_contract_address
+            - token_id
     columns:
       - *blockchain
       - *project
