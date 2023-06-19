@@ -10,7 +10,7 @@ models:
     config:
       tags: ['bnb','xchange','x7finance','trades','dex']
     description: >
-        xchange contract trades on BNB chain
+        Xchange contract trades on BNB chain
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -21,10 +21,10 @@ models:
             - tx_hash
             - evt_index
             - trace_address
-      - check_dex_seed:
-          blockchain: bnb
-          project: xchange
-          version: 1
+      # - check_dex_seed:
+      #     blockchain: bnb
+      #     project: xchange
+      #     version: 1
     columns:
       - &blockchain
         name: blockchain

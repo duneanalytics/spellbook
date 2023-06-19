@@ -3,12 +3,12 @@ version: 2
 models:
   - name: xchange_trades
     meta:
-      blockchain: ethereum, optimism, polygon, arbitrum, bnb
+      blockchain: ethereum, polygon, arbitrum, bnb
       sector: dex
       project: xchange
       contributors: mike-x7f
     config:
-      tags: ['ethereum', 'optimism', 'polygon', 'xchange', 'x7finance', 'trades', 'dex', 'cross-chain', 'bnb']
+      tags: ['ethereum', 'polygon', 'xchange', 'x7finance', 'trades', 'dex', 'cross-chain', 'bnb']
     description: >
         Xchange trades on all chains across all contracts and versions. This table will load dex trades downstream.
     columns:
