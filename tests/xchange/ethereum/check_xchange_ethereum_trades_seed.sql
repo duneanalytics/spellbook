@@ -13,7 +13,7 @@ WITH unit_tests as
         end as test
 FROM {{ ref('xchange_ethereum_trades') }} xchange_ethereum_trades
 JOIN {{ ref('xchange_ethereum_trades_seed') }} test_data ON test_data.tx_hash = xchange_ethereum_trades.tx_hash
-WHERE project = 'xchange' and xchange_ethereum_trades.block_date = 2023-06-12
+
 )
 select count(case when test = false then 1 else null end)/count(*) as pct_mismatch, count(*) as count_rows
 from unit_tests

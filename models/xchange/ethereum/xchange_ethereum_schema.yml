@@ -10,7 +10,7 @@ models:
     config:
       tags: ['ethereum','xchange','x7finance','trades','dex']
     description: >
-        xchange contract trades on Ethereum
+        Xchange contract trades on Ethereum
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -21,10 +21,23 @@ models:
             - tx_hash
             - evt_index
             - trace_address
-      - check_dex_seed:
-          blockchain: ethereum
-          project: xchange
-          version: 1
+      - check_seed:
+          seed_file: ref('xchange_ethereum_trades_seed')
+          filter:
+            blockchain: ethereum
+            version: 1
+          match_columns:
+            - tx_hash
+          check_columns:
+            - block_date
+            - blockchain
+            - version
+            - project
+            - evt_index
+            - token_bought_address
+            - token_sold_address
+            - token_bought_amount
+            - token_sold_amount           
     columns:
       - &blockchain
         name: blockchain

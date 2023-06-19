@@ -164,7 +164,7 @@ LEFT JOIN {{ source('prices', 'usd') }} p
     AND p.minute >= (NOW() - interval '14 days')
     {% endif %}
     
-LEFT JOIN {{ ref('chain_ids') }} cid_source
+LEFT JOIN {{ ref('chain_info_chain_ids') }} cid_source
     ON cid_source.chain_id = tf.source_chain_id
-LEFT JOIN {{ ref('chain_ids') }} cid_dest
+LEFT JOIN {{ ref('chain_info_chain_ids') }} cid_dest
     ON cid_dest.chain_id = tf.destination_chain_id

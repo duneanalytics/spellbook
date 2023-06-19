@@ -60,7 +60,7 @@ FROM (
     ,ts.evt_index
     ,ts.contract_address AS project_contract_address
     , ts.`transferId` AS transfer_id
-    , (SELECT chain_id FROM {{ ref('chain_ids') }} WHERE lower(chain_name) = 'optimism') AS source_chain_id
+    , (SELECT chain_id FROM {{ ref('chain_info_chain_ids') }} WHERE lower(chain_name) = 'optimism') AS source_chain_id
     ,chainId AS destination_chain_id
     
     FROM {{ source('hop_protocol_optimism', 'L2_OptimismBridge_evt_TransferSent') }} ts 
@@ -83,7 +83,7 @@ FROM (
     ,tl.contract_address AS project_contract_address
     , '' AS transfer_id
     , 1 AS source_chain_id
-    , (SELECT chain_id FROM {{ ref('chain_ids') }} WHERE lower(chain_name) = 'optimism') AS destination_chain_id
+    , (SELECT chain_id FROM {{ ref('chain_info_chain_ids') }} WHERE lower(chain_name) = 'optimism') AS destination_chain_id
     
     FROM {{ source ('hop_protocol_optimism', 'L2_OptimismBridge_evt_TransferFromL1Completed') }} tl
     {% if is_incremental() %}
@@ -105,13 +105,13 @@ FROM (
     ,wb.contract_address AS project_contract_address
     , wb.transferId AS transfer_id
     , CASE
-            WHEN arb.transferId IS NOT NULL THEN (SELECT chain_id FROM {{ ref('chain_ids') }} WHERE lower(chain_name) = 'arbitrum one')
-            WHEN poly.transferId IS NOT NULL THEN (SELECT chain_id FROM {{ ref('chain_ids') }} WHERE lower(chain_name) = 'polygon mainnet')
-            WHEN gno.transferId IS NOT NULL THEN (SELECT chain_id FROM {{ ref('chain_ids') }} WHERE lower(chain_name) = 'gnosis')
+            WHEN arb.transferId IS NOT NULL THEN (SELECT chain_id FROM {{ ref('chain_info_chain_ids') }} WHERE lower(chain_name) = 'arbitrum one')
+            WHEN poly.transferId IS NOT NULL THEN (SELECT chain_id FROM {{ ref('chain_info_chain_ids') }} WHERE lower(chain_name) = 'polygon mainnet')
+            WHEN gno.transferId IS NOT NULL THEN (SELECT chain_id FROM {{ ref('chain_info_chain_ids') }} WHERE lower(chain_name) = 'gnosis')
         ELSE NULL
         END
         AS source_chain_id
-    , (SELECT chain_id FROM {{ ref('chain_ids') }} WHERE lower(chain_name) = 'optimism') AS destination_chain_id
+    , (SELECT chain_id FROM {{ ref('chain_info_chain_ids') }} WHERE lower(chain_name) = 'optimism') AS destination_chain_id
     FROM {{ source ('hop_protocol_optimism', 'L2_OptimismBridge_evt_WithdrawalBonded') }} wb
         LEFT JOIN {{ source ('hop_protocol_arbitrum' ,'L2_ArbitrumBridge_evt_TransferSent') }} arb
             ON arb.evt_block_time BETWEEN (wb.evt_block_time - interval '30 days') AND (wb.evt_block_time + interval '1 day') --usually < ~20 mins, but extending longer for safety & OP blocktimestamp fix (used to have ~15 min delay)
@@ -158,7 +158,7 @@ LEFT JOIN {{ source('prices', 'usd') }} p
     AND p.minute >= (NOW() - interval '14 days')
     {% endif %}
 
-LEFT JOIN {{ ref('chain_ids') }} cid_source
+LEFT JOIN {{ ref('chain_info_chain_ids') }} cid_source
     ON cid_source.chain_id = tf.source_chain_id
-LEFT JOIN {{ ref('chain_ids') }} cid_dest
+LEFT JOIN {{ ref('chain_info_chain_ids') }} cid_dest
     ON cid_dest.chain_id = tf.destination_chain_id
