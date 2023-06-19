@@ -1,12 +1,12 @@
 {{ config(
-    schema = 'opensea_v3_optimism',
+    schema = 'opensea_v3_bnb',
     alias = 'events',
     partition_by = ['block_date'],
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
     unique_key = ['block_date', 'tx_hash', 'evt_index', 'nft_contract_address', 'token_id', 'sub_type', 'sub_idx'],
-    post_hook='{{ expose_spells(\'["optimism"]\',
+    post_hook='{{ expose_spells(\'["bnb"]\',
                             "project",
                             "opensea",
                             \'["sohwak"]\') }}'
@@ -21,9 +21,9 @@
 {% set c_native_symbol = "ETH" %}
 {% set c_seaport_first_date = "2022-07-01" %}
 
-with source_optimism_transactions as (
+with source_bnb_transactions as (
     select *
-      from {{ source('optimism','transactions') }}
+      from {{ source('bnb','transactions') }}
     {% if not is_incremental() %}
      where block_time >= date '{{c_seaport_first_date}}'  -- seaport first txn
     {% endif %}
@@ -34,22 +34,22 @@ with source_optimism_transactions as (
 ,ref_tokens_nft as (
     select *
       from {{ ref('tokens_nft') }}
-     where blockchain = 'optimism'
+     where blockchain = 'bnb'
 )
 ,ref_tokens_erc20 as (
     select *
       from {{ ref('tokens_erc20') }}
-    where blockchain = 'optimism'
+    where blockchain = 'bnb'
 )
 ,ref_nft_aggregators as (
     select *
       from {{ ref('nft_aggregators') }}
-    where blockchain = 'optimism'
+    where blockchain = 'bnb'
 )
 ,source_prices_usd as (
     select *
       from {{ source('prices', 'usd') }}
-    where blockchain = 'optimism'
+    where blockchain = 'bnb'
     {% if not is_incremental() %}
        and minute >= date '{{c_seaport_first_date}}'  -- seaport first txn
     {% endif %}
@@ -115,7 +115,7 @@ with source_optimism_transactions as (
             , zone
             , orderHash AS order_hash
             , posexplode(offer) as (offer_idx, offer_item)
-        from {{ source('opensea_optimism', 'Seaport_evt_OrderFulfilled') }}
+        from {{ source('seaport_bnb', 'Seaport_evt_OrderFulfilled') }}
        where contract_address = '0x00000000006c3852cbef3e08e8df289169ede581'
          and recipient != '0x0000000000000000000000000000000000000000'
        {% if not is_incremental() %}
@@ -180,7 +180,7 @@ with source_optimism_transactions as (
               ,zone
               ,orderHash AS order_hash
               ,posexplode(consideration) as (consideration_idx, consideration_item)
-          from {{ source('opensea_optimism','Seaport_evt_OrderFulfilled') }}
+          from {{ source('seaport_bnb','Seaport_evt_OrderFulfilled') }}
          where contract_address = '0x00000000006c3852cbef3e08e8df289169ede581'
            and recipient != '0x0000000000000000000000000000000000000000'
         {% if not is_incremental() %}
@@ -257,7 +257,7 @@ with source_optimism_transactions as (
                   ,contract_address as platform_contract_address
             from (select *
                         ,posexplode(output_executions) as (execution_idx, execution) 
-                    from {{ source('opensea_optimism', 'Seaport_call_matchAdvancedOrders') }}
+                    from {{ source('seaport_bnb', 'Seaport_call_matchAdvancedOrders') }}
                    where call_success 
                      and contract_address = '0x00000000006c3852cbef3e08e8df289169ede581'  -- Seaport v1.1
                  {% if not is_incremental() %}
@@ -287,7 +287,7 @@ with source_optimism_transactions as (
                   ,contract_address as platform_contract_address
             from (select *
                         ,posexplode(output_executions) as (execution_idx, execution)   -- output_executions
-                    from {{ source('opensea_optimism', 'Seaport_call_matchOrders') }}
+                    from {{ source('seaport_bnb', 'Seaport_call_matchOrders') }}
                    where call_success 
                      and contract_address = '0x00000000006c3852cbef3e08e8df289169ede581'  -- Seaport v1.1
                  {% if not is_incremental() %}
@@ -626,7 +626,7 @@ with source_optimism_transactions as (
           ,sub_idx
           ,a.fee_wallet_name
   from iv_nfts a
-  inner join source_optimism_transactions t on t.hash = a.tx_hash
+  inner join source_bnb_transactions t on t.hash = a.tx_hash
   left join ref_tokens_nft n on n.contract_address = nft_contract_address
   left join ref_tokens_erc20 e on e.contract_address = case when a.token_contract_address = '{{c_native_token_address}}' then '{{c_alternative_token_address}}'
                                                             else a.token_contract_address
@@ -638,7 +638,7 @@ with source_optimism_transactions as (
   left join ref_nft_aggregators agg on agg.contract_address = t.to
 )
 select  -- basic info
-        'optimism' as blockchain
+        'bnb' as blockchain
         ,'opensea' as project
         ,'v3' as version
 
