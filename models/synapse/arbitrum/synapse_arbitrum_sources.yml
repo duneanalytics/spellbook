@@ -1,0 +1,8 @@
+version: 2
+
+sources:
+  - name: synapse_arbitrum
+    description: Arbitrum decoded tables related to Synapse
+    tables:
+      - name: SwapFlashLoan_evt_FlashLoan
+        loaded_at_field: evt_block_time
