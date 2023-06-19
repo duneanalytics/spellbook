@@ -157,7 +157,7 @@ SELECT *
       ON t.contract_address = ct.address
       AND t.created_time = ct.block_time
       AND t.created_block_number = ct.block_number
-      AND t.creation_tx_hash ct.tx_hash
+      AND t.creation_tx_hash = ct.tx_hash
       AND sd.contract_address IS NULL
 
     -- If the creator becomes marked as non-deterministic, we want to re-run it.
