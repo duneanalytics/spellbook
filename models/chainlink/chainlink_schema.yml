@@ -1,0 +1,151 @@
+version: 2
+
+models:
+  - name: chainlink_ocr_transmission_logs
+    meta:
+      blockchain: ethereum
+      sector: chainlink
+      contributors: linkpool_ryan
+    config:
+      tags: ['chainlink', 'ocr', 'transmission', 'logs', 'ethereum']
+    description: >
+      Chainlink OCR Transmission Logs
+    columns:
+      - name: blockchain
+      - name: block_hash
+      - name: contract_address
+      - name: data
+      - name: topic0
+      - name: topic1
+      - name: topic2
+      - name: topic3
+      - name: tx_hash
+      - name: block_number
+      - name: block_time
+      - name: index
+      - name: tx_index
+
+  - name: chainlink_ocr_fulfilled_transactions
+    meta:
+      blockchain: ethereum
+      sector: chainlink
+      contributors: linkpool_ryan
+    config:
+      tags: ['chainlink', 'ocr', 'fulfilled', 'transactions', 'ethereum']
+    description: >
+      Chainlink OCR Fulfilled Transactions
+    columns:
+      - name: blockchain
+      - name: block_time
+      - name: node_address
+      - name: token_amount
+      - name: usd_amount
+
+  - name: chainlink_ocr_reverted_transactions
+    meta:
+      blockchain: ethereum
+      sector: chainlink
+      contributors: linkpool_ryan
+    config:
+      tags: ['chainlink', 'ocr', 'reverted', 'transactions', 'ethereum']
+    description: >
+      Chainlink OCR Reverted Transactions
+    columns:
+      - name: blockchain
+      - name: block_time
+      - name: node_address
+      - name: token_amount
+      - name: usd_amount
+
+  - name: chainlink_ocr_gas_daily
+    meta:
+      blockchain: ethereum
+      sector: chainlink
+      contributors: linkpool_ryan
+    config:
+      tags: ['chainlink','ocr', 'gas', 'daily', 'ethereum']
+    description: >
+        Chainlink OCR Gas Daily
+    columns:
+      - name: blockchain
+        description: "Blockchain"
+      - name: block_date
+        description: "UTC block date"
+      - name: node_address
+        description: "Node Address"
+      - name: node_name
+        description: "Node Name"
+      - name: fulfilled_token_amount
+        description: "Fulfilled Token Amount"
+      - name: fulfilled_usd_amount
+        description: "Fulfilled USD Amount"
+      - name: reverted_token_amount
+        description: "Reverted Token Amount"
+      - name: reverted_usd_amount
+        description: "Reverted USD Amount"
+      - name: total_token_amount
+        description: "Total Token Amount"
+      - name: total_usd_amount
+        description: "Total USD Amount"
+
+  - name: chainlink_ocr_gas_weekly
+    meta:
+      blockchain: ethereum
+      sector: chainlink
+      contributors: linkpool_ryan
+    config:
+      tags: ['chainlink','ocr', 'gas', 'weekly', 'ethereum']
+    description: >
+        Chainlink OCR Gas Weekly
+    columns:
+      - name: blockchain
+        description: "Blockchain"
+      - name: block_date
+        description: "UTC block date"
+      - name: node_address
+        description: "Node Address"
+      - name: node_name
+        description: "Node Name"
+      - name: fulfilled_token_amount
+        description: "Fulfilled Token Amount"
+      - name: fulfilled_usd_amount
+        description: "Fulfilled USD Amount"
+      - name: reverted_token_amount
+        description: "Reverted Token Amount"
+      - name: reverted_usd_amount
+        description: "Reverted USD Amount"
+      - name: total_token_amount
+        description: "Total Token Amount"
+      - name: total_usd_amount
+        description: "Total USD Amount"
+
+  - name: chainlink_ocr_gas_monthly
+    meta:
+      blockchain: ethereum
+      sector: chainlink
+      contributors: linkpool_ryan
+    config:
+      tags: ['chainlink','ocr', 'gas', 'monthly', 'ethereum']
+    description: >
+        Chainlink OCR Gas Monthly
+    columns:
+      - name: blockchain
+        description: "Blockchain"
+      - name: block_date
+        description: "UTC block date"
+      - name: node_address
+        description: "Node Address"
+      - name: node_name
+        description: "Node Name"
+      - name: fulfilled_token_amount
+        description: "Fulfilled Token Amount"
+      - name: fulfilled_usd_amount
+        description: "Fulfilled USD Amount"
+      - name: reverted_token_amount
+        description: "Reverted Token Amount"
+      - name: reverted_usd_amount
+        description: "Reverted USD Amount"
+      - name: total_token_amount
+        description: "Total Token Amount"
+      - name: total_usd_amount
+        description: "Total USD Amount"

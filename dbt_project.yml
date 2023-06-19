@@ -713,12 +713,8 @@ models:
 
     chainlink:
       +schema: chainlink
-      optimism:
-        +schema: chainlink_optimism
-      polygon:
-        +schema: chainlink_polygon
-      bnb:
-        +schema: chainlink_bnb
+      ethereum:
+        +schema: chainlink_ethereum
 
     contracts:
       +schema: contracts
