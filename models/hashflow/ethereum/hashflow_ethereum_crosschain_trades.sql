@@ -27,7 +27,7 @@ with cross_chain_trades AS (
             ,CASE WHEN dstChainId = 1 OR dstChainId = 101 THEN 'ethereum'
                   WHEN dstChainId = 10 OR dstChainId = 110 THEN 'arbitrum'
                   WHEN dstChainId = 11 OR dstChainId = 111 THEN 'optimism'
-                  WHEN dstChainId = 6 OR dstChainId = 106 THEN 'avalanche'
+                  WHEN dstChainId = 6 OR dstChainId = 106 THEN 'avalanche_c'
                   WHEN dstChainId = 9 OR dstChainId = 109 THEN 'polygon'
                   WHEN dstChainId = 2 OR dstChainId = 102 THEN 'bnb' END AS destination_chain
             ,'ethereum'                   AS source_chain
@@ -51,7 +51,7 @@ with cross_chain_trades AS (
             ,CASE WHEN dstChainId = 1 THEN 'ethereum'
                   WHEN dstChainId = 2 THEN 'arbitrum'
                   WHEN dstChainId = 3 THEN 'optimism'
-                  WHEN dstChainId = 4 THEN 'avalanche'
+                  WHEN dstChainId = 4 THEN 'avalanche_c'
                   WHEN dstChainId = 5 THEN 'polygon'
                   WHEN dstChainId = 6 THEN 'bnb' END AS destination_chain
             ,'ethereum'                   AS source_chain
@@ -87,6 +87,7 @@ LEFT JOIN {{ ref('tokens_erc20') }} erc20a
     ON erc20a.contract_address = cross_chain_trades.token_bought_address
 LEFT JOIN {{ ref('tokens_erc20') }} erc20b
     ON erc20b.contract_address = cross_chain_trades.token_sold_address
+    AND erc20b.blockchain = cross_chain_trades.source_chain
 LEFT JOIN {{ source('prices', 'usd') }} p_bought
     ON p_bought.minute = date_trunc('minute', cross_chain_trades.block_time)
     AND p_bought.contract_address = cross_chain_trades.token_bought_address
