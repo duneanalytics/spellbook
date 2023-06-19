@@ -93,7 +93,7 @@ WITH
             dexs
             LEFT JOIN {{ ref('balancer_v2_ethereum_bpt_prices') }} bpt_prices
                 ON bpt_prices.contract_address = dexs.token_bought_address
-                AND bpt_prices.median_price IS NOT NULL
+                --AND bpt_prices.median_price IS NOT NULL
                 AND bpt_prices.hour <= dexs.block_time
                 {% if not is_incremental () %}
                 AND bpt_prices.hour >= '{{ project_start_date }}'
@@ -115,7 +115,7 @@ WITH
             dexs
             LEFT JOIN {{ ref('balancer_v2_ethereum_bpt_prices') }} bpt_prices
                 ON bpt_prices.contract_address = dexs.token_sold_address
-                AND bpt_prices.median_price IS NOT NULL
+                --AND bpt_prices.median_price IS NOT NULL
                 AND bpt_prices.hour <= dexs.block_time
                 {% if not is_incremental () %}
                 AND bpt_prices.hour >= '{{ project_start_date }}'
