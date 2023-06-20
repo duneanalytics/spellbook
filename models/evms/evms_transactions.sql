@@ -87,36 +87,4 @@ FROM (
         , l1_timestamp
         , CAST(NULL AS DECIMAL(38,0)) AS effective_gas_price
         FROM {{ source('optimism', 'transactions') }}
-
-        UNION ALL
-
-        SELECT 'arbitrum' AS blockchain
-        , access_list
-        , block_hash
-        , data
-        , `from`
-        , hash
-        , to
-        , block_number
-        , block_time
-        , gas_limit
-        , CAST(gas_price AS double) AS gas_price
-        , gas_used
-        , index
-        , max_fee_per_gas
-        , max_priority_fee_per_gas
-        , nonce
-        , priority_fee_per_gas
-        , success
-        , `type`
-        , CAST(value AS double) AS value
-        , NULL AS l1_tx_origin
-        , CAST(NULL AS double) AS l1_fee_scalar
-        , CAST(NULL AS DECIMAL(38,0)) AS l1_fee_scalar
-        , CAST(NULL AS DECIMAL(38,0)) AS l1_fee
-        , CAST(NULL AS DECIMAL(38,0)) AS l1_gas_price
-        , gas_used_for_l1 AS l1_gas_used
-        , NULL AS l1_timestamp
-        , effective_gas_price
-        FROM {{ source('arbitrum', 'transactions') }}
         );
