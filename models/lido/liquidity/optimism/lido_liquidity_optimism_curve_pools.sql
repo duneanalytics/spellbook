@@ -235,10 +235,10 @@ select explode(sequence(to_date('{{ project_start_date }}'), now(), interval 1 d
 
 , all_metrics as (
     select  
-        pool 
+        r.pool 
         , 'optimism' as blockchain
         , 'curve' as project
-        , 0.04 as fee
+        , '0.04' as fee
         , day as time
         , main_token
         , main_token_symbol
@@ -255,6 +255,6 @@ select explode(sequence(to_date('{{ project_start_date }}'), now(), interval 1 d
 )
 
 
-select CONCAT(CONCAT(CONCAT(CONCAT(CONCAT(blockchain,CONCAT(' ', project)) ,' '), coalesce(paired_token_symbol,'unknown')),':') , main_token_symbol, ' ', fee) as pool_name,* 
+select CONCAT(CONCAT(CONCAT(CONCAT(CONCAT(blockchain,CONCAT(' ', project)) ,' '), coalesce(paired_token_symbol,'unknown')),':'), coalesce(main_token_symbol,'unknown'), ' ', fee) as pool_name,* 
 from all_metrics
 
