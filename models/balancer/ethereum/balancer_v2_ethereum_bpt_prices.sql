@@ -4,7 +4,6 @@
         alias = 'bpt_prices',
         materialized = 'view',
         file_format = 'delta',
-        --incremental_strategy = 'merge',
         unique_key = ['blockchain', 'hour', 'contract_address'],
         post_hook = '{{ expose_spells(\'["ethereum"]\',
                                     "project",
