@@ -20774,7 +20774,7 @@ FROM (VALUES
         ,('0x2863a328a0b7fc6040f11614fa0728587db8e353', 'multibtc3CRV-f', 18)
         ,('0x2d011adf89f0576c9b722c28269fcb5d50c2d179', 'B-sdBAL-STABLE', 18)
         ,('0x2e516ba5bf3b7ee47fb99b09eadb60bde80a82e0', 'EGGS', 18)
-        .('0x2e880962a9609aa3eab4def919fe9e917e99073b', 'BOSS', 0)
+        ,('0x2e880962a9609aa3eab4def919fe9e917e99073b', 'BOSS', 0)
         ,('0x39653e7ac574a362000a1dc86d1d39d78a985e61', 'RBT', 18)
         ,('0x3a4524270f1b96db45c3eb366b619b4a5074a032', 'BALLOON', 18)
         ,('0x4cb2d43a03ca2ba39aaafa633bd03a3bdde56595', 'MONDAY', 18)
