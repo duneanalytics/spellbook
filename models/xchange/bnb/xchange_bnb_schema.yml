@@ -1,16 +1,16 @@
 version: 2
 
 models:
-  - name: xchange_ethereum_trades
+  - name: xchange_bnb_trades
     meta:
-      blockchain: ethereum
+      blockchain: bnb
       sector: dex
       project: xchange
       contributors: mike-x7f
     config:
-      tags: ['ethereum','xchange','x7finance','trades','dex']
+      tags: ['bnb','xchange','x7finance','trades','dex']
     description: >
-        Xchange contract trades on Ethereum
+        Xchange contract trades on bnb
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -20,28 +20,11 @@ models:
             - version
             - tx_hash
             - evt_index
-            - trace_address
-      - check_seed:
-          seed_file: ref('xchange_ethereum_trades_seed')
-          filter:
-            blockchain: ethereum
-            version: 1
-          match_columns:
-            - tx_hash
-          check_columns:
-            - block_date
-            - blockchain
-            - version
-            - project
-            - evt_index
-            - token_bought_address
-            - token_sold_address
-            - token_bought_amount
-            - token_sold_amount      
+            - trace_address         
       - check_dex_seed:
-          blockchain: ethereum
+          blockchain: bnb
           project: xchange
-          version: 1       
+          version: 1  
     columns:
       - &blockchain
         name: blockchain
