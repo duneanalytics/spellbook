@@ -1,5 +1,5 @@
 {{ config(
-        schema = 'erc4337',
+        schema = 'account_abstraction_erc4337',
         alias ='userops',
         post_hook='{{ expose_spells(\'["ethereum","polygon","arbitrum","optimism","avalanche_c","gnosis"]\',
                                 "project",
@@ -9,12 +9,12 @@
 }}
 
 {% set erc4337_models = [
-ref('erc4337_ethereum_userops')
-, ref('erc4337_polygon_userops')
-, ref('erc4337_arbitrum_userops')
-, ref('erc4337_optimism_userops')
-, ref('erc4337_avalanche_c_userops')
-, ref('erc4337_gnosis_userops')
+  ref('account_abstraction_erc4337_ethereum_userops')
+, ref('account_abstraction_erc4337_polygon_userops')
+, ref('account_abstraction_erc4337_arbitrum_userops')
+, ref('account_abstraction_erc4337_optimism_userops')
+, ref('account_abstraction_erc4337_avalanche_c_userops')
+, ref('account_abstraction_erc4337_gnosis_userops')
 ] %}
 
 SELECT *

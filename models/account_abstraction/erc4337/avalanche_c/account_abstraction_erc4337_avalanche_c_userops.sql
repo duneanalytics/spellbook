@@ -5,7 +5,7 @@
     file_format = 'delta',
     incremental_strategy = 'merge',
     unique_key = ['userop_hash', 'tx_hash'],
-    post_hook='{{ expose_spells(\'["gnosis"]\',
+    post_hook='{{ expose_spells(\'["avalanche_c"]\',
                                     "project",
                                     "erc4337",
                                     \'["0xbitfly", "hosuke"]\') }}'
@@ -15,18 +15,18 @@
 {% set deployed_date = '2023-02-15' %}
 
 {% set erc4337_base_models = [
-    ref('erc4337_gnosis_v0_5_userops_basics')
-    , ref('erc4337_gnosis_v0_6_userops_basics')
+    ref('account_abstraction_erc4337_avalanche_c_v0_5_userops_basics')
+    , ref('account_abstraction_erc4337_avalanche_c_v0_6_userops_basics')
 ] %}
 
 {{
     erc4337_userops_enrichments(
-        blockchain = 'gnosis',
+        blockchain = 'avalanche_c',
         base_models = erc4337_base_models,
-        wrapped_gas_address = '0x44fa8e6f47987339850636f88629646662444217',
-        gas_symbol = 'DAI',
+        wrapped_gas_address = '0xb31f66aa3c1e785363f0875a1b74e27b85fd66c7',
+        gas_symbol = 'AVAX',
         deployed_date = '2023-02-15',
-        transactions_model = source('gnosis', 'transactions'),
+        transactions_model = source('avalanche_c', 'transactions'),
         prices_model = source('prices','usd')
     )
 }}

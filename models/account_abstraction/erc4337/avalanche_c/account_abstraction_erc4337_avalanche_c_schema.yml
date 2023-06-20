@@ -2,15 +2,15 @@ version: 2
 
 models:
 
-  - name: erc4337_polygon_v0_5_userops_basics
+  - name: account_abstraction_erc4337_avalanche_c_v0_5_userops_basics
     meta:
-      blockchain: polygon
+      blockchain: avalanche_c
       sector: erc4337
       project: erc4337
       contributors: 0xbitfly, hosuke
     config:
-      tags: ["polygon", "erc4337", "account", "abstraction", "entrypoint"]
-    description: erc4337 v0.5 user operations on polygon
+      tags: ["avalanche_c", "erc4337", "account", "abstraction", "entrypoint"]
+    description: erc4337 v0.5 user operations on avalanche_c
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -51,15 +51,14 @@ models:
         name: beneficiary
         description: "the address where the bundler setting for the user operation pay for thier gas fee"
 
-  - name: erc4337_polygon_v0_6_userops_basics
+  - name: account_abstraction_erc4337_avalanche_c_v0_6_userops_basics
     meta:
-      blockchain: polygon
-      sector: erc4337
+      blockchain: avalanche_c
       project: erc4337
       contributors: 0xbitfly, hosuke
     config:
-      tags: ["polygon", "erc4337", "account", "abstraction", "entrypoint"]
-    description: erc4337 v0.6 user operations on polygon
+      tags: ["avalanche_c", "erc4337", "account", "abstraction", "entrypoint"]
+    description: erc4337 v0.6 user operations on avalanche_c
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -78,24 +77,23 @@ models:
       - *op_fee
       - *beneficiary
 
-  - name: erc4337_polygon_userops
+  - name: account_abstraction_erc4337_avalanche_c_userops
     meta:
-      blockchain: polygon
-      sector: erc4337
+      blockchain: avalanche_c
       project: erc4337
       contributors: 0xbitfly, hosuke
     config:
-      tags: ["polygon", "erc4337", "account", "abstraction", "entrypoint"]
-    description: erc4337 user operation on polygon
+      tags: ["avalanche_c", "erc4337", "account", "abstraction", "entrypoint"]
+    description: erc4337 user operation on avalanche_c
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - userop_hash
             - tx_hash
       - check_seed:
-          seed_file: ref('erc4337_userops_seed')
+          seed_file: ref('account_abstraction_erc4337_userops_seed')
           filter:
-            blockchain: polygon
+            blockchain: avalanche_c
             version: v0.5
           match_columns:
             - userop_hash
@@ -103,9 +101,9 @@ models:
             - tx_hash
             - bundler
       - check_seed:
-          seed_file: ref('erc4337_userops_seed')
+          seed_file: ref('account_abstraction_erc4337_userops_seed')
           filter:
-            blockchain: polygon
+            blockchain: avalanche_c
             version: v0.6
           match_columns:
             - userop_hash

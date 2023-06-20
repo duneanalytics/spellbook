@@ -8,8 +8,8 @@ WITH unit_test AS (
         END AS bundler_test
 
     FROM
-        {{ ref('erc4337_polygon_userops') }} AS actual
-        INNER JOIN {{ ref('erc4337_userops_seed') }} AS test
+        {{ ref('account_abstraction_erc4337_optimism_userops') }} AS actual
+        INNER JOIN {{ ref('account_abstraction_erc4337_userops_seed') }} AS test
         ON LOWER(
             actual.userop_hash
         ) = LOWER(

@@ -18,8 +18,8 @@
 {% set deployed_date = '2023-02-15' %}
 
 {% set erc4337_models = [
-    ref('erc4337_arbitrum_v0_5_userops_basics')
-    , ref('erc4337_arbitrum_v0_6_userops_basics')
+    ref('account_abstraction_erc4337_arbitrum_v0_5_userops_basics')
+    , ref('account_abstraction_erc4337_arbitrum_v0_6_userops_basics')
 ] %}
 
 with userop as(
