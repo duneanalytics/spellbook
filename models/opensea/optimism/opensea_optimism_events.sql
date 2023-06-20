@@ -127,3 +127,4 @@ SELECT *
           FROM {{ ref('opensea_v3_optimism_events') }}
        )
        
+       
