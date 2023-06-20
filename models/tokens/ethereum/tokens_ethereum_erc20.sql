@@ -23538,7 +23538,7 @@ FROM (VALUES
         ,('0xbfc8182a58668cb5308819ea48001c06dcf070e0', 'ARIMA', 9)
         ,('0xd989160216ff0e3bff5b21bc1cfe5c592550e5d7', 'R1', 18)
         ,('0x9664b79c5a59cb815cc824a39273b889e8c34c2b', 'RIKU', 18)
-        ,('0x96772b1006e35694fa0c2c9df5e446118f2ee437', 'NETS' 0)
+        ,('0x96772b1006e35694fa0c2c9df5e446118f2ee437', 'NETS', 0)
         ,('0xccedff5237912081fcf523954b6a3cee93e006ef', 'ZELDA', 9)
         ,('0x4190943ce03adf61ca88b4fab66b6dc99437f3d7', 'oDEX', 9)
         ,('0x0f64629b4093ed27153515e4ad9968e41c08af52', 'NEXUS', 18)
