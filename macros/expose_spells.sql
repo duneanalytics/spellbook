@@ -1,6 +1,6 @@
 {% macro expose_spells(blockchains, spell_type, spell_name, contributors) %}
 {%- if target.name == 'prod' or True-%}
-        {%- if env_var('DBT_DUNE_SQL', 'False') != 'True' -%}
+        {%- if env_var('DBT_DUNE_SQL', 'false').lower() != 'true' -%}
                 ALTER {{"view" if model.config.materialized == "view" else "table"}} {{ this }}
                 SET TBLPROPERTIES (
                 'dune.public'='true',

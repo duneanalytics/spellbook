@@ -46,7 +46,7 @@ jobs:
         run: "dbt -x run --select state:modified --exclude tag:prod_exclude tag:dunesql --defer --state ."
 
       - name: dbt test initial model(s)
-        run: "dbt test --select state:new state:modified --exclude tag:prod_exclude tag:dunesql --defer --state . "
+        run: "dbt test --select state:new state:modified --exclude tag:prod_exclude tag:dunesql --defer --state ."
 
       - name: Set environment variable for incremental model count
         run: |
