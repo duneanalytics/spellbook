@@ -6,10 +6,12 @@
                 'dune.data_explorer.category'='abstraction'
                 )
         {%- else -%}
-                ALTER {{"view" if materialization == "view" else "table"}} {{ this }}
-                SET PROPERTIES extra_properties = map_from_entries (ARRAY[
-                ROW('dune.data_explorer.category', 'abstraction')
-                ])
+                {%- if model.config.materialized != "view" -%} 
+                        ALTER {{"view" if materialization == "view" else "table"}} {{ this }}
+                        SET PROPERTIES extra_properties = map_from_entries (ARRAY[
+                        ROW('dune.data_explorer.category', 'abstraction')
+                        ])
+                {%- endif -%}
         {%- endif -%}
 {%- endif -%}
 {%- endmacro -%}

@@ -4,6 +4,6 @@
     {% set newrel = rel.replace_path(database="delta_prod") %}
     {% do return(newrel) %}
   {%- else -%}
-    {% do return(newrel) %}
+    {% do return(rel) %}
   {%- endif -%}
 {% endmacro %}
