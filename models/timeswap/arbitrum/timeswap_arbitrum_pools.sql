@@ -261,7 +261,7 @@ FROM
                 'Arbitrum',
                 '0xFb466FBC00617C89E5865f4ef0bc6D48Ea150AC5',
                 '0x8DC92083F5C4813c02b502ce1ea61f0a48A36A88'
-            ),
+            )
     ) AS temp_table (
         token0_symbol,
         token1_symbol,
