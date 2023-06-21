@@ -233,6 +233,34 @@ FROM
                 'Arbitrum',
                 '0xEbaDA7aA52C68Bdb6a2744F40AA2f3da76D469dc',
                 '0xE1cd819b5a2C8FC65D3D77BFE0D0A0FF5Bb54326'
+            ),
+            (
+                'ARB',
+                'USDC',
+                '0x912ce59144191c1204e64559fe8253a0e49e6548',
+                '0xff970a61a04b1ca14834a43f5de4533ebddb5cc8',
+                18,
+                6,
+                '204169420152563078078024764',
+                '1689422400',
+                'ARB-USDC',
+                'Arbitrum',
+                '0xFb466FBC00617C89E5865f4ef0bc6D48Ea150AC5',
+                '0x8DC92083F5C4813c02b502ce1ea61f0a48A36A88'
+            ),
+            (
+                'ARB',
+                'USDC',
+                '0x912ce59144191c1204e64559fe8253a0e49e6548',
+                '0xff970a61a04b1ca14834a43f5de4533ebddb5cc8',
+                18,
+                6,
+                '442367076997220002502386989',
+                '1689422400',
+                'ARB-USDC',
+                'Arbitrum',
+                '0xFb466FBC00617C89E5865f4ef0bc6D48Ea150AC5',
+                '0x8DC92083F5C4813c02b502ce1ea61f0a48A36A88'
             )
     ) AS temp_table (
         token0_symbol,
