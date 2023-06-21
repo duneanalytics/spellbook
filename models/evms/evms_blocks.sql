@@ -1,4 +1,5 @@
 {{ config(
+        tags = ['dunesql'],
         alias ='blocks',
         unique_key=['blockchain', 'number'],
         post_hook='{{ expose_spells(\'["ethereum", "polygon", "bnb", "avalanche_c", "gnosis", "fantom", "optimism", "arbitrum"]\',
