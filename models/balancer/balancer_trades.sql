@@ -1,10 +1,10 @@
 {{ config(
     schema = 'balancer',
     alias = 'trades',
-    post_hook='{{ expose_spells(\'["arbitrum", "ethereum", "optimism", "polygon"]\',
+    post_hook='{{ expose_spells(\'["arbitrum", "ethereum", "gnosis", "optimism", "polygon"]\',
                                 "project",
                                 "balancer",
-                                \'["bizzyvinci"]\') }}'
+                                \'["bizzyvinci", "thetroyharris"]\') }}'
     )
 }}
 
