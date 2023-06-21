@@ -16,17 +16,36 @@
 {% set project_start_date = '2023-01-14' %}
 
 WITH    
-    fees_base AS (SELECT *, MAX(index) OVER(PARTITION BY tx_hash, contract_address) AS max_index_same_tx FROM balancer_v2_gnosis.pools_fees),
-    most_case_fees AS (SELECT * FROM fees_base WHERE index = max_index_same_tx),
+    fees_base AS (
+        SELECT *, 
+            MAX(index) OVER(PARTITION BY tx_hash, contract_address) AS max_index_same_tx 
+        FROM {{ ref('balancer_v2_gnosis_pools_fees') }} 
+        {% if not is_incremental () %}
+        WHERE block_time >= '{{ project_start_date }}'
+        {% endif %}
+        {% if is_incremental() %}
+        WHERE block_time >= DATE_TRUNC("day", NOW() - interval '1 week')
+        {% endif %}
+    ),
+    most_case_fees AS (
+        SELECT * FROM fees_base 
+        WHERE index = max_index_same_tx
+    ),
     edge_case_fees AS (
         SELECT 
             s.evt_block_number,
             s.evt_tx_hash,
             s.evt_index,
             f.swap_fee_percentage 
-        FROM balancer_v2_gnosis.Vault_evt_Swap s
-        INNER JOIN fees_base f 
-        ON s.evt_tx_hash = f.tx_hash AND f.index < s.evt_index
+        FROM {{ source ('balancer_v2_gnosis', 'Vault_evt_Swap') }} s
+            INNER JOIN fees_base f 
+                ON s.evt_tx_hash = f.tx_hash AND f.index < s.evt_index
+        {% if not is_incremental () %}
+        WHERE s.evt_block_time >= '{{ project_start_date }}'
+        {% endif %}
+        {% if is_incremental() %}
+        WHERE s.evt_block_time >= DATE_TRUNC("day", NOW() - interval '1 week')
+        {% endif %}
     ),
     swap_fees AS (
         SELECT
@@ -41,6 +60,14 @@ WITH
             LEFT JOIN {{ ref('balancer_v2_gnosis_pools_fees') }} fees
                 ON fees.contract_address = SUBSTRING(swap.poolId, 0, 42)
                 AND fees.block_time <= swap.evt_block_time
+        {% if not is_incremental () %}
+        WHERE swap.evt_block_time >= '{{ project_start_date }}'
+            AND fees.block_time >= '{{ project_start_date }}'
+        {% endif %}
+        {% if is_incremental() %}
+        WHERE swap.evt_block_time >= DATE_TRUNC("day", NOW() - interval '1 week')
+            AND fees.block_time >= DATE_TRUNC("day", NOW() - interval '1 week')
+        {% endif %}
         GROUP BY 1, 2, 3, 4, 5
     ),
     dexs AS (
@@ -77,9 +104,6 @@ WITH
         WHERE
             swap.tokenIn <> swap_fees.contract_address
             AND swap.tokenOut <> swap_fees.contract_address
-            {% if is_incremental() %}
-            AND swap.evt_block_time >= DATE_TRUNC("day", NOW() - interval '1 week')
-            {% endif %}
     ),
     bpa AS (
         SELECT
@@ -93,7 +117,6 @@ WITH
             dexs
             LEFT JOIN {{ ref('balancer_v2_gnosis_bpt_prices') }} bpt_prices
                 ON bpt_prices.contract_address = dexs.token_bought_address
-                --AND bpt_prices.median_price IS NOT NULL
                 AND bpt_prices.hour <= dexs.block_time
                 {% if not is_incremental () %}
                 AND bpt_prices.hour >= '{{ project_start_date }}'
@@ -115,7 +138,6 @@ WITH
             dexs
             LEFT JOIN {{ ref('balancer_v2_gnosis_bpt_prices') }} bpt_prices
                 ON bpt_prices.contract_address = dexs.token_sold_address
-                --AND bpt_prices.median_price IS NOT NULL
                 AND bpt_prices.hour <= dexs.block_time
                 {% if not is_incremental () %}
                 AND bpt_prices.hour >= '{{ project_start_date }}'
@@ -166,63 +188,63 @@ SELECT
     dexs.evt_index
 FROM
     dexs
-INNER JOIN {{ source ('gnosis', 'transactions') }} tx
-    ON tx.hash = dexs.tx_hash
-    {% if not is_incremental () %}
-    AND tx.block_time >= '{{ project_start_date }}'
-    {% endif %}
-    {% if is_incremental () %}
-    AND tx.block_time >= DATE_TRUNC("day", NOW() - interval '1 week')
-    {% endif %}
-LEFT JOIN {{ ref ('tokens_erc20') }} erc20a
-    ON erc20a.contract_address = dexs.token_bought_address
-    AND erc20a.blockchain = 'gnosis'
-LEFT JOIN {{ ref ('tokens_erc20') }} erc20b
-    ON erc20b.contract_address = dexs.token_sold_address
-    AND erc20b.blockchain = 'gnosis'
-LEFT JOIN {{ source ('prices', 'usd') }} p_bought
-    ON p_bought.minute = DATE_TRUNC('minute', dexs.block_time)
-    AND p_bought.contract_address = dexs.token_bought_address
-    AND p_bought.blockchain = 'gnosis'
-    {% if not is_incremental () %}
-    AND p_bought.minute >= '{{ project_start_date }}'
-    {% endif %}
-    {% if is_incremental () %}
-    AND p_bought.minute >= DATE_TRUNC("day", NOW() - interval '1 week')
-    {% endif %}
-LEFT JOIN {{ source ('prices', 'usd') }} p_sold
-    ON p_sold.minute = DATE_TRUNC('minute', dexs.block_time)
-    AND p_sold.contract_address = dexs.token_sold_address
-    AND p_sold.blockchain = 'gnosis'
-    {% if not is_incremental () %}
-    AND p_sold.minute >= '{{ project_start_date }}'
-    {% endif %}
-    {% if is_incremental () %}
-    AND p_sold.minute >= DATE_TRUNC("day", NOW() - interval '1 week')
-    {% endif %}
-INNER JOIN bpa
-    ON bpa.evt_block_number = dexs.evt_block_number
-    AND bpa.tx_hash = dexs.tx_hash
-    AND bpa.evt_index = dexs.evt_index
-LEFT JOIN {{ ref('balancer_v2_gnosis_bpt_prices') }} bpa_bpt_prices
-    ON bpa_bpt_prices.contract_address = bpa.contract_address
-    AND bpa_bpt_prices.hour = bpa.bpa_max_block_time
-    {% if not is_incremental () %}
-    AND bpa_bpt_prices.hour >= '{{ project_start_date }}'
-    {% endif %}
-    {% if is_incremental () %}
-    AND bpa_bpt_prices.hour >= DATE_TRUNC("day", NOW() - interval '1 week')
-    {% endif %}
-INNER JOIN bpb
-    ON bpb.evt_block_number = dexs.evt_block_number
-    AND bpb.tx_hash = dexs.tx_hash
-    AND bpb.evt_index = dexs.evt_index
-LEFT JOIN {{ ref('balancer_v2_gnosis_bpt_prices') }} bpb_bpt_prices
-    ON bpb_bpt_prices.contract_address = bpb.contract_address
-    AND bpb_bpt_prices.hour = bpb.bpb_max_block_time
-    {% if not is_incremental () %}
-    AND bpa_bpt_prices.hour >= '{{ project_start_date }}'
-    {% endif %}
-    {% if is_incremental () %}
-    AND bpa_bpt_prices.hour >= DATE_TRUNC("day", NOW() - interval '1 week')
-    {% endif %}
+    INNER JOIN {{ source ('gnosis', 'transactions') }} tx
+        ON tx.hash = dexs.tx_hash
+        {% if not is_incremental () %}
+        AND tx.block_time >= '{{ project_start_date }}'
+        {% endif %}
+        {% if is_incremental () %}
+        AND tx.block_time >= DATE_TRUNC("day", NOW() - interval '1 week')
+        {% endif %}
+    LEFT JOIN {{ ref ('tokens_erc20') }} erc20a
+        ON erc20a.contract_address = dexs.token_bought_address
+        AND erc20a.blockchain = 'gnosis'
+    LEFT JOIN {{ ref ('tokens_erc20') }} erc20b
+        ON erc20b.contract_address = dexs.token_sold_address
+        AND erc20b.blockchain = 'gnosis'
+    LEFT JOIN {{ source ('prices', 'usd') }} p_bought
+        ON p_bought.minute = DATE_TRUNC('minute', dexs.block_time)
+        AND p_bought.contract_address = dexs.token_bought_address
+        AND p_bought.blockchain = 'gnosis'
+        {% if not is_incremental () %}
+        AND p_bought.minute >= '{{ project_start_date }}'
+        {% endif %}
+        {% if is_incremental () %}
+        AND p_bought.minute >= DATE_TRUNC("day", NOW() - interval '1 week')
+        {% endif %}
+    LEFT JOIN {{ source ('prices', 'usd') }} p_sold
+        ON p_sold.minute = DATE_TRUNC('minute', dexs.block_time)
+        AND p_sold.contract_address = dexs.token_sold_address
+        AND p_sold.blockchain = 'gnosis'
+        {% if not is_incremental () %}
+        AND p_sold.minute >= '{{ project_start_date }}'
+        {% endif %}
+        {% if is_incremental () %}
+        AND p_sold.minute >= DATE_TRUNC("day", NOW() - interval '1 week')
+        {% endif %}
+    INNER JOIN bpa
+        ON bpa.evt_block_number = dexs.evt_block_number
+        AND bpa.tx_hash = dexs.tx_hash
+        AND bpa.evt_index = dexs.evt_index
+    LEFT JOIN {{ ref('balancer_v2_gnosis_bpt_prices') }} bpa_bpt_prices
+        ON bpa_bpt_prices.contract_address = bpa.contract_address
+        AND bpa_bpt_prices.hour = bpa.bpa_max_block_time
+        {% if not is_incremental () %}
+        AND bpa_bpt_prices.hour >= '{{ project_start_date }}'
+        {% endif %}
+        {% if is_incremental () %}
+        AND bpa_bpt_prices.hour >= DATE_TRUNC("day", NOW() - interval '1 week')
+        {% endif %}
+    INNER JOIN bpb
+        ON bpb.evt_block_number = dexs.evt_block_number
+        AND bpb.tx_hash = dexs.tx_hash
+        AND bpb.evt_index = dexs.evt_index
+    LEFT JOIN {{ ref('balancer_v2_gnosis_bpt_prices') }} bpb_bpt_prices
+        ON bpb_bpt_prices.contract_address = bpb.contract_address
+        AND bpb_bpt_prices.hour = bpb.bpb_max_block_time
+        {% if not is_incremental () %}
+        AND bpa_bpt_prices.hour >= '{{ project_start_date }}'
+        {% endif %}
+        {% if is_incremental () %}
+        AND bpa_bpt_prices.hour >= DATE_TRUNC("day", NOW() - interval '1 week')
+        {% endif %}
