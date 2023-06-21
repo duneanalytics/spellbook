@@ -52,3 +52,17 @@ sources:
     tables:
       - name: wstETH_evt_Transfer
         loaded_at_field: evt_block_time                
+
+  - name: velodrome_optimism
+    description: "Optimism decoded tables related to Velodrome pools contracts"
+    freshness: # default freshness
+      warn_after: { count: 12, period: hour }
+      error_after: { count: 24, period: hour }
+    tables:
+      - name: Pair_evt_Mint
+        loaded_at_field: evt_block_time
+      - name: Pair_evt_Burn
+        loaded_at_field: evt_block_time          
+      - name: Pair_evt_Fees
+        loaded_at_field: evt_block_time          
+       

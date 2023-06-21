@@ -19,7 +19,8 @@
  ref('lido_liquidity_optimism_balancer_pools'),
  ref('lido_liquidity_polygon_balancer_pools'),
  ref('lido_liquidity_arbitrum_curve_pools'),
- ref('lido_liquidity_optimism_curve_pools')
+ ref('lido_liquidity_optimism_curve_pools'),
+ ref('lido_liquidity_optimism_velodrome_pools')
 ] %}
 
 
