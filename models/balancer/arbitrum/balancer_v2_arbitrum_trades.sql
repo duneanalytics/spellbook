@@ -20,9 +20,6 @@ WITH
         SELECT *, 
             MAX(index) OVER(PARTITION BY tx_hash, contract_address) AS max_index_same_tx 
         FROM {{ ref('balancer_v2_arbitrum_pools_fees') }} 
-        {% if not is_incremental () %}
-        WHERE block_time >= '{{ project_start_date }}'
-        {% endif %}
         {% if is_incremental() %}
         WHERE block_time >= DATE_TRUNC("day", NOW() - interval '1 week')
         {% endif %}
@@ -40,9 +37,6 @@ WITH
         FROM {{ source ('balancer_v2_arbitrum', 'Vault_evt_Swap') }} s
             INNER JOIN fees_base f 
                 ON s.evt_tx_hash = f.tx_hash AND f.index < s.evt_index
-        {% if not is_incremental () %}
-        WHERE s.evt_block_time >= '{{ project_start_date }}'
-        {% endif %}
         {% if is_incremental() %}
         WHERE s.evt_block_time >= DATE_TRUNC("day", NOW() - interval '1 week')
         {% endif %}
@@ -60,10 +54,6 @@ WITH
             LEFT JOIN {{ ref('balancer_v2_arbitrum_pools_fees') }} fees
                 ON fees.contract_address = SUBSTRING(swap.poolId, 0, 42)
                 AND fees.block_time <= swap.evt_block_time
-        {% if not is_incremental () %}
-        WHERE swap.evt_block_time >= '{{ project_start_date }}'
-            AND fees.block_time >= '{{ project_start_date }}'
-        {% endif %}
         {% if is_incremental() %}
         WHERE swap.evt_block_time >= DATE_TRUNC("day", NOW() - interval '1 week')
             AND fees.block_time >= DATE_TRUNC("day", NOW() - interval '1 week')
