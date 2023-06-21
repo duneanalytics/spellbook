@@ -21,7 +21,7 @@ with dates AS (
     )
 
 , pools as (   
-SELECT
+SELECT distinct
     registered.poolId AS pool_id,
     tokens.token_address, 
     evt_block_time
@@ -167,11 +167,7 @@ WHERE call_create.output_0 in (select distinct  SUBSTRING(pool_id, 0, 42) from p
         decimals,
         last_value(price) over (partition by DATE_TRUNC('day', minute), contract_address ORDER BY  minute range between unbounded preceding AND unbounded following) AS price
     FROM {{source ('prices','usd')}}
-    {% if is_incremental() %}
-    WHERE date_trunc('day', minute) >= date_trunc("day", now() - interval '1 week') and date_trunc('day', minute) < date_trunc('day', now())
-    {% else %}
-    WHERE date_trunc('day', minute) >= '{{ project_start_date }}' and date_trunc('day', minute) < date_trunc('day', now())
-    {% endif %}
+    WHERE date_trunc('day', minute) = date_trunc('day', now())
     and blockchain = 'polygon'
     and contract_address in (select distinct token_address from tokens)
     union all
@@ -198,11 +194,7 @@ union all
         18,
         last_value(price) over (partition by DATE_TRUNC('day', minute), contract_address ORDER BY  minute range between unbounded preceding AND unbounded following) AS price
     FROM {{source ('prices','usd')}}
-    {% if is_incremental() %}
-    WHERE date_trunc('day', minute) >= date_trunc("day", now() - interval '1 week') and date_trunc('day', minute) < date_trunc('day', now())
-    {% else %}
-    WHERE date_trunc('day', minute) >= '{{ project_start_date }}' and date_trunc('day', minute) < date_trunc('day', now())
-    {% endif %}
+    WHERE date_trunc('day', minute) = date_trunc('day', now())
     and blockchain = 'polygon'
     and contract_address = lower('0x7ceb23fd6bc0add59e62ac25578270cff1b9f619') --weth
 )-- add here bb-a-WETH price
