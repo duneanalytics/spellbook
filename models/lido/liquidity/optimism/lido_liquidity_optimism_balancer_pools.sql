@@ -85,6 +85,11 @@ select '0x098f32d98d0d64dba199fc1923d3bf4192e787190001000000000000000000d2', low
 
 )
 
+, pool_per_date as ( 
+select dates.day, pools.*
+from dates
+left join pools on 1=1
+)
 
 , pools_fee as (
 select  contract_address, block_time as time, lead(block_time,1,now()) over (partition by contract_address order by contract_address, block_time) as next_time, swap_fee_percentage/1e18 as fee 
@@ -379,18 +384,33 @@ union all
 , cumulative_usd_balance AS (
         SELECT
             c.day,
-            b.pool_id,
+            c.pool_id,
             b.token,
             COALESCE(t.symbol, p1.symbol) AS token_symbol,
             cumulative_amount as token_balance_raw,
             cumulative_amount / POWER(10, COALESCE(t.decimals, p1.decimals)) AS token_balance,
             cumulative_amount / POWER(10, COALESCE(t.decimals, p1.decimals)) * COALESCE(p1.price, 0) AS amount_usd, 
-            row_number() OVER(PARTITION BY c.day,pool_id ORDER BY  c.day,pool_id) as row_numb
-        FROM dates c
-        LEFT JOIN cumulative_balance b ON b.day <= c.day AND c.day < b.day_of_next_change
-        LEFT JOIN {{source('prices','tokens')}} t ON t.contract_address = b.token AND blockchain = "optimism"
+            0 as row_numb
+        FROM pool_per_date c
+        LEFT JOIN cumulative_balance b ON b.day <= c.day AND c.day < b.day_of_next_change and c.pool_id = b.pool_id
+        LEFT JOIN prices.tokens t ON t.contract_address = b.token AND blockchain = "optimism"
         LEFT JOIN tokens_prices_daily p1 ON p1.time = b.day AND p1.token = b.token
-        WHERE b.token != SUBSTRING(b.pool_id, 0, 42)
+        WHERE b.token = lower('0x1F32b1c2345538c0c6f582fCB022739c4A194Ebb')
+        union all
+               SELECT
+            c.day,
+            c.pool_id,
+            b.token,
+            COALESCE(t.symbol, p1.symbol) AS token_symbol,
+            cumulative_amount as token_balance_raw,
+            cumulative_amount / POWER(10, COALESCE(t.decimals, p1.decimals)) AS token_balance,
+            cumulative_amount / POWER(10, COALESCE(t.decimals, p1.decimals)) * COALESCE(p1.price, 0) AS amount_usd, 
+            row_number() OVER(PARTITION BY c.day,c.pool_id ORDER BY  c.day,c.pool_id, b.token) as row_numb
+        FROM pool_per_date c
+        LEFT JOIN cumulative_balance b ON b.day <= c.day AND c.day < b.day_of_next_change and c.pool_id = b.pool_id
+        LEFT JOIN prices.tokens t ON t.contract_address = b.token AND blockchain = "optimism"
+        LEFT JOIN tokens_prices_daily p1 ON p1.time = b.day AND p1.token = b.token
+        WHERE b.token != lower('0x1F32b1c2345538c0c6f582fCB022739c4A194Ebb') and b.token != SUBSTRING(b.pool_id, 0, 42)
 )
 
 , reserves as (
@@ -420,7 +440,7 @@ SELECT
     coalesce(token_balance, token_balance_raw) as paired1_token_reserve,
     coalesce(amount_usd, 0) AS paired1_token_usd_reserve
 FROM cumulative_usd_balance b
-where token != lower('0x1F32b1c2345538c0c6f582fCB022739c4A194Ebb') and cast(row_numb as int) = cast(2 as int)) paired1
+where token != lower('0x1F32b1c2345538c0c6f582fCB022739c4A194Ebb') and cast(row_numb as int) = cast(1 as int)) paired1
 on main.day = paired1.day and main.pool_id = paired1.pool_id 
 left join (
 SELECT
@@ -431,7 +451,7 @@ SELECT
     coalesce(token_balance, token_balance_raw) as paired2_token_reserve,
     coalesce(amount_usd, 0) AS paired2_token_usd_reserve
 FROM cumulative_usd_balance b
-where token != lower('0x1F32b1c2345538c0c6f582fCB022739c4A194Ebb') and cast(row_numb as int) = cast(3 as int)) paired2
+where token != lower('0x1F32b1c2345538c0c6f582fCB022739c4A194Ebb') and cast(row_numb as int) = cast(2 as int)) paired2
 on main.day = paired2.day and main.pool_id = paired2.pool_id 
 left join (
 SELECT
@@ -442,7 +462,7 @@ SELECT
     coalesce(token_balance, token_balance_raw) as paired3_token_reserve,
     coalesce(amount_usd, 0) AS paired3_token_usd_reserve
 FROM cumulative_usd_balance b
-where token != lower('0x1F32b1c2345538c0c6f582fCB022739c4A194Ebb') and cast(row_numb as int) = cast(4 as int)) paired3
+where token != lower('0x1F32b1c2345538c0c6f582fCB022739c4A194Ebb') and cast(row_numb as int) = cast(3 as int)) paired3
 on main.day = paired3.day and main.pool_id = paired3.pool_id 
 left join (
 SELECT
@@ -453,7 +473,7 @@ SELECT
     coalesce(token_balance, token_balance_raw) as paired4_token_reserve,
     coalesce(amount_usd, 0) AS paired4_token_usd_reserve
 FROM cumulative_usd_balance b
-where token != lower('0x1F32b1c2345538c0c6f582fCB022739c4A194Ebb') and cast(row_numb as int) = cast(5 as int)) paired4
+where token != lower('0x1F32b1c2345538c0c6f582fCB022739c4A194Ebb') and cast(row_numb as int) = cast(4 as int)) paired4
 on main.day = paired4.day and main.pool_id = paired4.pool_id 
 )
 
@@ -487,4 +507,4 @@ order by day desc, pool_id
 
 select CONCAT(CONCAT(CONCAT(CONCAT(CONCAT(blockchain,CONCAT(' ', project)) ,' '), coalesce(paired_token_symbol,'unknown')),':') , main_token_symbol, ' ', fee) as pool_name,* 
 from all_metrics
-
+where main_token_reserve > 1
