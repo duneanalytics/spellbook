@@ -1,6 +1,6 @@
 {% macro mark_as_spell(this, materialization) %}
 {%- if target.name == 'prod' or True-%}
-        {%- if env_var('DBT_DUNE_SQL', 'false').lower() != 'true' -%}
+        {%- if 'dunesql' not in model.config.get("tags") -%}
                 ALTER {{"view" if materialization == "view" else "table"}} {{ this }}
                 SET TBLPROPERTIES (
                 'dune.data_explorer.category'='abstraction'
