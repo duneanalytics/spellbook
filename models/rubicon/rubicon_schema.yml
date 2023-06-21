@@ -142,7 +142,7 @@ models:
       - &bought_amount_raw
         name: bought_amount_raw
         description: "the raw amount of the token that the offer has bought"
-      - &sell_amount_usd: 
+      - &sell_amount_usd
         name: sell_amount_usd
         description: "the amount of the token that the maker is selling in USD (at the time of the offer creation)"
       - &buy_amount_usd
