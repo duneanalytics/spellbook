@@ -36,8 +36,7 @@ jobs:
           elif [[ "${{ matrix.engine }}" == "spark" ]]; then
             printf "Using spark engine\n"
             echo "PROFILE=--profile spark" >> $GITHUB_ENV
-            echo "TAG=tag:dunesql" >> $GITHUB_ENV
-            echo "EXCLUDE=tag:dunesql," >> $GITHUB_ENV
+            echo "EXCLUDE=tag:dunesql " >> $GITHUB_ENV
             echo "SINGLE_EXCLUDE=--exclude tag:dunesql" >> $GITHUB_ENV
             echo 
           else
