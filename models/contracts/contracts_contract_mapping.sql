@@ -1,3 +1,4 @@
+ -- TODO: Add checks for joins on blockchain name
  {{
   config(
         alias='contract_mapping',
@@ -5,7 +6,7 @@
         file_format ='delta',
         incremental_strategy='merge',
         unique_key='contract_address',
-        post_hook='{{ expose_spells(\'["optimism"]\',
+        post_hook='{{ expose_spells(\'["ethereum", "polygon", "bnb", "avalanche_c", "gnosis", "fantom", "optimism", "arbitrum","goerli"]\',
                                     "sector",
                                     "contracts",
                                     \'["msilb7", "chuxin"]\') }}'
@@ -44,8 +45,8 @@ with base_level as (
       ,ct.block_time as created_time
       ,ct.tx_hash as creation_tx_hash
       ,coalesce(sd.contract_address is not NULL, false) as is_self_destruct
-    from {{ source('optimism', 'creation_traces') }} as ct 
-    left join {{ ref('contracts_optimism_self_destruct_contracts') }} as sd 
+    from {{ ref('evms_creation_traces') }} as ct 
+    left join {{ ref('contracts_self_destruct_contracts') }} as sd 
       on ct.address = sd.contract_address
       and ct.tx_hash = sd.creation_tx_hash
       and ct.block_time = sd.created_time
@@ -77,7 +78,7 @@ with base_level as (
     bl.contract_address
     ,t.symbol
   from base_level as bl 
-  join {{ ref('tokens_optimism_erc20') }} as t
+  join {{ ref('tokens_erc20') }} as t --TODO: Make This EVMs
     on bl.contract_address = t.contract_address
   group by 1, 2
 
@@ -87,7 +88,7 @@ with base_level as (
     bl.contract_address
     ,t.name as symbol
   from base_level as bl 
-  join {{ ref('tokens_optimism_nft') }} as t
+  join {{ ref('tokens_nft') }} as t --TODO: Make This EVMs
     on bl.contract_address = t.contract_address
   group by 1, 2
 )
@@ -115,13 +116,13 @@ with base_level as (
     left join base_level as u --get info about the contract that created this contract
       on b.creator_address = u.contract_address
       AND b.creator_address NOT IN -- don't map creators that we know are not deterministic
-        (SELECT creator_address FROM {{ref('contracts_optimism_nondeterministic_contract_creators')}})
+        (SELECT creator_address FROM {{ref('contracts_deterministic_contract_creators')}})
     {% else -%}
     from level{{i-1}} as b
     left join base_level as u --get info about the contract that created this contract
       on b.creator_address = u.contract_address
       AND b.creator_address NOT IN -- don't map creators that we know are not deterministic
-        (SELECT creator_address FROM {{ref('contracts_optimism_nondeterministic_contract_creators')}})
+        (SELECT creator_address FROM {{ref('contracts_eterministic_contract_creators')}})
     {% endif %}
 )
 {%- endfor %}
@@ -137,9 +138,9 @@ with base_level as (
     ,f.is_self_destruct
     ,f.creation_tx_hash
   from level{{max_levels - 1}} as f
-  left join {{ ref('contracts_optimism_contract_creator_address_list') }} as cc 
+  left join {{ ref('contracts_contract_creator_address_list') }} as cc 
     on f.creator_address = cc.creator_address
-  left join {{ ref('contracts_optimism_contract_creator_address_list') }} as ccf
+  left join {{ ref('contracts_contract_creator_address_list') }} as ccf
     on f.contract_factory = ccf.creator_address
   where f.contract_address is not null
  )
@@ -156,14 +157,14 @@ with base_level as (
     ,'creator contracts' as source
     ,cc.creation_tx_hash
   from creator_contracts as cc 
-  left join {{ source('optimism', 'contracts') }} as oc 
+  left join {{ ref('evms_contracts') }} as oc 
     on cc.contract_address = oc.address 
 
   union all
   -- missing contracts
   select 
-     COALESCE(oc.from,'0xdeaddeaddeaddeaddeaddeaddeaddeaddead0006') AS trace_creator_address
-    ,COALESCE(oc.from,'0xdeaddeaddeaddeaddeaddeaddeaddeaddead0006') AS creator_address
+     oc.from AS trace_creator_address --maybe coalesce this to burn address
+    ,oc.from AS creator_address --maybe coalesce this to burn address
     ,cast(NULL as string) as contract_factory
     ,l.contract_address
     ,oc.namespace as contract_project 
@@ -172,8 +173,8 @@ with base_level as (
     ,false as is_self_destruct
     ,'missing contracts' as source
     ,cast(NULL as string) as creation_tx_hash
-  from {{ source('optimism', 'logs') }} as l
-    left join {{ source('optimism', 'contracts') }} as oc 
+  from {{ ref('evms_logs') }} as l
+    left join {{ ref('evms_contracts') }} as oc 
       ON l.contract_address = oc.address
   WHERE
     l.contract_address NOT IN (SELECT cc.contract_address FROM creator_contracts cc)
