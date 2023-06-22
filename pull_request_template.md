@@ -1,3 +1,21 @@
+# SPELLBOOK FREEZE
+
+From June 22 to June 29, we will be freezing some Spellbook contributions for the migration to DuneSQL. We will not accept contributions to the lineage of the following models:
+
+* dex.trades
+* nft.trades
+* labels
+* token.erc20
+* tokens.nft
+
+Run the following command to see the list of affected files:
+
+```
+dbt ls --resource-type model --output path --select +dex_trades +labels +nft_trades +tokens_nft +tokens_erc20
+```
+
+Don't hesitate to reach out on Discord if you have any questions.
+
 Brief comments on the purpose of your changes:
 
 **For Dune Engine V2**
