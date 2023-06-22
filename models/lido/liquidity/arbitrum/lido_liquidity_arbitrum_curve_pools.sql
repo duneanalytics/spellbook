@@ -16,7 +16,11 @@
 {% set project_start_date = '2022-10-06' %}
 
 with dates as (
+{% if not is_incremental() %}
+select explode(sequence(to_date('{{ project_start_date }}'), now(), interval 1 day)) as day
+{% else %}
 select explode(sequence(date_trunc("day", now() - interval '1 week'), now(), interval 1 day)) as day
+{% endif %}
 )
 
 , weth_prices_daily AS (
