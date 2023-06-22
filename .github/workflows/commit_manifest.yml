@@ -53,17 +53,14 @@ jobs:
       run: "dbt compile $PROFILE $COMPILE_TAG"
 
     - name: copy old manifest locally
-      run: "aws s3 cp s3://$S3_LOCATION/manifest.json previous_manifest.json"
-      
-    - name: copy old manifest to s3
-      run: "aws s3 cp previous_manifest.json s3://$S3_LOCATION/previous_manifest.json"
+      run: "aws s3 cp s3://$S3_LOCATION/manifest.json s3://$S3_LOCATION/previous_manifest.json"
 
     - name: Set environment variables
       run: |
         echo "GIT_SHA=$(echo ${{ github.sha }} | tr - _ | cut -c1-7)" >> $GITHUB_ENV
 
     - name: upload git_sha versioned previous manifest (for manual catchup if jobs fail)
-      run: "aws s3 cp previous_manifest.json s3://$S3_LOCATION/manifest_$GIT_SHA.json"
+      run: "aws s3 cp s3://$S3_LOCATION/manifest.json s3://$S3_LOCATION/manifest_$GIT_SHA.json"
 
     - name: upload manifest
       run: "aws s3 cp manifest.json s3://$S3_LOCATION/manifest.json"
