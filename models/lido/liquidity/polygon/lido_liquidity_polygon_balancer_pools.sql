@@ -185,7 +185,7 @@ SELECT distinct
     {% endif %}
     and blockchain = 'polygon'
     and contract_address = lower('0x7ceb23fd6bc0add59e62ac25578270cff1b9f619')
-    group by 1,2,3,4
+    group by 1,2,3
 union all
     SELECT distinct
         DATE_TRUNC('day', minute), 
@@ -196,8 +196,8 @@ union all
     FROM {{source ('prices','usd')}}
     WHERE date_trunc('day', minute) = date_trunc('day', now())
     and blockchain = 'polygon'
-    and contract_address = lower('0x7ceb23fd6bc0add59e62ac25578270cff1b9f619') --weth
-)-- add here bb-a-WETH price
+    and contract_address = lower('0x7ceb23fd6bc0add59e62ac25578270cff1b9f619')
+)
 
 , wsteth_prices_hourly AS (
     select time, lead(time,1, DATE_TRUNC('hour', now() + interval '1' hour)) over (order by time) as next_time, price
@@ -207,9 +207,9 @@ union all
         last_value(price) over (partition by DATE_TRUNC('hour', minute), contract_address ORDER BY  minute range between unbounded preceding AND unbounded following) AS price
     FROM {{source ('prices','usd')}}
     {% if is_incremental() %}
-    WHERE date_trunc('day', minute) >= date_trunc("day", now() - interval '1 week') and date_trunc('day', minute) < date_trunc('day', now())
+    WHERE date_trunc('day', minute) >= date_trunc("day", now() - interval '1 week') 
     {% else %}
-    WHERE date_trunc('day', minute) >= '{{ project_start_date }}' and date_trunc('day', minute) < date_trunc('day', now())
+    WHERE date_trunc('day', minute) >= '{{ project_start_date }}' 
     {% endif %}
     and blockchain = 'polygon'
     and contract_address = lower('0x03b54A6e9a984069379fae1a4fC4dBAE93B3bCCD')
@@ -225,9 +225,9 @@ union all
         , last_value(price) over (partition by DATE_TRUNC('hour', minute), contract_address ORDER BY  minute range between unbounded preceding AND unbounded following) AS price
     FROM {{source ('prices','usd')}}
     {% if is_incremental() %}
-    WHERE date_trunc('day', minute) >= date_trunc("day", now() - interval '1 week') and date_trunc('day', minute) < date_trunc('day', now())
+    WHERE date_trunc('day', minute) >= date_trunc("day", now() - interval '1 week') 
     {% else %}
-    WHERE date_trunc('day', minute) >= '{{ project_start_date }}' and date_trunc('day', minute) < date_trunc('day', now())
+    WHERE date_trunc('day', minute) >= '{{ project_start_date }}' 
     {% endif %}
     and blockchain = 'polygon'
     and contract_address = lower('0x7ceb23fd6bc0add59e62ac25578270cff1b9f619')
@@ -241,33 +241,16 @@ union all
     SELECT distinct
         DATE_TRUNC('hour', minute) AS time,
         lower('0x43894DE14462B421372bCFe445fA51b1b4A0Ff3D') as token,
-        'bb-a-WETH',
-        18,
-        avg(price) AS price
-    FROM {{source ('prices','usd')}}
-    {% if is_incremental() %}
-    WHERE date_trunc('day', minute) >= date_trunc("day", now() - interval '1 week') and date_trunc('day', minute) < date_trunc('day', now())
-    {% else %}
-    WHERE date_trunc('day', minute) >= '{{ project_start_date }}' and date_trunc('day', minute) < date_trunc('day', now())
-    {% endif %}
-    and blockchain = 'polygon'
-    and contract_address = lower('0x7ceb23fd6bc0add59e62ac25578270cff1b9f619')
-    group by 1,2,3,4
-union all
-    SELECT distinct
-        DATE_TRUNC('hour', minute), 
-        lower('0x43894DE14462B421372bCFe445fA51b1b4A0Ff3D') as token,
-        'bb-a-WETH',
-        18,
         last_value(price) over (partition by DATE_TRUNC('hour', minute), contract_address ORDER BY  minute range between unbounded preceding AND unbounded following) AS price
     FROM {{source ('prices','usd')}}
     {% if is_incremental() %}
-    WHERE date_trunc('day', minute) >= date_trunc("day", now() - interval '1 week') and date_trunc('day', minute) < date_trunc('day', now())
+    WHERE date_trunc('day', minute) >= date_trunc("day", now() - interval '1 week') 
     {% else %}
-    WHERE date_trunc('day', minute) >= '{{ project_start_date }}' and date_trunc('day', minute) < date_trunc('day', now())
+    WHERE date_trunc('day', minute) >= '{{ project_start_date }}' 
     {% endif %}
     and blockchain = 'polygon'
     and contract_address = lower('0x7ceb23fd6bc0add59e62ac25578270cff1b9f619')
+    
 )
 )
 , swaps_changes as (
