@@ -33,6 +33,12 @@ where token0 = lower('0x1F32b1c2345538c0c6f582fCB022739c4A194Ebb')
       OR token1 = lower('0x1F32b1c2345538c0c6f582fCB022739c4A194Ebb')
 )      
 
+, pool_per_date as ( 
+select dates.day, pools.*
+from dates
+left join pools on 1=1
+)
+
 , tokens as (
  select distinct token, pt.symbol, pt.decimals
  from (
@@ -197,16 +203,21 @@ from  fee_events
 ) group by 1,2,3,4
 )
 
+, daily_delta_balance_with_lead AS (
+select time, pool, token0, token1, amount0, amount1, lead(time, 1, now()) over (partition by pool order by time) as next_time
+from daily_delta_balance
+)
+
+
 , pool_liquidity as (
-SELECT time,
-      LEAD(time, 1, CURRENT_DATE + INTERVAL '1' day) OVER (ORDER BY time) AS next_time,
-      pool,
+SELECT c.day as time,
+      c.address as pool,
       token0,
       token1,
       SUM(amount0) OVER (PARTITION BY  pool   ORDER BY time) AS amount0,
       SUM(amount1) OVER (PARTITION BY  pool   ORDER BY time) AS amount1
-    FROM
-      daily_delta_balance
+    FROM pool_per_date c
+      left join daily_delta_balance_with_lead b  ON b.time <= c.day AND c.day < b.next_time and c.address = b.pool
 )
 
 , swap_events_hourly as (
