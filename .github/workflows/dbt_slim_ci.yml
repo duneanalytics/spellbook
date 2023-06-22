@@ -28,8 +28,6 @@ jobs:
         uses: actions/checkout@v3
 
       - name: Setup variables
-        env:
-          DUNESQL: 'tag:dunesql'
         run: |
           if [[ "${{ matrix.engine }}" == "dunesql" ]]; then
             printf "Using dunesql engine\n"
@@ -38,9 +36,9 @@ jobs:
           elif [[ "${{ matrix.engine }}" == "spark" ]]; then
             printf "Using spark engine\n"
             echo "PROFILE=--profile spark" >> $GITHUB_ENV
-            echo "TAG=spellbook" >> $GITHUB_ENV
-            echo "EXCLUDE=$TAG," >> $GITHUB_ENV
-            echo "SINGLE_EXCLUDE=--exclude $EXCLUDE" >> $GITHUB_ENV
+            echo "TAG=tag:dunesql" >> $GITHUB_ENV
+            echo "EXCLUDE=tag:dunesql," >> $GITHUB_ENV
+            echo "SINGLE_EXCLUDE=--exclude tag:dunesql" >> $GITHUB_ENV
             echo 
           else
             echo "Unknown engine: ${{ matrix.engine }}"
