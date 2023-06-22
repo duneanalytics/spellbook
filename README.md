@@ -1,6 +1,6 @@
 # SPELLBOOK FREEZE
 
-From June 22 to June 29, we will be freezing some Sepllbook contributions for the migration to DuneSQL. We will not accept contributions to the lineage of the following models:
+From June 22 to June 29, we will be freezing some Spellbook contributions for the migration to DuneSQL. We will not accept contributions to the lineage of the following models:
 
 * dex.trades
 * nft.trades
