@@ -68,7 +68,7 @@ jobs:
         run: "dbt -x run $PROFILE --select state:modified,$TAG --exclude $EXCLUDE tag:prod_exclude --defer --state ."
 
       - name: dbt test initial model(s)
-        run: "dbt test $PROFILE --select state:new state:modified,$TAG --exclude $EXCLUDE tag:prod_exclude --defer --state ."
+        run: "dbt test $PROFILE --select state:new,$TAG state:modified,$TAG --exclude $EXCLUDE tag:prod_exclude --defer --state ."
 
       - name: Set environment variable for incremental model count
         run: |
