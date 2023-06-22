@@ -33,11 +33,13 @@ jobs:
             printf "Using dunesql engine\n"
             echo "PROFILE=--profile dunesql" >> $GITHUB_ENV
             echo "TAG=tag:dunesql" >> $GITHUB_ENV
+            echo "COMPILE_TAG=--select tag:dunesql" >> $GITHUB_ENV
           elif [[ "${{ matrix.engine }}" == "spark" ]]; then
             printf "Using spark engine\n"
             echo "PROFILE=--profile spark" >> $GITHUB_ENV
-            echo "EXCLUDE=tag:dunesql " >> $GITHUB_ENV
+            echo "EXCLUDE=tag:dunesql" >> $GITHUB_ENV
             echo "SINGLE_EXCLUDE=--exclude tag:dunesql" >> $GITHUB_ENV
+            echo "COMPILE_TAG=--exclude tag:dunesql" >> $GITHUB_ENV
             echo 
           else
             echo "Unknown engine: ${{ matrix.engine }}"
@@ -55,21 +57,16 @@ jobs:
         run: "dbt deps"
 
       - name: dbt compile to create manifest to compare to
-        if: matrix.engine == 'dunesql'
-        run: "dbt compile $PROFILE --select $TAG"
-
-      - name: dbt compile to create manifest to compare to
-        if: matrix.engine == 'spark'
-        run: "dbt compile $PROFILE $SINGLE_EXCLUDE"
+        run: "dbt compile $PROFILE $COMPILE_TAG"
 
       - name: dbt seed
         run: "dbt seed $PROFILE --select state:modified,$TAG --state ."
 
       - name: dbt run initial model(s)
-        run: "dbt -x run $PROFILE --select state:modified,$TAG --exclude $EXCLUDEtag:prod_exclude --defer --state ."
+        run: "dbt -x run $PROFILE --select state:modified,$TAG --exclude $EXCLUDE tag:prod_exclude --defer --state ."
 
       - name: dbt test initial model(s)
-        run: "dbt test $PROFILE --select state:new state:modified,$TAG --exclude $EXCLUDEtag:prod_exclude --defer --state ."
+        run: "dbt test $PROFILE --select state:new state:modified,$TAG --exclude $EXCLUDE tag:prod_exclude --defer --state ."
 
       - name: Set environment variable for incremental model count
         run: |
@@ -77,11 +74,11 @@ jobs:
 
       - name: dbt run incremental model(s) if applicable
         if: env.INC_MODEL_COUNT > 0
-        run: "dbt run $PROFILE --select state:modified,config.materialized:incremental,$TAG --exclude $EXCLUDEtag:prod_exclude --defer --state ."
+        run: "dbt run $PROFILE --select state:modified,config.materialized:incremental,$TAG --exclude $EXCLUDE tag:prod_exclude --defer --state ."
 
       - name: dbt test incremental model(s) if applicable
         if: env.INC_MODEL_COUNT > 0
-        run: "dbt test $PROFILE --select state:modified,config.materialized:incremental,$TAG --exclude $EXCLUDEtag:prod_exclude --defer --state ."
+        run: "dbt test $PROFILE --select state:modified,config.materialized:incremental,$TAG --exclude $EXCLUDE tag:prod_exclude --defer --state ."
 
       - name: Run DuneSQL Check
         run: "/runner/dunesql_check.py --schema test_schema --pr_schema git_$GIT_SHA"
