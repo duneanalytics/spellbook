@@ -83,4 +83,5 @@ jobs:
         run: "dbt test $PROFILE --select state:modified,config.materialized:incremental,$TAG --exclude $EXCLUDE tag:prod_exclude --defer --state ."
 
       - name: Run DuneSQL Check
+        if: matrix.engine == 'dunesql'
         run: "/runner/dunesql_check.py --schema test_schema --pr_schema git_$GIT_SHA"
