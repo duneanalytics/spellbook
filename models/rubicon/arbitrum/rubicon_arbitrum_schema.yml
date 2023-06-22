@@ -106,7 +106,7 @@ models:
         A table containing all offers of rubicon on arbitrum
     tests:
       - check_seed:
-          seed_file: ref('dex_offers_seed')
+          seed_file: ref('rubicon_arbitrum_offers_seed')
           match_columns:
             - block_date
             - blockchain
@@ -128,10 +128,8 @@ models:
             - buy_amount_usd
             - sold_amount_usd
             - bought_amount_usd
-            - gas_price
+            - effective_gas_price
             - gas_used
-            - l1_gas_price
-            - l1_gas_used
             - txn_cost_eth
             - eth_price 
             - txn_cost_usd
@@ -209,21 +207,12 @@ models:
       - &bought_amount_usd
         name: bought_amount_usd
         description: "the amount of the token that the offer has bought in USD (summed bassed on the price at the time of each trade (if any))"  
-      - &gas_price
-        name: gas_price
+      - &effective_gas_price
+        name: effective_gas_price
         description: "the gas price of the transaction that created the offer"
       - &gas_used
         name: gas_used
         description: "the gas used by the transaction that created the offer"
-      - &l1_gas_price
-        name: l1_gas_price
-        description: "the gas price of the transaction that created the offer on ethereum mainnet"
-      - &l1_gas_used
-        name: l1_gas_used
-        description: "the gas used by the transaction that created the offer on ethereum mainnet"
-      - &l1_fee_scalar
-        name: l1_fee
-        description: "the fee paid to ethereum mainnet"
       - &txn_cost_eth
         name: txn_cost_eth
         description: "the cost of the transaction in ETH"

@@ -39,7 +39,7 @@ WITH dexs AS
     FROM
         {{ source('rubicon_arbitrum', 'RubiconMarket_evt_emitTake') }} t
         
-    WHERE t.evt_block_time >= '{{project_start_date}}'
+    WHERE t.evt_block_time >= cast('{{ project_start_date }}' AS timestamp)
     {% if is_incremental() %}
     AND t.evt_block_time >= date_trunc('day', now() - interval '1 week')
     {% endif %}
@@ -80,7 +80,7 @@ INNER JOIN {{ source('arbitrum', 'transactions') }} tx
     ON tx.hash = dexs.tx_hash
     AND tx.block_number = dexs.evt_block_number
     {% if not is_incremental() %}
-    AND tx.block_time >= '{{project_start_date}}'
+    AND tx.block_time >= cast('{{ project_start_date }}' AS timestamp)
     {% endif %}
     {% if is_incremental() %}
     AND tx.block_time >= date_trunc('day', now() - interval '1' week)
@@ -96,7 +96,7 @@ LEFT JOIN {{ source('prices', 'usd') }} p_bought
     AND p_bought.contract_address = dexs.token_bought_address
     AND p_bought.blockchain = 'arbitrum'
     {% if not is_incremental() %}
-    AND p_bought.minute >= '{{project_start_date}}'
+    AND p_bought.minute >= cast('{{ project_start_date }}' AS timestamp)
     {% endif %}
     {% if is_incremental() %}
     AND p_bought.minute >= date_trunc('day', now() - interval '1 week')
@@ -106,7 +106,7 @@ LEFT JOIN {{ source('prices', 'usd') }} p_sold
     AND p_sold.contract_address = dexs.token_sold_address
     AND p_sold.blockchain = 'arbitrum'
     {% if not is_incremental() %}
-    AND p_sold.minute >= '{{project_start_date}}'
+    AND p_sold.minute >= cast('{{ project_start_date }}' AS timestamp)
     {% endif %}
     {% if is_incremental() %}
     AND p_sold.minute >= date_trunc('day', now() - interval '1 week')
