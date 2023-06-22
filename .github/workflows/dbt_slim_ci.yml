@@ -34,12 +34,14 @@ jobs:
             echo "PROFILE=--profile dunesql" >> $GITHUB_ENV
             echo "TAG=tag:dunesql" >> $GITHUB_ENV
             echo "COMPILE_TAG=--select tag:dunesql" >> $GITHUB_ENV
+            echo "S3_LOCATION=manifest-spellbook-dunesql" >> $GITHUB_ENV
           elif [[ "${{ matrix.engine }}" == "spark" ]]; then
             printf "Using spark engine\n"
             echo "PROFILE=--profile spark" >> $GITHUB_ENV
             echo "EXCLUDE=tag:dunesql" >> $GITHUB_ENV
             echo "SINGLE_EXCLUDE=--exclude tag:dunesql" >> $GITHUB_ENV
             echo "COMPILE_TAG=--exclude tag:dunesql" >> $GITHUB_ENV
+            echo "S3_LOCATION=manifest-spellbook" >> $GITHUB_ENV
             echo 
           else
             echo "Unknown engine: ${{ matrix.engine }}"
@@ -51,7 +53,7 @@ jobs:
         run: "/runner/change_schema.sh git_${{ matrix.engine }}_$GIT_SHA"
 
       - name: Get latest manifest
-        run: "aws s3 cp s3://manifest-spellbook/manifest.json manifest.json"
+        run: "aws s3 cp s3://$S3_LOCATION/manifest.json manifest.json"
 
       - name: dbt dependencies
         run: "dbt deps"
