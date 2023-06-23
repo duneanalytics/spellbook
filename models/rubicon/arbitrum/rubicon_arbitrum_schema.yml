@@ -121,7 +121,7 @@ models:
             - buy_token_address
             - token_pair
             - sell_amount
-            - buy_amount
+            #- buy_amount
             - sold_amount
             - bought_amount
             - sell_amount_usd
