@@ -2,7 +2,7 @@
     schema='lido_liquidity_arbitrum',
     alias = 'kyberswap_pools',
     partition_by = ['time'],
-    materialized = 'time',
+    materialized = 'table',
     file_format = 'delta',
     unique_key = ['pool', 'time'],
     post_hook='{{ expose_spells(\'["arbitrum"]\',
