@@ -197,8 +197,8 @@ select explode(sequence(to_date('{{ project_start_date }}'), now(), interval 1 d
 
 
 , all_metrics as (
-    select  
-        pool 
+    select day 
+        , pool 
         , 'arbitrum' as blockchain
         , 'curve' as project
         , 0.04 as fee
