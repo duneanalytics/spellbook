@@ -108,10 +108,10 @@ WITH
             LEFT JOIN {{ ref('balancer_v2_arbitrum_bpt_prices') }} bpt_prices
                 ON bpt_prices.contract_address = dexs.token_bought_address
                 AND bpt_prices.hour <= dexs.block_time
-                {% if not is_incremental () %}
+                {% if not is_incremental() %}
                 AND bpt_prices.hour >= '{{ project_start_date }}'
                 {% endif %}
-                {% if is_incremental () %}
+                {% if is_incremental() %}
                 AND bpt_prices.hour >= DATE_TRUNC("day", NOW() - interval '1 week')
                 {% endif %}
         GROUP BY 1, 2, 3, 4, 5
@@ -129,10 +129,10 @@ WITH
             LEFT JOIN {{ ref('balancer_v2_arbitrum_bpt_prices') }} bpt_prices
                 ON bpt_prices.contract_address = dexs.token_sold_address
                 AND bpt_prices.hour <= dexs.block_time
-                {% if not is_incremental () %}
+                {% if not is_incremental() %}
                 AND bpt_prices.hour >= '{{ project_start_date }}'
                 {% endif %}
-                {% if is_incremental () %}
+                {% if is_incremental() %}
                 AND bpt_prices.hour >= DATE_TRUNC("day", NOW() - interval '1 week')
                 {% endif %}
         GROUP BY 1, 2, 3, 4, 5
@@ -180,10 +180,10 @@ FROM
     dexs
     INNER JOIN {{ source ('arbitrum', 'transactions') }} tx
         ON tx.hash = dexs.tx_hash
-        {% if not is_incremental () %}
+        {% if not is_incremental() %}
         AND tx.block_time >= '{{ project_start_date }}'
         {% endif %}
-        {% if is_incremental () %}
+        {% if is_incremental() %}
         AND tx.block_time >= DATE_TRUNC("day", NOW() - interval '1 week')
         {% endif %}
     LEFT JOIN {{ ref ('tokens_erc20') }} erc20a
@@ -196,20 +196,20 @@ FROM
         ON p_bought.minute = DATE_TRUNC('minute', dexs.block_time)
         AND p_bought.contract_address = dexs.token_bought_address
         AND p_bought.blockchain = 'arbitrum'
-        {% if not is_incremental () %}
+        {% if not is_incremental() %}
         AND p_bought.minute >= '{{ project_start_date }}'
         {% endif %}
-        {% if is_incremental () %}
+        {% if is_incremental() %}
         AND p_bought.minute >= DATE_TRUNC("day", NOW() - interval '1 week')
         {% endif %}
     LEFT JOIN {{ source ('prices', 'usd') }} p_sold
         ON p_sold.minute = DATE_TRUNC('minute', dexs.block_time)
         AND p_sold.contract_address = dexs.token_sold_address
         AND p_sold.blockchain = 'arbitrum'
-        {% if not is_incremental () %}
+        {% if not is_incremental() %}
         AND p_sold.minute >= '{{ project_start_date }}'
         {% endif %}
-        {% if is_incremental () %}
+        {% if is_incremental() %}
         AND p_sold.minute >= DATE_TRUNC("day", NOW() - interval '1 week')
         {% endif %}
     INNER JOIN bpa
@@ -219,10 +219,10 @@ FROM
     LEFT JOIN {{ ref('balancer_v2_arbitrum_bpt_prices') }} bpa_bpt_prices
         ON bpa_bpt_prices.contract_address = bpa.contract_address
         AND bpa_bpt_prices.hour = bpa.bpa_max_block_time
-        {% if not is_incremental () %}
+        {% if not is_incremental() %}
         AND bpa_bpt_prices.hour >= '{{ project_start_date }}'
         {% endif %}
-        {% if is_incremental () %}
+        {% if is_incremental() %}
         AND bpa_bpt_prices.hour >= DATE_TRUNC("day", NOW() - interval '1 week')
         {% endif %}
     INNER JOIN bpb
@@ -232,9 +232,9 @@ FROM
     LEFT JOIN {{ ref('balancer_v2_arbitrum_bpt_prices') }} bpb_bpt_prices
         ON bpb_bpt_prices.contract_address = bpb.contract_address
         AND bpb_bpt_prices.hour = bpb.bpb_max_block_time
-        {% if not is_incremental () %}
+        {% if not is_incremental() %}
         AND bpa_bpt_prices.hour >= '{{ project_start_date }}'
         {% endif %}
-        {% if is_incremental () %}
+        {% if is_incremental() %}
         AND bpa_bpt_prices.hour >= DATE_TRUNC("day", NOW() - interval '1 week')
         {% endif %}
