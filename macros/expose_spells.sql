@@ -1,5 +1,5 @@
 {% macro expose_spells(blockchains, spell_type, spell_name, contributors) %}
-{%- if target.name == 'prod' or True-%}
+{%- if target.name == 'prod'-%}
         {%- if 'dunesql' not in model.config.get("tags") -%}
                 {# comment #}
                 ALTER {{"view" if model.config.materialized == "view" else "table"}} {{ this }}

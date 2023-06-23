@@ -1,5 +1,5 @@
 {% macro mark_as_spell(this, materialization) %}
-{%- if target.name == 'prod' or True-%}
+{%- if target.name == 'prod'-%}
         {%- if 'dunesql' not in model.config.get("tags") -%}
                 ALTER {{"view" if materialization == "view" else "table"}} {{ this }}
                 SET TBLPROPERTIES (
