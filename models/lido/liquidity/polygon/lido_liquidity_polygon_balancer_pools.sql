@@ -530,6 +530,6 @@ coalesce(trading_volume.trading_volume,0) as trading_volume
 )
 
 
-select CONCAT(CONCAT(CONCAT(CONCAT(CONCAT(blockchain,CONCAT(' ', project)) ,' '), coalesce(paired_token_symbol,'unknown')),':') , main_token_symbol, ' ', fee) as pool_name,* 
+select CONCAT(CONCAT(CONCAT(CONCAT(CONCAT(blockchain,CONCAT(' ', project)) ,' '), coalesce(paired_token_symbol,'unknown')),':') , main_token_symbol, , '(', cast(pool as varchar(45)), ')') as pool_name,* 
 from all_metrics
 where main_token_reserve > 1
