@@ -2,9 +2,8 @@
     schema='lido_liquidity_optimism',
     alias = 'balancer_pools',
     partition_by = ['time'],
-    materialized = 'incremental',
+    materialized = 'table',
     file_format = 'delta',
-    incremental_strategy = 'merge',
     unique_key = ['pool', 'time'],
     post_hook='{{ expose_spells(\'["optimism"]\',
                                 "project",
@@ -139,11 +138,7 @@ WHERE call_create.output_0 in (select distinct  SUBSTRING(pool_id, 0, 42) from p
         decimals,
         avg(price) AS price
     FROM {{ source('prices','usd')}}
-    {% if is_incremental() %}
-    WHERE date_trunc('day', minute) >= date_trunc("day", now() - interval '1 week') and date_trunc('day', minute) < date_trunc('day', now())
-    {% else %}
     WHERE date_trunc('day', minute) >= '{{ project_start_date }}' and date_trunc('day', minute) < date_trunc('day', now())
-    {% endif %}
     and blockchain = 'optimism'
     and contract_address in (select distinct token_address from tokens)
     group by 1,2,3,4
@@ -166,11 +161,7 @@ WHERE call_create.output_0 in (select distinct  SUBSTRING(pool_id, 0, 42) from p
         18,
         avg(price) AS price
     FROM {{ source('prices','usd')}}
-    {% if is_incremental() %}
-    WHERE date_trunc('day', minute) >= date_trunc("day", now() - interval '1 week') and date_trunc('day', minute) < date_trunc('day', now())
-    {% else %}
     WHERE date_trunc('day', minute) >= '{{ project_start_date }}' and date_trunc('day', minute) < date_trunc('day', now())
-    {% endif %}
     and blockchain = 'optimism'
     and contract_address = lower('0x7F5c764cBc14f9669B88837ca1490cCa17c31607')
     group by 1,2,3
@@ -193,11 +184,7 @@ SELECT distinct
         18,
         avg(price) AS price
     FROM {{ source('prices','usd')}}
-    {% if is_incremental() %}
-    WHERE date_trunc('day', minute) >= date_trunc("day", now() - interval '1 week') and date_trunc('day', minute) < date_trunc('day', now())
-    {% else %}
     WHERE date_trunc('day', minute) >= '{{ project_start_date }}' and date_trunc('day', minute) < date_trunc('day', now())
-    {% endif %}
     and blockchain = 'optimism'
     and contract_address = lower('0x68f180fcCe6836688e9084f035309E29Bf0A2095')
     group by 1,2,3
@@ -220,12 +207,7 @@ SELECT distinct
         18,
         avg(price) AS price
     FROM {{ source('prices','usd')}}
-    {% if is_incremental() %}
-    WHERE date_trunc('day', minute) >= date_trunc("day", now() - interval '1 week') and date_trunc('day', minute) < date_trunc('day', now())
-    {% else %}
     WHERE date_trunc('day', minute) >= '{{ project_start_date }}' and date_trunc('day', minute) < date_trunc('day', now())
-    {% endif %}
-    
     and blockchain = 'optimism'
     and contract_address = lower('0x1F32b1c2345538c0c6f582fCB022739c4A194Ebb')
     group by 1,2,3
@@ -250,11 +232,8 @@ union all
         DATE_TRUNC('hour', minute) time,
         last_value(price) over (partition by DATE_TRUNC('hour', minute), contract_address ORDER BY  minute range between unbounded preceding AND unbounded following) AS price
     FROM {{ source('prices','usd')}}
-     {% if is_incremental() %}
-    WHERE date_trunc('day', minute) >= date_trunc("day", now() - interval '1 week') 
-    {% else %}
     WHERE date_trunc('day', minute) >= '{{ project_start_date }}' 
-    {% endif %}and blockchain = 'optimism'
+    and blockchain = 'optimism'
     and contract_address = lower('0x1F32b1c2345538c0c6f582fCB022739c4A194Ebb')
 ))
 
@@ -273,11 +252,7 @@ union all
                     tokenIn AS token,
                     amountIn AS delta
                 FROM {{source('balancer_v2_optimism','Vault_evt_Swap')}}
-                {% if is_incremental() %}
-                WHERE date_trunc('day', evt_block_time) >= date_trunc("day", now() - interval '1 week') 
-                {% else %}
                 WHERE date_trunc('day', evt_block_time) >= '{{ project_start_date }}'
-                {% endif %} 
                 and poolId in (select pool_id from pools)
                 UNION
                 ALL
@@ -287,11 +262,7 @@ union all
                     tokenOut AS token,
                     -amountOut AS delta
                 FROM {{source('balancer_v2_optimism','Vault_evt_Swap')}}
-                {% if is_incremental() %}
-                WHERE date_trunc('day', evt_block_time) >= date_trunc("day", now() - interval '1 week') 
-                {% else %}
                 WHERE date_trunc('day', evt_block_time) >= '{{ project_start_date }}'
-                {% endif %} 
                 and poolId in (select pool_id from pools)
             ) swaps
         GROUP BY 1, 2, 3
@@ -302,11 +273,7 @@ union all
             poolId AS pool_id,
             explode(arrays_zip(tokens, deltas, protocolFeeAmounts)) AS zipped
         FROM {{source('balancer_v2_optimism','Vault_evt_PoolBalanceChanged')}}
-        {% if is_incremental() %}
-        WHERE date_trunc('day', evt_block_time) >= date_trunc("day", now() - interval '1 week') 
-        {% else %}
         WHERE date_trunc('day', evt_block_time) >= '{{ project_start_date }}'
-        {% endif %} 
         and poolId in (select pool_id from pools)
 )
 
@@ -327,11 +294,7 @@ union all
             token,
             cashDelta + managedDelta AS delta
         FROM {{source('balancer_v2_optimism','Vault_evt_PoolBalanceManaged')}}
-        {% if is_incremental() %}
-        WHERE date_trunc('day', evt_block_time) >= date_trunc("day", now() - interval '1 week') 
-        {% else %}
         WHERE date_trunc('day', evt_block_time) >= '{{ project_start_date }}'
-        {% endif %} 
         and poolId in (select pool_id from pools)
 )
 
@@ -393,7 +356,7 @@ union all
             0 as row_numb
         FROM pool_per_date c
         LEFT JOIN cumulative_balance b ON b.day <= c.day AND c.day < b.day_of_next_change and c.pool_id = b.pool_id
-        LEFT JOIN prices.tokens t ON t.contract_address = b.token AND blockchain = "optimism"
+        LEFT JOIN {{source('prices','tokens')}} t ON t.contract_address = b.token AND blockchain = "optimism"
         LEFT JOIN tokens_prices_daily p1 ON p1.time = b.day AND p1.token = b.token
         WHERE b.token = lower('0x1F32b1c2345538c0c6f582fCB022739c4A194Ebb')
         union all
@@ -408,7 +371,7 @@ union all
             row_number() OVER(PARTITION BY c.day,c.pool_id ORDER BY  c.day,c.pool_id, b.token) as row_numb
         FROM pool_per_date c
         LEFT JOIN cumulative_balance b ON b.day <= c.day AND c.day < b.day_of_next_change and c.pool_id = b.pool_id
-        LEFT JOIN prices.tokens t ON t.contract_address = b.token AND blockchain = "optimism"
+        LEFT JOIN {{source('prices','tokens')}} t ON t.contract_address = b.token AND blockchain = "optimism"
         LEFT JOIN tokens_prices_daily p1 ON p1.time = b.day AND p1.token = b.token
         WHERE b.token != lower('0x1F32b1c2345538c0c6f582fCB022739c4A194Ebb') and b.token != SUBSTRING(b.pool_id, 0, 42)
 )

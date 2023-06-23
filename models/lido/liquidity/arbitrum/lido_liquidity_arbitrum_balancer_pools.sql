@@ -2,9 +2,8 @@
     schema='lido_liquidity_arbitrum',
     alias = 'balancer_pools',
     partition_by = ['time'],
-    materialized = 'incremental',
+    materialized = 'table',
     file_format = 'delta',
-    incremental_strategy = 'merge',
     unique_key = ['pool', 'time'],
     post_hook='{{ expose_spells(\'["arbitrum"]\',
                                 "project",
@@ -16,7 +15,7 @@
 {% set project_start_date = '2022-09-17' %} 
 
 with dates AS (
-        SELECT explode(sequence(to_date('2022-09-17'), CURRENT_DATE, interval 1 day)) AS day
+        SELECT explode(sequence(to_date('{{ project_start_date }}'), now(), interval 1 day)) AS day
     )
  
 
@@ -144,11 +143,7 @@ WHERE call_create.output_0 in (select distinct  SUBSTRING(pool_id, 0, 42) from p
         decimals,
         avg(price) AS price
     FROM {{source('prices','usd')}}
-    {% if is_incremental() %}
-    WHERE date_trunc('day', minute) >= date_trunc("day", now() - interval '1 week') and date_trunc('day', minute) < date_trunc('day', now())
-    {% else %}
     WHERE date_trunc('day', minute) >= '{{ project_start_date }}' and date_trunc('day', minute) < date_trunc('day', now())
-    {% endif %}
     and blockchain = 'arbitrum'
     and contract_address in (select distinct token_address from tokens)
     group by 1,2,3,4
@@ -172,11 +167,7 @@ WHERE call_create.output_0 in (select distinct  SUBSTRING(pool_id, 0, 42) from p
         DATE_TRUNC('hour', minute) time,
         last_value(price) over (partition by DATE_TRUNC('hour', minute), contract_address ORDER BY  minute range between unbounded preceding AND unbounded following) AS price
     FROM {{source('prices','usd')}}
-    {% if is_incremental() %}
-    WHERE date_trunc('day', minute) >= date_trunc("day", now() - interval '1 week') 
-    {% else %}
     WHERE date_trunc('day', minute) >= '{{ project_start_date }}' 
-    {% endif %}
     and blockchain = 'arbitrum'
     and contract_address = lower('0x5979d7b546e38e414f7e9822514be443a4800529')
 ))
@@ -196,11 +187,7 @@ WHERE call_create.output_0 in (select distinct  SUBSTRING(pool_id, 0, 42) from p
                     tokenIn AS token,
                     amountIn AS delta
                 FROM {{source('balancer_v2_arbitrum','Vault_evt_Swap')}}
-                {% if is_incremental() %}
-                WHERE date_trunc('day', evt_block_time) >= date_trunc("day", now() - interval '1 week') 
-                {% else %}
                 WHERE date_trunc('day', evt_block_time) >= '{{ project_start_date }}'
-                {% endif %} 
                 and poolId in (select pool_id from pools)
                 UNION
                 ALL
@@ -210,11 +197,7 @@ WHERE call_create.output_0 in (select distinct  SUBSTRING(pool_id, 0, 42) from p
                     tokenOut AS token,
                     -amountOut AS delta
                 FROM {{source('balancer_v2_arbitrum','Vault_evt_Swap')}}
-                {% if is_incremental() %}
-                WHERE date_trunc('day', evt_block_time) >= date_trunc("day", now() - interval '1 week') 
-                {% else %}
                 WHERE date_trunc('day', evt_block_time) >= '{{ project_start_date }}'
-                {% endif %} 
                 and poolId in (select pool_id from pools)
             ) swaps
         GROUP BY 1, 2, 3
@@ -226,11 +209,7 @@ WHERE call_create.output_0 in (select distinct  SUBSTRING(pool_id, 0, 42) from p
             poolId AS pool_id,
             explode(arrays_zip(tokens, deltas, protocolFeeAmounts)) AS zipped
         FROM {{source('balancer_v2_arbitrum','Vault_evt_PoolBalanceChanged')}}
-        {% if is_incremental() %}
-        WHERE date_trunc('day', evt_block_time) >= date_trunc("day", now() - interval '1 week') 
-        {% else %}
         WHERE date_trunc('day', evt_block_time) >= '{{ project_start_date }}'
-        {% endif %} 
         and poolId in (select pool_id from pools)
 )
 
@@ -251,11 +230,7 @@ WHERE call_create.output_0 in (select distinct  SUBSTRING(pool_id, 0, 42) from p
             token,
             cashDelta + managedDelta AS delta
         FROM {{source('balancer_v2_arbitrum','Vault_evt_PoolBalanceManaged')}}
-        {% if is_incremental() %}
-        WHERE date_trunc('day', evt_block_time) >= date_trunc("day", now() - interval '1 week') 
-        {% else %}
         WHERE date_trunc('day', evt_block_time) >= '{{ project_start_date }}'
-        {% endif %} 
         and poolId in (select pool_id from pools)
 )
 
@@ -319,7 +294,7 @@ WHERE call_create.output_0 in (select distinct  SUBSTRING(pool_id, 0, 42) from p
             0 as row_numb
         FROM  pool_per_date  c
         LEFT JOIN cumulative_balance b ON c.pool_id = b.pool_id and  b.day <= c.day AND c.day < b.day_of_next_change
-        LEFT JOIN prices.tokens t ON t.contract_address = b.token AND blockchain = "arbitrum"
+        LEFT JOIN {{source('prices','tokens')}} t ON t.contract_address = b.token AND blockchain = "arbitrum"
         LEFT JOIN tokens_prices_daily p1 ON p1.time = b.day AND p1.token = b.token
         WHERE b.token = '0x5979d7b546e38e414f7e9822514be443a4800529'
         union all
@@ -334,7 +309,7 @@ WHERE call_create.output_0 in (select distinct  SUBSTRING(pool_id, 0, 42) from p
             row_number() OVER(PARTITION BY c.day, c.pool_id ORDER BY  c.day, c.pool_id, b.token) as row_numb
         FROM  pool_per_date  c
         LEFT JOIN cumulative_balance b ON c.pool_id = b.pool_id and b.day <= c.day AND c.day < b.day_of_next_change
-        LEFT JOIN prices.tokens t ON t.contract_address = (case when b.token = lower('0xda1cd1711743e57dd57102e9e61b75f3587703da') then lower('0x82aF49447D8a07e3bd95BD0d56f35241523fBab1') else b.token end) AND blockchain = "arbitrum"
+        LEFT JOIN {{source('prices','tokens')}} t ON t.contract_address = (case when b.token = lower('0xda1cd1711743e57dd57102e9e61b75f3587703da') then lower('0x82aF49447D8a07e3bd95BD0d56f35241523fBab1') else b.token end) AND blockchain = "arbitrum"
         LEFT JOIN tokens_prices_daily p1 ON p1.time = b.day AND p1.token = (case when b.token = lower('0xda1cd1711743e57dd57102e9e61b75f3587703da') then lower('0x82aF49447D8a07e3bd95BD0d56f35241523fBab1') else b.token end)
         WHERE b.token != '0x5979d7b546e38e414f7e9822514be443a4800529' and b.token !=SUBSTRING(b.pool_id, 0, 42)
 )
@@ -411,11 +386,7 @@ on main.day = paired4.day and main.pool_id = paired4.pool_id
              else p.price*amountIn/1e18 end) as trading_volume
     from {{source('balancer_v2_arbitrum','Vault_evt_Swap')}} s
     left join wsteth_prices_hourly p on date_trunc('hour', s.evt_block_time) >= p.time and date_trunc('hour', s.evt_block_time) < p.next_time
-    {% if is_incremental() %}
-    WHERE date_trunc('day', s.evt_block_time) >= date_trunc("day", now() - interval '1 week') 
-    {% else %}
     WHERE date_trunc('day', s.evt_block_time) >= '{{ project_start_date }}'
-    {% endif %} 
     and s.poolId in (select pool_id from pools)
     group by 1,2
 ) 

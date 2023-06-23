@@ -2,9 +2,8 @@
     schema='lido_liquidity_polygon', 
     alias = 'balancer_pools', 
     partition_by = ['time'],
-    materialized = 'incremental',
+    materialized = 'table',
     file_format = 'delta',
-    incremental_strategy = 'merge',
     unique_key = ['pool', 'time'],
     post_hook='{{ expose_spells(\'["polygon"]\', 
                                 "project",
@@ -151,11 +150,7 @@ WHERE call_create.output_0 in (select distinct  SUBSTRING(pool_id, 0, 42) from p
         decimals,
         avg(price) AS price
     FROM {{source ('prices','usd')}}
-    {% if is_incremental() %}
-    WHERE date_trunc('day', minute) >= date_trunc("day", now() - interval '1 week') and date_trunc('day', minute) < date_trunc('day', now())
-    {% else %}
     WHERE date_trunc('day', minute) >= '{{ project_start_date }}' and date_trunc('day', minute) < date_trunc('day', now())
-    {% endif %}
     and blockchain = 'polygon'
     and contract_address in (select distinct token_address from tokens)
     group by 1,2,3,4
@@ -178,11 +173,7 @@ SELECT distinct
         18,
         avg(price) AS price
     FROM {{source ('prices','usd')}}
-    {% if is_incremental() %}
-    WHERE date_trunc('day', minute) >= date_trunc("day", now() - interval '1 week') and date_trunc('day', minute) < date_trunc('day', now())
-    {% else %}
     WHERE date_trunc('day', minute) >= '{{ project_start_date }}' and date_trunc('day', minute) < date_trunc('day', now())
-    {% endif %}
     and blockchain = 'polygon'
     and contract_address = lower('0x7ceb23fd6bc0add59e62ac25578270cff1b9f619')
     group by 1,2,3
@@ -206,11 +197,7 @@ union all
         DATE_TRUNC('hour', minute) time,
         last_value(price) over (partition by DATE_TRUNC('hour', minute), contract_address ORDER BY  minute range between unbounded preceding AND unbounded following) AS price
     FROM {{source ('prices','usd')}}
-    {% if is_incremental() %}
-    WHERE date_trunc('day', minute) >= date_trunc("day", now() - interval '1 week') 
-    {% else %}
     WHERE date_trunc('day', minute) >= '{{ project_start_date }}' 
-    {% endif %}
     and blockchain = 'polygon'
     and contract_address = lower('0x03b54A6e9a984069379fae1a4fC4dBAE93B3bCCD')
 ))
@@ -224,11 +211,7 @@ union all
         DATE_TRUNC('hour', minute) time
         , last_value(price) over (partition by DATE_TRUNC('hour', minute), contract_address ORDER BY  minute range between unbounded preceding AND unbounded following) AS price
     FROM {{source ('prices','usd')}}
-    {% if is_incremental() %}
-    WHERE date_trunc('day', minute) >= date_trunc("day", now() - interval '1 week') 
-    {% else %}
     WHERE date_trunc('day', minute) >= '{{ project_start_date }}' 
-    {% endif %}
     and blockchain = 'polygon'
     and contract_address = lower('0x7ceb23fd6bc0add59e62ac25578270cff1b9f619')
 ))
@@ -243,11 +226,7 @@ union all
         lower('0x43894DE14462B421372bCFe445fA51b1b4A0Ff3D') as token,
         last_value(price) over (partition by DATE_TRUNC('hour', minute), contract_address ORDER BY  minute range between unbounded preceding AND unbounded following) AS price
     FROM {{source ('prices','usd')}}
-    {% if is_incremental() %}
-    WHERE date_trunc('day', minute) >= date_trunc("day", now() - interval '1 week') 
-    {% else %}
     WHERE date_trunc('day', minute) >= '{{ project_start_date }}' 
-    {% endif %}
     and blockchain = 'polygon'
     and contract_address = lower('0x7ceb23fd6bc0add59e62ac25578270cff1b9f619')
     
@@ -267,7 +246,8 @@ union all
                     tokenIn AS token,
                     amountIn AS delta
                 FROM {{source ('balancer_v2_polygon','Vault_evt_Swap')}}
-                where poolId in (select pool_id from pools)
+                WHERE date_trunc('day', evt_block_time) >= '{{ project_start_date }}' 
+                and poolId in (select pool_id from pools)
                 UNION
                 ALL
                 SELECT
@@ -276,7 +256,8 @@ union all
                     tokenOut AS token,
                     -amountOut AS delta
                 FROM {{source ('balancer_v2_polygon','Vault_evt_Swap')}}
-                where poolId in (select pool_id from pools)
+                WHERE date_trunc('day', evt_block_time) >= '{{ project_start_date }}' 
+                and poolId in (select pool_id from pools)
             ) swaps on d.day = swaps.day
         GROUP BY 1, 2, 3
     )
@@ -287,7 +268,8 @@ union all
             poolId AS pool_id,
             explode(arrays_zip(tokens, deltas, protocolFeeAmounts)) AS zipped
         FROM {{source ('balancer_v2_polygon','Vault_evt_PoolBalanceChanged')}}
-        where poolId in (select pool_id from pools)
+        WHERE date_trunc('day', evt_block_time) >= '{{ project_start_date }}' 
+        and poolId in (select pool_id from pools)
 )
 
  , balances_changes AS (
@@ -307,7 +289,8 @@ union all
             token,
             cashDelta + managedDelta AS delta
         FROM {{source ('balancer_v2_polygon','Vault_evt_PoolBalanceManaged')}}
-        where poolId in (select pool_id from pools)
+        WHERE date_trunc('day', evt_block_time) >= '{{ project_start_date }}' 
+        and poolId in (select pool_id from pools)
 )
 
 , daily_delta_balance AS (
@@ -367,9 +350,9 @@ union all
             cumulative_amount / POWER(10, COALESCE(t.decimals, p1.decimals)) AS token_balance,
             cumulative_amount / POWER(10, COALESCE(t.decimals, p1.decimals)) * COALESCE(p1.price, 0) AS amount_usd, 
             0 as row_numb
-        FROM   pool_per_date c --dates c
+        FROM   pool_per_date c 
         LEFT JOIN cumulative_balance b ON b.day <= c.day AND c.day < b.day_of_next_change and c.pool_id = b.pool_id
-        LEFT JOIN prices.tokens t ON t.contract_address = b.token AND blockchain = "polygon"
+        LEFT JOIN {{source('prices','tokens')}} t ON t.contract_address = b.token AND blockchain = "polygon"
         LEFT JOIN tokens_prices_daily p1 ON p1.time = b.day AND p1.token = b.token
         WHERE  b.token = lower('0x03b54a6e9a984069379fae1a4fc4dbae93b3bccd')
         union all
@@ -382,9 +365,9 @@ union all
             cumulative_amount / POWER(10, COALESCE(t.decimals, p1.decimals)) AS token_balance,
             cumulative_amount / POWER(10, COALESCE(t.decimals, p1.decimals)) * COALESCE(p1.price, 0) AS amount_usd, 
             row_number() OVER(PARTITION BY c.day,c.pool_id ORDER BY  c.day,c.pool_id, b.token) as row_numb
-        FROM   pool_per_date c --dates c
+        FROM   pool_per_date c 
         LEFT JOIN cumulative_balance b ON b.day <= c.day AND c.day < b.day_of_next_change and c.pool_id = b.pool_id
-        LEFT JOIN prices.tokens t ON t.contract_address = b.token AND blockchain = "polygon"
+        LEFT JOIN {{source('prices','tokens')}} t ON t.contract_address = b.token AND blockchain = "polygon"
         LEFT JOIN tokens_prices_daily p1 ON p1.time = b.day AND p1.token = b.token
         WHERE b.token != SUBSTRING(b.pool_id, 0, 42) and b.token != lower('0x03b54a6e9a984069379fae1a4fc4dbae93b3bccd')
 
@@ -518,9 +501,10 @@ order by 1 desc
              else p.price*amountIn/1e18 end) as trading_volume
     from balancer_v2_polygon.Vault_evt_Swap s
     left join wsteth_prices_hourly p on date_trunc('hour', s.evt_block_time) >= p.time and date_trunc('hour', s.evt_block_time) < p.next_time
-    where s.poolId in (select pool_id from pools)
+    WHERE date_trunc('day', evt_block_time) >= '{{ project_start_date }}' 
+    and s.poolId in (select pool_id from pools)
     group by 1,2
-    --ORDER by 1 DESC
+    
 ) 
 
 , all_metrics as (
@@ -546,6 +530,6 @@ coalesce(trading_volume.trading_volume,0) as trading_volume
 )
 
 
-select CONCAT(CONCAT(CONCAT(CONCAT(CONCAT(blockchain,CONCAT(' ', project)) ,' '), coalesce(paired_token_symbol,'unknown')),':') , main_token_symbol) as pool_name,* 
+select CONCAT(CONCAT(CONCAT(CONCAT(CONCAT(blockchain,CONCAT(' ', project)) ,' '), coalesce(paired_token_symbol,'unknown')),':') , main_token_symbol, ' ', fee) as pool_name,* 
 from all_metrics
 where main_token_reserve > 1
