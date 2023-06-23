@@ -1,7 +1,7 @@
 {{ config(
     schema='lido_liquidity_arbitrum',
     alias = 'curve_pools',
-    partition_by = ['day'],
+    partition_by = ['time'],
     materialized = 'table',
     file_format = 'delta',
     unique_key = ['pool', 'time'],
@@ -197,8 +197,8 @@ select explode(sequence(to_date('{{ project_start_date }}'), now(), interval 1 d
 
 
 , all_metrics as (
-    select day 
-        , pool 
+    select 
+         pool 
         , 'arbitrum' as blockchain
         , 'curve' as project
         , 0.04 as fee
