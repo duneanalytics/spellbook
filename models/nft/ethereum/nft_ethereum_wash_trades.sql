@@ -55,6 +55,7 @@ WITH filter_1 AS (
         AND filter_bought_3x.token_id=nftt.token_id
         AND filter_bought_3x.buyer=nftt.buyer
         AND filter_bought_3x.token_standard IN ('erc721', 'erc20')
+        AND '0x29469395eaf6f95920e59f858042f0e28d98a20b' NOT IN (nftt.buyer, nftt.seller)
         {% if is_incremental() %}
         AND filter_bought_3x.block_time >= date_trunc("day", NOW() - interval '1 week')
         {% endif %}
@@ -78,6 +79,7 @@ WITH filter_1 AS (
         AND filter_sold_3x.token_id=nftt.token_id
         AND filter_sold_3x.seller=nftt.seller
         AND filter_sold_3x.token_standard IN ('erc721', 'erc20')
+        AND '0x29469395eaf6f95920e59f858042f0e28d98a20b' NOT IN (nftt.buyer, nftt.seller)
         {% if is_incremental() %}
         AND filter_sold_3x.block_time >= date_trunc("day", NOW() - interval '1 week')
         {% endif %}
