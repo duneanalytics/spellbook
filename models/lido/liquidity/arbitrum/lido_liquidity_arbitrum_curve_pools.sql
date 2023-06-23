@@ -15,7 +15,7 @@
 
 {% set project_start_date = '2022-10-06' %}
 
-with dates as (
+with dates as  (
 {% if not is_incremental() %}
 select explode(sequence(to_date('{{ project_start_date }}'), now(), interval 1 day)) as day
 {% else %}
