@@ -183,7 +183,7 @@ FROM
         {% if not is_incremental() %}
         AND tx.block_time >= '{{ project_start_date }}'
         {% endif %}
-        {% if is_incremental() %}
+        {% if is_incremental () %}
         AND tx.block_time >= DATE_TRUNC("day", NOW() - interval '1 week')
         {% endif %}
     LEFT JOIN {{ ref ('tokens_erc20') }} erc20a
@@ -199,7 +199,7 @@ FROM
         {% if not is_incremental() %}
         AND p_bought.minute >= '{{ project_start_date }}'
         {% endif %}
-        {% if is_incremental() %}
+        {% if is_incremental () %}
         AND p_bought.minute >= DATE_TRUNC("day", NOW() - interval '1 week')
         {% endif %}
     LEFT JOIN {{ source ('prices', 'usd') }} p_sold
@@ -209,7 +209,7 @@ FROM
         {% if not is_incremental() %}
         AND p_sold.minute >= '{{ project_start_date }}'
         {% endif %}
-        {% if is_incremental() %}
+        {% if is_incremental () %}
         AND p_sold.minute >= DATE_TRUNC("day", NOW() - interval '1 week')
         {% endif %}
     INNER JOIN bpa
@@ -222,7 +222,7 @@ FROM
         {% if not is_incremental() %}
         AND bpa_bpt_prices.hour >= '{{ project_start_date }}'
         {% endif %}
-        {% if is_incremental() %}
+        {% if is_incremental () %}
         AND bpa_bpt_prices.hour >= DATE_TRUNC("day", NOW() - interval '1 week')
         {% endif %}
     INNER JOIN bpb
@@ -235,6 +235,6 @@ FROM
         {% if not is_incremental() %}
         AND bpa_bpt_prices.hour >= '{{ project_start_date }}'
         {% endif %}
-        {% if is_incremental() %}
+        {% if is_incremental () %}
         AND bpa_bpt_prices.hour >= DATE_TRUNC("day", NOW() - interval '1 week')
         {% endif %}
