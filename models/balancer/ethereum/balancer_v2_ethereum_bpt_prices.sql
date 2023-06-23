@@ -45,13 +45,11 @@ WITH
             AND  p1.minute = date_trunc('minute', a.evt_block_time)
             {% if is_incremental() %}
             AND p1.minute >= date_trunc('day', now() - interval '1 week')
-            AND  p2.minute = date_trunc('minute', a.evt_block_time)
             {% endif %} 
         LEFT JOIN {{ source ('prices', 'usd') }} p2 ON p2.contract_address = a.tokenOut AND p2.blockchain = 'ethereum'
             AND  p2.minute = date_trunc('minute', a.evt_block_time)
             {% if is_incremental() %}
             AND p2.minute >= date_trunc('day', now() - interval '1 week')
-            AND  p2.minute = date_trunc('minute', a.evt_block_time)
             {% endif %} 
         LEFT JOIN {{ ref ('tokens_erc20') }} t1 ON t1.contract_address = a.tokenIn AND t1.blockchain = 'ethereum'
         LEFT JOIN {{ ref ('tokens_erc20') }} t2 ON t2.contract_address = a.tokenOut AND t2.blockchain = 'ethereum'
