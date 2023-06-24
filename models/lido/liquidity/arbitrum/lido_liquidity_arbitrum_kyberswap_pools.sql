@@ -25,12 +25,6 @@ where token0 = lower('0x5979D7b546E38E414F7E9822514be443A4800529') or token1 = l
 
 )
 
-, pool_per_date as ( 
-select dates.day, pools.*
-from dates
-left join pools on 1=1
-)
-
 , tokens_mapping as (
 select lower(address_l1) as address_l1, lower(address_l2) as address_l2 from
   (values 
@@ -69,8 +63,8 @@ left join tokens_mapping tm on t.token = tm.address_l2
         DATE_TRUNC('day', minute) AS time,
         tokens_mapping.address_l2 as token,
         avg(price) AS price
-    FROM {{ source('prices', 'usd') }}
-    left join tokens_mapping on prices.usd.contract_address = tokens_mapping.address_l1
+    FROM {{ source('prices', 'usd') }} p
+    left join tokens_mapping on p.contract_address = tokens_mapping.address_l1
     WHERE date_trunc('day', minute) >= '{{ project_start_date }}' and date_trunc('day', minute) < date_trunc('day', now())
     and blockchain = 'ethereum'
     and contract_address in (select address_l1 from tokens)
@@ -80,27 +74,29 @@ left join tokens_mapping tm on t.token = tm.address_l2
         DATE_TRUNC('day', minute), 
         tokens_mapping.address_l2 as token,
         last_value(price) over (partition by DATE_TRUNC('day', minute), contract_address ORDER BY  minute range between unbounded preceding AND unbounded following) AS price
-    FROM {{ source('prices', 'usd') }}
-    left join tokens_mapping on prices.usd.contract_address = tokens_mapping.address_l1
+    FROM {{ source('prices', 'usd') }} p
+    left join tokens_mapping on p.contract_address = tokens_mapping.address_l1
     WHERE date_trunc('day', minute) = date_trunc('day', now())
     and blockchain = 'ethereum'
     and contract_address in (select address_l1 from tokens)
 )
 
-
 , tokens_prices_hourly AS (
     select time, lead(time,1, DATE_TRUNC('hour', now() + interval '1 hour')) over (partition by token order by time) as next_time, token, price
     from (
     SELECT distinct
-        DATE_TRUNC('hour', minute) time, 
-        contract_address as token,
-        last_value(price) over (partition by DATE_TRUNC('hour', minute), contract_address ORDER BY  minute range between unbounded preceding AND unbounded following) AS price
-    FROM {{ source('prices', 'usd') }}
-    WHERE date_trunc('hour', minute) >= '{{ project_start_date }}' 
+        DATE_TRUNC('hour', minute) as time, 
+        tokens_mapping.address_l2 as token,
+        last_value(price) over (partition by DATE_TRUNC('day', minute), contract_address ORDER BY  minute range between unbounded preceding AND unbounded following) AS price
+    FROM {{ source('prices', 'usd') }} p
+    left join tokens_mapping on p.contract_address = tokens_mapping.address_l1
+    WHERE date_trunc('hour', minute) >= '{{ project_start_date }}'
     and blockchain = 'ethereum'
-    and contract_address in (select address from tokens)   
+    and contract_address in (select address_l1 from tokens)
+    
 ) p
 )
+
 
 , swap_events as (
     select 
@@ -182,10 +178,9 @@ left join tokens_mapping tm on t.token = tm.address_l2
 )
   
 , pool_liquidity as (
-    select c.day as time, c.address as pool, token0, token1, sum(amount0) over(partition by pool order by time) as amount0, 
+    select time, pool, token0, token1, sum(amount0) over(partition by pool order by time) as amount0, 
     sum(amount1)  over(partition by pool order by time) as amount1
-    from pool_per_date  c
-    LEFT JOIN daily_delta_balance b ON c.address = b.pool and  b.time <= c.day AND c.day < b.next_time
+    from daily_delta_balance b 
 
 )
 

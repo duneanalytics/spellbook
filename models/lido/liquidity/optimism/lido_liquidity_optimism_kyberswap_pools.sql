@@ -60,8 +60,8 @@ left join tokens_mapping tm on t.token = tm.address_l2
         DATE_TRUNC('day', minute) AS time,
         tokens_mapping.address_l2 as token,
         avg(price) AS price
-    FROM {{ source('prices', 'usd') }}
-    left join tokens_mapping on prices.usd.contract_address = tokens_mapping.address_l1
+    FROM {{ source('prices', 'usd') }} p
+    left join tokens_mapping on p.contract_address = tokens_mapping.address_l1
     WHERE date_trunc('day', minute) >= '{{ project_start_date }}' and date_trunc('day', minute) < date_trunc('day', now())
     and blockchain = 'ethereum'
     and contract_address in (select address_l1 from tokens)
@@ -71,8 +71,8 @@ left join tokens_mapping tm on t.token = tm.address_l2
         DATE_TRUNC('day', minute),
         tokens_mapping.address_l2 as token,
         last_value(price) over (partition by DATE_TRUNC('day', minute), contract_address ORDER BY  minute range between unbounded preceding AND unbounded following) AS price
-    FROM {{ source('prices', 'usd') }}
-    left join tokens_mapping on prices.usd.contract_address = tokens_mapping.address_l1
+    FROM {{ source('prices', 'usd') }} p
+    left join tokens_mapping on p.contract_address = tokens_mapping.address_l1
     WHERE date_trunc('day', minute) = date_trunc('day', now())
     and blockchain = 'ethereum'
     and contract_address in (select address_l1 from tokens)
@@ -85,8 +85,8 @@ left join tokens_mapping tm on t.token = tm.address_l2
         DATE_TRUNC('hour', minute) time,
         tokens_mapping.address_l2 as token,
         last_value(price) over (partition by DATE_TRUNC('hour', minute), contract_address ORDER BY  minute range between unbounded preceding AND unbounded following) AS price
-    FROM {{ source('prices', 'usd') }}
-    left join tokens_mapping on prices.usd.contract_address = tokens_mapping.address_l1
+    FROM {{ source('prices', 'usd') }} p
+    left join tokens_mapping on p.contract_address = tokens_mapping.address_l1
     WHERE date_trunc('hour', minute) >= '{{ project_start_date }}'
     and blockchain = 'ethereum'
     and contract_address in (select address_l1 from tokens)) p
@@ -226,3 +226,4 @@ left join trading_volume tv on l.time = tv.time and l.pool = tv.pool
 
 select CONCAT(CONCAT(CONCAT(CONCAT(CONCAT(blockchain,CONCAT(' ', project)) ,' '), coalesce(paired_token_symbol, 'unknown')),':') , main_token_symbol, ' ', fee) as pool_name,*
 from all_metrics
+where main_token_reserve > 1
