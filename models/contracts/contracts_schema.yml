@@ -40,7 +40,8 @@ models:
       - &contract_project
         name: contract_project
         description: "Project name of the contract"
-      - name: token_symbol
+      - &token_symbol
+        name: token_symbol
         description: "Token symbol of the contract, if any"
       - &contract_name
         name: contract_name
@@ -51,9 +52,11 @@ models:
       - &created_time
         name: created_time
         description: "contract creation time"
-      - name: contract_creator_if_factory
+      - &contract_creator_if_factory
+        name: contract_creator_if_factory
         description: "Contract creator address if it is a factory contract"
-      - name: is_self_destruct
+      - &is_self_destruct
+        name: is_self_destruct
         description: "Flag if it is a self destruct contract"
       - &creation_tx_hash
         name: creation_tx_hash
