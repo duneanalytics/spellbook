@@ -28,6 +28,8 @@ models:
       tags: ['evms', 'contracts', 'addresses']
     description: "Mapping of contracts to its creators and names across chains."
     columns:
+      - &blockchain
+        name: blockchain
       - &trace_creator_address
         name: trace_creator_address
         description: "Address creating the contract in the transaction trace"
@@ -124,6 +126,9 @@ models:
           - unique
           - not_null
       - *contract_project
+      - &excluded_chains
+        name: excluded_chains
+        description: Chains to exclude for this mapping
 
 
   - name: contracts_contract_overrides
@@ -149,6 +154,7 @@ models:
       tags: ['evms', 'contracts', 'addresses']
     description: "A list of contracts that are self-destruct, with the time that they were most recently self-destructed."
     columns:
+      - *blockchain
       - *created_time
       - *creation_tx_hash
       - *contract_address
@@ -194,6 +200,7 @@ models:
       tags: ['evms','contracts','predeploy','system']
     description: "Mapping of predeploy contracts to its creators and names."
     columns:
+      - *blockchain
       - *trace_creator_address
       - *contract_address
       - *contract_project

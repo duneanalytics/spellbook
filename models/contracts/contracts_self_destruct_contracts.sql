@@ -30,11 +30,11 @@ with creates as (
 )
 
 SELECT
-created_time, creation_tx_hash, contract_address, trace_element
+blockchain, created_time, creation_tx_hash, contract_address, trace_element
 FROM (
 
   SELECT
-  created_time, creation_tx_hash, contract_address, trace_element
+  blockchain, created_time, creation_tx_hash, contract_address, trace_element
       , ROW_NUMBER() OVER (PARTITION BY contract_address ORDER BY created_time DESC) as rn
   FROM (
     --self destruct method 1: same tx
@@ -55,13 +55,14 @@ FROM (
       and sd.block_time >= date_trunc('day', now() - interval '1 week')
       and cr.contract_address NOT IN (SELECT contract_address FROM {{this}} ) --ensure no duplicates
       {% endif %}
-    group by 1, 2, 3, 4
+    group by 1, 2, 3, 4, 5
 
     UNION ALL
 
     --self destruct method 2: later tx
     select
-      cr.created_time 
+      cr.blockchain
+      ,cr.created_time 
       ,cr.creation_tx_hash 
       ,cr.contract_address 
       ,cr.trace_element
