@@ -1,13 +1,13 @@
 version: 2
 
 models:
-  - name: contracts_optimism_project_name_mappings
+  - name: contracts_project_name_mappings
     meta:
-      blockchain: optimism
+      blockchain: ethereum, polygon, bnb, avalanche_c, gnosis, fantom, optimism, arbitrum, goerli
       sector: contracts
       contributors: chuxin, msilb7
     config:
-      tags: ['optimism', 'contracts', 'addresses']
+      tags: ['evms', 'contracts', 'addresses']
     description: "A list of contract name mapping from Dune name to cleaned name."
     columns:
       - name: dune_name
@@ -19,14 +19,14 @@ models:
         description: "Mapped contract name"
 
 
-  - name: contracts_optimism_contract_mapping
+  - name: contracts_contract_mapping
     meta:
-      blockchain: optimism
+      blockchain: ethereum, polygon, bnb, avalanche_c, gnosis, fantom, optimism, arbitrum, goerli
       sector: contracts
       contributors: chuxin, msilb7
     config:
-      tags: ['optimism', 'contracts', 'addresses']
-    description: "Mapping of contracts to its creators and names on Optimism. {{ doc('optimism_contract_mapping') }}"
+      tags: ['evms', 'contracts', 'addresses']
+    description: "Mapping of contracts to its creators and names across chains. {{ doc('contract_mapping') }}"
     columns:
       - &trace_creator_address
         name: trace_creator_address
@@ -60,13 +60,13 @@ models:
         description: "Contract creation transaction hash"
 
 
-  - name: contracts_optimism_contract_creator_address_list
+  - name: contracts_contract_creator_address_list
     meta:
-      blockchain: optimism
+      blockchain: ethereum, polygon, bnb, avalanche_c, gnosis, fantom, optimism, arbitrum, goerli
       sector: contracts
       contributors: chuxin, msilb7
     config:
-      tags: ['optimism', 'contracts', 'addresses']
+      tags: ['evms', 'contracts', 'addresses']
     description: "A list of contract creator addresses and corresponding names."
     columns:
       - name: creator_address
@@ -77,13 +77,13 @@ models:
       - *contract_project
 
 
-  - name: contracts_optimism_contract_overrides
+  - name: contracts_contract_overrides
     meta:
-      blockchain: optimism
+      blockchain: ethereum, polygon, bnb, avalanche_c, gnosis, fantom, optimism, arbitrum, goerli
       sector: contracts
       contributors: chuxin, msilb7
     config:
-      tags: ['optimism', 'contracts', 'addresses']
+      tags: ['evms', 'contracts', 'addresses']
     description: "A list of contracts where we know their mapping, but their creator is not deterministic and the contracts are not verified."
     columns:
       - *contract_address
@@ -91,13 +91,13 @@ models:
       - *contract_name
 
 
-  - name: contracts_optimism_self_destruct_contracts
+  - name: contracts_self_destruct_contracts
     meta:
-      blockchain: optimism
+      blockchain: ethereum, polygon, bnb, avalanche_c, gnosis, fantom, optimism, arbitrum, goerli
       sector: contracts
       contributors: chuxin, msilb7
     config:
-      tags: ['optimism', 'contracts', 'addresses']
+      tags: ['evms', 'contracts', 'addresses']
     description: "A list of contracts that are self-destruct, with the time that they were most recently self-destructed."
     columns:
       - *created_time
@@ -106,26 +106,26 @@ models:
       - name: trace_element
         description: "First item in the `trace_address` array"
     
-  - name: contracts_optimism_deterministic_contract_creators
+  - name: contracts_deterministic_contract_creators
     meta:
-      blockchain: optimism
+      blockchain: ethereum, polygon, bnb, avalanche_c, gnosis, fantom, optimism, arbitrum, goerli
       sector: contracts
       contributors: chuxin, msilb7
     config:
-      tags: ['optimism', 'contracts', 'addresses']
+      tags: ['evms', 'contracts', 'addresses']
     description: "A list of contract creator addresses that are non-deterministic (i.e. standard factories), and should not be used for contract mapping."
     columns:
       - *creator_address
       - name: creator_name
         description: "Name of the creator, indicating why we shouldn't use it for mapping."
   
-  - name: contracts_optimism_disperse_contracts
+  - name: contracts_disperse_contracts
     meta:
-      blockchain: optimism
+      blockchain: ethereum, polygon, bnb, avalanche_c, gnosis, fantom, optimism, arbitrum, goerli
       sector: contracts
       contributors: msilb7
     config:
-      tags: ['optimism','op','contracts','disperse']
+      tags: ['evms','contracts','disperse']
     description: >
         A table containing mappings for disperse contract wallets that we want to map distributions with
     tests:
@@ -136,13 +136,13 @@ models:
       - *contract_address
       - *contract_name
   
-  - name: contracts_optimism_system_predeploys
+  - name: contracts_system_predeploys
     meta:
-      blockchain: optimism
+      blockchain: ethereum, polygon, bnb, avalanche_c, gnosis, fantom, optimism, arbitrum, goerli
       sector: contracts
       contributors: msilb7
     config:
-      tags: ['optimism','op','contracts','predeploy','system']
+      tags: ['evms','contracts','predeploy','system']
     description: >
         A table containing mappings for predeploy system contracts
     tests:
