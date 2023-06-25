@@ -17,6 +17,9 @@ models:
           - not_null
       - name: mapped_name
         description: "Mapped contract name"
+      - &excluded_chains
+        name: excluded_chains
+        description: Chains to exclude for this mapping
 
 
   - name: contracts_contract_mapping
@@ -126,9 +129,7 @@ models:
           - unique
           - not_null
       - *contract_project
-      - &excluded_chains
-        name: excluded_chains
-        description: Chains to exclude for this mapping
+      - *excluded_chains
 
 
   - name: contracts_contract_overrides
