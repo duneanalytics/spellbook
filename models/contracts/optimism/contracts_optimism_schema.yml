@@ -127,6 +127,9 @@ models:
       - *contract_creator_if_factory
       - *is_self_destruct
       - *creation_tx_hash
+      - &source
+        name: source
+        description: "Where the Predeploy contract was sourced from"
 
   - name: contracts_optimism_contract_creator_address_list
     meta:

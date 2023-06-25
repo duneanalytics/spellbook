@@ -8,7 +8,21 @@
   )
 }}
 
-with contracts AS (
+{% set cols = [
+     "trace_creator_address"
+    ,"contract_project"
+    ,"token_symbol"
+    ,"contract_name"
+    ,"creator_address"
+    ,"created_time"
+    ,"created_block_number"
+    ,"contract_factory"
+    ,"is_self_destruct"
+    ,"creation_tx_hash"
+    ,"source"
+] %}
+
+with get_contracts AS (
 SELECT *, ROW_NUMBER() OVER (PARTITION BY contract_address ORDER BY pref_rnk ASC) AS c_rank
 FROM (
   -- other predeploys
@@ -84,23 +98,7 @@ FROM (
     group by 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11
   ) a
 )
-,get_contracts as (
-  select 
-    c.trace_creator_address
-    ,c.contract_address
-    ,c.contract_factory
-    ,c.contract_project
-    ,t.symbol as token_symbol
-    ,c.contract_name
-    ,c.creator_address
-    ,c.created_time 
-    ,c.is_self_destruct
-    ,c.creation_tx_hash
-  from combine as c 
-  left join tokens as t 
-    on c.contract_address = t.contract_address
-  group by 1, 2, 3, 4, 5, 6, 7, 8, 9, 10
-)
+
 ,cleanup as (
 --grab the first non-null value for each, i.e. if we have the contract via both contract mapping and optimism.contracts
   select
