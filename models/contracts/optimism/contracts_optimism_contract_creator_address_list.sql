@@ -521,6 +521,7 @@ WITH curated_list AS (
       ,('0xB8cEF765721A6da910f14Be93e7684e9a3714123', 'Allo Protocol') --Gitcoin Grants Stack
       ,('0x123694886DBf5Ac94DDA07135349534536D14cAf', 'Threshold Network')
       ,('0x1a5309f208f161a393e8b5a253de8ab894a67188', 'Bond Protocol')
+      ,('0x07537D4360aF2489FC1Ca086EA9741c054d804de', 'Velodrome')
 
   ) as temp_table (creator_address, contract_project)
 
