@@ -2,7 +2,7 @@
   config(
     alias='project_name_mappings',
     unique_key='dune_name',
-    post_hook='{{ expose_spells(\'["optimism"]\',
+    post_hook='{{ expose_spells(\'["ethereum", "polygon", "bnb", "avalanche_c", "gnosis", "fantom", "optimism", "arbitrum","goerli"]\',
                               "sector",
                               "contracts",
                               \'["msilb7", "chuxin"]\') }}'

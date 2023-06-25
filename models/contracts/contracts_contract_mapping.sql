@@ -5,7 +5,7 @@
         file_format ='delta',
         incremental_strategy='merge',
         unique_key='contract_address',
-        post_hook='{{ expose_spells(\'["optimism"]\',
+        post_hook='{{ expose_spells(\'["ethereum", "polygon", "bnb", "avalanche_c", "gnosis", "fantom", "optimism", "arbitrum","goerli"]\',
                                     "sector",
                                     "contracts",
                                     \'["msilb7", "chuxin"]\') }}'

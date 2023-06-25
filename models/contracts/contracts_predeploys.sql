@@ -1,7 +1,22 @@
+ {{
+  config(
+        alias='predeploys',
+        post_hook='{{ expose_spells(\'["ethereum", "polygon", "bnb", "avalanche_c", "gnosis", "fantom", "optimism", "arbitrum","goerli"]\',
+                                    "sector",
+                                    "contracts",
+                                    \'["msilb7", "chuxin"]\') }}'
+  )
+}}
 
+{% set pre_models = [
+    ('optimism', ref('contracts_optimism_predeploys'))
+] %}
 
-SELECT
-    AS blockchain
+SELECT * FROM
+    (
+    {% for predep in pre_models %}
+    SELECT
+    '{{ pre_models[0] }}' AS blockchain
     ,trace_creator_address
     ,contract_address
     ,contract_project
@@ -12,3 +27,11 @@ SELECT
     ,contract_creator_if_factory
     ,is_self_destruct
     ,creation_tx_hash
+    FROM {{ pre_models[1] }}
+    {% if not loop.last %}
+    {% if is_incremental() %}
+    {% endif %}
+    UNION ALL
+    {% endif %}
+    {% endfor %}
+    ) a

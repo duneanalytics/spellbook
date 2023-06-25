@@ -2,7 +2,7 @@
   config(
     alias='contract_creator_address_list',
     unique_key='creator_address',
-    post_hook='{{ expose_spells(\'["optimism"]\',
+    post_hook='{{ expose_spells(\'["ethereum", "polygon", "bnb", "avalanche_c", "gnosis", "fantom", "optimism", "arbitrum","goerli"]\',
                               "sector",
                               "contracts",
                               \'["msilb7", "chuxin"]\') }}'
