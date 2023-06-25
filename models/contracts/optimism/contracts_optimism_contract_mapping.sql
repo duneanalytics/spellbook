@@ -121,7 +121,7 @@ SELECT *
       ,t.created_time
       ,t.created_block_number
       ,t.creation_tx_hash
-      -- If the creator becomes marked as non-deterministic, we want to re-map
+      -- If the creator becomes marked as deterministic, we want to re-map
       ,CASE WHEN nd.creator_address IS NOT NULL THEN t.created_time
         ELSE t.top_level_time END AS top_level_time
 
@@ -160,8 +160,8 @@ SELECT *
       AND t.creation_tx_hash = ct.tx_hash
       AND sd.contract_address IS NULL
 
-    -- If the creator becomes marked as non-deterministic, we want to re-run it.
-    left join {{ref('contracts_optimism_nondeterministic_contract_creators')}} as nd 
+    -- If the creator becomes marked as deterministic, we want to re-run it.
+    left join {{ref('contracts_optimism_deterministic_contract_creators')}} as nd 
       ON nd.creator_address = t.creator_address
 
     -- Don't pull contracts that are in the incremental group (prevent dupes)
@@ -207,7 +207,7 @@ WHERE contract_order = 1
       ,b.trace_creator_address -- get the original contract creator address
       ,
       case when nd.creator_address IS NOT NULL
-        THEN b.created_tx_from --when non-deterministic creator, we take the tx sender
+        THEN b.created_tx_from --when deterministic creator, we take the tx sender
         ELSE coalesce(u.creator_address, b.creator_address)
       END as creator_address -- get the highest-level creator we know of
       {% if loop.first -%}
@@ -227,7 +227,7 @@ WHERE contract_order = 1
       ,b.created_tx_method_id
       ,b.created_tx_index
 
-      -- when non-deterministic, pull the tx-level data
+      -- when deterministic, pull the tx-level data
       ,case when nd.creator_address IS NOT NULL
         then b.top_level_time ELSE COALESCE(u.top_level_time, b.top_level_time ) END AS top_level_time
       ,case when nd.creator_address IS NOT NULL
@@ -256,8 +256,8 @@ WHERE contract_order = 1
     left join base_level as u --get info about the contract that created this contract
       on b.creator_address = u.contract_address
     {% endif %}
-    -- is the creator non-deterministic?
-    left join {{ref('contracts_optimism_nondeterministic_contract_creators')}} as nd 
+    -- is the creator deterministic?
+    left join {{ref('contracts_optimism_deterministic_contract_creators')}} as nd 
       ON nd.creator_address = b.creator_address
 )
 {%- endfor %}
