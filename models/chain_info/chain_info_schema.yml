@@ -46,7 +46,7 @@ models:
     config:
       tags: ['chains','cross-chain']
     description: >
-        Table mapping chain IDs to names. Compatible/joinable with `prices` project.
+        Table mapping chain IDs to names. Compatible/joinable with `prices` tables, and used for filtering chain types.
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -55,4 +55,8 @@ models:
       - &dune_name
         name: dune_name
         description: "Name of the blockchain used on Dune (prices table)"
+      - &chain_name
+        name: chain_name
       - *chain_id
+      - &chain_type
+        name: chain_type 
