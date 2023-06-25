@@ -541,7 +541,7 @@ SELECT
       WHERE ml.creator_address NOT IN (SELECT creator_address FROM curated_list)
     ) f
 WHERE f.creator_address NOT IN (
-   SELECT creator_address FROM {{ ref('contracts_optimism_nondeterministic_contract_creators') }}
+   SELECT creator_address FROM {{ ref('contracts_optimism_deterministic_contract_creators') }}
 )
 
 GROUP BY 1,2
