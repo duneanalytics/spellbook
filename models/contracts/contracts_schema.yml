@@ -26,7 +26,7 @@ models:
       contributors: chuxin, msilb7
     config:
       tags: ['evms', 'contracts', 'addresses']
-    description: "Mapping of contracts to its creators and names across chains. {{ doc('contract_mapping') }}"
+    description: "Mapping of contracts to its creators and names across chains."
     columns:
       - &trace_creator_address
         name: trace_creator_address
