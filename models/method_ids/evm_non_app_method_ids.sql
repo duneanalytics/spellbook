@@ -45,6 +45,7 @@ SELECT 'optimism' AS blockchains, method_id, method_descriptor
         ,('0x32b7006d','Bridge Out (L2 to L1)') --'Bridge Out (L2 to L1)'
         ,('0xbede39b5','OVM Gas Price Oracle'), ('0xbf1fe420','OVM Gas Price Oracle') --'OVM Gas Price Oracle'
         ,('0x015d8eb9','Set L1 Block Values') -- Set L1 Block Values System Transaction (Bedrock and later)
+        ,('0x015d8eb9','System Transaction')
         ) a (method_id, method_descriptor)
 
 UNION ALL --Arbitrum-Specific Methods
