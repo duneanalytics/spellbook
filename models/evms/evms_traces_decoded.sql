@@ -1,7 +1,7 @@
 {{ config(
         alias ='traces_decoded',
         unique_key=['blockchain', 'tx_hash', 'evt_index'],
-        post_hook='{{ expose_spells(\'["ethereum", "polygon", "bnb", "avalanche_c", "gnosis", "fantom", "optimism", "arbitrum"]\',
+        post_hook='{{ expose_spells(\'["ethereum", "polygon", "bnb", "avalanche_c", "gnosis", "fantom", "optimism", "arbitrum", "goerli"]\',
                                     "sector",
                                     "evms",
                                     \'["hildobby"]\') }}'
@@ -17,6 +17,7 @@
      , ('fantom', source('fantom', 'traces_decoded'))
      , ('optimism', source('optimism', 'traces_decoded'))
      , ('arbitrum', source('arbitrum', 'traces_decoded'))
+     , ('goerli', source('goerli', 'traces_decoded'))
 ] %}
 
 SELECT *

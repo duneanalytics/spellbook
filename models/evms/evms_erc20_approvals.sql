@@ -1,7 +1,7 @@
 {{ config(
         alias ='erc20_approvals',
         unique_key=['blockchain', 'tx_hash', 'evt_index'],
-        post_hook='{{ expose_spells(\'["ethereum", "polygon", "bnb", "avalanche_c", "gnosis", "fantom", "optimism", "arbitrum"]\',
+        post_hook='{{ expose_spells(\'["ethereum", "polygon", "bnb", "avalanche_c", "gnosis", "fantom", "optimism", "arbitrum", "goerli"]\',
                                     "sector",
                                     "evms",
                                     \'["hildobby"]\') }}'
@@ -17,6 +17,7 @@
      , ('fantom', source('erc20_fantom', 'evt_approval'))
      , ('optimism', source('erc20_optimism', 'evt_Approval'))
      , ('arbitrum', source('erc20_arbitrum', 'evt_approval'))
+     , ('goerli', source('erc20_goerli', 'evt_approval'))
 ] %}
 
 SELECT *

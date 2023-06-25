@@ -1,7 +1,7 @@
 {{ config(
         alias ='blocks',
         unique_key=['blockchain', 'number'],
-        post_hook='{{ expose_spells(\'["ethereum", "polygon", "bnb", "avalanche_c", "gnosis", "fantom", "optimism", "arbitrum"]\',
+        post_hook='{{ expose_spells(\'["ethereum", "polygon", "bnb", "avalanche_c", "gnosis", "fantom", "optimism", "arbitrum", "goerli"]\',
                                     "sector",
                                     "evms",
                                     \'["hildobby"]\') }}'
@@ -17,6 +17,7 @@
      , ('fantom', source('fantom', 'blocks'))
      , ('optimism', source('optimism', 'blocks'))
      , ('arbitrum', source('arbitrum', 'blocks'))
+     , ('goerli', source('goerli', 'blocks'))
 ] %}
 
 SELECT *
