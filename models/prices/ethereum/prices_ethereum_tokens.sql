@@ -1330,7 +1330,7 @@ FROM
     ('geth-goerli-eth', 'ethereum', 'GETH', '0xdD69DB25F6D620A7baD3023c5d32761D353D3De9', 18),
     ('bytes-bytes', 'ethereum', 'BYTES', '0x7d647b1A0dcD5525e9C6B3D14BE58f27674f8c95', 18),
     ('dc-dogechain-token', 'ethereum', 'DC', '0x7B4328c127B85369D9f82ca0503B000D09CF9180', 18),
-    ('luna-wrapped-luna-token', 'ethereum', 'LUNA', '0xd2877702675e6cEb975b4A1dFf9fb7BAF4C91ea9', 18),
+    ('luna-terra', 'ethereum', 'LUNC', '0xd2877702675e6cEb975b4A1dFf9fb7BAF4C91ea9', 18),
     ('sov-shiboriginalvision', 'ethereum', 'SOV', '0x2C5BC2Ba3614fD27FCc7022eA71d9172E2632c16', 18),
     ('texan-texan', 'ethereum', 'TEXAN', '0xcFCFfE432A48dB53F59c301422d2EdD77B2A88d7', 18),
     ('eggs-eggs', 'ethereum', 'EGGS', '0x2e516BA5Bf3b7eE47fb99B09eaDb60BDE80a82e0', 18),
