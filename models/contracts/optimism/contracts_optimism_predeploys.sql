@@ -7,11 +7,7 @@
                                     \'["msilb7", "chuxin"]\') }}'
   )
 }}
-        -- this is a static table
-        -- materialized ='incremental',
-        -- file_format ='delta',
-        -- incremental_strategy='merge',
-        -- unique_key='contract_address',
+
 with contracts AS (
 SELECT *, ROW_NUMBER() OVER (PARTITION BY contract_address ORDER BY pref_rnk ASC) AS c_rank
 FROM (

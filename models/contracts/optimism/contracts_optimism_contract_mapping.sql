@@ -210,7 +210,7 @@ with base_level as (
       from {{ this }} as gc
       where 
         gc.contract_address = pre.contract_address
-        and gc.contract_project LIKE pre.contract_project || '%' --future proof in case this name changes
+        and lower(gc.contract_project) LIKE lower(pre.contract_project) || '%' --future proof in case this name changes
     )
     {% endif %}
 
