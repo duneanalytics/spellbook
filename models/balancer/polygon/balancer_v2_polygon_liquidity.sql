@@ -59,6 +59,7 @@ WITH pool_labels AS (
             contract_address AS token,
             percentile(median_price, 0.5) AS bpt_price
         FROM {{ ref('balancer_bpt_prices') }}
+        GROUP BY 1, 2
     ),
 
     swaps_changes AS (
