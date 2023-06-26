@@ -525,7 +525,6 @@ WITH curated_list AS (
       ,('0x8fa9aa69a6e94c1cd49fbf214c833b2911d02553', 'Cian Protocol')
 
   ) as temp_table (creator_address, contract_project)
-
 )
 
 , mapped_list AS (
@@ -544,7 +543,7 @@ SELECT
       WHERE ml.creator_address NOT IN (SELECT creator_address FROM curated_list)
     ) f
 WHERE f.creator_address NOT IN (
-   SELECT creator_address FROM {{ ref('contracts_optimism_nondeterministic_contract_creators') }}
+   SELECT creator_address FROM {{ ref('contracts_optimism_deterministic_contract_creators') }}
 )
 
 GROUP BY 1,2
