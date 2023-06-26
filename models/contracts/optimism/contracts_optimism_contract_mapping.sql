@@ -12,7 +12,7 @@
   )
 }}
 
--- set max number of levels to trace root contract
+-- set max number of levels to trace root contract, eventually figure out how to make this properly recursive
 {% set max_levels = 5 %}
 -- set column names to loop through
 {% set cols = [
@@ -40,6 +40,7 @@
     ,"token_standard"
     ,"code_deploy_rank"
 ] %}
+    
 
 with base_level as (
 SELECT *

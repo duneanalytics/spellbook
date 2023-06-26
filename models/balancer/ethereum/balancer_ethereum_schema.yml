@@ -394,7 +394,7 @@ models:
     meta:
       blockchain: ethereum
       sector: dex
-      contributors: bizzyvinci
+      contributors: bizzyvinci, thetroyharris
     config:
       tags: [ 'balancer', 'ethereum', 'amm', 'trades', 'dex' ]
     description: >
@@ -414,29 +414,31 @@ models:
           project: balancer
           version: 2
     columns:
-      - *blockchain
-      - *project
-      - *version
-      - *block_date
-      - *block_time
-      - *token_bought_symbol
-      - *token_sold_symbol
-      - *token_pair
-      - *token_bought_amount
-      - *token_sold_amount
-      - *token_bought_amount_raw
-      - *token_sold_amount_raw
-      - *amount_usd
-      - *token_bought_address
-      - *token_sold_address
-      - *taker
-      - *maker
-      - *project_contract_address
-      - *tx_hash
-      - *tx_from
-      - *tx_to
-      - *trace_address
-      - *evt_index
+      - name: blockchain
+      - name: project
+      - name: version
+      - name: block_date
+      - name: block_time
+      - name: token_bought_symbol
+      - name: token_sold_symbol
+      - name: token_pair
+      - name: token_bought_amount
+      - name: token_sold_amount
+      - name: token_bought_amount_raw
+      - name: token_sold_amount_raw
+      - name: amount_usd
+      - name: token_bought_address
+      - name: token_sold_address
+      - name: taker
+      - name: maker
+      - name: project_contract_address
+      - name: pool_id
+      - name: swap_fee
+      - name: tx_hash
+      - name: tx_from
+      - name: tx_to
+      - name: trace_address
+      - name: evt_index
 
   - name: balancer_v2_ethereum_liquidity
     meta:
