@@ -523,6 +523,7 @@ WITH curated_list AS (
       ,('0x1a5309f208f161a393e8b5a253de8ab894a67188', 'Bond Protocol')
       ,('0x07537D4360aF2489FC1Ca086EA9741c054d804de', 'Velodrome')
       ,('0x8fa9aa69a6e94c1cd49fbf214c833b2911d02553', 'Cian Protocol')
+      ,('0xD56d253d6ad8C2164Eb35B2D7D8b951fe8380027', 'Merkly')
 
   ) as temp_table (creator_address, contract_project)
 )
