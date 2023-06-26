@@ -1,6 +1,7 @@
 {{
     config(
         materialized='incremental',
+        schema='safe_celo',
         alias='safes',
         partition_by = ['block_date'],
         unique_key = ['block_date', 'address'],
