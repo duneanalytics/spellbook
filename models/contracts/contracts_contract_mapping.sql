@@ -183,14 +183,33 @@ SELECT *
 WHERE contract_order = 1
 )
 
+--evms_tokens is temporary until every chain's token table includes all tokens, rather than curated only
+, evms_tokens AS (
+    SELECT blockchain, contract_address, MIN_BY(standard,rnk) AS standard
+      FROM (
+      SELECT blockchain, contract_address, 'erc20' as standard, 1 as rnk FROM {{ ref('evms_erc20_transfers') }} GROUP BY 1,2,3
+      UNION ALL
+      SELECT blockchain, contract_address, 'erc1155' as standard, 2 as rnk FROM {{ ref('evms_erc1155_transfersbatch') }} GROUP BY 1,2,3
+      UNION ALL
+      SELECT blockchain, contract_address, 'erc1155' as standard, 3 as rnk FROM {{ ref('evms_erc1155_transferssingle') }} GROUP BY 1,2,3
+      UNION ALL
+      SELECT blockchain, contract_address, 'erc721' as standard, 4 as rnk FROM {{ ref('evms_erc721_transfers') }} GROUP BY 1,2,3
+      ) a
+    GROUP BY 1,2
+)
+
 ,tokens as (
   select 
-    ,bl.blockchain
+     bl.blockchain
     ,bl.contract_address
     ,t.symbol
     ,'erc20' as token_standard
   from base_level as bl 
-  join {{ ref('tokens_erc20') }} as t
+  join evms_tokens AS et 
+    on bl.contract_address = et.contract_address
+    AND bl.blockchain = et.blockchain
+    AND standard = 'erc20'
+  left join {{ ref('tokens_erc20') }} as t
     on bl.contract_address = t.contract_address
     AND bl.blockchain = t.blockchain
   group by 1, 2, 3
@@ -198,12 +217,16 @@ WHERE contract_order = 1
   union all 
 
   select 
-    ,bl.blockchain
+     bl.blockchain
     ,bl.contract_address
     ,t.name as symbol
-    , standard AS token_standard
+    ,standard AS token_standard
   from base_level as bl 
-  join {{ ref('tokens_nft') }} as t
+  join evms_tokens AS et 
+    on bl.contract_address = et.contract_address
+    AND bl.blockchain = et.blockchain
+    AND standard IN ('erc721', 'erc1155')
+  left join {{ ref('tokens_nft') }} as t
     on bl.contract_address = t.contract_address
     AND bl.blockchain = t.blockchain
   group by 1, 2, 3
