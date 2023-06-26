@@ -131,6 +131,7 @@ select
   ,c.contract_factory as contract_creator_if_factory
   ,coalesce(c.is_self_destruct, false) as is_self_destruct
   ,c.creation_tx_hash
+  ,c.source
 from cleanup as c 
 
 left join {{ source('ovm1_optimism', 'contracts') }} as ovm1c
