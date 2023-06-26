@@ -9,14 +9,14 @@
 }}
 
 {% set pre_models = [
-    ('optimism', ref('contracts_optimism_predeploys'))
+    ( 'optimism', ref('contracts_optimism_predeploys') )
 ] %}
 
 SELECT * FROM
     (
-    {% for predep in pre_models %}
+    {% for pre in pre_models %}
     SELECT
-    '{{ pre_models[0] }}' AS blockchain
+    '{{ pre[0] }}' AS blockchain
     ,trace_creator_address
     ,contract_address
     ,contract_project
@@ -27,7 +27,7 @@ SELECT * FROM
     ,contract_creator_if_factory
     ,is_self_destruct
     ,creation_tx_hash
-    FROM {{ pre_models[1] }}
+    FROM {{ pre[1] }}
     {% if not loop.last %}
     {% if is_incremental() %}
     {% endif %}
