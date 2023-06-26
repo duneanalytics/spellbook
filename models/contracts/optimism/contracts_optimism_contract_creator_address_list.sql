@@ -520,9 +520,8 @@ WITH curated_list AS (
       ,('0x3B52ad533687Ce908bA0485ac177C5fb42972962', 'Manifold')
       ,('0xB8cEF765721A6da910f14Be93e7684e9a3714123', 'Allo Protocol') --Gitcoin Grants Stack
       ,('0x123694886DBf5Ac94DDA07135349534536D14cAf', 'Threshold Network')
-
+      
   ) as temp_table (creator_address, contract_project)
-
 )
 
 , mapped_list AS (
@@ -541,7 +540,7 @@ SELECT
       WHERE ml.creator_address NOT IN (SELECT creator_address FROM curated_list)
     ) f
 WHERE f.creator_address NOT IN (
-   SELECT creator_address FROM {{ ref('contracts_optimism_nondeterministic_contract_creators') }}
+   SELECT creator_address FROM {{ ref('contracts_optimism_deterministic_contract_creators') }}
 )
 
 GROUP BY 1,2
