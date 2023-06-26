@@ -56,7 +56,7 @@ WITH pool_labels AS (
     bpt_prices AS(
         SELECT 
             date_trunc('day', HOUR) AS DAY,
-            CAST(contract_address as varbinary) AS token,
+            contract_address AS token,
             percentile(median_price, 0.5) AS bpt_price
         FROM {{ ref('balancer_bpt_prices') }}
     ),
@@ -186,7 +186,7 @@ zipped_balance_changes AS (
         LEFT JOIN dex_prices p2 ON p2.day <= c.day
         AND c.day < p2.day_of_next_change
         AND p2.token = b.token
-        LEFT jOIN bpt_prices p3 ON p3.day = b.day AND p3.token = b.token
+        LEFT jOIN bpt_prices p3 ON p3.day = b.day AND p3.token = CAST(b.token as varchar)
         WHERE b.token != SUBSTRING(b.pool_id, 0, 42)
     ),
 
