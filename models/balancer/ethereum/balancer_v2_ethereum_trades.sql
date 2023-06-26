@@ -20,9 +20,6 @@ WITH
         SELECT *, 
             MAX(index) OVER(PARTITION BY tx_hash, contract_address) AS max_index_same_tx 
         FROM {{ ref('balancer_v2_ethereum_pools_fees') }} 
-        {% if is_incremental() %}
-        WHERE block_time >= DATE_TRUNC("day", NOW() - interval '1 week')
-        {% endif %}
     ),
     most_case_fees AS (
         SELECT * FROM fees_base 
@@ -37,9 +34,6 @@ WITH
         FROM {{ source ('balancer_v2_ethereum', 'Vault_evt_Swap') }} s
             INNER JOIN fees_base f 
                 ON s.evt_tx_hash = f.tx_hash AND f.index < s.evt_index
-        {% if is_incremental() %}
-        WHERE s.evt_block_time >= DATE_TRUNC("day", NOW() - interval '1 week')
-        {% endif %}
     ),
     swap_fees AS (
         SELECT
@@ -56,7 +50,6 @@ WITH
                 AND fees.block_time <= swap.evt_block_time
         {% if is_incremental() %}
         WHERE swap.evt_block_time >= DATE_TRUNC("day", NOW() - interval '1 week')
-            AND fees.block_time >= DATE_TRUNC("day", NOW() - interval '1 week')
         {% endif %}
         GROUP BY 1, 2, 3, 4, 5
     ),
@@ -183,7 +176,7 @@ FROM
         {% if not is_incremental() %}
         AND tx.block_time >= '{{ project_start_date }}'
         {% endif %}
-        {% if is_incremental () %}
+        {% if is_incremental() %}
         AND tx.block_time >= DATE_TRUNC("day", NOW() - interval '1 week')
         {% endif %}
     LEFT JOIN {{ ref ('tokens_erc20') }} erc20a
@@ -199,7 +192,7 @@ FROM
         {% if not is_incremental() %}
         AND p_bought.minute >= '{{ project_start_date }}'
         {% endif %}
-        {% if is_incremental () %}
+        {% if is_incremental() %}
         AND p_bought.minute >= DATE_TRUNC("day", NOW() - interval '1 week')
         {% endif %}
     LEFT JOIN {{ source ('prices', 'usd') }} p_sold
@@ -209,7 +202,7 @@ FROM
         {% if not is_incremental() %}
         AND p_sold.minute >= '{{ project_start_date }}'
         {% endif %}
-        {% if is_incremental () %}
+        {% if is_incremental() %}
         AND p_sold.minute >= DATE_TRUNC("day", NOW() - interval '1 week')
         {% endif %}
     INNER JOIN bpa
@@ -222,7 +215,7 @@ FROM
         {% if not is_incremental() %}
         AND bpa_bpt_prices.hour >= '{{ project_start_date }}'
         {% endif %}
-        {% if is_incremental () %}
+        {% if is_incremental() %}
         AND bpa_bpt_prices.hour >= DATE_TRUNC("day", NOW() - interval '1 week')
         {% endif %}
     INNER JOIN bpb
@@ -235,6 +228,6 @@ FROM
         {% if not is_incremental() %}
         AND bpa_bpt_prices.hour >= '{{ project_start_date }}'
         {% endif %}
-        {% if is_incremental () %}
+        {% if is_incremental() %}
         AND bpa_bpt_prices.hour >= DATE_TRUNC("day", NOW() - interval '1 week')
         {% endif %}

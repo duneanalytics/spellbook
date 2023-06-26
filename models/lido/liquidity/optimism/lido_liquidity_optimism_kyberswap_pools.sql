@@ -2,9 +2,8 @@
     schema='lido_liquidity_optimism',
     alias = 'kyberswap_pools',
     partition_by = ['time'],
-    materialized = 'incremental',
+    materialized = 'table',
     file_format = 'delta',
-    incremental_strategy = 'merge',
     unique_key = ['pool', 'time'],
     post_hook='{{ expose_spells(\'["optimism"]\',
                                 "project",
@@ -15,11 +14,7 @@
 
 {% set project_start_date = '2022-10-01' %}
 
-with dates as (
-select explode(sequence(to_date('{{ project_start_date }}'), now(), interval 1 hour)) as hour
-)
-
-, pools as (
+with pools as (
 select pool as address, 'optimism' as blockchain, 'kyberswap' as project, swapFeeUnits/1000 as fee
 from {{ source('kyber_optimism', 'Elastic_Factory_evt_PoolCreated') }}
 where token0 = lower('0x1F32b1c2345538c0c6f582fCB022739c4A194Ebb') or token1 = lower('0x1F32b1c2345538c0c6f582fCB022739c4A194Ebb')
@@ -65,13 +60,9 @@ left join tokens_mapping tm on t.token = tm.address_l2
         DATE_TRUNC('day', minute) AS time,
         tokens_mapping.address_l2 as token,
         avg(price) AS price
-    FROM {{ source('prices', 'usd') }}
-    left join tokens_mapping on prices.usd.contract_address = tokens_mapping.address_l1
-    {% if is_incremental() %}
-    WHERE date_trunc('day', minute) >= date_trunc("day", now() - interval '1 week') and date_trunc('day', minute) < date_trunc('day', now())
-    {% else %}
+    FROM {{ source('prices', 'usd') }} p
+    left join tokens_mapping on p.contract_address = tokens_mapping.address_l1
     WHERE date_trunc('day', minute) >= '{{ project_start_date }}' and date_trunc('day', minute) < date_trunc('day', now())
-    {% endif %}
     and blockchain = 'ethereum'
     and contract_address in (select address_l1 from tokens)
     group by 1,2
@@ -80,8 +71,8 @@ left join tokens_mapping tm on t.token = tm.address_l2
         DATE_TRUNC('day', minute),
         tokens_mapping.address_l2 as token,
         last_value(price) over (partition by DATE_TRUNC('day', minute), contract_address ORDER BY  minute range between unbounded preceding AND unbounded following) AS price
-    FROM {{ source('prices', 'usd') }}
-    left join tokens_mapping on prices.usd.contract_address = tokens_mapping.address_l1
+    FROM {{ source('prices', 'usd') }} p
+    left join tokens_mapping on p.contract_address = tokens_mapping.address_l1
     WHERE date_trunc('day', minute) = date_trunc('day', now())
     and blockchain = 'ethereum'
     and contract_address in (select address_l1 from tokens)
@@ -94,13 +85,9 @@ left join tokens_mapping tm on t.token = tm.address_l2
         DATE_TRUNC('hour', minute) time,
         tokens_mapping.address_l2 as token,
         last_value(price) over (partition by DATE_TRUNC('hour', minute), contract_address ORDER BY  minute range between unbounded preceding AND unbounded following) AS price
-    FROM {{ source('prices', 'usd') }}
-    left join tokens_mapping on prices.usd.contract_address = tokens_mapping.address_l1
-    {% if is_incremental() %}
-    WHERE date_trunc('hour', minute) >= date_trunc("hour", now() - interval '7 days')
-    {% else %}
+    FROM {{ source('prices', 'usd') }} p
+    left join tokens_mapping on p.contract_address = tokens_mapping.address_l1
     WHERE date_trunc('hour', minute) >= '{{ project_start_date }}'
-    {% endif %}
     and blockchain = 'ethereum'
     and contract_address in (select address_l1 from tokens)) p
 )
@@ -115,11 +102,7 @@ left join tokens_mapping tm on t.token = tm.address_l2
 
     from {{ source('kyber_optimism', 'Elastic_Pool_evt_swap') }} sw
     left join {{ source('kyber_optimism', 'Elastic_Factory_evt_PoolCreated') }} cr on sw.contract_address = cr.pool
-    {% if is_incremental() %}
-    WHERE date_trunc('day', sw.evt_block_time) >= date_trunc("day", now() - interval '1 week')
-    {% else %}
     WHERE date_trunc('day', sw.evt_block_time) >= '{{ project_start_date }}'
-    {% endif %}
     and sw.contract_address in (select address from pools)
     group by 1,2,3,4
 )
@@ -133,18 +116,10 @@ left join tokens_mapping tm on t.token = tm.address_l2
         sum(cast(qty1 as DOUBLE)) as amount1
     from {{ source('kyber_optimism', 'Elastic_Pool_evt_Mint') }} mt
     left join {{ source('kyber_optimism', 'Elastic_Factory_evt_PoolCreated') }} cr on mt.contract_address = cr.pool
-    {% if is_incremental() %}
-    WHERE date_trunc('day', mt.evt_block_time) >= date_trunc("day", now() - interval '1 week')
-    {% else %}
     WHERE date_trunc('day', mt.evt_block_time) >= '{{ project_start_date }}'
-    {% endif %}
     and mt.contract_address in (select address from pools)
     group by 1,2,3,4
-    union all
-    select d.day as time, cr.pool, cr.token0, cr.token1, 0, 0
-    from (select distinct date_trunc('day', hour) as day from dates) d
-    left join {{ source('kyber_optimism', 'Elastic_Factory_evt_PoolCreated') }} cr on 1 = 1
-    where cr.pool in (select address from pools)
+    
 )
 
 , burn_events as (
@@ -156,11 +131,7 @@ left join tokens_mapping tm on t.token = tm.address_l2
         (-1)*sum(cast(qty1 as DOUBLE)) as amount1
     from {{ source('kyber_optimism', 'Elastic_Pool_evt_Burn') }} bn
     left join {{ source('kyber_optimism', 'Elastic_Factory_evt_PoolCreated') }} cr on bn.contract_address = cr.pool
-    {% if is_incremental() %}
-    WHERE date_trunc('day', bn.evt_block_time) >= date_trunc("day", now() - interval '1 week')
-    {% else %}
     WHERE date_trunc('day', bn.evt_block_time) >= '{{ project_start_date }}'
-    {% endif %}
     and bn.contract_address in (select address from pools)
     group by 1,2,3,4
 
@@ -174,11 +145,7 @@ left join tokens_mapping tm on t.token = tm.address_l2
         (-1) * sum(cast(qty1 as double)) as amount1
     from {{ source('kyber_optimism', 'Elastic_Pool_evt_BurnRTokens') }} bn
     left join {{ source('kyber_optimism', 'Elastic_Factory_evt_PoolCreated') }} cr on bn.contract_address = cr.pool
-    {% if is_incremental() %}
-    WHERE date_trunc('day', bn.evt_block_time) >= date_trunc("day", now() - interval '1 week')
-    {% else %}
     WHERE date_trunc('day', bn.evt_block_time) >= '{{ project_start_date }}'
-    {% endif %}
     and bn.contract_address in (select address from pools)
     group by 1,2,3,4
 )
@@ -209,24 +176,16 @@ left join tokens_mapping tm on t.token = tm.address_l2
 , swap_events_hourly as (
     select hour, pool, token0, token1, sum(amount0) as amount0, sum(amount1) as amount1 from (
     select
-        d.hour,
+        date_trunc('hour', sw.evt_block_time) as hour,
         sw.contract_address as pool,
         cr.token0, cr.token1,
         coalesce(sum(cast(abs(deltaQty0) as DOUBLE)),0) as amount0,
         coalesce(sum(cast(abs(deltaQty1) as DOUBLE)),0) as amount1
 
-    from dates d
-    left join {{source('kyber_optimism','Elastic_Pool_evt_swap')}} sw on d.hour = date_trunc('hour', sw.evt_block_time)
+    from {{source('kyber_optimism','Elastic_Pool_evt_swap')}} sw
     left join {{source('kyber_optimism','Elastic_Factory_evt_PoolCreated')}} cr on sw.contract_address = cr.pool
     where sw.contract_address in (select address from pools)
     group by 1,2,3,4
-    union all
-    select d.hour,
-        cr.pool as pool,
-        cr.token0, cr.token1, 0, 0
-    from dates d
-    left join {{source('kyber_optimism','Elastic_Factory_evt_PoolCreated')}} cr on 1 = 1
-    where cr.pool in (select address from pools)
       ) a group by 1,2,3,4
 )
 
@@ -267,3 +226,4 @@ left join trading_volume tv on l.time = tv.time and l.pool = tv.pool
 
 select CONCAT(CONCAT(CONCAT(CONCAT(CONCAT(blockchain,CONCAT(' ', project)) ,' '), coalesce(paired_token_symbol, 'unknown')),':') , main_token_symbol, ' ', fee) as pool_name,*
 from all_metrics
+where main_token_reserve > 1
