@@ -58,7 +58,7 @@ WITH pool_labels AS (
             date_trunc('day', HOUR) AS DAY,
             CAST(contract_address as varbinary) AS token,
             percentile(median_price, 0.5) AS bpt_price,
-        FROM {{ ref('balancer_v2_ethereum_bpt_prices.sql')}}
+        FROM {{ ref('balancer_bpt_prices') }}
     ),
 
     swaps_changes AS (
