@@ -144,6 +144,7 @@ models:
       - *contract_address
       - *contract_project
       - *contract_name
+      - *excluded_chains
 
 
   - name: contracts_self_destruct_contracts
