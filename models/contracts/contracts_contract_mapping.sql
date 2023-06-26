@@ -213,7 +213,7 @@ WHERE contract_order = 1
     on bl.contract_address = t.contract_address
     AND bl.blockchain = t.blockchain
     AND t.symbol IS NOT NULL
-  group by 1, 2, 3
+  group by 1, 2, 3, 4
 
   union all 
 
@@ -231,7 +231,7 @@ WHERE contract_order = 1
     on bl.contract_address = t.contract_address
     AND bl.blockchain = t.blockchain
     AND t.name IS NOT NULL
-  group by 1, 2, 3
+  group by 1, 2, 3, 4
 )
 
 -- starting from 0 
