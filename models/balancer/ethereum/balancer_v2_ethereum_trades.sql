@@ -15,7 +15,7 @@
 
 {% set project_start_date = '2021-04-20' %}
 
-WITH    
+WITH
     fees_base AS (
         SELECT *, 
             MAX(index) OVER(PARTITION BY tx_hash, contract_address) AS max_index_same_tx 
