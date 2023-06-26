@@ -13,13 +13,11 @@
 
 WITH filter_1 AS (
     SELECT unique_trade_id
-    , CASE WHEN nftt.buyer=nftt.seller
-        THEN true
-        ELSE false
-        END AS same_buyer_seller
+    , true AS same_buyer_seller
     FROM {{ ref('nft_trades') }} nftt
     WHERE nftt.blockchain='ethereum'
         AND nftt.unique_trade_id IS NOT NULL
+        AND nftt.buyer=nftt.seller
         {% if is_incremental() %}
         AND nftt.block_time >= date_trunc("day", NOW() - interval '1 week')
         {% endif %}
@@ -27,10 +25,7 @@ WITH filter_1 AS (
 
 , filter_2 AS (
     SELECT nftt.unique_trade_id
-    , CASE WHEN COUNT(filter_baf.block_number) > 0
-        THEN true
-        ELSE false
-        END AS back_and_forth_trade
+    , true AS back_and_forth_trade
     FROM {{ ref('nft_trades') }} nftt
     INNER JOIN {{ ref('nft_trades') }} filter_baf
         ON filter_baf.seller=nftt.buyer
@@ -60,6 +55,7 @@ WITH filter_1 AS (
         AND filter_bought_3x.token_id=nftt.token_id
         AND filter_bought_3x.buyer=nftt.buyer
         AND filter_bought_3x.token_standard IN ('erc721', 'erc20')
+        AND '0x29469395eaf6f95920e59f858042f0e28d98a20b' NOT IN (nftt.buyer, nftt.seller)
         {% if is_incremental() %}
         AND filter_bought_3x.block_time >= date_trunc("day", NOW() - interval '1 week')
         {% endif %}
@@ -83,6 +79,7 @@ WITH filter_1 AS (
         AND filter_sold_3x.token_id=nftt.token_id
         AND filter_sold_3x.seller=nftt.seller
         AND filter_sold_3x.token_standard IN ('erc721', 'erc20')
+        AND '0x29469395eaf6f95920e59f858042f0e28d98a20b' NOT IN (nftt.buyer, nftt.seller)
         {% if is_incremental() %}
         AND filter_sold_3x.block_time >= date_trunc("day", NOW() - interval '1 week')
         {% endif %}
@@ -132,17 +129,13 @@ WITH filter_1 AS (
 
 , filter_5 AS (
     SELECT unique_trade_id
-    , CASE WHEN df.block_time IS NOT NULL
-        THEN true
-        ELSE false
-        END AS flashloan
+    , true AS flashloan
     FROM {{ ref('nft_trades') }} nftt
-    LEFT JOIN {{ ref('dex_flashloans') }} df ON df.blockchain='ethereum'
+    INNER JOIN {{ ref('dex_flashloans') }} df ON df.blockchain='ethereum'
         AND df.block_time=nftt.block_time
         AND df.tx_hash=nftt.tx_hash
     WHERE nftt.blockchain='ethereum'
         AND nftt.unique_trade_id IS NOT NULL
-        AND df.tx_hash IS NULL
         {% if is_incremental() %}
         AND nftt.block_time >= date_trunc("day", NOW() - interval '1 week')
         {% endif %}

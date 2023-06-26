@@ -235,16 +235,16 @@ models:
 
     xchange:
       +schema: xchange
-      #arbitrum:
-      #  +schema: xchange_arbitrum
+      arbitrum:
+        +schema: xchange_arbitrum
       ethereum:
         +schema: xchange_ethereum
       #optimism:
       #  +schema: xchange_optimism
-      #polygon:
-      #  +schema: xchange_polygon
-      #bnb:
-      #  +schema: xchange_bnb
+      polygon:
+        +schema: xchange_polygon
+      bnb:
+        +schema: xchange_bnb
 
     uniswap:
       +schema: uniswap
@@ -384,6 +384,10 @@ models:
         +schema: gas_arbitrum
       polygon:
         +schema: gas_polygon
+      fantom:
+        +schema: gas_fantom
+      gnosis:
+        +schema: gas_gnosis
 
     gmx:
       +schema: gmx
@@ -1265,3 +1269,19 @@ models:
     traces:
       optimism:
         +schema: traces_optimism
+    
+    account_abstraction:
+      erc4337:
+        +schema: account_abstraction_erc4337
+        ethereum:
+          +schema: account_abstraction_erc4337_ethereum
+        avalanche_c:
+          +schema: account_abstraction_erc4337_avalanche_c
+        arbitrum:
+          +schema: account_abstraction_erc4337_arbitrum
+        optimism:
+          +schema: account_abstraction_erc4337_optimism
+        polygon:
+          +schema: account_abstraction_erc4337_polygon
+        gnosis:
+          +schema: account_abstraction_erc4337_gnosis
