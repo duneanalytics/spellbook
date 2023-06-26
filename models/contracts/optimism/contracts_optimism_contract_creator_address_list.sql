@@ -522,6 +522,7 @@ WITH curated_list AS (
       ,('0x123694886DBf5Ac94DDA07135349534536D14cAf', 'Threshold Network')
       ,('0x1a5309f208f161a393e8b5a253de8ab894a67188', 'Bond Protocol')
       ,('0x07537D4360aF2489FC1Ca086EA9741c054d804de', 'Velodrome')
+      ,('0x8fa9aa69a6e94c1cd49fbf214c833b2911d02553', 'Cian Protocol')
 
   ) as temp_table (creator_address, contract_project)
 
