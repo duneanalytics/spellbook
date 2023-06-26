@@ -119,4 +119,5 @@ FROM (VALUES
         ,('0x088cd8f5eF3652623c22D48b1605DCfE860Cd704', 'VELA', 18)
         ,('0xd77b108d4f6cefaa0cae9506a934e825becca46e', 'WINR', 18)
         ,('0xd4d026322c88c2d49942a75dff920fcfbc5614c1', 'OLE', 18)
+        ,('0xdd69db25f6d620a7bad3023c5d32761d353d3de9', 'GETH', 18)
      ) AS temp_table (contract_address, symbol, decimals)
