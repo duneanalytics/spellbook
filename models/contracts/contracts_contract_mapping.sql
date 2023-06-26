@@ -212,6 +212,7 @@ WHERE contract_order = 1
   left join {{ ref('tokens_erc20') }} as t
     on bl.contract_address = t.contract_address
     AND bl.blockchain = t.blockchain
+    AND t.symbol IS NOT NULL
   group by 1, 2, 3
 
   union all 
@@ -220,7 +221,7 @@ WHERE contract_order = 1
      bl.blockchain
     ,bl.contract_address
     ,t.name as symbol
-    ,standard AS token_standard
+    ,et.standard AS token_standard
   from base_level as bl 
   join evms_tokens AS et 
     on bl.contract_address = et.contract_address
@@ -229,6 +230,7 @@ WHERE contract_order = 1
   left join {{ ref('tokens_nft') }} as t
     on bl.contract_address = t.contract_address
     AND bl.blockchain = t.blockchain
+    AND t.name IS NOT NULL
   group by 1, 2, 3
 )
 
