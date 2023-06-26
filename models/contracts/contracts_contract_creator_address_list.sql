@@ -13,7 +13,7 @@ WITH curated_list AS (
   select 
     creator_address
     ,cast(contract_project as varchar(250)) AS contract_project
-    ,lower(excluded_chains)
+    ,lower(excluded_chains) as excluded_chains
   from 
       (values
       ('0x932607335869cff6349ef450e74c83a3b871a9ff', 'Lyra', '')
