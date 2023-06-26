@@ -57,7 +57,7 @@ WITH pool_labels AS (
         SELECT 
             date_trunc('day', HOUR) AS DAY,
             CAST(contract_address as varbinary) AS token,
-            percentile(median_price, 0.5) AS bpt_price,
+            percentile(median_price, 0.5) AS bpt_price
         FROM {{ ref('balancer_bpt_prices') }}
     ),
 
