@@ -45,7 +45,7 @@ FROM (
         , `type`
         , CAST(value AS double) AS value
         --Logic for L2s
-                {% if transactions_model[1] == 'optimism' %}
+                {% if transactions_model[0] == 'optimism' %}
                 , l1_tx_origin
                 , l1_fee_scalar
                 , l1_block_number
@@ -55,7 +55,7 @@ FROM (
                 , l1_timestamp
                 , CAST(NULL AS DECIMAL(38,0)) AS effective_gas_price
 
-                {% elif transactions_model[1] == 'arbitrum' %}
+                {% elif transactions_model[0] == 'arbitrum' %}
                 , NULL AS l1_tx_origin
                 , CAST(NULL AS double) AS l1_fee_scalar
                 , CAST(NULL AS DECIMAL(38,0)) AS l1_fee_scalar
