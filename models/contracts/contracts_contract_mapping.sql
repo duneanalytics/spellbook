@@ -394,7 +394,7 @@ WHERE contract_order = 1
       blockchain
       ,trace_creator_address
       ,creator_address
-      ,contract_factory
+      ,cast(NULL as string) as contract_factory
       ,contract_address
       ,contract_project
       ,contract_name
