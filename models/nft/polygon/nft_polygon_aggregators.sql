@@ -12,4 +12,5 @@ FROM
       , ('0x3fc91a3afd70395cd496c647d5a6cc9d4b2b7fad', 'Uniswap') -- Uniswap's Universal Router 3
       , ('0xfbf4c42bb3981e6d5b85ad340d7f0213db7b132c', 'BitKeep') -- BitKeep
       , ('0x954dab8830ad2b9c312bb87ace96f6cce0f51e3a', 'OKX')  -- OKX
+      , ('0xc2c862322e9c97d6244a3506655da95f05246fd8', 'Reservoir') -- Reservoir v6.0.1
   ) AS temp_table (contract_address, name)

@@ -1,3 +1,21 @@
+# SPELLBOOK FREEZE
+
+From June 22 to June 29, we will be freezing some Spellbook contributions for the migration to DuneSQL. We will not accept contributions to the lineage of the following models:
+
+* dex.trades
+* nft.trades
+* labels
+* token.erc20
+* tokens.nft
+
+Run the following command to see the list of affected files:
+
+```
+dbt ls --resource-type model --output path --select +dex_trades +labels +nft_trades +tokens_nft +tokens_erc20
+```
+
+Don't hesitate to reach out on Discord if you have any questions.
+
 ![spellbook-logo@10x](https://user-images.githubusercontent.com/2520869/200791687-76f1bc4f-05d0-4384-a753-e3b5da0e7a4a.png#gh-light-mode-only)
 ![spellbook-logo-negative_10x](https://user-images.githubusercontent.com/2520869/200865128-426354af-8059-494d-83f7-46947aae271c.png#gh-dark-mode-only)
 
@@ -239,6 +257,6 @@ If you fail to run `dbt compile`, here are some common error messages:
 
 - Learn more about dbt [in the docs](https://docs.getdbt.com/docs/introduction)
 - Check out [Discourse](https://discourse.getdbt.com/) for commonly asked questions and answers
-- Join the [chat](https://community.getdbt.com/) on Slack for live discussions and support
-- Find [dbt events](https://events.getdbt.com) near you
-- Check out [the blog](https://blog.getdbt.com/) for the latest news on dbt's development and best practices
+- Join the [chat](https://getdbt.com/community/join-the-community/) on Slack for live discussions and support
+- Find [dbt events](https://getdbt.com/events/) near you
+- Check out [the blog](https://getdbt.com/blog/) for the latest news on dbt's development and best practices

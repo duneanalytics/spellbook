@@ -20,13 +20,14 @@ pairs as (
 
 {% set limit_order_trading_evt_tables = [
     'Trading_evt_LimitOrderExecuted',
-    'TradingV2_evt_LimitOrderExecuted'
+    'TradingV2_evt_LimitOrderExecuted',
+    'TradingV3_evt_LimitOrderExecuted'
 ] %}
 
 limit_orders AS (
     {% for limit_order_trading_evt in limit_order_trading_evt_tables %}
         SELECT
-            '{{ 'v2.' + (loop.index + 1) | string }}' as version,
+            '{{ 'v2.' + loop.index | string }}' as version,
             date_trunc('day', t.evt_block_time) as day,
             t.evt_block_time,
             t.evt_index,

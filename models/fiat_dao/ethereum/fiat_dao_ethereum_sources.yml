@@ -1,0 +1,9 @@
+version: 2
+
+sources:
+  - name: fiat_dao_ethereum
+    description: "Decoded contracts for Fiat DAO on Ethereum"
+
+    tables:
+      - name: Flash_evt_FlashLoan
+        loaded_at_field: evt_block_time
