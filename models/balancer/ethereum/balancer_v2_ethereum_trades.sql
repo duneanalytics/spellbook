@@ -17,7 +17,7 @@
 
 WITH   
     fees_base AS (
-        SELECT *, 
+        SELECT * , 
             MAX(index) OVER(PARTITION BY tx_hash, contract_address) AS max_index_same_tx 
         FROM {{ ref('balancer_v2_ethereum_pools_fees') }} 
     ),
