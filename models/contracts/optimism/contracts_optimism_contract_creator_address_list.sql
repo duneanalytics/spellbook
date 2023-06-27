@@ -422,7 +422,7 @@ WITH curated_list AS (
       ,(0x5e9Bf1dD74b4d25B7009AF11582f537b08eA3d3c, 'Layer Zero')
       ,(0xac789308a29783f507f1f3baacbd43326c5767f4, 'Gamma')
       ,(0xba32a3d407353fc3adaa6f7ec6264df5bca51c4b, 'Arcadia Finance')
-      ,(0x280333C41A9302448EbC070eD0300ad2Ed4B8244' ,'Transit Finance')
+      ,(0x280333C41A9302448EbC070eD0300ad2Ed4B8244, 'Transit Finance')
       ,(0x8a700FdB6121A57C59736041D9aa21dfd8820660, 'Orbiter Finance')
       ,(0xe00691e65Cd4400c84a174a4C56f20bA43dffD89, 'Ethos Reserve')
       ,(0x4bb4c1b0745ef7b4642feeccd0740dec417ca0a0, 'Sushi')
@@ -507,7 +507,7 @@ WITH curated_list AS (
       ,(0xB8Cd93C83A974649D76B1c19f311f639e62272BC, 'Axelar')
       ,(0x98b2920d53612483f91f12ed7754e51b4a77919e, 'Axelar')
       ,(0xE86375704CDb8491a5Ed82D90DceCE02Ee0ac25F, 'Axelar')
-      ,(0x9ebC8E61f87A301fF25a606d7C06150f856F24E2, 0xSplits')
+      ,(0x9ebC8E61f87A301fF25a606d7C06150f856F24E2, '0xSplits')
       ,(0x15bc81b35a8498cee37e2c7b857538b006cecaa5, 'Cinch Protocol')
       ,(0x7EEeF54Df0596633dbf6Fa3C88dEB1E3eA85ECE8, 'Metronome')
       ,(0x5472Cf4F1bE2aA6ad27C6F93101f7899cCAdBaf7, 'Rhino.fi')
@@ -520,6 +520,7 @@ WITH curated_list AS (
       ,(0x3B52ad533687Ce908bA0485ac177C5fb42972962, 'Manifold')
       ,(0xB8cEF765721A6da910f14Be93e7684e9a3714123, 'Allo Protocol') --Gitcoin Grants Stack
       ,(0x123694886DBf5Ac94DDA07135349534536D14cAf, 'Threshold Network')
+      ,(0x956a5152D0f498dBA0c5966577bb44262F8F7078, 'OP AttestationStation')
       
   ) as temp_table (creator_address, contract_project)
 )
