@@ -237,4 +237,6 @@ models:
         description: "NFT Project name"
       - name: symbol
         description: "NFT Project symbol"
+      - name: platform
+        description: "Where was the NFT minted"
 

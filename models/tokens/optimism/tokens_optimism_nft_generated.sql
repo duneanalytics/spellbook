@@ -11,6 +11,7 @@ select
    b.edition_address as contract_address
   ,b.edition_name AS name
   ,b.edition_symbol AS symbol
+  ,'Sound.xyz' as platform
 from {{ ref('sound_xyz_optimism_edition_metadata') }} as b
 GROUP BY 1,2,3
 
@@ -20,5 +21,6 @@ select
    b.edition_address as contract_address
   ,b.edition_name AS name
   ,b.edition_symbol AS symbol
+  ,'Zora' as platform
 from {{ ref('zora_optimism_edition_metadata') }} as b
 GROUP BY 1,2,3
