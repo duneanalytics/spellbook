@@ -375,6 +375,9 @@ WITH raw_token_list AS (
     ,('0xB25EA095997F5bBaa6cEa962c4fBf3bfc3C09776', 'FIRE', 9, 'underlying')
     ,('0x6c84a8f1c29108F47a79964b5Fe888D4f4D0dE40', 'tBTC', 18, 'underlying')
     ,('0x9560e827aF36c94D2Ac33a39bCE1Fe78631088Db', 'VELO', 18, 'underlying')
+    ,('0x6c2f7b6110a37b3B0fbdd811876be368df02E8B0', 'Stafi rETH', 18, 'underlying')
+    ,('0x929B939f8524c3Be977af57A4A0aD3fb1E374b50', 'MTA', 18, 'underlying')
+    ,('0x15e770B95Edd73fD96b02EcE0266247D50895E76', 'JRT', 18, 'underlying')
     
     ) AS temp_table (contract_address, symbol, decimals, token_type)
 )
