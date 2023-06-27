@@ -12,7 +12,7 @@ select
   ,b.edition_name AS name
   ,b.edition_symbol AS symbol
 from {{ ref('sound_xyz_optimism_edition_metadata') }} as b
-GROUP BY 1,2,3,4
+GROUP BY 1,2,3
 
 UNION ALL
 
@@ -21,4 +21,4 @@ select
   ,b.edition_name AS name
   ,b.edition_symbol AS symbol
 from {{ ref('zora_optimism_edition_metadata') }} as b
-GROUP BY 1,2,3,4
+GROUP BY 1,2,3
