@@ -178,8 +178,7 @@ sources:
           - *evt_block_time
           - *evt_index
           - *evt_tx_hash
-          - name: proxy
-            description: "Address of created Safe proxy"
+          - *proxy
           - &singleton
             name: singleton
             description: "Singleton"
