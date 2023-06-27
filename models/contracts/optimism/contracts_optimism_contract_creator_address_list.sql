@@ -526,6 +526,7 @@ WITH curated_list AS (
       ,('0xD56d253d6ad8C2164Eb35B2D7D8b951fe8380027', 'Merkly')
       ,('0xBE2F0354D970265BFc36D383af77F72736b81B54', 'KyberSwap')
       ,('0xc496Dfe5da45263742cdCe69BE460c8a90dF141E', 'Essence Finance')
+      ,('0x7492ce19d83b3a0BaC1BEBC9706ce0dF4ADD105F', 'Curve')
 
   ) as temp_table (creator_address, contract_project)
 )
