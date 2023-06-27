@@ -15,7 +15,7 @@ jobs:
     runs-on: [ self-hosted, linux, spellbook-trino ]
     strategy:
       matrix:
-        engine: [ 'dunesql', 'spark' ]
+        engine: [ 'spark', 'dunesql' ]
       max-parallel: 1
 
     steps:
