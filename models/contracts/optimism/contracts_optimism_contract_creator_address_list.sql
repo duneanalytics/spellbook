@@ -521,6 +521,7 @@ WITH curated_list AS (
       ,(0xB8cEF765721A6da910f14Be93e7684e9a3714123, 'Allo Protocol') --Gitcoin Grants Stack
       ,(0x123694886DBf5Ac94DDA07135349534536D14cAf, 'Threshold Network')
       ,(0x956a5152D0f498dBA0c5966577bb44262F8F7078, 'OP AttestationStation')
+      ,(0x9c6373de60c2d3297b18a8f964618ac46e011b58, 'OP Citizens House')
       
   ) as temp_table (creator_address, contract_project)
 )
