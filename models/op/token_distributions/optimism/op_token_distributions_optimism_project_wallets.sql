@@ -74,7 +74,7 @@ FROM (values
     ) a (address, proposal_name, address_descriptor)
     ) b
     WHERE rnk = 1 --check to prvent duplicates
-    AND address NOT IN (SELECT address FROM {{ref('addresses_optimism_cex')}} ) --make sure we don't accidently catch a CEX
+    AND address NOT IN (SELECT address FROM {{ref('cex_optimism_addresses')}} ) --make sure we don't accidently catch a CEX
 )
 
 
@@ -118,6 +118,7 @@ FROM (values
     ,('0xcb8883d1d8c560003489df43b30612aabb8013bb','Synthetix','sETH-ETH: Curve')
     ,('0xF510a2Ff7e9DD7e18629137adA4eb56B9c13E885','Kwenta','Distributor') --airdropper
     ,('0x4a8ff08af7f229b0d032ac182e2abb47ad3094e5','Kwenta','Distributor') --airdropper
+    ,('0x1964cf9d0c5c268dcf5a5d37f13600483237f6f5','Kwenta','MultipleMerkleDistributor')
     ,('0x2c8d267abd311e411793ffc3aca2d5206af59a08','QiDao','sUSDC/MAI: Velodrome')
     ,('0xd1b1f5b294432aaa399f9eb3069af13a8d327f45','QiDao','sUSDC/MAI: Velodrome')
     ,('0x26d9a248c4ebe777adb37813254e6aa59c1fe301','QiDao','vUSDC/MAI: Velodrome')
@@ -177,6 +178,12 @@ FROM (values
     ,('0x97a7E9726df22D6f28BB86679a0e5512A8c0E8A2', 'dHedge', 'Distributor')
     ,('0xC792980F2F3016F60bEd35926d21A43E140b99cC', 'dHedge', 'DHT/OP: Velodrome')
     ,('0xfCC293db3b7396a1c2477C9F24F5F948431EF6eC', 'Pika Protocol', 'Distributor')
+    ,('0x549406bc1370a7efe86e2ae71dea3b67fa08b43d', 'Pika Protocol', 'Distributor')
+    ,('0xc37e1fb3d127d6194fc2f5fe18ec871c7366df63', 'Pika Protocol', 'Distributor')
+    ,('0x4e3ad6266a26c31e9b221d3cf48f1812531095f2', 'Pika Protocol', 'Distributor')
+    ,('0xc4804658e193651dd8f87d1bccb8939eb63475d4', 'Pika Protocol', 'Distributor')
+    ,('0x6173bbca90c023a99384dbf73f40101d8ace1bd0', 'Pika Protocol', 'Distributor')
+    ,('0x270a49c498f02758800d688a44c690ffd4d60a07', 'Pika Protocol', 'Distributor')
     ,('0x8b50d942bb4effe0db32393a141ea083db0c4e7f', 'Alchemix', 'alETH/WETH: Velodrome')
     ,('0x4ea2e39626de031a011c3ca7360878202454ce75', 'Angle', 'OP/agEUR: Velodrome')
     ,('0x3ef3d8ba38ebe18db133cec108f4d14ce00dd9ae', 'Angle', 'USDC/agEUR: Uniswap') -- merkl.angle.money
@@ -226,7 +233,7 @@ FROM (values
     ) a (address, proposal_name, address_descriptor)
     ) b
     WHERE rnk = 1 --check to prvent duplicates
-    AND address NOT IN (SELECT address FROM {{ref('addresses_optimism_cex')}}) --make sure we don't accidently catch a CEX
+    AND address NOT IN (SELECT address FROM {{ref('cex_optimism_addresses')}}) --make sure we don't accidently catch a CEX
 )
 
 SELECT

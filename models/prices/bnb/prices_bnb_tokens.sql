@@ -65,7 +65,7 @@ FROM
     ("frax-frax", "bnb", "FRAX", "0x29ced01c447166958605519f10dcf8b0255fb379", 18),
     ("ftm-fantom", "bnb", "FTM", "0xAD29AbB318791D579433D831ed122aFeAf29dcfe", 18),
     ("fxs-frax-share", "bnb", "FXS", "0xde2f075f6f14eb9d96755b24e416a53e736ca363", 18),
-    ("gala-gala", "bnb", "GALA", "0x7ddee176f665cd201f93eede625770e2fd911990", 18),
+    -- ("gala-gala", "bnb", "GALA", "0x7ddee176f665cd201f93eede625770e2fd911990", 18), -- fake token
     ("gny-gny", "bnb", "GNY", "0xe4a4ad6e0b773f47d28f548742a23efd73798332", 18),
     ("inj-injective-protocol", "bnb", "INJ", "0xa2b726b1145a4773f68593cf171187d8ebe4d495", 18),
     ("iotx-iotex", "bnb", "IOTX", "0x9678e42cebeb63f23197d726b29b1cb20d0064e5", 18),
@@ -202,5 +202,6 @@ FROM
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)
 where contract_address not in (
     '0x2ab0e9e4ee70fff1fb9d67031e44f6410170d00e', -- bXEN has bad price feed.
-    '0x43f3918ff115081cfbfb256a5bde1e8d181f2907' -- ANT (aragon) doesn't exists on BSC, it's a scam-token address.
+    '0x43f3918ff115081cfbfb256a5bde1e8d181f2907', -- ANT (aragon) doesn't exists on BSC, it's a scam-token address.
+    '0x7ddee176f665cd201f93eede625770e2fd911990' -- GALA doesn't exists on BSC, it's a scam-token address.
 )

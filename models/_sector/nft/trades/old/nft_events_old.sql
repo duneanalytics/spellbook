@@ -13,6 +13,7 @@
  ref('aavegotchi_polygon_events')
 ,ref('element_bnb_events')
 ,ref('element_avalanche_c_events')
+,ref('element_polygon_events')
 ,ref('fractal_polygon_events')
 ,ref('liquidifty_bnb_events')
 ,ref('liquidifty_ethereum_events')
@@ -40,7 +41,9 @@
 ,ref('trove_v1_arbitrum_events')
 ,ref('trove_v2_arbitrum_events')
 ,ref('zonic_optimism_events')
+,ref('decentraland_polygon_events')
 ] %}
+
 
 SELECT *
 FROM (
@@ -83,7 +86,8 @@ FROM (
         royalty_fee_amount,
         royalty_fee_amount_usd,
         royalty_fee_percentage,
-        unique_trade_id
+        unique_trade_id,
+        row_number() over (partition by unique_trade_id order by tx_hash) as duplicates_rank
     FROM {{ nft_model }}
     {% if is_incremental() %}
     WHERE block_time >= date_trunc("day", now() - interval '1 week')
@@ -93,3 +97,4 @@ FROM (
     {% endif %}
     {% endfor %}
 )
+WHERE duplicates_rank = 1

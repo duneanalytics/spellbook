@@ -79,6 +79,8 @@ known_solver_metadata (address, environment, name) as (
                  ('0xD8b9c8e1a94baEAaf4D1CA2C45723eb88236130E', 'prod', 'Raven'),
                  ('0x0C60276BeaDc5BA35007661A89E0d5E7476523f8', 'prod', 'Barter'),
                  ('0x452d604f08affFc4E87E74e3279BdBdeCeD07232', 'prod', 'PropellerHeads'),
+                 ('0xAd897CF33E5AF59F33C1fD19490C5b94a8a2759b', 'prod', 'Enso'),
+                 ('0x40ADd124002E47119E9DeACdF650dE150F637b6f', 'barn', 'Enso'),
                  ('0x69f9365405762405cc17f7979aa8e94fd95c1e80', 'barn', 'Barter'),
                  ('0xFFC5E9d86c0e069f8B037c841ACc72cF94eeBaD8', 'barn', 'Barter'),
                  ('0x1857afb4da9bd4cc1c6e5287ad41cb5be469f14e', 'barn', 'Raven'),
