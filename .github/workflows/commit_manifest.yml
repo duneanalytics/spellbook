@@ -5,10 +5,6 @@ on:
   push:
     branches:
       - "main"
-
-concurrency:
-  group: ${{ github.workflow }}
-  cancel-in-progress: true
       
 jobs:
   commit_manifest:
