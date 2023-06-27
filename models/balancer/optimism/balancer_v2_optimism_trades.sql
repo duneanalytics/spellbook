@@ -53,6 +53,9 @@ WITH
             INNER JOIN fees_base f 
                 ON s.evt_tx_hash = f.tx_hash 
                 AND f.index = m.max_fee_evt_index
+        {% if is_incremental() %}
+        WHERE s.evt_block_time >= DATE_TRUNC("day", NOW() - interval '1 week')
+        {% endif %}
     ),
     swap_fees AS (
         SELECT
