@@ -37,7 +37,7 @@ WITH pool_labels AS (
             sum(sample_size) AS sample_size
         FROM {{ ref('dex_prices') }}
         GROUP BY 1, 2
-        HAVING sum(sample_size) > 3 
+        HAVING sum(sample_size) > 3
     ),
 
     dex_prices AS (
