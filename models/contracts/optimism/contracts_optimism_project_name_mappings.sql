@@ -10,8 +10,8 @@
 }}
 
 select 
-  cast(dune_name as varchar(250)) AS dune_name
-  ,cast(mapped_name as varchar(250)) AS mapped_name
+  cast(dune_name as varchar) AS dune_name
+  ,cast(mapped_name as varchar) AS mapped_name
 from (
     values
      ('lyra_v1',	'Lyra Finance')
