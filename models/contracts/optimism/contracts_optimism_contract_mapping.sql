@@ -197,6 +197,7 @@ WHERE contract_order = 1
     on bl.contract_address = t.contract_address
   group by 1, 2, 3
 )
+
 -- starting from 0 
 -- u = next level up contract (i.e. the factory)
 -- b = base-level contract
@@ -322,12 +323,13 @@ WHERE contract_order = 1
     on cc.contract_address = oc.address 
   group by 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23
 
+  
   union all
   -- missing contracts
   select 
      COALESCE(oc.from,0xdeaddeaddeaddeaddeaddeaddeaddeaddead0006) AS trace_creator_address
     ,COALESCE(oc.from,0xdeaddeaddeaddeaddeaddeaddeaddeaddead0006) AS creator_address
-    ,cast(NULL AS varchar) as contract_factory
+    ,CAST(NULL AS varchar) as contract_factory
     ,l.contract_address
     ,oc.namespace as contract_project 
     ,oc.name as contract_name 
@@ -335,16 +337,16 @@ WHERE contract_order = 1
     ,false as is_self_destruct
     ,'missing contracts' as source
     ,COALESCE(oc.created_at, MIN(block_time)) as top_level_time
-    ,cast(NULL AS varchar) as top_level_tx_hash
+    ,CAST(NULL AS varchar) as top_level_tx_hash
     ,cast(NULL as bigint) as top_level_block_number
-    ,cast(NULL AS varchar) as creation_tx_hash
+    ,CAST(NULL AS varchar) as creation_tx_hash
     ,cast(NULL as bigint) as created_block_number
-    ,cast(NULL AS varchar) as top_level_tx_from
-    ,cast(NULL AS varchar) as top_level_tx_to
-    ,cast(NULL AS varchar) as top_level_tx_method_id
-    ,cast(NULL AS varchar) as created_tx_from
-    ,cast(NULL AS varchar) as created_tx_to
-    ,cast(NULL AS varchar) as created_tx_method_id
+    ,CAST(NULL AS varchar) as top_level_tx_from
+    ,CAST(NULL AS varchar) as top_level_tx_to
+    ,CAST(NULL AS varchar) as top_level_tx_method_id
+    ,CAST(NULL AS varchar) as created_tx_from
+    ,CAST(NULL AS varchar) as created_tx_to
+    ,CAST(NULL AS varchar) as created_tx_method_id
     ,l.tx_index AS created_tx_index
     ,ceil( length(oc.code)/2 ) as code_bytelength
     ,1 as code_deploy_rank
@@ -366,130 +368,46 @@ WHERE contract_order = 1
   GROUP BY oc.from, l.contract_address, oc.namespace, oc.name, oc.created_at, l.tx_index, oc.code
 
   union all
-  -- ovm 1.0 contracts
-
+  -- predeploys
   select 
-     creator_address AS trace_creator_address
-    ,creator_address
-    ,cast(NULL AS varchar) as contract_factory
-    ,contract_address
-    ,contract_project
-    ,contract_name
-    ,coalesce( cast(created_time as timestamp) , cast('2021-11-11' as timestamp)) as created_time
-    ,false as is_self_destruct
-    ,'ovm1 contracts' as source
-    ,coalesce( cast(created_time as timestamp) , cast('2021-11-11' as timestamp)) as top_level_time
-    ,cast(NULL AS varchar) as top_level_tx_hash
-    ,cast(NULL as bigint) as top_level_block_number
-    ,cast(NULL AS varchar) as creation_tx_hash
-    ,cast(NULL as bigint) as created_block_number
-    ,cast(NULL AS varchar) as top_level_tx_from
-    ,cast(NULL AS varchar) as top_level_tx_to
-    ,cast(NULL AS varchar) as top_level_tx_method_id
-    ,cast(NULL AS varchar) as created_tx_from
-    ,cast(NULL AS varchar) as created_tx_to
-    ,cast(NULL AS varchar) as created_tx_method_id
-    ,cast(NULL as integer) AS created_tx_index
-    ,cast(NULL as bigint) as code_bytelength --todo
-    ,1 as code_deploy_rank
-  from {{ source('ovm1_optimism', 'contracts') }} as c
-  where 
-    true
-    {% if is_incremental() %} -- this filter will only be applied on an incremental run 
-    -- make sure we don't already have this mapped to the right project
-    and not exists (
-      select 1
-      from {{ this }} as gc
-      where 
-        gc.contract_address = c.contract_address
-        and (
-          (gc.contract_project = c.contract_project) or (gc.contract_project is NULL)
-        )
-    )
-    {% endif %}
-    group by 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23
+      trace_creator_address
+      ,creator_address
+      ,CAST(NULL AS varchar) as contract_factory
+      ,contract_address
+      ,contract_project
+      ,contract_name
+      ,created_time
+      ,is_self_destruct
+      ,source
+      ,created_time as top_level_time
+      ,CAST(NULL AS varchar) as top_level_tx_hash
+      ,cast(NULL as bigint) as top_level_block_number
+      ,CAST(NULL AS varchar) as creation_tx_hash
+      ,cast(NULL as bigint) as created_block_number
+      ,CAST(NULL AS varchar) as top_level_tx_from
+      ,CAST(NULL AS varchar) as top_level_tx_to
+      ,CAST(NULL AS varchar) as top_level_tx_method_id
+      ,CAST(NULL AS varchar) as created_tx_from
+      ,CAST(NULL AS varchar) as created_tx_to
+      ,CAST(NULL AS varchar) as created_tx_method_id
+      ,cast(NULL as integer) AS created_tx_index
+      ,cast(NULL as bigint) as code_bytelength --todo
+      ,1 as code_deploy_rank
 
-  union all 
-  --synthetix genesis contracts
-
-  select 
-     0xdeaddeaddeaddeaddeaddeaddeaddeaddead0006 as trace_creator_address
-    ,0xdeaddeaddeaddeaddeaddeaddeaddeaddead0006 as creator_address
-    ,cast(NULL AS varchar) as contract_factory
-    ,snx.contract_address
-    ,'Synthetix' as contract_project
-    ,contract_name
-    ,to_timestamp('2021-07-06 00:00:00') as created_time
-    ,false as is_self_destruct
-    ,'synthetix contracts' as source
-    ,to_timestamp('2021-07-06 00:00:00') as top_level_time
-    ,cast(NULL AS varchar) as top_level_tx_hash
-    ,cast(NULL as bigint) as top_level_block_number
-    ,cast(NULL AS varchar) as creation_tx_hash
-    ,cast(NULL as bigint) as created_block_number
-    ,cast(NULL AS varchar) as top_level_tx_from
-    ,cast(NULL AS varchar) as top_level_tx_to
-    ,cast(NULL AS varchar) as top_level_tx_method_id
-    ,cast(NULL AS varchar) as created_tx_from
-    ,cast(NULL AS varchar) as created_tx_to
-    ,cast(NULL AS varchar) as created_tx_method_id
-    ,1 AS created_tx_index
-    ,cast(NULL as bigint) as code_bytelength --todo
-    ,1 as code_deploy_rank
-  from {{ source('ovm1_optimism', 'synthetix_genesis_contracts') }} as snx
-  where 
-    true
+    FROM {{ ref('contracts_optimism_predeploys') }} pre
+    where 
+    1=1
     {% if is_incremental() %} -- this filter will only be applied on an incremental run 
     and not exists (
       select 1 
       from {{ this }} as gc
       where 
-        gc.contract_address = snx.contract_address
-        and gc.contract_project LIKE 'Synthetix%' --future proof in case this name changes
+        gc.contract_address = pre.contract_address
+        and lower(gc.contract_project) LIKE lower(pre.contract_project) || '%' --future proof in case this name changes
     )
     {% endif %}
-    group by 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23
+    GROUP BY 1,2,3,4,5,6,7,8,9
 
-    union all 
-  --uniswap pools from ovm1
-
-  select 
-     0xdeaddeaddeaddeaddeaddeaddeaddeaddead0006 as trace_creator_address
-    ,0xdeaddeaddeaddeaddeaddeaddeaddeaddead0006 as creator_address
-    ,cast(NULL AS varchar) as contract_factory
-    ,newaddress as contract_address
-    ,'Uniswap' as contract_project
-    ,'Pair' as contract_name
-    ,cast('2021-11-11' as timestamp) as created_time
-    ,false as is_self_destruct
-    ,'ovm1 uniswap pools' as source
-    ,tcast('2021-11-11' as timestamp) as top_level_time
-    ,cast(NULL AS varchar) as top_level_tx_hash
-    ,cast(NULL as bigint) as top_level_block_number
-    ,cast(NULL AS varchar) as creation_tx_hash
-    ,cast(NULL as bigint) as created_block_number
-    ,cast(NULL AS varchar) as top_level_tx_from
-    ,cast(NULL AS varchar) as top_level_tx_to
-    ,cast(NULL AS varchar) as top_level_tx_method_id
-    ,cast(NULL AS varchar) as created_tx_from
-    ,cast(NULL AS varchar) as created_tx_to
-    ,cast(NULL AS varchar) as created_tx_method_id
-    ,1 AS created_tx_index
-    ,cast(NULL as bigint) as code_bytelength --todo
-    ,1 as code_deploy_rank
-  from {{ ref('uniswap_optimism_ovm1_pool_mapping') }} as uni
-  where 
-    true
-    {% if is_incremental() %} -- this filter will only be applied on an incremental run 
-    and not exists (
-      select 1 
-      from {{ this }} as gc
-      where 
-        gc.contract_address = newaddress
-        and gc.contract_project LIKE 'Uniswap%' --future proof in case this name changes
-    )
-    {% endif %}
-    group by 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23
 )
 ,get_contracts as (
   select 
@@ -556,7 +474,7 @@ select
   ,c.token_symbol
   ,cast( coalesce(co.contract_name, c.contract_name) as varchar) as contract_name
   ,coalesce(c.creator_address, ovm1c.creator_address) as creator_address
-  ,coalesce(c.created_time, cast(ovm1c.created_time as timestamp)) as created_time
+  ,coalesce(c.created_time, to_timestamp(ovm1c.created_time)) as created_time
   ,coalesce(c.contract_factory, 
   {% if is_incremental() %}
     th.contract_creator_if_factory
