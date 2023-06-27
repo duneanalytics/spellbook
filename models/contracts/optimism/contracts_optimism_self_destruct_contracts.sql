@@ -25,7 +25,7 @@ with creates as (
       and success
       and tx_success
       {% if is_incremental() %}
-      and block_time >= date_trunc('day', now() - interval '1 week')
+      and block_time >= date_trunc('day', now() - interval '7' day)
       {% endif %}
 )
 
@@ -52,7 +52,7 @@ FROM (
       and cr.trace_element = sd.trace_address[0]
       and sd.`type` = 'suicide'
       {% if is_incremental() %}
-      and sd.block_time >= date_trunc('day', now() - interval '1 week')
+      and sd.block_time >= date_trunc('day', now() - interval '7' day)
       and cr.contract_address NOT IN (SELECT contract_address FROM {{this}} ) --ensure no duplicates
       {% endif %}
     group by 1, 2, 3, 4, 5
@@ -75,7 +75,7 @@ FROM (
       AND sds.type = 'suicide'
       AND sds.address IS NOT NULL
       {% if is_incremental() %}
-      and sds.block_time >= date_trunc('day', now() - interval '1 week')
+      and sds.block_time >= date_trunc('day', now() - interval '7' day)
       and cr.contract_address NOT IN (SELECT contract_address FROM {{this}} ) --ensure no duplicates
       {% endif %}
   ) inter

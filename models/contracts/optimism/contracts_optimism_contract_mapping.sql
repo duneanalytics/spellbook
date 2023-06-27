@@ -375,10 +375,10 @@ WHERE contract_order = 1
     ,contract_address
     ,contract_project
     ,contract_name
-    ,to_timestamp(coalesce( created_time, cast('2021-11-11' as timestamp))) as created_time
+    ,coalesce( cast(created_time as timestamp) , cast('2021-11-11' as timestamp)) as created_time
     ,false as is_self_destruct
     ,'ovm1 contracts' as source
-    ,to_timestamp(coalesce( created_time, cast('2021-11-11' as timestamp))) as top_level_time
+    ,coalesce( cast(created_time as timestamp) , cast('2021-11-11' as timestamp)) as top_level_time
     ,cast(NULL AS varchar) as top_level_tx_hash
     ,cast(NULL as bigint) as top_level_block_number
     ,cast(NULL AS varchar) as creation_tx_hash
@@ -556,7 +556,7 @@ select
   ,c.token_symbol
   ,cast( coalesce(co.contract_name, c.contract_name) as varchar) as contract_name
   ,coalesce(c.creator_address, ovm1c.creator_address) as creator_address
-  ,coalesce(c.created_time, to_timestamp(ovm1c.created_time)) as created_time
+  ,coalesce(c.created_time, cast(ovm1c.created_time as timestamp)) as created_time
   ,coalesce(c.contract_factory, 
   {% if is_incremental() %}
     th.contract_creator_if_factory
