@@ -711,21 +711,25 @@ WITH dao_wallet AS (
     GROUP BY 1
 )
 , opex_preunion AS (
-    SELECT dai.call_block_time   AS ts
-         , dai.call_tx_hash      AS hash
+    SELECT mints.call_block_time   AS ts
+         , mints.call_tx_hash      AS hash
          , CASE
                WHEN dao_wallet.code = 'GELATO' THEN 31710 --keeper maintenance expenses
                WHEN dao_wallet.code = 'GAS' THEN 31630 -- oracle gas expenses
                WHEN dao_wallet.code IS NOT NULL THEN 31720 --workforce expenses
                ELSE 31740 --direct opex - when a suck operation is used to directly transfer DAI to a third party
         END                  AS equity_code
-        , dai.wad / POW(10, 18) AS expense
-    FROM {{ source('maker_ethereum', 'dai_call_mint') }} dai
+        , mints.wad / POW(10, 18) AS expense
+    FROM {{ source('maker_ethereum', 'dai_call_mint') }} mints
     JOIN opex_suck_hashes opex
-        ON dai.call_tx_hash = opex.call_tx_hash
+        ON mints.call_tx_hash = opex.call_tx_hash
     LEFT JOIN dao_wallet
-        ON dai.usr = dao_wallet.wallet_address
-    WHERE dai.call_success
+        ON mints.usr = dao_wallet.wallet_address
+    LEFT JOIN interest_accruals_1 AS frobs
+            ON mints.call_tx_hash = frobs.hash
+            AND mints.wad = frobs.dart
+    WHERE mints.call_success
+        AND frobs.hash IS NULL --filtering out draws from psm that happened in the same tx as expenses
         -- {% if is_incremental() %}
         -- AND dai.call_block_time >= date_trunc("day", now() - interval '1 week')
         -- {% endif %}
@@ -968,7 +972,7 @@ WITH dao_wallet AS (
         , ts
         , hash
         , dart
-        , COALESCE(POW(10,27) + SUM(rate) OVER(PARTITION BY ilk ORDER BY ts ASC), POW(10,27)) AS rate
+        , COALESCE(POW(10,27) + SUM(rate) OVER(PARTITION BY ilk ORDER BY ts ASC, call_trace_address ASC), POW(10,27)) AS rate
     FROM interest_accruals_1 -- loan_actions_1 was previously exactly the same as interest_accruals_1, so instead of being redundant, I am just going from interest_accruals_1 and continuing the naming convention (treating as if it was called loan_actions_1)
     WHERE STRING(UNHEX(TRIM('0', RIGHT(ilk, LENGTH(ilk)-2)))) <> 'TELEPORT-FW-A'
 )
