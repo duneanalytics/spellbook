@@ -525,6 +525,7 @@ WITH curated_list AS (
       ,('0x8fa9aa69a6e94c1cd49fbf214c833b2911d02553', 'Cian Protocol')
       ,('0xD56d253d6ad8C2164Eb35B2D7D8b951fe8380027', 'Merkly')
       ,('0xBE2F0354D970265BFc36D383af77F72736b81B54', 'KyberSwap')
+      ,('0xc496Dfe5da45263742cdCe69BE460c8a90dF141E', 'Essence Finance')
 
   ) as temp_table (creator_address, contract_project)
 )
