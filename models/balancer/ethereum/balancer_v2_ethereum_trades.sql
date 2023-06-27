@@ -1,4 +1,5 @@
 {{ config(
+    tags=['prod_exclude'],
     schema = 'balancer_v2_ethereum',
     alias = 'trades',
     partition_by = ['block_date'],
