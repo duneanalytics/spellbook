@@ -34,3 +34,24 @@ sources:
     tables:
       - name: tokens
         loaded_at_field: minute
+
+  - name: lido_ethereum
+    description: "Ethereum decoded tables related to Lido contract"
+    freshness: # default freshness
+      warn_after: { count: 12, period: hour }
+      error_after: { count: 24, period: hour }
+    tables:
+      - name: WstETH_call_unwrap
+        loaded_at_field: evt_block_time
+      - name: WstETH_call_wrap
+        loaded_at_field: evt_block_time
+
+  - name: erc20_ethereum
+    description: "Ethereum decoded tables related to erc20 tokens"
+    freshness: # default freshness
+      warn_after: { count: 12, period: hour }
+      error_after: { count: 24, period: hour }
+    tables:
+      - name: evt_Transfer
+        loaded_at_field: evt_block_time
+        

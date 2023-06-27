@@ -2,9 +2,8 @@
     schema='lido_liquidity_optimism',
     alias = 'velodrome_pools',
     partition_by = ['time'],
-    materialized = 'incremental',
+    materialized = 'table',
     file_format = 'delta',
-    incremental_strategy = 'merge',
     unique_key = ['pool', 'time'],
     post_hook='{{ expose_spells(\'["optimism"]\',
                                 "project",
@@ -33,6 +32,12 @@ where token0 = lower('0x1F32b1c2345538c0c6f582fCB022739c4A194Ebb')
       OR token1 = lower('0x1F32b1c2345538c0c6f582fCB022739c4A194Ebb')
 )      
 
+, pool_per_date as ( 
+select dates.day, pools.*
+from dates
+left join pools on 1=1
+)
+
 , tokens as (
  select distinct token, pt.symbol, pt.decimals
  from (
@@ -56,12 +61,8 @@ select distinct
       contract_address AS token,
       AVG(price) AS price
 FROM {{source('prices','usd')}}
-    {% if is_incremental() %}
-    WHERE date_trunc('day', minute) >= date_trunc("day", now() - interval '1 week') and date_trunc('day', minute) < date_trunc('day', now())
-    {% else %}
-    WHERE date_trunc('day', minute) >= '{{ project_start_date }}' and date_trunc('day', minute) < date_trunc('day', now())
-    {% endif %}
-      and blockchain = 'optimism'
+WHERE date_trunc('day', minute) >= '{{ project_start_date }}' and date_trunc('day', minute) < date_trunc('day', now())
+     and blockchain = 'optimism'
   and contract_address IN (select token from tokens)
 group by 1,2
 union all
@@ -83,11 +84,7 @@ select distinct
         contract_address as token,
         last_value(price) over (partition by DATE_TRUNC('hour', minute), contract_address ORDER BY  minute range between unbounded preceding AND unbounded following) AS price
     FROM {{ source('prices', 'usd') }}
-    {% if is_incremental() %}
-    WHERE date_trunc('hour', minute) >= date_trunc("hour", now() - interval '7 days')
-    {% else %}
     WHERE date_trunc('hour', minute) >= '{{ project_start_date }}' 
-    {% endif %} 
       and blockchain = 'optimism' and contract_address = lower('0x1F32b1c2345538c0c6f582fCB022739c4A194Ebb')
     
 )
@@ -107,11 +104,7 @@ from wsteth_prices_hourly
       SUM(TRY_CAST(amount1 AS DOUBLE)) AS amount1
  from {{source('velodrome_optimism','Pair_evt_Mint')}} m
  left join {{source('velodrome_optimism','PairFactory_evt_PairCreated')}} cr on m.contract_address = cr.pair 
- {% if is_incremental() %}
- WHERE date_trunc('day', m.evt_block_time) >= date_trunc("day", now() - interval '1 week') 
- {% else %}
  WHERE date_trunc('day', m.evt_block_time) >= '{{ project_start_date }}'
- {% endif %} 
  and m.contract_address in (select address from pools)
  group by 1,2,3,4
  )
@@ -125,11 +118,7 @@ from wsteth_prices_hourly
       (-1)*SUM(TRY_CAST(amount1 AS DOUBLE)) AS amount1
  from {{source('velodrome_optimism','Pair_evt_Burn')}} b
  left join {{source('velodrome_optimism','PairFactory_evt_PairCreated')}} cr on b.contract_address = cr.pair 
- {% if is_incremental() %}
- WHERE date_trunc('day', b.evt_block_time) >= date_trunc("day", now() - interval '1 week') 
- {% else %}
  WHERE date_trunc('day', b.evt_block_time) >= '{{ project_start_date }}'
- {% endif %} 
  and b.contract_address in (select address from pools)
  group by 1,2,3,4
  
@@ -144,11 +133,7 @@ from wsteth_prices_hourly
       SUM(TRY_CAST(amount1In AS DOUBLE) - TRY_CAST(amount1Out AS DOUBLE)) AS amount1
  from {{source('velodrome_optimism','Pair_evt_Swap')}} s
  left join {{source('velodrome_optimism','PairFactory_evt_PairCreated')}} cr on s.contract_address = cr.pair 
- {% if is_incremental() %}
- WHERE date_trunc('day', s.evt_block_time) >= date_trunc("day", now() - interval '1 week') 
- {% else %}
  WHERE date_trunc('day', s.evt_block_time) >= '{{ project_start_date }}'
- {% endif %} 
  and s.contract_address in (select address from pools)
  group by 1,2,3,4
  
@@ -164,11 +149,7 @@ select
       (-1)*SUM(TRY_CAST(amount1 AS DOUBLE) ) AS amount1 
  from {{source('velodrome_optimism','Pair_evt_Fees')}} s
  left join {{source('velodrome_optimism','PairFactory_evt_PairCreated')}} cr on s.contract_address = cr.pair 
- {% if is_incremental() %}
- WHERE date_trunc('day', s.evt_block_time) >= date_trunc("day", now() - interval '1 week') 
- {% else %}
  WHERE date_trunc('day', s.evt_block_time) >= '{{ project_start_date }}'
- {% endif %} 
  and s.contract_address in (select address from pools)
  group by 1,2,3,4
  )
@@ -197,16 +178,21 @@ from  fee_events
 ) group by 1,2,3,4
 )
 
+, daily_delta_balance_with_lead AS (
+select time, pool, token0, token1, amount0, amount1, lead(time, 1, now()) over (partition by pool order by time) as next_time
+from daily_delta_balance
+)
+
+
 , pool_liquidity as (
-SELECT time,
-      LEAD(time, 1, CURRENT_DATE + INTERVAL '1' day) OVER (ORDER BY time) AS next_time,
-      pool,
+SELECT c.day as time,
+      c.address as pool,
       token0,
       token1,
       SUM(amount0) OVER (PARTITION BY  pool   ORDER BY time) AS amount0,
       SUM(amount1) OVER (PARTITION BY  pool   ORDER BY time) AS amount1
-    FROM
-      daily_delta_balance
+    FROM pool_per_date c
+      left join daily_delta_balance_with_lead b  ON b.time <= c.day AND c.day < b.next_time and c.address = b.pool
 )
 
 , swap_events_hourly as (
@@ -216,11 +202,7 @@ SELECT time,
       else TRY_CAST(amount1In AS DOUBLE) + TRY_CAST(amount1Out AS DOUBLE) end) as wsteth_amount
  from {{source('velodrome_optimism','Pair_evt_Swap')}} s
  left join {{source('velodrome_optimism','PairFactory_evt_PairCreated')}} cr on s.contract_address = cr.pair 
- {% if is_incremental() %}
- WHERE date_trunc('day', s.evt_block_time) >= date_trunc("day", now() - interval '1 week') 
- {% else %}
  WHERE date_trunc('day', s.evt_block_time) >= '{{ project_start_date }}'
- {% endif %}  
  and s.contract_address in (select address from pools)
 group by 1,2
 )
@@ -300,3 +282,4 @@ select  CONCAT(CONCAT(CONCAT(CONCAT(CONCAT(blockchain,CONCAT(' ', project)) ,' '
         paired_token_usd_reserve,
         trading_volume
 from all_metrics
+where main_token_reserve > 1
