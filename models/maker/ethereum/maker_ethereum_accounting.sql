@@ -705,6 +705,7 @@ WITH dao_wallet AS (
       AND suck.v IN ('0xbe8e3e3618f7474f8cb1d074a26affef007e98fb'
                 , '0x2cc583c0aacdac9e23cb601fda8f1a0c56cdcb71'
                 , '0xa4c22f0e25c6630b2017979acf1f865e94695c4b')
+      AND suck.rad+0 <> 0
     --   {% if is_incremental() %}
     --   AND suck.call_block_time >= date_trunc("day", now() - interval '1 week')
     --   {% endif %}
