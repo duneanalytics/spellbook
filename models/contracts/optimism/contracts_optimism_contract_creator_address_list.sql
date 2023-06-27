@@ -527,6 +527,9 @@ WITH curated_list AS (
       ,('0xBE2F0354D970265BFc36D383af77F72736b81B54', 'KyberSwap')
       ,('0xc496Dfe5da45263742cdCe69BE460c8a90dF141E', 'Essence Finance')
       ,('0x7492ce19d83b3a0BaC1BEBC9706ce0dF4ADD105F', 'Curve')
+      ,('0xC253Af7B80F3DD3d469bf4b94AA9e3df59e71e43', 'Inverse Finance')
+      ,('0x6Bd10054c59Febf0CF7c0f5359D036A997E93810', 'BlueNorva')
+      ,('0x6fF5723435b7dfC2371B57Fb5cB4c373E5995C78', 'Bored Town')
 
   ) as temp_table (creator_address, contract_project)
 )
