@@ -145,6 +145,7 @@ WITH dao_wallet AS (
         ('RWA007-A',CAST(NULL as date),CAST(NULL as date),12320,31172,CAST(NULL AS NUMERIC(38))),
         ('RWA008-A',CAST(NULL as date),CAST(NULL as date),12310,31170,CAST(NULL AS NUMERIC(38))),
         ('RWA009-A',CAST(NULL as date),CAST(NULL as date),12310,31170,CAST(NULL AS NUMERIC(38))),
+        ('RWA014-A',CAST(NULL as date),CAST(NULL as date),13411,31180,CAST(NULL AS NUMERIC(38))),
         ('UNIV2DAIUSDC-A',CAST(NULL as date),CAST(NULL as date),11140,31140,CAST(NULL AS NUMERIC(38))), --need to list all UNIV2% LP that are stable LPs, all else assumed volatile
         ('UNIV2DAIUSDT-A',CAST(NULL as date),CAST(NULL as date),11140,31140,CAST(NULL AS NUMERIC(38)))
 )
@@ -372,10 +373,11 @@ WITH dao_wallet AS (
     SELECT call_tx_hash
         , CASE WHEN usr = '0x6c6d4be2223b5d202263515351034861dd9afdb6' THEN 'RWA009-A'
             WHEN usr = '0xef1b095f700be471981aae025f92b03091c3ad47' THEN 'RWA007-A'
+            WHEN usr = '0x5c82d7eafd66d7f5edc2b844860bfd93c3b0474f' THEN 'RWA014-A'
         END AS ilk
     FROM {{ source('maker_ethereum', 'dai_call_burn') }}
     WHERE call_success
-      AND usr IN ('0x6c6d4be2223b5d202263515351034861dd9afdb6', '0xef1b095f700be471981aae025f92b03091c3ad47') --HVB RWA JAR, MIP65 RWA JAR
+      AND usr IN ('0x6c6d4be2223b5d202263515351034861dd9afdb6', '0xef1b095f700be471981aae025f92b03091c3ad47', '0x5c82d7eafd66d7f5edc2b844860bfd93c3b0474f') --HVB RWA JAR, MIP65 RWA JAR, COINBASE RWA JAR
     --   {% if is_incremental() %}
     --   AND call_block_time >= date_trunc("day", now() - interval '1 week')
     --   {% endif %}
