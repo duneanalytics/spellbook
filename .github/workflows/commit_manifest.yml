@@ -1,3 +1,5 @@
+name: Commit Manifest
+
 on:
   workflow_dispatch:
   push:
@@ -10,7 +12,11 @@ concurrency:
       
 jobs:
   commit_manifest:
-    runs-on: [ self-hosted, linux, spellbook ]
+    runs-on: [ self-hosted, linux, spellbook-trino ]
+    strategy:
+      matrix:
+        engine: [ 'dunesql', 'spark' ]
+      max-parallel: 1
 
     steps:
     - uses: actions/setup-python@v3
@@ -21,25 +27,40 @@ jobs:
 
     - name: Add git_sha to schema
       run: "/runner/change_schema.sh wizard"
-
+    
+    - name: Setup variables
+      run: |
+        if [[ "${{ matrix.engine }}" == "dunesql" ]]; then
+          printf "Using dunesql engine\n"
+          echo "PROFILE=--profile dunesql" >> $GITHUB_ENV
+          echo "COMPILE_TAG=--select tag:dunesql" >> $GITHUB_ENV
+          echo "S3_LOCATION=manifest-spellbook-dunesql" >> $GITHUB_ENV
+        elif [[ "${{ matrix.engine }}" == "spark" ]]; then
+          printf "Using spark engine\n"
+          echo "PROFILE=--profile spark" >> $GITHUB_ENV
+          echo "COMPILE_TAG=--exclude tag:dunesql" >> $GITHUB_ENV
+          echo "S3_LOCATION=manifest-spellbook" >> $GITHUB_ENV
+          echo 
+        else
+          echo "Unknown engine: ${{ matrix.engine }}"
+          exit 1
+        fi
+    
     - name: dbt dependencies
       run: "dbt deps"
 
     - name: dbt compile to create prod manifest from main
-      run: "dbt compile --target-path ."
+      run: "dbt compile --target-path . $PROFILE $COMPILE_TAG"
 
     - name: copy old manifest locally
-      run: "aws s3 cp s3://manifest-spellbook/manifest.json previous_manifest.json"
-      
-    - name: copy old manifest to s3
-      run: "aws s3 cp previous_manifest.json s3://manifest-spellbook/previous_manifest.json"
+      run: "aws s3 cp s3://$S3_LOCATION/manifest.json s3://$S3_LOCATION/previous_manifest.json"
 
     - name: Set environment variables
       run: |
         echo "GIT_SHA=$(echo ${{ github.sha }} | tr - _ | cut -c1-7)" >> $GITHUB_ENV
 
     - name: upload git_sha versioned previous manifest (for manual catchup if jobs fail)
-      run: "aws s3 cp previous_manifest.json s3://manifest-spellbook/manifest_$GIT_SHA.json"
+      run: "aws s3 cp s3://$S3_LOCATION/manifest.json s3://$S3_LOCATION/manifest_$GIT_SHA.json"
 
     - name: upload manifest
-      run: "aws s3 cp manifest.json s3://manifest-spellbook/manifest.json"
+      run: "aws s3 cp manifest.json s3://$S3_LOCATION/manifest.json"

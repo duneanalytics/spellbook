@@ -16,49 +16,72 @@ concurrency:
 
 jobs:
   dbt-test:
-    runs-on: [ self-hosted, linux, spellbook ]
+    runs-on: [ self-hosted, linux, spellbook-trino ]
+    strategy:
+      matrix:
+        engine: [ 'dunesql', 'spark' ]
+      max-parallel: 1
     timeout-minutes: 90
 
     steps:
       - name: Check out repository code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
-      - name: Set environment variables
+      - name: Setup variables
         run: |
+          if [[ "${{ matrix.engine }}" == "dunesql" ]]; then
+            printf "Using dunesql engine\n"
+            echo "PROFILE=--profile dunesql" >> $GITHUB_ENV
+            echo "TAG=,tag:dunesql" >> $GITHUB_ENV
+            echo "COMPILE_TAG=--select tag:dunesql" >> $GITHUB_ENV
+            echo "S3_LOCATION=manifest-spellbook-dunesql" >> $GITHUB_ENV
+          elif [[ "${{ matrix.engine }}" == "spark" ]]; then
+            printf "Using spark engine\n"
+            echo "PROFILE=--profile spark" >> $GITHUB_ENV
+            echo "EXCLUDE=tag:dunesql" >> $GITHUB_ENV
+            echo "SINGLE_EXCLUDE=--exclude tag:dunesql" >> $GITHUB_ENV
+            echo "COMPILE_TAG=--exclude tag:dunesql" >> $GITHUB_ENV
+            echo "S3_LOCATION=manifest-spellbook" >> $GITHUB_ENV
+            echo 
+          else
+            echo "Unknown engine: ${{ matrix.engine }}"
+            exit 1
+          fi
           echo "GIT_SHA=$(echo ${{ github.sha }} | tr - _ | cut -c1-8)" >> $GITHUB_ENV
 
       - name: Add git_sha to schema
-        run: "/runner/change_schema.sh git_$GIT_SHA"
+        run: "/runner/change_schema.sh git_${{ matrix.engine }}_$GIT_SHA"
 
       - name: Get latest manifest
-        run: "aws s3 cp s3://manifest-spellbook/manifest.json manifest.json"
+        run: "aws s3 cp s3://$S3_LOCATION/manifest.json manifest.json"
 
       - name: dbt dependencies
         run: "dbt deps"
 
       - name: dbt compile to create manifest to compare to
-        run: "dbt compile"
+        run: "dbt compile $PROFILE $COMPILE_TAG"
 
       - name: dbt seed
-        run: "dbt seed --select state:modified --state ."
+        run: "dbt seed $PROFILE --select state:modified$TAG --state ."
 
       - name: dbt run initial model(s)
-        run: "dbt -x run --select state:modified --exclude tag:prod_exclude --defer --state ."
+        run: "dbt -x run $PROFILE --select state:modified$TAG --exclude $EXCLUDE tag:prod_exclude --defer --state ."
 
       - name: dbt test initial model(s)
-        run: "dbt test --select state:new state:modified --exclude tag:prod_exclude --defer --state ."
+        run: "dbt test $PROFILE --select state:new$TAG state:modified$TAG --exclude $EXCLUDE tag:prod_exclude --defer --state ."
 
       - name: Set environment variable for incremental model count
         run: |
-          echo "INC_MODEL_COUNT=$(echo dbt ls --select state:modified,config.materialized:incremental --state . --resource-type model  | wc -l)" >> $GITHUB_ENV
+          echo "INC_MODEL_COUNT=$(echo dbt ls $PROFILE --select state:modified,config.materialized:incremental$TAG -SINGLE_EXCLUDE --state . --resource-type model  | wc -l)" >> $GITHUB_ENV
 
       - name: dbt run incremental model(s) if applicable
         if: env.INC_MODEL_COUNT > 0
-        run: "dbt run --select state:modified,config.materialized:incremental --exclude tag:prod_exclude --defer --state ."
+        run: "dbt run $PROFILE --select state:modified,config.materialized:incremental$TAG --exclude $EXCLUDE tag:prod_exclude --defer --state ."
 
       - name: dbt test incremental model(s) if applicable
         if: env.INC_MODEL_COUNT > 0
-        run: "dbt test --select state:modified,config.materialized:incremental --exclude tag:prod_exclude --defer --state ."
+        run: "dbt test $PROFILE --select state:modified,config.materialized:incremental$TAG --exclude $EXCLUDE tag:prod_exclude --defer --state ."
 
       - name: Run DuneSQL Check
+        if: matrix.engine != 'dunesql'
         run: "/runner/dunesql_check.py --schema test_schema --pr_schema git_$GIT_SHA"
