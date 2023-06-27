@@ -7,14 +7,18 @@
                                     \'["msilb7"]\') }}'
   )
 }}
-select distinct
+select
    b.edition_address as contract_address
   ,b.edition_name AS name
   ,b.edition_symbol AS symbol
-  ,n.standard
 from {{ ref('sound_xyz_optimism_edition_metadata') }} as b
-left join {{ ref('tokens_ethereum_nft')}} as n
-  on n.contract_address = b.edition_address
 GROUP BY 1,2,3,4
 
--- UNION ALL
+UNION ALL
+
+select
+   b.edition_address as contract_address
+  ,b.edition_name AS name
+  ,b.edition_symbol AS symbol
+from {{ ref('zora_optimism_edition_metadata') }} as b
+GROUP BY 1,2,3,4

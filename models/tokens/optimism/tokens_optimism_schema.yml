@@ -235,8 +235,6 @@ models:
           - unique
       - name: name
         description: "NFT Project name"
-      - name: standard
-        description: "NFT Project standard, currently only erc721 tokens can be bridged"
       - name: symbol
         description: "NFT Project symbol"
 
