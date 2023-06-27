@@ -50,7 +50,8 @@ jobs:
       run: "dbt deps"
 
     - name: dbt compile to create prod manifest from main
-      run: "dbt compile --target-path . $PROFILE $COMPILE_TAG"
+      run: "dbt compile --target-path . $COMPILE_TAG"
+      # OLD: run: "dbt compile --target-path . $PROFILE $COMPILE_TAG"
 
     - name: copy old manifest locally
       run: "aws s3 cp s3://$S3_LOCATION/manifest.json s3://$S3_LOCATION/previous_manifest.json"
