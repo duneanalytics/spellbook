@@ -202,8 +202,8 @@ WITH
     (
       SELECT
           fills.evt_block_time AS block_time, fills.evt_block_number as block_number
-          , 'otc' as native_order_type
           , 'v4' AS protocol_version
+          , 'otc' as native_order_type
           , fills.evt_tx_hash AS transaction_hash
           , fills.evt_index
           , fills.maker AS maker_address
@@ -288,7 +288,7 @@ WITH
                 taker_token_filled_amount_raw as taker_token_amount_raw,
                 maker_symbol,
                 token_pair,
-                CAST(ARRAY() as array<bigint>) as trace_address,
+                '1' as trace_address,
                 maker_asset_filled_amount maker_token_amount,
                 taker_token,
                 taker_symbol,

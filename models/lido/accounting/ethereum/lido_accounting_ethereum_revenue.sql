@@ -97,7 +97,7 @@ protocol_fee_distribution AS (
         protocol_fee_distribution.insurance_points AS insurance_fee,
         protocol_fee_distribution.operators_points AS operators_fee,
         protocol_fee_distribution.treasury_points AS treasury_fee,
-        (1 - protocol_fee.points)*(oracle_txns.treasury_revenue + oracle_txns.operators_revenue + 	oracle_txns.insurance_revenue) AS depositors_revenue,
+        10*(1 - protocol_fee.points)*(oracle_txns.treasury_revenue + oracle_txns.operators_revenue + 	oracle_txns.insurance_revenue) AS depositors_revenue,
         oracle_txns.treasury_revenue AS treasury_revenue,
         oracle_txns.insurance_revenue AS insurance_revenue,
         oracle_txns.operators_revenue AS operators_revenue

@@ -7,6 +7,7 @@
 -- 5. add aggregator columns
 -- 6. fix buyer or seller for aggregator txs
 -- 7. calculate platform and royalty rates
+-- 8. deduplicate based on sub_tx_trade_id
 
 WITH base_union as (
     {% for nft_model in models %}
@@ -32,7 +33,8 @@ WITH base_union as (
         royalty_fee_amount_raw,
         platform_fee_address,   -- optional
         royalty_fee_address,    -- optional
-        sub_tx_trade_id
+        sub_tx_trade_id,
+        row_number() over (partition by tx_hash, sub_tx_trade_id order by tx_hash) as duplicates_rank
     FROM {{ nft_model[2] }}
     {% if is_incremental() %}
     WHERE block_time >= date_trunc("day", now() - interval '1 week')
@@ -56,8 +58,8 @@ SELECT
     base.project_contract_address,
     base.trade_category,
     base.trade_type,
-    case when base.buyer != coalesce(agg1.contract_address,agg2.contract_address) then base.buyer else tx.from end as buyer,
-    case when base.seller != coalesce(agg1.contract_address,agg2.contract_address) then base.seller else tx.from end as seller,
+    case when base.buyer = coalesce(agg1.contract_address,agg2.contract_address) then tx.from else base.buyer end as buyer,
+    case when base.seller = coalesce(agg1.contract_address,agg2.contract_address) then tx.from else base.seller end as seller,
     base.nft_contract_address,
     base.nft_token_id,
     base.nft_amount,
@@ -71,13 +73,13 @@ SELECT
     tx.to as tx_to,
     nft.name as nft_collection,
     nft.standard as nft_standard,
-    erc20.symbol as currency_symbol,
-    base.price_raw/pow(10,coalesce(erc20.decimals,18)) as price,
-    base.platform_fee_amount_raw/pow(10,coalesce(erc20.decimals,18)) as platform_fee_amount,
-    base.royalty_fee_amount_raw/pow(10,coalesce(erc20.decimals,18)) as royalty_fee_amount,
-    base.price_raw/pow(10,coalesce(erc20.decimals,18))*p.price as price_usd,
-    base.platform_fee_amount_raw/pow(10,coalesce(erc20.decimals,18))*p.price as platform_fee_amount_usd,
-    base.royalty_fee_amount_raw/pow(10,coalesce(erc20.decimals,18))*p.price as royalty_fee_amount_usd,
+    coalesce(erc20.symbol,p.symbol) as currency_symbol,
+    base.price_raw/pow(10,coalesce(erc20.decimals,p.decimals,18)) as price,
+    base.platform_fee_amount_raw/pow(10,coalesce(erc20.decimals,p.decimals,18)) as platform_fee_amount,
+    base.royalty_fee_amount_raw/pow(10,coalesce(erc20.decimals,p.decimals,18)) as royalty_fee_amount,
+    base.price_raw/pow(10,coalesce(erc20.decimals,p.decimals,18))*p.price as price_usd,
+    base.platform_fee_amount_raw/pow(10,coalesce(erc20.decimals,p.decimals,18))*p.price as platform_fee_amount_usd,
+    base.royalty_fee_amount_raw/pow(10,coalesce(erc20.decimals,p.decimals,18))*p.price as royalty_fee_amount_usd,
     coalesce(cast(100*base.platform_fee_amount_raw/base.price_raw as double),cast(0.0 as double)) as platform_fee_percentage,
     coalesce(cast(100*base.royalty_fee_amount_raw/base.price_raw as double),cast(0.0 as double)) as royalty_fee_percentage,
     coalesce(agg1.contract_address,agg2.contract_address) as aggregator_address,
@@ -114,6 +116,7 @@ ON agg1.contract_address is null    -- only match if agg1 produces no matches, t
 LEFT JOIN {{ aggregator_markers }} agg_mark
 ON RIGHT(tx.data, agg_mark.hash_marker_size) = agg_mark.hash_marker
 {% endif %}
+WHERE base.duplicates_rank = 1
 )
 
 

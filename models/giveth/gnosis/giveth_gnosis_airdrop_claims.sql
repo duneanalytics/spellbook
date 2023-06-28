@@ -1,5 +1,6 @@
 {{
     config(
+        schema = 'giveth_gnosis',
         alias='airdrop_claims',
         materialized = 'table',
         file_format = 'delta',

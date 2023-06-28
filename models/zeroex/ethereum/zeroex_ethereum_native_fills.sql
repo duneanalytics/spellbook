@@ -14,7 +14,7 @@
 
 -- Test Query here: 
 WITH 
-    v3_fills AS (
+   /* v3_fills AS (
         SELECT
             evt_block_time AS block_time, fills.evt_block_number as block_number
             , 'v3' AS protocol_version
@@ -135,7 +135,7 @@ WITH
                 AND evt_block_time >= '{{zeroex_v3_start_date}}'
                 {% endif %}
     )
-    , v4_limit_fills AS (
+    , */ v4_limit_fills AS (
 
         SELECT
             fills.evt_block_time AS block_time, fills.evt_block_number as block_number
@@ -320,13 +320,13 @@ WITH
 
     all_fills as (
     
-    SELECT * FROM v3_fills
+    /*SELECT * FROM v3_fills
 
     UNION ALL
 
     SELECT * FROM v2_1_fills
 
-    UNION ALL
+    UNION ALL */
 
     SELECT * FROM v4_limit_fills
 
@@ -352,7 +352,7 @@ WITH
                 taker_token_filled_amount_raw as taker_token_amount_raw,
                 maker_symbol,
                 token_pair,
-                CAST(ARRAY() as array<bigint>) as trace_address,
+                '1' as trace_address,
                 maker_asset_filled_amount maker_token_amount,
                 taker_token, 
                 taker_symbol,

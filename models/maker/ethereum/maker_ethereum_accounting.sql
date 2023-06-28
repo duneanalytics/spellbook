@@ -145,6 +145,7 @@ WITH dao_wallet AS (
         ('RWA007-A',CAST(NULL as date),CAST(NULL as date),12320,31172,CAST(NULL AS NUMERIC(38))),
         ('RWA008-A',CAST(NULL as date),CAST(NULL as date),12310,31170,CAST(NULL AS NUMERIC(38))),
         ('RWA009-A',CAST(NULL as date),CAST(NULL as date),12310,31170,CAST(NULL AS NUMERIC(38))),
+        ('RWA014-A',CAST(NULL as date),CAST(NULL as date),13411,31180,CAST(NULL AS NUMERIC(38))),
         ('UNIV2DAIUSDC-A',CAST(NULL as date),CAST(NULL as date),11140,31140,CAST(NULL AS NUMERIC(38))), --need to list all UNIV2% LP that are stable LPs, all else assumed volatile
         ('UNIV2DAIUSDT-A',CAST(NULL as date),CAST(NULL as date),11140,31140,CAST(NULL AS NUMERIC(38)))
 )
@@ -372,10 +373,11 @@ WITH dao_wallet AS (
     SELECT call_tx_hash
         , CASE WHEN usr = '0x6c6d4be2223b5d202263515351034861dd9afdb6' THEN 'RWA009-A'
             WHEN usr = '0xef1b095f700be471981aae025f92b03091c3ad47' THEN 'RWA007-A'
+            WHEN usr = '0x5c82d7eafd66d7f5edc2b844860bfd93c3b0474f' THEN 'RWA014-A'
         END AS ilk
     FROM {{ source('maker_ethereum', 'dai_call_burn') }}
     WHERE call_success
-      AND usr IN ('0x6c6d4be2223b5d202263515351034861dd9afdb6', '0xef1b095f700be471981aae025f92b03091c3ad47') --HVB RWA JAR, MIP65 RWA JAR
+      AND usr IN ('0x6c6d4be2223b5d202263515351034861dd9afdb6', '0xef1b095f700be471981aae025f92b03091c3ad47', '0x5c82d7eafd66d7f5edc2b844860bfd93c3b0474f') --HVB RWA JAR, MIP65 RWA JAR, COINBASE RWA JAR
     --   {% if is_incremental() %}
     --   AND call_block_time >= date_trunc("day", now() - interval '1 week')
     --   {% endif %}
@@ -705,27 +707,32 @@ WITH dao_wallet AS (
       AND suck.v IN ('0xbe8e3e3618f7474f8cb1d074a26affef007e98fb'
                 , '0x2cc583c0aacdac9e23cb601fda8f1a0c56cdcb71'
                 , '0xa4c22f0e25c6630b2017979acf1f865e94695c4b')
+      AND suck.rad+0 <> 0
     --   {% if is_incremental() %}
     --   AND suck.call_block_time >= date_trunc("day", now() - interval '1 week')
     --   {% endif %}
     GROUP BY 1
 )
 , opex_preunion AS (
-    SELECT dai.call_block_time   AS ts
-         , dai.call_tx_hash      AS hash
+    SELECT mints.call_block_time   AS ts
+         , mints.call_tx_hash      AS hash
          , CASE
                WHEN dao_wallet.code = 'GELATO' THEN 31710 --keeper maintenance expenses
                WHEN dao_wallet.code = 'GAS' THEN 31630 -- oracle gas expenses
                WHEN dao_wallet.code IS NOT NULL THEN 31720 --workforce expenses
                ELSE 31740 --direct opex - when a suck operation is used to directly transfer DAI to a third party
         END                  AS equity_code
-        , dai.wad / POW(10, 18) AS expense
-    FROM {{ source('maker_ethereum', 'dai_call_mint') }} dai
+        , mints.wad / POW(10, 18) AS expense
+    FROM {{ source('maker_ethereum', 'dai_call_mint') }} mints
     JOIN opex_suck_hashes opex
-        ON dai.call_tx_hash = opex.call_tx_hash
+        ON mints.call_tx_hash = opex.call_tx_hash
     LEFT JOIN dao_wallet
-        ON dai.usr = dao_wallet.wallet_address
-    WHERE dai.call_success
+        ON mints.usr = dao_wallet.wallet_address
+    LEFT JOIN interest_accruals_1 AS frobs
+            ON mints.call_tx_hash = frobs.hash
+            AND mints.wad = frobs.dart
+    WHERE mints.call_success
+        AND frobs.hash IS NULL --filtering out draws from psm that happened in the same tx as expenses
         -- {% if is_incremental() %}
         -- AND dai.call_block_time >= date_trunc("day", now() - interval '1 week')
         -- {% endif %}
@@ -968,7 +975,7 @@ WITH dao_wallet AS (
         , ts
         , hash
         , dart
-        , COALESCE(POW(10,27) + SUM(rate) OVER(PARTITION BY ilk ORDER BY ts ASC), POW(10,27)) AS rate
+        , COALESCE(POW(10,27) + SUM(rate) OVER(PARTITION BY ilk ORDER BY ts ASC, call_trace_address ASC), POW(10,27)) AS rate
     FROM interest_accruals_1 -- loan_actions_1 was previously exactly the same as interest_accruals_1, so instead of being redundant, I am just going from interest_accruals_1 and continuing the naming convention (treating as if it was called loan_actions_1)
     WHERE STRING(UNHEX(TRIM('0', RIGHT(ilk, LENGTH(ilk)-2)))) <> 'TELEPORT-FW-A'
 )
