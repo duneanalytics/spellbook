@@ -208,10 +208,10 @@ select
         case when o.tokenA = '0x7f39c581f595b53c5cb19bd0b3f8da6c935e2ca0' then pA.symbol else pB.symbol end as main_token_symbol,
         case when o.tokenA = '0x7f39c581f595b53c5cb19bd0b3f8da6c935e2ca0' then o.tokenB else o.tokenA end as paired_token, 
         case when o.tokenA = '0x7f39c581f595b53c5cb19bd0b3f8da6c935e2ca0' then pB.symbol else pA.symbol end as paired_token_symbol,
-        case when o.tokenA = '0x7f39c581f595b53c5cb19bd0b3f8da6c935e2ca0' then amountA/pA.decimals else amountB/pB.decimals end as main_token_reserve,
-        case when o.tokenA = '0x7f39c581f595b53c5cb19bd0b3f8da6c935e2ca0' then amountB/pB.decimals else amountA/pA.decimals end as paired_token_reserve,
-        case when o.tokenA = '0x7f39c581f595b53c5cb19bd0b3f8da6c935e2ca0' then amountA*pA.price/pA.decimals else amountB*pB.price/pB.decimals end as main_token_usd_reserve,
-        case when o.tokenA = '0x7f39c581f595b53c5cb19bd0b3f8da6c935e2ca0' then amountB*pB.price/pB.decimals else amountA*pA.price/pA.decimals end as paired_token_usd_reserve,
+        case when o.tokenA = '0x7f39c581f595b53c5cb19bd0b3f8da6c935e2ca0' then amountA/power(10,pA.decimals) else amountB/power(10,pB.decimals) end as main_token_reserve,
+        case when o.tokenA = '0x7f39c581f595b53c5cb19bd0b3f8da6c935e2ca0' then amountB/power(10,pB.decimals) else amountA/power(10,pA.decimals) end as paired_token_reserve,
+        case when o.tokenA = '0x7f39c581f595b53c5cb19bd0b3f8da6c935e2ca0' then amountA*pA.price/power(10,pA.decimals) else amountB*pB.price/power(10,pB.decimals) end as main_token_usd_reserve,
+        case when o.tokenA = '0x7f39c581f595b53c5cb19bd0b3f8da6c935e2ca0' then amountB*pB.price/power(10,pB.decimals) else amountA*pA.price/power(10,pA.decimals) end as paired_token_usd_reserve,
         coalesce(t.volume,0) as trading_volume
 from pool_liquidity o
 left join tokens_prices_daily pA on o.time = pA.time and o.tokenA = pA.token
