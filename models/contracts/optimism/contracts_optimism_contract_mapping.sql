@@ -348,7 +348,7 @@ WHERE contract_order = 1
     ,CAST(NULL AS varchar) as created_tx_to
     ,CAST(NULL AS varchar) as created_tx_method_id
     ,l.tx_index AS created_tx_index
-    ,ceil( length(oc.code)/2 ) as code_bytelength
+    ,bytearray_length(oc.code) as code_bytelength
     ,1 as code_deploy_rank
     
   from {{ source('optimism', 'logs') }} as l
