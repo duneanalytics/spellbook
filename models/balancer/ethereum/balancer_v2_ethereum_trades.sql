@@ -30,6 +30,7 @@ WITH
             s.evt_block_number,
             s.evt_tx_hash,
             s.evt_index,
+            s.poolId,
             MAX(f.index) AS max_fee_evt_index
         FROM {{ source ('balancer_v2_ethereum', 'Vault_evt_Swap') }} s
         INNER JOIN fees_base f 
@@ -38,19 +39,21 @@ WITH
         {% if is_incremental() %}
         WHERE s.evt_block_time >= DATE_TRUNC("day", NOW() - interval '1 week')
         {% endif %}
-        GROUP BY 1, 2, 3
+        GROUP BY 1, 2, 3, 4
     ),
     edge_case_fees AS (
         SELECT 
             s.evt_block_number,
             s.evt_tx_hash,
             s.evt_index,
+            s.poolId,
             f.swap_fee_percentage 
         FROM {{ source ('balancer_v2_ethereum', 'Vault_evt_Swap') }} s
             INNER JOIN max_fee_change_evt_edge_case m
                 ON s.evt_block_number = m.evt_block_number
                 AND s.evt_tx_hash = m.evt_tx_hash 
                 AND s.evt_index = m.evt_index
+                AND s.poolId = m.poolId
             INNER JOIN fees_base f 
                 ON s.evt_tx_hash = f.tx_hash 
                 AND f.index = m.max_fee_evt_index
