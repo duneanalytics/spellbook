@@ -187,7 +187,7 @@ zipped_balance_changes AS (
         LEFT JOIN dex_prices p2 ON p2.day <= c.day
         AND c.day < p2.day_of_next_change
         AND p2.token = b.token
-        LEFT jOIN bpt_prices p3 ON p3.day = b.day AND p3.token = CAST(b.token as varchar(42))
+        LEFT JOIN bpt_prices p3 ON p3.day = b.day AND p3.token = CAST(b.token as varchar(42))
         WHERE b.token != SUBSTRING(b.pool_id, 0, 42)
     ),
 
