@@ -476,4 +476,5 @@ SELECT LOWER(contract_address) AS contract_address, symbol, decimals
 ,('0x4d8be0203962716f7e92484ddbee3af2b503972f' ,'test' ,9)
 ,('0xe2995c68a67202d4b5aa01b01c6b4bf319b49d43' ,'SS' ,9)
 ,('0x30e1cd47b5cbc7568c3339c7b288098be467f662' ,'SBx' ,18)
+,('0xa8318cb82cd01ed1b552ce03ea7099900178355f' ,'XHELLOWORLD' ,18)
 ) AS temp_table (contract_address, symbol, decimals)
