@@ -227,7 +227,7 @@ and   DATE_TRUNC('day', call_block_time) >= to_date('{{ project_start_date }}')
     GROUP by 1
 )
 
-select 'ethereum curve frxETH:stETH concentrated 0.04' as pool_name, '0x4d9f9D15101EEC665F77210cB999639f760F831E' as pool, 'ethereum' as blockchain, 'curve' as project,0.04 as fee,
+select 'ethereum curve frxETH:stETH 0.04' as pool_name, '0x4d9f9D15101EEC665F77210cB999639f760F831E' as pool, 'ethereum' as blockchain, 'curve' as project,0.04 as fee,
         d.day as time, '0xae7ab96520DE3A18E5e111B5EaAb095312D7fE84' as main_token, 'stETH' as main_token_symbol,
          '0x5E8422345238F34275888049021821E8E08CAa1f' as paired_token, 'frxETH' as paired_token_symbol,
          steth_from_wsteth as main_token_reserve,
