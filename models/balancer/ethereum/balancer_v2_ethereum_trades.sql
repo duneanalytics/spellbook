@@ -16,69 +16,26 @@
 {% set project_start_date = '2021-04-20' %}
 
 WITH 
-    fees_base AS (
-        SELECT *, 
-            MAX(index) OVER(PARTITION BY tx_hash, contract_address) AS max_index_same_tx 
+    fees_changes AS (
+        SELECT *, block_number + 0.0001 * index AS block_number_index_1
         FROM {{ ref('balancer_v2_ethereum_pools_fees') }} 
-    ),
-    most_case_fees AS (
-        SELECT * FROM fees_base 
-        WHERE index = max_index_same_tx
-    ),
-    max_fee_change_evt_edge_case AS (
-        SELECT 
-            s.evt_block_number,
-            s.evt_tx_hash,
-            s.evt_index,
-            s.poolId,
-            MAX(f.index) AS max_fee_evt_index
-        FROM {{ source ('balancer_v2_ethereum', 'Vault_evt_Swap') }} s
-        INNER JOIN fees_base f 
-            ON f.tx_hash = s.evt_tx_hash
-            AND f.index < s.evt_index
-            AND f.contract_address = SUBSTRING(CAST(s.poolId AS varchar(66)), 1, 42)
-        {% if is_incremental() %}
-        WHERE s.evt_block_time >= DATE_TRUNC("day", NOW() - interval '1 week')
-        {% endif %}
-        GROUP BY 1, 2, 3, 4
-    ),
-    edge_case_fees AS (
-        SELECT 
-            s.evt_block_number,
-            s.evt_tx_hash,
-            s.evt_index,
-            s.poolId,
-            f.swap_fee_percentage 
-        FROM {{ source ('balancer_v2_ethereum', 'Vault_evt_Swap') }} s
-            INNER JOIN max_fee_change_evt_edge_case m
-                ON s.evt_block_number = m.evt_block_number
-                AND s.evt_tx_hash = m.evt_tx_hash 
-                AND s.evt_index = m.evt_index
-                AND s.poolId = m.poolId
-            INNER JOIN fees_base f 
-                ON s.evt_tx_hash = f.tx_hash 
-                AND f.index = m.max_fee_evt_index
-        {% if is_incremental() %}
-        WHERE s.evt_block_time >= DATE_TRUNC("day", NOW() - interval '1 week')
-        {% endif %}
     ),
     swap_fees AS (
         SELECT
-            swap.evt_block_number,
-            swap.evt_tx_hash,
-            swap.evt_index,
-            SUBSTRING(swap.poolId, 0, 42) AS contract_address,
-            swap.evt_block_time,
-            MAX(fees.block_time) AS max_fee_evt_block_time
-        FROM
-            {{ source ('balancer_v2_ethereum', 'Vault_evt_Swap') }} swap
-            LEFT JOIN {{ ref('balancer_v2_ethereum_pools_fees') }} fees
-                ON fees.contract_address = SUBSTRING(swap.poolId, 0, 42)
-                AND fees.block_time <= swap.evt_block_time
+            swaps.poolId,
+            swaps.evt_block_number,
+            swaps.evt_tx_hash,
+            swaps.evt_index,
+            SUBSTRING(CAST(swaps.poolId AS varchar(66)), 1, 42) AS contract_address,
+            fees.swap_fee_percentage,
+            ROW_NUMBER() OVER (PARTITION BY poolId, evt_tx_hash, evt_index ORDER BY block_number_index_1 DESC) AS rn
+        FROM {{ source ('balancer_v2_ethereum', 'Vault_evt_Swap') }} swaps
+        LEFT JOIN fees_changes fees
+            ON CAST(fees.contract_address AS varchar(66)) = substring(CAST(swaps.poolId AS varchar(66)), 1, 42)
+            AND fees.block_number_index_1 < swaps.evt_block_number + 0.0001 * evt_index
         {% if is_incremental() %}
-        WHERE swap.evt_block_time >= DATE_TRUNC("day", NOW() - interval '1 week')
+        WHERE swaps.evt_block_time >= date_trunc('day', NOW() - interval '1 week')
         {% endif %}
-        GROUP BY 1, 2, 3, 4, 5
     ),
     dexs AS (
         SELECT
@@ -93,28 +50,20 @@ WITH
             swap.tokenIn AS token_sold_address,
             swap_fees.contract_address AS project_contract_address,
             swap.poolId AS poolId,
-            COALESCE(most.swap_fee_percentage, edge.swap_fee_percentage) / POWER(10, 18) AS swap_fee,
+            swap_fees.swap_fee_percentage / POWER(10, 18) AS swap_fee,
             swap.evt_tx_hash AS tx_hash,
             '' AS trace_address,
             swap.evt_index
         FROM
             swap_fees
-            INNER JOIN {{ source ('balancer_v2_ethereum', 'Vault_evt_Swap') }} swap
+            INNER JOIN `balancer_v2_ethereum`.`Vault_evt_Swap` swap
                 ON swap.evt_block_number = swap_fees.evt_block_number
                 AND swap.evt_tx_hash = swap_fees.evt_tx_hash
                 AND swap.evt_index = swap_fees.evt_index
-            LEFT JOIN most_case_fees most
-                ON most.contract_address = swap_fees.contract_address
-                AND most.block_time = swap_fees.max_fee_evt_block_time
-                AND most.tx_hash <> swap_fees.evt_tx_hash
-            LEFT JOIN edge_case_fees edge
-                ON edge.evt_block_number = swap_fees.evt_block_number
-                AND edge.evt_tx_hash = swap_fees.evt_tx_hash
-                AND edge.evt_index = swap_fees.evt_index
-                AND edge.poolId = swap.poolId
         WHERE
             swap.tokenIn <> swap_fees.contract_address
             AND swap.tokenOut <> swap_fees.contract_address
+            AND swap_fees.rn = 1
     ),
     bpa AS (
         SELECT
