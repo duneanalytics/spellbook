@@ -25,5 +25,5 @@ FROM {{ source('yearn_optimism', 'ReleaseRegistry_call_newVault') }}
 
 WHERE call_success = true
 {% if is_incremental() %}
-AND call_block_time >= date_trunc("day", now() - interval '1 week')
+AND call_block_time >= date_trunc("day", now() - interval '7' day)
 {% endif %}

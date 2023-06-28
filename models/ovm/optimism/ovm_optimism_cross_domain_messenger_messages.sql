@@ -20,7 +20,7 @@ SELECT 'withdraw' AS msg_type, 'SentMessage' AS event, sender,
     
     FROM {{ source ('ovm_optimism', 'L2CrossDomainMessenger_evt_SentMessage') }}
     {% if is_incremental() %}
-    WHERE evt_block_time >= (NOW() - interval '14 days')
+    WHERE evt_block_time >= (NOW() - interval '14' day)
     {% endif %}
 
     
@@ -34,5 +34,5 @@ SELECT 'deposit' AS m_type, 'RelayedMessage' AS event, '' as sender,
 
     FROM {{ source ('ovm_optimism', 'L2CrossDomainMessenger_evt_RelayedMessage') }}
     {% if is_incremental() %}
-    WHERE evt_block_time >= (NOW() - interval '14 days')
+    WHERE evt_block_time >= (NOW() - interval '14' day)
     {% endif %}
