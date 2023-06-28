@@ -99,5 +99,7 @@ from (
     ,('sound xyz', 'Sound.xyz')
     ,('splits','0xSplits')
     ,('kyber', 'kyberswap')
+    ,('synthetix_v3', 'Synthetix')
+    ,('velodrome_v2', 'Velodrome')
 
     ) as temp_table (dune_name, mapped_name)
