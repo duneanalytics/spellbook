@@ -38,6 +38,7 @@ WITH
         {% if is_incremental() %}
         WHERE s.evt_block_time >= DATE_TRUNC("day", NOW() - interval '1 week')
         {% endif %}
+        GROUP BY 1, 2, 3
     ),
     edge_case_fees AS (
         SELECT 
