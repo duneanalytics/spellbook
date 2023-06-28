@@ -56,7 +56,7 @@ WITH
             swap.evt_index
         FROM
             swap_fees
-            INNER JOIN {{ source ('balancer_v2_arbitrum', 'Vault_evt_Swap') }} swap
+            INNER JOIN {{ source ('balancer_v2_optimism', 'Vault_evt_Swap') }} swap
                 ON swap.evt_block_number = swap_fees.evt_block_number
                 AND swap.evt_tx_hash = swap_fees.evt_tx_hash
                 AND swap.evt_index = swap_fees.evt_index
