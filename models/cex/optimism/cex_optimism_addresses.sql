@@ -49,4 +49,6 @@ FROM (VALUES
     , ('optimism', '0xea319fd75766f5180018f8e760f51c3d3c457496', 'WOO Network', 'WOO Network 4', 'hildobby', timestamp '2023-04-07')
     -- Hotbit, Source: https://etherscan.io/accounts/label/hotbit
     , ('optimism', '0xfa6cf22527d88270eea37f45af1808adbf3c1b17', 'Hotbit', 'Hotbit 1', 'hildobby', timestamp '2022-08-28')
+    -- OKCoin, Source: https://github.com/DefiLlama/DefiLlama-Adapters/blob/0d5ea292d5911518a0686aecbf54a0260e063992/projects/okcoin/index.js
+    , ('optimism', '0x2ce910fbba65b454bbaf6a18c952a70f3bcd8299', 'OKCoin', 'OKCoin 1', 'msilb7', timestamp '2023-06-27')
     ) AS x (blockchain, address, cex_name, distinct_name, added_by, added_date)

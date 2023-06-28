@@ -530,6 +530,7 @@ WITH curated_list AS (
       ,('0xC253Af7B80F3DD3d469bf4b94AA9e3df59e71e43', 'Inverse Finance')
       ,('0x6Bd10054c59Febf0CF7c0f5359D036A997E93810', 'BlueNorva')
       ,('0x6fF5723435b7dfC2371B57Fb5cB4c373E5995C78', 'Bored Town')
+      ,('0xc82Ea2afE1Fd1D61C4A12f5CeB3D7000f564F5C6', 'OKX')
 
   ) as temp_table (creator_address, contract_project)
 )
