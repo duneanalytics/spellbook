@@ -34,8 +34,9 @@ WITH
             MAX(f.index) AS max_fee_evt_index
         FROM {{ source ('balancer_v2_ethereum', 'Vault_evt_Swap') }} s
         INNER JOIN fees_base f 
-            ON s.evt_tx_hash = f.tx_hash 
+            ON f.tx_hash = s.evt_tx_hash
             AND f.index < s.evt_index
+            AND f.contract_address = SUBSTRING(CAST(s.poolId AS varchar(66)), 1, 42)
         {% if is_incremental() %}
         WHERE s.evt_block_time >= DATE_TRUNC("day", NOW() - interval '1 week')
         {% endif %}
@@ -110,6 +111,7 @@ WITH
                 ON edge.evt_block_number = swap_fees.evt_block_number
                 AND edge.evt_tx_hash = swap_fees.evt_tx_hash
                 AND edge.evt_index = swap_fees.evt_index
+                AND edge.poolId = swap.poolId
         WHERE
             swap.tokenIn <> swap_fees.contract_address
             AND swap.tokenOut <> swap_fees.contract_address
