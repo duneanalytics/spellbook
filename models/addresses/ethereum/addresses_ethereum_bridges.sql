@@ -134,6 +134,7 @@ FROM (VALUES ('0x8ed95d1746bf1e4dab58d8ed4724f1ef95b20db0', '0x', 'Erc20 Bridge 
   ,('0x99c9fc46f92e8a1c0dec1b1747d010903e884be1', 'Optimism', 'Optimism: L1StandardBridge Proxy')
   ,('0x4afdd3a48e13b305e98d9eead67b1b5867e370df', 'Optimism', 'Optimism: L1ERC721Bridge')
   ,('0x5a7749f83b81b301cab5f48eb8516b986daef23d', 'Optimism', 'Optimism: L1ERC721BridgeProxy')
+  ,('0x25ace71c97B33Cc4729CF772ae268934F7ab5fA1', 'Optimism', 'Optimism: Proxy OVM L1 Cross Domain Messenger')
 
   ,('0x40ec5b33f54e0e8a33a975908c5ba1c14e5bbbdf', 'Polygon', 'ERC20 Bridge')
   ) AS x (address, bridge_name, description)
