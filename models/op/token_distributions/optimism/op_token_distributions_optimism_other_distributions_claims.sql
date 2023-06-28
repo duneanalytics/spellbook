@@ -12,7 +12,7 @@
     )
 }}
 
-{% set op_token_address = '0x4200000000000000000000000000000000000042' %}
+{% set op_token_address = 0x4200000000000000000000000000000000000042 %}
 {% set op_token_launch_date = '2022-05-31'  %}
 {% set foundation_label = 'OP Foundation'  %}
 {% set grants_descriptor = 'OP Foundation Grants'  %}
@@ -58,7 +58,7 @@ FROM (
             'Other' AS to_name, cast(amount as double) / cast(1e18 as double) AS op_amount_decimal
             --get last
             , tf.evt_index AS evt_tfer_index
-            , substring(tx.data,1,10) AS tx_method --bytearray_substring(tx.data, 1, 4) AS tx_method
+            , bytearray_substring(tx.data, 1, 4) AS tx_method
             
             ,ROW_NUMBER() OVER (PARTITION BY r.evt_tx_hash, r.evt_index ORDER BY tf.evt_index DESC) AS claim_rank_desc
             ,ROW_NUMBER() OVER (PARTITION BY r.evt_tx_hash, r.evt_index ORDER BY tf.evt_index ASC) AS claim_rank_asc
@@ -70,7 +70,7 @@ FROM (
                 AND tf.contract_address = r.reward
                 AND value = amount
                 {% if is_incremental() %} 
-                and tf.evt_block_time >= date_trunc('day', now() - interval '1 week')
+                and tf.evt_block_time >= date_trunc('day', now() - interval '7' day)
                 {% else %}
                 and tf.evt_block_time >= cast('{{op_token_launch_date}}' as date)
                 {% endif %}
@@ -84,7 +84,7 @@ FROM (
                 AND tx.block_number = tf.evt_block_number
                 AND lbl_to.label IS NULL -- don't try if we have a label on the to transfer
                 {% if is_incremental() %} 
-                AND tx.block_time >= date_trunc('day', now() - interval '1 week')
+                AND tx.block_time >= date_trunc('day', now() - interval '7' day)
                 {% else %}
                 AND tx.block_time >= cast('{{op_token_launch_date}}' as date)
                 {% endif %}
@@ -94,7 +94,7 @@ FROM (
         and cast(amount as double)/cast(1e18 as double) > 0
         AND lbl_from.label = '{{foundation_label}}'
         {% if is_incremental() %} 
-        and r.evt_block_time >= date_trunc('day', now() - interval '1 week')
+        and r.evt_block_time >= date_trunc('day', now() - interval '7' day)
         {% endif %}
 
     ) a

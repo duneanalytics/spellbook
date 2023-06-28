@@ -13,7 +13,7 @@
 }}
 
 
-{% set op_token_address = '0x4200000000000000000000000000000000000042' %}
+{% set op_token_address = 0x4200000000000000000000000000000000000042 %}
 {% set op_token_launch_date = '2022-05-31'  %}
 {% set foundation_label = 'OP Foundation'  %}
 {% set grants_descriptor = 'OP Foundation Grants'  %}
@@ -38,7 +38,7 @@ WITH all_labels AS (
         -- transfers out
             SELECT
                 evt_block_time, evt_block_number, evt_index,
-                tf.`from` AS from_address, tf.to AS to_address, tx.to AS tx_to_address, tx.`from` AS tx_from_address,  evt_tx_hash,
+                tf."from" AS from_address, tf.to AS to_address, tx.to AS tx_to_address, tx."from" AS tx_from_address,  evt_tx_hash,
             
             COALESCE(
                     lbl_from_util_tx.address_descriptor
@@ -74,12 +74,12 @@ WITH all_labels AS (
                 cast(tf.value as double)/cast( 1e18 as double) AS op_amount_decimal,
                 evt_index AS evt_tfer_index,
                 
-                substring(tx.data,1,10) AS tx_method --bytearray_substring(tx.data, 1, 4) AS tx_method
+                bytearray_substring(tx.data, 1, 4) AS tx_method
                 
             FROM {{source('erc20_optimism','evt_transfer') }} tf
             -- We want either the send or receiver to be the foundation or a project (also includes utility transfers)
             INNER JOIN all_labels lbl_from
-                ON lbl_from.address = tf.`from`
+                ON lbl_from.address = tf."from"
             -- if the recipient is in this list to, then we track it
             LEFT JOIN all_labels lbl_to
                 ON lbl_to.address = tf.to
@@ -98,7 +98,7 @@ WITH all_labels AS (
                 ON tx.to = dc.address
             
             LEFT JOIN all_labels lbl_from_util_tx
-                ON lbl_from_util_tx.address = tx.`from` --label of the transaction sender
+                ON lbl_from_util_tx.address = tx."from" --label of the transaction sender
                 AND dc.address IS NOT NULL --we have a disperse
                 
             -- LEFT JOIN tx_labels txl
@@ -106,7 +106,7 @@ WITH all_labels AS (
                 
             WHERE tf.contract_address = '{{op_token_address}}'
             --exclude Wintermute funding tfers
-            AND NOT (tf.`from` = '0x2501c477d0a35545a387aa4a3eee4292a9a8b3f0'
+            AND NOT (tf."from" = '0x2501c477d0a35545a387aa4a3eee4292a9a8b3f0'
                     and tf.to IN ('0x4f3a120e72c76c22ae802d129f599bfdbc31cb81'
                             ,'0x51d3a2f94e60cbecdce05ab41b61d7ce5240b8ff')
                     )
@@ -131,9 +131,9 @@ WITH all_labels AS (
                 WHEN dc.address IS NULL THEN 1 -- when not a utility transfer, keep it
                 WHEN dc.address IS NOT NULL
                     AND (
-                        tx.`from` IN (SELECT address FROM all_labels WHERE label != 'Utility')
+                        tx."from" IN (SELECT address FROM all_labels WHERE label != 'Utility')
                         OR
-                        tf.`from` IN (SELECT address FROM all_labels WHERE label != 'Utility')
+                        tf."from" IN (SELECT address FROM all_labels WHERE label != 'Utility')
                      ) THEN 1 --when utility, make sure the transaction or transfer is from a project wallet
                 ELSE 0
                 END

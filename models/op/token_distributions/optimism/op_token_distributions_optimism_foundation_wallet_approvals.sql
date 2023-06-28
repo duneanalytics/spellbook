@@ -16,7 +16,7 @@
 --          Project Wallet -> ? = Distributed OP
 -- Starting Jul 13, 2022 - The Foundation wallet approved tokens to project wallets for grants rather than making the transfer directly.
 
-{% set op_token_address = '0x4200000000000000000000000000000000000042' %}
+{% set op_token_address = 0x4200000000000000000000000000000000000042 %}
 {% set approvals_start_date = '2022-07-13'  %}
 {% set foundation_label = 'OP Foundation'  %}
 {% set grants_descriptor = 'OP Foundation Grants'  %}
@@ -33,7 +33,7 @@ DATE_TRUNC('day',evt_block_time) AS block_date,
 a.evt_block_time, a.evt_block_number, a.evt_tx_hash, a.evt_index,
 a.spender AS project_address, al.project_name,
 
-t.`from` AS tx_from_address, t.to AS tx_to_address, 
+t."from" AS tx_from_address, t.to AS tx_to_address, 
 
 cast(a.value as double)/cast(1e18 as double) AS op_approved_to_project
 
@@ -42,7 +42,7 @@ FROM {{ source('erc20_optimism', 'evt_Approval') }} a
         ON t.hash = a.evt_tx_hash
         AND t.block_number = a.evt_block_number
         {% if is_incremental() %} 
-        AND t.block_time >= date_trunc('day', now() - interval '1 week')
+        AND t.block_time >= date_trunc('day', now() - interval '7' day)
         {% else %}
         AND t.block_time >= cast( '{{approvals_start_date}}' as date )
         {% endif %}
@@ -54,7 +54,7 @@ WHERE
     a.contract_address = '{{op_token_address}}' --OP Token
     AND owner in (SELECT address FROM project_labels WHERE label = '{{foundation_label}}' AND address_descriptor = '{{grants_descriptor}}')
     {% if is_incremental() %} 
-    AND a.evt_block_time >= date_trunc('day', now() - interval '1 week')
+    AND a.evt_block_time >= date_trunc('day', now() - interval '7' day)
     {% else %}
     AND a.evt_block_time >= cast( '{{approvals_start_date}}' as date )
     {% endif %}
