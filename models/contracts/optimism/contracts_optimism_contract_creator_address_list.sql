@@ -52,7 +52,6 @@ WITH curated_list AS (
       ,(0xa430a8a6911e8de02acfe835eb1d5539a58cee94, 'Flux Protocol')
       ,(0x0e860f44d73f9fdbaf5e9b19afc554bf3c8e8a57, 'Poly Network')
       ,(0xe1cb04a0fa36ddd16a06ea828007e35e1a3cbc37, 'Gnosis Safe')
-      ,(0x914d7fec6aac8cd542e72bca78b30650d45643d7, 'Gnosis Safe')
       ,(0xab0d90fde397a4362acbe1d3a1c17f24b5b53266, 'Gnosis Safe')
       ,(0x3e579180cf01f0e2abf6ff4d566b7891fbf9b868, 'BitBTC Protocol')
       ,(0xd15d5d0f5b1b56a4daef75cfe108cb825e97d015, 'Superfluid')
@@ -533,6 +532,7 @@ WITH curated_list AS (
       ,(0x6Bd10054c59Febf0CF7c0f5359D036A997E93810, 'BlueNorva')
       ,(0x6fF5723435b7dfC2371B57Fb5cB4c373E5995C78, 'Bored Town')
       ,(0xc82Ea2afE1Fd1D61C4A12f5CeB3D7000f564F5C6, 'OKX')
+      ,(0x86c5608362b3fbbeb721140472229392f754ef87, 'Worldcoin')
       
   ) as temp_table (creator_address, contract_project)
 )
