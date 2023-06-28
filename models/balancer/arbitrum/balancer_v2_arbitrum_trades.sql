@@ -15,7 +15,7 @@
 
 {% set project_start_date = '2021-08-27' %}
 
-WITH
+WITH 
     fees_base AS (
         SELECT *, 
             MAX(index) OVER(PARTITION BY tx_hash, contract_address) AS max_index_same_tx 
@@ -30,27 +30,31 @@ WITH
             s.evt_block_number,
             s.evt_tx_hash,
             s.evt_index,
+            s.poolId,
             MAX(f.index) AS max_fee_evt_index
         FROM {{ source ('balancer_v2_arbitrum', 'Vault_evt_Swap') }} s
         INNER JOIN fees_base f 
-            ON s.evt_tx_hash = f.tx_hash 
+            ON f.tx_hash = s.evt_tx_hash
             AND f.index < s.evt_index
+            AND f.contract_address = SUBSTRING(CAST(s.poolId AS varchar(66)), 1, 42)
         {% if is_incremental() %}
         WHERE s.evt_block_time >= DATE_TRUNC("day", NOW() - interval '1 week')
         {% endif %}
-        GROUP BY 1, 2, 3
+        GROUP BY 1, 2, 3, 4
     ),
     edge_case_fees AS (
         SELECT 
             s.evt_block_number,
             s.evt_tx_hash,
             s.evt_index,
+            s.poolId,
             f.swap_fee_percentage 
         FROM {{ source ('balancer_v2_arbitrum', 'Vault_evt_Swap') }} s
             INNER JOIN max_fee_change_evt_edge_case m
                 ON s.evt_block_number = m.evt_block_number
                 AND s.evt_tx_hash = m.evt_tx_hash 
                 AND s.evt_index = m.evt_index
+                AND s.poolId = m.poolId
             INNER JOIN fees_base f 
                 ON s.evt_tx_hash = f.tx_hash 
                 AND f.index = m.max_fee_evt_index
@@ -107,6 +111,7 @@ WITH
                 ON edge.evt_block_number = swap_fees.evt_block_number
                 AND edge.evt_tx_hash = swap_fees.evt_tx_hash
                 AND edge.evt_index = swap_fees.evt_index
+                AND edge.poolId = swap.poolId
         WHERE
             swap.tokenIn <> swap_fees.contract_address
             AND swap.tokenOut <> swap_fees.contract_address
