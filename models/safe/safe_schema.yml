@@ -5,7 +5,7 @@ models:
     meta:
       blockchain: arbitrum, avalanche_c, bnb, ethereum, fantom, gnosis, goerli, optimism, polygon
       project: safe
-      contributors: [tschubotz]
+      contributors: tschubotz, danielpartida
     config:
       tags: ['arbitrum', 'avalanche_c', 'bnb', 'ethereum', 'fantom', 'gnosis', 'goerli', 'optimism', 'polygon', 'safe']
     description: >
