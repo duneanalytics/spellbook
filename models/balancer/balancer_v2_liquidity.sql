@@ -12,7 +12,6 @@ ref('balancer_v2_ethereum_liquidity')
 , ref('balancer_v2_optimism_liquidity')
 , ref('balancer_v2_arbitrum_liquidity')
 , ref('balancer_v2_polygon_liquidity')
-, ref('balancer_v2_gnosis_liquidity')
 ] %}
 
 
