@@ -17,7 +17,7 @@
 
 WITH 
     fees_changes AS (
-        SELECT *, block_number + 0.0001 * index AS block_number_index_1
+        SELECT *, block_number + 0.0000001 * index AS block_number_index_1
         FROM {{ ref('balancer_v2_gnosis_pools_fees') }} 
     ),
     swap_fees AS (
@@ -32,7 +32,7 @@ WITH
         FROM {{ source ('balancer_v2_gnosis', 'Vault_evt_Swap') }} swaps
         LEFT JOIN fees_changes fees
             ON CAST(fees.contract_address AS varchar(66)) = substring(CAST(swaps.poolId AS varchar(66)), 1, 42)
-            AND fees.block_number_index_1 < swaps.evt_block_number + 0.0001 * evt_index
+            AND fees.block_number_index_1 < swaps.evt_block_number + 0.0000001 * evt_index
         {% if is_incremental() %}
         WHERE swaps.evt_block_time >= date_trunc('day', NOW() - interval '1 week')
         {% endif %}
