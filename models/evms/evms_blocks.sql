@@ -2,6 +2,7 @@
         tags = ['dunesql'],
         alias = alias('blocks'),
         unique_key=['blockchain', 'number'],
+        view_security = 'invoker',
         post_hook='{{ expose_spells(\'["ethereum", "polygon", "bnb", "avalanche_c", "gnosis", "fantom", "optimism", "arbitrum"]\',
                                     "sector",
                                     "evms",
