@@ -269,7 +269,7 @@ WHERE contract_order = 1
     ,f.creator_address
     ,f.contract_factory
     ,f.contract_address
-    ,coalesce(cc.contract_project, ccf.contract_project) as contract_project 
+    ,coalesce(cc.contract_project, ccf.contract_project, cctr.contract_project) as contract_project 
     ,f.created_time
     ,f.creation_tx_hash
     ,f.created_block_number
@@ -291,6 +291,9 @@ WHERE contract_order = 1
     on f.creator_address = cc.creator_address
   left join {{ ref('contracts_optimism_contract_creator_address_list') }} as ccf
     on f.contract_factory = ccf.creator_address
+  left join {{ ref('contracts_optimism_contract_creator_address_list') }} as cctr
+    on f.trace_creator_address = cctr.creator_address
+  
   where f.contract_address is not null
  )
 ,combine as (
