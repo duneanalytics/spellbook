@@ -8,5 +8,5 @@ spellbook-local:
       host: trino
       port: 1234
       database: hive
-      schema: dbt
+      schema: wizard
       threads: 1
