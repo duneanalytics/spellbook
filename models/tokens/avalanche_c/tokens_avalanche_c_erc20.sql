@@ -218,4 +218,6 @@ FROM (VALUES
         ,('0xC891EB4cbdEFf6e073e859e987815Ed1505c2ACD','EUROC',6)
         ,('0x20CF1b6E9d856321ed4686877CF4538F2C84B4dE','ANKR',18)
         ,('0x33f0a866d9024d44de2E0602f4C9B94755944B6F','gmdUSDC',18)
+        ,('0x7dFCe792c83F283ECfE7EA7ed308F9B891073540','FTOMB',18)
+        
     ) AS temp_table (contract_address, symbol, decimals)
