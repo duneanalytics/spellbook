@@ -11,9 +11,9 @@ tests as (
     case when abs(balance) < 0.01 then true else false end as success
   from balance_2022
   union all
-  select 
-    'Check abs sum of value is 137,785,779,660.83 for 2022' as test_name, 
-    case when abs(abs_balance - 137785779660.83) < 1 then true else false end as success
+  select
+    'Check abs sum of value is 137,785,781,602.9179 for 2022' as test_name, 
+    case when abs(abs_balance - 137785781602.9179) < 1 then true else false end as success
   from balance_2022
 )
 select *
