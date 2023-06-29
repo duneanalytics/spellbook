@@ -12,7 +12,7 @@
   {% set modified_identifier = relation.identifier | replace("__dbt_tmp", "") %}
   {%- set unique_location = modified_identifier ~ '_' ~ time_salted_md5_prefix() -%}
       WITH (
-          location = 's3a://{{s3_bucket}}/hive/{{relation.schema}}/{{unique_location}}'
+          location = 's3a://{{s3_bucket}}/{{relation.schema}}/{{unique_location}}'
       )
 {%- endmacro -%}
 
