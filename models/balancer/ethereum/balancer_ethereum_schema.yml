@@ -530,7 +530,7 @@ models:
     meta:
       blockchain: ethereum
       project: balancer_v1
-      contributors: markusbkoch, mendesfabio, victorstefenon
+      contributors: markusbkoch, mendesfabio, victorstefenon, viniabussafi
     config:
       tags: ['ethereum', 'balancer', 'pools', 'liquidity']
     description: >
@@ -554,7 +554,7 @@ models:
         description: 'Raw balance of the token in the pool'
       - name: token_balance
         description: 'Scaled balance of the token in the pool'
-      - name: usd_amount
+      - name: protocol_liquidity)_usd
         description: 'Liquidity of the token in the pool in USD'
 
   - name: balancer_v2_ethereum_flashloans

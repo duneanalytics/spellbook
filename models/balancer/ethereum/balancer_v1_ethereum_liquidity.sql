@@ -101,7 +101,7 @@ WITH prices AS (
             --p.name AS pool_symbol,
             w.token_address,
             t.symbol AS token_symbol,
-            liquidity * normalized_weight AS usd_amount
+            liquidity * normalized_weight AS protocol_liquidity_usd
         FROM pool_liquidity_estimates b
         LEFT JOIN {{ ref('balancer_v1_ethereum_pools_tokens_weights') }} w ON b.pool = w.pool_id
         AND w.normalized_weight > 0
