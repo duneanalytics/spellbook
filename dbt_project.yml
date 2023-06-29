@@ -51,6 +51,7 @@ models:
         transaction: true
     +materialized: view
     +schema: no_schema    # this should be overriden in model specific configs
+    +view_security: invoker
 
     aave:
       +schema: aave
