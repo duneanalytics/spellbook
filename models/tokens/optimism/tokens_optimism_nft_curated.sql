@@ -295,5 +295,6 @@ FROM
 ,(0x8C531f965C05Fab8135d951e2aD0ad75CF3405A2, 'Building')
 ,(0x41838b44C20EB6b89b7169e4017eb1435165C1C3, 'KilroyPunk')
 ,(0x544c2Bd4A3cE5015036EB95ce3bA9626d25AD8c8, 'Optimistic Zorb')
+,(0x47c2A56176335fB2B1deD8e7B5acB136d307dc2d, 'CoSoul')
 
 ) as temp_table (contract_address, name)

@@ -533,6 +533,7 @@ WITH curated_list AS (
       ,(0x6fF5723435b7dfC2371B57Fb5cB4c373E5995C78, 'Bored Town')
       ,(0xc82Ea2afE1Fd1D61C4A12f5CeB3D7000f564F5C6, 'OKX')
       ,(0x86c5608362b3fbbeb721140472229392f754ef87, 'Worldcoin')
+      ,(0xcb21ed4ca5c5fff8b1e21ddb7bbff8c6546ce5e6, 'Coordinape')
       
   ) as temp_table (creator_address, contract_project)
 )
