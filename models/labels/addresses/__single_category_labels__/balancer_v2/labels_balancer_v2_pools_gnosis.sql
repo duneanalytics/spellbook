@@ -12,20 +12,6 @@
 }}
 
 WITH pools AS (
-    SELECT pool_id, zip.tokens AS token_address,  zip.weights/pow(10, 18) AS normalized_weight, symbol, pool_type
-    FROM (
-        SELECT c.poolId AS pool_id, explode(arrays_zip(cc.tokens, cc.weights)) AS zip, cc.symbol, 'WP' AS pool_type
-        FROM {{ source('balancer_v2_gnosis', 'Vault_evt_PoolRegistered') }} c
-        INNER JOIN {{ source('balancer_v2_gnosis', 'WeightedPoolFactory_call_create') }} cc
-        ON c.evt_tx_hash = cc.call_tx_hash
-        AND SUBSTRING(c.poolId, 0, 42) = cc.output_0
-        {% if is_incremental() %}
-        WHERE c.evt_block_time >= date_trunc("day", now() - interval '1 week')
-            AND cc.call_block_time >= date_trunc("day", now() - interval '1 week')
-        {% endif %}
-    )
-
-    UNION ALL
 
     SELECT pool_id, zip.tokens AS token_address,  zip.normalizedWeights/pow(10, 18) AS normalized_weight, symbol, pool_type
     FROM (
@@ -42,64 +28,9 @@ WITH pools AS (
 
     UNION ALL
 
-    SELECT pool_id, zip.tokens AS token_address,  zip.weights/pow(10, 18) AS normalized_weight, symbol, pool_type
-    FROM (
-        SELECT c.poolId AS pool_id, explode(arrays_zip(cc.tokens, cc.weights)) AS zip, cc.symbol, 'WP2T' AS pool_type
-        FROM {{ source('balancer_v2_gnosis', 'Vault_evt_PoolRegistered') }} c
-        INNER JOIN {{ source('balancer_v2_gnosis', 'WeightedPool2TokensFactory_call_create') }} cc
-        ON c.evt_tx_hash = cc.call_tx_hash
-        AND SUBSTRING(c.poolId, 0, 42) = cc.output_0
-        {% if is_incremental() %}
-        WHERE c.evt_block_time >= date_trunc("day", now() - interval '1 week')
-            AND cc.call_block_time >= date_trunc("day", now() - interval '1 week')
-        {% endif %}
-    )
-
-    UNION ALL
-
-    SELECT pool_id, zip.tokens AS token_address,  zip.weights/pow(10, 18) AS normalized_weight, symbol, pool_type
-    FROM (
-        SELECT c.poolId AS pool_id, explode(arrays_zip(cc.tokens, cc.weights)) AS zip, cc.symbol, 'IP' AS pool_type
-        FROM {{ source('balancer_v2_gnosis', 'Vault_evt_PoolRegistered') }} c
-        INNER JOIN {{ source('balancer_v2_gnosis', 'InvestmentPoolFactory_call_create') }} cc
-        ON c.evt_tx_hash = cc.call_tx_hash
-        AND SUBSTRING(c.poolId, 0, 42) = cc.output_0
-        {% if is_incremental() %}
-        WHERE c.evt_block_time >= date_trunc("day", now() - interval '1 week')
-            AND cc.call_block_time >= date_trunc("day", now() - interval '1 week')
-        {% endif %}
-    )
-
-    UNION ALL
-
     SELECT c.poolId AS pool_id, explode(cc.tokens) AS token_address, CAST(NULL AS DOUBLE) AS normalized_weight, cc.symbol, 'SP' AS pool_type
     FROM {{ source('balancer_v2_gnosis', 'Vault_evt_PoolRegistered') }} c
-    INNER JOIN {{ source('balancer_v2_gnosis', 'StablePoolFactory_call_create') }} cc
-    ON c.evt_tx_hash = cc.call_tx_hash
-    AND SUBSTRING(c.poolId, 0, 42) = cc.output_0
-    {% if is_incremental() %}
-    WHERE c.evt_block_time >= date_trunc("day", now() - interval '1 week')
-        AND cc.call_block_time >= date_trunc("day", now() - interval '1 week')
-    {% endif %}
-
-    UNION ALL
-
-    SELECT c.poolId AS pool_id, explode(cc.tokens) AS token_address, CAST(NULL AS DOUBLE) AS normalized_weight, cc.symbol, 'SP' AS pool_type
-    FROM {{ source('balancer_v2_gnosis', 'Vault_evt_PoolRegistered') }} c
-    INNER JOIN {{ source('balancer_v2_gnosis', 'MetaStablePoolFactory_call_create') }} cc
-    ON c.evt_tx_hash = cc.call_tx_hash
-    AND SUBSTRING(c.poolId, 0, 42) = cc.output_0
-    {% if is_incremental() %}
-    WHERE c.evt_block_time >= date_trunc("day", now() - interval '1 week')
-        AND cc.call_block_time >= date_trunc("day", now() - interval '1 week')
-    {% endif %}
-
-
-    UNION ALL
-
-    SELECT c.poolId AS pool_id, explode(cc.tokens) AS token_address, 0 AS normalized_weight, cc.symbol, 'LBP' AS pool_type
-    FROM {{ source('balancer_v2_gnosis', 'Vault_evt_PoolRegistered') }} c
-    INNER JOIN {{ source('balancer_v2_gnosis', 'LiquidityBootstrappingPoolFactory_call_create') }} cc
+    INNER JOIN {{ source('balancer_v2_gnosis', 'StablePoolV2Factory_call_create') }} cc
     ON c.evt_tx_hash = cc.call_tx_hash
     AND SUBSTRING(c.poolId, 0, 42) = cc.output_0
     {% if is_incremental() %}
@@ -112,18 +43,6 @@ WITH pools AS (
     SELECT c.poolId AS pool_id, explode(cc.tokens) AS token_address, 0 AS normalized_weight, cc.symbol, 'LBP' AS pool_type
     FROM {{ source('balancer_v2_gnosis', 'Vault_evt_PoolRegistered') }} c
     INNER JOIN {{ source('balancer_v2_gnosis', 'NoProtocolFeeLiquidityBootstrappingPoolFactory_call_create') }} cc
-    ON c.evt_tx_hash = cc.call_tx_hash
-    AND SUBSTRING(c.poolId, 0, 42) = cc.output_0
-    {% if is_incremental() %}
-    WHERE c.evt_block_time >= date_trunc("day", now() - interval '1 week')
-        AND cc.call_block_time >= date_trunc("day", now() - interval '1 week')
-    {% endif %}
-
-    UNION ALL
-
-    SELECT c.poolId AS pool_id, explode(cc.tokens) AS token_address, CAST(NULL AS DOUBLE) AS normalized_weight, cc.symbol, 'SP' AS pool_type
-    FROM {{ source('balancer_v2_gnosis', 'Vault_evt_PoolRegistered') }} c
-    INNER JOIN {{ source('balancer_v2_gnosis', 'StablePhantomPoolFactory_call_create') }} cc
     ON c.evt_tx_hash = cc.call_tx_hash
     AND SUBSTRING(c.poolId, 0, 42) = cc.output_0
     {% if is_incremental() %}
@@ -154,6 +73,32 @@ WITH pools AS (
     WHERE c.evt_block_time >= date_trunc("day", now() - interval '1 week')
         AND cc.call_block_time >= date_trunc("day", now() - interval '1 week')
     {% endif %}
+
+    UNION ALL
+
+    SELECT c.poolId AS pool_id, explode(array(cc.mainToken, cc.wrappedToken)) AS zip, CAST(NULL AS DOUBLE) AS normalized_weight, cc.symbol, 'LP' AS pool_type
+    FROM {{ source('balancer_v2_gnosis', 'Vault_evt_PoolRegistered') }} c
+    INNER JOIN {{ source('balancer_v2_gnosis', 'AaveLinearPoolV3Factory_call_create') }} cc
+    ON c.evt_tx_hash = cc.call_tx_hash
+    AND SUBSTRING(c.poolId, 0, 42) = cc.output_0
+    {% if is_incremental() %}
+    WHERE c.evt_block_time >= date_trunc("day", now() - interval '1 week')
+        AND cc.call_block_time >= date_trunc("day", now() - interval '1 week')
+    {% endif %}
+
+
+    UNION ALL
+
+    SELECT c.poolId AS pool_id, explode(cc.tokens) AS token_address, CAST(NULL AS DOUBLE) AS normalized_weight, cc.symbol, 'SP' AS pool_type
+    FROM {{ source('balancer_v2_gnosis', 'Vault_evt_PoolRegistered') }} c
+    INNER JOIN {{ source('balancer_v2_gnosis', 'ComposableStablePoolV2Factory_call_create') }} cc
+    ON c.evt_tx_hash = cc.call_tx_hash
+    AND SUBSTRING(c.poolId, 0, 42) = cc.output_0
+    {% if is_incremental() %}
+    WHERE c.evt_block_time >= date_trunc("day", now() - interval '1 week')
+        AND cc.call_block_time >= date_trunc("day", now() - interval '1 week')
+    {% endif %}
+
 ),
 
 settings AS (

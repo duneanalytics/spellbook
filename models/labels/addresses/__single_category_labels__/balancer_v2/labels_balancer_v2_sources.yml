@@ -871,30 +871,8 @@ sources:
 
   - name: balancer_v2_gnosis
     tables:
-      - name: InvestmentPoolFactory_call_create
-        description: >
-          Deco*ed table of registered pools on the Balancer InvestmentPoolFactory contract.
-        loaded_at_field: call_block_time
-        columns:
-          - *call_block_number
-          - *call_block_time
-          - *call_success
-          - *call_trace_address
-          - *call_tx_hash
-          - name: contract_address
-            description: 'Address of the InvestmentPoolFactory contract'
-          - name: name
-            description: 'Name of the created pool'
-          - *output_0
-          - *owner
-          - *swapFeePercentage
-          - *swapEnabledOnStart
-          - *managementSwapFeePercentage
-          - *symbol
-          - *tokens
-          - *weights
 
-      - name: StablePoolFactory_call_create
+      - name: StablePoolV2Factory_call_create
         description: >
           Decoded table of registered pools on the Balancer StablePoolFactory contract.
         loaded_at_field: call_block_time
@@ -914,52 +892,6 @@ sources:
           - *swapFeePercentage
           - *symbol
           - *tokens
-
-      - name: MetaStablePoolFactory_call_create
-        description: >
-          Decoded table of registered pools on the Balancer MetaStablePoolFactory contract.
-        loaded_at_field: call_block_time
-        columns:
-          - *call_block_number
-          - *call_block_time
-          - *call_success
-          - *call_trace_address
-          - *call_tx_hash
-          - name: contract_address
-            description: 'Address of the MetaStablePoolFactory contract'
-          - name: name
-            description: 'Name of the created pool'
-          - *oracleEnabled
-          - *rateProviders
-          - *priceRateCacheDuration
-          - *output_0
-          - *owner
-          - *swapFeePercentage
-          - *amplificationParameter
-          - *symbol
-          - *tokens
-
-      - name: LiquidityBootstrappingPoolFactory_call_create
-        description: >
-          Decoded table of registered pools on the Balancer LiquidityBootstrappingPoolFactory contract.
-        loaded_at_field: call_block_time
-        columns:
-          - *call_block_number
-          - *call_block_time
-          - *call_success
-          - *call_trace_address
-          - *call_tx_hash
-          - name: contract_address
-            description: 'Address of the LiquidityBootstrappingPoolFactory contract'
-          - name: name
-            description: 'Name of the created pool'
-          - *swapEnabledOnStart
-          - *output_0
-          - *owner
-          - *swapFeePercentage
-          - *symbol
-          - *tokens
-          - *weights
 
       - name: NoProtocolFeeLiquidityBootstrappingPoolFactory_call_create
         description: >
@@ -982,29 +914,6 @@ sources:
           - *symbol
           - *tokens
           - *weights
-
-      - name: StablePhantomPoolFactory_call_create
-        description: >
-          Decoded table of registered pools on the Balancer StablePhantomPoolFactory contract.
-        loaded_at_field: call_block_time
-        columns:
-          - *call_block_number
-          - *call_block_time
-          - *call_success
-          - *call_trace_address
-          - *call_tx_hash
-          - name: contract_address
-            description: 'Address of the StablePhantomPoolFactory contract'
-          - name: name
-            description: 'Name of the created pool'
-          - *output_0
-          - *owner
-          - *rateProviders
-          - *tokenRateCacheDurations
-          - *amplificationParameter
-          - *swapFeePercentage
-          - *symbol
-          - *tokens
 
       - name: ComposableStablePoolFactory_call_create
         description: >
@@ -1051,3 +960,49 @@ sources:
           - *owner
           - *swapFeePercentage
           - *symbol
+
+      - name: AaveV3LinearPoolFactory_call_create
+        description: >
+          Decoded table of registered pools on the Balancer AaveLinearPoolFactory contract.
+        loaded_at_field: call_block_time
+        columns:
+          - *call_block_number
+          - *call_block_time
+          - *call_success
+          - *call_trace_address
+          - *call_tx_hash
+          - name: contract_address
+            description: 'Address of the AaveLinearPoolFactory contract'
+          - name: name
+            description: 'Name of the created pool'
+          - *mainToken
+          - *wrappedToken
+          - *upperTarget
+          - *output_0
+          - *owner
+          - *swapFeePercentage
+          - *symbol
+
+      - name: ComposableStablePoolV2Factory_call_create
+        description: >
+          Decoded table of registered pools on the Balancer ComposableStablePoolFactory contract.
+        loaded_at_field: call_block_time
+        columns:
+          - *call_block_number
+          - *call_block_time
+          - *call_success
+          - *call_trace_address
+          - *call_tx_hash
+          - name: contract_address
+            description: 'Address of the ComposableStablePoolFactory contract'
+          - name: name
+            description: 'Name of the created pool'
+          - *tokenRateCacheDurations
+          - *exemptFromYieldProtocolFeeFlags
+          - *output_0
+          - *owner
+          - *swapFeePercentage
+          - *amplificationParameter
+          - *rateProviders
+          - *symbol
+          - *tokens
