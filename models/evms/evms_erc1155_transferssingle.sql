@@ -1,7 +1,7 @@
 {{ config(
         alias ='erc1155_transferssingle',
         unique_key=['blockchain', 'tx_hash', 'evt_index'],
-        post_hook='{{ expose_spells(\'["ethereum", "polygon", "bnb", "avalanche_c", "gnosis", "fantom", "optimism", "arbitrum"]\',
+        post_hook='{{ expose_spells(\'["ethereum", "polygon", "bnb", "avalanche_c", "gnosis", "fantom", "optimism", "arbitrum", "celo"]\',
                                     "sector",
                                     "evms",
                                     \'["hildobby"]\') }}'
@@ -17,6 +17,7 @@
      , ('fantom', source('erc1155_fantom', 'evt_transfersingle'))
      , ('optimism', source('erc1155_optimism', 'evt_transfersingle'))
      , ('arbitrum', source('erc1155_arbitrum', 'evt_transfersingle'))
+     , ('celo', source('erc1155_celo', 'evt_transfersingle'))
 ] %}
 
 SELECT *

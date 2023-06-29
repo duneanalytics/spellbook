@@ -1,7 +1,7 @@
 {{ config(
         alias ='transactions',
         unique_key=['blockchain', 'tx_hash', 'evt_index'],
-        post_hook='{{ expose_spells(\'["ethereum", "polygon", "bnb", "avalanche_c", "gnosis", "fantom", "optimism", "arbitrum"]\',
+        post_hook='{{ expose_spells(\'["ethereum", "polygon", "bnb", "avalanche_c", "gnosis", "fantom", "optimism", "arbitrum", "celo"]\',
                                     "sector",
                                     "evms",
                                     \'["hildobby"]\') }}'
@@ -16,6 +16,7 @@
      , ('gnosis', source('gnosis', 'transactions'))
      , ('fantom', source('fantom', 'transactions'))
      , ('arbitrum', source('arbitrum', 'transactions'))
+     , ('celo', source('celo', 'transactions'))
 ] %}
 
 SELECT *

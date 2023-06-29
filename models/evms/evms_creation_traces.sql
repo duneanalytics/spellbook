@@ -1,7 +1,7 @@
 {{ config(
         alias ='creation_traces',
         unique_key=['blockchain', 'tx_hash', 'evt_index'],
-        post_hook='{{ expose_spells(\'["ethereum", "polygon", "bnb", "avalanche_c", "gnosis", "fantom", "optimism", "arbitrum"]\',
+        post_hook='{{ expose_spells(\'["ethereum", "polygon", "bnb", "avalanche_c", "gnosis", "fantom", "optimism", "arbitrum", "celo"]\',
                                     "sector",
                                     "evms",
                                     \'["hildobby"]\') }}'
@@ -17,6 +17,7 @@
      , ('fantom', source('fantom', 'creation_traces'))
      , ('optimism', source('optimism', 'creation_traces'))
      , ('arbitrum', source('arbitrum', 'creation_traces'))
+     , ('celo', source('celo', 'creation_traces'))
 ] %}
 
 SELECT *

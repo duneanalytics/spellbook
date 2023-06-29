@@ -1,7 +1,7 @@
 {{ config(
         alias ='logs_decoded',
         unique_key=['blockchain', 'tx_hash'],
-        post_hook='{{ expose_spells(\'["ethereum", "polygon", "bnb", "avalanche_c", "gnosis", "fantom", "optimism", "arbitrum"]\',
+        post_hook='{{ expose_spells(\'["ethereum", "polygon", "bnb", "avalanche_c", "gnosis", "fantom", "optimism", "arbitrum", "celo"]\',
                                     "sector",
                                     "evms",
                                     \'["hildobby"]\') }}'
@@ -17,6 +17,7 @@
      , ('fantom', source('fantom', 'logs_decoded'))
      , ('optimism', source('optimism', 'logs_decoded'))
      , ('arbitrum', source('arbitrum', 'logs_decoded'))
+     , ('celo', source('celo', 'logs_decoded'))
 ] %}
 
 SELECT *
