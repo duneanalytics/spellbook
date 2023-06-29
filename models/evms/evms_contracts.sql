@@ -1,7 +1,7 @@
 {{ config(
         alias ='contracts',
         unique_key=['blockchain', 'address', 'created_at'],
-        post_hook='{{ expose_spells(\'["ethereum", "polygon", "bnb", "avalanche_c", "gnosis", "fantom", "optimism", "arbitrum"]\',
+        post_hook='{{ expose_spells(\'["ethereum", "polygon", "bnb", "avalanche_c", "gnosis", "fantom", "optimism", "arbitrum", "celo"]\',
                                     "sector",
                                     "evms",
                                     \'["hildobby"]\') }}'
@@ -17,6 +17,7 @@
      , ('fantom', source('fantom', 'contracts'))
      , ('optimism', source('optimism', 'contracts'))
      , ('arbitrum', source('arbitrum', 'contracts'))
+     , ('celo', source('celo', 'contracts'))
 ] %}
 
 SELECT *
