@@ -17,7 +17,7 @@
 
 WITH 
     fees_changes AS (
-        SELECT *, block_number + 0.0001 * index AS block_number_index_1
+        SELECT *, block_number + 0.0000001 * index AS block_number_index_1
         FROM {{ ref('balancer_v2_ethereum_pools_fees') }} 
     ),
     swap_fees AS (
