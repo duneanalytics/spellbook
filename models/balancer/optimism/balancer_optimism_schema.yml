@@ -268,6 +268,7 @@ models:
       - *pool_id
       - name: pool_symbol
         description: 'Symbol of the pool, consisting of the symbol of its tokens and their respective weights'
+      - name: blockchain 
       - *token_address
       - name: token_symbol
         description: 'Symbol of the token'

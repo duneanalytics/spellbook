@@ -99,6 +99,7 @@ WITH prices AS (
             b.day,
             w.pool_id,
             --p.name AS pool_symbol,
+            'ethereum' as blockchain,
             w.token_address,
             t.symbol AS token_symbol,
             liquidity * normalized_weight AS protocol_liquidity_usd

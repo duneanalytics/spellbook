@@ -208,6 +208,7 @@ SELECT
     b.day,
     b.pool_id,
     p.pool_symbol,
+    'arbitrum' as blockchain,
     token AS token_address,
     token_symbol,
     token_balance_raw,
