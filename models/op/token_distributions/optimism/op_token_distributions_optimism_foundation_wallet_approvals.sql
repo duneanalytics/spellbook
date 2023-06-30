@@ -24,8 +24,9 @@
 
 
 WITH project_labels AS (
-    SELECT * FROM {{ ref('op_token_distributions_optimism_project_wallets') }}
+    SELECT address, project_name, label FROM {{ ref('op_token_distributions_optimism_project_wallets') }}
     WHERE label IS NOT NULL
+    GROUP BY 1,2,3
 )
 
 
