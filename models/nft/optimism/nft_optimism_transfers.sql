@@ -1,5 +1,6 @@
 {{ config(
-        alias ='transfers',
+        alias = alias('transfers'),
+        tags = ['dunesql'],
         partition_by='block_date',
         materialized='incremental',
         file_format = 'delta',
@@ -30,10 +31,10 @@ FROM {{ source('erc721_optimism','evt_transfer') }} t
 INNER JOIN {{ source('optimism', 'transactions') }} ot ON ot.block_number = t.evt_block_number
     AND ot.hash = t.evt_tx_hash
     {% if is_incremental() %}
-    AND ot.block_time >= date_trunc("day", now() - interval '1 week')
+    AND ot.block_time >= date_trunc("day", now() - interval '7' day)
     {% endif %}
 {% if is_incremental() %}
-WHERE t.evt_block_time >= date_trunc("day", now() - interval '1 week')
+WHERE t.evt_block_time >= date_trunc("day", now() - interval '7' day)
 {% endif %}
 
 UNION ALL
@@ -61,10 +62,10 @@ FROM {{ source('erc1155_optimism','evt_transfersingle') }} t
 INNER JOIN {{ source('optimism', 'transactions') }} ot ON ot.block_number = t.evt_block_number
     AND ot.hash = t.evt_tx_hash
     {% if is_incremental() %}
-    AND ot.block_time >= date_trunc("day", now() - interval '1 week')
+    AND ot.block_time >= date_trunc("day", now() - interval '7' day)
     {% endif %}
 {% if is_incremental() %}
-WHERE t.evt_block_time >= date_trunc("day", now() - interval '1 week')
+WHERE t.evt_block_time >= date_trunc("day", now() - interval '7' day)
 {% endif %}
 
 UNION ALL
@@ -93,14 +94,14 @@ FROM (
             ON t.evt_tx_hash = anti_table.tx_hash
     {% endif %}
     {% if is_incremental() %}
-    WHERE t.evt_block_time >= date_trunc("day", now() - interval '1 week')
+    WHERE t.evt_block_time >= date_trunc("day", now() - interval '7' day)
     {% endif %}
     GROUP BY t.evt_block_time, t.evt_block_number, t.evt_tx_hash, t.contract_address, t.from, t.to, t.evt_index, t.values, t.ids
     ) t
 INNER JOIN {{ source('optimism', 'transactions') }} ot ON ot.block_number = t.evt_block_number
     AND ot.hash = t.evt_tx_hash
     {% if is_incremental() %}
-    AND ot.block_time >= date_trunc("day", now() - interval '1 week')
+    AND ot.block_time >= date_trunc("day", now() - interval '7' day)
     {% endif %}
 WHERE ids_and_count.values > 0
 GROUP BY blockchain, t.evt_block_time, t.evt_block_number, t.evt_tx_hash, t.contract_address, t.from, t.to, ot.from, t.evt_index, token_id, amount
