@@ -1,5 +1,6 @@
 {{ config(
-    alias = 'other_tags'
+    tags = ['dunesql','static'],
+    alias = alias('other_tags')
     )
 }}
 

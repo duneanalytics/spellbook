@@ -1,6 +1,7 @@
  {{
   config(
-        alias='predeploys',
+        tags = ['dunesql'],
+        alias = alias('predeploys'),
         post_hook='{{ expose_spells(\'["optimism"]\',
                                     "sector",
                                     "contracts",

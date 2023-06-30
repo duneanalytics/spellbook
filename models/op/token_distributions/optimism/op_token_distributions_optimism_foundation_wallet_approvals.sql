@@ -1,5 +1,6 @@
 {{ config(
-    alias = 'foundation_wallet_approvals',
+    tags = ['dunesql'],
+    alias = alias('foundation_wallet_approvals'),
     partition_by = ['block_date'],
     materialized = 'incremental',
     file_format = 'delta',

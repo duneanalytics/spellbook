@@ -1,4 +1,6 @@
-{{ config(alias='bridges',
+{{ config(
+          tags = ['dunesql','static'],
+          alias = alias('bridges'),
           post_hook='{{ expose_spells(\'["ethereum"]\',
           "sector",
           "addresses",

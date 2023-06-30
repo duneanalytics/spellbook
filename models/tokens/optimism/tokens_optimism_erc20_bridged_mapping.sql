@@ -1,6 +1,7 @@
  {{
   config(
-    alias='erc20_bridged_mapping'
+      tags = ['dunesql']
+    , alias = alias('erc20_bridged_mapping')
     , materialized = 'incremental'
     , file_format = 'delta'
     , incremental_strategy = 'merge'

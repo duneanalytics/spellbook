@@ -1,5 +1,6 @@
 {{ config(
-    alias = 'project_wallets',
+    tags = ['dunesql','static'],
+    alias = alias('project_wallets'),
     post_hook='{{ expose_spells(\'["optimism"]\',
                                 "project",
                                 "op_token_distributions",

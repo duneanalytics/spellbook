@@ -1,6 +1,6 @@
 {{ config(
-      alias='stablecoins'
-      , tags=['static']
+      tags = ['dunesql', 'static']
+      , alias = alias('stablecoins')
       , post_hook='{{ expose_spells(\'["optimism"]\',
                                   "sector",
                                   "tokens_optimism",

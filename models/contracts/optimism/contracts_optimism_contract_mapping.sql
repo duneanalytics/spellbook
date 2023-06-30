@@ -1,6 +1,7 @@
  {{
   config(
-        alias='contract_mapping',
+        tags = ['dunesql'],
+        alias = alias('contract_mapping'),
         materialized ='incremental',
         file_format ='delta',
         incremental_strategy='merge',

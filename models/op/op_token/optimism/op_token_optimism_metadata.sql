@@ -1,6 +1,7 @@
 {{ config(
         schema = 'op_token_optimism'
-        , alias='metadata'
+        , tags = ['dunesql']
+        , alias = alias('metadata')
         , unique_key = ['contract_address']
         , post_hook='{{ expose_spells(\'["optimism"]\',
                                   "project",

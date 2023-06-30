@@ -1,4 +1,7 @@
-{{ config(alias='nft_curated', tags=['static']) }}
+{{ config(
+  tags = ['dunesql', 'static']
+  , alias = alias('stablecoins')
+  ) }}
 
 SELECT
   LOWER(contract_address) AS contract_address, name, '' as symbol
