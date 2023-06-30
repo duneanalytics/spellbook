@@ -8,7 +8,7 @@
                                     \'["chuxin"]\') }}'
   )
 }}
-select distinct
+select
    b.`localToken` as contract_address
   ,n.name
   ,n.standard
@@ -17,3 +17,5 @@ select distinct
 from {{ source('ovm_optimism','L2ERC721Bridge_evt_ERC721BridgeFinalized') }} as b
 left join {{ ref('tokens_ethereum_nft')}} as n
   on n.contract_address = b.`localToken`
+
+group by 1,2,3,4,5
