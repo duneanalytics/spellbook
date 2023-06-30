@@ -1,6 +1,5 @@
 {{ config(
-     tags = ['dunesql']
-    , alias = alias('tokens')
+    alias='tokens'
     , materialized = 'incremental'
     , file_format = 'delta'
     , incremental_strategy = 'merge'
@@ -34,7 +33,7 @@ FROM (
                aTokenName        AS atoken_name
         FROM {{source( 'the_granary_optimism', 'AToken_evt_Initialized' ) }}
             {% if is_incremental() %}
-            WHERE evt_block_time >= date_trunc('day', now() - interval '7' day)
+            WHERE evt_block_time >= date_trunc("day", now() - interval '1 week')
             {% endif %}
 
         UNION ALL
@@ -52,6 +51,6 @@ FROM (
             debtTokenName       AS atoken_name
         FROM {{source( 'the_granary_optimism', 'DebtToken_evt_Initialized' ) }}
             {% if is_incremental() %}
-            WHERE evt_block_time >= date_trunc('day', now() - interval '7' day)
+            WHERE evt_block_time >= date_trunc("day", now() - interval '1 week')
             {% endif %}
         ) a

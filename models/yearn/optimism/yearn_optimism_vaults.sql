@@ -1,7 +1,6 @@
 {{ config(
         schema = 'yearn'
-        , tags = ['dunesql']
-        , alias = alias('vaults')
+        , alias = 'vaults'
         , materialized = 'incremental'
         , file_format = 'delta'
         , incremental_strategy = 'merge'
@@ -26,5 +25,5 @@ FROM {{ source('yearn_optimism', 'ReleaseRegistry_call_newVault') }}
 
 WHERE call_success = true
 {% if is_incremental() %}
-AND call_block_time >= date_trunc("day", now() - interval '7' day)
+AND call_block_time >= date_trunc("day", now() - interval '1 week')
 {% endif %}
