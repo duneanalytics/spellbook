@@ -27,7 +27,7 @@ SELECT 'withdraw' AS msg_type, 'SentMessage' AS event, sender,
     
 UNION ALL
 
-SELECT 'deposit' AS m_type, 'RelayedMessage' AS event, from_hex('') as sender,
+SELECT 'deposit' AS m_type, 'RelayedMessage' AS event, cast(NULL as varbinary) as sender,
     evt_tx_hash AS l2_tx_hash, evt_block_number AS l2_block_number, 
     evt_block_time AS l2_block_time, DATE_TRUNC('day',evt_block_time) AS l2_block_date,
     contract_address, cast(NULL as varbinary) AS target, msgHash AS message_nonce_hash, evt_index, '2' AS version,
