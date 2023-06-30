@@ -749,9 +749,9 @@ with ovm1_legacy_pools_raw as (
     )
 )
 select 
-   col.oldAddress
-  ,col.newAddress
-  ,col.token0
-  ,col.token1
+   from_hex(col.oldAddress) AS oldAddress
+  ,from_hex(col.newAddress) AS newAddress
+  ,from_hex(col.token0) AS token0
+  ,from_hex(col.token1) AS token1
   ,col.fee
 from ovm1_legacy_pools_raw
