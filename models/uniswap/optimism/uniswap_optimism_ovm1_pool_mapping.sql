@@ -755,4 +755,4 @@ SELECT
     from_hex( json_extract_scalar(json_data, '$[' || cast(t.index as varchar) || '].token1') ) AS token1,
     cast( json_extract_scalar(json_data, '$[' || cast(t.index as varchar) || '].fee') as bigint) AS fee
 FROM ovm1_legacy_pools_raw
-CROSS JOIN UNNEST(sequence(0, json_array_length(json_data) - 1)) AS t(index);
+CROSS JOIN UNNEST(sequence(0, json_array_length(json_data) - 1)) AS t(index)
