@@ -14,8 +14,6 @@ concurrency:
   group:  ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
-env:
-  DBT_ENV_CUSTOM_ENV_S3_BUCKET: env.DBT_ENV_CUSTOM_ENV_S3_BUCKET 
 
 jobs:
   dbt-test:
