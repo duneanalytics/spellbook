@@ -1,5 +1,8 @@
-{{ config( alias='erc20', materialized = 'table',
-    post_hook='{{ expose_spells(\'["optimism"]\',
+{{ config(
+		tags = ['dunesql']
+    	, alias = alias('erc20')
+		, materialized = 'table'
+    , post_hook='{{ expose_spells(\'["optimism"]\',
                                     "sector",
                                     "tokens",
                                     \'["msilb7"]\') }}')}}

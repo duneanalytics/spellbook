@@ -1,6 +1,6 @@
 {{ config(
   tags = ['dunesql', 'static']
-  , alias = alias('stablecoins')
+  , alias = alias('nft_curated')
   ) }}
 
 SELECT
