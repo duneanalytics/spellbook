@@ -275,6 +275,20 @@ FROM
                 'Arbitrum',
                 '0xFb466FBC00617C89E5865f4ef0bc6D48Ea150AC5',
                 '0x8DC92083F5C4813c02b502ce1ea61f0a48A36A88'
+            ),
+            (
+                'plsARB',
+                'ARB',
+                '0x7a5D193fE4ED9098F7EAdC99797087C96b002907',
+                '0x912CE59144191C1204E64559FE8253a0e49E6548',
+                18,
+                18,
+                '136112946768375385385349842972707284582',
+                '1693137600',
+                'plsARB-ARB',
+                'Arbitrum',
+                '0xFb466FBC00617C89E5865f4ef0bc6D48Ea150AC5',
+                '0x8DC92083F5C4813c02b502ce1ea61f0a48A36A88'
             )
     ) AS temp_table (
         token0_symbol,
