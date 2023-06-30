@@ -13,7 +13,7 @@
 
 SELECT
 
-reator_address, cast(creator_name as varchar) AS creator_name
+creator_address, cast(creator_name as varchar) AS creator_name
 
 FROM (values
    (0xbb6e024b9cffacb947a71991e386681b1cd1477d,	'Singleton Factory')
