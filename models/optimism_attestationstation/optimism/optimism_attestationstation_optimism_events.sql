@@ -43,13 +43,12 @@ SELECT
           ''
       ) AS key
 
-
         ,val as val_raw
 
         ,split(
                 REGEXP_REPLACE(--Replace invisible characters
                         CASE WHEN REGEXP_REPLACE(substring(cast(val as varchar), 3), '[^\x20-\x7E]','') != ''
-                            THEN cast(substring(cast(val as varchar), 3) )
+                            THEN substring(cast(val as varchar), 3)
                             ELSE cast(bytearray_to_uint256(
                               if(bytearray_length(val) > 32, bytearray_substring(val, 1, 32), val)
                             ) as varchar)
