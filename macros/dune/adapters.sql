@@ -8,11 +8,14 @@
 {% endmacro %}
 
 {% macro create_table_properties(properties, relation) %}
-  {% set s3_bucket = 'prod-spellbook-trino-118330671040' %}
+  {% set s3_bucket = 'trino-dev-datasets-118330671040' %}
   {% set modified_identifier = relation.identifier | replace("__dbt_tmp", "") %}
   {%- set unique_location = modified_identifier ~ '_' ~ time_salted_md5_prefix() -%}
+  {%- if target.name == 'dev' -%}
+    {%- set catalog = 'hive/' -%}
+  {%- endif -%}
       WITH (
-          location = 's3a://{{s3_bucket}}/{{relation.schema}}/{{unique_location}}'
+          location = 's3a://{{s3_bucket}}/{{catalog}}/{{relation.schema}}/{{unique_location}}'
       )
 {%- endmacro -%}
 
