@@ -1,4 +1,4 @@
-spellbook:
+spellbook-local:
   target: dev
   outputs:
     dev:
