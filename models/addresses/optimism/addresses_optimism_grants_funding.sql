@@ -123,6 +123,7 @@ FROM (VALUES
 ,('Project',	0xb053216998E4E11c655e3C9CEe086Bf3cc7c8Ed7,	'Chaintrap',	'Season 3')
 ,('Project',	0xD3581888a0890Fb3270F8349588F3f4Cc25Fb2c9,	'CharmVerse',	'Season 3')
 ,('Project',	0x7601630eC802952ba1ED2B6e4db16F699A0a5A87,	'DeNotify',	'Season 3')
+
 ,('Project',	0x11Ee133A1408FE2d7c62296D7eB33F234b774503,	'dm3 Protocol',	'Season 3')
 ,('Project',	0x1f0A4eb02d9BEfBd1538E8D230699d4e434CDbEE,	'Footprint Analytics',	'Season 3')
 ,('Project',	0x17C2D875CB397D813eAE817DaFD25807E348Df07,	'Herodotus',	'Season 3')
