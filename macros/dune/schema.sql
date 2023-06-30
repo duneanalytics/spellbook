@@ -3,7 +3,8 @@
 {% endmacro %}
 
 {% macro default__create_schema(relation) -%}
-  {% set s3_bucket = var('DBT_ENV_CUSTOM_ENV_S3_BUCKET', 'local') %}
+  {# {% set s3_bucket = var('DBT_ENV_CUSTOM_ENV_S3_BUCKET', 'local') %} #}
+  {% set s3_bucket = 'prod-spellbook-trino-118330671040' %}
   {%- call statement('create_schema') -%}
    CREATE SCHEMA {{ relation }} WITH (location = 's3a://{{s3_bucket}}/')
   {% endcall %}
