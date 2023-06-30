@@ -1,6 +1,6 @@
 {{ config(
         schema = 'yearn'
-        tags = ['dunesql']
+        , tags = ['dunesql']
         , alias = alias('vaults')
         , alias = 'vaults'
         , materialized = 'incremental'
