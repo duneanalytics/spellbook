@@ -84,7 +84,7 @@ SELECT 'optimism' as blockchain
 , t.to
 , ot."from" AS executed_by
 , evt_tx_hash AS tx_hash
-, 'optimism' || t.evt_tx_hash || '-erc1155-' || t.contract_address || '-' || t.ids_and_count.ids || '-' || t."from" || '-' || t.to || '-' || t.ids_and_count.values || '-' || t.evt_index AS unique_transfer_id
+, 'optimism' || t.evt_tx_hash || '-erc1155-' || t.contract_address || '-' || token_id || '-' || t."from" || '-' || t.to || '-' || t.amount || '-' || t.evt_index AS unique_transfer_id
 FROM (
     SELECT t.evt_block_time, t.evt_block_number, t.evt_tx_hash, t.contract_address, t."from", t.to, t.evt_index
     , u.token_id, u.amount
