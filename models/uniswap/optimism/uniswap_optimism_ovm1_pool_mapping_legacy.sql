@@ -1,8 +1,7 @@
  {{
   config(
-        tage = ['dunesql','static']
         schema='uniswap_v3_optimism',
-        alias=alias('ovm1_pool_mapping'),
+        alias='ovm1_pool_mapping',
         materialized='table',
         file_format = 'delta',
         post_hook='{{ expose_spells(\'["optimism"]\',
@@ -750,9 +749,9 @@ with ovm1_legacy_pools_raw as (
     )
 )
 select 
-   from_hex(col.oldAddress) AS oldAddress
-  ,from_hex(col.newAddress) AS newAddress
-  ,from_hex(col.token0) AS token0
-  ,from_hex(col.token1) AS token1
+   col.oldAddress AS oldAddress
+  ,col.newAddress AS newAddress
+  ,col.token0 AS token0
+  ,col.token1 AS token1
   ,col.fee
 from ovm1_legacy_pools_raw
