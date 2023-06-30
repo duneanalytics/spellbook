@@ -534,6 +534,7 @@ WITH curated_list AS (
       ,(0xc82Ea2afE1Fd1D61C4A12f5CeB3D7000f564F5C6, 'OKX')
       ,(0x86c5608362b3fbbeb721140472229392f754ef87, 'Worldcoin')
       ,(0xcb21ed4ca5c5fff8b1e21ddb7bbff8c6546ce5e6, 'Coordinape')
+      ,(0xeac5f0d4a9a45e1f9fdd0e7e2882e9f60e301156, 'ScopeLift')
       
   ) as temp_table (creator_address, contract_project)
 )
