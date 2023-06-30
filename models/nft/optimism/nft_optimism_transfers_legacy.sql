@@ -1,5 +1,5 @@
 {{ config(
-        alias ='transfers',
+        alias =alias('transfers', legacy_model=True),
         partition_by='block_date',
         materialized='incremental',
         file_format = 'delta',
