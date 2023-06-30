@@ -17,7 +17,7 @@
 , t.evt_index
 , t.contract_address
 , t.tokenId AS token_id
-, 1 AS amount
+, cast(1 as uint256) AS amount
 , t."from"
 , t.to
 , ot."from" AS executed_by
