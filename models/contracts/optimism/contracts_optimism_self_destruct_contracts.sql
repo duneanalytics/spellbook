@@ -19,7 +19,7 @@ with creates as (
       , block_number AS created_block_number
       ,tx_hash as creation_tx_hash
       ,address as contract_address
-      ,(CASE WHEN cardinality(trace_address) = 0 then ' ' else cast(trace_address[1] as varchar) end) as trace_element
+      ,(CASE WHEN cardinality(trace_address) = 0 then cast(-1 as bigint) else trace_address[1] end) as trace_element
     from {{ source('optimism', 'traces') }}
     where 
       type = 'create'
@@ -50,7 +50,7 @@ FROM (
       on cr.creation_tx_hash = sd.tx_hash
       and cr.created_time = sd.block_time
       AND cr.created_block_number = sd.block_number
-      and cr.trace_element = (CASE WHEN cardinality(sd.trace_address) = 0 then ' ' else cast(sd.trace_address[1] as varchar) end)
+      and cr.trace_element = (CASE WHEN cardinality(sd.trace_address) = 0 then cast(-1 as bigint) else sd.trace_address[1] end)
       and sd.type = 'suicide'
       {% if is_incremental() %}
       and sd.block_time >= date_trunc('day', now() - interval '7' day)

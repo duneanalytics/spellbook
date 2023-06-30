@@ -30,7 +30,7 @@ UNION ALL
 SELECT 'deposit' AS m_type, 'RelayedMessage' AS event, from_hex('') as sender,
     evt_tx_hash AS l2_tx_hash, evt_block_number AS l2_block_number, 
     evt_block_time AS l2_block_time, DATE_TRUNC('day',evt_block_time) AS l2_block_date,
-    contract_address, NULL AS target, msgHash AS message_nonce_hash, evt_index, '2' AS version,
+    contract_address, cast(NULL as varbinary) AS target, msgHash AS message_nonce_hash, evt_index, '2' AS version,
     DENSE_RANK() OVER (PARTITION BY evt_tx_hash ORDER BY evt_index ASC) AS msg_index
 
     FROM {{ source ('ovm_optimism', 'L2CrossDomainMessenger_evt_RelayedMessage') }}
