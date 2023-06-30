@@ -8990,4 +8990,5 @@ FROM (VALUES ('0x3f9463bdb502ec2079bf39da6c924d4022ff9f4c', 'biubiu.tools', 18),
             ,('0xbb9cd48d33033f5effbedec9dd700c7d7e1dcf50', 'bb-ag-WETH', 18)
             ,('0xd4015683b8153666190e0b2bec352580ebc4caca', 'bb-ag-WBTC', 18)
             ,('0x647fb77077c145e859cbfaa3e027e308a26f2fca', 'CRC', 18)
+        ,('0x4b1e2c2762667331bc91648052f646d1b0d35984', 'agEUR', 18)
      ) AS temp_table (contract_address, symbol, decimals)
