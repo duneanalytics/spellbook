@@ -51,7 +51,7 @@ FROM (
       and cr.created_time = sd.block_time
       AND cr.created_block_number = sd.block_number
       and cr.trace_element = sd.trace_address[0]
-      and sd.`type` = 'suicide'
+      and sd.type = 'suicide'
       {% if is_incremental() %}
       and sd.block_time >= date_trunc('day', now() - interval '7' day)
       and cr.contract_address NOT IN (SELECT contract_address FROM {{this}} ) --ensure no duplicates
