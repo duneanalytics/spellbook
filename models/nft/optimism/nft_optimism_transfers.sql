@@ -113,4 +113,4 @@ INNER JOIN {{ source('optimism', 'transactions') }} ot ON ot.block_number = t.ev
     AND ot.block_time >= date_trunc("day", now() - interval '7' day)
     {% endif %}
 WHERE amount > cast(0 as uint256)
-GROUP BY blockchain, t.evt_block_time, t.evt_block_number, t.evt_tx_hash, t.contract_address, t."from", t.to, ot."from", t.evt_index, token_id, amount
+GROUP BY t.evt_block_time, t.evt_block_number, t.evt_tx_hash, t.contract_address, t."from", t.to, ot."from", t.evt_index, token_id, amount
