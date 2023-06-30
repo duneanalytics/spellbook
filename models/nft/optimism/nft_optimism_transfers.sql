@@ -22,7 +22,7 @@
 , t.to
 , ot."from" AS executed_by
 , t.evt_tx_hash AS tx_hash
-, 'optimism' || t.evt_tx_hash || '-erc721-' || t.contract_address || '-' || t.tokenId || '-' || t."from" || '-' || t.to || '-' || '1' || '-' || t.evt_index AS unique_transfer_id
+, 'optimism' || cast(t.evt_tx_hash as varchar) || '-erc721-' || cast(t.contract_address as varchar) || '-' || t.tokenId || '-' || cast(t."from" as varchar) || '-' || cast(t.to as varchar) || '-' || '1' || '-' || t.evt_index AS unique_transfer_id
 FROM {{ source('erc721_optimism','evt_transfer') }} t
 {% if is_incremental() %}
     ANTI JOIN {{this}} anti_table
@@ -53,7 +53,7 @@ SELECT 'optimism' as blockchain
 , t.to
 , ot."from" AS executed_by
 , t.evt_tx_hash AS tx_hash
-, 'optimism' || t.evt_tx_hash || '-erc1155-' || t.contract_address || '-' || t.id || '-' || t."from" || '-' || t.to || '-' || t.value || '-' || t.evt_index AS unique_transfer_id
+, 'optimism' || cast(t.evt_tx_hash as varchar) || '-erc1155-' || cast(t.contract_address as varchar) || '-' || t.id || '-' || cast(t."from" as varchar) || '-' || cast(t.to as varchar) || '-' || t.value || '-' || t.evt_index AS unique_transfer_id
 FROM {{ source('erc1155_optimism','evt_transfersingle') }} t
 {% if is_incremental() %}
     ANTI JOIN {{this}} anti_table
