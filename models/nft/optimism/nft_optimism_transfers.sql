@@ -22,7 +22,7 @@
 , t.to
 , ot."from" AS executed_by
 , t.evt_tx_hash AS tx_hash
-, 'optimism' || cast(t.evt_tx_hash as varchar) || '-erc721-' || cast(t.contract_address as varchar) || '-' || t.tokenId || '-' || cast(t."from" as varchar) || '-' || cast(t.to as varchar) || '-' || '1' || '-' || t.evt_index AS unique_transfer_id
+, 'optimism' || cast(t.evt_tx_hash as varchar) || '-erc721-' || cast(t.contract_address as varchar) || '-' || cast(t.tokenId as varchar) || '-' || cast(t."from" as varchar) || '-' || cast(t.to as varchar) || '-' || '1' || '-' || cast(t.evt_index as varchar) AS unique_transfer_id
 FROM {{ source('erc721_optimism','evt_transfer') }} t
 {% if is_incremental() %}
     ANTI JOIN {{this}} anti_table
@@ -53,7 +53,7 @@ SELECT 'optimism' as blockchain
 , t.to
 , ot."from" AS executed_by
 , t.evt_tx_hash AS tx_hash
-, 'optimism' || cast(t.evt_tx_hash as varchar) || '-erc1155-' || cast(t.contract_address as varchar) || '-' || t.id || '-' || cast(t."from" as varchar) || '-' || cast(t.to as varchar) || '-' || t.value || '-' || t.evt_index AS unique_transfer_id
+, 'optimism' || cast(t.evt_tx_hash as varchar) || '-erc1155-' || cast(t.contract_address as varchar) || '-' || cast(t.id as varchar) || '-' || cast(t."from" as varchar) || '-' || cast(t.to as varchar) || '-' || cast(t.value as varchar) || '-' || cast(t.evt_index as varchar) AS unique_transfer_id
 FROM {{ source('erc1155_optimism','evt_transfersingle') }} t
 {% if is_incremental() %}
     ANTI JOIN {{this}} anti_table
@@ -84,7 +84,7 @@ SELECT 'optimism' as blockchain
 , t.to
 , ot."from" AS executed_by
 , evt_tx_hash AS tx_hash
-, 'optimism' || cast(t.evt_tx_hash as varchar) || '-erc1155-' || cast(t.contract_address as varchar) || '-' || token_id || '-' || cast(t."from" as varchar) || '-' || cast(t.to as varchar) || '-' || t.amount || '-' || t.evt_index AS unique_transfer_id
+, 'optimism' || cast(t.evt_tx_hash as varchar) || '-erc1155-' || cast(t.contract_address as varchar) || '-' || cast(token_id as varchar) || '-' || cast(t."from" as varchar) || '-' || cast(t.to as varchar) || '-' || cast(t.amount as varchar) || '-' || cast(t.evt_index as varchar) AS unique_transfer_id
 FROM (
     SELECT t.evt_block_time, t.evt_block_number, t.evt_tx_hash, t.contract_address, t."from", t.to, t.evt_index
     , u.token_id, u.amount
