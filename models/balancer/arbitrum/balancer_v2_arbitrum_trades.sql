@@ -1,4 +1,5 @@
 {{ config(
+    tags=['prod_exclude'],
     schema = 'balancer_v2_arbitrum',
     alias = 'trades',
     partition_by = ['block_date'],
