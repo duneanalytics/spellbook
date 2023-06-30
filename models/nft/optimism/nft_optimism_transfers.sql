@@ -78,8 +78,8 @@ SELECT 'optimism' as blockchain
 , 'batch' AS transfer_type
 , t.evt_index
 , t.contract_address
-, t.ids_and_count.ids AS token_id
-, t.ids_and_count.values AS amount
+, t.token_id
+, t.amount
 , t."from"
 , t.to
 , ot."from" AS executed_by
@@ -87,8 +87,17 @@ SELECT 'optimism' as blockchain
 , 'optimism' || t.evt_tx_hash || '-erc1155-' || t.contract_address || '-' || t.ids_and_count.ids || '-' || t."from" || '-' || t.to || '-' || t.ids_and_count.values || '-' || t.evt_index AS unique_transfer_id
 FROM (
     SELECT t.evt_block_time, t.evt_block_number, t.evt_tx_hash, t.contract_address, t."from", t.to, t.evt_index
-    , explode(arrays_zip(t.values, t.ids)) AS ids_and_count
+    , u.token_id, u.amount
+
     FROM {{ source('erc1155_optimism', 'evt_transferbatch') }} t
+    CROSS JOIN unnest(
+        transform(
+        sequence(1, least(cardinality(t."values"), cardinality(t.ids))),
+            i -> cast(row(t."values"[i], t.ids[i]) AS ROW(value uint256 , id uint256))
+        ) 
+    ) 
+    AS u(amount , token_id )
+
     {% if is_incremental() %}
         ANTI JOIN {{this}} anti_table
             ON t.evt_tx_hash = anti_table.tx_hash
