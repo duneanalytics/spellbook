@@ -1,19 +1,19 @@
 {{ config(
         schema = 'op_retropgf_optimism'
-        , alias=alias('round2_recipients')
+        , alias='round2_recipients'
         , materialized='table'
-        , tags=['static','dunesql']
+        , tags=['static']
   )
 }}
 
-{% set op_token = 0x4200000000000000000000000000000000000042 %}
+{% set op_token = '0x4200000000000000000000000000000000000042' %}
 
 with attestations as (
     SELECT *,
         REGEXP_REPLACE(key, '[[:cntrl:]]', '') AS key_mapped
     FROM {{ ref('optimism_attestationstation_optimism_events') }}
     
-    WHERE issuer = 0x60c5c9c98bcbd0b0f2fd89b24c16e533baa8cda3
+    WHERE issuer = '0x60c5c9c98bcbd0b0f2fd89b24c16e533baa8cda3'
     AND REGEXP_REPLACE(key, '[[:cntrl:]]', '') IN ('retropgf.round-2.name','retropgf.round-2.award','retropgf.round-2.category')
     AND block_date BETWEEN cast('2023-03-30' as date) AND cast('2023-05-01' as date)
     )
