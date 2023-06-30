@@ -23,5 +23,6 @@ FROM (values
         ,('SushiSwap', 'Sushi')
         ,('Karma delegate registry', 'Karma')
         ,('Rabbit Hole','Rabbithole')
+        ,('Lyra','Lyra Finance')
         
 ) a (proposal_name, project_name)
