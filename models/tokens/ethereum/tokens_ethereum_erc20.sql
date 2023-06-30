@@ -1,5 +1,5 @@
 {{ config(
-        alias='erc20'
+        alias=alias('erc20')
         , tags=['dunesql','static']
         )
 }}
