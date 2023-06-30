@@ -748,14 +748,6 @@ with ovm1_legacy_pools_raw as (
       ) data(json_column) 
 ) 
 
-select 
-   from_hex(col.oldAddress) AS oldAddress
-  ,from_hex(col.newAddress) AS newAddress
-  ,from_hex(col.token0) AS token0
-  ,from_hex(col.token1) AS token1
-  ,col.fee
-from ovm1_legacy_pools_raw
-
 SELECT
     from_hex( json_extract_scalar(json_data, '$[' || cast(t.index as varchar) || '].oldAddress') ) AS oldAddress,
     from_hex( json_extract_scalar(json_data, '$[' || cast(t.index as varchar) || '].newAddress') ) AS newAddress,
