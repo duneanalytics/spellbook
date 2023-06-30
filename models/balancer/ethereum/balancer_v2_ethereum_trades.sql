@@ -16,23 +16,19 @@
 {% set project_start_date = '2021-04-20' %}
 
 WITH 
-    fees_changes AS (
-        SELECT *, block_number + 0.0000001 * index AS block_number_index_1
-        FROM {{ ref('balancer_v2_ethereum_pools_fees') }} 
-    ),
     swap_fees AS (
-        SELECT
+        select
             swaps.poolId,
-            swaps.evt_block_number,
             swaps.evt_tx_hash,
             swaps.evt_index,
+            swaps.evt_block_number,
             SUBSTRING(CAST(swaps.poolId AS varchar(66)), 1, 42) AS contract_address,
             fees.swap_fee_percentage,
-            ROW_NUMBER() OVER (PARTITION BY poolId, evt_tx_hash, evt_index ORDER BY block_number_index_1 DESC) AS rn
-        FROM {{ source ('balancer_v2_ethereum', 'Vault_evt_Swap') }} swaps
-        LEFT JOIN fees_changes fees
-            ON CAST(fees.contract_address AS varchar(66)) = substring(CAST(swaps.poolId AS varchar(66)), 1, 42)
-            AND fees.block_number_index_1 < swaps.evt_block_number + 0.0000001 * evt_index
+            ROW_NUMBER() OVER (PARTITION BY poolId, evt_tx_hash, evt_index ORDER BY block_number DESC, index DESC) AS rn
+        from balancer_v2_ethereum.Vault_evt_Swap swaps
+        left join balancer_v2_ethereum.pools_fees fees
+        on cast(fees.contract_address as varchar(66)) = substring(cast(swaps.poolId as varchar(66)), 1, 42)
+        and ARRAY(fees.block_number) || ARRAY(fees.index) < ARRAY(swaps.evt_block_number) || ARRAY(swaps.evt_index)
         {% if is_incremental() %}
         WHERE swaps.evt_block_time >= date_trunc('day', NOW() - interval '1 week')
         {% endif %}
