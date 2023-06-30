@@ -8,7 +8,8 @@
 {% endmacro %}
 
 {% macro create_table_properties(properties, relation) %}
-  {% set s3_bucket = var('DBT_ENV_CUSTOM_ENV_S3_BUCKET', 'local') %}
+  {# {% set s3_bucket = var('DBT_ENV_CUSTOM_ENV_S3_BUCKET', 'local') %} #}
+  {% set s3_bucket = 'prod-spellbook-trino-118330671040' %}
   {% set modified_identifier = relation.identifier | replace("__dbt_tmp", "") %}
   {%- set unique_location = modified_identifier ~ '_' ~ time_salted_md5_prefix() -%}
       WITH (
