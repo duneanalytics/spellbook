@@ -280,6 +280,6 @@ FROM (
                 ) do_choice_rank
         ) fin
 LEFT JOIN {{ ref('op_token_distributions_optimism_project_name_mapping') }} pnm 
-        ON lower(pnm.proposal_name) = lower(fin.proposal_name)
+        ON trim(lower(pnm.proposal_name)) = trim(lower(fin.proposal_name))
 
 GROUP BY fin.address
