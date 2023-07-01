@@ -44,6 +44,7 @@ FROM (values
             ,(0x574a21fe5ea9666dbca804c9d69d8caf21d5322b, 'Rubicon LP')
             ,(0x1111111254760f7ab3f16433eea9304126dcd199, '1inch Swap')
             ,(0x1111111254EEB25477B68fb85Ed929f73A960582, '1inch Swap')
+            ,(0x79946eac000c85c83b6ba3adfa9ed7f4e2314e84, 'QuestN Protocol')
             
     ) a (address, address_name)
     ) b

@@ -1,7 +1,6 @@
 {{ config(
         schema = 'op_retropgf_optimism'
-        , alias=alias('recipients')
-        , tags = ['dunesql']
+        , alias='voters'
         , post_hook='{{ expose_spells(\'["optimism"]\',
                                   "project",
                                   "op_retropgf",
@@ -9,7 +8,7 @@
   )
 }}
 {% set sources = [
-     ('Round #2',   ref('op_retropgf_optimism_round2_recipients'))
+     ('Round #2',   ref('op_retropgf_optimism_round2_voters'))
 ] %}
 
 SELECT *
@@ -19,12 +18,9 @@ FROM (
     'optimism' AS blockchain,
     '{{ source[0] }}' as round_name,
     block_date,
-    submitter_address,
+    voter,
     issuer,
-    recipient_name,
-    recipient_category,
-    award_amount,
-    award_token
+    can_vote
 
     FROM {{ source[1] }}
     {% if not loop.last %}

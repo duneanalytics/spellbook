@@ -123,6 +123,7 @@ FROM (VALUES
 ,('Project',	0xb053216998E4E11c655e3C9CEe086Bf3cc7c8Ed7,	'Chaintrap',	'Season 3')
 ,('Project',	0xD3581888a0890Fb3270F8349588F3f4Cc25Fb2c9,	'CharmVerse',	'Season 3')
 ,('Project',	0x7601630eC802952ba1ED2B6e4db16F699A0a5A87,	'DeNotify',	'Season 3')
+
 ,('Project',	0x11Ee133A1408FE2d7c62296D7eB33F234b774503,	'dm3 Protocol',	'Season 3')
 ,('Project',	0x1f0A4eb02d9BEfBd1538E8D230699d4e434CDbEE,	'Footprint Analytics',	'Season 3')
 ,('Project',	0x17C2D875CB397D813eAE817DaFD25807E348Df07,	'Herodotus',	'Season 3')
@@ -151,9 +152,11 @@ FROM (VALUES
 ,('Project',	0x13838884271ec954cb036d0b29d404afab5eae2a,	'CryptoTesters',	'Partner Fund')
 ,('Project',	0xeb952357394b6668684a4890bd49d8a4c3e19ec0,	'Okex',	'Partner Fund')
 ,('Project',	0xb1ea5a3e5ea7fa1834d48058ecda26d8c59e8251,	'Quix',	'Partner Fund')
-,('Project',	0xf42279467d821bcdf40b50e9a5d2caccc4cf5b30,	'Quests on Coinbase Wallet - Quest #1 DEX Swap',	'Partner Fund') --Quest 1 - DEX
-,('Project',	0x9f4f2b8bda8d2d3832021b3119747470ea86a183,	'Quests on Coinbase Wallet - Quest #2 Delegation',	'Partner Fund') --Quest 2 - Delegation
-,('Project',	0x1fe95e0497a0E38AFBE18Bd19B9a2b42116880f0,	'Quests on Coinbase Wallet - Quest #3 Attestation',	'Partner Fund') --Quest 2 - Attestation
+,('Project',	0xf42279467d821bcdf40b50e9a5d2caccc4cf5b30,	'Quests on Coinbase Wallet',	'Partner Fund') --Quest 1 - DEX
+,('Project',	0x9f4f2b8bda8d2d3832021b3119747470ea86a183,	'Quests on Coinbase Wallet',	'Partner Fund') --Quest 2 - Delegation
+,('Project',	0x1fe95e0497a0E38AFBE18Bd19B9a2b42116880f0,	'Quests on Coinbase Wallet',	'Partner Fund') --Quest 3 - Attestation
+,('Project',	0x12d9aEF514EE8Bc3f7B2d523ae26164632b71acB,	'Quests on Coinbase Wallet',	'Partner Fund') --Quest 4 - Attestation
+,('Project',	0x0b1CEf4cAb511426B001f430b8d000D5a8C83AD0,	'Quests on Coinbase Wallet',	'Partner Fund') --Quest 5 - Attestation
 ,('Project',	0x23fd464e0b0ee21cedeb929b19cabf9bd5215019,	'Exactly',	'Partner Fund')
 ,('Project',	0x91cE2F083d59B832f95f90aA0997168ae051a98A,	'Lido',		'Partner Fund')
 -- Distributions to Rewarder contracts are not listed

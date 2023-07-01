@@ -1,6 +1,5 @@
 {{ config(
-    alias = alias('rewards_transfers'),
-    tags = ['dunesql'],
+    alias = 'rewards_transfers',
     partition_by = ['block_date'],
     materialized = 'incremental',
     file_format = 'delta',
@@ -28,14 +27,14 @@ SELECT qa.distributor_address
      , r.value            AS rewards_token_value_raw
 FROM {{source('erc20_optimism','evt_Transfer')}} r
 INNER JOIN {{ref('coinbase_wallet_quests_optimism_distributor_addresses')}} qa
-    ON r."from" = distributor_address
+    ON r.`from` = distributor_address
     AND r.contract_address = rewards_token
 
 WHERE evt_block_time >= cast('{{project_start_date}}' as timestamp) --arbitrary
 {% if is_incremental() %}
 -- for quest addresses we've seen before, pull incremental, else pull everything (controls for if we first see a distributor address later)
 AND 1 = (
-        CASE WHEN evt_block_time >= date_trunc('day', now() - interval '7' day) THEN 1
+        CASE WHEN evt_block_time >= date_trunc('day', now() - interval '1 week') THEN 1
              WHEN distributor_address NOT IN (SELECT distributor_address FROM {{this}} GROUP BY 1) THEN 1--we don't have this loaded in yet.
              ELSE 0
         END
