@@ -29,9 +29,9 @@ FROM (
         , ct.block_number
         , ct.tx_hash
         , ct.address
-        , ct.from
+        , ct."from"
         , ct.code
-        , txs.from AS tx_from
+        , txs."from" AS tx_from
         , txs.to AS tx_to
         FROM {{ creation_traces_model[1] }} ct
         INNER JOIN {{ creation_traces_model[2] }} txs USING (block_number, tx_hash)
@@ -47,7 +47,7 @@ FROM (
         , block_number
         , tx_hash
         , address
-        , from
+        , "from"
         , code
         , tx_from
         , tx_to
