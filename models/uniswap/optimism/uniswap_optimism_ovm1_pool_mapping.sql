@@ -2,7 +2,7 @@
   config(
         tags = ['dunesql','static'],
         schema='uniswap_v3_optimism',
-        alias=alias('ovm1_pool_mapping'),
+        alias= alias('ovm1_pool_mapping'),
         materialized='table',
         file_format = 'delta',
         post_hook='{{ expose_spells(\'["optimism"]\',
