@@ -1,6 +1,5 @@
 {{ config(
-        tags = ['dunesql'],
-        alias = alias('logs'),
+        alias = alias('logs', legacy_model=True),
         unique_key=['blockchain', 'tx_hash'],
         post_hook='{{ expose_spells(\'["ethereum", "polygon", "bnb", "avalanche_c", "gnosis", "fantom", "optimism", "arbitrum", "celo"]\',
                                     "sector",
