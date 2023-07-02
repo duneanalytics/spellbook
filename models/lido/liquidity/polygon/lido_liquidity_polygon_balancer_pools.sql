@@ -24,7 +24,7 @@ SELECT distinct
     registered.poolId AS pool_id,
     tokens.token_address, 
     evt_block_time
-FROM {{source ('balancer_v2_polygon','Vault_evt_PoolRegistered')}}registered
+FROM {{source ('balancer_v2_polygon','Vault_evt_PoolRegistered')}} registered
 INNER JOIN {{source ('balancer_v2_polygon','WeightedPoolV2Factory_call_create')}} call_create
     ON call_create.output_0 = SUBSTRING(registered.poolId, 0, 42)
     LATERAL VIEW posexplode(call_create.tokens) tokens AS pos, token_address
@@ -34,7 +34,7 @@ SELECT
     registered.poolId AS pool_id,
     tokens.token_address,
     evt_block_time
-FROM {{source ('balancer_v2_polygon','Vault_evt_PoolRegistered')}}registered
+FROM {{source ('balancer_v2_polygon','Vault_evt_PoolRegistered')}} registered
 INNER JOIN {{source ('balancer_v2_polygon','WeightedPool2TokensFactory_call_create')}} call_create
     ON call_create.output_0 = SUBSTRING(registered.poolId, 0, 42)
     LATERAL VIEW posexplode(call_create.tokens) tokens AS pos, token_address
@@ -44,7 +44,7 @@ SELECT
     registered.poolId AS pool_id,
     tokens.token_address,
     evt_block_time
-FROM {{source ('balancer_v2_polygon','Vault_evt_PoolRegistered')}}registered
+FROM {{source ('balancer_v2_polygon','Vault_evt_PoolRegistered')}} registered
 INNER JOIN {{source ('balancer_v2_polygon','WeightedPoolFactory_call_create')}} call_create
     ON call_create.output_0 = SUBSTRING(registered.poolId, 0, 42)
     LATERAL VIEW posexplode(call_create.tokens) tokens AS pos, token_address
@@ -54,7 +54,7 @@ SELECT
     registered.poolId AS pool_id,
     tokens.token_address,
     evt_block_time
-FROM {{source ('balancer_v2_polygon','Vault_evt_PoolRegistered')}}registered
+FROM {{source ('balancer_v2_polygon','Vault_evt_PoolRegistered')}} registered
 INNER JOIN {{source ('balancer_v2_polygon','StablePoolFactory_call_create')}} call_create
     ON call_create.output_0 = SUBSTRING(registered.poolId, 0, 42)
     LATERAL VIEW posexplode(call_create.tokens) tokens AS pos, token_address
@@ -64,7 +64,7 @@ SELECT
     registered.poolId AS pool_id,
     tokens.token_address,
     evt_block_time
-FROM {{source ('balancer_v2_polygon','Vault_evt_PoolRegistered')}}registered
+FROM {{source ('balancer_v2_polygon','Vault_evt_PoolRegistered')}} registered
 INNER JOIN  {{source ('balancer_v2_polygon','MetaStablePoolFactory_call_create')}} call_create
     ON call_create.output_0 = SUBSTRING(registered.poolId, 0, 42)
     LATERAL VIEW posexplode(call_create.tokens) tokens AS pos, token_address
@@ -74,7 +74,7 @@ SELECT
     registered.poolId AS pool_id,
     tokens.token_address,
     evt_block_time
-FROM {{source ('balancer_v2_polygon','Vault_evt_PoolRegistered')}}registered
+FROM {{source ('balancer_v2_polygon','Vault_evt_PoolRegistered')}} registered
 INNER JOIN  {{source ('balancer_v2_polygon','ComposableStablePoolFactory_call_create')}} call_create
     ON call_create.output_0 = SUBSTRING(registered.poolId, 0, 42)
     LATERAL VIEW posexplode(call_create.tokens) tokens AS pos, token_address
@@ -84,7 +84,7 @@ SELECT
     registered.poolId AS pool_id,
     tokens.token_address,
     evt_block_time
-FROM {{source ('balancer_v2_polygon','Vault_evt_PoolRegistered')}}registered
+FROM {{source ('balancer_v2_polygon','Vault_evt_PoolRegistered')}} registered
 INNER JOIN  {{source ('balancer_v2_polygon','LiquidityBootstrappingPoolFactory_call_create')}} call_create
     ON call_create.output_0 = SUBSTRING(registered.poolId, 0, 42)
     LATERAL VIEW posexplode(call_create.tokens) tokens AS pos, token_address
