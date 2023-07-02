@@ -1,6 +1,7 @@
  {{
   config(
-    alias='tokens_optimism_nft_generated',
+    tags = ['dunesql']
+    alias= alias('tokens_optimism_nft_generated'),
         post_hook='{{ expose_spells(\'["optimism"]\',
                                     "sector",
                                     "tokens",

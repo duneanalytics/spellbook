@@ -1,6 +1,7 @@
 {{
     config(
-        alias='edition_metadata'
+        tags = ['dunesql']
+        , alias= alias('edition_metadata')
         ,materialized = 'incremental'
         ,file_format = 'delta'
         ,incremental_strategy = 'merge'

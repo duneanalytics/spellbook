@@ -1,5 +1,6 @@
 {{ config(
-        alias ='nft'
+        tags = ['dunesql']
+        , alias = alias('nft')
         , materialized = 'table'
         , post_hook='{{ expose_spells(\'["optimism"]\',
                                 "sector",
