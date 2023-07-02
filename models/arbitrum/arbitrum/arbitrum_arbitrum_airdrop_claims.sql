@@ -1,5 +1,6 @@
 {{
     config(
+        tags=['prod_exclude'],
         schema = 'arbitrum_arbitrum',
         alias='airdrop_claims',
         materialized = 'incremental',
