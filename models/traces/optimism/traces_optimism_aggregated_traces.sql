@@ -1,5 +1,6 @@
 {{ config(
-	alias = 'aggregated_traces',
+	tags =['dunesql']
+	alias = alias('aggregated_traces'),
 	partition_by = ['block_date'],
 	materialized = 'incremental',
 	file_format = 'delta',
@@ -23,14 +24,14 @@ DATE_TRUNC('day', block_time) AS block_date
 , cast(SUM(gas_used_trace) as double) / cast(tx_gas_used AS double) AS pct_tx_trace_gas_used
 , COUNT(*) AS num_traces
 
-, 'txh-' || coalesce(cast(tx_hash as varchar(100)), 'null_tx_hash')
-|| '-bn-' || coalesce(cast(block_number as varchar(100)),'null_block_number')
-|| '-trf-' || coalesce(cast(trace_from as varchar(100)),'null_trace_from')
-|| '-trt-' || coalesce(cast(trace_to as varchar(100)),'null_trace_to')
-|| '-trm-' || coalesce(cast(trace_method as varchar(100)),'null_trace_method')
-|| '-trt-' || coalesce(cast(trace_type as varchar(100)),'null_trace_type')
-|| '-trs-' || coalesce(cast(trace_success as varchar(100)),'null_trace_success')
-|| '-txs-' || coalesce(cast(tx_success as varchar(100)),'null_tx_success')
+, 'txh-' || coalesce(cast(tx_hash as varchar), 'null_tx_hash')
+|| '-bn-' || coalesce(cast(block_number as varchar),'null_block_number')
+|| '-trf-' || coalesce(cast(trace_from as varchar),'null_trace_from')
+|| '-trt-' || coalesce(cast(trace_to as varchar),'null_trace_to')
+|| '-trm-' || coalesce(cast(trace_method as varchar),'null_trace_method')
+|| '-trt-' || coalesce(cast(trace_type as varchar),'null_trace_type')
+|| '-trs-' || coalesce(cast(trace_success as varchar),'null_trace_success')
+|| '-txs-' || coalesce(cast(tx_success as varchar),'null_tx_success')
 
 as unique_id
 
@@ -38,9 +39,9 @@ FROM (
 
 	SELECT
 
-          r.block_time
-        , r.block_number
-        , r.tx_hash
+		r.block_time
+	, r.block_number
+	, r.tx_hash
     
 	, r.tx_from
 	, r.tx_to
@@ -79,18 +80,18 @@ FROM (
 		AND t.block_time = r.block_time
 		AND t.block_number = r.block_number
 		{% if is_incremental() %}
-        	AND t.block_time >= date_trunc('day', now() - interval '1 week')
+        	AND t.block_time >= date_trunc('day', now() - interval '7' day)
         	{% endif %}
 
         INNER JOIN {{ source('optimism', 'blocks') }} b
 		ON  t.block_time = b.time
 		AND t.block_number = b.number
 		{% if is_incremental() %}
-        	AND b.time >= date_trunc('day', now() - interval '1 week')
+        	AND b.time >= date_trunc('day', now() - interval '7' day)
         	{% endif %}
         
 	{% if is_incremental() %}
-	WHERE r.block_time >= date_trunc('day', now() - interval '1 week')
+	WHERE r.block_time >= date_trunc('day', now() - interval '7' day)
 	{% endif %}
 	-- handle duplicate trace errors
 	GROUP BY 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25
