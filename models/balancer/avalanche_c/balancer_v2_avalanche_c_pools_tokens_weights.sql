@@ -24,8 +24,9 @@ FROM {{ source('balancer_v2_avalanche_c', 'Vault_evt_PoolRegistered') }} registe
 INNER JOIN {{ source('balancer_v2_avalanche_c', 'WeightedPoolFactory_call_create') }} call_create
     ON call_create.output_0 = SUBSTRING(registered.poolId, 0, 42)
     LATERAL VIEW posexplode(call_create.tokens) tokens AS pos, token_address
-    LATERAL VIEW posexplode(call_create.weights) weights AS pos, normalized_weight
+    LATERAL VIEW posexplode(call_create.normalizedWeights) weights AS pos, normalized_weight
 WHERE tokens.pos = weights.pos
     {% if is_incremental() %}
     AND registered.evt_block_time >= date_trunc("day", now() - interval '1 week')
     {% endif %}
+;
