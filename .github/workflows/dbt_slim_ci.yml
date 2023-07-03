@@ -35,6 +35,7 @@ jobs:
             echo "TAG=,tag:dunesql" >> $GITHUB_ENV
             echo "COMPILE_TAG=--select tag:dunesql" >> $GITHUB_ENV
             echo "S3_LOCATION=manifest-spellbook-dunesql" >> $GITHUB_ENV
+            echo "export DBT_ENV_CUSTOM_ENV_S3_BUCKET=prod-spellbook-trino-118330671040" >> $GITHUB_ENV
           elif [[ "${{ matrix.engine }}" == "spark" ]]; then
             printf "Using spark engine\n"
             echo "PROFILE=--profile spark" >> $GITHUB_ENV
