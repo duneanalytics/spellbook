@@ -503,6 +503,10 @@ models:
       - *blockchain
       - name: name
         description: "Capitalised name of the blockchain"
+      - name: chain_type
+        description: "Chain type"
+      - name: rollup_type
+        description: "Rollup type the chain"
       - name: native_token_symbol
         description: "Native token symbol"
       - name: wrapped_native_token_address
