@@ -289,6 +289,20 @@ FROM
                 'Arbitrum',
                 '0xFb466FBC00617C89E5865f4ef0bc6D48Ea150AC5',
                 '0x8DC92083F5C4813c02b502ce1ea61f0a48A36A88'
+            ),
+            (
+            'AuraRDNTWETH-USDC',
+            'USDC',
+            '0xa17492d89cB2D0bE1dDbd0008F8585EDc5B0ACf3',
+            '0xFF970A61A04b1cA14834A43f5dE4533eBDDB5CC8',
+            18,
+            6,
+            '340282366920938463463374607',
+            '1689336000'
+            'AuraRDNTWETH-USDC',
+            'Arbitrum',
+            '0xFb466FBC00617C89E5865f4ef0bc6D48Ea150AC5',
+            '0x8DC92083F5C4813c02b502ce1ea61f0a48A36A88'
             )
     ) AS temp_table (
         token0_symbol,
