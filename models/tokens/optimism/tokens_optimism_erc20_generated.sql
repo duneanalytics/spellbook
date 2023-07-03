@@ -16,6 +16,7 @@ FROM (
     , 'underlying' as token_type, 'l2 bridge mapping' AS token_mapping_source
     FROM {{ ref('tokens_optimism_erc20_bridged_mapping') }}
     WHERE l1_symbol IS NOT NULL
+    GROUP BY 1,2,3
 
     UNION ALL
 
@@ -24,7 +25,8 @@ FROM (
     , 'receipt' as token_type, 'aave factory' AS token_mapping_source
     FROM {{ ref('aave_v3_tokens') }}
       WHERE blockchain = 'optimism'
-    
+    GROUP BY 1,2,3
+
     UNION ALL
 
     SELECT
@@ -32,7 +34,8 @@ FROM (
     , 'receipt' as token_type, 'the granary factory' AS token_mapping_source
     FROM {{ ref('the_granary_optimism_tokens') }}
       WHERE blockchain = 'optimism'
-    
+    GROUP BY 1,2,3
+
     UNION ALL
 
     SELECT
@@ -40,7 +43,8 @@ FROM (
     , 'receipt' as token_type, 'yearn vault factory' AS token_mapping_source
     FROM {{ ref('yearn_optimism_vaults') }}
       WHERE blockchain = 'optimism'
-    
+    GROUP BY 1,2,3
+
   ) a
   GROUP BY contract_address, symbol, token_type, token_mapping_source --get uniques & handle if L2 token factory gets decimals wrong
 )
@@ -52,6 +56,9 @@ SELECT contract_address
       , token_mapping_source
 
     FROM (
-      SELECT contract_address, symbol, decimals, token_type, token_mapping_source
-        FROM generated_tokens_list  
+      SELECT contract_address, symbol, decimals, token_type, token_mapping_source,
+      -- ensure we don't have dupes with different symbols
+        ROW_NUMBER() OVER (PARTITION BY contract_address ORDER BY decimals ASC NULLS LAST, symbol ASC NULLS LAST) AS token_rank
+        FROM generated_tokens_list
     ) a
+  WHERE token_rank = 1
