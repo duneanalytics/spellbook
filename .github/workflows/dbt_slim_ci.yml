@@ -37,7 +37,7 @@ jobs:
             echo "S3_LOCATION=manifest-spellbook-dunesql" >> $GITHUB_ENV
           elif [[ "${{ matrix.engine }}" == "spark" ]]; then
             printf "Using spark engine\n"
-            echo "PROFILE=--profile spark" >> $GITHUB_ENV
+            echo "PROFILE=--profiles-dir=~/.dbt --profile spark" >> $GITHUB_ENV
             echo "EXCLUDE=tag:dunesql" >> $GITHUB_ENV
             echo "SINGLE_EXCLUDE=--exclude tag:dunesql" >> $GITHUB_ENV
             echo "COMPILE_TAG=--exclude tag:dunesql" >> $GITHUB_ENV
