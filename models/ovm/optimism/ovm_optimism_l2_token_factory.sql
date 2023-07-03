@@ -1,4 +1,5 @@
-{{ config(tags=['dunesql'],
+{{ config(
+    tags=['dunesql'],
     schema = 'ovm_optimism',
     alias = alias('l2_token_factory'),
     materialized = 'incremental',
