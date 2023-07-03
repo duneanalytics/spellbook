@@ -3,13 +3,13 @@
         alias = alias('info', timestamp ),
         post_hook='{{ expose_spells(\'["goerli"]\',
                                     "sector",
-                                    "emvs_mainnets_testnets",
+                                    "evms_mainnets_testnets",
                                     \'["hildobby", "msilb7]\') }}')
 }}
 
 {% set models = [
-     ('mainnet', ref('emvs_info'))
-     ,('testnet', ref('emvs_testnets_info'))
+     ('mainnet', ref('evms_info'))
+     ,('testnet', ref('evms_testnets_info'))
 ] %}
 
 SELECT *

@@ -10,8 +10,8 @@
 }}
 
 {% set models = [
-     ('mainnet', ref('emvs_blocks'))
-     ,('testnet', ref('emvs_testnets_blocks'))
+     ('mainnet', ref('evms_blocks'))
+     ,('testnet', ref('evms_testnets_blocks'))
 ] %}
 
 SELECT *

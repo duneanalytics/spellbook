@@ -4,14 +4,14 @@
         unique_key=['blockchain', 'tx_hash'],
         post_hook='{{ expose_spells(\'["goerli"]\',
                                     "sector",
-                                    "emvs_mainnets_testnets",
+                                    "evms_mainnets_testnets",
                                     \'["hildobby", "msilb7"]\') }}'
         )
 }}
 
 {% set models = [
-     ('mainnet', ref('emvs_logs_decoded'))
-     ,('testnet', ref('emvs_testnets_logs_decoded'))
+     ('mainnet', ref('evms_logs_decoded'))
+     ,('testnet', ref('evms_testnets_logs_decoded'))
 ] %}
 
 SELECT *

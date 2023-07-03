@@ -1,10 +1,10 @@
 version: 2
 
 models:
-  - name: emvs_mainnets_testnets_transactions
+  - name: evms_mainnets_testnets_transactions
     meta:
       blockchain: goerli, ethereum, polygon, bnb, avalanche_c, gnosis, fantom, optimism, arbitrum, celo
-      sector: emvs_mainnets_testnets
+      sector: evms_mainnets_testnets
       contributors: msilb7, hildobby
     config:
       tags:   ['evms', 'testnets', 'mainnets', 'transactions']
@@ -80,10 +80,10 @@ models:
         description: "The timestamp when the transaction is batched and confirmed on L1"
       - name: effective_gas_price
 
-  - name: emvs_mainnets_testnets_traces
+  - name: evms_mainnets_testnets_traces
     meta:
       blockchain: goerli, ethereum, polygon, bnb, avalanche_c, gnosis, fantom, optimism, arbitrum, celo
-      sector: emvs_mainnets_testnets
+      sector: evms_mainnets_testnets
       contributors: msilb7, hildobby
     config:
       tags:   ['evms', 'testnets', 'mainnets', 'traces']
@@ -135,10 +135,10 @@ models:
       - name: refund_address
         description: "Refund Address"
 
-  - name: emvs_mainnets_testnets_traces_decoded
+  - name: evms_mainnets_testnets_traces_decoded
     meta:
       blockchain: goerli, ethereum, polygon, bnb, avalanche_c, gnosis, fantom, optimism, arbitrum, celo
-      sector: emvs_mainnets_testnets
+      sector: evms_mainnets_testnets
       contributors: msilb7, hildobby
     config:
       tags:   ['evms', 'testnets', 'mainnets', 'traces', 'decoded']
@@ -163,10 +163,10 @@ models:
         description: "All returned traces, gives the exact location in the call trace"
       - *tx_hash
 
-  - name: emvs_mainnets_testnets_logs
+  - name: evms_mainnets_testnets_logs
     meta:
       blockchain: goerli, ethereum, polygon, bnb, avalanche_c, gnosis, fantom, optimism, arbitrum, celo
-      sector: emvs_mainnets_testnets
+      sector: evms_mainnets_testnets
       contributors: msilb7, hildobby
     config:
       tags:   ['evms', 'testnets', 'mainnets', 'logs']
@@ -195,10 +195,10 @@ models:
         description: "Log index"
       - *tx_index
 
-  - name: emvs_mainnets_testnets_logs_decoded
+  - name: evms_mainnets_testnets_logs_decoded
     meta:
       blockchain: goerli, ethereum, polygon, bnb, avalanche_c, gnosis, fantom, optimism, arbitrum, celo
-      sector: emvs_mainnets_testnets
+      sector: evms_mainnets_testnets
       contributors: msilb7, hildobby
     config:
       tags:   ['evms', 'testnets', 'mainnets', 'logs', 'decoded']
@@ -223,10 +223,10 @@ models:
         description: "Signature of the event"
       - *tx_hash
 
-  - name: emvs_mainnets_testnets_blocks
+  - name: evms_mainnets_testnets_blocks
     meta:
       blockchain: goerli, ethereum, polygon, bnb, avalanche_c, gnosis, fantom, optimism, arbitrum, celo
-      sector: emvs_mainnets_testnets
+      sector: evms_mainnets_testnets
       contributors: msilb7, hildobby
     config:
       tags:   ['evms', 'testnets', 'mainnets', 'blocks']
@@ -247,10 +247,10 @@ models:
       - name: time
       - name: total_difficulty
 
-  - name: emvs_mainnets_testnets_contracts
+  - name: evms_mainnets_testnets_contracts
     meta:
       blockchain: goerli, ethereum, polygon, bnb, avalanche_c, gnosis, fantom, optimism, arbitrum, celo
-      sector: emvs_mainnets_testnets
+      sector: evms_mainnets_testnets
       contributors: msilb7, hildobby
     config:
       tags:   ['evms', 'testnets', 'mainnets', 'contracts']
@@ -284,10 +284,10 @@ models:
       - name: created_at
         description: "Timestamp for contract creation"
       
-  - name: emvs_mainnets_testnets_creation_traces
+  - name: evms_mainnets_testnets_creation_traces
     meta:
       blockchain: goerli, ethereum, polygon, bnb, avalanche_c, gnosis, fantom, optimism, arbitrum, celo
-      sector: emvs_mainnets_testnets
+      sector: evms_mainnets_testnets
       contributors: msilb7, hildobby
     config:
       tags:   ['evms', 'testnets', 'mainnets', 'traces', 'creation', 'contracts']
@@ -305,10 +305,10 @@ models:
       - name: code
         description: "Contract code"
 
-  - name: emvs_mainnets_testnets_erc20_transfers
+  - name: evms_mainnets_testnets_erc20_transfers
     meta:
       blockchain: goerli, ethereum, polygon, bnb, avalanche_c, gnosis, fantom, optimism, arbitrum, celo
-      sector: emvs_mainnets_testnets
+      sector: evms_mainnets_testnets
       contributors: msilb7, hildobby
     config:
       tags:   ['evms', 'testnets', 'mainnets', 'erc20', 'transfers']
@@ -335,10 +335,10 @@ models:
       - name: value
         description: "Amount of ERC20 token transferred"
 
-  - name: emvs_mainnets_testnets_erc20_approvals
+  - name: evms_mainnets_testnets_erc20_approvals
     meta:
       blockchain: goerli, ethereum, polygon, bnb, avalanche_c, gnosis, fantom, optimism, arbitrum, celo
-      sector: emvs_mainnets_testnets
+      sector: evms_mainnets_testnets
       contributors: msilb7, hildobby
     config:
       tags:   ['evms', 'testnets', 'mainnets', 'erc20', 'approvals']
@@ -361,10 +361,10 @@ models:
       - name: value
         description: "Amount of ERC20 token transferred"
 
-  - name: emvs_mainnets_testnets_erc1155_transferssingle
+  - name: evms_mainnets_testnets_erc1155_transferssingle
     meta:
       blockchain: goerli, ethereum, polygon, bnb, avalanche_c, gnosis, fantom, optimism, arbitrum, celo
-      sector: emvs_mainnets_testnets
+      sector: evms_mainnets_testnets
       contributors: msilb7, hildobby
     config:
       tags:   ['evms', 'testnets', 'mainnets', 'erc1155', 'transfers', 'single']
@@ -387,10 +387,10 @@ models:
       - name: value
         description: "Amount of ERC1155 token transferred"
 
-  - name: emvs_mainnets_testnets_erc1155_transfersbatch
+  - name: evms_mainnets_testnets_erc1155_transfersbatch
     meta:
       blockchain: goerli, ethereum, polygon, bnb, avalanche_c, gnosis, fantom, optimism, arbitrum, celo
-      sector: emvs_mainnets_testnets
+      sector: evms_mainnets_testnets
       contributors: msilb7, hildobby
     config:
       tags:   ['evms', 'testnets', 'mainnets', 'erc1155', 'transfers', 'batch']
@@ -413,10 +413,10 @@ models:
       - name: values
         description: "Amounts of ERC1155 token transferred"
 
-  - name: emvs_mainnets_testnets_erc1155_approvalsforall
+  - name: evms_mainnets_testnets_erc1155_approvalsforall
     meta:
       blockchain: goerli, ethereum, polygon, bnb, avalanche_c, gnosis, fantom, optimism, arbitrum, celo
-      sector: emvs_mainnets_testnets
+      sector: evms_mainnets_testnets
       contributors: msilb7, hildobby
     config:
       tags:   ['evms', 'testnets', 'mainnets', 'erc1155', 'approvals']
@@ -442,10 +442,10 @@ models:
         name: operator
         description: "Opperator"
 
-  - name: emvs_mainnets_testnets_erc721_transfers
+  - name: evms_mainnets_testnets_erc721_transfers
     meta:
       blockchain: goerli, ethereum, polygon, bnb, avalanche_c, gnosis, fantom, optimism, arbitrum, celo
-      sector: emvs_mainnets_testnets
+      sector: evms_mainnets_testnets
       contributors: msilb7, hildobby
     config:
       tags:   ['evms', 'testnets', 'mainnets', 'erc721', 'transfers']
@@ -464,10 +464,10 @@ models:
       - name: tokenId
         description: "ERC721 token ID."
 
-  - name: emvs_mainnets_testnets_erc721_approvals
+  - name: evms_mainnets_testnets_erc721_approvals
     meta:
       blockchain: goerli, ethereum, polygon, bnb, avalanche_c, gnosis, fantom, optimism, arbitrum, celo
-      sector: emvs_mainnets_testnets
+      sector: evms_mainnets_testnets
       contributors: msilb7, hildobby
     config:
       tags:   ['evms', 'testnets', 'mainnets', 'erc721', 'approvals']
@@ -486,10 +486,10 @@ models:
       - name: tokenId
         description: "ERC721 token ID."
 
-  - name: emvs_mainnets_testnets_erc721_approvalsforall
+  - name: evms_mainnets_testnets_erc721_approvalsforall
     meta:
       blockchain: goerli, ethereum, polygon, bnb, avalanche_c, gnosis, fantom, optimism, arbitrum, celo
-      sector: emvs_mainnets_testnets
+      sector: evms_mainnets_testnets
       contributors: msilb7, hildobby
     config:
       tags:   ['evms', 'testnets', 'mainnets', 'erc721', 'approvals']
@@ -507,10 +507,10 @@ models:
       - *owner
       - *operator
   
-  - name: emvs_mainnets_testnets_info
+  - name: evms_mainnets_testnets_info
     meta:
       blockchain: goerli, ethereum, polygon, bnb, avalanche_c, gnosis, fantom, optimism, arbitrum, celo
-      sector: emvs_mainnets_testnets
+      sector: evms_mainnets_testnets
       contributors: hildobby
     config:
       tags:   ['evms', 'testnets', 'mainnets', 'info']
