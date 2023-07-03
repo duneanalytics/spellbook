@@ -13,8 +13,7 @@
     ref('balancer_ethereum_trades'),
     ref('balancer_gnosis_trades'),
     ref('balancer_optimism_trades'),
-    ref('balancer_polygon_trades'),
-    ref('balancer_avalanche_c_trades')
+    ref('balancer_polygon_trades')
 ] %}
 
 
