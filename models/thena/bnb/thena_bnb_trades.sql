@@ -5,8 +5,8 @@
 
 
 {% set thena_models = [
-    ref('thena_fusion_bnb_trades')
-,   ref('thena_v1_bnb_trades')
+    ref('thena_bnb_fusion_trades')
+,   ref('thena_bnb_v1_trades')
 ] %}
 
 
