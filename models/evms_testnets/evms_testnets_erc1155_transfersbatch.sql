@@ -4,7 +4,7 @@
         unique_key=['blockchain', 'tx_hash', 'evt_index'],
         post_hook='{{ expose_spells(\'["goerli"]\',
                                     "sector",
-                                    "evms",
+                                    "evms_testnets",
                                     \'["hildobby", "msilb7"]\') }}'
         )
 }}
