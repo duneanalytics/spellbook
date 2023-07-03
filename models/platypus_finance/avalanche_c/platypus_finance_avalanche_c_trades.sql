@@ -70,11 +70,11 @@ inner join {{ source('avalanche_c', 'transactions') }} tx
     AND tx.block_time >= date_trunc("day", now() - interval '1 week')
     {% endif %}
 -- bought tokens
-left join {{ ref('tokens_erc20') }} erc20_b
+left join {{ ref('tokens_erc20_legacy') }} erc20_b
     on erc20_b.contract_address = s.toToken 
     and erc20_b.blockchain = 'avalanche_c'
 -- sold tokens
-left join {{ ref('tokens_erc20') }} erc20_s
+left join {{ ref('tokens_erc20_legacy') }} erc20_s
     on erc20_s.contract_address = s.fromToken
     and erc20_s.blockchain = 'avalanche_c'
 -- price of bought tokens
