@@ -387,7 +387,7 @@ FROM (
     SELECT
     l2_token AS contract_address, l1_symbol AS symbol, l1_decimals as decimals
     , 'underlying' as token_type, 'l2 bridge mapping' AS token_mapping_source
-    FROM {{ ref('tokens_optimism_erc20_bridged_mapping_legacy') }}
+    FROM {{ ref('tokens_optimism_erc20_bridged_mapping') }}
     WHERE l1_symbol IS NOT NULL
 /*
     -- UNION ALL
