@@ -92,14 +92,12 @@ models:
             - hour
             - contract_address
     columns:
-      - *blockchain
-      - &hour
+        name: blockchain 
         name: hour
         description: 'UTC event block time truncated to the hour mark'
         tests:
           - not_null
-      - *contract_address
-      - &median_price
+        name: contract_address
         name: median_price
         description: 'BPT median price'
         
