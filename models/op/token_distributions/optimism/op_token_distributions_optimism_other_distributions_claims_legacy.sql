@@ -20,7 +20,7 @@
 
 --protocols that never claimed and transferred from the fnd wallet
 WITH all_labels AS (
-    SELECT address, label, proposal_name, address_descriptor, project_name FROM {{ ref('op_token_distributions_optimism_all_distributions_labels') }}
+    SELECT address, label, proposal_name, address_descriptor, project_name FROM {{ ref('op_token_distributions_optimism_all_distributions_labels_legacy') }}
 )
 
 , aave_lm_claims AS ( 

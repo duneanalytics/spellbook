@@ -99,7 +99,7 @@ SELECT *
       {% if is_incremental() %}
       and t.block_time >= date_trunc('day', now() - interval '1 week')
       {% endif %}
-    left join {{ ref('contracts_optimism_self_destruct_contracts') }} as sd 
+    left join {{ ref('contracts_optimism_self_destruct_contracts_legacy') }} as sd 
       on ct.address = sd.contract_address
       and ct.tx_hash = sd.creation_tx_hash
       and ct.block_time = sd.created_time
@@ -148,7 +148,7 @@ SELECT *
       ,t.code_bytelength
       ,coalesce(sd.contract_address is not NULL, false) as is_self_destruct
     from {{ this }} t
-    left join {{ ref('contracts_optimism_self_destruct_contracts') }} as sd 
+    left join {{ ref('contracts_optimism_self_destruct_contracts_legacy') }} as sd 
       on t.contract_address = sd.contract_address
       and t.creation_tx_hash = sd.creation_tx_hash
       and t.created_time = sd.created_time
@@ -161,7 +161,7 @@ SELECT *
       AND sd.contract_address IS NULL
 
     -- If the creator becomes marked as deterministic, we want to re-run it.
-    left join {{ref('contracts_optimism_deterministic_contract_creators')}} as nd 
+    left join {{ref('contracts_optimism_deterministic_contract_creators_legacy')}} as nd 
       ON nd.creator_address = t.creator_address
 
     -- Don't pull contracts that are in the incremental group (prevent dupes)
@@ -182,7 +182,7 @@ WHERE contract_order = 1
     ,t.symbol
     ,'erc20' as token_standard
   from base_level as bl 
-  join {{ ref('tokens_optimism_erc20') }} as t
+  join {{ ref('tokens_optimism_erc20_legacy') }} as t
     on bl.contract_address = t.contract_address
   group by 1, 2, 3
 
@@ -193,7 +193,7 @@ WHERE contract_order = 1
     ,t.name as symbol
     , standard AS token_standard
   from base_level as bl 
-  join {{ ref('tokens_optimism_nft') }} as t
+  join {{ ref('tokens_optimism_nft_legacy') }} as t
     on bl.contract_address = t.contract_address
   group by 1, 2, 3
 )
@@ -257,7 +257,7 @@ WHERE contract_order = 1
       on b.creator_address = u.contract_address
     {% endif %}
     -- is the creator deterministic?
-    left join {{ref('contracts_optimism_deterministic_contract_creators')}} as nd 
+    left join {{ref('contracts_optimism_deterministic_contract_creators_legacy')}} as nd 
       ON nd.creator_address = b.creator_address
 )
 {%- endfor %}
@@ -286,9 +286,9 @@ WHERE contract_order = 1
     ,f.is_self_destruct
     ,f.code_deploy_rank
   from level{{max_levels - 1}} as f
-  left join {{ ref('contracts_optimism_contract_creator_address_list') }} as cc 
+  left join {{ ref('contracts_optimism_contract_creator_address_list_legacy') }} as cc 
     on f.creator_address = cc.creator_address
-  left join {{ ref('contracts_optimism_contract_creator_address_list') }} as ccf
+  left join {{ ref('contracts_optimism_contract_creator_address_list_legacy') }} as ccf
     on f.contract_factory = ccf.creator_address
   where f.contract_address is not null
  )
@@ -477,7 +477,7 @@ WHERE contract_order = 1
     ,1 AS created_tx_index
     ,cast(NULL as bigint) as code_bytelength --todo
     ,1 as code_deploy_rank
-  from {{ ref('uniswap_optimism_ovm1_pool_mapping') }} as uni
+  from {{ ref('uniswap_optimism_ovm1_pool_mapping_legacy') }} as uni
   where 
     true
     {% if is_incremental() %} -- this filter will only be applied on an incremental run 
@@ -587,9 +587,9 @@ select
 from cleanup as c 
 left join {{ source('ovm1_optimism', 'contracts') }} as ovm1c
   on c.contract_address = ovm1c.contract_address --fill in any missing contract creators
-left join {{ ref('contracts_optimism_project_name_mappings') }} as dnm -- fix names for decoded contracts
+left join {{ ref('contracts_optimism_project_name_mappings_legacy') }} as dnm -- fix names for decoded contracts
   on lower(c.contract_project) = lower(dnm.dune_name)
-left join {{ ref('contracts_optimism_contract_overrides') }} as co --override contract maps
+left join {{ ref('contracts_optimism_contract_overrides_legacy') }} as co --override contract maps
   on lower(c.contract_address) = lower(co.contract_address)
 {% if is_incremental() %} -- this filter will only be applied on an incremental run 
 left join {{ this }} th -- grab if the contract was previously picked up as factory created

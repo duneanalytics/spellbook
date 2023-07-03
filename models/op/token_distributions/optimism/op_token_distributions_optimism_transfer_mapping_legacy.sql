@@ -21,7 +21,7 @@
 -- should rebuild on each update to upstream tables
 
 WITH all_labels AS (
-    SELECT address, label, proposal_name, address_descriptor, project_name FROM {{ ref('op_token_distributions_optimism_all_distributions_labels') }}
+    SELECT address, label, proposal_name, address_descriptor, project_name FROM {{ ref('op_token_distributions_optimism_all_distributions_labels_legacy') }}
 )
 
 
@@ -30,7 +30,7 @@ WITH all_labels AS (
     )
 
 , other_tags AS (
-        SELECT * FROM {{ ref('op_token_distributions_optimism_other_tags') }}
+        SELECT * FROM {{ ref('op_token_distributions_optimism_other_tags_legacy') }}
 )
 
 , outgoing_distributions AS (
@@ -148,7 +148,7 @@ WITH all_labels AS (
             evt_block_time, evt_block_number, evt_index,
             from_address, to_address, tx_to_address, tx_from_address, evt_tx_hash,
             from_type, to_type, from_label, from_name, to_label, o.to_name, op_amount_decimal, tx_method
-        FROM {{ ref('op_token_distributions_optimism_other_distributions_claims') }} o
+        FROM {{ ref('op_token_distributions_optimism_other_distributions_claims_legacy') }} o
         {% if is_incremental() %} 
             where o.evt_block_time >= date_trunc('day', now() - interval '1 week')
         {% endif %}
@@ -161,7 +161,7 @@ WITH all_labels AS (
             t.from_type, t.to_type, t.from_label, t.from_name, t.to_label, t.to_name, t.op_amount_decimal, t.tx_method
         
         FROM tfers t
-        LEFT JOIN {{ ref('op_token_distributions_optimism_other_distributions_claims') }} o --don't double count - at the amount level b/c there could be multiple claims in one tx
+        LEFT JOIN {{ ref('op_token_distributions_optimism_other_distributions_claims_legacy') }} o --don't double count - at the amount level b/c there could be multiple claims in one tx
             ON t.evt_block_number = o.evt_block_number
             AND t.evt_block_time = o.evt_block_time
             AND t.evt_tx_hash = o.evt_tx_hash
