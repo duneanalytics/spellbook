@@ -1,6 +1,6 @@
 {{ config(
         alias ='liquidity',
-        post_hook='{{ expose_spells(\'["ethereum","arbitrum", "optimism", "polygon", "gnosis"]\',
+        post_hook='{{ expose_spells(\'["ethereum","arbitrum", "optimism", "polygon", "gnosis", "avalanche_c"]\',
                                 "project",
                                 "balancer",
                                 \'["viniabussafi"]\') }}'
@@ -13,6 +13,7 @@ ref('balancer_v2_ethereum_liquidity')
 , ref('balancer_v2_arbitrum_liquidity')
 , ref('balancer_v2_polygon_liquidity')
 , ref('balancer_v2_gnosis_liquidity')
+, ref('balancer_v2_avalanche_c_liquidity')
 ] %}
 
 

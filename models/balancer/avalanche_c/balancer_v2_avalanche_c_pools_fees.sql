@@ -1,12 +1,12 @@
 {{
     config(
-        schema = 'balancer_v2_avalanche',
+        schema = 'balancer_v2_avalanche_c',
         alias='pools_fees',
         materialized = 'incremental',
         file_format = 'delta',
         incremental_strategy = 'merge',
         unique_key = ['block_number', 'tx_hash', 'index'],
-        post_hook='{{ expose_spells(\'["avalanche"]\',
+        post_hook='{{ expose_spells(\'["avalanche_c"]\',
                                     "project",
                                     "balancer_v2",
                                     \'["metacrypto", "jacektrocinski"]\') }}'
@@ -20,7 +20,7 @@ WITH registered_pools AS (
     SELECT DISTINCT
         `poolAddress` AS pool_address
     FROM
-        {{ source ('balancer_v2_avalanche', 'Vault_evt_PoolRegistered') }}
+        {{ source ('balancer_v2_avalanche_c', 'Vault_evt_PoolRegistered') }}
 )
 SELECT
     logs.contract_address,
@@ -31,7 +31,7 @@ SELECT
     logs.block_number,
     bytea2numeric_v3 (SUBSTRING(logs.data FROM 32 FOR 64)) * 1 AS swap_fee_percentage
 FROM
-    {{ source ('avalanche', 'logs') }}
+    {{ source ('avalanche_c', 'logs') }}
     INNER JOIN registered_pools ON registered_pools.pool_address = logs.contract_address
 WHERE logs.topic1 = '{{ event_signature }}'
     {% if not is_incremental() %}

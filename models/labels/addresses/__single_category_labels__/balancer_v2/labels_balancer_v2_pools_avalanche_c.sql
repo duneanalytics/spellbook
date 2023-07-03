@@ -1,10 +1,10 @@
 {{config(
-    alias='balancer_v2_pools_arbitrum',
+    alias='balancer_v2_pools_avalanche',
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
     unique_key = ['address'],
-    post_hook='{{ expose_spells(\'["arbitrum"]\',
+    post_hook='{{ expose_spells(\'["avalanche"]\',
                                      "sector",
                                     "labels",
                                     \'["balancerlabs"]\') }}'
@@ -22,8 +22,8 @@ WITH pools AS (
                explode(arrays_zip(cc.tokens, cc.weights)) AS zip,
                cc.symbol,
                'WP' AS pool_type
-        FROM {{ source('balancer_v2_arbitrum', 'Vault_evt_PoolRegistered') }} c
-        INNER JOIN {{ source('balancer_v2_arbitrum', 'WeightedPoolFactory_call_create') }} cc
+        FROM {{ source('balancer_v2_avalanche_c', 'Vault_evt_PoolRegistered') }} c
+        INNER JOIN {{ source('balancer_v2_avalanche_c', 'WeightedPoolFactory_call_create') }} cc
         ON c.evt_tx_hash = cc.call_tx_hash
         AND SUBSTRING(c.poolId, 0, 42) = cc.output_0
         {% if is_incremental() %}
@@ -44,8 +44,8 @@ WITH pools AS (
                explode(arrays_zip(cc.tokens, cc.normalizedWeights)) AS zip,
                cc.symbol,
                'WP' AS pool_type
-        FROM {{ source('balancer_v2_arbitrum', 'Vault_evt_PoolRegistered') }} c
-        INNER JOIN {{ source('balancer_v2_arbitrum', 'WeightedPoolV2Factory_call_create') }} cc
+        FROM {{ source('balancer_v2_avalanche', 'Vault_evt_PoolRegistered') }} c
+        INNER JOIN {{ source('balancer_v2_avalanche_c', 'NoProtocolFeeLiquidityBootstrappingPoolFactory_call_create') }} cc
         ON c.evt_tx_hash = cc.call_tx_hash
         AND SUBSTRING(c.poolId, 0, 42) = cc.output_0
         {% if is_incremental() %}
@@ -66,8 +66,8 @@ WITH pools AS (
                explode(arrays_zip(cc.tokens, cc.weights)) AS zip,
                cc.symbol,
                'IP' AS pool_type
-        FROM {{ source('balancer_v2_arbitrum', 'Vault_evt_PoolRegistered') }} c
-        INNER JOIN {{ source('balancer_v2_arbitrum', 'InvestmentPoolFactory_call_create') }} cc
+        FROM {{ source('balancer_v2_avalanche_c', 'Vault_evt_PoolRegistered') }} c
+        INNER JOIN {{ source('balancer_v2_avalanche_c', 'ComposableStablePoolFactory_call_create') }} cc
         ON c.evt_tx_hash = cc.call_tx_hash
         AND SUBSTRING(c.poolId, 0, 42) = cc.output_0
         {% if is_incremental() %}
@@ -88,8 +88,8 @@ WITH pools AS (
                explode(arrays_zip(cc.tokens, cc.weights)) AS zip,
                cc.symbol,
                'WP2T' AS pool_type
-        FROM {{ source('balancer_v2_arbitrum', 'Vault_evt_PoolRegistered') }} c
-        INNER JOIN {{ source('balancer_v2_arbitrum', 'WeightedPool2TokensFactory_call_create') }} cc
+        FROM {{ source('balancer_v2_avalanche_c', 'Vault_evt_PoolRegistered') }} c
+        INNER JOIN {{ source('balancer_v2_avalanche_c', 'ERC4626LinearPoolFactory_call_create') }} cc
         ON c.evt_tx_hash = cc.call_tx_hash
         AND SUBSTRING(c.poolId, 0, 42) = cc.output_0
         {% if is_incremental() %}
@@ -105,99 +105,8 @@ WITH pools AS (
            CAST(NULL AS DOUBLE) AS normalized_weight,
            cc.symbol,
            'SP' AS pool_type
-    FROM {{ source('balancer_v2_arbitrum', 'Vault_evt_PoolRegistered') }} c
-    INNER JOIN {{ source('balancer_v2_arbitrum', 'StablePoolFactory_call_create') }} cc
-    ON c.evt_tx_hash = cc.call_tx_hash
-    AND SUBSTRING(c.poolId, 0, 42) = cc.output_0
-    {% if is_incremental() %}
-    WHERE c.evt_block_time >= date_trunc("day", now() - interval '1 week')
-      AND cc.call_block_time >= date_trunc("day", now() - interval '1 week')
-    {% endif %}
-
-    UNION ALL
-
-    SELECT c.poolId AS pool_id,
-        explode(cc.tokens) AS token_address,
-        CAST(NULL AS DOUBLE) AS normalized_weight,
-        cc.symbol,
-        'SP' AS pool_type
-    FROM {{ source('balancer_v2_arbitrum', 'Vault_evt_PoolRegistered') }} c
-    INNER JOIN {{ source('balancer_v2_arbitrum', 'MetaStablePoolFactory_call_create') }} cc
-    ON c.evt_tx_hash = cc.call_tx_hash
-    AND SUBSTRING(c.poolId, 0, 42) = cc.output_0
-    {% if is_incremental() %}
-    WHERE c.evt_block_time >= date_trunc("day", now() - interval '1 week')
-      AND cc.call_block_time >= date_trunc("day", now() - interval '1 week')
-    {% endif %}
-
-    UNION ALL
-
-    SELECT c.poolId AS pool_id,
-        explode(cc.tokens) AS token_address,
-        0 AS normalized_weight, cc.symbol, 'LBP' AS pool_type
-    FROM {{ source('balancer_v2_arbitrum', 'Vault_evt_PoolRegistered') }} c
-    INNER JOIN {{ source('balancer_v2_arbitrum', 'LiquidityBootstrappingPoolFactory_call_create') }} cc
-    ON c.evt_tx_hash = cc.call_tx_hash
-    AND SUBSTRING(c.poolId, 0, 42) = cc.output_0
-    {% if is_incremental() %}
-    WHERE c.evt_block_time >= date_trunc("day", now() - interval '1 week')
-      AND cc.call_block_time >= date_trunc("day", now() - interval '1 week')
-    {% endif %}
-
-    UNION ALL
-
-    SELECT c.poolId AS pool_id,
-        explode(cc.tokens) AS token_address,
-        0 AS normalized_weight, cc.symbol,
-        'LBP' AS pool_type
-    FROM {{ source('balancer_v2_arbitrum', 'Vault_evt_PoolRegistered') }} c
-    INNER JOIN {{ source('balancer_v2_arbitrum', 'NoProtocolFeeLiquidityBootstrappingPoolFactory_call_create') }} cc
-    ON c.evt_tx_hash = cc.call_tx_hash
-    AND SUBSTRING(c.poolId, 0, 42) = cc.output_0
-    {% if is_incremental() %}
-    WHERE c.evt_block_time >= date_trunc("day", now() - interval '1 week')
-      AND cc.call_block_time >= date_trunc("day", now() - interval '1 week')
-    {% endif %}
-
-    UNION ALL
-
-    SELECT c.poolId AS pool_id,
-        explode(cc.tokens) AS token_address,
-        CAST(NULL AS DOUBLE) AS normalized_weight,
-        cc.symbol, 'SP' AS pool_type
-    FROM {{ source('balancer_v2_arbitrum', 'Vault_evt_PoolRegistered') }} c
-    INNER JOIN {{ source('balancer_v2_arbitrum', 'ComposableStablePoolFactory_call_create') }} cc
-    ON c.evt_tx_hash = cc.call_tx_hash
-    AND SUBSTRING(c.poolId, 0, 42) = cc.output_0
-    {% if is_incremental() %}
-    WHERE c.evt_block_time >= date_trunc("day", now() - interval '1 week')
-      AND cc.call_block_time >= date_trunc("day", now() - interval '1 week')
-    {% endif %}
-
-    UNION ALL
-
-    SELECT c.poolId AS pool_id,
-        explode(array(cc.mainToken, cc.wrappedToken)) AS zip,
-        CAST(NULL AS DOUBLE) AS normalized_weight,
-        cc.symbol,
-        'LP' AS pool_type
-    FROM {{ source('balancer_v2_arbitrum', 'Vault_evt_PoolRegistered') }} c
-    INNER JOIN {{ source('balancer_v2_arbitrum', 'AaveLinearPoolFactory_call_create') }} cc
-    ON c.evt_tx_hash = cc.call_tx_hash
-    AND SUBSTRING(c.poolId, 0, 42) = cc.output_0
-    {% if is_incremental() %}
-    WHERE c.evt_block_time >= date_trunc("day", now() - interval '1 week')
-      AND cc.call_block_time >= date_trunc("day", now() - interval '1 week')
-    {% endif %}
-
-    UNION ALL
-
-    SELECT c.poolId AS pool_id,
-        explode(array (cc.mainToken, cc.wrappedToken)) AS zip,
-        CAST(NULL AS DOUBLE) AS normalized_weight, cc.symbol,
-        'LP' AS pool_type
-    FROM {{ source('balancer_v2_arbitrum', 'Vault_evt_PoolRegistered') }} c
-    INNER JOIN {{ source('balancer_v2_arbitrum', 'ERC4626LinearPoolFactory_call_create') }} cc
+    FROM {{ source('balancer_v2_avalanche_c', 'Vault_evt_PoolRegistered') }} c
+    INNER JOIN {{ source('balancer_v2_avalanche_c', 'ManagedPoolFactory_call_create') }} cc
     ON c.evt_tx_hash = cc.call_tx_hash
     AND SUBSTRING(c.poolId, 0, 42) = cc.output_0
     {% if is_incremental() %}
@@ -217,7 +126,7 @@ settings AS (
 )
 
 SELECT
-  'arbitrum' AS blockchain,
+  'avalanche' AS blockchain,
   SUBSTRING(pool_id, 0, 42) AS address,
   CASE WHEN array_contains(array('SP', 'LP', 'LBP'), pool_type)
       THEN lower(pool_symbol)
@@ -228,7 +137,7 @@ SELECT
   'query' AS source,
   timestamp('2022-12-23') AS created_at,
   now() AS updated_at,
-  'balancer_v2_pools_arbitrum' AS model_name,
+  'balancer_v2_pools_avalanche' AS model_name,
   'identifier' as label_type
 FROM   (
     SELECT s1.pool_id,

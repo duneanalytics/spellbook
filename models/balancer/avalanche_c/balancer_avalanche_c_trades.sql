@@ -1,6 +1,6 @@
 {{ config(
     alias = 'trades',
-    post_hook = '{{ expose_spells(\'["avalanche"]\',
+    post_hook = '{{ expose_spells(\'["avalanche_c"]\',
                                 "project",
                                 "balancer",
                                 \'["bizzyvinci", "thetroyharris"]\') }}'
@@ -8,7 +8,7 @@
 }}
 
 {% set balancer_models = [
-    ref('balancer_v2_avalanche_trades')
+    ref('balancer_v2_avalanche_c_trades')
 ] %}
 
 SELECT *

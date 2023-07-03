@@ -211,7 +211,7 @@ SELECT
     'polygon' as blockchain,
     token AS token_address,
     token_symbol,
-    token_balance_raw,
+    token_balance_raw, 
     token_balance,
     coalesce(protocol_liquidity_usd, protocol_liquidity * normalized_weight) AS protocol_liquidity_usd,
     coalesce(pool_liquidity_usd, pool_liquidity * normalized_weight) AS pool_liquidity_usd

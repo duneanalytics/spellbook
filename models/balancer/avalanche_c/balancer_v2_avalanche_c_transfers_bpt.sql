@@ -1,13 +1,13 @@
 {{
     config(
-        schema = 'balancer_v2_avalanche',
+        schema = 'balancer_v2_avalanche_c',
         alias='transfers_bpt',
         partition_by = ['block_date'],
         materialized = 'incremental',
         file_format = 'delta',
         incremental_strategy = 'merge',
         unique_key = ['block_date', 'evt_tx_hash', 'evt_index'],
-        post_hook='{{ expose_spells(\'["avalanche"]\',
+        post_hook='{{ expose_spells(\'["avalanche_c"]\',
                                     "project",
                                     "balancer_v2",
                                     \'["stefenon"]\') }}'
@@ -21,7 +21,7 @@ WITH registered_pools AS (
     SELECT
       DISTINCT poolAddress AS pool_address
     FROM
-      {{ source('balancer_v2_avalanche', 'Vault_evt_PoolRegistered') }}
+      {{ source('balancer_v2_avalanche_c', 'Vault_evt_PoolRegistered') }}
     {% if is_incremental() %}
     WHERE evt_block_time >= DATE_TRUNC('day', NOW() - interval '1 week')
     {% endif %} 
@@ -38,7 +38,7 @@ SELECT DISTINCT * FROM (
         CONCAT('0x', SUBSTRING(logs.topic2, 27, 40)) AS from,
         CONCAT('0x', SUBSTRING(logs.topic3, 27, 40)) AS to,
         bytea2numeric(SUBSTRING(logs.data, 32, 64)) AS value
-    FROM {{ source('avalanche', 'logs') }} logs
+    FROM {{ source('avalanche_c', 'logs') }} logs
     INNER JOIN registered_pools p ON p.pool_address = logs.contract_address
     WHERE logs.topic1 = '{{ event_signature }}'
         {% if not is_incremental() %}

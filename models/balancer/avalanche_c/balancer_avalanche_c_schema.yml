@@ -281,39 +281,6 @@ models:
       - name: pool_liquidity_usd
         description: 'Liquidity of the token in the pool in USD, including BPTs'
 
-  - name: balancer_avalanche_gauge_mappings
-    meta:
-      blockchain: avalanche
-      project: balancer
-      contributors: msilb7
-    config:
-      tags: ['avalanche', 'balancer', 'gauges', 'incentives']
-    description: >
-      Balancer gauge to pool mappings on avalanche.
-    tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - pool_contract
-            - incentives_contract
-    columns:
-      - *blockchain
-      - *version
-      - &pool_contract
-        name: pool_contract
-        description: "Address of the liquidity pool contract"
-      - *pool_id
-      - &incentives_contract
-        name: incentives_contract
-        description: "Address of the contract where incentives are stored and emitted."
-      - &incentives_type
-        name: incentives_type
-        description: "Description of the incentives address type."
-      - *evt_block_time
-      - *evt_block_number
-      - *contract_address
-      - *evt_tx_hash
-      - *evt_index
-
   - name: balancer_v2_avalanche_flashloans
     meta:
       blockchain: avalanche

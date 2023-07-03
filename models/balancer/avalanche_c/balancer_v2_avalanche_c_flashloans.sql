@@ -1,14 +1,14 @@
 {{ config(
-      schema = 'balancer_v2_avalanche'
+      schema = 'balancer_v2_avalanche_c'
       , alias = 'flashloans'
       , materialized = 'incremental'
       , file_format = 'delta'
       , incremental_strategy = 'merge'
       , unique_key = ['tx_hash', 'evt_index']
-      , post_hook='{{ expose_spells(\'["avalanche"]\',
+      , post_hook='{{ expose_spells(\'["avalanche_c"]\',
                                   "project",
                                   "balancer_v2",
-                                  \'["hildobby"]\') }}'
+                                  \'["hilldobby", "viniabussafi"]\') }}'
   )
 }}
 
@@ -23,14 +23,14 @@ WITH flashloans AS (
     , erc20.symbol AS currency_symbol
     , erc20.decimals AS currency_decimals
     , f.contract_address
-    FROM {{ source('balancer_v2_avalanche','Vault_evt_FlashLoan') }} f
-    LEFT JOIN {{ ref('tokens_avalanche_erc20') }} erc20 ON f.token = erc20.contract_address
+    FROM {{ source('balancer_v2_avalanche_c','Vault_evt_FlashLoan') }} f
+    LEFT JOIN {{ ref('tokens_avalanche_c_erc20') }} erc20 ON f.token = erc20.contract_address
         {% if is_incremental() %}
         WHERE f.evt_block_time >= date_trunc("day", now() - interval '1 week')
         {% endif %}
     )
 
-SELECT 'avalanche' AS blockchain
+SELECT 'avalanche_c' AS blockchain
 , 'Balancer' AS project
 , '2' AS version
 , flash.block_time
@@ -44,6 +44,6 @@ SELECT 'avalanche' AS blockchain
 , flash.currency_symbol
 , flash.contract_address
 FROM flashloans flash
-LEFT JOIN {{ source('prices','usd') }} pu ON pu.blockchain = 'avalanche'  
+LEFT JOIN {{ source('prices','usd') }} pu ON pu.blockchain = 'avalanche_c'  
     AND pu.contract_address = flash.currency_contract
     AND pu.minute = date_trunc('minute', flash.block_time)
