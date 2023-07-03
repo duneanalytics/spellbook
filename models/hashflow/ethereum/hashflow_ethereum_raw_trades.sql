@@ -48,7 +48,7 @@ prices_usd as (
 
 erc20_tokens as (
     select *
-    from {{ ref('tokens_erc20') }}
+    from {{ ref('tokens_erc20_legacy') }}
     where blockchain = 'ethereum'
 ),
 

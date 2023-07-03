@@ -44,7 +44,7 @@ with source_ethereum_transactions as (
 )
 ,ref_tokens_erc20 as (
     select *
-    from {{ ref('tokens_erc20') }}
+    from {{ ref('tokens_erc20_legacy') }}
     where blockchain = 'ethereum'
 )
 ,ref_nft_aggregators as (

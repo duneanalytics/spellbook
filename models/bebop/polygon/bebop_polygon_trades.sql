@@ -136,10 +136,10 @@ SELECT 'polygon'                                                                
        t.evt_index
 FROM
   simple_trades t
-LEFT JOIN {{ ref('tokens_erc20') }} t_bought
+LEFT JOIN {{ ref('tokens_erc20_legacy') }} t_bought
     ON cast(t_bought.contract_address AS string) = t.maker_token
     AND t_bought.blockchain = 'polygon'
-LEFT JOIN {{ ref('tokens_erc20') }} t_sold
+LEFT JOIN {{ ref('tokens_erc20_legacy') }} t_sold
     ON cast(t_sold.contract_address AS string) = t.taker_token
     AND t_sold.blockchain = 'polygon'
 LEFT JOIN {{ source('prices', 'usd') }} p_bought
