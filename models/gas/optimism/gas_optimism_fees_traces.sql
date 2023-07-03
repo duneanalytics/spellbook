@@ -83,17 +83,17 @@ SELECT 'optimism' AS blockchain
 , traces.gas_used_original
 , traces.gas_used_trace
 , txs.gas_used AS tx_gas_used
-, traces.gas_used_original/txs.gas_used AS gas_used_original_percentage
-, traces.gas_used_trace/txs.gas_used AS gas_used_trace_percentage
+, cast( traces.gas_used_original as double)/cast( txs.gas_used as double) AS gas_used_original_percentage
+, cast( traces.gas_used_trace as double)/cast( txs.gas_used as double) AS gas_used_trace_percentage
 , txs.gas_price AS tx_gas_price
 , traces.trace_type
 , traces.trace_value
 , traces.trace_success
 , traces.tx_success
-, (traces.gas_used_original*txs.gas_price)/POWER(10, 18) AS gas_fee_spent_original
+, cast(traces.gas_used_original*txs.gas_price as double)/1e18 AS gas_fee_spent_original
 , (pu.price*traces.gas_used_original*txs.gas_price)/POWER(10, 18) AS gas_fee_spent_original_usd
-, (traces.gas_used_trace*txs.gas_price)/POWER(10, 18) AS gas_fee_spent_trace
-, (pu.price*traces.gas_used_trace*txs.gas_price)/POWER(10, 18) AS gas_fee_spent_trace_usd
+, cast(coalesce( traces.gas_used_trace,0) *txs.gas_price as double)/POWER(10, 18) AS gas_fee_spent_trace
+, cast(pu.price*tcoalesce(races.gas_used_trace,0)*txs.gas_price as double)/POWER(10, 18) AS gas_fee_spent_trace_usd
 FROM traces
 INNER JOIN {{ source('optimism','transactions') }} txs ON txs.block_time=traces.block_time
      AND txs.hash=traces.tx_hash
