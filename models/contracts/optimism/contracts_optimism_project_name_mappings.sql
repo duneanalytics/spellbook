@@ -77,7 +77,7 @@ from (
     ,('lemma','Lemma Finance')
     ,('arrakis','Arrakis Finance')
     ,('arrakis_finance','Arrakis Finance')
-    ,('collab_land_dao_pass', 'Collab Land')
+    ,('collab_land_dao_pass', 'Collab.Land')
     ,('Perpetualprotocol','Perpetual Protocol')
     ,('perp_hottub','Perpetual Protocol')
     ,('Collab Land', 'Collab.Land')
