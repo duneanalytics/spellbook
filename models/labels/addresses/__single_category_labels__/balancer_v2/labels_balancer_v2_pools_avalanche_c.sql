@@ -19,7 +19,7 @@ WITH pools AS (
            pool_type
     FROM (
         SELECT c.poolId AS pool_id,
-               explode(arrays_zip(cc.tokens, cc.weights)) AS zip,
+               explode(arrays_zip(cc.tokens, cc.normalizedWeights)) AS zip,
                cc.symbol,
                'WP' AS pool_type
         FROM {{ source('balancer_v2_avalanche_c', 'Vault_evt_PoolRegistered') }} c
