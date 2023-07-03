@@ -101,7 +101,7 @@ inner join {{ source('ethereum', 'transactions') }} tx
     {% else %}
     and tx.block_time >= '{{project_start_date}}'
     {% endif %}
-left join {{ ref('tokens_ethereum_erc20') }} erc20
+left join {{ ref('tokens_ethereum_erc20_legacy') }} erc20
     on erc20.contract_address = mp.currency_contract
 left join {{ ref('tokens_ethereum_nft') }} nft_tokens
     on nft_tokens.contract_address = mp.nft_contract_address
