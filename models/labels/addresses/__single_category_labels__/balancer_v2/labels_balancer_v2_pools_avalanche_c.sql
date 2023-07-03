@@ -14,7 +14,7 @@
 WITH pools AS (
     SELECT pool_id,
            zip.tokens AS token_address,
-           zip.weights / pow(10, 18) AS normalized_weight,
+           zip.normalizedWeights / pow(10, 18) AS normalized_weight,
            symbol,
            pool_type
     FROM (
