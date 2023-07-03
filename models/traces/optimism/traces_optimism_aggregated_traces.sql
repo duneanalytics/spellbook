@@ -1,5 +1,5 @@
 {{ config(
-	tags =['dunesql']
+	tags =['dunesql'],
 	alias = alias('aggregated_traces'),
 	partition_by = ['block_date'],
 	materialized = 'incremental',
