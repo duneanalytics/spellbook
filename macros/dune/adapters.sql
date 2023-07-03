@@ -24,7 +24,7 @@
 
 {%- macro s3_bucket() -%}
   {%- if target.type == 'trino' and target.schema != 'wizard' -%}
-    {%- if target.name == 'prod' or target.schema == 'github_actions' -%}
+    {%- if target.name == 'prod' or target.schema.startswith('git_dunesql') -%}
       {{- return('prod-spellbook-trino-118330671040') -}}
     {%- else -%}
       {{- return('trino-dev-datasets-118330671040') }}
