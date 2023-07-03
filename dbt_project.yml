@@ -93,6 +93,10 @@ models:
 
     evms:
       +schema: evms
+    evms_testnets:
+      +schema: evms_testnets
+    evms_mainnets_testnets:
+      +schema: evms_mainnets_testnets
 
     staking:
       +schema: staking
