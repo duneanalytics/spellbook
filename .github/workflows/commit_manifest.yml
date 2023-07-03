@@ -32,12 +32,12 @@ jobs:
       run: |
         if [[ "${{ matrix.engine }}" == "dunesql" ]]; then
           printf "Using dunesql engine\n"
-          echo "PROFILE=--profile dunesql" >> $GITHUB_ENV
+          echo "PROFILE=--profiles-dir=~/.dbt --profile dunesql" >> $GITHUB_ENV
           echo "COMPILE_TAG=--select tag:dunesql" >> $GITHUB_ENV
           echo "S3_LOCATION=manifest-spellbook-dunesql" >> $GITHUB_ENV
         elif [[ "${{ matrix.engine }}" == "spark" ]]; then
           printf "Using spark engine\n"
-          echo "PROFILE=--profile spark" >> $GITHUB_ENV
+          echo "PROFILE=--profiles-dir=~/.dbt --profile spark" >> $GITHUB_ENV
           echo "COMPILE_TAG=--exclude tag:dunesql" >> $GITHUB_ENV
           echo "S3_LOCATION=manifest-spellbook" >> $GITHUB_ENV
           echo 
