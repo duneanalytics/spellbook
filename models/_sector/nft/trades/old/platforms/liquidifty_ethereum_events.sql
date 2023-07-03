@@ -194,7 +194,7 @@ from (
     union all
     select * from v3
 ) buys
-left join {{ ref('tokens_ethereum_erc20') }} erc20
+left join {{ ref('tokens_ethereum_erc20_legacy') }} erc20
     on erc20.contract_address = buys.currency_contract
 left join {{ ref('tokens_ethereum_nft') }} nft_tokens
     on nft_tokens.contract_address = buys.nft_contract_address
