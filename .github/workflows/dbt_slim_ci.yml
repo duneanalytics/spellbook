@@ -58,6 +58,10 @@ jobs:
       - name: dbt dependencies
         run: "dbt deps"
 
+      - name: Check no common models between DuneSQL and Spark
+        if: matrix.engine == 'dunesql'
+        run: "./scripts/dunesql_spark_empty_intersection.sh"
+
       - name: dbt compile to create manifest to compare to
         run: "dbt compile $PROFILE $COMPILE_TAG"
 
