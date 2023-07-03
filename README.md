@@ -130,36 +130,6 @@ pipenv shell
 
 You have now created a virtual environment for this project. You can read more about virtual environments [here](https://realpython.com/pipenv-guide/).
 
-To initiate the dbt project run:
-
-```console
-dbt init
-```
-
-Enter the values as shown below:
-
-```console
-Which database would you like to use?
-[1] databricks
-[2] spark
-
-(Don't see the one you want? https://docs.getdbt.com/docs/available-adapters)
-
-Enter a number: 1
-host (yourorg.databricks.com): .
-http_path (HTTP Path): .
-token (dapiXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX):
-[1] use Unity Catalog
-[2] not use Unity Catalog
-Desired unity catalog option (enter a number): 2
-schema (default schema that dbt will build objects in): wizard
-threads (1 or more) [1]: 2
-```
-
-This will not connect to the database but you have access to some dbt actions.
-**When you are prompted to choose a schema, please enter `wizard` so we know you are an external contributor.**
-Should you make an error during this process (not entering `wizard` being the only one you can make), simply quit the CLI and start over.
-
 To pull the dbt project dependencies run:
 
 ```console
@@ -240,18 +210,6 @@ As a preview, you can do [things](https://docs.getdbt.com/reference/resource-pro
 - Link to other models in your descriptions.
 - Add images / project logos from the repo into descriptions.
 - Use HTML in your description.
-
-### Troubleshooting
-
-If you fail to run `dbt compile`, here are some common error messages:
-
-- `Could not find profile named 'spellbook'` <br> Check `~/.dbt/profiles.yml` and make sure there is a profile named `spellbook`. When you run `dbt init` to initiate a project, a profile gets created. Inside `spellbook` you cannot initiate a project called the same name, so you need to run `dbt init spellbook` outside the project so it creates the profile, or create one with a different name and then manually edit the `profiles.yml` file.
-- ```console
-  Credentials in profile "spellbook", target "dev" invalid: Runtime Error
-   http connection method requires additional dependencies.
-   Install the additional required dependencies with pip install dbt-spark[PyHive]
-  ```
-  You've probably selected the `spark` option instead of the `databricks` option when running `dbt init`. Rerun `dbt init`, overwrite the profile, and select the `databricks` option.
 
 ### DBT Resources:
 
