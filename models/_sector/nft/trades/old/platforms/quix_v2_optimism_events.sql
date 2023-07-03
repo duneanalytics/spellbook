@@ -216,7 +216,7 @@ with events_raw as (
         {% if is_incremental() %}
         and erc20.evt_block_time >= date_trunc("day", now() - interval '1 week')
         {% endif %}
-    left join {{ ref('tokens_erc20') }} as t1
+    left join {{ ref('tokens_erc20_legacy') }} as t1
         on t1.contract_address =
             case when (erc20.contract_address = '0x0000000000000000000000000000000000000000' or erc20.contract_address is null)
             then '0xdeaddeaddeaddeaddeaddeaddeaddeaddead0000'
