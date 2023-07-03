@@ -1,4 +1,5 @@
 {{ config(
+    tags=['prod_exclude'],
     schema = 'thena_v1_bnb',
     alias = 'trades',
     partition_by = ['block_date'],
