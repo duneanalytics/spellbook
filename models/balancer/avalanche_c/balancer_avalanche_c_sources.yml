@@ -3,7 +3,7 @@ version: 2
 sources:
   - name: balancer_v2_avalanche_c
     description: >
-      Decoded tables related to Balancer V2, an automated portfolio manager and trading platform, on avalanche.
+      Decoded tables related to Balancer V2, an automated portfolio manager and trading platform, on avalanche_c.
     tables:
       - name: Vault_evt_PoolRegistered
         description: >
@@ -123,7 +123,7 @@ sources:
 
       - name: Vault_evt_PoolBalanceChanged
         description: >
-          Decoded table of pool balances changes record on the Balancer Vault contract on avalanche.
+          Decoded table of pool balances changes record on the Balancer Vault contract on avalanche_c.
         loaded_at_field: evt_block_time
         columns:
           - name: contract_address
@@ -145,7 +145,7 @@ sources:
 
       - name: Vault_evt_PoolBalanceManaged
         description: >
-          Decoded table of transactions performed by asset managers on the Balancer Vault contract on avalanche.
+          Decoded table of transactions performed by asset managers on the Balancer Vault contract on avalanche_c.
         loaded_at_field: evt_block_time
         columns:
           - name: contract_address
@@ -169,10 +169,10 @@ sources:
       - name: Vault_evt_FlashLoan
         loaded_at_field: evt_block_time
   
-  - name: balancer_avalanche
+  - name: balancer_avalanche_c
     description: >
-      Decoded tables related to Balancer V2, an automated portfolio manager and trading platform, on avalanche.
+      Decoded tables related to Balancer V2, an automated portfolio manager and trading platform, on avalanche_c.
     tables:
       - name: ChildChainLiquidityGaugeFactory_evt_RewardsOnlyGaugeCreated
-        description: "Rewards gauges created on Balancer on avalanche"
+        description: "Rewards gauges created on Balancer on avalanche_c"
         loaded_at_field: evt_block_time
