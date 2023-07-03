@@ -1,10 +1,10 @@
 {{config(
-    alias='balancer_v2_pools_avalanche',
+    alias='balancer_v2_pools_avalanche_c_',
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
     unique_key = ['address'],
-    post_hook='{{ expose_spells(\'["avalanche"]\',
+    post_hook='{{ expose_spells(\'["avalanche_c"]\',
                                      "sector",
                                     "labels",
                                     \'["balancerlabs"]\') }}'
@@ -44,7 +44,7 @@ WITH pools AS (
                explode(arrays_zip(cc.tokens, cc.normalizedWeights)) AS zip,
                cc.symbol,
                'WP' AS pool_type
-        FROM {{ source('balancer_v2_avalanche', 'Vault_evt_PoolRegistered') }} c
+        FROM {{ source('balancer_v2_avalanche_c', 'Vault_evt_PoolRegistered') }} c
         INNER JOIN {{ source('balancer_v2_avalanche_c', 'NoProtocolFeeLiquidityBootstrappingPoolFactory_call_create') }} cc
         ON c.evt_tx_hash = cc.call_tx_hash
         AND SUBSTRING(c.poolId, 0, 42) = cc.output_0
@@ -126,7 +126,7 @@ settings AS (
 )
 
 SELECT
-  'avalanche' AS blockchain,
+  'avalanche_c' AS blockchain,
   SUBSTRING(pool_id, 0, 42) AS address,
   CASE WHEN array_contains(array('SP', 'LP', 'LBP'), pool_type)
       THEN lower(pool_symbol)
@@ -137,7 +137,7 @@ SELECT
   'query' AS source,
   timestamp('2022-12-23') AS created_at,
   now() AS updated_at,
-  'balancer_v2_pools_avalanche' AS model_name,
+  'balancer_v2_pools_avalanche_c' AS model_name,
   'identifier' as label_type
 FROM   (
     SELECT s1.pool_id,
