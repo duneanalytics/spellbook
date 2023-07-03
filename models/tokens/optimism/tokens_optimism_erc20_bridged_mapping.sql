@@ -27,7 +27,7 @@ FROM (
             FROM {{source( 'optimism_ethereum', 'L1StandardBridge_evt_ERC20DepositInitiated' ) }}
         WHERE evt_tx_hash != 0x460965f169a99b3d372cd749621a3652ad232d1b1580fd77424eacc2e973b672 --bad event emitted
         {% if is_incremental() %}
-        AND evt_block_time >= date_trunc("day", now() - interval '7' day)
+        AND evt_block_time >= date_trunc('day', now() - interval '7' day)
         {% endif %}
         GROUP BY 1,2
 
@@ -35,14 +35,14 @@ FROM (
         SELECT _l1Token, _l2Token, NULL AS symbol, NULL AS decimals
             FROM {{source( 'optimism_ethereum', 'OVM_L1StandardBridge_evt_ERC20DepositInitiated' ) }}
         {% if is_incremental() %}
-        WHERE evt_block_time >= date_trunc("day", now() - interval '7' day)
+        WHERE evt_block_time >= date_trunc('day', now() - interval '7' day)
         {% endif %}
         GROUP BY 1,2
 
         UNION ALL
         SELECT l1_token, l2_token, symbol, decimals FROM {{ ref('ovm_optimism_l2_token_factory') }}
         {% if is_incremental() %}
-        WHERE call_block_time >= date_trunc("day", now() - interval '7' day)
+        WHERE call_block_time >= date_trunc('day', now() - interval '7' day)
         {% endif %}
         GROUP BY 1,2,3,4
 

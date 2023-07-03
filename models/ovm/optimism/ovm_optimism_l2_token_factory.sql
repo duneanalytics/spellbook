@@ -35,7 +35,7 @@ FROM (
             ON c1.call_block_number = tc.evt_block_number
             AND c1.call_tx_hash = tc.evt_tx_hash
             {% if is_incremental() %}
-            AND tc.evt_block_time >= date_trunc('day', now() - interval '7 day')
+            AND tc.evt_block_time >= date_trunc('day', now() - interval '7' day)
             {% endif %}
 
         LEFT JOIN {{ref('tokens_ethereum_erc20')}} t
@@ -43,7 +43,7 @@ FROM (
 
         WHERE call_success = true
             {% if is_incremental() %}
-            AND c1.call_block_time >= date_trunc('day', now() - interval '7 day')
+            AND c1.call_block_time >= date_trunc('day', now() - interval '7' day)
             {% endif %}
 
     UNION ALL
@@ -57,7 +57,7 @@ FROM (
             ON c2.call_block_number = tc.evt_block_number
             AND c2.call_tx_hash = tc.evt_tx_hash
             {% if is_incremental() %}
-            AND tc.evt_block_time >= date_trunc('day', now() - interval '7 day')
+            AND tc.evt_block_time >= date_trunc('day', now() - interval '7' day)
             {% endif %}
 
         LEFT JOIN {{ref('tokens_ethereum_erc20')}} t
@@ -65,6 +65,6 @@ FROM (
 
         WHERE call_success = true
             {% if is_incremental() %}
-            AND c2.call_block_time >= date_trunc('day', now() - interval '1 day')
+            AND c2.call_block_time >= date_trunc('day', now() - interval '1' day)
             {% endif %}
     ) a
