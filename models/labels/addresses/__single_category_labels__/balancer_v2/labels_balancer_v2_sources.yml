@@ -961,7 +961,7 @@ sources:
           - *swapFeePercentage
           - *symbol
 
-      - name: AaveLinearPoolV3Factory_call_create
+      - name: AaveV3LinearPoolFactory_call_create
         description: >
           Decoded table of registered pools on the Balancer AaveLinearPoolFactory contract.
         loaded_at_field: call_block_time
