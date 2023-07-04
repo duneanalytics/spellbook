@@ -1,6 +1,5 @@
 {{ config(
-    alias = alias('nft_mints'),
-    tags=['dunesql'],
+    alias = 'nft_mints',
     partition_by = ['block_date'],
     materialized = 'incremental',
     file_format = 'delta',
@@ -14,7 +13,7 @@
 }}
 --SELECT MIN(block_time) FROM optimism.transactions where to = 0x2e42f214467f647Fe687Fd9a2bf3BAdDFA737465
 {% set project_start_date = '2022-07-17' %}
-{% set spacestation = 0x2e42f214467f647fe687fd9a2bf3baddfa737465 %}
+{% set spacestation = '0x2e42f214467f647fe687fd9a2bf3baddfa737465' %}
 
 SELECT
     DATE_TRUNC('day',block_time) AS block_date,
@@ -23,7 +22,7 @@ SELECT
     t.from as tx_from,
     t.to as tx_to,
     t.hash AS tx_hash,
-    bytearray_substring(t.data,1,4) AS tx_method_id,
+    substring(t.data,1,10) AS tx_method_id,
     tfer.to AS token_transfer_to,
     tfer.contract_address AS nft_contract_address,
     tfer.tokenId
@@ -33,7 +32,7 @@ FROM
 INNER JOIN {{source('erc721_optimism','evt_transfer')}} tfer 
     ON t.hash = tfer.evt_tx_hash
     AND t.block_number = tfer.evt_block_number
-    AND t.from = 0x0000000000000000000000000000000000000000 --mint
+    AND t.from = '0x0000000000000000000000000000000000000000' --mint
     {% if is_incremental() %}
     AND tfer.evt_block_time >= date_trunc('day', now() - interval '7' day)
     {% endif %}

@@ -1,7 +1,6 @@
 {{
     config(
-        alias=alias('optimism_quest_participants'),
-        tags=['dunesql']
+        alias='optimism_quest_participants',
         post_hook='{{ expose_spells(\'["optimism"]\', 
         "sector", 
         "labels", 
@@ -12,7 +11,7 @@
 with 
  questers as (
     select quester_address, 'optimism' AS blockchain, COUNT(*) AS num_quests_completed
-    from {{ref('optimism_quests_optimism_quest_completions')}}
+    from {{ref('optimism_quests_optimism_quest_completions_legacy')}}
     GROUP BY 1,2
   )
 

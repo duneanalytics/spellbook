@@ -1,6 +1,5 @@
 {{ config(
-    alias = alias('quest_completions'),
-    tags=['dunesql'],
+    alias = 'quest_completions',
     partition_by = ['block_date'],
     materialized = 'incremental',
     file_format = 'delta',
@@ -29,11 +28,11 @@ SELECT
 
 FROM
     {{source('optimism_quest_optimism','StarNFTV4_call_mint')}} m
-INNER JOIN {{ref('optimism_quests_optimism_nft_id_mapping')}} nft 
-    ON cast(m.cid as varchar) = nft.nft_id
+INNER JOIN {{ref('optimism_quests_optimism_nft_id_mapping_legacy')}} nft 
+    ON cast(m.cid as varchar(4)) = nft.nft_id
 
 WHERE call_success = true
 AND call_block_time >= cast( '{{project_start_date}}' as timestamp)
 {% if is_incremental() %}
-AND call_block_time >= date_trunc('day', now() - interval '7' day)
+AND call_block_time >= date_trunc('day', now() - interval '1 week')
 {% endif %}
