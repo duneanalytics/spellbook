@@ -26,7 +26,19 @@ FROM (
         {% for logs_model in logs_models %}
         SELECT
         '{{ logs_model[0] }}' AS blockchain
-        , *
+        , block_date
+        , block_time
+        , block_number
+        , block_hash
+        , contract_address
+        , topic1
+        , topic2
+        , topic3
+        , topic4
+        , data
+        , tx_hash
+        , index
+        , tx_index
         FROM {{ logs_model[1] }}
         {% if not loop.last %}
         UNION ALL

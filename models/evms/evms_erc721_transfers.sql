@@ -26,7 +26,14 @@ FROM (
         {% for erc721_transfers_model in erc721_transfers_models %}
         SELECT
         '{{ erc721_transfers_model[0] }}' AS blockchain
-        , *
+        , contract_address
+        , evt_tx_hash
+        , evt_index
+        , evt_block_time
+        , evt_block_number
+        , "from"
+        , to
+        , tokenId
         FROM {{ erc721_transfers_model[1] }}
         {% if not loop.last %}
         UNION ALL
