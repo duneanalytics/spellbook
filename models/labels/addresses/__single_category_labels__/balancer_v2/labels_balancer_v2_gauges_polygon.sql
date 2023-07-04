@@ -25,7 +25,7 @@ SELECT
     gauge.gauge AS address,
     'pol:' || pools.name  AS name,
     'balancer_v2_gauges' AS category,
-    'balancerlabs' AS contributor,
+    'balancerlabs' AS contributor,`
     'query' AS source,
     TIMESTAMP('2022-01-13') AS created_at,
     NOW() AS updated_at,
