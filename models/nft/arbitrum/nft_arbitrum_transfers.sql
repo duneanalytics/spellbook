@@ -1,4 +1,5 @@
 {{ config(
+        tags = ['dunesql'],
         alias ='transfers',
         partition_by='block_date',
         materialized='incremental',
