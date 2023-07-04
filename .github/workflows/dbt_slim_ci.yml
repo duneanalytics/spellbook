@@ -14,6 +14,7 @@ concurrency:
   group:  ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
+
 jobs:
   dbt-test:
     runs-on: [ self-hosted, linux, spellbook-trino ]
@@ -31,13 +32,13 @@ jobs:
         run: |
           if [[ "${{ matrix.engine }}" == "dunesql" ]]; then
             printf "Using dunesql engine\n"
-            echo "PROFILE=--profiles-dir ~/.dbt --profile dunesql" >> $GITHUB_ENV
+            echo "PROFILE=--profiles-dir $HOME/.dbt --profile dunesql" >> $GITHUB_ENV
             echo "TAG=,tag:dunesql" >> $GITHUB_ENV
             echo "COMPILE_TAG=--select tag:dunesql" >> $GITHUB_ENV
             echo "S3_LOCATION=manifest-spellbook-dunesql" >> $GITHUB_ENV
           elif [[ "${{ matrix.engine }}" == "spark" ]]; then
             printf "Using spark engine\n"
-            echo "PROFILE=--profiles-dir ~/.dbt --profile spark" >> $GITHUB_ENV
+            echo "PROFILE=--profiles-dir $HOME/.dbt --profile spark" >> $GITHUB_ENV
             echo "EXCLUDE=tag:dunesql" >> $GITHUB_ENV
             echo "SINGLE_EXCLUDE=--exclude tag:dunesql" >> $GITHUB_ENV
             echo "COMPILE_TAG=--exclude tag:dunesql" >> $GITHUB_ENV
@@ -57,6 +58,10 @@ jobs:
 
       - name: dbt dependencies
         run: "dbt deps"
+
+      - name: Check no common models between DuneSQL and Spark
+        if: matrix.engine == 'dunesql'
+        run: "./scripts/dunesql_spark_empty_intersection.sh"
 
       - name: dbt compile to create manifest to compare to
         run: "dbt compile $PROFILE $COMPILE_TAG"
