@@ -1,6 +1,6 @@
 {{
     config(
-        alias='galxe_quest_participants',
+        alias=alias('galxe_quest_participants', legacy_model=True),
         post_hook='{{ expose_spells(\'["optimism"]\', 
         "sector", 
         "labels", 
