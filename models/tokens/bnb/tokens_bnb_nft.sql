@@ -1,5 +1,5 @@
-{{ config(
-        alias ='nft'
+{{ config(tags=['dunesql'],
+        alias = alias('nft')
         , materialized = 'table'
         , post_hook='{{ expose_spells(\'["bnb"]\',
                                 "sector",
@@ -13,6 +13,6 @@ SELECT
   , t.name
   , t.symbol
   , c.standard
-  FROM {{ ref('tokens_bnb_nft_standards_legacy')}} c
-LEFT JOIN  {{ref('tokens_bnb_nft_curated_legacy')}} t
+  FROM {{ ref('tokens_bnb_nft_standards')}} c
+LEFT JOIN  {{ref('tokens_bnb_nft_curated')}} t
 ON c.contract_address = t.contract_address
