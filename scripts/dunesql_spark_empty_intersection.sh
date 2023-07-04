@@ -2,7 +2,7 @@
 
 set -euo pipefail
 
-res=$(comm -12 <( dbt ls --exclude tag:dunesql | sort | grep -v "^source" ) <( dbt ls --select +tag:dunesql+ | sort | grep -v "^source" ))
+res=$(comm -12 <( dbt ls --exclude tag:dunesql | sort | grep -v "^source" ) <( dbt ls --select 1+tag:dunesql+1 | sort | grep -v "^source" ))
 if [ -z "$res" ]; then
   exit 0
 else
