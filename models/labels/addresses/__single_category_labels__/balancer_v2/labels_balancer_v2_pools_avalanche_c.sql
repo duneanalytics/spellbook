@@ -29,7 +29,7 @@ WITH pools AS (
         {% if is_incremental() %}
         WHERE c.evt_block_time >= date_trunc("day", now() - interval '1 week')
           AND cc.call_block_time >= date_trunc("day", now() - interval '1 week')
-        {% endif %}
+        {% endif %} 
     )
 
     UNION ALL
