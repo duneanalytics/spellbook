@@ -21,7 +21,7 @@
 ,ref('nft_arbitrum_transfers_legacy')
 ,ref('nft_polygon_transfers_legacy')
 ,ref('nft_fantom_transfers_legacy')
-,ref('nft_goerli_transfers')
+,ref('nft_goerli_transfers_legacy')
 ] %}
 
 SELECT *
