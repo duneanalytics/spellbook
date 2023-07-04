@@ -1,6 +1,6 @@
 {{config(
         schema='optimism_quests_optimism',
-        tags=['dunesql']
+        tags=['dunesql'],
         alias=alias('nft_id_mapping'),
         post_hook='{{ expose_spells(\'["optimism"]\',
                                     "project",
