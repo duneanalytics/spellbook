@@ -13,5 +13,3 @@ UNION
 SELECT * FROM  {{ ref('labels_balancer_v2_pools_polygon') }}
 UNION
 SELECT * FROM  {{ ref('labels_balancer_v2_pools_gnosis') }}
-UNION
-SELECT * FROM  {{ ref('labels_balancer_v2_pools_avalanche_c') }}
