@@ -25990,7 +25990,6 @@ FROM (VALUES
         ,('0xdf72587909c0b5ed289e550cb128998c8d9cfc1b', 'LMAO', 9)
         ,('0xb44c0a4624eaed2c41eb8437d0fb5a28f91e7335', 'DAMBI', 18)
         ,('0x916b05e313d3c8507679ba2fa562af2aafef520e', 'PUMPIT', 9)
-<<<<<<< Updated upstream
         ,('0xc9a5e94479c3ff31957342e21932a8d044427291', 'SCS', 18)
         ,('0xc4538fe25182602b5438d7334ae9aab874d169db', 'KONG', 18)
         ,('0xf730ce7ce81d786c6a199b4e41e13504459b2976', 'PiggyBank', 18)
