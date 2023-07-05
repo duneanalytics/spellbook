@@ -1,5 +1,7 @@
 # Spellbook on DuneSQL is here 🪄
-It's time. Spellbook is ready to accept PRs to build spells on the DuneSQL engine!
+It's time. Spellbook is ready to accept PRs to build spells on the DuneSQL engine!  
+
+For any questions or help from Dune team, please use the open GH discussion [here](https://github.com/duneanalytics/spellbook/discussions/3558).
 
 ## Initial step(s)
 We can continue to safely use the setup instructions below in the new DuneSQL world: [Setting up your dev environment](#setting-up-your-local-dev-environment).  
