@@ -15,7 +15,7 @@
 
 {% set project_start_date = '2021-04-20' %}
 
-WITH 
+WITH
     swap_fees AS (
         SELECT
             swaps.poolId,
