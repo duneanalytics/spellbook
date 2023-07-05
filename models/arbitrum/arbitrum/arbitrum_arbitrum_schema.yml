@@ -8,7 +8,7 @@ models:
       project: arbitrum
       contributors: hildobby
     config:
-      tags: ['table', 'airdrop', 'arbitrum', 'claim']
+      tags: ["table", "airdrop", "arbitrum", "claim"]
     description: "List of claim transactions for the $ARB airdrop"
     tests:
       - dbt_utils.unique_combination_of_columns:
