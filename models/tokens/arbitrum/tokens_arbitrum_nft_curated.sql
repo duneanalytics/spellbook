@@ -3,7 +3,7 @@
 SELECT contract_address, name, symbol
 FROM (VALUES
         (0x08804C13D21Da41D2F1D6334B80F3241Ca72D2b7, 'ARB ID Transferable', 'ARBID'),
-        (0x41a10e0b2C8068ad99919B795468769e46709384, 'Trader Joe"s Arbitrum Adventure', 'Arbitrum Adventure'),
+        (0x41a10e0b2C8068ad99919B795468769e46709384, 'Trader Joe`s Arbitrum Adventure', 'Arbitrum Adventure'),
         (0xfE8c1ac365bA6780AEc5a985D989b327C27670A1, 'LEGION', 'LGN'),
         (0xC36442b4a4522E871399CD717aBDD847Ab11FE88, 'Uniswap V3 Positions NFT-V1', 'UNI-V3-POS'),
         (0xfca313e2be55957AC628a6193A60D38aDC2da64E, 'ETH Atlantic Straddle 4', 'ETH-ATLANTIC-STRADDLE-4'),
@@ -44,7 +44,7 @@ FROM (VALUES
         (0xdf67af354dC36feF1Bb67CFe12961B785043DD03, 'Hoodlife Club', 'HLC'),
         (0x8762DbD391Fd90b29eccBB628CD54bD92F5Fc1f3, 'MagicRefinery', 'MAGIC_REFINERY'),
         (0xe08449560c951D41D31155FaF69864141E1ffA2b, 'Hello LandX', 'HELLO_LANDX'),
-        (0x619F1f68a9a3cF939327801012E12f95B0312bB9, 'Bro Kwon"s Booty', 'Bro Kwon"s Booty'),
+        (0x619F1f68a9a3cF939327801012E12f95B0312bB9, 'Bro Kwon`s Booty', 'Bro Kwon`s Booty'),
         (0xAEbFb9431964c2c661faC9e99Be0C230D20C0C95, 'Battlefly Items', 'Battlefly ITEM'),
         (0xfF3aFb7d847AeD8f2540f7b5042F693242e01ebD, 'SuperPositions', 'SP'),
         (0x5e01c1889085B528EefF5e1bEe64Bfe94f454703, 'SamuRiseItems', 'SAMURISE_ITEMS')
