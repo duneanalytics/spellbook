@@ -1,7 +1,7 @@
 {{
     config(
         schema='balancer_v2_arbitrum',
-        alias=('liquidity',  legacy_model=True) 
+        alias= alias('liquidity',  legacy_model=True) 
         materialized = 'table',
         file_format = 'delta',
         post_hook='{{ expose_spells(\'["arbitrum"]\',
