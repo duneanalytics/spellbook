@@ -2,10 +2,12 @@ version: 2
 
 sources:
   - name: balancer_v2_arbitrum
+    database: delta_prod
     tables:
       - name: InvestmentPoolFactory_call_create
         description: >
-          Decoded table of registered pools on the Balancer InvestmentPoolFactory contract.
+          Decoded table of registered pools on the Balancer InvestmentPoolFactory
+          contract.
         loaded_at_field: call_block_time
         columns:
           - &call_block_number
@@ -77,7 +79,8 @@ sources:
 
       - name: MetaStablePoolFactory_call_create
         description: >
-          Decoded table of registered pools on the Balancer MetaStablePoolFactory contract.
+          Decoded table of registered pools on the Balancer MetaStablePoolFactory
+          contract.
         loaded_at_field: call_block_time
         columns:
           - *call_block_number
@@ -91,13 +94,16 @@ sources:
             description: 'Name of the created pool'
           - &oracleEnabled
             name: oracleEnabled
-            description: 'Boolean which indicates if the oracle functionality is enabled in the created pool'
+            description: 'Boolean which indicates if the oracle functionality is enabled
+              in the created pool'
           - &rateProviders
             name: rateProviders
-            description: 'Array with the contracts of the rate providers of the created pool'
+            description: 'Array with the contracts of the rate providers of the created
+              pool'
           - &priceRateCacheDuration
             name: priceRateCacheDuration
-            description: 'Array with the duration of the cached prices from RateProviders for each token'
+            description: 'Array with the duration of the cached prices from RateProviders
+              for each token'
           - *output_0
           - *owner
           - *swapFeePercentage
@@ -107,7 +113,8 @@ sources:
 
       - name: LiquidityBootstrappingPoolFactory_call_create
         description: >
-          Decoded table of registered pools on the Balancer LiquidityBootstrappingPoolFactory contract.
+          Decoded table of registered pools on the Balancer LiquidityBootstrappingPoolFactory
+          contract.
         loaded_at_field: call_block_time
         columns:
           - *call_block_number
@@ -129,7 +136,8 @@ sources:
 
       - name: NoProtocolFeeLiquidityBootstrappingPoolFactory_call_create
         description: >
-          Decoded table of registered pools on the Balancer NoProtocolFeeLiquidityBootstrappingPoolFactory contract.
+          Decoded table of registered pools on the Balancer NoProtocolFeeLiquidityBootstrappingPoolFactory
+          contract.
         loaded_at_field: call_block_time
         columns:
           - *call_block_number
@@ -138,7 +146,8 @@ sources:
           - *call_trace_address
           - *call_tx_hash
           - name: contract_address
-            description: 'Address of the NoProtocolFeeLiquidityBootstrappingPoolFactory contract'
+            description: 'Address of the NoProtocolFeeLiquidityBootstrappingPoolFactory
+              contract'
           - name: name
             description: 'Name of the created pool'
           - *swapEnabledOnStart
@@ -151,7 +160,8 @@ sources:
 
       - name: ComposableStablePoolFactory_call_create
         description: >
-          Decoded table of registered pools on the Balancer ComposableStablePoolFactory contract.
+          Decoded table of registered pools on the Balancer ComposableStablePoolFactory
+          contract.
         loaded_at_field: call_block_time
         columns:
           - *call_block_number
@@ -168,7 +178,8 @@ sources:
             description: 'Array with the duration of each tokens cached by RateProviders'
           - &exemptFromYieldProtocolFeeFlags
             name: exemptFromYieldProtocolFeeFlags
-            description: 'Array of booleans indicating if each token of the pool is exempt from yield protocol fee'
+            description: 'Array of booleans indicating if each token of the pool is
+              exempt from yield protocol fee'
           - *output_0
           - *owner
           - *swapFeePercentage
@@ -179,7 +190,8 @@ sources:
 
       - name: AaveLinearPoolFactory_call_create
         description: >
-          Decoded table of registered pools on the Balancer AaveLinearPoolFactory contract.
+          Decoded table of registered pools on the Balancer AaveLinearPoolFactory
+          contract.
         loaded_at_field: call_block_time
         columns:
           - *call_block_number
@@ -207,7 +219,8 @@ sources:
 
       - name: ERC4626LinearPoolFactory_call_create
         description: >
-          Decoded table of registered pools on the Balancer ERC4626LinearPoolFactory contract.
+          Decoded table of registered pools on the Balancer ERC4626LinearPoolFactory
+          contract.
         loaded_at_field: call_block_time
         columns:
           - *call_block_number
@@ -228,10 +241,12 @@ sources:
           - *symbol
 
   - name: balancer_v2_ethereum
+    database: delta_prod
     tables:
       - name: InvestmentPoolFactory_call_create
         description: >
-          Decoded table of registered pools on the Balancer InvestmentPoolFactory contract.
+          Decoded table of registered pools on the Balancer InvestmentPoolFactory
+          contract.
         loaded_at_field: call_block_time
         columns:
           - *call_block_number
@@ -274,7 +289,8 @@ sources:
 
       - name: MetaStablePoolFactory_call_create
         description: >
-          Decoded table of registered pools on the Balancer MetaStablePoolFactory contract.
+          Decoded table of registered pools on the Balancer MetaStablePoolFactory
+          contract.
         loaded_at_field: call_block_time
         columns:
           - *call_block_number
@@ -298,7 +314,8 @@ sources:
 
       - name: LiquidityBootstrappingPoolFactory_call_create
         description: >
-          Decoded table of registered pools on the Balancer LiquidityBootstrappingPoolFactory contract.
+          Decoded table of registered pools on the Balancer LiquidityBootstrappingPoolFactory
+          contract.
         loaded_at_field: call_block_time
         columns:
           - *call_block_number
@@ -320,7 +337,8 @@ sources:
 
       - name: NoProtocolFeeLiquidityBootstrappingPoolFactory_call_create
         description: >
-          Decoded table of registered pools on the Balancer NoProtocolFeeLiquidityBootstrappingPoolFactory contract.
+          Decoded table of registered pools on the Balancer NoProtocolFeeLiquidityBootstrappingPoolFactory
+          contract.
         loaded_at_field: call_block_time
         columns:
           - *call_block_number
@@ -329,7 +347,8 @@ sources:
           - *call_trace_address
           - *call_tx_hash
           - name: contract_address
-            description: 'Address of the NoProtocolFeeLiquidityBootstrappingPoolFactory contract'
+            description: 'Address of the NoProtocolFeeLiquidityBootstrappingPoolFactory
+              contract'
           - name: name
             description: 'Name of the created pool'
           - *swapEnabledOnStart
@@ -342,7 +361,8 @@ sources:
 
       - name: StablePhantomPoolFactory_call_create
         description: >
-          Decoded table of registered pools on the Balancer StablePhantomPoolFactory contract.
+          Decoded table of registered pools on the Balancer StablePhantomPoolFactory
+          contract.
         loaded_at_field: call_block_time
         columns:
           - *call_block_number
@@ -365,7 +385,8 @@ sources:
 
       - name: ComposableStablePoolFactory_call_create
         description: >
-          Decoded table of registered pools on the Balancer ComposableStablePoolFactory contract.
+          Decoded table of registered pools on the Balancer ComposableStablePoolFactory
+          contract.
         loaded_at_field: call_block_time
         columns:
           - *call_block_number
@@ -389,7 +410,8 @@ sources:
 
       - name: AaveLinearPoolFactory_call_create
         description: >
-          Decoded table of registered pools on the Balancer AaveLinearPoolFactory contract.
+          Decoded table of registered pools on the Balancer AaveLinearPoolFactory
+          contract.
         loaded_at_field: call_block_time
         columns:
           - *call_block_number
@@ -410,6 +432,7 @@ sources:
           - *symbol
 
   - name: balancer_v2_optimism
+    database: delta_prod
     tables:
       - name: StablePoolFactory_call_create
         description: >
@@ -434,7 +457,8 @@ sources:
 
       - name: MetaStablePoolFactory_call_create
         description: >
-          Decoded table of registered pools on the Balancer MetaStablePoolFactory contract.
+          Decoded table of registered pools on the Balancer MetaStablePoolFactory
+          contract.
         loaded_at_field: call_block_time
         columns:
           - *call_block_number
@@ -458,7 +482,8 @@ sources:
 
       - name: NoProtocolFeeLiquidityBootstrappingPoolFactory_call_create
         description: >
-          Decoded table of registered pools on the Balancer NoProtocolFeeLiquidityBootstrappingPoolFactory contract.
+          Decoded table of registered pools on the Balancer NoProtocolFeeLiquidityBootstrappingPoolFactory
+          contract.
         loaded_at_field: call_block_time
         columns:
           - *call_block_number
@@ -467,7 +492,8 @@ sources:
           - *call_trace_address
           - *call_tx_hash
           - name: contract_address
-            description: 'Address of the NoProtocolFeeLiquidityBootstrappingPoolFactory contract'
+            description: 'Address of the NoProtocolFeeLiquidityBootstrappingPoolFactory
+              contract'
           - name: name
             description: 'Name of the created pool'
           - *swapEnabledOnStart
@@ -480,7 +506,8 @@ sources:
 
       - name: ComposableStablePoolFactory_call_create
         description: >
-          Decoded table of registered pools on the Balancer ComposableStablePoolFactory contract.
+          Decoded table of registered pools on the Balancer ComposableStablePoolFactory
+          contract.
         loaded_at_field: call_block_time
         columns:
           - *call_block_number
@@ -504,7 +531,8 @@ sources:
 
       - name: AaveLinearPoolFactory_call_create
         description: >
-          Decoded table of registered pools on the Balancer AaveLinearPoolFactory contract.
+          Decoded table of registered pools on the Balancer AaveLinearPoolFactory
+          contract.
         loaded_at_field: call_block_time
         columns:
           - *call_block_number
@@ -525,10 +553,12 @@ sources:
           - *symbol
 
   - name: balancer_v2_polygon
+    database: delta_prod
     tables:
       - name: InvestmentPoolFactory_call_create
         description: >
-          Deco*ed table of registered pools on the Balancer InvestmentPoolFactory contract.
+          Deco*ed table of registered pools on the Balancer InvestmentPoolFactory
+          contract.
         loaded_at_field: call_block_time
         columns:
           - *call_block_number
@@ -572,7 +602,8 @@ sources:
 
       - name: MetaStablePoolFactory_call_create
         description: >
-          Decoded table of registered pools on the Balancer MetaStablePoolFactory contract.
+          Decoded table of registered pools on the Balancer MetaStablePoolFactory
+          contract.
         loaded_at_field: call_block_time
         columns:
           - *call_block_number
@@ -596,7 +627,8 @@ sources:
 
       - name: LiquidityBootstrappingPoolFactory_call_create
         description: >
-          Decoded table of registered pools on the Balancer LiquidityBootstrappingPoolFactory contract.
+          Decoded table of registered pools on the Balancer LiquidityBootstrappingPoolFactory
+          contract.
         loaded_at_field: call_block_time
         columns:
           - *call_block_number
@@ -618,7 +650,8 @@ sources:
 
       - name: NoProtocolFeeLiquidityBootstrappingPoolFactory_call_create
         description: >
-          Decoded table of registered pools on the Balancer NoProtocolFeeLiquidityBootstrappingPoolFactory contract.
+          Decoded table of registered pools on the Balancer NoProtocolFeeLiquidityBootstrappingPoolFactory
+          contract.
         loaded_at_field: call_block_time
         columns:
           - *call_block_number
@@ -627,7 +660,8 @@ sources:
           - *call_trace_address
           - *call_tx_hash
           - name: contract_address
-            description: 'Address of the NoProtocolFeeLiquidityBootstrappingPoolFactory contract'
+            description: 'Address of the NoProtocolFeeLiquidityBootstrappingPoolFactory
+              contract'
           - name: name
             description: 'Name of the created pool'
           - *swapEnabledOnStart
@@ -640,7 +674,8 @@ sources:
 
       - name: StablePhantomPoolFactory_call_create
         description: >
-          Decoded table of registered pools on the Balancer StablePhantomPoolFactory contract.
+          Decoded table of registered pools on the Balancer StablePhantomPoolFactory
+          contract.
         loaded_at_field: call_block_time
         columns:
           - *call_block_number
@@ -663,7 +698,8 @@ sources:
 
       - name: ComposableStablePoolFactory_call_create
         description: >
-          Decoded table of registered pools on the Balancer ComposableStablePoolFactory contract.
+          Decoded table of registered pools on the Balancer ComposableStablePoolFactory
+          contract.
         loaded_at_field: call_block_time
         columns:
           - *call_block_number
@@ -687,7 +723,8 @@ sources:
 
       - name: AaveLinearPoolFactory_call_create
         description: >
-          Decoded table of registered pools on the Balancer AaveLinearPoolFactory contract.
+          Decoded table of registered pools on the Balancer AaveLinearPoolFactory
+          contract.
         loaded_at_field: call_block_time
         columns:
           - *call_block_number
@@ -708,8 +745,10 @@ sources:
           - *symbol
 
   - name: balancer_ethereum
+    database: delta_prod
     description: >
-      Decoded tables related to Balancer, an automated portfolio manager and trading platform, on Ethereum.
+      Decoded tables related to Balancer, an automated portfolio manager and trading
+      platform, on Ethereum.
     tables:
       - name: LiquidityGaugeFactory_evt_GaugeCreated
         columns:
@@ -840,8 +879,10 @@ sources:
           - name: relativeWeightCap
 
   - name: balancer_polygon
+    database: delta_prod
     description: >
-      Decoded tables related to Balancer, an automated portfolio manager and trading platform, on Polygon.
+      Decoded tables related to Balancer, an automated portfolio manager and trading
+      platform, on Polygon.
     tables:
       - name: ChildChainLiquidityGaugeFactory_evt_RewardsOnlyGaugeCreated
         columns:
@@ -855,8 +896,10 @@ sources:
           - name: streamer
 
   - name: balancer_arbitrum
+    database: delta_prod
     description: >
-      Decoded tables related to Balancer, an automated portfolio manager and trading platform, on Arbitrum.
+      Decoded tables related to Balancer, an automated portfolio manager and trading
+      platform, on Arbitrum.
     tables:
       - name: ChildChainLiquidityGaugeFactory_evt_RewardsOnlyGaugeCreated
         columns:
