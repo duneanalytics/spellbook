@@ -16,7 +16,7 @@ models:
             - block_date
             - tx_hash
             - evt_index
-      - check_seed:
+      - check_seed_legacy:
           seed_file: ref('zeroex_ethereum_api_fills_sample')
           match_columns:
             - tx_hash
@@ -163,7 +163,7 @@ models:
             - block_date
             - tx_hash
             - evt_index
-      - check_seed:
+      - check_seed_legacy:
           seed_file: ref('zeroex_ethereum_nft_fills_sample')
           match_columns:
             - block_date
@@ -234,7 +234,7 @@ models:
             - tx_hash
             - evt_index
             - volume_usd
-      - check_seed:
+      - check_seed_legacy:
           seed_file: ref('zeroex_ethereum_native_fills_sample')
           match_columns:
             - tx_hash
