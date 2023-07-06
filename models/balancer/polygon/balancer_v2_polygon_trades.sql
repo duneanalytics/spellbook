@@ -1,5 +1,4 @@
 {{ config(
-    tags=['prod_exclude'],
     schema = 'balancer_v2_polygon',
     alias = 'trades',
     partition_by = ['block_date'],
@@ -16,43 +15,23 @@
 
 {% set project_start_date = '2021-06-24' %}
 
-WITH    
-    fees_base AS (
-        SELECT *, 
-            MAX(index) OVER(PARTITION BY tx_hash, contract_address) AS max_index_same_tx 
-        FROM {{ ref('balancer_v2_polygon_pools_fees') }} 
-    ),
-    most_case_fees AS (
-        SELECT * FROM fees_base 
-        WHERE index = max_index_same_tx
-    ),
-    edge_case_fees AS (
-        SELECT 
-            s.evt_block_number,
-            s.evt_tx_hash,
-            s.evt_index,
-            f.swap_fee_percentage 
-        FROM {{ source ('balancer_v2_polygon', 'Vault_evt_Swap') }} s
-            INNER JOIN fees_base f 
-                ON s.evt_tx_hash = f.tx_hash AND f.index < s.evt_index
-    ),
+WITH 
     swap_fees AS (
         SELECT
-            swap.evt_block_number,
-            swap.evt_tx_hash,
-            swap.evt_index,
-            SUBSTRING(swap.poolId, 0, 42) AS contract_address,
-            swap.evt_block_time,
-            MAX(fees.block_time) AS max_fee_evt_block_time
-        FROM
-            {{ source ('balancer_v2_polygon', 'Vault_evt_Swap') }} swap
-            LEFT JOIN {{ ref('balancer_v2_polygon_pools_fees') }} fees
-                ON fees.contract_address = SUBSTRING(swap.poolId, 0, 42)
-                AND fees.block_time <= swap.evt_block_time
+            swaps.poolId,
+            swaps.evt_tx_hash,
+            swaps.evt_index,
+            swaps.evt_block_number,
+            SUBSTRING(CAST(swaps.poolId AS varchar(66)), 1, 42) AS contract_address,
+            fees.swap_fee_percentage,
+            ROW_NUMBER() OVER (PARTITION BY poolId, evt_tx_hash, evt_index ORDER BY block_number DESC, index DESC) AS rn
+        FROM {{ source ('balancer_v2_polygon', 'Vault_evt_Swap') }} swaps
+        LEFT JOIN {{ ref('balancer_v2_polygon_pools_fees') }} fees
+            ON CAST(fees.contract_address AS varchar(66)) = substring(CAST(swaps.poolId AS varchar(66)), 1, 42)
+            AND ARRAY(fees.block_number) || ARRAY(fees.index) < ARRAY(swaps.evt_block_number) || ARRAY(swaps.evt_index)
         {% if is_incremental() %}
-        WHERE swap.evt_block_time >= DATE_TRUNC("day", NOW() - interval '1 week')
+        WHERE swaps.evt_block_time >= date_trunc('day', NOW() - interval '1 week')
         {% endif %}
-        GROUP BY 1, 2, 3, 4, 5
     ),
     dexs AS (
         SELECT
@@ -67,7 +46,7 @@ WITH
             swap.tokenIn AS token_sold_address,
             swap_fees.contract_address AS project_contract_address,
             swap.poolId AS poolId,
-            COALESCE(most.swap_fee_percentage, edge.swap_fee_percentage) / POWER(10, 18) AS swap_fee,
+            swap_fees.swap_fee_percentage / POWER(10, 18) AS swap_fee,
             swap.evt_tx_hash AS tx_hash,
             '' AS trace_address,
             swap.evt_index
@@ -77,17 +56,10 @@ WITH
                 ON swap.evt_block_number = swap_fees.evt_block_number
                 AND swap.evt_tx_hash = swap_fees.evt_tx_hash
                 AND swap.evt_index = swap_fees.evt_index
-            LEFT JOIN most_case_fees most
-                ON most.contract_address = swap_fees.contract_address
-                AND most.block_time = swap_fees.max_fee_evt_block_time
-                AND most.tx_hash <> swap_fees.evt_tx_hash
-            LEFT JOIN edge_case_fees edge
-                ON edge.evt_block_number = swap_fees.evt_block_number
-                AND edge.evt_tx_hash = swap_fees.evt_tx_hash
-                AND edge.evt_index = swap_fees.evt_index
         WHERE
             swap.tokenIn <> swap_fees.contract_address
             AND swap.tokenOut <> swap_fees.contract_address
+            AND swap_fees.rn = 1
     ),
     bpa AS (
         SELECT
