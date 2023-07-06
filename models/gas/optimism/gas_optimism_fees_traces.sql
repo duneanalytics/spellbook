@@ -1,7 +1,6 @@
 {{ config(
     schema = 'gas_optimism',
-    alias = alias('fees_traces'),
-    tags = ['dunesql'],
+    alias = 'fees_traces',
     partition_by = ['block_date'],
     materialized = 'incremental',
     file_format = 'delta',
@@ -14,7 +13,7 @@ WITH traces AS (
      SELECT traces.block_time
      , traces.block_number
      , traces.tx_hash
-     , MAX(traces.from) AS trace_from
+     , MAX(traces."from") AS trace_from
      , MAX(traces.to) AS trace_to
      , traces.trace
      , MAX(traces.input) AS trace_input
@@ -26,16 +25,17 @@ WITH traces AS (
      , MAX(traces.trace_success) AS trace_success
      , MAX(traces.tx_success) AS tx_success
      FROM (
-          SELECT from
+          SELECT "from"
           , to
           , tx_hash
           , trace_address AS trace
-          , cast(gas_used as double) AS gas_used_original
-          , cast(gas_used as double) AS gas_used_trace
+          , gas_used AS gas_used_original
+          , gas_used AS gas_used_trace
           , block_time
           , block_number
           , input
           , type AS trace_type
+          , call_type
           , value AS trace_value
           , success AS trace_success
           , tx_success
@@ -46,20 +46,18 @@ WITH traces AS (
           
           UNION ALL
           
-          SELECT CAST(NULL AS varchar(1)) AS from 
-          , CAST(NULL AS varchar(1)) AS to 
+          SELECT CAST(NULL AS varbinary) AS "from" 
+          , CAST(NULL AS varbinary) AS to 
           , tx_hash
-          , CASE WHEN cardinality(sub_tr.trace_address) =0
-               THEN array[-1]
-               ELSE slice(sub_tr.trace_address, 1, cardinality(sub_tr.trace_address) - 1)
-            END) AS trace
+          , slice(trace_address, 1, cardinality(trace_address) - 1) AS trace
           , CAST(NULL AS double) AS gas_used_original
-          , -cast(gas_used as double) AS gas_used_trace
+          , -gas_used AS gas_used_trace
           , block_time
           , block_number
-          , CAST(NULL AS varchar(1)) AS input
-          , CAST(NULL AS varchar(1)) AS trace_type
-          , CAST(NULL AS varchar(1)) AS trace_value
+          , CAST(NULL AS varbinary) AS input
+          , CAST(NULL AS varchar) AS trace_type
+          , CAST(NULL AS varchar) AS call_type
+          , CAST(NULL AS bigint) AS trace_value
           , CAST(NULL AS boolean) AS trace_success
           , CAST(NULL AS boolean) AS tx_success
           FROM {{ source('optimism','traces') }}
@@ -87,8 +85,8 @@ SELECT 'optimism' AS blockchain
 , traces.gas_used_original
 , traces.gas_used_trace
 , txs.gas_used AS tx_gas_used
-, cast(traces.gas_used_original as double)/cast(txs.gas_used AS gas_used_original_percentage
-, cast(traces.gas_used_trace as double)/cast(txs.gas_used AS gas_used_trace_percentage
+, cast(traces.gas_used_original as double)/cast(txs.gas_used as double) AS gas_used_original_percentage
+, cast(traces.gas_used_trace as double)/cast(txs.gas_used as double) AS gas_used_trace_percentage
 , txs.gas_price AS tx_gas_price
 , traces.trace_type
 , traces.trace_value
