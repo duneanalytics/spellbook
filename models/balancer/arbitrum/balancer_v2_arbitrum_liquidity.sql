@@ -199,7 +199,7 @@ zipped_balance_changes AS (
         FROM cumulative_usd_balance b
         LEFT JOIN {{ ref('balancer_v2_arbitrum_pools_tokens_weights') }} w ON b.pool_id = w.pool_id
         AND b.token = w.token_address
-        AND b.amount_usd > 0
+        AND b.pool_liquidity_usd > 0
         GROUP BY 1, 2
     )
 
