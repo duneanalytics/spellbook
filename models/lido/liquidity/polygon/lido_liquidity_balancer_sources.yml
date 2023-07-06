@@ -1,0 +1,11 @@
+version: 2
+
+sources:    
+  - name: balancer_v2_polygon
+    description: "Polygon decoded tables related to Balancer contract"
+    freshness: # default freshness
+      warn_after: { count: 12, period: hour }
+      error_after: { count: 24, period: hour }
+    tables:
+      - name: pools_fees
+        loaded_at_field: evt_block_time

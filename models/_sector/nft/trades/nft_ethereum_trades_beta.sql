@@ -12,7 +12,7 @@
 {% set base_models = [
      ('archipelago',    'v1',   ref('archipelago_ethereum_base_trades'))
     ,('superrare',    'v1',   ref('superrare_ethereum_base_trades'))
-    ,('foundation',    'v1',   ref('foundation_ethereum_base_trades'))
+    ,('foundation',    'v1',   ref('foundation_ethereum_base_trades_legacy'))
     ,('blur',    'v1',   ref('blur_ethereum_base_trades'))
     ,('element',    'v1',   ref('element_ethereum_base_trades'))
     ,('x2y2',    'v1',   ref('x2y2_ethereum_base_trades'))
@@ -61,8 +61,8 @@ enriched_trades as (
         blockchain='ethereum',
         models=base_models,
         transactions_model=source('ethereum','transactions'),
-        tokens_nft_model=ref('tokens_ethereum_nft'),
-        tokens_erc20_model=ref('tokens_ethereum_erc20'),
+        tokens_nft_model=ref('tokens_ethereum_nft_legacy'),
+        tokens_erc20_model=ref('tokens_ethereum_erc20_legacy'),
         prices_model='cte_prices_patch',
         aggregators=ref('nft_ethereum_aggregators'),
         aggregator_markers=ref('nft_ethereum_aggregators_markers')

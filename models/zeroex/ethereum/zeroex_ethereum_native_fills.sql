@@ -65,8 +65,8 @@ WITH
                     WHEN SUBSTRING(fills.makerAssetData,17,20) IN ('0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee') THEN '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'
                     ELSE SUBSTRING(fills.makerAssetData,17,20)
                 END = mp.contract_address
-        LEFT OUTER JOIN {{ ref('tokens_ethereum_erc20') }} mt ON mt.contract_address = SUBSTRING(fills.makerAssetData,17,20) 
-        LEFT OUTER JOIN {{ ref('tokens_ethereum_erc20') }} tt ON tt.contract_address = SUBSTRING(fills.takerAssetData,17,20) 
+        LEFT OUTER JOIN {{ ref('tokens_ethereum_erc20_legacy') }} mt ON mt.contract_address = SUBSTRING(fills.makerAssetData,17,20)
+        LEFT OUTER JOIN {{ ref('tokens_ethereum_erc20_legacy') }} tt ON tt.contract_address = SUBSTRING(fills.takerAssetData,17,20)
          where 1=1  
                 {% if is_incremental() %}
                 AND evt_block_time >= date_trunc('day', now() - interval '1 week')
@@ -125,8 +125,8 @@ WITH
                     WHEN SUBSTRING(fills.makerAssetData,17,20) IN ('0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee') THEN '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'
                     ELSE SUBSTRING(fills.makerAssetData,17,20)
                 END = mp.contract_address
-        LEFT OUTER JOIN {{ ref('tokens_ethereum_erc20') }} mt ON mt.contract_address = SUBSTRING(fills.makerAssetData,17,20) 
-        LEFT OUTER JOIN {{ ref('tokens_ethereum_erc20') }} tt ON tt.contract_address = SUBSTRING(fills.takerAssetData,17,20) 
+        LEFT OUTER JOIN {{ ref('tokens_ethereum_erc20_legacy') }} mt ON mt.contract_address = SUBSTRING(fills.makerAssetData,17,20)
+        LEFT OUTER JOIN {{ ref('tokens_ethereum_erc20_legacy') }} tt ON tt.contract_address = SUBSTRING(fills.takerAssetData,17,20)
          where 1=1  
                 {% if is_incremental() %}
                 AND evt_block_time >= date_trunc('day', now() - interval '1 week')
@@ -187,8 +187,8 @@ WITH
                     WHEN fills.makerToken IN ('0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee') THEN '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'
                     ELSE fills.makerToken
                 END = mp.contract_address
-        LEFT OUTER JOIN {{ ref('tokens_ethereum_erc20') }} mt ON mt.contract_address = fills.makerToken
-        LEFT OUTER JOIN {{ ref('tokens_ethereum_erc20') }} tt ON tt.contract_address = fills.takerToken
+        LEFT OUTER JOIN {{ ref('tokens_ethereum_erc20_legacy') }} mt ON mt.contract_address = fills.makerToken
+        LEFT OUTER JOIN {{ ref('tokens_ethereum_erc20_legacy') }} tt ON tt.contract_address = fills.takerToken
          where 1=1  
                 {% if is_incremental() %}
                 AND evt_block_time >= date_trunc('day', now() - interval '1 week')
@@ -247,8 +247,8 @@ WITH
                     WHEN fills.makerToken IN ('0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee') THEN '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'
                     ELSE fills.makerToken
               END = mp.contract_address
-      LEFT OUTER JOIN {{ ref('tokens_ethereum_erc20') }} mt ON mt.contract_address = fills.makerToken 
-      LEFT OUTER JOIN {{ ref('tokens_ethereum_erc20') }} tt ON tt.contract_address = fills.takerToken 
+      LEFT OUTER JOIN {{ ref('tokens_ethereum_erc20_legacy') }} mt ON mt.contract_address = fills.makerToken
+      LEFT OUTER JOIN {{ ref('tokens_ethereum_erc20_legacy') }} tt ON tt.contract_address = fills.takerToken
        where 1=1  
                 {% if is_incremental() %}
                 AND evt_block_time >= date_trunc('day', now() - interval '1 week')
@@ -306,8 +306,8 @@ WITH
                     WHEN fills.makerToken IN ('0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee') THEN '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'
                     ELSE fills.makerToken
               END = mp.contract_address
-      LEFT OUTER JOIN {{ ref('tokens_ethereum_erc20') }} mt ON mt.contract_address = fills.makerToken
-      LEFT OUTER JOIN {{ ref('tokens_ethereum_erc20') }} tt ON tt.contract_address = fills.takerToken 
+      LEFT OUTER JOIN {{ ref('tokens_ethereum_erc20_legacy') }} mt ON mt.contract_address = fills.makerToken
+      LEFT OUTER JOIN {{ ref('tokens_ethereum_erc20_legacy') }} tt ON tt.contract_address = fills.takerToken
        where 1=1  
                 {% if is_incremental() %}
                 AND evt_block_time >= date_trunc('day', now() - interval '1 week')

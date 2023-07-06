@@ -10,7 +10,7 @@ models:
      tags: ['polygon', 'layerzero', 'send']
    description: "LayerZero message send call on polygon"
    tests:
-     - check_seed:
+     - check_seed_legacy:
          seed_file: ref('layerzero_polygon_send_samples')
          check_columns:
            - destination_chain_id

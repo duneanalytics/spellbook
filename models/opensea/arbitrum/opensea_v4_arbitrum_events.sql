@@ -36,12 +36,12 @@ with source_arbitrum_transactions as (
 )
 ,ref_tokens_nft as (
     select *
-      from {{ ref('tokens_nft') }}
+      from {{ ref('tokens_nft_legacy') }}
      where blockchain = 'arbitrum'
 )
 ,ref_tokens_erc20 as (
     select *
-      from {{ ref('tokens_erc20') }}
+      from {{ ref('tokens_erc20_legacy') }}
      where blockchain = 'arbitrum'
 )
 ,ref_nft_aggregators as (
