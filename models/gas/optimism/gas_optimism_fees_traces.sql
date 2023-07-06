@@ -1,7 +1,7 @@
 {{ config(
     schema = 'gas_optimism',
     alias = alias('fees_traces'),
-    tags = ['dunesql']
+    tags = ['dunesql'],
     partition_by = ['block_date'],
     materialized = 'incremental',
     file_format = 'delta',
