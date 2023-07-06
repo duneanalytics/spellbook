@@ -1,26 +1,73 @@
-# SPELLBOOK FREEZE
+# Spellbook on DuneSQL is here 🪄
+It's time. Spellbook is ready to accept PRs to build spells on the DuneSQL engine!  
 
-From June 22 to June 29, we will be freezing some Spellbook contributions for the migration to DuneSQL. We will not accept contributions to the lineage of the following models:
+For any questions or help from Dune team, please use the open GH discussion [here](https://github.com/duneanalytics/spellbook/discussions/3558).
 
-* dex.trades
-* nft.trades
-* labels
-* token.erc20
-* tokens.nft
+## Initial step(s)
+We can continue to safely use the setup instructions below in the new DuneSQL world: [Setting up your dev environment](#setting-up-your-local-dev-environment).  
 
-Run the following command to see the list of affected files:
+To be safe, it's recommended in your local setup to:
+- exit any existing running python environment(s)
+- ensure you are in spellbook root directory
+- rerun `pipenv install`
+- rerun `pipenv shell` to re-enter the environment
 
+The process to compile code locally, grab from target directory & run on the Dune app remains the same.  
+
+Ensure you are still in Spellbook root directory, then run the following command:
+
+```console
+dbt compile
 ```
-dbt ls --resource-type model --output path --select +dex_trades +labels +nft_trades +tokens_nft +tokens_erc20
-```
 
-Don't hesitate to reach out on Discord if you have any questions.
+A recent change in the new setup was to include a `profiles.yml` file, which helps tell dbt how to run commmands. The profile is located in the root directory [here](https://github.com/duneanalytics/spellbook/blob/main/profiles.yml). This should never need modified, unless done intentionally by the Dune team.  
+Due to the `profiles.yml` file being stored in the root directory, this is why users **must** be in the root directory on the command line to run `dbt compile`.
+
+## High-level overview of Spellbook current state
+As we enter the phase of building on DuneSQL, we will continue to run spells in parallel on both the legacy engine (spark) and the new engine (DuneSQL).  
+**Note:** the below processes will simplify post-migration and we will eventually deprecate spark engine and all legacy files.
+- the single most important piece of code to help differentiate engines is through usage of dbt tags, specifically a `tag:dunesql` value applied in each spell's config block when ready to run on DuneSQL -- more on this exact setup below.
+- the `dbt slim ci` gh action attached to two PR's will show two jobs: one for spark, one for DuneSQL -- you will notice depending on how dbt tags are used in spell config, one of the two engines will skip all steps to ignore running there.
+- the process to contribute will differ between net new spells & modifying/migrating existing spells -- details for each process [here](#how-can-i-contribute-spells-on-dunesql).
+
+## How can I contribute spells on DuneSQL?
+The process will differ for new spells vs. migrating existing spells.
+
+### New spells
+If creating a new spell, follow the below steps:
+- Follow the same process from the spark engine setup
+  - SQL file for spell, YAML files for source & schema files, seeds & tests as needed
+- add tag for DuneSQL in spell config block
+  - `tags = ['dunesql'],` -- this is vital for orchestration and testing on the correct engine. If `tags` property already exists in the spell, then simply append new value after a comma: `tags = ['static', 'dunesql'],`
+- ensure alias property follows the below format:
+  - `alias = alias('blocks'),`
+- PR CI tests will check for this `tag:dunesql` applied and run on spark or dunesql dependent on if tag exists. the opposite engine will run too, but all steps should have no output and succeed.  
+  - the logs of the CI test gh action can still be used to grab table names and query on dune app for ~24 hours – be sure to query on the engine you modify!
+### Existing spells
+If modifying existing spells which haven't been migrated to DuneSQL yet, it is recommended to migrate at the same time.  
+
+Steps to migrate:
+- Find the spell SQL file to translate in the repo
+  - rename existing spark SQL file to append `_legacy.sql` at the end and keep the syntax as-is within the spell
+  - modify the `alias` property in the config block to leverage the new alias dbt macro, which includes extended parameters passed in
+    - from `alias = 'blocks',` to --> `alias = alias('blocks', legacy_model=True),`
+- Update all the references downstream of modified spell(s) to reference new legacy spells in step 1
+  - for example, any instance of `{{ ref( ) }}` downstream of modified spell(s)
+  - to find downstream spells, the following can be run: `dbt ls --resource-type model --output name --select <insert spell name>+`
+  - **future note:** when downstream spells are also migrated, we will be able to revert back to reference DuneSQL versioned spells. We will be working in a upstream --> downstream lineage path to full migration.
+- Duplicate the `_legacy.sql` file in your local repo & then remove the `_legacy` suffix
+  - add tag for DuneSQL in spell config block
+    - `tags = ['dunesql'],` -- this is vital for orchestration and testing on the correct engine. If `tags` property already exists in the spell, then simply append new value after a comma: `tags = ['static', 'dunesql'],`
+  - update alias property again, this time to simplify and remove legacy flag
+    - `alias = alias('blocks'),`
+  - now it's time to translate the code within to DuneSQL syntax!
+- PR CI tests will check for this `tag:dunesql` applied and run on spark or dunesql dependent on if tag exists. the opposite engine will run too, but all steps should have no output and succeed.  
+  - the logs of the CI test gh action can still be used to grab table names and query on dune app for ~24 hours – be sure to query on the engine you modify!
 
 ![spellbook-logo@10x](https://user-images.githubusercontent.com/2520869/200791687-76f1bc4f-05d0-4384-a753-e3b5da0e7a4a.png#gh-light-mode-only)
 ![spellbook-logo-negative_10x](https://user-images.githubusercontent.com/2520869/200865128-426354af-8059-494d-83f7-46947aae271c.png#gh-dark-mode-only)
 
 Welcome to [Spellbook](https://youtu.be/o7p0BNt7NHs). Cast a magical incantation to tame the blockchain.
-
 
 ## TL;DR
 - Are you building something new? **Please make sure to open a Draft PR**, so we minimize duplicated work, and other wizards can help you if you need
@@ -31,8 +78,7 @@ Welcome to [Spellbook](https://youtu.be/o7p0BNt7NHs). Cast a magical incantation
     - Make sure to open a draft PR if you will work on your spell for longer than a few days, to avoid duplicated work
   - Do you want to get started building spells and you don't know what to build? Check [Issues]() to see what the community needs.
   - Check the Discussions section to see what problems the community is trying to solve (i.e. non-incremental changes) or propose your own!
-- Have questions? Head over to #spellbook on our [disccord](https://discord.com/channels/757637422384283659/999683200563564655) and the community will be happy to help out!
-- Looking for abstractions from the V1 engine? We moved them to [dune-v1-abstractions](https://github.com/duneanalytics/dune-v1-abstractions).
+- Have questions? Head over to #spellbook on our [discord](https://discord.com/channels/757637422384283659/999683200563564655) and the community will be happy to help out!
 - Like with most OSS projects, your contributions to Spellbook are your own IP, you can find more details in the [Contributor License Agreement](https://github.com/duneanalytics/spellbook/edit/main/CLA.md)
 
 
@@ -49,7 +95,7 @@ Welcome to [Spellbook](https://youtu.be/o7p0BNt7NHs). Cast a magical incantation
 
 ## Introduction
 
-Spellbook is Dune's interpretation layer, built for and by the community. With Spellbook, 
+Spellbook is Dune's interpretation layer, built for and by the community.
 
 Spellbook is a [dbt](https://docs.getdbt.com/docs/introduction) project. Each model is a simple SQL query with minor syntactic sugar (meant to capture dependencies and help build the resulting tables), and does a small part of the task of turning raw and decoded records into interpretable blockchain data.
 
@@ -97,22 +143,20 @@ We use Discord to connect with our community. Head over to spellbook channel on 
 
 You can watch the video version of this if you scroll down a bit.
 
-Navigate to the abstraction repo within your CLI (Command line interface).
+Navigate to the spellbook repo within your CLI (Command line interface).
 
 ```console
 cd user\directory\github\spellbook
-# Change this to wherever spellbooks are stored locally on your machine.
+# Change this to wherever spellbook is stored locally on your machine.
 ```
 
-Use the pipfile to create a pipenv.
+Using the pipfile located in the spellbook repo, run the below install command to create a pipenv.
 
 ```console
 pipenv install
 ```
 
-If the env is created successfully, skip ahead to `pipenv shell`.
-
-Our script is looking for a static python version, the likelihood of an error for a wrong python version is pretty high. If that error occurs, check your python version with:
+If the install fails, one likely reason is our script looks for a static python version and the likelihood of an error for a wrong python version is pretty high. If that error occurs, check your python version with:
 
 ```console
 py --version
@@ -121,8 +165,7 @@ py --version
 Now use any text editor program to change the python version in the pipfile within the spellbook directory to your python version. You need to have at least python 3.9.
 If you have changed the python version in the pipfile, run `pipenv install` again.
 
-You are now ready to activate this project's virtual environment.
-Use:
+You are now ready to activate this project's virtual environment. Run the following command to enter the environment:
 
 ```console
 pipenv shell
@@ -154,8 +197,6 @@ If you have done this installation on your machine once, to get back into dbt, s
 
 You now have the ability to compile your dbt model statements and test statements into plain SQL. This allows you to test those queries on the usual dune.com environment and should therefore lead to a better experience while developing spells. Running the queries will immediately give you feedback on typos, logical errors, or mismatches.
 This in turn will help us deploy these spells faster and avoid any potential mistakes.
-
-We are thinking about better solutions to make more dbt actions available directly but we also have to consider security.
 
 ## How to use dbt to create spells
 

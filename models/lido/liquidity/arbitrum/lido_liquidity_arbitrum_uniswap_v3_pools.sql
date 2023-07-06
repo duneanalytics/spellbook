@@ -20,7 +20,7 @@ select explode(sequence(to_date('{{ project_start_date }}'), now(), interval 1 d
 
 , pools as (
 select pool as address, 'arbitrum' as blockchain, 'uniswap_v3' as project, fee/10000 as fee
-from {{source('uniswap_v3_arbitrum','UniswapV3Factory_evt_PoolCreated')}}
+from {{source('uniswap_v3_arbitrum','Factory_evt_PoolCreated')}}
 where token0 = lower('0x5979D7b546E38E414F7E9822514be443A4800529') or token1 = lower('0x5979D7b546E38E414F7E9822514be443A4800529')
 )
 
@@ -53,11 +53,11 @@ select lower(address_l1) as address_l1, lower(address_l2) as address_l2 from (va
 select distinct token as address, pt.symbol, pt.decimals, tm.address_l1 
 from (
 select token1 as token
-from {{source('uniswap_v3_arbitrum','UniswapV3Factory_evt_PoolCreated')}}
+from {{source('uniswap_v3_arbitrum','Factory_evt_PoolCreated')}}
 where token0 = lower('0x5979D7b546E38E414F7E9822514be443A4800529') 
 union
 select token0
-from {{source('uniswap_v3_arbitrum','UniswapV3Factory_evt_PoolCreated')}}
+from {{source('uniswap_v3_arbitrum','Factory_evt_PoolCreated')}}
 where token1 = lower('0x5979D7b546E38E414F7E9822514be443A4800529') 
 union 
 select lower('0x5979D7b546E38E414F7E9822514be443A4800529') 
@@ -115,7 +115,7 @@ left join tokens_mapping tm on t.token = tm.address_l2
         sum(cast(amount1 as DOUBLE)) as amount1
         
     from {{source('uniswap_v3_arbitrum','Pair_evt_Swap')}} sw
-    left join {{source('uniswap_v3_arbitrum','UniswapV3Factory_evt_PoolCreated')}} cr on sw.contract_address = cr.pool
+    left join {{source('uniswap_v3_arbitrum','Factory_evt_PoolCreated')}} cr on sw.contract_address = cr.pool
     WHERE date_trunc('day', sw.evt_block_time) >= '{{ project_start_date }}'
     and sw.contract_address in (select address from pools)
     group by 1,2,3,4
@@ -129,7 +129,7 @@ left join tokens_mapping tm on t.token = tm.address_l2
         sum(cast(amount0 as DOUBLE)) as amount0,
         sum(cast(amount1 as DOUBLE)) as amount1
     from {{source('uniswap_v3_arbitrum','Pair_evt_Mint')}} mt
-    left join {{source('uniswap_v3_arbitrum','UniswapV3Factory_evt_PoolCreated')}} cr on mt.contract_address = cr.pool
+    left join {{source('uniswap_v3_arbitrum','Factory_evt_PoolCreated')}} cr on mt.contract_address = cr.pool
     WHERE date_trunc('day', mt.evt_block_time) >= '{{ project_start_date }}'
     and mt.contract_address  in (select address from pools)
     group by 1,2,3,4
@@ -145,7 +145,7 @@ left join tokens_mapping tm on t.token = tm.address_l2
         (-1)*cast(amount1 as DOUBLE) as amount1,
         c.evt_tx_hash
     from {{source('uniswap_v3_arbitrum','Pair_evt_Collect')}} c
-    left join uniswap_v3_arbitrum.UniswapV3Factory_evt_PoolCreated cr on c.contract_address = cr.pool
+    left join uniswap_v3_arbitrum.Factory_evt_PoolCreated cr on c.contract_address = cr.pool
     WHERE date_trunc('day', c.evt_block_time) >= '{{ project_start_date }}'
     and c.contract_address  in (select address from pools)
     
@@ -160,7 +160,7 @@ left join tokens_mapping tm on t.token = tm.address_l2
         (-1)*sum(cast(amount0 as DOUBLE)) as amount0,
         (-1)*sum(cast(amount1 as DOUBLE)) as amount1
     from {{source('uniswap_v3_arbitrum','Pair_evt_Burn')}} bn
-    left join {{source('uniswap_v3_arbitrum','UniswapV3Factory_evt_PoolCreated')}} cr on bn.contract_address = cr.pool
+    left join {{source('uniswap_v3_arbitrum','Factory_evt_PoolCreated')}} cr on bn.contract_address = cr.pool
     WHERE date_trunc('day', bn.evt_block_time) >= '{{ project_start_date }}'
     and bn.contract_address  in (select address from pools)
     and bn.evt_tx_hash not in (select evt_tx_hash from collect_events)
@@ -204,7 +204,7 @@ left join tokens_mapping tm on t.token = tm.address_l2
         coalesce(sum(cast(abs(amount1) as DOUBLE)),0) as amount1
         
     from {{source('uniswap_v3_arbitrum','Pair_evt_Swap')}} sw 
-    left join {{source('uniswap_v3_arbitrum','UniswapV3Factory_evt_PoolCreated')}} cr on sw.contract_address = cr.pool
+    left join {{source('uniswap_v3_arbitrum','Factory_evt_PoolCreated')}} cr on sw.contract_address = cr.pool
     WHERE date_trunc('day', sw.evt_block_time) >= '{{ project_start_date }}'
     and sw.contract_address in (select address from pools)
     group by 1,2,3,4
