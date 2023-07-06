@@ -1,7 +1,6 @@
 {{ config(
     schema = 'gas_optimism',
-    alias = alias('fees_traces'),
-    tags = ['dunesql'],
+    alias = 'fees_traces',
     partition_by = ['block_date'],
     materialized = 'incremental',
     file_format = 'delta',
@@ -18,7 +17,7 @@ WITH traces AS (
      , MAX(traces.to) AS trace_to
      , traces.trace
      , MAX(traces.input) AS trace_input
-     , bytearray_substring(MAX(traces.input),1,4) AS trace_method
+     , substring(MAX(traces.input),1,10) AS trace_method
      , SUM(traces.gas_used_original) AS gas_used_original
      , SUM(traces.gas_used_trace) AS gas_used_trace
      , MAX(traces.trace_type) AS trace_type
@@ -30,8 +29,8 @@ WITH traces AS (
           , to
           , tx_hash
           , trace_address AS trace
-          , cast(gas_used as double) AS gas_used_original
-          , cast(gas_used as double) AS gas_used_trace
+          , gas_used AS gas_used_original
+          , gas_used AS gas_used_trace
           , block_time
           , block_number
           , input
@@ -41,7 +40,7 @@ WITH traces AS (
           , tx_success
           FROM {{ source('optimism','traces') }}
           {% if is_incremental() %}
-          WHERE block_time >= date_trunc('day', NOW() - interval '1' day)
+          WHERE block_time >= date_trunc("day", NOW() - interval '1 days')
           {% endif %}
           
           UNION ALL
@@ -51,7 +50,7 @@ WITH traces AS (
           , tx_hash
           , slice(trace_address, 1, cardinality(trace_address) - 1) AS trace
           , CAST(NULL AS double) AS gas_used_original
-          , -cast(gas_used as double) AS gas_used_trace
+          , -gas_used AS gas_used_trace
           , block_time
           , block_number
           , CAST(NULL AS varchar(1)) AS input
@@ -62,7 +61,7 @@ WITH traces AS (
           FROM {{ source('optimism','traces') }}
           WHERE cardinality(trace_address) > 0
           {% if is_incremental() %}
-          AND block_time >= date_trunc('day', NOW() - interval '1' day)
+          AND block_time >= date_trunc("day", NOW() - interval '1 days')
           {% endif %}
           ) traces
      GROUP BY traces.tx_hash, traces.trace, traces.block_time, traces.block_number
@@ -79,31 +78,31 @@ SELECT 'optimism' AS blockchain
 , txs.to AS tx_to
 , traces.trace
 , traces.trace_method
-, bytearray_substring(txs.data,1,4) AS tx_method
+, substring(txs.data,1,10) AS tx_method
 , traces.trace_input
 , traces.gas_used_original
 , traces.gas_used_trace
 , txs.gas_used AS tx_gas_used
-, cast(traces.gas_used_original as double)/cast(txs.gas_used AS gas_used_original_percentage
-, cast(traces.gas_used_trace as double)/cast(txs.gas_used AS gas_used_trace_percentage
+, traces.gas_used_original/txs.gas_used AS gas_used_original_percentage
+, traces.gas_used_trace/txs.gas_used AS gas_used_trace_percentage
 , txs.gas_price AS tx_gas_price
 , traces.trace_type
 , traces.trace_value
 , traces.trace_success
 , traces.tx_success
-, cast(traces.gas_used_original*txs.gas_price as double)/1e18 AS gas_fee_spent_original
-, cast(pu.price*traces.gas_used_original*txs.gas_price as double)/1e18 AS gas_fee_spent_original_usd
-, cast(traces.gas_used_trace*txs.gas_price as double)/1e18 AS gas_fee_spent_trace
-, cast(pu.price*traces.gas_used_trace*txs.gas_price as double)/1e18 AS gas_fee_spent_trace_usd
+, (traces.gas_used_original*txs.gas_price)/POWER(10, 18) AS gas_fee_spent_original
+, (pu.price*traces.gas_used_original*txs.gas_price)/POWER(10, 18) AS gas_fee_spent_original_usd
+, (traces.gas_used_trace*txs.gas_price)/POWER(10, 18) AS gas_fee_spent_trace
+, (pu.price*traces.gas_used_trace*txs.gas_price)/POWER(10, 18) AS gas_fee_spent_trace_usd
 FROM traces
 INNER JOIN {{ source('optimism','transactions') }} txs ON txs.block_time=traces.block_time
      AND txs.hash=traces.tx_hash
      {% if is_incremental() %}
-     AND txs.block_time >= date_trunc('day', NOW() - interval '1' day)
+     AND txs.block_time >= date_trunc("day", NOW() - interval '1 days')
      {% endif %}
 LEFT JOIN {{ source('prices', 'usd') }} pu ON pu.minute=date_trunc('minute', traces.block_time)
      AND pu.blockchain='optimism'
-     AND pu.contract_address=0x4200000000000000000000000000000000000006
+     AND pu.contract_address='0x4200000000000000000000000000000000000006'
      {% if is_incremental() %}
-     AND pu.minute >= date_trunc('day', NOW() - interval '1' day)
+     AND pu.minute >= date_trunc("day", NOW() - interval '1' week)
      {% endif %}
