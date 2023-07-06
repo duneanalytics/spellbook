@@ -1,10 +1,10 @@
-{{ config(
-        alias ='trades'
+{{ config(tags=['dunesql'],
+        alias = alias('trades')
         )
 }}
 
 {% set uniswap_bnb_models = [
-ref('uniswap_v3_bnb_trades_legacy')
+ref('uniswap_v3_bnb_trades')
 ] %}
 
 
@@ -41,4 +41,3 @@ FROM (
     {% endif %}
     {% endfor %}
 )
-;

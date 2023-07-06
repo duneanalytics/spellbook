@@ -1,5 +1,4 @@
-{{ config(
-        tags=['dunesql'],
+{{ config(tags=['dunesql'],
         schema = 'aave_v3'
         , alias = alias('tokens')
         , materialized = 'incremental'
