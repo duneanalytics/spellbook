@@ -61,7 +61,7 @@ enriched_trades as (
         blockchain='ethereum',
         models=base_models,
         transactions_model=source('ethereum','transactions'),
-        tokens_nft_model=ref('tokens_ethereum_nft'),
+        tokens_nft_model=ref('tokens_ethereum_nft_legacy'),
         tokens_erc20_model=ref('tokens_ethereum_erc20_legacy'),
         prices_model='cte_prices_patch',
         aggregators=ref('nft_ethereum_aggregators'),

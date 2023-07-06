@@ -37,7 +37,7 @@ with source_bnb_transactions as (
 )
 ,ref_tokens_nft as (
     select *
-    from {{ ref('tokens_nft') }}
+    from {{ ref('tokens_nft_legacy') }}
     where blockchain = 'bnb'
 )
 ,ref_tokens_erc20 as (
