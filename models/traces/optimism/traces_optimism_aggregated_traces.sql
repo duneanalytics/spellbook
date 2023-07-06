@@ -80,18 +80,18 @@ FROM (
 		AND t.block_time = r.block_time
 		AND t.block_number = r.block_number
 		{% if is_incremental() %}
-        	AND t.block_time >= date_trunc('day', now() - interval '7' day)
+        	AND t.block_time >= date_trunc('day', now() - interval '1' day)
         	{% endif %}
 
         INNER JOIN {{ source('optimism', 'blocks') }} b
 		ON  t.block_time = b.time
 		AND t.block_number = b.number
 		{% if is_incremental() %}
-        	AND b.time >= date_trunc('day', now() - interval '7' day)
+        	AND b.time >= date_trunc('day', now() - interval '1' day)
         	{% endif %}
         
 	{% if is_incremental() %}
-	WHERE r.block_time >= date_trunc('day', now() - interval '7' day)
+	WHERE r.block_time >= date_trunc('day', now() - interval '1' day)
 	{% endif %}
 	-- handle duplicate trace errors
 	GROUP BY 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25
