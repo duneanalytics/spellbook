@@ -1,5 +1,5 @@
 {{ config(
-    alias = alias('prices'),
+    alias = alias('prices', legacy_model=True),
     partition_by = ['day'],
     materialized = 'incremental',
     file_format = 'delta',
@@ -8,56 +8,57 @@
     post_hook='{{ expose_spells(\'["avalanche_c", "arbitrum", "bnb", "polygon", "ethereum", "gnosis", "optimism", "fantom"]\',
                                 "sector",
                                 "dex",
-                                \'["Henrystats", "m_r_g_t"]\') }}'
+                                \'["Henrystats"]\') }}'
     )
 }}
 
-WITH 
-dex_trades AS (
+WITH
+
+dex_trades as (
     SELECT 
-        d.token_bought_address AS contract_address, 
-        COALESCE(d.amount_usd/d.token_bought_amount, d.amount_usd/(cast(d.token_bought_amount_raw as double)/POW(10, er.decimals))) AS price, 
+        d.token_bought_address as contract_address, 
+        COALESCE(d.amount_usd/d.token_bought_amount, d.amount_usd/(d.token_bought_amount_raw/POW(10, er.decimals))) as price, 
         d.block_time, 
         d.blockchain
     FROM {{ ref('dex_trades') }} d 
-    LEFT JOIN {{ ref('tokens_erc20') }} er
+    LEFT JOIN {{ ref('tokens_erc20_legacy') }} er
         ON d.token_bought_address = er.contract_address
         AND d.blockchain = er.blockchain
     WHERE d.amount_usd > 0 
-        AND cast(d.token_bought_amount_raw as double) > 0
+        AND d.token_bought_amount_raw > 0 
         {% if is_incremental() %}
-        AND d.block_time >= date_add('week', -1, current_date)
+        AND d.block_time >= date_trunc("day", now() - interval '1 week')
         {% endif %}
 
     UNION ALL
 
     SELECT 
-        d.token_sold_address AS contract_address, 
-        COALESCE(d.amount_usd/d.token_sold_amount, d.amount_usd/(cast(d.token_sold_amount_raw as double)/POW(10, er.decimals))) AS price, 
+        d.token_sold_address as contract_address, 
+        COALESCE(d.amount_usd/d.token_sold_amount, d.amount_usd/(d.token_sold_amount_raw/POW(10, er.decimals))) as price, 
         d.block_time, 
         d.blockchain
     FROM {{ ref('dex_trades') }} d 
-    LEFT JOIN {{ ref('tokens_erc20') }} er
+    LEFT JOIN {{ ref('tokens_erc20_legacy') }} er
         ON d.token_sold_address = er.contract_address
         AND d.blockchain = er.blockchain
     WHERE d.amount_usd > 0 
-        AND cast(d.token_bought_amount_raw as double) > 0
+        AND d.token_bought_amount_raw > 0 
         {% if is_incremental() %}
-        AND d.block_time >= date_add('week', -1, current_date)
+        AND d.block_time >= date_trunc("day", now() - interval '1 week')
         {% endif %}
 )
 
 SELECT 
-    TRY_CAST(date_trunc('day', hour) AS date) AS day, -- for partitioning 
+    TRY_CAST(date_trunc('day', hour) as date) as day, -- for partitioning 
     * 
 FROM 
 (
     SELECT 
-        date_trunc('hour', block_time) AS hour, 
+        date_trunc('hour', block_time) as hour, 
         contract_address,
         blockchain,
-        approx_percentile(price, 0.5) AS median_price,
-        COUNT(price) AS sample_size 
+        (PERCENTILE_CONT(0.5) WITHIN GROUP (ORDER BY price)) AS median_price,
+        COUNT(price) as sample_size 
     FROM dex_trades
     GROUP BY 1, 2, 3
     HAVING COUNT(price) >= 5 
