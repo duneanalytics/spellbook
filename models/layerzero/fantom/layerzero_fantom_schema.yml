@@ -10,7 +10,7 @@ models:
      tags: ['fantom', 'layerzero', 'send']
    description: "LayerZero message send call on fantom"
    tests:
-     - check_seed:
+     - check_seed_legacy:
          seed_file: ref('layerzero_fantom_send_samples')
          check_columns:
            - destination_chain_id

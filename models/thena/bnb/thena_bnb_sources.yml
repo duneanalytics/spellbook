@@ -3,7 +3,7 @@ version: 2
 sources:
   - name: thena_fi_bnb
     description: >
-      BNB chain decoded tables related to Thena 
+      BNB chain decoded tables related to Thena
     tables:
       - name: pair_evt_swap
         freshness:
@@ -60,41 +60,7 @@ sources:
             description: "Token0 contract address"
           - &token1
             name: token1
-            description: "Token1 contract address"    
-
-  - name: thena_bnb
-    description: "BNB chain decoded tables related to Thena"
-    freshness:
-      warn_after: { count: 12, period: hour }
-    tables:
-      - name: AlgebraPool_evt_Swap
-        loaded_at_field: evt_block_time
-        description: >
-          Thena fusion pair swap events table
-        columns:
-          - *contract_address
-          - *evt_tx_hash
-          - *evt_index
-          - *evt_block_time 
-          - *evt_block_number
-          - &amount0
-            name: amount0
-            description: "The delta of the token0 balance of the pool"
-          - &amount1
-            name: amount1
-            description: "The delta of the token1 balance of the pool"
-          - &liquidity
-            name: liquidity
-            description: "The liquidity of the pool after the swap"
-          - &price
-            name: price
-          - &recipient
-            name: recipient
-            description: "The address that received the output of the swap"
-          - *sender
-          - &tick
-            name: tick
-            description: "the log base 1.0001 of price of the pool after the swap"
+            description: "Token1 contract address"
 
       - name: PairFactoryUpgradeable_evt_PairCreated
         freshness:
@@ -116,6 +82,38 @@ sources:
           - &stable
             name: stable
           - *token0
-          - *token1 
+          - *token1
 
-  
+  - name: thena_bnb
+    description: "BNB chain decoded tables related to Thena"
+    freshness:
+      warn_after: { count: 12, period: hour }
+    tables:
+      - name: AlgebraPool_evt_Swap
+        loaded_at_field: evt_block_time
+        description: >
+          Thena fusion pair swap events table
+        columns:
+          - *contract_address
+          - *evt_tx_hash
+          - *evt_index
+          - *evt_block_time
+          - *evt_block_number
+          - &amount0
+            name: amount0
+            description: "The delta of the token0 balance of the pool"
+          - &amount1
+            name: amount1
+            description: "The delta of the token1 balance of the pool"
+          - &liquidity
+            name: liquidity
+            description: "The liquidity of the pool after the swap"
+          - &price
+            name: price
+          - &recipient
+            name: recipient
+            description: "The address that received the output of the swap"
+          - *sender
+          - &tick
+            name: tick
+            description: "the log base 1.0001 of price of the pool after the swap"
