@@ -30,8 +30,8 @@ WITH traces AS (
           , to
           , tx_hash
           , trace_address AS trace
-          , gas_used AS gas_used_original
-          , gas_used AS gas_used_trace
+          , cast(gas_used as double) AS gas_used_original
+          , cast(gas_used as double) AS gas_used_trace
           , block_time
           , block_number
           , input
@@ -52,7 +52,7 @@ WITH traces AS (
           , tx_hash
           , slice(trace_address, 1, cardinality(trace_address) - 1) AS trace
           , CAST(NULL AS double) AS gas_used_original
-          , -gas_used AS gas_used_trace
+          , -cast(gas_used as double) AS gas_used_trace
           , block_time
           , block_number
           , CAST(NULL AS varbinary) AS input
@@ -77,7 +77,7 @@ SELECT 'gnosis' AS blockchain
 , traces.tx_hash
 , traces.trace_from
 , traces.trace_to
-, txs.from AS tx_from
+, txs."from" AS tx_from
 , txs.to AS tx_to
 , traces.trace
 , traces.trace_method
