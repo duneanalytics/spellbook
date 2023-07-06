@@ -12,7 +12,7 @@
     ,('ethereum',   ref('tokens_ethereum_nft'))
     ,('fantom',     ref('tokens_fantom_nft'))
     ,('gnosis',     ref('tokens_gnosis_nft'))
-    ,('optimism',   ref('tokens_optimism_nft_legacy'))
+    ,('optimism',   ref('tokens_optimism_nft'))
     ,('polygon',    ref('tokens_polygon_nft'))
 ] %}
 
