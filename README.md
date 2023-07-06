@@ -134,6 +134,7 @@ We use Discord to connect with our community. Head over to spellbook channel on 
 ### Prerequisites
 
 - Fork this repo and clone your fork locally. See Github's [guide](https://docs.github.com/en/get-started/quickstart/contributing-to-projects) on contributing to projects.
+- We default to use unix (LF) line endings, windows users please set: `git config --global core.autocrlf true`. [more info](https://docs.github.com/en/get-started/getting-started-with-git/configuring-git-to-handle-line-endings)
 - python 3.9 installed. Our recommendation is to follow the [Hitchhiker's Guide to Python](https://docs.python-guide.org/starting/installation/)
 - [pip](https://pip.pypa.io/en/stable/installation/) installed
 - [pipenv](https://pypi.org/project/pipenv/) installed

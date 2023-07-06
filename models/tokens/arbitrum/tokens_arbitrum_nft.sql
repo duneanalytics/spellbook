@@ -1,5 +1,5 @@
-{{ config(
-        alias ='nft'
+{{ config(tags=['dunesql'],
+        alias = alias('nft')
         , materialized = 'table'
         , post_hook='{{ expose_spells(\'["arbitrum"]\',
                                 "sector",
