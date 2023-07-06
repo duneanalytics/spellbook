@@ -10,7 +10,7 @@ models:
      tags: ['bnb', 'layerzero', 'send']
    description: "LayerZero message send call on bnb"
    tests:
-     - check_seed:
+     - check_seed_legacy:
          seed_file: ref('layerzero_bnb_send_samples')
          check_columns:
            - destination_chain_id
