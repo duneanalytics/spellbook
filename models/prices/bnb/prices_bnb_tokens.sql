@@ -199,6 +199,7 @@ FROM
     ("ghny-grizzly-honey","bnb","GHNY","0xa045e37a0d1dd3a45fefb8803d22457abc0a728a",18),
     ("grain-granary","bnb","GRAIN","0x8f87a7d376821c7b2658a005aaf190ec778bf37a",18),
     ("oath-oath","bnb","OATH","0xd3c6ceedd1cc7bd4304f72b011d53441d631e662",18),
+    ("wbeth-wrapped-beacon-eth","bnb","WBETH","0xa2e3356610840701bdf5611a53974510ae27e2e1",18),
     ("edu-edu-coin", "bnb", "EDU", "0xbdeae1ca48894a1759a8374d63925f21f2ee2639", 18),
     ("id2-space-id", "bnb", "ID", "0x2dff88a56767223a5529ea5960da7a3f5f766406", 18)
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)
