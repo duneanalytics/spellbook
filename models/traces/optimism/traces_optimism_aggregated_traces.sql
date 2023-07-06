@@ -55,13 +55,13 @@ FROM (
 	, r.trace_value
 	, r.trace_type
 	, r.gas_used_original
-	, r.gas_used_trace --if no sub traces, then it's the lowest level trace
+	, case when r.gas_used_trace > 0 then r.gas_used_trace else 0 end as gas_used_trace --no sub-trace refund logic for now
 
 	, t.l1_gas_used AS tx_l1_gas_used
 	, t.l1_gas_price AS tx_l1_gas_price
 	, t.l1_fee AS tx_l1_fee
 	, t.gas_price AS tx_l2_gas_price
-	, COALESCE( cast(b.base_fee_per_gas as double), cast(t.gas_price as double) ) AS tx_l2_base_fee_price --use gas price pre-Bedrock
+	, COALESCE( cast(b.base_fee_per_gas as double), cast(t.gas_price as double) ) AS tx_l2_base_fee_price --use gas price if pre-Bedrock
 	, CASE WHEN b.base_fee_per_gas IS NULL THEN 0 ELSE
 		cast(t.gas_price as double) - cast(b.base_fee_per_gas as double)
 		END AS tx_l2_priority_fee_price
