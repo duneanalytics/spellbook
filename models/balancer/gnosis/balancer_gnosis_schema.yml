@@ -249,10 +249,12 @@ models:
     columns:
       - name: day
         description: 'UTC event block time truncated to the day mark'
-      - *pool_id
+      - name: pool_id
+        description: 'ID of the Pool'
       - name: pool_symbol
         description: 'Symbol of the pool, consisting of the symbol of its tokens and their respective weights'
-      - *token_address
+      - name: token_address
+        description: 'ID of the Token'
       - name: token_symbol
         description: 'Symbol of the token'
       - name: token_balance_raw
