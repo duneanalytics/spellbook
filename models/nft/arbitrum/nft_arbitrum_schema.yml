@@ -111,7 +111,7 @@ models:
         description:  "Address that received the transaction"
       - name: unique_trade_id
         tests:
-          - is_unique_filtered
+          - is_unique_filtered_legacy
       - &buyer_first_funded_by
         name: buyer_first_funded_by
         description: "Which wallet first funded the buyer's wallet in ETH"
