@@ -54,6 +54,7 @@
     matching_count_test as (
         select
             'matched records count' as test_description,
+            -- these are cast to varchar to unify column types, note this is only for displaying them in the test results
             cast(count(model_{{seed_matching_columns[0]}}) as varchar) as result_model,
             cast(1 as varchar) as expected_seed,
             (count(model_{{seed_matching_columns[0]}}) = 1) as equality_check,
@@ -71,7 +72,8 @@
     (
         {%- for checked_column in seed_check_columns %}
         select
-            'equality test: {{checked_column}}' as test_description,
+            'equality test: {{checked_column}}' as test_description
+            -- these are cast to varchar to unify column types, note this is only for displaying them in the test results
             cast(model_{{checked_column}} as varchar) as result_model,
             cast(seed_{{checked_column}} as varchar) as expected_seed,
             (model_{{checked_column}} = seed_{{checked_column}}) as equality_check,
