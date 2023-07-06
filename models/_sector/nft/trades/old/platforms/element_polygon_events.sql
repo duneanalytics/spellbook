@@ -162,7 +162,7 @@ SELECT alet.blockchain
 FROM element_txs alet
 LEFT JOIN {{ ref('nft_aggregators') }} agg ON alet.buyer=agg.contract_address AND agg.blockchain='polygon'
 LEFT JOIN {{ ref('tokens_erc20_legacy') }} polygon_bep20_tokens ON polygon_bep20_tokens.contract_address=alet.currency_contract AND polygon_bep20_tokens.blockchain='polygon'
-LEFT JOIN {{ ref('tokens_nft') }} polygon_nft_tokens ON polygon_nft_tokens.contract_address=alet.currency_contract AND polygon_nft_tokens.blockchain='polygon'
+LEFT JOIN {{ ref('tokens_nft_legacy') }} polygon_nft_tokens ON polygon_nft_tokens.contract_address=alet.currency_contract AND polygon_nft_tokens.blockchain='polygon'
 LEFT JOIN {{ source('prices', 'usd') }} prices ON prices.minute=date_trunc('minute', alet.block_time)
     AND (prices.contract_address=alet.currency_contract AND prices.blockchain=alet.blockchain)
         {% if is_incremental() %}
