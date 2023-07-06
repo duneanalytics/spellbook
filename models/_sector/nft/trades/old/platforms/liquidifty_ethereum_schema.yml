@@ -11,7 +11,7 @@ models:
       tags: ['liquidifty', 'nft', 'trades']
     description: "NFT trades on liquidifty on ethereum blockchain"
     tests:
-      - check_seed:
+      - check_seed_legacy:
           seed_file: ref('liquidifty_ethereum_nft_trades_samples')
           match_columns:
             - block_number
