@@ -103,7 +103,7 @@ LEFT JOIN
 {{ ref('tokens_ethereum_nft') }} nft_token
     ON nft_token.contract_address = ae.nft_contract_address
 LEFT JOIN 
-{{ ref('tokens_ethereum_erc20') }} collateral_currency
+{{ ref('tokens_ethereum_erc20_legacy') }} collateral_currency
     ON collateral_currency.contract_address = ae.collateral_currency_contract
 LEFT JOIN 
 {{ source('prices', 'usd') }} p 

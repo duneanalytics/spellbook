@@ -295,7 +295,7 @@ direct_uniswapv3 AS (
             TRUE                                                                                    AS swap_flag,
             FALSE                                                                                   AS matcha_limit_order_flag
     FROM {{ source('uniswap_v3_polygon', 'UniswapV3Pool_evt_Swap') }} swap
-   LEFT JOIN {{ source('uniswap_v3_polygon', 'factory_polygon_evt_PoolCreated') }} pair ON pair.pool = swap.contract_address
+   LEFT JOIN {{ source('uniswap_v3_polygon', 'Factory_evt_PoolCreated') }} pair ON pair.pool = swap.contract_address
    INNER JOIN zeroex_tx ON zeroex_tx.tx_hash = swap.evt_tx_hash
    WHERE sender = '0xdef1c0ded9bec7f1a1670819833240f027b25eff'
 
@@ -411,7 +411,7 @@ AND mp.minute >= date_trunc('day', now() - interval '1 week')
 AND mp.minute >= '{{zeroex_v3_start_date}}'
 {% endif %}
 
-LEFT OUTER JOIN {{ ref('tokens_erc20') }} ts ON ts.contract_address = taker_token and ts.blockchain = 'polygon'
-LEFT OUTER JOIN {{ ref('tokens_erc20') }} ms ON ms.contract_address = maker_token and ms.blockchain = 'polygon'
+LEFT OUTER JOIN {{ ref('tokens_erc20_legacy') }} ts ON ts.contract_address = taker_token and ts.blockchain = 'polygon'
+LEFT OUTER JOIN {{ ref('tokens_erc20_legacy') }} ms ON ms.contract_address = maker_token and ms.blockchain = 'polygon'
 
 WHERE all_tx.tx_hash != '0x34ee112f3d601e4bb2f19f7744e86f9b4f65ed6c44dfe48db1c560d6b1c34bef' -- exclude tx with wrong decimals data
