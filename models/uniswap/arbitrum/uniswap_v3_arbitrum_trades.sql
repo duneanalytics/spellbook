@@ -34,7 +34,7 @@ WITH dexs AS
     FROM
         {{ source('uniswap_v3_arbitrum', 'Pair_evt_Swap') }} t
     INNER JOIN 
-        {{ source('uniswap_v3_arbitrum', 'UniswapV3Factory_evt_PoolCreated') }} f
+        {{ source('uniswap_v3_arbitrum', 'Factory_evt_PoolCreated') }} f
         ON f.pool = t.contract_address
     {% if is_incremental() %}
     WHERE t.evt_block_time >= date_trunc("day", now() - interval '1 week')
@@ -81,10 +81,10 @@ INNER JOIN
     {% if is_incremental() %}
     AND tx.block_time >= date_trunc("day", now() - interval '1 week')
     {% endif %}
-LEFT JOIN {{ ref('tokens_erc20') }} erc20a
+LEFT JOIN {{ ref('tokens_erc20_legacy') }} erc20a
     ON erc20a.contract_address = dexs.token_bought_address 
     AND erc20a.blockchain = 'arbitrum'
-LEFT JOIN {{ ref('tokens_erc20') }} erc20b
+LEFT JOIN {{ ref('tokens_erc20_legacy') }} erc20b
     ON erc20b.contract_address = dexs.token_sold_address
     AND erc20b.blockchain = 'arbitrum'
 LEFT JOIN {{ source('prices', 'usd') }} p_bought

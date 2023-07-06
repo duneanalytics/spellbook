@@ -18,7 +18,7 @@ models:
             - token_id
             - seller
             - evt_index
-      - check_seed:
+      - check_seed_legacy:
           seed_file: ref('quix_events_seed')
           filter:
             blockchain: optimism
@@ -267,7 +267,7 @@ models:
             - token_id
             - seller
             - evt_index
-      - check_seed:
+      - check_seed_legacy:
           seed_file: ref('quix_events_seed')
           filter:
             blockchain: optimism
@@ -337,7 +337,7 @@ models:
             - token_id
             - seller
             - evt_index
-      - check_seed:
+      - check_seed_legacy:
           seed_file: ref('quix_events_seed')
           filter:
             blockchain: optimism
@@ -407,7 +407,7 @@ models:
             - token_id
             - seller
             - evt_index
-      - check_seed:
+      - check_seed_legacy:
           seed_file: ref('quix_events_seed')
           filter:
             blockchain: optimism
@@ -477,7 +477,7 @@ models:
             - token_id
             - seller
             - evt_index
-      - check_seed:
+      - check_seed_legacy:
           seed_file: ref('quix_events_seed')
           filter:
             blockchain: optimism
@@ -551,7 +551,7 @@ models:
             - token_id
             - sub_type
             - sub_idx
-      - check_seed:
+      - check_seed_legacy:
           seed_file: ref('quix_events_seed')
           filter:
             blockchain: optimism
