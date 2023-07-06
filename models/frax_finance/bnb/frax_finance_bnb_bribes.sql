@@ -114,7 +114,7 @@ prices_raw as (
                 hour desc
         ) as rn
     from
-        {{ ref('dex_prices') }}
+        {{ ref('dex_prices_legacy') }}
     where
         blockchain = 'ethereum'
         and contract_address in (

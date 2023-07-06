@@ -107,7 +107,7 @@ LEFT JOIN
     AND p.minute >= date_trunc("day", now() - interval '1 week')
     {% endif %}
 LEFT JOIN 
-{{ ref('dex_prices') }} dp 
+{{ ref('dex_prices_legacy') }} dp 
     ON dp.hour = date_trunc('hour', t.block_time)
     AND dp.contract_address = LOWER('0x0d500b1d8e8ef31e21c99d1db9a6444d3adf1270')
     AND dp.blockchain = 'polygon'

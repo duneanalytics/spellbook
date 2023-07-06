@@ -32,7 +32,7 @@ WITH prices AS (
             contract_address AS token,
             percentile(median_price, 0.5) AS price,
             SUM(sample_size) AS sample_size
-        FROM {{ ref('dex_prices') }}
+        FROM {{ ref('dex_prices_legacy') }}
         WHERE blockchain = 'ethereum'
         {% if is_incremental() %}
         AND hour >= date_trunc("day", now() - interval '1 week')
