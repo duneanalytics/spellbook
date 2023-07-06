@@ -1,6 +1,6 @@
  {{
   config(
-        alias='contract_mapping',
+        alias=alias('contract_mapping',legacy_model=True),
         materialized ='incremental',
         file_format ='delta',
         incremental_strategy='merge',

@@ -1,4 +1,4 @@
-{{ config(alias='bridges',
+{{ config(alias=alias('bridges',legacy_model=True),
           post_hook='{{ expose_spells(\'["ethereum"]\',
           "sector",
           "addresses",

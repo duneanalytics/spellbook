@@ -1,4 +1,4 @@
-{{config(alias='grants_funding',
+{{config(alias=alias('grants_funding',legacy_model=True),
 	post_hook='{{ expose_spells(\'["optimism"]\',
 		"sector",
 		"addresses",

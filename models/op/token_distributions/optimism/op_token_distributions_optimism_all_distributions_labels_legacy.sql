@@ -1,5 +1,5 @@
 {{ config(
-    alias = 'all_distributions_labels',
+    alias = alias('all_distributions_labels',legacy_model=True),
     post_hook='{{ expose_spells(\'["optimism"]\',
                                 "project",
                                 "op_token_distributions",

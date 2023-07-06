@@ -1,6 +1,6 @@
 {{ 
   config(
-    alias='project_name_mappings',
+    alias=alias('project_name_mappings',legacy_model=True),
     unique_key='dune_name',
     post_hook='{{ expose_spells(\'["optimism"]\',
                               "sector",

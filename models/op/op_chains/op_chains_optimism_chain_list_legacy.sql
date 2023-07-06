@@ -1,5 +1,5 @@
 {{ config(
-        schema = 'op_chains',
+        schema = alias('op_chains',legacy_model=True),
         alias='chain_list'
         , unique_key = ['blockchain', 'chain_id']
         , post_hook='{{ expose_spells(\'["optimism"]\',
