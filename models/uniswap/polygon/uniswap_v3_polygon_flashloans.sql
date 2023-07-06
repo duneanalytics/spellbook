@@ -24,7 +24,7 @@ WITH flashloans AS (
     , CASE WHEN f.amount0 = 0 THEN erc20b.decimals ELSE erc20a.decimals END AS currency_decimals
     , f.contract_address
     FROM {{ source('uniswap_v3_polygon','UniswapV3Pool_evt_Flash') }} f
-        INNER JOIN {{ source('uniswap_v3_polygon','factory_polygon_evt_PoolCreated') }} p ON f.contract_address = p.pool
+        INNER JOIN {{ source('uniswap_v3_polygon','Factory_evt_PoolCreated') }} p ON f.contract_address = p.pool
     LEFT JOIN {{ ref('tokens_polygon_erc20_legacy') }} erc20a ON p.token0 = erc20a.contract_address
     LEFT JOIN {{ ref('tokens_polygon_erc20_legacy') }} erc20b ON p.token1 = erc20b.contract_address
     WHERE f.evt_block_time > NOW() - interval '1' month
