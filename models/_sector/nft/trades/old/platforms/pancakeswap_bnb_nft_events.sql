@@ -80,7 +80,7 @@ WITH events AS (
     FROM events
     LEFT JOIN {{ ref('nft_aggregators') }} agg ON events.buyer=agg.contract_address AND agg.blockchain='bnb'
     LEFT JOIN {{ ref('tokens_erc20_legacy') }} bnb_bep20_tokens ON bnb_bep20_tokens.contract_address=events.currency_contract AND bnb_bep20_tokens.blockchain='bnb'
-    LEFT JOIN {{ ref('tokens_nft') }} bnb_nft_tokens ON bnb_nft_tokens.contract_address=events.currency_contract AND bnb_nft_tokens.blockchain='bnb'
+    LEFT JOIN {{ ref('tokens_nft_legacy') }} bnb_nft_tokens ON bnb_nft_tokens.contract_address=events.currency_contract AND bnb_nft_tokens.blockchain='bnb'
     LEFT JOIN {{ source('prices', 'usd') }} prices ON prices.minute=date_trunc('minute', events.block_time)
     AND (prices.contract_address=events.currency_contract AND prices.blockchain=events.blockchain)
         {% if is_incremental() %}
