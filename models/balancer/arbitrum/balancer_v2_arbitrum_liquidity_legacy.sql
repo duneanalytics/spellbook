@@ -1,8 +1,7 @@
 {{
     config(
         schema='balancer_v2_arbitrum',
-        alias='liquidity',
-        tags = ['dunesql'], 
+        alias=('liquidity',  legacy_model=True) 
         materialized = 'table',
         file_format = 'delta',
         post_hook='{{ expose_spells(\'["arbitrum"]\',
@@ -75,7 +74,7 @@ WITH pool_labels AS (
                     date_trunc('day', evt_block_time) AS day,
                     poolId AS pool_id,
                     tokenIn AS token,
-                    CAST(amountIn as double) AS delta
+                    amountIn AS delta
                 FROM
                     {{ source('balancer_v2_arbitrum', 'Vault_evt_Swap') }}
                 UNION
@@ -84,23 +83,28 @@ WITH pool_labels AS (
                     date_trunc('day', evt_block_time) AS day,
                     poolId AS pool_id,
                     tokenOut AS token,
-                    -CAST(amountOut as double) AS delta
+                    -amountOut AS delta
                 FROM
                     {{ source('balancer_v2_arbitrum', 'Vault_evt_Swap') }}
             ) swaps
         GROUP BY 1, 2, 3
     ),
 
-    balances_changes AS (
+zipped_balance_changes AS (
         SELECT
             date_trunc('day', evt_block_time) AS day,
             poolId AS pool_id,
-            t.tokens AS token,
-            t.deltas - t.protocolFeeAmounts AS delta
+            explode(arrays_zip(tokens, deltas, protocolFeeAmounts)) AS zipped
         FROM {{ source('balancer_v2_arbitrum', 'Vault_evt_PoolBalanceChanged') }}
-        CROSS JOIN UNNEST(tokens) AS t(token)
-        CROSS JOIN UNNEST(deltas) AS t(delta)
-        CROSS JOIN UNNEST(protocolFeeAmounts) AS t(protocolFeeAmounts)
+    ),
+
+    balances_changes AS (
+        SELECT
+            day,
+            pool_id,
+            zipped.tokens AS token,
+            zipped.deltas - zipped.protocolFeeAmounts AS delta
+        FROM zipped_balance_changes
         ORDER BY 1, 2, 3
     ),
 
@@ -114,17 +118,37 @@ WITH pool_labels AS (
     ),
 
     daily_delta_balance AS (
-        SELECT day, pool, token, SUM(COALESCE(amount, 0)) AS amount 
-        FROM (
-            SELECT day, CAST(pool as varchar) as pool, token, SUM(COALESCE(CAST(delta as double), CAST(0 as double))) AS amount 
-            FROM balances_changes
-            GROUP BY 1, 2, 3
-            UNION ALL
-            SELECT day, CAST(pool as varchar) as pool, token, CAST(delta as double) AS amount 
-            FROM swaps_changes
-            UNION ALL
-            SELECT day, CAST(pool as varchar) as pool, token, CAST(delta as double) AS amount 
-            FROM managed_changes
+        SELECT
+            day,
+            pool_id,
+            token,
+            SUM(COALESCE(amount, 0)) AS amount
+        FROM
+            (
+                SELECT
+                    day,
+                    pool_id,
+                    token,
+                    SUM(COALESCE(delta, 0)) AS amount
+                FROM
+                    balances_changes
+                GROUP BY 1, 2, 3
+                UNION ALL
+                SELECT
+                    day,
+                    pool_id,
+                    token,
+                    delta AS amount
+                FROM
+                    swaps_changes
+                UNION ALL
+                SELECT
+                    day,
+                    pool_id,
+                    token,
+                    delta AS amount
+                FROM
+                    managed_changes
             ) balance
         GROUP BY 1, 2, 3
     ),
@@ -139,19 +163,9 @@ WITH pool_labels AS (
         FROM daily_delta_balance
     ),
 
-    calendar AS (  
-    with days_seq as (
-        SELECT
-        sequence(
-            (SELECT cast(min(date_trunc('day', evt_block_time)) as timestamp) day FROM erc20_{{4. Blockchain}}.evt_Transfer tr)
-            , date_trunc('day', cast(now() as timestamp))
-            , interval '1' day) as day
-    )
-    
-    SELECT 
-        days.day
-    FROM days_seq
-    CROSS JOIN unnest(day) as days(day)),
+    calendar AS (
+        SELECT explode(sequence(to_date('2021-04-21'), CURRENT_DATE, interval 1 day)) AS day
+    ),
 
    cumulative_usd_balance AS (
         SELECT
