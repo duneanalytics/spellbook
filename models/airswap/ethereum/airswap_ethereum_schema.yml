@@ -21,23 +21,23 @@ models:
             - tx_hash
             - evt_index
             - trace_address
-      - check_dex_seed:
+      - check_dex_seed_legacy:
           blockchain: ethereum
           project: airswap
           version: light
-      - check_dex_seed:
+      - check_dex_seed_legacy:
           blockchain: ethereum
           project: airswap
           version: light_v0
-      - check_dex_seed:
+      - check_dex_seed_legacy:
           blockchain: ethereum
           project: airswap
           version: swap
-      - check_dex_seed:
+      - check_dex_seed_legacy:
           blockchain: ethereum
           project: airswap
           version: swap_v3
-      - check_dex_seed:
+      - check_dex_seed_legacy:
           blockchain: ethereum
           project: airswap
           version: swap_erc20_v4
