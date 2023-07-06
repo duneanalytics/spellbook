@@ -70,7 +70,7 @@ models:
               - tx_hash
               - evt_index
               - trace_address
-      - check_dex_seed:
+      - check_dex_seed_legacy:
           blockchain: optimism
           project: uniswap
           version: 3
