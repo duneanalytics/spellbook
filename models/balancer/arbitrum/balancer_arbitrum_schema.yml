@@ -278,7 +278,7 @@ models:
       - name: usd_amount
         description: 'Liquidity of the token in the pool in USD'
 
- - name: balancer_v2_arbitrum_liquidity
+  - name: balancer_v2_arbitrum_liquidity
     meta:
       blockchain: arbitrum
       project: balancer_v2
