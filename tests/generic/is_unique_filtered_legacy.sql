@@ -1,4 +1,4 @@
-{% test is_unique_filtered(model, column_name) %}
+{% test is_unique_filtered_legacy(model, column_name) %}
 
 select
     {{ column_name }} as unique_field,
