@@ -14,7 +14,6 @@ dbt ls --resource-type model --output path --select +tokens_nft | python scripts
 
 """
 
-
 def make_legacy_file(model):
     """
     Copy the current model to *_legacy.sql
