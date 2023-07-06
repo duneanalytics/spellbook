@@ -1,7 +1,6 @@
 {{ config(
     schema = 'gas_ethereum',
-    alias = alias('fees_traces'),
-    tags=['dunesql'],
+    alias = 'fees_traces',
     partition_by = ['block_date'],
     materialized = 'incremental',
     file_format = 'delta',
@@ -49,10 +48,7 @@ WITH traces AS (
           SELECT CAST(NULL AS varchar(1)) AS from 
           , CAST(NULL AS varchar(1)) AS to 
           , tx_hash
-          , CASE WHEN cardinality(sub_tr.trace_address) =0
-               THEN array[-1]
-               ELSE slice(sub_tr.trace_address, 1, cardinality(sub_tr.trace_address) - 1)
-            END) AS trace
+          , slice(trace_address, 1, cardinality(trace_address) - 1) AS trace
           , CAST(NULL AS double) AS gas_used_original
           , -gas_used AS gas_used_trace
           , block_time
