@@ -234,20 +234,7 @@ FROM
                 '0xEbaDA7aA52C68Bdb6a2744F40AA2f3da76D469dc',
                 '0xE1cd819b5a2C8FC65D3D77BFE0D0A0FF5Bb54326'
             ),
-                 (
-                'unshETH',
-                'USDC',
-                '0x0ae38f7e10a43b5b2fb064b42a2f4514cba909ef',
-                '0xff970a61a04b1ca14834a43f5de4533ebddb5cc8',
-                18,
-                6,
-                '510423550381407695195061911147',
-                '1690545600',
-                'unshETH-USDC',
-                'Arbitrum',
-                '0xEbaDA7aA52C68Bdb6a2744F40AA2f3da76D469dc',
-                '0xE1cd819b5a2C8FC65D3D77BFE0D0A0FF5Bb54326'
-            ),
+
             (
                 'ARB',
                 'USDC',
@@ -305,18 +292,46 @@ FROM
                 '0x8DC92083F5C4813c02b502ce1ea61f0a48A36A88'
             ),
             (
-            'AuraRDNTWETH-USDC',
-            'USDC',
-            '0xa17492d89cB2D0bE1dDbd0008F8585EDc5B0ACf3',
-            '0xFF970A61A04b1cA14834A43f5dE4533eBDDB5CC8',
-            18,
-            6,
-            '340282366920938463463374607',
-            '1689336000',
-            'AuraRDNTWETH-USDC',
-            'Arbitrum',
-            '0x61EDF35c6C6557010A7649c7fC9EFC75B9fEb2E1',
-            '0xea45312c915adc912e681728A5Bf55441c08Fcd7'
+                'unshETH',
+                'USDC',
+                '0x0ae38f7e10a43b5b2fb064b42a2f4514cba909ef',
+                '0xff970a61a04b1ca14834a43f5de4533ebddb5cc8',
+                18,
+                6,
+                '510423550381407695195061911147',
+                '1690545600',
+                'unshETH-USDC',
+                'Arbitrum',
+                '0xFb466FBC00617C89E5865f4ef0bc6D48Ea150AC5',
+                '0x8DC92083F5C4813c02b502ce1ea61f0a48A36A88'
+            ),
+            (
+                'AuraRDNTWETH',
+                'USDC',
+                '0xa17492d89cB2D0bE1dDbd0008F8585EDc5B0ACf3',
+                '0xFF970A61A04b1cA14834A43f5dE4533eBDDB5CC8',
+                18,
+                6,
+                '340282366920938463463374607',
+                '1689336000',
+                'AuraRDNTWETH-USDC',
+                'Arbitrum',
+                '0x61EDF35c6C6557010A7649c7fC9EFC75B9fEb2E1',
+                '0xea45312c915adc912e681728A5Bf55441c08Fcd7'
+            ),
+            (
+                'AuraWBTCTBTC',
+                'USDC',
+                '0xFCC94454061b7fDF0B03b0D2107Ecd9c6c74ddfd',
+                '0xFF970A61A04b1cA14834A43f5dE4533eBDDB5CC8',
+                18,
+                6,
+                '8507059173023461586584365185794',
+                '1689336000',
+                'AuraWBTCTBTC-USDC',
+                'Arbitrum',
+                '0x61EDF35c6C6557010A7649c7fC9EFC75B9fEb2E1',
+                '0xea45312c915adc912e681728A5Bf55441c08Fcd7'
             )
     ) AS temp_table (
         token0_symbol,
