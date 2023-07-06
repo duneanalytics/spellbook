@@ -4,7 +4,7 @@
 }}
 
 {% set uniswap_bnb_models = [
-ref('uniswap_v3_bnb_trades')
+ref('uniswap_v3_bnb_trades_legacy')
 ] %}
 
 
