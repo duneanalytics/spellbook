@@ -56,27 +56,27 @@ def replace_with_legacy_ref(ref, model_contents):
     """
     return model_contents.replace(f"ref('{ref}')", f"ref('{ref}_legacy')")
 
+
 if __name__ == "__main__":
     # get current working dir
-    cwd = os.getcwd() 
+    cwd = os.getcwd()
     # get model paths from stdin
-    model_names = [] # list of models to later replace refs
+    model_names = []  # list of models to later replace refs
     for line in sys.stdin.read().splitlines():
-        if line.startswith("models/"):
+        if line.startswith("models/") and not line.endswith('_legacy.sql'):
             model_path = cwd + '/' + line
             make_legacy_file(model_path)
             model_names.append(model_path.split("/")[-1].replace(".sql", ""))
-    
 
     # replace refs in all models
     for root, dirs, files in os.walk('models'):
         for file_name in files:
             if file_name.endswith('.sql'):
                 file_path = os.path.join(root, file_name)
-                with open(file_path, 'r') as file:
+                with open(file_path, 'r', newline='') as file:
                     content = file.read()
                 for ref in model_names:
                     content = replace_with_legacy_ref(ref, content)
-                with open(file_path, 'w') as file:
+                with open(file_path, 'w', newline='') as file:
                     file.write(content)
                 print(f"Updated {file_path}")
