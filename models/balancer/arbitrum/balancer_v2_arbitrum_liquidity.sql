@@ -58,7 +58,7 @@ WITH pool_labels AS (
             date_trunc('day', HOUR) AS DAY,
             contract_address AS token,
             percentile(median_price, 0.5) AS bpt_price
-        FROM {{ ref('balancer_v2_ethereum_bpt_prices') }}
+        FROM {{ ref('balancer_v2_arbitrum_bpt_prices') }}
         GROUP BY 1, 2
     ),
 
@@ -207,7 +207,7 @@ SELECT
     b.day,
     b.pool_id,
     p.pool_symbol,
-    'ethereum' as blockchain,
+    'arbitrum' as blockchain,
     token AS token_address,
     token_symbol,
     token_balance_raw,
