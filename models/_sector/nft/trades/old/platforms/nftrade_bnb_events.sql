@@ -145,7 +145,7 @@ source_inventory_enriched as (
         AND btx.block_time >= date_trunc("day", now() - interval '1 week')
         {% endif %}
     LEFT JOIN
-    {{ ref('tokens_bnb_nft') }} nft_token
+    {{ ref('tokens_bnb_nft_legacy') }} nft_token
         ON nft_token.contract_address = src.nft_contract_address
     LEFT JOIN
     {{ source('prices','usd') }} p
