@@ -92,7 +92,7 @@ models:
           combination_of_columns:
             - userop_hash
             - tx_hash
-      - check_seed:
+      - check_seed_legacy:
           seed_file: ref('account_abstraction_erc4337_userops_seed')
           filter:
             blockchain: optimism
@@ -102,7 +102,7 @@ models:
           check_columns:
             - tx_hash
             - bundler
-      - check_seed:
+      - check_seed_legacy:
           seed_file: ref('account_abstraction_erc4337_userops_seed')
           filter:
             blockchain: optimism
