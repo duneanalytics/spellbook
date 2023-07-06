@@ -4,7 +4,7 @@ SELECT
   contract_address, name, '' as symbol
 FROM
   (VALUES
-(0xb8df6cc3050cc02f967db1ee48330ba23276a492,	'OptiPunk')
+ (0xb8df6cc3050cc02f967db1ee48330ba23276a492,	'OptiPunk')
 ,(0x52782699900df91b58ecd618e77847c5774dcd2e,	'Optimistic Bunnies')
 ,(0x006eb613cc586198003a119485594ecbbdf41230,	'OptimisticLoogies')
 ,(0x5763f564e0b5d8233da0accf2585f2dbef0f0dfa,	'OldEnglish (OE40)')
@@ -294,5 +294,7 @@ FROM
 ,(0xA077FA66Cf4C8044Ca4680db80B07CE85E8Af0B4, 'Getaverse SBT')
 ,(0x8C531f965C05Fab8135d951e2aD0ad75CF3405A2, 'Building')
 ,(0x41838b44C20EB6b89b7169e4017eb1435165C1C3, 'KilroyPunk')
+,(0x01a412edE097380eF44d1F5BD92633e3b2348250, 'HotPots Op')
+,(0x9e66EBa102B77Fc75cD87b5e60141b85573BC8e8, 'L2Marathon')
 
 ) as temp_table (contract_address, name)
