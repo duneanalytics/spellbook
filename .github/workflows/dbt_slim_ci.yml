@@ -67,7 +67,7 @@ jobs:
         run: "dbt compile $PROFILE $COMPILE_TAG"
 
       - name: dbt seed
-        run: "dbt seed $PROFILE --select state:modified$TAG --state ."
+        run: "dbt seed $PROFILE --select state:modified$TAG --exclude $EXCLUDE tag:prod_exclude --state ."
 
       - name: dbt run initial model(s)
         run: "dbt -x run $PROFILE --select state:modified$TAG --exclude $EXCLUDE tag:prod_exclude --defer --state ."
