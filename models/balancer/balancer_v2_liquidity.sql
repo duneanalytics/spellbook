@@ -17,7 +17,7 @@ ref('balancer_v2_ethereum_liquidity')
 , ref('balancer_v2_gnosis_liquidity')
 , ref('balancer_v2_avalanche_c_liquidity')
 ] %}
- 
+
 
 SELECT *
 FROM (
