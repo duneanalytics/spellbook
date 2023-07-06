@@ -64,7 +64,7 @@ if __name__ == "__main__":
     # get model paths from stdin
     model_names = []  # list of models to later replace refs
     for line in sys.stdin.read().splitlines():
-        if line.startswith("models/"):
+        if line.startswith("models/") and not line.endswith('_legacy.sql'):
             model_path = cwd + '/' + line
             make_legacy_file(model_path)
             model_names.append(model_path.split("/")[-1].replace(".sql", ""))
