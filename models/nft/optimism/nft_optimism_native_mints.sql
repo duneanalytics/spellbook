@@ -15,7 +15,7 @@ with namespaces as (
     select
         contract_address as address
         ,coalesce(contract_project, contract_name, token_symbol) as namespace
-	from {{ ref('contracts_optimism_contract_mapping') }}
+	from {{ ref('contracts_optimism_contract_mapping_legacy') }}
 )
 , nfts_per_tx as (
     select

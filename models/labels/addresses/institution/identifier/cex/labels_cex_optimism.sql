@@ -14,4 +14,4 @@ SELECT blockchain
 , NOW() AS updated_at
 , 'cex_' || blockchain AS model_name
 , 'identifier' AS label_type
-FROM {{ ref('cex_optimism_addresses') }}
+FROM {{ ref('cex_optimism_addresses_legacy') }}
