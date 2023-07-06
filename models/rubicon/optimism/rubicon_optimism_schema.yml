@@ -20,7 +20,7 @@ models:
               - tx_hash
               - evt_index
               - trace_address
-      - check_dex_seed:
+      - check_dex_seed_legacy:
           blockchain: optimism
           project: rubicon
           version: 1
@@ -105,7 +105,7 @@ models:
     description: >
         A table containing all offers of rubicon on optimism
     tests:
-      - check_seed:
+      - check_seed_legacy:
           seed_file: ref('dex_offers_seed')
           match_columns:
             - block_date

@@ -29,7 +29,7 @@ WITH flashloans AS (
     , flash.target AS recipient
     , flash.contract_address
     FROM {{ source('aave_v3_arbitrum','L2Pool_evt_FlashLoan') }} flash
-    LEFT JOIN {{ ref('tokens_arbitrum_erc20') }} erc20
+    LEFT JOIN {{ ref('tokens_arbitrum_erc20_legacy') }} erc20
         ON flash.asset = erc20.contract_address
     WHERE CAST(flash.amount AS double) > 0
         {% if is_incremental() %}

@@ -9,7 +9,7 @@ models:
     description: >
         nexusmutual product information for v1
     tests:
-      - check_seed:
+      - check_seed_legacy:
           seed_file: ref('nexusmutual_ethereum_product_information_seed')
           match_columns:
             - product_contract_address
@@ -130,7 +130,7 @@ models:
     description: >
         Daily summary for ethereum entering and leaving the nexus mutual capital pool contracts
     tests:
-      - check_seed:
+      - check_seed_legacy:
           seed_file: ref('nexusmutual_ethereum_capital_pool_eth_daily_transaction_summary_seed')
           match_columns:
             - day
