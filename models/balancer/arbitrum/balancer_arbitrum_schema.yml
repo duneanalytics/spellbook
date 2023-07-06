@@ -268,6 +268,7 @@ models:
       - *pool_id
       - name: pool_symbol
         description: 'Symbol of the pool, consisting of the symbol of its tokens and their respective weights'
+      - *blockchain
       - *token_address
       - name: token_symbol
         description: 'Symbol of the token'
@@ -275,8 +276,10 @@ models:
         description: 'Raw balance of the token in the pool'
       - name: token_balance
         description: 'Scaled balance of the token in the pool'
-      - name: usd_amount
-        description: 'Liquidity of the token in the pool in USD'
+      - name: protocol_liquidity_usd
+        description: 'Liquidity of the token in the pool in USD, except BPTs'
+      - name: pool_liquidity_usd
+        description: 'Liquidity of the token in the pool in USD, including BPTs'
 
   - name: balancer_v2_arbitrum_flashloans
     meta:

@@ -1,9 +1,9 @@
 version: 2
 
 sources:
-  - name: balancer_v2_optimism
+  - name: balancer_v2_avalanche_c
     description: >
-      Decoded tables related to Balancer V2, an automated portfolio manager and trading platform, on Optimism.
+      Decoded tables related to Balancer V2, an automated portfolio manager and trading platform, on avalanche_c.
     tables:
       - name: Vault_evt_PoolRegistered
         description: >
@@ -25,7 +25,7 @@ sources:
             name: evt_block_number
             description: 'Block number which processed the unique transaction hash'
           - name: poolAddress
-            description: 'Optimism address for the liquidity pool used in transaction'
+            description: 'avalanche_c address for the liquidity pool used in transaction'
           - name: poolId
             description: 'Unique encoded identifier that refers to each pool'
           - name: specialization
@@ -100,52 +100,9 @@ sources:
             name: weights
             description: 'Array with the weight of each token in the created pool'
 
-      - name: WeightedPool2TokensFactory_call_create
-        description: >
-          Decoded table of registered pools on the Balancer WeightedPool2TokensFactory contract.
-        loaded_at_field: call_block_time
-        columns:
-          - *call_block_number
-          - *call_block_time
-          - *call_success
-          - *call_trace_address
-          - *call_tx_hash
-          - name: contract_address
-            description: 'Address of the WeightedPool2TokensFactory contract'
-          - name: name
-            description: 'Name of the created pool'
-          - *output_0
-          - *owner
-          - *swapFeePercentage
-          - *symbol
-          - *tokens
-          - *weights
-
-      - name: WeightedPoolV2Factory_call_create
-        description: >
-          Decoded table of registered pools on the Balancer WeightedPool2TokensFactory contract.
-        loaded_at_field: call_block_time
-        columns:
-          - *call_block_number
-          - *call_block_time
-          - *call_success
-          - *call_trace_address
-          - *call_tx_hash
-          - name: contract_address
-            description: 'Address of the WeightedPoolV2Factory contract'
-          - name: name
-            description: 'Name of the created pool'
-          - name: normalizedWeights
-            description: 'Array with the normalized weight of each token in the created pool'
-          - *output_0
-          - *owner
-          - *swapFeePercentage
-          - *symbol
-          - *tokens
-
       - name: Vault_evt_PoolBalanceChanged
         description: >
-          Decoded table of pool balances changes record on the Balancer Vault contract on Optimism.
+          Decoded table of pool balances changes record on the Balancer Vault contract on avalanche_c.
         loaded_at_field: evt_block_time
         columns:
           - name: contract_address
@@ -167,7 +124,7 @@ sources:
 
       - name: Vault_evt_PoolBalanceManaged
         description: >
-          Decoded table of transactions performed by asset managers on the Balancer Vault contract on Optimism.
+          Decoded table of transactions performed by asset managers on the Balancer Vault contract on avalanche_c.
         loaded_at_field: evt_block_time
         columns:
           - name: contract_address
@@ -186,19 +143,3 @@ sources:
             description: 'Change in the amount of token managed by the asset manager'
           - name: cashDelta
             description: 'Change in the amount of token cashed the vault'
-          - *tokens
-      
-      - name: ChildChainLiquidityGaugeFactory_evt_RewardsOnlyGaugeCreated
-        description: "Rewards gauges created on Balancer on Optimism"
-        loaded_at_field: evt_block_time
-        
-      - name: Vault_evt_FlashLoan
-        loaded_at_field: evt_block_time
-  
-  - name: balancer_optimism
-    description: >
-      Decoded tables related to Balancer V2, an automated portfolio manager and trading platform, on Optimism.
-    tables:
-      - name: ChildChainLiquidityGaugeFactory_evt_RewardsOnlyGaugeCreated
-        description: "Rewards gauges created on Balancer on Optimism"
-        loaded_at_field: evt_block_time
