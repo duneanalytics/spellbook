@@ -269,14 +269,15 @@ SELECT distinct
         FROM {{source('balancer_v2_ethereum','Vault_evt_PoolBalanceChanged')}}
         WHERE date_trunc('day', evt_block_time) >= '{{ project_start_date }}'
         and poolId in (select pool_id from pools)
-)
+        
+ )
 
  , balances_changes AS (
         SELECT
             day,
             pool_id,
             zipped.tokens AS token,
-            zipped.deltas - zipped.protocolFeeAmounts AS delta
+            zipped.deltas AS delta
         FROM zipped_balance_changes
         ORDER BY 1, 2, 3
     )
@@ -286,7 +287,7 @@ SELECT distinct
             date_trunc('day', evt_block_time) AS day,
             poolId AS pool_id,
             token,
-            cashDelta + managedDelta AS delta
+            managedDelta AS delta
         FROM {{source('balancer_v2_ethereum','Vault_evt_PoolBalanceManaged')}}
         WHERE date_trunc('day', evt_block_time) >= '{{ project_start_date }}'
         and poolId in (select pool_id from pools)
