@@ -1,6 +1,6 @@
 {{
     config(
-        alias='tx_hash_labels_stable_to_stable',
+        alias = alias('tx_hash_labels_stable_to_stable', legacy_model=True),
         post_hook='{{ expose_spells(\'["ethereum"]\', "sector", "tx_hash_labels", \'["gentrexha"]\') }}'
     )
 }}
