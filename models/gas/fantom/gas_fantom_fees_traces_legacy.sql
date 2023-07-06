@@ -1,7 +1,6 @@
 {{ config(
-    schema = 'gas_gnosis',
-    alias = alias('fees_traces'),
-    tags=['dunesql'],
+    schema = 'gas_fantom',
+    alias = alias('fees_traces', legacy_model=True),
     partition_by = ['block_date'],
     materialized = 'incremental',
     file_format = 'delta',
@@ -39,7 +38,7 @@ WITH traces AS (
           , value AS trace_value
           , success AS trace_success
           , tx_success
-          FROM {{ source('gnosis','traces') }}
+          FROM {{ source('fantom','traces') }}
           {% if is_incremental() %}
           WHERE block_time >= date_trunc("day", NOW() - interval '1 days')
           {% endif %}
@@ -49,10 +48,7 @@ WITH traces AS (
           SELECT CAST(NULL AS varchar(1)) AS from 
           , CAST(NULL AS varchar(1)) AS to 
           , tx_hash
-          , CASE WHEN cardinality(sub_tr.trace_address) =0
-               THEN array[-1]
-               ELSE slice(sub_tr.trace_address, 1, cardinality(sub_tr.trace_address) - 1)
-            END) AS trace
+          , slice(trace_address, 1, cardinality(trace_address) - 1) AS trace
           , CAST(NULL AS double) AS gas_used_original
           , -gas_used AS gas_used_trace
           , block_time
@@ -62,7 +58,7 @@ WITH traces AS (
           , CAST(NULL AS varchar(1)) AS trace_value
           , CAST(NULL AS boolean) AS trace_success
           , CAST(NULL AS boolean) AS tx_success
-          FROM {{ source('gnosis','traces') }}
+          FROM {{ source('fantom','traces') }}
           WHERE cardinality(trace_address) > 0
           {% if is_incremental() %}
           AND block_time >= date_trunc("day", NOW() - interval '1 days')
@@ -71,7 +67,7 @@ WITH traces AS (
      GROUP BY traces.tx_hash, traces.trace, traces.block_time, traces.block_number
      )
 
-SELECT 'gnosis' AS blockchain
+SELECT 'fantom' AS blockchain
 , traces.block_time
 , date_trunc('day', traces.block_time) AS block_date
 , traces.block_number
@@ -99,14 +95,14 @@ SELECT 'gnosis' AS blockchain
 , (traces.gas_used_trace*txs.gas_price)/POWER(10, 18) AS gas_fee_spent_trace
 , (pu.price*traces.gas_used_trace*txs.gas_price)/POWER(10, 18) AS gas_fee_spent_trace_usd
 FROM traces
-INNER JOIN {{ source('gnosis','transactions') }} txs ON txs.block_time=traces.block_time
+INNER JOIN {{ source('fantom','transactions') }} txs ON txs.block_time=traces.block_time
      AND txs.hash=traces.tx_hash
      {% if is_incremental() %}
      AND txs.block_time >= date_trunc("day", NOW() - interval '1 days')
      {% endif %}
 LEFT JOIN {{ source('prices', 'usd') }} pu ON pu.minute=date_trunc('minute', traces.block_time)
-     AND pu.blockchain='gnosis'
-     AND pu.contract_address='0xe91d153e0b41518a2ce8dd3d7944fa863463a97d'
+     AND pu.blockchain='fantom'
+     AND pu.contract_address='0x21be370d5312f44cb42ce377bc9b8a0cef1a4c83'
      {% if is_incremental() %}
      AND pu.minute >= date_trunc("day", NOW() - interval '1' week)
      {% endif %}

@@ -1,6 +1,7 @@
 {{ config(
     schema = 'gas_arbitrum',
-    alias = 'fees_traces',
+    alias = alias('fees_traces'),
+    tags=['dunesql'],
     partition_by = ['block_date'],
     materialized = 'incremental',
     file_format = 'delta',
