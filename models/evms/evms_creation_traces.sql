@@ -43,13 +43,14 @@ FROM (
         UNION ALL
 
         SELECT 'celo' AS blockchain
-        , block_time
-        , block_number
-        , tx_hash
-        , address
-        , "from"
-        , code
-        , tx_from
-        , tx_to
-        FROM {{ source('celo', 'creation_traces') }}
+        , ct.block_time
+        , ct.block_number
+        , ct.tx_hash
+        , ct.address
+        , ct."from"
+        , ct.code
+        , txs."from" AS tx_from
+        , txs.to AS tx_to
+        FROM {{ source('celo', 'creation_traces') }} ct
+        INNER JOIN {{ source('celo', 'transactions') }} txs USING (block_number, tx_hash)
         );
