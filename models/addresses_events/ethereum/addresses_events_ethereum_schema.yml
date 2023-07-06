@@ -11,7 +11,7 @@ models:
       tags: ['table', 'funded', 'addresses_events', 'ethereum']
     description: "Table showing who first funded each Ethereum address in ETH"
     tests:
-      - check_seed:
+      - check_seed_legacy:
           seed_file: ref('first_funded_by_seed')
           filter:
             blockchain: ethereum

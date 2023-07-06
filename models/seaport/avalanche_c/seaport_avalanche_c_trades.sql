@@ -37,12 +37,12 @@ with source_avalanche_c_transactions as (
 )
 ,ref_tokens_nft as (
     select *
-    from {{ ref('tokens_nft') }}
+    from {{ ref('tokens_nft_legacy') }}
     where blockchain = 'avalanche_c'
 )
 ,ref_tokens_erc20 as (
     select *
-    from {{ ref('tokens_erc20') }}
+    from {{ ref('tokens_erc20_legacy') }}
     where blockchain = 'avalanche_c'
 )
 ,ref_nft_aggregators as (
