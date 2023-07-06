@@ -1,5 +1,6 @@
 {{
-  config(tags=['dunesql'],
+  config(
+    tags=['dunesql'],
     alias = alias('erc20_bridged_mapping')
     , materialized = 'incremental'
     , file_format = 'delta'
@@ -20,7 +21,7 @@ SELECT l1_token, l2_token
     , COALESCE(map.symbol, et.symbol) AS l1_symbol --select token factory, else eth
     , COALESCE(et.decimals, map.decimals) AS l1_decimals --select eth mapping, else token factory
     , ROW_NUMBER() OVER (PARTITION BY l1_token, l2_token
-        ORDER BY COALESCE(et.decimals, map.decimals) ASC, COALESCE(map.symbol, et.symbol) DESC NULLS LAST) AS rnk
+        ORDER BY COALESCE(et.decimals, map.decimals) ASC NULLS LAST, COALESCE(map.symbol, et.symbol) DESC NULLS LAST) AS rnk
 FROM (
 
         SELECT _l1Token AS l1_token, _l2Token AS l2_token, NULL AS symbol, NULL AS decimals

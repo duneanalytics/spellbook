@@ -1,5 +1,5 @@
-{{ config(tags=['dunesql'],
-        alias = alias('trades')
+{{ config(
+        alias ='trades'
         )
 }}
 
@@ -22,8 +22,8 @@ FROM (
         token_pair,
         token_bought_amount,
         token_sold_amount,
-        token_bought_amount_raw,
-        token_sold_amount_raw,
+        CAST(token_bought_amount_raw AS DECIMAL(38,0)) AS token_bought_amount_raw,
+        CAST(token_sold_amount_raw AS DECIMAL(38,0)) AS token_sold_amount_raw,
         amount_usd,
         token_bought_address,
         token_sold_address,
@@ -41,3 +41,4 @@ FROM (
     {% endif %}
     {% endfor %}
 )
+;

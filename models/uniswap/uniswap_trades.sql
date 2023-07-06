@@ -1,5 +1,5 @@
-{{ config(tags=['dunesql'],
-        alias = alias('trades'),
+{{ config(
+        alias ='trades',
         post_hook='{{ expose_spells(\'["ethereum","arbitrum", "optimism", "polygon", "bnb"]\',
                                 "project",
                                 "uniswap",
@@ -8,11 +8,11 @@
 }}
 
 {% set uniswap_models = [
-ref('uniswap_ethereum_trades')
-, ref('uniswap_optimism_trades')
-, ref('uniswap_arbitrum_trades')
-, ref('uniswap_polygon_trades')
-, ref('uniswap_bnb_trades')
+ref('uniswap_ethereum_trades_legacy')
+, ref('uniswap_optimism_trades_legacy')
+, ref('uniswap_arbitrum_trades_legacy')
+, ref('uniswap_polygon_trades_legacy')
+, ref('uniswap_bnb_trades_legacy')
 ] %}
 
 
@@ -49,3 +49,4 @@ FROM (
     {% endif %}
     {% endfor %}
 )
+;
