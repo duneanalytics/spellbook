@@ -444,7 +444,7 @@ models:
     meta:
       blockchain: ethereum
       project: balancer_v2
-      contributors: victorstefenon
+      contributors: victorstefenon, viniabussafi
     config:
       tags: ['ethereum', 'balancer', 'pools', 'liquidity']
     description: >
@@ -464,8 +464,14 @@ models:
       - *token_address
       - name: token_symbol
         description: 'Symbol of the token'
-      - name: usd_amount
-        description: 'Liquidity of the token in the pool in USD'
+      - name: token_balance_raw
+        description: 'Raw balance of the token in the pool'
+      - name: token_balance
+        description: 'Scaled balance of the token in the pool'
+      - name: protocol_liquidity_usd
+        description: 'Liquidity of the token in the pool in USD, except BPTs'
+      - name: pool_liquidity_usd
+        description: 'Liquidity of the token in the pool in USD, including BPTs'  
 
   - name: balancer_ethereum_vebal_votes
     meta:

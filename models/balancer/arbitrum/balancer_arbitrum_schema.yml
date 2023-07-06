@@ -252,7 +252,7 @@ models:
     meta:
       blockchain: arbitrum
       project: balancer_v2
-      contributors: victorstefenon
+      contributors: victorstefenon, viniabussafi
     config:
       tags: ['arbitrum', 'balancer', 'pools', 'liquidity']
     description: >
