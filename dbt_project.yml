@@ -1263,13 +1263,6 @@ models:
       +schema: thena
       bnb:
         +schema: thena_bnb
-        
-    time_utils:
-      +schema: time_utils
-    
-    traces:
-      optimism:
-        +schema: traces_optimism
     
     account_abstraction:
       erc4337:
