@@ -1,5 +1,6 @@
 {{ config(
-        alias = alias('transfers', legacy_model=True),
+        alias = alias('transfers'),
+        tags = ['dunesql'],
         partition_by='block_date',
         materialized='incremental',
         file_format = 'delta',
