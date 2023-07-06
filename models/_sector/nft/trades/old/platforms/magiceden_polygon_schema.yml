@@ -11,7 +11,7 @@ models:
     description: >
         Magic Eden events on Polygon
     tests:
-      - check_seed:
+      - check_seed_legacy:
           seed_file: ref('magiceden_polygon_sample_trades')
           match_columns:
             - block_number

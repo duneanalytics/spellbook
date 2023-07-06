@@ -21,7 +21,7 @@ models:
             - tx_hash
             - evt_index
             - trace_address
-      - check_dex_seed:
+      - check_dex_seed_legacy:
           blockchain: polygon
           project: clipper
           version: 1
@@ -116,7 +116,7 @@ models:
             - tx_hash
             - evt_index
             - trace_address
-      - check_dex_seed:
+      - check_dex_seed_legacy:
           blockchain: polygon
           project: clipper
           version: 2
@@ -165,7 +165,7 @@ models:
             - tx_hash
             - evt_index
             - trace_address
-      - check_dex_seed:
+      - check_dex_seed_legacy:
           blockchain: polygon
           project: clipper
           version: coves1
