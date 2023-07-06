@@ -1,4 +1,5 @@
 {{ config(
+    tags=['dunesql'],
     alias = alias('prices'),
     partition_by = ['day'],
     materialized = 'incremental',
