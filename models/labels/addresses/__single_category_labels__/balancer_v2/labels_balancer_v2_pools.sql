@@ -10,4 +10,6 @@ SELECT * FROM  {{ ref('labels_balancer_v2_pools_arbitrum') }}
 UNION
 SELECT * FROM  {{ ref('labels_balancer_v2_pools_optimism') }}
 UNION
-SELECT * FROM  {{ ref('labels_balancer_v2_pools_polygon') }}
+SELECT * FROM  {{ ref('labels_balancer_v2_pools_polygon') }}`
+UNION
+SELECT * FROM  {{ ref('labels_balancer_v2_pools_gnosis') }}
