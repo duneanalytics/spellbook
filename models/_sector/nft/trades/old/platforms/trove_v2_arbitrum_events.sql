@@ -124,7 +124,7 @@ inner join {{ source('arbitrum', 'transactions') }} tx
     {% endif %}
 left join {{ ref('tokens_arbitrum_erc20_legacy') }} erc20
     on erc20.contract_address = mp.currency_contract
-left join {{ ref('tokens_arbitrum_nft') }} nft_tokens
+left join {{ ref('tokens_arbitrum_nft_legacy') }} nft_tokens
     on nft_tokens.contract_address = mp.nft_contract_address
 left join {{ source('prices', 'usd') }} as prices
     on prices.minute = date_trunc('minute', mp.block_time)
