@@ -22,7 +22,7 @@ select
   'quests' AS category,
   'msilb7' AS contributor,
   'query' AS source,
-  cast('2023-06-15' as timestamp) as created_at,
+  timestamp '2023-06-15' as created_at,
   now() as updated_at,
   'galxe_quest_participants' as model_name,
   'persona' as label_type
