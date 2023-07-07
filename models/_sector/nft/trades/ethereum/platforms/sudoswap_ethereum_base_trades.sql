@@ -186,7 +186,7 @@ WITH
                 CASE WHEN (tr.to = sb.protocolfee_recipient) THEN cast(value as uint256)
                 ELSE uint256 '0' END
                  ) as protocol_fee_amount -- what the buyer paid
-            , filter(ARRAY_AGG(distinct CASE WHEN bytearray_substring(input,1,10)=0x42842e0e THEN bytearray_to_uint256(bytearray_substring(input,139,64)) END)
+            , filter(ARRAY_AGG(distinct CASE WHEN bytearray_substring(input,1,4)=0x42842e0e THEN bytearray_to_uint256(bytearray_substring(input,69,32)) END)
                 , x->x is not null
                 ) as nft_token_id
             , sb.call_tx_hash
