@@ -245,28 +245,27 @@ WHERE contract_order = 1
         then b.created_tx_to else COALESCE(u.created_tx_to, b.created_tx_to ) end AS top_level_tx_to
       ,case when nd.creator_address IS NOT NULL
         then b.created_tx_method_id else COALESCE(u.created_tx_method_id, b.created_tx_method_id ) end AS top_level_tx_method_id
-
-      
       
       ,b.code_bytelength
       ,b.is_self_destruct
       ,b.code_deploy_rank
+      ,b.contract_order
       ,b.to_iterate_creators --check if base needs to be iterated, keep the base option
 
     {% if loop.first -%}
     from base_level as b
     left join base_level as u --get info about the contract that created this contract
       on b.creator_address = u.contract_address
-      AND b.to_iterate_creators=1
     {% else -%}
     from level{{i-1}} as b
     left join base_level as u --get info about the contract that created this contract
       on b.creator_address = u.contract_address
-      AND b.to_iterate_creators=1
     {% endif %}
     -- is the creator deterministic?
     left join {{ref('contracts_optimism_deterministic_contract_creators')}} as nd 
       ON nd.creator_address = b.creator_address
+    
+    WHERE b.to_iterate_creators=1 --only run contracts that we want to iterate through
 )
 {%- endfor %}
 
@@ -293,7 +292,12 @@ WHERE contract_order = 1
     ,f.code_bytelength
     ,f.is_self_destruct
     ,f.code_deploy_rank
-  from level{{max_levels - 1}} as f
+    ,f.contract_order
+  from (
+    SELECT * FROM level{{max_levels - 1}} WHERE to_iterate_creators = 1 --get mapped contracts
+    UNION ALL
+    SELECT 5 as level, * FROM base_level WHERE to_iterate_creators = 0 --get legacy contracts
+  ) f
   left join {{ ref('contracts_optimism_contract_creator_address_list') }} as cc 
     on f.creator_address = cc.creator_address
   left join {{ ref('contracts_optimism_contract_creator_address_list') }} as ccf
