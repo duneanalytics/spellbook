@@ -21,7 +21,7 @@ FROM (
         , access_list
         , block_hash
         , data
-        , `from`
+        , "from"
         , hash
         , to
         , block_number
@@ -35,16 +35,16 @@ FROM (
         , nonce
         , priority_fee_per_gas
         , success
-        , `type`
+        , type
         , CAST(value AS double) AS value
         , NULL AS l1_tx_origin
         , CAST(NULL AS double) AS l1_fee_scalar
-        , CAST(NULL AS DECIMAL(38,0)) AS l1_block_number
-        , CAST(NULL AS DECIMAL(38,0)) AS l1_fee
-        , CAST(NULL AS DECIMAL(38,0)) AS l1_gas_price
-        , CAST(NULL AS DECIMAL(38,0)) AS l1_gas_used
+        , CAST(NULL AS DOUBLE) AS l1_block_number
+        , CAST(NULL AS DOUBLE) AS l1_fee
+        , CAST(NULL AS DOUBLE) AS l1_gas_price
+        , CAST(NULL AS DOUBLE) AS l1_gas_used
         , NULL AS l1_timestamp
-        , CAST(NULL AS DECIMAL(38,0)) AS effective_gas_price
+        , CAST(NULL AS DOUBLE) AS effective_gas_price
         FROM {{ transactions_model[1] }}
         {% if not loop.last %}
         UNION ALL
@@ -57,7 +57,7 @@ FROM (
         , access_list
         , block_hash
         , data
-        , `from`
+        , "from"
         , hash
         , to
         , block_number
@@ -71,7 +71,7 @@ FROM (
         , nonce
         , priority_fee_per_gas
         , success
-        , `type`
+        , type
         , CAST(value AS double) AS value
         ,l1_tx_origin
         , l1_fee_scalar
@@ -80,6 +80,6 @@ FROM (
         , l1_gas_price
         , l1_gas_used
         , l1_timestamp
-        , CAST(NULL AS DECIMAL(38,0)) AS effective_gas_price
+        , CAST(NULL AS DOUBLE) AS effective_gas_price
         FROM {{ source('optimism', 'transactions') }}
         );
