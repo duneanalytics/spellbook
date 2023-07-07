@@ -27,22 +27,11 @@ FROM (
         , txs."from" AS tx_from
         , txs.to AS tx_to
         FROM {{ creation_traces_model[1] }} ct
-        INNER JOIN {{ creation_traces_model[2] }} txs USING (block_number, tx_hash)
+        INNER JOIN {{ creation_traces_model[2] }} txs
+                ON ct.block_number = txs.block_number
+                AND ct.tx_hash = txs.hash
         {% if not loop.last %}
         UNION ALL
         {% endif %}
         {% endfor %}
-
-        UNION ALL
-
-        SELECT 'celo' AS blockchain
-        , block_time
-        , block_number
-        , tx_hash
-        , address
-        , "from"
-        , code
-        , tx_from
-        , tx_to
-        FROM {{ source('celo', 'creation_traces') }}
         );
