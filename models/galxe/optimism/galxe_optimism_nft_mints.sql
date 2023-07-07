@@ -5,7 +5,7 @@
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
-    unique_key = ['block_number', 'tx_hash', 'nft_contract_address', 'tokenId'],
+    unique_key = ['block_number', 'tx_hash', 'nft_contract_address', 'tokenId', 'evt_index'],
     post_hook='{{ expose_spells(\'["optimism"]\',
                                 "project",
                                 "galxe",
@@ -26,7 +26,8 @@ SELECT
     bytearray_substring(t.data,1,4) AS tx_method_id,
     tfer.to AS token_transfer_to,
     tfer.contract_address AS nft_contract_address,
-    tfer.tokenId
+    tfer.tokenId,
+    tfer.evt_index
 
 FROM
     {{source('optimism','transactions')}} t
