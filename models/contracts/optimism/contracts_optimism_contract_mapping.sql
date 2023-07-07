@@ -492,7 +492,7 @@ FROM (
     ,c.token_symbol
     ,cast( coalesce(co.contract_name, c.contract_name) as varchar) as contract_name
     ,coalesce(c.creator_address, ovm1c.creator_address) as creator_address
-    ,coalesce(c.created_time, from_iso8601_timestamp(ovm1c.created_time) ) as created_time
+    ,coalesce(cast( c.created_time, from_iso8601_timestamp(ovm1c.created_time) as timestamp) ) as created_time
     ,coalesce(c.contract_factory, 
     {% if is_incremental() %}
       th.contract_creator_if_factory
