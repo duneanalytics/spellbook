@@ -251,7 +251,7 @@ WHERE contract_order = 1
       ,b.code_bytelength
       ,b.is_self_destruct
       ,b.code_deploy_rank
-      ,b.to_iterate_creators --check if base needs to be iterated
+      ,b.to_iterate_creators --check if base needs to be iterated, keep the base option
 
     {% if loop.first -%}
     from base_level as b
