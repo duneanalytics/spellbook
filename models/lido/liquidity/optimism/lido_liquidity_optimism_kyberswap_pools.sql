@@ -50,7 +50,7 @@ where token1 = lower('0x1F32b1c2345538c0c6f582fCB022739c4A194Ebb')
 union
 select lower('0x1F32b1c2345538c0c6f582fCB022739c4A194Ebb')
 ) t
-left join {{ ref('prices_tokens') }} pt on ((t.token !=  lower('0x1F32b1c2345538c0c6f582fCB022739c4A194Ebb') and t.token = pt.contract_address) or
+left join {{ ref('prices_tokens_legacy') }} pt on ((t.token !=  lower('0x1F32b1c2345538c0c6f582fCB022739c4A194Ebb') and t.token = pt.contract_address) or
                                (t.token  =  lower('0x1F32b1c2345538c0c6f582fCB022739c4A194Ebb')  and pt.contract_address =  lower('0x7f39c581f595b53c5cb19bd0b3f8da6c935e2ca0')))
 left join tokens_mapping tm on t.token = tm.address_l2
 )

@@ -25,7 +25,7 @@ SELECT
     , m.address AS liquidator
 FROM aave_v2_annual_liquidations a
 LEFT JOIN mev_addresses m ON m.address = a.liquidator
-LEFT JOIN {{ ref('prices_tokens') }} p
+LEFT JOIN {{ ref('prices_tokens_legacy') }} p
     ON p.contract_address = a.collateralAsset
     AND p.blockchain = 'ethereum'
 )
