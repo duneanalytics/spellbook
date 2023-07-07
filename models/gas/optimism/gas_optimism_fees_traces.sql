@@ -57,7 +57,7 @@ WITH traces AS (
           , block_number
           , CAST(NULL AS varbinary) AS input
           , CAST(NULL AS varchar) AS trace_type
-          , CAST(NULL AS varchar) AS call_type
+          
           , CAST(NULL AS uint256) AS trace_value
           , CAST(NULL AS boolean) AS trace_success
           , CAST(NULL AS boolean) AS tx_success
