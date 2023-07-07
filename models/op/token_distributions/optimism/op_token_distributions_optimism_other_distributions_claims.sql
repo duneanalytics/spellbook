@@ -13,7 +13,7 @@
     )
 }}
 
-{% set op_token_address = 0x4200000000000000000000000000000000000042 %}
+{% set op_token_address = '0x4200000000000000000000000000000000000042' %}
 {% set op_token_launch_date = '2022-05-31'  %}
 {% set foundation_label = 'OP Foundation'  %}
 {% set grants_descriptor = 'OP Foundation Grants'  %}
@@ -48,7 +48,7 @@ FROM (
     SELECT 
     DATE_TRUNC('day',r.evt_block_time) AS block_date, 
     r.evt_block_time, r.evt_block_number, r.evt_index,
-        tf.`from` AS from_address, tf.to AS to_address, tx.to AS tx_to_address, tx.`from` AS tx_from_address, r.evt_tx_hash,
+        tf."from" AS from_address, tf.to AS to_address, tx.to AS tx_to_address, tx."from" AS tx_from_address, r.evt_tx_hash,
         'Project' as from_label, 'Parter Fund' AS from_type, 'Aave' AS from_name, 
         tf.to as user_address
             ,'Aave - Liquidity Mining' AS to_type
@@ -76,7 +76,7 @@ FROM (
                 and tf.evt_block_time >= cast('{{op_token_launch_date}}' as date)
                 {% endif %}
             left JOIN all_labels lbl_from
-                ON lbl_from.address = tf.`from`
+                ON lbl_from.address = tf."from"
             -- if the recipient is in this list to, then we track it
             LEFT JOIN all_labels lbl_to
                 ON lbl_to.address = tf.to

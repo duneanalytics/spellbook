@@ -14,7 +14,7 @@
 }}
 
 
-{% set op_token_address = 0x4200000000000000000000000000000000000042 %}
+{% set op_token_address = '0x4200000000000000000000000000000000000042' %}
 {% set op_token_launch_date = '2022-05-31'  %}
 {% set foundation_label = 'OP Foundation'  %}
 {% set grants_descriptor = 'OP Foundation Grants'  %}
