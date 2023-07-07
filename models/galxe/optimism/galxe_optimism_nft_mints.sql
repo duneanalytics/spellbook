@@ -14,13 +14,13 @@
 }}
 --SELECT MIN(block_time) FROM optimism.transactions where to = 0x2e42f214467f647Fe687Fd9a2bf3BAdDFA737465
 {% set project_start_date = '2022-07-17' %}
-{% set spacestation = 0x2e42f214467f647fe687fd9a2bf3baddfa737465 %}
+{% set spacestation = '0x2e42f214467f647fe687fd9a2bf3baddfa737465' %}
 
 SELECT
     DATE_TRUNC('day',block_time) AS block_date,
     block_time,
     block_number,
-    t."from"as tx_from,
+    t."from" as tx_from,
     t.to as tx_to,
     t.hash AS tx_hash,
     bytearray_substring(t.data,1,4) AS tx_method_id,
@@ -33,13 +33,14 @@ FROM
 INNER JOIN {{source('erc721_optimism','evt_transfer')}} tfer 
     ON t.hash = tfer.evt_tx_hash
     AND t.block_number = tfer.evt_block_number
-    AND t."from"= 0x0000000000000000000000000000000000000000 --mint
+    AND tfer."from" = 0x0000000000000000000000000000000000000000 --mint
+    AND tfer.evt_block_time >= cast( '{{project_start_date}}' as timestamp)
     {% if is_incremental() %}
     AND tfer.evt_block_time >= date_trunc('day', now() - interval '7' day)
     {% endif %}
 
 WHERE success = true
-    AND t.to = '{{spacestation}}'
+    AND t.to = from_hex('{{spacestation}}')
 AND block_time >= cast( '{{project_start_date}}' as timestamp)
 {% if is_incremental() %}
 AND block_time >= date_trunc('day', now() - interval '7' day)
