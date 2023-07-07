@@ -15,3 +15,5 @@ UNION ALL
 SELECT 'polygon' as blockchain, * FROM  {{ ref('nft_polygon_aggregators_legacy') }}
 UNION ALL
 SELECT 'optimism' as blockchain, * FROM  {{ ref('nft_optimism_aggregators_legacy') }}
+UNION ALL
+SELECT 'arbitrum' as blockchain, * FROM  {{ ref('nft_arbitrum_aggregators_legacy') }}
