@@ -21,7 +21,7 @@
 
 --protocols that never claimed and transferred from the fnd wallet
 
-, aave_lm_claims AS ( 
+with aave_lm_claims AS ( 
 SELECT
     DATE_TRUNC('day',evt_block_time) AS block_date,
     evt_block_time, evt_block_number, evt_index, 
