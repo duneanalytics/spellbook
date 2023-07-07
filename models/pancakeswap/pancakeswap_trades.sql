@@ -1,5 +1,5 @@
-{{ config(tags=['dunesql'],
-        alias = alias('trades'),
+{{ config(
+        alias ='trades',
         post_hook='{{ expose_spells(\'["bnb","ethereum"]\',
                                 "project",
                                 "pancakeswap",
@@ -8,8 +8,8 @@
 }}
 
 {% set pancake_models = [
-    ref('pancakeswap_bnb_trades')
-,   ref('pancakeswap_ethereum_trades')
+    ref('pancakeswap_bnb_trades_legacy')
+,   ref('pancakeswap_ethereum_trades_legacy')
 ] %}
 
 
@@ -46,3 +46,4 @@ FROM (
     {% endif %}
     {% endfor %}
 )
+;

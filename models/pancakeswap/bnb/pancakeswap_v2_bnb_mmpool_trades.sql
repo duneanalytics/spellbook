@@ -1,6 +1,6 @@
-{{ config(tags=['dunesql'],
+{{ config(
     schema = 'pancakeswap_v2_bnb',
-    alias = alias('mmpool_trades'),
+    alias = 'mmpool_trades',
     partition_by = ['block_date'],
     materialized = 'incremental',
     file_format = 'delta',
@@ -24,18 +24,18 @@ WITH dexs AS
         t.mm                                                                            AS maker,
         quoteTokenAmount                                                                AS token_bought_amount_raw,
         baseTokenAmount                                                                 AS token_sold_amount_raw,
-        NULL                                                           AS amount_usd,
-        CASE WHEN quotetoken  = 0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee 
-             THEN 0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c ELSE quotetoken END      AS token_bought_address,
-        CASE WHEN basetoken  = 0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee 
-             THEN 0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c ELSE basetoken END       AS token_sold_address,     
+        cast(NULL as double)                                                            AS amount_usd,
+        CASE WHEN quotetoken  = '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee' 
+             THEN '0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c' ELSE quotetoken END      AS token_bought_address,
+        CASE WHEN basetoken  = '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee' 
+             THEN '0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c' ELSE basetoken END       AS token_sold_address,     
         t.contract_address                                                              AS project_contract_address,
         t.evt_tx_hash                                                                   AS tx_hash,
         ''                                                                              AS trace_address,
         t.evt_index
     FROM {{ source('pancakeswap_v2_bnb', 'PancakeSwapMMPool_evt_Swap') }} t
     {% if is_incremental() %}
-    WHERE t.evt_block_time >= date_trunc('day', now() - interval '7' day)
+    WHERE t.evt_block_time >= date_trunc("day", now() - interval '1 week')
     {% endif %}
 )
 
@@ -53,8 +53,8 @@ SELECT
        end                                                       AS token_pair
      , dexs.token_bought_amount_raw / power(10, bep20a.decimals) AS token_bought_amount
      , dexs.token_sold_amount_raw / power(10, bep20b.decimals)   AS token_sold_amount
-     , dexs.token_bought_amount_raw        AS token_bought_amount_raw
-     , dexs.token_sold_amount_raw          AS token_sold_amount_raw
+     , CAST(dexs.token_bought_amount_raw AS DECIMAL(38,0))       AS token_bought_amount_raw
+     , CAST(dexs.token_sold_amount_raw AS DECIMAL(38,0))         AS token_sold_amount_raw
      , coalesce(
         dexs.amount_usd
         , (dexs.token_bought_amount_raw / power(10, p_bought.decimals)) * p_bought.price
@@ -62,11 +62,11 @@ SELECT
         )                                                        AS amount_usd
      , dexs.token_bought_address
      , dexs.token_sold_address
-     , coalesce(dexs.taker, tx."from")                             AS taker -- subqueries rely on this COALESCE to avoid redundant joins with the transactions table
+     , coalesce(dexs.taker, tx.from)                             AS taker -- subqueries rely on this COALESCE to avoid redundant joins with the transactions table
      , dexs.maker
      , dexs.project_contract_address
      , dexs.tx_hash
-     , tx."from"                                                   AS tx_from
+     , tx.from                                                   AS tx_from
      , tx.to                                                     AS tx_to
      , dexs.trace_address
      , dexs.evt_index
@@ -74,15 +74,15 @@ FROM dexs
 INNER JOIN {{ source('bnb', 'transactions') }} tx
     ON tx.hash = dexs.tx_hash
     {% if not is_incremental() %}
-    AND tx.block_time >= TIMESTAMP '{{project_start_date}}'
+    AND tx.block_time >= '{{project_start_date}}'
     {% endif %}
     {% if is_incremental() %}
-    AND tx.block_time >= date_trunc('day', now() - interval '7' day)
+    AND tx.block_time >= date_trunc("day", now() - interval '1 week')
     {% endif %}
-LEFT JOIN {{ ref('tokens_erc20') }} bep20a
+LEFT JOIN {{ ref('tokens_erc20_legacy') }} bep20a
     ON bep20a.contract_address = dexs.token_bought_address
     AND bep20a.blockchain = 'bnb'
-LEFT JOIN {{ ref('tokens_erc20') }} bep20b
+LEFT JOIN {{ ref('tokens_erc20_legacy') }} bep20b
     ON bep20b.contract_address = dexs.token_sold_address
     AND bep20b.blockchain = 'bnb'
 LEFT JOIN {{ source('prices', 'usd') }} p_bought
@@ -90,18 +90,19 @@ LEFT JOIN {{ source('prices', 'usd') }} p_bought
     AND p_bought.contract_address = dexs.token_bought_address
     AND p_bought.blockchain = 'bnb'
     {% if not is_incremental() %}
-    AND p_bought.minute >= TIMESTAMP '{{project_start_date}}'
+    AND p_bought.minute >= '{{project_start_date}}'
     {% endif %}
     {% if is_incremental() %}
-    AND p_bought.minute >= date_trunc('day', now() - interval '7' day)
+    AND p_bought.minute >= date_trunc("day", now() - interval '1 week')
     {% endif %}
 LEFT JOIN {{ source('prices', 'usd') }} p_sold
     ON p_sold.minute = date_trunc('minute', dexs.block_time)
     AND p_sold.contract_address = dexs.token_sold_address
     AND p_sold.blockchain = 'bnb'
     {% if not is_incremental() %}
-    AND p_sold.minute >= TIMESTAMP '{{project_start_date}}'
+    AND p_sold.minute >= '{{project_start_date}}'
     {% endif %}
     {% if is_incremental() %}
-    AND p_sold.minute >= date_trunc('day', now() - interval '7' day)
+    AND p_sold.minute >= date_trunc("day", now() - interval '1 week')
     {% endif %}
+;
