@@ -159,7 +159,7 @@ source_inventory_enriched as (
         AND p.minute >= date_trunc("day", now() - interval '1 week')
         {% endif %}
     LEFT JOIN
-    {{ ref('nft_bnb_aggregators') }} agg
+    {{ ref('nft_bnb_aggregators_legacy') }} agg
         ON agg.contract_address = src.sender_address
     LEFT JOIN
     {{ source('erc721_bnb','evt_transfer') }} erc721
