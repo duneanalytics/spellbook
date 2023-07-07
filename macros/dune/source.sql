@@ -30,8 +30,8 @@
 
 {# Get the loaded_at_field. The column must be defined in the contract. #}
 {% macro get_source_time_column(rel) %}
-  {% if (not target.schema.startswith('github_action')) and (not ((var('fast', 'false') | string).lower() == 'true')) %}
-    {% do log("Not fast mode", info=True) %}
+  {% if (not target.schema.startswith('github_action')) and ((var('fast', 'false') | string).lower() != 'true') %}
+    {% do log("Not fast mode %s" % target.schema, info=True) %}
     {% do return((None, [])) %}
   {% endif %}
   {% set key = "source.spellbook." + rel.schema + "." + rel.identifier %}
