@@ -3,10 +3,16 @@ version: 2
 seeds:
   - name: archipelago_ethereum_base_trades_seed
     config:
+      tags: dunesql
       column_types:
-        price_raw: decimal(38)
-        platform_fee_amount_raw: decimal(38)
-        royalty_fee_amount_raw: decimal(38)
+        tx_hash: varbinary
+        buyer: varbinary
+        seller: varbinary
+        nft_contract_address: varbinary
+        price_raw: uint256
+        platform_fee_amount_raw: uint256
+        royalty_fee_amount_raw: uint256
+        nft_token_id: uint256
 
   - name: foundation_ethereum_base_trades_seed
     config:
@@ -23,73 +29,157 @@ seeds:
 
   - name: superrare_ethereum_base_trades_seed
     config:
+      tags: dunesql
       column_types:
-        price_raw: decimal(38)
-        platform_fee_amount_raw: decimal(38)
-        royalty_fee_amount_raw: decimal(38)
+        tx_hash: varbinary
+        buyer: varbinary
+        seller: varbinary
+        nft_contract_address: varbinary
+        price_raw: uint256
+        platform_fee_amount_raw: uint256
+        royalty_fee_amount_raw: uint256
+        nft_token_id: uint256
 
   - name: blur_ethereum_base_trades_seed
     config:
+      tags: dunesql
       column_types:
-        price_raw: decimal(38)
-        platform_fee_amount_raw: decimal(38)
-        royalty_fee_amount_raw: decimal(38)
+        tx_hash: varbinary
+        buyer: varbinary
+        seller: varbinary
+        nft_contract_address: varbinary
+        price_raw: uint256
+        platform_fee_amount_raw: uint256
+        royalty_fee_amount_raw: uint256
+        nft_token_id: uint256
 
   - name: element_ethereum_base_trades_seed
     config:
+      tags: dunesql
       column_types:
-        price_raw: decimal(38)
-        platform_fee_amount_raw: decimal(38)
-        royalty_fee_amount_raw: decimal(38)
+        tx_hash: varbinary
+        buyer: varbinary
+        seller: varbinary
+        nft_contract_address: varbinary
+        price_raw: uint256
+        platform_fee_amount_raw: uint256
+        royalty_fee_amount_raw: uint256
+        nft_token_id: uint256
 
   - name: x2y2_ethereum_base_trades_seed
     config:
+      tags: dunesql
       column_types:
-        price_raw: decimal(38)
-        platform_fee_amount_raw: decimal(38)
-        royalty_fee_amount_raw: decimal(38)
+        tx_hash: varbinary
+        buyer: varbinary
+        seller: varbinary
+        nft_contract_address: varbinary
+        price_raw: uint256
+        platform_fee_amount_raw: uint256
+        royalty_fee_amount_raw: uint256
+        nft_token_id: uint256
 
   - name: zora_v1_ethereum_base_trades_seed
     config:
+      tags: dunesql
       column_types:
-        price_raw: decimal(38)
-        platform_fee_amount_raw: decimal(38)
-        royalty_fee_amount_raw: decimal(38)
+        tx_hash: varbinary
+        buyer: varbinary
+        seller: varbinary
+        nft_contract_address: varbinary
+        price_raw: uint256
+        platform_fee_amount_raw: uint256
+        royalty_fee_amount_raw: uint256
+        nft_token_id: uint256
 
   - name: zora_v2_ethereum_base_trades_seed
     config:
+      tags: dunesql
       column_types:
-        price_raw: decimal(38)
-        platform_fee_amount_raw: decimal(38)
-        royalty_fee_amount_raw: decimal(38)
+        tx_hash: varbinary
+        buyer: varbinary
+        seller: varbinary
+        nft_contract_address: varbinary
+        price_raw: uint256
+        platform_fee_amount_raw: uint256
+        royalty_fee_amount_raw: uint256
+        nft_token_id: uint256
 
   - name: zora_v3_ethereum_base_trades_seed
     config:
+      tags: dunesql
       column_types:
-        price_raw: decimal(38)
-        platform_fee_amount_raw: decimal(38)
-        royalty_fee_amount_raw: decimal(38)
+        tx_hash: varbinary
+        buyer: varbinary
+        seller: varbinary
+        nft_contract_address: varbinary
+        price_raw: uint256
+        platform_fee_amount_raw: uint256
+        royalty_fee_amount_raw: uint256
+        nft_token_id: uint256
 
   - name: cryptopunks_ethereum_base_trades_seed
     config:
+      tags: dunesql
       column_types:
-        price_raw: decimal(38)
-        platform_fee_amount_raw: decimal(38)
-        royalty_fee_amount_raw: decimal(38)
+        tx_hash: varbinary
+        buyer: varbinary
+        seller: varbinary
+        nft_contract_address: varbinary
+        price_raw: uint256
+        platform_fee_amount_raw: uint256
+        royalty_fee_amount_raw: uint256
+        nft_token_id: uint256
 
   - name: looksrare_v1_ethereum_base_trades_seed
     config:
+      tags: dunesql
       column_types:
-        price_raw: decimal(38)
-        platform_fee_amount_raw: decimal(38)
-        royalty_fee_amount_raw: decimal(38)
-        nft_token_id: string
+        tx_hash: varbinary
+        buyer: varbinary
+        seller: varbinary
+        nft_contract_address: varbinary
+        price_raw: uint256
+        platform_fee_amount_raw: uint256
+        royalty_fee_amount_raw: uint256
+        nft_token_id: uint256
 
   - name: looksrare_v2_ethereum_base_trades_seed
     config:
+      tags: dunesql
       column_types:
-        price_raw: decimal(38)
-        platform_fee_amount_raw: decimal(38)
-        royalty_fee_amount_raw: decimal(38)
-        nft_token_id: string
+        tx_hash: varbinary
+        buyer: varbinary
+        seller: varbinary
+        nft_contract_address: varbinary
+        price_raw: uint256
+        platform_fee_amount_raw: uint256
+        royalty_fee_amount_raw: uint256
+        nft_token_id: uint256
+
+  - name: collectionswap_ethereum_base_trades_seed
+    config:
+      tags: dunesql
+      column_types:
+        tx_hash: varbinary
+        buyer: varbinary
+        seller: varbinary
+        nft_contract_address: varbinary
+        price_raw: uint256
+        platform_fee_amount_raw: uint256
+        royalty_fee_amount_raw: uint256
+        nft_token_id: uint256
+
+  - name: sudoswap_ethereum_base_trades_seed
+    config:
+      tags: dunesql
+      column_types:
+        tx_hash: varbinary
+        buyer: varbinary
+        seller: varbinary
+        nft_contract_address: varbinary
+        price_raw: uint256
+        platform_fee_amount_raw: uint256
+        royalty_fee_amount_raw: uint256
+        nft_token_id: uint256
 
