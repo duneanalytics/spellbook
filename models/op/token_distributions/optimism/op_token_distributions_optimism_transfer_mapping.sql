@@ -121,9 +121,9 @@ WITH outgoing_distributions AS (
                 WHEN dc.address IS NULL THEN 1 -- when not a utility transfer, keep it
                 WHEN dc.address IS NOT NULL
                     AND (
-                        tx."from" IN (SELECT address FROM all_labels WHERE label != 'Utility')
+                        tx."from" IN (SELECT address FROM {{ ref('op_token_distributions_optimism_all_distributions_labels') }} WHERE label != 'Utility')
                         OR
-                        tf."from" IN (SELECT address FROM all_labels WHERE label != 'Utility')
+                        tf."from" IN (SELECT address FROM {{ ref('op_token_distributions_optimism_all_distributions_labels') }} WHERE label != 'Utility')
                      ) THEN 1 --when utility, make sure the transaction or transfer is from a project wallet
                 ELSE 0
                 END
