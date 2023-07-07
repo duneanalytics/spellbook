@@ -182,23 +182,19 @@ WHERE contract_order = 1
 
 ,tokens as (
   select 
-    bl.contract_address
+    t.contract_address
     ,t.symbol
     ,'erc20' as token_standard
-  from base_level as bl 
-  join {{ ref('tokens_optimism_erc20') }} as t
-    on bl.contract_address = t.contract_address
+  from {{ ref('tokens_optimism_erc20') }} as t
   group by 1, 2, 3
 
   union all 
 
   select 
-    bl.contract_address
+    t.contract_address
     ,t.name as symbol
     , standard AS token_standard
-  from base_level as bl 
-  join {{ ref('tokens_optimism_nft') }} as t
-    on bl.contract_address = t.contract_address
+  from {{ ref('tokens_optimism_nft') }} as t
   group by 1, 2, 3
 )
 
@@ -225,8 +221,8 @@ WHERE contract_order = 1
       ,b.contract_address
       -- store the raw created data
       ,b.created_time
-      ,b.creation_tx_hash
       ,b.created_block_number
+      ,b.creation_tx_hash
       ,b.created_tx_from
       ,b.created_tx_to
       ,b.created_tx_method_id
