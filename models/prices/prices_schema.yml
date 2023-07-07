@@ -93,6 +93,7 @@ models:
             severity: error
             error_if: ">5"        #there are 5 duplicates in the source prices table (29/11/2022)
             warn_if: "!=0"
+            where: "minute > now() - interval '30' day"
     columns:
       - name: minute
         description: "UTC event block time truncated to the minute mark"

@@ -285,7 +285,7 @@ AND erc721.evt_block_time >= date_trunc("day", now() - interval '1 week')
 LEFT JOIN {{ ref('tokens_bnb_nft_legacy') }} nft_token
 ON nft_token.contract_address = ae.nft_contract_address
 
-LEFT JOIN {{ ref('nft_bnb_aggregators')}} agg
+LEFT JOIN {{ ref('nft_bnb_aggregators_legacy')}} agg
 ON agg.contract_address = btx.`to`
 
 
