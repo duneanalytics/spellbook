@@ -11,7 +11,9 @@
 {% set op_token = 0x4200000000000000000000000000000000000042 %}
 
 WITH quest_addresses AS (
-SELECT distributor_address, rewards_token, quest_name
+SELECT cast(distributor_address as varbinary) AS distributor_address
+    , cast(rewards_token as varbinary) AS rewards_token
+    , quest_name
 FROM (values
     --  (0x9fFD84fA80932Fa55E761B06398aA2577815c459,'Admin & Gas Fee') --ignore
      (0xf42279467D821bCDf40b50E9A5d2cACCc4Cf5b30,'{{op_token}}','Quest 1 - DEX')
