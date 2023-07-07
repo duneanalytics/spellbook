@@ -71,7 +71,7 @@ SELECT *
     ,is_self_destruct
     ,ROW_NUMBER() OVER (PARTITION BY code ORDER BY created_block_number ASC, created_tx_index ASC) AS code_deploy_rank
     ,ROW_NUMBER() OVER (PARTITION BY contract_address ORDER BY created_time ASC ) AS contract_order -- to ensure no dupes
-    ,to_iterate_creators
+
   from (
     select 
       ct."from" as creator_address
@@ -93,7 +93,7 @@ SELECT *
       ,ct.code
       ,bytearray_length(ct.code) AS code_bytelength --toreplace with bytearray_length in dunesql
       ,coalesce(sd.contract_address is not NULL, false) as is_self_destruct
-      , 1 as to_iterate_creators --do we want to run the joins
+
     from {{ source('optimism', 'creation_traces') }} as ct 
     inner join {{ source('optimism', 'transactions') }} as t 
       ON t.hash = ct.tx_hash
@@ -116,7 +116,7 @@ SELECT *
       {% if is_incremental() %}
       and ct.block_time >= date_trunc('day', now() - interval '7' day)
 
-    -- to get existing history of contract mapping
+    -- to get existing history of contract mapping / only select those we want to re-run
     union all 
 
     select 
@@ -127,23 +127,12 @@ SELECT *
       ,t.created_block_number
       ,t.creation_tx_hash
       -- If the creator becomes marked as deterministic, we want to re-map
-      ,CASE WHEN nd.creator_address IS NOT NULL THEN t.created_time
-        ELSE t.top_level_time END AS top_level_time
-
-      ,CASE WHEN nd.creator_address IS NOT NULL THEN t.created_block_number
-        ELSE t.top_level_block_number END AS top_level_block_number
-
-      ,CASE WHEN nd.creator_address IS NOT NULL THEN t.creation_tx_hash
-        ELSE t.top_level_tx_hash END AS top_level_tx_hash
-
-      ,CASE WHEN nd.creator_address IS NOT NULL THEN created_tx_from
-        ELSE t.top_level_tx_from END AS top_level_tx_from
-
-      ,CASE WHEN nd.creator_address IS NOT NULL THEN created_tx_to
-        ELSE t.top_level_tx_to END AS top_level_tx_to
-
-      ,CASE WHEN nd.creator_address IS NOT NULL THEN created_tx_method_id
-        ELSE t.top_level_tx_method_id END AS top_level_tx_method_id
+      ,t.created_time AS top_level_time
+      ,t.created_block_number AS top_level_block_number
+      ,t.creation_tx_hash AS top_level_tx_hash
+      ,created_tx_from AS top_level_tx_from
+      ,created_tx_to AS top_level_tx_to
+      ,created_tx_method_id AS top_level_tx_method_id
       ---
       ,t.created_tx_from
       ,t.created_tx_to
@@ -151,8 +140,7 @@ SELECT *
       ,t.created_tx_index
       ,ct.code
       ,t.code_bytelength
-      ,coalesce(sd.contract_address is not NULL, false) as is_self_destruct
-      ,CASE WHEN nd.creator_address IS NOT NULL THEN 1 ELSE 0 END as to_iterate_creators
+      ,coalesce(sd.contract_address is not NULL, t.is_self_destruct, false) as is_self_destruct
     from {{ this }} t
     left join {{ ref('contracts_optimism_self_destruct_contracts') }} as sd 
       on t.contract_address = sd.contract_address
@@ -174,10 +162,17 @@ SELECT *
     WHERE t.contract_address NOT IN (
       SELECT address FROM {{ source('optimism', 'creation_traces') }} WHERE ct.block_time >= date_trunc('day', now() - interval '7' day)
     )
+    -- re-run if :
+    AND (nd.creator_address IS NOT NULL --creator is a known nondeterministic creator (i.e. improperly mapped before)
+        OR (sd.contract_address is not NULL AND t.is_self_destruct = false) --was newly selfdestructed
+        OR () --has a new contract name
+        OR () -- has a new token symbol
+        OR () -- has a new contract project name
+        ) --only pull contracts we want to rerun
 
       {% endif %} -- incremental filter
   ) as x
-  group by 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 22, code
+  group by 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, code
 ) y 
 WHERE contract_order = 1
 )
