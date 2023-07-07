@@ -394,7 +394,7 @@ WHERE contract_order = 1
       ,CAST(NULL AS varbinary) as created_tx_from
       ,CAST(NULL AS varbinary) as created_tx_to
       ,CAST(NULL AS varbinary) as created_tx_method_id
-      ,cast(NULL as varbinary) AS created_tx_index
+      ,cast(NULL as bigint) AS created_tx_index
       ,cast(NULL as bigint) as code_bytelength --todo
       ,1 as code_deploy_rank
 
