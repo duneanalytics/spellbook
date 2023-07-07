@@ -20,7 +20,7 @@ SELECT
     DATE_TRUNC('day',block_time) AS block_date,
     block_time,
     block_number,
-    t.from as tx_from,
+    t."from"as tx_from,
     t.to as tx_to,
     t.hash AS tx_hash,
     bytearray_substring(t.data,1,4) AS tx_method_id,
@@ -33,7 +33,7 @@ FROM
 INNER JOIN {{source('erc721_optimism','evt_transfer')}} tfer 
     ON t.hash = tfer.evt_tx_hash
     AND t.block_number = tfer.evt_block_number
-    AND t.from = 0x0000000000000000000000000000000000000000 --mint
+    AND t."from"= 0x0000000000000000000000000000000000000000 --mint
     {% if is_incremental() %}
     AND tfer.evt_block_time >= date_trunc('day', now() - interval '7' day)
     {% endif %}
