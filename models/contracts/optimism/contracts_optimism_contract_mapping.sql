@@ -71,6 +71,7 @@ SELECT *
     ,is_self_destruct
     ,ROW_NUMBER() OVER (PARTITION BY code ORDER BY created_block_number ASC, created_tx_index ASC) AS code_deploy_rank
     ,ROW_NUMBER() OVER (PARTITION BY contract_address ORDER BY created_time ASC ) AS contract_order -- to ensure no dupes
+    ,to_iterate_creators
   from (
     select 
       ct."from" as creator_address
@@ -92,6 +93,7 @@ SELECT *
       ,ct.code
       ,bytearray_length(ct.code) AS code_bytelength --toreplace with bytearray_length in dunesql
       ,coalesce(sd.contract_address is not NULL, false) as is_self_destruct
+      , 1 as to_iterate_creators --do we want to run the joins
     from {{ source('optimism', 'creation_traces') }} as ct 
     inner join {{ source('optimism', 'transactions') }} as t 
       ON t.hash = ct.tx_hash
@@ -148,6 +150,7 @@ SELECT *
       ,ct.code
       ,t.code_bytelength
       ,coalesce(sd.contract_address is not NULL, false) as is_self_destruct
+      ,CASE WHEN nd.creator_address IS NOT NULL THEN 1 ELSE 0 END as to_iterate_creators
     from {{ this }} t
     left join {{ ref('contracts_optimism_self_destruct_contracts') }} as sd 
       on t.contract_address = sd.contract_address
@@ -248,15 +251,18 @@ WHERE contract_order = 1
       ,b.code_bytelength
       ,b.is_self_destruct
       ,b.code_deploy_rank
+      ,b.to_iterate_creators --check if base needs to be iterated
 
     {% if loop.first -%}
     from base_level as b
     left join base_level as u --get info about the contract that created this contract
       on b.creator_address = u.contract_address
+      AND b.to_iterate_creators=1
     {% else -%}
     from level{{i-1}} as b
     left join base_level as u --get info about the contract that created this contract
       on b.creator_address = u.contract_address
+      AND b.to_iterate_creators=1
     {% endif %}
     -- is the creator deterministic?
     left join {{ref('contracts_optimism_deterministic_contract_creators')}} as nd 
