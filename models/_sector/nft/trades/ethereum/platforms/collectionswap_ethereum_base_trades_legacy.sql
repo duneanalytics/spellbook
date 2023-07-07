@@ -85,7 +85,7 @@ base_trades as (
     p.nft_contract_address,
     p.token_address as currency_contract
     from raw_trades t
-    left join {{ ref('collectionswap_ethereum_pools') }} p
+    left join {{ ref('collectionswap_ethereum_pools_legacy') }} p
     on t.project_contract_address = p.pool_address
 )
 
