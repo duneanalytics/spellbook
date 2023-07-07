@@ -1,7 +1,7 @@
 {{config(
     tags = ['dunesql'],
     alias = alias('aggregators')
-}}
+)}}
 
 SELECT
   contract_address,
