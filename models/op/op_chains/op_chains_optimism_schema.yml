@@ -32,6 +32,3 @@ models:
       - &is_superchain
         name: is_superchain
         description: "Binary flag if the chain is known to be Superchain aligned (does not exist yet - to be launched)."
-        tests:
-          - accepted_values:
-              values: [0,1]

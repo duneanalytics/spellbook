@@ -32,7 +32,6 @@ from
     ,(0xEE36eaaD94d1Cc1d0eccaDb55C38bFfB6Be06C77, 'OP AttestationStation','AttestationStation')
     ,(0xbed744818e96aad8a51324291a6f6cb20a0c22be, 'OP AttestationStation', 'AttestationStation')
     ,(0x2335022c740d17c2837f9c884bfe4ffdbf0a95d5, 'Optimist NFT', 'Optimist NFT')
-    ,(0x15dda60616ffca20371ed1659dbb78e888f65556, 'Retropgf Receiver', 'AssetReceiver')
     ,(0x225B0747C4062d98E2e957752Ac5d73C7DaCff90, 'Seaport', 'IOperatorFilterRegistry')
     --Non-Contract Labels
     ,(0x80C67432656d59144cEFf962E8fAF8926599bCF8, 'Orbiter Finance', 'Bridge')
