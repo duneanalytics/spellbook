@@ -252,10 +252,12 @@ WHERE contract_order = 1
     from base_level as b
     left join base_level as u --get info about the contract that created this contract
       on b.creator_address = u.contract_address
+      AND ( b.created_block_time >= u.created_block_time OR u.created_block_time IS NULL) --base level was created on or after its creator
     {% else -%}
     from level{{i-1}} as b
     left join base_level as u --get info about the contract that created this contract
       on b.creator_address = u.contract_address
+      AND ( b.created_block_time >= u.created_block_time OR u.created_block_time IS NULL) --base level was created on or after its creator
     {% endif %}
     -- is the creator deterministic?
     left join {{ref('contracts_optimism_deterministic_contract_creators')}} as nd 
