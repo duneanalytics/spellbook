@@ -459,61 +459,76 @@ WHERE contract_order = 1
   where contract_address is not NULL 
   group by 1
 )
-select 
-  c.trace_creator_address
-  ,c.contract_address
-  ,cast(initcap(
-      replace(
-      -- priority order: Override name, Mapped vs Dune, Raw/Actual names
-        coalesce(
-          co.contract_project
-          ,dnm.mapped_name
-          ,c.contract_project
-          ,ovm1c.contract_project
-        ),
-      '_',
-      ' '
-    )
-   ) as varchar) as contract_project
-  ,c.token_symbol
-  ,cast( coalesce(co.contract_name, c.contract_name) as varchar) as contract_name
-  ,coalesce(c.creator_address, ovm1c.creator_address) as creator_address
-  ,coalesce(c.created_time, to_timestamp(ovm1c.created_time)) as created_time
-  ,coalesce(c.contract_factory, 
-  {% if is_incremental() %}
-    th.contract_creator_if_factory
-    {% else -%}
-    NULL
+SELECT
+  trace_creator_address,  contract_address, 
+  --initcap: https://jordanlamborn.medium.com/presto-sql-proper-case-initcap-how-to-capitalize-the-first-letter-of-each-word-in-presto-5fbac3f0154c
+  (array_join((transform((split(lower(contract_project),' '))
+    , x -> concat(upper(substr(x,1,1)),substr(x,2,length(x))))),' ',''))
+    AS contract_project
+  --
+, contract_name, creator_address, created_time, contract_creator_if_factory
+, is_self_destruct, creation_tx_hash, created_block_number, created_tx_from
+, created_tx_to, created_tx_method_id, created_tx_index
+, top_level_time, top_level_tx_hash, top_level_block_number
+, top_level_tx_from, top_level_tx_to , top_level_tx_method_id
+, code_bytelength , token_standard , code_deploy_rank, is_eoa_deployed
+
+FROM (
+  select 
+    c.trace_creator_address
+    ,c.contract_address
+    ,cast(
+        replace(
+        -- priority order: Override name, Mapped vs Dune, Raw/Actual names
+          coalesce(
+            co.contract_project
+            ,dnm.mapped_name
+            ,c.contract_project
+            ,ovm1c.contract_project
+          ),
+        '_',
+        ' '
+    ) as varchar) as contract_project
+    ,c.token_symbol
+    ,cast( coalesce(co.contract_name, c.contract_name) as varchar) as contract_name
+    ,coalesce(c.creator_address, ovm1c.creator_address) as creator_address
+    ,coalesce(c.created_time, to_timestamp(ovm1c.created_time)) as created_time
+    ,coalesce(c.contract_factory, 
+    {% if is_incremental() %}
+      th.contract_creator_if_factory
+      {% else -%}
+      NULL
+    {% endif %}
+    ) as contract_creator_if_factory
+    ,coalesce(c.is_self_destruct, false) as is_self_destruct
+    ,c.creation_tx_hash
+    ,c.created_block_number
+    ,c.created_tx_from
+    ,c.created_tx_to
+    ,c.created_tx_method_id
+    ,c.created_tx_index
+
+    ,c.top_level_time
+    ,c.top_level_tx_hash
+    ,c.top_level_block_number
+    ,c.top_level_tx_from
+    ,c.top_level_tx_to
+    ,c.top_level_tx_method_id
+    
+    ,c.code_bytelength
+    ,c.token_standard
+    ,c.code_deploy_rank
+    ,CASE WHEN c.trace_creator_address = c.created_tx_from THEN 1 ELSE 0 END AS is_eoa_deployed
+
+  from cleanup as c 
+  left join {{ source('ovm1_optimism', 'contracts') }} as ovm1c
+    on c.contract_address = ovm1c.contract_address --fill in any missing contract creators
+  left join {{ ref('contracts_optimism_project_name_mappings') }} as dnm -- fix names for decoded contracts
+    on lower(c.contract_project) = lower(dnm.dune_name)
+  left join {{ ref('contracts_optimism_contract_overrides') }} as co --override contract maps
+    on c.contract_address = co.contract_address
+  {% if is_incremental() %} -- this filter will only be applied on an incremental run 
+  left join {{ this }} th -- grab if the contract was previously picked up as factory created
+    ON th.contract_address = c.contract_address
   {% endif %}
-  ) as contract_creator_if_factory
-  ,coalesce(c.is_self_destruct, false) as is_self_destruct
-  ,c.creation_tx_hash
-  ,c.created_block_number
-  ,c.created_tx_from
-  ,c.created_tx_to
-  ,c.created_tx_method_id
-  ,c.created_tx_index
-
-  ,c.top_level_time
-  ,c.top_level_tx_hash
-  ,c.top_level_block_number
-  ,c.top_level_tx_from
-  ,c.top_level_tx_to
-  ,c.top_level_tx_method_id
-  
-  ,c.code_bytelength
-  ,c.token_standard
-  ,c.code_deploy_rank
-  ,CASE WHEN c.trace_creator_address = c.created_tx_from THEN 1 ELSE 0 END AS is_eoa_deployed
-
-from cleanup as c 
-left join {{ source('ovm1_optimism', 'contracts') }} as ovm1c
-  on c.contract_address = ovm1c.contract_address --fill in any missing contract creators
-left join {{ ref('contracts_optimism_project_name_mappings') }} as dnm -- fix names for decoded contracts
-  on lower(c.contract_project) = lower(dnm.dune_name)
-left join {{ ref('contracts_optimism_contract_overrides') }} as co --override contract maps
-  on c.contract_address = co.contract_address
-{% if is_incremental() %} -- this filter will only be applied on an incremental run 
-left join {{ this }} th -- grab if the contract was previously picked up as factory created
-  ON th.contract_address = c.contract_address
-{% endif %}
+) f

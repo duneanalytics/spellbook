@@ -110,34 +110,46 @@ FROM (
   AND c_rank = 1 -- get first instance, no dupes
   group by 1
 )
-select 
-  c.trace_creator_address
-  ,c.contract_address
-  ,cast(initcap(
-      replace(
-      -- priority order: Override name, Mapped vs Dune, Raw/Actual names
-        coalesce(
-          co.contract_project
-          ,dnm.mapped_name
-          ,c.contract_project
-          ,ovm1c.contract_project
-        ),
-      '_',
-      ' '
-    )
-   ) as varchar) as contract_project
-  ,cast( coalesce(co.contract_name, c.contract_name) as varchar) as contract_name
-  ,coalesce(c.creator_address, ovm1c.creator_address) as creator_address
-  ,coalesce(c.created_time, cast(ovm1c.created_time as timestamp)) as created_time
-  ,c.contract_factory as contract_creator_if_factory
-  ,coalesce(c.is_self_destruct, false) as is_self_destruct
-  ,c.creation_tx_hash
-  ,c.source
-from cleanup as c 
 
-left join {{ source('ovm1_optimism', 'contracts') }} as ovm1c
-  on c.contract_address = ovm1c.contract_address --fill in any missing contract creators
-left join {{ ref('contracts_optimism_project_name_mappings') }} as dnm -- fix names for decoded contracts
-  on lower(c.contract_project) = lower(dnm.dune_name)
-left join {{ ref('contracts_optimism_contract_overrides') }} as co --override contract maps
-  on c.contract_address = co.contract_address
+SELECT
+  trace_creator_address,  contract_address, 
+  --initcap: https://jordanlamborn.medium.com/presto-sql-proper-case-initcap-how-to-capitalize-the-first-letter-of-each-word-in-presto-5fbac3f0154c
+  (array_join((transform((split(lower(contract_project),' '))
+    , x -> concat(upper(substr(x,1,1)),substr(x,2,length(x))))),' ',''))
+  AS contract_project
+  --
+, contract_name, creator_address, created_time, contract_creator_if_factory
+, is_self_destruct, creation_tx_hash, source
+FROM (
+  select 
+    c.trace_creator_address
+    ,c.contract_address
+    ,cast(
+        replace(
+        -- priority order: Override name, Mapped vs Dune, Raw/Actual names
+          coalesce(
+            co.contract_project
+            ,dnm.mapped_name
+            ,c.contract_project
+            ,ovm1c.contract_project
+          ),
+        '_',
+        ' '
+      )
+    as varchar) as contract_project
+    ,cast( coalesce(co.contract_name, c.contract_name) as varchar) as contract_name
+    ,coalesce(c.creator_address, ovm1c.creator_address) as creator_address
+    ,coalesce(c.created_time, cast(ovm1c.created_time as timestamp)) as created_time
+    ,c.contract_factory as contract_creator_if_factory
+    ,coalesce(c.is_self_destruct, false) as is_self_destruct
+    ,c.creation_tx_hash
+    ,c.source
+  from cleanup as c 
+
+  left join {{ source('ovm1_optimism', 'contracts') }} as ovm1c
+    on c.contract_address = ovm1c.contract_address --fill in any missing contract creators
+  left join {{ ref('contracts_optimism_project_name_mappings') }} as dnm -- fix names for decoded contracts
+    on lower(c.contract_project) = lower(dnm.dune_name)
+  left join {{ ref('contracts_optimism_contract_overrides') }} as co --override contract maps
+    on c.contract_address = co.contract_address
+) f
