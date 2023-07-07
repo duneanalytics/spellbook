@@ -33,7 +33,7 @@ FROM (
     token_balance,
     protocol_liquidity_usd,
     pool_liquidity_usd
-    FROM {{ flash_model }}
+    FROM {{ liquidity_model }}
     {% if not loop.last %}
     UNION ALL
     {% endif %}
