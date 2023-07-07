@@ -74,7 +74,7 @@ SELECT *
   from (
     select 
       ct."from" as creator_address
-      ,CAST(NULL AS varchar) as contract_factory
+      ,CAST(NULL AS varbinary) as contract_factory
       ,ct.address as contract_address
       ,ct.block_time as created_time
       ,ct.block_number as created_block_number
@@ -333,7 +333,7 @@ WHERE contract_order = 1
   select 
      COALESCE(oc."from",0xdeaddeaddeaddeaddeaddeaddeaddeaddead0006) AS trace_creator_address
     ,COALESCE(oc."from",0xdeaddeaddeaddeaddeaddeaddeaddeaddead0006) AS creator_address
-    ,CAST(NULL AS varchar) as contract_factory
+    ,CAST(NULL AS varbinary) as contract_factory
     ,l.contract_address
     ,oc.namespace as contract_project 
     ,oc.name as contract_name 
@@ -341,16 +341,16 @@ WHERE contract_order = 1
     ,false as is_self_destruct
     ,'missing contracts' as source
     ,COALESCE(oc.created_at, MIN(block_time)) as top_level_time
-    ,CAST(NULL AS varchar) as top_level_tx_hash
+    ,CAST(NULL AS varbinary) as top_level_tx_hash
     ,cast(NULL as bigint) as top_level_block_number
-    ,CAST(NULL AS varchar) as creation_tx_hash
+    ,CAST(NULL AS varbinary) as creation_tx_hash
     ,cast(NULL as bigint) as created_block_number
-    ,CAST(NULL AS varchar) as top_level_tx_from
-    ,CAST(NULL AS varchar) as top_level_tx_to
-    ,CAST(NULL AS varchar) as top_level_tx_method_id
-    ,CAST(NULL AS varchar) as created_tx_from
-    ,CAST(NULL AS varchar) as created_tx_to
-    ,CAST(NULL AS varchar) as created_tx_method_id
+    ,CAST(NULL AS varbinary) as top_level_tx_from
+    ,CAST(NULL AS varbinary) as top_level_tx_to
+    ,CAST(NULL AS varbinary) as top_level_tx_method_id
+    ,CAST(NULL AS varbinary) as created_tx_from
+    ,CAST(NULL AS varbinary) as created_tx_to
+    ,CAST(NULL AS varbinary) as created_tx_method_id
     ,l.tx_index AS created_tx_index
     ,bytearray_length(oc.code) as code_bytelength
     ,1 as code_deploy_rank
@@ -376,7 +376,7 @@ WHERE contract_order = 1
   select 
       trace_creator_address
       ,creator_address
-      ,CAST(NULL AS varchar) as contract_factory
+      ,CAST(NULL AS varbinary) as contract_factory
       ,contract_address
       ,contract_project
       ,contract_name
@@ -384,17 +384,17 @@ WHERE contract_order = 1
       ,is_self_destruct
       ,source
       ,created_time as top_level_time
-      ,CAST(NULL AS varchar) as top_level_tx_hash
+      ,CAST(NULL AS varbinary) as top_level_tx_hash
       ,cast(NULL as bigint) as top_level_block_number
-      ,CAST(NULL AS varchar) as creation_tx_hash
+      ,CAST(NULL AS varbinary) as creation_tx_hash
       ,cast(NULL as bigint) as created_block_number
-      ,CAST(NULL AS varchar) as top_level_tx_from
-      ,CAST(NULL AS varchar) as top_level_tx_to
-      ,CAST(NULL AS varchar) as top_level_tx_method_id
-      ,CAST(NULL AS varchar) as created_tx_from
-      ,CAST(NULL AS varchar) as created_tx_to
-      ,CAST(NULL AS varchar) as created_tx_method_id
-      ,cast(NULL as integer) AS created_tx_index
+      ,CAST(NULL AS varbinary) as top_level_tx_from
+      ,CAST(NULL AS varbinary) as top_level_tx_to
+      ,CAST(NULL AS varbinary) as top_level_tx_method_id
+      ,CAST(NULL AS varbinary) as created_tx_from
+      ,CAST(NULL AS varbinary) as created_tx_to
+      ,CAST(NULL AS varbinary) as created_tx_method_id
+      ,cast(NULL as varbinary) AS created_tx_index
       ,cast(NULL as bigint) as code_bytelength --todo
       ,1 as code_deploy_rank
 
