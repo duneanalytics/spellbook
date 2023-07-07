@@ -389,23 +389,7 @@ FROM (
     , 'underlying' as token_type, 'l2 bridge mapping' AS token_mapping_source
     FROM {{ ref('tokens_optimism_erc20_bridged_mapping') }}
     WHERE l1_symbol IS NOT NULL
-/*
-    -- UNION ALL
-
-    -- SELECT
-    -- LOWER(atoken_address) AS contract_address, atoken_symbol AS symbol, atoken_decimals as decimals
-    -- , 'receipt' as token_type, 'aave factory' AS token_mapping_source
-    -- FROM {{ ('aave_v3_tokens') }} -- to be refd
-    --   WHERE blockchain = 'optimism'
-    
-    -- UNION ALL
-
-    -- SELECT
-    -- LOWER(atoken_address) AS contract_address, atoken_symbol AS symbol, atoken_decimals as decimals
-    -- , 'receipt' as token_type, 'the granary factory' AS token_mapping_source
-    -- FROM {{ ('the_granary_optimism_tokens') }} -- to be refd
-    --   WHERE blockchain = 'optimism'
-    */
+s
   ) a
   GROUP BY contract_address, symbol, token_type, token_mapping_source --get uniques & handle if L2 token factory gets decimals wrong
 )
