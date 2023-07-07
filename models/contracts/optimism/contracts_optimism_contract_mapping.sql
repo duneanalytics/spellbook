@@ -101,6 +101,7 @@ SELECT *
       AND t.block_number = ct.block_number
       {% if is_incremental() %}
       and t.block_time >= date_trunc('day', now() - interval '7' day)
+      AND ct.block_time >= date_trunc('day', now() - interval '7' day)
       {% endif %}
     left join {{ ref('contracts_optimism_self_destruct_contracts') }} as sd 
       on ct.address = sd.contract_address
@@ -108,9 +109,10 @@ SELECT *
       and ct.block_time = sd.created_time
       {% if is_incremental() %}
       and sd.created_time >= date_trunc('day', now() - interval '7' day)
+      AND ct.block_time >= date_trunc('day', now() - interval '7' day)
       {% endif %}
     where 
-      true
+      1=1
       {% if is_incremental() %}
       and ct.block_time >= date_trunc('day', now() - interval '7' day)
 
@@ -330,6 +332,7 @@ WHERE contract_order = 1
     ,cc.created_tx_index
     ,cc.code_bytelength
     ,cc.code_deploy_rank
+    ,1 as map_rank
   from creator_contracts as cc 
   left join {{ source('optimism', 'contracts') }} as oc 
     on cc.contract_address = oc.address 
@@ -362,7 +365,7 @@ WHERE contract_order = 1
     ,l.tx_index AS created_tx_index
     ,bytearray_length(oc.code) as code_bytelength
     ,1 as code_deploy_rank
-    
+    ,2 as map_rank
   from {{ source('optimism', 'logs') }} as l
     left join {{ source('optimism', 'contracts') }} as oc 
       ON l.contract_address = oc.address
@@ -370,12 +373,6 @@ WHERE contract_order = 1
     l.contract_address NOT IN (SELECT cc.contract_address FROM creator_contracts cc)
     {% if is_incremental() %} -- this filter will only be applied on an incremental run 
       and l.block_time >= date_trunc('day', now() - interval '7' day)
-      and not exists (
-          select 1 
-          from {{ this }} as gc
-          where 
-            gc.contract_address = l.contract_address
-        )
     {% endif %}
   GROUP BY oc."from", l.contract_address, oc.namespace, oc.name, oc.created_at, l.tx_index, oc.code
 
@@ -405,22 +402,18 @@ WHERE contract_order = 1
       ,cast(NULL as bigint) AS created_tx_index
       ,cast(NULL as bigint) as code_bytelength --todo
       ,1 as code_deploy_rank
+      ,3 as map_rank
 
     FROM {{ ref('contracts_optimism_predeploys') }} pre
     where 
     1=1
     {% if is_incremental() %} -- this filter will only be applied on an incremental run 
-    and not exists (
-      select 1 
-      from {{ this }} as gc
-      where 
-        gc.contract_address = pre.contract_address
-        and lower(gc.contract_project) LIKE lower(pre.contract_project) || '%' --future proof in case this name changes
-    )
+    and 1=0 --do not run on incremental builds
     {% endif %}
     GROUP BY 1,2,3,4,5,6,7,8,9
 
 )
+
 ,get_contracts as (
   select 
     c.trace_creator_address
@@ -450,6 +443,7 @@ WHERE contract_order = 1
     ,c.code_bytelength
     ,t.token_standard AS token_standard
     ,c.code_deploy_rank
+    ,MIN(c.map_rank) AS map_rank
 
   from combine as c 
   left join tokens as t 
@@ -466,6 +460,7 @@ WHERE contract_order = 1
   from get_contracts
   where contract_address is not NULL 
   group by 1
+  ORDER BY map_rank ASC NULLS LAST --pick mapped contracts, then earlier contracts, then predeploys
 )
 SELECT
   trace_creator_address,  contract_address, 
@@ -508,7 +503,7 @@ FROM (
     {% if is_incremental() %}
       th.contract_creator_if_factory
       {% else -%}
-      NULL
+      cast(NULL as varbinary)
     {% endif %}
     ) as contract_creator_if_factory
     ,coalesce(c.is_self_destruct, false) as is_self_destruct
@@ -541,5 +536,6 @@ FROM (
   {% if is_incremental() %} -- this filter will only be applied on an incremental run 
   left join {{ this }} th -- grab if the contract was previously picked up as factory created
     ON th.contract_address = c.contract_address
+    AND th.created_block_number = c.created_block_number
   {% endif %}
 ) f
