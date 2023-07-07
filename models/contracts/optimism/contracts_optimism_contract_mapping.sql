@@ -415,6 +415,8 @@ WHERE contract_order = 1
 )
 
 ,get_contracts as (
+  select *
+  FROM (
   select 
     c.trace_creator_address
     ,c.contract_address
@@ -449,6 +451,8 @@ WHERE contract_order = 1
   left join tokens as t 
     on c.contract_address = t.contract_address
   group by 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24
+  ) a
+  ORDER BY map_rank ASC NULLS LAST --order we pick
 )
 ,cleanup as (
 --grab the first non-null value for each, i.e. if we have the contract via both contract mapping and optimism.contracts
@@ -460,7 +464,6 @@ WHERE contract_order = 1
   from get_contracts
   where contract_address is not NULL 
   group by 1
-  ORDER BY map_rank ASC NULLS LAST --pick mapped contracts, then earlier contracts, then predeploys
 )
 SELECT
   trace_creator_address,  contract_address, 
