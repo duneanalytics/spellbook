@@ -4,7 +4,7 @@
 )}}
 
 SELECT
-  lower(contract_address) as contract_address,
+  contract_address as contract_address,
   name
 FROM
   (
