@@ -1,4 +1,4 @@
-{{config(alias='validators',
+{{config(tags=['dunesql'],alias = alias('validators'),
         post_hook='{{ expose_spells(\'["ethereum","bnb","solana"]\',
                                     "sector",
                                     "labels",
