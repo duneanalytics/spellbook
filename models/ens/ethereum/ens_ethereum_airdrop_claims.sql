@@ -40,7 +40,7 @@ SELECT 'ethereum' AS blockchain
 , 'ENS' AS token_symbol
 , t.evt_index
 FROM {{ source('ethereumnameservice_ethereum', 'ENSToken_evt_Claim') }} t
-LEFT JOIN {{ ref('prices_usd_forward_fill') }} pu ON pu.blockchain = 'ethereum'
+LEFT JOIN {{ ref('prices_usd_forward_fill_legacy') }} pu ON pu.blockchain = 'ethereum'
     AND pu.contract_address='{{ens_token_address}}'
     AND pu.minute=date_trunc('minute', t.evt_block_time)
     {% if is_incremental() %}
