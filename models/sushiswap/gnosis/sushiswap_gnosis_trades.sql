@@ -1,5 +1,5 @@
-{{ config(tags=['dunesql'],
-    alias = alias('trades')
+{{ config(
+    alias = 'trades'
     ,partition_by = ['block_date']
     ,materialized = 'incremental'
     ,file_format = 'delta'
@@ -11,14 +11,14 @@
 {% set project_start_date = '2021-03-03' %}
 
 WITH sushiswap_dex AS (
-    SELECT  t.evt_block_time         AS block_time,
-            to                                                           AS taker,
+    SELECT  t.evt_block_time                                             AS block_time,
+            `to`                                                         AS taker,
             sender                                                       AS maker,
-            case when amount0Out = UINT256 '0' then amount1Out else amount0Out end as token_bought_amount_raw,
-            case when amount0In = UINT256 '0' then amount1In else amount0In end as token_sold_amount_raw,
-            null as amount_usd,
-            case when amount0Out = UINT256 '0' then token1 else token0 end as token_bought_address,
-            case when amount0In = UINT256 '0' then token1 else token0 end as token_sold_address,
+            CASE WHEN amount0Out = 0 THEN amount1Out ELSE amount0Out END AS token_bought_amount_raw,
+            CASE WHEN amount0In = 0 THEN amount1In ELSE amount0In END    AS token_sold_amount_raw,
+            cast(NULL as double)                                         AS amount_usd,
+            CASE WHEN amount0Out = 0 THEN token1 ELSE token0 END         AS token_bought_address,
+            CASE WHEN amount0In = 0 THEN token1 ELSE token0 END          AS token_sold_address,
             t.contract_address                                           AS project_contract_address,
             t.evt_tx_hash                                                AS tx_hash,
             ''                                                           AS trace_address,
@@ -27,9 +27,9 @@ WITH sushiswap_dex AS (
     INNER JOIN {{ source('sushiswap_gnosis', 'UniswapV2Factory_evt_PairCreated') }} f
         ON f.pair = t.contract_address
     {% if is_incremental() %}
-    WHERE t.evt_block_time >= date_trunc('day', now() - interval '7' day)
+    WHERE t.evt_block_time >= date_trunc("day", now() - interval '1 week')
     {% else %}
-    WHERE t.evt_block_time >= TIMESTAMP '{{project_start_date}}'
+    WHERE t.evt_block_time >= '{{ project_start_date }}'
     {% endif %}
 )
 
@@ -47,8 +47,8 @@ SELECT
         END                                                            AS token_pair,
     sushiswap_dex.token_bought_amount_raw / power(10, erc20a.decimals) AS token_bought_amount,
     sushiswap_dex.token_sold_amount_raw / power(10, erc20b.decimals)   AS token_sold_amount,
-    sushiswap_dex.token_bought_amount_raw AS token_bought_amount_raw,
-    sushiswap_dex.token_sold_amount_raw AS token_sold_amount_raw,
+    CAST(sushiswap_dex.token_bought_amount_raw AS DECIMAL(38,0)) AS token_bought_amount_raw,
+    CAST(sushiswap_dex.token_sold_amount_raw AS DECIMAL(38,0)) AS token_sold_amount_raw,
     coalesce(
             sushiswap_dex.amount_usd
         , (sushiswap_dex.token_bought_amount_raw / power(10, p_bought.decimals)) * p_bought.price
@@ -56,11 +56,11 @@ SELECT
         )                                                              AS amount_usd,
     sushiswap_dex.token_bought_address,
     sushiswap_dex.token_sold_address,
-    coalesce(sushiswap_dex.taker, tx."from")                             AS taker,
+    coalesce(sushiswap_dex.taker, tx.from)                             AS taker,
     sushiswap_dex.maker,
     sushiswap_dex.project_contract_address,
     sushiswap_dex.tx_hash,
-    tx."from"                                                            AS tx_from,
+    tx.from                                                            AS tx_from,
     tx.to                                                              AS tx_to,
     sushiswap_dex.trace_address,
     sushiswap_dex.evt_index
@@ -68,14 +68,14 @@ FROM sushiswap_dex
 INNER JOIN {{ source('gnosis', 'transactions') }} tx
     ON sushiswap_dex.tx_hash = tx.hash
     {% if not is_incremental() %}
-    AND tx.block_time >= TIMESTAMP '{{project_start_date}}'
+    AND tx.block_time >= '{{project_start_date}}'
     {% else %}
-    AND tx.block_time >= date_trunc('day', now() - interval '7' day)
+    AND tx.block_time >= date_trunc("day", now() - interval '1 week')
     {% endif %}
-LEFT JOIN {{ ref('tokens_erc20') }} erc20a
+LEFT JOIN {{ ref('tokens_erc20_legacy') }} erc20a
     ON erc20a.contract_address = sushiswap_dex.token_bought_address
     AND erc20a.blockchain = 'gnosis'
-LEFT JOIN {{ ref('tokens_erc20') }} erc20b
+LEFT JOIN {{ ref('tokens_erc20_legacy') }} erc20b
     ON erc20b.contract_address = sushiswap_dex.token_sold_address
     AND erc20b.blockchain = 'gnosis'
 LEFT JOIN {{ source('prices', 'usd') }} p_bought
@@ -83,16 +83,18 @@ LEFT JOIN {{ source('prices', 'usd') }} p_bought
     AND p_bought.contract_address = sushiswap_dex.token_bought_address
     AND p_bought.blockchain = 'gnosis'
     {% if not is_incremental() %}
-    AND p_bought.minute >= TIMESTAMP '{{project_start_date}}'
+    AND p_bought.minute >= '{{project_start_date}}'
     {% else %}
-    AND p_bought.minute >= date_trunc('day', now() - interval '7' day)
+    AND p_bought.minute >= date_trunc("day", now() - interval '1 week')
     {% endif %}
 LEFT JOIN {{ source('prices', 'usd') }} p_sold
     ON p_sold.minute = date_trunc('minute', sushiswap_dex.block_time)
     AND p_sold.contract_address = sushiswap_dex.token_sold_address
     AND p_sold.blockchain = 'gnosis'
     {% if not is_incremental() %}
-    AND p_sold.minute >= TIMESTAMP '{{project_start_date}}'
+    AND p_sold.minute >= '{{project_start_date}}'
     {% else %}
-    AND p_sold.minute >= date_trunc('day', now() - interval '7' day)
+    AND p_sold.minute >= date_trunc("day", now() - interval '1 week')
     {% endif %}
+;
+    
