@@ -13,7 +13,7 @@
 -- This is a lookup tables that's helpful for any analysis that focuses on stablecoins.
 
 SELECT
-  contract_address
+  tbl.contract_address
   , et.symbol,et. decimals
   , tbl.name, tbl.currency_peg, tbl.reserve_type
 
