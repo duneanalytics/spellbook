@@ -12,8 +12,9 @@
 
 WITH quest_addresses AS (
 
-SELECT cast(distributor_address as varbinary) AS distributor_address
-    , cast(rewards_token as varbinary) AS rewards_token
+SELECT
+      from_hex( cast(distributor_address as varchar) ) AS distributor_address
+    , from_hex( cast(rewards_token as varchar) ) AS rewards_token
     , quest_name
 FROM (values
     --  (0x9fFD84fA80932Fa55E761B06398aA2577815c459,'Admin & Gas Fee') --ignore
