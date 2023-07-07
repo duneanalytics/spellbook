@@ -18,4 +18,4 @@ SELECT 'optimism'        AS blockchain
      , 'l2_fee_vaults'   AS model_name
      , 'identifier'      AS label_type
 
-FROM {{ ref('addresses_optimism_fee_vaults_legacy') }}
+FROM {{ ref('addresses_optimism_fee_vaults') }}

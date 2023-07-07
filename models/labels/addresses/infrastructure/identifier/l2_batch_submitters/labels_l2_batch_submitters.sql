@@ -18,4 +18,4 @@ SELECT 'ethereum'                                                               
      , 'l2_batch_submitters'                                                         AS model_name
      , 'identifier'                                                                  AS label_type
 
-FROM {{ ref('addresses_ethereum_l2_batch_submitters_legacy') }}
+FROM {{ ref('addresses_ethereum_l2_batch_submitters') }}
