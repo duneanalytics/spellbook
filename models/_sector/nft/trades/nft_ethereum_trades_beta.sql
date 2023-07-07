@@ -35,7 +35,7 @@ WITH cte_prices_patch as (
         ,minute
         ,price
         ,symbol
-    FROM {{ ref('prices_usd_forward_fill') }}
+    FROM {{ ref('prices_usd_forward_fill_legacy') }}
     WHERE blockchain = 'ethereum'
     {% if is_incremental() %}
     AND minute >= date_trunc("day", now() - interval '1 week')
@@ -48,7 +48,7 @@ WITH cte_prices_patch as (
         ,minute
         ,price
         ,'ETH' as symbol
-    FROM {{ ref('prices_usd_forward_fill') }}
+    FROM {{ ref('prices_usd_forward_fill_legacy') }}
     WHERE blockchain is null AND symbol = 'ETH'
     {% if is_incremental() %}
     AND minute >= date_trunc("day", now() - interval '1 week')
@@ -64,8 +64,8 @@ enriched_trades as (
         tokens_nft_model=ref('tokens_ethereum_nft_legacy'),
         tokens_erc20_model=ref('tokens_ethereum_erc20_legacy'),
         prices_model='cte_prices_patch',
-        aggregators=ref('nft_ethereum_aggregators'),
-        aggregator_markers=ref('nft_ethereum_aggregators_markers')
+        aggregators=ref('nft_ethereum_aggregators_legacy'),
+        aggregator_markers=ref('nft_ethereum_aggregators_markers_legacy')
     )
 }}
 )
