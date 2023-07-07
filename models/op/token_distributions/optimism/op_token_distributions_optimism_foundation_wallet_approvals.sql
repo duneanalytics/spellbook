@@ -24,9 +24,9 @@
 
 
 WITH project_labels AS (
-    SELECT address, project_name, label FROM {{ ref('op_token_distributions_optimism_project_wallets') }}
+    SELECT address, project_name, label, address_descriptor FROM {{ ref('op_token_distributions_optimism_project_wallets') }}
     WHERE label IS NOT NULL
-    GROUP BY 1,2,3
+    GROUP BY 1,2,3,4
 )
 
 
@@ -53,7 +53,7 @@ FROM {{ source('erc20_optimism', 'evt_Approval') }} a
     LEFT JOIN project_labels al
         ON a.spender = al.address
 WHERE
-    a.contract_address = '{{op_token_address}}' --OP Token
+    a.contract_address = {{op_token_address}} --OP Token
     AND owner in (SELECT address FROM project_labels WHERE label = '{{foundation_label}}' AND address_descriptor = '{{grants_descriptor}}')
     {% if is_incremental() %} 
     AND a.evt_block_time >= date_trunc('day', now() - interval '7' day)

@@ -94,7 +94,7 @@ WITH outgoing_distributions AS (
             -- LEFT JOIN tx_labels txl
             --     ON txl.tx_hash = tf.evt_tx_hash
                 
-            WHERE tf.contract_address = '{{op_token_address}}'
+            WHERE tf.contract_address = {{op_token_address}}
             --if we want to exclude Wintermute funding tfers
             -- AND NOT (tf."from" = 0x2501c477d0a35545a387aa4a3eee4292a9a8b3f0
             --         and tf.to IN (0x4f3a120e72c76c22ae802d129f599bfdbc31cb81
