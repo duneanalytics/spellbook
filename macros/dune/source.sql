@@ -29,7 +29,8 @@
 
 {# Get the loaded_at_field. The column must be defined in the contract. #}
 {% macro get_source_time_column(rel) %}
-  {% if not target.schema.startswith('github_action') and not (var('fast', 'false') | string).lower() == 'true' %}
+  {% if (not target.schema.startswith('github_action')) and (not ((var('fast', 'false') | string).lower() == 'true')) %}
+    {% do log("Not fast mode") %}
     {% do return((None, [])) %}
   {% endif %}
   {% set key = "source.spellbook." + rel.schema + "." + rel.identifier %}
