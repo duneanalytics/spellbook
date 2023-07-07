@@ -29,7 +29,7 @@
 
 {# Get the loaded_at_field. The column must be defined in the contract. #}
 {% macro get_source_time_column(rel) %}
-  {% if (not target.schema.startswith('git_dunesql')) and ((var('fast', 'false') | string).lower() != 'true') %}
+  {% if (not target.schema.startswith('git')) and ((var('fast', 'false') | string).lower() != 'true') %}
     {% do return((None, [])) %}
   {% endif %}
   {% set key = "source.spellbook." + rel.schema + "." + rel.identifier %}
