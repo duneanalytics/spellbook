@@ -4,7 +4,6 @@
   {% if time_column != None %}
     {%- do return(time_filter(rel, time_column, test_dates)) -%}
   {% else %}
-    {% do log("time_column is None", info=True) %}
     {%- do return(rel) -%}
   {% endif %}
 {% endmacro %}
@@ -30,8 +29,7 @@
 
 {# Get the loaded_at_field. The column must be defined in the contract. #}
 {% macro get_source_time_column(rel) %}
-  {% if (not target.schema.startswith('github_action')) and ((var('fast', 'false') | string).lower() != 'true') %}
-    {% do log("Not fast mode %s" % target.schema, info=True) %}
+  {% if (not target.schema.startswith('git_dunesql')) and ((var('fast', 'false') | string).lower() != 'true') %}
     {% do return((None, [])) %}
   {% endif %}
   {% set key = "source.spellbook." + rel.schema + "." + rel.identifier %}
