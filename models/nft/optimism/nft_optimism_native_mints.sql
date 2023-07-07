@@ -106,7 +106,7 @@ left join {{ source('prices','usd') }} as pu_erc20s
     {% endif %}
 left join namespaces as ec
     on etxs.to=ec.address
-left join {{ ref('nft_optimism_aggregators') }} as agg
+left join {{ ref('nft_optimism_aggregators_legacy') }} as agg
     on etxs.to=agg.contract_address
 left join nfts_per_tx as nft_count
     on nft_count.tx_hash=nft_mints.tx_hash
