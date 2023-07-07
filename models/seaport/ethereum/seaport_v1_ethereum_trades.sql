@@ -39,7 +39,7 @@ with source_ethereum_transactions as (
 )
 ,ref_tokens_nft as (
     select *
-    from {{ ref('tokens_nft') }}
+    from {{ ref('tokens_nft_legacy') }}
     where blockchain = 'ethereum'
 )
 ,ref_tokens_erc20 as (

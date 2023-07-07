@@ -151,7 +151,7 @@ with events_raw as (
     left join {{ ref('nft_aggregators') }} as agg
         on agg.contract_address = tx.to
         and agg.blockchain = 'optimism'
-    left join {{ ref('tokens_nft') }} n
+    left join {{ ref('tokens_nft_legacy') }} n
         on n.contract_address = er.nft_contract_address
         and n.blockchain = 'optimism'
     left join {{ source('erc721_optimism','evt_transfer') }} as erct2

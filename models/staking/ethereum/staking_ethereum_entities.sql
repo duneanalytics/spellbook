@@ -54,7 +54,7 @@ FROM
     , ('0x84db6ee82b7cf3b47e8f19270abde5718b936670', 'Stkr (Ankr)', 'Stkr (Ankr)', 'Liquid Staking')
     , ('0x194bd70b59491ce1310ea0bceabdb6c23ac9d5b2', 'Huobi', 'Huobi 1', 'CEX')
     , ('0xb73f4d4e99f65ec4b16b684e44f81aeca5ba2b7c', 'Huobi', 'Huobi 2', 'CEX')
-    , ('0xbf1556a7d625654e3d64d1f0466a60a697fac178', 'InfStones', 'InfStones', 'Staking Pools')
+    , ('0xbf1556a7d625654e3d64d1f0466a60a697fac178', 'imToken', 'imToken Staking[NodeProviderInfStones]', 'Staking Pools')
     , ('0xbca3b7b87dcb15f0efa66136bc0e4684a3e5da4d', 'SharedStake', 'SharedStake', 'Liquid Staking')
     , ('0xeadcba8bf9aca93f627f31fb05470f5a0686ceca', 'StakeWise Solos', 'StakeWise Solos', 'Staking Pools')
     , ('0xfa5f9eaa65ffb2a75de092eb7f3fc84fc86b5b18', 'Abyss Finance', 'Abyss Finance', 'Batch Staking Contract')
