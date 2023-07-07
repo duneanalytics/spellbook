@@ -1,4 +1,7 @@
-{{ config( alias='aggregators') }}
+{{config(
+    tags= ['dunesql'],
+    alias=alias('aggregators')
+)}}
 
 SELECT
   lower(contract_address) as contract_address,

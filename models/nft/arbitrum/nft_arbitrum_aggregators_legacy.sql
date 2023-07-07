@@ -1,4 +1,6 @@
-{{ config( alias=alias('aggregators', legacy_model=True ) }}
+{{config(
+    alias=alias('aggregators', legacy_model=True)
+)}}
 
 SELECT
   lower(contract_address) as contract_address,
