@@ -1,13 +1,14 @@
 {{ config(
-        alias ='trades'
+        alias = alias('trades', legacy_model=True)
         )
 }}
 
 
 {% set pancake_models = [
-    ref('pancakeswap_v2_ethereum_amm_trades_legacy')
-,   ref('pancakeswap_v2_ethereum_mmpool_trades_legacy')
-,   ref('pancakeswap_v3_ethereum_amm_trades_legacy') 
+    ref('pancakeswap_v2_bnb_amm_trades_legacy')
+,   ref('pancakeswap_v2_bnb_mmpool_trades_legacy')
+,   ref('pancakeswap_v2_bnb_stableswap_trades_legacy')
+,   ref('pancakeswap_v3_bnb_amm_trades_legacy')
 ] %}
 
 
