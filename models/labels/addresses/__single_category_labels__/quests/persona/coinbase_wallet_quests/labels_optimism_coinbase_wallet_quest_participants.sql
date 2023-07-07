@@ -22,8 +22,8 @@ select
   'quests' AS category,
   'msilb7' AS contributor,
   'query' AS source,
-  timestamp '2023-03-11' as created_at,
-  timestamp now() as updated_at,
+  cast('2023-03-11' as timestamp) as created_at,
+  timestamp cast( now() as timestamp) as updated_at,
   'coinbase_wallet_quest_participants' as model_name,
   'persona' as label_type
 from
