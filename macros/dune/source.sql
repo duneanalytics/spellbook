@@ -4,6 +4,7 @@
   {% if time_column != None %}
     {%- do return(time_filter(rel, time_column, test_dates)) -%}
   {% else %}
+    {% do log("time_column is None") %}
     {%- do return(rel) -%}
   {% endif %}
 {% endmacro %}
