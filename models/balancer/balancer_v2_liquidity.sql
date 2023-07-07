@@ -1,4 +1,5 @@
 {{ config(
+        schema = 'balancer'
         alias ='liquidity', 
         post_hook='{{ expose_spells(\'["ethereum","arbitrum", "optimism", "polygon", "gnosis","avalanche_c" 
         ]\',
@@ -20,7 +21,7 @@ ref('balancer_v2_ethereum_liquidity')
 
 SELECT *
 FROM (
-    {% for flash_model in balancer_models %}
+    {% for liquidity_model in balancer_models %}
     SELECT
     day,
     pool_id,
