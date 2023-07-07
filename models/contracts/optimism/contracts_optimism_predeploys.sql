@@ -32,7 +32,7 @@ FROM (
     ,contract_address
     ,'ovm' as contract_project
     ,contract_name
-    ,cast('2021-07-06 00:00:00' as timestamp) as created_time
+    ,from_iso8601_timestamp( '2021-07-06' ) as created_time
     ,false as is_self_destruct
     ,'other predeploys' as source
     ,cast(NULL as varbinary) as creation_tx_hash
@@ -50,7 +50,7 @@ FROM (
     ,contract_address
     ,contract_project
     ,contract_name
-    ,cast(created_time as timestamp) as created_time
+    ,from_iso8601_timestamp( created_time ) AS created_time
     ,false as is_self_destruct
     ,'ovm1 contracts' as source
     ,cast(NULL as varbinary) as creation_tx_hash
@@ -68,7 +68,7 @@ FROM (
     ,snx.contract_address
     ,'Synthetix' as contract_project
     ,contract_name
-    ,cast('2021-07-06 00:00:00' as timestamp) as created_time
+    ,from_iso8601_timestamp( '2021-07-06' ) as created_time
     ,false as is_self_destruct
     ,'synthetix contracts' as source
     ,cast(NULL as varbinary) as creation_tx_hash
@@ -87,7 +87,7 @@ FROM (
     ,newaddress as contract_address
     ,'Uniswap' as contract_project
     ,'Pair' as contract_name
-    ,cast('2021-11-11 00:00:00' as timestamp) as created_time
+    ,from_iso8601_timestamp( '2021-11-11' ) as created_time
     ,false as is_self_destruct
     ,'ovm1 uniswap pools' as source
     ,cast(NULL as varbinary) as creation_tx_hash
@@ -139,7 +139,7 @@ FROM (
     as varchar) as contract_project
     ,cast( coalesce(co.contract_name, c.contract_name) as varchar) as contract_name
     ,coalesce(c.creator_address, ovm1c.creator_address) as creator_address
-    ,coalesce(c.created_time, cast(ovm1c.created_time as timestamp)) as created_time
+    ,coalesce(c.created_time, from_iso8601_timestamp(ovm1c.created_time) ) as created_time
     ,c.contract_factory as contract_creator_if_factory
     ,coalesce(c.is_self_destruct, false) as is_self_destruct
     ,c.creation_tx_hash
