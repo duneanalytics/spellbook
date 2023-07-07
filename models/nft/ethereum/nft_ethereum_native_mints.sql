@@ -100,7 +100,7 @@ LEFT JOIN {{ source('ethereum','transactions') }} etxs ON etxs.block_time=nft_mi
     {% if is_incremental() %}
     AND  etxs.block_time >= date_trunc("day", now() - interval '1 week')
     {% endif %}
-LEFT JOIN {{ ref('nft_ethereum_aggregators') }} agg ON etxs.to=agg.contract_address
+LEFT JOIN {{ ref('nft_ethereum_aggregators_legacy') }} agg ON etxs.to=agg.contract_address
 LEFT JOIN {{ ref('tokens_ethereum_nft_legacy') }} tok ON tok.contract_address=nft_mints.contract_address
 LEFT JOIN namespaces ec ON etxs.to=ec.address
 {% if is_incremental() %}
