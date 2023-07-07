@@ -389,7 +389,6 @@ FROM (
     , 'underlying' as token_type, 'l2 bridge mapping' AS token_mapping_source
     FROM {{ ref('tokens_optimism_erc20_bridged_mapping') }}
     WHERE l1_symbol IS NOT NULL
-s
   ) a
   GROUP BY contract_address, symbol, token_type, token_mapping_source --get uniques & handle if L2 token factory gets decimals wrong
 )
