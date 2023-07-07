@@ -216,7 +216,7 @@ WHERE contract_order = 1
         ELSE coalesce(u.creator_address, b.creator_address)
       END as creator_address -- get the highest-level creator we know of
       {% if loop.first -%}
-      ,case when u.creator_address is NULL then NULL
+      ,case when u.creator_address is NULL then CAST(NULL as varbinary)
         else b.creator_address
       end as contract_factory -- if factory created, maintain the original factory
       {% else -%}
