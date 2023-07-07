@@ -89,7 +89,7 @@ FROM (
                 {% endif %}
 
             
-        WHERE reward = '{{op_token_address}}' --OP Token
+        WHERE reward = {{op_token_address}} --OP Token
         and cast(amount as double)/cast(1e18 as double) > 0
         AND lbl_from.label = '{{foundation_label}}'
         {% if is_incremental() %} 
