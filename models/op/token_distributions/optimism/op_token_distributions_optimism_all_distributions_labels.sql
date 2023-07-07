@@ -39,4 +39,7 @@ WITH all_labels AS (
     WHERE address NOT IN (SELECT address FROM {{ ref('op_token_distributions_optimism_project_wallets') }})
 )
 
-SELECT * FROM all_labels
+SELECT
+    cast(address as varbinary) AS address,
+    label, proposal_name, address_descriptor, project_name
+FROM all_labels

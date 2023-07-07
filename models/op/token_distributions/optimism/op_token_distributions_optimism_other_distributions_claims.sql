@@ -20,9 +20,6 @@
 
 
 --protocols that never claimed and transferred from the fnd wallet
-WITH all_labels AS (
-    SELECT address, label, proposal_name, address_descriptor, project_name FROM {{ ref('op_token_distributions_optimism_all_distributions_labels') }}
-)
 
 , aave_lm_claims AS ( 
 SELECT
@@ -75,10 +72,11 @@ FROM (
                 {% else %}
                 and tf.evt_block_time >= cast('{{op_token_launch_date}}' as date)
                 {% endif %}
-            left JOIN all_labels lbl_from
+
+            LEFT JOIN {{ ref('op_token_distributions_optimism_all_distributions_labels') }} lbl_from
                 ON lbl_from.address = tf."from"
             -- if the recipient is in this list to, then we track it
-            LEFT JOIN all_labels lbl_to
+            LEFT JOIN {{ ref('op_token_distributions_optimism_all_distributions_labels') }} lbl_to
                 ON lbl_to.address = tf.to
             LEFT JOIN {{ source('optimism', 'transactions') }} tx
                 ON tx.hash = tf.evt_tx_hash
