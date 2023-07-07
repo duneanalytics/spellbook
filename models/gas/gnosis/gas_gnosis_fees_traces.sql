@@ -36,7 +36,7 @@ WITH traces AS (
           , block_number
           , input
           , type AS trace_type
-          , call_type
+          
           , value AS trace_value
           , success AS trace_success
           , tx_success
