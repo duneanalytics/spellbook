@@ -105,7 +105,7 @@ INNER JOIN {{ source('gnosis','transactions') }} txs ON txs.block_time=traces.bl
      {% endif %}
 LEFT JOIN {{ source('prices', 'usd') }} pu ON pu.minute=date_trunc('minute', traces.block_time)
      AND pu.blockchain='gnosis'
-     AND pu.contract_address='0xe91d153e0b41518a2ce8dd3d7944fa863463a97d'
+     AND pu.contract_address=0xe91d153e0b41518a2ce8dd3d7944fa863463a97d
      {% if is_incremental() %}
      AND pu.minute >= date_trunc('day', NOW() - interval '1' day)
      {% endif %}
