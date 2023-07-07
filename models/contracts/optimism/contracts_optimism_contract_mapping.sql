@@ -73,7 +73,7 @@ SELECT *
     ,ROW_NUMBER() OVER (PARTITION BY contract_address ORDER BY created_time ASC ) AS contract_order -- to ensure no dupes
   from (
     select 
-      ct.from as creator_address
+      ct."from" as creator_address
       ,CAST(NULL AS varchar) as contract_factory
       ,ct.address as contract_address
       ,ct.block_time as created_time
@@ -82,10 +82,10 @@ SELECT *
       ,t.block_time as top_level_time
       ,t.block_number as top_level_block_number
       ,t.hash as top_level_tx_hash
-      ,t.from AS top_level_tx_from
+      ,t."from" AS top_level_tx_from
       ,t.to AS top_level_tx_to
       ,bytearray_substring(t.data,1,4) AS top_level_tx_method_id
-      ,t.from AS created_tx_from
+      ,t."from" AS created_tx_from
       ,t.to AS created_tx_to
       ,bytearray_substring(t.data,1,4) AS created_tx_method_id
       ,t.index as created_tx_index
@@ -331,8 +331,8 @@ WHERE contract_order = 1
   union all
   -- missing contracts
   select 
-     COALESCE(oc.from,0xdeaddeaddeaddeaddeaddeaddeaddeaddead0006) AS trace_creator_address
-    ,COALESCE(oc.from,0xdeaddeaddeaddeaddeaddeaddeaddeaddead0006) AS creator_address
+     COALESCE(oc."from",0xdeaddeaddeaddeaddeaddeaddeaddeaddead0006) AS trace_creator_address
+    ,COALESCE(oc."from",0xdeaddeaddeaddeaddeaddeaddeaddeaddead0006) AS creator_address
     ,CAST(NULL AS varchar) as contract_factory
     ,l.contract_address
     ,oc.namespace as contract_project 
@@ -369,7 +369,7 @@ WHERE contract_order = 1
             gc.contract_address = l.contract_address
         )
     {% endif %}
-  GROUP BY oc.from, l.contract_address, oc.namespace, oc.name, oc.created_at, l.tx_index, oc.code
+  GROUP BY oc."from", l.contract_address, oc.namespace, oc.name, oc.created_at, l.tx_index, oc.code
 
   union all
   -- predeploys
