@@ -43,8 +43,8 @@ select
   'quests' AS category,
   'msilb7' AS contributor,
   'query' AS source,
-  cast('2023-03-11' as timestamp) as created_at,
-  cast(now() as timestamp) as updated_at,
+  timestamp '2023-03-11' as created_at,
+  timestamp now() as updated_at,
   'optimism_quest_participants' as model_name,
   'persona' as label_type
 from
