@@ -493,7 +493,7 @@ FROM (
     ,cast( coalesce(co.contract_name, c.contract_name) as varchar) as contract_name
     ,coalesce(c.creator_address, ovm1c.creator_address) as creator_address
     ,coalesce(c.created_time
-      , cast( from_iso8601_timestamp(cast(ovm1c.created_time as varchar) ) AT TIME ZONE 'UTC' AS TIMESTAMP)
+      , cast( from_iso8601_timestamp(ovm1c.created_time ) AT TIME ZONE 'UTC' AS TIMESTAMP)
        ) as created_time
     ,coalesce(c.contract_factory, 
     {% if is_incremental() %}
