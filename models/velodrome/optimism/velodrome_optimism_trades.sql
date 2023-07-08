@@ -63,7 +63,7 @@ WITH dexs AS
         ,t.evt_index
     FROM
         {{ source('velodrome_v2_optimism', 'Pool_evt_Swap') }} t
-    INNER JOIN {{ source('velodrome_v2_optimism', 'PoolFactory_evt_PairCreated') }} f
+    INNER JOIN {{ source('velodrome_v2_optimism', 'PoolFactory_evt_PoolCreated') }} f
         ON f.pool = t.contract_address
         AND t.evt_block_number >= f.evt_block_number
     {% if is_incremental() %}
