@@ -28,7 +28,7 @@ sources:
     tables:
       - name: Pool_evt_Swap
         loaded_at_field: evt_block_time
-      - name: PoolFactory_evt_PairCreated
+      - name: PoolFactory_evt_PoolCreated
         loaded_at_field: evt_block_time
       - name: Voter_evt_GaugeCreated
         loaded_at_field: evt_block_time
