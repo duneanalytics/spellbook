@@ -101,9 +101,9 @@ models:
       - &token_standard
         name: token_standard
         description: "What token standard the contract is. For non-tokens, this field will be null."
-      - &is_duplicate_code
-        name: is_duplicate_code
-        description: "Has this code been deployed before? True/False"
+      - &code_deploy_rank
+        name: code_deploy_rank
+        description: "Was this the 1st, 2rd, 3rd, etc time the same exact bytecode was deployed? (1 = 1st). This can be used for spam filtering."
       - &is_eoa_deployed
         name: is_eoa_deployed
         description: "Was the contract deployed by an EOA (test if the trace creator = the transaction sender)"
