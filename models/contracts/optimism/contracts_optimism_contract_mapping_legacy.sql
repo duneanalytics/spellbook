@@ -38,142 +38,149 @@
     ,"created_tx_index"
     ,"code_bytelength"
     ,"token_standard"
-    ,"code_deploy_rank"
+    ,"is_duplicate_code"
 ] %}
     
 
 with base_level as (
-SELECT *
-  FROM (
+select 
+    creator_address AS trace_creator_address -- get the original contract creator address
+  ,creator_address
+  ,contract_factory
+  ,contract_address
+
+  ,created_time
+  ,created_block_number
+  ,creation_tx_hash
+  ,created_tx_from
+  ,created_tx_to
+  ,created_tx_method_id
+  ,created_tx_index
+
+  ,top_level_time
+  ,top_level_block_number
+  ,top_level_tx_hash
+  ,top_level_tx_from
+  ,top_level_tx_to
+  ,top_level_tx_method_id
+
+  ,code_bytelength
+  ,is_self_destruct
+  ,is_duplicate_code
+from (
   select 
-     creator_address AS trace_creator_address -- get the original contract creator address
-    ,creator_address
-    ,contract_factory
-    ,contract_address
+    ct.from as creator_address
+    ,CAST(NULL AS string) as contract_factory
+    ,ct.address as contract_address
+    ,ct.block_time as created_time
+    ,ct.block_number as created_block_number
+    ,ct.tx_hash as creation_tx_hash
+    ,t.block_time as top_level_time
+    ,t.block_number as top_level_block_number
+    ,t.hash as top_level_tx_hash
+    ,t.from AS top_level_tx_from
+    ,t.to AS top_level_tx_to
+    ,substring(t.data,1,10) AS top_level_tx_method_id
+    ,t.from AS created_tx_from
+    ,t.to AS created_tx_to
+    ,substring(t.data,1,10) AS created_tx_method_id
+    ,t.index as created_tx_index
+    ,CASE WHEN EXISTS ( --if we've seen this code exist previously
+      SELECT 1 FROM {{ source('optimism', 'creation_traces') }} tst
+        WHERE tst.code = ct.code
+          AND (tst.block_number < ct.block_number --earlier block
+            OR (tst.block_number = ct.block_number AND tst.tx_index < ct.tx_index) --or same block, but earlier in the block
+          )
+    ) THEN true ELSE false END AS is_duplicate_code
+    ,ceil( length(ct.code)/2 ) AS code_bytelength --toreplace with bytearray_length in dunesql
+    ,coalesce(sd.contract_address is not NULL, false) as is_self_destruct
 
-    ,created_time
-    ,created_block_number
-    ,creation_tx_hash
-    ,created_tx_from
-    ,created_tx_to
-    ,created_tx_method_id
-    ,created_tx_index
+    ,ROW_NUMBER() OVER (PARTITION BY contract_address ORDER BY created_time ASC ) AS contract_order
 
-    ,top_level_time
-    ,top_level_block_number
-    ,top_level_tx_hash
-    ,top_level_tx_from
-    ,top_level_tx_to
-    ,top_level_tx_method_id
+  from {{ source('optimism', 'creation_traces') }} as ct 
+  inner join {{ source('optimism', 'transactions') }} as t 
+    ON t.hash = ct.tx_hash
+    AND t.block_time = ct.block_time
+    AND t.block_number = ct.block_number
+    {% if is_incremental() %}
+    and t.block_time >= date_trunc('day', now() - interval '1 week')
+    {% endif %}
+  left join {{ ref('contracts_optimism_self_destruct_contracts_legacy') }} as sd 
+    on ct.address = sd.contract_address
+    and ct.tx_hash = sd.creation_tx_hash
+    and ct.block_time = sd.created_time
+    {% if is_incremental() %}
+    and sd.created_time >= date_trunc('day', now() - interval '1 week')
+    {% endif %}
+  where 
+    true
+    {% if is_incremental() %}
+    and ct.block_time >= date_trunc('day', now() - interval '1 week')
 
-    ,code_bytelength
-    ,is_self_destruct
-    ,ROW_NUMBER() OVER (PARTITION BY code ORDER BY created_block_number ASC, created_tx_index ASC) AS code_deploy_rank
-    ,ROW_NUMBER() OVER (PARTITION BY contract_address ORDER BY created_time ASC ) AS contract_order -- to ensure no dupes
-  from (
-    select 
-      ct.from as creator_address
-      ,CAST(NULL AS string) as contract_factory
-      ,ct.address as contract_address
-      ,ct.block_time as created_time
-      ,ct.block_number as created_block_number
-      ,ct.tx_hash as creation_tx_hash
-      ,t.block_time as top_level_time
-      ,t.block_number as top_level_block_number
-      ,t.hash as top_level_tx_hash
-      ,t.from AS top_level_tx_from
-      ,t.to AS top_level_tx_to
-      ,substring(t.data,1,10) AS top_level_tx_method_id
-      ,t.from AS created_tx_from
-      ,t.to AS created_tx_to
-      ,substring(t.data,1,10) AS created_tx_method_id
-      ,t.index as created_tx_index
-      ,ct.code
-      ,ceil( length(ct.code)/2 ) AS code_bytelength --toreplace with bytearray_length in dunesql
-      ,coalesce(sd.contract_address is not NULL, false) as is_self_destruct
-    from {{ source('optimism', 'creation_traces') }} as ct 
-    inner join {{ source('optimism', 'transactions') }} as t 
-      ON t.hash = ct.tx_hash
-      AND t.block_time = ct.block_time
-      AND t.block_number = ct.block_number
-      {% if is_incremental() %}
-      and t.block_time >= date_trunc('day', now() - interval '1 week')
-      {% endif %}
-    left join {{ ref('contracts_optimism_self_destruct_contracts_legacy') }} as sd 
-      on ct.address = sd.contract_address
-      and ct.tx_hash = sd.creation_tx_hash
-      and ct.block_time = sd.created_time
-      {% if is_incremental() %}
-      and sd.created_time >= date_trunc('day', now() - interval '1 week')
-      {% endif %}
-    where 
-      true
-      {% if is_incremental() %}
-      and ct.block_time >= date_trunc('day', now() - interval '1 week')
+  -- to get existing history of contract mapping
+  union all 
 
-    -- to get existing history of contract mapping
-    union all 
+  select 
+      t.creator_address
+    ,t.contract_creator_if_factory as contract_factory
+    ,t.contract_address
+    ,t.created_time
+    ,t.created_block_number
+    ,t.creation_tx_hash
+    -- If the creator becomes marked as deterministic, we want to re-map
+    ,CASE WHEN nd.creator_address IS NOT NULL THEN t.created_time
+      ELSE t.top_level_time END AS top_level_time
 
-    select 
-       t.creator_address
-      ,t.contract_creator_if_factory as contract_factory
-      ,t.contract_address
-      ,t.created_time
-      ,t.created_block_number
-      ,t.creation_tx_hash
-      -- If the creator becomes marked as deterministic, we want to re-map
-      ,CASE WHEN nd.creator_address IS NOT NULL THEN t.created_time
-        ELSE t.top_level_time END AS top_level_time
+    ,CASE WHEN nd.creator_address IS NOT NULL THEN t.created_block_number
+      ELSE t.top_level_block_number END AS top_level_block_number
 
-      ,CASE WHEN nd.creator_address IS NOT NULL THEN t.created_block_number
-        ELSE t.top_level_block_number END AS top_level_block_number
+    ,CASE WHEN nd.creator_address IS NOT NULL THEN t.creation_tx_hash
+      ELSE t.top_level_tx_hash END AS top_level_tx_hash
 
-      ,CASE WHEN nd.creator_address IS NOT NULL THEN t.creation_tx_hash
-        ELSE t.top_level_tx_hash END AS top_level_tx_hash
+    ,CASE WHEN nd.creator_address IS NOT NULL THEN created_tx_from
+      ELSE t.top_level_tx_from END AS top_level_tx_from
 
-      ,CASE WHEN nd.creator_address IS NOT NULL THEN created_tx_from
-        ELSE t.top_level_tx_from END AS top_level_tx_from
+    ,CASE WHEN nd.creator_address IS NOT NULL THEN created_tx_to
+      ELSE t.top_level_tx_to END AS top_level_tx_to
 
-      ,CASE WHEN nd.creator_address IS NOT NULL THEN created_tx_to
-        ELSE t.top_level_tx_to END AS top_level_tx_to
+    ,CASE WHEN nd.creator_address IS NOT NULL THEN created_tx_method_id
+      ELSE t.top_level_tx_method_id END AS top_level_tx_method_id
+    ---
+    ,t.created_tx_from
+    ,t.created_tx_to
+    ,t.created_tx_method_id
+    ,t.created_tx_index
+    ,t.is_duplicate_code
+    ,t.code_bytelength
+    ,coalesce(sd.contract_address is not NULL, false) as is_self_destruct
+    ,1 as contract_order
+  from {{ this }} t
+  left join {{ ref('contracts_optimism_self_destruct_contracts_legacy') }} as sd 
+    on t.contract_address = sd.contract_address
+    and t.creation_tx_hash = sd.creation_tx_hash
+    and t.created_time = sd.created_time
+    AND t.created_block_number = sd.created_block_number
+  left join {{ source('optimism', 'creation_traces') }} as ct
+    ON t.contract_address = ct.address
+    AND t.created_time = ct.block_time
+    AND t.created_block_number = ct.block_number
+    AND t.creation_tx_hash = ct.tx_hash
+    AND sd.contract_address IS NULL
 
-      ,CASE WHEN nd.creator_address IS NOT NULL THEN created_tx_method_id
-        ELSE t.top_level_tx_method_id END AS top_level_tx_method_id
-      ---
-      ,t.created_tx_from
-      ,t.created_tx_to
-      ,t.created_tx_method_id
-      ,t.created_tx_index
-      ,ct.code
-      ,t.code_bytelength
-      ,coalesce(sd.contract_address is not NULL, false) as is_self_destruct
-    from {{ this }} t
-    left join {{ ref('contracts_optimism_self_destruct_contracts_legacy') }} as sd 
-      on t.contract_address = sd.contract_address
-      and t.creation_tx_hash = sd.creation_tx_hash
-      and t.created_time = sd.created_time
-      AND t.created_block_number = sd.created_block_number
-    left join {{ source('optimism', 'creation_traces') }} as ct
-      ON t.contract_address = ct.address
-      AND t.created_time = ct.block_time
-      AND t.created_block_number = ct.block_number
-      AND t.creation_tx_hash = ct.tx_hash
-      AND sd.contract_address IS NULL
+  -- If the creator becomes marked as deterministic, we want to re-run it.
+  left join {{ref('contracts_optimism_deterministic_contract_creators_legacy')}} as nd 
+    ON nd.creator_address = t.creator_address
 
-    -- If the creator becomes marked as deterministic, we want to re-run it.
-    left join {{ref('contracts_optimism_deterministic_contract_creators_legacy')}} as nd 
-      ON nd.creator_address = t.creator_address
+  -- Don't pull contracts that are in the incremental group (prevent dupes)
+  WHERE t.contract_address NOT IN (
+    SELECT address FROM {{ source('optimism', 'creation_traces') }} WHERE ct.block_time >= date_trunc('day', now() - interval '1 week')
+  )
 
-    -- Don't pull contracts that are in the incremental group (prevent dupes)
-    WHERE t.contract_address NOT IN (
-      SELECT address FROM {{ source('optimism', 'creation_traces') }} WHERE ct.block_time >= date_trunc('day', now() - interval '1 week')
-    )
+    {% endif %} -- incremental filter
+) as x
+WHERE contract_order = 1 -- to ensure no dupes
+group by 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20
 
-      {% endif %} -- incremental filter
-  ) as x
-  group by 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, code
-) y 
-WHERE contract_order = 1
 )
 
 ,tokens as (
@@ -245,7 +252,7 @@ WHERE contract_order = 1
       
       ,b.code_bytelength
       ,b.is_self_destruct
-      ,b.code_deploy_rank
+      ,b.is_duplicate_code
 
     {% if loop.first -%}
     from base_level as b
@@ -284,7 +291,7 @@ WHERE contract_order = 1
     ,f.created_tx_index
     ,f.code_bytelength
     ,f.is_self_destruct
-    ,f.code_deploy_rank
+    ,f.is_duplicate_code
   from level{{max_levels - 1}} as f
   left join {{ ref('contracts_optimism_contract_creator_address_list_legacy') }} as cc 
     on f.creator_address = cc.creator_address
@@ -316,7 +323,7 @@ WHERE contract_order = 1
     ,cc.created_tx_method_id
     ,cc.created_tx_index
     ,cc.code_bytelength
-    ,cc.code_deploy_rank
+    ,cc.is_duplicate_code
   from creator_contracts as cc 
   left join {{ source('optimism', 'contracts') }} as oc 
     on cc.contract_address = oc.address 
@@ -347,7 +354,7 @@ WHERE contract_order = 1
     ,cast(NULL as string) as created_tx_method_id
     ,l.tx_index AS created_tx_index
     ,ceil( length(oc.code)/2 ) as code_bytelength
-    ,1 as code_deploy_rank
+    ,false as is_duplicate_code
     
   from {{ source('optimism', 'logs') }} as l
     left join {{ source('optimism', 'contracts') }} as oc 
@@ -391,7 +398,7 @@ WHERE contract_order = 1
     ,cast(NULL as string) as created_tx_method_id
     ,cast(NULL as integer) AS created_tx_index
     ,cast(NULL as bigint) as code_bytelength --todo
-    ,1 as code_deploy_rank
+    ,false as is_duplicate_code
   from {{ source('ovm1_optimism', 'contracts') }} as c
   where 
     true
@@ -435,7 +442,7 @@ WHERE contract_order = 1
     ,cast(NULL as string) as created_tx_method_id
     ,1 AS created_tx_index
     ,cast(NULL as bigint) as code_bytelength --todo
-    ,1 as code_deploy_rank
+    ,false as is_duplicate_code
   from {{ source('ovm1_optimism', 'synthetix_genesis_contracts') }} as snx
   where 
     true
@@ -476,7 +483,7 @@ WHERE contract_order = 1
     ,cast(NULL as string) as created_tx_method_id
     ,1 AS created_tx_index
     ,cast(NULL as bigint) as code_bytelength --todo
-    ,1 as code_deploy_rank
+    ,false as is_duplicate_code
   from {{ ref('uniswap_optimism_ovm1_pool_mapping_legacy') }} as uni
   where 
     true
@@ -519,7 +526,7 @@ WHERE contract_order = 1
 
     ,c.code_bytelength
     ,t.token_standard AS token_standard
-    ,c.code_deploy_rank
+    ,c.is_duplicate_code
 
   from combine as c 
   left join tokens as t 
@@ -581,7 +588,7 @@ select
   
   ,c.code_bytelength
   ,c.token_standard
-  ,c.code_deploy_rank
+  ,c.is_duplicate_code
   ,CASE WHEN c.trace_creator_address = c.created_tx_from THEN 1 ELSE 0 END AS is_eoa_deployed
 
 from cleanup as c 

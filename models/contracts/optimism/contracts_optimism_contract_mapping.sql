@@ -39,7 +39,7 @@
     ,"created_tx_index"
     ,"code_bytelength"
     ,"token_standard"
-    ,"code_deploy_rank"
+    ,"is_duplicate_code"
 ] %}
     
 
@@ -69,7 +69,7 @@ SELECT *
 
     ,code_bytelength
     ,is_self_destruct
-    ,ROW_NUMBER() OVER (PARTITION BY code ORDER BY created_block_number ASC, created_tx_index ASC) AS code_deploy_rank
+    ,is_duplicate_code
     ,ROW_NUMBER() OVER (PARTITION BY contract_address ORDER BY created_time ASC ) AS contract_order -- to ensure no dupes
     ,to_iterate_creators
   from (
@@ -90,7 +90,13 @@ SELECT *
       ,t.to AS created_tx_to
       ,bytearray_substring(t.data,1,4) AS created_tx_method_id
       ,t.index as created_tx_index
-      ,ct.code
+      ,CASE WHEN EXISTS ( --if we've seen this code exist previously
+        SELECT 1 FROM {{ source('optimism', 'creation_traces') }} tst
+          WHERE tst.code = ct.code
+            AND (tst.block_number < ct.block_number --earlier block
+              OR (tst.block_number = ct.block_number AND tst.tx_index < ct.tx_index) --or same block, but earlier in the block
+            )
+      ) THEN true ELSE false END AS is_duplicate_code
       ,bytearray_length(ct.code) AS code_bytelength --toreplace with bytearray_length in dunesql
       ,coalesce(sd.contract_address is not NULL, false) as is_self_destruct
       ,1 AS to_iterate_creators
@@ -149,7 +155,7 @@ SELECT *
       ,t.created_tx_to
       ,t.created_tx_method_id
       ,t.created_tx_index
-      ,ct.code
+      ,is_duplicate_code
       ,t.code_bytelength
       ,coalesce(sd.contract_address is not NULL, t.is_self_destruct, false) as is_self_destruct
       , CASE WHEN nd.creator_address IS NOT NULL THEN 1 ELSE 0 END AS to_iterate_creators
@@ -176,7 +182,7 @@ SELECT *
     )
       {% endif %} -- incremental filter
   ) as x
-  group by 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 22, code
+  group by 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 22
 ) y 
 WHERE contract_order = 1
 )
@@ -245,7 +251,7 @@ WHERE contract_order = 1
       
       ,b.code_bytelength
       ,b.is_self_destruct
-      ,b.code_deploy_rank
+      ,b.is_duplicate_code
       ,b.contract_order
       ,b.to_iterate_creators --check if base needs to be iterated, keep the base option
 
@@ -290,7 +296,7 @@ WHERE contract_order = 1
     ,f.created_tx_index
     ,f.code_bytelength
     ,f.is_self_destruct
-    ,f.code_deploy_rank
+    ,f.is_duplicate_code
     ,f.contract_order
   from (
     SELECT * FROM level{{max_levels - 1}} WHERE to_iterate_creators = 1 --get mapped contracts
@@ -330,7 +336,7 @@ WHERE contract_order = 1
     ,cc.created_tx_method_id
     ,cc.created_tx_index
     ,cc.code_bytelength
-    ,cc.code_deploy_rank
+    ,cc.is_duplicate_code
     ,1 as map_rank
   from creator_contracts as cc 
   left join {{ source('optimism', 'contracts') }} as oc 
@@ -363,7 +369,7 @@ WHERE contract_order = 1
     ,CAST(NULL AS varbinary) as created_tx_method_id
     ,l.tx_index AS created_tx_index
     ,bytearray_length(oc.code) as code_bytelength
-    ,1 as code_deploy_rank
+    ,false as is_duplicate_code
     ,2 as map_rank
   from {{ source('optimism', 'logs') }} as l
     left join {{ source('optimism', 'contracts') }} as oc 
@@ -400,7 +406,7 @@ WHERE contract_order = 1
       ,CAST(NULL AS varbinary) as created_tx_method_id
       ,cast(NULL as bigint) AS created_tx_index
       ,cast(NULL as bigint) as code_bytelength --todo
-      ,1 as code_deploy_rank
+      ,false as is_duplicate_code
       ,3 as map_rank
 
     FROM {{ ref('contracts_optimism_predeploys') }} pre
@@ -443,7 +449,7 @@ WHERE contract_order = 1
 
     ,c.code_bytelength
     ,t.token_standard AS token_standard
-    ,c.code_deploy_rank
+    ,c.is_duplicate_code
     ,MIN(c.map_rank) AS map_rank
 
   from combine as c 
@@ -476,7 +482,7 @@ SELECT
 , created_tx_to, created_tx_method_id, created_tx_index
 , top_level_time, top_level_tx_hash, top_level_block_number
 , top_level_tx_from, top_level_tx_to , top_level_tx_method_id
-, code_bytelength , token_standard , code_deploy_rank, is_eoa_deployed
+, code_bytelength , token_standard , is_duplicate_code, is_eoa_deployed
 
 FROM (
   select 
@@ -525,7 +531,7 @@ FROM (
     
     ,c.code_bytelength
     ,c.token_standard
-    ,c.code_deploy_rank
+    ,c.is_duplicate_code
     ,CASE WHEN c.trace_creator_address = c.created_tx_from THEN 1 ELSE 0 END AS is_eoa_deployed
 
   from cleanup as c 
