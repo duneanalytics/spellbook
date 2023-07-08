@@ -38,6 +38,7 @@ WITH dexs AS
         {{ source('velodrome_optimism', 'Pair_evt_Swap') }} t
     INNER JOIN {{ source('velodrome_optimism', 'PairFactory_evt_PairCreated') }} f
         ON f.pair = t.contract_address
+        AND t.evt_block_number >= f.evt_block_number
     {% if is_incremental() %}
     WHERE t.evt_block_time >= date_trunc('day', now() - interval '7' day)
     {% endif %}
@@ -64,6 +65,7 @@ WITH dexs AS
         {{ source('velodrome_v2_optimism', 'Pool_evt_Swap') }} t
     INNER JOIN {{ source('velodrome_v2_optimism', 'PoolFactory_evt_PairCreated') }} f
         ON f.pool = t.contract_address
+        AND t.evt_block_number >= f.evt_block_number
     {% if is_incremental() %}
     WHERE t.evt_block_time >= date_trunc('day', now() - interval '7' day)
     {% endif %}
@@ -135,4 +137,3 @@ LEFT JOIN {{ source('prices', 'usd') }} p_sold
     {% if is_incremental() %}
     AND p_sold.minute >= date_trunc('day', now() - interval '7' day)
     {% endif %}
-;
