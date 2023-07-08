@@ -1,6 +1,5 @@
 {{ config(
-    alias = alias('trades'),
-    tags=['dunesql']
+    alias = alias('trades',legacy_model=True),
     partition_by = ['block_date'],
     materialized = 'incremental',
     file_format = 'delta',
@@ -38,7 +37,7 @@ WITH dexs AS
     INNER JOIN {{ source('velodrome_optimism', 'PairFactory_evt_PairCreated') }} f
         ON f.pair = t.contract_address
     {% if is_incremental() %}
-    WHERE t.evt_block_time >= date_trunc('day', now() - interval '7' day)
+    WHERE t.evt_block_time >= date_trunc('day', now() - interval '1 week')
     {% endif %}
 
     UNION ALL
@@ -63,7 +62,7 @@ WITH dexs AS
     INNER JOIN {{ source('velodrome_v2_optimism', 'PoolFactory_evt_PairCreated') }} f
         ON f.pool = t.contract_address
     {% if is_incremental() %}
-    WHERE t.evt_block_time >= date_trunc('day', now() - interval '7' day)
+    WHERE t.evt_block_time >= date_trunc('day', now() - interval '1 week')
     {% endif %}
 )
 SELECT
@@ -78,14 +77,14 @@ SELECT
         when lower(erc20a.symbol) > lower(erc20b.symbol) then concat(erc20b.symbol, '-', erc20a.symbol)
         else concat(erc20a.symbol, '-', erc20b.symbol)
     end as token_pair
-    ,cast(dexs.token_bought_amount_raw as double) / cast( power(10, erc20a.decimals) as double) AS token_bought_amount
-    ,cast(dexs.token_sold_amount_raw as double) / cast( power(10, erc20b.decimals) as double) AS token_sold_amount
-    ,CAST(dexs.token_bought_amount_raw AS double) AS token_bought_amount_raw
-    ,CAST(dexs.token_sold_amount_raw AS double) AS token_sold_amount_raw
+    ,dexs.token_bought_amount_raw / power(10, erc20a.decimals) AS token_bought_amount
+    ,dexs.token_sold_amount_raw / power(10, erc20b.decimals) AS token_sold_amount
+    ,CAST(dexs.token_bought_amount_raw AS DECIMAL(38,0)) AS token_bought_amount_raw
+    ,CAST(dexs.token_sold_amount_raw AS DECIMAL(38,0)) AS token_sold_amount_raw
     ,coalesce(
         dexs.amount_usd
-        ,(cast(dexs.token_bought_amount_raw as double) / cast(power(10, p_bought.decimals) as double) ) * p_bought.price
-        ,(cast(dexs.token_sold_amount_raw as double) / cast(power(10, p_sold.decimals) as double) ) * p_sold.price
+        ,(dexs.token_bought_amount_raw / power(10, p_bought.decimals)) * p_bought.price
+        ,(dexs.token_sold_amount_raw / power(10, p_sold.decimals)) * p_sold.price
     ) AS amount_usd
     ,dexs.token_bought_address
     ,dexs.token_sold_address
@@ -102,15 +101,15 @@ INNER JOIN {{ source('optimism', 'transactions') }} tx
     ON tx.hash = dexs.tx_hash
     AND tx.block_number = dexs.evt_block_number
     {% if not is_incremental() %}
-    AND tx.block_time >= from_iso8601_timestamp('{{project_start_date}}')
+    AND tx.block_time >= '{{project_start_date}}'
     {% endif %}
     {% if is_incremental() %}
-    AND tx.block_time >= date_trunc('day', now() - interval '7' day)
+    AND tx.block_time >= date_trunc('day', now() - interval '1' week)
     {% endif %}
-LEFT JOIN {{ ref('tokens_erc20') }} erc20a
+LEFT JOIN {{ ref('tokens_erc20_legacy') }} erc20a
     ON erc20a.contract_address = dexs.token_bought_address 
     AND erc20a.blockchain = 'optimism'
-LEFT JOIN {{ ref('tokens_erc20') }} erc20b
+LEFT JOIN {{ ref('tokens_erc20_legacy') }} erc20b
     ON erc20b.contract_address = dexs.token_sold_address
     AND erc20b.blockchain = 'optimism'
 LEFT JOIN {{ source('prices', 'usd') }} p_bought
@@ -118,19 +117,19 @@ LEFT JOIN {{ source('prices', 'usd') }} p_bought
     AND p_bought.contract_address = dexs.token_bought_address
     AND p_bought.blockchain = 'optimism'
     {% if not is_incremental() %}
-    AND p_bought.minute >= from_iso8601_timestamp('{{project_start_date}}')
+    AND p_bought.minute >= '{{project_start_date}}'
     {% endif %}
     {% if is_incremental() %}
-    AND p_bought.minute >= date_trunc('day', now() - interval '7' day)
+    AND p_bought.minute >= date_trunc('day', now() - interval '1 week')
     {% endif %}
 LEFT JOIN {{ source('prices', 'usd') }} p_sold
     ON p_sold.minute = date_trunc('minute', dexs.block_time)
     AND p_sold.contract_address = dexs.token_sold_address
     AND p_sold.blockchain = 'optimism'
     {% if not is_incremental() %}
-    AND p_sold.minute >= from_iso8601_timestamp('{{project_start_date}}')
+    AND p_sold.minute >= '{{project_start_date}}'
     {% endif %}
     {% if is_incremental() %}
-    AND p_sold.minute >= date_trunc('day', now() - interval '7' day)
+    AND p_sold.minute >= date_trunc('day', now() - interval '1 week')
     {% endif %}
 ;
