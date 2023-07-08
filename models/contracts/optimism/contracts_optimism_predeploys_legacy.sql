@@ -25,16 +25,16 @@ SELECT *, ROW_NUMBER() OVER (PARTITION BY contract_address ORDER BY pref_rnk ASC
 FROM (
   -- other predeploys
   select 
-     cast(NULL as varchar) as trace_creator_address
-    ,cast(NULL as varchar) as creator_address
-    ,cast(NULL as varchar) as contract_factory
+     cast(NULL as varchar(250)) as trace_creator_address
+    ,cast(NULL as varchar(250)) as creator_address
+    ,cast(NULL as varchar(250)) as contract_factory
     ,contract_address
     ,'ovm' as contract_project
     ,contract_name
     ,cast('2021-07-06 00:00:00' as timestamp) as created_time
     ,false as is_self_destruct
     ,'other predeploys' as source
-    ,cast(NULL as varchar) as creation_tx_hash
+    ,cast(NULL as varchar(250)) as creation_tx_hash
     , 1 as pref_rnk
   from {{ ref('contracts_optimism_system_predeploys_legacy') }} as c
     group by 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11
@@ -45,14 +45,14 @@ FROM (
   select 
      creator_address AS trace_creator_address
     ,creator_address
-    ,cast(NULL as varchar) as contract_factory
+    ,cast(NULL as varchar(250)) as contract_factory
     ,contract_address
     ,contract_project
     ,contract_name
     ,cast(created_time as timestamp) as created_time
     ,false as is_self_destruct
     ,'ovm1 contracts' as source
-    ,cast(NULL as varchar) as creation_tx_hash
+    ,cast(NULL as varchar(250)) as creation_tx_hash
     , 2 as pref_rnk
   from {{ source('ovm1_optimism', 'contracts') }} as c
     group by 1, 2, 3, 4, 5, 6, 7, 8, 9, 10,11
@@ -61,16 +61,16 @@ FROM (
   --synthetix genesis contracts
 
   select 
-     cast(NULL as varchar) as trace_creator_address
-    ,cast(NULL as varchar) as creator_address
-    ,cast(NULL as varchar) as contract_factory
+     cast(NULL as varchar(250)) as trace_creator_address
+    ,cast(NULL as varchar(250)) as creator_address
+    ,cast(NULL as varchar(250)) as contract_factory
     ,snx.contract_address
     ,'Synthetix' as contract_project
     ,contract_name
     ,cast('2021-07-06 00:00:00' as timestamp) as created_time
     ,false as is_self_destruct
     ,'synthetix contracts' as source
-    ,cast(NULL as varchar) as creation_tx_hash
+    ,cast(NULL as varchar(250)) as creation_tx_hash
     , 3 as pref_rnk
   from {{ source('ovm1_optimism', 'synthetix_genesis_contracts') }} as snx
 
@@ -80,16 +80,16 @@ FROM (
   --uniswap pools from ovm1
 
   select 
-     cast(NULL as varchar) as trace_creator_address
-    ,cast(NULL as varchar) as creator_address
-    ,cast(NULL as varchar) as contract_factory
+     cast(NULL as varchar(250)) as trace_creator_address
+    ,cast(NULL as varchar(250)) as creator_address
+    ,cast(NULL as varchar(250)) as contract_factory
     ,lower(newaddress) as contract_address
     ,'Uniswap' as contract_project
     ,'Pair' as contract_name
     ,cast('2021-11-11 00:00:00' as timestamp) as created_time
     ,false as is_self_destruct
     ,'ovm1 uniswap pools' as source
-    ,cast(NULL as varchar) as creation_tx_hash
+    ,cast(NULL as varchar(250)) as creation_tx_hash
     , 4 as pref_rnk
   from {{ ref('uniswap_optimism_ovm1_pool_mapping_legacy') }} as uni
 
@@ -124,8 +124,8 @@ select
       '_',
       ' '
     )
-   ) as varchar) as contract_project
-  ,cast( coalesce(co.contract_name, c.contract_name) as varchar) as contract_name
+   ) as varchar(250)) as contract_project
+  ,cast( coalesce(co.contract_name, c.contract_name) as varchar(250)) as contract_name
   ,coalesce(c.creator_address, ovm1c.creator_address) as creator_address
   ,coalesce(c.created_time, cast(ovm1c.created_time as timestamp)) as created_time
   ,c.contract_factory as contract_creator_if_factory
