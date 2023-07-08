@@ -19,7 +19,8 @@
 WITH dexs AS
 (
     SELECT
-        t.evt_block_time AS block_time
+        '1' as version
+        ,t.evt_block_time AS block_time
         ,t.evt_block_number
         ,t.to AS taker
         ,'' AS maker
@@ -44,7 +45,8 @@ WITH dexs AS
     UNION ALL
 
     SELECT
-        t.evt_block_time AS block_time
+        '2' as version
+        ,t.evt_block_time AS block_time
         ,t.evt_block_number
         ,t.to AS taker
         ,'' AS maker
@@ -69,7 +71,7 @@ WITH dexs AS
 SELECT
     'optimism' AS blockchain
     ,'velodrome' AS project
-    ,'1' AS version
+    ,version
     ,TRY_CAST(date_trunc('DAY', dexs.block_time) AS date) AS block_date
     ,dexs.block_time
     ,erc20a.symbol AS token_bought_symbol
