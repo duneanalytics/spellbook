@@ -2,7 +2,7 @@
     config(
         schema = 'velodrome_optimism',
         alias=alias('bribe_mappings'),
-        tags=['dunesql']
+        tags=['dunesql'],
         materialized = 'table',
         unique_key = ['pool_contract', 'incentives_contract', 'allowed_rewards'],
         post_hook='{{ expose_spells(\'["optimism"]\',
