@@ -99,7 +99,7 @@ models:
             - evt_tx_hash
             - evt_index
             - block_date
-      - check_seed:
+      - check_seed_legacy:
           seed_file: ref('balancer_transfers_bpt_seed')
           filter:
             blockchain: ethereum
@@ -361,7 +361,7 @@ models:
             - tx_hash
             - evt_index
             - trace_address
-      - check_dex_seed:
+      - check_dex_seed_legacy:
           blockchain: ethereum
           project: balancer
           version: 1
@@ -409,7 +409,7 @@ models:
             - tx_hash
             - evt_index
             - trace_address
-      - check_dex_seed:
+      - check_dex_seed_legacy:
           blockchain: ethereum
           project: balancer
           version: 2

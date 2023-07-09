@@ -40,7 +40,7 @@ SELECT 'gnosis' AS blockchain
 , 'GIV' AS token_symbol
 , t.evt_index
 FROM {{ source('giveth_gnosis', 'MerkleDistro_evt_Claimed') }} t
-LEFT JOIN {{ ref('prices_usd_forward_fill') }} pu ON pu.blockchain = 'gnosis'
+LEFT JOIN {{ ref('prices_usd_forward_fill_legacy') }} pu ON pu.blockchain = 'gnosis'
     AND pu.contract_address='{{giv_token_address}}'
     AND pu.minute=date_trunc('minute', t.evt_block_time)
 WHERE t.evt_block_time BETWEEN '2021-12-24' AND '2022-12-31'

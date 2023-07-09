@@ -1,6 +1,6 @@
-{{ config( alias='erc20', tags=['static'])}}
+{{ config( alias = alias('erc20'), tags=['static', 'dunesql'])}}
 
-SELECT LOWER(contract_address) as contract_address, symbol, decimals
+SELECT contract_address, symbol, decimals
 FROM (VALUES
         ('0xfd086bc7cd5c481dcc9c85ebe478a1c0b69fcbb9', 'USDT', 6)
         ,('0xff970a61a04b1ca14834a43f5de4533ebddb5cc8', 'USDC.e', 6)
@@ -126,5 +126,4 @@ FROM (VALUES
         ,('0x1922C36F3bc762Ca300b4a46bB2102F84B1684aB', 'cmUMAMI', 9)
         ,('0xaf88d065e77c8cc2239327c5edb3a432268e5831', 'USDC', 6)
         ,('0x30dF229cefa463e991e29D42DB0bae2e122B2AC7', 'MIM3CRV-f', 18)
-
      ) AS temp_table (contract_address, symbol, decimals)
