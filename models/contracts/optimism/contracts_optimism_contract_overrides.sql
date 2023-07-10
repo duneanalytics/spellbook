@@ -33,6 +33,7 @@ from
     ,(0xbed744818e96aad8a51324291a6f6cb20a0c22be, 'OP AttestationStation', 'AttestationStation')
     ,(0x2335022c740d17c2837f9c884bfe4ffdbf0a95d5, 'Optimist NFT', 'Optimist NFT')
     ,(0x225B0747C4062d98E2e957752Ac5d73C7DaCff90, 'Seaport', 'IOperatorFilterRegistry')
+    ,(0xc40F949F8a4e094D1b49a23ea9241D289B7b2819, 'Liquity', 'LUSD')
     --Non-Contract Labels
     ,(0x80C67432656d59144cEFf962E8fAF8926599bCF8, 'Orbiter Finance', 'Bridge')
     ,(0xf332761c673b59B21fF6dfa8adA44d78c12dEF09, 'OKX', 'OKX DEX')
