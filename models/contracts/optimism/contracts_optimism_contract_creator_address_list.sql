@@ -30,7 +30,7 @@ WITH curated_list AS (
       ,(0x11799622f4d98a24514011e8527b969f7488ef47, 'OneInch')
       ,(0x74886e43273e66da073d26d91cdb4f0eb91fc420, 'OneInch')
       ,(0x7a3d05c70581bd345fe117c06e45f9669205384f, 'Rainbow')
-      ,(0x075da589886ba445d7c7e81c472059de7ae65250, 'Maker')
+      ,(0x075da589886ba445d7c7e81c472059de7ae65250, 'MakerDAO')
       ,(0x395ec94bf3e3dcd3afbd82cd03197731411e396b, 'Synthetix')
       ,(0x3c05b1239b223c969540fefc0270227a2b00e047, 'Synthetix')
       ,(0x6c9fc64a53c1b71fb3f9af64d1ae3a4931a5f4e9, 'Uniswap')
