@@ -16,7 +16,7 @@
 {% set project_start_date = '2023-05-25' %} 
 
 with dates as (
-    with day_seq as (select (sequence(timestamp '{{ project_start_date }}', timestamp CURRENT_DATE, interval '1' day)) as day)
+    with day_seq as (select (sequence(timestamp '{{ project_start_date }}', cast(now() as timestamp), interval '1' day)) as day)
 select days.day
 from day_seq
 cross join unnest(day) as days(day)
@@ -30,7 +30,7 @@ cross join unnest(day) as days(day)
     FROM {{source('prices','usd')}}
     WHERE
       DATE_TRUNC('day', minute) >= timestamp '{{ project_start_date }}'
-      AND DATE_TRUNC('day', minute) < DATE_TRUNC('day', CURRENT_DATE)
+      AND DATE_TRUNC('day', minute) < DATE_TRUNC('day', now())
       AND blockchain = 'arbitrum'
       AND contract_address = 0x5979d7b546e38e414f7e9822514be443a4800529
     GROUP BY 1,2
@@ -41,7 +41,7 @@ cross join unnest(day) as days(day)
       LAST_VALUE(price) OVER (PARTITION BY  DATE_TRUNC('day', minute), contract_address  ORDER BY minute NULLS FIRST range BETWEEN UNBOUNDED preceding AND UNBOUNDED following) AS price
     FROM {{source('prices','usd')}}
     WHERE
-      DATE_TRUNC('day', minute) = DATE_TRUNC('day', CURRENT_DATE)
+      DATE_TRUNC('day', minute) = DATE_TRUNC('day', now())
       AND blockchain = 'arbitrum'
       AND contract_address = 0x5979d7b546e38e414f7e9822514be443a4800529
   )
@@ -59,7 +59,7 @@ SELECT
     FROM {{source('prices','usd')}}
     WHERE
       DATE_TRUNC('day', minute) >= cast('{{ project_start_date }}' as timestamp)
-      AND DATE_TRUNC('day', minute) < DATE_TRUNC('day', CURRENT_DATE)
+      AND DATE_TRUNC('day', minute) < DATE_TRUNC('day', now())
       AND blockchain = 'arbitrum'
       AND contract_address = 0x5979d7b546e38e414f7e9822514be443a4800529
     GROUP BY 1
