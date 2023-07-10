@@ -19,14 +19,14 @@ with dates as (
 select explode(sequence(to_date('{{ project_start_date }}'), now(), interval 1 day)) as day
 )
 
-, selected_pools as (
+, selected_pools(pool_id) as (
 values       lower('0x32296969EF14EB0C6D29669C550D4A0449130230000200000000000000000080'), 
               lower('0x5AEE1E99FE86960377DE9F88689616916D5DCABE000000000000000000000467'),
               lower('0x9C6D47FF73E0F5E51BE5FD53236E3F595C5793F200020000000000000000042C'),
               lower('0xE0FCBF4D98F0AD982DB260F86CF28B49845403C5000000000000000000000504'),
               lower('0x5F1F4E50BA51D723F12385A8A9606AFC3A0555F5000200000000000000000465'),
               lower('0x25ACCB7943FD73DDA5E23BA6329085A3C24BFB6A000200000000000000000387')
-              as pool_id
+              
 )
 
 , pools as (   
