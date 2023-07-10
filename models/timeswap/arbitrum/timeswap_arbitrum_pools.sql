@@ -332,7 +332,7 @@ FROM
                 'Arbitrum',
                 '0x61EDF35c6C6557010A7649c7fC9EFC75B9fEb2E1',
                 '0xea45312c915adc912e681728A5Bf55441c08Fcd7'
-            )
+            ),
             (
                 'PT-wstETH-26JUN2025',
                 'USDC',
