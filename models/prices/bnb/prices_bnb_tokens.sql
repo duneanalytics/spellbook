@@ -180,7 +180,7 @@ FROM
     ("alpaca-alpaca-finance","bnb" ,"ALPACA" ,"0x8f0528ce5ef7b51152a59745befdd91d97091d2f" ,18),
     ("ppp-playposeidon-nft" ,"bnb" ,"PPP" ,"0xce355300b9d7909f577640a3fb179cf911a23fbb" ,18),
     ("ape-apecoin", "bnb" ,"APE" ,"0x0b079b33b6e72311c6be245f9f660cc385029fc3",18),
-    ("metis-metis-token","bnb" ,"Metis" ,"0xe552fb52a4f19e44ef5a967632dbc320b0820639" ,18),
+    --("metis-metis-token","bnb" ,"Metis" ,"0xe552fb52a4f19e44ef5a967632dbc320b0820639" ,18), -- bad price feed and will be replaced by new contract
     ("bob-bob", "bnb", "BOB", "0xb0b195aefa3650a6908f15cdac7d92f8a5791b0b", 18),
     ("fb-fbbank", "bnb", "FB", "0x770F030FDBf63EBF1C939De8BCFf8943C2C2d454", 2),
     ("mdb-mdb", "bnb", "MDB+", "0x9f8bb16f49393eea4331a39b69071759e54e16ea", 18),
@@ -206,5 +206,6 @@ FROM
 where contract_address not in (
     '0x2ab0e9e4ee70fff1fb9d67031e44f6410170d00e', -- bXEN has bad price feed.
     '0x43f3918ff115081cfbfb256a5bde1e8d181f2907', -- ANT (aragon) doesn't exists on BSC, it's a scam-token address.
-    '0x7ddee176f665cd201f93eede625770e2fd911990' -- GALA doesn't exists on BSC, it's a scam-token address.
+    '0x7ddee176f665cd201f93eede625770e2fd911990', -- GALA doesn't exists on BSC, it's a scam-token address.
+    '0xe552fb52a4f19e44ef5a967632dbc320b0820639' -- METIS has bad price feed since PolyNetwork incident and will be replaced by new contract
 )
