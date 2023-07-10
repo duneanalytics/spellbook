@@ -1,7 +1,6 @@
 {{ config(
-    tags = ['dunesql'],
     schema='layerzero',
-    alias = alias('send'),
+    alias = alias('send', legacy_model=True),
     post_hook='{{ expose_spells(\'["ethereum", "gnosis", "avalanche_c", "arbitrum", "fantom", "optimism", "bnb", "polygon"]\',
                               "project",
                               "layerzero",
@@ -10,14 +9,14 @@
 }}
 
 {% set layerzero_models = [
-ref('layerzero_arbitrum_send')
-, ref('layerzero_avalanche_c_send')
-, ref('layerzero_bnb_send')
-, ref('layerzero_ethereum_send')
-, ref('layerzero_fantom_send')
-, ref('layerzero_gnosis_send')
-, ref('layerzero_optimism_send')
-, ref('layerzero_polygon_send')
+ref('layerzero_arbitrum_send_legacy')
+, ref('layerzero_avalanche_c_send_legacy')
+, ref('layerzero_bnb_send_legacy')
+, ref('layerzero_ethereum_send_legacy')
+, ref('layerzero_fantom_send_legacy')
+, ref('layerzero_gnosis_send_legacy')
+, ref('layerzero_optimism_send_legacy')
+, ref('layerzero_polygon_send_legacy')
 ] %}
 
 SELECT *
