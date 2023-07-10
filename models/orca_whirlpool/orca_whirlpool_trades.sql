@@ -5,7 +5,14 @@
         materialized='incremental',
         file_format = 'delta',
         incremental_strategy='merge',
-        unique_key = ['token_mint_address', 'address','day'],
+        unique_key = ['block_date'
+                    , 'blockchain'
+                    , 'project'
+                    ,'version'
+                    , 'tx_id'
+                    ,'outer_instruction_index'
+                    ,'inner_instruction_index'
+                    ,'tx_index'],
         post_hook='{{ expose_spells(\'["solana"]\',
                                     "sector",
                                     "orca_whirlpool",
