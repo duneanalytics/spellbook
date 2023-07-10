@@ -1,5 +1,6 @@
  {{
   config(
+        tags=['dunesql'],
         alias='latest_balances',
         materialized='table',
         post_hook='{{ expose_spells(\'["solana"]\',
