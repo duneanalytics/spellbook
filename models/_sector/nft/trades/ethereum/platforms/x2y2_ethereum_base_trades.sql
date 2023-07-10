@@ -23,7 +23,7 @@ WITH src_evt_inventory as (
     ,contract_address as project_contract_address
     ,case when intent = cast(1 as uint256) then taker else maker end as buyer
     ,case when intent = cast(1 as uint256) then maker else taker end as seller
-    ,from_hex('0x' || substring(JSON_EXTRACT_SCALAR(inv.item, '$.data'), 155, 40)) as nft_contract_address
+    ,from_hex(substring(JSON_EXTRACT_SCALAR(inv.item, '$.data'), 155, 40)) as nft_contract_address
     ,bytearray_to_uint256(from_hex(substring(JSON_EXTRACT_SCALAR(inv.item, '$.data'), 195,64))) as nft_token_id
     ,CAST(1 AS UINT256) AS nft_amount
     ,case when intent = cast(1 as uint256) then 'Buy' else 'Offer Accepted' end as trade_category
