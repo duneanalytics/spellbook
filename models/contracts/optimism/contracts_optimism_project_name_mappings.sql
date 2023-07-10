@@ -103,5 +103,6 @@ from (
     ,('synthetix_v3', 'Synthetix')
     ,('velodrome_v2', 'Velodrome')
     ,('Maker','MakerDAO')
+    ,('Allo Protocol','Allo Protocol (Gitcoin)')
 
     ) as temp_table (dune_name, mapped_name)
