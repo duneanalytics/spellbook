@@ -12,10 +12,6 @@ models:
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
-            - block_date
-            - blockchain
-            - project
-            - version
             - tx_id
             - outer_instruction_index
             - inner_instruction_index
