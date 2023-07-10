@@ -1,6 +1,5 @@
  {{
   config(
-        tags=['dunesql'],
         alias='token_accounts',
         materialized='incremental',
         file_format = 'delta',
