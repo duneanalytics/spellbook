@@ -20,8 +20,8 @@ with
                 ip.account_whirlpool as whirlpool_id
                 , ip.call_block_time as update_time
                 , fee.defaultFeeRate as fee_tier --https://docs.orca.so/reference/trading-fees, should track protocol fees too. and rewards.
-            FROM whirlpool_solana.whirlpool_call_initializePool ip
-            LEFT JOIN whirlpool_solana.whirlpool_call_initializeFeeTier fee ON ip.account_feeTier = fee.account_feeTier
+            FROM {{ source('whirlpool_solana', 'whirlpool_call_initializePool') }} ip
+            LEFT JOIN {{ source('whirlpool_solana', 'whirlpool_call_initializeFeeTier') }} fee ON ip.account_feeTier = fee.account_feeTier
             
             UNION all
             
@@ -29,7 +29,7 @@ with
                 account_whirlpool as whirlpool_id
                 , call_block_time as update_time
                 , feeRate as fee_tier
-            FROM whirlpool_solana.whirlpool_call_setFeeRate
+            FROM {{ source('whirlpool_solana', 'whirlpool_call_setFeeRate') }}
         )
         
     SELECT 
@@ -46,10 +46,10 @@ with
         , fu.update_time
         , fu.fee_tier
         , ip.call_tx_id as init_tx
-    FROM whirlpool_solana.whirlpool_call_initializePool ip
+    FROM {{ source('whirlpool_solana', 'whirlpool_call_initializePool') }} ip
     LEFT JOIN fee_updates fu ON fu.whirlpool_id = ip.account_whirlpool
-    LEFT JOIN tokens_solana.fungible tkA ON tkA.token_mint_address = ip.account_tokenMintA 
-    LEFT JOIN tokens_solana.fungible tkB ON tkB.token_mint_address = ip.account_tokenMintB
+    LEFT JOIN {{ ref('tokens_solana_fungible') }} tkA ON tkA.token_mint_address = ip.account_tokenMintA 
+    LEFT JOIN {{ ref('tokens_solana_fungible') }} tkB ON tkB.token_mint_address = ip.account_tokenMintB
     -- WHERE tkA.symbol is not null AND tkB.symbol is not null
     -- WHERE account_tokenMintA = 'DezXAZ8z7PnrnRJjz3wXBoRgixCa6xjnB7YaB1pPB263' 
     --     OR account_tokenMintB = 'DezXAZ8z7PnrnRJjz3wXBoRgixCa6xjnB7YaB1pPB263'
@@ -96,27 +96,27 @@ with
                 else wp.tokenBVault
                 end as token_sold_vault
             , wp.update_time
-        FROM whirlpool_solana.whirlpool_call_swap sp
+        FROM {{ source('whirlpool_solana', 'whirlpool_call_swap') }} sp
         JOIN whirlpools wp ON sp.account_whirlpool = wp.whirlpool_id AND sp.call_block_time >= wp.update_time
-        LEFT JOIN spl_token_solana.spl_token_call_transfer tr_1 ON tr_1.call_tx_id = sp.call_tx_id 
+        LEFT JOIN {{ source('spl_token_solana', 'spl_token_call_transfer') }} tr_1 ON tr_1.call_tx_id = sp.call_tx_id 
             AND tr_1.call_outer_instruction_index = sp.call_outer_instruction_index 
             AND ((sp.call_is_inner = false AND tr_1.call_inner_instruction_index = 1) 
                 OR (sp.call_is_inner = true AND tr_1.call_inner_instruction_index = sp.call_inner_instruction_index + 1))
             -- and tr_1.call_block_time >= now() - interval '3' month
-        LEFT JOIN spl_token_solana.spl_token_call_transfer tr_2 ON tr_2.call_tx_id = sp.call_tx_id 
+        LEFT JOIN {{ source('spl_token_solana', 'spl_token_call_transfer') }} tr_2 ON tr_2.call_tx_id = sp.call_tx_id 
             AND tr_2.call_outer_instruction_index = sp.call_outer_instruction_index 
             AND ((sp.call_is_inner = false AND tr_2.call_inner_instruction_index = 2)
                 OR (sp.call_is_inner = true AND tr_2.call_inner_instruction_index = sp.call_inner_instruction_index + 2))
             -- and tr_2.call_block_time >= now() - interval '3' month
         WHERE 1=1
-      {% if is_incremental() %}
-      AND sp.call_block_time >= date_trunc("day", now() - interval '1 day')
-      {% endif %}
+    --   {% if is_incremental() %}
+    --   AND sp.call_block_time >= date_trunc("day", now() - interval '1 day')
+    --   {% endif %}
         -- and cardinality(sp.call_inner_instructions) = 2 --this checks for non-reverts, but doesn't work anymore due to inner + outer in one. will need to find a better solution later.
         -- and sp.call_is_inner = false -- only outer transactions (direct)
         -- and sp.call_block_time >= now() - interval '3' month
         -- and sp.call_tx_id = '65mP3g1ygp5VvxKm1HGwMcQi6DKXQ5dXrj9PCAWmFB3JvEmdZ7AhmXps3B7Ln7A9ve4DK6ahRuvANMXcRvGGxqYT' --outer call 
-        -- and sp.call_tx_id = '67FFgUeE8FxuhhUaUrfrmAMqctNUyvxLNMhxWdeL8Ri89MA8BXx9oPQBNLowHTYArNNSGVoC448SZa7aA1ivnfF8' --inner call
+        and sp.call_tx_id = '67FFgUeE8FxuhhUaUrfrmAMqctNUyvxLNMhxWdeL8Ri89MA8BXx9oPQBNLowHTYArNNSGVoC448SZa7aA1ivnfF8' --inner call
     )
     
 
@@ -139,28 +139,28 @@ SELECT
     , cast(tb.fee_tier as double)/1000000 * COALESCE(tb.token_sold_amount * p_sold.price, tb.token_bought_amount * p_bought.price) as fee_usd
     , tb.token_sold_mint_address
     , tb.token_bought_mint_address
+    , tb.token_sold_vault
+    , tb.token_bought_vault
     , tb.whirlpool_id as project_program_id
     , tb.trader_id
     , tb.tx_id
     , tb.outer_instruction_index
     , tb.inner_instruction_index
     , tb.tx_index
-    , tb.token_a_vault
-    , tb.token_b_vault
 FROM
     (
     SELECT 
         *
-        , row_number() OVER (partition by tx_id, instruction_index, whirlpool_id, token_bought_amount order by update_time desc) as recent_update
+        , row_number() OVER (partition by tx_id, outer_instruction_index, whirlpool_id, token_bought_amount order by update_time desc) as recent_update
     FROM all_swaps
     )
     tb
-LEFT JOIN prices.usd p_bought ON p_bought.blockchain = 'solana' 
+LEFT JOIN {{ source('prices', 'usd') }} p_bought ON p_bought.blockchain = 'solana' 
     AND date_trunc('minute', tb.block_time) = p_bought.minute 
-    AND token_bought_program_id = toBase58(p_bought.contract_address)
-LEFT JOIN prices.usd p_sold ON p_sold.blockchain = 'solana' 
+    AND token_bought_mint_address = toBase58(p_bought.contract_address)
+LEFT JOIN {{ source('prices', 'usd') }} p_sold ON p_sold.blockchain = 'solana' 
     AND date_trunc('minute', tb.block_time) = p_sold.minute 
-    AND token_sold_program_id = toBase58(p_sold.contract_address)
+    AND token_sold_mint_address = toBase58(p_sold.contract_address)
 WHERE recent_update = 1 --keep only most recent fee tier
 -- --QA purposes only
 -- AND whirlpool_id = 'HJPjoWUrhoZzkNfRpHuieeFk9WcZWjwy6PBjZ81ngndJ'
