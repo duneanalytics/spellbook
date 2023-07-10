@@ -183,7 +183,7 @@ models:
             - token_id
             - sub_type
             - sub_idx
-      - check_seed:
+      - check_seed_legacy:
           seed_file: ref('nftearth_events_seed')
           filter:
             blockchain: optimism
@@ -223,7 +223,7 @@ models:
           combination_of_columns:
             - block_date
             - unique_trade_id
-      - check_seed:
+      - check_seed_legacy:
           seed_file: ref('pancakeswap_nft_trades_samples')
           match_columns:
             - block_time
