@@ -166,7 +166,7 @@ group by 1,2,3
   select 'arbitrum wombat wstETH one-sided' as pool_name, 0xe14302040c0a1eb6fb5a4a79efa46d60029358d9 as pool,
   'arbitrum' as blockchain, 'wombat' as project, 0.01 as fee, d.day as time, 
   0x5979d7b546e38e414f7e9822514be443a4800529 as main_token, 'wstETH' as main_token_symbol, 
-  null as paired_token, '' as paired_token_symbol,
+  cast(null as varbinary) as paired_token, '' as paired_token_symbol,
   l.amount0/1e18 as main_token_reserve, 0 as paired_token_reserve,
   p0.price*l.amount0/1e18 as main_token_usd_reserve, 0 as paired_token_usd_reserve,
   coalesce(tv.volume,0)/2 as trading_volume
