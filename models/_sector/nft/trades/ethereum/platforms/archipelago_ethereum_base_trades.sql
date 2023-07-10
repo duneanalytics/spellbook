@@ -9,7 +9,7 @@
     unique_key = ['block_number','tx_hash','sub_tx_trade_id'],
     )
 }}
-{% set project_start_date = "cast('2022-6-20' as timestamp)" %}
+{% set project_start_date = "timestamp '2022-6-20'" %}
 
 WITH
 trade_events as (
