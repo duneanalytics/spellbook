@@ -36,7 +36,7 @@ SELECT
 FROM {{source('balancer_v2_ethereum','Vault_evt_PoolRegistered')}}  registered
 INNER JOIN {{source('balancer_v2_ethereum','WeightedPoolV2Factory_call_create')}} call_create
     ON call_create.output_0 = SUBSTRING(registered.poolId, 0, 42)
-WHERE poolId in (select * from selected_pools)
+INNER JOIN selected_pools on registered.poolId = selected_pools.pool_id
 union all
 SELECT
     registered.poolId AS pool_id,
@@ -44,7 +44,7 @@ SELECT
 FROM {{source('balancer_v2_ethereum','Vault_evt_PoolRegistered')}} registered
 INNER JOIN {{source('balancer_v2_ethereum','WeightedPool2TokensFactory_call_create')}} call_create
     ON call_create.output_0 = SUBSTRING(registered.poolId, 0, 42)
-WHERE poolId in (select * from selected_pools)
+INNER JOIN selected_pools on registered.poolId = selected_pools.pool_id
 union all
 SELECT
     registered.poolId AS pool_id,
@@ -52,7 +52,7 @@ SELECT
 FROM {{source('balancer_v2_ethereum','Vault_evt_PoolRegistered')}} registered
 INNER JOIN {{source('balancer_v2_ethereum','WeightedPoolFactory_call_create')}} call_create
     ON call_create.output_0 = SUBSTRING(registered.poolId, 0, 42)
-WHERE poolId in (select * from selected_pools)
+INNER JOIN selected_pools on registered.poolId = selected_pools.pool_id
 union all
 SELECT
     registered.poolId AS pool_id,
@@ -60,7 +60,7 @@ SELECT
 FROM {{source('balancer_v2_ethereum','Vault_evt_PoolRegistered')}} registered
 INNER JOIN {{source('balancer_v2_ethereum','StablePoolFactory_call_create')}} call_create
     ON call_create.output_0 = SUBSTRING(registered.poolId, 0, 42)
-WHERE poolId in (select * from selected_pools)
+INNER JOIN selected_pools on registered.poolId = selected_pools.pool_id
 union all
 SELECT
     registered.poolId AS pool_id,
@@ -68,7 +68,7 @@ SELECT
 FROM {{source('balancer_v2_ethereum','Vault_evt_PoolRegistered')}} registered
 INNER JOIN  {{source('balancer_v2_ethereum','MetaStablePoolFactory_call_create')}} call_create
     ON call_create.output_0 = SUBSTRING(registered.poolId, 0, 42)
-WHERE poolId in (select * from selected_pools)
+INNER JOIN selected_pools on registered.poolId = selected_pools.pool_id
 union all
 SELECT
     registered.poolId AS pool_id,
@@ -76,7 +76,7 @@ SELECT
 FROM {{source('balancer_v2_ethereum','Vault_evt_PoolRegistered')}} registered
 INNER JOIN  {{source('balancer_v2_ethereum','ComposableStablePoolFactory_call_create')}} call_create
     ON call_create.output_0 = SUBSTRING(registered.poolId, 0, 42)
-WHERE poolId in (select * from selected_pools)
+INNER JOIN selected_pools on registered.poolId = selected_pools.pool_id
  
 )
 
@@ -351,7 +351,7 @@ SELECT distinct
             0 as row_numb
         FROM pool_per_date c
         LEFT JOIN cumulative_balance b ON b.day <= c.day AND c.day < b.day_of_next_change and c.pool_id = b.pool_id
-        LEFT JOIN {{source('prices','tokens')}} t ON t.contract_address = b.token AND blockchain = "ethereum"
+        LEFT JOIN ref('prices_tokens') t ON t.contract_address = b.token AND blockchain = "ethereum"
         LEFT JOIN tokens_prices_daily p1 ON p1.time = b.day AND p1.token = b.token
         WHERE b.token = lower('0x7f39C581F595B53c5cb19bD0b3f8dA6c935E2Ca0')
         union all
@@ -366,7 +366,7 @@ SELECT distinct
             row_number() OVER(PARTITION BY c.day,c.pool_id ORDER BY  c.day,c.pool_id, b.token) as row_numb
         FROM pool_per_date c
         LEFT JOIN cumulative_balance b ON b.day <= c.day AND c.day < b.day_of_next_change and c.pool_id = b.pool_id
-        LEFT JOIN {{source('prices','tokens')}} t ON t.contract_address = b.token AND blockchain = "ethereum"
+        LEFT JOIN ref('prices_tokens') t ON t.contract_address = b.token AND blockchain = "ethereum"
         LEFT JOIN tokens_prices_daily p1 ON p1.time = b.day AND p1.token = b.token
         WHERE b.token !=  lower('0x7f39C581F595B53c5cb19bD0b3f8dA6c935E2Ca0') and b.token != SUBSTRING(b.pool_id, 0, 42)
 )

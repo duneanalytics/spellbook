@@ -111,7 +111,8 @@ FROM (
     WHERE from = lower('0x21e27a5e5513d6e65c4f830167390997aa84843a')
     AND success
     AND (call_type NOT IN ('delegatecall', 'callcode', 'staticcall') OR call_type IS null)
-    
+    AND DATE_TRUNC('day', block_time) >= to_date('{{ project_start_date }}')
+
     UNION ALL
 
     -- inbound transfers
@@ -120,14 +121,15 @@ FROM (
     WHERE to = lower('0x21e27a5e5513d6e65c4f830167390997aa84843a')
     AND success
     AND (call_type NOT IN ('delegatecall', 'callcode', 'staticcall') OR call_type IS null)
-    
+    AND DATE_TRUNC('day', block_time) >= to_date('{{ project_start_date }}')
+
     UNION ALL
     
     -- gas costs
     SELECT block_time, from AS address, -cast(gas_price as double)*cast(gas_used as double)/1e18 
     FROM {{source('ethereum','transactions')}} et
     WHERE from = lower('0x21e27a5e5513d6e65c4f830167390997aa84843a')
-    
+    AND DATE_TRUNC('day', block_time) >= to_date('{{ project_start_date }}')
     and success
 ) t
 group by 1
