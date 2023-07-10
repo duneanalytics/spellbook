@@ -374,6 +374,7 @@ WITH raw_token_list AS (
     ,(0x9a2e53158e12BC09270Af10C16A466cb2b5D7836, 'MET', 18, 'underlying')
     ,(0xB25EA095997F5bBaa6cEa962c4fBf3bfc3C09776, 'FIRE', 9, 'underlying')
     ,(0x6c84a8f1c29108F47a79964b5Fe888D4f4D0dE40, 'tBTC', 18, 'underlying')
+    ,(0x747e42Eb0591547a0ab429B3627816208c734EA7, 'T', 18, 'underlying')
 
     ) AS temp_table (contract_address, symbol, decimals, token_type)
 )
