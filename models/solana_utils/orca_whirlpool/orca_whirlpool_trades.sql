@@ -63,31 +63,38 @@ with
             , 'solana' as blockchain
             , case when sp.call_is_inner = False then 'direct'
                 else sp.call_outer_executing_account
-                end as source
+                end as trade_source
             , concat(COALESCE(tokenA_symbol, tokenA), '-', COALESCE(tokenB_symbol, tokenB)) as token_pair
             , case when sp.aToB = true then COALESCE(tokenB_symbol, tokenB) 
                 else COALESCE(tokenA_symbol, tokenA) 
                 end as token_bought_symbol 
             --token bought is always the second instruction (transfer) in the inner instructions
+            , tr_2.amount as token_bought_amount_raw
             , tr_2.amount/COALESCE(pow(10,case when sp.aToB = true then wp.tokenB_decimals else tokenA_decimals end),1) as token_bought_amount
             , case when sp.aToB = true then tokenA_symbol
                 else tokenB_symbol
                 end as token_sold_symbol
+            , tr_1.amount as token_sold_amount_raw
             , tr_1.amount/COALESCE(pow(10,case when sp.aToB = true then wp.tokenA_decimals else tokenB_decimals end),1) as token_sold_amount
             , wp.fee_tier
             , wp.whirlpool_id
             , sp.call_tx_signer as trader_id
             , sp.call_tx_id as tx_id
-            , sp.call_outer_instruction_index as instruction_index
+            , sp.call_outer_instruction_index as outer_instruction_index
+            , sp.call_inner_instruction_index as inner_instruction_index
             , sp.call_tx_index as tx_index
             , case when sp.aToB = true then wp.tokenB
                 else wp.tokenA
-                end as token_bought_program_id  
+                end as token_bought_mint_address
             , case when sp.aToB = true then wp.tokenA 
                 else wp.tokenB
-                end as token_sold_program_id 
-            , wp.tokenAVault
-            , wp.tokenBVault
+                end as token_sold_mint_address
+            , case when sp.aToB = true then wp.tokenBVault
+                else wp.tokenAVault
+                end as token_bought_vault
+            , case when sp.aToB = true then wp.tokenAVault 
+                else wp.tokenBVault
+                end as token_sold_vault
             , wp.update_time
         FROM whirlpool_solana.whirlpool_call_swap sp
         JOIN whirlpools wp ON sp.account_whirlpool = wp.whirlpool_id AND sp.call_block_time >= wp.update_time
@@ -114,32 +121,32 @@ with
     
 
 SELECT
-    tb.block_time
+    tb.blockchain
     , tb.project 
     , tb.version
-    , tb.blockchain
-    , tb.source
+    , date_trunc('day', tb.block_time) as block_date
+    , tb.block_time
     , tb.token_pair
+    , tb.trade_source
     , tb.token_bought_symbol
     , tb.token_bought_amount
+    , tb.token_bought_amount_raw
     , tb.token_sold_symbol
     , tb.token_sold_amount
-    , p_bought.symbol as b_symbol 
-    , p_bought.price as b_price
-    , p_sold.symbol as s_symbol 
-    , p_sold.price as s_price
+    , tb.token_sold_amount_raw
     , COALESCE(tb.token_sold_amount * p_sold.price, tb.token_bought_amount * p_bought.price) as amount_usd
     , cast(tb.fee_tier as double)/1000000 as fee_tier
     , cast(tb.fee_tier as double)/1000000 * COALESCE(tb.token_sold_amount * p_sold.price, tb.token_bought_amount * p_bought.price) as fee_usd
-    , tb.whirlpool_id
+    , tb.token_sold_mint_address
+    , tb.token_bought_mint_address
+    , tb.whirlpool_id as project_program_id
     , tb.trader_id
     , tb.tx_id
-    , tb.instruction_index
+    , tb.outer_instruction_index
+    , tb.inner_instruction_index
     , tb.tx_index
-    , tb.token_sold_program_id
-    , tb.token_bought_program_id
-    , tb.tokenAVault
-    , tb.tokenBVault
+    , tb.token_a_vault
+    , tb.token_b_vault
 FROM
     (
     SELECT 

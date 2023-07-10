@@ -27,7 +27,7 @@ SELECT
     , account_leafOwner
     --thing that is owned ?
     , json_value(metadataArgs, 'strict $.MetadataArgs.tokenStandard.TokenStandard') as token_standard
-    , json_value(metadataArgs, 'strict $.MetadataArgs.name') as token_name 
+    , json_value(metadataArgs, 'strict $.MetadataArgs.name') as token_name --should split out name and id
     , json_value(metadataArgs, 'strict $.MetadataArgs.symbol') as token_symbol 
     , json_value(metadataArgs, 'strict $.MetadataArgs.uri') as token_uri
     , cast(json_value(metadataArgs, 'strict $.MetadataArgs.sellerFeeBasisPoints') as double) as seller_fee_basis_points
