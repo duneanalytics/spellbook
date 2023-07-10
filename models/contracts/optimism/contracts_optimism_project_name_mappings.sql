@@ -104,5 +104,6 @@ from (
     ,('velodrome_v2', 'Velodrome')
     ,('Maker','MakerDAO')
     ,('Allo Protocol','Allo Protocol (Gitcoin)')
+    ,('pika_protocol_v4', 'Pika Protocol')
 
     ) as temp_table (dune_name, mapped_name)
