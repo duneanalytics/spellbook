@@ -101,12 +101,12 @@ with
             AND tr_1.call_outer_instruction_index = sp.call_outer_instruction_index 
             AND ((sp.call_is_inner = false AND tr_1.call_inner_instruction_index = 1) 
                 OR (sp.call_is_inner = true AND tr_1.call_inner_instruction_index = sp.call_inner_instruction_index + 1))
-            -- and tr_1.call_block_time >= now() - interval '1' month
+            and tr_1.call_block_time >= now() - interval '1' day
         LEFT JOIN {{ source('spl_token_solana', 'spl_token_call_transfer') }} tr_2 ON tr_2.call_tx_id = sp.call_tx_id 
             AND tr_2.call_outer_instruction_index = sp.call_outer_instruction_index 
             AND ((sp.call_is_inner = false AND tr_2.call_inner_instruction_index = 2)
                 OR (sp.call_is_inner = true AND tr_2.call_inner_instruction_index = sp.call_inner_instruction_index + 2))
-            -- and tr_2.call_block_time >= now() - interval '1' month
+            and tr_2.call_block_time >= now() - interval '1' day
         WHERE 1=1
         AND sp.call_block_time >= now() - interval '1' day
     --   {% if is_incremental() %}
