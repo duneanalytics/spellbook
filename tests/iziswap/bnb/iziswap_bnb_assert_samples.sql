@@ -14,7 +14,7 @@ with trades as (
 		or (tx_hash='0x57bbc0040e8db0bdf9dd38b1e888dfc124159a4ef4c0368426f89238db23d8de' and evt_index='264')
 )
 , examples as (
-    select * from {{ ref('dex_trades_seed') }}
+    select * from {{ ref('dex_trades_seed_legacy') }}
 	where blockchain = 'bnb' and project='iziswap' and version='1'
 )
 , matched as (
