@@ -10,7 +10,7 @@ SELECT
     TRIM(token_id) as token_id
     , LOWER(TRIM(blockchain)) as blockchain
     , TRIM(symbol) as symbol
-    , TRIM(contract_address) as contract_address --address cannot be lower() on solana
+    , from_base58(contract_address) as contract_address
     , decimals
 FROM
 (
