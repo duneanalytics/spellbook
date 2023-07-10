@@ -7,10 +7,10 @@
         )
 }}
 SELECT 
-    TRIM(token_id) as token_id
-    , CAST(LOWER(TRIM(blockchain)) as VARCHAR) as blockchain
-    , TRIM(symbol) as symbol
-    , CAST(LOWER(TRIM(contract_address)) as VARBINARY) as contract_address
+    token_id
+    , CAST(blockchain as VARCHAR) as blockchain
+    , symbol
+    , CAST(contract_address as VARBINARY) as contract_address
     , CAST(decimals as int) as decimals
 FROM
 (
