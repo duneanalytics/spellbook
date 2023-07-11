@@ -169,6 +169,19 @@ sources:
           - &singleton
             name: singleton
             description: "Singleton"
+      - name: SafeProxyFactory_v_1_4_1_evt_ProxyCreation
+        loaded_at_field: evt_block_time
+        description: "Safe v1.4.1 factory ProxyCreation events"
+        columns:
+          - *contract_address
+          - *evt_block_number
+          - *evt_block_time
+          - *evt_index
+          - *evt_tx_hash
+          - name: proxy
+            description: "Address of created Safe proxy"
+          - name: singleton
+            description: "Singleton"
       - name: Safev0_1_0_call_setup
         loaded_at_field: call_block_time
         description: "Safe v0.1.0 setup events"
