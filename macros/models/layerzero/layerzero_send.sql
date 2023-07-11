@@ -1,4 +1,4 @@
-{% macro layerzero_send(blockchain, transaction_start_date, endpoint_contract, native_token_contract, source_chain_id, endpoint_call_send) %}
+{% macro layerzero_send(blockchain, transaction_start_date, endpoint_contract, native_token_contract, source_chain_id, endpoint_call_send, wrapped_native_symbol, native_symbol) %}
 WITH send_detail AS (
     SELECT ROW_NUMBER() OVER(PARTITION BY s.call_block_number,s.call_tx_hash ORDER BY s.call_trace_address ASC) AS call_send_index,
         CAST({{source_chain_id}} AS integer) AS source_chain_id,
@@ -15,7 +15,7 @@ WITH send_detail AS (
         t.to AS transaction_contract_address,
         CAST(t.value AS DOUBLE) AS transaction_value,
         CASE WHEN length(_destination) >= 40
-            THEN bytearray_substring(_destination, 1, 20)
+            THEN bytearray_substring(_destination, length(_destination) + 1 - 20, 20)
             ELSE 0x END AS local_contract_address, --
         CASE WHEN length(_destination) >= 40
             THEN bytearray_substring(_destination, 1, length(_destination) - 20)
@@ -135,8 +135,8 @@ SELECT '{{blockchain}}' AS blockchain,
     s.local_contract_address AS source_bridge_contract,
     s.remote_contract_address AS destination_bridge_contract,
     t.transfer_type,
-    CASE WHEN erc.symbol = 'WETH' AND t.transfer_type = 'native'
-        THEN 'ETH'
+    CASE WHEN erc.symbol = '{{wrapped_native_symbol}}' AND t.transfer_type = 'native'
+        THEN '{{native_symbol}}'
         ELSE erc.symbol END AS currency_symbol,
     t.currency_contract,
     COALESCE(t.amount_raw,0) / power(10, erc.decimals) * p.price AS amount_usd,

@@ -16,4 +16,6 @@
   native_token_contract="0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c",
   source_chain_id=102,
   endpoint_call_send = source ('layerzero_bnb', 'Endpoint_call_send'),
+  wrapped_native_symbol = 'WBNB',
+  native_symbol = 'BNB',
 )}}

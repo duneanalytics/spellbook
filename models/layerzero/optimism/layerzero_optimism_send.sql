@@ -16,4 +16,6 @@
   native_token_contract="0x4200000000000000000000000000000000000006",
   source_chain_id=111,
   endpoint_call_send = source('layerzero_optimism', 'Endpoint_call_send'),
+  wrapped_native_symbol = 'WETH',
+  native_symbol = 'ETH',
 )}}

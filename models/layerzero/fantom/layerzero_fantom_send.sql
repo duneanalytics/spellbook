@@ -16,4 +16,6 @@
   native_token_contract="0x21be370d5312f44cb42ce377bc9b8a0cef1a4c83",
   source_chain_id=112,
   endpoint_call_send = source('layerzero_fantom_endpoint_fantom', 'Endpoint_call_send'),
+  wrapped_native_symbol = 'WFTM',
+  native_symbol = 'FTM',
 )}}

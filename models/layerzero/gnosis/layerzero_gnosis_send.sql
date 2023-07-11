@@ -16,4 +16,6 @@
   native_token_contract="0xe91d153e0b41518a2ce8dd3d7944fa863463a97d",
   source_chain_id=145,
   endpoint_call_send = source('layerzero_gnosis', 'gnosisendpoint_call_send'),
+  wrapped_native_symbol = 'WXDAI',
+  native_symbol = 'XDAI',
 )}}
