@@ -1,4 +1,4 @@
-{% macro port_to_old_schema(model) %}
+{% macro port_to_old_schema_legacy(model) %}
 
 SELECT
     blockchain,
