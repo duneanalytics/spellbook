@@ -15,7 +15,7 @@
 
 SELECT 'withdraw' AS msg_type, 'SentMessage' AS event, sender,
     evt_tx_hash AS l2_tx_hash, evt_block_number AS l2_block_number, 
-    evt_block_time AS l2_block_time, DATE_TRUNC('day',evt_block_time) AS l2_block_date,
+    evt_block_time AS l2_block_time, cast(DATE_TRUNC('day',evt_block_time) as date) AS l2_block_date,
     contract_address, target, cast(messageNonce as varchar) AS message_nonce_hash, evt_index, '2' AS version,
     DENSE_RANK() OVER (PARTITION BY evt_tx_hash ORDER BY evt_index ASC) AS msg_index
     
@@ -29,7 +29,7 @@ UNION ALL
 
 SELECT 'deposit' AS m_type, 'RelayedMessage' AS event, cast(NULL as varbinary) as sender,
     evt_tx_hash AS l2_tx_hash, evt_block_number AS l2_block_number, 
-    evt_block_time AS l2_block_time, DATE_TRUNC('day',evt_block_time) AS l2_block_date,
+    evt_block_time AS l2_block_time, cast(DATE_TRUNC('day',evt_block_time) as date) AS l2_block_date,
     contract_address, cast(NULL as varbinary) AS target, substring(cast(msgHash as varchar),3) AS message_nonce_hash, evt_index, '2' AS version,
     DENSE_RANK() OVER (PARTITION BY evt_tx_hash ORDER BY evt_index ASC) AS msg_index
 
