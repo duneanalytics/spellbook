@@ -7,7 +7,7 @@ SELECT
 FROM(
      SELECT '{{blockchain}}' as blockchain
     , t.evt_block_time AS block_time
-    , date_trunc('day', t.evt_block_time) AS block_date
+    , cast(date_trunc('day', t.evt_block_time) as date) AS block_date
     , t.evt_block_number AS block_number
     , '{{token_standard_721}}' AS token_standard
     , 'single' AS transfer_type
@@ -39,7 +39,7 @@ FROM(
 
     SELECT '{{blockchain}}' as blockchain
     , t.evt_block_time AS block_time
-    , date_trunc('day', t.evt_block_time) AS block_date
+    , cast(date_trunc('day', t.evt_block_time) as date) AS block_date
     , t.evt_block_number AS block_number
     , '{{token_standard_1155}}' AS token_standard
     , 'single' AS transfer_type
@@ -71,7 +71,7 @@ FROM(
 
     SELECT '{{blockchain}}' as blockchain
     , t.evt_block_time AS block_time
-    , date_trunc('day', t.evt_block_time) AS block_date
+    , cast(date_trunc('day', t.evt_block_time) as date) AS block_date
     , t.evt_block_number AS block_number
     , '{{token_standard_1155}}'  AS token_standard
     , 'batch' AS transfer_type
