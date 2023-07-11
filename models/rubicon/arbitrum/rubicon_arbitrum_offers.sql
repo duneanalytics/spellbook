@@ -73,7 +73,8 @@ trades AS
         AND sell_token_price.blockchain = 'arbitrum'
         {% if not is_incremental() %} -- only run this filter if it is an incremental run
         AND sell_token_price.minute >= cast('{{ project_start_date }}' AS timestamp)
-        {% else is_incremental() %}
+        {% endif %}
+        {% if is_incremental() %}
         AND sell_token_price.minute >= date_trunc('day', now() - interval '1 week')
         {% endif %}
     
@@ -84,7 +85,8 @@ trades AS
         AND buy_token_price.blockchain = 'arbitrum'
         {% if not is_incremental() %} -- only run this filter if it is an incremental run
         AND buy_token_price.minute >= cast('{{ project_start_date }}' AS timestamp)
-        {% else is_incremental() %}
+        {% endif %}
+        {% if is_incremental() %}
         AND buy_token_price.minute >= date_trunc('day', now() - interval '1 week')
         {% endif %}
     
