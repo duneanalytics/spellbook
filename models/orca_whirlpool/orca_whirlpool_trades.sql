@@ -117,6 +117,7 @@ with
         -- and sp.call_block_time >= now() - interval '3' month
         -- and sp.call_tx_id = '65mP3g1ygp5VvxKm1HGwMcQi6DKXQ5dXrj9PCAWmFB3JvEmdZ7AhmXps3B7Ln7A9ve4DK6ahRuvANMXcRvGGxqYT' --outer call 
         -- and sp.call_tx_id = '67FFgUeE8FxuhhUaUrfrmAMqctNUyvxLNMhxWdeL8Ri89MA8BXx9oPQBNLowHTYArNNSGVoC448SZa7aA1ivnfF8' --inner call
+        and sp.call_tx_id = '4Dy3oJ3ErGXdCY8ftNape6uwuM7gd3JHh2WfHi7jAQZtFXWCqaAx61ELsmvuuvk1H1Pi1rsij7xX1zhRXBcX4gyk' --dupe test
     )
     
 
@@ -134,9 +135,9 @@ SELECT
     , tb.token_sold_symbol
     , tb.token_sold_amount
     , tb.token_sold_amount_raw
-    , COALESCE(tb.token_sold_amount * p_sold.price, tb.token_bought_amount * p_bought.price) as amount_usd
-    , cast(tb.fee_tier as double)/1000000 as fee_tier
-    , cast(tb.fee_tier as double)/1000000 * COALESCE(tb.token_sold_amount * p_sold.price, tb.token_bought_amount * p_bought.price) as fee_usd
+    -- , COALESCE(tb.token_sold_amount * p_sold.price, tb.token_bought_amount * p_bought.price) as amount_usd
+    -- , cast(tb.fee_tier as double)/1000000 as fee_tier
+    -- , cast(tb.fee_tier as double)/1000000 * COALESCE(tb.token_sold_amount * p_sold.price, tb.token_bought_amount * p_bought.price) as fee_usd
     , tb.token_sold_mint_address
     , tb.token_bought_mint_address
     , tb.token_sold_vault
@@ -155,12 +156,12 @@ FROM
     FROM all_swaps
     )
     tb
-LEFT JOIN {{ source('prices', 'usd') }} p_bought ON p_bought.blockchain = 'solana' 
-    AND date_trunc('minute', tb.block_time) = p_bought.minute 
-    AND token_bought_mint_address = toBase58(p_bought.contract_address)
-LEFT JOIN {{ source('prices', 'usd') }} p_sold ON p_sold.blockchain = 'solana' 
-    AND date_trunc('minute', tb.block_time) = p_sold.minute 
-    AND token_sold_mint_address = toBase58(p_sold.contract_address)
+-- LEFT JOIN {{ source('prices', 'usd') }} p_bought ON p_bought.blockchain = 'solana' 
+--     AND date_trunc('minute', tb.block_time) = p_bought.minute 
+--     AND token_bought_mint_address = toBase58(p_bought.contract_address)
+-- LEFT JOIN {{ source('prices', 'usd') }} p_sold ON p_sold.blockchain = 'solana' 
+--     AND date_trunc('minute', tb.block_time) = p_sold.minute 
+--     AND token_sold_mint_address = toBase58(p_sold.contract_address)
 WHERE recent_update = 1 --keep only most recent fee tier
 -- --QA purposes only
 -- AND whirlpool_id = 'HJPjoWUrhoZzkNfRpHuieeFk9WcZWjwy6PBjZ81ngndJ'
