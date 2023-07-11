@@ -57,12 +57,12 @@ trades AS
     FROM {{ source('rubicon_arbitrum', 'RubiconMarket_evt_emitTake') }} t 
 
     -- get the relevant sell token data
-    LEFT JOIN {{ ref('tokens_erc20') }} erc20_sell
+    LEFT JOIN {{ ref('tokens_erc20_legacy') }} erc20_sell
         ON erc20_sell.contract_address = t.pay_gem
         AND erc20_sell.blockchain = 'arbitrum'
 
     -- get the relevant buy token data
-    LEFT JOIN {{ ref('tokens_erc20') }} erc20_buy
+    LEFT JOIN {{ ref('tokens_erc20_legacy') }} erc20_buy
         ON erc20_buy.contract_address = t.buy_gem
         AND erc20_buy.blockchain = 'arbitrum'
 
@@ -73,6 +73,8 @@ trades AS
         AND sell_token_price.blockchain = 'arbitrum'
         {% if not is_incremental() %} -- only run this filter if it is an incremental run
         AND sell_token_price.minute >= cast('{{ project_start_date }}' AS timestamp)
+        {% else is_incremental() %}
+        AND sell_token_price.minute >= date_trunc('day', now() - interval '1 week')
         {% endif %}
     
     -- get the buy token price
@@ -82,6 +84,8 @@ trades AS
         AND buy_token_price.blockchain = 'arbitrum'
         {% if not is_incremental() %} -- only run this filter if it is an incremental run
         AND buy_token_price.minute >= cast('{{ project_start_date }}' AS timestamp)
+        {% else is_incremental() %}
+        AND buy_token_price.minute >= date_trunc('day', now() - interval '1 week')
         {% endif %}
     
     -- filter out trades that were created before the project start date
@@ -165,12 +169,12 @@ INNER JOIN {{ source('arbitrum', 'transactions') }} txn
     {% endif %}
     
 -- get the relevant sell token data
-LEFT JOIN {{ ref('tokens_erc20') }} erc20_sell
+LEFT JOIN {{ ref('tokens_erc20_legacy') }} erc20_sell
     ON erc20_sell.contract_address = offers.sell_token_address
     AND erc20_sell.blockchain = 'arbitrum'
 
 -- get the relevant buy token data
-LEFT JOIN {{ ref('tokens_erc20') }} erc20_buy
+LEFT JOIN {{ ref('tokens_erc20_legacy') }} erc20_buy
     ON erc20_buy.contract_address = offers.buy_token_address
     AND erc20_buy.blockchain = 'arbitrum'
 
