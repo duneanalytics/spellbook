@@ -16,7 +16,7 @@
 
 WITH src_evt_inventory as (
     SELECT
-     date_trunc('day',evt_block_time) as block_date
+     cast(date_trunc('month',evt_block_time) as date) as block_date
     ,evt_block_time as block_time
     ,evt_block_number as block_number
     ,evt_tx_hash as tx_hash

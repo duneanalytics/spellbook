@@ -177,7 +177,7 @@ with all_superrare_sales as (
 )
 
 SELECT
-    cast(date_trunc('day', a.block_time) AS date) AS block_date,
+    cast(date_trunc('month', a.block_time) AS date) AS block_date,
     a.block_time,
     a.block_number,
     a.nft_token_id,

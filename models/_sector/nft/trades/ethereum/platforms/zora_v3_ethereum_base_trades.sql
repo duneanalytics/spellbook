@@ -149,7 +149,7 @@ WITH v3_trades as (
 )
 
 SELECT
-    date_trunc('day',block_time) as block_date
+    cast(date_trunc('month',block_time) as date) as block_date
     , block_time
     , block_number
     , project_contract_address

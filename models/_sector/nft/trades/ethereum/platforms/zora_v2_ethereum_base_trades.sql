@@ -11,7 +11,7 @@
 }}
 
 SELECT
-      date_trunc('day',evt_block_time) AS block_date
+      cast(date_trunc('month',evt_block_time) as date) AS block_date
     , evt_block_time AS block_time
     , evt_block_number AS block_number
     , contract_address AS project_contract_address

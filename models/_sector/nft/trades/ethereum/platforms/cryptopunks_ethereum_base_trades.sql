@@ -30,7 +30,7 @@ with accepted_bid_prices as (
     group by 1,2,3
 )
 
-select  date_trunc('day',evt.evt_block_time) as block_date
+select  cast(date_trunc('month',evt.evt_block_time) as date) as block_date
         , evt.evt_block_time as block_time
         , evt.evt_block_number as block_number
         , evt.evt_tx_hash as tx_hash

@@ -18,7 +18,7 @@
 WITH
 regular_blur_sales as (
     SELECT
-          date_trunc('day', bm.evt_block_time) AS block_date
+          cast(date_trunc('month', bm.evt_block_time) as date) AS block_date
         , bm.evt_block_time AS block_time
         , bm.evt_block_number AS block_number
         , from_hex(JSON_EXTRACT_SCALAR(bm.buy, '$.collection')) AS nft_contract_address
@@ -50,7 +50,7 @@ regular_blur_sales as (
 
 , seaport_blur_sales as (
 SELECT
-      date_trunc('day', s.evt_block_time) AS block_date
+      cast(date_trunc('month', s.evt_block_time) as date) AS block_date
     , s.evt_block_time AS block_time
     , s.evt_block_number AS block_number
     , from_hex(JSON_EXTRACT_SCALAR(s.offer[1], '$.token')) AS nft_contract_address

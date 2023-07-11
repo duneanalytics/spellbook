@@ -224,7 +224,7 @@ WITH
 
     ,swaps_cleaned as (
         SELECT
-             date_trunc('DAY', call_block_time) AS block_date
+             cast(date_trunc('month', call_block_time) as date) AS block_date
             , call_block_time as block_time
             , call_block_number as block_number
             , nft_token_id

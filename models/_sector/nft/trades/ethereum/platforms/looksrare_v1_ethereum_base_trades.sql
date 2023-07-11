@@ -95,7 +95,7 @@ WITH looksrare_trades AS (
 
 
 SELECT
-  date_trunc('day', lr.block_time) AS block_date
+  cast(date_trunc('month', lr.block_time) as date) AS block_date
 , lr.block_time
 , lr.block_number
 , lr.tx_hash
