@@ -1,5 +1,6 @@
 {{  config(
         alias='eth_flow_orders',
+        tags = ['dunesql'],
         materialized='incremental',
         partition_by = ['block_date'],
         unique_key = ['tx_hash', 'order_uid'],
@@ -13,38 +14,40 @@
     )
 }}
 
--- PoC Query: https://dune.com/queries/1762226
+-- PoC Query: https://dune.com/queries/2715069
 with
 eth_flow_orders as (
     select
         sender,
         cast(date_trunc('day', evt_block_time) as date) as block_date,
+        case
+          when event.contract_address = 0x40a50cf069e992aa4536211b23f286ef88752187 then 'prod'
+          when event.contract_address = 0xd02de8da0b71e1b59489794f423fabba2adc4d93 then 'barn'
+        end as environment,
         evt_block_time as block_time,
         evt_block_number as block_number,
         evt_tx_hash as tx_hash,
-        case
-            when event.contract_address = '0x40a50cf069e992aa4536211b23f286ef88752187'
-                then 'prod'
-            when event.contract_address = '0xd02de8da0b71e1b59489794f423fabba2adc4d93'
-                then 'barn'
-        end as environment,
-        -- This validity is always infinite. Instead we unpack this from the data field.
-        -- from_unixtime(get_json_object(event.order, '$.validTo')) as valid_to,
-        from_unixtime(conv(substring(data, 19, 8), 16, 10)) as valid_to,
-        conv(substring(data, 3, 16), 16, 10) as quote_id,
-        -- These are unpacked so to hopefully make the join on trade events more efficient.
-        get_json_object(event.order, '$.sellAmount') as sell_amount,
-        get_json_object(event.order, '$.feeAmount') as fee,
-        -- Additional potentially relevant fields (for unfilled orders)
-        get_json_object(event.order, '$.buyAmount') as buy_amount,
-        get_json_object(event.order, '$.buyToken') as buy_token,
-        get_json_object(event.order, '$.receiver') as receiver,
-        get_json_object(event.order, '$.appData') as app_hash,
-        -- OrderHash returned by createOrder with excluded fix values (owner = contract_address, validTo = max u32)
-        -- https://github.com/cowprotocol/ethflowcontract/blob/9c74c8ba36ff9ff3e255172b02454f831c066865/src/CoWSwapEthFlow.sol#L81-L84
-        concat(output_orderHash, substring(event.contract_address, 3, 40), 'ffffffff') as order_uid
-    from {{ source('cow_protocol_ethereum', 'CoWSwapEthFlow_evt_OrderPlacement') }} event
-    inner join {{ source('cow_protocol_ethereum', 'CoWSwapEthFlow_call_createOrder') }} call
+        date_format(
+            from_unixtime(bytearray_to_decimal(from_hex(substring(cast(data as varchar), 19, 8)))),
+           '%Y-%m-%d %T'
+        ) AS valid_to,
+      substring(cast(data as varchar), 3, 16) as quote_id_hex,
+      bytearray_to_decimal(from_hex(substring(cast(data as varchar), 3, 16))) as quote_id,
+      JSON_EXTRACT_SCALAR(event."order", '$.sellAmount') as sell_amount,
+      JSON_EXTRACT_SCALAR(event."order", '$.feeAmount') as fee_amount,
+      JSON_EXTRACT_SCALAR(event."order", '$.buyAmount') as buy_amount,
+      JSON_EXTRACT_SCALAR(event."order", '$.buyToken') as buy_token,
+      JSON_EXTRACT_SCALAR(event."order", '$.receiver') as receiver,
+      JSON_EXTRACT_SCALAR(event."order", '$.appData') as app_hash,
+      -- OrderHash returned by createOrder with excluded fix values (owner = contract_address, validTo = max u32)
+      -- https://github.com/cowprotocol/ethflowcontract/blob/9c74c8ba36ff9ff3e255172b02454f831c066865/src/CoWSwapEthFlow.sol#L81-L84
+      concat(
+        cast(output_orderHash as varchar),
+        substring(cast(event.contract_address as varchar), 3, 40),
+        'ffffffff'
+      ) as order_uid
+  from {{ source('cow_protocol_ethereum', 'CoWSwapEthFlow_evt_OrderPlacement') }} event
+  inner join {{ source('cow_protocol_ethereum', 'CoWSwapEthFlow_call_createOrder') }} call
         on call_block_number = evt_block_number
         and call_tx_hash = evt_tx_hash
         and call_success = true
