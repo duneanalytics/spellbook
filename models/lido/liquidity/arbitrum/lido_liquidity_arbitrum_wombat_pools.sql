@@ -29,7 +29,7 @@ cross join unnest(day) as days(day)
       AVG(price) AS price
     FROM {{source('prices','usd')}}
     WHERE
-      DATE_TRUNC('day', minute) >= timestamp '{{ project_start_date }}'
+      DATE_TRUNC('day', minute) >= DATE '{{ project_start_date }}'
       AND DATE_TRUNC('day', minute) < DATE_TRUNC('day', now())
       AND blockchain = 'arbitrum'
       AND contract_address = 0x5979d7b546e38e414f7e9822514be443a4800529
@@ -58,7 +58,7 @@ SELECT
       AVG(price) AS price
     FROM {{source('prices','usd')}}
     WHERE
-      DATE_TRUNC('day', minute) >= cast('{{ project_start_date }}' as timestamp)
+      DATE_TRUNC('day', minute) >= DATE '{{ project_start_date }}'
       AND DATE_TRUNC('day', minute) < DATE_TRUNC('day', now())
       AND blockchain = 'arbitrum'
       AND contract_address = 0x5979d7b546e38e414f7e9822514be443a4800529
@@ -73,7 +73,7 @@ SELECT
       SUM(case when fromToken = 0x5979d7b546e38e414f7e9822514be443a4800529 then cast(fromAmount as double) else -cast(toAmount AS DOUBLE) end) AS amount0,
       SUM(case when fromToken = 0x5979d7b546e38e414f7e9822514be443a4800529 then -cast(toAmount as double) else cast(fromAmount AS DOUBLE) end) AS amount1
     FROM {{source('wombat_arbitrum','wsteth_pool_evt_Swap')}} AS sw
-    WHERE DATE_TRUNC('day', sw.evt_block_time) >= timestamp '{{ project_start_date }}'
+    WHERE DATE_TRUNC('day', sw.evt_block_time) >= DATE '{{ project_start_date }}'
     GROUP BY  1,2
  )
  
@@ -83,7 +83,7 @@ SELECT
       sw.contract_address AS pool,
       SUM(cast(amount as double)) AS amount0
     FROM {{source('wombat_arbitrum','wsteth_pool_evt_Deposit')}} AS sw
-    WHERE DATE_TRUNC('day', sw.evt_block_time) >= timestamp '{{ project_start_date }}'
+    WHERE DATE_TRUNC('day', sw.evt_block_time) >= DATE '{{ project_start_date }}'
     and token = 0x5979d7b546e38e414f7e9822514be443a4800529
     GROUP BY  1,2
     
@@ -95,7 +95,7 @@ SELECT
       sw.contract_address AS pool,
       SUM(cast(amount as double)) AS amount0
     FROM {{source('wombat_arbitrum','wsteth_pool_evt_Withdraw')}} AS sw
-    WHERE DATE_TRUNC('day', sw.evt_block_time) >= timestamp '{{ project_start_date }}'
+    WHERE DATE_TRUNC('day', sw.evt_block_time) >= DATE '{{ project_start_date }}'
     and token = 0x5979d7b546e38e414f7e9822514be443a4800529
     GROUP BY  1,2
     
@@ -134,7 +134,7 @@ group by 1,2,3
           sw.contract_address AS pool,
           SUM(case when fromToken = 0x5979d7b546e38e414f7e9822514be443a4800529 then cast(fromAmount as double) else cast(toAmount AS DOUBLE) end) AS amount0
         FROM {{source('wombat_arbitrum','wsteth_pool_evt_Swap')}} AS sw 
-        WHERE DATE_TRUNC('day', sw.evt_block_time) >= timestamp '{{ project_start_date }}'
+        WHERE DATE_TRUNC('day', sw.evt_block_time) >= DATE '{{ project_start_date }}'
         GROUP BY 1,2
         
   )
