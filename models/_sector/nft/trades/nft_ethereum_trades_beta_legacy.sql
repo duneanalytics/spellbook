@@ -1,7 +1,6 @@
 {{ config(
     schema = 'nft_ethereum',
-    tags = ['dunesql'],
-    alias = alias('trades_beta'),
+    alias = alias('trades_beta',legacy_model=True),
     partition_by = ['block_date'],
     materialized = 'incremental',
     file_format = 'delta',
@@ -13,7 +12,7 @@
 {% set base_models = [
      ('archipelago',    'v1',   ref('archipelago_ethereum_base_trades'))
     ,('superrare',    'v1',   ref('superrare_ethereum_base_trades'))
-    ,('foundation',    'v1',   ref('foundation_ethereum_base_trades'))
+    ,('foundation',    'v1',   ref('foundation_ethereum_base_trades_legacy'))
     ,('blur',    'v1',   ref('blur_ethereum_base_trades'))
     ,('element',    'v1',   ref('element_ethereum_base_trades'))
     ,('x2y2',    'v1',   ref('x2y2_ethereum_base_trades'))
@@ -27,7 +26,7 @@
     ,('looksrare',    'v2',   ref('looksrare_v2_ethereum_base_trades'))
 ] %}
 
--- TODO: We should remove this CTE and include ETH into the general prices table once everything is migrated
+-- We should remove this CTE and include ETH into the general prices table once everything is migrated
 WITH cte_prices_patch as (
     SELECT
         contract_address
@@ -36,37 +35,37 @@ WITH cte_prices_patch as (
         ,minute
         ,price
         ,symbol
-    FROM {{ ref('prices_usd_forward_fill') }}
+    FROM {{ ref('prices_usd_forward_fill_legacy') }}
     WHERE blockchain = 'ethereum'
     {% if is_incremental() %}
-    AND minute >= date_trunc('day', now() - interval '7' day)
+    AND minute >= date_trunc("day", now() - interval '1 week')
     {% endif %}
     UNION ALL
     SELECT
-        {{ var("ETH_ERC20_ADDRESS") }} as contract_address
+        '{{ var("ETH_ERC20_ADDRESS") }}' as contract_address
         ,'ethereum' as blockchain
         ,18 as decimals
         ,minute
         ,price
         ,'ETH' as symbol
-    FROM {{ ref('prices_usd_forward_fill') }}
+    FROM {{ ref('prices_usd_forward_fill_legacy') }}
     WHERE blockchain is null AND symbol = 'ETH'
     {% if is_incremental() %}
-    AND minute >= date_trunc('day', now() - interval '7' day)
+    AND minute >= date_trunc("day", now() - interval '1 week')
     {% endif %}
 ),
 enriched_trades as (
 -- macros/models/sector/nft
 {{
-    enrich_trades(
+    enrich_trades_legacy(
         blockchain='ethereum',
         models=base_models,
         transactions_model=source('ethereum','transactions'),
-        tokens_nft_model=ref('tokens_ethereum_nft'),
-        tokens_erc20_model=ref('tokens_ethereum_erc20'),
+        tokens_nft_model=ref('tokens_ethereum_nft_legacy'),
+        tokens_erc20_model=ref('tokens_ethereum_erc20_legacy'),
         prices_model='cte_prices_patch',
-        aggregators=ref('nft_ethereum_aggregators'),
-        aggregator_markers=ref('nft_ethereum_aggregators_markers')
+        aggregators=ref('nft_ethereum_aggregators_legacy'),
+        aggregator_markers=ref('nft_ethereum_aggregators_markers_legacy')
     )
 }}
 )

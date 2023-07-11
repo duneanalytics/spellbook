@@ -1,6 +1,7 @@
 {{ config(
     schema = 'nft_ethereum',
-    alias ='trades_beta_ported',
+    tags = ['dunesql'],
+    alias = alias('trades_beta_ported'),
     materialized = 'view'
     )
 }}
