@@ -543,6 +543,8 @@ WITH curated_list AS (
       ,(0x8fE3a2A5ae6BaA201C26fC7830EB713F33d6b313, 'L2Marathon')
       ,(0x12ddBd16175953a8035A009393482DD64849959A, 'PHISHING CONTRACT CREATOR')
       ,(0x057dd0333d0ef737c72ca39403e7d478b1f1d0b3, 'OP')
+      ,(0x30019eb135532bddf2da17659101cc000c73c8e4, 'Aura')
+      ,(0xB07d2d6a03F2d4878Dc1680F8581E871dae47494, 'Aura')
       
   ) as temp_table (creator_address, contract_project)
 )
