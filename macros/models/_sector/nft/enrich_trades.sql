@@ -7,6 +7,7 @@
 -- 5. add aggregator columns
 -- 6. fix buyer or seller for aggregator txs
 -- 7. calculate platform and royalty rates
+-- 8. deduplicate based on sub_tx_trade_id
 
 WITH base_union as (
     {% for nft_model in models %}
