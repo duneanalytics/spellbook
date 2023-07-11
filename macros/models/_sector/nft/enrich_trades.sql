@@ -32,7 +32,8 @@ WITH base_union as (
         royalty_fee_amount_raw,
         platform_fee_address,   -- optional
         royalty_fee_address,    -- optional
-        sub_tx_trade_id
+        sub_tx_trade_id,
+        row_number() over (partition by tx_hash, sub_tx_trade_id order by tx_hash) as duplicates_rank
     FROM {{ nft_model[2] }}
     {% if is_incremental() %}
     WHERE block_time >= date_trunc('day', now() - interval '7' day)
@@ -113,6 +114,7 @@ ON agg1.contract_address is null    -- only match if agg1 produces no matches, t
 {% if aggregator_markers != null %}
 LEFT JOIN {{ aggregator_markers }} agg_mark
 ON bytearray_starts_with(bytearray_reverse(tx.data), bytearray_reverse(agg_mark.hash_marker)) -- eq to end_with()
+WHERE base.duplicates_rank = 1
 {% endif %}
 )
 
