@@ -45,7 +45,7 @@ AND 1 = (
 )
 
 SELECT
-DATE_TRUNC('day',block_time) AS block_date
+cast(date_trunc('day', block_time) as date) AS block_date
 , distributor_address, rewards_token, quest_name, quester_address
 , tx_hash, evt_index, block_time, block_number
 , rewards_token_value_raw

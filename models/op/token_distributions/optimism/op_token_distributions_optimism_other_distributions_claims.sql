@@ -23,7 +23,7 @@
 
 with aave_lm_claims AS ( 
 SELECT
-    DATE_TRUNC('day',evt_block_time) AS block_date,
+    block_date,
     evt_block_time, evt_block_number, evt_index, 
     tx_to_address, tx_from_address,
     evt_tx_hash, from_label, from_type, from_name, 
@@ -43,7 +43,7 @@ SELECT
         is not NULL))[1] as to_address
 FROM (
     SELECT 
-    DATE_TRUNC('day',r.evt_block_time) AS block_date, 
+    cast(date_trunc('day', evt_block_time) as date) AS block_date, 
     r.evt_block_time, r.evt_block_number, r.evt_index,
         tf."from" AS from_address, tf.to AS to_address, tx.to AS tx_to_address, tx."from" AS tx_from_address, r.evt_tx_hash,
         'Project' as from_label, 'Parter Fund' AS from_type, 'Aave' AS from_name, 
