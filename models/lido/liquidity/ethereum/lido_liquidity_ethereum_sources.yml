@@ -27,14 +27,6 @@ sources:
       - name: Pair_evt_Burn
         loaded_at_field: evt_block_time
 
-  - name: prices
-    description: "Prices tables across blockchains"
-    freshness:
-      warn_after: { count: 12, period: hour }
-    tables:
-      - name: tokens
-        loaded_at_field: minute
-
   - name: lido_ethereum
     description: "Ethereum decoded tables related to Lido contract"
     freshness: # default freshness
@@ -55,3 +47,40 @@ sources:
       - name: evt_Transfer
         loaded_at_field: evt_block_time
         
+  - name: maverick_v1_ethereum
+    description: "Ethereum decoded tables related to Maverick DEX contracts"
+    freshness: # default freshness
+      warn_after: { count: 12, period: hour }
+      error_after: { count: 24, period: hour }
+    tables:
+      - name: pool_call_addLiquidity
+        loaded_at_field: call_block_time
+      - name: pool_call_removeLiquidity
+        loaded_at_field: call_block_time
+
+  - name: frax_ethereum
+    description: "Ethereum decoded tables related to Frax contracts"
+    freshness: # default freshness
+      warn_after: { count: 12, period: hour }
+      error_after: { count: 24, period: hour }
+    tables:
+      - name: sfrxETH_call_pricePerShare
+        loaded_at_field: call_block_time
+
+  - name: curvefi_ethereum
+    description: "Ethereum decoded tables related to Curve contracts"
+    freshness: # default freshness
+      warn_after: { count: 12, period: hour }
+      error_after: { count: 24, period: hour }
+    tables:
+      - name: stETHconcentrated_evt_TokenExchange
+        loaded_at_field: evt_block_time
+      - name: stETHng_evt_TokenExchange
+        loaded_at_field: evt_block_time    
+      - name: frxeth_eth_pool_call_price_oracle
+        loaded_at_field: call_block_time    
+      - name: frxETH_stETH_evt_TokenExchange
+        loaded_at_field: evt_block_time 
+      - name:  rETHwstETH_evt_TokenExchange   
+        loaded_at_field: evt_block_time 
+
