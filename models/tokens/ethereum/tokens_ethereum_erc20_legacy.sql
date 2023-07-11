@@ -1,6 +1,6 @@
 {{ config(
         alias = alias('erc20', legacy_model=True)
-        , tags=['static']
+        , tags=['static', 'legacy']
         )
 }}
 SELECT
