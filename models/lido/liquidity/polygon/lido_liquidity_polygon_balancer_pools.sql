@@ -352,7 +352,7 @@ union all
             0 as row_numb
         FROM   pool_per_date c 
         LEFT JOIN cumulative_balance b ON b.day <= c.day AND c.day < b.day_of_next_change and c.pool_id = b.pool_id
-        LEFT JOIN {{source('prices','tokens')}} t ON t.contract_address = b.token AND blockchain = "polygon"
+        LEFT JOIN {{ref('prices_tokens')}} t ON t.contract_address = b.token AND blockchain = "polygon"
         LEFT JOIN tokens_prices_daily p1 ON p1.time = b.day AND p1.token = b.token
         WHERE  b.token = lower('0x03b54a6e9a984069379fae1a4fc4dbae93b3bccd')
         union all
@@ -367,7 +367,7 @@ union all
             row_number() OVER(PARTITION BY c.day,c.pool_id ORDER BY  c.day,c.pool_id, b.token) as row_numb
         FROM   pool_per_date c 
         LEFT JOIN cumulative_balance b ON b.day <= c.day AND c.day < b.day_of_next_change and c.pool_id = b.pool_id
-        LEFT JOIN {{source('prices','tokens')}} t ON t.contract_address = b.token AND blockchain = "polygon"
+        LEFT JOIN {{ref('prices_tokens')}} t ON t.contract_address = b.token AND blockchain = "polygon"
         LEFT JOIN tokens_prices_daily p1 ON p1.time = b.day AND p1.token = b.token
         WHERE b.token != SUBSTRING(b.pool_id, 0, 42) and b.token != lower('0x03b54a6e9a984069379fae1a4fc4dbae93b3bccd')
 

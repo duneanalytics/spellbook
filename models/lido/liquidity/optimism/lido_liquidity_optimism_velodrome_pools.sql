@@ -51,7 +51,7 @@ left join pools on 1=1
  union all
  select lower('0x1F32b1c2345538c0c6f582fCB022739c4A194Ebb')
  ) t
- left join {{source('prices','tokens')}} AS pt ON t.token = pt.contract_address
+ left join {{ref('prices_tokens')}} AS pt ON t.token = pt.contract_address
  )
  
  
