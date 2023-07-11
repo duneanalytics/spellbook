@@ -20,7 +20,7 @@ Ensure you are still in Spellbook root directory, then run the following command
 dbt compile
 ```
 
-A recent change in the new setup was to include a `profiles.yml` file, which helps tell dbt how to run commmands. The profile is located in the root directory [here](https://github.com/duneanalytics/spellbook/blob/main/profiles.yml). This should never need modified, unless done intentionally by the Dune team.  
+A recent change in the new setup was to include a `profiles.yml` file, which helps tell dbt how to run commands. The profile is located in the root directory [here](https://github.com/duneanalytics/spellbook/blob/main/profiles.yml). This should never need modified, unless done intentionally by the Dune team.  
 Due to the `profiles.yml` file being stored in the root directory, this is why users **must** be in the root directory on the command line to run `dbt compile`.
 
 ## High-level overview of Spellbook current state
