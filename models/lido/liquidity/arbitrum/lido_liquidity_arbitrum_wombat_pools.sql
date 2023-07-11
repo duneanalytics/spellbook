@@ -16,7 +16,7 @@
 {% set project_start_date = '2023-05-25' %} 
 
 with dates as (
-    with day_seq as (select (sequence(timestamp '{{ project_start_date }}', cast(now() as timestamp), interval '1' day)) as day)
+    with day_seq as (select (sequence(timestamp '{{ project_start_date }}', cast(now() as timestamp(0)), interval '1' day)) as day)
 select days.day
 from day_seq
 cross join unnest(day) as days(day)
