@@ -49,7 +49,7 @@ cross join unnest(day) as days(day)
 , wsteth_prices_hourly AS (
 SELECT
       time,
-      LEAD(time,1,DATE_TRUNC('hour', CURRENT_DATE + INTERVAL '1' hour)) OVER (ORDER BY time NULLS FIRST) AS next_time,
+      LEAD(time,1,DATE_TRUNC('hour', now() + INTERVAL '1' hour)) OVER (ORDER BY time NULLS FIRST) AS next_time,
       price
     FROM
       (
@@ -120,7 +120,7 @@ group by 1,2,3
 , pool_liquidity AS (
     SELECT
       time,
-      LEAD(time, 1, CURRENT_DATE + INTERVAL '1' day) OVER (ORDER BY time NULLS FIRST ) AS next_time,
+      LEAD(time, 1, now() + INTERVAL '1' day) OVER (ORDER BY time NULLS FIRST ) AS next_time,
       pool,
       token0,
       SUM(amount0) OVER (PARTITION BY pool  ORDER BY time NULLS FIRST) AS amount0
