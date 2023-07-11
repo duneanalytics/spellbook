@@ -32,7 +32,7 @@ with
         )
         
     SELECT 
-        distinct --something going wrong here?
+        --distinct --something going wrong here?
         tkA.symbol as tokenA_symbol
         , tkA.decimals as tokenA_decimals
         , account_tokenMintA as tokenA
@@ -122,7 +122,7 @@ with
     
 
 SELECT
-    -- distinct --spellbook is giving me duplicates for some reason
+    distinct --spellbook is giving me duplicates for some reason
     tb.blockchain
     , tb.project 
     , tb.version
