@@ -1,62 +1,64 @@
 {{ config(
-    schema = 'opensea_v4_optimism',
-    alias = 'events',
+    schema = 'opensea_v4_polygon',
+    alias = alias('events', legacy_model=True),
     partition_by = ['block_date'],
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
     unique_key = ['block_date', 'tx_hash', 'evt_index', 'nft_contract_address', 'token_id', 'sub_type', 'sub_idx'],
-    post_hook='{{ expose_spells(\'["optimism"]\',
+    post_hook='{{ expose_spells(\'["polygon"]\',
                             "project",
                             "opensea",
                             \'["sohwak"]\') }}'
     )
 }}
 
+-- opensea.trades has the same columns as seaport.trades
+-- only some specified zone_address are recognized as opensea's
 -- project/version : opensea/v4
--- contract_address : 
---    0x00000000000001ad428e4906ae43d8f9852d0dd6 (Seaport v1.4)
---    0x00000000000000adc04c56bf30ac9d3c0aaf14dc (Seaport v1.5)
+-- contract_address : 0x00000000000001ad428e4906ae43d8f9852d0dd6 (Seaport v1.4)
+-- materialize : incremental table
 
-{% set c_native_token_address = "0x0000000000000000000000000000000000000000" %}
-{% set c_alternative_token_address = "0x4200000000000000000000000000000000000006" %}  -- MATIC
-{% set c_native_symbol = "ETH" %}
 {% set c_seaport_first_date = "2023-02-01" %}
+{% set c_native_token_address = "0x0000000000000000000000000000000000000000" %}
+{% set c_alternative_token_address = "0x0000000000000000000000000000000000001010" %}  -- MATIC
+{% set c_native_symbol = "MATIC" %}
+{% set c_seaport_contract_address = "0x00000000000001ad428e4906ae43d8f9852d0dd6" %} -- v2 = Seaport v1.4
 
-with source_optimism_transactions as (
+with source_polygon_transactions as (
     select *
-      from {{ source('optimism','transactions') }}
+      from {{ source('polygon','transactions') }}
     {% if not is_incremental() %}
      where block_time >= date '{{c_seaport_first_date}}'  -- seaport first txn
     {% endif %}
     {% if is_incremental() %}
-     where block_time >= date_trunc("day", now() - interval '1 week')
+     where block_time >= date_trunc("day", now() - interval '3 week')
     {% endif %}
 )
 ,ref_tokens_nft as (
     select *
       from {{ ref('tokens_nft_legacy') }}
-     where blockchain = 'optimism'
+     where blockchain = 'polygon'
 )
 ,ref_tokens_erc20 as (
     select *
       from {{ ref('tokens_erc20_legacy') }}
-     where blockchain = 'optimism'
+     where blockchain = 'polygon'
 )
 ,ref_nft_aggregators as (
     select *
       from {{ ref('nft_aggregators_legacy') }}
-     where blockchain = 'optimism'
+     where blockchain = 'polygon'
 )
 ,source_prices_usd as (
     select *
       from {{ source('prices', 'usd') }}
-     where blockchain = 'optimism'
+     where blockchain = 'polygon'
     {% if not is_incremental() %}
        and minute >= date '{{c_seaport_first_date}}'  -- seaport first txn
     {% endif %}
     {% if is_incremental() %}
-       and minute >= date_trunc("day", now() - interval '1 week')
+       and minute >= date_trunc("day", now() - interval '3 week')
     {% endif %}
 )
 ,iv_orders_matched AS (
@@ -64,7 +66,7 @@ with source_optimism_transactions as (
           ,evt_tx_hash as om_tx_hash
           ,evt_index as om_evt_index
           ,posexplode(orderhashes) as (om_order_id, om_order_hash)
-      from {{ source('seaport_optimism','Seaport_evt_OrdersMatched') }}
+      from {{ source('seaport_polygon','Seaport_evt_OrdersMatched') }}
      where contract_address in ('0x00000000000001ad428e4906ae43d8f9852d0dd6' -- Seaport v1.4
                                ,'0x00000000000000adc04c56bf30ac9d3c0aaf14dc' -- Seaport v1.5
                                )  
@@ -127,7 +129,7 @@ with source_optimism_transactions as (
             , zone
             , orderHash AS order_hash
             , posexplode(offer) as (offer_idx, offer_item)
-        from {{ source('seaport_optimism', 'Seaport_evt_OrderFulfilled') }}
+        from {{ source('seaport_polygon', 'Seaport_evt_OrderFulfilled') }}
        where contract_address in ('0x00000000000001ad428e4906ae43d8f9852d0dd6' -- Seaport v1.4
                                  ,'0x00000000000000adc04c56bf30ac9d3c0aaf14dc' -- Seaport v1.5
                                  )  
@@ -193,7 +195,7 @@ with source_optimism_transactions as (
               ,zone
               ,orderHash AS order_hash
               ,posexplode(consideration) as (consideration_idx, consideration_item)
-          from {{ source('seaport_optimism','Seaport_evt_OrderFulfilled') }}
+          from {{ source('seaport_polygon','Seaport_evt_OrderFulfilled') }}
        where contract_address in ('0x00000000000001ad428e4906ae43d8f9852d0dd6' -- Seaport v1.4
                                  ,'0x00000000000000adc04c56bf30ac9d3c0aaf14dc' -- Seaport v1.5
                                  )  
@@ -448,7 +450,7 @@ with source_optimism_transactions as (
           ,sub_idx
           ,a.fee_wallet_name
       from iv_nfts a
-           inner join source_optimism_transactions t on t.hash = a.tx_hash
+           inner join source_polygon_transactions t on t.hash = a.tx_hash
            left join ref_tokens_nft n on n.contract_address = nft_contract_address
            left join ref_tokens_erc20 e on e.contract_address = case when a.token_contract_address = '{{c_native_token_address}}' then '{{c_alternative_token_address}}'
                                                                      else a.token_contract_address
@@ -460,7 +462,7 @@ with source_optimism_transactions as (
            left join ref_nft_aggregators agg on agg.contract_address = t.to
 )
 select  -- basic info
-         'optimism' as blockchain
+         'polygon' as blockchain
         ,'opensea' as project
         ,'v4' as version
 

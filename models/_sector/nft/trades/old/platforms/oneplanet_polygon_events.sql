@@ -25,7 +25,7 @@ with source_polygon_transactions as (
 )
 ,ref_oneplanet_polygon_base_pairs as (
       select *
-      from {{ ref('oneplanet_polygon_base_pairs') }}
+      from {{ ref('oneplanet_polygon_base_pairs_legacy') }}
       where 1=1
       {% if is_incremental() %}
             and block_time >= date_trunc("day", now() - interval '1 week')

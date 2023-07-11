@@ -1,33 +1,31 @@
 {{ config(
-    schema = 'quix_seaport_optimism',
-    alias = 'seaport_events',
-    partition_by = ['block_date'],
+    schema = 'oneplanet_polygon',
+    alias = alias('events', legacy_model=True),
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
-    unique_key = ['block_date', 'tx_hash', 'evt_index', 'nft_contract_address', 'token_id', 'sub_type', 'sub_idx']
+    unique_key = ['tx_hash', 'evt_index', 'token_id']
     )
 }}
 
 {% set c_native_token_address = "0x0000000000000000000000000000000000000000" %}
-{% set c_alternative_token_address = "0xdeaddeaddeaddeaddeaddeaddeaddeaddead0000" %}  -- ETH
-{% set c_native_symbol = "ETH" %}
-{% set c_seaport_first_date = "2022-07-29" %}
-{% set non_buyer_address = "0xc78a09d6a4badecc7614a339fd264b7290361ef1" %} -- quix contract address
+{% set c_alternative_token_address = "0x0000000000000000000000000000000000001010" %}  -- MATIC
+{% set c_native_symbol = "MATIC" %}
+{% set c_oneplanet_first_date = "2023-09-03" %}
 
-with source_optimism_transactions as (
-    select *
-    from {{ source('optimism','transactions') }}
+with source_polygon_transactions as (
+    select block_time, block_number, "from", "to", hash, data
+    from {{ source('polygon','transactions') }}
     {% if not is_incremental() %}
-    where block_time >= '{{c_seaport_first_date}}'  -- seaport first txn
+    where block_time >= date '{{c_oneplanet_first_date}}'
     {% endif %}
     {% if is_incremental() %}
     where block_time >= date_trunc("day", now() - interval '1 week')
     {% endif %}
 )
-,ref_quix_seaport_optimism_base_pairs as (
+,ref_oneplanet_polygon_base_pairs as (
       select *
-      from {{ ref('quix_seaport_optimism_base_pairs_legacy') }}
+      from {{ ref('oneplanet_polygon_base_pairs_legacy') }}
       where 1=1
       {% if is_incremental() %}
             and block_time >= date_trunc("day", now() - interval '1 week')
@@ -36,24 +34,24 @@ with source_optimism_transactions as (
 ,ref_tokens_nft as (
     select *
     from {{ ref('tokens_nft_legacy') }}
-    where blockchain = 'optimism'
+    where blockchain = 'polygon'
 )
 ,ref_tokens_erc20 as (
     select *
     from {{ ref('tokens_erc20_legacy') }}
-    where blockchain = 'optimism'
+    where blockchain = 'polygon'
 )
 ,ref_nft_aggregators as (
     select *
     from {{ ref('nft_aggregators_legacy') }}
-    where blockchain = 'optimism'
+    where blockchain = 'polygon'
 )
 ,source_prices_usd as (
     select *
     from {{ source('prices', 'usd') }}
-    where blockchain = 'optimism'
+    where blockchain = 'polygon'
     {% if not is_incremental() %}
-      and minute >= '{{c_seaport_first_date}}'  -- seaport first txn
+      and minute >= date '{{c_oneplanet_first_date}}'
     {% endif %}
     {% if is_incremental() %}
       and minute >= date_trunc("day", now() - interval '1 week')
@@ -92,17 +90,18 @@ with source_optimism_transactions as (
         ,a.creator_fee_idx
         ,a.is_traded_nft
         ,a.is_moved_nft
-  from ref_quix_seaport_optimism_base_pairs a
+  from ref_oneplanet_polygon_base_pairs a
   where 1=1
     and not a.is_private
   union all
-  select a.block_date
+  select distinct
+         a.block_date
         ,a.block_time
         ,a.block_number
         ,a.tx_hash
         ,a.evt_index
         ,a.sub_type
-        ,a.sub_idx
+        ,coalesce(b.sub_idx, a.sub_idx) as sub_idx
         ,a.offer_first_item_type
         ,a.consideration_first_item_type
         ,a.sender
@@ -130,10 +129,10 @@ with source_optimism_transactions as (
         ,a.creator_fee_idx
         ,a.is_traded_nft
         ,a.is_moved_nft
-  from ref_quix_seaport_optimism_base_pairs a
-  left join ref_quix_seaport_optimism_base_pairs b on b.tx_hash = a.tx_hash
+  from ref_oneplanet_polygon_base_pairs a
+  left join ref_oneplanet_polygon_base_pairs b on b.tx_hash = a.tx_hash
     and b.evt_index = a.evt_index
-    and b.block_date = a.block_date -- for performance
+    and b.block_date = a.block_date
     and b.token_contract_address = a.token_contract_address
     and b.token_id = a.token_id
     and b.original_amount = a.original_amount
@@ -185,14 +184,14 @@ with source_optimism_transactions as (
         ,a.zone
         ,a.platform_contract_address
         ,b.token_contract_address
-        ,round(price_amount_raw / nft_cnt) as price_amount_raw  -- to truncate the odd number of decimal places
-        ,round(platform_fee_amount_raw / nft_cnt) as platform_fee_amount_raw
+        ,price_amount_raw
+        ,platform_fee_amount_raw
         ,platform_fee_receiver
-        ,round(creator_fee_amount_raw / nft_cnt) as creator_fee_amount_raw
-        ,creator_fee_amount_raw_1 / nft_cnt as creator_fee_amount_raw_1
-        ,creator_fee_amount_raw_2 / nft_cnt as creator_fee_amount_raw_2
-        ,creator_fee_amount_raw_3 / nft_cnt as creator_fee_amount_raw_3
-        ,creator_fee_amount_raw_4 / nft_cnt as creator_fee_amount_raw_4
+        ,creator_fee_amount_raw
+        ,creator_fee_amount_raw_1
+        ,creator_fee_amount_raw_2
+        ,creator_fee_amount_raw_3
+        ,creator_fee_amount_raw_4
         ,creator_fee_receiver_1
         ,creator_fee_receiver_2
         ,creator_fee_receiver_3
@@ -204,7 +203,7 @@ with source_optimism_transactions as (
         ,sub_type
         ,sub_idx
   from iv_base_pairs_priv a
-  left join iv_volume b on b.block_date = a.block_date  -- tx_hash and evt_index is PK, but for performance, block_time is included
+  left join iv_volume b on b.block_date = a.block_date
     and b.tx_hash = a.tx_hash
     and b.evt_index = a.evt_index
   where 1=1
@@ -227,13 +226,17 @@ with source_optimism_transactions as (
           ,a.price_amount_raw / power(10, e.decimals) * p.price as price_amount_usd
           ,a.platform_fee_amount_raw / power(10, e.decimals) as platform_fee_amount
           ,a.platform_fee_amount_raw / power(10, e.decimals) * p.price as platform_fee_amount_usd
-          ,a.creator_fee_amount_raw / power(10, e.decimals) as creator_fee_amount
-          ,a.creator_fee_amount_raw / power(10, e.decimals) * p.price as creator_fee_amount_usd
+          ,cast(coalesce(a.platform_fee_amount_raw, 0) / a.price_amount_raw as double) as platform_fee_percentage
+          ,a.creator_fee_amount_raw as royalty_fee_amount_raw
+          ,a.creator_fee_amount_raw / power(10, e.decimals) as royalty_fee_amount
+          ,a.creator_fee_amount_raw / power(10, e.decimals) * p.price as royalty_fee_amount_usd
+          ,cast(coalesce(a.creator_fee_amount_raw, 0) / a.price_amount_raw as double) as royalty_fee_percentage
+          ,creator_fee_receiver_1 as royalty_fee_receive_address
           ,agg.name as aggregator_name
           ,agg.contract_address AS aggregator_address
           ,sub_idx
   from iv_nfts a
-  inner join source_optimism_transactions t on t.hash = a.tx_hash
+  inner join source_polygon_transactions t on t.hash = a.tx_hash
   left join ref_tokens_nft n on n.contract_address = nft_contract_address
   left join ref_tokens_erc20 e on e.contract_address = case when a.token_contract_address = '{{c_native_token_address}}' then '{{c_alternative_token_address}}'
                                                             else a.token_contract_address
@@ -244,104 +247,48 @@ with source_optimism_transactions as (
     and p.minute = date_trunc('minute', a.block_time)
   left join ref_nft_aggregators agg on agg.contract_address = t.to
 )
-,erc721_transfer as (
-  select *
-  from {{ source('erc721_optimism','evt_transfer') }}
-  where
-    from = '{{non_buyer_address}}'
-    {% if not is_incremental() %}
-    and evt_block_time >= '{{c_seaport_first_date}}'  -- seaport first txn
-    {% endif %}
-    {% if is_incremental() %}
-    and evt_block_time >= date_trunc("day", now() - interval '1 week')
-    {% endif %}
-)
 ,iv_columns as (
-  -- Rename column to align other *.trades tables
-  -- But the columns ordering is according to convenience.
-  -- initcap the code value if needed
   select
-    -- basic info
-    'optimism' as blockchain
-    ,'quix' as project
-    ,'seaport' as version
-
-    -- order info
-    ,t.block_date
-    ,t.block_time
-    ,t.seller
-    ,case when t.buyer = '{{non_buyer_address}}' then erc.to else t.buyer end as buyer
-    ,initcap(t.trade_type) as trade_type
-    ,initcap(t.order_type) as trade_category -- Buy / Offer Accepted
+    'polygon' as blockchain
+    ,'oneplanet' as project
+    ,'v1' as version
+    ,block_time
+    ,nft_token_id as token_id
+    ,nft_token_name as collection
+    ,cast(price_amount_usd as double) as amount_usd
+    ,nft_token_standard as token_standard
+    ,initcap(trade_type) as trade_type
+    ,cast(nft_token_amount as decimal(38,0)) as number_of_items
+    ,initcap(order_type) as trade_category
     ,'Trade' as evt_type
-
-    -- nft token info
-    ,t.nft_contract_address
-    ,t.nft_token_name as collection
-    ,t.nft_token_id as token_id
-    ,cast(t.nft_token_amount as decimal(38, 0)) as number_of_items
-    ,t.nft_token_standard as token_standard
-
-    -- price info
-    ,t.price_amount as amount_original
-    ,cast(t.price_amount_raw as decimal(38, 0)) as amount_raw
-    ,t.price_amount_usd as amount_usd
-    ,t.token_symbol as currency_symbol
-    ,t.token_alternative_symbol as currency_contract
-    ,t.token_contract_address as original_currency_contract
-    ,t.price_token_decimals as currency_decimals   -- in case calculating royalty1~4
-
-    -- project info (platform or exchange)
-    ,t.platform_contract_address as project_contract_address
-    ,t.platform_fee_receiver as platform_fee_receive_address
-    ,CAST(t.platform_fee_amount_raw as double) as platform_fee_amount_raw
-    ,t.platform_fee_amount
-    ,t.platform_fee_amount_usd
-    ,case when t.price_amount_raw > 0 then CAST ((t.platform_fee_amount_raw / t.price_amount_raw * 100) AS DOUBLE) end platform_fee_percentage
-
-    -- royalty info
-    ,t.creator_fee_receiver_1 as royalty_fee_receive_address
-    ,CAST(t.creator_fee_amount_raw as double) as royalty_fee_amount_raw
-    ,case when t.price_amount_raw > 0 then CAST ((creator_fee_amount_raw / t.price_amount_raw * 100) AS DOUBLE) end royalty_fee_percentage
-    ,t.token_symbol as royalty_fee_currency_symbol
-    ,t.creator_fee_amount as royalty_fee_amount
-    ,t.creator_fee_amount_usd as royalty_fee_amount_usd
-    ,t.creator_fee_receiver_1 as royalty_fee_receive_address_1
-    ,t.creator_fee_receiver_2 as royalty_fee_receive_address_2
-    ,t.creator_fee_receiver_3 as royalty_fee_receive_address_3
-    ,t.creator_fee_receiver_4 as royalty_fee_receive_address_4
-    ,t.creator_fee_amount_raw_1 as royalty_fee_amount_raw_1
-    ,t.creator_fee_amount_raw_2 as royalty_fee_amount_raw_2
-    ,t.creator_fee_amount_raw_3 as royalty_fee_amount_raw_3
-    ,t.creator_fee_amount_raw_4 as royalty_fee_amount_raw_4
-
-    -- aggregator
-    ,t.aggregator_name
-    ,t.aggregator_address
-
-    -- tx
-    ,t.block_number
-    ,t.tx_hash
-    ,t.evt_index
-    ,t.tx_from
-    ,t.tx_to
-    ,t.right_hash
-
-    -- seaport etc
-    ,t.zone as zone_address
-    ,t.estimated_price
-    ,t.is_private
-    ,t.sub_idx
-    ,t.sub_type
-  from iv_trades as t
-  left join erc721_transfer as erc
-    on t.tx_hash = erc.evt_tx_hash
-    and t.block_number = erc.evt_block_number
-    and t.nft_token_id = erc.tokenId
-    and t.nft_contract_address = erc.contract_address
-    and t.buyer = erc.from
+    ,seller
+    ,buyer
+    ,cast(price_amount as double) as amount_original
+    ,cast(price_amount_raw as decimal(38,0)) as amount_raw
+    ,token_symbol as currency_symbol
+    ,token_alternative_symbol as currency_contract
+    ,nft_contract_address
+    ,platform_contract_address as project_contract_address
+    ,aggregator_name
+    ,aggregator_address
+    ,block_number
+    ,tx_hash
+    ,tx_from
+    ,tx_to
+    ,evt_index
+    ,cast(platform_fee_amount_raw as double) as platform_fee_amount_raw
+    ,cast(platform_fee_amount as double) as platform_fee_amount
+    ,cast(platform_fee_amount_usd as double) as platform_fee_amount_usd
+    ,cast(platform_fee_percentage as double) as platform_fee_percentage
+    ,cast(royalty_fee_amount_raw as double) as royalty_fee_amount_raw
+    ,cast(royalty_fee_amount as double) as royalty_fee_amount
+    ,cast(royalty_fee_amount_usd as double) as royalty_fee_amount_usd
+    ,cast(royalty_fee_percentage as double) as royalty_fee_percentage
+    ,royalty_fee_receive_address
+    ,token_symbol as royalty_fee_currency_symbol
+    ,'OnePlanet-' || tx_hash || '-' || cast(evt_index as VARCHAR(10)) || '-' || nft_contract_address || '-' || cast(nft_token_id as VARCHAR(10)) || '-' || cast(sub_idx as VARCHAR(10)) as unique_trade_id
+  from iv_trades
 )
-select
-  *
-  ,concat(block_date, tx_hash, evt_index, nft_contract_address, token_id, sub_type, sub_idx) as unique_trade_id
+select *
 from iv_columns
+;

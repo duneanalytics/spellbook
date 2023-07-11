@@ -1,6 +1,6 @@
 {{ config(
-    schema = 'quix_seaport_optimism',
-    alias = 'seaport_events',
+    schema = 'nftearth_optimism',
+    alias = alias('events', legacy_model=True),
     partition_by = ['block_date'],
     materialized = 'incremental',
     file_format = 'delta',
@@ -12,8 +12,8 @@
 {% set c_native_token_address = "0x0000000000000000000000000000000000000000" %}
 {% set c_alternative_token_address = "0xdeaddeaddeaddeaddeaddeaddeaddeaddead0000" %}  -- ETH
 {% set c_native_symbol = "ETH" %}
-{% set c_seaport_first_date = "2022-07-29" %}
-{% set non_buyer_address = "0xc78a09d6a4badecc7614a339fd264b7290361ef1" %} -- quix contract address
+{% set c_seaport_first_date = "2023-01-31" %}
+{% set non_buyer_address = "0x2140ea50bc3b6ac3971f9e9ea93a1442665670e4" %} -- nftearth contract address
 
 with source_optimism_transactions as (
     select *
@@ -25,9 +25,9 @@ with source_optimism_transactions as (
     where block_time >= date_trunc("day", now() - interval '1 week')
     {% endif %}
 )
-,ref_quix_seaport_optimism_base_pairs as (
+,ref_nftearth_optimism_base_pairs as (
       select *
-      from {{ ref('quix_seaport_optimism_base_pairs_legacy') }}
+      from {{ ref('nftearth_optimism_base_pairs_legacy') }}
       where 1=1
       {% if is_incremental() %}
             and block_time >= date_trunc("day", now() - interval '1 week')
@@ -92,7 +92,7 @@ with source_optimism_transactions as (
         ,a.creator_fee_idx
         ,a.is_traded_nft
         ,a.is_moved_nft
-  from ref_quix_seaport_optimism_base_pairs a
+  from ref_nftearth_optimism_base_pairs a
   where 1=1
     and not a.is_private
   union all
@@ -130,8 +130,8 @@ with source_optimism_transactions as (
         ,a.creator_fee_idx
         ,a.is_traded_nft
         ,a.is_moved_nft
-  from ref_quix_seaport_optimism_base_pairs a
-  left join ref_quix_seaport_optimism_base_pairs b on b.tx_hash = a.tx_hash
+  from ref_nftearth_optimism_base_pairs a
+  left join ref_nftearth_optimism_base_pairs b on b.tx_hash = a.tx_hash
     and b.evt_index = a.evt_index
     and b.block_date = a.block_date -- for performance
     and b.token_contract_address = a.token_contract_address
@@ -245,16 +245,53 @@ with source_optimism_transactions as (
   left join ref_nft_aggregators agg on agg.contract_address = t.to
 )
 ,erc721_transfer as (
-  select *
+  select
+    evt_tx_hash
+    ,evt_block_time
+    ,evt_block_number
+    ,tokenId
+    ,contract_address
+    ,from
+    ,to
   from {{ source('erc721_optimism','evt_transfer') }}
   where
-    from = '{{non_buyer_address}}'
+    (from = '{{non_buyer_address}}'
+    or to = '{{non_buyer_address}}')
     {% if not is_incremental() %}
     and evt_block_time >= '{{c_seaport_first_date}}'  -- seaport first txn
     {% endif %}
     {% if is_incremental() %}
     and evt_block_time >= date_trunc("day", now() - interval '1 week')
     {% endif %}
+)
+,erc1155_transfer as (
+  select
+    evt_tx_hash
+    ,evt_block_time
+    ,evt_block_number
+    ,id as tokenId
+    ,contract_address
+    ,from
+    ,to
+  from {{ source('erc1155_optimism','evt_transfersingle') }}
+  where
+    (from = '{{non_buyer_address}}'
+    or to = '{{non_buyer_address}}')
+    {% if not is_incremental() %}
+    and evt_block_time >= '{{c_seaport_first_date}}'  -- seaport first txn
+    {% endif %}
+    {% if is_incremental() %}
+    and evt_block_time >= date_trunc("day", now() - interval '1 week')
+    {% endif %}
+)
+,all_transfers as (
+  select *
+  from erc721_transfer
+
+  union all
+
+  select *
+  from erc1155_transfer
 )
 ,iv_columns as (
   -- Rename column to align other *.trades tables
@@ -263,13 +300,13 @@ with source_optimism_transactions as (
   select
     -- basic info
     'optimism' as blockchain
-    ,'quix' as project
-    ,'seaport' as version
+    ,'nftearth' as project
+    ,'v1' as version
 
     -- order info
     ,t.block_date
     ,t.block_time
-    ,t.seller
+    ,case when t.seller = '{{non_buyer_address}}' then erc2.from else t.seller end as seller
     ,case when t.buyer = '{{non_buyer_address}}' then erc.to else t.buyer end as buyer
     ,initcap(t.trade_type) as trade_type
     ,initcap(t.order_type) as trade_category -- Buy / Offer Accepted
@@ -334,12 +371,18 @@ with source_optimism_transactions as (
     ,t.sub_idx
     ,t.sub_type
   from iv_trades as t
-  left join erc721_transfer as erc
+  left join all_transfers as erc
     on t.tx_hash = erc.evt_tx_hash
     and t.block_number = erc.evt_block_number
     and t.nft_token_id = erc.tokenId
     and t.nft_contract_address = erc.contract_address
     and t.buyer = erc.from
+  left join all_transfers as erc2
+    on t.tx_hash = erc2.evt_tx_hash
+    and t.block_number = erc2.evt_block_number
+    and t.nft_token_id = erc2.tokenId
+    and t.nft_contract_address = erc2.contract_address
+    and t.seller = erc2.to
 )
 select
   *

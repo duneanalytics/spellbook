@@ -477,7 +477,7 @@ WHERE contract_order = 1
     ,1 AS created_tx_index
     ,cast(NULL as bigint) as code_bytelength --todo
     ,1 as code_deploy_rank
-  from {{ ref('uniswap_optimism_ovm1_pool_mapping') }} as uni
+  from {{ ref('uniswap_optimism_ovm1_pool_mapping_legacy') }} as uni
   where 
     true
     {% if is_incremental() %} -- this filter will only be applied on an incremental run 

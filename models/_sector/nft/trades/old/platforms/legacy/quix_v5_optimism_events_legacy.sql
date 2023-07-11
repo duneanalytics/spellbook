@@ -1,6 +1,6 @@
 {{ config(
-    schema = 'quix_v4_optimism',
-    alias = 'events',
+    schema = 'quix_v5_optimism',
+    alias = alias('events', legacy_model=True),
     partition_by = ['block_date'],
     materialized = 'incremental',
     file_format = 'delta',
@@ -9,66 +9,29 @@
     )
 }}
 {% set quix_fee_address_address = "0xec1557a67d4980c948cd473075293204f4d280fd" %}
-{% set min_block_number = 9162242 %}
-{% set project_start_date = '2022-05-27' %}     -- select time from optimism.blocks where `number` = 9162242
+{% set min_block_number = 13709446 %}
+{% set project_start_date = '2022-07-02' %}     -- select time from optimism.blocks where `number` = 13709446
 
 
 with events_raw as (
     select
-      *
-    from (
-        select
-            evt_block_number as block_number
-            ,tokenId as token_id
-            ,contract_address as project_contract_address
-            ,evt_tx_hash as tx_hash
-            ,evt_block_time as block_time
-            ,buyer
-            ,seller
-            ,contractAddress as nft_contract_address
-            ,price as amount_raw
-        from {{ source('quixotic_v4_optimism','ExchangeV4_evt_BuyOrderFilled') }}
-        {% if is_incremental() %} -- this filter will only be applied on an incremental run
-        where evt_block_time >= date_trunc("day", now() - interval '1 week')
-        {% endif %}
-
-        union all
-
-        select
-            evt_block_number as block_number
-            ,tokenId as token_id
-            ,contract_address as project_contract_address
-            ,evt_tx_hash as tx_hash
-            ,evt_block_time as block_time
-            ,buyer
-            ,seller
-            ,contractAddress as nft_contract_address
-            ,price as amount_raw
-        from {{ source('quixotic_v4_optimism','ExchangeV4_evt_DutchAuctionFilled') }}
-        {% if is_incremental() %} -- this filter will only be applied on an incremental run
-        where evt_block_time >= date_trunc("day", now() - interval '1 week')
-        {% endif %}
-
-        union all
-
-        select
-            evt_block_number as block_number
-            ,tokenId as token_id
-            ,contract_address as project_contract_address
-            ,evt_tx_hash as tx_hash
-            ,evt_block_time as block_time
-            ,buyer
-            ,seller
-            ,contractAddress as nft_contract_address
-            ,price as amount_raw
-        from {{ source('quixotic_v4_optimism','ExchangeV4_evt_SellOrderFilled') }}
-        {% if is_incremental() %}
-        where evt_block_time >= date_trunc("day", now() - interval '1 week')
-        {% endif %}
-    ) as x
-    where nft_contract_address != lower('0xbe81eabdbd437cba43e4c1c330c63022772c2520') -- --exploit contract
+        evt_block_number as block_number
+        ,tokenId as token_id
+        ,contract_address as project_contract_address
+        ,evt_tx_hash as tx_hash
+        ,evt_block_time as block_time
+        ,buyer
+        ,seller
+        ,contractAddress as nft_contract_address
+        ,price as amount_raw
+        ,evt_index
+    from {{ source('quixotic_v5_optimism','ExchangeV5_evt_SellOrderFilled') }}
+    where contractAddress != lower('0xbe81eabdbd437cba43e4c1c330c63022772c2520') -- --exploit contract
+    {% if is_incremental() %}
+    and evt_block_time >= date_trunc("day", now() - interval '1 week')
+    {% endif %}
 )
-,transfers as (
+,transfers_raw as (
     -- eth royalities
     select
       tr.tx_block_number as block_number
@@ -76,6 +39,8 @@ with events_raw as (
       ,tr.tx_hash
       ,tr.value
       ,tr.to
+      ,er.evt_index
+      ,er.evt_index - coalesce(tr.trace_address[0], 0) as ranking
     from events_raw as er
     join {{ ref('transfers_optimism_eth_legacy') }} as tr
       on er.tx_hash = tr.tx_hash
@@ -88,6 +53,7 @@ with events_raw as (
         ,er.project_contract_address
         ,lower('0x0000000000000000000000000000000000000000') -- v3 first few txs misconfigured to send fee to null address
         ,lower('0x942f9ce5d9a33a82f88d233aeb3292e680230348') -- v4 there are txs via Ambire Wallet Contract Deployer to be excluded
+        ,lower('0xdf95dc47753c94771f52444a2517f4bae7c6046d') -- v5 another contract that creates mutiple internal transfers, e.g. https://optimistic.etherscan.io/tx/0x7c7daf30bf3fa829c22428fd275bbe7b30b62f7ccebd2a8e4aaa396904f01b78
       )
       {% if not is_incremental() %}
       -- smallest block number for source tables above
@@ -106,6 +72,8 @@ with events_raw as (
       ,erc20.evt_tx_hash as tx_hash
       ,erc20.value
       ,erc20.to
+      ,er.evt_index
+      ,er.evt_index - erc20.evt_index as ranking
     from events_raw as er
     join {{ source('erc20_optimism','evt_transfer') }} as erc20
       on er.tx_hash = erc20.evt_tx_hash
@@ -118,6 +86,7 @@ with events_raw as (
         ,er.project_contract_address
         ,lower('0x0000000000000000000000000000000000000000') -- v3 first few txs misconfigured to send fee to null address
         ,lower('0x942f9ce5d9a33a82f88d233aeb3292e680230348') -- v4 there are txs via Ambire Wallet Contract Deployer to be excluded
+        ,lower('0xdf95dc47753c94771f52444a2517f4bae7c6046d') -- v5 another contract that creates mutiple internal transfers, e.g. https://optimistic.etherscan.io/tx/0x7c7daf30bf3fa829c22428fd275bbe7b30b62f7ccebd2a8e4aaa396904f01b78
       )
       {% if not is_incremental() %}
       -- smallest block number for source tables above
@@ -127,75 +96,32 @@ with events_raw as (
       and erc20.evt_block_time >= date_trunc("day", now() - interval '1 week')
       {% endif %}
 )
-,fill_missing_op_price as (
-    -- op price missing from prices.usd 2022-06-06
+,transfers as (
     select
-      date_trunc('day', block_time) as block_date
-      ,symbol
-      ,contract_address
-      ,avg(amount_usd/token_amount) as price
+        block_number
+        ,block_time
+        ,tx_hash
+        ,value
+        ,to
+        ,evt_index
     from (
         select
-            block_time,
-            amount_usd,
-            token_bought_amount as token_amount,
-            token_bought_address as contract_address,
-            token_bought_symbol as symbol
-        from {{ ref('uniswap_optimism_trades_legacy') }}
-        where
-            token_bought_address = '0x4200000000000000000000000000000000000042'
-            {% if is_incremental() %}
-            and block_time >= date_trunc("day", now() - interval '1 week')
-            {% endif %}
-
-        union all
-
-        select
-            block_time,
-            amount_usd,
-            token_sold_amount as token_amount,
-            token_sold_address as contract_address,
-            token_sold_symbol as symbol
-        from {{ ref('uniswap_optimism_trades_legacy') }}
-        where
-            token_bought_address = '0x4200000000000000000000000000000000000042'
-            {% if is_incremental() %}
-            and block_time >= date_trunc("day", now() - interval '1 week')
-            {% endif %}
+            *
+            ,row_number() over (partition by tx_hash, evt_index order by abs(ranking)) as rn
+        from transfers_raw
     ) as x
-    group by 1, 2, 3
-)
-,erc20_transfer as (
-    select
-      erc20.evt_block_time
-      ,erc20.evt_block_number
-      ,erc20.evt_tx_hash
-      ,erc20.contract_address
-      ,erc20.to
-    from events_raw as er
-    join {{ source('erc20_optimism','evt_transfer') }} as erc20
-        on erc20.evt_block_time=er.block_time
-            and erc20.evt_tx_hash=er.tx_hash
-            and erc20.to=er.seller
-            {% if not is_incremental() %}
-            -- smallest block number for source tables above
-            and erc20.evt_block_number >= '{{min_block_number}}'
-            {% endif %}
-            {% if is_incremental() %}
-            and erc20.evt_block_time >= date_trunc("day", now() - interval '1 week')
-            {% endif %}
-    {{ dbt_utils.group_by(n=5) }}
+    where rn = 1 -- select closest by order
 )
 ,final as (
     select
         'optimism' as blockchain
         ,'quix' as project
-        ,'v4' as version
+        ,'v5' as version
         ,TRY_CAST(date_trunc('DAY', er.block_time) AS date) AS block_date
         ,er.block_time
         ,er.token_id
         ,n.name as collection
-        ,er.amount_raw / power(10, t1.decimals) * coalesce(p1.price, fop.price) as amount_usd
+        ,er.amount_raw / power(10, t1.decimals) * p1.price as amount_usd
         ,case
         when erct2.evt_tx_hash is not null then 'erc721'
         when erc1155.evt_tx_hash is not null then 'erc1155'
@@ -232,11 +158,11 @@ with events_raw as (
         ,tx.to as tx_to
         ,ROUND((2.5*(er.amount_raw)/100),7) as platform_fee_amount_raw
         ,ROUND((2.5*((er.amount_raw / power(10,t1.decimals)))/100),7) AS platform_fee_amount
-        ,ROUND((2.5*((er.amount_raw / power(10,t1.decimals)* coalesce(p1.price, fop.price)))/100),7) AS platform_fee_amount_usd
+        ,ROUND((2.5*((er.amount_raw / power(10,t1.decimals)* p1.price))/100),7) AS platform_fee_amount_usd
         ,CAST(2.5 AS DOUBLE) AS platform_fee_percentage
         ,CAST(tr.value as double) as royalty_fee_amount_raw
         ,tr.value / power(10, t1.decimals) as royalty_fee_amount
-        ,tr.value / power(10, t1.decimals) * coalesce(p1.price, fop.price) as royalty_fee_amount_usd
+        ,tr.value / power(10, t1.decimals) * p1.price as royalty_fee_amount_usd
         ,(tr.value / er.amount_raw * 100) as royalty_fee_percentage
         ,case when tr.value is not null then tr.to end as royalty_fee_receive_address
         ,case when tr.value is not null
@@ -286,10 +212,17 @@ with events_raw as (
         {% if is_incremental() %}
         and erc1155.evt_block_time >= date_trunc("day", now() - interval '1 week')
         {% endif %}
-    left join erc20_transfer as erc20
+    left join {{ source('erc20_optimism','evt_transfer') }} as erc20
         on erc20.evt_block_time=er.block_time
         and erc20.evt_tx_hash=er.tx_hash
         and erc20.to=er.seller
+        {% if not is_incremental() %}
+        -- smallest block number for source tables above
+        and erc20.evt_block_number >= '{{min_block_number}}'
+        {% endif %}
+        {% if is_incremental() %}
+        and erc20.evt_block_time >= date_trunc("day", now() - interval '1 week')
+        {% endif %}
     left join {{ ref('tokens_erc20_legacy') }} as t1
         on t1.contract_address =
             case when (erc20.contract_address = '0x0000000000000000000000000000000000000000' or erc20.contract_address is null)
@@ -311,12 +244,10 @@ with events_raw as (
         {% if not is_incremental() %}
         and p1.minute >= '{{project_start_date}}'
         {% endif %}
-    left join fill_missing_op_price as fop
-    on fop.contract_address = erc20.contract_address
-    and fop.block_date = date_trunc('day', er.block_time)
     left join transfers as tr
         on tr.tx_hash = er.tx_hash
         and tr.block_number = er.block_number
+        and tr.evt_index = er.evt_index
 )
 select
     *

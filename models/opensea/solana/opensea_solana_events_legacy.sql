@@ -1,5 +1,5 @@
 {{ config(
-    alias = 'events',
+    alias = alias('events', legacy_model=True),
     partition_by = ['block_date'],
     materialized = 'incremental',
     file_format = 'delta',

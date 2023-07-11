@@ -27,7 +27,7 @@ with source_optimism_transactions as (
 )
 ,ref_nftearth_optimism_base_pairs as (
       select *
-      from {{ ref('nftearth_optimism_base_pairs') }}
+      from {{ ref('nftearth_optimism_base_pairs_legacy') }}
       where 1=1
       {% if is_incremental() %}
             and block_time >= date_trunc("day", now() - interval '1 week')
