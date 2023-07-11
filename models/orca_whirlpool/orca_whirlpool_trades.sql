@@ -152,7 +152,7 @@ FROM
     (
     SELECT 
         *
-        , row_number() OVER (partition by tx_id, outer_instruction_index, whirlpool_id, token_bought_amount order by update_time desc) as recent_update
+        -- , row_number() OVER (partition by tx_id, outer_instruction_index, whirlpool_id, token_bought_amount order by update_time desc) as recent_update
     FROM all_swaps
     )
     tb
