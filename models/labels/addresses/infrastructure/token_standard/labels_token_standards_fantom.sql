@@ -25,7 +25,7 @@ WHERE t.address IS NULL
 UNION ALL
 
 SELECT distinct 'fantom' AS blockchain
-, from_hex(nft.contract_address) AS address
+, nft.contract_address AS address
 , token_standard AS name
 , 'infrastructure' AS category
 , 'hildobby' AS contributor
@@ -34,7 +34,7 @@ SELECT distinct 'fantom' AS blockchain
 , NOW() AS updated_at
 , 'token_standard' AS model_name
 , 'persona' as label_type
-FROM { ref('nft_fantom_transfers_legacy') } nft -- {{ ref('nft_fantom_transfers') }} nft
+FROM {{ ref('nft_fantom_transfers') }} nft
 {% if is_incremental() %}
 LEFT JOIN this t
     ON t.address = nft.contract_address
