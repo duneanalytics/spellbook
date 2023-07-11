@@ -117,7 +117,7 @@ with
         -- and sp.call_is_inner = false -- only outer transactions (direct)
         -- and sp.call_block_time >= now() - interval '3' month
         -- and sp.call_tx_id = '65mP3g1ygp5VvxKm1HGwMcQi6DKXQ5dXrj9PCAWmFB3JvEmdZ7AhmXps3B7Ln7A9ve4DK6ahRuvANMXcRvGGxqYT' --outer call 
-        -- and sp.call_tx_id = '67FFgUeE8FxuhhUaUrfrmAMqctNUyvxLNMhxWdeL8Ri89MA8BXx9oPQBNLowHTYArNNSGVoC448SZa7aA1ivnfF8' --inner call
+        and sp.call_tx_id = '4jXZtQH8HtKhBpYFB6asETYSAR7Gfu4iYR9fwy3Qksz5HSCTSNBvV6AnvmaiBBQuHux53WSFojsr5ekY8xMo5tot' --inner call
     )
     
 
