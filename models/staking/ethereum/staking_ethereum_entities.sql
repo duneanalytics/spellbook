@@ -37,6 +37,7 @@ FROM
 (VALUES
 ('0xae7ab96520de3a18e5e111b5eaab095312d7fe84', 'Lido', 'Lido', 'Liquid Staking')
     , ('0xfddf38947afb03c621c71b06c9c70bce73f12999', 'Lido', 'Lido', 'Liquid Staking')
+    , ('0xa76a7d0d06754e4fc4941519d1f9d56fd9f8d53b', 'Lido', 'Lido', 'Liquid Staking')
     , ('0x39dc6a99209b5e6b81dc8540c86ff10981ebda29', 'Staked.us', 'Staked.us', 'Staking Pools')
     , ('0x0194512e77d798e4871973d9cb9d7ddfc0ffd801', 'stakefish', 'stakefish 1', 'Staking Pools')
     , ('0xd4039ecc40aeda0582036437cf3ec02845da4c13', 'Kraken', 'Kraken 1', 'CEX')
