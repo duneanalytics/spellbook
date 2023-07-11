@@ -18,10 +18,10 @@ SELECT
 
   FROM (
     select 
-        cast(date_trunc('day', evt_block_time) as date) as block_date
+        date_trunc('day', evt_block_time) as block_date
         ,evt_tx_hash as tx_hash
         ,evt_block_number as block_number
-        ,cast(evt_block_time as varchar) as block_time
+        ,evt_block_time as block_time
         ,evt_index
         ,about as recipient
         ,creator as issuer
