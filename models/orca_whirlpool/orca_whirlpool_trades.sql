@@ -163,7 +163,6 @@ FROM
 --     AND date_trunc('minute', tb.block_time) = p_sold.minute 
 --     AND token_sold_mint_address = toBase58(p_sold.contract_address)
 WHERE recent_update = 1 --keep only most recent fee tier
-limit 1
 -- --QA purposes only
 -- AND whirlpool_id = 'HJPjoWUrhoZzkNfRpHuieeFk9WcZWjwy6PBjZ81ngndJ'
 -- ORDER by block_time asc
