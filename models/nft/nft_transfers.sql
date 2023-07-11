@@ -46,7 +46,7 @@ FROM (
         , unique_transfer_id
     FROM {{ nft_model }}
     {% if is_incremental() %}
-    WHERE block_time >= date_trunc("day", now() - interval '7' days)
+    WHERE block_time >= date_trunc('day', now() - interval '7' day)
     {% endif %}
     {% if not loop.last %}
     UNION ALL
