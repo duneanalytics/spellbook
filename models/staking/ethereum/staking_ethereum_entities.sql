@@ -1,6 +1,6 @@
 {{ config(
     tags = ['dunesql'],
-    alias = 'entities',
+    alias = alias('entities'),
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
