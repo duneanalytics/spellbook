@@ -32,7 +32,7 @@ with
         )
         
     SELECT 
-        --distinct --something going wrong here?
+        distinct --something going wrong here?
         tkA.symbol as tokenA_symbol
         , tkA.decimals as tokenA_decimals
         , account_tokenMintA as tokenA
