@@ -45,7 +45,7 @@ SELECT block_time AS processed_block_time
         , nft_contract_address AS processed_nft_contract_address
         , token_id AS processed_token_id
         , tx_hash || '-' || nft_contract_address || '-' || token_id AS processed_trade_id
-FROM {{ ref('tofu_bnb_events') }}
+FROM {{ ref('tofu_bnb_events_legacy') }}
 WHERE blockchain = 'bnb'
   AND project = 'tofu'
   AND version = 'v1'

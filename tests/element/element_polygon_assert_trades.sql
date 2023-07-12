@@ -6,8 +6,8 @@ WITH raw_events AS (
   , erc721TokenId AS raw_token_id
   , evt_tx_hash || erc721Token || erc721TokenId AS raw_unique_trade_id
   FROM {{ source('element_ex_polygon','OrdersFeature_evt_ERC721SellOrderFilled') }}
-  WHERE evt_block_time >= '2022-04-15'
-  AND evt_block_time < NOW() - interval '1 day' -- allow some head desync
+  WHERE evt_block_time >= TIMESTAMP '2022-04-15'
+  AND evt_block_time < NOW() - interval '1' day -- allow some head desync
   UNION
   SELECT evt_block_time AS raw_block_time
   , evt_tx_hash AS raw_tx_hash
@@ -15,8 +15,8 @@ WITH raw_events AS (
   , erc721TokenId AS raw_token_id
   , evt_tx_hash || erc721Token || erc721TokenId AS raw_unique_trade_id
   FROM {{ source('element_ex_polygon','OrdersFeature_evt_ERC721BuyOrderFilled') }}
-  WHERE evt_block_time >= '2022-04-15'
-  AND evt_block_time < NOW() - interval '1 day' -- allow some head desync
+  WHERE evt_block_time >= TIMESTAMP '2022-04-15'
+  AND evt_block_time < NOW() - interval '1' day -- allow some head desync
   UNION
   SELECT evt_block_time AS raw_block_time
   , evt_tx_hash AS raw_tx_hash
@@ -24,8 +24,8 @@ WITH raw_events AS (
   , erc1155TokenId AS raw_token_id
   , evt_tx_hash || erc1155Token || erc1155TokenId AS raw_unique_trade_id
   FROM {{ source('element_ex_polygon','OrdersFeature_evt_ERC1155SellOrderFilled') }}
-  WHERE evt_block_time >= '2022-04-15'
-  AND evt_block_time < NOW() - interval '1 day' -- allow some head desync
+  WHERE evt_block_time >= TIMESTAMP '2022-04-15'
+  AND evt_block_time < NOW() - interval '1' day -- allow some head desync
   UNION
   SELECT evt_block_time AS raw_block_time
   , evt_tx_hash AS raw_tx_hash
@@ -33,8 +33,8 @@ WITH raw_events AS (
   , erc1155TokenId AS raw_token_id
   , evt_tx_hash || erc1155Token || erc1155TokenId AS raw_unique_trade_id
   FROM {{ source('element_ex_polygon','OrdersFeature_evt_ERC1155BuyOrderFilled') }}
-  WHERE evt_block_time >= '2022-04-15'
-  AND evt_block_time < NOW() - interval '1 day' -- allow some head desync
+  WHERE evt_block_time >= TIMESTAMP '2022-04-15'
+  AND evt_block_time < NOW() - interval '1' day -- allow some head desync
   )
 
 , processed_events AS (
@@ -47,8 +47,8 @@ WITH raw_events AS (
   WHERE blockchain = 'polygon'
     AND project = 'element'
     AND version = 'v1'
-    AND block_time >= '2022-04-15'
-    AND block_time < NOW() - interval '1 day' -- allow some head desync
+    AND block_time >= TIMESTAMP '2022-04-15'
+    AND block_time < NOW() - interval '1' day -- allow some head desync
   )
 
 SELECT *
