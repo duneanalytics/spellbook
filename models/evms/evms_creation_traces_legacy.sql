@@ -1,6 +1,5 @@
 {{ config(
-        tags = ['dunesql'],
-        alias = alias('creation_traces'),
+        alias = alias('creation_traces', legacy_model=True),
         unique_key=['blockchain', 'tx_hash', 'evt_index'],
         post_hook='{{ expose_spells(\'["ethereum", "polygon", "bnb", "avalanche_c", "gnosis", "fantom", "optimism", "arbitrum", "celo"]\',
                                     "sector",
@@ -18,7 +17,7 @@
      , ('fantom', source('fantom', 'creation_traces'))
      , ('optimism', source('optimism', 'creation_traces'))
      , ('arbitrum', source('arbitrum', 'creation_traces'))
-     , ('celo', source('celo', 'creation_traces'))
+     , ('arbitrum', source('arbitrum', 'creation_traces'))
 ] %}
 
 SELECT *
@@ -30,11 +29,11 @@ FROM (
         , block_number
         , tx_hash
         , address
-        , "from"
+        , from
         , code
         --, tx_from
         --, tx_to
-        FROM {{ creation_traces_model[1] }}
+        FROM {{ creation_traces_model[1] }} ct
         {% if not loop.last %}
         UNION ALL
         {% endif %}

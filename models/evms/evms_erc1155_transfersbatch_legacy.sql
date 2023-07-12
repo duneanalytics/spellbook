@@ -1,6 +1,5 @@
 {{ config(
-        tags = ['dunesql'],
-        alias = alias('erc1155_transfersbatch'),
+        alias = alias('erc1155_transfersbatch', legacy_model=True),
         unique_key=['blockchain', 'tx_hash', 'evt_index'],
         post_hook='{{ expose_spells(\'["ethereum", "polygon", "bnb", "avalanche_c", "gnosis", "fantom", "optimism", "arbitrum", "celo"]\',
                                     "sector",
@@ -32,10 +31,10 @@ FROM (
         , evt_block_time
         , evt_block_number
         , operator
-        , "from"
+        , from
         , to
         , ids
-        , "values"
+        , values
         FROM {{ erc1155_batchtransfers_model[1] }}
         {% if not loop.last %}
         UNION ALL

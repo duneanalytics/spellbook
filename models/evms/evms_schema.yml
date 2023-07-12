@@ -3,7 +3,7 @@ version: 2
 models:
   - name: evms_transactions
     meta:
-      blockchain: ethereum, polygon, bnb, avalanche_c, gnosis, fantom, optimism, arbitrum
+      blockchain: ethereum, polygon, bnb, avalanche_c, gnosis, fantom, optimism, arbitrum, celo
       sector: evms
       contributors: hildobby
     config:
@@ -13,9 +13,6 @@ models:
       - &blockchain
         name: blockchain
         description: "Name of the blockchain"
-      - &block_date
-        name: block_date
-        description: "Block event date in UTC"
       - &block_time
         name: block_time
         description: "Timestamp for block event time in UTC"
@@ -79,7 +76,7 @@ models:
 
   - name: evms_traces
     meta:
-      blockchain: ethereum, polygon, bnb, avalanche_c, gnosis, fantom, optimism, arbitrum
+      blockchain: ethereum, polygon, bnb, avalanche_c, gnosis, fantom, optimism, arbitrum, celo
       sector: evms
       contributors: hildobby
     config:
@@ -87,7 +84,6 @@ models:
     description: "An EVM trace is a small atomic action that modify the internal state of the Ethereum Virtual Machine. The three main trace types are call, create, and suicide."
     columns:
       - *blockchain
-      - *block_date
       - *block_time
       - *block_number
       - *value
@@ -101,8 +97,6 @@ models:
       - &tx_index
         name: tx_index
         description: "Transaction index"
-      - name: subtraces
-        description: "Number of subtraces (i.e, number of calls at a particular level within a transaction)"
       - name: error
         description: "Error log"
       - name: tx_success
@@ -133,7 +127,7 @@ models:
 
   - name: evms_traces_decoded
     meta:
-      blockchain: ethereum, polygon, bnb, avalanche_c, gnosis, fantom, optimism, arbitrum
+      blockchain: ethereum, polygon, bnb, avalanche_c, gnosis, fantom, optimism, arbitrum, celo
       sector: evms
       contributors: hildobby
     config:
@@ -141,7 +135,6 @@ models:
     description: "An EVM trace is a small atomic action that modify the internal state of the Ethereum Virtual Machine. The three main trace types are call, create, and suicide. Decoded traces include additional information based on submitted smart contracts and their ABI"
     columns:
       - *blockchain
-      - *block_date
       - *block_time
       - *block_number
       - name: contract_name
@@ -160,7 +153,7 @@ models:
 
   - name: evms_logs
     meta:
-      blockchain: ethereum, polygon, bnb, avalanche_c, gnosis, fantom, optimism, arbitrum
+      blockchain: ethereum, polygon, bnb, avalanche_c, gnosis, fantom, optimism, arbitrum, celo
       sector: evms
       contributors: hildobby
     config:
@@ -168,19 +161,18 @@ models:
     description: "An EVM log can be used to describe an event within a smart contract, like a token transfer or a change of ownership."
     columns:
       - *blockchain
-      - *block_date
       - *block_time
       - *block_number
       - *block_hash
       - name: contract_address
         description: "Address of the ethereum smart contract generating the log"
-      - name: topic1
+      - name: topic0
         description: "Topics are 32-byte (256 bit) “words” that are used to describe what’s going on in an event. The first topic usually consists of the signature of the name of the event that occurred, including the types (uint256, string, etc.) of its parameters."
-      - name: topic2
+      - name: topic1
         description: "Second topic"
-      - name: topic3
+      - name: topic2
         description: "Third topic"
-      - name: topic4
+      - name: topic3
         description: "Fourth topic"
       - name: data
         description: "Additional data for the log. Data is not searchable (while topics are), but is a lot cheaper and can include large or complicated data like arrays or strings."
@@ -191,7 +183,7 @@ models:
 
   - name: evms_logs_decoded
     meta:
-      blockchain: ethereum, polygon, bnb, avalanche_c, gnosis, fantom, optimism, arbitrum
+      blockchain: ethereum, polygon, bnb, avalanche_c, gnosis, fantom, optimism, arbitrum, celo
       sector: evms
       contributors: hildobby
     config:
@@ -199,7 +191,6 @@ models:
     description: "An EVM log can be used to describe an event within a smart contract, like a token transfer or a change of ownership. Those logs are decoded based on submitted smart contracts to make them human readable."
     columns:
       - *blockchain
-      - *block_date
       - *block_time
       - *block_number
       - name: index
@@ -218,7 +209,7 @@ models:
 
   - name: evms_blocks
     meta:
-      blockchain: ethereum, polygon, bnb, avalanche_c, gnosis, fantom, optimism, arbitrum
+      blockchain: ethereum, polygon, bnb, avalanche_c, gnosis, fantom, optimism, arbitrum, celo
       sector: evms
       contributors: hildobby
     config:
@@ -241,7 +232,7 @@ models:
 
   - name: evms_contracts
     meta:
-      blockchain: ethereum, polygon, bnb, avalanche_c, gnosis, fantom, optimism, arbitrum
+      blockchain: ethereum, polygon, bnb, avalanche_c, gnosis, fantom, optimism, arbitrum, celo
       sector: evms
       contributors: hildobby
     config:
@@ -277,7 +268,7 @@ models:
       
   - name: evms_creation_traces
     meta:
-      blockchain: ethereum, polygon, bnb, avalanche_c, gnosis, fantom, optimism, arbitrum
+      blockchain: ethereum, polygon, bnb, avalanche_c, gnosis, fantom, optimism, arbitrum, celo
       sector: evms
       contributors: hildobby
     config:
@@ -297,7 +288,7 @@ models:
 
   - name: evms_erc20_transfers
     meta:
-      blockchain: ethereum, polygon, bnb, avalanche_c, gnosis, fantom, optimism, arbitrum
+      blockchain: ethereum, polygon, bnb, avalanche_c, gnosis, fantom, optimism, arbitrum, celo
       sector: evms
       contributors: hildobby
     config:
@@ -326,7 +317,7 @@ models:
 
   - name: evms_erc20_approvals
     meta:
-      blockchain: ethereum, polygon, bnb, avalanche_c, gnosis, fantom, optimism, arbitrum
+      blockchain: ethereum, polygon, bnb, avalanche_c, gnosis, fantom, optimism, arbitrum, celo
       sector: evms
       contributors: hildobby
     config:
@@ -340,8 +331,6 @@ models:
       - *evt_index
       - *evt_block_time
       - *evt_block_number
-      - name: approved
-        description: "Approved"
       - name: owner
         description: "Owner"
       - name: spender
@@ -351,7 +340,7 @@ models:
 
   - name: evms_erc1155_transferssingle
     meta:
-      blockchain: ethereum, polygon, bnb, avalanche_c, gnosis, fantom, optimism, arbitrum
+      blockchain: ethereum, polygon, bnb, avalanche_c, gnosis, fantom, optimism, arbitrum, celo
       sector: evms
       contributors: hildobby
     config:
@@ -376,7 +365,7 @@ models:
 
   - name: evms_erc1155_transfersbatch
     meta:
-      blockchain: ethereum, polygon, bnb, avalanche_c, gnosis, fantom, optimism, arbitrum
+      blockchain: ethereum, polygon, bnb, avalanche_c, gnosis, fantom, optimism, arbitrum, celo
       sector: evms
       contributors: hildobby
     config:
@@ -401,7 +390,7 @@ models:
 
   - name: evms_erc1155_approvalsforall
     meta:
-      blockchain: ethereum, polygon, bnb, avalanche_c, gnosis, fantom, optimism, arbitrum
+      blockchain: ethereum, polygon, bnb, avalanche_c, gnosis, fantom, optimism, arbitrum, celo
       sector: evms
       contributors: hildobby
     config:
@@ -418,9 +407,6 @@ models:
       - &approved
         name: approved
         description: "Is approved"
-      - &owner
-        name: owner
-        description: "Owner"
       - name: account
         description: "Account"
       - &operator
@@ -429,7 +415,7 @@ models:
 
   - name: evms_erc721_transfers
     meta:
-      blockchain: ethereum, polygon, bnb, avalanche_c, gnosis, fantom, optimism, arbitrum
+      blockchain: ethereum, polygon, bnb, avalanche_c, gnosis, fantom, optimism, arbitrum, celo
       sector: evms
       contributors: hildobby
     config:
@@ -450,7 +436,7 @@ models:
 
   - name: evms_erc721_approvals
     meta:
-      blockchain: ethereum, polygon, bnb, avalanche_c, gnosis, fantom, optimism, arbitrum
+      blockchain: ethereum, polygon, bnb, avalanche_c, gnosis, fantom, optimism, arbitrum, celo
       sector: evms
       contributors: hildobby
     config:
@@ -465,13 +451,15 @@ models:
       - *evt_block_time
       - *evt_block_number
       - *approved
-      - *owner
+      - &owner
+        name: owner
+        description: "Owner"
       - name: tokenId
         description: "ERC721 token ID."
 
   - name: evms_erc721_approvalsforall
     meta:
-      blockchain: ethereum, polygon, bnb, avalanche_c, gnosis, fantom, optimism, arbitrum
+      blockchain: ethereum, polygon, bnb, avalanche_c, gnosis, fantom, optimism, arbitrum, celo
       sector: evms
       contributors: hildobby
     config:

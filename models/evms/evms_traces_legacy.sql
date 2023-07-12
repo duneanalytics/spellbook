@@ -1,6 +1,5 @@
 {{ config(
-        tags = ['dunesql'],
-        alias = alias('traces'),
+        alias = alias('traces', legacy_model=True),
         unique_key=['blockchain', 'tx_hash', 'evt_index'],
         post_hook='{{ expose_spells(\'["ethereum", "polygon", "bnb", "avalanche_c", "gnosis", "fantom", "optimism", "arbitrum", "celo"]\',
                                     "sector",
@@ -37,7 +36,7 @@ FROM (
         , error
         , tx_success
         , tx_hash
-        , "from"
+        , from
         , to
         , trace_address
         , type
