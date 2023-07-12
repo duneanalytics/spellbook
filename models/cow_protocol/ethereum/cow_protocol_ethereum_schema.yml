@@ -228,7 +228,9 @@ models:
         to the solver competition on the granularity level of orders.
     columns:
       - *tx_hash
-      - *solver_address
+      - &solver
+        name: solver
+        description: "Address of the solver who settled the order (i.e. the from address of the corresponding transaction)"
       - *block_number
       - &cow_reward
         name: cow_reward
