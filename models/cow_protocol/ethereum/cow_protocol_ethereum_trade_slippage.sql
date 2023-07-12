@@ -28,7 +28,7 @@ select
     atoms_sold,
     usd_value as trade_usd_value,
     slippage_bips as tolerance_bips
-from {{ref('cow_protocol_ethereum_app_data')}} as ad
+from {{ref('cow_protocol_ethereum_app_data_legacy')}} as ad
 inner join {{ ref('cow_protocol_ethereum_trades') }} as t on t.app_data = ad.app_hash
 where slippage_bips is not null
 ),
