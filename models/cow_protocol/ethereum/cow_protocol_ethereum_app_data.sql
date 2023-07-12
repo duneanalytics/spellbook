@@ -1,4 +1,4 @@
-{{ config(alias='app_data',
+{{ config(alias=alias('app_data'),
         tags=['dunesql'],
         post_hook='{{ expose_spells(\'["ethereum"]\',
                                     "project",
