@@ -97,8 +97,6 @@ models:
       - &tx_index
         name: tx_index
         description: "Transaction index"
-      - name: subtraces
-        description: "Number of subtraces (i.e, number of calls at a particular level within a transaction)"
       - name: error
         description: "Error log"
       - name: tx_success

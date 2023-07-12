@@ -33,7 +33,6 @@ FROM (
         , block_hash
         , success
         , tx_index
-        , subtraces
         , error
         , tx_success
         , tx_hash
