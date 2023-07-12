@@ -1,4 +1,5 @@
-{{config(alias = alias('aggregators_manual', legacy_model=True))}}
+{{config(
+	tags=['legacy'],alias = alias('aggregators_manual', legacy_model=True))}}
 SELECT
   LOWER(contract_address) AS contract_address,
   name

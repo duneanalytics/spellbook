@@ -1,4 +1,5 @@
-{{ config( alias = alias('erc20', legacy_model=True), materialized = 'table',
+{{ config(
+	tags=['legacy'], alias = alias('erc20', legacy_model=True), materialized = 'table',
     post_hook='{{ expose_spells(\'["optimism"]\',
                                     "sector",
                                     "tokens",

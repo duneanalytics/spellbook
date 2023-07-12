@@ -1,4 +1,5 @@
-{{ config( alias = alias('nft', legacy_model=True),
+{{ config(
+	tags=['legacy'], alias = alias('nft', legacy_model=True),
         post_hook='{{ expose_spells(\'["avalanche_c","bnb","ethereum","optimism", "gnosis", "fantom","arbitrum","polygon"]\',
                                     "sector",
                                     "tokens",
