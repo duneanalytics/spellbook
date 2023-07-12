@@ -1,4 +1,5 @@
 {{config(
+	tags=['legacy'],
     alias = alias('aggregators', legacy_model=True)
     )
 }}

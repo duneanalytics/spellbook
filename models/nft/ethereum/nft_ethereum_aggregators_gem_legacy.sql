@@ -1,4 +1,5 @@
-{{config(alias = alias('aggregators_gem', legacy_model=True))}}
+{{config(
+	tags=['legacy'],alias = alias('aggregators_gem', legacy_model=True))}}
 WITH vasa_contracts as (
     SELECT distinct
     address AS contract_address

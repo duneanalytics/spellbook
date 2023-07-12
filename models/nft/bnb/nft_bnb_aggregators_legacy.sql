@@ -1,4 +1,5 @@
- {{ config( alias = alias('aggregators', legacy_model=True)) }}
+ {{ config(
+	tags=['legacy'], alias = alias('aggregators', legacy_model=True)) }}
 
 SELECT
   contract_address,
