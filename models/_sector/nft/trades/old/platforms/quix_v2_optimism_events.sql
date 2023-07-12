@@ -186,10 +186,10 @@ with events_raw as (
         {% if is_incremental() %}
         and tx.block_time >= date_trunc("day", now() - interval '1 week')
         {% endif %}
-    left join {{ ref('nft_aggregators') }} as agg
+    left join {{ ref('nft_aggregators_legacy') }} as agg
         on agg.contract_address = tx.to
         and agg.blockchain = 'optimism'
-    left join {{ ref('tokens_nft') }} n
+    left join {{ ref('tokens_nft_legacy') }} n
         on n.contract_address = er.nft_contract_address
         and n.blockchain = 'optimism'
     left join {{ source('erc721_optimism','evt_transfer') }} as erct2

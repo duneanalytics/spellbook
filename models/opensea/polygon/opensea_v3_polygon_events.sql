@@ -36,7 +36,7 @@ with source_polygon_transactions as (
 )
 ,ref_tokens_nft as (
     select *
-      from {{ ref('tokens_nft') }}
+      from {{ ref('tokens_nft_legacy') }}
      where blockchain = 'polygon'
 )
 ,ref_tokens_erc20 as (
@@ -46,7 +46,7 @@ with source_polygon_transactions as (
 )
 ,ref_nft_aggregators as (
     select *
-      from {{ ref('nft_aggregators') }}
+      from {{ ref('nft_aggregators_legacy') }}
     where blockchain = 'polygon'
 )
 ,source_prices_usd as (

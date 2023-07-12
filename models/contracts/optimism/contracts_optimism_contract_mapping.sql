@@ -193,7 +193,7 @@ WHERE contract_order = 1
     ,t.name as symbol
     , standard AS token_standard
   from base_level as bl 
-  join {{ ref('tokens_optimism_nft') }} as t
+  join {{ ref('tokens_optimism_nft_legacy') }} as t
     on bl.contract_address = t.contract_address
   group by 1, 2, 3
 )

@@ -124,7 +124,7 @@ FROM tbl_cte_transaction AS a
 LEFT JOIN tbl_usd AS b
     ON date_trunc('minute', a.evt_block_time) = b.minute
     AND a.price_label = b.contract_address
-LEFT JOIN {{ ref('tokens_nft') }} AS c
+LEFT JOIN {{ ref('tokens_nft_legacy') }} AS c
     ON nft_address = c.contract_address
     AND c.blockchain = 'ethereum'
 )

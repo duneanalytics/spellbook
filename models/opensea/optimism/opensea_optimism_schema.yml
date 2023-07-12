@@ -203,7 +203,7 @@ models:
     description: >
         Opensea events on optimism, from Seaport v1.1
     tests:
-      - check_seed:
+      - check_seed_legacy:
           seed_file: ref('opensea_optimism_seaport_trades_samples')
           filter:
             blockchain: optimism
@@ -294,7 +294,7 @@ models:
           combination_of_columns:
             - block_date
             - unique_trade_id
-      - check_seed:
+      - check_seed_legacy:
           seed_file: ref('opensea_optimism_seaport_trades_samples')
           filter:
             blockchain: optimism

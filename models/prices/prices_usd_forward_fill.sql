@@ -1,7 +1,8 @@
 {{ config(
+        tags = ['dunesql'],
         schema='prices',
-        alias ='usd_forward_fill',
-        post_hook='{{ expose_spells_hide_trino(\'["ethereum", "solana", "arbitrum", "gnosis", "optimism", "bnb", "avalanche_c", "polygon"]\',
+        alias = alias('usd_forward_fill'),
+        post_hook='{{ expose_spells(\'["ethereum", "solana", "arbitrum", "gnosis", "optimism", "bnb", "avalanche_c", "polygon"]\',
                                     "sector",
                                     "prices",
                                     \'["0xRob"]\') }}'
@@ -10,7 +11,7 @@
 
 -- how much time we look back, anything before is considered finalized, anything after is forward filled.
 -- we could decrease this to optimize query performance but it's a tradeoff with resiliency to lateness.
-{%- set lookback_interval = '2 day' %}
+{%- set lookback_interval = "'2' day" %}
 
 
 WITH
@@ -28,10 +29,10 @@ WITH
 )
 
 , timeseries as (
-    select explode(sequence(
-        date_trunc('minute', now() - interval {{lookback_interval}})
-        ,date_trunc('minute', now())
-        ,interval 1 minute)) as minute
+    select * from unnest(sequence(
+        cast(date_trunc('minute', now() - interval {{lookback_interval}}) as timestamp)
+        ,cast(date_trunc('minute', now()) as timestamp)
+        ,interval '1' minute)) as foo(minute)
 )
 
 , forward_fill as (
@@ -64,4 +65,4 @@ SELECT
     ,symbol
     ,price
 FROM forward_fill
-;
+

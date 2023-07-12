@@ -275,4 +275,4 @@ LEFT JOIN {{ source('prices', 'usd') }} p ON p.contract_address = a.currency_con
     {% if is_incremental() %}
     AND p.minute >= date_trunc("day", now() - interval '1 week')
     {% endif %}
-LEFT JOIN {{ ref('nft_aggregators') }} agg ON agg.blockchain = 'polygon' AND agg.contract_address = t.`to`
+LEFT JOIN {{ ref('nft_aggregators_legacy') }} agg ON agg.blockchain = 'polygon' AND agg.contract_address = t.`to`
