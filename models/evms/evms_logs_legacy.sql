@@ -1,6 +1,5 @@
 {{ config(
-        tags = ['dunesql'],
-        alias = alias('logs'),
+        alias = alias('logs', legacy_model=True),
         unique_key=['blockchain', 'tx_hash'],
         post_hook='{{ expose_spells(\'["ethereum", "polygon", "bnb", "avalanche_c", "gnosis", "fantom", "optimism", "arbitrum", "celo"]\',
                                     "sector",
@@ -30,10 +29,10 @@ FROM (
         , block_number
         , block_hash
         , contract_address
-        , topic0
-        , topic1
-        , topic2
-        , topic3
+        , topic1 AS topic0
+        , topic2 AS topic1
+        , topic3 AS topic2
+        , topic4 AS topic3
         , data
         , tx_hash
         , index

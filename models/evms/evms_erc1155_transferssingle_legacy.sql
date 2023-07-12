@@ -1,6 +1,5 @@
 {{ config(
-        tags = ['dunesql'],
-        alias = alias('erc1155_transferssingle'),
+        alias = alias('erc1155_transferssingle', legacy_model=True),
         unique_key=['blockchain', 'tx_hash', 'evt_index'],
         post_hook='{{ expose_spells(\'["ethereum", "polygon", "bnb", "avalanche_c", "gnosis", "fantom", "optimism", "arbitrum", "celo"]\',
                                     "sector",
@@ -32,7 +31,7 @@ FROM (
         , evt_block_time
         , evt_block_number
         , operator
-        , "from"
+        , from
         , to
         , id
         , value

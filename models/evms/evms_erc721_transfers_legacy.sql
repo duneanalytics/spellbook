@@ -1,6 +1,5 @@
 {{ config(
-        tags = ['dunesql'],
-        alias = alias('erc721_transfers'),
+        alias = alias('erc721_transfers', legacy_model=True),
         unique_key=['blockchain', 'tx_hash', 'evt_index'],
         post_hook='{{ expose_spells(\'["ethereum", "polygon", "bnb", "avalanche_c", "gnosis", "fantom", "optimism", "arbitrum", "celo"]\',
                                     "sector",
@@ -31,7 +30,7 @@ FROM (
         , evt_index
         , evt_block_time
         , evt_block_number
-        , "from"
+        , from
         , to
         , tokenId
         FROM {{ erc721_transfers_model[1] }}
