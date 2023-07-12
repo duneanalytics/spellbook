@@ -21,11 +21,11 @@ models:
             - tx_hash
             - evt_index
             - trace_address
-      - check_dex_seed:
+      - check_dex_seed_legacy:
           blockchain: bnb
           project: onepunchswap
           version: quick
-      - check_dex_seed:
+      - check_dex_seed_legacy:
           blockchain: bnb
           project: onepunchswap
           version: normal

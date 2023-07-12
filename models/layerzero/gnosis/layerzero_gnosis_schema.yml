@@ -10,7 +10,7 @@ models:
      tags: ['gnosis', 'layerzero', 'send']
    description: "LayerZero message send call on gnosis"
    tests:
-     - check_seed:
+     - check_seed_legacy:
          seed_file: ref('layerzero_gnosis_send_samples')
          check_columns:
            - destination_chain_id

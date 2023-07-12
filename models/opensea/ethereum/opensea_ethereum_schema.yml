@@ -208,7 +208,7 @@ models:
           combination_of_columns:
             - block_date
             - unique_trade_id
-      - check_seed:
+      - check_seed_legacy:
           seed_file: ref('opensea_wyvern_trades_samples')
           match_columns:
             - block_time
@@ -274,7 +274,7 @@ models:
           combination_of_columns:
             - block_date
             - unique_trade_id
-      - check_seed:
+      - check_seed_legacy:
           seed_file: ref('opensea_ethereum_seaport_trades_samples')
           filter:
             blockchain: ethereum
@@ -367,7 +367,7 @@ models:
           combination_of_columns:
             - block_date
             - unique_trade_id
-      - check_seed:
+      - check_seed_legacy:
           seed_file: ref('opensea_ethereum_seaport_trades_samples')
           filter:
             blockchain: ethereum

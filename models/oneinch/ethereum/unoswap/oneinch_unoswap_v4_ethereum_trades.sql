@@ -188,10 +188,10 @@ SELECT
     ,src.evt_index
 FROM
     oneinch as src
-LEFT JOIN {{ ref('tokens_erc20') }} as token_bought
+LEFT JOIN {{ ref('tokens_erc20_legacy') }} as token_bought
     ON token_bought.contract_address = src.token_bought_address
     AND token_bought.blockchain = '{{blockchain}}'
-LEFT JOIN {{ ref('tokens_erc20') }} as token_sold
+LEFT JOIN {{ ref('tokens_erc20_legacy') }} as token_sold
     ON token_sold.contract_address = src.token_sold_address
     AND token_sold.blockchain = '{{blockchain}}'
 LEFT JOIN {{ source('prices', 'usd') }} as prices_bought

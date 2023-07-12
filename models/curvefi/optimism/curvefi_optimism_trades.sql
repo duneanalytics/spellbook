@@ -161,9 +161,9 @@ SELECT
     INNER JOIN {{ ref('curvefi_optimism_pools') }} tb
         ON cp.project_contract_address = tb.pool
         AND cp.sold_id = tb.tokenid
-    LEFT JOIN {{ ref('tokens_optimism_erc20') }} ea
+    LEFT JOIN {{ ref('tokens_optimism_erc20_legacy') }} ea
         ON ea.contract_address = ta.token
-    LEFT JOIN {{ ref('tokens_optimism_erc20') }} eb
+    LEFT JOIN {{ ref('tokens_optimism_erc20_legacy') }} eb
         ON eb.contract_address = tb.token
 )
 SELECT DISTINCT
@@ -211,10 +211,10 @@ INNER JOIN {{ source('optimism', 'transactions') }} tx
     {% if is_incremental() %}
     AND tx.block_time >= date_trunc('day', now() - interval '1' week)
     {% endif %}
-LEFT JOIN {{ ref('tokens_erc20') }} erc20a
+LEFT JOIN {{ ref('tokens_erc20_legacy') }} erc20a
     ON erc20a.contract_address = dexs.token_bought_address
     AND erc20a.blockchain = 'optimism'
-LEFT JOIN {{ ref('tokens_erc20') }} erc20b
+LEFT JOIN {{ ref('tokens_erc20_legacy') }} erc20b
     ON erc20b.contract_address = dexs.token_sold_address
     AND erc20b.blockchain = 'optimism'
 LEFT JOIN {{ source('prices', 'usd') }} p_bought

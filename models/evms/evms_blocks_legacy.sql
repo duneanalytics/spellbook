@@ -1,4 +1,5 @@
 {{ config(
+	tags=['legacy'],
         alias = alias('blocks', legacy_model=True),
         unique_key=['blockchain', 'number'],
         post_hook='{{ expose_spells(\'["ethereum", "polygon", "bnb", "avalanche_c", "gnosis", "fantom", "optimism", "arbitrum"]\',

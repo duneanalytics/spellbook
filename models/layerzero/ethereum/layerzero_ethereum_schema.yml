@@ -10,7 +10,7 @@ models:
      tags: ['ethereum', 'layerzero', 'send']
    description: "LayerZero message send call on ethereum"
    tests:
-     - check_seed:
+     - check_seed_legacy:
          seed_file: ref('layerzero_ethereum_send_samples')
          check_columns:
            - destination_chain_id

@@ -1,5 +1,6 @@
 {{ config(
-        alias ='transfers',
+        tags = ['dunesql'],
+        alias =alias('transfers'),
         partition_by = ['block_date'],
         materialized = 'incremental',
         file_format = 'delta',
@@ -38,14 +39,14 @@ FROM (
         , contract_address
         , token_id
         , amount
-        , `from`
+        , "from"
         , to
         , executed_by
         , tx_hash
         , unique_transfer_id
     FROM {{ nft_model }}
     {% if is_incremental() %}
-    WHERE block_time >= date_trunc("day", now() - interval '1 week')
+    WHERE block_time >= date_trunc('day', now() - interval '7' day)
     {% endif %}
     {% if not loop.last %}
     UNION ALL
