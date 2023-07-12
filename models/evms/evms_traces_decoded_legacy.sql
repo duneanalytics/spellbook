@@ -28,7 +28,7 @@ FROM (
         , block_date
         , block_time
         , block_number
-        , contract_address
+        , contract_name
         , function_name
         , namespace
         , signature
