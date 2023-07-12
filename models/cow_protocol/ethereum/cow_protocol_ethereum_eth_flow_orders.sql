@@ -20,13 +20,15 @@ eth_flow_orders as (
     select
         sender,
         cast(date_trunc('day', evt_block_time) as date) as block_date,
-        case
-          when event.contract_address = 0x40a50cf069e992aa4536211b23f286ef88752187 then 'prod'
-          when event.contract_address = 0xd02de8da0b71e1b59489794f423fabba2adc4d93 then 'barn'
-        end as environment,
         evt_block_time as block_time,
         evt_block_number as block_number,
         evt_tx_hash as tx_hash,
+        case
+            when event.contract_address = 0x40a50cf069e992aa4536211b23f286ef88752187
+                then 'prod'
+            when event.contract_address = 0xd02de8da0b71e1b59489794f423fabba2adc4d93
+                then 'barn'
+        end as environment,
         date_format(
             from_unixtime(bytearray_to_decimal(from_hex(substring(cast(data as varchar), 19, 8)))),
            '%Y-%m-%d %T'
