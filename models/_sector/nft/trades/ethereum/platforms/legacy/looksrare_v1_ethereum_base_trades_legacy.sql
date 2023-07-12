@@ -1,7 +1,6 @@
 {{ config(
     schema = 'looksrare_v1_ethereum',
-    tags = ['dunesql'],
-    alias = alias('base_trades'),
+    alias = alias('base_trades', legacy_model=True),
     partition_by = ['block_date'],
     materialized = 'incremental',
     file_format = 'delta',
@@ -17,7 +16,7 @@ WITH looksrare_trades AS (
         SELECT ta.evt_block_time AS block_time
         , ta.tokenId AS nft_token_id
         , ta.amount AS nft_amount
-        , CASE WHEN ta.strategy=0x58d83536d3efedb9f7f2a1ec3bdaad2b1a4dd98c THEN 'Private Sale' ELSE 'Buy' END AS trade_category
+        , CASE WHEN ta.strategy='0x58d83536d3efedb9f7f2a1ec3bdaad2b1a4dd98c' THEN 'Private Sale' ELSE 'Buy' END AS trade_category
         , ta.maker AS seller
         , ta.taker AS buyer
         , ta.price AS price_raw
@@ -30,7 +29,7 @@ WITH looksrare_trades AS (
         , ta.strategy
         FROM {{ source('looksrare_ethereum','LooksRareExchange_evt_TakerAsk') }} ta
         {% if is_incremental() %}
-        WHERE ta.evt_block_time >= date_trunc('day', now() - interval '7' day)
+        WHERE ta.evt_block_time >= date_trunc("day", NOW() - interval '1 week')
         {% endif %}
 
         UNION ALL
@@ -38,7 +37,7 @@ WITH looksrare_trades AS (
         SELECT tb.evt_block_time AS block_time
         , tb.tokenId AS nft_token_id
         , tb.amount AS nft_amount
-        , CASE WHEN tb.strategy=0x58d83536d3efedb9f7f2a1ec3bdaad2b1a4dd98c THEN 'Private Sale' ELSE 'Offer Accepted' END AS trade_category
+        , CASE WHEN tb.strategy='0x58d83536d3efedb9f7f2a1ec3bdaad2b1a4dd98c' THEN 'Private Sale' ELSE 'Offer Accepted' END AS trade_category
         , tb.maker AS seller
         , tb.taker AS buyer
         , tb.price AS price_raw
@@ -51,7 +50,7 @@ WITH looksrare_trades AS (
         , tb.strategy
         FROM {{ source('looksrare_ethereum','LooksRareExchange_evt_TakerBid') }} tb
         {% if is_incremental() %}
-        WHERE tb.evt_block_time >= date_trunc('day', now() - interval '7' day)
+        WHERE tb.evt_block_time >= date_trunc("day", NOW() - interval '1 week')
         {% endif %}
         )
     )
@@ -67,35 +66,35 @@ WITH looksrare_trades AS (
     , ROW_NUMBER() OVER (PARTITION BY evt_tx_hash, collection, tokenId ORDER BY evt_index ASC) AS id
     FROM {{ source('looksrare_ethereum','LooksRareExchange_evt_RoyaltyPayment') }}
     {% if is_incremental() %}
-    WHERE evt_block_time >= date_trunc('day', now() - interval '7' day)
+    WHERE evt_block_time >= date_trunc("day", NOW() - interval '1 week')
     {% endif %}
     )
 
 , platform_fees AS (
     SELECT distinct contract_address
-    , cast(output_0 as double)/100 AS fee_percentage
+    , output_0/100 AS fee_percentage
     FROM {{ source('looksrare_ethereum','StrategyStandardSaleForFixedPrice_call_viewProtocolFee') }}
     UNION ALL
     SELECT distinct contract_address
-    , cast(output_0 as double)/100 AS fee_percentage
+    , output_0/100 AS fee_percentage
     FROM {{ source('looksrare_ethereum','StrategyAnyItemFromCollectionForFixedPrice_call_viewProtocolFee') }}
     UNION ALL
     SELECT distinct contract_address
-    , cast(output_0 as double)/100 AS fee_percentage
+    , output_0/100 AS fee_percentage
     FROM {{ source('looksrare_ethereum','StrategyPrivateSale_call_viewProtocolFee') }}
     UNION ALL
     SELECT distinct contract_address
-    , cast(output_0 as double)/100 AS fee_percentage
+    , output_0/100 AS fee_percentage
     FROM {{ source('looksrare_ethereum','StrategyStandardSaleForFixedPriceV1B_call_viewProtocolFee') }}
     UNION ALL
     SELECT distinct contract_address
-    , cast(output_0 as double)/100 AS fee_percentage
+    , output_0/100 AS fee_percentage
     FROM {{ source('looksrare_ethereum','StrategyAnyItemFromCollectionForFixedPriceV1B_call_viewProtocolFee') }}
     )
 
 
 SELECT
-  cast(date_trunc('month', lr.block_time) as date) AS block_date
+  date_trunc('day', lr.block_time) AS block_date
 , lr.block_time
 , lr.block_number
 , lr.tx_hash
@@ -108,10 +107,10 @@ SELECT
 , lr.buyer
 , lr.seller
 , lr.currency_contract
-, lr.price_raw
-, CAST(COALESCE((pf.fee_percentage/100)*CAST(lr.price_raw as uint256),  DOUBLE '0') as UINT256) AS platform_fee_amount_raw
-, COALESCE(roy.amount, cast(0 as uint256)) AS royalty_fee_amount_raw
-, cast(null as varbinary) as platform_fee_address
+, CAST(lr.price_raw AS DECIMAL(38,0)) AS price_raw
+, CAST(COALESCE((pf.fee_percentage/100)*lr.price_raw, 0) as DECIMAL(38,0)) AS platform_fee_amount_raw
+, CAST(COALESCE(roy.amount, 0) AS DECIMAL(38,0)) AS royalty_fee_amount_raw
+, cast(null as varchar(1)) as platform_fee_address
 , roy.royaltyRecipient AS royalty_fee_address
 , lr.evt_index AS sub_tx_trade_id
 FROM looksrare_trades lr

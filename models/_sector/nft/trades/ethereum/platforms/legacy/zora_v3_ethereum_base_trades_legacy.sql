@@ -1,7 +1,6 @@
 {{ config(
     schema = 'zora_v3_ethereum',
-    tags = ['dunesql'],
-    alias = alias('base_trades'),
+    alias = alias('base_trades', legacy_model=True),
     partition_by = ['block_date'],
     materialized = 'incremental',
     file_format = 'delta',
@@ -14,13 +13,13 @@ WITH v3_trades as (
      SELECT
           evt_block_time AS block_time
         , evt_block_number AS block_number
-        , CAST(JSON_EXTRACT_SCALAR(a, '$.tokenId') as uint256) AS nft_token_id
+        , get_json_object(a, '$.tokenId') AS nft_token_id
         , 'Offer Accepted' AS trade_category
         , userA AS seller
         , userB AS buyer
-        , CAST(JSON_EXTRACT_SCALAR(b, '$.amount') as uint256) AS price_raw
-        , from_hex(JSON_EXTRACT_SCALAR(b, '$.tokenContract')) AS currency_contract
-        , from_hex(JSON_EXTRACT_SCALAR(a, '$.tokenContract')) AS nft_contract_address
+        , get_json_object(b, '$.amount') AS price_raw
+        , get_json_object(b, '$.tokenContract') AS currency_contract
+        , get_json_object(a, '$.tokenContract') AS nft_contract_address
         , contract_address AS project_contract_address
         , evt_tx_hash AS tx_hash
         , evt_index AS sub_tx_trade_id
@@ -33,7 +32,7 @@ WITH v3_trades as (
         FROM {{ source('zora_v3_ethereum','AsksV1_1_evt_ExchangeExecuted') }}
     )
     {% if is_incremental() %}
-    WHERE evt_block_time >= date_trunc('day', now() - interval '7' day)
+    WHERE evt_block_time >= date_trunc("day", now() - interval '1 week')
     {% endif %}
     UNION ALL
     SELECT
@@ -41,10 +40,10 @@ WITH v3_trades as (
         , evt_block_number AS block_number
         , tokenId AS nft_token_id
         , 'Buy' AS trade_category
-        , from_hex(JSON_EXTRACT_SCALAR(auction, '$.seller')) AS seller
-        , from_hex(JSON_EXTRACT_SCALAR(auction, '$.highestBidder')) AS buyer
-        , CAST(JSON_EXTRACT_SCALAR(auction, '$.highestBid') as uint256) AS price_raw
-        , coalesce(from_hex(JSON_EXTRACT_SCALAR(auction, '$.currency')),0x0000000000000000000000000000000000000000) AS currency_contract
+        , get_json_object(auction, '$.seller') AS seller
+        , get_json_object(auction, '$.highestBidder') AS buyer
+        , get_json_object(auction, '$.highestBid') AS price_raw
+        , coalesce(get_json_object(auction, '$.currency'),'0x0000000000000000000000000000000000000000') AS currency_contract
         , tokenContract AS nft_contract_address
         , contract_address AS project_contract_address
         , evt_tx_hash AS tx_hash
@@ -64,7 +63,7 @@ WITH v3_trades as (
         FROM {{ source('zora_v3_ethereum','ReserveAuctionListingErc20_evt_AuctionEnded') }}
     )
     {% if is_incremental() %}
-    WHERE evt_block_time >= date_trunc('day', now() - interval '7' day)
+    WHERE evt_block_time >= date_trunc("day", now() - interval '1 week')
     {% endif %}
     UNION ALL
     SELECT
@@ -72,17 +71,17 @@ WITH v3_trades as (
         , evt_block_number AS block_number
         , tokenId AS nft_token_id
         , 'Private Sale' AS trade_category
-        , from_hex(JSON_EXTRACT_SCALAR(ask, '$.seller')) AS seller
-        , from_hex(JSON_EXTRACT_SCALAR(ask, '$.buyer')) AS buyer
-        , CAST(JSON_EXTRACT_SCALAR(ask, '$.price') as uint256) AS price_raw
-        , 0x0000000000000000000000000000000000000000 AS currency_contract
+        , get_json_object(ask, '$.seller') AS seller
+        , get_json_object(ask, '$.buyer') AS buyer
+        , get_json_object(ask, '$.price') AS price_raw
+        , '0x0000000000000000000000000000000000000000' AS currency_contract
         , tokenContract AS nft_contract_address
         , contract_address AS project_contract_address
         , evt_tx_hash AS tx_hash
         , evt_index AS sub_tx_trade_id
     FROM {{ source('zora_v3_ethereum','AsksPrivateEth_evt_AskFilled') }}
     {% if is_incremental() %}
-    WHERE evt_block_time >= date_trunc('day', now() - interval '7' day)
+    WHERE evt_block_time >= date_trunc("day", now() - interval '1 week')
     {% endif %}
     UNION ALL
     SELECT
@@ -93,14 +92,14 @@ WITH v3_trades as (
         , seller AS seller
         , buyer AS buyer
         , price AS price_raw
-        , 0x0000000000000000000000000000000000000000 AS currency_contract
+        , '0x0000000000000000000000000000000000000000' AS currency_contract
         , tokenContract AS nft_contract_address
         , contract_address AS project_contract_address
         , evt_tx_hash AS tx_hash
         , evt_index AS sub_tx_trade_id
     FROM {{ source('zora_v3_ethereum','AsksCoreEth_evt_AskFilled') }}
     {% if is_incremental() %}
-    WHERE evt_block_time >= date_trunc('day', now() - interval '7' day)
+    WHERE evt_block_time >= date_trunc("day", now() - interval '1 week')
     {% endif %}
     )
 
@@ -110,10 +109,10 @@ WITH v3_trades as (
     ,evt_tx_hash
     ,tokenContract
     ,tokenId
-    ,sum(cast(amount as uint256)) as royalty_fee_amount_raw
+    ,sum(cast(amount as decimal(38))) as royalty_fee_amount_raw
     ,case when count(distinct recipient) = 1
       then min(recipient)
-      else cast(null as varbinary)
+      else cast(null as varchar(1))
      end as royalty_fee_address
     FROM (
     SELECT * FROM (
@@ -140,33 +139,33 @@ WITH v3_trades as (
         UNION ALL SELECT evt_block_time, evt_tx_hash, tokenContract, tokenId, amount, recipient
         FROM {{ source('zora_v3_ethereum','ReserveAuctionListingErc20_evt_RoyaltyPayout') }}
         )
-        WHERE cast(amount as uint256) > cast(0 as uint256)
+        WHERE cast(amount as decimal(38)) > 0
         {% if is_incremental() %}
-        AND evt_block_time >= date_trunc('day', now() - interval '7' day)
+        AND evt_block_time >= date_trunc("day", now() - interval '1 week')
         {% endif %}
     )
     GROUP BY 1,2,3,4
 )
 
 SELECT
-    cast(date_trunc('month',block_time) as date) as block_date
+    date_trunc('day',block_time) as block_date
     , block_time
     , block_number
     , project_contract_address
     , tx_hash
     , nft_contract_address
     , nft_token_id
-    , CAST(1 as uint256) as nft_amount
+    , CAST(1 as INT) as nft_amount
     , trade_category
     , 'secondary' as trade_type
     , buyer
     , seller
-    , price_raw as price_raw
+    , CAST(price_raw as DECIMAL(38)) as price_raw
     , currency_contract
-    , CAST(0 as uint256) AS platform_fee_amount_raw
-    , coalesce(roy.royalty_fee_amount_raw,cast(0 as uint256)) as royalty_fee_amount_raw
-    , CAST(NULL as varbinary) AS platform_fee_address
-    , roy.royalty_fee_address as royalty_fee_address
+    , CAST(0 as DECIMAL(38)) AS platform_fee_amount_raw
+    , CAST(coalesce(roy.royalty_fee_amount_raw,0) as DECIMAL(38)) as royalty_fee_amount_raw
+    , CAST(NULL as VARCHAR(1)) AS platform_fee_address
+    , CAST(roy.royalty_fee_address as VARCHAR(42)) as royalty_fee_address
     , sub_tx_trade_id
 FROM v3_trades
 LEFT JOIN royalty_payouts roy

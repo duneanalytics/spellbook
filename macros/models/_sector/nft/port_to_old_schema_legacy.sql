@@ -1,4 +1,4 @@
-{% macro port_to_old_schema(model) %}
+{% macro port_to_old_schema_legacy(model) %}
 
 SELECT
     blockchain,
@@ -11,13 +11,13 @@ SELECT
     price_usd as amount_usd,
     nft_standard as token_standard,
     trade_type,
-    CAST(nft_amount as uint256) as number_of_items,
+    CAST(nft_amount as decimal(38)) as number_of_items,
     trade_category,
     'Trade' as evt_type,
     seller,
     buyer,
     CAST(price as double) as amount_original,
-    CAST(price_raw as uint256) as amount_raw,
+    CAST(price_raw as decimal(38)) as amount_raw,
     currency_symbol,
     currency_contract,
     nft_contract_address,
@@ -28,17 +28,17 @@ SELECT
     block_number,
     tx_from,
     tx_to,
-    CAST(platform_fee_amount_raw as uint256) as platform_fee_amount_raw,
+    CAST(platform_fee_amount_raw as decimal(38)) as platform_fee_amount_raw,
     CAST(platform_fee_amount as double) as platform_fee_amount,
     platform_fee_amount_usd,
     platform_fee_percentage,
     royalty_fee_address as royalty_fee_receive_address,
     currency_symbol as royalty_fee_currency_symbol,
-    CAST(royalty_fee_amount_raw as uint256) as royalty_fee_amount_raw,
+    CAST(royalty_fee_amount_raw as decimal(38)) as royalty_fee_amount_raw,
     CAST(royalty_fee_amount as double) as royalty_fee_amount,
     royalty_fee_amount_usd,
     royalty_fee_percentage,
-    concat(project,'-',cast(block_number as varchar),'-',cast(tx_hash as varchar),'-',cast(sub_tx_trade_id as varchar)) as unique_trade_id
+    concat(project,'-',cast(block_number as varchar(20)),'-',cast(tx_hash as varchar(66)),'-',cast(sub_tx_trade_id as varchar(20))) as unique_trade_id
 FROM {{ model }}
 
 {% endmacro %}

@@ -1,7 +1,6 @@
 {{ config(
         schema='collectionswap_ethereum',
-        tags = ['dunesql'],
-        alias = alias('pools'),
+        alias = alias('pools', legacy_model=True),
         materialized = 'incremental',
         file_format = 'delta',
         incremental_strategy = 'merge',
@@ -19,41 +18,41 @@ from {{ source('collectionswap_ethereum','CollectionPoolFactory_evt_NewPool') }}
 inner join (
     select
     output_pool
-    ,from_hex(JSON_EXTRACT_SCALAR(params, '$.token')) AS token_address
+    ,get_json_object(params, '$.token') AS token_address
     from {{ source('collectionswap_ethereum','CollectionPoolFactory_call_createPoolERC20') }}
     where call_success
     {% if is_incremental() %}
-    and call_block_time >= date_trunc('day', now() - interval '7' day)
+    and call_block_time >= date_trunc("day", now() - interval '1 week')
     {% endif %}
     union all
     select
     output_pool
-    ,0x0000000000000000000000000000000000000000 AS token_address
+    ,'0x0000000000000000000000000000000000000000' AS token_address
     from {{ source('collectionswap_ethereum','CollectionPoolFactory_call_createPoolETH') }}
     where call_success
     {% if is_incremental() %}
-    and call_block_time >= date_trunc('day', now() - interval '7' day)
+    and call_block_time >= date_trunc("day", now() - interval '1 week')
     {% endif %}
     union all
     select
     output_pool
-    ,from_hex(JSON_EXTRACT_SCALAR(params, '$.token')) AS token_address
+    ,get_json_object(params, '$.token') AS token_address
     from {{ source('collectionswap_ethereum','CollectionPoolFactory_call_createPoolERC20Filtered') }}
     where call_success
     {% if is_incremental() %}
-    and call_block_time >= date_trunc('day', now() - interval '7' day)
+    and call_block_time >= date_trunc("day", now() - interval '1 week')
     {% endif %}
     union all
     select
     output_pool
-    ,0x0000000000000000000000000000000000000000 AS token_address
+    ,'0x0000000000000000000000000000000000000000' AS token_address
     from {{ source('collectionswap_ethereum','CollectionPoolFactory_call_createPoolETHFiltered') }}
     where call_success
     {% if is_incremental() %}
-    and call_block_time >= date_trunc('day', now() - interval '7' day)
+    and call_block_time >= date_trunc("day", now() - interval '1 week')
     {% endif %}
 ) c
 on e.poolAddress = c.output_pool
 {% if is_incremental() %}
-WHERE evt_block_time >= date_trunc('day', now() - interval '7' day)
+WHERE evt_block_time >= date_trunc("day", now() - interval '1 week')
 {% endif %}

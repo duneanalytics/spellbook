@@ -1,7 +1,6 @@
 {{ config(
     schema = 'sudoswap_ethereum',
-    tags = ['dunesql'],
-    alias = alias('base_trades'),
+    alias = alias('base_trades', legacy_model=True),
     partition_by = ['block_date'],
     materialized = 'incremental',
     file_format = 'delta',
@@ -43,7 +42,7 @@ WITH
             WHERE call_success = true
             {% if is_incremental() %}
             -- this filter will only be applied on an incremental run. We only want to update with new swaps.
-            AND call_block_time >= date_trunc('day', now() - interval '7' day)
+            AND call_block_time >= date_trunc("day", now() - interval '1 week')
             {% endif %}
 
             UNION ALL
@@ -62,7 +61,7 @@ WITH
             WHERE call_success = true
             {% if is_incremental() %}
             -- this filter will only be applied on an incremental run. We only want to update with new swaps.
-            AND call_block_time >= date_trunc('day', now() - interval '7' day)
+            AND call_block_time >= date_trunc("day", now() - interval '1 week')
             {% endif %}
 
             UNION ALL
@@ -81,7 +80,7 @@ WITH
             WHERE call_success = true
             {% if is_incremental() %}
             -- this filter will only be applied on an incremental run. We only want to update with new swaps.
-            AND call_block_time >= date_trunc('day', now() - interval '7' day)
+            AND call_block_time >= date_trunc("day", now() - interval '1 week')
             {% endif %}
         ) s
     )
@@ -89,16 +88,16 @@ WITH
     -- this join should be removed in the future when more call trace info is added to the _call_ tables, we need the call_from field to track down the eth traces.
     , swaps_with_calldata as (
         select s.*
-        , tr."from" as call_from
-        , CASE WHEN called_from_router = true THEN tr."from" ELSE tr.to END as project_contract_address -- either the router or the pool if called directly
+        , tr.from as call_from
+        , CASE WHEN called_from_router = true THEN tr.from ELSE tr.to END as project_contract_address -- either the router or the pool if called directly
         from swaps s
         inner join {{ source('ethereum', 'traces') }} tr
         ON tr.success and s.call_block_number = tr.block_number and s.call_tx_hash = tr.tx_hash and s.call_trace_address = tr.trace_address
         {% if is_incremental() %}
         -- this filter will only be applied on an incremental run. We only want to update with new swaps.
-        AND tr.block_time >= date_trunc('day', now() - interval '7' day)
+        AND tr.block_time >= date_trunc("day", now() - interval '1 week')
         {% else %}
-        AND tr.block_time >= TIMESTAMP '2022-4-1'
+        AND tr.block_time >= '2022-4-1'
         {% endif %}
     )
 
@@ -172,23 +171,22 @@ WITH
             sb.call_block_time
             , sb.call_block_number
             , sb.trade_category
-            , cast(SUM(
+            , SUM(
                 CASE WHEN sb.trade_category = 'Buy' -- caller buys, AMM sells
                 THEN (
-                    CASE WHEN tr."from" = sb.call_from THEN cast(value as int256) -- amount of ETH payed
-                    WHEN (tr.to = sb.call_from AND sb.call_from != sb.asset_recip) THEN -cast(value as int256) --refunds unless the caller is also the asset recipient, no way to discriminate there.
-                    ELSE int256 '0' END)
+                    CASE WHEN tr.from = sb.call_from THEN value -- amount of ETH payed
+                    WHEN (tr.to = sb.call_from AND sb.call_from != sb.asset_recip) THEN -value --refunds unless the caller is also the asset recipient, no way to discriminate there.
+                    ELSE 0 END)
                 ELSE ( -- caller sells, AMM buys
-                    CASE WHEN tr."from" = sb.pair_address THEN cast(value as int256) -- all ETH leaving the pool, nothing should be coming in on a sell.
-                    ELSE cast(0 as int256) END)
-                END ) as uint256) as trade_price -- what the buyer paid (incl all fees)
+                    CASE WHEN tr.from = sb.pair_address THEN value -- all ETH leaving the pool, nothing should be coming in on a sell.
+                    ELSE 0 END)
+                END ) as trade_price -- what the buyer paid (incl all fees)
             , SUM(
-                CASE WHEN (tr.to = sb.protocolfee_recipient) THEN cast(value as uint256)
-                ELSE uint256 '0' END
+                CASE WHEN (tr.to = sb.protocolfee_recipient) THEN value
+                ELSE 0 END
                  ) as protocol_fee_amount -- what the buyer paid
-            , filter(ARRAY_AGG(distinct CASE WHEN bytearray_substring(input,1,4)=0x42842e0e THEN bytearray_to_uint256(bytearray_substring(input,69,32)) END)
-                , x->x is not null
-                ) as nft_token_id
+            , ARRAY_AGG(distinct CASE WHEN substring(input,1,10)='0x42842e0e' THEN bytea2numeric_v3(substring(input,139,64)) END)
+                as nft_token_id
             , sb.call_tx_hash
             , sb.trade_recipient
             , sb.pair_address
@@ -208,23 +206,21 @@ WITH
             AND tr.block_number = sb.call_block_number
             AND tr.tx_hash = sb.call_tx_hash
             AND (
-                (cardinality(call_trace_address) != 0
-                AND call_trace_address = slice(tr.trace_address,1,cardinality(call_trace_address))
-                ) --either a normal tx where trace address helps us narrow down which subtraces to look at for ETH transfers or NFT transfers.
+                (cardinality(call_trace_address) != 0 AND call_trace_address = slice(tr.trace_address,1,cardinality(call_trace_address))) --either a normal tx where trace address helps us narrow down which subtraces to look at for ETH transfers or NFT transfers.
                 OR cardinality(call_trace_address) = 0 -- In this case the swap function was called directly, all traces are thus subtraces of that call (like 0x34a52a94fce15c090cc16adbd6824948c731ecb19a39350633590a9cd163658b).
                 )
             {% if is_incremental() %}
-            AND tr.block_time >= date_trunc('day', now() - interval '7' day)
+            AND tr.block_time >= date_trunc("day", now() - interval '1 week')
             {% endif %}
             {% if not is_incremental() %}
-            AND tr.block_time >= TIMESTAMP '2022-4-1'
+            AND tr.block_time >= '2022-4-1'
             {% endif %}
         GROUP BY 1,2,3,7,8,9,10,11,12,13,14,15,16
     )
 
     ,swaps_cleaned as (
         SELECT
-             cast(date_trunc('month', call_block_time) as date) AS block_date
+             date_trunc('DAY', call_block_time) AS block_date
             , call_block_time as block_time
             , call_block_number as block_number
             , nft_token_id
@@ -238,7 +234,7 @@ WITH
                 ELSE trade_recipient
                 END as buyer
             , trade_price as price_raw
-            , {{var("ETH_ERC20_ADDRESS")}} as currency_contract --ETH
+            , '{{ var("ETH_ERC20_ADDRESS") }}' as currency_contract --ETH
             , nftcontractaddress as nft_contract_address
             , project_contract_address -- This is either the router or the pool address if called directly
             , call_tx_hash as tx_hash
@@ -258,18 +254,17 @@ SELECT
     , buyer
     , seller
     , nft_contract_address
-    , one_nft_token_id as nft_token_id --nft.trades prefers each token id be its own row
-    , cast(1 as uint256) as nft_amount
+    , explode(nft_token_id) as nft_token_id --nft.trades prefers each token id be its own row
+    , cast(1 as int) as nft_amount
     , trade_type
     , trade_category
     , currency_contract
-    , cast(price_raw/number_of_items as uint256) as price_raw
-    , cast(platform_fee_amount_raw/number_of_items as uint256) as platform_fee_amount_raw
-    , cast(0 as uint256) as royalty_fee_amount_raw
-    , cast(pool_fee_amount_raw/number_of_items as uint256) as pool_fee_amount_raw
-    , protocolfee_recipient as platform_fee_address
-    , cast(null as varbinary) as royalty_fee_address
-    , row_number() over (partition by tx_hash order by one_nft_token_id) as sub_tx_trade_id
+    , cast(price_raw/number_of_items as DECIMAL(38,0)) as price_raw
+    , cast(platform_fee_amount_raw/number_of_items as decimal(38)) as platform_fee_amount_raw
+    , cast(0 as decimal(38)) as royalty_fee_amount_raw
+    , cast(pool_fee_amount_raw/number_of_items as decimal(38)) as pool_fee_amount_raw
+    , cast(protocolfee_recipient as VARCHAR(42)) as platform_fee_address
+    , cast(null as varchar(1)) as royalty_fee_address
+    , row_number() over (partition by tx_hash order by nft_token_id) as sub_tx_trade_id
 FROM swaps_cleaned
-CROSS JOIN UNNEST(nft_token_id) as foo(one_nft_token_id)
 
