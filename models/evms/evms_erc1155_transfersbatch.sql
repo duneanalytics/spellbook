@@ -35,7 +35,7 @@ FROM (
         , "from"
         , to
         , ids
-        , values
+        , "values"
         FROM {{ erc1155_batchtransfers_model[1] }}
         {% if not loop.last %}
         UNION ALL
