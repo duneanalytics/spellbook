@@ -1,6 +1,5 @@
 {{ config(
-    tags = ['dunesql'],
-    alias = 'deposits',
+    alias = alias('deposits', legacy_model=True),
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
@@ -40,10 +39,10 @@ WITH deposit_events AS (
     SELECT t.block_number
     , t.tx_hash AS tx_hash
     , t.value/POWER(10, 18) AS amount
-    , t."from" AS depositor_address
+    , t.from AS depositor_address
     , ROW_NUMBER() OVER (PARTITION BY t.block_number, t.tx_hash, t.value ORDER BY t.block_number) AS table_merging_traces_id
     FROM {{ source('ethereum', 'traces') }} t
-    WHERE t.to = 0x00000000219ab540356cbb839cbe05303d7705fa
+    WHERE t.to = '0x00000000219ab540356cbb839cbe05303d7705fa'
     AND (call_type NOT IN ('delegatecall', 'callcode', 'staticcall') OR call_type IS NULL)
     AND CAST(t.value AS double) > 0
     AND success
@@ -63,7 +62,7 @@ SELECT d.block_time
 , ete.entity_unique_name AS depositor_entity_unique_name
 , ete.category AS depositor_entity_category
 , d.tx_hash
-, et."from" AS tx_from
+, et.from AS tx_from
 , d.deposit_index
 , d.pubkey
 , d.signature
