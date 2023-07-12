@@ -229,7 +229,7 @@ SELECT
 
 
 SELECT 
-    cast(date_trunc('day', evt_block_time) as date) AS block_date AS block_date
+    cast(date_trunc('day', evt_block_time) as date) AS block_date
     , evt_block_time, evt_block_number, evt_index, evt_tx_hash
     --
     , from_address, to_address
