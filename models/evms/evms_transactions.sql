@@ -28,7 +28,7 @@ FROM (
         , access_list
         , block_hash
         , data
-        , `from`
+        , "from"
         , hash
         , to
         , block_number
@@ -42,7 +42,7 @@ FROM (
         , nonce
         , priority_fee_per_gas
         , success
-        , `type`
+        , "type"
         , CAST(value AS double) AS value
         , NULL AS l1_tx_origin
         , CAST(NULL AS double) AS l1_fee_scalar
@@ -64,7 +64,7 @@ FROM (
         , access_list
         , block_hash
         , data
-        , `from`
+        , "from"
         , hash
         , to
         , block_number
@@ -78,7 +78,7 @@ FROM (
         , nonce
         , priority_fee_per_gas
         , success
-        , `type`
+        , "type"
         , CAST(value AS double) AS value
         ,l1_tx_origin
         , l1_fee_scalar
