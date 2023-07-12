@@ -545,6 +545,8 @@ WITH curated_list AS (
       ,(0x057dd0333d0ef737c72ca39403e7d478b1f1d0b3, 'OP')
       ,(0x30019eb135532bddf2da17659101cc000c73c8e4, 'Aura')
       ,(0xB07d2d6a03F2d4878Dc1680F8581E871dae47494, 'Aura')
+      ,(0x8cF905C50F25A481171e7f5936625754d44A9537, 'Stackup')
+      ,(0x00e6202a8A52a3De6Ce7c45F2e5E299Ec71e875e, 'Candide')
       
   ) as temp_table (creator_address, contract_project)
 )
