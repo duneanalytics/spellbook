@@ -29,10 +29,10 @@ FROM (
         , block_number
         , block_hash
         , contract_address
-        , topic1
-        , topic2
-        , topic3
-        , topic4
+        , topic1 AS topic0
+        , topic2 AS topic1
+        , topic3 AS topic2
+        , topic4 AS topic3
         , data
         , tx_hash
         , index
