@@ -1,4 +1,5 @@
 {{ config(
+	tags=['legacy'],
         alias = alias('aggregators_markers', legacy_model=True),
 		materialized = 'table',
         unique_key='hash_marker',

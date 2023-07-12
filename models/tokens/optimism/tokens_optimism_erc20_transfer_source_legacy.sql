@@ -1,4 +1,5 @@
 {{ config(
+	tags=['legacy'],
         alias = alias('erc20_transfer_source', legacy_model=True),
         materialized='incremental',
         incremental_strategy = 'merge',
