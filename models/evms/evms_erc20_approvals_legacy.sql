@@ -30,7 +30,6 @@ FROM (
         , evt_index
         , evt_block_time
         , evt_block_number
-        , approved
         , owner
         , spender
         , value
