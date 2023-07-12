@@ -26,7 +26,6 @@ FROM (
         {% for traces_model in traces_models %}
         SELECT
         '{{ traces_model[0] }}' AS blockchain
-        , block_date
         , block_time
         , block_number
         , value

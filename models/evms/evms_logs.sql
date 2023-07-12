@@ -26,7 +26,6 @@ FROM (
         {% for logs_model in logs_models %}
         SELECT
         '{{ logs_model[0] }}' AS blockchain
-        , block_date
         , block_time
         , block_number
         , block_hash

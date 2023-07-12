@@ -26,7 +26,6 @@ FROM (
         {% for decodedlogs_model in decodedlogs_models %}
         SELECT
         '{{ decodedlogs_model[0] }}' AS blockchain
-        , block_date
         , block_time
         , block_number
         , index

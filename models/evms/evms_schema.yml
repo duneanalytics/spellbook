@@ -13,9 +13,6 @@ models:
       - &blockchain
         name: blockchain
         description: "Name of the blockchain"
-      - &block_date
-        name: block_date
-        description: "Block event date in UTC"
       - &block_time
         name: block_time
         description: "Timestamp for block event time in UTC"
@@ -87,7 +84,6 @@ models:
     description: "An EVM trace is a small atomic action that modify the internal state of the Ethereum Virtual Machine. The three main trace types are call, create, and suicide."
     columns:
       - *blockchain
-      - *block_date
       - *block_time
       - *block_number
       - *value
@@ -141,7 +137,6 @@ models:
     description: "An EVM trace is a small atomic action that modify the internal state of the Ethereum Virtual Machine. The three main trace types are call, create, and suicide. Decoded traces include additional information based on submitted smart contracts and their ABI"
     columns:
       - *blockchain
-      - *block_date
       - *block_time
       - *block_number
       - name: contract_name
@@ -168,7 +163,6 @@ models:
     description: "An EVM log can be used to describe an event within a smart contract, like a token transfer or a change of ownership."
     columns:
       - *blockchain
-      - *block_date
       - *block_time
       - *block_number
       - *block_hash
@@ -199,7 +193,6 @@ models:
     description: "An EVM log can be used to describe an event within a smart contract, like a token transfer or a change of ownership. Those logs are decoded based on submitted smart contracts to make them human readable."
     columns:
       - *blockchain
-      - *block_date
       - *block_time
       - *block_number
       - name: index
@@ -340,8 +333,6 @@ models:
       - *evt_index
       - *evt_block_time
       - *evt_block_number
-      - name: approved
-        description: "Approved"
       - name: owner
         description: "Owner"
       - name: spender
