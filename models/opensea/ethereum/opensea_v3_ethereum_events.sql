@@ -34,22 +34,22 @@ with source_ethereum_transactions as (
 )
 ,ref_tokens_nft as (
     select *
-      from {{ ref('tokens_nft') }}
+      from {{ ref('tokens_nft_legacy') }}
      where blockchain = 'ethereum'
 )
 ,ref_tokens_erc20 as (
     select *
-      from {{ ref('tokens_erc20') }}
+      from {{ ref('tokens_erc20_legacy') }}
     where blockchain = 'ethereum'
 )
 ,ref_nft_aggregators as (
     select *
-      from {{ ref('nft_aggregators') }}
+      from {{ ref('nft_aggregators_legacy') }}
     where blockchain = 'ethereum'
 )
 ,ref_nft_aggregators_marks as (
     select *
-    from {{ ref('nft_ethereum_aggregators_markers') }}
+    from {{ ref('nft_ethereum_aggregators_markers_legacy') }}
 )
 ,source_prices_usd as (
     select *

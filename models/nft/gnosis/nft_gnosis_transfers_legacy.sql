@@ -1,6 +1,6 @@
 {{ config(
-        alias ='transfers',
-        partition_by='block_date',
+        alias = alias('transfers', legacy_model=True),
+        partition_by=['block_date'],
         materialized='incremental',
         file_format = 'delta',
         unique_key = ['unique_transfer_id']

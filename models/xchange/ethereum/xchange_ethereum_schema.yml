@@ -21,7 +21,7 @@ models:
             - tx_hash
             - evt_index
             - trace_address
-      - check_seed:
+      - check_seed_legacy:
           seed_file: ref('xchange_ethereum_trades_seed')
           filter:
             blockchain: ethereum
@@ -38,7 +38,7 @@ models:
             - token_sold_address
             - token_bought_amount
             - token_sold_amount      
-      - check_dex_seed:
+      - check_dex_seed_legacy:
           blockchain: ethereum
           project: xchange
           version: 1       

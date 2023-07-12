@@ -40,7 +40,7 @@ SELECT 'ethereum' AS blockchain
 , 'FF' AS token_symbol
 , evt_index
 FROM {{ source('forefront_ethereum', 'ForefrontMerkle_evt_Claimed') }} t
-LEFT JOIN {{ ref('prices_usd_forward_fill') }} pu ON pu.blockchain = 'ethereum'
+LEFT JOIN {{ ref('prices_usd_forward_fill_legacy') }} pu ON pu.blockchain = 'ethereum'
     AND pu.contract_address='{{ff_token_address}}'
     AND pu.minute=date_trunc('minute', t.evt_block_time)
 WHERE t.evt_block_time BETWEEN '2021-03-31' AND '2021-04-16'

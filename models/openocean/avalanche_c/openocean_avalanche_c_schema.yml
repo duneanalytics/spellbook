@@ -21,7 +21,7 @@ models:
             - tx_hash
             - evt_index
             - trace_address
-      - check_dex_aggregator_seed:
+      - check_dex_aggregator_seed_legacy:
           blockchain: avalanche_c
           project: openocean
           version: 2

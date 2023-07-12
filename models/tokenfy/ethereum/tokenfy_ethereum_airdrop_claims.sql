@@ -42,7 +42,7 @@ SELECT 'ethereum' AS blockchain
 FROM {{ source('erc20_ethereum', 'evt_transfer') }} t
 INNER JOIN {{source( 'tokenfy_ethereum', 'Tokenfy_call_claim' ) }} c ON c.call_block_number=t.evt_block_number
     AND c.call_tx_hash=t.evt_tx_hash
-LEFT JOIN {{ ref('prices_usd_forward_fill') }} pu ON pu.blockchain = 'ethereum'
+LEFT JOIN {{ ref('prices_usd_forward_fill_legacy') }} pu ON pu.blockchain = 'ethereum'
     AND pu.contract_address='{{tknfy_token_address}}'
     AND pu.minute=date_trunc('minute', t.evt_block_time)
 WHERE t.evt_block_time BETWEEN '2022-01-21' AND '2022-02-05'
