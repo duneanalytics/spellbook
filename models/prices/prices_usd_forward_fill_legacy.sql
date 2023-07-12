@@ -1,4 +1,5 @@
 {{ config(
+	tags=['legacy'],
         schema='prices',
         alias = alias('usd_forward_fill', legacy_model=True),
         post_hook='{{ expose_spells_hide_trino(\'["ethereum", "solana", "arbitrum", "gnosis", "optimism", "bnb", "avalanche_c", "polygon"]\',
