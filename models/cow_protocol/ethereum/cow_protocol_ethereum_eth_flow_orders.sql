@@ -54,8 +54,8 @@ eth_flow_orders as (
         and call_tx_hash = evt_tx_hash
         and call_success = true
     {% if is_incremental() %}
-    WHERE evt_block_time >= date_trunc("day", now() - interval '1 week')
-    AND call_block_time >= date_trunc("day", now() - interval '1 week')
+    WHERE evt_block_time >= date_trunc('day', now() - interval '1 week')
+    AND call_block_time >= date_trunc('day', now() - interval '1 week')
     {% endif %}
 )
 
