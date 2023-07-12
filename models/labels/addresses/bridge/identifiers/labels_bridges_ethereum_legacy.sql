@@ -1,4 +1,4 @@
-{{config(alias='bridges_ethereum',
+{{config(alias = alias('bridges_ethereum', legacy_model=True),
         post_hook='{{ expose_spells(\'["ethereum"]\',
                                     "sector",
                                     "labels",
