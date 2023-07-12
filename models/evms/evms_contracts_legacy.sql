@@ -35,7 +35,7 @@ FROM (
         , base
         , factory
         , detection_source
-        , created§_at
+        , created_at
         FROM {{ contracts_model[1] }}
         {% if not loop.last %}
         UNION ALL
