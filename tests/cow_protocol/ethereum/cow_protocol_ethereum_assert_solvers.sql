@@ -1,3 +1,4 @@
+-- Test Query: https://dune.com/queries/2718501
 -- Given a list of solvers, when we look at the active solvers, then we should see only 1 per each env and name
 WITH unit_test1
     AS (SELECT COUNT(address) as cnt
