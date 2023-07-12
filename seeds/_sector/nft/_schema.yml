@@ -10,10 +10,16 @@ seeds:
 
   - name: foundation_ethereum_base_trades_seed
     config:
+      tags: dunesql
       column_types:
-        price_raw: decimal(38)
-        platform_fee_amount_raw: decimal(38)
-        royalty_fee_amount_raw: decimal(38)
+        tx_hash: varbinary
+        buyer: varbinary
+        seller: varbinary
+        nft_contract_address: varbinary
+        price_raw: uint256
+        platform_fee_amount_raw: uint256
+        royalty_fee_amount_raw: uint256
+        nft_token_id: uint256
 
   - name: superrare_ethereum_base_trades_seed
     config:
