@@ -1,4 +1,4 @@
-{% macro enrich_trades(blockchain='', models=[], transactions_model=null, tokens_nft_model=null, tokens_erc20_model=null, prices_model=null, aggregators=null, aggregator_markers=null) %}
+{% macro enrich_trades_legacy(blockchain='', models=[], transactions_model=null, tokens_nft_model=null, tokens_erc20_model=null, prices_model=null, aggregators=null, aggregator_markers=null) %}
 -- Macro to apply the NFT trades enrichment(s) to base models
 -- 1. add transaction information
 -- 2. add NFT token information
@@ -37,7 +37,7 @@ WITH base_union as (
         row_number() over (partition by tx_hash, sub_tx_trade_id order by tx_hash) as duplicates_rank
     FROM {{ nft_model[2] }}
     {% if is_incremental() %}
-    WHERE block_time >= date_trunc('day', now() - interval '7' day)
+    WHERE block_time >= date_trunc("day", now() - interval '1 week')
     {% endif %}
     {% if not loop.last %}
     UNION ALL
@@ -58,8 +58,8 @@ SELECT
     base.project_contract_address,
     base.trade_category,
     base.trade_type,
-    case when base.buyer = coalesce(agg1.contract_address,agg2.contract_address) then tx."from" else base.buyer end as buyer,
-    case when base.seller = coalesce(agg1.contract_address,agg2.contract_address) then tx."from" else base.seller end as seller,
+    case when base.buyer = coalesce(agg1.contract_address,agg2.contract_address) then tx.from else base.buyer end as buyer,
+    case when base.seller = coalesce(agg1.contract_address,agg2.contract_address) then tx.from else base.seller end as seller,
     base.nft_contract_address,
     base.nft_token_id,
     base.nft_amount,
@@ -69,7 +69,7 @@ SELECT
     base.royalty_fee_amount_raw,
     base.platform_fee_address,
     base.royalty_fee_address,
-    tx."from" as tx_from,
+    tx.from as tx_from,
     tx.to as tx_to,
     nft.name as nft_collection,
     nft.standard as nft_standard,
@@ -80,8 +80,8 @@ SELECT
     base.price_raw/pow(10,coalesce(erc20.decimals,p.decimals,18))*p.price as price_usd,
     base.platform_fee_amount_raw/pow(10,coalesce(erc20.decimals,p.decimals,18))*p.price as platform_fee_amount_usd,
     base.royalty_fee_amount_raw/pow(10,coalesce(erc20.decimals,p.decimals,18))*p.price as royalty_fee_amount_usd,
-    case when base.price_raw > uint256 '0' then cast(100*base.platform_fee_amount_raw/base.price_raw as double) else double '0' end as platform_fee_percentage,
-    case when base.price_raw > uint256 '0' then cast(100*base.royalty_fee_amount_raw/base.price_raw as double) else double '0' end as royalty_fee_percentage,
+    coalesce(cast(100*base.platform_fee_amount_raw/base.price_raw as double),cast(0.0 as double)) as platform_fee_percentage,
+    coalesce(cast(100*base.royalty_fee_amount_raw/base.price_raw as double),cast(0.0 as double)) as royalty_fee_percentage,
     coalesce(agg1.contract_address,agg2.contract_address) as aggregator_address,
     {% if aggregator_markers != null %}
     coalesce(agg_mark.aggregator_name, agg1.name, agg2.name) as aggregator_name
@@ -93,7 +93,7 @@ INNER JOIN {{ transactions_model }} tx
 ON tx.block_number = base.block_number
     AND tx.hash = base.tx_hash
     {% if is_incremental() %}
-    AND tx.block_time >= date_trunc('day', now() - interval '7' day)
+    AND tx.block_time >= date_trunc("day", now() - interval '1 week')
     {% endif %}
 LEFT JOIN {{ tokens_nft_model }} nft
 ON nft.contract_address = base.nft_contract_address
@@ -104,7 +104,7 @@ ON p.blockchain = base.blockchain
     AND p.contract_address = base.currency_contract
     AND p.minute = date_trunc('minute',base.block_time)
     {% if is_incremental() %}
-    AND p.minute >= date_trunc('day', now() - interval '7' day)
+    AND p.minute >= date_trunc("day", now() - interval '1 week')
     {% endif %}
 LEFT JOIN {{ aggregators }} agg1
 ON (base.buyer = agg1.contract_address
@@ -114,9 +114,9 @@ ON agg1.contract_address is null    -- only match if agg1 produces no matches, t
     AND tx.to = agg2.contract_address
 {% if aggregator_markers != null %}
 LEFT JOIN {{ aggregator_markers }} agg_mark
-ON bytearray_starts_with(bytearray_reverse(tx.data), bytearray_reverse(agg_mark.hash_marker)) -- eq to end_with()
-WHERE base.duplicates_rank = 1
+ON RIGHT(tx.data, agg_mark.hash_marker_size) = agg_mark.hash_marker
 {% endif %}
+WHERE base.duplicates_rank = 1
 )
 
 
