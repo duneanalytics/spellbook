@@ -3,6 +3,7 @@ WITH unit_test1
     AS (SELECT COUNT(address) as cnt
         FROM   {{ ref('cow_protocol_ethereum_solvers' )}}
         WHERE  active = true
+        AND environment != 'new' -- There are times when there can be multiple (new, uncatalogued) solvers.
         GROUP BY environment, name
         HAVING COUNT(address) > 1),
 -- Given a list of solvers, , then we should never see a solver who's both true and false for active
