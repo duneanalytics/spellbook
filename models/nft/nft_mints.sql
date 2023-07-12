@@ -19,10 +19,10 @@
 
 
 {% set project_mints = [
- ref('nftb_bnb_events')
-,ref('magiceden_solana_events')
+ ref('nftb_bnb_events_legacy')
+,ref('magiceden_solana_events_legacy')
 ,ref('opensea_v1_ethereum_events')
-,ref('stealcam_arbitrum_events')
+,ref('stealcam_arbitrum_events_legacy')
 ] %}
 
 WITH project_mints as
