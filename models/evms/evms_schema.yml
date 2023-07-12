@@ -168,13 +168,13 @@ models:
       - *block_hash
       - name: contract_address
         description: "Address of the ethereum smart contract generating the log"
-      - name: topic1
+      - name: topic0
         description: "Topics are 32-byte (256 bit) “words” that are used to describe what’s going on in an event. The first topic usually consists of the signature of the name of the event that occurred, including the types (uint256, string, etc.) of its parameters."
-      - name: topic2
+      - name: topic1
         description: "Second topic"
-      - name: topic3
+      - name: topic2
         description: "Third topic"
-      - name: topic4
+      - name: topic3
         description: "Fourth topic"
       - name: data
         description: "Additional data for the log. Data is not searchable (while topics are), but is a lot cheaper and can include large or complicated data like arrays or strings."
@@ -409,9 +409,6 @@ models:
       - &approved
         name: approved
         description: "Is approved"
-      - &owner
-        name: owner
-        description: "Owner"
       - name: account
         description: "Account"
       - &operator
@@ -456,7 +453,9 @@ models:
       - *evt_block_time
       - *evt_block_number
       - *approved
-      - *owner
+      - &owner
+        name: owner
+        description: "Owner"
       - name: tokenId
         description: "ERC721 token ID."
 
