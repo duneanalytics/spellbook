@@ -46,6 +46,7 @@
 ,ref('ellipsis_finance_trades')
 ,ref('spartacus_exchange_fantom_trades')
 ,ref('spookyswap_fantom_trades')
+,ref('spookyswap_fantom_trades_legacy')
 ,ref('beethoven_x_trades')
 ,ref('rubicon_trades')
 ,ref('synthetix_spot_trades')
