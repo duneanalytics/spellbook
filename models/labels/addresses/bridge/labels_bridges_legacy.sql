@@ -1,5 +1,5 @@
-{{ config(tags=['dunesql'],
-    alias = alias('bridge'),
+{{ config(
+    alias = alias('bridge', legacy_model=True),
     materialized = 'table',
     file_format = 'delta',
     post_hook='{{ expose_spells(\'["ethereum", "fantom"]\',
@@ -9,8 +9,8 @@
 }}
 
 {% set bridges_models = [
- ref('labels_bridges_ethereum')
- , ref('labels_bridges_fantom')
+ ref('labels_bridges_ethereum_legacy')
+ , ref('labels_bridges_fantom_legacy')
 ] %}
 
 SELECT *
