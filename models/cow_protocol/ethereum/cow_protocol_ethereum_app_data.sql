@@ -11,7 +11,7 @@ with
   partially_unpacked_app_content as (
     select
         distinct app_hash,
-        content.appCode AS app_code,
+        content.appCode as app_code,
         content.environment,
         content.metadata.orderClass.orderClass as order_class,
         content.metadata.quote,
@@ -26,7 +26,7 @@ with
         environment,
         order_class,
         quote,
-        coalesce(referrer.address, referrer.referrer)) as referrer,
+        coalesce(referrer.address, referrer.referrer) as referrer,
         utm
     from partially_unpacked_app_content
   ),
