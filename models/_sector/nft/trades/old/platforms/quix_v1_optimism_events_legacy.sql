@@ -39,7 +39,7 @@ with events_raw as (
       ,tr.value
       ,tr.to
     from events_raw as er
-    join {{ ref('transfers_optimism_eth') }} as tr
+    join {{ ref('transfers_optimism_eth_legacy') }} as tr
       on er.tx_hash = tr.tx_hash
       and er.block_number = tr.tx_block_number
       and tr.value_decimal > 0

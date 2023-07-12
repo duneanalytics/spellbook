@@ -9,7 +9,7 @@
 
 {% set uniswap_models = [
 ref('uniswap_ethereum_trades')
-, ref('uniswap_optimism_trades')
+, ref('uniswap_optimism_trades_legacy')
 , ref('uniswap_arbitrum_trades')
 , ref('uniswap_polygon_trades')
 , ref('uniswap_bnb_trades')
