@@ -32,7 +32,6 @@ FROM (
         , evt_block_time
         , evt_block_number
         , approved
-        , owner
         , account
         , operator
         FROM {{ erc1155_approvalforalls_model[1] }}
