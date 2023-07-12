@@ -1,5 +1,6 @@
  {{
   config(
+	tags=['legacy'],
     alias = alias('erc20_bridged_mapping', legacy_model=True)
     , materialized = 'incremental'
     , file_format = 'delta'
