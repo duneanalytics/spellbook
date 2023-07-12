@@ -10,7 +10,7 @@
 with
   partially_unpacked_app_content as (
     select
-        distinct app_hash,
+        distinct from_hex(app_hash) as app_hash,
         content.appCode as app_code,
         content.environment,
         content.metadata.orderClass.orderClass as order_class,
@@ -26,7 +26,8 @@ with
         environment,
         order_class,
         quote,
-        coalesce(referrer.address, referrer.referrer) as referrer,
+        -- different app data versions put referrer in two possible places.
+        from_hex(coalesce(referrer.address, referrer.referrer)) as referrer,
         utm
     from partially_unpacked_app_content
   ),
