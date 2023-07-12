@@ -33,20 +33,19 @@ eth_flow_orders as (
             from_unixtime(bytearray_to_decimal(from_hex(substring(cast(data as varchar), 19, 8)))),
            '%Y-%m-%d %T'
         ) AS valid_to,
-      substring(cast(data as varchar), 3, 16) as quote_id_hex,
-      bytearray_to_decimal(from_hex(substring(cast(data as varchar), 3, 16))) as quote_id,
-      JSON_EXTRACT_SCALAR(event."order", '$.sellAmount') as sell_amount,
-      JSON_EXTRACT_SCALAR(event."order", '$.feeAmount') as fee_amount,
-      JSON_EXTRACT_SCALAR(event."order", '$.buyAmount') as buy_amount,
-      JSON_EXTRACT_SCALAR(event."order", '$.buyToken') as buy_token,
-      JSON_EXTRACT_SCALAR(event."order", '$.receiver') as receiver,
-      JSON_EXTRACT_SCALAR(event."order", '$.appData') as app_hash,
+      bytearray_substring(data, 1, 8) as quote_id_hex,
+      bytearray_to_decimal(bytearray_substring(data, 1, 8)) as quote_id,
+      cast(JSON_EXTRACT_SCALAR(event."order", '$.sellAmount') as uint256) as sell_amount,
+      cast(JSON_EXTRACT_SCALAR(event."order", '$.feeAmount') as uint256)  as fee_amount,
+      cast(JSON_EXTRACT_SCALAR(event."order", '$.buyAmount')  as uint256)  as buy_amount,
+      from_hex(JSON_EXTRACT_SCALAR(event."order", '$.buyToken')) as buy_token,
+      from_hex(JSON_EXTRACT_SCALAR(event."order", '$.receiver')) as receiver,
+      from_hex(JSON_EXTRACT_SCALAR(event."order", '$.appData')) as app_hash,
       -- OrderHash returned by createOrder with excluded fix values (owner = contract_address, validTo = max u32)
       -- https://github.com/cowprotocol/ethflowcontract/blob/9c74c8ba36ff9ff3e255172b02454f831c066865/src/CoWSwapEthFlow.sol#L81-L84
-      concat(
-        cast(output_orderHash as varchar),
-        substring(cast(event.contract_address as varchar), 3, 40),
-        'ffffffff'
+      bytearray_concat(
+        bytearray_concat(output_orderHash, bytearray_substring(event.contract_address, 1, 20)),
+        from_hex('0xffffffff')
       ) as order_uid
   from {{ source('cow_protocol_ethereum', 'CoWSwapEthFlow_evt_OrderPlacement') }} event
   inner join {{ source('cow_protocol_ethereum', 'CoWSwapEthFlow_call_createOrder') }} call
