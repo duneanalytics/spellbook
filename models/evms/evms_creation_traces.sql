@@ -39,17 +39,4 @@ FROM (
         UNION ALL
         {% endif %}
         {% endfor %}
-
-        UNION ALL
-
-        SELECT 'celo' AS blockchain
-        , block_time
-        , block_number
-        , tx_hash
-        , address
-        , "from"
-        , code
-        , tx_from
-        , tx_to
-        FROM {{ source('celo', 'creation_traces') }}
         );
