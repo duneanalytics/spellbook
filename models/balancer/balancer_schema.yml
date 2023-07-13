@@ -172,4 +172,39 @@ models:
       - name: contract_address
       - name: median_price
    
-
+  - name: balancer_v2_liquidity
+    meta:
+      blockchain: ethereum, arbitrum, optimism, polygon, gnosis, avalanche_c
+      project: balancer_v2
+      contributors: viniabussafi
+    config:
+      tags: ['balancer', 'amm', 'dex', 'liquidity', 'ethereum', 'arbitrum', 'optimism', 'polygon', 'avalanche_c']
+    description: >
+      Liquidity by token on Balancer, an automated portfolio manager and trading platform.
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - day
+            - pool_id
+            - blockchain
+            - token_address
+            - token_symbol
+    columns:
+      - name: day
+        description: 'UTC event block time truncated to the day mark'
+      - *pool_id
+      - name: pool_symbol
+        description: 'Symbol of the pool, consisting of the symbol of its tokens and their respective weights'
+      - *blockchain
+      - name: token_address
+        description: 'Contract address for the token'
+      - name: token_symbol
+        description: 'Symbol of the token'
+      - name: token_balance_raw
+        description: 'Raw balance of the token in the pool'
+      - name: token_balance
+        description: 'Scaled balance of the token in the pool'
+      - name: protocol_liquidity_usd
+        description: 'Liquidity of the token in the pool in USD, except BPTs'
+      - name: pool_liquidity_usd
+        description: 'Liquidity of the token in the pool in USD, including BPTs'
