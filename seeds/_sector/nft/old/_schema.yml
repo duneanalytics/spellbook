@@ -10,3 +10,164 @@ seeds:
         token_id: uint256
         buyer: varbinary
         seller: varbinary
+
+  - name: fractal_polygon_sample_trades
+    config:
+      tags: dunesql
+      column_types:
+        tx_hash: varbinary
+        nft_contract_address: varbinary
+        token_id: uint256
+        buyer: varbinary
+        seller: varbinary
+
+  - name: liquidifty_bnb_nft_trades_samples
+    config:
+      tags: dunesql
+      column_types:
+        tx_hash: varbinary
+        token_id: uint256
+        buyer: varbinary
+        seller: varbinary
+
+  - name: liquidifty_ethereum_nft_trades_samples
+    config:
+      tags: dunesql
+      column_types:
+        tx_hash: varbinary
+        token_id: uint256
+        buyer: varbinary
+        seller: varbinary
+
+  - name: liquidifty_ethereum_nft_trades_samples
+    config:
+      tags: dunesql
+      column_types:
+        tx_hash: varbinary
+        token_id: uint256
+        buyer: varbinary
+        seller: varbinary
+
+  - name: magiceden_polygon_sample_trades
+    config:
+      tags: dunesql
+      column_types:
+        tx_hash: varbinary
+        nft_contract_address: varbinary
+        token_id: uint256
+        buyer: varbinary
+        seller: varbinary
+        currency_contract: varbinary
+        amount_raw: uint256
+        platform_fee_amount_raw: uint256
+        royalty_fee_amount_raw: uint256
+
+  - name: magiceden_solana_trades_solscan
+    config:
+      tags: dunesql
+      column_types:
+        tx_hash: varbinary
+
+  - name: nftb_nft_trades_samples
+    config:
+      tags: dunesql
+      column_types:
+        tx_hash: varbinary
+        token_id: uint256
+        buyer: varbinary
+        seller: varbinary
+
+  - name: nftrade_nft_trades_samples
+    config:
+      tags: dunesql
+      column_types:
+        tx_hash: varbinary
+        token_id: uint256
+        buyer: varbinary
+        seller: varbinary
+
+  - name: quix_events_seed
+    config:
+      tags: dunesql
+      column_types:
+        tx_hash: varbinary
+        token_id: uint256
+        buyer: varbinary
+        seller: varbinary
+        nft_contract_address: varbinary
+        project_contract_address: varbinary
+        tx_from: varbinary
+        tx_to: varbinary
+        royalty_fee_receive_address: varbinary
+
+  - name: tofu_arbitrum_nft_trades_samples
+    config:
+      tags: dunesql
+      column_types:
+        tx_hash: varbinary
+        token_id: uint256
+        buyer: varbinary
+        seller: varbinary
+
+  - name: tofu_bnb_nft_trades_samples
+    config:
+      tags: dunesql
+      column_types:
+        tx_hash: varbinary
+        token_id: uint256
+        buyer: varbinary
+        seller: varbinary
+
+  - name: tofu_optimism_nft_trades_samples
+    config:
+      tags: dunesql
+      column_types:
+        tx_hash: varbinary
+        token_id: uint256
+        buyer: varbinary
+        seller: varbinary
+
+  - name: tofu_polygon_nft_trades_samples
+    config:
+      tags: dunesql
+      column_types:
+        tx_hash: varbinary
+        token_id: uint256
+        buyer: varbinary
+        seller: varbinary
+
+  - name: trove_ethereum_nft_trades_samples
+    config:
+      tags: dunesql
+      column_types:
+        tx_hash: varbinary
+        token_id: uint256
+        buyer: varbinary
+        seller: varbinary
+
+  - name: trove_v1_arbitrum_nft_samples
+    config:
+      tags: dunesql
+      column_types:
+        tx_hash: varbinary
+        token_id: uint256
+        buyer: varbinary
+        seller: varbinary
+
+  - name: trove_v2_arbitrum_nft_samples
+    config:
+      tags: dunesql
+      column_types:
+        tx_hash: varbinary
+        token_id: uint256
+        buyer: varbinary
+        seller: varbinary
+
+  - name: zonic_events_seed
+    config:
+      tags: dunesql
+      column_types:
+        tx_hash: varbinary
+        token_id: uint256
+        buyer: varbinary
+        seller: varbinary
