@@ -1,5 +1,5 @@
 {{ config(
-        alias='solvers',
+        alias=alias('solvers'),
         tags=['dunesql'],
         post_hook='{{ expose_spells(\'["gnosis"]\',
                                     "project",
