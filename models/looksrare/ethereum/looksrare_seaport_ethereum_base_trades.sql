@@ -10,7 +10,7 @@
     )
 }}
 
-{% set looksrare_seaport_start_date = date('2023-06-28') %}
+{% set looksrare_seaport_start_date = "date"('2023-06-28') %}
 
 SELECT 'looksrare' AS project
 , 'seaport' AS project_version
