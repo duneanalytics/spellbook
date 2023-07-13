@@ -129,5 +129,5 @@ FROM tfe
                        {% if is_incremental() %}
                        AND pu.minute >= date_trunc("day", now() - interval '1 week')
                        {% endif %}
-         LEFT JOIN {{ ref('nft_bnb_aggregators')}} agg
+         LEFT JOIN {{ ref('nft_bnb_aggregators_legacy')}} agg
                    ON agg.contract_address = tx.`to`

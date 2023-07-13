@@ -139,6 +139,6 @@ left join {{ source('prices', 'usd') }} as pu
     {% else %}
     and pu.minute >= date_trunc("day", now() - interval '1 week')
     {% endif %}
-left join {{ ref('nft_aggregators') }} as agg
+left join {{ ref('nft_aggregators_legacy') }} as agg
     on agg.contract_address = tx.to
     and agg.blockchain = 'optimism'

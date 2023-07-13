@@ -89,7 +89,7 @@ SELECT 'fantom' AS blockchain
     ELSE CAST(trades.zerion_fee_amount_raw/POWER(10, COALESCE(trades.tok_sold_decimals, pu_sold.decimals)) AS double)
     END AS double) AS zerion_fee_amount_original
 FROM zerion_trades trades
-LEFT JOIN {{ ref('prices_usd_forward_fill') }} pu_sold ON pu_sold.blockchain='fantom'
+LEFT JOIN {{ ref('prices_usd_forward_fill_legacy') }} pu_sold ON pu_sold.blockchain='fantom'
     AND pu_sold.contract_address=trades.token_sold_address
     AND pu_sold.minute=date_trunc('minute', trades.block_time)
     {% if not is_incremental() %}
@@ -98,7 +98,7 @@ LEFT JOIN {{ ref('prices_usd_forward_fill') }} pu_sold ON pu_sold.blockchain='fa
     {% if is_incremental() %}
     AND pu_sold.minute >= date_trunc("day", now() - interval '1 week')
     {% endif %}
-LEFT JOIN {{ ref('prices_usd_forward_fill') }} pu_bought ON pu_bought.blockchain='fantom'
+LEFT JOIN {{ ref('prices_usd_forward_fill_legacy') }} pu_bought ON pu_bought.blockchain='fantom'
     AND pu_bought.contract_address=trades.token_bought_address
     AND pu_bought.minute=date_trunc('minute', trades.block_time)
     {% if not is_incremental() %}

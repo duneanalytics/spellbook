@@ -40,12 +40,12 @@ with source_ethereum_transactions as (
 )
 ,ref_nft_aggregators as (
     select *
-    from {{ ref('nft_aggregators') }}
+    from {{ ref('nft_aggregators_legacy') }}
     where blockchain = 'ethereum'
 )
 ,ref_nft_aggregators_marks as (
     select *
-    from {{ ref('nft_ethereum_aggregators_markers') }}
+    from {{ ref('nft_ethereum_aggregators_markers_legacy') }}
 )
 ,source_prices_usd as (
     select *

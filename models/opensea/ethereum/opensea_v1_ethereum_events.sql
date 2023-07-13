@@ -187,7 +187,7 @@ FROM enhanced_trades t
 INNER JOIN {{ source('ethereum','transactions') }} tx ON t.block_number = tx.block_number AND t.tx_hash = tx.hash
     AND tx.block_time >= '{{START_DATE}}' AND tx.block_time <= '{{END_DATE}}'
 LEFT JOIN {{ ref('tokens_nft_legacy') }} nft ON nft.contract_address = t.nft_contract_address and nft.blockchain = 'ethereum'
-LEFT JOIN {{ ref('nft_aggregators') }} agg ON agg.contract_address = tx.to AND agg.blockchain = 'ethereum'
+LEFT JOIN {{ ref('nft_aggregators_legacy') }} agg ON agg.contract_address = tx.to AND agg.blockchain = 'ethereum'
 LEFT JOIN {{ source('prices', 'usd') }} p ON p.minute = date_trunc('minute', t.block_time)
     AND p.contract_address = t.currency_contract
     AND p.blockchain ='ethereum'

@@ -47,7 +47,7 @@ with source_avalanche_c_transactions as (
 )
 ,ref_nft_aggregators as (
     select *
-    from {{ ref('nft_aggregators') }}
+    from {{ ref('nft_aggregators_legacy') }}
     where blockchain = 'avalanche_c'
 )
 ,source_prices_usd as (
