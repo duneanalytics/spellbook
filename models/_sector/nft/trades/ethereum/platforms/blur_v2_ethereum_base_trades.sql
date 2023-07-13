@@ -14,7 +14,7 @@
 
 WITH blur_v2_trades AS (
     SELECT evt_tx_hash AS tx_hash
-    , ROUND(CAST((bitwise_right_shift(collectionPriceSide, 160) - (bitwise_right_shift(collectionPriceSide, 248) * CAST(power(2, 88) AS UINT256))) AS BIGINT), 8) AS price_raw
+    , CAST(ROUND((bitwise_right_shift(collectionPriceSide, 160) - (bitwise_right_shift(collectionPriceSide, 248) * CAST(power(2, 88) AS UINT256)))/POWER(10, 18), 8) AS double) AS price
     , evt_block_time AS block_time
     , evt_block_number AS block_number
     , NULL AS fee_side
@@ -37,7 +37,7 @@ WITH blur_v2_trades AS (
     UNION ALL
     
     SELECT evt_tx_hash AS tx_hash
-    , ROUND(CAST((bitwise_right_shift(collectionPriceSide, 160) - (bitwise_right_shift(collectionPriceSide, 248) * CAST(power(2, 88) AS UINT256))) AS BIGINT), 8) AS price_raw
+    , CAST(ROUND((bitwise_right_shift(collectionPriceSide, 160) - (bitwise_right_shift(collectionPriceSide, 248) * CAST(power(2, 88) AS UINT256)))/POWER(10, 18), 8) AS double) AS price
     , evt_block_time AS block_time
     , evt_block_number AS block_number
     , 'maker' AS fee_side
@@ -60,7 +60,7 @@ WITH blur_v2_trades AS (
     UNION ALL
     
     SELECT evt_tx_hash AS tx_hash
-    , ROUND(CAST((bitwise_right_shift(collectionPriceSide, 160) - (bitwise_right_shift(collectionPriceSide, 248) * CAST(power(2, 88) AS UINT256))) AS BIGINT), 8) AS price_raw
+    , CAST(ROUND((bitwise_right_shift(collectionPriceSide, 160) - (bitwise_right_shift(collectionPriceSide, 248) * CAST(power(2, 88) AS UINT256)))/POWER(10, 18), 8) AS double) AS price
     , evt_block_time AS block_time
     , evt_block_number AS block_number
     , 'taker' AS fee_side
@@ -92,12 +92,12 @@ SELECT date_trunc('day', bt.block_time) AS block_date
 , bt.nft_contract_address
 , bt.nft_token_id
 , 1 AS nft_amount
-, bt.price_raw
+, CAST(bt.price*POWER(10, 18) AS UINT256) AS price_raw
 , CASE WHEN bt.order_type = 0 THEN 0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2 ELSE 0x0000000000a39bb272e79075ade125fd351887ac END AS currency_contract
 , bt.project_contract_address
 , CAST(0 AS uint256) AS platform_fee_amount_raw
 , CAST(NULL AS varbinary) AS platform_fee_address
-, bt.price_raw * bt.fee AS royalty_fee_amount_raw
+, CAST(ROUND(bt.price * POWER(10, 18) * bt.fee) AS UINT256) AS royalty_fee_amount_raw
 , bt.royalty_fee_address
 FROM blur_v2_trades bt
 INNER JOIN {{ source('ethereum', 'transactions') }} txs ON txs.block_number=bt.block_number
