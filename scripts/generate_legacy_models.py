@@ -61,8 +61,7 @@ def replace_with_legacy_ref(model_contents):
     transformation_string = f"ref('\\1_legacy')"
     return re.sub(pattern, transformation_string, model_contents)
 
-
-if __name__ == "__main__":
+def run():
     # get current working dir
     cwd = os.getcwd()
     # get model paths from stdin
@@ -74,15 +73,20 @@ if __name__ == "__main__":
             make_legacy_file(model_path)
             model_names.append(model_path.split("/")[-1].replace(".sql", ""))
 
-    # # replace refs in all models
-    # for root, dirs, files in os.walk('models'):
-    #     for file_name in files:
-    #         if file_name.endswith('.sql'):
-    #             file_path = os.path.join(root, file_name)
-    #             with open(file_path, 'r', newline='') as file:
-    #                 content = file.read()
-    #             for ref in model_names:
-    #                 content = replace_with_legacy_ref(ref, content)
-    #             with open(file_path, 'w', newline='') as file:
-    #                 file.write(content)
-    #             print(f"Updated {file_path}")
+def clean_up():
+    for root, dirs, files in os.walk('models'):
+        for file_name in files:
+            if file_name.endswith('.sql'):
+                file_path = os.path.join(root, file_name)
+                with open(file_path, 'r', newline='') as file:
+                    content = file.read()
+                content = content.replace("_legacy_legacy", "_legacy")
+                with open(file_path, 'w', newline='') as file:
+                    file.write(content)
+                print(f"Updated {file_path}")
+
+if __name__ == "__main__":
+    # run()
+
+    clean_up()
+    
