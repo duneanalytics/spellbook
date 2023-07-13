@@ -251,7 +251,7 @@ models:
     meta:
       blockchain: polygon
       project: balancer_v2
-      contributors: victorstefenon
+      contributors: victorstefenon, viniabussafi
     config:
       tags: ['polygon', 'balancer', 'pools', 'liquidity']
     description: >
@@ -275,8 +275,10 @@ models:
         description: 'Raw balance of the token in the pool'
       - name: token_balance
         description: 'Scaled balance of the token in the pool'
-      - name: usd_amount
-        description: 'Liquidity of the token in the pool in USD'
+      - name: protocol_liquidity_usd
+        description: 'Liquidity of the token in the pool in USD, except BPTs'
+      - name: pool_liquidity_usd
+        description: 'Liquidity of the token in the pool in USD, including BPTs'  
   
   - name: balancer_v2_polygon_lbps
     meta:
