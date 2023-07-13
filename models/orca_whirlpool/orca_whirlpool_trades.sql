@@ -1,12 +1,14 @@
  {{
   config(
-        tags=['dunesql'],           
-        alias='daily_balances',
-        materialized='incremental',
+        tags = ['dunesql'],
+        schema = 'orca_whirlpool'       
+        alias = 'trades',
+        materialized = 'incremental',
         file_format = 'delta',
-        incremental_strategy='merge',
+        incremental_strategy = 'merge',
+        unique_key = ['tx_id', 'outer_instruction_index', 'inner_instruction_index', 'tx_index', 'project_program_id'],
         post_hook='{{ expose_spells(\'["solana"]\',
-                                    "sector",
+                                    "project",
                                     "orca_whirlpool",
                                     \'["ilemi"]\') }}')
 }}
@@ -98,18 +100,18 @@ with
             --, wp.update_time
         FROM {{ source('whirlpool_solana', 'whirlpool_call_swap') }} sp
         JOIN whirlpools wp ON sp.account_whirlpool = wp.whirlpool_id --AND sp.call_block_time >= wp.update_time
-        LEFT JOIN {{ source('spl_token_solana', 'spl_token_call_transfer') }} tr_1 ON tr_1.call_tx_id = sp.call_tx_id 
+        INNER JOIN {{ source('spl_token_solana', 'spl_token_call_transfer') }} tr_1 ON tr_1.call_tx_id = sp.call_tx_id 
             AND tr_1.call_outer_instruction_index = sp.call_outer_instruction_index 
             AND ((sp.call_is_inner = false AND tr_1.call_inner_instruction_index = 1) 
                 OR (sp.call_is_inner = true AND tr_1.call_inner_instruction_index = sp.call_inner_instruction_index + 1))
-            -- and tr_1.call_block_time >= now() - interval '1' day
-        LEFT JOIN {{ source('spl_token_solana', 'spl_token_call_transfer') }} tr_2 ON tr_2.call_tx_id = sp.call_tx_id 
+            AND tr_1.call_block_time >= now() - interval '7' day
+        INNER JOIN {{ source('spl_token_solana', 'spl_token_call_transfer') }} tr_2 ON tr_2.call_tx_id = sp.call_tx_id 
             AND tr_2.call_outer_instruction_index = sp.call_outer_instruction_index 
             AND ((sp.call_is_inner = false AND tr_2.call_inner_instruction_index = 2)
                 OR (sp.call_is_inner = true AND tr_2.call_inner_instruction_index = sp.call_inner_instruction_index + 2))
-            -- and tr_2.call_block_time >= now() - interval '1' day
+            AND tr_2.call_block_time >= now() - interval '7' day
         WHERE 1=1
-        -- AND sp.call_block_time >= now() - interval '1' day
+            AND sp.call_block_time >= now() - interval '7' day
     --   {% if is_incremental() %}
     --   AND sp.call_block_time >= date_trunc("day", now() - interval '1 day')
     --   {% endif %}
@@ -117,8 +119,8 @@ with
         -- and sp.call_is_inner = false -- only outer transactions (direct)
         -- and sp.call_block_time >= now() - interval '3' month
         -- and sp.call_tx_id = '65mP3g1ygp5VvxKm1HGwMcQi6DKXQ5dXrj9PCAWmFB3JvEmdZ7AhmXps3B7Ln7A9ve4DK6ahRuvANMXcRvGGxqYT' --outer call 
-        and sp.call_tx_id = '4jXZtQH8HtKhBpYFB6asETYSAR7Gfu4iYR9fwy3Qksz5HSCTSNBvV6AnvmaiBBQuHux53WSFojsr5ekY8xMo5tot' --inner call
-        and sp.call_block_slot = 204656873
+        -- and sp.call_tx_id = '4jXZtQH8HtKhBpYFB6asETYSAR7Gfu4iYR9fwy3Qksz5HSCTSNBvV6AnvmaiBBQuHux53WSFojsr5ekY8xMo5tot' --inner call
+        -- and sp.call_block_slot = 204656873
     )
     
     SELECT
@@ -159,9 +161,13 @@ with
     LEFT JOIN {{ source('prices', 'usd') }} p_bought ON p_bought.blockchain = 'solana' 
         AND date_trunc('minute', tb.block_time) = p_bought.minute 
         AND token_bought_mint_address = toBase58(p_bought.contract_address)
+
+        AND p_bought.minute >= now() - interval '7' day
     LEFT JOIN {{ source('prices', 'usd') }} p_sold ON p_sold.blockchain = 'solana' 
         AND date_trunc('minute', tb.block_time) = p_sold.minute 
         AND token_sold_mint_address = toBase58(p_sold.contract_address)
+
+        AND p_sold.minute >= now() - interval '7' day
     --WHERE recent_update = 1 --keep only most recent fee tier
 -- --QA purposes only
 -- AND whirlpool_id = 'HJPjoWUrhoZzkNfRpHuieeFk9WcZWjwy6PBjZ81ngndJ'
