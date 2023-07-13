@@ -162,3 +162,12 @@ seeds:
         token_id: uint256
         buyer: varbinary
         seller: varbinary
+
+  - name: zonic_events_seed
+    config:
+      tags: dunesql
+      column_types:
+        tx_hash: varbinary
+        token_id: uint256
+        buyer: varbinary
+        seller: varbinary
