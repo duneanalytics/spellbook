@@ -224,13 +224,13 @@ models:
     config:
       tags: ['ethereum','cow_protocol','app_data', "metadata"]
     description: >
-        Order Rewards contains the data necessary to compute Weekly Solver Payouts.
-        In particular, how much COW token solvers are entitled for each settled order.
-        Furthermore, since the introduction of limit orders into the protocol, 
-        this table also contains the surplus fee.
+        Order Rewards (or more appropriately named Order Meta) contains off-chain meta data relevant 
+        to the solver competition on the granularity level of orders.
     columns:
       - *tx_hash
-      - *solver_address
+      - &solver
+        name: solver
+        description: "Address of the solver who settled the order (i.e. the from address of the corresponding transaction)"
       - *block_number
       - &cow_reward
         name: cow_reward
@@ -239,6 +239,9 @@ models:
         name: surplus_fee
         description: "Fee taken from limit orders"
       - *order_uid
+      - &quote_solver
+        name: quote_solver
+        description: "Address of the solver who provided the winning quote for this order"
 
   - name: cow_protocol_ethereum_eth_flow_orders
     meta:

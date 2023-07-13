@@ -10,7 +10,7 @@
         post_hook='{{ expose_spells(\'["ethereum"]\',
                                     "project",
                                     "safe",
-                                    \'["sche", "tschubotz"]\') }}'
+                                    \'["sche", "tschubotz", "danielpartida"]\') }}'
     ) 
 }}
 
@@ -27,6 +27,8 @@ select
         when et.to = '0x69f4d1788e39c87893c980c06edf4b7f686e2938' then '1.3.0'  -- for chains with EIP-155
         when et.to = '0x3e5c63644e683549055b9be8653de26e0b4cd36e' then '1.3.0L2'
         when et.to = '0xfb1bffc9d739b8d520daf37df666da4c687191ea' then '1.3.0L2' -- for chains with EIP-155
+        when et.to = '0x41675C099F32341bf84BFc5382aF534df5C7461a' then '1.4.1'
+        when et.to = '0x29fcB43b46531BcA003ddC8FCB67FFE91900C762' then '1.4.1L2'
         else 'unknown'
     end as creation_version,
     try_cast(date_trunc('day', et.block_time) as date) as block_date,
