@@ -51,7 +51,7 @@ models:
       - *token1
       - *fee
 
-  - name: uniswap_v3_optimism_trades
+  - name: uniswap_v3_optimism_trades_legacy
     meta:
       blockchain: optimism
       project: uniswap

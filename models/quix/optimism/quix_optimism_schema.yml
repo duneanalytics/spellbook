@@ -547,11 +547,7 @@ models:
             - sub_type
             - sub_idx
       - check_seed_legacy:
-          seed_file: ref('quix_events_seed')
-          filter:
-            blockchain: optimism
-            project: quix
-            version: seaport
+          seed_file: ref('quix_events_seaport_seed')
           match_columns:
             - block_date
             - tx_hash

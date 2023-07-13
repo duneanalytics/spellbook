@@ -4,8 +4,8 @@ WITH raw_events AS (
         evt_tx_hash as raw_tx_hash,
         cast(evt_tx_hash as varchar) || '-Trade-' || cast(evt_index as varchar) || '-' || cast(erc721TokenId as varchar) AS raw_unique_trade_id
     from {{ source ('aavegotchi_polygon', 'aavegotchi_diamond_evt_ERC721ExecutedListing') }}
-    WHERE evt_block_time >= '2023-01-01'
-        AND evt_block_time < '2023-02-01'
+    WHERE evt_block_time >= timestamp '2023-01-01'
+        AND evt_block_time < timestamp '2023-02-01'
 
     UNION ALL
 
@@ -13,8 +13,8 @@ WITH raw_events AS (
         evt_tx_hash as raw_tx_hash,
         cast(evt_tx_hash as varchar) || '-Trade-' || cast(evt_index as varchar) || '-' || cast(erc1155TypeId as varchar) AS raw_unique_trade_id
     from {{ source ('aavegotchi_polygon', 'aavegotchi_diamond_evt_ERC1155ExecutedListing') }}
-    WHERE evt_block_time >= '2023-01-01'
-        AND evt_block_time < '2023-02-01'
+    WHERE evt_block_time >= timestamp '2023-01-01'
+        AND evt_block_time < timestamp '2023-02-01'
 ),
 
 processed_events AS (
