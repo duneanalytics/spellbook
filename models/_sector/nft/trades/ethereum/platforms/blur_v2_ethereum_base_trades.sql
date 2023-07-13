@@ -81,8 +81,7 @@ WITH blur_v2_trades AS (
     {% endif %}
     )
 
-SELECT 'blur' AS project
-, 'v2' AS project_version
+SELECT date_trunc('day', block_time) AS block_date
 , bt.block_number
 , bt.tx_hash
 , bt.evt_index AS sub_tx_trade_id
