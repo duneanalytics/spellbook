@@ -1,6 +1,6 @@
 {{ config(
     schema = 'tigris_v1_arbitrum',
-    alias = ('events_add_margin', legacy_model=True),
+    alias = alias('events_add_margin', legacy_model=True),
     partition_by = ['day'],
     materialized = 'incremental',
     file_format = 'delta',
