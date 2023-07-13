@@ -1,0 +1,53 @@
+version: 2
+
+models:
+  - name: ironbank_v2_markets
+    meta:
+      blockchain: goerli
+      sector: lending
+      project: ironbank_v2
+      contributors: michael
+    config:
+      tags: ['goerli','ironbank_v2','view']
+    description: >
+        IronBank V2 markets on Goerli
+    columns:
+      - &market
+        name: market
+        description: "Market address"
+        tests:
+          - not_null
+      - &market_symbol
+        name: market_symbol
+        description: "Symbol of the market"
+        tests:
+          - not_null
+      - &market_decimals
+        name: market_decimals
+        description: "Decimals of the market"
+        tests:
+          - not_null
+      - &debt_token
+        name: debt_token
+        description: "Debt token address of the market"
+      - &debt_token_symbol
+        name: debt_token_symbol
+        description: "Symbol of the debt token"
+      - &debt_token_decimals
+        name: debt_token_decimals
+        description: "Decimals of the debt token"
+      - &ib_token
+        name: ib_token
+        description: "IB token address of the market"
+        tests:
+          - not_null
+      - &ib_token_symbol
+        name: ib_token_symbol
+        description: "Symbol of the ib token"
+        tests:
+          - not_null
+      - &ib_token_decimals
+        name: ib_token_decimals
+        description: "Decimals of the ib token"
+        tests:
+          - not_null
