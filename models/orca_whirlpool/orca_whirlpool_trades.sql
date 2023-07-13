@@ -1,8 +1,8 @@
  {{
   config(
         tags = ['dunesql'],
-        schema = 'orca_whirlpool'       
-        alias = 'trades',
+        schema = 'orca_whirlpool',
+        alias = alias('trades'),
         materialized = 'incremental',
         file_format = 'delta',
         incremental_strategy = 'merge',
