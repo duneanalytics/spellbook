@@ -48,7 +48,7 @@ limit_orders AS (
         INNER JOIN pairs ta
             ON t._asset = ta.asset_id
         {% if is_incremental() %}
-        WHERE t.evt_block_time >= date_trunc('day', now() - interval '7' Day)
+        WHERE t.evt_block_time >= date_trunc('day', now() - interval '7' Day) 
         {% endif %}
         {% if not loop.last %}
         UNION ALL
