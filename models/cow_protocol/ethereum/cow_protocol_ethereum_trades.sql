@@ -154,11 +154,13 @@ uid_to_app_id as (
 eth_flow_senders as (
     select
         sender,
-        from_hex(concat(
-            cast(output_orderHash AS VARCHAR),
-            substring(cast(event.contract_address as varchar), 3, 40),
-            'ffffffff'
-        )) AS order_uid
+        bytearray_concat(
+            bytearray_concat(
+                output_orderHash,
+                bytearray_substring(event.contract_address, 1, 20)
+            ),
+            0xffffffff
+        ) AS order_uid
     from {{ source('cow_protocol_ethereum', 'CoWSwapEthFlow_evt_OrderPlacement') }} event
     inner join {{ source('cow_protocol_ethereum', 'CoWSwapEthFlow_call_createOrder') }} call
         on call_block_number = evt_block_number
