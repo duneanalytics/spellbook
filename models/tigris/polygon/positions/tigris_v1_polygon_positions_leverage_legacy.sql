@@ -1,7 +1,6 @@
 {{ config(
-    tags=['dunesql'],
     schema = 'tigris_v1_polygon',
-    alias = alias('positions_leverage')
+    alias = alias('positions_leverage', legacy_model=True)
     )
  }}
 
@@ -15,7 +14,7 @@ leverage as (
         version,
         evt_index
     FROM 
-    {{ ref('tigris_v1_polygon_events_open_position') }}
+    {{ ref('tigris_v1_polygon_events_open_position_legacy') }}
 
     UNION 
 
@@ -26,7 +25,7 @@ leverage as (
         version,
         evt_index
     FROM 
-    {{ ref('tigris_v1_polygon_events_modify_margin') }}
+    {{ ref('tigris_v1_polygon_events_modify_margin_legacy') }}
 
     UNION 
 
@@ -37,7 +36,7 @@ leverage as (
         version,
         evt_index
     FROM 
-    {{ ref('tigris_v1_polygon_events_limit_order') }}
+    {{ ref('tigris_v1_polygon_events_limit_order_legacy') }}
 )
 
 SELECT * FROM leverage

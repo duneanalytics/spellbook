@@ -1,7 +1,6 @@
 {{ config(
-    tags=['dunesql'],
     schema = 'tigris_v2_polygon',
-    alias = alias('events_liquidate_position'),
+    alias = alias('events_liquidate_position', legacy_model=True),
     partition_by = ['day'],
     materialized = 'incremental',
     file_format = 'delta',
@@ -14,7 +13,7 @@ WITH
 
 liquidate_position_v1 as (
         SELECT 
-            TRY_CAST(date_trunc('DAY', evt_block_time) AS date) as day, 
+            date_trunc('day', evt_block_time) as day, 
             evt_tx_hash,
             evt_index,
             evt_block_time,
@@ -23,13 +22,13 @@ liquidate_position_v1 as (
         FROM 
         {{ source('tigristrade_v2_polygon', 'Trading_evt_PositionLiquidated') }}
         {% if is_incremental() %}
-        WHERE evt_block_time >= date_trunc('day', now() - interval '7' day)
+        WHERE evt_block_time >= date_trunc("day", now() - interval '1 week')
         {% endif %}
 ),
 
 liquidate_position_v2 as (
         SELECT 
-            TRY_CAST(date_trunc('DAY', evt_block_time) AS date) as day, 
+            date_trunc('day', evt_block_time) as day, 
             evt_tx_hash,
             evt_index,
             evt_block_time,
@@ -38,13 +37,13 @@ liquidate_position_v2 as (
         FROM 
         {{ source('tigristrade_v2_polygon', 'TradingV2_evt_PositionLiquidated') }}
         {% if is_incremental() %}
-        WHERE evt_block_time >= date_trunc('day', now() - interval '7' day)
+        WHERE evt_block_time >= date_trunc("day", now() - interval '1 week')
         {% endif %}
 ),
 
 liquidate_position_v3 as (
         SELECT 
-            TRY_CAST(date_trunc('DAY', evt_block_time) AS date) as day, 
+            date_trunc('day', evt_block_time) as day, 
             evt_tx_hash,
             evt_index,
             evt_block_time,
@@ -53,7 +52,7 @@ liquidate_position_v3 as (
         FROM 
         {{ source('tigristrade_v2_polygon', 'TradingV3_evt_PositionLiquidated') }}
         {% if is_incremental() %}
-        WHERE evt_block_time >= date_trunc('day', now() - interval '7' day)
+        WHERE evt_block_time >= date_trunc("day", now() - interval '1 week')
         {% endif %}
 )
 

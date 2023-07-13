@@ -1,7 +1,6 @@
 {{ config(
-    tags=['dunesql'],
     schema = 'tigris_v2_polygon',
-    alias = alias('events_add_margin'),
+    alias = alias('events_add_margin', legacy_model=True),
     partition_by = ['day'],
     materialized = 'incremental',
     file_format = 'delta',
@@ -14,7 +13,7 @@ WITH
 
 add_margin_v1 as (
         SELECT 
-            TRY_CAST(date_trunc('DAY', evt_block_time) AS date) as day, 
+            date_trunc('day', evt_block_time) as day, 
             evt_tx_hash,
             evt_index,
             evt_block_time,
@@ -26,13 +25,13 @@ add_margin_v1 as (
         FROM 
         {{ source('tigristrade_v2_polygon', 'Trading_evt_AddToPosition') }}
         {% if is_incremental() %}
-        WHERE evt_block_time >= date_trunc('day', now() - interval '7' day)
+        WHERE evt_block_time >= date_trunc("day", now() - interval '1 week')
         {% endif %}
 ),
 
 add_margin_v2 as (
         SELECT 
-            TRY_CAST(date_trunc('DAY', evt_block_time) AS date) as day, 
+            date_trunc('day', evt_block_time) as day, 
             evt_tx_hash,
             evt_index,
             evt_block_time,
@@ -44,13 +43,13 @@ add_margin_v2 as (
         FROM 
         {{ source('tigristrade_v2_polygon', 'TradingV2_evt_AddToPosition') }}
         {% if is_incremental() %}
-        WHERE evt_block_time >= date_trunc('day', now() - interval '7' day)
+        WHERE evt_block_time >= date_trunc("day", now() - interval '1 week')
         {% endif %}
 ),
 
 add_margin_v3 as (
         SELECT 
-            TRY_CAST(date_trunc('DAY', evt_block_time) AS date) as day, 
+            date_trunc('day', evt_block_time) as day, 
             evt_tx_hash,
             evt_index,
             evt_block_time,
@@ -62,7 +61,7 @@ add_margin_v3 as (
         FROM 
         {{ source('tigristrade_v2_polygon', 'TradingV3_evt_AddToPosition') }}
         {% if is_incremental() %}
-        WHERE evt_block_time >= date_trunc('day', now() - interval '7' day)
+        WHERE evt_block_time >= date_trunc("day", now() - interval '1 week')
         {% endif %}
 )
 

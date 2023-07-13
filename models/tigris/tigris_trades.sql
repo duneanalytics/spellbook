@@ -1,5 +1,6 @@
 {{ config(
-        alias ='trades',
+        tags=['dunesql'],
+        alias = alias('trades'),
         post_hook='{{ expose_spells(\'["polygon","arbitrum"]\',
                                 "project",
                                 "tigris",
@@ -9,6 +10,7 @@
 
 {% set models = [
 'tigris_polygon_trades'
+,'tigris_arbitrum_trades'
 ] %}
 
 -- ,'tigris_arbitrum_trades' temporarily removing to test 

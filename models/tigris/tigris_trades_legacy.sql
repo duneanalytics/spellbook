@@ -1,18 +1,20 @@
 {{ config(
-        tags=['dunesql'],
-        alias = alias('trades')
+        alias = alias('trades', legacy_model=True),
+        post_hook='{{ expose_spells(\'["polygon","arbitrum"]\',
+                                "project",
+                                "tigris",
+                                \'["Henrystats"]\') }}'
         )
 }}
 
-{% set tigris_models = [
-ref('tigris_v1_polygon_trades')
-,ref('tigris_v2_polygon_trades')
+{% set models = [
+'tigris_polygon_trades_legacy'
+,'tigris_arbitrum_trades_legacy'
 ] %}
-
 
 SELECT *
 FROM (
-    {% for perpetual_model in tigris_models %}
+    {% for model in models %}
     SELECT
         blockchain,
         day,
@@ -32,7 +34,7 @@ FROM (
         margin_change,
         trade_type,
         version
-    FROM {{ perpetual_model }}
+    FROM {{ ref(model) }}
     {% if not loop.last %}
     UNION ALL
     {% endif %}

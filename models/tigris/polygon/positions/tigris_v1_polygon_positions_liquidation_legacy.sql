@@ -1,7 +1,6 @@
 {{ config(
-    tags=['dunesql'],
     schema = 'tigris_v1_polygon',
-    alias = alias('positions_liquidation')
+    alias = alias('positions_liquidation', legacy_model=True)
     )
  }}
 
@@ -34,11 +33,11 @@ last_margin as (
                 position_id,
                 version 
             FROM 
-            {{ ref('tigris_v1_polygon_positions_margin') }}
+            {{ ref('tigris_v1_polygon_positions_margin_legacy') }}
             GROUP BY 2, 3 
             ) xx 
             INNER JOIN 
-            {{ ref('tigris_v1_polygon_positions_margin') }} xy 
+            {{ ref('tigris_v1_polygon_positions_margin_legacy') }} xy 
                 ON xx.evt_block_time = xy.evt_block_time
                 AND xx.position_id = xy.position_id
                 AND xx.version = xy.version
@@ -74,11 +73,11 @@ last_leverage as (
                 position_id,
                 version 
             FROM 
-            {{ ref('tigris_v1_polygon_positions_leverage') }}
+            {{ ref('tigris_v1_polygon_positions_leverage_legacy') }}
             GROUP BY 2, 3 
             ) xx 
             INNER JOIN 
-            {{ ref('tigris_v1_polygon_positions_leverage') }} xy 
+            {{ ref('tigris_v1_polygon_positions_leverage_legacy') }} xy 
                 ON xx.evt_block_time = xy.evt_block_time
                 AND xx.position_id = xy.position_id
                 AND xx.version = xy.version
@@ -92,7 +91,7 @@ SELECT
     lm.margin, 
     ll.leverage 
 FROM 
-{{ ref('tigris_v1_polygon_events_liquidate_position') }} lp 
+{{ ref('tigris_v1_polygon_events_liquidate_position_legacy') }} lp 
 INNER JOIN 
 last_margin lm 
     ON lp.position_id = lm.position_id

@@ -1,7 +1,6 @@
 {{ config(
-    tags=['dunesql'],
     schema = 'tigris_v2_polygon',
-    alias = alias('positions_margin')
+    alias = alias('positions_margin', legacy_model=True)
     )
  }}
 
@@ -13,7 +12,7 @@ margin as (
         position_id,
         margin
     FROM 
-    {{ ref('tigris_v2_polygon_events_add_margin') }}
+    {{ ref('tigris_v2_polygon_events_add_margin_legacy') }}
 
     UNION ALL
 
@@ -22,7 +21,7 @@ margin as (
         position_id,
         margin
     FROM 
-    {{ ref('tigris_v2_polygon_events_modify_margin') }}
+    {{ ref('tigris_v2_polygon_events_modify_margin_legacy') }}
 
     UNION ALL
 
@@ -31,7 +30,7 @@ margin as (
         position_id,
         margin
     FROM 
-    {{ ref('tigris_v2_polygon_events_open_position') }}
+    {{ ref('tigris_v2_polygon_events_open_position_legacy') }}
 
     UNION ALL
 
@@ -40,7 +39,7 @@ margin as (
         position_id,
         new_margin as margin 
     FROM 
-    {{ ref('tigris_v2_polygon_positions_close') }}
+    {{ ref('tigris_v2_polygon_positions_close_legacy') }}
 
     UNION ALL 
 
@@ -49,7 +48,7 @@ margin as (
         position_id,
         margin
     FROM 
-    {{ ref('tigris_v2_polygon_events_limit_order') }}
+    {{ ref('tigris_v2_polygon_events_limit_order_legacy') }}
 
 )
 
