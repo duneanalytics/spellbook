@@ -1,7 +1,6 @@
 {{ config(
-    tags=['dunesql'],
     schema = 'tigris_v1_arbitrum',
-    alias = alias('events_limit_order'),
+    alias = alias('events_limit_order', legacy_model=True),
     partition_by = ['day'],
     materialized = 'incremental',
     file_format = 'delta',
@@ -16,7 +15,7 @@ pairs as (
         SELECT 
             * 
         FROM 
-        {{ ref('tigris_v1_arbitrum_events_asset_added') }}
+        {{ ref('tigris_v1_arbitrum_events_asset_added_legacy') }}
 ),
 
 {% set limit_order_trading_evt_tables = [
@@ -39,16 +38,16 @@ limit_orders AS (
             t._margin/1e18 as margin,
             t._lev/1e18 as leverage,
             t._margin/1e18 * t._lev/1e18 as volume_usd,
-            CAST(NULL as VARCHAR) as margin_asset,
+            '' as margin_asset,
             ta.pair,
             CASE WHEN t._direction = true THEN 'true' ELSE 'false' END as direction,
-            CAST(NULL as VARCHAR) as referral,
+            '' as referral,
             t._trader as trader
         FROM {{ source('tigristrade_arbitrum', limit_order_trading_evt) }} t
         INNER JOIN pairs ta
             ON t._asset = ta.asset_id
         {% if is_incremental() %}
-        WHERE t.evt_block_time >= date_trunc("day", now() - interval '7' Day)
+        WHERE t.evt_block_time >= date_trunc("day", now() - interval '1 week')
         {% endif %}
         {% if not loop.last %}
         UNION ALL

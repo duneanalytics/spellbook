@@ -1,7 +1,6 @@
 {{ config(
-    tags=['dunesql'],
     schema = 'tigris_v2_arbitrum',
-    alias = alias('events_liquidate_position'),
+    alias = alias('events_liquidate_position', legacy_model=True),
     partition_by = ['day'],
     materialized = 'incremental',
     file_format = 'delta',
@@ -23,7 +22,7 @@ liquidate_position_v1 as (
         FROM 
         {{ source('tigristrade_v2_arbitrum', 'Trading_evt_PositionLiquidated') }}
         {% if is_incremental() %}
-        WHERE evt_block_time >= date_trunc("day", now() - interval '7' Day)
+        WHERE evt_block_time >= date_trunc("day", now() - interval '1 week')
         {% endif %}
 ),
 
@@ -38,7 +37,7 @@ liquidate_position_v2 as (
         FROM 
         {{ source('tigristrade_v2_arbitrum', 'TradingV2_evt_PositionLiquidated') }}
         {% if is_incremental() %}
-        WHERE evt_block_time >= date_trunc("day", now() - interval '7' Day)
+        WHERE evt_block_time >= date_trunc("day", now() - interval '1 week')
         {% endif %}
 ),
 
@@ -53,7 +52,7 @@ liquidate_position_v3 as (
         FROM 
         {{ source('tigristrade_v2_arbitrum', 'TradingV3_evt_PositionLiquidated') }}
         {% if is_incremental() %}
-        WHERE evt_block_time >= date_trunc("day", now() - interval '7' Day)
+        WHERE evt_block_time >= date_trunc("day", now() - interval '1 week')
         {% endif %}
 )
 

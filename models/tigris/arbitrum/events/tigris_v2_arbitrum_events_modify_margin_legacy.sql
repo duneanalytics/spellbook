@@ -1,7 +1,6 @@
 {{ config(
-    tags=['dunesql'],
     schema = 'tigris_v2_arbitrum',
-    alias = alias('events_modify_margin'),
+    alias = alias('events_modify_margin', legacy_model=True),
     partition_by = ['day'],
     materialized = 'incremental',
     file_format = 'delta',
@@ -33,7 +32,7 @@ modify_margin_v1 as (
             AND am.call_success = true 
             AND mm.isMarginAdded = true 
             {% if is_incremental() %}
-            AND am.call_block_time >= date_trunc("day", now() - interval '7' Day)
+            AND am.call_block_time >= date_trunc("day", now() - interval '1 week')
             {% endif %}
         LEFT JOIN 
         {{ source('tigristrade_v2_arbitrum', 'Trading_call_removeMargin') }} rm 
@@ -42,10 +41,10 @@ modify_margin_v1 as (
             AND rm.call_success = true 
             AND mm.isMarginAdded = false
             {% if is_incremental() %}
-            AND rm.call_block_time >= date_trunc("day", now() - interval '7' Day)
+            AND rm.call_block_time >= date_trunc("day", now() - interval '1 week')
             {% endif %}
         {% if is_incremental() %}
-        WHERE mm.evt_block_time >= date_trunc("day", now() - interval '7' Day)
+        WHERE mm.evt_block_time >= date_trunc("day", now() - interval '1 week')
         {% endif %}
 ),
 
@@ -70,7 +69,7 @@ modify_margin_v2 as (
             AND am.call_success = true 
             AND mm.isMarginAdded = true 
             {% if is_incremental() %}
-            AND am.call_block_time >= date_trunc("day", now() - interval '7' Day)
+            AND am.call_block_time >= date_trunc("day", now() - interval '1 week')
             {% endif %}
         LEFT JOIN 
         {{ source('tigristrade_v2_arbitrum', 'TradingV2_call_removeMargin') }} rm 
@@ -79,10 +78,10 @@ modify_margin_v2 as (
             AND rm.call_success = true 
             AND mm.isMarginAdded = false
             {% if is_incremental() %}
-            AND rm.call_block_time >= date_trunc("day", now() - interval '7' Day)
+            AND rm.call_block_time >= date_trunc("day", now() - interval '1 week')
             {% endif %}
         {% if is_incremental() %}
-        WHERE mm.evt_block_time >= date_trunc("day", now() - interval '7' Day)
+        WHERE mm.evt_block_time >= date_trunc("day", now() - interval '1 week')
         {% endif %}
 ),
 
@@ -107,7 +106,7 @@ modify_margin_v3 as (
             AND am.call_success = true 
             AND mm.isMarginAdded = true 
             {% if is_incremental() %}
-            AND am.call_block_time >= date_trunc("day", now() - interval '7' Day)
+            AND am.call_block_time >= date_trunc("day", now() - interval '1 week')
             {% endif %}
         LEFT JOIN 
         {{ source('tigristrade_v2_arbitrum', 'TradingV3_call_removeMargin') }} rm 
@@ -116,10 +115,10 @@ modify_margin_v3 as (
             AND rm.call_success = true 
             AND mm.isMarginAdded = false
             {% if is_incremental() %}
-            AND rm.call_block_time >= date_trunc("day", now() - interval '7' Day)
+            AND rm.call_block_time >= date_trunc("day", now() - interval '1 week')
             {% endif %}
         {% if is_incremental() %}
-        WHERE mm.evt_block_time >= date_trunc("day", now() - interval '7' Day)
+        WHERE mm.evt_block_time >= date_trunc("day", now() - interval '1 week')
         {% endif %}
 )
 

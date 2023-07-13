@@ -1,7 +1,6 @@
 {{ config(
-    tags=['dunesql'],
-    schema = 'tigris_v1_arbitrum',
-    alias = alias('positions_leverage')
+    schema = 'tigris_v2_arbitrum',
+    alias = alias('positions_leverage', legacy_model=True)
     )
  }}
 
@@ -13,7 +12,7 @@ leverage as (
         position_id,
         leverage 
     FROM 
-    {{ ref('tigris_v1_arbitrum_events_open_position') }}
+    {{ ref('tigris_v2_arbitrum_events_open_position_legacy') }}
 
     UNION ALL
 
@@ -22,7 +21,7 @@ leverage as (
         position_id,
         leverage 
     FROM 
-    {{ ref('tigris_v1_arbitrum_events_modify_margin') }}
+    {{ ref('tigris_v2_arbitrum_events_modify_margin_legacy') }}
 
     UNION ALL 
 
@@ -31,7 +30,7 @@ leverage as (
         position_id,
         leverage 
     FROM 
-    {{ ref('tigris_v1_arbitrum_events_limit_order') }}
+    {{ ref('tigris_v2_arbitrum_events_limit_order_legacy') }}
 
 )
 

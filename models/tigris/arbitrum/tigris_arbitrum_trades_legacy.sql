@@ -1,12 +1,11 @@
 {{ config(
-        tags=['dunesql'],
-        alias = alias('trades')
+        alias = alias('trades', legacy_model=True)
         )
 }}
 
 {% set tigris_models = [
-ref('tigris_v1_arbitrum_trades')
-,ref('tigris_v2_arbitrum_trades')
+ref('tigris_v1_arbitrum_trades_legacy')
+,ref('tigris_v2_arbitrum_trades_legacy')
 ] %}
 
 

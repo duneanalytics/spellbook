@@ -1,7 +1,6 @@
 {{ config(
-    tags=['dunesql'],
-    schema = 'tigris_v1_arbitrum',
-    alias = alias('positions_liquidation')
+    schema = 'tigris_v2_arbitrum',
+    alias = alias('positions_liquidation', legacy_model=True)
     )
  }}
 
@@ -18,11 +17,11 @@ last_margin as (
             MAX(evt_block_time) as evt_block_time,
             position_id
         FROM 
-        {{ ref('tigris_v1_arbitrum_positions_margin') }}
+        {{ ref('tigris_v2_arbitrum_positions_margin_legacy') }}
         GROUP BY 2 
         ) xx 
         INNER JOIN 
-        {{ ref('tigris_v1_arbitrum_positions_margin') }} xy 
+        {{ ref('tigris_v2_arbitrum_positions_margin_legacy') }} xy 
             ON xx.evt_block_time = xy.evt_block_time
             AND xx.position_id = xy.position_id
 ),
@@ -38,11 +37,11 @@ last_leverage as (
             MAX(evt_block_time) as evt_block_time,
             position_id
         FROM 
-        {{ ref('tigris_v1_arbitrum_positions_leverage') }}
+        {{ ref('tigris_v2_arbitrum_positions_leverage_legacy') }}
         GROUP BY 2 
         ) xx 
         INNER JOIN 
-        {{ ref('tigris_v1_arbitrum_positions_leverage') }} xy 
+        {{ ref('tigris_v2_arbitrum_positions_leverage_legacy') }} xy 
             ON xx.evt_block_time = xy.evt_block_time
             AND xx.position_id = xy.position_id
 )
@@ -52,7 +51,7 @@ SELECT
     lm.margin, 
     ll.leverage 
 FROM 
-{{ ref('tigris_v1_arbitrum_events_liquidate_position') }} lp 
+{{ ref('tigris_v2_arbitrum_events_liquidate_position_legacy') }} lp 
 INNER JOIN 
 last_margin lm 
     ON lp.position_id = lm.position_id

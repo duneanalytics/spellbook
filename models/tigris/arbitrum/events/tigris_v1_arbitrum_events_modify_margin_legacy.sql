@@ -1,7 +1,6 @@
 {{ config(
-    tags=['dunesql'],
     schema = 'tigris_v1_arbitrum',
-    alias = alias('events_modify_margin'),
+    alias = alias('events_modify_margin', legacy_model=True),
     partition_by = ['day'],
     materialized = 'incremental',
     file_format = 'delta',
@@ -32,7 +31,7 @@ modify_margin_v2 as (
             AND mm.evt_tx_hash = am.call_tx_hash
             AND am.call_success = true 
             {% if is_incremental() %}
-            AND am.call_block_time >= date_trunc("day", now() - interval '7' Day)
+            AND am.call_block_time >= date_trunc("day", now() - interval '1 week')
             {% endif %}
         LEFT JOIN 
         {{ source('tigristrade_arbitrum', 'TradingV2_call_removeMargin') }} rm 
@@ -40,10 +39,10 @@ modify_margin_v2 as (
             AND mm.evt_tx_hash = rm.call_tx_hash
             AND rm.call_success = true 
             {% if is_incremental() %}
-            AND rm.call_block_time >= date_trunc("day", now() - interval '7' Day)
+            AND rm.call_block_time >= date_trunc("day", now() - interval '1 week')
             {% endif %}
         {% if is_incremental() %}
-        WHERE mm.evt_block_time >= date_trunc("day", now() - interval '7' Day)
+        WHERE mm.evt_block_time >= date_trunc("day", now() - interval '1 week')
         {% endif %}
 ),
 
@@ -67,7 +66,7 @@ modify_margin_v3 as (
             AND mm.evt_tx_hash = am.call_tx_hash
             AND am.call_success = true 
             {% if is_incremental() %}
-            AND am.call_block_time >= date_trunc("day", now() - interval '7' Day)
+            AND am.call_block_time >= date_trunc("day", now() - interval '1 week')
             {% endif %}
         LEFT JOIN 
         {{ source('tigristrade_arbitrum', 'TradingV3_call_removeMargin') }} rm 
@@ -75,10 +74,10 @@ modify_margin_v3 as (
             AND mm.evt_tx_hash = rm.call_tx_hash
             AND rm.call_success = true 
             {% if is_incremental() %}
-            AND rm.call_block_time >= date_trunc("day", now() - interval '7' Day)
+            AND rm.call_block_time >= date_trunc("day", now() - interval '1 week')
             {% endif %}
         {% if is_incremental() %}
-        WHERE mm.evt_block_time >= date_trunc("day", now() - interval '7' Day)
+        WHERE mm.evt_block_time >= date_trunc("day", now() - interval '1 week')
         {% endif %}
 ),
 
@@ -102,7 +101,7 @@ modify_margin_v4 as (
             AND mm.evt_tx_hash = am.call_tx_hash
             AND am.call_success = true 
             {% if is_incremental() %}
-            AND am.call_block_time >= date_trunc("day", now() - interval '7' Day)
+            AND am.call_block_time >= date_trunc("day", now() - interval '1 week')
             {% endif %}
         LEFT JOIN 
         {{ source('tigristrade_arbitrum', 'TradingV4_call_removeMargin') }} rm 
@@ -110,10 +109,10 @@ modify_margin_v4 as (
             AND mm.evt_tx_hash = rm.call_tx_hash
             AND rm.call_success = true 
             {% if is_incremental() %}
-            AND rm.call_block_time >= date_trunc("day", now() - interval '7' Day)
+            AND rm.call_block_time >= date_trunc("day", now() - interval '1 week')
             {% endif %}
         {% if is_incremental() %}
-        WHERE mm.evt_block_time >= date_trunc("day", now() - interval '7' Day)
+        WHERE mm.evt_block_time >= date_trunc("day", now() - interval '1 week')
         {% endif %}
 ),
 
@@ -137,7 +136,7 @@ modify_margin_v5 as (
             AND mm.evt_tx_hash = am.call_tx_hash
             AND am.call_success = true 
             {% if is_incremental() %}
-            AND am.call_block_time >= date_trunc("day", now() - interval '7' Day)
+            AND am.call_block_time >= date_trunc("day", now() - interval '1 week')
             {% endif %}
         LEFT JOIN 
         {{ source('tigristrade_arbitrum', 'TradingV5_call_removeMargin') }} rm 
@@ -145,10 +144,10 @@ modify_margin_v5 as (
             AND mm.evt_tx_hash = rm.call_tx_hash
             AND rm.call_success = true 
             {% if is_incremental() %}
-            AND rm.call_block_time >= date_trunc("day", now() - interval '7' Day)
+            AND rm.call_block_time >= date_trunc("day", now() - interval '1 week')
             {% endif %}
         {% if is_incremental() %}
-        WHERE mm.evt_block_time >= date_trunc("day", now() - interval '7' Day)
+        WHERE mm.evt_block_time >= date_trunc("day", now() - interval '1 week')
         {% endif %}
 )
 
