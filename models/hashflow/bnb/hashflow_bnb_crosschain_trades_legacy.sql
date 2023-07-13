@@ -1,6 +1,6 @@
 {{
     config(
-        alias="cross_chain_trades"
+        alias = alias('cross_chain_trades', legacy_model=True)
         ,partition_by = ['block_date']
         ,materialized='incremental'
         ,incremental_strategy = 'merge'
