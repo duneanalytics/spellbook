@@ -30,7 +30,7 @@ limit_orders AS (
     {% for limit_order_trading_evt in limit_order_trading_evt_tables %}
         SELECT
             '{{ 'v1.' + (loop.index + 1) | string }}' as version,
-            date_trunc('day', t.evt_block_time) as day,
+            TRY_CAST(date_trunc('DAY', t.evt_block_time) AS date) as day, 
             t.evt_block_time,
             t.evt_index,
             t.evt_tx_hash,
@@ -48,7 +48,7 @@ limit_orders AS (
         INNER JOIN pairs ta
             ON t._asset = ta.asset_id
         {% if is_incremental() %}
-        WHERE t.evt_block_time >= date_trunc('day', CAST(now() as timestamp) - interval '7' Day) 
+        WHERE t.evt_block_time >= date_trunc('day', now() - interval '7' day) 
         {% endif %}
         {% if not loop.last %}
         UNION ALL

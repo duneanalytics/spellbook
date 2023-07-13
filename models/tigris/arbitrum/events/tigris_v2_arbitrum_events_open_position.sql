@@ -21,7 +21,7 @@ pairs as (
 
 open_positions_v1 as (
         SELECT 
-            date_trunc('day', t.evt_block_time) as day, 
+            TRY_CAST(date_trunc('DAY', t.evt_block_time) AS date) as day, 
             t.evt_block_time, 
             t.evt_index, 
             t.evt_tx_hash, 
@@ -41,13 +41,13 @@ open_positions_v1 as (
         pairs ta 
             ON CAST(json_extract_scalar(tradeInfo, '$.asset') as double) = CAST(ta.asset_id as double)
         {% if is_incremental() %}
-        WHERE t.evt_block_time >= date_trunc('day', CAST(now() as timestamp) - interval '7' Day)
+        WHERE t.evt_block_time >= date_trunc('day', now() - interval '7' day)
         {% endif %}
 ),
 
 open_positions_v2 as (
         SELECT 
-            date_trunc('day', t.evt_block_time) as day, 
+            TRY_CAST(date_trunc('DAY', t.evt_block_time) AS date) as day, 
             t.evt_block_time, 
             t.evt_index, 
             t.evt_tx_hash, 
@@ -67,13 +67,13 @@ open_positions_v2 as (
         pairs ta 
             ON CAST(json_extract_scalar(tradeInfo, '$.asset') as double) = CAST(ta.asset_id as double)
         {% if is_incremental() %}
-        WHERE t.evt_block_time >= date_trunc('day', CAST(now() as timestamp) - interval '7' Day)
+        WHERE t.evt_block_time >= date_trunc('day', now() - interval '7' day)
         {% endif %}
 ),
 
 open_positions_v3 as (
         SELECT 
-            date_trunc('day', t.evt_block_time) as day, 
+            TRY_CAST(date_trunc('DAY', t.evt_block_time) AS date) as day, 
             t.evt_block_time, 
             t.evt_index, 
             t.evt_tx_hash, 
@@ -93,7 +93,7 @@ open_positions_v3 as (
         pairs ta 
             ON CAST(json_extract_scalar(tradeInfo, '$.asset') as double) = CAST(ta.asset_id as double)
         {% if is_incremental() %}
-        WHERE t.evt_block_time >= date_trunc('day', CAST(now() as timestamp) - interval '7' Day)
+        WHERE t.evt_block_time >= date_trunc('day', now() - interval '7' day)
         {% endif %}
 )
 

@@ -14,7 +14,7 @@ WITH
 
 add_margin_v2 as (
         SELECT 
-            date_trunc('day', ap.evt_block_time) as day, 
+            TRY_CAST(date_trunc('DAY', ap.evt_block_time) AS date) as day, 
             ap.evt_tx_hash,
             ap.evt_index,
             ap.evt_block_time,
@@ -31,16 +31,16 @@ add_margin_v2 as (
             AND ap.evt_tx_hash = af.call_tx_hash 
             AND af.call_success = true 
             {% if is_incremental() %}
-            AND af.call_block_time >= date_trunc('day', CAST(now() as timestamp) - interval '7' Day)
+            AND af.call_block_time >= date_trunc('day', now() - interval '7' day)
             {% endif %}
         {% if is_incremental() %}
-        WHERE ap.evt_block_time >= date_trunc('day', CAST(now() as timestamp) - interval '7' Day)
+        WHERE ap.evt_block_time >= date_trunc('day', now() - interval '7' day)
         {% endif %}
 ),
 
 add_margin_v3 as (
         SELECT 
-            date_trunc('day', ap.evt_block_time) as day, 
+            TRY_CAST(date_trunc('DAY', ap.evt_block_time) AS date) as day, 
             ap.evt_tx_hash,
             ap.evt_index,
             ap.evt_block_time,
@@ -57,16 +57,16 @@ add_margin_v3 as (
             AND ap.evt_tx_hash = af.call_tx_hash 
             AND af.call_success = true 
             {% if is_incremental() %}
-            AND af.call_block_time >= date_trunc('day', CAST(now() as timestamp) - interval '7' Day)
+            AND af.call_block_time >= date_trunc('day', now() - interval '7' day)
             {% endif %}
         {% if is_incremental() %}
-        WHERE ap.evt_block_time >= date_trunc('day', CAST(now() as timestamp) - interval '7' Day)
+        WHERE ap.evt_block_time >= date_trunc('day', now() - interval '7' day)
         {% endif %}
 ),
 
 add_margin_v4 as (
         SELECT 
-            date_trunc('day', ap.evt_block_time) as day, 
+            TRY_CAST(date_trunc('DAY', ap.evt_block_time) AS date) as day, 
             ap.evt_tx_hash,
             ap.evt_index,
             ap.evt_block_time,
@@ -83,16 +83,16 @@ add_margin_v4 as (
             AND ap.evt_tx_hash = af.call_tx_hash 
             AND af.call_success = true 
             {% if is_incremental() %}
-            AND af.call_block_time >= date_trunc('day', CAST(now() as timestamp) - interval '7' Day)
+            AND af.call_block_time >= date_trunc('day', now() - interval '7' day)
             {% endif %}
         {% if is_incremental() %}
-        WHERE ap.evt_block_time >= date_trunc('day', CAST(now() as timestamp) - interval '7' Day)
+        WHERE ap.evt_block_time >= date_trunc('day', now() - interval '7' day)
         {% endif %}
 ),
 
 add_margin_v5 as (
         SELECT 
-            date_trunc('day', ap.evt_block_time) as day, 
+            TRY_CAST(date_trunc('DAY', ap.evt_block_time) AS date) as day, 
             ap.evt_tx_hash,
             ap.evt_index,
             ap.evt_block_time,
@@ -109,10 +109,10 @@ add_margin_v5 as (
             AND ap.evt_tx_hash = af.call_tx_hash 
             AND af.call_success = true 
             {% if is_incremental() %}
-            AND af.call_block_time >= date_trunc('day', CAST(now() as timestamp) - interval '7' Day)
+            AND af.call_block_time >= date_trunc('day', now() - interval '7' day)
             {% endif %}
         {% if is_incremental() %}
-        WHERE ap.evt_block_time >= date_trunc('day', CAST(now() as timestamp) - interval '7' Day)
+        WHERE ap.evt_block_time >= date_trunc('day', now() - interval '7' day)
         {% endif %}
 )
 
