@@ -27,7 +27,6 @@ SELECT s.evt_block_number AS block_number
 , from_hex(NULL) AS royalty_fee_address
 , s.contract_address AS project_contract_address
 , s.evt_index as sub_tx_trade_id
-, "RIGHT"(CAST(txs.data AS varchar), 20) AS tx_data_end
 FROM {{ source('seaport_ethereum','Seaport_evt_OrderFulfilled') }} s
 WHERE s.contract_address = 0x00000000000000adc04c56bf30ac9d3c0aaf14dc
 AND s.zone = 0x0000000000000000000000000000000000000000
