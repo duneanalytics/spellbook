@@ -95,8 +95,8 @@ SELECT date_trunc('day', bt.block_time) AS block_date
 , bt.price_raw
 , CASE WHEN bt.order_type = 0 THEN 0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2 ELSE 0x0000000000a39bb272e79075ade125fd351887ac END AS currency_contract
 , bt.project_contract_address
-, NULL AS platform_fee_amount_raw
-, NULL AS platform_fee_address
+, CAST(0 AS uint256) AS platform_fee_amount_raw
+, CAST(NULL AS varbinary) AS platform_fee_address
 , bt.price_raw * bt.fee AS royalty_fee_amount_raw
 , bt.royalty_fee_address
 FROM blur_v2_trades bt
