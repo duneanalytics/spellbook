@@ -30,10 +30,10 @@ open_positions_v2 as (
             CAST(json_extract_scalar(_tradeInfo, '$.margin') as double)/1e18 as margin, 
             CAST(json_extract_scalar(_tradeInfo, '$.leverage') as double)/1e18 as leverage,
             CAST(json_extract_scalar(_tradeInfo, '$.margin') as double)/1e18 * CAST(json_extract_scalar(_tradeInfo, '$.leverage') as double)/1e18 as volume_usd, 
-            CAST(json_extract_scalar(_tradeInfo, '$.marginAsset') as VARCHAR) as margin_asset, 
+            from_hex(json_extract_scalar(_tradeInfo, '$.marginAsset')) as margin_asset, 
             ta.pair, 
             CAST(json_extract_scalar(_tradeInfo, '$.direction') as VARCHAR) as direction, 
-            CAST(json_extract_scalar(_tradeInfo, '$.referral') as VARCHAR) as referral, 
+            from_hex(json_extract_scalar(_tradeInfo, '$.referral')) as referral, 
             t._trader as trader 
         FROM 
         {{ source('tigristrade_arbitrum', 'TradingV2_evt_PositionOpened') }} t 
@@ -56,10 +56,10 @@ open_positions_v3 as (
             CAST(json_extract_scalar(_tradeInfo, '$.margin') as double)/1e18 as margin, 
             CAST(json_extract_scalar(_tradeInfo, '$.leverage') as double)/1e18 as leverage,
             CAST(json_extract_scalar(_tradeInfo, '$.margin') as double)/1e18 * CAST(json_extract_scalar(_tradeInfo, '$.leverage') as double)/1e18 as volume_usd, 
-            CAST(json_extract_scalar(_tradeInfo, '$.marginAsset') as VARCHAR) as margin_asset, 
+            from_hex(json_extract_scalar(_tradeInfo, '$.marginAsset')) as margin_asset, 
             ta.pair, 
             CAST(json_extract_scalar(_tradeInfo, '$.direction') as VARCHAR) as direction, 
-            CAST(json_extract_scalar(_tradeInfo, '$.referral') as VARCHAR) as referral, 
+            from_hex(json_extract_scalar(_tradeInfo, '$.referral')) as referral, 
             t._trader as trader 
         FROM 
         {{ source('tigristrade_arbitrum', 'TradingV3_evt_PositionOpened') }} t 
@@ -82,10 +82,10 @@ open_positions_v4 as (
             CAST(json_extract_scalar(_tradeInfo, '$.margin') as double)/1e18 as margin, 
             CAST(json_extract_scalar(_tradeInfo, '$.leverage') as double)/1e18 as leverage,
             CAST(json_extract_scalar(_tradeInfo, '$.margin') as double)/1e18 * CAST(json_extract_scalar(_tradeInfo, '$.leverage') as double)/1e18 as volume_usd, 
-            CAST(json_extract_scalar(_tradeInfo, '$.marginAsset') as VARCHAR) as margin_asset, 
+            from_hex(json_extract_scalar(_tradeInfo, '$.marginAsset')) as margin_asset, 
             ta.pair, 
             CAST(json_extract_scalar(_tradeInfo, '$.direction') as VARCHAR) as direction, 
-            CAST(json_extract_scalar(_tradeInfo, '$.referral') as VARCHAR) as referral, 
+            from_hex(json_extract_scalar(_tradeInfo, '$.referral')) as referral, 
             t._trader as trader 
         FROM 
         {{ source('tigristrade_arbitrum', 'TradingV4_evt_PositionOpened') }} t 
@@ -108,10 +108,10 @@ open_positions_v5 as (
             CAST(json_extract_scalar(_tradeInfo, '$.margin') as double)/1e18 as margin, 
             CAST(json_extract_scalar(_tradeInfo, '$.leverage') as double)/1e18 as leverage,
             CAST(json_extract_scalar(_tradeInfo, '$.margin') as double)/1e18 * CAST(json_extract_scalar(_tradeInfo, '$.leverage') as double)/1e18 as volume_usd, 
-            CAST(json_extract_scalar(_tradeInfo, '$.marginAsset') as VARCHAR) as margin_asset, 
+            from_hex(json_extract_scalar(_tradeInfo, '$.marginAsset')) as margin_asset, 
             ta.pair, 
             CAST(json_extract_scalar(_tradeInfo, '$.direction') as VARCHAR) as direction, 
-            CAST(json_extract_scalar(_tradeInfo, '$.referral') as VARCHAR) as referral, 
+            from_hex(json_extract_scalar(_tradeInfo, '$.referral')) as referral, 
             t._trader as trader 
         FROM 
         {{ source('tigristrade_arbitrum', 'TradingV5_evt_PositionOpened') }} t 

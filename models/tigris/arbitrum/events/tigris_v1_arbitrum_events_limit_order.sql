@@ -39,10 +39,10 @@ limit_orders AS (
             t._margin/1e18 as margin,
             t._lev/1e18 as leverage,
             t._margin/1e18 * t._lev/1e18 as volume_usd,
-            CAST(NULL as VARCHAR) as margin_asset,
+            CAST(NULL as VARBINARY) as margin_asset,
             ta.pair,
             CASE WHEN t._direction = true THEN 'true' ELSE 'false' END as direction,
-            CAST(NULL as VARCHAR) as referral,
+            CAST(NULL as VARBINARY) as referral,
             t._trader as trader
         FROM {{ source('tigristrade_arbitrum', limit_order_trading_evt) }} t
         INNER JOIN pairs ta
