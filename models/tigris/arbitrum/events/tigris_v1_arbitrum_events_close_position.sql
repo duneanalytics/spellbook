@@ -26,7 +26,7 @@ close_position_v2 as (
         FROM 
         {{ source('tigristrade_arbitrum', 'TradingV2_evt_PositionClosed') }}
         {% if is_incremental() %}
-        WHERE evt_block_time >= date_trunc('day', now() - interval '7' Day)
+        WHERE evt_block_time >= date_trunc('day', CAST(now() as timestamp) - interval '7' Day)
         {% endif %}
 ),
 
@@ -44,7 +44,7 @@ close_position_v3 as (
         FROM 
         {{ source('tigristrade_arbitrum', 'TradingV3_evt_PositionClosed') }}
         {% if is_incremental() %}
-        WHERE evt_block_time >= date_trunc('day', now() - interval '7' Day)
+        WHERE evt_block_time >= date_trunc('day', CAST(now() as timestamp) - interval '7' Day)
         {% endif %}
 ),
 
@@ -62,7 +62,7 @@ close_position_v4 as (
         FROM 
         {{ source('tigristrade_arbitrum', 'TradingV4_evt_PositionClosed') }}
         {% if is_incremental() %}
-        WHERE evt_block_time >= date_trunc('day', now() - interval '7' Day)
+        WHERE evt_block_time >= date_trunc('day', CAST(now() as timestamp) - interval '7' Day)
         {% endif %}
 ),
 
@@ -80,7 +80,7 @@ close_position_v5 as (
         FROM 
         {{ source('tigristrade_arbitrum', 'TradingV5_evt_PositionClosed') }}
         {% if is_incremental() %}
-        WHERE evt_block_time >= date_trunc('day', now() - interval '7' Day)
+        WHERE evt_block_time >= date_trunc('day', CAST(now() as timestamp) - interval '7' Day)
         {% endif %}
 )
 
