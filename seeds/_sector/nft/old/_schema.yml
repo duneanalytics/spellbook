@@ -53,12 +53,6 @@ seeds:
         platform_fee_amount_raw: uint256
         royalty_fee_amount_raw: uint256
 
-  - name: magiceden_solana_trades_solscan
-    config:
-      tags: dunesql
-      column_types:
-        tx_hash: varbinary
-
   - name: nftb_nft_trades_samples
     config:
       tags: dunesql
@@ -101,15 +95,6 @@ seeds:
         seller: varbinary
 
   - name: tofu_bnb_trades_samples
-    config:
-      tags: dunesql
-      column_types:
-        tx_hash: varbinary
-        token_id: uint256
-        buyer: varbinary
-        seller: varbinary
-
-  - name: tofu_optimism_trades_samples
     config:
       tags: dunesql
       column_types:
