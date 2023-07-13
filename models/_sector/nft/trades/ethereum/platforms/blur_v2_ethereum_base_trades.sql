@@ -10,7 +10,7 @@
     )
 }}
 
-{% set blur_v2_start_date = CAST('2023-07-05' AS date) %}
+{% set blur_v2_start_date = "cast('2023-07-05' as timestamp)" %}
 
 WITH blur_v2_trades AS (
     SELECT evt_tx_hash AS tx_hash
@@ -29,9 +29,9 @@ WITH blur_v2_trades AS (
     , NULL AS royalty_fee_address
     FROM {{ source('blur_v2_ethereum','BlurPool_evt_Execution721Packed') }}
     {% if is_incremental() %}
-    WHERE evt_block_time >= date_trunc("day", now() - interval '1 week')
+    WHERE evt_block_time >= date_trunc("day", now() - interval '7' day)
     {% else %}
-    WHERE evt_block_time >= '{{blur_v2_start_date}}'
+    WHERE evt_block_time >= TIMESTAMP {{blur_v2_start_date}}
     {% endif %}
     
     UNION ALL
@@ -52,9 +52,9 @@ WITH blur_v2_trades AS (
     , from_hex('0x' || LOWER("RIGHT"(CAST(to_hex(CAST(makerFeeRecipientRate AS varbinary)) AS varchar), 40))) AS royalty_fee_address
     FROM {{ source('blur_v2_ethereum','BlurPool_evt_Execution721MakerFeePacked') }}
     {% if is_incremental() %}
-    WHERE evt_block_time >= date_trunc("day", now() - interval '1 week')
+    WHERE evt_block_time >= date_trunc("day", now() - interval '7' day)
     {% else %}
-    WHERE evt_block_time >= '{{blur_v2_start_date}}'
+    WHERE evt_block_time >= {{blur_v2_start_date}}
     {% endif %}
     
     UNION ALL
@@ -75,9 +75,9 @@ WITH blur_v2_trades AS (
     , from_hex('0x' || LOWER("RIGHT"(CAST(to_hex(CAST(takerFeeRecipientRate AS varbinary)) AS varchar), 40))) AS royalty_fee_address
     FROM {{ source('blur_v2_ethereum','BlurPool_evt_Execution721TakerFeePacked') }}
     {% if is_incremental() %}
-    WHERE evt_block_time >= date_trunc("day", now() - interval '1 week')
+    WHERE evt_block_time >= date_trunc("day", now() - interval '7' day)
     {% else %}
-    WHERE evt_block_time >= '{{blur_v2_start_date}}'
+    WHERE evt_block_time >= {{blur_v2_start_date}}
     {% endif %}
     )
 
@@ -94,7 +94,7 @@ SELECT 'blur' AS project
 , bt.nft_token_id
 , 1 AS nft_amount
 , bt.price_raw
-, CASE WHEN bt.order_type = 0 THEN 0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2 ELSE 0x0000000000a39bb272e79075ade125fd351887ac END AS currency_contract
+, CASE WHEN bt.order_type = 0 THEN {{ var("ETH_ERC20_ADDRESS") }} ELSE 0x0000000000a39bb272e79075ade125fd351887ac END AS currency_contract
 , bt.project_contract_address
 , NULL AS platform_fee_amount_raw
 , NULL AS platform_fee_address
@@ -104,7 +104,7 @@ FROM blur_v2_trades bt
 INNER JOIN {{ source('ethereum', 'transactions') }} txs ON txs.block_number=bt.block_number
     AND txs.hash=bt.tx_hash
     {% if is_incremental() %}
-    AND txs.block_time >= date_trunc("day", now() - interval '1 week')
+    AND txs.block_time >= date_trunc("day", now() - interval '7' day)
     {% else %}
-    AND txs.block_time >= '{{blur_v2_start_date}}'
+    AND txs.block_time >= {{blur_v2_start_date}}
     {% endif %}

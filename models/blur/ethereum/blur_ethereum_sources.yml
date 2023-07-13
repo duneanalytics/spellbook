@@ -7,14 +7,3 @@ sources:
     tables:
       - name: BlurAirdrop_evt_Claimed
         loaded_at_field: evt_block_time
-
-  - name: blur_v2_ethereum
-    freshness:
-      warn_after: { count: 12, period: hour }
-    tables:
-      - name: BlurPool_evt_Execution721Packed
-        loaded_at_field: evt_block_time
-      - name: BlurPool_evt_Execution721MakerFeePacked
-        loaded_at_field: evt_block_time
-      - name: BlurPool_evt_Execution721TakerFeePacked
-        loaded_at_field: evt_block_time
