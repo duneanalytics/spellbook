@@ -7,5 +7,4 @@
 )}}
 
 select
-    TIMESTAMP '2022-1-8' as test_timestamp,
-    DATE '2022-1-8' as test_date
+    TIMESTAMP '2022-1-8' as test_timestamp

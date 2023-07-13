@@ -1,10 +1,10 @@
 {{config(
         tags = ['dunesql', 'static'],
         schema = 'test_timestamp',
-        alias = alias('table2'),
+        alias = alias('table7'),
         materialized = 'table',
         file_format = 'delta'
 )}}
 
 select
-    TIMESTAMP '2022-1-8 10:1:17' as test_timestamp
+    TIMESTAMP '2022-1-8 10:10:17 UTC' as test_timestamp
