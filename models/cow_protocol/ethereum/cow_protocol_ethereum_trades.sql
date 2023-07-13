@@ -134,7 +134,10 @@ uid_to_app_id as (
       from_hex(JSON_EXTRACT_SCALAR(trade, '$.receiver')) AS receiver,
       cast(JSON_EXTRACT_SCALAR(trade, '$.sellAmount') as uint256) AS limit_sell_amount,
       cast(JSON_EXTRACT_SCALAR(trade, '$.buyAmount') as uint256) AS limit_buy_amount,
-      JSON_EXTRACT_SCALAR(trade, '$.validTo') AS valid_to,
+      date_format(
+        from_unixtime(cast(JSON_EXTRACT_SCALAR(trade, '$.validTo') as double)),
+        '%Y-%m-%d %T'
+      ) AS valid_to,
       cast(JSON_EXTRACT_SCALAR(trade, '$.flags') as integer) AS flags
     FROM
       orders_and_trades
