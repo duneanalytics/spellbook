@@ -29,7 +29,7 @@ WITH blur_v2_trades AS (
     , NULL AS royalty_fee_address
     FROM {{ source('blur_v2_ethereum','BlurPool_evt_Execution721Packed') }}
     {% if is_incremental() %}
-    WHERE evt_block_time >= date_trunc("day", now() - interval '7' day)
+    WHERE evt_block_time >= date_trunc('day', now() - interval '7' day)
     {% else %}
     WHERE evt_block_time >= {{blur_v2_start_date}}
     {% endif %}
@@ -52,7 +52,7 @@ WITH blur_v2_trades AS (
     , from_hex('0x' || LOWER("RIGHT"(CAST(to_hex(CAST(makerFeeRecipientRate AS varbinary)) AS varchar), 40))) AS royalty_fee_address
     FROM {{ source('blur_v2_ethereum','BlurPool_evt_Execution721MakerFeePacked') }}
     {% if is_incremental() %}
-    WHERE evt_block_time >= date_trunc("day", now() - interval '7' day)
+    WHERE evt_block_time >= date_trunc('day', now() - interval '7' day)
     {% else %}
     WHERE evt_block_time >= {{blur_v2_start_date}}
     {% endif %}
@@ -75,7 +75,7 @@ WITH blur_v2_trades AS (
     , from_hex('0x' || LOWER("RIGHT"(CAST(to_hex(CAST(takerFeeRecipientRate AS varbinary)) AS varchar), 40))) AS royalty_fee_address
     FROM {{ source('blur_v2_ethereum','BlurPool_evt_Execution721TakerFeePacked') }}
     {% if is_incremental() %}
-    WHERE evt_block_time >= date_trunc("day", now() - interval '7' day)
+    WHERE evt_block_time >= date_trunc('day', now() - interval '7' day)
     {% else %}
     WHERE evt_block_time >= {{blur_v2_start_date}}
     {% endif %}
@@ -104,7 +104,7 @@ FROM blur_v2_trades bt
 INNER JOIN {{ source('ethereum', 'transactions') }} txs ON txs.block_number=bt.block_number
     AND txs.hash=bt.tx_hash
     {% if is_incremental() %}
-    AND txs.block_time >= date_trunc("day", now() - interval '7' day)
+    AND txs.block_time >= date_trunc('day', now() - interval '7' day)
     {% else %}
     AND txs.block_time >= {{blur_v2_start_date}}
     {% endif %}
