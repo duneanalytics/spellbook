@@ -41,7 +41,7 @@ open_positions_v2 as (
         pairs ta 
             ON t._tradeInfo:asset = ta.asset_id 
         {% if is_incremental() %}
-        WHERE t.evt_block_time >= date_trunc("day", now() - interval '7' Day)
+        WHERE t.evt_block_time >= date_trunc('day', now() - interval '7' Day)
         {% endif %}
 ), 
 
@@ -67,7 +67,7 @@ open_positions_v3 as (
         pairs ta 
             ON CAST(json_extract_scalar(_tradeInfo, '$.asset') as double) = CAST(ta.asset_id as double)
         {% if is_incremental() %}
-        WHERE t.evt_block_time >= date_trunc("day", now() - interval '7' Day)
+        WHERE t.evt_block_time >= date_trunc('day', now() - interval '7' Day)
         {% endif %}
 ), 
 
@@ -93,7 +93,7 @@ open_positions_v4 as (
         pairs ta 
             ON CAST(json_extract_scalar(_tradeInfo, '$.asset') as double) = CAST(ta.asset_id as double)
         {% if is_incremental() %}
-        WHERE t.evt_block_time >= date_trunc("day", now() - interval '7' Day)
+        WHERE t.evt_block_time >= date_trunc('day', now() - interval '7' Day)
         {% endif %}
 ),
 
@@ -119,7 +119,7 @@ open_positions_v5 as (
         pairs ta 
             ON CAST(json_extract_scalar(_tradeInfo, '$.asset') as double) = CAST(ta.asset_id as double)
         {% if is_incremental() %}
-        WHERE t.evt_block_time >= date_trunc("day", now() - interval '7' Day)
+        WHERE t.evt_block_time >= date_trunc('day', now() - interval '7' Day)
         {% endif %}
 )
 
