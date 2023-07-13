@@ -14,7 +14,7 @@
 
 WITH blur_v2_trades AS (
     SELECT evt_tx_hash AS tx_hash
-    , ROUND((bitwise_right_shift(collectionPriceSide, 160) - (bitwise_right_shift(collectionPriceSide, 248) * CAST(power(2, 88) AS UINT256)))/POWER(10, 18), 8) AS price
+    , ROUND((bitwise_right_shift(collectionPriceSide, 160) - (bitwise_right_shift(collectionPriceSide, 248) * CAST(power(2, 88) AS UINT256))), 8) AS price_raw
     , evt_block_time AS block_time
     , evt_block_number AS block_number
     , NULL AS fee_side
@@ -37,7 +37,7 @@ WITH blur_v2_trades AS (
     UNION ALL
     
     SELECT evt_tx_hash AS tx_hash
-    , ROUND((bitwise_right_shift(collectionPriceSide, 160) - (bitwise_right_shift(collectionPriceSide, 248) * CAST(power(2, 88) AS UINT256)))/POWER(10, 18), 8) AS price
+    , ROUND((bitwise_right_shift(collectionPriceSide, 160) - (bitwise_right_shift(collectionPriceSide, 248) * CAST(power(2, 88) AS UINT256))), 8) AS price_raw
     , evt_block_time AS block_time
     , evt_block_number AS block_number
     , 'maker' AS fee_side
@@ -60,7 +60,7 @@ WITH blur_v2_trades AS (
     UNION ALL
     
     SELECT evt_tx_hash AS tx_hash
-    , ROUND((bitwise_right_shift(collectionPriceSide, 160) - (bitwise_right_shift(collectionPriceSide, 248) * CAST(power(2, 88) AS UINT256)))/POWER(10, 18), 8) AS price
+    , ROUND((bitwise_right_shift(collectionPriceSide, 160) - (bitwise_right_shift(collectionPriceSide, 248) * CAST(power(2, 88) AS UINT256))), 8) AS price_raw
     , evt_block_time AS block_time
     , evt_block_number AS block_number
     , 'taker' AS fee_side
@@ -84,7 +84,6 @@ WITH blur_v2_trades AS (
 SELECT 'blur' AS project
 , 'v2' AS project_version
 , bt.block_number
-, bt.order_type
 , bt.tx_hash
 , bt.evt_index AS sub_tx_trade_id
 , CASE WHEN txs."from" = bt.trader THEN 'Sell' ELSE 'Buy' END AS trade_category
@@ -94,12 +93,12 @@ SELECT 'blur' AS project
 , bt.nft_contract_address
 , bt.nft_token_id
 , 1 AS nft_amount
-, bt.price * POWER(10, 18) AS price_raw
+, bt.price_raw
 , CASE WHEN bt.order_type = 0 THEN 0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2 ELSE 0x0000000000a39bb272e79075ade125fd351887ac END AS currency_contract
 , bt.project_contract_address
 , NULL AS platform_fee_amount_raw
 , NULL AS platform_fee_address
-, bt.price * POWER(10, 18) * bt.fee AS royalty_fee_amount_raw
+, bt.price_raw * bt.fee AS royalty_fee_amount_raw
 , bt.royalty_fee_address
 FROM blur_v2_trades bt
 INNER JOIN {{ source('ethereum', 'transactions') }} txs ON txs.block_number=bt.block_number
