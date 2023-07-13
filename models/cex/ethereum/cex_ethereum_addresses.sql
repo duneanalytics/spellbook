@@ -509,7 +509,7 @@ FROM (VALUES
     -- FixedFloat
     , ('ethereum', 0x4e5b2e1dc63f6b91cb6cd759936495434c7e972f, 'FixedFloat', 'FixedFloat 1', 'hildobby', timestamp '2022-08-28') -- https://etherscan.io/address/0x4e5b2e1dc63f6b91cb6cd759936495434c7e972f
     -- Bitrue, Source: 
-    , ('ethereum', 0x6cc8dcbca746a6e4fdefb98e1d0df903b107fd21', 'Bitrue', 'Bitrue 1', 'hildobby', timestamp '2022-08-28') -- https://etherscan.io/address/0x6cc8dcbca746a6e4fdefb98e1d0df903b107fd21
+    , ('ethereum', 0x6cc8dcbca746a6e4fdefb98e1d0df903b107fd21, 'Bitrue', 'Bitrue 1', 'hildobby', timestamp '2022-08-28') -- https://etherscan.io/address/0x6cc8dcbca746a6e4fdefb98e1d0df903b107fd21
     -- CoinMetro, Source: https://etherscan.io/accounts/label/coinmetro
     , ('ethereum', 0xa270f3ad1a7a82e6a3157f12a900f1e25bc4fbfd, 'CoinMetro', 'CoinMetro 1', 'hildobby', timestamp '2022-08-28')
     , ('ethereum', 0x7c1c73bf60feb40cbcf0f12324200238ee23bb54, 'CoinMetro', 'CoinMetro MultiSig', 'hildobby', timestamp '2022-08-28')
@@ -708,7 +708,7 @@ FROM (VALUES
     -- Phemex, source: https://phemex.com/proof-of-reserves
     , ('ethereum', 0xf7d13c7dbec85ff86ee815f6dcbb3dedac78ca49, 'Phemex', 'Phemex 1', 'hildobby', timestamp '2023-04-06')
     -- Cake DeFi, source: https://cakedefi.com/transparency
-    , ('ethereum', 0x94fa70d079d76279e1815ce403e9b985bccc82ac', 'Cake DeFi', 'Cake DeFi 1', 'hildobby', timestamp '2023-04-06')
+    , ('ethereum', 0x94fa70d079d76279e1815ce403e9b985bccc82ac, 'Cake DeFi', 'Cake DeFi 1', 'hildobby', timestamp '2023-04-06')
     -- MaskEX, source: https://github.com/DefiLlama/DefiLlama-Adapters/blob/main/projects/maskex/index.js
     , ('ethereum', 0x09b1806df13062b5f653beda6998972cabcf7009, 'MaskEX', 'MaskEX 1', 'hildobby', timestamp '2023-04-06')
     , ('ethereum', 0x0c78fd926a8fc9cfc682bdc6b411942d9c7edb7a, 'MaskEX', 'MaskEX 2', 'hildobby', timestamp '2023-04-06')
