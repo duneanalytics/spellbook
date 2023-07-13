@@ -14,7 +14,7 @@
 
 WITH blur_v2_trades AS (
     SELECT evt_tx_hash AS tx_hash
-    , ROUND((bitwise_right_shift(collectionPriceSide, 160) - (bitwise_right_shift(collectionPriceSide, 248) * CAST(power(2, 88) AS UINT256))), 8) AS price_raw
+    , ROUND(CAST((bitwise_right_shift(collectionPriceSide, 160) - (bitwise_right_shift(collectionPriceSide, 248) * CAST(power(2, 88) AS UINT256))) AS BIGINT), 8) AS price_raw
     , evt_block_time AS block_time
     , evt_block_number AS block_number
     , NULL AS fee_side
