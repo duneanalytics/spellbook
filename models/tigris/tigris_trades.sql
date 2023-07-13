@@ -9,9 +9,9 @@
 
 {% set models = [
 'tigris_polygon_trades'
--- ,'tigris_arbitrum_trades' temporarily removing to test 
 ] %}
 
+-- ,'tigris_arbitrum_trades' temporarily removing to test 
 
 SELECT *
 FROM (
