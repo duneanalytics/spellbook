@@ -64,7 +64,7 @@ limit_order as (
 
 close_position as (
     SELECT 
-        date_trunc('day', c.evt_block_time) as day, 
+        TRY_CAST(date_trunc('DAY', c.evt_block_time) AS date) as day, 
         c.evt_block_time,
         c.evt_index,
         c.evt_tx_hash,
