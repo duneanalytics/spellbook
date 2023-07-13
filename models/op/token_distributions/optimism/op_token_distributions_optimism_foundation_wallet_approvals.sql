@@ -17,7 +17,7 @@
 --          Project Wallet -> ? = Distributed OP
 -- Starting Jul 13, 2022 - The Foundation wallet approved tokens to project wallets for grants rather than making the transfer directly.
 
-{% set op_token_address = '0x4200000000000000000000000000000000000042' %}
+{% set op_token_address = 0x4200000000000000000000000000000000000042 %}
 {% set approvals_start_date = '2022-07-13'  %}
 {% set foundation_label = 'OP Foundation'  %}
 {% set grants_descriptor = 'OP Foundation Grants'  %}

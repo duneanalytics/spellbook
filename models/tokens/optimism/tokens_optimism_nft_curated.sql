@@ -1,7 +1,7 @@
 {{ config(alias = alias('nft_curated'), tags=['static', 'dunesql']) }}
 
 SELECT
-  contract_address, name, cast('' as varchar) as symbol
+  contract_address, name, cast(NULL as varchar) as symbol
 FROM
   (VALUES
 (0xb8df6cc3050cc02f967db1ee48330ba23276a492,	'OptiPunk')

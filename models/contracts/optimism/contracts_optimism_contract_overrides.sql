@@ -13,7 +13,7 @@
 select 
   contract_address
   ,cast(contract_project as varchar) AS contract_project
-  ,cast(contract_name as varchar) AS contract_name
+  ,contract_name
 from 
     (values 
      (0xc30141B657f4216252dc59Af2e7CdB9D8792e1B0, 'Socket', 'Socket Registry')

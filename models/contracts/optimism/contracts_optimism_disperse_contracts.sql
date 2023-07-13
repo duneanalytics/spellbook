@@ -8,7 +8,7 @@
 -- Disperse contracts often function where tokens are sent to the disperser then distributed to users
 
 WITH disperse_contracts AS (
-    SELECT address AS contract_address, cast(contract_name as varchar) AS contract_name
+    SELECT address AS contract_address, contract_name
     FROM (values
              (0xd152f549545093347a162dce210e7293f1452150,'Disperse') --generic disperse
             ,(0x52da4de336f8354f7b33a472bf010cd4a3b640ae,'Disperse') --generic disperse
