@@ -1,5 +1,5 @@
 -- Element NFT trades (re-usable macro for all chains)
-{% macro element_v1_base_trades(erc721_sell_order_filled, erc721_buy_order_filled, erc1155_sell_order_filled, erc1155_buy_order_filled) %}
+{% macro element_v1_base_trades_legacy(erc721_sell_order_filled, erc721_buy_order_filled, erc1155_sell_order_filled, erc1155_buy_order_filled) %}
 
 
 SELECT

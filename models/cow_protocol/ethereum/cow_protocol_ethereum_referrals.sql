@@ -1,4 +1,5 @@
-{{ config(alias='referrals',
+{{ config(
+        alias='referrals',
         post_hook='{{ expose_spells(\'["ethereum"]\',
                                     "project",
                                     "cow_protocol",
@@ -11,7 +12,7 @@ referral_map as (
     select
         distinct app_hash,
         referrer
-    from {{ ref('cow_protocol_ethereum_app_data') }}
+    from {{ ref('cow_protocol_ethereum_app_data_legacy') }}
     where referrer is not null
 )
 
