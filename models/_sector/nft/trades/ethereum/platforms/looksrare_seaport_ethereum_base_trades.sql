@@ -16,7 +16,9 @@ SELECT CAST(date_trunc('day', s.evt_block_time) AS date) AS block_date
 , s.evt_block_time AS block_time
 , s.evt_block_number AS block_number
 , s.evt_tx_hash AS tx_hash
-, 'buy' AS trade_category
+, s.offerer AS seller
+, s.recipient AS buyer
+, 'Buy' AS trade_category
 , 'secondary' AS trade_type
 , from_hex(json_extract_scalar(s.offer[1], '$.token')) AS nft_contract_address
 , CAST(json_extract_scalar(s.offer[1], '$.identifier') AS UINT256) AS nft_token_id
