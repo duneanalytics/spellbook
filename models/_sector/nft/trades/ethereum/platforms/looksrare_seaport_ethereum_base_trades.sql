@@ -12,7 +12,7 @@
 
 {% set looksrare_seaport_start_date = "cast('2023-06-28' as timestamp)" %}
 
-SELECT date_trunc('day', s.evt_block_time) AS block_date
+SELECT CAST(date_trunc('day', s.evt_block_time) AS date) AS block_date
 , s.evt_block_number AS block_number
 , s.evt_tx_hash AS tx_hash
 , 'buy' AS trade_category
