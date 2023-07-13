@@ -23,9 +23,9 @@ SELECT CAST(date_trunc('day', s.evt_block_time) AS date) AS block_date
 , from_hex(json_extract_scalar(s.offer[1], '$.token')) AS nft_contract_address
 , CAST(json_extract_scalar(s.offer[1], '$.identifier') AS UINT256) AS nft_token_id
 , CAST(json_extract_scalar(s.offer[1], '$.amount') AS UINT256) AS nft_amount
-, (CAST(json_extract_scalar(s.consideration[1], '$.amount') AS double)+CAST(try(json_extract_scalar(s.consideration[2], '$.amount')) AS double)) AS price_raw
+, CAST((CAST(json_extract_scalar(s.consideration[1], '$.amount') AS double)+CAST(try(json_extract_scalar(s.consideration[2], '$.amount')) AS double)) AS UINT256) AS price_raw
 , {{ var("ETH_ERC20_ADDRESS") }} AS currency_contract
-, CAST(json_extract_scalar(s.consideration[2], '$.amount') AS double) AS platform_fee_amount_raw
+, CAST(json_extract_scalar(s.consideration[2], '$.amount') AS UINT256) AS platform_fee_amount_raw
 , from_hex(json_extract_scalar(s.consideration[2], '$.recipient')) AS platform_fee_address
 , CAST(NULL AS double) AS royalty_fee_amount_raw
 , from_hex(NULL) AS royalty_fee_address
