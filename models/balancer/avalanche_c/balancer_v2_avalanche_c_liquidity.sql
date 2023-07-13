@@ -1,10 +1,10 @@
 {{
     config(
-        schema='balancer_v2_polygon',
+        schema='balancer_v2_avalanche_c',
         alias='liquidity',
         materialized = 'table',
         file_format = 'delta',
-        post_hook='{{ expose_spells(\'["polygon"]\',
+        post_hook='{{ expose_spells(\'["avalanche_c"]\',
                                     "project",
                                     "balancer_v2",
                                     \'["stefenon", "viniabussafi"]\') }}'
@@ -15,7 +15,7 @@ WITH pool_labels AS (
     SELECT
         address AS pool_id,
         name AS pool_symbol
-    FROM {{ ref('labels_balancer_v2_pools_polygon') }}
+    FROM {{ ref('labels_balancer_v2_pools_avalanche_c') }}
     ),
 
     prices AS (
@@ -25,7 +25,7 @@ WITH pool_labels AS (
             decimals,
             AVG(price) AS price
         FROM {{ source('prices', 'usd') }}
-        WHERE blockchain = "polygon"
+        WHERE blockchain = "avalanche_c"
         GROUP BY 1, 2, 3
     ),
 
@@ -58,7 +58,7 @@ WITH pool_labels AS (
             date_trunc('day', HOUR) AS DAY,
             contract_address AS token,
             percentile(median_price, 0.5) AS bpt_price
-        FROM {{ ref('balancer_v2_polygon_bpt_prices') }}
+        FROM {{ ref('balancer_v2_avalanche_c_bpt_prices') }}
         GROUP BY 1, 2
     ),
 
@@ -76,7 +76,7 @@ WITH pool_labels AS (
                     tokenIn AS token,
                     amountIn AS delta
                 FROM
-                    {{ source('balancer_v2_polygon', 'Vault_evt_Swap') }}
+                    {{ source('balancer_v2_avalanche_c', 'Vault_evt_Swap') }}
                 UNION
                 ALL
                 SELECT
@@ -85,7 +85,7 @@ WITH pool_labels AS (
                     tokenOut AS token,
                     -amountOut AS delta
                 FROM
-                    {{ source('balancer_v2_polygon', 'Vault_evt_Swap') }}
+                    {{ source('balancer_v2_avalanche_c', 'Vault_evt_Swap') }}
             ) swaps
         GROUP BY 1, 2, 3
     ),
@@ -95,7 +95,7 @@ zipped_balance_changes AS (
             date_trunc('day', evt_block_time) AS day,
             poolId AS pool_id,
             explode(arrays_zip(tokens, deltas, protocolFeeAmounts)) AS zipped
-        FROM {{ source('balancer_v2_polygon', 'Vault_evt_PoolBalanceChanged') }}
+        FROM {{ source('balancer_v2_avalanche_c', 'Vault_evt_PoolBalanceChanged') }}
     ),
 
     balances_changes AS (
@@ -114,7 +114,7 @@ zipped_balance_changes AS (
             poolId AS pool_id,
             token,
             cashDelta + managedDelta AS delta
-        FROM {{ source('balancer_v2_polygon', 'Vault_evt_PoolBalanceManaged') }}
+        FROM {{ source('balancer_v2_avalanche_c', 'Vault_evt_PoolBalanceManaged') }}
     ),
 
     daily_delta_balance AS (
@@ -181,7 +181,7 @@ zipped_balance_changes AS (
         LEFT JOIN cumulative_balance b ON b.day <= c.day
         AND c.day < b.day_of_next_change
         LEFT JOIN {{ ref('tokens_erc20_legacy') }} t ON t.contract_address = b.token
-        AND blockchain = "polygon"
+        AND blockchain = "avalanche_c"
         LEFT JOIN prices p1 ON p1.day = b.day
         AND p1.token = b.token
         LEFT JOIN dex_prices p2 ON p2.day <= c.day
@@ -197,7 +197,7 @@ zipped_balance_changes AS (
             b.pool_id,
             SUM(b.pool_liquidity_usd) / COALESCE(SUM(w.normalized_weight), 1) AS pool_liquidity
         FROM cumulative_usd_balance b
-        LEFT JOIN {{ ref('balancer_v2_polygon_pools_tokens_weights') }} w ON b.pool_id = w.pool_id
+        LEFT JOIN {{ ref('balancer_v2_avalanche_c_pools_tokens_weights') }} w ON b.pool_id = w.pool_id
         AND b.token = w.token_address
         AND b.pool_liquidity_usd > 0
         GROUP BY 1, 2
@@ -207,7 +207,7 @@ SELECT
     b.day,
     b.pool_id,
     p.pool_symbol,
-    'polygon' as blockchain,
+    'avalanche_c' as blockchain,
     token AS token_address,
     token_symbol,
     token_balance_raw,
@@ -217,6 +217,6 @@ SELECT
 FROM pool_liquidity_estimates b
 LEFT JOIN cumulative_usd_balance c ON c.day = b.day
 AND c.pool_id = b.pool_id
-LEFT JOIN {{ ref('balancer_v2_polygon_pools_tokens_weights') }} w ON b.pool_id = w.pool_id
+LEFT JOIN {{ ref('balancer_v2_avalanche_c_pools_tokens_weights') }} w ON b.pool_id = w.pool_id
 AND w.token_address = c.token
 LEFT JOIN pool_labels p ON p.pool_id = SUBSTRING(b.pool_id, 0, 42)

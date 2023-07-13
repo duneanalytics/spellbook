@@ -1,9 +1,9 @@
 version: 2
 
 sources:
-  - name: balancer_v2_gnosis
+  - name: balancer_v2_avalanche_c
     description: >
-      Decoded tables related to Balancer V2, an automated portfolio manager and trading platform, on Gnosis.
+      Decoded tables related to Balancer V2, an automated portfolio manager and trading platform, on avalanche_c.
     tables:
       - name: Vault_evt_PoolRegistered
         description: >
@@ -25,7 +25,7 @@ sources:
             name: evt_block_number
             description: 'Block number which processed the unique transaction hash'
           - name: poolAddress
-            description: 'gnosis address for the liquidity pool used in transaction'
+            description: 'avalanche_c address for the liquidity pool used in transaction'
           - name: poolId
             description: 'Unique encoded identifier that refers to each pool'
           - name: specialization
@@ -100,74 +100,9 @@ sources:
             name: weights
             description: 'Array with the weight of each token in the created pool'
 
-      - name: WeightedPool2TokensFactory_call_create
-        description: >
-          Decoded table of registered pools on the Balancer WeightedPool2TokensFactory contract.
-        loaded_at_field: call_block_time
-        columns:
-          - *call_block_number
-          - *call_block_time
-          - *call_success
-          - *call_trace_address
-          - *call_tx_hash
-          - name: contract_address
-            description: 'Address of the WeightedPool2TokensFactory contract'
-          - name: name
-            description: 'Name of the created pool'
-          - *output_0
-          - *owner
-          - *swapFeePercentage
-          - *symbol
-          - *tokens
-          - *weights
-
-      - name: WeightedPoolV2Factory_call_create
-        description: >
-          Decoded table of registered pools on the Balancer WeightedPool2TokensFactory contract.
-        loaded_at_field: call_block_time
-        columns:
-          - *call_block_number
-          - *call_block_time
-          - *call_success
-          - *call_trace_address
-          - *call_tx_hash
-          - name: contract_address
-            description: 'Address of the WeightedPoolV2Factory contract'
-          - name: name
-            description: 'Name of the created pool'
-          - name: normalizedWeights
-            description: 'Array with the normalized weight of each token in the created pool'
-          - *output_0
-          - *owner
-          - *swapFeePercentage
-          - *symbol
-          - *tokens
-
-      - name: WeightedPoolV4Factory_call_create
-        description: >
-          Decoded table of registered pools on the Balancer WeightedPool2TokensFactory contract.
-        loaded_at_field: call_block_time
-        columns:
-          - *call_block_number
-          - *call_block_time
-          - *call_success
-          - *call_trace_address
-          - *call_tx_hash
-          - name: contract_address
-            description: 'Address of the WeightedPoolV2Factory contract'
-          - name: name
-            description: 'Name of the created pool'
-          - name: normalizedWeights
-            description: 'Array with the normalized weight of each token in the created pool'
-          - *output_0
-          - *owner
-          - *swapFeePercentage
-          - *symbol
-          - *tokens
-
       - name: Vault_evt_PoolBalanceChanged
         description: >
-          Decoded table of pool balances changes record on the Balancer Vault contract on gnosis.
+          Decoded table of pool balances changes record on the Balancer Vault contract on avalanche_c.
         loaded_at_field: evt_block_time
         columns:
           - name: contract_address
@@ -189,7 +124,7 @@ sources:
 
       - name: Vault_evt_PoolBalanceManaged
         description: >
-          Decoded table of transactions performed by asset managers on the Balancer Vault contract on gnosis.
+          Decoded table of transactions performed by asset managers on the Balancer Vault contract on avalanche_c.
         loaded_at_field: evt_block_time
         columns:
           - name: contract_address
@@ -208,46 +143,3 @@ sources:
             description: 'Change in the amount of token managed by the asset manager'
           - name: cashDelta
             description: 'Change in the amount of token cashed the vault'
-
-      - name: LiquidityBootstrappingPool_evt_GradualWeightUpdateScheduled
-        description: >
-          Decoded table related to scheduled gradual weight updates on the Balancer LiquidityBootstrappingPool contract.
-        loaded_at_field: evt_block_time
-        columns:
-          - name: contract_address
-            description: 'LBP contract address'
-          - *evt_tx_hash
-          - *evt_index
-          - *evt_block_time
-          - *evt_block_number
-          - &endTime
-            name: endTime
-            description: 'Unix timestamp of the LBP end time'
-          - &endWeights
-            name: endWeights
-            description: 'Array with the weights of the LBP tokens at the end of the LBP'
-          - &startTime
-            name: startTime
-            description: 'Unix timestamp of the LBP start time'
-          - &startWeights
-            name: startWeights
-            description: 'Array with the weights of the LBP tokens at the start of the LBP'
-
-      - name: NoProtocolFeeLiquidityBootstrappingPool_evt_GradualWeightUpdateScheduled
-        description: >
-          Decoded table related to scheduled gradual weight updates on the Balancer NoProtocolFeeLiquidityBootstrappingPool contract.
-        loaded_at_field: evt_block_time
-        columns:
-          - name: contract_address
-            description: 'LBP contract address'
-          - *evt_tx_hash
-          - *evt_index
-          - *evt_block_time
-          - *evt_block_number
-          - *endTime
-          - *endWeights
-          - *startTime
-          - *startWeights
-          
-      - name: Vault_evt_FlashLoan
-        loaded_at_field: evt_block_time
