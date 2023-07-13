@@ -229,7 +229,7 @@ valued_trades as (
            valid_to,
            flags,
            case when (flags % 2) = 0 then 'SELL' else 'BUY' end as order_type,
-           bitwise_and(flags, 2) as partial_fill,
+           bitwise_and(flags, 2) != 0 as partial_fill,
            (CASE
             when (flags % 2) = 0 then atoms_sold / limit_sell_amount
             else atoms_bought / limit_buy_amount
