@@ -170,7 +170,7 @@ add_margin as (
             FROM 
                 {{ ref('tigris_v1_polygon_events_add_margin_legacy') }} am 
             INNER JOIN 
-                {{ ref('tigris_v1_polygon_positions_leverage') }} l 
+                {{ ref('tigris_v1_polygon_positions_leverage_legacy') }} l 
                 ON am.position_id = l.position_id 
                 AND am.version = l.version
                 AND am.evt_block_time > l.evt_block_time
