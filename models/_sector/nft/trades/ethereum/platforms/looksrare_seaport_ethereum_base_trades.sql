@@ -10,11 +10,9 @@
     )
 }}
 
-{% set looksrare_seaport_start_date = "date"('2023-06-28') %}
+{% set looksrare_seaport_start_date = "cast('2023-06-28' as timestamp)" %}
 
-SELECT 'looksrare' AS project
-, 'seaport' AS project_version
-, s.evt_block_number AS block_number
+SELECT s.evt_block_number AS block_number
 , s.evt_tx_hash AS tx_hash
 , 'buy' AS trade_category
 , 'secondary' AS trade_type
@@ -22,8 +20,7 @@ SELECT 'looksrare' AS project
 , CAST(json_extract_scalar(s.offer[1], '$.identifier') AS UINT256) AS nft_token_id
 , CAST(json_extract_scalar(s.offer[1], '$.amount') AS UINT256) AS nft_amount
 , (CAST(json_extract_scalar(s.consideration[1], '$.amount') AS double)+CAST(try(json_extract_scalar(s.consideration[2], '$.amount')) AS double)) AS price_raw
-, 0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2 AS currency_contract
---, 'ETH' AS currency_symbol
+, {{ var("ETH_ERC20_ADDRESS") }} AS currency_contract
 , CAST(json_extract_scalar(s.consideration[2], '$.amount') AS double) AS platform_fee_amount_raw
 , from_hex(json_extract_scalar(s.consideration[2], '$.recipient')) AS platform_fee_address
 , CAST(NULL AS double) AS royalty_fee_amount_raw
@@ -38,5 +35,5 @@ AND try(from_hex(json_extract_scalar(s.consideration[2], '$.recipient')))  = 0x1
 {% if is_incremental() %}
 AND evt_block_time >= date_trunc("day", now() - interval '1 week')
 {% else %}
-AND evt_block_time >= '{{looksrare_seaport_start_date}}'
+AND evt_block_time >= {{looksrare_seaport_start_date}}
 {% endif %}

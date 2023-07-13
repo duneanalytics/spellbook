@@ -59,16 +59,3 @@ models:
      - &evt_index
         name: evt_index
         description: "Event index"
-
-  - name: looksrare_seaport_ethereum_base_trades
-    meta:
-     blockchain: ethereum
-     sector: nft
-     project: looksrare
-     contributors: ['hildobby']
-    config:
-     tags: ['ethereum', 'nft', 'trades', 'looksrare', 'seaport']
-    description: "LooksRare's seaport-routed base trades"
-    tests:
-     - dbt_utils.unique_combination_of_columns:
-         combination_of_columns: [ 'block_number','tx_hash','sub_tx_trade_id' ]
