@@ -22,7 +22,7 @@ referral_map as (
         ROW_NUMBER() OVER(PARTITION BY trader ORDER BY block_time, evt_index) AS user_trade_index,
         trader,
         app_data
-    FROM {{ ref('cow_protocol_ethereum_trades') }}
+    FROM {{ ref('cow_protocol_ethereum_trades_legacy') }}
     GROUP BY trader, block_time, app_data, evt_index
 )
 ,user_first_trade as (
