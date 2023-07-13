@@ -1,6 +1,5 @@
 {{config(
-        tags = ['dunesql'],
-        alias = alias('addresses'),
+        alias = alias('addresses', legacy_model=True),
         tags=['static'],
         post_hook='{{ expose_spells(\'["polygon"]\',
                                     "sector",
