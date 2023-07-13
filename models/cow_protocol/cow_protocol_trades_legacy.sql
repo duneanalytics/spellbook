@@ -1,6 +1,5 @@
 {{ config(
-        alias=alias('trades'),
-        tags=['dunesql'],
+        alias =alias('trades', legacy_model=True),
         post_hook='{{ expose_spells(\'["ethereum", "gnosis"]\',
                                     "project",
                                     "cow_protocol",
@@ -34,7 +33,7 @@ FROM
             receiver AS tx_to,
             trace_address,
             evt_index
-        FROM {{ ref('cow_protocol_ethereum_trades') }}
+        FROM {{ ref('cow_protocol_ethereum_trades_legacy') }}
 
         UNION ALL
 
@@ -63,5 +62,5 @@ FROM
             receiver AS tx_to,
             trace_address,
             evt_index
-        FROM {{ ref('cow_protocol_gnosis_trades') }}
+        FROM {{ ref('cow_protocol_gnosis_trades_legacy') }}
 )
