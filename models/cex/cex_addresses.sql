@@ -11,7 +11,6 @@
 {% set cex_models = [
 ref('cex_arbitrum_addresses')
 , ref('cex_avalanche_c_addresses')
-, ref('cex_bitcoin_addresses')
 , ref('cex_bnb_addresses')
 , ref('cex_ethereum_addresses')
 , ref('cex_fantom_addresses')
