@@ -129,7 +129,7 @@ orders_and_trades as (
 
 uid_to_app_id as (
     SELECT
-      uid,
+      distinct uid,
       from_hex(JSON_EXTRACT_SCALAR(trade, '$.appData')) AS app_data,
       from_hex(JSON_EXTRACT_SCALAR(trade, '$.receiver')) AS receiver,
       cast(JSON_EXTRACT_SCALAR(trade, '$.sellAmount') as uint256) AS limit_sell_amount,
