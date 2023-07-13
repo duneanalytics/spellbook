@@ -1,4 +1,5 @@
 {{ config(
+	tags=['legacy'],
         alias = alias('nft', legacy_model=True)
         , materialized = 'table'
         , post_hook='{{ expose_spells(\'["polygon"]\',

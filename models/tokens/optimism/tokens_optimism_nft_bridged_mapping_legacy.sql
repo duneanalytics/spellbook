@@ -1,5 +1,6 @@
  {{
   config(
+	tags=['legacy'],
     alias = alias('nft_bridged_mapping', legacy_model=True),
         post_hook='{{ expose_spells(\'["optimism"]\',
                                     "sector",
