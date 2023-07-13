@@ -152,7 +152,7 @@ LEFT JOIN {{ source('optimism', 'transactions') }} t
         AND t.block_time >= (NOW() - interval '14' days)
         {% endif %}
         
-LEFT JOIN {{ ref('tokens_erc20') }} erc
+LEFT JOIN {{ ref('tokens_erc20_legacy') }} erc
     ON erc.blockchain = 'optimism'
     AND erc.contract_address = tf.bridged_token_address
     

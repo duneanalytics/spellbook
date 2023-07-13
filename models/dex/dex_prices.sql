@@ -21,7 +21,7 @@ dex_trades as (
         d.block_time, 
         d.blockchain
     FROM {{ ref('dex_trades') }} d 
-    LEFT JOIN {{ ref('tokens_erc20') }} er 
+    LEFT JOIN {{ ref('tokens_erc20_legacy') }} er
         ON d.token_bought_address = er.contract_address
         AND d.blockchain = er.blockchain
     WHERE d.amount_usd > 0 
@@ -38,7 +38,7 @@ dex_trades as (
         d.block_time, 
         d.blockchain
     FROM {{ ref('dex_trades') }} d 
-    LEFT JOIN {{ ref('tokens_erc20') }} er 
+    LEFT JOIN {{ ref('tokens_erc20_legacy') }} er
         ON d.token_sold_address = er.contract_address
         AND d.blockchain = er.blockchain
     WHERE d.amount_usd > 0 

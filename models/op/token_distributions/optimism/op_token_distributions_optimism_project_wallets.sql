@@ -178,6 +178,12 @@ FROM (values
     ,('0x97a7E9726df22D6f28BB86679a0e5512A8c0E8A2', 'dHedge', 'Distributor')
     ,('0xC792980F2F3016F60bEd35926d21A43E140b99cC', 'dHedge', 'DHT/OP: Velodrome')
     ,('0xfCC293db3b7396a1c2477C9F24F5F948431EF6eC', 'Pika Protocol', 'Distributor')
+    ,('0x549406bc1370a7efe86e2ae71dea3b67fa08b43d', 'Pika Protocol', 'Distributor')
+    ,('0xc37e1fb3d127d6194fc2f5fe18ec871c7366df63', 'Pika Protocol', 'Distributor')
+    ,('0x4e3ad6266a26c31e9b221d3cf48f1812531095f2', 'Pika Protocol', 'Distributor')
+    ,('0xc4804658e193651dd8f87d1bccb8939eb63475d4', 'Pika Protocol', 'Distributor')
+    ,('0x6173bbca90c023a99384dbf73f40101d8ace1bd0', 'Pika Protocol', 'Distributor')
+    ,('0x270a49c498f02758800d688a44c690ffd4d60a07', 'Pika Protocol', 'Distributor')
     ,('0x8b50d942bb4effe0db32393a141ea083db0c4e7f', 'Alchemix', 'alETH/WETH: Velodrome')
     ,('0x4ea2e39626de031a011c3ca7360878202454ce75', 'Angle', 'OP/agEUR: Velodrome')
     ,('0x3ef3d8ba38ebe18db133cec108f4d14ce00dd9ae', 'Angle', 'USDC/agEUR: Uniswap') -- merkl.angle.money

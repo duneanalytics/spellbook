@@ -10,7 +10,7 @@ models:
      tags: ['avalanche_c', 'layerzero', 'send']
    description: "LayerZero message send call on avalanche c"
    tests:
-     - check_seed:
+     - check_seed_legacy:
          seed_file: ref('layerzero_avalanche_c_send_samples')
          check_columns:
            - destination_chain_id

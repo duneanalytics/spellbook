@@ -1,8 +1,0 @@
-version: 2
-
-sources:
-  - name: looksrare_ethereum
-    description: "looksrare royalty fee for collections"
-    tables:
-      - name: RoyaltyFeeRegistry_evt_RoyaltyFeeUpdate
-        loaded_at_field: evt_block_time

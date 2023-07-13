@@ -6,7 +6,7 @@ select
 
 from {{ model }}
 where {{ column_name }} is not null
-    and block_date >= NOW() - interval '2 days'
+    and block_date >= NOW() - interval '2' days
 group by {{ column_name }}
 having count(*) > 1
 

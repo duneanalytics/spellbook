@@ -1,9 +1,8 @@
 {{ config(
     alias = 'kyberswap_pools',
     partition_by = ['time'],
-    materialized = 'incremental',
+    materialized = 'table',
     file_format = 'delta',
-    incremental_strategy = 'merge',
     unique_key = ['pool', 'time'],
     post_hook='{{ expose_spells(\'["ethereum"]\',
                                 "project",
@@ -14,11 +13,7 @@
 
 {% set project_start_date = '2022-10-28' %} 
 
-with dates as (
-select explode(sequence(to_date('{{ project_start_date }}'), now(), interval 1 hour)) as hour
-)
- 
-, pools as (
+with pools as (
 select pool as address, 'ethereum' as blockchain, 'kyberswap' as project, swapFeeUnits/1000 as fee
 from {{ source('kyber_ethereum', 'Elastic_Factory_evt_PoolCreated') }}
 where token0 = lower('0x7f39C581F595B53c5cb19bD0b3f8dA6c935E2Ca0') or token1 = lower('0x7f39C581F595B53c5cb19bD0b3f8dA6c935E2Ca0')
@@ -46,11 +41,7 @@ left join {{ref('prices_tokens')}} pt on t.token = pt.contract_address
         contract_address as token,
         avg(price) AS price
     FROM {{ source('prices', 'usd') }}
-    {% if is_incremental() %}
-    WHERE date_trunc('day', minute) >= date_trunc("day", now() - interval '1 week') and date_trunc('day', minute) < date_trunc('day', now())
-    {% else %}
     WHERE date_trunc('day', minute) >= '{{ project_start_date }}' and date_trunc('day', minute) < date_trunc('day', now())
-    {% endif %}
     and blockchain = 'ethereum'
     and contract_address in (select address from tokens)    
     group by 1,2
@@ -73,11 +64,7 @@ left join {{ref('prices_tokens')}} pt on t.token = pt.contract_address
         contract_address as token,
         last_value(price) over (partition by DATE_TRUNC('hour', minute), contract_address ORDER BY  minute range between unbounded preceding AND unbounded following) AS price
     FROM {{ source('prices', 'usd') }}
-    {% if is_incremental() %}
-    WHERE date_trunc('hour', minute) >= date_trunc("hour", now() - interval '7 days')
-    {% else %}
     WHERE date_trunc('hour', minute) >= '{{ project_start_date }}' 
-    {% endif %} 
     and blockchain = 'ethereum'
     and contract_address in (select address from tokens)   
 ) p
@@ -94,11 +81,7 @@ left join {{ref('prices_tokens')}} pt on t.token = pt.contract_address
         
     from {{ source('kyber_ethereum', 'Elastic_Pool_evt_swap') }} sw
     left join {{ source('kyber_ethereum', 'Elastic_Factory_evt_PoolCreated') }} cr on sw.contract_address = cr.pool
-    {% if is_incremental() %}
-    WHERE date_trunc('day', sw.evt_block_time) >= date_trunc("day", now() - interval '1 week') 
-    {% else %}
     WHERE date_trunc('day', sw.evt_block_time) >= '{{ project_start_date }}'
-    {% endif %} 
     and sw.contract_address in (select address from pools)   
     group by 1,2,3,4
 ) 
@@ -112,18 +95,10 @@ left join {{ref('prices_tokens')}} pt on t.token = pt.contract_address
         sum(cast(qty1 as DOUBLE)) as amount1
     from {{ source('kyber_ethereum', 'Elastic_Pool_evt_Mint') }} mt
     left join {{ source('kyber_ethereum', 'Elastic_Factory_evt_PoolCreated') }} cr on mt.contract_address = cr.pool
-    {% if is_incremental() %}
-    WHERE date_trunc('day', mt.evt_block_time) >= date_trunc("day", now() - interval '1 week') 
-    {% else %}
     WHERE date_trunc('day', mt.evt_block_time) >= '{{ project_start_date }}'
-    {% endif %}
     and mt.contract_address in (select address from pools)    
     group by 1,2,3,4
-    union all
-    select d.day as time, cr.pool, cr.token0, cr.token1, 0, 0
-    from (select distinct date_trunc('day', hour) as day from dates) d
-    left join {{ source('kyber_ethereum', 'Elastic_Factory_evt_PoolCreated') }} cr on 1 = 1
-    where cr.pool in (select address from pools)
+    
 )
     
 , burn_events as (
@@ -135,11 +110,7 @@ left join {{ref('prices_tokens')}} pt on t.token = pt.contract_address
         (-1)*sum(cast(qty1 as DOUBLE)) as amount1
     from {{ source('kyber_ethereum', 'Elastic_Pool_evt_Burn') }} bn
     left join {{ source('kyber_ethereum', 'Elastic_Factory_evt_PoolCreated') }} cr on bn.contract_address = cr.pool
-    {% if is_incremental() %}
-    WHERE date_trunc('day', bn.evt_block_time) >= date_trunc("day", now() - interval '1 week') 
-    {% else %}
     WHERE date_trunc('day', bn.evt_block_time) >= '{{ project_start_date }}'
-    {% endif %}
     and bn.contract_address in (select address from pools)    
     group by 1,2,3,4
 
@@ -153,11 +124,7 @@ left join {{ref('prices_tokens')}} pt on t.token = pt.contract_address
         (-1) * sum(cast(qty1 as double)) as amount1 
     from {{ source('kyber_ethereum', 'Elastic_Pool_evt_BurnRTokens') }} bn
     left join {{ source('kyber_ethereum', 'Elastic_Factory_evt_PoolCreated') }} cr on bn.contract_address = cr.pool
-    {% if is_incremental() %}
-    WHERE date_trunc('day', bn.evt_block_time) >= date_trunc("day", now() - interval '1 week') 
-    {% else %}
     WHERE date_trunc('day', bn.evt_block_time) >= '{{ project_start_date }}'
-    {% endif %}
     and bn.contract_address in (select address from pools)    
     group by 1,2,3,4
 )
@@ -188,24 +155,17 @@ left join {{ref('prices_tokens')}} pt on t.token = pt.contract_address
 , swap_events_hourly as (
     select hour, pool, token0, token1, sum(amount0) as amount0, sum(amount1) as amount1 from (
     select 
-        d.hour,
+        date_trunc('hour', sw.evt_block_time) as hour,
         sw.contract_address as pool,
         cr.token0, cr.token1,
         coalesce(sum(cast(abs(deltaQty0) as DOUBLE)),0) as amount0,
         coalesce(sum(cast(abs(deltaQty1) as DOUBLE)),0) as amount1
         
-    from dates d
-    left join {{source('kyber_ethereum','Elastic_Pool_evt_swap')}} sw on d.hour = date_trunc('hour', sw.evt_block_time)
+    from {{source('kyber_ethereum','Elastic_Pool_evt_swap')}} sw 
     left join {{source('kyber_ethereum','Elastic_Factory_evt_PoolCreated')}} cr on sw.contract_address = cr.pool
     where sw.contract_address in (select address from pools)
     group by 1,2,3,4
-    union all
-    select d.hour,
-        cr.pool as pool,
-        cr.token0, cr.token1, 0, 0
-    from dates d
-    left join {{source('kyber_ethereum','Elastic_Factory_evt_PoolCreated')}} cr on 1 = 1
-    where cr.pool in (select address from pools)  
+
       ) a group by 1,2,3,4
 ) 
 

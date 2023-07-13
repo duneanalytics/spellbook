@@ -140,6 +140,7 @@ dmypy.json
 target/
 dbt_packages/
 logs/
+.user.yml
 
 # exclusions
 !target/manifest.json

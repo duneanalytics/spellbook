@@ -36,17 +36,17 @@ with source_polygon_transactions as (
 )
 ,ref_tokens_nft as (
     select *
-      from {{ ref('tokens_nft') }}
+      from {{ ref('tokens_nft_legacy') }}
      where blockchain = 'polygon'
 )
 ,ref_tokens_erc20 as (
     select *
-      from {{ ref('tokens_erc20') }}
+      from {{ ref('tokens_erc20_legacy') }}
     where blockchain = 'polygon'
 )
 ,ref_nft_aggregators as (
     select *
-      from {{ ref('nft_aggregators') }}
+      from {{ ref('nft_aggregators_legacy') }}
     where blockchain = 'polygon'
 )
 ,source_prices_usd as (
@@ -723,7 +723,6 @@ select  -- basic info
                                       ,'0x110b2b128a9ed1be5ef3232d8e4e41640df5c2cd'
                                       ,'0x000000e7ec00e7b300774b00001314b8610022b8' -- newly added on seaport v1.4
                                       )
-   and  (    fee_wallet_name = 'opensea'
-          or right_hash = '360c6ebe' -- opensea hash
-        )
- 
+  --  and  (    fee_wallet_name = 'opensea'
+  --         or right_hash = '360c6ebe' -- opensea hash
+  --       )

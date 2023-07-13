@@ -234,10 +234,10 @@ INNER JOIN {{ source('polygon', 'transactions')}} tx
     {% if is_incremental() %}
     AND tx.block_time >= date_trunc("day", now() - interval '1 week')
     {% endif %}
-LEFT JOIN {{ ref('tokens_erc20') }} erc20a
+LEFT JOIN {{ ref('tokens_erc20_legacy') }} erc20a
     ON erc20a.contract_address = dexs.token_bought_address
     AND erc20a.blockchain = 'polygon'
-LEFT JOIN {{ ref('tokens_erc20') }} erc20b
+LEFT JOIN {{ ref('tokens_erc20_legacy') }} erc20b
     ON erc20b.contract_address = dexs.token_sold_address
     AND erc20b.blockchain = 'polygon'
 LEFT JOIN {{ source('prices', 'usd') }} p_bought

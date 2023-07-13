@@ -2,9 +2,8 @@
     schema='lido_liquidity_arbitrum',
     alias = 'camelot_pools',
     partition_by = ['time'],
-    materialized = 'incremental',
+    materialized = 'table',
     file_format = 'delta',
-    incremental_strategy = 'merge',
     unique_key = ['pool', 'time'],
     post_hook='{{ expose_spells(\'["arbitrum"]\',
                                 "project",
@@ -16,7 +15,7 @@
 {% set project_start_date = '2022-12-07' %} 
 
 with dates as (
-select explode(sequence(to_date('{{ project_start_date }}'), now(), interval 1 hour)) as hour
+select explode(sequence(to_date('{{ project_start_date }}'), now(), interval 1 day)) as day
 )
 
 , pools as (
@@ -24,6 +23,13 @@ select pair as address, 'arbitrum' as blockchain, 'camelot' as project, 0 as fee
 from {{ source('camelot_arbitrum','CamelotFactory_evt_PairCreated')}}
 where token0 = lower('0x5979D7b546E38E414F7E9822514be443A4800529') or token1 = lower('0x5979D7b546E38E414F7E9822514be443A4800529')
 )
+
+, pool_per_date as ( 
+select dates.day, pools.*
+from dates
+left join pools on 1=1
+)
+
 
 , tokens_mapping as (
 select lower(address_l1) as address_l1, lower(address_l2) as address_l2 from (values 
@@ -71,11 +77,7 @@ left join tokens_mapping tm on t.token = tm.address_l2
         avg(price) AS price
     FROM {{ source('prices', 'usd') }}
     left join tokens_mapping on prices.usd.contract_address = tokens_mapping.address_l1
-    {% if is_incremental() %}
-    WHERE date_trunc('day', minute) >= date_trunc("day", now() - interval '1 week') and date_trunc('day', minute) < date_trunc('day', now())
-    {% else %}
     WHERE date_trunc('day', minute) >= '{{ project_start_date }}' and date_trunc('day', minute) < date_trunc('day', now())
-    {% endif %}
     and blockchain = 'ethereum'
     and contract_address in (select address_l1 from tokens)
     group by 1,2
@@ -100,11 +102,7 @@ left join tokens_mapping tm on t.token = tm.address_l2
         last_value(price) over (partition by DATE_TRUNC('hour', minute), contract_address ORDER BY  minute range between unbounded preceding AND unbounded following) AS price
     FROM {{ source('prices', 'usd') }}
     left join tokens_mapping on prices.usd.contract_address = tokens_mapping.address_l1
-    {% if is_incremental() %}
-    WHERE date_trunc('hour', minute) >= date_trunc("hour", now() - interval '7 days')
-    {% else %}
     WHERE date_trunc('hour', minute) >= '{{ project_start_date }}' 
-    {% endif %} 
     and blockchain = 'ethereum'
     and contract_address in (select address_l1 from tokens)) p
 )
@@ -120,11 +118,7 @@ left join tokens_mapping tm on t.token = tm.address_l2
         
     from {{source('camelot_arbitrum','CamelotPair_evt_Swap')}} sw
     left join {{source('camelot_arbitrum','CamelotFactory_evt_PairCreated')}} cr on sw.contract_address = cr.pair
-    {% if is_incremental() %}
-    WHERE date_trunc('day', sw.evt_block_time) >= date_trunc("day", now() - interval '1 week') 
-    {% else %}
     WHERE date_trunc('day', sw.evt_block_time) >= '{{ project_start_date }}'
-    {% endif %} 
     and sw.contract_address in (select address from pools)
 
     group by 1,2,3,4
@@ -139,18 +133,10 @@ left join tokens_mapping tm on t.token = tm.address_l2
         sum(cast(amount1 as DOUBLE)) as amount1
     from {{source('camelot_arbitrum','CamelotPair_evt_Mint')}} mt
     left join {{source('camelot_arbitrum','CamelotFactory_evt_PairCreated')}} cr on mt.contract_address = cr.pair
-    {% if is_incremental() %}
-    WHERE date_trunc('day', mt.evt_block_time) >= date_trunc("day", now() - interval '1 week') 
-    {% else %}
     WHERE date_trunc('day', mt.evt_block_time) >= '{{ project_start_date }}'
-    {% endif %}  
     and mt.contract_address  in (select address from pools)
     group by 1,2,3,4
-    union all
-    select d.day as time, cr.pair, cr.token0, cr.token1, 0, 0
-    from (select distinct date_trunc('day', hour) as day from dates) d
-    left join {{source('camelot_arbitrum','CamelotFactory_evt_PairCreated')}} cr on 1 = 1
-    where cr.pair in (select address from pools)
+    
 )
 
 , burn_events as (
@@ -162,17 +148,14 @@ left join tokens_mapping tm on t.token = tm.address_l2
         (-1)*sum(cast(amount1 as DOUBLE)) as amount1
     from {{source('camelot_arbitrum','CamelotPair_evt_Burn')}} bn
     left join {{source('camelot_arbitrum','CamelotFactory_evt_PairCreated')}} cr on bn.contract_address = cr.pair
-    {% if is_incremental() %}
-    WHERE date_trunc('day', bn.evt_block_time) >= date_trunc("day", now() - interval '1 week') 
-    {% else %}
     WHERE date_trunc('day', bn.evt_block_time) >= '{{ project_start_date }}'
-    {% endif %} 
     and bn.contract_address  in (select address from pools)     
     group by 1,2,3,4
 )
 
 , daily_delta_balance as (
-    select time, pool, token0, token1, sum(coalesce(amount0, 0)) as amount0, sum(coalesce(amount1, 0)) as amount1
+    select time, pool, token0, token1, sum(coalesce(amount0, 0)) as amount0, sum(coalesce(amount1, 0)) as amount1,
+    lead(time, 1, now() + interval '1 day') over (partition by pool order by time) as next_time
     from ( 
     select time, pool, token0, token1, amount0, amount1 
     from swap_events
@@ -187,37 +170,25 @@ left join tokens_mapping tm on t.token = tm.address_l2
 )
 
 , pool_liquidity as (
-    select  time, lead(time, 1, current_date + interval '1 day') over (order by time) as next_time, 
-            pool, token0, token1, sum(amount0) over(partition by pool order by time) as amount0, sum(amount1)  over(partition by pool order by time) as amount1
-    from daily_delta_balance
-)
+    select  c.day as time,c.address as pool, token0, token1, sum(amount0) over(partition by pool order by time) as amount0, sum(amount1)  over(partition by pool order by time) as amount1
+    from pool_per_date  c
+    LEFT JOIN daily_delta_balance b ON c.address = b.pool and  b.time <= c.day AND c.day < b.next_time
+    )
 
 , swap_events_hourly as (  
     select hour, pool, token0, token1, sum(amount0) as amount0, sum(amount1) as amount1 from (
     select 
-        d.hour,
+        date_trunc('hour', sw.evt_block_time) as hour,
         sw.contract_address as pool,
         cr.token0, cr.token1,
         coalesce(sum(cast(abs(amount0In) as DOUBLE)),0) + coalesce(sum(cast(abs(amount0Out) as DOUBLE)),0) as amount0,
         coalesce(sum(cast(abs(amount1In) as DOUBLE)),0) + coalesce(sum(cast(abs(amount1Out) as DOUBLE)),0) as amount1
         
-    from dates d
-    left join {{source('camelot_arbitrum','CamelotPair_evt_Swap')}} sw on d.hour = date_trunc('hour', sw.evt_block_time)
+    from {{source('camelot_arbitrum','CamelotPair_evt_Swap')}} sw 
     left join {{source('camelot_arbitrum','CamelotFactory_evt_PairCreated')}} cr on sw.contract_address = cr.pair
-    {% if is_incremental() %}
-    WHERE date_trunc('day', sw.evt_block_time) >= date_trunc("day", now() - interval '1 week') 
-    {% else %}
     WHERE date_trunc('day', sw.evt_block_time) >= '{{ project_start_date }}'
-    {% endif %}  
     and sw.contract_address in (select address from pools)
     group by 1,2,3,4
-    union all
-    select d.hour,
-        cr.pair as pool,
-        cr.token0, cr.token1, 0, 0
-    from dates d
-    left join {{source('camelot_arbitrum','CamelotFactory_evt_PairCreated')}} cr on 1 = 1
-    where cr.pair in (select address from pools)  
       ) a group by 1,2,3,4
 ) 
 
@@ -265,6 +236,6 @@ left join trading_volume tv on l.time = tv.time and l.pool = tv.pool
 ) 
 
 
-select CONCAT(CONCAT(CONCAT(CONCAT(CONCAT(blockchain,CONCAT(' ', project)) ,' '), coalesce(paired_token_symbol,'unknown')),':') , main_token_symbol, ' ', fee) as pool_name,* 
+select CONCAT(CONCAT(CONCAT(CONCAT(CONCAT(blockchain,CONCAT(' ', project)) ,' '), coalesce(paired_token_symbol,'unknown')),':') , main_token_symbol) as pool_name,* 
 from all_metrics
-
+where main_token_reserve > 1

@@ -137,9 +137,9 @@ SELECT
   t.evt_index
 FROM
   simple_trades t
-  LEFT JOIN {{ ref('tokens_erc20') }} t_bought ON cast(t_bought.contract_address AS string) = t.maker_token
+  LEFT JOIN {{ ref('tokens_erc20_legacy') }} t_bought ON cast(t_bought.contract_address AS string) = t.maker_token
   AND t_bought.blockchain = 'ethereum'
-  LEFT JOIN {{ ref('tokens_erc20') }} t_sold ON cast(t_sold.contract_address AS string) = t.taker_token
+  LEFT JOIN {{ ref('tokens_erc20_legacy') }} t_sold ON cast(t_sold.contract_address AS string) = t.taker_token
   AND t_sold.blockchain = 'ethereum'
   LEFT JOIN {{ source('prices', 'usd') }} p_bought ON p_bought.minute = date_trunc('minute', t.block_time)
   AND cast(p_bought.contract_address AS string) = t.maker_token

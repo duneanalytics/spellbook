@@ -5,7 +5,7 @@ version: "1.0.0"
 config-version: 2
 
 # This setting configures which "profile" dbt uses for this project.
-profile: "spellbook"
+profile: "spellbook-local"
 
 vars:
   DBT_ENV_CUSTOM_ENV_S3_BUCKET: "{{ env_var('DBT_ENV_CUSTOM_ENV_S3_BUCKET', 'local') }}"
@@ -51,6 +51,7 @@ models:
         transaction: true
     +materialized: view
     +schema: no_schema    # this should be overriden in model specific configs
+    +view_security: invoker
 
     aave:
       +schema: aave
@@ -84,6 +85,11 @@ models:
       +schema: ens
       ethereum:
         +schema: ens_ethereum
+
+    euler:
+      +schema: euler
+      ethereum:
+        +schema: euler_ethereum
 
     evms:
       +schema: evms
@@ -228,6 +234,19 @@ models:
       ethereum:
         +schema: x2y2_ethereum
 
+    xchange:
+      +schema: xchange
+      arbitrum:
+        +schema: xchange_arbitrum
+      ethereum:
+        +schema: xchange_ethereum
+      #optimism:
+      #  +schema: xchange_optimism
+      polygon:
+        +schema: xchange_polygon
+      bnb:
+        +schema: xchange_bnb
+
     uniswap:
       +schema: uniswap
       arbitrum:
@@ -366,6 +385,10 @@ models:
         +schema: gas_arbitrum
       polygon:
         +schema: gas_polygon
+      fantom:
+        +schema: gas_fantom
+      gnosis:
+        +schema: gas_gnosis
 
     gmx:
       +schema: gmx
@@ -654,12 +677,45 @@ models:
       optimism:
         +schema: synthetix_optimism
 
+    synapse:
+      +schema: synapse
+      arbitrum:
+        +schema: synapse_arbitrum
+      avalanche_c:
+        +schema: synapse_avalanche_c
+      bnb:
+        +schema: synapse_bnb
+      ethereum:
+        +schema: synapse_ethereum
+      fantom:
+        +schema: synapse_fantom
+      optimism:
+        +schema: synapse_optimism
+      polygon:
+        +schema: synapse_polygon
+        
+    fiat_dao:
+      +schema: fiat_dao
+      ethereum:
+        +schema: fiat_dao_ethereum
+
     integral:
       +schema: integral
       arbitrum:
         +schema: integral_arbitrum
       ethereum:
         +schema: integral_ethereum
+
+    equalizer:
+      +schema: equalizer
+      bnb:
+        +schema: equalizer_bnb
+      ethereum:
+        +schema: equalizer_ethereum
+      optimism:
+        +schema: equalizer_optimism
+      polygon:
+        +schema: equalizer_polygon
 
     integration_test:
       +schema: integration_test
@@ -1207,3 +1263,19 @@ models:
       +schema: thena
       bnb:
         +schema: thena_bnb
+    
+    account_abstraction:
+      erc4337:
+        +schema: account_abstraction_erc4337
+        ethereum:
+          +schema: account_abstraction_erc4337_ethereum
+        avalanche_c:
+          +schema: account_abstraction_erc4337_avalanche_c
+        arbitrum:
+          +schema: account_abstraction_erc4337_arbitrum
+        optimism:
+          +schema: account_abstraction_erc4337_optimism
+        polygon:
+          +schema: account_abstraction_erc4337_polygon
+        gnosis:
+          +schema: account_abstraction_erc4337_gnosis

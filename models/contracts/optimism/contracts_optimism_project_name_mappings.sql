@@ -98,5 +98,6 @@ from (
     ,('sound_xyz', 'Sound.xyz')
     ,('sound xyz', 'Sound.xyz')
     ,('splits','0xSplits')
+    ,('kyber', 'kyberswap')
 
     ) as temp_table (dune_name, mapped_name)
