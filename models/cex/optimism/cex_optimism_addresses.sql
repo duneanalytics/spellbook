@@ -6,7 +6,7 @@
                                     "cex",
                                     \'["msilb7", "hildobby"]\') }}')}}
 
-SELECT blockchain, LOWER(address) AS address, cex_name, distinct_name, added_by, added_date
+SELECT blockchain, address, cex_name, distinct_name, added_by, added_date
 FROM (VALUES
      ('optimism', 0x88880809d6345119ccabe8a9015e4b1309456990, 'Juno', 'Juno 1', 'msilb7', timestamp '2022-10-10')
     , ('optimism', 0x5122e9aa635c13afd2fc31de3953e0896bac7ab4, 'Coinbase', 'Coinbase 1', 'msilb7', timestamp '2022-10-10')

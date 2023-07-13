@@ -6,7 +6,7 @@
                                     "cex",
                                     \'["Henrystats", "hildobby"]\') }}')}}
 
-SELECT blockchain, LOWER(address) AS address, cex_name, distinct_name, added_by, added_date
+SELECT blockchain, address, cex_name, distinct_name, added_by, added_date
 FROM (VALUES
     -- Source https://ftmscan.com/accounts/label/exchange
     ('fantom', 0x8e1701cfd85258ddb8dfe89bc4c7350822b9601d, 'MEXC', 'MEXC: Hot Wallet', 'Henrystats', timestamp '2023-01-27')

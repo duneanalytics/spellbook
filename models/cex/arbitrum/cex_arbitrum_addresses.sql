@@ -6,7 +6,7 @@
                                     "cex",
                                     \'["hildobby"]\') }}')}}
 
-SELECT blockchain, LOWER(address) AS address, cex_name, distinct_name, added_by, added_date
+SELECT blockchain, address, cex_name, distinct_name, added_by, added_date
 FROM (VALUES
     -- Binance, source: https://arbiscan.io/accounts/label/exchange
     ('arbitrum', 0xb38e8c17e38363af6ebdcb3dae12e0243582891d, 'Binance', 'Binance: Hot Wallet', 'hildobby', timestamp '2023-04-06')

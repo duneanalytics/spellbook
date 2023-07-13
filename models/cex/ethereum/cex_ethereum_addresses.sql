@@ -6,7 +6,7 @@
                                     "cex",
                                     \'["hildobby", "soispoke", "web3_data"]\') }}')}}
 
-SELECT blockchain, LOWER(address) AS address, cex_name, distinct_name, added_by, added_date
+SELECT blockchain, address, cex_name, distinct_name, added_by, added_date
 FROM (VALUES
     -- Binance, Source: https://etherscan.io/accounts/label/binance
     ('ethereum', 0x3f5ce5fbfe3e9af3971dd833d26ba9b5c936f0be, 'Binance', 'Binance 1', 'hildobby', timestamp '2022-08-28')

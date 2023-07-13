@@ -6,7 +6,7 @@
                                     "cex",
                                     \'["hildobby"]\') }}')}}
 
-SELECT blockchain, LOWER(address) AS address, cex_name, distinct_name, added_by, added_date
+SELECT blockchain, address, cex_name, distinct_name, added_by, added_date
 FROM (VALUES
     -- Source: https://snowtrace.io/accounts/label/exchange
     ('avalanche_c', 0x14aa1ad09664c33679ae5689d93085b8f7c84bd3, 'Coinsquare', 'Coinsquare 1', 'hildobby', timestamp '2023-04-06')

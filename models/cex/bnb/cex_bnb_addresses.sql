@@ -6,7 +6,7 @@
                                     "cex",
                                     \'["soispoke", "hildobby"]\') }}')}}
 
-SELECT blockchain, LOWER(address) AS address, cex_name, distinct_name, added_by, added_date
+SELECT blockchain, address, cex_name, distinct_name, added_by, added_date
 FROM (VALUES
     -- Binance
     ('bnb', 0x631Fc1EA2270e98fbD9D92658eCe0F5a269Aa161, 'Binance', 'Binance 1', 'soispoke', timestamp '2022-08-28')
