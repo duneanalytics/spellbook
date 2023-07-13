@@ -45,11 +45,11 @@ with
         , account_tokenVaultB as tokenBVault
         , ip.tickSpacing
         , ip.account_whirlpool as whirlpool_id
-        --, fu.update_time
-        --, fu.fee_tier
+        , fu.update_time
+        , fu.fee_tier
         , ip.call_tx_id as init_tx
     FROM {{ source('whirlpool_solana', 'whirlpool_call_initializePool') }} ip
-    --LEFT JOIN fee_updates fu ON fu.whirlpool_id = ip.account_whirlpool
+    LEFT JOIN fee_updates fu ON fu.whirlpool_id = ip.account_whirlpool
     LEFT JOIN {{ ref('tokens_solana_fungible') }} tkA ON tkA.token_mint_address = ip.account_tokenMintA 
     LEFT JOIN {{ ref('tokens_solana_fungible') }} tkB ON tkB.token_mint_address = ip.account_tokenMintB
     -- WHERE tkA.symbol is not null AND tkB.symbol is not null
@@ -78,7 +78,7 @@ with
                 end as token_sold_symbol
             , tr_1.amount as token_sold_amount_raw
             , tr_1.amount/COALESCE(pow(10,case when sp.aToB = true then wp.tokenA_decimals else tokenB_decimals end),1) as token_sold_amount
-            --, wp.fee_tier
+            , wp.fee_tier
             , wp.whirlpool_id
             , sp.call_tx_signer as trader_id
             , sp.call_tx_id as tx_id
@@ -97,9 +97,9 @@ with
             , case when sp.aToB = true then wp.tokenAVault 
                 else wp.tokenBVault
                 end as token_sold_vault
-            --, wp.update_time
+            , wp.update_time
         FROM {{ source('whirlpool_solana', 'whirlpool_call_swap') }} sp
-        JOIN whirlpools wp ON sp.account_whirlpool = wp.whirlpool_id --AND sp.call_block_time >= wp.update_time
+        JOIN whirlpools wp ON sp.account_whirlpool = wp.whirlpool_id AND sp.call_block_time >= wp.update_time
         INNER JOIN {{ source('spl_token_solana', 'spl_token_call_transfer') }} tr_1 ON tr_1.call_tx_id = sp.call_tx_id 
             AND tr_1.call_outer_instruction_index = sp.call_outer_instruction_index 
             AND ((sp.call_is_inner = false AND tr_1.call_inner_instruction_index = 1) 
@@ -138,8 +138,8 @@ with
         , tb.token_sold_amount
         , tb.token_sold_amount_raw
         , COALESCE(tb.token_sold_amount * p_sold.price, tb.token_bought_amount * p_bought.price) as amount_usd
-        --, cast(tb.fee_tier as double)/1000000 as fee_tier
-        --, cast(tb.fee_tier as double)/1000000 * COALESCE(tb.token_sold_amount * p_sold.price, tb.token_bought_amount * p_bought.price) as fee_usd
+        , cast(tb.fee_tier as double)/1000000 as fee_tier
+        , cast(tb.fee_tier as double)/1000000 * COALESCE(tb.token_sold_amount * p_sold.price, tb.token_bought_amount * p_bought.price) as fee_usd
         , tb.token_sold_mint_address
         , tb.token_bought_mint_address
         , tb.token_sold_vault
@@ -154,7 +154,7 @@ with
         (
         SELECT 
             *
-            --, row_number() OVER (partition by tx_id, outer_instruction_index, inner_instruction_index, tx_index, whirlpool_id, token_bought_amount order by update_time desc) as recent_update
+            , row_number() OVER (partition by tx_id, outer_instruction_index, inner_instruction_index, tx_index, whirlpool_id, token_bought_amount order by update_time desc) as recent_update
         FROM all_swaps
         )
         tb
@@ -168,7 +168,7 @@ with
         AND token_sold_mint_address = toBase58(p_sold.contract_address)
 
         AND p_sold.minute >= now() - interval '7' day
-    --WHERE recent_update = 1 --keep only most recent fee tier
+    WHERE recent_update = 1 --keep only most recent fee tier
 -- --QA purposes only
 -- AND whirlpool_id = 'HJPjoWUrhoZzkNfRpHuieeFk9WcZWjwy6PBjZ81ngndJ'
 -- ORDER by block_time asc
