@@ -10,7 +10,7 @@
     )
 }}
 
-{% set blur_v2_start_date = datetime '2023-07-05') %}
+{% set blur_v2_start_date = CAST('2023-07-05' AS date) %}
 
 WITH blur_v2_trades AS (
     SELECT evt_tx_hash AS tx_hash
