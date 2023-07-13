@@ -11,4 +11,3 @@ SELECT
     _name as pair 
 FROM 
 {{ source('tigristrade_v2_arbitrum', 'PairsContract_evt_AssetAdded') }}
-;

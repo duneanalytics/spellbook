@@ -57,4 +57,3 @@ limit_orders AS (
 
 SELECT *
 FROM limit_orders
-;

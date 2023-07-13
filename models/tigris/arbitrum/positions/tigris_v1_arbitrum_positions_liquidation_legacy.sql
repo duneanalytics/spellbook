@@ -58,4 +58,3 @@ last_margin lm
 INNER JOIN 
 last_leverage ll 
     ON lp.position_id = ll.position_id
-;

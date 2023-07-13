@@ -54,4 +54,3 @@ margin as (
 )
 
 SELECT * FROM margin  
-;
