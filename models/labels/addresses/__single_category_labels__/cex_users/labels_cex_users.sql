@@ -34,7 +34,7 @@ FROM (
         'cex_users_withdrawals' model_name,
         'persona' as label_type
     FROM {{source('erc20_' + chain, 'evt_transfer')}} t
-    INNER JOIN {{ref('cex_addresses')}} c ON '{{chain}}' = c.blockchain
+    INNER JOIN {{ref('cex_addresses_legacy')}} c ON '{{chain}}' = c.blockchain
         AND t.from = c.address
 
     {% if not loop.last %}

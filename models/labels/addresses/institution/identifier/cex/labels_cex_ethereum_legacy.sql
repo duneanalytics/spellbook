@@ -1,10 +1,9 @@
 {{config(
-        tags = ['dunesql'],
-        alias = alias('cex_polygon'),
-        post_hook='{{ expose_spells(\'["polygon"]\',
+        alias = alias('cex_ethereum', legacy_model=True),
+        post_hook='{{ expose_spells(\'["ethereum"]\',
                                     "sector",
                                     "labels",
-                                    \'["hildobby"]\') }}')}}
+                                    \'["hildobby", "soispoke", "ilemi", "web3_data"]\') }}')}}
 
 SELECT blockchain
 , address
@@ -16,4 +15,4 @@ SELECT blockchain
 , NOW() AS updated_at
 , 'cex_' || blockchain AS model_name
 , 'identifier' AS label_type
-FROM {{ ref('cex_polygon_addresses') }}
+FROM {{ ref('cex_ethereum_addresses_legacy') }}

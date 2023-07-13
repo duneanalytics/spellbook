@@ -1,7 +1,6 @@
 {{config(
-        tags = ['dunesql'],
-        alias = alias('cex_polygon'),
-        post_hook='{{ expose_spells(\'["polygon"]\',
+        alias = alias('cex_avalanche_c', legacy_model=True),
+        post_hook='{{ expose_spells(\'["avalanche_c"]\',
                                     "sector",
                                     "labels",
                                     \'["hildobby"]\') }}')}}
@@ -16,4 +15,4 @@ SELECT blockchain
 , NOW() AS updated_at
 , 'cex_' || blockchain AS model_name
 , 'identifier' AS label_type
-FROM {{ ref('cex_polygon_addresses') }}
+FROM {{ ref('cex_avalanche_c_addresses_legacy') }}
