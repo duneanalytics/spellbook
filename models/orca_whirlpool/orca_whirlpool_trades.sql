@@ -97,7 +97,7 @@ with
                 end as token_sold_vault
             --, wp.update_time
         FROM {{ source('whirlpool_solana', 'whirlpool_call_swap') }} sp
-        JOIN whirlpools wp ON sp.account_whirlpool = wp.whirlpool_id AND sp.call_block_time >= wp.update_time
+        JOIN whirlpools wp ON sp.account_whirlpool = wp.whirlpool_id --AND sp.call_block_time >= wp.update_time
         LEFT JOIN {{ source('spl_token_solana', 'spl_token_call_transfer') }} tr_1 ON tr_1.call_tx_id = sp.call_tx_id 
             AND tr_1.call_outer_instruction_index = sp.call_outer_instruction_index 
             AND ((sp.call_is_inner = false AND tr_1.call_inner_instruction_index = 1) 
