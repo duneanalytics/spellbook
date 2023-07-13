@@ -27,7 +27,7 @@ SELECT CAST(date_trunc('day', s.evt_block_time) AS date) AS block_date
 , {{ var("ETH_ERC20_ADDRESS") }} AS currency_contract
 , CAST(json_extract_scalar(s.consideration[2], '$.amount') AS UINT256) AS platform_fee_amount_raw
 , from_hex(json_extract_scalar(s.consideration[2], '$.recipient')) AS platform_fee_address
-, CAST(NULL AS double) AS royalty_fee_amount_raw
+, CAST(0 AS UINT256) AS royalty_fee_amount_raw
 , from_hex(NULL) AS royalty_fee_address
 , s.contract_address AS project_contract_address
 , s.evt_index as sub_tx_trade_id
