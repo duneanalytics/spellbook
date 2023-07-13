@@ -17,7 +17,7 @@
 --          Project Wallet -> ? = Distributed OP
 -- Starting Jul 13, 2022 - The Foundation wallet approved tokens to project wallets for grants rather than making the transfer directly.
 
-{% set op_token_address = 0x4200000000000000000000000000000000000042 %}
+{% set op_token_address = '0x4200000000000000000000000000000000000042' %}
 {% set approvals_start_date = '2022-07-13'  %}
 {% set foundation_label = 'OP Foundation'  %}
 {% set grants_descriptor = 'OP Foundation Grants'  %}
@@ -53,7 +53,7 @@ FROM {{ source('erc20_optimism', 'evt_Approval') }} a
     LEFT JOIN project_labels al
         ON a.spender = al.address
 WHERE
-    a.contract_address = {{op_token_address}} --OP Token
+    a.contract_address = '{{op_token_address}}' --OP Token
     AND owner in (SELECT address FROM project_labels WHERE label = '{{foundation_label}}' AND address_descriptor = '{{grants_descriptor}}')
     {% if is_incremental() %} 
     AND a.evt_block_time >= date_trunc('day', now() - interval '7' day)
