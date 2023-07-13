@@ -83,7 +83,7 @@ SELECT
     royalty_fee_amount_usd,
     royalty_fee_percentage,
     unique_trade_id
-from {{ ref('nft_ethereum_trades_beta_ported') }}
+from {{ ref('nft_ethereum_trades_beta_ported_legacy') }}
 limit 1
 )
 )
