@@ -1,5 +1,5 @@
 {{ config(
-    alias = 'transactions_ethereum_erc20',
+    alias = alias('transactions_ethereum_erc20'),
     partition_by = ['block_date'],
     materialized = 'incremental',
     file_format = 'delta',

@@ -1,6 +1,6 @@
 {{ config(
     schema = 'quix_seaport_optimism',
-    alias = 'seaport_events',
+    alias = alias('seaport_events'),
     partition_by = ['block_date'],
     materialized = 'incremental',
     file_format = 'delta',

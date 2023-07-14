@@ -1,5 +1,5 @@
 {{ config(
-        alias ='floor_price_over_time',
+        alias = alias('floor_price_over_time'),
         unique_key='day',
         post_hook='{{ expose_spells_hide_trino(\'["ethereum"]\',
                                     "project",

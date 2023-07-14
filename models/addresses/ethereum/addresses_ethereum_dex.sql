@@ -1,4 +1,4 @@
-{{config(alias='dex',
+{{config(alias = alias('dex'),
         post_hook='{{ expose_spells(\'["ethereum"]\',
                                     "sector",
                                     "addresses",

@@ -1,6 +1,6 @@
 {{ config(
     schema = 'balancer_v2_gnosis',
-    alias = 'trades',
+    alias = alias('trades'),
     partition_by = ['block_date'],
     materialized = 'incremental',
     file_format = 'delta',

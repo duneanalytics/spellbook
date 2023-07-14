@@ -1,5 +1,5 @@
 {{ config(
-        alias ='bep20_agg_hour',
+        alias = alias('bep20_agg_hour'),
         partition_by = ['hour'],
         materialized ='incremental',
         file_format ='delta',

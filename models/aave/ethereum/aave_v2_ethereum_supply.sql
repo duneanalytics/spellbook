@@ -1,6 +1,6 @@
 {{ config(
     schema = 'aave_v2_ethereum'
-    , alias='supply'
+    , alias = alias('supply')
   )
 }}
 

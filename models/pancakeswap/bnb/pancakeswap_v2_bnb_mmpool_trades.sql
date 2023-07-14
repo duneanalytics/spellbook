@@ -1,6 +1,6 @@
 {{ config(
     schema = 'pancakeswap_v2_bnb',
-    alias = 'mmpool_trades',
+    alias = alias('mmpool_trades'),
     partition_by = ['block_date'],
     materialized = 'incremental',
     file_format = 'delta',

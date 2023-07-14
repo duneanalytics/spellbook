@@ -1,5 +1,5 @@
 {{ config(
-        alias = 'verse'
+        alias = alias('verse')
         )
 }}
 

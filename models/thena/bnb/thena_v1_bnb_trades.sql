@@ -1,6 +1,6 @@
 {{ config(
     schema = 'thena_v1_bnb',
-    alias = 'trades',
+    alias = alias('trades'),
     partition_by = ['block_date'],
     materialized = 'incremental',
     file_format = 'delta',

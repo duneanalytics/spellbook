@@ -1,6 +1,6 @@
 {{ config(
     schema = 'aave_v2_polygon'
-    , alias='flashloans'
+    , alias = alias('flashloans')
     , materialized = 'incremental'
     , file_format = 'delta'
     , incremental_strategy = 'merge'
