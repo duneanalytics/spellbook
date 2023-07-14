@@ -136,9 +136,9 @@ with
         , tb.token_sold_symbol
         , tb.token_sold_amount
         , tb.token_sold_amount_raw
-        , COALESCE(tb.token_sold_amount * p_sold.price, tb.token_bought_amount * p_bought.price) as amount_usd
+        -- , COALESCE(tb.token_sold_amount * p_sold.price, tb.token_bought_amount * p_bought.price) as amount_usd
         , cast(tb.fee_tier as double)/1000000 as fee_tier
-        , cast(tb.fee_tier as double)/1000000 * COALESCE(tb.token_sold_amount * p_sold.price, tb.token_bought_amount * p_bought.price) as fee_usd
+        -- , cast(tb.fee_tier as double)/1000000 * COALESCE(tb.token_sold_amount * p_sold.price, tb.token_bought_amount * p_bought.price) as fee_usd
         , tb.token_sold_mint_address
         , tb.token_bought_mint_address
         , tb.token_sold_vault
@@ -158,17 +158,17 @@ with
         FROM all_swaps
         )
         tb
-    LEFT JOIN {{ source('prices', 'usd') }} p_bought ON p_bought.blockchain = 'solana' 
-        AND date_trunc('minute', tb.block_time) = p_bought.minute 
-        AND token_bought_mint_address = toBase58(p_bought.contract_address)
+    -- LEFT JOIN {{ source('prices', 'usd') }} p_bought ON p_bought.blockchain = 'solana' 
+    --     AND date_trunc('minute', tb.block_time) = p_bought.minute 
+    --     AND token_bought_mint_address = toBase58(p_bought.contract_address)
 
-        AND p_bought.minute >= now() - interval '7' day
-    LEFT JOIN {{ source('prices', 'usd') }} p_sold ON p_sold.blockchain = 'solana' 
-        AND date_trunc('minute', tb.block_time) = p_sold.minute 
-        AND token_sold_mint_address = toBase58(p_sold.contract_address)
+    --     AND p_bought.minute >= now() - interval '7' day
+    -- LEFT JOIN {{ source('prices', 'usd') }} p_sold ON p_sold.blockchain = 'solana' 
+    --     AND date_trunc('minute', tb.block_time) = p_sold.minute 
+    --     AND token_sold_mint_address = toBase58(p_sold.contract_address)
 
-        AND p_sold.minute >= now() - interval '7' day
-    WHERE recent_update = 1 --keep only most recent fee tier
+    --     AND p_sold.minute >= now() - interval '7' day
+    -- WHERE recent_update = 1 --keep only most recent fee tier
 -- --QA purposes only
 -- AND whirlpool_id = 'HJPjoWUrhoZzkNfRpHuieeFk9WcZWjwy6PBjZ81ngndJ'
 -- ORDER by block_time asc
