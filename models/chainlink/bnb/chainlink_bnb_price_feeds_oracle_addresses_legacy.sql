@@ -1,12 +1,11 @@
 {{
   config(
-	tags=['legacy'],
-	
-        alias = alias('oracle_addresses', legacy_model=True),
-        post_hook='{{ expose_spells(\'["bnb"]\',
-                                    "project",
-                                    "chainlink",
-                                    \'["msilb7","0xroll"]\') }}'
+  	tags=['legacy'],
+    alias=alias('price_feeds_oracle_addresses', legacy_model=True),
+    post_hook='{{ expose_spells(\'["bnb"]\',
+                                "project",
+                                "chainlink",
+                                \'["msilb7","0xroll","linkpool_ryan"]\') }}'
   )
 }}
 
