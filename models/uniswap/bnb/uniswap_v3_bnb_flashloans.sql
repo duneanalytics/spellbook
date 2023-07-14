@@ -1,6 +1,6 @@
 {{ config(
       schema = 'uniswap_v3_bnb'
-      , alias='flashloans'
+      , alias = alias('flashloans')
       , materialized = 'incremental'
       , file_format = 'delta'
       , incremental_strategy = 'merge'

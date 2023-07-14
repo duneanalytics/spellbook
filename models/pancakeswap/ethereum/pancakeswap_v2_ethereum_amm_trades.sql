@@ -1,6 +1,6 @@
 {{ config(
     schema = 'pancakeswap_v2_ethereum',
-    alias = 'amm_trades',
+    alias = alias('amm_trades'),
     partition_by = ['block_date'],
     materialized = 'incremental',
     file_format = 'delta',

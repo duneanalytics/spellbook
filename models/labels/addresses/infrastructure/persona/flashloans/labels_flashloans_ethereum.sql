@@ -1,5 +1,5 @@
 {{config(
-    alias='flashloans_ethereum',
+    alias = alias('flashloans_ethereum'),
     post_hook='{{ expose_spells(\'["ethereum"]\',
                                     "sector",
                                     "labels",

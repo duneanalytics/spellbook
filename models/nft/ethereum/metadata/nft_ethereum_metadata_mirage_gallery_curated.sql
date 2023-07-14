@@ -1,5 +1,5 @@
 {{ config(
-        alias = 'mirage_gallery_curated'
+        alias = alias('mirage_gallery_curated')
         )
 }}
 

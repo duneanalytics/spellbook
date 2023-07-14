@@ -1,6 +1,6 @@
 {{ config(
         schema='prices',
-        alias ='tokens',
+        alias = alias('tokens'),
         materialized='table',
         file_format = 'delta',
         tags=['static'],

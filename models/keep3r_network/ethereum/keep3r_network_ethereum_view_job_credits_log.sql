@@ -1,5 +1,5 @@
 {{ config (
-    alias = 'job_credits_log',
+    alias = alias('job_credits_log'),
     post_hook = '{{ expose_spells_hide_trino(\'["ethereum"]\', "project", "keep3r", \'["wei3erHase", "agaperste"]\') }}'
 ) }}
 

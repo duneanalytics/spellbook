@@ -1,5 +1,5 @@
 {{ config(
-    alias = 'prices',
+    alias = alias('prices'),
     partition_by = ['day'],
     materialized = 'incremental',
     file_format = 'delta',

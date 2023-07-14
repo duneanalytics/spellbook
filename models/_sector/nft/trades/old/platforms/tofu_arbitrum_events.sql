@@ -1,6 +1,6 @@
 {{ config(
     schema = 'tofu_arbitrum',
-    alias = 'events',
+    alias = alias('events'),
     partition_by = ['block_date'],
     materialized = 'incremental',
     file_format = 'delta',

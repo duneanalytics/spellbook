@@ -1,5 +1,5 @@
 {{  config(
-        alias='batches',
+        alias = alias('batches'),
         materialized='incremental',
         partition_by = ['block_date'],
         unique_key = ['tx_hash'],

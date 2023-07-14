@@ -1,4 +1,4 @@
-{{config(alias='cex')}}
+{{config(alias = alias('cex'))}}
 
 
 {% set cex_label_models = [

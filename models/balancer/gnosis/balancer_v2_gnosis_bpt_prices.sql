@@ -1,7 +1,7 @@
 {{
     config(
         schema = 'balancer_v2_gnosis',
-        alias = 'bpt_prices',
+        alias = alias('bpt_prices'),
         materialized = 'incremental',
         file_format = 'delta',
         incremental_strategy = 'merge',

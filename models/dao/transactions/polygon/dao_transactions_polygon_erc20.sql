@@ -1,5 +1,5 @@
 {{ config(
-    alias = 'transactions_polygon_erc20',
+    alias = alias('transactions_polygon_erc20'),
     partition_by = ['block_date'],
     materialized = 'incremental',
     file_format = 'delta',

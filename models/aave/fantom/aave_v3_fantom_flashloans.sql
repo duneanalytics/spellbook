@@ -1,6 +1,6 @@
 {{ config(
     schema = 'aave_v3_fantom'
-    , alias='flashloans'
+    , alias = alias('flashloans')
     , materialized = 'incremental'
     , file_format = 'delta'
     , incremental_strategy = 'merge'

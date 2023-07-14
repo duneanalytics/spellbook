@@ -1,6 +1,6 @@
 {{
     config(
-        alias='likely_bot_addresses',
+        alias = alias('likely_bot_addresses'),
         post_hook='{{ expose_spells(\'["optimism"]\', 
         "sector", 
         "labels", 

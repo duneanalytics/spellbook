@@ -1,6 +1,6 @@
 {{  config(
         schema='oneinch_v3_ethereum',
-        alias='trades',
+        alias = alias('trades'),
         partition_by = ['block_date'],
         on_schema_change='sync_all_columns',
         file_format ='delta',

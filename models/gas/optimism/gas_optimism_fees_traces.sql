@@ -1,6 +1,6 @@
 {{ config(
     schema = 'gas_optimism',
-    alias = 'fees_traces',
+    alias = alias('fees_traces'),
     partition_by = ['block_date'],
     materialized = 'incremental',
     file_format = 'delta',

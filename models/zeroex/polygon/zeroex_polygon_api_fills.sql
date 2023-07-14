@@ -1,6 +1,6 @@
 {{  config(
 
-        alias='api_fills',
+        alias = alias('api_fills'),
         materialized='incremental',
         partition_by = ['block_date'],
         unique_key = ['block_date', 'tx_hash', 'evt_index'],
