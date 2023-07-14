@@ -48,19 +48,17 @@ If modifying existing spells which haven't been migrated to DuneSQL yet, it is r
 
 Steps to migrate:
 - Find the spell SQL file to translate in the repo
-  - rename existing spark SQL file to append `_legacy.sql` at the end and keep the syntax as-is within the spell
-  - modify the `alias` property in the config block to leverage the new alias dbt macro, which includes extended parameters passed in
-    - from `alias = 'blocks',` to --> `alias = alias('blocks', legacy_model=True),`
-- Update all the references downstream of modified spell(s) to reference new legacy spells in step 1
+  - **note:** you can safely ignore the _legacy file, as they are intended to maintain the spark syntax (unless you need to alter logic in spark spell for bug fixes)
+    - previously, it was requested for users to generate the _legacy files in the migration process, but the Dune team has gone ahead and universally built the legacy files for simplicity in the process of migration
+  - add tag for DuneSQL in spell config block
+    - `tags = ['dunesql'],` -- this is vital for orchestration and testing on the correct engine. If `tags` property already exists in the spell, then simply append new value after a comma: `tags = ['static', 'dunesql'],`
+  - update alias property to leverage the new alias macro -- Dune team will maintain this alias macro, it's simply to help differentiate engines & metastores
+    - `alias = alias('blocks'),`
+  - now it's time to translate the code within to DuneSQL syntax!
+- Update all the references downstream of modified spell(s) to reference legacy spells, to ensure full lineage is on the same engine
   - for example, any instance of `{{ ref( ) }}` downstream of modified spell(s)
   - to find downstream spells, the following can be run: `dbt ls --resource-type model --output name --select <insert spell name>+`
   - **future note:** when downstream spells are also migrated, we will be able to revert back to reference DuneSQL versioned spells. We will be working in a upstream --> downstream lineage path to full migration.
-- Duplicate the `_legacy.sql` file in your local repo & then remove the `_legacy` suffix
-  - add tag for DuneSQL in spell config block
-    - `tags = ['dunesql'],` -- this is vital for orchestration and testing on the correct engine. If `tags` property already exists in the spell, then simply append new value after a comma: `tags = ['static', 'dunesql'],`
-  - update alias property again, this time to simplify and remove legacy flag
-    - `alias = alias('blocks'),`
-  - now it's time to translate the code within to DuneSQL syntax!
 - PR CI tests will check for this `tag:dunesql` applied and run on spark or dunesql dependent on if tag exists. the opposite engine will run too, but all steps should have no output and succeed.  
   - the logs of the CI test gh action can still be used to grab table names and query on dune app for ~24 hours – be sure to query on the engine you modify!
 
