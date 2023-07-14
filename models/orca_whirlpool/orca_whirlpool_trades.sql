@@ -73,9 +73,9 @@ with
             --token bought is always the second instruction (transfer) in the inner instructions
             -- , tr_2.amount as token_bought_amount_raw
             -- , tr_2.amount/COALESCE(pow(10,case when sp.aToB = true then wp.tokenB_decimals else tokenA_decimals end),1) as token_bought_amount
-            -- , case when sp.aToB = true then tokenA_symbol
-            --     else tokenB_symbol
-            --     end as token_sold_symbol
+            , case when sp.aToB = true then tokenA_symbol
+                else tokenB_symbol
+                end as token_sold_symbol
             -- , tr_1.amount as token_sold_amount_raw
             -- , tr_1.amount/COALESCE(pow(10,case when sp.aToB = true then wp.tokenA_decimals else tokenB_decimals end),1) as token_sold_amount
             , wp.fee_tier
