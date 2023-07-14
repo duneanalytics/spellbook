@@ -21,6 +21,7 @@ WITH
 trades_with_prices AS (
     SELECT cast(date_trunc('day', evt_block_time) as date) as block_date,
            evt_block_time            as block_time,
+           evt_block_number          as block_number,
            evt_tx_hash               as tx_hash,
            evt_index,
            trade.contract_address    as project_contract_address,
@@ -61,6 +62,7 @@ trades_with_prices AS (
 trades_with_token_units as (
     SELECT block_date,
            block_time,
+           block_number,
            tx_hash,
            evt_index,
            project_contract_address,
@@ -173,6 +175,7 @@ eth_flow_senders as (
 valued_trades as (
     SELECT block_date,
            block_time,
+           block_number,
            tx_hash,
            evt_index,
            CAST(NULL as array<bigint>) as trace_address,
@@ -245,5 +248,5 @@ valued_trades as (
 select *,
   -- Relative surplus (in %) is the difference between limit price and executed price as a ratio of the limit price.
   -- Absolute surplus (in USD) is relative surplus multiplied with the value of the trade
-  fill_proportion * usd_value * (atoms_bought * limit_sell_amount - atoms_sold * limit_buy_amount) / (atoms_bought * limit_sell_amount) as surplus_usd
+  usd_value * (atoms_bought * limit_sell_amount - atoms_sold * limit_buy_amount) / (atoms_bought * limit_sell_amount) as surplus_usd
 from valued_trades
