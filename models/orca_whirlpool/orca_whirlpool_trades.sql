@@ -169,7 +169,7 @@ with
     --     AND date_trunc('minute', tb.block_time) = p_sold.minute 
     --     AND token_sold_mint_address = toBase58(p_sold.contract_address)
 
-        AND p_sold.minute >= now() - interval '7' day
+        -- AND p_sold.minute >= now() - interval '7' day
     WHERE recent_update = 1 --keep only most recent fee tier
 -- --QA purposes only
 -- AND whirlpool_id = 'HJPjoWUrhoZzkNfRpHuieeFk9WcZWjwy6PBjZ81ngndJ'
