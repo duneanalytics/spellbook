@@ -57,19 +57,19 @@ models:
       - &token_sold_amount_raw
         name: token_sold_amount_raw
         description: "Raw value of the token sold at time of execution in the original currency"
-      # - &amount_usd
-      #   name: amount_usd
-      #   description: "USD value of the trade at time of execution"
-      #   tests:
-      #     - dbt_utils.accepted_range:
-      #         max_value: 1000000000 # $1b is an arbitrary number, intended to flag outlier amounts early
-      #         severity: warn
-      # - &fee_tier
-      #   name: fee_tier
-      #   description: "Whirlpool fee tier (fee %)"
-      # - &fee_usd
-      #   name: fee_usd
-      #   description: "Whirlpool fee usd paid on swap"
+      - &amount_usd
+        name: amount_usd
+        description: "USD value of the trade at time of execution"
+        tests:
+          - dbt_utils.accepted_range:
+              max_value: 1000000000 # $1b is an arbitrary number, intended to flag outlier amounts early
+              severity: warn
+      - &fee_tier
+        name: fee_tier
+        description: "Whirlpool fee tier (fee %)"
+      - &fee_usd
+        name: fee_usd
+        description: "Whirlpool fee usd paid on swap"
       - &token_bought_mint_address
         name: token_bought_address
         description: "token mint address of the token bought"
@@ -100,3 +100,6 @@ models:
       - &tx_index
         name: tx_index
         description: "index of the transaction in the block slot"
+      - &recent_update
+        name: recent_update
+        description: "something weird about recent_update?"
