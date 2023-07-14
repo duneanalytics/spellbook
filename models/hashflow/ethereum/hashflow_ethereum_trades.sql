@@ -34,7 +34,7 @@ ethereum_transactions as (
 
 erc20_tokens as (
     select *
-    from {{ ref('tokens_erc20_legacy') }}
+    from {{ ref('tokens_erc20') }}
     where blockchain = 'ethereum'
 )
 

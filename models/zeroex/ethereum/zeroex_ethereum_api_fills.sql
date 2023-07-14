@@ -513,5 +513,5 @@ AND mp.minute >= date_trunc('day', now() - interval '1 week')
 AND mp.minute >= '{{zeroex_v3_start_date}}'
 {% endif %}
 
-LEFT OUTER JOIN {{ ref('tokens_ethereum_erc20_legacy') }} ts ON ts.contract_address = taker_token
-LEFT OUTER JOIN {{ ref('tokens_ethereum_erc20_legacy') }} ms ON ms.contract_address = maker_token
+LEFT OUTER JOIN {{ ref('tokens_ethereum_erc20') }} ts ON ts.contract_address = taker_token
+LEFT OUTER JOIN {{ ref('tokens_ethereum_erc20') }} ms ON ms.contract_address = maker_token

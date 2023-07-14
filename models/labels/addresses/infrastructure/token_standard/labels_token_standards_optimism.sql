@@ -32,7 +32,7 @@ SELECT distinct 'optimism' AS blockchain
 , NOW() AS modified_at
 , 'token_standard' AS model_name
 , 'persona' as label_type
-FROM {{ ref('nft_optimism_transfers_legacy') }} nft
+FROM {{ ref('nft_optimism_transfers') }} nft
 {% if is_incremental() %}
 LEFT ANTI JOIN this t ON t.address = nft.contract_address
 WHERE nft.block_time >= date_trunc('day', now() - interval '1 week')

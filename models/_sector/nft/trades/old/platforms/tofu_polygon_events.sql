@@ -130,7 +130,7 @@ FROM tfe
                        {% if is_incremental() %}
                        and tx.block_time >= date_trunc("day", now() - interval '1 week')
                        {% endif %}
-         LEFT JOIN {{ ref('tokens_nft_legacy') }} nft
+         LEFT JOIN {{ ref('tokens_nft') }} nft
                    ON tff.token = nft.contract_address
                    AND nft.blockchain = 'polygon'
          LEFT JOIN {{ source('prices', 'usd') }} pu
@@ -143,7 +143,7 @@ FROM tfe
                        {% if is_incremental() %}
                        AND pu.minute >= date_trunc("day", now() - interval '1 week')
                        {% endif %}
-         LEFT JOIN {{ ref('nft_aggregators_legacy')}} agg
+         LEFT JOIN {{ ref('nft_aggregators')}} agg
                    ON agg.contract_address = tx.`to`
                    AND agg.blockchain = 'polygon'
 

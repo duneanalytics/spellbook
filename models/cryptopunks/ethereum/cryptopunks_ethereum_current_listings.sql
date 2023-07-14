@@ -32,7 +32,7 @@ with all_listing_events as (
             , sub_tx_trade_id as evt_index
             , block_time as evt_block_time
             , tx_hash as evt_tx_hash
-    from {{ ref('nft_ethereum_trades_beta_legacy') }}
+    from {{ ref('nft_ethereum_trades_beta') }}
     where project = 'cryptopunks'
 )
 , all_transfers as (

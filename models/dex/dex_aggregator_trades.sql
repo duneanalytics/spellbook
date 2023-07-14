@@ -20,7 +20,7 @@ spells with issues, to be excluded in short term:
 ********************************************************/
 
 {% set dex_aggregator_models = [
- ref('cow_protocol_trades_legacy')
+ ref('cow_protocol_trades')
  ,ref('oneinch_ethereum_trades')
  ,ref('openocean_trades')
  ,ref('paraswap_trades')

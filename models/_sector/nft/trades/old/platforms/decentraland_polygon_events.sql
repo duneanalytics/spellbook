@@ -95,6 +95,6 @@ LEFT JOIN
     AND p.minute >= date_trunc("day", now() - interval '1 week')
     {% endif %}
 LEFT JOIN 
-{{ ref('nft_aggregators_legacy') }} agg 
+{{ ref('nft_aggregators') }} agg 
     ON agg.blockchain = 'polygon' 
     AND agg.contract_address = t.`to`

@@ -127,7 +127,7 @@ inner join {{ source('optimism', 'transactions') }} as tx
     {% else %}
     and tx.block_time >= date_trunc("day", now() - interval '1 week')
     {% endif %}
-left join {{ ref('tokens_nft_legacy') }} as nft
+left join {{ ref('tokens_nft') }} as nft
     on nft.contract_address = tff.token
     and nft.blockchain = 'optimism'
 left join {{ source('prices', 'usd') }} as pu
@@ -139,6 +139,6 @@ left join {{ source('prices', 'usd') }} as pu
     {% else %}
     and pu.minute >= date_trunc("day", now() - interval '1 week')
     {% endif %}
-left join {{ ref('nft_aggregators_legacy') }} as agg
+left join {{ ref('nft_aggregators') }} as agg
     on agg.contract_address = tx.to
     and agg.blockchain = 'optimism'

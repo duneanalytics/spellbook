@@ -34,7 +34,7 @@ SELECT
 FROM 
 assets_added a
 LEFT JOIN
-{{ ref('tokens_erc20_legacy') }} t
+{{ ref('tokens_erc20') }} t
     ON a.asset_address = t.contract_address
     AND t.blockchain = 'ethereum'
 ; 
