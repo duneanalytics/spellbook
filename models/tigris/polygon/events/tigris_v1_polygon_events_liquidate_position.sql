@@ -90,7 +90,7 @@ liquidate_position_v4 as (
 
 liquidate_position_v5 as (
         SELECT 
-            TRY_CAST(date_trunc('DAY', pl.evt_block_time) AS date) as day, 
+            TRY_CAST(date_trunc('DAY', evt_block_time) AS date) as day, 
             evt_tx_hash,
             evt_index,
             evt_block_time,
@@ -105,7 +105,7 @@ liquidate_position_v5 as (
 
 liquidate_position_v6 as (
         SELECT 
-            TRY_CAST(date_trunc('DAY', pl.evt_block_time) AS date) as day, 
+            TRY_CAST(date_trunc('DAY', evt_block_time) AS date) as day, 
             evt_tx_hash,
             evt_index,
             evt_block_time,
@@ -120,7 +120,7 @@ liquidate_position_v6 as (
 
 liquidate_position_v7 as (
         SELECT 
-            TRY_CAST(date_trunc('DAY', pl.evt_block_time) AS date) as day, 
+            TRY_CAST(date_trunc('DAY', evt_block_time) AS date) as day, 
             evt_tx_hash,
             evt_index,
             evt_block_time,
@@ -135,7 +135,7 @@ liquidate_position_v7 as (
 
 liquidate_position_v8 as (
         SELECT 
-            TRY_CAST(date_trunc('DAY', pl.evt_block_time) AS date) as day, 
+            TRY_CAST(date_trunc('DAY', evt_block_time) AS date) as day, 
             evt_tx_hash,
             evt_index,
             evt_block_time,
