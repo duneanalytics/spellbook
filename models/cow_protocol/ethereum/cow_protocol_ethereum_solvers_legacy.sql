@@ -1,4 +1,6 @@
-{{ config(alias=alias('solvers', legacy_model=True),
+{{ config(
+	tags=['legacy'],
+	alias = alias('solvers', legacy_model=True),
         post_hook='{{ expose_spells(\'["ethereum"]\',
                                     "project",
                                     "cow_protocol",

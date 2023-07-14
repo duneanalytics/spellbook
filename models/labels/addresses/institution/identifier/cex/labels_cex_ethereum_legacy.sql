@@ -1,5 +1,6 @@
 {{config(
-        alias = alias('cex_ethereum', legacy_model=True),
+	tags=['legacy'],
+	alias = alias('cex_ethereum', legacy_model=True),
         post_hook='{{ expose_spells(\'["ethereum"]\',
                                     "sector",
                                     "labels",

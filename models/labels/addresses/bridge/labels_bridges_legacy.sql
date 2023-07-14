@@ -1,4 +1,6 @@
 {{ config(
+	tags=['legacy'],
+	
     alias = alias('bridge', legacy_model=True),
     materialized = 'table',
     file_format = 'delta',
