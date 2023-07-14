@@ -14,7 +14,7 @@ ref('cex_arbitrum_addresses')
 , ref('cex_bnb_addresses')
 , ref('cex_ethereum_addresses')
 , ref('cex_fantom_addresses')
-, ref('cex_optimism_addresses_legacy')
+, ref('cex_optimism_addresses')
 , ref('cex_polygon_addresses')
 ] %}
 
