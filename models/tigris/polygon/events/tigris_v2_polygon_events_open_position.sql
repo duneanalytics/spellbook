@@ -21,7 +21,7 @@ pairs as (
 
 open_positions_v1 as (
         SELECT 
-            TRY_CAST(date_trunc('DAY', t..evt_block_time) AS date) as day, 
+            TRY_CAST(date_trunc('DAY', t.evt_block_time) AS date) as day, 
             t.evt_block_time, 
             t.evt_index, 
             t.evt_tx_hash, 
@@ -47,7 +47,7 @@ open_positions_v1 as (
 
 open_positions_v2 as (
         SELECT 
-            TRY_CAST(date_trunc('DAY', t..evt_block_time) AS date) as day, 
+            TRY_CAST(date_trunc('DAY', t.evt_block_time) AS date) as day, 
             t.evt_block_time, 
             t.evt_index, 
             t.evt_tx_hash, 
@@ -73,7 +73,7 @@ open_positions_v2 as (
 
 open_positions_v3 as (
         SELECT 
-            TRY_CAST(date_trunc('DAY', t..evt_block_time) AS date) as day, 
+            TRY_CAST(date_trunc('DAY', t.evt_block_time) AS date) as day, 
             t.evt_block_time, 
             t.evt_index, 
             t.evt_tx_hash, 
