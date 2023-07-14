@@ -29,7 +29,7 @@
 
 -- new/standardized labels
 {% set standardized_labels_models = [
-    ref('labels_bridges_legacy')
+    ref('labels_bridges')
     , ref('labels_dex')
     , ref('labels_social')
     , ref('labels_nft')

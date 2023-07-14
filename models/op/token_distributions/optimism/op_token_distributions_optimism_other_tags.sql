@@ -55,6 +55,6 @@ FROM (
     FROM tagged_wallets
     UNION ALL
     SELECT 'Other',address, cex_name
-    FROM {{ ref('cex_optimism_addresses_legacy') }}
+    FROM {{ ref('cex_optimism_addresses') }}
     )
 WHERE address NOT IN (SELECT address FROM {{ ref('op_token_distributions_optimism_project_wallets') }}) --not already tagged

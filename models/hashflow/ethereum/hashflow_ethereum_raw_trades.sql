@@ -48,7 +48,7 @@ prices_usd as (
 
 erc20_tokens as (
     select *
-    from {{ ref('tokens_erc20_legacy') }}
+    from {{ ref('tokens_erc20') }}
     where blockchain = 'ethereum'
 ),
 
@@ -112,7 +112,7 @@ new_router as (
             else ('0x' || substring(get_json_object(quote,'$.quoteToken') from 3)) end
 ),
 
-event_decoding_legacy_router as (
+event_decoding_router as (
     select
         tx_hash,
         index as evt_index,
@@ -165,7 +165,7 @@ legacy_router_w_integration as (
                 maker_token_amount/power(10, mp.decimals) * mp.price) end as amount_usd
     from ethereum_traces t
     inner join ethereum_transactions tx on tx.hash = t.tx_hash
-    left join event_decoding_legacy_router l on l.tx_id = substring(t.input, 325, 32) -- join on tx_id 1:1, no dup
+    left join event_decoding_router l on l.tx_id = substring(t.input, 325, 32) -- join on tx_id 1:1, no dup
     left join prices_usd tp on tp.minute = date_trunc('minute', t.block_time)
         and tp.contract_address =
             case when substring(input, 81, 20) = '0x0000000000000000000000000000000000000000'
@@ -205,7 +205,7 @@ legacy_router_w_integration as (
                 maker_token_amount/power(10, mp.decimals) * mp.price) end as amount_usd
     from ethereum_traces t
     inner join ethereum_transactions tx on tx.hash = t.tx_hash
-    left join event_decoding_legacy_router l on l.tx_id = substring(t.input, 485, 32)
+    left join event_decoding_router l on l.tx_id = substring(t.input, 485, 32)
     left join prices_usd tp on tp.minute = date_trunc('minute', t.block_time)
         and tp.contract_address =
             case when substring(input, 177, 20) = '0x0000000000000000000000000000000000000000'

@@ -20,7 +20,7 @@ WITH namespaces AS (
 , nfts_per_tx AS (
     SELECT tx_hash
     , sum(amount) AS nfts_minted_in_tx
-    FROM {{ ref('nft_ethereum_transfers_legacy') }}
+    FROM {{ ref('nft_ethereum_transfers') }}
     {% if is_incremental() %}
     WHERE block_time >= date_trunc("day", now() - interval '1 week')
     {% endif %}
@@ -67,7 +67,7 @@ SELECT distinct 'ethereum' AS blockchain
 , CAST(0 AS DOUBLE) AS royalty_fee_amount_usd
 , CAST(0 AS DOUBLE) AS royalty_fee_percentage
 , 'ethereum' || '-' || COALESCE(ec.namespace, 'Unknown') || '-Mint-' || COALESCE(nft_mints.tx_hash, '-1') || '-' || COALESCE(nft_mints.to, '-1') || '-' ||  COALESCE(nft_mints.contract_address, '-1') || '-' || COALESCE(nft_mints.token_id, '-1') || '-' || COALESCE(nft_mints.amount, '-1') || '-'|| COALESCE(erc20s.contract_address, '0x0000000000000000000000000000000000000000') || '-' || COALESCE(nft_mints.evt_index, '-1') AS unique_trade_id
-FROM {{ ref('nft_ethereum_transfers_legacy') }} nft_mints
+FROM {{ ref('nft_ethereum_transfers') }} nft_mints
 LEFT JOIN nfts_per_tx nft_count ON nft_count.tx_hash=nft_mints.tx_hash
 LEFT JOIN {{ source('ethereum','traces') }} et ON et.block_time=nft_mints.block_time
     AND et.tx_hash=nft_mints.tx_hash
@@ -100,8 +100,8 @@ LEFT JOIN {{ source('ethereum','transactions') }} etxs ON etxs.block_time=nft_mi
     {% if is_incremental() %}
     AND  etxs.block_time >= date_trunc("day", now() - interval '1 week')
     {% endif %}
-LEFT JOIN {{ ref('nft_ethereum_aggregators_legacy') }} agg ON etxs.to=agg.contract_address
-LEFT JOIN {{ ref('tokens_ethereum_nft_legacy') }} tok ON tok.contract_address=nft_mints.contract_address
+LEFT JOIN {{ ref('nft_ethereum_aggregators') }} agg ON etxs.to=agg.contract_address
+LEFT JOIN {{ ref('tokens_ethereum_nft') }} tok ON tok.contract_address=nft_mints.contract_address
 LEFT JOIN namespaces ec ON etxs.to=ec.address
 {% if is_incremental() %}
 LEFT ANTI JOIN {{this}} anti_txs ON anti_txs.block_time=nft_mints.block_time
