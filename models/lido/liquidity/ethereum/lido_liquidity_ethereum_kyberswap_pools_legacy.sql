@@ -1,4 +1,6 @@
 {{ config(
+	tags=['legacy'],
+	
     alias = alias('kyberswap_pools', legacy_model=True),
     partition_by = ['time'],
     materialized = 'table',

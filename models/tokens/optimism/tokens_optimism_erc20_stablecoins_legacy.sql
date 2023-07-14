@@ -1,6 +1,6 @@
 {{ config(
       alias = alias('stablecoins', legacy_model=True)
-      , tags=['static']
+      , tags=['legacy', 'static']
       , post_hook='{{ expose_spells(\'["optimism"]\',
                                   "sector",
                                   "tokens_optimism",

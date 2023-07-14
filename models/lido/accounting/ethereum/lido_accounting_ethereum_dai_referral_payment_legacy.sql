@@ -1,4 +1,6 @@
 {{ config(
+	tags=['legacy'],
+	
         alias = alias('dai_referral_payment', legacy_model=True),
         partition_by = ['period'],
         materialized = 'table',

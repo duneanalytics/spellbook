@@ -1,4 +1,6 @@
 {{config(
+	tags=['legacy'],
+	
     alias = alias('system_addresses', legacy_model=True),
     post_hook='{{ expose_spells(\'["arbitrum","optimism","solana"]\',
                                 "sector",

@@ -1,4 +1,6 @@
 {{ config(
+	tags=['legacy'],
+	
         alias = alias('art_platform_collections', legacy_model=True)
 )
 }}

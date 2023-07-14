@@ -1,4 +1,6 @@
-{{config(alias = alias('airdrop', legacy_model=True),
+{{config(
+	tags=['legacy'],
+	alias = alias('airdrop', legacy_model=True),
         post_hook='{{ expose_spells(\'["optimism"]\',
                                     "sector",
                                     "labels",

@@ -1,5 +1,7 @@
 {{
   config(
+	tags=['legacy'],
+	
         schema = 'chain_info',
         alias = alias('chain_ids', legacy_model=True)
   )

@@ -1,4 +1,6 @@
 {{ config(
+	tags=['legacy'],
+	
         schema='prices',
         alias = alias('usd_latest', legacy_model=True),
         post_hook='{{ expose_spells(\'["ethereum", "solana", "arbitrum", "gnosis", "optimism", "bnb", "avalanche_c"]\',

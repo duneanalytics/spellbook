@@ -1,5 +1,7 @@
 
 {{ config(
+	tags=['legacy'],
+	
         schema = 'fractal',
         alias = alias('trades', legacy_model=True),
         materialized = 'view',

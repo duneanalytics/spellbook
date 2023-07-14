@@ -1,4 +1,6 @@
 {{ config(
+	tags=['legacy'],
+	
       schema = 'balancer_v2_arbitrum'
       , alias = alias('flashloans', legacy_model=True)
       , materialized = 'incremental'

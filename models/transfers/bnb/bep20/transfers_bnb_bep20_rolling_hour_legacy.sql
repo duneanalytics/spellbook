@@ -1,4 +1,6 @@
 {{ config(
+	tags=['legacy'],
+	
         alias = alias('bep20_rolling_hour', legacy_model=True)
         )
 }}

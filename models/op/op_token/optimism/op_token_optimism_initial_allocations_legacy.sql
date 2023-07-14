@@ -1,6 +1,8 @@
 
 
 {{ config(
+	tags=['legacy'],
+	
         schema = 'op_token_optimism',
         alias = alias('initial_allocations', legacy_model=True)
         , unique_key = ['allocation_category','allocation_subcategory']

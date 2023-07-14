@@ -1,4 +1,6 @@
 {{ config(
+	tags=['legacy'],
+	
     alias = alias('wallet_pnl', legacy_model=True),
     materialized='incremental',
     file_format = 'delta',

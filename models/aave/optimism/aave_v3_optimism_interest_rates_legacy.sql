@@ -1,4 +1,6 @@
 {{ config(
+	tags=['legacy'],
+	
   schema = 'aave_v3_optimism'
   , materialized = 'incremental'
   , file_format = 'delta'

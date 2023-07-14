@@ -1,5 +1,7 @@
  {{
   config(
+	tags=['legacy'],
+	
         schema='arrakis',
         alias = alias('uniswap_pools', legacy_model=True),
         post_hook='{{ expose_spells(\'["optimism"]\',

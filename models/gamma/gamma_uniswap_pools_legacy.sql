@@ -1,5 +1,7 @@
  {{
   config(
+	tags=['legacy'],
+	
         schema='gamma',
         alias = alias('uniswap_pools', legacy_model=True),
         materialized = 'incremental',

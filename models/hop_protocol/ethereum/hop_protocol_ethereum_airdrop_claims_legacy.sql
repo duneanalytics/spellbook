@@ -1,5 +1,7 @@
 {{
     config(
+	tags=['legacy'],
+	
         schema = 'hop_protocol_ethereum',
         alias = alias('airdrop_claims', legacy_model=True),
         materialized = 'incremental',

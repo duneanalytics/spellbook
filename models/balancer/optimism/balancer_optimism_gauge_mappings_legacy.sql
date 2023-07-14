@@ -1,5 +1,7 @@
 {{
     config(
+	tags=['legacy'],
+	
         schema = 'balancer_optimism',
         alias = alias('gauge_mappings', legacy_model=True),
         materialized = 'incremental',

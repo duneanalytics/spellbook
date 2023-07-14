@@ -1,4 +1,6 @@
 {{ config(
+	tags=['legacy'],
+	
         alias = alias('accounting', legacy_model=True),
         partition_by = ['period'],
         materialized = 'table',

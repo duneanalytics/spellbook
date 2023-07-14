@@ -1,4 +1,6 @@
 {{ config(
+	tags=['legacy'],
+	
         schema = 'op_token_optimism'
         , alias = alias('metadata', legacy_model=True)
         , unique_key = ['contract_address']

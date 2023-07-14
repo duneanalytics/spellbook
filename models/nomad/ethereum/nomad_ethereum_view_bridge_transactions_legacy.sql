@@ -1,7 +1,9 @@
 -- Expose Spells macro:
 -- => expose_spells(["blockchains"], 'project'/'sector','name', ["contributors"])
 {{
-  config(alias = alias('view_bridge_transactions', legacy_model=True),
+  config(
+	tags=['legacy'],
+	alias = alias('view_bridge_transactions', legacy_model=True),
          post_hook='{{ expose_spells(\'["ethereum"]\',
                                       "project",
                                       "nomad",

@@ -1,4 +1,6 @@
-{{config(alias = alias('funds_ethereum', legacy_model=True))}}
+{{config(
+	tags=['legacy'],
+	alias = alias('funds_ethereum', legacy_model=True))}}
 
 SELECT blockchain, address, name, category, contributor, source, created_at, updated_at, model_name, label_type
 FROM (VALUES

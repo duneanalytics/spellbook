@@ -2,7 +2,7 @@
         schema = 'op_retropgf_optimism'
         , alias = alias('round2_recipients', legacy_model=True)
         , materialized='table'
-        , tags=['static']
+        , tags=['legacy', 'static']
   )
 }}
 

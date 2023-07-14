@@ -1,5 +1,7 @@
 {{
     config(
+	tags=['legacy'],
+	
         alias = alias('tx_hash_labels_treasury_management_ethereum', legacy_model=True),
     )
 }}

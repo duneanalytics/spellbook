@@ -1,4 +1,6 @@
 {{ config(
+	tags=['legacy'],
+	
         alias = alias('deposits', legacy_model=True),
         materialized='incremental',
         partition_by=['block_date'],

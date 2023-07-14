@@ -1,4 +1,6 @@
 {{ config(
+	tags=['legacy'],
+	
     alias = alias('other_tags', legacy_model=True)
     )
 }}

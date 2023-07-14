@@ -1,4 +1,6 @@
 {{ config(
+	tags=['legacy'],
+	
     schema = 'tigris_v2_arbitrum',
     alias = alias('events_asset_added', legacy_model=True)
     )

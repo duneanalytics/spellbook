@@ -1,5 +1,7 @@
  {{
   config(
+	tags=['legacy'],
+	
         alias = alias('self_destruct_contracts', legacy_model=True),
         materialized ='incremental',
         file_format ='delta',

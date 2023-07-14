@@ -1,4 +1,6 @@
 {{ config(
+	tags=['legacy'],
+	
         alias = alias('erc20_hour', legacy_model=True),
         post_hook='{{ expose_spells_hide_trino(\'["ethereum"]\',
                                             "sector",

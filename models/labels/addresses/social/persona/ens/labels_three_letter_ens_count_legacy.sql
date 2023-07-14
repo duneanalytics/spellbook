@@ -1,4 +1,6 @@
-{{config(alias = alias('three_letter_ens_count', legacy_model=True))}}
+{{config(
+	tags=['legacy'],
+	alias = alias('three_letter_ens_count', legacy_model=True))}}
 
 WITH three_letter_ens_count AS (
     SELECT 

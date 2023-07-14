@@ -1,5 +1,7 @@
 {{
     config(
+	tags=['legacy'],
+	
         alias = alias('kyt', legacy_model=True),
         post_hook='{{ expose_spells(\'["ethereum", "fantom", "arbitrum", "avalanche_c", "gnosis", "bnb", "optimism", "polygon"]\',
                                     "sector",

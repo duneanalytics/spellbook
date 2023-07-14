@@ -1,4 +1,6 @@
 {{ config(
+	tags=['legacy'],
+	
     schema='layerzero',
     alias = alias('send', legacy_model=True),
     post_hook='{{ expose_spells(\'["ethereum", "gnosis", "avalanche_c", "arbitrum", "fantom", "optimism", "bnb", "polygon"]\',

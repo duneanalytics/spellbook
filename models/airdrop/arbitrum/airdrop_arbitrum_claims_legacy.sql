@@ -1,4 +1,6 @@
 {{ config(
+	tags=['legacy'],
+	
         alias = alias('claims', legacy_model=True),
         post_hook='{{ expose_spells(\'["arbitrum"]\',
                                       "sector",

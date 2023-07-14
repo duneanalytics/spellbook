@@ -1,4 +1,6 @@
 {{ config(
+	tags=['legacy'],
+	
     schema = 'balancer_v2_gnosis',
     alias = alias('trades', legacy_model=True),
     partition_by = ['block_date'],

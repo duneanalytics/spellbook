@@ -1,5 +1,7 @@
 {{
     config(
+	tags=['legacy'],
+	
         alias = alias('sandwich_attackers', legacy_model=True), 
         post_hook='{{ expose_spells(\'["ethereum"]\', "sector", "labels", \'["alexth"]\') }}'
     )

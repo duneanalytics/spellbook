@@ -1,4 +1,6 @@
 {{ config(
+	tags=['legacy'],
+	
         alias = alias('fees', legacy_model=True),
         post_hook='{{ expose_spells(\'["ethereum","bnb","avalanche_c","optimism","arbitrum"]\',
                                 "sector",

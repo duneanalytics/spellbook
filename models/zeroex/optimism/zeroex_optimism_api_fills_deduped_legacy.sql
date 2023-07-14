@@ -1,4 +1,6 @@
 {{  config(
+	tags=['legacy'],
+	
         alias = alias('api_fills_deduped', legacy_model=True),
         materialized='incremental',
         partition_by = ['block_date'],

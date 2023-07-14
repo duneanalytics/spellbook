@@ -2,7 +2,7 @@
   config(
     schema = 'chain_info'
     , alias = alias('dune_chains', legacy_model=True)
-    , tags=['static']
+    , tags=['legacy', 'static']
   )
 }}
 

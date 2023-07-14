@@ -1,4 +1,6 @@
 {{ config(
+	tags=['legacy'],
+	
         alias = alias('signatures', legacy_model=True),
         schema = 'abi',
         partition_by = ['created_at_month'],

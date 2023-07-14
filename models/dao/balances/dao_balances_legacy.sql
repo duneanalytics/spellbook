@@ -1,4 +1,6 @@
 {{ config(
+	tags=['legacy'],
+	
     alias = alias('balances', legacy_model=True),
     materialized = 'table',
     file_format = 'delta',

@@ -1,4 +1,6 @@
-{{config(alias = alias('dao_framework', legacy_model=True))}}
+{{config(
+	tags=['legacy'],
+	alias = alias('dao_framework', legacy_model=True))}}
 
 WITH dao_address_w_name AS (
     SELECT

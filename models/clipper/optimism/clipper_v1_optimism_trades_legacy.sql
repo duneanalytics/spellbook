@@ -1,4 +1,6 @@
 {{ config(
+	tags=['legacy'],
+	
     schema = 'clipper_v1_optimism',
     alias = alias('trades', legacy_model=True),
     partition_by = ['block_date'],

@@ -1,5 +1,7 @@
 {{
   config(
+	tags=['legacy'],
+	
         alias = alias('oracle_token_mapping', legacy_model=True),
         post_hook='{{ expose_spells(\'["optimism"]\',
                                     "project",

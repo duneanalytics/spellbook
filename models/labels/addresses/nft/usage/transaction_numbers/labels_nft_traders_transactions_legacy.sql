@@ -1,4 +1,6 @@
-{{config(alias = alias('nft_traders_transactions', legacy_model=True))}}
+{{config(
+	tags=['legacy'],
+	alias = alias('nft_traders_transactions', legacy_model=True))}}
 
 WITH nft_trades AS (
 SELECT

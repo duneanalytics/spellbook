@@ -1,4 +1,6 @@
 {{  config(
+	tags=['legacy'],
+	
         schema='oneinch_limit_order_protocol_embedded_rfq_ethereum',
         alias = alias('trades', legacy_model=True),
         partition_by = ['block_date'],

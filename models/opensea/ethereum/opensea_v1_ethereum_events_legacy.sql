@@ -1,4 +1,6 @@
 {{ config(
+	tags=['legacy'],
+	
     schema = 'opensea_v1_ethereum',
     alias = alias('events', legacy_model=True),
     materialized = 'table',

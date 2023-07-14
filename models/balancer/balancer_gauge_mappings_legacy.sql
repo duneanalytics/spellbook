@@ -1,4 +1,6 @@
 {{ config(
+	tags=['legacy'],
+	
     schema = 'balancer',
     alias = alias('gauge_mappings', legacy_model=True),
     post_hook='{{ expose_spells(\'["optimism"]\',

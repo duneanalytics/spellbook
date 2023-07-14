@@ -1,5 +1,7 @@
 {{
   config(
+	tags=['legacy'],
+	
          schema = 'opensea_arbitrum',
          alias = alias('fees', legacy_model=True)
         )

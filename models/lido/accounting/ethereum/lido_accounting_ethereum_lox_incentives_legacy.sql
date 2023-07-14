@@ -1,4 +1,6 @@
 {{ config(
+	tags=['legacy'],
+	
         alias = alias('lox_incentives', legacy_model=True),
         partition_by = ['period'],
         materialized = 'table',

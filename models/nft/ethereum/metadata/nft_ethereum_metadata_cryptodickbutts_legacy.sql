@@ -1,4 +1,6 @@
 {{ config(
+	tags=['legacy'],
+	
         alias = alias('cryptodickbutts', legacy_model=True)
         )
 }}

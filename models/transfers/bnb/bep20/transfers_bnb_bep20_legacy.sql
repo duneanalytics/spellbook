@@ -1,4 +1,6 @@
-{{ config(materialized='view', alias = alias('bep20', legacy_model=True),
+{{ config(
+	tags=['legacy'],
+	materialized='view', alias = alias('bep20', legacy_model=True),
         post_hook='{{ expose_spells(\'["bnb"]\',
                                     "sector",
                                     "transfers",

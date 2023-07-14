@@ -1,4 +1,6 @@
 {{ config(
+	tags=['legacy'],
+	
         alias = alias('terraforms', legacy_model=True)
         )
 }}

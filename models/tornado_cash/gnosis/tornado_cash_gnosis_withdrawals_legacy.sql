@@ -1,4 +1,6 @@
 {{ config(
+	tags=['legacy'],
+	
         schema = 'tornado_cash_gnosis',
         alias = alias('withdrawals', legacy_model=True),
         materialized='incremental',

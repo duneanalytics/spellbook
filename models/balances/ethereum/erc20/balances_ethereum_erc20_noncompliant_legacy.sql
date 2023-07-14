@@ -1,4 +1,6 @@
 {{ config(
+	tags=['legacy'],
+	
         alias = alias('erc20_noncompliant', legacy_model=True),
         materialized ='table',
         file_format = 'delta'

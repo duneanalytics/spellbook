@@ -1,4 +1,6 @@
 {{ config(
+	tags=['legacy'],
+	
         alias = alias('ringers', legacy_model=True)
         )
 }}

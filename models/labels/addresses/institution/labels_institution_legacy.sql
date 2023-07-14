@@ -1,4 +1,6 @@
-{{config(alias = alias('institution', legacy_model=True),
+{{config(
+	tags=['legacy'],
+	alias = alias('institution', legacy_model=True),
         post_hook='{{ expose_spells(\'["ethereum", "bnb", "fantom", "optimism", "bitcoin", "polygon", "avalanche_c", "arbitrum"]\',
                                     "sector",
                                     "labels",

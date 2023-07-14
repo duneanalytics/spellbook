@@ -1,4 +1,6 @@
 {{ config(
+	tags=['legacy'],
+	
     alias = alias('cross_domain_messenger_messages', legacy_model=True),
     partition_by = ['l2_block_date'],
     materialized = 'incremental',

@@ -1,4 +1,6 @@
 {{ config(
+	tags=['legacy'],
+	
     schema = 'beethoven_x_fantom',
     alias = alias('trades', legacy_model=True),
     partition_by = ['block_date'],

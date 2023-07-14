@@ -3,7 +3,7 @@
         alias = alias('tokens', legacy_model=True),
         materialized='table',
         file_format = 'delta',
-        tags=['static'],
+        tags=['legacy', 'static'],
         post_hook='{{ expose_spells(\'["ethereum", "solana", "arbitrum", "gnosis", "optimism", "bnb", "avalanche_c", "polygon", "fantom"]\',
                                     "sector",
                                     "prices",

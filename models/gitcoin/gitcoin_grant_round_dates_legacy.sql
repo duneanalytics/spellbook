@@ -1,6 +1,6 @@
 {{ config(
         alias = alias('grant_round_dates', legacy_model=True)
-        , tags=['static']
+        , tags=['legacy', 'static']
         )
 }}
 

@@ -1,4 +1,6 @@
 {{ config(
+	tags=['legacy'],
+	
         alias = alias('pool_settings_latest', legacy_model=True),
         materialized = 'incremental',
         file_format = 'delta',

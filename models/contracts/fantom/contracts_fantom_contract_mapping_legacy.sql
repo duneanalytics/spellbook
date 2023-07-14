@@ -1,7 +1,7 @@
 {{
   config(
         alias = alias('contract_mapping', legacy_model=True),
-        tags=['static'],
+        tags=['legacy', 'static'],
         post_hook='{{ expose_spells(\'["fantom"]\',
                                     "sector",
                                     "contracts",

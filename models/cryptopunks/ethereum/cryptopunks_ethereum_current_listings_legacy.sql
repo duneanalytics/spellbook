@@ -1,4 +1,6 @@
 {{ config(
+	tags=['legacy'],
+	
         alias = alias('current_listings', legacy_model=True),
         unique_key='punk_id',
         post_hook='{{ expose_spells(\'["ethereum"]\',

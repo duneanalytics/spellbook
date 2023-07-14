@@ -1,4 +1,6 @@
 {{ config(
+	tags=['legacy'],
+	
         alias = alias('proof_grails_ii', legacy_model=True)
         )
 }}

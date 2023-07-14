@@ -1,4 +1,6 @@
 {{ config(
+	tags=['legacy'],
+	
         alias = alias('glp_aum', legacy_model=True),
         partition_by = ['block_date'],
         materialized = 'incremental',

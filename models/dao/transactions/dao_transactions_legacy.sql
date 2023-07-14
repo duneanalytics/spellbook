@@ -1,4 +1,6 @@
 {{ config(
+	tags=['legacy'],
+	
     alias = alias('transactions', legacy_model=True),
     materialized = 'view',
     file_format = 'delta',

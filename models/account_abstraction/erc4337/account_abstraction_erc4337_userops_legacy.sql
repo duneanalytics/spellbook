@@ -1,4 +1,6 @@
 {{ config(
+	tags=['legacy'],
+	
         schema = 'account_abstraction_erc4337',
         alias = alias('userops', legacy_model=True),
         post_hook='{{ expose_spells(\'["ethereum","polygon","arbitrum","optimism","avalanche_c","gnosis"]\',

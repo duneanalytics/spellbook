@@ -1,4 +1,6 @@
 {{ config(
+	tags=['legacy'],
+	
     schema='layerzero',
     alias = alias('chain_list', legacy_model=True),
     tags = ['static']

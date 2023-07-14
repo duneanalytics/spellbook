@@ -1,4 +1,6 @@
 {{ config(
+	tags=['legacy'],
+	
     schema = 'compound_v2_ethereum',
     alias = alias('borrow', legacy_model=True),
     partition_by = ['block_date'],

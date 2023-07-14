@@ -1,5 +1,7 @@
 {{
     config(
+	tags=['legacy'],
+	
         alias = alias('average_trade_values', legacy_model=True),
         post_hook='{{ expose_spells(\'["ethereum", "fantom", "avalanche_c", "gnosis", "optimism", "arbitrum", "polygon"]\', 
         "sector", 

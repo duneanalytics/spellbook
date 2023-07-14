@@ -1,4 +1,6 @@
 {{ config(
+	tags=['legacy'],
+	
         alias = alias('punk_offer_events', legacy_model=True),
         partition_by = ['evt_block_time_week'],
         materialized = 'incremental',

@@ -1,4 +1,6 @@
 {{ config(
+	tags=['legacy'],
+	
         alias = alias('fellowship_gallery', legacy_model=True)
         )
 }}

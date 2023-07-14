@@ -1,4 +1,6 @@
 {{ config(
+	tags=['legacy'],
+	
     schema = 'hop_protocol_optimism',
     alias = alias('flows', legacy_model=True),
     partition_by = ['block_date'],

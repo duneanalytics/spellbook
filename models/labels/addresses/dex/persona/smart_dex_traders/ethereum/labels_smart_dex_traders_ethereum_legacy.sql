@@ -1,4 +1,6 @@
-{{config(alias = alias('smart_dex_traders_ethereum', legacy_model=True))}}
+{{config(
+	tags=['legacy'],
+	alias = alias('smart_dex_traders_ethereum', legacy_model=True))}}
 /*
 ** This is a submission for the Dune labels mini hackathon (March 2023)
 ** Category: Smart Money, Smart DEX Trader (Persona)

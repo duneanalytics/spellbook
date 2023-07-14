@@ -1,4 +1,6 @@
 {{ config(
+	tags=['legacy'],
+	
          schema = 'opensea_optimism',        
         alias = alias('events', legacy_model=True)
 )

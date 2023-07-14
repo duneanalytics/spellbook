@@ -1,4 +1,6 @@
-{{config(alias = alias('cex', legacy_model=True))}}
+{{config(
+	tags=['legacy'],
+	alias = alias('cex', legacy_model=True))}}
 
 
 {% set cex_label_models = [

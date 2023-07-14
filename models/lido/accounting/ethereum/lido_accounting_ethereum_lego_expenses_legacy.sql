@@ -1,4 +1,6 @@
 {{ config(
+	tags=['legacy'],
+	
         alias = alias('lego_expenses', legacy_model=True),
         partition_by = ['period'],
         materialized = 'table',

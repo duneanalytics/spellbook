@@ -1,4 +1,6 @@
 {{ config(
+	tags=['legacy'],
+	
     schema = 'compound_v2_ethereum',
     alias = alias('votes', legacy_model=True),
     partition_by = ['block_date'],

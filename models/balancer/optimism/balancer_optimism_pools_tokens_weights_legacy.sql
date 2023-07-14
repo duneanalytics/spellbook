@@ -1,4 +1,6 @@
 {{ config(
+	tags=['legacy'],
+	
         alias = alias('pools_tokens_weights', legacy_model=True)
         )
 }}

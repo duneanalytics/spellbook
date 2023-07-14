@@ -1,4 +1,4 @@
-{{ config( alias = alias('rebase', legacy_model=True), tags=['static'])}}
+{{ config( alias = alias('rebase', legacy_model=True), tags=['legacy', 'static'])}}
 
 SELECT contract_address, symbol
   FROM (VALUES

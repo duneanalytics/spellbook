@@ -1,5 +1,7 @@
 {{ 
   config(
+	tags=['legacy'],
+	
     alias = alias('contract_overrides', legacy_model=True),
     unique_key='contract_address',
     post_hook='{{ expose_spells(\'["optimism"]\',

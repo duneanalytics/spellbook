@@ -1,5 +1,7 @@
 {{
     config(
+	tags=['legacy'],
+	
         schema = 'balancer_v2_ethereum',
         alias = alias('bpt_prices', legacy_model=True),
         materialized = 'incremental',

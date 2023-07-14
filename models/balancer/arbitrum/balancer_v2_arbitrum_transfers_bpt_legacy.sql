@@ -1,5 +1,7 @@
 {{
     config(
+	tags=['legacy'],
+	
         schema='balancer_v2_arbitrum',
         alias = alias('transfers_bpt', legacy_model=True),
         partition_by = ['block_date'],

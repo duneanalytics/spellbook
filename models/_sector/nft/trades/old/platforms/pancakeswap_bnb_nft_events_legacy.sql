@@ -1,4 +1,6 @@
 {{ config(
+	tags=['legacy'],
+	
     schema = 'pancekeswap_nft_bnb',
     alias = alias('events', legacy_model=True),
     partition_by = ['block_date'],

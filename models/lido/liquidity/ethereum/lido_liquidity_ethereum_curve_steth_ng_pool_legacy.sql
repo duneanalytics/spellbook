@@ -1,4 +1,6 @@
 {{ config(
+	tags=['legacy'],
+	
     alias = alias('curve_steth_ng_pool', legacy_model=True),
     partition_by = ['time'],
     materialized = 'table',

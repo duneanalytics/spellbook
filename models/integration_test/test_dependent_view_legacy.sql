@@ -1,4 +1,6 @@
 {{ config(
+	tags=['legacy'],
+	
         alias = alias('test_dependent_view', legacy_model=True)
         )
 }}

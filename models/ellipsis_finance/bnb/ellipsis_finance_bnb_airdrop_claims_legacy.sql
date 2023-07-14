@@ -4,7 +4,7 @@
         alias = alias('airdrop_claims', legacy_model=True),
         materialized = 'table',
         file_format = 'delta',
-        tags=['static'],
+        tags=['legacy', 'static'],
         unique_key = ['recipient', 'tx_hash', 'evt_index'],
         post_hook='{{ expose_spells(\'["bnb"]\',
                                 "project",

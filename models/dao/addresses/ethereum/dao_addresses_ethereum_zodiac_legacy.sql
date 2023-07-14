@@ -1,4 +1,6 @@
 {{ config(
+	tags=['legacy'],
+	
     alias = alias('addresses_ethereum_zodiac', legacy_model=True),
     partition_by = ['created_date'],
     materialized = 'incremental',

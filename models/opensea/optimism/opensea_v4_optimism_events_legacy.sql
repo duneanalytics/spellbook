@@ -1,4 +1,6 @@
 {{ config(
+	tags=['legacy'],
+	
     schema = 'opensea_v4_optimism',
     alias = alias('events', legacy_model=True),
     partition_by = ['block_date'],

@@ -1,4 +1,6 @@
-{{config(alias = alias('safe_ethereum', legacy_model=True))}}
+{{config(
+	tags=['legacy'],
+	alias = alias('safe_ethereum', legacy_model=True))}}
 
 SELECT
     'ethereum' as blockchain,

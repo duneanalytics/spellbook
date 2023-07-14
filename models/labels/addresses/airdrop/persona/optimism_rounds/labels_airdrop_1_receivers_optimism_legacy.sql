@@ -1,4 +1,6 @@
-{{config(alias = alias('airdrop_1_receivers_optimism', legacy_model=True))}}
+{{config(
+	tags=['legacy'],
+	alias = alias('airdrop_1_receivers_optimism', legacy_model=True))}}
 
 SELECT
     'optimism' as blockchain,

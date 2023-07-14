@@ -1,4 +1,6 @@
 {{ config(
+	tags=['legacy'],
+	
     schema = 'pancakeswap_v2_ethereum',
     alias = alias('mmpool_trades', legacy_model=True),
     partition_by = ['block_date'],

@@ -1,4 +1,6 @@
 {{ config(
+	tags=['legacy'],
+	
     schema = 'aave_v2_ethereum'
     , alias = alias('borrow', legacy_model=True)
   )

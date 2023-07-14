@@ -1,4 +1,6 @@
 {{ config(
+	tags=['legacy'],
+	
     schema = 'opensea_v3_ethereum',
     alias = alias('events', legacy_model=True),
     partition_by = ['block_date'],

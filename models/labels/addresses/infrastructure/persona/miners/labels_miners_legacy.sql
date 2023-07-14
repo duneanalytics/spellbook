@@ -1,4 +1,6 @@
-{{config(alias = alias('miners', legacy_model=True),
+{{config(
+	tags=['legacy'],
+	alias = alias('miners', legacy_model=True),
         post_hook='{{ expose_spells(\'["ethereum", "arbitrum", "gnosis", "optimism", "bnb", "avalanche_c","fantom","polygon"]\',
                                     "sector",
                                     "labels",

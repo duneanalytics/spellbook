@@ -1,4 +1,6 @@
 {{ config(
+	tags=['legacy'],
+	
         alias = alias('pools', legacy_model=True),
         post_hook='{{ expose_spells(\'["ethereum", "arbitrum", "polygon"]\',
                                 "project",

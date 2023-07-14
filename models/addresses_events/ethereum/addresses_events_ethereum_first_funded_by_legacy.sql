@@ -1,4 +1,6 @@
 {{ config(
+	tags=['legacy'],
+	
     schema = 'addresses_events_ethereum'
     , alias = alias('first_funded_by', legacy_model=True)
     , materialized = 'incremental'

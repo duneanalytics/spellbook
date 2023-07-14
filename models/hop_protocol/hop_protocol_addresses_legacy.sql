@@ -1,5 +1,7 @@
 {{
   config(
+	tags=['legacy'],
+	
         schema = 'hop_protocol',
         alias = alias('addresses', legacy_model=True),
         post_hook='{{ expose_spells(\'["optimism"]\',

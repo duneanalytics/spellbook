@@ -1,5 +1,7 @@
  {{
   config(
+	tags=['legacy'],
+	
         schema='uniswap_v3_optimism',
         alias = alias('pools', legacy_model=True),
         materialized='table',

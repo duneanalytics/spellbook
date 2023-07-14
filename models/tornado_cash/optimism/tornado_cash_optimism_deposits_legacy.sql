@@ -1,4 +1,6 @@
 {{ config(
+	tags=['legacy'],
+	
         schema = 'tornado_cash_optimism',
         alias = alias('deposits', legacy_model=True),
         materialized='incremental',

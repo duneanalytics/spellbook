@@ -1,4 +1,6 @@
 {{ config(
+	tags=['legacy'],
+	
     alias = alias('maverick_pools', legacy_model=True),
     partition_by = ['time'],
     materialized = 'table',

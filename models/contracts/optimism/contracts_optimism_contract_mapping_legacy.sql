@@ -1,5 +1,7 @@
  {{
   config(
+	tags=['legacy'],
+	
         alias = alias('contract_mapping', legacy_model=True),
         materialized ='incremental',
         file_format ='delta',

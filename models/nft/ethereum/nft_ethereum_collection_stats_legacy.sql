@@ -1,4 +1,6 @@
 {{ config(
+	tags=['legacy'],
+	
     alias = alias('collection_stats', legacy_model=True),
     partition_by = ['block_date'],
     materialized = 'incremental',

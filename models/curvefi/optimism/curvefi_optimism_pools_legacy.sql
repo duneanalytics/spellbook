@@ -1,4 +1,6 @@
 {{ config(
+	tags=['legacy'],
+	
     alias = alias('pools', legacy_model=True),
     materialized = 'incremental',
     file_format = 'delta',

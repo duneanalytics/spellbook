@@ -1,5 +1,7 @@
 {{
   config(
+	tags=['legacy'],
+	
         alias = alias('jfiat_collateral_mapping', legacy_model=True),
         post_hook='{{ expose_spells(\'["polygon"]\',
                                     "project",

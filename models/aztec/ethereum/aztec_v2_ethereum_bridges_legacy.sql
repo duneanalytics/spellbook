@@ -1,4 +1,6 @@
 {{ config(
+	tags=['legacy'],
+	
     schema = 'aztec_v2_ethereum',
     alias = alias('bridges', legacy_model=True),
     post_hook='{{ expose_spells(\'["ethereum"]\',

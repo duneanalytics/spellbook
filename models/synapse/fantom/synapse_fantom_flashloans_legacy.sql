@@ -1,4 +1,6 @@
 {{ config(
+	tags=['legacy'],
+	
     schema = 'synapse_fantom'
     , alias = alias('flashloans', legacy_model=True)
     , materialized = 'incremental'

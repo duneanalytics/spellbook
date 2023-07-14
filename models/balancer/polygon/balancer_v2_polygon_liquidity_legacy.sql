@@ -1,5 +1,7 @@
 {{
     config(
+	tags=['legacy'],
+	
         schema='balancer_v2_polygon',
         alias = alias('liquidity', legacy_model=True),
         materialized = 'table',

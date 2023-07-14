@@ -1,4 +1,6 @@
 {{ config(
+	tags=['legacy'],
+	
         alias = alias('braindrops', legacy_model=True)
         )
 }}

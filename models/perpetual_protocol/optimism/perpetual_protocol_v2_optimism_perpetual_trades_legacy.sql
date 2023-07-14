@@ -1,4 +1,6 @@
 {{ config(
+	tags=['legacy'],
+	
 	schema = 'perpetual_protocol_v2_optimism',
 	alias = alias('perpetual_trades', legacy_model=True),
 	partition_by = ['block_date'],

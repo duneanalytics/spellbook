@@ -1,5 +1,7 @@
 {{
     config(
+	tags=['legacy'],
+	
         schema = 'balancer_v2_gnosis',
         alias = alias('pools_fees', legacy_model=True),
         materialized = 'incremental',

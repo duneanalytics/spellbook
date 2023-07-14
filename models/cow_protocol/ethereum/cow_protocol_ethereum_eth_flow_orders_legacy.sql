@@ -1,4 +1,6 @@
 {{  config(
+	tags=['legacy'],
+	
         alias = alias('eth_flow_orders', legacy_model=True),
         materialized='incremental',
         partition_by = ['block_date'],

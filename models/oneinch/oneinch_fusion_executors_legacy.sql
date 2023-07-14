@@ -1,5 +1,7 @@
 {{
     config(
+	tags=['legacy'],
+	
         schema='oneinch',
         alias = alias('fusion_executors', legacy_model=True),
         materialized='table',

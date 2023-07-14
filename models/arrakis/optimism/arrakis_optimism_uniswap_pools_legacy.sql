@@ -1,6 +1,8 @@
 
  {{
   config(
+	tags=['legacy'],
+	
         schema='arrakis_optimism',
         alias = alias('uniswap_pools', legacy_model=True),
         materialized = 'incremental',

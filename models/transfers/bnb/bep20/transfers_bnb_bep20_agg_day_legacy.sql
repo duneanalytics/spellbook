@@ -1,4 +1,6 @@
 {{ config(
+	tags=['legacy'],
+	
         alias = alias('bep20_agg_day', legacy_model=True),
         partition_by = ['day'],
         materialized ='incremental',

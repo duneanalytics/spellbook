@@ -1,5 +1,7 @@
 {{
     config(
+	tags=['legacy'],
+	
         alias = alias('vebal_votes', legacy_model=True),
         materialized = 'table',
         file_format = 'delta',

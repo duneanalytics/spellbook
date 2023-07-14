@@ -1,5 +1,7 @@
 {{
     config(
+	tags=['legacy'],
+	
         alias = alias('tx_hash_labels_bluechip_investment_ethereum', legacy_model=True),
     )
 }}

@@ -1,4 +1,6 @@
 {{ config(
+	tags=['legacy'],
+	
     schema = 'compound_v2_ethereum',
     alias = alias('ctokens', legacy_model=True),
     post_hook = '{{ expose_spells(\'["ethereum"]\',

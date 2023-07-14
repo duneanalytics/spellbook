@@ -1,4 +1,6 @@
 {{config(
+	tags=['legacy'],
+	
     alias = alias('balancer_v1_pools_ethereum', legacy_model=True),
     materialized = 'incremental',
     file_format = 'delta',

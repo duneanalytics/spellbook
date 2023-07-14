@@ -1,4 +1,6 @@
 {{ config(
+	tags=['legacy'],
+	
     schema = 'aave_v3_arbitrum'
     , alias = alias('flashloans', legacy_model=True)
     , materialized = 'incremental'

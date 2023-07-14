@@ -1,4 +1,6 @@
 {{ config(
+	tags=['legacy'],
+	
     schema = 'uniswap_polygon',
     alias = alias('pools', legacy_model=True),
     materialized = 'incremental',

@@ -1,4 +1,6 @@
 {{ config(
+	tags=['legacy'],
+	
     alias = alias('pool_details', legacy_model=True)
 ) }}
 

@@ -1,4 +1,6 @@
 {{ config(
+	tags=['legacy'],
+	
         alias = alias('withdrawals', legacy_model=True),
         partition_by = ['day'],
         materialized = 'table',

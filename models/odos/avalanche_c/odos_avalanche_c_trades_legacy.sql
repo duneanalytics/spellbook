@@ -1,5 +1,5 @@
 {{ config(
-    tags=['prod_exclude'],
+    tags=['legacy', 'prod_exclude'],
     alias = alias('trades', legacy_model=True),
     partition_by = ['block_date'],
     materialized = 'incremental',

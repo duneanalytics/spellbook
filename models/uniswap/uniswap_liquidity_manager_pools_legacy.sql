@@ -1,4 +1,6 @@
 {{ config(
+	tags=['legacy'],
+	
         alias = alias('liquidity_manager_pools', legacy_model=True),
         post_hook='{{ expose_spells(\'["optimism"]\',
                                 "project",

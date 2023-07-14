@@ -1,4 +1,6 @@
 {{ config(
+	tags=['legacy'],
+	
         alias = alias('bep20_agg_hour', legacy_model=True),
         partition_by = ['hour'],
         materialized ='incremental',

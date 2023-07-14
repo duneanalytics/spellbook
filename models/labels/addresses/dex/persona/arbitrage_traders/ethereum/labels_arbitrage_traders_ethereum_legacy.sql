@@ -1,4 +1,6 @@
-{{config(alias = alias('arbitrage_traders_ethereum', legacy_model=True))}}
+{{config(
+	tags=['legacy'],
+	alias = alias('arbitrage_traders_ethereum', legacy_model=True))}}
 
 with 
  eth_arb_traders as (

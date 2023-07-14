@@ -1,4 +1,6 @@
-{{config(alias = alias('aave_v2_liquidations', legacy_model=True))}}
+{{config(
+	tags=['legacy'],
+	alias = alias('aave_v2_liquidations', legacy_model=True))}}
 
 
 WITH mev_addresses AS (

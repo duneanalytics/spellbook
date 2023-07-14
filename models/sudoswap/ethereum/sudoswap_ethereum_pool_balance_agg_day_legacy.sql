@@ -1,4 +1,6 @@
 {{ config(
+	tags=['legacy'],
+	
         alias = alias('pool_balance_changes', legacy_model=True),
         materialized = 'incremental',
         file_format = 'delta',

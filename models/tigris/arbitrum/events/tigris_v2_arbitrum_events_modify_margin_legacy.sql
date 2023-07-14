@@ -1,4 +1,6 @@
 {{ config(
+	tags=['legacy'],
+	
     schema = 'tigris_v2_arbitrum',
     alias = alias('events_modify_margin', legacy_model=True),
     partition_by = ['day'],

@@ -1,4 +1,6 @@
 {{ config(
+	tags=['legacy'],
+	
 	alias = alias('genesis_balances', legacy_model=True),
     post_hook='{{ expose_spells(\'["ethereum"]\',
                                 "sector",

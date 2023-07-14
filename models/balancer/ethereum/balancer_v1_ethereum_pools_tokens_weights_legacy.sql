@@ -1,5 +1,7 @@
 {{
     config(
+	tags=['legacy'],
+	
         schema='balancer_v1_ethereum',
         alias = alias('pools_tokens_weights', legacy_model=True),
         materialized = 'incremental',

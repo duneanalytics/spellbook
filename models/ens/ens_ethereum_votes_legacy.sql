@@ -1,4 +1,6 @@
 {{ config(
+	tags=['legacy'],
+	
     schema = 'ens_ethereum',
     alias = alias('votes', legacy_model=True),
     partition_by = ['block_date'],

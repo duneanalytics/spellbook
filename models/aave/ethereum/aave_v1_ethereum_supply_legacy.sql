@@ -1,4 +1,6 @@
 {{ config(
+	tags=['legacy'],
+	
     schema = 'aave_v1_ethereum'
     , alias = alias('supply', legacy_model=True)
   )

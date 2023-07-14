@@ -1,4 +1,6 @@
 {{ config(
+	tags=['legacy'],
+	
     alias = alias('tx_hash_labels_all', legacy_model=True),
     materialized = 'table',
     file_format = 'delta',

@@ -1,5 +1,7 @@
 
 {{ config(
+	tags=['legacy'],
+	
         schema = 'stealcam',
         alias = alias('trades', legacy_model=True),
         materialized = 'view',

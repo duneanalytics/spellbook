@@ -1,4 +1,6 @@
-{{config(alias = alias('nft_smart_trader_roi_eth', legacy_model=True))}}
+{{config(
+	tags=['legacy'],
+	alias = alias('nft_smart_trader_roi_eth', legacy_model=True))}}
 
 with  
 

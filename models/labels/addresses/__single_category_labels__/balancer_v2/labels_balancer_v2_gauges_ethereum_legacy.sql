@@ -1,4 +1,6 @@
-{{config(alias = alias('balancer_v2_gauges_ethereum', legacy_model=True),
+{{config(
+	tags=['legacy'],
+	alias = alias('balancer_v2_gauges_ethereum', legacy_model=True),
         post_hook='{{ expose_spells(\'["ethereum"]\',
                                     "sector",
                                     "labels",

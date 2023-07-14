@@ -1,4 +1,6 @@
 {{ config(
+	tags=['legacy'],
+	
     schema='lido_liquidity_polygon', 
     alias = alias('balancer_pools', legacy_model=True), 
     partition_by = ['time'],

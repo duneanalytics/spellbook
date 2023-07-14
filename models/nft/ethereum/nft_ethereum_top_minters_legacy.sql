@@ -1,4 +1,6 @@
 {{ config(
+	tags=['legacy'],
+	
     alias = alias('top_minters', legacy_model=True),
     materialized='incremental',
     file_format = 'delta',

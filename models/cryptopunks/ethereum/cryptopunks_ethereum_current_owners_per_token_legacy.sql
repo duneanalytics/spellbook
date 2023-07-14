@@ -1,4 +1,6 @@
 {{ config(
+	tags=['legacy'],
+	
         alias = alias('current_owners_per_token', legacy_model=True),
         post_hook='{{ expose_spells(\'["ethereum"]\',
                                     "project",

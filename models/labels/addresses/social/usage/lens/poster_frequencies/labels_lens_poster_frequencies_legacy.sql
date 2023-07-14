@@ -1,4 +1,6 @@
-{{config(alias = alias('lens_poster_frequencies', legacy_model=True)
+{{config(
+	tags=['legacy'],
+	alias = alias('lens_poster_frequencies', legacy_model=True)
 
     ,post_hook='{{ expose_spells(\'["polygon"]\',
                                     "sector",

@@ -1,4 +1,6 @@
 {{ config(
+	tags=['legacy'],
+	
     schema = 'aave_v2_avalanche_c'
     , alias = alias('flashloans', legacy_model=True)
     , materialized = 'incremental'

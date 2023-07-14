@@ -1,4 +1,6 @@
 {{ config(
+	tags=['legacy'],
+	
     alias = alias('dex', legacy_model=True),
     materialized = 'table',
     file_format = 'delta',

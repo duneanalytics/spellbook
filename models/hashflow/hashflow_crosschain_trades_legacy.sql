@@ -1,5 +1,7 @@
 {{
     config(
+	tags=['legacy'],
+	
         alias = alias('cross_chain_trades', legacy_model=True)
         ,post_hook='{{ expose_spells(\'["ethereum", "avalanche_c", "bnb"]\',
                         "project",

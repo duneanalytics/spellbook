@@ -1,5 +1,7 @@
 {{
     config(
+	tags=['legacy'],
+	
         schema = 'blur_ethereum',
         alias = alias('airdrop_1_claims', legacy_model=True),
         materialized = 'incremental',

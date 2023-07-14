@@ -1,4 +1,6 @@
-{{ config(alias = alias('signer_thresholds', legacy_model=True),
+{{ config(
+	tags=['legacy'],
+	alias = alias('signer_thresholds', legacy_model=True),
         post_hook='{{ expose_spells(\'["ethereum"]\',
                                     "project",
                                     "safe",

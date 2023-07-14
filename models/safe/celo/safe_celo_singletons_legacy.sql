@@ -1,5 +1,7 @@
 {{
     config(
+	tags=['legacy'],
+	
         materialized='table',
         schema='safe_celo',
         alias = alias('singletons', legacy_model=True),

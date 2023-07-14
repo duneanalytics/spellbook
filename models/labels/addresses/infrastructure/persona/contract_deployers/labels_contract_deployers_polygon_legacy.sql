@@ -1,5 +1,7 @@
 {{
     config(
+	tags=['legacy'],
+	
         alias = alias('contract_deployers_polygon', legacy_model=True),
         post_hook='{{ expose_spells(\'["polygon"]\',
                                     "sector",

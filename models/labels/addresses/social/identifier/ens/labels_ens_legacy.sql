@@ -1,4 +1,6 @@
-{{config(alias = alias('ens', legacy_model=True),
+{{config(
+	tags=['legacy'],
+	alias = alias('ens', legacy_model=True),
         materialized = 'table',
         file_format = 'delta',
         unique_key = ['blockchain','address'],

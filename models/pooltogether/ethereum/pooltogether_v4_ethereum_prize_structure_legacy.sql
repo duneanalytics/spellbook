@@ -1,4 +1,6 @@
 {{ config(
+	tags=['legacy'],
+	
     schema ='pooltogether_v4_ethereum',
     alias = alias('prize_structure', legacy_model=True),
     materialized = 'incremental',

@@ -1,4 +1,6 @@
 {{config(
+	tags=['legacy'],
+	
         alias = alias('balancer_v2_gauges_arbitrum', legacy_model=True),
         post_hook='{{ expose_spells(\'["arbitrum"]\',
                                     "sector",

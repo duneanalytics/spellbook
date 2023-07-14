@@ -1,4 +1,6 @@
 {{ config(
+	tags=['legacy'],
+	
         schema = 'op_token_optimism',
         alias = alias('inflation_schedule', legacy_model=True)
         , unique_key = ['schedule_confirmed_date', 'schedule_start_date']

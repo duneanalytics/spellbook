@@ -1,6 +1,6 @@
 {{ config(
     alias = alias('pool_incentives_config', legacy_model=True)
-    , tags=['static']
+    , tags=['legacy', 'static']
     )
 }}
 

@@ -1,4 +1,6 @@
-{{config(alias = alias('addresses_gnosis', legacy_model=True))}}
+{{config(
+	tags=['legacy'],
+	alias = alias('addresses_gnosis', legacy_model=True))}}
 
 WITH 
 

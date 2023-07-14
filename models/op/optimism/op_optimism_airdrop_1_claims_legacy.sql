@@ -1,5 +1,7 @@
 {{
     config(
+	tags=['legacy'],
+	
         schema = 'op_optimism',
         alias = alias('airdrop_1_claims', legacy_model=True),
         materialized = 'incremental',

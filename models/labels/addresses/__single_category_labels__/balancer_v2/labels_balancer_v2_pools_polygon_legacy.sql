@@ -1,4 +1,6 @@
 {{config(
+	tags=['legacy'],
+	
     alias = alias('balancer_v2_pools_polygon', legacy_model=True),
     materialized = 'incremental',
     file_format = 'delta',

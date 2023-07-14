@@ -1,4 +1,6 @@
 {{ config(
+	tags=['legacy'],
+	
         alias = alias('owners_over_time', legacy_model=True),
         unique_key='day',
         post_hook='{{ expose_spells_hide_trino(\'["ethereum"]\',

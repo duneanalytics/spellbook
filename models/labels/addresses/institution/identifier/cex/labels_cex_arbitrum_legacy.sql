@@ -1,4 +1,6 @@
-{{config(alias = alias('cex_arbitrum', legacy_model=True),
+{{config(
+	tags=['legacy'],
+	alias = alias('cex_arbitrum', legacy_model=True),
         post_hook='{{ expose_spells(\'["arbitrum"]\',
                                     "sector",
                                     "labels",

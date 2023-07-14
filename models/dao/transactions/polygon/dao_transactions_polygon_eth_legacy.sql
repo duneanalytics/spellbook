@@ -1,4 +1,6 @@
 {{ config(
+	tags=['legacy'],
+	
     alias = alias('transactions_polygon_eth', legacy_model=True),
     partition_by = ['block_date'],
     materialized = 'incremental',

@@ -1,4 +1,6 @@
 {{ config(
+	tags=['legacy'],
+	
     schema = 'uniswap_ethereum',
     alias = alias('pools', legacy_model=True),
     materialized = 'incremental',

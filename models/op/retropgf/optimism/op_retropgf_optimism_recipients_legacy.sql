@@ -1,4 +1,6 @@
 {{ config(
+	tags=['legacy'],
+	
         schema = 'op_retropgf_optimism'
         , alias = alias('recipients', legacy_model=True)
         , post_hook='{{ expose_spells(\'["optimism"]\',

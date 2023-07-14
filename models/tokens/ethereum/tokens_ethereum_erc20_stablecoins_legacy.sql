@@ -1,6 +1,6 @@
 {{ config(
       alias = alias('stablecoins', legacy_model=True)
-      , tags=['static']
+      , tags=['legacy', 'static']
       , post_hook='{{ expose_spells(\'["ethereum"]\',
                                   "sector",
                                   "tokens_ethereum",

@@ -1,4 +1,6 @@
 {{ config(
+	tags=['legacy'],
+	
         alias = alias('erc1155_agg_day', legacy_model=True),
         materialized ='incremental',
         file_format ='delta',

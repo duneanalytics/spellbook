@@ -1,4 +1,6 @@
-{{config(schema='superrare_ethereum', alias = alias('usernames', legacy_model=True))}}
+{{config(
+	tags=['legacy'],
+	schema='superrare_ethereum', alias = alias('usernames', legacy_model=True))}}
 
 
 SELECT blockchain, address, name, category, contributor, source, created_at, updated_at

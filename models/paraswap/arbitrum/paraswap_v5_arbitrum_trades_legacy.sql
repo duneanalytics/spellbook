@@ -1,4 +1,6 @@
 {{ config(
+	tags=['legacy'],
+	
     schema = 'paraswap_v5_arbitrum',
     alias = alias('trades', legacy_model=True),
     partition_by = ['block_date'],

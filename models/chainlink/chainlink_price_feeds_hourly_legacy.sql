@@ -1,4 +1,6 @@
 {{ config(
+	tags=['legacy'],
+	
         alias = alias('price_feeds_hourly', legacy_model=True),
         post_hook='{{ expose_spells(\'["optimism","polygon","bnb"]\',
                                 "project",

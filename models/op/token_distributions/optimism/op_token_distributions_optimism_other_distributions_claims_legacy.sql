@@ -1,4 +1,6 @@
 {{ config(
+	tags=['legacy'],
+	
     alias = alias('other_distributions_claims', legacy_model=True),
     partition_by = ['block_date'],
     materialized = 'incremental',

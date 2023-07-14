@@ -1,4 +1,6 @@
 {{ config(
+	tags=['legacy'],
+	
     schema = 'aztec_v2_ethereum',
     alias = alias('daily_estimated_rollup_tvl', legacy_model=True),
     post_hook='{{ expose_spells_hide_trino(\'["ethereum"]\',

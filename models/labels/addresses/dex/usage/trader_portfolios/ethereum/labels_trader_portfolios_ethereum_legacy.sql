@@ -1,5 +1,7 @@
 {{
     config(
+	tags=['legacy'],
+	
         alias = alias('trader_portfolios_ethereum', legacy_model=True),
     )
 }}

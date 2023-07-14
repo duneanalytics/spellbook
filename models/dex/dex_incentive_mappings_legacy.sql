@@ -1,4 +1,6 @@
 {{ config(
+	tags=['legacy'],
+	
         alias = alias('incentive_mappings', legacy_model=True),
         post_hook='{{ expose_spells(\'["optimism"]\',
                                 "sector",

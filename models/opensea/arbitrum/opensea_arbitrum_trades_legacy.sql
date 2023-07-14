@@ -1,5 +1,7 @@
  {{
   config(
+	tags=['legacy'],
+	
         schema = 'opensea_arbitrum',
         alias = alias('trades', legacy_model=True)
         )

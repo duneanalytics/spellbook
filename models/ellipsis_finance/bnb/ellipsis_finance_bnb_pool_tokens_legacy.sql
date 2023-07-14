@@ -1,4 +1,6 @@
 {{ config(
+	tags=['legacy'],
+	
     alias = alias('pool_tokens', legacy_model=True),
     partition_by = ['pool'],
     materialized = 'incremental',

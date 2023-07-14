@@ -1,5 +1,7 @@
 {{
     config(
+	tags=['legacy'],
+	
         alias = alias('contract_deployers_arbitrum', legacy_model=True),
         post_hook='{{ expose_spells(\'["arbitrum"]\',
                                     "sector",

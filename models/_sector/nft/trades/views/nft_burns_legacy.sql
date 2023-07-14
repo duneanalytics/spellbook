@@ -1,4 +1,6 @@
 {{ config(
+	tags=['legacy'],
+	
         schema = 'nft',
         alias = alias('burns', legacy_model=True),
         materialized = 'view',

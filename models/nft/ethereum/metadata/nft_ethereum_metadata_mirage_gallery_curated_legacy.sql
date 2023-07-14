@@ -1,4 +1,6 @@
 {{ config(
+	tags=['legacy'],
+	
         alias = alias('mirage_gallery_curated', legacy_model=True)
         )
 }}

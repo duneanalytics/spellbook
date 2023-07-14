@@ -1,4 +1,6 @@
 {{ config(
+	tags=['legacy'],
+	
         alias = alias('all_events', legacy_model=True),
         post_hook='{{ expose_spells(\'["ethereum"]\',
                                     "project",

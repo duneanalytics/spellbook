@@ -2,7 +2,7 @@
     alias = alias('product_information', legacy_model=True),
     materialized='table',
     file_format = 'delta',
-    tags=['static'],
+    tags=['legacy', 'static'],
     unique_key = ['product_contract_address'],
     post_hook='{{ expose_spells(\'["ethereum"]\',
                                 "project",

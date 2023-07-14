@@ -1,5 +1,7 @@
 {{ 
     config(
+	tags=['legacy'],
+	
         materialized='incremental',
         alias = alias('transactions', legacy_model=True),
         partition_by = ['block_date'],

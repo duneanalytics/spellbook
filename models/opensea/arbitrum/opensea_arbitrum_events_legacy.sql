@@ -1,4 +1,6 @@
 {{ config(
+	tags=['legacy'],
+	
          schema = 'opensea_arbitrum',        
          alias = alias('events', legacy_model=True)
          )

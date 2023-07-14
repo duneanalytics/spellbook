@@ -1,5 +1,7 @@
 {{
     config(
+	tags=['legacy'],
+	
         alias = alias('balances', legacy_model=True),
         post_hook='{{ expose_spells_hide_trino(\'["ethereum"]\',
                                     "project",

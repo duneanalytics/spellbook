@@ -1,5 +1,7 @@
 
 {{ config(
+	tags=['legacy'],
+	
         alias = alias('art_blocks_collections', legacy_model=True)
         )
 }}

@@ -1,4 +1,6 @@
 {{ config(
+	tags=['legacy'],
+	
     alias = alias('standard_bridge_flows', legacy_model=True),
     partition_by = ['block_date'],
     materialized = 'incremental',

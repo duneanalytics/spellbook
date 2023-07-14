@@ -1,4 +1,6 @@
 {{ config(
+	tags=['legacy'],
+	
     alias = alias('pool_incentives_mappings', legacy_model=True)
     )
 }}

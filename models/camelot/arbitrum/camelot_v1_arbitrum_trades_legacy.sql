@@ -1,4 +1,6 @@
 {{ config(
+	tags=['legacy'],
+	
   schema = 'camelot_v1_arbitrum',
     alias = alias('trades', legacy_model=True),
     partition_by = ['block_date'],

@@ -1,4 +1,6 @@
 {{ config(
+	tags=['legacy'],
+	
         schema = 'dex_arbitrum',
         alias = alias('sandwiches', legacy_model=True),
         partition_by = ['block_date'],

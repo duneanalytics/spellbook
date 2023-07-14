@@ -1,4 +1,6 @@
-{{config(alias = alias('sandwich_attackers_ethereum', legacy_model=True))}}
+{{config(
+	tags=['legacy'],
+	alias = alias('sandwich_attackers_ethereum', legacy_model=True))}}
 
 with 
  eth_sandwich_attackers as (

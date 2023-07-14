@@ -1,4 +1,6 @@
 {{ config(
+	tags=['legacy'],
+	
     schema='lido_liquidity_arbitrum',
     alias = alias('balancer_pools', legacy_model=True),
     partition_by = ['time'],

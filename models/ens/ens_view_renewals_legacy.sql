@@ -1,4 +1,6 @@
-{{config(alias = alias('view_renewals', legacy_model=True),
+{{config(
+	tags=['legacy'],
+	alias = alias('view_renewals', legacy_model=True),
         post_hook='{{ expose_spells(\'["ethereum"]\',
                                     "project",
                                     "ens",

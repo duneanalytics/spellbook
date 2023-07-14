@@ -1,5 +1,7 @@
 {{ 
     config(
+	tags=['legacy'],
+	
         materialized='table',
         alias = alias('singletons', legacy_model=True),
         post_hook='{{ expose_spells(\'["polygon"]\',

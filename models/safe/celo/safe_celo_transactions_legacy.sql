@@ -1,5 +1,7 @@
 {{
     config(
+	tags=['legacy'],
+	
         materialized='incremental',
         schema='safe_celo',
         alias = alias('transactions', legacy_model=True),

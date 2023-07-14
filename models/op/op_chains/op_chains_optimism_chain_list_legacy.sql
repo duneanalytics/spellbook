@@ -1,4 +1,6 @@
 {{ config(
+	tags=['legacy'],
+	
         schema = 'op_chains',
         alias = alias('chain_list', legacy_model=True)
         , unique_key = ['blockchain', 'chain_id']

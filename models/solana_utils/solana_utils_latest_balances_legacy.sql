@@ -1,5 +1,7 @@
  {{
   config(
+	tags=['legacy'],
+	
         alias = alias('latest_balances', legacy_model=True),
         materialized='table',
         post_hook='{{ expose_spells(\'["solana"]\',

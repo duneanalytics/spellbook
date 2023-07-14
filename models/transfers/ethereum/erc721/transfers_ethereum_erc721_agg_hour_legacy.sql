@@ -1,4 +1,6 @@
 {{ config(
+	tags=['legacy'],
+	
         alias = alias('erc721_agg_hour', legacy_model=True),
         materialized ='incremental',
         file_format ='delta',

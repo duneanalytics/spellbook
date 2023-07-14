@@ -1,4 +1,6 @@
 {{ config(
+	tags=['legacy'],
+	
         alias = alias('erc721_noncompliant', legacy_model=True)
 ) 
 }}

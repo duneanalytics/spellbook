@@ -1,4 +1,6 @@
 {{ config(
+	tags=['legacy'],
+	
     alias = alias('project_wallets', legacy_model=True),
     post_hook='{{ expose_spells(\'["optimism"]\',
                                 "project",

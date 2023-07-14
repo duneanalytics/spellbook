@@ -1,4 +1,6 @@
 {{ config(
+	tags=['legacy'],
+	
     schema = 'aztec_v2_ethereum',
     alias = alias('rollupbridge_transfers', legacy_model=True),
     partition_by = ['evt_block_date'],

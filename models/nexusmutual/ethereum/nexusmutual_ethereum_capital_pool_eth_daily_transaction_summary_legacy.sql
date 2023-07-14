@@ -1,4 +1,6 @@
 {{ config(
+	tags=['legacy'],
+	
     alias = alias('capital_pool_eth_daily_transaction_summary', legacy_model=True),
     partition_by = ['day'],
     materialized = 'incremental',

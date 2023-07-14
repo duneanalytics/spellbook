@@ -1,4 +1,6 @@
 {{ config(
+	tags=['legacy'],
+	
     alias = alias('transactions_gnosis_eth', legacy_model=True),
     partition_by = ['block_date'],
     materialized = 'incremental',

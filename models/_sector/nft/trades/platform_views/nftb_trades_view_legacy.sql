@@ -1,5 +1,7 @@
 
 {{ config(
+	tags=['legacy'],
+	
         schema = 'nftb',
         alias = alias('trades', legacy_model=True),
         materialized = 'view',

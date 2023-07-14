@@ -1,4 +1,6 @@
 {{ config(
+	tags=['legacy'],
+	
 	schema = 'pika_v3_optimism',
 	alias = alias('perpetual_trades', legacy_model=True),
 	partition_by = ['block_date'],

@@ -1,4 +1,6 @@
 {{ config(
+	tags=['legacy'],
+	
     schema = 'tigris_v2_polygon',
     alias = alias('events_add_margin', legacy_model=True),
     partition_by = ['day'],

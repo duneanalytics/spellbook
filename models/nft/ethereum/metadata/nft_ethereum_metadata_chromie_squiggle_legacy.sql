@@ -1,4 +1,6 @@
 {{ config(
+	tags=['legacy'],
+	
         alias = alias('chromie_squiggle', legacy_model=True)
         )
 }}

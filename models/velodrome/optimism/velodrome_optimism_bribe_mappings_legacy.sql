@@ -1,5 +1,7 @@
 {{
     config(
+	tags=['legacy'],
+	
         schema = 'velodrome_optimism',
         alias = alias('bribe_mappings', legacy_model=True),
         materialized = 'table',
