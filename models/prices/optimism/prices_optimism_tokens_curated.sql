@@ -114,6 +114,10 @@ FROM
     ("bomb-fbomb","fBOMB","0x74ccbe53F77b08632ce0CB91D3A545bF6B8E0979",18),
     ("busd-binance-usd","BUSD","0x9c9e5fd8bbc25984b178fdce6117defa39d2db39",18),
     ("cbeth-coinbase-wrapped-staked-eth","cbETH","0xaddb6a0412de1ba0f936dcaeb8aaa24578dcf3b2",18),
-    ("grain-granary","GRAIN","0xfD389Dc9533717239856190F42475d3f263a270d",18)
+    ("grain-granary","GRAIN","0xfD389Dc9533717239856190F42475d3f263a270d",18),
+    ("ern-ethos-reserve-note","ERN","0xc5b001DC33727F8F26880B184090D3E252470D45",18),
+    ("t-threshold-network-token","T","0x747e42Eb0591547a0ab429B3627816208c734EA7", 18),
+    ("tbtc-tbtc-v2","tBTC","0x6c84a8f1c29108F47a79964b5Fe888D4f4D0dE40",18),
+    ("aura-aura-finance","AURA","0x1509706a6c66CA549ff0cB464de88231DDBe213B",18)
 
 ) as temp (token_id, symbol, contract_address, decimals)
