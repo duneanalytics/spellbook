@@ -1,0 +1,129 @@
+{{ config(
+    alias = 'l1_calldata_fees',
+    partition_by = ['block_time'],
+    materialized = 'incremental',
+    file_format = 'delta',
+    incremental_strategy = 'merge',
+    unique_key = ['tx_hash'],
+    post_hook='{{ expose_spells(\'["ethereum"]\',
+                                    "project",
+                                    "rollup_economics",
+                                    \'["niftytable"]\') }}'
+)}}
+
+WITH tx_batch_appends AS (
+    SELECT
+    'Arbitrum' AS name,
+    t.block_time,
+    t.hash,
+    (t.gas_used*t.gas_price)/POWER(10,18) AS gas_spent,
+    (length(t.data)) AS data_length
+    FROM
+    (
+      SELECT
+      evt_tx_hash AS tx_hash,
+      evt_block_time  AS block_time
+      FROM source('arbitrum_ethereum', 'SequencerInbox_evt_SequencerBatchDeliveredFromOrigin') o
+      WHERE evt_block_time >= timestamp '2022-01-01'
+      {% if is_incremental() %}
+          and evt_block_time >= date_trunc("day", now() - interval '1 week')
+      {% endif %}
+
+      UNION ALL
+
+      SELECT
+      call_tx_hash AS tx_hash,
+      call_block_time  AS block_time
+      FROM source('arbitrum_ethereum','SequencerInbox_call_addSequencerL2BatchFromOrigin') o
+      WHERE call_success = true
+      AND call_tx_hash NOT IN
+      (SELECT evt_tx_hash FROM source('arbitrum_ethereum', 'SequencerInbox_evt_SequencerBatchDeliveredFromOrigin') o
+      WHERE evt_block_time >= timestamp '2022-01-01'
+      )
+      {% if is_incremental() %}
+          and call_block_time >= date_trunc("day", now() - interval '1 week')
+      {% endif %}
+
+      UNION ALL
+
+      SELECT
+      call_tx_hash AS tx_hash,
+      call_block_time  AS block_time
+      FROM source('arbitrum_ethereum','SequencerInbox_call_addSequencerL2Batch') o
+      WHERE call_success = true
+      AND call_tx_hash NOT IN
+      (SELECT evt_tx_hash FROM source('arbitrum_ethereum', 'SequencerInbox_evt_SequencerBatchDeliveredFromOrigin') o
+      WHERE evt_block_time >= timestamp '2022-01-01'
+      )
+      {% if is_incremental() %}
+          and call_block_time >= date_trunc("day", now() - interval '1 week')
+      {% endif %}
+
+      UNION ALL
+
+      SELECT
+      call_tx_hash AS tx_hash,
+      call_block_time  AS block_time
+      FROM source('arbitrum_ethereum','SequencerInbox_call_addSequencerL2BatchFromOriginWithGasRefunder') o
+      WHERE call_success = true
+      AND call_tx_hash NOT IN
+      (SELECT evt_tx_hash FROM source('arbitrum_ethereum', 'SequencerInbox_evt_SequencerBatchDeliveredFromOrigin') o
+      WHERE evt_block_time >= timestamp '2022-01-01'
+      )
+      {% if is_incremental() %}
+          and call_block_time >= date_trunc("day", now() - interval '1 week')
+      {% endif %}
+    )b
+    INNER JOIN source('ethereum','transactions') t
+    ON b.tx_hash = t.hash
+    WHERE b.block_number = t.block_number
+    AND b.block_time = t.block_time
+    AND success = true
+    AND t.block_time >= timestamp '2022-01-01'
+    {% if is_incremental() %}
+        and block_time >= date_trunc("day", now() - interval '1 week')
+    {% endif %}
+
+    UNION ALL SELECT
+    SELECT
+      op.name AS name,
+      t.block_time,
+      t.hash,
+      gas_used * (gas_price / 1e18) AS gas_spent,
+      (length(t.data)) AS data_length
+    FROM
+      source('ethereum','transactions') AS t
+      INNER JOIN source('dune_upload','op_stack_chain_metadata') op ON (
+        t."from" = op.batchinbox_from_address
+        AND t.to = op.batchinbox_to_address
+      )
+      OR (
+        t."from" = op.l2_output_oracle_from_address
+        AND t.to = op.l2_output_oracle
+      )
+    WHERE t.block_time >= timestamp '2022-01-01'
+    {% if is_incremental() %}
+        and block_time >= date_trunc("day", now() - interval '1 week')
+    {% endif %}
+
+)
+
+,block_basefees AS (
+    SELECT b.number as block_number, b.base_fee_per_gas, b.time
+    FROM source('ethereum','blocks') AS b
+    WHERE b.time >= timestamp '2022-01-01'
+    {% if is_incremental() %}
+        and b.time >= date_trunc("day", now() - interval '1 week')
+    {% endif %}
+)
+
+
+SELECT
+txs.chain,
+txs.hash,
+bxs.time AS block_time,
+txs.data_length,
+gas_spent
+FROM tx_batch_appends txs
+INNER JOIN block_basefees bxs
+ON txs.block_number = bxs.block_number
