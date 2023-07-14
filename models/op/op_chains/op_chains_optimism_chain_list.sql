@@ -22,5 +22,6 @@ FROM(values
          ('optimism',	'OP Mainnet',		10,		'2021-06-23',	1)
         ,('zora',	'Zora Network Mainnet',	7777777,	'2023-06-14',	1)
         ,('base',	'Base Mainnet',		8453,		'2023-07-13',	1)
+        ,('public_goods_network', 'Public Goods network',	NULL,	NULL,	1)
 
 ) op (blockchain, blockchain_name, chain_id, start_date, is_superchain)
