@@ -102,7 +102,7 @@ WITH filter_1 AS (
     FROM {{ ref('nft_trades') }} nftt
     INNER JOIN {{ ref('addresses_events_optimism_first_funded_by') }} filter_funding_buyer
         ON filter_funding_buyer.address=nftt.buyer
-        AND filter_funding_buyer.first_funded_by NOT IN (SELECT DISTINCT address FROM {{ ref('labels_bridges') }})
+        AND filter_funding_buyer.first_funded_by NOT IN (SELECT DISTINCT address FROM {{ ref('labels_bridges_legacy') }})
         AND filter_funding_buyer.first_funded_by NOT IN (SELECT DISTINCT address FROM {{ ref('labels_cex') }})
         AND filter_funding_buyer.first_funded_by NOT IN (SELECT DISTINCT contract_address FROM {{ ref('tornado_cash_withdrawals') }})
         {% if is_incremental() %}
@@ -110,7 +110,7 @@ WITH filter_1 AS (
         {% endif %}
     INNER JOIN {{ ref('addresses_events_optimism_first_funded_by') }} filter_funding_seller
         ON filter_funding_seller.address=nftt.seller
-        AND filter_funding_seller.first_funded_by NOT IN (SELECT DISTINCT address FROM {{ ref('labels_bridges') }})
+        AND filter_funding_seller.first_funded_by NOT IN (SELECT DISTINCT address FROM {{ ref('labels_bridges_legacy') }})
         AND filter_funding_seller.first_funded_by NOT IN (SELECT DISTINCT address FROM {{ ref('labels_cex') }})
         AND filter_funding_seller.first_funded_by NOT IN (SELECT DISTINCT contract_address FROM {{ ref('tornado_cash_withdrawals') }})
         {% if is_incremental() %}

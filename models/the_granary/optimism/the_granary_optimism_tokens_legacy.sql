@@ -1,4 +1,5 @@
 {{ config(
+	tags=['legacy'],
     alias = alias('tokens', legacy_model=True)
     , materialized = 'incremental'
     , file_format = 'delta'

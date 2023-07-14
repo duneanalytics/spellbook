@@ -51,7 +51,7 @@ batch_values as (
         sum(usd_value)  as batch_value,
         sum(fee_usd)    as fee_value,
         price           as eth_price
-    from {{ ref('cow_protocol_gnosis_trades') }}
+    from {{ ref('cow_protocol_gnosis_trades_legacy') }}
         left outer join {{ source('prices', 'usd') }} as p
             on p.contract_address = '0xe91d153e0b41518a2ce8dd3d7944fa863463a97d'
             and p.minute = date_trunc('minute', block_time)

@@ -1,4 +1,4 @@
-{{ config( alias = alias('erc20', legacy_model=True), tags=['static'])}}
+{{ config( alias = alias('erc20', legacy_model=True), tags=['static', 'legacy'])}}
 
 SELECT LOWER(contract_address) as contract_address, symbol, decimals 
 FROM (VALUES
