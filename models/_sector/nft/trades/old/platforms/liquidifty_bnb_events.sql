@@ -235,9 +235,9 @@ from (
     union all
     select * from v3
 ) buys
-left join {{ ref('tokens_bnb_bep20_legacy') }} bep20
+left join {{ ref('tokens_bnb_bep20') }} bep20
     on bep20.contract_address = buys.currency_contract
-left join {{ ref('tokens_bnb_nft_legacy') }} nft_tokens
+left join {{ ref('tokens_bnb_nft') }} nft_tokens
     on nft_tokens.contract_address = buys.nft_contract_address
 left join {{ source('prices', 'usd') }} as prices
     on prices.minute = date_trunc('minute', buys.block_time)

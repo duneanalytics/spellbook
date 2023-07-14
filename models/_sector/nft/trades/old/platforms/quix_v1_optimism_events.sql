@@ -148,10 +148,10 @@ with events_raw as (
         {% if is_incremental() %}
         and tx.block_time >= date_trunc("day", now() - interval '1 week')
         {% endif %}
-    left join {{ ref('nft_aggregators_legacy') }} as agg
+    left join {{ ref('nft_aggregators') }} as agg
         on agg.contract_address = tx.to
         and agg.blockchain = 'optimism'
-    left join {{ ref('tokens_nft_legacy') }} n
+    left join {{ ref('tokens_nft') }} n
         on n.contract_address = er.nft_contract_address
         and n.blockchain = 'optimism'
     left join {{ source('erc721_optimism','evt_transfer') }} as erct2
@@ -178,7 +178,7 @@ with events_raw as (
         {% if is_incremental() %}
         and erc20.evt_block_time >= date_trunc("day", now() - interval '1 week')
         {% endif %}
-    left join {{ ref('tokens_erc20_legacy') }} as t1
+    left join {{ ref('tokens_erc20') }} as t1
         on t1.contract_address =
             case when (erc20.contract_address = '0x0000000000000000000000000000000000000000' or erc20.contract_address is null)
             then '0xdeaddeaddeaddeaddeaddeaddeaddeaddead0000'

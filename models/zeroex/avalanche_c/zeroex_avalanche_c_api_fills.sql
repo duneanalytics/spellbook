@@ -350,5 +350,5 @@ LEFT JOIN {{ source('prices', 'usd') }} mp
     AND mp.minute >= '{{zeroex_v3_start_date}}'
     {% endif %}
 
-LEFT OUTER JOIN {{ ref('tokens_erc20_legacy') }} ts ON ts.contract_address = taker_token and ts.blockchain = 'avalanche_c'
-LEFT OUTER JOIN {{ ref('tokens_erc20_legacy') }} ms ON ms.contract_address = maker_token and ms.blockchain = 'avalanche_c'
+LEFT OUTER JOIN {{ ref('tokens_erc20') }} ts ON ts.contract_address = taker_token and ts.blockchain = 'avalanche_c'
+LEFT OUTER JOIN {{ ref('tokens_erc20') }} ms ON ms.contract_address = maker_token and ms.blockchain = 'avalanche_c'

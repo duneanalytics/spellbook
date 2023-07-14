@@ -145,7 +145,7 @@ source_inventory_enriched as (
         AND btx.block_time >= date_trunc("day", now() - interval '1 week')
         {% endif %}
     LEFT JOIN
-    {{ ref('tokens_bnb_nft_legacy') }} nft_token
+    {{ ref('tokens_bnb_nft') }} nft_token
         ON nft_token.contract_address = src.nft_contract_address
     LEFT JOIN
     {{ source('prices','usd') }} p
@@ -159,7 +159,7 @@ source_inventory_enriched as (
         AND p.minute >= date_trunc("day", now() - interval '1 week')
         {% endif %}
     LEFT JOIN
-    {{ ref('nft_bnb_aggregators_legacy') }} agg
+    {{ ref('nft_bnb_aggregators') }} agg
         ON agg.contract_address = src.sender_address
     LEFT JOIN
     {{ source('erc721_bnb','evt_transfer') }} erc721

@@ -118,6 +118,6 @@ FROM (
         , cast(alloc_points as double) / cast(total_alloc_points as double) AS alloc_point_share
         FROM joined
 ) a
-LEFT JOIN {{ ref('tokens_optimism_erc20_legacy') }} t
+LEFT JOIN {{ ref('tokens_optimism_erc20') }} t
         ON a.reward_token = t.contract_address
         

@@ -90,7 +90,7 @@ INNER JOIN
 dao_tmp dt 
     ON t.dao_wallet_address = dt.dao_wallet_address
 LEFT JOIN 
-{{ ref('tokens_erc20_legacy') }} er
+{{ ref('tokens_erc20') }} er
     ON t.token = er.contract_address
     AND er.blockchain = 'gnosis'
 LEFT JOIN 

@@ -411,7 +411,7 @@ AND mp.minute >= date_trunc('day', now() - interval '1 week')
 AND mp.minute >= '{{zeroex_v3_start_date}}'
 {% endif %}
 
-LEFT OUTER JOIN {{ ref('tokens_erc20_legacy') }} ts ON ts.contract_address = taker_token and ts.blockchain = 'polygon'
-LEFT OUTER JOIN {{ ref('tokens_erc20_legacy') }} ms ON ms.contract_address = maker_token and ms.blockchain = 'polygon'
+LEFT OUTER JOIN {{ ref('tokens_erc20') }} ts ON ts.contract_address = taker_token and ts.blockchain = 'polygon'
+LEFT OUTER JOIN {{ ref('tokens_erc20') }} ms ON ms.contract_address = maker_token and ms.blockchain = 'polygon'
 
 WHERE all_tx.tx_hash != '0x34ee112f3d601e4bb2f19f7744e86f9b4f65ed6c44dfe48db1c560d6b1c34bef' -- exclude tx with wrong decimals data
