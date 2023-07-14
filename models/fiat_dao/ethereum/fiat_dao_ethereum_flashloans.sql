@@ -26,7 +26,7 @@ SELECT 'ethereum' AS blockchain
 , flash.receiver AS recipient
 , flash.contract_address
 FROM {{ source('fiat_dao_ethereum','Flash_evt_FlashLoan') }} flash
-LEFT JOIN {{ ref('tokens_ethereum_erc20_legacy') }} tok ON flash.token=tok.contract_address
+LEFT JOIN {{ ref('tokens_ethereum_erc20') }} tok ON flash.token=tok.contract_address
 LEFT JOIN {{ source('prices','usd') }} pu ON pu.blockchain = 'ethereum'
     AND pu.contract_address = flash.token
     AND pu.minute = date_trunc('minute', flash.evt_block_time)

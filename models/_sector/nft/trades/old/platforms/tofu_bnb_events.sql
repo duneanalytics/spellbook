@@ -120,7 +120,7 @@ FROM tfe
                        {% if is_incremental() %}
                        and tx.block_time >= date_trunc("day", now() - interval '1 week')
                        {% endif %}
-         LEFT JOIN {{ ref('tokens_bnb_nft_legacy') }} nft
+         LEFT JOIN {{ ref('tokens_bnb_nft') }} nft
                    ON tff.token = nft.contract_address
          LEFT JOIN {{ source('prices', 'usd') }} pu
                    ON pu.blockchain = 'bnb'
@@ -129,5 +129,5 @@ FROM tfe
                        {% if is_incremental() %}
                        AND pu.minute >= date_trunc("day", now() - interval '1 week')
                        {% endif %}
-         LEFT JOIN {{ ref('nft_bnb_aggregators_legacy')}} agg
+         LEFT JOIN {{ ref('nft_bnb_aggregators')}} agg
                    ON agg.contract_address = tx.`to`

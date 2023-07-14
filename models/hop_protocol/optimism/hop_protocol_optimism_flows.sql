@@ -146,7 +146,7 @@ LEFT JOIN {{ source('optimism', 'transactions') }} t
         {% if is_incremental() %}
         AND t.block_time >= (NOW() - interval '14 days')
         {% endif %}
-LEFT JOIN {{ ref('tokens_erc20_legacy') }} erc
+LEFT JOIN {{ ref('tokens_erc20') }} erc
     ON erc.blockchain = hba.blockchain
     AND erc.contract_address = hba.`l2CanonicalToken`
     

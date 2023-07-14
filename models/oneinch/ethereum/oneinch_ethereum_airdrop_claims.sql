@@ -40,7 +40,7 @@ SELECT 'ethereum' AS blockchain
 , '1INCH' AS token_symbol
 , t.evt_index
 FROM {{ source('oneinch_ethereum', 'MerkleDistributor_evt_Claimed') }} t
-LEFT JOIN {{ ref('prices_usd_forward_fill_legacy') }} pu ON pu.blockchain = 'ethereum'
+LEFT JOIN {{ ref('prices_usd_forward_fill') }} pu ON pu.blockchain = 'ethereum'
     AND pu.contract_address='{{oinch_token_address}}'
     AND pu.minute=date_trunc('minute', t.evt_block_time)
     {% if is_incremental() %}

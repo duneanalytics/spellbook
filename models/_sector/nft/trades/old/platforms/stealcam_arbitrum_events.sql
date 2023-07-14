@@ -73,7 +73,7 @@ INNER JOIN {{ source('arbitrum', 'transactions') }} at ON at.block_number=sc.evt
     {% if not is_incremental() %}
     AND at.block_time >= '{{project_start_date}}'
     {% endif %}
-LEFT JOIN {{ ref('prices_usd_forward_fill_legacy') }} pu ON pu.blockchain = 'ethereum'
+LEFT JOIN {{ ref('prices_usd_forward_fill') }} pu ON pu.blockchain = 'ethereum'
     AND pu.contract_address='0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'
     AND pu.minute=date_trunc('minute', sc.evt_block_time)
     {% if is_incremental() %}

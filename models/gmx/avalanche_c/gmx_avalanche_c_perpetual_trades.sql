@@ -136,9 +136,9 @@ INNER JOIN {{ source('avalanche_c', 'transactions') }} txns
     {% if is_incremental() %}
     AND txns.block_time >= date_trunc("day", now() - interval '1 week')
     {% endif %}
-LEFT JOIN {{ ref('tokens_erc20_legacy') }} erc20a
+LEFT JOIN {{ ref('tokens_erc20') }} erc20a
     ON erc20a.contract_address = pe.virtual_asset
     AND erc20a.blockchain = 'avalanche_c'
-LEFT JOIN {{ ref('tokens_erc20_legacy') }} erc20b
+LEFT JOIN {{ ref('tokens_erc20') }} erc20b
     ON erc20b.contract_address = pe.underlying_asset
     AND erc20b.blockchain = 'avalanche_c'

@@ -109,6 +109,6 @@ select
     sum(tr.amount_raw) as amount_raw,
     sum(tr.amount_raw / power(10, t.decimals)) as amount
 from transfers_bnb_bep20 tr
-left join {{ ref('tokens_bnb_bep20_legacy') }} t on t.contract_address = tr.token_address
+left join {{ ref('tokens_bnb_bep20') }} t on t.contract_address = tr.token_address
 group by 1, 2, 3, 4, 5
 ;

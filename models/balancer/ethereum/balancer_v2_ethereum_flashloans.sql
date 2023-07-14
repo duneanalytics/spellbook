@@ -24,7 +24,7 @@ WITH flashloans AS (
     , erc20.decimals AS currency_decimals
     , f.contract_address
     FROM {{ source('balancer_v2_ethereum','Vault_evt_FlashLoan') }} f
-    LEFT JOIN {{ ref('tokens_ethereum_erc20_legacy') }} erc20 ON f.token = erc20.contract_address
+    LEFT JOIN {{ ref('tokens_ethereum_erc20') }} erc20 ON f.token = erc20.contract_address
         {% if is_incremental() %}
         WHERE f.evt_block_time >= date_trunc("day", now() - interval '1 week')
         {% endif %}

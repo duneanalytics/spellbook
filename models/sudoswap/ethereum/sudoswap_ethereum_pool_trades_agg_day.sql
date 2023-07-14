@@ -39,8 +39,8 @@ SELECT
         ELSE -1 * nft_amount
       END
     ) AS nft_change_trading
-FROM {{ ref('sudoswap_ethereum_base_trades_legacy') }} t
-LEFT JOIN {{ ref('prices_usd_forward_fill_legacy') }} usd
+FROM {{ ref('sudoswap_ethereum_base_trades') }} t
+LEFT JOIN {{ ref('prices_usd_forward_fill') }} usd
 ON usd.blockchain = null and usd.symbol = 'ETH'
     AND usd.minute = date_trunc('minute',t.block_time)
     {% if not is_incremental() %}

@@ -80,10 +80,10 @@ INNER JOIN {{ source('bnb', 'transactions') }} tx
     {% if is_incremental() %}
     AND tx.block_time >= date_trunc("day", now() - interval '1 week')
     {% endif %}
-LEFT JOIN {{ ref('tokens_erc20_legacy') }} bep20a
+LEFT JOIN {{ ref('tokens_erc20') }} bep20a
     ON bep20a.contract_address = dexs.token_bought_address
     AND bep20a.blockchain = 'bnb'
-LEFT JOIN {{ ref('tokens_erc20_legacy') }} bep20b
+LEFT JOIN {{ ref('tokens_erc20') }} bep20b
     ON bep20b.contract_address = dexs.token_sold_address
     AND bep20b.blockchain = 'bnb'
 LEFT JOIN {{ source('prices', 'usd') }} p_bought

@@ -68,7 +68,7 @@ SELECT
     evt_block_number
 FROM {{ source('aave_v2_ethereum','LendingPool_evt_LiquidationCall') }}
 ) borrow
-LEFT JOIN {{ ref('tokens_ethereum_erc20_legacy') }} erc20
+LEFT JOIN {{ ref('tokens_ethereum_erc20') }} erc20
     ON borrow.token = erc20.contract_address
 LEFT JOIN {{ source('prices','usd') }} p 
     ON p.minute = date_trunc('minute', borrow.evt_block_time) 
