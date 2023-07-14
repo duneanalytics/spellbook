@@ -36,4 +36,3 @@ leverage as (
 )
 
 SELECT * FROM leverage 
-;

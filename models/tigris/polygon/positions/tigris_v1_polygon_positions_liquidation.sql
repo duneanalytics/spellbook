@@ -101,4 +101,3 @@ INNER JOIN
 last_leverage ll 
     ON lp.position_id = ll.position_id
     AND lp.version = ll.version
-;

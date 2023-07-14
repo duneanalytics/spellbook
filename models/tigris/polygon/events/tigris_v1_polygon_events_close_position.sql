@@ -208,4 +208,3 @@ SELECT *, 'v1.7' as version FROM close_position_v7
 UNION ALL
 
 SELECT *, 'v1.8' as version FROM close_position_v8
-;

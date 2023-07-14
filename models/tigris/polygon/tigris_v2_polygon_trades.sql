@@ -266,4 +266,3 @@ SELECT
     'polygon' as blockchain,
     *
 FROM limit_order
-;

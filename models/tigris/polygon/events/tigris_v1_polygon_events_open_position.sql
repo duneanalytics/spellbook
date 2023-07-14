@@ -256,4 +256,3 @@ SELECT *, 'v1.7' as version FROM open_positions_v7
 UNION ALL
 
 SELECT *, 'v1.8' as version FROM open_positions_v8
-;
