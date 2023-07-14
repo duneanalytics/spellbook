@@ -60,5 +60,12 @@ FROM (VALUES
         ,("0x56315b90c40730925ec5485cf004d835058518a0", "Base Mainnet", "L2OutputOracleProxy","to_address","OP Stack","Base Mainnet: L2OutputOracleProxy")
         ,("0x7237343c2A746Aa2940E5E4Fbd53eaFBF3049DcA", "Base Mainnet", "L2OutputOracle","to_address","OP Stack","Base Mainnet: L2OutputOracle")
         ,("0x642229f238fb9de03374be34b0ed8d9de80752c5", "Base Mainnet", "L2OutputOracle","from_address","OP Stack","Base Mainnet: L2OutputOracle")
+        -- https://github.com/ethereum-optimism/optimism/pull/6261/files
+        ,("0xC1B90E1e459aBBDcEc4DCF90dA45ba077d83BFc5", "Public Goods Network", "L1BatchInbox","to_address","OP Stack","Public Goods Network: L1BatchInbox")
+        ,("0x99526b0e49A95833E734EB556A6aBaFFAb0Ee167", "Public Goods Network", "L1BatchInbox","from_address","OP Stack","Public Goods Network: L1BatchInbox")
+
+        ,("0xA38d0c4E6319F9045F20318BA5f04CDe94208608", "Public Goods Network", "L2OutputOracleProxy","to_address","OP Stack","Public Goods Network: L2OutputOracleProxy")
+        ,("0x76983dfED43C7ae7ebB592A92Be2BE972cAE4348", "Public Goods Network", "L2OutputOracle","to_address","OP Stack","Public Goods Network: L2OutputOracle")
+        ,("0x69968Ce0E92d9c101BAd81de55EFbcb69603cFe3", "Public Goods Network", "L2OutputOracle","from_address","OP Stack","Public Goods Network: L2OutputOracle")
 
         ) AS x (address, protocol_name, submitter_type, role_type, version, description)
