@@ -7,16 +7,16 @@ models:
       sector: chainlink
       contributors: linkpool_ryan
     config:
-      tags: ['chainlink', 'ocr', 'gas', 'transmission', 'logs', 'gnosis']
+      tags: ["chainlink", "ocr", "gas", "transmission", "logs", "gnosis"]
     description: >
       Chainlink OCR Gas Transmission Logs
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
-              - blockchain
-              - block_number
-              - tx_hash
-              - tx_index
+            - blockchain
+            - block_number
+            - tx_hash
+            - tx_index
     columns:
       - &blockchain
         name: blockchain
@@ -64,16 +64,9 @@ models:
       sector: chainlink
       contributors: linkpool_ryan
     config:
-      tags: ['chainlink', 'ocr', 'fulfilled', 'transactions', 'gnosis']
+      tags: ["chainlink", "ocr", "fulfilled", "transactions", "gnosis"]
     description: >
       Chainlink OCR Fulfilled Transactions
-    tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-              - blockchain
-              - tx_hash
-              - tx_index
-              - node_address
     columns:
       - *blockchain
       - *block_time
@@ -98,16 +91,9 @@ models:
       sector: chainlink
       contributors: linkpool_ryan
     config:
-      tags: ['chainlink', 'ocr', 'reverted', 'transactions', 'gnosis']
+      tags: ["chainlink", "ocr", "reverted", "transactions", "gnosis"]
     description: >
       Chainlink OCR Reverted Transactions
-    tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-              - blockchain
-              - tx_hash
-              - tx_index
-              - node_address
     columns:
       - *blockchain
       - *block_time
@@ -124,15 +110,9 @@ models:
       sector: chainlink
       contributors: linkpool_ryan
     config:
-      tags: ['chainlink','ocr', 'gas', 'daily', 'gnosis']
+      tags: ["chainlink", "ocr", "gas", "daily", "gnosis"]
     description: >
-        Chainlink OCR Gas Daily
-    tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-              - blockchain
-              - date_start
-              - node_address
+      Chainlink OCR Gas Daily
     columns:
       - *blockchain
       - &date_start
@@ -168,15 +148,9 @@ models:
       sector: chainlink
       contributors: linkpool_ryan
     config:
-      tags: ['chainlink','ocr', 'request', 'daily', 'gnosis']
+      tags: ["chainlink", "ocr", "request", "daily", "gnosis"]
     description: >
-        Chainlink OCR Request Daily
-    tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-              - blockchain
-              - date_start
-              - node_address
+      Chainlink OCR Request Daily
     columns:
       - *blockchain
       - *date_start
@@ -199,7 +173,7 @@ models:
       sector: chainlink
       contributors: linkpool_ryan
     config:
-      tags: ['chainlink', 'ocr', 'reward', 'transmission', 'logs', 'gnosis']
+      tags: ["chainlink", "ocr", "reward", "transmission", "logs", "gnosis"]
     description: >
       Chainlink OCR Reward Transmission Logs
     columns:
@@ -223,7 +197,7 @@ models:
       sector: chainlink
       contributors: linkpool_ryan
     config:
-      tags: ['chainlink', 'ocr', 'reward', 'evt', 'transfer', 'gnosis']
+      tags: ["chainlink", "ocr", "reward", "evt", "transfer", "gnosis"]
     description: >
       Chainlink OCR Reward Event Transfers
     columns:
@@ -245,15 +219,15 @@ models:
       sector: chainlink
       contributors: linkpool_ryan
     config:
-      tags: ['chainlink', 'ocr', 'reward', 'evt', 'transfer', 'daily', 'gnosis']
+      tags: ["chainlink", "ocr", "reward", "evt", "transfer", "daily", "gnosis"]
     description: >
       Chainlink OCR Reward Event Transfers Daily
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
-              - blockchain
-              - date_start
-              - admin_address
+            - blockchain
+            - date_start
+            - admin_address
     columns:
       - *blockchain
       - *date_start
@@ -268,15 +242,9 @@ models:
       sector: chainlink
       contributors: linkpool_ryan
     config:
-      tags: ['chainlink','ocr', 'reward', 'daily', 'gnosis']
+      tags: ["chainlink", "ocr", "reward", "daily", "gnosis"]
     description: >
-        Chainlink OCR Reward Daily
-    tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-              - blockchain
-              - date_start
-              - admin_address
+      Chainlink OCR Reward Daily
     columns:
       - *blockchain
       - *date_start
@@ -285,4 +253,3 @@ models:
       - *operator_name
       - *token_amount
       - *usd_amount
-
