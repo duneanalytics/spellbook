@@ -1,5 +1,6 @@
-{{ config
-(
+{{ config(
+	tags=['legacy'],
+	
     alias = alias('first_funded_by', legacy_model=True)
     , post_hook='{{ expose_spells(\'["arbitrum", "avalanche_c", "bnb", "ethereum", "fantom", "gnosis", "optimism", "polygon"]\',
                                     "sector",

@@ -1,4 +1,6 @@
-{{ config (
+{{ config(
+	tags=['legacy'],
+	
     alias = alias('test_addresses', legacy_model=True),
     post_hook = '{{ 
         expose_spells(\'["polygon"]\',

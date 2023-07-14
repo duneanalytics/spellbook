@@ -1,4 +1,6 @@
-{{ config (
+{{ config(
+	tags=['legacy'],
+	
     alias = alias('fees', legacy_model=True),
     post_hook = '{{ expose_spells(\'["ethereum"]\', "project", "tessera",\'["amadarrrr"]\') }}'
 ) }}

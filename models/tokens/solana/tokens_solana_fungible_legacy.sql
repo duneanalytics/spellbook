@@ -1,5 +1,4 @@
-{{ config
-(
+{{ config(
   alias = alias('fungible', legacy_model=True),
   tags=['legacy', 'static'],
   post_hook='{{ expose_spells(\'["solana"]\',

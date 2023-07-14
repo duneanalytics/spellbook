@@ -1,5 +1,6 @@
-{{ config
-(
+{{ config(
+	tags=['legacy'],
+	
     alias = alias('v0_6_userops_basics', legacy_model=True),
     partition_by = ['block_time'],
     materialized = 'incremental',

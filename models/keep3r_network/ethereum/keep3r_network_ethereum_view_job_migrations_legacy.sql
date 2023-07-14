@@ -1,4 +1,5 @@
-{{ config (
+{{ config(
+    tags=['legacy'],
     alias = alias('job_migrations', legacy_model=True),
     post_hook = '{{ expose_spells_hide_trino(\'["ethereum"]\', "project", "keep3r", \'["wei3erHase", "agaperste"]\') }}'
 ) }}
