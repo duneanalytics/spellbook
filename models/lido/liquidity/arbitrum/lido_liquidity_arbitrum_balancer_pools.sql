@@ -294,7 +294,7 @@ WHERE call_create.output_0 in (select distinct  SUBSTRING(pool_id, 0, 42) from p
             0 as row_numb
         FROM  pool_per_date  c
         LEFT JOIN cumulative_balance b ON c.pool_id = b.pool_id and  b.day <= c.day AND c.day < b.day_of_next_change
-        LEFT JOIN {{source('prices','tokens')}} t ON t.contract_address = b.token AND blockchain = "arbitrum"
+        LEFT JOIN {{ref('prices_tokens')}} t ON t.contract_address = b.token AND blockchain = "arbitrum"
         LEFT JOIN tokens_prices_daily p1 ON p1.time = b.day AND p1.token = b.token
         WHERE b.token = '0x5979d7b546e38e414f7e9822514be443a4800529'
         union all
@@ -309,7 +309,7 @@ WHERE call_create.output_0 in (select distinct  SUBSTRING(pool_id, 0, 42) from p
             row_number() OVER(PARTITION BY c.day, c.pool_id ORDER BY  c.day, c.pool_id, b.token) as row_numb
         FROM  pool_per_date  c
         LEFT JOIN cumulative_balance b ON c.pool_id = b.pool_id and b.day <= c.day AND c.day < b.day_of_next_change
-        LEFT JOIN {{source('prices','tokens')}} t ON t.contract_address = (case when b.token = lower('0xda1cd1711743e57dd57102e9e61b75f3587703da') then lower('0x82aF49447D8a07e3bd95BD0d56f35241523fBab1') else b.token end) AND blockchain = "arbitrum"
+        LEFT JOIN {{ref('prices_tokens')}} t ON t.contract_address = (case when b.token = lower('0xda1cd1711743e57dd57102e9e61b75f3587703da') then lower('0x82aF49447D8a07e3bd95BD0d56f35241523fBab1') else b.token end) AND blockchain = "arbitrum"
         LEFT JOIN tokens_prices_daily p1 ON p1.time = b.day AND p1.token = (case when b.token = lower('0xda1cd1711743e57dd57102e9e61b75f3587703da') then lower('0x82aF49447D8a07e3bd95BD0d56f35241523fBab1') else b.token end)
         WHERE b.token != '0x5979d7b546e38e414f7e9822514be443a4800529' and b.token !=SUBSTRING(b.pool_id, 0, 42)
 )

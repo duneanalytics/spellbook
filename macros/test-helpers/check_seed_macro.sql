@@ -72,7 +72,7 @@
     (
         {%- for checked_column in seed_check_columns %}
         select
-            'equality test: {{checked_column}}' as test_description
+            'equality test: {{checked_column}}' as test_description,
             -- these are cast to varchar to unify column types, note this is only for displaying them in the test results
             cast(model_{{checked_column}} as varchar) as result_model,
             cast(seed_{{checked_column}} as varchar) as expected_seed,

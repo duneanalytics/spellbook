@@ -37,7 +37,7 @@ with source_optimism_transactions as (
 )
 ,ref_tokens_nft as (
     select *
-    from {{ ref('tokens_nft') }}
+    from {{ ref('tokens_nft_legacy') }}
     where blockchain = 'optimism'
 )
 ,ref_tokens_erc20 as (
@@ -47,7 +47,7 @@ with source_optimism_transactions as (
 )
 ,ref_nft_aggregators as (
     select *
-    from {{ ref('nft_aggregators') }}
+    from {{ ref('nft_aggregators_legacy') }}
     where blockchain = 'optimism'
 )
 ,source_prices_usd as (

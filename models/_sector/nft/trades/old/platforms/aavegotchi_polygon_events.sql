@@ -127,4 +127,4 @@ LEFT JOIN {{ source('prices', 'usd') }} p
     AND p.minute >= date_trunc("day", now() - interval '1 week')
     {% endif %}
     AND p.minute = date_trunc('minute', a.evt_block_time)
-LEFT JOIN {{ ref('nft_aggregators') }} agg ON agg.blockchain = 'polygon' AND agg.contract_address = t.`to`
+LEFT JOIN {{ ref('nft_aggregators_legacy') }} agg ON agg.blockchain = 'polygon' AND agg.contract_address = t.`to`

@@ -51,7 +51,7 @@ SELECT
     royalty_fee_amount_usd,
     royalty_fee_percentage,
     unique_trade_id
-FROM {{ ref('nft_ethereum_trades_beta_ported')}}
+FROM {{ ref('nft_ethereum_trades_beta_ported_legacy')}}
 {% if is_incremental() %}
 WHERE block_time >= date_trunc("day", now() - interval '1 week')
 {% endif %}
@@ -95,7 +95,7 @@ SELECT blockchain,
     royalty_fee_percentage,
     unique_trade_id
 FROM {{ref('nft_events_old')}}
-WHERE (project, version) not in (SELECT distinct project, version FROM {{ref('nft_ethereum_trades_beta_ported')}})
+WHERE (project, version) not in (SELECT distinct project, version FROM {{ref('nft_ethereum_trades_beta_ported_legacy')}})
 {% if is_incremental() %}
 AND block_time >= date_trunc("day", now() - interval '1 week')
 {% endif %}
