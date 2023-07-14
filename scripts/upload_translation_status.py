@@ -6,9 +6,9 @@ def get_tables_from_manifest(manifest_path):
     """
     returns a csv of tables from a manifest file. We filter out
     """
-    table_csv_str = "schema, table, materialized, created_at, partition_by\n"
+    table_csv_str = "schema, table, path, tag\n"
     with open(manifest_path, "r") as f:
-        print(f"Loading manifest file at {manifest_path} ...")
+        # print(f"Loading manifest file at {manifest_path} ...")
         manifest = json.load(f)
     for node_name in manifest["nodes"]:
         node_data = manifest["nodes"][node_name]
@@ -16,10 +16,15 @@ def get_tables_from_manifest(manifest_path):
         if node_data["resource_type"] == "model":
             schema = node_data["schema"]
             table = node_data["alias"]
-            if 'dunesql' in node_data["tags"]:
-                print(node_data["original_file_path"])
-            # row = f"{schema}, {table}, {materialized}, {created_at}, {partition_by}\n"
-            # table_csv_str += row
+            path = node_data["original_file_path"]
+            row = ""
+            # print(node_data["original_file_path"], node_data["tags"])
+            if 'legacy' in node_data["tags"]:
+                row = f"{schema}, {table}, {path}, legacy\n"
+            elif 'dunesql' in node_data["tags"]:
+                row = f"{schema}, {table}, {path}, dunesql\n"
+                print(path)
+            table_csv_str += row
 
     return table_csv_str
 
@@ -31,10 +36,10 @@ def upload_csv(table_csv, target):
     """
 
     print(f"Writing {target} to Dune.com ...")
-    url = 'https://api.dev.dune.com/api/v1/table/upload/csv'
-    api_key = os.environ.get('DUNE_API_KEY')
+    url = 'https://api.dune.com/api/v1/table/upload/csv'
+    api_key = os.environ.get('DUNE_API_KEY_PROD')
     if not api_key:
-        raise Exception('DUNE_API_KEY environment variable not set!')
+        raise Exception('DUNE_API_KEY_PROD environment variable not set!')
     headers = {'X-Dune-Api-Key': api_key}
     payload = {
         "table_name": target,
@@ -49,4 +54,5 @@ def upload_csv(table_csv, target):
         raise Exception(response.content)
     
 if __name__ == "__main__":
-    get_tables_from_manifest("target/manifest.json")
+    table = get_tables_from_manifest("target/manifest.json")
+    upload_csv(table, "migration_status")
