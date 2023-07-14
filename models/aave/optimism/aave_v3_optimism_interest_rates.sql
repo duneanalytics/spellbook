@@ -4,7 +4,7 @@
   , file_format = 'delta'
   , incremental_strategy = 'merge'
   , unique_key = ['reserve', 'symbol', 'hour']
-  , alias='interest'
+  , alias = alias('interest')
   , post_hook='{{ expose_spells(\'["optimism"]\',
                                   "project",
                                   "aave_v3",

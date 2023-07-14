@@ -1,5 +1,5 @@
 {{ config(
-    alias = 'pool_incentives_rates'
+    alias = alias('pool_incentives_rates')
     , partition_by = ['block_date']
     , materialized = 'table'
     )

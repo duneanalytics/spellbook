@@ -1,7 +1,7 @@
 {{
     config(
         schema='oneinch',
-        alias='fusion_executors',
+        alias = alias('fusion_executors'),
         materialized='table',
         file_format='delta',
         unique_key = ['resolver_executor', 'chain_id']

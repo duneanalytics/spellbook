@@ -1,6 +1,6 @@
 {{ config(
     schema = 'aztec_v2_ethereum',
-    alias = 'daily_deposits',
+    alias = alias('daily_deposits'),
     post_hook='{{ expose_spells(\'["ethereum"]\',
                                 "project",
                                 "aztec_v2",

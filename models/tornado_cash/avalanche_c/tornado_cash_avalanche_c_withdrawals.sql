@@ -1,6 +1,6 @@
 {{ config(
         schema = 'tornado_cash_avalanche_c',
-        alias ='withdrawals',
+        alias = alias('withdrawals'),
         materialized='incremental',
         partition_by=['block_date'],
         file_format = 'delta',

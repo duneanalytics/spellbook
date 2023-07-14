@@ -1,5 +1,5 @@
 {{ config(
-        alias ='lego_expenses',
+        alias = alias('lego_expenses'),
         partition_by = ['period'],
         materialized = 'table',
         file_format = 'delta',

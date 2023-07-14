@@ -1,6 +1,6 @@
 {{ config(
     schema = 'uniswap_v1_ethereum',
-    alias = 'trades',
+    alias = alias('trades'),
     partition_by = ['block_date'],
     materialized = 'incremental',
     file_format = 'delta',

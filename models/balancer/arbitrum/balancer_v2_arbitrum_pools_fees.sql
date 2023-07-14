@@ -1,7 +1,7 @@
 {{
     config(
         schema = 'balancer_v2_arbitrum',
-        alias='pools_fees',
+        alias = alias('pools_fees'),
         materialized = 'incremental',
         file_format = 'delta',
         incremental_strategy = 'merge',

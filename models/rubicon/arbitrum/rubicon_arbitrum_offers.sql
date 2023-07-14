@@ -1,6 +1,6 @@
 {{ config(
     schema = 'rubicon_arbitrum',
-    alias = 'offers',
+    alias = alias('offers'),
     partition_by = ['block_date'],
     materialized = 'incremental',
     file_format = 'delta',

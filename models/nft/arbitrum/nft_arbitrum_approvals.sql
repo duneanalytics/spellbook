@@ -1,5 +1,5 @@
 {{ config(
-        alias ='approvals',
+        alias = alias('approvals'),
         partition_by=['block_date'],
         materialized='incremental',
         incremental_strategy='merge',

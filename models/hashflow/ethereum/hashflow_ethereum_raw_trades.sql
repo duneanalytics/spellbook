@@ -1,6 +1,6 @@
 {{ config(
     tags=['prod_exclude'],
-    alias = 'raw_trades',
+    alias = alias('raw_trades'),
     partition_by = ['block_date'],
     materialized = 'incremental',
     file_format = 'delta',

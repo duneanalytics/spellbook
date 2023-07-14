@@ -1,4 +1,4 @@
-{{config(alias='token_standards_bnb',
+{{config(alias = alias('token_standards_bnb'),
         post_hook='{{ expose_spells(\'["bnb"]\',
                                     "sector",
                                     "labels",
