@@ -1,6 +1,8 @@
 {{ config(
+	tags=['legacy'],
+	
         schema = 'op_retropgf_optimism'
-        , alias=alias('voters',legacy_model=True)
+        , alias = alias('voters', legacy_model=True)
         , post_hook='{{ expose_spells(\'["optimism"]\',
                                   "project",
                                   "op_retropgf",

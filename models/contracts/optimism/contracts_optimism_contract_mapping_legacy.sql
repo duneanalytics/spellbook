@@ -1,6 +1,8 @@
  {{
   config(
-        alias=alias('contract_mapping',legacy_model=True),
+	tags=['legacy'],
+	
+        alias = alias('contract_mapping', legacy_model=True),
         materialized ='incremental',
         file_format ='delta',
         incremental_strategy='merge',

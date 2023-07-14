@@ -1,5 +1,7 @@
 {{ config(
-    alias = alias('other_distributions_claims',legacy_model=True),
+	tags=['legacy'],
+	
+    alias = alias('other_distributions_claims', legacy_model=True),
     partition_by = ['block_date'],
     materialized = 'incremental',
     file_format = 'delta',

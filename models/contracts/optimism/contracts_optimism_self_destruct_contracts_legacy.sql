@@ -1,6 +1,8 @@
  {{
   config(
-        alias=alias('self_destruct_contracts',legacy_model=True),
+	tags=['legacy'],
+	
+        alias = alias('self_destruct_contracts', legacy_model=True),
         materialized ='incremental',
         file_format ='delta',
         incremental_strategy='merge',

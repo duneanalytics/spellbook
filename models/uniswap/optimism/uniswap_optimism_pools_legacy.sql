@@ -1,7 +1,9 @@
  {{
   config(
+	tags=['legacy'],
+	
         schema='uniswap_v3_optimism',
-        alias=alias('pools',legacy_model=True),
+        alias = alias('pools', legacy_model=True),
         materialized='table',
         file_format = 'delta',
         post_hook='{{ expose_spells(\'["optimism"]\',

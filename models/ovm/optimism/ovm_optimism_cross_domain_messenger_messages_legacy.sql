@@ -1,5 +1,7 @@
 {{ config(
-    alias = alias('cross_domain_messenger_messages',legacy_model=True),
+	tags=['legacy'],
+	
+    alias = alias('cross_domain_messenger_messages', legacy_model=True),
     partition_by = ['l2_block_date'],
     materialized = 'incremental',
     file_format = 'delta',

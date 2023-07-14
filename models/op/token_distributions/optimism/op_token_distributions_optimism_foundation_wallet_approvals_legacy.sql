@@ -1,5 +1,7 @@
 {{ config(
-    alias = alias('foundation_wallet_approvals',legacy_model=True),
+	tags=['legacy'],
+	
+    alias = alias('foundation_wallet_approvals', legacy_model=True),
     partition_by = ['block_date'],
     materialized = 'incremental',
     file_format = 'delta',

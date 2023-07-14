@@ -1,6 +1,8 @@
 {{ 
   config(
-    alias=alias('contract_creator_address_list',legacy_model=True),
+	tags=['legacy'],
+	
+    alias = alias('contract_creator_address_list', legacy_model=True),
     unique_key='creator_address',
     post_hook='{{ expose_spells(\'["optimism"]\',
                               "sector",

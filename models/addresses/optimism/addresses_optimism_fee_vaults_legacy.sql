@@ -1,4 +1,6 @@
-{{config(alias= alias('fee_vaults',legacy_model=True),
+{{config(
+	tags=['legacy'],
+	alias = alias('fee_vaults', legacy_model=True),
         post_hook='{{ expose_spells(\'["optimism"]\',
                                     "sector",
                                     "addresses",

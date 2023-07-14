@@ -1,7 +1,9 @@
  {{
   config(
+	tags=['legacy'],
+	
         schema='uniswap_v3_optimism',
-        alias=alias('ovm1_pool_mapping',legacy_model=True),
+        alias = alias('ovm1_pool_mapping', legacy_model=True),
         materialized='table',
         file_format = 'delta',
         post_hook='{{ expose_spells(\'["optimism"]\',
@@ -749,9 +751,9 @@ with ovm1_legacy_pools_raw as (
     )
 )
 select 
-   col.oldAddress AS oldAddress
-  ,col.newAddress AS newAddress
-  ,col.token0 AS token0
-  ,col.token1 AS token1
+   col.oldAddress
+  ,col.newAddress
+  ,col.token0
+  ,col.token1
   ,col.fee
 from ovm1_legacy_pools_raw

@@ -1,5 +1,7 @@
 {{ config(
-    alias = alias('other_tags',legacy_model=True)
+	tags=['legacy'],
+	
+    alias = alias('other_tags', legacy_model=True)
     )
 }}
 

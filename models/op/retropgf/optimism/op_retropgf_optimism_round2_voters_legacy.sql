@@ -1,8 +1,8 @@
 {{ config(
         schema = 'op_retropgf_optimism'
-        , alias=alias('round2_voters',legacy_model=True)
+        , alias = alias('round2_voters', legacy_model=True)
         , materialized='table'
-        , tags=['static']
+        , tags=['legacy', 'static']
   )
 }}
 

@@ -1,5 +1,7 @@
 {{ config(
-    alias = alias('transfer_mapping',legacy_model=True),
+	tags=['legacy'],
+	
+    alias = alias('transfer_mapping', legacy_model=True),
     partition_by = ['block_date'],
     materialized = 'incremental',
     file_format = 'delta',

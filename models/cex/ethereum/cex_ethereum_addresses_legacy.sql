@@ -1,6 +1,5 @@
-{{config(
-        alias = alias('addresses', legacy_model=True),
-        tags=['static'],
+{{config(alias = alias('addresses', legacy_model=True),
+        tags=['legacy', 'static'],
         post_hook='{{ expose_spells(\'["ethereum"]\',
                                     "sector",
                                     "cex",
