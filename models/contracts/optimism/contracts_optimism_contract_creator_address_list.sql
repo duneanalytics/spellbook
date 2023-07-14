@@ -512,6 +512,7 @@ WITH curated_list AS (
       ,(0x5472Cf4F1bE2aA6ad27C6F93101f7899cCAdBaf7, 'Rhino.fi')
       ,(0x8de39c1Fa14b6082053e7cD937d6Ebe58A69D6D2, 'KyberSwap')
       ,(0xfB3485c2e209A5cfBDC1447674256578f1A80eE3, 'Abracadabra')
+      ,(0xfddfe525054efaad204600d00ca86adb1cc2ea8a, 'Abracadabra')
       ,(0x085909388fc0cE9E5761ac8608aF8f2F52cb8B89, 'Interest Protocol')
       ,(0x3d4316342acd2deD06507302404e9788fF5F4d02, 'Squid Router')
       ,(0x19df27089a52ccfa444ce5a73ef86403d03210d4, 'Getaverse')
