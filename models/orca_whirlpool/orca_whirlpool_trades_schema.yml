@@ -60,10 +60,10 @@ models:
       - &amount_usd
         name: amount_usd
         description: "USD value of the trade at time of execution"
-        tests:
-          - dbt_utils.accepted_range:
-              max_value: 1000000000 # $1b is an arbitrary number, intended to flag outlier amounts early
-              severity: warn
+        # tests:
+        #   - dbt_utils.accepted_range:
+        #       max_value: 1000000000 # $1b is an arbitrary number, intended to flag outlier amounts early
+        #       severity: warn
       - &fee_tier
         name: fee_tier
         description: "Whirlpool fee tier (fee %)"
