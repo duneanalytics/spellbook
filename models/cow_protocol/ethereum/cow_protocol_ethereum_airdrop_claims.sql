@@ -14,8 +14,6 @@
     )
 }}
 
-{% set cow_token_address = '0xdef1ca1fb7fbcdc777520aa7f396b4e015f497ab' %}
-
 WITH early_price AS (
     SELECT MIN(minute) AS minute
     , MIN_BY(price, minute) AS price
