@@ -548,6 +548,7 @@ WITH curated_list AS (
       ,(0xB07d2d6a03F2d4878Dc1680F8581E871dae47494, 'Aura')
       ,(0x8cF905C50F25A481171e7f5936625754d44A9537, 'Stackup')
       ,(0x00e6202a8A52a3De6Ce7c45F2e5E299Ec71e875e, 'Candide')
+      ,(0x4325018916b082B91e277C7165FD8Da6467b71F8, 'Fuji Finance')
       
   ) as temp_table (creator_address, contract_project)
 )
