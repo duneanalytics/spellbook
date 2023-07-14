@@ -1,5 +1,6 @@
 {{config(
-        alias = alias('cex_fantom', legacy_model=True),
+	tags=['legacy'],
+	alias = alias('cex_fantom', legacy_model=True),
         post_hook='{{ expose_spells(\'["fantom"]\',
                                     "sector",
                                     "labels",

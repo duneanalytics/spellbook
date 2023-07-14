@@ -1,0 +1,12978 @@
+{{ config(
+  alias = alias('fungible', legacy_model=True),
+  tags=['legacy', 'static'],
+  post_hook='{{ expose_spells(\'["solana"]\',
+                                  "sector",
+                                  "tokens",
+                                  \'["ilemi"]\') }}'
+)
+}}
+
+SELECT 
+  trim(token_mint_address) as token_mint_address
+  , trim(symbol) as symbol
+  , decimals
+FROM 
+(
+  VALUES
+(
+  'G5V7t3ZHTUGi6xGfk5nc42P1iRkNN3JhaFwFXkvyDmz5',
+  'tuBTC',
+  6
+),
+(
+  '7j9nBTTLrQAe1p9Sfz9y323PaGtQWexw3aeN7RnU6tmy',
+  'SER',
+  6
+),
+(
+  'kti1UbBFcCZbfccmGE57W9f6Byy5EY9YLLdsecs3UHa',
+  'BUTTER',
+  0
+),
+(
+  'xZsp3D2JhBvgjdQzd5nobU26CALm916nYwZys3gRPux',
+  'SOLACE',
+  6
+),
+(
+  'J64w7g38vBf6XZwie14pJJYSwdTxutEX5XB1dDcDBH4n',
+  '$YUMI',
+  9
+),
+(
+  'FsAXvJ5wrCoSh3cQvdkuceUsQUjLtRcqgoikR9jQ9FBW',
+  'DCN',
+  9
+),
+(
+  '5mcRqyofvBiFm2Dt9AG2DRvJq1BkM6D3VX93u2DWMhsJ',
+  'RP',
+  4
+),
+(
+  '6N3sRS3FGZszkSYgVe4zk8W42jPpQKfcqpe7fv1eC5UF',
+  'BLACKB',
+  0
+),
+(
+  'TATsdYBQRdCGvpHVxPqcAvo3tAsyjgChhrdPGvRieg5',
+  'AKEOWL',
+  0
+),
+(
+  '7gsBUE9ZBSWL3AAx9guwBt2maoVTqv1xo2KHzMorzftj',
+  'NDWL1',
+  0
+),
+(
+  'GpS9AavHtSUspaBnL1Tu26FWbUAdW8tm3MbacsNvwtGu',
+  'SOLT',
+  9
+),
+(
+  'FeLoyXk8ac2AYVmDhAWEKNWWT63Z9TczeidYbpDvxF3T',
+  'wCAPS_v1',
+  8
+),
+(
+  'LFGqoEMMPUDkeWHRHeZucsiAtgudgDw9DaLjvxXMEmn',
+  'LFGOLD',
+  9
+),
+(
+  '4UFiHL1FzUUQPpjsm1gpVDA9ENQQaB81WdvN4HYW24Pa',
+  'INCOME',
+  6
+),
+(
+  'AUNHT5DSvHqgaQCeB7bs9XQMjyx2gfVv8nzmUf5jX3Et',
+  'LNFTxMOON345',
+  0
+),
+(
+  'DdLynXMq4hURnMMNNVt2CRi1WbnbV2NmuEb8skhWZUAh',
+  'DRYGN',
+  0
+),
+(
+  '2Xf2yAXJfg82sWwdLUo2x9mZXy6JCdszdMZkcF1Hf4KV',
+  'wLUNA_v1',
+  9
+),
+(
+  'Ds4VGZhZzS2PMFzhzKeC3mwcQjdiCG21R76fTVbsSJyJ',
+  'SYP/USDC',
+  6
+),
+(
+  '9VthVfjnNoeBzPpN4Dk8U4Nhn5g96ddLb8aAc9xJKiGv',
+  'JELLY_WL_TWO',
+  0
+),
+(
+  'Ajnx5aVELiDbir3du6c9pbuJPJNmpqoEJBhND2oswmKz',
+  'KMC',
+  4
+),
+(
+  '9xvPQbGmUWwhhaRmersVKGvFCYTHQfkiuWgiuzv68YB4',
+  'GPC',
+  0
+),
+(
+  'JCt4Uq9DnEfUiZ9yQ1ds5c3AnCq76pNHSxCWzLjKSvLJ',
+  'ONYX',
+  9
+),
+(
+  'EkSPpfdGCstzExF3eCsHFqjmyS71bguaZ1qJZCXXTCnv',
+  'SBY',
+  9
+),
+(
+  '8JgJUfALp74xF1zdvU3tsbqn2u8ZvaDBmefuU9Lp759L',
+  'PUNK',
+  0
+),
+(
+  'moaTKHdUBnQyCTUbaetkPek8tnQkZTN4Z4ALMTHgQr9',
+  'MoAToken',
+  0
+),
+(
+  '8G1SG7q8VyqCrjH7VjG9fouDDmHYJaYBMzBomdcUZ1qX',
+  'CACTI',
+  9
+),
+(
+  'A3iozx9T9wgrtybnecQ9rv56y9RF8ThUrwRGWiF7hsmZ',
+  '$SHIVER',
+  9
+),
+(
+  'AVTrxHq5P57fYZTYjMuCRWFqsrLmom2gGThNtgEgK1ip',
+  'aaUSDT-USDT',
+  9
+),
+(
+  '5HMfLQpR9BKfLfT6PVZVrMuRJNuYDKGHAoD2UJksnGkk',
+  'PANDA/USDC',
+  8
+),
+(
+  '2VdJqfGzW9JzBZSpDQLAYMBjwD4YoYtMAyBxg6S9AXL5',
+  'MOON',
+  2
+),
+(
+  '2dfUDFaYGy7Kkp2TiUXHsY9myq2Ws9hjSyb5pPDRVEzY',
+  'MTKN',
+  2
+),
+(
+  'ALPDpWSYbwNkkuVB3wd1nZx7dZBLV7fEGvbDu9KJxLik',
+  'aeFEI-wtUST',
+  9
+),
+(
+  '14r8dWfzmUUBpw59w5swNRb5F1YWqmUnSPgD6djUs1Jj',
+  'TREATS',
+  9
+),
+(
+  'N1CfKy2UEQmvQeQgELMXuHX9KRGQa6ayTrYUSqsL7TG',
+  'LMAO',
+  6
+),
+(
+  'EnuUKoFnc9ewnLCv6oRcMbqc6hCLKE5Y95WZeyT36mcZ',
+  'XVC/USDC',
+  8
+),
+(
+  '9krdcPB9gzGZk3QxqJi6AEAdyVt1RiDmQKin3im29DCJ',
+  'CHILL',
+  0
+),
+(
+  'GP9zY2D8CgMreoUdYQjyn7Fo7XCq9ubVnX3u4ot1wpgt',
+  'DPD',
+  9
+),
+(
+  'BoNE4kp9QQ6mBDPBz1RWPdZFwSevjiGJDBTZQM94fFLb',
+  '$BONE',
+  9
+),
+(
+  '57h4LEnBooHrKbacYWGCFghmrTzYPVn8PwZkzTzRLvHa',
+  'USDC-USDT-UST',
+  9
+),
+(
+  '4pLbiXeTym6XNkPWUw88V5JKYFErJa9bX9tV9hdHtdtN',
+  'SBWL',
+  9
+),
+(
+  '4fRea2p9hpWEMddLraYAaMr7rcQHAAVkk2cQXxUN4yrh',
+  'CTZWL',
+  0
+),
+(
+  'BFsCwfk8VsEbSfLkkgmoKsAPk2N6FMJjeTsuxfGa9VEf',
+  'aeFTT',
+  9
+),
+(
+  'SKu11EypaFU3gvr8VSAbi13zEC2CPvqbz9s83N3tWHM',
+  'SKULL',
+  0
+),
+(
+  '3kT3oYuS1rCfhmqfgy6EKcbZdaJimaVEjoy25QiuEaoj',
+  'stSOL/wstETH',
+  6
+),
+(
+  'fueL3hBZjLLLJHiFH9cqZoozTG3XQZ53diwFPwbzNim',
+  'FUEL',
+  0
+),
+(
+  '4LaxTpMRBBnetws6WGwNad28B8C58brcEDFuNwSUT2sT',
+  'SOLR/USDC',
+  8
+),
+(
+  '7vKX5rx57VPE1ozJesFzojdPjGZ3M89894PT27i6seUF',
+  'PAC',
+  9
+),
+(
+  'FeVooZDV8ihVhwuHVbagriw6rtonLdysXQ52VwqTaVAd',
+  '$RYO',
+  9
+),
+(
+  'EKuYvkDkNxkvGgpnmDJtFyp7bpaeKffMPp5DoTSJpHjs',
+  'XNU',
+  9
+),
+(
+  'GmBwNscpLsjctXS4yEt43b1sBzeboUJythhAXw23deg1',
+  'SNIFF',
+  9
+),
+(
+  'ECPAzxsa4VBALQ4kh4i9mtUdRTBRhGwrzu7Y2YqwZjsi',
+  'BZT',
+  6
+),
+(
+  'BswdGxfurGpSKPPhHUP6d9uzdY3bAG8o3CJnFUQLanzw',
+  'CMHMSB',
+  0
+),
+(
+  'HwzkXyX8B45LsaHXwY8su92NoRBS5GQC32HzjQRDqPnr',
+  'SAMO-RAY',
+  9
+),
+(
+  '2Z21GPCZSyrieTN3tYtPHUmuLWBffW9L86wqyZBj84Fv',
+  'BROCCOLI',
+  4
+),
+(
+  'DAihWEjhBc8LEmV1rEekTaiC2zqE5ex7nEFkmoe1Ppp3',
+  'wDAI-USDC',
+  8
+),
+(
+  'EBPM7fvPN8EuA65Uc7DT9eGyDUZ1sqMLM8Rb8y2YxBYU',
+  'fpSOL',
+  6
+),
+(
+  '2hWrFTaGYXNLEVnTdvYPF5roxp4NSygoC8BYWYHYLuXd',
+  'PLEB',
+  0
+),
+(
+  '5h6ssFpeDeRbzsEHDbTQNH7nVGgsKrZydxdSTnLm6QdV',
+  'cSOL',
+  9
+),
+(
+  'WLhJmBK713bYZUpe9Hvx6CdCDMFRLLGDTJtaME7ywfP',
+  'SHFW',
+  0
+),
+(
+  'F5PPQHGcznZ2FxD9JaxJMXaf7XkaFFJ6zzTBcW8osQjw',
+  'RAY-SOL',
+  6
+),
+(
+  '8oiPhiFrmXS93iC98M4ATev8emQ6XGtf8pz8sntbbqGt',
+  'OASIS',
+  6
+),
+(
+  '84CGueN92MKdNRhpgciRmWZhnD8xv65k6K6zFX5e4Lwq',
+  'DHMT',
+  0
+),
+(
+  'BRKZbe8hFPmiJeBa94yARQ2RQ8KJQgRdnGMo7o6Wu1DC',
+  'BRICKZ',
+  9
+),
+(
+  'D7txa12HUtWk5dVxC2Ybg9QoE7ALZgDcUEKdrh43V8fB',
+  'GRLR',
+  0
+),
+(
+  'ToTxDbCvSKrTozuTLyTpiUMPMuyNtSohiXxcxbGv5wL',
+  'HODLWhales',
+  0
+),
+(
+  '5tMhmodggwwcdcQQUZXJabXbU5NAbpWqMXkUjeFs9X72',
+  'SDWL',
+  0
+),
+(
+  '4P4jjC6KjwVTCxhpfj4pQGBC1ohUaNin8QaWwPyge9ML',
+  'SHEEP',
+  6
+),
+(
+  'yLP4agSHVPv7oxDFQ38fuwJGQA4MV1kJJy4SuNbDEHj',
+  'y-wUSD-4Pool',
+  8
+),
+(
+  '9C7ipMbr5b2YhgGzFy1cxUotnCHcPhbp6wdQWD4EeggA',
+  'HIST',
+  0
+),
+(
+  'FFTKNbF95yW764GFKS28wYZETMtQvLPCbEzmEjfpGNkq',
+  'FRENCHIE',
+  9
+),
+(
+  '8oXhRzmhmf12yrhqHWuso4bKqGnsLNmBfAY2U8w7HwWW',
+  'GBARS',
+  9
+),
+(
+  'ExN3MaZLB5VhjGZ75qUuJ8ENkNiUvCCdA7j85vCcNicQ',
+  'MODS',
+  9
+),
+(
+  '6jHEQ3HdKb7PpAve2oXpcKRnp6xfEDfM8hWEVBwEE5HP',
+  'DUDE',
+  3
+),
+(
+  'ELECtZbpWTUGcxYTvmqTu2gRH8GVMVWuE4dkULDapp8F',
+  'ELECTRUM',
+  9
+),
+(
+  '92bcERNtUmuaJ6mwLSxYHZYSph37jdKxRdoYNxpcYNPp',
+  'BTC-mSOL',
+  6
+),
+(
+  '666YXKdQzN49gzQetYffQUhy4hLxEB31PZkRew4VrXAj',
+  'SHOIT',
+  9
+),
+(
+  '68RRPuZQrrw3whXHm9LSyC4y8iLrjkTm5Brc2tUMLNPw',
+  'CLAN',
+  9
+),
+(
+  'RACE5fnTKB9obGtCusArTQ6hhdNXAtf3HarvJM17rxJ',
+  'RACE',
+  9
+),
+(
+  'WLiu98oqYLrM1rkbew41QSPrqVteVn3h2wS4rNurv9v',
+  '$WLPILL',
+  0
+),
+(
+  '3xbqJgCsf2PjKQsjACGUvH2Eo8ZyGxW2hWGY9TZW2q8D',
+  'ALPHA',
+  9
+),
+(
+  'CHVV3NwB77oSnBUqRJNeb6F5x6e3xBrYMrbxDDvdSGnu',
+  'GRAMZ',
+  0
+),
+(
+  'Bic8w5K9tvHDY7XfiT7fLTdiAkQWURAKkcEs8EsXpxbY',
+  'TROOP',
+  6
+),
+(
+  '4Z9UMELGy3tU4pD4PvnQCiTVGPDpNK6e25XYSWYH9MrG',
+  'ALBINO',
+  0
+),
+(
+  'EkhbjG14GJdnWkKSTdnPSG8xhFDmh855XK1xKAFjYmUR',
+  '$BDAWG',
+  9
+),
+(
+  'BnV3XcZUbNsuonNKqkQrZSvCN8tVYTJtDgfUx6DJ9riy',
+  'NOIA',
+  9
+),
+(
+  '9wRD14AhdZ3qV8et3eBQVsrb3UoBZDUbJGyFckpTg8sj',
+  'soPAXG',
+  6
+),
+(
+  'DrcPRJPBiakQcWqon3gZms7sviAqdQS5zS5wvaG5v6wu',
+  'BLD',
+  4
+),
+(
+  '95GBBtPvFotNSLDuM4DYTukZhxptRbJjW7dMH45WMS2N',
+  'CCAT',
+  6
+),
+(
+  'Bxp46xCB6CLjiqE99QaTcJAaY1hYF1o63DUUrXAS7QFu',
+  'mBRZ',
+  9
+),
+(
+  'A1LwvSDH2v6swHXP9JMxYJVx6YDzdQdnBDvy8VeBA3g1',
+  'WKN',
+  0
+),
+(
+  '26nPfD9S6Eiqm6f27ob74uQ5u6BDmMWFKbRoMPZKgNjF',
+  'MMC',
+  0
+),
+(
+  'BgiTVxW9uLuHHoafTd2qjYB5xjCc5Y1EnUuYNfmTwhvp',
+  'LOST',
+  0
+),
+(
+  'QN2HkkBaWHfYSU5bybyups9z1UHu8Eu7QeeyMbjD2JA',
+  'pBTC',
+  6
+),
+(
+  'WLkccWEEH6k6x7CZpaszQSwqK9VjQwabMV4wkaW3bxo',
+  'GLDWL',
+  0
+),
+(
+  'MMWjJmjppSH8wmoRzi9bZZavRXzWqkG4YYJEreo4zrU',
+  'MMWLT',
+  0
+),
+(
+  'AA6LkBM7m5wmhrrTopNfEeMrLupsRDZVQzFSfL2rr5iQ',
+  'DRIP',
+  9
+),
+(
+  'FiRE67XRcLmVaHnxo46VAVEtvTto9XZMPCqUvC2JSLef',
+  'FIRE',
+  2
+),
+(
+  'GGQmwvoYRUbRs1p8azv7goikFJAJThjm7oW4tDTYCsdR',
+  'KONGWL1',
+  0
+),
+(
+  'GoAwpsL4SjGMd7BAMq2QKbHvEjgPcbmAwAjg1wpT7UDv',
+  'NZWT',
+  0
+),
+(
+  'GknXZXR3Y84wgmDUxtsoR9FBHEZovqXFuDK2jczi1ydz',
+  'GENO',
+  8
+),
+(
+  '828oFZuUAtisZ1n17DEH2yys9foTXgJz7xqZj9YwGubu',
+  'ANTLER',
+  9
+),
+(
+  'HvCbPvCoDhynUffEYP8DeNDxDQ7hetnBxqFWFM6Svsa4',
+  'MICE',
+  9
+),
+(
+  'CtvD16P3aziZZaamHEyLHVnFN7UpXD9rcziShg2JAuQJ',
+  'CHIQUITA',
+  6
+),
+(
+  '4vasoS3ZVVEaaoMqPFJUbd7s5sbJE2WVt8a6QZNZx64u',
+  'KUNAI',
+  9
+),
+(
+  '2eibTj6LtqF6DyabpmUZH8EhzZJFvoxcApyzArHt24G6',
+  'TIGU',
+  0
+),
+(
+  '6ercxSiDn2KJ8KZxmCT4eheQqAWN3z17s8eLT3VECuda',
+  'MOMO',
+  9
+),
+(
+  '36EsmEsa5rp3VrZAzLna3UFDEBFihwjsRFciUTfoZ5Qt',
+  'BORGS',
+  9
+),
+(
+  'MDNTEcP4wVVWcpeQvojy1VnunpwtiydMZVzPeWWZYP3',
+  'MIDNIGHT',
+  9
+),
+(
+  'FkBRohZpqx2c7zxe5cDhNq3AoFo2nPJus3xtdz9CvQmQ',
+  '$MINERAL',
+  0
+),
+(
+  'C7MnWhwB4JyA21bo6wnomQA5jJtd31WoaiCSKbVTHq5n',
+  '$PDSGT',
+  0
+),
+(
+  '7hMNi9EVTTRyuUH7FybEcPLa7uG6amLWW8xAmV8qi47',
+  'DIRT',
+  9
+),
+(
+  'D8Fc2HLd9L9V2mJnEUpnys6muJUawKYFnJWcUiaGKnyP',
+  'OOAH',
+  9
+),
+(
+  'To6JP3WdnzttxLJzjE3dtxEQ7V5j67tffRPW6UYngZn',
+  'TG',
+  0
+),
+(
+  'AGrCEkCgXeTuD8GzHJmw2PEx4DKqmrnNiV6BYCsZK2Vg',
+  'GXG',
+  9
+),
+(
+  'CJ2K2J3HYU6ibR1JwLkUmD9RM8eytfxtMcLzYPqoQQKo',
+  'BONER',
+  6
+),
+(
+  '14UMe2amWfXj1CrM7C9kFkTQ6PtX5aT1fdsVGqBZaXCT',
+  'XMON',
+  9
+),
+(
+  '79BXbiiN5HcXH1vRHbQgs9T9Qmae9por26ULEMXuaP7L',
+  '$PARENT',
+  9
+),
+(
+  'HFmY1ggCsCky1zJ1sfdkNR4zb3u5n38YNRdf4vsGu17t',
+  'ATLAS/USDC',
+  6
+),
+(
+  'HUSzWddUQbavKn24cjozm65eps8rq9yhNn5edtTLWfdz',
+  'wHUSD-USDC',
+  8
+),
+(
+  '85SyKDLXZPC1sqdFqasywQojutGhDCobbPHM6zczD1Li',
+  'tuwhETH',
+  6
+),
+(
+  'BTsbZDV7aCMRJ3VNy9ygV4Q2UeEo9GpR8D6VvmMZzNr8',
+  'cUSDT',
+  6
+),
+(
+  '32gaR4rn9JyzoDVwMzZ5j3NgcHc5RQhMSJby55FFKnq3',
+  'RIBBET',
+  9
+),
+(
+  'mongopjRpUgnQQpQFiasgFLyo69YXUwFcw3hyqaN8RL',
+  'MONGO',
+  0
+),
+(
+  'B8NrYG3ZGbmDS6Xv5PUSdpJmXor9VvtxibvDRKNq3rnc',
+  'METASOL',
+  9
+),
+(
+  'PHnyhLEnsD9SiP9tk9kHHKiCxCTPFnymzPspDqAicMe',
+  'pHONEY',
+  6
+),
+(
+  'BzwERW2s5brUYtt3jvobVQn64uxXYRrz81Yx6vYpJorE',
+  '$SPOT',
+  9
+),
+(
+  'SPraYi59a21jEhqvPBbWuwmjA4vdTaSLbiRTefcHJSR',
+  'SPRAY',
+  4
+),
+(
+  'YodaXmvJfRMEecpYacvcvDEM3TCom6dVdFik4x8HyFe',
+  'YODA',
+  6
+),
+(
+  'tooLsNYLiVqzg8o4m3L2Uetbn62mvMWRqkog6PQeYKL',
+  'TOOOOOOOL',
+  0
+),
+(
+  'AGFNz4kCrWNrzV3E84MLPVu7qwbYdYbw3gkHBGHG2jXg',
+  'SUGAR',
+  9
+),
+(
+  'dK83wTVypEpa1pqiBbHY3MNuUnT3ADUZM4wk9VZXZEc',
+  'soAAVE',
+  6
+),
+(
+  'Appn8xsma7ajLzsEADNhihNLJt2xVz8V1iqJa6zizqyU',
+  'WAGMSG',
+  6
+),
+(
+  'HjFijcGWKgfDwGpFX2rqFwEU9jtEgFuRQAJe1ERXFsA3',
+  'VZUSSO',
+  0
+),
+(
+  'YLB6H9s99Y9HMARGM5zYpBv59fr1qtooZY1Qo7vpf4n',
+  'KONGWL2',
+  0
+),
+(
+  '4mJ6N65rD9w6sFPQ17UDWot2H64UtzR31biVLaKpZT6J',
+  'ALIEN',
+  9
+),
+(
+  '5Wddj4FevPALWn655YTC5wGktWM7vViQTzLJLr2dhGFF',
+  'UPASS',
+  0
+),
+(
+  'ARg9wfeLN4qZTxgYTYeuGtGFMmYdk5zFhBuSnTfXXUvb',
+  'CHI',
+  9
+),
+(
+  'CP8CaP7GmSVUo9j3L8dwDKVR6i1kvcCUn1ubGGhc2V2M',
+  'SURF',
+  2
+),
+(
+  '3vXYrqQkKpebReDPUaD1CseA3cWiqfxgPuKTe5aGL17U',
+  'SOUL',
+  2
+),
+(
+  '5io93Fx24MDPMybCUYxjLmfK1WaW33bWRqfvBnNgX6Ug',
+  'RNDIEWL',
+  0
+),
+(
+  'GUohe4DJUA5FKPWo3joiPgsB7yzer7LpDmt1Vhzy3Zht',
+  'soKEEP',
+  6
+),
+(
+  'CEUQNkt3tXqakiXurUbCMVVq9RRaPFsaw8fUKfTNgpup',
+  'BUDS',
+  6
+),
+(
+  '4goT5SLzfoeFx3YwbPF3g6j8whtqnwDJ7BdKC6YVDeKc',
+  'CHI',
+  9
+),
+(
+  '82hjawkN9hPBnB3SENwRyJnhdEgWy9iNFUkags2iBqbf',
+  '$CALS',
+  3
+),
+(
+  '8Lg7TowFuMQoGiTsLE6qV9x3czRgDmVy8f8Vv8KS4uW',
+  'tuRAY',
+  6
+),
+(
+  'SRMKjSJpBHJ5gSVTrimci49SnXc1LVkBi9TGF9RNYdp',
+  'wSRMV1-SRM',
+  6
+),
+(
+  '4CHXd5uSMb9qrLfQwvyHzDMiKmNKDP8Np23dAQWTKNEy',
+  'LPFi',
+  9
+),
+(
+  '4LW9ELPQg45772qU7ZT9q8BP19o3fuXcv8P15fs1MYuX',
+  'PRICK',
+  9
+),
+(
+  'RACEKYC7jTn98bEyG8xWFyMJZj9XDXHPfYRsCMoaM33',
+  'RACER',
+  6
+),
+(
+  'AWGrr6HmmhJwnMdDLoxxDMpKo2KN99Bx47Rbhfo3NM3V',
+  'BWLKN',
+  9
+),
+(
+  'Hie7HKx2JDEnQg8Vo4zBAaYrZiWhgrgNDo7m1X4k99qi',
+  'SHMB',
+  0
+),
+(
+  '71MwukaK2Hudp862BC7X7e8Ggyzqx1aMQD611nRM85Vu',
+  'JUN',
+  9
+),
+(
+  'B3DRD16zzuybK5Ku4Vv79hp6cxkBmZvTnrDx16N5D5ct',
+  'Champ',
+  6
+),
+(
+  '9uBUX5YMtc3iYSmqmxHne8zyn3Hc2xZ3DazDmdZjaxwr',
+  'MNWL',
+  0
+),
+(
+  '9yM42HMJnN69rhMGr8nCYSRtFxjWTWm5Z6GeucyLBEHg',
+  'RAMENF',
+  9
+),
+(
+  '7ftKSttU6yUAnWsWxpRP3LKdQNEto8V4KD9NuWttoVnV',
+  'JOINTS',
+  6
+),
+(
+  'HjUhUzi6fVkY1BndaSc4Dcg2mCzvnqzXjVJtXsj78ver',
+  'afDAI',
+  9
+),
+(
+  '8t2JQrLWDN8HJ5jTNKzVYgJasmxpaqQW6yo6dx9M3BTK',
+  '$MYTH',
+  0
+),
+(
+  'Ghj7ib4VJC592ybwpMK75vaX3fRu1SqtkXYMd2pNywtK',
+  'PRMD',
+  9
+),
+(
+  '61QYeabDU9sb9UmFJjcApznWigRxLyFjKD3dpD7xHPUL',
+  'YOU',
+  9
+),
+(
+  '4CGxvZdwiZgVMLXiTdJHTkJRUTpTSJCtmtCRbSkAxerE',
+  'PORT/USDC',
+  6
+),
+(
+  'AYv1MnM75ayDkRBxBoAMhdXULKfUAQN3JWxkDGS4gT1Q',
+  'NUTTY',
+  9
+),
+(
+  'CYqZ4FG2Jb5Z1CWgdojej9Svhvvo8ohKEAuDvzG3iQ3N',
+  'DRIP',
+  9
+),
+(
+  'TSTeJQaJ68jmS9vvooq9iDCmQETggC8ibb3ofeDkQUa',
+  'TST',
+  5
+),
+(
+  '37mG5XYuwMSutQnvERDUZqxumes5hYp89X2gpBbedpZ2',
+  'ELON',
+  9
+),
+(
+  'FMBfAxhiTwDmujiEGbexFtExHR9q7nqnRF1Rjd5UmhS7',
+  'bacon',
+  9
+),
+(
+  'NEo3D6MXRXf2iAfaqvZYqSmFkfutLvNjm86xmfGWNh5',
+  'NEO',
+  9
+),
+(
+  '4yoWgpCg5KciCPuA6LxDFpJHa53Jjj6XU9RLFJCgdakL',
+  '$DRIVE',
+  9
+),
+(
+  'F9tytWqLUAPXQTy6dejGtSgvJQZWYC71naD5bCi6caGX',
+  'INUGAMI',
+  6
+),
+(
+  '51AA7ktYcb8yb98Tfrhs6TaDjr7cMtJVo6sEMNe87mNs',
+  '$GLUE',
+  0
+),
+(
+  'F5tmDpUQaH8QKpv5LihZnfcmMoKtB1HZxyzEfBgLJeaN',
+  'GNOWL',
+  0
+),
+(
+  'EG55kTkxsmpJFb6p2qafVC35XJ8Xd1kyJ53xhBNGzeyn',
+  'FUCK',
+  9
+),
+(
+  'MiLKR8QYixQxp5wDXwfC8fLVH4AiAyb3X9YpAcXvtWe',
+  'KLIM',
+  9
+),
+(
+  '9xEgqA4b2NsHwN1bTi1fEDjX8J1waQNA7nHfPWnRpfbu',
+  'DARKELVWL',
+  0
+),
+(
+  'CB8wh1bXWugaqaqcA2KxTv1nf5zyU5oTsT6XvT3A6uyh',
+  'NWL',
+  0
+),
+(
+  '4tVnbp4KY8Ur6A9YQtZfs43r91LkFhdfAjot8wxw3uCF',
+  'PIXEL',
+  0
+),
+(
+  'D2DWXG6oDhywmYeFXQy3pCkLp7RKiwuoSZgjhNSqx14N',
+  'PIOLY',
+  9
+),
+(
+  'FdLycDiJH5se75GZyxEdEdo6c3z7WHkoHZmvbkibUUrS',
+  'SPRING',
+  9
+),
+(
+  'DMTRqrUy2MVRTLZN7wv54sboHZDiiVsbeqXAiCUpDyNZ',
+  'DMTR',
+  0
+),
+(
+  '9nQPYJvysyfnXhQ6nkK5V7sZG26hmDgusfdNQijRk5LD',
+  'BOP-RAY',
+  8
+),
+(
+  'H6Jz41jUjNV7kNDBQuvJqNnpEYhGF6wJ5DR8bMLZDqvR',
+  'PALM',
+  6
+),
+(
+  'ApgNFHXMsY9qM8yaaSVzqX7xtbKkGjgo64NLGuf2hQjW',
+  'VRSW',
+  9
+),
+(
+  'DDCEE8BVKbxZ6TXo8HK7g4qUBpaTocNRX4q7ppt5FKA1',
+  'DDCWL',
+  0
+),
+(
+  'Hgvs5aM4SXy4YHsZZXUBcnvNXFmop6XCzAFGnkamQdRq',
+  'SKE',
+  9
+),
+(
+  '7vG8c9DyEUj3k6Sf2FYZ9NsN7nUXDE4XWzvkAoUQwjCp',
+  'BLD',
+  9
+),
+(
+  'GsZcjMnaqw6VVpTtQa4ggkjT9w3wNiupUA4AYT2WKTXC',
+  'DTN',
+  6
+),
+(
+  '9bQXrgpNYf9V2QgH6z8diP5e96c18REcDQXd87XCPkZw',
+  'BOLELD',
+  9
+),
+(
+  'cet4t25o8KbxxphkR2jiS3vqE2HJiy4rZTsKRMYrrnj',
+  'WAGMIX',
+  6
+),
+(
+  '2a2aGyHFkGqsDeK8T9WHqsF7MYa7wJ9XWhfvKAixehDj',
+  'VAULT',
+  0
+),
+(
+  '3Py5nZKoNuotXBcYTiDrLVQeWJzgryHWyiED4JRckEEs',
+  'MICROCOCK',
+  0
+),
+(
+  'Fd8xyHHRjTvxfZrBirb6MaxSmrZYw99gRSqFUKdFwFvw',
+  'aaWBTC',
+  9
+),
+(
+  '4F2yutcbkabE5MJoDvrDLa5U2re5HPABSCVKA7vqrKcH',
+  'REJECT',
+  2
+),
+(
+  'jWWi8vp5q8hcNdxQpqbJNMJ2aDpz5t8SoB1dkzYS7CL',
+  'BD$',
+  6
+),
+(
+  'DpxMKwKMrM9mBExbttc9SrCAqy9Nx9MAX3Ha8kWkHtBr',
+  'TFNFT',
+  6
+),
+(
+  'pLtMXLgfyTsRfZyxnFkJpWqHBxMTvkr4tyMLgyj9wrY',
+  'PLTMX',
+  9
+),
+(
+  'AU4bT5vsa8Dqsd9BXEzsW5QSeDQ97QwKx8oEum8GMKpG',
+  'SAI',
+  9
+),
+(
+  'Epm4KfTj4DMrvqn6Bwg2Tr2N8vhQuNbuK8bESFp4k33K',
+  'SOL-USDT',
+  9
+),
+(
+  '8hwHhAxzrKtuN8GfotLTUYXXLEiX9qrzPYkahzuByWGP',
+  '$SHINE',
+  9
+),
+(
+  'H69DNtbZZtk92hLLbMrHYqL8HiSHFVGcf6USHU39oRMW',
+  'GUANO',
+  9
+),
+(
+  'DMT5qtsrFicxvaFnnFwJJtNVU53V85Rt2Xhf6rRM3ySQ',
+  'DMT',
+  0
+),
+(
+  '8HoQnePLqPj4M7PUDzfw8e3Ymdwgc7NLGnaTUapubyvu',
+  'SOL-USDC',
+  9
+),
+(
+  'CRmGfCvD3s43v2X6dGMmA9XVCMXy8jacKGQ6H451afgd',
+  'HVEWL',
+  0
+),
+(
+  'E8G4uo2i9d12aGnXDHXXcw6hU2fh2NytR5XR3qurTLBx',
+  'WNDO',
+  9
+),
+(
+  '4q5UBXJxE91BZKX548qhU8i5QBWvZdXzS3RZwfTgLQda',
+  'N2H4',
+  6
+),
+(
+  'WisehRG5uPTHFJHrTmfm7dBMRvLZ6Lm9mivgYB2Pd3A',
+  'WISECAT',
+  0
+),
+(
+  'CCTprR8uQqwhLEDhwA4yWsMrj4D7LqbH39f54ih4w6pb',
+  'CTWLT',
+  0
+),
+(
+  '2mtG2SXAUPBewyFX4evjmCBH5MZHAiA7VFmVVFTxcvQA',
+  'PAGMI',
+  9
+),
+(
+  'AUnF9BxPPtZZYdm9dPXMiVeF3TJvPaXPisSYPU5jWp36',
+  'FLOAT',
+  1
+),
+(
+  '9mXZ54YnJJRmUN2MaMEtWCfFyoncP4ZhKz7U9DZ4JY2X',
+  'SPACEGOLD',
+  4
+),
+(
+  'AG1wkgfXJNkS2xWsbDePVsVDsdiZofcm2JpYiMfvPnHg',
+  'TUSK',
+  0
+),
+(
+  'HBHMiauecxer5FCzPeXgE2A8ZCf7fQgxxwo4vfkFtC7s',
+  'SLNDN',
+  9
+),
+(
+  'DYbRXaQcnj44SH9woxvyFdtcKkSoPoCEshRTQDZSjsBm',
+  'MARIJUANA',
+  9
+),
+(
+  'jbyi8caTyxtzw6vPRpZCwRv9k1rZNfxTK9yRDKFgj7P',
+  'ThxU',
+  9
+),
+(
+  'PigobSSPVECtDpdo1wv7Nzvvq7jKY9KfcsQWqFSitME',
+  'PIGLETS',
+  0
+),
+(
+  '2ybz3ehQnePURs5tbxQDAo3TpKArqxdbB5yoABjC5TnP',
+  'SUWL',
+  0
+),
+(
+  '9A6dgXm79ASFyG42tui86F4gQTC56Ydw3mrNL61xhdr',
+  'CRB',
+  9
+),
+(
+  'KzkscetEFcPpwVQV2vfgs7zgA8W1gwdK7w8dJpfq25V',
+  'KZK',
+  9
+),
+(
+  'AKVYLV1cZakQ5HKGiTu9UR9uEv7TwA7VeZyvcL3mHfs3',
+  'DBDWL',
+  0
+),
+(
+  'Ed1934BYVPQQ2KXbzCLxBMtNVZN3SjanTewfR9upbb7L',
+  '$SAKE',
+  9
+),
+(
+  'AVDuGckLavyLr5YifViaxnoveY6rwqDezHw5kiKiRQEC',
+  'aaDAI-USDC',
+  9
+),
+(
+  '78ZnfsncDVyhE2HVPe5LscUrgKsJpwP3wJDHRF2TuC1v',
+  'SLNT',
+  9
+),
+(
+  '3wDZqcNeNzzmrSMn5cTmGK8werqWqRPKqb25HLzHmsA9',
+  'THCxWL',
+  6
+),
+(
+  'BAaN4r6pPHNLhm5t5FssMLpcnYFz9MpxUBc1gVox4jRF',
+  'SHADE',
+  0
+),
+(
+  'FjJyWJfnb39fdsswQmzNbVxCsH976SQZGFPzXvN5ufwc',
+  'SCORP',
+  9
+),
+(
+  'J2BWMK44sjgM2dApxMX4Xpst4jCJBBUvaBXj6AbXGdad',
+  'THC',
+  6
+),
+(
+  'KARTdF5K68Q2nGppizG3DeCzp7AhHy6YXf2uTQjBSQx',
+  'VROOM',
+  0
+),
+(
+  'CfNkADyvwg66yLtctbuDo381s6VqVC8583ur7uvooE43',
+  'HB',
+  0
+),
+(
+  'Bfsrs1qLiuooamkSuG9tcF66SXXFefWbur86RkHDuxQS',
+  'CHING',
+  9
+),
+(
+  'pBTCmyG7FaZx4uk3Q2pT5jHKWmWDn84npdc7gZXpQ1x',
+  'pBTC-renBTC',
+  8
+),
+(
+  '5HHv6HAyBtaihyHEapCJvjE6iRbGLRmm3F5EZjz6EzHV',
+  'wID_v1',
+  8
+),
+(
+  'Cornwa1ifRukcEgGmipzrcDDqdksQ34hh9Ca4ukn9tet',
+  'TBFWL',
+  0
+),
+(
+  's1ams7bwzHCG2qQf2yMF5CWASV37YotDQsjRppVkX9n',
+  'SLAM',
+  9
+),
+(
+  'E1XbcaMheKrvRbaM8rMVnJkHJ9EYpHZCX6xctsDQ73Pp',
+  'Zio',
+  9
+),
+(
+  'AQGncY1hA22JATnj8aEuCAaPQsoe9wwmn4QBKzvV96yS',
+  'BACK',
+  0
+),
+(
+  'BXXkv6z8ykpG1yuvUDPgh732wzVHB69RnB9YgSYh3itW',
+  'soUSDC',
+  6
+),
+(
+  '7xZgeMkxKocj8wBBKdEFTaF25j4kUHVJbUZjvRqkdrsE',
+  'TIT',
+  9
+),
+(
+  '3sDP1g1LpiCqPCc4CsaSpqmEv4Uvf46kzg7XeRdfLsmk',
+  'BKD',
+  0
+),
+(
+  'USDCgfM1psLGhAbx99iPA72mTySvUcVq33qhCJpm65c',
+  'weUSDC-USDC',
+  6
+),
+(
+  '7gJenN7qBMP3yZeg7ULq5t7BCk5wYmvEtaqL9t9WkkAF',
+  'STAKE2',
+  0
+),
+(
+  '46G5mPufPTxteTBqr98yjpePtTrSYdF1jjvR71Ju1mM1',
+  'OPENLHMINT',
+  0
+),
+(
+  'HVWUENskPh5bYq4Fdpv4hTwkbVbS4XAbCJ49Gev3WYEX',
+  'HVWWL',
+  0
+),
+(
+  'GqiHtXj18aaWs82UBz7D72x934EQLZNhpeUpfJwS3Scm',
+  'FLYZ',
+  6
+),
+(
+  'E5TT39UcytqDkHy4xq24JjjWhQrWjhT8yf4XeCfz1v2F',
+  'FLPZ',
+  4
+),
+(
+  'FLoD6AwcJCnbznnWfV6HkBHh5FYtr8wJYj3mBnwNdLLg',
+  'DOOK',
+  6
+),
+(
+  '5JNGgEcU9EYAa5PoyQiTUoRfgP3fpBGHfXK33ZRggDZo',
+  '$EASE',
+  9
+),
+(
+  'HighHmwDW4o5QXGXt4n3HsimjLEKnTG4V1DjBwbhyP1i',
+  'SOCIETY',
+  9
+),
+(
+  '2YmFbkbfPMiUivS5TtSnzLGPM32iapkHBUvKB7XVYuoi',
+  '$DABL',
+  9
+),
+(
+  'kai6Dt6612rNn9MaW1eXHAWngwfoqYKFEMyniuWmoWv',
+  'KAIJU',
+  9
+),
+(
+  'sEedsCkfvPzjnfPNWVJAeNkNZf8yWTwZF3jh42R4X25',
+  'SEEDS',
+  3
+),
+(
+  'SF3oTvfWzEP3DTwGSvUXRrGTvr75pdZNnBLAH9bzMuX',
+  'soSXP',
+  6
+),
+(
+  'rainH85N1vCoerCi4cQ3w6mCf7oYUdrsTFtFzpaRwjL',
+  'RAIN',
+  2
+),
+(
+  'GkpbHQu2zYmJxyp93p9wTX3uHjsFt8ZGeomVwZkGwXLH',
+  'sGENE',
+  9
+),
+(
+  'B4KvbdQYomQJqnfzvjAoaNhWGiJVdSRQWLyCQ3cm74Ts',
+  'PX_WL',
+  0
+),
+(
+  'rMMASpNW7YDfNMGjHqGtSjwcEuPygbTDCgdNNxnipNp',
+  'rMMA',
+  9
+),
+(
+  'GGFNWQ2oEzYVPu1kGSjXZWfyTibnCGJfqZ7uPx8Jkj7B',
+  'SCTT',
+  6
+),
+(
+  '7Q9YbR4jPPaDsWsEngubW2z9PGfmWK7xn7AeewMm3qbT',
+  'DLITE',
+  0
+),
+(
+  'CRTRFiHiddN7UMR5LR4SgDB4VuX6s4SKm2Ltms7ui7Tu',
+  '$CRTR',
+  9
+),
+(
+  'XenomnZ7kLQxfENcKKpfC8tov3GoZiW4XrDmPc8HRxd',
+  'XENO',
+  9
+),
+(
+  'BQcdHdAQW1hczDbBi9hiegXAR7A98Q9jx3X3iBBBDiq4',
+  'soUSDT',
+  6
+),
+(
+  '9XczSh86n8XKkDuL4yK93afRHgSifui9j9sFPHQLfFUT',
+  'EGGZ',
+  0
+),
+(
+  'BUSDjE9NEQ15aRFTxKFAjUf5vzqBhEgTNbYevWcSB5qp',
+  'abBUSD-USDC',
+  9
+),
+(
+  'B2GcHcXR4Na3ry38dSKXpybacaW4xYmt4TZvCoXHmqki',
+  'SKW2L',
+  9
+),
+(
+  'D68NB5JkzvyNCZAvi6EGtEcGvSoRNPanU9heYTAUFFRa',
+  'PERP',
+  6
+),
+(
+  '5Emw7mifMM86nfHhyMC12p8pAW5DvWTFJeFtsP7DBHn2',
+  'WATR',
+  6
+),
+(
+  'sotka91WnAeWUbmyBgGbHjhYFML1AX1Nk3xYdvQTMth',
+  'KNIVES',
+  9
+),
+(
+  '67jSkrp4SEhk4k5E6oXjprX9SXnRb1x2M3obke7BemL1',
+  '$MARS',
+  9
+),
+(
+  'JEFFSQ3s8T3wKsvp4tnRAsUBW7Cqgnf8ukBZC4C8XBm1',
+  'sUSDC-9',
+  9
+),
+(
+  'HUBBMrYrYpxkPbBbULdsvSrcoa6Qv526AGuosrhF8V59',
+  'USDH-CASH',
+  6
+),
+(
+  'Gq5xdBxA39rRN5GsnJtodAnkqvFDQ4YxkEG3N7rS8XHw',
+  'KTR',
+  0
+),
+(
+  'rg3SH72WW9szTMVLUXamk4cNmLxRwdd5KM73vDMrtvK',
+  'ONI',
+  6
+),
+(
+  'GdTXHhRr9UoqaYj2MC9hPz4mjE3vigGbUEfjaDCU2onq',
+  'FIRE',
+  9
+),
+(
+  '9BsnSWDPfbusseZfnXyZ3un14CyPMZYvsKjWY3Y8Gbqn',
+  'PERP',
+  8
+),
+(
+  '2ueY1bLcPHfuFzEJq7yN1V2Wrpu8nkun9xG2TVCE1mhD',
+  'HGET',
+  8
+),
+(
+  '7eJCLyW5KkvzdzkVXs1ukA1WfFjCcocXjVit64tYcown',
+  'SLITE',
+  9
+),
+(
+  'HGsLG4PnZ28L8A4R5nPqKgZd86zUUdmfnkTRnuFJ5dAX',
+  'grt',
+  8
+),
+(
+  'HihxL2iM6L6P1oqoSeiixdJ3PhPYNxvSKH9A2dDqLVDH',
+  'CREAM',
+  8
+),
+(
+  'AR1Mtgh7zAtxuxGd2XPovXPVjcSdY3i4rQYisNadjfKy',
+  'soSUSHI',
+  6
+),
+(
+  '6X4jtyjKQmNx9zEPjzt1A3hcKEX7fi6BX3ruQ79sLa75',
+  'ATG',
+  9
+),
+(
+  '77TBgKmTNtMdGrt1ewNRb56F2Xw6fNLZZj33JZ3oGwXh',
+  'pSRM',
+  6
+),
+(
+  'WLZAGA9jnK7o5nTgkDTDngSsSuiyegb1p7Ch5DDoQEe',
+  'ATWL',
+  0
+),
+(
+  'Ev3xUhc1Leqi4qR2E5VoG9pcxCvHHmnAaSRVPg485xAT',
+  'OPALJ',
+  0
+),
+(
+  'BUduUSJDmTpEUs3di9NMPf38zRz1HMHqEtWAebpYwyVz',
+  'HSWL',
+  0
+),
+(
+  'WLUczF9P5wKLfq53ZSR9UGgBmwxXcELXpECnRyzS2Jp',
+  'CHEESMT',
+  0
+),
+(
+  'SRYWvj5Xw1UoivpdfJN4hFZU1qbtceMvfM5nBc3PsRC',
+  'SUNNY',
+  6
+),
+(
+  'FAWLwPYG4BSTkwnZY6VLTYQeFTYyLFGkwWSzjrU9LZZc',
+  'FELLOWWL',
+  0
+),
+(
+  'TupVw9WuoZQZ3Zb2kegZvf8xrwEo2EGwx7gB79P5gx4',
+  'SLEEPY',
+  9
+),
+(
+  'HphmyPf32KgoMaGeEnLrndtcJuejxDMRFj4r1EzNvWSM',
+  'IG',
+  0
+),
+(
+  '75Brdir35vFLheHSoiEX3oWnTuHfAscYpGSBgfhRbmbk',
+  'BOOP',
+  6
+),
+(
+  'ArdsPHY5LsCjvxSxZz8f3vTkv5qoYihmCCPMYvr6aQza',
+  'MPI',
+  9
+),
+(
+  'Gorizmp5uZz2VC8dg6L58Hhf9L1onCfBH8SoDBHnyJ2C',
+  'GMACHA',
+  0
+),
+(
+  'BSdaqrvjJZ7ekPKtyuhBZuhsGENiQSV4CRGs8Xt3nkDe',
+  'DOODLE',
+  6
+),
+(
+  '9oCf3dx1PoSP1tnhNS6LBQXzixU1vkzNHvFwY1oFCD8M',
+  '$FLY',
+  9
+),
+(
+  '3Duk5b6fLztPmS4ryV48FM1Q9WXUSMwz9jehAT4UtqpE',
+  'ORCA/mSOL',
+  6
+),
+(
+  '9F9fNTT6qwjsu4X4yWYKZpsbw5qT7o6yR2i57JF2jagy',
+  'soSWAG',
+  6
+),
+(
+  '3K7aZhtwWJ2JS6GnbbgeDVnxd1q2hwhqasmgRsAMZ4yC',
+  'SLIM/USDC',
+  6
+),
+(
+  'A4MgR6ANAh79AE1csJjXiRV2vYDqP8wgSUUp28HpDEyo',
+  'GIS',
+  6
+),
+(
+  '3in9a9yHtdjDFRjDyGTTpGUwJpT9zZBcyjQ8J7nqqNtq',
+  'DoggyStyle',
+  9
+),
+(
+  'A7e46NH9UMeCARWtNNoVSkR55DxEaAgQGiXLYwxLW36z',
+  'PAWR',
+  2
+),
+(
+  'Ei8cio2iKfBErSCyHuGzvSqPQpDPd9qaxdE8nJYroX1B',
+  'DOPET',
+  9
+),
+(
+  '27oGLMCDP57DE77rfVfe35oJaAnimFasJs3HyuaDUuuU',
+  'BKSP',
+  7
+),
+(
+  '4SVyZ9e8EJFLiHeoys7Bsm4EH8bkfCRMcL4TzEEfsyXE',
+  'MASK',
+  5
+),
+(
+  'GJQ1iDoPWWo7pXeNKhC9BLD3FHL2tgFEVGMHYGEfQZT',
+  'ALTAR',
+  9
+),
+(
+  '7ViSurf5Ve2a8qDWFYsfU8GFmRttQvS5paJ8L94QZgo7',
+  'BBSAMO',
+  1
+),
+(
+  'DnYLfTsnLMYVdDhnZuzekdGf8AMQ3crDR2qRfpHRe47i',
+  'FIN',
+  9
+),
+(
+  '7SEsxCsiNiYqCpYG16wx4c9u2YGLZphnEFTAU9ENAizD',
+  'RING',
+  9
+),
+(
+  '9THzNrZiF3XNsuuqb9T8gsCGaYnek2Lsg5YKdqMnf8TW',
+  'SS',
+  9
+),
+(
+  'FronkXnfBgzfhsEV2bjwoJ5VgYhpEVCSN3pzpJkvZGUf',
+  'FRONK',
+  9
+),
+(
+  '8AN7mWuw6M81w3gDcxvvQR2Kr5RGKJjzh7ZKAPPmrcJG',
+  'SAKC',
+  8
+),
+(
+  'inuXXDC6Tw1Fu6qUAfRbELG5x5pSA4afTskf7MvwjhN',
+  'KINU',
+  5
+),
+(
+  '2ZLYEWypSrQhruqsTDqWNWuzFXe5G75dX9PoHQWtKZ31',
+  'PTN',
+  9
+),
+(
+  '3S3a5vVR244mrDZWidChYk1wYM6L2Y1nG58EDP4Hdpbx',
+  '$PETE',
+  9
+),
+(
+  '7ScYHk4VDgSRnQngAUtQk4Eyf7fGat8P4wXq6e2dkzLj',
+  '$ALL',
+  9
+),
+(
+  'Gqu3TFmJXfnfSX84kqbZ5u9JjSBVoesaHjfTsaPjRSnZ',
+  'cBTC',
+  6
+),
+(
+  'TdnwZyyXjwJxe21As5vjKKfJn9Y7mBeEuKLsHxAKvFV',
+  'TheSaintsWL',
+  0
+),
+(
+  'QQ6WK86aUCBvNPkGeYBKikk15sUg6aMUEi5PTL6eB4i',
+  'cstSOL',
+  9
+),
+(
+  'CrKj3wahgHc76yUE5gL3WLbRW5g5rK88vAtUqRcsSCnX',
+  'TNC',
+  9
+),
+(
+  'BjFceVzhHSADeV9udJnS73sxdGFQ2VcFdi1meXhS1EzF',
+  'ChimpWL',
+  0
+),
+(
+  '5RnsebX6ZamLv8YAXDNhgv513SNFbUto9Yz1a9LC4tBZ',
+  'DSOUL-WL',
+  0
+),
+(
+  'SC3o3s72Ecpr8Dovt6zzakUZ4ewesAFz8Hyj119hLER',
+  'SKCLWL',
+  0
+),
+(
+  'GBWT2DcrsgB6FpqtQQNLQp8ZX3wED4JTVHspMzYxGmbn',
+  'GBWT',
+  0
+),
+(
+  '6156vEwBw11hGF6rkr3um5RPNWfBCYBFH7XcbEF47erH',
+  'STEPN',
+  6
+),
+(
+  'CJ9G8mxRu5jwmtjnCLt4KGCJwKM47GNCTknMUbZXQvN3',
+  'MRB',
+  9
+),
+(
+  'ANqY8h3sRSwkC29FvGJenAh7VGRABVVx7Ls6Mq4BuGT',
+  'ZIG',
+  9
+),
+(
+  '2fNw2cs23CV2X6JFA4CprbNbk3GcctFH8FcXSDPBkd7X',
+  'FISH',
+  0
+),
+(
+  '5WWRMYPchxgh3VmYGPqoq2kfzCtBLxXB9vFH2TeFeR9m',
+  'TPC',
+  4
+),
+(
+  'AErxrfertfwzFANXPpgpKkgBPY5kMZzRsafBU3a5mFw6',
+  'LSTR',
+  6
+),
+(
+  'WLPR8Sy6Fbnf2sZHVg8Z7uW1QnRThnjhb244kf4ddCS',
+  'wbBUSD-USDC',
+  8
+),
+(
+  'FffNDEb4jm5cp3burLawTV17PDXjexuN3MzdDahkKtaf',
+  'AWLT',
+  0
+),
+(
+  'SGTdtpAiPU1Fg9a3DqUN1852V24sfo92ePEHpyqkrSN',
+  'SGT',
+  6
+),
+(
+  'DdFPRnccQqLD4zCHrBqdY95D6hvw6PLWp9DEXj1fLCL9',
+  'aeUSDC',
+  9
+),
+(
+  '5yUX1XpjLSTDyNBTQ3N3oYpu6RH4gckqnSS6Ecg79fAL',
+  'TDX',
+  9
+),
+(
+  '3LDAW7enNUZ4DjE1jCi1cDpXvXLrJ1rPiECPbcHpMgG2',
+  'FEED',
+  2
+),
+(
+  '6tFQQmUfMY8463jxDfTd6RaJesL2aHMq4HFp6S8Jtzm8',
+  'CLYDE',
+  9
+),
+(
+  'Tokykm2subzeF9C3G5nqXds6YxpPeXEKkCD2Rt1jHKk',
+  'SPWL',
+  0
+),
+(
+  'RoTksthszZDGGZq4uZZZxVmV7xsaz4X8kBESMyeLZkE',
+  'RoT',
+  9
+),
+(
+  'Ed5nxXh2TT1Ry7MuX4Hi5YuCAnjmXEcpJ9LhdmDbCFQS',
+  'FUM',
+  9
+),
+(
+  '4ihMnPfPCRqHiQHB1pjqX43ZUMoGow9GFobhWgjVa1Wm',
+  'EYEZ',
+  9
+),
+(
+  '9yP5r8DPtPj4o9dHjxCVt6PYBusWCRg6yFpXNN59LUmt',
+  '$THUMB',
+  6
+),
+(
+  'GV6n9Uow3XzMWSs8vwTCML8SvMA6ozbidaEfdPoSoraQ',
+  'SVIZ',
+  9
+),
+(
+  'WLPkasQaeBjePs6uED7MQsQiES41aANWfqqAxc5Y8CP',
+  'PPWL',
+  0
+),
+(
+  'HWLvCf7dwed7WrfiAbesDfSbPZAhfbwwrALv21mZqG8Y',
+  'HWL',
+  0
+),
+(
+  '6LcERGBPSv7nhoA6Gr8nvke1xcAmbarVsCMHVvQ3NCbt',
+  '$SLAY',
+  0
+),
+(
+  '7GBfZq24jHXmp6bQ988yhgV2bQiZjZx7Fj1E2xSg8ytU',
+  'BGAT',
+  0
+),
+(
+  'RAZRymwM9F2nP9ZAsojyKRoneydftoqztsx3MnRS9MC',
+  'RAZR',
+  6
+),
+(
+  '7Yeihi147ynkw58UP6W5AetBgotn6gFxV8UWsNPhfrkZ',
+  'OJJSBB',
+  0
+),
+(
+  'HyUD3Vkfp4zsVXVbAfSrpSZqvEuMysF1zLSFyCcHybkt',
+  'WARI-WL',
+  0
+),
+(
+  '7g166TuBmnoHKvS2PEkZx6kREZtbfjUxCHGWjCqoDXZv',
+  'acEUR',
+  9
+),
+(
+  '2eZ45YBgQEftoxEVyCTWEULLNkDxSVSMrwv7LXiZn4sk',
+  'STAR',
+  9
+),
+(
+  'FCqfQSujuPxy6V42UvafBhsysWtEq1vhjfMN1PUbgaxA',
+  'USDCbs',
+  8
+),
+(
+  'EA9GBGUxJoNfHLZ5qzLtG6553EmXM5NgsyrMXfZcfQQE',
+  'WOOT',
+  6
+),
+(
+  '12Mzc4wnxW1t27M1uJ5F8fj4V7FK921gsGG7WsBcnfSX',
+  'WOW',
+  9
+),
+(
+  'DuxDz1K3npjMYT6ZoH628pK3zJYjUzDMGT3ZQHKz1VYb',
+  'SST',
+  0
+),
+(
+  '2uEb2S4JCxZSzMxRfEdmj6grtZkgEe6XrfTwgkpswuvS',
+  'VAL',
+  9
+),
+(
+  'ASTkbpe5ckW1mx6WDLE9zPScWsYjSh6h5zQ89UYoUQ7D',
+  'CHAM',
+  9
+),
+(
+  '3hWBSqyHrJMDkSuAQtBYHwgKmMbJ666we5xegfDmMzGd',
+  'CURSE',
+  0
+),
+(
+  '9MjAmgHXbu5drkNa9XpzfozgsM5Dcq6bSnKZzdNrwscC',
+  '$FORCE',
+  9
+),
+(
+  '2thvTG87oytuwp6Egp1jqMAKTyQ5B1aWk46pLsa7Zo2P',
+  'SXA',
+  9
+),
+(
+  'HitPa8XDRpaWzsLL3FwawBiRXS85wZ5Fc7fKdmY6uR5',
+  'HIT',
+  6
+),
+(
+  '8kRacWW5qZ34anyH8s9gu2gC4FpXtncqBDPpd2a6DnZE',
+  'MECA',
+  9
+),
+(
+  'B7mXkkZgn7abwz1A3HnKkb18Y6y18WcbeSkh1DuLMkee',
+  'fusd',
+  8
+),
+(
+  'FmpqmVcT4hSUfNhach31YUpf6M75bBYaC59JLMyCVNHH',
+  'GOOSE',
+  9
+),
+(
+  'frogmSnr9knrc6CcVMtGrh3KvixZRc67LQYSqoE3ozZ',
+  '$RIBBIT',
+  9
+),
+(
+  'WoSZYtctzp48xcdsSfGNKUGhjNdPx2qm5J2TUNfd1a1',
+  'WOS',
+  9
+),
+(
+  '22xoSp66BDt4x4Q5xqxjaSnirdEyharoBziSFChkLFLy',
+  'BCHBULL',
+  6
+),
+(
+  '5vfLU3vxRQj6v474imwFvoeWxqo4gKmXmRpQ5N1Qgpcy',
+  'SLACCMINT',
+  0
+),
+(
+  'A6JVLMAjR1aeCfz3X2z4vVQ9GafYWVT75tC5V5qefja2',
+  'BULB',
+  9
+),
+(
+  '938xXsPKhBAXDLUfWNYuZdsnj57oGF6fCz8P6yLom19f',
+  'NURP',
+  9
+),
+(
+  'CH7ZBJNnJRsUXUK8j2SQhoZbvU4mLWX1M6T98rUejwYT',
+  'wCAPS_v1/USDC',
+  8
+),
+(
+  'v7bs339b8oqXgYGJu4mX9cB8tZrFVSozBjW6QZZKE3m',
+  'GON',
+  2
+),
+(
+  'USTKgR66nvdkCc4bUKsirzEnyFoPtRyZzT2xsqB5t7c',
+  'solUST-UST',
+  6
+),
+(
+  'BsDrXiQaFd147Fxq1fQYbJQ77P6tmPkRJQJzkKvspDKo',
+  'SOLA',
+  8
+),
+(
+  '8iey5bqBcqejJWcS7Two1ZffeJcxx28rfBMeSAqCF9nf',
+  'LIT',
+  0
+),
+(
+  'A7Fzax3TigXLinwQa2hRydsuiJo14d73i2Gob7WDvNTa',
+  'HIPPO/USDC',
+  8
+),
+(
+  '9bnKvEK2ymzbrtKGeCSbDtn7Dr1afCQoTTH1y4fL5seK',
+  'RBN',
+  9
+),
+(
+  '6kcXW5DZjF31jNZKpJ6XLYwqVsn7HdkoVLSJUnogma9U',
+  'MWLT2',
+  0
+),
+(
+  'MRLY2ScVMxXJTieiDi2Ywdm8VjEKeLcY4THL2UyhHRA',
+  'MNRL',
+  9
+),
+(
+  '43nugMCbD2J7BDiDDTxUD15jcLnexdPtftPdANYy9tc6',
+  'QKA',
+  9
+),
+(
+  'EDkC5pB4TWNL2dcpBFfGpKuJTYzhAPvhrMyXgRnyKFT8',
+  'SDRAW',
+  0
+),
+(
+  'Daimhb91DY4e3aVaa7YCW5GgwaMT9j1ALSi2GriBvDNh',
+  'wDAIV1-USDC',
+  9
+),
+(
+  '9XnZd82j34KxNLgQfz29jGbYdxsYznTWRpvZE3SRE7JG',
+  'SRM-USDC',
+  6
+),
+(
+  'HafihnBU1fFn2Gi4GBh8gTcqw4BFDzkFmKLQf9ikGoyr',
+  'CHAKRA',
+  6
+),
+(
+  '3FYzcJvLeQubLuAgacV6sDu9Ye8Eg1vFYpCxD3ogp74M',
+  'CCG',
+  9
+),
+(
+  '32Eh585dMTSAPHF28DEG8i8vNcS9iwoVRdaJkBucfqG1',
+  'GIN',
+  0
+),
+(
+  'FbNGhqrw9Wm1y2mdkBRuhXkBfrh6fTd1gXS7d4oov88b',
+  'MAG',
+  9
+),
+(
+  'WLPGfDvnSsJg888FydDCRKkmKTwu4L3MHjfqBFj5LJD',
+  'FRAX-UST',
+  8
+),
+(
+  'ZScHuTtqZukUrtZS43teTKGs2VqkKL8k4QCouR2n6Uo',
+  'wstETH',
+  8
+),
+(
+  'C6ZkcqRDdBxWoXvgsEuPxEWbmJTSssf3stqMznfETcAT',
+  'DGEM',
+  4
+),
+(
+  'ToTuLunrMF2eQtvj7p6UtU7Jc38mbZZ8do21fg61Qg6',
+  'MRTS',
+  0
+),
+(
+  '7LFgbAxGkVsFNWsDrFTU2itczmaSeAdbCjWxcco7nKB3',
+  'MTV',
+  0
+),
+(
+  '3bQnc6nZoS2ZpNfCWDezhResXcWV5Lm41wn4xtRtWyG1',
+  'kpETH',
+  6
+),
+(
+  '7LmGzEgnQZTxxeCThgxsv3xe4JQmiy9hxEGBPCF66KgH',
+  'SNEK',
+  0
+),
+(
+  'DcqWM1BdgfUFktSKw8XC6qLAo2Ki2dUFXc1YYe67c8kD',
+  'DRUGS',
+  4
+),
+(
+  'AUrMpCDYYcPuHhyNX8gEEqbmDPFUpBpHrNW3vPeCFn5Z',
+  'AVAX',
+  9
+),
+(
+  '5AHzHDUiamGAwiVs8pXJuJmigqJWopwtcp2voieL1oWP',
+  'CRPT',
+  6
+),
+(
+  'E6HdfEAvaY8Fz9avWHvP9iJLWhVrdvmRjvXNc2v3vzb7',
+  'GNANA',
+  9
+),
+(
+  'DiRHqRqHK7ze2ffBDpLtzswuTYPmWDJh5t2J8bH9AoKr',
+  'TSG',
+  9
+),
+(
+  'VVKNtVuJJ1fYPAh2tRbZWVssiRVY6Z8hari5DbR9omy',
+  'VPASS',
+  0
+),
+(
+  'Ahiss7vnLA3JZW76TNLkHMHA8FKytdfMnQ5GzEwTt3Ed',
+  'AHI',
+  2
+),
+(
+  'Amig8TisuLpzun8XyGfC5HJHHGUQEscjLgoTWsCCKihg',
+  'tuUSDC',
+  6
+),
+(
+  '5Z7bWSvcxVeUkroSypFW3Tsw7vPoJUcCxhTFNenLxNoR',
+  'MSP',
+  9
+),
+(
+  'CLVZwHqS1CLdqGMSsFvRYVyGM7HUXAYXNkAfarn2nLRz',
+  'QTON',
+  9
+),
+(
+  '4t6hdasqbriik3svqbhBpZmAbYGiJUPds1bCB6rRbLzN',
+  '$STEALTH',
+  5
+),
+(
+  '8L8pDf3jutdpdr4m3np68CL9ZroLActrqwxi6s9Ah5xU',
+  'wFRAX_v1',
+  9
+),
+(
+  'EyrnrbE5ujd3HQG5PZd9MbECN9yaQrqc8pRwGtaLoyC',
+  'abETH',
+  9
+),
+(
+  'B9xkxYMfv1TuPu2BFRuGNcd9XqX8YTCvdrG9ozAE3a9d',
+  'BGPR',
+  0
+),
+(
+  'SusHi7jkadUEmE7L4CvkNyZroXMDrx1saBFfDSpq6tx',
+  '$USHI',
+  9
+),
+(
+  'PXLSmSBWHU8yAqNof9Ry2LPsZxHSYB4xXsBaQWUmEzV',
+  'Pixels',
+  0
+),
+(
+  '9iDWyYZ5VHBCxxmWZogoY3Z6FSbKsX4WFe37c728krdT',
+  'OXYPOOL',
+  6
+),
+(
+  'HM9jjC8gThNDfFv3TRWqUdfJp5onWGDXhWirm5sUcFhj',
+  'NERD',
+  9
+),
+(
+  '8a3NjzFNcXXWRUV243jBs5GwdTSppFbpVo4vDydUtsbB',
+  'WLTUBBY',
+  1
+),
+(
+  'MTSUtji2nigjKJLoqCgvpdqoDSwpjCoFo8rWRPS8uvS',
+  'MITSU',
+  9
+),
+(
+  '61m2xv1m6zTEAS86VfjFmNKG1ZGemNu19hzMmgstowLZ',
+  'SAMI',
+  9
+),
+(
+  '54WShMVn3GKf6xNLc55jidj4M8VW1jpmzdvV7MJPX5JK',
+  'WRLD',
+  3
+),
+(
+  '3LKZU3iQx9KM94S4uYRdYwAHTm6odDyzGQqTBNj7J27z',
+  'atLUNA',
+  9
+),
+(
+  '45HfvXJHY9msY2i4EmUpume1mSMLUvdaWsJRbctAobQM',
+  'INU',
+  0
+),
+(
+  'GGEMxCsqM74URiXdY46VcaSW73a4yfHfJKrJrUmDVpEF',
+  '$GGEM',
+  9
+),
+(
+  '6CEH3RdzsubHF94fRuU7DWGNh5XpatXmu6jqJnh7kqfM',
+  'BUXX',
+  6
+),
+(
+  'FJEEHRAKPcVUBfitPZDsmR8PtYfeg1Cy8RusVb7PuPgw',
+  'STAKE3',
+  0
+),
+(
+  '6tC7i5aVU2Gw2Bdj3WdC4WKj2DXUt31DdHz3AEbBCxp5',
+  'BADRAY',
+  0
+),
+(
+  '86ywhGx2vMPUQht6VbxNA6T6WxzGLSYJsmMptgGTMcy6',
+  'PILLZ',
+  0
+),
+(
+  '9U8Bn6zAf6Wyp1YHdXtLyfbN7yMvdvW1qQY475iZ5ftZ',
+  'GIGS',
+  4
+),
+(
+  'GEMz5TfaV54E6wmGJ1wtArysP99U5pftMExgeCZ6hwoo',
+  'GEMZ',
+  9
+),
+(
+  'AH1KE4h9nnKfqYRDynDsB3nFwT8ohXvw9rX81uaxrhAg',
+  'MERC',
+  0
+),
+(
+  'DJafV9qemGp7mLMEn5wrfqaFwxsbLgUsGVS16zKRk9kc',
+  'soHXRO',
+  6
+),
+(
+  '6DnZ8eU2JGmaHDALrR425xes228sFeMEcXezQ4CqdQx4',
+  'MWT',
+  0
+),
+(
+  'G33nLPsvygo4qT6ocxA5TuJng7d6BGK6844DCLB3kcfC',
+  'AMIGO-WL',
+  0
+),
+(
+  'Cf4yCbJs2LZeNLN1jRvLk8q6tgBh7MMG1Rg1fKf5MxbL',
+  'OSM',
+  6
+),
+(
+  'SrZXMTPhY8TEJMXQEhHKbFdVY2oNSGR5YqMMGK6Zm7L',
+  'BDNT',
+  9
+),
+(
+  '26fxx6VCssNFQ5iTDmvNzMJW7t9MA7Nuk8L726fnU4BX',
+  'Rein',
+  0
+),
+(
+  '2qayh5Qc3BBR91KA6CemKN7vmzmexRJJw2KWFPzn53Uw',
+  'BELL',
+  6
+),
+(
+  'FAigNii6yJEraz5LX9JQ9NUieUnk3ucY1eHKjXBGmd4d',
+  'CHKRA',
+  9
+),
+(
+  '8bqjz8DeSuim1sEAsQatjJN4zseyxSPdhHQcuuhL8PCK',
+  'xETH',
+  9
+),
+(
+  '8KBZyCpvZJ26nAp6A44zZiVevgsbkF3wakTAUa1yVBpL',
+  'ZWL',
+  0
+),
+(
+  '2uHq9w2NnAfrVYWkmPiVx34L7q9AcfPKgFAHAJrPPXLr',
+  'BRP',
+  9
+),
+(
+  '52Y1RGnRFvRFUQq5r2AWpFLLFvokiiqxRocsWVpmPTU4',
+  'MHC',
+  0
+),
+(
+  'BKydRTNdaMJ8B4zPva3YhwUQcpvAsyZaGJnKA6F44fX7',
+  'FBZ',
+  9
+),
+(
+  'BjdhCgJcdvvprhY3pQfJgsLfKJCyPFAW6Mt1gB8hExGH',
+  'TALON',
+  6
+),
+(
+  'FEkvXnyW7sPV1Xa4w7SZfMGsGnf5kaCoAAxHQVVfUs2Z',
+  'ASG',
+  9
+),
+(
+  '5xEbwdxKaB8T2fNatZi8CGg99EjJoTFnnBssJXqEU6SZ',
+  'FBMP',
+  0
+),
+(
+  'CVatR2DSHovFfFvJqeiuhgbjsHD9NpN9iAaqbVEZRxdW',
+  'SOLAND',
+  6
+),
+(
+  '3iBZV8gvUFxp333FFogUPVi6MP9dEZ74xUxVzEQvNPii',
+  'SHIBU',
+  9
+),
+(
+  '3ZXVxxX6zCf5Yqeq6iwdTuVwC6E8b7bs2q3D1Prg86sv',
+  'DAGE',
+  9
+),
+(
+  '93iJG6TY2bXb8zUe6gscx3fwvUCZPHVMCrVRg6uFz6ZU',
+  'SKULL',
+  6
+),
+(
+  'EkB2Z2jZDLN8YQVnKeJfAYeoUhCVXtwfmq8eS9fH6kpL',
+  'RSPT',
+  6
+),
+(
+  'AyDDpSg7Q6icGx7RAntSDAuwxdMkEsRWkL4QkeqoQF1H',
+  'BTWL',
+  0
+),
+(
+  'HALoiQHVad4zaH4yhyiZg6E2Pc9hTp4Pp3Fhoo9Et12h',
+  'HALO',
+  9
+),
+(
+  '3GQqCi9cuGhAH4VwkmWD32gFHHJhxujurzkRCQsjxLCT',
+  'svtGGSG',
+  8
+),
+(
+  'USDTJZL2vH92K5QeCvQTTzvMXUYAdvk3v46CwZyfsue',
+  'weUSDT-USDT',
+  6
+),
+(
+  'FTXjwjwWqituSXEHnL5VF1mjDhZoAyJqvHiRPsRq3KWK',
+  'aeFTT-wFTT',
+  9
+),
+(
+  '3D4zNUJMqXUcShpFC9BeK3ueGodQ8y85iX1uN34YNYss',
+  'FEMNS',
+  9
+),
+(
+  '7kWBhuqxf6tX1GUgAQAh9fgEHqBoizuQX7vvHTfhysiL',
+  'LMINT',
+  0
+),
+(
+  '4ZEDNmqoLbzwJVAJZNhRgz31Da8DauDkpSfH9iU2vXA4',
+  'CATOMIAOU',
+  9
+),
+(
+  'Hjibp1cn2bSk1dkTdpbxez3YAiBGTLjzc8xZ8LbCCUHS',
+  'FRANCIUM-CP',
+  6
+),
+(
+  'D4KVLfryvPdjPsWRKDWGz4YpqpqZHkrjk1JzUMeBG8JJ',
+  'APUNK',
+  9
+),
+(
+  'DKzkt1r6QctnQFx5hMnGomcMimXqVfAyBhMcoKHcBiNK',
+  'ROUNDIE',
+  0
+),
+(
+  'TRENpVRAR9LiZgyYv9zWrQwYqSHa7ThCYdbpFCJixj1',
+  'TREN',
+  9
+),
+(
+  'AEzCK6jhPpZgTwoVh3dpQHR8d5sTxnmSvqegbgsxyfTa',
+  'APWL',
+  0
+),
+(
+  '8Bihqw9aQETYVH7kitDtk4PwWN5XMCCZJTRDJGUwDkNp',
+  'HOZ',
+  9
+),
+(
+  '3xVf2hPbkE5TuZNUPLQXFgFLD4LpvCM45BodbPmnpSSV',
+  'sBull',
+  9
+),
+(
+  '7a4cXVvVT7kF6hS5q5LDqtzWfHfys4a9PoK6pf87RKwf',
+  'LUNY',
+  9
+),
+(
+  'GVsdtSe3E2fQoP3TzNT2M1VUchJ7sBmDBuvBZmGDGvmB',
+  'PEEL',
+  9
+),
+(
+  '8wv2KAykQstNAj2oW6AHANGBiFKVFhvMiyyzzjhkmGvE',
+  'renLUNA',
+  6
+),
+(
+  '7CLDJc5aKJp2WYLGVyNAwdbcnvdKdZuKggNKGo3GigYL',
+  '$BEARS',
+  9
+),
+(
+  '5kMBto3Eu1sUKM6h9E5x4Lj6QBqaJcpr9V5GqP44EbU3',
+  'SSCSTK',
+  0
+),
+(
+  '42Y3CgJQLnHjdScYMu8VS4TbeZMUNVdBMKYbf7hz7aum',
+  'GMFC',
+  6
+),
+(
+  'guppyrZyEX9iTPSu92pi8T71Zka7xd6PrsTJrXRW6u1',
+  'GUPPY',
+  0
+),
+(
+  'CJze5X3G3V6nqqrfeALTpb1HbkKvspjiUGR12rVchL3T',
+  'SOC',
+  9
+),
+(
+  'FmQ7v2QUqXVVtAXkngBh3Mwx7s3mKT55nQ5Z673dURYS',
+  'DARK',
+  9
+),
+(
+  'sunSBR8hRLZy13HCHdrT3hjJZVRpkVfXF3QaaJYjxZ2',
+  'sunSBR',
+  6
+),
+(
+  'EAv8t3gCJpZ2M45oZNtpURmiis1H9kgUgfod27fJGrxo',
+  'NFTP',
+  0
+),
+(
+  'CHzPHnY84VZdgzEnpPJZBTCXiSSsiMEah1qeLGQgD2q8',
+  'HAPPY',
+  0
+),
+(
+  '7ajE3K37GGj9zY1MUbq4QFLhbiL3yY5F7saxhZZ5ZQbp',
+  'MEND/USDC',
+  8
+),
+(
+  'YLTrJGCqZpwZZbCN2D3KTg4PuGBofto8ciqYdPoQEgd',
+  'YLTR',
+  2
+),
+(
+  '6EMv9MPiTL5oWzkBHr9XmHHtRpUk12nKGfqboDFyY87P',
+  'PINEH',
+  9
+),
+(
+  '3yeGqnYLXya7zPbTkEt2d84F489eV9mNia4WQHY3JefA',
+  'TRB',
+  6
+),
+(
+  '8S46ooYiMtmrvpJxg3P3cteEtPuhbvfM65rXj9ywdD4q',
+  'FFn',
+  0
+),
+(
+  'GXMvfY2jpQctDqZ9RoU3oWPhufKiCcFEfchvYumtX7jd',
+  'soTOMO',
+  6
+),
+(
+  'ciAKvQShrEdMf6d4GctueSTnakiF8V4QjrYdRrZQngY',
+  'IMP',
+  0
+),
+(
+  '5LL1vedTP55UGkGF1x6ZRbefPHANveYpvqF18QSwKx2e',
+  '$RAWR',
+  9
+),
+(
+  'ADcEtKSVKDxBUe3JERgSh9q458w3kRKPMHkihF13vxx2',
+  'DYOR',
+  0
+),
+(
+  '6xUECSMxSjPGPMzauuCjJGkYgyLYC5UJWpv5en8twhPN',
+  'SKOL',
+  9
+),
+(
+  'aro9zmkh9pxkKN9F1FZntQDQCyfbyqv9QdqAwWc7nfJ',
+  'ARO',
+  6
+),
+(
+  'E4DRAz5D9iMND9PJ7tq1HQbZPxavDWHxmeizUtk68o8S',
+  'SAFE',
+  6
+),
+(
+  '6cwW3gBpWnBU8UAsximLQVfbMySJqBG6LkFsozkr7BTg',
+  '$MEAT',
+  6
+),
+(
+  '9dACzqUP3V8FSpn818MLhvu3j7KgzjSTmstGEH53ezLm',
+  'SUCO',
+  6
+),
+(
+  'SL819j8K9FuFPL84UepVcFkEZqDUUvVzwDmJjCHySYj',
+  'sETH-8',
+  8
+),
+(
+  '2dsWvsHBE5biqZtNDYDUfxGVWKC7xSfwTArwic8MJAWy',
+  'BLCWL',
+  0
+),
+(
+  '359inGpmLCc4rVK8nqmg8EB7KovAFJq8WYTC98M8inMn',
+  'DINO-WL',
+  0
+),
+(
+  'fishXewD9Muc6xenzn3JevquHq3A5WVERMLLUrZMTfh',
+  'FI$H',
+  0
+),
+(
+  'KVXJhoJLSSQq2EYPYMP4h2v8AJryQQGeDJcpjRLp96K',
+  'ORBWAY',
+  5
+),
+(
+  'GkDg1ZfoFkroLAwLqtJNXhxCDg8gmKxHAGxSUZagYFfE',
+  'SOL100',
+  9
+),
+(
+  'E5qNsCX91wqnLQQ25yEHTo3eujWGtqLe9daJvejRxikc',
+  'WADA',
+  0
+),
+(
+  '7UUWK4HFvkFvhd6U4DxCBi1yY7XWhQguabXK1MxtANKW',
+  'KSD',
+  4
+),
+(
+  'DkCdWb73xNPVbFDE9LXAiqnJRioQyGJYNjsiYiVdFTdj',
+  'PCHAUP',
+  0
+),
+(
+  'HMWLJtkb5U1evEJvXassg2MHaStY6aeE9CmVvr2o6pVE',
+  'HMKS',
+  0
+),
+(
+  'Ca5eaXbfQQ6gjZ5zPVfybtDpqWndNdACtKVtxxNHsgcz',
+  'svtSMB',
+  8
+),
+(
+  'GLapb5CUwQ5pbDy9RLuEctFEjZuoNKsRvc95MGpKimCf',
+  'SLGT',
+  9
+),
+(
+  'Grk6b4UMRWkgyq4Y6S1BnNRF4hRgtnMFp7Sorkv6Ez4u',
+  'afUSDC',
+  9
+),
+(
+  '4dzDhawz7bHfDDfBpbDrLeDu6T7vZEtmmyQtn9Df2PRa',
+  'PUMP',
+  3
+),
+(
+  '4MRVPdN41888CwKSpY37K8HtN2FM9Bc3xTnhf9EDdcou',
+  'MGT',
+  9
+),
+(
+  'Gtj6NZHgMZ7QHg8PDN6izEn4GjVoX8yFLv4ESNKsWb62',
+  'BT',
+  0
+),
+(
+  '57vGdcMZLnbNr4TZ4hgrpGJZGR9vTPhu8L9bNKDrqxKT',
+  'LIQ/USDC',
+  6
+),
+(
+  '56bFarytGNPXnA34WbghfHoHQJ7NqKSKyTSnfmACdYtk',
+  'KCRWN',
+  6
+),
+(
+  'CDJWUqTcYTVAKXAVXoQZFes5JUFc7owSeq7eMQcDSbo5',
+  'renBTC',
+  8
+),
+(
+  'BUMxQPidV5oAyU2qbGHn7n5efG5GT3zCBRZ626wQqhAV',
+  'BUM',
+  9
+),
+(
+  '3DWLgzpD6z9PrUY7Hk9CyHHTrGk28aHwcyPhgdQmExTt',
+  '3DFGWL',
+  0
+),
+(
+  'HHXMCAQGw4SNfwJ3FqTJdFgt2M8GqggFk9cRm4jLYPDB',
+  'Ticket',
+  0
+),
+(
+  '4hiMPLMDGkCRgKnDsXwhVZPZhESgp34ZZqymVHuBu1z2',
+  'MOTS',
+  9
+),
+(
+  'CERSmXza6DcU3vy61sVRHsZBXPsEaHG5edu4jx9VZPvm',
+  'DCSC',
+  8
+),
+(
+  'ALPBPdBQf8ibRm3PRCycDC8bdFZQhFgjUwZMtnxA3rAA',
+  'atUST-CASH',
+  6
+),
+(
+  '7dCG3R5sCLnEySHkkSJxHK3MfEKEbeKxgcuqRnkmTysU',
+  'SOUL',
+  9
+),
+(
+  '76DThuyLHagfkm2ssYw6Lv7k3MYHx6tXcwPBLU9tXm4D',
+  'BASIC',
+  0
+),
+(
+  'DMvWyuGPCWzAHCiQ1cq6NcGGyAC1Rne1RPiCaz4fDQMy',
+  'AP',
+  9
+),
+(
+  'CLoTdqgpqcvCQDipcGDkJxBPJVyZMP8v8e3iCFP5tFfc',
+  'MvrsWL',
+  0
+),
+(
+  'BBUiBwwG2pLZFboPpbvqVXACs4r3HrNBaC73zzXspfYW',
+  'FIYA',
+  0
+),
+(
+  'GfmUGCL2kY21tqpDoeVYnjP4c57wyQZzamyHjbqU4TKd',
+  'VENUS',
+  9
+),
+(
+  '3YUfxdwg1288BLSqzz6VnVsHwV7vqgbTBoTWqyhP4TEw',
+  'FLIES',
+  0
+),
+(
+  'hone3CJTYjczb5nJh45KCNMkjrKMt7SCnHkWGWsVfVu',
+  'HONE',
+  0
+),
+(
+  'DuSyBCGuhPvyGu6cSvbZonvQvh8JLyGvXJn1TmkJh6Zn',
+  '$NEON',
+  0
+),
+(
+  'iUDasAP2nXm5wvTukAHEKSdSXn8vQkRtaiShs9ceGB7',
+  'ALEPH-USDC',
+  6
+),
+(
+  '9XZR8Y5ZbRAvbCMMzeoSPzj8haAaUBaa9XoFBDHJAy2Z',
+  'SVBL',
+  2
+),
+(
+  'GtBwdtJvjyh3f7auZpABP7gswsiimw8D7geWZc8rzH9Q',
+  'GEEXO',
+  0
+),
+(
+  '86erHPHmYKXxkQSKVuRUazUrG62tZg1FdYr5oJPaS4tQ',
+  'BLSHMNT',
+  0
+),
+(
+  '8UCRqj24VEtwsqCm4k2UHsp8STy2yUqRg6xD4p6g55p6',
+  'SOLCITYPH3',
+  0
+),
+(
+  '4tUUpzPsSCzSasdRueA3J2phAvLD9cqRbzFCCNQAJpt4',
+  'KAI',
+  0
+),
+(
+  '9d6JQSWrXVEjxBNrej7efCUdc7ZCRpaHsdN2CH6sEawn',
+  'MSPP1',
+  0
+),
+(
+  'EZANpsohLdDWTT8xrQbYBwrVSz6bg31qRycMw6TTr3bp',
+  'DWT',
+  0
+),
+(
+  '9RbTen9wL7hTZRKZUMBPNpGGKsjRAM8LHokphuoCWK5w',
+  'BOSSWL',
+  0
+),
+(
+  'A5jZTDzSxySC1YGGN85XjoyDbxxcjKBAWb5viX8KhivA',
+  '$EC',
+  4
+),
+(
+  '3UMYcByZNQVHHyyqVfXMKr8XWP64omYBFVvf7bD6wBiA',
+  'BET',
+  9
+),
+(
+  '3E4YuX7XdEVCF54KtimWVBhBpeN5P2dehGnCff65q559',
+  'STRAYAPE-WL',
+  0
+),
+(
+  'GaAzf7jwEKTouDXJExH9TKfvX3Ae7fLaGwNuEajq7KsE',
+  'BARK',
+  1
+),
+(
+  'AfjHjdLibuXyvmz7PyTSc5KEcGBh43Kcu8Sr2tyDaJyt',
+  'BNBBULL',
+  6
+),
+(
+  '8L9XGTMzcqS9p61zsR35t7qipwAXMYkD6disWoDFZiFT',
+  'LTCBEAR',
+  6
+),
+(
+  'NovNrxPNjmLVFscH5rjMbec7C4BdAHms9WK21xjsP3p',
+  'NOVAX',
+  9
+),
+(
+  'FYpdBuyAHSbdaAyD1sKkxyLWbAP8uUW9h6uvdhK74ij1',
+  'wDAI_v1',
+  9
+),
+(
+  '64ExnkDhpVwKzEjuqnkGgWVEtWZvWTG7JRyqQgzTWtFV',
+  'bfs',
+  9
+),
+(
+  'ApeWLUZp1WGZdYnFEVubpTEzaNg2cpw182DKitLsyuRd',
+  'AOWS',
+  0
+),
+(
+  'Bpm2aBL57uqVhgxutfRVrbtnjDpZLV8PZrRrytV1LgeT',
+  'cSBR',
+  6
+),
+(
+  'hKnVPhEEWBbge4vuNZxFe8dVstpsXVUv6wJDwfTLvhW',
+  'SKWL1',
+  9
+),
+(
+  'DCdMWbCEbVWQi6i4ndYBAGJkZSy3ZKSRwqJo9TyhBmxR',
+  'ARTMOB',
+  9
+),
+(
+  '9tdCBZd9ZtpAS4KjBhfx4VsA9svC7ZQD8UR7FXHyLPaP',
+  'TBMP',
+  9
+),
+(
+  '4xFVXVK8Hy28MbF1rKGAU4F3sVLbMmzh63wQJeM8k9NW',
+  'BANG',
+  9
+),
+(
+  'HELLBR3SoErMY1JkcnHMes3xTYoHaRMFJQGzWMATpQf9',
+  '$HELL',
+  9
+),
+(
+  'DJTMxBZDpjFv27o4QzTSkSBb2TZPFTsAnXaAWPrJept6',
+  'DJWLT',
+  0
+),
+(
+  '6GK4nhV3h2RDKmjY4u43N3HJWNs6nYSB1qSBnsj6a2px',
+  'SFC-BATTERY',
+  4
+),
+(
+  'Ebb1hE7AN82zMeLLe2JnfJCacnn2zTMP7xfDfqKPcccJ',
+  'DDLE',
+  9
+),
+(
+  '9k27FY1wmxKEyoMGqK4zJMT2Y8dvkiYRGM2ijjLLTrjq',
+  'UNIVERSE',
+  8
+),
+(
+  'ZNEc3wSpNycdsEtsccWXooa8fKb8n4rGC24Py6ZpyUx',
+  '$SNEK',
+  9
+),
+(
+  'GDTVxsG41afjiJngZgFYHJkrG4PkTB9pVx7NuVsm2RcX',
+  'Club',
+  9
+),
+(
+  '4RBJRwEAnNEe664LgSECkkfeT4fc6ZjtCMgL7rtUs8g1',
+  'CYRUS',
+  9
+),
+(
+  'uU1bU1ccSXRTsUNQkDdwbWuFfqZ9iPkxfKnWQff4wrg',
+  'DGD',
+  0
+),
+(
+  '6nY5u2KWywfY6ERXgBBr6YNfBATHi13HT1fge64vCAKo',
+  'HOHOHO',
+  6
+),
+(
+  'MUSH7gnYdrr9PHrfSq8VyfehwUX9v9tqGqLNdKYRUrv',
+  'MUSH',
+  0
+),
+(
+  'ALP89a89ASo1h5VosTSABtQBKLBgeoaWQexYQrRCMNfV',
+  'aSOL-SOL',
+  9
+),
+(
+  '3rkCq2ZAxoDGa3KWGebeiEMN92H5AV9HBLC9eVKDoPv8',
+  '$EGG',
+  9
+),
+(
+  'E9bjYSAqabYAd2Zaev4qAMVNAiX7Z2Dp4Sn1JgsTn2b6',
+  'CCC',
+  8
+),
+(
+  'H7NbVyqLPHWC7Da49F4CLNTgfMfYq8dF9ktJW5wwH3Ck',
+  'RTRO',
+  6
+),
+(
+  'E8LYrZeJ1B84PVhyUS58BLgifWgXLvuot2LQsmCR9Wv4',
+  'LEAF',
+  6
+),
+(
+  '7TSMDTH15FddZfZHX1pPuDynM3N62BCHbHtLvRNvmSmL',
+  'ANGEL',
+  9
+),
+(
+  'HAfTjdSjZiquZiAkmsYBmcFR5NM7cP8HtMqjQRk8eVTX',
+  'ICON',
+  9
+),
+(
+  '3pVGSD3L4n35kcC6m6Z8rmG5j4q7Uq8NvEVPmc9CwrxZ',
+  'CRM',
+  0
+),
+(
+  '34TNFU9QLVraxfnCM3MHgeS3SKQ6RYw2iBogUzXoPbLD',
+  'SAIGO',
+  9
+),
+(
+  'EgQ3yNtVhdHz7g1ZhjfGbxhFKMPPaFkz8QHXM5RBZBgi',
+  'aaDAI',
+  9
+),
+(
+  'ayVMWBtmzPM48HAP1f5BSyvVWnqJWs4y2TEDbKNUGMo',
+  '$NOW',
+  9
+),
+(
+  '33j6cnQUmef2tSbSvxn2U4uSBdKYSbRvzmJcPAvDEHoW',
+  'LOCO',
+  9
+),
+(
+  'DeViLuoFz6JbDsXk3hifyQCx4CGAgAThyyQjSM6jewKK',
+  'LKEY',
+  0
+),
+(
+  'FxbkaJPXVJNBz5MGLyPPnAAsZeAHyj6FvvrM2wq3gQfb',
+  'TAP',
+  9
+),
+(
+  '7BjGUzsCJBXuT21QS4tkEdWf4DyFbJz4wAZRbkoCVizm',
+  'XSGD',
+  8
+),
+(
+  '9jcibqjEh988j7szCXB9jKgF3hH17CYbjrDYoGYGmmne',
+  'SOLNANA',
+  9
+),
+(
+  'RPEbt7HCzbJGL24VCzr17pPspFaieFQ44skWsM2332Y',
+  'RPE',
+  1
+),
+(
+  'Et4Ni9HzKXByeMx6bPmJLHwLTzhLojxbZe5pZJgpwjYr',
+  'PENGUIN',
+  0
+),
+(
+  'EwHqbMUMX33JjWAhxSg9vsX3miWqncsgpnAbqn9nhJwZ',
+  'ULA',
+  9
+),
+(
+  'HQaECmN3d5tKMf94jFPquWLr41fRdfrfWEHs8fazqf7A',
+  'MEAT',
+  9
+),
+(
+  '4Hnh1UCC6HLzx9NaGKnTVHR2bANcRrhydumdHCnrT3i2',
+  'fcSOL',
+  9
+),
+(
+  '9Qpe56yDLcUddhU6mJowdhcDkqPXXYZNn7VEjz8yUxNv',
+  'CONCC',
+  0
+),
+(
+  'FBdRvc9CmHUf8ib2sV8PDv2oiFAmyxoftjid3Uv9e4kK',
+  'XIN',
+  6
+),
+(
+  'CARoTGvYPajELZsoLQSovLY8fZmBkrrUoyJVJN3zGwQT',
+  '$CAROT',
+  0
+),
+(
+  'ELADrKrvyv7mtQ5DbCvPDGogn4fcApH3jDeTy2qpfhsA',
+  'VIDI',
+  6
+),
+(
+  '9DSDuJxgQouaYBLComUfGTGyaGLjVKktTYuojUs7o3r3',
+  'VOID',
+  0
+),
+(
+  '6JKtKEFiyp67VPN61nTCyUpY1cLrAZ7qpXiBsKqWZqWh',
+  'tsRAY',
+  6
+),
+(
+  '2g6H7aqMxsETTUoC5acFYMNX2Zk3y4ahQHzvU5spKavC',
+  'VOLTAGE',
+  9
+),
+(
+  'A9ik2NrpKRRG2snyTjofZQcTuav9yH3mNVHLsLiDQmYt',
+  'FRONT',
+  8
+),
+(
+  'GmEvUrfkmWzJSqua5UkK3KZMUWjLieDK6iatBd7QzEAN',
+  'Leo',
+  9
+),
+(
+  'BsWLxf6hRJnyytKR52kKBiz7qU7BB3SH77mrBxNnYU1G',
+  'cMER',
+  6
+),
+(
+  'MeTaRpcZ6XDvFrmPsNFqhehqV7MgY6obHrsxJLG372E',
+  'MAECWL',
+  0
+),
+(
+  'HxgAGBTLCeemm4TVqvYSebpUanJKzuztXTHdhuCt4W2i',
+  '$FLUFF',
+  9
+),
+(
+  'J2SVSPEu6ZefWH16BgPHpH6vU43MeEcRZm5Npm1ycQUi',
+  '$UPGRADE',
+  9
+),
+(
+  'AUTF8zA3uUMvaK18QAAwrfchzRHK9WdMnaJ2pu5GY68E',
+  'PNFT',
+  2
+),
+(
+  'DcJTzgLtV2Y2b6HQFTkSv3Wsck5uqXCGrAKVa4JiV5zZ',
+  'MIKO',
+  2
+),
+(
+  'FyctSeF2E7pcM3GRQdtfeAYsCPeHNWkgmdYGebB3y97A',
+  'MAGM',
+  9
+),
+(
+  '8udZmv2RrHpU8rPZhphUGhHpmyAqc9UzV4UihpThKvYh',
+  'SFI',
+  4
+),
+(
+  '8hHra5o2LYCUrog9KrR39uT6WW4meTBtHKCDJbyr44ox',
+  'EARTH',
+  9
+),
+(
+  'HUBBGekfLpdZhZcqjLeecLVz39o1ysDkicZpgMgZgPFS',
+  'USDH-USDC',
+  6
+),
+(
+  'BhsbcuW7iDEthrh6noja7ZFJ9yMqtu9QnuzpK38wv3r9',
+  'TIGUEA',
+  0
+),
+(
+  'GCHK2hkKoQBfoiyChty5kddQNGqodwKwxdr6MYaYVmSn',
+  'GLOW',
+  6
+),
+(
+  'brnzEEdWQ5pBd2Qfec4Tquw5xL1tLkL85qFuBsMGjfm',
+  'AotMBronze',
+  0
+),
+(
+  'G8qcfeFqxwbCqpxv5LpLWxUCd1PyMB5nWb5e5YyxLMKg',
+  'SNY-USDC',
+  6
+),
+(
+  'TodKG4UuPVbuRmQg4byCDuTVq4kuFBXp4oPE66okeB1',
+  'NOVAWL',
+  0
+),
+(
+  '6dqaoHQNsmbTd11JGqDKhyoNQ36rnRTRmWtxaAqA9fBV',
+  'OOAA',
+  9
+),
+(
+  '863ZRjf1J8AaVuCqypAdm5ktVyGYDiBTvD1MNHKrwyjp',
+  'LTCBULL',
+  6
+),
+(
+  'CXVZgdAGahKyZaTegfJLq5TwjbJkJdSjM3xJHgnSfH26',
+  'FROGG',
+  6
+),
+(
+  '5FozDe1UB9cJZmWKxGg6nBSBSu2A51DXowshCtYeKWEp',
+  'SKULL',
+  0
+),
+(
+  'GYyL45cnhDWEcr2iEs5sxWND5SLXa7VMFUmwp1uM92YV',
+  'WURK',
+  9
+),
+(
+  '7xfKgh8vtX2RrZn21wFTQSP9jsjh7Fqo8P4igYfmxxD3',
+  'ASDEX',
+  9
+),
+(
+  '4evENxfLeUDk24nrqzMp4gkR3kPxCMeQuCeftjgd66BD',
+  'SBOOBS',
+  9
+),
+(
+  'CDxwZo3ayxvTmxin7F6o9xg6SjdE4qWEDXV6MZFBevqw',
+  'SHIBS',
+  9
+),
+(
+  'ZEExktbqMM5ZMS569pCNbzky92KeEmiFeVwR3exfBNn',
+  'ZEE',
+  0
+),
+(
+  'cqNTpypmbwghrf1G9VGvSENcw7M7wGSQ7JS8UTQWXwb',
+  'SCUM',
+  8
+),
+(
+  'E6Hkw5o48QfNo6iUi1aepjEBzVq4ZjQLxh7xVtdTqoyB',
+  'DICK',
+  9
+),
+(
+  '3JSf5tPeuscJGtaCp5giEiDhv51gQ4v3zWg8DGgyLfAB',
+  'soyfi',
+  6
+),
+(
+  'HovGjrBGTfna4dvg6exkMxXuexB3tUfEZKcut8AWowXj',
+  'FCON',
+  4
+),
+(
+  '3vAs4D1WE6Na4tCgt4BApgFfENbm8WY7q4cSPD1yM4Cg',
+  'aave',
+  8
+),
+(
+  'DH5KjPM53i7NMj69CEZ6FiF82ipbgz1U6QzNfQNY87Pr',
+  'SOLAB',
+  9
+),
+(
+  'MarcoPaG4dV4qit3ZPGPFm4qt4KKNBKvAsm2rPGNF72',
+  'gobi',
+  6
+),
+(
+  'GnzxEyULVPQYb5F5hxGc8dEGivctVrfr5mtsdp4z5xU2',
+  'djn',
+  9
+),
+(
+  '9WMwGcY6TcbSfy9XPpQymY3qNEsvEaYL3wivdwPG2fpp',
+  'jelly',
+  6
+),
+(
+  'Hq9MuLDvUAWqC29JhqP2CUJP9879LfqNBHyRRREEXwtZ',
+  'flock',
+  0
+),
+(
+  '41TwwURtuv4k8TuFxp1vfFYP9noMbHXqtscse8xLM26V',
+  'linu',
+  9
+),
+(
+  'EwxNF8g9UfmsJVcZFTpL9Hx5MCkoQFoJi6XNWzKf1j8e',
+  'acusd',
+  9
+),
+(
+  '7xzovRepzLvXbbpVZLYKzEBhCNgStEv1xpDqf1rMFFKX',
+  'kermit',
+  8
+),
+(
+  'bSo13r4TkiE4KumL71LsHTPpL2euBYLFx6h9HP3piy1',
+  'bsol',
+  9
+),
+(
+  'ALQ9KMWjFmxVbew3vMkJj3ypbAKuorSgGst6svCHEe2z',
+  'mdf',
+  6
+),
+(
+  'kinXdEcpDQeHPEuQnqmUgtYykqKGVFq6CeVX5iAHJq6',
+  'kin',
+  5
+),
+(
+  'GePFQaZKHcWE5vpxHfviQtH5jgxokSs51Y5Q4zgBiMDs',
+  'jfi',
+  9
+),
+(
+  'xnorPhAzWXUczCP3KjU5yDxmKKZi5cSbxytQ1LgE3kG',
+  'srmet',
+  6
+),
+(
+  '6LX8BhMQ4Sy2otmAWj7Y5sKd9YTVVUgfMsBzT6B9W7ct',
+  'fxs',
+  8
+),
+(
+  '49c7WuCZkQgc3M4qH8WuEUNXfgwupZf1xqWkDQ7gjRGt',
+  'sand',
+  8
+),
+(
+  'kozyGtC1y9hRDhvwiLDyvxdREQUyjfjMjFSBTnE492T',
+  'KOZY',
+  2
+),
+(
+  'AFq1sSdevxfqWGcmcz7XpPbfjHevcJY7baZf9RkyrzoR',
+  'cscnSOL',
+  9
+),
+(
+  '6pQnfdrZVm7mASQoRnDfAAi98ngS1eFNij2koW4kUZFS',
+  'DICP',
+  0
+),
+(
+  '939KAUTAyNdmpahj1vQmbS67D7auhyJnkMt4sv2tzBwU',
+  'SHIMOO',
+  9
+),
+(
+  '6SUmHppQdVY44VXh7svyb9jhWJbiQSwvKQBW4oegmx3m',
+  'RSN',
+  3
+),
+(
+  '9kt93AW5QMjFL6ZxomnSq3FbWiU5ibNeTSgBz9UDFSB6',
+  'GOD',
+  6
+),
+(
+  'GsBJWMp5UDJqBiaAvgQRoC5RyJhm125jZVo3oFV6zoa5',
+  'DTAC',
+  4
+),
+(
+  '4vXidyArpT8fyQTmfXfMNHitj5ay1Fjcnbw9fJLL2zBa',
+  'HONSHU',
+  9
+),
+(
+  'CUvVMqXAcyFJnwMhojQ9jmGuWrijGt26HfY7b99dyBeB',
+  'FLWRS',
+  6
+),
+(
+  '5cKFNtooCQSkLhdFukk8R3PTdT4Rvm9cJr8Et49TxchR',
+  'TSI',
+  9
+),
+(
+  '4UDbU1he3FzNNQieGcoS3wjXbrm8BDLzM38U8PVzuw36',
+  'DGENZ',
+  9
+),
+(
+  'cr8ooTCpZUx4AQW5GquDzsfDNXEN3xxtEYEz8tAjgsw',
+  'CREATE',
+  9
+),
+(
+  'kronKPwYDbmtNgynPMGwyMyV6PrgJffNuvG3EvjTiVa',
+  '$BUDZ',
+  9
+),
+(
+  'PrsVdKtXDDf6kJQu5Ff6YqmjfE4TZXtBgHM4bjuvRnR',
+  'prtSOL-SOL',
+  9
+),
+(
+  '9N32Tr2iXFo6GNxRRSFTtrVYcriEnABAwPE7rFatFBA1',
+  'CGWL',
+  0
+),
+(
+  'DBsDkTdAxQEiSDeqfE48eMmc1vGXWjcum7hjRAf6zxza',
+  'DBS',
+  0
+),
+(
+  '4eFU1TAigNZtv4nyDcAsUTZfUUgK6bTdpFSQEgn2H2u6',
+  'SBOX',
+  0
+),
+(
+  'HmKT2GJQsfmJU44Xyygzrkey8uzfmCmroFSCdZja8jRD',
+  'LIS',
+  9
+),
+(
+  '6FfKvzcHxo2no9MwLs8FHXDxBhQj1Sg7Q4H3WnyhmHDw',
+  'Hikari',
+  9
+),
+(
+  'CN4bGnSdNDD3A6kLTBKffF4ocN3AMg8ZQCrzoRyEZ4Yw',
+  'EDST',
+  0
+),
+(
+  'AefuNcVikKudanCHGRB5KkjdUoen9QBL4fFX6q1kGsRe',
+  'GEEXOWL',
+  0
+),
+(
+  '2Da82KXrqcUnv9oRcoKKUYRWM2yjPesi31GmrgMjZZ6h',
+  'CRP/USDC',
+  8
+),
+(
+  'C5EefTmWXHJWFkN3Dh7QyFUnBG3UXSu8h6qVs6xtaLxy',
+  'SDUST',
+  6
+),
+(
+  '2EqzJJtqTDeVLmV6wPHyvRLcBYEbqa4PowZjM34mzYay',
+  'SOLYuan',
+  9
+),
+(
+  'WLPyXq7WRfdWLiP4fvRfSisrfDzLiPmCeVTE6okKQWE',
+  'wpUSDC-USDC',
+  6
+),
+(
+  '8Sc16a55YzSKpPTUN4VJEfcKU5aXSk22WyCEsr1MfdCf',
+  'TREE',
+  0
+),
+(
+  'B4pZJFQm9VDdscJzoR4TTuj8YwexY4kYMfmRCxbZwbcV',
+  'HERD',
+  9
+),
+(
+  '9WgTVodnWjVTwDyp44cEgezKhPhexkJMv1d2MkmGJEWw',
+  'TMP',
+  6
+),
+(
+  '4CxGuD2NMr6zM8f18gr6kRhgd748pnmkAhkY1YJtkup1',
+  'cSRM',
+  6
+),
+(
+  '9j7TLzTcdH5UVTB1aSCsM4BvH6u34MmWZQtHxLJF4i4W',
+  'GOO',
+  9
+),
+(
+  'Cs2R3beyPt4NGg1ARgk3uP6U3DA8Hpi8SW613WGoRVzC',
+  'AMOG',
+  0
+),
+(
+  'DhfF81uahANRYQ4rn8VZKSGVmLE4k2nzccgfZMazmLJ2',
+  'TIPZ',
+  9
+),
+(
+  'FACTQhZBfRzC7A76antnpAoZtiwYmUfdAN8wz7e8rxC5',
+  'srenBTC-9',
+  9
+),
+(
+  '2qB8M2qCwZUDVsyf1hMFBL41kn3Es1ZA7aEaKP2gWjop',
+  'PPWL',
+  0
+),
+(
+  'LUSTdLASZy86pR6V5VjMpXxW9oVtCQt8q3fJ9iHZtPY',
+  'LUST',
+  3
+),
+(
+  'EmLJ8cNEsUtboiV2eiD6VgaEscSJ6zu3ELhqixUP4J56',
+  'svtTHUGZ',
+  8
+),
+(
+  '4rii94eJ9oh2rPNQY4y11gz4g7CtTfH9pULqFoCHFeCC',
+  'REO',
+  4
+),
+(
+  'BQTN97PwrQGkbNepQxjvcYfRPYbPNgd5PqoioYwBt4qX',
+  'ASGARD',
+  9
+),
+(
+  'D3csbk4gBLzWMB2xjAYSoF6Gz8ZVS9R1QRs3KYLfaW7Y',
+  'ABT',
+  6
+),
+(
+  '58yYYVT5FoVx2jtvD9xtX4JxE8jogtA5tjMkJudgERMS',
+  'DONKEY',
+  9
+),
+(
+  'DAHSwp5jFX9fzgHLWCxXZAjkqm3w4guTkWKA9rNJHx1q',
+  'WLDAHS',
+  0
+),
+(
+  'CdQseFmnPh2JBiz5747dJ6oYXK9NKnbdFRfiXTcZuaXT',
+  '$PACES',
+  0
+),
+(
+  '6fDeCCoZLWRZporJtRBZ8toMs7BBn2wWQapdaKsTigpF',
+  'HHWL',
+  0
+),
+(
+  'Dm99YNXbJXzf2tDkNQMNwKY19Jop3C6fXQawLHBFbHi2',
+  '$HIME',
+  9
+),
+(
+  'PaiYwHYxr4SsEWox9YmyBNJmxVG7GdauirbBcYGB7cJ',
+  'PAI-USDC',
+  6
+),
+(
+  '3JFC4cB56Er45nWVe29Bhnn5GnwQzSmHVf6eUq9ac91h',
+  'cmSOL',
+  9
+),
+(
+  'A1KWZzcUrsX9MAsL8XtZkuS4RX6fjZazc7K5UoX42M3M',
+  'ARTZ',
+  4
+),
+(
+  'AmvYBdYBF9WFy6oprdnzjsJTgNraeAPP9v3cexBTzgb3',
+  'GDC',
+  3
+),
+(
+  '9SqXkCCpcRGrimjMfPdof9awceRHUEwy5qvmTgW779QD',
+  'FUEL',
+  2
+),
+(
+  '3xNzdRumes6PKefrHYbfhCLAGJfBQQhYKTV2fgPrPat4',
+  'GOONZ-WL',
+  0
+),
+(
+  '5aGsu5hASnsnQVXV58fN8Jw9P8BVyfDnH2eYatmFLGoQ',
+  'LIFL',
+  8
+),
+(
+  'Fj9n59ALXoQuePLMksjVuVCdkp9KiHBkSqt7r1u4YGuU',
+  'SLIM/SOL',
+  8
+),
+(
+  'AMzmwvDRKdt5AQ3m1m28tWjzBxmQNe1PsmHnYitVZwzp',
+  'JUNKz',
+  9
+),
+(
+  'smbdJcLBrtKPhjrWCpDv5ABdJwz2vYo3mm6ojmePL3t',
+  'SMBD',
+  8
+),
+(
+  'ERPueLaiBW48uBhqX1CvCYBv2ApHN6ZFuME1MeQGTdAi',
+  'MIT',
+  8
+),
+(
+  'SRMFbAYiA6vxA2KxURziACmtqs1jtiqCVKPPMjNMxmm',
+  'SERUM',
+  0
+),
+(
+  '2KXuiuKwSxatUSN3bYG9i4Mg9T66PYBPAHvVDtiCfoLm',
+  'MEN',
+  4
+),
+(
+  'PPTfK8sQwH5485Fvjg5edAFG3aoQdEhxaTe9kthhTy6',
+  'PPWLT',
+  0
+),
+(
+  'DMTRrwYy8ipGxNFJewx3cj5UZYRTzh5ypn2xRGMUnKTi',
+  'DMT',
+  0
+),
+(
+  'CY2E69dSG9vBsMoaXDvYmMDSMEP4SZtRY1rqVQ9tkNDu',
+  'NFD',
+  8
+),
+(
+  'FtRnQYHNmQNkX1T1ZuWd7HtFV2GrvJwTm4CwtXMvWRs8',
+  'SBBY',
+  9
+),
+(
+  'GiLh8u8dsEkhy6ovZ4wNtgQucuMR1s1mYpkH36yjTMvt',
+  'NFTP',
+  0
+),
+(
+  'D5YJf7nqSp9JtQpMcZCthdEpMghK2gKmkLMLi2RhKSJt',
+  '$KAIDO',
+  9
+),
+(
+  'SMTyWUTw9gFr9MAs8nebGT7a2L65HzGimgB3Sha4Qwa',
+  'SlMtsWL',
+  0
+),
+(
+  'unknXbA1bDg39nuBqVgMNZ5qSZa8pw5HditgkPe5eFA',
+  'UNKN',
+  9
+),
+(
+  'THCBB791xLFhRhxPHMDVN9m5KDeBBjwh6dfBbnTuPe9',
+  'THC',
+  6
+),
+(
+  'AW9bgLubnd4jjmfsidHwSJnDutWhZBcj3yYcY4weXvSP',
+  'BIGCANDY',
+  9
+),
+(
+  'FfMRKofNLF3Z38qcuvP72xr4t39kYnWUhwfgt8X7jigd',
+  'CARTON',
+  9
+),
+(
+  'Cz1kUvHw98imKkrqqu95GQB9h1frY8RikxPojMwWKGXf',
+  'COPE-USDC',
+  6
+),
+(
+  'Rs3Mrx9ZSNwsTM3gtJhEbeHQdTfzcvUWHg8T8Ena3pD',
+  'GLUB',
+  6
+),
+(
+  'HYuUNZbw2K1iJ9j5Sg1e1om8qC49b7595rSMH15sjg2D',
+  'MATTER',
+  9
+),
+(
+  'CT1iZ7MJzm8Riy6MTgVht2PowGetEWrnq1SfmUjKvz8c',
+  'svtBV',
+  8
+),
+(
+  '2PoF4gqWg97yjJk276yUYaGVkkASE7tqAU7H5faEBkeC',
+  'MM',
+  8
+),
+(
+  '3rH1toffQAELHo5vyRKdwEFxhPTZA7ocfRdJK2c8txoJ',
+  'FamSOL',
+  9
+),
+(
+  'SH1f6At4pScGi42Xfp6tvf9eKirfMd5bi2oPmxdpUAF',
+  'SH',
+  0
+),
+(
+  '8UdHFarzkrq3tu6bvLkMRssFKVoFe8mMmkCrVQGC7BND',
+  'TTCCMint',
+  0
+),
+(
+  'CK5K8GUKSGt5u5aJ7wHfeiCTgWMhcEVgo5zxAQ42msv9',
+  'PNP',
+  4
+),
+(
+  'KUANeD8EQvwpT1W7QZDtDqctLEh2FfSTy5pThE9CogT',
+  'srenLUNA-9',
+  9
+),
+(
+  'GNCjk3FmPPgZTkbQRSxr6nCvLtYMbXKMnRxg8BgJs62e',
+  'CELO',
+  9
+),
+(
+  'PUhuAtMHsKavMTwZsLaDeKy2jb7ciETHJP7rhbKLJGY',
+  'USN',
+  9
+),
+(
+  'BV2AJmBUFnEXqAjXxhds5st6hoHnCfbCLzqnGY87ciWQ',
+  'SSP',
+  0
+),
+(
+  'WL2jnbxfHqQ6SoHrfA4QXEx9vw8gNyJwSTfgtvvuoKD',
+  'SHWL2',
+  0
+),
+(
+  'qXu8Tj65H5XR8KHuaKKoyLCWj592KbTG3YWJwsuFrPS',
+  'STVA',
+  3
+),
+(
+  'EsUoZMbACNMppdqdmuLCFLet8VXxt2h47N9jHCKwyaPz',
+  'LINKBULL',
+  6
+),
+(
+  'ChywntqwNRzaoWYUcDQ3iALqcwSAVtjM2dPshz5AETMm',
+  'KTRC',
+  0
+),
+(
+  'D1MQUD2QKg4HaMbasBq4gk8LWjaogBiGV2vdLkrodBkx',
+  'FWL',
+  0
+),
+(
+  '38i2NQxjp5rt5B3KogqrxmBxgrAwaB3W1f1GmiKqh9MS',
+  'soGRT',
+  6
+),
+(
+  'Ao94rg8D6oK2TAq3nm8YEQxfS73vZ2GWYw2AKaUihDEY',
+  '$CRECK',
+  9
+),
+(
+  '4HecfhYXWiRhfJyjfRAufrxkRocBgwDzRmYAzCLS3VDA',
+  'HEADS',
+  9
+),
+(
+  '3oLpKntC8W9AxiFhafRGBeALGuKdimduUXVPo1GQNHuX',
+  'Otter',
+  9
+),
+(
+  '4QSK13NTKxTBExbMjHFsj3QfHBn4Hfp3DGLSba8GvFvh',
+  'tuSRM',
+  6
+),
+(
+  'Ehbfbo2eYQYcaPeLK7LHN3gZeXfjBQyKopxTQCCKot4i',
+  'TETO',
+  0
+),
+(
+  '6r3VeYKXv1GLEdskNzgNgtmSRwYzQdrVh9fDViaXfTeW',
+  'MHWL',
+  0
+),
+(
+  'AEiGBSooswQgA1nB3AC8QVTDncpnpcqYFE163WwquTFz',
+  'CRIM',
+  0
+),
+(
+  'HkNK7BL5pSUUzc6ns1mHW5JnzbSG4S9u2QdR3cUuyzSa',
+  'SPZ',
+  5
+),
+(
+  'H36ykN443TZ6pC8oryicCYr5YB1em4fuSyezu5aoskNv',
+  'METARARITY',
+  6
+),
+(
+  'CWintzgasUVMK5YVbnwrNjMEV3Uen6rYYqbXNdXxKqnQ',
+  'CWint',
+  0
+),
+(
+  '2znADNrRYvai8gfej1mcV2YbNvehY6cBSALvuWnuvNPN',
+  'SIN',
+  4
+),
+(
+  '9bPoFPCwGCVGDMC5gvzisPdjgKC6tRLRDhirJvcktgVh',
+  'SPIRIT',
+  0
+),
+(
+  '5mRj82qzktE2Ab7ZvoeWUYk6gnuRynTJaPs3YuFQW1gt',
+  '$CYBER',
+  9
+),
+(
+  'DKCP3dFJrLLATpkeZ3JWAkhWuD45ruyoJndZRsPZzpvH',
+  'FINE',
+  9
+),
+(
+  'HUSDgP5YieANhAAHD42yivX9aFS1zbodTut2Dvvkj8QS',
+  'wHUSDV1-USDC',
+  8
+),
+(
+  '3yjCHAThuRTU8vFctU51ept4esSra5aneN9ZqZmQwjWr',
+  'TACOS',
+  4
+),
+(
+  'D4L61nbUsaNngn5rYfAQAhV7QasffCcoKqQitbMyNMtB',
+  'RCWL',
+  9
+),
+(
+  '33MJjPS6H7P2nwD648uiTiUu8v5fJ1zKyjnVqeWZ344F',
+  'WVE',
+  9
+),
+(
+  '8kA1WJKoLTxtACNPkvW6UNufsrpxUY57tXZ9KmG9123t',
+  'BSVBULL',
+  6
+),
+(
+  'DrogoV6nuMsCGfhqcVMCVxGZASajgXoxN7ytUcRCQgQs',
+  'DRG',
+  9
+),
+(
+  'GkSPaHdY2raetuYzsJYacHtrAtQUfWt64bpd1VzxJgSD',
+  'BULL',
+  6
+),
+(
+  'AsiP4tPh6tWfgKMjTibhA5H6ge3EnHSyh3iPPDEFSqSu',
+  'NET',
+  9
+),
+(
+  '66xCxkffQZKBZLiHV3PDcfR8ANJTfnDRxPCaBdv4wxB7',
+  'SLRS/USDC',
+  6
+),
+(
+  '7FntsntzGjK9PzPBbHLDJAFcKQVU14d2SbQZhgMUf2KA',
+  'TOCO',
+  2
+),
+(
+  'GLrFNhFr9kmAi2maE4nPAd3AEc5BPakgDz78ogQKYxEF',
+  'SLN',
+  9
+),
+(
+  '7ZYwaUfN1BftozKcXv1a3Vhkd32y1VjD1NrDJRoDTDfR',
+  'BPLW',
+  0
+),
+(
+  '7ncCLJpP3MNww17LW8bRvx8odQQnubNtfNZBL5BgAEHW',
+  'soRSR',
+  6
+),
+(
+  'Ao8BZG21WAVuPCjSuh5SKM5F8yEMnyrvhJiCMXiGEggD',
+  'DripChips',
+  3
+),
+(
+  '6xnUqAfxvDTZepHNWK1NsxXkjhFdTvuaGVXh3z29wRhx',
+  'BONEZ',
+  6
+),
+(
+  '2RXSV7qPvPoPz7djG5fTT7teb61EJ1VRiC6ysHWm8F6c',
+  '$MTSN',
+  9
+),
+(
+  '9cU8yLEAidMNVGEq6QHPe2ktN7SV2qqvLABth8YiSwYx',
+  'PARM',
+  6
+),
+(
+  '7AAtpqK78qbc7vx6BVWQ1D4PEjoccDbU293oGh74ovzN',
+  'FLB',
+  9
+),
+(
+  '4j5wrut5J4Aq81R5daWHUeRwLGz6eBodfRepUnaW473b',
+  'PICASO',
+  6
+),
+(
+  'Eqekt4QF8zy9X6MZn5JUa6YYAz5MMgo7ZV5ZyX7YtjJW',
+  'SMU',
+  0
+),
+(
+  'C9mNSDBnHbpgRCwrtcpDQGNJJbNZPTLNKDe2d195uBSc',
+  'META$',
+  9
+),
+(
+  'Foea9rMuUk58xn414yB4PfWcP2VweR2mr3SU3ZUmSEa7',
+  'TURNT',
+  9
+),
+(
+  'GD8B6KhufThbCGmNodrTE5feVxU2kK5TRzwxqjahv12G',
+  'LQN',
+  6
+),
+(
+  'sCsVEENGKrjh8S4sLr2pb8kn7mMbwasBBzhyT4w7DGv',
+  'SKATE',
+  9
+),
+(
+  'GHhDU9Y7HM37v6cQyaie1A3aZdfpCDp6ScJ5zZn2c3uk',
+  'SOL-pSOL',
+  9
+),
+(
+  'Y71XaLmJPvuPY4h4LnTZfFgSR6vP3qCxGLpCx25JTMA',
+  'STEAK',
+  9
+),
+(
+  'FJvkpSpR4y73Hd6yNDvd11ie3kBkHAtNCv922gcYYM3w',
+  'ODKY',
+  0
+),
+(
+  '6ry4WBDvAwAnrYJVv6MCog4J8zx6S3cPgSqnTsDZ73AR',
+  'TRYB',
+  6
+),
+(
+  'ATNhobTTsidXWAAEp1HNedSAwfCEBSsL8kVaV6Bco1vx',
+  'HIMA/USDC',
+  8
+),
+(
+  '47R68vQesdgEAjJN84x7KCHVhabiNenAFfypudyPyemd',
+  'GREED',
+  9
+),
+(
+  '35v9KktjoyRWbACbtVcEFjGbmhAN2QFb4hJvB2MnSyTd',
+  'PWL',
+  9
+),
+(
+  'KUSHs1xRrv7U3jMUd8g3LjrEc4ZhUx9EBm7Yc6cgCsL',
+  '$KUSH',
+  9
+),
+(
+  'BAM2LDmxSjbkRNVQC3bNYo514tGSXTKH3NrW3xQEAkwX',
+  'BAMMM',
+  9
+),
+(
+  'sou1ELxm3XpLWpnjP81KaoigPPCwbNUFAZ4dhqifq13',
+  'SS',
+  6
+),
+(
+  'DHVUoxNqv3D7EgktBxUsxFF2Wx83hVDmD2wBBpUaw3jn',
+  'CHP',
+  9
+),
+(
+  '8H4eH19o9yYWCGFQLe37fQhn9Jkb5TUVw8bwW9cmHNfu',
+  'OWSOM',
+  2
+),
+(
+  'FMHHwUB6amLWYhWxtiZHC2g5azy9usPTLMq46N3HEgFU',
+  'OGKAMK',
+  0
+),
+(
+  '45eBLJUCQf1acXdBG8daBfUudy8T7V5gDTBpiE1iezsN',
+  'SOLP',
+  6
+),
+(
+  '7B9ALzzrs2iefZvrDVwZiP8GrFw3957UyExpBAhFYKq2',
+  'WLHALO',
+  0
+),
+(
+  'DK6PWMyuZ4NMjsm9AWNCTMKrajQYrtfMjMJ3QauX2UH5',
+  'BITXBIT',
+  9
+),
+(
+  'Avc1X8iAWLVrsnRtDK6aTyPDichkqe8YAn6ePGTuPAKH',
+  'BREAD',
+  9
+),
+(
+  '5uB44vtqsgWMu2BDr4owwSequHDhDYtJ4pBZn4oUFhfi',
+  'HODLR',
+  6
+),
+(
+  'PSPdfYZVDrrYaWh5F7XDdQPeMPsLpisnE5VD4E3JGtp',
+  'DWLT',
+  0
+),
+(
+  'HAriirKUY6fWN9gQrDUFSsAs7drF96rdK6ov8v2hvti1',
+  'MONWL',
+  0
+),
+(
+  '7s7PKr3qhuvZjngR1Zmsy53tFLLhZA4aoMnzeE8Z2H5Z',
+  'GALAXY',
+  4
+),
+(
+  '9Y8NT5HT9z2EsmCbYMgKXPRq3h3aa6tycEqfFiXjfZM7',
+  'CRT',
+  9
+),
+(
+  'eUkSbazTfDir4jjYth6fwayGh2gSQ2zNaHLfoKud97L',
+  'PX4SNB',
+  0
+),
+(
+  '6HKq7SoHESuDz5ZbjZqgQkhrTiDFTfQdJapavMv7DbFb',
+  'SBD',
+  9
+),
+(
+  'EiasWmzy9MrkyekABHLfFRkGhRakaWNvmQ8h5DV86zyn',
+  'svtVSNRY',
+  8
+),
+(
+  'HfMVgG3fQr45JtrQD3jpVki6E5H5BSdjN8kCAvDEDKMQ',
+  'INA',
+  8
+),
+(
+  'SPSzWFd2YpwbifRqoow76N31RcnFPH17vmq6AGCXt3C',
+  'SPARK',
+  0
+),
+(
+  '8kazth76gv4CyufQLiNmYVQVnascfSMjQ4m168ZRsWg5',
+  'WLTKN',
+  0
+),
+(
+  'igsvRjB6uyVMGcM9nbWwESxN1eTfVTPiQ1ThoCc8f2g',
+  'IGS',
+  0
+),
+(
+  'E1zxRweqCWzviAraKjNjqupuyYTzm1bukJgb8KiBN1sN',
+  'GOLD',
+  5
+),
+(
+  '54J1tQbQVVPvEcnDqCYNfMe2pEyWEWmix2cb3t1ENim8',
+  'BAMBOO',
+  9
+),
+(
+  'BQHdWCL8WTkxBsKKLvFxgThmCX9EK4zorTzpznabMrZY',
+  'ABWT',
+  0
+),
+(
+  'ssdmMTQJ2e8G5EbPabaQ9X7p1ZwwHSw3n8fQnuJ55b1',
+  'SS-COUPON',
+  0
+),
+(
+  'BDCyYhw4zvf8wx3e8rXcrcYnmsX5BxF7R6g5ooXqu3uL',
+  'SamoShib',
+  4
+),
+(
+  '5aHpMNhALJsfBkogF63SqMxxYvfzBmcbAdjjTc5e8t3v',
+  'FSTC',
+  9
+),
+(
+  'FXSLj3g5u9SEm62bErBs8895YgrfJPyn5q36V4KpZQFc',
+  '$BURGER',
+  9
+),
+(
+  '7GptK2dfK4u8yNU7MUs8eJoFypkuNaKYTR2pG2WfYpcq',
+  'CNANA',
+  0
+),
+(
+  '7mNihWEjzWv9yCZc8capE4mS8v5Xvp5YH2yQhtZrQV5B',
+  'SBreakpoint',
+  9
+),
+(
+  'G1B6TwvfotwX4eVY7pcP6SDyZRGiTPwnKAL3bexi72WN',
+  'xKZEN',
+  9
+),
+(
+  'CLPRkuzQFiYnXddGTTKLvqgjgh4Tm7q16sVvivWNRzo8',
+  'wUST-CASH',
+  6
+),
+(
+  'Cq5pHfXB8zM7GGZ9r9MKLeh8jGK4TTzwhD4EhW8VVaCp',
+  'DDAO',
+  0
+),
+(
+  'DBFM7MFBWHvsi1CBU5x7av77dDoCTGiBcTx54VR8wp1k',
+  'CHMVOS',
+  0
+),
+(
+  'CVy9zWnF7y15FeqEvV3ZsMdnMDG25na3NWHzx8xQvcG2',
+  'VIP',
+  0
+),
+(
+  '8vkTew1mT8w5NapTqpAoNUNHW2MSnAGVNeu8QPmumSJM',
+  'svtWAVE',
+  8
+),
+(
+  'iRoCxFdj5ZpaGZv5zfbme6CkMtRYc6rLTWbxzuxdMGQ',
+  'IROC',
+  6
+),
+(
+  '5LiAUHfvRpkvrNTZe5CNgoQpdn4VFM5KfX5jDJKAjTSS',
+  'OSTD1',
+  0
+),
+(
+  '8WDJHzLR94ZCiJdkeGHMUY3TdWuryWgTGgWM9XRCbUG4',
+  'EWS',
+  0
+),
+(
+  'sYQeqp87wBhQyZMo2TfCVNrFiX4HrLAWUkr2rmqbRoN',
+  'DRYGNWL',
+  0
+),
+(
+  '6CQuweCcPRWAaQNvnkvwWjrbxRe6MuVh5eFFVk8DVyM7',
+  'RUMT',
+  9
+),
+(
+  'BtPMb5Fm21XcS8fNPMZM9FsmZrZQZyWFzLbztvdB1kTE',
+  'MEKA',
+  9
+),
+(
+  'FCP14kyGeg9BYfBUZFtcEAt5sLe7BfyjLvBoqnL2WcQV',
+  'DAFM',
+  0
+),
+(
+  'HuMShjViKhcfihmHkgvctcFAyeyxAk8hK5K58zWpuRKf',
+  'DREAM',
+  9
+),
+(
+  'FFBnqafsjrvvxxf5n3Tzba8V7vWPb8wr5DPEog1VAwff',
+  'THUGZ',
+  8
+),
+(
+  '8i3YUt4kw76AbtXCb6hCxR6k3vHTfAWNsuf5QD67XWwm',
+  'TRUE',
+  9
+),
+(
+  'MCDsTXbZe87sWezWJ3B8Sw63PUjq3BXzRmY7zptoYr2',
+  'TMDC',
+  5
+),
+(
+  'CBV12y1pehFbhdnDpUfgPe88SbUZ5G2s1kLA449Yu3Ad',
+  'GUARD',
+  6
+),
+(
+  '4eYYeaFqjscucKTUBHfgQe5zf8xF8YXqTA55EfXFYxB6',
+  'AF',
+  1
+),
+(
+  'Dc8mEshVhb6e4dxi1yWm2gBDxUDVfYBKrYMGR1hz8Ku7',
+  'NEUT',
+  9
+),
+(
+  '5MoDJmq3JqsNnottRdot3WHmhmD6h8VRodqsBKVu9LPk',
+  'APEC',
+  6
+),
+(
+  'FdviznPoMEakdJ37fikNxhoscyruUHSHNkKyvntSqbuo',
+  '$CATNIP',
+  0
+),
+(
+  'h4XNYWyefydaNiEZmECeutJtxQbyopZUSeWPFDJZtaL',
+  'PURR',
+  2
+),
+(
+  'rwLH899ZJpjdWb2si3213HMHSvH4yMJdCj6Ne3HrkN4',
+  'ATRWL',
+  0
+),
+(
+  'CLPKiHjoU5HwpPK5L6MBXHKqFsuzPr47dM1w4An3Lnvv',
+  'CASH-USDC',
+  6
+),
+(
+  'BdZPG9xWrG3uFrx2KrUW1jT4tZ9VKPDWknYihzoPRJS3',
+  'prtSOL',
+  9
+),
+(
+  'DAZbw2FG5PCssV24SsP1E3m1whDn8paXZMwBdfVHRt5w',
+  'MCS',
+  9
+),
+(
+  'EAUQ1HsgGX2Xgjc5kYYJ5AxxQnNmhbG4xrWUZp49NN1N',
+  'MTWL',
+  0
+),
+(
+  '5utpkwvqG5euWHbvrxo8S66C7T5dfoweCC7y1zCWokts',
+  'COVAS',
+  0
+),
+(
+  'AsVNhq2nnoUgMWciCvePRyHk7xAv6i4ruV6oRHFWBcwF',
+  'SHIBL',
+  9
+),
+(
+  '6wcWAqCEmxQkEK6hPEsyvTpiaFFCENww6gxqMTq8YBHE',
+  'TTST',
+  6
+),
+(
+  'y2poavXfuAHWRizzK52vegqzzkHUo5CzooxFzDDX6vp',
+  'y-USDT-USDC',
+  6
+),
+(
+  'CEN5hFZKA1vY9g9BQYF9oejXhe9zqJ13ckxmo4CpHWa1',
+  'CentWL',
+  0
+),
+(
+  'UXRj3sUsJsQ6mkDz8xmXQxnY7DHoyZzX1UtEZriqbmC',
+  'CHEERS',
+  0
+),
+(
+  '7NF4QChyNo7knUAe5YAXt8JUKLEuHRDgtC5aoVhZyUGx',
+  'CHEDDAR',
+  9
+),
+(
+  'CASHedBw9NfhsLBXq1WNVfueVznx255j8LLTScto3S6s',
+  'sCASH-8',
+  8
+),
+(
+  'sinjBMHhAuvywW3o87uXHswuRXb3c7TfqgAdocedtDj',
+  'sIN',
+  9
+),
+(
+  '7vVRYg24HvVmgxV4neAog66GjW6aCUwnArvjDn6bgrX5',
+  'NECTAR2',
+  3
+),
+(
+  'Dt1Cuau5m5CSmun8hZstjEh9RszxAmejnq7ZaHNcuXfA',
+  'pmSOL',
+  6
+),
+(
+  '4i3285PyW8ansfoHQWH3AadVV6UP39mdxhHS8xBdMtph',
+  'HPWL',
+  0
+),
+(
+  'CLDnSM5PyjHEHGndxt4WHqa2ehJsnWPcPc4BH5Y9aesB',
+  'AVTUR',
+  9
+),
+(
+  '8Yv9Jz4z7BUHP68dz8E8m3tMe6NKgpMUKn8KVqrPA6Fr',
+  'aaUSDC',
+  9
+),
+(
+  '5TPYH5sMvFMitzsjzM9xrxq5igpVuGugVu8CLzCrFdFW',
+  'Ras',
+  9
+),
+(
+  'FdhKXYjCou2jQfgKWcNY7jb8F2DPLU1teTTTRfLBD2v1',
+  'RAY-WUSDT',
+  6
+),
+(
+  '585mJ5PGUEMZuAEnD3G6DqhxZ6wo6hRBL4JYTtcqArqm',
+  '$TEAK',
+  9
+),
+(
+  'BLAAD2QLUgRSbQ9AB9jqAoHh55cGVcSBaCH9JGBh2zDX',
+  'BLOOD',
+  0
+),
+(
+  'DbgDEG9L9wEYsnDtpzrm8Kyw5RkiU8EGexJFUCSL6McV',
+  'CYS/USDC',
+  8
+),
+(
+  '3VhB8EAL8dZ457SiksLPpMUR1pyACpbNh5rTjQUEVCcH',
+  'TUTL',
+  9
+),
+(
+  '5YFaApo5XYgJfyJ72dF5oBtv2d1VNay3ajuPxwbK2jX',
+  'FFT',
+  6
+),
+(
+  '8dXC7QzRimcycR89pT65y3b9FLCmyuKEXPMcNxV7Dem9',
+  'GSCWL',
+  0
+),
+(
+  'BbBa2LR1JQ7Scq993vPkYoYDpQDntduMAcRS27wWtEi1',
+  'MORPA',
+  0
+),
+(
+  'G1NChRwNJG8BJAPfRCzq7t1aH5UTjdytCEGBDbQHCYcE',
+  'EPC',
+  2
+),
+(
+  'eG7L3PRqzNZLrrzoei93zHK2oDmq1dtyVwjFu83RBki',
+  'DREAM',
+  9
+),
+(
+  'RUWV9EDJkyA3ua3CgNsZVdRJUPp9KrpmeM8i1AfK6We',
+  'AlphaClub',
+  0
+),
+(
+  'FgSsGV8GByPaMERxeQJPvZRZHf7zCBhrdYtztKorJS58',
+  'pUSDC',
+  6
+),
+(
+  'GZNrMEdrt6Vg428JzvJYRGGPpVxgjUPsg6WLqKBvmNLw',
+  'mPLAT',
+  9
+),
+(
+  'cwmkTPCxDkYpBjLQRNhcCKxuxnAQW6ahS7JQLeXrsXt',
+  'CWM',
+  8
+),
+(
+  '4kHnCyYn4D6kquPMrQSZTHrVPuUjRom6CvffRr8i5MBG',
+  'WINTO',
+  6
+),
+(
+  '2ASbApnFVSTp2RJvMLgLVfbDwJvu1FRXdhJWrGs89Lhj',
+  'aeMIM',
+  9
+),
+(
+  'GuRdDYCNuykG28e77aFVD7gvwdeRqziBfQYdCdRqSVVS',
+  'HNYG',
+  8
+),
+(
+  '7Xs3yt9eJPuEexZrKSGVbQMXHwWUKHGeDZnM4ZksZmyS',
+  'FBLLOW',
+  0
+),
+(
+  'X2y9KtLFWCRomutronoPoXDmcGrBoyYgMajTFH51EFG',
+  'RII',
+  6
+),
+(
+  'MSRMcoVyrFxnSgo5uXwone5SKcGhT1KEJMFEkMEWf9L',
+  'MSRM',
+  0
+),
+(
+  '3iH4LXRDMicfqb4TPR99QYzz1d6zyDvuuCWsQZxMH2bi',
+  'BPTS',
+  9
+),
+(
+  '8kWgPei6KkkcnoDZGtXGXxAvUkNmug7qbeNnm2zx3xgp',
+  'METAL',
+  0
+),
+(
+  'AShCRr7fqsMf7ieM5AkJqNY566HsYmtvpvK8oPUL4Bh8',
+  'MBC',
+  9
+),
+(
+  'CZY2dDTb86ARthiLP47hpmEgX1h82XCEr51XWQ5GsZoj',
+  'UMF',
+  6
+),
+(
+  'BJUH9GJLaMSLV1E7B3SQLCy9eCfyr6zsrwGcpS2MkqR1',
+  'swimUSD',
+  8
+),
+(
+  'LbrZyD19NVCKQo2C7M6Nq2pfck1spMwE5FUxThcwDWt',
+  'HNZ',
+  9
+),
+(
+  'Ct7mbdwLmdFC6zgVRXFidvvgYbtGo2icsntNSSgzxoLs',
+  'SXS',
+  6
+),
+(
+  'EmvtEzATa3n766yxojGZJmpSzkTxsCdDSX2zgRMZEoaQ',
+  'rPWNG',
+  9
+),
+(
+  'KAT2oYwjN2uVj9gubM9VutCFMoX1Wq9eLiwJJEpBEX3',
+  '9LIVES',
+  9
+),
+(
+  'BebGokMwTrFp2wRV4Z5CftVq7pvgMbj176VND3vTVSKJ',
+  'GAPE',
+  9
+),
+(
+  'A6aY2ceogBz1VaXBxm1j2eJuNZMRqrWUAnKecrMH85zj',
+  'LQID',
+  6
+),
+(
+  'KNVfdSJyq1pRQk9AKKv1g5uyGuk6wpm4WG16Bjuwdma',
+  'swhETH-9',
+  9
+),
+(
+  'Gso9VgvACphPJerk32vTmsvCPN6H79pKqdUMZVCGfRnf',
+  'SOLARISWL',
+  0
+),
+(
+  'RLYv2ubRMDLcGG2UyvPmnPmkfuQTsMbg4Jtygc7dmnq',
+  'sRLY',
+  9
+),
+(
+  '4n91Cp8ufhotnvvNj7zMZemYhCdfaJhSAQifGMGrDXNR',
+  'SCMK',
+  0
+),
+(
+  'E77cpQ4VncGmcAXX16LHFFzNBEBb2U7Ar7LBmZNfCgwL',
+  'abUSDT',
+  9
+),
+(
+  'A38TjtcYrfutXT6nfRxhqwoGiXyzwJsGPmekoZYYmfgP',
+  'csoFTT',
+  6
+),
+(
+  '54CPSwxTvPNtqoPc9Q5pmE9tC6nTM7FNAZvSUCe7sYG7',
+  'MEKAPRESALE',
+  0
+),
+(
+  '2JBr8X9zABjCbh21t2ZrrWFAT58VRe8jRtaHMPcXqPvo',
+  'CARDSHARKSMINT',
+  0
+),
+(
+  '5r3vDsNTGXXb9cGQfqyNuYD2bjhRPymGJBfDmKosR9Ev',
+  'mSOL/USDC',
+  6
+),
+(
+  'C9PXceoq8uho2RZDGdtxYmyGYXeJUABaUP4qn37wQCgB',
+  'poUSDC',
+  6
+),
+(
+  '7zhbkbKpGaUsJW7AD4yyAfGGoy53Xx2H3Ai5BKcwGKHw',
+  'NOM',
+  0
+),
+(
+  'Em3mRfTT8ZXp1U8eGZKCbrHW6ciBJn5UqaWfHemXnbCd',
+  'GVAULT',
+  6
+),
+(
+  'FdSBbLHK8hfc6BSqjrhQZaGj7jgd5vfPcchDB2RDAQFA',
+  'DMNDS',
+  0
+),
+(
+  '8xfL5CPfcDfovbBFHZpxPcHeUcYkbFwCGKm2JtrJr3q2',
+  'HVCWL',
+  0
+),
+(
+  '3echLX8Qyz4hB694BFsSNWj6ytdStVQKVKFiFCJ1McpQ',
+  'TOME',
+  6
+),
+(
+  'AVBDpg1UYpDYQLbzEnRY76R3u82PYHtDuc3NBdFS2k39',
+  'aaWBTC-renBTC',
+  9
+),
+(
+  'LUNGEjUXyP48nrC1GYY5o4eTAkwm4RdX8BxFUxWJBLB',
+  'sLUNA-9',
+  9
+),
+(
+  'DhYTJPmUa5kQZfLgHb1soubgaK4VLZMxb8CTNY1vZ93S',
+  'MEK',
+  9
+),
+(
+  '2wPsMuzhEsC6GhV3qtFpmJF6atEgLGbnmQ8U43Y6fPxZ',
+  'MNDE/mSOL',
+  6
+),
+(
+  'AbD4ZqLj1xXwRWnnEGfuLK5KRfynSuNXRHLkQ9ntNcjg',
+  'Kaze',
+  9
+),
+(
+  '4h4LvS6NsVjZ87uBwrYyTeppTm1ii5PtRN9A6Ld2kZjw',
+  '$FLY',
+  6
+),
+(
+  'uSdKg2Cs5bCtFSeNXs7aRVNzZJauX58eCkdsfssxTdW',
+  'wUSDKV1-USDC',
+  9
+),
+(
+  '9acdc5M9F9WVM4nVZ2gPtVvkeYiWenmzLW9EsTkKdsUJ',
+  'svtGOON',
+  8
+),
+(
+  'CcKK8srfVdTSsFGV3VLBb2YDbzF4T4NM2C3UEjC39RLP',
+  'MAPS-RAY',
+  6
+),
+(
+  'Bfoi3RNnfdP5VeRGqvTA8MRN9ePGJoZgeKfe8WeBHUxE',
+  'wHAPI/USDC',
+  6
+),
+(
+  'G1izd6XghBaCRw3gS2sRwD2JJdmAnFQWinnfYCvSzfuZ',
+  '$GLIZZY',
+  9
+),
+(
+  'FgkPeKEDfb2mfbf3at8TVcZE8YdKxpdTTyqabqXqB33Y',
+  '$ACCESS',
+  9
+),
+(
+  '267DbhCypYzvTqv72ZG5UKHeFu56qXFsuoz3rw832eC5',
+  'PX5',
+  0
+),
+(
+  '5QrKoSKw2fYCW4FFHnLnRgTMjRtL6S3YLmEswJYP9B6t',
+  'DOPE-WL',
+  0
+),
+(
+  'JetNnLZpbECCfyeZSvJdgg5gf37QfCkPrp2X8XfmNWn',
+  'JET',
+  9
+),
+(
+  'FBHFo6uQheu5WNXhryDUpkDwyCQP6e1iTF56veLVJu3a',
+  'SFWLT',
+  0
+),
+(
+  'Bjgh4YsLdicr8WArz9ftdSmpWNcQjsZ9KV3w9fkjiLG',
+  'SOLRC',
+  8
+),
+(
+  'SiCKr9KxWv9pA9q35qoaKu9ZhEKZngscLjcREogaobh',
+  'SBT',
+  0
+),
+(
+  'HEqxKLV8kW2XYd8XxCH7nPxCa5AYxhF1EqpsXCMUWDpa',
+  'CORN',
+  9
+),
+(
+  'DgnaQdr5VkNbH7n8qN471Hgsw19hUbMBhUs1N3MQKgtu',
+  'tsSOL',
+  9
+),
+(
+  'son4WQ39xri8sqMqNQZAEtEEPTuUcCRHg7t1ZcYdkSw',
+  'JSOL-SOL',
+  9
+),
+(
+  'DpcmtJniwGRPqU6A8shdcV812uddwoxDCMfXUz2SkLVJ',
+  'DGOD',
+  8
+),
+(
+  'aeDebgky5BssqgLo426rXoQTmGrAn1JjEXp6aXFNLic',
+  'aeDAI-USDC',
+  9
+),
+(
+  'HkNokfCXG33eu5vCcS49mq3jZcKZeQSQCyta964YxxYg',
+  'CRRT',
+  0
+),
+(
+  '6r9ThcybVr3pbdyZHxUuABHNZJWtmcqZAYyK1HCs62fN',
+  'TEPS',
+  9
+),
+(
+  '9KEe6o1jRTqFDFBo2AezsskcxBNwuq1rVeVat1Td8zbV',
+  'MPAD',
+  9
+),
+(
+  'MMTXhAEoj23QQ22gYYTLfLzRhRTW58NNG5aTBXExjeE',
+  'MMWL',
+  0
+),
+(
+  'GeDS162t9yGJuLEHPWXXGrb1zwkzinCgRwnT8vHYjKza',
+  'soMATH',
+  6
+),
+(
+  '4ewdr269QKV9SC1N855LUhXAe3YevASjQHoR7bzg9JKW',
+  'XDRIP',
+  6
+),
+(
+  'Cx7Rswv6MNyaBk354BohVvBP6mCPFo7FDjTwCYDXkajG',
+  'STAR',
+  6
+),
+(
+  'B9LtfDZWWRrihYu8jDN57thcqqi7xfWAvj8yq4o2YJxw',
+  'UPB',
+  0
+),
+(
+  'XUSDfnsgc2QYXRdbPAbMWoXCbBCCspRSvoGJ8o7RV9n',
+  'xUSD-USDC',
+  6
+),
+(
+  '5X6AuKY8QF2xzYUEYYCxf9t9FXhuG76hHJNAB8qUbKqz',
+  'UPGRADE',
+  9
+),
+(
+  'MoNgFYzYQAY2pCYDkrHzbrcCauCUxJw6jVnk7iFk9Mz',
+  'MONG',
+  0
+),
+(
+  'AaAEw2VCw1XzgvKB8Rj2DyK2ZVau9fbt2bE8hZFWsMyE',
+  'aeWETH',
+  9
+),
+(
+  '5xq71UHmPSZ5s68DkXL8wrBVsWCh4zXgcn4wTWkqFdxa',
+  'JESUS',
+  9
+),
+(
+  'DKu822yyAYFXn5XZo7J1aUNPaGxLNhrLEvGK6qw1ex8L',
+  'XENOMINT',
+  0
+),
+(
+  'DG2kMSpmGaFxUSVAFLHk75VzJ6iQEQx3UzGkLoGrAX4D',
+  'RVLN',
+  9
+),
+(
+  'EWvdioY8AY4btFj1EaK2wug9fc9WZaab52cpHFmoqMV3',
+  'NEUM',
+  9
+),
+(
+  'boyeMJs9YsLhEYHHQHcnjHLUvm6ez8dxRMD9y3ttWR4',
+  'BOFYWL',
+  0
+),
+(
+  '6UA3yn28XecAHLTwoCtjfzy3WcyQj1x13bxnH8urUiKt',
+  'fcmSOL',
+  9
+),
+(
+  'FbC6K13MzHvN42bXrtGaWsvZY9fxrackRSZcBGfjPc7m',
+  'RAY-USDC',
+  6
+),
+(
+  'yPRTUpLDftNej7p6QofNYgRArRXsm6Mvkzohj4bh4WM',
+  'yPRT',
+  6
+),
+(
+  'A96PoNcxa9LMxcF9HhKAfA1p3M1dGbubPMWf19gHAkgJ',
+  'atUST',
+  9
+),
+(
+  '5DYkrfkZ9SG9NqBq2yYqRbUWAibK4E5QaNwV4aqpDb6K',
+  'SBYC',
+  9
+),
+(
+  '5tfvSnzrWQKB6yfGT2ATCzpNfsj4oui5fE8oZghejLev',
+  'AUTH',
+  6
+),
+(
+  '6QxNGjZsLaKa35pKnxY2sa7GcUCnWSni9LPfw7KDLqYr',
+  'MOF',
+  9
+),
+(
+  'FAn4hcD345ugybXc6aDivPnLAnBLhjNKcRGkZt2bGiCb',
+  '$BAGS',
+  9
+),
+(
+  'PaPa6D4Rys4Lcj1d5csabmDv3QdUE2T1QQ6sWNgoeTa',
+  'PAPPA',
+  9
+),
+(
+  '8ezDtNNhX91t1NbSLe8xV2PcCEfoQjEm2qDVGjt3rjhg',
+  'pSOL',
+  9
+),
+(
+  'LABSwpcfDjvRRMmEs87Y9yrj4pS9eofVS6cSbJm2zCW',
+  'LABS',
+  9
+),
+(
+  '8dK5tfnxtbCRmqev2iJGqsizRxcPrpaNLSjuVokcbtDx',
+  'Shake',
+  2
+),
+(
+  'ankhim7kPXxLKVbW1Tn7vH4mLTuvCAqHjhkKuvwWJ7b',
+  'ANKH',
+  9
+),
+(
+  'GQVAdB2mYSNG1amewdSmTheoFGggy99Hjv6fDjTZrnFo',
+  'VENOM',
+  0
+),
+(
+  'GkywroLpkvYQc5dmFfd2RchVYycXZdaA5Uzix42iJdNo',
+  'DROID',
+  9
+),
+(
+  'D9hidBDDauvAYWY9jkNt6YfPxtcC7HgWm5sNNHAobC3A',
+  'NAC-WL',
+  0
+),
+(
+  'D4NXEPTGUcwntfyY3P1w8F7kpLbs2vn4G5LmwDF9ERPY',
+  'BNANA',
+  0
+),
+(
+  'E9LAZYxBVhJr9Cdfi9Tn4GSiJHDWSZDsew5tfgJja6Cu',
+  'cORCA',
+  6
+),
+(
+  'aeTwxcJhujVCq6rwbJri3s6ViYifsJUCFirMjLHgHZ7',
+  'aeUSDT-USDT',
+  9
+),
+(
+  'tABbYiZsg2msMsPx9wZeJVJpBdCBdGBKDMTuy3XnH2V',
+  'TABBY',
+  8
+),
+(
+  '5LkYStW5K4dPkYDzMFw5smUZ3qNJ8v1fG4gwbHbDfNV2',
+  'BGOF',
+  0
+),
+(
+  '9N6pAzykk711HvBMsBkZ3KDsQMAo5oMrqrj7VpuwwmQT',
+  'PLKTN',
+  6
+),
+(
+  'GENR71rjoC56vFf8RzfMTutEEHcQV8mr5kSsUzs7kHbc',
+  'SPACEROBOTS',
+  0
+),
+(
+  '3rFgy3p5u6NFRbEzDqt1NyHp1g3wX8WiWkEWZkmtxdFm',
+  'CHOMPS',
+  9
+),
+(
+  '4AHDENUSystAUR3VEgcUFLYAVL4BGNhLgq8uaAaKoQKq',
+  'SHRIMP',
+  9
+),
+(
+  '3HDyDDvRTmSMa5QxhUod5gEgVKmTujncwKomxrWxSb8j',
+  'GFT',
+  9
+),
+(
+  'B8WQQJ5uBXqGFYbdHhX6Y4YWxXHBtAFEL7YriKtyHH8o',
+  'MANI',
+  9
+),
+(
+  'GF8xQkj8EsdB19grGhRYzTFV766NtNBakz6GZg6a9Msr',
+  'DUCK',
+  9
+),
+(
+  '37qK4Nc6ryVZYfNFufx97nJU6QD2hskToSdgL7VXwoJ4',
+  'LANA',
+  9
+),
+(
+  '2wBXHm4oxmed7ZoDkPL4DU8BuRfMYkubVu8T4N38vXdb',
+  'MSC',
+  9
+),
+(
+  '7zphtJVjKyECvQkdfxJNPx83MNpPT6ZJyujQL8jyvKcC',
+  'SSHIB',
+  9
+),
+(
+  'AB9dE76Sf8c7mi8cxFC7e9n8xz7z4zNQQinEDpgmiHmA',
+  'ABTWL',
+  0
+),
+(
+  'porpKs9ZZERXKkg55f1GRXCiXZK89Uz6VKS8Bv9qWqM',
+  'PORPOISE',
+  6
+),
+(
+  '7dr7jVyXf1KUnYq5FTpV2vCZjKRR4MV94jzerb8Fi16Q',
+  'MRDR',
+  0
+),
+(
+  '4Up16GyRmybEEDfaCsDszkzkvtWgoKDtS4cUyBEjvPBM',
+  'VAULT',
+  9
+),
+(
+  '88881Hu2jGMfCs9tMu5Rr7Ah7WBNBuXqde4nR5ZmKYYy',
+  'sUSDC-8',
+  8
+),
+(
+  'FTXdV5wFFhceKjcd1JRrRQTT2uB7ruMerAqbj2rj1Mz7',
+  'wFTTV1-FTT',
+  9
+),
+(
+  'PortuzxBGYMQXeNmM9Kc6AtHLBwqSrb6xWwZ4trQ1en',
+  'pUSDT-pUSDC',
+  6
+),
+(
+  '8rgGrnETmAbMCmgAWgUA67ydf7CzMyd5pErGZiHvWxwN',
+  'BSHD',
+  2
+),
+(
+  'FXzrgwqF2rHAEiwa9qs9cdWS9QMmACWXLqzrufQFYmFu',
+  'TAMASHI',
+  9
+),
+(
+  'USTRHDiTkhjE1oDydHqNkPJNDeBKTTbz9crTmiYc2w9',
+  'solUST-USDH',
+  6
+),
+(
+  'GGATzpTfEwkq8BDotzBFTUSeKu36XRtsFhncd83UDwEu',
+  'GGAT',
+  9
+),
+(
+  '9Cs1JW3uMyzLnCduK8ukDJWUWgVGHV5LiWjvQztxf6uH',
+  'SCAM_0BAE',
+  0
+),
+(
+  'BHcuncUCUxsBw1yyENizoseEAH2Qrt4UxbcukPhQEGPQ',
+  'FCKU',
+  9
+),
+(
+  'Em9L4m8VZUpRUiajnwmkDMXeJ7yvGfVNZraaGknnsB4A',
+  'WRO',
+  4
+),
+(
+  'mCaKentpBgRwisk5zUtx6dfRYkCqMyTKDjjqSDp97mk',
+  'MCAKE',
+  6
+),
+(
+  'STNkp36CqWfuDx7E1jXyzDxnRZXtXhcLgXroxYJ3Qa1',
+  'TSWL',
+  0
+),
+(
+  '5ddiFxh3J2tcZHfn8uhGRYqu16P3FUvBfh8WoZPUHKW5',
+  'EOSBEAR',
+  6
+),
+(
+  'Ab7jUsWFTdVNmdCC3ZwjbNGnpt9E4qSh9oSZ6hYMBBaw',
+  '$LEGEND',
+  9
+),
+(
+  '2ez6ioJ5vpNonQEj3GBiHaK5yVu46QuQVLBnbjjiShvi',
+  'SXA3DWL',
+  0
+),
+(
+  'BmLvq52WKMb5MYKLScay5V9C4Sh4E67zxvwLbU6i2vTR',
+  'HP',
+  0
+),
+(
+  '2EPvVjHusU3ozoucmdhhnqv3HQtBsQmjTnSa87K91HkC',
+  'MIDBEAR',
+  6
+),
+(
+  'ammoK8AkX2wnebQb35cDAZtTkvsXQbi82cGeTnUvvfK',
+  'AMMO',
+  0
+),
+(
+  '7KHPgzBmot6jD8CKW3KLT9SmVFDPQUzJeXDY3yCku1j7',
+  'GHS',
+  0
+),
+(
+  '9EKEh1CHMKmyvBTY6qYZm7kgRJE18tCbaY1ZbpdELbVr',
+  'BULLS',
+  6
+),
+(
+  'USDKKmk1anWU1aEn6GJ6skL3ZvcB9CBAWVkmPGQEHtz',
+  'wUSDK-USDC',
+  8
+),
+(
+  'Foxy7Df6VEc1dUCr1ExZfRAqqHaifNFDd8ccvAs59DNr',
+  'FOXY',
+  9
+),
+(
+  '8ZepSXp47WFyDK21QbvMiiKVWRHnGrAegiwDr71PfGi3',
+  '$ROBO',
+  9
+),
+(
+  '8k8nYi4NSigPgk9CijcDJyoraGr273AggWZFgn8Adk1a',
+  'VSNRY',
+  8
+),
+(
+  'CRSzWoeyfR8sJxB2d6LLEre92Uc59TCPX2gZidp4t3eE',
+  'AGVZ',
+  9
+),
+(
+  'SMKdxDRkGU4NVhi36cXbYMzCGhkj48VVsWHiybAQDwC',
+  'SMKWL',
+  0
+),
+(
+  '56TH45QefFZYBUggparQ4GN1Komo8vg7XfFZfAryJTa2',
+  'INFAPE',
+  9
+),
+(
+  'AamY54CmEp9CFLKCxy97x2zxhFvqSFbQuZRhLz1mbSjm',
+  'RENNT',
+  0
+),
+(
+  'AAoJ5eYd61QsUBRBxjCcAdsQZpQYxrob2wS4Hzoaeoas',
+  'SNAP',
+  9
+),
+(
+  'epchejN2prm44RwMfWetBkbMr4wnEXHmMN9nmKyx2TQ',
+  'EPOCH',
+  8
+),
+(
+  '5TY71D29Cyuk9UrsSxLXw2quJBpS7xDDFuFu2K9W7Wf9',
+  'IBVOL',
+  6
+),
+(
+  '7jZzdF79oWYN5UBezaZAexrys74wRkZr7ksr5QJ5Zim3',
+  'BLT',
+  9
+),
+(
+  '7utH6rGUdnuji8mMmRQxqysYyzTAH7bbL11Abzpon3s1',
+  'UB',
+  0
+),
+(
+  '4SsBoLmKGWdVWfuJ5DU1TmM2BxxWBx44eMDuh6nhYgHf',
+  '$SHILLS',
+  9
+),
+(
+  'Ga2AXHpfAF6mv2ekZwcsJFqu7wB4NV331qNH7fW9Nst8',
+  'XRP',
+  6
+),
+(
+  'ogtWYbiHXF32wdTvhKv8CfHn3FThf2MfhCPi6Y3Fc1G',
+  'MIDHOGT',
+  0
+),
+(
+  'GodsvjpSKruMFKaPCBBWw4S66RepEzToPqjUhiheTNMZ',
+  'SGWL',
+  0
+),
+(
+  'LUNkiLcb2wxcqULmJvMjuM6YQhpFBadG5KZBe7qBpSE',
+  'wLUNAV1-renLUNA',
+  9
+),
+(
+  'Gnhy3boBT4MA8TTjGip5ND2uNsceh1Wgeaw1rYJo51ZY',
+  'MAPSPOOL',
+  6
+),
+(
+  'GEMSkjHriJp95iSZpRgb5ym3RQeaMFig7cfWvnWTT4An',
+  'GEMS',
+  8
+),
+(
+  'Ga1FE6vviZcUhnYWv1pdQHYt5geVq299hdcjfxigDBcJ',
+  'UWC',
+  9
+),
+(
+  'FXKM9Ziz9kTTRbpUxxS2rUipSnJmeyNAkLDbabr5RTpb',
+  'QMC',
+  9
+),
+(
+  'MAiP3Zmjhc6NYiCb2xK2893ifvTTDHciCS57Kga39pC',
+  'MAI-USDC',
+  9
+),
+(
+  '9HYUHuQPixPvRnWCaVWcwFX9o2GGDBJiPWTVveoPVViA',
+  'SUITES',
+  6
+),
+(
+  'WLwKFNCKESMfbYU1o7hzp868AtyFHGpbC9i4jUTHpQb',
+  'TMDC-X-WL',
+  0
+),
+(
+  'FyXLF1fFAnKjby8f2pYXeyBWgB5hmon2DmCjytZEfkcz',
+  '$ELEVATE',
+  9
+),
+(
+  'MAHGKVNJzmGKUA2oHc4QaQtkfdoeKuHgrVGpjdxHhss',
+  'MAHO',
+  9
+),
+(
+  'FF75evgj5bFWiBuu9MfLF54imFo8ypSYwfC6xQSiKYcJ',
+  'MBOT',
+  0
+),
+(
+  '8EDaoeBqpcVACwvkYXh1vAcU29HiBiNhqoF4pRsuUsZS',
+  'sSOL',
+  9
+),
+(
+  'GwrBA1F8rGummDCDd8NY9Eu1cLNuJqbT8WaGxgWpFwGL',
+  'STEP/SOL',
+  6
+),
+(
+  'LsinpBtQH68hzHqrvWw4PYbH7wMoAobQAzcvxVHwTLv',
+  'lsIN',
+  9
+),
+(
+  'AcZLBqhVjqnd4aoyRQ4fQpsBQnPtwNAFFHEmsedctmUR',
+  'DPAY',
+  9
+),
+(
+  'AADeU92VvTiNT94zk7GKryNyPhp2FWo5KXHZHHq8iHTc',
+  'TRPN',
+  2
+),
+(
+  '2oR1D21bNczbpgH6jY4DEtMbGD49boZ7DPVVUXnTV1iL',
+  'SKUMA',
+  4
+),
+(
+  'kATzfFsDBcLjknypjLXSPy6mrzFyNhwA5VmTZEurkgR',
+  'CKATZ',
+  0
+),
+(
+  'WERKZCY6o4eYu9cSh94s1RYC9rQG1parxuvwoW6FZAa',
+  '$WERK',
+  9
+),
+(
+  '5LwkUHbof6yxaVJcc7TTc1oMoJpoJxEouidAamvwtCsX',
+  'LYFE',
+  2
+),
+(
+  'FFAWLA1yaqYXmbYVofEQYH19mz7WZDb57V2h63BsvoKo',
+  'FFA-WL',
+  0
+),
+(
+  'FTT8cGNp3rfTC6c44uPTuEFLqmsVDhjd2BhH65v2uppr',
+  'ssoFTT-8',
+  8
+),
+(
+  'E6s1cJi6Qs8EE14FNkF9pbNu1pwhLWGH2jMRZeStWsAk',
+  'DAYC',
+  0
+),
+(
+  'ESzkdUN8jvJxMqBjWADUomRxHn2ECxLFeeEvrcteLMnY',
+  'pstSOL',
+  9
+),
+(
+  '8Wu5sJpERA1J5iWcT8aMpt9cTAfKDLPbLpGjNsJoPgLc',
+  'WAG/USDC',
+  6
+),
+(
+  '73pWtZwP3bq5XUYQdPi4jkchGKJpL3pR5U93rh1oFJV3',
+  'JELLY_WL_THREE',
+  0
+),
+(
+  'A1H85Aco9XX6ZeeLMdjwF7rosvNThj3dm4K9kRtb77X5',
+  'SINS',
+  0
+),
+(
+  'F9ZsJAyX4SaqMbFqiixDk1RXRUkJ9d9zeC5tYjyn4v5z',
+  'IZU',
+  2
+),
+(
+  '3cUGVa1wVg9XiCSi4dhwjLR8A5T8FYnEyhNPBPkMbYDq',
+  'OOWL',
+  0
+),
+(
+  '9orxGYrDdQzuNQdUGfHTVS2xWyGC6snFDf13eezaZCbv',
+  'SHELL',
+  6
+),
+(
+  'AD5PZKiJNyCxaixUqp6qRxLHy5t6nAoqU3bE1bYoiHAJ',
+  'NABI',
+  0
+),
+(
+  '9iHQcYQR3qfqUh1HsTvRu2K1QZSCW3M6DXCY7HcwFGJn',
+  'PASS',
+  0
+),
+(
+  '837zQBUJDs6JvMsVZkWdMaCTXsPkSfUyPEVEnuJZgMQt',
+  'FETTI',
+  6
+),
+(
+  'GM4CTEsNsU5Kg22JNKkANTannrBU9Ah6SNa3BcyBA6Kj',
+  'BMINUS',
+  3
+),
+(
+  '49YUsDrThJosHSagCn1F59Uc9NRxbr9thVrZikUnQDXy',
+  'LIQ-RAY',
+  6
+),
+(
+  '52WyZe1pfobyq6v1t7KAKZWePcq9Aj2Aa5kJHuF2KHDM',
+  'SHEEP',
+  0
+),
+(
+  'SFTZFZd9t4uCmRqdDL3WY248Bbdkdgv5Q6PUHc9bPNC',
+  'SFWL',
+  0
+),
+(
+  '7P5Thr9Egi2rvMmEuQkLn8x8e8Qro7u2U7yLD2tU2Hbe',
+  'RAY-SRM',
+  6
+),
+(
+  'AhDt1FnEt759Tmxwa61E9FQhFnerPwMDTTt7CJjvog7L',
+  'EC',
+  2
+),
+(
+  '4onzDs1X6ubktirorHB8iYbve3K4bBtkGpYehqzGm9So',
+  'BIJU',
+  9
+),
+(
+  '4o67Pazc9fNqEfQM66xqWngw7WdAUzsccdpPmKsANDg1',
+  'LAVA',
+  6
+),
+(
+  'Dy66WHU3DqSKZeCMt3S7645oyP1D3mkJzB2CevjPmm1F',
+  'REX',
+  0
+),
+(
+  'MoscKLpTs9EV4ADTCGYATt1cHLdmybZ7215gKTdWAq7',
+  'MOSC',
+  9
+),
+(
+  'HqB7uswoVg4suaQiDP3wjxob1G5WdZ144zhdStwMCq7e',
+  'soHNT',
+  6
+),
+(
+  'MWL8k1ESrzD4zWiar7jKfFWZwNn4VSHd9rJgcYMeaui',
+  'MDWL',
+  0
+),
+(
+  'UST32f2JtPGocLzsL41B3VBBoJzTm1mK1j3rwyM3Wgc',
+  'wUSTV1-USDC',
+  9
+),
+(
+  '27QmTVixhZP5xLM2iYsdmpfhVNsThUS2ZvtmZ3AmNhED',
+  '$ANTI',
+  9
+),
+(
+  'BpZ93AYjkYgGtpMf15CVqFogtbeRmgyoevpwDcPq2vNv',
+  'Soltopia',
+  9
+),
+(
+  'FE7ZpFUeHrWdcxga7yKV2WnGvGNRKv63EDzkLzMbgyRT',
+  'LUVE',
+  6
+),
+(
+  '3tYsZEAAfpUBWQt6TShpo6JSuVjPrpx6GruR4BHFHV7J',
+  '$FROTH',
+  0
+),
+(
+  'D3Cu5urZJhkKyNZQQq2ne6xSfzbXLU4RrywVErMA2vf8',
+  'cSLND',
+  6
+),
+(
+  '8Jmvq2f2UMKwS16HeLXJu3Gr1BmZhmDmUXXuLRLcCKaj',
+  'MYOPA',
+  8
+),
+(
+  'Emberc567ToSP9FgAMuJWHXiQnEKVWrWC6gy64zbsK8u',
+  'EMBER',
+  9
+),
+(
+  '9vi6PTKBFHR2hXgyjoTZx6h7WXNkFAA5dCsZRSi4higK',
+  'ASF',
+  0
+),
+(
+  '48A1pXHvottXTf954CMhZyoG7MdFjngLJCDKJS6iJUth',
+  '$Yakuza',
+  0
+),
+(
+  'AxDiQTWTC1mY9UE5G6fXyUZU9ngof4vqnf1GhVHW6BSi',
+  'K',
+  9
+),
+(
+  'CWUUV3ym4Uphw4CVgkpNxrR7FsttF7h7mLggEUJ1J1aV',
+  'GIF',
+  9
+),
+(
+  'Bqd2ujCTEzpKzfjb1FHL7FKrdM6n1rZSnRecJK57EoKz',
+  'HOTTO',
+  9
+),
+(
+  '6MeoZEcUMhAB788YXTQN4x7K8MnwSt6RHWsLkuq9GJb2',
+  'xLUNA',
+  6
+),
+(
+  '282Weh31UZ1yw99dYV8JqxPLtFBNbN1UfZhjBiKNk9Zb',
+  'UGA',
+  0
+),
+(
+  '5uR5STASUmoGVHzqMeut98t26TfVkQqWU9f9dsv3NfJ6',
+  'ABR/USDC',
+  6
+),
+(
+  'MM7s2bggZvq2DBFyBVKBBHb9DYAo3A2WGkP6L5cPzxC',
+  'NEST',
+  6
+),
+(
+  'ALQ6fjG5vSp9ou9PZHZES2cgu5E6QghL37gLNM2seZNh',
+  'DTPT',
+  0
+),
+(
+  'HoGbvSustgSvZMyjbMKE3iNBbfrcATEYbbsaPwA9xxMp',
+  '$HOGLOT',
+  0
+),
+(
+  'sFA2de5kRsAmCev2WAoPCXbCKEd1ZwkvJ3MxPMojw9h',
+  'RUM',
+  9
+),
+(
+  '4gC2RFo69c8oGqzqAcrhtQgJCu13EEMWUVtkpVbDjQx2',
+  'RUFF',
+  6
+),
+(
+  'BqZdsThwaCLRbhDkszc6dRommQtPeEyfmYgWpiALku9o',
+  'TMK',
+  6
+),
+(
+  'TLAJct3sZjNPCeu3gX2ia9XXYTGRyRgXN7c6NETQj3p',
+  '$TLA',
+  4
+),
+(
+  'BEf5BZxd5w2paiX6GnyBDBHUihfNMRUy8Dpek8X4rjBy',
+  '$TOXIN',
+  9
+),
+(
+  '7G5KeJceruc7Kh6zYiwdXo7QF7kfHBie1anSfx3SA9MA',
+  'EDS',
+  0
+),
+(
+  'FLLW9PtziXxtin4bvcVKbw1roFPENi5HPADzXdcjGbY1',
+  'FELLOW',
+  9
+),
+(
+  'Cq4HyW5xia37tKejPF2XfZeXQoPYW6KfbPvxvw5eRoUE',
+  'ROPE-USDC',
+  9
+),
+(
+  '8sMa1Jfcpt2eSkKDtcd6rurX27gqxkrEvXn5jHt3suGB',
+  'DGMOON',
+  9
+),
+(
+  'BkbqZY7Bhg4TV1fjL9zBLs1xLUpjXj16mmPT6MAMfpQH',
+  '$POT',
+  9
+),
+(
+  'JEHHZr57hJ7By3dL74HB9G9R77ZrTvDr1P2vSjQCAewF',
+  'SWIM',
+  9
+),
+(
+  '5kANAUeHsoambmdV317Nhs8puVxfukyChr9j9TZ8ZeQq',
+  'DoSC',
+  9
+),
+(
+  'CogFXXLHaTPwZMid55TaRLeC8FXyfVaREbNCoVVMCoin',
+  'CCWL',
+  0
+),
+(
+  'obtF8YwHn2g7uhmtziqVn4wvD2r99e3DPcQo4rFaN1G',
+  'OCXWL',
+  0
+),
+(
+  'ALPaX3bS8zPKsVN6eS7Ln7dvEbDAfDtXsLz5pe2JRddq',
+  'aeFEI-CASH',
+  9
+),
+(
+  'FbUzTvXeHxPXKpZQHWMvoVXXW6aEhitfoakRttUBBzVx',
+  'BBX',
+  0
+),
+(
+  'EcSXCrLsB6nZ3ccr2VR6mrXXsXsCAWtG2a9cWMKn4CJt',
+  'ARTIFAKT',
+  0
+),
+(
+  '9XoLtLc3vGFocje9Jojm6nDkjz82mZQYbBPLDYvFafJL',
+  'AZDWL',
+  0
+),
+(
+  'FhuY6rZoeQH3WKEXFs1NitsrvHf9axPvzKVcXHrNh94E',
+  'TREAT',
+  0
+),
+(
+  '63JUKLnCAuNMPSPioEgbjjzp9Qk8qSEEM8eZqEtPqfLU',
+  'POLIS/USDC',
+  6
+),
+(
+  '2bdHb59xYNtJNf1FuK8Tt96CsZyTTXFMNEDxTgXMCkdq',
+  'GOOB',
+  9
+),
+(
+  'HAWy8kV3bD4gaN6yy6iK2619x2dyzLUBj1PfJiihTisE',
+  'DOI',
+  0
+),
+(
+  '24WQvWoqJuTS5LoqeBJpa2smqg94V6iqQDWC5cPd8tve',
+  'JINDO',
+  9
+),
+(
+  'WTHPuMavN9HBvgUafjrL65WqQytQHDwnTAmdFB9whXA',
+  'ETH-whETH',
+  8
+),
+(
+  '3cAzWmrfovbkb3pU9mktcEzCiAXrVWRf2yp3T8PdJ2Zt',
+  'DRINK',
+  9
+),
+(
+  '3mXx1bNiB5bhgwznk4eeqM9eoy6DU3CeCkm1LPabeoEh',
+  'SAMOY',
+  9
+),
+(
+  '8ZSJTmL42LgTrC1qY7AZQkLYT1EZquQA1cA3ze4bSjvq',
+  'NEON',
+  6
+),
+(
+  'DPh8nC4TxcJEyTUmTDtvkj4o7rkDg9o9v2x3Yd3DXbCL',
+  'WATER',
+  9
+),
+(
+  'MywLpWzJ9AxM1psuDNJmSTiLhYnuGtChUXc4WEfGvAB',
+  'MONYWL',
+  0
+),
+(
+  'BaZXh456atM5Fh7uWcbKeTPGXbMCacoxwXhbrM8eefNm',
+  'MISO',
+  6
+),
+(
+  'SUSeGZEV69Xy7rQfhDffyTysHgEP3nJUDMxEZJSvJr1',
+  'cUSDC-cUSDT',
+  6
+),
+(
+  'NpgsBSfavf5hmUeGQAbMz5pHDtXhn9ZFNRQypTr8Tfv',
+  'NSPACE',
+  9
+),
+(
+  '3x7UeXDF4imKSKnizK9mYyx1M5bTNzpeALfPeB8S6XT9',
+  'SKEM',
+  9
+),
+(
+  'WLP59xUDvQMQdzC2SgPmZeRF1oj2RSvGZiQLksj4bwj',
+  'wpUSDT-USDT',
+  6
+),
+(
+  'ASqpLQXayEH8JT1dFcamUY7RQPPvJhQdwPPUduEfAdKX',
+  'IBHC',
+  0
+),
+(
+  'star2pH7rVWscs743JGdCAL8Lc9nyJeqx7YQXkGUnWf',
+  'STARFISH',
+  6
+),
+(
+  '9qcLbAanoAo461yf19epr6GXGyAwHQn8asKGUaoRRB47',
+  'KPM',
+  0
+),
+(
+  '4xDPH7DVtDXA2eU6wp9BjhryfXEdxBuhe4hnEc9yz1pJ',
+  'BOLT',
+  2
+),
+(
+  'Fd9ZJHMCyaaFqTsbJMgPX3Cj3953zYW91Qfw8SNdxoaf',
+  'SBDA',
+  0
+),
+(
+  '6fMoTH7Bad61GPzvqfq1XmRGFGv84MrvZfjDKGNuVwBz',
+  'OXSQ',
+  0
+),
+(
+  'CNgARsLNnudL5UqbqkwA2mQ1aah2U9kfHFyoppZTeTKx',
+  'MINTTUSKER',
+  0
+),
+(
+  'BYLotMdQmq579hhP9xDcuCJky9kmMrbp77eoktmm7a5Y',
+  'CKG',
+  6
+),
+(
+  'TWL3qkjRXomK4fFViXA86csuYAfphTQiKCfxXTYjB7K',
+  'TOAWL',
+  0
+),
+(
+  'sunxSBRH867pEGc5D4UFR7D6RQULsmjkXZT3SQ8XqwS',
+  'yiSunSBR',
+  6
+),
+(
+  '9LDkpLUuETkmYd7KrdPXgzMdKs5hMSKt177UepRW66x6',
+  'STRYS',
+  0
+),
+(
+  '4NJ1L4LHSbJpk4h4rHQnJNKZbRSYticS8sQVPbGHsj33',
+  'BNCE',
+  9
+),
+(
+  'ABFkiQcLuCjicoCddXHuiPN9S653StWuySCHvWYF5oEy',
+  'SMWL',
+  0
+),
+(
+  'ggsgHDoX6tACq25XhQPUmbza8Fzwp9WdAzTU1voTwDi',
+  'GGSG',
+  8
+),
+(
+  'PFjQE5mYPTCCDuHz8buxFppyQoL8q32wfTmZbBF5BWL',
+  'WLPENFRENS',
+  0
+),
+(
+  'idoLztG5ZGMVEjjoQWjeSu2eVkVsp3YnrFZKf7dNi4j',
+  'IDOLZ',
+  9
+),
+(
+  '8C3CwsUB1ePoWrgxJ2wd76D9byGWviYuK1gcfSTNUbnV',
+  'CRP/SOL',
+  8
+),
+(
+  'CdcRwbFuj3YNJYdfUqh3hnxFz1fuF6he1Wgz7JvZMHda',
+  'HONEYBEAR',
+  9
+),
+(
+  'GMeqxdPtZvwj9rmrCLqdB2MAeJXjmRPnRrgpDLpVqKCh',
+  'INFOMO',
+  0
+),
+(
+  'DEVJp3frkYy9D8oSYcgAapHGAD9pLv4c9ssfBFyNZyJ8',
+  'MKM',
+  9
+),
+(
+  '3yVqA5Grz3F4cjm3hNPLGLUeYV9nNdK5m7nAyYG7hu6d',
+  'IVY',
+  9
+),
+(
+  'DkYtowSvwrkp9G3PBKDwtfLbTxCJhuj92XcrnzxNhp3G',
+  'BLZ',
+  6
+),
+(
+  '4bwMPPipiPafcxxtSBPMUgCkv8hF4xAyWsUzxr3DLYPZ',
+  'DISK',
+  9
+),
+(
+  '2Y1E1KgmXYgfLKR7e6o9xzwgZ53rYjLPyqmEeDPacgZi',
+  '$DUNK',
+  9
+),
+(
+  'DgT6BQqmmzaaHo7KjoxdswpoC6CoTBNcyD9q3jywEa8w',
+  'BALANCE',
+  1
+),
+(
+  'D6xt2imesfZ1zL57o72BBzjaDs91Q72kgoSGC6qpXY9T',
+  'FUDAI',
+  6
+),
+(
+  'MonYu4GQb1dpoMs4DG1FpJt5F9nXtUy6JRyvANZFxZu',
+  'MONY',
+  6
+),
+(
+  'H1QvHLhmk4rL36FBphnFUaQszf6RHGU8RLptPSuPcQwX',
+  'BUGS',
+  9
+),
+(
+  'G4iSJWW63sU8yRWtV4AkcQ5JJmEdbUHEG68aDyHbaqr3',
+  'LNFTxK2SOLAND',
+  0
+),
+(
+  'ELXRYrf8wd4DcyXDU9QPnMdD8jn2twg7o7qEtf5z2GBW',
+  'ELIXIR',
+  0
+),
+(
+  'Fse2oFDfbwT89CqtuoFaHCBnGTMFLartDYDjPLZyc7e',
+  'TRPY',
+  6
+),
+(
+  '31GpPxe1SW8pn7GXimM73paD8PZyCsmVSGTLkwUAJvZ8',
+  'ANGLE',
+  8
+),
+(
+  '5jqymuoXXVcUuJKrf1MWiHSqHyg2osMaJGVy69NsJWyP',
+  'BEARSHIT',
+  6
+),
+(
+  'rogue3qZEABqmjpL9orMosdBh2a1rfmpoDKfPrztG1K',
+  'ROGUE',
+  7
+),
+(
+  'GFdambb9r51DMu6Hmiz85pupX1o1P5okScgcem7KC5Tp',
+  'SSLT',
+  0
+),
+(
+  '8kub6BkBGf3Xd1GhtYvZZoh8KS88gauMSrSBy6iuDw8A',
+  'POKER',
+  0
+),
+(
+  'LPmSozJJ8Jh69ut2WP3XmVohTjL4ipR18yiCzxrUmVj',
+  'mSOL-SOL-LP',
+  9
+),
+(
+  'Cm3dsFkMtydExWib9pAxueaWhzMaZxJ5CWjMNT9tq2Eu',
+  'SCS',
+  9
+),
+(
+  '5Fu5UUgbjpUvdBveb3a1JTNirL8rXtiYeSMWvKjtUNQv',
+  'soCREAM',
+  6
+),
+(
+  '8psN3FhC8FJAD37bRPMNLAYD9PXJnA8zozBn2AfFEoih',
+  'NEOME',
+  9
+),
+(
+  '8XSsNvaKU9FDhYWAv7Yc7qSNwuJSzVrXBNEk7AFiWF69',
+  'abUSDC',
+  9
+),
+(
+  '9gVyinZd945tJddQBP7Lwo97kUpos7zNw6VkBA55VyPd',
+  'ISOL',
+  4
+),
+(
+  '2JqUDmTAGdebvbvjWXgSVq1bj1mDhjhX2q531AmPB9Vk',
+  'SMR',
+  0
+),
+(
+  'TooaT4kKfpGQ7bD9NsZhEU81qDXoAn2GzqBLyaGY1e8',
+  'WLHELLCATS',
+  0
+),
+(
+  'HvYf1hTdD177smRDqfFWGByyaa3Cm5viUH3eUyHwDNxg',
+  'SUSSY',
+  9
+),
+(
+  '7mQ7A7YPzRfkQnTwgwCMJknQ38EBBuppf1UEHYhBXMYB',
+  'SDSV',
+  0
+),
+(
+  '8nBNn2TcXnBFzc8TjoafWxLWw2BYHyNebZQ1w9PrWUs2',
+  'BLOCKS',
+  3
+),
+(
+  '8vFjsxK4SHg2XVSB6ofqNNvkFF62fx5Uq588a7f8qrjk',
+  'SIMS',
+  9
+),
+(
+  '3ZYsJZ7wb4hNEkfaDnR4JKT6Rok4hEfbxjGqDA3cRxGS',
+  'TTCS',
+  5
+),
+(
+  'A4DpjBEAL9U8crHRNKrbtdbH1wziiAkavNKPnwaetnyS',
+  'TWDNEW',
+  0
+),
+(
+  'C4VW9CKc8mPBMmJsqDpTF24TwYpbLW1aTzhRevMfWUXi',
+  'AW',
+  0
+),
+(
+  'F2CcdH4uXVL6vwutkFMtHWFaj87dYSh9WMWNqzsMmTUG',
+  'ENC',
+  0
+),
+(
+  'GmY2Rp9t5S4yD5jhgJrc47VSAa6hQiikkYi3sr9HLNZr',
+  'BLEEP',
+  0
+),
+(
+  'BMV5eEuMtpvNCKa2SHipxNxYMq3HWLWu6RrjaFYwpiRK',
+  'BMVDEG',
+  0
+),
+(
+  'AoqPs243Hh5LrzVmRamz9pEyiemzTBi5N1b4uiVsfrgU',
+  'IUX',
+  9
+),
+(
+  '4G85c5aUsRTrRPqE5VjY7ebD9b2ktTF6NEVGiCddRBDX',
+  'LOVE',
+  0
+),
+(
+  'DHpoYejUDqzByb6HAdaLWF7KZvwUv2vWYDY9cTENNZui',
+  'acUSDC',
+  9
+),
+(
+  '2zwkTwiN4ABxovt2FaBQpRzVD4Kar7sHi3azBRQZfXSr',
+  'ALPACA',
+  0
+),
+(
+  '5LVTQYHeu5jx1oTbwLQF9QEdPqV9KPUgxm1772fArY1p',
+  'SCAM_01E2',
+  0
+),
+(
+  'Dm7cDFpovTay4pxFpUYv66ZZtRYdD1YjgvnseaaF6KHh',
+  'BLOOD',
+  6
+),
+(
+  'Kir4NUgYeLoHN7aBjNTfiyn3vHwZVKiyhBqN5RYBqnA',
+  'KIRIN',
+  9
+),
+(
+  'cPQm9UM1ekMeAgRcYGLfNcBC65SLA8o2BVTaBUA7kTg',
+  'API',
+  9
+),
+(
+  '89ZKE4aoyfLBe2RuV6jM3JGNhaV18Nxh8eNtjRcndBip',
+  'RAY-SOL',
+  6
+),
+(
+  'FZMcCAq9U65mymBjUxKXPUJehDJMLg54Ud5bTrmbaHYS',
+  'DCN',
+  9
+),
+(
+  'BYHvqH47A1UrUDZnPhE94X9LLg2ChrxwmkXfabbxy43A',
+  'AKQJ',
+  0
+),
+(
+  'ECFcUGwHHMaZynAQpqRHkYeTBnS5GnPWZywM8aggcs3A',
+  'SOL/USDC',
+  9
+),
+(
+  'fLoeAqCfMiS3Uaj6aXSCGhf2ZE9znWz7WjTPCD2Rgnf',
+  'MMCC',
+  2
+),
+(
+  '7HGJwFyKC5wPLZ9ctgVSgjBARJ4dZrGCjMRQmzWwe277',
+  'Synapses',
+  9
+),
+(
+  'FvBZo7dEFasSB9vottYnuLvLy3br5pkbC1NXDdCVa4wQ',
+  'MHV',
+  9
+),
+(
+  '2geYxMQ9o466tQ3JitUVR5Xmuk4a11KXs7ZmSX1hiSJp',
+  'McNoot',
+  9
+),
+(
+  '8pBc4v9GAwCBNWPB5XKA93APexMGAS4qMr37vNke9Ref',
+  'wHBTC_v1',
+  9
+),
+(
+  '9esJPERfsEV8hedoXkrBJ74ZJ8BNQEU2WBRuyxomxeBN',
+  'PPenguin',
+  5
+),
+(
+  '3RTGL7gPF4V1ns1AeGFApT7cBEGVDfmJ77DqQi9AC6uG',
+  'mSOL/SOL',
+  6
+),
+(
+  'FDKBUXKxCdNQnDrqP7DLe8Kri3hzFRxcXyoskoPa74rk',
+  '$YETI',
+  9
+),
+(
+  '3TMdBbnXKASdx9rBcZ5HQsyqCky7Gt2ea44gYB6Ro15A',
+  'SFOX',
+  8
+),
+(
+  '7aohFKctcbgaSzNTtfL1999hUy4tgDeUC7wLU1ozNmxc',
+  'CRAT',
+  8
+),
+(
+  'GfzU1fLASNV3r4NtEyrnwTyTakJkYzoivnaL3Snh45oj',
+  'ahUSDT',
+  9
+),
+(
+  '7R7rZ7SsLDXkYAfJyRCBScLuZwizeMWaTWrwFhSZU2Jq',
+  'WET',
+  9
+),
+(
+  'LUVumGBdVkaPYbGyjjRJtsbYoVtZ1h7AaX1Hh2bcaqn',
+  '$LUV',
+  10
+),
+(
+  'DAHStbBEHcp7ooofA1TV3oayoRGM9i1v6TJSnoa2ZAWh',
+  'DAHS',
+  2
+),
+(
+  'A98UDy7z8MfmWnTQt6cKjje7UfqV3pTLf4yEbuwL2HrH',
+  'MODUL',
+  9
+),
+(
+  '7eDhcd5zo6Dg3LAdezLvGMYE9xHWTzr2ayKzAhQp8DHy',
+  '$',
+  9
+),
+(
+  '6PGoaQdL9e463hdaFxHXsuPcjCHRK32CQ9PFKxvM7XY2',
+  'KURO/USDC',
+  6
+),
+(
+  'Aq8jBSDyAqaHv8DYr8SbBRarJEQmtYhpGi3R7FsYZsug',
+  'CURSEDMIKE',
+  0
+),
+(
+  'SWLXCGbDk7PkwU9b4GzRgQMy1HgPHwcfe2vTWCXRqSy',
+  'SPHXWL',
+  0
+),
+(
+  'FFAfrApKHskMMsnHs8P8WGqDweXCf2AbeMVjz9vbVY4C',
+  'DUWL',
+  0
+),
+(
+  '9cyEStsrZF7LzqLzbNcuUeuat1NM4eHrBVApvkPBCQk4',
+  'ATA',
+  9
+),
+(
+  'WL7fRmbPfu3U45ZWPrXyfJTjzneFahC2X2pMsBESL4g',
+  'ZWLT',
+  0
+),
+(
+  'Gns4DFoM98sib6XJSojU2hm7C6jU9qYWLzYu1Z7HAb8E',
+  'WCDL',
+  0
+),
+(
+  '2iMhgB4pbdKvwJHVyitpvX5z1NBNypFonUgaSAt9dtDt',
+  'PX4',
+  0
+),
+(
+  '8rDACnycUMGFvndX74ZM9sxjEbR3gUpVHDjDbL4qW6Zf',
+  'TRTN',
+  6
+),
+(
+  'EXQgN2S5baFSqBR9XijnGvtunemdhhj2f9p4K9NW4Y9F',
+  'CRE8R',
+  0
+),
+(
+  '6LaJKhZts2cJJPdo9v7XR4kHiLk9ERh16VLKjBUS8DxD',
+  '$LILY',
+  18
+),
+(
+  'FDqVe2wP8WPJ2aWR1uUXWJsyMeB72mNkvDRjQPbmuyHE',
+  'MYRIEN',
+  9
+),
+(
+  'BAexggGFsiLCKr17cSZF12wkHd8BkR1DBhzuSb78WTR2',
+  'aeFEI',
+  9
+),
+(
+  'X71v8NH6dbLwPsn4TR1Tx38K4uWgGZ78mC599XSPJox',
+  'SNS',
+  9
+),
+(
+  '942JqBf2PipzDyHM5sQyfLh21XUVFmGAoSReMMe1Gfba',
+  'SCWL',
+  0
+),
+(
+  '8W2ZFYag9zTdnVpiyR4sqDXszQfx2jAZoMcvPtCSQc7D',
+  'svtCWM',
+  8
+),
+(
+  'FujiSB9NYj8bGeEh77bibsK9PnBhRNXLZ5V4t6aMBtfK',
+  'FUJILIST',
+  0
+),
+(
+  '4hzNWj7mzEvACcrPZnUa4CrVygTsVGuqZMRzYkZoQEdj',
+  'WAG/CRP',
+  8
+),
+(
+  '9oM4Bg2E8y8LkGbaJhd27tcbto4KpjvXHubG2LEoRbQL',
+  'PB',
+  0
+),
+(
+  '9TeUnTLnQCRAC3erDjgXrpnVgkwcP283VEWM5o8QTNXF',
+  'OKAYMAYC',
+  0
+),
+(
+  'u8am3pjJ6poZrpwgerGyAmPYHfg7AmQyR8YNaG39onS',
+  '$FOX',
+  9
+),
+(
+  'qRvWKRP2hdbVi8aCw5f9V2JarxtV6W51dVnm1tyXWXk',
+  'TLLWL',
+  0
+),
+(
+  '8YPwxJ7geGS8jjtTYzKaYbgkFWBQQHKtfHS4g2nzXcHt',
+  'WAR',
+  0
+),
+(
+  'k5Ybbtmnd1eAtBZoTqB9uzd24bVPz8Aip5EGVCJXQCM',
+  'sBTC',
+  8
+),
+(
+  'GnYmoLzwY9RfpBs5FnWnXJ1ZL2ymbESVj9ihrpbYch9b',
+  'TTRYB',
+  9
+),
+(
+  'CQkTVkohEmyydNPNPH82c6aNPeXE72AatrhZcbntiAfg',
+  'WVIP',
+  4
+),
+(
+  'xBTCPvRuEuRgz5DuuUd3ju3VP5XtR2Dsu1AxyW9JpXK',
+  'xBTC-renBTC',
+  10
+),
+(
+  'GuJWiZBox3tZZwiV9NCJsRUaULv8tmNcK9UWNV25msND',
+  'FROGZ',
+  9
+),
+(
+  'G6CFsk54ewgkRQqj5pDVQJsDystRQXZZpqF8CfgZoUq4',
+  'WEEH',
+  9
+),
+(
+  'ALPfb7HJd4oenNBknjzCbVc2RooC5N1H6N391hbZ82ky',
+  'aeMIM-wtUST',
+  9
+),
+(
+  '3K6SeyAYC6E5n39DZ25Jp2EsWSgb4JBjSQYS86jziNMy',
+  'SHRKDAO',
+  0
+),
+(
+  '7YyhptkxY81HPzFVfyCzA5UXxWdsNRD41ofLva3TuSpd',
+  'NINJA/SOL',
+  6
+),
+(
+  'Digi7SnUD9ddiitEqkNfby1c4BfkgokFKWu9KScbizes',
+  '$DIGI',
+  9
+),
+(
+  'HDXJnHUdi11qNb2aJ4xVaAvvhgnrRVDbZ9ogw3d81ZYc',
+  'EGEM',
+  2
+),
+(
+  'Gh1jKzmxf95cT5PQabNbfJskkQU8kQ5UugfpbHSnPq9z',
+  'NRC',
+  3
+),
+(
+  'Dc5LzwzYLtSMhquxvXSAuhiDqjjbPLrBF1ZajNQyFuXM',
+  'WTLBC',
+  0
+),
+(
+  'pskJRUNzJbVu4RaZSUJYfvaTNXmFdRCutegL6P2Y9tG',
+  'PSK',
+  8
+),
+(
+  'AppJPZka33cu4DyUenFe9Dc1ZmZ3oQju6mBn9k37bNAa',
+  'csoETH',
+  6
+),
+(
+  'WLDWnYmLNcCGV6r6z27QZDEeUaKbCiKuhyaLqm49B8j',
+  'TMDCSB',
+  0
+),
+(
+  'BhyD7wsPdSfqfDWpbx7S99GAXqHJhX4QsviNNJ6oSzqu',
+  '$CIETY',
+  9
+),
+(
+  'WLmzvH6aA31vA8hZ1bptVemSoiBc8fm6J4LRXzHZmCF',
+  'matE',
+  0
+),
+(
+  '8o66EVAf4u2Hr21m2tuRrPtEXFPLr8G8aL1ETStP8fDu',
+  'VIBE',
+  9
+),
+(
+  'G1bE9ge8Yoq43hv7QLcumxTFhHqFMdcL4y2d6ZdzMG4b',
+  'PFP',
+  0
+),
+(
+  'BSCNZ4GLnpZYv4BLk5edymk4qty8a6ZpiMbfvtv9gAzL',
+  'weBUSD-USDC',
+  8
+),
+(
+  'mjQH33MqZv5aKAbKHi8dG3g3qXeRQqq1GFcXceZkNSr',
+  'RAY-ETH',
+  6
+),
+(
+  'J2beWpqSSoFXzzotd9uWQe9xSHZkszAntjYD7xCdnu1K',
+  'TENU',
+  9
+),
+(
+  'Hero6s7zJXsw9hfCXLVR5stLqgCok3E7CCkpQEoLAk2g',
+  'hero',
+  6
+),
+(
+  'FMJotGUW16AzexRD3vXJQ94AL71cwrhtFaCTGtK1QHXm',
+  'LRA',
+  9
+),
+(
+  'GqvM4xqeegtVgzY5mbEoq8Z9Wf8XpHuAxpg7gXN2dQ37',
+  'FLOW',
+  9
+),
+(
+  'aYZPYgohjK6LYM8o1v6pnr3ZinhuRzSHd6TRDVDUBkK',
+  'BTL',
+  8
+),
+(
+  '2ZamLCGLPSpP2MRbeM2wXRWzTEDhr669cFycVWgzBixi',
+  'TBF',
+  6
+),
+(
+  'TKMKgSh3aADsmjr4yFWG52tkCQvmDxsQC1he1aBsi65',
+  'TKMK',
+  9
+),
+(
+  'DogeLZECE9CthXasBLFxgeA2umEyt8CcV7Jsf6P5ZTFo',
+  'DLANA',
+  9
+),
+(
+  'C7gENDPyayjE2iw6p55J5ELtcDYzQbe91JEhLjH2yxAR',
+  'SRD',
+  6
+),
+(
+  'EFqYVEitSUpUTj2d9LSqun4eZ4BzouFuTPqQzU4hNtsS',
+  'MMaps',
+  6
+),
+(
+  '9pkudFiG5qhiSQQ8XatPbxZj8zBQ5m4XzHsKHMAGkkCR',
+  'SERSH',
+  9
+),
+(
+  'wrBTCqVjkpqktbqN3CeGVSzQ9PFiPonHN98uwEpwMsy',
+  'wrBTC',
+  6
+),
+(
+  'CsZ5LZkDS7h9TDKjrbL7VAwQZ9nsRu8vJLhRYfmGaN8K',
+  'soALEPH',
+  6
+),
+(
+  'BXZX2JRJFjvKazM1ibeDFxgAngKExb74MRXzXKvgikxX',
+  'YFI',
+  8
+),
+(
+  '9S4t2NEAiJVMvPdRYKVrfJpBafPBLtvbvyS3DecojQHw',
+  'soFRONT',
+  6
+),
+(
+  '7MKpy8PeNjQM3i4xWzGiZjDd97mq6m4QH6Q8jrXnsQ9L',
+  'ZORG',
+  9
+),
+(
+  'FhGkz2uJRDkTKsFMeGPhreeM8E2yNmVmbyv6ny2zm8YD',
+  'MTVR',
+  9
+),
+(
+  'FNRDrrinmYQ4TMEbAppmLFp92bGi6FfNLBCp5Xkc2PSw',
+  'FNRD',
+  9
+),
+(
+  'GJQpf6Zjvokd3YK5EprXqZUah9jxkn8aG4pTeWL7Gkju',
+  'OKI',
+  9
+),
+(
+  '43m2ewFV5nDepieFjT9EmAQnc1HRtAF247RBpLGFem5F',
+  'USDK',
+  8
+),
+(
+  '12uHjozDVgyGWeLqQ8DMCRbig8amW5VmvZu3FdMMdcaG',
+  'AKRO',
+  8
+),
+(
+  'DkbE8U4gSRuGHcVMA1LwyZPYUjYbfEbjW8DMR3iSXBzr',
+  'RSR',
+  8
+),
+(
+  'HMKSrb4Nb894wEmwYveACs3y7wHy7TKzf3kqPeiHjaqa',
+  'HMKS',
+  6
+),
+(
+  '22WH22zjhczZU5Rc8jjteqNmM2hiv8VnJb8eha1B4eoE',
+  'DFOREST',
+  0
+),
+(
+  'GoGwgMnVsRqLUf2vPKxTG6DSyRRSrZCEKQBUCFDUFneU',
+  'GOG',
+  1
+),
+(
+  'DJ5TCEN2epuVfqMkgVozSUCTLHi71RNRhQXELCVw12L4',
+  'DJNRB',
+  0
+),
+(
+  'Bvv9xLodFrvDFSno9Ud8SEh5zVtBDQQjnBty2SgMcJ2s',
+  'ETHBEAR',
+  6
+),
+(
+  'Afvh7TWfcT1E9eEEWJk17fPjnqk36hreTJJK5g3s4fm8',
+  'mSOL/USDT',
+  6
+),
+(
+  'GyvLD8DxSEVffv22eEWQ6NdJMbtzoYfPhue7XxCXMKqr',
+  'MEC',
+  9
+),
+(
+  'EqWCKXfs3x47uVosDpTRgFniThL9Y8iCztJaapxbEaVX',
+  'soLUA',
+  6
+),
+(
+  '3i6AKKC2WGd7qgqFJmSxKUGBWAui91upsMGu82xszTL2',
+  'vBARN',
+  9
+),
+(
+  '2FkuyFr3N9RzvVahPqzXKfa8H9KhYpChwQZSeMKkkVPJ',
+  'SMBT',
+  4
+),
+(
+  'B64haiHLQoWdrvcJqufRG5dEMms96rDpwuaTjYTihQEo',
+  'pyUSDC',
+  6
+),
+(
+  'CwChm6p9Q3yFrjzVeiLTTbsoJkooscof5SJYZc2CrNqG',
+  'ETHBULL',
+  6
+),
+(
+  'CPXDs2uhNwDKAt9V3vXvtspv9U7rsQ2fVr1qAUDmuCaq',
+  'CPX',
+  6
+),
+(
+  '33fsBLA8djQm82RpHmE3SuVrPGtZBWNYExsEUeKX1HXX',
+  'BUSDet',
+  8
+),
+(
+  '9BiqBycZWkWH21vYqCbu2bL1PjZbR5GxWGA8LQkShbyt',
+  'MEW',
+  0
+),
+(
+  'AtgKBiAwAmAbSNaZCSfvvCCuypsqbHgry2MmaE1PUh2Z',
+  'SOLsquid',
+  4
+),
+(
+  'Amt5wUJREJQC5pX7Z48YSK812xmu4j3sQVupNhtsEuY8',
+  'FROG',
+  6
+),
+(
+  '5rFmh8C6Zj1VfL7ogB6PyVDnQkqsayvEPsEbbkUPX8f',
+  'SLCAT',
+  4
+),
+(
+  '63cL4hHbkRStqMvhAudXkPsydRASp3yr7iPQemqmAcD2',
+  'ART',
+  6
+),
+(
+  'CaGa7pddFXS65Gznqwp42kBhkJQdceoFVT7AQYo8Jr8Q',
+  'MATH',
+  8
+),
+(
+  'AwEauVaTMQRB71WeDnwf1DWSBxaMKjEPuxyLr1uixFom',
+  'COMP',
+  8
+),
+(
+  'HZNpqL7RT9gxf9eWoWsWzC5DfjzQ41XTQgEA7p3VzaaD',
+  'TWT',
+  8
+),
+(
+  'FKckG972VE5yGEsHLwL9MfGEXTaYTvEn9KZ4Qf22dTgc',
+  'SOI',
+  9
+),
+(
+  '7VQo3HFLNH5QqGtM8eC3XQbPkJUu7nS9LeGWjerRh5Sw',
+  'HUSD',
+  8
+),
+(
+  'EjmyN6qEC1Tf1JxiG1ae7UTJhUxSwk1TCWNWqxWV4J6o',
+  'DAI',
+  8
+),
+(
+  '3CyiEDRehaGufzkpXJitCP5tvh7cNhRqd9rPBxZrgK5z',
+  'SXP',
+  8
+),
+(
+  '5xnRrqoyoLBixNwjVet6Xb2ZTyBSXhENyUWj4sqzRGrv',
+  'quid',
+  9
+),
+(
+  'HysWcbHiYY9888pHbaqhwLYZQeZrcQMXKQWRqS7zcPK5',
+  'axset',
+  8
+),
+(
+  'FLTHudk5B5zag7JmGXqrYrFfey6otevLQA6jm1UHHLEE',
+  'flth',
+  9
+),
+(
+  '9gP2kCy3wA1ctvYWQk75guqXuHfrEomqydHLtcTCqiLa',
+  'bnb',
+  8
+),
+(
+  'SRMuApVNdxXokk5GT7XD5cUUgXMBCoAz2LHeuAoKWRt',
+  'srm',
+  6
+),
+(
+  '3QxMtHFY6x35Rmuh7SPSiP6EPNpFT1AEPz268KF3JH1V',
+  'GHC',
+  9
+),
+(
+  'gLhY2arqFpmVGkpbBbTi3TeWbsWevA8dqrwbKacK3vJ',
+  'tuUSDT',
+  6
+),
+(
+  '2Dm1zu8ERJGBs3NLXt8s8Vor3YHwJye5E2pYhLiMHU4L',
+  'REAP',
+  9
+),
+(
+  'soL6gkvtJa7wtiqHXPZ2G6g2V9ZdT7GzFRJJPxTRS67',
+  '$SOLID',
+  2
+),
+(
+  'DYQ3oKHyF8DVDr2gm3tLmFzuQ4HTfrE78NvmCh3WJ1XC',
+  'ZEN',
+  6
+),
+(
+  'BXVR8wqs8ixPMHnuUq65buJQmimwG9WG5pNKKKBRd2S4',
+  'GUMA',
+  9
+),
+(
+  'dogNpVvUavBx65BXETRFhwByMw65cAzFxTjbc7uD8br',
+  'CDFM',
+  0
+),
+(
+  'Es9ogKeDecth3erJanqKFsBLgU9bQCtsjNetRUsqiJto',
+  '$WELLNESS',
+  9
+),
+(
+  'AEUT5uFm1D575FVCoQd5Yq891FJEqkncZUbBFoFcAhTV',
+  'sUSDT-9',
+  9
+),
+(
+  '3H9NxvaZoxMZZDZcbBDdWMKbrfNj7PCF5sbRwDr7SdDW',
+  'MER-USDC',
+  6
+),
+(
+  'BBaUcA9HFb6iJgXBzWn7pi1bptuBMETNXzge2BGti9Ts',
+  'RMBLWL',
+  0
+),
+(
+  'CcaKx6adqp8wDeksiR15x8HMgBzjz8QY6pJCmRZQPXAB',
+  'HAY',
+  0
+),
+(
+  '7FvaS3FZ3RThvFeZspkzszF9hj5Zp6SMrxjkoz74NfX',
+  'SKUL',
+  9
+),
+(
+  'HD2WMkhqBqHBeuPaJfziGwSGTaaJTVfWs9drW7yTsLtk',
+  'NORY',
+  6
+),
+(
+  '7QTcx3LuVfPSZxVzFJcTmbpQCL35jkfoNSzx4qouX495',
+  'AKELA',
+  9
+),
+(
+  '8cn7JcYVjDZesLa3RTt3NXne4WcDw9PdUneQWuByehwW',
+  'tumSOL',
+  9
+),
+(
+  'D63gfFT3YE7GXUShznPXEVPJwoKhdWw2psHmrxjBTt1M',
+  'SOVD',
+  9
+),
+(
+  '53dqN1unCex98QWzLZtk1ssJptEcRwZapTrv8pakcgNB',
+  'LGBR',
+  9
+),
+(
+  '8PYkbcenAWxniMCPKAAuQyxpvnw681nL9nJjwTHA6c7j',
+  'SCAM_6617',
+  0
+),
+(
+  'BoNEQFUfvNMWww7afX4HPyjJvT4XcQsohUgxtuNKK6vW',
+  'BONE',
+  9
+),
+(
+  'zoomAe6zBJsgB23puRkVxgPAC8WETUb6AApaBUM7y1M',
+  'ZOOM',
+  0
+),
+(
+  '9dBKkgCaNxXxe95zPHvotYJcuf9UAQDNko1hQ6M6H7AV',
+  'SWOLE/USDC',
+  8
+),
+(
+  'omg6vAatLFChVhicZqFvBLd7vEqJqjp7KPR5CxKjMjR',
+  'omgWL',
+  0
+),
+(
+  '8btg1akyvVNqkDjftALYMRDqG9QfWvS7sy96KpLAMZny',
+  'VEXWL',
+  0
+),
+(
+  'cLownTTaiiQMoyMmFjfmSGowi8HyNhCtTLFcrNKnqX6',
+  'CLOWNFISH',
+  0
+),
+(
+  'GiaaHW6H1gYM6ygzug2gSpGMAy7NAMCQGHsT4LgXZxwY',
+  'FACT',
+  0
+),
+(
+  'AfGaVaWuGdKcbdzTTFvh1Haatw8DpaHQnouY3fRJEXyz',
+  'XEN',
+  0
+),
+(
+  'BcRr96qhSoaKFjGJDKtSWmHDvTrv7ziuq29dRjtUmHuk',
+  'NNI',
+  6
+),
+(
+  '6UZsQ5sCGCSJyxHbYrEjZTWvXmYsWEcKbd77AKi3oxxi',
+  '$TRUST',
+  9
+),
+(
+  'FPWsFrQRhJpiCZAAUotNes3XZuBTv8M5yLYU7YYGc61J',
+  'FPW',
+  0
+),
+(
+  'wLYsBuL6HH5Pxzh5sxdzHfQHmWTJMRMyP8WCUvnoKte',
+  'VWT',
+  0
+),
+(
+  'EG9JDbEiCFpQ8a9LCi8AXskKvqZy757n3yFCnBvLrZRd',
+  'OTAKU',
+  0
+),
+(
+  'Dah1ysVPY2zhnR4M3akE3LFpuZCpA4pbHK5hMbjNBKSc',
+  'DHLYDT',
+  0
+),
+(
+  '9dwrdifAVWZsyEPxi15D8LcLsdrvTbpabrGw5EVzc7pp',
+  'NinjaDoge',
+  9
+),
+(
+  'DTRK1XRNaL6CxfFWwVLZMxyhiCZnwdP32CgzVDXWy5Td',
+  'DTRK',
+  6
+),
+(
+  '45vwTZSDFBiqCMRdtK4xiLCHEov8LJRW8GwnofG8HYyH',
+  'BEAR',
+  6
+),
+(
+  'ssr1CpV54AngxBAeeTpPNgmAACf3VpdTQJtCdgMRFSC',
+  'BRCRS',
+  8
+),
+(
+  'MatA8b1QRcrDSfNtqnPzkbmtq8RmKTw8iZydbMtxV6X',
+  'CHTKT',
+  0
+),
+(
+  'DMbb79fgxR3fKKVKWcbetMCuxNNtJnfjY3qqAE4G4wJf',
+  'DUSK',
+  3
+),
+(
+  'c8JyuF2fD84G6Vk4AmeVfTUoseNRmv2A9JpymAXi4B6',
+  'WENSIR',
+  7
+),
+(
+  '4KwJBSGtpoxGY8pUUEsjpModoYgRGgaqNEZHrd11DzsV',
+  'NINJAS',
+  9
+),
+(
+  'AP58G14hoy4GGgZS4L8TzZgqXnk3hBvciFKW2Cb1RQ2J',
+  'YARDv1',
+  9
+),
+(
+  '56ZMDv7VWEhEx2Q1YgH3RNEMnwNqTPPA8rk9KLi6CjX6',
+  'kcETH',
+  6
+),
+(
+  'Er7a3ugS6kkAqj6sp3UmXEFAFrDdLMRQEkV9QH2fwRYA',
+  'mDIAM',
+  9
+),
+(
+  'CoCrfJfccDLXxdd4HSVynLGKavvBPPHjJEGphwXZTFyn',
+  'OG',
+  0
+),
+(
+  'DsBuznXRTmzvEdb36Dx3aVLVo1XmH7r1PRZUFugLPTFv',
+  'FIDA-RAY',
+  6
+),
+(
+  'CvRjLqr3fwtQEe3RETTQCqX2CJAvMzKf613yC6DfyBDM',
+  'PRTS',
+  2
+),
+(
+  'A4vmCTGepYqFT5CtkFgkjtsj7DUUBNAkkMB9G8q6dzKJ',
+  'SSB',
+  0
+),
+(
+  '8gWEnKqB4qVQgC8yAorMxhiEKqsDcxZSVKFVbQ8g1fzB',
+  'PORN',
+  9
+),
+(
+  'Do5AbqdEbj742B2Cm8BypAGg3h1skLaAVTbT2mLRcW8c',
+  'HALO',
+  9
+),
+(
+  'EeLpRX4pgS4zPTQQfoHqqhBvoLzL83wPExmQoG5e1hnb',
+  'CRAFT',
+  9
+),
+(
+  'uGPpPFGMNUbiEZG4kihsqXAGQcb3Egb8mks2pUTzSkj',
+  'WingsWL',
+  0
+),
+(
+  '3uKPwVQ7cjnCJWgpFLRfMDkJzAEaV6o7uMJUyZErT6V4',
+  '$MAES',
+  9
+),
+(
+  'EK1rBdnucX4yf8JDCFQEC7rTejXEUqsjazDxHZaHSKT7',
+  'DRAY',
+  9
+),
+(
+  '2CDLbxeuqkLTLY3em6FFQgfBQV5LRnEsJJgcFCvWKNcS',
+  'BNBBEAR',
+  6
+),
+(
+  '4vqAHZgaQT6e1vGVhFjZVXGEejxJsiXpxsmjmw8LPtRK',
+  'WEDAO',
+  8
+),
+(
+  '35HAnnLpne8Kppd7JtpDJ9dWwgrW8f8yUmHwymjGZth4',
+  'P',
+  6
+),
+(
+  'CRkwd2QedqDi5u6W2w6jeAViAUd1pR4AXs2aKvh7GW7M',
+  'SEI',
+  6
+),
+(
+  'ALP8mkba7FHrpn18hGMRURF1aRNS7P2y1SRzqE6ra3Zo',
+  'afUSDC-USDC',
+  9
+),
+(
+  '7yyTQNQdi45pRVCkDXB8yLRcPw9KFvd9P2Bw3u22HUj9',
+  'ATWORLD',
+  3
+),
+(
+  '8Tjjm9zB8sLJNFNALq7MRrnL9ygY354XX7dV4zkcb4Tj',
+  'Rev-WL',
+  0
+),
+(
+  'D8VVNvc6EmjHLJE1vgzZSyMEAH6CZvD3wVaeY6RZHuj8',
+  'DTome',
+  6
+),
+(
+  '5TuPwHGENJ8ZyvYZB28taMyh1uFUZH4bdFQfTbSxF1vj',
+  '$CACTI',
+  6
+),
+(
+  '7uS8FP88CTrrtwNpzwcJsH7BfSGorn4L9wsfrb1knzKo',
+  'SKIDDY',
+  9
+),
+(
+  'BtZQfWqDGbk9Wf2rXEiWyQBdBY1etnUUn6zEphvVS7yN',
+  'soHGET',
+  6
+),
+(
+  'dDTRVvDVJfuELbuEmNqve32pkbc95raxBf2s2wAVjq5',
+  'CREDIT',
+  9
+),
+(
+  'RRTBB9xWcYD9DvaTX7R8UgYbNmxDkVsM2jo1iEXm1Et',
+  'RR',
+  0
+),
+(
+  'nope9HWCJcXVFkG49CDk7oYFtgGsUzsRvHdcJeL2aCL',
+  'NOPE',
+  9
+),
+(
+  'xLfNTYy76B8Tiix3hA51Jyvc1kMSFV4sPdR7szTZsRu',
+  'xLFNTY',
+  6
+),
+(
+  'vqU8NVkkgpFtt3YECwuQRD3RhX7LYaqZKrotZbdiBJn',
+  'MOONRACE',
+  3
+),
+(
+  'DMC8y7kpeBYfkbM3MmLREKeSGnw1sdWSv68aDUfH97Bu',
+  'DMC',
+  9
+),
+(
+  'H1X2quMc8ZesCE4afDQhWAmFssENprmmz9a6SXvHWPoN',
+  '$AMMO',
+  9
+),
+(
+  'CYbLZDG7TexKi2axdh4gQGLV3FnXvBgfJgLtixhKVytZ',
+  'FUEL',
+  2
+),
+(
+  '64SqEfHtu4bZ6jr1mAxaWrLFdMngbKbru9AyaG2Dyk5T',
+  'wen-token',
+  0
+),
+(
+  'uSuyHGF93xkMU35uUNcAyXWrwLFrzS56kBZYLQVX25R',
+  'ATVS',
+  9
+),
+(
+  '1SSBwC8hxB4GXzKKU4ENNpST7zgpTmucDe9NoAopWXX',
+  'ISS',
+  9
+),
+(
+  'SBTCB6pWqeDo6zGi9WVRMLCsKsN6JiR1RMUqvLtgSRv',
+  'sBTC-8',
+  8
+),
+(
+  'DUM5J59yrYGukU52i1hC6YGZQ8Bfg7ppVpsYwJDF41f6',
+  'NKL',
+  9
+),
+(
+  '4wGimtLPQhbRT1cmKFJ7P7jDTgBqDnRBWsFXEhLoUep2',
+  'svtFLARE',
+  8
+),
+(
+  'NXH66NhJZ3woe1KCYFGwSJHTtpELuv4Mf8YoVthWtce',
+  'MECH',
+  9
+),
+(
+  'GCxgQbbvJc4UyqGCsUAUa38npzZX27EMxZwckLuWeEkt',
+  'NUTS',
+  9
+),
+(
+  '75r7zg51bz7ESrQ9KuDLn3KGX7NKSZgB9UfKdfopHR6m',
+  'SMINE',
+  9
+),
+(
+  'rvxo8t7TKeSmAgpdqK1CY9ddZi3NyowRCh1m2d7KrUc',
+  'SMRAI',
+  9
+),
+(
+  'ESrrTHaNKiC9saxaudX2j9iCM9r8qHRcLSrW5ypQ3W64',
+  'DALI',
+  3
+),
+(
+  'B3Ggjjj3QargPkFTAJiR6BaD8CWKFUaWRXGcDQ1nyeeD',
+  'PARTI',
+  9
+),
+(
+  '6isPCSZf1ZQdwHMTuRMG9q4DZPKsjFog5o3HM4XCuCc9',
+  'vBOW',
+  9
+),
+(
+  'goatmBAgLyFoHTyyg9NNqGLV4LqTGyjAx1HBn3P1NkD',
+  '$GOAT',
+  9
+),
+(
+  'MAGf4MnUUkkAUUdiYbNFcDnE4EBGHJYLk9foJ2ae7BV',
+  'MAGAI',
+  0
+),
+(
+  'FjA8FNXryYsPEoND6RfUoXffXhZMpy6YDA83G5pz5bwP',
+  'RGD',
+  9
+),
+(
+  'DH9L2E49cBKC9BEbt4q262WDp6E7FnH7QBkyES7AQbSx',
+  'CLASS',
+  3
+),
+(
+  '7GnAtLAoiXYhow3mE7szXHfkmWA5QEitbiHDXE4so9Jd',
+  'PengT',
+  0
+),
+(
+  'HRhCiCe8WLC4Jsy43Jkhq3poEWpjgXKD1U26XACReimt',
+  'zSOL',
+  9
+),
+(
+  'D5fQ4jY4GxKfTjdqe7Rnwbu1wN1DLu7mwtmJxPsT9Zr6',
+  'FERO',
+  9
+),
+(
+  'PRDXoZD3WCjgr6xzvTfWo3qQJmmVsR616cX2NM1wnaX',
+  '$PRDX',
+  9
+),
+(
+  '7hUdUTkJLwdcmt3jSEeqx4ep91sm1XwBxMDaJae6bD5D',
+  'rSOL',
+  9
+),
+(
+  'FASohke1j5eRAwQBMqTs3W9d3N54xFqNAg3nZRmGKQdk',
+  'AQUA',
+  9
+),
+(
+  'WLPAEUgB95YrU7Vk1FVPeSP5C3e66bf63frHRgsyxHv',
+  'wbUSDT-USDT',
+  8
+),
+(
+  'AkeoLsFzjQ3ZtKXwrGVaa6MSuU7X5wiBX9L5AKAPoFzp',
+  'AKEO',
+  7
+),
+(
+  'GUAXo4yYqY335t9esybM4wDPcDeAc7m2mW2xQ2svXzy1',
+  'SOUTHPARK',
+  0
+),
+(
+  'etCPUaMghWobVwxug5Vgxb6r3A7DEBdLKUywrnDrJeZ',
+  'JFICALL',
+  0
+),
+(
+  '3Ztt53vwGhQGoEp3n1RjSu4CFnGRfqzwo6L8KN8gmXfd',
+  'METAS',
+  9
+),
+(
+  '3uXMgtaMRBcyEtEChgiLMdHDjb5Azr17SQWwQo3ppEH8',
+  'WBRZ',
+  6
+),
+(
+  'HcJCPYck2UsTMgiPfjn6CS1wrC5iBXtuqPSjt8Qy8Sou',
+  'GANGS',
+  4
+),
+(
+  'JApyjFvMard5g1WmgSGC6vF61ZsofSEHHQMYk6hNVUXk',
+  'SXD',
+  0
+),
+(
+  'dapeM1DJj3xf2rC5o3Gcz1Cg3Rdu2ayZae9nGcsRRZT',
+  'DAPE',
+  8
+),
+(
+  'FdDEakNRY4k3orJuBXUcm9VkcXd8YXVPjuG5WuRN2tWH',
+  'POOS',
+  4
+),
+(
+  '2y7wUCJdtqTbjnKBNEB3DpAYCuwA1atCtdfkGt9VR4sM',
+  '$PSYn',
+  5
+),
+(
+  'icex2Fy2KtXjfiAAUEHLPHu7XKDLvwiyVUPP9PNpSkF',
+  'ICE',
+  9
+),
+(
+  'Cf6rda8prASJemo9w4Q3NeBEM2pcYKK8aNZ5zLk4Dmzh',
+  'FUS',
+  9
+),
+(
+  '3k8BDobgihmk72jVmXYLE168bxxQUhqqyESW4dQVktqC',
+  'STEP-USDC',
+  9
+),
+(
+  'GWpD3eTfhJB5KDCcnE85dBQrjAk2CsrgDF9b52R9CrjV',
+  'LIQ-USDC',
+  6
+),
+(
+  'WL43J7vzgyYRNNmDBvDK2CtuKHoQHdPoL1gL5XTpPeP',
+  'WL',
+  0
+),
+(
+  '5iet2XLprsR1ACxC46p6RzPbhu5u7Kcw6gHTYbaLnUWo',
+  'DIRT',
+  9
+),
+(
+  'BF948N21VtSvhT8Vj1yQfm3xiNyf5Q94AF1ghbivaFMe',
+  'NFTP',
+  0
+),
+(
+  'spr1yvmfxbPVW9Pn1Nn5uHJzunKXZGLwytSvGgHNv46',
+  'SPRAY',
+  9
+),
+(
+  '4Qd7t3wG1ea5Zm7NSuEocMrc6NfA8GyGp3s3nv4kgvgj',
+  'ARK',
+  0
+),
+(
+  'BELEkfxRkTdNexHtsJ8sk6RBx1ZuNcQmfpkKSNgq8S7N',
+  'BELE',
+  6
+),
+(
+  '262cQHT3soHwzuo2oVSy5kAfHcFZ1Jjn8C1GRLcQNKA3',
+  'XRPBULL',
+  6
+),
+(
+  '3z2vPLw1k9whGwM2KqMMVruKGZmecfEFmeAiXzqhXrUr',
+  'NESTWL',
+  0
+),
+(
+  'HjLtBjuh1vMd3N1Hsi2V6akvoziTMrbpnoWnkyXpb9tA',
+  'GUNWL2',
+  0
+),
+(
+  '2Kc91qK5tA1df2P9BWrjNrJfdQCbCx95iUY8H27aNuWa',
+  'FFF',
+  8
+),
+(
+  'HYtdDGdMFqBrtyUe5z74bKCtH2WUHZiWRicjNVaHSfkg',
+  'svtAURY',
+  8
+),
+(
+  '8z1jFyg9heBFvKVvqMHJQ4UXQqomNpYZHWCsEJhQYaBd',
+  'VIP',
+  9
+),
+(
+  'foodQJAztMzX1DKpLaiounNe2BDMds5RNuPC6jsNrDG',
+  'FOOOOOOD',
+  0
+),
+(
+  'DyT12z3tnUokpy18XdKXQNxsGmgUzAA67JUPpj6dBRtd',
+  'RGSC',
+  0
+),
+(
+  'ETER9jTizmKFKLtW55jMd9MaBWhR2UZpUx48yR3Jixrx',
+  'ETERNIUM',
+  9
+),
+(
+  'C9xqJe3gMTUDKidZsZ6jJ7tL9zSLimDUKVpgUbLZnNbi',
+  'sCASH-9',
+  9
+),
+(
+  'EKe7rakfHZGhjPc7xtJ5RbjdPrydjxKrsoWZoEGatUvD',
+  'SFWL',
+  0
+),
+(
+  'TFTY9zFrum5FkJ63WqJFFSti7mAXyMSNvodx1xnHL1H',
+  'TFWL',
+  0
+),
+(
+  'ByJ8a9NWk6G4Jg4iFyFNdrya1iVcusL1aL9aGXWXeoVG',
+  'POM',
+  9
+),
+(
+  'yUT3Dqe2Nz46iy9urmqEdntQSBywvSC1KoiktkEycvN',
+  'y-UST-USDC',
+  6
+),
+(
+  'SLPbsNrLHv8xG4cTc4R5Ci8kB9wUPs6yn6f7cKosoxs',
+  'BTC-renBTC',
+  8
+),
+(
+  'SPCc5sh97jK7bvtxjvGZy94DX6Zi7GDQuZdxDFkxe4h',
+  'SPCTK',
+  9
+),
+(
+  '4DUQcmSn13YoXHAMfPAT3WDsQb8SmmnC7nom4hcAwRHD',
+  'Grams',
+  9
+),
+(
+  '3LCSAo9Hf64cxtPbArLog3PKkwGkZFN7Ttz1zLdPWPTS',
+  'MORN',
+  9
+),
+(
+  'SoCJs5Qw1D3fjGbTqxxovK15FVnYVrwvTbYcBBrZmWj',
+  'scnSOL-SOL',
+  9
+),
+(
+  'eqKJTf1Do4MDPyKisMYqVaUFpkEFAs3riGF3ceDH2Ca',
+  'apUSDC',
+  6
+),
+(
+  'SoLEao8wTzSfqhuou8rcYsVoLjthVmiXuEjzdNPMnCz',
+  'mSOL-SOL',
+  9
+),
+(
+  '5wihEYGca7X4gSe97C5mVcqNsfxBzhdTwpv72HKs25US',
+  'so1INCH',
+  6
+),
+(
+  'DcvJP16Cw5oqTbtHmpJ4JGXaqBvV5m6eMZj5rGsFLpwU',
+  'BOOGI',
+  4
+),
+(
+  'ChRdev5KUUaqySyttxDmfKUnXdcsCSCZhmaVTyL5Yn1q',
+  'DREG',
+  9
+),
+(
+  'fJGfG6NFM2SGmvXhsNRaN4Ge3UAhqbbmjAkqbR7hn6B',
+  'USDL',
+  9
+),
+(
+  '95sn4kgeJnnBfRCD8S2quu4HS9Y6vb7JDuXrarnmEjYE',
+  'fcLUNA',
+  6
+),
+(
+  'xkqjobmo1kUgN4P7jcsWe5ud657oA3co4PnwKoQKG12',
+  '$DRAY',
+  9
+),
+(
+  'GxbSCU2go1MsLPM9ZJFSWuvsYCN4ZBRtCFSmcy5VehmX',
+  'MLS',
+  9
+),
+(
+  '2KKhXL6Ajkhedp9rRNHXen1CzhZnYfonkBno7iVcHpsD',
+  'CLOSEDLHMINT',
+  0
+),
+(
+  '9Mu1KmjBKTUWgpDoeTJ5oD7XFQmEiZxzspEd3TZGkavx',
+  'ALTBEAR',
+  6
+),
+(
+  '5J6amyqS3PRiv8JuyHFVCXoNd3RGQEcfYwyesSLhPGWq',
+  'SKULLS',
+  0
+),
+(
+  '7ezQ4XB3yqQhvXfnWc8vRGvvfYuF419fJtSFLKrHTGJF',
+  'SCAM_9DCD',
+  0
+),
+(
+  'WLP7MDjSKGWxs2s6o2d8JFvvqLJD8KHZpcTAZf9ongE',
+  'weSRM-SRM',
+  6
+),
+(
+  'SB2KhzJb2kqhkYC6J5DKw449wiHf7gEbGtKA9NEnbaN',
+  'SOLBARSWL2',
+  0
+),
+(
+  'HBSPEVBvSJbRXmeyf7gYSZbPeLjZQTBeNotjsSrtqHTe',
+  'HBWT',
+  0
+),
+(
+  'unVasmPouDQNVvyvoGRyHMnNafhqLX23dUpbxrJnZvV',
+  'UNVAL-WL',
+  0
+),
+(
+  '6H87YFkp5LHyN3KzDXa5r3QYce7WTcwYJi9SqwH3TXkQ',
+  'AINU',
+  1
+),
+(
+  'AMNoi4727tzy7adu4wnx3cN2VQbQdG71DqaPoSm7isJ3',
+  'BITCH',
+  9
+),
+(
+  'Frog8vt6gmuuUuuerd7ispP6yavssBUtMpEP5DCEuUgD',
+  '$FROG',
+  9
+),
+(
+  'AZci9R148CU6hfnnE8ffm2K5mkxagbnTAZNQF5fLbvHb',
+  'CUSE',
+  9
+),
+(
+  'WL9XzGRaUwrZmPQD7ank5KM2z9U87WcWQEYo6Xk4bnZ',
+  'TMDCWL',
+  0
+),
+(
+  'Eo5YeDSgnH1qa4tL5iWhyk7iKdohWWpv9iDtym3Kgb7t',
+  'cPANZR',
+  5
+),
+(
+  'EHinbFyVA4VckqJ54wxFXHWLxCCYCKxy62oVtRDTCoRD',
+  '$SKULL',
+  0
+),
+(
+  'THN7o5vR5ELDY1HeJmDd1ezSuu3mwpmMapzKEuRGrMs',
+  'WLBSF',
+  0
+),
+(
+  '2DH1PxfM8d8bkrQM3WFX1HySohcv1rvMLU9KmycmzLp1',
+  'GRILLAZ',
+  0
+),
+(
+  'wpcxhh4VTi16TkYMZx7ApM6ZKiejkZd7kW7PengKNLi',
+  'ARWL',
+  0
+),
+(
+  'FAogUQVmijxSQdTiNAV1rrHcqmPRdZYZeFDPd8NsVj2m',
+  'FELLOWOG',
+  0
+),
+(
+  'ENdCXVtcFEzpVCbsedLinVWbwEbR3yfWwdKVBn1hirhk',
+  'ONE',
+  9
+),
+(
+  'BB33fYoeBVA2uv119be9tKvmXeuwtcx1W25N9KFNd2ca',
+  'GODZ',
+  9
+),
+(
+  'LoTrcDXVtmu7CPaxnsVifJD8wwcEr4fhxKykrAQDKWE',
+  'LOT',
+  9
+),
+(
+  '6frkvZf72wiz3uqRWhBqLftNU4PS6XXYCoNrW9P4CFdK',
+  'QUACK',
+  9
+),
+(
+  'To7eo6cfLM4y24hRgKmb1ZyArrPCvb2NUa4kiTZGn1L',
+  'CRCWL',
+  0
+),
+(
+  'P1utjqwB7hEcgDe3u8oHeRCtfyWQY2XEhhCyPFYVhu7',
+  'PLMTX',
+  0
+),
+(
+  'DfgYfvfW8cWumofEgRZsAYHhZVDgQbu9z8sGwcKahSho',
+  'CARTEL',
+  9
+),
+(
+  'APUVVYA8Xf7T1PqLyDvNxLtwQ9rRDf3RUxfMttreVzHP',
+  'apUSDC-USDC',
+  6
+),
+(
+  '2NczZKqiEtv1CCufwBCLVRCh17w8aHAhvyGTU486KMo3',
+  'ST',
+  9
+),
+(
+  'APTaiNJxUtAZMnhoZCVXdxR5kf7ExYWuET3sfnub59z2',
+  'SOL/USDC',
+  8
+),
+(
+  'HDutUmTAGspwyw9EqNMgDc8XQVC41iT9Yd3a5JXBa5JY',
+  'NWL',
+  0
+),
+(
+  'UST8SCn7jrqsq51odVLqcmvnC658HkqrKrPL3w2hHQ7',
+  'sUST-8',
+  8
+),
+(
+  'xETH89889mVRwsw9tSUnULsdLUPryTpijagy2YXxWyY',
+  'xETH-whETH',
+  9
+),
+(
+  '5RpUwQ8wtdPCZHhu6MERp2RGrpobsbZ6MH5dDHkUjs2',
+  'BUSDbs',
+  8
+),
+(
+  'LUN1p1dZwSBgTv1JSdn2apdUuLanHKtgNcnpDydVFTU',
+  'wLUNA-renLUNA',
+  6
+),
+(
+  'CCKDRAd4Xwjoovtf2s1duu3d4TPTmFRyh1hfrb3ZUGR2',
+  'MILK',
+  9
+),
+(
+  'HbrmyoumgcK6sDFBi6EZQDi4i4ZgoN16eRB2JseKc7Hi',
+  'CRY',
+  9
+),
+(
+  'AXBDeu9xakvdJ1dgpnhVrmwKffbhNqSHZgNb4gM99xYC',
+  'AYKWL',
+  0
+),
+(
+  'DSmqf5Je3FEUmZntxBzG7c7EYJN3WK3feBV5Zgidukjj',
+  'USDC-wUSDC-wUSDT-wDAI',
+  8
+),
+(
+  'RRpPtGKTBRuawbvqGqAPPtu81Gmhhg4LZww4BDarXZv',
+  'RR-PRE',
+  0
+),
+(
+  '7xBLAJQ9TDnBXZ6cEcLiq7XtwneiCU5b94b569ryBEqP',
+  'BENZ',
+  0
+),
+(
+  'GEBRghyfoFfFdvb4q2kb6DCczKtPvDBSjdMPFtweVxLj',
+  'STAKE1',
+  0
+),
+(
+  'Domn87XEqaE31Sq2piAGvUxg79vCdp3RPmW2WSQohird',
+  'DOM',
+  9
+),
+(
+  '4B49SgAWkVBUATcbj5BAV4WZJ3TUY1P2x4mFY5BpKzBP',
+  'HL',
+  9
+),
+(
+  '5WUab7TCvth43Au5vk6wKjchTzWFeyPEUSJE1MPJtTZE',
+  'KEKN1',
+  0
+),
+(
+  'FNpCzhQy5NZgEbmcJLedQebpRKRvw8sBGizhYj1uifGX',
+  'BREAD',
+  6
+),
+(
+  'iobVLW6ePUrcX7Y4DzW69QDpQt2CkJ6c3SZmaLozibj',
+  'BTCNFT',
+  6
+),
+(
+  '7YNMhgmG7ZEQDvKVwsvN2GyUPaDpKYQ3VtzdkEskcAAe',
+  'FM-PLG',
+  0
+),
+(
+  'CVoDGyg8cUebjpHUb7N7r32sg2gawXRG7JNQNqJFTAGR',
+  'LAZY',
+  9
+),
+(
+  '7fPemBMNAAnCv2eyN8Y2qHbiawRFk79cQcwMWuETLdk9',
+  'BAMM',
+  0
+),
+(
+  'Gu2ouFDwgFzwHSWqNQmfNxu2wcKkPwaVh4yWewzD3rb6',
+  'SLNDWL',
+  9
+),
+(
+  'CkD9GDPqME11zrFt7Lk51jdQSuPmP1nRULUWbBYj2Ngq',
+  'B4C',
+  6
+),
+(
+  'BYNHheaKFX2WRGQTpMZNsM6vAyJXvkeMoMcixKfVKxY9',
+  'PLUTES',
+  6
+),
+(
+  'pToHR9ATnztDaF6CqK3CqQV6MVDkCfAFwrjstktatXS',
+  'pTICKETS',
+  9
+),
+(
+  'GzTxngZwZ2ZcDydepix1cTMRcooDxfK32Px5ZZkcjtX6',
+  'DRICH',
+  9
+),
+(
+  'DCgRa2RR7fCsD63M3NgHnoQedMtwH1jJCwZYXQqk9x3v',
+  'svtDGOD',
+  8
+),
+(
+  '5fibbme9FE1ttgaMHjKnt529va9Pf9oYEjJLU9F3G3s4',
+  'AMBR',
+  6
+),
+(
+  '6F5A4ZAtQfhvi3ZxNex9E1UN5TK7VM2enDCYG1sx1AXT',
+  'svtDAPE',
+  8
+),
+(
+  '6tAmokk5fqrjm4ho2JerziBsiV3hYzgJZnG6sFXZNXZs',
+  'GREPCC',
+  2
+),
+(
+  'kiTkNc7nYAu8dLKjQFYPx3BqdzwagZGBUrcb7d4nbN5',
+  'KI',
+  9
+),
+(
+  'M7cvT3qkNRkhG3YmQ3sTe2T46q4JKWH9mWK39UarxYv',
+  'CEMOP',
+  0
+),
+(
+  '4i565nbEspucgEDbNFNmk47LmJaftQtWUjT9Kx2KnhLA',
+  '$GFY',
+  9
+),
+(
+  'HVtfDhSpbuUQwXxEL6RmVEfEeWbpmfUt6Tbh8iRrosZP',
+  'OtakuOriginsWL',
+  0
+),
+(
+  '3wZ9hVw26xRkBcDjgNfUGaQgFsRhqVaZh19ZU2uyg6eo',
+  'LVWL',
+  0
+),
+(
+  'GtHxqAqbaZB8eo8R8pGXUhWxs6X8WQWMWTUWKTgSFbHo',
+  'Potion',
+  6
+),
+(
+  'BRENm9SgYJZuCxM4ZJiH6CmZqEBn4MLpD9cnBZDnJgeT',
+  'wibBTCV1-renBTC',
+  9
+),
+(
+  'FxjbQMfvQYMtZZK7WGEJwWfsDcdMuuaee8uPxDFFShWh',
+  'UPFI',
+  6
+),
+(
+  'HkCrU2Vk5kGvvPUUR2dirjgAx3TbyCPYXRZbefwzCyCp',
+  'LFI',
+  9
+),
+(
+  'FrHe1NUX2hRgnpZCTcxDEh8LU9uYEGU1uWhyYjvXLdFe',
+  '$BOING',
+  9
+),
+(
+  '4KAFf8ZpNCn1SWLZFo5tbeZsKpVemsobbVZdERWxRvd2',
+  'SGT',
+  8
+),
+(
+  'Boxch4vwBdKjZjE4hixCaoQFvv16P9vwRHTFHWbC5o6f',
+  'BOXCH',
+  4
+),
+(
+  '8J7Cir9SmRiRQfkN6QoE1kL354i3uNoyQkngqkg18i79',
+  'CTZNS',
+  0
+),
+(
+  'AXneQDz2f8QcVuPmxNNmme1EZZvKkPxnfP4maB5KHPFp',
+  'CozyC',
+  0
+),
+(
+  'goonVPLC3DARhntpoE56nrsybwMnP76St5JoywzCmMw',
+  'GOON',
+  8
+),
+(
+  '2Vyyeuyd15Gp8aH6uKE72c4hxc8TVSLibxDP9vzspQWG',
+  'COPE-USDC',
+  0
+),
+(
+  '6UgGnLA3Lfe8NBLAESctsUXWdP3zjMFzSLEZxS3tiaKh',
+  'pMER',
+  6
+),
+(
+  'T4iPCH1Fo6fGdebxrTnwM79t82DhS4uJJ4xesykUThw',
+  'HAF',
+  2
+),
+(
+  'BAKeByLipzovqThC8bMpgEycUCTvNcMU82aKu2L5ihcY',
+  '$BAKE',
+  9
+),
+(
+  'ySumbV2nRTFDpiEyetwpz8Pr3JqUNBi7hK2s7jyyji3',
+  'TIKI',
+  6
+),
+(
+  '8u3o8FJ2YAQLWdUrGg8C7YYXgdpspjf7NLUBtUqQUFgq',
+  'WAGBULL',
+  9
+),
+(
+  'AxXoJZhSfeVUe3qgFZTt4NwQRJB61pBQAHTdWTN9PNms',
+  'KAYAC',
+  9
+),
+(
+  'ADehsNVsuXwdQ5L6JT4YpZrmLumDQ3f1ar2VxBaR3TaL',
+  'RUM',
+  6
+),
+(
+  '3JU8iPVMrrhmct4RP7rTSBFwStv6oksEsSj4C6mkk2Yg',
+  'kcWLUNA',
+  6
+),
+(
+  'A8VuM8oJfZjB4cbUWTBdc9pPmPoMyUjqa7TtzG3fboGe',
+  'FADED',
+  0
+),
+(
+  'FREaJRk8mUbK7Vc1LMUw9rdtpLAu9g4qk4Yq9rU9wWP8',
+  'NRA/USDC',
+  8
+),
+(
+  'ArGrm5N6Sv9d79bosoH7jjteRDVLfX1J2HinPFoBFXz6',
+  'MSWS',
+  9
+),
+(
+  'HmRpcXedRLmWaRt5iFjsPUfoSTViZgHNSmU5RUmJFZu5',
+  'ENEC',
+  2
+),
+(
+  'WL12AGjU2zs5myyrUzBmSDF5cMG9xMAcZ8kMYnre2ns',
+  'SHWL1',
+  0
+),
+(
+  'HHjoYwUp5aU6pnrvN4s2pwEErwXNZKhxKGYjRJMoBjLw',
+  'PIP',
+  9
+),
+(
+  'HBfHbAuCFCP34rSkPMXEt5UuLf8HH3SbuvH7DPA6aX8Q',
+  'CITRUS',
+  6
+),
+(
+  '5j6BmiZTfHssaWPT23EQYQci3w57VTw7QypKArQZbSZ9',
+  'CHAD',
+  9
+),
+(
+  'ChTE6TCqoY16dvqPjgK6Ji7zHcKricB2DHLoqWzx5v9A',
+  'MTP',
+  9
+),
+(
+  'FhraFicS7fGxHn8jfzuZ6TeTpCu8PAnQNZiT2tqM5xvv',
+  'pSBR',
+  6
+),
+(
+  'GENW9qVvxHMVmRTVokgHRPqSr3syV2AmKoehqrRWiYFu',
+  'DUSA',
+  9
+),
+(
+  'BrwgXmUtNd32dTKdP5teie68EmBnjGq8Wp3MukHehUBY',
+  'GSTONKS',
+  9
+),
+(
+  'senWz5Nzt73xvDdk1Qbh3BLL1995xppr52dL8ti4gEo',
+  'SEFMT',
+  0
+),
+(
+  '2YJH1Y5NbdwJGEUAMY6hoTycKWrRCP6kLKs62xiSKWHM',
+  'SGEM',
+  9
+),
+(
+  '13cbpw6uN6wXVaQk6ngedAErceLLhyo1mgzoDpoUgCJE',
+  'PHISHINGSCAM',
+  0
+),
+(
+  'HNohCm8oGNA2qY3MPLz16vEUNfLKV7UXhY2NrhwtJgP2',
+  'PORTARI',
+  0
+),
+(
+  'ForaXiBD8K3a7C1PwxV1xqDHs5aV8y8nWRmHebafdkes',
+  'FORA',
+  9
+),
+(
+  '64Hw4Hm4WLC1Ty6p8g5vLZNCS37msb9Qq8ZFJE6UConN',
+  'sAPE',
+  6
+),
+(
+  'SeawdHf3NHG6gxCrezQxr5oJAHTLJd6JsQxxd144yaz',
+  'Seagrass',
+  0
+),
+(
+  '8sxtSswmQ7Lcd2GjK6am37Z61wJZjA2SzE7Luf7yaKBB',
+  'XRPBEAR',
+  6
+),
+(
+  '3zD9zassLocyH6Tdj2NYXw6ym1jtgaM3QDkmeJNwNjer',
+  'ULTRON',
+  9
+),
+(
+  'wofMXpfx7RrbPUsUbUmcYGFsbCX8drjtgP6siXQDPhN',
+  'PFWL',
+  0
+),
+(
+  '3oePHsi4fhoyuLAjqXEgBUPB1cs4bP9A8cZpc1dATS9c',
+  'CHEEZE',
+  3
+),
+(
+  'TRck3zHXCTyoAsiKPn1NyGb3i1mXFbB8JHheh7uFiVL',
+  'TRCK',
+  9
+),
+(
+  'G9sWx5Mm1dxJr2Sx34CCrwxJi9CBfKZki1Lkm7V1zHnV',
+  'Noiz',
+  6
+),
+(
+  'Fp1ZyU4NTDvrPfBUtKFPMmSCS3Yp4KvPsTX2RscMCD5g',
+  'DDZ',
+  0
+),
+(
+  'FqJE1neoCJrRwxfC9mRL6FduuZ1gCX2FUbya5hi8EQgA',
+  'VLDC',
+  9
+),
+(
+  '943NSd9g9t71hZcw3AR3qbHMVCxy6sXWwYKELbzJjVms',
+  'NATU',
+  6
+),
+(
+  '2cW8Yosn4tSYJYjfUkcpKnYBSMYDqXfJmQXVu4RJzBTw',
+  'WAS',
+  18
+),
+(
+  '43shunGxqAydDfcHadZzs9j9JHVCEYixPnSMFHpqwc3k',
+  'FM-T3FTX',
+  0
+),
+(
+  'CDTvfESJbaBDzKV11wTLxmMiutrc5jwBZjASysLbAovF',
+  '$KIDZ',
+  9
+),
+(
+  '3gb3iUAgTCtXq7cFiDZTi2GFPgQdg1zFVUubYAtLJfWU',
+  'LUX',
+  9
+),
+(
+  '3WV4fTWGvtWNvQb8oVU4t99By8KztDLtExqHnkPfHAA9',
+  'PAW',
+  9
+),
+(
+  'DKEyAMNSVNdFCSUcunFJ4jn7TzZd8ec9Z4XUACaT37mG',
+  'BattleWL',
+  0
+),
+(
+  '9jWgVR3Q3QjfmaXNiZ6jht2K43W7sqkn6tZFeoK9B48t',
+  'JRDN',
+  3
+),
+(
+  '6FLsSkF4AqQeDuqEmGPyBZvVebc4WWWntnZP2QZyBzG8',
+  'JJJJC',
+  9
+),
+(
+  'K1EFss6frvERxWBF3qBmuApG1qFBA8GVXyi2viXGqXK',
+  '$KIEF',
+  9
+),
+(
+  '67Z7Pr4pX5iMczBox2bCgeU7Dy6SJRm2kZaMJoptstse',
+  'KOMO',
+  9
+),
+(
+  '91z91RukFM16hyEUCXuwMQwp2BW3vanNG5Jh5yj6auiJ',
+  'BVOL',
+  6
+),
+(
+  '4azyRH1JYia3mbZAvcNcVvd9QaxSEziJECyS4EekCi8Z',
+  'SAMO/SOL',
+  8
+),
+(
+  '78uaHEgTUELYBUbNX2FgijH64FudDJERGZHzrArSV3Le',
+  'PIDT',
+  0
+),
+(
+  '7AfuD3nqZEJSF7oaQgEPmeo7zJi1n8Dh7BedYtgRugFk',
+  'July22ppUSDC',
+  6
+),
+(
+  'E3RN9omoTNdqKXGj988X8JuCXwNZ6ZHXbfpaZ1nVZbrA',
+  'APE',
+  6
+),
+(
+  'CNLTUm3bYaF9HKQPEjvMFVH7QWnng1QWTeTXZzavLPDq',
+  'LW-WL',
+  0
+),
+(
+  '3NcCuwvTMnnf7TU2UEVhp6v2nzbLXQiDgzQySS6m8A7P',
+  'SQUIDGAME',
+  9
+),
+(
+  '9SDpBrfqNxjXcCzpKWM6yUKdfky975VJBD6xcu5cKf5s',
+  'COPE/USDC',
+  6
+),
+(
+  'GS6E87SLTioRDG3uSVRwQmuKKMxDmWU7fktCTJ5xkEM8',
+  'WAVE',
+  9
+),
+(
+  'FFTwhd4pEZoGCbocV1PMqkb2MCebskz8MoKiNugyCpAd',
+  'FUNK',
+  0
+),
+(
+  '9g7MFEqPLtoDe3vyJx1JsqCFyKogHXxf6dDkuRxUUd9f',
+  'PACE',
+  6
+),
+(
+  'KUPoVbJmipJb1M7xzQEND5w7u1BbmBytu9wZ2QPjQx4',
+  'CUBE',
+  9
+),
+(
+  'AoHTk47aAaxpXHCVBzixXg7i6KjgeFufXkiNEqNvnPXD',
+  '$BRUSH',
+  9
+),
+(
+  '2Tnc6ngSfJS4QNXzDU5daR2G7JH5uox2C6Z6B3y1SZ6i',
+  'AHMT',
+  0
+),
+(
+  'MXTzb9Pns2oJNHYcsvKqp9ybZnvF4XZDETzuBnBmitp',
+  'MKWL',
+  0
+),
+(
+  '6DzRG51nRXkD5JmTj7P8ELTwBgExMGUoa9cyvi9vEPUK',
+  'SPPWL',
+  0
+),
+(
+  'GzAr3oY2nZJnnbsvyRTYy7PW9Dp9hThGgiUpzs3HE8ns',
+  '$TUITON',
+  2
+),
+(
+  'ARApgmD9DyUo72TcfDpRomb13YZkqZKoLroRdeez8UeQ',
+  'ARTEM',
+  8
+),
+(
+  'CmAgr6XtAZsR1BGrxTrbVKXsVvvC4Y69GXR2zP8XxK3X',
+  'CHALK',
+  9
+),
+(
+  '2vfgEPJStq761qrkyh8xedrj9zpew1GQ8CobjtQ4wtyM',
+  'BOO',
+  9
+),
+(
+  'EeiNMyKPDUhdkc8xDupMgMgnSos4GNc7RtLy8S1HB1tq',
+  'BOOGY',
+  9
+),
+(
+  'Aojru8bfwZK6sgrx6exNazxASFZUjPpRY59byMrs6izt',
+  'oink',
+  10
+),
+(
+  'GkSMSvjjcd8AXqbkzo4CiFXrsVB5JEhqLvd48HoVhJDA',
+  'SMIMO',
+  0
+),
+(
+  'AT5jKk5oUeToyDMneVbu5J92DoM4Ab18zJciUfku2MrD',
+  'STAKE4',
+  0
+),
+(
+  'DXA9itWDGmGgqqUoHnBhw6CjvJKMUmTMKB17hBuoYkfQ',
+  'svtHNYG',
+  8
+),
+(
+  'JNK9NxVGmSdE3rUYgZs2NUYWJgTYXtsm73x9L69hmPf',
+  'JNKPASS',
+  0
+),
+(
+  '3uNAevHamuZKKQdtdLzmHNvqD8r14tXUUXx5PN48UbYC',
+  'NLTK',
+  0
+),
+(
+  '44thGfHRsdCB61NAkrDFe6djRrwWZegTTqrs1bwMeAGu',
+  '44TH',
+  0
+),
+(
+  'HAndCoG9GWS4TPaBFhbbtVMDevpUkvRti6TweV7d4q1L',
+  'PoHS',
+  0
+),
+(
+  '993dVFL2uXWYeoXuEBFXR4BijeXdTv4s6BzsCjJZuwqk',
+  'cUSDC',
+  6
+),
+(
+  'BgjhevUKQDZ28usZMEairXPctoFA3nqKM8A1j5YhHv7w',
+  'ANGRY',
+  9
+),
+(
+  '7gsvY4yjAVrP7fwBBMjyVCJNBRMRHgotjFfqrNPDKJec',
+  'MC',
+  6
+),
+(
+  'GiLAFSEGwJB3pmMkpAAznS9YBSPe82GtWugzwkBNvJ5v',
+  'STYX',
+  3
+),
+(
+  '2ejweV8NPa1u29cKU8FERiBwCMMNaPxVzhj5Zu9PFK2H',
+  'CLMT',
+  0
+),
+(
+  '6WmvhWXQH5BgqoLNmEfytd12dAdgA7PFTgFv9ho9nQ72',
+  'DATE/USDC',
+  8
+),
+(
+  '7EpBKD7A6F8dpms4ZAC9mkKSnzHeEwx4sHi82G65rMh2',
+  'SFT',
+  9
+),
+(
+  '4JEaBv49a4KdSrMduKZS3PcBCcPmPEmaY3uP7kXv6cj6',
+  '$ASS',
+  9
+),
+(
+  'BqKAcnMm9tvF3RJvxA6H75XpM9d7VZuNZzYiLW1vaGMo',
+  'SCAM_3A41',
+  0
+),
+(
+  'FGWLpx2iQntuhYcLfECbJcDDpQ6LW2feHJA7ZYv3F244',
+  'FGWL',
+  0
+),
+(
+  '9Tn4dFiSokzKDoiAHVMH2L7TqaRwKbGDz4PCsMS6RkbC',
+  'PROFT',
+  6
+),
+(
+  'neoSCa3b4HJR6TF3pVQzph3yrcd97ZMovCVaRC8bRss',
+  '$NEO',
+  9
+),
+(
+  'APERe98wcFuzQcHkX5aagTEZn2Vm8EAFE4PWBYzUT8d7',
+  'APER',
+  9
+),
+(
+  '3BjcHXvyzMsjmeqE2qFLx45K4XFx3JPiyRnjJiF5MAHt',
+  'fcBTC',
+  6
+),
+(
+  'CS5tMuXYGR1cd2XnVQjoZ42Z1jWoW1Bu8ySdRBT99PDc',
+  'GEMS',
+  9
+),
+(
+  'BR31LZKtry5tyjVtZ49PFZoZjtE5SeS4rjVMuL9Xiyer',
+  'zSTEP',
+  9
+),
+(
+  'B1ock8ufjvuEPo4eDhnTHtY1uzk2TLg9zpoLnmMpa3Ht',
+  'BLOCK',
+  4
+),
+(
+  '8Jdjg3xVNAAFdiDbFpWF2FX5dYwHyw5j3Myvgmzrf7z4',
+  'MDOA',
+  9
+),
+(
+  'CGBxTQNXMmmCXAPm4dC9MQJ1q8JDDxApwFwW188SdtBu',
+  'TiP',
+  2
+),
+(
+  '5HbkoVbaMnJYEuiTqeC7cBMSK2zG2MFfoxc9e6VkWPQS',
+  'SCP',
+  6
+),
+(
+  'nYDqQVEaQxLYLh8B8oAFXziMT1bcGrAVigZPL1s3dKc',
+  'PREY',
+  9
+),
+(
+  '5TLBtAsJyGrxWyFhgyYr9R9KEkec9zrMQjfCKegdfax8',
+  'BPWT',
+  0
+),
+(
+  '8zqeAcLQKv9qqovonj9exEei4mUNKhnFUAfAHQhuj7Ea',
+  'FUNZ',
+  0
+),
+(
+  '9voVuTq1S9bFZkF2Jo44HoVG63w2xDRT8eBzB23YbQud',
+  'SAMO/USDC',
+  6
+),
+(
+  '8jqjjbFtVQ9u2fDyqNWA6vCuU3wepnfafuaHTLYw8aog',
+  'OATSU',
+  9
+),
+(
+  'GuLCixNS3St1PgBRYesQUX1M7oANL3APK2LFEv1a7dWA',
+  'WZRD',
+  8
+),
+(
+  '4oS3LJTPVr8UW9g2gJMEADotTF3omitQMxvXqgRTm8Mw',
+  'PAPA',
+  2
+),
+(
+  'CvzmN4HEMt2R9tsLyCV26yV2sT5tgD6nAHd7TNtWvHXq',
+  'WWV',
+  9
+),
+(
+  'CVsL7JFa2BHfckDcc4PTxX7ARCUGuFYav5zRDVK2JFRe',
+  'AHWL',
+  0
+),
+(
+  '6z8sqTatfnXfV8DYJzEFeqrXnFz9AKRtRXVoL37DtCLp',
+  'OJSW',
+  0
+),
+(
+  'BqRtfrNpvRAW3KW319hvhPoTu76wKU2LTdXJyG9CyDze',
+  'ECHO',
+  9
+),
+(
+  'Bp6k6xacSc4KJ5Bmk9D5xfbw8nN42ZHtPAswEPkNze6U',
+  'svtPSK',
+  8
+),
+(
+  'TowQvaG4JUUDCY6SYrqq4xh45D6Rrv6cUdSjY86sTVb',
+  'GADO',
+  0
+),
+(
+  '3nH3vsMyAWPxwRdbwT2tcmXGiYm6eYGf1Mi8bTXGt8CF',
+  '$AKR',
+  9
+),
+(
+  'Eggb3Wuuwb6S7dy2swEZC5kLWR16Tq8F9e41jXym1ZHv',
+  'EGGMINT',
+  0
+),
+(
+  '8M93YmbZjYzAPNsRjRcerbEydk1eG9EHNBitv4PRVCrf',
+  'FEMN',
+  9
+),
+(
+  'G541xHAw1xSH6aCUBDJR3zcgBBbedBm2LU3yoqqhGvVA',
+  'SILVR',
+  6
+),
+(
+  'ArhMyF2N8XpaujYUxTTDt9EuaBCaGaccxfwaZmkm9XeF',
+  'DOGETH',
+  9
+),
+(
+  '9EaLkQrbjmbbuZG9Wdpo8qfNUEjHATJFSycEmw6f1rGX',
+  'pSOL',
+  9
+),
+(
+  'zmFoYNC3CuGY1VmgAcxXzfLMnSMVZpJF6RGJU5vDxvT',
+  'JUUJUU',
+  9
+),
+(
+  'stSjCmjQ96BiGhTk8gkU22j1739R8YBQVMq7KXWTqUV',
+  'stSOL-SOL',
+  9
+),
+(
+  'JAYDueSTMuhLYZEHZVXJrbSaYtgMfg78zGMpeiPRhxXA',
+  'ELXR',
+  0
+),
+(
+  '25CNQuwBrHNkCHUMbLUjfUcfGBrepGB6gw53LNsTGGZ9',
+  'STB',
+  6
+),
+(
+  'AGTWeVBaAsUqak2nX8L4auTNEkDXbfVRsYfPZpa4LNkS',
+  'AOTGWL',
+  0
+),
+(
+  'HLPC9r4gbeP6KagT3qJLzFj7iWcYTJs245k9tuHFQGyR',
+  'ahUSDT-USDC',
+  9
+),
+(
+  'DPU4yN7jSA6R4bHp4nMq61AWyXufXHhvvfQaNJnnnEST',
+  'CANNAHEMP',
+  4
+),
+(
+  '4cH3CvtwURFUVDnV1urH41kwnxfKsYFybonfctxwNSBS',
+  'PALS',
+  0
+),
+(
+  '3PNqq4kEqgRSkV5dYdcc6mtoaoXdaun9ytoCr4BgX5yA',
+  'CSC',
+  9
+),
+(
+  'EdGAZ8JyFTFbmVedVTbaAEQRb6bxrvi3AW3kz8gABz2E',
+  'DOGA',
+  9
+),
+(
+  'StiMWryqUXqFfQUBX51bbxhMJqS9RqJqsAvrsuh2aYi',
+  'SER',
+  9
+),
+(
+  '2PHMZHEnChKsBjRoAQSUAAkb2eUi8KAKYF9kpjbfP41i',
+  'NDOWL',
+  9
+),
+(
+  '8gsccGREpFttkH813odWMfHGtDRu8MjjyKvTN782WFaP',
+  '$',
+  0
+),
+(
+  '6qQnzsoH89TWZirgZS9AJN3NrxS7Y4K7oNt5N93E6QDR',
+  'PCPC',
+  0
+),
+(
+  '2prC8tcVsXwVJAinhxd2zeMeWMWaVyzPoQeLKyDZRFKd',
+  'MCAPS',
+  0
+),
+(
+  'BLSTrhpP73RnVocgRu3te1Z5bBy6kL78Cpg2WuACqFkS',
+  'BLAST',
+  9
+),
+(
+  'FossiLkXJZ1rePN8jWBqHDZZ3F7ET8p1dRGhYKHbQcZR',
+  'Fossil',
+  0
+),
+(
+  'AHGXtqajWiph31bh5y3MfSK4Bo6JGyt3xpveEZ41ZLaX',
+  'ARAB',
+  9
+),
+(
+  'imbaePRPNVxBhTLdSWpdjYbXiPWc9spNTz4xKVkZfBJ',
+  'IMBA',
+  0
+),
+(
+  'ToGdR5gjTqDe9SuLb1zcCathHv8KwqZKwHryUyztWsM',
+  'PBCWL',
+  0
+),
+(
+  'CjxPDfH3EX2gp3qypLbwmePyehwpsvU3Qc7GmxP3LQQG',
+  'HOOTS',
+  9
+),
+(
+  'FRAXXvt2ucEsxYPK4nufDy5zKhb2xysieqRBE1dQTqnK',
+  'wFRAXV1-USDC',
+  9
+),
+(
+  '2LBYxD4Jzipk1bEREW6vQk163cj27mUSxmHzW2ujXFNy',
+  'zUSDC',
+  6
+),
+(
+  'DeGbpw8kYC8YCiH4f6JL9ppMWdJ2nC6GZAxasFXfaqVW',
+  'TREE',
+  0
+),
+(
+  'netGLdgjzwsr3zfX1YH59yMGNjX4nK8VtZGJvq7G35Z',
+  'NETG',
+  9
+),
+(
+  'HBTCNvkwjMsEtwe2PeXUuMcu8C4Hobw6HDP2m6vpWHGo',
+  'wHBTCV1-renBTC',
+  9
+),
+(
+  'UST98bfV6EASdTFQrRwCBczpehdMFwYCUdLT5tEbhpW',
+  'swtUST-9',
+  9
+),
+(
+  'ALPX6x8FkkdQyn9YuoVZjPAapL4nUC7vjJ3AtwStmj9P',
+  'abUSDC-USDC',
+  9
+),
+(
+  'EFjGYw3f9VrkqDXWKo3dPCaiobDnWRcCmgEtKUQrNoUo',
+  'CNVS',
+  3
+),
+(
+  '7idro6sV7p4TDjqcDGaH9ofQgDy6yBKxCK65NtS7A9AP',
+  'SCAM_DCBD',
+  0
+),
+(
+  'FDrvNJHhLPMCrRe3oPzkXi3ug3S5dQ84hYAGUTjyjrqQ',
+  'MILEZ',
+  9
+),
+(
+  'WLTdgwdNi91RGojhM6Wk5rXNKsVgLA5cZbgL7XGTETX',
+  'WLSSS',
+  0
+),
+(
+  'MGM57zGF6ghF9Aax7FfoPHfxuoLKuEGM6twJALyCFqx',
+  'MGM',
+  6
+),
+(
+  'FRbqQnbuLoMbUG4gtQMeULgCDHyY6YWF9NRUuLa98qmq',
+  'ECOP',
+  0
+),
+(
+  'AuxCj2T4Mdb6h5i1pZd2yDJy5pdiEpZCPtTHAR1DqKdT',
+  'MSD1',
+  0
+),
+(
+  '4fiysjiegD8yoqHX75YXBvhBzmaUEQhyuAVRX8fGL3F1',
+  'RAYPOOL',
+  6
+),
+(
+  'AkJF8CkEjmV5vt3uhDD73dNWxfjTKKdCsqeg2XazWEca',
+  'AoD',
+  9
+),
+(
+  'xFTTLsMdN28XHtYTTTVWYz5zwXWBm5r1WTuZ7Cc7SyA',
+  'xFTT-wFTT',
+  8
+),
+(
+  '2jmhtbcbnmqpTaL7ythKYPS64fdb9VGcTNpXoHNbGPrN',
+  'PORES',
+  6
+),
+(
+  'FNMLmBPkhh7nBFyGHsdrmCuvgEf6ygpaVqFejimHEx9V',
+  'vBLSH',
+  9
+),
+(
+  'WoSgyFWVmmEdvfY9Bp5Zrhqu6uas7mUjkiZpEUoBeQH',
+  'WOSMINT',
+  0
+),
+(
+  '49PGdswRzWT3yUP13r6oysMv1B1WeQ4w87H4M8zxWrTN',
+  'LNA',
+  0
+),
+(
+  'BHz39KcF6taQSUmNvDCYTnjAdeN95UrtduBVaAV5AxtQ',
+  'BH',
+  0
+),
+(
+  'FaiPGacTM7YBmacumbg4ZnDx7sKtGcG3LkcVoqfddEA7',
+  'BULL',
+  0
+),
+(
+  'GFTYCJzCuQXuzPoZCbVkqVtFBwDdRhQHEe2w6QA36z4Y',
+  'GOMT',
+  0
+),
+(
+  'ADQwix6UMnhZ13iAd5xQMWFUuw8cJRGj1RioqP3GZebg',
+  'SIGHT',
+  6
+),
+(
+  '4h41QKUkQPd2pCAFXNNgZUyGUxQ6E7fMexaZZHziCvhh',
+  'SUITE',
+  2
+),
+(
+  'J2hGHwbkpj2SVo6Bs4X2Houy7n6oauydhbh9D6HpKBU4',
+  'JFI-USDC',
+  9
+),
+(
+  'DDthcF7L3ALPZGk3WKbKEBxhXceTtVXZshD9qSFJKfGd',
+  'SOUL',
+  9
+),
+(
+  'CLUbn9QKBwbX3rfFTuvQG3HgERzu7R9naLfJas3WuPgx',
+  'CLUB',
+  9
+),
+(
+  'A7vvbqENJj8kED3ABjphe8TvwpasQYtoWGKpjpLArMxa',
+  'BOP/USDC',
+  6
+),
+(
+  'ASboaJPFtJeCS5eG4gL3Lg95xrTz2UZSLE9sdJtY93kE',
+  'DOGEBULL',
+  6
+),
+(
+  'ENNuzbdv7MiT9fjg7ApC2Fyf2F67PWww5Trm6A7W1BSn',
+  'QUACK',
+  6
+),
+(
+  'EEhosSQvC2yVDRXRGpkonGFF2WNjtUdzb48GV8TSmhfA',
+  'AMMO',
+  9
+),
+(
+  'WL3JbsR9VGjFP7maGkAC6LfS9s3JFuCWeU5JAB9Gi4G',
+  'MIDHWLT',
+  0
+),
+(
+  '9ajPmmLNtwFsHjeU289Y1v9MU6WwoBGVcAnRVyPcj5YY',
+  'DRW',
+  6
+),
+(
+  '7rmV64vLfbrbS5rTFvojYWzCVEn8dnJ9RfSRx3nD6C5E',
+  'MARIO',
+  4
+),
+(
+  '2S3hhwCnDkFN2zHYc7SBzhLuHUevMwmgUCzq3ShDsUb5',
+  'CWB',
+  0
+),
+(
+  'GzMYkPvEccCxn7bvZh8Jhz87GhrASKhVadn9LHE4zVDy',
+  'CAPRA',
+  0
+),
+(
+  '4bgRUBC4gPoTs38TytDwujhcdn7reRoKynecvK7fJ5VW',
+  '$NUT',
+  9
+),
+(
+  'iouQcQBAiEXe6cKLS85zmZxUqaCqBdeHFpqKoSz615u',
+  'SBR',
+  6
+),
+(
+  '3Hi27r9kUtSmiPYtpRJNYCCGTGosnqC5Dhz812TrjpaY',
+  'DJIB',
+  9
+),
+(
+  'AF3BcDnqaJhdpKQ9jskZjohnTYRwqrv8H6Yyv4zUvA5g',
+  'HORDE',
+  9
+),
+(
+  'FUNHP94B46a486h5RSv46aeWUkeM5goTUuM5mVh4L6Qr',
+  'Dino',
+  3
+),
+(
+  '2VFkmFpyFm9DMKch4UdrdyY7WHLGrWgwJLAdKwHd5ekY',
+  'OODA',
+  9
+),
+(
+  'CBPfSGeSf76o3r4628k7BcZ5YBNxHh7hkCzu4AmVgk2Q',
+  'KSOL',
+  6
+),
+(
+  '8X81vuXa8yYS1k242e7CpVgaShk5cxwx8gwgc2RDS8Jh',
+  'PSOL/USDC',
+  8
+),
+(
+  'FdvkkCbCgYht1xTR1W9MBJhEF1JEPVhHtW1NXBYRzZts',
+  'afBTC',
+  9
+),
+(
+  'soLACdGKTr1PT75KTjj4RaUgA2sDBvCqAd8Zty2W1Yz',
+  'SOLA',
+  9
+),
+(
+  '9RxfJAtr4T6s7uvj1zdjvwviKRwnDCJdKQqUZmX5FYiC',
+  'SXMAS',
+  9
+),
+(
+  'BoBoWy2Z4QvyZRw7JdNS1dxXPA56DNrxCX97YEzobcA6',
+  'BOW',
+  9
+),
+(
+  '64gXuummCXmQpmCGyufc9zUShSaMgkjTbFyeKeXkBqu2',
+  'NFTP',
+  0
+),
+(
+  '3RudPTAkfcq9Q9Jk8SVeCoecCBmdKMj6q5smsWzxqtqZ',
+  'pUSDT',
+  6
+),
+(
+  'BB2gejCCLsh84iJPjsoZivSEBWn3Y6zZLk6XnVKhPGCv',
+  'BBCA2WLT',
+  0
+),
+(
+  '5osL1DnezspfmAd2Qn1PXsQniZGrzRXrxUNCPXbbrr78',
+  'DON',
+  9
+),
+(
+  '8cPHdUKcphHMxZcqk5ccNLuqJWt9iutwDWByA9ATqxhB',
+  'kcBTC',
+  6
+),
+(
+  '3hEN3maDrmuoj89EDV452RRoRqDfZeeR4auoRs5mXF9u',
+  'FLAME',
+  9
+),
+(
+  '7TQTpG1qBvE9ui7J9yQWKFAYpQahkaKPKqGTsqSm1wUv',
+  'GV',
+  9
+),
+(
+  '9bccaxs8YihGCRkPqcFMPkPbVBwNNjzHc4iHvsfQNs6x',
+  'TIGUSS',
+  0
+),
+(
+  'Azw7nHFCUrY3i2RpRLxJja1mooiZkAai3ipsmQTeMqNQ',
+  'JUNK',
+  9
+),
+(
+  '9nusLQeFKiocswDt6NQsiErm1M43H2b8x6v5onhivqKv',
+  'LLAMA',
+  1
+),
+(
+  'FKQX91BgH633Ww72Jpeq2g11MC3MTP97k4Nd2bk2W2Vn',
+  'rinTICKET-USDC',
+  0
+),
+(
+  'GpYMp8eP3HADY8x1jLVfFVBVYqxFNxT5mFhZAZt9Poco',
+  'CAPE',
+  9
+),
+(
+  '2QyXrDw26mq3Pw3C2Fswz22qPMVLSLg9BfqPy6PqmsMt',
+  'GREATLT',
+  6
+),
+(
+  'DKrjaRTyhRozuKS1euhsmdLNc2K1fTYrrRXBjFdeec1o',
+  'KINY',
+  5
+),
+(
+  'CCPSqDhvJtJpovDRfKdWsVLdo5aYoJumV3f38y2CXhCz',
+  'SCMM',
+  9
+),
+(
+  '8iSagwHZNj4Hx4CMeoZwLLMVbWt4mUT6qk42TxiHkRtn',
+  'DGNA',
+  6
+),
+(
+  'H4Q3hDbuMUw8Bu72Ph8oV2xMQ7BFNbekpfQZKS2xF7jW',
+  'tuSOL',
+  9
+),
+(
+  'Ef38uckDt5igFxn9kc2tAQQKVmvVat9PMxjybh9ZvvuL',
+  'PR',
+  0
+),
+(
+  '6JiPyJdjh8HdA4G3qHVD7oxrUUdaqBSR833DD46nFDyF',
+  '$BRAP',
+  6
+),
+(
+  'monKYjV2bHTjbJVWCCcwhxE8C96sdTKR2HUNUHCjh4z',
+  'daoSOL-SOL',
+  9
+),
+(
+  'PSopTFPXzTRysj2H6W8oTvYBZmJHtRcVaQaDkckifAy',
+  'pSOL-prtSOL',
+  9
+),
+(
+  '2Xxbm1hdv5wPeen5ponDSMT3VqhGMTQ7mH9stNXm9shU',
+  'SLRS-USDC',
+  6
+),
+(
+  'BiryxNvVTABRs3pEE4fvVuu4d17aAYEsNmcPnJ8E8WeT',
+  'afETH',
+  9
+),
+(
+  '32uwQKZibFm5C9EjY6raGC1ZjAAQQWy1LvJxeriJEzEt',
+  'DGX',
+  9
+),
+(
+  '4CWQ6KS2ZhNQtWxAytY8AGGt8qgfNEK1dvnHMMQhQBpE',
+  'KUNCI',
+  8
+),
+(
+  'aosvsUetSY7h7hSYXPR3oCoVMpo9GeL3Gtz2aqnua7p',
+  'AOST',
+  9
+),
+(
+  'FTT9GrHBVHvDeUTgLU8FxVJouGqg9uiWGmmjETdm32Sx',
+  'swFTT-9',
+  9
+),
+(
+  'FZgL5motNWEDEa24xgfSdBDfXkB9Ru9KxfEsey9S58bb',
+  'VCC',
+  6
+),
+(
+  '9w6LpS7RU1DKftiwH3NgShtXbkMM1ke9iNU4g3MBXSUs',
+  'aeDAI',
+  9
+),
+(
+  'JAJGBFCgN8YBP1ked9yRd5j52gWfyrkJAHEPQa4UUPDr',
+  'ICE',
+  9
+),
+(
+  'DJWYzyVsuzfprR5hkmW98nmXgQ8CK6rJWhxswj4CmQEb',
+  '$SQUEAK',
+  6
+),
+(
+  'AXEyoHAhMM9kRZuEgMpLjuteRSnfiPH8UrFxdUgb5hdo',
+  'F1CT',
+  0
+),
+(
+  '7sWMHQaJJPn1rkeizq41iPiW5gG7Ry7PXYAVHaUwY4qu',
+  'EDO',
+  9
+),
+(
+  'GgZGpi7ycFNNFTt33rKH8gbP5dpD3PVHKBhKa5UHqCck',
+  'CRAY',
+  9
+),
+(
+  'Aj7p7pCarQFvtSVv5gvRGbJ5yddpAajqpHgJmZWboTnD',
+  'IMGN',
+  6
+),
+(
+  'boomh1LQnwDnHtKxWTFgxcbdRjPypRSjdwxkAEJkFSH',
+  'BMA',
+  9
+),
+(
+  'UXDgmqLd1roNYkC4TmJzok61qcM9oKs5foDADiFoCiJ',
+  'UXD-USDC',
+  6
+),
+(
+  'Fuj1gZHrGu7x3W5uab7CrSXuy9cZ3qqc1me5LjGykt4d',
+  'ApesPlanet',
+  0
+),
+(
+  'GroARooBMki2hcpLP6QxEAgwyNgW1zwiJf8x1TfTVkPa',
+  'GROAR',
+  9
+),
+(
+  'BX9FrvAXfDdFKDcgkRPhq38wCn9SDggg9pN2V9qAup5C',
+  'CONSO',
+  0
+),
+(
+  'osaRUfE6ccwNMWfdY8X29auM8W4LtyDzaEU4EAHKBhR',
+  'OSARU',
+  9
+),
+(
+  'Du8zr5ydoqcu5LQutEjr55RUjvmHLpPQKtncAMFhahsV',
+  'DCXa',
+  9
+),
+(
+  '7JYZmXjHenJxgLUtBxgYsFfoABmWQFA1fW3tHQKUBThV',
+  'WEED',
+  6
+),
+(
+  'DfB1NY8Ftv3rDTnyffSVj5sr3ycFjLoUeNBEkTDvPQYn',
+  'ERRA',
+  0
+),
+(
+  'VRGEZtRamTVKinargJ7WstJHPSzYY9oGSQDYn6awDf8',
+  '$VRGE',
+  9
+),
+(
+  'BtX7AfzEJLnU8KQR1AgHrhGH5s2AHUTbfjhUQP8BhPvi',
+  'srenBTC-10',
+  10
+),
+(
+  '5De7hU2PZFsSb6nJaetgZ2aZNEMDsC9A8Bp8G54x9BX7',
+  '$DRPOWER',
+  9
+),
+(
+  '3GfdtDnQC6mjkdr9cEaSr9mjS2VnSYoVypQiT2PPRBch',
+  'ORO',
+  9
+),
+(
+  '2MStv16MMiSTGu917stHLsC1ZTUW83tmrfVjUxfx2Ev1',
+  'NCLR',
+  9
+),
+(
+  'MMTGAktYpgHiUnj1jdMvCSiap84X9bsfWbw11yHWAEm',
+  'MMWLT',
+  0
+),
+(
+  'EKmeuVtJRMsXek53ohh33BG3QLxBAiCh4SqGCvS2Eq4W',
+  'CREATURE',
+  9
+),
+(
+  'DbreB1y7f52k5x1AHrJio18eBBNRcjb97BKLtaEKgstX',
+  'LMCFPWL',
+  0
+),
+(
+  'AVC7uVb6R9B34T8zWxQMEK8twvYk26U71gworsujxFNv',
+  'aaUSDC-USDC',
+  9
+),
+(
+  '2UgW5e86z3wHYRT4jnXRLgJheSKM8yCz3sn9rMpbWdCy',
+  'DUCKS',
+  9
+),
+(
+  'FUtxQAXuC4TgQvF7C5RTRsgqHvPqn4iHhMicRZKV775E',
+  '$PIGGY',
+  9
+),
+(
+  'CLPLCvWFycur9CysMT3pmdkUXxPfBjXVkWyxTGntzoZ7',
+  'acUSD-CASH',
+  9
+),
+(
+  '7BPCwgL97UMWcSuyUmDdNTzGnDvruyfGKTmUaSbLzohP',
+  'CHEF',
+  0
+),
+(
+  'J4tV8qjZyzwsYhGmPREDEyehCusPwa7uYm3UssQ6X4A8',
+  'GRUNT',
+  6
+),
+(
+  '9TrnN1nRvPetRJgwtdbRrf7MX5eeCDbUyXk2aKw83mQK',
+  'FUM/USDC',
+  8
+),
+(
+  '8BLiujyxu5gJajWBXoZQkwSsamdeHNKWQbu1ApAao8Ps',
+  'ACA',
+  6
+),
+(
+  '97d6kj4itu6cqCNbxwmxjHxUD4QD1wicEi2jFw2Fm5vi',
+  'DEEZ',
+  9
+),
+(
+  '873KLxCbz7s9Kc4ZzgYRtNmhfkQrhfyWGZJBmyCbC3ei',
+  'soUBXT',
+  6
+),
+(
+  'BYPsjxa3YuZESQz1dKuBw1QSFCSpecsm8nCQhY5xbU1Z',
+  'NEAR',
+  9
+),
+(
+  'A1iT9r65MpvabW47nfvKwBDhwMjrja2ub6Fs9iD2k46U',
+  'SAND',
+  9
+),
+(
+  'J58rNqBQTQQJ7oMftec8bLWKVF6iujcH3Ck81f2a4zCu',
+  'kcSOL',
+  9
+),
+(
+  'ErbJzzRAEM8cVRMXHTftVDFbUVM7TiFWSfaZx4zQRJhS',
+  'NFTABSWL',
+  0
+),
+(
+  'A5zanvgtioZGiJMdEyaKN4XQmJsp1p7uVxaq2696REvQ',
+  'MEDIA-USDC',
+  6
+),
+(
+  '6cKnRJskSTonD6kZiWt2Fy3NB6ZND6CbgA3vHiZ1kHEU',
+  'ppUSDC',
+  6
+),
+(
+  '6ABQdaTwRvmacto7aeRBGghS6Pxctd6cFGL8gDdwV1dd',
+  'XTR',
+  8
+),
+(
+  'Hdv4pBjB54LLzihUcC6CMTN8uwH63ACq1itkESXHkiSh',
+  'DEGN/USDC',
+  8
+),
+(
+  'T8KdT8hDzNhbGx5sjpEUxepnbDB1TZoCa7vtC5JjsMw',
+  'sUSDT-8',
+  8
+),
+(
+  'CW2sMRF3JJ7q8rqamJz3iZcdPRNiv3RYKDQ4LfKTkUm7',
+  'GRT',
+  4
+),
+(
+  '9nhuxLhaMGwUdAcnn53vJeXBt3qtjycSFqGefYGA829n',
+  'SHROOM',
+  0
+),
+(
+  '665t3SYTfoVtaRPP7QRbBG3V7ePVtWVKQXYkSaUfxS7u',
+  'ORNC',
+  9
+),
+(
+  '8fd5eUPMNHuyKRshFbfmKRAm2gowJ75m8WjT7tLio6J3',
+  'DLN',
+  9
+),
+(
+  'GZ1BzNsCkV7kd1cYuWHQRHmVSTLqGm71uJiPWep9nh7r',
+  'pMOON',
+  0
+),
+(
+  '8sxPUxRSRQD6vdvNLC65VMdLrjkbyyEtRfw4aMasvjUR',
+  'Umi',
+  9
+),
+(
+  '8TCfJTyeqNBZqyDMY4VwDY7kdCCY7pcbJJ58CnKHkMu2',
+  'LINKBEAR',
+  6
+),
+(
+  'BDNRJZ6MA3YRhHcewYMjRDEc7oWQCxHknXU98wwTsSxu',
+  'OOO',
+  2
+),
+(
+  'G8naNPQvUYHT4r93WjNJAjefPAyQk94FbkPkzucxycE1',
+  'HSMINT',
+  0
+),
+(
+  'BTSPdFLQJ9R3JXAgjVx2JtLq4sNSjiVSGh4tQi4oRUi8',
+  'DYOR',
+  5
+),
+(
+  '9GnYb1ukBUKHobqpmNdzBE7VkYn7wWqianpKaYFPBChk',
+  'XAL',
+  9
+),
+(
+  '3WA8kxjyBTsfvxdTdmJeRtk1SKWCXYNp6QK4n4j5Zsbg',
+  '$IMPACT',
+  9
+),
+(
+  'HdsHqjH4fvaSfBuByoM6ijT8hTibdnfXHytJVMvUwoJu',
+  '$Ball',
+  0
+),
+(
+  'woTu6cugnrEw6tZqePeXrHGbSJJVsBdHgmQwxTER4R3',
+  'BUM',
+  0
+),
+(
+  'Code7hV6DaK5Werof8c7vPwBxLvhmEWVUbU2AfhBZArB',
+  'CODE',
+  6
+),
+(
+  'USTCmQpbUGj5iTsXdnTYHZupY1QpftDZhLokSVk6UWi',
+  'wUST-USDC',
+  6
+),
+(
+  '7H4Co5vUfRGuYCHFitwCr2iCvKpv7QiRA8hFfwa1y4x3',
+  'DOM',
+  17
+),
+(
+  'DSX5E21RE9FB9hM8Nh8xcXQfPK6SzRaJiywemHBSsfup',
+  'RAY-SRM',
+  6
+),
+(
+  'DGXtHxKMFhb82RsqihyEHksgWWe3DXBXEvKjz24JruAP',
+  'WOB',
+  9
+),
+(
+  '6piwLtPi6sYjvE1reSEpmAXfcJqJtyGp3fahhEU7VF2C',
+  'SKZ',
+  9
+),
+(
+  'DpsZg8zMTsdycpikKgYXbZ5FsztBeBiFue2ZgVFErCLs',
+  'AKELANS',
+  5
+),
+(
+  'BjTUmZjNUUAPKHVdTs8yZsCmecW5isSK4AbuFihXoUwa',
+  'PUSSY',
+  9
+),
+(
+  '4oZyezadeP4KdskT3oDXWFR6Nsado4rGanaH6p6wNR3P',
+  'MIX',
+  6
+),
+(
+  '4MSMKZwGnkT8qxK8LsdH28Uu8UfKRT2aNaGTU8TEMuHz',
+  'svtGENE',
+  8
+),
+(
+  '3TMxuBEMAV3BQunMBrFtKf8UQT2LmJchVbnV2o2ddkZU',
+  'Orbs',
+  9
+),
+(
+  'FwaX9W7iThTZH5MFeasxdLpxTVxRcM7ZHieTCnYog8Yb',
+  'OXY-RAY',
+  6
+),
+(
+  '7VeFS95G5WApQgaAgZUejwRgV8pbWDDCSiL3kQKkyFrd',
+  'VAL',
+  0
+),
+(
+  'EfiqH74NTt8U3PE5gDXWAwF8JHsYWsTzTeskH31D2Qon',
+  'CLB',
+  2
+),
+(
+  'BybpSTBoZHsmKnfxYG47GDhVPKrnEKX31CScShbrzUhX',
+  'wHUSD_v1',
+  8
+),
+(
+  'GQzf8qF7sG1eLyYqk7scFy8HfShhyfqZa4NVwRrDrGcY',
+  'BUD_PAI',
+  6
+),
+(
+  'DoKnmLSCe81mkvga7Vxn82F8NtvBdW3Qas4Rk22Wd3UG',
+  'DAWL',
+  0
+),
+(
+  'MkM7taZ6sV5UenNX1HcKFJifr4iN4vWwSevdXecrzBj',
+  'TSSWL',
+  0
+),
+(
+  'ER8Xa8YxJLC3CFJgdAxJs46Rdhb7B3MjgbPZsVg1aAFV',
+  'MOLAMON',
+  0
+),
+(
+  'Hi4WKXqmeoNVz8Nf7pxCCQrdFfxdLDLGFudHXmV95oU9',
+  'ACRE',
+  9
+),
+(
+  '5qjK1py1gFa1XSEpBjgXZtUE2JKYxNLNm3MvQqMAuCN3',
+  'SOVG',
+  9
+),
+(
+  'ExLjCck16LmtH87hhCAmTk4RWv7getYQeGhLvoEfDLrH',
+  'SWRD',
+  9
+),
+(
+  'Gqu3e6x4iN5rGJwAEeCwQFsuuYP5dpvmB9ise2sufrcs',
+  'SOVO',
+  9
+),
+(
+  'Emead5KsJBa1i53JTMmLJ4MAQrAtQ8x59JdL76jUr751',
+  'JUST',
+  5
+),
+(
+  'E16AdwkqMrmWpVamKL2U8zwJLTjpA8dMsoedPqQNXAoo',
+  'SMOOCH',
+  0
+),
+(
+  'EYV1w4tZDqC7TkBKTmLwx2r5y8no2W6EFnNFmedsugWa',
+  'ODKYV2',
+  0
+),
+(
+  '22obGTGPjKFrXcSAGYbecJAicrhJQvMgdvXjVcY8ZYiw',
+  'STR/USDC',
+  8
+),
+(
+  'PLYJZgSkcV8UXTWhTyf2WLCMeBoZum1Y4rXgXkoYiNj',
+  'apUSDT-USDT',
+  6
+),
+(
+  'SouN3GpzerkB9tkmybjktAm17Pt4ynrdgU64B4mv8Ye',
+  'Souls',
+  6
+),
+(
+  'Gj9GCwBoVwR2wqaKHCkrAYQtTpyPSfwLU4WjsoJMqQ8m',
+  'ACESMINT',
+  0
+),
+(
+  'GQ26R2DVjWPYZTeUCBZV7Hs9V1DBsVhCNunvP2MWLQgP',
+  'LOBO',
+  8
+),
+(
+  'Ewv5Y641TPYoFLBdb8XkWCukHbvW49ACzXMhcKtAy4xD',
+  'ddSOL',
+  9
+),
+(
+  'Ewf86g35EWcr5dyLSunQkCt5pcnR3hY6bnDAPCKcaye',
+  'FLINT',
+  9
+),
+(
+  'ASHTTPcMddo7RsYHEyTv3nutMWvK8S4wgFUy3seAohja',
+  '$ASH',
+  0
+),
+(
+  '5K1JtWpdSksVKaL6R2DuLpCDAjzxK6sq2CpXaXDWHVLg',
+  'YORK',
+  9
+),
+(
+  '8mgeCL7k2cB2KTN8NhD5biqvcbkfrmBogDpYoHmn5cKQ',
+  'DXB',
+  9
+),
+(
+  'AET3m1Mp2SLi7QX3tSypcZWyEtk1d8dUGcwhweDiZdaR',
+  'whETH-aeWETH',
+  9
+),
+(
+  'AxGonoNW3Qi8GBmcwpRpGE4xPV5v7rz2ug244gHBKfSr',
+  'KDWL',
+  0
+),
+(
+  '7S5QMfpwnai8nF8RmHnwfGDQwGa2TURDvkHXH17tMjdn',
+  'betaFANT',
+  6
+),
+(
+  '2doeZGLJyACtaG9DCUyqMLtswesfje1hjNA11hMdj6YU',
+  'TULIP-USDC',
+  6
+),
+(
+  '6bD8mr8DyuVqN5dXd1jnqmCL66b5KUV14jYY1HSmnxTE',
+  'AVE',
+  0
+),
+(
+  'BvEj2MNMPsUrD4vSk7NHs4TtRcCcJd75Wx5HvVbY4rbK',
+  'DEDS',
+  9
+),
+(
+  'DkPn7EwX229HDWL9suY9o2GN6iov2pMpXhvujkUjav6A',
+  'SOLRS',
+  9
+),
+(
+  '3GhLNM5EuuuBPZyMRweMbGgMWaVdA5YpLWU1NRAERi6d',
+  'LITIT',
+  9
+),
+(
+  '9MhNoxy1PbmEazjPo9kiZPCcG7BiFbhi3bWZXZgacfpp',
+  'ACMN',
+  9
+),
+(
+  '2poo1w1DL6yd2WNTCnNTzDqkC6MBXq7axo77P16yrBuf',
+  'USDT-USDC',
+  6
+),
+(
+  '9sQtcMxC7zwoVm9vsbZD6XkbZMik5882sA22oc6kb6bU',
+  'GAP',
+  9
+),
+(
+  '3GECTP7H4Tww3w8jEPJCJtXUtXxiZty31S9szs84CcwQ',
+  'HOLY',
+  6
+),
+(
+  'GUtWHTy9N5Av4LTB5PJPn4ZTfxCB2tGiK7DJpS7y8F8S',
+  'AUR',
+  8
+),
+(
+  'xStpgUCss9piqeFUk2iLVcvJEGhAdJxJQuwLkXP555G',
+  'xSTEP',
+  9
+),
+(
+  '5nHt8TrjJN9U37WKaCpWftGfsKV91nXwiphJRbMo299p',
+  'BANDS',
+  9
+),
+(
+  'J1inBU6NJahWE6NdSrR3cKr161ZmGdPsM7QTvHfNsD4J',
+  'CORP',
+  9
+),
+(
+  'miWLpCeMRnJ5zEhH952cYAQK4KN9MPbCrnXKMSnFpCE',
+  'MIWL',
+  0
+),
+(
+  '6c2rt6aYpRKwddwwtE68BS2ok8y4U8VUZdThCjfcX38M',
+  'AAP',
+  3
+),
+(
+  'TKDrcm3n4mfXFfPKZoLp5soRSdFQSmyWLdomdKL3ktU',
+  'TENKAI',
+  0
+),
+(
+  'WLHhNcW169NyPwUooRBh1jkXf5C2hHY2WjNY4ASfPEC',
+  'LIMWL',
+  0
+),
+(
+  '3os2M3bX9qta154PRbU9rzaPUYAKAqVpaMMS8u2hoUQu',
+  'abBTCB',
+  9
+),
+(
+  'GoDjmr61qsywyx63xRWQFZ3VKe1mkVy9w9k1Nzu6wFVH',
+  'GojiraWL',
+  0
+),
+(
+  'MR4LmLsWNyWZXzo3jHq1abv1ZwPwjGewrPoHsNSHVJk',
+  'BCBY',
+  0
+),
+(
+  'Cvvh8nsKZet59nsDDo3orMa3rZnPWQhpgrMCVcRDRgip',
+  'tsUSDC',
+  6
+),
+(
+  'cUSDDDBZRhpDW7eyUUPMuw6u1SiMnzu6i7movwf5jxk',
+  'acUSD-USDC',
+  9
+),
+(
+  'MGTt6Cj6Brg3mHmDSe6NnJhmAvwqoibNBt7xrj92RNu',
+  'MGWL',
+  0
+),
+(
+  '7bJMr1AtyCewq5QKRPJHVKTQZVKoSRN6ekiuJTe93cdN',
+  'LANA',
+  6
+),
+(
+  '6aJhpKmMpWCRw7vFLc5xxC1fJZGKXZspT5Lxjz5PnWtB',
+  'SOLARIUM',
+  6
+),
+(
+  'AvB7Ffmt3H16bhq7ToXb839ynKzFgJxu2WDHsR1S9Yft',
+  'FLOKIS',
+  4
+),
+(
+  '7tE99RKS4RwQxEjvZfh4CQMoQMMTRdL5KQbugsfhNYPg',
+  'FLW',
+  9
+),
+(
+  'Ae1aeYK9WrB2kP29jJU4aUUK7Y1vzsGNZFKoe4BG2h6P',
+  'OLDNINJA',
+  0
+),
+(
+  'CCoin6VDphET1YsAgTGsXwThEUWetGNo4WiTPhGgR6US',
+  'CatchCoin',
+  9
+),
+(
+  '8uD8yx7pXCvX1J1AmdN7jLZh7rAGUE4zNtwT7UtY4rvm',
+  'CSST',
+  0
+),
+(
+  '8KoC6B7ekXKCEucie7skdH3TePx2ja3WeB14bFJKaahX',
+  'SNECK',
+  6
+),
+(
+  '2377XYwns6GBJziPbBBg9EzJWq9TPiunZPiuKB4DdQCR',
+  'HIPPO',
+  9
+),
+(
+  '5H3EHgNgX6vCog2JQwv5LfkhTWLvcd1EP6CSMzym1QSF',
+  'BLAZE',
+  0
+),
+(
+  'BwyQD7Kvn5ciu7D6B1S382vhfXmsneVZnuiH7LfjtFA6',
+  'BMP',
+  0
+),
+(
+  'D1pyrui915KubTU59ByWWKuNfNHc9wmJEAq23CGDsGiw',
+  'MIND',
+  6
+),
+(
+  'AMNrJcZb4efKBjCg9djRmYacLgGRT7fR8LA48evGeLK7',
+  'DANK',
+  6
+),
+(
+  '2d95ZC8L5XP6xCnaKx8D5U5eX6rKbboBBAwuBLxaFmmJ',
+  'cRAY',
+  6
+),
+(
+  'GEcowHQW46CrEkfAdbcsdt4SV7taCetZF4sFBXN4USDC',
+  'USDC-acUSDC',
+  9
+),
+(
+  'Hat4RZHuSdDGWAwYQkHRzQsKuhtdwJuqugcPz2W4yU5M',
+  'LVSH',
+  6
+),
+(
+  'BHzj5oaBZTjUU9JzwmQBeLP3EttCMsTn4f4JXLd6ASrJ',
+  'MYSTIC',
+  0
+),
+(
+  'xSoLVBNztDTUW8Kou2GJinHoe54Siu9Sk3e2uoU9aUi',
+  'xSOL-SOL',
+  9
+),
+(
+  'GdVYQYnYV8zNFuQcMMEb1RQFBR14mdJUVVWHVTzU3AHq',
+  'ZOKER',
+  9
+),
+(
+  'DPuGqV7jq9PEbcRU7bWzuaJx5bGiaVj4cNWhWjTdWAKi',
+  'DOPIES',
+  9
+),
+(
+  '8Ncps4M6Le7U3cxxvAwsE7LfVmLArBdFpwg3byx2YXKz',
+  'CHICKS/USDC',
+  8
+),
+(
+  'nooot44pqeM88dcU8XpbexrmHjK7PapV2qEVnQ9LJ14',
+  'PESKY',
+  9
+),
+(
+  'AJ1W9A9N9dEMdVyoDiam2rV44gnBm2csrPDP7xqcapgX',
+  'wBUSD_v1',
+  9
+),
+(
+  'WLQg4eA6duP7mNhcRtquVr5mQoReaTGZiCbR9hYSfvu',
+  'AELWL',
+  0
+),
+(
+  'NTRNt4MmibcfkRHww3Y4WXRwFkXWxLvFXhBJ27YUbVN',
+  'NTRN',
+  4
+),
+(
+  'Dk1HXZkE5tUn8EvNeT8GoB1JqcYioFp5LCPxGq8tTa7s',
+  'HAIR',
+  4
+),
+(
+  'NFTUcWc3R1cGzpsh9UzGeKnVeXDTJQjRVL6wUM9Qt98',
+  'NFTU',
+  6
+),
+(
+  'ANMSoho4nmt5ACg4uM9EeprwvjNJAPFXieaS7sECZ3s4',
+  'ANMS',
+  9
+),
+(
+  'FLuFFY16jePbVTrJ68SY3YbwyZvne2w2ktAVkArpBufG',
+  'FLUFFY',
+  9
+),
+(
+  'CWLAETW6Pty2VqPm3MTs47FhVNdQmEPfDm6yZBkQcZz2',
+  'SC1M',
+  9
+),
+(
+  '6Tf26EZ2F8efATQpodGKYMNMZccCTL1VPYzcC4kPF6cC',
+  'FOXIE',
+  9
+),
+(
+  '98ouGzbMV2DnHfn3Uc7oahwvDP4Cf7Ls77JsBiARdjvn',
+  'DBC',
+  6
+),
+(
+  'FnVPD3fRutXcibEHDYP1gv8kuYJx2SNCi2EizcAsR4wN',
+  'CMP',
+  9
+),
+(
+  'DTPMARh15YSqggNbMLECj8RxVoxfhtobyyCLiwEeVwZu',
+  'DTPM',
+  0
+),
+(
+  '5VQnKaTu522jRQyaawDNBKZjBa5SZoeetyDXEwocYxXN',
+  'KING',
+  6
+),
+(
+  'Avz2fmevhhu87WYtWQCFj9UjKRjF9Z9QWwN2ih9yF95G',
+  'soCOMP',
+  6
+),
+(
+  'MHMFaJCu8wWabFghBV759ZaKqhCaqJ1jWpxFzbgmUia',
+  'PT',
+  9
+),
+(
+  '43VWkd99HjqkhFTZbWBpMpRhjG469nWa7x7uEsgSH7We',
+  'STNK',
+  9
+),
+(
+  'DHbGBhZc1yLLgpPqAzr7KGs47oCMfbg2q6Fmg5NCSM1C',
+  'BAMB',
+  9
+),
+(
+  'CHT8sft3h3gpLYbCcZ9o27mT5s3Z6VifBVbUiDvprHPW',
+  'KIN-RAY',
+  6
+),
+(
+  'ALPbh25PVwDDEhmJizhrtyhfgXNjh17RtbZc4i5ZAHdh',
+  'aeMIM-CASH',
+  9
+),
+(
+  '2HXfRTmmCEUZJDbqySfvETewMUxujod1ZwUHJMrHGCEf',
+  '$FRAIS',
+  9
+),
+(
+  '2E6Wt8f4rzKBtbabBNS2MSMZ2KX57TpK2bLWT8Gq9QDe',
+  'GOONZ',
+  0
+),
+(
+  '58nifjPjF3CutGz2xMxvAMk7R9YgbVEc8Cstj4rCcs8j',
+  'mSOL/whETH',
+  6
+),
+(
+  'Hj9V5W4R9BxKUJYC36X5Biayv6FwZz5mmfV3JY4LxF8z',
+  'MELLOWWL',
+  0
+),
+(
+  '78fRJMzWdKpeb2cAQ1pe25J5Fth9Mmiufzsi4KfazQdL',
+  'H2O',
+  9
+),
+(
+  '97oBkXkZQRJd9kxptQiYoDQCmGtVMjb3NBg5xN66kWKS',
+  'PMWL',
+  0
+),
+(
+  'GdRNeX9mbzCt4AnfiUFLbYZmxRuW7pGHfjbbAM59ZybR',
+  'SLFT',
+  9
+),
+(
+  'CASHVDm2wsJXfhj6VWxb7GiMdoLc17Du7paH4bNr5woT',
+  'cash',
+  6
+),
+(
+  'JB9sPerGhfdwCDajmd8x4y2gkC4EtXVevoAoPwni39ik',
+  'abp',
+  9
+),
+(
+  '4nQqJkBx3Dnovc6ueEdkJfFr2zi2fc77834czmoymR1b',
+  'wamo',
+  6
+),
+(
+  '8z4ghJPp3ccvEtuXZbceGRfoX7AZHhcdwiapYzmsxmyC',
+  'TIGER',
+  9
+),
+(
+  'E48Ueg1o9avL5s7XBjfLViercSrNSJCvmbZMvnwN873',
+  'MCK',
+  9
+),
+(
+  '6Q5fvsJ6kgAFmisgDqqyaFd9FURYzHf8MCUbpAUaGZnE',
+  'SOS',
+  8
+),
+(
+  'HuManQDs2YtrRkQu4www48fFc6mz39gG6u2vUT2U9B9X',
+  'HUMAN',
+  9
+),
+(
+  '7xd71KP4HwQ4sM936xL8JQZCwE4amUko1AdCCf6Znjrt',
+  'FREN',
+  9
+),
+(
+  'EKSM2sjtptnvkqq79kwfAaSfVudNAtFYZSBdPe5jeRSt',
+  'SOLCH',
+  9
+),
+(
+  '3K6rftdAaQYMPunrtNRHgnK2UAtjm2JwyT2oCiTDouYE',
+  'XCOPE',
+  0
+),
+(
+  'nRtfwU9G82CSHhHGJNxFhtn7FLvWP2rqvQvje1WtL69',
+  'CEL',
+  4
+),
+(
+  'AwdLhnYKHsA53KYVXFhsRAfnrPbAgPMjUKPoMQ2L6VM',
+  'GBLN',
+  9
+),
+(
+  'DdUm3gHS5nnB3XKnxEufnazb5ERa9vHjK6S3DgZi7QR5',
+  'BTSL',
+  9
+),
+(
+  '4wfCtMp8KQ7r61V4qH2VtHxFjVjUdsWhgAmZgQi33UkT',
+  'ARDN',
+  9
+),
+(
+  'AoYS2EzUPNKWSm4BH4bvzL16hA76XSmCkxgftxojVgLA',
+  'SFC-PRESALE',
+  0
+),
+(
+  '6wJYjYRtEMVsGXKzTuhLmWt6hfHX8qCa6VXn4E4nGoyj',
+  'GORE',
+  9
+),
+(
+  'BS9HQKdgY6DUq6HCgNz8xpDyoERJD4GnwGRHebFasjZS',
+  'RRAM',
+  9
+),
+(
+  '2sf6MtQgAwthVrXZmTUKH1myuP8z1N7vXT87t34bw3Gj',
+  'MNSTR',
+  9
+),
+(
+  'xLvawiUDbXmaLdNi71s4Ry8y4ykXJetwZ9LZ124jMpi',
+  'XLVA',
+  9
+),
+(
+  '5e5znzUAuWrM7p96XTZZyn5KWKRikLr1m8rpQESriebT',
+  'ERNESTWL',
+  0
+),
+(
+  '7xGviwPk9Fj2YFLLoZdXZzj64TwQe9ysVS7JawHKaePD',
+  'Konoha',
+  9
+),
+(
+  '3b9wtU4VP6qSUDL6NidwXxK6pMvYLFUTBR1QHWCtYKTS',
+  'svtEPOCH',
+  8
+),
+(
+  'Heart9dqPteF9TBSReDeqAQ6bFJ61Hsm2zRGTyY2H1QD',
+  'HoC',
+  0
+),
+(
+  'DwC83VkKYbqChRtxr14apQtQGYeuoicuvbqCirxyY8kQ',
+  'HBLM',
+  0
+),
+(
+  '7Nz4gAXydZcWHPN1EBxM1Rqzoaz7btyRVFhLN7PkfoJR',
+  'DILLO',
+  9
+),
+(
+  'ETPz31G7uXGCAv8o2bDhWmx9ejZvNdmirg9x62N3AAga',
+  'RAID',
+  2
+),
+(
+  '36s6AFRXzE9KVdUyoJQ5y6mwxXw21LawYqqwNiQUMD8s',
+  'TCW',
+  0
+),
+(
+  '14Zi6xaKrFpEdxQKyU1SnSE8dfa97Gfj1jrtuWCxWnZL',
+  'WPUFF',
+  2
+),
+(
+  '9861az8m8LiuEeSgsmUaNVzVcq6XGDG6YCj3Jq7MRKHq',
+  'ASSET',
+  9
+),
+(
+  'FhkAPgX25YZBVTR57HGSbMUVGTt2kMaBPZKRgKbte1Qs',
+  'PORTARI',
+  0
+),
+(
+  'CGczF9uYdSVXmSr9swMafhF1ktHsi6ygcgTHWL71XNZ9',
+  'yiSolUST',
+  6
+),
+(
+  'FCbwFaX6zXA3BmJBW4JhPAahTn2b8ve6fRMYjmigv4Gw',
+  'ZBC/USDC',
+  8
+),
+(
+  'AYL1adismZ1U9pTuN33ahG4aYc5XTZQL4vKFx9ofsGWD',
+  'BULLSHIT',
+  6
+),
+(
+  'SexyzTVcKsB7m9CHDt2FgkJbhQK58pm7M73RynPWhCz',
+  'EXY',
+  9
+),
+(
+  'GbBWwtYTMPis4VHb8MrBbdibPhn28TSrLB53KvUmb7Gi',
+  'wFTT_v1',
+  9
+),
+(
+  'EYZMoSHaVmULt3AnujorGweJ6NPqzDaUbLrTiCwZeJYu',
+  'BOTTLE',
+  0
+),
+(
+  'WLtxyA4FdeCpMkZEXtr6FxasUyH4E5CEh5kwFmcYywt',
+  'HGWL',
+  0
+),
+(
+  'CLP2aB2bCXZEaoQjUNQdn64dCSzCVxKE3Kjgo3PcAYeY',
+  'PAI-CASH',
+  6
+),
+(
+  '8qEvmjgVub3fEaxaEr6YkyPnWv5ZT2XQkFQTXaYSvJzN',
+  'JOWL',
+  0
+),
+(
+  'ES6xz8FR8a5fP31ePeeKGR7HcgtzjQAQdHfGmcR3Uer7',
+  'ROAR',
+  9
+),
+(
+  'FMwvZPFGvmjjTQ9ZhePd4kB9WqK3YkyBGcHkYQp45TW1',
+  'PX5SSP',
+  0
+),
+(
+  '2VTAVf1YCwamD3ALMdYHRMV5vPUCXdnatJH5f1khbmx6',
+  'BCHBEAR',
+  6
+),
+(
+  'EjSwAfwi4F6uYtoi2WuCSYSWPVUPJCdemmShZ9tdy65P',
+  'KZN',
+  9
+),
+(
+  'PoLEXM5xikzieXENFvP7WwHJPorcFiCUVuMo9BAGZT3',
+  'POLE',
+  6
+),
+(
+  'XzR7CUMqhDBzbAm4aUNvwhVCxjWGn1KEvqTp3Y8fFCD',
+  'SCAM',
+  5
+),
+(
+  'EPeUFDgHRxs9xxEPVaL6kfGQvCon7jmAWKVUHuux1Tpz',
+  'BAT',
+  8
+),
+(
+  'FLUX1wa2GmbtSB6ZGi2pTNbVCw3zEeKnaPCkPtFXxqXe',
+  'FLUX',
+  8
+),
+(
+  'FR87nWEUxVgerFGhZM8Y4AggKGLnaXswr1Pd8wZ4kZcp',
+  'frax',
+  8
+),
+(
+  '9vMJfxuKxXBoEa7rM12mYLMwTacLMLDJqHozw96WQL8i',
+  'ust',
+  6
+),
+(
+  'WLDu1fuZ2dswJAizQg5BrN26oAKeCUiJ42x7uaep5WV',
+  'WLD',
+  0
+),
+(
+  'HWXWUXUNuBd6euKDxsL3FrCZ6P9RwmVmbXHKSd4MgxoA',
+  'BARMY',
+  4
+),
+(
+  'ToEY2bUgDzbMfABvuUQ41AvinTQeb6qwJZkfXCLVKGS',
+  'NA',
+  0
+),
+(
+  'BGLa4XwmsRcLDBKEtUgxAzKTkHYm4qgxEtkGwJKT7gEF',
+  'MHAWL',
+  0
+),
+(
+  'HWxpSV3QAGzLQzGAtvhSYAEr7sTQugQygnni1gnUGh1D',
+  'xBTC',
+  10
+),
+(
+  'CNMvWLKc8r1wRrQ1Xws6v43x5ttTnaf2pccLkUqsfXVf',
+  '$REM',
+  0
+),
+(
+  '8GQsW3f7mdwfjqJon2myADcBsSsRjpXmxHYDG8q1pvV6',
+  'HOLD',
+  9
+),
+(
+  'FQkm6bACFuJpGDmnkvYoq2Luhcc65oam2dg1tXfnKWAY',
+  'PLWAV',
+  8
+),
+(
+  'FwEHs3kJEdMa2qZHv7SgzCiFXUQPEycEXksfBkwmS8gj',
+  'aaUSDT',
+  9
+),
+(
+  'GSaiLQxREzaxUcE3v28HxBacoUQPZNtXx1eQsCFsX9Bg',
+  'XgSAIL',
+  9
+),
+(
+  '8TjgDMv2Esb7YRKu1ESZv5vtgD1WqFKmzhPBgsLqwEGG',
+  'NARWHAL',
+  9
+),
+(
+  'skuLLY6NHFrjL3oGpWMrrwjCfWMSvwp6AD7resMF9m7',
+  'SUMMON',
+  0
+),
+(
+  'HEqcDLPDBMNeZwmxqqSAq8xGQB28E5BTgNTDm3oxPvGa',
+  'SCAM_7BB4',
+  0
+),
+(
+  'VoxnYpJxkriwgBdARwsYPbheGCjXfWi8NFsDYsfP14Q',
+  'VOXN',
+  6
+),
+(
+  'EdWqqUz56Jo9QvLqCTg8Q1PR7boC8xMVraAEQqnWgdGZ',
+  'SAMU/USDC',
+  8
+),
+(
+  'E85VGYoRTojo2tYvoCqEtKUTr16Xcm6DbxcooK1T4mwJ',
+  'ST',
+  0
+),
+(
+  'AkNbg12E9PatjkiAWJ3tAbM479gtcoA1gi6Joa925WKi',
+  'CALCH',
+  0
+),
+(
+  '2zRiTfY2mmkUcDtj7Rp8pZuB15D5fupxoTaNEDewomTj',
+  'HEYESWL',
+  0
+),
+(
+  '6vVD6QjoFjghKhXQtSc2yTSQaGTBxcUGnWfjnzbeeENK',
+  'CHIPS',
+  6
+),
+(
+  'DqRNwrvGUffB1j9tEYHcpw1DLMoc2QfwZ25nkBHkvRmr',
+  'SUPL',
+  9
+),
+(
+  '4YRSYKcbC3oQSEPEPqcYDHtwDabTBym3YjSsAvnLKdiU',
+  'SONAR/USDC',
+  8
+),
+(
+  'WLd7Rr5k1aA8iTKAVgLw7iG1FzqcNiZ3XSzzLyrfVh5',
+  'SPHXB',
+  0
+),
+(
+  '4ZwWddrPzfgMxyEgQ7kzVrqoqX5D9BQJPwduQUBMmePs',
+  'APEM',
+  9
+),
+(
+  '8Q6MKy5Yxb9vG1mWzppMtMb2nrhNuCRNUkJTeiE3fuwD',
+  'RAY-ETH',
+  6
+),
+(
+  'DoLDqhWPLrAH4mzsGo54AshM6k94T23GnaFmGVdLTR4r',
+  'mKOGWL',
+  0
+),
+(
+  '3nmTsvHUoyWFRoksBWU9oHaHwGsezAp97hgrrnc8brNo',
+  '$LOOP',
+  9
+),
+(
+  '9C2Ht3Cd8uNKsxiLQ27qxv9mnQ1iqMPFW2FUwB9DkxFP',
+  'DUBZ',
+  9
+),
+(
+  '22CgxvP9YdhmoC7Pnhp7PQDMr9LvDefVHEvWWW7Rtvuv',
+  'EVILM',
+  0
+),
+(
+  'AEcFA1cq4Mtz568HL8sd7tQ9EyTYFNV6EHw6KrqYT785',
+  'bSHARD',
+  9
+),
+(
+  'D5qtZURrR8hs1V1oTuSFu7tMe5pt1XKWWqqK34CHF5ZA',
+  'COSSOU',
+  0
+),
+(
+  'vBUD5s5PtJoApmQCxPd6yFudUmTgiARkn5SEspuf38w',
+  'vBUD',
+  6
+),
+(
+  'rekTBEUuEBVz6mqbfLmE9d9JR4jrxV5r91LJfGdzufq',
+  'Rekt',
+  9
+),
+(
+  'HV8RWueWwpRue86SMzXQapxDB5ZEWw5YnVbxuDcihaF5',
+  'MARMO',
+  9
+),
+(
+  '7p6zGHdmWHvCH4Lsik2MoMBXqPGhFbSPSceSBXd8KNEC',
+  'PU238',
+  6
+),
+(
+  'F8Wh3zT1ydxPYfQ3p1oo9SCJbjedqDsaC1WaBwh64NHA',
+  'SSURF',
+  8
+),
+(
+  '9HhZRiV63c4pMc4xEscrGDh6Xu17gPSpkCMvSb5tmGis',
+  '$MIGO',
+  9
+),
+(
+  'CVj6FV4HmhEsn7xQXCjj5iqbDQHB7hQ8AwZjB6P8UMDu',
+  'CoW',
+  9
+),
+(
+  'RoLLn5qBN4juQ1D2KFpJyAcC7Deo3cYotXi4qDooHLU',
+  'ROL',
+  6
+),
+(
+  '8oJ4nGEJmGCq8RikM3R8wdAN8d8ZxrhMYpbUPYzCMgFq',
+  'RPC',
+  9
+),
+(
+  'DHojuFwy5Pb8HTUhyRGQ285s5KYgk8tGAjAcmjkEAGbY',
+  'RFK',
+  2
+),
+(
+  'DqPwxiqS9ooPZftazpNUU8hM4wPdhZ6W94Pcyig1SQFL',
+  'JPNS',
+  3
+),
+(
+  '5BY9wMqpvmTJrzUHt9BAmaQwave833DyHZh33rCXFEQ2',
+  'GLXY',
+  9
+),
+(
+  'FTT9rBBrYwcHam4qLvkzzzhrsihYMbZ3k6wJbdoahxAt',
+  'sFTT-9',
+  9
+),
+(
+  'uL2qhMckUAroJPt2MLHwEeppJNYE3wBAGFMCs3anwXn',
+  'DRIPP',
+  2
+),
+(
+  'EdWYL5Z4tCCsMtdxPXT5iV9Ycg46U6mvCJDsQV9zQkCm',
+  'HOLLY',
+  9
+),
+(
+  'BPfgTWYrsBZJAxrjLxp9cMbtKTswsL5wwW3SHqPCnFh5',
+  'SCWL',
+  0
+),
+(
+  '6ybxMQpMgQhtsTLhvHZqk8uqao7kvoexY6e8JmCTqAB1',
+  'QUEST',
+  4
+),
+(
+  '5DfhZugS25gPf84LF5u6LjRCzW1XCFuRd88PAujoeic5',
+  'MZOO',
+  2
+),
+(
+  '8phLV3YLRwud8QohZQnAdKvhjUbte2V75M4wB5uYwPjs',
+  'SSGWL',
+  0
+),
+(
+  'Cbi6U8C8mC1ENvskYBqyYzmy1Q5wB5bk9YzUcF6ZVomQ',
+  'PURR',
+  9
+),
+(
+  '4qw5MNc9oLKS22hiFTK6TNBHCqegDK3qzhMDgawtwnUL',
+  'SSK',
+  9
+),
+(
+  'CkTT6bUw9DWtnrkhJmUPTgWB9TvVy4sHgX3mmFNw1v1C',
+  'NNTICKET',
+  0
+),
+(
+  'Djoz8btdR7p6xWHoVtPYF3zyN9LU5BBfMoDk4HczSDqc',
+  'AUSS',
+  9
+),
+(
+  '7qFv2mV6Kc7AmGkvaEo5kS2Zy7Z6ofCGdhRk6v3oDQMG',
+  '$HAT',
+  0
+),
+(
+  'FZxUbyQ9oeFiSDaabw8KfAWACsDMQhbuxR9vm2Rh7Ewm',
+  'PHASE',
+  9
+),
+(
+  'EAzCTpMGRjFmGf4MaiMVNqv6KxQNoM6HEXtPZLEtEivB',
+  'DECI',
+  9
+),
+(
+  '6WNVCuxCGJzNjmMZoKyhZJwvJ5tYpsLyAtagzYASqBoF',
+  'soAKRO',
+  6
+),
+(
+  'Z1hJj8M518eMgErW8PYAQzv3u9EQjsHYvjbkgy51GtE',
+  'INVNLT',
+  0
+),
+(
+  'HYoGYzMcbYq3tAvpg15d8VFYVHw6jWEVuGgpNTrG8hps',
+  'DOGELON',
+  4
+),
+(
+  'AgBQSKgZPJPmsMz8qkHbyZdEU4JrRpoNHYh2kxE5TcD1',
+  'BV',
+  8
+),
+(
+  'gJtYNevehYkg9VeEaWWKztWeFt4WXdQFihMXrUMeKd4',
+  'ODYSSEUS',
+  9
+),
+(
+  'sBUDzitkrHNZAR2gAoRorwSo6nqBEsHfRmdybHCsw8o',
+  'sBUD',
+  6
+),
+(
+  'Cw2yB2XvmmLpPz6EjxUns3F2yeuB6XCHfKa5qEfp7ddT',
+  'NDWL2',
+  0
+),
+(
+  'EoqJXTxCc67i18B7nwWs59RBkTe8rStTreRhCCq1eVTH',
+  'DAU',
+  0
+),
+(
+  'EL1aDTnLKjf4SaGpqtxJPyK94imSBr8fWDbcXjXQrsmj',
+  'MIDBULL',
+  6
+),
+(
+  'Exz2u9EhSXzGDef4v8bfXVjcUbsFm4kMKoXxn58fDUSa',
+  '$MCREW',
+  9
+),
+(
+  '9DYLi7scxtyTGUbQEwNSuSoiVUvnxUHrY6mYRGdTu87C',
+  'ACIDBOMBWL',
+  0
+),
+(
+  '2FGW8BVMu1EHsz2ZS9rZummDaq6o2DVrZZPw4KaAvDWh',
+  'BSVBEAR',
+  6
+),
+(
+  '56rYxFVCb4EfQNdRYrBtG8ENT9x3pRSHKuSCuAG9NfFs',
+  'SKREEE',
+  3
+),
+(
+  'Bn113WT6rbdgwrm12UJtnmNqGqZjY4it2WoUQuQopFVn',
+  'aeUSDT',
+  9
+),
+(
+  'Dd7pji6EruuFPuAxuZG5LwZUdPSzYCTN6NsttrkHeedS',
+  'FLUFF',
+  6
+),
+(
+  '3UYUHHubaSehdoqADUspBsvTjW8B3LLc1jP271skhRRz',
+  'LRN',
+  0
+),
+(
+  'FyNuYGBBry5LAtPEkh8Y73izjTUNT2td2J3sGCK7E9Ju',
+  'VIBEZ',
+  9
+),
+(
+  '61bjnxUgvq332wDVe1mtQ7TjFUNTxHGjgfebuj3WaihY',
+  'SHAKING',
+  9
+),
+(
+  'AECpyKJWfXVyWnk2d9md5dUj3RuzHRKfQra8MakjuVRz',
+  'aeUSDC-USDC',
+  9
+),
+(
+  '2maDvG9nXGVstjdnsCZoSsNtjoda1SsZTLrHBVRgLR5F',
+  'CORE',
+  9
+),
+(
+  'DYDWu4hE4MN3aH897xQ3sRTs5EAjJDmQsKLNhbpUiKun',
+  'pBTC',
+  8
+),
+(
+  'GKZ1pt5vbMfd3zGxpqfjku12Mw1gp7BaM9eGx9V2fc4b',
+  'JUTSU',
+  7
+),
+(
+  '6yHNeyd7a14VD2PBedaXqFacoVAJfD5mAAYbvwBnvC7t',
+  'MTM',
+  9
+),
+(
+  '8qJSyQprMC57TWKaYEmetUR3UUiTP2M3hXdcvFhkZdmv',
+  'USDTbs',
+  8
+),
+(
+  'DEhAasscXF4kEGxFgJ3bq4PpVGp5wyUxMRvn6TzGVHaw',
+  'soUNI',
+  6
+),
+(
+  'EsPKhGTMf3bGoy4Qm7pCv3UCcWqAmbC1UGHBTDxRjjD4',
+  'FTM',
+  9
+),
+(
+  'ATSPo9f9TJ3Atx8SuoTYdzSMh4ctQBzYzDiNukQDmoF7',
+  'HOSA',
+  0
+),
+(
+  '99Q3AfFWX3rdidoQCnAPPoZFjsaXr2AAk65RUgxiwfUi',
+  'GCC',
+  9
+),
+(
+  '76ijxiMkj4DX8q9QMtqpzTxFnT4KPmWv47sZf2kKoVwk',
+  'QF',
+  9
+),
+(
+  'A6n5SnM2G8ZsTdpd85bUn5byvFAcEfqYHcMvQNNZ8tTR',
+  'WFCWT',
+  0
+),
+(
+  'dSvuy2L9aa8bPu5MV756Fsb6GmzDwtnaGXVRrNeRigU',
+  'BABY/USDC',
+  8
+),
+(
+  'roccqR8b2s7srXwWGNpoe31zhThcjeQPKy2ghq2ccn4',
+  'ROCC',
+  9
+),
+(
+  '7GNyprqrpvJHNwzWSj4KVkqw9cKyV5aR3ehM2HeE5pw',
+  'Miku',
+  0
+),
+(
+  '6DNkUoMa6vNo3CsxAw5XMJhjmdPbPBENHJ6w35eMXESo',
+  'MEME',
+  6
+),
+(
+  'GqKdvkC9JF6qkLpT56MRc6UhDepj7uYt9nVbnm7MWBgR',
+  'EEZE',
+  0
+),
+(
+  '6Mt8jADDUPckFf3hQfsxrrZGyov7sdfLAiD9oeLVcBkk',
+  'DTH',
+  0
+),
+(
+  'GD57bW3qQaqk8HkbWrFV3t4tSAeJsjngFRtYwbF1wZhZ',
+  'KLUB',
+  9
+),
+(
+  'DgHK9mfhMtUwwv54GChRrU54T2Em5cuszq2uMuen1ZVE',
+  'soCEL',
+  4
+),
+(
+  'C3sT1R3nsw4AVdepvLTLKr5Gvszr7jufyBWUCvy4TUvT',
+  'RAY-USDT',
+  6
+),
+(
+  '9CzmA137fzLtdyfaBY63Sa85uY8ZvBiX3MrAJypzsDGR',
+  'BLUFF',
+  6
+),
+(
+  'AMzb4Tc7gDGHrsz1zUQzjtmQS2AXWuejveAKXKSpsoPU',
+  'GAMESHIB',
+  9
+),
+(
+  '7V9C2XUQgCb31n7hGKqKGu4ENcvqXhJLJzU77CAQtXhw',
+  'FBLBPL',
+  0
+),
+(
+  'CfzXjG5VCQqZ7H7hxnoZZpA1MdcGSThcm6aaipU3M46K',
+  'DR',
+  3
+),
+(
+  'B2K7et7RDYjpuaYFcspBYxbnWP7C3v85cQif7ZsntVtz',
+  'BVLL-G-WL',
+  0
+),
+(
+  'GBDsHu7SMev6Q2DdFyU6YPkjRBiPVqWuFmsJyrsLLrUX',
+  'TOPIA',
+  9
+),
+(
+  'cjZmbt8sJgaoyWYUttomAu5LJYU44ZrcKTbzTSEPDVw',
+  'LIKE-USDC',
+  9
+),
+(
+  'BGrCkH9iBjNrdDLJSpqD8EUVWx8qVD3vXvcJurVc1xsZ',
+  'BOOGA',
+  2
+),
+(
+  'BANANAs2SCcdFmZw3ahhM9PpQ1GhdgpxJ6mcARTuSzQc',
+  'BANANA',
+  0
+),
+(
+  '77A8ycvZQfwYb3h2Rc4f9masYfug1wKVRRJUPeMA7b6o',
+  'SCHRY',
+  6
+),
+(
+  '7rrJLRar2WjZwRoF3iJKHKnA7d7d9YJT1X9HAJnwUH3Z',
+  'WIZE',
+  6
+),
+(
+  '9qTA3A113oG94ppSpiJTwWCyj44wyNcgPAs5i9d7QQne',
+  '$CULT',
+  2
+),
+(
+  'DNAdXVQZjBa77jHoqij52RDhkDkBq6iCLsJwCRfhzYz2',
+  'DNA',
+  2
+),
+(
+  '6cH34XtzNgCDwb7NFbiji1a1N8F3FgmXTrFxvzBZNVui',
+  'KINGSHIB',
+  9
+),
+(
+  'ToQaYfKWvHtHpmPsCo4awxavoEQJjguBZzGiZBM2vYT',
+  'PBT',
+  0
+),
+(
+  'DbV44ix6fnBsR7Uf7uinmHqkMcEG81PjxP2ofCbBrUPa',
+  'SWAMP',
+  0
+),
+(
+  '8XUTstViEpLfhxaA88A6oWKraHm8V444bnSq6hm79vYh',
+  'RUGZ',
+  9
+),
+(
+  'BhxPoUPkVASfT9y4ipJ6t4sN8uEuThz9voKaPrkv2sFQ',
+  'ANT',
+  9
+),
+(
+  'BZFGfXMrjG2sS7QT2eiCDEevPFnkYYF7kzJpWfYxPbcx',
+  'RAY-USDC',
+  6
+),
+(
+  'Hrs8H2FfWLxUa7kFV53vXPE2RGx5uZuUPCrKSUNZ99yU',
+  '$CROPS',
+  9
+),
+(
+  '2qRHKgE9k7doshwy7ZfENuSHW256pDhcbyspDgU3Ek8C',
+  'SAMOL',
+  9
+),
+(
+  'FDWmQxD9hQruYKtFK8wt6UhKGv6frPvU8EhjKiEPQoyD',
+  'FADE',
+  9
+),
+(
+  '6GNwqhgq3saN6dX94kDrxc8dj4xAcgnwK9njqbrHjmt2',
+  '$LVRG',
+  9
+),
+(
+  '3UCMiSnkcnkPE1pgQ5ggPCBv6dXgVUy16TmMUe1WpG9x',
+  'ALEPH',
+  8
+),
+(
+  '9ABNesWj7NVdkDgko7UjVaDp5pTh8a6wfXHLWz3bZM6W',
+  'OPALJJ',
+  0
+),
+(
+  'BoeDfSFRyaeuaLP97dhxkHnsn7hhhes3w3X8GgQj5obK',
+  'svtFFF',
+  8
+),
+(
+  '4ws4ZmDmNQwG1boaDmKtmPzEHJ5UUEaeBKtHzeFDwYyo',
+  'JPEDU',
+  9
+),
+(
+  'E2eevzN2TBWAL1LiALAfEYFLRBzSDLugLjiNuZg9ehwT',
+  'kcMSOL',
+  9
+),
+(
+  'FRXsjEv4jF3r72FgbCXu8uLbPoZGLmCmg3EN1S3cfC4x',
+  'wFRAX-USDC',
+  8
+),
+(
+  '76JQoQBum4A9KD7b6CKRJ2eWMRkjFNVEzA4mJ9VxVv9K',
+  'SENWL',
+  0
+),
+(
+  '7VEyj9ooKPLaxd4rxwRWB4J5Yo1upymWwNs7RL78i8Nj',
+  'D3DNETWORK',
+  0
+),
+(
+  '3Cm1DDX9K9emkjjHoJJKXwwcDpREGxRzLyNgMSCy49zB',
+  'CHEESE',
+  9
+),
+(
+  'F3YadVupQT3rxBpXxZJCdmzhpyb5NEPsCr18DHKXvsmb',
+  'SKULLWL',
+  0
+),
+(
+  'FLWRna1gxehQ9pSyZMzxfp4UhewvLPwuKfdUTgdZuMBY',
+  'flwr',
+  2
+),
+(
+  'KRTapyUMe5fW92KZkYoXToFtc6Cn7UG6seaKz646oGu',
+  'OOINK',
+  9
+),
+(
+  '21jZ1ESEFYh9SBwjT5gqE3jHv3JnaGhgvypLTR96QXW9',
+  'sUSD',
+  6
+),
+(
+  'tojixS2xsLhpSfYRvLfALmMehyQMEUDwV9RH7TMQmkY',
+  '$IJOT',
+  0
+),
+(
+  'DzpLz78wuwyFsQToin8iDv6YK6aBEymRqQq82swiFh7r',
+  'BTC/mSOL',
+  6
+),
+(
+  'G2PQTxEooYBG6TcrJ97tFrBzyYoFiRQwwTwiAkTycpwd',
+  'BUM',
+  0
+),
+(
+  'w71tgPPw37F7sCxxq1bcT63D3dtV6bJ7MUD3q7fpLqg',
+  'SIM',
+  9
+),
+(
+  'G7JY5Ui9YghpXCjCAh9bEf3QgZ2HKKmys8JggNmhzH6k',
+  '$GODzWL',
+  0
+),
+(
+  'Bots8GcuhxrZ1XBGHx3qvzMEq3xfBZHSCxHX5EukGuis',
+  'BBW',
+  0
+),
+(
+  'HRhaNssoyv5tKFRcbPg69ULEbcD8DPv99GdXLcdkgc1A',
+  'ALTBULL',
+  6
+),
+(
+  'ingaAW6YRGVFa4NASZFi9TEhxQcuRfGumGLMVxRSav9',
+  'IGTY',
+  0
+),
+(
+  'C7P3cWGAhEY9A4BsBXiQNZ7ycavPUcuQcaH99ppQdfwe',
+  'HNYC',
+  6
+),
+(
+  'A4zyBooAFkpfy7osonRJMQ8a6zArGxN5fNXjXo1ZTZK2',
+  'NTCK',
+  0
+),
+(
+  'qxxF6S62hmZF5bo46mS7C2qbBa87qRossAM78VzsDqi',
+  'EOSBULL',
+  6
+),
+(
+  'CurZY9UonzDNmDfB9SgjYAJz2hj6Kx4VYLLkzGozJfJB',
+  'MWTK',
+  0
+),
+(
+  'VisDZunhfXf29cxyZ2pGWvsrpye5FnCgScnRZ2d9WVG',
+  '$VISN',
+  9
+),
+(
+  'kshrEkxuc7zPAvLxvabxoERKxK6BfariPcjBoiHvM7B',
+  'SCROLL',
+  9
+),
+(
+  '7i7LiEhcmoqSefeWG2v9v7nXoXNywBT3aMgnt7sz5fAZ',
+  'GLUG',
+  6
+),
+(
+  '3HaDnJ2PEt7v7RE8dPaSzSCgBL5dWvWtTkGaEGs5ap3N',
+  'ELONCASH',
+  6
+),
+(
+  'CyZDc8wbDmtT88YVLAfvrH7QSsGdAreXkNKjWVQDDzCn',
+  'MFCMC',
+  0
+),
+(
+  'Gro98oTmXxCVX8HKr3q2tMnP5ztoC77q6KehFDnAB983',
+  'solmo',
+  4
+),
+(
+  '5SZSVgnQDgKKxtCe3UA3x4T7tcSRNDaL3NmfdEqpuLzo',
+  'bby',
+  9
+),
+(
+  'frtnaScfGPuo56uyPGmij1QTc64SBdjnXC3RXmcVmxw',
+  'frtn',
+  9
+),
+(
+  '2wpTofQ8SkACrkZWrZDjXPitYa8AwWgX8AfxdeBRRVLX',
+  'link',
+  8
+),
+(
+  'ACUMENkbnxQPAsN8XrNA11sY3NmXDNKVCqS82EiDqMYB',
+  'acm',
+  9
+),
+(
+  'BBZbqM7RPKzncqaC26gtq6Z4dkm5ksZXib4nJYjk8L3X',
+  'nugget',
+  9
+),
+(
+  '7CnFGR9mZWyAtWxPcVuTewpyC3A3MDW4nLsu5NY6PDbd',
+  'SECO',
+  6
+),
+(
+  'AjkPkq3nsyDe1yKcbyZT7N4aK4Evv9om9tzhQD3wsRC',
+  '1INCH',
+  8
+),
+(
+  'CbNYA9n3927uXUukee2Hf4tm3xxkffJPPZvGazc2EAH1',
+  'ageur',
+  8
+),
+(
+  'CWE8jPTUYhdCTZYWPTe1o5DFqfdjzWKc9WKz6rSjQUdG',
+  'solink',
+  6
+),
+(
+  'C6oFsE8nXRDThzrMEQ5SxaNFGKoyyfWDDVPw37JKvPTe',
+  'paxg',
+  8
+),
+(
+  'CbU2bWHoy73HqCm9PQjGcniaxhFkQ65zWTJyUfNU5694',
+  'euronin',
+  9
+),
+(
+  'CowKesoLUaHSbAMaUxJUj7eodHHsaLsS65cy8NFyRDGP',
+  'cow',
+  6
+),
+(
+  'BRg8CLYEStYAFQad3CVMCYy1cgeuvUnarAZLV8K8Hyfv',
+  'shell',
+  9
+),
+(
+  'Es9vMFrzaCERmJfrF4H2FYD4KCoNkY11McCe8BenwNYB',
+  'usdt',
+  6
+),
+(
+  '8FU95xFJhUUkyyCLU13HSzDLs7oC4QZdXQHL6SCeab36',
+  'uni',
+  8
+),
+(
+  'boooCKXQn9YTK2aqN5pWftQeb9TH7cj7iUKuVCShWQx',
+  'boo',
+  9
+),
+(
+  '9LzCMqDgTKYz9Drzqnpgee3SGa89up3a247ypMj2xrqM',
+  'audio',
+  8
+),
+(
+  '3swraHsc77KMg1tFvwH3tfYcd8SWr5fcUhtmRxjavG7H',
+  'ks',
+  9
+),
+(
+  'WNZzxM1WqWFH8DpDZSqr6EoHKWXeMx9NLLd2R5RzGPA',
+  '$wnz',
+  4
+),
+(
+  'FYUkUybywqUUyrUwiAezbvhTp2DUgx1eg8tQNiKkXqJ9',
+  'tfmc',
+  9
+),
+(
+  'CWBzupvyXN1Cf5rsBEHbzfTFvreLfUaJ77BMNLVJ739y',
+  'atpay',
+  9
+),
+(
+  '6VYF5jXq6rfq4QRgGMG6co7b1Ev1Lj7KSbHBxfQ9e1L3',
+  'dingo',
+  8
+),
+(
+  'CAPYD6Lrm7bTZ6C7t7JvSxvpEcfKQ9YNB7kUjh6p6XBN',
+  'capy',
+  9
+),
+(
+  'HBB111SCo9jkCejsZfz8Ec8nH7T6THF8KEKSnvwT6XK6',
+  'hbb',
+  6
+),
+(
+  'nosXBVoaCTtYdLvKY6Csb4AC8JCdQKKAaWYtx2ZMoo7',
+  'nos',
+  6
+),
+(
+  '2zzC22UBgJGCYPdFyo7GDwz7YHq5SozJc1nnBqLU8oZb',
+  '1sp',
+  9
+),
+(
+  'HnZiKrSKYQkEfzjQs6qkvuGbBmrBP9YzjB1SMM7tiGZ1',
+  'such',
+  9
+),
+(
+  '5L2YboFbHAUpBDDJjvDB5M6pu9CW2FRjyDB2asZyvjtE',
+  'pixl',
+  8
+),
+(
+  'FtgGSFADXBtroxq8VCausXRr2of47QBf5AS1NtZCu4GD',
+  'brz',
+  4
+),
+(
+  '7zBWymxbZt7PVHQzfi3i85frc1YRiQc23K7bh3gos8ZC',
+  'vi',
+  9
+),
+(
+  '7puG5H5Mc6QpvaXjAVLr6GnL5hhUMnpLcUm8G3mEsgHQ',
+  'leonidas',
+  9
+),
+(
+  '6cVgJUqo4nmvQpbgrDZwyfd6RwWw5bfnCamS3M9N1fd',
+  'shill',
+  6
+),
+(
+  '9tzZzEHsKnwFL1A3DyFJwj36KnZj3gZ7g4srWp9YTEoh',
+  'arb',
+  6
+),
+(
+  '674PmuiDtgKx3uKuJ1B16f9m5L84eFvNwj3xDMvHcbo7',
+  '$wood',
+  0
+),
+(
+  'Ea5SjE2Y6yvCeW5dYTn7PYMuW5ikXkvbGdcmSnXeaLjS',
+  'pai',
+  6
+),
+(
+  'A7rqejP8LKN8syXMr4tvcKjs2iJ4WtZjXNs1e6qP3m9g',
+  'zion',
+  3
+),
+(
+  'GWTipxSJVPmmW2wCjBdkbnEJbCRCyrhL2x9zuHRPPTj1',
+  'gwt',
+  6
+),
+(
+  '4SZjjNABoqhbd4hnapbvoEPEqT8mnNkfbEoAwALf1V8t',
+  'cave',
+  6
+),
+(
+  'kNkT1RDnexWqYP3EYGyWv5ZtazB8CfgGAfJtv9AQ3kz',
+  'knk',
+  9
+),
+(
+  '9QXAu7FTf7hmswBQwKxvuqGgWH42FyQjqXJanUt6y4eC',
+  'mount',
+  9
+),
+(
+  '6Y7LbYB3tfGBG6CSkyssoxdtHb77AEMTRVXe8JUJRwZ7',
+  'dino',
+  6
+),
+(
+  'McpgFn2CxFYFq6JLiBxeC6viNfebLsfsf9Sv5wcwKvL',
+  'dpunkz',
+  2
+),
+(
+  'EuD5L5XSYKzyDC1YyYzmoWC8gmJhpEh2vMj4f8LeRW8r',
+  'npc',
+  9
+),
+(
+  'A9mUU4qviSctJVPJdBJWkb28deg915LYJKrzQ19ji3FM',
+  'usdcet',
+  6
+),
+(
+  'NFTUkR4u7wKxy9QLaX2TGvd9oZSWoMo4jqSJqdMb7Nk',
+  'block',
+  6
+),
+(
+  '3m7A2A8HHdqmiDrjAfaddj7Hxd88FrBHA1KSoqjoELtu',
+  'wagmi',
+  6
+),
+(
+  'sRLY3migNrkC1HLgqotpvi66qGkdNedqPZ9TJpAQhyh',
+  'srly',
+  9
+),
+(
+  'DSXWF79VQ3RzFBB67WeNfCzfzAQq5X6m97zi85bq1TRx',
+  'whales',
+  2
+),
+(
+  'uNrix3Q5g51MCEUrYBUEBDdQ96RQDQspQJJnnQ4T3Vc',
+  'sbnk',
+  6
+),
+(
+  'Ca9LxRYdZ7jK4QAqjLo4iaYmiV8FNdngtSkzM69hzgDX',
+  'okayb',
+  2
+),
+(
+  '87rSGrpYdmTxfNBf8o2cpyiNcxCmNhUPBXjT8aoyfob5',
+  'enx',
+  9
+),
+(
+  'NaFJTgvemQFfTTGAq2PR1uBny3NENWMur5k6eBsG5ii',
+  'naga',
+  9
+),
+(
+  'UXPhBoR3qG4UCiGNJfV7MqhHyFqKN68g45GoYvAeL2M',
+  'uxp',
+  9
+),
+(
+  '2HeykdKjzHKGm2LKHw8pDYwjKPiFEoXAz74dirhUgQvq',
+  'sao',
+  6
+),
+(
+  '6jAHVBYY2B4dU6hGxXpCqFwHdjDL6aiLtTvJKn8fWRo1',
+  'dra',
+  6
+),
+(
+  '6uZ7MRGGf3FJhzk9TUk3QRMR2fz83WY9BEVBukRvMRVX',
+  'nana',
+  9
+),
+(
+  'HVkFqcMHevVPb4XKrf4XowjEaVVsBoqJ2U1EG59Dfk5j',
+  'vision',
+  9
+),
+(
+  'Aw8qLRHGhMcKq7rxs5XBNCd9oe3BvoAhpNMVz7AdGmty',
+  'panda',
+  9
+),
+(
+  'EHaEBhYHWA7HSphorXXosysJem6qF4agccoqDqQKCUge',
+  'weyu',
+  8
+),
+(
+  'EcFyPDjqpnyMvh1LhACtC6rrCZ41DMez7RZYocjhmUVS',
+  'noch',
+  6
+),
+(
+  '9tQhCmFtCh56qqf9szLQ8dNjYcd4TTv6MWPpw6MqLubu',
+  'cmpn',
+  6
+),
+(
+  '9ae76zqD3cgzR9gvf5Thc2NN3ACF7rqqnrLqxNzgcre6',
+  'wipe',
+  9
+),
+(
+  'ArUkYE2XDKzqy77PRRGjo4wREWwqk6RXTfM9NeqzPvjU',
+  'rendoge',
+  8
+),
+(
+  'Bx4ykEMurwPQBAFNvthGj73fMBVTvHa8e9cbAyaK4ZSh',
+  'tox',
+  9
+),
+(
+  'SLRSSpSLUTP7okbCUBYStWCo1vUgyt775faPqz8HUMr',
+  'slrs',
+  6
+),
+(
+  '2e7yNwrmTgXp9ABUmcPXvFJTSrEVLj4YMyrb4GUM4Pdd',
+  'msi',
+  6
+),
+(
+  'EctmRn2jMAdTDvQdG7mxadyiTvhGZiGYNrt9PWe6zioG',
+  'santa',
+  9
+),
+(
+  'GDsVXtyt2CBwieKSYMEsjjZXXvqz2G2VwudD7EvXzoEU',
+  'hiram',
+  3
+),
+(
+  '4NPzwMK2gfgQ6rTv8x4EE1ZvKW6MYyYTSrAZCx7zxyaX',
+  'klb',
+  0
+),
+(
+  'CLAsHPfTPpsXmzZzdexdEuKeRzZrWjZFRHQEPu2kSgWM',
+  'clh',
+  6
+),
+(
+  'HjUMVG3yQK7uMTq1TerG6C8JzAjRvMdYCoX7ZUzKTgjH',
+  'merit',
+  9
+),
+(
+  'FoRGERiW7odcCBGU1bztZi16osPBHjxharvDathL5eds',
+  '$forge',
+  9
+),
+(
+  'ALMmmmbt5KNrPPUBFE4dAKUKSPWTop5s3kUGCdF69gmw',
+  'alm',
+  6
+),
+(
+  'GENEtH5amGSi8kHAtQoezp1XEXwZJ8vcuePYnXdKrMYz',
+  'gene',
+  9
+),
+(
+  '4ThReWAbAVZjNVgs5Ui9Pk3cZ5TYaD9u6Y89fp6EFzoF',
+  '1sol',
+  8
+),
+(
+  'DktNJUJAWJyeLw3ykCkFNpGohE24SoEhevKBskRi6P1y',
+  'solbear',
+  9
+),
+(
+  '2946ofy854iifvXCQmHX2AJgxRBoQcchy1gfD26RtkHp',
+  'shibt',
+  9
+),
+(
+  'H7Qc9APCWWGDVxGD5fJHmLTmdEgT9GFatAKFNg6sHh8A',
+  'oogi',
+  9
+),
+(
+  'MNDEFzGvMt87ueuHvVU9VcTqsAP5b3fTGPsHuuPA5ey',
+  'mnde',
+  9
+),
+(
+  '4dydh8EGNEdTz6grqnGBxpduRg55eLnwNZXoNZJetadu',
+  'swarm',
+  9
+),
+(
+  'Dhg9XnzJWzSQqH2aAnhPTEJHGQAkALDfD98MA499A7pa',
+  'shiba',
+  9
+),
+(
+  '2mDJPcvv7vigZo9ZPxhHLpKQSixCkbohVY35eX6NkN6m',
+  'tbk',
+  9
+),
+(
+  '2vRgBSJEVPXxayrhXoazQyCKSGFYQG3ZdfT2Gv5gZykL',
+  'shroomz',
+  6
+),
+(
+  'HDiA4quoMibAGeJQzvxajp3Z9cvnkNng99oVrnuNj6px',
+  'ksamo',
+  6
+),
+(
+  'G7uYedVqFy97mzjygebnmmaMUVxWHFhNZotY6Zzsprvf',
+  'cstr',
+  9
+),
+(
+  '2LxZrcJJhzcAju1FBHuGvw929EVkX7R7Q8yA2cdp8q7b',
+  'bork',
+  3
+),
+(
+  'SAMUmmSvrE8yqtcG94oyP1Zu2P9t8PSRSV3vewsGtPM',
+  'samu',
+  9
+),
+(
+  '4BzxVoBQzwKoqm1dQc78r42Yby3EzAeZmMiYFdCjeu5Z',
+  'swole',
+  9
+),
+(
+  'FANTafPFBAt93BNJVpdu25pGPmca3RfwdsDsRrT3LX1r',
+  'fant',
+  6
+),
+(
+  'DogscQVvNVj7ndEnhWiCXPVPKKwNy9fJd4ATF7mVi5J',
+  'dsc',
+  9
+),
+(
+  'Hj4sTP4L4rvR9WBR6KyK99sxPptBQQczNWe4y15mxhRD',
+  'snj',
+  9
+),
+(
+  'DjPt6xxMoZx1DyyWUHGs4mwqWWX48Fwf6ZJgqv2F9qwc',
+  'void',
+  9
+),
+(
+  '72hgmvS5zFxaFJfMizq6Gp4gjBqXjTPyX9GDP38krorQ',
+  'hima',
+  9
+),
+(
+  '6bLp99VoqKU1C3Qp6VTNvSoCoc78jMGxPkGSSopq8wHB',
+  'paws',
+  2
+),
+(
+  'SLT3iSYKeBuCyxvnfij4RUhMfKxZCY3s12Z5pfkTXhV',
+  'slt',
+  6
+),
+(
+  '8ymi88q5DtmdNTn2sPRNFkvMkszMHuLJ1e3RVdWjPa3s',
+  'sdoge',
+  0
+),
+(
+  'A9UhP1xfQHWUhSd54NgKPub2XB3ZuQMdPEvf9aMTHxGT',
+  'degn',
+  9
+),
+(
+  'Uuc6hiKT9Y6ASoqs2phonGGw2LAtecfJu9yEohppzWH',
+  'baby',
+  9
+),
+(
+  'AAmGoPDFLG6bE82BgZWjVi8k95tj9Tf3vUN7WvtUm2BU',
+  'racefi',
+  6
+),
+(
+  'EZF2sPJRe26e8iyXaCrmEefrGVBkqqNGv9UPGG9EnTQz',
+  'fum',
+  9
+),
+(
+  '3jzdrXXKxwkBk82u2eCWASZLCKoZs1LQTg87HBEAmBJw',
+  'floof',
+  9
+),
+(
+  '6TgvYd7eApfcZ7K5Mur7MaUQ2xT7THB4cLHWuMkQdU5Z',
+  'otr',
+  9
+),
+(
+  '7q3AdgKuMeDRnjaMQs7ppXjaw4HUxjsdyMrrfiSZraiN',
+  'solv',
+  9
+),
+(
+  'CobcsUrt3p91FwvULYKorQejgsm5HoQdv5T8RUZ6PnLA',
+  'people',
+  8
+),
+(
+  'CN7qFa5iYkHz99PTctvT4xXUHnxwjQ5MHxCuTJtPN5uS',
+  'boku',
+  9
+),
+(
+  '45ojchnvC3agGNvs86MWBq8N4miiTY6X8ECQzgQNDE4v',
+  'swerve',
+  9
+),
+(
+  'EYDEQW4xQzLqHcFwHTgGvpdjsa5EFn74KzuqLX5emjD2',
+  'bst',
+  9
+),
+(
+  '5ENUvV3Ur3o3Fg6LVRfHL4sowidiVTMHHsEFqNJXRz6o',
+  'lizard',
+  4
+),
+(
+  '1C2EYVrwmoXAGbiKirFFBeDFDYUBHPhDeg9trhibTND',
+  'nra',
+  9
+),
+(
+  'inL8PMVd6iiW3RCBJnr5AsrRN6nqr4BTrcNuQWQSkvY',
+  'in',
+  9
+),
+(
+  '7uv3ZvZcQLd95bUp5WMioxG7tyAZVXFfr8JYkwhMYrnt',
+  'bole',
+  4
+),
+(
+  'AD27ov5fVU2XzwsbvnFvb1JpCBaCB5dRXrczV9CqSVGb',
+  'real',
+  9
+),
+(
+  'cxxShYRVcepDudXhe7U62QHvw8uBJoKFifmzggGKVC2',
+  'chicks',
+  9
+),
+(
+  'q4bpaRKw3fJB1AJBeeBaKv3TjYzWsmntLgnSB275YUb',
+  'trtls',
+  9
+),
+(
+  '66edZnAPEJSxnAK4SckuupssXpbu5doV57FUcghaqPsY',
+  'prgc',
+  9
+),
+(
+  'Ch9NFVk5sqEPQHtw2gJVgnHfTm7FW1JspYwc7SxLi6q3',
+  'mend',
+  9
+),
+(
+  'AWW5UQfMBnPsTaaxCK7cSEmkj1kbX2zUrqvgKXStjBKx',
+  'sbfc',
+  6
+),
+(
+  'EdAhkbj5nF9sRM7XN7ewuW8C9XEUMs8P7cnoQ57SYE96',
+  'fab',
+  9
+),
+(
+  'LAinEtNLgpmCP9Rvsf5Hn8W6EhNiKLZQti1xfWMLy6X',
+  'lainesol',
+  9
+),
+(
+  '8NGgmXzBzhsXz46pTC3ioSBxeE3w2EXpc741N3EQ8E6r',
+  'joke',
+  9
+),
+(
+  'FciGvHj9FjgSGgCBF1b9HY814FM9D28NijDd5SJrKvPo',
+  'tgt',
+  6
+),
+(
+  '5fTwKZP2AK39LtFN9Ayppu6hdCVKfMGVm79F2EgHCtsi',
+  'whey',
+  6
+),
+(
+  'Lrxqnh6ZHKbGy3dcrCED43nsoLkM1LTzU2jRfWe8qUC',
+  'larix',
+  6
+),
+(
+  'KgV1GvrHQmRBY8sHQQeUKwTm2r2h8t4C8qt12Cw1HVE',
+  'avax',
+  8
+),
+(
+  'BUD1144GGYwmMRFs4Whjfkom5UHqC9a8dZHPVvR2vfPx',
+  'bud',
+  6
+),
+(
+  '3FoUAsGDbvTD6YZ4wVKJgTB76onJUKz7GPEBNiR5b8wc',
+  'cheems',
+  4
+),
+(
+  '3bRTivrVsitbmCTGtqwp7hxXPsybkjn4XLNtPsHqa3zR',
+  'like',
+  9
+),
+(
+  'MangoCzJ36AjZyKwVj3VnYU4GTonjfVEnJmvvWaxLac',
+  'mngo',
+  6
+),
+(
+  '333iHoRM2Awhf9uVZtSyTfU8AekdGrgQePZsKMFPgKmS',
+  'isola',
+  6
+),
+(
+  '9mWRABuz2x6koTPCWiCPM49WUbcrNqGTHBV9T9k7y1o7',
+  'mimatic',
+  9
+),
+(
+  '4Hx6Bj56eGyw8EJrrheM6LBQAvVYRikYCWsALeTrwyRU',
+  'dydx',
+  8
+),
+(
+  'Saber2gLauYim4Mvftnrasomsv6NvAuncvMEZwcLpD1',
+  'sbr',
+  6
+),
+(
+  '5p2zjqCd1WJzAVgcEnjhb9zWDU7b9XVhFhx4usiyN7jB',
+  'cato',
+  9
+),
+(
+  'Gsai2KN28MTGcSZ1gKYFswUpFpS7EM9mvdR9c8f6iVXJ',
+  'gsail',
+  9
+),
+(
+  'AMdnw9H5DFtQwZowVFr4kUgSXJzLokKSinvgGiUoLSps',
+  'mola',
+  9
+),
+(
+  '5U9QqCPhqXAJcEv9uyzFJd5zhN93vuPk1aNNkXnUfPnt',
+  'spwn',
+  9
+),
+(
+  'DFL1zNkaGPWm1BqAVqRjCZvHmwTFrEaJtbzJWgseoNJh',
+  'dfl',
+  9
+),
+(
+  'orcaEKTdK7LKz57vaAYr9QeNsVEPfiu6QeMU1kektZE',
+  'orca',
+  6
+),
+(
+  '5LSFpvLDkcdV2a3Kiyzmg5YmJsj2XDLySaXvnfP1cgLT',
+  'dogo',
+  6
+),
+(
+  '4TGxgCSJQx2GQk9oHZ8dC5m3JNXTYZHjXumKAW3vLnNx',
+  'oxs',
+  9
+),
+(
+  'HEhMLvpSdPviukafKwVN8BnBUTamirptsQ6Wxo5Cyv8s',
+  'ftr',
+  9
+),
+(
+  '2FPyTwcZLUg1MDrwsyoP4D6s1tM7hAkHYRjkNb5w6Pxk',
+  'soeth',
+  6
+),
+(
+  'DubwWZNWiNGMMeeQHPnMATNj77YZPZSAz2WVR5WjLJqz',
+  'crp',
+  9
+),
+(
+  'mSoLzYCxHdYgdzU16g5QSh3i5K3z3KZK7ytfqcJm7So',
+  'msol',
+  9
+),
+(
+  '51tMb3zBKDiQhNwGqpgwbavaGH54mk8fXFzxTc1xnasg',
+  'apex',
+  9
+),
+(
+  'GfJ3Vq2eSTYf1hJP6kKLE9RT6u7jF9gNszJhZwo5VPZp',
+  'solpad',
+  9
+),
+(
+  'C98A4nkJXhpVZNAZdHUA95RpTF3T4whtQubL3YobiUX9',
+  'c98',
+  6
+),
+(
+  'PoRTjZMPXb9T7dyU7tpLEZRQj7e6ssfAE62j2oQuc6y',
+  'port',
+  6
+),
+(
+  'GsNzxJfFn6zQdJGeYsupJWzUAm57Ba7335mfhWvFiE9Z',
+  'dxl',
+  6
+),
+(
+  'BRLsMczKuaR5w9vSubF4j8HwEGGprVAyyVgS4EX7DKEg',
+  'cys',
+  6
+),
+(
+  '4wjPQJ6PrkC4dHhYghwJzGBVP78DkBzA2U3kHoFNBuhj',
+  'liq',
+  6
+),
+(
+  '5v6tZ1SiAi7G8Qg4rBF1ZdAn4cn6aeQtefewMr1NLy61',
+  'sold',
+  9
+),
+(
+  'AURYydfxJib1ZkTir1Jn1J9ECYUtjb6rKQVmtYaixWPP',
+  'aury',
+  9
+),
+(
+  'ATLASXmbPQxBUYbxPsV97usA3fPQYEqzQBUHgiFCUsXx',
+  'atlas',
+  8
+),
+(
+  'poLisWXnNRwC6oBu1vHiuKQzFjGL4XDSu4g9qjz9qVk',
+  'polis',
+  8
+),
+(
+  'BLwTnYKqf7u4qjgZrrsKeNs2EzWkMLqVCu6j8iHyrNA3',
+  'bop',
+  8
+),
+(
+  'E5ndSkaB17Dm7CsD22dvcjfrYSDLCxFcMd6z8ddCk5wp',
+  'rin',
+  9
+),
+(
+  '6YAXGyWb3hhLVQQ3vqg9ZYewXk4Cknnr1raTfDwbf8XG',
+  'mekka',
+  9
+),
+(
+  'ChVzxWRmrTeSgwd3Ui3UumcN8KX7VK3WaD4KGeSKpypj',
+  'sushi',
+  8
+),
+(
+  '3vHSsV6mgvpa1JVuuDZVB72vYbeUNzW4mBxiBftwzHEA',
+  'frnt',
+  9
+),
+(
+  '6Dujewcxn1qCd6rcj448SXQL9YYqTcqZCNQdCn3xJAKS',
+  'arte',
+  6
+),
+(
+  '2QK9vxydd7WoDwvVFT5JSU8cwE9xmbJSzeqbRESiPGMG',
+  'kekw',
+  9
+),
+(
+  'RLBxxFkseAZ4RgJH3Sqn8jXxhmGoz9jWxDNJMh8pL7a',
+  'rlb',
+  2
+),
+(
+  'EP2aYBDD4WvdhnwWLUMyqU69g1ePtEjgYK6qyEAFCHTx',
+  'krill',
+  0
+),
+(
+  'AkhdZGVbJXPuQZ53u2LrimCjkRP6ZyxG1SoM85T98eE1',
+  'bot',
+  8
+),
+(
+  '5jFnsfx36DyGk8uVGrbXnVUMTsBkPXGpx6e69BiGFzko',
+  'inu',
+  9
+),
+(
+  '7SZUnH7H9KptyJkUhJ5L4Kee5fFAbqVgCHvt7B6wg4Xc',
+  'sdo',
+  5
+),
+(
+  '7Q2afV64in6N6SeZsAAB81TJzwDoD6zpqmHkzi9Dcavn',
+  'jsol',
+  9
+),
+(
+  '25Vu6457o2gdZRGVVt5K8NbAvaP3esYaQNHbNDitVtw1',
+  'xvc',
+  9
+),
+(
+  'Ma4dse7fmzXLQYymNsDDjq6VgRXtEFTJw1CvmRrBoKN',
+  'maga',
+  9
+),
+(
+  'CpFE715P5DnDoJj9FbCRcuyHHeTXNdRnvzNkHvq1o23U',
+  'darc',
+  9
+),
+(
+  'TuLipcqtGVXP9XR62wM8WWCm6a9vhLs7T1uoWBk6FDs',
+  'tulip',
+  6
+),
+(
+  'EwJN2GqUGXXzYmoAciwuABtorHczTA5LqbukKXV1viH7',
+  'ups',
+  6
+),
+(
+  'SUNNYWgPQmFxe9wTZzNK7iPnJ3vYDrkgnxJRJm1s3ag',
+  'sunny',
+  6
+),
+(
+  'MMAx26JtJgSWv6yH48nEHCGZcVvRbf9Lt9ALa7jSipe',
+  'mma',
+  9
+),
+(
+  'AVKnbqNQgXDY8kbnno9eSGfwpVz5idimBnDKiz1vbWAh',
+  'part',
+  9
+),
+(
+  'PRSMNsEPqhGVCH1TtWiJqPjJyh2cKrLostPZTNy1o5x',
+  'prism',
+  6
+),
+(
+  'FnKE9n6aGjQoNWRBZXy4RW6LZVao7qwBonUbiD7edUmZ',
+  'syp',
+  9
+),
+(
+  'AKxR1NLTtPnsVcWwPSEGat1TC9da3Z2vX7sY4G7ZLj1r',
+  'pnt',
+  9
+),
+(
+  '6JdcMdhqgCtcP4U9tieRqmKLhPLxRMLC67QfmdXAJBvZ',
+  'kitty',
+  6
+),
+(
+  'C6qep3y7tCZUJYDXHiwuK46Gt6FsoxLi8qV1bTCRYaY1',
+  'lstar',
+  6
+),
+(
+  '3EkHyexJLGCvSxzn5umbtd9N69GoT4p5pfdLTFqCNP9Y',
+  '$hippo',
+  9
+),
+(
+  'Basis9oJw9j8cw53oMV7iqsgo6ihi9ALw4QR31rcjUJa',
+  'basis',
+  6
+),
+(
+  '3DHPqxdMXogNNnpqBMF8N4Zs4dn1WR31H7UjWq6FExwG',
+  'dawg',
+  9
+),
+(
+  'sonarX4VtVkQemriJeLm6CKeW3GDMyiBnnAEMw1MRAE',
+  'sonar',
+  9
+),
+(
+  'FY6XDSCubMhpkU9FAsUjB7jmN8YHYZGezHTWo9RHBSyX',
+  'ash',
+  4
+),
+(
+  'FTPnEQ3NfRRZ9tvmpDW6JFrvweBE5sanxnXSpJL1dvbB',
+  'bird',
+  9
+),
+(
+  'EGiWZhNk3vUNJr35MbL2tY5YD6D81VVZghR2LgEFyXZh',
+  'bit',
+  9
+),
+(
+  'JAa3gQySiTi8tH3dpkvgztJWHQC1vGXr5m6SQ9LEM55T',
+  'solust',
+  6
+),
+(
+  'USDrbBQwQbQ2oWHUPfA8QBHcyVxKUq1xHyXsSLKdUq2',
+  'usdr',
+  6
+),
+(
+  '3CaBxqxWsP5oqS84Pkja4wLxyZYsHzMivQbnfwFJQeL1',
+  'solfi',
+  9
+),
+(
+  '5y1YcGVPFy8bEiCJi79kegF9igahmvDe5UrqswFvnpMJ',
+  'dsol',
+  4
+),
+(
+  'Ce3PSQfkxT5ua4r2JqCoWYrMwKWC5hEzwsrT9Hb7mAz9',
+  'date',
+  9
+),
+(
+  'CiAkzbxkQCyY7hFtNeUHMbqiL8CXtbWaRnUJpJz5sBrE',
+  'plut',
+  9
+),
+(
+  'CgbJxXyaHeU8VsquBpySuFXA94b6LWXxioZ28wRr8fs9',
+  'vinu',
+  6
+),
+(
+  '8c71AvjQeKKeWRe8jtTGG1bJ2WiYXQdbjqFbUfhHgSVk',
+  'gary',
+  9
+),
+(
+  'CH74tuRLTYcxG7qNJCsV9rghfLXJCQJbsu7i52a8F1Gn',
+  'solx',
+  9
+),
+(
+  'G7eETAaUzmsBPKhokZyfbaT4tD9igdZSmfQGEYWem8Sw',
+  'eye',
+  6
+),
+(
+  '8ymjMjitLchSFU9zkcbjsJENhSXou4YKh7RD2U3yvqdJ',
+  'ksw',
+  8
+),
+(
+  '6AarZpv8KwmPBxBEZdRmd3g1q2tUBaSgTNQ5e621qcZQ',
+  'dape',
+  2
+),
+(
+  'AMp8Jo18ZjK2tuQGfjKAkkWnVP4NWX5sav4NJH6pXF2D',
+  'astra',
+  9
+),
+(
+  'EKLq86cHRwc8Spkcx2noPnfoVyQvcWSeud5JMJnTxNAD',
+  'abc',
+  2
+),
+(
+  'DMCUFm2ZAnSU7UgsdVq23gRogMU3MEBjPgQF1gK53rEn',
+  'um',
+  6
+),
+(
+  'J7WYVzFNynk9D28eBCccw2EYkygygiLDCVCabV7CupWL',
+  'mongoose',
+  9
+),
+(
+  '9iLH8T7zoWhY7sBmj1WK9ENbWdS1nL8n9wAxaeRitTa6',
+  'ush',
+  9
+),
+(
+  'SNSNkV9zfG5ZKWQs6x4hxvBRV6s8SqMfSGCtECDvdMd',
+  'sns',
+  3
+),
+(
+  '2wmKXX1xsxLfrvjEPrt2UHiqj8Gbzwxvffr9qmNjsw8g',
+  'solar',
+  9
+),
+(
+  'Bwfe7DwmEDvjEBZGbQnDU8CrwZsuvYaed1VuQ8KDTGsS',
+  'xeno',
+  0
+),
+(
+  '31tCNEE6LiL9yW4Bu153Dq4vi2GuorXxCA9pW9aA6ecU',
+  'spkl',
+  9
+),
+(
+  '6c4L5nTH2sBKkfeuP3WhGp6Vq1tE4Suh4ezRp5KSu8Z7',
+  'fani',
+  9
+),
+(
+  'FoqP7aTaibT5npFKYKQQdyonL99vkW8YALNPwWepdvf5',
+  'bip',
+  9
+),
+(
+  '6j14WyX1Ag2pLWvn99euK4xp2VcZD62VeJv2iwCrYmT8',
+  '$ksh',
+  9
+),
+(
+  'So11111111111111111111111111111111111111112',
+  'sol',
+  9
+),
+(
+  'XwTZraiF1dVh69cZ2SpqyjDLmei2uVps5CYHD9vqK6d',
+  'burr',
+  2
+),
+(
+  'HAgX1HSfok8DohiNCS54FnC2UJkDSrRVnT38W3iWFwc8',
+  'meow',
+  9
+),
+(
+  '4Te4KJgjtnZe4aE2zne8G4NPfrPjCwDmaiEx9rKnyDVZ',
+  'sct',
+  9
+),
+(
+  'FNFKRV3V8DtA3gVJN6UshMiLGYA8izxFwkNWmJbFjmRj',
+  'ttt',
+  6
+),
+(
+  '7i5KKsX2weiTkry7jA4ZwSuXGhs5eJBEjY8vVxR4pfRx',
+  'gmt',
+  9
+),
+(
+  'CJ5U6wPmjxFUyTJpUTS7Rt1UqhTmSVRMvmJ8WD4nndXW',
+  'glxy',
+  9
+),
+(
+  'GHvFFSZ9BctWsEc5nujR1MTmmJWY7tgQz2AXE6WVFtGN',
+  'solape',
+  9
+),
+(
+  'FatneQg39zhrG6XdwYb8fzM4VgybpgqjisJYESSBD7FV',
+  'mkd',
+  9
+),
+(
+  'H6JocWxg5g1Lcs4oPnBecmjQ4Y1bkZhGJHtjMunmjyrp',
+  'spx',
+  9
+),
+(
+  'CzXF8oUJSsB9ADKV99WAi2TgytqAyKvQw6EihwiL9em4',
+  'drgnz',
+  2
+),
+(
+  'DUSTawucrTsGU8hcqRdHDCbuYhCPADMLM2VcCb8VnFnQ',
+  'dust',
+  9
+),
+(
+  '3fXCWpQaEHEsnHSYAqcxm3QLPGLxYiZzoJbqRY9wWxV2',
+  'dcct',
+  9
+),
+(
+  'invSTFnhB1779dyku9vKSmGPxeBNKhdf7ZfGL1vTH3u',
+  'iv',
+  9
+),
+(
+  'PRiME7gDoiG1vGr95a3CRMv9xHY7UGjd4JKvfSkmQu2',
+  'prime',
+  9
+),
+(
+  'Hg35Vd8K3BS2pLB3xwC2WqQV8pmpCm3oNRGYP1PEpmCM',
+  'esol',
+  9
+),
+(
+  '56tNQ29XBrbovm5K5SThuQatjCy92w2wKUaUeQ8WCD9g',
+  'cryy',
+  9
+),
+(
+  'GZL4yjPohDShW4RofJ6dEWu2Fv7qEa5mBT7Dpje5hqe7',
+  'sac',
+  2
+),
+(
+  '4uRn7vxRPWYP4HuAa4UNXwEPLRL8oQ71YByMhr6yBnL4',
+  'waves',
+  2
+),
+(
+  'HonyeYAaTPgKUgQpayL914P6VAqbQZPrbkGMETZvW4iN',
+  'honey',
+  6
+),
+(
+  'zebeczgi5fSEtbpfQKVZKCJ3WgYXxjkMUkNNx7fLKAF',
+  'zbc',
+  9
+),
+(
+  'E6oCGvmSYW7qhy7oeDfiNZLX6hEmPCVxBC8AknwAj82B',
+  'playa',
+  2
+),
+(
+  '8j3hXRK5rdoZ2vSpGLRmXtWmW6iYaRUw5xVk4Kzmc9Hp',
+  'shards',
+  9
+),
+(
+  'MoshMwLkVu4iwrPBaWpYkh43qJiSXsnyzNLuMXFv5F4',
+  'moshi',
+  9
+),
+(
+  'ATZERmcPfopS9vGqw9kxqRj9Bmdi3Z268nHXkGsMa3Pf',
+  'fone',
+  2
+),
+(
+  'yvbrxE6zjrA8SxxSpL7oojDBB5QDmF5CVqJWea8JcQE',
+  'codi',
+  9
+),
+(
+  'AAXng5czWLNtTXHdWEn9Ef7kXMXEaraHj2JQKo7ZoLux',
+  'dge',
+  9
+),
+(
+  'BNTY5DaMP9CZhEtmQfMLHfUwwkXropHuCz4m96YqpqKm',
+  'bnty',
+  9
+),
+(
+  'EE5L8cMU4itTsCSuor7NLK6RZx6JhsBe8GGV3oaAHm3P',
+  'avdo',
+  8
+),
+(
+  'AGkFkKgXUEP7ZXazza5a25bSKbz5dDpgafPhqywuQnpf',
+  'ssu',
+  9
+),
+(
+  'de1QJkP1qDCk5JYCCXCeq27bQQUdCaiv7xVKFrhPSzF',
+  'delfi',
+  6
+),
+(
+  'Taki7fi3Zicv7Du1xNAWLaf6mRK7ikdn77HeGzgwvo4',
+  'taki',
+  9
+),
+(
+  'A3HyGZqe451CBesNqieNPfJ4A9Mu332ui8ni6dobVSLB',
+  'woop',
+  5
+),
+(
+  'YAWtS7vWCSRPckx1agB6sKidVXiXiDUfehXdEUSRGKE',
+  'yaw',
+  6
+),
+(
+  '2MtPZqwNKTNsBoFCwm4ZTWk3ySz4LSd82ucDGeTk7VNu',
+  'ivry',
+  2
+),
+(
+  'D3eyBjfgJMPHZyYDRtbf1cSxeLiNwKumwHzQK3h3TRRq',
+  'bone',
+  6
+),
+(
+  '8s9FCz99Wcr3dHpiauFRi6bLXzshXfcGTfgQE7UEopVx',
+  'ckc',
+  6
+),
+(
+  'EcQCUYv57C4V6RoPxkVUiDwtX1SP8y8FP5AEToYL8Az',
+  'wlkn',
+  9
+),
+(
+  '5s4BYUXLuvs9ZcVDTxkTpKhThWFSpaU8GG55q2iySe2N',
+  'enrx',
+  2
+),
+(
+  'SENBBKVCM7homnf5RX9zqpf1GFe935hnbU4uVzY1Y6M',
+  'sntr',
+  9
+),
+(
+  'DmXfDUeyRJqnpvdjssGgUXwZrRFPXvu2DfMq4jfTTC9C',
+  'weens',
+  0
+),
+(
+  'DNhZkUaxHXYvpxZ7LNnHtss8sQgdAfd1ZYS1fB7LKWUZ',
+  'apusdt',
+  6
+),
+(
+  '9n4nbM75f5Ui33ZbPYXn59EwSgE8CGsHtAeTH5YFeJ9E',
+  'sobtc',
+  6
+),
+(
+  'A94X2fRy3wydNShU4dRaDyap2UuoeWJGWyATtyp61WZf',
+  'tryb',
+  6
+),
+(
+  'Fr3W7NPVvdVbwMcHgA7Gx2wUxP43txdsn3iULJGFbKz9',
+  'xftt',
+  8
+),
+(
+  'Fp4gjLpTsPqBN6xDGpDHwtnuEofjyiZKxxZxzvJnjxV6',
+  'naxar',
+  4
+),
+(
+  'SoLW9muuNQmEAoBws7CWfYQnXRXMVEG12cQhy6LE2Zf',
+  'amtsol',
+  9
+),
+(
+  'E1PvPRPQvZNivZbXRL61AEGr71npZQ5JGxh4aWX7q9QA',
+  'ino',
+  9
+),
+(
+  'GyUYoBT1gcZBEVffWeGKQ3E2gzfNP5b8GEvnqAGjL6Hs',
+  'dpay',
+  6
+),
+(
+  'kiNeKo77w1WBEzFFCXrTDRWGRWGP8yHvKC9rX6dqjQh',
+  'kko',
+  9
+),
+(
+  '7z1eQmEhhM9e1AVCBQc6BzMZWmCZRqHCLJtkDgHxzYnQ',
+  'lfgo',
+  9
+),
+(
+  'CREAMpdDimXxj2zTCwP5wMEtba4NYaKCrTBEQTSKtqHe',
+  'creamy',
+  9
+),
+(
+  'EAefyXw6E8sny1cX3LTH6RSvtzH6E5EFy1XsE2AiH1f3',
+  'rpc',
+  6
+),
+(
+  'htoHLBJV1err8xP5oxyQdV2PLQhtVjxLXpKB7FsgJQD',
+  'hto',
+  9
+),
+(
+  'DsVPH4mAppxKrmdzcizGfPtLYEBAkQGK4eUch32wgaHY',
+  'gxe',
+  9
+),
+(
+  'ANAxByE6G2WjFp7A4NqtWYXb3mgruyzZYg3spfxe6Lbo',
+  'ana',
+  6
+),
+(
+  '5PmpMzWjraf3kSsGEKtqdUsCoLhptg4yriZ17LKKdBBy',
+  'hdg',
+  9
+),
+(
+  'FoXyMu5xwXre7zEoSvzViRk3nGawHUp9kUh97y2NDhcq',
+  'foxy',
+  0
+),
+(
+  'CTYiHf58UGShfHtpkTwx7vjPDA779dd6iVaeD281fEVx',
+  'hunt',
+  9
+),
+(
+  'GENZexWRRGNS2Ko5rEgGG1snRXpaa3CDDGYnhTSmE3kd',
+  'genz',
+  9
+),
+(
+  'AUT1gfMZw37wMMQqAxk89nfpjZpEEf2XSoBUd8V5ydnS',
+  'aut',
+  9
+),
+(
+  'BKipkearSqAUdNKa1WDstvcMjoPsSKBuNyvKDQDDu9WE',
+  'hawk',
+  6
+),
+(
+  'GWsZd8k85q2ie9SNycVSLeKkX7HLZfSsgx6Jdat9cjY1',
+  'pcn',
+  9
+),
+(
+  'GoLDYyyiVeXnVf9qgoK712N5esm1cCbHEK9aNJFx47Sx',
+  'goldy',
+  9
+),
+(
+  'J1toso1uCk3RLmjorhTtrVwY9HJ7X8V9yYac6Y7kGCPn',
+  'jitosol',
+  9
+),
+(
+  '2cJgFtnqjaoiu9fKVX3fny4Z4pRzuaqfJ3PBTMk2D9ur',
+  'pld',
+  6
+),
+(
+  'LiLyT885cG9xZKYQk9x6VWMzmcui4ueV9J1uzPDDajY',
+  'lily',
+  6
+),
+(
+  '23WuycvPjEuzJTsBPBZqnbFZFcBtBKAMTowUDHwagkuD',
+  'gear',
+  0
+),
+(
+  '5idSc21Ht4FTC7jSNe34d6v5FmY8gonswYHpgC7QZCZW',
+  'prs',
+  2
+),
+(
+  'AHT1yynTv45s3P3KrRfQCVMHckdHeMVA3fteEg34xt9y',
+  'aht',
+  9
+),
+(
+  '95bzgMCtKw2dwaWufV9iZyu64DQo1eqw6QWnFMUSnsuF',
+  'lada',
+  9
+),
+(
+  '7dgHoN8wBZCc5wbnQ2C47TDnBMAxG4Q5L3KjP67z8kNi',
+  'mana',
+  8
+),
+(
+  'pH5wWJc3KhdeVQSt86DU31pdcL9c8P88x2FQoKEJVHC',
+  'bxs',
+  6
+),
+(
+  '2YCQcQgy9nNhgukjAur1jCvMXgSTQ5FVDc3ae3BcspXS',
+  'vrs',
+  9
+),
+(
+  'kiGenopAScF8VF31Zbtx2Hg8qA5ArGqvnVtXb83sotc',
+  'ki',
+  9
+),
+(
+  'PRAxfbouRoJ9yZqhyejEAH6RvjJ86Y82vfiZTBSM3xG',
+  'prana',
+  6
+),
+(
+  'METAewgxyPbgwsseH8T16a39CQ5VyVxZi9zXiDPY18m',
+  'mplx',
+  6
+),
+(
+  'ANXqXpSkTEuCnR27YK2AoHNH2CCbiSaKYAKcDQVMi6ar',
+  'mtk',
+  9
+),
+(
+  'EXGqHqvKBs4Z1mCwhiGE7kT2TXGFirAjvQzPSQP8nvuw',
+  'star',
+  9
+),
+(
+  '3uejHm24sWmniGA5m4j4S1DVuGqzYBR5DJpevND4mivq',
+  'ip3',
+  9
+),
+(
+  'xALGoH1zUfRmpCriy94qbfoMXHtK6NDnMKzT4Xdvgms',
+  'xalgo',
+  6
+),
+(
+  'CUSDvqAQLbt7fRofcmV2EXfPA2t36kzj7FjzdmqDiNQL',
+  'cusd',
+  6
+),
+(
+  'YtfMZ4jg2ubdz4GasY86iuGjHdo5rCPJnFqgSf8gxAz',
+  'chb',
+  9
+),
+(
+  'USDH1SM1ojwWUga67PGrgFWUHibbjqMvuMaDkRJTgkX',
+  'usdh',
+  6
+),
+(
+  'NRVwhjBQiUPYtfDT5zRBVJajzFQHaBUNtC7SNVvqRFa',
+  'nirv',
+  6
+),
+(
+  'kZEn3aDxEzcFADPe2VQ6WcJRbS1hVGjUcgCw4HiuYSU',
+  'kzen',
+  9
+),
+(
+  'GRsoqmhsS7fCLpEqqE7oRM92ag3WVy8VbJAi6KfWSeHS',
+  'bbi',
+  2
+),
+(
+  'EzfnjRUKtc5vweE1GCLdHV4MkDQ3ebSpQXLobSKgQ9RB',
+  'csm',
+  6
+),
+(
+  '3FHpkMTQ3QyAJoLoXVdBpH4TfHiehnL2kXmv9UXBpYuF',
+  'style',
+  9
+),
+(
+  'E6eCEE3KqjRD5UxcBYQTdV8Z535hyaBuFin9Udm6s6bz',
+  'air',
+  9
+),
+(
+  'CFbdjaKonbBQTYG2GC6CmB7exofgDYGCDR8tp8KVGS7T',
+  'borg',
+  6
+),
+(
+  '5KV2W2XPdSo97wQWcuAVi6G4PaCoieg4Lhhi61PAMaMJ',
+  'gu',
+  9
+),
+(
+  'HxhWkVpk5NS4Ltg5nij2G671CKXFRKPK8vy271Ub4uEK',
+  'hxro',
+  8
+),
+(
+  'BiDB55p4G3n1fGhwKFpxsokBMqgctL4qnZpDH1bVQxMD',
+  'dio',
+  9
+),
+(
+  'F6v4wfAdJB8D8p77bMXZgYt8TDKsYxLYxH5AFhUkYx9W',
+  'lunc',
+  6
+),
+(
+  'AGFEad2et2ZJif9jaGpdMixQqvW5i81aBdvKe7PHNfz3',
+  'ftt',
+  6
+),
+(
+  '83LGLCm7QKpYZbX8q4W2kYWbtt8NJBwbVwEepzkVnJ9y',
+  'xusd',
+  6
+),
+(
+  'MERt85fc5boKw3BW1eYdxonEuJNvXbiMbs6hvheau5K',
+  'mer',
+  6
+),
+(
+  'Au6EdrSDubCUc34awy9c6iQAg5GSos9pPBXyZQtyZewV',
+  'nxdf',
+  6
+),
+(
+  'Dn4noZ5jgGfkntzcQSUZ8czkreiZ1ForXYoV2H8Dm7S1',
+  'usdtet',
+  6
+),
+(
+  '2cZv8HrgcWSvC6n1uEiS48cEQGb1d3fiowP2rpa4wBL9',
+  'acf',
+  2
+),
+(
+  '3KnVxWhoYdc9UwDr5WMVkZp2LpF7gnojg7We7MUd6ixQ',
+  'wolfe',
+  9
+),
+(
+  'A5NF1e6RnYkVwtg3V3z1qeUz4PZfHCXmQ9RotuJWgi6F',
+  'vync',
+  4
+),
+(
+  'SLNAAQ8VT6DRDc3W9UPDjFyRt7u4mzh8Z4WYMDjJc35',
+  'slna',
+  6
+),
+(
+  '7fCzz6ZDHm4UWC9Se1RPLmiyeuQ6kStxpcAP696EuE1E',
+  'shbl',
+  9
+),
+(
+  '6nuaX3ogrr2CaoAPjtaKHAoBNWok32BMcRozuf32s2QF',
+  'abbusd',
+  9
+),
+(
+  '9ZLBKPCzkvDv85hojKofsogsESkJMN164QCVUtxvBxEQ',
+  'sldr',
+  6
+),
+(
+  'EzfgjvkSwthhgHaceR3LnKXUoRkP6NUhfghdaHAj1tUv',
+  'ftt',
+  8
+),
+(
+  'FGMTuwmVVz9hUJzA8shYiEnM16wsYDoSmYoy13UZe1kk',
+  'shiver',
+  9
+),
+(
+  '3e9pHUxa2nvAqso2Kr2KqJxYvZaz9qZLjoLaG77uQwB1',
+  'bail',
+  9
+),
+(
+  'zwqe1Nd4eiWyCcqdo4FgCq7LYZHdSeGKKudv6RwiAEn',
+  'solpay',
+  9
+),
+(
+  'BhPXDQio8xtNC6k5Bg5fnUVL9kGN8uvRDNwW8MZBu8DL',
+  'bana',
+  4
+),
+(
+  '6XWfkyg5mzGtKNftSDgYjyoPyUsLRf2rafj95XSFSFrr',
+  'kitty',
+  9
+),
+(
+  'Czt7Fc4dz6BpLh2vKiSYyotNK2uPPDhvbWrrLeD9QxhV',
+  'nesta',
+  9
+),
+(
+  '6wShYhqA2gs3HUAZ4MyaPDpKPBWFJUQQUGaCoy2k1Tgz',
+  'tut',
+  9
+),
+(
+  'MEANeD3XDdUmNMsRGjASkSWdC8prLYsoRJ61pPeHctD',
+  'mean',
+  6
+),
+(
+  '4TyXexYsJqy9n1vVFVkHn1CUxabP2cht3BSE74PSG1pq',
+  'wso',
+  9
+),
+(
+  '2FKuYE5D75e9Fjg3ymGBrFfVc8tVKac4SeyvZn5dGNUz',
+  'vital',
+  9
+),
+(
+  'G9tt98aYSznRk7jWsfuz9FnTdokxS6Brohdo9hSmjTRB',
+  'puff',
+  9
+),
+(
+  'EzL6LLmv4vgfF7irkjG7ZxM92bTJ9f6nFopDXJTow7zj',
+  'condoms',
+  9
+),
+(
+  'E6UU5M1z4CvSAAF99d9wRoXsasWMEXsvHrz3JQRXtm2X',
+  'dgln',
+  9
+),
+(
+  '3eLpKZBgu6pKG2TSpvTfTeeimT294yxV2AEiBKZdY2ai',
+  'sgg',
+  6
+),
+(
+  'SuperbZyz7TsSdSoFAZ6RYHfAWe9NmjXBLVQpS8hqdx',
+  'sb',
+  6
+),
+(
+  '48AEwauAHsJibyt3WqjQ6EoHnFBcnyHASfo7vB2eCXPS',
+  'draw',
+  0
+),
+(
+  '9TE7ebz1dsFo1uQ2T4oYAKSm39Y6fWuHrd6Uk6XaiD16',
+  'mimo',
+  9
+),
+(
+  '4tJZhSdGePuMEfZQ3h5LaHjTPsw1iWTRFTojnZcwsAU6',
+  'elu',
+  9
+),
+(
+  'A5UevXJdphkzXhRtTXj8JyoYYrWnkCLHVS986JHtRLyj',
+  'solid',
+  9
+),
+(
+  '6xcfmgzPgABAuAfGDhvvLLMfMDur4at7tU7j3NudUviK',
+  'fossil',
+  3
+),
+(
+  'DysbQiM8nPdZbBhvHM1EgcSE73EwtFWDanXwY8CDD3Jn',
+  'box',
+  8
+),
+(
+  'D3cm6WRnyBct3p7vFqyTt2CaynsGPuVQT2zW6WHSTX6q',
+  'theca',
+  6
+),
+(
+  'SLCLww7nc1PD2gQPQdGayHviVVcpMthnqUz2iWKhNQV',
+  'slcl',
+  9
+),
+(
+  'E1s2muWwiLT2n3EQUL27hgviaPRRXWkpXD7ShpfgRvVz',
+  'cac',
+  6
+),
+(
+  'svtMpL5eQzdmB3uqK9NXaQkq8prGZoKQFNVJghdWCkV',
+  'svt',
+  6
+),
+(
+  '7osS84AkAG2TCrUvrE1wfKwfAqWTCrHnaCsrsyVJd5pY',
+  'thug',
+  3
+),
+(
+  'GWgwUUrgai3BFeEJZp7bdsBSYiuDqNmHf9uRusWsf3Yi',
+  'safu',
+  0
+),
+(
+  'GzpRsvnKXKz586kRLkjdppR4dUCFwHa2qaszKkPUQx6g',
+  'loot',
+  6
+),
+(
+  'FTkj421DxbS1wajE74J34BJ5a1o9ccA97PkK6mYq9hNQ',
+  'minecraft',
+  9
+),
+(
+  '94jMUy411XNUw1CnkFr2514fq6KRc49W3kAmrjJiuZLx',
+  'syx',
+  9
+),
+(
+  '3UcBMHnSTCXaxUbP6B96kHcED98DgEnNa9rGKzwXKMf4',
+  'ptr',
+  0
+),
+(
+  '2TxM6S3ZozrBHZGHEPh9CtM74a9SVXbr7NQ7UxkRvQij',
+  'dinoegg',
+  6
+),
+(
+  'SHDWyBxihqiCj6YekG2GUr7wqKLeLAMK1gHZck9pL6y',
+  'shdw',
+  9
+),
+(
+  'PsyFiqqjiv41G7o5SMRzDJCu4psptThNR2GtfeGHfSq',
+  'psy',
+  6
+),
+(
+  'buMnhMd5xSyXBssTQo15jouu8VhuEZJCfbtBUZgRcuW',
+  'nni',
+  6
+),
+(
+  'HJbNXx2YMRxgfUJ6K4qeWtjatMK5KYQT1QnsCdDWywNv',
+  'ats',
+  9
+),
+(
+  'AymKzSDznoLT7Vhsb4wSRnCj1gjcG3zkgYFY8fxsHHer',
+  'ticket',
+  8
+),
+(
+  '8JjBJdV73zPPmZvkgC91ni8RsbXWTkhpuSdxeZgaw6hD',
+  'babytiger',
+  9
+),
+(
+  'GLmaRDRmYd4u3YLfnj9eq1mrwxa1YfSweZYYZXZLTRdK',
+  'solab',
+  9
+),
+(
+  '5Wsd311hY8NXQhkt9cWHwTnqafk7BGEbLu8Py3DSnPAr',
+  'cmfi',
+  6
+),
+(
+  '2jw1uFmc1hhfJH3EqGhaE2rfZMMC2YBpxkZcdUbPppMn',
+  'vivaion',
+  9
+),
+(
+  '3CKQgrcvwhvFqVXXxLTb1u262nh26SJ3uutkSCTtbZxH',
+  'trbl',
+  9
+),
+(
+  'AFbX8oGjGpmVFywbVouvhQSRmiW2aR1mohfahi4Y2AdB',
+  'gst-sol',
+  9
+),
+(
+  'HKfs24UEDQpHS5hUyKYkHd9q7GY5UQ679q2bokeL2whu',
+  'tiny',
+  6
+),
+(
+  '3aAYh35n81F8HPG2QBdE48aYdzGFj2fsLccg91X4AcRc',
+  'clash',
+  9
+),
+(
+  'FsPncBfeDV3Uv9g6yyx1NnKidvUeCaAiT2NtBAPy17xg',
+  'xgli',
+  6
+),
+(
+  'r8nuuzXCchjtqsmQZVZDPXXq928tuk7KVH479GsKVpy',
+  'daojones',
+  2
+),
+(
+  '6xtyNYX6Rf4Kp3629X11m1jqUmkV89mf9xQakUtUQfHq',
+  'chih',
+  9
+),
+(
+  '74YedyBSKbjYzWMhwuBQz3mwsN6vuSSdAfzX9WLZQUtq',
+  'gnar',
+  2
+),
+(
+  'BygDd5LURoqztD3xETc99WCxLUbTi6WYSht9XiBgZ4HW',
+  'wmp',
+  9
+),
+(
+  'Gz3u6eJaKEviYpPC5AwUziz891kNX76PNdsmJrnaNNY4',
+  'soulo',
+  9
+),
+(
+  '5EbpXhW7t8ypBF3Q1X7odFaHjuh7XJfCohXR3VYAW32i',
+  'mall',
+  3
+),
+(
+  'AfXLBfMZd32pN6QauazHCd7diEWoBgw1GNUALDw3suVZ',
+  'fire',
+  9
+),
+(
+  'Aogv6j1wWiBAZcqRNN1Y89eozda2ke6rkc4CYy7c4iCi',
+  'jungle',
+  9
+),
+(
+  'BDrL8huis6S5tpmozaAaT5zhE5A7ZBAB2jMMvpKEeF8A',
+  'nova',
+  9
+),
+(
+  '7kbnvuGBxxj8AG9qp8Scn56muWGaRaFqxg1FsRp3PaFT',
+  'uxd',
+  6
+),
+(
+  'GEJpt3Wjmr628FqXxTgxMce1pLntcPV4uFi8ksxMyPQh',
+  'daosol',
+  9
+),
+(
+  '6naWDMGNWwqffJnnXFLBCLaYu1y5U9Rohe5wwJPHvf1p',
+  'scrap',
+  3
+),
+(
+  '3Dy8KFyvpUJ8nfRCbvk4HLWjNRRzxiVhTeE9PQF9RARD',
+  'arnm',
+  6
+),
+(
+  'MLKmUCaj1dpBY881aFsrBwR9RUMoKic8SWT3u1q5Nkj',
+  'milk',
+  9
+),
+(
+  '88YqDBWxYhhwPbExF966EdaCYBKP51xVm1oGBcbWzcf2',
+  'grlc',
+  4
+),
+(
+  'EswgBj2hZKdgovX2ihWSUDnuBg9VNbGmSGoH5yjNsPRa',
+  'phy',
+  9
+),
+(
+  '4pk3pf9nJDN1im1kNwWJN1ThjE8pCYCTexXYGyFjqKVf',
+  'odop',
+  9
+),
+(
+  'HNpdP2rL6FR6jM3bDxFX2Zo32D1YG2ZCztf9zzCrKMEX',
+  'ser',
+  8
+),
+(
+  'StepAscQoEioFxxWGnh2sLBDFp9d8rvKz2Yp39iDpyT',
+  'step',
+  9
+),
+(
+  '6y8W5YwAuzostqrS4YDJufBvksosfSi47Pd8U4A5vrBC',
+  'wec',
+  9
+),
+(
+  '8PMHT4swUMtBzgHnh5U564N5sjPSiUz2cjEQzFnnP1Fo',
+  'rope',
+  9
+),
+(
+  '7xKXtg2CW87d97TXJSDpbD5jBkheTqA83TZRuJosgAsU',
+  'samo',
+  9
+),
+(
+  'ETAtLmCmsoiEEKfNrHKJ2kYy3MoABhU6NQvpSfij5tDs',
+  'media',
+  6
+),
+(
+  '4dmKkXNHdgYsXqBHCuMikNQWwVomZURhYvkkX5c4pQ7y',
+  'sny',
+  6
+),
+(
+  'Gz7VkD4MacbEB6yC5XD3HcumEiYx2EtDYYrfikGsvopG',
+  'maticpo',
+  8
+),
+(
+  'CRWNYkqdgvhGGae9CKfNka58j6QQkaD5bLhKXvUYqnc1',
+  'crwny',
+  6
+),
+(
+  'xxxxa1sKNGwFtw2kFn8XauW9xq8hBZ5kVtcSesTT9fW',
+  'slim',
+  6
+),
+(
+  '8upjSpvjcdpuzhfR1zriwg5NXkwDruejqNE9WNbPRtyA',
+  'grape',
+  6
+),
+(
+  'sodaNXUbtjMvHe9c5Uw7o7VAcVpXPHAvtaRaiPVJQuE',
+  'soda',
+  0
+),
+(
+  '4QV4wzDdy7S1EV6y2r9DkmaDsHeoKz6HUvFLVtAsu6dV',
+  'agte',
+  9
+),
+(
+  '8HGyAAB1yoM1ttS7pXjHMa3dukTFGQggnFFH3hJZgzQh',
+  'cope',
+  6
+),
+(
+  'CiKu4eHsVrc1eueVQeHn7qhXTcVu95gSQmBpX4utjL9z',
+  'shib',
+  8
+),
+(
+  '7vfCXTUXx5WJV5JADk17DUJ4ksgau7utNKj4b963voxs',
+  'eth',
+  8
+),
+(
+  'EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v',
+  'usdc',
+  6
+),
+(
+  'Ac7GiHwC7vZU2y97GRh9rqCqqnKAAgopYrTAtKccHxUk',
+  'sinu',
+  9
+),
+(
+  'z9WZXekbCtwoxyfAwEJn1euXybvqLzPVv3NDzJzkq7C',
+  'crc',
+  9
+),
+(
+  'MekkANZkBpzbGeTWsD1cRRuQxZMTFfBJyLrKywGQRss',
+  'mek',
+  9
+),
+(
+  '6kwTqmdQkJd8qRr9RjSnUX9XJ24RmJRSrU1rsragP97Y',
+  'sail',
+  6
+),
+(
+  '8JnNWJ46yfdq8sKgT1Lk4G7VWkAA8Rhh7LhqgJ6WY41G',
+  'soli',
+  6
+),
+(
+  'ratioMVg27rSZbSvBopUvsdrGUzeALUfFma61mpxc8J',
+  'ratio',
+  6
+),
+(
+  '5yw793FZPCaPcuUN4F61VJh2ehsFX87zvHbCA4oRebfn',
+  'rice',
+  2
+),
+(
+  'HtbhBYdcfXbbD2JiH6jtsTt2m2FXjn7h4k6iXfz98k5W',
+  'dkm',
+  9
+),
+(
+  'LPFiNAybMobY5oHfYVdy9jPozFBGKpPiEGoobK2xCe3',
+  'lpfi',
+  9
+),
+(
+  '45wdSjpSqZCk9mkqmq5Nh7beCEqqUJMJcVduwYCip5eq',
+  'bofb',
+  8
+),
+(
+  'Fv3ZG56M2cWvF8sy9VWzWyvtHPhugNc1BAzpyoAPvL7r',
+  'solnut',
+  4
+),
+(
+  'BgeRyFWWGHeVouqfHfcXUxmvfkgekhrXYVqQWf63kpJB',
+  'bape',
+  9
+),
+(
+  'Hmatmu1ktLbobSvim94mfpZmjL5iiyoM1zidtXJRAdLZ',
+  'psol',
+  7
+),
+(
+  'METAmTMXwdb8gYzyCPfXXFmZZw4rUsXX58PNsDg7zjL',
+  'slc',
+  6
+),
+(
+  'seedEDBqu63tJ7PFqvcbwvThrYUkQeqT6NLf81kLibs',
+  'seeded',
+  9
+),
+(
+  '9K4uNquZjVSBBN6fBsp62gtYLropyAxAbdZC7D9XErih',
+  'oppa',
+  9
+),
+(
+  'ALKiRVrfLgzeAV2mCT7cJHKg3ZoPvsCRSV7VCRWnE8zQ',
+  'neki',
+  9
+),
+(
+  'LFNTYraetVioAPnGJht4yNg2aUZFXR776cMeN9VMjXp',
+  'lfnty',
+  6
+),
+(
+  '2Dzzc14S1D7cEFGJyMZMACuoQRHVUYFhVE74C5o8Fwau',
+  'bab',
+  0
+),
+(
+  'At7RLMbA6ZUjj7riyvFq2j5NHQ19aJabCju2VxLDAqso',
+  'bgs',
+  9
+),
+(
+  '6F9XriABHfWhit6zmMUYAQBSy6XK5VF1cHXuW5LDpRtC',
+  'run',
+  9
+),
+(
+  'DkNihsQs1hqEwf9TgKP8FmGv7dmMQ7hnKjS2ZSmMZZBE',
+  'qtcon',
+  8
+),
+(
+  'LABSfApdYpC5Ek1tQiCFAoQP5K8CvADe2GgdYrA2QHh',
+  'labs',
+  9
+),
+(
+  'F4q5mMxk9RA2a9dwfa2FgJjhvuqbk8SC9jEpnDVz5TFy',
+  'aria',
+  6
+),
+(
+  'HDLRMKW1FDz2q5Zg778CZx26UgrtnqpUDkNNJHhmVUFr',
+  'milli',
+  9
+),
+(
+  '55t1PfJngPgMS4c4HeSHPy54VWfkMEk7XBQhSkdz6Cm6',
+  'voo',
+  9
+),
+(
+  'DqxzPWQ2FKHn8pRoy9jCpA6M3GkEqYfieiAVwMYWVyXr',
+  'roar',
+  9
+),
+(
+  '49jpm8SpyTwaGaJfUa4AmU28hmW1HoKuqzXkgykysowU',
+  'psy',
+  8
+),
+(
+  'UNQtEecZ5Zb4gSSVHCAWUQEoNnSVEbWiKCi1v9kdUJJ',
+  'unq',
+  6
+),
+(
+  'GXnw9YSt6DANCt84Ti6ZpbaXvrvuEJFCYqrDjygnq4R8',
+  'atc',
+  6
+),
+(
+  'gmdu3snwW28DmmxCseChp9owWLUhamH9eS3hWfHG8Vg',
+  'gmsol',
+  9
+),
+(
+  '2XSuy8RSESbtYRBbVHxGWuoikn3B6iXKVKzN4i3owTCf',
+  'bsamo',
+  9
+),
+(
+  'NGK3iHqqQkyRZUj4uhJDQqEyKKcZ7mdawWpqwMffM3s',
+  'yaku',
+  0
+),
+(
+  '7s6NLX42eURZfpyuKkVLrr9ED9hJE8718cyXFsYKqq5g',
+  'gear',
+  9
+),
+(
+  'bonegFPgrpZ4bfVn3kQK1aMbGYddWtfMAywNt5LsuVE',
+  'bones',
+  2
+),
+(
+  '76aYNHbDfHemxSS7vmh6eJGfjodK8m7srCxiYCrKxzY1',
+  'roll',
+  6
+),
+(
+  'AfARcLLqRHsZc4xPWHE9nXZAswZaW294Ff1xcYQbjkLq',
+  'krook',
+  9
+),
+(
+  'C5xtJBKm24WTt3JiXrvguv7vHCe7CknDB7PNabp4eYX6',
+  't1ny',
+  0
+),
+(
+  'Qikhhhg9Ta3Jg7WoDFbSYuCAE14hx9hPvdz1zVp3zUw',
+  'burd',
+  9
+),
+(
+  '2pVkjwPJHXopCknbdsHgXQnhptEWWWkfiw6pDcnNnBPC',
+  'topss',
+  6
+),
+(
+  '5goWRao6a3yNC4d6UjMdQxonkCMvKBwdpubU3qhfcdf1',
+  'usdtpo',
+  6
+),
+(
+  'BdUJucPJyjkHxLMv6ipKNUhSeY3DWrVtgxAES1iSBAov',
+  'xsol',
+  9
+),
+(
+  'BABYsocP6cB95xvBDXnjXKX96VBNC37dmNWUtaV9Jk6v',
+  'sbabydoge',
+  2
+),
+(
+  'BGN9c9JJxMgmm7rUqeLanYwWwo2GbedjUFaXn7tAeuXK',
+  'hono',
+  8
+),
+(
+  'DVPWKGLFHK73PwgKgTtW28iCZGewQdva2N5HeBLDorVJ',
+  'goats',
+  4
+),
+(
+  'B6aJ3TGfme3SMnLSouHXqWXjVFqYyqj7czzhzr8WJFAi',
+  'rad',
+  4
+),
+(
+  'AbnTggpTujbdAiJtyhH9WtK2CqXk44W7GipyJXkopBDd',
+  'torg',
+  8
+),
+(
+  'PRT88RkA4Kg5z7pKnezeNH4mafTvtQdfFgpQTGRjz44',
+  'prt',
+  6
+),
+(
+  '7j7H7sgsnNDeCngAPjpaCN4aaaru4HS7NAFYSEUyzJ3k',
+  'solr',
+  6
+),
+(
+  'a11bdAAuV8iB2fu7X6AxAvDTo1QZ8FXB3kk5eecdasp',
+  'abr',
+  9
+),
+(
+  'JET6zMJWkCN9tpRT2v2jfAmm5VnQFDpUBCyaKojmGtz',
+  'jet',
+  9
+),
+(
+  'EWS2ATMt5fQk89NWLJYNRmGaNoji8MhFZkUB4DiWCCcz',
+  'solberry',
+  6
+),
+(
+  'HfYFjMKNZygfMC8LsQ8LtpPsPxEJoXJx4M6tqi75Hajo',
+  'cwar',
+  9
+),
+(
+  'CKaKtYvz6dKPyMvYq9Rh3UBrnNqYZAyd7iF4hJtjUvks',
+  'gari',
+  9
+),
+(
+  'SLNDpmoWTVADgEdndyvWzroNL7zSi1dF9PC3xHGtPwp',
+  'slnd',
+  6
+),
+(
+  'F3nefJBcejYbtdREjui1T9DPh5dBgpkKq7u2GAAMXs5B',
+  'aart',
+  6
+),
+(
+  '9zoqdwEBKWEi9G5Ze8BSkdmppxGgVv1Kw4LuigDiNr9m',
+  'str',
+  9
+),
+(
+  '4UuGQgkD3rSeoXatXRWwRfRd21G87d5LiCfkVzNNv1Tt',
+  'xsb',
+  9
+),
+(
+  '5sM9xxcBTM9rWza6nEgq2cShA87JjTBx1Cu82LjgmaEg',
+  'bmbo',
+  7
+),
+(
+  '95KN8q3qubEVjPf9trgyur2nHx8T5RCmztRbLuQ5E5i',
+  'smrt',
+  0
+),
+(
+  '8RYSc3rrS4X4bvBCtSJnhcpPpMaAJkXnVKZPzANxQHgz',
+  'yard',
+  9
+),
+(
+  '2Kc38rfQ49DFaKHQaWbijkE7fcymUMLY5guUiUsDmFfn',
+  'kuro',
+  6
+),
+(
+  '7dHbWXmci3dT8UFYWYZweBLXgycu7Y3iL6trKn1Y7ARj',
+  'stsol',
+  9
+),
+(
+  'SWANaZUGxF82KyVsbxeeNsMaVECtimze5VyCdywkvkH',
+  'swan',
+  9
+),
+(
+  'ErGB9xa24Szxbk1M28u2Tx8rKPqzL6BroNkkzk5rG4zj',
+  'frkt',
+  8
+),
+(
+  'GFX1ZjR2P15tmrSwow6FjyDYcEkoFb4p4gJCpLBjaxHD',
+  'gofx',
+  9
+),
+(
+  'HCgybxq5Upy8Mccihrp7EsmwwFqYZtrHrsmsKwtGXLgW',
+  'stars',
+  6
+),
+(
+  'APTtJyaRX5yGTsJU522N4VYWg3vCvSb65eam5GrPT5Rt',
+  'aprt',
+  6
+),
+(
+  '9XtRZwKzDXEJ61A7qCqbPz8jXMYHGT3LwxqrEzB6fqxv',
+  'solum',
+  9
+),
+(
+  'Fm9rHUTF5v3hwMLbStjZXqNBBoZyGriQaFM6sTFz3K8A',
+  'mbs',
+  6
+),
+(
+  '7udMmYXh6cuWVY6qQVCd9b429wDVn2J71r5BdxHkQADY',
+  'coban',
+  3
+),
+(
+  'AASdD9rAefJ4PP7iM89MYUsQEyCQwvBofhceZUGDh5HZ',
+  'slx',
+  9
+),
+(
+  'GEYrotdkRitGUK5UMv3aMttEhVAZLhRJMcG82zKYsaWB',
+  'potato',
+  3
+),
+(
+  'BLT1noyNr3GttckEVrtcfC6oyK6yV1DpPgSyXbncMwef',
+  'blt',
+  8
+),
+(
+  'iVNcrNE9BRZBC9Aqf753iZiZfbszeAVUoikgT9yvr2a',
+  'ivn',
+  6
+),
+(
+  'A2T2jDe2bxyEHkKtS8AtrTRmJ9VZRwyY8Kr7oQ8xNyfb',
+  'hams',
+  9
+),
+(
+  '5oVNBeEEQvYi1cX3ir8Dx5n1P7pdxydbGF2X4TxVusJm',
+  'scnsol',
+  9
+),
+(
+  '5gs8nf4wojB5EXgDUWNLwXpknzgV2YWDhveAeBZpVLbp',
+  'xtag',
+  6
+),
+(
+  'BxHJqGtC629c55swCqWXFGA2rRF1igbbTmh22H8ePUWG',
+  'pgnt',
+  4
+),
+(
+  'FYfQ9uaRaYvRiaEGUmct45F9WKam3BYXArTrotnTNFXF',
+  'sola',
+  9
+),
+(
+  'Bx1fDtvTN6NvE4kjdPHQXtmGSg582bZx9fGy4DQNMmAT',
+  'solc',
+  9
+),
+(
+  '2uRFEWRBQLEKpLmF8mohFZGDcFQmrkQEEZmHQvMUBvY7',
+  'slb',
+  9
+),
+(
+  'WLZna3K4SaDxf7ouEweCpXwEEt7g3qJ9ims1bm4CrYs',
+  '$WLZ',
+  9
+),
+(
+  'CBSTwQzAXeGiNvM5aDdkMD6wkSyuVXqsu8u3ZQmQLFa1',
+  'CUBIST',
+  9
+),
+(
+  'invYVY53mcmBtf2RbVudoqKDyAgZGofkLYodvnQwQep',
+  'INV',
+  9
+),
+(
+  'BUtLhi4ohcuYiFooWhZyWxQXKceZLCLNS3BHGXnmnhqM',
+  'BGUNQ',
+  0
+),
+(
+  'GH9urVNhVzEvQFAz4NGWrjc3raGMKSmU96GV7s3QwSfq',
+  'SD',
+  9
+),
+(
+  'NASTYAhPiC1LnBr8dikyd9KWBMhrzhQQ5Ro8TD1tqf7',
+  'NASTY',
+  9
+),
+(
+  'BUSDaZjarCrQJLeHpWi7aLaKptdR1S8DFpwdDuuZu9p3',
+  'wBUSDV1-USDC',
+  9
+),
+(
+  'ASoLXbfe7cd6igh5yiEsU8M7FW64QRxPKkxk7sjAfond',
+  'aSOL',
+  9
+),
+(
+  'DYXYVkCk4Xk7RpWdsnqZEkt2S1UBYHsSbj5ZWTWAHvHM',
+  'SOSA',
+  0
+),
+(
+  'FgGSSyWTof35tPwZi8CZ7uoH2tD6y1ezWcMiw38Cmoat',
+  'SCARAB',
+  9
+),
+(
+  'meebAU3nZrU5PbUt3dVK6ExgbNWCUAkV7C3DaJKMZZ4',
+  'MEEB',
+  9
+),
+(
+  'CnSNBakQSv2MW7pdvdcAHpmUTmvPoChg3NfRtZ7HSaGA',
+  'HARE',
+  9
+),
+(
+  '4ECiWwt2g7TB623UAkyKVWBmcGHGzSTg8pxxknVqhz3X',
+  'NDQF',
+  9
+),
+(
+  '9X4EK8E59VAVi6ChnNvvd39m6Yg9RtkBbAPq1mDVJT57',
+  'SLIM-SOL',
+  6
+),
+(
+  '9XYbEGVjBK2BWvtvjoJBZtnoHtkkdGiw321tdN6eLa4A',
+  'SPORE',
+  3
+),
+(
+  '5tN42n9vMi6ubp67Uy4NnmM5DMZYN8aS8GeB3bEDHr6E',
+  'wag',
+  9
+),
+(
+  'H5gczCNbrtso6BqGKihF97RaWaxpUEZnFuFUKK4YX3s2',
+  'bde',
+  9
+),
+(
+  '9nEqaUcb16sQ3Tn1psbkWqyhPdLmfHWjKGymREjsAgTE',
+  'woof',
+  6
+),
+(
+  'EkDf4Nt89x4Usnxkj4sGHX7sWxkmmpiBzA4qdDkgEN6b',
+  'sob',
+  9
+),
+(
+  'FgX1WD9WzMU3yLwXaFSarPfkgzjLb2DZCqmkx9ExpuvJ',
+  'ninja',
+  6
+),
+(
+  'Boxch1343xWQWbahVBPhYHuYLXNHnWYHG6QbuqfNugQ1',
+  'boxch',
+  9
+),
+(
+  'FriCEbw1V99GwrJRXPnSQ6su2TabHabNxiZ3VNsVFPPN',
+  'fries',
+  9
+),
+(
+  'E7WqtfRHcY8YW8z65u9WmD7CfMmvtrm2qPVicSzDxLaT',
+  'ppug',
+  9
+),
+(
+  'CbDwU8JrTYv3GzU7msni8qtfFkAGpcyFAzuhuGq5SVqp',
+  'chug',
+  9
+),
+(
+  'HZRCwxP2Vq9PCpPXooayhJ2bxTpo5xfpQrwB1svh332p',
+  'ldo',
+  8
+),
+(
+  'E5rk3nmgLUuKUiS94gg4bpWwWwyjCMtddsAXkTFLtHEy',
+  'woo',
+  6
+),
+(
+  '4k3Dyjzvzp8eMZWUXbBCjEvwSkkk59S5iCNLY3QrkX6R',
+  'ray',
+  6
+),
+(
+  'MAPS41MDahZ9QdKXhVa4dWB9RuyfV4XqhyAZ8XcYepb',
+  'maps',
+  6
+),
+(
+  '6VNKqgz9hk7zRShTFdg5AnkfKwZUcojzwAkzxSH3bnUm',
+  'hapi',
+  9
+),
+(
+  'EchesyfXePKdLtoiZSL8pBe8Myagyy8ZRqsACNCFGnvp',
+  'fida',
+  6
+),
+(
+  '5JnZ667P3VcjDinkJFysWh2K2KtViy63FZ3oL5YghEhW',
+  'apys',
+  9
+),
+(
+  'z3dn17yLaGMKffVogeFHQ9zWVcXgqgf3PQnDsNs2g6M',
+  'oxy',
+  6
+),
+(
+  '32CHtMAuGaCAZx8Rgp54jSFG3ihbpN5brSvRAWpwEHPv',
+  'dab',
+  9
+),
+(
+  'E2VmbootbVCBkMNNxKQgCLMS1X3NoGMaYAsufaAsf7M',
+  'usdcpo',
+  6
+),
+(
+  '9iz45n44TQUPyoRymdZXEunqvZUksZyhzS6zQ7sLMadj',
+  'pot',
+  9
+),
+(
+  '8E5W9PMhnEvdvM2Q9XBLMJW7UsFiieXnRHPj8zhtB23h',
+  'apple',
+  9
+),
+(
+  'SCYfrGCw8aDiqdgcpdGjV6jp4UVVQLuphxTDLNWu36f',
+  'scy',
+  9
+),
+(
+  '4NGNdLiQ1KG8GgqZimKku4WCLdXbNw6UQJvqax3fE6CJ',
+  'wav',
+  2
+),
+(
+  'GYCVdmDthkf3jSz5ns6fkzCmHub7FSZxjVCfbfGqkH7P',
+  'gyc',
+  9
+),
+(
+  'fujiCeCeP9AFDVCv27P5JRcKLoH7wfs2C9xmDECs24m',
+  'fuji',
+  3
+),
+(
+  'CXLBjMMcwkc17GfJtBos6rQCo1ypeH6eDbB82Kby4MRm',
+  'ustc',
+  9
+),
+(  
+  'DezXAZ8z7PnrnRJjz3wXBoRgixCa6xjnB7YaB1pPB263',
+  'bonk',
+  5
+),
+( 
+  'BWXrrYFhT7bMHmNBFoQFWdsSgA3yXoAnMhDK6Fn1eSEn',
+  'HADES',
+  9
+)
+) AS temp_table (token_mint_address, symbol, decimals)

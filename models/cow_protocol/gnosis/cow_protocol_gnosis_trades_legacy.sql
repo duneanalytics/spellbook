@@ -1,5 +1,7 @@
 {{  config(
-        alias=alias('trades', legacy_model=True),
+	tags=['legacy'],
+	
+        alias = alias('trades', legacy_model=True),
         materialized='incremental',
         partition_by = ['block_date'],
         unique_key = ['tx_hash', 'order_uid', 'evt_index'],
