@@ -1,5 +1,5 @@
 {{ config(
-        alias ='batches',
+        alias = alias('batches'),
         post_hook='{{ expose_spells(\'["ethereum", "gnosis"]\',
                                     "project",
                                     "cow_protocol",

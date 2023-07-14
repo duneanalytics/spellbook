@@ -1,4 +1,4 @@
-{{config(alias='smart_dex_traders_ethereum')}}
+{{config(alias = alias('smart_dex_traders_ethereum'))}}
 /*
 ** This is a submission for the Dune labels mini hackathon (March 2023)
 ** Category: Smart Money, Smart DEX Trader (Persona)

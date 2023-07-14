@@ -1,4 +1,4 @@
-{{config(alias='airdrop_1_receivers_optimism')}}
+{{config(alias = alias('airdrop_1_receivers_optimism'))}}
 
 SELECT
     'optimism' as blockchain,

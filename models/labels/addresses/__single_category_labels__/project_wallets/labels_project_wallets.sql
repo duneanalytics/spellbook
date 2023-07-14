@@ -1,4 +1,4 @@
-{{config(alias='project_wallets',
+{{config(alias = alias('project_wallets'),
         post_hook='{{ expose_spells(\'["optimism"]\',
                                     "sector",
                                     "labels",

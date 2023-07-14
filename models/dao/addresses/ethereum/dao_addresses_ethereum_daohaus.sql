@@ -1,5 +1,5 @@
 {{ config(
-    alias = 'addresses_ethereum_daohaus',
+    alias = alias('addresses_ethereum_daohaus'),
     partition_by = ['created_date'],
     materialized = 'incremental',
     file_format = 'delta',

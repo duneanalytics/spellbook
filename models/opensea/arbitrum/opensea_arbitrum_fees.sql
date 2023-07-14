@@ -1,7 +1,7 @@
 {{
   config(
          schema = 'opensea_arbitrum',
-         alias='fees'
+         alias = alias('fees')
         )
 }}
 
