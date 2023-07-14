@@ -1,0 +1,110 @@
+version: 2
+
+models:
+
+  - name: balancer_avalanche_c_pools_tokens_weights
+    meta:
+      blockchain: avalanche_c
+      project: balancer
+      contributors: jacektrocinski
+    config:
+      tags: ['avalanche_c', 'balancer', 'pools', 'tokens', 'weights']
+    description: >
+      Token weights in Balancer pools.
+    columns:
+      - &pool_id
+        name: pool_id
+        description: 'Unique encoded identifier that refers to each pool'
+        tests:
+          - not_null
+      - &token_address
+        name: token_address
+        description: 'Contract address for the token'
+      - &normalized_weight
+        name: normalized_weight
+        description: 'Weight of the token in the pool.'
+
+  - name: balancer_v2_avalanche_c_pools_tokens_weights
+    meta:
+      blockchain: avalanche_c
+      project: balancer
+      contributors: jacektrocinski
+    config:
+      tags: ['avalanche_c', 'balancer', 'pools', 'tokens', 'weights']
+    description: >
+      Token weights in Balancer v2 pools.
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - pool_id
+            - token_address
+    columns:
+      - *pool_id
+      - *token_address
+      - *normalized_weight
+
+
+  - name: balancer_v2_avalanche_c_liquidity
+    meta:
+      blockchain: avalanche_c
+      project: balancer_v2
+      contributors: victorstefenon
+    config:
+      tags: ['avalanche_c', 'balancer', 'pools', 'liquidity']
+    description: >
+      Balancer v2 pools liquidity by token in avalanche_c.
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - day
+            - pool_id
+            - token_address
+    columns:
+      - name: day
+        description: 'UTC event block time truncated to the day mark'
+      - *pool_id
+      - name: pool_symbol
+        description: 'Symbol of the pool, consisting of the symbol of its tokens and their respective weights'
+      - &blockchain
+        name: blockchain
+        description: "Blockchain"
+      - *token_address
+      - name: token_symbol
+        description: 'Symbol of the token'
+      - name: token_balance_raw
+        description: 'Raw balance of the token in the pool'
+      - name: token_balance
+        description: 'Scaled balance of the token in the pool'
+      - name: protocol_liquidity_usd
+        description: 'Liquidity of the token in the pool in USD, except BPTs'
+      - name: pool_liquidity_usd
+        description: 'Liquidity of the token in the pool in USD, including BPTs'
+
+  - name: balancer_v2_avalanche_c_bpt_prices
+    meta:
+      blockchain: avalanche_c
+      project: balancer_v2
+      contributors: victorstefenon, thetroyharris
+    config:
+      tags: ['avalanche_c', 'bpt', 'prices']
+    description: >
+      Balancer Pool Token (BPT) hourly median price by pool on Balancer, an automated portfolio manager and trading platform.
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - hour
+            - contract_address
+    columns:
+      - *blockchain
+      - &hour
+        name: hour
+        description: 'UTC event block time truncated to the hour mark'
+        tests:
+          - not_null
+      - name: contract_address
+        description: 'avalanche address for the liquidity pool used in transaction'
+      - &median_price
+        name: median_price
+        description: 'BPT median price'
+  

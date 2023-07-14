@@ -1,4 +1,4 @@
-{{ config( alias = alias('erc20_curated', legacy_model=True), tags=['static'],
+{{ config( alias = alias('erc20_curated', legacy_model=True), tags=['static', 'legacy'],
     post_hook='{{ expose_spells(\'["optimism"]\',
                                     "sector",
                                     "tokens",
