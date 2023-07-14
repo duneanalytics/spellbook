@@ -21,7 +21,7 @@ close_position_v1 as (
             tc._id as position_id,
             tc._closePrice/1e18 as price, 
             tc._payout/1e18 as payout, 
-            tc._percent/100 as perc_closed, 
+            tc._percent/1e2 as perc_closed, 
             op.trader
         FROM 
         {{ source('tigristrade_polygon', 'Tradingv1_evt_PositionClosed') }} tc 
@@ -43,7 +43,7 @@ close_position_v2 as (
             tc._id as position_id,
             tc._closePrice/1e18 as price, 
             tc._payout/1e18 as payout, 
-            tc._percent/100 as perc_closed, 
+            tc._percent/1e2 as perc_closed, 
             op.trader
         FROM 
         {{ source('tigristrade_polygon', 'TradingV2_evt_PositionClosed') }} tc 
@@ -65,7 +65,7 @@ close_position_v3 as (
             tc._id as position_id,
             tc._closePrice/1e18 as price, 
             tc._payout/1e18 as payout, 
-            tc._percent/100 as perc_closed, 
+            tc._percent/1e2 as perc_closed, 
             op.trader
         FROM 
         {{ source('tigristrade_polygon', 'TradingV3_evt_PositionClosed') }} tc 
@@ -88,7 +88,7 @@ close_position_v4 as (
             tc._id as position_id,
             tc._closePrice/1e18 as price, 
             tc._payout/1e18 as payout, 
-            tc._percent/100 as perc_closed, 
+            tc._percent/1e2 as perc_closed, 
             op.trader
         FROM 
         {{ source('tigristrade_polygon', 'TradingV4_evt_PositionClosed') }} tc 
