@@ -480,7 +480,7 @@ SELECT
 
 FROM (
   select 
-    COALESCE(c.trace_creator_address, (CAST NULL AS varbinary) ) AS trace_creator_address
+    COALESCE(c.trace_creator_address, CAST(NULL AS varbinary) ) AS trace_creator_address
     ,c.contract_address
     ,cast(
         replace(
@@ -496,7 +496,7 @@ FROM (
     ) as varchar) as contract_project
     ,c.token_symbol
     ,cast( coalesce(co.contract_name, c.contract_name) as varchar) as contract_name
-    ,coalesce(c.creator_address, ovm1c.creator_address, (CAST NULL AS varbinary) ) as creator_address
+    ,coalesce(c.creator_address, ovm1c.creator_address, CAST(NULL AS varbinary) ) as creator_address
     ,coalesce(c.created_time
       -- , CAST(SUBSTRING(ovm1c.created_time, 1, POSITION('T' IN ovm1c.created_time) - 1) as timestamp)
         , from_iso8601_timestamp( ovm1c.created_time )
