@@ -1,6 +1,5 @@
 {{ config(
-        alias=alias('referrals'),
-        tags=['dunesql'],
+        alias=alias('referrals', legacy_model=True),
         post_hook='{{ expose_spells(\'["ethereum"]\',
                                     "project",
                                     "cow_protocol",
@@ -13,7 +12,7 @@ referral_map as (
     select
         distinct app_hash,
         referrer
-    from {{ ref('cow_protocol_ethereum_app_data') }}
+    from {{ ref('cow_protocol_ethereum_app_data_legacy') }}
     where referrer is not null
 )
 
@@ -23,7 +22,7 @@ referral_map as (
         ROW_NUMBER() OVER(PARTITION BY trader ORDER BY block_time, evt_index) AS user_trade_index,
         trader,
         app_data
-    FROM {{ ref('cow_protocol_ethereum_trades') }}
+    FROM {{ ref('cow_protocol_ethereum_trades_legacy') }}
     GROUP BY trader, block_time, app_data, evt_index
 )
 ,user_first_trade as (
