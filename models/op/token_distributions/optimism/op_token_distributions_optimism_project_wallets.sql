@@ -80,7 +80,7 @@ FROM (values
     ) a (address, proposal_name, address_descriptor)
     ) b
     WHERE rnk = 1 --check to prvent duplicates
-    AND address NOT IN (SELECT address FROM {{ref('cex_optimism_addresses_legacy')}} ) --make sure we don't accidently catch a CEX
+    AND address NOT IN (SELECT address FROM {{ref('cex_optimism_addresses')}} ) --make sure we don't accidently catch a CEX
 )
 
 
@@ -242,7 +242,7 @@ FROM (values
     ) a (address, proposal_name, address_descriptor)
     ) b
     WHERE rnk = 1 --check to prvent duplicates
-    AND address NOT IN (SELECT address FROM {{ref('cex_optimism_addresses_legacy')}}) --make sure we don't accidently catch a CEX
+    AND address NOT IN (SELECT address FROM {{ref('cex_optimism_addresses')}}) --make sure we don't accidently catch a CEX
 )
 
 SELECT
