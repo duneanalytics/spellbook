@@ -1,4 +1,4 @@
-{{ config(alias = alias('app_data', legacy_model=True),
+{{ config(alias=alias('app_data', legacy_model=True),
         post_hook='{{ expose_spells(\'["ethereum"]\',
                                     "project",
                                     "cow_protocol",
@@ -14,7 +14,8 @@ partially_unpacked_app_content as (
         content.environment,
         content.metadata.orderClass.orderClass as order_class,
         content.metadata.quote,
-        content.metadata.referrer
+        content.metadata.referrer,
+        content.metadata.utm
     from {{ source('cowswap', 'raw_app_data') }}
 ),
 
@@ -26,7 +27,8 @@ unpacked_referrer_app_data as (
         order_class,
         quote,
         -- different app data versions put referrer in two possible places.
-        lower(coalesce(referrer.address, referrer.referrer)) as referrer
+        lower(coalesce(referrer.address, referrer.referrer)) as referrer,
+        utm
     from partially_unpacked_app_content
 ),
 
@@ -38,6 +40,8 @@ results as (
         order_class,
         referrer,
         cast(quote.slippageBips as integer) slippage_bips
+        cast(quote.slippageBips as integer) slippage_bips,
+        utm
         -- There is only one App Data using buyAmount/sellAmount fields.
         -- cast(quote.sellAmount as double) sell_amount,
         -- cast(quote.buyAmount as double) buy_amount
