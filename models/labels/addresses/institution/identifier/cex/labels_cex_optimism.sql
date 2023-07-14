@@ -1,4 +1,6 @@
-{{config(alias='cex_optimism',
+{{config(
+        tags = ['dunesql'],
+        alias = alias('cex_optimism'),
         post_hook='{{ expose_spells(\'["optimism"]\',
                                     "sector",
                                     "labels",

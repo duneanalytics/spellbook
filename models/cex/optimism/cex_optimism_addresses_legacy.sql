@@ -1,4 +1,5 @@
-{{config(alias=alias('addresses',legacy_model=True),
+{{config(
+        alias = alias('addresses', legacy_model=True),
         tags=['static'],
         post_hook='{{ expose_spells(\'["optimism"]\',
                                     "sector",
