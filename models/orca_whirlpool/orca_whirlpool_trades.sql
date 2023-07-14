@@ -150,8 +150,8 @@ with
         , tb.inner_instruction_index
         , tb.tx_index
         , recent_update
-        , p_sold.minute as s_min
-        , p_bought.minute as b_min
+        -- , p_sold.minute as s_min
+        -- , p_bought.minute as b_min
     FROM
         (
         SELECT 
