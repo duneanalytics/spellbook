@@ -2,14 +2,14 @@
 
 
 {% set cex_label_models = [
-ref('labels_cex_arbitrum')
-, ref('labels_cex_avalanche_c')
-, ref('labels_cex_bitcoin')
-, ref('labels_cex_bnb')
-, ref('labels_cex_ethereum')
-, ref('labels_cex_fantom')
-, ref('labels_cex_optimism')
-, ref('labels_cex_polygon')
+ref('labels_cex_arbitrum_legacy')
+, ref('labels_cex_avalanche_c_legacy')
+, ref('labels_cex_bitcoin_legacy')
+, ref('labels_cex_bnb_legacy')
+, ref('labels_cex_ethereum_legacy')
+, ref('labels_cex_fantom_legacy')
+, ref('labels_cex_optimism_legacy')
+, ref('labels_cex_polygon_legacy')
 ] %}
 
 SELECT *
