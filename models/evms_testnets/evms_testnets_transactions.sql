@@ -38,7 +38,7 @@ FROM (
         , success
         , "type"
         , CAST(value AS double) AS value
-        , NULL AS l1_tx_origin
+        , CAST(NULL as varbinary) AS l1_tx_origin
         , CAST(NULL AS double) AS l1_fee_scalar
         , CAST(NULL AS DECIMAL(38,0)) AS l1_block_number
         , CAST(NULL AS DECIMAL(38,0)) AS l1_fee
