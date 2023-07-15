@@ -13,6 +13,8 @@
 }}
 
 
+
+
 with base_date as (
     WITH t1 AS (
         SELECT
@@ -116,7 +118,7 @@ prices_raw as (
                 hour desc
         ) as rn
     from
-        {{ ref('dex_prices_legacy') }}
+        {{ ref('dex_prices') }}
     where
         blockchain = 'ethereum'
         and contract_address in (
