@@ -4,8 +4,8 @@
         unique_key=['blockchain', 'tx_hash'],
         post_hook='{{ expose_spells(\'["goerli"]\',
                                     "sector",
-                                    "evms_testnets",
-                                    \'["hildobby", "msilb7"]\') }}'
+                                    "evms",
+                                    \'["hildobby","msilb7"]\') }}'
         )
 }}
 
@@ -19,7 +19,18 @@ FROM (
         {% for logs_model in logs_models %}
         SELECT
         '{{ logs_model[0] }}' AS blockchain
-        , *
+        , block_time
+        , block_number
+        , block_hash
+        , contract_address
+        , topic0
+        , topic1
+        , topic2
+        , topic3
+        , data
+        , tx_hash
+        , index
+        , tx_index
         FROM {{ logs_model[1] }}
         {% if not loop.last %}
         UNION ALL

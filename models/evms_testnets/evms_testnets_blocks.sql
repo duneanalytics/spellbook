@@ -4,13 +4,14 @@
         unique_key=['blockchain', 'number'],
         post_hook='{{ expose_spells(\'["goerli"]\',
                                     "sector",
-                                    "evms_testnets",
-                                    \'["hildobby", "msilb7"]\') }}'
+                                    "evms",
+                                    \'["hildobby","msilb7"]\') }}'
         )
 }}
 
 {% set blocks_models = [
      ('goerli', source('goerli', 'blocks'))
+ 
 ] %}
 
 SELECT *

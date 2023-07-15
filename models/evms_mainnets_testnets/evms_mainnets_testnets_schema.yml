@@ -5,20 +5,14 @@ models:
     meta:
       blockchain: goerli, ethereum, polygon, bnb, avalanche_c, gnosis, fantom, optimism, arbitrum, celo
       sector: evms_mainnets_testnets
-      contributors: msilb7, hildobby
+      contributors: hildobby, msilb7
     config:
       tags:   ['evms', 'testnets', 'mainnets', 'transactions']
     description: "An EVM transaction refers to an action initiated by an externally-owned account (i.e., an account managed by a human, not a contract)."
     columns:
-      - &chain_type
-        name: chain_type
-        description: "Chain type indicator"
       - &blockchain
         name: blockchain
         description: "Name of the blockchain"
-      - &block_date
-        name: block_date
-        description: "Block event date in UTC"
       - &block_time
         name: block_time
         description: "Timestamp for block event time in UTC"
@@ -84,14 +78,12 @@ models:
     meta:
       blockchain: goerli, ethereum, polygon, bnb, avalanche_c, gnosis, fantom, optimism, arbitrum, celo
       sector: evms_mainnets_testnets
-      contributors: msilb7, hildobby
+      contributors: hildobby, msilb7
     config:
       tags:   ['evms', 'testnets', 'mainnets', 'traces']
     description: "An EVM trace is a small atomic action that modify the internal state of the Ethereum Virtual Machine. The three main trace types are call, create, and suicide."
     columns:
-      - *chain_type
       - *blockchain
-      - *block_date
       - *block_time
       - *block_number
       - *value
@@ -105,8 +97,6 @@ models:
       - &tx_index
         name: tx_index
         description: "Transaction index"
-      - name: subtraces
-        description: "Number of subtraces (i.e, number of calls at a particular level within a transaction)"
       - name: error
         description: "Error log"
       - name: tx_success
@@ -139,14 +129,12 @@ models:
     meta:
       blockchain: goerli, ethereum, polygon, bnb, avalanche_c, gnosis, fantom, optimism, arbitrum, celo
       sector: evms_mainnets_testnets
-      contributors: msilb7, hildobby
+      contributors: hildobby, msilb7
     config:
       tags:   ['evms', 'testnets', 'mainnets', 'traces', 'decoded']
     description: "An EVM trace is a small atomic action that modify the internal state of the Ethereum Virtual Machine. The three main trace types are call, create, and suicide. Decoded traces include additional information based on submitted smart contracts and their ABI"
     columns:
-      - *chain_type
       - *blockchain
-      - *block_date
       - *block_time
       - *block_number
       - name: contract_name
@@ -167,26 +155,24 @@ models:
     meta:
       blockchain: goerli, ethereum, polygon, bnb, avalanche_c, gnosis, fantom, optimism, arbitrum, celo
       sector: evms_mainnets_testnets
-      contributors: msilb7, hildobby
+      contributors: hildobby, msilb7
     config:
       tags:   ['evms', 'testnets', 'mainnets', 'logs']
     description: "An EVM log can be used to describe an event within a smart contract, like a token transfer or a change of ownership."
     columns:
-      - *chain_type
       - *blockchain
-      - *block_date
       - *block_time
       - *block_number
       - *block_hash
       - name: contract_address
         description: "Address of the ethereum smart contract generating the log"
-      - name: topic1
+      - name: topic0
         description: "Topics are 32-byte (256 bit) “words” that are used to describe what’s going on in an event. The first topic usually consists of the signature of the name of the event that occurred, including the types (uint256, string, etc.) of its parameters."
-      - name: topic2
+      - name: topic1
         description: "Second topic"
-      - name: topic3
+      - name: topic2
         description: "Third topic"
-      - name: topic4
+      - name: topic3
         description: "Fourth topic"
       - name: data
         description: "Additional data for the log. Data is not searchable (while topics are), but is a lot cheaper and can include large or complicated data like arrays or strings."
@@ -199,14 +185,12 @@ models:
     meta:
       blockchain: goerli, ethereum, polygon, bnb, avalanche_c, gnosis, fantom, optimism, arbitrum, celo
       sector: evms_mainnets_testnets
-      contributors: msilb7, hildobby
+      contributors: hildobby, msilb7
     config:
       tags:   ['evms', 'testnets', 'mainnets', 'logs', 'decoded']
     description: "An EVM log can be used to describe an event within a smart contract, like a token transfer or a change of ownership. Those logs are decoded based on submitted smart contracts to make them human readable."
     columns:
-      - *chain_type
       - *blockchain
-      - *block_date
       - *block_time
       - *block_number
       - name: index
@@ -227,12 +211,11 @@ models:
     meta:
       blockchain: goerli, ethereum, polygon, bnb, avalanche_c, gnosis, fantom, optimism, arbitrum, celo
       sector: evms_mainnets_testnets
-      contributors: msilb7, hildobby
+      contributors: hildobby, msilb7
     config:
       tags:   ['evms', 'testnets', 'mainnets', 'blocks']
     description: "Blocks are batches of transactions with a hash of the previous block in the chain. This links blocks together (in a chain) because hashes are cryptographically derived from the block data."
     columns:
-      - *chain_type
       - *blockchain
       - name: base_fee_per_gas
       - name: difficulty
@@ -251,12 +234,11 @@ models:
     meta:
       blockchain: goerli, ethereum, polygon, bnb, avalanche_c, gnosis, fantom, optimism, arbitrum, celo
       sector: evms_mainnets_testnets
-      contributors: msilb7, hildobby
+      contributors: hildobby, msilb7
     config:
       tags:   ['evms', 'testnets', 'mainnets', 'contracts']
     description: "A view keeping track of what contracts are decoded across EVM chains on Dune; contains information associated with the decoded contract such as namespace, name, address, ABI."
     columns:
-      - *chain_type
       - *blockchain
       - name: abi
         description: "ABI of the decoded contract"
@@ -288,12 +270,11 @@ models:
     meta:
       blockchain: goerli, ethereum, polygon, bnb, avalanche_c, gnosis, fantom, optimism, arbitrum, celo
       sector: evms_mainnets_testnets
-      contributors: msilb7, hildobby
+      contributors: hildobby, msilb7
     config:
       tags:   ['evms', 'testnets', 'mainnets', 'traces', 'creation', 'contracts']
     description: "EVM chains creation traces"
     columns:
-      - *chain_type
       - *blockchain
       - *block_time
       - *block_number
@@ -309,12 +290,11 @@ models:
     meta:
       blockchain: goerli, ethereum, polygon, bnb, avalanche_c, gnosis, fantom, optimism, arbitrum, celo
       sector: evms_mainnets_testnets
-      contributors: msilb7, hildobby
+      contributors: hildobby, msilb7
     config:
       tags:   ['evms', 'testnets', 'mainnets', 'erc20', 'transfers']
     description: "Transfers events for ERC20 tokens on EVM chains."
     columns:
-      - *chain_type
       - *blockchain
       - name: contract_address
         description: "ERC20 token contract address"
@@ -339,12 +319,11 @@ models:
     meta:
       blockchain: goerli, ethereum, polygon, bnb, avalanche_c, gnosis, fantom, optimism, arbitrum, celo
       sector: evms_mainnets_testnets
-      contributors: msilb7, hildobby
+      contributors: hildobby, msilb7
     config:
       tags:   ['evms', 'testnets', 'mainnets', 'erc20', 'approvals']
     description: "Approval events for ERC20 tokens on EVM chains."
     columns:
-      - *chain_type
       - *blockchain
       - name: contract_address
         description: "ERC20 token contract address"
@@ -352,8 +331,6 @@ models:
       - *evt_index
       - *evt_block_time
       - *evt_block_number
-      - name: approved
-        description: "Approved"
       - name: owner
         description: "Owner"
       - name: spender
@@ -365,12 +342,11 @@ models:
     meta:
       blockchain: goerli, ethereum, polygon, bnb, avalanche_c, gnosis, fantom, optimism, arbitrum, celo
       sector: evms_mainnets_testnets
-      contributors: msilb7, hildobby
+      contributors: hildobby, msilb7
     config:
       tags:   ['evms', 'testnets', 'mainnets', 'erc1155', 'transfers', 'single']
     description: "Single transfers events for ERC1155 tokens on EVM chains."
     columns:
-      - *chain_type
       - *blockchain
       - name: contract_address
         description: "ERC1155 token contract address"
@@ -391,12 +367,11 @@ models:
     meta:
       blockchain: goerli, ethereum, polygon, bnb, avalanche_c, gnosis, fantom, optimism, arbitrum, celo
       sector: evms_mainnets_testnets
-      contributors: msilb7, hildobby
+      contributors: hildobby, msilb7
     config:
       tags:   ['evms', 'testnets', 'mainnets', 'erc1155', 'transfers', 'batch']
     description: "Batch transfers events for ERC1155 tokens on EVM chains."
     columns:
-      - *chain_type
       - *blockchain
       - name: contract_address
         description: "ERC1155 token contract address"
@@ -417,12 +392,11 @@ models:
     meta:
       blockchain: goerli, ethereum, polygon, bnb, avalanche_c, gnosis, fantom, optimism, arbitrum, celo
       sector: evms_mainnets_testnets
-      contributors: msilb7, hildobby
+      contributors: hildobby, msilb7
     config:
       tags:   ['evms', 'testnets', 'mainnets', 'erc1155', 'approvals']
     description: "Approval for all events for ERC1155 tokens on EVM chains."
     columns:
-      - *chain_type
       - *blockchain
       - name: contract_address
         description: "ERC1155 token contract address"
@@ -433,9 +407,6 @@ models:
       - &approved
         name: approved
         description: "Is approved"
-      - &owner
-        name: owner
-        description: "Owner"
       - name: account
         description: "Account"
       - &operator
@@ -446,12 +417,11 @@ models:
     meta:
       blockchain: goerli, ethereum, polygon, bnb, avalanche_c, gnosis, fantom, optimism, arbitrum, celo
       sector: evms_mainnets_testnets
-      contributors: msilb7, hildobby
+      contributors: hildobby, msilb7
     config:
       tags:   ['evms', 'testnets', 'mainnets', 'erc721', 'transfers']
     description: "Transfers events for ERC721 tokens on EVM chains."
     columns:
-      - *chain_type
       - *blockchain
       - name: contract_address
         description: "ERC721 token contract address"
@@ -468,12 +438,11 @@ models:
     meta:
       blockchain: goerli, ethereum, polygon, bnb, avalanche_c, gnosis, fantom, optimism, arbitrum, celo
       sector: evms_mainnets_testnets
-      contributors: msilb7, hildobby
+      contributors: hildobby, msilb7
     config:
       tags:   ['evms', 'testnets', 'mainnets', 'erc721', 'approvals']
     description: "Approval events for ERC721 tokens on EVM chains."
     columns:
-      - *chain_type
       - *blockchain
       - name: contract_address
         description: "ERC721 token contract address"
@@ -482,7 +451,9 @@ models:
       - *evt_block_time
       - *evt_block_number
       - *approved
-      - *owner
+      - &owner
+        name: owner
+        description: "Owner"
       - name: tokenId
         description: "ERC721 token ID."
 
@@ -490,12 +461,11 @@ models:
     meta:
       blockchain: goerli, ethereum, polygon, bnb, avalanche_c, gnosis, fantom, optimism, arbitrum, celo
       sector: evms_mainnets_testnets
-      contributors: msilb7, hildobby
+      contributors: hildobby, msilb7
     config:
       tags:   ['evms', 'testnets', 'mainnets', 'erc721', 'approvals']
     description: "Approval for all events for ERC721 tokens on EVM chains."
     columns:
-      - *chain_type
       - *blockchain
       - name: contract_address
         description: "ERC721 token contract address"
@@ -506,17 +476,16 @@ models:
       - *approved
       - *owner
       - *operator
-  
+
   - name: evms_mainnets_testnets_info
     meta:
       blockchain: goerli, ethereum, polygon, bnb, avalanche_c, gnosis, fantom, optimism, arbitrum, celo
       sector: evms_mainnets_testnets
-      contributors: hildobby
+      contributors: hildobby, msilb7
     config:
       tags:   ['evms', 'testnets', 'mainnets', 'info']
     description: "Some information about the EVM chains"
     columns: 
-      - *chain_type
       - name: chain_id
         description: "Chain ID"
       - *blockchain
