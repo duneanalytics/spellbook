@@ -1,9 +1,9 @@
 {{config(alias = alias('defi'),
         tags=['static', 'dunesql'],
-        post_hook='{{ expose_spells(\'['ethereum']\',
-                                    'sector',
-                                    'addresses',
-                                    \'['umer_h_adil']\') }}')}}
+        post_hook='{{ expose_spells(\'["ethereum"]\',
+                                    "sector",
+                                    "addresses",
+                                    \'["umer_h_adil"]\') }}')}}
 
 SELECT address, project, project_type
 FROM (VALUES
