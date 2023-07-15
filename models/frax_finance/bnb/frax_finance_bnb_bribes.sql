@@ -1,13 +1,14 @@
 {{ config(
     alias = alias('bribes'),
     materialized = 'table',
+    tags = ['dunesql'],
     file_format = 'delta',
     unique_key = ['week_start', 'week_end', 'contract_address'],
-    post_hook='{{ expose_spells(\'["bnb"]\',
+    post_hook = '{{ expose_spells('["bnb"]',
                                     "project",
                                     "frax_finance",
-                                    \'["vahid"]\') }}'
-    )
+                                    '["vahid"]') }}'
+)
 }}
 
 
