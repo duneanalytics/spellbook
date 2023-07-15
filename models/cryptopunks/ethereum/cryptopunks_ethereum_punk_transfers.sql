@@ -1,5 +1,5 @@
 {{ config(
-        alias ='punk_transfers',
+        alias = alias('punk_transfers'),
         partition_by = ['evt_block_time_week'],
         materialized = 'incremental',
         file_format = 'delta',

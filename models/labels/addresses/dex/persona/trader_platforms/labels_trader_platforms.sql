@@ -1,6 +1,6 @@
 {{
     config(
-        alias='trader_platforms',
+        alias = alias('trader_platforms'),
         post_hook='{{ expose_spells(\'["ethereum", "fantom", "arbitrum", "avalanche_c", "gnosis", "bnb", "optimism", "polygon"]\',
                     "sector",
                     "labels",

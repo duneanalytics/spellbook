@@ -1,5 +1,5 @@
 {{ config(
-    alias = 'reverse_latest',
+    alias = alias('reverse_latest'),
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',

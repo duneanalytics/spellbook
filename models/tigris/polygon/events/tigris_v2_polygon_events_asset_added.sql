@@ -1,6 +1,6 @@
 {{ config(
     schema = 'tigris_v2_polygon',
-    alias = 'events_asset_added'
+    alias = alias('events_asset_added')
     )
  }}
 

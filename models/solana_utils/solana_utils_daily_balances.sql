@@ -1,6 +1,6 @@
  {{
   config(
-        alias='daily_balances',
+        alias = alias('daily_balances'),
         materialized='incremental',
         file_format = 'delta',
         incremental_strategy='merge',

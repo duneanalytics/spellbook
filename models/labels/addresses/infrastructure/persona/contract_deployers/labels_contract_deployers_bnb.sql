@@ -1,6 +1,6 @@
 {{
     config(
-        alias='contract_deployers_bnb',
+        alias = alias('contract_deployers_bnb'),
         post_hook='{{ expose_spells(\'["bnb"]\',
                                     "sector",
                                     "labels",

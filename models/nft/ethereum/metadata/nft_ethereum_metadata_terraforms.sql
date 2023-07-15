@@ -1,5 +1,5 @@
 {{ config(
-        alias = 'terraforms'
+        alias = alias('terraforms')
         )
 }}
 

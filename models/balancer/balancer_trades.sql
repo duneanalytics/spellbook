@@ -1,6 +1,6 @@
 {{ config(
     schema = 'balancer',
-    alias = 'trades',
+    alias = alias('trades'),
     post_hook='{{ expose_spells(\'["arbitrum", "ethereum", "gnosis", "optimism", "polygon"]\',
                                 "project",
                                 "balancer",
