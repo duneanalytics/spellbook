@@ -19,9 +19,7 @@ WITH wld_deployers AS (
     WHERE "from" = 0x86c5608362b3fbbeb721140472229392f754ef87
     AND value > cast(0 as uint256)
     AND block_number >= 105870092 --first transfer
-    {% if is_incremental() %}
-    AND block_time >= date_trunc('day', now() - interval '7' day)
-    {% endif %}
+    -- don't do incremental here, we want to always build this subaccount list (maybe an eventual spell)
     GROUP BY 1
 )
 
