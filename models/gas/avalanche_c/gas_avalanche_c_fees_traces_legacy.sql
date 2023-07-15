@@ -1,4 +1,6 @@
 {{ config(
+	tags=['legacy'],
+	
     schema = 'gas_avalanche_c',
     alias = alias('fees_traces', legacy_model=True),
     partition_by = ['block_date'],

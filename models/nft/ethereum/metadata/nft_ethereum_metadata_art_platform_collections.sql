@@ -1,5 +1,5 @@
 {{ config(
-        alias ='art_platform_collections'
+        alias = alias('art_platform_collections')
 )
 }}
 

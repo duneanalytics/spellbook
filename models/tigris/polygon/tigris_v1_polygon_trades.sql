@@ -1,6 +1,6 @@
 {{ config(
     schema = 'tigris_v1_polygon',
-    alias = 'trades',
+    alias = alias('trades'),
     partition_by = ['day'],
     materialized = 'incremental',
     file_format = 'delta',

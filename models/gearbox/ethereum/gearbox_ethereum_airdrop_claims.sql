@@ -1,7 +1,7 @@
 {{
     config(
         schema = 'gearbox_ethereum',
-        alias='airdrop_claims',
+        alias = alias('airdrop_claims'),
         materialized = 'incremental',
         file_format = 'delta',
         tags=['static'],

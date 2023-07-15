@@ -1,6 +1,6 @@
 {{ config(
     schema = 'tigris_v1_polygon',
-    alias = 'events_close_position',
+    alias = alias('events_close_position'),
     partition_by = ['day'],
     materialized = 'incremental',
     file_format = 'delta',

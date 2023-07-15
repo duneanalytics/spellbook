@@ -1,6 +1,8 @@
 {{ config(
+	tags=['legacy'],
+	
     schema = 'gas_polygon',
-    alias = alias('fees_traces',legacy_model=True),
+    alias = alias('fees_traces', legacy_model=True),
     partition_by = ['block_date'],
     materialized = 'incremental',
     file_format = 'delta',

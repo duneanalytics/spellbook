@@ -1,4 +1,6 @@
 {{ config(
+	tags=['legacy'],
+	
     schema = 'gas_arbitrum',
     alias = alias('fees_traces', legacy_model=True),
     partition_by = ['block_date'],

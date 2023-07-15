@@ -1,6 +1,6 @@
 {{ config(
-        alias ='approvals',
-        partition_by='block_date',
+        alias = alias('approvals'),
+        partition_by=['block_date'],
         materialized='incremental',
         incremental_strategy='merge',
         file_format = 'delta',

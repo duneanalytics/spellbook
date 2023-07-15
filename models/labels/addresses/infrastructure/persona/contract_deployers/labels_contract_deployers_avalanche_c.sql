@@ -1,6 +1,6 @@
 {{
     config(
-        alias='contract_deployers_avalanche_c',
+        alias = alias('contract_deployers_avalanche_c'),
         post_hook='{{ expose_spells(\'["avalanche_c"]\',
                                     "sector",
                                     "labels",
