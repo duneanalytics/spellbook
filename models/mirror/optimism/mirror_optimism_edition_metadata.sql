@@ -74,9 +74,17 @@ NULL as platformFee,
 NULL as platformFeeRecipient,
 NULL AS salt
 
-FROM {{ source('mirror_optimism','WritingEditionsFactory_call_createWithSignature') }}
-INNER JOIN source('optimism','creation_traces') tr
+FROM {{ source('mirror_optimism','WritingEditionsFactory_call_createWithSignature') }} ce
+INNER JOIN {{ source('optimism','creation_traces') }} tr
     ON tr.block_time = ce.call_block_time
     AND tr.block_number = ce.call_block_number
     AND tr.tx_hash = ce.call_tx_hash
     AND tr.address = ce.output_clone
+    {% if is_incremental() %}
+    AND tr.block_time >= NOW() - interval '7' day
+    {% endif %}
+
+WHERE call_success = true
+{% if is_incremental() %}
+AND ce.call_block_time >= NOW() - interval '7' day
+{% endif %}
