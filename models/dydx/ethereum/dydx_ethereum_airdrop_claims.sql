@@ -1,7 +1,7 @@
 {{
     config(
         schema = 'dydx_ethereum',
-        alias='airdrop_claims',
+        alias = alias('airdrop_claims'),
         materialized = 'incremental',
         file_format = 'delta',
         incremental_strategy = 'merge',
@@ -40,7 +40,7 @@ SELECT 'ethereum' AS blockchain
 , 'DYDX' AS token_symbol
 , t.evt_index
 FROM {{ source('erc20_ethereum', 'evt_transfer') }} t
-LEFT JOIN {{ ref('prices_usd_forward_fill_legacy') }} pu ON pu.blockchain = 'ethereum'
+LEFT JOIN {{ ref('prices_usd_forward_fill') }} pu ON pu.blockchain = 'ethereum'
     AND pu.contract_address='{{dydx_token_address}}'
     AND pu.minute=date_trunc('minute', t.evt_block_time)
     {% if is_incremental() %}

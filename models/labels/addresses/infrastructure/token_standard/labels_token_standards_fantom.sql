@@ -1,4 +1,4 @@
-{{config(alias='token_standards_fantom',
+{{config(alias = alias('token_standards_fantom'),
         post_hook='{{ expose_spells(\'["fantom"]\',
                                     "sector",
                                     "labels",
@@ -32,7 +32,7 @@ SELECT distinct 'fantom' AS blockchain
 , NOW() AS modified_at
 , 'token_standard' AS model_name
 , 'persona' as label_type
-FROM {{ ref('nft_fantom_transfers_legacy') }} nft
+FROM {{ ref('nft_fantom_transfers') }} nft
 {% if is_incremental() %}
 LEFT ANTI JOIN this t ON t.address = nft.contract_address
 WHERE nft.block_time >= date_trunc('day', now() - interval '1 week')

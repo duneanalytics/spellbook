@@ -1,5 +1,5 @@
 {{ config(
-      alias='stablecoins'
+      alias = alias('stablecoins')
       , tags=['static']
       , post_hook='{{ expose_spells(\'["fantom"]\',
                                   "sector",

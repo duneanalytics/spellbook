@@ -1,6 +1,6 @@
 {{
     config(
-        alias='contract_deployers_fantom',
+        alias = alias('contract_deployers_fantom'),
         post_hook='{{ expose_spells(\'["fantom"]\',
                                     "sector",
                                     "labels",

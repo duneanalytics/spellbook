@@ -1,6 +1,6 @@
 {{
   config(
-    alias='all_transactions',
+    alias = alias('all_transactions'),
     partition_by = ['block_date'],
     materialized = 'incremental',
     file_format = 'delta',
