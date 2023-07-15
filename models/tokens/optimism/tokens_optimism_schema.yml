@@ -237,6 +237,8 @@ models:
         description: "NFT Project name"
       - name: symbol
         description: "NFT Project symbol"
+      - name: royalty_pct
+        description: "Percent Royalty in decimal form (i.e. 0.01 = 1% royalty)"
       - name: platform
         description: "Where was the NFT minted"
 
