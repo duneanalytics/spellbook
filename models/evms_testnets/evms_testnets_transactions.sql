@@ -16,6 +16,7 @@
 
 SELECT *
 FROM (
+         {% for transactions_model in transactions_models %}
         SELECT
         '{{ transactions_model[0] }}' AS blockchain
         , access_list
