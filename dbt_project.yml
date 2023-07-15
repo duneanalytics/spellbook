@@ -1281,3 +1281,8 @@ models:
           +schema: account_abstraction_erc4337_polygon
         gnosis:
           +schema: account_abstraction_erc4337_gnosis
+    
+    worldcoin:
+      +schema: worldcoin
+      optimism:
+        +schema: worldcoin_optimism
