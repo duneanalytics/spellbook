@@ -1,5 +1,5 @@
 {{ config(
-        alias = 'bright_moments'
+        alias = alias('bright_moments')
         )
 }}
 

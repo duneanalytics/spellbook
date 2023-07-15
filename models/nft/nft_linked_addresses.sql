@@ -1,5 +1,5 @@
 {{ config(
-    alias = 'linked_addresses',
+    alias = alias('linked_addresses'),
     partition_by = ['blockchain'],
     materialized = 'incremental',
     file_format = 'delta',

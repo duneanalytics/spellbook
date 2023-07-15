@@ -1,6 +1,6 @@
 {{ config(
 	schema = 'pika_v3_optimism',
-	alias ='perpetual_trades',
+	alias = alias('perpetual_trades'),
 	partition_by = ['block_date'],
 	materialized = 'incremental',
 	file_format = 'delta',

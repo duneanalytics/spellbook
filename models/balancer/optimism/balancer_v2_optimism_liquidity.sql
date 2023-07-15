@@ -1,7 +1,7 @@
 {{
     config(
         schema='balancer_v2_optimism',
-        alias='liquidity',
+        alias = alias('liquidity'),
         materialized = 'table',
         file_format = 'delta',
         post_hook='{{ expose_spells(\'["optimism"]\',
@@ -180,7 +180,7 @@ zipped_balance_changes AS (
         FROM calendar c
         LEFT JOIN cumulative_balance b ON b.day <= c.day
         AND c.day < b.day_of_next_change
-        LEFT JOIN {{ ref('tokens_erc20_legacy') }} t ON t.contract_address = b.token
+        LEFT JOIN {{ ref('tokens_erc20') }} t ON t.contract_address = b.token
         AND blockchain = "optimism"
         LEFT JOIN prices p1 ON p1.day = b.day
         AND p1.token = b.token

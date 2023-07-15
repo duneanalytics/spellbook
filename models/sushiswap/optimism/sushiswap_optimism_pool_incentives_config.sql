@@ -1,5 +1,5 @@
 {{ config(
-    alias = 'pool_incentives_config'
+    alias = alias('pool_incentives_config')
     , tags=['static']
     )
 }}
