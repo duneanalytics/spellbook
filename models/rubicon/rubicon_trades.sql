@@ -1,14 +1,15 @@
 {{ config(
-        alias ='trades',
+        alias = alias('trades'),
         post_hook='{{ expose_spells(\'["optimism"]\',
                                 "project",
                                 "rubicon",
-                                \'["msilb7"]\') }}'
+                                \'["msilb7, denver"]\') }}'
         )
 }}
 
 {% set rubi_models = [
-ref('rubicon_optimism_trades')
+ref('rubicon_optimism_trades'),
+ref('rubicon_arbitrum_trades')
 ] %}
 
 

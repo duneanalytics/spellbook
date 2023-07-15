@@ -1,5 +1,5 @@
 {{ config(
-    alias = 'social',
+    alias = alias('social'),
     materialized = 'table',
     file_format = 'delta',
     post_hook='{{ expose_spells(\'["ethereum", "solana", "arbitrum", "gnosis", "optimism", "bnb", "avalanche_c"]\',

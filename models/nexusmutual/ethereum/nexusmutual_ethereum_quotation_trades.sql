@@ -1,5 +1,5 @@
 {{ config(
-    alias ='trades',
+    alias = alias('trades'),
     partition_by = ['block_date'],
     materialized = 'incremental',
     file_format = 'delta',
@@ -76,7 +76,7 @@ INNER JOIN {{ source('ethereum','transactions') }} tx
     {% if is_incremental() %}
     AND tx.block_time >= date_trunc("day", now() - interval '1 week')
     {% endif %}
-LEFT JOIN {{ ref('tokens_erc20_legacy') }} erc20
+LEFT JOIN {{ ref('tokens_erc20') }} erc20
     ON quo_evt.token = erc20.contract_address
     AND erc20.blockchain = 'ethereum'
 ;

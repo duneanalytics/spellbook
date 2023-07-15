@@ -1,7 +1,8 @@
 {{ config(
-        alias ='transactions',
+        tags = ['dunesql'],
+        alias = alias('transactions'),
         unique_key=['blockchain', 'tx_hash', 'evt_index'],
-        post_hook='{{ expose_spells(\'["ethereum", "polygon", "bnb", "avalanche_c", "gnosis", "fantom", "optimism", "arbitrum"]\',
+        post_hook='{{ expose_spells(\'["ethereum", "polygon", "bnb", "avalanche_c", "gnosis", "fantom", "optimism", "arbitrum", "celo"]\',
                                     "sector",
                                     "evms",
                                     \'["hildobby"]\') }}'
@@ -18,6 +19,7 @@
      , ('fantom', source('fantom', 'transactions'))
      , ('arbitrum', source('arbitrum', 'transactions'))
      , ('optimism', source('optimism', 'transactions'))
+     , ('celo', source('celo', 'transactions'))
 ] %}
 
 SELECT *
@@ -28,7 +30,7 @@ FROM (
         , access_list
         , block_hash
         , data
-        , `from`
+        , "from"
         , hash
         , to
         , block_number
@@ -42,7 +44,7 @@ FROM (
         , nonce
         , priority_fee_per_gas
         , success
-        , `type`
+        , "type"
         , CAST(value AS double) AS value
         --Logic for L2s
                 {% if transactions_model[0] == 'optimism' %}
@@ -62,7 +64,7 @@ FROM (
                 , CAST(NULL AS DECIMAL(38,0)) AS l1_fee
                 , CAST(NULL AS DECIMAL(38,0)) AS l1_gas_price
                 , gas_used_for_l1 AS l1_gas_used
-                , NULL AS l1_timestamp
+                , cast(NULL as bigint) AS l1_timestamp
                 , effective_gas_price
 
                 {% else %}
@@ -72,7 +74,7 @@ FROM (
                 , CAST(NULL AS DECIMAL(38,0)) AS l1_fee
                 , CAST(NULL AS DECIMAL(38,0)) AS l1_gas_price
                 , CAST(NULL AS DECIMAL(38,0)) AS l1_gas_used
-                , NULL AS l1_timestamp
+                , cast(NULL as bigint) AS l1_timestamp
                 , CAST(NULL AS DECIMAL(38,0)) AS effective_gas_price
                 {% endif %}
         FROM {{ transactions_model[1] }}
