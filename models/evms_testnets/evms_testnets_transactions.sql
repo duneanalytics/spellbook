@@ -4,7 +4,7 @@
         unique_key=['blockchain', 'tx_hash', 'evt_index'],
         post_hook='{{ expose_spells(\'["goerli"]\',
                                     "sector",
-                                    "evms",
+                                    "emvs_testnets",
                                     \'["hildobby","msilb7"]\') }}'
         )
 }}
@@ -16,7 +16,6 @@
 
 SELECT *
 FROM (
-        {% for transactions_model in transactions_models %}
         SELECT
         '{{ transactions_model[0] }}' AS blockchain
         , access_list
@@ -40,12 +39,12 @@ FROM (
         , CAST(value AS double) AS value
         , NULL AS l1_tx_origin
         , CAST(NULL AS double) AS l1_fee_scalar
-        , CAST(NULL AS DOUBLE) AS l1_block_number
-        , CAST(NULL AS DOUBLE) AS l1_fee
-        , CAST(NULL AS DOUBLE) AS l1_gas_price
-        , CAST(NULL AS DOUBLE) AS l1_gas_used
+        , CAST(NULL AS DECIMAL(38,0)) AS l1_block_number
+        , CAST(NULL AS DECIMAL(38,0)) AS l1_fee
+        , CAST(NULL AS DECIMAL(38,0)) AS l1_gas_price
+        , CAST(NULL AS DECIMAL(38,0)) AS l1_gas_used
         , NULL AS l1_timestamp
-        , CAST(NULL AS DOUBLE) AS effective_gas_price
+        , CAST(NULL AS DECIMAL(38,0)) AS effective_gas_price
         FROM {{ transactions_model[1] }}
         {% if not loop.last %}
         UNION ALL
