@@ -1145,6 +1145,8 @@ models:
       +schema: rubicon
       optimism:
         +schema: rubicon_optimism
+      arbitrum: 
+        +schema: rubicon_arbitrum
 
     beethoven_x:
       +schema: beethoven_x

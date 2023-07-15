@@ -1,5 +1,5 @@
 {{ config(
-        alias ='liquidity_incentives',
+        alias = alias('liquidity_incentives'),
         partition_by = ['period'],
         materialized = 'table',
         file_format = 'delta',

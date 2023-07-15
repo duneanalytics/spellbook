@@ -1,7 +1,7 @@
 {{
     config(
         schema = 'arbitrum_arbitrum',
-        alias='airdrop_claims',
+        alias = alias('airdrop_claims'),
         materialized = 'incremental',
         file_format = 'delta',
         incremental_strategy = 'merge',

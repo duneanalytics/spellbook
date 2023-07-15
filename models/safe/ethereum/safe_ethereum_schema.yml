@@ -5,7 +5,7 @@ models:
     meta:
       blockchain: ethereum
       project: safe
-      contributors: scherbovich, tschubotz, frankmaseo
+      contributors: scherbovich, tschubotz, frankmaseo, danielpartida
     freshness:
       warn_after: { count: 12, period: hour }
       error_after: { count: 24, period: hour }

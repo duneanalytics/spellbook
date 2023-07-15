@@ -1,4 +1,4 @@
-{{config(alias='flashbots_ethereum',
+{{config(alias = alias('flashbots_ethereum'),
         post_hook='{{ expose_spells(\'["ethereum"]\',
                                     "sector",
                                     "labels",

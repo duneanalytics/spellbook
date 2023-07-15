@@ -1,5 +1,5 @@
 {{ config(
-        alias = 'pool_balance_changes',
+        alias = alias('pool_balance_changes'),
         materialized = 'incremental',
         file_format = 'delta',
         incremental_strategy = 'merge',

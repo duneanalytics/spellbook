@@ -1,4 +1,4 @@
-{{config(alias='safe_ethereum')}}
+{{config(alias = alias('safe_ethereum'))}}
 
 SELECT
     'ethereum' as blockchain,

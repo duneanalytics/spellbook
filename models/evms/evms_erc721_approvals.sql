@@ -1,7 +1,8 @@
 {{ config(
-        alias ='erc721_approvals',
+        tags = ['dunesql'],
+        alias = alias('erc721_approvals'),
         unique_key=['blockchain', 'tx_hash', 'evt_index'],
-        post_hook='{{ expose_spells(\'["ethereum", "polygon", "bnb", "avalanche_c", "gnosis", "fantom", "optimism", "arbitrum"]\',
+        post_hook='{{ expose_spells(\'["ethereum", "polygon", "bnb", "avalanche_c", "gnosis", "fantom", "optimism", "arbitrum", "celo"]\',
                                     "sector",
                                     "evms",
                                     \'["hildobby"]\') }}'
@@ -17,6 +18,7 @@
      , ('fantom', source('erc721_fantom', 'evt_Approval'))
      , ('optimism', source('erc721_optimism', 'evt_Approval'))
      , ('arbitrum', source('erc721_arbitrum', 'evt_Approval'))
+     , ('celo', source('erc721_celo', 'evt_Approval'))
 ] %}
 
 SELECT *
@@ -24,7 +26,14 @@ FROM (
         {% for erc721_approvals_model in erc721_approvals_models %}
         SELECT
         '{{ erc721_approvals_model[0] }}' AS blockchain
-        , *
+        , contract_address
+        , evt_tx_hash
+        , evt_index
+        , evt_block_time
+        , evt_block_number
+        , approved
+        , owner
+        , tokenId
         FROM {{ erc721_approvals_model[1] }}
         {% if not loop.last %}
         UNION ALL
