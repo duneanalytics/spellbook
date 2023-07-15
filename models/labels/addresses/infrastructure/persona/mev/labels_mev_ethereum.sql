@@ -1,4 +1,5 @@
-{{config(tags=['dunesql'],alias = alias('mev_ethereum'),
+{{config(tags=['dunesql'],
+    alias = alias('mev_ethereum'),
         post_hook='{{ expose_spells(\'["ethereum"]\',
                                     "sector",
                                     "labels",

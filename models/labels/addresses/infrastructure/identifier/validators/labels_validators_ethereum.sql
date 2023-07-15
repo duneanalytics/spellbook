@@ -1,4 +1,5 @@
-{{config(tags=['dunesql'],alias = alias('validators_ethereum'))}}
+{{config(tags=['dunesql'],
+    alias = alias('validators_ethereum'))}}
 
 SELECT distinct
     'ethereum' as blockchain,

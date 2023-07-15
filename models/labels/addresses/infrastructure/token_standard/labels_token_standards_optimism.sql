@@ -1,4 +1,5 @@
-{{config(tags=['dunesql'],alias = alias('token_standards_optimism'),
+{{config(tags=['dunesql'],
+    alias = alias('token_standards_optimism'),
         post_hook='{{ expose_spells(\'["optimism"]\',
                                     "sector",
                                     "labels",

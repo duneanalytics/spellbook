@@ -1,4 +1,5 @@
-{{config(tags=['dunesql'],alias = alias('token_standards_gnosis'),
+{{config(tags=['dunesql'],
+    alias = alias('token_standards_gnosis'),
         post_hook='{{ expose_spells(\'["gnosis"]\',
                                     "sector",
                                     "labels",
