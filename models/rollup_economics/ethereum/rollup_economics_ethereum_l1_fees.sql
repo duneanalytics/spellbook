@@ -1,5 +1,6 @@
 {{ config(
-    alias = 'l1_calldata_fees',
+    alias = alias('l1_calldata_fees'),
+    tags = ['dunesql'],
     partition_by = ['block_time'],
     materialized = 'incremental',
     file_format = 'delta',
@@ -16,7 +17,7 @@ WITH tx_batch_appends AS (
     'Arbitrum' AS name,
     t.block_time,
     t.hash,
-    (t.gas_used*t.gas_price)/POWER(10,18) AS gas_spent,
+    (cast(gas_used AS double) * (cast(gas_price AS double) / 1e18) AS gas_spent,
     (length(t.data)) AS data_length
     FROM
     (
@@ -84,12 +85,12 @@ WITH tx_batch_appends AS (
         and block_time >= date_trunc("day", now() - interval '1 week')
     {% endif %}
 
-    UNION ALL SELECT
+    UNION ALL
     SELECT
       op.name AS name,
       t.block_time,
       t.hash,
-      gas_used * (gas_price / 1e18) AS gas_spent,
+      cast(gas_used AS double) * (cast(gas_price AS double) / 1e18) AS gas_spent,
       (length(t.data)) AS data_length
     FROM
       source('ethereum','transactions') AS t
