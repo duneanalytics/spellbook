@@ -550,6 +550,7 @@ WITH curated_list AS (
       ,(0x00e6202a8A52a3De6Ce7c45F2e5E299Ec71e875e, 'Candide')
       ,(0x4325018916b082B91e277C7165FD8Da6467b71F8, 'Fuji Finance')
       ,(0x0B5a3C04D1199283938fbe887A2C82C808aa89Fb, 'Summer.fi')
+      ,(0x7d896339a80dd38bc3bbb04383894c62b2ef2585, 'Worldcoin')
       
   ) as temp_table (creator_address, contract_project)
 )
