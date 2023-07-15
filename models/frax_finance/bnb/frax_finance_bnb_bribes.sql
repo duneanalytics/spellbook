@@ -1,4 +1,5 @@
-{ { config(
+
+{{ config(
     alias = alias('bribes'),
     materialized = 'table',
     tags = ['dunesql'],

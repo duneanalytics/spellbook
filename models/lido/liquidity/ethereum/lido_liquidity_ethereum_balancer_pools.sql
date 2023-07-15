@@ -1,5 +1,5 @@
 {{ config(
-    alias = 'balancer_pools',
+    alias = alias('balancer_pools'),
     partition_by = ['time'],
     materialized = 'table',
     file_format = 'delta',

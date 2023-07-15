@@ -1,5 +1,5 @@
 {{ config(
-    alias = 'view_pools',
+    alias = alias('view_pools'),
     materialized='table',
     file_format = 'delta',
     post_hook='{{ expose_spells(\'["ethereum"]\',

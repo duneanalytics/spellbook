@@ -1,6 +1,6 @@
  {{
   config(
-        alias='token_accounts',
+        alias = alias('token_accounts'),
         materialized='incremental',
         file_format = 'delta',
         incremental_strategy='merge',

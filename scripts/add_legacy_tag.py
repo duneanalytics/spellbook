@@ -14,12 +14,20 @@ for root, dirs, files in os.walk("models"):
         if file.endswith("_legacy.sql"):
             path = os.path.join(root, file)
             # open file and read the first line
+
             with open(path, "r") as f:
                 content = f.read()
-            if "tags=['static']" in content:
-                content = content.replace("tags=['static']", "tags=['static', 'legacy']")
-            else:
-                content = content.replace("config(", "config(\n\ttags=['legacy'],\n\t")
+
+            if content.count("tags") != 1:
+                print(content.count("tags"), path)
+             
+            if "'legacy'" not in content:
+                if "tags=[" in content:
+                    content = content.replace("tags=[", "tags=['legacy', ")
+                else:
+                    content = content.replace("config(", "config(\n\ttags=['legacy'],\n\t")
+            
+            
             # write the first line back to the file
             with open(path, "w") as f:
                 f.write(content)

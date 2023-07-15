@@ -1,5 +1,5 @@
 {{ config(
-        alias ='all_events',
+        alias = alias('all_events'),
         post_hook='{{ expose_spells(\'["ethereum"]\',
                                     "project",
                                     "cryptopunks",
@@ -57,7 +57,7 @@ from
             , price_usd as amount_usd
             , block_number
             , tx_hash
-    from {{ ref('nft_ethereum_trades_beta_legacy') }}
+    from {{ ref('nft_ethereum_trades_beta') }}
     where project = 'cryptopunks'
 
     union all

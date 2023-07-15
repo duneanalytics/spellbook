@@ -1,4 +1,6 @@
 {{ config(
+	tags=['legacy'],
+
     alias = alias('bribes', legacy_model=True),
     materialized = 'table',
     file_format = 'delta',
@@ -9,8 +11,6 @@
                                     \'["vahid"]\') }}'
     )
 }}
-
-
 
 
 with base_date as (
@@ -116,7 +116,7 @@ prices_raw as (
                 hour desc
         ) as rn
     from
-        {{ ref('dex_prices') }}
+        {{ ref('dex_prices_legacy') }}
     where
         blockchain = 'ethereum'
         and contract_address in (
@@ -471,5 +471,4 @@ from
         and date_add(a.week_start, 14) >= g.collection_time
     )
     and a.contract_address = g.contract_address
-order by week_start desc
-
+order by week_start desc 

@@ -1,5 +1,5 @@
 {{ config(
-        alias ='aggregator_trades',
+        alias = alias('aggregator_trades'),
         post_hook='{{ expose_spells(\'["ethereum","bnb","polygon","arbitrum","optimism"]\',
                                 "project",
                                 "dodo",
