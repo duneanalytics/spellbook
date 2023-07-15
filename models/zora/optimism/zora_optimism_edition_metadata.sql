@@ -96,7 +96,7 @@ FROM (
     name AS edition_name,
     CAST(NULL AS varchar) AS edition_description,
     name AS edition_symbol,
-    CAST(NULL AS bigint) AS edition_size,
+    CAST(NULL AS uint256) AS edition_size,
     cast( json_extract_scalar(defaultRoyaltyConfiguration, '$.royaltyBPS') as double)/1e5 AS royalty_pct,
     CAST(NULL as varchar) AS image_uri,
     CAST(NULL as varchar) AS animation_uri,
