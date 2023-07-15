@@ -4,10 +4,10 @@ models:
   - name: zora_optimism_edition_metadata
     meta:
       blockchain: optimism
-      project: sound_xyz
+      project: zora
       contributors: [msilb7]
     config:
-      tags: ['optimism','zora','nft','music_nfts']
+      tags: ['optimism','zora','nft']
     description: >
        NFT editions minted on Zora on OP Mainnet
     columns:
