@@ -17,7 +17,7 @@
 {% set spacestation = '0x2e42f214467f647fe687fd9a2bf3baddfa737465' %}
 
 SELECT
-    DATE_TRUNC('day',block_time) AS block_date,
+    cast( DATE_TRUNC('day',block_time) as date) AS block_date,
     block_time,
     block_number,
     t."from" as tx_from,

@@ -16,7 +16,7 @@
 {% set project_start_date = '2022-09-13' %}
 
 SELECT
-    DATE_TRUNC('day',call_block_time) AS block_date,
+    cast( DATE_TRUNC('day',call_block_time) as date) AS block_date,
     account AS quester_address,
     call_tx_hash AS tx_hash,
     call_block_number AS block_number,
