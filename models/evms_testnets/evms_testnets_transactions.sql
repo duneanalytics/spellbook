@@ -44,7 +44,7 @@ FROM (
         , CAST(NULL AS DECIMAL(38,0)) AS l1_fee
         , CAST(NULL AS DECIMAL(38,0)) AS l1_gas_price
         , CAST(NULL AS DECIMAL(38,0)) AS l1_gas_used
-        , NULL AS l1_timestamp
+        , cast(NULL as timestamp) AS l1_timestamp
         , CAST(NULL AS DECIMAL(38,0)) AS effective_gas_price
         FROM {{ transactions_model[1] }}
         {% if not loop.last %}
