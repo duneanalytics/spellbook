@@ -17,7 +17,6 @@
      , ('gnosis', source('gnosis', 'transactions'))
      , ('fantom', source('fantom', 'transactions'))
      , ('arbitrum', source('arbitrum', 'transactions'))
-     , ('optimism', source('optimism', 'transactions'))
      , ('celo', source('celo', 'transactions'))
 ] %}
 
@@ -47,16 +46,47 @@ FROM (
         , CAST(value AS double) AS value
         , NULL AS l1_tx_origin
         , CAST(NULL AS double) AS l1_fee_scalar
-        , CAST(NULL AS DOUBLE) AS l1_block_number
-        , CAST(NULL AS DOUBLE) AS l1_fee
-        , CAST(NULL AS DOUBLE) AS l1_gas_price
-        , CAST(NULL AS DOUBLE) AS l1_gas_used
+        , CAST(NULL AS DECIMAL(38,0)) AS l1_block_number
+        , CAST(NULL AS DECIMAL(38,0)) AS l1_fee
+        , CAST(NULL AS DECIMAL(38,0)) AS l1_gas_price
+        , CAST(NULL AS DECIMAL(38,0)) AS l1_gas_used
         , NULL AS l1_timestamp
-        , CAST(NULL AS DOUBLE) AS effective_gas_price
+        , CAST(NULL AS DECIMAL(38,0)) AS effective_gas_price
         FROM {{ transactions_model[1] }}
         {% if not loop.last %}
         UNION ALL
         {% endif %}
         {% endfor %}
 
+        UNION ALL
+
+        SELECT 'optimism' AS blockchain
+        , access_list
+        , block_hash
+        , data
+        , "from"
+        , hash
+        , to
+        , block_number
+        , block_time
+        , gas_limit
+        , CAST(gas_price AS double) AS gas_price
+        , gas_used
+        , index
+        , max_fee_per_gas
+        , max_priority_fee_per_gas
+        , nonce
+        , priority_fee_per_gas
+        , success
+        , "type"
+        , CAST(value AS double) AS value
+        ,l1_tx_origin
+        , l1_fee_scalar
+        , l1_block_number
+        , l1_fee
+        , l1_gas_price
+        , l1_gas_used
+        , l1_timestamp
+        , CAST(NULL AS DECIMAL(38,0)) AS effective_gas_price
+        FROM {{ source('optimism', 'transactions') }}
         );
