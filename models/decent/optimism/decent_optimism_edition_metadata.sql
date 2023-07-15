@@ -1,11 +1,11 @@
 {{
     config(
          tags = ['dunesql']
-        , alias = alias('edition_metadata')
+        ,alias = alias('edition_metadata')
         ,materialized = 'incremental'
         ,file_format = 'delta'
         ,incremental_strategy = 'merge'
-        ,unique_key = ['edition_address']
+        ,unique_key = ['nft_contract_address']
         ,post_hook='{{ expose_spells(\'["optimism"]\',
                                     "project",
                                     "decent",
