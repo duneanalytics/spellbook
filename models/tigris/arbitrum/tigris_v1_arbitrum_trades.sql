@@ -1,6 +1,6 @@
 {{ config(
     schema = 'tigris_v1_arbitrum',
-    alias = 'trades',
+    alias = alias('trades'),
     partition_by = ['day'],
     materialized = 'incremental',
     file_format = 'delta',

@@ -1,5 +1,5 @@
 {{ config(
-        alias ='wash_trades',
+        alias = alias('wash_trades'),
         post_hook='{{ expose_spells(\'["arbitrum", "avalanche_c", "bnb", "ethereum", "gnosis", "optimism", "polygon"]\',
                                     "sector",
                                     "nft",

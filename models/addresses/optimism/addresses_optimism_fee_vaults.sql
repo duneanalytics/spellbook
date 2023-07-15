@@ -1,4 +1,4 @@
-{{config(alias='fee_vaults',
+{{config(alias = alias('fee_vaults'),
         post_hook='{{ expose_spells(\'["optimism"]\',
                                     "sector",
                                     "addresses",

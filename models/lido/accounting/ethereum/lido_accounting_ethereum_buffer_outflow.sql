@@ -1,5 +1,5 @@
 {{ config(
-        alias ='buffer_outflow',
+        alias = alias('buffer_outflow'),
         partition_by = ['day'],
         materialized = 'table',
         file_format = 'delta',

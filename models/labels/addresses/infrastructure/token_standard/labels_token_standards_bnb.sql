@@ -1,4 +1,4 @@
-{{config(alias='token_standards_bnb',
+{{config(alias = alias('token_standards_bnb'),
         post_hook='{{ expose_spells(\'["bnb"]\',
                                     "sector",
                                     "labels",
@@ -32,7 +32,7 @@ SELECT distinct 'bnb' AS blockchain
 , NOW() AS modified_at
 , 'token_standard' AS model_name
 , 'persona' as label_type
-FROM {{ ref('nft_bnb_transfers_legacy') }} nft
+FROM {{ ref('nft_bnb_transfers') }} nft
 {% if is_incremental() %}
 LEFT ANTI JOIN this t ON t.address = nft.contract_address
 WHERE nft.block_time >= date_trunc('day', now() - interval '1 week')

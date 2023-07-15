@@ -1,4 +1,6 @@
 {{ config(
+	tags=['legacy'],
+	
     schema = 'looksrare_v1_ethereum',
     alias = alias('base_trades', legacy_model=True),
     partition_by = ['block_date'],
