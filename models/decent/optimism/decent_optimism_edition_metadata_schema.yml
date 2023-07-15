@@ -45,8 +45,6 @@ models:
         name: presaleEnd
       - &saleStart
         name: saleStart
-      - &saleStart
-        name: saleStart
       - &saleEnd
         name: saleEnd
       - &royalty_pct

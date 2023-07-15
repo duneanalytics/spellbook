@@ -1291,3 +1291,13 @@ models:
       +schema: zora
       optimism:
         +schema: zora_optimism
+    
+    decent:
+      +schema: decent
+      optimism:
+        +schema: decent_optimism
+
+    mirror:
+      +schema: mirror
+      optimism:
+        +schema: mirror_optimism
