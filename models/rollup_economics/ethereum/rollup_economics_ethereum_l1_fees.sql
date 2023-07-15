@@ -17,13 +17,13 @@ WITH tx_batch_appends AS (
     'Arbitrum' AS name,
     t.block_time,
     t.hash,
-    (cast(gas_used AS double) * (cast(gas_price AS double) / 1e18) AS gas_spent,
+    (cast(gas_used as double) * (cast(gas_price as double) / 1e18) AS gas_spent,
     (length(t.data)) AS data_length
     FROM
     (
       SELECT
       evt_tx_hash AS tx_hash,
-      evt_block_time  AS block_time
+      evt_block_time AS block_time
       FROM source('arbitrum_ethereum', 'SequencerInbox_evt_SequencerBatchDeliveredFromOrigin') o
       WHERE evt_block_time >= timestamp '2022-01-01'
       {% if is_incremental() %}
@@ -34,7 +34,7 @@ WITH tx_batch_appends AS (
 
       SELECT
       call_tx_hash AS tx_hash,
-      call_block_time  AS block_time
+      call_block_time AS block_time
       FROM source('arbitrum_ethereum','SequencerInbox_call_addSequencerL2BatchFromOrigin') o
       WHERE call_success = true
       AND call_tx_hash NOT IN
@@ -49,7 +49,7 @@ WITH tx_batch_appends AS (
 
       SELECT
       call_tx_hash AS tx_hash,
-      call_block_time  AS block_time
+      call_block_time AS block_time
       FROM source('arbitrum_ethereum','SequencerInbox_call_addSequencerL2Batch') o
       WHERE call_success = true
       AND call_tx_hash NOT IN
@@ -64,7 +64,7 @@ WITH tx_batch_appends AS (
 
       SELECT
       call_tx_hash AS tx_hash,
-      call_block_time  AS block_time
+      call_block_time AS block_time
       FROM source('arbitrum_ethereum','SequencerInbox_call_addSequencerL2BatchFromOriginWithGasRefunder') o
       WHERE call_success = true
       AND call_tx_hash NOT IN
@@ -90,7 +90,7 @@ WITH tx_batch_appends AS (
       op.name AS name,
       t.block_time,
       t.hash,
-      cast(gas_used AS double) * (cast(gas_price AS double) / 1e18) AS gas_spent,
+      cast(gas_used as double) * (cast(gas_price as double) / 1e18) AS gas_spent,
       (length(t.data)) AS data_length
     FROM
       source('ethereum','transactions') AS t
