@@ -2,7 +2,7 @@
         tags = ['dunesql'],
         alias = alias('blocks'),
         unique_key=['blockchain', 'number'],
-        post_hook='{{ expose_spells(\'["goerli"]\',
+        post_hook='{{ expose_spells(\'["goerli","ethereum", "polygon", "bnb", "avalanche_c", "gnosis", "fantom", "optimism", "arbitrum", "celo"]\',
                                     "sector",
                                     "evms_mainnets_testnets",
                                     \'["hildobby", "msilb7"]\') }}'

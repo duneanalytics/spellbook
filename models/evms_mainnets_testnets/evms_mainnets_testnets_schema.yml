@@ -486,6 +486,8 @@ models:
       tags:   ['evms', 'testnets', 'mainnets', 'info']
     description: "Some information about the EVM chains"
     columns: 
+      - name: network_type
+        description: "Network Type (i.e. mainnet, testnet)"
       - name: chain_id
         description: "Chain ID"
       - *blockchain
