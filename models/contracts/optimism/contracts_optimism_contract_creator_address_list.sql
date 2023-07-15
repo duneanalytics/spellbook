@@ -551,6 +551,7 @@ WITH curated_list AS (
       ,(0x4325018916b082B91e277C7165FD8Da6467b71F8, 'Fuji Finance')
       ,(0x0B5a3C04D1199283938fbe887A2C82C808aa89Fb, 'Summer.fi')
       ,(0x7d896339a80dd38bc3bbb04383894c62b2ef2585, 'Worldcoin')
+      ,(0xb02748d3eee8691c94b7c8d6788776aa52571628, 'Hidden Hand')
       
   ) as temp_table (creator_address, contract_project)
 )
