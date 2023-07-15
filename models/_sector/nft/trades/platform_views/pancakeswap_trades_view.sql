@@ -1,7 +1,7 @@
 
 {{ config(
         schema = 'pancakeswap_nft',
-        alias ='trades',
+        alias = alias('trades'),
         materialized = 'view',
         post_hook='{{ expose_spells(\'["bnb"]\',
                                     "project",

@@ -1,6 +1,6 @@
 {{
     config(
-        alias='contract_deployers_polygon',
+        alias = alias('contract_deployers_polygon'),
         post_hook='{{ expose_spells(\'["polygon"]\',
                                     "sector",
                                     "labels",

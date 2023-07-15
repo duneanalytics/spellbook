@@ -1,4 +1,6 @@
 {{ config(
+	tags=['legacy'],
+	
     schema = 'uniswap_v2_ethereum',
     alias = alias('trades', legacy_model=True),
     partition_by = ['block_date'],

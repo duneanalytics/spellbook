@@ -1,5 +1,5 @@
 {{ config(
-        alias ='deposits',
+        alias = alias('deposits'),
         partition_by = ['period'],
         materialized = 'incremental',
         file_format = 'delta',

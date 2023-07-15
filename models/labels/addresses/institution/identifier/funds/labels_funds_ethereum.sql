@@ -1,4 +1,4 @@
-{{config(alias='funds_ethereum')}}
+{{config(alias = alias('funds_ethereum'))}}
 
 SELECT blockchain, address, name, category, contributor, source, created_at, updated_at, model_name, label_type
 FROM (VALUES
