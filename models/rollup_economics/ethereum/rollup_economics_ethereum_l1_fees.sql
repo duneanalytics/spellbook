@@ -25,11 +25,11 @@ WITH tx_batch_appends AS (
       SELECT
       evt_tx_hash AS tx_hash,
       evt_block_time AS block_time,
-      evt_block_number  AS block_number
+      evt_block_number AS block_number
       FROM source('arbitrum_ethereum', 'SequencerInbox_evt_SequencerBatchDeliveredFromOrigin') o
       WHERE evt_block_time >= timestamp '2022-01-01'
       {% if is_incremental() %}
-          and evt_block_time >= date_trunc("day", now() - interval '1 week')
+          and evt_block_time >= date_trunc("day", now() - interval '7' day)
       {% endif %}
 
       UNION ALL
@@ -37,7 +37,7 @@ WITH tx_batch_appends AS (
       SELECT
       call_tx_hash AS tx_hash,
       call_block_time AS block_time,
-      call_block_number  AS block_number
+      call_block_number AS block_number
       FROM source('arbitrum_ethereum','SequencerInbox_call_addSequencerL2BatchFromOrigin') o
       WHERE call_success = true
       AND call_tx_hash NOT IN
@@ -45,7 +45,7 @@ WITH tx_batch_appends AS (
       WHERE evt_block_time >= timestamp '2022-01-01'
       )
       {% if is_incremental() %}
-          and call_block_time >= date_trunc("day", now() - interval '1 week')
+          and call_block_time >= date_trunc("day", now() - interval '7' day)
       {% endif %}
 
       UNION ALL
@@ -53,7 +53,7 @@ WITH tx_batch_appends AS (
       SELECT
       call_tx_hash AS tx_hash,
       call_block_time AS block_time,
-      call_block_number  AS block_number
+      call_block_number AS block_number
       FROM source('arbitrum_ethereum','SequencerInbox_call_addSequencerL2Batch') o
       WHERE call_success = true
       AND call_tx_hash NOT IN
@@ -61,7 +61,7 @@ WITH tx_batch_appends AS (
       WHERE evt_block_time >= timestamp '2022-01-01'
       )
       {% if is_incremental() %}
-          and call_block_time >= date_trunc("day", now() - interval '1 week')
+          and call_block_time >= date_trunc("day", now() - interval '7' day)
       {% endif %}
 
       UNION ALL
@@ -69,7 +69,7 @@ WITH tx_batch_appends AS (
       SELECT
       call_tx_hash AS tx_hash,
       call_block_time AS block_time,
-      call_block_number  AS block_number
+      call_block_number AS block_number
       FROM source('arbitrum_ethereum','SequencerInbox_call_addSequencerL2BatchFromOriginWithGasRefunder') o
       WHERE call_success = true
       AND call_tx_hash NOT IN
@@ -77,7 +77,7 @@ WITH tx_batch_appends AS (
       WHERE evt_block_time >= timestamp '2022-01-01'
       )
       {% if is_incremental() %}
-          and call_block_time >= date_trunc("day", now() - interval '1 week')
+          and call_block_time >= date_trunc("day", now() - interval '7' day)
       {% endif %}
     )b
     INNER JOIN source('ethereum','transactions') t
@@ -87,7 +87,7 @@ WITH tx_batch_appends AS (
     AND success = true
     AND t.block_time >= timestamp '2022-01-01'
     {% if is_incremental() %}
-        and block_time >= date_trunc("day", now() - interval '1 week')
+        and block_time >= date_trunc("day", now() - interval '7' day)
     {% endif %}
 
     UNION ALL
@@ -110,7 +110,7 @@ WITH tx_batch_appends AS (
       )
     WHERE t.block_time >= timestamp '2022-01-01'
     {% if is_incremental() %}
-        and block_time >= date_trunc("day", now() - interval '1 week')
+        and block_time >= date_trunc("day", now() - interval '7' day)
     {% endif %}
 
 )
@@ -120,7 +120,7 @@ WITH tx_batch_appends AS (
     FROM source('ethereum','blocks') AS b
     WHERE b.time >= timestamp '2022-01-01'
     {% if is_incremental() %}
-        and b.time >= date_trunc("day", now() - interval '1 week')
+        and b.time >= date_trunc("day", now() - interval '7' day)
     {% endif %}
 )
 
