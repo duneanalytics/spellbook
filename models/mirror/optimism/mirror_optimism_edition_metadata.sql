@@ -74,7 +74,7 @@ NULL as platformFee,
 NULL as platformFeeRecipient,
 NULL AS salt
 
-FROM {{ ref('mirror_optimism','WritingEditionsFactory_call_createWithSignature') }}
+FROM {{ source('mirror_optimism','WritingEditionsFactory_call_createWithSignature') }}
 INNER JOIN source('optimism','creation_traces') tr
     ON tr.block_time = ce.call_block_time
     AND tr.block_number = ce.call_block_number
