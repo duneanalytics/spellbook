@@ -1,4 +1,6 @@
-{{config(alias='cex_fantom',
+{{config(
+        tags = ['dunesql'],
+        alias = alias('cex_fantom'),
         post_hook='{{ expose_spells(\'["fantom"]\',
                                     "sector",
                                     "labels",

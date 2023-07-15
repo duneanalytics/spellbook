@@ -1,6 +1,6 @@
 {{ config(
     schema = 'synapse_ethereum'
-    , alias='flashloans'
+    , alias = alias('flashloans')
     , materialized = 'incremental'
     , file_format = 'delta'
     , incremental_strategy = 'merge'

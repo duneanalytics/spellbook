@@ -1,5 +1,5 @@
 {{ config(
-        alias ='offers',
+        alias = alias('offers'),
         post_hook='{{ expose_spells(\'["optimism"]\',
                                 "project",
                                 "rubicon",
@@ -8,7 +8,8 @@
 }}
 
 {% set rubi_models = [
-ref('rubicon_optimism_offers')
+ref('rubicon_optimism_offers'),
+ref('rubicon_arbitrum_offers')
 ] %}
 
 SELECT * 

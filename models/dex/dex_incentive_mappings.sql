@@ -1,5 +1,5 @@
 {{ config(
-        alias ='incentive_mappings',
+        alias = alias('incentive_mappings'),
         post_hook='{{ expose_spells(\'["optimism"]\',
                                 "sector",
                                 "dex",

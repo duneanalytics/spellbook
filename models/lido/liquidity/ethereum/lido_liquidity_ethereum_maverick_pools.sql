@@ -1,5 +1,5 @@
 {{ config(
-    alias = 'maverick_pools',
+    alias = alias('maverick_pools'),
     partition_by = ['time'],
     materialized = 'table',
     file_format = 'delta',

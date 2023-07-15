@@ -1,6 +1,6 @@
 {{ config(
 
-    alias = 'curve_wsteth_reth_pool',
+    alias = alias('curve_wsteth_reth_pool'),
     partition_by = ['time'],
     materialized = 'table',
     file_format = 'delta',

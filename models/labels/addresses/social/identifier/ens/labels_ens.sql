@@ -1,4 +1,4 @@
-{{config(alias='ens',
+{{config(alias = alias('ens'),
         materialized = 'table',
         file_format = 'delta',
         unique_key = ['blockchain','address'],

@@ -10,7 +10,7 @@
                               "project",
                               "ovm_optimism",
                               \'["msilb7"]\') }}',
-    depends_on=['tokens_optimism_erc20_legacy','tokens_erc20_legacy']
+    depends_on=['tokens_optimism_erc20','tokens_erc20']
 )
 }}
 
