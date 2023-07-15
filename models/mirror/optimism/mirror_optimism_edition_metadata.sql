@@ -28,7 +28,7 @@ NULL AS contentURI,
 NULL as price,
 NULL as "limit",
 NULL AS fundingRecipient,
-NULL AS owner
+NULL AS owner,
 json_extract_scalar(params,'$._contractURI') as contractURI,
 json_extract_scalar(params,'$._uri') as uri,
 json_extract_scalar(params,'$._trustedForwarders') as trustedForwarders,
