@@ -1,6 +1,6 @@
 {{
   config(
-        alias='jfiat_collateral_mapping',
+        alias = alias('jfiat_collateral_mapping'),
         post_hook='{{ expose_spells(\'["polygon"]\',
                                     "project",
                                     "jarvis_network",

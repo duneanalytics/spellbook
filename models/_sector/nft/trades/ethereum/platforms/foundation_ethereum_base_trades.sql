@@ -103,7 +103,7 @@ WITH all_foundation_trades AS (
     )
 
 SELECT
- date_trunc('day', t.block_time) AS block_date
+ cast(date_trunc('month', t.block_time) as date) AS block_date
 , t.block_time
 , t.block_number
 , t.nft_token_id

@@ -1,5 +1,5 @@
 {{ config(
-    alias = 'trades',
+    alias = alias('trades'),
     partition_by = ['block_date'],
     materialized = 'incremental',
     file_format = 'delta',
@@ -34,7 +34,7 @@ ethereum_transactions as (
 
 erc20_tokens as (
     select *
-    from {{ ref('tokens_erc20_legacy') }}
+    from {{ ref('tokens_erc20') }}
     where blockchain = 'ethereum'
 )
 

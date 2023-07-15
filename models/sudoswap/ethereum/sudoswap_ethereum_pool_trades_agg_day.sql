@@ -1,5 +1,5 @@
 {{ config(
-        alias = 'pool_trades',
+        alias = alias('pool_trades'),
         materialized = 'incremental',
         file_format = 'delta',
         incremental_strategy = 'merge',
@@ -40,7 +40,7 @@ SELECT
       END
     ) AS nft_change_trading
 FROM {{ ref('sudoswap_ethereum_base_trades') }} t
-LEFT JOIN {{ ref('prices_usd_forward_fill_legacy') }} usd
+LEFT JOIN {{ ref('prices_usd_forward_fill') }} usd
 ON usd.blockchain = null and usd.symbol = 'ETH'
     AND usd.minute = date_trunc('minute',t.block_time)
     {% if not is_incremental() %}

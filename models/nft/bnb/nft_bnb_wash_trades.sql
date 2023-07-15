@@ -1,5 +1,5 @@
 {{ config(
-        alias ='wash_trades',
+        alias = alias('wash_trades'),
         partition_by=['block_date'],
         materialized='incremental',
         file_format = 'delta',

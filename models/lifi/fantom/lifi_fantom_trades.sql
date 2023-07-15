@@ -1,6 +1,6 @@
 
 {{ config(
-        alias ='trades'
+        alias = alias('trades')
         )
 }}
 

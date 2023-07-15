@@ -1,5 +1,5 @@
 {{ config(
-    alias = 'node_names',
+    alias = alias('node_names'),
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',

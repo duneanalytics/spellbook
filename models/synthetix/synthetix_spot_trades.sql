@@ -1,5 +1,5 @@
 {{ config(
-        alias ='spot_trades',
+        alias = alias('spot_trades'),
         post_hook='{{ expose_spells(\'["optimism"]\',
                                 "project",
                                 "synthetix",

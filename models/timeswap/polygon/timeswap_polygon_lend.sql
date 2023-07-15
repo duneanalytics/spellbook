@@ -1,5 +1,5 @@
 {{ config(
-    alias = 'lend',
+    alias = alias('lend'),
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',

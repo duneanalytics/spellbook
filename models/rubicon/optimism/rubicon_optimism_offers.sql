@@ -1,5 +1,6 @@
 {{ config(
-    alias = 'offers',
+    schema = 'rubicon_optimism',
+    alias = alias('offers'),
     partition_by = ['block_date'],
     materialized = 'incremental',
     file_format = 'delta',
@@ -99,12 +100,12 @@ trades AS
     FROM raw_trades t
 
     -- get the relevant sell token data
-    LEFT JOIN {{ ref('tokens_erc20_legacy') }} erc20_sell
+    LEFT JOIN {{ ref('tokens_erc20') }} erc20_sell
         ON erc20_sell.contract_address = t.sell_token_address
         AND erc20_sell.blockchain = 'optimism'
 
     -- get the relevant buy token data
-    LEFT JOIN {{ ref('tokens_erc20_legacy') }} erc20_buy
+    LEFT JOIN {{ ref('tokens_erc20') }} erc20_buy
         ON erc20_buy.contract_address = t.buy_token_address
         AND erc20_buy.blockchain = 'optimism'
 
@@ -210,12 +211,12 @@ INNER JOIN {{ source('optimism', 'transactions') }} txn
     {% endif %}
     
 -- get the relevant sell token data
-LEFT JOIN {{ ref('tokens_erc20_legacy') }} erc20_sell
+LEFT JOIN {{ ref('tokens_erc20') }} erc20_sell
     ON erc20_sell.contract_address = offers.sell_token_address
     AND erc20_sell.blockchain = 'optimism'
 
 -- get the relevant buy token data
-LEFT JOIN {{ ref('tokens_erc20_legacy') }} erc20_buy
+LEFT JOIN {{ ref('tokens_erc20') }} erc20_buy
     ON erc20_buy.contract_address = offers.buy_token_address
     AND erc20_buy.blockchain = 'optimism'
 

@@ -1,7 +1,7 @@
  {{
   config(
         schema='uniswap_v3_optimism',
-        alias='ovm1_pool_mapping',
+        alias = alias('ovm1_pool_mapping'),
         materialized='table',
         file_format = 'delta',
         post_hook='{{ expose_spells(\'["optimism"]\',
@@ -10,7 +10,7 @@
                                     \'["msilb7", "chuxin"]\') }}'
   )
 }}
-with ovm1_legacy_pools_raw as (
+with ovm1_pools_raw as (
   select 
     explode(
       from_json(
@@ -754,4 +754,4 @@ select
   ,col.token0
   ,col.token1
   ,col.fee
-from ovm1_legacy_pools_raw
+from ovm1_pools_raw
