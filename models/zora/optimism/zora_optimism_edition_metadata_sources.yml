@@ -11,3 +11,5 @@ sources:
         loaded_at_field: call_block_time
       - name: ZoraNFTCreatorProxy_call_createEdition
         loaded_at_field: call_block_time
+      - name: ZoraCreator1155Factory_call_createContract
+        loaded_at_field: call_block_time

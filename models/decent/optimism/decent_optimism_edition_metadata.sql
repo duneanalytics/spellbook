@@ -1,7 +1,7 @@
 {{
     config(
-         tags = ['dunesql']
-        ,alias = alias('edition_metadata')
+        alias = alias('edition_metadata')
+        ,tags = ['dunesql']
         ,materialized = 'incremental'
         ,file_format = 'delta'
         ,incremental_strategy = 'merge'
@@ -46,7 +46,7 @@ json_extract_scalar(_tokenGateConfig, '$.saleType') AS saleType,
 
 'DCNT721A' AS mint_type
 
-FROM {{ ref('decent_optimism','DCNTSDK_call_deployDCNT721A') }}
+FROM {{ source('decent_optimism','DCNTSDK_call_deployDCNT721A') }} ce
 WHERE call_success = true
 {% if is_incremental() %}
 AND ce.call_block_time >= NOW() - interval '7' day
@@ -87,7 +87,7 @@ json_extract_scalar(_tokenGateConfig, '$.saleType') AS saleType,
 
 'DCNT4907A' AS mint_type
 
-FROM {{ ref('decent_optimism','DCNTSDK_call_deployDCNT4907A') }}
+FROM {{ source('decent_optimism','DCNTSDK_call_deployDCNT4907A') }} ce
 WHERE call_success = true
 {% if is_incremental() %}
 AND ce.call_block_time >= NOW() - interval '7' day
@@ -129,7 +129,7 @@ NULL AS saleType,
 
 'DCNTCrescendo' AS mint_type
 
-FROM {{ ref('decent_optimism','DCNTSDK_call_deployDCNTCrescendo') }}
+FROM {{ source('decent_optimism','DCNTSDK_call_deployDCNTCrescendo') }} ce
 WHERE call_success = true
 {% if is_incremental() %}
 AND ce.call_block_time >= NOW() - interval '7' day
@@ -170,7 +170,7 @@ NULL AS saleType,
 
 'DCNTSeries' AS mint_type
 
-FROM {{ ref('decent_optimism','DCNTSDK_call_deployDCNTSeries') }}
+FROM {{ source('decent_optimism','DCNTSDK_call_deployDCNTSeries') }}
 WHERE call_success = true
 {% if is_incremental() %}
 AND ce.call_block_time >= NOW() - interval '7' day
