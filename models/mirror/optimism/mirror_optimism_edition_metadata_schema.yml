@@ -1,7 +1,7 @@
 version: 2
 
 models:
-  - name: zora_optimism_edition_metadata
+  - name: mirror_optimism_edition_metadata
     meta:
       blockchain: optimism
       project: zora
