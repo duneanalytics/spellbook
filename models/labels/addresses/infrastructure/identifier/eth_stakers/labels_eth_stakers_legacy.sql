@@ -1,4 +1,6 @@
-{{config(alias = alias('eth_stakers', legacy_model=True),
+{{config(
+	tags=['legacy'],
+	alias = alias('eth_stakers', legacy_model=True),
         post_hook='{{ expose_spells(\'["ethereum"]\',
                                     "sector",
                                     "labels",

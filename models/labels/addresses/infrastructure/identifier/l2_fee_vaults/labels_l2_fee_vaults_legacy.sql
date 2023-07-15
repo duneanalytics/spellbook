@@ -1,4 +1,6 @@
 {{config(
+	tags=['legacy'],
+	
     alias = alias('l2_fee_vaults', legacy_model=True),
     post_hook='{{ expose_spells(\'["optimism"]\',
                                 "sector",

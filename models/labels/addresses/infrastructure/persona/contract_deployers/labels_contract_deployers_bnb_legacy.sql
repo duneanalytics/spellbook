@@ -1,5 +1,7 @@
 {{
     config(
+	tags=['legacy'],
+	
         alias = alias('contract_deployers_bnb', legacy_model=True),
         post_hook='{{ expose_spells(\'["bnb"]\',
                                     "sector",

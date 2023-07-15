@@ -1,4 +1,6 @@
-{{config(alias = alias('validators_ethereum', legacy_model=True))}}
+{{config(
+	tags=['legacy'],
+	alias = alias('validators_ethereum', legacy_model=True))}}
 
 SELECT distinct
     'ethereum' as blockchain,

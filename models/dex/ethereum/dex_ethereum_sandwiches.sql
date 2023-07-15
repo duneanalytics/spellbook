@@ -1,6 +1,6 @@
 {{ config(
         schema = 'dex_ethereum',
-        alias ='sandwiches',
+        alias = alias('sandwiches'),
         partition_by = ['block_date'],
         materialized = 'incremental',
         file_format = 'delta',

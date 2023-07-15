@@ -1,7 +1,7 @@
 
 {{ config(
         schema = 'magiceden',
-        alias ='trades',
+        alias = alias('trades'),
         materialized = 'view',
         post_hook='{{ expose_spells(\'["solana", "polygon"]\',
                                     "project",

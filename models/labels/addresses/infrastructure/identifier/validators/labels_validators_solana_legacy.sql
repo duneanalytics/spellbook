@@ -1,4 +1,6 @@
-{{config(alias = alias('validators_solana', legacy_model=True))}}
+{{config(
+	tags=['legacy'],
+	alias = alias('validators_solana', legacy_model=True))}}
 
 SELECT distinct
     'solana' as blockchain,

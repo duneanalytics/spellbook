@@ -1,7 +1,7 @@
 {{
     config(
         schema = 'balancer_v2_gnosis',
-        alias = 'bpt_prices',
+        alias = alias('bpt_prices'),
         materialized = 'incremental',
         file_format = 'delta',
         incremental_strategy = 'merge',
@@ -51,8 +51,8 @@ WITH
             {% if is_incremental() %}
             AND p2.minute >= date_trunc('day', now() - interval '1 week')
             {% endif %} 
-        LEFT JOIN {{ ref ('tokens_erc20_legacy') }} t1 ON t1.contract_address = a.tokenIn AND t1.blockchain = 'gnosis'
-        LEFT JOIN {{ ref ('tokens_erc20_legacy') }} t2 ON t2.contract_address = a.tokenOut AND t2.blockchain = 'gnosis'
+        LEFT JOIN {{ ref ('tokens_erc20') }} t1 ON t1.contract_address = a.tokenIn AND t1.blockchain = 'gnosis'
+        LEFT JOIN {{ ref ('tokens_erc20') }} t2 ON t2.contract_address = a.tokenOut AND t2.blockchain = 'gnosis'
         ORDER BY a.evt_block_number DESC, a.evt_index DESC
     ), 
     

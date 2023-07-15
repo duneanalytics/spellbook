@@ -1,6 +1,6 @@
 {{ config(
     schema = 'uniswap_ethereum',
-    alias = 'pools',
+    alias = alias('pools'),
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',

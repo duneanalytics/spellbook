@@ -1,5 +1,7 @@
 {{
     config(
+	tags=['legacy'],
+	
         alias = alias('contract_deployers', legacy_model=True),
         post_hook='{{ expose_spells(\'["arbitrum", "avalanche_c", "bnb", "ethereum", "fantom", "gnosis","goerli","optimism","polygon"]\',
                                     "sector",

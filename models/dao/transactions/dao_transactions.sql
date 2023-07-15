@@ -1,5 +1,5 @@
 {{ config(
-    alias = 'transactions',
+    alias = alias('transactions'),
     materialized = 'view',
     file_format = 'delta',
     post_hook='{{ expose_spells(\'["ethereum", "gnosis", "polygon"]\',

@@ -1,4 +1,6 @@
-{{config(alias = alias('token_standards_fantom', legacy_model=True),
+{{config(
+	tags=['legacy'],
+	alias = alias('token_standards_fantom', legacy_model=True),
         post_hook='{{ expose_spells(\'["fantom"]\',
                                     "sector",
                                     "labels",

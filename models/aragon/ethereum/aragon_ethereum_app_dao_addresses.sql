@@ -1,5 +1,5 @@
 {{ config(
-    alias = 'app_dao_addresses',
+    alias = alias('app_dao_addresses'),
     partition_by = ['created_date'],
     materialized = 'incremental',
     file_format = 'delta',

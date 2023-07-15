@@ -1,6 +1,6 @@
 {{config(
     alias = alias('cex_tokens', legacy_model=True),
-    tags=['static'],
+    tags=['legacy', 'static'],
     post_hook='{{ expose_spells(\'["ethereum", "bnb", "polygon", "solana", "arbitrum", "optimism", "fantom", "avalanche_c", "gnosis"]\',
                                 "sector",
                                 "labels",
