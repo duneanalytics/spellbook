@@ -103,7 +103,7 @@ FROM (
     newContractURI AS metadata_contract_uri,
     CAST(NULL as varchar) AS metadata_uri_base,
     
-    json_extract_scalar(defaultRoyaltyConfiguration, '$.royaltyRecipient') AS funds_recipient,
+    cast( json_extract_scalar(defaultRoyaltyConfiguration, '$.royaltyRecipient') as varbinary) AS funds_recipient,
     defaultAdmin AS default_admin,
     
     '1155 Edition' as mint_type,
