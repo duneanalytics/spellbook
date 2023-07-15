@@ -105,5 +105,8 @@ from (
     ,('Maker','MakerDAO')
     ,('Allo Protocol','Allo Protocol (Gitcoin)')
     ,('pika_protocol_v4', 'Pika Protocol')
+    ,('summer_fi','Summer.fi')
+    ,('summerfi','Summer.fi')
+    ,('oasisapp','Summer.fi')
 
     ) as temp_table (dune_name, mapped_name)
