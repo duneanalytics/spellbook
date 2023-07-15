@@ -1,6 +1,8 @@
 {{config(
+	tags=['legacy'],
+	
         schema='optimism_quests_optimism',
-        alias=alias('nft_id_mapping', legacy_model=True),
+        alias = alias('nft_id_mapping', legacy_model=True),
         post_hook='{{ expose_spells(\'["optimism"]\',
                                     "project",
                                     "optimism_quests",

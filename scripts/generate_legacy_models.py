@@ -33,6 +33,8 @@ def make_legacy_file(model):
     # replace alias with legacy alias macro
     model_contents = replace_with_alias_macros(model_contents)
 
+    model_contents = replace_with_legacy_ref(model_contents)
+
     # create new file with _legacy.sql suffix in same folder as original
     with open(destination_path, 'w') as f:
         f.write(model_contents)
@@ -50,33 +52,41 @@ def replace_with_alias_macros(model_contents):
     return re.sub(pattern, transformation_string, model_contents)
 
 
-def replace_with_legacy_ref(ref, model_contents):
+def replace_with_legacy_ref(model_contents):
     """
     Replace ref('some_ref') with ref('some_ref_legacy')
     """
-    return model_contents.replace(f"ref('{ref}')", f"ref('{ref}_legacy')")
+    pattern = r"ref\s*\(\s*'([^']*)'\s*\)"
+    # replace alias with legacy alias
+    transformation_string = f"ref('\\1_legacy')"
+    return re.sub(pattern, transformation_string, model_contents)
 
-
-if __name__ == "__main__":
+def run():
     # get current working dir
     cwd = os.getcwd()
     # get model paths from stdin
     model_names = []  # list of models to later replace refs
-    for line in sys.stdin.read().splitlines():
-        if line.startswith("models/") and not line.endswith('_legacy.sql'):
-            model_path = cwd + '/' + line
+    # for path in ["models/zeroex/zeroex_native_trades.sql"]:
+    for path in sys.stdin.read().splitlines():
+        model_path = cwd + '/' + path
+        if path.startswith("models/") and not path.endswith('_legacy.sql') and not os.path.exists(model_path.replace(".sql", "_legacy.sql")):
             make_legacy_file(model_path)
             model_names.append(model_path.split("/")[-1].replace(".sql", ""))
 
-    # replace refs in all models
+def clean_up():
     for root, dirs, files in os.walk('models'):
         for file_name in files:
             if file_name.endswith('.sql'):
                 file_path = os.path.join(root, file_name)
                 with open(file_path, 'r', newline='') as file:
                     content = file.read()
-                for ref in model_names:
-                    content = replace_with_legacy_ref(ref, content)
+                content = content.replace("_legacy_legacy", "_legacy")
                 with open(file_path, 'w', newline='') as file:
                     file.write(content)
                 print(f"Updated {file_path}")
+
+if __name__ == "__main__":
+    # run()
+
+    clean_up()
+    

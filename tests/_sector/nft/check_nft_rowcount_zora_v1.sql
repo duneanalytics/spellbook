@@ -8,7 +8,7 @@ from
 full outer join
     (select count(*) as count_b
     from {{ source('zora_ethereum','Market_evt_BidFinalized') }}
-    where get_json_object(bid, '$.bidder') != '0xe468ce99444174bd3bbbed09209577d25d1ad673'
+    where from_hex(json_extract_scalar(bid, '$.bidder')) != 0xe468ce99444174bd3bbbed09209577d25d1ad673
     and evt_block_time <= (select max(block_time) from {{ ref('zora_v1_ethereum_base_trades')}})
     )
 on 1=1

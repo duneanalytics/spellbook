@@ -1,5 +1,5 @@
 {{ config(
-    alias = 'addresses_polygon_syndicate',
+    alias = alias('addresses_polygon_syndicate'),
     partition_by = ['created_date'],
     materialized = 'incremental',
     file_format = 'delta',

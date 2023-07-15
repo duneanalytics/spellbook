@@ -1,6 +1,6 @@
 {{ config(
     schema = 'compound_v2_ethereum',
-    alias = 'votes',
+    alias = alias('votes'),
     partition_by = ['block_date'],
     materialized = 'table',
     file_format = 'delta',

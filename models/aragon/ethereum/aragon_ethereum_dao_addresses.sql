@@ -1,4 +1,4 @@
-{{config(alias='dao_addresses')}}
+{{config(alias = alias('dao_addresses'))}}
 
 {% set aragon_models = [
 ref('aragon_ethereum_app_dao_addresses'),

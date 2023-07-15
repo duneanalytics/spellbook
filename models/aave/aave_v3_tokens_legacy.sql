@@ -1,4 +1,5 @@
 {{ config(
+	tags=['legacy'],
         schema = 'aave_v3'
         , alias = alias('tokens', legacy_model=True)
         , materialized = 'incremental'

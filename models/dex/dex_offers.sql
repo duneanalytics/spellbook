@@ -1,5 +1,5 @@
 {{ config(
-        alias ='offers',
+        alias = alias('offers'),
         partition_by = ['block_date'],
         materialized = 'incremental',
         file_format = 'delta',

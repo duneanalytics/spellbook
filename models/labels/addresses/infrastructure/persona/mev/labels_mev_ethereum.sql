@@ -1,4 +1,4 @@
-{{config(alias='mev_ethereum',
+{{config(alias = alias('mev_ethereum'),
         post_hook='{{ expose_spells(\'["ethereum"]\',
                                     "sector",
                                     "labels",

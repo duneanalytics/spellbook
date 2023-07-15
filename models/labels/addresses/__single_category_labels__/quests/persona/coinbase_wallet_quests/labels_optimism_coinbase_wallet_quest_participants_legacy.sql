@@ -1,6 +1,7 @@
 {{
     config(
-        alias=alias('coinbase_wallet_quest_participants', legacy_model=True),
+	      tags=['legacy'],
+        alias = alias('coinbase_wallet_quest_participants', legacy_model=True),
         post_hook='{{ expose_spells(\'["optimism"]\', 
         "sector", 
         "labels", 

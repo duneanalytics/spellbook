@@ -38,7 +38,7 @@ jobs:
         elif [[ "${{ matrix.engine }}" == "spark" ]]; then
           printf "Using spark engine\n"
           echo "PROFILE=--profiles-dir $HOME/.dbt --profile spark" >> $GITHUB_ENV
-          echo "COMPILE_TAG=--exclude tag:dunesql" >> $GITHUB_ENV
+          echo "COMPILE_TAG=--select tag:legacy" >> $GITHUB_ENV
           echo "S3_LOCATION=manifest-spellbook" >> $GITHUB_ENV
           echo 
         else
