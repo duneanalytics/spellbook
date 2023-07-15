@@ -1,5 +1,5 @@
 {{ config(
-        alias = 'braindrops'
+        alias = alias('braindrops')
         )
 }}
 

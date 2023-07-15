@@ -1,5 +1,5 @@
 {{config(
-    alias='l2_fee_vaults',
+    alias = alias('l2_fee_vaults'),
     post_hook='{{ expose_spells(\'["optimism"]\',
                                 "sector",
                                 "labels",

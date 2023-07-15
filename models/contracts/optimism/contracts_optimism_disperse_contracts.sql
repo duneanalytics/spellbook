@@ -1,5 +1,5 @@
 {{ config(
-    alias = 'disperse_contracts'
+    alias = alias('disperse_contracts')
     )
 }}
 

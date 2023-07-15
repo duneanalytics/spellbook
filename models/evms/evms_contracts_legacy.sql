@@ -1,4 +1,6 @@
 {{ config(
+	tags=['legacy'],
+	
         alias = alias('contracts', legacy_model=True),
         unique_key=['blockchain', 'address', 'created_at'],
         post_hook='{{ expose_spells(\'["ethereum", "polygon", "bnb", "avalanche_c", "gnosis", "fantom", "optimism", "arbitrum", "celo"]\',

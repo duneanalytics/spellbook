@@ -1,7 +1,7 @@
 {{ 
     config(
         materialized='incremental',
-        alias='matic_transfers',
+        alias = alias('matic_transfers'),
         partition_by = ['block_date'],
         unique_key = ['block_date', 'address', 'tx_hash', 'trace_address'],
         on_schema_change='fail',

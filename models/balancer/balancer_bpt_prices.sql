@@ -1,6 +1,6 @@
 {{ config(
     schema = 'balancer',
-    alias = 'bpt_prices',
+    alias = alias('bpt_prices'),
     post_hook='{{ expose_spells(\'["ethereum", "arbitrum", "polygon", "gnosis", "optimism"]\',
                             "project",
                             "balancer",

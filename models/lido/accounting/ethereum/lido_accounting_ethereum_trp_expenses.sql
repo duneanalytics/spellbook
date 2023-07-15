@@ -1,5 +1,5 @@
 {{ config(
-        alias ='trp_expenses',
+        alias = alias('trp_expenses'),
         partition_by = ['period'],
         materialized = 'table',
         file_format = 'delta',

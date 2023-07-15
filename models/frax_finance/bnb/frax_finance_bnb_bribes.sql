@@ -1,5 +1,5 @@
 {{ config(
-    alias = 'bribes',
+    alias = alias('bribes'),
     materialized = 'table',
     file_format = 'delta',
     unique_key = ['week_start', 'week_end', 'contract_address'],

@@ -1,6 +1,6 @@
 {{ config(
     schema = 'tigris_v1_polygon',
-    alias = 'positions_margin'
+    alias = alias('positions_margin')
     )
  }}
 
