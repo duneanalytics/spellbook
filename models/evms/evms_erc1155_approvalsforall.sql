@@ -26,7 +26,14 @@ FROM (
         {% for erc1155_approvalforalls_model in erc1155_approvalforalls_models %}
         SELECT
         '{{ erc1155_approvalforalls_model[0] }}' AS blockchain
-        , *
+        , contract_address
+        , evt_tx_hash
+        , evt_index
+        , evt_block_time
+        , evt_block_number
+        , approved
+        , account
+        , operator
         FROM {{ erc1155_approvalforalls_model[1] }}
         {% if not loop.last %}
         UNION ALL

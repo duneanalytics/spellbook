@@ -1,4 +1,4 @@
-{{config(alias='airdrop',
+{{config(alias = alias('airdrop'),
         post_hook='{{ expose_spells(\'["optimism"]\',
                                     "sector",
                                     "labels",

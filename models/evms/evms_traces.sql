@@ -26,7 +26,27 @@ FROM (
         {% for traces_model in traces_models %}
         SELECT
         '{{ traces_model[0] }}' AS blockchain
-        , *
+        , block_time
+        , block_number
+        , value
+        , gas
+        , gas_used
+        , block_hash
+        , success
+        , tx_index
+        , error
+        , tx_success
+        , tx_hash
+        , "from"
+        , to
+        , trace_address
+        , type
+        , address
+        , code
+        , call_type
+        , input
+        , output
+        , refund_address
         FROM {{ traces_model[1] }}
         {% if not loop.last %}
         UNION ALL

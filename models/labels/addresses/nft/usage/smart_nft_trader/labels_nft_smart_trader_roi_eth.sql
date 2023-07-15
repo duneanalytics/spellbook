@@ -1,4 +1,4 @@
-{{config(alias='nft_smart_trader_roi_eth')}}
+{{config(alias = alias('nft_smart_trader_roi_eth'))}}
 
 with  
 

@@ -10,14 +10,15 @@
 }}
 
 {% set creation_traces_models = [
-     ('ethereum', source('ethereum', 'creation_traces'), source('ethereum', 'transactions'))
-     , ('polygon', source('polygon', 'creation_traces'), source('polygon', 'transactions'))
-     , ('bnb', source('bnb', 'creation_traces'), source('bnb', 'transactions'))
-     , ('avalanche_c', source('avalanche_c', 'creation_traces'), source('avalanche_c', 'transactions'))
-     , ('gnosis', source('gnosis', 'creation_traces'), source('gnosis', 'transactions'))
-     , ('fantom', source('fantom', 'creation_traces'), source('fantom', 'transactions'))
-     , ('optimism', source('optimism', 'creation_traces'), source('optimism', 'transactions'))
-     , ('arbitrum', source('arbitrum', 'creation_traces'), source('arbitrum', 'transactions'))
+     ('ethereum', source('ethereum', 'creation_traces'))
+     , ('polygon', source('polygon', 'creation_traces'))
+     , ('bnb', source('bnb', 'creation_traces'))
+     , ('avalanche_c', source('avalanche_c', 'creation_traces'))
+     , ('gnosis', source('gnosis', 'creation_traces'))
+     , ('fantom', source('fantom', 'creation_traces'))
+     , ('optimism', source('optimism', 'creation_traces'))
+     , ('arbitrum', source('arbitrum', 'creation_traces'))
+     , ('celo', source('celo', 'creation_traces'))
 ] %}
 
 SELECT *
@@ -25,37 +26,17 @@ FROM (
         {% for creation_traces_model in creation_traces_models %}
         SELECT
         '{{ creation_traces_model[0] }}' AS blockchain
-        , ct.block_time
-        , ct.block_number
-        , ct.tx_hash
-        , ct.address
-        , ct."from"
-        , ct.code
-        , txs."from" AS tx_from
-        , txs.to AS tx_to
-        FROM {{ creation_traces_model[1] }} ct
-        INNER JOIN {{ creation_traces_model[2] }} txs 
-                ON ct.block_number = txs.block_number
-                AND ct.tx_hash = txs.hash
-                
+        , block_time
+        , block_number
+        , tx_hash
+        , address
+        , "from"
+        , code
+        --, tx_from
+        --, tx_to
+        FROM {{ creation_traces_model[1] }}
         {% if not loop.last %}
         UNION ALL
         {% endif %}
         {% endfor %}
-
-        UNION ALL
-
-        SELECT 'celo' AS blockchain
-        , ct.block_time
-        , ct.block_number
-        , ct.tx_hash
-        , ct.address
-        , ct."from"
-        , ct.code
-        , txs."from" AS tx_from
-        , txs.to AS tx_to
-        FROM {{ source('celo', 'creation_traces') }} ct
-        INNER JOIN {{ source('celo', 'transactions') }} txs
-                ON ct.block_number = txs.block_number
-                AND ct.tx_hash = txs.hash
         );

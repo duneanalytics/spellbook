@@ -1,4 +1,6 @@
 {{ config(
+	tags=['legacy'],
+	
         alias = alias('logs_decoded', legacy_model=True),
         unique_key=['blockchain', 'tx_hash'],
         post_hook='{{ expose_spells(\'["ethereum", "polygon", "bnb", "avalanche_c", "gnosis", "fantom", "optimism", "arbitrum", "celo"]\',
@@ -25,7 +27,14 @@ FROM (
         {% for decodedlogs_model in decodedlogs_models %}
         SELECT
         '{{ decodedlogs_model[0] }}' AS blockchain
-        , *
+        , block_time
+        , block_number
+        , index
+        , contract_address
+        , event_name
+        , namespace
+        , signature
+        , tx_hash
         FROM {{ decodedlogs_model[1] }}
         {% if not loop.last %}
         UNION ALL

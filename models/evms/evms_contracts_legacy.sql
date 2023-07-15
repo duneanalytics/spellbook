@@ -1,4 +1,6 @@
 {{ config(
+	tags=['legacy'],
+	
         alias = alias('contracts', legacy_model=True),
         unique_key=['blockchain', 'address', 'created_at'],
         post_hook='{{ expose_spells(\'["ethereum", "polygon", "bnb", "avalanche_c", "gnosis", "fantom", "optimism", "arbitrum", "celo"]\',
@@ -25,7 +27,17 @@ FROM (
         {% for contracts_model in contracts_models %}
         SELECT
         '{{ contracts_model[0] }}' AS blockchain
-        , *
+        , abi
+        , address
+        , from
+        , code
+        , name
+        , namespace
+        , dynamic
+        , base
+        , factory
+        , detection_source
+        , created_at
         FROM {{ contracts_model[1] }}
         {% if not loop.last %}
         UNION ALL

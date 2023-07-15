@@ -1,4 +1,6 @@
 {{ config(
+	tags=['legacy'],
+	
         alias = alias('erc1155_approvalsforall', legacy_model=True),
         unique_key=['blockchain', 'tx_hash', 'evt_index'],
         post_hook='{{ expose_spells(\'["ethereum", "polygon", "bnb", "avalanche_c", "gnosis", "fantom", "optimism", "arbitrum", "celo"]\',
@@ -25,7 +27,14 @@ FROM (
         {% for erc1155_approvalforalls_model in erc1155_approvalforalls_models %}
         SELECT
         '{{ erc1155_approvalforalls_model[0] }}' AS blockchain
-        , *
+        , contract_address
+        , evt_tx_hash
+        , evt_index
+        , evt_block_time
+        , evt_block_number
+        , approved
+        , account
+        , operator
         FROM {{ erc1155_approvalforalls_model[1] }}
         {% if not loop.last %}
         UNION ALL

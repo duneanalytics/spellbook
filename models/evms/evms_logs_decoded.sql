@@ -26,7 +26,14 @@ FROM (
         {% for decodedlogs_model in decodedlogs_models %}
         SELECT
         '{{ decodedlogs_model[0] }}' AS blockchain
-        , *
+        , block_time
+        , block_number
+        , index
+        , contract_address
+        , event_name
+        , namespace
+        , signature
+        , tx_hash
         FROM {{ decodedlogs_model[1] }}
         {% if not loop.last %}
         UNION ALL
