@@ -1,6 +1,6 @@
 -- Map governance proposal names to Dune project names
 {{ config(
-    alias = 'project_name_mapping'
+    alias = alias('project_name_mapping')
     )
 }}
 
