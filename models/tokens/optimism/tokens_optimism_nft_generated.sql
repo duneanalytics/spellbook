@@ -35,7 +35,7 @@ select
   ,b.name AS name
   ,b.symbol AS symbol
   ,b.royalty_pct
-  ,'Decent.XYZ' as platform
+  ,'Decent.xyz' as platform
 from {{ ref('decent_optimism_edition_metadata') }} as b
 GROUP BY 1,2,3,4
 
