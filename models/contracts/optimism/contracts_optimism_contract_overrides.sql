@@ -35,6 +35,8 @@ from
     ,(0x225B0747C4062d98E2e957752Ac5d73C7DaCff90, 'Seaport', 'IOperatorFilterRegistry')
     ,(0xc40F949F8a4e094D1b49a23ea9241D289B7b2819, 'Liquity', 'LUSD')
     ,(0x1B36291fF8F503CfB4E3baBe198a40398BCF54AD, 'Manifold', 'ERC1155CreatorImplementation')
+    ,(0x000000000000AAeB6D7670E522A718067333cd4E, 'OpenSea', 'OperatorFilterRegistry')
+    ,(0x3cc6CddA760b79bAfa08dF41ECFA224f810dCeB6, 'OpenSea', 'OperatorFilterRegistry')
     --Non-Contract Labels
     ,(0x80C67432656d59144cEFf962E8fAF8926599bCF8, 'Orbiter Finance', 'Bridge')
     ,(0xf332761c673b59B21fF6dfa8adA44d78c12dEF09, 'OKX', 'OKX DEX')
