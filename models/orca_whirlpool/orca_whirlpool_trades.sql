@@ -56,7 +56,7 @@ with
     --     OR account_tokenMintB = 'DezXAZ8z7PnrnRJjz3wXBoRgixCa6xjnB7YaB1pPB263'
     )
     
-    -- , all_swaps as (
+    , all_swaps as (
         SELECT 
             sp.call_block_time as block_time
             , 'whirlpool' as project
@@ -119,58 +119,56 @@ with
         -- and sp.call_block_time >= now() - interval '3' month
         -- and sp.call_tx_id = '65mP3g1ygp5VvxKm1HGwMcQi6DKXQ5dXrj9PCAWmFB3JvEmdZ7AhmXps3B7Ln7A9ve4DK6ahRuvANMXcRvGGxqYT' --outer call 
         and sp.call_tx_id = '2dBWhFtYqqmVBjFRD1M4Q8Xbq3db4ctgNX8UP9xYUiwS3DvXrR8N4v6z2cupYrMERH8GKTNoG8KDduFn3vVK6ptu' --inner call
-    -- )
+    )
     
-    -- SELECT
-    --     tb.blockchain
-    --     , tb.project 
-    --     , tb.version
-    --     , date_trunc('day', tb.block_time) as block_date
-    --     , tb.block_time
-    --     , tb.token_pair
-    --     , tb.trade_source
-    --     , tb.token_bought_symbol
-    --     -- , tb.token_bought_amount
-    --     -- , tb.token_bought_amount_raw
-    --     , tb.token_sold_symbol
-    --     -- , tb.token_sold_amount
-    --     -- , tb.token_sold_amount_raw
-    --     -- , COALESCE(tb.token_sold_amount * p_sold.price, tb.token_bought_amount * p_bought.price) as amount_usd
-    --     , cast(tb.fee_tier as double)/1000000 as fee_tier
-    --     -- , cast(tb.fee_tier as double)/1000000 * COALESCE(tb.token_sold_amount * p_sold.price, tb.token_bought_amount * p_bought.price) as fee_usd
-    --     , tb.token_sold_mint_address
-    --     , tb.token_bought_mint_address
-    --     , tb.token_sold_vault
-    --     , tb.token_bought_vault
-    --     , tb.whirlpool_id as project_program_id
-    --     , tb.trader_id
-    --     , tb.tx_id
-    --     , tb.outer_instruction_index
-    --     , tb.inner_instruction_index
-    --     , tb.tx_index
-    --     , recent_update
-    --     -- , p_sold.minute as s_min
-    --     -- , p_bought.minute as b_min
-    -- FROM
-    --     (
-    --     SELECT 
-    --         *
-    --         , row_number() OVER (partition by tx_id, outer_instruction_index, inner_instruction_index, tx_index order by update_time desc) as recent_update
-    --     FROM all_swaps
-    --     )
-    --     tb
-    -- -- LEFT JOIN {{ source('prices', 'usd') }} p_bought ON p_bought.blockchain = 'solana' 
-    -- --     AND date_trunc('minute', tb.block_time) = p_bought.minute 
-    -- --     AND token_bought_mint_address = toBase58(p_bought.contract_address)
+    SELECT
+        tb.blockchain
+        , tb.project 
+        , tb.version
+        , date_trunc('day', tb.block_time) as block_date
+        , tb.block_time
+        , tb.token_pair
+        , tb.trade_source
+        , tb.token_bought_symbol
+        , tb.token_bought_amount
+        , tb.token_bought_amount_raw
+        , tb.token_sold_symbol
+        , tb.token_sold_amount
+        , tb.token_sold_amount_raw
+        , COALESCE(tb.token_sold_amount * p_sold.price, tb.token_bought_amount * p_bought.price) as amount_usd
+        , cast(tb.fee_tier as double)/1000000 as fee_tier
+        , cast(tb.fee_tier as double)/1000000 * COALESCE(tb.token_sold_amount * p_sold.price, tb.token_bought_amount * p_bought.price) as fee_usd
+        , tb.token_sold_mint_address
+        , tb.token_bought_mint_address
+        , tb.token_sold_vault
+        , tb.token_bought_vault
+        , tb.whirlpool_id as project_program_id
+        , tb.trader_id
+        , tb.tx_id
+        , tb.outer_instruction_index
+        , tb.inner_instruction_index
+        , tb.tx_index
+        , recent_update
+        -- , p_sold.minute as s_min
+        -- , p_bought.minute as b_min
+    FROM
+        (
+        SELECT 
+            *
+            , row_number() OVER (partition by tx_id, outer_instruction_index, inner_instruction_index, tx_index order by update_time desc) as recent_update
+        FROM all_swaps
+        )
+        tb
+    LEFT JOIN {{ source('prices', 'usd') }} p_bought ON p_bought.blockchain = 'solana' 
+        AND date_trunc('minute', tb.block_time) = p_bought.minute 
+        AND token_bought_mint_address = toBase58(p_bought.contract_address)
 
-    -- --     AND p_bought.minute >= now() - interval '7' day
-    -- -- LEFT JOIN {{ source('prices', 'usd') }} p_sold ON p_sold.blockchain = 'solana' 
-    -- --     AND date_trunc('minute', tb.block_time) = p_sold.minute 
-    -- --     AND token_sold_mint_address = toBase58(p_sold.contract_address)
+        AND p_bought.minute >= now() - interval '7' day
+    LEFT JOIN {{ source('prices', 'usd') }} p_sold ON p_sold.blockchain = 'solana' 
+        AND date_trunc('minute', tb.block_time) = p_sold.minute 
+        AND token_sold_mint_address = toBase58(p_sold.contract_address)
 
-    --     -- AND p_sold.minute >= now() - interval '7' day
-    -- WHERE recent_update = 1 --keep only most recent fee tier
--- --QA purposes only
--- AND whirlpool_id = 'HJPjoWUrhoZzkNfRpHuieeFk9WcZWjwy6PBjZ81ngndJ'
+        AND p_sold.minute >= now() - interval '7' day
+    WHERE recent_update = 1 --keep only most recent fee tier
 -- ORDER by block_time asc
 -- limit 100000

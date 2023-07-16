@@ -99,6 +99,3 @@ models:
       - &tx_index
         name: tx_index
         description: "index of the transaction in the block slot"
-      - &recent_update
-        name: recent_update
-        description: "something weird about recent_update?"
