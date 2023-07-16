@@ -34,7 +34,6 @@ with
         )
         
     SELECT 
-        --distinct --something going wrong here?
         tkA.symbol as tokenA_symbol
         , tkA.decimals as tokenA_decimals
         , account_tokenMintA as tokenA
@@ -68,9 +67,9 @@ with
                 end as trade_source
             , concat(COALESCE(tokenA_symbol, tokenA), '-', COALESCE(tokenB_symbol, tokenB)) as token_pair
             , case when sp.aToB = true then COALESCE(tokenB_symbol, tokenB) 
-                else COALESCE(tokenA_symbol, tokenA) 
+                else COALESCE(tokenA_symbol, tokenA)
                 end as token_bought_symbol 
-            token bought is always the second instruction (transfer) in the inner instructions
+            -- token bought is always the second instruction (transfer) in the inner instructions
             , tr_2.amount as token_bought_amount_raw
             , tr_2.amount/COALESCE(pow(10,case when sp.aToB = true then wp.tokenB_decimals else tokenA_decimals end),1) as token_bought_amount
             , case when sp.aToB = true then tokenA_symbol
