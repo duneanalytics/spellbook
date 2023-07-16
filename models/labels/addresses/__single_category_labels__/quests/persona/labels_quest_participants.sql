@@ -9,8 +9,17 @@
     )
 }}
 
-SELECT blockchain, address, name, category, contributor, source, created_at, updated_at, model_name, label_type FROM {{ ref('labels_optimism_coinbase_wallet_quest_participants') }}
-UNION ALL
-SELECT blockchain, address, name, category, contributor, source, created_at, updated_at, model_name, label_type FROM {{ ref('labels_optimism_optimism_quest_participants') }}
-UNION ALL
-SELECT blockchain, address, name, category, contributor, source, created_at, updated_at, model_name, label_type FROM {{ ref('labels_optimism_galxe_quest_participants') }}
+SELECT
+    blockchain
+    , address
+    , platform || ': ' || 'participant' AS name
+    , 'quests' as category
+    , 'msilb7' as contributor
+    , 'query' as source
+    , created_at
+    , now() AS updated_at
+    , replace(platform,' ', '_') || '_participants' model_name
+    , 'persona' as label_type
+
+FROM {{ ref('quests_participants') }}
+GROUP BY 1,2,3
