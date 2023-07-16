@@ -66,20 +66,20 @@ with
             , case when sp.call_is_inner = False then 'direct'
                 else sp.call_outer_executing_account
                 end as trade_source
-            -- , concat(COALESCE(tokenA_symbol, tokenA), '-', COALESCE(tokenB_symbol, tokenB)) as token_pair
-            -- , case when sp.aToB = true then COALESCE(tokenB_symbol, tokenB) 
-            --     else COALESCE(tokenA_symbol, tokenA) 
-            --     end as token_bought_symbol 
-            --token bought is always the second instruction (transfer) in the inner instructions
-            -- , tr_2.amount as token_bought_amount_raw
-            -- , tr_2.amount/COALESCE(pow(10,case when sp.aToB = true then wp.tokenB_decimals else tokenA_decimals end),1) as token_bought_amount
-            -- , case when sp.aToB = true then tokenA_symbol
-            --     else tokenB_symbol
-            --     end as token_sold_symbol
-            -- , tr_1.amount as token_sold_amount_raw
-            -- , tr_1.amount/COALESCE(pow(10,case when sp.aToB = true then wp.tokenA_decimals else tokenB_decimals end),1) as token_sold_amount
-            -- , wp.fee_tier
-            -- , wp.whirlpool_id
+            , concat(COALESCE(tokenA_symbol, tokenA), '-', COALESCE(tokenB_symbol, tokenB)) as token_pair
+            , case when sp.aToB = true then COALESCE(tokenB_symbol, tokenB) 
+                else COALESCE(tokenA_symbol, tokenA) 
+                end as token_bought_symbol 
+            token bought is always the second instruction (transfer) in the inner instructions
+            , tr_2.amount as token_bought_amount_raw
+            , tr_2.amount/COALESCE(pow(10,case when sp.aToB = true then wp.tokenB_decimals else tokenA_decimals end),1) as token_bought_amount
+            , case when sp.aToB = true then tokenA_symbol
+                else tokenB_symbol
+                end as token_sold_symbol
+            , tr_1.amount as token_sold_amount_raw
+            , tr_1.amount/COALESCE(pow(10,case when sp.aToB = true then wp.tokenA_decimals else tokenB_decimals end),1) as token_sold_amount
+            , wp.fee_tier
+            , wp.whirlpool_id
             , sp.call_tx_signer as trader_id
             , sp.call_tx_id as tx_id
             , sp.call_outer_instruction_index as outer_instruction_index
@@ -97,19 +97,19 @@ with
             , case when sp.aToB = true then wp.tokenAVault 
                 else wp.tokenBVault
                 end as token_sold_vault
-            -- , wp.update_time
+            , wp.update_time
         FROM {{ source('whirlpool_solana', 'whirlpool_call_swap') }} sp
         JOIN whirlpools wp ON sp.account_whirlpool = wp.whirlpool_id AND sp.call_block_time >= wp.update_time
-        -- INNER JOIN {{ source('spl_token_solana', 'spl_token_call_transfer') }} tr_1 ON tr_1.call_tx_id = sp.call_tx_id 
-        --     AND tr_1.call_outer_instruction_index = sp.call_outer_instruction_index 
-        --     AND ((sp.call_is_inner = false AND tr_1.call_inner_instruction_index = 1) 
-        --         OR (sp.call_is_inner = true AND tr_1.call_inner_instruction_index = sp.call_inner_instruction_index + 1))
-        --     AND tr_1.call_block_time >= now() - interval '7' day
-        -- INNER JOIN {{ source('spl_token_solana', 'spl_token_call_transfer') }} tr_2 ON tr_2.call_tx_id = sp.call_tx_id 
-        --     AND tr_2.call_outer_instruction_index = sp.call_outer_instruction_index 
-        --     AND ((sp.call_is_inner = false AND tr_2.call_inner_instruction_index = 2)
-        --         OR (sp.call_is_inner = true AND tr_2.call_inner_instruction_index = sp.call_inner_instruction_index + 2))
-        --     AND tr_2.call_block_time >= now() - interval '7' day
+        INNER JOIN {{ source('spl_token_solana', 'spl_token_call_transfer') }} tr_1 ON tr_1.call_tx_id = sp.call_tx_id 
+            AND tr_1.call_outer_instruction_index = sp.call_outer_instruction_index 
+            AND ((sp.call_is_inner = false AND tr_1.call_inner_instruction_index = 1) 
+                OR (sp.call_is_inner = true AND tr_1.call_inner_instruction_index = sp.call_inner_instruction_index + 1))
+            AND tr_1.call_block_time >= now() - interval '7' day
+        INNER JOIN {{ source('spl_token_solana', 'spl_token_call_transfer') }} tr_2 ON tr_2.call_tx_id = sp.call_tx_id 
+            AND tr_2.call_outer_instruction_index = sp.call_outer_instruction_index 
+            AND ((sp.call_is_inner = false AND tr_2.call_inner_instruction_index = 2)
+                OR (sp.call_is_inner = true AND tr_2.call_inner_instruction_index = sp.call_inner_instruction_index + 2))
+            AND tr_2.call_block_time >= now() - interval '7' day
         WHERE 1=1
             AND sp.call_block_time >= now() - interval '7' day
     --   {% if is_incremental() %}
