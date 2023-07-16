@@ -552,6 +552,7 @@ WITH curated_list AS (
       ,(0x0B5a3C04D1199283938fbe887A2C82C808aa89Fb, 'Summer.fi')
       ,(0x7d896339a80dd38bc3bbb04383894c62b2ef2585, 'Worldcoin')
       ,(0xb02748d3eee8691c94b7c8d6788776aa52571628, 'Hidden Hand')
+      ,(0x9DB006063ee2049a35624bCCe32945E524105401, 'NiftyKit')
       
   ) as temp_table (creator_address, contract_project)
 )

@@ -108,5 +108,7 @@ from (
     ,('summer_fi','Summer.fi')
     ,('summerfi','Summer.fi')
     ,('oasisapp','Summer.fi')
+    ,('niftykit_v2','NiftyKit')
+    ,('niftykit_v3','NiftyKit')
 
     ) as temp_table (dune_name, mapped_name)
