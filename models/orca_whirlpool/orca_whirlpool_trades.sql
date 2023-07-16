@@ -13,49 +13,49 @@
                                     \'["ilemi"]\') }}')
 }}
 
--- with 
---     whirlpools as (
---     with 
---         fee_updates as (
---             SELECT 
---                 ip.account_whirlpool as whirlpool_id
---                 , ip.call_block_time as update_time
---                 , fee.defaultFeeRate as fee_tier --https://docs.orca.so/reference/trading-fees, should track protocol fees too. and rewards.
---             FROM {{ source('whirlpool_solana', 'whirlpool_call_initializePool') }} ip
---             LEFT JOIN {{ source('whirlpool_solana', 'whirlpool_call_initializeFeeTier') }} fee ON ip.account_feeTier = fee.account_feeTier
+with 
+    whirlpools as (
+    with 
+        fee_updates as (
+            SELECT 
+                ip.account_whirlpool as whirlpool_id
+                , ip.call_block_time as update_time
+                , fee.defaultFeeRate as fee_tier --https://docs.orca.so/reference/trading-fees, should track protocol fees too. and rewards.
+            FROM {{ source('whirlpool_solana', 'whirlpool_call_initializePool') }} ip
+            LEFT JOIN {{ source('whirlpool_solana', 'whirlpool_call_initializeFeeTier') }} fee ON ip.account_feeTier = fee.account_feeTier
             
---             UNION all
+            UNION all
             
---              SELECT 
---                 account_whirlpool as whirlpool_id
---                 , call_block_time as update_time
---                 , feeRate as fee_tier
---             FROM {{ source('whirlpool_solana', 'whirlpool_call_setFeeRate') }}
---         )
+             SELECT 
+                account_whirlpool as whirlpool_id
+                , call_block_time as update_time
+                , feeRate as fee_tier
+            FROM {{ source('whirlpool_solana', 'whirlpool_call_setFeeRate') }}
+        )
         
---     SELECT 
---         --distinct --something going wrong here?
---         tkA.symbol as tokenA_symbol
---         , tkA.decimals as tokenA_decimals
---         , account_tokenMintA as tokenA
---         , account_tokenVaultA as tokenAVault
---         , tkB.symbol as tokenB_symbol
---         , tkB.decimals as tokenB_decimals
---         , account_tokenMintB as tokenB
---         , account_tokenVaultB as tokenBVault
---         , ip.tickSpacing
---         , ip.account_whirlpool as whirlpool_id
---         , fu.update_time
---         , fu.fee_tier
---         , ip.call_tx_id as init_tx
---     FROM {{ source('whirlpool_solana', 'whirlpool_call_initializePool') }} ip
---     LEFT JOIN fee_updates fu ON fu.whirlpool_id = ip.account_whirlpool
---     LEFT JOIN {{ ref('tokens_solana_fungible') }} tkA ON tkA.token_mint_address = ip.account_tokenMintA 
---     LEFT JOIN {{ ref('tokens_solana_fungible') }} tkB ON tkB.token_mint_address = ip.account_tokenMintB
---     -- WHERE tkA.symbol is not null AND tkB.symbol is not null
---     -- WHERE account_tokenMintA = 'DezXAZ8z7PnrnRJjz3wXBoRgixCa6xjnB7YaB1pPB263' 
---     --     OR account_tokenMintB = 'DezXAZ8z7PnrnRJjz3wXBoRgixCa6xjnB7YaB1pPB263'
---     )
+    SELECT 
+        --distinct --something going wrong here?
+        tkA.symbol as tokenA_symbol
+        , tkA.decimals as tokenA_decimals
+        , account_tokenMintA as tokenA
+        , account_tokenVaultA as tokenAVault
+        , tkB.symbol as tokenB_symbol
+        , tkB.decimals as tokenB_decimals
+        , account_tokenMintB as tokenB
+        , account_tokenVaultB as tokenBVault
+        , ip.tickSpacing
+        , ip.account_whirlpool as whirlpool_id
+        , fu.update_time
+        , fu.fee_tier
+        , ip.call_tx_id as init_tx
+    FROM {{ source('whirlpool_solana', 'whirlpool_call_initializePool') }} ip
+    LEFT JOIN fee_updates fu ON fu.whirlpool_id = ip.account_whirlpool
+    LEFT JOIN {{ ref('tokens_solana_fungible') }} tkA ON tkA.token_mint_address = ip.account_tokenMintA 
+    LEFT JOIN {{ ref('tokens_solana_fungible') }} tkB ON tkB.token_mint_address = ip.account_tokenMintB
+    -- WHERE tkA.symbol is not null AND tkB.symbol is not null
+    -- WHERE account_tokenMintA = 'DezXAZ8z7PnrnRJjz3wXBoRgixCa6xjnB7YaB1pPB263' 
+    --     OR account_tokenMintB = 'DezXAZ8z7PnrnRJjz3wXBoRgixCa6xjnB7YaB1pPB263'
+    )
     
     -- , all_swaps as (
         SELECT 
@@ -85,21 +85,21 @@
             , sp.call_outer_instruction_index as outer_instruction_index
             , COALESCE(sp.call_inner_instruction_index, 0) as inner_instruction_index
             , sp.call_tx_index as tx_index
-            -- , case when sp.aToB = true then wp.tokenB
-            --     else wp.tokenA
-            --     end as token_bought_mint_address
-            -- , case when sp.aToB = true then wp.tokenA 
-            --     else wp.tokenB
-            --     end as token_sold_mint_address
-            -- , case when sp.aToB = true then wp.tokenBVault
-            --     else wp.tokenAVault
-            --     end as token_bought_vault
-            -- , case when sp.aToB = true then wp.tokenAVault 
-            --     else wp.tokenBVault
-            --     end as token_sold_vault
+            , case when sp.aToB = true then wp.tokenB
+                else wp.tokenA
+                end as token_bought_mint_address
+            , case when sp.aToB = true then wp.tokenA 
+                else wp.tokenB
+                end as token_sold_mint_address
+            , case when sp.aToB = true then wp.tokenBVault
+                else wp.tokenAVault
+                end as token_bought_vault
+            , case when sp.aToB = true then wp.tokenAVault 
+                else wp.tokenBVault
+                end as token_sold_vault
             -- , wp.update_time
         FROM {{ source('whirlpool_solana', 'whirlpool_call_swap') }} sp
-        -- JOIN whirlpools wp ON sp.account_whirlpool = wp.whirlpool_id AND sp.call_block_time >= wp.update_time
+        JOIN whirlpools wp ON sp.account_whirlpool = wp.whirlpool_id AND sp.call_block_time >= wp.update_time
         -- INNER JOIN {{ source('spl_token_solana', 'spl_token_call_transfer') }} tr_1 ON tr_1.call_tx_id = sp.call_tx_id 
         --     AND tr_1.call_outer_instruction_index = sp.call_outer_instruction_index 
         --     AND ((sp.call_is_inner = false AND tr_1.call_inner_instruction_index = 1) 
