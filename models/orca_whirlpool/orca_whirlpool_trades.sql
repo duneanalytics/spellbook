@@ -83,7 +83,7 @@
             , sp.call_tx_signer as trader_id
             , sp.call_tx_id as tx_id
             , sp.call_outer_instruction_index as outer_instruction_index
-            , sp.call_inner_instruction_index as inner_instruction_index
+            , COALESCE(sp.call_inner_instruction_index, 0) as inner_instruction_index
             , sp.call_tx_index as tx_index
             -- , case when sp.aToB = true then wp.tokenB
             --     else wp.tokenA
