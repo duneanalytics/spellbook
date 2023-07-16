@@ -170,7 +170,7 @@ NULL AS saleType,
 
 'DCNTSeries' AS mint_type
 
-FROM {{ source('decent_optimism','DCNTSDK_call_deployDCNTSeries') }}
+FROM {{ source('decent_optimism','DCNTSDK_call_deployDCNTSeries') }} ce
 WHERE call_success = true
 {% if is_incremental() %}
 AND ce.call_block_time >= NOW() - interval '7' day
