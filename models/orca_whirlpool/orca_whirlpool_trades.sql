@@ -111,14 +111,14 @@ with
             AND tr_2.call_block_time >= now() - interval '7' day
         WHERE 1=1
             AND sp.call_block_time >= now() - interval '7' day
-    --   {% if is_incremental() %}
-    --   AND sp.call_block_time >= date_trunc("day", now() - interval '1 day')
-    --   {% endif %}
+            {% if is_incremental() %}
+            AND sp.call_block_time >= date_trunc("day", now() - interval '1 day')
+            {% endif %}
         -- and cardinality(sp.call_inner_instructions) = 2 --this checks for non-reverts, but doesn't work anymore due to inner + outer in one. will need to find a better solution later.
         -- and sp.call_is_inner = false -- only outer transactions (direct)
         -- and sp.call_block_time >= now() - interval '3' month
         -- and sp.call_tx_id = '65mP3g1ygp5VvxKm1HGwMcQi6DKXQ5dXrj9PCAWmFB3JvEmdZ7AhmXps3B7Ln7A9ve4DK6ahRuvANMXcRvGGxqYT' --outer call 
-        and sp.call_tx_id = '2dBWhFtYqqmVBjFRD1M4Q8Xbq3db4ctgNX8UP9xYUiwS3DvXrR8N4v6z2cupYrMERH8GKTNoG8KDduFn3vVK6ptu' --inner call
+        -- and sp.call_tx_id = '2dBWhFtYqqmVBjFRD1M4Q8Xbq3db4ctgNX8UP9xYUiwS3DvXrR8N4v6z2cupYrMERH8GKTNoG8KDduFn3vVK6ptu' --inner call
     )
     
     SELECT
