@@ -15,7 +15,7 @@ select
   ,b.royalty_pct
   ,'Sound.xyz' as platform
 from {{ ref('sound_xyz_optimism_edition_metadata') }} as b
-GROUP BY 1,2,3, 4
+GROUP BY 1,2,3,4
 
 UNION ALL
 
@@ -26,7 +26,7 @@ select
   ,b.royalty_pct
   ,'Zora' as platform
 from {{ ref('zora_optimism_edition_metadata') }} as b
-GROUP BY 1,2,3, 4
+GROUP BY 1,2,3,4
 
 UNION ALL
 
@@ -37,7 +37,7 @@ select
   ,b.royalty_pct
   ,'Decent.XYZ' as platform
 from {{ ref('decent_optimism_edition_metadata') }} as b
-GROUP BY 1,2,3, 4
+GROUP BY 1,2,3,4
 
 UNION ALL
 
@@ -48,4 +48,4 @@ select
   ,b.royalty_pct
   ,'Mirror' as platform
 from {{ ref('mirror_optimism_edition_metadata') }} as b
-GROUP BY 1,2,3
+GROUP BY 1,2,3,4
