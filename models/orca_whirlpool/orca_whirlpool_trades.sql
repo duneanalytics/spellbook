@@ -112,7 +112,7 @@ with
         WHERE 1=1
             AND sp.call_block_time >= now() - interval '7' day
             {% if is_incremental() %}
-            AND sp.call_block_time >= date_trunc('day', now() - interval '1 day')
+            AND sp.call_block_time >= now() - interval '1' day
             {% endif %}
         -- and cardinality(sp.call_inner_instructions) = 2 --this checks for non-reverts, but doesn't work anymore due to inner + outer in one. will need to find a better solution later.
         -- and sp.call_is_inner = false -- only outer transactions (direct)
