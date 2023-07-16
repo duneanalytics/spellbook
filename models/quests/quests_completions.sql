@@ -1,6 +1,6 @@
 {{
     config(
-        alias=alias('participants'),
+        alias=alias('completions'),
         tags=['dunesql'],
         post_hook='{{ expose_spells(\'["optimism"]\', 
         "sector", 

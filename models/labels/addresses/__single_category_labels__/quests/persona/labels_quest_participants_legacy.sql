@@ -17,10 +17,10 @@ SELECT
     , 'quests' as category
     , 'msilb7' as contributor
     , 'query' as source
-    , created_at
+    , MIN(block_time) created_at
     , now() AS updated_at
     , replace(platform,' ', '_') || '_participants' model_name
     , 'persona' as label_type
 
-FROM {{ ref('quests_participants_legacy') }}
+FROM {{ ref('quests_completions_legacy') }}
 GROUP BY 1,2,3,4,5,6,7,8,9,10 -- distinct if addresses completed quests multiple times

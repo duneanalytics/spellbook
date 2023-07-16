@@ -16,10 +16,10 @@ SELECT
     , 'quests' as category
     , 'msilb7' as contributor
     , 'query' as source
-    , created_at
+    , MIN(block_time) created_at
     , now() AS updated_at
     , replace(platform,' ', '_') || '_participants' model_name
     , 'persona' as label_type
 
-FROM {{ ref('quests_participants') }}
-GROUP BY 1,2,3
+FROM {{ ref('quests_completions') }}
+GROUP BY blockchain, quester_address, platform -- distinct if addresses completed quests multiple times

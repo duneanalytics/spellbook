@@ -1,7 +1,7 @@
 version: 2
 
 models:
-  - name: quests_participants
+  - name: quests_completions
     meta:
       blockchain: optimism
       project: quests

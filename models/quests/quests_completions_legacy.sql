@@ -1,6 +1,6 @@
 {{
     config(
-        alias=alias('participants',legacy_model=true),
+        alias=alias('completions',legacy_model=true),
         post_hook='{{ expose_spells(\'["optimism"]\', 
         "sector", 
         "labels", 
