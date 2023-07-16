@@ -11,6 +11,7 @@
 ref('uniswap_ethereum_pools')
 , ref('uniswap_arbitrum_pools')
 , ref('uniswap_polygon_pools')
+, ref('uniswap_optimism_pools')
 ] %}
 
 
