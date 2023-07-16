@@ -110,5 +110,7 @@ from (
     ,('oasisapp','Summer.fi')
     ,('niftykit_v2','NiftyKit')
     ,('niftykit_v3','NiftyKit')
+    ,('cozy_v2_beta','Cozy Finance')
+    ,('cozy_v2_prod','Cozy Finance')
 
     ) as temp_table (dune_name, mapped_name)
