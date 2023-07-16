@@ -1,4 +1,5 @@
 {{ config(
+	tags=['legacy'],
         alias = alias('nft_standards', legacy_model=True),
         materialized='incremental',
 	    incremental_strategy = 'merge',

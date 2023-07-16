@@ -1,6 +1,6 @@
 {{ config(
     schema = 'tigris_v1_arbitrum',
-    alias = 'positions_leverage'
+    alias = alias('positions_leverage')
     )
  }}
 

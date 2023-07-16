@@ -1,5 +1,5 @@
 {{ config(
-        alias ='votes',
+        alias = alias('votes'),
         post_hook='{{ expose_spells(\'["ethereum"]\',
                                 "sector",
                                 "dao",
