@@ -22,4 +22,4 @@ SELECT
     , 'persona' as label_type
 
 FROM {{ ref('quests_completions_legacy') }}
-GROUP BY 1,2,3,4,5,6,7,8,9,10 -- distinct if addresses completed quests multiple times
+GROUP BY blockchain, quester_address, platform -- distinct if addresses completed quests multiple times
