@@ -1,5 +1,6 @@
 {{ config(
     alias = alias('nft_mints', legacy_model=True),
+    tags=['legacy']
     partition_by = ['block_date'],
     materialized = 'incremental',
     file_format = 'delta',
