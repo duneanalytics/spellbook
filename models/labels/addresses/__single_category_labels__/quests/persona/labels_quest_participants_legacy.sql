@@ -12,7 +12,7 @@
 
 SELECT
     blockchain
-    , address
+    , quester_address as address
     , platform || ': ' || 'participant' AS name
     , 'quests' as category
     , 'msilb7' as contributor
