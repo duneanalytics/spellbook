@@ -1,7 +1,7 @@
 {{
     config(
         alias=alias('completions',legacy_model=true),
-        tags=['legacy']
+        tags=['legacy'],
         post_hook='{{ expose_spells(\'["optimism"]\', 
         "sector", 
         "labels", 
