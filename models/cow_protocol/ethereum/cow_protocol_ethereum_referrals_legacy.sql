@@ -1,5 +1,6 @@
 {{ config(
         alias=alias('referrals', legacy_model=True),
+        tags=['legacy'],
         post_hook='{{ expose_spells(\'["ethereum"]\',
                                     "project",
                                     "cow_protocol",
