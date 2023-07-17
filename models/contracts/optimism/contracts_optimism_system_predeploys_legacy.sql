@@ -1,7 +1,7 @@
  {{
   config(
         alias = alias('system_predeploys',legacy_model=True),
-	tags = ['dunesql'],
+	tags = ['legacy'],
         post_hook='{{ expose_spells(\'["optimism"]\',
                                     "sector",
                                     "contracts",
