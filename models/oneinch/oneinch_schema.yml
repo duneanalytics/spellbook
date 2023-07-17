@@ -1,0 +1,57 @@
+version: 2
+
+models:
+  - name: oneinch_contract_addresses
+    meta:
+      blockchain: ['ethereum','optimism','polygon','arbitrum','avalanche_c','gnosis','bnb','fantom']
+      sector: oneinch
+      contributors: [grkhr]
+    config:
+      tags: ['oneinch', 'metadata']
+    description: >
+        (dictionary) contract addresses of 1inch and other projects for internal use
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - contract_address
+    columns:
+      - &blockchain
+        name: blockchain
+      - &project
+        name: project
+      - &contract_name
+        name: contract_name
+      - &contract_type
+        name: contract_type
+      - &contract_address
+        name: contract_address
+
+  - name: oneinch_fusion_executors
+    meta:
+      blockchain: ['ethereum','optimism','polygon','arbitrum','avalanche_c','gnosis','bnb','fantom']
+      sector: oneinch
+      contributors: [grkhr]
+    config:
+      tags: ['oneinch', 'metadata']
+    description: >
+        fusion resolvers and executors
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - chain_id
+            - resolver_executor
+    columns:
+      - &resolver_address
+        name: resolver_address
+      - &resolver_executor
+        name: resolver_executor
+      - *blockchain
+      - &chain_id
+        name: chain_id
+      - &resolver_name
+        name: resolver_name
+      - &kyc
+        name: kyc
+      - &tx_hash_example
+        name: tx_hash_example

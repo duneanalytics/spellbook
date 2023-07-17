@@ -1,0 +1,28 @@
+version: 2
+
+sources:
+  - name: tornado_cash_avalanche_c
+    tables:
+      - name: ETHTornado_evt_Deposit
+        loaded_at_field: evt_block_time
+        columns:
+          - name: contract_address
+          - name: evt_tx_hash
+          - name: evt_index
+          - name: evt_block_time
+          - name: evt_block_number
+          - name: commitment
+          - name: leafIndex
+          - name: timestamp
+      - name: ETHTornado_evt_Withdrawal
+        loaded_at_field: evt_block_time
+        columns:
+          - name: contract_address
+          - name: evt_tx_hash
+          - name: evt_index
+          - name: evt_block_time
+          - name: evt_block_number
+          - name: fee
+          - name: nullifierHash
+          - name: relayer
+          - name: to

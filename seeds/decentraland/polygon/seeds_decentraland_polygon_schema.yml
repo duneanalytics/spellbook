@@ -1,0 +1,7 @@
+version: 2
+
+seeds:
+  - name: decentraland_polygon_sample_trades
+    config:
+      column_types:
+        token_id: string

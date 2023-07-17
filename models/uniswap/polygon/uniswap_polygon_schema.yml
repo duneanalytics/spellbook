@@ -21,7 +21,7 @@ models:
             - tx_hash
             - evt_index
             - trace_address
-      - check_dex_seed:
+      - check_dex_seed_legacy:
           blockchain: polygon
           project: uniswap
           version: 3
@@ -130,3 +130,64 @@ models:
       - *tx_to
       - *trace_address
       - *evt_index
+
+  - name: uniswap_polygon_pools
+    meta:
+      blockchain: polygon
+      sector: dex
+      contributors: hildobby
+    config:
+      tags: ['polygon']
+    description: >
+      Uniswap DEX pools
+    columns:
+      - *blockchain
+      - *project
+      - *version
+      - name: pool
+        description: "DEX pool smart contract address"
+        tests:
+          - unique
+      - name: fee
+        description: "Defined fee"
+      - name: token0
+        description: "First token in pool"
+      - name: token1
+        description: "Second token in pool"
+      - name: creation_block_time
+        description: "Block time of pool creation"
+      - name: creation_block_number
+        description: "Block number of pool creation"
+      - name: contract_address
+        description: "Contract address used to create the pool"
+
+  - name: uniswap_v3_polygon_flashloans
+    meta:
+      blockchain: polygon
+      sector: lending
+      contributors: hildobby
+    config:
+      tags: ['polygon', 'flashloans']
+    description: >
+      All Uniswap v3 flashloans on Polygon
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - tx_hash
+            - evt_index
+    columns:
+      - name: blockchain
+      - name: project
+      - name: version
+      - name: block_time
+      - name: block_number
+      - name: amount
+      - name: amount_usd
+      - name: tx_hash
+      - name: evt_index
+      - name: fee
+      - name: currency_contract
+      - name: currency_symbol
+      - name: recipient
+      - name: contract_address

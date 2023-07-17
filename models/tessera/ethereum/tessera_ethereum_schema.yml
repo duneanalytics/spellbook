@@ -8,8 +8,8 @@ models:
       contributors: [amadarrrr]
     config:
       tags: ["ethereum", "tessera", "vault"]
-    test:
-      - check_seed:
+    tests:
+      - check_seed_legacy:
           seed_file: ref('tessera_ethereum_vault_deploy_test_data')
           match_columns:
             - tx_hash

@@ -1,25 +1,6 @@
 version: 2
 
 models:
-  - name: addresses_ethereum_cex
-    meta:
-      blockchain: ethereum
-      sector: cex
-      project: addresses
-      contributors: hildobby
-    config:
-      tags: ['table', 'cex', 'addresses', 'ethereum']
-    description: "Known centralised exchange addresses"
-    columns:
-      - name: address
-        description: "Address of known CEX"
-        tests:
-          - unique
-      - name: cex_name
-        description: "Name of centralised exchange"
-      - name: distinct_name
-        description: "Distinct name of centralised exchange address"
-
   - name: addresses_ethereum_dex
     meta:
       blockchain: ethereum

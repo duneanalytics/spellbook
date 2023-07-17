@@ -1,6 +1,6 @@
 {{ config(
     schema = 'aztec_v2_ethereum',
-    alias = 'rollupbridge_transfers',
+    alias = alias('rollupbridge_transfers'),
     partition_by = ['evt_block_date'],
     materialized = 'incremental',
     file_format = 'delta',

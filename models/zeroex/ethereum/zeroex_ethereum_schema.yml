@@ -5,7 +5,7 @@ models:
     meta:
       blockchain: ethereum
       project: zeroex
-      contributors: sui414, bakabhai993, hosuke
+      contributors: danning.sui, bakabhai993, hosuke
     config:
       tags: ['ethereum','0x','dex_aggregator','dex','aggregator']
     description: >
@@ -16,7 +16,7 @@ models:
             - block_date
             - tx_hash
             - evt_index
-      - check_seed:
+      - check_seed_legacy:
           seed_file: ref('zeroex_ethereum_api_fills_sample')
           match_columns:
             - tx_hash
@@ -93,9 +93,15 @@ models:
       - &volume_usd
         name: volume_usd
         description: "Trading volume measured in USD value"
-        tests:
-          - zeroex_ethereum_fills_test:
-              seed_file: ref('zeroex_ethereum_api_fills_sample')
+      - &tx_from
+        name: tx_from
+        description: "Address which initiated the trade"
+      - &tx_to
+        name: tx_to
+        description: "Address which received the trade"
+      - &blockchain
+        name: blockchain
+        description: "Blockchain which the aggregator project is deployed"
               
   - name: zeroex_ethereum_api_fills_deduped
     meta:
@@ -113,15 +119,7 @@ models:
             - tx_hash
             - evt_index
     columns:
-      - &blockchain
-        name: blockchain
-        description: "Blockchain which the aggregator project is deployed"
-      - &project 
-        name: project 
-        description: "Name of aggregator project"
-      - &version
-        name: version
-        description: "Version of the contract built and deployed by the project"
+      - *blockchain
       - *block_date
       - *block_time
       - *taker_symbol
@@ -137,52 +135,24 @@ models:
       - *maker_token
       - *taker
       - *maker
-      - &project_contract_address
-        name: project_contract_address
-        description: "Project contract address which executed the trade on the blockchain"
+      - *affiliate_address
       - *tx_hash
-      - &tx_from
-        name: tx_from
-        description: "Address which initiated the trade"
-      - &tx_to
-        name: tx_to
-        description: "Address which received the trade"
-      - &trace_address
-        name: trace_address
-        tests:
-          - zeroex_ethereum_fills_deduped_test:
-              seed_file: ref('zeroex_ethereum_api_fills_deduped_sample')
+      - *tx_from
+      - *tx_to
       - *evt_index
-      - &token_bought_amount
-        name: token_bought_amount
-        description: "Value of the token bought at time of execution in the original currency"
-      - &token_sold_amount
-        name: token_sold_amount
-        description: "Value of the token sold at time of execution in the original currency"
-      - &token_bought_amount_raw
-        name: token_bought_amount_raw
-        description: "Raw value of the token bought at time of execution in the original currency"
-      - &token_sold_amount_raw
-        name: token_sold_amount_raw
-        description: "Raw value of the token sold at time of execution in the original currency"
-      - &token_bought_address
-        name: token_bought_address
-        description: "Contract address of the token bought"
-      - &token_sold_address
-        name: token_sold_address
-        description: "Contract address of the token sold"
-      - &token_bought_symbol
-        name: token_bought_symbol
-        description: "Token symbol for token bought in the trade"
-      - &token_sold_symbol
-        name: token_sold_symbol
-        description: "Token symbol for token sold in the trade"
+      - *type
+      - *swap_flag
+      - *contract_address
+      - &fills_within
+        name: fills_within
+        description: "fills in then multihop, if present"          
+
         
   - name: zeroex_ethereum_nft_fills
     meta:
       blockchain: ethereum
       project: zeroex
-      contributors: bakabhai993, sui414
+      contributors: bakabhai993, danning.sui
     config:
       tags: ['ethereum','0x','nft']
     description: >
@@ -193,7 +163,7 @@ models:
             - block_date
             - tx_hash
             - evt_index
-      - check_seed:
+      - check_seed_legacy:
           seed_file: ref('zeroex_ethereum_nft_fills_sample')
           match_columns:
             - block_date
@@ -247,3 +217,58 @@ models:
         tests:
           - zeroex_ethereum_nft_test:
               seed_file: ref('zeroex_ethereum_nft_fills_sample')
+
+  - name: zeroex_ethereum_native_fills 
+    meta:
+      blockchain: ethereum
+      project: zeroex
+      contributors: rantum, danning.sui, bakabhai993
+    config:
+      tags: ['ethereum','0x','dex_aggregator','dex','aggregator']
+    description: >
+        0x API erc20 swaps raw fills (including multihops) and also native swaps thru 0x exchange contracts (without using 0x API) on Ethereum
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_time
+            - tx_hash
+            - evt_index
+            - volume_usd
+      - check_seed_legacy:
+          seed_file: ref('zeroex_ethereum_native_fills_sample')
+          match_columns:
+            - tx_hash
+            - evt_index
+          check_columns:
+            - maker
+            - taker
+            - maker_token
+            - taker_token
+    columns:
+      - *tx_hash
+      - *contract_address
+      - *block_time
+      - *block_number
+      - *maker
+      - *taker
+      - *taker_token
+      - *taker_symbol
+      - *maker_token
+      - *maker_symbol      
+      - *token_pair
+      - *taker_token_amount
+      - *taker_token_amount_raw
+      - *maker_token_amount
+      - *maker_token_amount_raw
+      - *volume_usd
+      - *tx_from
+      - *tx_to
+      - *evt_index
+      - *blockchain
+      - &native_fill_type
+        name: native_fill_type
+        description: "type of native fill - RFQ, limit order, OTC, fill"
+      - *matcha_limit_order_flag
+      - &protocol_fee_paid_eth
+        name: protocol_fee_paid_eth
+        description: "The protocol fee paid in ETH"

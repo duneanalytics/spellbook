@@ -1,0 +1,10 @@
+version: 2 # Spells all have “version: 2” as that’s the version of our engine they use.
+
+sources:
+  - name: thena_fi_bnb
+    tables:
+    - name: Pair_call_tokens
+    - name: Pair_call_getReserves
+  - name: thena_bnb
+    tables:
+    - name: BribeFactoryV2_call_createBribe

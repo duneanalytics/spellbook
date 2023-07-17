@@ -1,7 +1,7 @@
 version: 2
 
 models:
-  - name: tigris_arbitrum_events_asset_added
+  - name: tigris_v1_arbitrum_events_asset_added
     meta:
       blockchain: arbitrum
       project: tigris
@@ -9,7 +9,7 @@ models:
     config:
       tags: [ 'tigris', 'perps', 'margin' ]
     description: >
-      pairs added for trading on tigris on arbitrum  
+      pairs added for trading on tigris on arbitrum  on v1
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -27,7 +27,7 @@ models:
         name: pair 
         description: "name of asset added"
 
-  - name: tigris_arbitrum_events_open_position
+  - name: tigris_v2_arbitrum_events_asset_added
     meta:
       blockchain: arbitrum
       project: tigris
@@ -35,7 +35,27 @@ models:
     config:
       tags: [ 'tigris', 'perps', 'margin' ]
     description: >
-      open position events for tigris events 
+      pairs added for trading on tigris on arbitrum on v2
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - evt_tx_hash 
+            - asset_id 
+            - pair 
+    columns:
+      - *evt_tx_hash
+      - *asset_id
+      - *pair 
+
+  - name: tigris_v1_arbitrum_events_open_position
+    meta:
+      blockchain: arbitrum
+      project: tigris_v1
+      contributors: Henrystats 
+    config:
+      tags: [ 'tigris', 'perps', 'margin' ]
+    description: >
+      open position events for tigris events on v1
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -85,15 +105,15 @@ models:
         name: version
         description: "trading contract version"
 
-  - name: tigris_arbitrum_events_add_margin
+  - name: tigris_v1_arbitrum_events_add_margin
     meta:
       blockchain: arbitrum
-      project: tigris
+      project: tigris_v1
       contributors: Henrystats 
     config:
       tags: [ 'tigris', 'perps', 'margin' ]
     description: >
-      add margin events for tigris events 
+      add margin events for tigris events on v1
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -116,15 +136,15 @@ models:
       - *trader
       - *version
 
-  - name: tigris_arbitrum_events_modify_margin
+  - name: tigris_v1_arbitrum_events_modify_margin
     meta:
       blockchain: arbitrum
-      project: tigris
+      project: tigris_v1
       contributors: Henrystats 
     config:
       tags: [ 'tigris', 'perps', 'margin' ]
     description: >
-      modify margin events for tigris events 
+      modify margin events for tigris events on v1
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -149,15 +169,15 @@ models:
       - *trader
       - *version
 
-  - name: tigris_arbitrum_events_close_position
+  - name: tigris_v1_arbitrum_events_close_position
     meta:
       blockchain: arbitrum
-      project: tigris
+      project: tigris_v1
       contributors: Henrystats 
     config:
       tags: [ 'tigris', 'perps', 'margin' ]
     description: >
-      close position events for tigris events 
+      close position events for tigris events on v1
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -183,15 +203,15 @@ models:
       - *trader
       - *version
 
-  - name: tigris_arbitrum_events_liquidate_position
+  - name: tigris_v1_arbitrum_events_liquidate_position
     meta:
       blockchain: arbitrum
-      project: tigris
+      project: tigris_v1
       contributors: Henrystats 
     config:
       tags: [ 'tigris', 'perps', 'margin' ]
     description: >
-      liquidate position events for tigris events 
+      liquidate position events for tigris events on v1
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -208,15 +228,194 @@ models:
       - *trader
       - *version
 
-  - name: tigris_arbitrum_events_limit_order
+  - name: tigris_v1_arbitrum_events_limit_order
     meta:
       blockchain: arbitrum
-      project: tigris
+      project: tigris_v1
       contributors: Henrystats 
     config:
       tags: [ 'tigris', 'perps', 'margin' ]
     description: >
-      limit order events
+      limit order events on v1
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - evt_block_time
+            - evt_tx_hash
+            - position_id 
+    columns:
+      - *day
+      - *evt_block_time
+      - *evt_index
+      - *evt_tx_hash
+      - *position_id
+      - *price
+      - *margin
+      - *leverage
+      - *volume_usd 
+      - *margin_asset
+      - *pair
+      - *direction
+      - *referral
+      - *trader
+      - *version
+
+  - name: tigris_v2_arbitrum_events_open_position
+    meta:
+      blockchain: arbitrum
+      project: tigris_v2
+      contributors: Henrystats 
+    config:
+      tags: [ 'tigris', 'perps', 'margin' ]
+    description: >
+      open position events for tigris events on v2
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - evt_block_time
+            - evt_tx_hash
+            - position_id 
+    columns:
+      - *day
+      - *evt_block_time
+      - *evt_index
+      - *evt_tx_hash
+      - *position_id
+      - *price
+      - *margin
+      - *leverage
+      - *volume_usd
+      - *margin_asset
+      - *pair
+      - *direction
+      - *referral
+      - *trader
+      - *version
+
+  - name: tigris_v2_arbitrum_events_add_margin
+    meta:
+      blockchain: arbitrum
+      project: tigris_v2
+      contributors: Henrystats 
+    config:
+      tags: [ 'tigris', 'perps', 'margin' ]
+    description: >
+      add margin events for tigris events on v2
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - evt_block_time
+            - evt_tx_hash
+            - position_id 
+            - trader
+            - margin
+    columns:
+      - *day
+      - *evt_block_time
+      - *evt_index
+      - *evt_tx_hash
+      - *position_id
+      - *price
+      - *margin_change
+      - *margin
+      - *trader
+      - *version
+
+  - name: tigris_v2_arbitrum_events_modify_margin
+    meta:
+      blockchain: arbitrum
+      project: tigris_v2
+      contributors: Henrystats 
+    config:
+      tags: [ 'tigris', 'perps', 'margin' ]
+    description: >
+      modify margin events for tigris events on v2
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - evt_block_time
+            - evt_tx_hash
+            - position_id 
+            - trader
+            - margin
+            - leverage
+    columns:
+      - *day
+      - *evt_block_time
+      - *evt_index
+      - *evt_tx_hash
+      - *position_id
+      - *leverage
+      - *modify_type
+      - *margin_change
+      - *margin
+      - *trader
+      - *version
+
+  - name: tigris_v2_arbitrum_events_close_position
+    meta:
+      blockchain: arbitrum
+      project: tigris_v1
+      contributors: Henrystats 
+    config:
+      tags: [ 'tigris', 'perps', 'margin' ]
+    description: >
+      close position events for tigris events on v2
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - evt_block_time
+            - evt_tx_hash
+            - position_id 
+            - trader
+            - price
+            - payout
+            - perc_closed
+    columns:
+      - *day
+      - *evt_block_time
+      - *evt_index
+      - *evt_tx_hash
+      - *position_id
+      - *payout
+      - *perc_closed
+      - *trader
+      - *version
+
+  - name: tigris_v2_arbitrum_events_liquidate_position
+    meta:
+      blockchain: arbitrum
+      project: tigris_v2
+      contributors: Henrystats 
+    config:
+      tags: [ 'tigris', 'perps', 'margin' ]
+    description: >
+      liquidate position events for tigris events on v2
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - evt_block_time
+            - evt_tx_hash
+            - position_id 
+            - trader
+    columns:
+      - *day
+      - *evt_block_time
+      - *evt_index
+      - *evt_tx_hash
+      - *position_id
+      - *trader
+      - *version
+
+  - name: tigris_v2_arbitrum_events_limit_order
+    meta:
+      blockchain: arbitrum
+      project: tigris_v1
+      contributors: Henrystats 
+    config:
+      tags: [ 'tigris', 'perps', 'margin' ]
+    description: >
+      limit order events on v2
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:

@@ -1,15 +1,11 @@
 {{  config(
-        alias='api_fills',
+        alias = alias('api_fills'),
         materialized='incremental',
         partition_by = ['block_date'],
         unique_key = ['block_date', 'tx_hash', 'evt_index'],
         on_schema_change='sync_all_columns',
         file_format ='delta',
-        incremental_strategy='merge',
-        post_hook='{{ expose_spells(\'["ethereum"]\',
-                                "project",
-                                "zeroex",
-                                \'["sui414", "bakabhai993", "hosuke"]\') }}'
+        incremental_strategy='merge' 
     )
 }}
 
@@ -42,7 +38,7 @@ WITH zeroex_tx AS (
             {% endif %}
             {% if not is_incremental() %}
             AND evt_block_time >= '{{zeroex_v3_start_date}}'
-            {% endif %}
+            {% endif %} 
 
         UNION ALL
         SELECT tr.tx_hash,
@@ -59,11 +55,11 @@ WITH zeroex_tx AS (
         FROM {{ source('ethereum', 'traces') }} tr
         WHERE tr.to IN (
                 -- exchange contract
-                '0x61935cbdd02287b511119ddb11aeb42f1593b7ef', 
+                '0x61935cbdd02287b511119ddb11aeb42f1593b7ef',
                 -- forwarder addresses
                 '0x6958f5e95332d93d21af0d7b9ca85b8212fee0a5',
                 '0x4aa817c6f383c8e8ae77301d18ce48efb16fd2be',
-                '0x4ef40d1bf0983899892946830abf99eca2dbc5ce', 
+                '0x4ef40d1bf0983899892946830abf99eca2dbc5ce',
                 -- exchange proxy
                 '0xdef1c0ded9bec7f1a1670819833240f027b25eff'
                 )
@@ -71,9 +67,9 @@ WITH zeroex_tx AS (
                         POSITION('869584cd' IN INPUT) <> 0
                         OR POSITION('fbc019a7' IN INPUT) <> 0
                     )
-                
+
                 {% if is_incremental() %}
-                AND block_time >= date_trunc('day', now() - interval '1 week') 
+                AND block_time >= date_trunc('day', now() - interval '1 week')
                 {% endif %}
                 {% if not is_incremental() %}
                 AND block_time >= '{{zeroex_v3_start_date}}'
@@ -83,15 +79,15 @@ WITH zeroex_tx AS (
 
 ),
 v3_fills_no_bridge AS (
-    SELECT 
+    SELECT
             fills.evt_tx_hash                                                          AS tx_hash,
             fills.evt_index,
             fills.contract_address,
             evt_block_time                                                             AS block_time,
             fills.makerAddress                                                         AS maker,
             fills.takerAddress                                                         AS taker,
-            SUBSTRING(fills.takerAssetData, 34, 40)                                    AS taker_token,
-            SUBSTRING(fills.makerAssetData, 34, 40)                                    AS maker_token,
+            '0x' || SUBSTRING(fills.takerAssetData, 35, 40)                            AS taker_token,
+            '0x' || SUBSTRING(fills.makerAssetData, 35, 40)                            AS maker_token,
             fills.takerAssetFilledAmount                                               AS taker_token_amount_raw,
             fills.makerAssetFilledAmount                                               AS maker_token_amount_raw,
             'Fill'                                                                     AS type,
@@ -113,7 +109,7 @@ v3_fills_no_bridge AS (
 
 ),
 v4_rfq_fills_no_bridge AS (
-    SELECT 
+    SELECT
             fills.evt_tx_hash               AS tx_hash,
             fills.evt_index,
             fills.contract_address,
@@ -139,7 +135,7 @@ v4_rfq_fills_no_bridge AS (
     {% endif %}
 ),
 v4_limit_fills_no_bridge AS (
-    SELECT 
+    SELECT
             fills.evt_tx_hash AS tx_hash,
             fills.evt_index,
             fills.contract_address,
@@ -153,7 +149,9 @@ v4_limit_fills_no_bridge AS (
             'LimitOrderFilled' AS type,
             COALESCE(zeroex_tx.affiliate_address, fills.feeRecipient) AS affiliate_address,
             (zeroex_tx.tx_hash IS NOT NULL) AS swap_flag,
-            (fills.feeRecipient = '0x9b858Be6E3047D88820f439B240deaC2418a2551') AS matcha_limit_order_flag
+            (fills.feeRecipient in 
+                ('0x9b858be6e3047d88820f439b240deac2418a2551','0x86003b044f70dac0abc80ac8957305b6370893ed','0x5bc2419a087666148bfbe1361ae6c06d240c6131')) 
+                AS matcha_limit_order_flag
     FROM {{ source('zeroex_ethereum', 'ExchangeProxy_evt_LimitOrderFilled') }} fills
     LEFT JOIN zeroex_tx ON zeroex_tx.tx_hash = fills.evt_tx_hash
 
@@ -165,7 +163,7 @@ v4_limit_fills_no_bridge AS (
     {% endif %}
 ),
 otc_fills AS (
-    SELECT 
+    SELECT
             fills.evt_tx_hash               AS tx_hash,
             fills.evt_index,
             fills.contract_address,
@@ -192,7 +190,7 @@ otc_fills AS (
 
 ),
 ERC20BridgeTransfer AS (
-    SELECT 
+    SELECT
             logs.tx_hash,
             INDEX                                   AS evt_index,
             logs.contract_address,
@@ -201,8 +199,8 @@ ERC20BridgeTransfer AS (
             '0x' || substring(DATA, 347, 40)        AS taker,
             '0x' || substring(DATA, 27, 40)         AS taker_token,
             '0x' || substring(DATA, 91, 40)         AS maker_token,
-            bytea2numeric_v2(substring(DATA, 155, 40)) AS taker_token_amount_raw,
-            bytea2numeric_v2(substring(DATA, 219, 40)) AS maker_token_amount_raw,
+            bytea2numeric_v3(substring(DATA, 155, 40)) AS taker_token_amount_raw,
+            bytea2numeric_v3(substring(DATA, 219, 40)) AS maker_token_amount_raw,
             'ERC20BridgeTransfer'                   AS type,
             zeroex_tx.affiliate_address             AS affiliate_address,
             TRUE                                    AS swap_flag,
@@ -220,7 +218,7 @@ ERC20BridgeTransfer AS (
 
 ),
 BridgeFill AS (
-    SELECT 
+    SELECT
             logs.tx_hash,
             INDEX                                           AS evt_index,
             logs.contract_address,
@@ -229,8 +227,8 @@ BridgeFill AS (
             '0xdef1c0ded9bec7f1a1670819833240f027b25eff'    AS taker,
             '0x' || substring(DATA, 91, 40)                 AS taker_token,
             '0x' || substring(DATA, 155, 40)                AS maker_token,
-            bytea2numeric_v2('0x' || substring(DATA, 219, 40)) AS taker_token_amount_raw,
-            bytea2numeric_v2('0x' || substring(DATA, 283, 40)) AS maker_token_amount_raw,
+            bytea2numeric_v3('0x' || substring(DATA, 219, 40)) AS taker_token_amount_raw,
+            bytea2numeric_v3('0x' || substring(DATA, 283, 40)) AS maker_token_amount_raw,
             'BridgeFill'                                    AS type,
             zeroex_tx.affiliate_address                     AS affiliate_address,
             TRUE                                            AS swap_flag,
@@ -248,7 +246,7 @@ BridgeFill AS (
         {% endif %}
 ),
 NewBridgeFill AS (
-    SELECT 
+    SELECT
             logs.tx_hash,
             INDEX                                           AS evt_index,
             logs.contract_address,
@@ -257,8 +255,8 @@ NewBridgeFill AS (
             '0xdef1c0ded9bec7f1a1670819833240f027b25eff'    AS taker,
             '0x' || substring(DATA, 91, 40)                 AS taker_token,
             '0x' || substring(DATA, 155, 40)                AS maker_token,
-            bytea2numeric_v2('0x' || substring(DATA, 219, 40)) AS taker_token_amount_raw,
-            bytea2numeric_v2('0x' || substring(DATA, 283, 40)) AS maker_token_amount_raw,
+            bytea2numeric_v3('0x' || substring(DATA, 219, 40)) AS taker_token_amount_raw,
+            bytea2numeric_v3('0x' || substring(DATA, 283, 40)) AS maker_token_amount_raw,
             'NewBridgeFill'                                 AS type,
             zeroex_tx.affiliate_address                     AS affiliate_address,
             TRUE                                            AS swap_flag,
@@ -276,7 +274,7 @@ NewBridgeFill AS (
         {% endif %}
 ),
 direct_PLP AS (
-    SELECT 
+    SELECT
             plp.evt_tx_hash,
             plp.evt_index               AS evt_index,
             plp.contract_address,
@@ -303,7 +301,7 @@ direct_PLP AS (
 
 ),
 direct_uniswapv2 AS (
-    SELECT 
+    SELECT
             swap.evt_tx_hash AS tx_hash,
             swap.evt_index,
             swap.contract_address,
@@ -311,19 +309,19 @@ direct_uniswapv2 AS (
             swap.contract_address AS maker,
             LAST_VALUE(swap.to) OVER ( PARTITION BY swap.evt_tx_hash ORDER BY swap.evt_index) AS taker,
             CASE
-                WHEN swap.amount0In > swap.amount0Out THEN pair.token0
+                WHEN CAST(swap.amount0In AS float) > CAST(swap.amount0Out AS float) THEN pair.token0
                 ELSE pair.token1
             END AS taker_token,
             CASE
-                WHEN swap.amount0In > swap.amount0Out THEN pair.token1
+                WHEN CAST(swap.amount0In AS float) > CAST(swap.amount0Out AS float) THEN pair.token1
                 ELSE pair.token0
             END AS maker_token,
             CASE
-                WHEN swap.amount0In > swap.amount0Out THEN swap.amount0In - swap.amount0Out
+                WHEN CAST(swap.amount0In AS float) > CAST(swap.amount0Out AS float) THEN swap.amount0In - swap.amount0Out
                 ELSE swap.amount1In - swap.amount1Out
             END AS taker_token_amount_raw,
             CASE
-                WHEN swap.amount0In > swap.amount0Out THEN swap.amount1Out - swap.amount1In
+                WHEN CAST(swap.amount0In AS float) > CAST(swap.amount0Out AS float) THEN swap.amount1Out - swap.amount1In
                 ELSE swap.amount0Out - swap.amount0In
             END AS maker_token_amount_raw,
             'Uniswap V2 Direct' AS type,
@@ -344,7 +342,7 @@ direct_uniswapv2 AS (
 
 ),
 direct_sushiswap AS (
-    SELECT 
+    SELECT
             swap.evt_tx_hash AS tx_hash,
             swap.evt_index,
             swap.contract_address,
@@ -352,19 +350,19 @@ direct_sushiswap AS (
             swap.contract_address AS maker,
             LAST_VALUE(swap.to) OVER (PARTITION BY swap.evt_tx_hash ORDER BY swap.evt_index) AS taker,
             CASE
-                WHEN swap.amount0In > swap.amount0Out THEN pair.token0
+                WHEN CAST(swap.amount0In AS float) > CAST(swap.amount0Out AS float) THEN pair.token0
                 ELSE pair.token1
             END AS taker_token,
             CASE
-                WHEN swap.amount0In > swap.amount0Out THEN pair.token1
+                WHEN CAST(swap.amount0In AS float) > CAST(swap.amount0Out AS float) THEN pair.token1
                 ELSE pair.token0
             END AS maker_token,
             CASE
-                WHEN swap.amount0In > swap.amount0Out THEN swap.amount0In - swap.amount0Out
+                WHEN CAST(swap.amount0In AS float) > CAST(swap.amount0Out AS float) THEN swap.amount0In - swap.amount0Out
                 ELSE swap.amount1In - swap.amount1Out
             END AS taker_token_amount_raw,
             CASE
-                WHEN swap.amount0In > swap.amount0Out THEN swap.amount1Out - swap.amount1In
+                WHEN CAST(swap.amount0In AS float) > CAST(swap.amount0Out AS float) THEN swap.amount1Out - swap.amount1In
                 ELSE swap.amount0Out - swap.amount0In
             END AS maker_token_amount_raw,
             'Sushiswap Direct' AS type,
@@ -384,7 +382,7 @@ direct_sushiswap AS (
         {% endif %}
 ),
 direct_uniswapv3 AS (
-    SELECT 
+    SELECT
             swap.evt_tx_hash                                                                        AS tx_hash,
             swap.evt_index,
             swap.contract_address,
@@ -441,7 +439,7 @@ all_tx AS (
     FROM otc_fills
 )
 
-SELECT 
+SELECT
         all_tx.tx_hash,
         tx.block_number,
         all_tx.evt_index,
@@ -455,7 +453,7 @@ SELECT
         END AS taker, -- fix the user masked by ProxyContract issue
         taker_token,
         ts.symbol AS taker_symbol,
-        maker_token,
+        maker_token, 
         ms.symbol AS maker_symbol,
         CASE WHEN lower(ts.symbol) > lower(ms.symbol) THEN concat(ms.symbol, '-', ts.symbol) ELSE concat(ts.symbol, '-', ms.symbol) END AS token_pair,
         taker_token_amount_raw / pow(10, tp.decimals) AS taker_token_amount,
@@ -463,17 +461,20 @@ SELECT
         maker_token_amount_raw / pow(10, mp.decimals) AS maker_token_amount,
         maker_token_amount_raw,
         all_tx.type,
-        affiliate_address,
+        max(affiliate_address) over (partition by all_tx.tx_hash) as affiliate_address,
         swap_flag,
         matcha_limit_order_flag,
-        CASE WHEN maker_token IN ('0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2','0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48','0xdac17f958d2ee523a2206206994597c13d831ec7','0x4fabb145d64652a948d72533023f6e7a623c7c53','0x6b175474e89094c44da98b954eedeac495271d0f')
+        CASE WHEN maker_token IN ('0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2','0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48','0xdac17f958d2ee523a2206206994597c13d831ec7',
+                '0x4fabb145d64652a948d72533023f6e7a623c7c53','0x6b175474e89094c44da98b954eedeac495271d0f') AND  mp.price IS NOT NULL
              THEN (all_tx.maker_token_amount_raw / pow(10, mp.decimals)) * mp.price
-             WHEN taker_token IN ('0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2','0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48','0xdac17f958d2ee523a2206206994597c13d831ec7','0x4fabb145d64652a948d72533023f6e7a623c7c53','0x6b175474e89094c44da98b954eedeac495271d0f')     
+             WHEN taker_token IN ('0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2','0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48','0xdac17f958d2ee523a2206206994597c13d831ec7',
+                '0x4fabb145d64652a948d72533023f6e7a623c7c53','0x6b175474e89094c44da98b954eedeac495271d0f')  AND  tp.price IS NOT NULL
              THEN (all_tx.taker_token_amount_raw / pow(10, tp.decimals)) * tp.price
              ELSE COALESCE((all_tx.maker_token_amount_raw / pow(10, mp.decimals)) * mp.price, (all_tx.taker_token_amount_raw / pow(10, tp.decimals)) * tp.price)
              END AS volume_usd,
         tx.from AS tx_from,
-        tx.to AS tx_to
+        tx.to AS tx_to,
+        'ethereum' AS blockchain
 FROM all_tx
 INNER JOIN {{ source('ethereum', 'transactions')}} tx ON all_tx.tx_hash = tx.hash
 

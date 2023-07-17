@@ -1,5 +1,5 @@
 {{ config(
-    alias = 'transactions_polygon_erc20',
+    alias = alias('transactions_polygon_erc20'),
     partition_by = ['block_date'],
     materialized = 'incremental',
     file_format = 'delta',
@@ -90,7 +90,7 @@ INNER JOIN
 dao_tmp dt 
     ON t.dao_wallet_address = dt.dao_wallet_address
 LEFT JOIN 
-{{ ref('tokens_erc20') }} er 
+{{ ref('tokens_erc20') }} er
     ON t.token = er.contract_address
     AND er.blockchain = 'polygon'
 LEFT JOIN 

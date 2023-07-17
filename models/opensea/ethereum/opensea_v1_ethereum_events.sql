@@ -1,6 +1,6 @@
 {{ config(
     schema = 'opensea_v1_ethereum',
-    alias = 'events',
+    alias = alias('events'),
     materialized = 'table',
     file_format = 'delta',
     partition_by = ['block_date']

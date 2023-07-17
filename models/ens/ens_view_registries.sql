@@ -1,4 +1,4 @@
-{{config(alias='view_registries',
+{{config(alias = alias('view_registries'),
         post_hook='{{ expose_spells(\'["ethereum"]\',
                                     "project",
                                     "ens",

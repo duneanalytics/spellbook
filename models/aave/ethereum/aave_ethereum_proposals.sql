@@ -1,11 +1,9 @@
 {{ config(
     schema = 'aave_ethereum',
-    alias = 'proposals',
+    alias = alias('proposals'),
     partition_by = ['block_date'],
-    materialized = 'incremental',
+    materialized = 'table',
     file_format = 'delta',
-    incremental_strategy = 'merge',
-    unique_key = ['created_at', 'blockchain', 'project', 'version', 'tx_hash'],
     post_hook='{{ expose_spells(\'["ethereum"]\',
                                 "project",
                                 "aave",
@@ -58,7 +56,7 @@ SELECT DISTINCT
     csv.votes_abstain,
     csv.votes_total,
     csv.number_of_voters,
-    csv.votes_total / 1e9 * 100 AS participation, -- Total votes / Total supply (1B for Uniswap)
+    csv.votes_total / 16e6 * 100 AS participation, -- Total votes / Total supply (16M for Aave)
     pcr.startBlock as start_block,
     pcr.endBlock as end_block,
     CASE 
@@ -74,6 +72,3 @@ LEFT JOIN cte_sum_votes csv ON csv.id = pcr.id
 LEFT JOIN {{ source('aave_ethereum', 'AaveGovernanceV2_evt_ProposalCanceled') }} pca ON pca.id = pcr.id
 LEFT JOIN {{ source('aave_ethereum', 'AaveGovernanceV2_evt_ProposalExecuted') }} pex ON pex.id = pcr.id
 LEFT JOIN {{ source('aave_ethereum', 'AaveGovernanceV2_evt_ProposalQueued') }} pqu ON pqu.id = pcr.id
-{% if is_incremental() %}
-WHERE pcr.evt_block_time > (select max(created_at) from {{ this }})
-{% endif %}

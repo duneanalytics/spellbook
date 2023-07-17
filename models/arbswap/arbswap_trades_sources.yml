@@ -54,3 +54,7 @@ sources:
             name: token0
           - &token1
             name: token1
+      - name: ArbswapStableSwapTwoPool_evt_TokenExchange
+        loaded_at_field: evt_block_time
+      - name: ArbswapStableSwapFactory_evt_NewStableSwapPair
+        loaded_at_field: evt_block_time

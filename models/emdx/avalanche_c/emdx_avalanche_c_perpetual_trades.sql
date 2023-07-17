@@ -1,5 +1,5 @@
 {{ config(
-    alias = 'perpetual_trades',
+    alias = alias('perpetual_trades'),
     partition_by = ['block_date'],
     materialized = 'incremental',
     file_format = 'delta',
@@ -93,6 +93,7 @@ trade_data as (
 SELECT 'avalanche_c'                    as blockchain,
        'emdx'                           as project,
        '1'                              as version,
+       'emdx'                           as frontend,
        date_trunc('day', pe.block_time) as block_date,
        pe.block_time,
        pe.virtual_asset,
@@ -117,6 +118,7 @@ perp_events pe
 INNER JOIN 
 {{ source('avalanche_c', 'transactions') }} txns 
     ON pe.tx_hash = txns.hash
+    AND pe.block_number = txns.block_number
     {% if not is_incremental() %}
     AND txns.block_time >= '{{project_start_date}}'
     {% endif %}

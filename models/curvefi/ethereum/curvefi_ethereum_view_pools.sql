@@ -1,5 +1,5 @@
 {{ config(
-    alias = 'view_pools',
+    alias = alias('view_pools'),
     materialized='table',
     file_format = 'delta',
     post_hook='{{ expose_spells(\'["ethereum"]\',
@@ -108,21 +108,44 @@ plain_pools_deployed AS (
 ),
 meta_calls AS (
     SELECT
-        _name,
-        _symbol,
-        output_0,
-        call_tx_hash,
-        _base_pool,
-        _coin,
-        "_A",
-        _fee
-    FROM
+        *
+    FROM (
+        SELECT         
+            _name,
+            _symbol,
+            output_0,
+            call_tx_hash,
+            _base_pool,
+            _coin,
+            "_A",
+            _fee 
+        FROM 
         {{ source(
             'curvefi_ethereum',
-            'CurveFactory_call_deploy_metapool'
-        ) }}
-    WHERE
+            'CurveFactory_call_deploy_metapool' 
+        ) }} --https://etherscan.io/address/0xb9fc157394af804a3578134a6585c0dc9cc990d4
+        WHERE
         call_success
+
+        UNION ALL 
+
+        SELECT         
+            _name,
+            _symbol,
+            output_0,
+            call_tx_hash,
+            _base_pool,
+            _coin,
+            "_A",
+            _fee 
+        FROM 
+        {{ source(
+            'curvefi_ethereum',
+            'MetaPoolFactory_call_deploy_metapool' 
+        ) }} --https://etherscan.io/address/0x0959158b6040d32d04c301a72cbfd6b39e21c9ae
+        WHERE
+        call_success
+    ) a
 ),
 meta_pools_deployed AS (
     SELECT
@@ -234,11 +257,20 @@ pools AS (
         ) }}
         g2
         ON pd2.pool_address = g2.token
+),
+
+contract_name AS (
+    SELECT first(c.name, true) as name,
+           first(c.namespace, true) as namespace,
+           c.address
+    FROM {{ source('ethereum', 'contracts') }} c
+    INNER JOIN pools ON address = pool_address
+    GROUP BY address
 )
 
 SELECT
     version,
-    p.`name`,
+    p.name,
     symbol,
     pool_address,
     CASE
@@ -246,7 +278,7 @@ SELECT
         ELSE 'yes'
     END AS decoded,
     namespace AS dune_namespace,
-    C.`name` AS dune_table_name,
+    C.name AS dune_table_name,
     A AS amplification_param,
     mid_fee,
     out_fee,
@@ -265,10 +297,7 @@ SELECT
     gauge_contract
 FROM
     pools p
-    LEFT JOIN {{ source(
-        'ethereum',
-        'contracts'
-    ) }} C
+LEFT JOIN contract_name C
     ON C.address = pool_address
 ORDER BY
     dune_table_name DESC

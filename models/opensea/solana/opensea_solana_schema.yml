@@ -46,25 +46,3 @@ models:
         description:  "Unique trade id, combination of signatures[0] and id"
         tests:
           - unique
-
-  - name: opensea_solana_trades
-    meta:
-      blockchain: solana
-      project: opensea
-      contributors: soispoke
-    config:
-      tags: ['solana','opensea','trades']
-    description: >
-        OpenSea trades on Solana
-    columns:
-      - *blockchain
-      - *tx_hash
-      - *block_time
-      - *currency_symbol
-      - *currency_contract
-      - *token_standard
-      - *amount_original
-      - *amount_usd
-      - *project_contract_address
-      - *evt_type
-      - *unique_trade_id

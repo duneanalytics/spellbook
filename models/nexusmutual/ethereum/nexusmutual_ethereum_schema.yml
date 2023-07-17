@@ -9,7 +9,7 @@ models:
     description: >
         nexusmutual product information for v1
     tests:
-      - check_seed:
+      - check_seed_legacy:
           seed_file: ref('nexusmutual_ethereum_product_information_seed')
           match_columns:
             - product_contract_address
@@ -28,6 +28,9 @@ models:
         name: product_name
       - &product_type
         name: product_type
+        tests:
+          - accepted_values:
+              values: [ 'Protocol', 'Custody', 'Token', 'Eth2slashing', 'Sherlock']
       - &syndicate
         name: syndicate
 
@@ -116,3 +119,33 @@ models:
       - &token_address
         name: token_address
         description: "Contract address for the token"
+
+  - name: nexusmutual_ethereum_capital_pool_eth_daily_transaction_summary
+    meta:
+      blockchain: ethereum
+      project: nexusmutual
+      contributors: [guyhow]
+    config:
+      tags: ['ethereum','nexusmutual','trades']
+    description: >
+        Daily summary for ethereum entering and leaving the nexus mutual capital pool contracts
+    tests:
+      - check_seed_legacy:
+          seed_file: ref('nexusmutual_ethereum_capital_pool_eth_daily_transaction_summary_seed')
+          match_columns:
+            - day
+          check_columns:
+            - eth_ingress
+            - eth_egress
+    columns:
+      - &day
+        name: day
+        description: "Table primary key: day of summarised transctions"
+        tests:
+          - unique
+      - &eth_ingress
+        name: ingress ethereum
+        description: "Sum of incoming transctions over the time covered by day"
+      - &eth_egress
+        name: egress ethereum
+        description: "Sum of outgoing transctions over the time covered by day"

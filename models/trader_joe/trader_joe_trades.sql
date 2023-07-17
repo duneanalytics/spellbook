@@ -1,14 +1,15 @@
 {{ config(
-        alias ='trades',
-        post_hook='{{ expose_spells(\'["avalanche_c"]\',
+        alias = alias('trades'),
+        post_hook='{{ expose_spells(\'["avalanche_c","bnb"]\',
                                 "project",
                                 "trader_joe",
-                                \'["jeff-dude","mtitus6"]\') }}'
+                                \'["jeff-dude","mtitus6","Henrystats","hsrvc"]\') }}'
         )
 }}
 
 {% set trader_joe_models = [
-'trader_joe_avalanche_c_trades'
+    ref('trader_joe_avalanche_c_trades')
+,   ref('trader_joe_bnb_trades')
 ] %}
 
 
@@ -39,7 +40,7 @@ FROM (
         tx_to,
         trace_address,
         evt_index
-    FROM {{ ref(dex_model) }}
+    FROM {{ dex_model }}
     {% if not loop.last %}
     UNION ALL
     {% endif %}

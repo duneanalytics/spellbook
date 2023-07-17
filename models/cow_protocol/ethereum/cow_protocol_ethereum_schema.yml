@@ -16,13 +16,14 @@ models:
         description: "Solver's wallet address"
       - &environment
         name: environment
-        description: "Solver's environment"
+        description: "Development environment"
       - &name
         name: name
         description: "Solver's name"
       - &active
         name: active
         description: "Solver's active status according to the events emitted by GPv2AllowListAuthentication. True if solver has been 'added' and not yet removed, False when the solver has been 'removed'."
+
   - name: cow_protocol_ethereum_trades
     meta:
       blockchain: ethereum
@@ -129,6 +130,18 @@ models:
       - &flags
         name: flags
         description: "bitmap with additional trade information (cf. https://github.com/cowprotocol/contracts/blob/main/src/contracts/libraries/GPv2Trade.sol#L58-L94)"
+      - &surplus_usd
+        name: surplus_usd
+        description: "USD value of surplus (difference between limit and executed price)"
+      - &order_type
+        name: order_type
+        description: "SELL/BUY string indicating if the trade was a sell or buy order"
+      - &partial_fill
+        name: partial_fill
+        description: "Boolean indicating if the order is partially fill-able"
+      - &fill_proportion
+        name: fill_proportion
+
   - name: cow_protocol_ethereum_batches
     meta:
       blockchain: ethereum
@@ -175,6 +188,7 @@ models:
       - &token_approvals
         name: token_approvals
         description: Number of ERC20 token approvals made within the settlement
+
   - name: cow_protocol_ethereum_app_data
     meta:
       blockchain: ethereum
@@ -201,6 +215,10 @@ models:
       - &slippage_bips
         name: slippage_bips
         description: User's slippage tolerance configured through the interface. Used to compute trade execution price improvement (can be Null)
+      - &utm
+        name: utm
+        description: utm object associated with the app data (consisting of fields utmSource, utmContent and utmMedium)
+
   - name: cow_protocol_ethereum_order_rewards
     meta:
       blockchain: ethereum
@@ -209,13 +227,13 @@ models:
     config:
       tags: ['ethereum','cow_protocol','app_data', "metadata"]
     description: >
-        Order Rewards contains the data necessary to compute Weekly Solver Payouts.
-        In particular, how much COW token solvers are entitled for each settled order.
-        Furthermore, since the introduction of limit orders into the protocol, 
-        this table also contains the surplus fee.
+        Order Rewards (or more appropriately named Order Meta) contains off-chain meta data relevant 
+        to the solver competition on the granularity level of orders.
     columns:
       - *tx_hash
-      - *solver_address
+      - &solver
+        name: solver
+        description: "Address of the solver who settled the order (i.e. the from address of the corresponding transaction)"
       - *block_number
       - &cow_reward
         name: cow_reward
@@ -224,6 +242,10 @@ models:
         name: surplus_fee
         description: "Fee taken from limit orders"
       - *order_uid
+      - &quote_solver
+        name: quote_solver
+        description: "Address of the solver who provided the winning quote for this order"
+
   - name: cow_protocol_ethereum_eth_flow_orders
     meta:
       blockchain: ethereum
@@ -241,6 +263,7 @@ models:
       - *block_time
       - *block_number
       - *tx_hash
+      - *environment
       - *valid_to
       - &quote_id
         name: quote_id
@@ -259,6 +282,7 @@ models:
         description: sender of order placement transaction. Equivalent to "trader"
       - *app_hash
       - *order_uid
+
   - name: cow_protocol_ethereum_referrals
     meta:
       blockchain: ethereum
@@ -274,17 +298,23 @@ models:
     columns:
       - *trader
       - *referrer
-  - name: cow_protocol_ethereum_price_improvement
+
+  - name: cow_protocol_ethereum_trade_slippage
     meta:
       blockchain: ethereum
       project: cow_protocol
       contributors: bh2smith, gentrexha, josojo
     config:
-      tags: [ 'ethereum','cow_protocol','price improvement' ]
+      tags: [ 'ethereum','cow_protocol','trade_slippage' ]
     description: >
-      The query contains several measurments between the quoted price on cowswap and 
+      The query contains several measurements between the quoted price on cowswap and 
       the executed price. The price difference between the quote and the actual price 
       is called price improvement and is measured as percentage or in absolute dollars.
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - order_uid
+            - block_number
     columns:
       - *order_uid
       - *block_time
@@ -293,12 +323,63 @@ models:
         name: buy_quote
       - &sell_quote
         name: sell_quote
-      - *slippage_bips
-      - *usd_value
-      - &surplus_atoms
-        name: surplus_atoms
-      - &surplus_percentage
-        name: surplus_percentage
-      - &surplus_usd
-        name: surplus_usd
+      - &tolerance_bips
+        name: tolerance_bips
+      - &trade_usd_value
+        name: trade_usd_value
+      - *fill_proportion
+      - &amount_atoms
+        name: amount_atoms
+      - &amount_percentage
+        name: amount_percentage
+      - &amount_usd
+        name: amount_usd
+
+  - name: cow_protocol_ethereum_airdrop_claims
+    meta:
+      blockchain: ethereum
+      sector: airdrop
+      project: cow_protocol
+      contributors: hildobby
+    config:
+      tags: ['table', 'airdrop', 'ethereum', 'claim', 'cow_protocol']
+    description: "List of claim transactions for the $COW airdrop"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - recipient
+            - evt_index
+    columns:
+      - &blockchain
+        name: blockchain
+        description: "Blockchain"
+      - *block_time
+      - *block_number
+      - &project
+        name: project
+        description: "Project name"
+      - &airdrop_identifier
+        name: airdrop_identifier
+        description: "Airdrop identifier name"
+      - &recipient
+        name: recipient
+        description: "Airdrop recipient"
+      - &contract_address
+        name: contract_address
+        description: "Contract addressed used"
+      - *tx_hash
+      - name: amount_raw
+        description: "Raw amount of tokens"
+      - name: amount_original
+        description: "Original amount of tokens"
+      - name: amount_usd
+        description: "USD value of tokens"
+      - &token_address
+        name: token_address
+        description: "Token address"
+      - &token_symbol
+        name: token_symbol
+        description: "Token symbol"
+      - *evt_index
 

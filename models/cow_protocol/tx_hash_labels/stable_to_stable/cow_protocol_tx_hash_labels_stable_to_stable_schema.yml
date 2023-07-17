@@ -14,9 +14,9 @@ models:
       - &blockchain
         name: blockchain
         description: "Blockchain"   
-      - &tx_hash
-        name: tx_hash
-        description: "Transaction hash of stable to stable trade"
+      - &tx_hash_key
+        name: tx_hash_key
+        description: "Transaction hash of a stable to stable trade made up from tx_hash, evt_index, project, and version"
       - &name
         name: name
         description: "Label name"
@@ -35,6 +35,12 @@ models:
       - &updated_at
         name: updated_at
         description: "When were labels updated for the last time"
+      - &model_name
+        name: model_name
+        description: "Name of the label model sourced from"
+      - &label_type
+        name: label_type
+        description: "Type of label (see labels overall readme)"
 
   - name: cow_protocol_tx_hash_labels_stable_to_stable_ethereum
     meta:
@@ -44,13 +50,15 @@ models:
       contributors: gentrexha
     config:
       tags: ['labels', 'tx_hash', 'ethereum', 'stable_to_stable', 'dex']
-    description:  "Trades that traded from one stable coin to another"
+    description:  "Trades that traded from one stable coin to another stable coin"
     columns:
       - *blockchain
-      - *tx_hash
+      - *tx_hash_key
       - *name
       - *category
       - *contributor
       - *source
       - *created_at
       - *updated_at
+      - *model_name
+      - *label_type

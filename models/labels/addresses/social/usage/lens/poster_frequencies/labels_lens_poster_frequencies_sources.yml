@@ -1,0 +1,24 @@
+version: 2
+
+sources:
+  - name: lens_polygon
+    description: >
+      Decoded tables related to lens protocol. The web3 social platform
+    freshness:
+      warn_after: { count: 12, period: hour }
+    tables:
+      - name: LensHub_evt_ProfileCreated
+        description: >
+          table related to the lens profiles created and the addresses associated with the profiles.
+        loaded_at_field: evt_block_time
+      - name: LensHub_call_post
+        description: >
+          table related to addresses on lens profile that call the post function when they want to post content on lens profile.
+        loaded_at_field: call_block_time
+      - name: LensHub_call_postWithSig
+        description: >
+          table related to addresses on lens profile that call the post function of behalf of other addresses 
+          when they want to post content on lens profile.
+        loaded_at_field: call_block_time
+
+

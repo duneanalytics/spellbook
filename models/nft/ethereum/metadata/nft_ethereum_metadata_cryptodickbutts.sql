@@ -1,5 +1,5 @@
 {{ config(
-        alias = 'cryptodickbutts'
+        alias = alias('cryptodickbutts')
         )
 }}
 

@@ -1,15 +1,11 @@
 {{  config(
-        alias='api_fills',
+        alias = alias('api_fills'),
         materialized='incremental',
         partition_by = ['block_date'],
         unique_key = ['block_date', 'tx_hash', 'evt_index'],
         on_schema_change='sync_all_columns',
         file_format ='delta',
-        incremental_strategy='merge',
-        post_hook='{{ expose_spells(\'["avalanche_c"]\',
-                                "project",
-                                "zeroex",
-                                \'["rantumBits",  "bakabhai993", "sui414"]\') }}'
+        incremental_strategy='merge'
     )
 }}
 
@@ -101,7 +97,9 @@ v4_limit_fills_no_bridge AS (
             'LimitOrderFilled' AS type,
             COALESCE(zeroex_tx.affiliate_address, fills.feeRecipient) AS affiliate_address,
             (zeroex_tx.tx_hash IS NOT NULL) AS swap_flag,
-            (fills.feeRecipient = '0x86003b044f70dac0abc80ac8957305b6370893ed') AS matcha_limit_order_flag
+            (fills.feeRecipient in 
+                ('0x9b858be6e3047d88820f439b240deac2418a2551','0x86003b044f70dac0abc80ac8957305b6370893ed','0x5bc2419a087666148bfbe1361ae6c06d240c6131')) 
+                AS matcha_limit_order_flag 
     FROM {{ source('zeroex_avalanche_c', 'ExchangeProxy_evt_LimitOrderFilled') }} fills
     INNER JOIN zeroex_tx 
         ON zeroex_tx.tx_hash = fills.evt_tx_hash
@@ -290,21 +288,29 @@ SELECT
             ELSE taker
         END AS taker, -- fix the user masked by ProxyContract issue
         taker_token,
+        ts.symbol AS taker_symbol,
         maker_token,
+        ms.symbol AS maker_symbol,
+        CASE WHEN lower(ts.symbol) > lower(ms.symbol) THEN concat(ms.symbol, '-', ts.symbol) ELSE concat(ts.symbol, '-', ms.symbol) END AS token_pair,
         taker_token_amount_raw / pow(10, tp.decimals) AS taker_token_amount,
         taker_token_amount_raw,
         maker_token_amount_raw / pow(10, mp.decimals) AS maker_token_amount,
         maker_token_amount_raw,
         all_tx.type,
-        affiliate_address,
+        max(affiliate_address) over (partition by all_tx.tx_hash) as affiliate_address,
         swap_flag,
         matcha_limit_order_flag,
-        CASE WHEN maker_token IN ('0x9702230a8ea53601f5cd2dc00fdbc13d4df4a8c7','0xa7d7079b0fead91f3e65f86e8915cb59c1a4c664','0xc7198437980c041c805a1edcba50c1ce5db95118','0xb31f66aa3c1e785363f0875a1b74e27b85fd66c7','0xd586e7f844cea2f87f50152665bcbc2c279d8d70', '0x49d5c2bdffac6ce2bfdb6640f4f80f226bc10bab')
+        CASE WHEN maker_token IN ('0x9702230a8ea53601f5cd2dc00fdbc13d4df4a8c7','0xa7d7079b0fead91f3e65f86e8915cb59c1a4c664','0xc7198437980c041c805a1edcba50c1ce5db95118',
+            '0xb31f66aa3c1e785363f0875a1b74e27b85fd66c7','0xd586e7f844cea2f87f50152665bcbc2c279d8d70', '0x49d5c2bdffac6ce2bfdb6640f4f80f226bc10bab') AND  mp.price IS NOT NULL
              THEN (all_tx.maker_token_amount_raw / pow(10, mp.decimals)) * mp.price
-             WHEN taker_token IN ('0x9702230a8ea53601f5cd2dc00fdbc13d4df4a8c7','0xa7d7079b0fead91f3e65f86e8915cb59c1a4c664','0xc7198437980c041c805a1edcba50c1ce5db95118','0xb31f66aa3c1e785363f0875a1b74e27b85fd66c7','0xd586e7f844cea2f87f50152665bcbc2c279d8d70', '0x49d5c2bdffac6ce2bfdb6640f4f80f226bc10bab')    
+             WHEN taker_token IN ('0x9702230a8ea53601f5cd2dc00fdbc13d4df4a8c7','0xa7d7079b0fead91f3e65f86e8915cb59c1a4c664','0xc7198437980c041c805a1edcba50c1ce5db95118',
+                '0xb31f66aa3c1e785363f0875a1b74e27b85fd66c7','0xd586e7f844cea2f87f50152665bcbc2c279d8d70', '0x49d5c2bdffac6ce2bfdb6640f4f80f226bc10bab')    AND  tp.price IS NOT NULL
              THEN (all_tx.taker_token_amount_raw / pow(10, tp.decimals)) * tp.price
              ELSE COALESCE((all_tx.maker_token_amount_raw / pow(10, mp.decimals)) * mp.price, (all_tx.taker_token_amount_raw / pow(10, tp.decimals)) * tp.price)
-             END AS volume_usd, tx.to, tx.from
+             END AS volume_usd, 
+        tx.from AS tx_from,
+        tx.to AS tx_to,
+        'avalanche_c' AS blockchain
 FROM all_tx
 INNER JOIN {{ source('avalanche_c', 'transactions')}} tx
     ON all_tx.tx_hash = tx.hash
@@ -319,7 +325,7 @@ INNER JOIN {{ source('avalanche_c', 'transactions')}} tx
 LEFT JOIN {{ source('prices', 'usd') }} tp 
     ON date_trunc('minute', all_tx.block_time) = tp.minute
     AND CASE
-            WHEN all_tx.taker_token = '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee' THEN '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'
+            WHEN all_tx.taker_token = '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee' THEN '0xb31f66aa3c1e785363f0875a1b74e27b85fd66c7'
             ELSE all_tx.taker_token
         END = tp.contract_address
     AND tp.blockchain = 'avalanche_c'
@@ -333,7 +339,7 @@ LEFT JOIN {{ source('prices', 'usd') }} tp
 LEFT JOIN {{ source('prices', 'usd') }} mp 
     ON DATE_TRUNC('minute', all_tx.block_time) = mp.minute
     AND CASE
-            WHEN all_tx.maker_token = '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee' THEN '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'
+            WHEN all_tx.maker_token = '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee' THEN '0xb31f66aa3c1e785363f0875a1b74e27b85fd66c7'
             ELSE all_tx.maker_token
         END = mp.contract_address
     AND mp.blockchain = 'avalanche_c'
@@ -343,3 +349,6 @@ LEFT JOIN {{ source('prices', 'usd') }} mp
     {% if not is_incremental() %}
     AND mp.minute >= '{{zeroex_v3_start_date}}'
     {% endif %}
+
+LEFT OUTER JOIN {{ ref('tokens_erc20') }} ts ON ts.contract_address = taker_token and ts.blockchain = 'avalanche_c'
+LEFT OUTER JOIN {{ ref('tokens_erc20') }} ms ON ms.contract_address = maker_token and ms.blockchain = 'avalanche_c'

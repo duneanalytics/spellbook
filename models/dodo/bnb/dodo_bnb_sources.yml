@@ -78,6 +78,20 @@ sources:
           - name: evt_block_time
             description: 'Timestamp for block event time in UTC'
 
+      - name: DODOFeeRouteProxy_evt_OrderHistory
+        description: >
+          Order History happening through a fee_router contract.
+        loaded_at_field: evt_block_time
+        columns:
+          - name: contract_address
+            description: 'Binance Smart Chain address for the proxy contract used in transaction'
+          - name: evt_tx_hash
+            description: 'Transaction hash of the event'
+          - name: evt_index
+            description: 'Event index'
+          - name: evt_block_time
+            description: 'Timestamp for block event time in UTC'
+
       - name: DVM_evt_DODOSwap
         description: >
           Decoded table related to the DVM DODOSwap contract events.

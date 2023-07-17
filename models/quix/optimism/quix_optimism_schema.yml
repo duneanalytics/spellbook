@@ -18,7 +18,7 @@ models:
             - token_id
             - seller
             - evt_index
-      - check_seed:
+      - check_seed_legacy:
           seed_file: ref('quix_events_seed')
           filter:
             blockchain: optimism
@@ -145,295 +145,15 @@ models:
         name: royalty_fee_currency_symbol
         description: "Symbol of the token in which fees are paid out"
 
-  - name: quix_v3_optimism_events
-    meta:
-      blockchain: optimism
-      project: quix
-      contributors: chuxin
-    config:
-      tags: ['optimism','quix', 'v3', 'events']
-    description: >
-        Quix v3 trades on Optimism
-    tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - block_date
-            - tx_hash
-            - token_id
-            - seller
-            - evt_index
-      - check_seed:
-          seed_file: ref('quix_events_seed')
-          filter:
-            blockchain: optimism
-            project: quix
-            version: v3
-          match_columns:
-            - block_date
-            - tx_hash
-            - token_id
-            - seller
-            - evt_index
-          check_columns:
-            - buyer
-            - nft_contract_address
-    columns:
-       - *blockchain
-       - *project
-       - *version
-       - *block_time
-       - *token_id
-       - *collection
-       - *amount_usd
-       - *token_standard
-       - *trade_type
-       - *number_of_items
-       - *trade_category
-       - *evt_type
-       - *seller
-       - *buyer
-       - *amount_original
-       - *amount_raw
-       - *currency_symbol
-       - *currency_contract
-       - *nft_contract_address
-       - *project_contract_address
-       - *aggregator_name
-       - *aggregator_address
-       - *tx_hash
-       - *evt_index
-       - *block_number
-       - *tx_from
-       - *tx_to
-       - *platform_fee_amount_raw
-       - *platform_fee_amount
-       - *platform_fee_amount_usd
-       - *royalty_fee_amount_raw
-       - *royalty_fee_amount
-       - *royalty_fee_amount_usd
-       - *royalty_fee_percentage
-       - *royalty_fee_receive_address
-       - *royalty_fee_currency_symbol
-
-  - name: quix_v1_optimism_events
-    meta:
-      blockchain: optimism
-      project: quix
-      contributors: chuxin
-    config:
-      tags: ['optimism','quix', 'v1', 'events']
-    description: >
-        Quix v1 trades on Optimism
-    tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - block_date
-            - tx_hash
-            - token_id
-            - seller
-            - evt_index
-      - check_seed:
-          seed_file: ref('quix_events_seed')
-          filter:
-            blockchain: optimism
-            project: quix
-            version: v1
-          match_columns:
-            - block_date
-            - tx_hash
-            - token_id
-            - seller
-            - evt_index
-          check_columns:
-            - buyer
-            - nft_contract_address
-    columns:
-       - *blockchain
-       - *project
-       - *version
-       - *block_time
-       - *token_id
-       - *collection
-       - *amount_usd
-       - *token_standard
-       - *trade_type
-       - *number_of_items
-       - *trade_category
-       - *evt_type
-       - *seller
-       - *buyer
-       - *amount_original
-       - *amount_raw
-       - *currency_symbol
-       - *currency_contract
-       - *nft_contract_address
-       - *project_contract_address
-       - *aggregator_name
-       - *aggregator_address
-       - *tx_hash
-       - *evt_index
-       - *block_number
-       - *tx_from
-       - *tx_to
-       - *platform_fee_amount_raw
-       - *platform_fee_amount
-       - *platform_fee_amount_usd
-       - *royalty_fee_amount_raw
-       - *royalty_fee_amount
-       - *royalty_fee_amount_usd
-       - *royalty_fee_percentage
-       - *royalty_fee_receive_address
-       - *royalty_fee_currency_symbol
-
-  - name: quix_v4_optimism_events
-    meta:
-      blockchain: optimism
-      project: quix
-      contributors: chuxin
-    config:
-      tags: ['optimism','quix', 'v4', 'events']
-    description: >
-        Quix v4 trades on Optimism
-    tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - block_date
-            - tx_hash
-            - token_id
-            - seller
-            - evt_index
-      - check_seed:
-          seed_file: ref('quix_events_seed')
-          filter:
-            blockchain: optimism
-            project: quix
-            version: v4
-          match_columns:
-            - block_date
-            - tx_hash
-            - token_id
-            - seller
-            - evt_index
-          check_columns:
-            - buyer
-            - nft_contract_address
-    columns:
-       - *blockchain
-       - *project
-       - *version
-       - *block_time
-       - *token_id
-       - *collection
-       - *amount_usd
-       - *token_standard
-       - *trade_type
-       - *number_of_items
-       - *trade_category
-       - *evt_type
-       - *seller
-       - *buyer
-       - *amount_original
-       - *amount_raw
-       - *currency_symbol
-       - *currency_contract
-       - *nft_contract_address
-       - *project_contract_address
-       - *aggregator_name
-       - *aggregator_address
-       - *tx_hash
-       - *evt_index
-       - *block_number
-       - *tx_from
-       - *tx_to
-       - *platform_fee_amount_raw
-       - *platform_fee_amount
-       - *platform_fee_amount_usd
-       - *royalty_fee_amount_raw
-       - *royalty_fee_amount
-       - *royalty_fee_amount_usd
-       - *royalty_fee_percentage
-       - *royalty_fee_receive_address
-       - *royalty_fee_currency_symbol
-
-  - name: quix_v5_optimism_events
-    meta:
-      blockchain: optimism
-      project: quix
-      contributors: chuxin
-    config:
-      tags: ['optimism','quix', 'v5', 'events']
-    description: >
-        Quix v4 trades on Optimism
-    tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - block_date
-            - tx_hash
-            - token_id
-            - seller
-            - evt_index
-      - check_seed:
-          seed_file: ref('quix_events_seed')
-          filter:
-            blockchain: optimism
-            project: quix
-            version: v5
-          match_columns:
-            - block_date
-            - tx_hash
-            - token_id
-            - seller
-            - evt_index
-          check_columns:
-            - buyer
-            - nft_contract_address
-    columns:
-       - *blockchain
-       - *project
-       - *version
-       - *block_time
-       - *token_id
-       - *collection
-       - *amount_usd
-       - *token_standard
-       - *trade_type
-       - *number_of_items
-       - *trade_category
-       - *evt_type
-       - *seller
-       - *buyer
-       - *amount_original
-       - *amount_raw
-       - *currency_symbol
-       - *currency_contract
-       - *nft_contract_address
-       - *project_contract_address
-       - *aggregator_name
-       - *aggregator_address
-       - *tx_hash
-       - *evt_index
-       - *block_number
-       - *tx_from
-       - *tx_to
-       - *platform_fee_amount_raw
-       - *platform_fee_amount
-       - *platform_fee_amount_usd
-       - *royalty_fee_amount_raw
-       - *royalty_fee_amount
-       - *royalty_fee_amount_usd
-       - *royalty_fee_percentage
-       - *royalty_fee_receive_address
-       - *royalty_fee_currency_symbol
-
   - name: quix_seaport_optimism_base_pairs
     meta:
       blockchain: optimism
       project: quix
       contributors: chuxin
     config:
-      tags: ['optimism','quix','base_pairs','chuxin']
+      tags: [ 'optimism','quix','base_pairs','chuxin' ]
     description: >
-        Exploded table from Seaport trade events with `offer` and `consideration` array columns
+      Exploded table from Seaport trade events with `offer` and `consideration` array columns
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -530,6 +250,288 @@ models:
         name: is_moved_nft
         description: "Transferred NFT if `true`, because it is traded or just transferred."
 
+  - name: quix_v3_optimism_events
+    meta:
+      blockchain: optimism
+      project: quix
+      contributors: chuxin
+    config:
+      tags: ['optimism','quix', 'v3', 'events']
+    description: >
+        Quix v3 trades on Optimism
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_date
+            - tx_hash
+            - token_id
+            - seller
+            - evt_index
+      - check_seed_legacy:
+          seed_file: ref('quix_events_seed')
+          filter:
+            blockchain: optimism
+            project: quix
+            version: v3
+          match_columns:
+            - block_date
+            - tx_hash
+            - token_id
+            - seller
+            - evt_index
+          check_columns:
+            - buyer
+            - nft_contract_address
+    columns:
+       - *blockchain
+       - *project
+       - *version
+       - *block_time
+       - *token_id
+       - *collection
+       - *amount_usd
+       - *token_standard
+       - *trade_type
+       - *number_of_items
+       - *trade_category
+       - *evt_type
+       - *seller
+       - *buyer
+       - *amount_original
+       - *amount_raw
+       - *currency_symbol
+       - *currency_contract
+       - *nft_contract_address
+       - *project_contract_address
+       - *aggregator_name
+       - *aggregator_address
+       - *tx_hash
+       - *evt_index
+       - *block_number
+       - *tx_from
+       - *tx_to
+       - *platform_fee_amount_raw
+       - *platform_fee_amount
+       - *platform_fee_amount_usd
+       - *royalty_fee_amount_raw
+       - *royalty_fee_amount
+       - *royalty_fee_amount_usd
+       - *royalty_fee_percentage
+       - *royalty_fee_receive_address
+       - *royalty_fee_currency_symbol
+
+  - name: quix_v1_optimism_events
+    meta:
+      blockchain: optimism
+      project: quix
+      contributors: chuxin
+    config:
+      tags: ['optimism','quix', 'v1', 'events']
+    description: >
+        Quix v1 trades on Optimism
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_date
+            - tx_hash
+            - token_id
+            - seller
+            - evt_index
+      - check_seed_legacy:
+          seed_file: ref('quix_events_seed')
+          filter:
+            blockchain: optimism
+            project: quix
+            version: v1
+          match_columns:
+            - block_date
+            - tx_hash
+            - token_id
+            - seller
+            - evt_index
+          check_columns:
+            - buyer
+            - nft_contract_address
+    columns:
+       - *blockchain
+       - *project
+       - *version
+       - *block_time
+       - *token_id
+       - *collection
+       - *amount_usd
+       - *token_standard
+       - *trade_type
+       - *number_of_items
+       - *trade_category
+       - *evt_type
+       - *seller
+       - *buyer
+       - *amount_original
+       - *amount_raw
+       - *currency_symbol
+       - *currency_contract
+       - *nft_contract_address
+       - *project_contract_address
+       - *aggregator_name
+       - *aggregator_address
+       - *tx_hash
+       - *evt_index
+       - *block_number
+       - *tx_from
+       - *tx_to
+       - *platform_fee_amount_raw
+       - *platform_fee_amount
+       - *platform_fee_amount_usd
+       - *royalty_fee_amount_raw
+       - *royalty_fee_amount
+       - *royalty_fee_amount_usd
+       - *royalty_fee_percentage
+       - *royalty_fee_receive_address
+       - *royalty_fee_currency_symbol
+
+  - name: quix_v4_optimism_events
+    meta:
+      blockchain: optimism
+      project: quix
+      contributors: chuxin
+    config:
+      tags: ['optimism','quix', 'v4', 'events']
+    description: >
+        Quix v4 trades on Optimism
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_date
+            - tx_hash
+            - token_id
+            - seller
+            - evt_index
+      - check_seed_legacy:
+          seed_file: ref('quix_events_seed')
+          filter:
+            blockchain: optimism
+            project: quix
+            version: v4
+          match_columns:
+            - block_date
+            - tx_hash
+            - token_id
+            - seller
+            - evt_index
+          check_columns:
+            - buyer
+            - nft_contract_address
+    columns:
+       - *blockchain
+       - *project
+       - *version
+       - *block_time
+       - *token_id
+       - *collection
+       - *amount_usd
+       - *token_standard
+       - *trade_type
+       - *number_of_items
+       - *trade_category
+       - *evt_type
+       - *seller
+       - *buyer
+       - *amount_original
+       - *amount_raw
+       - *currency_symbol
+       - *currency_contract
+       - *nft_contract_address
+       - *project_contract_address
+       - *aggregator_name
+       - *aggregator_address
+       - *tx_hash
+       - *evt_index
+       - *block_number
+       - *tx_from
+       - *tx_to
+       - *platform_fee_amount_raw
+       - *platform_fee_amount
+       - *platform_fee_amount_usd
+       - *royalty_fee_amount_raw
+       - *royalty_fee_amount
+       - *royalty_fee_amount_usd
+       - *royalty_fee_percentage
+       - *royalty_fee_receive_address
+       - *royalty_fee_currency_symbol
+
+  - name: quix_v5_optimism_events
+    meta:
+      blockchain: optimism
+      project: quix
+      contributors: chuxin
+    config:
+      tags: ['optimism','quix', 'v5', 'events']
+    description: >
+        Quix v4 trades on Optimism
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_date
+            - tx_hash
+            - token_id
+            - seller
+            - evt_index
+      - check_seed_legacy:
+          seed_file: ref('quix_events_seed')
+          filter:
+            blockchain: optimism
+            project: quix
+            version: v5
+          match_columns:
+            - block_date
+            - tx_hash
+            - token_id
+            - seller
+            - evt_index
+          check_columns:
+            - buyer
+            - nft_contract_address
+    columns:
+       - *blockchain
+       - *project
+       - *version
+       - *block_time
+       - *token_id
+       - *collection
+       - *amount_usd
+       - *token_standard
+       - *trade_type
+       - *number_of_items
+       - *trade_category
+       - *evt_type
+       - *seller
+       - *buyer
+       - *amount_original
+       - *amount_raw
+       - *currency_symbol
+       - *currency_contract
+       - *nft_contract_address
+       - *project_contract_address
+       - *aggregator_name
+       - *aggregator_address
+       - *tx_hash
+       - *evt_index
+       - *block_number
+       - *tx_from
+       - *tx_to
+       - *platform_fee_amount_raw
+       - *platform_fee_amount
+       - *platform_fee_amount_usd
+       - *royalty_fee_amount_raw
+       - *royalty_fee_amount
+       - *royalty_fee_amount_usd
+       - *royalty_fee_percentage
+       - *royalty_fee_receive_address
+       - *royalty_fee_currency_symbol
+
+
+
   - name: quix_seaport_optimism_events
     meta:
       blockchain: optimism
@@ -549,7 +551,7 @@ models:
             - token_id
             - sub_type
             - sub_idx
-      - check_seed:
+      - check_seed_legacy:
           seed_file: ref('quix_events_seed')
           filter:
             blockchain: optimism
@@ -637,136 +639,3 @@ models:
         name: estimated_price
         description: "True if it is bundle trade and dividened price"
       - *is_private
-
-  - name: quix_optimism_events
-    meta:
-      blockchain: optimism
-      project: quix
-      contributors: chuxin
-    config:
-      tags: [ 'optimism','nft','events','chuxin' ]
-    description: >
-      Quix v1, v2, v3, v4, v5 and Seaport events on Optimism.
-    columns:
-      - *blockchain
-      - *project
-      - *version
-      - *block_time
-      - *token_id
-      - *collection
-      - *amount_usd
-      - *token_standard
-      - *trade_type
-      - *number_of_items
-      - *trade_category
-      - *evt_type
-      - *seller
-      - *buyer
-      - *amount_original
-      - *amount_raw
-      - *currency_symbol
-      - *currency_contract
-      - *nft_contract_address
-      - *project_contract_address
-      - *aggregator_name
-      - *aggregator_address
-      - *platform_fee_amount_raw
-      - *platform_fee_amount
-      - *platform_fee_amount_usd
-      - *platform_fee_percentage
-      - *royalty_fee_amount_raw
-      - *royalty_fee_amount
-      - *royalty_fee_amount_usd
-      - *royalty_fee_percentage
-      - *royalty_fee_receive_address
-      - *royalty_fee_currency_symbol
-      - *tx_hash
-      - *block_number
-      - *tx_from
-      - *tx_to
-      - &unique_trade_id
-        name: unique_trade_id
-        description: "unique trade id"
-
-  - name: quix_optimism_trades
-    meta:
-      blockchain: optimism
-      project: quix
-      contributors: chuxin
-    config:
-      tags: ['optimism','nft','trades','chuxin']
-    description: >
-        Quix v1, v2, v3, v4, v5 and Seaport trades on Optimism.
-    columns:
-      - *blockchain
-      - *project
-      - *version
-      - *block_time
-      - *token_id
-      - *collection
-      - *amount_usd
-      - *token_standard
-      - *trade_type
-      - *number_of_items
-      - *trade_category
-      - *evt_type
-      - *seller
-      - *buyer
-      - *amount_original
-      - *amount_raw
-      - *currency_symbol
-      - *currency_contract
-      - *nft_contract_address
-      - *project_contract_address
-      - *aggregator_name
-      - *aggregator_address
-      - *tx_hash
-      - *block_number
-      - *tx_from
-      - *tx_to
-      - *unique_trade_id
-
-  - name: quix_optimism_fees
-    meta:
-      blockchain: optimism
-      project: opensea
-      contributors: chuxin
-    config:
-      tags: ['optimism','nft','fees','quix','chuxin']
-    description: >
-      Quix v1, v2, v3, v4, v5 and Seaport fees on Optimism.
-    columns:
-      - *blockchain
-      - *project
-      - *version
-      - *block_time
-      - *token_id
-      - *collection
-      - *platform_fee_amount_raw
-      - *platform_fee_amount
-      - *platform_fee_amount_usd
-      - *platform_fee_percentage
-      - *royalty_fee_amount_raw
-      - *royalty_fee_amount
-      - *royalty_fee_amount_usd
-      - *royalty_fee_percentage
-      - *royalty_fee_receive_address
-      - *royalty_fee_currency_symbol
-      - *token_standard
-      - *trade_type
-      - *number_of_items
-      - *trade_category
-      - *evt_type
-      - *seller
-      - *buyer
-      - *currency_symbol
-      - *currency_contract
-      - *nft_contract_address
-      - *project_contract_address
-      - *aggregator_name
-      - *aggregator_address
-      - *tx_hash
-      - *block_number
-      - *tx_from
-      - *tx_to
-      - *unique_trade_id

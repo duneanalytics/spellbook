@@ -1,7 +1,7 @@
 {{
     config(
         schema = 'balancer_v2_ethereum',
-        alias='pools_fees',
+        alias = alias('pools_fees'),
         materialized = 'incremental',
         file_format = 'delta',
         incremental_strategy = 'merge',
@@ -29,7 +29,7 @@ SELECT
     logs.index,
     logs.block_time,
     logs.block_number,
-    bytea2numeric_v2 (SUBSTRING(logs.data FROM 32 FOR 64)) * 1 AS swap_fee_percentage
+    bytea2numeric_v3 (SUBSTRING(logs.data FROM 32 FOR 64)) * 1 AS swap_fee_percentage
 FROM
     {{ source ('ethereum', 'logs') }}
     INNER JOIN registered_pools ON registered_pools.pool_address = logs.contract_address

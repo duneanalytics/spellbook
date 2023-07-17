@@ -1,5 +1,5 @@
 {{  config(
-        alias='nft_fills',
+        alias = alias('nft_fills'),
         materialized='incremental',
         partition_by = ['block_date'],
         unique_key = ['block_date', 'tx_hash', 'evt_index'],
@@ -9,7 +9,7 @@
         post_hook='{{ expose_spells(\'["polygon"]\',
                                 "project",
                                 "zeroex",
-                                \'["rantum","bakabhai993", "sui414"]\') }}'
+                                \'["rantum","bakabhai993", "danning.sui"]\') }}'
     )
 }}
 
@@ -29,8 +29,8 @@ WITH tbl_cte_transaction AS
          , 'erc721'         AS label
          , '1'             AS nft_cnt   
          , CASE
-                WHEN erc20Token = '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee'
-                THEN '0x7ceb23fd6bc0add59e62ac25578270cff1b9f619'
+                WHEN erc20Token in ('0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee', '0x0000000000000000000000000000000000001010') 
+                THEN '0x0d500b1d8e8ef31e21c99d1db9a6444d3adf1270'
                 ELSE erc20Token
             END             AS price_label
          , erc20Token       AS token
@@ -57,8 +57,8 @@ WITH tbl_cte_transaction AS
             , 'erc1155'         AS label
             , erc1155FillAmount  as nft_cnt
             , CASE
-                WHEN erc20Token = '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee'
-                THEN '0x7ceb23fd6bc0add59e62ac25578270cff1b9f619'
+                WHEN erc20Token in ('0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee', '0x0000000000000000000000000000000000001010') 
+                THEN '0x0d500b1d8e8ef31e21c99d1db9a6444d3adf1270'
                 ELSE erc20Token
                 END             AS price_label
             , erc20Token        AS token

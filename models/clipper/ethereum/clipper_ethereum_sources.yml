@@ -13,3 +13,5 @@ sources:
         loaded_at_field: evt_block_time
       - name: ClipperVerifiedCaravelExchange_evt_Swapped
         loaded_at_field: evt_block_time
+      - name: ClipperApproximateCaravelExchange_evt_Swapped
+        loaded_at_field: evt_block_time

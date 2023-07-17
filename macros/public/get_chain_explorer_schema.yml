@@ -1,5 +1,0 @@
-version: 2
-
-macros:
-  - name: get_chain_explorer
-    description: "Converts chain to explorer base url"

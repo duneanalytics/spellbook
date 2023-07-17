@@ -2,13 +2,6 @@ version: 2
 
 models:
   - name: cow_protocol_tx_hash_labels_all
-    tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - name
-            - category
-            - blockchain
     meta:
       blockchain: ethereum
       sector: labels
@@ -20,8 +13,8 @@ models:
     columns:
       - name: blockchain
         description: "Blockchain"
-      - name: tx_hash
-        description: "Label transaction hash"
+      - name: tx_hash_key
+        description: "Label transaction hash key made up from tx_hash, evt_index, project, and version"
       - name: name
         description: "Label name"
       - name: category
@@ -34,3 +27,7 @@ models:
         description: "When were labels created"
       - name: updated_at
         description: "When were labels updated for the last time"
+      - name: model_name
+        description: "Name of the label model sourced from"
+      - name: label_type
+        description: "Type of label (see labels overall readme)"
