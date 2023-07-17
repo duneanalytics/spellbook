@@ -41,7 +41,7 @@ If creating a new spell, follow the below steps:
   - `tags = ['dunesql'],` -- this is vital for orchestration and testing on the correct engine. If `tags` property already exists in the spell, then simply append new value after a comma: `tags = ['static', 'dunesql'],`
 - ensure alias property follows the below format:
   - `alias = alias('blocks'),`
-- PR CI tests will check for this `tag:dunesql` applied and run on spark or dunesql dependent on if tag exists. the opposite engine will run too, but all steps should have no output and succeed.  
+- PR CI tests will check for this `tag:dunesql` applied and run on spark (`tag:legacy`) or dunesql dependent on if tag exists. the opposite engine will run too, but all steps should have no output and succeed.  
   - the logs of the CI test gh action can still be used to grab table names and query on dune app for ~24 hours – be sure to query on the engine you modify!
 ### Existing spells
 If modifying existing spells which haven't been migrated to DuneSQL yet, it is recommended to migrate at the same time.  
@@ -59,7 +59,7 @@ Steps to migrate:
   - for example, any instance of `{{ ref( ) }}` downstream of modified spell(s)
   - to find downstream spells, the following can be run: `dbt ls --resource-type model --output name --select <insert spell name>+`
   - **future note:** when downstream spells are also migrated, we will be able to revert back to reference DuneSQL versioned spells. We will be working in a upstream --> downstream lineage path to full migration.
-- PR CI tests will check for this `tag:dunesql` applied and run on spark or dunesql dependent on if tag exists. the opposite engine will run too, but all steps should have no output and succeed.  
+- PR CI tests will check for this `tag:dunesql` applied and run on spark (`tag:legacy`) or dunesql dependent on if tag exists. the opposite engine will run too, but all steps should have no output and succeed.  
   - the logs of the CI test gh action can still be used to grab table names and query on dune app for ~24 hours – be sure to query on the engine you modify!
 
 ![spellbook-logo@10x](https://user-images.githubusercontent.com/2520869/200791687-76f1bc4f-05d0-4384-a753-e3b5da0e7a4a.png#gh-light-mode-only)
