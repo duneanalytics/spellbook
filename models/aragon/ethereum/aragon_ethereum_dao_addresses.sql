@@ -1,4 +1,5 @@
-{{config(alias = alias('dao_addresses'))}}
+{{config(alias = alias('dao_addresses'),
+    tags = ['dunesql'])}}
 
 {% set aragon_models = [
 ref('aragon_ethereum_app_dao_addresses'),

@@ -1,5 +1,6 @@
 {{ config(
     alias = alias('app_dao_addresses'),
+    tags = ['dunesql'],
     partition_by = ['created_date'],
     materialized = 'incremental',
     file_format = 'delta',
@@ -24,8 +25,8 @@ SELECT
 FROM 
 {{ source('aragon_app_polygon', 'DAORegistry_evt_DAORegistered') }}
 {% if not is_incremental() %}
-WHERE evt_block_time >= '{{project_start_date}}'
+WHERE evt_block_time >= DATE '{{project_start_date}}'
 {% endif %}
 {% if is_incremental() %}
-WHERE evt_block_time >= date_trunc("day", now() - interval '1 week')
+WHERE evt_block_time >= date_trunc('day', now() - interval '7' day)
 {% endif %}
