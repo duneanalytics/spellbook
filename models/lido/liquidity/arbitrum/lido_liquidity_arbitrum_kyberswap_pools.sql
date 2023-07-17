@@ -63,7 +63,7 @@ left join pools on 1=1
       {{source('prices','usd')}}
     WHERE
       DATE_TRUNC('day', minute) >= date '{{ project_start_date }}' 
-      AND DATE_TRUNC('day', minute) < DATE_TRUNC('day', now())
+      AND DATE_TRUNC('day', minute) < DATE_TRUNC('day', cast(now() as date))
       AND blockchain = 'arbitrum'
       AND contract_address IN (SELECT address  FROM tokens      )
     GROUP BY 1, 2,3,4
@@ -84,7 +84,7 @@ left join pools on 1=1
     FROM
       {{source('prices','usd')}}
     WHERE
-      DATE_TRUNC('day', minute) = DATE_TRUNC('day', now())
+      DATE_TRUNC('day', minute) = DATE_TRUNC('day', cast(now() as date))
       AND blockchain = 'arbitrum'
       AND contract_address IN (SELECT address  FROM tokens)
   )
@@ -188,9 +188,9 @@ left join pools on 1=1
 
     
 --, daily_delta_balance as (
-    select time, pool, token0, token1, sum(coalesce(amount0, 0)) as amount0, sum(coalesce(amount1, 0)) as amount1
+    --select time, pool, token0, token1, sum(coalesce(amount0, 0)) as amount0, sum(coalesce(amount1, 0)) as amount1
         --lead(time, 1, cast(now() as date) + interval '1' day) over (partition by pool order by time) as next_time
-    from ( 
+    --from ( 
     select time, pool, token0, token1, amount0, amount1 
     from swap_events
     union all
@@ -199,8 +199,8 @@ left join pools on 1=1
     union all
     select time, pool, token0, token1, amount0, amount1 
     from burn_events
-    ) balance
-    group by 1,2,3,4
+    --) balance
+    --group by 1,2,3,4
 --)
   /*
 , pool_liquidity as (
