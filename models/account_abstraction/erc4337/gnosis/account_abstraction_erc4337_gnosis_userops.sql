@@ -26,7 +26,7 @@
         base_models = erc4337_base_models,
         wrapped_gas_address = '0x44fa8e6f47987339850636f88629646662444217',
         gas_symbol = 'DAI',
-        deployed_date = '2023-02-15',
+        deployed_date = deployed_date,
         transactions_model = source('gnosis', 'transactions'),
         prices_model = source('prices','usd')
     )

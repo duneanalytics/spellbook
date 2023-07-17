@@ -13,7 +13,7 @@
 )}}
 
 -- min deployed_date on chain
-{% set deployed_date = '2023-02-15' %}
+{% set deployed_date = '2023-02-15 00:00:00 UTC' %}
 
 {% set erc4337_base_models = [
     ref('account_abstraction_erc4337_ethereum_v0_5_userops_basics')
@@ -26,7 +26,7 @@
         base_models = erc4337_base_models,
         wrapped_gas_address = '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2',
         gas_symbol = 'ETH',
-        deployed_date = '2023-02-15',
+        deployed_date = deployed_date,
         transactions_model = source('ethereum', 'transactions'),
         prices_model = source('prices','usd')
     )

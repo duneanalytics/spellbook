@@ -13,7 +13,7 @@
 )}}
 
 -- min deployed_date on chain
-{% set deployed_date = '2023-02-15' %}
+{% set deployed_date = '2023-02-15 00:00:00 UTC' %}
 
 {% set erc4337_base_models = [
     ref('account_abstraction_erc4337_polygon_v0_5_userops_basics')
@@ -26,7 +26,7 @@
         base_models = erc4337_base_models,
         wrapped_gas_address = '0x0d500b1d8e8ef31e21c99d1db9a6444d3adf1270',
         gas_symbol = 'MATIC',
-        deployed_date = '2023-02-15',
+        deployed_date = deployed_date,
         transactions_model = source('polygon', 'transactions'),
         prices_model = source('prices','usd')
     )
