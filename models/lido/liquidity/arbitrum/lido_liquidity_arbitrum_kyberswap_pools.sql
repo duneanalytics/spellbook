@@ -187,9 +187,9 @@ left join pools on 1=1
 
 
     
-, daily_delta_balance as (
-    select time, pool, token0, token1, sum(coalesce(amount0, 0)) as amount0, sum(coalesce(amount1, 0)) as amount1,
-        lead(time, 1, cast(now() as date) + interval '1' day) over (partition by pool order by time) as next_time
+--, daily_delta_balance as (
+    select time, pool, token0, token1, sum(coalesce(amount0, 0)) as amount0, sum(coalesce(amount1, 0)) as amount1
+        --lead(time, 1, cast(now() as date) + interval '1' day) over (partition by pool order by time) as next_time
     from ( 
     select time, pool, token0, token1, amount0, amount1 
     from swap_events
@@ -201,12 +201,12 @@ left join pools on 1=1
     from burn_events
     ) balance
     group by 1,2,3,4
-)
-  
+--)
+  /*
 , pool_liquidity as (
         SELECT
       time,
-      LEAD(time, 1, cast(now() as date) + INTERVAL '1' day) OVER (ORDER BY time) AS next_time,
+      --LEAD(time, 1, cast(now() as date) + INTERVAL '1' day) OVER (ORDER BY time) AS next_time,
       pool,
       d.token0,
       d.token1,
@@ -218,7 +218,7 @@ left join pools on 1=1
 
 )
 
-/*
+
 , swap_events_hourly as (
     select hour, pool, token0, token1, sum(amount0) as amount0, sum(amount1) as amount1 from (
     select 
@@ -249,7 +249,7 @@ select  distinct date_trunc('day', time) as time, pool, sum(volume) as volume
 from trading_volume_hourly
 group by 1,2
 )
-*/
+
 , all_metrics as (
 select l.pool, pools.blockchain, pools.project, pools.fee, l.time, 
     case when l.token0 = 0x5979D7b546E38E414F7E9822514be443A4800529 then l.token0 else l.token1 end main_token,
@@ -273,3 +273,4 @@ left join tokens_prices_daily p1 on l.time = p1.time and l.token1 = p1.token
 select CONCAT(CONCAT(CONCAT(CONCAT(CONCAT(blockchain,CONCAT(' ', project)) ,' '), paired_token_symbol),':') , main_token_symbol, ' ', format('%,.3f',round(coalesce(fee,0),4))) as pool_name,* 
 from all_metrics
 where main_token_reserve > 1
+*/
