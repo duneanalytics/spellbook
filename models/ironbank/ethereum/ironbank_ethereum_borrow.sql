@@ -1,5 +1,5 @@
 {{ config(
-    alias = 'borrow',
+    alias = alias('borrow'),
     post_hook='{{ expose_spells(\'["ethereum"]\',
                                 "project",
                                 "ironbank",

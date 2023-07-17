@@ -1,5 +1,5 @@
 {{ config(
-     alias = 'top_sales',
+     alias = alias('top_sales'),
      materialized='table',
      post_hook='{{ expose_spells(\'["ethereum"]\',
                                  "sector",

@@ -1,6 +1,6 @@
 {{ config(
     schema='lido_liquidity_arbitrum',
-    alias = 'camelot_pools',
+    alias = alias('camelot_pools'),
     partition_by = ['time'],
     materialized = 'table',
     file_format = 'delta',

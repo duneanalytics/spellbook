@@ -1,6 +1,6 @@
 {{
     config(
-        alias='vebal_votes',
+        alias = alias('vebal_votes'),
         materialized = 'table',
         file_format = 'delta',
         post_hook='{{ expose_spells(\'["ethereum"]\',

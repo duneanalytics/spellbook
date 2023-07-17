@@ -1,5 +1,5 @@
 {{ config(
-    alias = 'curve_steth_conc_pool',
+    alias = alias('curve_steth_conc_pool'),
     partition_by = ['time'],
     materialized = 'table',
     file_format = 'delta',

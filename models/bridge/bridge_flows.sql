@@ -1,6 +1,6 @@
 {{ config(
         schema = 'bridge',
-        alias ='flows',
+        alias = alias('flows'),
         post_hook='{{ expose_spells_hide_trino(\'["optimism"]\',
                                 "sector",
                                 "bridge",

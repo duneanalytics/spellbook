@@ -1,6 +1,6 @@
 {{
     config(
-        alias='contract_deployers_ethereum',
+        alias = alias('contract_deployers_ethereum'),
         post_hook='{{ expose_spells(\'["ethereum"]\',
                                     "sector",
                                     "labels",

@@ -1,5 +1,5 @@
 {{ config(
-    alias = 'userops',
+    alias = alias('userops'),
     partition_by = ['block_time'],
     materialized = 'incremental',
     file_format = 'delta',
