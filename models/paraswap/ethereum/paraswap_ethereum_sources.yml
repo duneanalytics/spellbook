@@ -53,3 +53,5 @@ sources:
         loaded_at_field: call_block_time
       - name: AugustusSwapper6_0_call_swapOnZeroXv4WithPermit
         loaded_at_field: call_block_time
+      - name: AugustusSwapper6_0_evt_SwappedDirect
+        loaded_at_field: evt_block_time
