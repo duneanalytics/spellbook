@@ -1,5 +1,5 @@
 {{ config(
-    schema = 'blur_v2_ethereum',
+    schema = 'looksrare_seaport',
     tags = ['dunesql'],
     alias = alias('base_trades'),
     partition_by = ['block_date'],
