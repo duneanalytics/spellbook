@@ -1,4 +1,5 @@
 {{ config(alias = alias('l2_batch_submitters'),
+        tags=['legacy'],
         post_hook='{{ expose_spells(\'["ethereum"]\',
                                     "sector",
                                     "addresses",
