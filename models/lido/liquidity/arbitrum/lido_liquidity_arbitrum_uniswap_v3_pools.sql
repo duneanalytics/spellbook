@@ -20,7 +20,7 @@ with dates as (
 select days.day
 from day_seq
 cross join unnest(day) as days(day)
-  ),
+),
   
   
   pools AS (
