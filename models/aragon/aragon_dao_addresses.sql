@@ -1,5 +1,5 @@
 {{ config(
-    alias = 'dao_addresses',
+    alias = alias('dao_addresses'),
     materialized = 'view',
     file_format = 'delta',
     post_hook='{{ expose_spells(\'["ethereum", "gnosis", "polygon"]\',

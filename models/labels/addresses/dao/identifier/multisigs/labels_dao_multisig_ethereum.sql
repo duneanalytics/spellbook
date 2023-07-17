@@ -1,4 +1,4 @@
-{{config(alias='multisig_ethereum',
+{{config(alias = alias('multisig_ethereum'),
         post_hook='{{ expose_spells(\'["ethereum"]\',
                                     "sector",
                                     "labels",

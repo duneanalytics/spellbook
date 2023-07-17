@@ -1,5 +1,5 @@
 {{ config(
-    alias = 'pools',
+    alias = alias('pools'),
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',

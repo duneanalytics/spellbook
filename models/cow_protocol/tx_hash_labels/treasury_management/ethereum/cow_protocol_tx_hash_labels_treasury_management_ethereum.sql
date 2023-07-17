@@ -1,6 +1,6 @@
 {{
     config(
-        alias='tx_hash_labels_treasury_management_ethereum',
+        alias = alias('tx_hash_labels_treasury_management_ethereum'),
     )
 }}
 

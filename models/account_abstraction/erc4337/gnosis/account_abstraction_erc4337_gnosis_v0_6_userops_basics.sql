@@ -1,6 +1,6 @@
 {{ config
 (
-    alias ='v0_6_userops_basics',
+    alias = alias('v0_6_userops_basics'),
     partition_by = ['block_time'],
     materialized = 'incremental',
     file_format = 'delta',
