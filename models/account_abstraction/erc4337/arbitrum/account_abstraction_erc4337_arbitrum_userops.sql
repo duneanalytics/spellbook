@@ -16,7 +16,7 @@
 {% set chain = 'arbitrum' %}
 {% set gas_symbol = 'ETH' %}
 {% set wrapped_gas_address = '0x82af49447d8a07e3bd95bd0d56f35241523fbab1' %}
-{% set deployed_date = '2023-02-15 00:00:00 UTC' %}
+{% set deployed_date = '2023-02-15' %}
 
 {% set erc4337_models = [
     ref('account_abstraction_erc4337_arbitrum_v0_5_userops_basics')

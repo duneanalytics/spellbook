@@ -15,7 +15,7 @@
 {% set gas_symbol = 'ETH' %}
 {% set wrapped_gas_address = '0x4200000000000000000000000000000000000006' %}
 {% set version = 'v0.6' %}
-{% set deployed_date = '2023-02-15 00:00:00 UTC' %}
+{% set deployed_date = '2023-02-15' %}
 
 -- macros/models/sector/erc4337
 {{

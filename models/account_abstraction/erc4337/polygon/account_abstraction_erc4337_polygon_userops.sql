@@ -13,7 +13,7 @@
 )}}
 
 -- min deployed_date on chain
-{% set deployed_date = '2023-02-15 00:00:00 UTC' %}
+{% set deployed_date = '2023-02-15' %}
 
 {% set erc4337_base_models = [
     ref('account_abstraction_erc4337_polygon_v0_5_userops_basics')

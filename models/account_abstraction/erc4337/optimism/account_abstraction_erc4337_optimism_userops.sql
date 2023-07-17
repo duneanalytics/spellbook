@@ -17,7 +17,7 @@
 {% set gas_symbol = 'ETH' %}
 {% set wrapped_gas_address = '0x4200000000000000000000000000000000000006' %}
 {% set version = 'v0.5' %}
-{% set deployed_date = '2023-02-15 00:00:00 UTC' %}
+{% set deployed_date = '2023-02-15' %}
 
 {% set erc4337_models = [
     ref('account_abstraction_erc4337_optimism_v0_5_userops_basics')

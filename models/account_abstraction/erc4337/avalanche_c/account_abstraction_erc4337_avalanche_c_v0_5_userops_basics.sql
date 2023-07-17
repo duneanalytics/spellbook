@@ -14,7 +14,7 @@
 {% set gas_symbol = 'AVAX' %}
 {% set wrapped_gas_address = '0xb31f66aa3c1e785363f0875a1b74e27b85fd66c7' %}
 {% set version = 'v0.5' %}
-{% set deployed_date = '2023-02-15 00:00:00 UTC' %}
+{% set deployed_date = '2023-02-15' %}
 
 -- macros/models/sector/erc4337
 {{
