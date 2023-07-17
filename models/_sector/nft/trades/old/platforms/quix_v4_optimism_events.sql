@@ -141,7 +141,7 @@ with events_raw as (
             token_bought_amount as token_amount,
             token_bought_address as contract_address,
             token_bought_symbol as symbol
-        from {{ ref('uniswap_optimism_trades_legacy') }}
+        from {{ ref('uniswap_optimism_trades') }}
         where
             token_bought_address = '0x4200000000000000000000000000000000000042'
             {% if is_incremental() %}
@@ -156,7 +156,7 @@ with events_raw as (
             token_sold_amount as token_amount,
             token_sold_address as contract_address,
             token_sold_symbol as symbol
-        from {{ ref('uniswap_optimism_trades_legacy') }}
+        from {{ ref('uniswap_optimism_trades') }}
         where
             token_bought_address = '0x4200000000000000000000000000000000000042'
             {% if is_incremental() %}
