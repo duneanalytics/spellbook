@@ -26,7 +26,7 @@ models:
         description: "Name of creator tool used to create DAO"
         tests:
           - dao_addresses_creator_tool:
-              dao_addresses_seed: ref('dao_addresses_seed')
+              dao_addresses_seed: ref('dao_addresses_seed_legacy')
       - &dao
         name: dao
         description: "address of the dao deployed"
