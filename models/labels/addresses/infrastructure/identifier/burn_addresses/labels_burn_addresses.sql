@@ -1,5 +1,5 @@
 {{config(
-    alias='burn_addresses',
+    alias = alias('burn_addresses'),
     tags=['static'],
     post_hook='{{ expose_spells(\'["ethereum", "bnb", "polygon", "solana", "arbitrum", "optimism", "fantom", "avalanche_c", "gnosis"]\',
                                 "sector",

@@ -1,6 +1,6 @@
 {{
   config(
-        alias='oracle_token_mapping',
+        alias = alias('oracle_token_mapping'),
         post_hook='{{ expose_spells(\'["bnb"]\',
                                     "project",
                                     "chainlink",

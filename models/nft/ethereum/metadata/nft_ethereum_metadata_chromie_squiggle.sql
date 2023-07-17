@@ -1,5 +1,5 @@
 {{ config(
-        alias = 'chromie_squiggle'
+        alias = alias('chromie_squiggle')
         )
 }}
 

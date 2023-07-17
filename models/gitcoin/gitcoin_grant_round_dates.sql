@@ -1,5 +1,5 @@
 {{ config(
-        alias='grant_round_dates'
+        alias = alias('grant_round_dates')
         , tags=['static']
         )
 }}
