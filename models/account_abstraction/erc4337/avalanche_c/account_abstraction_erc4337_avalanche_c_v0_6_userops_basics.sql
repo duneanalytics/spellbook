@@ -1,6 +1,6 @@
 {{ config(
     alias = alias('v0_6_userops_basics'),
-    tags=['dunesql'],
+    -- tags=['dunesql'],
     partition_by = ['block_time'],
     materialized = 'incremental',
     file_format = 'delta',
