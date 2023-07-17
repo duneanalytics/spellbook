@@ -1,5 +1,6 @@
 {{ config(
     alias = alias('userops'),
+    tags=['dunesql'],
     partition_by = ['block_time'],
     materialized = 'incremental',
     file_format = 'delta',
@@ -41,7 +42,7 @@ with userop as(
             , beneficiary
         FROM {{ erc4337_model }}
         {% if is_incremental() %}
-        WHERE block_time >= date_trunc("day", now() - interval '1 week')
+        WHERE block_time >= date_trunc('day', now() - interval '7' day)
         {% endif %}
         {% if not loop.last %}
         UNION ALL
@@ -52,7 +53,7 @@ with userop as(
 , txs as (
     select 
           hash as tx_hash
-        , tx.from as tx_from
+        , tx."from" as tx_from
         , tx.to as tx_to
         , '{{gas_symbol}}' as gas_symbol
         , ((cast(gas_used as double) * gas_price)+l1_fee) / 1e18 as tx_fee 
@@ -62,17 +63,17 @@ with userop as(
     )
     and block_time > timestamp '{{deployed_date}}'
     {% if is_incremental() %}
-        and block_time >= date_trunc("day", now() - interval '1 week')
+        and block_time >= date_trunc('day', now() - interval '7' day)
     {% endif %}
 )
 , price as (
     select symbol, decimals, minute, price  
     from {{source('prices','usd')}}
     where minute > timestamp  '{{deployed_date}}'
-        and contract_address='{{wrapped_gas_address}}'
+        and contract_address={{wrapped_gas_address}}
         and blockchain='{{chain}}'
         {% if is_incremental() %}
-         and minute >= date_trunc("day", now() - interval '1 week')
+         and minute >= date_trunc('day', now() - interval '7' day)
         {% endif %}
 )
 select 

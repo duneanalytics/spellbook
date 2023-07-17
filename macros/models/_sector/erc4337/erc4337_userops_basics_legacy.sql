@@ -1,4 +1,4 @@
-{% macro erc4337_userops_basics(
+{% macro erc4337_userops_basics_legacy(
     blockchain='',
     version='',
     userops_evt_model=null,
@@ -20,7 +20,7 @@ with userop as (
         , actualGasCost/1e18 as op_fee
     from {{ userops_evt_model }}
     {% if is_incremental() %}
-        WHERE evt_block_time >= date_trunc('day', now() - interval '7' day)
+        WHERE evt_block_time >= date_trunc("day", now() - interval '1 week')
     {% endif %}
 )
 , handleops as (
@@ -28,7 +28,7 @@ with userop as (
            beneficiary
     from {{ handleops_call_model }}
     {% if is_incremental() %}
-        WHERE call_block_time >= date_trunc('day', now() - interval '7' day)
+        WHERE call_block_time >= date_trunc("day", now() - interval '1 week')
     {% endif %}
 )
 

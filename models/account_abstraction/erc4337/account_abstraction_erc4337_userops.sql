@@ -1,6 +1,7 @@
 {{ config(
         schema = 'account_abstraction_erc4337',
         alias = alias('userops'),
+        tags=['dunesql'],
         post_hook='{{ expose_spells(\'["ethereum","polygon","arbitrum","optimism","avalanche_c","gnosis"]\',
                                 "project",
                                 "erc4337",
