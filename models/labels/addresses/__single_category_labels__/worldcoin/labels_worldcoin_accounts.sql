@@ -13,7 +13,7 @@
 
 SELECT
     '{{ model[0] }}' as blockchain,
-    address,
+    account_address as address,
     'Worldcoin Account' AS name,
     'worldcoin' AS category,
     'msilb7' AS contributor,
