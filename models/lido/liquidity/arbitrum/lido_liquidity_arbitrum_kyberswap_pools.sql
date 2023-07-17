@@ -63,7 +63,7 @@ left join pools on 1=1
       {{source('prices','usd')}}
     WHERE
       DATE_TRUNC('day', minute) >= date '{{ project_start_date }}' 
-      AND DATE_TRUNC('day', minute) < DATE_TRUNC('day', NOW())
+      AND DATE_TRUNC('day', minute) < DATE_TRUNC('day', now())
       AND blockchain = 'arbitrum'
       AND contract_address IN (SELECT address  FROM tokens      )
     GROUP BY 1, 2,3,4
@@ -84,15 +84,21 @@ left join pools on 1=1
     FROM
       {{source('prices','usd')}}
     WHERE
-      DATE_TRUNC('day', minute) = DATE_TRUNC('day', NOW())
+      DATE_TRUNC('day', minute) = DATE_TRUNC('day', now())
       AND blockchain = 'arbitrum'
       AND contract_address IN (SELECT address  FROM tokens)
   )
   
  , tokens_prices_hourly AS (
+        select 
+        time, 
+        LEAD(time,1, now() + INTERVAL '1' hour) OVER (PARTITION BY token  ORDER BY time) AS next_time,
+        token,
+          decimals, 
+          symbol,
+        price from (
         SELECT DISTINCT
           DATE_TRUNC('hour', minute) AS time,
-          LEAD(DATE_TRUNC('hour', minute),1,DATE_TRUNC('hour', NOW() + INTERVAL '1' hour)) OVER (PARTITION BY contract_address  ORDER BY DATE_TRUNC('hour', minute) NULLS FIRST) AS next_time,
           contract_address  AS token,
           decimals, 
           symbol,
@@ -114,7 +120,7 @@ left join pools on 1=1
               address
             FROM
               tokens
-          )
+          )) p
       
   )
   
@@ -183,7 +189,7 @@ left join pools on 1=1
     
 , daily_delta_balance as (
     select time, pool, token0, token1, sum(coalesce(amount0, 0)) as amount0, sum(coalesce(amount1, 0)) as amount1,
-        lead(time, 1, now() + interval '1' day) over (partition by pool order by time) as next_time
+        lead(time, 1, cast(now() as date) + interval '1' day) over (partition by pool order by time) as next_time
     from ( 
     select time, pool, token0, token1, amount0, amount1 
     from swap_events
@@ -200,7 +206,7 @@ left join pools on 1=1
 , pool_liquidity as (
         SELECT
       time,
-      LEAD(time, 1, CURRENT_DATE + INTERVAL '1' day) OVER (
+      LEAD(time, 1, cast(now() as date) + INTERVAL '1' day) OVER (
         ORDER BY
           time NULLS FIRST
       ) AS next_time,
