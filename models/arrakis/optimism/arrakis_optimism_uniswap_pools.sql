@@ -1,7 +1,6 @@
 
  {{
   config(
-        tags=['dunesql'],
         schema='arrakis_optimism',
         alias = alias('uniswap_pools'),
         materialized = 'incremental',

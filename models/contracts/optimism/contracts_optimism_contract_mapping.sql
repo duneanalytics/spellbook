@@ -1,6 +1,5 @@
  {{
   config(
-        tags=['dunesql' ],
         alias = alias('contract_mapping'),
         materialized ='incremental',
         file_format ='delta',
