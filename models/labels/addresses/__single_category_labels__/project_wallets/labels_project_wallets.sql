@@ -19,7 +19,7 @@ SELECT
     'project_wallets' AS model_name,
     'identifier' AS label_type
 
-FROM {{ ref('addresses_optimism_grants_funding') }}
+FROM {{ ref('addresses_optimism_grants_funding_legacy') }}
 GROUP BY 1,2,3
 
 -- UNION ALL
