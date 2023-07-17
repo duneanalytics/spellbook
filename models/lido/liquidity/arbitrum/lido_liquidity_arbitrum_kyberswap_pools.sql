@@ -22,6 +22,8 @@ from day_seq
 cross join unnest(day) as days(day)
   )
 
+select * from dates 
+/*
 , pools as (
 select pool as address, 'arbitrum' as blockchain, 'kyberswap' as project, cast(swapFeeUnits as double)/1000 as fee,
 token0, token1
@@ -88,6 +90,7 @@ left join pools on 1=1
       AND blockchain = 'arbitrum'
       AND contract_address IN (SELECT address  FROM tokens)
   )
+*/
 /*  
  , tokens_prices_hourly AS (
         select 
@@ -125,7 +128,7 @@ left join pools on 1=1
   )
   
 */
-
+/*
 , swap_events as (
     select 
         date_trunc('day', sw.evt_block_time) as time,
@@ -202,6 +205,8 @@ left join pools on 1=1
     --) balance
     --group by 1,2,3,4
 --)
+  
+  */
   /*
 , pool_liquidity as (
         SELECT
