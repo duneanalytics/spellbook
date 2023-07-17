@@ -1,6 +1,6 @@
 {{
     config(
-        alias='contract_deployers_arbitrum',
+        alias = alias('contract_deployers_arbitrum'),
         post_hook='{{ expose_spells(\'["arbitrum"]\',
                                     "sector",
                                     "labels",

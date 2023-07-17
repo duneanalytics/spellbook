@@ -1,4 +1,4 @@
-{{config(alias='token_standards_polygon',
+{{config(alias = alias('token_standards_polygon'),
         post_hook='{{ expose_spells(\'["polygon"]\',
                                     "sector",
                                     "labels",
@@ -32,7 +32,7 @@ SELECT distinct 'polygon' AS blockchain
 , NOW() AS modified_at
 , 'token_standard' AS model_name
 , 'persona' as label_type
-FROM {{ ref('nft_polygon_transfers_legacy') }} nft
+FROM {{ ref('nft_polygon_transfers') }} nft
 {% if is_incremental() %}
 LEFT ANTI JOIN this t ON t.address = nft.contract_address
 WHERE nft.block_time >= date_trunc('day', now() - interval '1 week')

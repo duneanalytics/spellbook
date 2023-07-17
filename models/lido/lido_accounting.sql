@@ -1,5 +1,5 @@
 {{ config(
-        alias ='accounting',
+        alias = alias('accounting'),
         partition_by = ['period'],
         materialized = 'table',
         file_format = 'delta',

@@ -1,6 +1,6 @@
 {{
     config(
-        alias='contract_deployers_gnosis',
+        alias = alias('contract_deployers_gnosis'),
         post_hook='{{ expose_spells(\'["gnosis"]\',
                                     "sector",
                                     "labels",

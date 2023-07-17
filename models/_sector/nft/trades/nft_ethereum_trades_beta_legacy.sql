@@ -1,4 +1,6 @@
 {{ config(
+	tags=['legacy'],
+	
     schema = 'nft_ethereum',
     alias = alias('trades_beta',legacy_model=True),
     partition_by = ['block_date'],

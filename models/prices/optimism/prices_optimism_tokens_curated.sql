@@ -1,6 +1,6 @@
 {{ config(
         schema='prices_optimism',
-        alias ='tokens_curated',
+        alias = alias('tokens_curated'),
         materialized='table',
         file_format = 'delta',
         tags=['static']

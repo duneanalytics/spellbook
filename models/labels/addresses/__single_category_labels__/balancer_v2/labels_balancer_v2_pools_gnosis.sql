@@ -1,5 +1,5 @@
 {{config(
-    alias='balancer_v2_pools_gnosis',
+    alias = alias('balancer_v2_pools_gnosis'),
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
@@ -108,7 +108,7 @@ settings AS (
     p.symbol AS pool_symbol,
     p.pool_type
     FROM pools p
-    LEFT JOIN {{ ref('tokens_erc20_legacy') }} t ON p.token_address = t.contract_address
+    LEFT JOIN {{ ref('tokens_erc20') }} t ON p.token_address = t.contract_address
 )
 
 SELECT

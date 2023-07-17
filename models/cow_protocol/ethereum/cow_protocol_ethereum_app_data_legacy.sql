@@ -1,4 +1,6 @@
-{{ config(alias=alias('app_data', legacy_model=True),
+{{ config(
+	tags=['legacy'],
+	alias=alias('app_data', legacy_model=True),
         post_hook='{{ expose_spells(\'["ethereum"]\',
                                     "project",
                                     "cow_protocol",
@@ -39,6 +41,7 @@ results as (
         environment,
         order_class,
         referrer,
+        cast(quote.slippageBips as integer) slippage_bips
         cast(quote.slippageBips as integer) slippage_bips,
         utm
         -- There is only one App Data using buyAmount/sellAmount fields.

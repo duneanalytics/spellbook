@@ -1,6 +1,6 @@
 
 {{ config(
-        alias = 'art_blocks_collections'
+        alias = alias('art_blocks_collections')
         )
 }}
 

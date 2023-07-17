@@ -1,6 +1,6 @@
 {{ config(
     schema = 'tigris_v2_polygon',
-    alias = 'positions_leverage'
+    alias = alias('positions_leverage')
     )
  }}
 

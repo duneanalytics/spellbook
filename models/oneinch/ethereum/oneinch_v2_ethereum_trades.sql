@@ -1,6 +1,6 @@
 {{  config(
         schema='oneinch_v2_ethereum',
-        alias='trades',
+        alias = alias('trades'),
         partition_by = ['block_date'],
         on_schema_change='sync_all_columns',
         file_format ='delta',
@@ -162,10 +162,10 @@ INNER JOIN {{ source('ethereum', 'transactions') }} as tx
     {% else %}
     AND tx.block_time >= '{{project_start_date}}'
     {% endif %}
-LEFT JOIN {{ ref('tokens_erc20_legacy') }} as token_bought
+LEFT JOIN {{ ref('tokens_erc20') }} as token_bought
     ON token_bought.contract_address = src.token_bought_address
     AND token_bought.blockchain = '{{blockchain}}'
-LEFT JOIN {{ ref('tokens_erc20_legacy') }} as token_sold
+LEFT JOIN {{ ref('tokens_erc20') }} as token_sold
     ON token_sold.contract_address = src.token_sold_address
     AND token_sold.blockchain = '{{blockchain}}'
 LEFT JOIN {{ source('prices', 'usd') }} as prices_bought
