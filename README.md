@@ -55,10 +55,8 @@ Steps to migrate:
   - update alias property to leverage the new alias macro -- Dune team will maintain this alias macro, it's simply to help differentiate engines & metastores
     - `alias = alias('blocks'),`
   - now it's time to translate the code within to DuneSQL syntax!
-- Update all the references downstream of modified spell(s) to reference legacy spells, to ensure full lineage is on the same engine
-  - for example, any instance of `{{ ref( ) }}` downstream of modified spell(s)
-  - to find downstream spells, the following can be run: `dbt ls --resource-type model --output name --select <insert spell name>+`
-  - **future note:** when downstream spells are also migrated, we will be able to revert back to reference DuneSQL versioned spells. We will be working in a upstream --> downstream lineage path to full migration.
+- to find downstream spells from modified upstream spells, the following can be run: `dbt ls --resource-type model --output name --select <insert spell name>+`
+  - **future note:** when downstream spells are also migrated, we can double check to reference DuneSQL versioned spells. We will be working in a upstream --> downstream lineage path to full migration.
 - PR CI tests will check for this `tag:dunesql` applied and run on spark (`tag:legacy`) or dunesql dependent on if tag exists. the opposite engine will run too, but all steps should have no output and succeed.  
   - the logs of the CI test gh action can still be used to grab table names and query on dune app for ~24 hours – be sure to query on the engine you modify!
 
