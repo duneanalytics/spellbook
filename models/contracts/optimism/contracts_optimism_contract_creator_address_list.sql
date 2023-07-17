@@ -551,6 +551,7 @@ WITH curated_list AS (
       ,(0x4325018916b082B91e277C7165FD8Da6467b71F8, 'Fuji Finance')
       ,(0x0B5a3C04D1199283938fbe887A2C82C808aa89Fb, 'Summer.fi')
       ,(0x7d896339a80dd38bc3bbb04383894c62b2ef2585, 'Worldcoin')
+      ,(0x80dc00811e7c4a03c1f1599d3dc8febaad87bf87, 'Worldcoin')
       ,(0xb02748d3eee8691c94b7c8d6788776aa52571628, 'Hidden Hand')
       ,(0x9DB006063ee2049a35624bCCe32945E524105401, 'NiftyKit')
       ,(0x682bd405073dd248527e40184898ed45bb827527, 'Cozy Finance')

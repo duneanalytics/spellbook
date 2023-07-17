@@ -1,4 +1,5 @@
 {{config(alias = alias('op_retropgf'),
+tags = ['dunesql'],
         post_hook='{{ expose_spells(\'["optimism"]\',
                                     "sector",
                                     "labels",

@@ -1,6 +1,7 @@
 {{
     config(
         alias = alias('coinbase_wallet_quest_participants'),
+        tags = ['dunesql'],
         post_hook='{{ expose_spells(\'["optimism"]\', 
         "sector", 
         "labels", 

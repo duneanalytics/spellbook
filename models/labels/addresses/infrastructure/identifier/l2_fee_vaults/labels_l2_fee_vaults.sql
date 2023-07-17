@@ -1,5 +1,6 @@
 {{config(
     alias = alias('l2_fee_vaults'),
+    tags = ['dunesql'],
     post_hook='{{ expose_spells(\'["optimism"]\',
                                 "sector",
                                 "labels",
