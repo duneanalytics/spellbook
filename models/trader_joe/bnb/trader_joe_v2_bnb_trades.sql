@@ -1,6 +1,6 @@
 {{ config(
     schema = 'trader_joe_v2_bnb',
-    alias = 'trades',
+    alias = alias('trades'),
     partition_by = ['block_date'],
     materialized = 'incremental',
     file_format = 'delta',

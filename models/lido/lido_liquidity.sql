@@ -1,5 +1,5 @@
 {{ config(
-        alias ='liquidity',
+        alias = alias('liquidity'),
         post_hook='{{ expose_spells(\'["ethereum", "arbitrum", "optimism"]\',
                                 "project",
                                 "lido_liquidity",
@@ -18,10 +18,16 @@
  ref('lido_liquidity_arbitrum_balancer_pools'),
  ref('lido_liquidity_optimism_balancer_pools'),
  ref('lido_liquidity_polygon_balancer_pools'),
+ ref('lido_liquidity_ethereum_balancer_pools'),
  ref('lido_liquidity_arbitrum_curve_pools'),
  ref('lido_liquidity_optimism_curve_pools'),
- ref('lido_liquidity_optimism_velodrome_pools'),
  ref('lido_liquidity_ethereum_curve_steth_pool'),
+ ref('lido_liquidity_ethereum_curve_steth_conc_pool'),
+ ref('lido_liquidity_ethereum_curve_steth_ng_pool'),
+ ref('lido_liquidity_ethereum_curve_steth_frxeth_pool'),
+ ref('lido_liquidity_ethereum_curve_wsteth_reth_pool'),
+ ref('lido_liquidity_optimism_velodrome_pools'),
+ ref('lido_liquidity_ethereum_maverick_pools')
 ] %}
 
 

@@ -1,6 +1,6 @@
 {{ config(
     schema='lido_liquidity_optimism',
-    alias = 'kyberswap_pools',
+    alias = alias('kyberswap_pools'),
     partition_by = ['time'],
     materialized = 'table',
     file_format = 'delta',

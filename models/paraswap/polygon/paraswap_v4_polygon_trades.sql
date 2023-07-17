@@ -1,6 +1,6 @@
 {{ config(
     schema = 'paraswap_v4_polygon',
-    alias = 'trades',
+    alias = alias('trades'),
     partition_by = ['block_date'],
     materialized = 'incremental',
     file_format = 'delta',

@@ -1,6 +1,6 @@
 {{ config(
     schema = 'aave_v1_ethereum'
-    , alias='borrow'
+    , alias = alias('borrow')
   )
 }}
 

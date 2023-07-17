@@ -1,5 +1,5 @@
 {{ config(
-        alias ='claims',
+        alias = alias('claims'),
         materialized = 'incremental',
         file_format = 'delta',
         incremental_strategy = 'merge',

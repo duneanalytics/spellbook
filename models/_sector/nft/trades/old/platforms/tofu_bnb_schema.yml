@@ -15,7 +15,7 @@ models:
           combination_of_columns:
             - block_date
             - unique_trade_id
-      - check_seed:
+      - check_seed_legacy:
           seed_file: ref('tofu_bnb_trades_samples')
           match_columns:
             - block_number

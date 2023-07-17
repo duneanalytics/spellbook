@@ -112,15 +112,15 @@ models:
             - tx_hash
             - evt_index
             - trace_address
-      - check_dex_seed:
+      - check_dex_seed_legacy:
           blockchain: arbitrum
           project: DODO
           version: 1
-      - check_dex_seed:
+      - check_dex_seed_legacy:
           blockchain: arbitrum
           project: DODO
           version: 2_dvm
-      - check_dex_seed:
+      - check_dex_seed_legacy:
           blockchain: arbitrum
           project: DODO
           version: 2_dsp
@@ -169,7 +169,7 @@ models:
             - tx_hash
             - evt_index
             - trace_address
-      - check_dex_aggregator_seed:
+      - check_dex_aggregator_seed_legacy:
           blockchain: arbitrum
           project: DODO
           version: 0

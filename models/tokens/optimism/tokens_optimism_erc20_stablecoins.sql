@@ -1,5 +1,5 @@
 {{ config(
-      alias='stablecoins'
+      alias = alias('stablecoins')
       , tags=['static']
       , post_hook='{{ expose_spells(\'["optimism"]\',
                                   "sector",
@@ -61,6 +61,6 @@ FROM (VALUES
 -- -- Enforce that the token is listen in "tokens_optimism_erc20.sql"
 -- -- Pull symbol and decimals from root table
 
-INNER JOIN {{ref('tokens_optimism_erc20')}} et 
+INNER JOIN {{ref('tokens_optimism_erc20')}} et
   ON et.contract_address = tbl.contract_address
   AND et.is_counted_in_tvl = 1 -- Make sure we don't include any receipt or placeholder tokens

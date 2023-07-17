@@ -1,5 +1,5 @@
 {{ config(
-    alias = 'transfer_mapping',
+    alias = alias('transfer_mapping'),
     partition_by = ['block_date'],
     materialized = 'incremental',
     file_format = 'delta',

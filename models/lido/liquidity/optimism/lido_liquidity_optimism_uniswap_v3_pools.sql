@@ -1,6 +1,6 @@
 {{ config(
     schema='lido_liquidity_optimism',
-    alias = 'uniswap_v3_pools',
+    alias = alias('uniswap_v3_pools'),
     partition_by = ['time'],
     materialized = 'table',
     file_format = 'delta',
@@ -32,7 +32,7 @@ left join pools on 1=1
 
 , tokens_mapping as (
 select distinct lower(address_l1) as address_l1, lower(address_l2) as address_l2 from (
-select l1_token as address_l1, l2_token as address_l2 from {{ref('tokens_optimism_erc20_bridged_mapping')}} 
+select l1_token as address_l1, l2_token as address_l2 from {{ref('tokens_optimism_erc20_bridged_mapping')}}
 where l1_token not in (select l1_token from {{ref('tokens_optimism_erc20_bridged_mapping')}} group by 1 having count(*) > 1)
 union 
 select '0x1a7e4e63778B4f12a199C062f3eFdD288afCBce8', '0x9485aca5bbbe1667ad97c7fe7c4531a624c8b1ed' 

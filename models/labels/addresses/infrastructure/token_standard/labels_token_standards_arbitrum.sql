@@ -1,4 +1,4 @@
-{{config(alias='token_standards_arbitrum',
+{{config(alias = alias('token_standards_arbitrum'),
         post_hook='{{ expose_spells(\'["arbitrum"]\',
                                     "sector",
                                     "labels",

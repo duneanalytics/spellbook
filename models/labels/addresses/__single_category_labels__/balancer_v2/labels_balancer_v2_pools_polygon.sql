@@ -1,5 +1,5 @@
 {{config(
-    alias='balancer_v2_pools_polygon',
+    alias = alias('balancer_v2_pools_polygon'),
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',

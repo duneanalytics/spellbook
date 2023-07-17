@@ -1,6 +1,6 @@
 {{ config(
         schema = 'op_chains',
-        alias='chain_list'
+        alias = alias('chain_list')
         , unique_key = ['blockchain', 'chain_id']
         , post_hook='{{ expose_spells(\'["optimism"]\',
                                   "project",

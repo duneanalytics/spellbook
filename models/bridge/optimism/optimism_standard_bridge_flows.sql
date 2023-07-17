@@ -1,5 +1,5 @@
 {{ config(
-    alias = 'standard_bridge_flows',
+    alias = alias('standard_bridge_flows'),
     partition_by = ['block_date'],
     materialized = 'incremental',
     file_format = 'delta',

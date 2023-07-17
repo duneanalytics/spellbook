@@ -1,5 +1,5 @@
 {{ config(
-        alias = 'ringers'
+        alias = alias('ringers')
         )
 }}
 

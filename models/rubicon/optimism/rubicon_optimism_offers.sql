@@ -1,5 +1,6 @@
 {{ config(
-    alias = 'offers',
+    schema = 'rubicon_optimism',
+    alias = alias('offers'),
     partition_by = ['block_date'],
     materialized = 'incremental',
     file_format = 'delta',
