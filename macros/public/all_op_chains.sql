@@ -1,3 +1,3 @@
 {% macro all_op_chains() %}
-   {{ return(array('optimism', 'base','zora')) }}
+   {{ return( ('optimism', 'base','zora') ) }}
 {% endmacro %}
