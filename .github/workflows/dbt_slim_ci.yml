@@ -68,19 +68,19 @@ jobs:
       - name: check schemas
         if: matrix.engine == 'dunesql'
         run: |
-          test=$(dbt --quiet --no-print ls --resource-type model --select  state:modified,config.schema:no_schema --output path --state .)
+          test=$(dbt --quiet --no-print ls $PROFILE --resource-type model --select  state:modified,config.schema:no_schema --output path --state .)
           [[ -z "$test" ]] && { echo "Success: All models have a custom schema"; exit 0; } || { echo "Found models without custom schema:"; echo "$test"; exit 1; }
 
       - name: check duplicate tags
         if: matrix.engine == 'dunesql'
         run: |
-          test=$(dbt --quiet --no-print ls --resource-type model --select state:modified,tag:legacy,tag:dunesql --output path --state .)
+          test=$(dbt --quiet --no-print ls $PROFILE --resource-type model --select state:modified,tag:legacy,tag:dunesql --output path --state .)
           [[ -z "$test" ]] && { echo "Success: No models with both tags"; exit 0; } || { echo "Found models with both dunesql and legacy tags:"; echo "$test"; exit 1; }
 
       - name: check tags
         if: matrix.engine == 'dunesql'
         run: |
-          test=$(dbt --quiet --no-print ls --resource-type model --select state:modified --exclude tag:legacy tag:dunesql --output path --state .)
+          test=$(dbt --quiet --no-print ls $PROFILE --resource-type model --select state:modified --exclude tag:legacy tag:dunesql --output path --state .)
           [[ -z "$test" ]] && { echo "Success: No models without a tag"; exit 0; } || { echo "Found models with no dunesql or legacy tag:"; echo "$test"; exit 1; }
 
       - name: dbt seed
