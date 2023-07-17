@@ -60,7 +60,7 @@ with userop as(
     where hash in (
         select tx_hash from userop
     )
-    and block_time > cast('{{deployed_date}}' as timestamp)
+    and block_time > date '{{deployed_date}}'
     {% if is_incremental() %}
         and block_time >= date_trunc('day', now() - interval '7' day)
     {% endif %}
@@ -68,7 +68,7 @@ with userop as(
 , price as (
     select symbol, decimals, minute, price  
     from {{source('prices','usd')}}
-    where minute > cast('{{deployed_date}}' as timestamp)
+    where minute > date '{{deployed_date}}'
         and contract_address={{wrapped_gas_address}}
         and blockchain='{{chain}}'
         {% if is_incremental() %}
