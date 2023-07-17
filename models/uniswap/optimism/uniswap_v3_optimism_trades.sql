@@ -1,7 +1,7 @@
 {{ config(
     schema = 'uniswap_v3_optimism',
     alias = alias('trades'),
-    tags = ['dunesql'],
+    tags = ['dunesql']
     partition_by = ['block_date'],
     materialized = 'incremental',
     file_format = 'delta',

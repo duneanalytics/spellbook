@@ -2,7 +2,6 @@
   config(
         schema='arrakis',
         alias = alias('uniswap_pools'),
-        tags = ['dunesql'],
         post_hook='{{ expose_spells(\'["optimism"]\',
                                     "project",
                                     "arrakis",
