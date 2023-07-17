@@ -2,7 +2,7 @@
     schema='lido_liquidity_arbitrum',
     alias = alias('kyberswap_pools'),
     tags = ['dunesql'],
-    partition_by = ['day'],
+    partition_by = ['time'],
     materialized = 'table',
     file_format = 'delta',
     unique_key = ['pool', 'time'],
@@ -17,13 +17,13 @@
 
 with dates as (
     with day_seq as (select (sequence(cast('{{ project_start_date }}' as date), cast(now() as date), interval '1' day)) as day)
-select days.day
+select cast(days.day as date)
 from day_seq
 cross join unnest(day) as days(day)
   )
 
-select * from dates 
-/*
+
+
 , pools as (
 select pool as address, 'arbitrum' as blockchain, 'kyberswap' as project, cast(swapFeeUnits as double)/1000 as fee,
 token0, token1
@@ -67,7 +67,7 @@ left join pools on 1=1
       DATE_TRUNC('day', minute) >= date '{{ project_start_date }}' 
       AND DATE_TRUNC('day', minute) < DATE_TRUNC('day', cast(now() as date))
       AND blockchain = 'arbitrum'
-      AND contract_address IN (SELECT address  FROM tokens      )
+      AND contract_address IN (SELECT address  FROM tokens)
     GROUP BY 1, 2,3,4
     UNION ALL
     SELECT DISTINCT
@@ -79,10 +79,7 @@ left join pools on 1=1
         PARTITION BY
           DATE_TRUNC('day', minute),
           contract_address
-        ORDER BY
-          minute NULLS FIRST range BETWEEN UNBOUNDED preceding
-          AND UNBOUNDED following
-      ) AS price
+        ORDER BY minute range BETWEEN UNBOUNDED preceding AND UNBOUNDED following) AS price
     FROM
       {{source('prices','usd')}}
     WHERE
@@ -90,7 +87,7 @@ left join pools on 1=1
       AND blockchain = 'arbitrum'
       AND contract_address IN (SELECT address  FROM tokens)
   )
-*/
+
 /*  
  , tokens_prices_hourly AS (
         select 
@@ -128,7 +125,7 @@ left join pools on 1=1
   )
   
 */
-/*
+
 , swap_events as (
     select 
         date_trunc('day', sw.evt_block_time) as time,
@@ -206,7 +203,7 @@ left join pools on 1=1
     --group by 1,2,3,4
 --)
   
-  */
+
   /*
 , pool_liquidity as (
         SELECT
