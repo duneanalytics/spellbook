@@ -3,4 +3,4 @@
     alias = alias('correct_model'),
     tags = ['dunesql']
 )}}
-select 'test'
+select 'test' as test
