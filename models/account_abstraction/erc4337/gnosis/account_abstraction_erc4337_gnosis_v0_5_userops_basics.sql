@@ -15,7 +15,7 @@
 {% set gas_symbol = 'DAI' %}
 {% set wrapped_gas_address = '0x44fa8e6f47987339850636f88629646662444217' %}
 {% set version = 'v0.5' %}
-{% set deployed_date = '2023-02-15' %}
+{% set deployed_date = '2023-02-15 00:00:00 UTC' %}
 
 -- macros/models/sector/erc4337
 {{
