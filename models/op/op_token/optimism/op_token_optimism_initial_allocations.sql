@@ -38,4 +38,4 @@ SELECT
 , allocation_subcategory
 , pct_supply_allocation*total_initial_supply AS initial_allocated_supply
 
-FROM {{ ref('op_token_optimism_metadata_legacy')}} md , initial_allocation_percentages allo
+FROM {{ ref('op_token_optimism_metadata')}} md , initial_allocation_percentages allo
