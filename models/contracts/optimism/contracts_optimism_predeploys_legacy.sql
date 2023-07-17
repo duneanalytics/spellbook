@@ -1,7 +1,6 @@
  {{
   config(
         alias = alias('predeploys',legacy_model=True),
-        tags = ['legacy'],
         post_hook='{{ expose_spells(\'["optimism"]\',
                                     "sector",
                                     "contracts",
