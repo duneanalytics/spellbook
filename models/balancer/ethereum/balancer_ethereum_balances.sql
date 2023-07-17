@@ -1,6 +1,6 @@
 {{
     config(
-        alias='balances',
+        alias = alias('balances'),
         post_hook='{{ expose_spells_hide_trino(\'["ethereum"]\',
                                     "project",
                                     "balancer",

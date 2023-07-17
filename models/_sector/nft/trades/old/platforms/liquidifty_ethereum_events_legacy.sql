@@ -1,4 +1,6 @@
 {{ config(
+	tags=['legacy'],
+	
     schema = 'liquidifty_ethereum',
     materialized = 'incremental',
     file_format = 'delta',

@@ -1,6 +1,6 @@
 {{config(
         schema='coinbase_wallet_quests_optimism',
-        alias='distributor_addresses',
+        alias = alias('distributor_addresses'),
         post_hook='{{ expose_spells(\'["optimism"]\',
                                     "project",
                                     "coinbase_wallet_quests",

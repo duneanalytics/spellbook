@@ -1,4 +1,6 @@
 {{ config(
+	tags=['legacy'],
+	
     schema = 'liquidifty_bnb',
     alias = alias('events', legacy_model=True),
     materialized = 'incremental',

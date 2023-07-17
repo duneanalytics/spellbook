@@ -1,4 +1,4 @@
-{{config(alias='nft',
+{{config(alias = alias('nft'),
         post_hook='{{ expose_spells(\'["ethereum","solana"]\',
                                     "sector",
                                     "labels",

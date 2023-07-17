@@ -1,5 +1,5 @@
 {{ config(
-    alias ='mints',
+    alias = alias('mints'),
     partition_by = ['block_date'],
     materialized = 'incremental',
     file_format = 'delta',

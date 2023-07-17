@@ -1,5 +1,5 @@
 {{ config(
-    alias = 'addresses',
+    alias = alias('addresses'),
     materialized = 'table',
     file_format = 'delta',
     post_hook='{{ expose_spells(\'["bitcoin", "ethereum", "solana", "arbitrum", "gnosis", "optimism", "bnb", "avalanche_c", "fantom"]\',
@@ -29,7 +29,7 @@
 
 -- new/standardized labels
 {% set standardized_labels_models = [
-    ref('labels_bridges_legacy')
+    ref('labels_bridges')
     , ref('labels_dex')
     , ref('labels_social')
     , ref('labels_nft')

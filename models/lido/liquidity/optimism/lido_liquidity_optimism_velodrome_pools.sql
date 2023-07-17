@@ -1,6 +1,6 @@
 {{ config(
     schema='lido_liquidity_optimism',
-    alias = 'velodrome_pools',
+    alias = alias('velodrome_pools'),
     partition_by = ['time'],
     materialized = 'table',
     file_format = 'delta',

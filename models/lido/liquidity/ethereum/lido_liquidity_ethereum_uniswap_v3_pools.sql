@@ -1,5 +1,5 @@
 {{ config(
-    alias = 'uniswap_v3_pools',
+    alias = alias('uniswap_v3_pools'),
     partition_by = ['time'],
     materialized = 'table',
     file_format = 'delta',
