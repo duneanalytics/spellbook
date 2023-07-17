@@ -16,7 +16,10 @@ WITH wld_deployers AS (
     SELECT
     to as worldcoin_deployer_address
     FROM {{ source('optimism','transactions') }}
-    WHERE "from" = 0x86c5608362b3fbbeb721140472229392f754ef87
+    WHERE "from" IN (
+                 0x86c5608362b3fbbeb721140472229392f754ef87
+                ,0x80dc00811e7c4a03c1f1599d3dc8febaad87bf87
+                )
     AND value > cast(0 as uint256)
     AND block_number >= 105870092 --first transfer
     -- don't do incremental here, we want to always build this subaccount list (maybe an eventual spell)
