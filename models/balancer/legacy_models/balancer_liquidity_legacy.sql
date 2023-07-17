@@ -2,8 +2,7 @@
         tags=['legacy'],
 	schema = 'balancer',
         alias = alias('liquidity', legacy_model=True)
-        post_hook='{{ expose_spells(\'["ethereum","arbitrum", "optimism", "polygon", "gnosis","avalanche_c" 
-        ]\',
+        post_hook='{{ expose_spells(\'["ethereum", "arbitrum", "optimism", "polygon", "gnosis", "avalanche_c"]\',
                                 "project",
                                 "balancer",
                                 \'["viniabussafi"]\') }}'
