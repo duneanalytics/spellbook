@@ -1,6 +1,7 @@
 {{ config(
     schema = 'uniswap_v3_optimism',
     alias = alias('trades'),
+    tags = ['dunesql'],
     partition_by = ['block_date'],
     materialized = 'incremental',
     file_format = 'delta',
@@ -22,22 +23,22 @@ WITH dexs AS
         t.evt_block_time AS block_time
         , t.evt_block_number
         , t.recipient AS taker
-        ,'' AS maker
-        ,CASE WHEN amount0 < '0' THEN abs(amount0) ELSE abs(amount1) END AS token_bought_amount_raw -- when amount0 is negative it means trader_a is buying token0 from the pool
-        ,CASE WHEN amount0 < '0' THEN abs(amount1) ELSE abs(amount0) END AS token_sold_amount_raw
+        ,CAST(NULL AS varbinary) AS maker
+        ,CASE WHEN amount0 < cast(0 as int256) THEN abs(amount0) ELSE abs(amount1) END AS token_bought_amount_raw -- when amount0 is negative it means trader_a is buying token0 from the pool
+        ,CASE WHEN amount0 < cast(0 as int256) THEN abs(amount1) ELSE abs(amount0) END AS token_sold_amount_raw
         ,NULL AS amount_usd
-        ,LOWER(CASE WHEN amount0 < '0' THEN f.token0 ELSE f.token1 END) AS token_bought_address
-        ,LOWER(CASE WHEN amount0 < '0' THEN f.token1 ELSE f.token0 END) AS token_sold_address
+        ,LOWER(CASE WHEN amount0 < cast(0 as int256) THEN f.token0 ELSE f.token1 END) AS token_bought_address
+        ,LOWER(CASE WHEN amount0 < cast(0 as int256) THEN f.token1 ELSE f.token0 END) AS token_sold_address
         ,CAST(t.contract_address as string) as project_contract_address
         ,t.evt_tx_hash AS tx_hash
         ,'' AS trace_address
         ,t.evt_index
     FROM
         {{ source('uniswap_v3_optimism', 'Pair_evt_Swap') }} t
-    INNER JOIN {{ ref('uniswap_optimism_pools_legacy') }} f
+    INNER JOIN {{ ref('uniswap_optimism_pools') }} f
         ON f.pool = t.contract_address
     {% if is_incremental() %}
-    WHERE t.evt_block_time >= date_trunc('day', now() - interval '1 week')
+    WHERE t.evt_block_time >= date_trunc('day', now() - interval '7' day)
     {% endif %}
 )
 SELECT
@@ -52,14 +53,14 @@ SELECT
         when lower(erc20a.symbol) > lower(erc20b.symbol) then concat(erc20b.symbol, '-', erc20a.symbol)
         else concat(erc20a.symbol, '-', erc20b.symbol)
     end as token_pair
-    ,dexs.token_bought_amount_raw / power(10, erc20a.decimals) AS token_bought_amount
-    ,dexs.token_sold_amount_raw / power(10, erc20b.decimals) AS token_sold_amount
-    ,CAST(dexs.token_bought_amount_raw AS DECIMAL(38,0)) AS token_bought_amount_raw
-    ,CAST(dexs.token_sold_amount_raw AS DECIMAL(38,0)) AS token_sold_amount_raw
+    ,cast( dexs.token_bought_amount_raw as double) / cast( power(10, erc20a.decimals) as double) AS token_bought_amount
+    ,cast( dexs.token_sold_amount_raw as double) / cast( power(10, erc20b.decimals) as double) AS token_sold_amount
+    ,CAST(dexs.token_bought_amount_raw AS double) AS token_bought_amount_raw
+    ,CAST(dexs.token_sold_amount_raw AS double) AS token_sold_amount_raw
     ,coalesce(
         dexs.amount_usd
-        ,(dexs.token_bought_amount_raw / power(10, p_bought.decimals)) * p_bought.price
-        ,(dexs.token_sold_amount_raw / power(10, p_sold.decimals)) * p_sold.price
+        ,(cast( dexs.token_bought_amount_raw as double) / cast( power(10, p_bought.decimals) as double)) * p_bought.price
+        ,(cast( dexs.token_sold_amount_raw as double) / cast( power(10, p_sold.decimals) as double)) * p_sold.price
     ) AS amount_usd
     ,dexs.token_bought_address
     ,dexs.token_sold_address
@@ -76,10 +77,10 @@ INNER JOIN {{ source('optimism', 'transactions') }} tx
     ON tx.hash = dexs.tx_hash
     AND tx.block_number = dexs.evt_block_number
     {% if not is_incremental() %}
-    AND tx.block_time >= '{{project_start_date}}'
+    AND tx.block_time >= cast('{{project_start_date}}' as timestamp)
     {% endif %}
     {% if is_incremental() %}
-    AND tx.block_time >= date_trunc('day', now() - interval '1' week)
+    AND tx.block_time >= date_trunc('day', now() - interval '7' day)
     {% endif %}
 LEFT JOIN {{ ref('tokens_erc20') }} erc20a
     ON erc20a.contract_address = dexs.token_bought_address 
@@ -92,19 +93,19 @@ LEFT JOIN {{ source('prices', 'usd') }} p_bought
     AND p_bought.contract_address = dexs.token_bought_address
     AND p_bought.blockchain = 'optimism'
     {% if not is_incremental() %}
-    AND p_bought.minute >= '{{project_start_date}}'
+    AND p_bought.minute >= cast('{{project_start_date}}' as timestamp)
     {% endif %}
     {% if is_incremental() %}
-    AND p_bought.minute >= date_trunc('day', now() - interval '1 week')
+    AND p_bought.minute >= date_trunc('day', now() - interval '7' day)
     {% endif %}
 LEFT JOIN {{ source('prices', 'usd') }} p_sold
     ON p_sold.minute = date_trunc('minute', dexs.block_time)
     AND p_sold.contract_address = dexs.token_sold_address
     AND p_sold.blockchain = 'optimism'
     {% if not is_incremental() %}
-    AND p_sold.minute >= '{{project_start_date}}'
+    AND p_sold.minute >= cast('{{project_start_date}}' as timestamp)
     {% endif %}
     {% if is_incremental() %}
-    AND p_sold.minute >= date_trunc('day', now() - interval '1 week')
+    AND p_sold.minute >= date_trunc('day', now() - interval '7' day)
     {% endif %}
 ;
