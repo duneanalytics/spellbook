@@ -556,6 +556,7 @@ WITH curated_list AS (
       ,(0x682bd405073dd248527e40184898ed45bb827527, 'Cozy Finance')
       ,(0xA58090dd84D143ca90e95B05395e0F116A727714, 'Optimism Governor')
       ,(0x9AaC739c133074dB445183A95149880a2156541A, 'OpenSea')
+      ,(0x9f6798ec61a30e27f94db7e6af678d179662b27c, 'Chainlink')
       
   ) as temp_table (creator_address, contract_project)
 )
