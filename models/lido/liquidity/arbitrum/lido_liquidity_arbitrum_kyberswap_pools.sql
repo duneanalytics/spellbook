@@ -17,12 +17,11 @@
 
 with dates as (
     with day_seq as (select (sequence(cast('{{ project_start_date }}' as date), cast(now() as date), interval '1' day)) as day)
-
 select days.day
 from day_seq
 cross join unnest(day) as days(day)
   )
- 
+
 , pools as (
 select pool as address, 'arbitrum' as blockchain, 'kyberswap' as project, cast(swapFeeUnits as double)/1000 as fee,
 token0, token1
@@ -87,7 +86,7 @@ left join pools on 1=1
     WHERE
       DATE_TRUNC('day', minute) = DATE_TRUNC('day', NOW())
       AND blockchain = 'arbitrum'
-      AND contract_address IN (SELECT address  FROM tokens      )
+      AND contract_address IN (SELECT address  FROM tokens)
   )
   
  , tokens_prices_hourly AS (
