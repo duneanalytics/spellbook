@@ -14,11 +14,11 @@
 SELECT distinct
     'optimism' AS blockchain,
 
-    CONCAT(COALESCE(e0.symbol,cast(token0 as varchar) )
+    CONCAT(COALESCE(e0.symbol,token0)
             , '/'
-            ,COALESCE(e1.symbol,cast(token1 as varcahr) )
+            ,COALESCE(e1.symbol,token1)
             ,'-'
-            , TRIM(cast( ROUND(cast(fee as double) / 1e4, 2) AS varchar))
+            , TRIM(CAST(CAST(ROUND(fee / 1e4, 2) AS DECIMAL(20, 2)) AS VARCHAR(10) ))
             ,'%'
             ,'-'
             ,CAST( ROW_NUMBER() OVER (PARTITION BY uniPool ORDER BY pc.evt_block_time ASC) AS VARCHAR(10) )
@@ -38,5 +38,5 @@ FROM {{ source('arrakis_optimism', 'ArrakisFactoryV1_evt_PoolCreated') }} pc
         AND e1.blockchain = 'optimism'
 
 {% if is_incremental() %}
-WHERE pc.evt_block_time >= date_trunc('day', now() - interval '1' month)
+WHERE pc.evt_block_time >= date_trunc('day', now() - interval '1 month')
 {% endif %}
