@@ -1,5 +1,6 @@
 {{ config(
         alias=alias('trade_slippage', legacy_model=True),
+        tags=['legacy'],
         post_hook='{{ expose_spells(\'["ethereum"]\',
                                     "project",
                                     "cow_protocol",
