@@ -29,7 +29,7 @@ WITH tx_batch_appends AS (
       FROM source('arbitrum_ethereum', 'SequencerInbox_evt_SequencerBatchDeliveredFromOrigin') o
       WHERE evt_block_time >= timestamp '2022-01-01'
       {% if is_incremental() %}
-          and evt_block_time >= date_trunc("day", now() - interval '7' day)
+          and evt_block_time >= date_trunc('day', now() - interval '7' day)
       {% endif %}
 
       UNION ALL
@@ -45,7 +45,7 @@ WITH tx_batch_appends AS (
       WHERE evt_block_time >= timestamp '2022-01-01'
       )
       {% if is_incremental() %}
-          and call_block_time >= date_trunc("day", now() - interval '7' day)
+          and call_block_time >= date_trunc('day', now() - interval '7' day)
       {% endif %}
 
       UNION ALL
@@ -61,7 +61,7 @@ WITH tx_batch_appends AS (
       WHERE evt_block_time >= timestamp '2022-01-01'
       )
       {% if is_incremental() %}
-          and call_block_time >= date_trunc("day", now() - interval '7' day)
+          and call_block_time >= date_trunc('day', now() - interval '7' day)
       {% endif %}
 
       UNION ALL
@@ -77,7 +77,7 @@ WITH tx_batch_appends AS (
       WHERE evt_block_time >= timestamp '2022-01-01'
       )
       {% if is_incremental() %}
-          and call_block_time >= date_trunc("day", now() - interval '7' day)
+          and call_block_time >= date_trunc('day', now() - interval '7' day)
       {% endif %}
     )b
     INNER JOIN source('ethereum','transactions') t
@@ -87,7 +87,7 @@ WITH tx_batch_appends AS (
     AND success = true
     AND t.block_time >= timestamp '2022-01-01'
     {% if is_incremental() %}
-        and block_time >= date_trunc("day", now() - interval '7' day)
+        and block_time >= date_trunc('day', now() - interval '7' day)
     {% endif %}
 
     UNION ALL
@@ -110,7 +110,7 @@ WITH tx_batch_appends AS (
       )
     WHERE t.block_time >= timestamp '2022-01-01'
     {% if is_incremental() %}
-        and block_time >= date_trunc("day", now() - interval '7' day)
+        and block_time >= date_trunc('day', now() - interval '7' day)
     {% endif %}
 
 )
@@ -120,7 +120,7 @@ WITH tx_batch_appends AS (
     FROM source('ethereum','blocks') AS b
     WHERE b.time >= timestamp '2022-01-01'
     {% if is_incremental() %}
-        and b.time >= date_trunc("day", now() - interval '7' day)
+        and b.time >= date_trunc('day', now() - interval '7' day)
     {% endif %}
 )
 
