@@ -1,6 +1,7 @@
 {{ config(
     schema = 'paraswap_v5_fantom',
     alias = alias('trades'),
+    tags = ['dunesql'],
     partition_by = ['block_date'],
     materialized = 'incremental',
     file_format = 'delta',
@@ -34,22 +35,22 @@ dexs as (
             srcAmount as token_sold_amount_raw,
             CAST(NULL as double) as amount_usd,
             CASE 
-                WHEN destToken = '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee'
-                THEN '0x21be370d5312f44cb42ce377bc9b8a0cef1a4c83' -- wftm 
+                WHEN destToken = 0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee
+                THEN 0x21be370d5312f44cb42ce377bc9b8a0cef1a4c83 -- wftm 
                 ELSE destToken
             END as token_bought_address,
             CASE 
-                WHEN srcToken = '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee'
-                THEN '0x21be370d5312f44cb42ce377bc9b8a0cef1a4c83' -- wftm 
+                WHEN srcToken = 0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee
+                THEN 0x21be370d5312f44cb42ce377bc9b8a0cef1a4c83 -- wftm 
                 ELSE srcToken
             END as token_sold_address,
             contract_address as project_contract_address,
             evt_tx_hash as tx_hash, 
-            CAST(ARRAY() as array<bigint>) AS trace_address,
+            ARRAY[] AS trace_address,
             evt_index
         FROM {{ trade_tables }} p 
         {% if is_incremental() %}
-        WHERE p.evt_block_time >= date_trunc("day", now() - interval '1 week')
+        WHERE p.evt_block_time >= date_trunc("day", now() - interval '7' day)
         {% endif %}
         {% if not loop.last %}
         UNION ALL
@@ -79,11 +80,11 @@ SELECT
     ) AS amount_usd,
     dexs.token_bought_address,
     dexs.token_sold_address,
-    coalesce(dexs.taker, tx.from) AS taker,
+    coalesce(dexs.taker, tx."from") AS taker,
     dexs.maker,
     dexs.project_contract_address,
     dexs.tx_hash,
-    tx.from AS tx_from,
+    tx."from" AS tx_from,
     tx.to AS tx_to,
     dexs.trace_address,
     dexs.evt_index
@@ -92,10 +93,10 @@ inner join {{ source('fantom', 'transactions') }} tx
     on dexs.tx_hash = tx.hash
     and dexs.block_number = tx.block_number
     {% if not is_incremental() %}
-    and tx.block_time >= '{{project_start_date}}'
+    and tx.block_time >= date('{{project_start_date}}')
     {% endif %}
     {% if is_incremental() %}
-    and tx.block_time >= date_trunc("day", now() - interval '1 week')
+    and tx.block_time >= date_trunc("day", now() - interval '7' day)
     {% endif %}
 left join {{ ref('tokens_erc20') }} erc20a
     on erc20a.contract_address = dexs.token_bought_address
@@ -108,18 +109,18 @@ left join {{ source('prices', 'usd') }} p_bought
     and p_bought.contract_address = dexs.token_bought_address
     and p_bought.blockchain = 'fantom'
     {% if not is_incremental() %}
-    and p_bought.minute >= '{{project_start_date}}'
+    and p_bought.minute >= date('{{project_start_date}}')
     {% endif %}
     {% if is_incremental() %}
-    and p_bought.minute >= date_trunc("day", now() - interval '1 week')
+    and p_bought.minute >= date_trunc("day", now() - interval '7' day)
     {% endif %}
 left join {{ source('prices', 'usd') }} p_sold
     on p_sold.minute = date_trunc('minute', dexs.block_time)
     and p_sold.contract_address = dexs.token_sold_address
     and p_sold.blockchain = 'fantom'
     {% if not is_incremental() %}
-    and p_sold.minute >= '{{project_start_date}}'
+    and p_sold.minute >= date('{{project_start_date}}')
     {% endif %}
     {% if is_incremental() %}
-    and p_sold.minute >= date_trunc("day", now() - interval '1 week')
+    and p_sold.minute >= date_trunc("day", now() - interval '7' day)
     {% endif %}
