@@ -18,8 +18,8 @@ WITH tx_batch_appends AS (
     t.block_time,
     t.block_number,
     t.hash,
-    cast(gas_used as double) * (cast(gas_price as double) / 1e18) AS gas_spent,
-    (length(t.data)) AS data_length
+    (cast(gas_used as double) * (cast(gas_price as double) / 1e18)) AS gas_spent,
+    length(t.data) AS data_length
     FROM
     (
       SELECT
@@ -96,8 +96,8 @@ WITH tx_batch_appends AS (
       t.block_time,
       t.block_number,
       t.hash,
-      cast(gas_used as double) * (cast(gas_price as double) / 1e18) AS gas_spent,
-      (length(t.data)) AS data_length
+      (cast(gas_used as double) * (cast(gas_price as double) / 1e18)) AS gas_spent,
+      length(t.data) AS data_length
     FROM
       source('ethereum','transactions') AS t
       INNER JOIN source('dune_upload','op_stack_chain_metadata') op ON (
