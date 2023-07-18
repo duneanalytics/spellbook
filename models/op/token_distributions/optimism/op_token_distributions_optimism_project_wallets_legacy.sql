@@ -62,6 +62,11 @@ FROM (values
     ,('0x5ad276439e3772fdb6696b6cb61401902d4e8b72', 'Geo Web', 'Protocol Treasury')
     ,('0x94beC50afA856533603DF45639aC11c7E6A64c1f', 'Airgap Wallet', 'Team Wallet')
     ,('0x5248be8b6c9b7257695275ebd7c3918326151ae6', 'Synthetix', 'Multisig')
+    ,('0x450F82319f940936F1f4F253B468c3e6E566Cdd5', 'Synapse', 'OTC Wallet')
+    ,('0xB8313Eaf73AED8fEa1D9930dF199B3c1Bdb67b47', 'Paraswap', 'Multisig')
+    ,('0x0BeBD2FcA9854F657329324aA7dc90F656395189', 'Rotki', 'Multisig')
+    ,('0x634977e11C823a436e587C1a1Eca959588C64287', 'Giveth', 'Grants Wallet')
+    ,('0x4D9339dd97db55e3B9bCBE65dE39fF9c04d1C2cd', 'Giveth', 'Multisig')
 
     --quix - should come from CB
     ,('0x5Ad4A019F77e82940f6Dd15A5215362AF061A742','Quix','Distributor')
@@ -230,6 +235,12 @@ FROM (values
 
     --grants deployed
     ,('0xC98786D5A7a03C1e74AffCb97fF7eF8a710DA09B', 'Karma', 'Karma - Grant')
+
+
+    ,('0x973b9A7D490f06FEa3dd06432Cea3b097E9Cecb9', 'Vesper', 'vaETH Rewards')
+    ,('0x6104D21888CD996918C8cbA7480C71271DEE3120', 'Vesper', 'vaUSDC Rewards')
+    ,('0xE91172020777b03a94627dBe0b94c6b8389Fb99C', 'Vesper', 'vaOP Rewards')
+    ,('0x94E38F592d92964ebe0684A65F1318b91Dc54E9e', 'Vesper', 'vaETH Rewards')
     
     
     ) a (address, proposal_name, address_descriptor)

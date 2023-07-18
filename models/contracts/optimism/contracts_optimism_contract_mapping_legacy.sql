@@ -301,7 +301,7 @@ WHERE contract_order = 1
     on f.creator_address = cc.creator_address
   left join {{ ref('contracts_optimism_contract_creator_address_list_legacy') }} as ccf
     on f.contract_factory = ccf.creator_address
-  left join {{ ref('contracts_optimism_contract_creator_address_list') }} as cctr
+  left join {{ ref('contracts_optimism_contract_creator_address_list_legacy') }} as cctr
     on f.trace_creator_address = cctr.creator_address
 
   where f.contract_address is not null
