@@ -58,8 +58,8 @@ borrows as (
         CAST(point_amount as double) as lien_amount_raw,
         point_last as lien_start, 
         point_end as lien_end, 
-        CAST(point_lienId as VARCHAR(64)) as lien_id, 
-        CAST(lien_collateralId as VARCHAR(64)) as lien_collateral_id, 
+        CAST(point_lienId as VARCHAR) as lien_id, 
+        CAST(lien_collateralId as VARCHAR) as lien_collateral_id, 
         b.contract_address
     FROM 
     borrows_tmp b 
@@ -146,7 +146,7 @@ repays as (
         CAST(r.amount as double) as lien_amount_raw,
         b.lien_start, 
         b.lien_end, 
-        CAST(r.lienId as VARCHAR(64)) as lien_id, 
+        CAST(r.lienId as VARCHAR) as lien_id, 
         b.lien_collateral_id,
         r.contract_address
     FROM 
@@ -154,23 +154,23 @@ repays as (
     INNER JOIN 
     borrows_join b 
         ON b.evt_type = 'borrow'
-        AND CAST(r.lienId as VARCHAR(64)) = b.lien_id
+        AND CAST(r.lienId as VARCHAR) = b.lien_id
     INNER JOIN (
             SELECT 
                 MAX(b.evt_block_number) as borrow_block_number, 
                 r.evt_block_number,
-                CAST(r.lienId as VARCHAR(64)) as lien_id 
+                CAST(r.lienId as VARCHAR) as lien_id 
             FROM 
             repays_table r 
             INNER JOIN 
             borrows_join b 
                 ON b.evt_type = 'borrow'
-                AND CAST(r.lienId as VARCHAR(64)) = b.lien_id
+                AND CAST(r.lienId as VARCHAR) = b.lien_id
                 AND r.evt_block_number >= b.evt_block_number
             WHERE r.evt_tx_hash IN (SELECT call_tx_hash FROM repays_calls )
             GROUP BY 2, 3 
         ) a 
-        ON CAST(r.lienId as VARCHAR(64)) = a.lien_id
+        ON CAST(r.lienId as VARCHAR) = a.lien_id
         AND b.evt_block_number = a.borrow_block_number
         AND r.evt_block_number = a.evt_block_number
     WHERE r.evt_tx_hash IN (SELECT call_tx_hash FROM repays_calls)
@@ -216,7 +216,7 @@ liquidation_tmp as (
         b.lien_start, 
         b.lien_end, 
         b.lien_id, 
-        CAST(l.collateralId as VARCHAR(64)) as lien_collateral_id,
+        CAST(l.collateralId as VARCHAR) as lien_collateral_id,
         l.contract_address
         -- CONCAT(CAST(l.evt_tx_hash AS VARCHAR), CAST(b.lien_id AS VARCHAR), CAST(b.lien_start as VARCHAR)) as unique_id 
     FROM 
@@ -224,12 +224,12 @@ liquidation_tmp as (
     INNER JOIN 
     borrows_join b 
         ON b.evt_type = 'borrow'
-        AND CAST(collateralId as VARCHAR(64)) = b.lien_collateral_id
+        AND CAST(collateralId as VARCHAR) = b.lien_collateral_id
         AND l.evt_block_number > b.evt_block_number
         AND l.evt_block_time > from_unixtime(CAST(b.lien_start AS DOUBLE))
     INNER JOIN 
     repays_join r 
-        ON CONCAT(CAST(b.lien_id as VARCHAR(64)), CAST(b.lien_start as VARCHAR(10))) != CONCAT(CAST(r.lien_id as VARCHAR(64)), CAST(r.lien_start as VARCHAR(10)))
+        ON CONCAT(CAST(b.lien_id as VARCHAR), CAST(b.lien_start as VARCHAR)) != CONCAT(CAST(r.lien_id as VARCHAR), CAST(r.lien_start as VARCHAR))
         -- AND r.evt_type = 'repay'
 ), 
 
@@ -286,10 +286,10 @@ SELECT
     d.nft_token_standard,
     d.collateral_token_contract as nft_contract_address, 
     CASE WHEN d.collateral_token_contract = 0x9ff70d528830e47154224dc5c185e4d052d0fb99 THEN 'Bad Trip' ELSE d.nft_collection END as nft_collection, 
-    CAST(d.collateral_token_id as VARCHAR(64)) as nft_token_id 
+    CAST(d.collateral_token_id as VARCHAR) as nft_token_id 
 FROM 
 all_events ae 
 INNER JOIN 
 {{ ref('astaria_ethereum_daily_deposits') }} d
-    ON ae.lien_collateral_id = CAST(d.collateral_id as VARCHAR(42))
+    ON ae.lien_collateral_id = CAST(d.collateral_id as VARCHAR)
     AND TRY_CAST(date_trunc('DAY', ae.evt_block_time) AS date) = d.day
