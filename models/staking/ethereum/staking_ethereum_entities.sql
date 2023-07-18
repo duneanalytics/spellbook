@@ -127,7 +127,7 @@ FROM
 
     SELECT coinbase.address
     , 'Coinbase' AS name
-    , 'Coinbase ' || ROW_NUMBER() OVER (ORDER BY MIN(coinbase.block_time)) AS entity_unique_name
+    , CONCAT('Coinbase ', ROW_NUMBER() OVER (ORDER BY MIN(coinbase.block_time))) AS entity_unique_name
     , 'CEX' AS category
     FROM (
             SELECT
@@ -158,7 +158,7 @@ FROM
 
     SELECT binance.address
     , 'Binance' AS name
-    , 'Binance ' || ROW_NUMBER() OVER (ORDER BY MIN(t.block_time)) AS entity_unique_name
+    , CONCAT('Binance ', ROW_NUMBER() OVER (ORDER BY MIN(t.block_time))) AS entity_unique_name
     , 'CEX' AS category
     FROM (
         SELECT 0xf17aced3c7a8daa29ebb90db8d1b6efd8c364a18 AS address
@@ -192,7 +192,7 @@ FROM
     
     SELECT address
     , entity AS name
-    , entity || ' ' || ROW_NUMBER() OVER (PARTITION BY entity ORDER BY first_used) AS entity_unique_name
+    , CONCAT(entity, ' ', ROW_NUMBER() OVER (PARTITION BY entity ORDER BY first_used)) AS entity_unique_name
     , category AS category
     FROM (
         SELECT traces."from" AS address
