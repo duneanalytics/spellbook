@@ -41,7 +41,7 @@
     ,"token_standard"
     ,"code_deploy_rank"
 ] %}
-    
+
 
 with base_level as (
 SELECT *
@@ -72,6 +72,7 @@ SELECT *
     ,ROW_NUMBER() OVER (PARTITION BY code ORDER BY created_block_number ASC, created_tx_index ASC) AS code_deploy_rank
     ,ROW_NUMBER() OVER (PARTITION BY contract_address ORDER BY created_time ASC ) AS contract_order -- to ensure no dupes
     ,to_iterate_creators
+
   from (
     select 
       ct."from" as creator_address
@@ -246,7 +247,6 @@ WHERE contract_order = 1
       ,b.code_bytelength
       ,b.is_self_destruct
       ,b.code_deploy_rank
-      ,b.contract_order
       ,b.to_iterate_creators --check if base needs to be iterated, keep the base option
 
     {% if loop.first -%}
@@ -291,7 +291,6 @@ WHERE contract_order = 1
     ,f.code_bytelength
     ,f.is_self_destruct
     ,f.code_deploy_rank
-    ,f.contract_order
   from (
     SELECT * FROM level{{max_levels - 1}} WHERE to_iterate_creators = 1 --get mapped contracts
     UNION ALL
@@ -336,7 +335,6 @@ WHERE contract_order = 1
   left join {{ source('optimism', 'contracts') }} as oc 
     on cc.contract_address = oc.address 
   group by 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24
-
   
   union all
   -- missing contracts
@@ -410,7 +408,6 @@ WHERE contract_order = 1
     and 1=0 --do not run on incremental builds
     {% endif %}
     GROUP BY 1,2,3,4,5,6,7,8,9
-
 )
 
 ,get_contracts as (
