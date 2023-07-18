@@ -1,6 +1,5 @@
 {{ config(
     alias = alias('pools'),
-    tags = ['dunesql'],
     post_hook='{{ expose_spells(\'["polygon"]\',
                                 "project",
                                 "timeswap",
@@ -12,130 +11,130 @@
 SELECT
     token0_symbol,
     token1_symbol,
-     token0_address  as token0_address,
-     token1_address  as token1_address,
+    lower(token0_address) as token0_address,
+    lower(token1_address) as token1_address,
     token0_decimals,
     token1_decimals,
     strike,
     maturity,
     pool_pair,
     chain,
-     borrow_contract_address  as borrow_contract_address,
-     lend_contract_address  as lend_contract_address
+    lower(borrow_contract_address) as borrow_contract_address,
+    lower(lend_contract_address) as lend_contract_address
 FROM
     (
         VALUES
             (
                 'USDC',
                 'WETH',
-                0x2791bca1f2de4661ed88a30c99a7a9449aa84174,
-                0x7ceb23fd6bc0add59e62ac25578270cff1b9f619,
+                '0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174',
+                '0x7ceB23fD6bC0adD59E62ac25578270cFf1b9f619',
                 6,
                 18,
                 '237490072735998707284173473430675352952919527482',
                 '1677513600',
                 'USDC-WETH',
                 'Polygon',
-                0x7f7b71d60027aee523fffac9cc17ebf7915f1d02,
-                0xb0eb735b0246bb11fb57db28df5370d72c153314
+                '0x7f7B71d60027aEE523FFfac9cC17ebF7915f1d02',
+                '0xb0EB735B0246bB11Fb57DB28DF5370D72C153314'
             ),
             (
                 'stMATIC', 
                 'MIMATIC', 
-                0x3a58a54c066fdc0f2d55fc9c89f0415c92ebf3c4,
-                0xa3fa99a148fa48d14ed51d610c367c61876997f1,
+                '0x3A58a54C066FdC0f2D55FC9C89F0415C92eBf3C4',
+                '0xa3Fa99A148fA48D14Ed51d610c367C61876997F1',
                 18,
                 18,
                 '340282366920938463463374607431768211456',
                 '1679918400',
                 'stMATIC-MIMATIC', 
                 'Polygon',
-                0x477c3ab5c9811e87dee1fbd43d5357427b749b21,
-                0x1a3a964bba5e918f9630c26d1f772021b0e03cac
+                '0x477C3AB5c9811e87dEE1fBd43D5357427B749b21',
+                '0x1a3a964BBa5e918f9630C26D1f772021B0e03CAc'
             ),
             (
                 'USDC', 
                 'USDT', 
-                0x2791bca1f2de4661ed88a30c99a7a9449aa84174,
-                0xc2132d05d31c914a87c6611c10748aeb04b58e8f,
+                '0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174',
+                '0xc2132D05D31c914a87C6611C10748AEb04B58e8F',
                 6,
                 6,
                 '279031540875169540039967178094049933393',
                 '1678795200', 
                 'USDC-USDT',
                 'Polygon',
-                0xe14f43397584d138315c113ef6a82010ab84b701,
-                0xab30a405c28fb1c1466f5bfa03bdba63e1b36584
+                '0xe14f43397584d138315C113eF6A82010ab84B701',
+                '0xAb30A405C28fb1c1466f5BFa03BdBa63e1b36584'
             ),
             (
                 'USDC', 
                 'stMATIC', 
-                0x2791bca1f2de4661ed88a30c99a7a9449aa84174,
-                0x3a58a54c066fdc0f2d55fc9c89f0415c92ebf3c4,
+                '0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174',
+                '0x3A58a54C066FdC0f2D55FC9C89F0415C92eBf3C4',
                 6,
                 18,
                 '170141183460469231731687303715884105728000000000000',
                 '1682337600', 
                 'USDC-stMATIC', 
                 'Polygon',
-                0x990a70f9a33d748c90dd05c302daffd3fffaa2a7,
-                0x36b34ab7538061089700ba976ba7e88d7ad500e9
+                '0x990A70F9a33d748C90Dd05c302dAFfd3FFFAA2a7',
+                '0x36b34aB7538061089700Ba976BA7e88d7ad500e9'
             ),
             (
                 'USDC',
                 'QUICK', 
-                0x2791bca1f2de4661ed88a30c99a7a9449aa84174,
-                0xb5c064f955d8e7f38fe0460c556a72987494ee17,
+                '0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174',
+                '0xB5C064F955D8e7F38fE0460C556a72987494eE17',
                 6,
                 18,
                 '2617556668622603565102881595628986241969230769230769',
                 '1684929600', 
                 'USDC-QUICK',
                 'Polygon',
-                0xb9385afc6ddf565c0256116aa3415efdfca1e872,
-                0x880d3fc39683ecbfd7636cc48d5fcc34508ca7c3
+                '0xb9385AfC6Ddf565C0256116Aa3415EfdFca1E872',
+                '0x880D3fc39683Ecbfd7636cc48D5FCc34508ca7c3'
             ),
             (
                 'USDC',
                 'dQUICK',
-                0x2791bca1f2de4661ed88a30c99a7a9449aa84174,
-                0x958d208cdf087843e9ad98d23823d32e17d723a1,
+                '0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174',
+                '0x958d208Cdf087843e9AD98d23823d32E17d723A1',
                 6,
                 18,
                 '3402823669209384634633746074317682114560000000000000',
                 '1687521600',
                 'USDC-dQUICK',
                 'Polygon',
-                0xb9385afc6ddf565c0256116aa3415efdfca1e872,
-                0x880d3fc39683ecbfd7636cc48d5fcc34508ca7c3
+                '0xb9385AfC6Ddf565C0256116Aa3415EfdFca1E872',
+                '0x880D3fc39683Ecbfd7636cc48D5FCc34508ca7c3'
             ),
             (
                 'USDC',
                 'stMATIC',
-                0x2791bca1f2de4661ed88a30c99a7a9449aa84174,
-                0x3a58a54c066fdc0f2d55fc9c89f0415c92ebf3c4,
+                '0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174',
+                '0x3A58a54C066FdC0f2D55FC9C89F0415C92eBf3C4',
                 6,
                 18,
                 '261755666862260356510288159562898624196923076923076',
                 '1688126400',
                 'USDC-stMATIC',
                 'Polygon',
-                0xb9385afc6ddf565c0256116aa3415efdfca1e872,
-                0x880d3fc39683ecbfd7636cc48d5fcc34508ca7c3
+                '0xb9385AfC6Ddf565C0256116Aa3415EfdFca1E872',
+                '0x880D3fc39683Ecbfd7636cc48D5FCc34508ca7c3'
             ),
             (
                 'USDC',
                 'QUICK',
-                0x2791bca1f2de4661ed88a30c99a7a9449aa84174,
-                0xb5c064f955d8e7f38fe0460c556a72987494ee17,
+                '0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174',
+                '0xB5C064F955D8e7F38fE0460C556a72987494eE17',
                 6,
                 18,
                 '4253529586511730793292182592897102643200000000000000',
                 '1690113600',
                 'USDC-QUICK',
                 'Polygon',
-                0x9f024e0c98b598421c1f3170c94254c266870340,
-                0xa68636df3019e56857ad5a1759d130b17746820f
+                '0x9f024e0c98b598421c1f3170c94254c266870340',
+                '0xa68636df3019e56857ad5a1759d130b17746820f'
             )
 
     ) AS temp_table (
