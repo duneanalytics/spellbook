@@ -1,6 +1,5 @@
 {{  config(
-	tags=['legacy'],
-	
+	    tags=['legacy'],
         alias = alias('batches', legacy_model=True),
         materialized='incremental',
         partition_by = ['block_date'],
