@@ -343,7 +343,7 @@ WHERE contract_order = 1
   select 
      COALESCE(oc.`from`,'0xdeaddeaddeaddeaddeaddeaddeaddeaddead0006') AS trace_creator_address
     ,COALESCE(oc.`from`,'0xdeaddeaddeaddeaddeaddeaddeaddeaddead0006') AS creator_address
-    ,CAST(NULL AS varchar) as contract_factory
+    ,CAST(NULL AS string) as contract_factory
     ,l.contract_address
     ,oc.namespace as contract_project 
     ,oc.name as contract_name 
