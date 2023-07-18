@@ -3,31 +3,29 @@
     alias = alias('dao_addresses'),
     materialized = 'view',
     file_format = 'delta',
-    post_hook='{{ expose_spells(\'["ethereum", "gnosis", "polygon"]\',
+    post_hook='{{ expose_spells(\'["ethereum", "gnosis"]\',
                                 "project",
-                                "aragon",
+                                "daohaus",
                                 \'["Henrystats"]\') }}')
 }}
 
-{% set aragon_models = [
-ref('aragon_ethereum_dao_addresses')
-,ref('aragon_gnosis_dao_addresses')
-,ref('aragon_polygon_dao_addresses')
+{% set daohaus_models = [
+ref('daohaus_ethereum_dao_addresses')
+,ref('daohaus_gnosis_dao_addresses')
 ] %}
 
 
 SELECT *
 
 FROM (
-    {% for dao_model in aragon_models %}
+    {% for dao_model in daohaus_models %}
     SELECT
         blockchain,
         dao_creator_tool, 
         dao, 
         dao_wallet_address,
         created_block_time,
-        created_date,
-        product
+        created_date
     FROM {{ dao_model }}
     {% if not loop.last %}
     UNION ALL

@@ -339,6 +339,13 @@ models:
       fantom:
         +schema: zerion_fantom
 
+    daohaus:
+      +schema: daohaus
+      ethereum:
+        +schema: daohaus_ethereum
+      gnosis:
+        +schema: daohaus_gnosis
+
     openocean:
       +schema: openocean
       fantom:
