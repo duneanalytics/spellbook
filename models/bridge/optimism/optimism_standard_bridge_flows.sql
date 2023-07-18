@@ -101,7 +101,7 @@ WITH bridge_events AS (
         {% endif %}
         
         ) a
-    LEFT JOIN {{ ref ('ovm_optimism_cross_domain_messenger_messages_legacy') }} m
+    LEFT JOIN {{ ref ('ovm_optimism_cross_domain_messenger_messages') }} m
         ON a.tf_type = m.msg_type
         AND a.block_time = m.l2_block_time
         AND a.block_number = m.l2_block_number
