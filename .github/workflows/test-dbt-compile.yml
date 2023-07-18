@@ -28,6 +28,10 @@ jobs:
       - name: Check out repository code
         uses: actions/checkout@v3
 
+      - name: fix pipenv
+        run: "pipenv clean & pipenv sync"
+
+
       - name: dbt dependencies
         run: "dbt deps"
 
