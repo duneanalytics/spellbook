@@ -1,4 +1,5 @@
 {{ config(
+    tags=['legacy'],
     schema = 'tigris_v1_polygon',
     alias = alias('trades', legacy_model=True),
     partition_by = ['day'],

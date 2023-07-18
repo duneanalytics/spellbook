@@ -1,4 +1,5 @@
 {{ config(
+    tags=['legacy'],
     schema = 'tigris_v1_polygon',
     alias = alias('positions_close', legacy_model=True)
     )

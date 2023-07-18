@@ -1,4 +1,5 @@
 {{ config(
+    tags=['legacy'],
     schema = 'tigris_v2_polygon',
     alias = alias('positions_margin', legacy_model=True)
     )
