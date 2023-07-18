@@ -5,7 +5,7 @@
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
-    unique_key = ['block_date', 'blockchain', 'project', 'version', 'evt_type', 'evt_tx_hash', 'evt_index'],
+    unique_key = ['block_date', 'blockchain', 'project', 'version', 'evt_type', 'evt_tx_hash', 'evt_index', 'lien_id'],
     post_hook='{{ expose_spells(\'["ethereum"]\',
                                 "project",
                                 "astaria",
@@ -192,7 +192,7 @@ repays_join as (
 
     UNION 
 
-    SELECY 
+    SELECT 
         * 
     FROM 
     repays 
@@ -227,10 +227,7 @@ liquidation_tmp as (
         AND CAST(collateralId as VARCHAR) = b.lien_collateral_id
         AND l.evt_block_number > b.evt_block_number
         AND l.evt_block_time > from_unixtime(CAST(b.lien_start AS DOUBLE))
-    INNER JOIN 
-    repays_join r 
-        ON CONCAT(CAST(b.lien_id as VARCHAR), CAST(b.lien_start as VARCHAR)) != CONCAT(CAST(r.lien_id as VARCHAR), CAST(r.lien_start as VARCHAR))
-        -- AND r.evt_type = 'repay'
+    WHERE CONCAT(CAST(b.lien_id as VARCHAR), CAST(b.lien_start as VARCHAR)) NOT IN (SELECT CONCAT(CAST(r.lien_id as VARCHAR), CAST(r.lien_start as VARCHAR)) FROM repays_join)
 ), 
 
 liquidation as (

@@ -134,6 +134,7 @@ models:
               - evt_type
               - tx_hash
               - evt_index
+              - lien_id
         - check_seed:
             seed_file: ref('astaria_ethereum_nft_lending')
             match_columns:
