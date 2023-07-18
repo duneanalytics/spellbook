@@ -1,7 +1,6 @@
 {{ config(
     schema = 'uniswap_v3_optimism',
     alias = alias('trades'),
-    tags = ['legacy'],
     partition_by = ['block_date'],
     materialized = 'incremental',
     file_format = 'delta',

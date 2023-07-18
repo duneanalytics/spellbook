@@ -1,6 +1,5 @@
 {{ config(
         alias = alias('native_mints'),
-        tags = ['legacy'],
 		materialized = 'incremental',
 		file_format = 'delta',
 		incremental_strategy = 'merge',
