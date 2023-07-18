@@ -20,7 +20,10 @@ FROM (
     {% for cex_label_model in cex_label_models %}
     SELECT
     blockchain
-    , address
+    , CASE
+        WHEN blockchain = 'bitcoin' THEN from_base58(address)
+        ELSE address
+      END AS address
     , name
     , category
     , contributor
