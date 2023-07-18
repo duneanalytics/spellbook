@@ -179,13 +179,15 @@ repays as (
 repays_join as (
     {% if not is_incremental() %}
     SELECT  
-        * 
+        lien_id, 
+        lien_start
     FROM 
     repays 
     {% endif %}
     {% if is_incremental() %}
     SELECT 
-        * 
+        lien_id, 
+        lien_start
     FROM 
     {{This}}
     WHERE evt_type = 'repay'
@@ -193,7 +195,8 @@ repays_join as (
     UNION 
 
     SELECT 
-        * 
+        lien_id, 
+        lien_start
     FROM 
     repays 
     {% endif %}
@@ -227,7 +230,7 @@ liquidation_tmp as (
         AND CAST(collateralId as VARCHAR) = b.lien_collateral_id
         AND l.evt_block_number > b.evt_block_number
         AND l.evt_block_time > from_unixtime(CAST(b.lien_start AS DOUBLE))
-    WHERE CONCAT(CAST(b.lien_id as VARCHAR), CAST(b.lien_start as VARCHAR)) NOT IN (SELECT CONCAT(CAST(r.lien_id as VARCHAR), CAST(r.lien_start as VARCHAR)) FROM repays_join)
+    WHERE CONCAT(CAST(b.lien_id as VARCHAR), CAST(b.lien_start as VARCHAR)) NOT IN (SELECT CONCAT(CAST(lien_id as VARCHAR), CAST(lien_start as VARCHAR)) FROM repays_join)
 ), 
 
 liquidation as (
