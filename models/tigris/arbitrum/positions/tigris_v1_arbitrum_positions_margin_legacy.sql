@@ -1,5 +1,6 @@
 {{ config(
-    tags=['legacy'],
+	tags=['legacy'],
+	
     schema = 'tigris_v1_arbitrum',
     alias = alias('positions_margin', legacy_model=True)
     )
@@ -54,3 +55,4 @@ margin as (
 )
 
 SELECT * FROM margin  
+;

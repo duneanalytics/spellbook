@@ -1,5 +1,6 @@
 {{ config(
-    tags=['legacy'],
+	tags=['legacy'],
+	
     schema = 'tigris_v2_arbitrum',
     alias = alias('events_liquidate_position', legacy_model=True),
     partition_by = ['day'],

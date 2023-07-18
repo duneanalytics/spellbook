@@ -1,5 +1,6 @@
 {{ config(
-    tags=['legacy'],
+	tags=['legacy'],
+	
     schema = 'tigris_v1_arbitrum',
     alias = alias('events_asset_added', legacy_model=True)
     )
@@ -11,3 +12,4 @@ SELECT
     _name as pair 
 FROM 
 {{ source('tigristrade_arbitrum', 'PairsContract_evt_AssetAdded') }}
+;

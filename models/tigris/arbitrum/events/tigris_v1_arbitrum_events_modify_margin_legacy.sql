@@ -1,5 +1,6 @@
 {{ config(
-    tags=['legacy'],
+	tags=['legacy'],
+	
     schema = 'tigris_v1_arbitrum',
     alias = alias('events_modify_margin', legacy_model=True),
     partition_by = ['day'],
@@ -165,3 +166,4 @@ SELECT *, 'v1.4' as version FROM modify_margin_v4
 UNION ALL
 
 SELECT *, 'v1.5' as version FROM modify_margin_v5
+;

@@ -1,5 +1,6 @@
 {{ config(
-    tags=['legacy'],
+	tags=['legacy'],
+	
     schema = 'tigris_v1_arbitrum',
     alias = alias('events_close_position', legacy_model=True),
     partition_by = ['day'],
@@ -98,3 +99,4 @@ SELECT *, 'v1.4' as version FROM close_position_v4
 UNION ALL
 
 SELECT *, 'v1.5' as version FROM close_position_v5
+;

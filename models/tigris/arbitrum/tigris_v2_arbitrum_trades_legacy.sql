@@ -1,5 +1,6 @@
 {{ config(
-    tags=['legacy'],
+	tags=['legacy'],
+	
     schema = 'tigris_v2_arbitrum',
     alias = alias('trades', legacy_model=True),
     partition_by = ['day'],
@@ -266,3 +267,4 @@ SELECT
     'arbitrum' as blockchain,
     *
 FROM limit_order
+;

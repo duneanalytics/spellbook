@@ -1,5 +1,6 @@
 {{ config(
-    tags=['legacy'],
+	tags=['legacy'],
+	
     schema = 'tigris_v1_arbitrum',
     alias = alias('positions_leverage', legacy_model=True)
     )
@@ -36,3 +37,4 @@ leverage as (
 )
 
 SELECT * FROM leverage 
+;
