@@ -1,4 +1,6 @@
 {{ config(
+	tags=['legacy'],
+	
     schema = 'nft_ethereum',
     alias = alias('trades_beta_ported', legacy_model=True),
     materialized = 'view'

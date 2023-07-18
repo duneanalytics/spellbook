@@ -1,5 +1,5 @@
 {{ config(
-    alias = 'transactions_polygon_eth',
+    alias = alias('transactions_polygon_eth'),
     partition_by = ['block_date'],
     materialized = 'incremental',
     file_format = 'delta',

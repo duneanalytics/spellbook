@@ -1,4 +1,4 @@
-{{config(alias='aztec_v2_contracts_ethereum')}}
+{{config(alias = alias('aztec_v2_contracts_ethereum'))}}
 
 with
   contract_labels as (

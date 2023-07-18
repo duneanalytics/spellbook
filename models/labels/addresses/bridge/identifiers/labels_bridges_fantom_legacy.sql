@@ -1,4 +1,6 @@
-{{config(alias = alias('bridges_fantom', legacy_model=True),
+{{config(
+	tags=['legacy'],
+	alias = alias('bridges_fantom', legacy_model=True),
         post_hook='{{ expose_spells(\'["fantom"]\',
                                     "sector",
                                     "labels",

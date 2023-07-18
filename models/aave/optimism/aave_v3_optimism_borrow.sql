@@ -4,7 +4,7 @@
     , file_format = 'delta'
     , incremental_strategy = 'merge'
     , unique_key = ['version', 'token_address', 'evt_tx_hash', 'evt_block_number', 'evt_index']
-    , alias='borrow'
+    , alias = alias('borrow')
     , post_hook='{{ expose_spells(\'["optimism"]\',
                                   "project",
                                   "aave_v3",
@@ -85,7 +85,7 @@ FROM {{ source('aave_v3_optimism','Pool_evt_LiquidationCall') }}
     WHERE evt_block_time >= date_trunc('day', now() - interval '1 week')
 {% endif %}
 ) borrow
-LEFT JOIN {{ ref('tokens_optimism_erc20_legacy') }} erc20
+LEFT JOIN {{ ref('tokens_optimism_erc20') }} erc20
     ON borrow.token = erc20.contract_address
 LEFT JOIN {{ source('prices','usd') }} p 
     ON p.minute = date_trunc('minute', borrow.evt_block_time) 

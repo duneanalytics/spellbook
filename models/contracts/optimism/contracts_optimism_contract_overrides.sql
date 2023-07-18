@@ -1,6 +1,6 @@
 {{ 
   config(
-    alias='contract_overrides',
+    alias = alias('contract_overrides'),
     unique_key='contract_address',
     post_hook='{{ expose_spells(\'["optimism"]\',
                               "sector",
