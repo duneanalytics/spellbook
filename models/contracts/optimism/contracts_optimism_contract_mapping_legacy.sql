@@ -341,8 +341,8 @@ WHERE contract_order = 1
   union all
   -- missing contracts
   select 
-     COALESCE(oc."from",'0xdeaddeaddeaddeaddeaddeaddeaddeaddead0006') AS trace_creator_address
-    ,COALESCE(oc."from",'0xdeaddeaddeaddeaddeaddeaddeaddeaddead0006') AS creator_address
+     COALESCE(oc.`from`,'0xdeaddeaddeaddeaddeaddeaddeaddeaddead0006') AS trace_creator_address
+    ,COALESCE(oc.`from`,'0xdeaddeaddeaddeaddeaddeaddeaddeaddead0006') AS creator_address
     ,CAST(NULL AS varchar) as contract_factory
     ,l.contract_address
     ,oc.namespace as contract_project 
@@ -373,7 +373,7 @@ WHERE contract_order = 1
     {% if is_incremental() %} -- this filter will only be applied on an incremental run 
       and l.block_time >= date_trunc('day', now() - interval '7' day)
     {% endif %}
-  GROUP BY oc."from", l.contract_address, oc.namespace, oc.name, oc.created_at, l.tx_index, oc.code
+  GROUP BY oc.`from`, l.contract_address, oc.namespace, oc.name, oc.created_at, l.tx_index, oc.code
 
   union all
   -- predeploys
