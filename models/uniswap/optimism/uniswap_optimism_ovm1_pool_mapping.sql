@@ -2,6 +2,7 @@
   config(
         schema='uniswap_v3_optimism',
         alias = alias('ovm1_pool_mapping'),
+        tags=['dunesql'],
         materialized='table',
         file_format = 'delta',
         post_hook='{{ expose_spells(\'["optimism"]\',
@@ -10,12 +11,19 @@
                                     \'["msilb7", "chuxin"]\') }}'
   )
 }}
-with ovm1_pools_raw as (
-  select 
-    explode(
-      from_json(
-        '[
-          
+with ovm1_legacy_pools_raw as (
+  SELECT cast(json_row
+            as ROW(
+                oldAddress VARCHAR,
+                newAddress VARCHAR,
+                token0 VARCHAR,
+                token1 VARCHAR,
+                fee INTEGER)
+            ) as row
+  FROM UNNEST (
+    CAST(
+      JSON_PARSE('[
+
           {
             "oldAddress": "0x2e9c575206288f2219409289035facac0b670c2f",
             "newAddress": "0x03af20bdaaffb4cc0a521796a223f7d85e2aac31",
@@ -744,14 +752,15 @@ with ovm1_pools_raw as (
             "token1": "0xe0BB0D3DE8c10976511e5030cA403dBf4c25165B",
             "fee": 10000
           }
-        ]','array<struct<oldAddress:string,newAddress:string,token0:string, token1:string, fee:int>>'
-      )  
-    )
+        ]'
+        )
+        AS ARRAY<JSON>)
+  ) as foo(json_row)
 )
-select 
-   col.oldAddress
-  ,col.newAddress
-  ,col.token0
-  ,col.token1
-  ,col.fee
-from ovm1_pools_raw
+select
+    from_hex(row.oldAddress) as oldAddress
+    ,from_hex(row.newAddress) as newAddress
+    ,from_hex(row.token0) as token0
+    ,from_hex(row.token1) as token1
+    ,row.fee
+from ovm1_legacy_pools_raw
