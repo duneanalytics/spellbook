@@ -1,5 +1,6 @@
 {{ config(
-    tags=['legacy'],
+	tags=['legacy'],
+	
         alias = alias('trades', legacy_model=True),
         post_hook='{{ expose_spells(\'["polygon","arbitrum"]\',
                                 "project",
@@ -9,9 +10,10 @@
 }}
 
 {% set models = [
-'tigris_polygon_trades_legacy'
-,'tigris_arbitrum_trades_legacy'
+'tigris_polygon_trades'
+,'tigris_arbitrum_trades'
 ] %}
+
 
 SELECT *
 FROM (
