@@ -16,7 +16,7 @@ with uniswap_v3_poolcreated as (
     ,token0
     ,token1
     ,fee
-  from {{ source('uniswap_v3_optimism', 'factory_evt_poolcreated') }} 
+  from {{ source('uniswap_v3_optimism', 'Factory_evt_PoolCreated') }}
   group by 1, 2, 3, 4
 )
 
