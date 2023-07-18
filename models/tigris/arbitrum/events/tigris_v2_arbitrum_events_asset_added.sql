@@ -6,7 +6,6 @@
  }}
 
 SELECT 
-    evt_tx_hash, 
     _asset as asset_id, 
     _name as pair 
 FROM 
@@ -15,7 +14,6 @@ FROM
 UNION
 
 SELECT 
-    evt_tx_hash, 
     _asset as asset_id, 
     _name as pair 
 FROM 
