@@ -8,5 +8,5 @@ seeds:
         blockchain: varchar
         address: varbinary
         first_funded_by: varbinary
-        block_number: uint256
+        block_number: bigint
         tx_hash: varbinary
