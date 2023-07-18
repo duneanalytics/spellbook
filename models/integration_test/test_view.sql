@@ -1,4 +1,4 @@
-{{ config(materialized='view', alias='test_view') }}
+{{ config(materialized='view', alias = alias('test_view')) }}
 
 with
   erc1155_ids_batch AS (

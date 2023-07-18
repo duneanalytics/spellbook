@@ -1,5 +1,5 @@
 {{ config(
-        alias = 'fellowship_gallery'
+        alias = alias('fellowship_gallery')
         )
 }}
 

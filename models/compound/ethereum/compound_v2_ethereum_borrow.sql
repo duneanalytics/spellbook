@@ -1,6 +1,6 @@
 {{ config(
     schema = 'compound_v2_ethereum',
-    alias = 'borrow',
+    alias = alias('borrow'),
     partition_by = ['block_date'],
     materialized = 'incremental',
     file_format = 'delta',

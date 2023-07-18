@@ -1,4 +1,4 @@
-{{config(alias='balancer_v2_gauges_optimism',
+{{config(alias = alias('balancer_v2_gauges_optimism'),
         post_hook='{{ expose_spells(\'["optimism"]\',
                                     "sector",
                                     "labels",
