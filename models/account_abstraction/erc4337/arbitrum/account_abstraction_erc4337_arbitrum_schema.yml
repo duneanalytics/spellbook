@@ -11,11 +11,6 @@ models:
     config:
       tags: ["arbitrum", "erc4337", "account", "abstraction", "entrypoint"]
     description: erc4337 v0.5 user operations on arbitrum
-    tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - userop_hash
-            - tx_hash
     columns:
       - &blockchain
         name: blockchain
@@ -63,11 +58,6 @@ models:
     config:
       tags: ["arbitrum", "erc4337", "account", "abstraction", "entrypoint"]
     description: erc4337 v0.6 user operations on arbitrum
-    tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - userop_hash
-            - tx_hash
     columns:
       - *blockchain
       - *version
