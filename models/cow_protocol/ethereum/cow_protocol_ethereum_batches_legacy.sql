@@ -1,6 +1,5 @@
 {{  config(
-	tags=['legacy'],
-	
+	    tags=['legacy'],
         alias = alias('batches', legacy_model=True),
         materialized='incremental',
         partition_by = ['block_date'],
@@ -71,21 +70,7 @@ combined_batch_info as (
         evt_block_number                               as block_number,
         evt_block_time                                 as block_time,
         num_trades,
-        CASE
-            WHEN (
-              name ilike '%1inch'
-               OR name ilike '%ParaSwap'
-               OR name ilike '%0x'
-               OR name = 'Legacy'
-              )
-               THEN (
-                select count(*)
-                from {{ ref('dex_trades_legacy') }}
-                where tx_hash = evt_tx_hash
-                and blockchain = 'ethereum'
-              )
-            ELSE dex_swaps
-        END                                              as dex_swaps,
+        dex_swaps,
         batch_value,
         solver                                           as solver_address,
         evt_tx_hash                                      as tx_hash,
