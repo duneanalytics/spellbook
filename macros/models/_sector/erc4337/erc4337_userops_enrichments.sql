@@ -12,6 +12,7 @@
 WITH userops_base_union AS (
     SELECT      blockchain
                 , version
+                , block_date
                 , block_time
                 , entrypoint_contract
                 , tx_hash
@@ -25,6 +26,7 @@ WITH userops_base_union AS (
         {% for erc4337_model in base_models %}
           SELECT blockchain
                 , version
+                , block_date
                 , block_time
                 , entrypoint_contract
                 , tx_hash
