@@ -1,4 +1,5 @@
 {{config(alias = alias('project_wallets'),
+        tags = ['dunesql'],
         post_hook='{{ expose_spells(\'["optimism"]\',
                                     "sector",
                                     "labels",
@@ -13,12 +14,12 @@ SELECT
     'project wallet' AS category,
     'msilb7' AS contributor,
     'static' AS source,
-    timestamp('2023-01-28') as created_at,
+    cast('2023-01-28 00:00' as timestamp) as created_at,
     NOW() AS updated_at,
     'project_wallets' AS model_name,
     'identifier' AS label_type
 
-FROM {{ ref('addresses_optimism_grants_funding_legacy') }}
+FROM {{ ref('addresses_optimism_grants_funding') }}
 GROUP BY 1,2,3
 
 -- UNION ALL
