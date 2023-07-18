@@ -1,5 +1,6 @@
 {{ config(
-    tags=['legacy'],
+	tags=['legacy'],
+	
     schema = 'tigris_v1_polygon',
     alias = alias('events_asset_added', legacy_model=True)
     )

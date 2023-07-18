@@ -1,5 +1,6 @@
 {{ config(
-    tags=['legacy'],
+	tags=['legacy'],
+	
     schema = 'tigris_v1_polygon',
     alias = alias('events_close_position', legacy_model=True),
     partition_by = ['day'],
@@ -28,7 +29,7 @@ close_position_v1 as (
         INNER JOIN 
         {{ ref('tigris_v1_polygon_events_open_position_legacy') }} op 
             ON tc._id = op.position_id
-            AND op.version ='v1.1'
+            AND op.version ='v1'
         {% if is_incremental() %}
         WHERE tc.evt_block_time >= date_trunc("day", now() - interval '1 week')
         {% endif %}
@@ -50,7 +51,7 @@ close_position_v2 as (
         INNER JOIN 
         {{ ref('tigris_v1_polygon_events_open_position_legacy') }} op 
             ON tc._id = op.position_id
-            AND op.version = 'v1.2'
+            AND op.version = 'v2'
         {% if is_incremental() %}
         WHERE tc.evt_block_time >= date_trunc("day", now() - interval '1 week')
         {% endif %}
@@ -72,7 +73,7 @@ close_position_v3 as (
         INNER JOIN 
         {{ ref('tigris_v1_polygon_events_open_position_legacy') }} op 
             ON tc._id = op.position_id
-            AND op.version = 'v1.3'
+            AND op.version = 'v3'
         {% if is_incremental() %}
         WHERE tc.evt_block_time >= date_trunc("day", now() - interval '1 week')
         {% endif %}
@@ -95,7 +96,7 @@ close_position_v4 as (
         INNER JOIN 
         {{ ref('tigris_v1_polygon_events_open_position_legacy') }} op 
             ON tc._id = op.position_id
-            AND op.version = 'v1.4'
+            AND op.version = 'v4'
         {% if is_incremental() %}
         WHERE tc.evt_block_time >= date_trunc("day", now() - interval '1 week')
         {% endif %}

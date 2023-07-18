@@ -1,5 +1,6 @@
 {{ config(
-    tags=['legacy'],
+	tags=['legacy'],
+	
     schema = 'tigris_v1_polygon',
     alias = alias('positions_leverage', legacy_model=True)
     )

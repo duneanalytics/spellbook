@@ -1,5 +1,6 @@
 {{ config(
-    tags=['legacy'],
+	tags=['legacy'],
+	
     schema = 'tigris_v2_polygon',
     alias = alias('positions_liquidation', legacy_model=True)
     )
