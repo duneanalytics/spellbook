@@ -610,7 +610,7 @@ models:
 
     astaria:
       +schema: astaria
-      astaria:
+      ethereum:
         +schema: astaria_ethereum
 
     aragon:
