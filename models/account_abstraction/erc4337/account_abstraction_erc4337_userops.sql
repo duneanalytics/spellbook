@@ -24,6 +24,7 @@ FROM (
     SELECT
           blockchain
         , version
+        , userop
         , block_time
         , entrypoint_contract
         , tx_hash

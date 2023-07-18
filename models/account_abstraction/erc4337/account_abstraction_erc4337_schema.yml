@@ -17,6 +17,9 @@ models:
       - &version
         name: version
         description: "version of the EntryPoint contract"
+      - &block_date
+        name: block_date
+        description: "UTC event block date of each User Operation"
       - &block_time
         name: block_time
         description: "UTC event block time of each User Operation"
