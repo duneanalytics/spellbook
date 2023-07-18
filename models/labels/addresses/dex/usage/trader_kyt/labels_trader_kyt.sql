@@ -86,7 +86,7 @@ from (select t1.`from`, date_trunc('month', t1.block_time) AS month, count(*) AS
             from {{ ref('labels_cex') }}
             union all 
             select address
-            from {{ ref('labels_miners_legacy') }}
+            from {{ ref('labels_miners') }}
             union all
             select
                 cast (lower(address) AS varchar (100))

@@ -35,7 +35,7 @@
     , ref('labels_nft')
     , ref('labels_airdrop')
     , ref('labels_dao')
-    , ref('labels_infrastructure_legacy')
+    , ref('labels_infrastructure')
 ] %}
 
 
