@@ -20,8 +20,12 @@
 ,ref('magiceden_solana_events')
 ,ref('magiceden_polygon_events')
 ,ref('nftb_bnb_events')
+,ref('nftearth_optimism_events')
 ,ref('nftrade_bnb_events')
+,ref('oneplanet_polygon_events')
+,ref('opensea_events')
 ,ref('pancakeswap_bnb_nft_events')
+,ref('quix_seaport_optimism_events')
 ,ref('quix_v1_optimism_events')
 ,ref('quix_v2_optimism_events')
 ,ref('quix_v3_optimism_events')
@@ -38,10 +42,6 @@
 ,ref('trove_v2_arbitrum_events')
 ,ref('zonic_optimism_events')
 ,ref('decentraland_polygon_events')
-,ref('quix_seaport_optimism_events')
-,ref('oneplanet_polygon_events')
-,ref('nftearth_optimism_events')
-,ref('opensea_events')
 ] %}
 
 
