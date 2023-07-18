@@ -251,6 +251,8 @@ WHERE contract_order = 1
       ,b.code_bytelength
       ,b.is_self_destruct
       ,b.code_deploy_rank
+      ,b.contract_order
+      b.to_iterate_creators=1
 
     {% if loop.first -%}
     from base_level as b

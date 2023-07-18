@@ -247,6 +247,7 @@ WHERE contract_order = 1
       ,b.code_bytelength
       ,b.is_self_destruct
       ,b.code_deploy_rank
+      ,b.contract_order
       ,b.to_iterate_creators --check if base needs to be iterated, keep the base option
 
     {% if loop.first -%}
@@ -408,6 +409,7 @@ WHERE contract_order = 1
     and 1=0 --do not run on incremental builds
     {% endif %}
     GROUP BY 1,2,3,4,5,6,7,8,9
+
 )
 
 ,get_contracts as (
