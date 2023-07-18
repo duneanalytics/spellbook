@@ -14,7 +14,7 @@ SELECT
     'project wallet' AS category,
     'msilb7' AS contributor,
     'static' AS source,
-    cast('2023-01-28 00:00' as timestamp) as created_at,
+    from_iso8601_timestamp('2023-01-28') as created_at,
     NOW() AS updated_at,
     'project_wallets' AS model_name,
     'identifier' AS label_type
