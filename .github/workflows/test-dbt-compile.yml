@@ -28,9 +28,8 @@ jobs:
       - name: Check out repository code
         uses: actions/checkout@v3
 
-      - name: fix pipenv
+      - name: fix pipenv on the fly
         run: "python3 --version && pipenv clean && pipenv sync"
-
 
       - name: dbt dependencies
         run: "pipenv run dbt deps"
