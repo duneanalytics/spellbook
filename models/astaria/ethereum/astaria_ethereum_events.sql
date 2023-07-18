@@ -78,22 +78,28 @@ borrows as (
         ON  b.lien_token = er.contract_address
 ), 
 
--- borrows_join as (
---     SELECT  
---         * 
---     FROM 
---     {{This}}
---     WHERE evt_type = 'borrow'
--- ), 
+borrows_join as (
+    {% if not is_incremental() %}
+    SELECT  
+        * 
+    FROM 
+    borrows 
+    {% endif %}
+    {% if is_incremental() %}
+    SELECT 
+        * 
+    FROM 
+    {{This}}
+    WHERE evt_type = 'borrow'
 
+    UNION 
 
--- repays_join as (
---     SELECT  
---         * 
---     FROM 
---     {{This}}
---     WHERE evt_type = 'repay'
--- ), 
+    SELECT  
+        * 
+    FROM 
+    borrows 
+    {% endif %}
+), 
 
 repays_table as (
     SELECT 
@@ -146,7 +152,7 @@ repays as (
     FROM 
     repays_table r 
     INNER JOIN 
-    {{This}} b 
+    borrows_join b 
         ON b.evt_type = 'borrow'
         AND CAST(r.lienId as VARCHAR(64)) = b.lien_id
     INNER JOIN (
@@ -157,7 +163,7 @@ repays as (
             FROM 
             repays_table r 
             INNER JOIN 
-            {{This}} b 
+            borrows_join b 
                 ON b.evt_type = 'borrow'
                 AND CAST(r.lienId as VARCHAR(64)) = b.lien_id
                 AND r.evt_block_number >= b.evt_block_number
@@ -168,6 +174,29 @@ repays as (
         AND b.evt_block_number = a.borrow_block_number
         AND r.evt_block_number = a.evt_block_number
     WHERE r.evt_tx_hash IN (SELECT call_tx_hash FROM repays_calls)
+), 
+
+repays_join as (
+    {% if not is_incremental() %}
+    SELECT  
+        * 
+    FROM 
+    repays 
+    {% endif %}
+    {% if is_incremental() %}
+    SELECT 
+        * 
+    FROM 
+    {{This}}
+    WHERE evt_type = 'repay'
+
+    UNION 
+
+    SELECY 
+        * 
+    FROM 
+    repays 
+    {% endif %}
 ), 
 
 liquidation_tmp as (
@@ -193,15 +222,15 @@ liquidation_tmp as (
     FROM 
     liquidation_table l 
     INNER JOIN 
-    {{This}} b 
+    borrows_join b 
         ON b.evt_type = 'borrow'
         AND CAST(collateralId as VARCHAR(64)) = b.lien_collateral_id
         AND l.evt_block_number > b.evt_block_number
         AND l.evt_block_time > from_unixtime(CAST(b.lien_start AS DOUBLE))
     INNER JOIN 
-    {{This}} r 
+    repays_join r 
         ON CONCAT(CAST(b.lien_id as VARCHAR(64)), CAST(b.lien_start as VARCHAR(10))) != CONCAT(CAST(r.lien_id as VARCHAR(64)), CAST(r.lien_start as VARCHAR(10)))
-        AND r.evt_type = 'repay'
+        -- AND r.evt_type = 'repay'
 ), 
 
 liquidation as (
