@@ -1,4 +1,5 @@
 {{ config(
+    tags=['dunesql'],
     schema = 'tigris_v2_arbitrum',
     alias = alias('events_asset_added')
     )
