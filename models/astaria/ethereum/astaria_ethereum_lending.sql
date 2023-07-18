@@ -37,7 +37,8 @@ SELECT
     ae.evt_tx_hash as tx_hash, 
     et."from" as tx_from, 
     et."to" as tx_to, 
-    ae.evt_index
+    ae.evt_index,
+    ae.lien_id
 FROM 
 {{ ref('astaria_ethereum_events') }} ae 
 INNER JOIN 

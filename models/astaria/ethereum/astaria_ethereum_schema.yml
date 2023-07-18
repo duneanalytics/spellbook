@@ -136,7 +136,7 @@ models:
               - evt_index
               - lien_id
         - check_seed:
-            seed_file: ref('astaria_ethereum_nft_lending')
+            seed_file: ref('astaria_ethereum_lending')
             match_columns:
               - block_number
               - tx_hash
@@ -196,3 +196,4 @@ models:
         name: tx_to
         description:  "Address that received the transaction"
       - *evt_index
+      - *lien_id
