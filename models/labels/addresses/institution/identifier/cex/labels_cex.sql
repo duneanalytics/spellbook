@@ -21,7 +21,7 @@ FROM (
     SELECT
     blockchain
     , CASE
-        WHEN blockchain = 'bitcoin' THEN from_base58(address)
+        WHEN blockchain != 'bitcoin' THEN CAST(address AS VARCHAR)
         ELSE address
       END AS address
     , name
