@@ -75,6 +75,7 @@ WITH userops_base_union AS (
 select
       userop.blockchain
     , userop.version
+    , userop.block_date
     , userop.block_time
     , userop.entrypoint_contract
     , userop.tx_hash

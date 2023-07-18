@@ -10,6 +10,7 @@ with userop as (
     select
           '{{ blockchain }}' as blockchain
         , '{{ version }}' as version
+        , cast(date_trunc(evt_block_time, 'day') as date) as block_date
         , evt_block_time as block_time
         , contract_address as entrypoint_contract
         , evt_tx_hash as tx_hash
@@ -35,6 +36,7 @@ with userop as (
 select
       userop.blockchain
     , userop.version
+    , userop.block_date
     , userop.block_time
     , userop.entrypoint_contract
     , userop.tx_hash

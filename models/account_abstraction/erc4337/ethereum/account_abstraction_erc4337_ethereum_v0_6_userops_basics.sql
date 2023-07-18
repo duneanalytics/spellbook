@@ -2,7 +2,7 @@
 (
     alias = alias('v0_6_userops_basics'),
     tags=['dunesql'],
-    partition_by = ['block_time'],
+    partition_by = ['block_date'],
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
