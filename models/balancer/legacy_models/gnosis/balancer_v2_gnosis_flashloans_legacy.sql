@@ -1,13 +1,13 @@
 {{ config(
 	tags=['legacy'],
 	
-      schema = 'balancer_v2_polygon'
+      schema = 'balancer_v2_gnosis'
       , alias = alias('flashloans', legacy_model=True)
       , materialized = 'incremental'
       , file_format = 'delta'
       , incremental_strategy = 'merge'
       , unique_key = ['tx_hash', 'evt_index']
-      , post_hook='{{ expose_spells(\'["polygon"]\',
+      , post_hook='{{ expose_spells(\'["gnosis"]\',
                                   "project",
                                   "balancer_v2",
                                   \'["hildobby"]\') }}'
@@ -25,14 +25,14 @@ WITH flashloans AS (
     , erc20.symbol AS currency_symbol
     , erc20.decimals AS currency_decimals
     , f.contract_address
-    FROM {{ source('balancer_v2_polygon','Vault_evt_FlashLoan') }} f
-    LEFT JOIN {{ ref('tokens_polygon_erc20_legacy') }} erc20 ON f.token = erc20.contract_address
+    FROM {{ source('balancer_v2_gnosis','Vault_evt_FlashLoan') }} f
+    LEFT JOIN {{ ref('tokens_gnosis_erc20_legacy') }} erc20 ON f.token = erc20.contract_address
         {% if is_incremental() %}
         WHERE f.evt_block_time >= date_trunc("day", now() - interval '1 week')
         {% endif %}
     )
 
-SELECT 'polygon' AS blockchain
+SELECT 'gnosis' AS blockchain
 , 'Balancer' AS project
 , '2' AS version
 , flash.block_time
@@ -46,6 +46,6 @@ SELECT 'polygon' AS blockchain
 , flash.currency_symbol
 , flash.contract_address
 FROM flashloans flash
-LEFT JOIN {{ source('prices','usd') }} pu ON pu.blockchain = 'polygon'  
+LEFT JOIN {{ source('prices','usd') }} pu ON pu.blockchain = 'gnosis'  
     AND pu.contract_address = flash.currency_contract
     AND pu.minute = date_trunc('minute', flash.block_time)

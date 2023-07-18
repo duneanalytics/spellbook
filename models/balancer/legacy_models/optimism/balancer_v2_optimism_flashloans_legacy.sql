@@ -1,13 +1,13 @@
 {{ config(
 	tags=['legacy'],
 	
-      schema = 'balancer_v2_arbitrum'
+      schema = 'balancer_v2_optimism'
       , alias = alias('flashloans', legacy_model=True)
       , materialized = 'incremental'
       , file_format = 'delta'
       , incremental_strategy = 'merge'
       , unique_key = ['tx_hash', 'evt_index']
-      , post_hook='{{ expose_spells(\'["arbitrum"]\',
+      , post_hook='{{ expose_spells(\'["optimism"]\',
                                   "project",
                                   "balancer_v2",
                                   \'["hildobby"]\') }}'
@@ -25,14 +25,14 @@ WITH flashloans AS (
     , erc20.symbol AS currency_symbol
     , erc20.decimals AS currency_decimals
     , f.contract_address
-    FROM {{ source('balancer_v2_arbitrum','Vault_evt_FlashLoan') }} f
-    LEFT JOIN {{ ref('tokens_arbitrum_erc20_legacy') }} erc20 ON f.token = erc20.contract_address
+    FROM {{ source('balancer_v2_optimism','Vault_evt_FlashLoan') }} f
+    LEFT JOIN {{ ref('tokens_optimism_erc20_legacy') }} erc20 ON f.token = erc20.contract_address
         {% if is_incremental() %}
         WHERE f.evt_block_time >= date_trunc("day", now() - interval '1 week')
         {% endif %}
     )
 
-SELECT 'arbitrum' AS blockchain
+SELECT 'optimism' AS blockchain
 , 'Balancer' AS project
 , '2' AS version
 , flash.block_time
@@ -46,6 +46,6 @@ SELECT 'arbitrum' AS blockchain
 , flash.currency_symbol
 , flash.contract_address
 FROM flashloans flash
-LEFT JOIN {{ source('prices','usd') }} pu ON pu.blockchain = 'arbitrum'  
+LEFT JOIN {{ source('prices','usd') }} pu ON pu.blockchain = 'optimism'  
     AND pu.contract_address = flash.currency_contract
     AND pu.minute = date_trunc('minute', flash.block_time)

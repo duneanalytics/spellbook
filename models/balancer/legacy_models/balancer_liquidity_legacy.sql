@@ -1,8 +1,8 @@
 {{ config(
-        schema = 'balancer',
-        alias = alias('liquidity'), 
-        post_hook='{{ expose_spells(\'["ethereum","arbitrum", "optimism", "polygon", "gnosis","avalanche_c" 
-        ]\',
+        tags=['legacy'],
+	schema = 'balancer',
+        alias = alias('liquidity', legacy_model=True)
+        post_hook='{{ expose_spells(\'["ethereum", "arbitrum", "optimism", "polygon", "gnosis", "avalanche_c"]\',
                                 "project",
                                 "balancer",
                                 \'["viniabussafi"]\') }}'
@@ -10,12 +10,12 @@
 }}
 
 {% set balancer_models = [
-ref('balancer_v2_ethereum_liquidity')
-, ref('balancer_v2_optimism_liquidity')
-, ref('balancer_v2_arbitrum_liquidity')
-, ref('balancer_v2_polygon_liquidity')
-, ref('balancer_v2_gnosis_liquidity')
-, ref('balancer_v2_avalanche_c_liquidity')
+ref('balancer_v2_ethereum_liquidity_legacy')
+, ref('balancer_v2_optimism_liquidity_legacy')
+, ref('balancer_v2_arbitrum_liquidity_legacy')
+, ref('balancer_v2_polygon_liquidity_legacy')
+, ref('balancer_v2_gnosis_liquidity_legacy')
+, ref('balancer_v2_avalanche_c_liquidity_legacy')
 ] %}
 
 
