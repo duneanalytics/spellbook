@@ -140,7 +140,7 @@ FROM
                 AND et2.block_time >= DATE'2020-10-14'
                 {% endif %}
                 {% if is_incremental() %}
-                AND et2.block_time >= date_trunc("day", now() - interval '7' day)
+                AND et2.block_time >= date_trunc('day', now() - interval '7' day)
                 {% endif %}
             WHERE et.to = 0x00000000219ab540356cbb839cbe05303d7705fa
                 AND et.success
@@ -148,7 +148,7 @@ FROM
                 AND et.block_time >= DATE '2020-10-14'
                 {% endif %}
                 {% if is_incremental() %}
-                AND et.block_time >= date_trunc("day", now() - interval '7' day)
+                AND et.block_time >= date_trunc('day', now() - interval '7' day)
                 {% endif %}
             GROUP BY et."from", et.block_time
         ) coinbase
@@ -173,7 +173,7 @@ FROM
             AND block_time >= DATE '2020-10-14'
             {% endif %}
             {% if is_incremental() %}
-            AND block_time >= date_trunc("day", now() - interval '7' day)
+            AND block_time >= date_trunc('day', now() - interval '7' day)
             {% endif %}
         GROUP BY to
     ) binance
@@ -184,7 +184,7 @@ FROM
         AND t.block_time >= DATE '2020-10-14'
         {% endif %}
         {% if is_incremental() %}
-        AND t.block_time >= date_trunc("day", now() - interval '7' day)
+        AND t.block_time >= date_trunc('day', now() - interval '7' day)
         {% endif %}
     GROUP BY binance.address
 
@@ -207,7 +207,7 @@ FROM
             AND traces.block_time >= DATE '2020-10-14'
             {% endif %}
             {% if is_incremental() %}
-            AND traces.block_time >= date_trunc("day", now() - interval '7' day)
+            AND traces.block_time >= date_trunc('day', now() - interval '7' day)
             {% endif %}
         INNER JOIN contracts c ON c.address=txs.to
         WHERE txs.to IN (SELECT address FROM contracts)
@@ -215,7 +215,7 @@ FROM
             AND txs.block_time >= DATE '2020-10-14'
             {% endif %}
             {% if is_incremental() %}
-            AND txs.block_time >= date_trunc("day", now() - interval '7' day)
+            AND txs.block_time >= date_trunc('day', now() - interval '7' day)
             {% endif %}
         GROUP BY 1, 2, 3
         )
