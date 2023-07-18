@@ -1,4 +1,7 @@
-{{config(alias = alias('cex'))}}
+{{config(
+    tags = ['dunesql'],
+    alias = alias('cex')
+)}}
 
 
 {% set cex_label_models = [
