@@ -172,7 +172,7 @@ models:
       - name: contract_address
       - name: median_price
    
-  - name: balancer_v2_liquidity
+  - name: balancer_liquidity
     meta:
       blockchain: ethereum, arbitrum, optimism, polygon, gnosis, avalanche_c
       project: balancer_v2
