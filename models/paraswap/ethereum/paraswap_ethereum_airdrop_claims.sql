@@ -2,6 +2,7 @@
     config(
         schema = 'paraswap_ethereum',
         alias = alias('airdrop_claims'),
+        tags = ['dunesql'],
         materialized = 'incremental',
         file_format = 'delta',
         incremental_strategy = 'merge',
