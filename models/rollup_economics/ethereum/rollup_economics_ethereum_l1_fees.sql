@@ -1,5 +1,5 @@
 {{ config(
-    alias = alias('l1_calldata_fees'),
+    alias = alias('l1_fees'),
     tags = ['dunesql'],
     partition_by = ['block_time'],
     materialized = 'incremental',

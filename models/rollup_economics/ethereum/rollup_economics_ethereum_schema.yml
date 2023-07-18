@@ -1,7 +1,6 @@
 version: 2
 
 models:
-
   - name: rollup_economics_ethereum_l1_fees
     meta:
       blockchain: ethereum
@@ -9,8 +8,8 @@ models:
       project: rollup_economics
       contributors: niftytable
     config:
-      tags: ["rollup", "l2"]
-    description: rollup fees paid for posting transaction data on ethereum
+      tags: ['rollup', 'l2']
+    description: Fees paid by rollups for posting transaction data on Ethereum
     columns:
       - &name
         name: name
