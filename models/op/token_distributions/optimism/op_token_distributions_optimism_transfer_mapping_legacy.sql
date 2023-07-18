@@ -22,20 +22,7 @@
 
 -- should rebuild on each update to upstream tables
 
-WITH all_labels AS (
-    SELECT address, label, proposal_name, address_descriptor, project_name FROM {{ ref('op_token_distributions_optimism_all_distributions_labels_legacy') }}
-)
-
-
-, disperse_contracts AS (
-    SELECT * FROM all_labels WHERE label = 'Utility'
-    )
-
-, other_tags AS (
-        SELECT * FROM {{ ref('op_token_distributions_optimism_other_tags_legacy') }}
-)
-
-, outgoing_distributions AS (
+WITH outgoing_distributions AS (
     WITH tfers AS (
         -- transfers out
             SELECT
@@ -80,10 +67,10 @@ WITH all_labels AS (
                 
             FROM {{source('erc20_optimism','evt_transfer') }} tf
             -- We want either the send or receiver to be the foundation or a project (also includes utility transfers)
-            INNER JOIN all_labels lbl_from
+            INNER JOIN {{ ref('op_token_distributions_optimism_all_distributions_labels_legacy') }} lbl_from
                 ON lbl_from.address = tf.`from`
             -- if the recipient is in this list to, then we track it
-            LEFT JOIN all_labels lbl_to
+            LEFT JOIN {{ ref('op_token_distributions_optimism_all_distributions_labels_legacy') }} lbl_to
                 ON lbl_to.address = tf.to
     
                 
@@ -96,10 +83,11 @@ WITH all_labels AS (
                 AND tx.block_time >= cast('{{op_token_launch_date}}' as date)
                 {% endif %}
             
-            LEFT JOIN disperse_contracts dc
+            LEFT JOIN {{ ref('op_token_distributions_optimism_all_distributions_labels_legacy') }} dc
                 ON tx.to = dc.address
+                AND dc.label = 'Utility'
             
-            LEFT JOIN all_labels lbl_from_util_tx
+            LEFT JOIN {{ ref('op_token_distributions_optimism_all_distributions_labels_legacy') }} lbl_from_util_tx
                 ON lbl_from_util_tx.address = tx.`from` --label of the transaction sender
                 AND dc.address IS NOT NULL --we have a disperse
                 
@@ -133,9 +121,9 @@ WITH all_labels AS (
                 WHEN dc.address IS NULL THEN 1 -- when not a utility transfer, keep it
                 WHEN dc.address IS NOT NULL
                     AND (
-                        tx.`from` IN (SELECT address FROM all_labels WHERE label != 'Utility')
+                        tx.`from` IN (SELECT address FROM {{ ref('op_token_distributions_optimism_all_distributions_labels_legacy') }} WHERE label != 'Utility')
                         OR
-                        tf.`from` IN (SELECT address FROM all_labels WHERE label != 'Utility')
+                        tf.`from` IN (SELECT address FROM {{ ref('op_token_distributions_optimism_all_distributions_labels_legacy') }} WHERE label != 'Utility')
                      ) THEN 1 --when utility, make sure the transaction or transfer is from a project wallet
                 ELSE 0
                 END
@@ -268,12 +256,12 @@ SELECT
     
 FROM distributions d
 -- read in other tags
-LEFT JOIN other_tags dto
+LEFT JOIN {{ ref('op_token_distributions_optimism_other_tags_legacy') }} dto
     ON dto.address = d.to_address
     AND d.to_name = 'Other' -- don't overwrite existing mapping
-LEFT JOIN other_tags dtxto
+LEFT JOIN {{ ref('op_token_distributions_optimism_other_tags_legacy') }} dtxto
     ON dtxto.address = d.tx_to_address
     AND d.to_name = 'Other' -- don't overwrite existing mapping
-LEFT JOIN other_tags dfrom
+LEFT JOIN {{ ref('op_token_distributions_optimism_other_tags_legacy') }} dfrom
     ON dfrom.address = d.from_address
     AND d.from_name = 'Other' -- don't overwrite existing mapping
