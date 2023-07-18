@@ -267,7 +267,7 @@ WHERE contract_order = 1
     left join {{ref('contracts_optimism_deterministic_contract_creators_legacy')}} as nd 
       ON nd.creator_address = b.creator_address
     
-    WHERE b.to_iterate_creators=1 --only run contracts that we want to iterate through
+    WHERE b.to_iterate_creators = 1 --only run contracts that we want to iterate through
 )
 {%- endfor %}
 
@@ -333,6 +333,7 @@ WHERE contract_order = 1
     ,cc.created_tx_index
     ,cc.code_bytelength
     ,cc.code_deploy_rank
+    ,1 as map_rank
   from creator_contracts as cc 
   left join {{ source('optimism', 'contracts') }} as oc 
     on cc.contract_address = oc.address 
