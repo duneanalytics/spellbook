@@ -43,7 +43,7 @@ pairs as (
         output_0 as token0,
         output_1 as token1
     from
-        { { source('thena_fi_bnb', 'Pair_call_tokens') } }
+        {{ source('thena_fi_bnb', 'Pair_call_tokens') }}
     where
         (
             output_0 in (
