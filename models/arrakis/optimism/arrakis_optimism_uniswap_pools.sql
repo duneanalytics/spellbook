@@ -23,11 +23,11 @@ SELECT distinct
             ,CAST( ROW_NUMBER() OVER (PARTITION BY uniPool ORDER BY pc.evt_block_time ASC) AS VARCHAR(10) )
             )
     AS lp_name,
-    
+
     pc.pool AS contract_address, uniPool as pool_contract, fee, token0, token1
 
-FROM {{ source('arrakis_optimism', 'ArrakisFactoryV1_evt_PoolCreated') }} pc 
-    INNER JOIN {{ ref('uniswap_optimism_pools_legacy') }} up 
+FROM {{ source('arrakis_optimism', 'ArrakisFactoryV1_evt_PoolCreated') }} pc
+    INNER JOIN {{ ref('uniswap_optimism_pools') }} up
         ON up.pool = pc.uniPool
     LEFT JOIN {{ ref('tokens_erc20') }} e0
         ON e0.contract_address = up.token0

@@ -51,22 +51,22 @@ SELECT distinct
     'optimism' AS blockchain,
     lp_name, mm.contract_address, pool AS pool_contract, fee, token0, token1
     FROM manual_mapping mm
-    INNER JOIN {{ source('optimism', 'creation_traces') }} ct 
+    INNER JOIN {{ source('optimism', 'creation_traces') }} ct
         ON ct.address = mm.contract_address
         -- only pull new contract creations
         AND ct.block_time >= '{{project_start_date}}'
-    INNER JOIN {{ source('optimism', 'transactions') }} t 
+    INNER JOIN {{ source('optimism', 'transactions') }} t
         ON t.to = mm.contract_address
         AND t.block_time >= '{{project_start_date}}'
         AND t.block_time >= ct.block_time
         AND t.block_time < ct.block_time + interval '1 month'
         AND substring(t.data,1,10) IN ('0x85919c5d','0xa8559872') --on rebalances & withdrawals, we can pull the uniswap pool
-    INNER JOIN {{ source('optimism', 'logs') }} l 
+    INNER JOIN {{ source('optimism', 'logs') }} l
         ON t.hash = l.tx_hash
         AND t.block_number = l.block_number
         AND t.block_time = l.block_time
         AND l.block_time >= ct.block_time
         AND l.block_time < ct.block_time + interval '1 month'
         AND l.block_time >= '{{project_start_date}}'
-    INNER JOIN {{ ref('uniswap_optimism_pools_legacy') }} up
+    INNER JOIN {{ ref('uniswap_optimism_pools') }} up
         ON up.pool = l.contract_address

@@ -80,7 +80,7 @@ left join {{ ref('tokens_optimism_nft') }} as tok
     on tok.contract_address=nft_mints.contract_address
 left join {{ ref('tokens_optimism_nft_bridged_mapping') }} as bm
     on bm.contract_address=nft_mints.contract_address
-left join {{ ref('transfers_optimism_eth_legacy') }} as tr
+left join {{ ref('transfers_optimism_eth') }} as tr
     on nft_mints.tx_hash = tr.tx_hash
     and nft_mints.block_number = tr.tx_block_number
     and tr.value_decimal > 0
