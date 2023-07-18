@@ -1,54 +1,42 @@
 {{ config(
-	tags=['legacy'],
-	
-    schema = 'balancer',
-    alias = alias('trades', legacy_model=True),
-    post_hook='{{ expose_spells(\'["arbitrum", "ethereum", "gnosis", "optimism", "polygon"]\',
+        tags=['legacy'],
+	schema = 'balancer',
+        alias = alias('liquidity', legacy_model=True),
+        post_hook='{{ expose_spells(\'["ethereum", "arbitrum", "optimism", "polygon", "gnosis", "avalanche_c"]\',
                                 "project",
                                 "balancer",
-                                \'["bizzyvinci", "thetroyharris"]\') }}'
-    )
+                                \'["viniabussafi"]\') }}'
+        )
 }}
 
 {% set balancer_models = [
-    ref('balancer_arbitrum_trades_legacy'),
-    ref('balancer_ethereum_trades_legacy'),
-    ref('balancer_gnosis_trades_legacy'),
-    ref('balancer_optimism_trades_legacy'),
-    ref('balancer_polygon_trades_legacy')
+ref('balancer_v2_ethereum_liquidity_legacy')
+, ref('balancer_v2_optimism_liquidity_legacy')
+, ref('balancer_v2_arbitrum_liquidity_legacy')
+, ref('balancer_v2_polygon_liquidity_legacy')
+, ref('balancer_v2_gnosis_liquidity_legacy')
+, ref('balancer_v2_avalanche_c_liquidity_legacy')
 ] %}
 
 
 SELECT *
 FROM (
-    {% for dex_model in balancer_models %}
+    {% for liquidity_model in balancer_models %}
     SELECT
-        blockchain,
-        project,
-        version,
-        block_date,
-        block_time,
-        token_bought_symbol,
-        token_sold_symbol,
-        token_pair,
-        token_bought_amount,
-        token_sold_amount,
-        token_bought_amount_raw,
-        token_sold_amount_raw,
-        amount_usd,
-        token_bought_address,
-        token_sold_address,
-        taker,
-        maker,
-        project_contract_address,
-        tx_hash,
-        tx_from,
-        tx_to,
-        trace_address,
-        evt_index
-    FROM {{ dex_model }}
+    day,
+    pool_id,
+    pool_symbol,
+    blockchain,
+    token_address,
+    token_symbol,
+    token_balance_raw,
+    token_balance,
+    protocol_liquidity_usd,
+    pool_liquidity_usd
+    FROM {{ liquidity_model }}
     {% if not loop.last %}
     UNION ALL
     {% endif %}
     {% endfor %}
 )
+;
