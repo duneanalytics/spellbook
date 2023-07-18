@@ -1,5 +1,6 @@
 {{ config(
     alias = alias('addresses_ethereum_syndicate'),
+    tags = ['dunesql'],
     partition_by = ['created_date'],
     materialized = 'incremental',
     file_format = 'delta',
@@ -18,26 +19,26 @@ syndicatev2_daos as ( -- decoded event on dune for syndicate v2, this returns in
             tokenAddress as dao 
         FROM {{ source('syndicate_v2_ethereum', 'ERC20ClubFactory_evt_ERC20ClubCreated') }}
         {% if not is_incremental() %}
-        WHERE evt_block_time >= '{{project_start_date}}'
+        WHERE evt_block_time >= DATE '{{project_start_date}}'
         {% endif %}
         {% if is_incremental() %}
-        WHERE evt_block_time >= date_trunc("day", now() - interval '1 week')
+        WHERE evt_block_time >= date_trunc('day', now() - interval '7' day)
         {% endif %}
 ), 
 
 syndicatev1_daos as ( -- getting investment clubs created on dune v1 
         SELECT 
             block_time, 
-            CONCAT('0x', RIGHT(topic2, 40)) as dao 
+            bytearray_ltrim(topic1) as dao
         FROM 
         {{ source('ethereum', 'logs') }}
         {% if not is_incremental() %}
-        WHERE block_time >= '{{project_start_date}}'
+        WHERE block_time >= DATE '{{project_start_date}}'
         {% endif %}
         {% if is_incremental() %}
-        WHERE block_time >= date_trunc("day", now() - interval '1 week')
+        WHERE block_time >= date_trunc('day', now() - interval '7' day)
         {% endif %}
-        AND topic1 = '0x5fb43bb458994f457693950959aff3a8815320c4da2fb30aa66137420808172e' -- syndicate investment club created event 
+        AND topic0 = 0x5fb43bb458994f457693950959aff3a8815320c4da2fb30aa66137420808172e -- syndicate investment club created event
 ), 
 
 all_syndicate_daos as ( -- joining both tables above 
@@ -50,16 +51,16 @@ ownership_transferred as ( -- whenever an investment club is created, the owners
         SELECT 
             contract_address as dao, 
             block_time, 
-            CONCAT('0x', RIGHT(topic3, 40)) as wallet_address 
+            bytearray_ltrim(topic2) as wallet_address
         FROM 
         {{ source('ethereum', 'logs') }}
         {% if not is_incremental() %}
-        WHERE block_time >= '{{project_start_date}}'
+        WHERE block_time >= DATE '{{project_start_date}}'
         {% endif %}
         {% if is_incremental() %}
-        WHERE block_time >= date_trunc("day", now() - interval '1 week')
+        WHERE block_time >= date_trunc('day', now() - interval '7' day)
         {% endif %}
-        AND topic1 = '0x8be0079c531659141344cd1fd0a4f28419497f9722a3daafe3b4186f6b6457e0' -- ownership transferred event 
+        AND topic0 = 0x8be0079c531659141344cd1fd0a4f28419497f9722a3daafe3b4186f6b6457e0 -- ownership transferred event
         AND contract_address IN (SELECT dao FROM all_syndicate_daos)
 ), 
 
@@ -94,6 +95,6 @@ SELECT
     created_block_time, 
     TRY_CAST(created_date as DATE) as created_date
 FROM syndicate_wallets
-WHERE dao_wallet_address NOT IN ('0x2da762e665fe9c220f7011d4ee9c2d15aaa27f9d', '0x2372fd8d69da29b4b328b518c6d7e84f3aa25dc3', '0x99116a5641dc89a7cb43a9a82694177538aa0391', '0x22a3d80299d4f2437611e1ca0b7c8d50f4816c6e') -- these are syndicate contract addresses, there's a transfer from 0x00...0000 to these addresses during set up so filtering to get rid of them. 
+WHERE dao_wallet_address NOT IN (0x2da762e665fe9c220f7011d4ee9c2d15aaa27f9d, 0x2372fd8d69da29b4b328b518c6d7e84f3aa25dc3, 0x99116a5641dc89a7cb43a9a82694177538aa0391, 0x22a3d80299d4f2437611e1ca0b7c8d50f4816c6e) -- these are syndicate contract addresses, there's a transfer from 0x00...0000 to these addresses during set up so filtering to get rid of them. 
 
 

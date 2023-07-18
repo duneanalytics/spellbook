@@ -1,5 +1,6 @@
 {{ config(
     alias = alias('addresses'),
+    tags = ['dunesql'],
     materialized = 'view',
     file_format = 'delta',
     post_hook='{{ expose_spells(\'["ethereum", "gnosis", "polygon"]\',

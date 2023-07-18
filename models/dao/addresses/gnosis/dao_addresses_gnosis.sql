@@ -1,4 +1,7 @@
-{{config(alias = alias('addresses_gnosis'))}}
+{{config(
+    alias = alias('addresses_gnosis')
+    , tags = ['dunesql']
+    )}}
 
 WITH 
 

@@ -1,5 +1,6 @@
 {{ config(
     alias = alias('addresses_ethereum_zodiac'),
+    tags = ['dunesql'],
     partition_by = ['created_date'],
     materialized = 'incremental',
     file_format = 'delta',
@@ -16,16 +17,16 @@ get_zodiac_wallets as ( -- getting the gnosis safes created using zodiac's reali
         SELECT 
             block_time as created_block_time, 
             TRY_CAST(date_trunc('day', block_time) as DATE) as created_date, 
-            CONCAT('0x', RIGHT(topic3, 40)) as dao
+            bytearray_ltrim(topic2) as dao
         FROM 
         {{ source('ethereum', 'logs') }}
         {% if not is_incremental() %}
-        WHERE block_time >= '{{project_start_date}}'
+        WHERE block_time >= DATE '{{project_start_date}}'
         {% endif %}
         {% if is_incremental() %}
-        WHERE block_time >= date_trunc("day", now() - interval '1 week')
+        WHERE block_time >= date_trunc('day', now() - interval '7' day)
         {% endif %}
-        AND topic1 = '0x8b8abdce7435e63696dbae9e46dc2ee5036195638ecfc5b45a3c45bcd7e3ed34' -- module set up event emitted when a reality.eth module is set up 
+        AND topic0 = 0x8b8abdce7435e63696dbae9e46dc2ee5036195638ecfc5b45a3c45bcd7e3ed34 -- module set up event emitted when a reality.eth module is set up
 )
 
 SELECT 
