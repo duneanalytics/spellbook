@@ -59,7 +59,7 @@ WITH pool_labels AS (
             date_trunc('day', HOUR) AS DAY,
             contract_address AS token,
             percentile(median_price, 0.5) AS bpt_price
-        FROM {{ ref('balancer_v2_avalanche_c_bpt_prices_legacy_legacy') }}
+        FROM {{ ref('balancer_v2_avalanche_c_bpt_prices_legacy') }}
         GROUP BY 1, 2
     ),
 
