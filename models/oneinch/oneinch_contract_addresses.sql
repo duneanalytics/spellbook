@@ -1,5 +1,4 @@
-{{ config(materialized='view', alias = alias('contract_addresses')), tags=['dunesql'] }}
-
+{{ config(materialized='view', alias = alias('contract_addresses'), tags=['dunesql']) }}
 -- last updated 2023-03-21
 with routers as (
     select * 
