@@ -362,7 +362,7 @@ WHERE contract_order = 1
     ,CAST(NULL AS string) as created_tx_to
     ,CAST(NULL AS string) as created_tx_method_id
     ,l.tx_index AS created_tx_index
-    ,bytearray_length(oc.code) as code_bytelength
+    ,ceil( length(oc.code)/2 ) AS code_bytelength --toreplace with bytearray_length in dunesql
     ,1 as code_deploy_rank
     ,2 as map_rank
   from {{ source('optimism', 'logs') }} as l
