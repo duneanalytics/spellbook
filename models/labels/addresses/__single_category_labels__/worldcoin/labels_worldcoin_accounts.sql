@@ -18,7 +18,7 @@ SELECT
     'worldcoin' AS category,
     'msilb7' AS contributor,
     'query' AS source,
-    cast('2023-07-15' as timestamp) as created_at,
+    from_iso8601_timestamp('2023-07-15') as created_at,
     now() as updated_at,
     'worldcoin_accounts' AS model_name,
     'persona' AS label_type
