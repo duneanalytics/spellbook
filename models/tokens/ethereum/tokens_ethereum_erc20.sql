@@ -28784,4 +28784,5 @@ FROM (VALUES
         ,(0xd822aa7a904deb860a44e0bb455ca11a9cfe1ed6, 'POEPOE', 9)
         ,(0x703293d32aea894cca91d6c282db9efffe47c308, 'AER', 18)
         ,(0x63a2ef2c7d20f8226d1c8c4b71e6832bdca47d48, 'DOGINU', 9)
+        ,(0x3c3a81e81dc49A522A592e7622A7E711c06bf354, 'MNT', 18)
      ) AS temp_table (contract_address, symbol, decimals)
