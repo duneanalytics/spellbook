@@ -78,22 +78,22 @@ borrows as (
         ON  b.lien_token = er.contract_address
 ), 
 
-borrows_join as (
-    SELECT  
-        * 
-    FROM 
-    {{This}}
-    WHERE evt_type = 'borrow'
-), 
+-- borrows_join as (
+--     SELECT  
+--         * 
+--     FROM 
+--     {{This}}
+--     WHERE evt_type = 'borrow'
+-- ), 
 
 
-repays_join as (
-    SELECT  
-        * 
-    FROM 
-    {{This}}
-    WHERE evt_type = 'repay'
-), 
+-- repays_join as (
+--     SELECT  
+--         * 
+--     FROM 
+--     {{This}}
+--     WHERE evt_type = 'repay'
+-- ), 
 
 repays_table as (
     SELECT 
@@ -146,8 +146,9 @@ repays as (
     FROM 
     repays_table r 
     INNER JOIN 
-    borrows_join b 
-        ON CAST(r.lienId as VARCHAR(64)) = b.lien_id
+    {{This}} b 
+        ON b.evt_type = 'borrow'
+        AND CAST(r.lienId as VARCHAR(64)) = b.lien_id
     INNER JOIN (
             SELECT 
                 MAX(b.evt_block_number) as borrow_block_number, 
@@ -156,8 +157,9 @@ repays as (
             FROM 
             repays_table r 
             INNER JOIN 
-            borrows_join b 
-                ON CAST(r.lienId as VARCHAR(64)) = b.lien_id
+            {{This}} b 
+                ON b.evt_type = 'borrow'
+                AND CAST(r.lienId as VARCHAR(64)) = b.lien_id
                 AND r.evt_block_number >= b.evt_block_number
             WHERE r.evt_tx_hash IN (SELECT call_tx_hash FROM repays_calls )
             GROUP BY 2, 3 
@@ -191,11 +193,15 @@ liquidation_tmp as (
     FROM 
     liquidation_table l 
     INNER JOIN 
-    borrows_join b 
-        ON CAST(collateralId as VARCHAR(64)) = b.lien_collateral_id
+    {{This}} b 
+        ON b.evt_type = 'borrow'
+        AND CAST(collateralId as VARCHAR(64)) = b.lien_collateral_id
         AND l.evt_block_number > b.evt_block_number
         AND l.evt_block_time > from_unixtime(CAST(b.lien_start AS DOUBLE))
-    WHERE CONCAT(CAST(b.lien_id as VARCHAR(64)), CAST(b.lien_start as VARCHAR(10))) NOT IN (SELECT CONCAT(CAST(lien_id as VARCHAR(64)), CAST(lien_start as VARCHAR(10))) FROM repays_join) 
+    INNER JOIN 
+    {{This}} r 
+        ON CONCAT(CAST(b.lien_id as VARCHAR(64)), CAST(b.lien_start as VARCHAR(10))) != CONCAT(CAST(r.lien_id as VARCHAR(64)), CAST(r.lien_start as VARCHAR(10)))
+        AND r.evt_type = 'repay'
 ), 
 
 liquidation as (
