@@ -346,6 +346,13 @@ models:
       gnosis:
         +schema: daohaus_gnosis
 
+    syndicate:
+      +schema: syndicate
+      ethereum:
+        +schema: syndicate_ethereum
+      polygon:
+        +schema: syndicate_polygon
+
     openocean:
       +schema: openocean
       fantom:
