@@ -1,0 +1,6 @@
+version: 2
+
+seeds:
+ - name: astaria_lending_seed
+   description: >
+     astaria lending seed to tets the astaria_nft_lending table

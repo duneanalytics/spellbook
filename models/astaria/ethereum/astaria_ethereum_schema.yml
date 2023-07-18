@@ -136,7 +136,7 @@ models:
               - evt_index
               - lien_id
         - check_seed:
-            seed_file: ref('astaria_ethereum_lending_seed')
+            seed_file: ref('astaria_lending_seed')
             match_columns:
               - block_number
               - tx_hash
