@@ -1,6 +1,6 @@
  {{
   config(
-        alias='latest_balances',
+        alias = alias('latest_balances'),
         materialized='table',
         post_hook='{{ expose_spells(\'["solana"]\',
                                     "sector",

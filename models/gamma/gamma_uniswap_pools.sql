@@ -1,7 +1,7 @@
  {{
   config(
         schema='gamma',
-        alias='uniswap_pools',
+        alias = alias('uniswap_pools'),
         materialized = 'incremental',
         file_format = 'delta',
         incremental_strategy = 'merge',

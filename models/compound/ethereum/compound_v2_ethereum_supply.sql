@@ -1,6 +1,6 @@
 {{ config(
     schema = 'compound_v2_ethereum',
-    alias = 'supply',
+    alias = alias('supply'),
     partition_by = ['block_date'],
     materialized = 'incremental',
     file_format = 'delta',

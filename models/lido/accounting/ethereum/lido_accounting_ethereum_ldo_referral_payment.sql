@@ -1,5 +1,5 @@
 {{ config(
-        alias ='ldo_referral_payment',
+        alias = alias('ldo_referral_payment'),
         partition_by = ['period'],
         materialized = 'table',
         file_format = 'delta',

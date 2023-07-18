@@ -1,5 +1,5 @@
 {{ config(
-    alias = 'collection_stats',
+    alias = alias('collection_stats'),
     partition_by = ['block_date'],
     materialized = 'incremental',
     file_format = 'delta',
