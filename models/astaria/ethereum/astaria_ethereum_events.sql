@@ -13,7 +13,7 @@
     )
 }}
 
-{%- set project_start_date = '2023-04-27' %}
+-- {%- set project_start_date = '2023-04-27' %}
 
 WITH
 
@@ -68,7 +68,7 @@ borrows as (
         ON b.evt_block_number = et.block_number
         AND b.evt_tx_hash = et.hash
     {% if not is_incremental() %}
-        AND et.block_time >= DATE '{{project_start_date}}'
+        AND et.block_time >= CAST('2023-04-27' as timestamp)
     {% endif %}
     {% if is_incremental() %}
         AND et.block_time >= date_trunc('day', now() - interval '7' Day)
