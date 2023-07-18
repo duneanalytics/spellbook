@@ -1,5 +1,4 @@
 {{ config( 
-    schema='oneinch',
     alias = alias('fantom_calls_transfers'),
     tags = ['dunesql'],
     partition_by = ['block_date'],
