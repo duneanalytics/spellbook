@@ -2,7 +2,6 @@
   config(
         schema='gamma_optimism',
         alias = alias('uniswap_pools'),
-        tags = ['legacy'],
         materialized = 'table',
         unique_key = ['contract_address', 'pool_contract']
   )
@@ -69,5 +68,5 @@ SELECT distinct
         AND l.block_time >= ct.block_time
         AND l.block_time < ct.block_time + interval '1 month'
         AND l.block_time >= '{{project_start_date}}'
-    INNER JOIN {{ ref('uniswap_optimism_pools_legacy') }} up
+    INNER JOIN {{ ref('uniswap_optimism_pools') }} up
         ON up.pool = l.contract_address
