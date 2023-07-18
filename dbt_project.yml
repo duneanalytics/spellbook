@@ -608,6 +608,11 @@ models:
       fantom:
         +schema: lifi_fantom
 
+    astaria:
+      +schema: astaria
+      astaria:
+        +schema: astaria_ethereum
+
     aragon:
       +schema: aragon
       ethereum:
