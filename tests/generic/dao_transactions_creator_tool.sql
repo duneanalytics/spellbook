@@ -1,5 +1,7 @@
 {% test dao_transactions_creator_tool(model, column_name, dao_transactions_seed) %}
 
+    -- TODO: Modify the test to dune sql compatible @henrystats
+
     with unit_test as
     (
         select
