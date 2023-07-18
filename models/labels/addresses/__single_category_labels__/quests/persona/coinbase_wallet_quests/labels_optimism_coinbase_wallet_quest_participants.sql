@@ -1,7 +1,6 @@
 {{
     config(
         alias = alias('coinbase_wallet_quest_participants'),
-        tags = ['legacy'],
         post_hook='{{ expose_spells(\'["optimism"]\', 
         "sector", 
         "labels", 
@@ -12,7 +11,7 @@
 with 
  questers as (
     select quester_address, 'optimism' AS blockchain
-    from {{ref('coinbase_wallet_quests_optimism_rewards_transfers_legacy')}}
+    from {{ref('coinbase_wallet_quests_optimism_rewards_transfers')}}
     GROUP BY 1
   )
 select

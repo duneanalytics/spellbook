@@ -1,5 +1,4 @@
 {{config(alias = alias('op_retropgf'),
-        tags = ['legacy'],
         post_hook='{{ expose_spells(\'["optimism"]\',
                                     "sector",
                                     "labels",
@@ -17,7 +16,7 @@ SELECT blockchain,
         'op_retropgf_recipients' as model_name,
        'identifier' as label_type
 
-FROM {{ ref('op_retropgf_optimism_recipients_legacy') }} 
+FROM {{ ref('op_retropgf_optimism_recipients') }} 
 
 UNION ALL
 
@@ -32,4 +31,4 @@ SELECT blockchain,
         'op_retropgf_voters' as model_name,
        'identifier' as label_type
 
-FROM {{ ref('op_retropgf_optimism_voters_legacy') }} 
+FROM {{ ref('op_retropgf_optimism_voters') }} 

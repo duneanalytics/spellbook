@@ -58,4 +58,3 @@ models:
         description: "Token symbol"
      - &evt_index
         name: evt_index
-        description: "Event index"
