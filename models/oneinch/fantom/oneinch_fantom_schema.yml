@@ -1,0 +1,47 @@
+version: 2
+
+models:
+  - name: oneinch_fantom_calls_transfers
+    meta:
+      blockchain: ['fantom']
+      sector: oneinch
+      contributors: ['grkhr']
+    config:
+      tags: ['oneinch', 'raw']
+    description: >
+        oneinch calls & transfers
+    columns:
+      - &tx_hash
+        name: tx_hash
+        tests:
+          - not_null
+      - &block_time
+        name: block_time
+      - &block_date
+        name: block_date
+      - &tx_from
+        name: tx_from
+      - &start
+        name: start
+      - &transfer_trace_address
+        name: transfer_trace_address
+      - &token_address
+        name: token_address
+      - &amount
+        name: amount
+      - &transfer_from
+        name: transfer_from
+      - &transfer_to
+        name: transfer_to
+      - &caller
+        name: caller
+      - &call_selector
+        name: call_selector
+      - &call_success
+        name: call_success
+      - &tx_success
+        name: tx_success
+      - &rn_ta_asc
+        name: rn_ta_asc
+      - &rn_ta_desc
+        name: rn_ta_desc
