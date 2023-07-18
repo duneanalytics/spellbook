@@ -280,7 +280,7 @@ SELECT
     'ethereum' as blockchain, 
     'astaria' as project,
     1 as version, 
-    TRY_CAST(date_trunc('DAY', ae.event_time) AS date) as block_date,
+    TRY_CAST(date_trunc('DAY', ae.evt_block_time) AS date) as block_date,
     ae.*, 
     d.nft_symbol, 
     d.nft_token_standard,
@@ -292,4 +292,4 @@ all_events ae
 INNER JOIN 
 {{ ref('astaria_ethereum_daily_deposits') }} d
     ON ae.lien_collateral_id = CAST(d.collateral_id as VARCHAR(42))
-    AND TRY_CAST(date_trunc('DAY', ae.event_time) AS date) = d.day
+    AND TRY_CAST(date_trunc('DAY', ae.evt_block_time) AS date) = d.day
