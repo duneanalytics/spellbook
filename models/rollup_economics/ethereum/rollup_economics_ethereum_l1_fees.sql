@@ -26,7 +26,7 @@ WITH tx_batch_appends AS (
       evt_tx_hash AS tx_hash,
       evt_block_time AS block_time,
       evt_block_number AS block_number
-      FROM source('arbitrum_ethereum', 'SequencerInbox_evt_SequencerBatchDeliveredFromOrigin') o
+      FROM {{ source('arbitrum_ethereum', 'SequencerInbox_evt_SequencerBatchDeliveredFromOrigin') }} o
       WHERE evt_block_time >= timestamp '2022-01-01'
       {% if is_incremental() %}
           and evt_block_time >= date_trunc('day', now() - interval '7' day)
@@ -38,10 +38,10 @@ WITH tx_batch_appends AS (
       call_tx_hash AS tx_hash,
       call_block_time AS block_time,
       call_block_number AS block_number
-      FROM source('arbitrum_ethereum','SequencerInbox_call_addSequencerL2BatchFromOrigin') o
+      FROM {{ source('arbitrum_ethereum','SequencerInbox_call_addSequencerL2BatchFromOrigin') }} o
       WHERE call_success = true
       AND call_tx_hash NOT IN
-      (SELECT evt_tx_hash FROM source('arbitrum_ethereum', 'SequencerInbox_evt_SequencerBatchDeliveredFromOrigin') o
+      (SELECT evt_tx_hash FROM {{ source('arbitrum_ethereum', 'SequencerInbox_evt_SequencerBatchDeliveredFromOrigin') }} o
       WHERE evt_block_time >= timestamp '2022-01-01'
       )
       {% if is_incremental() %}
@@ -54,10 +54,10 @@ WITH tx_batch_appends AS (
       call_tx_hash AS tx_hash,
       call_block_time AS block_time,
       call_block_number AS block_number
-      FROM source('arbitrum_ethereum','SequencerInbox_call_addSequencerL2Batch') o
+      FROM {{ source('arbitrum_ethereum','SequencerInbox_call_addSequencerL2Batch') }} o
       WHERE call_success = true
       AND call_tx_hash NOT IN
-      (SELECT evt_tx_hash FROM source('arbitrum_ethereum', 'SequencerInbox_evt_SequencerBatchDeliveredFromOrigin') o
+      (SELECT evt_tx_hash FROM {{ source('arbitrum_ethereum', 'SequencerInbox_evt_SequencerBatchDeliveredFromOrigin') }} o
       WHERE evt_block_time >= timestamp '2022-01-01'
       )
       {% if is_incremental() %}
@@ -70,17 +70,17 @@ WITH tx_batch_appends AS (
       call_tx_hash AS tx_hash,
       call_block_time AS block_time,
       call_block_number AS block_number
-      FROM source('arbitrum_ethereum','SequencerInbox_call_addSequencerL2BatchFromOriginWithGasRefunder') o
+      FROM {{ source('arbitrum_ethereum','SequencerInbox_call_addSequencerL2BatchFromOriginWithGasRefunder') }} o
       WHERE call_success = true
       AND call_tx_hash NOT IN
-      (SELECT evt_tx_hash FROM source('arbitrum_ethereum', 'SequencerInbox_evt_SequencerBatchDeliveredFromOrigin') o
+      (SELECT evt_tx_hash FROM {{ source('arbitrum_ethereum', 'SequencerInbox_evt_SequencerBatchDeliveredFromOrigin') }} o
       WHERE evt_block_time >= timestamp '2022-01-01'
       )
       {% if is_incremental() %}
           and call_block_time >= date_trunc('day', now() - interval '7' day)
       {% endif %}
     )b
-    INNER JOIN source('ethereum','transactions') t
+    INNER JOIN {{ source('ethereum','transactions') }} t
     ON b.tx_hash = t.hash
     WHERE b.block_number = t.block_number
     AND b.block_time = t.block_time
@@ -99,8 +99,8 @@ WITH tx_batch_appends AS (
       (cast(gas_used as double) * (cast(gas_price as double) / 1e18)) AS gas_spent,
       length(t.data) AS data_length
     FROM
-      source('ethereum','transactions') AS t
-      INNER JOIN source('dune_upload','op_stack_chain_metadata') op ON (
+      {{ source('ethereum','transactions') }} AS t
+      INNER JOIN {{ source('dune_upload','op_stack_chain_metadata') }} op ON (
         t."from" = op.batchinbox_from_address
         AND t.to = op.batchinbox_to_address
       )
@@ -117,7 +117,7 @@ WITH tx_batch_appends AS (
 
 ,block_basefees AS (
     SELECT b.number as block_number, b.base_fee_per_gas, b.time
-    FROM source('ethereum','blocks') AS b
+    FROM {{ source('ethereum','blocks') }} AS b
     WHERE b.time >= timestamp '2022-01-01'
     {% if is_incremental() %}
         and b.time >= date_trunc('day', now() - interval '7' day)
