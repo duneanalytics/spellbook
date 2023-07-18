@@ -10,7 +10,7 @@ models:
       contributors: 0xbitfly, hosuke
     config:
       tags: ["polygon", "erc4337", "account", "abstraction", "entrypoint"]
-    description: erc4337 v0.5 user operations on polygon
+    description: "erc4337 v0.5 user operations on polygon"
     columns:
       - &blockchain
         name: blockchain
@@ -57,7 +57,7 @@ models:
       contributors: 0xbitfly, hosuke
     config:
       tags: ["polygon", "erc4337", "account", "abstraction", "entrypoint"]
-    description: erc4337 v0.6 user operations on polygon
+    description: "erc4337 v0.6 user operations on polygon"
     columns:
       - *blockchain
       - *version
@@ -80,7 +80,7 @@ models:
       contributors: 0xbitfly, hosuke
     config:
       tags: ["polygon", "erc4337", "account", "abstraction", "entrypoint"]
-    description: erc4337 user operation on polygon
+    description: "erc4337 user operation on polygon"
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
