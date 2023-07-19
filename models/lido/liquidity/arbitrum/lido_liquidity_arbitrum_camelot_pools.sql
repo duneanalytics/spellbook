@@ -182,7 +182,7 @@ select 0x5979D7b546E38E414F7E9822514be443A4800529
 )
 
 , pool_liquidity as (
-    SELECT
+    SELECT distinct 
       time,
       LEAD(time, 1, CURRENT_DATE + INTERVAL '1' day) OVER (
         ORDER BY
