@@ -42,7 +42,7 @@
     ,"token_standard"
     ,"code_deploy_rank"
 ] %}
-    
+
 
 with base_level as (
 SELECT *
@@ -73,10 +73,11 @@ SELECT *
     ,ROW_NUMBER() OVER (PARTITION BY code ORDER BY created_block_number ASC, created_tx_index ASC) AS code_deploy_rank
     ,ROW_NUMBER() OVER (PARTITION BY contract_address ORDER BY created_time ASC ) AS contract_order -- to ensure no dupes
     ,to_iterate_creators
+
   from (
     select 
-      ct.from as creator_address
-      ,CAST(NULL AS string) as contract_factory
+      ct.`from` as creator_address
+      ,CAST(NULL as varchar(250)) as contract_factory
       ,ct.address as contract_address
       ,ct.block_time as created_time
       ,ct.block_number as created_block_number
@@ -84,15 +85,15 @@ SELECT *
       ,t.block_time as top_level_time
       ,t.block_number as top_level_block_number
       ,t.hash as top_level_tx_hash
-      ,t.from AS top_level_tx_from
+      ,t.`from` AS top_level_tx_from
       ,t.to AS top_level_tx_to
       ,substring(t.data,1,10) AS top_level_tx_method_id
-      ,t.from AS created_tx_from
+      ,t.`from` AS created_tx_from
       ,t.to AS created_tx_to
       ,substring(t.data,1,10) AS created_tx_method_id
       ,t.index as created_tx_index
       ,ct.code
-      ,ceil( length(ct.code)/2 ) AS code_bytelength --toreplace with bytearray_length in dunesql
+      ,length(ct.code)/2 AS code_bytelength --toreplace with bytearray_length in dunesql
       ,coalesce(sd.contract_address is not NULL, false) as is_self_destruct
       ,1 AS to_iterate_creators
     from {{ source('optimism', 'creation_traces') }} as ct 
@@ -101,21 +102,23 @@ SELECT *
       AND t.block_time = ct.block_time
       AND t.block_number = ct.block_number
       {% if is_incremental() %}
-      and t.block_time >= date_trunc('day', now() - interval '1 week')
+      and t.block_time >= date_trunc('day', now() - interval '7' day)
+      AND ct.block_time >= date_trunc('day', now() - interval '7' day)
       {% endif %}
-    left join {{ ref('contracts_optimism_self_destruct_contracts_legacy') }} as sd 
+    left join {{ ref('contracts_optimism_self_destruct_contracts') }} as sd 
       on ct.address = sd.contract_address
       and ct.tx_hash = sd.creation_tx_hash
       and ct.block_time = sd.created_time
       {% if is_incremental() %}
-      and sd.created_time >= date_trunc('day', now() - interval '1 week')
+      and sd.created_time >= date_trunc('day', now() - interval '7' day)
+      AND ct.block_time >= date_trunc('day', now() - interval '7' day)
       {% endif %}
     where 
-      true
+      1=1
       {% if is_incremental() %}
-      and ct.block_time >= date_trunc('day', now() - interval '1 week')
+      and ct.block_time >= date_trunc('day', now() - interval '7' day)
 
-    -- to get existing history of contract mapping
+    -- to get existing history of contract mapping / only select those we want to re-run
     union all 
 
     select 
@@ -153,7 +156,7 @@ SELECT *
       ,coalesce(sd.contract_address is not NULL, false) as is_self_destruct
       , CASE WHEN nd.creator_address IS NOT NULL THEN 1 ELSE 0 END AS to_iterate_creators
     from {{ this }} t
-    left join {{ ref('contracts_optimism_self_destruct_contracts_legacy') }} as sd 
+    left join {{ ref('contracts_optimism_self_destruct_contracts') }} as sd 
       on t.contract_address = sd.contract_address
       and t.creation_tx_hash = sd.creation_tx_hash
       and t.created_time = sd.created_time
@@ -166,14 +169,13 @@ SELECT *
       AND sd.contract_address IS NULL
 
     -- If the creator becomes marked as deterministic, we want to re-run it.
-    left join {{ref('contracts_optimism_deterministic_contract_creators_legacy')}} as nd 
+    left join {{ref('contracts_optimism_deterministic_contract_creators')}} as nd 
       ON nd.creator_address = t.creator_address
 
     -- Don't pull contracts that are in the incremental group (prevent dupes)
     WHERE t.contract_address NOT IN (
-      SELECT address FROM {{ source('optimism', 'creation_traces') }} WHERE ct.block_time >= date_trunc('day', now() - interval '1 week')
+      SELECT address FROM {{ source('optimism', 'creation_traces') }} WHERE block_time >= date_trunc('day', now() - interval '7' day)
     )
-
       {% endif %} -- incremental filter
   ) as x
   group by 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 22, code
@@ -183,25 +185,22 @@ WHERE contract_order = 1
 
 ,tokens as (
   select 
-    bl.contract_address
+    t.contract_address
     ,t.symbol
     ,'erc20' as token_standard
-  from base_level as bl 
-  join {{ ref('tokens_optimism_erc20_legacy') }} as t
-    on bl.contract_address = t.contract_address
+  from {{ ref('tokens_optimism_erc20') }} as t
   group by 1, 2, 3
 
   union all 
 
   select 
-    bl.contract_address
+    t.contract_address
     ,t.name as symbol
     , standard AS token_standard
-  from base_level as bl 
-  join {{ ref('tokens_optimism_nft_legacy') }} as t
-    on bl.contract_address = t.contract_address
+  from {{ ref('tokens_optimism_nft') }} as t
   group by 1, 2, 3
 )
+
 -- starting from 0 
 -- u = next level up contract (i.e. the factory)
 -- b = base-level contract
@@ -216,7 +215,7 @@ WHERE contract_order = 1
         ELSE coalesce(u.creator_address, b.creator_address)
       END as creator_address -- get the highest-level creator we know of
       {% if loop.first -%}
-      ,case when u.creator_address is NULL then NULL
+      ,case when u.creator_address is NULL then CAST(NULL as varchar(250))
         else b.creator_address
       end as contract_factory -- if factory created, maintain the original factory
       {% else -%}
@@ -225,8 +224,8 @@ WHERE contract_order = 1
       ,b.contract_address
       -- store the raw created data
       ,b.created_time
-      ,b.creation_tx_hash
       ,b.created_block_number
+      ,b.creation_tx_hash
       ,b.created_tx_from
       ,b.created_tx_to
       ,b.created_tx_method_id
@@ -245,29 +244,29 @@ WHERE contract_order = 1
         then b.created_tx_to else COALESCE(u.created_tx_to, b.created_tx_to ) end AS top_level_tx_to
       ,case when nd.creator_address IS NOT NULL
         then b.created_tx_method_id else COALESCE(u.created_tx_method_id, b.created_tx_method_id ) end AS top_level_tx_method_id
-
-      
       
       ,b.code_bytelength
       ,b.is_self_destruct
       ,b.code_deploy_rank
       ,b.contract_order
-      ,b.to_iterate_creators
+      ,b.to_iterate_creators --check if base needs to be iterated, keep the base option
 
     {% if loop.first -%}
     from base_level as b
     left join base_level as u --get info about the contract that created this contract
       on b.creator_address = u.contract_address
+      AND ( b.created_time >= u.created_time OR u.created_time IS NULL) --base level was created on or after its creator
     {% else -%}
     from level{{i-1}} as b
     left join base_level as u --get info about the contract that created this contract
       on b.creator_address = u.contract_address
+      AND ( b.created_time >= u.created_time OR u.created_time IS NULL) --base level was created on or after its creator
     {% endif %}
     -- is the creator deterministic?
-    left join {{ref('contracts_optimism_deterministic_contract_creators_legacy')}} as nd 
+    left join {{ref('contracts_optimism_deterministic_contract_creators')}} as nd 
       ON nd.creator_address = b.creator_address
     
-    WHERE b.to_iterate_creators = 1 --only run contracts that we want to iterate through
+    WHERE b.to_iterate_creators=1 --only run contracts that we want to iterate through
 )
 {%- endfor %}
 
@@ -299,13 +298,13 @@ WHERE contract_order = 1
     UNION ALL
     SELECT 5 as level, * FROM base_level WHERE to_iterate_creators = 0 --get legacy contracts
   ) f
-  left join {{ ref('contracts_optimism_contract_creator_address_list_legacy') }} as cc 
+  left join {{ ref('contracts_optimism_contract_creator_address_list') }} as cc 
     on f.creator_address = cc.creator_address
-  left join {{ ref('contracts_optimism_contract_creator_address_list_legacy') }} as ccf
+  left join {{ ref('contracts_optimism_contract_creator_address_list') }} as ccf
     on f.contract_factory = ccf.creator_address
-  left join {{ ref('contracts_optimism_contract_creator_address_list_legacy') }} as cctr
+  left join {{ ref('contracts_optimism_contract_creator_address_list') }} as cctr
     on f.trace_creator_address = cctr.creator_address
-
+  
   where f.contract_address is not null
  )
 ,combine as (
@@ -337,14 +336,14 @@ WHERE contract_order = 1
   from creator_contracts as cc 
   left join {{ source('optimism', 'contracts') }} as oc 
     on cc.contract_address = oc.address 
-  group by 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23
-
+  group by 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24
+  
   union all
   -- missing contracts
   select 
      COALESCE(oc.`from`,'0xdeaddeaddeaddeaddeaddeaddeaddeaddead0006') AS trace_creator_address
     ,COALESCE(oc.`from`,'0xdeaddeaddeaddeaddeaddeaddeaddeaddead0006') AS creator_address
-    ,CAST(NULL AS string) as contract_factory
+    ,CAST(NULL as varchar(250)) as contract_factory
     ,l.contract_address
     ,oc.namespace as contract_project 
     ,oc.name as contract_name 
@@ -352,18 +351,18 @@ WHERE contract_order = 1
     ,false as is_self_destruct
     ,'missing contracts' as source
     ,COALESCE(oc.created_at, MIN(block_time)) as top_level_time
-    ,CAST(NULL AS string) as top_level_tx_hash
+    ,CAST(NULL as varchar(250)) as top_level_tx_hash
     ,cast(NULL as bigint) as top_level_block_number
-    ,CAST(NULL AS string) as creation_tx_hash
+    ,CAST(NULL as varchar(250)) as creation_tx_hash
     ,cast(NULL as bigint) as created_block_number
-    ,CAST(NULL AS string) as top_level_tx_from
-    ,CAST(NULL AS string) as top_level_tx_to
-    ,CAST(NULL AS string) as top_level_tx_method_id
-    ,CAST(NULL AS string) as created_tx_from
-    ,CAST(NULL AS string) as created_tx_to
-    ,CAST(NULL AS string) as created_tx_method_id
+    ,CAST(NULL as varchar(250)) as top_level_tx_from
+    ,CAST(NULL as varchar(250)) as top_level_tx_to
+    ,CAST(NULL as varchar(250)) as top_level_tx_method_id
+    ,CAST(NULL as varchar(250)) as created_tx_from
+    ,CAST(NULL as varchar(250)) as created_tx_to
+    ,CAST(NULL as varchar(250)) as created_tx_method_id
     ,l.tx_index AS created_tx_index
-    ,ceil( length(oc.code)/2 ) AS code_bytelength --toreplace with bytearray_length in dunesql
+    ,length(oc.code)/2 as code_bytelength
     ,1 as code_deploy_rank
     ,2 as map_rank
   from {{ source('optimism', 'logs') }} as l
@@ -381,7 +380,7 @@ WHERE contract_order = 1
   select 
       trace_creator_address
       ,creator_address
-      ,CAST(NULL AS string) as contract_factory
+      ,CAST(NULL as varchar(250)) as contract_factory
       ,contract_address
       ,contract_project
       ,contract_name
@@ -389,33 +388,34 @@ WHERE contract_order = 1
       ,is_self_destruct
       ,source
       ,created_time as top_level_time
-      ,CAST(NULL AS string) as top_level_tx_hash
+      ,CAST(NULL as varchar(250)) as top_level_tx_hash
       ,cast(NULL as bigint) as top_level_block_number
-      ,CAST(NULL AS string) as creation_tx_hash
+      ,CAST(NULL as varchar(250)) as creation_tx_hash
       ,cast(NULL as bigint) as created_block_number
-      ,CAST(NULL AS string) as top_level_tx_from
-      ,CAST(NULL AS string) as top_level_tx_to
-      ,CAST(NULL AS string) as top_level_tx_method_id
-      ,CAST(NULL AS string) as created_tx_from
-      ,CAST(NULL AS string) as created_tx_to
-      ,CAST(NULL AS string) as created_tx_method_id
+      ,CAST(NULL as varchar(250)) as top_level_tx_from
+      ,CAST(NULL as varchar(250)) as top_level_tx_to
+      ,CAST(NULL as varchar(250)) as top_level_tx_method_id
+      ,CAST(NULL as varchar(250)) as created_tx_from
+      ,CAST(NULL as varchar(250)) as created_tx_to
+      ,CAST(NULL as varchar(250)) as created_tx_method_id
       ,cast(NULL as bigint) AS created_tx_index
       ,cast(NULL as bigint) as code_bytelength --todo
       ,1 as code_deploy_rank
       ,3 as map_rank
 
-    FROM {{ ref('contracts_optimism_predeploys_legacy') }} pre
+    FROM {{ ref('contracts_optimism_predeploys') }} pre
     where 
     1=1
     {% if is_incremental() %} -- this filter will only be applied on an incremental run 
     and 1=0 --do not run on incremental builds
     {% endif %}
     GROUP BY 1,2,3,4,5,6,7,8,9
+
 )
 
 ,get_contracts as (
-select *
-from (
+  select *
+  FROM (
   select 
     c.trace_creator_address
     ,c.contract_address
@@ -450,24 +450,24 @@ from (
   left join tokens as t 
     on c.contract_address = t.contract_address
   group by 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24
-) a
-ORDER BY map_rank ASC NULLS LAST --order we pick
+  ) a
+  ORDER BY map_rank ASC NULLS LAST --order we pick
 )
 ,cleanup as (
 --grab the first non-null value for each, i.e. if we have the contract via both contract mapping and optimism.contracts
   select
     contract_address
     {% for col in cols %}
-    ,(array_agg({{ col }}) filter (where {{ col }} is not NULL))[0] as {{ col }}
+    ,(array_agg({{ col }}) filter (where {{ col }} is not NULL))[1] as {{ col }}
     {% endfor %}
   from get_contracts
   where contract_address is not NULL 
   group by 1
 )
-select 
-  c.trace_creator_address
-  ,c.contract_address
-  ,cast(initcap(
+SELECT
+  trace_creator_address,  contract_address, 
+
+  cast(initcap(
       replace(
       -- priority order: Override name, Mapped vs Dune, Raw/Actual names
         coalesce(
@@ -480,45 +480,74 @@ select
       ' '
     )
    ) as varchar(250)) as contract_project
-  ,c.token_symbol
-  ,cast( coalesce(co.contract_name, c.contract_name) as varchar(250)) as contract_name
-  ,coalesce(c.creator_address, ovm1c.creator_address) as creator_address
-  ,coalesce(c.created_time, to_timestamp(ovm1c.created_time)) as created_time
-  ,coalesce(c.contract_factory, 
-  {% if is_incremental() %}
-    th.contract_creator_if_factory
-    {% else -%}
-    NULL
+  --
+, contract_name, creator_address, created_time, contract_creator_if_factory
+, is_self_destruct, creation_tx_hash, created_block_number, created_tx_from
+, created_tx_to, created_tx_method_id, created_tx_index
+, top_level_time, top_level_tx_hash, top_level_block_number
+, top_level_tx_from, top_level_tx_to , top_level_tx_method_id
+, code_bytelength , token_standard , code_deploy_rank, is_eoa_deployed
+
+FROM (
+  select 
+    COALESCE(c.trace_creator_address, CAST(NULL as varchar(250)) ) AS trace_creator_address
+    ,c.contract_address
+    ,cast(
+        replace(
+        -- priority order: Override name, Mapped vs Dune, Raw/Actual names
+          coalesce(
+            co.contract_project
+            ,dnm.mapped_name
+            ,c.contract_project
+            ,ovm1c.contract_project
+          ),
+        '_',
+        ' '
+    ) as varchar(250) ) as contract_project
+    ,c.token_symbol
+    ,cast( coalesce(co.contract_name, c.contract_name) as varchar(250) ) as contract_name
+    ,coalesce(c.creator_address, ovm1c.creator_address, CAST(NULL as varchar(250)) ) as creator_address
+    ,coalesce(c.created_time
+      -- , CAST(SUBSTRING(ovm1c.created_time, 1, POSITION('T' IN ovm1c.created_time) - 1) as timestamp)
+        , from_iso8601_timestamp( ovm1c.created_time )
+       ) as created_time
+    ,coalesce(c.contract_factory, 
+    {% if is_incremental() %}
+      th.contract_creator_if_factory
+      {% else -%}
+      cast(NULL as varchar(250))
+    {% endif %}
+    ) as contract_creator_if_factory
+    ,coalesce(c.is_self_destruct, false) as is_self_destruct
+    ,c.creation_tx_hash
+    ,COALESCE(c.created_block_number,0) AS created_block_number
+    ,c.created_tx_from
+    ,c.created_tx_to
+    ,c.created_tx_method_id
+    ,c.created_tx_index
+
+    ,c.top_level_time
+    ,c.top_level_tx_hash
+    ,c.top_level_block_number
+    ,c.top_level_tx_from
+    ,c.top_level_tx_to
+    ,c.top_level_tx_method_id
+    
+    ,c.code_bytelength
+    ,c.token_standard
+    ,c.code_deploy_rank
+    ,CASE WHEN c.trace_creator_address = c.created_tx_from THEN 1 ELSE 0 END AS is_eoa_deployed
+
+  from cleanup as c 
+  left join {{ source('ovm1_optimism', 'contracts') }} as ovm1c
+    on c.contract_address = ovm1c.contract_address --fill in any missing contract creators
+  left join {{ ref('contracts_optimism_project_name_mappings') }} as dnm -- fix names for decoded contracts
+    on lower(c.contract_project) = lower(dnm.dune_name)
+  left join {{ ref('contracts_optimism_contract_overrides') }} as co --override contract maps
+    on c.contract_address = co.contract_address
+  {% if is_incremental() %} -- this filter will only be applied on an incremental run 
+  left join {{ this }} th -- grab if the contract was previously picked up as factory created
+    ON th.contract_address = c.contract_address
+    AND th.created_block_number = c.created_block_number
   {% endif %}
-  ) as contract_creator_if_factory
-  ,coalesce(c.is_self_destruct, false) as is_self_destruct
-  ,c.creation_tx_hash
-  ,c.created_block_number
-  ,c.created_tx_from
-  ,c.created_tx_to
-  ,c.created_tx_method_id
-  ,c.created_tx_index
-
-  ,c.top_level_time
-  ,c.top_level_tx_hash
-  ,c.top_level_block_number
-  ,c.top_level_tx_from
-  ,c.top_level_tx_to
-  ,c.top_level_tx_method_id
-  
-  ,c.code_bytelength
-  ,c.token_standard
-  ,c.code_deploy_rank
-  ,CASE WHEN c.trace_creator_address = c.created_tx_from THEN 1 ELSE 0 END AS is_eoa_deployed
-
-from cleanup as c 
-left join {{ source('ovm1_optimism', 'contracts') }} as ovm1c
-  on c.contract_address = ovm1c.contract_address --fill in any missing contract creators
-left join {{ ref('contracts_optimism_project_name_mappings_legacy') }} as dnm -- fix names for decoded contracts
-  on lower(c.contract_project) = lower(dnm.dune_name)
-left join {{ ref('contracts_optimism_contract_overrides_legacy') }} as co --override contract maps
-  on lower(c.contract_address) = lower(co.contract_address)
-{% if is_incremental() %} -- this filter will only be applied on an incremental run 
-left join {{ this }} th -- grab if the contract was previously picked up as factory created
-  ON lower(th.contract_address) = lower(c.contract_address)
-{% endif %}
+) f
