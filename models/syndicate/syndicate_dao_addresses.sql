@@ -11,7 +11,7 @@
 
 {% set syndicate_models = [
 ref('syndicate_ethereum_dao_addresses')
-,ref('syndicate_gnosis_dao_addresses')
+,ref('syndicate_polygon_dao_addresses')
 ] %}
 
 
