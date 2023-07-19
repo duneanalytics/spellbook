@@ -33,6 +33,18 @@ As we enter the phase of building on DuneSQL, we will continue to run spells in 
 ## How can I contribute spells on DuneSQL?
 The process will differ for new spells vs. migrating existing spells.
 
+### How can I tell the status of a particular spell?
+Here are a few things to look for, when looking for spells in the repo:
+- all spells have two files
+  - one with `_legacy.sql` suffix
+    - the legacy file refers to **spark** engine, as we are looking to deprecate once fully migrated
+    - all legacy files contain a `tags = ['legacy']` to help our orchestration engines determine spark engine
+  - one without the legacy suffix
+    - these files refer to **dunesql** engine
+    - all of these files will either contain a tag for dunesql or not (`tags = ['dunesql']`)
+      - if there is a tag present, the spell has been successfully migrated to dunesql syntax and is ready to run on the dunesql engine
+      - if there is no tag present, the spell is sitting idle and waiting for migration and will not run on any engine until migrated and tag is added
+
 ### New spells
 If creating a new spell, follow the below steps:
 - Follow the same process from the spark engine setup

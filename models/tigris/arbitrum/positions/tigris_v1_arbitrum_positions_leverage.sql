@@ -1,4 +1,5 @@
 {{ config(
+    tags=['dunesql'],
     schema = 'tigris_v1_arbitrum',
     alias = alias('positions_leverage')
     )
@@ -35,4 +36,3 @@ leverage as (
 )
 
 SELECT * FROM leverage 
-;
