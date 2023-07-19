@@ -13,7 +13,7 @@
     )
 }}
 
-{% set psp_token_address = '0xcafe001067cdef266afb7eb5a286dcfd277f3de5' %} 
+{% set psp_token_address = '0xcafe001067cdef266afb7eb5a286dcfd277f3de5' %}
 
 WITH more_prices AS (
     SELECT MIN(hour) AS min_hour
