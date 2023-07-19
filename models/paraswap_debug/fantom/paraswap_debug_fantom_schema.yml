@@ -11,6 +11,20 @@ models:
       tags: ['fantom','paraswap_v5','trades', 'paraswap','dex']
     description: >
         Paraswap V5 contract aggregator trades on fantom
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_date
+            - blockchain
+            - project
+            - version
+            - tx_hash
+            - evt_index
+            - trace_address
+      - check_dex_aggregator_seed_legacy:
+          blockchain: fantom
+          project: paraswap
+          version: 5
     columns:
       - &blockchain
         name: blockchain
