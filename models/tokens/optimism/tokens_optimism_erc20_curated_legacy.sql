@@ -377,6 +377,7 @@ WITH raw_token_list AS (
     ,('0x747e42Eb0591547a0ab429B3627816208c734EA7', 'T', 18, 'underlying')
     ,('0x1509706a6c66CA549ff0cB464de88231DDBe213B', 'AURA', 18, 'underlying')
     ,('0x0346c32E5d7e98bD57100b6F7002a0Ae17188048', 'BWLD', 18, 'underlying')
+    ,('0x8a6039fc7a479928b1d73f88040362e9c50db275', 'BITCOIN (hpos10i)', 8, 'underlying')
     
     ) AS temp_table (contract_address, symbol, decimals, token_type)
 )
