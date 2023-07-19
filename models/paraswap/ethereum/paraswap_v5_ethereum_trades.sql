@@ -60,7 +60,7 @@ WITH dex_swap AS (
             END AS token_sold_address,
             contract_address AS project_contract_address,
             evt_tx_hash AS tx_hash, 
-            ARRAY[] AS trace_address,
+            ARRAY[cast(null as bigint)] AS trace_address,
             evt_index
         FROM {{ trade_table }} p 
         {% if is_incremental() %}
@@ -93,7 +93,7 @@ liqudity_swap AS (
         END AS token_sold_address,
         p.contract_address AS project_contract_address,
         p.evt_tx_hash AS tx_hash, 
-        ARRAY[] AS trace_address,
+        ARRAY[cast(null as bigint)] AS trace_address,
         p.evt_index
     FROM {{ source('paraswap_ethereum', 'ParaSwapLiquiditySwapAdapter_evt_Swapped') }} p
     INNER JOIN {{ source('ethereum', 'transactions') }} tx ON p.evt_tx_hash = tx.hash
@@ -140,7 +140,7 @@ call_swap_without_event AS (
                 t."from" AS user_address,
                 t.contract_address AS tokenIn,
                 cast(t.value AS decimal(38, 0)) AS amountIn,
-                ARRAY[] AS trace_address,
+                ARRAY[cast(null as bigint)] AS trace_address,
                 t.evt_index,
                 row_number() over (partition by t.evt_tx_hash order by t.evt_index) as row_num
             FROM no_event_call_transaction c
@@ -223,7 +223,7 @@ call_swap_without_event AS (
                 t."to" AS user_address,
                 t.contract_address AS tokenOut,
                 cast(t.value AS decimal(38, 0)) AS amountOut,
-                ARRAY[] AS trace_address,
+                ARRAY[cast(null as bigint)] AS trace_address,
                 t.evt_index,
                 row_number() over (partition by t.evt_tx_hash order by t.evt_index) AS row_num
             FROM no_event_call_transaction c
