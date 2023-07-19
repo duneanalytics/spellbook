@@ -22,10 +22,10 @@ models:
           seed_file: ref('dao_addresses_seed')
           match_columns:
             - blockchain
-            - dao
+            - dao_creator_tool
             - dao_wallet_address
           check_columns:
-            - dao_creator_tool
+            - dao
     columns:
       - &blockchain
         name: blockchain
