@@ -1,6 +1,6 @@
 version: 2
 
- seeds:
+seeds:
    - name: dao_addresses_seed
      config:
        tags: dunesql
