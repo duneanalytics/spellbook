@@ -1,5 +1,6 @@
 {{ config(
         alias = alias('trades'),
+        tags = ['dunesql'],
         post_hook='{{ expose_spells(\'["fantom"]\',
                                 "project",
                                 "paraswap_debug",
