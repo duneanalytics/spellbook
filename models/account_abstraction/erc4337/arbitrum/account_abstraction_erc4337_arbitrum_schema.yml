@@ -16,6 +16,16 @@ models:
           combination_of_columns:
             - userop_hash
             - tx_hash
+      - check_seed:
+          seed_file: ref('account_abstraction_erc4337_userops_seed')
+          filter:
+            blockchain: arbitrum
+            version: v0.5
+          match_columns:
+            - userop_hash
+            - tx_hash
+          check_columns:
+            - bundler
     columns:
       - &blockchain
         name: blockchain
@@ -65,6 +75,16 @@ models:
           combination_of_columns:
             - userop_hash
             - tx_hash
+      - check_seed:
+          seed_file: ref('account_abstraction_erc4337_userops_seed')
+          filter:
+            blockchain: arbitrum
+            version: v0.6
+          match_columns:
+            - userop_hash
+            - tx_hash
+          check_columns:
+            - bundler
     columns:
       - *blockchain
       - *version
@@ -92,26 +112,6 @@ models:
           combination_of_columns:
             - userop_hash
             - tx_hash
-      - check_seed:
-          seed_file: ref('account_abstraction_erc4337_userops_seed')
-          filter:
-            blockchain: arbitrum
-            version: v0.5
-          match_columns:
-            - userop_hash
-            - tx_hash
-          check_columns:
-            - bundler
-      - check_seed:
-          seed_file: ref('account_abstraction_erc4337_userops_seed')
-          filter:
-            blockchain: arbitrum
-            version: v0.6
-          match_columns:
-            - userop_hash
-            - tx_hash
-          check_columns:
-            - bundler
     columns:
       - *blockchain
       - *version
