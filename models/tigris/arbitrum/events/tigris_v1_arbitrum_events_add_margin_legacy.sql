@@ -131,4 +131,3 @@ SELECT *, 'v1.4' as version FROM add_margin_v4
 UNION ALL
 
 SELECT *, 'v1.5' as version FROM add_margin_v5
-;
