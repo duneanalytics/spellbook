@@ -22,4 +22,4 @@ version: 2
          value: double
          block_date: date
          tx_type: varchar
-         tx_hash: varbinary 
+         tx_hash: varbinary
