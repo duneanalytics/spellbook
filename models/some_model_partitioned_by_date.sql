@@ -1,4 +1,5 @@
 {{ config(
+        schema = 'test_dont_merge',
         alias = alias('partitioned_by_time'),
         tags = ['dunesql'],
         partition_by = ['partition_column']
