@@ -61,7 +61,7 @@ SELECT
     'fantom' as blockchain,
     'paraswap' as project,
     '5' as version,
-    try_cast(date_trunc('DAY', dexs.block_time) as date) as block_date,
+    date_trunc('day', dexs.block_time) as block_date,
     dexs.block_time,
     erc20a.symbol as token_bought_symbol,
     erc20b.symbol as token_sold_symbol,

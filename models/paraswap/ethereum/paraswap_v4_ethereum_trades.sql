@@ -293,7 +293,7 @@ dexs AS (
 SELECT 'ethereum' AS blockchain,
     'paraswap' AS project,
     '4' AS version,
-    try_cast(date_trunc('DAY', d.block_time) AS date) AS block_date,
+    date_trunc('DAY', d.block_time) AS block_date,
     d.block_time,
     e1.symbol AS token_bought_symbol,
     e2.symbol AS token_sold_symbol,
