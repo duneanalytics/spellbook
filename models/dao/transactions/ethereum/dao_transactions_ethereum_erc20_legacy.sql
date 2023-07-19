@@ -1,6 +1,5 @@
 {{ config(
 	tags=['legacy'],
-	
     alias = alias('transactions_ethereum_erc20', legacy_model=True),
     partition_by = ['block_date'],
     materialized = 'incremental',
