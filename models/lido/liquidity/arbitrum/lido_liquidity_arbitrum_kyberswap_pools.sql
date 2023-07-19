@@ -2,7 +2,6 @@
     schema='lido_liquidity_arbitrum',
     alias = alias('kyberswap_pools'),
     tags = ['dunesql'],
-    partition_by = ['time'],
     materialized = 'table',
     file_format = 'delta',
     unique_key = ['pool', 'time'],
@@ -47,7 +46,7 @@ select 0x5979D7b546E38E414F7E9822514be443A4800529
 ) t
 )
 
-
+/*
 , pool_per_date as ( 
 select dates.day, pools.*
 from dates
@@ -56,7 +55,7 @@ left join pools on 1=1
 
 , tokens_prices_daily AS (
     SELECT DISTINCT
-      DATE_TRUNC('day', minute) AS time,
+      DATE_TRUNC('day', minute) AS dtime,
       contract_address  AS token,
       decimals, 
       symbol,
@@ -87,7 +86,7 @@ left join pools on 1=1
       AND blockchain = 'arbitrum'
       AND contract_address IN (SELECT address  FROM tokens)
   )
-
+*/
 /*  
  , tokens_prices_hourly AS (
         select 
@@ -128,7 +127,7 @@ left join pools on 1=1
 
 , swap_events as (
     select 
-        date_trunc('day', sw.evt_block_time) as time,
+        date_trunc('day', sw.evt_block_time) as dtime,
         sw.contract_address as pool,
         cr.token0, cr.token1,
         sum(cast(deltaQty0 as DOUBLE)) as amount0,
@@ -143,7 +142,7 @@ left join pools on 1=1
     
 , mint_events as (
     select 
-        date_trunc('day', mt.evt_block_time) as time,
+        date_trunc('day', mt.evt_block_time) as dtime,
         mt.contract_address as pool,
         cr.token0, cr.token1,
         sum(cast(qty0 as DOUBLE)) as amount0,
@@ -159,7 +158,7 @@ left join pools on 1=1
 
 , burn_events as (
     select 
-        date_trunc('day', bn.evt_block_time) as time,
+        date_trunc('day', bn.evt_block_time) as dtime,
         bn.contract_address as pool,
         cr.token0, cr.token1,
         (-1)*sum(cast(qty0 as DOUBLE)) as amount0,
@@ -191,13 +190,13 @@ left join pools on 1=1
     --select time, pool, token0, token1, sum(coalesce(amount0, 0)) as amount0, sum(coalesce(amount1, 0)) as amount1
         --lead(time, 1, cast(now() as date) + interval '1' day) over (partition by pool order by time) as next_time
     --from ( 
-    select time, pool, token0, token1, amount0, amount1 
+    select dtime, pool, token0, token1, amount0, amount1 
     from swap_events
     union all
-    select time, pool, token0, token1, amount0, amount1 
+    select dtime, pool, token0, token1, amount0, amount1 
     from mint_events
     union all
-    select time, pool, token0, token1, amount0, amount1 
+    select dtime, pool, token0, token1, amount0, amount1 
     from burn_events
     --) balance
     --group by 1,2,3,4
