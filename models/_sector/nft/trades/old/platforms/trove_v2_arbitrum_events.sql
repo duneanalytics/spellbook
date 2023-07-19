@@ -1,6 +1,7 @@
 {{ config(
     schema='trove_v2_arbitrum',
-    alias = 'events',
+    alias = alias('events'),
+    tags = ['dunesql'],
     partition_by = ['block_date'],
     materialized = 'incremental',
     file_format = 'delta',
