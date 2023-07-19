@@ -18,6 +18,14 @@ models:
             - dao_creator_tool
             - dao
             - dao_wallet_address
+      - check_seed:
+          seed_file: ref('dao_addresses_seed')
+          match_columns:
+            - blockchain
+            - dao
+            - dao_wallet_address
+          check_columns:
+            - dao_creator_tool
     columns:
       - &blockchain
         name: blockchain
@@ -25,9 +33,6 @@ models:
       - &dao_creator_tool
         name: dao_creator_tool
         description: "Name of creator tool used to create DAO"
-        tests:
-          - dao_addresses_creator_tool:
-              dao_addresses_seed: ref('dao_addresses_seed')
       - &dao
         name: dao
         description: "address of the dao deployed"
