@@ -6,7 +6,6 @@
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
-    unique_key = ['block_date', 'blockchain', 'project', 'version', 'tx_hash', 'evt_index', 'trace_address'],
     post_hook='{{ expose_spells(\'["fantom"]\',
                                 "project",
                                 "paraswap_debug_v5",
@@ -80,22 +79,12 @@ SELECT
     ) AS amount_usd,
     dexs.token_bought_address,
     dexs.token_sold_address,
-    /*coalesce(dexs.taker, tx."from") AS taker,
+    coalesce(dexs.taker, tx."from") AS taker,
     dexs.maker,
     dexs.project_contract_address,
     dexs.tx_hash,
     tx."from" AS tx_from,
-    tx.to AS tx_to,
-    dexs.trace_address,
-    dexs.evt_index*/
-    null as taker,
-    null as maker,
-    null as project_contract_address,
-    dexs.tx_hash,
-    null as tx_from,
-    null as tx_to,
-    null as trace_address,
-    null as evt_index
+    tx.to AS tx_to
 from dexs
 inner join {{ source('fantom', 'transactions') }} tx
     on dexs.tx_hash = tx.hash
