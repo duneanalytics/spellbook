@@ -47,7 +47,7 @@ get_minion_creations as (
         WHERE block_time >= date_trunc('day', now() - interval '7' day)
         {% endif %}
         AND topic0 = 0xbaefe449c0963ab3bd87eb56115a3f8420fbefae45878f063cc59a6cb99d3ae0
-        AND contract_address IN (LOWER(0xA1b97D22e22507498B350A9edeA85c44bA7DBC01), LOWER(0xBD090EF169c0C8589Acb33406C29C20d22bb4a55))
+        AND contract_address IN (0xA1b97D22e22507498B350A9edeA85c44bA7DBC01, 0xBD090EF169c0C8589Acb33406C29C20d22bb4a55)
 ), 
 
 get_daohaus_wallets as (
