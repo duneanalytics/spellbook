@@ -16,7 +16,7 @@
 {% set project_start_date = '2022-02-11' %} 
 
 with dates as (
-    with day_seq as (select (sequence(cast('{{ project_start_date }}' as date), cast(now() as date), interval '1' day)) as day)
+    with day_seq as (select (sequence(cast('{{ project_start_date }}' as date), current_date, interval '1' day)) as day)
 select cast(days.day as date) as day
 from day_seq
 cross join unnest(day) as days(day)
@@ -65,7 +65,7 @@ left join pools on 1=1
       {{source('prices','usd')}}
     WHERE
       DATE_TRUNC('day', minute) >= date '{{ project_start_date }}' 
-      AND DATE_TRUNC('day', minute) < DATE_TRUNC('day', cast(now() as date))
+      AND DATE_TRUNC('day', minute) < current_date
       AND blockchain = 'arbitrum'
       AND contract_address IN (SELECT address  FROM tokens)
     GROUP BY 1, 2,3,4
@@ -83,7 +83,7 @@ left join pools on 1=1
     FROM
       {{source('prices','usd')}}
     WHERE
-      DATE_TRUNC('day', minute) = DATE_TRUNC('day', cast(now() as date))
+      DATE_TRUNC('day', minute) = current_date
       AND blockchain = 'arbitrum'
       AND contract_address IN (SELECT address  FROM tokens)
   )
