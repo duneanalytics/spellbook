@@ -17,35 +17,23 @@
 
 with dates as (
     with day_seq as (select (sequence(cast('{{ project_start_date }}' as date), current_date, interval '1' day)) as day)
-
-select days.day
+select cast(days.day as date) as day
 from day_seq
 cross join unnest(day) as days(day)
   )
- 
+
+
+
 , pools as (
-select pool as address, 'arbitrum' as blockchain, 'kyberswap' as project, cast(swapFeeUnits as double)/1000 as fee
+select pool as address, 'arbitrum' as blockchain, 'kyberswap' as project, cast(swapFeeUnits as double)/1000 as fee,
+token0, token1
 from {{ source('kyber_arbitrum', 'Elastic_Factory_evt_PoolCreated') }}
 where token0 = 0x5979D7b546E38E414F7E9822514be443A4800529 or token1 = 0x5979D7b546E38E414F7E9822514be443A4800529
 
 )
 
-, tokens_mapping as (
-select address_l1 as address_l1, address_l2 as address_l2 from
-  (values 
-    (0x5A98FcBEA516Cf06857215779Fd812CA3beF1B32, 0x13ad51ed4f1b7e9dc168d8a00cb3f4ddd85efa60), --LDO
-    (0x2260FAC5E5542a773Aa44fBCfeDf7C193bc2C599, 0x2f2a2543b76a4166549f7aab2e75bef0aefc5b0f),   --WBTC
-    (0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48, 0xff970a61a04b1ca14834a43f5de4533ebddb5cc8),   --USDC
-    (0xdeFA4e8a7bcBA345F687a2f1456F5Edd9CE97202, 0xe4dddfe67e7164b0fe14e218d80dc4c08edc01cb), -- KNC
-    (0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2, 0x82af49447d8a07e3bd95bd0d56f35241523fbab1),   --WETH
-    (0xB50721BCf8d664c30412Cfbc6cf7a15145234ad1, 0x912ce59144191c1204e64559fe8253a0e49e6548),   --ARB
-    (0x514910771AF9Ca656af840dff83E8264EcF986CA, 0xf97f4df75117a78c1a5a0dbb814af92458539fb4),  --LINK
-    (0x7f39C581F595B53c5cb19bD0b3f8dA6c935E2Ca0, 0x5979d7b546e38e414f7e9822514be443a4800529) --wstETH
-) as tokens(address_l1, address_l2)
-)
-
 , tokens as (
-select distinct token as address, pt.symbol, pt.decimals, tm.address_l1 
+select distinct token as address--, pt.symbol, pt.decimals, tm.address_l1 
 from (
 select token1 as token
 from {{ source('kyber_arbitrum', 'Elastic_Factory_evt_PoolCreated') }}
@@ -57,52 +45,85 @@ where token1 = 0x5979D7b546E38E414F7E9822514be443A4800529
 union 
 select 0x5979D7b546E38E414F7E9822514be443A4800529
 ) t
-left join {{ref('prices_tokens')}} pt on ((t.token !=  0x5979d7b546e38e414f7e9822514be443a4800529 and t.token = pt.contract_address) or
-                               (t.token  =  0x5979d7b546e38e414f7e9822514be443a4800529  and pt.contract_address =  0x7f39C581F595B53c5cb19bD0b3f8dA6c935E2Ca0))
-left join tokens_mapping tm on t.token = tm.address_l2                                    
 )
 
+
+, pool_per_date as ( 
+select dates.day, pools.*
+from dates
+left join pools on 1=1
+)
 
 , tokens_prices_daily AS (
-    SELECT distinct
-        DATE_TRUNC('day', minute) AS time,
-        tokens_mapping.address_l2 as token,
-        avg(price) AS price
-    FROM {{ source('prices', 'usd') }} p
-    left join tokens_mapping on p.contract_address = tokens_mapping.address_l1
-    WHERE date_trunc('day', minute) >= date '{{ project_start_date }}' 
-    and date_trunc('day', minute) < current_date
-    and blockchain = 'ethereum'
-    and contract_address in (select address_l1 from tokens)
-    group by 1,2
-    union all
-    SELECT distinct
-        DATE_TRUNC('day', minute), 
-        tokens_mapping.address_l2 as token,
-        last_value(price) over (partition by DATE_TRUNC('day', minute), contract_address ORDER BY  minute range between unbounded preceding AND unbounded following) AS price
-    FROM {{ source('prices', 'usd') }} p
-    left join tokens_mapping on p.contract_address = tokens_mapping.address_l1
-    WHERE date_trunc('day', minute) = current_date
-    and blockchain = 'ethereum'
-    and contract_address in (select address_l1 from tokens)
-)
+    SELECT DISTINCT
+      DATE_TRUNC('day', minute) AS time,
+      contract_address  AS token,
+      decimals, 
+      symbol,
+      AVG(price) AS price
+    FROM
+      {{source('prices','usd')}}
+    WHERE
+      DATE_TRUNC('day', minute) >= date '{{ project_start_date }}' 
+      AND DATE_TRUNC('day', minute) < current_date
+      AND blockchain = 'arbitrum'
+      AND contract_address IN (SELECT address  FROM tokens)
+    GROUP BY 1, 2,3,4
+    UNION ALL
+    SELECT DISTINCT
+      DATE_TRUNC('day', minute),
+      contract_address  AS token,
+      decimals, 
+      symbol,
+      LAST_VALUE(price) OVER (
+        PARTITION BY
+          DATE_TRUNC('day', minute),
+          contract_address
+        ORDER BY minute range BETWEEN UNBOUNDED preceding AND UNBOUNDED following) AS price
+    FROM
+      {{source('prices','usd')}}
+    WHERE
+      DATE_TRUNC('day', minute) = current_date
+      AND blockchain = 'arbitrum'
+      AND contract_address IN (SELECT address  FROM tokens)
+  )
 
-, tokens_prices_hourly AS (
-    select time, lead(time,1, DATE_TRUNC('hour', now() + interval '1' hour)) over (partition by token order by time) as next_time, token, price
-    from (
-    SELECT distinct
-        DATE_TRUNC('hour', minute) as time, 
-        tokens_mapping.address_l2 as token,
-        last_value(price) over (partition by DATE_TRUNC('day', minute), contract_address ORDER BY  minute range between unbounded preceding AND unbounded following) AS price
-    FROM {{ source('prices', 'usd') }} p
-    left join tokens_mapping on p.contract_address = tokens_mapping.address_l1
-    WHERE date_trunc('hour', minute) >= date '{{ project_start_date }}'
-    and blockchain = 'ethereum'
-    and contract_address in (select address_l1 from tokens)
-    
-) p
-)
-
+  
+ , tokens_prices_hourly AS (
+        select 
+        time, 
+        LEAD(time,1, now() + INTERVAL '1' hour) OVER (PARTITION BY token  ORDER BY time) AS next_time,
+        token,
+          decimals, 
+          symbol,
+        price from (
+        SELECT DISTINCT
+          DATE_TRUNC('hour', minute) AS time,
+          contract_address  AS token,
+          decimals, 
+          symbol,
+          LAST_VALUE(price) OVER (
+            PARTITION BY
+              DATE_TRUNC('hour', minute),
+              contract_address
+            ORDER BY
+              minute NULLS FIRST range BETWEEN UNBOUNDED preceding
+              AND UNBOUNDED following
+          ) AS price
+        FROM
+          {{source('prices','usd')}}
+        WHERE
+          DATE_TRUNC('hour', minute) >= date '{{ project_start_date }}' 
+          AND blockchain = 'arbitrum'
+          AND contract_address IN (
+            SELECT
+              address
+            FROM
+              tokens
+          )) p
+      
+  )
+  
 
 , swap_events as (
     select 
@@ -167,7 +188,7 @@ left join tokens_mapping tm on t.token = tm.address_l2
     
 , daily_delta_balance as (
     select time, pool, token0, token1, sum(coalesce(amount0, 0)) as amount0, sum(coalesce(amount1, 0)) as amount1,
-        lead(time, 1, now() + interval '1' day) over (partition by pool order by time) as next_time
+        lead(time, 1, current_date + interval '1' day) over (partition by pool order by time) as next_time
     from ( 
     select time, pool, token0, token1, amount0, amount1 
     from swap_events
@@ -181,10 +202,19 @@ left join tokens_mapping tm on t.token = tm.address_l2
     group by 1,2,3,4
 )
   
+
+  
 , pool_liquidity as (
-    select distinct time, pool, token0, token1, sum(amount0) over(partition by pool order by time) as amount0, 
-    sum(amount1)  over(partition by pool order by time) as amount1
-    from daily_delta_balance b 
+        SELECT distinct
+      time,
+      pool,
+      d.token0,
+      d.token1,
+      SUM(amount0) OVER (PARTITION BY pool ORDER BY time) AS amount0,
+      SUM(amount1) OVER (PARTITION BY pool ORDER BY time) AS amount1
+    FROM
+    pool_per_date  c
+    left join  daily_delta_balance d on c.address = d.pool and c.day >= d.time and c.day < d.next_time
 
 )
 
@@ -207,7 +237,7 @@ left join tokens_mapping tm on t.token = tm.address_l2
 ) 
 
 , trading_volume_hourly as (
-    select hour as time, pool, token0, amount0, p.price, coalesce(p.price*amount0/power(10, t.decimals),0) as volume
+    select hour as time, pool, token0, amount0, p.price, coalesce(p.price*amount0/power(10, p.decimals),0) as volume
     from swap_events_hourly s 
     left join tokens t on s.token0 = t.address
     left join tokens_prices_hourly p on  s.hour >= p.time and s.hour < p.next_time  and s.token0 = p.token
@@ -222,14 +252,14 @@ group by 1,2
 
 , all_metrics as (
 select l.pool, pools.blockchain, pools.project, pools.fee, cast(l.time as date) as "time", 
-    case when token0 = 0x5979D7b546E38E414F7E9822514be443A4800529 then token0 else token1 end main_token,
-    case when token0 = 0x5979D7b546E38E414F7E9822514be443A4800529 then t0.symbol else t1.symbol end main_token_symbol,
-    case when token0 = 0x5979D7b546E38E414F7E9822514be443A4800529 then token1 else token0 end paired_token,
-    case when token0 = 0x5979D7b546E38E414F7E9822514be443A4800529 then t1.symbol else t0.symbol end paired_token_symbol, 
-    case when token0 = 0x5979D7b546E38E414F7E9822514be443A4800529 then amount0/power(10, t0.decimals)  else amount1/power(10, t1.decimals)  end main_token_reserve,
-    case when token0 = 0x5979D7b546E38E414F7E9822514be443A4800529 then amount1/power(10, t1.decimals)  else amount0/power(10, t0.decimals)  end paired_token_reserve,
-    case when token0 = 0x5979D7b546E38E414F7E9822514be443A4800529 then p0.price*amount0/power(10, t0.decimals) else p1.price*amount1/power(10, t1.decimals) end as main_token_usd_reserve,
-    case when token0 = 0x5979D7b546E38E414F7E9822514be443A4800529 then p1.price*amount1/power(10, t1.decimals) else p0.price*amount0/power(10, t0.decimals) end as paired_token_usd_reserve,
+    case when l.token0 = 0x5979D7b546E38E414F7E9822514be443A4800529 then l.token0 else l.token1 end main_token,
+    case when l.token0 = 0x5979D7b546E38E414F7E9822514be443A4800529 then p0.symbol else p1.symbol end main_token_symbol,
+    case when l.token0 = 0x5979D7b546E38E414F7E9822514be443A4800529 then l.token1 else l.token0 end paired_token,
+    case when l.token0 = 0x5979D7b546E38E414F7E9822514be443A4800529 then p1.symbol else p0.symbol end paired_token_symbol, 
+    case when l.token0 = 0x5979D7b546E38E414F7E9822514be443A4800529 then amount0/power(10, p0.decimals)  else amount1/power(10, p1.decimals)  end main_token_reserve,
+    case when l.token0 = 0x5979D7b546E38E414F7E9822514be443A4800529 then amount1/power(10, p1.decimals)  else amount0/power(10, p0.decimals)  end paired_token_reserve,
+    case when l.token0 = 0x5979D7b546E38E414F7E9822514be443A4800529 then p0.price*amount0/power(10, p0.decimals) else p1.price*amount1/power(10, p1.decimals) end as main_token_usd_reserve,
+    case when l.token0 = 0x5979D7b546E38E414F7E9822514be443A4800529 then p1.price*amount1/power(10, p1.decimals) else p0.price*amount0/power(10, p0.decimals) end as paired_token_usd_reserve,
     volume as trading_volume
 from pool_liquidity l 
 left join pools on l.pool = pools.address
