@@ -2,7 +2,8 @@
         schema = 'test_dont_merge',
         alias = alias('partitioned_by_date'),
         tags = ['dunesql'],
-        partition_by = ['partition_column']
+        partition_by = ['partition_column'],
+        materialized = 'table'
         )
 }}
 
