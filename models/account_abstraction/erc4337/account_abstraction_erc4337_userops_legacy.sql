@@ -12,7 +12,7 @@
 
 {% set erc4337_models = [
   -- ref('account_abstraction_erc4337_ethereum_userops_legacy')
-, ref('account_abstraction_erc4337_polygon_userops_legacy')
+ ref('account_abstraction_erc4337_polygon_userops_legacy')
 -- , ref('account_abstraction_erc4337_arbitrum_userops_legacy')
 -- , ref('account_abstraction_erc4337_optimism_userops_legacy')
 -- , ref('account_abstraction_erc4337_avalanche_c_userops_legacy')
