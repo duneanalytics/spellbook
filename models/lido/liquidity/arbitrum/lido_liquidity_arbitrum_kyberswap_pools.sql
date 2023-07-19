@@ -56,7 +56,7 @@ left join pools on 1=1
 
 , tokens_prices_daily AS (
     SELECT DISTINCT
-      DATE_TRUNC('day', minute) AS dtime,
+      DATE_TRUNC('day', minute) AS time,
       contract_address  AS token,
       decimals, 
       symbol,
@@ -128,7 +128,7 @@ left join pools on 1=1
 
 , swap_events as (
     select 
-        date_trunc('day', sw.evt_block_time) as dtime,
+        date_trunc('day', sw.evt_block_time) as time,
         sw.contract_address as pool,
         cr.token0, cr.token1,
         sum(cast(deltaQty0 as DOUBLE)) as amount0,
@@ -143,7 +143,7 @@ left join pools on 1=1
     
 , mint_events as (
     select 
-        date_trunc('day', mt.evt_block_time) as dtime,
+        date_trunc('day', mt.evt_block_time) as time,
         mt.contract_address as pool,
         cr.token0, cr.token1,
         sum(cast(qty0 as DOUBLE)) as amount0,
@@ -159,7 +159,7 @@ left join pools on 1=1
 
 , burn_events as (
     select 
-        date_trunc('day', bn.evt_block_time) as dtime,
+        date_trunc('day', bn.evt_block_time) as time,
         bn.contract_address as pool,
         cr.token0, cr.token1,
         (-1)*sum(cast(qty0 as DOUBLE)) as amount0,
@@ -188,16 +188,16 @@ left join pools on 1=1
 
     
 , daily_delta_balance as (
-    select dtime, pool, token0, token1, sum(coalesce(amount0, 0)) as amount0, sum(coalesce(amount1, 0)) as amount1,
-        lead(dtime, 1, current_date + interval '1' day) over (partition by pool order by dtime) as next_time
+    select time, pool, token0, token1, sum(coalesce(amount0, 0)) as amount0, sum(coalesce(amount1, 0)) as amount1,
+        lead(time, 1, current_date + interval '1' day) over (partition by pool order by time) as next_time
     from ( 
-    select dtime, pool, token0, token1, amount0, amount1 
+    select time, pool, token0, token1, amount0, amount1 
     from swap_events
     union all
-    select dtime, pool, token0, token1, amount0, amount1 
+    select time, pool, token0, token1, amount0, amount1 
     from mint_events
     union all
-    select dtime, pool, token0, token1, amount0, amount1 
+    select time, pool, token0, token1, amount0, amount1 
     from burn_events
     ) balance
     group by 1,2,3,4
@@ -207,15 +207,15 @@ left join pools on 1=1
   
 , pool_liquidity as (
         SELECT distinct
-      dtime,
+      time,
       pool,
       d.token0,
       d.token1,
-      SUM(amount0) OVER (PARTITION BY pool ORDER BY dtime) AS amount0,
-      SUM(amount1) OVER (PARTITION BY pool ORDER BY dtime) AS amount1
+      SUM(amount0) OVER (PARTITION BY pool ORDER BY time) AS amount0,
+      SUM(amount1) OVER (PARTITION BY pool ORDER BY time) AS amount1
     FROM
     pool_per_date  c
-    left join  daily_delta_balance d on c.address = d.pool and c.day >= d.dtime and c.day < d.next_time
+    left join  daily_delta_balance d on c.address = d.pool and c.day >= d.time and c.day < d.next_time
 
 )
 
@@ -252,7 +252,7 @@ group by 1,2
 )
 */
 , all_metrics as (
-select l.pool, pools.blockchain, pools.project, pools.fee, cast(l.dtime as date) as "time", 
+select l.pool, pools.blockchain, pools.project, pools.fee, cast(l.time as date) as "time", 
     case when l.token0 = 0x5979D7b546E38E414F7E9822514be443A4800529 then l.token0 else l.token1 end main_token,
     case when l.token0 = 0x5979D7b546E38E414F7E9822514be443A4800529 then p0.symbol else p1.symbol end main_token_symbol,
     case when l.token0 = 0x5979D7b546E38E414F7E9822514be443A4800529 then l.token1 else l.token0 end paired_token,
@@ -267,8 +267,8 @@ from pool_liquidity l
 left join pools on l.pool = pools.address
 left join tokens t0 on l.token0 = t0.address
 left join tokens t1 on l.token1 = t1.address
-left join tokens_prices_daily p0 on l.dtime = p0.dtime and l.token0 = p0.token
-left join tokens_prices_daily p1 on l.dtime = p1.dtime and l.token1 = p1.token
+left join tokens_prices_daily p0 on l.time = p0.time and l.token0 = p0.token
+left join tokens_prices_daily p1 on l.time = p1.time and l.token1 = p1.token
 --left join trading_volume tv on l.time = tv.time and l.pool = tv.pool
 ) 
 
