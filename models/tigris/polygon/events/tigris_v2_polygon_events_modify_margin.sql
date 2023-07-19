@@ -1,4 +1,5 @@
 {{ config(
+    tags=['dunesql'],
     schema = 'tigris_v2_polygon',
     alias = alias('events_modify_margin'),
     partition_by = ['day'],
@@ -13,7 +14,7 @@ WITH
 
 modify_margin_v1 as (
         SELECT 
-            date_trunc('day', mm.evt_block_time) as day, 
+            TRY_CAST(date_trunc('DAY', mm.evt_block_time) AS date) as day, 
             mm.evt_tx_hash,
             mm.evt_index,
             mm.evt_block_time,
@@ -32,7 +33,7 @@ modify_margin_v1 as (
             AND am.call_success = true 
             AND mm.isMarginAdded = true 
             {% if is_incremental() %}
-            AND am.call_block_time >= date_trunc("day", now() - interval '1 week')
+            AND am.call_block_time >= date_trunc('day', now() - interval '7' day)
             {% endif %}
         LEFT JOIN 
         {{ source('tigristrade_v2_polygon', 'Trading_call_removeMargin') }} rm 
@@ -41,16 +42,16 @@ modify_margin_v1 as (
             AND rm.call_success = true 
             AND mm.isMarginAdded = false
             {% if is_incremental() %}
-            AND rm.call_block_time >= date_trunc("day", now() - interval '1 week')
+            AND rm.call_block_time >= date_trunc('day', now() - interval '7' day)
             {% endif %}
         {% if is_incremental() %}
-        WHERE mm.evt_block_time >= date_trunc("day", now() - interval '1 week')
+        WHERE mm.evt_block_time >= date_trunc('day', now() - interval '7' day)
         {% endif %}
 ),
 
 modify_margin_v2 as (
         SELECT 
-            date_trunc('day', mm.evt_block_time) as day, 
+            TRY_CAST(date_trunc('DAY', mm.evt_block_time) AS date) as day, 
             mm.evt_tx_hash,
             mm.evt_index,
             mm.evt_block_time,
@@ -69,7 +70,7 @@ modify_margin_v2 as (
             AND am.call_success = true 
             AND mm.isMarginAdded = true 
             {% if is_incremental() %}
-            AND am.call_block_time >= date_trunc("day", now() - interval '1 week')
+            AND am.call_block_time >= date_trunc('day', now() - interval '7' day)
             {% endif %}
         LEFT JOIN 
         {{ source('tigristrade_v2_polygon', 'TradingV2_call_removeMargin') }} rm 
@@ -78,16 +79,16 @@ modify_margin_v2 as (
             AND rm.call_success = true 
             AND mm.isMarginAdded = false
             {% if is_incremental() %}
-            AND rm.call_block_time >= date_trunc("day", now() - interval '1 week')
+            AND rm.call_block_time >= date_trunc('day', now() - interval '7' day)
             {% endif %}
         {% if is_incremental() %}
-        WHERE mm.evt_block_time >= date_trunc("day", now() - interval '1 week')
+        WHERE mm.evt_block_time >= date_trunc('day', now() - interval '7' day)
         {% endif %}
 ),
 
 modify_margin_v3 as (
         SELECT 
-            date_trunc('day', mm.evt_block_time) as day, 
+            TRY_CAST(date_trunc('DAY', mm.evt_block_time) AS date) as day, 
             mm.evt_tx_hash,
             mm.evt_index,
             mm.evt_block_time,
@@ -106,7 +107,7 @@ modify_margin_v3 as (
             AND am.call_success = true 
             AND mm.isMarginAdded = true 
             {% if is_incremental() %}
-            AND am.call_block_time >= date_trunc("day", now() - interval '1 week')
+            AND am.call_block_time >= date_trunc('day', now() - interval '7' day)
             {% endif %}
         LEFT JOIN 
         {{ source('tigristrade_v2_polygon', 'TradingV3_call_removeMargin') }} rm 
@@ -115,10 +116,10 @@ modify_margin_v3 as (
             AND rm.call_success = true 
             AND mm.isMarginAdded = false
             {% if is_incremental() %}
-            AND rm.call_block_time >= date_trunc("day", now() - interval '1 week')
+            AND rm.call_block_time >= date_trunc('day', now() - interval '7' day)
             {% endif %}
         {% if is_incremental() %}
-        WHERE mm.evt_block_time >= date_trunc("day", now() - interval '1 week')
+        WHERE mm.evt_block_time >= date_trunc('day', now() - interval '7' day)
         {% endif %}
 )
 
