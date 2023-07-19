@@ -96,7 +96,7 @@ v3 as (
             when orderType = '1' then 'Buy'
             when orderType = '2' then 'Sell'
         end as trade_category,
-        cast(json_extract_scalar(_order, '$.signer') as varbinary) as seller,
+        from_hex(json_extract_scalar(_order, '$.signer')) as seller,
         cast(null as varbinary) as buyer,
         cast(json_extract_scalar(currency, '$.amount') as uint256) as amount_raw,
         case
