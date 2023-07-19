@@ -16,7 +16,7 @@
 {% set project_start_date = '2022-02-11' %} 
 
 with dates as (
-    with day_seq as (select (sequence(cast('{{ project_start_date }}' as date), cast(now() as date), interval '1' day)) as day)
+    with day_seq as (select (sequence(cast('{{ project_start_date }}' as date), current_date, interval '1' day)) as day)
 
 select days.day
 from day_seq
@@ -70,7 +70,8 @@ left join tokens_mapping tm on t.token = tm.address_l2
         avg(price) AS price
     FROM {{ source('prices', 'usd') }} p
     left join tokens_mapping on p.contract_address = tokens_mapping.address_l1
-    WHERE date_trunc('day', minute) >= date '{{ project_start_date }}' and date_trunc('day', minute) < date_trunc('day', now())
+    WHERE date_trunc('day', minute) >= date '{{ project_start_date }}' 
+    and date_trunc('day', minute) < current_date
     and blockchain = 'ethereum'
     and contract_address in (select address_l1 from tokens)
     group by 1,2
@@ -81,7 +82,7 @@ left join tokens_mapping tm on t.token = tm.address_l2
         last_value(price) over (partition by DATE_TRUNC('day', minute), contract_address ORDER BY  minute range between unbounded preceding AND unbounded following) AS price
     FROM {{ source('prices', 'usd') }} p
     left join tokens_mapping on p.contract_address = tokens_mapping.address_l1
-    WHERE date_trunc('day', minute) = date_trunc('day', now())
+    WHERE date_trunc('day', minute) = current_date
     and blockchain = 'ethereum'
     and contract_address in (select address_l1 from tokens)
 )
@@ -181,7 +182,7 @@ left join tokens_mapping tm on t.token = tm.address_l2
 )
   
 , pool_liquidity as (
-    select time, pool, token0, token1, sum(amount0) over(partition by pool order by time) as amount0, 
+    select distinct time, pool, token0, token1, sum(amount0) over(partition by pool order by time) as amount0, 
     sum(amount1)  over(partition by pool order by time) as amount1
     from daily_delta_balance b 
 
@@ -220,7 +221,7 @@ group by 1,2
 )
 
 , all_metrics as (
-select l.pool, pools.blockchain, pools.project, pools.fee, l.time, 
+select l.pool, pools.blockchain, pools.project, pools.fee, cast(l.time as date) as "time", 
     case when token0 = 0x5979D7b546E38E414F7E9822514be443A4800529 then token0 else token1 end main_token,
     case when token0 = 0x5979D7b546E38E414F7E9822514be443A4800529 then t0.symbol else t1.symbol end main_token_symbol,
     case when token0 = 0x5979D7b546E38E414F7E9822514be443A4800529 then token1 else token0 end paired_token,

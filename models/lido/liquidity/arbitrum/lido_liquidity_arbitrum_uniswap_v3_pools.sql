@@ -16,7 +16,7 @@
 {% set project_start_date = '2022-09-21' %} 
 
 with dates as (
-    with day_seq as (select (sequence(cast('{{ project_start_date }}' as date), cast(now() as date), interval '1' day)) as day)
+    with day_seq as (select (sequence(cast('{{ project_start_date }}' as date), current_date, interval '1' day)) as day)
 select days.day
 from day_seq
 cross join unnest(day) as days(day)
@@ -73,7 +73,7 @@ left join pools on 1=1
       {{source('prices','usd')}}
     WHERE
       DATE_TRUNC('day', minute) >= date '{{ project_start_date }}' 
-      AND DATE_TRUNC('day', minute) < DATE_TRUNC('day', NOW())
+      AND DATE_TRUNC('day', minute) < current_date
       AND blockchain = 'arbitrum'
       AND contract_address IN (SELECT address  FROM tokens      )
     GROUP BY 1, 2,3,4
@@ -94,7 +94,7 @@ left join pools on 1=1
     FROM
       {{source('prices','usd')}}
     WHERE
-      DATE_TRUNC('day', minute) = DATE_TRUNC('day', NOW())
+      DATE_TRUNC('day', minute) = current_date
       AND blockchain = 'arbitrum'
       AND contract_address IN (SELECT address  FROM tokens      )
   ),
@@ -251,7 +251,7 @@ left join pools on 1=1
   ),
   daily_delta_balance AS (
     select time,
-      lead(time, 1, now() + interval '1' day) over (partition by pool order by time) as next_time, 
+      lead(time, 1, current_date + interval '1' day) over (partition by pool order by time) as next_time, 
       pool,
       token0,
       token1,
@@ -382,7 +382,7 @@ left join pools on 1=1
       pools.chain,
       pools.project,
       pools.fee,
-      l.time,
+      cast(l.time as date) as time,
       CASE
         WHEN l.token0 = 0x5979D7b546E38E414F7E9822514be443A4800529 THEN l.token0
         ELSE l.token1
