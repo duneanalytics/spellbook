@@ -193,7 +193,7 @@ group by 1,2
 )
 
 , all_metrics as (
-select l.pool, pools.blockchain, pools.project, pools.fee, l.time,
+select l.pool, pools.blockchain, pools.project, pools.fee, cast(l.time as date) as time,
     case when token0 = 0x1F32b1c2345538c0c6f582fCB022739c4A194Ebb then token0 else token1 end main_token,
     case when token0 = 0x1F32b1c2345538c0c6f582fCB022739c4A194Ebb then p0.symbol else p1.symbol end main_token_symbol,
     case when token0 = 0x1F32b1c2345538c0c6f582fCB022739c4A194Ebb then token1 else token0 end paired_token,
