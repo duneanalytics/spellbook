@@ -50,7 +50,7 @@ dexs as (
             evt_index
         FROM {{ trade_tables }} p 
         {% if is_incremental() %}
-        WHERE p.evt_block_time >= date_trunc("day", now() - interval '7' day)
+        WHERE p.evt_block_time >= date_trunc('day', now() - interval '7' day)
         {% endif %}
         {% if not loop.last %}
         UNION ALL
@@ -61,7 +61,7 @@ SELECT
     'fantom' as blockchain,
     'paraswap' as project,
     '5' as version,
-    date_trunc('day', dexs.block_time) as block_date,
+    try_cast(date_trunc('day', dexs.block_time) as date) as block_date,
     dexs.block_time,
     erc20a.symbol as token_bought_symbol,
     erc20b.symbol as token_sold_symbol,
@@ -96,7 +96,7 @@ inner join {{ source('fantom', 'transactions') }} tx
     and tx.block_time >= date('{{project_start_date}}')
     {% endif %}
     {% if is_incremental() %}
-    and tx.block_time >= date_trunc("day", now() - interval '7' day)
+    and tx.block_time >= date_trunc('day', now() - interval '7' day)
     {% endif %}
 left join {{ ref('tokens_erc20') }} erc20a
     on erc20a.contract_address = dexs.token_bought_address
@@ -112,7 +112,7 @@ left join {{ source('prices', 'usd') }} p_bought
     and p_bought.minute >= date('{{project_start_date}}')
     {% endif %}
     {% if is_incremental() %}
-    and p_bought.minute >= date_trunc("day", now() - interval '7' day)
+    and p_bought.minute >= date_trunc('day', now() - interval '7' day)
     {% endif %}
 left join {{ source('prices', 'usd') }} p_sold
     on p_sold.minute = date_trunc('minute', dexs.block_time)
@@ -122,5 +122,5 @@ left join {{ source('prices', 'usd') }} p_sold
     and p_sold.minute >= date('{{project_start_date}}')
     {% endif %}
     {% if is_incremental() %}
-    and p_sold.minute >= date_trunc("day", now() - interval '7' day)
+    and p_sold.minute >= date_trunc('day', now() - interval '7' day)
     {% endif %}

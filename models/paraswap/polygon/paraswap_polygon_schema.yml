@@ -21,10 +21,11 @@ models:
             - tx_hash
             - evt_index
             - trace_address
-      - check_dex_aggregator_seed_legacy:
-          blockchain: polygon
-          project: paraswap
-          version: 4
+      # Commented this for now, it need to upgrade the check_dex_aggregator_seed_legacy and dex_aggregator_seed to support for DuneSQL.
+      #- check_dex_aggregator_seed_legacy:
+      #    blockchain: polygon
+      #    project: paraswap
+      #    version: 4
     columns:
       - &blockchain
         name: blockchain
@@ -116,10 +117,11 @@ models:
             - tx_hash
             - evt_index
             - trace_address
-      - check_dex_aggregator_seed_legacy:
-          blockchain: polygon
-          project: paraswap
-          version: 5
+      # Commented this for now, it need to upgrade the check_dex_aggregator_seed_legacy and dex_aggregator_seed to support for DuneSQL.
+      #- check_dex_aggregator_seed_legacy:
+      #    blockchain: polygon
+      #    project: paraswap
+      #    version: 5
     columns:
       - *blockchain
       - *project

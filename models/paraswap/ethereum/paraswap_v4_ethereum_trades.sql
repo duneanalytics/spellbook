@@ -53,7 +53,7 @@ WITH dex_swap AS (
             evt_index
         FROM {{ trade_table }} p 
         {% if is_incremental() %}
-        WHERE p.evt_block_time >= date_trunc("day", now() - interval '7' day)
+        WHERE p.evt_block_time >= date_trunc('day', now() - interval '7' day)
         {% endif %}
         {% if not loop.last %}
         UNION ALL
@@ -68,7 +68,7 @@ call_swap_without_event AS (
             FROM {{ call_table }}
             WHERE call_success = true
             {% if is_incremental() %}
-            AND call_block_time >= date_trunc("day", now() - interval '7' day)
+            AND call_block_time >= date_trunc('day', now() - interval '7' day)
             {% endif %}
             {% if not loop.last %}
             UNION -- There may be multiple calls in same tx
@@ -99,7 +99,7 @@ call_swap_without_event AS (
             INNER JOIN {{ source('erc20_ethereum','evt_transfer') }} t ON c.call_block_number = t.evt_block_number
                 AND c.call_tx_hash = t.evt_tx_hash
                 {% if is_incremental() %}
-                AND t.evt_block_time >= date_trunc("day", now() - interval '7' day)
+                AND t.evt_block_time >= date_trunc('day', now() - interval '7' day)
                 {% endif %}
                 {% if not is_incremental() %}
                 AND t.evt_block_time >= date('{{project_start_date}}')
@@ -110,7 +110,7 @@ call_swap_without_event AS (
                 AND t.evt_block_number >= {{ trade_call_start_block_number }}
                 AND tx.block_number >= {{ trade_call_start_block_number }}
                 {% if is_incremental() %}
-                AND tx.block_time >= date_trunc("day", now() - interval '7' day)
+                AND tx.block_time >= date_trunc('day', now() - interval '7' day)
                 {% endif %}
                 {% if not is_incremental() %}
                 AND tx.block_time >= date('{{project_start_date}}')
@@ -137,7 +137,7 @@ call_swap_without_event AS (
         INNER JOIN {{ source('ethereum', 'traces') }} t ON c.call_block_number = t.block_number
             AND c.call_tx_hash = t.tx_hash
             {% if is_incremental() %}
-            AND t.block_time >= date_trunc("day", now() - interval '7' day)
+            AND t.block_time >= date_trunc('day', now() - interval '7' day)
             {% endif %}
             {% if not is_incremental() %}
             AND t.block_time >= date('{{project_start_date}}')
@@ -148,7 +148,7 @@ call_swap_without_event AS (
             AND t.block_number >= {{ trade_call_start_block_number }}
             AND tx.block_number >= {{ trade_call_start_block_number }}
             {% if is_incremental() %}
-            AND tx.block_time >= date_trunc("day", now() - interval '7' day)
+            AND tx.block_time >= date_trunc('day', now() - interval '7' day)
             {% endif %}
             {% if not is_incremental() %}
             AND tx.block_time >= date('{{project_start_date}}')
@@ -182,7 +182,7 @@ call_swap_without_event AS (
             INNER JOIN {{ source('erc20_ethereum','evt_transfer') }} t ON c.call_block_number = t.evt_block_number
                 AND c.call_tx_hash = t.evt_tx_hash
                 {% if is_incremental() %}
-                AND t.evt_block_time >= date_trunc("day", now() - interval '7' day)
+                AND t.evt_block_time >= date_trunc('day', now() - interval '7' day)
                 {% endif %}
                 {% if not is_incremental() %}
                 AND t.evt_block_time >= date('{{project_start_date}}')
@@ -193,7 +193,7 @@ call_swap_without_event AS (
                 AND t.evt_block_number >= {{ trade_call_start_block_number }}
                 AND tx.block_number >= {{ trade_call_start_block_number }}
                 {% if is_incremental() %}
-                AND tx.block_time >= date_trunc("day", now() - interval '7' day)
+                AND tx.block_time >= date_trunc('day', now() - interval '7' day)
                 {% endif %}
                 {% if not is_incremental() %}
                 AND tx.block_time >= date('{{project_start_date}}')
@@ -216,7 +216,7 @@ call_swap_without_event AS (
         INNER JOIN {{ source('ethereum', 'traces') }} t ON c.call_block_number = t.block_number
             AND c.call_tx_hash = t.tx_hash
             {% if is_incremental() %}
-            AND t.block_time >= date_trunc("day", now() - interval '7' day)
+            AND t.block_time >= date_trunc('day', now() - interval '7' day)
             {% endif %}
             {% if not is_incremental() %}
             AND t.block_time >= date('{{project_start_date}}')
@@ -227,7 +227,7 @@ call_swap_without_event AS (
             AND t.block_number >= {{ trade_call_start_block_number }}
             AND tx.block_number >= {{ trade_call_start_block_number }}
             {% if is_incremental() %}
-            AND tx.block_time >= date_trunc("day", now() - interval '7' day)
+            AND tx.block_time >= date_trunc('day', now() - interval '7' day)
             {% endif %}
             {% if not is_incremental() %}
             AND tx.block_time >= date('{{project_start_date}}')
@@ -293,7 +293,7 @@ dexs AS (
 SELECT 'ethereum' AS blockchain,
     'paraswap' AS project,
     '4' AS version,
-    date_trunc('DAY', d.block_time) AS block_date,
+    try_cast(date_trunc('day', d.block_time) as date) as block_date,
     d.block_time,
     e1.symbol AS token_bought_symbol,
     e2.symbol AS token_sold_symbol,
@@ -327,7 +327,7 @@ INNER JOIN {{ source('ethereum', 'transactions') }} tx ON d.tx_hash = tx.hash
     AND tx.block_time >= date('{{project_start_date}}')
     {% endif %}
     {% if is_incremental() %}
-    AND tx.block_time >= date_trunc("day", now() - interval '7' day)
+    AND tx.block_time >= date_trunc('day', now() - interval '7' day)
     {% endif %}
 LEFT JOIN {{ ref('tokens_erc20') }} e1 ON e1.contract_address = d.token_bought_address
     AND e1.blockchain = 'ethereum'
@@ -340,7 +340,7 @@ LEFT JOIN {{ source('prices', 'usd') }} p1 ON p1.minute = date_trunc('minute', d
     AND p1.minute >= date('{{project_start_date}}')
     {% endif %}
     {% if is_incremental() %}
-    AND p1.minute >= date_trunc("day", now() - interval '7' day)
+    AND p1.minute >= date_trunc('day', now() - interval '7' day)
     {% endif %}
 LEFT JOIN {{ source('prices', 'usd') }} p2 ON p2.minute = date_trunc('minute', d.block_time)
     AND p2.contract_address = d.token_sold_address
@@ -349,5 +349,5 @@ LEFT JOIN {{ source('prices', 'usd') }} p2 ON p2.minute = date_trunc('minute', d
     AND p2.minute >= date('{{project_start_date}}')
     {% endif %}
     {% if is_incremental() %}
-    AND p2.minute >= date_trunc("day", now() - interval '7' day)
+    AND p2.minute >= date_trunc('day', now() - interval '7' day)
     {% endif %}

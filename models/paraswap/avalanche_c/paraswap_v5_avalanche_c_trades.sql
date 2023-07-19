@@ -54,7 +54,7 @@ dexs as (
             evt_index
         FROM {{ trade_tables }} p 
         {% if is_incremental() %}
-        WHERE p.evt_block_time >= date_trunc("day", now() - interval '7' day)
+        WHERE p.evt_block_time >= date_trunc('day', now() - interval '7' day)
         {% endif %}
         {% if not loop.last %}
         UNION ALL
@@ -120,7 +120,7 @@ SELECT
     'avalanche_c' as blockchain,
     'paraswap' as project,
     '5' as version,
-    date_trunc('day', dexs.block_time) as block_date,
+    try_cast(date_trunc('day', dexs.block_time) as date) as block_date,
     dexs.block_time,
     erc20a.symbol as token_bought_symbol,
     erc20b.symbol as token_sold_symbol,
@@ -155,7 +155,7 @@ INNER JOIN {{ source('avalanche_c', 'transactions') }} tx
     AND tx.block_time >= date('{{project_start_date}}')
     {% endif %}
     {% if is_incremental() %}
-    AND tx.block_time >= date_trunc("day", now() - interval '7' day)
+    AND tx.block_time >= date_trunc('day', now() - interval '7' day)
     {% endif %}
 LEFT JOIN {{ ref('tokens_erc20') }} erc20a
     ON erc20a.contract_address = dexs.token_bought_address
@@ -171,7 +171,7 @@ LEFT JOIN {{ source('prices', 'usd') }} p_bought
     AND p_bought.minute >= date('{{project_start_date}}')
     {% endif %}
     {% if is_incremental() %}
-    AND p_bought.minute >= date_trunc("day", now() - interval '7' day)
+    AND p_bought.minute >= date_trunc('day', now() - interval '7' day)
     {% endif %}
 LEFT JOIN price_missed_previous p_prev1 ON dexs.token_bought_address = p_prev1.contract_address
     AND dexs.block_time < p_prev1.minute -- Swap before first price record time
@@ -185,7 +185,7 @@ LEFT JOIN {{ source('prices', 'usd') }} p_sold
     AND p_sold.minute >= date('{{project_start_date}}')
     {% endif %}
     {% if is_incremental() %}
-    AND p_sold.minute >= date_trunc("day", now() - interval '7' day)
+    AND p_sold.minute >= date_trunc('day', now() - interval '7' day)
     {% endif %}
 LEFT JOIN price_missed_previous p_prev2 ON dexs.token_sold_address = p_prev2.contract_address
     AND dexs.block_time < p_prev2.minute -- Swap before first price record time

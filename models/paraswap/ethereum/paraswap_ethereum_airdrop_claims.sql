@@ -48,11 +48,11 @@ LEFT JOIN {{ ref('dex_prices') }} pu ON pu.blockchain = 'ethereum'
     AND pu.contract_address={{psp_token_address}}
     AND pu.hour = date_trunc('hour', t.evt_block_time)
     {% if is_incremental() %}
-    AND pu.hour >= date_trunc("day", now() - interval '7' day)
+    AND pu.hour >= date_trunc('day', now() - interval '7' day)
     {% endif %}
 WHERE t.contract_address = {{psp_token_address}}
 AND t."from" = 0x090e53c44e8a9b6b1bca800e881455b921aec420
 AND t.evt_block_time > date('2021-11-15')
 {% if is_incremental() %}
-AND t.evt_block_time >= date_trunc("day", now() - interval '7' day)
+AND t.evt_block_time >= date_trunc('day', now() - interval '7' day)
 {% endif %}
