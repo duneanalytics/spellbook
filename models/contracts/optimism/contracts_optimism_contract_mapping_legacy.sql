@@ -508,7 +508,7 @@ FROM (
     ,coalesce(c.creator_address, ovm1c.creator_address, CAST(NULL as varchar(250)) ) as creator_address
     ,coalesce(c.created_time
       -- , CAST(SUBSTRING(ovm1c.created_time, 1, POSITION('T' IN ovm1c.created_time) - 1) as timestamp)
-        , from_iso8601_timestamp( ovm1c.created_time )
+        , timestamp( ovm1c.created_time )
        ) as created_time
     ,coalesce(c.contract_factory, 
     {% if is_incremental() %}
