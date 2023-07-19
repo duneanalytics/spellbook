@@ -36,6 +36,7 @@ with userop as (
 select
       userop.blockchain
     , userop.version
+    , userop.block_month
     , userop.block_time
     , userop.entrypoint_contract
     , userop.tx_hash
