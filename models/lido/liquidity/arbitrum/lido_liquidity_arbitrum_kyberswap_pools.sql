@@ -2,7 +2,7 @@
     schema='lido_liquidity_arbitrum',
     alias = alias('kyberswap_pools'),
     tags = ['dunesql'],
-    
+    partition_by = ['time'],
     materialized = 'table',
     file_format = 'delta',
     unique_key = ['pool', 'time'],
