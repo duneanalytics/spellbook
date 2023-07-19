@@ -1,7 +1,6 @@
  {{
   config(
 	tags=['legacy'],
-	
         alias = alias('contract_mapping', legacy_model=True),
         materialized ='incremental',
         file_format ='delta',
@@ -169,7 +168,7 @@ SELECT *
       AND sd.contract_address IS NULL
 
     -- If the creator becomes marked as deterministic, we want to re-run it.
-    left join {{ref('contracts_optimism_deterministic_contract_creators')}} as nd 
+    left join {{ref('contracts_optimism_deterministic_contract_creators_legacy')}} as nd 
       ON nd.creator_address = t.creator_address
 
     -- Don't pull contracts that are in the incremental group (prevent dupes)
@@ -263,7 +262,7 @@ WHERE contract_order = 1
       AND ( b.created_time >= u.created_time OR u.created_time IS NULL) --base level was created on or after its creator
     {% endif %}
     -- is the creator deterministic?
-    left join {{ref('contracts_optimism_deterministic_contract_creators')}} as nd 
+    left join {{ref('contracts_optimism_deterministic_contract_creators_legacy')}} as nd 
       ON nd.creator_address = b.creator_address
     
     WHERE b.to_iterate_creators=1 --only run contracts that we want to iterate through
