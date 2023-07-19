@@ -105,7 +105,7 @@ SELECT *
       and t.block_time >= date_trunc('day', now() - interval '7' day)
       AND ct.block_time >= date_trunc('day', now() - interval '7' day)
       {% endif %}
-    left join {{ ref('contracts_optimism_self_destruct_contracts') }} as sd 
+    left join {{ ref('contracts_optimism_self_destruct_contracts_legacy') }} as sd 
       on ct.address = sd.contract_address
       and ct.tx_hash = sd.creation_tx_hash
       and ct.block_time = sd.created_time
@@ -156,7 +156,7 @@ SELECT *
       ,coalesce(sd.contract_address is not NULL, false) as is_self_destruct
       , CASE WHEN nd.creator_address IS NOT NULL THEN 1 ELSE 0 END AS to_iterate_creators
     from {{ this }} t
-    left join {{ ref('contracts_optimism_self_destruct_contracts') }} as sd 
+    left join {{ ref('contracts_optimism_self_destruct_contracts_legacy') }} as sd 
       on t.contract_address = sd.contract_address
       and t.creation_tx_hash = sd.creation_tx_hash
       and t.created_time = sd.created_time
@@ -188,7 +188,7 @@ WHERE contract_order = 1
     t.contract_address
     ,t.symbol
     ,'erc20' as token_standard
-  from {{ ref('tokens_optimism_erc20') }} as t
+  from {{ ref('tokens_optimism_erc20_legacy') }} as t
   group by 1, 2, 3
 
   union all 
@@ -197,7 +197,7 @@ WHERE contract_order = 1
     t.contract_address
     ,t.name as symbol
     , standard AS token_standard
-  from {{ ref('tokens_optimism_nft') }} as t
+  from {{ ref('tokens_optimism_nft_legacy') }} as t
   group by 1, 2, 3
 )
 
@@ -298,11 +298,11 @@ WHERE contract_order = 1
     UNION ALL
     SELECT 5 as level, * FROM base_level WHERE to_iterate_creators = 0 --get legacy contracts
   ) f
-  left join {{ ref('contracts_optimism_contract_creator_address_list') }} as cc 
+  left join {{ ref('contracts_optimism_contract_creator_address_list_legacy') }} as cc 
     on f.creator_address = cc.creator_address
-  left join {{ ref('contracts_optimism_contract_creator_address_list') }} as ccf
+  left join {{ ref('contracts_optimism_contract_creator_address_list_legacy') }} as ccf
     on f.contract_factory = ccf.creator_address
-  left join {{ ref('contracts_optimism_contract_creator_address_list') }} as cctr
+  left join {{ ref('contracts_optimism_contract_creator_address_list_legacy') }} as cctr
     on f.trace_creator_address = cctr.creator_address
   
   where f.contract_address is not null
@@ -403,7 +403,7 @@ WHERE contract_order = 1
       ,1 as code_deploy_rank
       ,3 as map_rank
 
-    FROM {{ ref('contracts_optimism_predeploys') }} pre
+    FROM {{ ref('contracts_optimism_predeploys_legacy') }} pre
     where 
     1=1
     {% if is_incremental() %} -- this filter will only be applied on an incremental run 
@@ -539,11 +539,11 @@ FROM (
     ,CASE WHEN c.trace_creator_address = c.created_tx_from THEN 1 ELSE 0 END AS is_eoa_deployed
 
   from cleanup as c 
-  left join {{ source('ovm1_optimism', 'contracts') }} as ovm1c
+  left join {{ source('ovm1_optimism', 'contracts_legacy') }} as ovm1c
     on c.contract_address = ovm1c.contract_address --fill in any missing contract creators
-  left join {{ ref('contracts_optimism_project_name_mappings') }} as dnm -- fix names for decoded contracts
+  left join {{ ref('contracts_optimism_project_name_mappings_legacy') }} as dnm -- fix names for decoded contracts
     on lower(c.contract_project) = lower(dnm.dune_name)
-  left join {{ ref('contracts_optimism_contract_overrides') }} as co --override contract maps
+  left join {{ ref('contracts_optimism_contract_overrides_legacy') }} as co --override contract maps
     on c.contract_address = co.contract_address
   {% if is_incremental() %} -- this filter will only be applied on an incremental run 
   left join {{ this }} th -- grab if the contract was previously picked up as factory created
