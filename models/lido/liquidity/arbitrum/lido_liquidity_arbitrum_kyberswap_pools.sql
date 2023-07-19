@@ -206,7 +206,7 @@ left join pools on 1=1
 
   
 , pool_liquidity as (
-        SELECT
+        SELECT distinct
       dtime,
       pool,
       d.token0,
@@ -252,7 +252,7 @@ group by 1,2
 )
 */
 , all_metrics as (
-select l.pool, pools.blockchain, pools.project, pools.fee, l.dtime as "time", 
+select l.pool, pools.blockchain, pools.project, pools.fee, cast(l.dtime as date) as "time", 
     case when l.token0 = 0x5979D7b546E38E414F7E9822514be443A4800529 then l.token0 else l.token1 end main_token,
     case when l.token0 = 0x5979D7b546E38E414F7E9822514be443A4800529 then p0.symbol else p1.symbol end main_token_symbol,
     case when l.token0 = 0x5979D7b546E38E414F7E9822514be443A4800529 then l.token1 else l.token0 end paired_token,
