@@ -1,5 +1,6 @@
 {{ 
   config(
+    tags = ['dunesql','static'],
     alias = alias('project_name_mappings'),
     unique_key='dune_name',
     post_hook='{{ expose_spells(\'["optimism"]\',
@@ -10,8 +11,8 @@
 }}
 
 select 
-  cast(dune_name as varchar(250)) AS dune_name
-  ,cast(mapped_name as varchar(250)) AS mapped_name
+  dune_name
+  ,mapped_name
 from (
     values
      ('lyra_v1',	'Lyra Finance')
@@ -76,7 +77,7 @@ from (
     ,('lemma','Lemma Finance')
     ,('arrakis','Arrakis Finance')
     ,('arrakis_finance','Arrakis Finance')
-    ,('collab_land_dao_pass', 'Collab Land')
+    ,('collab_land_dao_pass', 'Collab.Land')
     ,('Perpetualprotocol','Perpetual Protocol')
     ,('perp_hottub','Perpetual Protocol')
     ,('Collab Land', 'Collab.Land')
@@ -99,5 +100,20 @@ from (
     ,('sound xyz', 'Sound.xyz')
     ,('splits','0xSplits')
     ,('kyber', 'kyberswap')
+    ,('synthetix_v3', 'Synthetix')
+    ,('velodrome_v2', 'Velodrome')
+    ,('Maker','MakerDAO')
+    ,('Allo Protocol','Allo Protocol (Gitcoin)')
+    ,('pika_protocol_v4', 'Pika Protocol')
+    ,('summer_fi','Summer.fi')
+    ,('summerfi','Summer.fi')
+    ,('oasisapp','Summer.fi')
+    ,('niftykit_v2','NiftyKit')
+    ,('niftykit_v3','NiftyKit')
+    ,('cozy_v2_beta','Cozy Finance')
+    ,('cozy_v2_prod','Cozy Finance')
+    ,('highlight_xyz','Highlight.xyz')
+    ,('mint_fun','mint.fun')
+    ,('mintfun','mint.fun')
 
     ) as temp_table (dune_name, mapped_name)
