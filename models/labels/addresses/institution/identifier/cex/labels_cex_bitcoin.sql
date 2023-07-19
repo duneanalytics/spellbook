@@ -7,7 +7,7 @@
                                     \'["hildobby"]\') }}')}}
 
 SELECT blockchain
-, address
+, from_base58(address) as address
 , distinct_name AS name
 , 'institution' AS category
 , added_by AS contributor

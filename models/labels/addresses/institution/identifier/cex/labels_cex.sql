@@ -20,10 +20,7 @@ FROM (
     {% for cex_label_model in cex_label_models %}
     SELECT
     blockchain
-    , CASE
-        WHEN blockchain != 'bitcoin' THEN CAST(address AS VARCHAR)
-        ELSE address
-      END AS address
+    , address
     , name
     , category
     , contributor
