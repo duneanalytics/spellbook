@@ -8,5 +8,5 @@
 
 select
     date_trunc('day', block_time) as partition_column
-from {source('ethereum','transactions')}
+from {{ source('ethereum','transactions') }}
 limit 20
