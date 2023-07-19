@@ -32,6 +32,7 @@ FROM (
         block_time, 
         tx_type, 
         asset_contract_address,
+        asset,
         raw_value,
         value,
         usd_value,
