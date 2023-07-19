@@ -2,6 +2,7 @@
     schema='lido_liquidity_arbitrum',
     alias = alias('kyberswap_pools'),
     tags = ['dunesql'],
+    
     materialized = 'table',
     file_format = 'delta',
     unique_key = ['pool', 'time'],
@@ -46,7 +47,7 @@ select 0x5979D7b546E38E414F7E9822514be443A4800529
 ) t
 )
 
-/*
+
 , pool_per_date as ( 
 select dates.day, pools.*
 from dates
@@ -86,7 +87,7 @@ left join pools on 1=1
       AND blockchain = 'arbitrum'
       AND contract_address IN (SELECT address  FROM tokens)
   )
-*/
+
 /*  
  , tokens_prices_hourly AS (
         select 
@@ -186,10 +187,10 @@ left join pools on 1=1
 
 
     
---, daily_delta_balance as (
-    --select time, pool, token0, token1, sum(coalesce(amount0, 0)) as amount0, sum(coalesce(amount1, 0)) as amount1
-        --lead(time, 1, cast(now() as date) + interval '1' day) over (partition by pool order by time) as next_time
-    --from ( 
+, daily_delta_balance as (
+    select dtime, pool, token0, token1, sum(coalesce(amount0, 0)) as amount0, sum(coalesce(amount1, 0)) as amount1,
+        lead(dtime, 1, current_date + interval '1' day) over (partition by pool order by dtime) as next_time
+    from ( 
     select dtime, pool, token0, token1, amount0, amount1 
     from swap_events
     union all
@@ -198,28 +199,27 @@ left join pools on 1=1
     union all
     select dtime, pool, token0, token1, amount0, amount1 
     from burn_events
-    --) balance
-    --group by 1,2,3,4
---)
+    ) balance
+    group by 1,2,3,4
+)
   
 
-  /*
+  
 , pool_liquidity as (
         SELECT
-      time,
-      --LEAD(time, 1, cast(now() as date) + INTERVAL '1' day) OVER (ORDER BY time) AS next_time,
+      dtime,
       pool,
       d.token0,
       d.token1,
-      SUM(amount0) OVER (PARTITION BY pool ORDER BY time) AS amount0,
-      SUM(amount1) OVER (PARTITION BY pool ORDER BY time) AS amount1
+      SUM(amount0) OVER (PARTITION BY pool ORDER BY dtime) AS amount0,
+      SUM(amount1) OVER (PARTITION BY pool ORDER BY dtime) AS amount1
     FROM
     pool_per_date  c
-    left join  daily_delta_balance d on c.address = d.pool and c.day >= d.time and c.day < d.next_time
+    left join  daily_delta_balance d on c.address = d.pool and c.day >= d.dtime and c.day < d.next_time
 
 )
 
-
+/*
 , swap_events_hourly as (
     select hour, pool, token0, token1, sum(amount0) as amount0, sum(amount1) as amount1 from (
     select 
@@ -250,9 +250,9 @@ select  distinct date_trunc('day', time) as time, pool, sum(volume) as volume
 from trading_volume_hourly
 group by 1,2
 )
-
+*/
 , all_metrics as (
-select l.pool, pools.blockchain, pools.project, pools.fee, l.time, 
+select l.pool, pools.blockchain, pools.project, pools.fee, l.dtime, 
     case when l.token0 = 0x5979D7b546E38E414F7E9822514be443A4800529 then l.token0 else l.token1 end main_token,
     case when l.token0 = 0x5979D7b546E38E414F7E9822514be443A4800529 then p0.symbol else p1.symbol end main_token_symbol,
     case when l.token0 = 0x5979D7b546E38E414F7E9822514be443A4800529 then l.token1 else l.token0 end paired_token,
@@ -260,18 +260,18 @@ select l.pool, pools.blockchain, pools.project, pools.fee, l.time,
     case when l.token0 = 0x5979D7b546E38E414F7E9822514be443A4800529 then amount0/power(10, p0.decimals)  else amount1/power(10, p1.decimals)  end main_token_reserve,
     case when l.token0 = 0x5979D7b546E38E414F7E9822514be443A4800529 then amount1/power(10, p1.decimals)  else amount0/power(10, p0.decimals)  end paired_token_reserve,
     case when l.token0 = 0x5979D7b546E38E414F7E9822514be443A4800529 then p0.price*amount0/power(10, p0.decimals) else p1.price*amount1/power(10, p1.decimals) end as main_token_usd_reserve,
-    case when l.token0 = 0x5979D7b546E38E414F7E9822514be443A4800529 then p1.price*amount1/power(10, p1.decimals) else p0.price*amount0/power(10, p0.decimals) end as paired_token_usd_reserve
-  --  volume as trading_volume
+    case when l.token0 = 0x5979D7b546E38E414F7E9822514be443A4800529 then p1.price*amount1/power(10, p1.decimals) else p0.price*amount0/power(10, p0.decimals) end as paired_token_usd_reserve,
+  --  volume 
+    double '0' as trading_volume
 from pool_liquidity l 
 left join pools on l.pool = pools.address
 left join tokens t0 on l.token0 = t0.address
 left join tokens t1 on l.token1 = t1.address
-left join tokens_prices_daily p0 on l.time = p0.time and l.token0 = p0.token
-left join tokens_prices_daily p1 on l.time = p1.time and l.token1 = p1.token
+left join tokens_prices_daily p0 on l.dtime = p0.dtime and l.token0 = p0.token
+left join tokens_prices_daily p1 on l.dtime = p1.dtime and l.token1 = p1.token
 --left join trading_volume tv on l.time = tv.time and l.pool = tv.pool
 ) 
 
 select CONCAT(CONCAT(CONCAT(CONCAT(CONCAT(blockchain,CONCAT(' ', project)) ,' '), paired_token_symbol),':') , main_token_symbol, ' ', format('%,.3f',round(coalesce(fee,0),4))) as pool_name,* 
 from all_metrics
 where main_token_reserve > 1
-*/
