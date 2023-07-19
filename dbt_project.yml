@@ -293,6 +293,11 @@ models:
       polygon:
         +schema: paraswap_polygon
 
+    paraswap_debug:
+      +schema: paraswap_debug
+      fantom:
+        +schema: paraswap_debug_fantom
+
     nomiswap:
       +schema: nomiswap
       bnb:
