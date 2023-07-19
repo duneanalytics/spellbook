@@ -466,19 +466,7 @@ WHERE contract_order = 1
 SELECT
   trace_creator_address,  contract_address, 
 
-  cast(initcap(
-      replace(
-      -- priority order: Override name, Mapped vs Dune, Raw/Actual names
-        coalesce(
-          co.contract_project
-          ,dnm.mapped_name
-          ,c.contract_project
-          ,ovm1c.contract_project
-        ),
-      '_',
-      ' '
-    )
-   ) as varchar(250)) as contract_project
+  initcap(contract_project) AS contract_project
   --
 , contract_name, creator_address, created_time, contract_creator_if_factory
 , is_self_destruct, creation_tx_hash, created_block_number, created_tx_from
