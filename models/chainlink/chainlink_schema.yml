@@ -87,7 +87,7 @@ models:
       sector: chainlink
       contributors: linkpool_ryan
     config:
-      tags: ['chainlink', 'ocr', 'gas', 'transmission', 'logs', 'ethereum']
+      tags: ['chainlink', 'ocr', 'gas', 'transmission', 'logs', 'arbitrum', 'avalanche_c', 'bnb', 'ethereum', 'fantom', 'gnosis', 'optimism', 'polygon']
     description: >
       Chainlink OCR Gas Transmission Logs
     tests:
@@ -138,7 +138,7 @@ models:
       sector: chainlink
       contributors: linkpool_ryan
     config:
-      tags: ['chainlink', 'ocr', 'fulfilled', 'transactions', 'ethereum']
+      tags: ['chainlink', 'ocr', 'fulfilled', 'transactions', 'arbitrum', 'avalanche_c', 'bnb', 'ethereum', 'fantom', 'gnosis', 'optimism', 'polygon']
     description: >
       Chainlink OCR Fulfilled Transactions
     columns:
@@ -160,7 +160,7 @@ models:
       sector: chainlink
       contributors: linkpool_ryan
     config:
-      tags: ['chainlink', 'ocr', 'reverted', 'transactions', 'ethereum']
+      tags: ['chainlink', 'ocr', 'reverted', 'transactions', 'arbitrum', 'avalanche_c', 'bnb', 'ethereum', 'fantom', 'gnosis', 'optimism', 'polygon']
     description: >
       Chainlink OCR Reverted Transactions
     columns:
@@ -176,7 +176,7 @@ models:
       sector: chainlink
       contributors: linkpool_ryan
     config:
-      tags: ['chainlink','ocr', 'gas', 'daily', 'ethereum']
+      tags: ['chainlink','ocr', 'gas', 'daily', 'arbitrum', 'avalanche_c', 'bnb', 'ethereum', 'fantom', 'gnosis', 'optimism', 'polygon']
     description: >
         Chainlink OCR Gas Daily
     tests:
@@ -219,7 +219,7 @@ models:
       sector: chainlink
       contributors: linkpool_ryan
     config:
-      tags: ['chainlink','ocr', 'request', 'daily', 'ethereum']
+      tags: ['chainlink','ocr', 'request', 'daily', 'arbitrum', 'avalanche_c', 'bnb', 'ethereum', 'fantom', 'gnosis', 'optimism', 'polygon']
     description: >
         Chainlink OCR Request Daily
     tests:
@@ -249,7 +249,7 @@ models:
       sector: chainlink
       contributors: linkpool_ryan
     config:
-      tags: ['chainlink', 'ocr', 'reward', 'transmission', 'logs', 'ethereum']
+      tags: ['chainlink', 'ocr', 'reward', 'transmission', 'logs', 'arbitrum', 'avalanche_c', 'bnb', 'ethereum', 'fantom', 'gnosis', 'optimism', 'polygon']
     description: >
       Chainlink OCR Reward Transmission Logs
     columns:
@@ -273,7 +273,7 @@ models:
       sector: chainlink
       contributors: linkpool_ryan
     config:
-      tags: ['chainlink', 'ocr', 'reward', 'evt', 'transfer', 'ethereum']
+      tags: ['chainlink', 'ocr', 'reward', 'evt', 'transfer', 'arbitrum', 'avalanche_c', 'bnb', 'ethereum', 'fantom', 'gnosis', 'optimism', 'polygon']
     description: >
       Chainlink OCR Reward Event Transfers
     columns:
@@ -295,7 +295,7 @@ models:
       sector: chainlink
       contributors: linkpool_ryan
     config:
-      tags: ['chainlink', 'ocr', 'reward', 'evt', 'transfer', 'daily', 'ethereum']
+      tags: ['chainlink', 'ocr', 'reward', 'evt', 'transfer', 'daily', 'arbitrum', 'avalanche_c', 'bnb', 'ethereum', 'fantom', 'gnosis', 'optimism', 'polygon']
     description: >
       Chainlink OCR Reward Event Transfers Daily
     tests:
@@ -317,7 +317,7 @@ models:
       sector: chainlink
       contributors: linkpool_ryan
     config:
-      tags: ['chainlink','ocr', 'reward', 'daily', 'ethereum']
+      tags: ['chainlink','ocr', 'reward', 'daily', 'arbitrum', 'avalanche_c', 'bnb', 'ethereum', 'fantom', 'gnosis', 'optimism', 'polygon']
     description: >
         Chainlink OCR Reward Daily
     tests:

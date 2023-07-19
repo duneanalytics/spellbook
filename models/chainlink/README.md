@@ -1,4 +1,16 @@
-## OCR Metrics Example
+# Price Feeds
+
+## Optimism 
+
+To add a new price feed, add a row to the `chainlink_optimism_price_feeds_oracle_addresses.sql` table with the following information:
+- **feed_name**: Sourced from [Chainlink Docs](https://docs.chain.link/docs/optimism-price-feeds/)
+- **decimals**: Sourced from [Chainlink Docs](https://docs.chain.link/docs/optimism-price-feeds/) (Note: This refers to the price feed decimals, not the underlying token's decimals)
+- **proxy_address**: Sourced from [Chainlink Docs](https://docs.chain.link/docs/optimism-price-feeds/)
+- **aggregator_address**: Sourced from opening the proxy address on Etherscan ([example](https://optimistic.etherscan.io/address/0x338ed6787f463394D24813b297401B9F05a8C9d1#readContract)), clicking 'Contract' -> 'Read Contract' and getting the address from the 'aggregator' field
+
+*Open Research Area: Is there a way for us to deterministically build the oracle -> address -> feed name -> token links purely by reading on-chain events vs manually entering data from Chainlink docs?*
+
+## OCR Metrics Usage Example
 
 Aggregate OCR data monthly with margin and  aggregation, along with margin by node operator
 
@@ -10,7 +22,7 @@ WITH
       operator_name,
       SUM(token_amount) as reward_token,
       SUM(usd_amount) as reward_usd
-    FROM test_schema.git_dunesql_1294d1da_chainlink_ethereum_ocr_reward_daily
+    FROM chainlink_ethereum_ocr_reward_daily
     WHERE operator_name = 'LinkPool'
       AND date_start >= cast('2023-01-01' as date)
     GROUP BY 1, 2
@@ -21,7 +33,7 @@ WITH
       operator_name,
       SUM(total_token_amount) as gas_token,
       SUM(total_usd_amount) as gas_usd
-    FROM test_schema.git_dunesql_1294d1da_chainlink_ethereum_ocr_gas_daily
+    FROM chainlink_ethereum_ocr_gas_daily
     GROUP BY 1, 2
   ),
   request as (
@@ -31,7 +43,7 @@ WITH
       SUM(fulfilled_requests) as fulfilled_requests,
       SUM(reverted_requests) as reverted_requests,
       SUM(total_requests) as total_requests
-    FROM test_schema.git_dunesql_1294d1da_chainlink_ethereum_ocr_request_daily
+    FROM chainlink_ethereum_ocr_request_daily
     GROUP BY 1, 2
   )
 SELECT 
