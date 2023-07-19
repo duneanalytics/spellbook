@@ -358,6 +358,11 @@ models:
       gnosis:
         +schema: colony_gnosis
 
+    zodiac:
+      +schema: zodiac
+      ethereum:
+        +schema: zodiac_ethereum
+
     openocean:
       +schema: openocean
       fantom:
