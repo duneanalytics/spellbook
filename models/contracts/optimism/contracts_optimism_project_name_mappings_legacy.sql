@@ -78,7 +78,7 @@ from (
     ,('lemma','Lemma Finance')
     ,('arrakis','Arrakis Finance')
     ,('arrakis_finance','Arrakis Finance')
-    ,('collab_land_dao_pass', 'Collab Land')
+    ,('collab_land_dao_pass', 'Collab.Land')
     ,('Perpetualprotocol','Perpetual Protocol')
     ,('perp_hottub','Perpetual Protocol')
     ,('Collab Land', 'Collab.Land')
@@ -113,5 +113,8 @@ from (
     ,('niftykit_v3','NiftyKit')
     ,('cozy_v2_beta','Cozy Finance')
     ,('cozy_v2_prod','Cozy Finance')
+    ,('highlight_xyz','Highlight.xyz')
+    ,('mint_fun','mint.fun')
+    ,('mintfun','mint.fun')
 
     ) as temp_table (dune_name, mapped_name)
