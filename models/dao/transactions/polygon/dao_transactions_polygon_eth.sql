@@ -33,7 +33,7 @@ transactions as (
             "to" as dao_wallet_address, 
             'tx_in' as tx_type, 
             tx_index,
-            COALESCE("from", '') as address_interacted_with,
+            COALESCE("from", CAST(NULL as VARBINARY)) as address_interacted_with,
             trace_address
         FROM 
         {{ source('polygon', 'traces') }}
@@ -58,7 +58,7 @@ transactions as (
             "from" as dao_wallet_address, 
             'tx_out' as tx_type,
             tx_index,
-            COALESCE("to", '') as address_interacted_with,
+            COALESCE("to", CAST(NULL as VARBINARY)) as address_interacted_with,
             trace_address
         FROM 
         {{ source('polygon', 'traces') }}
