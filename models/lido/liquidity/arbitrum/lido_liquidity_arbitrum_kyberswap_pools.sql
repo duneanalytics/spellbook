@@ -5,7 +5,7 @@
     
     materialized = 'table',
     file_format = 'delta',
-    
+    unique_key = ['pool', 'time'],
     post_hook='{{ expose_spells(\'["arbitrum"]\',
                                 "project",
                                 "lido_liquidity",
@@ -274,4 +274,4 @@ left join tokens_prices_daily p1 on l.dtime = p1.dtime and l.token1 = p1.token
 
 select CONCAT(CONCAT(CONCAT(CONCAT(CONCAT(blockchain,CONCAT(' ', project)) ,' '), paired_token_symbol),':') , main_token_symbol, ' ', format('%,.3f',round(coalesce(fee,0),4))) as pool_name,* 
 from all_metrics
---where main_token_reserve > 1
+where main_token_reserve > 1
