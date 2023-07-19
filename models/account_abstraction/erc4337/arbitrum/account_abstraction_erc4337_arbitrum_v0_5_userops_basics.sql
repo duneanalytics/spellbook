@@ -1,5 +1,5 @@
 {{ config
-(
+(tags = ['dunesql'],
     alias = alias('v0_5_userops_basics'),
     partition_by = ['block_time'],
     materialized = 'incremental',
@@ -8,13 +8,6 @@
     unique_key = ['userop_hash', 'tx_hash']
 )
 }}
-
-
-{% set chain = 'arbitrum' %}
-{% set gas_symbol = 'ETH' %}
-{% set wrapped_gas_address = '0x82af49447d8a07e3bd95bd0d56f35241523fbab1' %}
-{% set version = 'v0.5' %}
-{% set deployed_date = '2023-02-15' %}
 
 -- macros/models/sector/erc4337
 {{

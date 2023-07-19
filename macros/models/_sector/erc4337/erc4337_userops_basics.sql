@@ -10,6 +10,7 @@ with userop as (
     select
           '{{ blockchain }}' as blockchain
         , '{{ version }}' as version
+        , cast(date_trunc('month', evt_block_time) as date) as block_month
         , evt_block_time as block_time
         , contract_address as entrypoint_contract
         , evt_tx_hash as tx_hash
@@ -20,7 +21,7 @@ with userop as (
         , actualGasCost/1e18 as op_fee
     from {{ userops_evt_model }}
     {% if is_incremental() %}
-        WHERE evt_block_time >= date_trunc("day", now() - interval '1 week')
+    WHERE evt_block_time >= date_trunc("day", now() - interval '1 week')
     {% endif %}
 )
 , handleops as (
@@ -28,7 +29,7 @@ with userop as (
            beneficiary
     from {{ handleops_call_model }}
     {% if is_incremental() %}
-        WHERE call_block_time >= date_trunc("day", now() - interval '1 week')
+    WHERE call_block_time >= date_trunc("day", now() - interval '1 week')
     {% endif %}
 )
 

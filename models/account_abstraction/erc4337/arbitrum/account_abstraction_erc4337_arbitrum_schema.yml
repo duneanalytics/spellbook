@@ -99,8 +99,8 @@ models:
             version: v0.5
           match_columns:
             - userop_hash
-          check_columns:
             - tx_hash
+          check_columns:
             - bundler
       - check_seed:
           seed_file: ref('account_abstraction_erc4337_userops_seed')
@@ -109,8 +109,8 @@ models:
             version: v0.6
           match_columns:
             - userop_hash
-          check_columns:
             - tx_hash
+          check_columns:
             - bundler
     columns:
       - *blockchain
