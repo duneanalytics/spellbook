@@ -31,7 +31,6 @@ models:
             - blockchain
             - dao
             - dao_wallet_address
-            - dao_creator_tool
             - tx_hash
             - tx_type
           check_columns:
@@ -116,7 +115,6 @@ models:
             - blockchain
             - dao
             - dao_wallet_address
-            - dao_creator_tool
             - tx_hash
             - tx_type
           check_columns:
