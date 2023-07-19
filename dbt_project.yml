@@ -353,6 +353,11 @@ models:
       polygon:
         +schema: syndicate_polygon
 
+    colony:
+      +schema: colony
+      gnosis:
+        +schema: colony_gnosis
+
     openocean:
       +schema: openocean
       fantom:
