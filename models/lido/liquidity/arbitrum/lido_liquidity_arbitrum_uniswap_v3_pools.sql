@@ -26,7 +26,7 @@ cross join unnest(day) as days(day)
   pools AS (
     SELECT
       pool AS address,
-      'arbitrum' AS chain,
+      'arbitrum' AS blockchain,
       'uniswap_v3' AS project,
       cast(fee as double) / CAST(10000 AS DOUBLE) AS fee,
       token0, token1
@@ -379,7 +379,7 @@ left join pools on 1=1
   all_metrics AS (
     SELECT
       l.pool,
-      pools.chain,
+      pools.blockchain,
       pools.project,
       pools.fee,
       cast(l.time as date) as time,
@@ -475,7 +475,7 @@ SELECT
               CONCAT(
                 CAST(
                   CONCAT(
-                    CAST(chain AS VARCHAR),
+                    CAST(blockchain AS VARCHAR),
                     CAST(
                       CONCAT(CAST(' ' AS VARCHAR), CAST(project AS VARCHAR)) AS VARCHAR
                     )
