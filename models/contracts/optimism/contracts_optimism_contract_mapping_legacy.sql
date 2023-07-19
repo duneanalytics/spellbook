@@ -539,7 +539,7 @@ FROM (
     ,CASE WHEN c.trace_creator_address = c.created_tx_from THEN 1 ELSE 0 END AS is_eoa_deployed
 
   from cleanup as c 
-  left join {{ source('ovm1_optimism', 'contracts_legacy') }} as ovm1c
+  left join {{ source('ovm1_optimism', 'contracts') }} as ovm1c
     on c.contract_address = ovm1c.contract_address --fill in any missing contract creators
   left join {{ ref('contracts_optimism_project_name_mappings_legacy') }} as dnm -- fix names for decoded contracts
     on lower(c.contract_project) = lower(dnm.dune_name)
