@@ -83,7 +83,7 @@ models:
             - userop_hash
             - tx_hash
       - check_seed_legacy:
-          seed_file: ref('first_funded_by_seed')
+          seed_file: ref('account_abstraction_erc4337_userops_seed')
           match_columns:
             - userop_hash
           check_columns:
