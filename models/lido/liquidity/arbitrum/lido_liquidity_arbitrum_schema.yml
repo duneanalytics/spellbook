@@ -32,8 +32,8 @@ models:
       - &fee
         name: fee
         description: "Liquidity pool's trading fee"
-      - &dtime
-        name: dtime
+      - &time
+        name: time
         description: "UTC event block date truncated to the day mark"
       - &main_token
         name: main_token
