@@ -33,6 +33,18 @@ As we enter the phase of building on DuneSQL, we will continue to run spells in 
 ## How can I contribute spells on DuneSQL?
 The process will differ for new spells vs. migrating existing spells.
 
+### How can I tell the status of a particular spell?
+Here are a few things to look for, when looking for spells in the repo:
+- all spells have two files
+  - one with `_legacy.sql` suffix
+    - the legacy file refers to **spark** engine, as we are looking to deprecate once fully migrated
+    - all legacy files contain a `tags = ['legacy']` to help our orchestration engines determine spark engine
+  - one without the legacy suffix
+    - these files refer to **dunesql** engine
+    - all of these files will either contain a tag for dunesql or not (`tags = ['dunesql']`)
+      - if there is a tag present, the spell has been successfully migrated to dunesql syntax and is ready to run on the dunesql engine
+      - if there is no tag present, the spell is sitting idle and waiting for migration and will not run on any engine until migrated and tag is added
+
 ### New spells
 If creating a new spell, follow the below steps:
 - Follow the same process from the spark engine setup
@@ -41,7 +53,7 @@ If creating a new spell, follow the below steps:
   - `tags = ['dunesql'],` -- this is vital for orchestration and testing on the correct engine. If `tags` property already exists in the spell, then simply append new value after a comma: `tags = ['static', 'dunesql'],`
 - ensure alias property follows the below format:
   - `alias = alias('blocks'),`
-- PR CI tests will check for this `tag:dunesql` applied and run on spark or dunesql dependent on if tag exists. the opposite engine will run too, but all steps should have no output and succeed.  
+- PR CI tests will check for this `tag:dunesql` applied and run on spark (`tag:legacy`) or dunesql dependent on if tag exists. the opposite engine will run too, but all steps should have no output and succeed.  
   - the logs of the CI test gh action can still be used to grab table names and query on dune app for ~24 hours – be sure to query on the engine you modify!
 ### Existing spells
 If modifying existing spells which haven't been migrated to DuneSQL yet, it is recommended to migrate at the same time.  
@@ -55,11 +67,9 @@ Steps to migrate:
   - update alias property to leverage the new alias macro -- Dune team will maintain this alias macro, it's simply to help differentiate engines & metastores
     - `alias = alias('blocks'),`
   - now it's time to translate the code within to DuneSQL syntax!
-- Update all the references downstream of modified spell(s) to reference legacy spells, to ensure full lineage is on the same engine
-  - for example, any instance of `{{ ref( ) }}` downstream of modified spell(s)
-  - to find downstream spells, the following can be run: `dbt ls --resource-type model --output name --select <insert spell name>+`
-  - **future note:** when downstream spells are also migrated, we will be able to revert back to reference DuneSQL versioned spells. We will be working in a upstream --> downstream lineage path to full migration.
-- PR CI tests will check for this `tag:dunesql` applied and run on spark or dunesql dependent on if tag exists. the opposite engine will run too, but all steps should have no output and succeed.  
+- to find downstream spells from modified upstream spells, the following can be run: `dbt ls --resource-type model --output name --select <insert spell name>+`
+  - **future note:** when downstream spells are also migrated, we can double check to reference DuneSQL versioned spells. We will be working in a upstream --> downstream lineage path to full migration.
+- PR CI tests will check for this `tag:dunesql` applied and run on spark (`tag:legacy`) or dunesql dependent on if tag exists. the opposite engine will run too, but all steps should have no output and succeed.  
   - the logs of the CI test gh action can still be used to grab table names and query on dune app for ~24 hours – be sure to query on the engine you modify!
 
 ![spellbook-logo@10x](https://user-images.githubusercontent.com/2520869/200791687-76f1bc4f-05d0-4384-a753-e3b5da0e7a4a.png#gh-light-mode-only)

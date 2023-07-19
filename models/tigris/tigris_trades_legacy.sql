@@ -10,8 +10,8 @@
 }}
 
 {% set models = [
-'tigris_polygon_trades'
-,'tigris_arbitrum_trades'
+'tigris_polygon_trades_legacy'
+,'tigris_arbitrum_trades_legacy'
 ] %}
 
 
