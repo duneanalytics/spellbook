@@ -28502,4 +28502,5 @@ FROM (VALUES
         ,('0xef4928e4a36628408419f0efd99228907b19ace5', 'DogeKing2.0', 9)
         ,('0xeed47eb03a2be37dc103a35bffda92e319e3253a', 'PIPI', 9)
         ,('0x44ae257f8fa2591e6def7d3c7d7bd20f62e3c4dc', '3.0PEPE', 9)
+        ,('0x40d16fc0246ad3160ccc09b8d0d3a2cd28ae6c2f', 'GHO',18)
      ) AS temp_table (contract_address, symbol, decimals)
