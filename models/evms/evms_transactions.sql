@@ -58,7 +58,7 @@ FROM (
                 , CAST(NULL AS DECIMAL(38,0)) AS effective_gas_price
 
                 {% elif transactions_model[0] == 'arbitrum' %}
-                , cast(NULL as varbinary AS l1_tx_origin
+                , cast(NULL as varbinary) AS l1_tx_origin
                 , CAST(NULL AS double) AS l1_fee_scalar
                 , CAST(NULL AS DECIMAL(38,0)) AS l1_fee_scalar
                 , CAST(NULL AS DECIMAL(38,0)) AS l1_fee
@@ -68,7 +68,7 @@ FROM (
                 , effective_gas_price
 
                 {% else %}
-                , NULL AS l1_tx_origin
+                , cast(NULL as varbinary) AS l1_tx_origin
                 , CAST(NULL AS double) AS l1_fee_scalar
                 , CAST(NULL AS DECIMAL(38,0)) AS l1_block_number
                 , CAST(NULL AS DECIMAL(38,0)) AS l1_fee
