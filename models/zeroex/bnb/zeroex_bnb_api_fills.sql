@@ -306,13 +306,12 @@ direct_PLP AS (
 ),
 uni_v2_swap as (
 SELECT   s.tx_hash tx_hash, s.index evt_index, s.contract_address, s.block_time, 
-    '0x' || substring(DATA, 283, 40) AS maker, 
+    contract_address AS maker, AS maker, 
             '0xdef1c0ded9bec7f1a1670819833240f027b25eff' AS taker,
             z.taker_token,
             z.maker_token,
             bytea2numeric_v3('0x' || substring(DATA, 91, 40)) AS taker_token_amount_raw,
-            case when length(bytea2numeric_v3('0x' || substring(DATA, 27, 40))) < length(bytea2numeric_v3('0x' || substring(DATA, 219, 40))) 
-                then bytea2numeric_v3('0x' || substring(DATA, 27, 40)) else bytea2numeric_v3('0x' || substring(DATA, 219, 40)) end AS maker_token_amount_raw,
+            bytea2numeric_v3('0x' || substring(DATA, 155, 40)) AS maker_token_amount_raw,
             'direct_uniswapv2' AS TYPE,
             z.affiliate_address AS affiliate_address,
             TRUE AS swap_flag,
@@ -320,7 +319,7 @@ SELECT   s.tx_hash tx_hash, s.index evt_index, s.contract_address, s.block_time,
     
     FROM {{ source('bnb', 'logs') }} s
     JOIN zeroex_tx z on z.tx_hash = s.tx_hash 
-    WHERE topic1 = '0xd78ad95fa46c994b6551d0da85fc275fe613ce37657fb8d5e3d130840159d822' -- all the uni v2 swap event
+     WHERE topic1 = '0xd78ad95fa46c994b6551d0da85fc275fe613ce37657fb8d5e3d130840159d822' -- all the uni v2 swap event
            and topic2 = '0x000000000000000000000000def1c0ded9bec7f1a1670819833240f027b25eff' -- 0x EP
         {% if is_incremental() %}
         AND block_time >= date_trunc('day', now() - interval '1 week')
@@ -477,3 +476,5 @@ LEFT OUTER JOIN {{ ref('tokens_erc20') }} ms ON ms.contract_address =
                     WHEN all_tx.maker_token = '0x0000000000000000000000000000000000000000' THEN '0x55d398326f99059ff775485246999027b3197955'
                     ELSE all_tx.maker_token end 
                 AND ms.blockchain = 'bnb'
+
+
