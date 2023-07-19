@@ -37,3 +37,6 @@ jobs:
       - name: dbt compile
         run: "pipenv run dbt compile --profiles-dir $HOME/.dbt --profile spark"
 
+      - name: dbt run the new model
+        run: "pipenv run dbt run --select some_new_dunesql_model --profiles-dir $HOME/.dbt --profile spark"
+
