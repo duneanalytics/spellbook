@@ -11,12 +11,12 @@
 
 
 {% set blockchains_models = [
-ref('dao_transactions_ethereum_erc20')
-,ref('dao_transactions_ethereum_eth')
-,ref('dao_transactions_gnosis_erc20')
-,ref('dao_transactions_gnosis_eth')
-,ref('dao_transactions_polygon_erc20')
-,ref('dao_transactions_polygon_eth')
+ref('dao_transactions_ethereum_erc20_legacy')
+,ref('dao_transactions_ethereum_eth_legacy')
+,ref('dao_transactions_gnosis_erc20_legacy')
+,ref('dao_transactions_gnosis_eth_legacy')
+,ref('dao_transactions_polygon_erc20_legacy')
+,ref('dao_transactions_polygon_eth_legacy')
 ] %}
 
 SELECT *
