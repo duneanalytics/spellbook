@@ -25,6 +25,17 @@ models:
             - address_interacted_with
             - value 
             - asset_contract_address
+      - check_seed:
+          seed_file: ref('dao_transactions_seed')
+          match_columns:
+            - blockchain
+            - dao
+            - dao_wallet_address
+            - dao_creator_tool
+            - tx_hash
+            - tx_type
+          check_columns:
+            - dao_creator_tool
     columns:
       - &blockchain
         name: blockchain
@@ -32,9 +43,6 @@ models:
       - &dao_creator_tool
         name: dao_creator_tool
         description: "Name of creator tool used to create DAO"
-        tests:
-          - dao_transactions_creator_tool:
-              dao_transactions_seed: ref('dao_transactions_seed')
       - &dao
         name: dao
         description: "address of the dao deployed"
@@ -102,6 +110,17 @@ models:
             - address_interacted_with
             - value 
             - asset_contract_address
+      - check_seed:
+          seed_file: ref('dao_transactions_seed')
+          match_columns:
+            - blockchain
+            - dao
+            - dao_wallet_address
+            - dao_creator_tool
+            - tx_hash
+            - tx_type
+          check_columns:
+            - dao_creator_tool
     columns:
       - *blockchain
       - *dao_creator_tool
