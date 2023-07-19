@@ -148,13 +148,13 @@ all_addresses as (
 ),
 reserves as (
     select
-        contract_address,
+        a.contract_address,
         call_block_time,
         output__reserve0 / cast(pow(10, 18) as uint256) as reserve0,
         output__reserve1 / cast(pow(10, 18) as uint256) as reserve1,
         row_number() over(
             partition by date(call_block_time),
-            contract_address
+            a.contract_address
             order by
                 call_block_time desc
         ) as rn
