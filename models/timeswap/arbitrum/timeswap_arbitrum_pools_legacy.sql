@@ -348,6 +348,62 @@ FROM
                 'Arbitrum',
                 '0x61EDF35c6C6557010A7649c7fC9EFC75B9fEb2E1',
                 '0xea45312c915adc912e681728A5Bf55441c08Fcd7'
+            ),
+            (
+                'APT',
+                'USDC',
+                '0xfd421d60905d2f7cabd49e6a5703a3499367b8f4',
+                '0xff970a61a04b1ca14834a43f5de4533ebddb5cc8',
+                12,
+                6,
+                '289240011882797693943868416317002',
+                '1691928000',
+                'APT-USDC',
+                'Arbitrum',
+                '0x61EDF35c6C6557010A7649c7fC9EFC75B9fEb2E1',
+                '0xea45312c915adc912e681728A5Bf55441c08Fcd7'
+            ),  
+            (
+                'glpUSDC',
+                'USDC',
+                '0x727eD4eF04bB2a96Ec77e44C1a91dbB01B605e42',
+                '0xff970a61a04b1ca14834a43f5de4533ebddb5cc8',
+                6,
+                6,
+                '306254130228844617117037146688591390310',
+                '1690545600',
+                'glpUSDC-USDC',
+                'Arbitrum',
+                '0x61EDF35c6C6557010A7649c7fC9EFC75B9fEb2E1',
+                '0xea45312c915adc912e681728A5Bf55441c08Fcd7'
+            ),
+            (
+                'ARB',
+                'USDC',
+                '0x912ce59144191c1204e64559fe8253a0e49e6548',
+                '0xff970a61a04b1ca14834a43f5de4533ebddb5cc8',
+                18,
+                6,
+                '306254130228844617117037146',
+                '1692100800',
+                'ARB-USDC',
+                'Arbitrum',
+                '0x61EDF35c6C6557010A7649c7fC9EFC75B9fEb2E1',
+                '0xea45312c915adc912e681728A5Bf55441c08Fcd7'
+            ),
+            (
+                'ARB',
+                'USDC',
+                '0x912ce59144191c1204e64559fe8253a0e49e6548',
+                '0xff970a61a04b1ca14834a43f5de4533ebddb5cc8',
+                18,
+                6,
+                '595494142111642311060905563',
+                '1692100800',
+                'ARB-USDC',
+                'Arbitrum',
+                '0x61EDF35c6C6557010A7649c7fC9EFC75B9fEb2E1',
+                '0xea45312c915adc912e681728A5Bf55441c08Fcd7'
             )
     ) AS temp_table (
         token0_symbol,
