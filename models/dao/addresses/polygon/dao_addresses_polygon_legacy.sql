@@ -3,8 +3,8 @@
 	alias = alias('addresses_polygon', legacy_model=True))}}
 
 {% set addresses_models = [
-ref('aragon_polygon_dao_addresses')
-,ref('syndicate_polygon_dao_addresses')
+ref('aragon_polygon_dao_addresses_legacy')
+,ref('syndicate_polygon_dao_addresses_legacy')
 ] %}
 
 
