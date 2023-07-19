@@ -559,6 +559,9 @@ WITH curated_list AS (
       ,('0xA58090dd84D143ca90e95B05395e0F116A727714', 'Optimism Governor')
       ,('0x9AaC739c133074dB445183A95149880a2156541A', 'OpenSea')
       ,('0x9f6798ec61a30e27f94db7e6af678d179662b27c', 'Chainlink') --CCIP
+      ,('0xae0c5140744bfc6bc33ce73298f10f7b538f02dd', 'Eco')
+      ,('0xb1bEF51ebCA01EB12001a639bDBbFF6eEcA12B9F', 'Sablier')
+      ,('0x3c5e6b4292ed35e8973400bef77177a9e84e8e6e', 'Layerr')
       
   ) as temp_table (creator_address, contract_project)
 )
