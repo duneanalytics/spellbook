@@ -15,8 +15,7 @@ models:
           combination_of_columns:
             - tx_hash
             - start
-            - transfer_trace_address
-            - block_time
+            - _transfer_trace_address_not_null
     columns:
       - &tx_hash
         name: tx_hash
@@ -50,5 +49,9 @@ models:
         name: rn_ta_asc
       - &rn_ta_desc
         name: rn_ta_desc
-      - &_partition
-        name: _partition
+      - &block_month
+        name: block_month
+      - &_transfer_trace_address_not_null
+        name: transfer_trace_address
+        tests:
+          - not_null

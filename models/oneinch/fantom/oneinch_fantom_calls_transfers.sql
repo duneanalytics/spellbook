@@ -2,11 +2,11 @@
     schema = 'oneinch_fantom',
     alias = alias('calls_transfers'),
     tags = ['dunesql'],
-    partition_by = ['_partition'],
+    partition_by = ['block_month'],
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
-    unique_key = ['tx_hash', 'start', 'transfer_trace_address', 'block_time']
+    unique_key = ['tx_hash', 'start', '_transfer_trace_address_not_null']
     )
 }}
 
@@ -27,6 +27,7 @@ calls as (
         , transactions.tx_success
         , gr_traces.call_success
         , gr_traces.call_selector
+        , transactions.block_time
     from (
         select 
             "from" as tx_from
@@ -66,7 +67,7 @@ calls as (
 , merged as (
     select 
         calls.tx_hash
-        , transfers.block_time
+        , calls.block_time
         , calls.tx_from
         , calls.start
         , transfers.trace_address as transfer_trace_address
@@ -78,9 +79,10 @@ calls as (
         , calls.call_selector
         , calls.call_success
         , calls.tx_success
-        , row_number() over(partition by calls.tx_hash order by transfers.trace_address asc) as rn_ta_asc
-        , row_number() over(partition by calls.tx_hash order by transfers.trace_address desc) as rn_ta_desc
-        , date(date_trunc('month', transfers.block_time)) as _partition
+        , row_number() over(partition by calls.tx_hash order by transfers.trace_address asc) - 1 as rn_ta_asc -- -1 as call 0, transfer 1+
+        , row_number() over(partition by calls.tx_hash order by transfers.trace_address desc) - 1 as rn_ta_desc
+        , date(date_trunc('month', transfers.block_time)) as block_month
+        , coalesce(transfers.transfer_trace_address, array[-1]) as _transfer_trace_address_not_null
     from calls
     left join (
         select 
