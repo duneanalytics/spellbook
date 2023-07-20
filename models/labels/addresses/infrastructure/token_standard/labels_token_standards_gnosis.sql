@@ -11,7 +11,7 @@ SELECT distinct 'gnosis' AS blockchain
 , 'infrastructure' AS category
 , 'hildobby' AS contributor
 , 'query' AS source
-, date '2023-03-02' AS created_at
+, TIMESTAMP '2023-03-02' AS created_at
 , NOW() AS updated_at
 , 'token_standard' AS model_name
 , 'persona' as label_type
@@ -31,7 +31,7 @@ SELECT distinct 'gnosis' AS blockchain
 , 'infrastructure' AS category
 , 'hildobby' AS contributor
 , 'query' AS source
-, date '2023-03-02' AS created_at
+, TIMESTAMP '2023-03-02' AS created_at
 , NOW() AS updated_at
 , 'token_standard' AS model_name
 , 'persona' as label_type
