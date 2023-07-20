@@ -1,6 +1,7 @@
 {{ config(
     schema = 'magiceden_solana',
-    alias = 'events',
+    alias = alias('events'),
+    tags = ['dunesql'],
     partition_by = ['block_date'],
     materialized = 'incremental',
     file_format = 'delta',
@@ -15,7 +16,7 @@ WITH me_txs AS (
     pre_balances,
     post_balances,
     block_slot,
-    block_date,
+    cast(block_date as date) as block_date,
     block_time,
     account_keys,
     log_messages,
