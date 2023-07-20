@@ -20,8 +20,7 @@ models:
             - version
             - tx_hash
             - evt_index
-            - trace_address
-      - check_dex_seed_legacy:
+      - check_dex_seed:
           blockchain: ethereum
           project: pancakeswap
           version: 2
@@ -68,8 +67,6 @@ models:
         description: "Address which initiated the transaction"
       - name: tx_to
         description: "Address which received the transaction"
-      - name: trace_address
-        description: ""
       - name: evt_index
         description: "Index of the corresponding trade event"
 
@@ -92,8 +89,7 @@ models:
             - version
             - tx_hash
             - evt_index
-            - trace_address
-      - check_dex_seed_legacy:
+      - check_dex_seed:
           blockchain: ethereum
           project: pancakeswap
           version: 3
@@ -140,8 +136,6 @@ models:
         description: "Address which initiated the transaction"
       - name: tx_to
         description: "Address which received the transaction"
-      - name: trace_address
-        description: ""
       - name: evt_index
         description: "Index of the corresponding trade event"
 
@@ -164,8 +158,7 @@ models:
             - version
             - tx_hash
             - evt_index
-            - trace_address
-      - check_dex_seed_legacy:
+      - check_dex_seed:
           blockchain: ethereum
           project: pancakeswap
           version: mmpool
@@ -212,8 +205,6 @@ models:
         description: "Address which initiated the transaction"
       - name: tx_to
         description: "Address which received the transaction"
-      - name: trace_address
-        description: ""
       - name: evt_index
         description: "Index of the corresponding trade event"
 
@@ -271,7 +262,5 @@ models:
         description: "Address which initiated the transaction"
       - name: tx_to
         description: "Address which received the transaction"
-      - name: trace_address
-        description: ""
       - name: evt_index
         description: "Index of the corresponding trade event"
