@@ -82,7 +82,7 @@ calls as (
         , row_number() over(partition by calls.tx_hash order by transfers.trace_address asc) - 1 as rn_ta_asc -- -1 as call 0, transfer 1+
         , row_number() over(partition by calls.tx_hash order by transfers.trace_address desc) - 1 as rn_ta_desc
         , date(date_trunc('month', transfers.block_time)) as block_month
-        , coalesce(transfers.transfer_trace_address, array[-1]) as _transfer_trace_address_not_null
+        , coalesce(transfers.trace_address, array[-1]) as _transfer_trace_address_not_null
     from calls
     left join (
         select 
