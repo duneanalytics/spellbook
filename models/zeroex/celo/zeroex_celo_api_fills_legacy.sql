@@ -1,7 +1,7 @@
 {{  config(
 	tags=['legacy'],
 	
-        alias = alias('api_fills', legacy_model=True),
+        alias = alias('api_fills_celo', legacy_model=True),
         materialized='incremental',
         partition_by = ['block_date'],
         unique_key = ['block_date', 'tx_hash', 'evt_index'],
@@ -31,7 +31,7 @@ WITH zeroex_tx AS (
                                         FROM (position('fbc019a7' IN INPUT) + 32)
                                         FOR 40)
                             END AS affiliate_address
-        FROM {{ source('fantom', 'traces') }} tr
+        FROM {{ source('celo', 'traces') }} tr
         WHERE tr.to IN (
                 -- exchange contract
                 '0x61935cbdd02287b511119ddb11aeb42f1593b7ef', 
@@ -74,7 +74,7 @@ v4_rfq_fills_no_bridge AS (
             zeroex_tx.affiliate_address     AS affiliate_address,
             (zeroex_tx.tx_hash IS NOT NULL) AS swap_flag,
             FALSE                           AS matcha_limit_order_flag
-    FROM {{ source('zeroex_fantom', 'ExchangeProxy_evt_RfqOrderFilled') }} fills
+    FROM {{ source('zeroex_celo', 'ExchangeProxy_evt_RfqOrderFilled') }} fills
     LEFT JOIN zeroex_tx ON zeroex_tx.tx_hash = fills.evt_tx_hash
 
     {% if is_incremental() %}
@@ -100,7 +100,7 @@ v4_limit_fills_no_bridge AS (
             COALESCE(zeroex_tx.affiliate_address, fills.feeRecipient) AS affiliate_address,
             (zeroex_tx.tx_hash IS NOT NULL) AS swap_flag,
             (fills.feeRecipient = '0x86003b044f70dac0abc80ac8957305b6370893ed') AS matcha_limit_order_flag
-    FROM {{ source('zeroex_fantom', 'ExchangeProxy_evt_LimitOrderFilled') }} fills
+    FROM {{ source('zeroex_celo', 'ExchangeProxy_evt_LimitOrderFilled') }} fills
     LEFT JOIN zeroex_tx ON zeroex_tx.tx_hash = fills.evt_tx_hash
 
     {% if is_incremental() %}
@@ -126,7 +126,7 @@ otc_fills AS (
             zeroex_tx.affiliate_address     AS affiliate_address,
             (zeroex_tx.tx_hash IS NOT NULL) AS swap_flag,
             FALSE                           AS matcha_limit_order_flag
-    FROM {{ source('zeroex_fantom', 'ExchangeProxy_evt_OtcOrderFilled') }} fills
+    FROM {{ source('zeroex_celo', 'ExchangeProxy_evt_OtcOrderFilled') }} fills
     LEFT JOIN zeroex_tx ON zeroex_tx.tx_hash = fills.evt_tx_hash
 
     {% if is_incremental() %}
@@ -155,7 +155,7 @@ ERC20BridgeTransfer AS (
             zeroex_tx.affiliate_address             AS affiliate_address,
             TRUE                                    AS swap_flag,
             FALSE                                   AS matcha_limit_order_flag
-    FROM {{ source('fantom', 'logs') }} logs
+    FROM {{ source('celo', 'logs') }} logs
     INNER JOIN zeroex_tx ON zeroex_tx.tx_hash = logs.tx_hash
     WHERE topic1 = '0x349fc08071558d8e3aa92dec9396e4e9f2dfecd6bb9065759d1932e7da43b8a9'
     
@@ -184,7 +184,7 @@ BridgeFill AS (
             zeroex_tx.affiliate_address                     AS affiliate_address,
             TRUE                                            AS swap_flag,
             FALSE                                           AS matcha_limit_order_flag
-    FROM {{ source('fantom', 'logs') }} logs
+    FROM {{ source('celo', 'logs') }} logs
     INNER JOIN zeroex_tx ON zeroex_tx.tx_hash = logs.tx_hash
     WHERE topic1 = '0xff3bc5e46464411f331d1b093e1587d2d1aa667f5618f98a95afc4132709d3a9'
         AND contract_address = '0xb4d961671cadfed687e040b076eee29840c142e5'
@@ -213,7 +213,7 @@ NewBridgeFill AS (
             zeroex_tx.affiliate_address                     AS affiliate_address,
             TRUE                                            AS swap_flag,
             FALSE                                           AS matcha_limit_order_flag
-    FROM {{ source('fantom' ,'logs') }} logs
+    FROM {{ source('celo' ,'logs') }} logs
     INNER JOIN zeroex_tx ON zeroex_tx.tx_hash = logs.tx_hash
     WHERE topic1 = '0xe59e71a14fe90157eedc866c4f8c767d3943d6b6b2e8cd64dddcc92ab4c55af8'
         AND contract_address = '0xb4d961671cadfed687e040b076eee29840c142e5'
@@ -242,7 +242,7 @@ direct_PLP AS (
             zeroex_tx.affiliate_address AS affiliate_address,
             TRUE                        AS swap_flag,
             FALSE                       AS matcha_limit_order_flag
-    FROM {{ source('zeroex_fantom', 'ExchangeProxy_evt_LiquidityProviderSwap') }} plp
+    FROM {{ source('zeroex_celo', 'ExchangeProxy_evt_LiquidityProviderSwap') }} plp
     INNER JOIN zeroex_tx ON zeroex_tx.tx_hash = plp.evt_tx_hash
 
     {% if is_incremental() %}
@@ -301,9 +301,9 @@ SELECT
              END AS volume_usd, 
         tx.from AS tx_from,
         tx.to AS tx_to,
-        'fantom' AS blockchain
+        'celo' AS blockchain
 FROM all_tx
-INNER JOIN {{ source('fantom', 'transactions')}} tx ON all_tx.tx_hash = tx.hash
+INNER JOIN {{ source('celo', 'transactions')}} tx ON all_tx.tx_hash = tx.hash
 
 {% if is_incremental() %}
 AND tx.block_time >= date_trunc('day', now() - interval '1 week')
@@ -317,7 +317,7 @@ AND CASE
         WHEN all_tx.taker_token = '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee' THEN '0x21be370d5312f44cb42ce377bc9b8a0cef1a4c83'
         ELSE all_tx.taker_token
     END = tp.contract_address
-AND tp.blockchain = 'fantom'
+AND tp.blockchain = 'celo'
 
 {% if is_incremental() %}
 AND tp.minute >= date_trunc('day', now() - interval '1 week')
@@ -331,7 +331,7 @@ AND CASE
         WHEN all_tx.maker_token = '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee' THEN '0x21be370d5312f44cb42ce377bc9b8a0cef1a4c83'
         ELSE all_tx.maker_token
     END = mp.contract_address
-AND mp.blockchain = 'fantom'
+AND mp.blockchain = 'celo'
 
 {% if is_incremental() %}
 AND mp.minute >= date_trunc('day', now() - interval '1 week')
@@ -340,5 +340,5 @@ AND mp.minute >= date_trunc('day', now() - interval '1 week')
 AND mp.minute >= '{{zeroex_v3_start_date}}'
 {% endif %}
 
-LEFT OUTER JOIN {{ ref('tokens_erc20_legacy') }} ts ON ts.contract_address = taker_token and ts.blockchain = 'fantom'
-LEFT OUTER JOIN {{ ref('tokens_erc20_legacy') }} ms ON ms.contract_address = maker_token and ms.blockchain = 'fantom'
+LEFT OUTER JOIN {{ ref('tokens_erc20_legacy') }} ts ON ts.contract_address = taker_token and ts.blockchain = 'celo'
+LEFT OUTER JOIN {{ ref('tokens_erc20_legacy') }} ms ON ms.contract_address = maker_token and ms.blockchain = 'celo'
