@@ -1,7 +1,7 @@
 version: 2
 
 models:
-  - name: keep3r_network_crosschain_Keep3r_v2_evt_KeeperWork
+  - name: keep3r_network_crosschain_evt_Keep3rv2_KeeperWork
     meta:
       blockchain: ethereum, optimism, polygon
       sector: oracle
