@@ -1,4 +1,6 @@
-{{config(alias = alias('airdrop'),
+{{config(
+        alias = alias('airdrop'),
+        tags = ['dunesql'],
         post_hook='{{ expose_spells(\'["optimism"]\',
                                     "sector",
                                     "labels",
