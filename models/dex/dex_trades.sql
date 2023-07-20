@@ -25,7 +25,7 @@
 ,ref('swapr_ethereum_trades')
 ,ref('defiswap_ethereum_trades')
 ,ref('dfx_ethereum_trades')
-,ref('pancakeswap_trades_legacy')
+,ref('pancakeswap_trades')
 ,ref('dodo_trades')
 ,ref('velodrome_optimism_trades')
 ,ref('woofi_trades')
