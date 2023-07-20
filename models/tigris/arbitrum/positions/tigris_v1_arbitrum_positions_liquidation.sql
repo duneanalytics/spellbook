@@ -1,4 +1,5 @@
 {{ config(
+    tags=['dunesql'],
     schema = 'tigris_v1_arbitrum',
     alias = alias('positions_liquidation')
     )
@@ -58,4 +59,3 @@ last_margin lm
 INNER JOIN 
 last_leverage ll 
     ON lp.position_id = ll.position_id
-;

@@ -1,4 +1,5 @@
 {{ config(
+    tags=['dunesql'],
     schema = 'tigris_v1_polygon',
     alias = alias('events_liquidate_position'),
     partition_by = ['day'],
@@ -13,7 +14,7 @@ WITH
 
 liquidate_position_v1 as (
         SELECT 
-            date_trunc('day', pl.evt_block_time) as day, 
+            TRY_CAST(date_trunc('DAY', pl.evt_block_time) AS date) as day, 
             pl.evt_tx_hash,
             pl.evt_index,
             pl.evt_block_time,
@@ -26,13 +27,13 @@ liquidate_position_v1 as (
             ON pl._id = op.position_id
             AND op.version = 'v1'
         {% if is_incremental() %}
-        WHERE pl.evt_block_time >= date_trunc("day", now() - interval '1 week')
+        WHERE pl.evt_block_time >= date_trunc('day', now() - interval '7' day)
         {% endif %}
 ),
 
 liquidate_position_v2 as (
         SELECT 
-            date_trunc('day', pl.evt_block_time) as day, 
+            TRY_CAST(date_trunc('DAY', pl.evt_block_time) AS date) as day, 
             pl.evt_tx_hash,
             pl.evt_index,
             pl.evt_block_time,
@@ -45,13 +46,13 @@ liquidate_position_v2 as (
             ON pl._id = op.position_id
             AND op.version = 'v2'
         {% if is_incremental() %}
-        WHERE pl.evt_block_time >= date_trunc("day", now() - interval '1 week')
+        WHERE pl.evt_block_time >= date_trunc('day', now() - interval '7' day)
         {% endif %}
 ),
 
 liquidate_position_v3 as (
         SELECT 
-            date_trunc('day', pl.evt_block_time) as day, 
+            TRY_CAST(date_trunc('DAY', pl.evt_block_time) AS date) as day, 
             pl.evt_tx_hash,
             pl.evt_index,
             pl.evt_block_time,
@@ -64,13 +65,13 @@ liquidate_position_v3 as (
             ON pl._id = op.position_id
             AND op.version = 'v3'
         {% if is_incremental() %}
-        WHERE pl.evt_block_time >= date_trunc("day", now() - interval '1 week')
+        WHERE pl.evt_block_time >= date_trunc('day', now() - interval '7' day)
         {% endif %}
 ),
 
 liquidate_position_v4 as (
         SELECT 
-            date_trunc('day', pl.evt_block_time) as day, 
+            TRY_CAST(date_trunc('DAY', pl.evt_block_time) AS date) as day, 
             pl.evt_tx_hash,
             pl.evt_index,
             pl.evt_block_time,
@@ -83,13 +84,13 @@ liquidate_position_v4 as (
             ON pl._id = op.position_id
             AND op.version = 'v4'
         {% if is_incremental() %}
-        WHERE pl.evt_block_time >= date_trunc("day", now() - interval '1 week')
+        WHERE pl.evt_block_time >= date_trunc('day', now() - interval '7' day)
         {% endif %}
 ),
 
 liquidate_position_v5 as (
         SELECT 
-            date_trunc('day', evt_block_time) as day, 
+            TRY_CAST(date_trunc('DAY', evt_block_time) AS date) as day, 
             evt_tx_hash,
             evt_index,
             evt_block_time,
@@ -98,13 +99,13 @@ liquidate_position_v5 as (
         FROM 
         {{ source('tigristrade_polygon', 'TradingV5_evt_PositionLiquidated') }}
         {% if is_incremental() %}
-        WHERE evt_block_time >= date_trunc("day", now() - interval '1 week')
+        WHERE evt_block_time >= date_trunc('day', now() - interval '7' day)
         {% endif %}
 ),
 
 liquidate_position_v6 as (
         SELECT 
-            date_trunc('day', evt_block_time) as day, 
+            TRY_CAST(date_trunc('DAY', evt_block_time) AS date) as day, 
             evt_tx_hash,
             evt_index,
             evt_block_time,
@@ -113,13 +114,13 @@ liquidate_position_v6 as (
         FROM 
         {{ source('tigristrade_polygon', 'TradingV6_evt_PositionLiquidated') }}
         {% if is_incremental() %}
-        WHERE evt_block_time >= date_trunc("day", now() - interval '1 week')
+        WHERE evt_block_time >= date_trunc('day', now() - interval '7' day)
         {% endif %}
 ),
 
 liquidate_position_v7 as (
         SELECT 
-            date_trunc('day', evt_block_time) as day, 
+            TRY_CAST(date_trunc('DAY', evt_block_time) AS date) as day, 
             evt_tx_hash,
             evt_index,
             evt_block_time,
@@ -128,13 +129,13 @@ liquidate_position_v7 as (
         FROM 
         {{ source('tigristrade_polygon', 'TradingV7_evt_PositionLiquidated') }}
         {% if is_incremental() %}
-        WHERE evt_block_time >= date_trunc("day", now() - interval '1 week')
+        WHERE evt_block_time >= date_trunc('day', now() - interval '7' day)
         {% endif %}
 ),
 
 liquidate_position_v8 as (
         SELECT 
-            date_trunc('day', evt_block_time) as day, 
+            TRY_CAST(date_trunc('DAY', evt_block_time) AS date) as day, 
             evt_tx_hash,
             evt_index,
             evt_block_time,
@@ -143,7 +144,7 @@ liquidate_position_v8 as (
         FROM 
         {{ source('tigristrade_polygon', 'TradingV8_evt_PositionLiquidated') }}
         {% if is_incremental() %}
-        WHERE evt_block_time >= date_trunc("day", now() - interval '1 week')
+        WHERE evt_block_time >= date_trunc('day', now() - interval '7' day)
         {% endif %}
 )
 
@@ -176,4 +177,3 @@ SELECT *, 'v1.7' as version FROM liquidate_position_v7
 UNION ALL
 
 SELECT *, 'v1.8' as version FROM liquidate_position_v8
-;
