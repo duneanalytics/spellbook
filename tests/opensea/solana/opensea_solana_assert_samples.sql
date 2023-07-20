@@ -6,7 +6,7 @@ WITH unit_tests as
 FROM {{ ref('opensea_solana_events') }} os_trades
 JOIN {{ ref('opensea_solana_trades_solscan') }} test_data ON test_data.tx_hash = os_trades.tx_hash
 AND test_data.block_time = os_trades.block_time
-WHERE os_trades.block_time > '2022-05-01' and os_trades.block_time < '2022-05-03'
+WHERE os_trades.block_time > timestamp '2022-05-01' and os_trades.block_time < timestamp '2022-05-03'
 and os_trades.project = 'opensea' and os_trades.blockchain = 'solana'
 )
 
