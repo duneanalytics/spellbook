@@ -27,6 +27,10 @@
     ,source('paraswap_ethereum', 'AugustusSwapper5_0_call_swapOnUniswapFork')
 ] %}
 
+/**
+    Note: Used try_cast instead of cast to avoid throwing an overflow error on the special transaction.
+    Example: https://etherscan.io/tx/0x2db75d6401a39cb72a0a38e0a0cfd46117def1a6dae7d411c9ed5e5e211ab8cf
+**/
 WITH dex_swap AS (
     {% for trade_table in trade_event_tables %}
         SELECT 
@@ -103,7 +107,7 @@ call_swap_without_event AS (
                 t.evt_block_time AS block_time,
                 t."from" AS user_address,
                 t.contract_address AS tokenIn,
-                cast(t.value AS decimal(38, 0)) AS amountIn,
+                try_cast(t.value AS decimal(38, 0)) AS amountIn,
                 ARRAY[cast(-1 as bigint)] AS trace_address,
                 t.evt_index,
                 row_number() over (partition by t.evt_tx_hash order by t.evt_index) as row_num
@@ -131,8 +135,8 @@ call_swap_without_event AS (
             c."from" AS user_address,
             0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2 AS tokenIn, -- WETH
             sum(case
-                when t."from" = c."from" then cast(t.value AS decimal(38, 0))
-                else -1 * cast(t.value AS decimal(38, 0))
+                when t."from" = c."from" then try_cast(t.value AS decimal(38, 0))
+                else -1 * try_cast(t.value AS decimal(38, 0))
             end) AS amountIn,
             MAX(t.trace_address) AS trace_address,
             CAST(-1 as integer) AS evt_index
@@ -168,7 +172,7 @@ call_swap_without_event AS (
                 t.evt_block_time AS block_time,
                 t."to" AS user_address,
                 t.contract_address AS tokenOut,
-                cast(t.value AS decimal(38, 0)) AS amountOut,
+                try_cast(t.value AS decimal(38, 0)) AS amountOut,
                 ARRAY[cast(-1 as bigint)] AS trace_address,
                 t.evt_index,
                 row_number() over (partition by t.evt_tx_hash order by t.evt_index) AS row_num
@@ -194,7 +198,7 @@ call_swap_without_event AS (
             t.block_time,
             t."to" AS user_address,
             0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2 AS tokenOut, -- WETH
-            cast(t.value AS decimal(38, 0)) AS amountOut,
+            try_cast(t.value AS decimal(38, 0)) AS amountOut,
             t.trace_address,
             CAST(-1 as integer) AS evt_index
         FROM no_event_call_transaction c
@@ -231,7 +235,6 @@ call_swap_without_event AS (
 ),
 
 dexs AS (
-    -- Used try_cast instead of cast to avoid throwing an overflow error on https://etherscan.io/tx/0x2db75d6401a39cb72a0a38e0a0cfd46117def1a6dae7d411c9ed5e5e211ab8cf.
     SELECT block_time,
         block_number,
         taker, 
