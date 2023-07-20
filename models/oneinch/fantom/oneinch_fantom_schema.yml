@@ -16,6 +16,7 @@ models:
             - tx_hash
             - start
             - transfer_trace_address
+            - block_time
     columns:
       - &tx_hash
         name: tx_hash
