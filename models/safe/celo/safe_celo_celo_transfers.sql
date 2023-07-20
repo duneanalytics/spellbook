@@ -2,7 +2,7 @@
     config(
         materialized='incremental',
         schema='safe_celo',
-        alias='transfers',
+        alias = alias('transfers'),
         partition_by = ['block_date'],
         unique_key = ['block_date', 'address', 'tx_hash', 'trace_address'],
         on_schema_change='fail',

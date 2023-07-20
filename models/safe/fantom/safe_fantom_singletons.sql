@@ -1,7 +1,7 @@
 {{ 
     config(
         materialized='table',
-        alias='singletons',
+        alias = alias('singletons'),
         post_hook='{{ expose_spells(\'["fantom"]\',
                                     "project",
                                     "safe",

@@ -1,5 +1,5 @@
 {{ config(
-    alias = 'pool_details'
+    alias = alias('pool_details')
 ) }}
 
 SELECT

@@ -1,4 +1,4 @@
-{{config(alias='nft_traders_transactions')}}
+{{config(alias = alias('nft_traders_transactions'))}}
 
 WITH nft_trades AS (
 SELECT

@@ -1,7 +1,7 @@
 {{
     config(
         schema = 'blur_ethereum',
-        alias='airdrop_1_claims',
+        alias = alias('airdrop_1_claims'),
         materialized = 'incremental',
         file_format = 'delta',
         incremental_strategy = 'merge',
@@ -40,7 +40,7 @@ SELECT 'ethereum' AS blockchain
 , 'BLUR' AS token_symbol
 , t.evt_index
 FROM {{ source('blur_ethereum', 'BlurAirdrop_evt_Claimed') }} t
-LEFT JOIN {{ ref('prices_usd_forward_fill_legacy') }} pu ON pu.blockchain = 'ethereum'
+LEFT JOIN {{ ref('prices_usd_forward_fill') }} pu ON pu.blockchain = 'ethereum'
     AND pu.contract_address='{{blur_token_address}}'
     AND pu.minute=date_trunc('minute', t.evt_block_time)
     {% if is_incremental() %}

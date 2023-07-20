@@ -1,5 +1,5 @@
 {{ config(
-    alias = 'wallet_pnl',
+    alias = alias('wallet_pnl'),
     materialized='incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
