@@ -1,6 +1,7 @@
 {{ config(
     schema='lido_liquidity_optimism',
     alias = alias('uniswap_v3_pools'),
+    tags = ['dunesql'], 
     partition_by = ['time'],
     materialized = 'table',
     file_format = 'delta',
