@@ -2,7 +2,7 @@
     schema = 'oneinch_fantom',
     alias = alias('calls_transfers'),
     tags = ['dunesql'],
-    partition_by = ['block_month'],
+    partition_by = ['_partition'],
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
