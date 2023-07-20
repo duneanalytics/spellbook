@@ -92,6 +92,7 @@ LEFT JOIN
 LEFT JOIN 
     {{ source('prices', 'usd') }} e 
     ON db.contract_address = lower('0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee')
+    AND d.day = e.minute
     AND db.blockchain = 'ethereum'
     AND e.symbol = 'WETH'
     
