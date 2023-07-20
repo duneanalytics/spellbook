@@ -96,7 +96,8 @@ nft_data AS (
         symbol AS nft_symbol,
         standard as nft_token_standard
     FROM
-    {{ ref('tokens_ethereum_nft') }}
+    {{ ref('tokens_nft') }}
+    WHERE blockchain = 'ethereum'
 ),
 
 collateral_ids AS (
