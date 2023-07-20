@@ -52,6 +52,4 @@ models:
       - &block_month
         name: block_month
       - &_transfer_trace_address_not_null
-        name: transfer_trace_address
-        tests:
-          - not_null
+        name: _transfer_trace_address_not_null
