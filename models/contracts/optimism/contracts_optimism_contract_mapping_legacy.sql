@@ -468,6 +468,7 @@ SELECT
 
   initcap(contract_project) AS contract_project
   --
+, token_symbol
 , contract_name, creator_address, created_time, contract_creator_if_factory
 , is_self_destruct, creation_tx_hash, created_block_number, created_tx_from
 , created_tx_to, created_tx_method_id, created_tx_index

@@ -1,5 +1,5 @@
 {{config(
-	tags = ['dunesql','static'],
+  tags = ['dunesql','static'],
   alias = alias('grants_funding'),
 	post_hook='{{ expose_spells(\'["optimism"]\',
 		"sector",
