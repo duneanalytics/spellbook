@@ -1,7 +1,8 @@
  {{
   config(
+        tags = ['dunesql','static'],
         schema='uniswap_v3_optimism',
-        alias = alias('ovm1_pool_mapping'),
+        alias= alias('ovm1_pool_mapping'),
         materialized='table',
         file_format = 'delta',
         post_hook='{{ expose_spells(\'["optimism"]\',
@@ -10,10 +11,9 @@
                                     \'["msilb7", "chuxin"]\') }}'
   )
 }}
-with ovm1_pools_raw as (
-  select 
-    explode(
-      from_json(
+with ovm1_legacy_pools_raw as (
+  select json_parse(json_column) AS json_data
+    from (values
         '[
           
           {
@@ -744,14 +744,15 @@ with ovm1_pools_raw as (
             "token1": "0xe0BB0D3DE8c10976511e5030cA403dBf4c25165B",
             "fee": 10000
           }
-        ]','array<struct<oldAddress:string,newAddress:string,token0:string, token1:string, fee:int>>'
-      )  
-    )
-)
-select 
-   col.oldAddress
-  ,col.newAddress
-  ,col.token0
-  ,col.token1
-  ,col.fee
-from ovm1_pools_raw
+        ]'
+      ) data(json_column) 
+) 
+
+SELECT
+    from_hex( json_extract_scalar(json_data, '$[' || cast(t.index as varchar) || '].oldAddress') ) AS oldAddress,
+    from_hex( json_extract_scalar(json_data, '$[' || cast(t.index as varchar) || '].newAddress') ) AS newAddress,
+    from_hex( json_extract_scalar(json_data, '$[' || cast(t.index as varchar) || '].token0') ) AS token0,
+    from_hex( json_extract_scalar(json_data, '$[' || cast(t.index as varchar) || '].token1') ) AS token1,
+    cast( json_extract_scalar(json_data, '$[' || cast(t.index as varchar) || '].fee') as bigint) AS fee
+FROM ovm1_legacy_pools_raw
+CROSS JOIN UNNEST(sequence(0, json_array_length(json_data) - 1)) AS t(index)
