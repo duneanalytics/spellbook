@@ -1,6 +1,7 @@
 {{ config(
     schema = 'element_bnb',
-    alias = 'events',
+    alias = alias('events'),
+    tags = ['dunesql'],
     partition_by = ['block_date'],
     materialized = 'incremental',
     file_format = 'delta',
