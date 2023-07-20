@@ -22,7 +22,7 @@ SELECT
   _payment AS payment,
   evt_tx_hash AS tx_hash
 FROM
-  keep3r_network_optimism.Keep3rSidechain_evt_KeeperWork
+  source('keep3r_network_optimism','Keep3rSidechain_evt_KeeperWork')
 UNION ALL
 SELECT
   'polygon' AS blockchain,
@@ -37,7 +37,7 @@ SELECT
   _payment AS payment,
   evt_tx_hash AS tx_hash
 FROM
-  keep3r_network_polygon.Keep3rSidechain_evt_KeeperWork
+  source('keep3r_network_polygon','Keep3rSidechain_evt_KeeperWork')
 UNION ALL
 SELECT
   'ethereum' AS blockchain,
@@ -52,7 +52,7 @@ SELECT
   _payment AS payment,
   evt_tx_hash AS tx_hash
 FROM
-  keep3r_network_ethereum.Keep3r_v2_evt_KeeperWork
+  source('keep3r_network_ethereum','Keep3r_v2_evt_KeeperWork')
 UNION ALL
 SELECT
   'ethereum' AS blockchain,
@@ -67,4 +67,4 @@ SELECT
   _amount AS payment,
   evt_tx_hash AS tx_hash
 FROM
-  keep3r_network_ethereum.Keep3r_evt_KeeperWork
+  source('keep3r_network_ethereum','Keep3r_evt_KeeperWork')

@@ -8,7 +8,7 @@ models:
       project: keep3r_network
       contributors: m_r_g_t
     config:
-      tags: ['keeper','oracle','keep3r','keep3r-network','keep3rnetwork','ethereum','polygon','optimism','cross-chain']
+      tags: ['dunesql','keeper','oracle','keep3r','keep3r-network','keep3rnetwork','ethereum','polygon','optimism','cross-chain']
     description: >
         The Keep3r Network is a decentralized network for projects that need external devops, and for external teams to find keeper jobs.
     columns:
@@ -22,5 +22,5 @@ models:
       - *job,
       - *keeper,
       - *payment,
-      - *tx_hash
+      - *tx_hash,
       - *blockchain
