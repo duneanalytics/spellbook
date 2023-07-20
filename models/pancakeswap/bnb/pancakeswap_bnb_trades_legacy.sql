@@ -38,6 +38,7 @@ FROM (
         tx_hash,
         tx_from,
         tx_to,
+        trace_address,
         evt_index
     FROM {{ dex_model }}
     {% if not loop.last %}

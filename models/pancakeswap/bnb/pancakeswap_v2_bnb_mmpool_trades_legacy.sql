@@ -6,7 +6,7 @@
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
-    unique_key = ['block_date', 'blockchain', 'project', 'version', 'tx_hash', 'evt_index'],
+    unique_key = ['block_date', 'blockchain', 'project', 'version', 'tx_hash', 'evt_index', 'trace_address'],
     post_hook='{{ expose_spells(\'["bnb"]\',
                                 "project",
                                 "pancakeswap_v2",
@@ -32,6 +32,7 @@ WITH dexs AS
              THEN '0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c' ELSE basetoken END       AS token_sold_address,     
         t.contract_address                                                              AS project_contract_address,
         t.evt_tx_hash                                                                   AS tx_hash,
+        ''                                                                              AS trace_address,
         t.evt_index
     FROM {{ source('pancakeswap_v2_bnb', 'PancakeSwapMMPool_evt_Swap') }} t
     {% if is_incremental() %}
@@ -68,6 +69,7 @@ SELECT
      , dexs.tx_hash
      , tx.from                                                   AS tx_from
      , tx.to                                                     AS tx_to
+     , dexs.trace_address
      , dexs.evt_index
 FROM dexs
 INNER JOIN {{ source('bnb', 'transactions') }} tx
