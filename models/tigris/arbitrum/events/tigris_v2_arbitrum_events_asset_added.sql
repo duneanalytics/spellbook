@@ -6,7 +6,6 @@
  }}
 
 SELECT 
-    evt_tx_hash, 
     _asset as asset_id, 
     _name as pair 
 FROM 
@@ -15,9 +14,7 @@ FROM
 UNION
 
 SELECT 
-    evt_tx_hash, 
     _asset as asset_id, 
     _name as pair 
 FROM 
 {{ source('tigristrade_v2_arbitrum', 'PairsContract_v2_evt_AssetAdded') }}
-;
