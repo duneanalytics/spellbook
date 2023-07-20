@@ -1,5 +1,5 @@
 {{  config(
-        alias = alias('api_fills_deduped'),
+        alias = alias('api_fills_deduped_celo'),
         materialized='incremental',
         partition_by = ['block_date'],
         unique_key = ['block_date', 'tx_hash', 'evt_index'],
@@ -16,7 +16,7 @@ AS
 (
     SELECT   row_number() OVER ( partition BY tx_hash ORDER BY evt_index ASC ) AS tx_fill_number
            , *
-    FROM {{ ref('zeroex_fantom_api_fills') }}
+    FROM {{ ref('zeroex_celo_api_fills') }}
     WHERE 1=1
     AND swap_flag = 1
     {% if is_incremental() %}
