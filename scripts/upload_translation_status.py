@@ -48,7 +48,7 @@ def upload_csv(table_csv, target):
     }
     response = requests.post(url, data=json.dumps(payload), headers=headers)
     if response.status_code == 200 and response.json()['success']:
-        print(f'Success writing CSV to delta_dev.dune_upload.{target} ', flush=True)
+        print(f'Success writing CSV to dune_upload.{target} ', flush=True)
     else:
         print('Error writing CSV to Dune.com!')
         raise Exception(response.content)
