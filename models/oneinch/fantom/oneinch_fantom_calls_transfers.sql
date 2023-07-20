@@ -79,8 +79,8 @@ calls as (
         , calls.call_selector
         , calls.call_success
         , calls.tx_success
-        , if(transfer_trace_address is not null, row_number() over(partition by calls.tx_hash order by transfers.trace_address asc)) as rn_ta_asc 
-        , if(transfer_trace_address is not null, row_number() over(partition by calls.tx_hash order by transfers.trace_address desc)) as rn_ta_desc
+        , if(transfers.trace_address is not null, row_number() over(partition by calls.tx_hash order by transfers.trace_address asc)) as rn_ta_asc 
+        , if(transfers.trace_address is not null, row_number() over(partition by calls.tx_hash order by transfers.trace_address desc)) as rn_ta_desc
         , date(date_trunc('month', calls.block_time)) as block_month
         , coalesce(transfers.trace_address, array[-1]) as _transfer_trace_address_not_null
     from calls
