@@ -16,6 +16,7 @@ models:
             - tx_hash
             - start
             - _transfer_trace_address_not_null
+            - block_month
     columns:
       - &tx_hash
         name: tx_hash
