@@ -5,4 +5,4 @@ seeds:
     config:
       tags: dunesql
       column_types:
-        tx_hash: varbinary
+        tx_hash: varchar
