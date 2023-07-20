@@ -40,7 +40,7 @@ with node_names as (
         and (to = 0x9062c0a6dbd6108336bcbe4593a3d1ce05512069 -- ReverseRegistrar v1
             or to = 0x084b1c3c81545d370f3634392de611caabff8148 -- ReverseRegistrar v2
         )
-        and bytearray_substring(input,1,5) in (
+        and bytearray_substring(input,1,4) in (
             0xc47f0027 -- setName(string)
             ,0x0f5a5466 -- claimWithResolver(address,address)
             ,0x1e83409a -- claim(address)
