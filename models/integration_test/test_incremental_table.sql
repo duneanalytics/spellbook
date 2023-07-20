@@ -1,5 +1,5 @@
 {{ config(
-        alias ='test_incremental_table',
+        alias = alias('test_incremental_table'),
         materialized ='incremental',
         file_format ='delta',
         incremental_strategy='merge',

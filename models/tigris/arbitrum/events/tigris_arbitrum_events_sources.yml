@@ -136,3 +136,5 @@ sources:
         loaded_at_field: evt_block_time
       - name: PairsContract_evt_AssetAdded
         loaded_at_field: evt_block_time
+      - name: PairsContract_v2_evt_AssetAdded
+        loaded_at_field: evt_block_time

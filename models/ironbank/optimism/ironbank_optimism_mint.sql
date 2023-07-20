@@ -1,5 +1,5 @@
 {{ config(
-    alias = 'mint',
+    alias = alias('mint'),
     post_hook='{{ expose_spells(\'["optimism"]\',
                                 "project",
                                 "ironbank",

@@ -1,5 +1,5 @@
 {{ config(
-        alias ='all_events',
+        alias = alias('all_events'),
         post_hook='{{ expose_spells(\'["ethereum"]\',
                                     "project",
                                     "cryptopunks",

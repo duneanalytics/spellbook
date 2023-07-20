@@ -1,6 +1,6 @@
 {{ config(
     schema = 'uniswap_v3_ethereum',
-    alias = 'proposals',
+    alias = alias('proposals'),
     partition_by = ['block_date'],
     materialized = 'table',
     file_format = 'delta',

@@ -1,7 +1,7 @@
 {{ 
     config(
         materialized='incremental',
-        alias='safes',
+        alias = alias('safes'),
         partition_by = ['block_date'],
         unique_key = ['block_date', 'address'],
         on_schema_change='fail',

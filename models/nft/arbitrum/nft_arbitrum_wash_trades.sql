@@ -1,6 +1,6 @@
 {{ config(
-        alias ='wash_trades',
-        partition_by='block_date',
+        alias = alias('wash_trades'),
+        partition_by=['block_date'],
         materialized='incremental',
         file_format = 'delta',
         post_hook='{{ expose_spells(\'["arbitrum"]\',

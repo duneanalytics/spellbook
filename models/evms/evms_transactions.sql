@@ -1,7 +1,8 @@
 {{ config(
-        alias ='transactions',
+        tags = ['dunesql'],
+        alias = alias('transactions'),
         unique_key=['blockchain', 'tx_hash', 'evt_index'],
-        post_hook='{{ expose_spells(\'["ethereum", "polygon", "bnb", "avalanche_c", "gnosis", "fantom", "optimism", "arbitrum"]\',
+        post_hook='{{ expose_spells(\'["ethereum", "polygon", "bnb", "avalanche_c", "gnosis", "fantom", "optimism", "arbitrum", "celo"]\',
                                     "sector",
                                     "evms",
                                     \'["hildobby"]\') }}'
@@ -16,6 +17,7 @@
      , ('gnosis', source('gnosis', 'transactions'))
      , ('fantom', source('fantom', 'transactions'))
      , ('arbitrum', source('arbitrum', 'transactions'))
+     , ('celo', source('celo', 'transactions'))
 ] %}
 
 SELECT *
@@ -26,7 +28,7 @@ FROM (
         , access_list
         , block_hash
         , data
-        , `from`
+        , "from"
         , hash
         , to
         , block_number
@@ -40,7 +42,7 @@ FROM (
         , nonce
         , priority_fee_per_gas
         , success
-        , `type`
+        , "type"
         , CAST(value AS double) AS value
         , NULL AS l1_tx_origin
         , CAST(NULL AS double) AS l1_fee_scalar
@@ -62,7 +64,7 @@ FROM (
         , access_list
         , block_hash
         , data
-        , `from`
+        , "from"
         , hash
         , to
         , block_number
@@ -76,7 +78,7 @@ FROM (
         , nonce
         , priority_fee_per_gas
         , success
-        , `type`
+        , "type"
         , CAST(value AS double) AS value
         ,l1_tx_origin
         , l1_fee_scalar

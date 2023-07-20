@@ -1,4 +1,4 @@
-{{config(alias='balancer_v2_gauges_polygon',
+{{config(alias = alias('balancer_v2_gauges_polygon'),
         post_hook='{{ expose_spells(\'["polygon"]\',
                                     "sector",
                                     "labels",

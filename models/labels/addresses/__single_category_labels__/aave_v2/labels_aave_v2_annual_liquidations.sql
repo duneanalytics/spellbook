@@ -1,4 +1,4 @@
-{{config(alias='aave_v2_liquidations')}}
+{{config(alias = alias('aave_v2_liquidations'))}}
 
 
 WITH mev_addresses AS (

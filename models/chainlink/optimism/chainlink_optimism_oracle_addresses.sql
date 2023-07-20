@@ -1,6 +1,6 @@
 {{
   config(
-        alias='oracle_addresses',
+        alias = alias('oracle_addresses'),
         post_hook='{{ expose_spells(\'["optimism"]\',
                                     "project",
                                     "chainlink",
