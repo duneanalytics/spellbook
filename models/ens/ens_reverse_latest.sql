@@ -1,5 +1,6 @@
 {{ config(
     alias = alias('reverse_latest'),
+    tags = ['dunesql'],
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
@@ -25,7 +26,7 @@ with node_names as (
         from {{ source('ethereumnameservice_ethereum', 'DefaultReverseResolver_call_setName') }}
         where call_success
         {% if is_incremental() %}
-        AND call_block_time >= date_trunc("day", now() - interval '1 week')
+        AND call_block_time >= date_trunc('day', now() - interval '7' day)
         {% endif %}
     ) foo
     where ordering = 1
@@ -46,7 +47,7 @@ with node_names as (
             ,'0x1e83409a' -- claim(address)
             )
         {% if is_incremental() %}
-        AND block_time >= date_trunc("day", now() - interval '1 week')
+        AND block_time >= date_trunc('day', now() - interval '7' day)
         {% endif %}
 
 )
