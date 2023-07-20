@@ -60,7 +60,7 @@ WITH dex_swap AS (
             END AS token_sold_address,
             contract_address AS project_contract_address,
             evt_tx_hash AS tx_hash, 
-            ARRAY[cast(null as bigint)] AS trace_address,
+            ARRAY[cast(-1 as bigint)] AS trace_address,
             evt_index
         FROM {{ trade_table }} p 
         {% if is_incremental() %}
@@ -93,7 +93,7 @@ liqudity_swap AS (
         END AS token_sold_address,
         p.contract_address AS project_contract_address,
         p.evt_tx_hash AS tx_hash, 
-        ARRAY[cast(null as bigint)] AS trace_address,
+        ARRAY[cast(-1 as bigint)] AS trace_address,
         p.evt_index
     FROM {{ source('paraswap_ethereum', 'ParaSwapLiquiditySwapAdapter_evt_Swapped') }} p
     INNER JOIN {{ source('ethereum', 'transactions') }} tx ON p.evt_tx_hash = tx.hash
@@ -112,11 +112,23 @@ liqudity_swap AS (
 call_swap_without_event AS (
     WITH no_event_call_transaction AS (
         {% for call_table in trade_call_tables %}
-            SELECT call_tx_hash, call_block_number
-            FROM {{ call_table }}
-            WHERE call_success = true
+            SELECT c.call_tx_hash,
+            c.call_block_number,
+            (case when tx.value > 0 then true else false end) as is_eth,
+            tx."from"
+            FROM {{ call_table }} c
+            INNER JOIN {{ source('ethereum', 'transactions') }} tx ON c.call_block_number = tx.block_number
+                AND c.call_tx_hash = tx.hash
+                AND tx.block_number >= {{ trade_call_start_block_number }}
+                {% if is_incremental() %}
+                AND tx.block_time >= date_trunc('day', now() - interval '7' day)
+                {% endif %}
+                {% if not is_incremental() %}
+                AND tx.block_time >= date('{{project_start_date}}')
+                {% endif %}
+            WHERE c.call_success = true
             {% if is_incremental() %}
-            AND call_block_time >= date_trunc('day', now() - interval '7' day)
+            AND c.call_block_time >= date_trunc('day', now() - interval '7' day)
             {% endif %}
             {% if not loop.last %}
             UNION -- There may be multiple calls in same tx
@@ -140,30 +152,21 @@ call_swap_without_event AS (
                 t."from" AS user_address,
                 t.contract_address AS tokenIn,
                 cast(t.value AS decimal(38, 0)) AS amountIn,
-                ARRAY[cast(null as bigint)] AS trace_address,
+                ARRAY[cast(-1 as bigint)] AS trace_address,
                 t.evt_index,
                 row_number() over (partition by t.evt_tx_hash order by t.evt_index) as row_num
             FROM no_event_call_transaction c
             INNER JOIN {{ source('erc20_ethereum','evt_transfer') }} t ON c.call_block_number = t.evt_block_number
                 AND c.call_tx_hash = t.evt_tx_hash
+                AND t."from" = c."from"
+                AND t.evt_block_number >= {{ trade_call_start_block_number }}
                 {% if is_incremental() %}
                 AND t.evt_block_time >= date_trunc('day', now() - interval '7' day)
                 {% endif %}
                 {% if not is_incremental() %}
                 AND t.evt_block_time >= date('{{project_start_date}}')
                 {% endif %}
-            INNER JOIN {{ source('ethereum', 'transactions') }} tx ON t.evt_block_number = tx.block_number
-                AND t.evt_tx_hash = tx.hash
-                AND t."from" = tx."from"
-                AND t.evt_block_number >= {{ trade_call_start_block_number }}
-                AND tx.block_number >= {{ trade_call_start_block_number }}
-                {% if is_incremental() %}
-                AND tx.block_time >= date_trunc('day', now() - interval '7' day)
-                {% endif %}
-                {% if not is_incremental() %}
-                AND tx.block_time >= date('{{project_start_date}}')
-                {% endif %}
-                AND tx.value = 0 -- Swap ERC20 to other token
+            where c.is_eth = false -- Swap ERC20 to other token
         ) t
         WHERE row_num = 1 -- Only use the first input row
 
@@ -173,10 +176,10 @@ call_swap_without_event AS (
         SELECT t.tx_hash,
             t.block_number,
             t.block_time,
-            tx."from" AS user_address,
+            c."from" AS user_address,
             0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2 AS tokenIn, -- WETH
             sum(case
-                when t."from" = tx."from" then cast(t.value AS decimal(38, 0))
+                when t."from" = c."from" then cast(t.value AS decimal(38, 0))
                 else -1 * cast(t.value AS decimal(38, 0))
             end) AS amountIn,
             MAX(t.trace_address) AS trace_address,
@@ -184,26 +187,17 @@ call_swap_without_event AS (
         FROM no_event_call_transaction c
         INNER JOIN {{ source('ethereum', 'traces') }} t ON c.call_block_number = t.block_number
             AND c.call_tx_hash = t.tx_hash
+            AND (t."from" = c."from" or t."to" = c."from")
+            AND t.block_number >= {{ trade_call_start_block_number }}
+            AND t.call_type = 'call'
+            AND t.value > cast(0 as uint256)
             {% if is_incremental() %}
             AND t.block_time >= date_trunc('day', now() - interval '7' day)
             {% endif %}
             {% if not is_incremental() %}
             AND t.block_time >= date('{{project_start_date}}')
             {% endif %}
-        INNER JOIN {{ source('ethereum', 'transactions') }} tx ON t.block_number = tx.block_number
-            AND t.tx_hash = tx.hash
-            AND (t."from" = tx."from" or t."to" = tx."from")
-            AND t.block_number >= {{ trade_call_start_block_number }}
-            AND tx.block_number >= {{ trade_call_start_block_number }}
-            {% if is_incremental() %}
-            AND tx.block_time >= date_trunc('day', now() - interval '7' day)
-            {% endif %}
-            {% if not is_incremental() %}
-            AND tx.block_time >= date('{{project_start_date}}')
-            {% endif %}
-            AND t.call_type = 'call'
-            AND t.value > cast(0 as uint256)
-            AND tx.value > 0 -- Swap ETH to other token
+        where c.is_eth -- Swap ETH to other token
         GROUP BY 1, 2, 3, 4
     ),
 
@@ -223,30 +217,21 @@ call_swap_without_event AS (
                 t."to" AS user_address,
                 t.contract_address AS tokenOut,
                 cast(t.value AS decimal(38, 0)) AS amountOut,
-                ARRAY[cast(null as bigint)] AS trace_address,
+                ARRAY[cast(-1 as bigint)] AS trace_address,
                 t.evt_index,
                 row_number() over (partition by t.evt_tx_hash order by t.evt_index) AS row_num
             FROM no_event_call_transaction c
             INNER JOIN {{ source('erc20_ethereum','evt_transfer') }} t ON c.call_block_number = t.evt_block_number
                 AND c.call_tx_hash = t.evt_tx_hash
+                AND t."to" = c."from"
+                AND t.evt_block_number >= {{ trade_call_start_block_number }}
                 {% if is_incremental() %}
                 AND t.evt_block_time >= date_trunc('day', now() - interval '7' day)
                 {% endif %}
                 {% if not is_incremental() %}
                 AND t.evt_block_time >= date('{{project_start_date}}')
                 {% endif %}
-            INNER JOIN {{ source('ethereum', 'transactions') }} tx ON t.evt_block_number = tx.block_number
-                AND t.evt_tx_hash = tx.hash
-                AND t."to" = tx."from"
-                AND t.evt_block_number >= {{ trade_call_start_block_number }}
-                AND tx.block_number >= {{ trade_call_start_block_number }}
-                {% if is_incremental() %}
-                AND tx.block_time >= date_trunc('day', now() - interval '7' day)
-                {% endif %}
-                {% if not is_incremental() %}
-                AND tx.block_time >= date('{{project_start_date}}')
-                {% endif %}
-                AND tx.value = 0  -- Swap ERC20 to other token
+            where c.is_eth = false -- Swap ERC20 to other token
         ) t
         WHERE row_num = 1
 
@@ -263,26 +248,17 @@ call_swap_without_event AS (
         FROM no_event_call_transaction c
         INNER JOIN {{ source('ethereum', 'traces') }} t ON c.call_block_number = t.block_number
             AND c.call_tx_hash = t.tx_hash
+            AND t."to" = c."from"
+            AND t.block_number >= {{ trade_call_start_block_number }}
+            AND t.call_type = 'call'
+            AND t.value > cast(0 as uint256)
             {% if is_incremental() %}
             AND t.block_time >= date_trunc('day', now() - interval '7' day)
             {% endif %}
             {% if not is_incremental() %}
             AND t.block_time >= date('{{project_start_date}}')
             {% endif %}
-        INNER JOIN {{ source('ethereum', 'transactions') }} tx ON t.block_number = tx.block_number
-            AND t.tx_hash = tx.hash
-            AND t."to" = tx."from"
-            AND t.block_number >= {{ trade_call_start_block_number }}
-            AND tx.block_number >= {{ trade_call_start_block_number }}
-            {% if is_incremental() %}
-            AND tx.block_time >= date_trunc('day', now() - interval '7' day)
-            {% endif %}
-            {% if not is_incremental() %}
-            AND tx.block_time >= date('{{project_start_date}}')
-            {% endif %}
-            AND t.call_type = 'call'
-            AND t.value > cast(0 as uint256)
-            AND tx.value = 0 --  Swap ERC20 token to ETH
+        where c.is_eth = false --  Swap ERC20 token to ETH
     )
 
     SELECT i.block_time,
