@@ -1,5 +1,4 @@
 {{  config(
-        tags=['dunesql'],
         alias = alias('api_fills'),
         materialized='incremental',
         partition_by = ['block_date'],
@@ -285,7 +284,7 @@ SELECT
         try_cast(date_trunc('day', all_tx.block_time) AS date) AS block_date,
         maker,
         CASE
-            WHEN taker = '0xdef1c0ded9bec7f1a1670819833240f027b25eff' THEN tx."from"
+            WHEN taker = '0xdef1c0ded9bec7f1a1670819833240f027b25eff' THEN tx.from
             ELSE taker
         END AS taker, -- fix the user masked by ProxyContract issue
         taker_token,
@@ -309,7 +308,7 @@ SELECT
              THEN (all_tx.taker_token_amount_raw / pow(10, tp.decimals)) * tp.price
              ELSE COALESCE((all_tx.maker_token_amount_raw / pow(10, mp.decimals)) * mp.price, (all_tx.taker_token_amount_raw / pow(10, tp.decimals)) * tp.price)
              END AS volume_usd, 
-        tx."from" AS tx_from,
+        tx.from AS tx_from,
         tx.to AS tx_to,
         'avalanche_c' AS blockchain
 FROM all_tx
@@ -327,7 +326,6 @@ LEFT JOIN {{ source('prices', 'usd') }} tp
     ON date_trunc('minute', all_tx.block_time) = tp.minute
     AND CASE
             WHEN all_tx.taker_token = '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee' THEN '0xb31f66aa3c1e785363f0875a1b74e27b85fd66c7'
-            WHEN (all_tx.taker_token = '0xa7d7079b0fead91f3e65f86e8915cb59c1a4c664' and tp.minute <= cast('2022-10-19' as date)) THEN '0x9702230a8ea53601f5cd2dc00fdbc13d4df4a8c7'
             ELSE all_tx.taker_token
         END = tp.contract_address
     AND tp.blockchain = 'avalanche_c'
@@ -342,7 +340,6 @@ LEFT JOIN {{ source('prices', 'usd') }} mp
     ON DATE_TRUNC('minute', all_tx.block_time) = mp.minute
     AND CASE
             WHEN all_tx.maker_token = '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee' THEN '0xb31f66aa3c1e785363f0875a1b74e27b85fd66c7'
-            WHEN (all_tx.maker_token = '0xa7d7079b0fead91f3e65f86e8915cb59c1a4c664' and mp.minute <= cast('2022-10-19' as date)) THEN '0x9702230a8ea53601f5cd2dc00fdbc13d4df4a8c7'
             ELSE all_tx.maker_token
         END = mp.contract_address
     AND mp.blockchain = 'avalanche_c'
