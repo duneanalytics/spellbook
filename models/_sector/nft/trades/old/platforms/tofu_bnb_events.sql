@@ -1,6 +1,6 @@
 {{ config(
     schema = 'tofu_bnb',
-    alias = 'events',
+    alias = alias('events'),
     partition_by = ['block_date'],
     materialized = 'incremental',
     file_format = 'delta',
@@ -120,7 +120,7 @@ FROM tfe
                        {% if is_incremental() %}
                        and tx.block_time >= date_trunc("day", now() - interval '1 week')
                        {% endif %}
-         LEFT JOIN {{ ref('tokens_bnb_nft_legacy') }} nft
+         LEFT JOIN {{ ref('tokens_bnb_nft') }} nft
                    ON tff.token = nft.contract_address
          LEFT JOIN {{ source('prices', 'usd') }} pu
                    ON pu.blockchain = 'bnb'

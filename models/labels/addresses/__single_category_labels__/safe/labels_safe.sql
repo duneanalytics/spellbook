@@ -1,4 +1,4 @@
-{{config(alias='safe',
+{{config(alias = alias('safe'),
         post_hook='{{ expose_spells(\'["ethereum"]\',
                                     "sector",
                                     "labels",

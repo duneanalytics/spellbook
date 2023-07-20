@@ -1,5 +1,5 @@
 {{ config(
-    alias = 'pool_tokens',
+    alias = alias('pool_tokens'),
     partition_by = ['pool'],
     materialized = 'incremental',
     file_format = 'delta',

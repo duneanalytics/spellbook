@@ -1,6 +1,6 @@
 {{ config(
     schema = 'tofu_optimism',
-    alias = 'events',
+    alias = alias('events'),
     partition_by = ['block_date'],
     materialized = 'incremental',
     file_format = 'delta',
@@ -127,7 +127,7 @@ inner join {{ source('optimism', 'transactions') }} as tx
     {% else %}
     and tx.block_time >= date_trunc("day", now() - interval '1 week')
     {% endif %}
-left join {{ ref('tokens_nft_legacy') }} as nft
+left join {{ ref('tokens_nft') }} as nft
     on nft.contract_address = tff.token
     and nft.blockchain = 'optimism'
 left join {{ source('prices', 'usd') }} as pu

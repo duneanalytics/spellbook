@@ -1,6 +1,6 @@
 {{
     config(
-        alias='trader_portfolios_ethereum',
+        alias = alias('trader_portfolios_ethereum'),
     )
 }}
 

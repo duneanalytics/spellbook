@@ -1,4 +1,5 @@
 {{ config(
+	tags=['legacy'],
         schema = 'yearn'
         , alias = alias('vaults', legacy_model=True)
         , materialized = 'incremental'

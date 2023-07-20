@@ -1,4 +1,4 @@
-{{ config( alias='native', tags=['static'])}}
+{{ config( alias = alias('native'), tags=['static'])}}
 
 SELECT chain, symbol, price_symbol, LOWER(price_address) as price_address, decimals
 FROM (VALUES

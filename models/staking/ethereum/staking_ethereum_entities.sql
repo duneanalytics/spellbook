@@ -1,5 +1,5 @@
 {{ config(
-    alias = 'entities',
+    alias = alias('entities'),
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
@@ -37,6 +37,7 @@ FROM
 (VALUES
 ('0xae7ab96520de3a18e5e111b5eaab095312d7fe84', 'Lido', 'Lido', 'Liquid Staking')
     , ('0xfddf38947afb03c621c71b06c9c70bce73f12999', 'Lido', 'Lido', 'Liquid Staking')
+    , ('0xa76a7d0d06754e4fc4941519d1f9d56fd9f8d53b', 'Lido', 'Lido', 'Liquid Staking')
     , ('0x39dc6a99209b5e6b81dc8540c86ff10981ebda29', 'Staked.us', 'Staked.us', 'Staking Pools')
     , ('0x0194512e77d798e4871973d9cb9d7ddfc0ffd801', 'stakefish', 'stakefish 1', 'Staking Pools')
     , ('0xd4039ecc40aeda0582036437cf3ec02845da4c13', 'Kraken', 'Kraken 1', 'CEX')
@@ -54,7 +55,7 @@ FROM
     , ('0x84db6ee82b7cf3b47e8f19270abde5718b936670', 'Stkr (Ankr)', 'Stkr (Ankr)', 'Liquid Staking')
     , ('0x194bd70b59491ce1310ea0bceabdb6c23ac9d5b2', 'Huobi', 'Huobi 1', 'CEX')
     , ('0xb73f4d4e99f65ec4b16b684e44f81aeca5ba2b7c', 'Huobi', 'Huobi 2', 'CEX')
-    , ('0xbf1556a7d625654e3d64d1f0466a60a697fac178', 'InfStones', 'InfStones', 'Staking Pools')
+    , ('0xbf1556a7d625654e3d64d1f0466a60a697fac178', 'imToken', 'imToken Staking[NodeProviderInfStones]', 'Staking Pools')
     , ('0xbca3b7b87dcb15f0efa66136bc0e4684a3e5da4d', 'SharedStake', 'SharedStake', 'Liquid Staking')
     , ('0xeadcba8bf9aca93f627f31fb05470f5a0686ceca', 'StakeWise Solos', 'StakeWise Solos', 'Staking Pools')
     , ('0xfa5f9eaa65ffb2a75de092eb7f3fc84fc86b5b18', 'Abyss Finance', 'Abyss Finance', 'Batch Staking Contract')

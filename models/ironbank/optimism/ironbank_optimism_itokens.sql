@@ -1,5 +1,5 @@
 {{ config(
-    alias = 'itokens',
+    alias = alias('itokens'),
     post_hook='{{ expose_spells(\'["optimism"]\',
                             "project",
                             "ironbank",

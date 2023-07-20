@@ -1,5 +1,5 @@
 {{ config(
-    alias = 'price_feeds',
+    alias = alias('price_feeds'),
     partition_by = ['block_date'],
     materialized = 'incremental',
     file_format = 'delta',
