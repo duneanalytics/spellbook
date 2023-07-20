@@ -12,7 +12,7 @@ WITH identified_stakers AS (
     , 'infrastructure' AS category
     , 'hildobby' AS contributor
     , 'query' AS source
-    , from_iso8601_timestamp('2023-01-18')  AS created_at
+    , DATE '2023-01-18'  AS created_at
     , NOW() AS updated_at
     , 'eth_stakers' AS model_name
     , 'identifier' as label_type
@@ -26,7 +26,7 @@ WITH identified_stakers AS (
     , 'infrastructure' AS category
     , 'hildobby' AS contributor
     , 'query' AS source
-    , from_iso8601_timestamp('2023-01-18')  AS created_at
+    , DATE '2023-01-18'  AS created_at
     , NOW() AS updated_at
     , 'eth_stakers' AS model_name
     , 'identifier' as label_type

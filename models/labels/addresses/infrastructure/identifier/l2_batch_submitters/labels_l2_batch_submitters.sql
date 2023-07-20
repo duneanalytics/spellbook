@@ -13,7 +13,7 @@ SELECT 'ethereum'                                                               
      , 'infrastructure'                                                              AS category
      , 'msilb7'                                                                      AS contributor
      , 'static'                                                                      AS source
-     , from_iso8601_timestamp('2023-06-02')                                                             AS created_at
+     , DATE '2023-06-02'                                                             AS created_at
      , now()                                                                         AS updated_at
      , 'l2_batch_submitters'                                                         AS model_name
      , 'identifier'                                                                  AS label_type
