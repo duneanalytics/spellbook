@@ -2,7 +2,7 @@
     schema = 'oneinch_fantom',
     alias = alias('calls_transfers'),
     tags = ['dunesql'],
-    partition_by = ['block_date'],
+    partition_by = ['block_month'],
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
@@ -67,7 +67,6 @@ calls as (
     select 
         calls.tx_hash
         , transfers.block_time
-        , date_trunc('day', transfers.block_time) as block_date
         , calls.tx_from
         , calls.start
         , transfers.trace_address as transfer_trace_address
@@ -81,6 +80,7 @@ calls as (
         , calls.tx_success
         , row_number() over(partition by calls.tx_hash order by transfers.trace_address asc) as rn_ta_asc
         , row_number() over(partition by calls.tx_hash order by transfers.trace_address desc) as rn_ta_desc
+        , date(date_trunc('month', transfers.block_time)) as _partition
     from calls
     left join (
         select 
