@@ -6,7 +6,7 @@
 }}
 
 {% set uniswap_polygon_models = [
-'uniswap_v3_polygon_trades'
+'uniswap_v3_polygon_trades_legacy'
 ] %}
 
 
@@ -35,7 +35,6 @@ FROM (
         tx_hash,
         tx_from,
         tx_to,
-        trace_address,
         evt_index
     FROM {{ ref(dex_model) }}
     {% if not loop.last %}
