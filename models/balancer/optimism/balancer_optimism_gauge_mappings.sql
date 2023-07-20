@@ -1,7 +1,7 @@
 {{
     config(
         schema = 'balancer_optimism',
-        alias='gauge_mappings',
+        alias = alias('gauge_mappings'),
         materialized = 'incremental',
         file_format = 'delta',
         incremental_strategy = 'merge',

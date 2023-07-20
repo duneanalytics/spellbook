@@ -1,4 +1,6 @@
-{{config(alias='cex_arbitrum',
+{{config(
+        tags = ['dunesql'],
+        alias = alias('cex_arbitrum'),
         post_hook='{{ expose_spells(\'["arbitrum"]\',
                                     "sector",
                                     "labels",

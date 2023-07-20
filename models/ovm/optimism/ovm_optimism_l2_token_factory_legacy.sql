@@ -1,4 +1,5 @@
 {{ config(
+	tags=['legacy'],
         schema = 'ovm_optimism'
         , alias = alias('l2_token_factory', legacy_model=True)
         , materialized = 'incremental'

@@ -1,6 +1,6 @@
 {{ config(
     schema = 'balancer',
-    alias = 'gauge_mappings',
+    alias = alias('gauge_mappings'),
     post_hook='{{ expose_spells(\'["optimism"]\',
                                 "project",
                                 "balancer",

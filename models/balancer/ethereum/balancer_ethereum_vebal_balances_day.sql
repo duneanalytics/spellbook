@@ -1,7 +1,7 @@
 {{
     config(
         schema="balancer_ethereum",
-        alias='vebal_balances_day',
+        alias = alias('vebal_balances_day'),
         post_hook='{{ expose_spells_hide_trino(\'["ethereum"]\',
                                     "project",
                                     "balancer",

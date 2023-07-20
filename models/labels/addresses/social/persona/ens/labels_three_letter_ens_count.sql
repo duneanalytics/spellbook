@@ -1,4 +1,4 @@
-{{config(alias='three_letter_ens_count')}}
+{{config(alias = alias('three_letter_ens_count'))}}
 
 WITH three_letter_ens_count AS (
     SELECT 

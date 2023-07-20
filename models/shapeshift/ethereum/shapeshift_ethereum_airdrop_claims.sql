@@ -1,7 +1,7 @@
 {{
     config(
         schema = 'shapeshiftethereum',
-        alias='airdrop_claims',
+        alias = alias('airdrop_claims'),
         materialized = 'table',
         file_format = 'delta',
         tags=['static'],

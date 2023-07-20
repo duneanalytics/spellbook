@@ -1,6 +1,6 @@
 {{ config(
     schema = 'tofu_polygon',
-    alias = 'events',
+    alias = alias('events'),
     partition_by = ['block_date'],
     materialized = 'incremental',
     file_format = 'delta',
@@ -130,7 +130,7 @@ FROM tfe
                        {% if is_incremental() %}
                        and tx.block_time >= date_trunc("day", now() - interval '1 week')
                        {% endif %}
-         LEFT JOIN {{ ref('tokens_nft_legacy') }} nft
+         LEFT JOIN {{ ref('tokens_nft') }} nft
                    ON tff.token = nft.contract_address
                    AND nft.blockchain = 'polygon'
          LEFT JOIN {{ source('prices', 'usd') }} pu
