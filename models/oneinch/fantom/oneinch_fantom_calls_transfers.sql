@@ -35,7 +35,7 @@ calls as (
             , block_time from {{ source('fantom', 'transactions') }}
         where
         {% if is_incremental() %}
-            block_time >= date_add('day', {{lookback_days}}, now())
+            block_time >= cast(date_add('day', {{lookback_days}}, now()) as timestamp)
         {% else %}
             block_time >= {{ project_start_date }}
         {% endif %}
@@ -50,7 +50,7 @@ calls as (
         from {{ source('fantom', 'traces') }}
         where 
             {% if is_incremental() %}
-                block_time >= date_add('day', {{lookback_days}}, now())
+                block_time >= cast(date_add('day', {{lookback_days}}, now()) as timestamp)
             {% else %}
                 block_time >= {{ project_start_date }}
             {% endif %}
