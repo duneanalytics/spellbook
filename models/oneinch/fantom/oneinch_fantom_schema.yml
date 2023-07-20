@@ -10,6 +10,12 @@ models:
       tags: ['oneinch', 'raw']
     description: >
         oneinch calls & transfers
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - start
+            - transfer_trace_address
     columns:
       - &tx_hash
         name: tx_hash

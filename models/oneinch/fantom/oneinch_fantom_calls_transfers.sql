@@ -1,5 +1,6 @@
 {{ config( 
-    alias = alias('fantom_calls_transfers'),
+    schema = 'oneinch_fantom',
+    alias = alias('calls_transfers'),
     tags = ['dunesql'],
     partition_by = ['block_date'],
     materialized = 'incremental',
@@ -10,7 +11,7 @@
 }}
 
 {% set project_start_date = "timestamp '2020-11-13'" %} 
-{% set lookback_days = -2 %}
+{% set lookback_days = -7 %}
 {% set transfer_selector = '0xa9059cbb' %}
 {% set transfer_from_selector = '0x23b872dd' %}
 {% set selector = 'substr(input, 1, 4)' %}
@@ -54,7 +55,7 @@ calls as (
                 block_time >= {{ project_start_date }}
             {% endif %}
             and "to" in (
-                select contract_address from {{ ref('oneinch_contract_addresses') }}
+                select distinct contract_address from {{ ref('oneinch_contract_addresses') }}
                 where project = '1inch'
             )
             and call_type = 'call'
