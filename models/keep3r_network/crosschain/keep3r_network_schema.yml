@@ -1,7 +1,7 @@
 version: 2
 
 models:
-  - name: keep3r_network_Keep3r_v2_evt_KeeperWork
+  - name: keep3r_network_crosschain_Keep3r_v2_evt_KeeperWork
     meta:
       blockchain: ethereum, optimism, polygon
       sector: oracle
@@ -12,6 +12,7 @@ models:
     description: >
         The Keep3r Network is a decentralized network for projects that need external devops, and for external teams to find keeper jobs.
     columns:
+      - *blockchain,
       - *block_time,
       - *block_number,
       - *credit,

@@ -10,6 +10,7 @@
 }}
 
 SELECT
+  'optimism' AS blockchain,
   evt_block_time AS block_time,
   evt_block_number AS block_number,
   _credit AS credit,
@@ -24,6 +25,7 @@ FROM
   keep3r_network_optimism.Keep3rSidechain_evt_KeeperWork
 UNION ALL
 SELECT
+  'polygon' AS blockchain,
   evt_block_time AS block_time,
   evt_block_number AS block_number,
   _credit AS credit,
@@ -38,6 +40,7 @@ FROM
   keep3r_network_polygon.Keep3rSidechain_evt_KeeperWork
 UNION ALL
 SELECT
+  'ethereum' AS blockchain,
   evt_block_time AS block_time,
   evt_block_number AS block_number,
   _credit AS credit,
@@ -52,6 +55,7 @@ FROM
   keep3r_network_ethereum.Keep3r_v2_evt_KeeperWork
 UNION ALL
 SELECT
+  'ethereum' AS blockchain,
   evt_block_time AS block_time,
   evt_block_number AS block_number,
   _credit AS credit,
