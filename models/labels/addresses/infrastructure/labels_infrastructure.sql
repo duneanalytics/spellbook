@@ -1,4 +1,4 @@
-{{ config(
+{{ config(tags=['dunesql'],
     alias = alias('infrastructure'),
     materialized = 'table',
     file_format = 'delta',
