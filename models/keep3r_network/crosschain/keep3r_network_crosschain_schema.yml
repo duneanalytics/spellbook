@@ -12,14 +12,39 @@ models:
     description: >
         The Keep3r Network is a decentralized network for projects that need external devops, and for external teams to find keeper jobs.
     columns:
-      - *blockchain
-      - *block_time
-      - *block_number
-      - *credit
-      - *contract_address
-      - *evt_index
-      - *gasLeft
-      - *job
-      - *keeper
-      - *payment
-      - *tx_hash
+      - &blockchain
+        name: blockchain
+        description: 'Chain where the job was worked'
+      - &block_time
+        name: block_time
+        description: 'Event/call execution block time'
+      - &block_number
+        name: block_number
+        description: 'Event/call execution block number'
+      - &credit
+        name: credit
+        description: 'Address of token the job was paid with'
+      - &contract_address
+        name: contract_address
+        description: 'Address of Keeper_v2 contract'      
+      - &event
+        name: event
+        description: 'Type of event - KeeperWork, LiquidityAddition, KeeperMigration, etcetera'
+      - &evt_index
+        name: evt_index
+        description: 'Index of event in the block'
+      - &gasLeft
+        name: gasLeft
+        description: 'Amount of gas in keeper after execution'
+      - &job
+        name: job
+        description: 'Address of the job'
+      - &keeper
+        name: keeper
+        description: 'Address of keeper executing the job'
+      - &payment
+        name: payment
+        description: 'Amount the keeper was paid for execution'
+      - &tx_hash
+        name: tx_hash
+        description: 'Event/Call transaction hash'
