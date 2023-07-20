@@ -6,7 +6,7 @@
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
-    unique_key = ['block_date', 'blockchain', 'project', 'version', 'tx_hash', 'evt_index', 'trace_address'],
+    unique_key = ['block_date', 'blockchain', 'project', 'version', 'tx_hash', 'evt_index'],
     post_hook='{{ expose_spells(\'["bnb"]\',
                                 "project",
                                 "pancakeswap_v2",
@@ -30,7 +30,6 @@ WITH dexs AS
         CASE WHEN bought_id = '0' THEN f.tokenB ELSE f.tokenA END                       AS token_sold_address,
         t.contract_address                                                              AS project_contract_address,
         t.evt_tx_hash                                                                   AS tx_hash,
-        ''                                                                              AS trace_address,
         t.evt_index
     FROM
         (
@@ -83,7 +82,6 @@ SELECT
      , dexs.tx_hash
      , tx.from                                                   AS tx_from
      , tx.to                                                     AS tx_to
-     , dexs.trace_address
      , dexs.evt_index
 FROM dexs
 INNER JOIN {{ source('bnb', 'transactions') }} tx
