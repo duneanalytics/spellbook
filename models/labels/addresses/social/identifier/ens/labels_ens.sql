@@ -1,4 +1,5 @@
 {{config(alias = alias('ens'),
+        tags = ['dunesql'],
         materialized = 'table',
         file_format = 'delta',
         unique_key = ['blockchain','address'],
@@ -19,10 +20,10 @@ FROM (
        'ENS' as category, --should be social but we can't change this due to how many queries it probably breaks.
        '0xRob' as contributor,
        'query' AS source,
-       date('2022-10-06') as created_at,
+       timestamp '2022-10-06' as created_at,
        now() as updated_at,
-       "ens" as model_name,
-       "identifier" as label_type
+       'ens' as model_name,
+       'identifier' as label_type
     FROM (
         select *
         from (
