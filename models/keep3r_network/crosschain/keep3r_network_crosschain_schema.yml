@@ -12,15 +12,14 @@ models:
     description: >
         The Keep3r Network is a decentralized network for projects that need external devops, and for external teams to find keeper jobs.
     columns:
-      - *blockchain,
-      - *block_time,
-      - *block_number,
-      - *credit,
-      - *contract_address,
-      - *evt_index,
-      - *gasLeft,
-      - *job,
-      - *keeper,
-      - *payment,
-      - *tx_hash,
       - *blockchain
+      - *block_time
+      - *block_number
+      - *credit
+      - *contract_address
+      - *evt_index
+      - *gasLeft
+      - *job
+      - *keeper
+      - *payment
+      - *tx_hash
