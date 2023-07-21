@@ -36,6 +36,7 @@
     ,source('paraswap_ethereum', 'AugustusSwapper6_0_call_swapOnUniswapV2ForkWithPermit')
     ,source('paraswap_ethereum', 'AugustusSwapper6_0_call_swapOnZeroXv4')
     ,source('paraswap_ethereum', 'AugustusSwapper6_0_call_swapOnZeroXv4WithPermit')
+    ,source('paraswap_ethereum', 'AugustusSwapper6_0_evt_SwappedDirect')
 ] %}
 
 WITH dex_swap AS (
