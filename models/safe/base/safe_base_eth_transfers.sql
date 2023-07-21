@@ -28,7 +28,7 @@ join {{ ref('safe_base_safes') }} s on et.from = s.address
     and (lower(et.call_type) not in ('delegatecall', 'callcode', 'staticcall') or et.call_type is null)
     and cast(et.value as decimal(38,0)) > 0 -- value is of type string. exclude 0 value traces
 {% if not is_incremental() %}
-where et.block_time > '2018-11-24' -- for initial query optimisation
+where et.block_time > date('2023-07-01') -- for initial query optimisation
 {% endif %}
 {% if is_incremental() %}
 -- to prevent potential counterfactual safe deployment issues we take a bigger interval
@@ -51,7 +51,7 @@ join {{ ref('safe_base_safes') }} s on et.to = s.address
     and (lower(et.call_type) not in ('delegatecall', 'callcode', 'staticcall') or et.call_type is null)
     and cast(et.value as decimal(38,0)) > 0 -- value is of type string. exclude 0 value traces
 {% if not is_incremental() %}
-where et.block_time > '2018-11-24' -- for initial query optimisation
+where et.block_time > date('2023-07-01') -- for initial query optimisation
 {% endif %}
 {% if is_incremental() %}
 -- to prevent potential counterfactual safe deployment issues we take a bigger interval

@@ -50,7 +50,7 @@ where substring(tr.input from 1 for 4) in (
     )
     and tr.call_type = 'delegatecall'
     {% if not is_incremental() %}
-    and tr.block_time > '2018-11-24' -- for initial query optimisation
+    and tr.block_time > date('2023-07-01') -- for initial query optimisation
     {% endif %}
     {% if is_incremental() %}
     and tr.block_time > date_trunc("day", now() - interval '1 week')
