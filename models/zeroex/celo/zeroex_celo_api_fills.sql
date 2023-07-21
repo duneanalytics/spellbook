@@ -10,8 +10,8 @@
     )
 }}
 
-{% set zeroex_v3_start_date = cast('2019-12-01' as date) %}
-{% set zeroex_v4_start_date = cast('2021-01-06' as date) %}
+{% set zeroex_v3_start_date = '2019-12-01' %}
+{% set zeroex_v4_start_date = '2021-01-06' %}
 
 -- Test Query here: https://dune.com/queries/2755622  / https://dune.com/queries/2755822 
 
@@ -48,7 +48,7 @@ WITH zeroex_tx AS (
                 AND block_time >= date_trunc('day', now() - interval '1' week) 
                 {% endif %}
                 {% if not is_incremental() %}
-                AND block_time >= '{{zeroex_v3_start_date}}'
+                AND block_time >= cast('{{zeroex_v3_start_date}}' as date)
                 {% endif %}
     ) temp
     group by tx_hash
@@ -80,7 +80,7 @@ ERC20BridgeTransfer AS (
     AND block_time >= date_trunc('day', now() - interval '1' week)
     {% endif %}
     {% if not is_incremental() %}
-    AND block_time >= '{{zeroex_v3_start_date}}'
+    AND block_time >= cast('{{zeroex_v3_start_date}}' as date)
     {% endif %}
 
 ), 
@@ -166,7 +166,7 @@ direct_PLP AS (
     WHERE evt_block_time >= date_trunc('day', now() - interval '1 week')
     {% endif %}
     {% if not is_incremental() %}
-    WHERE evt_block_time >= '{{zeroex_v3_start_date}}'
+    WHERE evt_block_time >= cast('{{zeroex_v3_start_date}}' as date)
     {% endif %}
 ), 
  */
@@ -224,7 +224,7 @@ INNER JOIN {{ source('celo', 'transactions')}} tx ON all_tx.tx_hash = tx.hash
 AND tx.block_time >= date_trunc('day', now() - interval '1' week)
 {% endif %}
 {% if not is_incremental() %}
-AND tx.block_time >= '{{zeroex_v3_start_date}}'
+AND tx.block_time >= cast('{{zeroex_v3_start_date}}' as date)
 {% endif %}
 
 LEFT JOIN {{ source('prices', 'usd') }} tp ON date_trunc('minute', all_tx.block_time) = tp.minute
@@ -238,7 +238,7 @@ AND tp.blockchain = 'celo'
 AND tp.minute >= date_trunc('day', now() - interval '1' week)
 {% endif %}
 {% if not is_incremental() %}
-AND tp.minute >= '{{zeroex_v3_start_date}}'
+AND tp.minute >= cast('{{zeroex_v3_start_date}}' as date)
 {% endif %}
 
 LEFT JOIN {{ source('prices', 'usd') }} mp ON DATE_TRUNC('minute', all_tx.block_time) = mp.minute
@@ -252,7 +252,7 @@ AND mp.blockchain = 'celo'
 AND mp.minute >= date_trunc('day', now() - interval '1' week)
 {% endif %}
 {% if not is_incremental() %}
-AND mp.minute >= '{{zeroex_v3_start_date}}'
+AND mp.minute >= cast('{{zeroex_v3_start_date}}' as date)
 {% endif %}
 
 LEFT OUTER JOIN {{ ref('tokens_erc20') }} ts ON ts.contract_address = taker_token and ts.blockchain = 'celo'
