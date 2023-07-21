@@ -370,7 +370,7 @@ on main.day = paired2.day and main.pool_id = paired2.pool_id
 ) 
 
 , all_metrics as (
-select  pool_id as pool, 'ethereum' as blockchain, 'balancer' as project, pools_fee.fee, 
+select  pool_id as pool, 'ethereum' as blockchain, 'balancer' as project, 0 as fee, 
 cast(day as date) as time, main_token, main_token_symbol, 
 paired1_token as paired_token,
 paired1_token_symbol||case when paired2_token_symbol is null then '' else '/'||paired2_token_symbol end as paired_token_symbol,
