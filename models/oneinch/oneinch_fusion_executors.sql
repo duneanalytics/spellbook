@@ -55,6 +55,7 @@ chains as (
         , "from" as resolver_address
         , substr(input, 49, 20) as resolver_executor
         , cast(bytearray_to_uint256(substr(input, 5, 32)) as double) as chain_id
+        , block_time
     from {{ source('ethereum', 'traces') }}
     where "to" = 0xcb8308fcb7bc2f84ed1bea2c016991d34de5cc77
         and substr(input, 1, 4) = 0xf204bdb9
@@ -72,6 +73,7 @@ select distinct
     , resolver_name
     , kyc
     , max(tx_hash) over(partition by resolver_executor, chain_id) as tx_hash_example
+    , block_time
 from traces
 left join names using(resolver_address)
 left join chains using(chain_id)
