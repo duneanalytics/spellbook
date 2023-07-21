@@ -562,6 +562,12 @@ WITH curated_list AS (
       ,('0xae0c5140744bfc6bc33ce73298f10f7b538f02dd', 'Eco')
       ,('0xb1bEF51ebCA01EB12001a639bDBbFF6eEcA12B9F', 'Sablier')
       ,('0x3c5e6b4292ed35e8973400bef77177a9e84e8e6e', 'Layerr')
+      ,('0x9f76a95AA7535bb0893cf88A146396e00ed21A12', 'Angle Protocol') --Merkl
+      ,('0x123E2974efC726FABc16ea729c3e84F17a788DB1', 'Beefy Finance')
+      ,('0xeFd9434A2B1076D5C84D242b6f4AAb47270EcEAC', 'ThriveCoin')
+      ,('0x24399266da004b11173Bb478E5Da2c1b194721bC', 'Sismo')
+      ,('0x890Bc5691E6011F580e264065d09a7a1A6902131', 'Synapse')
+      ,('0x161D61e30284A33Ab1ed227beDcac6014877B3DE', 'Beefy Finance')
       
   ) as temp_table (creator_address, contract_project)
 )
