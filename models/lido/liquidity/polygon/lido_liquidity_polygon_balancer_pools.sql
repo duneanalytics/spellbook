@@ -431,7 +431,7 @@ order by 1 desc
         sum(case when tokenOut in (0x03b54a6e9a984069379fae1a4fc4dbae93b3bccd, 0x43894DE14462B421372bCFe445fA51b1b4A0Ff3D)  
             then p.price*amountOut/1e18 
             else p.price*amountIn/1e18 end) as trading_volume
-    from balancer_v2_polygon.Vault_evt_Swap s
+    from {{source('balancer_v2_polygon','Vault_evt_Swap')}} s
     left join wsteth_prices_hourly p on date_trunc('hour', s.evt_block_time) >= p.time and date_trunc('hour', s.evt_block_time) < p.next_time
     WHERE date_trunc('day', evt_block_time) >= date '{{ project_start_date }}' 
     and s.poolId in (select pool_id from pools)
