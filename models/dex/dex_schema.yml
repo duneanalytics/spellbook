@@ -468,4 +468,3 @@ models:
       - &token_price_usd_raw
         name: token_price_usd_raw
         description: "USD price of the token's raw amount"
-      

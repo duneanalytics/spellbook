@@ -35,7 +35,7 @@ FROM (
             token_bought_amount AS token_amount,
             token_bought_amount_raw AS token_amount_raw,
             amount_usd
-        FROM dex.trades
+        FROM {{ ref('dex_trades') }}
         {% if is_incremental() %}
         WHERE block_time >= now() - interval '7' day
         {% endif %}
@@ -46,7 +46,7 @@ FROM (
             token_sold_amount AS token_amount,
             token_sold_amount_raw AS token_amount_raw,
             amount_usd
-        FROM dex.trades
+        FROM {{ ref('dex_trades') }}
         {% if is_incremental() %}
         WHERE block_time >= now() - interval '7' day
         {% endif %}
