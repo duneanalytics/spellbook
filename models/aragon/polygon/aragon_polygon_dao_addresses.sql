@@ -1,4 +1,6 @@
-{{config(alias = alias('dao_addresses'))}}
+{{config(
+    tags=['dunesql'],
+    alias = alias('dao_addresses'))}}
 
 {% set aragon_models = [
 ref('aragon_polygon_client_dao_addresses')
@@ -24,4 +26,3 @@ FROM (
     {% endif %}
     {% endfor %}
 )
-;

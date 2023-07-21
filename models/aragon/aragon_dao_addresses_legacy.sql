@@ -1,6 +1,5 @@
 {{ config(
 	tags=['legacy'],
-	
     alias = alias('dao_addresses', legacy_model=True),
     materialized = 'view',
     file_format = 'delta',

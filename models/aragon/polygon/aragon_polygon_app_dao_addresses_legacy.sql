@@ -1,6 +1,5 @@
 {{ config(
 	tags=['legacy'],
-	
     alias = alias('app_dao_addresses', legacy_model=True),
     partition_by = ['created_date'],
     materialized = 'incremental',
