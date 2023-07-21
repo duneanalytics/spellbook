@@ -20,8 +20,7 @@ models:
             - version
             - tx_hash
             - evt_index
-            - trace_address
-      - check_dex_seed_legacy:
+      - check_dex_seed:
           blockchain: ethereum
           project: uniswap
           version: 1
@@ -89,9 +88,6 @@ models:
       - &tx_to
         name: tx_to
         description: "Address which received the transaction"
-      - &trace_address
-        name: trace_address
-        description: ""
       - &evt_index
         name: evt_index
         description: ""
@@ -115,8 +111,7 @@ models:
             - version
             - tx_hash
             - evt_index
-            - trace_address
-      - check_dex_seed_legacy:
+      - check_dex_seed:
           blockchain: ethereum
           project: uniswap
           version: 2
@@ -142,7 +137,6 @@ models:
       - *tx_hash
       - *tx_from
       - *tx_to
-      - *trace_address
       - *evt_index
 
   - name: uniswap_v3_ethereum_trades
@@ -164,8 +158,7 @@ models:
             - version
             - tx_hash
             - evt_index
-            - trace_address
-      - check_dex_seed_legacy:
+      - check_dex_seed:
           blockchain: ethereum
           project: uniswap
           version: 3
@@ -191,7 +184,6 @@ models:
       - *tx_hash
       - *tx_from
       - *tx_to
-      - *trace_address
       - *evt_index
 
   - name: uniswap_ethereum_trades
@@ -226,7 +218,6 @@ models:
       - *tx_hash
       - *tx_from
       - *tx_to
-      - *trace_address
       - *evt_index
 
   - name: uniswap_v3_ethereum_votes
