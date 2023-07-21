@@ -1,7 +1,7 @@
 {{ config(
     alias = alias('userops'),
     tags=['dunesql'],
-    partition_by = ['block_date'],
+    partition_by = ['block_month'],
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
@@ -30,7 +30,7 @@ with userop as(
         SELECT 
             blockchain
             , version
-            , block_date
+            , block_month
             , block_time
             , entrypoint_contract
             , tx_hash
@@ -79,7 +79,7 @@ with userop as(
 select 
       userop.blockchain
     , userop.version
-    , userop.block_date
+    , userop.block_month
     , userop.block_time
     , userop.entrypoint_contract
     , userop.tx_hash
