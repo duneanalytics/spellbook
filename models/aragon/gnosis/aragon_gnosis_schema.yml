@@ -24,8 +24,9 @@ models:
             - blockchain
             - dao_creator_tool
             - dao_wallet_address
-          check_columns:
             - dao
+          check_columns:
+            - created_date
     columns:
       - &blockchain
         name: blockchain
