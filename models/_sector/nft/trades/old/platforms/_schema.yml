@@ -223,7 +223,7 @@ models:
           combination_of_columns:
             - block_date
             - unique_trade_id
-      - check_seed_legacy:
+      - check_seed:
           seed_file: ref('pancakeswap_nft_trades_samples')
           match_columns:
             - block_time
