@@ -10,10 +10,10 @@
     )
 }}
 
-{% set zeroex_v3_start_date = '2019-12-01' %}
-{% set zeroex_v4_start_date = '2021-01-06' %}
+{% set zeroex_v3_start_date = cast('2019-12-01' as date) %}
+{% set zeroex_v4_start_date = cast('2021-01-06' as date) %}
 
--- Test Query here: https://dune.com/queries/2755622
+-- Test Query here: https://dune.com/queries/2755622  / https://dune.com/queries/2755822 
 
 WITH zeroex_tx AS (
     SELECT tx_hash,
