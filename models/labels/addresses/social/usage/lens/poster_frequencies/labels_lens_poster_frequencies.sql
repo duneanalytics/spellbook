@@ -17,7 +17,7 @@ WITH lens_addresses as (
 ,post_data as(
     SELECT
          output_0 as post_id
-         ,json_query(vars, 'lax $.profileId' omit quotes) as profileId
+         , CAST(json_extract_scalar(vars, '$.profileId') AS VARCHAR) as profileId
     FROM {{ source('lens_polygon','LensHub_call_post') }} cp1
     WHERE call_success = true
 
@@ -25,7 +25,7 @@ WITH lens_addresses as (
 
     SELECT
         output_0 as post_id
-        ,json_query(vars, 'lax $.profileId' omit quotes) as profileId
+        , CAST(json_extract_scalar(vars, '$.profileId') AS VARCHAR) as profileId
     FROM {{ source('lens_polygon','LensHub_call_postWithSig') }} cp2
     WHERE call_success = true
 )
