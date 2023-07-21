@@ -79,7 +79,7 @@ SELECT d.day,
        db.dao,
        db.dao_wallet_address,
        db.balance,
-       db.balance * p.price as usd_value,
+       db.balance * COALESCE(p.price, e.price) as usd_value,
        db.asset,
        db.asset_contract_address
 FROM daily_balances db
@@ -87,8 +87,15 @@ INNER JOIN days d
     ON db.day <= d.day
     AND d.day < db.next_day
 LEFT JOIN
-   {{ source('prices', 'usd') }} p
+    {{ source('prices', 'usd') }} p
     ON p.contract_address = db.asset_contract_address
     AND d.day = p.minute
     AND p.blockchain = db.blockchain
+LEFT JOIN 
+    {{ source('prices', 'usd') }} e 
+    ON db.asset_contract_address = lower('0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee')
+    AND d.day = e.minute
+    AND db.blockchain = 'ethereum'
+    AND e.symbol = 'WETH'
+
     
