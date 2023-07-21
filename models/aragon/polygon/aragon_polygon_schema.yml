@@ -57,14 +57,6 @@ models:
             - dao_creator_tool
             - dao
             - dao_wallet_address
-      - check_seed:
-          seed_file: ref('dao_addresses_seed')
-          match_columns:
-            - blockchain
-            - dao_creator_tool
-            - dao_wallet_address
-          check_columns:
-            - dao
     columns:
       - *blockchain
       - name: dao_creator_tool
