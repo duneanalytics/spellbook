@@ -6,26 +6,30 @@ def get_tables_from_manifest(manifest_path):
     """
     returns a csv of tables from a manifest file. We filter out
     """
-    table_csv_str = "schema, table, path, tag\n"
+    table_csv_str = "schema, name, path, tag\n"
     with open(manifest_path, "r") as f:
         # print(f"Loading manifest file at {manifest_path} ...")
         manifest = json.load(f)
+        legacy_count = dunecount = 0
+
     for node_name in manifest["nodes"]:
         node_data = manifest["nodes"][node_name]
         
         if node_data["resource_type"] == "model":
             schema = node_data["schema"]
-            table = node_data["alias"]
+            name = node_data["alias"]
             path = node_data["original_file_path"]
             row = ""
             # print(node_data["original_file_path"], node_data["tags"])
             if 'legacy' in node_data["tags"]:
-                row = f"{schema}, {table}, {path}, legacy\n"
+                row = f"{schema}, {name}, {path}, legacy\n"
+                legacy_count += 1
             elif 'dunesql' in node_data["tags"]:
-                row = f"{schema}, {table}, {path}, dunesql\n"
-                print(path)
+                row = f"{schema}, {name}, {path}, dunesql\n"
+                dunecount += 1
             table_csv_str += row
 
+    print(f"{legacy_count} legacy and {dunecount} dunesql models found")
     return table_csv_str
 
 def upload_csv(table_csv, target):
@@ -54,5 +58,5 @@ def upload_csv(table_csv, target):
         raise Exception(response.content)
     
 if __name__ == "__main__":
-    table = get_tables_from_manifest("target/manifest.json")
-    upload_csv(table, "migration_status")
+    table = get_tables_from_manifest("manifest.json")
+    # upload_csv(table, "migration_status")
