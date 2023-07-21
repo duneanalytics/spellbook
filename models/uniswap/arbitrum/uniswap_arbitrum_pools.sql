@@ -1,4 +1,5 @@
 {{ config(
+    tags = ['dunesql'],
     schema = 'uniswap_arbitrum',
     alias = alias('pools'),
     materialized = 'incremental',
