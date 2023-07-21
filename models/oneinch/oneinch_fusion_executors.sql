@@ -73,7 +73,7 @@ select distinct
     , resolver_name
     , kyc
     , max(tx_hash) over(partition by resolver_executor, chain_id) as tx_hash_example
-    , block_time
+    , max(block_time) over(partition by resolver_executor, chain_id) as last_block_time
 from traces
 left join names using(resolver_address)
 left join chains using(chain_id)
