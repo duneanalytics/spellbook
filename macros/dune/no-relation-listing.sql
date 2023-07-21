@@ -22,6 +22,8 @@
 {%- endmacro %}
 
 {% macro list_relations_without_caching(schema_relation) %}
+  {% do log("schema_relation") %}
+  {% do log(schema_relation) %}
   {%- if (var('no-relation-listing', 'false').lower() == 'true') or (target.profile_name == 'spellbook-local') -%}
     {{ return([]) }}
   {%- else -%}
