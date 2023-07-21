@@ -115,5 +115,7 @@ from (
     ,('highlight_xyz','Highlight.xyz')
     ,('mint_fun','mint.fun')
     ,('mintfun','mint.fun')
+    ,('allo_protocol', 'allo protocol (gitcoin)')
+    ,('union_protocol', 'Union Finance')
 
     ) as temp_table (dune_name, mapped_name)
