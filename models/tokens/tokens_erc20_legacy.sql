@@ -1,4 +1,4 @@
-{{ config( alias = alias('erc20'),
+{{ config( alias = alias('erc20_legacy'),
         
         post_hook='{{ expose_spells(\'["arbitrum","avalanche_c","bnb","ethereum","optimism", "gnosis", "fantom", "polygon"]\',
                                     "sector",
