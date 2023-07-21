@@ -255,5 +255,5 @@ AND mp.minute >= date_trunc('day', now() - interval '1' week)
 AND mp.minute >= cast('{{zeroex_v3_start_date}}' as date)
 {% endif %}
 
-LEFT OUTER JOIN {{ ref('tokens_erc20_legacy')  }} ts ON ts.contract_address = taker_token and ts.blockchain = 'celo'
-LEFT OUTER JOIN {{ ref('tokens_erc20_legacy')  }} ms ON ms.contract_address = maker_token and ms.blockchain = 'celo'
+LEFT OUTER JOIN {{ ref('tokens_erc20')  }} ts ON ts.contract_address = taker_token and ts.blockchain = 'celo'
+LEFT OUTER JOIN {{ ref('tokens_erc20')  }} ms ON ms.contract_address = maker_token and ms.blockchain = 'celo'
