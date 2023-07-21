@@ -298,6 +298,11 @@ models:
       bnb:
         +schema: nomiswap_bnb
 
+    zodiac:
+      +schema: zodiac
+      ethereum:
+        +schema: zodiac_ethereum
+
     maverick:
       +schema: maverick
       ethereum:
