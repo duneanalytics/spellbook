@@ -1,7 +1,7 @@
 version: 2
 
 models:
-  - name: rollup_economics_ethereum_l1_fees
+  - name: l1_data_fees
     meta:
       blockchain: ethereum
       sector: rollup_economics
@@ -10,6 +10,11 @@ models:
     config:
       tags: ['rollup', 'l2']
     description: Fees paid by rollups for posting transaction data on Ethereum
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - name
+            - hash
     columns:
       - &name
         name: name
