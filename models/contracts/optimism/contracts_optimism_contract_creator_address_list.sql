@@ -457,7 +457,7 @@ WITH curated_list AS (
       ,(0x01c28a1b29098175fd5c74f6dd9225b0853325fe, 'Layer Zero')
       ,(0xb67c0cde9974275836e77fac65bcbb5055d356e9, 'Fire')
       ,(0x98422d38f6c408d0224b8fa4588b807ca5e66b17, 'Galxe')
-      ,(0xcbd1c32a1b3961cc43868b8bae431ab0da65beeb, 'Union Protocol')
+      ,(0xcbd1c32a1b3961cc43868b8bae431ab0da65beeb, 'Union Finance')
       ,(0x4A21C588c93c38833BCf3c0fe0425bC114Fe8271, 'Socket')
       ,(0xCbE0EDD07345A98542d779e1f6b897103eEa0aB5, 'Metamask')
       ,(0xc522c16e88b6bf457389566d22550bce157d3875, 'Bitkeep')
