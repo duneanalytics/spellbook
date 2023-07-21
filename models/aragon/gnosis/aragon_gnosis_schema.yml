@@ -22,8 +22,7 @@ models:
       - &blockchain
         name: blockchain
         description: "blockchain which the DAO is deployed"
-      - &dao_creator_tool
-        name: dao_creator_tool
+      - name: dao_creator_tool
         description: "Name of creator tool used to create DAO"
         tests:
           - dao_addresses_creator_tool:
