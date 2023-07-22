@@ -20,6 +20,16 @@ FROM
         FROM {{ ref('addresses_optimism_relayers')}}
 
         UNION ALL
+
+        SELECT
+        dest_chain as blockchain, bonder_address AS address, 'Hop Protocol Bonders' AS name, 'infrastructure' as category
+            , 'msilb7' as contributor, 'query' as source
+            , TIMESTAMP '2023-07-22' AS created_at, NOW() AS updated_at
+            , 'hop_protocol_bonders' as model_name, 'identifier' as model_type
+
+        FROM ref('hop_protocol_bonders')
+        GROUP BY dest_chain, bonder_address
+
     ) st
 ) a
 WHERE rn = 1 --ensure no dupes

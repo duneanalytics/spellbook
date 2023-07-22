@@ -190,3 +190,20 @@ models:
         name: l2MessengerProxy
         description:  "Messenger Proxy contract address on L2"
   
+  - name: hop_protocol_bonders
+    meta:
+      project: hop_protocol
+      contributors: msilb7
+    config:
+      tags: ['bridge','hop_protocol','cross-chain']
+    description: >
+        Table storing bonder address mapping inoformation for Hop.
+    columns:
+      - name: source_chain
+        description: "Source Blockchain"
+      - name: token_symbol
+        description: "Bridged Token Symbol"
+      - name: dest_chain
+        description: "Destination Blockchain"
+      - name: bonder_address
+        description: "Bonder Address"
