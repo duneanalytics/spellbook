@@ -44,3 +44,19 @@ models:
           - unique
       - name: vault_name
         description: "Fee vault type"
+  
+  - name: addresses_optimism_relayers
+    meta:
+      blockchain: optimism
+      sector: relayers
+      project: addresses
+      contributors: msilb7
+    config:
+      tags: ['table', 'relayers', 'addresses', 'optimism']
+    description: "Addresses for relaying transactions (i.e. executing user's transactions)."
+    columns:
+      - name: wallet_address
+        tests:
+          - unique
+      - name: project_name
+        description: "Project name. This should map with the 'contract_project' name in contract mapping, if relevant."
