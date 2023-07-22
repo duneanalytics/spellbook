@@ -1,4 +1,5 @@
-{{config(alias = alias('miners'),
+{{config(tags=['dunesql'],
+        alias = alias('miners'),
         post_hook='{{ expose_spells(\'["ethereum", "arbitrum", "gnosis", "optimism", "bnb", "avalanche_c","fantom","polygon"]\',
                                     "sector",
                                     "labels",
