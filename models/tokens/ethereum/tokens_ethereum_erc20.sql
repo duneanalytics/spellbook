@@ -28786,4 +28786,5 @@ FROM (VALUES
         ,(0x63a2ef2c7d20f8226d1c8c4b71e6832bdca47d48, 'DOGINU', 9)
         ,(0xed6bf9e8431a7f8b03a54864702b50140cb54fb0, 'COCKGG', 9)
         ,(0x9a7703338730b82a803ba050df55f9b3959f3fb2, 'CHIKUN', 9)        
+        ,(0x3f2D4708F75DE6Fb60B687fEd326697634774dEb, 'NEOBOT', 18)  
      ) AS temp_table (contract_address, symbol, decimals)
