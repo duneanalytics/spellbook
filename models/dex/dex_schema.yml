@@ -448,7 +448,7 @@ models:
         description: "Backrun transaction fee"
 
 
-  - name: prices_latest
+  - name: dex_prices_latest
     meta:
       blockchain: ethereum, bnb, avalanche_c, gnosis, optimism, arbitrum, fantom
       sector: dex
