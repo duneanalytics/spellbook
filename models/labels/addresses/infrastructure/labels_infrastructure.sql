@@ -20,6 +20,7 @@
  , ref('labels_cex_tokens')
  , ref('labels_burn_addresses')
  , ref('labels_flashloans_ethereum')
+ , ref('labels_relayer_addresses')
 ] %}
 
 SELECT *
