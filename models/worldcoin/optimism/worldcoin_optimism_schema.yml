@@ -28,3 +28,15 @@ models:
       - &created_block_number
         name: created_block_number
         description: "Created Block Number"
+      - &contract_project
+        name: contract_project
+        description: "Project mapping for the contract. We expect this to be Gnosis Safe"
+      - &contract_project
+        name: contract_project
+        description: "Project mapping for the contract. We expect this to be Gnosis Safe"
+      - &contract_name
+        name: contract_name
+        description: "Contract Name for the contract. We expect this to be a Gnosis Safe"
+      - &trace_creator_address
+        name: trace_creator_address
+        description: "Deployer address in the creation trace. We expect this to be a Gnosis Safe deployer"
