@@ -1,6 +1,7 @@
 {{
   config(
         schema = 'hop_protocol',
+        tags = ['dunesql'],
         alias = alias('bonders'),
         post_hook='{{ expose_spells(\'["optimism","arbitrum","gnosis","polygon","ethereum"]\',
                                     "sector",
