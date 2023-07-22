@@ -36,6 +36,7 @@ where 1=1 -- limit by time
         , 0xb54a5205ee454f48ddfc23ca26a3836ba3dacc07
         , 0x4399fa85585f90da110d5ba150ff96c763bc0aba
         , 0xd8f7d2d62514895475afe0c7d75f31390dd40de4
+        , 0x67Fa7f957F13e64c986ce1c7ef75De5c716E2367
         -- deployer wallets (safe deployments)
         , 0x91a3060513f25b44bacb46762160f6794bbd42d2
         , 0xe74E592E1dD43ccfb55bcd7999DEe0dfeE7acae3
@@ -47,6 +48,4 @@ where 1=1 -- limit by time
         , 0x9F4665f0ce1a377abDbD638F81F0C5883fbedCDb
         , 0x77Db88C013D5149d994B17F6586Cd71c3FFD2503
         , 0xc5a53b78734284D683d623C5C06D2e646abCec3f
-        -- later adds
-        , 0x67Fa7f957F13e64c986ce1c7ef75De5c716E2367
         )
