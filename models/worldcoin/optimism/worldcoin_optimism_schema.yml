@@ -31,9 +31,6 @@ models:
       - &contract_project
         name: contract_project
         description: "Project mapping for the contract. We expect this to be Gnosis Safe"
-      - &contract_project
-        name: contract_project
-        description: "Project mapping for the contract. We expect this to be Gnosis Safe"
       - &contract_name
         name: contract_name
         description: "Contract Name for the contract. We expect this to be a Gnosis Safe"
