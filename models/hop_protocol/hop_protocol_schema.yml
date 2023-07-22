@@ -3,6 +3,7 @@ version: 2
 models:
   - name: hop_protocol_flows
     meta:
+      blockchain: ethereum, optimism, gnosis, arbitrum, polygon, ethereum
       project: hop_protocol
       contributors: msilb7, soispoke
     config:
@@ -111,6 +112,7 @@ models:
 
   - name: hop_protocol_addresses
     meta:
+      blockchain: ethereum, optimism, gnosis, arbitrum, polygon, ethereum
       project: hop_protocol
       contributors: msilb7, soispoke
     config:
@@ -192,6 +194,7 @@ models:
   
   - name: hop_protocol_bonders
     meta:
+      blockchain: ethereum, optimism, gnosis, arbitrum, polygon, ethereum
       project: hop_protocol
       contributors: msilb7
     config:

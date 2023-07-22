@@ -1,15 +1,15 @@
 version: 2
 
 models:
-  - name: labels_burn_addresses
+  - name: labels_relayer_addresses
     meta:
-      blockchain: ethereum
+      blockchain: ethereum, optimism, gnosis, arbitrum, polygon, ethereum
       sector: labels
-      project: burn_addresses
-      contributors: hildobby
+      project: relayer_addresses
+      contributors: msilb7
     config:
-      tags: ['labels', 'burn_addresses', 'erc20', 'ethereum']
-    description: "Burn addresses"
+      tags: ['labels', 'relayer']
+    description: "Relayer addresses"
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:

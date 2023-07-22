@@ -2,7 +2,7 @@
   config(
         schema = 'hop_protocol',
         alias = alias('bonders'),
-        post_hook='{{ expose_spells(\'["optimism"]\',
+        post_hook='{{ expose_spells(\'["optimism","arbitrum","gnosis","polygon","ethereum"]\',
                                     "sector",
                                     "bridge",
                                     \'["msilb7"]\') }}'
