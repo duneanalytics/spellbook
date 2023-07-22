@@ -1,7 +1,7 @@
 {{ config(alias = alias('nft_curated'), tags=['static', 'dunesql']) }}
 
 SELECT
-  contract_address, name, '' as symbol
+  contract_address, name, cast(NULL as varchar) as symbol
 FROM
   (VALUES
 (0xb8df6cc3050cc02f967db1ee48330ba23276a492,	'OptiPunk')
@@ -294,5 +294,6 @@ FROM
 ,(0xA077FA66Cf4C8044Ca4680db80B07CE85E8Af0B4, 'Getaverse SBT')
 ,(0x8C531f965C05Fab8135d951e2aD0ad75CF3405A2, 'Building')
 ,(0x41838b44C20EB6b89b7169e4017eb1435165C1C3, 'KilroyPunk')
+,(0x9ca0d0256ecd93bb6220981c2c6b4aef8c59d37a, 'Dune AirDump')
 
 ) as temp_table (contract_address, name)
