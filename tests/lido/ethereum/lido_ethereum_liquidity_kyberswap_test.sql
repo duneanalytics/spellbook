@@ -9,4 +9,4 @@ where pool = 0xebfe63ba0264ad639b3c41d2bfe1ad708f683bc8
 
 select *
 from tests
-where success is false
+where success = false
