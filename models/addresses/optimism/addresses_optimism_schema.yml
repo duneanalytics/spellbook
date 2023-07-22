@@ -45,7 +45,7 @@ models:
       - name: vault_name
         description: "Fee vault type"
   
-  - name: addresses_optimism_relayers
+  - name: addresses_optimism_relayers_curated
     meta:
       blockchain: optimism
       sector: relayers

@@ -17,7 +17,7 @@ FROM
             , 'msilb7' as contributor, 'static' as source
             , TIMESTAMP '2023-07-22' AS created_at, NOW() AS updated_at
             , 'relayers' as model_name, 'identifier' as model_type
-        FROM {{ ref('addresses_optimism_relayers')}}
+        FROM {{ ref('addresses_optimism_relayers_curated')}}
 
         UNION ALL
 
