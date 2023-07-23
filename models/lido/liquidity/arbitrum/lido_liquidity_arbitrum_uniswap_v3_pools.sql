@@ -134,8 +134,8 @@ left join pools on 1=1
       sw.contract_address AS pool,
       cr.token0,
       cr.token1,
-      SUM(TRY_CAST(amount0 AS DOUBLE)) AS amount0,
-      SUM(TRY_CAST(amount1 AS DOUBLE)) AS amount1
+      SUM(CAST(amount0 AS DOUBLE)) AS amount0,
+      SUM(CAST(amount1 AS DOUBLE)) AS amount1
     FROM
       {{source('uniswap_v3_arbitrum','Pair_evt_Swap')}} AS sw
       LEFT JOIN {{source('uniswap_v3_arbitrum','UniswapV3Factory_evt_PoolCreated')}} AS cr ON sw.contract_address = cr.pool
@@ -158,8 +158,8 @@ left join pools on 1=1
       mt.contract_address AS pool,
       cr.token0,
       cr.token1,
-      SUM(TRY_CAST(amount0 AS DOUBLE)) AS amount0,
-      SUM(TRY_CAST(amount1 AS DOUBLE)) AS amount1
+      SUM(CAST(amount0 AS DOUBLE)) AS amount0,
+      SUM(CAST(amount1 AS DOUBLE)) AS amount1
     FROM
       {{source('uniswap_v3_arbitrum','Pair_evt_Mint')}} AS mt
       LEFT JOIN {{source('uniswap_v3_arbitrum','UniswapV3Factory_evt_PoolCreated')}} AS cr ON mt.contract_address = cr.pool
@@ -205,8 +205,8 @@ left join pools on 1=1
       c.contract_address AS pool,
       cr.token0,
       cr.token1,
-      (-1) * TRY_CAST(amount0 AS DOUBLE) AS amount0,
-      (-1) * TRY_CAST(amount1 AS DOUBLE) AS amount1,
+      (-1) * CAST(amount0 AS DOUBLE) AS amount0,
+      (-1) * CAST(amount1 AS DOUBLE) AS amount1,
       c.evt_tx_hash
     FROM
       {{source('uniswap_v3_arbitrum','Pair_evt_Collect')}} AS c
@@ -225,8 +225,8 @@ left join pools on 1=1
       bn.contract_address AS pool,
       cr.token0,
       cr.token1,
-      (-1) * SUM(TRY_CAST(amount0 AS DOUBLE)) AS amount0,
-      (-1) * SUM(TRY_CAST(amount1 AS DOUBLE)) AS amount1
+      (-1) * SUM(CAST(amount0 AS DOUBLE)) AS amount0,
+      (-1) * SUM(CAST(amount1 AS DOUBLE)) AS amount1
     FROM
       {{source('uniswap_v3_arbitrum','Pair_evt_Burn')}} AS bn
       LEFT JOIN {{source('uniswap_v3_arbitrum','UniswapV3Factory_evt_PoolCreated')}} AS cr ON bn.contract_address = cr.pool
@@ -285,7 +285,7 @@ left join pools on 1=1
           amount1
         FROM
           mint_events
-        UNION ALL
+        /*UNION ALL
         SELECT
           time,
           pool,
@@ -295,7 +295,7 @@ left join pools on 1=1
           amount1
         FROM
           burn_events
-        UNION ALL
+        */UNION ALL
         SELECT
           DATE_TRUNC('day', time),
           pool,
@@ -351,8 +351,8 @@ left join pools on 1=1
           sw.contract_address AS pool,
           token0,
           token1,
-          COALESCE(SUM(TRY_CAST(ABS(amount0) AS DOUBLE)), 0) AS amount0,
-          COALESCE(SUM(TRY_CAST(ABS(amount1) AS DOUBLE)), 0) AS amount1
+          COALESCE(SUM(CAST(ABS(amount0) AS DOUBLE)), 0) AS amount0,
+          COALESCE(SUM(CAST(ABS(amount1) AS DOUBLE)), 0) AS amount1
         FROM
           {{source('uniswap_v3_arbitrum','Pair_evt_Swap')}} AS sw 
           inner join pools on sw.contract_address = pools.address

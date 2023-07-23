@@ -107,7 +107,7 @@ cross join unnest(day) as days(day)
     from (
     select date_trunc('day', evt_block_time) as time
         , contract_address as pool
-        , cast(0 as uint256) as eth_amount_raw
+        , uint256 '0' as eth_amount_raw
         , coin_amount as wsteth_amount_raw
     from {{source('curvefi_arbitrum','wstETH_swap_evt_RemoveLiquidityOne')}}
     WHERE date_trunc('day', evt_block_time) >= date '{{ project_start_date }}'
@@ -118,7 +118,7 @@ cross join unnest(day) as days(day)
     select date_trunc('day', evt_block_time) as time
         , contract_address as pool
         , coin_amount as eth_amount_raw
-        , cast(0 as uint256) as wsteth_amount_raw
+        , uint256 '0' as wsteth_amount_raw
     from {{source('curvefi_arbitrum','wstETH_swap_evt_RemoveLiquidityOne')}}
     WHERE date_trunc('day', evt_block_time) >= date '{{ project_start_date }}'
     and evt_tx_hash not in (select evt_tx_hash from {{source('lido_arbitrum','wstETH_evt_Transfer')}})
@@ -149,8 +149,8 @@ cross join unnest(day) as days(day)
 , token_exchange_events as(
     select date_trunc('day', evt_block_time) as time
         , contract_address as pool
-        , sum(case when sold_id = cast(0 as int256) then cast(tokens_sold as double) else (-1) * cast(tokens_bought as double) end) as eth_amount_raw
-        , sum(case when sold_id = cast(0 as int256) then (-1) *  cast(tokens_bought as double) else cast(tokens_sold as double) end) as wsteth_amount_raw
+        , sum(case when sold_id = int256 '0' then cast(tokens_sold as double) else (-1) * cast(tokens_bought as double) end) as eth_amount_raw
+        , sum(case when sold_id = int256 '0' then (-1) *  cast(tokens_bought as double) else cast(tokens_sold as double) end) as wsteth_amount_raw
     from {{source('curvefi_arbitrum','wstETH_swap_evt_TokenExchange')}}
     WHERE date_trunc('day', evt_block_time) >= date '{{ project_start_date }}'
     group by 1,2
@@ -179,7 +179,7 @@ cross join unnest(day) as days(day)
 
 , token_exchange_hourly as( 
     select date_trunc('hour', evt_block_time) as time
-        , sum(case when sold_id = cast(0 as int256) then tokens_sold else tokens_bought end) as eth_amount_raw
+        , sum(case when sold_id = int256 '0' then tokens_sold else tokens_bought end) as eth_amount_raw
     from {{source('curvefi_arbitrum','wstETH_swap_evt_TokenExchange')}}
     WHERE date_trunc('day', evt_block_time) >= date '{{ project_start_date }}'
     group by 1   
