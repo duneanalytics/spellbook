@@ -338,7 +338,7 @@ SELECT
     coalesce(amount_usd, 0) AS paired1_token_usd_reserve
 FROM cumulative_usd_balance b
 where token not in (0x03b54a6e9a984069379fae1a4fc4dbae93b3bccd) 
-  and cast(row_numb as int) = cast(1 as int)
+  and cast(row_numb as int) = int '1'
 )paired1
 on main.day = paired1.day and main.pool_id = paired1.pool_id 
 
@@ -353,7 +353,7 @@ SELECT
     coalesce(amount_usd, 0) AS paired2_token_usd_reserve
 FROM cumulative_usd_balance b
 where token not in (0x03b54a6e9a984069379fae1a4fc4dbae93b3bccd) 
-  and cast(row_numb as int) = cast(2 as int)) paired2
+  and cast(row_numb as int) = int '2') paired2
 on main.day = paired2.day and main.pool_id = paired2.pool_id 
 /*
 left join 
