@@ -27,6 +27,7 @@
  ref('lido_liquidity_ethereum_curve_steth_frxeth_pool'),
  ref('lido_liquidity_ethereum_curve_wsteth_reth_pool'),
  ref('lido_liquidity_optimism_velodrome_pools'),
+ ref('lido_liquidity_optimism_v2_velodrome_pools'),
  ref('lido_liquidity_ethereum_maverick_pools')
 ] %}
 
