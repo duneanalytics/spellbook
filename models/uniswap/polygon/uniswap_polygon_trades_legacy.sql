@@ -6,7 +6,7 @@
 }}
 
 {% set uniswap_polygon_models = [
-'uniswap_v3_polygon_trades'
+'uniswap_v3_polygon_trades_legacy'
 ] %}
 
 
