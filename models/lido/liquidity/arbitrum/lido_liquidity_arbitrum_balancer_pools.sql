@@ -280,7 +280,7 @@ SELECT
     coalesce(token_balance, token_balance_raw) as paired1_token_reserve,
     coalesce(amount_usd, 0) AS paired1_token_usd_reserve
 FROM cumulative_usd_balance b
-where token != 0x5979d7b546e38e414f7e9822514be443a4800529 and cast(row_numb as int) = cast(1 as int)) paired1
+where token != 0x5979d7b546e38e414f7e9822514be443a4800529 and cast(row_numb as int) = int '1') paired1
 on main.day = paired1.day and main.pool_id = paired1.pool_id 
 left join (
 SELECT
@@ -291,7 +291,7 @@ SELECT
     coalesce(token_balance, token_balance_raw) as paired2_token_reserve,
     coalesce(amount_usd, 0) AS paired2_token_usd_reserve
 FROM cumulative_usd_balance b
-where token != 0x5979d7b546e38e414f7e9822514be443a4800529 and cast(row_numb as int) = cast(2 as int)) paired2
+where token != 0x5979d7b546e38e414f7e9822514be443a4800529 and cast(row_numb as int) = int '2') paired2
 on main.day = paired2.day and main.pool_id = paired2.pool_id 
 left join (
 SELECT
@@ -302,7 +302,7 @@ SELECT
     coalesce(token_balance, token_balance_raw) as paired3_token_reserve,
     coalesce(amount_usd, 0) AS paired3_token_usd_reserve
 FROM cumulative_usd_balance b
-where token != 0x5979d7b546e38e414f7e9822514be443a4800529 and cast(row_numb as int) = cast(3 as int)) paired3
+where token != 0x5979d7b546e38e414f7e9822514be443a4800529 and cast(row_numb as int) = int '3') paired3
 on main.day = paired3.day and main.pool_id = paired3.pool_id 
 left join (
 SELECT
@@ -313,7 +313,7 @@ SELECT
     coalesce(token_balance, token_balance_raw) as paired4_token_reserve,
     coalesce(amount_usd, 0) AS paired4_token_usd_reserve
 FROM cumulative_usd_balance b
-where token != 0x5979d7b546e38e414f7e9822514be443a4800529 and cast(row_numb as int) = cast(4 as int)) paired4
+where token != 0x5979d7b546e38e414f7e9822514be443a4800529 and cast(row_numb as int) = int '4') paired4
 on main.day = paired4.day and main.pool_id = paired4.pool_id 
 )
 
