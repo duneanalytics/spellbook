@@ -17,7 +17,7 @@
 
 
 with dates as (
-    with day_seq as (select (sequence(cast('{{ project_start_date }}' as date), cast(now() as date), interval '1' day)) as day)
+    with day_seq as (select (sequence( cast('{{ project_start_date }}' as date), cast(now() as date), interval '1' day)) as day)
 select days.day
 from day_seq
 cross join unnest(day) as days(day)
