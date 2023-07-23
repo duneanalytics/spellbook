@@ -112,8 +112,8 @@ from wsteth_prices_hourly
       m.contract_address AS pool,
       cr.token0,
       cr.token1,
-      SUM(TRY_CAST(amount0 AS DOUBLE)) AS amount0,
-      SUM(TRY_CAST(amount1 AS DOUBLE)) AS amount1
+      SUM(CAST(amount0 AS DOUBLE)) AS amount0,
+      SUM(CAST(amount1 AS DOUBLE)) AS amount1
  from {{source('velodrome_optimism','Pair_evt_Mint')}} m
  left join {{source('velodrome_optimism','PairFactory_evt_PairCreated')}} cr on m.contract_address = cr.pair 
  WHERE date_trunc('day', m.evt_block_time) >= date '{{ project_start_date }}'
@@ -126,8 +126,8 @@ from wsteth_prices_hourly
       b.contract_address AS pool,
       cr.token0,
       cr.token1,
-      (-1)*SUM(TRY_CAST(amount0 AS DOUBLE)) AS amount0,
-      (-1)*SUM(TRY_CAST(amount1 AS DOUBLE)) AS amount1
+      (-1)*SUM(CAST(amount0 AS DOUBLE)) AS amount0,
+      (-1)*SUM(CAST(amount1 AS DOUBLE)) AS amount1
  from {{source('velodrome_optimism','Pair_evt_Burn')}} b
  left join {{source('velodrome_optimism','PairFactory_evt_PairCreated')}} cr on b.contract_address = cr.pair 
  WHERE date_trunc('day', b.evt_block_time) >= date '{{ project_start_date }}'
@@ -141,8 +141,8 @@ from wsteth_prices_hourly
       s.contract_address AS pool,
       cr.token0,
       cr.token1,
-      SUM(TRY_CAST(amount0In AS DOUBLE) - TRY_CAST(amount0Out AS DOUBLE)) AS amount0,
-      SUM(TRY_CAST(amount1In AS DOUBLE) - TRY_CAST(amount1Out AS DOUBLE)) AS amount1
+      SUM(CAST(amount0In AS DOUBLE) - CAST(amount0Out AS DOUBLE)) AS amount0,
+      SUM(CAST(amount1In AS DOUBLE) - CAST(amount1Out AS DOUBLE)) AS amount1
  from {{source('velodrome_optimism','Pair_evt_Swap')}} s
  left join {{source('velodrome_optimism','PairFactory_evt_PairCreated')}} cr on s.contract_address = cr.pair 
  WHERE date_trunc('day', s.evt_block_time) >= date '{{ project_start_date }}'
@@ -157,8 +157,8 @@ select
       s.contract_address AS pool,
       cr.token0,
       cr.token1,
-      (-1)*SUM(TRY_CAST(amount0 AS DOUBLE) ) AS amount0,
-      (-1)*SUM(TRY_CAST(amount1 AS DOUBLE) ) AS amount1 
+      (-1)*SUM(CAST(amount0 AS DOUBLE) ) AS amount0,
+      (-1)*SUM(CAST(amount1 AS DOUBLE) ) AS amount1 
  from {{source('velodrome_optimism','Pair_evt_Fees')}} s
  left join {{source('velodrome_optimism','PairFactory_evt_PairCreated')}} cr on s.contract_address = cr.pair 
  WHERE date_trunc('day', s.evt_block_time) >= date '{{ project_start_date }}'
@@ -211,8 +211,8 @@ SELECT c.day as time,
 , swap_events_hourly as (
  select DATE_TRUNC('hour', s.evt_block_time) AS time,
       s.contract_address AS pool,
-      sum(case when cr.token0 = 0x1F32b1c2345538c0c6f582fCB022739c4A194Ebb then TRY_CAST(amount0In AS DOUBLE) + TRY_CAST(amount0Out AS DOUBLE)
-      else TRY_CAST(amount1In AS DOUBLE) + TRY_CAST(amount1Out AS DOUBLE) end) as wsteth_amount
+      sum(case when cr.token0 = 0x1F32b1c2345538c0c6f582fCB022739c4A194Ebb then CAST(amount0In AS DOUBLE) + CAST(amount0Out AS DOUBLE)
+      else CAST(amount1In AS DOUBLE) + CAST(amount1Out AS DOUBLE) end) as wsteth_amount
  from {{source('velodrome_optimism','Pair_evt_Swap')}} s
  left join {{source('velodrome_optimism','PairFactory_evt_PairCreated')}} cr on s.contract_address = cr.pair 
  WHERE date_trunc('day', s.evt_block_time) >= date '{{ project_start_date }}'
