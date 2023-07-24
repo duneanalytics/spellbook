@@ -20,7 +20,7 @@ FROM (
        'ENS' as category, --should be social but we can't change this due to how many queries it probably breaks.
        '0xRob' as contributor,
        'query' AS source,
-       timestamp '2022-10-06' as created_at,
+       date('2022-10-06') as created_at,
        now() as updated_at,
        'ens' as model_name,
        'identifier' as label_type
