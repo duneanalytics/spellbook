@@ -1,4 +1,7 @@
-{{config(alias = alias('aave_v2_liquidations'))}}
+{{config(
+    tags=['dunesql'],
+    alias = alias('aave_v2_liquidations')
+)}}
 
 
 WITH mev_addresses AS (
@@ -63,4 +66,4 @@ SELECT
     , model_name
     , label_type
 FROM final_base_label
-;
+
