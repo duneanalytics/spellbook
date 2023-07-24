@@ -24,7 +24,6 @@ decimals,
 call_tx_hash,
 call_block_time,
 call_block_number
-
 FROM (
 
     SELECT c1.contract_address, c1._l1Token, tc._l2Token, _symbol, _name,

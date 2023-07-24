@@ -4,7 +4,7 @@
         )
 }}
 SELECT
-        contract_address as contract_address
+        contract_address
         , trim(symbol) as symbol
         , decimals
 FROM (VALUES
