@@ -100,4 +100,4 @@ SELECT
     created_block_time, 
     TRY_CAST(created_date as DATE) as created_date
 FROM syndicate_wallets
-WHERE dao_wallet_address NOT IN (0xae6328c067bddfba4963e2a1f52baaf11a2e2588, 0x3902ab762a94b8088b71ee5c84bc3c7d2075646b, 0xc08bc955da8968327405642d65a7513ce5eb31ed) -- these are syndicate contract addresses, there's a transfer from 0x00...0000 to these addresses during set up so filtering to get rid of them. 
+WHERE dao_wallet_address NOT IN (0xae6328c067bddfba4963e2a1f52baaf11a2e2588, 0x3902ab762a94b8088b71ee5c84bc3c7d2075646b, 0xc08bc955da8968327405642d65a7513ce5eb31ed) -- these are syndicate contract addresses, there's a transfer from 0x00...0000 to these addresses during set up so filtering to get rid of them
