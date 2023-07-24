@@ -36,7 +36,6 @@ FROM (
             token_bought_amount_raw AS token_amount_raw,
             amount_usd
         FROM {{ ref('dex_trades_legacy') }}
-        FROM dex.trades
         {% if is_incremental() %}
         WHERE block_time >= date_trunc("day", now() - interval '1 week')
         {% endif %}
@@ -48,7 +47,6 @@ FROM (
             token_sold_amount_raw AS token_amount_raw,
             amount_usd
         FROM {{ ref('dex_trades_legacy') }}
-        FROM dex.trades
         {% if is_incremental() %}
         WHERE block_time >= date_trunc("day", now() - interval '1 week')
         {% endif %}
