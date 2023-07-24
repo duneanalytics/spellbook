@@ -59,4 +59,4 @@ def upload_csv(table_csv, target):
     
 if __name__ == "__main__":
     table = get_tables_from_manifest("manifest.json")
-    # upload_csv(table, "migration_status")
+    upload_csv(table, "migration_status")
