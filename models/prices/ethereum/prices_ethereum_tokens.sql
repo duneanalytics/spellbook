@@ -1618,7 +1618,7 @@ FROM
     ('verse-verse-token', 'ethereum', 'VERSE', '0x249ca82617ec3dfb2589c4c17ab7ec9765350a18', 18),
     ('mc-merit-circle', 'ethereum', 'MC', '0x949d48eca67b17269629c7194f4b727d4ef9e5d6', 18),
     ('r-r-stablecoin', 'ethereum', 'R', '0x183015a9ba6ff60230fdeadc3f43b3d788b13e21', 18),
-    ('unibot', 'ethereum', 'UNIBOT', '0xf819d9cb1c2a819fd991781a822de3ca8607c3c9', 18)
+    ('unibot-unibot', 'ethereum', 'UNIBOT', '0xf819d9cb1c2a819fd991781a822de3ca8607c3c9', 18)
     ) as temp (token_id, blockchain, symbol, contract_address, decimals)
 where lower(trim(contract_address)) not in (
     -- bad price feeds
