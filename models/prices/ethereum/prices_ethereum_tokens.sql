@@ -1619,7 +1619,7 @@ FROM
     ('mc-merit-circle', 'ethereum', 'MC', 0x949d48eca67b17269629c7194f4b727d4ef9e5d6, 18),
     ('r-r-stablecoin', 'ethereum', 'R', 0x183015a9ba6ff60230fdeadc3f43b3d788b13e21, 18)
     ) as temp (token_id, blockchain, symbol, contract_address, decimals)
-where lower(trim(contract_address)) not in (
+where contract_address not in (
     -- bad price feeds
     0x841fb148863454a3b3570f515414759be9091465    -- SHIH
     ,0xf3b9569f82b18aef890de263b84189bd33ebe452   -- CAW
