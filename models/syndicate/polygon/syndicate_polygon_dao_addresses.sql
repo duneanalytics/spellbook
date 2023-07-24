@@ -56,7 +56,7 @@ ownership_transferred as ( -- whenever an investment club is created, the owners
         SELECT 
             contract_address as dao, 
             block_time, 
-            bytearray_ltrim(topic2) as wallet_address
+            bytearray_substring(topic2, 13, 20) as wallet_address
         FROM 
         {{ source('polygon', 'logs') }}
         {% if not is_incremental() %}
