@@ -295,5 +295,7 @@ FROM
 ,('0x8C531f965C05Fab8135d951e2aD0ad75CF3405A2', 'Building')
 ,('0x41838b44C20EB6b89b7169e4017eb1435165C1C3', 'KilroyPunk')
 ,('0x9ca0d0256ecd93bb6220981c2c6b4aef8c59d37a', 'Dune AirDump')
+,('0xC5Ab9Dc51a09537BfF8287267292284c8D5dFd18', 'Optimism Inscriptions')
+,('0xf27a25bf230c02f52721324266583aaed85284e8', 'Sismo Early Community NFT')
 
 ) as temp_table (contract_address, name)

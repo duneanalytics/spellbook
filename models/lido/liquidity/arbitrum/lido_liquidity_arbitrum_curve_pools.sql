@@ -1,6 +1,7 @@
 {{ config(
     schema='lido_liquidity_arbitrum',
     alias = alias('curve_pools'),
+    tags = ['dunesql'], 
     partition_by = ['time'],
     materialized = 'table',
     file_format = 'delta',
@@ -14,10 +15,13 @@
 
 {% set project_start_date = '2022-10-06' %}
 
-with dates as  (
-select explode(sequence(to_date('{{ project_start_date }}'), now(), interval 1 day)) as day
-)
 
+with dates as (
+    with day_seq as (select (sequence(cast('{{ project_start_date }}' as date), cast(now() as date), interval '1' day)) as day)
+select days.day
+from day_seq
+cross join unnest(day) as days(day)
+  )
 
 , weth_prices_daily AS (
     SELECT distinct
@@ -27,9 +31,9 @@ select explode(sequence(to_date('{{ project_start_date }}'), now(), interval 1 d
         decimals,
         avg(price) AS price
     FROM {{source('prices','usd')}}
-    WHERE date_trunc('day', minute) >= '{{ project_start_date }}' and date_trunc('day', minute) < date_trunc('day', now())
+    WHERE date_trunc('day', minute) >= date '{{ project_start_date }}' and date_trunc('day', minute) < date_trunc('day', now())
     and blockchain = 'arbitrum'
-    and contract_address = '0x82af49447d8a07e3bd95bd0d56f35241523fbab1'
+    and contract_address = 0x82af49447d8a07e3bd95bd0d56f35241523fbab1
     group by 1,2,3,4
     union all
     SELECT distinct
@@ -41,7 +45,7 @@ select explode(sequence(to_date('{{ project_start_date }}'), now(), interval 1 d
     FROM {{source('prices','usd')}}
     WHERE date_trunc('day', minute) = date_trunc('day', now())
     and blockchain = 'arbitrum'
-    and contract_address = '0x82af49447d8a07e3bd95bd0d56f35241523fbab1'
+    and contract_address = 0x82af49447d8a07e3bd95bd0d56f35241523fbab1
 
     
 )    
@@ -55,9 +59,9 @@ select explode(sequence(to_date('{{ project_start_date }}'), now(), interval 1 d
         DATE_TRUNC('hour', minute) time
         , last_value(price) over (partition by DATE_TRUNC('hour', minute), contract_address ORDER BY  minute range between unbounded preceding AND unbounded following) AS price
     FROM {{ source('prices', 'usd') }}
-    WHERE date_trunc('hour', minute) >= '{{ project_start_date }}' 
+    WHERE date_trunc('hour', minute) >= date '{{ project_start_date }}' 
     and blockchain = 'arbitrum'
-    and contract_address = '0x82af49447d8a07e3bd95bd0d56f35241523fbab1'
+    and contract_address = 0x82af49447d8a07e3bd95bd0d56f35241523fbab1
     
 ))   
 
@@ -69,9 +73,10 @@ select explode(sequence(to_date('{{ project_start_date }}'), now(), interval 1 d
         decimals,
         avg(price) AS price
     FROM {{source('prices','usd')}}
-    WHERE date_trunc('day', minute) >= '{{ project_start_date }}' and date_trunc('day', minute) < date_trunc('day', now())
+    WHERE date_trunc('day', minute) >= date'{{ project_start_date }}' 
+    and date_trunc('day', minute) < date_trunc('day', now())
     and blockchain = 'arbitrum'
-    and contract_address = '0x5979d7b546e38e414f7e9822514be443a4800529'
+    and contract_address = 0x5979d7b546e38e414f7e9822514be443a4800529
     group by 1,2,3,4
     union all
     SELECT distinct
@@ -83,17 +88,17 @@ select explode(sequence(to_date('{{ project_start_date }}'), now(), interval 1 d
     FROM {{source('prices','usd')}}
     WHERE date_trunc('day', minute) = date_trunc('day', now())
     and blockchain = 'arbitrum'
-    and contract_address = '0x5979d7b546e38e414f7e9822514be443a4800529'
+    and contract_address = 0x5979d7b546e38e414f7e9822514be443a4800529
 
 )
 
 , add_liquidity_events as (
     select  date_trunc('day', evt_block_time) as time
         , contract_address as pool
-        , sum(token_amounts[0]) as eth_amount_raw
-        , sum(token_amounts[1]) as wsteth_amount_raw
+        , sum(token_amounts[1]) as eth_amount_raw
+        , sum(token_amounts[2]) as wsteth_amount_raw
     from {{source('curvefi_arbitrum','wstETH_swap_evt_AddLiquidity')}}
-    WHERE date_trunc('day', evt_block_time) >= '{{ project_start_date }}'
+    WHERE date_trunc('day', evt_block_time) >= date '{{ project_start_date }}'
     group by 1, 2
 ) 
 
@@ -102,10 +107,10 @@ select explode(sequence(to_date('{{ project_start_date }}'), now(), interval 1 d
     from (
     select date_trunc('day', evt_block_time) as time
         , contract_address as pool
-        , 0 as eth_amount_raw
+        , uint256 '0' as eth_amount_raw
         , coin_amount as wsteth_amount_raw
     from {{source('curvefi_arbitrum','wstETH_swap_evt_RemoveLiquidityOne')}}
-    WHERE date_trunc('day', evt_block_time) >= '{{ project_start_date }}'
+    WHERE date_trunc('day', evt_block_time) >= date '{{ project_start_date }}'
     and evt_tx_hash in (select evt_tx_hash from {{source('lido_arbitrum','wstETH_evt_Transfer')}})
     
     union all
@@ -113,29 +118,29 @@ select explode(sequence(to_date('{{ project_start_date }}'), now(), interval 1 d
     select date_trunc('day', evt_block_time) as time
         , contract_address as pool
         , coin_amount as eth_amount_raw
-        , 0 as wsteth_amount_raw
+        , uint256 '0' as wsteth_amount_raw
     from {{source('curvefi_arbitrum','wstETH_swap_evt_RemoveLiquidityOne')}}
-    WHERE date_trunc('day', evt_block_time) >= '{{ project_start_date }}'
+    WHERE date_trunc('day', evt_block_time) >= date '{{ project_start_date }}'
     and evt_tx_hash not in (select evt_tx_hash from {{source('lido_arbitrum','wstETH_evt_Transfer')}})
     
     union all
     
     select  date_trunc('day', evt_block_time) as time
         , contract_address as pool
-        , token_amounts[0]
         , token_amounts[1]
+        , token_amounts[2]
     from {{source('curvefi_arbitrum','wstETH_swap_evt_RemoveLiquidityImbalance')}}
-    WHERE date_trunc('day', evt_block_time) >= '{{ project_start_date }}'
+    WHERE date_trunc('day', evt_block_time) >= date '{{ project_start_date }}'
            
 
     union all
     
     select date_trunc('day', evt_block_time) as time
         , contract_address as pool
-        , token_amounts[0]
         , token_amounts[1]
+        , token_amounts[2]
     from {{source('curvefi_arbitrum','wstETH_swap_evt_RemoveLiquidity')}}
-    WHERE date_trunc('day', evt_block_time) >= '{{ project_start_date }}'
+    WHERE date_trunc('day', evt_block_time) >= date '{{ project_start_date }}'
         
 
 ) group by 1,2
@@ -144,25 +149,25 @@ select explode(sequence(to_date('{{ project_start_date }}'), now(), interval 1 d
 , token_exchange_events as(
     select date_trunc('day', evt_block_time) as time
         , contract_address as pool
-        , sum(case when sold_id = 0 then tokens_sold else (-1) * tokens_bought end) as eth_amount_raw
-        , sum(case when sold_id = 0 then (-1) * tokens_bought else tokens_sold end) as wsteth_amount_raw
+        , sum(case when sold_id = int256 '0' then cast(tokens_sold as double) else (-1) * cast(tokens_bought as double) end) as eth_amount_raw
+        , sum(case when sold_id = int256 '0' then (-1) *  cast(tokens_bought as double) else cast(tokens_sold as double) end) as wsteth_amount_raw
     from {{source('curvefi_arbitrum','wstETH_swap_evt_TokenExchange')}}
-    WHERE date_trunc('day', evt_block_time) >= '{{ project_start_date }}'
+    WHERE date_trunc('day', evt_block_time) >= date '{{ project_start_date }}'
     group by 1,2
 )
 
 , reserves as (
     select day
-        , coalesce(d.pool, w.pool, e.pool, '0x6eb2dc694eb516b16dc9fbc678c60052bbdd7d80') as pool
+        , coalesce(d.pool, w.pool, e.pool, 0x6eb2dc694eb516b16dc9fbc678c60052bbdd7d80) as pool
         , p2.token as main_token
         , p2.symbol as main_token_symbol
         , p1.token as paired_token
         , p1.symbol as paired_token_symbol 
-        , (sum(coalesce(d.wsteth_amount_raw, 0) - coalesce(w.wsteth_amount_raw, 0) + coalesce(e.wsteth_amount_raw, 0)) over (order by dd.day))/1e18 as main_token_reserve
-        , ((sum(coalesce(d.wsteth_amount_raw, 0) - coalesce(w.wsteth_amount_raw, 0) + coalesce(e.wsteth_amount_raw, 0)) over (order by dd.day))* p2.price)/1e18 as main_token_usd_reserve
-        , (sum(coalesce(d.eth_amount_raw, 0) - coalesce(w.eth_amount_raw, 0) + coalesce(e.eth_amount_raw, 0)) over (order by dd.day))/1e18 as paired_token_reserve
-        , ((sum(coalesce(d.eth_amount_raw, 0) - coalesce(w.eth_amount_raw, 0) + coalesce(e.eth_amount_raw, 0)) over (order by dd.day)) * p1.price) /1e18 as paired_token_usd_reserve
-    
+        , (sum(coalesce(cast(d.wsteth_amount_raw as double), cast(0 as double)) - coalesce(cast(w.wsteth_amount_raw as double), cast(0 as double)) + coalesce(cast(e.wsteth_amount_raw as double), cast(0 as double))) over (order by dd.day))/1e18 as main_token_reserve
+        , ((sum(coalesce(cast(d.wsteth_amount_raw as double), cast(0 as double)) - coalesce(cast(w.wsteth_amount_raw as double), cast(0 as double)) + coalesce(cast(e.wsteth_amount_raw as double), cast(0 as double))) over (order by dd.day))* p2.price)/1e18 as main_token_usd_reserve
+        , (sum(coalesce(cast(d.eth_amount_raw as double), cast(0 as double)) - coalesce(cast(w.eth_amount_raw as double), cast(0 as double)) + coalesce(cast(e.eth_amount_raw as double), cast(0 as double))) over (order by dd.day))/1e18 as paired_token_reserve
+        , ((sum(coalesce(cast(d.eth_amount_raw as double), cast(0 as double)) - coalesce(cast(w.eth_amount_raw as double), cast(0 as double)) + coalesce(cast(e.eth_amount_raw as double), cast(0 as double))) over (order by dd.day)) * p1.price) /1e18 as paired_token_usd_reserve
+        
     from dates dd
     left join add_liquidity_events d on dd.day = d.time
     left join remove_liquidity_events w on dd.day = w.time
@@ -174,9 +179,9 @@ select explode(sequence(to_date('{{ project_start_date }}'), now(), interval 1 d
 
 , token_exchange_hourly as( 
     select date_trunc('hour', evt_block_time) as time
-        , sum(case when sold_id = 0 then tokens_sold else tokens_bought end) as eth_amount_raw
+        , sum(case when sold_id = int256 '0' then tokens_sold else tokens_bought end) as eth_amount_raw
     from {{source('curvefi_arbitrum','wstETH_swap_evt_TokenExchange')}}
-    WHERE date_trunc('day', evt_block_time) >= '{{ project_start_date }}'
+    WHERE date_trunc('day', evt_block_time) >= date '{{ project_start_date }}'
     group by 1   
 )
 
@@ -218,6 +223,6 @@ select explode(sequence(to_date('{{ project_start_date }}'), now(), interval 1 d
 )
 
 
-select CONCAT(CONCAT(CONCAT(CONCAT(CONCAT(blockchain,CONCAT(' ', project)) ,' '), coalesce(paired_token_symbol,'unknown')),':') , main_token_symbol, ' ', fee) as pool_name,* 
+select CONCAT(CONCAT(CONCAT(CONCAT(CONCAT(blockchain,CONCAT(' ', project)) ,' '), coalesce(paired_token_symbol,'unknown')),':') , main_token_symbol, ' ',  format('%,.3f%%',round(coalesce(fee,0),4))) as pool_name,* 
 from all_metrics
 
