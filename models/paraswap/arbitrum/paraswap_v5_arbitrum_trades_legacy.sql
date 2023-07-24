@@ -19,6 +19,7 @@
 {% set trade_event_tables = [
     source('paraswap_arbitrum', 'AugustusSwapper_evt_BoughtV3')
     ,source('paraswap_arbitrum', 'AugustusSwapper_evt_SwappedV3')
+    ,source('paraswap_arbitrum', 'AugustusSwapper_evt_SwappedDirect')
 ] %}
 
 WITH dexs AS (
