@@ -59,7 +59,7 @@ SELECT
     'polygon' as blockchain, 
     'aragon' as dao_creator_tool, 
     ad.dao, 
-    COALESCE(gw.dao_wallet_address, 0x) as dao_wallet_address,
+    COALESCE(gw.dao_wallet_address, CAST(NULL as VARBINARY)) as dao_wallet_address,
     ad.created_block_time,
     TRY_CAST(ad.created_date AS DATE) as created_date,
     'aragon_client' as product
