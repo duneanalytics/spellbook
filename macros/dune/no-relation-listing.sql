@@ -5,6 +5,7 @@
  #}
 {% macro get_catalog(information_schema, schemas) -%}
   {% do log(target) %}
+  {% do log(information_schema) %}
   {%- if (var('no-relation-listing', 'false').lower() == 'true') or (target.profile_name == 'spellbook-local') -%}
     {{ return([]) }}
   {%- else -%}
@@ -31,7 +32,7 @@
   {%- endif -%}
 {%- endmacro %}
 
-{% macro databricks__set_relations_cache(schema_relation) %}
+{# {% macro databricks__set_relations_cache(schema_relation) %}
   {% do log("schema_relation") %}
   {% do log(schema_relation) %}
-{%- endmacro %}
+{%- endmacro %} #}
