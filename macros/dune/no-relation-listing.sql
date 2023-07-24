@@ -30,3 +30,8 @@
     {{ return(adapter.dispatch('list_relations_without_caching')(schema_relation)) }}
   {%- endif -%}
 {%- endmacro %}
+
+{% macro databricks__set_relations_cache(schema_relation) %}
+  {% do log("schema_relation") %}
+  {% do log(schema_relation) %}
+{%- endmacro %}
