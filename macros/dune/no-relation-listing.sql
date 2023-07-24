@@ -6,9 +6,9 @@
  databricks:  or (target.type == 'databricks') 
  #}
 {% macro get_catalog(information_schema, schemas) -%}
-  {% do log("get_catalog") %}
+  {% do log('get_catalog') %}
   {% do log(target) %}
-  {% do log("information_schema") %}
+  {% do log('information_schema') %}
   {% do log(information_schema) %}
   {%- if (var('no-relation-listing', 'false').lower() == 'true') or (target.profile_name == 'spellbook-local') -%}
     {{ return([]) }}
@@ -26,7 +26,7 @@
 {%- endmacro %}
 
 {% macro list_relations_without_caching(schema_relation) %}
-  {% do log("schema_relation") %}
+  {% do log('schema_relation') %}
   {% do log(schema_relation) %}
   {%- if (var('no-relation-listing', 'false').lower() == 'true') or (target.profile_name == 'spellbook-local') -%}
     {{ return([]) }}
@@ -36,6 +36,6 @@
 {%- endmacro %}
 
 {% macro databricks__get_catalog_schemas(schema_relation) %}
-  {% do log("databricks__get_catalog_schemas") %}
+  {% do log('databricks__get_catalog_schemas') %}
   {% do log(schema_relation) %}
 {%- endmacro %}
