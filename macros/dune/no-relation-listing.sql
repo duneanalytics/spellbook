@@ -4,9 +4,11 @@
  This speeds up DBT compile times. It must not be used in combination with dbt run.
  #}
 {% macro get_catalog(information_schema, schemas) -%}
+  {% do log("get_catalog") %}
   {% do log(target) %}
+  {% do log("information_schema") %}
   {% do log(information_schema) %}
-  {%- if (var('no-relation-listing', 'false').lower() == 'true') or (target.profile_name == 'spellbook-local') -%}
+  {%- if (var('no-relation-listing', 'false').lower() == 'true') or (target.profile_name == 'spellbook-local') or (target.type == 'databricks') -%}
     {{ return([]) }}
   {%- else -%}
     {{ return(adapter.dispatch('get_catalog')(information_schema, schemas)) }}
@@ -14,8 +16,7 @@
 {%- endmacro %}
 
 {% macro list_schemas(database) -%}
-  {% do log(target) %}
-  {%- if (var('no-relation-listing', 'false').lower() == 'true') or (target.profile_name == 'spellbook-local') -%}
+  {%- if (var('no-relation-listing', 'false').lower() == 'true') or (target.profile_name == 'spellbook-local') or (target.type == 'databricks') -%}
     {{ return([]) }}
   {%- else -%}
     {{ return(adapter.dispatch('list_schemas')(database)) }}
@@ -25,7 +26,7 @@
 {% macro list_relations_without_caching(schema_relation) %}
   {% do log("schema_relation") %}
   {% do log(schema_relation) %}
-  {%- if (var('no-relation-listing', 'false').lower() == 'true') or (target.profile_name == 'spellbook-local') -%}
+  {%- if (var('no-relation-listing', 'false').lower() == 'true') or (target.profile_name == 'spellbook-local') or (target.type == 'databricks') -%}
     {{ return([]) }}
   {%- else -%}
     {{ return(adapter.dispatch('list_relations_without_caching')(schema_relation)) }}
