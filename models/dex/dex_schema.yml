@@ -446,3 +446,24 @@ models:
       - &backrun_tx_fee
         name: backrun_tx_fee
         description: "Backrun transaction fee"
+
+  - name: dex_prices_latest
+    meta:
+      blockchain: ethereum, bnb, avalanche_c, gnosis, optimism, arbitrum, fantom
+      sector: dex
+      contributors: bernat
+    config:
+      tags: ['erc20', 'prices', 'ethereum', 'polygon', 'arbitrum', 'optimism', 'gnosis', 'fantom', 'avalanche_c', 'bnb']
+    description: >
+      Latest token prices from dex.trades
+    columns:
+      - *block_time
+      - &token_address
+        name: token_address
+        description: "Token's contract address"
+      - &token_price_usd
+        name: token_price_usd
+        description: "USD price of the token"
+      - &token_price_usd_raw
+        name: token_price_usd_raw
+        description: "USD price of the token's raw amount"
