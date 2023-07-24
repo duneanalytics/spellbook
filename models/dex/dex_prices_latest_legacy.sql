@@ -1,11 +1,11 @@
 {{ config(
         alias = alias('prices_latest'),
         tags = ['legacy'],
-        partition_by = ['block_date'],
+        partition_by = ['block_time'],
         materialized = 'incremental',
         file_format = 'delta',
         incremental_strategy = 'merge',
-        unique_key = ['block_date', 'token_address'],
+        unique_key = ['block_time', 'token_address'],
         post_hook='{{ expose_spells(\'["ethereum", "bnb", "avalanche_c", "gnosis", "optimism", "arbitrum", "fantom", "polygon"]\',
                                 "sector",
                                 "dex",
