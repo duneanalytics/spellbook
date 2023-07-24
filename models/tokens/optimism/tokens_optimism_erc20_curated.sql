@@ -380,6 +380,7 @@ WITH raw_token_list AS (
     ,(0x8a6039fc7a479928b1d73f88040362e9c50db275, 'BITCOIN (hpos10i)', 8, 'underlying')
     ,(0xe7BC9b3A936F122f08AAC3b1fac3C3eC29A78874, 'ECO', 18, 'underlying')
     ,(0x88a89866439F4C2830986B79cbe6f69d1Bd548BB, 'BIKE', 18, 'underlying')
+    ,(0xdc6ff44d5d932cbd77b52e5612ba0529dc6226f1, 'WLD', 18, 'underlying')
 
     ) AS temp_table (contract_address, symbol, decimals, token_type)
 )
