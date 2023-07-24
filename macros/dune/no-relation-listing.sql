@@ -26,7 +26,7 @@
 {% macro list_relations_without_caching(schema_relation) %}
   {% do log("schema_relation") %}
   {% do log(schema_relation) %}
-  {%- if (var('no-relation-listing', 'false').lower() == 'true') or (target.profile_name == 'spellbook-local') or (target.type == 'databricks') -%}
+  {%- if (var('no-relation-listing', 'false').lower() == 'true') or (target.profile_name == 'spellbook-local') -%}
     {{ return([]) }}
   {%- else -%}
     {{ return(adapter.dispatch('list_relations_without_caching')(schema_relation)) }}
@@ -34,6 +34,6 @@
 {%- endmacro %}
 
 {% macro databricks__get_catalog_schemas(schema_relation) %}
-  {% do log("schema_relation") %}
+  {% do log("databricks__get_catalog_schemas") %}
   {% do log(schema_relation) %}
 {%- endmacro %}
