@@ -3,11 +3,11 @@
         alias = alias('tokens'),
         materialized='table',
         file_format = 'delta',
-        tags=['static'],
+        tags=['static', 'dunesql'],
         post_hook='{{ expose_spells(\'["ethereum", "solana", "arbitrum", "gnosis", "optimism", "bnb", "avalanche_c", "polygon", "fantom"]\',
                                     "sector",
                                     "prices",
-                                    \'["aalan3", "jeff-dude", "umer_h_adil", "0xBoxer"]\') }}'
+                                    \'["aalan3", "jeff-dude", "umer_h_adil", "0xBoxer", "hosuke"]\') }}'
         )
 }}
 
