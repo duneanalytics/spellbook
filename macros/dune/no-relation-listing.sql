@@ -33,7 +33,7 @@
   {%- endif -%}
 {%- endmacro %}
 
-{# {% macro databricks__set_relations_cache(schema_relation) %}
+{% macro databricks__get_catalog_schemas(schema_relation) %}
   {% do log("schema_relation") %}
   {% do log(schema_relation) %}
-{%- endmacro %} #}
+{%- endmacro %}
