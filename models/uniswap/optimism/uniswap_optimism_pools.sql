@@ -34,9 +34,9 @@ select
   , token0
   , token1
   , fee
-  , CAST('2021-01-14' AS TIMESTAMP) as creation_block_time
-  , 0 as creation_block_number
-  , 0x0000000000000000000000000000000000000000 as contract_address
+  , creation_block_time
+  , creation_block_number
+  , contract_address
 from {{ ref('uniswap_optimism_ovm1_pool_mapping') }}
 
 union
