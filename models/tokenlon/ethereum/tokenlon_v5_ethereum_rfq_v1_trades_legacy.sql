@@ -36,7 +36,7 @@ WITH dexs AS (
     FROM
         {{ source('tokenlon_v5_ethereum', 'RFQv1_evt_FillOrder') }} 
     {% if is_incremental() %}
-    WHERE t.evt_block_time >= date_trunc("day", now() - interval '1 week') 
+    WHERE evt_block_time >= date_trunc("day", now() - interval '1 week') 
     {% endif %}
 )
 
