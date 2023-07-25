@@ -6,9 +6,9 @@
  databricks:  or (target.type == 'databricks')
  #}
 {% macro get_catalog(information_schema, schemas) -%}
-  {% do log('get_catalog') %}
-  {% do log(target) %}
-  {% do log('model') %}
+  {% do log('get_catalog', info=True) %}
+  {% do log(target, info=True) %}
+  {% do log('model', info=True) %}
   {% do log(model, info=True) %}
   {% do log('information_schema') %}
   {% do log(information_schema) %}
@@ -20,7 +20,7 @@
 {%- endmacro %}
 
 {% macro list_schemas(database) -%}
-  {% do log('model') %}
+  {% do log('model', info=True) %}
   {% do log(model, info=True) %}
   {% do log(this, info=True) %}
   {%- if (var('no-relation-listing', 'false').lower() == 'true') or (target.profile_name == 'spellbook-local') -%}
