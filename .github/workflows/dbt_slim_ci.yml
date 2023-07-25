@@ -40,6 +40,7 @@ jobs:
             printf "Using spark engine\n"
             echo "PROFILE=--profiles-dir $HOME/.dbt --profile spark" >> $GITHUB_ENV
             echo "TAG=,tag:legacy" >> $GITHUB_ENV
+            echo "COMPILE_TAG=--select tag:legacy" >> $GITHUB_ENV
             echo "S3_LOCATION=manifest-spellbook" >> $GITHUB_ENV
             echo 
           else
