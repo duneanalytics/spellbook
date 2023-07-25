@@ -127,6 +127,40 @@ liquidate_position as (
     {% endif %}
 ),
 
+limit_cancel as (
+    SELECT 
+        lp.day, 
+        lp.evt_block_time,
+        lp.evt_index,
+        lp.evt_tx_hash,
+        lp.position_id, 
+        CAST(NULL as double) as price, 
+        0 as new_margin, 
+        lp.leverage, 
+        lp.margin * lp.leverage as volume_usd, 
+        COALESCE(op.margin_asset, lo.margin_asset) as margin_asset, 
+        COALESCE(op.pair, lo.pair) as pair, 
+        COALESCE(op.direction, lo.direction) as direction, 
+        COALESCE(op.referral, lo.referral) as referral, 
+        lp.trader, 
+        lp.margin as margin_change,
+        lp.version, 
+        'limit_cancel' as trade_type
+    FROM 
+        {{ ref('tigris_v2_polygon_positions_limit_cancel') }} lp 
+    LEFT JOIN
+        open_position op 
+        ON lp.position_id = op.position_id 
+        -- AND lp.version = op.version
+    LEFT JOIN
+        limit_order lo 
+        ON lp.position_id = lo.position_id 
+        -- AND lp.version = lo.version
+    {% if is_incremental() %}
+    WHERE lp.evt_block_time >= date_trunc('day', now() - interval '7' day)
+    {% endif %}
+),
+
 add_margin as (
     SELECT 
         am.day, 
@@ -266,3 +300,10 @@ SELECT
     'polygon' as blockchain,
     *
 FROM limit_order
+
+UNION ALL 
+
+SELECT 
+    'polygon' as blockchain,
+    *
+FROM limit_cancel

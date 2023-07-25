@@ -218,3 +218,53 @@ models:
       - *evt_index
       - *trader
       - *day
+
+  - name: tigris_v1_polygon_positions_limit_cancel
+    meta:
+      blockchain: polygon
+      project: tigris_v1
+      contributors: Henrystats 
+    config:
+      tags: [ 'tigris', 'perps', 'margin' ]
+    description: >
+      limit cancel data on v1
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - evt_block_time
+            - position_id
+    columns:
+      - *evt_block_time
+      - *position_id
+      - *margin
+      - *evt_tx_hash
+      - *leverage
+      - *evt_index
+      - *trader
+      - *day
+      - *version
+
+  - name: tigris_v2_polygon_positions_limit_cancel
+    meta:
+      blockchain: polygon
+      project: tigris_v2
+      contributors: Henrystats 
+    config:
+      tags: [ 'tigris', 'perps', 'margin' ]
+    description: >
+      limit cancel data on v2
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - evt_block_time
+            - position_id
+    columns:
+      - *evt_block_time
+      - *position_id
+      - *margin
+      - *evt_tx_hash
+      - *leverage
+      - *evt_index
+      - *trader
+      - *day
+      - *version
