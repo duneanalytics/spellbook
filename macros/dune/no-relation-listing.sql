@@ -20,9 +20,6 @@
 {%- endmacro %}
 
 {% macro list_schemas(database) -%}
-  {% do log('model', info=True) %}
-  {% do log(model, info=True) %}
-  {% do log(this, info=True) %}
   {%- if (var('no-relation-listing', 'false').lower() == 'true') or (target.profile_name == 'spellbook-local') -%}
     {{ return([]) }}
   {%- else -%}
@@ -41,13 +38,15 @@
 {%- endmacro %}
 
 
---{% macro databricks__list_relations_without_caching(schema_relation) %}
---  {% do log('databricks__list_relations_without_caching') %}
---  {% do log(target.tags) %}
---  {% do log(target.get("tags")) %}
---  {%- if (var('no-relation-listing', 'false').lower() == 'true') or (target.profile_name == 'spellbook-local') -%}
---    {{ return([]) }}
---  {%- else -%}
---    {{ return(adapter.get_relations_without_caching(schema_relation)) }}
---  {%- endif -%}
---{% endmacro %}
+{% macro databricks__list_relations_without_caching(schema_relation) %}
+  {% do log('databricks__list_relations_without_caching') %}
+  {% do log(model, info=True) %}
+  {% do log(this, info=True) %}
+  {% do log(target, info=True) %}
+  {% do log(database, info=True) %}
+  {%- if (var('no-relation-listing', 'false').lower() == 'true') or (target.profile_name == 'spellbook-local') -%}
+    {{ return([]) }}
+  {%- else -%}
+    {{ return(adapter.get_relations_without_caching(schema_relation)) }}
+  {%- endif -%}
+{% endmacro %}
