@@ -1,6 +1,7 @@
 {{
   config(
         schema = 'hop_protocol',
+        tags = ['dunesql'],
         alias = alias('addresses'),
         post_hook='{{ expose_spells(\'["optimism"]\',
                                     "sector",
@@ -13,26 +14,26 @@
 -- Table generation script: https://github.com/MSilb7/msilb7-crypto-queries/blob/main/dune_spell_utils/hop_addresses/get_hop_bridge_addresses.ipynb
 
 SELECT
-lower(`blockchain`) AS blockchain
-,`token_symbol`
-,lower(`l1CanonicalToken`) AS `l1CanonicalToken`
-,lower(`l1Bridge`) AS `l1Bridge`
-,`bridgeDeployedBlockNumber`
-,lower(`l1CanonicalBridge`) AS `l1CanonicalBridge`
-,lower(`l1MessengerWrapper`) AS `l1MessengerWrapper`
-,lower(`l2CanonicalBridge`) AS `l2CanonicalBridge`
-,lower(`l2CanonicalToken`) AS `l2CanonicalToken`
-,lower(`l2Bridge`) AS `l2Bridge`
-,lower(`l2HopBridgeToken`) AS `l2HopBridgeToken`
-,lower(`l2AmmWrapper`) AS `l2AmmWrapper`
-,lower(`l2SaddleSwap`) AS `l2SaddleSwap`
-,lower(`l2SaddleLpToken`) AS `l2SaddleLpToken`
-,lower(`l1Amb`) AS `l1Amb`
-,lower(`l2Amb`) AS `l2Amb`
-,lower(`l1FxBaseRootTunnel`) AS `l1FxBaseRootTunnel`
-,lower(`l1PosRootChainManager`) AS `l1PosRootChainManager`
-,lower(`l1PosPredicate`) AS `l1PosPredicate`
-,lower(`l2MessengerProxy`) AS `l2MessengerProxy`
+blockchain AS blockchain
+,token_symbol
+,l1CanonicalToken AS l1CanonicalToken
+,l1Bridge AS l1Bridge
+,bridgeDeployedBlockNumber
+,l1CanonicalBridge AS l1CanonicalBridge
+,l1MessengerWrapper AS l1MessengerWrapper
+,l2CanonicalBridge AS l2CanonicalBridge
+,l2CanonicalToken AS l2CanonicalToken
+,l2Bridge AS l2Bridge
+,l2HopBridgeToken AS l2HopBridgeToken
+,l2AmmWrapper AS l2AmmWrapper
+,l2SaddleSwap AS l2SaddleSwap
+,l2SaddleLpToken AS l2SaddleLpToken
+,l1Amb AS l1Amb
+,l2Amb AS l2Amb
+,l1FxBaseRootTunnel AS l1FxBaseRootTunnel
+,l1PosRootChainManager AS l1PosRootChainManager
+,l1PosPredicate AS l1PosPredicate
+,l2MessengerProxy AS l2MessengerProxy
 
 FROM (values
  ('ethereum'	,'USDC'	,'0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48'	,'0x3666f603Cc164936C1b87e207F36BEBa4AC5f18a'	,12650032	,''	,''	,''	,''	,''	,''	,''	,''	,''	,''	,''	,''	,''	,''	,'')
@@ -67,5 +68,5 @@ FROM (values
 ,('optimism'	,'SNX'	,''	,''	,26092038	,'0x0000000000000000000000000000000000000000'	,'0x30ca9afabA0DA59F507756cA43619f96f176d214'	,'0x4200000000000000000000000000000000000010'	,'0x8700dAec35aF8Ff88c16BdF0418774CB3D7599B4'	,'0x16284c7323c35F4960540583998C98B1CfC581a7'	,'0x13B7F51BD865410c3AcC4d56083C5B56aB38D203'	,'0xf11EBB94EC986EA891Aec29cfF151345C83b33Ec'	,'0x1990BC6dfe2ef605Bfc08f5A23564dB75642Ad73'	,'0xe63337211DdE2569C348D9B3A0acb5637CFa8aB3'	,''	,''	,''	,''	,''	,'')
 
   ) ht (
-    `blockchain`,`token_symbol`,`l1CanonicalToken`,`l1Bridge`,`bridgeDeployedBlockNumber`,`l1CanonicalBridge`,`l1MessengerWrapper`,`l2CanonicalBridge`,`l2CanonicalToken`,`l2Bridge`,`l2HopBridgeToken`,`l2AmmWrapper`,`l2SaddleSwap`,`l2SaddleLpToken`,`l1Amb`,`l2Amb`,`l1FxBaseRootTunnel`,`l1PosRootChainManager`,`l1PosPredicate`,`l2MessengerProxy`
+    blockchain,token_symbol,l1CanonicalToken,l1Bridge,bridgeDeployedBlockNumber,l1CanonicalBridge,l1MessengerWrapper,l2CanonicalBridge,l2CanonicalToken,l2Bridge,l2HopBridgeToken,l2AmmWrapper,l2SaddleSwap,l2SaddleLpToken,l1Amb,l2Amb,l1FxBaseRootTunnel,l1PosRootChainManager,l1PosPredicate,l2MessengerProxy
   )
