@@ -60,3 +60,5 @@ models:
           - unique
       - name: project_name
         description: "Project name. This should map with the 'contract_project' name in contract mapping, if relevant."
+      - name: address_name
+        description: "Address name, if relevant."
