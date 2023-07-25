@@ -1,7 +1,7 @@
 {{ config(
     schema = 'tokenlon_v5_ethereum',
-    tags=['dunesql'],
-    alias = alias('amm_v1_trades'),
+    tags = ['legacy'],
+    alias = alias('rfq_v1_trades', legacy_model=True),
     partition_by = ['block_date'],
     materialized = 'incremental',
     file_format = 'delta',
@@ -16,8 +16,8 @@
 {% set blockchain = 'ethereum' %}
 {% set project = 'tokenlon' %}
 {% set project_version = '5' %}
--- block 11463016
-{% set project_start_date = "timestamp '2020-12-16'" %}
+-- block 12792553
+{% set project_start_date = '2021-07-09' %}
 
 WITH dexs AS (
     SELECT 
@@ -34,9 +34,9 @@ WITH dexs AS (
         ''                    AS trace_address,
         evt_index
     FROM
-        {{ source('tokenlon_v5_ethereum', 'AMMWrapper_evt_Swapped') }} 
+        {{ source('tokenlon_v5_ethereum', 'RFQv1_evt_FillOrder') }} 
     {% if is_incremental() %}
-    WHERE t.evt_block_time >= date_trunc('day', now() - interval '7' day) 
+    WHERE t.evt_block_time >= date_trunc("day", now() - interval '1 week') 
     {% endif %}
 )
 
@@ -63,11 +63,11 @@ SELECT
     )                                                           AS amount_usd,
     dexs.token_bought_address,
     dexs.token_sold_address,
-    coalesce(dexs.taker, tx."from")                               AS taker,
+    coalesce(dexs.taker, tx.from)                               AS taker,
     dexs.maker,
     dexs.project_contract_address,
     dexs.tx_hash,
-    tx."from" AS tx_from,
+    tx.from AS tx_from,
     tx.to AS tx_to,
     dexs.trace_address,
     dexs.evt_index
@@ -75,15 +75,15 @@ FROM dexs
 INNER JOIN {{ source('ethereum', 'transactions') }} tx 
     ON tx.hash = dexs.tx_hash
     {% if not is_incremental() %}
-    AND tx.block_time >= {{project_start_date}}
+    AND tx.block_time >= '{{project_start_date}}' 
     {% endif %} 
     {% if is_incremental() %}
-    AND tx.block_time >= date_trunc('day', now() - interval '7' day) 
+    AND tx.block_time >= date_trunc("day", now() - interval '1 week') 
     {% endif %}
-LEFT JOIN {{ ref('tokens_erc20') }} erc20a 
+LEFT JOIN {{ ref('tokens_erc20_legacy') }} erc20a 
     ON erc20a.contract_address = dexs.token_bought_address
     AND erc20a.blockchain = 'ethereum'
-LEFT JOIN {{ ref('tokens_erc20') }} erc20b 
+LEFT JOIN {{ ref('tokens_erc20_legacy') }} erc20b 
     ON erc20b.contract_address = dexs.token_sold_address
     AND erc20b.blockchain = 'ethereum'
 LEFT JOIN {{ source('prices', 'usd') }} p_bought 
@@ -91,19 +91,19 @@ LEFT JOIN {{ source('prices', 'usd') }} p_bought
     AND p_bought.contract_address = dexs.token_bought_address
     AND p_bought.blockchain = 'ethereum' 
     {% if not is_incremental() %}
-    AND p_bought.minute >= {{project_start_date}}
+    AND p_bought.minute >= '{{project_start_date}}'
     {% endif %} 
     {% if is_incremental() %}
-    AND p_bought.minute >= date_trunc('day', now() - interval '7' day)
+    AND p_bought.minute >= date_trunc("day", now() - interval '1 week')
     {% endif %}
 LEFT JOIN {{ source('prices', 'usd') }} p_sold
     ON p_sold.minute = date_trunc('minute', dexs.block_time)
     AND p_sold.contract_address = dexs.token_sold_address
     AND p_sold.blockchain = 'ethereum' 
     {% if not is_incremental() %}
-    AND p_sold.minute >= {{project_start_date}}
+    AND p_sold.minute >= '{{project_start_date}}' 
     {% endif %}
     {% if is_incremental() %}
-    AND p_sold.minute >= date_trunc('day', now() - interval '7' day)
+    AND p_sold.minute >= date_trunc("day", now() - interval '1 week')
     {% endif %}
 ;

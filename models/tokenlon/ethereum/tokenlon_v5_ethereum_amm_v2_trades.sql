@@ -1,5 +1,6 @@
 {{ config(
     schema = 'tokenlon_v5_ethereum',
+    tags=['dunesql'],
     alias = alias('amm_v2_trades'),
     partition_by = ['block_date'],
     materialized = 'incremental',
@@ -16,18 +17,18 @@
 {% set project = 'tokenlon' %}
 {% set project_version = '5' %}
 -- block 12792417
-{% set project_start_date = '2021-07-09' %}
+{% set project_start_date = "timestamp '2021-07-09'" %}
 
 WITH dexs AS (
     SELECT 
-        evt_block_time                                          AS block_time,
-        JSON_EXTRACT_SCALAR("order", '$.userAddr')              AS taker,
-        JSON_EXTRACT_SCALAR("order", '$.makerAddr')             AS maker,
-        JSON_EXTRACT_SCALAR("order", '$.takerAssetAmount')      AS token_sold_amount_raw,
-        JSON_EXTRACT_SCALAR("order", '$.makerAssetAmount')      AS token_bought_amount_raw,
-        cast(NULL as double)                                    AS amount_usd,
-        JSON_EXTRACT_SCALAR("order", '$.takerAssetAddr')        AS token_sold_address,
-        JSON_EXTRACT_SCALAR("order", '$.makerAssetAddr')        AS token_bought_address,
+        evt_block_time                                                             AS block_time,
+        CAST(JSON_EXTRACT_SCALAR("order", '$.userAddr') as VARBINARY)              AS taker,
+        CAST(JSON_EXTRACT_SCALAR("order", '$.makerAddr') as VARBINARY)             AS maker,
+        CAST(JSON_EXTRACT_SCALAR("order", '$.takerAssetAmount') as VARBINARY)      AS token_sold_amount_raw,
+        CAST(JSON_EXTRACT_SCALAR("order", '$.makerAssetAmount') as VARBINARY)      AS token_bought_amount_raw,
+        CAST(NULL as double)                                                       AS amount_usd,
+        CAST(JSON_EXTRACT_SCALAR("order", '$.takerAssetAddr') as VARBINARY)        AS token_sold_address,
+        CAST(JSON_EXTRACT_SCALAR("order", '$.makerAssetAddr') as VARBINARY)        AS token_bought_address,
         contract_address      AS project_contract_address,
         evt_tx_hash           AS tx_hash,
         ''                    AS trace_address,
@@ -35,7 +36,7 @@ WITH dexs AS (
     FROM
         {{ source('tokenlon_v5_ethereum', 'AMMWrapperWithPath_evt_Swapped') }} 
     {% if is_incremental() %}
-    WHERE t.evt_block_time >= date_trunc("day", now() - interval '1 week') 
+    WHERE t.evt_block_time >= date_trunc('day', now() - interval '7' day) 
     {% endif %}
 )
 
@@ -62,11 +63,11 @@ SELECT
     )                                                           AS amount_usd,
     dexs.token_bought_address,
     dexs.token_sold_address,
-    coalesce(dexs.taker, tx.from)                               AS taker
+    coalesce(dexs.taker, tx."from")                               AS taker,
     dexs.maker,
     dexs.project_contract_address,
     dexs.tx_hash,
-    tx.from AS tx_from,
+    tx."from" AS tx_from,
     tx.to AS tx_to,
     dexs.trace_address,
     dexs.evt_index
@@ -74,10 +75,10 @@ FROM dexs
 INNER JOIN {{ source('ethereum', 'transactions') }} tx 
     ON tx.hash = dexs.tx_hash
     {% if not is_incremental() %}
-    AND tx.block_time >= '{{project_start_date}}' 
+    AND tx.block_time >= {{project_start_date}}
     {% endif %} 
     {% if is_incremental() %}
-    AND tx.block_time >= date_trunc("day", now() - interval '1 week') 
+    AND tx.block_time >= date_trunc('day', now() - interval '7' day) 
     {% endif %}
 LEFT JOIN {{ ref('tokens_erc20') }} erc20a 
     ON erc20a.contract_address = dexs.token_bought_address
@@ -90,19 +91,19 @@ LEFT JOIN {{ source('prices', 'usd') }} p_bought
     AND p_bought.contract_address = dexs.token_bought_address
     AND p_bought.blockchain = 'ethereum' 
     {% if not is_incremental() %}
-    AND p_bought.minute >= '{{project_start_date}}'
+    AND p_bought.minute >= {{project_start_date}}
     {% endif %} 
     {% if is_incremental() %}
-    AND p_bought.minute >= date_trunc("day", now() - interval '1 week')
+    AND p_bought.minute >= date_trunc('day', now() - interval '7' day)
     {% endif %}
 LEFT JOIN {{ source('prices', 'usd') }} p_sold
     ON p_sold.minute = date_trunc('minute', dexs.block_time)
     AND p_sold.contract_address = dexs.token_sold_address
     AND p_sold.blockchain = 'ethereum' 
     {% if not is_incremental() %}
-    AND p_sold.minute >= '{{project_start_date}}' 
+    AND p_sold.minute >= {{project_start_date}}
     {% endif %}
     {% if is_incremental() %}
-    AND p_sold.minute >= date_trunc("day", now() - interval '1 week')
+    AND p_sold.minute >= date_trunc('day', now() - interval '7' day)
     {% endif %}
 ;

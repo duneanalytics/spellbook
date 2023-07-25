@@ -1,6 +1,6 @@
 {{ config(
-    alias = alias('trades'),
-    tags=['dunesql'],
+    tags=['legacy'],
+    alias = alias('trades', legacy_model=True),
     post_hook='{{ expose_spells(\'["ethereum"]\',
         "project",
         "tokenlon",
@@ -9,7 +9,7 @@
 }}
 
 {% set tokenlon_models = [
-    ref('tokenlon_ethereum_trades')
+    ref('tokenlon_ethereum_trades_legacy')
 ] %}
 
 SELECT *
