@@ -22,6 +22,7 @@
 {% macro list_schemas(database) -%}
   {% do log('model') %}
   {% do log(model, info=True) %}
+  {% do log(this, info=True) %}
   {%- if (var('no-relation-listing', 'false').lower() == 'true') or (target.profile_name == 'spellbook-local') -%}
     {{ return([]) }}
   {%- else -%}
