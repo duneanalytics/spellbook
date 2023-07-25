@@ -569,6 +569,7 @@ WITH curated_list AS (
       ,('0x890Bc5691E6011F580e264065d09a7a1A6902131', 'Synapse')
       ,('0x161D61e30284A33Ab1ed227beDcac6014877B3DE', 'Beefy Finance')
       ,('0x5853ed4f26a3fcea565b3fbc698bb19cdf6deb85', 'DeBank')
+      ,('0x36BDE71C97B33Cc4729cf772aE268934f7AB70B2', 'Worldcoin')
       
   ) as temp_table (creator_address, contract_project)
 )

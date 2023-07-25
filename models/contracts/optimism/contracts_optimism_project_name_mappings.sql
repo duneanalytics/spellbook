@@ -12,7 +12,7 @@
 
 select 
   dune_name
-  ,mapped_name
+  , mapped_name
 from (
     values
      ('lyra_v1',	'Lyra Finance')
