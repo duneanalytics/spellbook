@@ -27,7 +27,7 @@ FROM
             , TIMESTAMP '2023-07-22' AS created_at, NOW() AS updated_at
             , 'hop_protocol_bonders' as model_name, 'identifier' as model_type
 
-        FROM ref('hop_protocol_bonders')
+        FROM {{ ref('hop_protocol_bonders') }}
         GROUP BY dest_chain, bonder_address
 
     ) st
