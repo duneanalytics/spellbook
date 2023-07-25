@@ -16,24 +16,24 @@
 SELECT
 blockchain AS blockchain
 ,token_symbol
-,l1CanonicalToken AS l1CanonicalToken
-,l1Bridge AS l1Bridge
+,from_hex(l1CanonicalToken) AS l1CanonicalToken
+,from_hex(l1Bridge) AS l1Bridge
 ,bridgeDeployedBlockNumber
-,l1CanonicalBridge AS l1CanonicalBridge
-,l1MessengerWrapper AS l1MessengerWrapper
-,l2CanonicalBridge AS l2CanonicalBridge
-,l2CanonicalToken AS l2CanonicalToken
-,l2Bridge AS l2Bridge
-,l2HopBridgeToken AS l2HopBridgeToken
-,l2AmmWrapper AS l2AmmWrapper
-,l2SaddleSwap AS l2SaddleSwap
-,l2SaddleLpToken AS l2SaddleLpToken
-,l1Amb AS l1Amb
-,l2Amb AS l2Amb
-,l1FxBaseRootTunnel AS l1FxBaseRootTunnel
-,l1PosRootChainManager AS l1PosRootChainManager
-,l1PosPredicate AS l1PosPredicate
-,l2MessengerProxy AS l2MessengerProxy
+,from_hex(l1CanonicalBridge) AS l1CanonicalBridge
+,from_hex(l1MessengerWrapper) AS l1MessengerWrapper
+,from_hex(l2CanonicalBridge) AS l2CanonicalBridge
+,from_hex(l2CanonicalToken) AS l2CanonicalToken
+,from_hex(l2Bridge) AS l2Bridge
+,from_hex(l2HopBridgeToken) AS l2HopBridgeToken
+,from_hex(l2AmmWrapper) AS l2AmmWrapper
+,from_hex(l2SaddleSwap) AS l2SaddleSwap
+,from_hex(l2SaddleLpToken) AS l2SaddleLpToken
+,from_hex(l1Amb) AS l1Amb
+,from_hex(l2Amb) AS l2Amb
+,from_hex(l1FxBaseRootTunnel) AS l1FxBaseRootTunnel
+,from_hex(l1PosRootChainManager) AS l1PosRootChainManager
+,from_hex(l1PosPredicate) AS l1PosPredicate
+,from_hex(l2MessengerProxy) AS l2MessengerProxy
 
 FROM (values
  ('ethereum'	,'USDC'	,'0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48'	,'0x3666f603Cc164936C1b87e207F36BEBa4AC5f18a'	,12650032	,''	,''	,''	,''	,''	,''	,''	,''	,''	,''	,''	,''	,''	,''	,'')
