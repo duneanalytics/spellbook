@@ -8,6 +8,8 @@
 {% macro get_catalog(information_schema, schemas) -%}
   {% do log('get_catalog') %}
   {% do log(target) %}
+  {% do log('model') %}
+  {% do log(model, info=True) %}
   {% do log('information_schema') %}
   {% do log(information_schema) %}
   {%- if (var('no-relation-listing', 'false').lower() == 'true') or (target.profile_name == 'spellbook-local') -%}
@@ -18,6 +20,8 @@
 {%- endmacro %}
 
 {% macro list_schemas(database) -%}
+  {% do log('model') %}
+  {% do log(model, info=True) %}
   {%- if (var('no-relation-listing', 'false').lower() == 'true') or (target.profile_name == 'spellbook-local') -%}
     {{ return([]) }}
   {%- else -%}
