@@ -1,4 +1,5 @@
 {{ config(
+    tags=['dunesql'],
     schema = 'tigris_v2_polygon',
     alias = alias('trades'),
     partition_by = ['day'],
@@ -32,7 +33,7 @@ open_position as (
         'open_position' as trade_type 
     FROM {{ ref('tigris_v2_polygon_events_open_position') }}
     {% if is_incremental() %}
-    WHERE evt_block_time >= date_trunc("day", now() - interval '1 week')
+    WHERE evt_block_time >= date_trunc('day', now() - interval '7' day)
     {% endif %}
 ), 
 
@@ -57,13 +58,13 @@ limit_order as (
         'limit_order' as trade_type 
     FROM {{ ref('tigris_v2_polygon_events_limit_order') }}
     {% if is_incremental() %}
-    WHERE evt_block_time >= date_trunc("day", now() - interval '1 week')
+    WHERE evt_block_time >= date_trunc('day', now() - interval '7' day)
     {% endif %}
 ), 
 
 close_position as (
     SELECT 
-        date_trunc('day', c.evt_block_time) as day, 
+        TRY_CAST(date_trunc('DAY', c.evt_block_time) AS date) as day, 
         c.evt_block_time,
         c.evt_index,
         c.evt_tx_hash,
@@ -89,7 +90,7 @@ close_position as (
         limit_order lo
         ON c.position_id = lo.position_id
     {% if is_incremental() %}
-    WHERE c.evt_block_time >= date_trunc("day", now() - interval '1 week')
+    WHERE c.evt_block_time >= date_trunc('day', now() - interval '7' day)
     {% endif %}
 
 ), 
@@ -122,7 +123,7 @@ liquidate_position as (
         limit_order lo 
         ON lp.position_id = lo.position_id 
     {% if is_incremental() %}
-    WHERE lp.evt_block_time >= date_trunc("day", now() - interval '1 week')
+    WHERE lp.evt_block_time >= date_trunc('day', now() - interval '7' day)
     {% endif %}
 ),
 
@@ -171,10 +172,10 @@ add_margin as (
                 ON am.position_id = l.position_id 
                 AND am.evt_block_time > l.evt_block_time
                 {% if is_incremental() %}
-                AND l.evt_block_time >= date_trunc("day", now() - interval '1 week')
+                AND l.evt_block_time >= date_trunc('day', now() - interval '7' day)
                 {% endif %}
             {% if is_incremental() %}
-            WHERE am.evt_block_time >= date_trunc("day", now() - interval '1 week')
+            WHERE am.evt_block_time >= date_trunc('day', now() - interval '7' day)
             {% endif %}
             GROUP BY 2, 3, 4, 5, 6, 7, 8, 9, 10, 11
         ) tmp 
@@ -183,7 +184,7 @@ add_margin as (
             ON tmp.position_id = l.position_id
             AND tmp.latest_leverage_time = l.evt_block_time
             {% if is_incremental() %}
-            AND l.evt_block_time >= date_trunc("day", now() - interval '1 week')
+            AND l.evt_block_time >= date_trunc('day', now() - interval '7' day)
             {% endif %}
     ) am  
     LEFT JOIN 
@@ -222,7 +223,7 @@ modify_margin as (
         limit_order lo 
         ON mm.position_id = lo.position_id 
     {% if is_incremental() %}
-    WHERE mm.evt_block_time >= date_trunc("day", now() - interval '1 week')
+    WHERE mm.evt_block_time >= date_trunc('day', now() - interval '7' day)
     {% endif %}
 )
 
@@ -265,4 +266,3 @@ SELECT
     'polygon' as blockchain,
     *
 FROM limit_order
-;
