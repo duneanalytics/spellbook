@@ -27,7 +27,7 @@
 ,ref('dfx_ethereum_trades')
 ,ref('pancakeswap_trades')
 ,ref('dodo_trades')
-,ref('velodrome_optimism_trades_legacy')
+,ref('velodrome_optimism_trades')
 ,ref('woofi_trades')
 ,ref('bancor_ethereum_trades')
 ,ref('platypus_finance_avalanche_c_trades')
