@@ -25,5 +25,5 @@ SELECT 'arbitrum' AS blockchain
 , contract_address
 FROM {{ source('uniswap_v3_arbitrum', 'Factory_evt_PoolCreated') }}
 {% if is_incremental() %}
-WHERE evt_block_time >= date_trunc("day", now() - interval '1 week')
+WHERE evt_block_time >= cast (date_add('week',-1,now()) as timestamp)
 {% endif %}
