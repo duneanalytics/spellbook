@@ -1,11 +1,12 @@
 spellbook-local:
+  target: dev
   outputs:
     dev:
-      catalog: null
-      host: .
-      http_path: .
+      type: trino
+      user: trino
+      password: trino
+      host: trino
+      port: 1234
+      database: hive
       schema: wizard
       threads: 1
-      token: .
-      type: databricks
-  target: dev
