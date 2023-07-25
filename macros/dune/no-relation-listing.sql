@@ -35,7 +35,13 @@
   {%- endif -%}
 {%- endmacro %}
 
-{% macro databricks__get_catalog_schemas(schema_relation) %}
-  {% do log('databricks__get_catalog_schemas') %}
-  {% do log(schema_relation) %}
-{%- endmacro %}
+
+{% macro databricks__list_relations_without_caching(schema_relation) %}
+  {% do log('databricks__list_relations_without_caching') %}
+  {% do log(model.config.get("tags")) %}
+  {%- if (var('no-relation-listing', 'false').lower() == 'true') or (target.profile_name == 'spellbook-local') -%}
+    {{ return([]) }}
+  {%- else -%}
+    {{ return(adapter.get_relations_without_caching(schema_relation)) }}
+  {%- endif -%}
+{% endmacro %}
