@@ -13,8 +13,7 @@
 WITH 
 
 {% set limit_cancel_trading_evt_tables = [
-    'Tradingv1_evt_LimitCancelled'
-    ,'TradingV2_evt_LimitCancelled'
+    'TradingV2_evt_LimitCancelled'
     ,'TradingV3_evt_LimitCancelled'
     ,'TradingV4_evt_LimitCancelled'
     ,'TradingV5_evt_LimitCancelled'
@@ -26,7 +25,7 @@ WITH
 limit_orders AS (
     {% for limit_cancel_trading_evt in limit_cancel_trading_evt_tables %}
         SELECT
-            '{{ 'v1.' + loop.index | string }}' as version,
+            '{{ 'v1.' + (loop.index + 1) | string }}' as version,
             date_trunc('day', t.evt_block_time) as day,
             t.evt_block_time,
             t.evt_index,
@@ -41,7 +40,27 @@ limit_orders AS (
         UNION ALL
         {% endif %}
     {% endfor %}
+), 
+
+missing_traders as (
+        SELECT 
+            'v1.1' as version, 
+            date_trunc('day', evt_block_time) as day,
+            evt_block_time, 
+            evt_index,
+            evt_tx_hash,
+            _id as position_id, 
+            lower('0xe1c15f1f8d2a99123f7a554865cef7b25e06d698') as trader
+        FROM 
+        {{ source('tigristrade_polygon', 'Tradingv1_evt_LimitCancelled') }} t
+        {% if is_incremental() %}
+        WHERE evt_block_time >= date_trunc("day", now() - interval '1 week')
+        {% endif %}
 )
 
 SELECT *
 FROM limit_orders
+
+UNION ALL
+
+SELECT * FROM missing_traders
