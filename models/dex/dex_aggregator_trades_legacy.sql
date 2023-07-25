@@ -31,6 +31,7 @@ spells with issues, to be excluded in short term:
  ,ref('bebop_trades_legacy')
  ,ref('zeroex_trades_legacy')
  ,ref('dodo_aggregator_trades_legacy')
+ ,ref('tokenlon_trades_legacy')
 ] %}
 
 SELECT *
