@@ -23,6 +23,7 @@
     ,source('paraswap_bnb', 'AugustusSwapperV5_evt_Swapped')
     ,source('paraswap_bnb', 'AugustusSwapperV5_evt_Swapped2')
     ,source('paraswap_bnb', 'AugustusSwapperV5_evt_SwappedV3')
+    ,source('paraswap_bnb', 'AugustusSwapperV5_evt_SwappedDirect')
 ] %}
 
 WITH dexs AS (
