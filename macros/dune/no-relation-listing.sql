@@ -3,7 +3,7 @@
  on the command line to explicitly enable or disable this.
  This speeds up DBT compile times. It must not be used in combination with dbt run.
 
- databricks:  or (target.type == 'databricks') 
+ databricks:  or (target.type == 'databricks')
  #}
 {% macro get_catalog(information_schema, schemas) -%}
   {% do log('get_catalog') %}
@@ -36,13 +36,13 @@
 {%- endmacro %}
 
 
-{% macro databricks__list_relations_without_caching(schema_relation) %}
-  {% do log('databricks__list_relations_without_caching') %}
-  {% do log(target.tags) %}
-  {% do log(target.get("tags")) %}
-  {%- if (var('no-relation-listing', 'false').lower() == 'true') or (target.profile_name == 'spellbook-local') -%}
-    {{ return([]) }}
-  {%- else -%}
-    {{ return(adapter.get_relations_without_caching(schema_relation)) }}
-  {%- endif -%}
-{% endmacro %}
+--{% macro databricks__list_relations_without_caching(schema_relation) %}
+--  {% do log('databricks__list_relations_without_caching') %}
+--  {% do log(target.tags) %}
+--  {% do log(target.get("tags")) %}
+--  {%- if (var('no-relation-listing', 'false').lower() == 'true') or (target.profile_name == 'spellbook-local') -%}
+--    {{ return([]) }}
+--  {%- else -%}
+--    {{ return(adapter.get_relations_without_caching(schema_relation)) }}
+--  {%- endif -%}
+--{% endmacro %}
