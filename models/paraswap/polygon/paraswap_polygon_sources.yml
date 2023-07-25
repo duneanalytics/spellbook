@@ -23,3 +23,5 @@ sources:
         loaded_at_field: evt_block_time
       - name: AugustusSwapperV5_evt_SwappedV3
         loaded_at_field: evt_block_time
+      - name: AugustusSwapperV5_evt_SwappedDirect
+        loaded_at_field: evt_block_time
