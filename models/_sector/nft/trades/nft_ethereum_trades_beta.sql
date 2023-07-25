@@ -25,7 +25,6 @@
     ,('collectionswap',    'v1',   ref('collectionswap_ethereum_base_trades'))
     ,('looksrare',    'v1',   ref('looksrare_v1_ethereum_base_trades'))
     ,('looksrare',    'v2',   ref('looksrare_v2_ethereum_base_trades'))
-    ,('looksrare',    'seaport',   ref('looksrare_seaport_ethereum_base_trades'))
 ] %}
 
 -- TODO: We should remove this CTE and include ETH into the general prices table once everything is migrated
