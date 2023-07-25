@@ -95,7 +95,6 @@ FROM (VALUES
 ,('Project',	0x0e2cd794602152772a19c5eb7bf221ccafdabd9d,	'Agora',	'Season 2')
 ,('Project',	0x41693B7c0E41CBEa0d4F68Dc73898CB79e390f29,	'Mochi',	'Season 2')
 ,('Project',	0xb074ec6c37659525EEf2Fb44478077901F878012,	'Velodrome',	'Season 2') --dupe
-
 ,('Project',	0xd873d124d79ca220ebed2b93eb1205c61d228864,	'Atomic Links',	'Season 3')
 ,('Project',	0x5eff4b8c042aa6003cbda6e32c4aa23657d3b6af,	'Attestation Station Interface',	'Season 3')
 ,('Project',	0xef43993d36145a74ed34bc17656789a28a7c60c7,	'Clique',	'Season 3')
