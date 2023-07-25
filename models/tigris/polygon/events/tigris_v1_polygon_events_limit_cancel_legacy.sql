@@ -13,10 +13,7 @@
 WITH 
 
 {% set limit_cancel_trading_evt_tables = [
-    'TradingV2_evt_LimitCancelled'
-    ,'TradingV3_evt_LimitCancelled'
-    ,'TradingV4_evt_LimitCancelled'
-    ,'TradingV5_evt_LimitCancelled'
+    'TradingV5_evt_LimitCancelled'
     ,'TradingV6_evt_LimitCancelled'
     ,'TradingV7_evt_LimitCancelled'
     ,'TradingV8_evt_LimitCancelled'
@@ -25,7 +22,7 @@ WITH
 limit_orders AS (
     {% for limit_cancel_trading_evt in limit_cancel_trading_evt_tables %}
         SELECT
-            '{{ 'v1.' + (loop.index + 1) | string }}' as version,
+            '{{ 'v1.' + (loop.index + 4) | string }}' as version,
             date_trunc('day', t.evt_block_time) as day,
             t.evt_block_time,
             t.evt_index,

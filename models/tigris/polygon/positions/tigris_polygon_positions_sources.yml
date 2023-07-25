@@ -6,3 +6,7 @@ sources:
     tables:
       - name: Tradingv1_evt_LimitCancelled
         loaded_at_field: evt_block_time
+      - name: TradingV3_evt_LimitCancelled
+        loaded_at_field: evt_block_time
+      - name: TradingV4_evt_LimitCancelled
+        loaded_at_field: evt_block_time
