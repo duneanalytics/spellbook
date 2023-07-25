@@ -45,6 +45,33 @@ last_leverage as (
         {{ ref('tigris_v1_polygon_positions_leverage') }} xy 
             ON xx.evt_block_time = xy.evt_block_time
             AND xx.position_id = xy.position_id
+),
+
+missing_traders as (
+        SELECT 
+            'v1.1' as version, 
+            date_trunc('day', evt_block_time) as day,
+            evt_block_time, 
+            evt_index,
+            evt_tx_hash,
+            _id as position_id, 
+            0xe1c15f1f8d2a99123f7a554865cef7b25e06d698 as trader
+        FROM 
+        {{ source('tigristrade_polygon', 'Tradingv1_evt_LimitCancelled') }} t
+),
+
+limit_orders as (
+        SELECT 
+            * 
+        FROM 
+        missing_traders
+
+        UNION ALL 
+
+        SELECT 
+            * 
+        FROM 
+        {{ ref('tigris_v1_polygon_events_limit_cancel') }}
 )
 
 SELECT 
@@ -52,11 +79,10 @@ SELECT
     lm.margin, 
     ll.leverage 
 FROM 
-{{ ref('tigris_v1_polygon_events_limit_cancel') }} lp 
+limit_orders lp 
 INNER JOIN 
 last_margin lm 
     ON lp.position_id = lm.position_id
 INNER JOIN 
 last_leverage ll 
     ON lp.position_id = ll.position_id
-;

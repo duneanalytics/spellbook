@@ -1,0 +1,8 @@
+version: 2
+
+sources:
+  - name: tigristrade_polygon
+    description: "tigris trade polygon decoded events"
+    tables:
+      - name: Tradingv1_evt_LimitCancelled
+        loaded_at_field: evt_block_time
