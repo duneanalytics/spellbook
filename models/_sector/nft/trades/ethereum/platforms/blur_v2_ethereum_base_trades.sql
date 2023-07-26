@@ -86,10 +86,10 @@ SELECT CAST(date_trunc('day', bt.block_time) AS date) AS block_date
 , bt.block_number
 , bt.tx_hash
 , bt.evt_index AS sub_tx_trade_id
-, CASE WHEN txs."from" = bt.trader THEN 'Sell' ELSE 'Buy' END AS trade_category
+, CASE WHEN bt.order_type = 1 THEN 'Sell' ELSE 'Buy' END AS trade_category
 , 'secondary' AS trade_type
-, CASE WHEN txs."from" = bt.trader THEN bt.trader ELSE txs."from" END AS buyer
-, CASE WHEN txs."from" = bt.trader THEN txs."from" ELSE bt.trader END AS seller
+, CASE WHEN bt.order_type = 1 THEN bt.trader ELSE txs."from" END AS buyer
+, CASE WHEN bt.order_type = 0 THEN bt.trader ELSE txs."from" END AS seller
 , bt.nft_contract_address
 , CAST(bt.nft_token_id AS UINT256) AS nft_token_id
 , CAST(1 AS UINT256) AS nft_amount
