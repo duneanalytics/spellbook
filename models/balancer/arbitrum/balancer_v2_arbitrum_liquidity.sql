@@ -26,7 +26,7 @@ WITH pool_labels AS (
             decimals,
             AVG(price) AS price
         FROM {{ source('prices', 'usd') }}
-        WHERE blockchain = "arbitrum"
+        WHERE blockchain = 'arbitrum'
         GROUP BY 1, 2, 3
     ),
 
