@@ -12,7 +12,7 @@
         create table {{ relation }}
       {% endif %}
             {% if s3_bucket != 'local' %}
-                {{ file_format_clause() }} location "{{ 's3a://'+ s3_bucket + '/' +  relation | replace(".","/")` }}"
+                {{ file_format_clause() }} location "{{ 's3a://'+ s3_bucket + '/' +  relation | replace(".","/") }}"
              {% else %}
                 {{ file_format_clause() }}
             {% endif %}
