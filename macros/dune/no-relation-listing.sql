@@ -14,9 +14,6 @@
 {%- endmacro %}
 
 {% macro list_schemas(database) -%}
-  {% do log('model', info=True) %}
-  {% do log(model, info=True) %}
-  {% do log(this, info=True) %}
   {%- if (var('no-relation-listing', 'false').lower() == 'true') or (target.profile_name == 'spellbook-local') -%}
     {{ return([]) }}
   {%- else -%}
@@ -25,14 +22,6 @@
 {%- endmacro %}
 
 {% macro list_relations_without_caching(schema_relation) %}
-  {% do log('list_relations_without_caching START', info=True) %}
-  {% do log(model, info=True) %}
-  {% do log(this, info=True) %}
-  {% do log('schema_relation', info=True) %}
-  {% do log(schema_relation, info=True) %}
-  {% do log(schema_relation.path, info=True) %}
-  {% do log(schema_relation.metadata, info=True) %}
-  {% do log('list_relations_without_caching END', info=True) %}
   {%- if (var('no-relation-listing', 'false').lower() == 'true') or (target.profile_name == 'spellbook-local') -%}
     {{ return([]) }}
   {%- else -%}
