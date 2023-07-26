@@ -14,7 +14,7 @@
 
 WITH blur_v2_trades AS (
     SELECT evt_tx_hash AS tx_hash
-    , bytearray_to_uint256(bytearray_substring(cast(collectionPriceSide as varbinary),2,11)) AS price
+    , bytearray_to_uint256(bytearray_substring(cast(collectionPriceSide as varbinary),2,11)) AS price_raw
     , evt_block_time AS block_time
     , evt_block_number AS block_number
     , NULL AS fee_side
@@ -37,7 +37,7 @@ WITH blur_v2_trades AS (
     UNION ALL
     
     SELECT evt_tx_hash AS tx_hash
-    , bytearray_to_uint256(bytearray_substring(cast(collectionPriceSide as varbinary),2,11)) AS price
+    , bytearray_to_uint256(bytearray_substring(cast(collectionPriceSide as varbinary),2,11)) AS price_raw
     , evt_block_time AS block_time
     , evt_block_number AS block_number
     , 'maker' AS fee_side
@@ -60,7 +60,7 @@ WITH blur_v2_trades AS (
     UNION ALL
     
     SELECT evt_tx_hash AS tx_hash
-    , bytearray_to_uint256(bytearray_substring(cast(collectionPriceSide as varbinary),2,11)) AS price
+    , bytearray_to_uint256(bytearray_substring(cast(collectionPriceSide as varbinary),2,11)) AS price_raw
     , evt_block_time AS block_time
     , evt_block_number AS block_number
     , 'taker' AS fee_side
@@ -93,12 +93,12 @@ SELECT CAST(date_trunc('day', bt.block_time) AS date) AS block_date
 , bt.nft_contract_address
 , CAST(bt.nft_token_id AS UINT256) AS nft_token_id
 , CAST(1 AS UINT256) AS nft_amount
-, CAST(bt.price*POWER(10, 18) AS UINT256) AS price_raw
+, bt.price_raw
 , CASE WHEN bt.order_type = 0 THEN 0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2 ELSE 0x0000000000a39bb272e79075ade125fd351887ac END AS currency_contract
 , bt.project_contract_address
 , CAST(0 AS uint256) AS platform_fee_amount_raw
 , CAST(NULL AS varbinary) AS platform_fee_address
-, CAST(ROUND(bt.price * POWER(10, 18) * bt.fee) AS UINT256) AS royalty_fee_amount_raw
+, CAST(ROUND(bt.price_raw * bt.fee) AS UINT256) AS royalty_fee_amount_raw
 , bt.royalty_fee_address
 FROM blur_v2_trades bt
 INNER JOIN {{ source('ethereum', 'transactions') }} txs ON txs.block_number=bt.block_number
