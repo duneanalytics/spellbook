@@ -31,7 +31,7 @@ WITH blur_v2_trades AS (
     {% if is_incremental() %}
     WHERE evt_block_time >= date_trunc('day', now() - interval '7' day)
     {% else %}
-    WHERE evt_block_time >= TIMESTAMP {{blur_v2_start_date}}
+    WHERE evt_block_time >= TIMESTAMP '{{blur_v2_start_date}}'
     {% endif %}
     
     UNION ALL
@@ -54,7 +54,7 @@ WITH blur_v2_trades AS (
     {% if is_incremental() %}
     WHERE evt_block_time >= date_trunc('day', now() - interval '7' day)
     {% else %}
-    WHERE evt_block_time >= TIMESTAMP {{blur_v2_start_date}}
+    WHERE evt_block_time >= TIMESTAMP '{{blur_v2_start_date}}'
     {% endif %}
     
     UNION ALL
@@ -77,7 +77,7 @@ WITH blur_v2_trades AS (
     {% if is_incremental() %}
     WHERE evt_block_time >= date_trunc('day', now() - interval '7' day)
     {% else %}
-    WHERE evt_block_time >= TIMESTAMP {{blur_v2_start_date}}
+    WHERE evt_block_time >= TIMESTAMP '{{blur_v2_start_date}}'
     {% endif %}
     )
 
@@ -106,5 +106,5 @@ INNER JOIN {{ source('ethereum', 'transactions') }} txs ON txs.block_number=bt.b
     {% if is_incremental() %}
     AND txs.block_time >= date_trunc('day', now() - interval '7' day)
     {% else %}
-    AND txs.block_time >= {{blur_v2_start_date}}
+    AND txs.block_time >= '{{blur_v2_start_date}}'
     {% endif %}
