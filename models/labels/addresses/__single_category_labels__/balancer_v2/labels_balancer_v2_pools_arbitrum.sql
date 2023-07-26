@@ -280,4 +280,4 @@ FROM (
   GROUP BY s1.pool_id, token_symbol, pool_symbol, normalized_weight, pool_type
 ) s
 GROUP BY pool_id, pool_symbol, pool_type
-ORDER BY 1;
+ORDER BY 1

@@ -82,4 +82,3 @@ WHERE w.pool_id IS NOT NULL
 {% if is_incremental() %}
 AND registered.evt_block_time >= date_trunc('day', now() - interval '7' day)
 {% endif %}
-;
