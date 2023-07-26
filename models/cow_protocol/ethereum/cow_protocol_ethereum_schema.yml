@@ -215,6 +215,9 @@ models:
       - &slippage_bips
         name: slippage_bips
         description: User's slippage tolerance configured through the interface. Used to compute trade execution price improvement (can be Null)
+      - &utm
+        name: utm
+        description: utm object associated with the app data (consisting of fields utmSource, utmContent and utmMedium)
 
   - name: cow_protocol_ethereum_order_rewards
     meta:

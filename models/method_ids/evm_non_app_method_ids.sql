@@ -1,7 +1,7 @@
 
 {{ config(
         schema = 'method_ids',
-        alias ='evm_non_app_method_ids',
+        alias = alias('evm_non_app_method_ids'),
         post_hook='{{ expose_spells(\'["ethereum","optimism","arbitrum","polygon","gnosis","avalanche_c","fantom","goerli","bnb"]\',
                                 "sector",
                                 "method_ids",

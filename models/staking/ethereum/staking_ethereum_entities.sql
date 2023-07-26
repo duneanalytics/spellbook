@@ -1,6 +1,6 @@
 {{ config(
-    tags = ['dunesql'],
     alias = alias('entities'),
+    tags = ['dunesql'],
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
@@ -12,7 +12,7 @@
 }}
 
 WITH contracts AS (
-    SELECT lower(trim(address)) as address, trim(entity) as entity, trim(category) as category
+    SELECT address as address, entity as entity, category as category
     FROM
     (VALUES
     (0xdcd51fc5cd918e0461b9b7fb75967fdfd10dae2f, 'Rocket Pool', 'Liquid Staking')
@@ -22,7 +22,7 @@ WITH contracts AS (
     , (0x1e68238ce926dec62b3fbc99ab06eb1d85ce0270, 'Kiln', 'Staking Pools')
     , (0x2421a0af8badfae12e1c1700e369747d3db47b09, 'SenseiNode', 'Staking Pools')
     , (0x10e02a656b5f9de2c44c687787c36a2c4801cc40, 'Tranchess', 'Liquid Staking')
-    , (0x447c3ee829a3B506ad0a66Ff1089F30181c42637, 'KingHash', 'Liquid Staking')
+    , (0x447c3ee829a3b506ad0a66ff1089f30181c42637, 'KingHash', 'Liquid Staking')
     , (0xa8f50a6c41d67685b820b4fe6bed7e549e54a949, 'Eth2Stake', 'Staking Pools')
     , (0xf243a92eb7d4b4f6a00a57888b887bd01ec6fd12, 'MyEtherWallet', 'Staking Pools')
     , (0x73fd39ba4fb23c9b080fca0fcbe4c8c7a2d630d0, 'MyEtherWallet', 'Staking Pools')
@@ -33,7 +33,7 @@ WITH contracts AS (
         x (address, entity, category)
     )
 
-SELECT lower(trim(address)) as address, trim(entity) as entity, trim(entity_unique_name) as entity_unique_name, trim(category) as category
+SELECT address as address, entity as entity, entity_unique_name as entity_unique_name, category as category
 FROM
 (VALUES
 (0xae7ab96520de3a18e5e111b5eaab095312d7fe84, 'Lido', 'Lido', 'Liquid Staking')
@@ -127,7 +127,7 @@ FROM
 
     SELECT coinbase.address
     , 'Coinbase' AS name
-    , 'Coinbase ' || ROW_NUMBER() OVER (ORDER BY MIN(coinbase.block_time)) AS entity_unique_name
+    , CONCAT('Coinbase ', CAST(ROW_NUMBER() OVER (ORDER BY MIN(coinbase.block_time)) AS VARCHAR)) AS entity_unique_name
     , 'CEX' AS category
     FROM (
             SELECT
@@ -137,18 +137,22 @@ FROM
             INNER JOIN {{ source('ethereum', 'traces') }} et2 ON et2."from"=et."from"
                 AND et2.to IN (SELECT address FROM {{ ref('cex_ethereum_addresses') }} WHERE cex_name = 'Coinbase')
                 {% if not is_incremental() %}
-                AND et2.block_time >= '2020-10-14'
+                AND et2.block_time >= DATE'2020-10-14'
                 {% endif %}
                 {% if is_incremental() %}
-                AND et2.block_time >= date_trunc("day", now() - interval '1 week')
+                AND et2.block_time >= date_trunc('day', now() - interval '7' day)
                 {% endif %}
+<<<<<<< HEAD
             WHERE et.to=0x00000000219ab540356cbb839cbe05303d7705fa
+=======
+            WHERE et.to = 0x00000000219ab540356cbb839cbe05303d7705fa
+>>>>>>> main
                 AND et.success
                 {% if not is_incremental() %}
-                AND et.block_time >= '2020-10-14'
+                AND et.block_time >= DATE '2020-10-14'
                 {% endif %}
                 {% if is_incremental() %}
-                AND et.block_time >= date_trunc("day", now() - interval '1 week')
+                AND et.block_time >= date_trunc('day', now() - interval '7' day)
                 {% endif %}
             GROUP BY et."from", et.block_time
         ) coinbase
@@ -158,7 +162,7 @@ FROM
 
     SELECT binance.address
     , 'Binance' AS name
-    , 'Binance ' || ROW_NUMBER() OVER (ORDER BY MIN(t.block_time)) AS entity_unique_name
+    , CONCAT('Binance ', CAST(ROW_NUMBER() OVER (ORDER BY MIN(t.block_time)) AS VARCHAR)) AS entity_unique_name
     , 'CEX' AS category
     FROM (
         SELECT 0xf17aced3c7a8daa29ebb90db8d1b6efd8c364a18 AS address
@@ -170,10 +174,10 @@ FROM
         WHERE "from"=0xf17aced3c7a8daa29ebb90db8d1b6efd8c364a18
             AND to !=0x00000000219ab540356cbb839cbe05303d7705fa
             {% if not is_incremental() %}
-            AND block_time >= '2020-10-14'
+            AND block_time >= DATE '2020-10-14'
             {% endif %}
             {% if is_incremental() %}
-            AND block_time >= date_trunc("day", now() - interval '1 week')
+            AND block_time >= date_trunc('day', now() - interval '7' day)
             {% endif %}
         GROUP BY to
     ) binance
@@ -181,10 +185,10 @@ FROM
         ON binance.address=t."from"
         AND t.to=0x00000000219ab540356cbb839cbe05303d7705fa
         {% if not is_incremental() %}
-        AND t.block_time >= '2020-10-14'
+        AND t.block_time >= DATE '2020-10-14'
         {% endif %}
         {% if is_incremental() %}
-        AND t.block_time >= date_trunc("day", now() - interval '1 week')
+        AND t.block_time >= date_trunc('day', now() - interval '7' day)
         {% endif %}
     GROUP BY binance.address
 
@@ -192,7 +196,7 @@ FROM
     
     SELECT address
     , entity AS name
-    , entity || ' ' || ROW_NUMBER() OVER (PARTITION BY entity ORDER BY first_used) AS entity_unique_name
+    , CONCAT(entity, ' ', CAST(ROW_NUMBER() OVER (PARTITION BY entity ORDER BY first_used) AS VARCHAR)) AS entity_unique_name
     , category AS category
     FROM (
         SELECT traces."from" AS address
@@ -202,20 +206,20 @@ FROM
         FROM {{ source('ethereum', 'transactions') }} txs
         INNER JOIN {{ source('ethereum', 'traces') }} traces
             ON txs.hash=traces.tx_hash 
-            AND traces.to=0x00000000219ab540356cbb839cbe05303d7705fa
+            AND traces.to = 0x00000000219ab540356cbb839cbe05303d7705fa
             {% if not is_incremental() %}
-            AND traces.block_time >= '2020-10-14'
+            AND traces.block_time >= DATE '2020-10-14'
             {% endif %}
             {% if is_incremental() %}
-            AND traces.block_time >= date_trunc("day", now() - interval '1 week')
+            AND traces.block_time >= date_trunc('day', now() - interval '7' day)
             {% endif %}
         INNER JOIN contracts c ON c.address=txs.to
         WHERE txs.to IN (SELECT address FROM contracts)
             {% if not is_incremental() %}
-            AND txs.block_time >= '2020-10-14'
+            AND txs.block_time >= DATE '2020-10-14'
             {% endif %}
             {% if is_incremental() %}
-            AND txs.block_time >= date_trunc("day", now() - interval '1 week')
+            AND txs.block_time >= date_trunc('day', now() - interval '7' day)
             {% endif %}
         GROUP BY 1, 2, 3
         )

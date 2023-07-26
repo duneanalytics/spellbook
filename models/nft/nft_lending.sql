@@ -1,5 +1,5 @@
 {{ config(
-        alias ='lending',
+        alias = alias('lending'),
         partition_by = ['block_date'],
         materialized = 'incremental',
         file_format = 'delta',

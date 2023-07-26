@@ -1,5 +1,5 @@
 {{ config(
-        alias ='lox_incentives',
+        alias = alias('lox_incentives'),
         partition_by = ['period'],
         materialized = 'table',
         file_format = 'delta',

@@ -1,5 +1,4 @@
 {{ config(
-    tags = ['dunesql'],
     alias = alias('deposits'),
     materialized = 'incremental',
     file_format = 'delta',

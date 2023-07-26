@@ -1,4 +1,4 @@
-{{ config(materialized='view', alias='contract_addresses') }}
+{{ config(materialized='view', alias = alias('contract_addresses')) }}
 
 -- last updated 2023-03-21
 with routers as (
