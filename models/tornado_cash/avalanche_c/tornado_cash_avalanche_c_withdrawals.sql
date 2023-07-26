@@ -38,13 +38,13 @@ FROM {{ source('tornado_cash_avalanche_c','ETHTornado_evt_Withdrawal') }} tc
 INNER JOIN {{ source('avalanche_c','transactions') }} at
         ON at.hash=tc.evt_tx_hash
         {% if not is_incremental() %}
-        AND at.block_time >= '{{avalanche_start_date}}'
+        AND at.block_time >= TIMESTAMP '{{avalanche_start_date}}'
         {% endif %}
         {% if is_incremental() %}
         AND at.block_time >= date_trunc('day', now() - interval '7' day)
         {% endif %}
 {% if not is_incremental() %}
-WHERE tc.evt_block_time >= '{{avalanche_start_date}}'
+WHERE tc.evt_block_time >= TIMESTAMP '{{avalanche_start_date}}'
 {% endif %}
 {% if is_incremental() %}
 WHERE tc.evt_block_time >= date_trunc('day', now() - interval '7' day)

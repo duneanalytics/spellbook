@@ -39,13 +39,13 @@ FROM {{ source('tornado_cash_bnb','TornadoCashBNB_evt_Withdrawal') }} tc
 INNER JOIN {{ source('bnb','transactions') }} bt
         ON bt.hash=tc.evt_tx_hash
         {% if not is_incremental() %}
-        AND bt.block_time >= '{{bnb_start_date}}'
+        AND bt.block_time >= TIMESTAMP '{{bnb_start_date}}'
         {% endif %}
         {% if is_incremental() %}
         AND bt.block_time >= date_trunc('day', now() - interval '7' day)
         {% endif %}
 {% if not is_incremental() %}
-WHERE tc.evt_block_time >= '{{bnb_start_date}}'
+WHERE tc.evt_block_time >= TIMESTAMP '{{bnb_start_date}}'
 {% endif %}
 {% if is_incremental() %}
 WHERE tc.evt_block_time >= date_trunc('day', now() - interval '7' day)

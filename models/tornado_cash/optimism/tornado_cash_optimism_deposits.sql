@@ -37,13 +37,13 @@ FROM {{ source('tornado_cash_optimism','ETHTornado_evt_Deposit') }} tc
 INNER JOIN {{ source('optimism','transactions') }} ot
         ON ot.hash=tc.evt_tx_hash
         {% if not is_incremental() %}
-        AND ot.block_time >= '{{optimism_start_date}}'
+        AND ot.block_time >= TIMESTAMP '{{optimism_start_date}}'
         {% endif %}
         {% if is_incremental() %}
         AND ot.block_time >= date_trunc('day', now() - interval '7' day)
         {% endif %}
 {% if not is_incremental() %}
-WHERE tc.evt_block_time >= '{{optimism_start_date}}'
+WHERE tc.evt_block_time >= TIMESTAMP '{{optimism_start_date}}'
 {% endif %}
 {% if is_incremental() %}
 WHERE tc.evt_block_time >= date_trunc('day', now() - interval '7' day)

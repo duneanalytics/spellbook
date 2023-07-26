@@ -36,13 +36,13 @@ FROM {{ source('tornado_cash_polygon','TornadoCashMatic_evt_Deposit') }} tc
 INNER JOIN {{ source('polygon','transactions') }} pt
         ON pt.hash=tc.evt_tx_hash
         {% if not is_incremental() %}
-        AND pt.block_time >= '{{polygon_start_date}}'
+        AND pt.block_time >= TIMESTAMP '{{polygon_start_date}}'
         {% endif %}
         {% if is_incremental() %}
         AND pt.block_time >= date_trunc('day', now() - interval '7' day)
         {% endif %}
 {% if not is_incremental() %}
-WHERE tc.evt_block_time >= '{{polygon_start_date}}'
+WHERE tc.evt_block_time >= TIMESTAMP '{{polygon_start_date}}'
 {% endif %}
 {% if is_incremental() %}
 WHERE tc.evt_block_time >= date_trunc('day', now() - interval '7' day)

@@ -39,13 +39,13 @@ FROM {{ source('tornado_cash_gnosis','eth_evt_Withdrawal') }} tc
 INNER JOIN {{ source('gnosis','transactions') }} gt
         ON gt.hash=tc.evt_tx_hash
         {% if not is_incremental() %}
-        AND gt.block_time >= '{{gnosis_start_date}}'
+        AND gt.block_time >= TIMESTAMP '{{gnosis_start_date}}'
         {% endif %}
         {% if is_incremental() %}
         AND gt.block_time >= date_trunc('day', now() - interval '7' day)
         {% endif %}
 {% if not is_incremental() %}
-WHERE tc.evt_block_time >= '{{gnosis_start_date}}'
+WHERE tc.evt_block_time >= TIMESTAMP '{{gnosis_start_date}}'
 {% endif %}
 {% if is_incremental() %}
 WHERE tc.evt_block_time >= date_trunc('day', now() - interval '7' day)
