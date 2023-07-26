@@ -20,7 +20,7 @@ WITH early_price AS (
     , MIN_BY(price, minute) AS price
     FROM {{ source('prices', 'usd') }}
     WHERE blockchain = 'ethereum'
-    AND contract_address='{{torn_token_address}}'
+    AND contract_address = {{torn_token_address}}
     )
 
 SELECT 'ethereum' AS blockchain
@@ -36,11 +36,11 @@ SELECT 'ethereum' AS blockchain
 , CASE WHEN t.evt_block_time >= (SELECT minute FROM early_price) THEN CAST(pu.price*t.value/POWER(10, 18) AS double)
     ELSE CAST((SELECT price FROM early_price)*t.value/POWER(10, 18) AS double)
     END AS amount_usd
-, '{{torn_token_address}}' AS token_address
+, {{torn_token_address}} AS token_address
 , 'TORN' AS token_symbol
 , t.evt_index
 FROM {{ source('erc20_ethereum', 'evt_transfer') }} t
 LEFT JOIN {{ ref('prices_usd_forward_fill') }} pu ON pu.blockchain = 'ethereum'
-    AND pu.contract_address='{{torn_token_address}}'
+    AND pu.contract_address = {{torn_token_address}}
     AND pu.minute=date_trunc('minute', t.evt_block_time)
 WHERE t.evt_block_time BETWEEN TIMESTAMP '2020-12-18' AND TIMESTAMP '2021-12-13'
