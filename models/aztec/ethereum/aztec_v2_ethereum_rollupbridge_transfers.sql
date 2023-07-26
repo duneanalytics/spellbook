@@ -1,6 +1,6 @@
 {{ config(
     schema = 'aztec_v2_ethereum',
-    alias = 'rollupbridge_transfers',
+    alias = alias('rollupbridge_transfers'),
     partition_by = ['evt_block_date'],
     materialized = 'incremental',
     file_format = 'delta',
@@ -193,7 +193,7 @@ tfers_categorized as (
                 ELSE ''
             END as bridge_version
         FROM tfers_raw t
-        LEFT JOIN {{ref('tokens_erc20_legacy')}}  tk on t.contract_address = tk.contract_address AND tk.blockchain = 'ethereum'
+        LEFT JOIN {{ref('tokens_erc20')}}  tk on t.contract_address = tk.contract_address AND tk.blockchain = 'ethereum'
         LEFT JOIN all_bridges to_contract on t.tx_to = to_contract.contract_address
         LEFT JOIN all_bridges from_contract on t.tx_from = from_contract.contract_address
 ) 

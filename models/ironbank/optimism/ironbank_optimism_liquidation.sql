@@ -1,5 +1,5 @@
 {{ config(
-    alias = 'liquidation',
+    alias = alias('liquidation'),
     post_hook='{{ expose_spells(\'["optimism"]\',
                                 "project",
                                 "ironbank",

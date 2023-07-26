@@ -1,6 +1,6 @@
 {{
     config(
-        alias='trader_portfolios',
+        alias = alias('trader_portfolios'),
         post_hook='{{ expose_spells(\'["ethereum"]\', "sector", "labels", \'["gentrexha"]\') }}'
     )
 }}

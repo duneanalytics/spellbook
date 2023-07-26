@@ -1,5 +1,5 @@
 {{ config(
-        alias='erc721_latest',
+        alias = alias('erc721_latest'),
         post_hook='{{ expose_spells(\'["ethereum"]\',
                                             "sector",
                                             "balances",
@@ -14,7 +14,7 @@ SELECT
     nft_tokens.name as collection,
     b.updated_at
 FROM {{ ref('transfers_ethereum_erc721_rolling_day') }} b
-LEFT JOIN {{ ref('tokens_nft_legacy') }} nft_tokens ON nft_tokens.contract_address = b.token_address
+LEFT JOIN {{ ref('tokens_nft') }} nft_tokens ON nft_tokens.contract_address = b.token_address
 AND nft_tokens.blockchain = 'ethereum'
 LEFT JOIN {{ ref('balances_ethereum_erc721_noncompliant') }}  as nc
     ON b.token_address = nc.token_address

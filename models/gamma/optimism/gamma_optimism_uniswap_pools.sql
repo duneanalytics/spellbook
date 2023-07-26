@@ -1,7 +1,7 @@
  {{
   config(
         schema='gamma_optimism',
-        alias='uniswap_pools',
+        alias = alias('uniswap_pools'),
         materialized = 'table',
         unique_key = ['contract_address', 'pool_contract']
   )
