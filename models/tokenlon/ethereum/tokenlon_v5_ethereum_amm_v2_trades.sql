@@ -27,8 +27,14 @@ WITH dexs AS (
         CAST(JSON_EXTRACT_SCALAR("order", '$.takerAssetAmount') as VARBINARY)      AS token_sold_amount_raw,
         CAST(JSON_EXTRACT_SCALAR("order", '$.makerAssetAmount') as VARBINARY)      AS token_bought_amount_raw,
         CAST(NULL as double)                                                       AS amount_usd,
-        CAST(JSON_EXTRACT_SCALAR("order", '$.takerAssetAddr') as VARBINARY)        AS token_sold_address,
-        CAST(JSON_EXTRACT_SCALAR("order", '$.makerAssetAddr') as VARBINARY)        AS token_bought_address,
+        CASE
+            WHEN JSON_EXTRACT_SCALAR("order", '$.takerAssetAddr') = "0x0000000000000000000000000000000000000000"
+                CAST("0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2" AS VARBINARY)
+            ELSE CAST(JSON_EXTRACT_SCALAR("order", '$.takerAssetAddr') AS VARBINARY) AS token_sold_address,
+        CASE
+            WHEN JSON_EXTRACT_SCALAR("order", '$.makerAssetAddr') = "0x0000000000000000000000000000000000000000"
+                THEN CAST("0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2" AS VARBINARY)
+            ELSE CAST(JSON_EXTRACT_SCALAR("order", '$.makerAssetAddr') AS VARBINARY) AS token_bought_address,
         contract_address      AS project_contract_address,
         evt_tx_hash           AS tx_hash,
         ''                    AS trace_address,

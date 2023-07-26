@@ -26,9 +26,15 @@ WITH dexs AS (
         "makerAddr"           AS maker,
         "takerAssetAmount"    AS token_sold_amount_raw,
         "makerAssetAmount"    AS token_bought_amount_raw,
-        cast(NULL as double)  AS amount_usd,
-        "takerAssetAddr"      AS token_sold_address,
-        "makerAssetAddr"      AS token_bought_address,
+        CAST(NULL as double)  AS amount_usd,
+        CASE
+            WHEN "takerAssetAddr" IN ("0x0000000000000000000000000000000000000000")
+                THEN "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2"
+            ELSE "takerAssetAddr" AS token_sold_address
+        CASE
+            WHEN "makerAssetAddr" IN ("0x0000000000000000000000000000000000000000")
+                THEN "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2"
+            ELSE "makerAssetAddr" AS token_bought_address
         contract_address      AS project_contract_address,
         evt_tx_hash           AS tx_hash,
         ''                    AS trace_address,
