@@ -30,6 +30,7 @@ FROM (values
   ,(0xeedA95f4513f950957Ae84E4da221ee260Fa2f40,	'Deterministic Factory')
   ,(0x4e59b44847b379578588920cA78FbF26c0B4956C, 'CREATE2 Factory')
   ,(0xE21f6b2A09bB27149E1afec31D05675bcf581FEd, 'CREATE3Factory')
+  ,(0x93FEC2C00BfE902F733B57c5a6CeeD7CD1384AE1, 'CREATE3Factory')
   ,(0xdeaddeaddeaddeaddeaddeaddeaddeaddead0006, 'Genesis Contract')
   ,(0xe1cb04a0fa36ddd16a06ea828007e35e1a3cbc37, 'Singleton Factory')
 
