@@ -55,6 +55,7 @@ SELECT
     lp.trader,
     lp.day,
     lp.project_contract_address,
+    lp.version,
     lm.margin, 
     ll.leverage 
 FROM 
