@@ -88,7 +88,14 @@ last_leverage as (
 )
 
 SELECT 
-    lp.*, 
+    lp.evt_block_time,
+    lp.position_id,
+    lp.margin,
+    lp.evt_tx_hash,
+    lp.leverage,
+    lp.evt_index,
+    lp.trader,
+    lp.day,
     lm.margin, 
     ll.leverage 
 FROM 
