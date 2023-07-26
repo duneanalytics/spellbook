@@ -48,7 +48,8 @@ WITH pools AS (
   FROM (
     SELECT
       c.poolId AS pool_id,
-      explode(arrays_zip(cc.tokens, cc.normalizedWeights)) AS zip,
+      t.tokens,
+      w.weights,
       cc.symbol,
       'WP' AS pool_type
     FROM {{ source('balancer_v2_arbitrum', 'Vault_evt_PoolRegistered') }} c
