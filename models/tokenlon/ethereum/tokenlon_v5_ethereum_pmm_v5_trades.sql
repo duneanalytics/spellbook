@@ -26,7 +26,7 @@ WITH dexs AS (
         "makerAddr"           AS maker,
         "takerAssetAmount"    AS token_sold_amount_raw,
         "makerAssetAmount"    AS token_bought_amount_raw,
-        cast(NULL as double)  AS amount_usd,
+        CAST(NULL as double)  AS amount_usd,
         "takerAssetAddr"      AS token_sold_address,
         "makerAssetAddr"      AS token_bought_address,
         contract_address      AS project_contract_address,
@@ -56,14 +56,14 @@ SELECT
     dexs.token_sold_amount_raw / power(10, erc20b.decimals)     AS token_sold_amount,
     CAST(dexs.token_bought_amount_raw AS DECIMAL(38, 0))        AS token_bought_amount_raw,
     CAST(dexs.token_sold_amount_raw AS DECIMAL(38, 0))          AS token_sold_amount_raw,
-    coalesce(dexs.
+    COALESCE(dexs.
         amount_usd, 
         (dexs.token_bought_amount_raw / power(10, p_bought.decimals)) * p_bought.price, 
         (dexs.token_sold_amount_raw / power(10, p_sold.decimals)) * p_sold.price
     )                                                           AS amount_usd,
     dexs.token_bought_address,
     dexs.token_sold_address,
-    coalesce(dexs.taker, tx."from")                               AS taker,
+    COALESCE(dexs.taker, tx."from")                               AS taker,
     dexs.maker,
     dexs.project_contract_address,
     dexs.tx_hash,
