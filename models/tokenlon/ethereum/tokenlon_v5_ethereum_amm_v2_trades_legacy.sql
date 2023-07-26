@@ -30,11 +30,13 @@ WITH dexs AS (
         CASE
             WHEN JSON_EXTRACT_SCALAR("order", '$.takerAssetAddr') = "0x0000000000000000000000000000000000000000"
                 THEN "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2"
-            ELSE JSON_EXTRACT_SCALAR("order", '$.takerAssetAddr') AS token_sold_address,
+            ELSE JSON_EXTRACT_SCALAR("order", '$.takerAssetAddr')
+        END                                                     AS token_sold_address,
         CASE
             WHEN JSON_EXTRACT_SCALAR("order", '$.makerAssetAddr') = "0x0000000000000000000000000000000000000000"
                 THEN "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2"
-            ELSE JSON_EXTRACT_SCALAR("order", '$.makerAssetAddr') AS token_bought_address,
+            ELSE JSON_EXTRACT_SCALAR("order", '$.makerAssetAddr')
+        END                                                     AS token_bought_address,
         contract_address      AS project_contract_address,
         evt_tx_hash           AS tx_hash,
         ''                    AS trace_address,

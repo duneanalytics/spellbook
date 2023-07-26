@@ -30,11 +30,13 @@ WITH dexs AS (
         CASE
             WHEN "takerAssetAddr" IN ("0x0000000000000000000000000000000000000000")
                 THEN "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2"
-            ELSE "takerAssetAddr" AS token_sold_address
+            ELSE "takerAssetAddr" 
+        END                   AS token_sold_address
         CASE
             WHEN "makerAssetAddr" IN ("0x0000000000000000000000000000000000000000")
                 THEN "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2"
-            ELSE "makerAssetAddr" AS token_bought_address
+            ELSE "makerAssetAddr"
+        END                   AS token_bought_address
         contract_address      AS project_contract_address,
         evt_tx_hash           AS tx_hash,
         ''                    AS trace_address,
@@ -62,14 +64,14 @@ SELECT
     dexs.token_sold_amount_raw / power(10, erc20b.decimals)     AS token_sold_amount,
     CAST(dexs.token_bought_amount_raw AS DECIMAL(38, 0))        AS token_bought_amount_raw,
     CAST(dexs.token_sold_amount_raw AS DECIMAL(38, 0))          AS token_sold_amount_raw,
-    coalesce(dexs.
+    COALESCE(dexs.
         amount_usd, 
         (dexs.token_bought_amount_raw / power(10, p_bought.decimals)) * p_bought.price, 
         (dexs.token_sold_amount_raw / power(10, p_sold.decimals)) * p_sold.price
     )                                                           AS amount_usd,
     dexs.token_bought_address,
     dexs.token_sold_address,
-    coalesce(dexs.taker, tx."from")                               AS taker,
+    COALESCE(dexs.taker, tx."from")                               AS taker,
     dexs.maker,
     dexs.project_contract_address,
     dexs.tx_hash,
