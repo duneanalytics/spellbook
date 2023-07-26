@@ -21,7 +21,7 @@ SELECT tc.evt_block_time AS block_time
 , 'ETH' AS currency_symbol
 , 'optimism' AS blockchain
 , 'classic' AS tornado_version
-, ot.from AS depositor
+, ot."from" AS depositor
 , tc.contract_address AS contract_address
 , CASE WHEN tc.contract_address=0x84443cfd09a48af6ef360c6976c5392ac5023a1f THEN 0.1
         WHEN tc.contract_address=0xb529a618ffedefe5cfa4df8dbb0b32d8c29ca2e8 THEN 0.1

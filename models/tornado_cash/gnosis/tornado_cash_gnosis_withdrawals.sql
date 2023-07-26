@@ -21,7 +21,7 @@ SELECT tc.evt_block_time AS block_time
 , 'xDAI' AS currency_symbol
 , 'gnosis' AS blockchain
 , 'classic' AS tornado_version
-, gt.from AS tx_from
+, gt."from" AS tx_from
 , nullifierHash AS nullifier
 , tc.fee/POWER(10, 18) AS fee
 , tc.relayer

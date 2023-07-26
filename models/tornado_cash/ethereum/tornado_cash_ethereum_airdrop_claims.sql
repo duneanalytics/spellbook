@@ -28,7 +28,7 @@ SELECT 'ethereum' AS blockchain
 , t.evt_block_number AS block_number
 , 'Tornado Cash' AS project
 , 'Tornado Cash Airdrop' AS airdrop_identifier
-, t.from AS recipient
+, t."from" AS recipient
 , t.contract_address
 , t.evt_tx_hash AS tx_hash
 , CAST(t.value AS DECIMAL(38,0)) AS amount_raw

@@ -21,7 +21,7 @@ SELECT tc.evt_block_time AS block_time
 , 'MATIC' AS currency_symbol
 , 'polygon' AS blockchain
 , 'classic' AS tornado_version
-, pt.from AS tx_from
+, pt."from" AS tx_from
 , tc.nullifierHash AS nullifier
 , tc.fee/POWER(10, 18) AS fee
 , tc.relayer

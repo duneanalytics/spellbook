@@ -21,7 +21,7 @@ SELECT tc.evt_block_time AS block_time
 , 'MATIC' AS currency_symbol
 , 'polygon' AS blockchain
 , 'classic' AS tornado_version
-, pt.from AS depositor
+, pt."from" AS depositor
 , tc.contract_address AS contract_address
 , CASE WHEN tc.contract_address=0x1e34a77868e19a6647b1f2f47b51ed72dede95dd THEN 100
         WHEN tc.contract_address=0xdf231d99ff8b6c6cbf4e9b9a945cbacef9339178 THEN 1000

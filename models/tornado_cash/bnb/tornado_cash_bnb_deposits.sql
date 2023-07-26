@@ -21,7 +21,7 @@ SELECT tc.evt_block_time AS block_time
 , 'BNB' AS currency_symbol
 , 'bnb' AS blockchain
 , 'classic' AS tornado_version
-, bt.from AS depositor
+, bt."from" AS depositor
 , tc.contract_address AS contract_address
 , CASE WHEN tc.contract_address=0x84443cfd09a48af6ef360c6976c5392ac5023a1f THEN 0.1
         WHEN tc.contract_address=0xd47438c816c9e7f2e2888e060936a499af9582b3 THEN 1

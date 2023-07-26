@@ -24,7 +24,7 @@ SELECT tc.evt_block_time AS block_time
 , 'ETH' AS currency_symbol
 , 'ethereum' AS blockchain
 , 'classic' AS tornado_version
-, et.from AS depositor
+, et."from" AS depositor
 , tc.contract_address AS contract_address
 , CASE WHEN tc.contract_address=0x12d66f87a04a9e220743712ce6d9bb1b5616b8fc THEN 0.1
         WHEN tc.contract_address=0x47ce0c6ed5b0ce3d3a51fdb1c52dc66a7c3c2936 THEN 1
@@ -103,7 +103,7 @@ SELECT tc.evt_block_time AS block_time
         END AS currency_symbol
 , 'ethereum' AS blockchain
 , 'classic' AS tornado_version
-, et.from AS depositor
+, et."from" AS depositor
 , tc.contract_address AS contract_address
 , CASE WHEN tc.contract_address=0xd4b88df4d29f5cedd6857912842cff3b20c8cfa3 THEN 100
         WHEN tc.contract_address=0xfd8610d20aa15b7b2e3be39b396a1bc3516c7144 THEN 1000
@@ -200,7 +200,7 @@ SELECT tc.evt_block_time AS block_time
         END AS currency_symbol
 , 'ethereum' AS blockchain
 , 'classic' AS tornado_version
-, et.from AS depositor
+, et."from" AS depositor
 , tc.contract_address AS contract_address
 , CASE WHEN tc.contract_address=0xd4b88df4d29f5cedd6857912842cff3b20c8cfa3 THEN 100
         WHEN tc.contract_address=0xfd8610d20aa15b7b2e3be39b396a1bc3516c7144 THEN 1000

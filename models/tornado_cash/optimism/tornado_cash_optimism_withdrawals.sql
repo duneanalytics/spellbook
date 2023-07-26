@@ -21,7 +21,7 @@ SELECT tc.evt_block_time AS block_time
 , 'ETH' AS currency_symbol
 , 'optimism' AS blockchain
 , 'classic' AS tornado_version
-, ot.from AS tx_from
+, ot."from" AS tx_from
 , tc.nullifierHash AS nullifier
 , tc.fee/POWER(10, 18) AS fee
 , tc.relayer

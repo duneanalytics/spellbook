@@ -21,7 +21,7 @@ SELECT tc.evt_block_time AS block_time
 , 'BNB' AS currency_symbol
 , 'bnb' AS blockchain
 , 'classic' AS tornado_version
-, bt.from AS tx_from
+, bt."from" AS tx_from
 , tc.nullifierHash AS nullifier
 , tc.fee/POWER(10, 18) AS fee
 , tc.relayer

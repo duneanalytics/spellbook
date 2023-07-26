@@ -21,7 +21,7 @@ SELECT tc.evt_block_time AS block_time
 , 'AVAX' AS currency_symbol
 , 'avalanche_c' AS blockchain
 , 'classic' AS tornado_version
-, at.from AS tx_from
+, at."from" AS tx_from
 , tc.nullifierHash AS nullifier
 , tc.fee/POWER(10, 18) AS fee
 , tc.relayer
