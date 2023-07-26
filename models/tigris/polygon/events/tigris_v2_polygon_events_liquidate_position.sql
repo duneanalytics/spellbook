@@ -19,7 +19,8 @@ liquidate_position_v1 as (
             evt_index,
             evt_block_time,
             id as position_id,
-            trader as trader 
+            trader as trader,
+            contract_address as project_contract_address
         FROM 
         {{ source('tigristrade_v2_polygon', 'Trading_evt_PositionLiquidated') }}
         {% if is_incremental() %}
@@ -34,7 +35,8 @@ liquidate_position_v2 as (
             evt_index,
             evt_block_time,
             id as position_id,
-            trader as trader 
+            trader as trader,
+            contract_address as project_contract_address 
         FROM 
         {{ source('tigristrade_v2_polygon', 'TradingV2_evt_PositionLiquidated') }}
         {% if is_incremental() %}
@@ -49,7 +51,8 @@ liquidate_position_v3 as (
             evt_index,
             evt_block_time,
             id as position_id,
-            trader as trader 
+            trader as trader,
+            contract_address as project_contract_address
         FROM 
         {{ source('tigristrade_v2_polygon', 'TradingV3_evt_PositionLiquidated') }}
         {% if is_incremental() %}

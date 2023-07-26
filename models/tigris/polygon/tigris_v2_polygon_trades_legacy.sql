@@ -16,6 +16,7 @@ WITH
 open_position as (
     SELECT 
         day, 
+        project_contract_address,
         evt_block_time, 
         evt_index,
         evt_tx_hash,
@@ -41,6 +42,7 @@ open_position as (
 limit_order as (
     SELECT 
         day, 
+        project_contract_address,
         evt_block_time, 
         evt_index,
         evt_tx_hash,
@@ -66,6 +68,7 @@ limit_order as (
 close_position as (
     SELECT 
         date_trunc('day', c.evt_block_time) as day, 
+        c.project_contract_address,
         c.evt_block_time,
         c.evt_index,
         c.evt_tx_hash,
@@ -99,6 +102,7 @@ close_position as (
 liquidate_position as (
     SELECT 
         lp.day, 
+        lp.project_contract_address,
         lp.evt_block_time,
         lp.evt_index,
         lp.evt_tx_hash,
@@ -131,6 +135,7 @@ liquidate_position as (
 add_margin as (
     SELECT 
         am.day, 
+        am.project_contract_address,
         am.evt_block_time,
         am.evt_index,
         am.evt_tx_hash,
@@ -165,7 +170,8 @@ add_margin as (
                 am.margin, 
                 am.margin_change,
                 am.version,
-                am.trader
+                am.trader,
+                am.project_contract_address
             FROM 
                 {{ ref('tigris_v2_polygon_events_add_margin_legacy') }} am 
             INNER JOIN 
@@ -178,7 +184,7 @@ add_margin as (
             {% if is_incremental() %}
             WHERE am.evt_block_time >= date_trunc("day", now() - interval '1 week')
             {% endif %}
-            GROUP BY 2, 3, 4, 5, 6, 7, 8, 9, 10, 11
+            GROUP BY 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12
         ) tmp 
         INNER JOIN 
             {{ ref('tigris_v2_polygon_positions_leverage_legacy') }} l 
@@ -199,6 +205,7 @@ add_margin as (
 modify_margin as (
     SELECT 
         mm.day, 
+        mm.project_contract_address,
         mm.evt_block_time,
         mm.evt_index,
         mm.evt_tx_hash,

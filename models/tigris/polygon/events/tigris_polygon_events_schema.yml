@@ -105,6 +105,9 @@ models:
       - &version
         name: version
         description: "trading contract version"
+      - &project_contract_address
+        name: project_contract_address
+        description: "trading contract address"
 
   - name: tigris_v1_polygon_events_add_margin
     meta:
@@ -137,6 +140,7 @@ models:
       - *margin
       - *trader
       - *version
+      - *project_contract_address
 
   - name: tigris_v1_polygon_events_modify_margin
     meta:
@@ -171,6 +175,7 @@ models:
       - *margin
       - *trader
       - *version
+      - *project_contract_address
 
   - name: tigris_v1_polygon_events_close_position
     meta:
@@ -206,6 +211,7 @@ models:
         description: "% of trade closed"
       - *trader
       - *version
+      - *project_contract_address
 
   - name: tigris_v1_polygon_events_liquidate_position
     meta:
@@ -232,6 +238,7 @@ models:
       - *position_id
       - *trader
       - *version
+      - *project_contract_address
 
   - name: tigris_v1_polygon_events_limit_order
     meta:
@@ -264,6 +271,7 @@ models:
       - *referral
       - *trader
       - *version
+      - *project_contract_address
 
   - name: tigris_v2_polygon_events_open_position
     meta:
@@ -296,6 +304,7 @@ models:
       - *referral
       - *trader
       - *version
+      - *project_contract_address
 
   - name: tigris_v2_polygon_events_add_margin
     meta:
@@ -325,6 +334,7 @@ models:
       - *margin
       - *trader
       - *version
+      - *project_contract_address
 
   - name: tigris_v2_polygon_events_modify_margin
     meta:
@@ -356,6 +366,7 @@ models:
       - *margin
       - *trader
       - *version
+      - *project_contract_address
 
   - name: tigris_v2_polygon_events_close_position
     meta:
@@ -386,6 +397,7 @@ models:
       - *perc_closed
       - *trader
       - *version
+      - *project_contract_address
 
   - name: tigris_v2_polygon_events_liquidate_position
     meta:
@@ -411,6 +423,7 @@ models:
       - *position_id
       - *trader
       - *version
+      - *project_contract_address
 
   - name: tigris_v2_polygon_events_limit_order
     meta:
@@ -443,3 +456,32 @@ models:
       - *referral
       - *trader
       - *version
+      - *project_contract_address
+
+  - name: tigris_polygon_events_contracts_positions
+    meta:
+      blockchain: polygon
+      project: tigris
+      contributors: Henrystats 
+    config:
+      tags: [ 'tigris', 'perps', 'margin' ]
+    description: >
+      tigris trading contracts and their corresponding positions contract
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - trading_contract
+            - positions_contract
+    columns:
+      - &trading_contract
+        name: trading_contract
+        description: "trading contract address "
+      - &positions_contract
+        name: position_contract
+        description: "corresponding position contract address"
+      - &trading_contract_version
+        name: trading_contract_version
+        description: "trading contract version"
+      - &blockchain
+        name: blockchain
+        description: "trading contract chain deployed on"

@@ -12,7 +12,8 @@ margin as (
     SELECT 
         evt_block_time,
         position_id,
-        margin
+        margin,
+        project_contract_address
     FROM 
     {{ ref('tigris_v2_polygon_events_add_margin_legacy') }}
 
@@ -21,7 +22,8 @@ margin as (
     SELECT 
         evt_block_time,
         position_id,
-        margin
+        margin,
+        project_contract_address
     FROM 
     {{ ref('tigris_v2_polygon_events_modify_margin_legacy') }}
 
@@ -30,7 +32,8 @@ margin as (
     SELECT 
         evt_block_time,
         position_id,
-        margin
+        margin,
+        project_contract_address
     FROM 
     {{ ref('tigris_v2_polygon_events_open_position_legacy') }}
 
@@ -39,7 +42,8 @@ margin as (
     SELECT 
         evt_block_time,
         position_id,
-        new_margin as margin 
+        new_margin as margin,
+        project_contract_address
     FROM 
     {{ ref('tigris_v2_polygon_positions_close_legacy') }}
 
@@ -48,7 +52,8 @@ margin as (
     SELECT 
         evt_block_time,
         position_id,
-        margin
+        margin,
+        project_contract_address
     FROM 
     {{ ref('tigris_v2_polygon_events_limit_order_legacy') }}
 

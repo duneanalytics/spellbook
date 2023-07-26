@@ -17,6 +17,7 @@ FROM (
     SELECT
         blockchain,
         day,
+        project_contract_address,
         evt_block_time,
         evt_index,
         evt_tx_hash,

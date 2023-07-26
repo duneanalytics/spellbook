@@ -65,3 +65,6 @@ models:
       - &version
         name: version
         description: "trading contract version"
+      - &project_contract_address
+        name: project_contract_address
+        description: "trading contract address"

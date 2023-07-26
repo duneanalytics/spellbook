@@ -72,6 +72,9 @@ models:
       - &version
         name: version
         description: "trading contract version"
+      - &project_contract_address
+        name: project_contract_address
+        description: "trading contract address"
       
   - name: tigris_v2_arbitrum_trades
     meta:
@@ -108,6 +111,7 @@ models:
       - *margin_change
       - *trade_type
       - *version
+      - *project_contract_address
 
   - name: tigris_arbitrum_trades
     meta:
@@ -137,3 +141,4 @@ models:
       - *margin_change
       - *trade_type
       - *version
+      - *project_contract_address

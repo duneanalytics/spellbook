@@ -23,7 +23,8 @@ modify_margin_v5 as (
             COALESCE(am._addMargin/1e18, rm._removeMargin/1e18) as margin_change, 
             mm._newMargin/1e18 as margin, 
             mm._newLeverage/1e18 as leverage, 
-            mm._trader as trader 
+            mm._trader as trader,
+            mm.contract_address as project_contract_address
         FROM 
         {{ source('tigristrade_polygon', 'TradingV5_evt_MarginModified') }} mm 
         LEFT JOIN 
@@ -58,7 +59,8 @@ modify_margin_v6 as (
             COALESCE(am._addMargin/1e18, rm._removeMargin/1e18) as margin_change, 
             mm._newMargin/1e18 as margin, 
             mm._newLeverage/1e18 as leverage, 
-            mm._trader as trader 
+            mm._trader as trader,
+            mm.contract_address as project_contract_address
         FROM 
         {{ source('tigristrade_polygon', 'TradingV6_evt_MarginModified') }} mm 
         LEFT JOIN 
@@ -93,7 +95,8 @@ modify_margin_v7 as (
             COALESCE(am._addMargin/1e18, rm._removeMargin/1e18) as margin_change, 
             mm._newMargin/1e18 as margin, 
             mm._newLeverage/1e18 as leverage, 
-            mm._trader as trader 
+            mm._trader as trader,
+            mm.contract_address as project_contract_address
         FROM 
         {{ source('tigristrade_polygon', 'TradingV7_evt_MarginModified') }} mm 
         LEFT JOIN 
@@ -132,7 +135,8 @@ modify_margin_v8 as (
             COALESCE(am._addMargin/1e18, rm._removeMargin/1e18) as margin_change, 
             mm._newMargin/1e18 as margin, 
             mm._newLeverage/1e18 as leverage, 
-            mm._trader as trader 
+            mm._trader as trader,
+            mm.contract_address as project_contract_address
         FROM 
         {{ source('tigristrade_polygon', 'TradingV8_evt_MarginModified') }} mm 
         LEFT JOIN 

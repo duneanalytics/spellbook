@@ -35,7 +35,8 @@ open_positions_v1 as (
             ta.pair, 
             t.tradeInfo:direction as direction, 
             t.tradeInfo:referral as referral, 
-            t.trader as trader 
+            t.trader as trader,
+            t.contract_address as project_contract_address
         FROM 
         {{ source('tigristrade_v2_polygon', 'Trading_evt_PositionOpened') }} t 
         INNER JOIN 
@@ -61,7 +62,8 @@ open_positions_v2 as (
             ta.pair, 
             t.tradeInfo:direction as direction, 
             t.tradeInfo:referral as referral, 
-            t.trader as trader 
+            t.trader as trader,
+            t.contract_address as project_contract_address
         FROM 
         {{ source('tigristrade_v2_polygon', 'TradingV2_evt_PositionOpened') }} t 
         INNER JOIN 
@@ -87,7 +89,8 @@ open_positions_v3 as (
             ta.pair, 
             t.tradeInfo:direction as direction, 
             t.tradeInfo:referral as referral, 
-            t.trader as trader 
+            t.trader as trader,
+            t.contract_address as project_contract_address
         FROM 
         {{ source('tigristrade_v2_polygon', 'TradingV3_evt_PositionOpened') }} t 
         INNER JOIN 

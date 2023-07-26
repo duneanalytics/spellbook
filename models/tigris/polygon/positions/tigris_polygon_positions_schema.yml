@@ -34,6 +34,9 @@ models:
       - &evt_index
         name: evt_index
         description: "blockchain transaction index "
+      - &project_contract_address
+        name: project_contract_address
+        description: "trading contract address"
 
   - name: tigris_v1_polygon_positions_close
     meta:
@@ -72,6 +75,7 @@ models:
         name: new_margin
         description: "margin after payout was processed"
       - *evt_index
+      - *project_contract_address
 
   - name: tigris_v1_polygon_positions_margin
     meta:
@@ -98,6 +102,7 @@ models:
         description: "margin of trade at block time"
       - *version
       - *evt_index
+      - *project_contract_address
 
   - name: tigris_v1_polygon_positions_liquidation
     meta:
@@ -128,6 +133,7 @@ models:
       - &day
         name: day
         description: "date of trade"
+      - *project_contract_address
 
   - name: tigris_v2_polygon_positions_leverage
     meta:
@@ -148,6 +154,7 @@ models:
       - *evt_block_time
       - *position_id
       - *leverage
+      - *project_contract_address
   
   - name: tigris_v2_polygon_positions_close
     meta:
@@ -174,6 +181,7 @@ models:
       - *payout
       - *previous_margin
       - *new_margin
+      - *project_contract_address
 
   - name: tigris_v2_polygon_positions_margin
     meta:
@@ -194,6 +202,7 @@ models:
       - *evt_block_time
       - *position_id
       - *margin
+      - *project_contract_address
 
   - name: tigris_v2_polygon_positions_liquidation
     meta:
@@ -218,3 +227,4 @@ models:
       - *evt_index
       - *trader
       - *day
+      - *project_contract_address

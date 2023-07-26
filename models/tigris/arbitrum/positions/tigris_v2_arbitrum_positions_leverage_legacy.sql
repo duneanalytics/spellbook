@@ -12,7 +12,8 @@ leverage as (
     SELECT 
         evt_block_time,
         position_id,
-        leverage 
+        leverage,
+        project_contract_address
     FROM 
     {{ ref('tigris_v2_arbitrum_events_open_position_legacy') }}
 
@@ -21,7 +22,8 @@ leverage as (
     SELECT 
         evt_block_time,
         position_id,
-        leverage 
+        leverage,
+        project_contract_address
     FROM 
     {{ ref('tigris_v2_arbitrum_events_modify_margin_legacy') }}
 
@@ -30,7 +32,8 @@ leverage as (
     SELECT 
         evt_block_time,
         position_id,
-        leverage 
+        leverage,
+        project_contract_address
     FROM 
     {{ ref('tigris_v2_arbitrum_events_limit_order_legacy') }}
 

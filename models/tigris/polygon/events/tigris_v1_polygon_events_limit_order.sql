@@ -47,7 +47,8 @@ limit_orders AS (
             ta.pair,
             CASE WHEN t._direction = true THEN 'true' ELSE 'false' END as direction,
             CAST(NULL as VARBINARY) as referral,
-            t._trader as trader
+            t._trader as trader,
+            t.contract_address as project_contract_address
         FROM {{ source('tigristrade_polygon', limit_order_trading_evt) }} t
         INNER JOIN pairs ta
             ON t._asset = ta.asset_id

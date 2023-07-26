@@ -26,6 +26,9 @@ models:
       - &leverage
         name: leverage
         description: "leverage of trade at evt block time"
+      - &project_contract_address
+        name: project_contract_address
+        description: "trading contract address"
   
   - name: tigris_v1_arbitrum_positions_close
     meta:
@@ -62,6 +65,7 @@ models:
       - &new_margin
         name: new_margin
         description: "margin after payout was processed"
+      - *project_contract_address
 
   - name: tigris_v1_arbitrum_positions_margin
     meta:
@@ -84,6 +88,7 @@ models:
       - &margin
         name: margin
         description: "margin of trade at block time"
+      - *project_contract_address
 
   - name: tigris_v1_arbitrum_positions_liquidation
     meta:
@@ -114,6 +119,7 @@ models:
       - &day
         name: day
         description: "date of trade"
+      - *project_contract_address
 
   - name: tigris_v2_arbitrum_positions_leverage
     meta:
@@ -134,6 +140,7 @@ models:
       - *evt_block_time
       - *position_id
       - *leverage
+      - *project_contract_address
   
   - name: tigris_v2_arbitrum_positions_close
     meta:
@@ -160,6 +167,7 @@ models:
       - *payout
       - *previous_margin
       - *new_margin
+      - *project_contract_address
 
   - name: tigris_v2_arbitrum_positions_margin
     meta:
@@ -180,6 +188,7 @@ models:
       - *evt_block_time
       - *position_id
       - *margin
+      - *project_contract_address
 
   - name: tigris_v2_arbitrum_positions_liquidation
     meta:
@@ -204,3 +213,4 @@ models:
       - *evt_index
       - *trader
       - *day
+      - *project_contract_address

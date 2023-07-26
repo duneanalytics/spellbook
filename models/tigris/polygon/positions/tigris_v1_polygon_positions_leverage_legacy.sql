@@ -14,7 +14,8 @@ leverage as (
         position_id,
         leverage, 
         version,
-        evt_index
+        evt_index,
+        project_contract_address
     FROM 
     {{ ref('tigris_v1_polygon_events_open_position_legacy') }}
 
@@ -25,7 +26,8 @@ leverage as (
         position_id,
         leverage, 
         version,
-        evt_index
+        evt_index,
+        project_contract_address
     FROM 
     {{ ref('tigris_v1_polygon_events_modify_margin_legacy') }}
 
@@ -36,7 +38,8 @@ leverage as (
         position_id,
         leverage, 
         version,
-        evt_index
+        evt_index,
+        project_contract_address
     FROM 
     {{ ref('tigris_v1_polygon_events_limit_order_legacy') }}
 )

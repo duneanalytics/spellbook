@@ -23,7 +23,8 @@ add_margin_v1 as (
             addMargin/1e18 as margin_change, 
             newMargin/1e18 as margin, 
             newPrice/1e18 as price, 
-            trader
+            trader,
+            contract_address as project_contract_address
         FROM 
         {{ source('tigristrade_v2_polygon', 'Trading_evt_AddToPosition') }}
         {% if is_incremental() %}
@@ -41,7 +42,8 @@ add_margin_v2 as (
             addMargin/1e18 as margin_change, 
             newMargin/1e18 as margin, 
             newPrice/1e18 as price, 
-            trader
+            trader,
+            contract_address as project_contract_address
         FROM 
         {{ source('tigristrade_v2_polygon', 'TradingV2_evt_AddToPosition') }}
         {% if is_incremental() %}
@@ -59,7 +61,8 @@ add_margin_v3 as (
             addMargin/1e18 as margin_change, 
             newMargin/1e18 as margin, 
             newPrice/1e18 as price, 
-            trader
+            trader,
+            contract_address as project_contract_address
         FROM 
         {{ source('tigristrade_v2_polygon', 'TradingV3_evt_AddToPosition') }}
         {% if is_incremental() %}

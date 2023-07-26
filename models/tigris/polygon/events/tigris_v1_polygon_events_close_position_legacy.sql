@@ -23,7 +23,8 @@ close_position_v1 as (
             tc._closePrice/1e18 as price, 
             tc._payout/1e18 as payout, 
             tc._percent/100 as perc_closed, 
-            op.trader
+            op.trader,
+            tc.contract_address as project_contract_address
         FROM 
         {{ source('tigristrade_polygon', 'Tradingv1_evt_PositionClosed') }} tc 
         INNER JOIN 
@@ -45,7 +46,8 @@ close_position_v2 as (
             tc._closePrice/1e18 as price, 
             tc._payout/1e18 as payout, 
             tc._percent/100 as perc_closed, 
-            op.trader
+            op.trader,
+            tc.contract_address as project_contract_address
         FROM 
         {{ source('tigristrade_polygon', 'TradingV2_evt_PositionClosed') }} tc 
         INNER JOIN 
@@ -67,7 +69,8 @@ close_position_v3 as (
             tc._closePrice/1e18 as price, 
             tc._payout/1e18 as payout, 
             tc._percent/100 as perc_closed, 
-            op.trader
+            op.trader,
+            tc.contract_address as project_contract_address
         FROM 
         {{ source('tigristrade_polygon', 'TradingV3_evt_PositionClosed') }} tc 
         INNER JOIN 
@@ -90,7 +93,8 @@ close_position_v4 as (
             tc._closePrice/1e18 as price, 
             tc._payout/1e18 as payout, 
             tc._percent/100 as perc_closed, 
-            op.trader
+            op.trader,
+            tc.contract_address as project_contract_address
         FROM 
         {{ source('tigristrade_polygon', 'TradingV4_evt_PositionClosed') }} tc 
         INNER JOIN 
@@ -112,7 +116,8 @@ close_position_v5 as (
             _closePrice/1e18 as price, 
             _payout/1e18 as payout, 
             _percent/1e8 as perc_closed, 
-            _trader as trader 
+            _trader as trader,
+            contract_address as project_contract_address
         FROM 
         {{ source('tigristrade_polygon', 'TradingV5_evt_PositionClosed') }}
         {% if is_incremental() %}
@@ -130,7 +135,8 @@ close_position_v6 as (
             _closePrice/1e18 as price, 
             _payout/1e18 as payout, 
             _percent/1e8 as perc_closed, 
-            _trader as trader 
+            _trader as trader,
+            contract_address as project_contract_address
         FROM 
         {{ source('tigristrade_polygon', 'TradingV6_evt_PositionClosed') }}
         {% if is_incremental() %}
@@ -148,7 +154,8 @@ close_position_v7 as (
             _closePrice/1e18 as price, 
             _payout/1e18 as payout, 
             _percent/1e8 as perc_closed, 
-            _trader as trader 
+            _trader as trader,
+            contract_address as project_contract_address
         FROM 
         {{ source('tigristrade_polygon', 'TradingV7_evt_PositionClosed') }}
         {% if is_incremental() %}
@@ -170,7 +177,8 @@ close_position_v8 as (
             _closePrice/1e18 as price, 
             _payout/1e18 as payout, 
             _percent/1e8 as perc_closed, 
-            _trader as trader 
+            _trader as trader,
+            contract_address as project_contract_address
         FROM 
         {{ source('tigristrade_polygon', 'TradingV8_evt_PositionClosed') }}
         {% if is_incremental() %}

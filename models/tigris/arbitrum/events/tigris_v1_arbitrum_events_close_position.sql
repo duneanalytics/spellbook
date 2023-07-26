@@ -22,7 +22,8 @@ close_position_v2 as (
             _closePrice/1e18 as price, 
             _payout/1e18 as payout, 
             _percent/1e8 as perc_closed, 
-            _trader as trader 
+            _trader as trader,
+            contract_address as project_contract_address
         FROM 
         {{ source('tigristrade_arbitrum', 'TradingV2_evt_PositionClosed') }}
         {% if is_incremental() %}
@@ -40,7 +41,8 @@ close_position_v3 as (
             _closePrice/1e18 as price, 
             _payout/1e18 as payout, 
             _percent/1e8 as perc_closed, 
-            _trader as trader 
+            _trader as trader,
+            contract_address as project_contract_address
         FROM 
         {{ source('tigristrade_arbitrum', 'TradingV3_evt_PositionClosed') }}
         {% if is_incremental() %}
@@ -58,7 +60,8 @@ close_position_v4 as (
             _closePrice/1e18 as price, 
             _payout/1e18 as payout, 
             _percent/1e8 as perc_closed, 
-            _trader as trader 
+            _trader as trader,
+            contract_address as project_contract_address
         FROM 
         {{ source('tigristrade_arbitrum', 'TradingV4_evt_PositionClosed') }}
         {% if is_incremental() %}
@@ -76,7 +79,8 @@ close_position_v5 as (
             _closePrice/1e18 as price, 
             _payout/1e18 as payout, 
             _percent/1e8 as perc_closed, 
-            _trader as trader 
+            _trader as trader,
+            contract_address as project_contract_address
         FROM 
         {{ source('tigristrade_arbitrum', 'TradingV5_evt_PositionClosed') }}
         {% if is_incremental() %}

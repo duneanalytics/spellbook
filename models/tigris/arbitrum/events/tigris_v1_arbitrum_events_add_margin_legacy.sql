@@ -23,7 +23,8 @@ add_margin_v2 as (
             af._addMargin/1e18 as margin_change, 
             ap._newMargin/1e18 as margin, 
             ap._newPrice/1e18 as price, 
-            ap._trader as trader 
+            ap._trader as trader, 
+            ap.contract_address as project_contract_address
         FROM 
         {{ source('tigristrade_arbitrum', 'TradingV2_evt_AddToPosition') }} ap 
         INNER JOIN 
@@ -49,7 +50,8 @@ add_margin_v3 as (
             af._addMargin/1e18 as margin_change, 
             ap._newMargin/1e18 as margin, 
             ap._newPrice/1e18 as price, 
-            ap._trader as trader 
+            ap._trader as trader,
+            ap.contract_address as project_contract_address
         FROM 
         {{ source('tigristrade_arbitrum', 'TradingV3_evt_AddToPosition') }} ap 
         INNER JOIN 
@@ -75,7 +77,8 @@ add_margin_v4 as (
             af._addMargin/1e18 as margin_change, 
             ap._newMargin/1e18 as margin, 
             ap._newPrice/1e18 as price, 
-            ap._trader as trader 
+            ap._trader as trader,
+            ap.contract_address as project_contract_address
         FROM 
         {{ source('tigristrade_arbitrum', 'TradingV4_evt_AddToPosition') }} ap 
         INNER JOIN 
@@ -101,7 +104,8 @@ add_margin_v5 as (
             af._addMargin/1e18 as margin_change, 
             ap._newMargin/1e18 as margin, 
             ap._newPrice/1e18 as price, 
-            ap._trader as trader 
+            ap._trader as trader,
+            ap.contract_address as project_contract_address
         FROM 
         {{ source('tigristrade_arbitrum', 'TradingV5_evt_AddToPosition') }} ap 
         INNER JOIN 

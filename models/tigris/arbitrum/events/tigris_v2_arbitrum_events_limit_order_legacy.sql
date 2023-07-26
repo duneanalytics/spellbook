@@ -43,7 +43,8 @@ limit_orders AS (
             ta.pair,
             CASE WHEN t.direction = true THEN 'true' ELSE 'false' END as direction,
             '' as referral,
-            t.trader as trader
+            t.trader as trader,
+            t.contract_address as project_contract_address
         FROM {{ source('tigristrade_v2_arbitrum', limit_order_trading_evt) }} t
         INNER JOIN pairs ta
             ON t.asset = ta.asset_id
