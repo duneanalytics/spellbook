@@ -29492,4 +29492,5 @@ FROM (VALUES
         ,(0x9732ee9a44938cce991ba4de5f86bb4afc18b6ad, 'PAUL', 18)
         ,(0xb65b74c908d72d790e3e7cbb222e2aaf713346cf, 'MUSH', 9)
         ,(0xb529c64212e7a29ffe7296a138b53d5c2d2a3902, 'BRACE', 8)
+        ,(0x5edb9a9ecc1963f45802861e3579ed17cc89f19f, 'DEFIAI', 18)
      ) AS temp_table (contract_address, symbol, decimals)
