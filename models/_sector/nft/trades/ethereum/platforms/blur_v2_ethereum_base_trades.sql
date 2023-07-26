@@ -10,74 +10,74 @@
     )
 }}
 
-{% set blur_v2_start_date = "cast('2023-07-05' as timestamp)" %}
+{% set blur_v2_start_date = '2023-07-05' %}
 
 WITH blur_v2_trades AS (
     SELECT evt_tx_hash AS tx_hash
-    , CAST(ROUND((bitwise_right_shift(collectionPriceSide, 160) - (bitwise_right_shift(collectionPriceSide, 248) * CAST(power(2, 88) AS UINT256)))/POWER(10, 18), 8) AS double) AS price
+    , bytearray_to_uint256(bytearray_substring(cast(collectionPriceSide as varbinary),2,11)) AS price
     , evt_block_time AS block_time
     , evt_block_number AS block_number
     , NULL AS fee_side
     , evt_index
     , contract_address AS project_contract_address
-    , CAST(bitwise_right_shift(collectionPriceSide, 248) AS BIGINT) AS order_type
-    , from_hex('0x' || LOWER("RIGHT"(CAST(to_hex(CAST(collectionPriceSide AS varbinary)) AS varchar), 40))) AS nft_contract_address
+    , bytearray_to_bigint(bytearray_substring(cast(collectionPriceSide as varbinary),1,1)) AS order_type
+    , bytearray_substring(cast(collectionPriceSide as varbinary),13,20) AS nft_contract_address
     , orderHash AS order_hash
-    , bitwise_right_shift(tokenIdListingIndexTrader, 168) AS nft_token_id
-    , from_hex('0x' || LOWER("RIGHT"(CAST(to_hex(CAST(tokenIdListingIndexTrader AS varbinary)) AS varchar), 40))) AS trader
+    , bytearray_to_uint256(bytearray_substring(cast(tokenIdListingIndexTrader as varbinary),1,11)) AS nft_token_id
+    , bytearray_substring(cast(tokenIdListingIndexTrader as varbinary),13,20) AS trader
     , CAST(0 AS double) AS fee
     , NULL AS royalty_fee_address
     FROM {{ source('blur_v2_ethereum','BlurPool_evt_Execution721Packed') }}
     {% if is_incremental() %}
     WHERE evt_block_time >= date_trunc('day', now() - interval '7' day)
     {% else %}
-    WHERE evt_block_time >= {{blur_v2_start_date}}
+    WHERE evt_block_time >= TIMESTAMP {{blur_v2_start_date}}
     {% endif %}
     
     UNION ALL
     
     SELECT evt_tx_hash AS tx_hash
-    , CAST(ROUND((bitwise_right_shift(collectionPriceSide, 160) - (bitwise_right_shift(collectionPriceSide, 248) * CAST(power(2, 88) AS UINT256)))/POWER(10, 18), 8) AS double) AS price
+    , bytearray_to_uint256(bytearray_substring(cast(collectionPriceSide as varbinary),2,11)) AS price
     , evt_block_time AS block_time
     , evt_block_number AS block_number
     , 'maker' AS fee_side
     , evt_index
     , contract_address AS project_contract_address
-    , CAST(bitwise_right_shift(collectionPriceSide, 248) AS BIGINT) AS order_type
-    , from_hex('0x' || LOWER("RIGHT"(CAST(to_hex(CAST(collectionPriceSide AS varbinary)) AS varchar), 40))) AS nft_contract_address
+    , bytearray_to_bigint(bytearray_substring(cast(collectionPriceSide as varbinary),1,1)) AS order_type
+    , bytearray_substring(cast(collectionPriceSide as varbinary),13,20) AS nft_contract_address
     , orderHash AS order_hash
-    , bitwise_right_shift(tokenIdListingIndexTrader, 168) AS nft_token_id
-    , from_hex('0x' || LOWER("RIGHT"(CAST(to_hex(CAST(tokenIdListingIndexTrader AS varbinary)) AS varchar), 40))) AS trader
+    , bytearray_to_uint256(bytearray_substring(cast(tokenIdListingIndexTrader as varbinary),1,11)) AS nft_token_id
+    , bytearray_substring(cast(tokenIdListingIndexTrader as varbinary),13,20) AS trader
     , CAST(bitwise_right_shift(makerFeeRecipientRate, 160) AS double)/10000 AS fee
     , from_hex('0x' || LOWER("RIGHT"(CAST(to_hex(CAST(makerFeeRecipientRate AS varbinary)) AS varchar), 40))) AS royalty_fee_address
     FROM {{ source('blur_v2_ethereum','BlurPool_evt_Execution721MakerFeePacked') }}
     {% if is_incremental() %}
     WHERE evt_block_time >= date_trunc('day', now() - interval '7' day)
     {% else %}
-    WHERE evt_block_time >= {{blur_v2_start_date}}
+    WHERE evt_block_time >= TIMESTAMP {{blur_v2_start_date}}
     {% endif %}
     
     UNION ALL
     
     SELECT evt_tx_hash AS tx_hash
-    , CAST(ROUND((bitwise_right_shift(collectionPriceSide, 160) - (bitwise_right_shift(collectionPriceSide, 248) * CAST(power(2, 88) AS UINT256)))/POWER(10, 18), 8) AS double) AS price
+    , bytearray_to_uint256(bytearray_substring(cast(collectionPriceSide as varbinary),2,11)) AS price
     , evt_block_time AS block_time
     , evt_block_number AS block_number
     , 'taker' AS fee_side
     , evt_index
     , contract_address AS project_contract_address
-    , CAST(bitwise_right_shift(collectionPriceSide, 248) AS BIGINT) AS order_type
-    , from_hex('0x' || LOWER("RIGHT"(CAST(to_hex(CAST(collectionPriceSide AS varbinary)) AS varchar), 40))) AS nft_contract_address
+    , bytearray_to_bigint(bytearray_substring(cast(collectionPriceSide as varbinary),1,1)) AS order_type
+    , bytearray_substring(cast(collectionPriceSide as varbinary),13,20) AS nft_contract_address
     , orderHash AS order_hash
-    , bitwise_right_shift(tokenIdListingIndexTrader, 168) AS nft_token_id
-    , from_hex('0x' || LOWER("RIGHT"(CAST(to_hex(CAST(tokenIdListingIndexTrader AS varbinary)) AS varchar), 40))) AS trader
+    , bytearray_to_uint256(bytearray_substring(cast(tokenIdListingIndexTrader as varbinary),1,11)) AS nft_token_id
+    , bytearray_substring(cast(tokenIdListingIndexTrader as varbinary),13,20) AS trader
     , CAST(bitwise_right_shift(takerFeeRecipientRate, 160) AS double)/10000 AS fee
     , from_hex('0x' || LOWER("RIGHT"(CAST(to_hex(CAST(takerFeeRecipientRate AS varbinary)) AS varchar), 40))) AS royalty_fee_address
     FROM {{ source('blur_v2_ethereum','BlurPool_evt_Execution721TakerFeePacked') }}
     {% if is_incremental() %}
     WHERE evt_block_time >= date_trunc('day', now() - interval '7' day)
     {% else %}
-    WHERE evt_block_time >= {{blur_v2_start_date}}
+    WHERE evt_block_time >= TIMESTAMP {{blur_v2_start_date}}
     {% endif %}
     )
 
