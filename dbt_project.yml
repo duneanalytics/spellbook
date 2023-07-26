@@ -4,6 +4,11 @@ name: "spellbook"
 version: "1.0.0"
 config-version: 2
 
+quoting:
+  database: false
+  schema: false
+  identifier: false
+
 # This setting configures which "profile" dbt uses for this project.
 profile: "spellbook-local"
 
@@ -45,6 +50,10 @@ seeds:
 models:
   spellbook:
     +post-hook:
+      - sql: "{{ set_trino_session_property(is_materialized(model), 'writer_min_size', model.config.get('writer_min_size', '500MB')) }}"
+        transaction: true
+      - sql: "{{ set_trino_session_property(is_materialized(model), 'task_scale_writers_enabled', false) }}"
+        transaction: true
       - sql: "{{ optimize_spell(this, model.config.materialized) }}"
         transaction: true
       - sql: "{{ mark_as_spell(this, model.config.materialized) }}"
@@ -698,7 +707,7 @@ models:
         +schema: synapse_optimism
       polygon:
         +schema: synapse_polygon
-        
+
     fiat_dao:
       +schema: fiat_dao
       ethereum:
@@ -1150,7 +1159,7 @@ models:
       +schema: rubicon
       optimism:
         +schema: rubicon_optimism
-      arbitrum: 
+      arbitrum:
         +schema: rubicon_arbitrum
 
     beethoven_x:
@@ -1270,7 +1279,7 @@ models:
       +schema: thena
       bnb:
         +schema: thena_bnb
-    
+
     account_abstraction:
       erc4337:
         +schema: account_abstraction_erc4337
