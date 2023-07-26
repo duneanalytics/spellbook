@@ -2,6 +2,7 @@
     config(
         schema='balancer_v2_arbitrum',
         alias = alias('liquidity'),
+        tags = ['dunesql'],
         materialized = 'table',
         file_format = 'delta',
         post_hook='{{ expose_spells(\'["arbitrum"]\',
@@ -31,9 +32,9 @@ WITH pool_labels AS (
 
     dex_prices_1 AS (
         SELECT
-            date_trunc('day', HOUR) AS DAY,
+            date_trunc('day', HOUR) AS day,
             contract_address AS token,
-            percentile(median_price, 0.5) AS price,
+            approx_percentile(median_price, 0.5) AS price,
             sum(sample_size) AS sample_size
         FROM {{ ref('dex_prices') }}
         GROUP BY 1, 2
@@ -55,9 +56,9 @@ WITH pool_labels AS (
 
     bpt_prices AS(
         SELECT 
-            date_trunc('day', HOUR) AS DAY,
+            date_trunc('day', HOUR) AS day,
             contract_address AS token,
-            percentile(median_price, 0.5) AS bpt_price
+            approx_percentile(median_price, 0.5) AS bpt_price
         FROM {{ ref('balancer_v2_arbitrum_bpt_prices') }}
         GROUP BY 1, 2
     ),
@@ -74,7 +75,7 @@ WITH pool_labels AS (
                     date_trunc('day', evt_block_time) AS day,
                     poolId AS pool_id,
                     tokenIn AS token,
-                    amountIn AS delta
+                    CAST(amountIn AS double) AS delta
                 FROM
                     {{ source('balancer_v2_arbitrum', 'Vault_evt_Swap') }}
                 UNION
@@ -83,28 +84,23 @@ WITH pool_labels AS (
                     date_trunc('day', evt_block_time) AS day,
                     poolId AS pool_id,
                     tokenOut AS token,
-                    -amountOut AS delta
+                    -CAST(amountOut AS double) AS delta
                 FROM
                     {{ source('balancer_v2_arbitrum', 'Vault_evt_Swap') }}
             ) swaps
         GROUP BY 1, 2, 3
     ),
 
-zipped_balance_changes AS (
+    balances_changes AS (
         SELECT
             date_trunc('day', evt_block_time) AS day,
             poolId AS pool_id,
-            explode(arrays_zip(tokens, deltas, protocolFeeAmounts)) AS zipped
+            t.token AS token,
+            d.delta - CAST(p.protocolFeeAmount AS double) AS delta
         FROM {{ source('balancer_v2_arbitrum', 'Vault_evt_PoolBalanceChanged') }}
-    ),
-
-    balances_changes AS (
-        SELECT
-            day,
-            pool_id,
-            zipped.tokens AS token,
-            zipped.deltas - zipped.protocolFeeAmounts AS delta
-        FROM zipped_balance_changes
+        CROSS JOIN UNNEST(tokens) AS t(token)
+        CROSS JOIN UNNEST(deltas) AS d(delta)
+        CROSS JOIN UNNEST(protocolFeeAmounts) AS p(protocolFeeAmount)
         ORDER BY 1, 2, 3
     ),
 
@@ -146,7 +142,7 @@ zipped_balance_changes AS (
                     day,
                     pool_id,
                     token,
-                    delta AS amount
+                    CAST(delta as double) AS amount
                 FROM
                     managed_changes
             ) balance
@@ -164,7 +160,8 @@ zipped_balance_changes AS (
     ),
 
     calendar AS (
-        SELECT explode(sequence(to_date('2021-04-21'), CURRENT_DATE, interval 1 day)) AS day
+        SELECT date_sequence AS day
+        FROM unnest(sequence(date('2021-04-21'), date(now()), interval '1' day)) as t(date_sequence)
     ),
 
    cumulative_usd_balance AS (
