@@ -6,8 +6,9 @@
 }}
 
 WITH unified_mappings AS (
-        SELECT proposal_name, project_name,
-                ROW_NUMBER() OVER (PARTITION BY lower(proposal_name) ORDER BY project_name ASC) AS rn
+        SELECT proposal_name,
+               project_name,
+               ROW_NUMBER() OVER (PARTITION BY lower(proposal_name) ORDER BY project_name ASC) AS rn
         FROM (
                 SELECT proposal_name, project_name
 
