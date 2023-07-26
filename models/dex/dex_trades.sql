@@ -30,6 +30,7 @@
 ,ref('velodrome_optimism_trades')
 ,ref('woofi_trades')
 ,ref('bancor_ethereum_trades')
+,ref('carbon_defi_ethereum_trades')
 ,ref('platypus_finance_avalanche_c_trades')
 ,ref('trader_joe_trades')
 ,ref('hashflow_trades')
