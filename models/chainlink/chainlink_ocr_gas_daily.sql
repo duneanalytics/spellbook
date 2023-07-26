@@ -1,7 +1,7 @@
 {{
   config(
     tags=['dunesql'],
-    alias='ocr_gas_daily',
+    alias=alias('ocr_gas_daily'),
     post_hook='{{ expose_spells(\'["arbitrum","avalanche_c","bnb","ethereum","fantom","gnosis","optimism","polygon"]\',
                             "project",
                             "chainlink",
@@ -26,6 +26,7 @@ FROM (
     SELECT
       blockchain,
       date_start,
+      date_month,
       node_address,
       operator_name,
       fulfilled_token_amount,

@@ -1,7 +1,7 @@
 {{
   config(
     tags=['dunesql'],
-    alias='ocr_fulfilled_transactions',
+    alias=alias('ocr_fulfilled_transactions'),
     post_hook='{{ expose_spells(\'["arbitrum","avalanche_c","bnb","ethereum","fantom","gnosis","optimism","polygon"]\',
                             "project",
                             "chainlink",
@@ -26,6 +26,7 @@ FROM (
     SELECT
       blockchain,
       block_time,
+      date_month,
       node_address,
       token_amount,
       usd_amount

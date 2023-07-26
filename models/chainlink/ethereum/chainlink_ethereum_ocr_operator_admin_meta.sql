@@ -1,14 +1,15 @@
 {{
-      config(
-        tags=['dunesql'],
-        alias='ocr_operator_admin_meta',
-        materialized = 'view',
-        post_hook='{{ expose_spells(\'["ethereum"]\',
-                                    "sector",
-                                    "chainlink",
-                                    \'["linkpool_ryan", "linkpool_jon"]\') }}'
-      )
-    }}
+  config(
+    tags=['dunesql'],
+    alias=alias('ocr_operator_admin_meta'),
+    materialized = 'view',
+    post_hook='{{ expose_spells(\'["ethereum"]\',
+                                "project",
+                                "chainlink",
+                                \'["linkpool_ryan", "linkpool_jon"]\') }}'
+  )
+}}
+
 {% set alphachain = 'Alpha Chain' %}
 {% set kytzu = 'Kytzu' %}
 {% set lexisnexis = 'LexisNexis' %}
@@ -77,6 +78,7 @@
 {% set linkpool = 'LinkPool' %}
 {% set nomics = 'Nomics.com' %}
 {% set easy2stake = 'Easy 2 stake' %}
+
 SELECT admin_address, operator_name FROM (VALUES
   ('0x111f1B41f702c20707686769a4b7f25c56C533B2', '{{wetez}}'),
   ('0x54919167e0389b07a99e7cE9F66F1fd9f8C75d77', '{{kyber}}'),

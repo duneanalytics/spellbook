@@ -1,14 +1,15 @@
 {{
-      config(
-        tags=['dunesql'],
-        alias='ocr_operator_admin_meta',
-        materialized = 'view',
-        post_hook='{{ expose_spells(\'["bnb"]\',
-                                    "sector",
-                                    "chainlink",
-                                    \'["linkpool_ryan", "linkpool_jon"]\') }}'
-      )
-    }}
+  config(
+    tags=['dunesql'],
+    alias=alias('ocr_operator_admin_meta'),
+    materialized = 'view',
+    post_hook='{{ expose_spells(\'["bnb"]\',
+                                "project",
+                                "chainlink",
+                                \'["linkpool_ryan", "linkpool_jon"]\') }}'
+  )
+}}
+
 {% set snzpool = 'SNZPool' %}
 {% set cosmostation = 'Cosmostation' %}
 {% set syncnode = 'SyncNode' %}
@@ -34,6 +35,7 @@
 {% set linkpool = 'LinkPool' %}
 {% set tiingo = 'Tiingo' %}
 {% set frameworkventures = 'Framework Ventures' %}
+
 SELECT admin_address, operator_name FROM (VALUES
   ('0xC51D3470693BC049809A1c515606124c7C75908d', '{{syncnode}}'),
   ('0x0b16EC1044F60F03B0e815f863bd4d27638cbD0A', '{{xbto}}'),

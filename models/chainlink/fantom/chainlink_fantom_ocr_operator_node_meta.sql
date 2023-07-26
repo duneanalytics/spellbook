@@ -1,14 +1,15 @@
 {{
-      config(
-        tags=['dunesql'],
-        alias='ocr_operator_node_meta',
-        materialized = 'view',
-        post_hook='{{ expose_spells(\'["fantom"]\',
-                                    "sector",
-                                    "chainlink",
-                                    \'["linkpool_ryan", "linkpool_jon"]\') }}'
-      )
-    }}
+  config(
+    tags=['dunesql'],
+    alias=alias('ocr_operator_node_meta'),
+    materialized = 'view',
+    post_hook='{{ expose_spells(\'["fantom"]\',
+                                "project",
+                                "chainlink",
+                                \'["linkpool_ryan", "linkpool_jon"]\') }}'
+  )
+}}
+
 {% set inotel = 'Inotel' %}
 {% set syncnode = 'SyncNode' %}
 {% set newroad = 'Newroad Network' %}
@@ -26,6 +27,7 @@
 {% set cryptomanufaktur = 'CryptoManufaktur' %}
 {% set 01node = '01Node' %}
 {% set tiingo = 'Tiingo' %}
+
 SELECT node_address, operator_name FROM (VALUES
   ('0x05Ee5882122A86C8D15D8D5ECB42830503A7d0d8', '{{easy2stake}}'),
   ('0x120Af64d9B7bB555cd2Abc47A945d126ddeD0376', '{{p2porg}}'),

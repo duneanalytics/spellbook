@@ -1,14 +1,15 @@
 {{
-      config(
-        tags=['dunesql'],
-        alias='ocr_operator_node_meta',
-        materialized = 'view',
-        post_hook='{{ expose_spells(\'["bnb"]\',
-                                    "sector",
-                                    "chainlink",
-                                    \'["linkpool_ryan", "linkpool_jon"]\') }}'
-      )
-    }}
+  config(
+    tags=['dunesql'],
+    alias=alias('ocr_operator_node_meta'),
+    materialized = 'view',
+    post_hook='{{ expose_spells(\'["bnb"]\',
+                                "project",
+                                "chainlink",
+                                \'["linkpool_ryan", "linkpool_jon"]\') }}'
+  )
+}}
+
 {% set xbto = 'XBTO' %}
 {% set dmakers = 'dMakers' %}
 {% set snzpool = 'SNZPool' %}
@@ -34,6 +35,7 @@
 {% set blockdaemon = 'Blockdaemon' %}
 {% set onchaintech = 'On-chain Tech' %}
 {% set alphachain = 'Alpha Chain' %}
+
 SELECT node_address, operator_name FROM (VALUES
   ('0xA1e96Ecaab9d97Bd17583966963C486cf856B639', '{{easy2stake}}'),
   ('0x7a8cB388CEf668201aE8d213f87227007D39cC9C', '{{easy2stake}}'),

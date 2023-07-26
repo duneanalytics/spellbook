@@ -1,10 +1,14 @@
 {{
   config(
     tags=['dunesql'],
-    alias='ocr_reverted_transactions',
-    materialized = 'view',
+    alias=alias('ocr_reverted_transactions'),
+    partition_by=['date_month'],
+    materialized='incremental',
+    file_format='delta',
+    incremental_strategy='merge',
+    unique_key=['hash', 'index', 'from'],
     post_hook='{{ expose_spells(\'["avalanche_c"]\',
-                                "sector",
+                                "project",
                                 "chainlink",
                                 \'["linkpool_ryan"]\') }}'
   )
@@ -28,6 +32,7 @@ WITH
   ocr_reverted_transactions AS (
     SELECT
       MAX(tx.block_time) as block_time,
+      date_trunc('month', MAX(tx.block_time)) as date_month,
       tx."from" as "node_address",
       MAX((cast((gas_used) as double) / 1e18) * gas_price) as token_amount,
       MAX(avalanche_c_usd.usd_amount) as usd_amount
@@ -47,6 +52,7 @@ WITH
 SELECT
  'avalanche_c' as blockchain,
  block_time,
+ date_month,
  node_address,
  token_amount,
  usd_amount

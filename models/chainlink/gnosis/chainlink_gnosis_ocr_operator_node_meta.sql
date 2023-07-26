@@ -1,14 +1,15 @@
 {{
-      config(
-        tags=['dunesql'],
-        alias='ocr_operator_node_meta',
-        materialized = 'view',
-        post_hook='{{ expose_spells(\'["gnosis"]\',
-                                    "sector",
-                                    "chainlink",
-                                    \'["linkpool_ryan", "linkpool_jon"]\') }}'
-      )
-    }}
+  config(
+    tags=['dunesql'],
+    alias=alias('ocr_operator_node_meta'),
+    materialized = 'view',
+    post_hook='{{ expose_spells(\'["gnosis"]\',
+                                "project",
+                                "chainlink",
+                                \'["linkpool_ryan", "linkpool_jon"]\') }}'
+  )
+}}
+
 {% set fiews = 'Fiews' %}
 {% set snzpool = 'SNZPool' %}
 {% set dextrac = 'DexTrac' %}
@@ -23,6 +24,7 @@
 {% set linkpool = 'LinkPool' %}
 {% set blockdaemon = 'Blockdaemon' %}
 {% set inotel = 'Inotel' %}
+
 SELECT node_address, operator_name FROM (VALUES
   ('0x16F5c3Dc347A5814B81553c7725D4ed9214C8A3c', '{{fiews}}'),
   ('0x0184Ee351E270fb0942C5Cb66f0Ff37bF4d37D3e', '{{fiews}}'),

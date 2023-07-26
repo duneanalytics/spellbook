@@ -1,14 +1,15 @@
 {{
-      config(
-        tags=['dunesql'],
-        alias='ocr_operator_admin_meta',
-        materialized = 'view',
-        post_hook='{{ expose_spells(\'["avalanche_c"]\',
-                                    "sector",
-                                    "chainlink",
-                                    \'["linkpool_ryan", "linkpool_jon"]\') }}'
-      )
-    }}
+  config(
+    tags=['dunesql'],
+    alias=alias('ocr_operator_admin_meta'),
+    materialized = 'view',
+    post_hook='{{ expose_spells(\'["avalanche_c"]\',
+                                "project",
+                                "chainlink",
+                                \'["linkpool_ryan", "linkpool_jon"]\') }}'
+  )
+}}
+
 {% set blocksizecapital = 'Blocksize Capital' %}
 {% set inotel = 'Inotel' %}
 {% set p2porg = 'P2P.org' %}
@@ -27,6 +28,7 @@
 {% set linkforest = 'LinkForest' %}
 {% set chainlayer = 'Chainlayer' %}
 {% set simplyvc = 'Simply VC' %}
+
 SELECT admin_address, operator_name FROM (VALUES
   ('0x797de2909991C66C66D8e730C8385bbab8D18eA6', '{{linkpool}}'),
   ('0x183A96629fF566e7AA8AfA38980Cd037EB40A59A', '{{validationcapital}}'),

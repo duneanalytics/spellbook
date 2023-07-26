@@ -1,10 +1,10 @@
 {{
   config(
     tags=['dunesql'],
-    alias='ocr_gas_transmission_logs',
-    materialized = 'view',
+    alias=alias('ocr_gas_transmission_logs'),
+    materialized='view',
     post_hook='{{ expose_spells(\'["fantom"]\',
-                                "sector",
+                                "project",
                                 "chainlink",
                                 \'["linkpool_ryan"]\') }}'
   )

@@ -1,15 +1,20 @@
 {{
   config(
     tags=['dunesql'],
-    alias='ocr_gas_daily',
-    materialized = 'view',
+    alias=alias('ocr_gas_daily'),
+    partition_by=['date_month'],
+    materialized='incremental',
+    file_format='delta',
+    incremental_strategy='merge',
+    unique_key=['date_start', 'node_address'],
     post_hook='{{ expose_spells(\'["polygon"]\',
-                                "sector",
+                                "project",
                                 "chainlink",
                                 \'["linkpool_ryan"]\') }}'
   )
 }}
 
+{% set incremental_interval = '7' %}
 {% set truncate_by = 'day' %}
 
 WITH
@@ -32,6 +37,11 @@ WITH
       FULL OUTER JOIN {{ ref('chainlink_polygon_ocr_reverted_transactions') }} reverted ON
         reverted.block_time = fulfilled.block_time AND
         reverted.node_address = fulfilled.node_address
+    {% if is_incremental() %}
+      WHERE
+        fulfilled.block_time >= date_trunc('day', now() - interval '{{incremental_interval}}' day)
+        AND reverted.block_time >= date_trunc('day', now() - interval '{{incremental_interval}}' day)
+    {% endif %}
     GROUP BY
       1, 2
     ORDER BY
@@ -41,6 +51,7 @@ WITH
     SELECT
       'polygon' as blockchain,
       date_start,
+      date_trunc('month', MAX(date_start)) as date_month,
       ocr_gas_daily_meta.node_address as node_address,
       operator_name,
       fulfilled_token_amount,
@@ -55,6 +66,7 @@ WITH
 SELECT 
   blockchain,
   date_start,
+  date_month,
   node_address,
   operator_name,
   fulfilled_token_amount,

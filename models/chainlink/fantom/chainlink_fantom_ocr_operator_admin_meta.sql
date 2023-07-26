@@ -1,14 +1,15 @@
 {{
-      config(
-        tags=['dunesql'],
-        alias='ocr_operator_admin_meta',
-        materialized = 'view',
-        post_hook='{{ expose_spells(\'["fantom"]\',
-                                    "sector",
-                                    "chainlink",
-                                    \'["linkpool_ryan", "linkpool_jon"]\') }}'
-      )
-    }}
+  config(
+    tags=['dunesql'],
+    alias=alias('ocr_operator_admin_meta'),
+    materialized = 'view',
+    post_hook='{{ expose_spells(\'["fantom"]\',
+                                "project",
+                                "chainlink",
+                                \'["linkpool_ryan", "linkpool_jon"]\') }}'
+  )
+}}
+
 {% set vulcan = 'Vulcan Link' %}
 {% set prophet = 'Prophet' %}
 {% set linkriver = 'LinkRiver' %}
@@ -26,6 +27,7 @@
 {% set linkpool = 'LinkPool' %}
 {% set kytzu = 'Kytzu' %}
 {% set fiews = 'Fiews' %}
+
 SELECT admin_address, operator_name FROM (VALUES
   ('0xC51D3470693BC049809A1c515606124c7C75908d', '{{syncnode}}'),
   ('0xAB35418fB9f8B13E3e6857c36A0769b9F94a87EC', '{{newroad}}'),

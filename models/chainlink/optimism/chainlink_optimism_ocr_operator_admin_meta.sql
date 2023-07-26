@@ -1,14 +1,15 @@
 {{
-      config(
-        tags=['dunesql'],
-        alias='ocr_operator_admin_meta',
-        materialized = 'view',
-        post_hook='{{ expose_spells(\'["optimism"]\',
-                                    "sector",
-                                    "chainlink",
-                                    \'["linkpool_ryan", "linkpool_jon"]\') }}'
-      )
-    }}
+  config(
+    tags=['dunesql'],
+    alias=alias('ocr_operator_admin_meta'),
+    materialized = 'view',
+    post_hook='{{ expose_spells(\'["optimism"]\',
+                                "project",
+                                "chainlink",
+                                \'["linkpool_ryan", "linkpool_jon"]\') }}'
+  )
+}}
+
 {% set simplyvc = 'Simply VC' %}
 {% set linkpool = 'LinkPool' %}
 {% set cryptomanufaktur = 'CryptoManufaktur' %}
@@ -22,6 +23,7 @@
 {% set linkriver = 'LinkRiver' %}
 {% set 01node = '01Node' %}
 {% set mycelium = 'Mycelium' %}
+
 SELECT admin_address, operator_name FROM (VALUES
   ('0x3615Fa045f00ae0eD60Dc0141911757c2AdC5E03', '{{anyblockanalytics}}'),
   ('0x9efa0A617C0552F1558c95993aA8b8A68b3e709C', '{{dextrac}}'),

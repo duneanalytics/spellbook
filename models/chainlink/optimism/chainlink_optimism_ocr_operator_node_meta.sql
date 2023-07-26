@@ -1,14 +1,15 @@
 {{
-      config(
-        tags=['dunesql'],
-        alias='ocr_operator_node_meta',
-        materialized = 'view',
-        post_hook='{{ expose_spells(\'["optimism"]\',
-                                    "sector",
-                                    "chainlink",
-                                    \'["linkpool_ryan", "linkpool_jon"]\') }}'
-      )
-    }}
+  config(
+    tags=['dunesql'],
+    alias=alias('ocr_operator_node_meta'),
+    materialized = 'view',
+    post_hook='{{ expose_spells(\'["optimism"]\',
+                                "project",
+                                "chainlink",
+                                \'["linkpool_ryan", "linkpool_jon"]\') }}'
+  )
+}}
+
 {% set linkriver = 'LinkRiver' %}
 {% set 01node = '01Node' %}
 {% set mycelium = 'Mycelium' %}
@@ -22,6 +23,7 @@
 {% set simplyvc = 'Simply VC' %}
 {% set linkpool = 'LinkPool' %}
 {% set cryptomanufaktur = 'CryptoManufaktur' %}
+
 SELECT node_address, operator_name FROM (VALUES
   ('0x91722db88a8810e2e4AE2E4549aeE9eb2B9A4e8A', '{{simplyvc}}'),
   ('0xE5e7492282FD1E3bfAC337A0BecCD29b15B7B240', '{{simplyvc}}'),

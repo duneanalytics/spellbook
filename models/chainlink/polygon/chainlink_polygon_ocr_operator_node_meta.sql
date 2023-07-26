@@ -1,14 +1,15 @@
 {{
-      config(
-        tags=['dunesql'],
-        alias='ocr_operator_node_meta',
-        materialized = 'view',
-        post_hook='{{ expose_spells(\'["polygon"]\',
-                                    "sector",
-                                    "chainlink",
-                                    \'["linkpool_ryan", "linkpool_jon"]\') }}'
-      )
-    }}
+  config(
+    tags=['dunesql'],
+    alias=alias('ocr_operator_node_meta'),
+    materialized = 'view',
+    post_hook='{{ expose_spells(\'["polygon"]\',
+                                "project",
+                                "chainlink",
+                                \'["linkpool_ryan", "linkpool_jon"]\') }}'
+  )
+}}
+
 {% set inotel = 'Inotel' %}
 {% set matrixedlink = 'Matrixed.Link' %}
 {% set linkforest = 'LinkForest' %}
@@ -30,6 +31,7 @@
 {% set bharvest = 'B Harvest' %}
 {% set ztake = 'Ztake.org' %}
 {% set vulcan = 'Vulcan Link' %}
+
 SELECT node_address, operator_name FROM (VALUES
   ('0x550365027554bD20D750f9361e460C7428ffBd75', '{{fiews}}'),
   ('0xFCE3E6b1739812cdDa335964f281E9A0472B6047', '{{fiews}}'),

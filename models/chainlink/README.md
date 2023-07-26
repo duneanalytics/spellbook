@@ -1,29 +1,53 @@
 # Price Feeds
 
-## Optimism 
+## About
 
-To add a new price feed, add a row to the `chainlink_optimism_price_feeds_oracle_addresses.sql` table with the following information:
-- **feed_name**: Sourced from [Chainlink Docs](https://docs.chain.link/docs/optimism-price-feeds/)
-- **decimals**: Sourced from [Chainlink Docs](https://docs.chain.link/docs/optimism-price-feeds/) (Note: This refers to the price feed decimals, not the underlying token's decimals)
-- **proxy_address**: Sourced from [Chainlink Docs](https://docs.chain.link/docs/optimism-price-feeds/)
-- **aggregator_address**: Sourced from opening the proxy address on Etherscan ([example](https://optimistic.etherscan.io/address/0x338ed6787f463394D24813b297401B9F05a8C9d1#readContract)), clicking 'Contract' -> 'Read Contract' and getting the address from the 'aggregator' field
+chainlink.price_feeds* models aggregate feed data from logs, add prices answesr, and truncates hourly and daily.
 
-*Open Research Area: Is there a way for us to deterministically build the oracle -> address -> feed name -> token links purely by reading on-chain events vs manually entering data from Chainlink docs?*
-# Price Feeds
+## Flow of tables
 
-## Optimism 
+- `price_feeds_oracle_addresses`: Meta file provides feed details based on aggregator address.
+- `price_feeds_oracle_token_mapping`: Meta file provides feed details based on underlying token address
+- `price_feeds`: Selected logs filtered by appropriate topic, joined by oracle_addresses. Adds secondary join with token_mapping to get accurate price decimals. Truncated daily.
+- `price_feeds_hourly`: price_feeds. Trruncated hourly.
 
-To add a new price feed, add a row to the `chainlink_optimism_price_feeds_oracle_addresses.sql` table with the following information:
-- **feed_name**: Sourced from [Chainlink Docs](https://docs.chain.link/docs/optimism-price-feeds/)
-- **decimals**: Sourced from [Chainlink Docs](https://docs.chain.link/docs/optimism-price-feeds/) (Note: This refers to the price feed decimals, not the underlying token's decimals)
-- **proxy_address**: Sourced from [Chainlink Docs](https://docs.chain.link/docs/optimism-price-feeds/)
-- **aggregator_address**: Sourced from opening the proxy address on Etherscan ([example](https://optimistic.etherscan.io/address/0x338ed6787f463394D24813b297401B9F05a8C9d1#readContract)), clicking 'Contract' -> 'Read Contract' and getting the address from the 'aggregator' field
+## Maintenance
 
-*Open Research Area: Is there a way for us to deterministically build the oracle -> address -> feed name -> token links purely by reading on-chain events vs manually entering data from Chainlink docs?*
+These oracle_addresses and token_mapping models require consistent maintenance with adding feeds periodically. The LinkPool team has built an automated internal tool which can be used to periodically generate updated vesions of these files. Where possible, manual edits to these files should be avoided in favor of the automated generation script. Please mention @linkpool_ryan (gh: anon-r-7) or @linkpool_jon (gh: AnonJon) for request to update.
 
-## OCR Metrics Usage Example
+# OCR
 
-Aggregate OCR data monthly with margin and  aggregation, along with margin by node operator
+## About
+
+chainlink.ocr* models aggregate logs and transactions relating to node operator gas usage, rewards and requests and truncates daily. Ultimately, this is used to track financial performance, isolated by node operator and/or by network. Calculating OCR payments is inherently complex and requires intimate knowledge and understanding of the OCR payment system. This spellbook abstracts this complexity while still providing the ability for users to isolate even at the log or transaction level. 
+
+## Flow of Tables
+
+### Node Operator Meta
+- `ocr_operator_node_meta`: Node operators spend gas from each node on a given network. This is a catalogue of all current and historical node_addresses used by node operators.
+- `ocr_operator_admin_meta`: Node operators receive payment to an `admin_address` per network for payment of all nodes ran on that network. This is a catalogue of all current and historical admin_addresses used by node operators. 
+- Node meta is ultimately used to calculate gas costs by operators, and admin meta rewards. Both meta tables define a source controlled `operator_name` which can be used to join gas and rewards to calaculate margin (e.g., `margin = (rewards - gas) / rewards`)
+
+### Gas: Fulfilled Transactions
+- `ocr_gas_transmission_logs`: Isolates logs to the OCR topic0 gas event
+- `ocr_fulfilled_transactions`: Joins OCR logs with transactions and adds usd price to the closest minute
+
+### Gas: Reverted Transactions
+- `ocr_reverted_transactions`: Isolates all failed transactions on nodes and adds usd price to the closest minute
+
+### Rewards
+- `ocr_reward_transmission_logs`: Isolates logs to the OCR topic0 reward event
+- `ocr_reward_evt_transfer`: Joins reward_transmission_logs to erc20 event transfer to obtain token value for each log and injects operator details
+- `ocr_reward_evt_transfer_daily`: Truncates event transfers daily and calculate the sum of token value
+
+### Daily Summary
+- `ocr_gas_daily`: Joins fulfilled and reverted transactions, truncates to daily calculating total gas in token and usd for each of fulfilled, reverted, and total, and injects operator details
+- `ocr_request_daily`: Joins fulfilled and reverted transactions, truncates to daily calculating number of transactions in each of fulfilled, reverted and total, and injects operator details
+- `ocr_reward_daily`: Distributes payments from ocr_reward_evt_transfer_daily over the number of days since the last payment, the closest methodology available to mirror intended payment schedules by OCR. Adds price usd per day and truncates results to a token and usd amount of rewards per day with node operator details included. 
+
+## Usage Example
+
+### Use Case A: Display OCR metrics for a given node operator on a monthly basis for the last N months
 
 ```sql
 WITH 
@@ -34,7 +58,7 @@ WITH
       SUM(token_amount) as reward_token,
       SUM(usd_amount) as reward_usd
     FROM chainlink_ethereum_ocr_reward_daily
-    WHERE operator_name = 'LinkPool'
+    WHERE operator_name = '<some-operator>'
       AND date_start >= cast('2023-01-01' as date)
     GROUP BY 1, 2
   ),

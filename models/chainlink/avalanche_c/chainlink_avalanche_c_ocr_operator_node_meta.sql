@@ -1,14 +1,15 @@
 {{
-      config(
-        tags=['dunesql'],
-        alias='ocr_operator_node_meta',
-        materialized = 'view',
-        post_hook='{{ expose_spells(\'["avalanche_c"]\',
-                                    "sector",
-                                    "chainlink",
-                                    \'["linkpool_ryan", "linkpool_jon"]\') }}'
-      )
-    }}
+  config(
+    tags=['dunesql'],
+    alias=alias('ocr_operator_node_meta'),
+    materialized = 'view',
+    post_hook='{{ expose_spells(\'["avalanche_c"]\',
+                                "project",
+                                "chainlink",
+                                \'["linkpool_ryan", "linkpool_jon"]\') }}'
+  )
+}}
+
 {% set chainlayer = 'Chainlayer' %}
 {% set simplyvc = 'Simply VC' %}
 {% set anyblockanalytics = 'Anyblock' %}
@@ -27,6 +28,7 @@
 {% set linkpool = 'LinkPool' %}
 {% set validationcapital = 'Validation Capital' %}
 {% set linkriver = 'LinkRiver' %}
+
 SELECT node_address, operator_name FROM (VALUES
   ('0xd877d01d972D28dBd28ed138c63173D07A024E5C', '{{chainlayer}}'),
   ('0xFb821dfde8F43ed6fbf970153585038b0b3B49CC', '{{simplyvc}}'),

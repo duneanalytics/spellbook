@@ -1,10 +1,10 @@
 {{
   config(
     tags=['dunesql'],
-    alias='ocr_reward_evt_transfer',
-    materialized = 'view',
+    alias=alias('ocr_reward_evt_transfer'),
+    materialized='view',
     post_hook='{{ expose_spells(\'["fantom"]\',
-                                "sector",
+                                "project",
                                 "chainlink",
                                 \'["linkpool_ryan"]\') }}'
   )

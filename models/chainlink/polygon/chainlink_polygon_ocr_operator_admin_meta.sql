@@ -1,14 +1,15 @@
 {{
-      config(
-        tags=['dunesql'],
-        alias='ocr_operator_admin_meta',
-        materialized = 'view',
-        post_hook='{{ expose_spells(\'["polygon"]\',
-                                    "sector",
-                                    "chainlink",
-                                    \'["linkpool_ryan", "linkpool_jon"]\') }}'
-      )
-    }}
+  config(
+    tags=['dunesql'],
+    alias=alias('ocr_operator_admin_meta'),
+    materialized = 'view',
+    post_hook='{{ expose_spells(\'["polygon"]\',
+                                "project",
+                                "chainlink",
+                                \'["linkpool_ryan", "linkpool_jon"]\') }}'
+  )
+}}
+
 {% set mycelium = 'Mycelium' %}
 {% set snzpool = 'SNZPool' %}
 {% set cryptomanufaktur = 'CryptoManufaktur' %}
@@ -30,6 +31,7 @@
 {% set dmakers = 'dMakers' %}
 {% set 01node = '01Node' %}
 {% set fiews = 'Fiews' %}
+
 SELECT admin_address, operator_name FROM (VALUES
   ('0x15918ff7f6C44592C81d999B442956B07D26CC44', '{{fiews}}'),
   ('0xB97a32D95A31a504C3dB28dDd574F21c700EDbee', '{{fiews}}'),

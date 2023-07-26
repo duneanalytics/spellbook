@@ -1,14 +1,15 @@
 {{
-      config(
-        tags=['dunesql'],
-        alias='ocr_operator_admin_meta',
-        materialized = 'view',
-        post_hook='{{ expose_spells(\'["arbitrum"]\',
-                                    "sector",
-                                    "chainlink",
-                                    \'["linkpool_ryan", "linkpool_jon"]\') }}'
-      )
-    }}
+  config(
+    tags=['dunesql'],
+    alias=alias('ocr_operator_admin_meta'),
+    materialized = 'view',
+    post_hook='{{ expose_spells(\'["arbitrum"]\',
+                                "project",
+                                "chainlink",
+                                \'["linkpool_ryan", "linkpool_jon"]\') }}'
+  )
+}}
+
 {% set chainlayer = 'Chainlayer' %}
 {% set inotel = 'Inotel' %}
 {% set dextrac = 'DexTrac' %}
@@ -25,6 +26,7 @@
 {% set validationcloud = 'Validation Cloud' %}
 {% set mycelium = 'Mycelium' %}
 {% set validationcapital = 'Validation Capital' %}
+
 SELECT admin_address, operator_name FROM (VALUES
   ('0x9efa0A617C0552F1558c95993aA8b8A68b3e709C', '{{dextrac}}'),
   ('0x4a3dF8cAe46765d33c2551ff5438a5C5FC44347c', '{{chainlayer}}'),

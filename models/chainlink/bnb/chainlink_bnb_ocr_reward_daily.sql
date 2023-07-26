@@ -1,14 +1,14 @@
 {{
   config(
     tags=['dunesql'],
-    alias='ocr_reward_daily',
-    partition_by = ['date_start'],
+    alias=alias('ocr_reward_daily'),
+    partition_by = ['date_month'],
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
     unique_key = ['date_start', 'admin_address'],
     post_hook='{{ expose_spells(\'["bnb"]\',
-                                "sector",
+                                "project",
                                 "chainlink",
                                 \'["linkpool_ryan"]\') }}'
   )
@@ -83,6 +83,7 @@ WITH
   ocr_reward_daily AS (
     SELECT 
       payment_meta.date_start,
+      date_trunc('month', payment_meta.date_start) as date_month,
       payment_meta.admin_address,
       ocr_operator_admin_meta.operator_name,      
       COALESCE(ocr_reward_evt_transfer_daily.token_amount / EXTRACT(DAY FROM next_payment_date - prev_payment_date), 0) as token_amount,
@@ -99,6 +100,7 @@ WITH
 SELECT
   'bnb' as blockchain,
   date_start,
+  date_month,
   admin_address,
   operator_name,
   token_amount,

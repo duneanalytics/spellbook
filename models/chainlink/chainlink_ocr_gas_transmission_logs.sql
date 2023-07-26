@@ -1,7 +1,7 @@
 {{
   config(
     tags=['dunesql'],
-    alias='ocr_gas_transmission_logs',
+    alias=alias('ocr_gas_transmission_logs'),
     post_hook='{{ expose_spells(\'["arbitrum","avalanche_c","bnb","ethereum","fantom","gnosis","optimism","polygon"]\',
                             "project",
                             "chainlink",

@@ -1,14 +1,15 @@
 {{
-      config(
-        tags=['dunesql'],
-        alias='ocr_operator_node_meta',
-        materialized = 'view',
-        post_hook='{{ expose_spells(\'["ethereum"]\',
-                                    "sector",
-                                    "chainlink",
-                                    \'["linkpool_ryan", "linkpool_jon"]\') }}'
-      )
-    }}
+  config(
+    tags=['dunesql'],
+    alias=alias('ocr_operator_node_meta'),
+    materialized = 'view',
+    post_hook='{{ expose_spells(\'["ethereum"]\',
+                                "project",
+                                "chainlink",
+                                \'["linkpool_ryan", "linkpool_jon"]\') }}'
+  )
+}}
+
 {% set dextrac = 'DexTrac' %}
 {% set swisscom = 'Swisscom' %}
 {% set artifact = 'Artifact' %}
@@ -77,6 +78,7 @@
 {% set alphachain = 'Alpha Chain' %}
 {% set kytzu = 'Kytzu' %}
 {% set lexisnexis = 'LexisNexis' %}
+
 SELECT node_address, operator_name FROM (VALUES
   ('0xb976d01275B809333E3EfD76D1d31fE9264466D0', '{{dextrac}}'),
   ('0x1e1956cAfdB99f8A757EF902B2A4C67F3122ffcc', '{{dextrac}}'),

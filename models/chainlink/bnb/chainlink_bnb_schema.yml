@@ -196,6 +196,9 @@ models:
     columns:
       - *blockchain
       - *block_time
+      - &date_month
+        name: date_month
+        description: "Date truncated by month"
       - &node_address
         name: node_address
         description: "Node Address"
@@ -218,6 +221,7 @@ models:
     columns:
       - *blockchain
       - *block_time
+      - *date_month
       - *node_address
       - *token_amount
       - *usd_amount
@@ -242,6 +246,7 @@ models:
       - &date_start
         name: date_start
         description: "Date Start"
+      - *date_month
       - *node_address
       - &operator_name
         name: operator_name
@@ -283,6 +288,7 @@ models:
     columns:
       - *blockchain
       - *date_start
+      - *date_month
       - *node_address
       - *operator_name
       - &fulfilled_requests
@@ -381,6 +387,7 @@ models:
     columns:
       - *blockchain
       - *date_start
+      - *date_month
       - *admin_address
       - *operator_name
       - *token_amount

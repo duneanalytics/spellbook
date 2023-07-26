@@ -1,14 +1,15 @@
 {{
-      config(
-        tags=['dunesql'],
-        alias='ocr_operator_node_meta',
-        materialized = 'view',
-        post_hook='{{ expose_spells(\'["arbitrum"]\',
-                                    "sector",
-                                    "chainlink",
-                                    \'["linkpool_ryan", "linkpool_jon"]\') }}'
-      )
-    }}
+  config(
+    tags=['dunesql'],
+    alias=alias('ocr_operator_node_meta'),
+    materialized = 'view',
+    post_hook='{{ expose_spells(\'["arbitrum"]\',
+                                "project",
+                                "chainlink",
+                                \'["linkpool_ryan", "linkpool_jon"]\') }}'
+  )
+}}
+
 {% set validationcloud = 'Validation Cloud' %}
 {% set mycelium = 'Mycelium' %}
 {% set validationcapital = 'Validation Capital' %}
@@ -25,6 +26,7 @@
 {% set linkpool = 'LinkPool' %}
 {% set linkforest = 'LinkForest' %}
 {% set matrixedlink = 'Matrixed.Link' %}
+
 SELECT node_address, operator_name FROM (VALUES
   ('0xD596389948247b582317a1EfA76cD7741A134191', '{{simplyvc}}'),
   ('0x3cae103213dB7673072E138A622bD17b20bc7ad4', '{{vulcan}}'),

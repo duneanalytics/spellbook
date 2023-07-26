@@ -1,10 +1,10 @@
 {{
   config(
     tags=['dunesql'],
-    alias='ocr_reward_evt_transfer_daily',
-    materialized = 'view',
+    alias=alias('ocr_reward_evt_transfer_daily'),
+    materialized='view',
     post_hook='{{ expose_spells(\'["ethereum"]\',
-                                "sector",
+                                "project",
                                 "chainlink",
                                 \'["linkpool_ryan"]\') }}'
   )

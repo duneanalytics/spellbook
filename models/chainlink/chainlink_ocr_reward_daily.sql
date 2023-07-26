@@ -1,7 +1,7 @@
 {{
   config(
     tags=['dunesql'],
-    alias='ocr_reward_daily',
+    alias=alias('ocr_reward_daily'),
     post_hook='{{ expose_spells(\'["arbitrum","avalanche_c","bnb","ethereum","fantom","gnosis","optimism","polygon"]\',
                             "project",
                             "chainlink",
@@ -26,6 +26,7 @@ FROM (
     SELECT
       blockchain,
       date_start,
+      date_month,
       admin_address,
       operator_name,
       token_amount,

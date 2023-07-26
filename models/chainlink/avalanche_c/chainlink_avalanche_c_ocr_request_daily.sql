@@ -1,15 +1,20 @@
 {{
   config(
     tags=['dunesql'],
-    alias='ocr_request_daily',
-    materialized = 'view',
+    alias=alias('ocr_request_daily'),
+    partition_by=['date_month'],
+    materialized='incremental',
+    file_format='delta',
+    incremental_strategy='merge',
+    unique_key=['date_start', 'node_address'],
     post_hook='{{ expose_spells(\'["avalanche_c"]\',
-                                "sector",
+                                "project",
                                 "chainlink",
                                 \'["linkpool_ryan"]\') }}'
   )
 }}
 
+{% set incremental_interval = '7' %}
 {% set truncate_by = 'day' %}
 
 WITH
@@ -31,6 +36,11 @@ WITH
       FULL OUTER JOIN {{ ref('chainlink_avalanche_c_ocr_reverted_transactions') }} reverted ON
         reverted.block_time = fulfilled.block_time AND
         reverted.node_address = fulfilled.node_address
+    {% if is_incremental() %}
+      WHERE
+        fulfilled.block_time >= date_trunc('day', now() - interval '{{incremental_interval}}' day)
+        AND reverted.block_time >= date_trunc('day', now() - interval '{{incremental_interval}}' day)
+    {% endif %}
     GROUP BY
       1, 2
     ORDER BY
@@ -40,6 +50,7 @@ WITH
     SELECT
       'avalanche_c' as blockchain,
       date_start,
+      date_trunc('month', date_start) as date_month,
       ocr_request_daily_meta.node_address as node_address,
       operator_name,
       fulfilled_requests,
@@ -51,6 +62,7 @@ WITH
 SELECT 
   blockchain,
   date_start,
+  date_month,
   node_address,
   operator_name,
   fulfilled_requests,
