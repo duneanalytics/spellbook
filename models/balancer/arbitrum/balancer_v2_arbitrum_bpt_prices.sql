@@ -53,7 +53,7 @@ WITH
             AND p2.minute >= date_trunc('day', now() - interval '1 week')
             {% endif %} 
         LEFT JOIN {{ ref('tokens_arbitrum_erc20') }} t1 ON t1.contract_address = a.tokenIn
-        LEFT JOIN {{ref('tokens_arbitrum_erc20')) }} t2 ON t2.contract_address = a.tokenOut
+        LEFT JOIN {{ref('tokens_arbitrum_erc20') }} t2 ON t2.contract_address = a.tokenOut
         ORDER BY a.evt_block_number DESC, a.evt_index DESC
     ), 
     
