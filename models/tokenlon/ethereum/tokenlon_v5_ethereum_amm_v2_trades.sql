@@ -24,9 +24,9 @@ WITH dexs AS (
         evt_block_time                                                             AS block_time,
         from_hex(JSON_EXTRACT_SCALAR(t."order", '$.userAddr'))                     AS taker,
         from_hex(JSON_EXTRACT_SCALAR(t."order", '$.makerAddr'))                    AS maker,
-        JSON_EXTRACT_SCALAR(t."order", '$.takerAssetAmount')                       AS token_sold_amount_raw,
-        JSON_EXTRACT_SCALAR(t."order", '$.makerAssetAmount')                       AS token_bought_amount_raw,
-        CAST(0 AS uint256)                                                         AS amount_usd,
+        CAST(JSON_EXTRACT_SCALAR(t."order", '$.takerAssetAmount') AS DOUBLE)       AS token_sold_amount_raw,
+        CAST(JSON_EXTRACT_SCALAR(t."order", '$.makerAssetAmount') AS DOUBLE)       AS token_bought_amount_raw,
+        CAST(0 AS DOUBLE)                                                         AS amount_usd,
         CASE
             WHEN from_hex(JSON_EXTRACT_SCALAR(t."order", '$.takerAssetAddr')) IN (0x0000000000000000000000000000000000000000)
                 THEN 0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2
