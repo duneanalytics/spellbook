@@ -1,8 +1,8 @@
 {{
   config(
     tags=['dunesql'],
-    alias='price_feeds_hourly',
-    partition_by=['block_date'],
+    alias=alias('price_feeds_hourly'),
+    partition_by=['block_month'],
     materialized='incremental',
     file_format='delta',
     incremental_strategy='merge',
@@ -59,6 +59,7 @@ SELECT
     'bnb' AS blockchain,
     hour,
     cast(date_trunc('day', hour) as date) as block_date,
+    cast(date_trunc('month', hour) as date) as block_month,
     feed_name,
     proxy_address,
     aggregator_address,

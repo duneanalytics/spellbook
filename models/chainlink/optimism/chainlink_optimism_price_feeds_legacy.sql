@@ -2,7 +2,7 @@
   config(
 	tags=['legacy'],
     alias=alias('price_feeds', legacy_model=True),
-    partition_by=['block_date'],
+    partition_by=['block_month'],
     materialized='incremental',
     file_format='delta',
     incremental_strategy='merge',
@@ -22,6 +22,7 @@ SELECT
     'optimism' as blockchain
     , c.block_time
     , c.block_date
+    , c.block_month
     , c.block_number
     , c.feed_name
     , c.oracle_price
@@ -34,6 +35,7 @@ FROM
     SELECT
         l.block_time
         , date_trunc('day', CAST(l.block_time AS timestamp)) as block_date
+        , date_trunc('month', CAST(l.block_time AS timestamp)) as block_month
         , l.block_number
 	    , cfa.feed_name
 	    , AVG(

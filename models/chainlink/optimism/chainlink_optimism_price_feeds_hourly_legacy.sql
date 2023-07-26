@@ -2,7 +2,7 @@
   config(
 	tags=['legacy'],	
     alias=alias('price_feeds_hourly', legacy_model=True),
-    partition_by=['block_date'],
+    partition_by=['block_month'],
     materialized='incremental',
     file_format='delta',
     incremental_strategy='merge',
@@ -54,6 +54,7 @@ SELECT
     'optimism' as blockchain
     , hour
     , DATE_TRUNC('day',hour) AS block_date
+    , DATE_TRUNC('month',hour) AS block_month
     , feed_name
     , proxy_address
     , aggregator_address

@@ -1,7 +1,7 @@
 {{
   config(
     tags=['dunesql'],
-    alias='price_feeds_oracle_token_mapping',
+    alias=alias('price_feeds_oracle_token_mapping'),
     post_hook='{{ expose_spells(\'["bnb"]\',
                                 "project",
                                 "chainlink",

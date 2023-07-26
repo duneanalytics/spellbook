@@ -2,7 +2,7 @@
   config(
 	  tags=['legacy'],
     alias=alias('price_feeds', legacy_model=True),
-    partition_by=['block_date'],
+    partition_by=['block_month'],
     materialized='incremental',
     file_format='delta',
     incremental_strategy='merge',
@@ -21,6 +21,7 @@
 SELECT 'polygon'                                        AS blockchain,
        c.block_time,
        c.block_date,
+       c.block_month,
        c.block_number,
        c.feed_name,
        c.oracle_price,
@@ -32,6 +33,7 @@ FROM
 (
     SELECT l.block_time,
            DATE_TRUNC('day', l.block_time)              AS block_date,
+           DATE_TRUNC('month', l.block_time)              AS block_month,
            l.block_number,
 	       cfa.feed_name,
            AVG(

@@ -1,8 +1,8 @@
 {{
   config(
     tags=['dunesql'],
-    alias='price_feeds',
-    partition_by=['block_date'],
+    alias=alias('price_feeds'),
+    partition_by=['block_month'],
     materialized='incremental',
     file_format='delta',
     incremental_strategy='merge',
@@ -21,6 +21,7 @@ SELECT
     'polygon' as blockchain,
     c.block_time,
     c.block_date,
+    c.block_month,
     c.block_number,
     c.feed_name,
     c.oracle_price,
@@ -33,10 +34,11 @@ FROM
     SELECT
         l.block_time,
         cast(date_trunc('day', l.block_time) as date) as block_date, 
+        cast(date_trunc('month', l.block_time) as date) as block_month, 
         l.block_number,
         cfa.feed_name,
         cfa.proxy_address,
-        cfa.aggregator_address,
+        MAX(cfa.aggregator_address) as aggregator_address,
         AVG(
             CAST(bytearray_to_uint256(bytearray_substring(l.topic1, 3, 64)) as DOUBLE) 
             / POWER(10, cfa.decimals)

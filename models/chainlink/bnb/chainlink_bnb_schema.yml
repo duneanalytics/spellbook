@@ -10,21 +10,20 @@ models:
       tags: ['bnb','chainlink','oracle']
     description: >
         Table pulling price updates for known Chainlink oracle addresses
-    # Tempoarily Disable, test_data not found.
-    # tests:
-      # - check_seed:
-      #     seed_file: ref('chainlink_get_price_seed')
-      #     filter:
-      #       blockchain: bnb
-      #     match_columns:
-      #       - blockchain
-      #       - block_number
-      #       - proxy_address
-      #       - underlying_token_address
-      #     check_columns:
-      #       - aggregator_address
-      #       - feed_name
-      #       - oracle_price
+    tests:
+      - check_seed:
+          seed_file: ref('chainlink_get_price_seed')
+          filter:
+            blockchain: bnb
+          match_columns:
+            - blockchain
+            - block_number
+            - proxy_address
+            - underlying_token_address
+          check_columns:
+            - aggregator_address
+            - feed_name
+            - oracle_price
     columns:
       - &blockchain
         name: blockchain
@@ -35,6 +34,9 @@ models:
       - &block_date
         name: block_date
         description: "Block time truncated to date"
+      - &block_month
+        name: block_month
+        description: "Block time truncated to month"
       - &block_number
         name: block_number
         description: "Block number"
@@ -80,6 +82,7 @@ models:
         name: hour
         description: "Block time of the oracle update - truncated to hour"
       - *block_date
+      - *block_month
       - *feed_name
       - *oracle_price
       - *proxy_address

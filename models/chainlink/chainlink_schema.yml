@@ -27,6 +27,9 @@ models:
       - &block_date
         name: block_date
         description: "Block Time, truncated to date"
+      - &block_month
+        name: block_month
+        description: "Block time truncated to month"
       - &block_number
         name: block_number
         description: "Block Number"
@@ -72,6 +75,7 @@ models:
       - name: hour
         description: "Block time of the oracle update - truncated to hour"
       - *block_date
+      - *block_month
       - *feed_name
       - name: oracle_price_avg
         description:  "Price returned by Chainlink oracle update" 
