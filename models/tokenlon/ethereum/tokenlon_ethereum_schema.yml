@@ -10,7 +10,7 @@ models:
     config:
       tags: ['ethereum', 'dex', 'trades', 'tokenlon', 'aggregator', 'izayl']
     description: >
-      Tokenlon AMM trades
+      Tokenlon AMM v1 trades
     columns:
       - name: blockchain
         description: 'Blockchain which the DEX is deployed'
@@ -68,7 +68,7 @@ models:
     config:
       tags: ['ethereum', 'dex', 'trades', 'tokenlon', 'aggregator', 'izayl']
     description: >
-      Tokenlon AMM trades
+      Tokenlon AMM v2 trades
     columns:
       - name: blockchain
         description: 'Blockchain which the DEX is deployed'
@@ -126,7 +126,7 @@ models:
     config:
       tags: ['ethereum', 'dex', 'trades', 'tokenlon', 'aggregator', 'izayl']
     description: >
-      Tokenlon AMM trades
+      Tokenlon PMM v5 trades
     columns:
       - name: blockchain
         description: 'Blockchain which the DEX is deployed'
@@ -184,7 +184,7 @@ models:
     config:
       tags: ['ethereum', 'dex', 'trades', 'tokenlon', 'aggregator', 'izayl']
     description: >
-      Tokenlon AMM trades
+      Tokenlon RFQ v1 trades
     columns:
       - name: blockchain
         description: 'Blockchain which the DEX is deployed'
