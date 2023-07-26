@@ -4,6 +4,11 @@ name: "spellbook"
 version: "1.0.0"
 config-version: 2
 
+quoting:
+  database: false
+  schema: false
+  identifier: false
+
 # This setting configures which "profile" dbt uses for this project.
 profile: "spellbook-local"
 
@@ -697,7 +702,7 @@ models:
         +schema: synapse_optimism
       polygon:
         +schema: synapse_polygon
-        
+
     fiat_dao:
       +schema: fiat_dao
       ethereum:
@@ -1149,7 +1154,7 @@ models:
       +schema: rubicon
       optimism:
         +schema: rubicon_optimism
-      arbitrum: 
+      arbitrum:
         +schema: rubicon_arbitrum
 
     beethoven_x:
@@ -1269,7 +1274,7 @@ models:
       +schema: thena
       bnb:
         +schema: thena_bnb
-    
+
     account_abstraction:
       erc4337:
         +schema: account_abstraction_erc4337
