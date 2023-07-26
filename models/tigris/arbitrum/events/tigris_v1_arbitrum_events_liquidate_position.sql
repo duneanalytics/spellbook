@@ -36,7 +36,7 @@ liquidate_position_v3 as (
             evt_block_time,
             _id as position_id,
             _trader as trader,
-            contract_address as project_contract_address 
+            contract_address as project_contract_address
         FROM 
         {{ source('tigristrade_arbitrum', 'TradingV3_evt_PositionLiquidated') }}
         {% if is_incremental() %}
@@ -68,7 +68,7 @@ liquidate_position_v5 as (
             evt_block_time,
             _id as position_id,
             _trader as trader,
-            contract_address as project_contract_address 
+            contract_address as project_contract_address
         FROM 
         {{ source('tigristrade_arbitrum', 'TradingV5_evt_PositionLiquidated') }}
         {% if is_incremental() %}
