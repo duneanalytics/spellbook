@@ -55,5 +55,3 @@ models:
         name: kyc
       - &tx_hash_example
         name: tx_hash_example
-      - &last_block_time
-        name: last_block_time
