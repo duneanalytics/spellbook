@@ -1,12 +1,11 @@
 {{
   config(
-	tags=['legacy'],
-	
-        alias = alias('oracle_token_mapping', legacy_model=True),
-        post_hook='{{ expose_spells(\'["optimism"]\',
-                                    "project",
-                                    "chainlink",
-                                    \'["msilb7","0xroll"]\') }}'
+		tags=['legacy'],
+    alias=alias('price_feeds_oracle_token_mapping', legacy_model=True),
+    post_hook='{{ expose_spells(\'["optimism"]\',
+                                "project",
+                                "chainlink",
+                                \'["msilb7","0xroll","linkpool_ryan"]\') }}'
   )
 }}
 

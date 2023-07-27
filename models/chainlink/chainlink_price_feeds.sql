@@ -1,18 +1,18 @@
 {{
   config(
-	  tags=['legacy'],
-    alias=alias('price_feeds_hourly', legacy_model=True),
+    tags=['dunesql'],
+    alias=alias('price_feeds'),
     post_hook='{{ expose_spells(\'["bnb","optimism","polygon"]\',
                             "project",
                             "chainlink",
-                            \'["msilb7","0xroll","linkpool_ryan"]\') }}' 
+                            \'["msilb7","0xroll","linkpool_ryan"]\') }}'
   )
 }}
 
 {% set models = [
-  'chainlink_bnb_price_feeds_hourly_legacy',
-  'chainlink_optimism_price_feeds_hourly_legacy',
-  'chainlink_polygon_price_feeds_hourly_legacy'
+  'chainlink_bnb_price_feeds',
+  'chainlink_optimism_price_feeds',
+  'chainlink_polygon_price_feeds'
 ] %}
 
 SELECT *
@@ -20,18 +20,18 @@ FROM (
     {% for model in models %}
     SELECT
       blockchain,
-      hour,
+      block_time,
       block_date,
+      block_number,
       feed_name,
+      oracle_price,
       proxy_address,
       aggregator_address,
-      underlying_token_address, 
-      oracle_price_avg,
-      underlying_token_price_avg
+      underlying_token_address,
+      underlying_token_price
     FROM {{ ref(model) }}
     {% if not loop.last %}
     UNION ALL
     {% endif %}
     {% endfor %}
 )
-;
