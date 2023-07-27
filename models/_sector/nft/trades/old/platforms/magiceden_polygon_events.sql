@@ -1,6 +1,7 @@
 {{ config(
     schema = 'magiceden_polygon',
-    alias = 'events',
+    alias = alias('events'),
+    tags = ['dunesql'],
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
