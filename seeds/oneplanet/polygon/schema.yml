@@ -1,0 +1,9 @@
+version: 2
+
+seeds:
+  - name: oneplanet_polygon_trades_seed
+    config:
+      tags: dunesql
+      column_types:
+        tx_hash: varbinary
+        price_amount_raw: uint256
