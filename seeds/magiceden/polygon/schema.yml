@@ -11,3 +11,6 @@ seeds:
         buyer: varbinary
         seller: varbinary
         token_id: uint256
+        amount_raw: uint256
+        platform_fee_amount_raw: uint256
+        royalty_fee_amount_raw: uint256
