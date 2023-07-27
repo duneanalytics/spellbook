@@ -114,8 +114,8 @@ native_order_return_amount AS (
 
 native_order_total_amount AS (
 select *
-    , case when transaction_amount_raw > uint256 '0' then order_amount_raw / transaction_amount_raw
-        else 1.0
+    , case when transaction_amount_raw > uint256 '0' then cast(order_amount_raw as double)/cast(transaction_amount_raw as double)
+        else double '1.0'
         end as order_amount_percentage
 from(
     SELECT o.evt_block_number,
