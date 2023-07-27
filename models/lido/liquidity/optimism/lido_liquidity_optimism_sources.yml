@@ -64,5 +64,4 @@ sources:
       - name: Pair_evt_Burn
         loaded_at_field: evt_block_time          
       - name: Pair_evt_Fees
-        loaded_at_field: evt_block_time          
-       
+        loaded_at_field: evt_block_time         
