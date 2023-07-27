@@ -121,7 +121,7 @@ from(
     SELECT o.evt_block_number,
         o.evt_tx_hash,
         o.order_amount_raw,
-        cast(greatest(int256 '0' ,cast(t.value AS int256) - coalesce(cast(r.return_amount_raw as int256), cast(0 as int256))) as uint256) AS transaction_amount_raw
+        case when t.value >= r.return_amount_raw then t.value - r.return_amount_raw else uint256 '0' end AS transaction_amount_raw
     FROM native_order_summary o
     INNER JOIN {{ source('polygon', 'transactions') }} t ON o.evt_block_number = t.block_number
         AND o.evt_tx_hash = t.hash
