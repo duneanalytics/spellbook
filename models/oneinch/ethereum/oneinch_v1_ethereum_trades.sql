@@ -2,7 +2,7 @@
         tags=['dunesql'], 
         schema='oneinch_v1_ethereum',
         alias = alias('trades'),
-        partition_by = ['block_date'],
+        partition_by = ['block_month'],
         on_schema_change='sync_all_columns',
         file_format ='delta',
         materialized='incremental',
@@ -35,7 +35,7 @@ WITH
   oneinch_calls AS (
     SELECT
       call_block_number AS block_number,
-      TRY_CAST(NULL AS VARCHAR) AS taker,
+      CAST(NULL AS VARBINARY) AS taker,
       fromToken AS from_token,
       toToken AS to_token,
       tokensAmount AS from_amount,
@@ -43,23 +43,23 @@ WITH
       call_tx_hash AS tx_hash,
       call_block_time AS block_time,
       call_trace_address AS trace_address,
-      TRY_CAST(-1 AS INTEGER) AS evt_index,
+      CAST(-1 AS INTEGER) AS evt_index,
       contract_address
     FROM
         {{ source('oneinch_ethereum', 'exchange_v1_call_aggregate') }}
     WHERE
         call_success
         {% if is_incremental() %}
-        AND call_block_time >= date_trunc("day", now() - interval '1 week')
+        AND call_block_time >= date_trunc('day', current_timestamp - (interval '7' day))
         {% else %}
-        AND call_block_time >= CAST('{{project_start_date}}' AS TIMESTAMP)
+        AND call_block_time >= TIMESTAMP '{{project_start_date}}'
         {% endif %}
     
     UNION ALL
     
     SELECT
       call_block_number AS block_number,
-      TRY_CAST(NULL AS VARCHAR) AS taker,
+      CAST(NULL AS VARBINARY) AS taker,
       fromToken AS from_token,
       toToken AS to_token,
       tokensAmount AS from_amount,
@@ -67,23 +67,23 @@ WITH
       call_tx_hash AS tx_hash,
       call_block_time AS block_time,
       call_trace_address AS trace_address,
-      TRY_CAST(-1 AS INTEGER) AS evt_index,
+      CAST(-1 AS INTEGER) AS evt_index,
       contract_address
     FROM
         {{ source('oneinch_ethereum', 'exchange_v2_call_aggregate') }}
     WHERE
         call_success
         {% if is_incremental() %}
-        AND call_block_time >= date_trunc("day", now() - interval '1 week')
+        AND call_block_time >= date_trunc('day', current_timestamp - (interval '7' day))
         {% else %}
-        AND call_block_time >= CAST('{{project_start_date}}' AS TIMESTAMP)
+        AND call_block_time >= TIMESTAMP '{{project_start_date}}'
         {% endif %}
         
     UNION ALL
               
     SELECT
       call_block_number AS block_number,
-      TRY_CAST(NULL AS VARCHAR) AS taker,
+      CAST(NULL AS VARBINARY) AS taker,
       fromToken AS from_token,
       toToken AS to_token,
       tokensAmount AS from_amount,
@@ -91,23 +91,23 @@ WITH
       call_tx_hash AS tx_hash,
       call_block_time AS block_time,
       call_trace_address AS trace_address,
-      TRY_CAST(-1 AS INTEGER) AS evt_index,
+      CAST(-1 AS INTEGER) AS evt_index,
       contract_address
     FROM
         {{ source('oneinch_ethereum', 'exchange_v3_call_aggregate') }}
     WHERE
         call_success
         {% if is_incremental() %}
-        AND call_block_time >= date_trunc("day", now() - interval '1 week')
+        AND call_block_time >= date_trunc('day', current_timestamp - (interval '7' day))
         {% else %}
-        AND call_block_time >= CAST('{{project_start_date}}' AS TIMESTAMP)
+        AND call_block_time >= TIMESTAMP '{{project_start_date}}'
         {% endif %}
         
     UNION ALL
     
     SELECT
       call_block_number AS block_number,
-      TRY_CAST(NULL AS VARCHAR) AS taker,
+      CAST(NULL AS VARBINARY) AS taker,
       fromToken AS from_token,
       toToken AS to_token,
       tokensAmount AS from_amount,
@@ -115,23 +115,23 @@ WITH
       call_tx_hash AS tx_hash,
       call_block_time AS block_time,
       call_trace_address AS trace_address,
-      TRY_CAST(-1 AS INTEGER) AS evt_index,
+      CAST(-1 AS INTEGER) AS evt_index,
       contract_address
     FROM
         {{ source('oneinch_ethereum', 'exchange_v4_call_aggregate') }}
     WHERE
         call_success
         {% if is_incremental() %}
-        AND call_block_time >= date_trunc("day", now() - interval '1 week')
+        AND call_block_time >= date_trunc('day', current_timestamp - (interval '7' day))
         {% else %}
-        AND call_block_time >= CAST('{{project_start_date}}' AS TIMESTAMP)
+        AND call_block_time >= TIMESTAMP '{{project_start_date}}'
         {% endif %}
         
     UNION ALL
     
     SELECT
       call_block_number AS block_number,
-      TRY_CAST(NULL AS VARCHAR) AS taker,
+      CAST(NULL AS VARBINARY) AS taker,
       fromToken AS from_token,
       toToken AS to_token,
       tokensAmount AS from_amount,
@@ -139,23 +139,23 @@ WITH
       call_tx_hash AS tx_hash,
       call_block_time AS block_time,
       call_trace_address AS trace_address,
-      TRY_CAST(-1 AS INTEGER) AS evt_index,
+      CAST(-1 AS INTEGER) AS evt_index,
       contract_address
     FROM
         {{ source('oneinch_ethereum', 'exchange_v5_call_aggregate') }}
     WHERE
         call_success
         {% if is_incremental() %}
-        AND call_block_time >= date_trunc("day", now() - interval '1 week')
+        AND call_block_time >= date_trunc('day', current_timestamp - (interval '7' day))
         {% else %}
-        AND call_block_time >= CAST('{{project_start_date}}' AS TIMESTAMP)
+        AND call_block_time >= TIMESTAMP '{{project_start_date}}'
         {% endif %}
         
     UNION ALL
     
     SELECT
       call_block_number AS block_number,
-      TRY_CAST(NULL AS VARCHAR) AS taker,
+      CAST(NULL AS VARBINARY) AS taker,
       fromToken AS from_token,
       toToken AS to_token,
       tokensAmount AS from_amount,
@@ -163,23 +163,23 @@ WITH
       call_tx_hash AS tx_hash,
       call_block_time AS block_time,
       call_trace_address AS trace_address,
-      TRY_CAST(-1 AS INTEGER) AS evt_index,
+      CAST(-1 AS INTEGER) AS evt_index,
       contract_address
     FROM
         {{ source('oneinch_ethereum', 'exchange_v6_call_aggregate') }}
     WHERE
         call_success
         {% if is_incremental() %}
-        AND call_block_time >= date_trunc("day", now() - interval '1 week')
+        AND call_block_time >= date_trunc('day', current_timestamp - (interval '7' day))
         {% else %}
-        AND call_block_time >= CAST('{{project_start_date}}' AS TIMESTAMP)
+        AND call_block_time >= TIMESTAMP '{{project_start_date}}'
         {% endif %}
         
     UNION ALL
     
     SELECT
       call_block_number AS block_number,
-      TRY_CAST(NULL AS VARCHAR) AS taker,
+      CAST(NULL AS VARBINARY) AS taker,
       fromToken AS from_token,
       toToken AS to_token,
       fromTokenAmount AS from_amount,
@@ -187,23 +187,23 @@ WITH
       call_tx_hash AS tx_hash,
       call_block_time AS block_time,
       call_trace_address AS trace_address,
-      TRY_CAST(-1 AS INTEGER) AS evt_index,
+      CAST(-1 AS INTEGER) AS evt_index,
       contract_address
     FROM
         {{ source('oneinch_ethereum', 'exchange_v7_call_swap') }}
     WHERE
         call_success
         {% if is_incremental() %}
-        AND call_block_time >= date_trunc("day", now() - interval '1 week')
+        AND call_block_time >= date_trunc('day', current_timestamp - (interval '7' day))
         {% else %}
-        AND call_block_time >= CAST('{{project_start_date}}' AS TIMESTAMP)
+        AND call_block_time >= TIMESTAMP '{{project_start_date}}'
         {% endif %}
         
     UNION ALL
     
     SELECT
       call_block_number AS block_number,
-      TRY_CAST(NULL AS VARCHAR) AS taker,
+      CAST(NULL AS VARBINARY) AS taker,
       fromToken AS from_token,
       toToken AS to_token,
       fromTokenAmount AS from_amount,
@@ -211,16 +211,16 @@ WITH
       call_tx_hash AS tx_hash,
       call_block_time AS block_time,
       call_trace_address AS trace_address,
-      TRY_CAST(-1 AS INTEGER) AS evt_index,
+      CAST(-1 AS INTEGER) AS evt_index,
       contract_address
     FROM
         {{ source('oneinch_ethereum', 'OneInchExchange_call_swap') }}
     WHERE
         call_success
         {% if is_incremental() %}
-        AND call_block_time >= date_trunc("day", now() - interval '1 week')
+        AND call_block_time >= date_trunc('day', current_timestamp - (interval '7' day))
         {% else %}
-        AND call_block_time >= CAST('{{project_start_date}}' AS TIMESTAMP)
+        AND call_block_time >= TIMESTAMP '{{project_start_date}}'
         {% endif %}
 )
 , oneinch AS
@@ -231,10 +231,10 @@ WITH
       '1inch' AS project,
       '1' AS version,
       taker,
-      TRY_CAST(NULL AS VARCHAR) AS maker,
+      CAST(NULL AS VARBINARY) AS maker,
       to_amount AS token_bought_amount_raw,
       from_amount AS token_sold_amount_raw,
-      TRY_CAST(NULL AS DOUBLE) AS amount_usd,
+        CAST(NULL AS DOUBLE) AS amount_usd,
         CASE
           WHEN to_token = {{generic_null_address}}
             THEN {{burn_address}}
@@ -264,7 +264,8 @@ SELECT
     '{{blockchain}}' AS blockchain
     ,src.project
     ,src.version
-    ,date_trunc('day', src.block_time) AS block_date
+    ,cast(date_trunc('day', src.block_time) as date) AS block_date
+    ,cast(date_trunc('month', src.block_time) as date) AS block_month
     ,src.block_time
     ,src.block_number
     ,token_bought.symbol AS token_bought_symbol
@@ -275,8 +276,8 @@ SELECT
     end as token_pair
     ,src.token_bought_amount_raw / power(10, token_bought.decimals) AS token_bought_amount
     ,src.token_sold_amount_raw / power(10, token_sold.decimals) AS token_sold_amount
-    ,CAST(src.token_bought_amount_raw AS DECIMAL(38,0)) AS token_bought_amount_raw
-    ,CAST(src.token_sold_amount_raw AS DECIMAL(38,0)) AS token_sold_amount_raw
+    ,src.token_bought_amount_raw AS token_bought_amount_raw
+    ,src.token_sold_amount_raw AS token_sold_amount_raw
     ,coalesce(
         src.amount_usd
         , (src.token_bought_amount_raw / power(10,
@@ -314,7 +315,7 @@ SELECT
     ) AS amount_usd
     ,src.token_bought_address
     ,src.token_sold_address
-    ,coalesce(src.taker, cast(tx."from" as varchar)) AS taker
+    ,coalesce(src.taker, cast(tx."from" as VARBINARY)) AS taker
     ,src.maker
     ,src.project_contract_address
     ,src.tx_hash
@@ -327,7 +328,7 @@ INNER JOIN {{ source('ethereum', 'transactions') }} as tx
     ON src.tx_hash = tx.hash
     AND src.block_number = tx.block_number
     {% if is_incremental() %}
-    AND tx.block_time >= date_trunc("day", now() - interval '1 week')
+    AND tx.block_time >= date_trunc('day', current_timestamp - (interval '7' day))
     {% else %}
     AND tx.block_time >= timestamp '{{project_start_date}}'
     {% endif %}
@@ -342,7 +343,7 @@ LEFT JOIN {{ source('prices', 'usd') }} as prices_bought
     AND prices_bought.contract_address = src.token_bought_address
     AND prices_bought.blockchain = '{{blockchain}}'
     {% if is_incremental() %}
-    AND prices_bought.minute >= date_trunc("day", now() - interval '1 week')
+    AND prices_bought.minute >= date_trunc('day', current_timestamp - (interval '7' day))
     {% else %}
     AND prices_bought.minute >= timestamp '{{project_start_date}}'
     {% endif %}
@@ -351,7 +352,7 @@ LEFT JOIN {{ source('prices', 'usd') }} as prices_sold
     AND prices_sold.contract_address = src.token_sold_address
     AND prices_sold.blockchain = '{{blockchain}}'
     {% if is_incremental() %}
-    AND prices_sold.minute >= date_trunc("day", now() - interval '1 week')
+    AND prices_sold.minute >= date_trunc('day', current_timestamp - (interval '7' day))
     {% else %}
     AND prices_sold.minute >= timestamp '{{project_start_date}}'
     {% endif %}
@@ -360,7 +361,7 @@ LEFT JOIN {{ source('prices', 'usd') }} as prices_eth
     AND prices_eth.blockchain is null
     AND prices_eth.symbol = '{{blockchain_symbol}}'
     {% if is_incremental() %}
-    AND prices_eth.minute >= date_trunc("day", now() - interval '1 week')
+    AND prices_eth.minute >= date_trunc('day', current_timestamp - (interval '7' day))
     {% else %}
     AND prices_eth.minute >= timestamp '{{project_start_date}}'
     {% endif %}
