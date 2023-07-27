@@ -164,7 +164,7 @@ order by 1
 
 , token_exchange_hourly as( 
     select date_trunc('hour', evt_block_time) as time
-        , sum(case when cast(sold_id as int) = 0 then cast(tokens_sold as double) else cast(tokens_bought as double) end) as eth_amount_raw
+        , sum(case when cast(sold_id as int) = int '0' then cast(tokens_sold as double) else cast(tokens_bought as double) end) as eth_amount_raw
     from {{source('curvefi_ethereum','rETHwstETH_evt_TokenExchange')}} c
     WHERE date_trunc('day', evt_block_time) >= date '{{ project_start_date }}' 
     group by 1
