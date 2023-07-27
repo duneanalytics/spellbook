@@ -493,24 +493,24 @@ select
     a.contract_name,
     d.Frax_bribe as lwb_frax,
     round(d.Frax_bribe * i.price) as lwb_frax_usd,
-    b.Frax_reserve as Start_Frax,
-    c.Frax_reserve as End_Frax,
-    round(b.Frax_TVL) as Start_Frax_TVL,
-    round(c.Frax_TVL) as End_Frax_TVL,
-    f.FXS_collected_usd,
+    b.Frax_reserve as start_frax,
+    c.Frax_reserve as end_frax,
+    round(b.Frax_TVL) as start_frax_TVL,
+    round(c.Frax_TVL) as end_frax_TVL,
+    f.fxs_collected_usd,
     round(
         coalesce(f.FXS_collected_usd, 0) - (
             COALESCE((d.FrxETH_bribe * h.price), 0) + COALESCE((d.Frax_bribe * i.price), 0)
         )
-    ) as Gross_profit,
+    ) as gross_profit,
     round(g.fee_reward_token0) as fee_reward_token0,
     round(g.fee_reward_token1) as fee_reward_token1,
     d.FrxETH_bribe as lwb_frxETH,
     round(d.FrxETH_bribe * h.price) as lwb_frxETH_usd,
-    b.FrxETH_reserve as Start_FrxETH,
-    c.FrxETH_reserve as End_FrxETH,
-    round(b.FrxETH_TVL) as Start_FrxETH_TVL,
-    round(c.FrxETH_TVL) as End_FrxETH_TVL
+    b.FrxETH_reserve as start_frxETH,
+    c.FrxETH_reserve as end_frxETH,
+    round(b.FrxETH_TVL) as start_frxETH_TVL,
+    round(c.FrxETH_TVL) as end_frxETH_TVL
 from
     base_date_with_contracts a
     left join TVL_sum b on a.week_start = b.day
