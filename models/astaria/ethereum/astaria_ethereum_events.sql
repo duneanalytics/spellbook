@@ -90,7 +90,7 @@ borrows_join as (
         * 
     FROM 
     {{This}}
-    WHERE evt_type = 'borrow'
+    -- WHERE evt_type = 'borrow'
 
     UNION 
 
@@ -190,7 +190,7 @@ repays_join as (
         lien_start
     FROM 
     {{This}}
-    WHERE evt_type = 'repay'
+    -- WHERE evt_type = 'repay'
 
     UNION 
 
@@ -230,7 +230,7 @@ liquidation_tmp as (
         AND CAST(collateralId as VARCHAR) = b.lien_collateral_id
         AND l.evt_block_number > b.evt_block_number
         AND l.evt_block_time > from_unixtime(CAST(b.lien_start AS DOUBLE))
-    WHERE CONCAT(CAST(b.lien_id as VARCHAR), CAST(b.lien_start as VARCHAR)) NOT IN (SELECT CONCAT(CAST(lien_id as VARCHAR), CAST(lien_start as VARCHAR)) FROM repays_join)
+    WHERE CONCAT(CAST(b.lien_id as VARCHAR), CAST(b.lien_start as VARCHAR)) NOT IN (SELECT CONCAT(CAST(lien_id as VARCHAR), CAST(lien_start as VARCHAR)) FROM repays_join WHERE evt_type = 'repay')
 ), 
 
 liquidation as (
