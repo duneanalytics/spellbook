@@ -8,4 +8,5 @@ seeds:
         tx_hash: varbinary
         buyer: varbinary
         seller: varbinary
+        nft_contract_address: varbinary
         token_id: uint256
