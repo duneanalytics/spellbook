@@ -17,14 +17,14 @@ with uniswap_v3_poolcreated as (
     ,token0
     ,token1
     ,fee
-  from {{ source('uniswap_v3_optimism', 'factory_evt_poolcreated') }} 
+  from {{ source('uniswap_v3_optimism', 'Factory_evt_PoolCreated') }}
   group by 1, 2, 3, 4
 )
 
 select 
    newAddress as pool
-  , token0 AS token0
-  , token1 AS token1
+  , token0
+  , token1
   ,fee
 from {{ ref('uniswap_optimism_ovm1_pool_mapping') }}
 
@@ -32,7 +32,7 @@ union
 
 select
   pool
-  , token0 AS token0
-  , token1 AS token1
+  , token0
+  , token1
   , fee
 from uniswap_v3_poolcreated
