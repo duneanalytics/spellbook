@@ -20,5 +20,5 @@ def rename_sql_files(root_directory):
                 print(f"Renamed: {old_path} -> {new_path}")
 
 if __name__ == "__main__":
-    root_directory = "models/"
+    root_directory = "macros/"
     rename_sql_files(root_directory)
