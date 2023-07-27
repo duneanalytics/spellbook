@@ -93,7 +93,7 @@ native_order_summary AS (
 native_order_return_amount AS (
     SELECT evt_block_number,
         evt_tx_hash,
-        sum(return_amount_raw) AS return_amount_raw
+        cast(sum(return_amount_raw) as uint256) AS return_amount_raw
     FROM (
         SELECT DISTINCT t.evt_block_number,
             t.evt_tx_hash,
