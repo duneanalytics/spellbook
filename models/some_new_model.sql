@@ -1,5 +1,5 @@
 {{  config(
-        schema = 'test_new_dunesql',
+        schema = '<your-schema>',
         tags = ['dunesql'],
         alias = alias('new_model'),
         materialized = 'table'

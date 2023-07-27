@@ -8,6 +8,19 @@ if [ -z "$res" ]; then
 else
   echo "Legacy schema missing:"
   echo "$res"
-  echo "If you added a new DuneSQL model, please add a dummy spark model with the same name and schema to force schema creation on spark."
+  echo "If you added a new DuneSQL model, please add a dummy _legacy model with the same name and schema to force schema creation on spark."
+  echo "Example:
+cat > new_model_legacy.sql << EOL
+{{ config( 
+  schema = 'schema_name',
+  alias = alias('table_name', legacy_model=True),
+  tags = ['legacy']
+  )
+}}
+  
+  
+-- DUMMY TABLE, WILL BE REMOVED SOON
+select 
+  1"
   exit 1
 fi
