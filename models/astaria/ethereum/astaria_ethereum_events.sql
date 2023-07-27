@@ -79,25 +79,17 @@ borrows as (
 ), 
 
 borrows_join as (
-    {% if not is_incremental() %}
     SELECT  
         * 
     FROM 
     borrows 
-    {% endif %}
     {% if is_incremental() %}
+    UNION 
+
     SELECT 
         * 
     FROM 
     {{This}}
-    -- WHERE evt_type = 'borrow'
-
-    UNION 
-
-    SELECT  
-        * 
-    FROM 
-    borrows 
     {% endif %}
 ), 
 
@@ -177,28 +169,19 @@ repays as (
 ), 
 
 repays_join as (
-    {% if not is_incremental() %}
     SELECT  
         lien_id, 
         lien_start
     FROM 
     repays 
-    {% endif %}
     {% if is_incremental() %}
-    SELECT 
-        lien_id, 
-        lien_start
-    FROM 
-    {{This}}
-    -- WHERE evt_type = 'repay'
-
     UNION 
 
     SELECT 
         lien_id, 
         lien_start
     FROM 
-    repays 
+    {{This}}
     {% endif %}
 ), 
 
