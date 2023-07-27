@@ -75,6 +75,15 @@ open_position_events as (
         CONCAT(CAST(id as VARCHAR), 'arbitrum', 'v2.3') as position_data 
     FROM 
     {{ source('tigristrade_v2_arbitrum', 'TradingV3_evt_PositionOpened') }}
+
+    UNION ALL 
+
+    SELECT 
+        'open_position' as evt_type, 
+        0xe739ea2b7e6174812d1c451704bf231d1612486d46358b412b4dabec531c9d8e as evt_tx_hash, 
+        CAST(NULL as UINT256) AS position_id,
+        DATE ('2023-07-27') as evt_block_time,
+        CONCAT('test', 'arbitrum', 'v2.3') as position_data 
 ),
 
 all_events as (
