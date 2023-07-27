@@ -114,7 +114,7 @@ native_order_return_amount AS (
 
 native_order_total_amount AS (
 select *
-    , case when transaction_amount_raw > 0 then order_amount_raw / transaction_amount_raw
+    , case when transaction_amount_raw > uint256 '0' then order_amount_raw / transaction_amount_raw
         else 1.0
         end as order_amount_percentage
 from(
