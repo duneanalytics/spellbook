@@ -20,7 +20,7 @@ WITH
         WHERE CAST(tokenIn AS VARCHAR(66)) = SUBSTRING(CAST(poolId AS VARCHAR(66)), 1, 42)
         OR CAST(tokenOut AS VARCHAR(66)) = SUBSTRING(CAST(poolId AS VARCHAR(66)), 1, 42) 
         {% if is_incremental() %}
-        AND v.evt_block_time >= date_trunc('day', now() - interval '1 week')
+        AND v.evt_block_time >= date_trunc('day', now() - interval '7' day)
         {% endif %} 
     ), 
     
@@ -45,12 +45,12 @@ WITH
         LEFT JOIN {{ source ('prices', 'usd') }} p1 ON p1.contract_address = a.tokenIn AND p1.blockchain = 'arbitrum' 
             AND  p1.minute = date_trunc('minute', a.evt_block_time)
             {% if is_incremental() %}
-            AND p1.minute >= date_trunc('day', now() - interval '1 week')
+            AND p1.minute >= date_trunc('day', now() - interval '7' day)
             {% endif %} 
         LEFT JOIN {{ source ('prices', 'usd') }} p2 ON p2.contract_address = a.tokenOut AND p2.blockchain = 'arbitrum'
             AND  p2.minute = date_trunc('minute', a.evt_block_time)
             {% if is_incremental() %}
-            AND p2.minute >= date_trunc('day', now() - interval '1 week')
+            AND p2.minute >= date_trunc('day', now() - interval '7' day)
             {% endif %} 
         LEFT JOIN {{ ref ('tokens_erc20') }} t1 ON t1.contract_address = a.tokenIn AND t1.blockchain = 'arbitrum'
         LEFT JOIN {{ ref ('tokens_erc20') }} t2 ON t2.contract_address = a.tokenOut AND t2.blockchain = 'arbitrum'
