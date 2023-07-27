@@ -10,9 +10,9 @@
 }}
 
 {% set hashflow_models = [
-ref('hashflow_avalanche_c_trades_legacy')
-, ref('hashflow_ethereum_trades_legacy')
-, ref('hashflow_bnb_trades_legacy')
+ref('hashflow_avalanche_c_trades')
+, ref('hashflow_ethereum_trades')
+, ref('hashflow_bnb_trades')
 ] %}
  
 SELECT *

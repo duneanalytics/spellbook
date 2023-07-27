@@ -28,7 +28,7 @@ WITH
             fees.swap_fee_percentage,
             ROW_NUMBER() OVER (PARTITION BY poolId, evt_tx_hash, evt_index ORDER BY block_number DESC, index DESC) AS rn
         FROM {{ source ('balancer_v2_arbitrum', 'Vault_evt_Swap') }} swaps
-        LEFT JOIN {{ ref('balancer_v2_arbitrum_pools_fees_legacy') }} fees
+        LEFT JOIN {{ ref('balancer_v2_arbitrum_pools_fees') }} fees
             ON CAST(fees.contract_address AS varchar(66)) = substring(CAST(swaps.poolId AS varchar(66)), 1, 42)
             AND ARRAY(fees.block_number) || ARRAY(fees.index) < ARRAY(swaps.evt_block_number) || ARRAY(swaps.evt_index)
         {% if is_incremental() %}
@@ -73,7 +73,7 @@ WITH
             MAX(bpt_prices.hour) AS bpa_max_block_time
         FROM
             dexs
-            LEFT JOIN {{ ref('balancer_v2_arbitrum_bpt_prices_legacy') }} bpt_prices
+            LEFT JOIN {{ ref('balancer_v2_arbitrum_bpt_prices') }} bpt_prices
                 ON bpt_prices.contract_address = dexs.token_bought_address
                 AND bpt_prices.hour <= dexs.block_time
                 {% if not is_incremental() %}
@@ -94,7 +94,7 @@ WITH
             MAX(bpt_prices.hour) AS bpb_max_block_time
         FROM
             dexs
-            LEFT JOIN {{ ref('balancer_v2_arbitrum_bpt_prices_legacy') }} bpt_prices
+            LEFT JOIN {{ ref('balancer_v2_arbitrum_bpt_prices') }} bpt_prices
                 ON bpt_prices.contract_address = dexs.token_sold_address
                 AND bpt_prices.hour <= dexs.block_time
                 {% if not is_incremental() %}
@@ -154,10 +154,10 @@ FROM
         {% if is_incremental() %}
         AND tx.block_time >= DATE_TRUNC("day", NOW() - interval '1 week')
         {% endif %}
-    LEFT JOIN {{ ref('tokens_erc20_legacy') }} erc20a
+    LEFT JOIN {{ ref('tokens_erc20') }} erc20a
         ON erc20a.contract_address = dexs.token_bought_address
         AND erc20a.blockchain = 'arbitrum'
-    LEFT JOIN {{ ref('tokens_erc20_legacy') }} erc20b
+    LEFT JOIN {{ ref('tokens_erc20') }} erc20b
         ON erc20b.contract_address = dexs.token_sold_address
         AND erc20b.blockchain = 'arbitrum'
     LEFT JOIN {{ source ('prices', 'usd') }} p_bought
@@ -184,7 +184,7 @@ FROM
         ON bpa.evt_block_number = dexs.evt_block_number
         AND bpa.tx_hash = dexs.tx_hash
         AND bpa.evt_index = dexs.evt_index
-    LEFT JOIN {{ ref('balancer_v2_arbitrum_bpt_prices_legacy') }} bpa_bpt_prices
+    LEFT JOIN {{ ref('balancer_v2_arbitrum_bpt_prices') }} bpa_bpt_prices
         ON bpa_bpt_prices.contract_address = bpa.contract_address
         AND bpa_bpt_prices.hour = bpa.bpa_max_block_time
         {% if not is_incremental() %}
@@ -197,7 +197,7 @@ FROM
         ON bpb.evt_block_number = dexs.evt_block_number
         AND bpb.tx_hash = dexs.tx_hash
         AND bpb.evt_index = dexs.evt_index
-    LEFT JOIN {{ ref('balancer_v2_arbitrum_bpt_prices_legacy') }} bpb_bpt_prices
+    LEFT JOIN {{ ref('balancer_v2_arbitrum_bpt_prices') }} bpb_bpt_prices
         ON bpb_bpt_prices.contract_address = bpb.contract_address
         AND bpb_bpt_prices.hour = bpb.bpb_max_block_time
         {% if not is_incremental() %}

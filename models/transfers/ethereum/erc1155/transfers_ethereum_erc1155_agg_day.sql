@@ -17,7 +17,7 @@ select
     tokenId,
     sum(amount) as amount,
     unique_tx_id || '-' || wallet_address || '-' || token_address || tokenId || '-' || sum(amount)::string as unique_transfer_id
-FROM {{ ref('transfers_ethereum_erc1155_legacy') }}
+FROM {{ ref('transfers_ethereum_erc1155') }}
 {% if is_incremental() %}
 -- this filter will only be applied on an incremental run
 where date_trunc('day', evt_block_time) > now() - interval 2 days

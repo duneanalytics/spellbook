@@ -18,7 +18,7 @@ erc721_balances as (
         token_address as nft_contract_address,
         COUNT(tokenId) as balance 
     FROM 
-    {{ ref('balances_ethereum_erc721_latest_legacy') }}
+    {{ ref('balances_ethereum_erc721_latest') }}
     GROUP BY 1, 2
 ), 
 

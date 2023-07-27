@@ -15,8 +15,8 @@
 
 
 {% set gitcoin_models = [
-ref('gitcoin_ethereum_donations_legacy')
-, ref('gitcoin_polygon_donations_legacy')
+ref('gitcoin_ethereum_donations')
+, ref('gitcoin_polygon_donations')
 ] %}
 
 SELECT *

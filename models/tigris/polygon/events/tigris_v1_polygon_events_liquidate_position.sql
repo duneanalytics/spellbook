@@ -24,7 +24,7 @@ liquidate_position_v1 as (
         FROM 
         {{ source('tigristrade_polygon', 'Tradingv1_evt_PositionLiquidated') }} pl 
         INNER JOIN 
-        {{ ref('tigris_v1_polygon_events_open_position_legacy') }} op 
+        {{ ref('tigris_v1_polygon_events_open_position') }} op 
             ON pl._id = op.position_id
             AND op.version = 'v1'
         {% if is_incremental() %}
@@ -43,7 +43,7 @@ liquidate_position_v2 as (
         FROM 
         {{ source('tigristrade_polygon', 'TradingV2_evt_PositionLiquidated') }} pl 
         INNER JOIN 
-        {{ ref('tigris_v1_polygon_events_open_position_legacy') }} op 
+        {{ ref('tigris_v1_polygon_events_open_position') }} op 
             ON pl._id = op.position_id
             AND op.version = 'v2'
         {% if is_incremental() %}
@@ -62,7 +62,7 @@ liquidate_position_v3 as (
         FROM 
         {{ source('tigristrade_polygon', 'TradingV3_evt_PositionLiquidated') }} pl 
         INNER JOIN 
-        {{ ref('tigris_v1_polygon_events_open_position_legacy') }} op 
+        {{ ref('tigris_v1_polygon_events_open_position') }} op 
             ON pl._id = op.position_id
             AND op.version = 'v3'
         {% if is_incremental() %}
@@ -81,7 +81,7 @@ liquidate_position_v4 as (
         FROM 
         {{ source('tigristrade_polygon', 'TradingV4_evt_PositionLiquidated') }} pl 
         INNER JOIN 
-        {{ ref('tigris_v1_polygon_events_open_position_legacy') }} op 
+        {{ ref('tigris_v1_polygon_events_open_position') }} op 
             ON pl._id = op.position_id
             AND op.version = 'v4'
         {% if is_incremental() %}

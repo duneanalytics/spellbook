@@ -7,10 +7,10 @@
                                     \'["jacektrocinski"]\') }}')}}
 
 {% set gauges_models = [
-    ref('labels_balancer_v2_gauges_ethereum_legacy')
-    , ref('labels_balancer_v2_gauges_polygon_legacy')
-    , ref('labels_balancer_v2_gauges_arbitrum_legacy')
-    , ref('labels_balancer_v2_gauges_optimism_legacy')
+    ref('labels_balancer_v2_gauges_ethereum')
+    , ref('labels_balancer_v2_gauges_polygon')
+    , ref('labels_balancer_v2_gauges_arbitrum')
+    , ref('labels_balancer_v2_gauges_optimism')
 ] %}
 
 SELECT *

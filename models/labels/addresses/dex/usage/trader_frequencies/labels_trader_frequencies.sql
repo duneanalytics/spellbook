@@ -19,10 +19,10 @@ with
         count(distinct tx_hash) / datediff(max(block_date), min(block_date)) as trades_per_day
     from (
         select blockchain, taker, block_date, tx_hash
-        from {{ ref('dex_aggregator_trades_legacy') }}
+        from {{ ref('dex_aggregator_trades') }}
         UNION ALL
         select blockchain, taker, block_date, tx_hash
-        from {{ ref('dex_trades_legacy') }}
+        from {{ ref('dex_trades') }}
     )
     group by taker, blockchain
     -- That have at least more than 1 trade

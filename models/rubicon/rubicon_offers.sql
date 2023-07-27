@@ -10,7 +10,7 @@
 }}
 
 {% set rubi_models = [
-ref('rubicon_optimism_offers_legacy')
+ref('rubicon_optimism_offers')
 ] %}
 
 SELECT * 

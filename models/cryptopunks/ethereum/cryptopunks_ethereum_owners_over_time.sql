@@ -18,7 +18,7 @@ with transfers_sub_table as (
             , evt_block_number
             , punk_id
             , evt_tx_hash 
-    from {{ref('cryptopunks_ethereum_punk_transfers_legacy')}} 
+    from {{ref('cryptopunks_ethereum_punk_transfers')}} 
     group by 1,2,3,4,5,6,7
 )
 , transfers as (    

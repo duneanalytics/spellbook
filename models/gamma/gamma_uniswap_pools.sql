@@ -16,7 +16,7 @@
 }}
 
 {% set lp_models = [
-  ref('gamma_optimism_uniswap_pools_legacy')
+  ref('gamma_optimism_uniswap_pools')
 ] %}
 
 

@@ -25,7 +25,7 @@
 
 
 WITH project_labels AS (
-    SELECT * FROM {{ ref('op_token_distributions_optimism_project_wallets_legacy') }}
+    SELECT * FROM {{ ref('op_token_distributions_optimism_project_wallets') }}
     WHERE label IS NOT NULL
 )
 

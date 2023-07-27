@@ -6,7 +6,7 @@ with
 
 aggregated_wallet_trading_stats AS (
     select * 
-    from {{ref('nft_ethereum_wallet_metrics_legacy')}}
+    from {{ref('nft_ethereum_wallet_metrics')}}
     where trades_count >= 10
         and unique_collections_traded >= 3
         and spent_eth >= 1

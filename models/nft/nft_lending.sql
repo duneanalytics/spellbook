@@ -15,7 +15,7 @@
 
 
 {% set nft_models = [
- ref('bend_dao_ethereum_lending_legacy')
+ ref('bend_dao_ethereum_lending')
 ] %}
 
 SELECT *

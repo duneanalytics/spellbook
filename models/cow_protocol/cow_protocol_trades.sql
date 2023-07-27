@@ -35,7 +35,7 @@ FROM
             receiver AS tx_to,
             trace_address,
             evt_index
-        FROM {{ ref('cow_protocol_ethereum_trades_legacy') }}
+        FROM {{ ref('cow_protocol_ethereum_trades') }}
 
         UNION ALL
 
@@ -64,5 +64,5 @@ FROM
             receiver AS tx_to,
             trace_address,
             evt_index
-        FROM {{ ref('cow_protocol_gnosis_trades_legacy') }}
+        FROM {{ ref('cow_protocol_gnosis_trades') }}
 )

@@ -16,4 +16,4 @@
             sum(amount) over (
                 partition by token_address, tokenId, wallet_address order by day
             ) as amount
-        from {{ ref('transfers_ethereum_erc1155_agg_day_legacy') }}
+        from {{ ref('transfers_ethereum_erc1155_agg_day') }}

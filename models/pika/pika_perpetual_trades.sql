@@ -10,7 +10,7 @@
 }}
 
 {% set pika_perpetual_trade_models = [
- ref('pika_optimism_perpetual_trades_legacy')
+ ref('pika_optimism_perpetual_trades')
 ] %}
 
 SELECT *

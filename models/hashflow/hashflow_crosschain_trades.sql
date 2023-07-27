@@ -12,9 +12,9 @@
 
 {% set cross_chain_models = 
     [
-        ref('hashflow_avalanche_c_crosschain_trades_legacy')
-        ,ref('hashflow_ethereum_crosschain_trades_legacy')
-        ,ref('hashflow_bnb_crosschain_trades_legacy')
+        ref('hashflow_avalanche_c_crosschain_trades')
+        ,ref('hashflow_ethereum_crosschain_trades')
+        ,ref('hashflow_bnb_crosschain_trades')
     ]
 %}
 

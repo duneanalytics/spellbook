@@ -45,7 +45,7 @@ FROM
 	    , cfa.proxy_address
         , cfa.aggregator_address
 	FROM {{ source('optimism', 'logs') }} l
-	INNER JOIN {{ ref('chainlink_optimism_oracle_addresses_legacy') }} cfa
+	INNER JOIN {{ ref('chainlink_optimism_oracle_addresses') }} cfa
 	    ON l.contract_address = cfa.aggregator_address
 	WHERE l.topic1 = '{{answer_updated}}'
         {% if not is_incremental() %}
@@ -62,6 +62,6 @@ FROM
         , cfa.proxy_address
         , cfa.aggregator_address
 ) c
-LEFT JOIN {{ ref('chainlink_optimism_oracle_token_mapping_legacy') }} o
+LEFT JOIN {{ ref('chainlink_optimism_oracle_token_mapping') }} o
 	ON c.proxy_address = o.proxy_address
 ;

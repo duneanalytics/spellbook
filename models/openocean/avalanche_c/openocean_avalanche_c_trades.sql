@@ -6,7 +6,7 @@
 }}
 
 {% set openocean_avalanche_models = [
-ref('openocean_v2_avalanche_c_trades_legacy')
+ref('openocean_v2_avalanche_c_trades')
 ] %}
 
 

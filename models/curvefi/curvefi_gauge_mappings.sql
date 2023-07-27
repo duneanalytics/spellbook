@@ -11,7 +11,7 @@
 }}
 
 {% set curve_models = [
-    ref('curvefi_optimism_gauge_mappings_legacy')
+    ref('curvefi_optimism_gauge_mappings')
 ] %}
 
 

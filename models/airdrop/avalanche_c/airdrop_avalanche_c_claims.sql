@@ -11,7 +11,7 @@
 
 
 {% set airdrop_claims_models = [
-    ref('pangolin_avalanche_c_airdrop_claims_legacy')
+    ref('pangolin_avalanche_c_airdrop_claims')
 ] %}
 
 SELECT *

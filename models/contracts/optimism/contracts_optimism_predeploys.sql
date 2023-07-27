@@ -37,7 +37,7 @@ FROM (
     ,'other predeploys' as source
     ,cast(NULL as varchar(250)) as creation_tx_hash
     , 1 as pref_rnk
-  from {{ ref('contracts_optimism_system_predeploys_legacy') }} as c
+  from {{ ref('contracts_optimism_system_predeploys') }} as c
     group by 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11
   
   union all
@@ -92,7 +92,7 @@ FROM (
     ,'ovm1 uniswap pools' as source
     ,cast(NULL as varchar(250)) as creation_tx_hash
     , 4 as pref_rnk
-  from {{ ref('uniswap_optimism_ovm1_pool_mapping_legacy') }} as uni
+  from {{ ref('uniswap_optimism_ovm1_pool_mapping') }} as uni
 
     group by 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11
   ) a
@@ -137,7 +137,7 @@ from cleanup as c
 
 left join {{ source('ovm1_optimism', 'contracts') }} as ovm1c
   on c.contract_address = ovm1c.contract_address --fill in any missing contract creators
-left join {{ ref('contracts_optimism_project_name_mappings_legacy') }} as dnm -- fix names for decoded contracts
+left join {{ ref('contracts_optimism_project_name_mappings') }} as dnm -- fix names for decoded contracts
   on lower(c.contract_project) = lower(dnm.dune_name)
-left join {{ ref('contracts_optimism_contract_overrides_legacy') }} as co --override contract maps
+left join {{ ref('contracts_optimism_contract_overrides') }} as co --override contract maps
   on lower(c.contract_address) = lower(co.contract_address)

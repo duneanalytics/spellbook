@@ -11,11 +11,11 @@
 }}
 
 {% set bridge_protocol_flows_models = [
-    ref('hop_protocol_flows_legacy')
+    ref('hop_protocol_flows')
 ] %}
 
 {% set native_bridge_flows_models = [
-    ref('optimism_standard_bridge_flows_legacy')
+    ref('optimism_standard_bridge_flows')
 ] %}
 
 WITH bridge_protocols AS (
@@ -59,9 +59,9 @@ WITH bridge_protocols AS (
             , trace_address
             , tx_method_id
         FROM {{ bridge_protocol_model }} bmod
-            LEFT JOIN {{ ref('chain_info_chain_ids_legacy') }} cid_source
+            LEFT JOIN {{ ref('chain_info_chain_ids') }} cid_source
                 ON CAST(cid_source.chain_id AS DECIMAL(38, 0)) = CAST(bmod.source_chain_id AS DECIMAL(38, 0))
-            LEFT JOIN {{ ref('chain_info_chain_ids_legacy') }} cid_dest
+            LEFT JOIN {{ ref('chain_info_chain_ids') }} cid_dest
                 ON CAST(cid_dest.chain_id AS DECIMAL(38, 0)) = CAST(bmod.destination_chain_id AS DECIMAL(38, 0))
         {% if not loop.last %}
         UNION ALL
@@ -111,9 +111,9 @@ WITH bridge_protocols AS (
             , trace_address
             , tx_method_id
         FROM {{ native_bridge_model }} bmod
-            LEFT JOIN {{ ref('chain_info_chain_ids_legacy') }} cid_source
+            LEFT JOIN {{ ref('chain_info_chain_ids') }} cid_source
                 ON CAST(cid_source.chain_id AS DECIMAL(38, 0)) = CAST(bmod.source_chain_id AS DECIMAL(38, 0))
-            LEFT JOIN {{ ref('chain_info_chain_ids_legacy') }} cid_dest
+            LEFT JOIN {{ ref('chain_info_chain_ids') }} cid_dest
                 ON CAST(cid_dest.chain_id AS DECIMAL(38, 0)) = CAST(bmod.destination_chain_id AS DECIMAL(38, 0))
         {% if not loop.last %}
         UNION ALL

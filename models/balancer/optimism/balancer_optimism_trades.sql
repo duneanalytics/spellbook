@@ -10,7 +10,7 @@
 }}
 
 {% set balancer_models = [
-    ref('balancer_v2_optimism_trades_legacy')
+    ref('balancer_v2_optimism_trades')
 ] %}
 
 SELECT *

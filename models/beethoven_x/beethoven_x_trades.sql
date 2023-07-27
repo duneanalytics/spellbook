@@ -9,9 +9,9 @@
         )
 }}
 
--- ref('beethoven_x_optimism_trades_legacy'), --Do not include this, the volume should be attributed to Balancer for Optimism (per Balancer team)
+-- ref('beethoven_x_optimism_trades'), --Do not include this, the volume should be attributed to Balancer for Optimism (per Balancer team)
 {% set beets_models = [
-ref('beethoven_x_fantom_trades_legacy')
+ref('beethoven_x_fantom_trades')
 ] %}
 
 

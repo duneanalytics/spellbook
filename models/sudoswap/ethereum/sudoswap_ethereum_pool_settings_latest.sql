@@ -115,7 +115,7 @@ with
       pool_fee,
       creation_block_time
     FROM
-      {{ ref('sudoswap_ethereum_pool_creations_legacy') }}
+      {{ ref('sudoswap_ethereum_pool_creations') }}
     {% if is_incremental() %}
     WHERE creation_block_time >= date_trunc("day", now() - interval '1 week')
     {% endif %}

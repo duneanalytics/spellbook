@@ -6,4 +6,4 @@
                                     "labels",
                                     \'["soispoke"]\') }}')}}
 
-SELECT * FROM {{ ref('labels_safe_ethereum_legacy') }}
+SELECT * FROM {{ ref('labels_safe_ethereum') }}

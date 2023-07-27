@@ -11,15 +11,15 @@ with
     select
         sum(amount_usd) as portfolio_value_usd,
         wallet_address as address
-    from {{ ref('balances_ethereum_erc20_day_legacy') }}
+    from {{ ref('balances_ethereum_erc20_day') }}
     where blockchain = 'ethereum' and day = CURRENT_DATE and amount > 0
     and wallet_address in (
         select distinct taker
-        from {{ ref('dex_aggregator_trades_legacy') }}
+        from {{ ref('dex_aggregator_trades') }}
         where blockchain = 'ethereum'
         UNION ALL
         select distinct taker
-        from {{ ref('dex_trades_legacy') }}
+        from {{ ref('dex_trades') }}
         where blockchain = 'ethereum'
     )
     group by wallet_address

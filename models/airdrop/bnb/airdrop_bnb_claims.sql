@@ -11,7 +11,7 @@
 
 
 {% set airdrop_claims_models = [
-    ref('ellipsis_finance_bnb_airdrop_claims_legacy')
+    ref('ellipsis_finance_bnb_airdrop_claims')
 ] %}
 
 SELECT *

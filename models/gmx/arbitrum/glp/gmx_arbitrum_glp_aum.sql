@@ -45,7 +45,7 @@ SELECT -- This query calculates the AUM of each component of GLP
     (weth_longs) + ((weth_current_price - weth_shorts_entry_price) * COALESCE((weth_shorts_outstanding_notional / weth_shorts_entry_price),0)) - weth_shorts_outstanding_notional AS weth_neutral_exposure_aum,
     
     dai_available_assets * dai_current_price AS dai_aum
-FROM {{ref('gmx_arbitrum_glp_components_legacy')}}
+FROM {{ref('gmx_arbitrum_glp_components')}}
 {% if is_incremental() %}
 WHERE minute >= date_trunc("day", now() - interval '1 day')
 {% endif %}

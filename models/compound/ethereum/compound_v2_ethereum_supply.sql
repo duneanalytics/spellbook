@@ -42,7 +42,7 @@ with mints as (
 		where evt_block_time >= date_trunc("day", now() - interval '1 week')
 		{% endif %}
     ) evt_mint
-    left join {{ ref('compound_v2_ethereum_ctokens_legacy') }} ctokens
+    left join {{ ref('compound_v2_ethereum_ctokens') }} ctokens
         on evt_mint.contract_address = ctokens.ctoken_address
     left join {{ source('prices', 'usd') }} p
         on p.minute = date_trunc('minute', evt_mint.evt_block_time)
@@ -79,7 +79,7 @@ redeems as (
 		where evt_block_time >= date_trunc("day", now() - interval '1 week')
 		{% endif %}
     ) evt_mint
-    left join {{ ref('compound_v2_ethereum_ctokens_legacy') }} ctokens
+    left join {{ ref('compound_v2_ethereum_ctokens') }} ctokens
         on evt_mint.contract_address = ctokens.ctoken_address
     left join {{ source('prices', 'usd') }} p
         on p.minute = date_trunc('minute', evt_mint.evt_block_time)

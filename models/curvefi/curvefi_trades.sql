@@ -10,10 +10,10 @@
 }}
 
 {% set curvefi_trade_models = [
- ref('curvefi_ethereum_trades_legacy')
-,ref('curvefi_optimism_trades_legacy')
-,ref('curvefi_avalanche_c_trades_legacy')
-,ref('curvefi_fantom_trades_legacy')
+ ref('curvefi_ethereum_trades')
+,ref('curvefi_optimism_trades')
+,ref('curvefi_avalanche_c_trades')
+,ref('curvefi_fantom_trades')
 ] %}
 
 

@@ -38,7 +38,7 @@ FROM (
             token_bought_amount AS token_amount,
             token_bought_amount_raw AS token_amount_raw,
             amount_usd
-        FROM {{ ref('dex_trades_legacy') }}
+        FROM {{ ref('dex_trades') }}
         WHERE
             amount_usd > 0
             {% if is_incremental() %}
@@ -52,7 +52,7 @@ FROM (
             token_sold_amount AS token_amount,
             token_sold_amount_raw AS token_amount_raw,
             amount_usd
-        FROM {{ ref('dex_trades_legacy') }}
+        FROM {{ ref('dex_trades') }}
         WHERE
             amount_usd > 0
             {% if is_incremental() %}

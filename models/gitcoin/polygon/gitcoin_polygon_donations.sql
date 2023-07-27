@@ -39,7 +39,7 @@ WITH gitcoin_donations AS (
     , gd.contract_address
     , gd.evt_tx_hash AS tx_hash
     FROM {{ source('gitcoin_polygon', 'BulkCheckout_evt_DonationSent') }} gd
-    LEFT JOIN {{ ref('tokens_polygon_erc20_legacy') }} tok
+    LEFT JOIN {{ ref('tokens_polygon_erc20') }} tok
         ON tok.contract_address=gd.token
     {% if is_incremental() %}
     WHERE gd.evt_block_time >= date_trunc("day", now() - interval '1 week')
@@ -65,7 +65,7 @@ SELECT 'polygon' AS blockchain
 , gd.contract_address
 , gd.tx_hash
 FROM gitcoin_donations gd
-LEFT JOIN {{ ref('gitcoin_grant_round_dates_legacy') }} grd ON grd.start_date <= gd.block_time
+LEFT JOIN {{ ref('gitcoin_grant_round_dates') }} grd ON grd.start_date <= gd.block_time
     AND gd.block_time < grd.end_date
 LEFT JOIN {{ source('prices', 'usd') }} pu ON pu.blockchain='polygon'
     AND pu.contract_address=gd.currency_contract

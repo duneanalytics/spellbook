@@ -6,4 +6,4 @@
                                     "labels",
                                     \'["balancerlabs"]\') }}')}}
 
-SELECT * FROM  {{ ref('labels_balancer_v1_pools_ethereum_legacy') }}
+SELECT * FROM  {{ ref('labels_balancer_v1_pools_ethereum') }}

@@ -11,8 +11,8 @@
 
 
 {% set dex_inc_models = [
-         ref('balancer_gauge_mappings_legacy')
-        ,ref('velodrome_optimism_bribe_mappings_legacy')
+         ref('balancer_gauge_mappings')
+        ,ref('velodrome_optimism_bribe_mappings')
 ] %}
 
 

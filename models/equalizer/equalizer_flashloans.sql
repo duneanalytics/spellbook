@@ -14,10 +14,10 @@
 }}
 
 {% set equalizer_models = [
-ref('equalizer_bnb_flashloans_legacy')
-, ref('equalizer_ethereum_flashloans_legacy')
-, ref('equalizer_optimism_flashloans_legacy')
-, ref('equalizer_polygon_flashloans_legacy')
+ref('equalizer_bnb_flashloans')
+, ref('equalizer_ethereum_flashloans')
+, ref('equalizer_optimism_flashloans')
+, ref('equalizer_polygon_flashloans')
 ] %}
 
 SELECT *

@@ -13,7 +13,7 @@
 with 
  questers as (
     select quester_address, 'optimism' AS blockchain, COUNT(*) AS num_quests_completed
-    from {{ref('optimism_quests_optimism_quest_completions_legacy')}}
+    from {{ref('optimism_quests_optimism_quest_completions')}}
     GROUP BY 1,2
   )
 

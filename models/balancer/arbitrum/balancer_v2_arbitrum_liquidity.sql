@@ -16,7 +16,7 @@ WITH pool_labels AS (
     SELECT
         address AS pool_id,
         name AS pool_symbol
-    FROM {{ ref('labels_balancer_v2_pools_arbitrum_legacy') }}
+    FROM {{ ref('labels_balancer_v2_pools_arbitrum') }}
     ),
 
     prices AS (
@@ -36,7 +36,7 @@ WITH pool_labels AS (
             contract_address AS token,
             percentile(median_price, 0.5) AS price,
             sum(sample_size) AS sample_size
-        FROM {{ ref('dex_prices_legacy') }}
+        FROM {{ ref('dex_prices') }}
         GROUP BY 1, 2
         HAVING sum(sample_size) > 3
     ),
@@ -59,7 +59,7 @@ WITH pool_labels AS (
             date_trunc('day', HOUR) AS DAY,
             contract_address AS token,
             percentile(median_price, 0.5) AS bpt_price
-        FROM {{ ref('balancer_v2_arbitrum_bpt_prices_legacy') }}
+        FROM {{ ref('balancer_v2_arbitrum_bpt_prices') }}
         GROUP BY 1, 2
     ),
 
@@ -181,7 +181,7 @@ zipped_balance_changes AS (
         FROM calendar c
         LEFT JOIN cumulative_balance b ON b.day <= c.day
         AND c.day < b.day_of_next_change
-        LEFT JOIN {{ ref('tokens_erc20_legacy') }} t ON t.contract_address = b.token
+        LEFT JOIN {{ ref('tokens_erc20') }} t ON t.contract_address = b.token
         AND blockchain = "arbitrum"
         LEFT JOIN prices p1 ON p1.day = b.day
         AND p1.token = b.token
@@ -198,7 +198,7 @@ zipped_balance_changes AS (
             b.pool_id,
             SUM(b.pool_liquidity_usd) / COALESCE(SUM(w.normalized_weight), 1) AS pool_liquidity
         FROM cumulative_usd_balance b
-        LEFT JOIN {{ ref('balancer_v2_arbitrum_pools_tokens_weights_legacy') }} w ON b.pool_id = w.pool_id
+        LEFT JOIN {{ ref('balancer_v2_arbitrum_pools_tokens_weights') }} w ON b.pool_id = w.pool_id
         AND b.token = w.token_address
         AND b.pool_liquidity_usd > 0
         GROUP BY 1, 2
@@ -218,6 +218,6 @@ SELECT
 FROM pool_liquidity_estimates b
 LEFT JOIN cumulative_usd_balance c ON c.day = b.day
 AND c.pool_id = b.pool_id
-LEFT JOIN {{ ref('balancer_v2_arbitrum_pools_tokens_weights_legacy') }} w ON b.pool_id = w.pool_id
+LEFT JOIN {{ ref('balancer_v2_arbitrum_pools_tokens_weights') }} w ON b.pool_id = w.pool_id
 AND w.token_address = c.token
 LEFT JOIN pool_labels p ON p.pool_id = SUBSTRING(b.pool_id, 0, 42)

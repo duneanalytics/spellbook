@@ -45,7 +45,7 @@ where tokenA = lower('0x7f39C581F595B53c5cb19bD0b3f8dA6c935E2Ca0')
 union 
 select lower('0x7f39C581F595B53c5cb19bD0b3f8dA6c935E2Ca0') 
 ) t
-left join {{ref('prices_tokens_legacy')}} pt on t.token = pt.contract_address
+left join {{ref('prices_tokens')}} pt on t.token = pt.contract_address
 )
 
 , tokens_prices_daily AS (

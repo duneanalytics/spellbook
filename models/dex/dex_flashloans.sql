@@ -14,15 +14,15 @@
 }}
 
 {% set flashloan_models = [
-ref('aave_flashloans_legacy')
-, ref('balancer_flashloans_legacy')
-, ref('dydx_ethereum_flashloans_legacy')
-, ref('uniswap_flashloans_legacy')
-, ref('euler_ethereum_flashloans_legacy')
-, ref('maker_ethereum_flashloans_legacy')
-, ref('synapse_flashloans_legacy')
-, ref('fiat_dao_ethereum_flashloans_legacy')
-, ref('equalizer_flashloans_legacy')
+ref('aave_flashloans')
+, ref('balancer_flashloans')
+, ref('dydx_ethereum_flashloans')
+, ref('uniswap_flashloans')
+, ref('euler_ethereum_flashloans')
+, ref('maker_ethereum_flashloans')
+, ref('synapse_flashloans')
+, ref('fiat_dao_ethereum_flashloans')
+, ref('equalizer_flashloans')
 ] %}
 
 

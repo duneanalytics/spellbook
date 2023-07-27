@@ -42,9 +42,9 @@ select
         else 'unknown'
     end as method
 from {{ source('celo', 'traces') }} tr
-join {{ ref('safe_celo_safes_legacy') }} s
+join {{ ref('safe_celo_safes') }} s
     on s.address = tr.from
-join {{ ref('safe_celo_singletons_legacy') }} ss
+join {{ ref('safe_celo_singletons') }} ss
     on tr.to = ss.address
 where substring(tr.input, 0, 10) in (
         '0x6a761202', -- execTransaction

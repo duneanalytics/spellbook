@@ -19,7 +19,7 @@ select distinct blockchain,
     case when buyer <= seller then buyer else seller end as master_address,
     case when buyer <= seller then seller else buyer end as alternative_address,
     max(block_time) as last_trade
-from {{ ref('nft_trades_legacy') }}
+from {{ ref('nft_trades') }}
 where buyer is not null
     and seller is not null
     and blockchain is not null

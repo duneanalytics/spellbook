@@ -10,12 +10,12 @@
 }}
 
 {% set balancer_models = [
-ref('balancer_v2_ethereum_liquidity_legacy')
-, ref('balancer_v2_optimism_liquidity_legacy')
-, ref('balancer_v2_arbitrum_liquidity_legacy')
-, ref('balancer_v2_polygon_liquidity_legacy')
-, ref('balancer_v2_gnosis_liquidity_legacy')
-, ref('balancer_v2_avalanche_c_liquidity_legacy')
+ref('balancer_v2_ethereum_liquidity')
+, ref('balancer_v2_optimism_liquidity')
+, ref('balancer_v2_arbitrum_liquidity')
+, ref('balancer_v2_polygon_liquidity')
+, ref('balancer_v2_gnosis_liquidity')
+, ref('balancer_v2_avalanche_c_liquidity')
 ] %}
 
 

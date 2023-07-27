@@ -7,4 +7,4 @@
     )
 }}
 
-SELECT * FROM {{ ref('labels_trader_portfolios_ethereum_legacy') }}
+SELECT * FROM {{ ref('labels_trader_portfolios_ethereum') }}

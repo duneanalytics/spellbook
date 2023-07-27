@@ -11,9 +11,9 @@
 }}
 
 {% set social_models = [
-  ref('labels_ens_legacy')
-, ref('labels_three_letter_ens_count_legacy')
- ,ref('labels_lens_poster_frequencies_legacy')
+  ref('labels_ens')
+, ref('labels_three_letter_ens_count')
+ ,ref('labels_lens_poster_frequencies')
 ] %}
 
 SELECT *

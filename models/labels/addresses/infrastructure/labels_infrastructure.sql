@@ -11,17 +11,17 @@
 }}
 
 {% set infrastructure_models = [
- ref('labels_eth_stakers_legacy')
- , ref('labels_miners_legacy')
- , ref('labels_system_addresses_legacy')
- , ref('labels_validators_legacy')
- , ref('labels_flashbots_ethereum_legacy')
- , ref('labels_mev_ethereum_legacy')
- , ref('labels_contract_deployers_legacy')
- , ref('labels_stablecoins_legacy')
- , ref('labels_cex_tokens_legacy')
- , ref('labels_burn_addresses_legacy')
- , ref('labels_flashloans_ethereum_legacy')
+ ref('labels_eth_stakers')
+ , ref('labels_miners')
+ , ref('labels_system_addresses')
+ , ref('labels_validators')
+ , ref('labels_flashbots_ethereum')
+ , ref('labels_mev_ethereum')
+ , ref('labels_contract_deployers')
+ , ref('labels_stablecoins')
+ , ref('labels_cex_tokens')
+ , ref('labels_burn_addresses')
+ , ref('labels_flashloans_ethereum')
 ] %}
 
 SELECT *

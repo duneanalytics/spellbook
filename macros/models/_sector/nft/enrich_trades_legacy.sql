@@ -1,4 +1,4 @@
-{% macro enrich_trades_legacy(blockchain='', models=[], transactions_model=null, tokens_nft_model=null, tokens_erc20_model=null, prices_model=null, aggregators=null, aggregator_markers=null) %}
+{% macro enrich_trades(blockchain='', models=[], transactions_model=null, tokens_nft_model=null, tokens_erc20_model=null, prices_model=null, aggregators=null, aggregator_markers=null) %}
 -- Macro to apply the NFT trades enrichment(s) to base models
 -- 1. add transaction information
 -- 2. add NFT token information

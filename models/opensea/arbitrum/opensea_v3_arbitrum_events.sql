@@ -65,5 +65,5 @@ select blockchain
       ,sub_type
       ,sub_idx
       ,'seaport-' || CAST(tx_hash AS VARCHAR(100)) || '-' || cast(evt_index as VARCHAR(100)) || '-' || CAST(nft_contract_address AS VARCHAR(100)) || '-' || cast(token_id as VARCHAR(100)) || '-' || cast(sub_idx as VARCHAR(100)) as unique_trade_id
-  from {{ ref('seaport_arbitrum_trades_legacy') }}
+  from {{ ref('seaport_arbitrum_trades') }}
  where cast(project_contract_address as varchar(100)) = '0x00000000006c3852cbef3e08e8df289169ede581'  

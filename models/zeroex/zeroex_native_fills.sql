@@ -10,11 +10,11 @@
 }}
 
 {% set zeroex_models = [  
-ref('zeroex_ethereum_native_fills_legacy')
-,ref('zeroex_polygon_native_fills_legacy')
-,ref('zeroex_optimism_native_fills_legacy')
-,ref('zeroex_arbitrum_native_fills_legacy')
-,ref('zeroex_bnb_native_fills_legacy')
+ref('zeroex_ethereum_native_fills')
+,ref('zeroex_polygon_native_fills')
+,ref('zeroex_optimism_native_fills')
+,ref('zeroex_arbitrum_native_fills')
+,ref('zeroex_bnb_native_fills')
 ] %}
  
 

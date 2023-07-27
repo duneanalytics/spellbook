@@ -16,10 +16,10 @@ with trader_age as (
            taker                                      as address
     from (
         select blockchain, taker, block_date
-        from {{ ref('dex_aggregator_trades_legacy') }}
+        from {{ ref('dex_aggregator_trades') }}
         UNION ALL
         select blockchain, taker, block_date
-        from {{ ref('dex_trades_legacy') }}
+        from {{ ref('dex_trades') }}
     )
     group by taker, blockchain
 )

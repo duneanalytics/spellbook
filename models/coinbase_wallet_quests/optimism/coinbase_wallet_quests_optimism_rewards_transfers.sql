@@ -28,7 +28,7 @@ SELECT qa.distributor_address
      , r.evt_block_number AS block_number
      , r.value            AS rewards_token_value_raw
 FROM {{source('erc20_optimism','evt_Transfer')}} r
-INNER JOIN {{ref('coinbase_wallet_quests_optimism_distributor_addresses_legacy')}} qa
+INNER JOIN {{ref('coinbase_wallet_quests_optimism_distributor_addresses')}} qa
     ON r.`from` = distributor_address
     AND r.contract_address = rewards_token
 

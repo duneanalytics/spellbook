@@ -17,13 +17,13 @@ with namespaces as (
     select
         contract_address as address
         ,coalesce(contract_project, contract_name, token_symbol) as namespace
-	from {{ ref('contracts_optimism_contract_mapping_legacy') }}
+	from {{ ref('contracts_optimism_contract_mapping') }}
 )
 , nfts_per_tx as (
     select
         tx_hash
         ,sum(amount) as nfts_minted_in_tx
-        from {{ ref('nft_optimism_transfers_legacy') }}
+        from {{ ref('nft_optimism_transfers') }}
         {% if is_incremental() %}
         where block_time >= date_trunc("day", now() - interval '1 week')
         {% endif %}
@@ -71,18 +71,18 @@ select
     , cast(coalesce(sum(tr.value), sum(cast(erc20s.value as double)), 0)*(nft_mints.amount/nft_count.nfts_minted_in_tx) as decimal(38,0)) as amount_raw
     , coalesce(sum(tr.value_decimal), sum(cast(erc20s.value as double))/power(10, pu_erc20s.decimals))*(nft_mints.amount/nft_count.nfts_minted_in_tx) as amount_original
     , coalesce(pu_eth.price*sum(tr.value_decimal), pu_erc20s.price*sum(cast(erc20s.value as double))/power(10, pu_erc20s.decimals))*(nft_mints.amount/nft_count.nfts_minted_in_tx) as amount_usd
-from {{ ref('nft_optimism_transfers_legacy') }} as nft_mints
+from {{ ref('nft_optimism_transfers') }} as nft_mints
 left join {{ source('optimism','transactions') }} as etxs
     on etxs.block_time=nft_mints.block_time
     and etxs.hash=nft_mints.tx_hash
     {% if is_incremental() %}
     and etxs.block_time >= date_trunc("day", now() - interval '1 week')
     {% endif %}
-left join {{ ref('tokens_optimism_nft_legacy') }} as tok
+left join {{ ref('tokens_optimism_nft') }} as tok
     on tok.contract_address=nft_mints.contract_address
-left join {{ ref('tokens_optimism_nft_bridged_mapping_legacy') }} as bm
+left join {{ ref('tokens_optimism_nft_bridged_mapping') }} as bm
     on bm.contract_address=nft_mints.contract_address
-left join {{ ref('transfers_optimism_eth_legacy') }} as tr
+left join {{ ref('transfers_optimism_eth') }} as tr
     on nft_mints.tx_hash = tr.tx_hash
     and nft_mints.block_number = tr.tx_block_number
     and tr.value_decimal > 0
@@ -108,7 +108,7 @@ left join {{ source('prices','usd') }} as pu_erc20s
     {% endif %}
 left join namespaces as ec
     on etxs.to=ec.address
-left join {{ ref('nft_optimism_aggregators_legacy') }} as agg
+left join {{ ref('nft_optimism_aggregators') }} as agg
     on etxs.to=agg.contract_address
 left join nfts_per_tx as nft_count
     on nft_count.tx_hash=nft_mints.tx_hash

@@ -21,7 +21,7 @@ dao_tmp as (
             dao, 
             dao_wallet_address
         FROM 
-        {{ ref('dao_addresses_ethereum_legacy') }}
+        {{ ref('dao_addresses_ethereum') }}
         WHERE dao_wallet_address IS NOT NULL
         AND dao_wallet_address NOT IN ('0x0000000000000000000000000000000000000001', '0x000000000000000000000000000000000000dead')
 ), 
@@ -110,7 +110,7 @@ LEFT JOIN
     AND p.minute >= date_trunc("day", now() - interval '1 week')
     {% endif %}
 LEFT JOIN 
-{{ ref('dex_prices_legacy') }} dp 
+{{ ref('dex_prices') }} dp 
     ON dp.hour = date_trunc('hour', t.block_time)
     AND dp.contract_address = LOWER('0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2')
     AND dp.blockchain = 'ethereum'

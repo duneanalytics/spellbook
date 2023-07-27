@@ -7,7 +7,7 @@
 
 
 {% set pancake_models = [
-    ref('trader_joe_v2_bnb_trades_legacy')
+    ref('trader_joe_v2_bnb_trades')
 ] %}
 
 

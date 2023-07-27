@@ -6,8 +6,8 @@
 }}
 
 {% set paraswap_models = [
-    ref('paraswap_v4_ethereum_trades_legacy')
-    ,ref('paraswap_v5_ethereum_trades_legacy')
+    ref('paraswap_v4_ethereum_trades')
+    ,ref('paraswap_v5_ethereum_trades')
 ] %}
 
 

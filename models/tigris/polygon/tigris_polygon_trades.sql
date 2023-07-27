@@ -6,8 +6,8 @@
 }}
 
 {% set tigris_models = [
-ref('tigris_v1_polygon_trades_legacy')
-,ref('tigris_v2_polygon_trades_legacy')
+ref('tigris_v1_polygon_trades')
+,ref('tigris_v2_polygon_trades')
 ] %}
 
 

@@ -10,11 +10,11 @@
 }}
 
 {% set uniswap_models = [
-ref('uniswap_v3_ethereum_flashloans_legacy')
-, ref('uniswap_v3_optimism_flashloans_legacy')
-, ref('uniswap_v3_arbitrum_flashloans_legacy')
-, ref('uniswap_v3_polygon_flashloans_legacy')
-, ref('uniswap_v3_bnb_flashloans_legacy')
+ref('uniswap_v3_ethereum_flashloans')
+, ref('uniswap_v3_optimism_flashloans')
+, ref('uniswap_v3_arbitrum_flashloans')
+, ref('uniswap_v3_polygon_flashloans')
+, ref('uniswap_v3_bnb_flashloans')
 ] %}
 
 

@@ -11,7 +11,7 @@ with
     -- DAO list taken from dao multisig list from Dune
     -- https://github.com/duneanalytics/spellbook/blob/main/models/labels/dao/identifier/multisigs/labels_dao_multisig_ethereum.sql
     SELECT distinct address
-    FROM {{ ref('labels_addresses_legacy') }}
+    FROM {{ ref('labels_addresses') }}
     WHERE category = 'dao' and blockchain = 'ethereum' and label_type = 'identifier'
   ),
 
@@ -20,12 +20,12 @@ with
         *
     from (
         select tx_hash, evt_index, project, version
-        from {{ ref('dex_aggregator_trades_legacy') }}
+        from {{ ref('dex_aggregator_trades') }}
         where blockchain = 'ethereum'
         and taker in (select address from daos)
         UNION ALL
         select tx_hash, evt_index, project, version
-        from {{ ref('dex_trades_legacy') }}
+        from {{ ref('dex_trades') }}
         where blockchain = 'ethereum'
         and taker in (select address from daos)
     )

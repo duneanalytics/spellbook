@@ -10,7 +10,7 @@
 }}
 
 {% set ellipsis_finance_models = [
-ref('ellipsis_finance_bnb_trades_legacy')
+ref('ellipsis_finance_bnb_trades')
 ] %}
 
 

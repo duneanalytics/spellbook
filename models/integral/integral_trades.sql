@@ -10,8 +10,8 @@
 }}
 
 {% set integral_models = [
-ref('integral_arbitrum_trades_legacy'),
-ref('integral_ethereum_trades_legacy')
+ref('integral_arbitrum_trades'),
+ref('integral_ethereum_trades')
 ] %}
 
 

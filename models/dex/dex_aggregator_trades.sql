@@ -18,19 +18,19 @@
 
 /********************************************************
 spells with issues, to be excluded in short term:
--- ,ref('odos_trades_legacy') contains duplicates
+-- ,ref('odos_trades') contains duplicates
 ********************************************************/
 
 {% set dex_aggregator_models = [
- ref('cow_protocol_trades_legacy')
- ,ref('oneinch_ethereum_trades_legacy')
- ,ref('openocean_trades_legacy')
- ,ref('paraswap_trades_legacy')
- ,ref('lifi_trades_legacy')
- ,ref('yield_yak_avalanche_c_trades_legacy')
- ,ref('bebop_trades_legacy')
- ,ref('zeroex_trades_legacy')
- ,ref('dodo_aggregator_trades_legacy')
+ ref('cow_protocol_trades')
+ ,ref('oneinch_ethereum_trades')
+ ,ref('openocean_trades')
+ ,ref('paraswap_trades')
+ ,ref('lifi_trades')
+ ,ref('yield_yak_avalanche_c_trades')
+ ,ref('bebop_trades')
+ ,ref('zeroex_trades')
+ ,ref('dodo_aggregator_trades')
 ] %}
 
 SELECT *

@@ -11,7 +11,7 @@
 
 
 {% set airdrop_claims_models = [
-    ref('arbitrum_arbitrum_airdrop_claims_legacy')
+    ref('arbitrum_arbitrum_airdrop_claims')
 ] %}
 
 

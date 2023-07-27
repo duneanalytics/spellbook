@@ -8,8 +8,8 @@
 )}}
 
 {% set institution_models = [
- ref('labels_cex_legacy')
- , ref('labels_funds_legacy')
+ ref('labels_cex')
+ , ref('labels_funds')
 ] %}
 
 SELECT *

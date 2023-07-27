@@ -44,9 +44,9 @@ WITH gs AS (
             , feed_name
             , proxy_address
             , aggregator_address
-        FROM {{ ref('chainlink_optimism_oracle_addresses_legacy') }}
+        FROM {{ ref('chainlink_optimism_oracle_addresses') }}
     ) oa
-    LEFT JOIN {{ ref('chainlink_optimism_oracle_token_mapping_legacy') }} c
+    LEFT JOIN {{ ref('chainlink_optimism_oracle_token_mapping') }} c
         ON c.proxy_address = oa.proxy_address
 )
 
@@ -92,7 +92,7 @@ FROM
                 , gs.underlying_token_address
                 , AVG(underlying_token_price) AS underlying_token_price_avg
             FROM gs
-            LEFT JOIN {{ ref('chainlink_optimism_price_feeds_legacy') }} f
+            LEFT JOIN {{ ref('chainlink_optimism_price_feeds') }} f
                 ON gs.hr = DATE_TRUNC('day',f.block_time)
                 AND gs.underlying_token_address = f.underlying_token_address
                 AND gs.proxy_address = f.proxy_address

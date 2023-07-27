@@ -8,12 +8,12 @@
 )}}
 
 {% set nft_labels_models = [
- ref('labels_nft_traders_transactions_legacy')
- ,ref('labels_nft_traders_transactions_current_legacy')
- ,ref('labels_nft_traders_volume_usd_legacy')
- ,ref('labels_nft_traders_volume_usd_current_legacy')
- ,ref('labels_nft_users_platforms_legacy')
- ,ref('labels_nft_smart_trader_roi_eth_legacy')
+ ref('labels_nft_traders_transactions')
+ ,ref('labels_nft_traders_transactions_current')
+ ,ref('labels_nft_traders_volume_usd')
+ ,ref('labels_nft_traders_volume_usd_current')
+ ,ref('labels_nft_users_platforms')
+ ,ref('labels_nft_smart_trader_roi_eth')
 ] %}
 
 SELECT *

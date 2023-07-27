@@ -11,9 +11,9 @@
 }}
 
 {% set aragon_models = [
-ref('aragon_ethereum_dao_addresses_legacy')
-,ref('aragon_gnosis_dao_addresses_legacy')
-,ref('aragon_polygon_dao_addresses_legacy')
+ref('aragon_ethereum_dao_addresses')
+,ref('aragon_gnosis_dao_addresses')
+,ref('aragon_polygon_dao_addresses')
 ] %}
 
 

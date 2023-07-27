@@ -577,7 +577,7 @@ WITH curated_list AS (
 , mapped_list AS (
   SELECT
     address AS creator_address, project_name AS contract_project
-    FROM {{ ref('addresses_optimism_grants_funding_legacy') }} pro
+    FROM {{ ref('addresses_optimism_grants_funding') }} pro
 )
 
 SELECT 
@@ -590,7 +590,7 @@ SELECT
       WHERE ml.creator_address NOT IN (SELECT creator_address FROM curated_list)
     ) f
 WHERE f.creator_address NOT IN (
-   SELECT creator_address FROM {{ ref('contracts_optimism_deterministic_contract_creators_legacy') }}
+   SELECT creator_address FROM {{ ref('contracts_optimism_deterministic_contract_creators') }}
 )
 
 GROUP BY 1,2

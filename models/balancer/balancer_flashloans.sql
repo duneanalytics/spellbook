@@ -10,11 +10,11 @@
 }}
 
 {% set balancer_models = [
-ref('balancer_v2_ethereum_flashloans_legacy')
-, ref('balancer_v2_optimism_flashloans_legacy')
-, ref('balancer_v2_arbitrum_flashloans_legacy')
-, ref('balancer_v2_polygon_flashloans_legacy')
-, ref('balancer_v2_gnosis_flashloans_legacy')
+ref('balancer_v2_ethereum_flashloans')
+, ref('balancer_v2_optimism_flashloans')
+, ref('balancer_v2_arbitrum_flashloans')
+, ref('balancer_v2_polygon_flashloans')
+, ref('balancer_v2_gnosis_flashloans')
 ] %}
 
 

@@ -11,7 +11,7 @@
 
 
 {% set airdrop_claims_models = [
-    ref('giveth_gnosis_airdrop_claims_legacy')
+    ref('giveth_gnosis_airdrop_claims')
 ] %}
 
 SELECT *

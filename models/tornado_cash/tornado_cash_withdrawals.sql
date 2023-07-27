@@ -16,13 +16,13 @@
 
 
 {% set tornado_cash_withdrawals_models = [
-ref('tornado_cash_arbitrum_withdrawals_legacy')
-,ref('tornado_cash_avalanche_c_withdrawals_legacy')
-,ref('tornado_cash_bnb_withdrawals_legacy')
-,ref('tornado_cash_ethereum_withdrawals_legacy')
-,ref('tornado_cash_gnosis_withdrawals_legacy')
-,ref('tornado_cash_optimism_withdrawals_legacy')
-,ref('tornado_cash_polygon_withdrawals_legacy')
+ref('tornado_cash_arbitrum_withdrawals')
+,ref('tornado_cash_avalanche_c_withdrawals')
+,ref('tornado_cash_bnb_withdrawals')
+,ref('tornado_cash_ethereum_withdrawals')
+,ref('tornado_cash_gnosis_withdrawals')
+,ref('tornado_cash_optimism_withdrawals')
+,ref('tornado_cash_polygon_withdrawals')
 ] %}
 
 SELECT *

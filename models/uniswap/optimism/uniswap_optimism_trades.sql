@@ -6,7 +6,7 @@
 }}
 
 {% set uniswap_models = [
-'uniswap_v3_optimism_trades_legacy'
+'uniswap_v3_optimism_trades'
 ] %}
 
 

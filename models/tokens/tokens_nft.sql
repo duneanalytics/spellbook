@@ -7,14 +7,14 @@
 
 
 {% set sources = [
-     ('arbitrum',   ref('tokens_arbitrum_nft_legacy'))
-    ,('avalanche_c',ref('tokens_avalanche_c_nft_legacy'))
-    ,('bnb',        ref('tokens_bnb_nft_legacy'))
-    ,('ethereum',   ref('tokens_ethereum_nft_legacy'))
-    ,('fantom',     ref('tokens_fantom_nft_legacy'))
-    ,('gnosis',     ref('tokens_gnosis_nft_legacy'))
-    ,('optimism',   ref('tokens_optimism_nft_legacy'))
-    ,('polygon',    ref('tokens_polygon_nft_legacy'))
+     ('arbitrum',   ref('tokens_arbitrum_nft'))
+    ,('avalanche_c',ref('tokens_avalanche_c_nft'))
+    ,('bnb',        ref('tokens_bnb_nft'))
+    ,('ethereum',   ref('tokens_ethereum_nft'))
+    ,('fantom',     ref('tokens_fantom_nft'))
+    ,('gnosis',     ref('tokens_gnosis_nft'))
+    ,('optimism',   ref('tokens_optimism_nft'))
+    ,('polygon',    ref('tokens_polygon_nft'))
 ] %}
 
 SELECT *

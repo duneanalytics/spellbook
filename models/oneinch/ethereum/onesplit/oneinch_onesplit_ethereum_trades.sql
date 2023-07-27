@@ -160,31 +160,31 @@ LEFT ANTI JOIN --where tx_hash isn't already pulled from oneinch version spells
             tx_hash
             , block_number
         FROM
-            {{ ref('oneinch_v1_ethereum_trades_legacy') }}
+            {{ ref('oneinch_v1_ethereum_trades') }}
         UNION ALL
         SELECT DISTINCT
             tx_hash
             , block_number
         FROM
-            {{ ref('oneinch_v2_ethereum_trades_legacy') }}
+            {{ ref('oneinch_v2_ethereum_trades') }}
         UNION ALL
         SELECT DISTINCT
             tx_hash
             , block_number
         FROM
-            {{ ref('oneinch_v3_ethereum_trades_legacy') }}
+            {{ ref('oneinch_v3_ethereum_trades') }}
         UNION ALL
         SELECT DISTINCT
             tx_hash
             , block_number
         FROM
-            {{ ref('oneinch_v4_ethereum_trades_legacy') }}
+            {{ ref('oneinch_v4_ethereum_trades') }}
         UNION ALL
         SELECT DISTINCT
             tx_hash
             , block_number
         FROM
-            {{ ref('oneinch_v5_ethereum_trades_legacy') }}
+            {{ ref('oneinch_v5_ethereum_trades') }}
     ) oneinch
     ON src.tx_hash = oneinch.tx_hash
     AND src.block_number = oneinch.block_number
@@ -196,10 +196,10 @@ INNER JOIN {{ source('ethereum', 'transactions') }} as tx
     {% else %}
     AND tx.block_time >= '{{project_start_date}}'
     {% endif %}
-LEFT JOIN {{ ref('tokens_erc20_legacy') }} as token_bought
+LEFT JOIN {{ ref('tokens_erc20') }} as token_bought
     ON token_bought.contract_address = src.token_bought_address
     AND token_bought.blockchain = '{{blockchain}}'
-LEFT JOIN {{ ref('tokens_erc20_legacy') }} as token_sold
+LEFT JOIN {{ ref('tokens_erc20') }} as token_sold
     ON token_sold.contract_address = src.token_sold_address
     AND token_sold.blockchain = '{{blockchain}}'
 LEFT JOIN {{ source('prices', 'usd') }} as prices_bought

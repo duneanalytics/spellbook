@@ -13,7 +13,7 @@
 
 
 {% set zeroex_models = [  
-ref('zeroex_native_fills_legacy')
+ref('zeroex_native_fills')
 ] %}
 
 

@@ -10,9 +10,9 @@
 }}
 
 {% set uniswap_models = [
-ref('uniswap_ethereum_pools_legacy')
-, ref('uniswap_arbitrum_pools_legacy')
-, ref('uniswap_polygon_pools_legacy')
+ref('uniswap_ethereum_pools')
+, ref('uniswap_arbitrum_pools')
+, ref('uniswap_polygon_pools')
 ] %}
 
 

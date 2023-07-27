@@ -11,7 +11,7 @@
 }}
 
 {% set balancer_models = [
-    ref('balancer_optimism_gauge_mappings_legacy')
+    ref('balancer_optimism_gauge_mappings')
 ] %}
 
 

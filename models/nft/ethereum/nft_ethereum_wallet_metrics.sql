@@ -15,8 +15,8 @@ with
 --- filtering out wash trades based on definition in this model https://github.com/duneanalytics/spellbook/blob/main/models/nft/nft_wash_trades.sql
 nft_trades_no_wash as
 ( select nft.*
-    from {{ref('nft_trades_legacy')}} nft
-    INNER JOIN {{ref('nft_wash_trades_legacy')}} wt ON wt.block_number=nft.block_number
+    from {{ref('nft_trades')}} nft
+    INNER JOIN {{ref('nft_wash_trades')}} wt ON wt.block_number=nft.block_number
     AND wt.unique_trade_id=nft.unique_trade_id
     where is_wash_trade = FALSE ),
 
@@ -80,7 +80,7 @@ select cast(aggregator_address as string)       as aggregator_address,
        cast(tx_to as string)                    as tx_to,
        cast(unique_trade_id as string)          as unique_trade_id,
        cast(version as string)                  as version
-from {{ref('nft_mints_legacy')}}
+from {{ref('nft_mints')}}
 )
 ,
 -- creating a longform version of buys and sells 
@@ -151,12 +151,12 @@ reservoir_floors_latest_avg as
     where rn_desc <= 3
     group by 1
 ),
------ SECOND SOURCE: nft_ethereum.collection_stats - based on {{ref('nft_trades_legacy')}} 5th percentile of latest traded day
+----- SECOND SOURCE: nft_ethereum.collection_stats - based on {{ref('nft_trades')}} 5th percentile of latest traded day
 eth_collection_stats_floor as (
     select nft_contract_address,
         price_p5_eth,
         row_number() over (partition by nft_contract_address order by block_date desc) rn
-    from {{ref('nft_ethereum_collection_stats_legacy')}}
+    from {{ref('nft_ethereum_collection_stats')}}
 ),
 
 eth_collection_stats_latest_floor as (
@@ -190,7 +190,7 @@ lastest_eth_price_usd as (
 select blockchain,
        minute,
        price
-from {{ref('prices_usd_latest_legacy')}}
+from {{ref('prices_usd_latest')}}
 where blockchain = 'ethereum' and symbol = 'WETH'
 ),
 

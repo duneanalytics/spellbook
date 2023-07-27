@@ -47,7 +47,7 @@ FROM
                 royalty_fee_receive_address,
                 royalty_fee_currency_symbol,
                 unique_trade_id
-        FROM {{ ref('opensea_ethereum_events_legacy') }}
+        FROM {{ ref('opensea_ethereum_events') }}
         UNION ALL
         SELECT
                 blockchain,
@@ -87,7 +87,7 @@ FROM
                 CAST(NULL AS VARCHAR(5)) as royalty_fee_receive_address,
                 CAST(NULL AS VARCHAR(5)) as royalty_fee_currency_symbol,
                 unique_trade_id
-        FROM {{ ref('opensea_solana_events_legacy') }}
+        FROM {{ ref('opensea_solana_events') }}
         UNION ALL
         SELECT
                 blockchain,
@@ -127,7 +127,7 @@ FROM
                 royalty_fee_receive_address,
                 royalty_fee_currency_symbol,
                 unique_trade_id
-        FROM {{ ref('opensea_optimism_events_legacy') }}
+        FROM {{ ref('opensea_optimism_events') }}
         UNION ALL
         SELECT
                 blockchain,
@@ -167,5 +167,5 @@ FROM
                 royalty_fee_receive_address,
                 royalty_fee_currency_symbol,
                 unique_trade_id
-        FROM {{ ref('opensea_polygon_events_legacy') }}
+        FROM {{ ref('opensea_polygon_events') }}
 )

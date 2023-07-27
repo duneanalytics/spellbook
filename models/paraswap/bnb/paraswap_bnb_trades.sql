@@ -6,8 +6,8 @@
 }}
 
 {% set paraswap_models = [
-    ref('paraswap_v4_bnb_trades_legacy')
-    ,ref('paraswap_v5_bnb_trades_legacy')
+    ref('paraswap_v4_bnb_trades')
+    ,ref('paraswap_v5_bnb_trades')
 ] %}
 
 

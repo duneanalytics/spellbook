@@ -14,7 +14,7 @@ margin as (
         position_id,
         margin
     FROM 
-    {{ ref('tigris_v1_arbitrum_events_add_margin_legacy') }}
+    {{ ref('tigris_v1_arbitrum_events_add_margin') }}
 
     UNION ALL
 
@@ -23,7 +23,7 @@ margin as (
         position_id,
         margin
     FROM 
-    {{ ref('tigris_v1_arbitrum_events_modify_margin_legacy') }}
+    {{ ref('tigris_v1_arbitrum_events_modify_margin') }}
 
     UNION ALL
 
@@ -32,7 +32,7 @@ margin as (
         position_id,
         margin
     FROM 
-    {{ ref('tigris_v1_arbitrum_events_open_position_legacy') }}
+    {{ ref('tigris_v1_arbitrum_events_open_position') }}
 
     UNION ALL
 
@@ -41,7 +41,7 @@ margin as (
         position_id,
         new_margin as margin 
     FROM 
-    {{ ref('tigris_v1_arbitrum_positions_close_legacy') }}
+    {{ ref('tigris_v1_arbitrum_positions_close') }}
 
     UNION ALL 
 
@@ -50,7 +50,7 @@ margin as (
         position_id,
         margin
     FROM 
-    {{ ref('tigris_v1_arbitrum_events_limit_order_legacy') }}
+    {{ ref('tigris_v1_arbitrum_events_limit_order') }}
 
 )
 

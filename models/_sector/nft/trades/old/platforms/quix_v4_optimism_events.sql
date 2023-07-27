@@ -79,7 +79,7 @@ with events_raw as (
       ,tr.value
       ,tr.to
     from events_raw as er
-    join {{ ref('transfers_optimism_eth_legacy') }} as tr
+    join {{ ref('transfers_optimism_eth') }} as tr
       on er.tx_hash = tr.tx_hash
       and er.block_number = tr.tx_block_number
       and tr.value_decimal > 0
@@ -143,7 +143,7 @@ with events_raw as (
             token_bought_amount as token_amount,
             token_bought_address as contract_address,
             token_bought_symbol as symbol
-        from {{ ref('uniswap_optimism_trades_legacy') }}
+        from {{ ref('uniswap_optimism_trades') }}
         where
             token_bought_address = '0x4200000000000000000000000000000000000042'
             {% if is_incremental() %}
@@ -158,7 +158,7 @@ with events_raw as (
             token_sold_amount as token_amount,
             token_sold_address as contract_address,
             token_sold_symbol as symbol
-        from {{ ref('uniswap_optimism_trades_legacy') }}
+        from {{ ref('uniswap_optimism_trades') }}
         where
             token_bought_address = '0x4200000000000000000000000000000000000042'
             {% if is_incremental() %}
@@ -256,10 +256,10 @@ with events_raw as (
         {% if is_incremental() %}
         and tx.block_time >= date_trunc("day", now() - interval '1 week')
         {% endif %}
-    left join {{ ref('nft_aggregators_legacy') }} as agg
+    left join {{ ref('nft_aggregators') }} as agg
         on agg.contract_address = tx.to
         and agg.blockchain = 'optimism'
-    left join {{ ref('tokens_nft_legacy') }} n
+    left join {{ ref('tokens_nft') }} n
         on n.contract_address = er.nft_contract_address
         and n.blockchain = 'optimism'
     left join {{ source('erc721_optimism','evt_transfer') }} as erct2
@@ -292,7 +292,7 @@ with events_raw as (
         on erc20.evt_block_time=er.block_time
         and erc20.evt_tx_hash=er.tx_hash
         and erc20.to=er.seller
-    left join {{ ref('tokens_erc20_legacy') }} as t1
+    left join {{ ref('tokens_erc20') }} as t1
         on t1.contract_address =
             case when (erc20.contract_address = '0x0000000000000000000000000000000000000000' or erc20.contract_address is null)
             then '0xdeaddeaddeaddeaddeaddeaddeaddeaddead0000'

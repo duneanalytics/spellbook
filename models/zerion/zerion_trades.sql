@@ -10,13 +10,13 @@
 }}
 
 {% set zerion_models = [
-ref('zerion_arbitrum_trades_legacy')
-, ref('zerion_avalanche_c_trades_legacy')
-, ref('zerion_bnb_trades_legacy')
-, ref('zerion_gnosis_trades_legacy')
-, ref('zerion_optimism_trades_legacy')
-, ref('zerion_polygon_trades_legacy')
-, ref('zerion_fantom_trades_legacy')
+ref('zerion_arbitrum_trades')
+, ref('zerion_avalanche_c_trades')
+, ref('zerion_bnb_trades')
+, ref('zerion_gnosis_trades')
+, ref('zerion_optimism_trades')
+, ref('zerion_polygon_trades')
+, ref('zerion_fantom_trades')
 ] %}
 
 

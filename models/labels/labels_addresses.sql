@@ -12,32 +12,32 @@
 
 -- single category labels (no subsets), needs label_type and model_name added still.
 {% set single_category_labels_models = [
-    ref('labels_aztec_v2_contracts_ethereum_legacy')
-    , ref('labels_balancer_v1_pools_legacy')
-    , ref('labels_balancer_v2_pools_legacy')
-    , ref('labels_balancer_v2_gauges_legacy')
-    , ref('labels_cex_legacy')
-    , ref('labels_contracts_legacy')
-    , ref('labels_hackers_ethereum_legacy')
-    , ref('labels_ofac_sanctionned_ethereum_legacy')
-    , ref('labels_project_wallets_legacy')
-    , ref('labels_safe_ethereum_legacy')
-    , ref('labels_tornado_cash_legacy')
-    , ref('labels_likely_bot_labels_legacy')
-    , ref('labels_quest_participants_legacy')
-    , ref('labels_cex_users_legacy')
-    , ref('labels_op_retropgf_legacy')
+    ref('labels_aztec_v2_contracts_ethereum')
+    , ref('labels_balancer_v1_pools')
+    , ref('labels_balancer_v2_pools')
+    , ref('labels_balancer_v2_gauges')
+    , ref('labels_cex')
+    , ref('labels_contracts')
+    , ref('labels_hackers_ethereum')
+    , ref('labels_ofac_sanctionned_ethereum')
+    , ref('labels_project_wallets')
+    , ref('labels_safe_ethereum')
+    , ref('labels_tornado_cash')
+    , ref('labels_likely_bot_labels')
+    , ref('labels_quest_participants')
+    , ref('labels_cex_users')
+    , ref('labels_op_retropgf')
 ] %}
 
 -- new/standardized labels
 {% set standardized_labels_models = [
-    ref('labels_bridges_legacy')
-    , ref('labels_dex_legacy')
-    , ref('labels_social_legacy')
-    , ref('labels_nft_legacy')
-    , ref('labels_airdrop_legacy')
-    , ref('labels_dao_legacy')
-    , ref('labels_infrastructure_legacy')
+    ref('labels_bridges')
+    , ref('labels_dex')
+    , ref('labels_social')
+    , ref('labels_nft')
+    , ref('labels_airdrop')
+    , ref('labels_dao')
+    , ref('labels_infrastructure')
 ] %}
 
 

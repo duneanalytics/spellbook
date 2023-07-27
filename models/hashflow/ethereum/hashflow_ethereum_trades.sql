@@ -18,7 +18,7 @@
 
 with hashflow_trades as (
     select *
-    from {{ ref('hashflow_ethereum_raw_trades_legacy') }}
+    from {{ ref('hashflow_ethereum_raw_trades') }}
     where fill_status is true -- successful trade
     {% if is_incremental() %}
         and block_time >= date_trunc('day', now() - interval '10 days')
@@ -36,7 +36,7 @@ ethereum_transactions as (
 
 erc20_tokens as (
     select *
-    from {{ ref('tokens_erc20_legacy') }}
+    from {{ ref('tokens_erc20') }}
     where blockchain = 'ethereum'
 )
 

@@ -35,7 +35,7 @@ select
     et.block_time as creation_time,
     et.tx_hash
 from {{ source('goerli', 'traces') }} et 
-join {{ ref('safe_goerli_singletons_legacy') }} s
+join {{ ref('safe_goerli_singletons') }} s
     on et.to = s.address
 where et.success = true
     and et.call_type = 'delegatecall' -- delegatecall to singleton is Safe (proxy) address

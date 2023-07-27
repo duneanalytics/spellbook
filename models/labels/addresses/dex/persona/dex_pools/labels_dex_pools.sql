@@ -20,4 +20,4 @@ SELECT blockchain
 , now() AS updated_at
 , "dex_pools" AS model_name
 , "persona" AS label_type
-FROM {{ ref('dex_pools_legacy') }}
+FROM {{ ref('dex_pools') }}

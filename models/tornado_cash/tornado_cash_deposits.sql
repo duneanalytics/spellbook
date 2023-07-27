@@ -16,13 +16,13 @@
 
 
 {% set tornado_cash_deposits_models = [
-ref('tornado_cash_arbitrum_deposits_legacy')
-,ref('tornado_cash_avalanche_c_deposits_legacy')
-,ref('tornado_cash_bnb_deposits_legacy')
-,ref('tornado_cash_ethereum_deposits_legacy')
-,ref('tornado_cash_gnosis_deposits_legacy')
-,ref('tornado_cash_optimism_deposits_legacy')
-,ref('tornado_cash_polygon_deposits_legacy')
+ref('tornado_cash_arbitrum_deposits')
+,ref('tornado_cash_avalanche_c_deposits')
+,ref('tornado_cash_bnb_deposits')
+,ref('tornado_cash_ethereum_deposits')
+,ref('tornado_cash_gnosis_deposits')
+,ref('tornado_cash_optimism_deposits')
+,ref('tornado_cash_polygon_deposits')
 ] %}
 
 SELECT *

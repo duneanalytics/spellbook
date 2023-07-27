@@ -22,7 +22,7 @@ WITH balances as (
            asset_contract_address,
            asset
     FROM
-        {{ ref('dao_transactions_legacy') }}
+        {{ ref('dao_transactions') }}
     WHERE tx_type = 'tx_in'
     GROUP BY 1, 3, 4, 5, 6, 7, 8
 
@@ -38,7 +38,7 @@ WITH balances as (
         asset_contract_address,
         asset
     FROM
-        {{ ref('dao_transactions_legacy') }}
+        {{ ref('dao_transactions') }}
     WHERE tx_type = 'tx_out'
     GROUP BY 1, 3, 4, 5, 6, 7, 8
 ),

@@ -94,7 +94,7 @@ left join pools on 1=1
 
 , pools_fee as (
 select  contract_address, block_time as time, lead(block_time,1,now()) over (partition by contract_address order by contract_address, block_time) as next_time, swap_fee_percentage/1e18 as fee 
-from {{ref('balancer_v2_optimism_pools_fees_legacy')}}
+from {{ref('balancer_v2_optimism_pools_fees')}}
 where contract_address in (select SUBSTRING(pool_id, 0, 42) from pools)
 )
 
@@ -358,7 +358,7 @@ union all
             0 as row_numb
         FROM pool_per_date c
         LEFT JOIN cumulative_balance b ON b.day <= c.day AND c.day < b.day_of_next_change and c.pool_id = b.pool_id
-        LEFT JOIN {{ref('prices_tokens_legacy')}} t ON t.contract_address = b.token AND blockchain = "optimism"
+        LEFT JOIN {{ref('prices_tokens')}} t ON t.contract_address = b.token AND blockchain = "optimism"
         LEFT JOIN tokens_prices_daily p1 ON p1.time = b.day AND p1.token = b.token
         WHERE b.token = lower('0x1F32b1c2345538c0c6f582fCB022739c4A194Ebb')
         union all
@@ -373,7 +373,7 @@ union all
             row_number() OVER(PARTITION BY c.day,c.pool_id ORDER BY  c.day,c.pool_id, b.token) as row_numb
         FROM pool_per_date c
         LEFT JOIN cumulative_balance b ON b.day <= c.day AND c.day < b.day_of_next_change and c.pool_id = b.pool_id
-        LEFT JOIN {{ref('prices_tokens_legacy')}} t ON t.contract_address = b.token AND blockchain = "optimism"
+        LEFT JOIN {{ref('prices_tokens')}} t ON t.contract_address = b.token AND blockchain = "optimism"
         LEFT JOIN tokens_prices_daily p1 ON p1.time = b.day AND p1.token = b.token
         WHERE b.token != lower('0x1F32b1c2345538c0c6f582fCB022739c4A194Ebb') and b.token != SUBSTRING(b.pool_id, 0, 42)
 )

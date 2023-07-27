@@ -13,14 +13,14 @@ SELECT
     tx_hash,
     depositor AS address,
     'Depositor' as name
-FROM {{ ref('tornado_cash_deposits_legacy') }}
+FROM {{ ref('tornado_cash_deposits') }}
 UNION
 SELECT
     lower(blockchain) as blockchain,
     tx_hash,
     recipient AS address,
     'Recipient' as name
-FROM {{ ref('tornado_cash_withdrawals_legacy') }}
+FROM {{ ref('tornado_cash_withdrawals') }}
 )
 
 SELECT

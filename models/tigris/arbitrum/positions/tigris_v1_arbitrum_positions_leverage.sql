@@ -14,7 +14,7 @@ leverage as (
         position_id,
         leverage 
     FROM 
-    {{ ref('tigris_v1_arbitrum_events_open_position_legacy') }}
+    {{ ref('tigris_v1_arbitrum_events_open_position') }}
 
     UNION ALL
 
@@ -23,7 +23,7 @@ leverage as (
         position_id,
         leverage 
     FROM 
-    {{ ref('tigris_v1_arbitrum_events_modify_margin_legacy') }}
+    {{ ref('tigris_v1_arbitrum_events_modify_margin') }}
 
     UNION ALL 
 
@@ -32,7 +32,7 @@ leverage as (
         position_id,
         leverage 
     FROM 
-    {{ ref('tigris_v1_arbitrum_events_limit_order_legacy') }}
+    {{ ref('tigris_v1_arbitrum_events_limit_order') }}
 
 )
 

@@ -23,8 +23,8 @@ SELECT
   , coalesce(curated.name, reservoir.name) as name
   , curated.symbol
   , c.standard
-FROM {{ ref('tokens_ethereum_nft_standards_legacy')}} c
-LEFT JOIN  {{ref('tokens_ethereum_nft_curated_legacy')}} curated
+FROM {{ ref('tokens_ethereum_nft_standards')}} c
+LEFT JOIN  {{ref('tokens_ethereum_nft_curated')}} curated
     ON c.contract_address = curated.contract_address
 LEFT JOIN reservoir_names reservoir
     ON c.contract_address = reservoir.contract_address

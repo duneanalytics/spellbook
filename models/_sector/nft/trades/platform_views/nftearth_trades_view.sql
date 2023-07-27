@@ -12,5 +12,5 @@
 }}
 
 SELECT *
-FROM {{ ref('nft_trades_legacy') }}
+FROM {{ ref('nft_trades') }}
 WHERE project = "nftearth"

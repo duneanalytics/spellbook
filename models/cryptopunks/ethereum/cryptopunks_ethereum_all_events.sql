@@ -31,7 +31,7 @@ from
             , usd_amount
             , evt_block_number
             , evt_tx_hash
-    from {{ ref('cryptopunks_ethereum_punk_bid_events_legacy') }}
+    from {{ ref('cryptopunks_ethereum_punk_bid_events') }}
 
     union all
 
@@ -45,7 +45,7 @@ from
             , usd_amount
             , evt_block_number
             , evt_tx_hash
-    from {{ ref('cryptopunks_ethereum_punk_offer_events_legacy') }}
+    from {{ ref('cryptopunks_ethereum_punk_offer_events') }}
 
     union all
 
@@ -59,7 +59,7 @@ from
             , price_usd as amount_usd
             , block_number
             , tx_hash
-    from {{ ref('nft_ethereum_trades_beta_legacy') }}
+    from {{ ref('nft_ethereum_trades_beta') }}
     where project = 'cryptopunks'
 
     union all
@@ -74,7 +74,7 @@ from
             , amount_usd
             , block_number
             , tx_hash
-    from {{ ref('nft_trades_legacy') }}
+    from {{ ref('nft_trades') }}
     where nft_contract_address = lower('0xb7f7f6c52f2e2fdb1963eab30438024864c313f6') -- wrapped punk contract
         and blockchain = 'ethereum'
 
@@ -109,7 +109,7 @@ from
             , cast(NULL as double) as usd_amount
             , evt_block_number
             , evt_tx_hash
-    from {{ ref('cryptopunks_ethereum_punk_transfers_legacy') }}
+    from {{ ref('cryptopunks_ethereum_punk_transfers') }}
     where evt_tx_hash not in (select distinct evt_tx_hash from {{ source('cryptopunks_ethereum','CryptoPunksMarket_evt_PunkBought') }} )
 ) a
 group by 1,2,3,4,5,6,7,8,9,10

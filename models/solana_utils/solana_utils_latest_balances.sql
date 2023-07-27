@@ -20,7 +20,7 @@ WITH
                   , token_balance
                   , token_balance_owner
                   , row_number() OVER (partition by address order by day desc) as latest_balance
-            FROM {{ ref('solana_utils_daily_balances_legacy') }}
+            FROM {{ ref('solana_utils_daily_balances') }}
       )
 
 SELECT 

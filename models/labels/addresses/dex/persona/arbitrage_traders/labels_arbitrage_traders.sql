@@ -5,4 +5,4 @@
     )
 }}
 
-SELECT * FROM {{ ref('labels_arbitrage_traders_ethereum_legacy') }}
+SELECT * FROM {{ ref('labels_arbitrage_traders_ethereum') }}

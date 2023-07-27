@@ -17,7 +17,7 @@ pairs as (
         SELECT 
             * 
         FROM 
-        {{ ref('tigris_v2_arbitrum_events_asset_added_legacy') }}
+        {{ ref('tigris_v2_arbitrum_events_asset_added') }}
 ), 
 
 open_positions_v1 as (

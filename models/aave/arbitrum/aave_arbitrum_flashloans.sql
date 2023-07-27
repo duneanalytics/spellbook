@@ -14,7 +14,7 @@
 }}
 
 {% set aave_models = [
-ref('aave_v3_arbitrum_flashloans_legacy')
+ref('aave_v3_arbitrum_flashloans')
 ] %}
 
 SELECT *

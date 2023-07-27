@@ -20,7 +20,7 @@ WITH
     SELECT
          pool_address
         ,nft_contract_address
-    FROM {{ ref('sudoswap_ethereum_pool_creations_legacy') }}
+    FROM {{ ref('sudoswap_ethereum_pool_creations') }}
   ),
 
   erc721_deltas AS (

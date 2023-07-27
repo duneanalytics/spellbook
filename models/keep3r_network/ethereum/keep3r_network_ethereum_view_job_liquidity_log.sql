@@ -108,7 +108,7 @@ df AS (
         liqs.token AS token,
         NULL AS amount
     FROM
-        {{ ref('keep3r_network_ethereum_view_job_migrations_legacy') }} AS migs
+        {{ ref('keep3r_network_ethereum_view_job_migrations') }} AS migs
         INNER JOIN (
             -- generates 1 extra line per token of keep3r
             SELECT

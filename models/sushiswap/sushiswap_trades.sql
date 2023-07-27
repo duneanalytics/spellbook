@@ -10,14 +10,14 @@
 }}
 
 {% set sushi_models = [
-ref('sushiswap_ethereum_trades_legacy')
-, ref('sushiswap_avalanche_c_trades_legacy')
-, ref('sushiswap_gnosis_trades_legacy')
-, ref('sushiswap_arbitrum_trades_legacy')
-, ref('sushiswap_fantom_trades_legacy')
-, ref('sushiswap_optimism_trades_legacy')
-, ref('sushiswap_polygon_trades_legacy')
-, ref('sushiswap_bnb_trades_legacy')
+ref('sushiswap_ethereum_trades')
+, ref('sushiswap_avalanche_c_trades')
+, ref('sushiswap_gnosis_trades')
+, ref('sushiswap_arbitrum_trades')
+, ref('sushiswap_fantom_trades')
+, ref('sushiswap_optimism_trades')
+, ref('sushiswap_polygon_trades')
+, ref('sushiswap_bnb_trades')
 ] %}
 
 

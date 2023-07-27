@@ -12,7 +12,7 @@ SELECT
     , symbol
     , contract_address
     , decimals
-FROM {{ ref('prices_optimism_tokens_curated_legacy') }}
+FROM {{ ref('prices_optimism_tokens_curated') }}
 UNION ALL
 SELECT
      token_id
@@ -20,5 +20,5 @@ SELECT
     , symbol
     , contract_address
     , decimals
-FROM {{ ref('prices_optimism_tokens_bridged_legacy') }}
-WHERE contract_address not in (select contract_address from {{ ref('prices_optimism_tokens_curated_legacy') }})
+FROM {{ ref('prices_optimism_tokens_bridged') }}
+WHERE contract_address not in (select contract_address from {{ ref('prices_optimism_tokens_curated') }})

@@ -9,14 +9,14 @@
 
 
 {% set cex_models = [
-ref('cex_arbitrum_addresses_legacy')
-, ref('cex_avalanche_c_addresses_legacy')
-, ref('cex_bitcoin_addresses_legacy')
-, ref('cex_bnb_addresses_legacy')
-, ref('cex_ethereum_addresses_legacy')
-, ref('cex_fantom_addresses_legacy')
-, ref('cex_optimism_addresses_legacy')
-, ref('cex_polygon_addresses_legacy')
+ref('cex_arbitrum_addresses')
+, ref('cex_avalanche_c_addresses')
+, ref('cex_bitcoin_addresses')
+, ref('cex_bnb_addresses')
+, ref('cex_ethereum_addresses')
+, ref('cex_fantom_addresses')
+, ref('cex_optimism_addresses')
+, ref('cex_polygon_addresses')
 ] %}
 
 SELECT *

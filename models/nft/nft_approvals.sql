@@ -14,15 +14,15 @@
 }}
 
 {% set nft_models = [
- ref('nft_ethereum_approvals_legacy')
-,ref('nft_bnb_approvals_legacy')
-,ref('nft_avalanche_c_approvals_legacy')
-,ref('nft_gnosis_approvals_legacy')
-,ref('nft_optimism_approvals_legacy')
-,ref('nft_arbitrum_approvals_legacy')
-,ref('nft_polygon_approvals_legacy')
-,ref('nft_fantom_approvals_legacy')
-,ref('nft_goerli_approvals_legacy')
+ ref('nft_ethereum_approvals')
+,ref('nft_bnb_approvals')
+,ref('nft_avalanche_c_approvals')
+,ref('nft_gnosis_approvals')
+,ref('nft_optimism_approvals')
+,ref('nft_arbitrum_approvals')
+,ref('nft_polygon_approvals')
+,ref('nft_fantom_approvals')
+,ref('nft_goerli_approvals')
 ] %}
 
 SELECT *

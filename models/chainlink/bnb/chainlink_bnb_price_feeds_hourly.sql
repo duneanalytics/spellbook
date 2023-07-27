@@ -39,8 +39,8 @@ WITH gs AS (
                 feed_name,
                 proxy_address,
                 aggregator_address
-        FROM {{ ref('chainlink_bnb_oracle_addresses_legacy') }}
-    ) oa LEFT JOIN {{ ref('chainlink_bnb_oracle_token_mapping_legacy') }} c ON c.proxy_address = oa.proxy_address
+        FROM {{ ref('chainlink_bnb_oracle_addresses') }}
+    ) oa LEFT JOIN {{ ref('chainlink_bnb_oracle_token_mapping') }} c ON c.proxy_address = oa.proxy_address
 )
 
 SELECT 'bnb'                                                AS blockchain,
@@ -100,7 +100,7 @@ FROM (
                 AVG(oracle_price)                           AS oracle_price_avg,
                 gs.underlying_token_address,
                 AVG(underlying_token_price)                 AS underlying_token_price_avg
-            FROM gs LEFT JOIN {{ ref('chainlink_bnb_price_feeds_legacy') }} f
+            FROM gs LEFT JOIN {{ ref('chainlink_bnb_price_feeds') }} f
                  ON gs.hr = DATE_TRUNC('day',f.block_time)
                  AND gs.underlying_token_address = f.underlying_token_address
                  AND gs.proxy_address = f.proxy_address

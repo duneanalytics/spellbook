@@ -10,7 +10,7 @@
 }}
 
 {% set quickswap_models = [
-ref('quickswap_polygon_trades_legacy')
+ref('quickswap_polygon_trades')
 ] %}
 
 

@@ -11,19 +11,19 @@
 }}
 
 {% set dex_models = [
- ref('labels_sandwich_attackers_legacy')
-,ref('labels_dex_aggregator_traders_legacy')
-,ref('labels_arbitrage_traders_legacy')
-,ref('labels_dex_traders_legacy')
-,ref('labels_smart_dex_traders_legacy')
-,ref('labels_trader_platforms_legacy')
-,ref('labels_dex_pools_legacy')
-,ref('labels_trader_kyt_legacy')
-,ref('labels_average_trade_values_legacy')
-,ref('labels_trader_age_legacy')
-,ref('labels_trader_dex_diversity_legacy')
-,ref('labels_trader_frequencies_legacy')
-,ref('labels_trader_portfolios_legacy')
+ ref('labels_sandwich_attackers')
+,ref('labels_dex_aggregator_traders')
+,ref('labels_arbitrage_traders')
+,ref('labels_dex_traders')
+,ref('labels_smart_dex_traders')
+,ref('labels_trader_platforms')
+,ref('labels_dex_pools')
+,ref('labels_trader_kyt')
+,ref('labels_average_trade_values')
+,ref('labels_trader_age')
+,ref('labels_trader_dex_diversity')
+,ref('labels_trader_frequencies')
+,ref('labels_trader_portfolios')
 ] %}
 
 SELECT *

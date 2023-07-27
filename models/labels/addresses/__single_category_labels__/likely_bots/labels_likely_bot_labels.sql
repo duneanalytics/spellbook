@@ -10,6 +10,6 @@
     )
 }}
 
-SELECT * FROM {{ ref('labels_optimism_likely_bot_addresses_legacy') }}
+SELECT * FROM {{ ref('labels_optimism_likely_bot_addresses') }}
 UNION ALL
-SELECT * FROM {{ ref('labels_optimism_likely_bot_contracts_legacy') }}
+SELECT * FROM {{ ref('labels_optimism_likely_bot_contracts') }}

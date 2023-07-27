@@ -3,8 +3,8 @@
 	alias = alias('dao_addresses', legacy_model=True))}}
 
 {% set aragon_models = [
-ref('aragon_ethereum_app_dao_addresses_legacy'),
-ref('aragon_ethereum_client_dao_addresses_legacy')
+ref('aragon_ethereum_app_dao_addresses'),
+ref('aragon_ethereum_client_dao_addresses')
 ] %}
 
 

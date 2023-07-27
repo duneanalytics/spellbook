@@ -11,9 +11,9 @@
 
 
 {% set apeswap_models = [
-    ref('apeswap_ethereum_trades_legacy')
-    , ref('apeswap_bnb_trades_legacy')
-    , ref('apeswap_polygon_trades_legacy')
+    ref('apeswap_ethereum_trades')
+    , ref('apeswap_bnb_trades')
+    , ref('apeswap_polygon_trades')
 ] %}
 
 SELECT *

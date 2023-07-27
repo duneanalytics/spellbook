@@ -11,15 +11,15 @@
 }}
 
 {% set contract_deployers_models = [
-    ref('labels_contract_deployers_arbitrum_legacy')
-    , ref('labels_contract_deployers_avalanche_c_legacy')
-    , ref('labels_contract_deployers_bnb_legacy')
-    , ref('labels_contract_deployers_ethereum_legacy')
-    , ref('labels_contract_deployers_fantom_legacy')
-    , ref('labels_contract_deployers_gnosis_legacy')
-    , ref('labels_contract_deployers_goerli_legacy')
-    , ref('labels_contract_deployers_optimism_legacy')
-    , ref('labels_contract_deployers_polygon_legacy')
+    ref('labels_contract_deployers_arbitrum')
+    , ref('labels_contract_deployers_avalanche_c')
+    , ref('labels_contract_deployers_bnb')
+    , ref('labels_contract_deployers_ethereum')
+    , ref('labels_contract_deployers_fantom')
+    , ref('labels_contract_deployers_gnosis')
+    , ref('labels_contract_deployers_goerli')
+    , ref('labels_contract_deployers_optimism')
+    , ref('labels_contract_deployers_polygon')
 ] %}
 
 SELECT *

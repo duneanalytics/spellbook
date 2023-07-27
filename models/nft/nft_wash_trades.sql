@@ -9,13 +9,13 @@
 }}
 
 {% set nft_wash_models = [
- ref('nft_arbitrum_wash_trades_legacy')
-, ref('nft_avalanche_c_wash_trades_legacy')
-, ref('nft_bnb_wash_trades_legacy')
-, ref('nft_ethereum_wash_trades_legacy')
-, ref('nft_gnosis_wash_trades_legacy')
-, ref('nft_optimism_wash_trades_legacy')
-, ref('nft_polygon_wash_trades_legacy')
+ ref('nft_arbitrum_wash_trades')
+, ref('nft_avalanche_c_wash_trades')
+, ref('nft_bnb_wash_trades')
+, ref('nft_ethereum_wash_trades')
+, ref('nft_gnosis_wash_trades')
+, ref('nft_optimism_wash_trades')
+, ref('nft_polygon_wash_trades')
 ] %}
 
 SELECT *

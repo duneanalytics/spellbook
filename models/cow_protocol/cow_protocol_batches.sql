@@ -28,7 +28,7 @@ FROM
             call_data_size,
             unwraps,
             token_approvals
-        FROM {{ ref('cow_protocol_ethereum_batches_legacy') }}
+        FROM {{ ref('cow_protocol_ethereum_batches') }}
 
         UNION ALL
 
@@ -50,5 +50,5 @@ FROM
             call_data_size,
             unwraps,
             token_approvals
-        FROM {{ ref('cow_protocol_gnosis_batches_legacy') }}
+        FROM {{ ref('cow_protocol_gnosis_batches') }}
 )

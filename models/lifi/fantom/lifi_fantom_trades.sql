@@ -7,7 +7,7 @@
 }}
 
 {% set lifi_models = [
-ref('lifi_v2_fantom_trades_legacy')
+ref('lifi_v2_fantom_trades')
 ] %}
 
 

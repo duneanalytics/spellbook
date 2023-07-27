@@ -27,7 +27,7 @@ FROM
             evt_index,
             evt_block_time,
             evt_block_number  
-      FROM {{ ref('aave_v1_ethereum_borrow_legacy') }}
+      FROM {{ ref('aave_v1_ethereum_borrow') }}
       UNION
       SELECT
             version,
@@ -44,6 +44,6 @@ FROM
             evt_index,
             evt_block_time,
             evt_block_number  
-      FROM {{ ref('aave_v2_ethereum_borrow_legacy') }} 
+      FROM {{ ref('aave_v2_ethereum_borrow') }} 
 )
 ;

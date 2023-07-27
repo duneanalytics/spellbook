@@ -10,7 +10,7 @@
 }}
 
 {% set maverick_models = [
-    ref('maverick_v1_ethereum_trades_legacy')
+    ref('maverick_v1_ethereum_trades')
 ] %}
 
 

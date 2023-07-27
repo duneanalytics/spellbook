@@ -74,7 +74,7 @@ swappers as (
         token_sold_address,
         taker,
         tx_hash
-    from {{ ref('dex_trades_legacy') }}
+    from {{ ref('dex_trades') }}
     where 
         blockchain = 'ethereum' 
         and block_date > now() - interval '60' day
@@ -88,13 +88,13 @@ swappers as (
 -- Get list of known contract addresses
 , addresses_to_exclude as (
     select distinct address from (
-        select distinct cast(address as varchar(5)) as address from {{ ref('labels_contracts_legacy') }}
+        select distinct cast(address as varchar(5)) as address from {{ ref('labels_contracts') }}
         union all
         select distinct cast(address as varchar(5)) as address from {{ source('ethereum', 'traces') }}
         union all
-        select distinct cast(address as varchar(5)) as address from {{ ref('labels_mev_ethereum_legacy') }}
+        select distinct cast(address as varchar(5)) as address from {{ ref('labels_mev_ethereum') }}
         union all
-        select distinct cast(address as varchar(5)) as address from {{ ref('labels_sandwich_attackers_legacy') }}
+        select distinct cast(address as varchar(5)) as address from {{ ref('labels_sandwich_attackers') }}
     )
 )
 
@@ -167,7 +167,7 @@ swappers as (
 -- Get latest prices
 , prices as (
     select symbol, price, cast(contract_address as varchar(5)) as token_address
-    from {{ ref('prices_usd_latest_legacy') }}
+    from {{ ref('prices_usd_latest') }}
     where blockchain = 'ethereum'
 )
 
@@ -188,7 +188,7 @@ swappers as (
         taker,
         amount_usd / token_bought_amount as cost_basis,
         project as venue
-    from {{ ref('dex_trades_legacy') }}
+    from {{ ref('dex_trades') }}
     where
         blockchain = 'ethereum'
         and block_time > now() - interval '60' day
@@ -218,7 +218,7 @@ swappers as (
         taker,
         amount_usd / token_sold_amount as cost_basis,
         project as venue
-    from {{ ref('dex_trades_legacy') }}
+    from {{ ref('dex_trades') }}
     where
         blockchain = 'ethereum'
         and block_time > now() - interval '60' day

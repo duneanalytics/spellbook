@@ -63,7 +63,7 @@ select *
               ,is_private
               ,sub_idx
               ,sub_type
-          from {{ ref('seaport_v1_ethereum_trades_legacy') }}
+          from {{ ref('seaport_v1_ethereum_trades') }}
         union all
         select blockchain
               ,project
@@ -117,5 +117,5 @@ select *
               ,is_private
               ,sub_idx
               ,sub_type
-          from {{ ref('seaport_v2_ethereum_trades_legacy') }}                  
+          from {{ ref('seaport_v2_ethereum_trades') }}                  
         )

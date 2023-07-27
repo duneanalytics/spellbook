@@ -7,7 +7,7 @@ WITH three_letter_ens_count AS (
         owner,
         count(owner) as ens_count
     FROM
-        {{ ref('ens_view_registrations_legacy') }}
+        {{ ref('ens_view_registrations') }}
     WHERE
         length(name) = 3
 

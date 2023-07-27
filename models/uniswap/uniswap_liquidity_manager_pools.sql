@@ -10,8 +10,8 @@
 }}
 
 {% set uniswap_models = [
-     ref('gamma_uniswap_pools_legacy')
-    ,ref('arrakis_uniswap_pools_legacy')
+     ref('gamma_uniswap_pools')
+    ,ref('arrakis_uniswap_pools')
 ] %}
 
 

@@ -7,7 +7,7 @@ SELECT
     blockchain,
     amount_usd,
     buyer AS address
-FROM {{ ref('nft_trades_legacy') }}
+FROM {{ ref('nft_trades') }}
 
 UNION
 
@@ -15,7 +15,7 @@ SELECT
     blockchain,
     amount_usd,
     seller AS address
-FROM {{ ref('nft_trades_legacy') }}
+FROM {{ ref('nft_trades') }}
 ),
 
 total as (

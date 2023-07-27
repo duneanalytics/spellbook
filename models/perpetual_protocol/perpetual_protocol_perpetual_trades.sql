@@ -10,7 +10,7 @@
 }}
 
 {% set perpetual_protocol_perpetual_trade_models = [
- ref('perpetual_protocol_optimism_perpetual_trades_legacy')
+ ref('perpetual_protocol_optimism_perpetual_trades')
 ] %}
 
 SELECT *

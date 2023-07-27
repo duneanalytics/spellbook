@@ -11,7 +11,7 @@
 with attestations as (
     SELECT *,
         REGEXP_REPLACE(key, '[[:cntrl:]]', '') AS key_mapped
-    FROM {{ ref('optimism_attestationstation_optimism_events_legacy') }}
+    FROM {{ ref('optimism_attestationstation_optimism_events') }}
     
     WHERE issuer = '0x60c5c9c98bcbd0b0f2fd89b24c16e533baa8cda3'
     AND REGEXP_REPLACE(key, '[[:cntrl:]]', '') IN ('retropgf.round-2.name','retropgf.round-2.award','retropgf.round-2.category')

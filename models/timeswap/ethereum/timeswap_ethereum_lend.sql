@@ -37,7 +37,7 @@ SELECT
     END as DOUBLE
   ) as usd_amount
   FROM {{ source('timeswap_ethereum', 'TimeswapV2PeripheryUniswapV3LendGivenPrincipal_evt_LendGivenPrincipal') }} l
-  JOIN {{ ref('timeswap_ethereum_pools_legacy') }} i ON CAST(l.maturity as VARCHAR(100)) = i.maturity and cast(l.strike as VARCHAR(100)) = i.strike
+  JOIN {{ ref('timeswap_ethereum_pools') }} i ON CAST(l.maturity as VARCHAR(100)) = i.maturity and cast(l.strike as VARCHAR(100)) = i.strike
   JOIN {{ source('ethereum', 'transactions') }} tx
   on l.evt_tx_hash = tx.hash
   {% if is_incremental() %}
@@ -76,7 +76,7 @@ SELECT
     END as DOUBLE
   ) as usd_amount
 FROM {{ source('timeswap_ethereum', 'TimeswapV2PeripheryUniswapV3LendGivenPrincipal_evt_LendGivenPrincipal') }} l
-JOIN {{ ref('timeswap_ethereum_pools_legacy') }} i
+JOIN {{ ref('timeswap_ethereum_pools') }} i
   ON CAST(l.maturity as VARCHAR(100)) = i.maturity
   and cast(l.strike as VARCHAR(100)) = i.strike
 JOIN {{ source('ethereum', 'transactions') }} tx

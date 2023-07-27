@@ -11,18 +11,18 @@
 }}
 
 -- Query Labels
-SELECT * FROM {{ ref('cow_protocol_tx_hash_labels_stable_to_stable_legacy') }}
+SELECT * FROM {{ ref('cow_protocol_tx_hash_labels_stable_to_stable') }}
 UNION ALL
-SELECT * FROM {{ ref('cow_protocol_tx_hash_labels_early_investment_legacy') }}
+SELECT * FROM {{ ref('cow_protocol_tx_hash_labels_early_investment') }}
 UNION ALL
-SELECT * FROM {{ ref('cow_protocol_tx_hash_labels_staking_token_investment_legacy') }}
+SELECT * FROM {{ ref('cow_protocol_tx_hash_labels_staking_token_investment') }}
 UNION ALL
-SELECT * FROM {{ ref('cow_protocol_tx_hash_labels_harvest_yield_legacy') }}
+SELECT * FROM {{ ref('cow_protocol_tx_hash_labels_harvest_yield') }}
 UNION ALL
-SELECT * FROM {{ ref('cow_protocol_tx_hash_labels_onramp_legacy') }}
+SELECT * FROM {{ ref('cow_protocol_tx_hash_labels_onramp') }}
 UNION ALL
-SELECT * FROM {{ ref('cow_protocol_tx_hash_labels_offramp_legacy') }}
+SELECT * FROM {{ ref('cow_protocol_tx_hash_labels_offramp') }}
 UNION ALL
-SELECT * FROM {{ ref('cow_protocol_tx_hash_labels_bluechip_investment_legacy') }}
+SELECT * FROM {{ ref('cow_protocol_tx_hash_labels_bluechip_investment') }}
 UNION ALL
-SELECT * FROM {{ ref('cow_protocol_tx_hash_labels_treasury_management_legacy') }}
+SELECT * FROM {{ ref('cow_protocol_tx_hash_labels_treasury_management') }}

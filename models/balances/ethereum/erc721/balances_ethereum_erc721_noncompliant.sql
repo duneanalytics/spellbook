@@ -13,7 +13,7 @@ multiple_owners as (
         token_address,
         tokenId,
         count(wallet_address) as holder_count --should always be 1
-    from {{ ref('transfers_ethereum_erc721_rolling_day_legacy') }}
+    from {{ ref('transfers_ethereum_erc721_rolling_day') }}
     WHERE recency_index = 1
     AND amount = 1
     group by blockchain, token_address, tokenId

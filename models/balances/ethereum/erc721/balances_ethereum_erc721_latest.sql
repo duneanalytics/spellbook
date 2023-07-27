@@ -15,10 +15,10 @@ SELECT
     b.tokenId,
     nft_tokens.name as collection,
     b.updated_at
-FROM {{ ref('transfers_ethereum_erc721_rolling_day_legacy') }} b
-LEFT JOIN {{ ref('tokens_nft_legacy') }} nft_tokens ON nft_tokens.contract_address = b.token_address
+FROM {{ ref('transfers_ethereum_erc721_rolling_day') }} b
+LEFT JOIN {{ ref('tokens_nft') }} nft_tokens ON nft_tokens.contract_address = b.token_address
 AND nft_tokens.blockchain = 'ethereum'
-LEFT JOIN {{ ref('balances_ethereum_erc721_noncompliant_legacy') }}  as nc
+LEFT JOIN {{ ref('balances_ethereum_erc721_noncompliant') }}  as nc
     ON b.token_address = nc.token_address
 WHERE recency_index = 1
 AND amount = 1

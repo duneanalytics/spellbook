@@ -12,5 +12,5 @@
 
 
 SELECT *
-FROM {{ ref('nft_events_old_legacy') }}
+FROM {{ ref('nft_events_old') }}
 WHERE evt_type = "Burn"

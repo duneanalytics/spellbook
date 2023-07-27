@@ -10,7 +10,7 @@
 }}
 
 {% set balancer_models = [
-    ref('balancer_v2_arbitrum_trades_legacy')
+    ref('balancer_v2_arbitrum_trades')
 ] %}
 
 SELECT *

@@ -24,7 +24,7 @@ WITH src_data as
         , amount_original
         , amount_usd
     FROM 
-        {{ ref('nft_trades_legacy') }} 
+        {{ ref('nft_trades') }} 
     WHERE blockchain = 'ethereum'
         AND number_of_items = 1
         AND tx_from != LOWER('0x0000000000000000000000000000000000000000')

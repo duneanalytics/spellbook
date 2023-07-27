@@ -25,7 +25,7 @@ with registrations as (
         ,evt_block_time as block_time
         ,evt_tx_hash as tx_hash
         ,evt_index
-    from {{ ref('ens_view_registrations_legacy') }}
+    from {{ ref('ens_view_registrations') }}
     {% if is_incremental() %}
     WHERE evt_block_time >= date_trunc("day", now() - interval '1 week')
     {% endif %}

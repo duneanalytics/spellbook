@@ -20,7 +20,7 @@ WITH src AS
         , tx_hash
         , ROW_NUMBER() OVER (PARTITION BY nft_contract_address ORDER BY amount_original DESC) as rn
     FROM
-        {{ ref('nft_trades_legacy') }}
+        {{ ref('nft_trades') }}
     WHERE 
         blockchain = 'ethereum'
         AND currency_symbol IN ('ETH', 'WETH')

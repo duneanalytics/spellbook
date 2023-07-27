@@ -22,7 +22,7 @@ with all_listing_events as (
             , evt_index
             , evt_block_time
             , evt_tx_hash
-    from {{ ref('cryptopunks_ethereum_punk_offer_events_legacy') }}
+    from {{ ref('cryptopunks_ethereum_punk_offer_events') }}
 )
 , all_buys as (
     select  nft_token_id as punk_id
@@ -34,7 +34,7 @@ with all_listing_events as (
             , sub_tx_trade_id as evt_index
             , block_time as evt_block_time
             , tx_hash as evt_tx_hash
-    from {{ ref('nft_ethereum_trades_beta_legacy') }}
+    from {{ ref('nft_ethereum_trades_beta') }}
     where project = 'cryptopunks'
 )
 , all_transfers as (
@@ -47,7 +47,7 @@ with all_listing_events as (
             , evt_index
             , evt_block_time
             , evt_tx_hash
-    from {{ ref('cryptopunks_ethereum_punk_transfers_legacy') }}
+    from {{ ref('cryptopunks_ethereum_punk_transfers') }}
 )
 , base_data as (
     with all_days  as (select explode(sequence(to_date('2017-06-23'), to_date(now()), interval 1 day)) as day)

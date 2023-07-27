@@ -8,16 +8,16 @@
 
 
 {% set labels_models = [
-ref('labels_token_standards_arbitrum_legacy')
- ,ref('labels_token_standards_avalanche_c_legacy')
- ,ref('labels_token_standards_bnb_legacy')
- ,ref('labels_token_standards_ethereum_legacy')
- ,ref('labels_token_standards_ethereum_legacy')
- ,ref('labels_token_standards_fantom_legacy')
- ,ref('labels_token_standards_gnosis_legacy')
- ,ref('labels_token_standards_goerli_legacy')
- ,ref('labels_token_standards_optimism_legacy')
- ,ref('labels_token_standards_polygon_legacy')
+ref('labels_token_standards_arbitrum')
+ ,ref('labels_token_standards_avalanche_c')
+ ,ref('labels_token_standards_bnb')
+ ,ref('labels_token_standards_ethereum')
+ ,ref('labels_token_standards_ethereum')
+ ,ref('labels_token_standards_fantom')
+ ,ref('labels_token_standards_gnosis')
+ ,ref('labels_token_standards_goerli')
+ ,ref('labels_token_standards_optimism')
+ ,ref('labels_token_standards_polygon')
 ] %}
 
 

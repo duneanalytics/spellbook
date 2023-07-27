@@ -14,12 +14,12 @@
 }}
 
 {% set aave_models = [
-ref('aave_arbitrum_flashloans_legacy')
-, ref('aave_avalanche_c_flashloans_legacy')
-, ref('aave_optimism_flashloans_legacy')
-, ref('aave_ethereum_flashloans_legacy')
-, ref('aave_polygon_flashloans_legacy')
-, ref('aave_fantom_flashloans_legacy')
+ref('aave_arbitrum_flashloans')
+, ref('aave_avalanche_c_flashloans')
+, ref('aave_optimism_flashloans')
+, ref('aave_ethereum_flashloans')
+, ref('aave_polygon_flashloans')
+, ref('aave_fantom_flashloans')
 ] %}
 
 SELECT *

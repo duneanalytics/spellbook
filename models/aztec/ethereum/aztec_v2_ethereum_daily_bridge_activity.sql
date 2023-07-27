@@ -25,7 +25,7 @@ daily_transfers as (
         , sum(case when spec_txn_type in ('Bridge to Protocol','Protocol to Bridge') then value_norm else 0 end ) as abs_value_norm
         , sum(case when spec_txn_type = 'Bridge to Protocol' then value_norm else 0 end ) as input_value_norm
         , sum(case when spec_txn_type = 'Protocol to Bridge' then value_norm else 0 end ) as output_value_norm
-    FROM {{ref('aztec_v2_ethereum_rollupbridge_transfers_legacy')}}
+    FROM {{ref('aztec_v2_ethereum_rollupbridge_transfers')}}
     where bridge_protocol != '' -- exclude all txns that don't interact with the bridges
     group by 1,2,3,4
 ),
@@ -92,7 +92,7 @@ token_prices as (
         , dt.output_value_norm * COALESCE(p.price_usd, b.price) as output_volume_usd
         , dt.output_value_norm * COALESCE(p.price_eth, b.price_eth) as output_volume_eth
     from daily_transfers dt
-    LEFT JOIN {{ref('tokens_erc20_legacy')}} er ON dt.token_address = er.contract_address AND er.blockchain = 'ethereum'
+    LEFT JOIN {{ref('tokens_erc20')}} er ON dt.token_address = er.contract_address AND er.blockchain = 'ethereum'
     LEFT join token_prices p on dt.date = p.day and dt.token_address = p.token_address AND dt.token_address != '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee'
     LEFT JOIN token_prices_eth b on dt.date = b.day AND dt.token_address = '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee' -- using this to get price for missing ETH token 
 ; 

@@ -161,9 +161,9 @@ FROM send_detail s
 LEFT JOIN trans_detail t ON s.block_number = t.block_number
     AND s.tx_hash = t.tx_hash
     AND s.call_send_index = 1
-LEFT JOIN {{ ref('layerzero_chain_list_legacy') }} cls ON cls.chain_id = s.source_chain_id
-LEFT JOIN {{ ref('layerzero_chain_list_legacy') }} cld ON cld.chain_id = s.destination_chain_id
-LEFT JOIN {{ ref('tokens_erc20_legacy') }} erc ON erc.blockchain = 'avalanche_c' AND erc.contract_address = t.currency_contract
+LEFT JOIN {{ ref('layerzero_chain_list') }} cls ON cls.chain_id = s.source_chain_id
+LEFT JOIN {{ ref('layerzero_chain_list') }} cld ON cld.chain_id = s.destination_chain_id
+LEFT JOIN {{ ref('tokens_erc20') }} erc ON erc.blockchain = 'avalanche_c' AND erc.contract_address = t.currency_contract
 LEFT JOIN {{ source('prices', 'usd') }} p ON p.blockchain = 'avalanche_c' AND p.contract_address = t.currency_contract
     AND p.minute = date_trunc('minute', s.block_time)
     {% if not is_incremental() %}

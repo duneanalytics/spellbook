@@ -20,7 +20,7 @@ WITH weekly_unique_minter_nft_address AS
         nft_contract_address,
         buyer
     FROM 
-        {{ ref('nft_mints_legacy') }}
+        {{ ref('nft_mints') }}
     WHERE 
         block_time >= date_trunc("day", now() - interval '1 week')
         AND blockchain = 'ethereum'
@@ -34,7 +34,7 @@ SELECT
     COUNT(*) as no_minted,
     MAX(src.block_time) as last_updated
 FROM 
-    {{ ref('nft_mints_legacy') }} src
+    {{ ref('nft_mints') }} src
 INNER JOIN
     weekly_unique_minter_nft_address
     ON src.nft_contract_address = weekly_unique_minter_nft_address.nft_contract_address
@@ -53,7 +53,7 @@ SELECT
     COUNT(*) as no_minted,
     MAX(block_time) as last_updated
 FROM 
-    {{ ref('nft_mints_legacy') }}
+    {{ ref('nft_mints') }}
 WHERE
     blockchain = 'ethereum'
     AND currency_symbol IN ('WETH', 'ETH')

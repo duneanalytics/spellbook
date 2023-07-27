@@ -10,7 +10,7 @@
 }}
 
 {% set camelot_models = [
-ref('camelot_arbitrum_trades_legacy'),
+ref('camelot_arbitrum_trades'),
 ] %}
 
 

@@ -11,8 +11,8 @@
 }}
 
 {% set dao_models = [
- ref('labels_dao_multisig_ethereum_legacy')
- ,ref('labels_dao_framework_legacy')
+ ref('labels_dao_multisig_ethereum')
+ ,ref('labels_dao_framework')
 ] %}
 
 SELECT *

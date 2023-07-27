@@ -10,9 +10,9 @@
 }}
 
 {% set clipper_models = [
-ref('clipper_v1_optimism_trades_legacy')
-, ref('clipper_v2_optimism_trades_legacy')
-, ref('clipper_coves_v1_optimism_trades_legacy')
+ref('clipper_v1_optimism_trades')
+, ref('clipper_v2_optimism_trades')
+, ref('clipper_coves_v1_optimism_trades')
 ] %}
 
 

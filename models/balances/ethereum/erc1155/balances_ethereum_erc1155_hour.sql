@@ -27,7 +27,7 @@ with
     b.hour,
     b.amount, 
     lead(b.hour, 1, now()) OVER (PARTITION BY b.wallet_address, b.token_address, b.tokenId ORDER BY hour) AS next_hour
-FROM {{ ref('transfers_ethereum_erc1155_rolling_hour_legacy') }} b
+FROM {{ ref('transfers_ethereum_erc1155_rolling_hour') }} b
 )
 
 SELECT 
@@ -40,7 +40,7 @@ SELECT
     nft_tokens.name as collection
 FROM hourly_balances b
 INNER JOIN hours d ON b.hour <= d.hour AND d.hour < b.next_hour
-LEFT JOIN {{ ref('tokens_nft_legacy') }} nft_tokens ON nft_tokens.contract_address = b.token_address
+LEFT JOIN {{ ref('tokens_nft') }} nft_tokens ON nft_tokens.contract_address = b.token_address
 AND nft_tokens.blockchain = 'ethereum'
 GROUP BY 1, 2, 3, 4, 5, 7
 HAVING SUM(b.amount) > 0

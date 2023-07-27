@@ -41,9 +41,9 @@ select
         else 'unknown'
     end as method
 from {{ source('avalanche_c', 'traces') }} tr 
-join {{ ref('safe_avalanche_c_safes_legacy') }} s
+join {{ ref('safe_avalanche_c_safes') }} s
     on s.address = tr.from
-join {{ ref('safe_avalanche_c_singletons_legacy') }} ss
+join {{ ref('safe_avalanche_c_singletons') }} ss
     on tr.to = ss.address
 where substring(tr.input, 0, 10) in (
         '0x6a761202', -- execTransaction

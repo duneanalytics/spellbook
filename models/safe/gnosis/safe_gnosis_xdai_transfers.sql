@@ -26,7 +26,7 @@ select
     et.tx_hash,
     array_join(et.trace_address, ',') as trace_address
 from {{ source('gnosis', 'traces') }} et
-join {{ ref('safe_gnosis_safes_legacy') }} s on et.from = s.address
+join {{ ref('safe_gnosis_safes') }} s on et.from = s.address
     and et.from != et.to -- exclude calls to self to guarantee unique key property
     and et.success = true
     and (lower(et.call_type) not in ('delegatecall', 'callcode', 'staticcall') or et.call_type is null)
@@ -49,7 +49,7 @@ select
     et.tx_hash,
     array_join(et.trace_address, ',') as trace_address
 from {{ source('gnosis', 'traces') }} et
-join {{ ref('safe_gnosis_safes_legacy') }} s on et.to = s.address
+join {{ ref('safe_gnosis_safes') }} s on et.to = s.address
     and et.from != et.to -- exclude calls to self to guarantee unique key property
     and et.success = true
     and (lower(et.call_type) not in ('delegatecall', 'callcode', 'staticcall') or et.call_type is null)
@@ -72,7 +72,7 @@ select
     a.evt_tx_hash as tx_hash,
     cast(array(a.evt_index) as string) as trace_address
 from {{ source('xdai_gnosis', 'BlockRewardAuRa_evt_AddedReceiver') }} a
-join {{ ref('safe_gnosis_safes_legacy') }} s
+join {{ ref('safe_gnosis_safes') }} s
     on a.receiver = s.address
 {% if not is_incremental() %}
 where a.evt_block_time > '{{project_start_date}}' -- for initial query optimisation

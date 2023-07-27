@@ -19,7 +19,7 @@ SELECT
     'identifier' AS label_type
 FROM
     {{ source('balancer_ethereum', 'LiquidityGaugeFactory_evt_GaugeCreated') }} gauge
-    LEFT JOIN {{ ref('labels_balancer_v2_pools_ethereum_legacy') }} pools ON pools.address = gauge.pool
+    LEFT JOIN {{ ref('labels_balancer_v2_pools_ethereum') }} pools ON pools.address = gauge.pool
 UNION ALL
 SELECT
     'ethereum' AS blockchain,
@@ -35,5 +35,5 @@ SELECT
 FROM
     {{ source('balancer_ethereum', 'CappedLiquidityGaugeFactory_evt_GaugeCreated') }} evt
     INNER JOIN {{ source('balancer_ethereum', 'CappedLiquidityGaugeFactory_call_create') }} call ON call.call_tx_hash = evt.evt_tx_hash
-    LEFT JOIN {{ ref('labels_balancer_v2_pools_ethereum_legacy') }} pools ON pools.address = call.pool;
+    LEFT JOIN {{ ref('labels_balancer_v2_pools_ethereum') }} pools ON pools.address = call.pool;
 

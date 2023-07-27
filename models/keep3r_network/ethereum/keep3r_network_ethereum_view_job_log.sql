@@ -16,7 +16,7 @@ SELECT
     amount,
     NULL AS period_credits
 FROM
-    {{ ref('keep3r_network_ethereum_view_job_liquidity_log_legacy') }}
+    {{ ref('keep3r_network_ethereum_view_job_liquidity_log') }}
 UNION ALL
 SELECT
     `timestamp`,
@@ -30,7 +30,7 @@ SELECT
     amount,
     period_credits
 FROM
-    {{ ref('keep3r_network_ethereum_view_job_credits_log_legacy') }}
+    {{ ref('keep3r_network_ethereum_view_job_credits_log') }}
 ORDER BY
     `timestamp`,
     evt_index

@@ -14,8 +14,8 @@
 }}
 
 {% set aave_models = [
-ref('aave_v2_avalanche_c_flashloans_legacy')
-, ref('aave_v3_avalanche_c_flashloans_legacy')
+ref('aave_v2_avalanche_c_flashloans')
+, ref('aave_v3_avalanche_c_flashloans')
 ] %}
 
 SELECT *

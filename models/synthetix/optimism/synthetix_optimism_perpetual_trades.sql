@@ -10,8 +10,8 @@
 }}
 
 {% set synthetix_optimism_perpetual_trade_models = [
-    ref('synthetix_v1_optimism_perpetual_trades_legacy')
-    , ref('synthetix_v2_optimism_perpetual_trades_legacy')
+    ref('synthetix_v1_optimism_perpetual_trades')
+    , ref('synthetix_v2_optimism_perpetual_trades')
 ] %}
 
 SELECT *

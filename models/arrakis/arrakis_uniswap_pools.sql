@@ -12,7 +12,7 @@
 }}
 
 {% set lp_models = [
-  ref('arrakis_optimism_uniswap_pools_legacy')
+  ref('arrakis_optimism_uniswap_pools')
 ] %}
 
 

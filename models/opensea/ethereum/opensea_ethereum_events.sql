@@ -68,7 +68,7 @@ FROM (   -- UNION ALL is in reverse order because the newer table contains more 
                 ,sub_idx
                 ,sub_type
                 ,fee_wallet_name
-          FROM {{ ref('opensea_v4_ethereum_events_legacy') }}
+          FROM {{ ref('opensea_v4_ethereum_events') }}
         UNION ALL
         SELECT   blockchain
                 ,project
@@ -128,7 +128,7 @@ FROM (   -- UNION ALL is in reverse order because the newer table contains more 
                 ,sub_idx
                 ,sub_type
                 ,NULL
-          FROM {{ ref('opensea_v3_ethereum_events_legacy') }}
+          FROM {{ ref('opensea_v3_ethereum_events') }}
         UNION ALL
         SELECT
                 blockchain
@@ -189,6 +189,6 @@ FROM (   -- UNION ALL is in reverse order because the newer table contains more 
                ,NULL
                ,NULL
                ,NULL
-        FROM {{ ref('opensea_v1_ethereum_events_legacy') }}
+        FROM {{ ref('opensea_v1_ethereum_events') }}
 
 )

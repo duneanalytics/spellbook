@@ -15,12 +15,12 @@
 
 
 {% set airdrop_claims_models = [
-    ref('airdrop_ethereum_claims_legacy')
-    , ref('airdrop_optimism_claims_legacy')
-    , ref('airdrop_arbitrum_claims_legacy')
-    , ref('airdrop_avalanche_c_claims_legacy')
-    , ref('airdrop_bnb_claims_legacy')
-    , ref('airdrop_gnosis_claims_legacy')
+    ref('airdrop_ethereum_claims')
+    , ref('airdrop_optimism_claims')
+    , ref('airdrop_arbitrum_claims')
+    , ref('airdrop_avalanche_c_claims')
+    , ref('airdrop_bnb_claims')
+    , ref('airdrop_gnosis_claims')
 ] %}
 
 

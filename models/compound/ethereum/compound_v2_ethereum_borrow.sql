@@ -42,7 +42,7 @@ with borrows as (
 		where evt_block_time >= date_trunc("day", now() - interval '1 week')
 		{% endif %}
     ) evt_borrow
-    left join {{ ref('compound_v2_ethereum_ctokens_legacy') }} ctokens
+    left join {{ ref('compound_v2_ethereum_ctokens') }} ctokens
         on evt_borrow.contract_address = ctokens.ctoken_address
     left join {{ source('prices', 'usd') }} p
         on p.minute = date_trunc('minute', evt_borrow.evt_block_time)
@@ -79,7 +79,7 @@ repays as (
 		where evt_block_time >= date_trunc("day", now() - interval '1 week')
 		{% endif %}
     ) evt_repay
-    left join {{ ref('compound_v2_ethereum_ctokens_legacy') }} ctokens
+    left join {{ ref('compound_v2_ethereum_ctokens') }} ctokens
         on evt_repay.contract_address = ctokens.ctoken_address
     left join {{ source('prices', 'usd') }} p
         on p.minute = date_trunc('minute', evt_repay.evt_block_time)
@@ -116,7 +116,7 @@ liquidations as (
 		where evt_block_time >= date_trunc("day", now() - interval '1 week')
 		{% endif %}
     ) evt_liquidate
-    left join {{ ref('compound_v2_ethereum_ctokens_legacy') }} ctokens
+    left join {{ ref('compound_v2_ethereum_ctokens') }} ctokens
         on evt_liquidate.contract_address = ctokens.ctoken_address
     left join {{ source('prices', 'usd') }} p
         on p.minute = date_trunc('minute', evt_liquidate.evt_block_time)

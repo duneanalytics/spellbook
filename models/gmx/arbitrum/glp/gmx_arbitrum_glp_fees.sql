@@ -101,7 +101,7 @@ FROM
         SELECT
             minute,
             weth_current_price
-        FROM {{ref('gmx_arbitrum_glp_components_legacy')}}
+        FROM {{ref('gmx_arbitrum_glp_components')}}
         -- excess time filter
         {% if not is_incremental() %}
         WHERE minute >= '{{project_start_date}}'

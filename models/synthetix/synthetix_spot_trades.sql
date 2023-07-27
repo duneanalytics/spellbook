@@ -10,7 +10,7 @@
 }}
 
 {% set snx_models = [
-ref('synthetix_optimism_spot_trades_legacy')
+ref('synthetix_optimism_spot_trades')
 ] %}
 
 

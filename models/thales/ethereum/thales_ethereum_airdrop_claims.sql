@@ -20,7 +20,7 @@ WITH more_prices AS (
     , MAX(hour) AS max_hour
     , MIN_BY(median_price, hour) AS min_price
     , MAX_BY(median_price, hour) AS max_price
-    FROM {{ ref('dex_prices_legacy') }}
+    FROM {{ ref('dex_prices') }}
     WHERE blockchain = 'ethereum'
     AND contract_address='{{thales_token_address}}'
     )
@@ -43,7 +43,7 @@ SELECT 'ethereum' AS blockchain
 , 'THALES' AS token_symbol
 , t.evt_index
 FROM {{ source('thales_ethereum', 'Airdrop_evt_Claim') }} t
-LEFT JOIN {{ ref('dex_prices_legacy') }} pu ON pu.blockchain = 'ethereum'
+LEFT JOIN {{ ref('dex_prices') }} pu ON pu.blockchain = 'ethereum'
     AND pu.contract_address='{{thales_token_address}}'
     AND pu.hour = date_trunc('hour', t.evt_block_time)
 WHERE t.evt_block_time BETWEEN '2021-09-15' AND '2022-02-02'

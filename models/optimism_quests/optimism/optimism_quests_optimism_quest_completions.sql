@@ -28,7 +28,7 @@ SELECT
 
 FROM
     {{source('optimism_quest_optimism','StarNFTV4_call_mint')}} m
-INNER JOIN {{ref('optimism_quests_optimism_nft_id_mapping_legacy')}} nft 
+INNER JOIN {{ref('optimism_quests_optimism_nft_id_mapping')}} nft 
     ON cast(m.cid as varchar(4)) = nft.nft_id
 
 WHERE call_success = true

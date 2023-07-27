@@ -41,7 +41,7 @@ FROM (
         GROUP BY 1,2
 
         UNION ALL
-        SELECT l1_token, l2_token, symbol, decimals FROM {{ ref('ovm_optimism_l2_token_factory_legacy') }} 
+        SELECT l1_token, l2_token, symbol, decimals FROM {{ ref('ovm_optimism_l2_token_factory') }} 
         {% if is_incremental() %}
         WHERE call_block_time >= date_trunc("day", now() - interval '1 week')
         {% endif %}   
@@ -55,7 +55,7 @@ FROM (
 
     ) map
 
-LEFT JOIN {{ ref('tokens_ethereum_erc20_legacy') }} et
+LEFT JOIN {{ ref('tokens_ethereum_erc20') }} et
     ON et.contract_address = map.l1_token
 ) fin 
 WHERE rnk =1

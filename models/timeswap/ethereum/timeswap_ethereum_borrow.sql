@@ -37,7 +37,7 @@ SELECT
     END as DOUBLE
   ) as usd_amount
 FROM {{ source('timeswap_ethereum', 'TimeswapV2PeripheryUniswapV3BorrowGivenPrincipal_evt_BorrowGivenPrincipal') }} b
-JOIN {{ ref('timeswap_ethereum_pools_legacy') }} i
+JOIN {{ ref('timeswap_ethereum_pools') }} i
   ON CAST(b.maturity as VARCHAR(100)) = i.maturity
   and cast(b.strike as VARCHAR(100)) = i.strike
 JOIN {{ source('ethereum', 'transactions') }} tx
@@ -81,7 +81,7 @@ SELECT
     END as DOUBLE
   ) as usd_amount
 FROM {{ source('timeswap_ethereum', 'TimeswapV2PeripheryUniswapV3BorrowGivenPrincipal_evt_BorrowGivenPrincipal') }} b
-JOIN {{ ref('timeswap_ethereum_pools_legacy') }} i
+JOIN {{ ref('timeswap_ethereum_pools') }} i
   ON CAST(b.maturity as VARCHAR(100)) = i.maturity
   and cast(b.strike as VARCHAR(100)) = i.strike
 JOIN {{ source('ethereum', 'transactions') }} tx

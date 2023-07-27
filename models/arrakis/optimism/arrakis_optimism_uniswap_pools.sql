@@ -29,12 +29,12 @@ SELECT distinct
     pc.pool AS contract_address, uniPool as pool_contract, fee, token0, token1
 
 FROM {{ source('arrakis_optimism', 'ArrakisFactoryV1_evt_PoolCreated') }} pc 
-    INNER JOIN {{ ref('uniswap_optimism_pools_legacy') }} up 
+    INNER JOIN {{ ref('uniswap_optimism_pools') }} up 
         ON up.pool = pc.uniPool
-    LEFT JOIN {{ ref('tokens_erc20_legacy') }} e0
+    LEFT JOIN {{ ref('tokens_erc20') }} e0
         ON e0.contract_address = up.token0
         AND e0.blockchain = 'optimism'
-    LEFT JOIN {{ ref('tokens_erc20_legacy') }} e1
+    LEFT JOIN {{ ref('tokens_erc20') }} e1
         ON e1.contract_address = up.token1
         AND e1.blockchain = 'optimism'
 

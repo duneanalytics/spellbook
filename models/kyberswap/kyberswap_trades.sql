@@ -10,10 +10,10 @@
 }}
 
 {% set kyber_models = [
- ref('kyberswap_avalanche_c_trades_legacy')
-,ref('kyberswap_optimism_trades_legacy')
-,ref('kyberswap_ethereum_trades_legacy')
-,ref('kyberswap_arbitrum_trades_legacy')
+ ref('kyberswap_avalanche_c_trades')
+,ref('kyberswap_optimism_trades')
+,ref('kyberswap_ethereum_trades')
+,ref('kyberswap_arbitrum_trades')
 ] %}
 
 

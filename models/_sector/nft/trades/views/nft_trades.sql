@@ -11,5 +11,5 @@
 }}
 
 SELECT *
-FROM {{ ref('nft_events_legacy') }}
+FROM {{ ref('nft_events') }}
 WHERE evt_type = "Trade"

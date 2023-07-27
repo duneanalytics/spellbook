@@ -10,7 +10,7 @@
 }}
 
 {% set zip_models = [
- ref('zipswap_optimism_trades_legacy')
+ ref('zipswap_optimism_trades')
 ] %}
 
 

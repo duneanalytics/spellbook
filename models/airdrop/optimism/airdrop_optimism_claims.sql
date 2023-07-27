@@ -11,8 +11,8 @@
 
 
 {% set airdrop_claims_models = [
-    ref('op_optimism_airdrop_1_claims_legacy')
-    , ref('velodrome_optimism_airdrop_claims_legacy')
+    ref('op_optimism_airdrop_1_claims')
+    , ref('velodrome_optimism_airdrop_claims')
 ] %}
 
 

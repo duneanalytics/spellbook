@@ -14,13 +14,13 @@
 }}
 
 {% set synapse_models = [
-ref('synapse_arbitrum_flashloans_legacy')
-, ref('synapse_avalanche_c_flashloans_legacy')
-, ref('synapse_bnb_flashloans_legacy')
-, ref('synapse_ethereum_flashloans_legacy')
-, ref('synapse_fantom_flashloans_legacy')
-, ref('synapse_optimism_flashloans_legacy')
-, ref('synapse_polygon_flashloans_legacy')
+ref('synapse_arbitrum_flashloans')
+, ref('synapse_avalanche_c_flashloans')
+, ref('synapse_bnb_flashloans')
+, ref('synapse_ethereum_flashloans')
+, ref('synapse_fantom_flashloans')
+, ref('synapse_optimism_flashloans')
+, ref('synapse_polygon_flashloans')
 ] %}
 
 SELECT *

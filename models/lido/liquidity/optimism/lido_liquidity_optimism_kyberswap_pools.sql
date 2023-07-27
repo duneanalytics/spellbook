@@ -25,8 +25,8 @@ where token0 = lower('0x1F32b1c2345538c0c6f582fCB022739c4A194Ebb') or token1 = l
 
 , tokens_mapping as (
 select distinct lower(address_l1) as address_l1, lower(address_l2) as address_l2 from (
-select l1_token as address_l1, l2_token as address_l2 from {{ ref('tokens_optimism_erc20_bridged_mapping_legacy') }}
-where l1_token not in (select l1_token from {{ ref('tokens_optimism_erc20_bridged_mapping_legacy') }} group by 1 having count(*) > 1)
+select l1_token as address_l1, l2_token as address_l2 from {{ ref('tokens_optimism_erc20_bridged_mapping') }}
+where l1_token not in (select l1_token from {{ ref('tokens_optimism_erc20_bridged_mapping') }} group by 1 having count(*) > 1)
 union all 
 select '0x1a7e4e63778B4f12a199C062f3eFdD288afCBce8', '0x9485aca5bbbe1667ad97c7fe7c4531a624c8b1ed' 
 union all 
@@ -52,7 +52,7 @@ where token1 = lower('0x1F32b1c2345538c0c6f582fCB022739c4A194Ebb')
 union
 select lower('0x1F32b1c2345538c0c6f582fCB022739c4A194Ebb')
 ) t
-left join {{ ref('prices_tokens_legacy') }} pt on ((t.token !=  lower('0x1F32b1c2345538c0c6f582fCB022739c4A194Ebb') and t.token = pt.contract_address) or
+left join {{ ref('prices_tokens') }} pt on ((t.token !=  lower('0x1F32b1c2345538c0c6f582fCB022739c4A194Ebb') and t.token = pt.contract_address) or
                                (t.token  =  lower('0x1F32b1c2345538c0c6f582fCB022739c4A194Ebb')  and pt.contract_address =  lower('0x7f39c581f595b53c5cb19bd0b3f8da6c935e2ca0')))
 left join tokens_mapping tm on t.token = tm.address_l2
 )

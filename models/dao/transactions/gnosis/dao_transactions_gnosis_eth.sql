@@ -21,7 +21,7 @@ dao_tmp as (
             dao, 
             dao_wallet_address
         FROM 
-        {{ ref('dao_addresses_gnosis_legacy') }}
+        {{ ref('dao_addresses_gnosis') }}
         WHERE dao_wallet_address IS NOT NULL
 ), 
 
@@ -109,7 +109,7 @@ LEFT JOIN
     AND p.minute >= date_trunc("day", now() - interval '1 week')
     {% endif %}
 LEFT JOIN 
-{{ ref('dex_prices_legacy') }} dp 
+{{ ref('dex_prices') }} dp 
     ON dp.hour = date_trunc('hour', t.block_time)
     AND dp.contract_address = LOWER('0xe91d153e0b41518a2ce8dd3d7944fa863463a97d')
     AND dp.blockchain = 'gnosis'

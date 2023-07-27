@@ -12,7 +12,7 @@
                                     \'["msilb7", "chuxin"]\') }}'
   )
 }}
-with ovm1_legacy_pools_raw as (
+with ovm1_pools_raw as (
   select 
     explode(
       from_json(
@@ -756,4 +756,4 @@ select
   ,col.token0
   ,col.token1
   ,col.fee
-from ovm1_legacy_pools_raw
+from ovm1_pools_raw

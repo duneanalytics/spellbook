@@ -13,4 +13,4 @@ SELECT
     now() as updated_at,
     'safe_ethereum' AS model_name,
     'persona' AS label_type
-FROM {{ ref('safe_ethereum_safes_legacy') }}
+FROM {{ ref('safe_ethereum_safes') }}

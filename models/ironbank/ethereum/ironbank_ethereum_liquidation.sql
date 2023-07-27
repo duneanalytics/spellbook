@@ -23,8 +23,8 @@ CAST(l.repayAmount AS DOUBLE) / power(10,i.underlying_decimals) AS repay_amount,
 CAST(l.repayAmount AS DOUBLE) / power(10,i.underlying_decimals)*p.price AS repay_usd
 FROM {{ source('ironbank_ethereum', 'CErc20Delegator_evt_LiquidateBorrow') }} l
 LEFT JOIN (SELECT contract_address,underlying_token_address
-            FROM {{ ref('ironbank_ethereum_itokens_legacy') }} ) i_collateral ON CAST(l.cTokenCollateral AS VARCHAR(100)) = i_collateral.contract_address
+            FROM {{ ref('ironbank_ethereum_itokens') }} ) i_collateral ON CAST(l.cTokenCollateral AS VARCHAR(100)) = i_collateral.contract_address
 LEFT JOIN (SELECT contract_address,underlying_token_address
-            FROM {{ ref('ironbank_ethereum_itokens_legacy') }} ) i_asset ON CAST(l.contract_address AS VARCHAR(100)) = i_asset.contract_address
-LEFT JOIN {{ ref('ironbank_ethereum_itokens_legacy') }} i ON CAST(l.contract_address AS VARCHAR(100)) = i.contract_address
+            FROM {{ ref('ironbank_ethereum_itokens') }} ) i_asset ON CAST(l.contract_address AS VARCHAR(100)) = i_asset.contract_address
+LEFT JOIN {{ ref('ironbank_ethereum_itokens') }} i ON CAST(l.contract_address AS VARCHAR(100)) = i.contract_address
 LEFT JOIN {{ source('prices', 'usd') }} p ON p.minute = date_trunc('minute', l.evt_block_time) AND CAST(p.contract_address AS VARCHAR(100)) = i.underlying_token_address AND p.blockchain = 'ethereum'

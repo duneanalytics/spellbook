@@ -26,7 +26,7 @@ FROM
             evt_index,
             evt_block_time,
             evt_block_number 
-      FROM {{ ref('aave_v3_optimism_supply_legacy') }}
+      FROM {{ ref('aave_v3_optimism_supply') }}
       /*
       UNION ALL
       < add new version as needed

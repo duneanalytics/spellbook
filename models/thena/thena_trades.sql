@@ -10,7 +10,7 @@
 }}
 
 {% set thena_models = [
-    ref('thena_bnb_trades_legacy')
+    ref('thena_bnb_trades')
 ] %}
 
 

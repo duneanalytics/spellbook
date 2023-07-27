@@ -6,7 +6,7 @@
 }}
 
 {% set paraswap_models = [
-ref('paraswap_v5_fantom_trades_legacy')
+ref('paraswap_v5_fantom_trades')
 ] %}
 
 

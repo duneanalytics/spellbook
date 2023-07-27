@@ -58,7 +58,7 @@ with
                token_sold_address,
                token_bought_address,
                evt_index
-        FROM {{ref('dex_trades_legacy')}}
+        FROM {{ref('dex_trades')}}
 
         UNION ALL
 
@@ -68,7 +68,7 @@ with
                token_sold_address,
                token_bought_address,
                evt_index
-        FROM {{ref('dex_aggregator_trades_legacy')}}
+        FROM {{ref('dex_aggregator_trades')}}
       ) t1
       INNER JOIN
       (
@@ -78,7 +78,7 @@ with
                token_sold_address,
                token_bought_address,
                evt_index
-        FROM {{ref('dex_trades_legacy')}}
+        FROM {{ref('dex_trades')}}
         UNION ALL
         SELECT taker,
                tx_hash,
@@ -86,7 +86,7 @@ with
                token_sold_address,
                token_bought_address,
                evt_index
-        FROM {{ref('dex_aggregator_trades_legacy')}}
+        FROM {{ref('dex_aggregator_trades')}}
       ) t2 ON t1.tx_hash = t2.tx_hash
     WHERE
       t1.blockchain = 'ethereum'

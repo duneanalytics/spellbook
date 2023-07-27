@@ -35,7 +35,7 @@ WITH unified_mappings AS (
 
                 SELECT
                 dune_name AS proposal_name, mapped_name AS project_name
-                FROM {{ ref('contracts_optimism_project_name_mappings_legacy') }}
+                FROM {{ ref('contracts_optimism_project_name_mappings') }}
 
         ) u
 )

@@ -10,8 +10,8 @@
 }}
 
 {% set gmx_perp_models = [
-ref('gmx_avalanche_c_perpetual_trades_legacy')
-, ref('gmx_arbitrum_perpetual_trades_legacy')
+ref('gmx_avalanche_c_perpetual_trades')
+, ref('gmx_arbitrum_perpetual_trades')
 ] %}
 
 SELECT *

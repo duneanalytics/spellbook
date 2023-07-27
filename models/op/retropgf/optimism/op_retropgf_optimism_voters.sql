@@ -10,7 +10,7 @@
   )
 }}
 {% set sources = [
-     ('Round #2',   ref('op_retropgf_optimism_round2_voters_legacy'))
+     ('Round #2',   ref('op_retropgf_optimism_round2_voters'))
 ] %}
 
 SELECT *

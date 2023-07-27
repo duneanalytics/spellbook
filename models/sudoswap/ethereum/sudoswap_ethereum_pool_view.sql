@@ -16,7 +16,7 @@ WITH
       SUM(eth_balance_change) AS eth_balance,
       SUM(nft_balance_change) AS nft_balance
     FROM
-      {{ ref('sudoswap_ethereum_pool_balance_agg_day_legacy') }}
+      {{ ref('sudoswap_ethereum_pool_balance_agg_day') }}
     GROUP BY pool_address
 )
 
@@ -33,7 +33,7 @@ WITH
       SUM(eth_change_trading) AS eth_change_trading,
       SUM(nft_change_trading) AS nft_change_trading
     FROM
-      {{ ref('sudoswap_ethereum_pool_trades_agg_day_legacy') }}
+      {{ ref('sudoswap_ethereum_pool_trades_agg_day') }}
     GROUP BY pool_address
 )
 
@@ -63,8 +63,8 @@ SELECT
   pool_factory,
   creation_block_time,
   creation_tx_hash
-FROM {{ ref('sudoswap_ethereum_pool_creations_legacy') }} p
-INNER JOIN {{ ref('sudoswap_ethereum_pool_settings_latest_legacy') }} s
+FROM {{ ref('sudoswap_ethereum_pool_creations') }} p
+INNER JOIN {{ ref('sudoswap_ethereum_pool_settings_latest') }} s
     ON p.pool_address = s.pool_address
 INNER JOIN pool_balance b ON p.pool_address = b.pool_address
 LEFT JOIN pool_trade_stats t ON p.pool_address = t.pool_address

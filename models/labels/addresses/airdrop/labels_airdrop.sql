@@ -7,4 +7,4 @@
                                     \'["ilemi"]\') }}'
 )}}
 
-SELECT * FROM {{ ref('labels_airdrop_1_receivers_optimism_legacy') }}
+SELECT * FROM {{ ref('labels_airdrop_1_receivers_optimism') }}

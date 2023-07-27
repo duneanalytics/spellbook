@@ -7,4 +7,4 @@
     )
 }}
 
-SELECT * FROM {{ ref('cow_protocol_tx_hash_labels_early_investment_ethereum_legacy') }}
+SELECT * FROM {{ ref('cow_protocol_tx_hash_labels_early_investment_ethereum') }}

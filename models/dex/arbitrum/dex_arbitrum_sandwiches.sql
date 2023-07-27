@@ -38,7 +38,7 @@ WITH trades AS (
     , SUM(COALESCE(dt.token_sold_amount, 0)) AS token_sold_amount
     , SUM(COALESCE(dt.token_bought_amount, 0)) AS token_bought_amount
     , SUM(COALESCE(dt.amount_usd, 0)) AS amount_usd
-    FROM {{ ref('dex_trades_legacy') }} dt
+    FROM {{ ref('dex_trades') }} dt
     INNER JOIN {{ source('arbitrum', 'transactions') }} t ON t.block_time=dt.block_time
         AND t.hash=dt.tx_hash
         {% if is_incremental() %}

@@ -10,11 +10,11 @@
 }}
 
 {% set dodo_models = [
-ref('dodo_aggregator_ethereum_trades_legacy')
-, ref('dodo_aggregator_bnb_trades_legacy')
-, ref('dodo_aggregator_polygon_trades_legacy')
-, ref('dodo_aggregator_arbitrum_trades_legacy')
-, ref('dodo_aggregator_optimism_trades_legacy')
+ref('dodo_aggregator_ethereum_trades')
+, ref('dodo_aggregator_bnb_trades')
+, ref('dodo_aggregator_polygon_trades')
+, ref('dodo_aggregator_arbitrum_trades')
+, ref('dodo_aggregator_optimism_trades')
 ] %}
 
 

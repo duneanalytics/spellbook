@@ -34,5 +34,5 @@ select
     ,r.tx_hash
     ,r.evt_index
 from resolver_records r
-inner join {{ ref('ens_node_names_legacy')}} n
+inner join {{ ref('ens_node_names')}} n
 ON r.node = n.node

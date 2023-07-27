@@ -29,7 +29,7 @@ with source_optimism_transactions as (
 )
 ,ref_nftearth_optimism_base_pairs as (
       select *
-      from {{ ref('nftearth_optimism_base_pairs_legacy') }}
+      from {{ ref('nftearth_optimism_base_pairs') }}
       where 1=1
       {% if is_incremental() %}
             and block_time >= date_trunc("day", now() - interval '1 week')
@@ -37,17 +37,17 @@ with source_optimism_transactions as (
 )
 ,ref_tokens_nft as (
     select *
-    from {{ ref('tokens_nft_legacy') }}
+    from {{ ref('tokens_nft') }}
     where blockchain = 'optimism'
 )
 ,ref_tokens_erc20 as (
     select *
-    from {{ ref('tokens_erc20_legacy') }}
+    from {{ ref('tokens_erc20') }}
     where blockchain = 'optimism'
 )
 ,ref_nft_aggregators as (
     select *
-    from {{ ref('nft_aggregators_legacy') }}
+    from {{ ref('nft_aggregators') }}
     where blockchain = 'optimism'
 )
 ,source_prices_usd as (

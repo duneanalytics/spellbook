@@ -27,7 +27,7 @@ select
     et.tx_hash,
     array_join(et.trace_address, ',') as trace_address
 from {{ source('celo', 'traces') }} et
-inner join {{ ref('safe_celo_safes_legacy') }} s on et.from = s.address
+inner join {{ ref('safe_celo_safes') }} s on et.from = s.address
     and et.from != et.to -- exclude calls to self to guarantee unique key property
     and et.success = true
     and (lower(et.call_type) not in ('delegatecall', 'callcode', 'staticcall') or et.call_type is null)
@@ -50,7 +50,7 @@ select
     et.tx_hash,
     array_join(et.trace_address, ',') as trace_address
 from {{ source('celo', 'traces') }} et
-inner join {{ ref('safe_celo_safes_legacy') }} s on et.to = s.address
+inner join {{ ref('safe_celo_safes') }} s on et.to = s.address
     and et.from != et.to -- exclude calls to self to guarantee unique key property
     and et.success = true
     and (lower(et.call_type) not in ('delegatecall', 'callcode', 'staticcall') or et.call_type is null)

@@ -17,7 +17,7 @@ pairs as (
         SELECT 
             * 
         FROM 
-        {{ ref('tigris_v1_arbitrum_events_asset_added_legacy') }}
+        {{ ref('tigris_v1_arbitrum_events_asset_added') }}
 ),
 
 {% set limit_order_trading_evt_tables = [

@@ -20,7 +20,7 @@ WITH weekly_unique_wallet_address as
         nft_contract_address,
         buyer as wallet 
     FROM 
-        {{ ref('nft_trades_legacy') }}
+        {{ ref('nft_trades') }}
     WHERE 
         block_time >= date_trunc("day", now() - interval '1 week')
         AND blockchain = 'ethereum'
@@ -35,7 +35,7 @@ WITH weekly_unique_wallet_address as
         nft_contract_address,
         seller as wallet 
     FROM 
-        {{ ref('nft_trades_legacy') }}
+        {{ ref('nft_trades') }}
     WHERE 
         block_time >= date_trunc("day", now() - interval '1 week')
         AND blockchain = 'ethereum'
@@ -55,7 +55,7 @@ WITH weekly_unique_wallet_address as
         COUNT(*) as trades, 
         MAX(src.block_time) as last_updated
     FROM 
-        {{ ref('nft_trades_legacy') }} src 
+        {{ ref('nft_trades') }} src 
     INNER JOIN 
         weekly_unique_wallet_address
         ON src.nft_contract_address = weekly_unique_wallet_address.nft_contract_address
@@ -80,7 +80,7 @@ WITH weekly_unique_wallet_address as
         COUNT(*) as trades, 
         MAX(src.block_time) as last_updated
     FROM 
-        {{ ref('nft_trades_legacy') }} src
+        {{ ref('nft_trades') }} src
     INNER JOIN 
         weekly_unique_wallet_address
         ON src.nft_contract_address = weekly_unique_wallet_address.nft_contract_address
@@ -140,7 +140,7 @@ WITH trades as
         COUNT(*) as trades, 
         MAX(src.block_time) as last_updated
     FROM 
-        {{ ref('nft_trades_legacy') }} src 
+        {{ ref('nft_trades') }} src 
     WHERE
         src.currency_symbol IN ('ETH', 'WETH')
         AND src.blockchain = 'ethereum'
@@ -161,7 +161,7 @@ WITH trades as
         COUNT(*) as trades, 
         MAX(src.block_time) as last_updated
     FROM 
-        {{ ref('nft_trades_legacy') }} src
+        {{ ref('nft_trades') }} src
     WHERE
         src.currency_symbol IN ('ETH', 'WETH')
         AND src.blockchain = 'ethereum'

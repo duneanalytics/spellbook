@@ -15,12 +15,12 @@
 }}
 
 {% set perpetual_trade_models = [
- ref('perpetual_protocol_perpetual_trades_legacy')
-,ref('pika_perpetual_trades_legacy')
-,ref('synthetix_perpetual_trades_legacy')
-,ref('emdx_avalanche_c_perpetual_trades_legacy')
-,ref('hubble_exchange_avalanche_c_perpetual_trades_legacy')
-,ref('gmx_perpetual_trades_legacy')
+ ref('perpetual_protocol_perpetual_trades')
+,ref('pika_perpetual_trades')
+,ref('synthetix_perpetual_trades')
+,ref('emdx_avalanche_c_perpetual_trades')
+,ref('hubble_exchange_avalanche_c_perpetual_trades')
+,ref('gmx_perpetual_trades')
 ] %}
 
 SELECT *

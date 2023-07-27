@@ -15,16 +15,16 @@
 
 
 {% set native_mints = [
- ref('nft_ethereum_native_mints_legacy')
-,ref('nft_optimism_native_mints_legacy')
+ ref('nft_ethereum_native_mints')
+,ref('nft_optimism_native_mints')
 ] %}
 
 
 {% set project_mints = [
- ref('nftb_bnb_events_legacy')
-,ref('magiceden_solana_events_legacy')
-,ref('opensea_v1_ethereum_events_legacy')
-,ref('stealcam_arbitrum_events_legacy')
+ ref('nftb_bnb_events')
+,ref('magiceden_solana_events')
+,ref('opensea_v1_ethereum_events')
+,ref('stealcam_arbitrum_events')
 ] %}
 
 WITH project_mints as

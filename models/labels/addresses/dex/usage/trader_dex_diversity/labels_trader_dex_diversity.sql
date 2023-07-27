@@ -17,10 +17,10 @@ with
            count(distinct project) as dex_diversity,
            taker                   as address
     from (select blockchain, taker, project
-          from {{ ref('dex_aggregator_trades_legacy') }}
+          from {{ ref('dex_aggregator_trades') }}
           union all
           select blockchain, taker, project
-          from {{ ref('dex_trades_legacy') }})
+          from {{ ref('dex_trades') }})
     group by taker, blockchain 
  )
 

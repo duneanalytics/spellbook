@@ -29,17 +29,17 @@ with source_optimism_transactions as (
 )
 ,ref_tokens_nft as (
     select *
-    from {{ ref('tokens_nft_legacy') }}
+    from {{ ref('tokens_nft') }}
     where blockchain = 'optimism'
 )
 ,ref_tokens_erc20 as (
     select *
-    from {{ ref('tokens_erc20_legacy') }}
+    from {{ ref('tokens_erc20') }}
     where blockchain = 'optimism'
 )
 ,ref_nft_aggregators as (
     select *
-    from {{ ref('nft_aggregators_legacy') }}
+    from {{ ref('nft_aggregators') }}
     where blockchain = 'optimism'
 )
 ,source_prices_usd as (
@@ -91,7 +91,7 @@ with source_optimism_transactions as (
       ,er.evt_index
       ,er.evt_index - coalesce(tr.trace_address[0], 0) as ranking
     from events_raw as er
-    join {{ ref('transfers_optimism_eth_legacy') }} as tr
+    join {{ ref('transfers_optimism_eth') }} as tr
       on er.tx_hash = tr.tx_hash
       and er.block_number = tr.tx_block_number
       and tr.value_decimal > 0

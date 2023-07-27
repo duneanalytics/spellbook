@@ -6,7 +6,7 @@
 }}
 
 {% set openocean_fantom_models = [
-ref('openocean_v2_fantom_trades_legacy')
+ref('openocean_v2_fantom_trades')
 ] %}
 
 

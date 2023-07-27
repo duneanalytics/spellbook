@@ -15,7 +15,7 @@
 }}
 
 {% set dex_offer_models = [
-    ref('rubicon_offers_legacy')
+    ref('rubicon_offers')
 ] %}
 
 SELECT *

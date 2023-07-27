@@ -18,7 +18,7 @@ AS
 (
     SELECT   row_number() OVER ( partition BY tx_hash ORDER BY evt_index ASC ) AS tx_fill_number
            , *
-    FROM {{ ref('zeroex_optimism_api_fills_legacy') }}
+    FROM {{ ref('zeroex_optimism_api_fills') }}
     WHERE 1=1
     AND swap_flag = 1
     {% if is_incremental() %}

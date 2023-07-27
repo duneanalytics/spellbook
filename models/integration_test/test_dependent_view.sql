@@ -17,4 +17,4 @@
             sum(amount) over (
                 partition by token_address, wallet_address order by day
             ) as amount
-        from {{ ref('test_incremental_table_legacy') }}
+        from {{ ref('test_incremental_table') }}

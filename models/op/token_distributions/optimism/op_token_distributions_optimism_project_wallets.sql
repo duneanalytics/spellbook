@@ -76,7 +76,7 @@ FROM (values
     ) a (address, proposal_name, address_descriptor)
     ) b
     WHERE rnk = 1 --check to prvent duplicates
-    AND address NOT IN (SELECT address FROM {{ref('cex_optimism_addresses_legacy')}} ) --make sure we don't accidently catch a CEX
+    AND address NOT IN (SELECT address FROM {{ref('cex_optimism_addresses')}} ) --make sure we don't accidently catch a CEX
 )
 
 
@@ -235,7 +235,7 @@ FROM (values
     ) a (address, proposal_name, address_descriptor)
     ) b
     WHERE rnk = 1 --check to prvent duplicates
-    AND address NOT IN (SELECT address FROM {{ref('cex_optimism_addresses_legacy')}}) --make sure we don't accidently catch a CEX
+    AND address NOT IN (SELECT address FROM {{ref('cex_optimism_addresses')}}) --make sure we don't accidently catch a CEX
 )
 
 SELECT
@@ -253,7 +253,7 @@ FROM (
                 FROM (
                 -- Pull known project wallets
                 SELECT address, category AS label, proposal_name, funding_source AS address_descriptor, 1 as rnk
-                FROM {{ref('addresses_optimism_grants_funding_legacy')}}
+                FROM {{ref('addresses_optimism_grants_funding')}}
 
                 UNION ALL
 
@@ -268,11 +268,11 @@ FROM (
 		UNION ALL
 		--retropgf payouts
 		SELECT submitter_address AS address, 'RetroPGF' AS label, recipient_name AS proposal_name, 'RetroPGF - ' || round_name AS address_descriptor, 4 as rnk
-		FROM {{ref('op_retropgf_optimism_recipients_legacy')}}
+		FROM {{ref('op_retropgf_optimism_recipients')}}
 
                 ) do_choice_rank
         ) fin
-LEFT JOIN {{ ref('op_token_distributions_optimism_project_name_mapping_legacy') }} pnm 
+LEFT JOIN {{ ref('op_token_distributions_optimism_project_name_mapping') }} pnm 
         ON pnm.proposal_name = fin.proposal_name
 
 GROUP BY fin.address

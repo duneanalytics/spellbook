@@ -27,7 +27,7 @@ select
   , LOWER(token0) AS token0
   , LOWER(token1) AS token1
   ,fee
-from {{ ref('uniswap_optimism_ovm1_pool_mapping_legacy') }}
+from {{ ref('uniswap_optimism_ovm1_pool_mapping') }}
 
 union
 

@@ -21,13 +21,13 @@ with trader_platforms as (
                taker,
                project,
                block_time
-        from {{ ref('dex_aggregator_trades_legacy') }}
+        from {{ ref('dex_aggregator_trades') }}
         UNION ALL
         select blockchain,
                taker,
                project,
                block_time
-        from {{ ref('dex_trades_legacy') }}
+        from {{ ref('dex_trades') }}
           )
     group by taker, project, blockchain
     order by first_trade

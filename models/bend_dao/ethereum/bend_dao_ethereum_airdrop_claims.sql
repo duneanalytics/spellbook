@@ -40,7 +40,7 @@ SELECT 'ethereum' AS blockchain
 , 'BEND' AS token_symbol
 , t.evt_index
 FROM {{ source('benddao_ethereum', 'MerkleDistributor_evt_Claimed') }} t
-LEFT JOIN {{ ref('prices_usd_forward_fill_legacy') }} pu ON pu.blockchain = 'ethereum'
+LEFT JOIN {{ ref('prices_usd_forward_fill') }} pu ON pu.blockchain = 'ethereum'
     AND pu.contract_address='{{bend_token_address}}'
     AND pu.minute=date_trunc('minute', t.evt_block_time)
 WHERE t.evt_block_time BETWEEN '2022-03-21' AND '2022-06-19'

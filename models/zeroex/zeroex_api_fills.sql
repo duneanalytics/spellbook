@@ -10,13 +10,13 @@
 }}
 
 {% set zeroex_models = [  
-ref('zeroex_arbitrum_api_fills_legacy')
-,ref('zeroex_avalanche_c_api_fills_legacy')
-,ref('zeroex_ethereum_api_fills_legacy')
-,ref('zeroex_fantom_api_fills_legacy')
-,ref('zeroex_optimism_api_fills_legacy')
-,ref('zeroex_polygon_api_fills_legacy')
-,ref('zeroex_bnb_api_fills_legacy')
+ref('zeroex_arbitrum_api_fills')
+,ref('zeroex_avalanche_c_api_fills')
+,ref('zeroex_ethereum_api_fills')
+,ref('zeroex_fantom_api_fills')
+,ref('zeroex_optimism_api_fills')
+,ref('zeroex_polygon_api_fills')
+,ref('zeroex_bnb_api_fills')
 ] %}
 
 

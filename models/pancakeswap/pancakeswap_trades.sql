@@ -10,8 +10,8 @@
 }}
 
 {% set pancake_models = [
-    ref('pancakeswap_bnb_trades_legacy')
-,   ref('pancakeswap_ethereum_trades_legacy')
+    ref('pancakeswap_bnb_trades')
+,   ref('pancakeswap_ethereum_trades')
 ] %}
 
 

@@ -6,7 +6,7 @@
 WITH mev_addresses AS (
     SELECT 
         address
-    FROM {{ ref('labels_mev_ethereum_legacy') }}
+    FROM {{ ref('labels_mev_ethereum') }}
 )
 
 , aave_v2_annual_liquidations AS (
@@ -27,7 +27,7 @@ SELECT
     , m.address AS liquidator
 FROM aave_v2_annual_liquidations a
 LEFT JOIN mev_addresses m ON m.address = a.liquidator
-LEFT JOIN {{ ref('prices_tokens_legacy') }} p
+LEFT JOIN {{ ref('prices_tokens') }} p
     ON p.contract_address = a.collateralAsset
     AND p.blockchain = 'ethereum'
 )

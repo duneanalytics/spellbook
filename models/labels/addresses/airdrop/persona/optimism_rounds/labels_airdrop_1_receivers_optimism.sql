@@ -13,4 +13,4 @@ SELECT
     now() as updated_at,
     'op_airdrop_1_receivers' AS model_name,
     'persona' as label_type
-FROM {{ ref('airdrop_optimism_addresses_1_legacy') }}
+FROM {{ ref('airdrop_optimism_addresses_1') }}

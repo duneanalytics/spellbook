@@ -21,5 +21,5 @@ i.underlying_token_address AS underlying_address,
 CAST(r.redeemAmount AS DOUBLE) / power(10,i.underlying_decimals) AS redeem_amount,
 CAST(r.redeemAmount AS DOUBLE) / power(10,i.underlying_decimals)*p.price AS redeem_usd
 FROM {{ source('ironbank_optimism', 'CErc20Delegator_evt_Redeem') }} r
-LEFT JOIN {{ ref('ironbank_optimism_itokens_legacy') }} i ON CAST(r.contract_address AS VARCHAR(100)) = i.contract_address
+LEFT JOIN {{ ref('ironbank_optimism_itokens') }} i ON CAST(r.contract_address AS VARCHAR(100)) = i.contract_address
 LEFT JOIN {{ source('prices', 'usd') }} p ON p.minute = date_trunc('minute', r.evt_block_time) AND CAST(p.contract_address AS VARCHAR(100)) = i.underlying_token_address AND p.blockchain = 'optimism'

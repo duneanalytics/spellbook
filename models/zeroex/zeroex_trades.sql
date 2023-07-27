@@ -13,7 +13,7 @@
 -- https://dune.com/queries/2329953
 
 {% set zeroex_models = [  
-ref('zeroex_api_fills_deduped_legacy')
+ref('zeroex_api_fills_deduped')
 ] %}
 
 

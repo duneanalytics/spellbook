@@ -14,14 +14,14 @@
 }}
 
 {% set sandwiches_models = [
-     (ref('dex_arbitrum_sandwiches_legacy'))
-     , (ref('dex_avalanche_c_sandwiches_legacy'))
-     , (ref('dex_bnb_sandwiches_legacy'))
-     , (ref('dex_ethereum_sandwiches_legacy'))
-     , (ref('dex_fantom_sandwiches_legacy'))
-     , (ref('dex_gnosis_sandwiches_legacy'))
-     , (ref('dex_optimism_sandwiches_legacy'))
-     , (ref('dex_polygon_sandwiches_legacy'))
+     (ref('dex_arbitrum_sandwiches'))
+     , (ref('dex_avalanche_c_sandwiches'))
+     , (ref('dex_bnb_sandwiches'))
+     , (ref('dex_ethereum_sandwiches'))
+     , (ref('dex_fantom_sandwiches'))
+     , (ref('dex_gnosis_sandwiches'))
+     , (ref('dex_optimism_sandwiches'))
+     , (ref('dex_polygon_sandwiches'))
 ] %}
 
 SELECT *

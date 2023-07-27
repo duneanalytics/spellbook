@@ -10,15 +10,15 @@
 }}
 
 {% set safe_safes_models = [
- ref('safe_arbitrum_safes_legacy')
-,ref('safe_avalanche_c_safes_legacy')
-,ref('safe_bnb_safes_legacy')
-,ref('safe_ethereum_safes_legacy')
-,ref('safe_fantom_safes_legacy')
-,ref('safe_gnosis_safes_legacy')
-,ref('safe_goerli_safes_legacy')
-,ref('safe_optimism_safes_legacy')
-,ref('safe_polygon_safes_legacy')
+ ref('safe_arbitrum_safes')
+,ref('safe_avalanche_c_safes')
+,ref('safe_bnb_safes')
+,ref('safe_ethereum_safes')
+,ref('safe_fantom_safes')
+,ref('safe_gnosis_safes')
+,ref('safe_goerli_safes')
+,ref('safe_optimism_safes')
+,ref('safe_polygon_safes')
 ] %}
 
 

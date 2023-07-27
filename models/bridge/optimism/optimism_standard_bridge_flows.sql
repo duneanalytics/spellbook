@@ -103,7 +103,7 @@ WITH bridge_events AS (
         {% endif %}
         
         ) a
-    LEFT JOIN {{ ref('ovm_optimism_cross_domain_messenger_messages_legacy') }} m
+    LEFT JOIN {{ ref('ovm_optimism_cross_domain_messenger_messages') }} m
         ON a.tf_type = m.msg_type
         AND a.block_time = m.l2_block_time
         AND a.block_number = m.l2_block_number
@@ -154,7 +154,7 @@ LEFT JOIN {{ source('optimism', 'transactions') }} t
         AND t.block_time >= (NOW() - interval '14' days)
         {% endif %}
         
-LEFT JOIN {{ ref('tokens_erc20_legacy') }} erc
+LEFT JOIN {{ ref('tokens_erc20') }} erc
     ON erc.blockchain = 'optimism'
     AND erc.contract_address = tf.bridged_token_address
     
@@ -166,7 +166,7 @@ LEFT JOIN {{ source('prices', 'usd') }} p
     AND p.minute >= (NOW() - interval '14 days')
     {% endif %}
     
-LEFT JOIN {{ ref('chain_info_chain_ids_legacy') }} cid_source
+LEFT JOIN {{ ref('chain_info_chain_ids') }} cid_source
     ON cid_source.chain_id = tf.source_chain_id
-LEFT JOIN {{ ref('chain_info_chain_ids_legacy') }} cid_dest
+LEFT JOIN {{ ref('chain_info_chain_ids') }} cid_dest
     ON cid_dest.chain_id = tf.destination_chain_id

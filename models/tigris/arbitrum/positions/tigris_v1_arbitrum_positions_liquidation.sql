@@ -19,11 +19,11 @@ last_margin as (
             MAX(evt_block_time) as evt_block_time,
             position_id
         FROM 
-        {{ ref('tigris_v1_arbitrum_positions_margin_legacy') }}
+        {{ ref('tigris_v1_arbitrum_positions_margin') }}
         GROUP BY 2 
         ) xx 
         INNER JOIN 
-        {{ ref('tigris_v1_arbitrum_positions_margin_legacy') }} xy 
+        {{ ref('tigris_v1_arbitrum_positions_margin') }} xy 
             ON xx.evt_block_time = xy.evt_block_time
             AND xx.position_id = xy.position_id
 ),
@@ -39,11 +39,11 @@ last_leverage as (
             MAX(evt_block_time) as evt_block_time,
             position_id
         FROM 
-        {{ ref('tigris_v1_arbitrum_positions_leverage_legacy') }}
+        {{ ref('tigris_v1_arbitrum_positions_leverage') }}
         GROUP BY 2 
         ) xx 
         INNER JOIN 
-        {{ ref('tigris_v1_arbitrum_positions_leverage_legacy') }} xy 
+        {{ ref('tigris_v1_arbitrum_positions_leverage') }} xy 
             ON xx.evt_block_time = xy.evt_block_time
             AND xx.position_id = xy.position_id
 )
@@ -53,7 +53,7 @@ SELECT
     lm.margin, 
     ll.leverage 
 FROM 
-{{ ref('tigris_v1_arbitrum_events_liquidate_position_legacy') }} lp 
+{{ ref('tigris_v1_arbitrum_events_liquidate_position') }} lp 
 INNER JOIN 
 last_margin lm 
     ON lp.position_id = lm.position_id

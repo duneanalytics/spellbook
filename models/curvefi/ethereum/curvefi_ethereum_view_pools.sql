@@ -30,7 +30,7 @@ WITH regular_pools AS (
         deposit_contract,
         coin3
     FROM
-        {{ ref('curvefi_ethereum_pool_details_legacy') }}
+        {{ ref('curvefi_ethereum_pool_details') }}
 ),
 regular_pools_deployed AS (
     SELECT

@@ -156,9 +156,9 @@ FROM
     WHERE evt_block_time >= '{{ project_start_date }}'
     {% endif %}
   ) x
-  INNER JOIN {{ ref('jarvis_network_polygon_jfiat_address_mapping_legacy') }}    am
+  INNER JOIN {{ ref('jarvis_network_polygon_jfiat_address_mapping') }}    am
       ON (x.contract_address = am.jfiat_collateral_pool_address)
-  LEFT JOIN  {{ ref('jarvis_network_polygon_jfiat_collateral_mapping_legacy') }} cm
+  LEFT JOIN  {{ ref('jarvis_network_polygon_jfiat_collateral_mapping') }} cm
       ON (am.jfiat_collateral_pool_address = cm.jfiat_collateral_pool_address)
   LEFT JOIN  {{ source('prices', 'usd') }}                                pu
       ON am.blockchain = pu.blockchain

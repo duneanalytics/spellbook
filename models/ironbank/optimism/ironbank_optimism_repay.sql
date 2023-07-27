@@ -21,5 +21,5 @@ i.underlying_token_address AS underlying_address,
 CAST(r.repayAmount AS DOUBLE) / power(10,i.underlying_decimals) AS repay_amount,
 CAST(r.repayAmount AS DOUBLE) / power(10,i.underlying_decimals)*p.price AS repay_usd
 FROM {{ source('ironbank_optimism', 'CErc20Delegator_evt_RepayBorrow') }} r
-LEFT JOIN {{ ref('ironbank_optimism_itokens_legacy') }} i ON i.contract_address = CAST(r.contract_address AS VARCHAR(100))
+LEFT JOIN {{ ref('ironbank_optimism_itokens') }} i ON i.contract_address = CAST(r.contract_address AS VARCHAR(100))
 LEFT JOIN {{ source('prices', 'usd') }} p ON p.minute = date_trunc('minute', r.evt_block_time) AND CAST(p.contract_address AS VARCHAR(100)) = i.underlying_token_address AND p.blockchain = 'optimism'

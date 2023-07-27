@@ -56,9 +56,9 @@ WITH last_block AS (
            lead(evt_block_number, 1, (SELECT MAX_BT FROM LAST_BLOCK))
                 OVER (PARTITION BY p.contract_address, p.pid ORDER BY evt_block_number ASC) AS next_evt_number
     FROM pools p
-    LEFT JOIN {{ ref('sushiswap_optimism_pool_incentives_config_legacy') }} c
+    LEFT JOIN {{ ref('sushiswap_optimism_pool_incentives_config') }} c
         ON p.rewarder_address = c.contract_address
-    LEFT JOIN {{ ref('sushiswap_optimism_pool_incentives_mappings_legacy') }} m
+    LEFT JOIN {{ ref('sushiswap_optimism_pool_incentives_mappings') }} m
         ON p.contract_address = m.contract_address
         AND p.pid = m.pid
 )
@@ -120,6 +120,6 @@ FROM (
         , cast(alloc_points as double) / cast(total_alloc_points as double) AS alloc_point_share
         FROM joined
 ) a
-LEFT JOIN {{ ref('tokens_optimism_erc20_legacy') }} t
+LEFT JOIN {{ ref('tokens_optimism_erc20') }} t
         ON a.reward_token = t.contract_address
         

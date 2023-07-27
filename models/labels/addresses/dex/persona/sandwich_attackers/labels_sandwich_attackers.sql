@@ -7,4 +7,4 @@
     )
 }}
 
-SELECT * FROM {{ ref('labels_sandwich_attackers_ethereum_legacy') }}
+SELECT * FROM {{ ref('labels_sandwich_attackers_ethereum') }}

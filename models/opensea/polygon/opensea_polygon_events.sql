@@ -66,7 +66,7 @@ SELECT *
                 ,sub_idx
                 ,sub_type
                 ,fee_wallet_name
-          FROM {{ ref('opensea_v4_polygon_events_legacy') }}
+          FROM {{ ref('opensea_v4_polygon_events') }}
         UNION ALL
         SELECT   blockchain
                 ,project
@@ -126,7 +126,7 @@ SELECT *
                 ,sub_idx
                 ,sub_type
                 ,NULL
-          FROM {{ ref('opensea_v3_polygon_events_legacy') }}
+          FROM {{ ref('opensea_v3_polygon_events') }}
         UNION ALL          
         SELECT
                 blockchain
@@ -187,5 +187,5 @@ SELECT *
                ,NULL
                ,NULL
                ,NULL
-        FROM {{ ref('opensea_v2_polygon_events_legacy') }}
+        FROM {{ ref('opensea_v2_polygon_events') }}
        )

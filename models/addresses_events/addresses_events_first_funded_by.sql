@@ -10,14 +10,14 @@
 }}
 
 {% set addresses_events_models = [
-ref('addresses_events_arbitrum_first_funded_by_legacy')
-, ref('addresses_events_avalanche_c_first_funded_by_legacy')
-, ref('addresses_events_bnb_first_funded_by_legacy')
-, ref('addresses_events_ethereum_first_funded_by_legacy')
-, ref('addresses_events_fantom_first_funded_by_legacy')
-, ref('addresses_events_gnosis_first_funded_by_legacy')
-, ref('addresses_events_optimism_first_funded_by_legacy')
-, ref('addresses_events_polygon_first_funded_by_legacy')
+ref('addresses_events_arbitrum_first_funded_by')
+, ref('addresses_events_avalanche_c_first_funded_by')
+, ref('addresses_events_bnb_first_funded_by')
+, ref('addresses_events_ethereum_first_funded_by')
+, ref('addresses_events_fantom_first_funded_by')
+, ref('addresses_events_gnosis_first_funded_by')
+, ref('addresses_events_optimism_first_funded_by')
+, ref('addresses_events_polygon_first_funded_by')
 ] %}
 
 SELECT *

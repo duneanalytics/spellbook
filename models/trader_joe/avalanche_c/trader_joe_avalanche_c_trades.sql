@@ -6,8 +6,8 @@
 }}
 
 {% set trader_joe_models = [
-ref('trader_joe_v1_avalanche_c_trades_legacy')
-,ref('trader_joe_v2_avalanche_c_trades_legacy')
+ref('trader_joe_v1_avalanche_c_trades')
+,ref('trader_joe_v2_avalanche_c_trades')
 ] %}
 
 

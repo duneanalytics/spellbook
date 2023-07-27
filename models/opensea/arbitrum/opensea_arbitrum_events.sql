@@ -66,7 +66,7 @@ SELECT *
                 ,sub_idx
                 ,sub_type
                 ,fee_wallet_name
-          FROM {{ ref('opensea_v4_arbitrum_events_legacy') }}
+          FROM {{ ref('opensea_v4_arbitrum_events') }}
         UNION ALL
         SELECT   blockchain
                 ,project
@@ -126,5 +126,5 @@ SELECT *
                 ,sub_idx
                 ,sub_type
                 ,NULL
-          FROM {{ ref('opensea_v3_arbitrum_events_legacy') }}
+          FROM {{ ref('opensea_v3_arbitrum_events') }}
        )

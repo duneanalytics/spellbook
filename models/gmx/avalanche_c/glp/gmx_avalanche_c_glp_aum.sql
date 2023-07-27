@@ -30,7 +30,7 @@ SELECT -- This query calculates the AUM of each component of GLP
     (weth_e_available_assets * weth_e_current_price) + (weth_e_longs) + (weth_e_current_price - weth_e_shorts_entry_price) * COALESCE((weth_e_shorts_outstanding_notional / weth_e_current_price),0) AS weth_e_aum, -- Removes null values derrived from 0 divided 0
     (wbtc_e_available_assets * wbtc_e_current_price) + (wbtc_e_longs) + (wbtc_e_current_price - wbtc_e_shorts_entry_price) * COALESCE((wbtc_e_shorts_outstanding_notional / wbtc_e_current_price),0) AS wbtc_e_aum, -- Removes null values derrived from 0 divided 0
     (btc_b_available_assets * btc_b_current_price) + (btc_b_longs) + (btc_b_current_price - btc_b_shorts_entry_price) * COALESCE((btc_b_shorts_outstanding_notional / btc_b_current_price),0) AS btc_b_aum -- Removes null values derrived from 0 divided 0
-FROM {{ref('gmx_avalanche_c_glp_components_legacy')}}
+FROM {{ref('gmx_avalanche_c_glp_components')}}
 {% if is_incremental() %}
 WHERE minute >= date_trunc("day", now() - interval '1 day')
 {% endif %}

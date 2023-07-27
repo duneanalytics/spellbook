@@ -10,12 +10,12 @@
 }}
 
 {% set dao_votes_models = [
-ref('uniswap_v3_ethereum_votes_legacy')
-, ref('compound_v2_ethereum_votes_legacy')
-, ref('gitcoin_ethereum_votes_legacy')
-, ref('ens_ethereum_votes_legacy')
-, ref('aave_ethereum_votes_legacy')
-, ref('dydx_ethereum_votes_legacy')
+ref('uniswap_v3_ethereum_votes')
+, ref('compound_v2_ethereum_votes')
+, ref('gitcoin_ethereum_votes')
+, ref('ens_ethereum_votes')
+, ref('aave_ethereum_votes')
+, ref('dydx_ethereum_votes')
 ] %}
 
 

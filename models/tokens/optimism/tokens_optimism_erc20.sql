@@ -26,10 +26,10 @@ FROM (
 			) AS rn
 
 
-	FROM {{ ref('tokens_optimism_erc20_transfer_source_legacy')}} c
-	LEFT JOIN  {{ref('tokens_optimism_erc20_curated_legacy')}} t
+	FROM {{ ref('tokens_optimism_erc20_transfer_source')}} c
+	LEFT JOIN  {{ref('tokens_optimism_erc20_curated')}} t
 	ON c.contract_address = t.contract_address
-	LEFT JOIN {{ ref('tokens_optimism_erc20_generated_legacy')}} b
+	LEFT JOIN {{ ref('tokens_optimism_erc20_generated')}} b
 	ON c.contract_address = b.contract_address
 	-- Eventually we can also try to map sectors here (i.e. stablecoin, liquid staking)
 ) a

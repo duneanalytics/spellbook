@@ -7,4 +7,4 @@
     )
 }}
 
-{{ port_to_old_schema_legacy(ref('nft_ethereum_trades_beta_legacy')) }}
+{{ port_to_old_schema(ref('nft_ethereum_trades_beta')) }}

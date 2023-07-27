@@ -11,8 +11,8 @@
 }}
 
 {% set bridges_models = [
- ref('labels_bridges_ethereum_legacy')
- , ref('labels_bridges_fantom_legacy')
+ ref('labels_bridges_ethereum')
+ , ref('labels_bridges_fantom')
 ] %}
 
 SELECT *

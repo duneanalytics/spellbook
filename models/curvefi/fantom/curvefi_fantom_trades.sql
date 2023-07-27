@@ -71,12 +71,12 @@ enriched_evt_all as(
         ,pa.token_address as token_bought_address
         ,pb.token_address as token_sold_address
     FROM exchange_evt_all eb
-    INNER JOIN {{ ref('curvefi_fantom_pool_tokens_legacy') }} pa
+    INNER JOIN {{ ref('curvefi_fantom_pool_tokens') }} pa
         ON eb.bought_id = pa.token_id
         AND eb.project_contract_address = pa.pool
         AND pa.token_type = 'pool_token'
     INNER JOIN
-    {{ ref('curvefi_fantom_pool_tokens_legacy') }} pb
+    {{ ref('curvefi_fantom_pool_tokens') }} pb
         ON eb.sold_id = pb.token_id
         AND eb.project_contract_address = pb.pool
         AND pb.token_type = 'pool_token'
@@ -88,12 +88,12 @@ enriched_evt_all as(
         ,pa.token_address as token_bought_address
         ,pb.token_address as token_sold_address
     FROM exchange_und_evt_all eb
-    INNER JOIN {{ ref('curvefi_fantom_pool_tokens_legacy') }} pa
+    INNER JOIN {{ ref('curvefi_fantom_pool_tokens') }} pa
         ON eb.bought_id = pa.token_id
         AND eb.project_contract_address = pa.pool
         AND pa.token_type = 'underlying_token_bought'
     INNER JOIN
-    {{ ref('curvefi_fantom_pool_tokens_legacy') }} pb
+    {{ ref('curvefi_fantom_pool_tokens') }} pb
         ON eb.sold_id = pb.token_id
         AND eb.project_contract_address = pb.pool
         AND pb.token_type = 'underlying_token_sold'
@@ -138,10 +138,10 @@ INNER JOIN {{ source('fantom', 'transactions') }} tx
     {% if is_incremental() %}
     AND tx.block_time >= date_trunc("day", now() - interval '1 week')
     {% endif %}
-LEFT JOIN {{ ref('tokens_erc20_legacy') }} erc20a
+LEFT JOIN {{ ref('tokens_erc20') }} erc20a
     ON erc20a.contract_address = dexs.token_bought_address
     AND erc20a.blockchain = 'fantom'
-LEFT JOIN {{ ref('tokens_erc20_legacy') }} erc20b
+LEFT JOIN {{ ref('tokens_erc20') }} erc20b
     ON erc20b.contract_address = dexs.token_sold_address
     AND erc20b.blockchain = 'fantom'
 LEFT JOIN {{ source('prices', 'usd') }} p_bought

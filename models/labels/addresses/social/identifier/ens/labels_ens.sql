@@ -32,10 +32,10 @@ FROM (
                 address,
                  name
                  ,row_number() over (partition by address order by block_time asc) as ordering
-            from {{ ref('ens_resolver_latest_legacy') }}
+            from {{ ref('ens_resolver_latest') }}
         ) where ordering = 1
     ) res
-    FULL OUTER JOIN {{ ref('ens_reverse_latest_legacy') }} rev
+    FULL OUTER JOIN {{ ref('ens_reverse_latest') }} rev
     ON res.address = rev.address
 ) ens
 
@@ -49,7 +49,7 @@ FROM (
 --       'query' AS source,
 --       date('2022-10-06') as created_at,
 --       now() as modified_at
---FROM {{ ref('ens_resolver_latest_legacy') }}
+--FROM {{ ref('ens_resolver_latest') }}
 --UNION
 --SELECT 'ethereum' as blockchain,
 --       address,
@@ -59,5 +59,5 @@ FROM (
 --       'query' AS source,
 --       date('2022-10-06') as created_at,
 --       now() as modified_at
---FROM {{ ref('ens_reverse_latest_legacy') }}
+--FROM {{ ref('ens_reverse_latest') }}
 

@@ -17,5 +17,5 @@ FROM (
     , block_time
     , block_number
     , tx_hash
-    FROM {{ ref('addresses_events_testnets_goerli_first_funded_by_legacy') }}
+    FROM {{ ref('addresses_events_testnets_goerli_first_funded_by') }}
 )

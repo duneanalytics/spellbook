@@ -32,7 +32,7 @@ open_position as (
         margin as margin_change, 
         version, 
         'open_position' as trade_type 
-    FROM {{ ref('tigris_v1_arbitrum_events_open_position_legacy') }}
+    FROM {{ ref('tigris_v1_arbitrum_events_open_position') }}
     {% if is_incremental() %}
     WHERE evt_block_time >= date_trunc("day", now() - interval '1 week')
     {% endif %}
@@ -57,7 +57,7 @@ limit_order as (
         margin as margin_change, 
         version, 
         'limit_order' as trade_type 
-    FROM {{ ref('tigris_v1_arbitrum_events_limit_order_legacy') }}
+    FROM {{ ref('tigris_v1_arbitrum_events_limit_order') }}
     {% if is_incremental() %}
     WHERE evt_block_time >= date_trunc("day", now() - interval '1 week')
     {% endif %}
@@ -83,7 +83,7 @@ close_position as (
         c.version, 
         'close_position' as trade_type 
     FROM 
-        {{ ref('tigris_v1_arbitrum_positions_close_legacy') }} c
+        {{ ref('tigris_v1_arbitrum_positions_close') }} c
     LEFT JOIN
         open_position op 
         ON c.position_id = op.position_id
@@ -116,7 +116,7 @@ liquidate_position as (
         lp.version, 
         'liquidate_position' as trade_type
     FROM 
-        {{ ref('tigris_v1_arbitrum_positions_liquidation_legacy') }} lp 
+        {{ ref('tigris_v1_arbitrum_positions_liquidation') }} lp 
     LEFT JOIN
         open_position op 
         ON lp.position_id = op.position_id 
@@ -167,9 +167,9 @@ add_margin as (
                 am.version,
                 am.trader
             FROM 
-                {{ ref('tigris_v1_arbitrum_events_add_margin_legacy') }} am 
+                {{ ref('tigris_v1_arbitrum_events_add_margin') }} am 
             INNER JOIN 
-                {{ ref('tigris_v1_arbitrum_positions_leverage_legacy') }} l 
+                {{ ref('tigris_v1_arbitrum_positions_leverage') }} l 
                 ON am.position_id = l.position_id 
                 AND am.evt_block_time > l.evt_block_time
                 {% if is_incremental() %}
@@ -181,7 +181,7 @@ add_margin as (
             GROUP BY 2, 3, 4, 5, 6, 7, 8, 9, 10, 11
         ) tmp 
         INNER JOIN 
-            {{ ref('tigris_v1_arbitrum_positions_leverage_legacy') }} l 
+            {{ ref('tigris_v1_arbitrum_positions_leverage') }} l 
             ON tmp.position_id = l.position_id
             AND tmp.latest_leverage_time = l.evt_block_time
             {% if is_incremental() %}
@@ -216,7 +216,7 @@ modify_margin as (
         mm.version,
         CASE WHEN mm.modify_type = true THEN 'add_margin' ELSE 'remove_margin' END as trade_type
     FROM 
-        {{ ref('tigris_v1_arbitrum_events_modify_margin_legacy') }} mm 
+        {{ ref('tigris_v1_arbitrum_events_modify_margin') }} mm 
     LEFT JOIN 
         open_position op 
         ON mm.position_id = op.position_id 

@@ -12,20 +12,20 @@
 }}
 -- (project, project_version, model)
 {% set base_models = [
-     ('archipelago',    'v1',   ref('archipelago_ethereum_base_trades_legacy'))
-    ,('superrare',    'v1',   ref('superrare_ethereum_base_trades_legacy'))
-    ,('foundation',    'v1',   ref('foundation_ethereum_base_trades_legacy'))
-    ,('blur',    'v1',   ref('blur_ethereum_base_trades_legacy'))
-    ,('element',    'v1',   ref('element_ethereum_base_trades_legacy'))
-    ,('x2y2',    'v1',   ref('x2y2_ethereum_base_trades_legacy'))
-    ,('zora',    'v1',   ref('zora_v1_ethereum_base_trades_legacy'))
-    ,('zora',    'v2',   ref('zora_v2_ethereum_base_trades_legacy'))
-    ,('zora',    'v3',   ref('zora_v3_ethereum_base_trades_legacy'))
-    ,('cryptopunks',    'v1',   ref('cryptopunks_ethereum_base_trades_legacy'))
-    ,('sudoswap',    'v1',   ref('sudoswap_ethereum_base_trades_legacy'))
-    ,('collectionswap',    'v1',   ref('collectionswap_ethereum_base_trades_legacy'))
-    ,('looksrare',    'v1',   ref('looksrare_v1_ethereum_base_trades_legacy'))
-    ,('looksrare',    'v2',   ref('looksrare_v2_ethereum_base_trades_legacy'))
+     ('archipelago',    'v1',   ref('archipelago_ethereum_base_trades'))
+    ,('superrare',    'v1',   ref('superrare_ethereum_base_trades'))
+    ,('foundation',    'v1',   ref('foundation_ethereum_base_trades'))
+    ,('blur',    'v1',   ref('blur_ethereum_base_trades'))
+    ,('element',    'v1',   ref('element_ethereum_base_trades'))
+    ,('x2y2',    'v1',   ref('x2y2_ethereum_base_trades'))
+    ,('zora',    'v1',   ref('zora_v1_ethereum_base_trades'))
+    ,('zora',    'v2',   ref('zora_v2_ethereum_base_trades'))
+    ,('zora',    'v3',   ref('zora_v3_ethereum_base_trades'))
+    ,('cryptopunks',    'v1',   ref('cryptopunks_ethereum_base_trades'))
+    ,('sudoswap',    'v1',   ref('sudoswap_ethereum_base_trades'))
+    ,('collectionswap',    'v1',   ref('collectionswap_ethereum_base_trades'))
+    ,('looksrare',    'v1',   ref('looksrare_v1_ethereum_base_trades'))
+    ,('looksrare',    'v2',   ref('looksrare_v2_ethereum_base_trades'))
 ] %}
 
 -- We should remove this CTE and include ETH into the general prices table once everything is migrated
@@ -37,7 +37,7 @@ WITH cte_prices_patch as (
         ,minute
         ,price
         ,symbol
-    FROM {{ ref('prices_usd_forward_fill_legacy') }}
+    FROM {{ ref('prices_usd_forward_fill') }}
     WHERE blockchain = 'ethereum'
     {% if is_incremental() %}
     AND minute >= date_trunc("day", now() - interval '1 week')
@@ -50,7 +50,7 @@ WITH cte_prices_patch as (
         ,minute
         ,price
         ,'ETH' as symbol
-    FROM {{ ref('prices_usd_forward_fill_legacy') }}
+    FROM {{ ref('prices_usd_forward_fill') }}
     WHERE blockchain is null AND symbol = 'ETH'
     {% if is_incremental() %}
     AND minute >= date_trunc("day", now() - interval '1 week')
@@ -59,15 +59,15 @@ WITH cte_prices_patch as (
 enriched_trades as (
 -- macros/models/sector/nft
 {{
-    enrich_trades_legacy(
+    enrich_trades(
         blockchain='ethereum',
         models=base_models,
         transactions_model=source('ethereum','transactions'),
-        tokens_nft_model=ref('tokens_ethereum_nft_legacy'),
-        tokens_erc20_model=ref('tokens_ethereum_erc20_legacy'),
+        tokens_nft_model=ref('tokens_ethereum_nft'),
+        tokens_erc20_model=ref('tokens_ethereum_erc20'),
         prices_model='cte_prices_patch',
-        aggregators=ref('nft_ethereum_aggregators_legacy'),
-        aggregator_markers=ref('nft_ethereum_aggregators_markers_legacy')
+        aggregators=ref('nft_ethereum_aggregators'),
+        aggregator_markers=ref('nft_ethereum_aggregators_markers')
     )
 }}
 )

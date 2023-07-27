@@ -7,9 +7,9 @@
 
 
 {% set pancake_models = [
-    ref('pancakeswap_v2_ethereum_amm_trades_legacy')
-,   ref('pancakeswap_v2_ethereum_mmpool_trades_legacy')
-,   ref('pancakeswap_v3_ethereum_amm_trades_legacy') 
+    ref('pancakeswap_v2_ethereum_amm_trades')
+,   ref('pancakeswap_v2_ethereum_mmpool_trades')
+,   ref('pancakeswap_v3_ethereum_amm_trades') 
 ] %}
 
 

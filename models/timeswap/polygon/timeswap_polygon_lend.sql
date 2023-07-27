@@ -41,7 +41,7 @@ SELECT
         END as DOUBLE
     ) as usd_amount
     FROM {{ source('timeswap_polygon', 'TimeswapV2PeripheryUniswapV3LendGivenPrincipal_call_lendGivenPrincipal') }} l
-    JOIN {{ ref('timeswap_polygon_pools_legacy') }} i ON CAST(maturity as VARCHAR(100)) = i.maturity and cast(strike as VARCHAR(100)) = i.strike
+    JOIN {{ ref('timeswap_polygon_pools') }} i ON CAST(maturity as VARCHAR(100)) = i.maturity and cast(strike as VARCHAR(100)) = i.strike
     JOIN {{ source('polygon', 'transactions') }} tx
       on l.call_tx_hash = tx.hash
       {% if is_incremental() %}
@@ -87,7 +87,7 @@ SELECT
         END as DOUBLE
     ) as usd_amount
     FROM {{ source('timeswap_polygon', 'TimeswapV2PeripheryUniswapV3LendGivenPrincipal_call_lendGivenPrincipal') }} l
-    JOIN {{ ref('timeswap_polygon_pools_legacy') }} i ON CAST(maturity as VARCHAR(100)) = i.maturity and cast(strike as VARCHAR(100)) = i.strike
+    JOIN {{ ref('timeswap_polygon_pools') }} i ON CAST(maturity as VARCHAR(100)) = i.maturity and cast(strike as VARCHAR(100)) = i.strike
     JOIN {{ source('polygon', 'transactions') }} tx
       on l.call_tx_hash = tx.hash
       {% if is_incremental() %}
@@ -131,7 +131,7 @@ SELECT
     END as DOUBLE
   ) as usd_amount
 FROM {{ source('timeswap_polygon', 'TimeswapV2PeripheryUniswapV3LendGivenPrincipal_evt_LendGivenPrincipal') }} l
-JOIN {{ ref('timeswap_polygon_pools_legacy') }} i
+JOIN {{ ref('timeswap_polygon_pools') }} i
   ON CAST(l.maturity as VARCHAR(100)) = i.maturity
   and cast(l.strike as VARCHAR(100)) = i.strike
 JOIN {{ source('polygon', 'transactions') }} tx
@@ -175,7 +175,7 @@ SELECT
     END as DOUBLE
   ) as usd_amount
 FROM {{ source('timeswap_polygon', 'TimeswapV2PeripheryUniswapV3LendGivenPrincipal_evt_LendGivenPrincipal') }} l
-JOIN {{ ref('timeswap_polygon_pools_legacy') }} i
+JOIN {{ ref('timeswap_polygon_pools') }} i
   ON CAST(l.maturity as VARCHAR(100)) = i.maturity
   and cast(l.strike as VARCHAR(100)) = i.strike
 JOIN {{ source('polygon', 'transactions') }} tx
@@ -222,7 +222,7 @@ SELECT
     END as DOUBLE
   ) as usd_amount
 FROM {{ source('timeswap_polygon', 'TimeswapV2PeripheryNoDexLendGivenPrincipal_evt_LendGivenPrincipal') }} l
-JOIN {{ ref('timeswap_polygon_pools_legacy') }} i
+JOIN {{ ref('timeswap_polygon_pools') }} i
   ON CAST(l.maturity as VARCHAR(100)) = i.maturity
   and cast(l.strike as VARCHAR(100)) = i.strike
 JOIN {{ source('polygon', 'transactions') }} tx
@@ -266,7 +266,7 @@ SELECT
     END as DOUBLE
   ) as usd_amount
 FROM {{ source('timeswap_polygon', 'TimeswapV2PeripheryNoDexLendGivenPrincipal_evt_LendGivenPrincipal') }} l
-JOIN {{ ref('timeswap_polygon_pools_legacy') }} i
+JOIN {{ ref('timeswap_polygon_pools') }} i
   ON CAST(l.maturity as VARCHAR(100)) = i.maturity
   and cast(l.strike as VARCHAR(100)) = i.strike
 JOIN {{ source('polygon', 'transactions') }} tx

@@ -28,7 +28,7 @@ with
     day,
     symbol,
     lead(day, 1, now()) OVER (PARTITION BY token_address, wallet_address ORDER BY day) AS next_day
-    FROM {{ ref('transfers_ethereum_erc20_rolling_day_legacy') }})
+    FROM {{ ref('transfers_ethereum_erc20_rolling_day') }})
 
 SELECT
     'ethereum' as blockchain,
@@ -46,10 +46,10 @@ LEFT JOIN {{ source('prices', 'usd') }} p
     AND d.day = p.minute
     AND p.blockchain = 'ethereum'
 -- Removes rebase tokens from balances
-LEFT JOIN {{ ref('tokens_ethereum_rebase_legacy') }}  as r
+LEFT JOIN {{ ref('tokens_ethereum_rebase') }}  as r
     ON b.token_address = r.contract_address
 -- Removes likely non-compliant tokens due to negative balances
-LEFT JOIN {{ ref('balances_ethereum_erc20_noncompliant_legacy') }}  as nc
+LEFT JOIN {{ ref('balances_ethereum_erc20_noncompliant') }}  as nc
     ON b.token_address = nc.token_address
 WHERE r.contract_address is null
 and nc.token_address is null

@@ -11,12 +11,12 @@
 }}
 
 
-SELECT * FROM {{ ref('dao_addresses_ethereum_legacy') }}
+SELECT * FROM {{ ref('dao_addresses_ethereum') }}
 
 UNION ALL 
 
-SELECT * FROM {{ ref('dao_addresses_gnosis_legacy') }}
+SELECT * FROM {{ ref('dao_addresses_gnosis') }}
 
 UNION ALL 
 
-SELECT * FROM {{ ref('dao_addresses_polygon_legacy') }}
+SELECT * FROM {{ ref('dao_addresses_polygon') }}
