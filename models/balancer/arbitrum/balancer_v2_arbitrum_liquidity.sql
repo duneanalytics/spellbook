@@ -155,7 +155,7 @@ WITH pool_labels AS (
         LEFT JOIN cumulative_balance b ON b.day <= c.day
         AND c.day < b.day_of_next_change
         LEFT JOIN {{ ref('tokens_erc20') }} t ON t.contract_address = b.token
-        AND blockchain = "arbitrum"
+        AND blockchain = 'arbitrum'
         LEFT JOIN prices p1 ON p1.day = b.day
         AND p1.token = b.token
         LEFT JOIN bpt_prices p3 ON p3.day = b.day AND p3.token = CAST(b.token as varchar(42))
