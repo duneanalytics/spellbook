@@ -1,7 +1,7 @@
 version: 2
 
 seeds:
-  - name: decentraland_polygon_sample_trades
+  - name: fractal_polygon_sample_trades
     config:
       tags: dunesql
       column_types:

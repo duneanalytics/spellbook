@@ -1,12 +1,11 @@
 version: 2
 
 seeds:
-  - name: decentraland_polygon_sample_trades
+  - name: tofu_polygon_nft_trades_samples
     config:
       tags: dunesql
       column_types:
         tx_hash: varbinary
-        nft_contract_address: varbinary
         buyer: varbinary
         seller: varbinary
         token_id: uint256
