@@ -2,7 +2,6 @@
     schema = 'quix_v1_optimism',
     alias = alias('events'),
     tags = ['dunesql'],
-    partition_by = ['block_date'],
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
