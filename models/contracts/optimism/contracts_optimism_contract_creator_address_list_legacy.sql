@@ -569,7 +569,6 @@ WITH curated_list AS (
       ,('0x890Bc5691E6011F580e264065d09a7a1A6902131', 'Synapse')
       ,('0x161D61e30284A33Ab1ed227beDcac6014877B3DE', 'Beefy Finance')
       ,('0x5853ed4f26a3fcea565b3fbc698bb19cdf6deb85', 'DeBank')
-      ,('0x36BDE71C97B33Cc4729cf772aE268934f7AB70B2', 'Worldcoin')
       ,('0x86d26897267711ea4b173c8c124a0a73612001da', 'OpenSea')
       ,('0xf60F3A45c7D4476019262FC1Ff6756Fc15042F13', 'KyberSwap')
       ,('0x5401fe33559a355638b9b37c9640a04a182feff2', 'Gelato')
