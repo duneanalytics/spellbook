@@ -113,13 +113,15 @@ native_order_return_amount AS (
 ),
 
 native_order_total_amount AS (
+select *
+    , case when transaction_amount_raw > 0 then order_amount_raw / transaction_amount_raw
+        else 1.0
+        end as order_amount_percentage
+from(
     SELECT o.evt_block_number,
         o.evt_tx_hash,
         o.order_amount_raw,
         cast(t.value AS uint256) - coalesce(r.return_amount_raw, cast(0 as uint256)) AS transaction_amount_raw,
-        case when (cast(t.value AS int256) - coalesce(r.return_amount_raw, cast(0 as int256))) = uint256 '0'
-        then int256 '1'
-        else o.order_amount_raw / (cast(t.value AS int256) - coalesce(r.return_amount_raw, cast(0 as int256))) end AS order_amount_percentage
     FROM native_order_summary o
     INNER JOIN {{ source('polygon', 'transactions') }} t ON o.evt_block_number = t.block_number
         AND o.evt_tx_hash = t.hash
@@ -131,6 +133,7 @@ native_order_total_amount AS (
         {% endif %}
     LEFT JOIN native_order_return_amount r ON o.evt_block_number = r.evt_block_number
         AND o.evt_tx_hash = r.evt_tx_hash
+    )
 ),
 
 native_trade_amount_summary AS (
