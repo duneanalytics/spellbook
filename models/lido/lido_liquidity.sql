@@ -1,6 +1,4 @@
-{{ config(
-	tags=['legacy'],
-	
+{{ config(	
         alias = alias('liquidity', legacy_model=True),
         post_hook='{{ expose_spells(\'["ethereum", "arbitrum", "optimism"]\',
                                 "project",
