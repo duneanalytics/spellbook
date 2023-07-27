@@ -780,12 +780,12 @@ models:
 
     chainlink:
       +schema: chainlink
+      bnb:
+        +schema: chainlink_bnb
       optimism:
         +schema: chainlink_optimism
       polygon:
         +schema: chainlink_polygon
-      bnb:
-        +schema: chainlink_bnb
 
     contracts:
       +schema: contracts
