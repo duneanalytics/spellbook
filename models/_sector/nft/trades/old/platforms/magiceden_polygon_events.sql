@@ -117,7 +117,7 @@ native_order_total_amount AS (
         o.evt_tx_hash,
         o.order_amount_raw,
         cast(t.value AS uint256) - coalesce(r.return_amount_raw, cast(0 as uint256)) AS transaction_amount_raw,
-        case when (cast(t.value AS uint256) - coalesce(r.return_amount_raw, cast(0 as uint256))) == uint256 '0'
+        case when (cast(t.value AS uint256) - coalesce(r.return_amount_raw, cast(0 as uint256))) = uint256 '0'
         then uint256 '1'
         else o.order_amount_raw / (cast(t.value AS uint256) - coalesce(r.return_amount_raw, cast(0 as uint256))) end AS order_amount_percentage
     FROM native_order_summary o
