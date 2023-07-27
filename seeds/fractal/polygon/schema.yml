@@ -6,6 +6,7 @@ seeds:
       tags: dunesql
       column_types:
         tx_hash: varbinary
+        nft_contract_address: varbinary
         buyer: varbinary
         seller: varbinary
         token_id: uint256
