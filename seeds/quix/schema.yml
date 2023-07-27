@@ -14,4 +14,4 @@ seeds:
         tx_to: varbinary
         royalty_fee_receive_address: varbinary
         token_id: uint256
-        block_date: timestamp
+        block_date: date
