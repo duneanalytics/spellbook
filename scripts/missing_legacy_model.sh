@@ -21,6 +21,7 @@ cat > new_model_legacy.sql << EOL
   
 -- DUMMY TABLE, WILL BE REMOVED SOON
 select 
-  1"
+  1
+EOL"
   exit 1
 fi
