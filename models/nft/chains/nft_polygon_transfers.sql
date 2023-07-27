@@ -2,7 +2,7 @@
         tags = ['dunesql'],
         schema = 'nft_polygon',
         alias =alias('transfers'),
-        partition_by=['block_date'],
+        partition_by=['block_month'],
         materialized='incremental',
         file_format = 'delta',
         unique_key = ['unique_transfer_id']
