@@ -2,7 +2,6 @@
 {{ config(
         schema ='dex_aggregator',
         alias = alias('trades'),
-        tags = ['dunesql'],
         partition_by = ['block_date'],
         materialized = 'incremental',
         file_format = 'delta',
@@ -30,7 +29,6 @@ spells with issues, to be excluded in short term:
  ,ref('bebop_trades')
  ,ref('zeroex_trades')
  ,ref('dodo_aggregator_trades')
- ,ref('tokenlon_trades')
 ] %}
 
 SELECT *
@@ -69,3 +67,4 @@ FROM (
     {% endif %}
     {% endfor %}
 )
+;
