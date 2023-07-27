@@ -1,5 +1,5 @@
 {{ config(	
-        alias = alias('liquidity', legacy_model=True),
+        alias = alias('liquidity'),
         post_hook='{{ expose_spells(\'["ethereum", "arbitrum", "optimism"]\',
                                 "project",
                                 "lido_liquidity",
