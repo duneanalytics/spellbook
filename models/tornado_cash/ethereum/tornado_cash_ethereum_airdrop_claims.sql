@@ -31,7 +31,7 @@ SELECT 'ethereum' AS blockchain
 , t."from" AS recipient
 , t.contract_address
 , t.evt_tx_hash AS tx_hash
-, CAST(t.value AS DECIMAL(38,0)) AS amount_raw
+, t.value AS amount_raw
 , CAST(t.value/POWER(10, 18) AS double) AS amount_original
 , CASE WHEN t.evt_block_time >= (SELECT minute FROM early_price) THEN CAST(pu.price*t.value/POWER(10, 18) AS double)
     ELSE CAST((SELECT price FROM early_price)*t.value/POWER(10, 18) AS double)
