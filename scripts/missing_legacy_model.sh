@@ -2,7 +2,7 @@
 
 set -euo pipefail
 
-res=$(comm -13 <( dbt ls --resource-type model --select resource_type:model,tag:legacy | sed 's/_legacy//g' |sed 's/.legacy//g' | sort ) <( dbt ls --resource-type model --select tag:dunesql,resource_type:model | sort ))
+res=$(comm -13 <( dbt ls --resource-type model --select resource_type:model,tag:legacy --output name | sed 's/_legacy//g' | sort ) <( dbt ls --resource-type model --select tag:dunesql,resource_type:model --output name | sort ))
 if [ -z "$res" ]; then
   exit 0
 else
