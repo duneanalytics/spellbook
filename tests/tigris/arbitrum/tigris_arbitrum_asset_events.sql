@@ -91,11 +91,7 @@ all_events as (
 )
 
 SELECT 
-    ae.*,
-    ta.trade_type
+*
 FROM 
 all_events
-LEFT JOIN 
-ref('tigris_arbitrum_trades') ta
-    ON ae.evt_tx_hash = ta.evt_tx_hash
-WHERE ta.trade_type IS NULL 
+WHERE evt_tx_hash NOT IN (SELECT evt_tx_hash FROM ref('tigris_arbitrum_trades'))
