@@ -3,7 +3,8 @@
 SELECT contract_address, symbol, decimals
 FROM (VALUES
         (0xfd086bc7cd5c481dcc9c85ebe478a1c0b69fcbb9, 'USDT', 6)
-        ,(0xff970a61a04b1ca14834a43f5de4533ebddb5cc8, 'USDC', 6)
+        ,(0xff970a61a04b1ca14834a43f5de4533ebddb5cc8, 'USDC.e', 6)
+        ,(0xaf88d065e77c8cC2239327C5EDb3A432268e5831, 'USDC', 6)
         ,(0xda10009cbd5d07dd0cecc66161fc93d7c9000da1, 'DAI', 18)
         ,(0x2f2a2543b76a4166549f7aab2e75bef0aefc5b0f, 'WBTC', 8)
         ,(0xfa7f8980b0f1e64a2062791cc3b0871572f1f7f0, 'UNI', 18)
@@ -11,6 +12,7 @@ FROM (VALUES
         ,(0x1a4da80967373fd929961e976b4b53ceec063a15, 'LUNC', 6)
         ,(0x17fc002b466eec40dae837fc4be5c67993ddbd6f, 'FRAX', 18)
         ,(0x4d15a3a2286d883af0aa1b3f21367843fac63e07, 'TUSD', 18)
+        ,(0x93b346b6BC2548dA6A1E7d98E9a421B42541425b, 'LUSD', 18)
         ,(0x13ad51ed4f1b7e9dc168d8a00cb3f4ddd85efa60, 'LDO', 18)
         ,(0x680447595e8b7b3aa1b43beb9f6098c79ac2ab3f, 'USDD', 18)
         ,(0x23a941036ae778ac51ab04cea08ed6e2fe103614, 'GRT', 18)
