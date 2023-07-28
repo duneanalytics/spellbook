@@ -80,16 +80,48 @@ borrows as (
 
 borrows_join as (
     SELECT  
-        * 
+        evt_type, 
+        evt_tx_hash,
+        evt_block_number,
+        evt_index,
+        evt_block_time,
+        borrower,
+        lien_token,
+        lien_symbol, 
+        lien_rate,
+        lien_duration,
+        lien_amount,
+        lien_amount_raw,
+        lien_start,
+        lien_end,
+        lien_id,
+        lien_collateral_id,
+        contract_address
     FROM 
     borrows 
     {% if is_incremental() %}
     UNION 
 
     SELECT 
-        * 
+        evt_type, 
+        evt_tx_hash,
+        evt_block_number,
+        evt_index,
+        evt_block_time,
+        borrower,
+        lien_token,
+        lien_symbol, 
+        lien_rate,
+        lien_duration,
+        lien_amount,
+        lien_amount_raw,
+        lien_start,
+        lien_end,
+        lien_id,
+        lien_collateral_id,
+        contract_address
     FROM 
-    {{This}}
+    {{this}}
     {% endif %}
 ), 
 
@@ -181,7 +213,7 @@ repays_join as (
         lien_id, 
         lien_start
     FROM 
-    {{This}}
+    {{this}}
     {% endif %}
 ), 
 
