@@ -29667,7 +29667,6 @@ FROM (VALUES
         ,(0x58c93c2add1ecd596a63cfad280118424a4bdc34, 'ETHDICE', 18)
         ,(0x331e5f78fe03ef0247337e57eee63292da3f628d, 'PEJAK', 9)
         ,(0xcb7d1b6648e13c43a3e5a98eb700428fc84a45ec, 'MOOKIE', 9)
-        ,(0x5edb9a9ecc1963f45802861e3579ed17cc89f19f, 'DEFIAI', 18)
         ,(0x7a8bf2a772a544e7375060409a0f3b9bb8ddaf80, 'FLOKICOIN', 9)
         ,(0x517a23000b29b1b41b81493686a61e3e6b8ed0ee, 'BITCOIN𝕏', 9)
         ,(0x25a73cf1d3d3a7527e5ddd7c46ef0a0f798a8442, 'BITCOINX', 8)
