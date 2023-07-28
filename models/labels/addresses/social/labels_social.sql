@@ -1,4 +1,5 @@
 {{ config(
+    tags=['dunesql'],
     alias = alias('social'),
     materialized = 'table',
     file_format = 'delta',
