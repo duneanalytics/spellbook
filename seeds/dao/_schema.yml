@@ -22,4 +22,4 @@ seeds:
          value: double
          block_date: date
          tx_type: varchar
-         tx_hash: varbinar
+         tx_hash: varbinary
