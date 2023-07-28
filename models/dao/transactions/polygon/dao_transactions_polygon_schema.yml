@@ -33,8 +33,8 @@ models:
         name: dao_creator_tool
         description: "Name of creator tool used to create DAO"
         tests:
-          - dao_transactions_creator_tool:
-              dao_transactions_seed: ref('dao_transactions_seed')
+          - dao_transactions_creator_tool_legacy:
+              dao_transactions_seed_legacy: ref('dao_transactions_seed_legacy')
       - &dao
         name: dao
         description: "address of the dao deployed"
