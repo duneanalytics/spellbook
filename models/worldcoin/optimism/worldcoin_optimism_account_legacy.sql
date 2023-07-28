@@ -10,4 +10,4 @@
                                     "worldcoin",
                                     \'["msilb7"]\') }}')}}
 
-SELECT 1
+SELECT 1 as worldcoin_deployer_address
