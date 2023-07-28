@@ -15,7 +15,7 @@
 }}
 
 {% set dodo_models = [
-ref("dodo_pools_arbitrum_trades")
+ref('dodo_pools_arbitrum_trades_legacy')
 ] %}
 
 
