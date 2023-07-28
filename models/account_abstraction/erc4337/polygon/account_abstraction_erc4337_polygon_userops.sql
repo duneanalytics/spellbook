@@ -1,6 +1,7 @@
 {{ config(
     alias = alias('userops'),
-    partition_by = ['block_time'],
+    tags=['dunesql'],
+    partition_by = ['block_month'],
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
@@ -25,7 +26,7 @@
         base_models = erc4337_base_models,
         wrapped_gas_address = '0x0d500b1d8e8ef31e21c99d1db9a6444d3adf1270',
         gas_symbol = 'MATIC',
-        deployed_date = '2023-02-15',
+        deployed_date = deployed_date,
         transactions_model = source('polygon', 'transactions'),
         prices_model = source('prices','usd')
     )

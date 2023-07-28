@@ -1,0 +1,12 @@
+version: 2
+
+seeds:
+  - name: zonic_events_seed
+    config:
+      tags: dunesql
+      column_types:
+        tx_hash: varbinary
+        buyer: varbinary
+        seller: varbinary
+        nft_contract_address: varbinary
+        token_id: uint256

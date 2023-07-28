@@ -66,5 +66,17 @@ sources:
       - name: wstETH_evt_Transfer
         loaded_at_field: evt_block_time                
 
+  - name: wombat_arbitrum
+    description: "Arbitrum decoded tables related to Wombat exchange contracts"
+    freshness: # default freshness
+      warn_after: { count: 12, period: hour }
+      error_after: { count: 24, period: hour }
+    tables:
+      - name: wsteth_pool_evt_Swap
+        loaded_at_field: evt_block_time   
+      - name: wsteth_pool_evt_Deposit     
+        loaded_at_field: evt_block_time             
+      - name: wsteth_pool_evt_Withdraw    
+        loaded_at_field: evt_block_time             
             
           
