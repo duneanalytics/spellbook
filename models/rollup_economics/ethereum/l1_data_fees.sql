@@ -1,5 +1,5 @@
 {{ config(
-    schema = 'l1_data_fees',
+    schema = 'rollup_economics_ethereum',
     alias = alias('l1_data_fees'),
     tags = ['dunesql'],
     materialized = 'incremental',
@@ -14,7 +14,7 @@
 
 with tx_batch_appends as (
     SELECT
-    'Arbitrum' as name,
+    'arbitrum' as name,
     t.block_time,
     t.block_number,
     t.hash,
