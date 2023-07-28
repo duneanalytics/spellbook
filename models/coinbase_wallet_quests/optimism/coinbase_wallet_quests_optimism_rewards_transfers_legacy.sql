@@ -47,10 +47,15 @@ AND 1 = (
 SELECT
 DATE_TRUNC('day',block_time) AS block_date
 , DATE_TRUNC('month',block_time) AS block_month
-, distributor_address, rewards_token, quest_name, quester_address
-, tx_hash, evt_index, block_time, block_number
+, distributor_address
+, rewards_token
+, quest_name
+, quester_address
+, tx_hash
+, evt_index
+, block_time
+, block_number
 , rewards_token_value_raw
-
 FROM distributions d
 
-GROUP BY 1,2,3,4,5,6,7,8,9,10 --distinct
+GROUP BY 1,2,3,4,5,6,7,8,9,10,11 --distinct
