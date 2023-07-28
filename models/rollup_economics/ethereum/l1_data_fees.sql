@@ -87,7 +87,7 @@ with tx_batch_appends as (
     AND success = true
     AND t.block_time >= timestamp '2022-01-01'
     {% if is_incremental() %}
-        and block_time >= date_trunc('day', now() - interval '7' day)
+        and t.block_time >= date_trunc('day', now() - interval '7' day)
     {% endif %}
 
     UNION ALL
@@ -110,7 +110,7 @@ with tx_batch_appends as (
       )
     WHERE t.block_time >= timestamp '2022-01-01'
     {% if is_incremental() %}
-        and block_time >= date_trunc('day', now() - interval '7' day)
+        and t.block_time >= date_trunc('day', now() - interval '7' day)
     {% endif %}
 
 )
