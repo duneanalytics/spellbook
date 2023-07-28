@@ -1,7 +1,7 @@
 {{ config(
     alias = alias('nft_mints'),
     tags=['dunesql'],
-    partition_by = ['block_date'],
+    partition_by = ['block_month'],
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
@@ -17,7 +17,7 @@
 {% set spacestation = '0x2e42f214467f647fe687fd9a2bf3baddfa737465' %}
 
 SELECT
-    cast( DATE_TRUNC('day',block_time) as date) AS block_date,
+    cast( DATE_TRUNC('month',block_time) as date) AS block_month,
     block_time,
     block_number,
     t."from" as tx_from,
@@ -42,7 +42,7 @@ INNER JOIN {{source('erc721_optimism','evt_transfer')}} tfer
 
 WHERE success = true
     AND t.to = {{spacestation}}
-AND block_time >= cast( '{{project_start_date}}' as timestamp)
+AND block_time >= timestamp '{{project_start_date}}'
 {% if is_incremental() %}
 AND block_time >= date_trunc('day', now() - interval '7' day)
 {% endif %}

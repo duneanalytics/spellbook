@@ -1,7 +1,7 @@
 {{ config(
 	tags=['legacy'],
     alias = alias('rewards_transfers', legacy_model=True),
-    partition_by = ['block_date'],
+    partition_by = ['block_month'],
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
@@ -46,6 +46,7 @@ AND 1 = (
 
 SELECT
 DATE_TRUNC('day',block_time) AS block_date
+, DATE_TRUNC('month',block_time) AS block_month
 , distributor_address, rewards_token, quest_name, quester_address
 , tx_hash, evt_index, block_time, block_number
 , rewards_token_value_raw

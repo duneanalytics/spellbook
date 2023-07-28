@@ -1,7 +1,7 @@
 {{ config(
     alias = alias('rewards_transfers'),
     tags=['dunesql'],
-    partition_by = ['block_date'],
+    partition_by = ['block_month'],
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
@@ -31,7 +31,7 @@ INNER JOIN {{ref('coinbase_wallet_quests_optimism_distributor_addresses')}} qa
     ON r."from" = distributor_address
     AND r.contract_address = rewards_token
 
-WHERE evt_block_time >= cast('{{project_start_date}}' as timestamp) --arbitrary
+WHERE evt_block_time >= timestamp '{{project_start_date}}' --arbitrary
 {% if is_incremental() %}
 -- for quest addresses we've seen before, pull incremental, else pull everything (controls for if we first see a distributor address later)
 AND 1 = (
@@ -46,6 +46,7 @@ AND 1 = (
 
 SELECT
 cast( DATE_TRUNC('day',block_time) as date) AS block_date
+, cast( DATE_TRUNC('month',block_time) as date) AS block_month
 , distributor_address, rewards_token, quest_name, quester_address
 , tx_hash, evt_index, block_time, block_number
 , rewards_token_value_raw

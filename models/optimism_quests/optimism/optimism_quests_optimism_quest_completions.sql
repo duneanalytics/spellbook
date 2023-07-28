@@ -1,7 +1,7 @@
 {{ config(
     alias = alias('quest_completions'),
     tags=['dunesql'],
-    partition_by = ['block_date'],
+    partition_by = ['block_month'],
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
@@ -17,6 +17,7 @@
 
 SELECT
     cast( DATE_TRUNC('day',call_block_time) as date) AS block_date,
+    cast( DATE_TRUNC('month',call_block_time) as date) AS block_month,
     account AS quester_address,
     call_tx_hash AS tx_hash,
     call_block_number AS block_number,
@@ -33,7 +34,7 @@ INNER JOIN {{ref('optimism_quests_optimism_nft_id_mapping')}} nft
     ON cast(m.cid as varchar) = nft.nft_id
 
 WHERE call_success = true
-AND call_block_time >= cast( '{{project_start_date}}' as timestamp)
+AND call_block_time >= timestamp '{{project_start_date}}'
 {% if is_incremental() %}
 AND call_block_time >= date_trunc('day', now() - interval '7' day)
 {% endif %}
