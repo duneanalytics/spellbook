@@ -32,8 +32,8 @@ WITH pools AS (
     CROSS JOIN UNNEST(cc.tokens) AS t(tokens)
     CROSS JOIN UNNEST(cc.weights) AS w(weights)
     {% if is_incremental() %}
-    WHERE c.evt_block_time >= date_trunc("day", now() - interval '7' day)
-      AND cc.call_block_time >= date_trunc("day", now() - interval '7' day)
+    WHERE c.evt_block_time >= date_trunc('day', now() - interval '7' day)
+      AND cc.call_block_time >= date_trunc('day', now() - interval '7' day)
     {% endif %}
   ) zip
 
@@ -59,8 +59,8 @@ WITH pools AS (
     CROSS JOIN UNNEST(cc.tokens) AS t(tokens)
     CROSS JOIN UNNEST(cc.normalizedWeights) AS w(weights)
     {% if is_incremental() %}
-    WHERE c.evt_block_time >= date_trunc("day", now() - interval '7' day)
-      AND cc.call_block_time >= date_trunc("day", now() - interval '7' day)
+    WHERE c.evt_block_time >= date_trunc('day', now() - interval '7' day)
+      AND cc.call_block_time >= date_trunc('day', now() - interval '7' day)
     {% endif %}
   ) zip
 
@@ -86,8 +86,8 @@ WITH pools AS (
     CROSS JOIN UNNEST(cc.tokens) AS t(tokens)
     CROSS JOIN UNNEST(cc.weights) AS w(weights)
     {% if is_incremental() %}
-    WHERE c.evt_block_time >= date_trunc("day", now() - interval '7' day)
-      AND cc.call_block_time >= date_trunc("day", now() - interval '7' day)
+    WHERE c.evt_block_time >= date_trunc('day', now() - interval '7' day)
+      AND cc.call_block_time >= date_trunc('day', now() - interval '7' day)
     {% endif %}
   ) zip
 
@@ -113,8 +113,8 @@ WITH pools AS (
     CROSS JOIN UNNEST(cc.tokens) AS t(tokens)
     CROSS JOIN UNNEST(cc.weights) AS w(weights)
     {% if is_incremental() %}
-    WHERE c.evt_block_time >= date_trunc("day", now() - interval '7' day)
-      AND cc.call_block_time >= date_trunc("day", now() - interval '7' day)
+    WHERE c.evt_block_time >= date_trunc('day', now() - interval '7' day)
+      AND cc.call_block_time >= date_trunc('day', now() - interval '7' day)
     {% endif %}
   ) zip
 
@@ -132,8 +132,8 @@ WITH pools AS (
     AND SUBSTRING(CAST(c.poolId AS varchar), 1, 42) = CAST(cc.output_0 AS varchar)
   CROSS JOIN UNNEST(cc.tokens) AS t(tokens)
   {% if is_incremental() %}
-  WHERE c.evt_block_time >= date_trunc("day", now() - interval '7' day)
-    AND cc.call_block_time >= date_trunc("day", now() - interval '7' day)
+  WHERE c.evt_block_time >= date_trunc('day', now() - interval '7' day)
+    AND cc.call_block_time >= date_trunc('day', now() - interval '7' day)
   {% endif %}
 
   UNION ALL
@@ -150,8 +150,8 @@ WITH pools AS (
     AND SUBSTRING(CAST(c.poolId AS varchar), 1, 42) = CAST(cc.output_0 AS varchar)
   CROSS JOIN UNNEST(cc.tokens) AS t(tokens)
   {% if is_incremental() %}
-  WHERE c.evt_block_time >= date_trunc("day", now() - interval '7' day)
-    AND cc.call_block_time >= date_trunc("day", now() - interval '7' day)
+  WHERE c.evt_block_time >= date_trunc('day', now() - interval '7' day)
+    AND cc.call_block_time >= date_trunc('day', now() - interval '7' day)
   {% endif %}
 
   UNION ALL
@@ -168,8 +168,8 @@ WITH pools AS (
     AND SUBSTRING(CAST(c.poolId AS varchar), 1, 42) = CAST(cc.output_0 AS varchar)
   CROSS JOIN UNNEST(cc.tokens) AS t(tokens)
   {% if is_incremental() %}
-  WHERE c.evt_block_time >= date_trunc("day", now() - interval '7' day)
-    AND cc.call_block_time >= date_trunc("day", now() - interval '7' day)
+  WHERE c.evt_block_time >= date_trunc('day', now() - interval '7' day)
+    AND cc.call_block_time >= date_trunc('day', now() - interval '7' day)
   {% endif %}
 
   UNION ALL
@@ -186,8 +186,8 @@ WITH pools AS (
     AND SUBSTRING(CAST(c.poolId AS varchar), 1, 42) = CAST(cc.output_0 AS varchar)
   CROSS JOIN UNNEST(cc.tokens) AS t(tokens)
   {% if is_incremental() %}
-  WHERE c.evt_block_time >= date_trunc("day", now() - interval '7' day)
-    AND cc.call_block_time >= date_trunc("day", now() - interval '7' day)
+  WHERE c.evt_block_time >= date_trunc('day', now() - interval '7' day)
+    AND cc.call_block_time >= date_trunc('day', now() - interval '7' day)
   {% endif %}
 
   UNION ALL
@@ -204,8 +204,8 @@ WITH pools AS (
     AND SUBSTRING(CAST(c.poolId AS varchar), 1, 42) = CAST(cc.output_0 AS varchar)
   CROSS JOIN UNNEST(cc.tokens) AS t(tokens)
   {% if is_incremental() %}
-  WHERE c.evt_block_time >= date_trunc("day", now() - interval '7' day)
-    AND cc.call_block_time >= date_trunc("day", now() - interval '7' day)
+  WHERE c.evt_block_time >= date_trunc('day', now() - interval '7' day)
+    AND cc.call_block_time >= date_trunc('day', now() - interval '7' day)
   {% endif %}
 
   UNION ALL
@@ -222,8 +222,8 @@ WITH pools AS (
     AND SUBSTRING(CAST(c.poolId AS varchar), 1, 42) = CAST(cc.output_0 AS varchar)
   CROSS JOIN UNNEST(ARRAY[cc.mainToken, cc.wrappedToken]) AS t (element)
   {% if is_incremental() %}
-  WHERE c.evt_block_time >= date_trunc("day", now() - interval '7' day)
-    AND cc.call_block_time >= date_trunc("day", now() - interval '7' day)
+  WHERE c.evt_block_time >= date_trunc('day', now() - interval '7' day)
+    AND cc.call_block_time >= date_trunc('day', now() - interval '7' day)
   {% endif %}
 
   UNION ALL
@@ -240,8 +240,8 @@ WITH pools AS (
     AND SUBSTRING(CAST(c.poolId AS varchar), 1, 42) = CAST(cc.output_0 AS varchar)
   CROSS JOIN UNNEST(ARRAY[cc.mainToken, cc.wrappedToken]) AS t (element)
   {% if is_incremental() %}
-  WHERE c.evt_block_time >= date_trunc("day", now() - interval '7' day)
-    AND cc.call_block_time >= date_trunc("day", now() - interval '7' day)
+  WHERE c.evt_block_time >= date_trunc('day', now() - interval '7' day)
+    AND cc.call_block_time >= date_trunc('day', now() - interval '7' day)
   {% endif %}
 ),
 
