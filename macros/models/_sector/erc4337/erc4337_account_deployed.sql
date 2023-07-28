@@ -1,7 +1,7 @@
 {% macro erc4337_account_deployed(
     blockchain='',
     version='',
-    account_deployed_evt_model=null,
+    account_deployed_evt_model=null
     )
 %}
 
