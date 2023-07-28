@@ -1,7 +1,7 @@
 {{ config(
         tags = ['dunesql'],
         alias =alias('transfers'),
-        partition_by = ['block_date'],
+        partition_by = ['block_month'],
         materialized = 'incremental',
         file_format = 'delta',
         incremental_strategy = 'merge',
@@ -31,6 +31,7 @@ FROM (
     SELECT
           blockchain
         , block_time
+        , block_month
         , block_date
         , block_number
         , token_standard
