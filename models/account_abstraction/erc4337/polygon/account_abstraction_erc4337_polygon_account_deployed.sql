@@ -30,7 +30,7 @@ SELECT
         , paymaster
         , factory
 FROM (
-    {% for erc4337_model in base_models %}
+    {% for erc4337_model in erc4337_base_models %}
     SELECT 
           blockchain
         , version
