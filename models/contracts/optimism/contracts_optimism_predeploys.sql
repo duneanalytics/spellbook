@@ -30,7 +30,7 @@ FROM (
     ,cast(NULL as varbinary) as creator_address
     ,cast(NULL as varbinary) as contract_factory
     ,contract_address
-    ,'ovm' as contract_project
+    ,project_name as contract_project
     ,contract_name
     ,from_iso8601_timestamp( '2021-07-06' ) as created_time
     ,false as is_self_destruct

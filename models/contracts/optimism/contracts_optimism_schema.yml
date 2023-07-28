@@ -221,5 +221,7 @@ models:
           combination_of_columns:
               - contract_address
     columns:
+      - name: project_name
+        description: "Project name associated with the predeploy."
       - *contract_address
       - *contract_name
