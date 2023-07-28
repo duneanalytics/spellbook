@@ -53,7 +53,7 @@ SELECT
     '{{project}}'                                               AS project,
     '{{project_version}}'                                       AS version,
     TRY_CAST(date_trunc('DAY', dexs.block_time) AS date)        AS block_date,
-    CAST(date_trunc('month', dexs.block_time) AS date)          AS block_month,
+    TRY_CAST(date_trunc('month', dexs.block_time) AS date)          AS block_month,
     dexs.block_time,
     erc20a.symbol                                               AS token_bought_symbol,
     erc20b.symbol                                               AS token_sold_symbol,
