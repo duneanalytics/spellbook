@@ -2,7 +2,6 @@
     schema = 'rollup_economics_ethereum',
     alias = alias('l1_data_fees'),
     tags = ['dunesql'],
-    partition_by = ['block_time'],
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
