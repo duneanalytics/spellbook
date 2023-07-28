@@ -1,5 +1,5 @@
 {{ config(
-    schema = 'rollup_economics_ethereum',
+    schema = 'l1_data_fees',
     alias = alias('l1_data_fees'),
     tags = ['dunesql'],
     materialized = 'incremental',
