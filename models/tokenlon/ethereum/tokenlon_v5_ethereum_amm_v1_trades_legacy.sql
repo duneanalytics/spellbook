@@ -39,7 +39,7 @@ WITH dexs AS (
         END                   AS token_bought_address,
         contract_address      AS project_contract_address,
         evt_tx_hash           AS tx_hash,
-        CAST(ARRAY[] as array<bigint>) AS trace_address,
+        CAST(ARRAY() as array<bigint>) AS trace_address,
         evt_index
     FROM
         {{ source('tokenlon_v5_ethereum', 'AMMWrapper_evt_Swapped') }} 
