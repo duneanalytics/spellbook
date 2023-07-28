@@ -39,7 +39,7 @@ FROM (
            pool, 
            blockchain, 
            project, 
-           fee, 
+           cast(fee as double) as fee, 
            time, 
            main_token, 
            main_token_symbol,
