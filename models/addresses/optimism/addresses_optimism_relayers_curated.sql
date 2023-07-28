@@ -20,4 +20,5 @@ FROM (
     ,(0xd8f7d2d62514895475afe0c7d75f31390dd40de4, 'Worldcoin', 'Relayer')
     ,(0x46DcEC50647abFb2905Af8Da4e670051653A5FBC, 'Worldcoin', 'Bridge')
     ,(0xe710657bEbDBd75fBDaCA07D57c2A5aE04085507, 'Worldcoin', 'Bridge')
+    ,(0x36BDE71C97B33Cc4729cf772aE268934f7AB70B2, 'Optimism', 'Cross Domain Messenger Aliased')
 ) a (wallet_address, project_name)
