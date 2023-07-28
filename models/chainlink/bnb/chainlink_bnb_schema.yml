@@ -5,19 +5,13 @@ models:
     meta:
       blockchain: bnb
       project: chainlink
-      contributors: ["msilb7","0xroll"]
+      contributors: ['msilb7','0xroll','linkpool_ryan']
     config:
       tags: ['bnb','chainlink','oracle']
     description: >
         Table pulling price updates for known Chainlink oracle addresses
     tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-              - blockchain
-              - block_number
-              - proxy_address
-              - underlying_token_address
-      - check_seed_legacy:
+      - check_seed:
           seed_file: ref('chainlink_get_price_seed')
           filter:
             blockchain: bnb
@@ -33,16 +27,19 @@ models:
     columns:
       - &blockchain
         name: blockchain
-        description: "Blockchain of the oracle update"
+        description: "Blockchain"
       - &block_time
         name: block_time
-        description: "Block time of the oracle update"
+        description: "Block time"
       - &block_date
         name: block_date
-        description: "Block time of the oracle update - truncated to date"
+        description: "Block time truncated to date"
+      - &block_month
+        name: block_month
+        description: "Block time truncated to month"
       - &block_number
         name: block_number
-        description: "Block number of the oracle update"
+        description: "Block number"
       - &feed_name
         name: feed_name
         description:  "Feed name from Chainlink docs"  
@@ -66,7 +63,7 @@ models:
     meta:
       blockchain: bnb
       project: chainlink
-      contributors: ["msilb7","0xroll"]
+      contributors: ['msilb7','0xroll','linkpool_ryan']
     config:
       tags: ['bnb','chainlink','oracle']
     description: >
@@ -77,6 +74,7 @@ models:
               - blockchain
               - hour
               - proxy_address
+              - aggregator_address
               - underlying_token_address
     columns:
       - *blockchain
@@ -84,6 +82,7 @@ models:
         name: hour
         description: "Block time of the oracle update - truncated to hour"
       - *block_date
+      - *block_month
       - *feed_name
       - *oracle_price
       - *proxy_address
@@ -91,11 +90,11 @@ models:
       - *underlying_token_address
       - *underlying_token_price
 
-  - name: chainlink_bnb_oracle_token_mapping
+  - name: chainlink_bnb_price_feeds_oracle_token_mapping
     meta:
       blockchain: bnb
       project: chainlink
-      contributors: ["msilb7","0xroll"]
+      contributors: ['msilb7','0xroll','linkpool_ryan']
     config:
       tags: ['bnb','chainlink','oracle']
     description: >
@@ -110,12 +109,12 @@ models:
       - &extra_decimals
         name: extra_decimals
         description:  "Additional decimals needed to adjust the Chainlink oracle answer to the underlying token (most often this is 0)"
-
-  - name: chainlink_bnb_oracle_addresses
+  
+  - name: chainlink_bnb_price_feeds_oracle_addresses
     meta:
       blockchain: bnb
       project: chainlink
-      contributors: ["msilb7","0xroll"]
+      contributors: ['msilb7','0xroll','linkpool_ryan']
     config:
       tags: ['bnb','chainlink','oracle']
     description: >
