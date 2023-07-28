@@ -1,6 +1,7 @@
 {{ config(
 
     alias = alias('curve_wsteth_reth_pool'),
+    tags = ['dunesql'],             
     partition_by = ['time'],
     materialized = 'table',
     file_format = 'delta',
@@ -16,20 +17,21 @@
 
 
 
-with dates AS (
-        SELECT explode(sequence(to_date('{{ project_start_date }}'), now(), interval 1 day)) AS day
-    )
+with dates as (
+    with day_seq as (select (sequence(cast('{{ project_start_date }}' as date), current_date, interval '1' day)) as day)
+select days.day
+from day_seq
+cross join unnest(day) as days(day)
+)
  
-
-
 ,wsteth_in as (
 select
     DATE_TRUNC('day', evt_block_time) as time,
     sum(cast(value as double))/1e18 as wsteth_in
 from {{source('erc20_ethereum','evt_Transfer')}} t
-where contract_address = lower('0x7f39C581F595B53c5cb19bD0b3f8dA6c935E2Ca0') and 
-    to = lower('0x447Ddd4960d9fdBF6af9a790560d0AF76795CB08') and
-    DATE_TRUNC('day', evt_block_time) >= to_date('{{ project_start_date }}')
+where contract_address = 0x7f39C581F595B53c5cb19bD0b3f8dA6c935E2Ca0 and 
+    to = 0x447Ddd4960d9fdBF6af9a790560d0AF76795CB08 and
+    DATE_TRUNC('day', evt_block_time) >= date '{{ project_start_date }}'
     
 group by 1
 )
@@ -39,9 +41,9 @@ select
     DATE_TRUNC('day', evt_block_time) as time,
     -sum(cast(value as double))/1e18 as wsteth_out
 from {{source('erc20_ethereum','evt_Transfer')}} t
-where contract_address = lower('0x7f39C581F595B53c5cb19bD0b3f8dA6c935E2Ca0') and 
-    from = lower('0x447Ddd4960d9fdBF6af9a790560d0AF76795CB08') and
-    DATE_TRUNC('day', evt_block_time) >= to_date('{{ project_start_date }}')
+where contract_address = 0x7f39C581F595B53c5cb19bD0b3f8dA6c935E2Ca0 and 
+    "from" = 0x447Ddd4960d9fdBF6af9a790560d0AF76795CB08 and
+    DATE_TRUNC('day', evt_block_time) >= date '{{ project_start_date }}'
     
 group by 1
 )
@@ -55,7 +57,7 @@ select * from wsteth_out
 )
 
 , wsteth_balances as (
-select time, lead(time, 1, now()+ interval 1 day ) over (order by time) as next_time,
+select time, lead(time, 1, now()+ interval '1' day ) over (order by time) as next_time,
 sum(wsteth_balance) over (order by time) as wsteth_cumu
 from wsteth_daily_balances b
 order by 1
@@ -68,9 +70,9 @@ select
     sum(cast(value as double))/1e18 as reth_in
 from {{source('erc20_ethereum','evt_Transfer')}} t
 where 
-    contract_address = lower('0xae78736Cd615f374D3085123A210448E74Fc6393') and 
-    to = lower('0x447Ddd4960d9fdBF6af9a790560d0AF76795CB08') and
-    DATE_TRUNC('day', evt_block_time) >= to_date('{{ project_start_date }}')
+    contract_address = 0xae78736Cd615f374D3085123A210448E74Fc6393 and 
+    to = 0x447Ddd4960d9fdBF6af9a790560d0AF76795CB08 and
+    DATE_TRUNC('day', evt_block_time) >= date '{{ project_start_date }}'
 group by 1
 )
 
@@ -80,9 +82,9 @@ select
     -sum(cast(value as double))/1e18 as reth_out
 from {{source('erc20_ethereum','evt_Transfer')}} t
 where 
-    contract_address = lower('0xae78736Cd615f374D3085123A210448E74Fc6393') and 
-    from = lower('0x447Ddd4960d9fdBF6af9a790560d0AF76795CB08') and
-    DATE_TRUNC('day', evt_block_time) >= to_date('{{ project_start_date }}')
+    contract_address = 0xae78736Cd615f374D3085123A210448E74Fc6393 and 
+    "from" = 0x447Ddd4960d9fdBF6af9a790560d0AF76795CB08 and
+    DATE_TRUNC('day', evt_block_time) >= date '{{ project_start_date }}'
 group by 1
 )
 
@@ -95,7 +97,7 @@ select * from reth_out
 )
 
 , reth_balances as (
-select time, lead(time, 1, now()+ interval 1 day ) over (order by time) as next_time,
+select time, lead(time, 1, now()+ interval '1' day ) over (order by time) as next_time,
 sum(reth_balance) over (order by time) as reth_cumu
 from reth_daily_balances 
 order by 1
@@ -107,34 +109,35 @@ order by 1
         DATE_TRUNC('day', minute) AS time,
         avg(price) AS price
     FROM {{source('prices','usd')}}
-    WHERE date_trunc('day', minute) >= to_date('{{ project_start_date }}') and date_trunc('day', minute) < date_trunc('day', now())
+    WHERE date_trunc('day', minute) >= date '{{ project_start_date }}' 
+    and date_trunc('day', minute) < current_date
     and blockchain = 'ethereum'
-    and contract_address = lower('0xae78736Cd615f374D3085123A210448E74Fc6393')
+    and contract_address = 0xae78736Cd615f374D3085123A210448E74Fc6393
     group by 1
     union all
     SELECT distinct
         DATE_TRUNC('day', minute), 
         last_value(price) over (partition by DATE_TRUNC('day', minute), contract_address ORDER BY  minute range between unbounded preceding AND unbounded following) AS price
     FROM {{source('prices','usd')}}
-    WHERE date_trunc('day', minute) = date_trunc('day', now())
+    WHERE date_trunc('day', minute) = current_date
     and blockchain = 'ethereum'
-    and contract_address = lower('0xae78736Cd615f374D3085123A210448E74Fc6393')
+    and contract_address = 0xae78736Cd615f374D3085123A210448E74Fc6393
     
     
 )    
 
 , wsteth_prices_hourly AS (
     select time
-    , lead(time,1, DATE_TRUNC('hour', now() + interval 1 hour)) over (order by time) as next_time
+    , lead(time,1, DATE_TRUNC('hour', now() + interval '1' hour)) over (order by time) as next_time
     , price
     from (
     SELECT distinct
         DATE_TRUNC('hour', minute) time
         , last_value(price) over (partition by DATE_TRUNC('hour', minute), contract_address ORDER BY  minute range between unbounded preceding AND unbounded following) AS price
     FROM {{source('prices','usd')}}
-    WHERE date_trunc('hour', minute) >= to_date('{{ project_start_date }}')
+    WHERE date_trunc('hour', minute) >= date '{{ project_start_date }}'
     and blockchain = 'ethereum'
-    and contract_address = lower('0x7f39C581F595B53c5cb19bD0b3f8dA6c935E2Ca0')
+    and contract_address = 0x7f39C581F595B53c5cb19bD0b3f8dA6c935E2Ca0
     
 ))   
 
@@ -143,25 +146,27 @@ order by 1
         DATE_TRUNC('day', minute) AS time,
         avg(price) AS price
     FROM {{source('prices','usd')}}
-    WHERE date_trunc('day', minute) >= to_date('{{ project_start_date }}') and date_trunc('day', minute) < date_trunc('day', now())
+    WHERE date_trunc('day', minute) >= date '{{ project_start_date }}' 
+    and date_trunc('day', minute) < current_date
     and blockchain = 'ethereum'
-    and contract_address = lower('0x7f39C581F595B53c5cb19bD0b3f8dA6c935E2Ca0')
+    and contract_address = 0x7f39C581F595B53c5cb19bD0b3f8dA6c935E2Ca0
     group by 1
     union all
     SELECT distinct
         DATE_TRUNC('day', minute), 
         last_value(price) over (partition by DATE_TRUNC('day', minute), contract_address ORDER BY  minute range between unbounded preceding AND unbounded following) AS price
     FROM {{source('prices','usd')}}
-    WHERE date_trunc('day', minute) = date_trunc('day', now())
+    WHERE date_trunc('day', minute) = current_date
     and blockchain = 'ethereum'
-    and contract_address = lower('0x7f39C581F595B53c5cb19bD0b3f8dA6c935E2Ca0')
+    and contract_address = 0x7f39C581F595B53c5cb19bD0b3f8dA6c935E2Ca0
 
 )
 
 , token_exchange_hourly as( 
     select date_trunc('hour', evt_block_time) as time
-        , sum(case when cast(sold_id as int) = 0 then cast(tokens_sold as double) else cast(tokens_bought as double) end) as eth_amount_raw
+        , sum(case when cast(sold_id as int) = int '0' then cast(tokens_sold as double) else cast(tokens_bought as double) end) as eth_amount_raw
     from {{source('curvefi_ethereum','rETHwstETH_evt_TokenExchange')}} c
+    WHERE date_trunc('day', evt_block_time) >= date '{{ project_start_date }}' 
     group by 1
     
 )
@@ -181,10 +186,12 @@ order by 1
     GROUP by 1
 )
 
-select 'ethereum curve rETH:wstETH 0.04' as pool_name, lower('0x447Ddd4960d9fdBF6af9a790560d0AF76795CB08') as pool, 
+select 'ethereum curve rETH:wstETH 0.04' as pool_name, 
+        0x447Ddd4960d9fdBF6af9a790560d0AF76795CB08 as pool, 
         'ethereum' as blockchain, 'curve' as project,0.04 as fee,
-        d.day as time, lower('0x7f39C581F595B53c5cb19bD0b3f8dA6c935E2Ca0') as main_token, 'wstETH' as main_token_symbol,
-         lower('0xae78736Cd615f374D3085123A210448E74Fc6393') as paired_token, 'rETH' as paired_token_symbol,
+        cast(d.day as date) as time, 
+        0x7f39C581F595B53c5cb19bD0b3f8dA6c935E2Ca0 as main_token, 'wstETH' as main_token_symbol,
+        0xae78736Cd615f374D3085123A210448E74Fc6393 as paired_token, 'rETH' as paired_token_symbol,
          wsteth_cumu as main_token_reserve,
          coalesce(reth.reth_cumu, 0) as paired_token_reserve,
          wsteth_cumu*coalesce(wstethp.price, 1)as main_token_usd_reserve,
