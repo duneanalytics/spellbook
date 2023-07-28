@@ -39,7 +39,7 @@ UNION ALL
 SELECT 'EAS' as project_name, contract_name, contract_address
 FROM (values
 	-- Other Predeploys
-	,('EAS',					0x4200000000000000000000000000000000000021)
+	 ('EAS',					0x4200000000000000000000000000000000000021)
 	,('SchemaRegistry',				0x4200000000000000000000000000000000000021)
 
 ) a (contract_name, contract_address)
