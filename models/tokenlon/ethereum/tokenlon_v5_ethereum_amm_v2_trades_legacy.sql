@@ -22,20 +22,20 @@
 WITH dexs AS (
     SELECT 
         evt_block_time                                                             AS block_time,
-        from_hex(JSON_EXTRACT_SCALAR(t."order", '$.userAddr'))                     AS taker,
-        from_hex(JSON_EXTRACT_SCALAR(t."order", '$.makerAddr'))                    AS maker,
-        CAST(JSON_EXTRACT_SCALAR(t."order", '$.takerAssetAmount') AS DOUBLE)       AS token_sold_amount_raw,
-        CAST(JSON_EXTRACT_SCALAR(t."order", '$.makerAssetAmount') AS DOUBLE)       AS token_bought_amount_raw,
+        get_json_object(t.order, '$.userAddr')                                   AS taker,
+        get_json_object(t.order, '$.makerAddr')                                  AS maker,
+        CAST(get_json_object(t.order, '$.takerAssetAmount') AS DOUBLE)       AS token_sold_amount_raw,
+        CAST(get_json_object(t.order, '$.makerAssetAmount') AS DOUBLE)       AS token_bought_amount_raw,
         CAST(0 AS DOUBLE)                                                         AS amount_usd,
         CASE
-            WHEN from_hex(JSON_EXTRACT_SCALAR(t."order", '$.takerAssetAddr')) IN (0x0000000000000000000000000000000000000000)
-                THEN 0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2
-            ELSE from_hex(JSON_EXTRACT_SCALAR(t."order", '$.takerAssetAddr'))
+            WHEN get_json_object(t.order, '$.takerAssetAddr') IN ('0x0000000000000000000000000000000000000000')
+                THEN '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'
+            ELSE get_json_object(t.order, '$.takerAssetAddr')
         END                                                                        AS token_sold_address,
         CASE
-            WHEN from_hex(JSON_EXTRACT_SCALAR(t."order", '$.makerAssetAddr')) IN (0x0000000000000000000000000000000000000000)
-                THEN 0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2
-            ELSE from_hex(JSON_EXTRACT_SCALAR(t."order", '$.makerAssetAddr'))
+            WHEN get_json_object(t.order, '$.makerAssetAddr') IN ('0x0000000000000000000000000000000000000000')
+                THEN '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'
+            ELSE get_json_object(t.order, '$.makerAssetAddr')
         END                                                                        AS token_bought_address,
         contract_address      AS project_contract_address,
         evt_tx_hash           AS tx_hash,
@@ -72,11 +72,11 @@ SELECT
     )                                                           AS amount_usd,
     dexs.token_bought_address,
     dexs.token_sold_address,
-    coalesce(dexs.taker, tx."from")                               AS taker,
+    coalesce(dexs.taker, tx.from)                               AS taker,
     dexs.maker,
     dexs.project_contract_address,
     dexs.tx_hash,
-    tx."from" AS tx_from,
+    tx.from AS tx_from,
     tx.to AS tx_to,
     dexs.trace_address,
     dexs.evt_index
