@@ -15,5 +15,5 @@ select
     1 as block_number, 
     timestamp '2023-01-01' as block_time, 
     '1' as quest_name, 
-    0x as rewards_token as token_address,
+    0x as token_address,
     '1' as token_id
