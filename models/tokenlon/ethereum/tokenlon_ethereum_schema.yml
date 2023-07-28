@@ -21,10 +21,6 @@ models:
             - tx_hash
             - evt_index
             - trace_address
-      - check_dex_aggregator_seed:
-          blockchain: ethereum
-          project: tokenlon
-          version: 5
     columns:
       - name: blockchain
         description: 'Blockchain which the DEX is deployed'
@@ -93,10 +89,6 @@ models:
             - tx_hash
             - evt_index
             - trace_address
-      - check_dex_aggregator_seed:
-          blockchain: ethereum
-          project: tokenlon
-          version: 5
     columns:
       - name: blockchain
         description: 'Blockchain which the DEX is deployed'
@@ -165,10 +157,6 @@ models:
             - tx_hash
             - evt_index
             - trace_address
-      - check_dex_aggregator_seed:
-          blockchain: ethereum
-          project: tokenlon
-          version: 5
     columns:
       - name: blockchain
         description: 'Blockchain which the DEX is deployed'
@@ -237,10 +225,6 @@ models:
             - tx_hash
             - evt_index
             - trace_address
-      - check_dex_aggregator_seed:
-          blockchain: ethereum
-          project: tokenlon
-          version: 5
     columns:
       - name: blockchain
         description: 'Blockchain which the DEX is deployed'
@@ -299,6 +283,20 @@ models:
       tags: ['ethereum', 'dex', 'trades', 'tokenlon', 'aggregator', 'izayl']
     description: >
       Tokenlon v5 all trades
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_date
+            - blockchain
+            - project
+            - version
+            - tx_hash
+            - evt_index
+            - trace_address
+      - check_dex_aggregator_seed:
+          blockchain: ethereum
+          project: tokenlon
+          version: 5
     columns:
       - name: blockchain
         description: 'Blockchain which the DEX is deployed'
