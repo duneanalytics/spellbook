@@ -17,6 +17,9 @@ jobs:
         with:
           ref: main
       
+      - name: dbt dependencies
+        run: "dbt deps"
+      
       - name: DBT compile to create prod manifest from main
         run: "dbt compile --target-path . --profiles-dir $HOME/.dbt --profile dunesql --select tag:legacy tag:dunesql"
       - name: Upload translation status CSV to Dune
