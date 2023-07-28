@@ -6,7 +6,7 @@
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
-    unique_key = ['block_date', 'blockchain', 'project', 'version', 'tx_hash'],
+    unique_key = ['block_date', 'blockchain', 'project', 'version', 'tx_hash', 'evt_index', 'trace_address'],
     post_hook = '{{ expose_spells(\'["ethereum"]\',
                                     "project",
                                     "tokenlon",
@@ -31,7 +31,7 @@ WITH dexs AS (
         "makerAssetAddr"      AS token_bought_address,
         contract_address      AS project_contract_address,
         evt_tx_hash           AS tx_hash,
-        ''                    AS trace_address,
+        CAST(ARRAY() as array<bigint>) AS trace_address,
         evt_index
     FROM
         {{ source('tokenlon_v5_ethereum', 'PMM_evt_FillOrder') }} 
