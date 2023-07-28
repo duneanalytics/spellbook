@@ -18,7 +18,7 @@ jobs:
           ref: main
       
       - name: DBT compile to create prod manifest from main
-        run: "dbt compile --target-path . --profiles-dir $HOME/.dbt --select tag:legacy tag:dunesql"
+        run: "dbt compile --target-path . --profiles-dir $HOME/.dbt --profile dunesql --select tag:legacy tag:dunesql"
       - name: Upload translation status CSV to Dune
         env:
           DUNE_API_KEY_PROD: ${{ secrets.DUNE_API_KEY_PROD }}
