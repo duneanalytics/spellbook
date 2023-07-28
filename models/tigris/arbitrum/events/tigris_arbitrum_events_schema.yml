@@ -39,11 +39,9 @@ models:
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
-            - evt_tx_hash 
             - asset_id 
             - pair 
     columns:
-      - *evt_tx_hash
       - *asset_id
       - *pair 
 

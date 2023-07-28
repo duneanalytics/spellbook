@@ -1,5 +1,5 @@
 {{ config(
-        alias ='native_fills',
+        alias = alias('native_fills'),
         post_hook='{{ expose_spells(\'["ethereum","arbitrum", "optimism", "polygon","bnb"]\',
                                 "project",
                                 "zeroex",

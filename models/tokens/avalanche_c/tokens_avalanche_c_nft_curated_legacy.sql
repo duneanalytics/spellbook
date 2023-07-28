@@ -1,4 +1,4 @@
-{{ config( alias = alias('nft_curated', legacy_model=True), tags=['static']) }}
+{{ config( alias = alias('nft_curated', legacy_model=True), tags=['static', 'legacy']) }}
 
 SELECT LOWER(contract_address) AS contract_address, name, symbol
 FROM (VALUES

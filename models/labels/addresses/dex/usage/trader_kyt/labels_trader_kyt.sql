@@ -1,6 +1,6 @@
 {{
     config(
-        alias='kyt',
+        alias = alias('kyt'),
         post_hook='{{ expose_spells(\'["ethereum", "fantom", "arbitrum", "avalanche_c", "gnosis", "bnb", "optimism", "polygon"]\',
                                     "sector",
                                     "labels",

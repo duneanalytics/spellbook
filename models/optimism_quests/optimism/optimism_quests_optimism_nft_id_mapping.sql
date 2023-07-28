@@ -1,6 +1,6 @@
 {{config(
         schema='optimism_quests_optimism',
-        alias='nft_id_mapping',
+        alias = alias('nft_id_mapping'),
         post_hook='{{ expose_spells(\'["optimism"]\',
                                     "project",
                                     "optimism_quests",

@@ -1,7 +1,7 @@
  {{
   config(
         schema = 'opensea_arbitrum',
-        alias='trades'
+        alias = alias('trades')
         )
 }}
 

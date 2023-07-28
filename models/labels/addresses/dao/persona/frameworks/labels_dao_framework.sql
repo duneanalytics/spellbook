@@ -1,4 +1,4 @@
-{{config(alias='dao_framework')}}
+{{config(alias = alias('dao_framework'))}}
 
 WITH dao_address_w_name AS (
     SELECT

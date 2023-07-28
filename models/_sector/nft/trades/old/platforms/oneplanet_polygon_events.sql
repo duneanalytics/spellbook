@@ -1,6 +1,6 @@
 {{ config(
     schema = 'oneplanet_polygon',
-    alias = 'events',
+    alias = alias('events'),
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
@@ -33,17 +33,17 @@ with source_polygon_transactions as (
 )
 ,ref_tokens_nft as (
     select *
-    from {{ ref('tokens_nft_legacy') }}
+    from {{ ref('tokens_nft') }}
     where blockchain = 'polygon'
 )
 ,ref_tokens_erc20 as (
     select *
-    from {{ ref('tokens_erc20_legacy') }}
+    from {{ ref('tokens_erc20') }}
     where blockchain = 'polygon'
 )
 ,ref_nft_aggregators as (
     select *
-    from {{ ref('nft_aggregators_legacy') }}
+    from {{ ref('nft_aggregators') }}
     where blockchain = 'polygon'
 )
 ,source_prices_usd as (

@@ -1,6 +1,7 @@
 {{ config(
+    tags=['dunesql'],
     schema = 'tigris_v1_polygon',
-    alias = 'positions_liquidation'
+    alias = alias('positions_liquidation')
     )
  }}
 
@@ -100,4 +101,3 @@ INNER JOIN
 last_leverage ll 
     ON lp.position_id = ll.position_id
     AND lp.version = ll.version
-;
