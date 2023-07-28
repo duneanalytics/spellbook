@@ -1,0 +1,75 @@
+version: 2
+
+models:
+  - name: chainlink_avalanche_c_ccip_onramps
+    meta:
+      alias: chainlink_avalanche_c_ccip_onramps_avax
+      blockchain: avalanche_c
+      sector: CCIP
+      project: chainlink
+      contributors: synthquest
+    config:
+      tags: ['avalanche','ccip','chainlink']
+    description: >
+        Chainlink CCIP messages sent from avalanche
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - evt_index
+            - evt_tx_hash
+            - message
+    columns:
+      - &contract_address
+        name: contract_address
+        description: "avalanche CCIP ramp contract address"
+      - &evt_block_number
+        name: evt_block_number
+        description: "Block number which processed the unique transaction hash"
+      - &evt_block_time
+        name: evt_block_time
+        description: "Timestamp for block event time in UTC"
+      - &evt_index
+        name: evt_index
+        description: "Index value of the transaction"
+      - &evt_tx_hash
+        name: evt_tx_hash
+        description: "Block number which processed the unique transaction hash"
+      - &message
+        name: message
+        description: "Message included in CCIP Send Request"
+
+  - name: chainlink_avalanche_c_ccip_offramps
+    meta:
+      alias: chainlink_avalanche_c_ccip_offramps_avax
+      blockchain: avalanche_c
+      sector: CCIP
+      project: chainlink
+      contributors: synthquest
+    config:
+      tags: ['avalanche','ccip','chainlink']
+    description: >
+        Chainlink CCIP messages sent to avalanche
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - evt_index
+            - evt_tx_hash
+            - message
+    columns:
+      - *contract_address
+      - *evt_tx_hash
+      - *evt_index
+      - *evt_block_time
+      - *evt_block_number
+      - &messageId
+        name: messageId
+        description: "Unique messageId associated with CCIP tx. This will be the same ID for the tx's on both chains."
+      - &returnData
+        name: returnData
+        description: "return data CCIP"
+      - &sequenceNumber
+        name: sequenceNumber
+        description: "sequence CCIP"
+      - &state
+        name: state
+        description: "state CCIP"

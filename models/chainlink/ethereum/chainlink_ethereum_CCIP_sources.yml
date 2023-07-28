@@ -1,0 +1,27 @@
+version: 2
+
+sources:
+  - name: chainlink_ethereum
+    description: CCIP ethereum send events
+    tables:
+      - name: CCIPSendRequested
+        loaded_at_field: evt_block_time
+        description: "CCIP sent from ethereum to various chains"
+      - name: EVM2EVMOnRampAVAX_evt_CCIPSendRequested
+        loaded_at_field: evt_block_time
+        description: "CCIP sent from ethereum to Avalanche"
+      - name: EVM2EVMOnRampOP_evt_CCIPSendRequested
+        loaded_at_field: evt_block_time
+        description: "CCIP sent from ethereum to Optimism"
+      - name: EVM2EVMOnRampPOLYGON_evt_CCIPSendRequested
+        loaded_at_field: evt_block_time
+        description: "CCIP sent from ethereum to Polygon"
+      - name: EVM2EVMOffRamp_evt_ExecutionStateChanged
+        loaded_at_field: evt_block_time
+        description: "CCIP sent from Avalanche to ethereum"
+      - name: EVM2EVMOffRampOP_evt_ExecutionStateChanged
+        loaded_at_field: evt_block_time
+        description: "CCIP sent from Optimism to ethereum"
+      - name: EVM2EVMOffRampPOLYGON_evt_ExecutionStateChanged
+        loaded_at_field: evt_block_time
+        description: "CCIP sent from Polygon to ethereum"

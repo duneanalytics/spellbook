@@ -1,0 +1,22 @@
+version: 2
+
+sources:
+
+  - name: chainlink_CCIP
+
+    description: >
+
+      Decoded events for [chainlink.CCIP](https://chain.link/cross-chain), an open-source global standard for decentralized inter-blockchain messaging, data, and token movements.
+
+      See their [docs](https://docs.chain.link/ccip) for more.
+
+    tables:
+
+      - name: Keep3r_evt_LiquidityAddition
+
+      - name: Keep3r_v2_evt_LiquidityAddition
+
+      - name: Keep3r_evt_LiquidityWithdrawal
+
+      - name: Keep3r_v2_evt_LiquidityWithdrawal
+      

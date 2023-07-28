@@ -1,0 +1,12 @@
+version: 2
+
+sources:
+  - name: chainlink_polygon
+    description: CCIP polygon send events
+    tables:
+      - name: EVM2EVMOnRampETH_evt_CCIPSendRequested
+        loaded_at_field: evt_block_time
+        description: "CCIP sent from polygon to ethereum"
+      - name: EVM2EVMOffRampETH_evt_ExecutionStateChanged
+        loaded_at_field: evt_block_time
+        description: "CCIP sent from ethereum to polygon"
