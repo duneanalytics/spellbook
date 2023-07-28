@@ -25,4 +25,4 @@ jobs:
       - name: Upload translation status CSV to Dune
         env:
           DUNE_API_KEY_PROD: ${{ secrets.DUNE_API_KEY_PROD }}
-        run: "python script/upload_translation_status.py"
+        run: "python scripts/upload_translation_status.py"
