@@ -9,7 +9,7 @@
           '{{blockchain}}' as blockchain
         , '{{version}}' as version
         , evt_block_time as block_time
-        , date_trunc('month', evt_block_time) as block_month
+        , cast(date_trunc('month', evt_block_time) as date) as block_month
         , userOpHash as userop_hash
         , contract_address as entrypoint_contract
         , evt_tx_hash as tx_hash
