@@ -81,8 +81,8 @@ left join {{ source('base','transactions') }} as etxs
     {% endif %}
 left join {{ ref('tokens_base_nft_legacy') }} as tok
     on tok.contract_address=nft_mints.contract_address
-left join {{ ref('tokens_base_nft_bridged_mapping_legacy') }} as bm
-    on bm.contract_address=nft_mints.contract_address
+-- left join {{ ref('tokens_base_nft_bridged_mapping_legacy') }} as bm
+--     on bm.contract_address=nft_mints.contract_address
 left join {{ ref('transfers_base_eth_legacy') }} as tr
     on nft_mints.tx_hash = tr.tx_hash
     and nft_mints.block_number = tr.tx_block_number
@@ -119,7 +119,7 @@ where
     and nft_mints.block_time >= date_trunc("day", now() - interval '1 week')
     {% endif %}
     -- to exclude bridged L1 NFT collections to L2
-    and bm.contract_address is null
+    -- and bm.contract_address is null
     group by nft_mints.block_time, nft_mints.block_number, nft_mints.token_id, nft_mints.token_standard
     , nft_mints.amount, nft_mints.from, nft_mints.to, nft_mints.contract_address, etxs.to, nft_mints.evt_index
     , nft_mints.tx_hash, etxs.from, ec.namespace, tok.name, pu_erc20s.decimals, pu_eth.price, pu_erc20s.price
