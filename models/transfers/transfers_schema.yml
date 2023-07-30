@@ -11,6 +11,7 @@ models:
       tags: ['transfers', 'erc20']
     description: "ERC20 Token Transfers. Note: all transfers will show twice from a given wallet's presepctive"
     columns:
+      - name: block_month
       - name: unique_transfer_id
         description: "Unique transfer ID (used for testing for duplicates)"
       - &blockchain
