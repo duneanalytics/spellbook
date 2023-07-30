@@ -28,7 +28,7 @@ with
             t."from" AS tx_from,
             t.to AS tx_to,
             bytearray_substring(t.data,1,4) AS tx_method_id,
-            cast(value as double) as amount_raw
+            cast(tr.value as double) as amount_raw
         from
             {{ source('erc20_' + chain , 'evt_transfer') }} tr 
             INNER JOIN {{ source( chain , 'transactions') }} t
@@ -71,7 +71,7 @@ with
             t."from" AS tx_from,
             t.to AS tx_to,
             bytearray_substring(t.data,1,4) AS tx_method_id,
-            cast(value as double) as amount_raw
+            cast(tr.value as double) as amount_raw
         from
             {{ source('erc20_' + chain , 'evt_transfer') }} tr 
             INNER JOIN {{ source( chain , 'transactions') }} t
