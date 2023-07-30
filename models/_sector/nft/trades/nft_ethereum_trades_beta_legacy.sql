@@ -1,6 +1,6 @@
 {{ config(
 	tags=['legacy'],
-	
+
     schema = 'nft_ethereum',
     alias = alias('trades_beta',legacy_model=True),
     partition_by = ['block_date'],
@@ -33,11 +33,7 @@ WITH cte_prices_patch as (
     SELECT
         contract_address
         ,blockchain
-        ,decimals
-        ,minute
-        ,price
-        ,symbol
-    FROM {{ ref('prices_usd_forward_fill_legacy') }}
+        ,decimals ,minute ,price ,symbol FROM {{ ref('prices_usd_forward_fill_legacy') }}
     WHERE blockchain = 'ethereum'
     {% if is_incremental() %}
     AND minute >= date_trunc("day", now() - interval '1 week')
