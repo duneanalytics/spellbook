@@ -19,7 +19,7 @@ SELECT 'base' AS blockchain
 , CAST(false AS boolean) AS approval_for_all
 , app.contract_address
 , CAST(app.tokenId AS double) AS token_id
-, approved
+, CASE WHEN approved = 0x0000000000000000000000000000000000000000 then false else true end as approved
 , app.evt_tx_hash AS tx_hash
 --, et.from AS tx_from
 --, et.to AS tx_to
