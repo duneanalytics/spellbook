@@ -26,7 +26,7 @@ with creates as (
       ,tx_hash as creation_tx_hash
       ,address as contract_address
       ,(CASE WHEN cardinality(trace_address) = 0 then cast(-1 as bigint) else trace_address[1] end) as trace_element
-    from {{ source({{chain}}, 'traces') }}
+    from {{ source(chain , 'traces') }}
     where 
       type = 'create'
       and success
@@ -58,7 +58,7 @@ FROM (
       ,cr.contract_address 
       ,cr.trace_element
     from creates as cr
-    join {{ source( {{chain}}, 'traces') }} as sd
+    join {{ source( chain , 'traces') }} as sd
       on cr.creation_tx_hash = sd.tx_hash
       and cr.created_time = sd.block_time
       AND cr.created_block_number = sd.block_number
@@ -84,7 +84,7 @@ FROM (
       ,cr.trace_element
     from creates as cr
 
-    JOIN {{ source( {{chain}} , 'traces') }} as sds
+    JOIN {{ source( chain , 'traces') }} as sds
       ON cr.contract_address = sds.address
       AND cr.created_time <= sds.block_time
       AND cr.created_block_number <= sds.block_number

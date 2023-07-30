@@ -101,8 +101,8 @@ SELECT *
       ,bytearray_length(ct.code) AS code_bytelength --toreplace with bytearray_length in dunesql
       ,coalesce(sd.contract_address is not NULL, false) as is_self_destruct
       ,1 AS to_iterate_creators
-    from {{ source( {{chain}}, 'creation_traces') }} as ct 
-    inner join {{ source( {{chain}}, 'transactions') }} as t 
+    from {{ source( chain , 'creation_traces') }} as ct 
+    inner join {{ source( chain , 'transactions') }} as t 
       ON t.hash = ct.tx_hash
       AND t.block_time = ct.block_time
       AND t.block_number = ct.block_number
@@ -172,7 +172,7 @@ SELECT *
       and t.created_time = sd.created_time
       AND t.created_block_number = sd.created_block_number
       AND t.blockchain = '{{chain}}'
-    left join {{ source({{chain}}, 'creation_traces') }} as ct
+    left join {{ source(chain , 'creation_traces') }} as ct
       ON t.contract_address = ct.address
       AND t.created_time = ct.block_time
       AND t.created_block_number = ct.block_number
@@ -186,7 +186,7 @@ SELECT *
 
     -- Don't pull contracts that are in the incremental group (prevent dupes)
     WHERE t.contract_address NOT IN (
-      SELECT address FROM {{ source({{chain}}, 'creation_traces') }} WHERE block_time >= date_trunc('day', now() - interval '7' day)
+      SELECT address FROM {{ source(chain , 'creation_traces') }} WHERE block_time >= date_trunc('day', now() - interval '7' day)
     )
     -- pull one chain at a time
     AND th.blockchain = '{{chain}}'
@@ -203,20 +203,19 @@ UNION ALL
 )
 
 ,tokens as (
-  --NEED TO DO THIS TO PULL AS TRANSFERS. TOKENS TABLES ARE NOT SUFFICIENT
-  --LIKELY MAKE A NEW ERC20 Tokens spell
+
+  --LIKELY MAKE A NEW ERC20 Tokens spell because existing tables were not sufficient
   select 
     blockchain
     ,t.contract_address
     ,t.symbol
     ,'erc20' as token_standard
-  from {{ ref('tokens_erc20') }} as t
+  from {{ ref('tokens_erc20_all') }} as t
   group by 1, 2, 3, 4
 
   union all 
-
-  --NEED TO DO THIS TO PULL AS TRANSFERS. TOKENS TABLES ARE NOT SUFFICIENT
-  --CHAINS MAY BE MISSING - MAY NEED TO MAKE A NEW SPELL WITH MACRO
+  -- THIS WILL BREAK IF CHAINS MAY BE MISSING FROM THIS SPELL
+  -- WE WILL NEED TO MAKE A NEW SPELL WITH MACRO FOR HANDLING CHAINS
   select 
     blockchain
     ,t.contract_address
@@ -365,7 +364,7 @@ UNION ALL
     ,cc.code_deploy_rank
     ,1 as map_rank
   from creator_contracts as cc 
-  left join {{ source( {{chain}}, 'contracts') }} as oc 
+  left join {{ source( chain , 'contracts') }} as oc 
     on cc.contract_address = oc.address 
   WHERE cc.blockchain = '{{chain}}'
   group by 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24
@@ -398,8 +397,8 @@ UNION ALL
     ,bytearray_length(oc.code) as code_bytelength
     ,1 as code_deploy_rank
     ,2 as map_rank
-  from {{ source( {{chain}}, 'logs') }} as l
-    left join {{ source( {{chain}}, 'contracts') }} as oc 
+  from {{ source( chain , 'logs') }} as l
+    left join {{ source( chain , 'contracts') }} as oc 
       ON l.contract_address = oc.address
   WHERE
     l.contract_address NOT IN (SELECT cc.contract_address FROM creator_contracts WHERE cc.blockchain = '{{chain}}' cc)

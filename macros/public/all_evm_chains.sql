@@ -1,3 +1,3 @@
 {% macro all_evm_chains() %}
-   {{ return(array('ethereum', 'optimism', 'arbitrum', 'avalanche_c', 'polygon', 'bnb', 'gnosis', 'fantom', 'base')) }}
+   {{ return(['ethereum', 'optimism', 'arbitrum', 'avalanche_c', 'polygon', 'bnb', 'gnosis', 'fantom', 'base']) }}
 {% endmacro %}

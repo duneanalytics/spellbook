@@ -7,7 +7,7 @@ models:
       sector: contracts
       contributors: chuxin, msilb7
     config:
-      tags: ['optimism', 'contracts', 'addresses']
+      tags: ['evm', 'contracts', 'addresses']
     description: "A list of contract name mapping from Dune name to cleaned name."
     columns:
       - name: dune_name
@@ -25,7 +25,7 @@ models:
       sector: contracts
       contributors: chuxin, msilb7
     config:
-      tags: ['optimism', 'contracts', 'addresses']
+      tags: ['evm', 'contracts', 'addresses']
     description: "Mapping of contracts to its creators and names on EVM chains. {{ doc('contract_mapping') }}"
     tests:
       - dbt_utils.unique_combination_of_columns:
@@ -121,7 +121,7 @@ models:
       sector: contracts
       contributors: chuxin, msilb7
     config:
-      tags: ['optimism', 'contracts', 'predeploy', 'addresses']
+      tags: ['evm', 'contracts', 'predeploy', 'addresses']
     description: "Mapping of predeploy contracts to its creators and names on EVM chains."
     columns:
       - *blockchain
@@ -144,7 +144,7 @@ models:
       sector: contracts
       contributors: chuxin, msilb7
     config:
-      tags: ['optimism', 'contracts', 'addresses']
+      tags: ['evm', 'contracts', 'addresses']
     description: "A list of contract creator addresses and corresponding names."
     columns:
       - name: creator_address
@@ -161,7 +161,7 @@ models:
       sector: contracts
       contributors: chuxin, msilb7
     config:
-      tags: ['optimism', 'contracts', 'addresses']
+      tags: ['evm', 'contracts', 'addresses']
     description: "A list of contracts where we know their mapping, but their creator is not deterministic and the contracts are not verified."
     columns:
       - *contract_address
@@ -175,7 +175,7 @@ models:
       sector: contracts
       contributors: chuxin, msilb7
     config:
-      tags: ['optimism', 'contracts', 'addresses']
+      tags: ['evm', 'contracts', 'addresses']
     description: "A list of contracts that are self-destruct, with the time that they were most recently self-destructed."
     columns:
       - *blockchain
@@ -192,7 +192,7 @@ models:
       sector: contracts
       contributors: chuxin, msilb7
     config:
-      tags: ['optimism', 'contracts', 'addresses']
+      tags: ['evm', 'contracts', 'addresses']
     description: "A list of contract creator addresses that are non-deterministic (i.e. standard factories), and should not be used for contract mapping."
     columns:
       - *creator_address
