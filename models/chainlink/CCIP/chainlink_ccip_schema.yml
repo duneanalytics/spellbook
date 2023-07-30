@@ -1,15 +1,15 @@
 version: 2
 
 models:
-  - name: chainlink_ethereum_ccip_onramps
+  - name: chainlink_ccip_onramps
     meta:
       alias: chainlink_ethereum_ccip_onramps_ETH
-      blockchain: ethereum
+      blockchain: ethereum, optimism, avalanche_c, polygon
       sector: CCIP
       project: chainlink
       contributors: synthquest
     config:
-      tags: ['ethereum','optimism', 'avalanche_c', 'polygon', 'ccip','chainlink']
+      tags: ['ethereum','optimism', 'avalanche_c', 'polygon', 'chainlink']
     description: >
         Chainlink CCIP messages sent from ethereum
     tests:
@@ -38,15 +38,15 @@ models:
         name: message
         description: "Message included in CCIP Send Request"
 
-  - name: chainlink_ethereum_ccip_offramps
+  - name: chainlink_ccip_offramps
     meta:
-      alias: chainlink_ethereum_ccip_offramps_ETH
-      blockchain: ethereum
+      alias: chainlink_ccip_offramps_ETH
+      blockchain: ethereum, optimism, avalanche_c, polygon
       sector: CCIP
       project: chainlink
       contributors: synthquest
     config:
-      tags: ['ethereum','optimism', 'avalanche_c', 'polygon', 'ccip','chainlink']
+      tags: ['ethereum','optimism', 'avalanche_c', 'polygon', 'chainlink']
     description: >
         Chainlink CCIP messages sent to ethereum
     tests:

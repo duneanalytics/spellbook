@@ -36,7 +36,7 @@ FROM (
         , state
 
     
-    FROM {{ onramps }}
+    FROM {{ offramps }}
 )
     {% if not loop.last %}
     UNION ALL
