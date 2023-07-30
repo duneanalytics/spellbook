@@ -12,7 +12,7 @@
 
 SELECT 'base' AS blockchain
 , app.evt_block_time AS block_time
-, date_trunc('day', app.evt_block_time) AS block_date
+, cast( date_trunc('day', app.evt_block_time) as date) AS block_date
 , app.evt_block_number AS block_number
 , app.owner AS address
 , 'erc721' AS token_standard
@@ -38,7 +38,7 @@ UNION ALL
 
 SELECT 'base' AS blockchain
 , app.evt_block_time AS block_time
-, date_trunc('day', app.evt_block_time) AS block_date
+, cast( date_trunc('day', app.evt_block_time) as date) AS block_date
 , app.evt_block_number AS block_number
 , app.owner AS address
 , 'erc721' AS token_standard
@@ -64,7 +64,7 @@ UNION ALL
 
 SELECT 'base' AS blockchain
 , app.evt_block_time AS block_time
-, date_trunc('day', app.evt_block_time) AS block_date
+, cast( date_trunc('day', app.evt_block_time) as date) AS block_date
 , app.evt_block_number AS block_number
 , app.operator AS address
 , 'erc1155' AS token_standard

@@ -156,7 +156,7 @@ SELECT nftt.blockchain
 , nftt.tx_from
 , nftt.tx_to
 , nftt.block_time
-, date_trunc('day', nftt.block_time) AS block_date
+, cast( date_trunc('day', nftt.block_time) as date) AS block_date
 , nftt.block_number
 , nftt.tx_hash
 , nftt.unique_trade_id
