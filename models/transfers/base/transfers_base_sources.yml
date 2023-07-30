@@ -1,7 +1,7 @@
 version: 2
 
 sources:
-  - name: weth_optimism
+  - name: weth_base
     freshness:
       warn_after: { count: 12, period: hour }
     tables:

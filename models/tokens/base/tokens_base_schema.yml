@@ -44,31 +44,6 @@ models:
           to be compatible with the common standards. Accepted values are presently standards represented.
           If you are adding a token with a new standard, remember to add it the accepted values list.   
 
-  - name: tokens_base_nft_bridged_mapping
-    meta:
-      blockchain: base
-      sector: nft
-      contributors: chuxin
-    config:
-      tags: ['tokens', 'base', 'nft', 'erc721','bridge']
-    description: >
-        Selection of NFT token addresses bridged from Ethereum to Optimism.
-    columns:
-      - name: contract_address
-        description: "The contract address is the unique address of where the NFTs are stored on Optimism."
-        tests:
-          - unique
-      - name: name
-        description: "NFT Project name"
-      - name: standard
-        description: "NFT Project standard, currently only erc721 tokens can be bridged"
-      - name: symbol
-        description: "NFT Project symbol"
-      - name: contract_address_l1
-        description: "Bridged project contract address on L1"
-        tests:
-          - unique
-
   - name: tokens_base_nft_standards
     meta:
       blockchain: base
