@@ -1,8 +1,7 @@
 {{ config(
-	tags=['legacy'],
-	
-        schema = 'hop_protocol',
-        alias = alias('flows', legacy_model=True),
+	schema = 'hop_protocol',
+        tags=['legacy'],
+	alias = alias('flows', legacy_model=True),        
         post_hook='{{ expose_spells(\'["optimism"]\',
                                 "project",
                                 "hop_protocol",
