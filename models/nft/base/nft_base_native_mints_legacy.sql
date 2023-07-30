@@ -81,7 +81,7 @@ left join {{ source('base','transactions') }} as etxs
     {% endif %}
 left join {{ ref('tokens_base_nft_legacy') }} as tok
     on tok.contract_address=nft_mints.contract_address
--- left join {{ ref('tokens_base_nft_bridged_mapping_legacy') }} as bm
+-- left join 'tokens_base_nft_bridged_mapping_legacy' as bm
 --     on bm.contract_address=nft_mints.contract_address
 left join {{ ref('transfers_base_eth_legacy') }} as tr
     on nft_mints.tx_hash = tr.tx_hash
