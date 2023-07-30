@@ -1,7 +1,15 @@
 {{ config(
 	tags=['legacy'],
 	
-        alias = alias('native_mints', legacy_model=True)
+        alias = alias('native_mints', legacy_model=True),
+		materialized = 'incremental',
+		file_format = 'delta',
+		incremental_strategy = 'merge',
+        unique_key='unique_trade_id',
+        post_hook='{{ expose_spells(\'["optimism"]\',
+                                    "sector",
+                                    "nft",
+                                    \'["chuxin"]\') }}')
 }}
 {% set eth_address = "0xdeaddeaddeaddeaddeaddeaddeaddeaddead0000" %}
 

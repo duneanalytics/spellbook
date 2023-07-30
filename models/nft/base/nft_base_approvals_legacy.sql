@@ -1,6 +1,12 @@
 {{ config(
 	tags=['legacy'],
-        alias = alias('approvals', legacy_model=True)
+	
+        alias = alias('approvals', legacy_model=True),
+        partition_by=['block_date'],
+        materialized='incremental',
+        incremental_strategy='merge',
+        file_format = 'delta',
+        unique_key = ['block_number','tx_hash','evt_index']
 )
 }}
 
