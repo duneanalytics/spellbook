@@ -1,6 +1,8 @@
 {{ config(
 	tags=['legacy'],
-	materialized='view', alias = alias('erc20', legacy_model=True),
+	materialized='view', 
+    schema = 'base_transfers',
+    alias = alias('erc20', legacy_model=True),
         post_hook='{{ expose_spells(\'["base"]\',
                                     "sector",
                                     "transfers",
