@@ -1,5 +1,6 @@
 {{
     config(
+        tags=['dunesql'],
         schema = 'chainlink_avalanche_c',
         alias = alias('ccip_offramps'),
         materialized = 'incremental',

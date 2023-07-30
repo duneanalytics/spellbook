@@ -1,5 +1,6 @@
 {{
     config(
+        tags=['dunesql'],
         schema = 'chainlink_optimism',
         alias = alias('ccip_onramps'),
         materialized = 'incremental',

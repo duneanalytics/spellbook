@@ -1,4 +1,5 @@
-{{ config(tags=['chainlink', 'CCIP'],
+{{ config(
+        tags=['dunesql'],
         alias = alias('CCIP_onRamps'),
         post_hook='{{ expose_spells(\'["ethereum", "avalanche_c", "optimism", "polygon"]\',
                                 "project",
