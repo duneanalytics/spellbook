@@ -19,7 +19,7 @@ SELECT 'base' AS blockchain
 , CAST(false AS boolean) AS approval_for_all
 , app.contract_address
 , CAST(app.tokenId AS double) AS token_id
-, CAST(approved AS boolean) AS approved
+, approved
 , app.evt_tx_hash AS tx_hash
 --, et.from AS tx_from
 --, et.to AS tx_to
@@ -45,7 +45,7 @@ SELECT 'base' AS blockchain
 , CAST(true AS boolean) AS approval_for_all
 , app.contract_address
 , CAST(NULL AS double) AS token_id
-, CAST(approved AS boolean) AS approved
+, approved
 , app.evt_tx_hash AS tx_hash
 --, et.from AS tx_from
 --, et.to AS tx_to
@@ -71,7 +71,7 @@ SELECT 'base' AS blockchain
 , CAST(true AS boolean) AS approval_for_all
 , app.contract_address
 , CAST(NULL AS double) AS token_id
-, CAST(approved AS boolean) AS approved
+, approved
 , app.evt_tx_hash AS tx_hash
 --, et.from AS tx_from
 --, et.to AS tx_to
