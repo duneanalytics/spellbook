@@ -1,4 +1,5 @@
-{{ config(materialized='view', 
+{{ config(
+        materialized='view', 
         schema = 'base_transfers',
         alias = alias('erc20'),
         post_hook='{{ expose_spells(\'["base"]\',
