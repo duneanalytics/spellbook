@@ -196,6 +196,8 @@ models:
         +schema: nft_fantom
       goerli:
         +schema: nft_goerli
+      base:
+        +schema: base
 
     cex:
       +schema: cex
