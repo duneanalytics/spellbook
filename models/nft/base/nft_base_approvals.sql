@@ -1,4 +1,5 @@
 {{ config(
+        schema='nft_base',
         alias = alias('approvals'),
         partition_by=['block_date'],
         materialized='incremental',

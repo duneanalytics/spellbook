@@ -1,4 +1,5 @@
 {{ config(
+        schema='nft_base',
         alias = alias('native_mints'),
 		materialized = 'incremental',
 		file_format = 'delta',
