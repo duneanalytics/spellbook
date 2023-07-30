@@ -11,8 +11,8 @@ WITH unit_tests as
         ON test_data.tx_hash = sharky_events.tx_hash
         AND test_data.block_time = sharky_events.block_time
     WHERE 
-        sharky_events.block_time > '2023-01-01' 
-        and sharky_events.block_time < '2023-01-05'
+        sharky_events.block_time > TIMESTAMP '2023-01-01'
+        and sharky_events.block_time < TIMESTAMP '2023-01-05'
         and sharky_events.project = 'sharky' 
         and sharky_events.blockchain = 'solana'
 )

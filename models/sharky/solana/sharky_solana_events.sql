@@ -144,8 +144,11 @@ SELECT *,
                    WHEN block_number > 132405709 THEN sharky_instructions[1].account_arguments[6] -- upgrade to version 2.0 2oNjJSxAM72Y6t7ALKXBiMDjtwhmxEfbk8jBz4es3U6XpBfw2Jvgcu3pSvxuHUkDWbVE48xxpjwgpuxrNnPFjvxm
                    ELSE sharky_instructions[1].account_arguments[7]
                END
-           WHEN (evt_type = 'Rescind' OR evt_type = 'Repay' OR evt_type = 'Foreclose' OR evt_type = 'Extend')
-               THEN sharky_instructions[1].account_arguments[1]
-           END as loan_id
+           WHEN (
+               evt_type = 'Rescind'
+               OR evt_type = 'Repay'
+               OR evt_type = 'Foreclose'
+               OR evt_type = 'Extend'
+           ) THEN sharky_instructions[1].account_arguments[1]
+       END as loan_id
 FROM events
-;
