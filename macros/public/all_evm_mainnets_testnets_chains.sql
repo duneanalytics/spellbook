@@ -11,5 +11,5 @@
         {% do mainnets_testnets_chains.append(chain) %}
     {% endfor %}
 
-    {{ return(unified_chains) }}
+    {{ return(mainnets_testnets_chains) }}
 {% endmacro %}
