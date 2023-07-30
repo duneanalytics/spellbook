@@ -1,4 +1,4 @@
-{{ config(materialized='view', 
+{{ config(
     schema = 'base_transfers',
     alias = alias('erc20'),
     tags = ['dunesql'],
