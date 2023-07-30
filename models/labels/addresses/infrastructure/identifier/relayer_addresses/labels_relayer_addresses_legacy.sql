@@ -1,6 +1,6 @@
 {{config(
-    alias = alias('relayer_addresses'),
-    tags=['dunesql'],
+    alias = alias('relayer_addresses',legacy_model=True),
+    tags=['legacy'],
     post_hook='{{ expose_spells(\'["ethereum", "bnb", "polygon", "arbitrum", "optimism", "fantom", "avalanche_c", "gnosis"]\',
                                 "sector",
                                 "labels",
