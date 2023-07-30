@@ -18,7 +18,7 @@ with
     sent_transfers as (
     {% for chain in evm_chains %}
         select
-            blockchain,
+            '{{chain}}' AS blockchain,
             'send-' ||'{{chain}}-' || cast(evt_tx_hash as varchar) || '-' || cast (evt_index as varchar) || '-' || CAST(tr.to AS varchar) as unique_transfer_id,
             tr.to as wallet_address, tr."from" AS counterparty_address,
             contract_address as token_address,
@@ -61,7 +61,7 @@ with
     received_transfers as (
     {% for chain in evm_chains %}
         select
-            blockchain,
+            '{{chain}}' AS blockchain,
             'receive-' ||'{{chain}}-' || cast(evt_tx_hash as varchar) || '-' || cast (evt_index as varchar) || '-' || CAST(tr."from" AS varchar) as unique_transfer_id,
             tr."from" as wallet_address, tr.to AS counterparty_address,
             contract_address as token_address,
