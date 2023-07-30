@@ -46,7 +46,7 @@
 {% set evm_chains = all_evm_mainnets_testnets_chains() %} --macro: all_evm_mainnets_testnets_chains.sql
 
 WITH base_level as (
-{% for chain in evm_chains %} 
+
 SELECT *
   FROM (
   select 
@@ -79,6 +79,7 @@ SELECT *
     ,to_iterate_creators
 
   from (
+  {% for chain in evm_chains %}
     select 
       '{{chain}}' AS blockchain
       ,ct."from" as creator_address
@@ -122,7 +123,15 @@ SELECT *
     where 
       1=1
       {% if is_incremental() %}
-      and ct.block_time >= date_trunc('day', now() - interval '7' day)
+      and 1= (
+          CASE
+            -- have we never run this chain?
+            WHEN NOT EXISTS (SELECT 1 FROM {{this}} WHERE blockchain = '{{chain}}') THEN 1
+            -- if we have run it, then only do the last week
+            WHEN ct.block_time >= date_trunc('day', now() - interval '7' day)
+            ELSE 0
+          END 
+      )
 
     -- to get existing history of contract mapping / only select those we want to re-run
     union all 
@@ -192,14 +201,14 @@ SELECT *
     AND th.blockchain = '{{chain}}'
 
       {% endif %} -- incremental filter
+    {% if not loop.last %}
+    UNION ALL
+    {% endif %}
+    {% endfor %}
   ) as x
   group by 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 22, 23, code
 ) y 
 WHERE contract_order = 1
-{% if not loop.last %}
-UNION ALL
-{% endif %}
-{% endfor %}
 )
 
 ,tokens as (

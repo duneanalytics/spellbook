@@ -70,11 +70,27 @@ with
                 AND tr.evt_block_number = t.block_number
                 AND tr.evt_tx_hash = t.hash
                 {% if is_incremental() %}
-                and t.block_time >= date_trunc('day', now() - interval '7' day)
+                and 1 = (
+                        CASE
+                        -- is this the first time we're running this chain?
+                        WHEN NOT EXISTS (SELECT 1 FROM {{this}} WHERE blockchain = '{{chain}}') THEN 1
+                        -- if not, then incremental
+                        WHEN t.block_time >= date_trunc('day', now() - interval '7' day) THEN 1
+                        ELSE 0
+                        END
+                        )
                 {% endif %}
         WHERE 1=1
         {% if is_incremental() %}
-        and tr.evt_block_time >= date_trunc('day', now() - interval '7' day)
+        and 1 = (
+                CASE
+                -- is this the first time we're running this chain?
+                WHEN NOT EXISTS (SELECT 1 FROM {{this}} WHERE blockchain = '{{chain}}') THEN 1
+                -- if not, then incremental
+                WHEN tr.evt_block_time >= date_trunc('day', now() - interval '7' day) THEN 1
+                ELSE 0
+                END
+                )
         {% endif %}
     {% if not loop.last %}
     UNION ALL
