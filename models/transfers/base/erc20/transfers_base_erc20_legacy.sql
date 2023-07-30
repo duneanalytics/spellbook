@@ -36,24 +36,28 @@ with
     deposited_weth as (
         select
             'deposit-' || cast(evt_tx_hash as varchar(100)) || '-' || cast (evt_index as varchar(100)) || '-' ||  CAST(dst AS VARCHAR(100)) as unique_transfer_id,
-            dst as wallet_address,
+            bytearray_substring(topic2,13,20) as wallet_address
             contract_address as token_address,
             evt_block_time,
-            wad as amount_raw
+            cast( bytearray_to_uint256(data) as double) as amount_raw
         from
-            {{ source('weth_base', 'weth9_evt_deposit') }}
+            {{ source('base', 'logs') }}
+            WHERE contract_address = '0x4200000000000000000000000000000000000006'
+            AND topic1 = '0xe1fffcc4923d04b559f4d29a8bfc6cda04eb5b0d3c460751c2402c5c5cc9109c' --deposit
     )
 
     ,
     withdrawn_weth as (
         select
             'withdraw-' || cast(evt_tx_hash as varchar(100)) || '-' || cast (evt_index as varchar(100)) || '-' ||  CAST(src AS VARCHAR(100)) as unique_transfer_id,
-            src as wallet_address,
+            bytearray_substring(topic2,13,20) as wallet_address
             contract_address as token_address,
             evt_block_time,
-            '-' || CAST(wad AS VARCHAR(100)) as amount_raw
+            (-1)* cast( bytearray_to_uint256(data) as double) as amount_raw
         from
-            {{ source('weth_base', 'weth9_evt_withdrawal') }}
+            {{ source('base', 'logs') }}
+            WHERE contract_address = '0x4200000000000000000000000000000000000006'
+            AND topic1 = '0x7fcf532c15f0a6db0bd6d0e038bea71d30d808c7d98cb3bf7268a95bf5081b65' --withdrawal
     )
     
 select unique_transfer_id, 'base' as blockchain, wallet_address, token_address, evt_block_time, CAST(amount_raw AS VARCHAR(100)) as amount_raw
