@@ -1,5 +1,6 @@
 {{ config(
         alias = alias('erc20')
+        , tags = ['dunesql']
         ,partition_by=['block_month']
         ,materialized='incremental'
         ,file_format = 'delta'
@@ -132,12 +133,14 @@ with
     -- )
     
 select 
-blockchain, unique_transfer_id, counterparty_address, token_address
+DATE_TRUNC('month', evt_block_time) AS block_month
+, blockchain, unique_transfer_id, counterparty_address, token_address
 , evt_block_time, evt_tx_hash, evt_block_number
 , tx_from, tx_to, tx_method_id, amount_raw
 from sent_transfers
 union all
-blockchain, unique_transfer_id, counterparty_address, token_address
+DATE_TRUNC('month', evt_block_time) AS block_month
+, blockchain, unique_transfer_id, counterparty_address, token_address
 , evt_block_time, evt_tx_hash, evt_block_number
 , tx_from, tx_to, tx_method_id, amount_raw
 from received_transfers
