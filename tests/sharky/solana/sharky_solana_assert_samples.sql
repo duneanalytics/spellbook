@@ -23,4 +23,3 @@ FROM
     unit_tests
 WHERE
     amount_test = False
-;
