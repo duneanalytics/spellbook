@@ -575,6 +575,9 @@ WITH curated_list AS (
       ,(0x35E0C852FcB9534df65D03877c1238f8E59c53FE, 'Paraswap')
       ,(0xf3d63166f0ca56c3c1a3508fce03ff0cf3fb691e, 'Reservoir')
       ,(0x9098b50ee2d9e4c3c69928a691da3b192b4c9673, 'Aura')
+      ,(0x71F718D3e4d1449D1502A6A7595eb84eBcCB1683, 'Curve')
+      ,(0x383Ea12347E56932E08638767B8A2B3c18700493, 'Hundred Finance')
+      ,(0x8286dC6dF929C4BfA4f6951caB4dAe2EC02d4D72, 'Hundred Finance')
       
   ) as temp_table (creator_address, contract_project)
 )
