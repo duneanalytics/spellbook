@@ -69,7 +69,7 @@ models:
         Table containing ALL ERC20 tokens, not just those in curated tables. This is needed for contracts mapping.
     columns:
       - name: blockchain
-        descriptionL "chain"
+        description: "chain"
       - name: contract_address
         description: "ERC20 Token's contract address"
       - name: standard

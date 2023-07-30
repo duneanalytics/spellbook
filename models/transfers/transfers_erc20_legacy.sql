@@ -1,6 +1,8 @@
 {{ config(
 	tags=['legacy'],
-	materialized='view', alias = alias('erc20', legacy_model=True)
+	alias = alias('erc20', legacy_model=True)
+)
+}}
 
 select
     1 as unique_transfer_id
