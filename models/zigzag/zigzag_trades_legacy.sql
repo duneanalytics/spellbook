@@ -10,7 +10,7 @@
 }}
 
 {% set zigzag_models = [
-'zigzag_v1_arbitrum_trades'
+'zigzag_v1_arbitrum_trades_legacy'
 ] %}
 
 

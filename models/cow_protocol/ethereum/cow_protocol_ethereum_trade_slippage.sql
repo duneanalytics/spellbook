@@ -1,4 +1,6 @@
-{{ config(alias = alias('trade_slippage'),
+{{ config(
+        alias=alias('trade_slippage'),
+        tags=['dunesql'],
         post_hook='{{ expose_spells(\'["ethereum"]\',
                                     "project",
                                     "cow_protocol",
