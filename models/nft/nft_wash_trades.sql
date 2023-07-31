@@ -14,6 +14,7 @@
 , ref('nft_gnosis_wash_trades')
 , ref('nft_optimism_wash_trades')
 , ref('nft_polygon_wash_trades')
+, ref('nft_base_wash_trades')
 ] %}
 
 SELECT *
