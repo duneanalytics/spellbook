@@ -5,4 +5,6 @@
     )
 }}
 
-SELECT 1
+SELECT
+    1 as nft_contract_address,
+    1 as edition_address
