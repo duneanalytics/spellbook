@@ -20,7 +20,7 @@
 with creates as (
 {% for chain in evm_chains %}
     select 
-      blockchain
+      '{{chain}}' as blockchain
       , block_time as created_time
       , block_number AS created_block_number
       ,tx_hash as creation_tx_hash
