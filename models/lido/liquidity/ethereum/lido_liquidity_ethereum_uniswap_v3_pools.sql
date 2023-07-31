@@ -1,5 +1,6 @@
 {{ config(
     alias = alias('uniswap_v3_pools'),
+    tags = ['dunesql'],             
     partition_by = ['time'],
     materialized = 'table',
     file_format = 'delta',
@@ -14,221 +15,487 @@
 {% set project_start_date = '2021-05-05' %} 
 
 with dates as (
-select explode(sequence(to_date('{{ project_start_date }}'), now(), interval 1 day)) as day
-)
-
-, pools as (
-select pool as address, 'ethereum' as blockchain, 'uniswap_v3' as project, fee/10000 as fee
-from {{source('uniswap_v3_ethereum','Factory_evt_PoolCreated')}}
-where token0 = lower('0x7f39C581F595B53c5cb19bD0b3f8dA6c935E2Ca0') or token1 = lower('0x7f39C581F595B53c5cb19bD0b3f8dA6c935E2Ca0')
-)
-
-, pool_per_date as ( 
+    with day_seq as (select (sequence(cast('{{ project_start_date }}' as date), current_date, interval '1' day)) as day)
+select days.day
+from day_seq
+cross join unnest(day) as days(day)
+),
+  
+  
+  pools AS (
+    SELECT
+      pool AS address,
+      'ethereum' AS blockchain,
+      'uniswap_v3' AS project,
+      cast(fee as double) / CAST(10000 AS DOUBLE) AS fee,
+      token0, token1
+    FROM
+      {{source('uniswap_v3_ethereum','Factory_evt_PoolCreated')}}
+    WHERE
+      token0 = 0x7f39C581F595B53c5cb19bD0b3f8dA6c935E2Ca0 
+      OR token1 = 0x7f39C581F595B53c5cb19bD0b3f8dA6c935E2Ca0 
+  ),
+  
+  
+pool_per_date as ( 
 select dates.day, pools.*
 from dates
 left join pools on 1=1
-)
+),
 
-, tokens as (
-select distinct token as address, pt.symbol, pt.decimals 
-from (
-select token1 as token
-from {{source('uniswap_v3_ethereum','Factory_evt_PoolCreated')}}
-where token0 = lower('0x7f39C581F595B53c5cb19bD0b3f8dA6c935E2Ca0') 
-union
-select token0
-from {{source('uniswap_v3_ethereum','Factory_evt_PoolCreated')}}
-where token1 = lower('0x7f39C581F595B53c5cb19bD0b3f8dA6c935E2Ca0') 
-union 
-select lower('0x7f39C581F595B53c5cb19bD0b3f8dA6c935E2Ca0') 
-) t
-left join prices.tokens pt on t.token = pt.contract_address
-)
-
-, tokens_prices_daily AS (
-    SELECT distinct
-        DATE_TRUNC('day', minute) AS time,
-        contract_address as token,
-        avg(price) AS price
-    FROM {{ source('prices', 'usd') }}
-    WHERE date_trunc('hour', minute) >= '{{ project_start_date }}' and date_trunc('day', minute) < date_trunc('day', now())
-    and blockchain = 'ethereum'
-    and contract_address in (select address from tokens)
-    group by 1,2
-    union all
-    SELECT distinct
-        DATE_TRUNC('day', minute), 
-        contract_address as token,
-        last_value(price) over (partition by DATE_TRUNC('day', minute), contract_address ORDER BY  minute range between unbounded preceding AND unbounded following) AS price
-    FROM {{source('prices','usd')}}
-    WHERE date_trunc('day', minute) = date_trunc('day', now())
-    and blockchain = 'ethereum'
-    and contract_address in (select address from tokens)
-)
-
-, tokens_prices_hourly as (   
-   select time, lead(time,1, DATE_TRUNC('hour', now() + interval '1 hour')) over (partition by token order by time) as next_time, token, price
-    from (
-    SELECT distinct
-        DATE_TRUNC('hour', minute) time, 
-        contract_address as token,
-        last_value(price) over (partition by DATE_TRUNC('hour', minute), contract_address ORDER BY  minute range between unbounded preceding AND unbounded following) AS price
-    FROM {{source('prices','usd')}}
-    WHERE date_trunc('hour', minute) >= '{{ project_start_date }}' 
-    and blockchain = 'ethereum'
-    and contract_address in (select address from tokens)) p
-)
-
-, swap_events as (
-    select 
-        date_trunc('day', sw.evt_block_time) as time,
-        sw.contract_address as pool,
-        cr.token0, cr.token1,
-        sum(cast(amount0 as DOUBLE)) as amount0,
-        sum(cast(amount1 as DOUBLE)) as amount1
+  tokens AS (
+    SELECT DISTINCT
+      token AS address
+    FROM
+      (
+        SELECT token1 AS token
+        FROM {{source('uniswap_v3_ethereum','Factory_evt_PoolCreated')}}
+        WHERE token0 = 0x7f39C581F595B53c5cb19bD0b3f8dA6c935E2Ca0 
+        UNION
+        SELECT token0
+        FROM {{source('uniswap_v3_ethereum','Factory_evt_PoolCreated')}}
+        WHERE token1 = 0x7f39C581F595B53c5cb19bD0b3f8dA6c935E2Ca0 
+        UNION
+        SELECT  0x7f39C581F595B53c5cb19bD0b3f8dA6c935E2Ca0 
+      ) AS t
+      
+  ),
+  
+  tokens_prices_daily AS (
+    SELECT DISTINCT
+      DATE_TRUNC('day', minute) AS time,
+      contract_address  AS token,
+      decimals, 
+      symbol,
+      AVG(price) AS price
+    FROM
+      {{source('prices','usd')}}
+    WHERE
+      DATE_TRUNC('day', minute) >= date '{{ project_start_date }}' 
+      AND DATE_TRUNC('day', minute) < current_date
+      AND blockchain = 'ethereum'
+      AND contract_address IN (SELECT address  FROM tokens      )
+    GROUP BY 1, 2,3,4
+    UNION ALL
+    SELECT DISTINCT
+      DATE_TRUNC('day', minute),
+      contract_address  AS token,
+      decimals, 
+      symbol,
+      LAST_VALUE(price) OVER (
+        PARTITION BY
+          DATE_TRUNC('day', minute),
+          contract_address
+        ORDER BY
+          minute NULLS FIRST range BETWEEN UNBOUNDED preceding
+          AND UNBOUNDED following
+      ) AS price
+    FROM
+      {{source('prices','usd')}}
+    WHERE
+      DATE_TRUNC('day', minute) = current_date
+      AND blockchain = 'ethereum'
+      AND contract_address IN (SELECT address  FROM tokens      )
+  ),
+  
+  tokens_prices_hourly AS (
+        SELECT DISTINCT
+          DATE_TRUNC('hour', minute) AS time,
+          LEAD(DATE_TRUNC('hour', minute),1,DATE_TRUNC('hour', NOW() + INTERVAL '1' hour)) OVER (PARTITION BY contract_address  ORDER BY DATE_TRUNC('hour', minute) NULLS FIRST) AS next_time,
+          contract_address  AS token,
+          decimals, 
+          symbol,
+          LAST_VALUE(price) OVER (
+            PARTITION BY
+              DATE_TRUNC('hour', minute),
+              contract_address
+            ORDER BY
+              minute NULLS FIRST range BETWEEN UNBOUNDED preceding
+              AND UNBOUNDED following
+          ) AS price
+        FROM
+          {{source('prices','usd')}}
+        WHERE
+          DATE_TRUNC('hour', minute) >= date '{{ project_start_date }}' 
+          AND blockchain = 'ethereum'
+          AND contract_address IN (
+            SELECT
+              address
+            FROM
+              tokens
+          )
+      
+  ),
+  
+  swap_events AS (
+    SELECT
+      DATE_TRUNC('day', sw.evt_block_time) AS time,
+      sw.contract_address AS pool,
+      cr.token0,
+      cr.token1,
+      SUM(CAST(amount0 AS DOUBLE)) AS amount0,
+      SUM(CAST(amount1 AS DOUBLE)) AS amount1
+    FROM
+      {{source('uniswap_v3_ethereum','Pair_evt_Swap')}} AS sw
+      LEFT JOIN {{source('uniswap_v3_ethereum','Factory_evt_PoolCreated')}} AS cr ON sw.contract_address = cr.pool
+    WHERE DATE_TRUNC('day', sw.evt_block_time)  >= date '{{ project_start_date }}' 
+       and sw.contract_address IN (
+        SELECT
+          address
+        FROM
+          pools
+      )
+    GROUP BY
+      1,
+      2,
+      3,
+      4
+  ),
+  mint_events AS (
+    SELECT
+      DATE_TRUNC('day', mt.evt_block_time) AS time,
+      mt.contract_address AS pool,
+      cr.token0,
+      cr.token1,
+      SUM(CAST(amount0 AS DOUBLE)) AS amount0,
+      SUM(CAST(amount1 AS DOUBLE)) AS amount1
+    FROM
+      {{source('uniswap_v3_ethereum','Pair_evt_Mint')}} AS mt
+      LEFT JOIN {{source('uniswap_v3_ethereum','Factory_evt_PoolCreated')}} AS cr ON mt.contract_address = cr.pool
+    WHERE DATE_TRUNC('day', mt.evt_block_time)  >= date '{{ project_start_date }}' 
+      and mt.contract_address IN (
+        SELECT
+          address
+        FROM
+          pools
+      )
+    GROUP BY
+      1,
+      2,
+      3,
+      4
+    UNION ALL
+    SELECT
+      d.day AS time,
+      cr.pool,
+      cr.token0,
+      cr.token1,
+      0,
+      0
+    FROM
+      (
+        SELECT DISTINCT
+          day
+        FROM
+          dates
+      ) AS d
+      LEFT JOIN {{source('uniswap_v3_ethereum','Factory_evt_PoolCreated')}} AS cr ON 1 = 1
+    WHERE
+      cr.pool IN (
+        SELECT
+          address
+        FROM
+          pools
+      )
+  ),
+  collect_events AS (
+    SELECT
+      c.evt_block_time AS time,
+      c.contract_address AS pool,
+      cr.token0,
+      cr.token1,
+      (-1) * CAST(amount0 AS DOUBLE) AS amount0,
+      (-1) * CAST(amount1 AS DOUBLE) AS amount1,
+      c.evt_tx_hash
+    FROM
+      {{source('uniswap_v3_ethereum','Pair_evt_Collect')}} AS c
+      LEFT JOIN {{source('uniswap_v3_ethereum','Factory_evt_PoolCreated')}} AS cr ON c.contract_address = cr.pool
+    WHERE DATE_TRUNC('day', c.evt_block_time)  >= date '{{ project_start_date }}' 
+      and c.contract_address IN (
+        SELECT
+          address
+        FROM
+          pools
+      )
+  ),
+  burn_events AS (
+    SELECT
+      DATE_TRUNC('day', bn.evt_block_time) AS time,
+      bn.contract_address AS pool,
+      cr.token0,
+      cr.token1,
+      (-1) * SUM(CAST(amount0 AS DOUBLE)) AS amount0,
+      (-1) * SUM(CAST(amount1 AS DOUBLE)) AS amount1
+    FROM
+      {{source('uniswap_v3_ethereum','Pair_evt_Burn')}} AS bn
+      LEFT JOIN {{source('uniswap_v3_ethereum','Factory_evt_PoolCreated')}} AS cr ON bn.contract_address = cr.pool
+    WHERE DATE_TRUNC('day', bn.evt_block_time)  >= date '{{ project_start_date }}' 
+      and bn.contract_address IN (
+        SELECT
+          address
+        FROM
+          pools
+      )
+      AND NOT bn.evt_tx_hash IN (
+        SELECT
+          evt_tx_hash
+        FROM
+          collect_events
+      )
+    GROUP BY
+      1,
+      2,
+      3,
+      4
+  ),
+  daily_delta_balance AS (
+    select time,
+      lead(time, 1, current_date + interval '1' day) over (partition by pool order by time) as next_time, 
+      pool,
+      token0,
+      token1,
+      amount0,
+      amount1 from (
+    SELECT
+      time,
+      pool,
+      token0,
+      token1,
+      SUM(COALESCE(amount0, 0)) AS amount0,
+      SUM(COALESCE(amount1, 0)) AS amount1
+    FROM
+      (
+        SELECT
+          time,
+          pool,
+          token0,
+          token1,
+          amount0,
+          amount1
+        FROM
+          swap_events
+        UNION ALL
+        SELECT
+          time,
+          pool,
+          token0,
+          token1,
+          amount0,
+          amount1
+        FROM
+          mint_events
+        /*UNION ALL
+        SELECT
+          time,
+          pool,
+          token0,
+          token1,
+          amount0,
+          amount1
+        FROM
+          burn_events
+        */UNION ALL
+        SELECT
+          DATE_TRUNC('day', time),
+          pool,
+          token0,
+          token1,
+          SUM(amount0),
+          SUM(amount1)
+        FROM
+          collect_events
+        GROUP BY
+          1,
+          2,
+          3,
+          4
+      ) AS balance
+    GROUP BY
+      1,
+      2,
+      3,
+      4
+      )
+  ),
+  pool_liquidity AS (
+    SELECT
+      time,
+      LEAD(time, 1, CURRENT_DATE + INTERVAL '1' day) OVER (
+        ORDER BY
+          time NULLS FIRST
+      ) AS next_time,
+      pool,
+      d.token0,
+      d.token1,
+      SUM(amount0) OVER (
+        PARTITION BY
+          pool
+        ORDER BY
+          time NULLS FIRST
+      ) AS amount0,
+      SUM(amount1) OVER (
+        PARTITION BY
+          pool
+        ORDER BY
+          time NULLS FIRST
+      ) AS amount1
+    FROM
+    pool_per_date  c
+    left join  daily_delta_balance d on c.address = d.pool and c.day >= d.time and c.day < d.next_time
+  ),
+  
+  swap_events_hourly AS (
+        SELECT
+          sw.evt_block_time as time,
+          sw.contract_address AS pool,
+          token0,
+          token1,
+          COALESCE(SUM(CAST(ABS(amount0) AS DOUBLE)), 0) AS amount0,
+          COALESCE(SUM(CAST(ABS(amount1) AS DOUBLE)), 0) AS amount1
+        FROM
+          {{source('uniswap_v3_ethereum','Pair_evt_Swap')}} AS sw 
+          inner join pools on sw.contract_address = pools.address
+        WHERE DATE_TRUNC('day', sw.evt_block_time)  >= date '{{ project_start_date }}' 
+         
+        GROUP BY 1, 2, 3, 4
         
-    from {{source('uniswap_v3_ethereum','Pair_evt_Swap')}} sw
-    left join {{source('uniswap_v3_ethereum','Factory_evt_PoolCreated')}} cr on sw.contract_address = cr.pool
-    WHERE date_trunc('day', sw.evt_block_time) >= '{{ project_start_date }}'
-    and sw.contract_address in (select address from pools)
-    group by 1,2,3,4
-)
+  ),
+  
+  
+  trading_volume AS (
+    SELECT
+      date_trunc('day', s.time)  AS time,
+      pool,
+      sum(COALESCE((p.price * amount0) / CAST(POWER(10, p.decimals) AS DOUBLE),0)) AS volume
+    FROM
+      swap_events_hourly AS s
+      LEFT JOIN tokens_prices_hourly AS p ON date_trunc('hour', s.time) >= p.time
+      AND date_trunc('hour', s.time) < p.next_time
+      AND s.token0 = p.token
+    group by 1,2  
+  ),
+  
+  all_metrics AS (
+    SELECT
+      l.pool,
+      pools.blockchain,
+      pools.project,
+      pools.fee,
+      cast(l.time as date) as time,
+      CASE
+        WHEN l.token0 = 0x7f39C581F595B53c5cb19bD0b3f8dA6c935E2Ca0  THEN l.token0
+        ELSE l.token1
+      END AS main_token,
+      CASE
+        WHEN l.token0 = 0x7f39C581F595B53c5cb19bD0b3f8dA6c935E2Ca0  THEN p0.symbol
+        ELSE p1.symbol
+      END AS main_token_symbol,
+      CASE
+        WHEN l.token0 = 0x7f39C581F595B53c5cb19bD0b3f8dA6c935E2Ca0  THEN l.token1
+        ELSE l.token0
+      END AS paired_token,
+      CASE
+        WHEN l.token0 = 0x7f39C581F595B53c5cb19bD0b3f8dA6c935E2Ca0  THEN p1.symbol
+        ELSE p0.symbol
+      END AS paired_token_symbol,
+      CASE
+        WHEN l.token0 = 0x7f39C581F595B53c5cb19bD0b3f8dA6c935E2Ca0  THEN (
+          CASE
+            WHEN amount0 > 0 THEN amount0 / CAST(POWER(10, p0.decimals) AS DOUBLE)
+            ELSE 0
+          END
+        )
+        ELSE (
+          CASE
+            WHEN amount1 > 0 THEN amount1 / CAST(POWER(10, p1.decimals) AS DOUBLE)
+            ELSE 0
+          END
+        )
+      END AS main_token_reserve,
+      CASE
+        WHEN l.token0 = 0x7f39C581F595B53c5cb19bD0b3f8dA6c935E2Ca0  THEN (
+          CASE
+            WHEN amount1 > 0 THEN amount1 / CAST(POWER(10, p1.decimals) AS DOUBLE)
+            ELSE 0
+          END
+        )
+        ELSE (
+          CASE
+            WHEN amount0 > 0 THEN amount0 / CAST(POWER(10, p0.decimals) AS DOUBLE)
+            ELSE 0
+          END
+        )
+      END AS paired_token_reserve,
+      CASE
+        WHEN l.token0 = 0x7f39C581F595B53c5cb19bD0b3f8dA6c935E2Ca0  THEN (
+          CASE
+            WHEN amount0 > 0 THEN (p0.price * amount0) / CAST(POWER(10, p0.decimals) AS DOUBLE)
+            ELSE 0
+          END
+        )
+        ELSE (
+          CASE
+            WHEN amount1 > 0 THEN (p1.price * amount1) / CAST(POWER(10, p1.decimals) AS DOUBLE)
+            ELSE 0
+          END
+        )
+      END AS main_token_usd_reserve,
+      CASE
+        WHEN l.token0 = 0x7f39C581F595B53c5cb19bD0b3f8dA6c935E2Ca0  THEN (
+          CASE
+            WHEN amount1 > 0 THEN (p1.price * amount1) / CAST(POWER(10, p1.decimals) AS DOUBLE)
+            ELSE 0
+          END
+        )
+        ELSE (
+          CASE
+            WHEN amount0 > 0 THEN (p0.price * amount0) / CAST(POWER(10, p0.decimals) AS DOUBLE)
+            ELSE 0
+          END
+        )
+      END AS paired_token_usd_reserve,
+      volume AS trading_volume
+    FROM
+      pool_liquidity AS l
+      LEFT JOIN pools ON l.pool = pools.address
+      LEFT JOIN tokens AS t0 ON l.token0 = t0.address
+      LEFT JOIN tokens AS t1 ON l.token1 = t1.address
+      LEFT JOIN tokens_prices_daily AS p0 ON l.time = p0.time   AND l.token0 = p0.token
+      LEFT JOIN tokens_prices_daily AS p1 ON l.time = p1.time   AND l.token1 = p1.token
+      LEFT JOIN trading_volume AS tv ON l.time = tv.time AND l.pool = tv.pool
+  )
+SELECT
+  CONCAT(
+    CAST(
+      CONCAT(
+        CAST(
+          CONCAT(
+            CAST(
+              CONCAT(
+                CAST(
+                  CONCAT(
+                    CAST(blockchain AS VARCHAR),
+                    CAST(
+                      CONCAT(CAST(' ' AS VARCHAR), CAST(project AS VARCHAR)) AS VARCHAR
+                    )
+                  ) AS VARCHAR
+                ),
+                CAST(' ' AS VARCHAR)
+              ) AS VARCHAR
+            ),
+            CAST(
+              COALESCE(paired_token_symbol, 'unknown') AS VARCHAR
+            )
+          ) AS VARCHAR
+        ),
+        CAST(':' AS VARCHAR)
+      ) AS VARCHAR
+    ),
+    CAST(main_token_symbol AS VARCHAR),
+    CAST(' ' AS VARCHAR),
+    format('%,.3f',round(coalesce(fee,0),4))
+  ) AS pool_name,
+  *
+FROM
+  all_metrics
 
-, mint_events as (
-    select 
-        date_trunc('day', mt.evt_block_time) as time,
-        mt.contract_address as pool,
-        cr.token0, cr.token1,
-        sum(cast(amount0 as DOUBLE)) as amount0,
-        sum(cast(amount1 as DOUBLE)) as amount1
-    from {{source('uniswap_v3_ethereum','Pair_evt_Mint')}} mt
-    left join {{source('uniswap_v3_ethereum','Factory_evt_PoolCreated')}} cr on mt.contract_address = cr.pool
-    WHERE date_trunc('day', mt.evt_block_time) >= '{{ project_start_date }}'
-    and mt.contract_address  in (select address from pools)
-    group by 1,2,3,4
-    
-)
-
-, collect_events as (
-    select 
-        c.evt_block_time as time,
-        c.contract_address as pool,
-        cr.token0, cr.token1,
-        (-1)*cast(amount0 as DOUBLE) as amount0,
-        (-1)*cast(amount1 as DOUBLE) as amount1,
-        c.evt_tx_hash
-    from {{source('uniswap_v3_ethereum','Pair_evt_Collect')}} c
-    left join {{source('uniswap_v3_ethereum','Factory_evt_PoolCreated')}} cr on c.contract_address = cr.pool
-    WHERE date_trunc('day', c.evt_block_time) >= '{{ project_start_date }}'
-    and c.contract_address  in (select address from pools)
-    
-)
-
-
-, burn_events as (
-    select 
-        date_trunc('day', bn.evt_block_time) as time,
-        bn.contract_address as pool,
-        cr.token0, cr.token1,
-        (-1)*sum(cast(amount0 as DOUBLE)) as amount0,
-        (-1)*sum(cast(amount1 as DOUBLE)) as amount1
-    from {{source('uniswap_v3_ethereum','Pair_evt_Burn')}} bn
-    left join {{source('uniswap_v3_ethereum','Factory_evt_PoolCreated')}} cr on bn.contract_address = cr.pool
-    WHERE date_trunc('day', bn.evt_block_time) >= '{{ project_start_date }}'
-    and bn.contract_address  in (select address from pools)
-    and bn.evt_tx_hash not in (select evt_tx_hash from collect_events)
-    group by 1,2,3,4
-)
-
-, daily_delta_balance as (
-    select time, pool, token0, token1, sum(coalesce(amount0, 0)) as amount0, sum(coalesce(amount1, 0)) as amount1,
-    lead(time, 1, now() + interval '1 day') over (partition by pool order by time) as next_time
-    from ( 
-    select time, pool, token0, token1, amount0, amount1 
-    from swap_events
-    union all
-    select time, pool, token0, token1, amount0, amount1 
-    from mint_events
-    union all
-    select time, pool, token0, token1, amount0, amount1 
-    from burn_events
-    union all
-    select date_trunc('day', time), pool, token0, token1, sum(amount0), sum(amount1) 
-    from collect_events
-    group by 1,2,3,4
-    
-    ) balance
-    group by 1,2,3,4
-)
-
-, pool_liquidity as (
-    select c.day as time, c.address as pool, token0, token1, sum(amount0) over(partition by pool order by time) as amount0, 
-    sum(amount1)  over(partition by pool order by time) as amount1
-    from pool_per_date  c
-    LEFT JOIN daily_delta_balance b ON c.address = b.pool and  b.time <= c.day AND c.day < b.next_time
-)
-
-, swap_events_hourly as (  
-    select hour, pool, token0, token1, sum(amount0) as amount0, sum(amount1) as amount1 from (
-    select 
-        date_trunc('hour', sw.evt_block_time) as hour,
-        sw.contract_address as pool,
-        cr.token0, cr.token1,
-        coalesce(sum(cast(abs(amount0) as DOUBLE)),0) as amount0,
-        coalesce(sum(cast(abs(amount1) as DOUBLE)),0) as amount1
-        
-    from {{source('uniswap_v3_ethereum','Pair_evt_Swap')}} sw 
-    left join {{source('uniswap_v3_ethereum','Factory_evt_PoolCreated')}} cr on sw.contract_address = cr.pool
-    WHERE date_trunc('day', sw.evt_block_time) >= '{{ project_start_date }}'
-    and sw.contract_address in (select address from pools)
-    group by 1,2,3,4
-      ) a group by 1,2,3,4
-) 
-
-, trading_volume_hourly as (
-    select hour as time, pool, token0, amount0, p.price, coalesce(p.price*amount0/power(10, t.decimals),0) as volume
-    from swap_events_hourly s 
-    left join tokens t on s.token0 = t.address
-    left join tokens_prices_hourly p on  s.hour >= p.time and s.hour < p.next_time  and s.token0 = p.token
-   
-)
-
-
-, trading_volume as (
-select  distinct date_trunc('day', time) as time, pool, sum(volume) as volume
-from trading_volume_hourly
-group by 1,2
-)
-
-, all_metrics as (
-select l.pool, pools.blockchain, pools.project, pools.fee, l.time, 
-    case when token0 = LOWER('0x7f39C581F595B53c5cb19bD0b3f8dA6c935E2Ca0') then token0 else token1 end main_token,
-    case when token0 = LOWER('0x7f39C581F595B53c5cb19bD0b3f8dA6c935E2Ca0') then t0.symbol else t1.symbol end main_token_symbol,
-    case when token0 = LOWER('0x7f39C581F595B53c5cb19bD0b3f8dA6c935E2Ca0') then token1 else token0 end paired_token,
-    case when token0 = LOWER('0x7f39C581F595B53c5cb19bD0b3f8dA6c935E2Ca0') then t1.symbol else t0.symbol end paired_token_symbol, 
-    case when token0 = LOWER('0x7f39C581F595B53c5cb19bD0b3f8dA6c935E2Ca0') then (case when amount0 > 0 then amount0/power(10, t0.decimals) else 0 end)  
-          else (case when amount1 > 0 then amount1/power(10, t1.decimals) else 0 end)  
-         end main_token_reserve,
-    case when token0 = LOWER('0x7f39C581F595B53c5cb19bD0b3f8dA6c935E2Ca0') then (case when amount1 > 0 then amount1/power(10, t1.decimals) else 0 end)  
-          else (case when amount0 > 0 then  amount0/power(10, t0.decimals) else 0 end)
-         end paired_token_reserve,
-    case when token0 = LOWER('0x7f39C581F595B53c5cb19bD0b3f8dA6c935E2Ca0') then (case when amount0 > 0 then p0.price*amount0/power(10, t0.decimals) else 0 end)
-         else (case when amount1 > 0 then p1.price*amount1/power(10, t1.decimals) else 0 end)
-         end as main_token_usd_reserve,
-    case when token0 = LOWER('0x7f39C581F595B53c5cb19bD0b3f8dA6c935E2Ca0') then (case when amount1 > 0 then p1.price*amount1/power(10, t1.decimals) else 0 end)
-         else (case when amount0 > 0 then p0.price*amount0/power(10, t0.decimals) else 0 end)
-         end as paired_token_usd_reserve,     
-    volume as trading_volume
-from pool_liquidity l 
-left join pools on l.pool = pools.address
-left join tokens t0 on l.token0 = t0.address
-left join tokens t1 on l.token1 = t1.address
-left join tokens_prices_daily p0 on l.time = p0.time and l.token0 = p0.token
-left join tokens_prices_daily p1 on l.time = p1.time and l.token1 = p1.token
-left join trading_volume tv on l.time = tv.time and l.pool = tv.pool
-) 
-
-
-select CONCAT(CONCAT(CONCAT(CONCAT(CONCAT(blockchain,CONCAT(' ', project)) ,' '), coalesce(paired_token_symbol,'unknown')),':') , main_token_symbol, ' ', fee) as pool_name,* 
-from all_metrics
-where main_token_reserve > 1
