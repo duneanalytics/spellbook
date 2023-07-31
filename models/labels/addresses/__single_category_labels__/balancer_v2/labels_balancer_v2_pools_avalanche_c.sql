@@ -30,7 +30,7 @@ WITH pools AS (
       ON c.evt_tx_hash = cc.call_tx_hash
       AND SUBSTRING(CAST(c.poolId AS varchar), 1, 42) = CAST(cc.output_0 AS varchar)
     CROSS JOIN UNNEST(cc.tokens) AS t(tokens)
-    CROSS JOIN UNNEST(cc.weights) AS w(weights)
+    CROSS JOIN UNNEST(cc.normalized_weights) AS w(weights)
     {% if is_incremental() %}
     WHERE c.evt_block_time >= date_trunc('day', now() - interval '7' day)
       AND cc.call_block_time >= date_trunc('day', now() - interval '7' day)
