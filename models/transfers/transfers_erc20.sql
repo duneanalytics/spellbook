@@ -43,7 +43,7 @@ with
                 and 1 = (
                         CASE
                         -- is this the first time we're running this chain?
-                        WHEN NOT EXISTS (SELECT 1 FROM {{this}} WHERE blockchain = '{{chain}}') THEN 1
+                        WHEN NOT EXISTS (SELECT 1 FROM {{this}} WHERE blockchain = '{{chain}}' limit 1) THEN 1
                         -- if not, then incremental
                         WHEN t.block_time >= date_trunc('day', now() - interval '7' day) THEN 1
                         ELSE 0
@@ -82,7 +82,7 @@ with
                 and 1 = (
                         CASE
                         -- is this the first time we're running this chain?
-                        WHEN NOT EXISTS (SELECT 1 FROM {{this}} WHERE blockchain = '{{chain}}') THEN 1
+                        WHEN NOT EXISTS (SELECT 1 FROM {{this}} WHERE blockchain = '{{chain}}' limit 1) THEN 1
                         -- if not, then incremental
                         WHEN t.block_time >= date_trunc('day', now() - interval '7' day) THEN 1
                         ELSE 0
@@ -94,7 +94,7 @@ with
         and 1 = (
                 CASE
                 -- is this the first time we're running this chain?
-                WHEN NOT EXISTS (SELECT 1 FROM {{this}} WHERE blockchain = '{{chain}}') THEN 1
+                WHEN NOT EXISTS (SELECT 1 FROM {{this}} WHERE blockchain = '{{chain}}' limit 1) THEN 1
                 -- if not, then incremental
                 WHEN tr.evt_block_time >= date_trunc('day', now() - interval '7' day) THEN 1
                 ELSE 0
