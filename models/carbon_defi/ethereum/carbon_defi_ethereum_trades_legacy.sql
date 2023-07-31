@@ -25,11 +25,11 @@ SELECT
     t.sourceAmount AS token_sold_amount_raw,
     NULL AS amount_usd,
     CASE
-        WHEN t.targetToken = 0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee THEN {{weth_address}}
+        WHEN t.targetToken = '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee' THEN {{weth_address}}
         ELSE t.targetToken
     END AS token_bought_address, --Using WETH for easier joining with USD price table
     CASE
-        WHEN t.sourceToken = 0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee THEN {{weth_address}}
+        WHEN t.sourceToken = '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee' THEN {{weth_address}}
         ELSE t.sourceToken
     END AS token_sold_address, --Using WETH for easier joining with USD price table
 
@@ -39,7 +39,7 @@ SELECT
     t.evt_index
 FROM {{ source('carbon_defi_ethereum', 'CarbonController_evt_TokensTraded') }} t
     {% if is_incremental() %}
-    WHERE t.evt_block_time >= date_trunc("day", now() - interval '1 week')
+    WHERE t.evt_block_time >= date_trunc('day', now() - interval '7' day)
     {% endif %}
     {% if not is_incremental() %}
     WHERE t.evt_block_time >= '{{project_start_date}}'
@@ -83,7 +83,7 @@ INNER JOIN {{ source('ethereum', 'transactions') }} tx
     AND tx.block_time >= '{{project_start_date}}'
     {% endif %}
     {% if is_incremental() %}
-    AND tx.block_time >= date_trunc('day', now() - interval '1 week')
+    AND tx.block_time >= date_trunc('day', now() - interval '7' day)
     {% endif %}
 LEFT JOIN {{ ref('tokens_erc20_legacy') }} erc20a
     ON erc20a.contract_address = dexs.token_bought_address
@@ -99,7 +99,7 @@ LEFT JOIN {{ source('prices', 'usd') }} p_bought
     AND p_bought.minute >= '{{project_start_date}}'
     {% endif %}
     {% if is_incremental() %}
-    AND p_bought.minute >= date_trunc('day', now() - interval '1 week')
+    AND p_bought.minute >= date_trunc('day', now() - interval '7' day)
     {% endif %}
 LEFT JOIN {{ source('prices', 'usd') }} p_sold
     ON p_sold.minute = date_trunc('minute', dexs.block_time)
@@ -109,5 +109,5 @@ LEFT JOIN {{ source('prices', 'usd') }} p_sold
     AND p_sold.minute >= '{{project_start_date}}'
     {% endif %}
     {% if is_incremental() %}
-    AND p_sold.minute >= date_trunc('day', now() - interval '1 week')
+    AND p_sold.minute >= date_trunc('day', now() - interval '7' day)
     {% endif %}
