@@ -1,0 +1,30 @@
+version: 2
+
+models:
+  - name: transfers_celo_erc20
+    meta:
+      blockchain: celo
+      sector: transfers
+      project: erc20
+      contributors: danielpartida
+    config:
+      tags: [ 'transfers', 'celo', 'erc20', 'danielpartida']
+    description: "ERC20 Token Transfers on Celo. This table is updated every 30 minutes."
+    columns:
+      - name: unique_transfer_id
+        description: "Unique transfer ID (used for testing for duplicates)"
+      - &blockchain
+        name: blockchain
+        description: "Blockchain"
+      - &wallet_address
+        name: wallet_address
+        description: "Wallet address of sender or receiver. If amount is negative, wallet address is the sender's."
+      - &token_address
+        name: token_address
+        description: "Contract address for token"
+      - &evt_block_time
+        name: evt_block_time
+        description: "Timestamp for block event time in UTC"
+      - &amount_raw
+        name: amount_raw
+        description: "Raw amount of ERC20 token held *before* taking into account token decimals"
