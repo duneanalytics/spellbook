@@ -32,11 +32,11 @@ WITH pool_labels AS (
 
     dex_prices_1 AS (
         SELECT
-            date_trunc('day', HOUR) AS DAY,
+            date_trunc('day', HOUR) AS day,
             contract_address AS token,
-            approx_percentilepercentile(median_price, 0.5) AS price,
+            approx_percentile(median_price, 0.5) AS price,
             sum(sample_size) AS sample_size
-        FROM {{ ref('dex_prices_legacy') }}
+        FROM {{ ref('dex_prices') }}
         GROUP BY 1, 2
         HAVING sum(sample_size) > 3
     ),
@@ -52,6 +52,7 @@ WITH pool_labels AS (
         FROM
             dex_prices_1
     ),
+
 
     bpt_prices AS(
         SELECT 
@@ -183,8 +184,8 @@ WITH pool_labels AS (
             symbol AS token_symbol,
             cumulative_amount as token_balance_raw,
             cumulative_amount / POWER(10, COALESCE(t.decimals, p1.decimals)) AS token_balance,
-            cumulative_amount / POWER(10, COALESCE(t.decimals, p1.decimals)) * COALESCE(p1.price, p2.price, 0) AS protocol_liquidity_usd,
-            cumulative_amount / POWER(10, COALESCE(t.decimals, p1.decimals)) * COALESCE(p1.price, p2.price, p3.bpt_price) AS pool_liquidity_usd
+            cumulative_amount / POWER(10, COALESCE(t.decimals, p1.decimals)) * COALESCE(p1.price, 0) AS protocol_liquidity_usd,
+            cumulative_amount / POWER(10, COALESCE(t.decimals, p1.decimals)) * COALESCE(p1.price, p3.bpt_price) AS pool_liquidity_usd
         FROM calendar c
         LEFT JOIN cumulative_balance b ON b.day <= c.day
         AND c.day < b.day_of_next_change
@@ -195,8 +196,8 @@ WITH pool_labels AS (
         LEFT JOIN dex_prices p2 ON p2.day <= c.day
         AND c.day < p2.day_of_next_change
         AND p2.token = b.token
-        LEFT JOIN bpt_prices p3 ON p3.day = b.day AND CAST(p3.token as varchar) = CAST(b.token as varchar(42))
-        WHERE CAST(b.token as varchar) != SUBSTRING(CAST(b.pool_id as varchar), 1, 42)
+        LEFT JOIN bpt_prices p3 ON p3.day = b.day AND p3.token = CAST(b.token as varchar(42))
+        WHERE b.token != SUBSTRING(b.pool_id, 0, 42)
     ),
 
     pool_liquidity_estimates AS (

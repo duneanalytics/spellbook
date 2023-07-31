@@ -2,7 +2,7 @@
     config(
         schema = 'balancer_v2_arbitrum',
         alias = alias('bpt_prices'),
-        tags = ['dunesql'],
+        tags = ['dunesql'], 
         materialized = 'incremental',
         file_format = 'delta',
         incremental_strategy = 'merge',
