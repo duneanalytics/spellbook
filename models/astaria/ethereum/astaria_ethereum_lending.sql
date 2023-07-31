@@ -37,8 +37,8 @@ SELECT
     ae.evt_tx_hash as tx_hash, 
     et."from" as tx_from, 
     et."to" as tx_to, 
-    ae.evt_index,
-    ae.lien_id
+    ae.lien_id,
+    ae.evt_index
 FROM 
 {{ ref('astaria_ethereum_events') }} ae 
 INNER JOIN 
@@ -48,7 +48,7 @@ INNER JOIN
     AND et.block_time >= DATE '{{project_start_date}}'
     {% endif %}
     {% if is_incremental() %}
-    AND ae.evt_block_time >= date_trunc('day', now() - interval '7' Day)
+    -- AND ae.evt_block_time >= date_trunc('day', now() - interval '7' Day)
     AND et.block_time >= date_trunc('day', now() - interval '7' Day)
     {% endif %}
 LEFT JOIN 
@@ -60,6 +60,6 @@ LEFT JOIN
     AND p.minute >= DATE '{{project_start_date}}'
     {% endif %}
     {% if is_incremental() %}
-    AND ae.evt_block_time >= date_trunc('day', now() - interval '7' Day)
+    -- AND ae.evt_block_time >= date_trunc('day', now() - interval '7' Day)
     AND p.minute >= date_trunc('day', now() - interval '7' Day)
     {% endif %}
