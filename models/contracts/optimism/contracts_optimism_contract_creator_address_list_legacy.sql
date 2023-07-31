@@ -580,6 +580,7 @@ WITH curated_list AS (
       ,('0x71F718D3e4d1449D1502A6A7595eb84eBcCB1683', 'Curve')
       ,('0x383Ea12347E56932E08638767B8A2B3c18700493', 'Hundred Finance')
       ,('0x8286dC6dF929C4BfA4f6951caB4dAe2EC02d4D72', 'Hundred Finance')
+      ,('0xB45cf380FF9A33c2bf7c41043530dc8Bb2e5295B', 'ChainX')
       
   ) as temp_table (creator_address, contract_project)
 )
