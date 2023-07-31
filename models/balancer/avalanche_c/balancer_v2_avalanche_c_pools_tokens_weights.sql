@@ -2,6 +2,7 @@
     config(
         schema='balancer_v2_avalanche_c',
         alias = alias('pools_tokens_weights'),
+        tags = ['dunesql'],
         materialized = 'incremental',
         file_format = 'delta',
         incremental_strategy = 'merge',
@@ -9,23 +10,41 @@
         post_hook='{{ expose_spells(\'["avalanche_c"]\',
                                     "project",
                                     "balancer_v2",
-                                    \'["metacrypto", "jacektrocinski", "viniabussafi"]\') }}'
+                                    \'["metacrypto", "jacektrocinski"]\') }}'
     )
 }}
 
 --
 -- Balancer v2 Pools Tokens Weights
 --
-SELECT
-    registered.poolId AS pool_id,
-    tokens.token_address,
-    weights.normalized_weight / POWER(10, 18) AS normalized_weight
-FROM {{ source('balancer_v2_avalanche_c', 'Vault_evt_PoolRegistered') }} registered
-INNER JOIN {{ source('balancer_v2_avalanche_c', 'WeightedPoolFactory_call_create') }} call_create
-    ON call_create.output_0 = SUBSTRING(registered.poolId, 0, 42)
-    LATERAL VIEW posexplode(call_create.tokens) tokens AS pos, token_address
-    LATERAL VIEW posexplode(call_create.normalizedWeights) weights AS pos, normalized_weight
-WHERE tokens.pos = weights.pos
-    {% if is_incremental() %}
-    AND registered.evt_block_time >= date_trunc("day", now() - interval '1 week')
-    {% endif %}
+WITH registered AS (
+    SELECT
+        poolID AS pool_id,
+        evt_block_time
+    FROM {{ source('balancer_v2_avalanche_c', 'Vault_evt_PoolRegistered') }}
+),
+weighted_pool_factory AS (
+    SELECT
+        call_create.output_0 AS pool_id,
+        t.pos AS pos,
+        t.token_address AS token_address,
+        t2.normalized_weight AS normalized_weight
+    FROM {{ source('balancer_v2_avalanche_c', 'WeightedPoolFactory_call_create') }} AS call_create
+    CROSS JOIN UNNEST(call_create.tokens) WITH ORDINALITY t(token_address, pos)
+    CROSS JOIN UNNEST(call_create.weights) WITH ORDINALITY t2(normalized_weight, pos)
+    WHERE t.pos = t2.pos
+),
+normalized_weights AS (
+    SELECT
+        pool_id,
+        token_address,
+        normalized_weight / POWER(10, 18) AS normalized_weight
+    FROM weighted_pool_factory
+)
+SELECT r.pool_id, w.token_address, w.normalized_weight
+FROM normalized_weights w 
+LEFT JOIN registered r ON SUBSTRING(CAST(r.pool_id as varchar),1,42) = CAST(w.pool_id as varchar)
+WHERE w.pool_id IS NOT NULL
+{% if is_incremental() %}
+AND r.evt_block_time >= date_trunc('day', now() - interval '7' day)
+{% endif %}
