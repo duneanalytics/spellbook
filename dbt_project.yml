@@ -863,6 +863,11 @@ models:
       +schema: bancor
       ethereum:
         +schema: bancor_ethereum
+    
+    carbon_defi:
+      +schema: carbon_defi
+      ethereum:
+        +schema: carbon_defi_ethereum
 
     kyberswap:
       +schema: kyberswap
