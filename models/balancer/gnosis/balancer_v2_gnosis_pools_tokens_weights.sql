@@ -31,7 +31,7 @@ weighted_pool_factory AS (
         t2.normalized_weight AS normalized_weight
     FROM {{ source('balancer_v2_gnosis', 'WeightedPoolV4Factory_call_create') }} AS call_create
     CROSS JOIN UNNEST(call_create.tokens) WITH ORDINALITY t(token_address, pos)
-    CROSS JOIN UNNEST(call_create.weights) WITH ORDINALITY t2(normalized_weight, pos)
+    CROSS JOIN UNNEST(call_create.normalizedWeights) WITH ORDINALITY t2(normalized_weight, pos)
     WHERE t.pos = t2.pos
 ),
 normalized_weights AS (
