@@ -5,6 +5,7 @@ seeds:
     config:
       tags: dunesql
       column_types:
+        block_date: date
         tx_hash: varbinary
         token_bought_address: varbinary
         token_sold_address: varbinary
