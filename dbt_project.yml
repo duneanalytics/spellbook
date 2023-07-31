@@ -319,6 +319,11 @@ models:
       gnosis:
         +schema: daohaus_gnosis
 
+    colony:
+      +schema: colony
+      gnosis:
+        +schema: colony_gnosis
+
     sushiswap:
       +schema: sushiswap
       ethereum:
