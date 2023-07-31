@@ -26,6 +26,7 @@ WITH
     ,source('paraswap_avalanche_c', 'AugustusSwapperV5_evt_Swapped2')
     ,source('paraswap_avalanche_c', 'AugustusSwapperV5_evt_BoughtV3')
     ,source('paraswap_avalanche_c', 'AugustusSwapperV5_evt_SwappedV3')
+    ,source('paraswap_avalanche_c', 'AugustusSwapperV5_evt_SwappedDirect')
 ] %}
 
 dexs as (
