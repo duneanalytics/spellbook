@@ -52,6 +52,7 @@ normalized_weights AS (
         normalized_weight / POWER(10, 18) AS normalized_weight
     FROM weighted_pool_v4_factory
     UNION ALL
+    SELECT
         pool_id,
         token_address,
         normalized_weight / POWER(10, 18) AS normalized_weight
