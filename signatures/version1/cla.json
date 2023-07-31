@@ -1,3 +1,12 @@
 {
-   "signedContributors": []
+  "signedContributors": [
+    {
+      "name": "aalan3",
+      "id": 1659079,
+      "comment_id": 1658078710,
+      "created_at": "2023-07-31T10:14:29Z",
+      "repoId": 237392204,
+      "pullRequestNo": 3905
+    }
+  ]
 }
