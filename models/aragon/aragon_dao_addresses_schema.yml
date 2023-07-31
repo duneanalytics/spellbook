@@ -32,3 +32,6 @@ models:
       - &product
         name: product
         description: "Aragon Product used to deploy DAO"
+      - &block_month
+        name: block_month
+        description: "UTC event block month of DAO creation"
