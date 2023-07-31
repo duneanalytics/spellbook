@@ -204,3 +204,4 @@ LEFT JOIN {{ ref('balancer_v2_arbitrum_pools_tokens_weights') }} w ON b.pool_id 
 AND w.token_address = c.token
 LEFT JOIN pool_labels p ON CAST(p.pool_id as varchar) = SUBSTRING(CAST(b.pool_id as varchar), 1, 42)
 
+
