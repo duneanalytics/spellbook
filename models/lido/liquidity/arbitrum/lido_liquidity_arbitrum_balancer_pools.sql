@@ -1,6 +1,7 @@
 {{ config(
     schema='lido_liquidity_arbitrum',
     alias = alias('balancer_pools'),
+    tags = ['dunesql'], 
     partition_by = ['time'],
     materialized = 'table',
     file_format = 'delta',
@@ -14,75 +15,21 @@
 
 {% set project_start_date = '2022-09-17' %} 
 
-with dates AS (
-        SELECT explode(sequence(to_date('{{ project_start_date }}'), now(), interval 1 day)) AS day
-    )
- 
+with dates as (
+with day_seq as (select (sequence(cast('{{ project_start_date }}' as date), CURRENT_DATE, interval '1' day)) as day)
+select days.day
+from day_seq
+cross join unnest(day) as days(day)
+  )
 
-, pools as (   
-SELECT
-    registered.poolId AS pool_id,
-    tokens.token_address
-FROM {{source('balancer_v2_arbitrum','Vault_evt_PoolRegistered')}} registered
-INNER JOIN {{source('balancer_v2_arbitrum','WeightedPoolV2Factory_call_create')}} call_create
-    ON call_create.output_0 = SUBSTRING(registered.poolId, 0, 42)
-    LATERAL VIEW posexplode(call_create.tokens) tokens AS pos, token_address
-WHERE tokens.token_address = lower('0x5979d7b546e38e414f7e9822514be443a4800529')
-union all
-SELECT
-    registered.poolId AS pool_id,
-    tokens.token_address
-FROM {{source('balancer_v2_arbitrum','Vault_evt_PoolRegistered')}} registered
-INNER JOIN {{source('balancer_v2_arbitrum','WeightedPool2TokensFactory_call_create')}} call_create
-    ON call_create.output_0 = SUBSTRING(registered.poolId, 0, 42)
-    LATERAL VIEW posexplode(call_create.tokens) tokens AS pos, token_address
-WHERE tokens.token_address = lower('0x5979d7b546e38e414f7e9822514be443a4800529')
-union all
-SELECT
-    registered.poolId AS pool_id,
-    tokens.token_address
-FROM {{source('balancer_v2_arbitrum','Vault_evt_PoolRegistered')}} registered
-INNER JOIN {{source('balancer_v2_arbitrum','WeightedPoolFactory_call_create')}} call_create
-    ON call_create.output_0 = SUBSTRING(registered.poolId, 0, 42)
-    LATERAL VIEW posexplode(call_create.tokens) tokens AS pos, token_address
-WHERE tokens.token_address = lower('0x5979d7b546e38e414f7e9822514be443a4800529')
-union all
-SELECT
-    registered.poolId AS pool_id,
-    tokens.token_address
-FROM {{source('balancer_v2_arbitrum','Vault_evt_PoolRegistered')}} registered
-INNER JOIN {{source('balancer_v2_arbitrum','StablePoolFactory_call_create')}} call_create
-    ON call_create.output_0 = SUBSTRING(registered.poolId, 0, 42)
-    LATERAL VIEW posexplode(call_create.tokens) tokens AS pos, token_address
-WHERE tokens.token_address = lower('0x5979d7b546e38e414f7e9822514be443a4800529')
-union all
-SELECT
-    registered.poolId AS pool_id,
-    tokens.token_address
-FROM {{source('balancer_v2_arbitrum','Vault_evt_PoolRegistered')}} registered
-INNER JOIN  {{source('balancer_v2_arbitrum','MetaStablePoolFactory_call_create')}} call_create
-    ON call_create.output_0 = SUBSTRING(registered.poolId, 0, 42)
-    LATERAL VIEW posexplode(call_create.tokens) tokens AS pos, token_address
-WHERE tokens.token_address = lower('0x5979d7b546e38e414f7e9822514be443a4800529')
-union all
-SELECT
-    registered.poolId AS pool_id,
-    tokens.token_address
-FROM {{source('balancer_v2_arbitrum','Vault_evt_PoolRegistered')}} registered
-INNER JOIN  {{source('balancer_v2_arbitrum','ComposableStablePoolFactory_call_create')}} call_create
-    ON call_create.output_0 = SUBSTRING(registered.poolId, 0, 42)
-    LATERAL VIEW posexplode(call_create.tokens) tokens AS pos, token_address
-WHERE tokens.token_address = lower('0x5979d7b546e38e414f7e9822514be443a4800529')
-union all
-SELECT
-    registered.poolId AS pool_id,
-    tokens.token_address
-FROM {{source('balancer_v2_arbitrum','Vault_evt_PoolRegistered')}} registered
-INNER JOIN  {{source('balancer_v2_arbitrum','LiquidityBootstrappingPoolFactory_call_create')}} call_create
-    ON call_create.output_0 = SUBSTRING(registered.poolId, 0, 42)
-    LATERAL VIEW posexplode(call_create.tokens) tokens AS pos, token_address
-WHERE tokens.token_address = lower('0x5979d7b546e38e414f7e9822514be443a4800529')
 
+, pools(pool_id,  poolAddress) as (   
+values 
+(0x36bf227d6bac96e2ab1ebb5492ecec69c691943f000200000000000000000316, 0x36bf227d6BaC96e2aB1EbB5492ECec69C691943f),
+(0x5a7f39435fd9c381e4932fa2047c9a5136a5e3e7000000000000000000000400, 0x5a7f39435fd9c381e4932fa2047c9a5136a5e3e7),
+(0xfb5e6d0c1dfed2ba000fbc040ab8df3615ac329c000000000000000000000159, 0xfb5e6d0c1dfed2ba000fbc040ab8df3615ac329c),
+(0xb5bd58c733948e3d65d86ba9604e06e5da276fd10002000000000000000003e6, 0xb5bd58c733948e3d65d86ba9604e06e5da276fd1),
+(0x178e029173417b1f9c8bc16dcec6f697bc323746000200000000000000000158, 0x178e029173417b1f9c8bc16dcec6f697bc323746)
 )
 
 , pool_per_date as ( 
@@ -91,49 +38,45 @@ from dates
 left join pools on 1=1
 )
 
-, pools_fee as (
-select  contract_address, block_time as time, lead(block_time,1,now()) over (partition by contract_address order by contract_address, block_time) as next_time, swap_fee_percentage/1e18 as fee 
-from {{ref('balancer_v2_arbitrum_pools_fees')}}
-where contract_address in (select SUBSTRING(pool_id, 0, 42) from pools)
-)
-
 , tokens as (
 select distinct token_address from (
 SELECT  tokens.token_address
 FROM {{source('balancer_v2_arbitrum','WeightedPoolV2Factory_call_create')}} call_create
-    LATERAL VIEW posexplode(call_create.tokens) tokens AS pos, token_address
-WHERE call_create.output_0 in (select distinct  SUBSTRING(pool_id, 0, 42) from pools)
+    CROSS JOIN UNNEST(call_create.tokens) as tokens(token_address)
+WHERE call_create.output_0 in (select distinct  poolAddress from pools)
 union all
 SELECT tokens.token_address
 FROM {{source('balancer_v2_arbitrum','WeightedPool2TokensFactory_call_create')}} call_create
-    LATERAL VIEW posexplode(call_create.tokens) tokens AS pos, token_address
-WHERE call_create.output_0 in (select distinct  SUBSTRING(pool_id, 0, 42) from pools)
+    CROSS JOIN UNNEST(call_create.tokens) as tokens(token_address)
+WHERE call_create.output_0 in (select distinct  poolAddress from pools)
 union all
 SELECT tokens.token_address
 FROM {{source('balancer_v2_arbitrum','WeightedPoolFactory_call_create')}} call_create
-    LATERAL VIEW posexplode(call_create.tokens) tokens AS pos, token_address
-WHERE call_create.output_0 in (select distinct  SUBSTRING(pool_id, 0, 42) from pools)
+    CROSS JOIN UNNEST(call_create.tokens) as tokens(token_address)
+WHERE call_create.output_0 in (select distinct  poolAddress from pools)
 union all
 SELECT tokens.token_address
 FROM {{source('balancer_v2_arbitrum','StablePoolFactory_call_create')}} call_create
-    LATERAL VIEW posexplode(call_create.tokens) tokens AS pos, token_address
-WHERE call_create.output_0 in (select distinct  SUBSTRING(pool_id, 0, 42) from pools)
+    CROSS JOIN UNNEST(call_create.tokens) as tokens(token_address)
+WHERE call_create.output_0 in (select distinct  poolAddress from pools)
 union all
 SELECT tokens.token_address
 FROM {{source('balancer_v2_arbitrum','MetaStablePoolFactory_call_create')}} call_create
-    LATERAL VIEW posexplode(call_create.tokens) tokens AS pos, token_address
-WHERE call_create.output_0 in (select distinct  SUBSTRING(pool_id, 0, 42) from pools)
+    CROSS JOIN UNNEST(call_create.tokens) as tokens(token_address)
+WHERE call_create.output_0 in (select distinct  poolAddress from pools)
 union all
 SELECT tokens.token_address
 FROM {{source('balancer_v2_arbitrum','ComposableStablePoolFactory_call_create')}} call_create
-    LATERAL VIEW posexplode(call_create.tokens) tokens AS pos, token_address
-WHERE call_create.output_0 in (select distinct  SUBSTRING(pool_id, 0, 42) from pools)
+    CROSS JOIN UNNEST(call_create.tokens) as tokens(token_address)
+WHERE call_create.output_0 in (select distinct  poolAddress from pools)
 union all
 SELECT tokens.token_address
 FROM {{source('balancer_v2_arbitrum','LiquidityBootstrappingPoolFactory_call_create')}} call_create
-    LATERAL VIEW posexplode(call_create.tokens) tokens AS pos, token_address
-WHERE call_create.output_0 in (select distinct  SUBSTRING(pool_id, 0, 42) from pools)
-))
+    CROSS JOIN UNNEST(call_create.tokens) as tokens(token_address)
+WHERE call_create.output_0 in (select distinct  poolAddress from pools)
+)
+)
+
 
 , tokens_prices_daily AS (
     SELECT distinct
@@ -142,8 +85,9 @@ WHERE call_create.output_0 in (select distinct  SUBSTRING(pool_id, 0, 42) from p
         symbol,
         decimals,
         avg(price) AS price
-    FROM {{source('prices','usd')}}
-    WHERE date_trunc('day', minute) >= '{{ project_start_date }}' and date_trunc('day', minute) < date_trunc('day', now())
+    FROM {{ source('prices', 'usd') }}
+    WHERE date_trunc('day', minute) >= date '{{ project_start_date }}'
+    and date_trunc('day', minute) < current_date
     and blockchain = 'arbitrum'
     and contract_address in (select distinct token_address from tokens)
     group by 1,2,3,4
@@ -154,8 +98,8 @@ WHERE call_create.output_0 in (select distinct  SUBSTRING(pool_id, 0, 42) from p
         symbol,
         decimals,
         last_value(price) over (partition by DATE_TRUNC('day', minute), contract_address ORDER BY  minute range between unbounded preceding AND unbounded following) AS price
-    FROM {{source('prices','usd')}}
-    WHERE date_trunc('day', minute) = date_trunc('day', now())
+    FROM {{ source('prices', 'usd') }}
+    WHERE date_trunc('day', minute) = current_date
     and blockchain = 'arbitrum'
     and contract_address in (select distinct token_address from tokens)
 )
@@ -166,10 +110,10 @@ WHERE call_create.output_0 in (select distinct  SUBSTRING(pool_id, 0, 42) from p
     SELECT distinct
         DATE_TRUNC('hour', minute) time,
         last_value(price) over (partition by DATE_TRUNC('hour', minute), contract_address ORDER BY  minute range between unbounded preceding AND unbounded following) AS price
-    FROM {{source('prices','usd')}}
-    WHERE date_trunc('day', minute) >= '{{ project_start_date }}' 
+    FROM {{ source('prices', 'usd') }}
+    WHERE date_trunc('day', minute) >=  date '{{ project_start_date }}'
     and blockchain = 'arbitrum'
-    and contract_address = lower('0x5979d7b546e38e414f7e9822514be443a4800529')
+    and contract_address = 0x5979d7b546e38e414f7e9822514be443a4800529
 ))
 
 
@@ -185,9 +129,9 @@ WHERE call_create.output_0 in (select distinct  SUBSTRING(pool_id, 0, 42) from p
                     date_trunc('day', evt_block_time) AS day,
                     poolId AS pool_id,
                     tokenIn AS token,
-                    amountIn AS delta
+                    cast(amountIn as double) AS delta
                 FROM {{source('balancer_v2_arbitrum','Vault_evt_Swap')}}
-                WHERE date_trunc('day', evt_block_time) >= '{{ project_start_date }}'
+                WHERE date_trunc('day', evt_block_time) >= date '{{ project_start_date }}'
                 and poolId in (select pool_id from pools)
                 UNION
                 ALL
@@ -195,32 +139,24 @@ WHERE call_create.output_0 in (select distinct  SUBSTRING(pool_id, 0, 42) from p
                     date_trunc('day', evt_block_time) AS day,
                     poolId AS pool_id,
                     tokenOut AS token,
-                    -amountOut AS delta
+                    -cast(amountOut as double) AS delta
                 FROM {{source('balancer_v2_arbitrum','Vault_evt_Swap')}}
-                WHERE date_trunc('day', evt_block_time) >= '{{ project_start_date }}'
+                WHERE date_trunc('day', evt_block_time) >= date '{{ project_start_date }}'
                 and poolId in (select pool_id from pools)
             ) swaps
         GROUP BY 1, 2, 3
-    )
-
-, zipped_balance_changes AS (
-        SELECT
-            date_trunc('day', evt_block_time) AS day,
-            poolId AS pool_id,
-            explode(arrays_zip(tokens, deltas, protocolFeeAmounts)) AS zipped
-        FROM {{source('balancer_v2_arbitrum','Vault_evt_PoolBalanceChanged')}}
-        WHERE date_trunc('day', evt_block_time) >= '{{ project_start_date }}'
-        and poolId in (select pool_id from pools)
-)
+   )
 
  , balances_changes AS (
         SELECT
-            day,
-            pool_id,
-            zipped.tokens AS token,
-            zipped.deltas - zipped.protocolFeeAmounts AS delta
-        FROM zipped_balance_changes
-        ORDER BY 1, 2, 3
+            date_trunc('day', evt_block_time) AS day,
+            poolId AS pool_id,
+            u.token,
+            cast(u.delta as double) as delta
+        FROM {{source('balancer_v2_arbitrum','Vault_evt_PoolBalanceChanged')}}
+         CROSS JOIN UNNEST(tokens, deltas) as u(token, delta)
+        WHERE date_trunc('day', evt_block_time) >= date '{{ project_start_date }}'
+        and poolId in (select pool_id from pools)
     )
 
 , managed_changes AS (
@@ -228,9 +164,9 @@ WHERE call_create.output_0 in (select distinct  SUBSTRING(pool_id, 0, 42) from p
             date_trunc('day', evt_block_time) AS day,
             poolId AS pool_id,
             token,
-            cashDelta + managedDelta AS delta
+            cast(managedDelta as double) AS delta
         FROM {{source('balancer_v2_arbitrum','Vault_evt_PoolBalanceManaged')}}
-        WHERE date_trunc('day', evt_block_time) >= '{{ project_start_date }}'
+        WHERE date_trunc('day', evt_block_time) >= date '{{ project_start_date }}'
         and poolId in (select pool_id from pools)
 )
 
@@ -239,14 +175,14 @@ WHERE call_create.output_0 in (select distinct  SUBSTRING(pool_id, 0, 42) from p
             day,
             pool_id,
             token,
-            SUM(COALESCE(amount, 0)) AS amount
+            SUM(COALESCE(amount, cast(0 as double))) AS amount
         FROM
             (
                 SELECT
                     day,
                     pool_id,
                     token,
-                    SUM(COALESCE(delta, 0)) AS amount
+                    SUM(COALESCE(delta, cast(0 as double))) AS amount
                 FROM
                     balances_changes
                 GROUP BY 1, 2, 3
@@ -272,10 +208,10 @@ WHERE call_create.output_0 in (select distinct  SUBSTRING(pool_id, 0, 42) from p
 
 , cumulative_balance AS (
         SELECT
-            DAY,
+            day,
             pool_id,
             token,
-            LEAD(DAY, 1, NOW()) OVER (PARTITION BY token, pool_id ORDER BY DAY) AS day_of_next_change,
+            LEAD(day, 1, current_date + interval '1' day) OVER (PARTITION BY token, pool_id ORDER BY DAY) AS day_of_next_change,
             SUM(amount) OVER (PARTITION BY pool_id, token ORDER BY DAY ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW) AS cumulative_amount
         FROM daily_delta_balance
 )
@@ -287,31 +223,33 @@ WHERE call_create.output_0 in (select distinct  SUBSTRING(pool_id, 0, 42) from p
             c.day,
             c.pool_id,
             b.token,
-            COALESCE(t.symbol, p1.symbol) AS token_symbol,
+            p1.symbol AS token_symbol,
             cumulative_amount as token_balance_raw,
-            cumulative_amount / POWER(10, COALESCE(t.decimals, p1.decimals)) AS token_balance,
-            cumulative_amount / POWER(10, COALESCE(t.decimals, p1.decimals)) * COALESCE(p1.price, 0) AS amount_usd, 
+            cumulative_amount / POWER(10, p1.decimals) AS token_balance,
+            (cumulative_amount / POWER(10, p1.decimals)) * COALESCE(p1.price, 0) AS amount_usd, 
             0 as row_numb
         FROM  pool_per_date  c
         LEFT JOIN cumulative_balance b ON c.pool_id = b.pool_id and  b.day <= c.day AND c.day < b.day_of_next_change
-        LEFT JOIN {{ref('prices_tokens')}} t ON t.contract_address = b.token AND blockchain = "arbitrum"
         LEFT JOIN tokens_prices_daily p1 ON p1.time = b.day AND p1.token = b.token
-        WHERE b.token = '0x5979d7b546e38e414f7e9822514be443a4800529'
+        WHERE b.token = 0x5979d7b546e38e414f7e9822514be443a4800529
         union all
         SELECT
             c.day,
             c.pool_id,
-            b.token,
-            COALESCE(t.symbol, p1.symbol) AS token_symbol,
+            coalesce(b.token, p1.token) as token,
+            p1.symbol AS token_symbol,
             cumulative_amount as token_balance_raw,
-            cumulative_amount / POWER(10, COALESCE(t.decimals, p1.decimals)) AS token_balance,
-            cumulative_amount / POWER(10, COALESCE(t.decimals, p1.decimals)) * COALESCE(p1.price, 0) AS amount_usd, 
+            cumulative_amount / POWER(10, p1.decimals) AS token_balance,
+            (cumulative_amount / POWER(10, p1.decimals)) * COALESCE(p1.price, 0) AS amount_usd, 
             row_number() OVER(PARTITION BY c.day, c.pool_id ORDER BY  c.day, c.pool_id, b.token) as row_numb
+            
         FROM  pool_per_date  c
         LEFT JOIN cumulative_balance b ON c.pool_id = b.pool_id and b.day <= c.day AND c.day < b.day_of_next_change
-        LEFT JOIN {{ref('prices_tokens')}} t ON t.contract_address = (case when b.token = lower('0xda1cd1711743e57dd57102e9e61b75f3587703da') then lower('0x82aF49447D8a07e3bd95BD0d56f35241523fBab1') else b.token end) AND blockchain = "arbitrum"
-        LEFT JOIN tokens_prices_daily p1 ON p1.time = b.day AND p1.token = (case when b.token = lower('0xda1cd1711743e57dd57102e9e61b75f3587703da') then lower('0x82aF49447D8a07e3bd95BD0d56f35241523fBab1') else b.token end)
-        WHERE b.token != '0x5979d7b546e38e414f7e9822514be443a4800529' and b.token !=SUBSTRING(b.pool_id, 0, 42)
+        LEFT JOIN tokens_prices_daily p1 ON p1.time = b.day 
+            AND p1.token = (case when b.token = 0xda1cd1711743e57dd57102e9e61b75f3587703da then 0x82aF49447D8a07e3bd95BD0d56f35241523fBab1 else b.token end)
+        WHERE b.token != 0x5979d7b546e38e414f7e9822514be443a4800529 
+          and b.token not in (select poolAddress from pools)
+
 )
 
 
@@ -331,7 +269,7 @@ SELECT
     coalesce(token_balance, token_balance_raw) as main_token_reserve,
     coalesce(amount_usd, 0) AS main_token_usd_reserve
 FROM cumulative_usd_balance b
-where token = lower('0x5979d7b546e38e414f7e9822514be443a4800529') ) main
+where token = 0x5979d7b546e38e414f7e9822514be443a4800529 ) main
 join 
 (
 SELECT
@@ -342,7 +280,7 @@ SELECT
     coalesce(token_balance, token_balance_raw) as paired1_token_reserve,
     coalesce(amount_usd, 0) AS paired1_token_usd_reserve
 FROM cumulative_usd_balance b
-where token != lower('0x5979d7b546e38e414f7e9822514be443a4800529') and cast(row_numb as int) = cast(1 as int)) paired1
+where token != 0x5979d7b546e38e414f7e9822514be443a4800529 and cast(row_numb as int) = int '1') paired1
 on main.day = paired1.day and main.pool_id = paired1.pool_id 
 left join (
 SELECT
@@ -353,7 +291,7 @@ SELECT
     coalesce(token_balance, token_balance_raw) as paired2_token_reserve,
     coalesce(amount_usd, 0) AS paired2_token_usd_reserve
 FROM cumulative_usd_balance b
-where token != lower('0x5979d7b546e38e414f7e9822514be443a4800529') and cast(row_numb as int) = cast(2 as int)) paired2
+where token != 0x5979d7b546e38e414f7e9822514be443a4800529 and cast(row_numb as int) = int '2') paired2
 on main.day = paired2.day and main.pool_id = paired2.pool_id 
 left join (
 SELECT
@@ -364,7 +302,7 @@ SELECT
     coalesce(token_balance, token_balance_raw) as paired3_token_reserve,
     coalesce(amount_usd, 0) AS paired3_token_usd_reserve
 FROM cumulative_usd_balance b
-where token != lower('0x5979d7b546e38e414f7e9822514be443a4800529') and cast(row_numb as int) = cast(3 as int)) paired3
+where token != 0x5979d7b546e38e414f7e9822514be443a4800529 and cast(row_numb as int) = int '3') paired3
 on main.day = paired3.day and main.pool_id = paired3.pool_id 
 left join (
 SELECT
@@ -375,38 +313,42 @@ SELECT
     coalesce(token_balance, token_balance_raw) as paired4_token_reserve,
     coalesce(amount_usd, 0) AS paired4_token_usd_reserve
 FROM cumulative_usd_balance b
-where token != lower('0x5979d7b546e38e414f7e9822514be443a4800529') and cast(row_numb as int) = cast(4 as int)) paired4
+where token != 0x5979d7b546e38e414f7e9822514be443a4800529 and cast(row_numb as int) = int '4') paired4
 on main.day = paired4.day and main.pool_id = paired4.pool_id 
 )
+
+
 
 , trading_volume as (    
     select  date_trunc('day', s.evt_block_time) as time,
         poolId,
-        sum(case when tokenOut = lower('0x5979d7b546e38e414f7e9822514be443a4800529') then p.price*amountOut/1e18 
+        sum(case when tokenOut = 0x5979d7b546e38e414f7e9822514be443a4800529 then p.price*amountOut/1e18 
              else p.price*amountIn/1e18 end) as trading_volume
     from {{source('balancer_v2_arbitrum','Vault_evt_Swap')}} s
     left join wsteth_prices_hourly p on date_trunc('hour', s.evt_block_time) >= p.time and date_trunc('hour', s.evt_block_time) < p.next_time
-    WHERE date_trunc('day', s.evt_block_time) >= '{{ project_start_date }}'
+    WHERE date_trunc('day', s.evt_block_time) >= date '{{ project_start_date }}'
     and s.poolId in (select pool_id from pools)
     group by 1,2
 ) 
 
 
 , all_metrics as (
-select  pool_id as pool, 'arbitrum' as blockchain, 'balancer' as project, pools_fee.fee, day as time, main_token, main_token_symbol, 
-paired1_token||decode(paired2_token, null, '', '/'||coalesce(paired2_token,''))||decode(paired3_token, null, '', '/'||coalesce(paired3_token,''))||decode(paired4_token, null, '', '/'||coalesce(paired4_token,'')) as paired_token,
-paired1_token_symbol||decode(paired2_token_symbol, null, '', '/'||coalesce(paired2_token_symbol,''))||decode(paired3_token_symbol, null, '', '/'||coalesce(paired3_token_symbol,''))||decode(paired4_token_symbol, null, '', '/'||coalesce(paired4_token_symbol,'')) as paired_token_symbol,
+select  pool_id as pool, 'arbitrum' as blockchain, 'balancer' as project, 0 as fee, day as time, main_token, main_token_symbol, 
+paired1_token as paired_token,
+paired1_token_symbol as paired_token_symbol,
 main_token_reserve, paired1_token_reserve as paired_token_reserve,
 main_token_usd_reserve,
 paired1_token_usd_reserve + coalesce(paired2_token_usd_reserve,0) + coalesce(paired3_token_usd_reserve,0) + coalesce(paired4_token_usd_reserve,0) as paired_token_usd_reserve,
 coalesce(trading_volume.trading_volume,0) as trading_volume
 from reserves r
 left join trading_volume on r.pool_id = trading_volume.poolId and  r.day = trading_volume.time
-left join pools_fee on SUBSTRING(r.pool_id, 0, 42) = pools_fee.contract_address and r.day >= pools_fee.time and r.day < pools_fee.next_time
 order by day desc, pool_id
+
 )
 
 
-select CONCAT(CONCAT(CONCAT(CONCAT(CONCAT(blockchain,CONCAT(' ', project)) ,' '), coalesce(paired_token_symbol,paired_token)),':', main_token_symbol, '(', cast(pool as varchar(45)), ')')) as pool_name,* 
+select 
+blockchain ||' '|| project ||' '|| coalesce(paired_token_symbol,'unknown') ||':'|| main_token_symbol ||'('|| substring(cast(pool as varchar),64) ||')' as pool_name,
+* 
 from all_metrics
 where main_token_reserve > 1
