@@ -35,7 +35,7 @@ with
     ,
     deposited_weth as (
         select
-            'deposit-' || cast(tx_hash as varchar(100)) || '-' || cast (index as varchar(100)) || '-' ||  CAST(dst AS VARCHAR(100)) as unique_transfer_id,
+            'deposit-' || cast(tx_hash as varchar(100)) || '-' || cast (index as varchar(100)) || '-' ||  CAST(bytearray_substring(topic1,13,20) AS VARCHAR(100)) as unique_transfer_id,
             bytearray_substring(topic2,13,20) as wallet_address,
             contract_address as token_address,
             block_time as evt_block_time,
@@ -49,7 +49,7 @@ with
     ,
     withdrawn_weth as (
         select
-            'withdraw-' || cast(tx_hash as varchar(100)) || '-' || cast (index as varchar(100)) || '-' ||  CAST(src AS VARCHAR(100)) as unique_transfer_id,
+            'withdraw-' || cast(tx_hash as varchar(100)) || '-' || cast (index as varchar(100)) || '-' ||  CAST(bytearray_substring(topic1,13,20) AS VARCHAR(100)) as unique_transfer_id,
             bytearray_substring(topic2,13,20) as wallet_address,
             contract_address as token_address,
             block_time as evt_block_time,
