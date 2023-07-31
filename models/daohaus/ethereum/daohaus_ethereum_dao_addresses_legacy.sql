@@ -1,11 +1,11 @@
 {{ config(
 	tags=['legacy'],
     alias = alias('dao_addresses', legacy_model=True),
-    partition_by = ['created_date'],
+    partition_by = ['block_month'],
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
-    unique_key = ['created_block_time', 'dao_wallet_address', 'blockchain', 'dao', 'dao_creator_tool']
+    unique_key = ['created_block_time', 'dao_wallet_address', 'blockchain', 'dao', 'dao_creator_tool', 'block_month']
     )
 }}
 
@@ -18,7 +18,7 @@ WITH  -- dune query here - https://dune.com/queries/1433790
 get_daohaus_molochs as ( -- molochs are daos and this is getting a list of molochs created through daohaus 
         SELECT 
             block_time as created_block_time, 
-            TRY_CAST(date_trunc('day', block_time) as DATE) as created_date, 
+            CAST(date_trunc('day', block_time) as DATE) as created_date, 
             CONCAT('0x', RIGHT(topic2, 40)) as moloch
         FROM 
         {{ source('ethereum', 'logs') }}
@@ -69,7 +69,8 @@ mapped_wallets as (
             dao, 
             dao_wallet as dao_wallet_address, 
             created_block_time, 
-            created_date
+            created_date,
+            CAST(date_trunc('month', created_date) as date) as block_month
         FROM 
         get_daohaus_wallets
 
@@ -81,7 +82,8 @@ mapped_wallets as (
             dao, 
             minion_wallet as dao_wallet_address,
             created_block_time, 
-            created_date
+            created_date,
+            CAST(date_trunc('month', created_date) as date) as block_month
         FROM 
         get_daohaus_wallets
 )

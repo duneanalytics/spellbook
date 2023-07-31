@@ -18,6 +18,7 @@ models:
             - dao_creator_tool
             - dao
             - dao_wallet_address
+            - block_month
     columns:
       - &blockchain
         name: blockchain
@@ -39,3 +40,6 @@ models:
       - &created_block_time
         name: created_block_time
         description: "UTC event block time of DAO creation"
+      - &block_month
+        name: block_month
+        description: "UTC event block month of DAO creation"

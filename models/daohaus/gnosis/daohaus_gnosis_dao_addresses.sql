@@ -1,11 +1,11 @@
 {{ config(
     alias = alias('dao_addresses'),
     tags = ['dunesql'],
-    partition_by = ['created_date'],
+    partition_by = ['block_month'],
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
-    unique_key = ['created_block_time', 'dao_wallet_address', 'blockchain', 'dao', 'dao_creator_tool']
+    unique_key = ['created_block_time', 'dao_wallet_address', 'blockchain', 'dao', 'dao_creator_tool', 'block_month']
     )
 }}
 
@@ -71,7 +71,8 @@ mapped_wallets as (
             dao, 
             dao_wallet as dao_wallet_address, 
             created_block_time, 
-            created_date
+            created_date,
+            CAST(date_trunc('month', created_date) as date) as block_month
         FROM 
         get_daohaus_wallets
 
@@ -83,7 +84,8 @@ mapped_wallets as (
             dao, 
             minion_wallet as dao_wallet_address,
             created_block_time, 
-            created_date 
+            created_date,
+            CAST(date_trunc('month', created_date) as date) as block_month
         FROM 
         get_daohaus_wallets
 )
@@ -95,6 +97,7 @@ SELECT DISTINCT -- there are still duplicates so I'm using a distinct to filter 
         , dao_wallet_address
         , created_block_time
         , created_date
+        , block_month
 FROM 
 mapped_wallets mw 
 WHERE dao_wallet_address IS NOT NULL 

@@ -25,7 +25,8 @@ FROM (
         dao, 
         dao_wallet_address,
         created_block_time,
-        created_date
+        created_date,
+        block_month
     FROM {{ dao_model }}
     {% if not loop.last %}
     UNION ALL

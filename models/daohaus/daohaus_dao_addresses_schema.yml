@@ -29,3 +29,6 @@ models:
       - &created_block_time
         name: created_block_time
         description: "UTC event block time of DAO creation"
+      - &block_month
+        name: block_month
+        description: "UTC event block month of DAO creation"
