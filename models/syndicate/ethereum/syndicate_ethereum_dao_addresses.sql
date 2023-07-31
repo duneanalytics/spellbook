@@ -1,11 +1,11 @@
 {{ config(
     alias = alias('dao_addresses'),
     tags = ['dunesql'],
-    partition_by = ['created_date'],
+    partition_by = ['block_month'],
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
-    unique_key = ['created_block_time', 'dao_wallet_address', 'blockchain', 'dao', 'dao_creator_tool']
+    unique_key = ['created_block_time', 'dao_wallet_address', 'blockchain', 'dao', 'dao_creator_tool', 'block_month']
     )
 }}
 
@@ -93,6 +93,7 @@ SELECT
     dao, 
     dao_wallet_address, 
     created_block_time, 
-    TRY_CAST(created_date as DATE) as created_date
+    CAST(created_date as DATE) as created_date,
+    CAST(date_trunc('month', created_date) as date) as block_month
 FROM syndicate_wallets
 WHERE dao_wallet_address NOT IN (0x2da762e665fe9c220f7011d4ee9c2d15aaa27f9d, 0x2372fd8d69da29b4b328b518c6d7e84f3aa25dc3, 0x99116a5641dc89a7cb43a9a82694177538aa0391, 0x22a3d80299d4f2437611e1ca0b7c8d50f4816c6e) -- these are syndicate contract addresses, there's a transfer from 0x00...0000 to these addresses during set up so filtering to get rid of them. 
