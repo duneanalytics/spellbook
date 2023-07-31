@@ -12,7 +12,7 @@
 
 select 
   dune_name
-  ,mapped_name
+  , mapped_name
 from (
     values
      ('lyra_v1',	'Lyra Finance')
@@ -115,5 +115,7 @@ from (
     ,('highlight_xyz','Highlight.xyz')
     ,('mint_fun','mint.fun')
     ,('mintfun','mint.fun')
+    ,('allo_protocol', 'allo protocol (gitcoin)')
+    ,('union_protocol', 'Union Finance')
 
     ) as temp_table (dune_name, mapped_name)

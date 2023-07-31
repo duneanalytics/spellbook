@@ -25,8 +25,8 @@ models:
       - name: dao_creator_tool
         description: "Name of creator tool used to create DAO"
         tests:
-          - dao_addresses_creator_tool:
-              dao_addresses_seed: ref('dao_addresses_seed')
+          - dao_addresses_creator_tool_legacy:
+              dao_addresses_seed_legacy: ref('dao_addresses_seed_legacy')
       - &dao
         name: dao
         description: "address of the dao deployed"
@@ -65,8 +65,8 @@ models:
       - name: dao_creator_tool
         description: "Name of creator tool used to create DAO"
         tests:
-          - dao_addresses_creator_tool:
-              dao_addresses_seed: ref('dao_addresses_seed')
+          - dao_addresses_creator_tool_legacy:
+              dao_addresses_seed_legacy: ref('dao_addresses_seed_legacy')
       - *dao
       - *dao_wallet_address
       - *created_date
