@@ -22,7 +22,7 @@
 ] %}
 
 {{
-    erc4337_userops_enrichments(
+    erc4337_userops_enrichments_legacy(
         blockchain = 'gnosis',
         base_models = erc4337_base_models,
         wrapped_gas_address = '0x44fa8e6f47987339850636f88629646662444217',
