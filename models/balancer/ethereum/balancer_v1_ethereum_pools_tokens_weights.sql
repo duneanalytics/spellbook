@@ -2,7 +2,6 @@
     config(
         schema='balancer_v1_ethereum',
         alias = alias('pools_tokens_weights'),
-        tags = ['dunesql'],
         materialized = 'incremental',
         file_format = 'delta',
         incremental_strategy = 'merge',
@@ -10,7 +9,7 @@
         post_hook='{{ expose_spells(\'["ethereum"]\',
                                     "project",
                                     "balancer_v1",
-                                    \'["metacrypto", "jacektrocinski", "viniabussafi"]\') }}'
+                                    \'["metacrypto", "jacektrocinski"]\') }}'
     )
 }}
 
@@ -35,8 +34,8 @@ WITH events AS (
         AND tx.block_time >= '{{bind_start_date}}'
         {% endif %}
         {% if is_incremental() %}
-        AND bind.call_block_time >= date_trunc("day", now() - interval '7' day)
-        AND tx.block_time >= date_trunc("day", now() - interval '7' day)
+        AND bind.call_block_time >= date_trunc("day", now() - interval '1 week')
+        AND tx.block_time >= date_trunc("day", now() - interval '1 week')
         {% endif %}
 
     UNION ALL
@@ -57,8 +56,8 @@ WITH events AS (
         AND tx.block_time >= '{{bind_start_date}}'
         {% endif %}
         {% if is_incremental() %}
-        AND rebind.call_block_time >= date_trunc("day", now() - interval '7' day)
-        AND tx.block_time >= date_trunc("day", now() - interval '7' day)
+        AND rebind.call_block_time >= date_trunc("day", now() - interval '1 week')
+        AND tx.block_time >= date_trunc("day", now() - interval '1 week')
         {% endif %}
     
     UNION ALL
@@ -79,8 +78,8 @@ WITH events AS (
         AND tx.block_time >= '{{bind_start_date}}'
         {% endif %}
         {% if is_incremental() %}
-        AND unbind.call_block_time >= date_trunc("day", now() - interval '7' day)
-        AND tx.block_time >= date_trunc("day", now() - interval '7' day)
+        AND unbind.call_block_time >= date_trunc("day", now() - interval '1 week')
+        AND tx.block_time >= date_trunc("day", now() - interval '1 week')
         {% endif %}
 ),
 state_with_gaps AS (
@@ -131,4 +130,4 @@ SELECT
     token_address,
     normalized_weight
 FROM norm_weights
-
+;
