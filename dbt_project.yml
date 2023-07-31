@@ -312,6 +312,13 @@ models:
       ethereum:
         +schema: maverick_ethereum
 
+    daohaus:
+      +schema: daohaus
+      ethereum:
+        +schema: daohaus_ethereum
+      gnosis:
+        +schema: daohaus_gnosis
+
     colony:
       +schema: colony
       gnosis:
