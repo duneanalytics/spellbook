@@ -3,6 +3,7 @@
         tags = ['dunesql'],
         schema = 'orca_whirlpool',
         alias = alias('trades'),
+        partition_by = ['block_month'],
         materialized = 'incremental',
         file_format = 'delta',
         incremental_strategy = 'merge',
@@ -12,6 +13,8 @@
                                     "orca_whirlpool",
                                     \'["ilemi"]\') }}')
 }}
+
+{% set project_start_date = '2022-03-10' %} --grabbed min block time from whirlpool_solana.whirlpool_call_swap
 
 with 
     whirlpools as (
@@ -98,68 +101,87 @@ with
                 end as token_sold_vault
             , wp.update_time
         FROM {{ source('whirlpool_solana', 'whirlpool_call_swap') }} sp
-        JOIN whirlpools wp ON sp.account_whirlpool = wp.whirlpool_id AND sp.call_block_time >= wp.update_time
-        INNER JOIN {{ source('spl_token_solana', 'spl_token_call_transfer') }} tr_1 ON tr_1.call_tx_id = sp.call_tx_id 
+        INNER JOIN whirlpools wp
+            ON sp.account_whirlpool = wp.whirlpool_id 
+            AND sp.call_block_time >= wp.update_time
+        INNER JOIN {{ source('spl_token_solana', 'spl_token_call_transfer') }} tr_1 
+            ON tr_1.call_tx_id = sp.call_tx_id 
             AND tr_1.call_outer_instruction_index = sp.call_outer_instruction_index 
             AND ((sp.call_is_inner = false AND tr_1.call_inner_instruction_index = 1) 
                 OR (sp.call_is_inner = true AND tr_1.call_inner_instruction_index = sp.call_inner_instruction_index + 1))
-            AND tr_1.call_block_time >= now() - interval '7' day
-        INNER JOIN {{ source('spl_token_solana', 'spl_token_call_transfer') }} tr_2 ON tr_2.call_tx_id = sp.call_tx_id 
+            {% if is_incremental() %}
+            AND tr_1.call_block_time >= date_trunc('day', now() - interval '7' day)
+            {% else %}
+            AND tr_1.call_block_time >= TIMESTAMP '{{project_start_date}}'
+            {% endif %}
+        INNER JOIN {{ source('spl_token_solana', 'spl_token_call_transfer') }} tr_2 
+            ON tr_2.call_tx_id = sp.call_tx_id 
             AND tr_2.call_outer_instruction_index = sp.call_outer_instruction_index 
             AND ((sp.call_is_inner = false AND tr_2.call_inner_instruction_index = 2)
                 OR (sp.call_is_inner = true AND tr_2.call_inner_instruction_index = sp.call_inner_instruction_index + 2))
-            AND tr_2.call_block_time >= now() - interval '7' day
-        WHERE 1=1
-            AND sp.call_block_time >= now() - interval '7' day
             {% if is_incremental() %}
-            AND sp.call_block_time >= now() - interval '1' day
+            AND tr_2.call_block_time >= date_trunc('day', now() - interval '7' day)
+            {% else %}
+            AND tr_2.call_block_time >= TIMESTAMP '{{project_start_date}}'
+            {% endif %}
+        WHERE 1=1
+            {% if is_incremental() %}
+            AND sp.call_block_time >= date_trunc('day', now() - interval '7' day)
+            {% else %}
+            AND sp.call_block_time >= TIMESTAMP '{{project_start_date}}'
             {% endif %}
     )
     
-    SELECT
-        tb.blockchain
-        , tb.project 
-        , tb.version
-        , date_trunc('month', tb.block_time) as block_month
-        , tb.block_time
-        , tb.token_pair
-        , tb.trade_source
-        , tb.token_bought_symbol
-        , tb.token_bought_amount
-        , tb.token_bought_amount_raw
-        , tb.token_sold_symbol
-        , tb.token_sold_amount
-        , tb.token_sold_amount_raw
-        , COALESCE(tb.token_sold_amount * p_sold.price, tb.token_bought_amount * p_bought.price) as amount_usd
-        , cast(tb.fee_tier as double)/1000000 as fee_tier
-        , cast(tb.fee_tier as double)/1000000 * COALESCE(tb.token_sold_amount * p_sold.price, tb.token_bought_amount * p_bought.price) as fee_usd
-        , tb.token_sold_mint_address
-        , tb.token_bought_mint_address
-        , tb.token_sold_vault
-        , tb.token_bought_vault
-        , tb.whirlpool_id as project_program_id
-        , tb.trader_id
-        , tb.tx_id
-        , tb.outer_instruction_index
-        , tb.inner_instruction_index
-        , tb.tx_index
-        , recent_update
-    FROM
-        (
-        SELECT 
-            *
-            , row_number() OVER (partition by tx_id, outer_instruction_index, inner_instruction_index, tx_index order by update_time desc) as recent_update
-        FROM all_swaps
-        )
-        tb
-    LEFT JOIN {{ source('prices', 'usd') }} p_bought ON p_bought.blockchain = 'solana' 
-        AND date_trunc('minute', tb.block_time) = p_bought.minute 
-        AND token_bought_mint_address = toBase58(p_bought.contract_address)
-
-        AND p_bought.minute >= now() - interval '7' day
-    LEFT JOIN {{ source('prices', 'usd') }} p_sold ON p_sold.blockchain = 'solana' 
-        AND date_trunc('minute', tb.block_time) = p_sold.minute 
-        AND token_sold_mint_address = toBase58(p_sold.contract_address)
-
-        AND p_sold.minute >= now() - interval '7' day
-    WHERE recent_update = 1 
+SELECT
+    tb.blockchain
+    , tb.project 
+    , tb.version
+    , CAST(date_trunc('month', tb.block_time) AS DATE) as block_month
+    , tb.block_time
+    , tb.token_pair
+    , tb.trade_source
+    , tb.token_bought_symbol
+    , tb.token_bought_amount
+    , tb.token_bought_amount_raw
+    , tb.token_sold_symbol
+    , tb.token_sold_amount
+    , tb.token_sold_amount_raw
+    , COALESCE(tb.token_sold_amount * p_sold.price, tb.token_bought_amount * p_bought.price) as amount_usd
+    , cast(tb.fee_tier as double)/1000000 as fee_tier
+    , cast(tb.fee_tier as double)/1000000 * COALESCE(tb.token_sold_amount * p_sold.price, tb.token_bought_amount * p_bought.price) as fee_usd
+    , tb.token_sold_mint_address
+    , tb.token_bought_mint_address
+    , tb.token_sold_vault
+    , tb.token_bought_vault
+    , tb.whirlpool_id as project_program_id
+    , tb.trader_id
+    , tb.tx_id
+    , tb.outer_instruction_index
+    , tb.inner_instruction_index
+    , tb.tx_index
+    , recent_update
+FROM
+    (
+    SELECT 
+        *
+        , row_number() OVER (partition by tx_id, outer_instruction_index, inner_instruction_index, tx_index order by update_time desc) as recent_update
+    FROM all_swaps
+    )
+    tb
+LEFT JOIN {{ source('prices', 'usd') }} p_bought ON p_bought.blockchain = 'solana' 
+    AND date_trunc('minute', tb.block_time) = p_bought.minute 
+    AND token_bought_mint_address = toBase58(p_bought.contract_address)
+    {% if is_incremental() %}
+    AND p_bought.minute >= date_trunc('day', now() - interval '7' day)
+    {% else %}
+    AND p_bought.minute >= TIMESTAMP '{{project_start_date}}'
+    {% endif %}
+LEFT JOIN {{ source('prices', 'usd') }} p_sold ON p_sold.blockchain = 'solana' 
+    AND date_trunc('minute', tb.block_time) = p_sold.minute 
+    AND token_sold_mint_address = toBase58(p_sold.contract_address)
+    {% if is_incremental() %}
+    AND p_sold.minute >= date_trunc('day', now() - interval '7' day)
+    {% else %}
+    AND p_sold.minute >= TIMESTAMP '{{project_start_date}}'
+    {% endif %}
+WHERE recent_update = 1 
