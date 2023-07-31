@@ -307,10 +307,22 @@ models:
       bnb:
         +schema: nomiswap_bnb
 
+    zodiac:
+      +schema: zodiac
+      ethereum:
+        +schema: zodiac_ethereum
+
     maverick:
       +schema: maverick
       ethereum:
         +schema: maverick_ethereum
+
+    daohaus:
+      +schema: daohaus
+      ethereum:
+        +schema: daohaus_ethereum
+      gnosis:
+        +schema: daohaus_gnosis
 
     colony:
       +schema: colony
@@ -359,6 +371,13 @@ models:
         +schema: openocean_fantom
       avalanche_c:
         +schema: openocean_avalanche_c
+
+    syndicate:
+      +schema: syndicate
+      ethereum:
+        +schema: syndicate_ethereum
+      polygon:
+        +schema: syndicate_polygon
 
     babyswap:
       +schema: babyswap
