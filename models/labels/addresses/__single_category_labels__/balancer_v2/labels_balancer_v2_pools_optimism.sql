@@ -180,24 +180,6 @@ WITH pools AS (
   WHERE c.evt_block_time >= date_trunc('day', now() - interval '7' day)
     AND cc.call_block_time >= date_trunc('day', now() - interval '7' day)
   {% endif %}
-
-  UNION ALL
-
-  SELECT
-    c.poolId AS pool_id,
-    element AS token_address,
-    CAST(NULL AS DOUBLE) AS normalized_weight,
-    cc.symbol,
-    'LP' AS pool_type
-  FROM {{ source('balancer_v2_optimism', 'Vault_evt_PoolRegistered') }} c
-  INNER JOIN {{ source('balancer_v2_optimism', 'ERC4626LinearPoolFactory_call_create') }} cc
-    ON c.evt_tx_hash = cc.call_tx_hash
-    AND SUBSTRING(CAST(c.poolId AS varchar), 1, 42) = CAST(cc.output_0 AS varchar)
-  CROSS JOIN UNNEST(ARRAY[cc.mainToken, cc.wrappedToken]) AS t (element)
-  {% if is_incremental() %}
-  WHERE c.evt_block_time >= date_trunc('day', now() - interval '7' day)
-    AND cc.call_block_time >= date_trunc('day', now() - interval '7' day)
-  {% endif %}
 ),
 
 settings AS (
