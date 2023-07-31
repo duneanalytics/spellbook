@@ -131,4 +131,4 @@ SELECT
     token_address,
     normalized_weight
 FROM norm_weights
-;
+
