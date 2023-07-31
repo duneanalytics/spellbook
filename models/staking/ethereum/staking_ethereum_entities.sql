@@ -29,6 +29,7 @@ WITH contracts AS (
     , (0xe7b385fb5d81259280b7d639df81513ab8b005e4, 'MyEtherWallet', 'Staking Pools')
     , (0x82ce843130ff0ae069c54118dfbfa6a5ea17158e, 'Gemini', 'CEX')
     , (0x24d729aae93a05a729e68504e5ccdfa3bb876491, 'Gemini', 'CEX')
+    , (0x1522900b6dafac587d499a862861c0869be6e428, 'Bitstamp', 'CEX')
         ) 
         x (address, entity, category)
     )
