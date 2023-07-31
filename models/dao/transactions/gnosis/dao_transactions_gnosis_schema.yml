@@ -21,7 +21,6 @@ models:
             - tx_hash 
             - tx_index
             - tx_type
-            - trace_address
             - address_interacted_with
             - value 
             - asset_contract_address
