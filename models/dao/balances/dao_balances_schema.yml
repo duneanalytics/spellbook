@@ -10,6 +10,15 @@ models:
       tags: [ 'ethereum','gnosis', 'polygon', 'dao', 'dao creator tools', 'henrystats' ]
     description: >
       DAO wallet balances
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - dao_creator_tool
+            - dao
+            - dao_wallet_address
+            - day 
+            - asset_contract_address
     columns:
       - &blockchain
         name: blockchain
