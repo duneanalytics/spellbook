@@ -204,4 +204,3 @@ WHERE nftt.blockchain='base'
     {% if is_incremental() %}
     AND nftt.block_time >= date_trunc("day", NOW() - interval '1 week')
     {% endif %}
-;
