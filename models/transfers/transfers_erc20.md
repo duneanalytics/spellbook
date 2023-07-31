@@ -1,3 +1,4 @@
+# Can become a spell later on, but took too long to run
 {{ config(
         alias = alias('erc20')
         , tags = ['dunesql']

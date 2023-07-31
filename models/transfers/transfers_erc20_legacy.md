@@ -1,3 +1,4 @@
+# Can become a spell later on, but took too long to run
 {{ config(
 	tags=['legacy'],
 	alias = alias('erc20', legacy_model=True)
