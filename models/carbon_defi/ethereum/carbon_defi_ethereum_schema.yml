@@ -28,7 +28,10 @@ models:
             - version
             - tx_hash
             - evt_index
-            - trace_address
+      - check_dex_seed_legacy:
+          blockchain: ethereum
+          project: carbon_defi
+          version: 1
     columns:
       - &blockchain
         name: blockchain
