@@ -1,25 +1,26 @@
 {{
     config(
-        schema = 'balancer_v2_polygon',
+        schema = 'balancer_v2_arbitrum',
         alias = alias('bpt_prices'),
+        tags = ['dunesql'],
         materialized = 'incremental',
         file_format = 'delta',
         incremental_strategy = 'merge',
         unique_key = ['blockchain', 'hour','contract_address'],
-        post_hook = '{{ expose_spells(\'["polygon"]\',
+        post_hook = '{{ expose_spells(\'["arbitrum"]\',
                                     "project",
                                     "balancer_v2",
-                                    \'["victorstefenon", "thetroyharris"]\') }}'
+                                    \'["victorstefenon", "thetroyharris", "viniabussafi"]\') }}'
     )
 }}
 
 WITH
     bpt_trades AS (
-        SELECT * FROM {{ source('balancer_v2_polygon', 'Vault_evt_Swap') }} v
+        SELECT * FROM {{ source('balancer_v2_arbitrum', 'Vault_evt_Swap') }} v
         WHERE CAST(tokenIn AS VARCHAR(66)) = SUBSTRING(CAST(poolId AS VARCHAR(66)), 1, 42)
         OR CAST(tokenOut AS VARCHAR(66)) = SUBSTRING(CAST(poolId AS VARCHAR(66)), 1, 42) 
         {% if is_incremental() %}
-        AND v.evt_block_time >= date_trunc('day', now() - interval '1 week')
+        AND v.evt_block_time >= date_trunc('day', now() - interval '7' day)
         {% endif %} 
     ), 
     
@@ -41,18 +42,18 @@ WITH
             COALESCE(p2.symbol, t2.symbol) AS token_out_sym,
             COALESCE(p2.decimals, t2.decimals) AS token_out_decimals
         FROM bpt_trades a
-        LEFT JOIN {{ source ('prices', 'usd') }} p1 ON p1.contract_address = a.tokenIn AND p1.blockchain = 'polygon' 
+        LEFT JOIN {{ source ('prices', 'usd') }} p1 ON p1.contract_address = a.tokenIn AND p1.blockchain = 'arbitrum' 
             AND  p1.minute = date_trunc('minute', a.evt_block_time)
             {% if is_incremental() %}
-            AND p1.minute >= date_trunc('day', now() - interval '1 week')
+            AND p1.minute >= date_trunc('day', now() - interval '7' day)
             {% endif %} 
-        LEFT JOIN {{ source ('prices', 'usd') }} p2 ON p2.contract_address = a.tokenOut AND p2.blockchain = 'polygon'
+        LEFT JOIN {{ source ('prices', 'usd') }} p2 ON p2.contract_address = a.tokenOut AND p2.blockchain = 'arbitrum'
             AND  p2.minute = date_trunc('minute', a.evt_block_time)
             {% if is_incremental() %}
-            AND p2.minute >= date_trunc('day', now() - interval '1 week')
+            AND p2.minute >= date_trunc('day', now() - interval '7' day)
             {% endif %} 
-        LEFT JOIN {{ ref ('tokens_erc20') }} t1 ON t1.contract_address = a.tokenIn AND t1.blockchain = 'polygon'
-        LEFT JOIN {{ ref ('tokens_erc20') }} t2 ON t2.contract_address = a.tokenOut AND t2.blockchain = 'polygon'
+        LEFT JOIN {{ ref ('tokens_erc20') }} t1 ON t1.contract_address = a.tokenIn AND t1.blockchain = 'arbitrum'
+        LEFT JOIN {{ ref ('tokens_erc20') }} t2 ON t2.contract_address = a.tokenOut AND t2.blockchain = 'arbitrum'
         ORDER BY a.evt_block_number DESC, a.evt_index DESC
     ), 
     
@@ -92,7 +93,7 @@ WITH
             SELECT tx_hash, token_out AS token, token_out_price AS token_price
             FROM all_trades_calc_2
         ) 
-        ORDER BY 1, 2
+        ORDER BY 1,2
     ),
     
     backfill_pricing_1 AS (
@@ -127,7 +128,7 @@ WITH
 
     price_formulation AS (
         SELECT
-            'polygon' AS blockchain,
+            'arbitrum' AS blockchain,
             date_trunc('hour', block_time) AS hour,
             contract_address,
             approx_percentile(price, 0.5) AS median_price
@@ -138,7 +139,6 @@ WITH
             SELECT block_time, contract_address, token_out_price AS price 
             FROM backfill_pricing_2 b2 WHERE b2.contract_address = b2.token_out
         )
-        WHERE price <> 'Infinity'
         GROUP BY 1, 2, 3
         ORDER BY 2 DESC, 3
     )

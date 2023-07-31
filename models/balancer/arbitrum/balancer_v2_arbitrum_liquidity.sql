@@ -26,17 +26,17 @@ WITH pool_labels AS (
             decimals,
             AVG(price) AS price
         FROM {{ source('prices', 'usd') }}
-        WHERE blockchain = "arbitrum"
+        WHERE blockchain = 'arbitrum'
         GROUP BY 1, 2, 3
     ),
 
     dex_prices_1 AS (
         SELECT
-            date_trunc('day', HOUR) AS day,
+            date_trunc('day', HOUR) AS DAY,
             contract_address AS token,
-            approx_percentile(median_price, 0.5) AS price,
+            approx_percentilepercentile(median_price, 0.5) AS price,
             sum(sample_size) AS sample_size
-        FROM {{ ref('dex_prices') }}
+        FROM {{ ref('dex_prices_legacy') }}
         GROUP BY 1, 2
         HAVING sum(sample_size) > 3
     ),
@@ -52,7 +52,6 @@ WITH pool_labels AS (
         FROM
             dex_prices_1
     ),
-
 
     bpt_prices AS(
         SELECT 
@@ -91,16 +90,28 @@ WITH pool_labels AS (
         GROUP BY 1, 2, 3
     ),
 
-    balances_changes AS (
+    zipped_balance_changes AS (
         SELECT
             date_trunc('day', evt_block_time) AS day,
             poolId AS pool_id,
-            t.token AS token,
-            d.delta - CAST(p.protocolFeeAmount AS double) AS delta
+            t.tokens,
+            d.deltas,
+            p.protocolFeeAmounts
         FROM {{ source('balancer_v2_arbitrum', 'Vault_evt_PoolBalanceChanged') }}
-        CROSS JOIN UNNEST(tokens) AS t(token)
-        CROSS JOIN UNNEST(deltas) AS d(delta)
-        CROSS JOIN UNNEST(protocolFeeAmounts) AS p(protocolFeeAmount)
+        CROSS JOIN UNNEST (tokens) WITH ORDINALITY as t(tokens,i)
+        CROSS JOIN UNNEST (deltas) WITH ORDINALITY as d(deltas,i)
+        CROSS JOIN UNNEST (protocolFeeAmounts) WITH ORDINALITY as p(protocolFeeAmounts,i)
+        WHERE t.i = d.i AND d.i = p.i
+        ORDER BY 1,2,3
+    ),
+
+    balances_changes AS (
+        SELECT
+            day,
+            pool_id,
+            tokens AS token,
+            deltas - CAST(protocolFeeAmounts as int256) AS delta
+        FROM zipped_balance_changes
         ORDER BY 1, 2, 3
     ),
 
@@ -178,14 +189,14 @@ WITH pool_labels AS (
         LEFT JOIN cumulative_balance b ON b.day <= c.day
         AND c.day < b.day_of_next_change
         LEFT JOIN {{ ref('tokens_erc20') }} t ON t.contract_address = b.token
-        AND blockchain = "arbitrum"
+        AND blockchain = 'arbitrum'
         LEFT JOIN prices p1 ON p1.day = b.day
         AND p1.token = b.token
         LEFT JOIN dex_prices p2 ON p2.day <= c.day
         AND c.day < p2.day_of_next_change
         AND p2.token = b.token
-        LEFT JOIN bpt_prices p3 ON p3.day = b.day AND p3.token = CAST(b.token as varchar(42))
-        WHERE b.token != SUBSTRING(b.pool_id, 0, 42)
+        LEFT JOIN bpt_prices p3 ON p3.day = b.day AND CAST(p3.token as varchar) = CAST(b.token as varchar(42))
+        WHERE CAST(b.token as varchar) != SUBSTRING(CAST(b.pool_id as varchar), 1, 42)
     ),
 
     pool_liquidity_estimates AS (
@@ -216,4 +227,5 @@ LEFT JOIN cumulative_usd_balance c ON c.day = b.day
 AND c.pool_id = b.pool_id
 LEFT JOIN {{ ref('balancer_v2_arbitrum_pools_tokens_weights') }} w ON b.pool_id = w.pool_id
 AND w.token_address = c.token
-LEFT JOIN pool_labels p ON p.pool_id = SUBSTRING(b.pool_id, 0, 42)
+LEFT JOIN pool_labels p ON CAST(p.pool_id as varchar) = SUBSTRING(CAST(b.pool_id as varchar), 1, 42)
+

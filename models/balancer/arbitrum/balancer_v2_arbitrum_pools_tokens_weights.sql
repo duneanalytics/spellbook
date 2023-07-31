@@ -10,7 +10,7 @@
         post_hook='{{ expose_spells(\'["arbitrum"]\',
                                     "project",
                                     "balancer_v2",
-                                    \'["metacrypto", "jacektrocinski"]\') }}'
+                                    \'["metacrypto", "jacektrocinski", "viniabussafi"]\') }}'
     )
 }}
 
@@ -80,5 +80,5 @@ FROM normalized_weights w
 LEFT JOIN registered r ON SUBSTRING(CAST(r.pool_id as varchar),1,42) = CAST(w.pool_id as varchar)
 WHERE w.pool_id IS NOT NULL
 {% if is_incremental() %}
-AND registered.evt_block_time >= date_trunc('day', now() - interval '7' day)
+AND r.evt_block_time >= date_trunc('day', now() - interval '7' day)
 {% endif %}
