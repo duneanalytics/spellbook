@@ -312,6 +312,11 @@ models:
       ethereum:
         +schema: maverick_ethereum
 
+    colony:
+      +schema: colony
+      gnosis:
+        +schema: colony_gnosis
+
     sushiswap:
       +schema: sushiswap
       ethereum:
