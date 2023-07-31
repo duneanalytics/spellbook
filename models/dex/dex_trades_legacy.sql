@@ -32,7 +32,6 @@
 ,ref('velodrome_optimism_trades_legacy')
 ,ref('woofi_trades_legacy')
 ,ref('bancor_ethereum_trades_legacy')
-,ref('carbon_defi_ethereum_trades_legacy')
 ,ref('platypus_finance_avalanche_c_trades_legacy')
 ,ref('trader_joe_trades_legacy')
 ,ref('hashflow_trades_legacy')
