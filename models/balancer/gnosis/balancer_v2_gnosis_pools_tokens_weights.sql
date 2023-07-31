@@ -23,7 +23,18 @@ WITH registered AS (
         evt_block_time
     FROM {{ source('balancer_v2_gnosis', 'Vault_evt_PoolRegistered') }}
 ),
-weighted_pool_factory AS (
+weighted_pool_v4_factory AS (
+    SELECT
+        call_create.output_0 AS pool_id,
+        t.pos AS pos,
+        t.token_address AS token_address,
+        t2.normalized_weight AS normalized_weight
+    FROM {{ source('balancer_v2_gnosis', 'WeightedPoolFactory_call_create') }} AS call_create
+    CROSS JOIN UNNEST(call_create.tokens) WITH ORDINALITY t(token_address, pos)
+    CROSS JOIN UNNEST(call_create.normalizedWeights) WITH ORDINALITY t2(normalized_weight, pos)
+    WHERE t.pos = t2.pos
+),
+weighted_pool_v2_factory AS (
     SELECT
         call_create.output_0 AS pool_id,
         t.pos AS pos,
@@ -39,7 +50,12 @@ normalized_weights AS (
         pool_id,
         token_address,
         normalized_weight / POWER(10, 18) AS normalized_weight
-    FROM weighted_pool_factory
+    FROM weighted_pool_v4_factory
+    UNION ALL
+        pool_id,
+        token_address,
+        normalized_weight / POWER(10, 18) AS normalized_weight
+    FROM weighted_pool_v2_factory
 )
 SELECT r.pool_id, w.token_address, w.normalized_weight
 FROM normalized_weights w 
