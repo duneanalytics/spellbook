@@ -1,7 +1,6 @@
 {{ config(
         schema='nft_base',
         alias = alias('wash_trades'),
-        tags = ['dunesql'],
         partition_by=['block_date'],
         materialized='incremental',
         file_format = 'delta',
@@ -12,7 +11,7 @@
         unique_key = ['unique_trade_id']
 )
 }}
-
+-- no dunesql tag yet
 WITH filter_1 AS (
     SELECT unique_trade_id
     , true AS same_buyer_seller
