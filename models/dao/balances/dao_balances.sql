@@ -99,7 +99,7 @@ LEFT JOIN
     AND p.blockchain = db.blockchain
 LEFT JOIN 
     {{ source('prices', 'usd') }} e 
-    ON db.asset_contract_address = lower('0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee')
+    ON db.asset_contract_address = 0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee
     AND d.day = e.minute
     AND db.blockchain = 'ethereum'
     AND e.blockchain = 'ethereum'
