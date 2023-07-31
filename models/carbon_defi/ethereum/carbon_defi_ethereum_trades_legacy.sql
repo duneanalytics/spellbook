@@ -1,4 +1,4 @@
-{{ config(tags=['spark'],
+{{ config(tags=['legacy'],
     schema = 'carbon_defi_ethereum',
     alias = alias('trades', legacy_model=True),
     partition_by = ['block_date'],
