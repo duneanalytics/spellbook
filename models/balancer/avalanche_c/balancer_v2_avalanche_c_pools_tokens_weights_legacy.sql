@@ -1,7 +1,8 @@
 {{
     config(
+        tags=['legacy'],
         schema='balancer_v2_avalanche_c',
-        alias = alias('pools_tokens_weights'),
+        alias = alias('pools_tokens_weights', legacy_model=True),
         materialized = 'incremental',
         file_format = 'delta',
         incremental_strategy = 'merge',
@@ -9,7 +10,7 @@
         post_hook='{{ expose_spells(\'["avalanche_c"]\',
                                     "project",
                                     "balancer_v2",
-                                    \'["metacrypto", "jacektrocinski", "viniabussafi"]\') }}'
+                                    \'["metacrypto", "jacektrocinski"]\') }}'
     )
 }}
 
@@ -28,4 +29,4 @@ INNER JOIN {{ source('balancer_v2_avalanche_c', 'WeightedPoolFactory_call_create
 WHERE tokens.pos = weights.pos
     {% if is_incremental() %}
     AND registered.evt_block_time >= date_trunc("day", now() - interval '1 week')
-    {% endif %}`
+    {% endif %}
