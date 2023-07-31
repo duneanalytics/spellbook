@@ -17,5 +17,5 @@ SELECT
 FROM {{ ref('tokens_base_nft_standards_legacy')}} c
 LEFT JOIN  {{ref('tokens_base_nft_curated_legacy')}} t
     ON c.contract_address = t.contract_address
--- LEFT JOIN 'tokens_base_nft_bridged_mapping_legacy b
+-- LEFT JOIN 'tokens_base_nft_bridged_mapping_legacy' b
 --     ON c.contract_address = b.contract_address

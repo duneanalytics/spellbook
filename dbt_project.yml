@@ -197,7 +197,7 @@ models:
       goerli:
         +schema: nft_goerli
       base:
-        +schema: base
+        +schema: nft_base
 
     cex:
       +schema: cex

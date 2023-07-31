@@ -16,8 +16,8 @@
 with namespaces as (
     select
         contract_address as address
-        ,namespace
-    -- ,coalesce(contract_project, contract_name, token_symbol) as namespace
+        ,namespeace
+        -- ,coalesce(contract_project, contract_name, token_symbol) as namespace
 	from {{ source('base','contracts') }} -- to be: contracts_contract_mapping_legacy where blockchain = 'base' (once merged)
 )
 , nfts_per_tx as (

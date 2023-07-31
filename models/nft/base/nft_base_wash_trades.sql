@@ -1,5 +1,7 @@
 {{ config(
+        schema='nft_base',
         alias = alias('wash_trades'),
+        tags = ['dunesql'],
         partition_by=['block_date'],
         materialized='incremental',
         file_format = 'delta',
@@ -19,7 +21,7 @@ WITH filter_1 AS (
         AND nftt.unique_trade_id IS NOT NULL
         AND nftt.buyer=nftt.seller
         {% if is_incremental() %}
-        AND nftt.block_time >= date_trunc("day", NOW() - interval '1 week')
+        AND nftt.block_time >= date_trunc('day', NOW() - interval '7' day)
         {% endif %}
     )
 
@@ -33,12 +35,12 @@ WITH filter_1 AS (
         AND filter_baf.nft_contract_address=nftt.nft_contract_address
         AND filter_baf.token_id=nftt.token_id
         {% if is_incremental() %}
-        AND filter_baf.block_time >= date_trunc("day", NOW() - interval '1 week')
+        AND filter_baf.block_time >= date_trunc('day', NOW() - interval '7' day)
         {% endif %}
     WHERE nftt.blockchain='base'
         AND nftt.unique_trade_id IS NOT NULL
         {% if is_incremental() %}
-        AND nftt.block_time >= date_trunc("day", NOW() - interval '1 week')
+        AND nftt.block_time >= date_trunc('day', NOW() - interval '7' day)
         {% endif %}
     GROUP BY nftt.unique_trade_id
     )
@@ -56,12 +58,12 @@ WITH filter_1 AS (
         AND filter_bought_3x.buyer=nftt.buyer
         AND filter_bought_3x.token_standard IN ('erc721', 'erc20')
         {% if is_incremental() %}
-        AND filter_bought_3x.block_time >= date_trunc("day", NOW() - interval '1 week')
+        AND filter_bought_3x.block_time >= date_trunc('day', NOW() - interval '7' day)
         {% endif %}
     WHERE nftt.blockchain='base'
         AND nftt.unique_trade_id IS NOT NULL
         {% if is_incremental() %}
-        AND nftt.block_time >= date_trunc("day", NOW() - interval '1 week')
+        AND nftt.block_time >= date_trunc('day', NOW() - interval '7' day)
         {% endif %}
     GROUP BY nftt.unique_trade_id
     )
@@ -79,12 +81,12 @@ WITH filter_1 AS (
         AND filter_sold_3x.seller=nftt.seller
         AND filter_sold_3x.token_standard IN ('erc721', 'erc20')
         {% if is_incremental() %}
-        AND filter_sold_3x.block_time >= date_trunc("day", NOW() - interval '1 week')
+        AND filter_sold_3x.block_time >= date_trunc('day', NOW() - interval '7' day)
         {% endif %}
     WHERE nftt.blockchain='base'
         AND nftt.unique_trade_id IS NOT NULL
         {% if is_incremental() %}
-        AND nftt.block_time >= date_trunc("day", NOW() - interval '1 week')
+        AND nftt.block_time >= date_trunc('day', NOW() - interval '7' day)
         {% endif %}
     GROUP BY nftt.unique_trade_id
     )
@@ -106,7 +108,7 @@ WITH filter_1 AS (
         AND filter_funding_buyer.first_funded_by NOT IN (SELECT DISTINCT address FROM {{ ref('labels_cex') }})
         AND filter_funding_buyer.first_funded_by NOT IN (SELECT DISTINCT contract_address FROM {{ ref('tornado_cash_withdrawals') }})
         {% if is_incremental() %}
-        AND filter_funding_buyer.block_time >= date_trunc("day", NOW() - interval '1 week')
+        AND filter_funding_buyer.block_time >= date_trunc('day', NOW() - interval '7' day)
         {% endif %}
     INNER JOIN {{ ref('addresses_events_base_first_funded_by') }} filter_funding_seller
         ON filter_funding_seller.address=nftt.seller
@@ -114,14 +116,14 @@ WITH filter_1 AS (
         AND filter_funding_seller.first_funded_by NOT IN (SELECT DISTINCT address FROM {{ ref('labels_cex') }})
         AND filter_funding_seller.first_funded_by NOT IN (SELECT DISTINCT contract_address FROM {{ ref('tornado_cash_withdrawals') }})
         {% if is_incremental() %}
-        AND filter_funding_seller.block_time >= date_trunc("day", NOW() - interval '1 week')
+        AND filter_funding_seller.block_time >= date_trunc('day', NOW() - interval '7' day)
         {% endif %}
     WHERE nftt.blockchain='base'
         AND nftt.unique_trade_id IS NOT NULL
         AND nftt.buyer IS NOT NULL
         AND nftt.seller IS NOT NULL
         {% if is_incremental() %}
-        AND nftt.block_time >= date_trunc("day", NOW() - interval '1 week')
+        AND nftt.block_time >= date_trunc('day', NOW() - interval '7' day)
         {% endif %}
     )
 
@@ -135,7 +137,7 @@ WITH filter_1 AS (
     WHERE nftt.blockchain='base'
         AND nftt.unique_trade_id IS NOT NULL
         {% if is_incremental() %}
-        AND nftt.block_time >= date_trunc("day", NOW() - interval '1 week')
+        AND nftt.block_time >= date_trunc('day', NOW() - interval '7' day)
         {% endif %}
     )
 
@@ -154,7 +156,7 @@ SELECT nftt.blockchain
 , nftt.tx_from
 , nftt.tx_to
 , nftt.block_time
-, date_trunc('day', nftt.block_time) AS block_date
+, cast( date_trunc('day', nftt.block_time) as date) AS block_date
 , nftt.block_number
 , nftt.tx_hash
 , nftt.unique_trade_id
@@ -200,6 +202,5 @@ LEFT JOIN filter_5 ON nftt.unique_trade_id=filter_5.unique_trade_id
 WHERE nftt.blockchain='base'
     AND nftt.unique_trade_id IS NOT NULL
     {% if is_incremental() %}
-    AND nftt.block_time >= date_trunc("day", NOW() - interval '1 week')
+    AND nftt.block_time >= date_trunc('day', NOW() - interval '7' day)
     {% endif %}
-;
