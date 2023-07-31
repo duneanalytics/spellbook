@@ -3,7 +3,6 @@ version: 2
 models:
   - name: chainlink_ccip_onramps
     meta:
-      alias: chainlink_ccip_onramps_ALL
       blockchain: ethereum, optimism, avalanche_c, polygon
       sector: CCIP
       project: chainlink
@@ -40,7 +39,6 @@ models:
 
   - name: chainlink_ccip_offramps
     meta:
-      alias: chainlink_ccip_offramps_ALL
       blockchain: ethereum, optimism, avalanche_c, polygon
       sector: CCIP
       project: chainlink

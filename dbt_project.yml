@@ -781,6 +781,10 @@ models:
         +schema: chainlink_polygon
       bnb:
         +schema: chainlink_bnb
+      ethereum:
+        +schema: chainlink_ethereum
+      avalanche_c:
+        +schema: chainlink_avalanche_c
 
     contracts:
       +schema: contracts
