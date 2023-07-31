@@ -149,7 +149,7 @@ sources:
         loaded_at_field: call_block_time
         columns:
           - *call_block_number
-          - *call_block_time
+          - *call_block_time 
           - *call_success
           - *call_trace_address
           - *call_tx_hash
