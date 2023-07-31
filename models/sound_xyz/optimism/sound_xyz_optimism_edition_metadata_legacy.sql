@@ -6,5 +6,5 @@
 }}
 
 SELECT
-    1 as nft_contract_address,
-    1 as edition_address
+    '0x' as nft_contract_address,
+    '0x' as edition_address
