@@ -14,6 +14,12 @@ sources:
     tables:
       - name: BlurExchange_evt_OrdersMatched
 
+  - name: blur_v2_ethereum
+    tables:
+      - name: BlurPool_evt_Execution721Packed
+      - name: BlurPool_evt_Execution721MakerFeePacked
+      - name: BlurPool_evt_Execution721TakerFeePacked
+
   - name: collectionswap_ethereum
     tables:
       - name: CollectionPool_evt_SwapNFTOutPool

@@ -43,7 +43,7 @@ WITH
       call_tx_hash AS tx_hash,
       call_block_time AS block_time,
       call_trace_address AS trace_address,
-      CAST(-1 AS INTEGER) AS evt_index,
+      CAST(-1 AS BIGINT) AS evt_index,
       contract_address
     FROM
         {{ source('oneinch_ethereum', 'exchange_v1_call_aggregate') }}
@@ -67,7 +67,7 @@ WITH
       call_tx_hash AS tx_hash,
       call_block_time AS block_time,
       call_trace_address AS trace_address,
-      CAST(-1 AS INTEGER) AS evt_index,
+      CAST(-1 AS BIGINT) AS evt_index,
       contract_address
     FROM
         {{ source('oneinch_ethereum', 'exchange_v2_call_aggregate') }}
@@ -91,7 +91,7 @@ WITH
       call_tx_hash AS tx_hash,
       call_block_time AS block_time,
       call_trace_address AS trace_address,
-      CAST(-1 AS INTEGER) AS evt_index,
+      CAST(-1 AS BIGINT) AS evt_index,
       contract_address
     FROM
         {{ source('oneinch_ethereum', 'exchange_v3_call_aggregate') }}
@@ -115,7 +115,7 @@ WITH
       call_tx_hash AS tx_hash,
       call_block_time AS block_time,
       call_trace_address AS trace_address,
-      CAST(-1 AS INTEGER) AS evt_index,
+      CAST(-1 AS BIGINT) AS evt_index,
       contract_address
     FROM
         {{ source('oneinch_ethereum', 'exchange_v4_call_aggregate') }}
@@ -139,7 +139,7 @@ WITH
       call_tx_hash AS tx_hash,
       call_block_time AS block_time,
       call_trace_address AS trace_address,
-      CAST(-1 AS INTEGER) AS evt_index,
+      CAST(-1 AS BIGINT) AS evt_index,
       contract_address
     FROM
         {{ source('oneinch_ethereum', 'exchange_v5_call_aggregate') }}
@@ -163,7 +163,7 @@ WITH
       call_tx_hash AS tx_hash,
       call_block_time AS block_time,
       call_trace_address AS trace_address,
-      CAST(-1 AS INTEGER) AS evt_index,
+      CAST(-1 AS BIGINT) AS evt_index,
       contract_address
     FROM
         {{ source('oneinch_ethereum', 'exchange_v6_call_aggregate') }}
@@ -187,7 +187,7 @@ WITH
       call_tx_hash AS tx_hash,
       call_block_time AS block_time,
       call_trace_address AS trace_address,
-      CAST(-1 AS INTEGER) AS evt_index,
+      CAST(-1 AS BIGINT) AS evt_index,
       contract_address
     FROM
         {{ source('oneinch_ethereum', 'exchange_v7_call_swap') }}
@@ -211,7 +211,7 @@ WITH
       call_tx_hash AS tx_hash,
       call_block_time AS block_time,
       call_trace_address AS trace_address,
-      CAST(-1 AS INTEGER) AS evt_index,
+      CAST(-1 AS BIGINT) AS evt_index,
       contract_address
     FROM
         {{ source('oneinch_ethereum', 'OneInchExchange_call_swap') }}
@@ -226,24 +226,24 @@ WITH
 , oneinch AS
 (
     SELECT
-      block_number,
-      block_time,
-      '1inch' AS project,
-      '1' AS version,
-      taker,
-      CAST(NULL AS VARBINARY) AS maker,
-      to_amount AS token_bought_amount_raw,
-      from_amount AS token_sold_amount_raw,
+        block_number,
+        block_time,
+        '1inch' AS project,
+        '1' AS version,
+        taker,
+        CAST(NULL AS VARBINARY) AS maker,
+        to_amount AS token_bought_amount_raw,
+        from_amount AS token_sold_amount_raw,
         CAST(NULL AS DOUBLE) AS amount_usd,
         CASE
-          WHEN to_token = {{generic_null_address}}
+            WHEN to_token = {{generic_null_address}}
             THEN {{burn_address}}
             ELSE to_token
         END AS token_bought_address,
         CASE
-          WHEN from_token = {{generic_null_address}}
-              THEN {{burn_address}}
-              ELSE from_token
+            WHEN from_token = {{generic_null_address}}
+                THEN {{burn_address}}
+                ELSE from_token
         END AS token_sold_address,
         contract_address AS project_contract_address,
         tx_hash,
@@ -315,13 +315,13 @@ SELECT
     ) AS amount_usd
     ,src.token_bought_address
     ,src.token_sold_address
-    ,coalesce(src.taker, cast(tx."from" as VARBINARY)) AS taker
+    ,coalesce(src.taker, tx."from") AS taker
     ,src.maker
     ,src.project_contract_address
     ,src.tx_hash
     ,tx."from" AS tx_from
     ,tx.to AS tx_to
-    ,TRY_CAST(src.trace_address AS ARRAY (BIGINT)) AS trace_address
+    ,src.trace_address
     ,src.evt_index
 FROM oneinch as src
 INNER JOIN {{ source('ethereum', 'transactions') }} as tx
