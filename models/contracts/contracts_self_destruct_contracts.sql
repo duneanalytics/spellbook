@@ -71,13 +71,14 @@ FROM (
       {% endif %}
 
     WHERE cr.blockchain = '{{chain}}'
-    group by 1, 2, 3, 4, 5
+    group by 1, 2, 3, 4, 5, 6
 
     UNION ALL
 
     --self destruct method 2: later tx
     select
-      cr.created_time 
+      cr.blockchain
+      , cr.created_time 
       ,cr.created_block_number
       ,cr.creation_tx_hash 
       ,cr.contract_address 
@@ -96,6 +97,7 @@ FROM (
       and cr.contract_address NOT IN (SELECT contract_address FROM {{this}} th WHERE th.blockchain = '{{chain}}' ) --ensure no duplicates
       {% endif %}
     WHERE cr.blockchain = '{{chain}}'
+    group by 1, 2, 3, 4, 5, 6
 
     {% if not loop.last %}
     UNION ALL
