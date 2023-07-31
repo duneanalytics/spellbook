@@ -1,6 +1,6 @@
 {{ config(
 	tags=['legacy'],
-	
+
     alias = alias('trades', legacy_model=True),
     partition_by = ['block_date'],
     materialized = 'incremental',
@@ -20,14 +20,7 @@ WITH dexs AS
 (
     SELECT
         evt_block_time AS block_time,
-        'light' AS version,
-        e.senderWallet AS taker,
-        e.signerWallet AS maker,
-        e.senderAmount AS token_sold_amount_raw,
-        e.signerAmount AS token_bought_amount_raw,
-        e.senderToken AS token_sold_address,
-        e.signerToken AS token_bought_address,
-        contract_address AS project_contract_address,
+        'light' AS version, e.senderWallet AS taker, e.signerWallet AS maker, e.senderAmount AS token_sold_amount_raw, e.signerAmount AS token_bought_amount_raw, e.senderToken AS token_sold_address, e.signerToken AS token_bought_address, contract_address AS project_contract_address,
         evt_tx_hash AS tx_hash,
         '' AS trace_address,
         cast(NULL as double) AS amount_usd,
@@ -59,7 +52,7 @@ WITH dexs AS
     {% endif %}
 
     UNION ALL
-    
+
     SELECT
         evt_block_time AS block_time,
         'swap' AS version,
