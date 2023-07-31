@@ -18,7 +18,6 @@
 
 WITH dexs AS (
 SELECT
-    '1' AS version,
     t.evt_block_time AS block_time,
     t.trader AS taker,
     CAST(NULL as VARBINARY) as maker,
