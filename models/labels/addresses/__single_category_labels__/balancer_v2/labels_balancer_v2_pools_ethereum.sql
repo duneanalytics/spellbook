@@ -245,7 +245,7 @@ WITH pools AS (
   WHERE c.evt_block_time >= date_trunc('day', now() - interval '7' day)
     AND cc.call_block_time >= date_trunc('day', now() - interval '7' day)
   {% endif %}
-
+),
 settings AS (
   SELECT
     pool_id,

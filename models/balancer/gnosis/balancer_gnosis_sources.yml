@@ -153,12 +153,9 @@ sources:
           - *call_success
           - *call_trace_address
           - *call_tx_hash
-          - name: contract_address
-            description: 'Address of the WeightedPoolV2Factory contract'
-          - name: name
-            description: 'Name of the created pool'
-          - name: normalizedWeights
-            description: 'Array with the normalized weight of each token in the created pool'
+          - *contract_address
+          - *name
+          - *normalizedWeights
           - *output_0
           - *owner
           - *swapFeePercentage
