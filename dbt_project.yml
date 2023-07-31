@@ -372,6 +372,13 @@ models:
       avalanche_c:
         +schema: openocean_avalanche_c
 
+    syndicate:
+      +schema: syndicate
+      ethereum:
+        +schema: syndicate_ethereum
+      polygon:
+        +schema: syndicate_polygon
+
     babyswap:
       +schema: babyswap
       bnb:
