@@ -8,3 +8,7 @@
 {%- macro is_materialized(model) -%}
   {% do return(model.config.materialized in ('table', 'incremental')) %}
 {%- endmacro -%}
+
+{%- macro is_partitioned_join(model) -%}
+    {% do return(model.config.is_partitioned_join in ('true')) %}
+{%- endmacro -%}
