@@ -17,5 +17,5 @@ FROM (VALUES
         , (137, 'polygon', 'Polygon PoS', 'Layer 1', NULL, 'MATIC', 0x0d500b1d8e8ef31e21c99d1db9a6444d3adf1270, 'https://polygonscan.com', timestamp '2020-05-30 16:30')
         , (250, 'fantom', 'Fantom', 'Layer 1', NULL, 'FTM', 0x21be370d5312f44cb42ce377bc9b8a0cef1a4c83, 'https://ftmscan.com', timestamp '2019-12-27 03:56')
         , (56, 'bnb', 'BNB', 'Layer 1', NULL, 'BNB', 0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c, 'https://bscscan.com', timestamp '2020-08-29 03:24')
-        , (42220, 'celo', 'Celo', 'Layer 1', NULL, 'CELO', NULL, 'https://celoscan.io', timestamp '2020-04-22 16:00')
+        , (42220, 'celo', 'Celo', 'Layer 1', NULL, 'CELO', 0xe452e6ea2ddeb012e20db73bf5d3863a3ac8d77a, 'https://celoscan.io', timestamp '2020-04-22 16:00')
         ) AS temp_table (chain_id, blockchain, name, chain_type, rollup_type, native_token_symbol, wrapped_native_token_address, explorer_link, first_block_time)
