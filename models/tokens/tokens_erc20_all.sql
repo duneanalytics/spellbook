@@ -20,7 +20,7 @@
 {% set evm_chains = all_evm_mainnets_testnets_chains() %} --macro: all_evm_mainnets_testnets_chains.sql
 
 {% for chain in evm_chains %}
-        SELECT blockchain, contract_address, 'erc20' as standard
+        SELECT '{{chain}}' AS blockchain, contract_address, 'erc20' as standard
 
         from {{ source('erc20_' + chain , 'evt_transfer') }} tr 
 
