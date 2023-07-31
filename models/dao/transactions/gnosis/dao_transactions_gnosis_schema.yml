@@ -25,7 +25,6 @@ models:
             - address_interacted_with
             - value 
             - asset_contract_address
-            - block_month
     columns:
       - &blockchain
         name: blockchain
@@ -106,7 +105,6 @@ models:
             - address_interacted_with
             - value 
             - asset_contract_address
-            - block_month
     columns:
       - *blockchain
       - *dao_creator_tool
