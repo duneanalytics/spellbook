@@ -6,54 +6,54 @@
         post_hook='{{ expose_spells(\'["polygon"]\',
                                     "sector",
                                     "chainlink",
-                                    \'["linkpool_ryan", "linkpool_jon]\') }}'
+                                    \'["linkpool_ryan", "linkpool_jon"]\') }}'
       )
     }}
-{% set blocksizecapital = 'BlocksizeCapital' %}
-{% set newroad = 'Newroad Network' %}
-{% set linkpool = 'LinkPool' %}
-{% set inotel = 'Inotel' %}
-{% set bharvest = 'B Harvest' %}
 {% set mycelium = 'Mycelium' %}
-{% set alphachain = 'Alphachain' %}
 {% set snzpool = 'SNZPool' %}
 {% set cryptomanufaktur = 'CryptoManufaktur' %}
-{% set stakingfacilities = 'Staking Facilities' %}
-{% set dmakers = 'dMakers' %}
-{% set simplyvc = 'Simply VC' %}
-{% set 01node = '01Node' %}
-{% set matrixedlink = 'Matrixed.Link' %}
-{% set dextrac = 'DexTrac' %}
-{% set fiews = 'Fiews' %}
-{% set linkriver = 'LinkRiver' %}
 {% set chainlayer = 'Chainlayer' %}
-{% set linkforest = 'LinkForest' %}
+{% set linkriver = 'LinkRiver' %}
+{% set dextrac = 'DexTrac' %}
+{% set linkpool = 'LinkPool' %}
+{% set bharvest = 'B Harvest' %}
 {% set ztake = 'Ztake.org' %}
 {% set vulcan = 'Vulcan Link' %}
+{% set newroad = 'Newroad Network' %}
+{% set matrixedlink = 'Matrixed.Link' %}
+{% set linkforest = 'LinkForest' %}
+{% set simplyvc = 'Simply VC' %}
+{% set stakingfacilities = 'Staking Facilities' %}
+{% set inotel = 'Inotel' %}
+{% set blocksizecapital = 'BlocksizeCapital' %}
+{% set alphachain = 'Alphachain' %}
+{% set dmakers = 'dMakers' %}
+{% set 01node = '01Node' %}
+{% set fiews = 'Fiews' %}
 SELECT admin_address, operator_name FROM (VALUES
-  ('0x3FB4600736d306Ee2A89EdF0356D4272fb095768', '{{mycelium}}'),
-  ('0xa5D0084A766203b463b3164DFc49D91509C12daB', '{{alphachain}}'),
-  ('0x9cCbFD17FA284f36c2ff503546160B256d1CD3D1', '{{snzpool}}'),
-  ('0x9efa0A617C0552F1558c95993aA8b8A68b3e709C', '{{dextrac}}'),
-  ('0x59eCf48345A221E0731E785ED79eD40d0A94E2A5', '{{cryptomanufaktur}}'),
-  ('0x3D65be029c949F52cABa2d8E8270c098256697d9', '{{stakingfacilities}}'),
-  ('0xB9e62F6a14aC8BabB7f99993bdc3182a1976c22E', '{{dmakers}}'),
-  ('0x4fBefaf1BFf0130945C61603B97D38DD6e21f5Cf', '{{simplyvc}}'),
-  ('0x1f11134A80aEd1FF47E3ee97A4d3f978A0629669', '{{simplyvc}}'),
-  ('0xD9459cc85E78e0336aDb349EAbF257Dbaf9d5a2B', '{{01node}}'),
-  ('0x4dc81f63CB356c1420D4620414f366794072A3a8', '{{matrixedlink}}'),
   ('0x15918ff7f6C44592C81d999B442956B07D26CC44', '{{fiews}}'),
   ('0xB97a32D95A31a504C3dB28dDd574F21c700EDbee', '{{fiews}}'),
-  ('0x14f94049397C3F1807c45B6f854Cb5F36bC4393B', '{{linkriver}}'),
+  ('0x7CC60c9C24E9A290Db55b1017AF477E5c87a7550', '{{blocksizecapital}}'),
+  ('0xa5D0084A766203b463b3164DFc49D91509C12daB', '{{alphachain}}'),
+  ('0xB9e62F6a14aC8BabB7f99993bdc3182a1976c22E', '{{dmakers}}'),
+  ('0xD9459cc85E78e0336aDb349EAbF257Dbaf9d5a2B', '{{01node}}'),
+  ('0x9efa0A617C0552F1558c95993aA8b8A68b3e709C', '{{dextrac}}'),
+  ('0x3FB4600736d306Ee2A89EdF0356D4272fb095768', '{{mycelium}}'),
+  ('0x9cCbFD17FA284f36c2ff503546160B256d1CD3D1', '{{snzpool}}'),
+  ('0x59eCf48345A221E0731E785ED79eD40d0A94E2A5', '{{cryptomanufaktur}}'),
   ('0x4a3dF8cAe46765d33c2551ff5438a5C5FC44347c', '{{chainlayer}}'),
+  ('0x14f94049397C3F1807c45B6f854Cb5F36bC4393B', '{{linkriver}}'),
+  ('0xAB35418fB9f8B13E3e6857c36A0769b9F94a87EC', '{{newroad}}'),
+  ('0x797de2909991C66C66D8e730C8385bbab8D18eA6', '{{linkpool}}'),
+  ('0x6cDC3Efa3bAa392fAF3E5c1Ca802E15B6185E0e8', '{{bharvest}}'),
+  ('0x0039F22efB07A647557C7C5d17854CFD6D489eF3', '{{ztake}}'),
+  ('0x7D0f8dd25135047967bA6C50309b567957dd52c3', '{{vulcan}}'),
+  ('0xB8C6E43f37E04A2411562a13c1C48B3ad5975cf4', '{{inotel}}'),
+  ('0x4dc81f63CB356c1420D4620414f366794072A3a8', '{{matrixedlink}}'),
   ('0x4564A9c6061f6f1F2Eadb954B1b3C241D2DC984e', '{{linkforest}}'),
   ('0xD56FBFF05D2e1cdbeb5CB50e8055dAD0cf864792', '{{linkforest}}'),
   ('0xD48fc6E2B73C2988fA50C994181C0CdCa850D62a', '{{linkforest}}'),
-  ('0x0039F22efB07A647557C7C5d17854CFD6D489eF3', '{{ztake}}'),
-  ('0x7D0f8dd25135047967bA6C50309b567957dd52c3', '{{vulcan}}'),
-  ('0x7CC60c9C24E9A290Db55b1017AF477E5c87a7550', '{{blocksizecapital}}'),
-  ('0xAB35418fB9f8B13E3e6857c36A0769b9F94a87EC', '{{newroad}}'),
-  ('0x797de2909991C66C66D8e730C8385bbab8D18eA6', '{{linkpool}}'),
-  ('0xB8C6E43f37E04A2411562a13c1C48B3ad5975cf4', '{{inotel}}'),
-  ('0x6cDC3Efa3bAa392fAF3E5c1Ca802E15B6185E0e8', '{{bharvest}}'),
+  ('0x4fBefaf1BFf0130945C61603B97D38DD6e21f5Cf', '{{simplyvc}}'),
+  ('0x1f11134A80aEd1FF47E3ee97A4d3f978A0629669', '{{simplyvc}}'),
+  ('0x3D65be029c949F52cABa2d8E8270c098256697d9', '{{stakingfacilities}}')
 ) AS tmp_node_meta(admin_address, operator_name)
