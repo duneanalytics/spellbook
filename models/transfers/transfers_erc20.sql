@@ -28,7 +28,7 @@ with
             t."from" AS tx_from,
             t.to AS tx_to,
             bytearray_substring(t.data,1,4) AS tx_method_id,
-            cast(value as double) as amount_raw
+            cast(tr.value as double) as amount_raw
         from
             {{ source('erc20_' + chain , 'evt_transfer') }} tr 
             INNER JOIN {{ source( chain , 'transactions') }} t
@@ -71,7 +71,7 @@ with
             t."from" AS tx_from,
             t.to AS tx_to,
             bytearray_substring(t.data,1,4) AS tx_method_id,
-            cast(value as double) as amount_raw
+            cast(tr.value as double) as amount_raw
         from
             {{ source('erc20_' + chain , 'evt_transfer') }} tr 
             INNER JOIN {{ source( chain , 'transactions') }} t
@@ -133,7 +133,7 @@ with
     -- )
     
 select 
-DATE_TRUNC('month', evt_block_time) AS block_month
+cast(DATE_TRUNC('month', evt_block_time) as date) AS block_month
 , blockchain, unique_transfer_id, counterparty_address, token_address
 , evt_block_time, evt_tx_hash, evt_block_number
 , tx_from, tx_to, tx_method_id, amount_raw
@@ -141,7 +141,7 @@ from sent_transfers
 union all
 
 select
-DATE_TRUNC('month', evt_block_time) AS block_month
+cast(DATE_TRUNC('month', evt_block_time) as date) AS block_month
 , blockchain, unique_transfer_id, counterparty_address, token_address
 , evt_block_time, evt_tx_hash, evt_block_number
 , tx_from, tx_to, tx_method_id, amount_raw
