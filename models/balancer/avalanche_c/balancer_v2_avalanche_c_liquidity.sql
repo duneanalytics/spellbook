@@ -1,11 +1,11 @@
 {{
     config(
-        schema='balancer_v2_arbitrum',
+        schema='balancer_v2_avalanche_c',
         alias = alias('liquidity'),
         tags = ['dunesql'],
         materialized = 'table',
         file_format = 'delta',
-        post_hook='{{ expose_spells(\'["arbitrum"]\',
+        post_hook='{{ expose_spells(\'["avalanche_c"]\',
                                     "project",
                                     "balancer_v2",
                                     \'["stefenon", "viniabussafi"]\') }}'
@@ -16,7 +16,7 @@ WITH pool_labels AS (
     SELECT
         address AS pool_id,
         name AS pool_symbol
-    FROM {{ ref('labels_balancer_v2_pools_arbitrum') }}
+    FROM {{ ref('labels_balancer_v2_pools_avalanche_c') }}
     ),
 
     prices AS (
@@ -26,7 +26,7 @@ WITH pool_labels AS (
             decimals,
             AVG(price) AS price
         FROM {{ source('prices', 'usd') }}
-        WHERE blockchain = 'arbitrum'
+        WHERE blockchain = 'avalanche_c'
         GROUP BY 1, 2, 3
     ),
 
@@ -36,7 +36,7 @@ WITH pool_labels AS (
             date_trunc('day', HOUR) AS day,
             contract_address AS token,
             approx_percentile(median_price, 0.5) AS bpt_price
-        FROM {{ ref('balancer_v2_arbitrum_bpt_prices') }}
+        FROM {{ ref('balancer_v2_avalanche_c_bpt_prices') }}
         GROUP BY 1, 2
     ),
 
@@ -54,7 +54,7 @@ WITH pool_labels AS (
                     tokenIn AS token,
                     CAST(amountIn AS double) AS delta
                 FROM
-                    {{ source('balancer_v2_arbitrum', 'Vault_evt_Swap') }}
+                    {{ source('balancer_v2_avalanche_c', 'Vault_evt_Swap') }}
                 UNION
                 ALL
                 SELECT
@@ -63,7 +63,7 @@ WITH pool_labels AS (
                     tokenOut AS token,
                     -CAST(amountOut AS double) AS delta
                 FROM
-                    {{ source('balancer_v2_arbitrum', 'Vault_evt_Swap') }}
+                    {{ source('balancer_v2_avalanche_c', 'Vault_evt_Swap') }}
             ) swaps
         GROUP BY 1, 2, 3
     ),
@@ -75,7 +75,7 @@ WITH pool_labels AS (
             t.tokens,
             d.deltas,
             p.protocolFeeAmounts
-        FROM {{ source('balancer_v2_arbitrum', 'Vault_evt_PoolBalanceChanged') }}
+        FROM {{ source('balancer_v2_avalanche_c', 'Vault_evt_PoolBalanceChanged') }}
         CROSS JOIN UNNEST (tokens) WITH ORDINALITY as t(tokens,i)
         CROSS JOIN UNNEST (deltas) WITH ORDINALITY as d(deltas,i)
         CROSS JOIN UNNEST (protocolFeeAmounts) WITH ORDINALITY as p(protocolFeeAmounts,i)
@@ -99,7 +99,7 @@ WITH pool_labels AS (
             poolId AS pool_id,
             token,
             cashDelta + managedDelta AS delta
-        FROM {{ source('balancer_v2_arbitrum', 'Vault_evt_PoolBalanceManaged') }}
+        FROM {{ source('balancer_v2_avalanche_c', 'Vault_evt_PoolBalanceManaged') }}
     ),
 
     daily_delta_balance AS (
@@ -167,7 +167,7 @@ WITH pool_labels AS (
         LEFT JOIN cumulative_balance b ON b.day <= c.day
         AND c.day < b.day_of_next_change
         LEFT JOIN {{ ref('tokens_erc20') }} t ON t.contract_address = b.token
-        AND blockchain = 'arbitrum'
+        AND blockchain = 'avalanche_c'
         LEFT JOIN prices p1 ON p1.day = b.day
         AND p1.token = b.token
         LEFT JOIN bpt_prices p3 ON p3.day = b.day AND p3.token = CAST(b.token as varchar(42))
@@ -180,7 +180,7 @@ WITH pool_labels AS (
             b.pool_id,
             SUM(b.pool_liquidity_usd) / COALESCE(SUM(w.normalized_weight), 1) AS pool_liquidity
         FROM cumulative_usd_balance b
-        LEFT JOIN {{ ref('balancer_v2_arbitrum_pools_tokens_weights') }} w ON b.pool_id = w.pool_id
+        LEFT JOIN {{ ref('balancer_v2_avalanche_c_pools_tokens_weights') }} w ON b.pool_id = w.pool_id
         AND b.token = w.token_address
         AND b.pool_liquidity_usd > 0
         GROUP BY 1, 2
@@ -190,7 +190,7 @@ SELECT
     b.day,
     b.pool_id,
     p.pool_symbol,
-    'arbitrum' as blockchain,
+    'avalanche_c' as blockchain,
     token AS token_address,
     token_symbol,
     token_balance_raw,
@@ -200,7 +200,7 @@ SELECT
 FROM pool_liquidity_estimates b
 LEFT JOIN cumulative_usd_balance c ON c.day = b.day
 AND c.pool_id = b.pool_id
-LEFT JOIN {{ ref('balancer_v2_arbitrum_pools_tokens_weights') }} w ON b.pool_id = w.pool_id
+LEFT JOIN {{ ref('balancer_v2_avalanche_c_pools_tokens_weights') }} w ON b.pool_id = w.pool_id
 AND w.token_address = c.token
 LEFT JOIN pool_labels p ON CAST(p.pool_id as varchar) = SUBSTRING(CAST(b.pool_id as varchar), 1, 42)
 
