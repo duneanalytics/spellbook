@@ -309,10 +309,27 @@ models:
       bnb:
         +schema: nomiswap_bnb
 
+    zodiac:
+      +schema: zodiac
+      ethereum:
+        +schema: zodiac_ethereum
+
     maverick:
       +schema: maverick
       ethereum:
         +schema: maverick_ethereum
+
+    daohaus:
+      +schema: daohaus
+      ethereum:
+        +schema: daohaus_ethereum
+      gnosis:
+        +schema: daohaus_gnosis
+
+    colony:
+      +schema: colony
+      gnosis:
+        +schema: colony_gnosis
 
     sushiswap:
       +schema: sushiswap
@@ -356,6 +373,13 @@ models:
         +schema: openocean_fantom
       avalanche_c:
         +schema: openocean_avalanche_c
+
+    syndicate:
+      +schema: syndicate
+      ethereum:
+        +schema: syndicate_ethereum
+      polygon:
+        +schema: syndicate_polygon
 
     babyswap:
       +schema: babyswap
@@ -871,6 +895,11 @@ models:
       +schema: bancor
       ethereum:
         +schema: bancor_ethereum
+    
+    carbon_defi:
+      +schema: carbon_defi
+      ethereum:
+        +schema: carbon_defi_ethereum
 
     kyberswap:
       +schema: kyberswap
