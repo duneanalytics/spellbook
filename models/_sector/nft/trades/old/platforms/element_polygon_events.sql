@@ -1,7 +1,7 @@
 {{ config(
     schema = 'element_polygon',
     alias = alias('events'),
-    partition_by = ['block_date'],
+    tags = ['dunesql'],
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
@@ -23,9 +23,9 @@ WITH element_txs AS (
         , ee.maker AS seller
         , ee.taker AS buyer
         , ee.erc20TokenAmount AS amount_raw
-        , CASE WHEN ee.erc20Token='0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee' THEN '0x0d500B1d8E8eF31E21C99d1Db9A6444d3ADf1270'
+        , CASE WHEN ee.erc20Token=0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee THEN 0x0d500B1d8E8eF31E21C99d1Db9A6444d3ADf1270
             ELSE ee.erc20Token END AS currency_contract
-        , CASE WHEN ee.erc20Token='0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee' THEN 'WMATIC' END AS currency_symbol
+        , CASE WHEN ee.erc20Token=0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee THEN 'WMATIC' END AS currency_symbol
         , ee.erc721Token AS nft_contract_address
         , ee.contract_address AS project_contract_address
         , ee.evt_tx_hash AS tx_hash
@@ -33,7 +33,7 @@ WITH element_txs AS (
         , ee.evt_index
         FROM {{ source('element_ex_polygon','OrdersFeature_evt_ERC721SellOrderFilled') }} ee
         {% if is_incremental() %}
-        WHERE ee.evt_block_time >= date_trunc("day", now() - interval '1 week')
+        WHERE ee.evt_block_time >= date_trunc('day', now() - interval '7' day)
         {% endif %}
 
         UNION ALL
@@ -51,9 +51,9 @@ WITH element_txs AS (
         , ee.taker AS seller
         , ee.maker AS buyer
         , ee.erc20TokenAmount AS amount_raw
-        , CASE WHEN ee.erc20Token='0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee' THEN '0x0d500B1d8E8eF31E21C99d1Db9A6444d3ADf1270'
+        , CASE WHEN ee.erc20Token=0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee THEN 0x0d500B1d8E8eF31E21C99d1Db9A6444d3ADf1270
             ELSE ee.erc20Token END AS currency_contract
-        , CASE WHEN ee.erc20Token='0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee' THEN 'WMATIC' END AS currency_symbol
+        , CASE WHEN ee.erc20Token=0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee THEN 'WMATIC' END AS currency_symbol
         , ee.erc721Token AS nft_contract_address
         , ee.contract_address AS project_contract_address
         , ee.evt_tx_hash AS tx_hash
@@ -61,7 +61,7 @@ WITH element_txs AS (
         , ee.evt_index
         FROM {{ source('element_ex_polygon','OrdersFeature_evt_ERC721BuyOrderFilled') }} ee
         {% if is_incremental() %}
-        WHERE ee.evt_block_time >= date_trunc("day", now() - interval '1 week')
+        WHERE ee.evt_block_time >= date_trunc('day', now() - interval '7' day)
         {% endif %}
 
         UNION ALL
@@ -79,9 +79,9 @@ WITH element_txs AS (
         , ee.maker AS seller
         , ee.taker AS buyer
         , ee.erc20FillAmount AS amount_raw
-        , CASE WHEN ee.erc20Token='0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee' THEN '0x0d500B1d8E8eF31E21C99d1Db9A6444d3ADf1270'
+        , CASE WHEN ee.erc20Token=0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee THEN 0x0d500B1d8E8eF31E21C99d1Db9A6444d3ADf1270
             ELSE ee.erc20Token END AS currency_contract
-        , CASE WHEN ee.erc20Token='0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee' THEN 'WMATIC' END AS currency_symbol
+        , CASE WHEN ee.erc20Token=0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee THEN 'WMATIC' END AS currency_symbol
         , ee.erc1155Token AS nft_contract_address
         , ee.contract_address AS project_contract_address
         , ee.evt_tx_hash AS tx_hash
@@ -89,7 +89,7 @@ WITH element_txs AS (
         , ee.evt_index
         FROM {{ source('element_ex_polygon','OrdersFeature_evt_ERC1155SellOrderFilled') }} ee
         {% if is_incremental() %}
-        WHERE ee.evt_block_time >= date_trunc("day", now() - interval '1 week')
+        WHERE ee.evt_block_time >= date_trunc('day', now() - interval '7' day)
         {% endif %}
 
         UNION ALL
@@ -107,9 +107,9 @@ WITH element_txs AS (
         , ee.taker AS seller
         , ee.maker AS buyer
         , ee.erc20FillAmount AS amount_raw
-        , CASE WHEN ee.erc20Token='0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee' THEN '0x0d500B1d8E8eF31E21C99d1Db9A6444d3ADf1270'
+        , CASE WHEN ee.erc20Token=0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee THEN 0x0d500B1d8E8eF31E21C99d1Db9A6444d3ADf1270
             ELSE ee.erc20Token END AS currency_contract
-        , CASE WHEN ee.erc20Token='0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee' THEN 'WMATIC' END AS currency_symbol
+        , CASE WHEN ee.erc20Token=0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee THEN 'WMATIC' END AS currency_symbol
         , ee.erc1155Token AS nft_contract_address
         , ee.contract_address AS project_contract_address
         , ee.evt_tx_hash AS tx_hash
@@ -117,7 +117,7 @@ WITH element_txs AS (
         , ee.evt_index
         FROM {{ source('element_ex_polygon','OrdersFeature_evt_ERC1155BuyOrderFilled') }} ee
         {% if is_incremental() %}
-        WHERE ee.evt_block_time >= date_trunc("day", now() - interval '1 week')
+        WHERE ee.evt_block_time >= date_trunc('day', now() - interval '7' day)
         {% endif %}
         )
 
@@ -146,19 +146,19 @@ SELECT alet.blockchain
 , CASE WHEN agg.name IS NOT NULL THEN agg.contract_address END AS aggregator_address
 , alet.tx_hash
 , alet.block_number
-, bt.from AS tx_from
+, bt."from" AS tx_from
 , bt.to AS tx_to
-, CAST(0 AS DOUBLE) AS platform_fee_amount_raw
+, CAST(0 AS uint256) AS platform_fee_amount_raw
 , CAST(0 AS DOUBLE) AS platform_fee_amount
 , CAST(0 AS DOUBLE) AS platform_fee_amount_usd
 , CAST(0 AS DOUBLE) AS platform_fee_percentage
-, CAST(0 AS DOUBLE) AS royalty_fee_amount_raw
+, CAST(0 AS uint256) AS royalty_fee_amount_raw
 , CAST(0 AS DOUBLE) AS royalty_fee_amount
 , CAST(0 AS DOUBLE) AS royalty_fee_amount_usd
 , CAST(0 AS DOUBLE) AS royalty_fee_percentage
-, CAST('0' AS VARCHAR(5)) AS royalty_fee_receive_address
-, CAST('0' AS VARCHAR(5)) AS royalty_fee_currency_symbol
-, alet.blockchain || alet.project || alet.version || alet.tx_hash || alet.seller  || alet.buyer || alet.nft_contract_address || alet.token_id || alet.evt_index AS unique_trade_id
+, CAST(null AS varbinary) AS royalty_fee_receive_address
+, CAST(null AS VARCHAR) AS royalty_fee_currency_symbol
+, alet.blockchain || alet.project || alet.version || cast(alet.tx_hash as varchar) || cast(alet.seller as varchar) || cast(alet.buyer as varchar) || cast(alet.nft_contract_address as varchar) || cast(alet.token_id as varchar) || cast(alet.evt_index as varchar) AS unique_trade_id
 FROM element_txs alet
 LEFT JOIN {{ ref('nft_aggregators') }} agg ON alet.buyer=agg.contract_address AND agg.blockchain='polygon'
 LEFT JOIN {{ ref('tokens_erc20') }} polygon_bep20_tokens ON polygon_bep20_tokens.contract_address=alet.currency_contract AND polygon_bep20_tokens.blockchain='polygon'
@@ -166,10 +166,10 @@ LEFT JOIN {{ ref('tokens_nft') }} polygon_nft_tokens ON polygon_nft_tokens.contr
 LEFT JOIN {{ source('prices', 'usd') }} prices ON prices.minute=date_trunc('minute', alet.block_time)
     AND (prices.contract_address=alet.currency_contract AND prices.blockchain=alet.blockchain)
         {% if is_incremental() %}
-        AND prices.minute >= date_trunc("day", now() - interval '1 week')
+        AND prices.minute >= date_trunc('day', now() - interval '7' day)
         {% endif %}
 LEFT JOIN {{ source('polygon','transactions') }} bt ON bt.hash=alet.tx_hash
     AND bt.block_time=alet.block_time
         {% if is_incremental() %}
-        AND bt.block_time >= date_trunc("day", now() - interval '1 week')
+        AND bt.block_time >= date_trunc('day', now() - interval '7' day)
         {% endif %}

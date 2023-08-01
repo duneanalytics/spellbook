@@ -17,6 +17,9 @@ models:
       - &version
         name: version
         description: "version of the EntryPoint contract"
+      - &block_month
+        name: block_month
+        description: "UTC event block date of each User Operation"
       - &block_time
         name: block_time
         description: "UTC event block time of each User Operation"
@@ -40,7 +43,7 @@ models:
         description: "the address that pay for the user operation gas fees on behalf of the user"
       - &op_fee
         name: op_fee
-        description: "The user operation gas paid by sender or paymaster. It’s depends on the chain gas setting."
+        description: "The gas paid by sender or paymaster It depends on the chain gas setting"
       - &op_fee_usd
         name: op_fee_usd
         description: "The user operation gas (in usd) paid by sender or paymaster. "

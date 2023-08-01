@@ -1,6 +1,7 @@
 {{ config(
     schema='lido_liquidity_optimism',
     alias = alias('kyberswap_pools'),
+    tags = ['dunesql'], 
     partition_by = ['time'],
     materialized = 'table',
     file_format = 'delta',
@@ -15,81 +16,67 @@
 {% set project_start_date = '2022-10-01' %}
 
 with pools as (
-select pool as address, 'optimism' as blockchain, 'kyberswap' as project, swapFeeUnits/1000 as fee
+select pool as address, 'optimism' as blockchain, 'kyberswap' as project, cast(swapFeeUnits as double)/1000 as fee
 from {{ source('kyber_optimism', 'Elastic_Factory_evt_PoolCreated') }}
-where token0 = lower('0x1F32b1c2345538c0c6f582fCB022739c4A194Ebb') or token1 = lower('0x1F32b1c2345538c0c6f582fCB022739c4A194Ebb')
+where token0 = 0x1F32b1c2345538c0c6f582fCB022739c4A194Ebb 
+   or token1 = 0x1F32b1c2345538c0c6f582fCB022739c4A194Ebb
 )
 
-
-, tokens_mapping as (
-select distinct lower(address_l1) as address_l1, lower(address_l2) as address_l2 from (
-select l1_token as address_l1, l2_token as address_l2 from {{ ref('tokens_optimism_erc20_bridged_mapping') }}
-where l1_token not in (select l1_token from {{ ref('tokens_optimism_erc20_bridged_mapping') }} group by 1 having count(*) > 1)
-union all 
-select '0x1a7e4e63778B4f12a199C062f3eFdD288afCBce8', '0x9485aca5bbbe1667ad97c7fe7c4531a624c8b1ed' 
-union all 
-select '0x8D6CeBD76f18E1558D4DB88138e2DeFB3909fAD6', '0xdfa46478f9e5ea86d57387849598dbfb2e964b02'
-union all
-select '0x7f39c581f595b53c5cb19bd0b3f8da6c935e2ca0', '0x1F32b1c2345538c0c6f582fCB022739c4A194Ebb'
-union all
-select '0x6b175474e89094c44da98b954eedeac495271d0f', '0xDA10009cBd5D07dd0CeCc66161FC93D7c9000da1'
-union all
-select '0x514910771af9ca656af840dff83e8264ecf986ca', '0x350a791Bfc2C21F9Ed5d10980Dad2e2638ffa7f6'
-))
-
 , tokens as (
-select distinct lower(token) as address, pt.symbol, pt.decimals, tm.address_l1
+select distinct token as address
 from (
 select token1 as token
 from {{ source('kyber_optimism', 'Elastic_Factory_evt_PoolCreated') }}
-where token0 = lower('0x1F32b1c2345538c0c6f582fCB022739c4A194Ebb')
+where token0 = 0x1F32b1c2345538c0c6f582fCB022739c4A194Ebb
 union
 select token0
 from {{ source('kyber_optimism', 'Elastic_Factory_evt_PoolCreated') }}
-where token1 = lower('0x1F32b1c2345538c0c6f582fCB022739c4A194Ebb')
+where token1 = 0x1F32b1c2345538c0c6f582fCB022739c4A194Ebb
 union
-select lower('0x1F32b1c2345538c0c6f582fCB022739c4A194Ebb')
+select 0x1F32b1c2345538c0c6f582fCB022739c4A194Ebb
 ) t
-left join {{ ref('prices_tokens') }} pt on ((t.token !=  lower('0x1F32b1c2345538c0c6f582fCB022739c4A194Ebb') and t.token = pt.contract_address) or
-                               (t.token  =  lower('0x1F32b1c2345538c0c6f582fCB022739c4A194Ebb')  and pt.contract_address =  lower('0x7f39c581f595b53c5cb19bd0b3f8da6c935e2ca0')))
-left join tokens_mapping tm on t.token = tm.address_l2
 )
 
 , tokens_prices_daily AS (
     SELECT distinct
         DATE_TRUNC('day', minute) AS time,
-        tokens_mapping.address_l2 as token,
+        contract_address as token,
+        symbol,
+        decimals,
         avg(price) AS price
     FROM {{ source('prices', 'usd') }} p
-    left join tokens_mapping on p.contract_address = tokens_mapping.address_l1
-    WHERE date_trunc('day', minute) >= '{{ project_start_date }}' and date_trunc('day', minute) < date_trunc('day', now())
-    and blockchain = 'ethereum'
-    and contract_address in (select address_l1 from tokens)
-    group by 1,2
+    WHERE date_trunc('day', minute) >= date '{{ project_start_date }}' 
+    and date_trunc('day', minute) < current_date
+    and blockchain = 'optimism'
+    and contract_address in (select address from tokens)
+    group by 1,2,3,4
     union all
     SELECT distinct
         DATE_TRUNC('day', minute),
-        tokens_mapping.address_l2 as token,
+        contract_address as token,
+        symbol,
+        decimals,
         last_value(price) over (partition by DATE_TRUNC('day', minute), contract_address ORDER BY  minute range between unbounded preceding AND unbounded following) AS price
     FROM {{ source('prices', 'usd') }} p
-    left join tokens_mapping on p.contract_address = tokens_mapping.address_l1
-    WHERE date_trunc('day', minute) = date_trunc('day', now())
-    and blockchain = 'ethereum'
-    and contract_address in (select address_l1 from tokens)
+    WHERE date_trunc('day', minute) = current_date
+    and blockchain = 'optimism'
+    and contract_address in (select address from tokens)
 )
 
 , tokens_prices_hourly AS (
-    select time, lead(time,1, DATE_TRUNC('hour', now() + interval '1 hour')) over (partition by token order by time) as next_time, token, price
+    select time, lead(time,1, DATE_TRUNC('hour', now() + interval '1' hour)) over (partition by token order by time) as next_time, 
+    token, price, symbol, decimals
     from (
     SELECT distinct
         DATE_TRUNC('hour', minute) time,
-        tokens_mapping.address_l2 as token,
+        contract_address as token,
+        symbol,
+        decimals,
         last_value(price) over (partition by DATE_TRUNC('hour', minute), contract_address ORDER BY  minute range between unbounded preceding AND unbounded following) AS price
     FROM {{ source('prices', 'usd') }} p
-    left join tokens_mapping on p.contract_address = tokens_mapping.address_l1
-    WHERE date_trunc('hour', minute) >= '{{ project_start_date }}'
-    and blockchain = 'ethereum'
-    and contract_address in (select address_l1 from tokens)) p
+    WHERE date_trunc('hour', minute) >= date '{{ project_start_date }}'
+    and blockchain = 'optimism'
+    and contract_address in (select address from tokens)) p
 )
 
 , swap_events as (
@@ -102,7 +89,7 @@ left join tokens_mapping tm on t.token = tm.address_l2
 
     from {{ source('kyber_optimism', 'Elastic_Pool_evt_swap') }} sw
     left join {{ source('kyber_optimism', 'Elastic_Factory_evt_PoolCreated') }} cr on sw.contract_address = cr.pool
-    WHERE date_trunc('day', sw.evt_block_time) >= '{{ project_start_date }}'
+    WHERE date_trunc('day', sw.evt_block_time) >= date '{{ project_start_date }}'
     and sw.contract_address in (select address from pools)
     group by 1,2,3,4
 )
@@ -116,7 +103,7 @@ left join tokens_mapping tm on t.token = tm.address_l2
         sum(cast(qty1 as DOUBLE)) as amount1
     from {{ source('kyber_optimism', 'Elastic_Pool_evt_Mint') }} mt
     left join {{ source('kyber_optimism', 'Elastic_Factory_evt_PoolCreated') }} cr on mt.contract_address = cr.pool
-    WHERE date_trunc('day', mt.evt_block_time) >= '{{ project_start_date }}'
+    WHERE date_trunc('day', mt.evt_block_time) >= date '{{ project_start_date }}'
     and mt.contract_address in (select address from pools)
     group by 1,2,3,4
     
@@ -131,7 +118,7 @@ left join tokens_mapping tm on t.token = tm.address_l2
         (-1)*sum(cast(qty1 as DOUBLE)) as amount1
     from {{ source('kyber_optimism', 'Elastic_Pool_evt_Burn') }} bn
     left join {{ source('kyber_optimism', 'Elastic_Factory_evt_PoolCreated') }} cr on bn.contract_address = cr.pool
-    WHERE date_trunc('day', bn.evt_block_time) >= '{{ project_start_date }}'
+    WHERE date_trunc('day', bn.evt_block_time) >= date '{{ project_start_date }}'
     and bn.contract_address in (select address from pools)
     group by 1,2,3,4
 
@@ -145,7 +132,7 @@ left join tokens_mapping tm on t.token = tm.address_l2
         (-1) * sum(cast(qty1 as double)) as amount1
     from {{ source('kyber_optimism', 'Elastic_Pool_evt_BurnRTokens') }} bn
     left join {{ source('kyber_optimism', 'Elastic_Factory_evt_PoolCreated') }} cr on bn.contract_address = cr.pool
-    WHERE date_trunc('day', bn.evt_block_time) >= '{{ project_start_date }}'
+    WHERE date_trunc('day', bn.evt_block_time) >= date '{{ project_start_date }}'
     and bn.contract_address in (select address from pools)
     group by 1,2,3,4
 )
@@ -167,8 +154,10 @@ left join tokens_mapping tm on t.token = tm.address_l2
 )
 
 , pool_liquidity as (
-    select  time, lead(time, 1, current_date + interval '1 day') over (order by time) as next_time,
-            pool, token0, token1, sum(amount0) over(partition by pool order by time) as amount0, sum(amount1)  over(partition by pool order by time) as amount1
+    select  time, lead(time, 1, current_date + interval '1' day) over (order by time) as next_time,
+            pool, token0, token1, 
+            sum(amount0) over(partition by pool order by time) as amount0, 
+            sum(amount1)  over(partition by pool order by time) as amount1
     from daily_delta_balance
 )
 
@@ -184,15 +173,15 @@ left join tokens_mapping tm on t.token = tm.address_l2
 
     from {{source('kyber_optimism','Elastic_Pool_evt_swap')}} sw
     left join {{source('kyber_optimism','Elastic_Factory_evt_PoolCreated')}} cr on sw.contract_address = cr.pool
-    where sw.contract_address in (select address from pools)
+    WHERE date_trunc('day', sw.evt_block_time) >= date '{{ project_start_date }}'
+    and sw.contract_address in (select address from pools)
     group by 1,2,3,4
       ) a group by 1,2,3,4
 )
 
 , trading_volume_hourly as (
-    select hour as time, pool, token0, amount0, p.price, coalesce(p.price*amount0/power(10, t.decimals),0) as volume
+    select hour as time, pool, token0, amount0, p.price, coalesce(p.price*amount0/power(10, p.decimals),0) as volume
     from swap_events_hourly s
-    left join tokens t on s.token0 = t.address
     left join tokens_prices_hourly p on  s.hour >= p.time and s.hour < p.next_time  and s.token0 = p.token
 
 )
@@ -204,15 +193,15 @@ group by 1,2
 )
 
 , all_metrics as (
-select l.pool, pools.blockchain, pools.project, pools.fee, l.time,
-    case when token0 = LOWER('0x1F32b1c2345538c0c6f582fCB022739c4A194Ebb') then token0 else token1 end main_token,
-    case when token0 = LOWER('0x1F32b1c2345538c0c6f582fCB022739c4A194Ebb') then t0.symbol else t1.symbol end main_token_symbol,
-    case when token0 = LOWER('0x1F32b1c2345538c0c6f582fCB022739c4A194Ebb') then token1 else token0 end paired_token,
-    case when token0 = LOWER('0x1F32b1c2345538c0c6f582fCB022739c4A194Ebb') then t1.symbol else t0.symbol end paired_token_symbol,
-    case when token0 = LOWER('0x1F32b1c2345538c0c6f582fCB022739c4A194Ebb') then coalesce(amount0/power(10, t0.decimals),0)  else coalesce(amount1/power(10, t1.decimals),0)  end main_token_reserve,
-    case when token0 = LOWER('0x1F32b1c2345538c0c6f582fCB022739c4A194Ebb') then coalesce(amount1/power(10, t1.decimals),0)  else coalesce(amount0/power(10, t0.decimals),0)  end paired_token_reserve,
-    case when token0 = LOWER('0x1F32b1c2345538c0c6f582fCB022739c4A194Ebb') then coalesce(p0.price*amount0/power(10, t0.decimals),0) else coalesce(p1.price*amount1/power(10, t1.decimals),0) end as main_token_usd_reserve,
-    case when token0 = LOWER('0x1F32b1c2345538c0c6f582fCB022739c4A194Ebb') then coalesce(p1.price*amount1/power(10, t1.decimals),0) else coalesce(p0.price*amount0/power(10, t0.decimals),0) end as paired_token_usd_reserve,
+select l.pool, pools.blockchain, pools.project, pools.fee, cast(l.time as date) as time,
+    case when token0 = 0x1F32b1c2345538c0c6f582fCB022739c4A194Ebb then token0 else token1 end main_token,
+    case when token0 = 0x1F32b1c2345538c0c6f582fCB022739c4A194Ebb then p0.symbol else p1.symbol end main_token_symbol,
+    case when token0 = 0x1F32b1c2345538c0c6f582fCB022739c4A194Ebb then token1 else token0 end paired_token,
+    case when token0 = 0x1F32b1c2345538c0c6f582fCB022739c4A194Ebb then p1.symbol else p0.symbol end paired_token_symbol,
+    case when token0 = 0x1F32b1c2345538c0c6f582fCB022739c4A194Ebb then coalesce(amount0/power(10, p0.decimals),0)  else coalesce(amount1/power(10, p1.decimals),0)  end main_token_reserve,
+    case when token0 = 0x1F32b1c2345538c0c6f582fCB022739c4A194Ebb then coalesce(amount1/power(10, p1.decimals),0)  else coalesce(amount0/power(10, p0.decimals),0)  end paired_token_reserve,
+    case when token0 = 0x1F32b1c2345538c0c6f582fCB022739c4A194Ebb then coalesce(p0.price*amount0/power(10, p0.decimals),0) else coalesce(p1.price*amount1/power(10, p1.decimals),0) end as main_token_usd_reserve,
+    case when token0 = 0x1F32b1c2345538c0c6f582fCB022739c4A194Ebb then coalesce(p1.price*amount1/power(10, p1.decimals),0) else coalesce(p0.price*amount0/power(10, p0.decimals),0) end as paired_token_usd_reserve,
     coalesce(volume,0) as trading_volume
 from pool_liquidity l
 left join pools on l.pool = pools.address
@@ -224,6 +213,6 @@ left join trading_volume tv on l.time = tv.time and l.pool = tv.pool
 
 )
 
-select CONCAT(CONCAT(CONCAT(CONCAT(CONCAT(blockchain,CONCAT(' ', project)) ,' '), coalesce(paired_token_symbol, 'unknown')),':') , main_token_symbol, ' ', fee) as pool_name,*
+select CONCAT(CONCAT(CONCAT(CONCAT(CONCAT(blockchain,CONCAT(' ', project)) ,' '), coalesce(paired_token_symbol, 'unknown')),':') , main_token_symbol, ' ',  format('%,.3f%%',round(coalesce(fee,0),4))) as pool_name,*
 from all_metrics
 where main_token_reserve > 1

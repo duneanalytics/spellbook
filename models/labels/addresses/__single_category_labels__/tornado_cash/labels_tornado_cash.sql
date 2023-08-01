@@ -1,4 +1,6 @@
-{{config(alias = alias('tornado_cash'),
+{{config(
+        tags=['dunesql'],
+        alias = alias('tornado_cash'),
         post_hook='{{ expose_spells(\'["ethereum", "arbitrum","bnb","avalanche_c","optimism","gnosis"]\',
                                     "sector",
                                     "labels",
@@ -24,11 +26,11 @@ FROM {{ ref('tornado_cash_withdrawals') }}
 SELECT
     blockchain,
     address,
-    'Tornado Cash ' || array_join(collect_set(name),' and ') AS name,
+    'Tornado Cash ' || array_join(ARRAY_AGG(DISTINCT name),' and ') AS name,
     'tornado_cash' AS category,
     'soispoke' AS contributor,
     'query' AS source,
-    timestamp('2022-10-01') as created_at,
+    timestamp '2022-10-01' as created_at,
     now() as updated_at,
     'tornado_cash' AS model_name,
     'persona' AS label_type

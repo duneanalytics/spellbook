@@ -1,15 +1,12 @@
 {{ config
 (
     alias = alias('v0_6_userops_basics'),
-    partition_by = ['block_time'],
+    tags=['dunesql'],
+    partition_by = ['block_month'],
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
-    unique_key = ['userop_hash', 'tx_hash'],
-    post_hook='{{ expose_spells(\'["ethereum"]\',
-                                    "project",
-                                    "erc4337",
-                                    \'["0xbitfly", "hosuke"]\') }}'
+    unique_key = ['userop_hash', 'tx_hash']
 )
 }}
 

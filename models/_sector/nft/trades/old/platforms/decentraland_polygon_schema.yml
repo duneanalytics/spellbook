@@ -15,7 +15,7 @@ models:
           combination_of_columns:
             - block_time
             - unique_trade_id
-      - check_seed_legacy:
+      - check_seed:
           seed_file: ref('decentraland_polygon_sample_trades')
           match_columns:
             - block_number
