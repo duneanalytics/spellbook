@@ -1,6 +1,7 @@
 {{ config(
         alias = alias('erc20_all',legacy_model=True)
         ,tags=['legacy']
+        )
 }}
 
 
