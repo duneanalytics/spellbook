@@ -26,7 +26,7 @@ WITH events AS (
         bind.call_trace_address,
         bind.contract_address AS pool,
         bind.token,
-        bind.denorm
+        CAST(bind.denorm as int256) as denorm
     FROM {{ source('balancer_v1_ethereum', 'BPool_call_bind') }} bind
     INNER JOIN {{ source('ethereum', 'transactions') }} tx ON tx.hash = bind.call_tx_hash 
     WHERE bind.call_success = TRUE
@@ -48,7 +48,7 @@ WITH events AS (
         rebind.call_trace_address,
         rebind.contract_address AS pool,
         rebind.token,
-        rebind.denorm
+        CAST(rebind.denorm as int256) as denorm
     FROM {{ source('balancer_v1_ethereum', 'BPool_call_rebind') }} rebind
     INNER JOIN {{ source('ethereum', 'transactions') }} tx ON tx.hash = rebind.call_tx_hash 
     WHERE rebind.call_success = TRUE
@@ -70,7 +70,7 @@ WITH events AS (
         unbind.call_trace_address,
         unbind.contract_address AS pool,
         unbind.token,
-        '0' AS denorm
+        CAST('0' as int256) AS denorm
     FROM {{ source('balancer_v1_ethereum', 'BPool_call_unbind') }} unbind
     INNER JOIN {{ source('ethereum', 'transactions') }} tx ON tx.hash = unbind.call_tx_hash 
     WHERE unbind.call_success = TRUE
@@ -103,7 +103,7 @@ settings AS (
     FROM state_with_gaps
     WHERE
         next_block_number IS NULL
-        AND denorm <> '0'
+        AND denorm <> CAST('0' as int256)
 ),
 sum_denorm AS (
     SELECT
@@ -112,7 +112,7 @@ sum_denorm AS (
     FROM state_with_gaps
     WHERE
         next_block_number IS NULL
-        AND denorm <> '0'
+        AND denorm <> CAST('0' as int256)
     GROUP BY pool
 ),
 norm_weights AS (
@@ -131,4 +131,3 @@ SELECT
     token_address,
     normalized_weight
 FROM norm_weights
-;
