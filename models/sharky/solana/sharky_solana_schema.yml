@@ -27,6 +27,9 @@ models:
       - &block_date
         name: block_date
         description: "UTC event block date"
+      - &block_month
+        name: block_month
+        description: "UTC month of the event"
       - &block_time
         name: block_time
         description: "UTC event block time"
