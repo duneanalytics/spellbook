@@ -22,7 +22,7 @@
 ] %}
 
 {{
-    erc4337_userops_enrichments(
+    erc4337_userops_enrichments_legacy(
         blockchain = 'polygon',
         base_models = erc4337_base_models,
         wrapped_gas_address = '0x0d500b1d8e8ef31e21c99d1db9a6444d3adf1270',

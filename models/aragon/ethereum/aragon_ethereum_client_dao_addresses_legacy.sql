@@ -1,12 +1,11 @@
 {{ config(
 	tags=['legacy'],
-	
     alias = alias('client_dao_addresses', legacy_model=True),
-    partition_by = ['created_date'],
+    partition_by = ['block_month'],
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
-    unique_key = ['created_block_time', 'dao_wallet_address', 'blockchain', 'dao', 'dao_creator_tool']
+    unique_key = ['created_block_time', 'dao_wallet_address', 'blockchain', 'dao', 'dao_creator_tool', 'block_month']
     )
 }}
 
@@ -62,7 +61,8 @@ SELECT
     ad.dao, 
     gw.dao_wallet_address, 
     ad.created_block_time,
-    TRY_CAST(ad.created_date as DATE) as created_date, 
+    CAST(ad.created_date as DATE) as created_date, 
+    CAST(date_trunc('month', ad.created_date) as DATE) as block_month,
     'aragon_client' as product
 FROM 
 aragon_daos ad 
