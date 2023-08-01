@@ -17,31 +17,31 @@ WITH pools AS (
 ),
 
 joins AS (
-    SELECT p.pools as pool, date_trunc('day', e.evt_block_time) AS day, e.contract_address AS token, SUM(value) AS amount
+    SELECT p.pools as pool, date_trunc('day', e.evt_block_time) AS day, e.contract_address AS token, SUM(CAST(value) as int256) AS amount
     FROM {{ source('erc20_ethereum', 'evt_transfer') }} e
     INNER JOIN pools p ON e."to" = p.pools
     GROUP BY 1, 2, 3
     UNION ALL
-    SELECT e."to" as pool, date_trunc('day', e.evt_block_time) AS day, e.contract_address AS token, SUM(value) AS amount
+    SELECT e."to" as pool, date_trunc('day', e.evt_block_time) AS day, e.contract_address AS token, SUM(CAST(value) as int256) AS amount
     FROM {{ source('erc20_ethereum', 'evt_transfer') }} e
     WHERE CAST(e."to" as VARCHAR)= '{{balancer_contract}}'
     GROUP BY 1, 2, 3
 ),
 
 exits AS (
-    SELECT p.pools as pool, date_trunc('day', e.evt_block_time) AS day, e.contract_address AS token, -SUM(value) AS amount
+    SELECT p.pools as pool, date_trunc('day', e.evt_block_time) AS day, e.contract_address AS token, -SUM(CAST(value) as int256) AS amount
     FROM {{ source('erc20_ethereum', 'evt_transfer') }} e
     INNER JOIN pools p ON e."from" = p.pools   
     GROUP BY 1, 2, 3
     UNION ALL
-    SELECT e."from" as pool, date_trunc('day', e.evt_block_time) AS day, e.contract_address AS token, -SUM(value) AS amount
+    SELECT e."from" as pool, date_trunc('day', e.evt_block_time) AS day, e.contract_address AS token, -SUM(CAST(value) as int256) AS amount
     FROM {{ source('erc20_ethereum', 'evt_transfer') }} e
     WHERE CAST(e."from" as VARCHAR) = '{{balancer_contract}}'
     GROUP BY 1, 2, 3
 ),
 
 daily_delta_balance_by_token AS (
-    SELECT pool, day, token, SUM(COALESCE(amount, 0)) AS amount FROM 
+    SELECT pool, day, token, SUM(COALESCE(amount, CAST(0 as int256))) AS amount FROM 
     (SELECT *
     FROM joins j 
     UNION ALL
