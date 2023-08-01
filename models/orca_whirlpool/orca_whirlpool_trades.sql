@@ -4,6 +4,10 @@
         schema = 'orca_whirlpool',
         alias = alias('trades'),
         partition_by = ['block_month'],
+        pre_hook = {
+            'sql': '{{ set_trino_session_property(is_partitioned(model), \'join_distribution_type\', \'PARTITIONED\') }}',
+            'transaction': True
+        },
         materialized = 'incremental',
         file_format = 'delta',
         incremental_strategy = 'merge',
@@ -14,7 +18,7 @@
                                     \'["ilemi"]\') }}')
 }}
 
-{% set project_start_date = '2022-03-10' %} --grabbed min block time from whirlpool_solana.whirlpool_call_swap
+{% set project_start_date = '2023-07-31' %} --grabbed min block time from whirlpool_solana.whirlpool_call_swap
 
 with 
     whirlpools as (
@@ -110,7 +114,7 @@ with
             AND ((sp.call_is_inner = false AND tr_1.call_inner_instruction_index = 1) 
                 OR (sp.call_is_inner = true AND tr_1.call_inner_instruction_index = sp.call_inner_instruction_index + 1))
             {% if is_incremental() %}
-            AND tr_1.call_block_time >= date_trunc('day', now() - interval '7' day)
+            AND tr_1.call_block_time >= date_trunc('day', now() - interval '1' day)
             {% else %}
             AND tr_1.call_block_time >= TIMESTAMP '{{project_start_date}}'
             {% endif %}
@@ -120,13 +124,13 @@ with
             AND ((sp.call_is_inner = false AND tr_2.call_inner_instruction_index = 2)
                 OR (sp.call_is_inner = true AND tr_2.call_inner_instruction_index = sp.call_inner_instruction_index + 2))
             {% if is_incremental() %}
-            AND tr_2.call_block_time >= date_trunc('day', now() - interval '7' day)
+            AND tr_2.call_block_time >= date_trunc('day', now() - interval '1' day)
             {% else %}
             AND tr_2.call_block_time >= TIMESTAMP '{{project_start_date}}'
             {% endif %}
         WHERE 1=1
             {% if is_incremental() %}
-            AND sp.call_block_time >= date_trunc('day', now() - interval '7' day)
+            AND sp.call_block_time >= date_trunc('day', now() - interval '1' day)
             {% else %}
             AND sp.call_block_time >= TIMESTAMP '{{project_start_date}}'
             {% endif %}
@@ -172,7 +176,7 @@ LEFT JOIN {{ source('prices', 'usd') }} p_bought ON p_bought.blockchain = 'solan
     AND date_trunc('minute', tb.block_time) = p_bought.minute 
     AND token_bought_mint_address = toBase58(p_bought.contract_address)
     {% if is_incremental() %}
-    AND p_bought.minute >= date_trunc('day', now() - interval '7' day)
+    AND p_bought.minute >= date_trunc('day', now() - interval '1' day)
     {% else %}
     AND p_bought.minute >= TIMESTAMP '{{project_start_date}}'
     {% endif %}
@@ -180,7 +184,7 @@ LEFT JOIN {{ source('prices', 'usd') }} p_sold ON p_sold.blockchain = 'solana'
     AND date_trunc('minute', tb.block_time) = p_sold.minute 
     AND token_sold_mint_address = toBase58(p_sold.contract_address)
     {% if is_incremental() %}
-    AND p_sold.minute >= date_trunc('day', now() - interval '7' day)
+    AND p_sold.minute >= date_trunc('day', now() - interval '1' day)
     {% else %}
     AND p_sold.minute >= TIMESTAMP '{{project_start_date}}'
     {% endif %}
