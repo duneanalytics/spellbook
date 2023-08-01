@@ -1,6 +1,6 @@
 {{  config(
     tags=['dunesql'],
-        alias = alias('api_fills_deduped_celo'),
+        alias = alias('api_fills_deduped'),
         materialized='incremental',
         partition_by = ['block_date'],
         unique_key = ['block_date', 'tx_hash', 'evt_index'],
@@ -84,7 +84,7 @@ SELECT  a.blockchain
       , a.tx_from
       , a.tx_to
       , b.evt_index
-      , CAST(ARRAY(-1) as array<bigint>) as trace_address
+      , CAST(ARRAY[-1] as array<bigint>) as trace_address
       , a.type
       , a.swap_flag
       , b.fills_within
