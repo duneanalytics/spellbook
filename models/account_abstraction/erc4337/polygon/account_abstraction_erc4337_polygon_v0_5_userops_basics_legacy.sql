@@ -19,7 +19,7 @@
 
 -- macros/models/sector/erc4337
 {{
-    erc4337_userops_basics(
+    erc4337_userops_basics_legacy(
         blockchain = 'polygon',
         version = 'v0.5',
         userops_evt_model = source('erc4337_polygon','EntryPoint_evt_UserOperationEvent'),
