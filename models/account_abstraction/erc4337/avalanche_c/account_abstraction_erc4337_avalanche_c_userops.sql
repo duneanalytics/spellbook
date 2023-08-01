@@ -1,6 +1,7 @@
 {{ config(
-    alias = 'userops',
-    partition_by = ['block_time'],
+    alias = alias('userops'),
+    tags=['dunesql'],
+    partition_by = ['block_month'],
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',

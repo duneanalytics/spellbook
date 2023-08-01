@@ -1,5 +1,5 @@
 {{ config(
-        alias ='current_owners_per_token',
+        alias = alias('current_owners_per_token'),
         post_hook='{{ expose_spells(\'["ethereum"]\',
                                     "project",
                                     "cryptopunks",

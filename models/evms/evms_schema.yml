@@ -476,3 +476,30 @@ models:
       - *approved
       - *owner
       - *operator
+
+  - name: evms_info
+    meta:
+      blockchain: ethereum, polygon, bnb, avalanche_c, gnosis, fantom, optimism, arbitrum, celo
+      sector: evms
+      contributors: hildobby
+    config:
+      tags:   ['evms', 'info']
+    description: "Some information about the EVM chains"
+    columns: 
+      - name: chain_id
+        description: "Chain ID"
+      - *blockchain
+      - name: name
+        description: "Capitalised name of the blockchain"
+      - name: chain_type
+        description: "Chain type"
+      - name: rollup_type
+        description: "Rollup type the chain"
+      - name: native_token_symbol
+        description: "Native token symbol"
+      - name: wrapped_native_token_address
+        description: "Address of the wrapped native token"
+      - name: explorer_link
+        description: "Explorer link"
+      - name: first_block_time
+        description: "First block time"

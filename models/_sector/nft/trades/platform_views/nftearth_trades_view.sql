@@ -1,7 +1,7 @@
 
 {{ config(
         schema = 'nftearth',
-        alias ='trades',
+        alias = alias('trades'),
         materialized = 'view',
         post_hook='{{ expose_spells(\'["optimism"]\',
                                     "project",
