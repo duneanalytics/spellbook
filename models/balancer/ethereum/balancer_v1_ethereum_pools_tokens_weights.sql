@@ -14,7 +14,7 @@
     )
 }}
 
-{% set bind_start_date = '2020-02-28' %}
+{% set bind_start_date =  '2020-02-28' %}
 {% set rebind_start_date = '2020-04-01' %}
 {% set unbind_start_date = '2020-04-05' %}
 
@@ -31,8 +31,8 @@ WITH events AS (
     INNER JOIN {{ source('ethereum', 'transactions') }} tx ON tx.hash = bind.call_tx_hash 
     WHERE bind.call_success = TRUE
         {% if not is_incremental() %}
-        AND bind.call_block_time >= '{{bind_start_date}}'
-        AND tx.block_time >= '{{bind_start_date}}'
+        AND bind.call_block_time >= TIMESTAMP '{{bind_start_date}}'
+        AND tx.block_time >= TIMESTAMP '{{bind_start_date}}'
         {% endif %}
         {% if is_incremental() %}
         AND bind.call_block_time >= date_trunc('day', now() - interval '7' day)
@@ -53,8 +53,8 @@ WITH events AS (
     INNER JOIN {{ source('ethereum', 'transactions') }} tx ON tx.hash = rebind.call_tx_hash 
     WHERE rebind.call_success = TRUE
         {% if not is_incremental() %}
-        AND rebind.call_block_time >= '{{bind_start_date}}'
-        AND tx.block_time >= '{{bind_start_date}}'
+        AND rebind.call_block_time >= TIMESTAMP '{{bind_start_date}}'
+        AND tx.block_time >= TIMESTAMP '{{bind_start_date}}'
         {% endif %}
         {% if is_incremental() %}
         AND rebind.call_block_time >= date_trunc('day', now() - interval '7' day)
@@ -75,8 +75,8 @@ WITH events AS (
     INNER JOIN {{ source('ethereum', 'transactions') }} tx ON tx.hash = unbind.call_tx_hash 
     WHERE unbind.call_success = TRUE
         {% if not is_incremental() %}
-        AND unbind.call_block_time >= '{{bind_start_date}}'
-        AND tx.block_time >= '{{bind_start_date}}'
+        AND unbind.call_block_time >= TIMESTAMP '{{bind_start_date}}'
+        AND tx.block_time >= TIMESTAMP '{{bind_start_date}}'
         {% endif %}
         {% if is_incremental() %}
         AND unbind.call_block_time >= date_trunc('day', now() - interval '7' day)
