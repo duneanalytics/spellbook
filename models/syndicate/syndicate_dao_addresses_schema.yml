@@ -1,15 +1,15 @@
 version: 2
 
 models:
-  - name: aragon_dao_addresses
+  - name: syndicate_dao_addresses
     meta:
-      blockchain: polygon, ethereum, gnosis
-      project: aragon
+      blockchain: ethereum, polygon
+      project: syndicate
       contributors: Henrystats 
     config:
-      tags: [ 'polygon', 'ethereum', 'gnosis', 'dao', 'aragon', 'dao creator tools', 'Henrystats', 'Aragon Client', 'Aragon App']
+      tags: ['ethereum', 'polygon', 'dao', 'syndicate', 'dao creator tools', 'Henrystats']
     description: >
-      wallet addresses of daos created on aragon across all products & blockchains
+      wallet addresses of daos created on syndicate across all products & blockchains
     columns:
       - &blockchain
         name: blockchain
@@ -29,9 +29,6 @@ models:
       - &created_block_time
         name: created_block_time
         description: "UTC event block time of DAO creation"
-      - &product
-        name: product
-        description: "Aragon Product used to deploy DAO"
       - &block_month
         name: block_month
         description: "UTC event block month of DAO creation"

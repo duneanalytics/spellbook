@@ -1,25 +1,24 @@
 {{ config(
-	tags=['legacy'],
-    alias = alias('dao_addresses', legacy_model=True),
+    tags=['dunesql'],
+    alias = alias('dao_addresses'),
     materialized = 'view',
     file_format = 'delta',
-    post_hook='{{ expose_spells(\'["ethereum", "gnosis", "polygon"]\',
+    post_hook='{{ expose_spells(\'["ethereum", "polygon"]\',
                                 "project",
-                                "aragon",
+                                "syndicate",
                                 \'["Henrystats"]\') }}')
 }}
 
-{% set aragon_models = [
-ref('aragon_ethereum_dao_addresses_legacy')
-,ref('aragon_gnosis_dao_addresses_legacy')
-,ref('aragon_polygon_dao_addresses_legacy')
+{% set syndicate_models = [
+ref('syndicate_ethereum_dao_addresses')
+,ref('syndicate_polygon_dao_addresses')
 ] %}
 
 
 SELECT *
 
 FROM (
-    {% for dao_model in aragon_models %}
+    {% for dao_model in syndicate_models %}
     SELECT
         blockchain,
         dao_creator_tool, 
@@ -27,12 +26,10 @@ FROM (
         dao_wallet_address,
         created_block_time,
         created_date,
-        block_month,
-        product
+        block_month
     FROM {{ dao_model }}
     {% if not loop.last %}
     UNION ALL
     {% endif %}
     {% endfor %}
 )
-;

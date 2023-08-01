@@ -25,8 +25,8 @@ models:
       - name: dao_creator_tool
         description: "Name of creator tool used to create DAO"
         tests:
-          - dao_addresses_creator_tool_legacy:
-              dao_addresses_seed_legacy: ref('dao_addresses_seed_legacy')
+          - dao_addresses_creator_tool:
+              dao_addresses_seed: ref('dao_addresses_seed')
       - &dao
         name: dao
         description: "address of the dao deployed"
@@ -42,6 +42,9 @@ models:
       - &product
         name: product
         description: "Aragon Product used to deploy DAO"
+      - &block_month
+        name: block_month
+        description: "UTC event block month of DAO creation"
 
   - name: aragon_ethereum_app_dao_addresses
     meta:
@@ -65,13 +68,14 @@ models:
       - name: dao_creator_tool
         description: "Name of creator tool used to create DAO"
         tests:
-          - dao_addresses_creator_tool_legacy:
-              dao_addresses_seed_legacy: ref('dao_addresses_seed_legacy')
+          - dao_addresses_creator_tool:
+              dao_addresses_seed: ref('dao_addresses_seed')
       - *dao
       - *dao_wallet_address
       - *created_date
       - *created_block_time
       - *product
+      - *block_month
 
   - name: aragon_ethereum_dao_addresses
     meta:
@@ -92,3 +96,4 @@ models:
       - *created_date
       - *created_block_time
       - *product
+      - *block_month
