@@ -34,7 +34,7 @@ exits AS (
     INNER JOIN pools p ON e."from" = p.pools   
     GROUP BY 1, 2, 3
     UNION ALL
-    SELECT e."from" as pool, date_trunc('day', e.evt_block_time) AS day, e.contract_address AS token, -SUM(CAST(value) as int256) AS amount
+    SELECT e."from" as pool, date_trunc('day', e.evt_block_time) AS day, e.contract_address AS token, -SUM(CAST(value as int256)) AS amount
     FROM {{ source('erc20_ethereum', 'evt_transfer') }} e
     WHERE CAST(e."from" as VARCHAR) = '{{balancer_contract}}'
     GROUP BY 1, 2, 3
@@ -51,7 +51,7 @@ daily_delta_balance_by_token AS (
 ),
 
 cumulative_balance_by_token AS (
-    SELECT 
+    SELECT
         pool, 
         token, 
         day, 
@@ -62,7 +62,7 @@ cumulative_balance_by_token AS (
 
     calendar AS (
         SELECT date_sequence AS day
-        FROM unnest(sequence(date('2020-01-1'), date(now()), interval '1' day)) as t(date_sequence)
+        FROM unnest(sequence(date('2020-01-01'), date(now()), interval '1' day)) as t(date_sequence)
     ),
 
 
