@@ -17,14 +17,23 @@
 
 {% set project_start_date =  '2023-05-25'%} 
 
-with /* dates as (
+{% if not is_incremental() %}
+with  dates as (
     with day_seq as (select (sequence(cast('{{ project_start_date }}' as date), cast(now() as date), interval '1' day)) as day)
 select days.day
 from day_seq
 cross join unnest(day) as days(day)
   )
-
-,*/ 
+{% endif %}
+{% if is_incremental() %} 
+with  dates as (
+    with day_seq as (select (sequence(cast(now() as date)-interval '1' day, cast(now() as date), interval '1' day)) as day)
+select days.day
+from day_seq
+cross join unnest(day) as days(day)
+  )
+{% endif %}
+,
 tokens_prices_daily AS (
     SELECT DISTINCT
       DATE_TRUNC('day', p.minute) AS time,
@@ -201,11 +210,10 @@ group by 1,2,3
   l.amount0/1e18 as main_token_reserve, 0 as paired_token_reserve,
   p0.price*l.amount0/1e18 as main_token_usd_reserve, 0 as paired_token_usd_reserve,
   coalesce(tv.volume,0)/2 as trading_volume
-  FROM --dates d 
-      --LEFT JOIN 
-      pool_liquidity AS l --on d.day >= DATE_TRUNC('day', l.time) and  d.day <  DATE_TRUNC('day', l.next_time)
-      LEFT JOIN tokens_prices_daily AS p0 ON DATE_TRUNC('day', l.time) = p0.time
-      LEFT JOIN trading_volume AS tv ON DATE_TRUNC('day', l.time) = tv.time
+  FROM dates d 
+      LEFT JOIN pool_liquidity AS l on d.day >= DATE_TRUNC('day', l.time) and  d.day <  DATE_TRUNC('day', l.next_time)
+      LEFT JOIN tokens_prices_daily AS p0 ON d.day = p0.time
+      LEFT JOIN trading_volume AS tv ON d.day = tv.time
 
 
 
