@@ -86,12 +86,21 @@ open_position_events as (
         CONCAT('test', 'arbitrum', 'v2.3') as position_data 
 ),
 
-all_events as (
-    SELECT * FROM open_position_events
+unit_tests as (
+        SELECT 
+            COUNT(*) as count_spell
+        FROM 
+        ref('tigris_arbitrum_trades')
+),
+
+source as (
+        SELECT 
+            COUNT(*) as count_event_table
+            FROM 
+            open_position_events
 )
 
-SELECT 
-*
-FROM 
-all_events
-WHERE evt_tx_hash NOT IN (SELECT evt_tx_hash FROM ref('tigris_arbitrum_trades'))
+SELECT 1
+FROM unit_tests
+JOIN source ON 1 = 1 
+WHERE count_spell - count_event_table <> 0
