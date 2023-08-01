@@ -4,7 +4,7 @@
         ,materialized='incremental'
         ,file_format = 'delta'
         ,unique_key = ['blockchain','contract_address']
-        ,post_hook='{{ expose_spells(\'["arbitrum","avalanche_c","bnb","ethereum","optimism", "gnosis", "fantom", "polygon"]\',
+        ,post_hook='{{ expose_spells(\'["arbitrum","avalanche_c","bnb","ethereum","optimism", "gnosis", "fantom", "polygon","goerli","base"]\',
                                     "sector",
                                     "tokens",
                                     \'["msilb7"]\') }}')}}

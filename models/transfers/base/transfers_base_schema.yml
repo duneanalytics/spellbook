@@ -9,7 +9,7 @@ models:
       contributors: msilb7, chuxin
     config:
       tags: ["transfers", "base", "eth"]
-    description: "Events of native ETH transfers on Ethereum."
+    description: "Events of native ETH transfers on Base."
     columns:
       - &from
         name: from
