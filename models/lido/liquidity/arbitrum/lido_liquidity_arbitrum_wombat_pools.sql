@@ -204,7 +204,7 @@ group by 1,2,3
   FROM --dates d 
       --LEFT JOIN 
       pool_liquidity AS l --on d.day >= DATE_TRUNC('day', l.time) and  d.day <  DATE_TRUNC('day', l.next_time)
-      outer JOIN tokens_prices_daily AS p0 ON DATE_TRUNC('day', l.time) = p0.time
+      LEFT JOIN tokens_prices_daily AS p0 ON DATE_TRUNC('day', l.time) = p0.time
       LEFT JOIN trading_volume AS tv ON DATE_TRUNC('day', l.time) = tv.time
 
 
