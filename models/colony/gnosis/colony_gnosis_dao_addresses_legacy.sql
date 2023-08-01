@@ -1,12 +1,11 @@
 {{ config(
 	tags=['legacy'],
-	
-    alias = alias('addresses_gnosis_colony', legacy_model=True),
-    partition_by = ['created_date'],
+    alias = alias('dao_addresses', legacy_model=True),
+    partition_by = ['block_month'],
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
-    unique_key = ['created_block_time', 'dao_wallet_address', 'blockchain', 'dao', 'dao_creator_tool']
+    unique_key = ['created_block_time', 'dao_wallet_address', 'blockchain', 'dao', 'dao_creator_tool', 'block_month']
     )
 }}
 
@@ -37,6 +36,7 @@ SELECT
     colony as dao, 
     colony as dao_wallet_address, -- the colony address is also the address that receives & sends funds 
     created_block_time, 
-    TRY_CAST(created_date as DATE) as created_date
+    CAST(created_date as DATE) as created_date,
+    CAST(DATE_TRUNC('month', created_date) AS DATE) as block_month
 FROM 
 get_colony_wallets

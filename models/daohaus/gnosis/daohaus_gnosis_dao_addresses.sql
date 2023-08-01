@@ -1,12 +1,11 @@
 {{ config(
-	tags=['legacy'],
-	
-    alias = alias('addresses_gnosis_daohaus', legacy_model=True),
-    partition_by = ['created_date'],
+    alias = alias('dao_addresses'),
+    tags = ['dunesql'],
+    partition_by = ['block_month'],
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
-    unique_key = ['created_block_time', 'dao_wallet_address', 'blockchain', 'dao', 'dao_creator_tool']
+    unique_key = ['created_block_time', 'dao_wallet_address', 'blockchain', 'dao', 'dao_creator_tool', 'block_month']
     )
 }}
 
@@ -22,33 +21,33 @@ get_daohaus_molochs as (
         SELECT 
             block_time as created_block_time, 
             TRY_CAST(date_trunc('day', block_time) as DATE) as created_date, 
-            CONCAT('0x', RIGHT(topic2, 40)) as moloch
+            bytearray_ltrim(topic1) as moloch
         FROM 
         {{ source('gnosis', 'logs') }}
         {% if not is_incremental() %}
-        WHERE block_time >= '{{moloch_start_date}}'
+        WHERE block_time >= DATE '{{moloch_start_date}}'
         {% endif %}
         {% if is_incremental() %}
-        WHERE block_time >= date_trunc("day", now() - interval '1 week')
+        WHERE block_time >= date_trunc('day', now() - interval '7' day)
         {% endif %}
-        AND topic1 = '0x099e0b09e056ad33e22e4d35de2e837a30ba249f33d912abb7e1e273bbf9d650'
-        AND contract_address = '0x0f50b2f3165db96614fbb6e4262716acc9f9e098'
+        AND topic0 = 0x099e0b09e056ad33e22e4d35de2e837a30ba249f33d912abb7e1e273bbf9d650
+        AND contract_address = 0x0f50b2f3165db96614fbb6e4262716acc9f9e098
 ), 
 
 get_minion_creations as (
         SELECT 
-            CONCAT('0x', RIGHT(topic3, 40)) as moloch,  
-            CONCAT('0x', RIGHT(topic2, 40)) as wallet_address
+            bytearray_ltrim(topic2) as moloch,
+            bytearray_ltrim(topic1) as wallet_address
         FROM 
         {{ source('gnosis', 'logs') }}
         {% if not is_incremental() %}
-        WHERE block_time >= '{{minion_start_date}}'
+        WHERE block_time >= DATE '{{minion_start_date}}'
         {% endif %}
         {% if is_incremental() %}
-        WHERE block_time >= date_trunc("day", now() - interval '1 week')
+        WHERE block_time >= date_trunc('day', now() - interval '7' day)
         {% endif %}
-        AND topic1 = '0xbaefe449c0963ab3bd87eb56115a3f8420fbefae45878f063cc59a6cb99d3ae0'
-        AND contract_address IN (LOWER('0xA1b97D22e22507498B350A9edeA85c44bA7DBC01'), LOWER('0xBD090EF169c0C8589Acb33406C29C20d22bb4a55'))
+        AND topic0 = 0xbaefe449c0963ab3bd87eb56115a3f8420fbefae45878f063cc59a6cb99d3ae0
+        AND contract_address IN (0xA1b97D22e22507498B350A9edeA85c44bA7DBC01, 0xBD090EF169c0C8589Acb33406C29C20d22bb4a55)
 ), 
 
 get_daohaus_wallets as (
@@ -72,7 +71,8 @@ mapped_wallets as (
             dao, 
             dao_wallet as dao_wallet_address, 
             created_block_time, 
-            created_date
+            created_date,
+            CAST(date_trunc('month', created_date) as date) as block_month
         FROM 
         get_daohaus_wallets
 
@@ -84,13 +84,20 @@ mapped_wallets as (
             dao, 
             minion_wallet as dao_wallet_address,
             created_block_time, 
-            created_date 
+            created_date,
+            CAST(date_trunc('month', created_date) as date) as block_month
         FROM 
         get_daohaus_wallets
 )
 
-SELECT 
-    DISTINCT(mw.*)
+SELECT DISTINCT -- there are still duplicates so I'm using a distinct to filter for the duplicates
+        blockchain
+        , dao_creator_tool
+        , dao
+        , dao_wallet_address
+        , created_block_time
+        , created_date
+        , block_month
 FROM 
 mapped_wallets mw 
 WHERE dao_wallet_address IS NOT NULL 
