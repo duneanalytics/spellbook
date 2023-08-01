@@ -10,12 +10,7 @@ models:
       contributors: 0xbitfly, hosuke
     config:
       tags: ["arbitrum", "erc4337", "account", "abstraction", "entrypoint"]
-    description: erc4337 v0.5 user operations on arbitrum
-    tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - userop_hash
-            - tx_hash
+    description: "erc4337 v0.5 user operations on arbitrum"
     columns:
       - &blockchain
         name: blockchain
@@ -23,6 +18,9 @@ models:
       - &version
         name: version
         description: "version of the EntryPoint contract"
+      - &block_month
+        name: block_month
+        description: "UTC event block date of each User Operation"
       - &block_time
         name: block_time
         description: "UTC event block time of each User Operation"
@@ -46,7 +44,7 @@ models:
         description: "the address that pay for the user operation gas fees on behalf of the user"
       - &op_fee
         name: op_fee
-        description: "The user operation gas paid by sender or paymaster. It’s depends on the chain gas setting."
+        description: "The gas paid by sender or paymaster It depends on the chain gas setting"
       - &beneficiary
         name: beneficiary
         description: "the address where the bundler setting for the user operation pay for thier gas fee"
@@ -59,15 +57,11 @@ models:
       contributors: 0xbitfly, hosuke
     config:
       tags: ["arbitrum", "erc4337", "account", "abstraction", "entrypoint"]
-    description: erc4337 v0.6 user operations on arbitrum
-    tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - userop_hash
-            - tx_hash
+    description: "erc4337 v0.6 user operations on arbitrum"
     columns:
       - *blockchain
       - *version
+      - *block_month
       - *block_time
       - *entrypoint_contract
       - *tx_hash
@@ -86,7 +80,7 @@ models:
       contributors: 0xbitfly, hosuke
     config:
       tags: ["arbitrum", "erc4337", "account", "abstraction", "entrypoint"]
-    description: erc4337 user operation on arbitrum
+    description: "erc4337 user operation on arbitrum"
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -99,8 +93,9 @@ models:
             version: v0.5
           match_columns:
             - userop_hash
-          check_columns:
             - tx_hash
+          check_columns:
+            - paymaster
             - bundler
       - check_seed:
           seed_file: ref('account_abstraction_erc4337_userops_seed')
@@ -109,12 +104,14 @@ models:
             version: v0.6
           match_columns:
             - userop_hash
-          check_columns:
             - tx_hash
+          check_columns:
+            - paymaster
             - bundler
     columns:
       - *blockchain
       - *version
+      - *block_month
       - *block_time
       - *entrypoint_contract
       - *tx_hash

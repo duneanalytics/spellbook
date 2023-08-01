@@ -35,28 +35,28 @@ models:
       - &bribe_last_week
         name: bribe_last_week
         description: "The amount of bribe, in the form of FXS token, that frax finance paid last week on its pools in the dex"
-      - &bribe_last_week_USD
+      - &bribe_last_week_usd
         name: bribe_last_week_USD
         description: "The amount of bribe, in the form of FXS token denominated in USD, that frax finance paid last week on its pools in the dex"
-      - &Start_Frax
+      - &start_frax
         name: Start_Frax
         description: "The TVL of FRAX pools at the start of the week on the dex"
-      - &End_Frax
+      - &end_frax
         name: End_Frax
         description: "The TVL of FRAX pools at the end of the week on the dex"
-      - &Start_FrxETH
+      - &start_frxeth
         name: Start_FrxETH
         description: "The TVL of FrxETH pools at the start of the week on the dex"
-      - &End_FrxETH
+      - &end_frxeth
         name: End_FrxETH
         description: "The TVL of FrxETH pools at the end of the week on the dex"
-      - &FXS_collected
+      - &fxs_collected
         name: FXS_collected
         description: "The amount of FXS rewards that Frax finance has collected on its pools at the end of epoch"
-      - &FXS_collected_usd 
+      - &fxs_collected_usd 
         name: FXS_collected_usd
         description: "The amount of bribe, in the form of FXS token denominated in USD, that frax finance receives at the end of each week as a result of voting on its own pools"
-      - &Gross_profit
+      - &gross_profit
         name: Gross_profit
         description: "The amount of bribe that Frax finance paid on its pools minus the rewards it received in FXS"
       - &fee_reward_token0
@@ -65,16 +65,16 @@ models:
       - &fee_reward_token1
         name: fee_reward_token1
         description: "The amount of token1 fee that Frax finance received at the end of each epoch on dex"    
-      - &Start_frax_TVL
+      - &start_frax_tvl
         name: Start_frax_TVL
         description: "The TVL of FRAX pools, in USD, at the beginning of the epoch"
-      - &End_frax_TVL
+      - &end_frax_tvl
         name: End_frax_TVL
         description: "The TVL of FRAX pools, in USD, at the end of the epoch"
-      - &Start_frxETH_TVL
+      - &start_frxeth_tvl
         name: Start_frxETH_TVL
         description: "The TVL of FrxETH pools, in USD, at the beginning of the epoch"
-      - &End_frxETH_TVL
+      - &end_frxeth_tvl
         name: End_frxETH_TVL
         description: "The TVL of FrxETH pools, in USD, at the end of the epoch"    
 
