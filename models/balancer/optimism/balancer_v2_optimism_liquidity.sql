@@ -170,8 +170,8 @@ WITH pool_labels AS (
         AND blockchain = 'optimism'
         LEFT JOIN prices p1 ON p1.day = b.day
         AND p1.token = b.token
-        LEFT JOIN bpt_prices p3 ON p3.day = b.day AND p3.token = CAST(b.token as varchar(42))
-        WHERE b.token != SUBSTRING(b.pool_id, 1, 42)
+        LEFT JOIN bpt_prices p3 ON p3.day = b.day AND CAST(p3.token as varchar) = CAST(b.token as varchar(42))
+        WHERE CAST(b.token as varchar) != SUBSTRING(CAST(b.pool_id as varchar), 1, 42)
     ),
 
     pool_liquidity_estimates AS (
