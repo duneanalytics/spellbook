@@ -19,24 +19,24 @@ WITH pools AS (
 joins AS (
     SELECT p.pools as pool, date_trunc('day', e.evt_block_time) AS day, e.contract_address AS token, SUM(value) AS amount
     FROM {{ source('erc20_ethereum', 'evt_transfer') }} e
-    INNER JOIN pools p ON e.`to` = p.pools
+    INNER JOIN pools p ON e."to" = p.pools
     GROUP BY 1, 2, 3
     UNION ALL
-    SELECT e.`to` as pool, date_trunc('day', e.evt_block_time) AS day, e.contract_address AS token, SUM(value) AS amount
+    SELECT e."to" as pool, date_trunc('day', e.evt_block_time) AS day, e.contract_address AS token, SUM(value) AS amount
     FROM {{ source('erc20_ethereum', 'evt_transfer') }} e
-    WHERE e.`to` = '{{balancer_contract}}'
+    WHERE e."to" = '{{balancer_contract}}'
     GROUP BY 1, 2, 3
 ),
 
 exits AS (
     SELECT p.pools as pool, date_trunc('day', e.evt_block_time) AS day, e.contract_address AS token, -SUM(value) AS amount
     FROM {{ source('erc20_ethereum', 'evt_transfer') }} e
-    INNER JOIN pools p ON e.`from` = p.pools   
+    INNER JOIN pools p ON e."from" = p.pools   
     GROUP BY 1, 2, 3
     UNION ALL
-    SELECT e.`from` as pool, date_trunc('day', e.evt_block_time) AS day, e.contract_address AS token, -SUM(value) AS amount
+    SELECT e."from" as pool, date_trunc('day', e.evt_block_time) AS day, e.contract_address AS token, -SUM(value) AS amount
     FROM {{ source('erc20_ethereum', 'evt_transfer') }} e
-    WHERE e.`from` = '{{balancer_contract}}'
+    WHERE e."from" = '{{balancer_contract}}'
     GROUP BY 1, 2, 3
 ),
 
@@ -62,7 +62,7 @@ cumulative_balance_by_token AS (
 
     calendar AS (
         SELECT date_sequence AS day
-        FROM unnest(sequence(date('2020-01-01'), date(now()), interval '1' day)) as t(date_sequence)
+        FROM unnest(sequence(date('2020-01-1'), date(now()), interval '1' day)) as t(date_sequence)
     ),
 
 
