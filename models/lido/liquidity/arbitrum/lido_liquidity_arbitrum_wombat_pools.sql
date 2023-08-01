@@ -26,12 +26,17 @@ cross join unnest(day) as days(day)
 
 , tokens_prices_daily AS (
     SELECT DISTINCT
-      DATE_TRUNC('day', minute) AS time,
+      DATE_TRUNC('day', p.minute) AS time,
       contract_address as token,
       AVG(price) AS price
-    FROM {{source('prices','usd')}}
+    FROM {{source('prices','usd')}} p
     WHERE
-      DATE_TRUNC('day', minute) >= DATE '{{ project_start_date }}'
+    {% if not is_incremental() %}
+    WHERE DATE_TRUNC('day', p.minute) >= DATE '{{ project_start_date }}'
+    {% endif %}
+    {% if is_incremental() %}
+    WHERE DATE_TRUNC('day', p.minute) >= DATE_TRUNC('day', NOW() - INTERVAL '1' day)
+    {% endif %}
       AND DATE_TRUNC('day', minute) < DATE_TRUNC('day', now())
       AND blockchain = 'arbitrum'
       AND contract_address = 0x5979d7b546e38e414f7e9822514be443a4800529
@@ -56,12 +61,16 @@ SELECT
     FROM
       (
     SELECT DISTINCT
-      DATE_TRUNC('hour', minute) AS time,
+      DATE_TRUNC('hour', p.minute) AS time,
       AVG(price) AS price
-    FROM {{source('prices','usd')}}
+    FROM {{source('prices','usd')}} p
     WHERE
-      DATE_TRUNC('day', minute) >= DATE '{{ project_start_date }}'
-      AND DATE_TRUNC('day', minute) < DATE_TRUNC('day', now())
+      {% if not is_incremental() %}
+    WHERE DATE_TRUNC('day', p.minute) >= DATE '{{ project_start_date }}'
+    {% endif %}
+    {% if is_incremental() %}
+    WHERE DATE_TRUNC('day', p.minute) >= DATE_TRUNC('day', NOW() - INTERVAL '1' day)
+    {% endif %}
       AND blockchain = 'arbitrum'
       AND contract_address = 0x5979d7b546e38e414f7e9822514be443a4800529
     GROUP BY 1
@@ -79,7 +88,7 @@ SELECT
     WHERE DATE_TRUNC('day', sw.evt_block_time) >= DATE '{{ project_start_date }}'
     {% endif %}
     {% if is_incremental() %}
-    WHERE DATE_TRUNC('day', sw.evt_block_time) >= DATE_TRUNC("DAY", NOW() - INTERVAL '1 WEEK')
+    WHERE DATE_TRUNC('day', sw.evt_block_time) >= DATE_TRUNC('day', NOW() - INTERVAL '1' day)
     {% endif %}
     GROUP BY  1,2
  )
@@ -94,7 +103,7 @@ SELECT
     WHERE DATE_TRUNC('day', sw.evt_block_time) >= DATE '{{ project_start_date }}'
     {% endif %}
     {% if is_incremental() %}
-    WHERE DATE_TRUNC('day', sw.evt_block_time) >= DATE_TRUNC("DAY", NOW() - INTERVAL '1 WEEK')
+    WHERE DATE_TRUNC('day', sw.evt_block_time) >= DATE_TRUNC('day', NOW() - INTERVAL '1' day)
     {% endif %}
     and token = 0x5979d7b546e38e414f7e9822514be443a4800529
     GROUP BY  1,2
@@ -111,7 +120,7 @@ SELECT
     WHERE DATE_TRUNC('day', sw.evt_block_time) >= DATE '{{ project_start_date }}'
     {% endif %}
     {% if is_incremental() %}
-    WHERE DATE_TRUNC('day', sw.evt_block_time) >= DATE_TRUNC("DAY", NOW() - INTERVAL '1 WEEK')
+    WHERE DATE_TRUNC('day', sw.evt_block_time) >= DATE_TRUNC('day', NOW() - INTERVAL '1' day)
     {% endif %}
     and token = 0x5979d7b546e38e414f7e9822514be443a4800529
     GROUP BY  1,2
@@ -156,7 +165,7 @@ group by 1,2,3
         WHERE DATE_TRUNC('day', sw.evt_block_time) >= DATE '{{ project_start_date }}'
         {% endif %}
         {% if is_incremental() %}
-        WHERE DATE_TRUNC('day', sw.evt_block_time) >= DATE_TRUNC("DAY", NOW() - INTERVAL '1 WEEK')
+        WHERE DATE_TRUNC('day', sw.evt_block_time) >= DATE_TRUNC('day', NOW() - INTERVAL '1' day)
         {% endif %}
         GROUP BY 1,2
         
