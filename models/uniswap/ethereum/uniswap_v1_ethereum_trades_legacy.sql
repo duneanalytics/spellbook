@@ -7,7 +7,7 @@
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
-    unique_key = ['block_date', 'blockchain', 'project', 'version', 'tx_hash', 'evt_index'],
+    unique_key = ['block_date', 'blockchain', 'project', 'version', 'tx_hash', 'evt_index', 'trace_address'],
     post_hook='{{ expose_spells(\'["ethereum"]\',
                                 "project",
                                 "uniswap_v1",
@@ -32,6 +32,7 @@ WITH dexs AS
         ,'{{weth_address}}' AS token_sold_address --Using WETH for easier joining with USD price table
         ,t.contract_address AS project_contract_address
         ,t.evt_tx_hash AS tx_hash
+        ,'' AS trace_address
         ,t.evt_index
     FROM
         {{ source('uniswap_ethereum', 'Exchange_evt_TokenPurchase') }} t
@@ -55,6 +56,7 @@ WITH dexs AS
         ,f.token AS token_sold_address
         ,t.contract_address AS project_contract_address
         ,t.evt_tx_hash AS tx_hash
+        ,'' AS trace_address
         ,t.evt_index
     FROM
         {{ source('uniswap_ethereum', 'Exchange_evt_EthPurchase') }} t
@@ -93,6 +95,7 @@ SELECT
     ,dexs.tx_hash
     ,tx.from AS tx_from
     ,tx.to AS tx_to
+    ,dexs.trace_address
     ,dexs.evt_index
 FROM dexs
 INNER JOIN {{ source('ethereum', 'transactions') }} tx

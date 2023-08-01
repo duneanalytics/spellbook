@@ -520,7 +520,7 @@ WITH curated_list AS (
       ,('0x19df27089a52ccfa444ce5a73ef86403d03210d4', 'Getaverse')
       ,('0xBd9d5319691922e2e1F9DC69ce0Fd0B0ded51656', 'Manifold')
       ,('0x3B52ad533687Ce908bA0485ac177C5fb42972962', 'Manifold')
-      ,('0xB8cEF765721A6da910f14Be93e7684e9a3714123', 'Allo Protocol') --Gitcoin Grants Stack
+      ,('0xB8cEF765721A6da910f14Be93e7684e9a3714123', 'Allo Protocol (Gitcoin)') --Gitcoin Grants Stack
       ,('0x123694886DBf5Ac94DDA07135349534536D14cAf', 'Threshold Network')
       ,('0x956a5152D0f498dBA0c5966577bb44262F8F7078', 'OP AttestationStation')
       ,('0x9c6373de60c2d3297b18a8f964618ac46e011b58', 'OP Citizens House')
@@ -562,6 +562,14 @@ WITH curated_list AS (
       ,('0xae0c5140744bfc6bc33ce73298f10f7b538f02dd', 'Eco')
       ,('0xb1bEF51ebCA01EB12001a639bDBbFF6eEcA12B9F', 'Sablier')
       ,('0x3c5e6b4292ed35e8973400bef77177a9e84e8e6e', 'Layerr')
+      ,('0x9f76a95AA7535bb0893cf88A146396e00ed21A12', 'Angle Protocol') --Merkl
+      ,('0x123E2974efC726FABc16ea729c3e84F17a788DB1', 'Beefy Finance')
+      ,('0xeFd9434A2B1076D5C84D242b6f4AAb47270EcEAC', 'ThriveCoin')
+      ,('0x24399266da004b11173Bb478E5Da2c1b194721bC', 'Sismo')
+      ,('0x890Bc5691E6011F580e264065d09a7a1A6902131', 'Synapse')
+      ,('0x161D61e30284A33Ab1ed227beDcac6014877B3DE', 'Beefy Finance')
+      ,('0x5853ed4f26a3fcea565b3fbc698bb19cdf6deb85', 'DeBank')
+      ,('0x36BDE71C97B33Cc4729cf772aE268934f7AB70B2', 'Worldcoin')
       
   ) as temp_table (creator_address, contract_project)
 )

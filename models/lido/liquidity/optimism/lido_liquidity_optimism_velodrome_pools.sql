@@ -1,6 +1,7 @@
 {{ config(
     schema='lido_liquidity_optimism',
     alias = alias('velodrome_pools'),
+    tags = ['dunesql'], 
     partition_by = ['time'],
     materialized = 'table',
     file_format = 'delta',
@@ -16,9 +17,12 @@
 
 
 
-with dates AS (
-        SELECT explode(sequence(to_date('{{ project_start_date }}'), CURRENT_DATE, interval 1 day)) AS day
-    )
+with dates as (
+    with day_seq as (select (sequence(cast('{{ project_start_date }}' as date), current_date, interval '1' day)) as day)
+select days.day
+from day_seq
+cross join unnest(day) as days(day)
+  )
 
 
 , pools as (
@@ -28,8 +32,8 @@ select pair AS address,
       case when stable then 'stable' else 'volatile' end AS pool_type,
       0.02 as fee
 from {{source('velodrome_optimism','PairFactory_evt_PairCreated')}}
-where token0 = lower('0x1F32b1c2345538c0c6f582fCB022739c4A194Ebb')
-      OR token1 = lower('0x1F32b1c2345538c0c6f582fCB022739c4A194Ebb')
+where token0 = 0x1F32b1c2345538c0c6f582fCB022739c4A194Ebb
+      OR token1 = 0x1F32b1c2345538c0c6f582fCB022739c4A194Ebb
 )      
 
 , pool_per_date as ( 
@@ -39,19 +43,18 @@ left join pools on 1=1
 )
 
 , tokens as (
- select distinct token, pt.symbol, pt.decimals
+ select distinct token
  from (
  select token0 as token
  from {{source('velodrome_optimism','PairFactory_evt_PairCreated')}}
- where token1 = lower('0x1F32b1c2345538c0c6f582fCB022739c4A194Ebb')
+ where token1 = 0x1F32b1c2345538c0c6f582fCB022739c4A194Ebb
  union all
  select token1
  from {{source('velodrome_optimism','PairFactory_evt_PairCreated')}}
- where token0 = lower('0x1F32b1c2345538c0c6f582fCB022739c4A194Ebb')
+ where token0 = 0x1F32b1c2345538c0c6f582fCB022739c4A194Ebb
  union all
- select lower('0x1F32b1c2345538c0c6f582fCB022739c4A194Ebb')
+ select 0x1F32b1c2345538c0c6f582fCB022739c4A194Ebb
  ) t
- left join {{ref('prices_tokens')}} AS pt ON t.token = pt.contract_address
  )
  
  
@@ -59,21 +62,26 @@ left join pools on 1=1
 select distinct 
       DATE_TRUNC('day', minute) AS time,
       contract_address AS token,
+      symbol,
+      decimals,
       AVG(price) AS price
 FROM {{source('prices','usd')}}
-WHERE date_trunc('day', minute) >= '{{ project_start_date }}' and date_trunc('day', minute) < date_trunc('day', now())
+WHERE date_trunc('day', minute) >= date '{{ project_start_date }}' 
+     and date_trunc('day', minute) < current_date
      and blockchain = 'optimism'
   and contract_address IN (select token from tokens)
-group by 1,2
+group by 1,2,3,4
 union all
 select distinct
       DATE_TRUNC('day', minute),
       contract_address AS token,
+      symbol,
+      decimals,      
       LAST_VALUE(price) OVER (PARTITION BY DATE_TRUNC('day', minute),contract_address  ORDER BY minute NULLS FIRST range BETWEEN UNBOUNDED preceding AND UNBOUNDED following) AS price
     FROM
       {{source('prices','usd')}}
     WHERE
-      DATE_TRUNC('day', minute) = DATE_TRUNC('day', NOW())
+      DATE_TRUNC('day', minute) = current_date
       and blockchain = 'optimism'
   and contract_address IN (select token from tokens) 
  )
@@ -82,15 +90,19 @@ select distinct
     SELECT distinct
         DATE_TRUNC('hour', minute) time, 
         contract_address as token,
+        symbol,
+        decimals,
         last_value(price) over (partition by DATE_TRUNC('hour', minute), contract_address ORDER BY  minute range between unbounded preceding AND unbounded following) AS price
     FROM {{ source('prices', 'usd') }}
-    WHERE date_trunc('hour', minute) >= '{{ project_start_date }}' 
-      and blockchain = 'optimism' and contract_address = lower('0x1F32b1c2345538c0c6f582fCB022739c4A194Ebb')
+    WHERE date_trunc('hour', minute) >= date '{{ project_start_date }}' 
+      and blockchain = 'optimism' and contract_address = 0x1F32b1c2345538c0c6f582fCB022739c4A194Ebb
     
 )
 
 , wsteth_prices_hourly_with_lead AS (
-select time, lead(time, 1, date_trunc('hour', now() + interval '1'  hour)) over (order by time) as next_time, price
+select time, 
+       lead(time, 1, date_trunc('hour', now() + interval '1'  hour)) over (order by time) as next_time, 
+       price
 from wsteth_prices_hourly
 )
 
@@ -100,11 +112,11 @@ from wsteth_prices_hourly
       m.contract_address AS pool,
       cr.token0,
       cr.token1,
-      SUM(TRY_CAST(amount0 AS DOUBLE)) AS amount0,
-      SUM(TRY_CAST(amount1 AS DOUBLE)) AS amount1
+      SUM(CAST(amount0 AS DOUBLE)) AS amount0,
+      SUM(CAST(amount1 AS DOUBLE)) AS amount1
  from {{source('velodrome_optimism','Pair_evt_Mint')}} m
  left join {{source('velodrome_optimism','PairFactory_evt_PairCreated')}} cr on m.contract_address = cr.pair 
- WHERE date_trunc('day', m.evt_block_time) >= '{{ project_start_date }}'
+ WHERE date_trunc('day', m.evt_block_time) >= date '{{ project_start_date }}'
  and m.contract_address in (select address from pools)
  group by 1,2,3,4
  )
@@ -114,11 +126,11 @@ from wsteth_prices_hourly
       b.contract_address AS pool,
       cr.token0,
       cr.token1,
-      (-1)*SUM(TRY_CAST(amount0 AS DOUBLE)) AS amount0,
-      (-1)*SUM(TRY_CAST(amount1 AS DOUBLE)) AS amount1
+      (-1)*SUM(CAST(amount0 AS DOUBLE)) AS amount0,
+      (-1)*SUM(CAST(amount1 AS DOUBLE)) AS amount1
  from {{source('velodrome_optimism','Pair_evt_Burn')}} b
  left join {{source('velodrome_optimism','PairFactory_evt_PairCreated')}} cr on b.contract_address = cr.pair 
- WHERE date_trunc('day', b.evt_block_time) >= '{{ project_start_date }}'
+ WHERE date_trunc('day', b.evt_block_time) >= date '{{ project_start_date }}'
  and b.contract_address in (select address from pools)
  group by 1,2,3,4
  
@@ -129,11 +141,11 @@ from wsteth_prices_hourly
       s.contract_address AS pool,
       cr.token0,
       cr.token1,
-      SUM(TRY_CAST(amount0In AS DOUBLE) - TRY_CAST(amount0Out AS DOUBLE)) AS amount0,
-      SUM(TRY_CAST(amount1In AS DOUBLE) - TRY_CAST(amount1Out AS DOUBLE)) AS amount1
+      SUM(CAST(amount0In AS DOUBLE) - CAST(amount0Out AS DOUBLE)) AS amount0,
+      SUM(CAST(amount1In AS DOUBLE) - CAST(amount1Out AS DOUBLE)) AS amount1
  from {{source('velodrome_optimism','Pair_evt_Swap')}} s
  left join {{source('velodrome_optimism','PairFactory_evt_PairCreated')}} cr on s.contract_address = cr.pair 
- WHERE date_trunc('day', s.evt_block_time) >= '{{ project_start_date }}'
+ WHERE date_trunc('day', s.evt_block_time) >= date '{{ project_start_date }}'
  and s.contract_address in (select address from pools)
  group by 1,2,3,4
  
@@ -145,11 +157,11 @@ select
       s.contract_address AS pool,
       cr.token0,
       cr.token1,
-      (-1)*SUM(TRY_CAST(amount0 AS DOUBLE) ) AS amount0,
-      (-1)*SUM(TRY_CAST(amount1 AS DOUBLE) ) AS amount1 
+      (-1)*SUM(CAST(amount0 AS DOUBLE) ) AS amount0,
+      (-1)*SUM(CAST(amount1 AS DOUBLE) ) AS amount1 
  from {{source('velodrome_optimism','Pair_evt_Fees')}} s
  left join {{source('velodrome_optimism','PairFactory_evt_PairCreated')}} cr on s.contract_address = cr.pair 
- WHERE date_trunc('day', s.evt_block_time) >= '{{ project_start_date }}'
+ WHERE date_trunc('day', s.evt_block_time) >= date '{{ project_start_date }}'
  and s.contract_address in (select address from pools)
  group by 1,2,3,4
  )
@@ -179,7 +191,8 @@ from  fee_events
 )
 
 , daily_delta_balance_with_lead AS (
-select time, pool, token0, token1, amount0, amount1, lead(time, 1, now()) over (partition by pool order by time) as next_time
+select time, pool, token0, token1, amount0, amount1, 
+lead(time, 1, now()) over (partition by pool order by time) as next_time
 from daily_delta_balance
 )
 
@@ -198,11 +211,11 @@ SELECT c.day as time,
 , swap_events_hourly as (
  select DATE_TRUNC('hour', s.evt_block_time) AS time,
       s.contract_address AS pool,
-      sum(case when cr.token0 = lower('0x1F32b1c2345538c0c6f582fCB022739c4A194Ebb') then TRY_CAST(amount0In AS DOUBLE) + TRY_CAST(amount0Out AS DOUBLE)
-      else TRY_CAST(amount1In AS DOUBLE) + TRY_CAST(amount1Out AS DOUBLE) end) as wsteth_amount
+      sum(case when cr.token0 = 0x1F32b1c2345538c0c6f582fCB022739c4A194Ebb then CAST(amount0In AS DOUBLE) + CAST(amount0Out AS DOUBLE)
+      else CAST(amount1In AS DOUBLE) + CAST(amount1Out AS DOUBLE) end) as wsteth_amount
  from {{source('velodrome_optimism','Pair_evt_Swap')}} s
  left join {{source('velodrome_optimism','PairFactory_evt_PairCreated')}} cr on s.contract_address = cr.pair 
- WHERE date_trunc('day', s.evt_block_time) >= '{{ project_start_date }}'
+ WHERE date_trunc('day', s.evt_block_time) >= date '{{ project_start_date }}'
  and s.contract_address in (select address from pools)
 group by 1,2
 )
@@ -236,22 +249,22 @@ group by 1,2
       pools.project,
       pools.fee,
       pools.pool_type,
-      l.time,
-      CASE WHEN token0 = lower('0x1F32b1c2345538c0c6f582fCB022739c4A194Ebb') THEN token0 ELSE token1 END AS main_token,
-      CASE WHEN token0 = lower('0x1F32b1c2345538c0c6f582fCB022739c4A194Ebb') THEN t0.symbol ELSE t1.symbol END AS main_token_symbol,
-      CASE WHEN token0 = lower('0x1F32b1c2345538c0c6f582fCB022739c4A194Ebb') THEN token1 ELSE token0 END AS paired_token,
-      CASE WHEN token0 = lower('0x1F32b1c2345538c0c6f582fCB022739c4A194Ebb') THEN t1.symbol ELSE t0.symbol END AS paired_token_symbol,
-      CASE WHEN token0 = lower('0x1F32b1c2345538c0c6f582fCB022739c4A194Ebb') THEN (CASE WHEN amount0 > 0 THEN amount0 / CAST(POWER(10, t0.decimals) AS DOUBLE) ELSE 0 END)
-        ELSE (CASE WHEN amount1 > 0 THEN amount1 / CAST(POWER(10, t1.decimals) AS DOUBLE) ELSE 0 END) END AS main_token_reserve,
-      CASE WHEN token0 = lower('0x1F32b1c2345538c0c6f582fCB022739c4A194Ebb') THEN (CASE WHEN amount1 > 0 THEN amount1 / CAST(POWER(10, t1.decimals) AS DOUBLE) ELSE 0 END)  
-        ELSE (CASE WHEN amount0 > 0 THEN amount0 / CAST(POWER(10, t0.decimals) AS DOUBLE) ELSE 0 END) END AS paired_token_reserve,
-      CASE WHEN token0 = lower('0x1F32b1c2345538c0c6f582fCB022739c4A194Ebb') THEN (CASE WHEN amount0 > 0 THEN (p0.price * amount0) / CAST(POWER(10, t0.decimals) AS DOUBLE)
+      cast(l.time as date) as time,
+      CASE WHEN token0 = 0x1F32b1c2345538c0c6f582fCB022739c4A194Ebb THEN token0 ELSE token1 END AS main_token,
+      CASE WHEN token0 = 0x1F32b1c2345538c0c6f582fCB022739c4A194Ebb THEN p0.symbol ELSE p1.symbol END AS main_token_symbol,
+      CASE WHEN token0 = 0x1F32b1c2345538c0c6f582fCB022739c4A194Ebb THEN token1 ELSE token0 END AS paired_token,
+      CASE WHEN token0 = 0x1F32b1c2345538c0c6f582fCB022739c4A194Ebb THEN p1.symbol ELSE p0.symbol END AS paired_token_symbol,
+      CASE WHEN token0 = 0x1F32b1c2345538c0c6f582fCB022739c4A194Ebb THEN (CASE WHEN amount0 > 0 THEN amount0 / CAST(POWER(10, p0.decimals) AS DOUBLE) ELSE 0 END)
+        ELSE (CASE WHEN amount1 > 0 THEN amount1 / CAST(POWER(10, p1.decimals) AS DOUBLE) ELSE 0 END) END AS main_token_reserve,
+      CASE WHEN token0 = 0x1F32b1c2345538c0c6f582fCB022739c4A194Ebb THEN (CASE WHEN amount1 > 0 THEN amount1 / CAST(POWER(10, p1.decimals) AS DOUBLE) ELSE 0 END)  
+        ELSE (CASE WHEN amount0 > 0 THEN amount0 / CAST(POWER(10, p0.decimals) AS DOUBLE) ELSE 0 END) END AS paired_token_reserve,
+      CASE WHEN token0 = 0x1F32b1c2345538c0c6f582fCB022739c4A194Ebb THEN (CASE WHEN amount0 > 0 THEN (p0.price * amount0) / CAST(POWER(10, p0.decimals) AS DOUBLE)
             ELSE 0 END)
-        ELSE (CASE WHEN amount1 > 0 THEN (p1.price * amount1) / CAST(POWER(10, t1.decimals) AS DOUBLE)  ELSE 0 END) END AS main_token_usd_reserve,
-      CASE WHEN token0 = lower('0x1F32b1c2345538c0c6f582fCB022739c4A194Ebb') THEN (
-          CASE WHEN amount1 > 0 THEN (p1.price * amount1) / CAST(POWER(10, t1.decimals) AS DOUBLE)
+        ELSE (CASE WHEN amount1 > 0 THEN (p1.price * amount1) / CAST(POWER(10, p1.decimals) AS DOUBLE)  ELSE 0 END) END AS main_token_usd_reserve,
+      CASE WHEN token0 = 0x1F32b1c2345538c0c6f582fCB022739c4A194Ebb THEN (
+          CASE WHEN amount1 > 0 THEN (p1.price * amount1) / CAST(POWER(10, p1.decimals) AS DOUBLE)
             ELSE 0 END)
-        ELSE (CASE WHEN amount0 > 0 THEN (p0.price * amount0) / CAST(POWER(10, t0.decimals) AS DOUBLE) ELSE 0 END) END AS paired_token_usd_reserve,
+        ELSE (CASE WHEN amount0 > 0 THEN (p0.price * amount0) / CAST(POWER(10, p0.decimals) AS DOUBLE) ELSE 0 END) END AS paired_token_usd_reserve,
       coalesce(volume,0) AS trading_volume
     FROM
       pool_liquidity AS l
