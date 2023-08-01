@@ -131,7 +131,7 @@ WITH
             'ethereum' AS blockchain,
             date_trunc('hour', block_time) AS hour,
             contract_address,
-            approx_percentile(price, 0.5) AS median_price
+            approx_percentile(price, 0.5) FILTER (WHERE is_finite(price)) AS median_price
         FROM (
             SELECT block_time, contract_address, token_in_price AS price 
             FROM backfill_pricing_2 b2 WHERE b2.contract_address = b2.token_in
