@@ -212,17 +212,25 @@ WHERE contract_order = 1
 )
 
 ,tokens as (
-
+  {% for chain in evm_chains %}
   --LIKELY MAKE A NEW ERC20 Tokens spell because existing tables were not sufficient
-  select 
-    blockchain
-    ,t.contract_address
-    ,t.symbol
-    ,'erc20' as token_standard
-  from {{ ref('tokens_erc20_all') }} as t
-  group by 1, 2, 3, 4
+  -- select 
+  --   '{{chain}}' as blockchain
+  --   ,t.contract_address
+  --   ,t.symbol
+  --   ,'erc20' as token_standard
+  -- from {{ ref('tokens_erc20_all') }} as t
+  -- group by 1, 2, 3, 4
+      {% for chain in evm_chains %}
+        SELECT '{{chain}}' AS blockchain, contract_address, NULL AS symbol, 'erc20' as standard
 
-  union all 
+        from {{ source('erc20_' + chain , 'evt_transfer') }} tr 
+
+        WHERE 1=1
+
+  UNION ALL
+  {% endfor %}
+
   -- THIS WILL BREAK IF CHAINS MAY BE MISSING FROM THIS SPELL
   -- WE WILL NEED TO MAKE A NEW SPELL WITH MACRO FOR HANDLING CHAINS
   select 
