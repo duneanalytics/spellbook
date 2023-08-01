@@ -9,7 +9,7 @@
     ) 
 }}
 
-{% set balancer_contract = "0xba12222222228d8ba445958a75a0704d566bf2c8" %}
+{% set balancer_contract = '0xba12222222228d8ba445958a75a0704d566bf2c8' %}
 
 WITH pools AS (
     SELECT pool as pools
