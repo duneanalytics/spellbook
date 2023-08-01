@@ -45,14 +45,14 @@ WITH pool_labels AS (
             day,
             pool_id,
             token,
-            SUM(COALESCE(delta, 0)) AS delta
+            SUM(COALESCE(delta, CAST(0 as int256))) AS delta
         FROM
             (
                 SELECT
                     date_trunc('day', evt_block_time) AS day,
                     poolId AS pool_id,
                     tokenIn AS token,
-                    CAST(amountIn AS double) AS delta
+                    CAST(amountIn as int256) AS delta
                 FROM
                     {{ source('balancer_v2_ethereum', 'Vault_evt_Swap') }}
                 UNION
@@ -61,7 +61,7 @@ WITH pool_labels AS (
                     date_trunc('day', evt_block_time) AS day,
                     poolId AS pool_id,
                     tokenOut AS token,
-                    -CAST(amountOut AS double) AS delta
+                    -CAST(amountOut AS int256) AS delta
                 FROM
                     {{ source('balancer_v2_ethereum', 'Vault_evt_Swap') }}
             ) swaps
@@ -107,14 +107,14 @@ WITH pool_labels AS (
             day,
             pool_id,
             token,
-            SUM(COALESCE(amount, 0)) AS amount
+            SUM(COALESCE(amount, CAST(0 as int256))) AS amount
         FROM
             (
                 SELECT
                     day,
                     pool_id,
                     token,
-                    SUM(COALESCE(delta, 0)) AS amount
+                    SUM(COALESCE(delta, CAST(0 as int256))) AS amount
                 FROM
                     balances_changes
                 GROUP BY 1, 2, 3
@@ -131,7 +131,7 @@ WITH pool_labels AS (
                     day,
                     pool_id,
                     token,
-                    CAST(delta as double) AS amount
+                    CAST(delta as int256) AS amount
                 FROM
                     managed_changes
             ) balance
