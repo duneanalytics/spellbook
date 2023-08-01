@@ -43,7 +43,7 @@ exits AS (
 daily_delta_balance_by_token AS (
     SELECT pool, day, token, SUM(COALESCE(amount, CAST(0 as int256))) AS amount FROM 
     (SELECT *
-    FROM joins j 
+    FROM joins j
     UNION ALL
     SELECT * 
     FROM exits e) foo
