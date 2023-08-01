@@ -5,7 +5,7 @@
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
-    unique_key = ['block_date', 'blockchain', 'project', 'version', 'evt_type', 'tx_hash', 'evt_index' 'lien_id'],
+    unique_key = ['block_date', 'blockchain', 'project', 'version', 'evt_type', 'tx_hash', 'evt_index', 'lien_id'],
     post_hook='{{ expose_spells(\'["ethereum"]\',
                                 "project",
                                 "astaria",
