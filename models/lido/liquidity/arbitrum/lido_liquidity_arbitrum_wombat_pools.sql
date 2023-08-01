@@ -30,7 +30,6 @@ cross join unnest(day) as days(day)
       contract_address as token,
       AVG(price) AS price
     FROM {{source('prices','usd')}} p
-    WHERE
     {% if not is_incremental() %}
     WHERE DATE_TRUNC('day', p.minute) >= DATE '{{ project_start_date }}'
     {% endif %}
@@ -64,7 +63,6 @@ SELECT
       DATE_TRUNC('hour', p.minute) AS time,
       AVG(price) AS price
     FROM {{source('prices','usd')}} p
-    WHERE
       {% if not is_incremental() %}
     WHERE DATE_TRUNC('day', p.minute) >= DATE '{{ project_start_date }}'
     {% endif %}
