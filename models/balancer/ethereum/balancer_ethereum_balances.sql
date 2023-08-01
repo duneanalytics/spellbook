@@ -24,7 +24,7 @@ joins AS (
     UNION ALL
     SELECT e."to" as pool, date_trunc('day', e.evt_block_time) AS day, e.contract_address AS token, SUM(value) AS amount
     FROM {{ source('erc20_ethereum', 'evt_transfer') }} e
-    WHERE e."to" = '{{balancer_contract}}'
+    WHERE CAST(e."to" as VARCHAR)= '{{balancer_contract}}'
     GROUP BY 1, 2, 3
 ),
 
@@ -36,7 +36,7 @@ exits AS (
     UNION ALL
     SELECT e."from" as pool, date_trunc('day', e.evt_block_time) AS day, e.contract_address AS token, -SUM(value) AS amount
     FROM {{ source('erc20_ethereum', 'evt_transfer') }} e
-    WHERE e."from" = '{{balancer_contract}}'
+    WHERE CAST(e."from" as VARCHAR) = '{{balancer_contract}}'
     GROUP BY 1, 2, 3
 ),
 
