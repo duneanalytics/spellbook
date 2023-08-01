@@ -93,7 +93,7 @@ models:
     meta:
       blockchain: celo
       project: zeroex
-      contributors: rantum, danning.sui, bakabhai993
+      contributors: rantum
     config:
       tags: ['celo','0x','dex_aggregator','dex','aggregator']
     description: >
