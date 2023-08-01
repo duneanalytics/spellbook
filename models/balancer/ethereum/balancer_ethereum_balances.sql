@@ -1,10 +1,11 @@
 {{
     config(
         alias = alias('balances'),
+        tags = ['dunesql'],
         post_hook='{{ expose_spells_hide_trino(\'["ethereum"]\',
                                     "project",
                                     "balancer",
-                                    \'["metacrypto", "jacektrocinski"]\') }}'
+                                    \'["metacrypto", "jacektrocinski", "viniabussafi"]\') }}'
     ) 
 }}
 
@@ -59,9 +60,11 @@ cumulative_balance_by_token AS (
     FROM daily_delta_balance_by_token
 ),
 
-calendar AS (
-    SELECT explode(sequence(to_date('2020-01-01'), current_date, interval 1 day)) AS day
-),
+    calendar AS (
+        SELECT date_sequence AS day
+        FROM unnest(sequence(date('2020-01-01'), date(now()), interval '1' day)) as t(date_sequence)
+    ),
+
 
 running_cumulative_balance_by_token AS (
     SELECT c.day, pool, token, cumulative_amount 

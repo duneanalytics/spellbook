@@ -2,6 +2,7 @@
     config(
         schema='balancer_v1_ethereum',
         alias = alias('pools_tokens_weights'),
+        tags = ['dunesql'],
         materialized = 'incremental',
         file_format = 'delta',
         incremental_strategy = 'merge',
@@ -34,8 +35,8 @@ WITH events AS (
         AND tx.block_time >= '{{bind_start_date}}'
         {% endif %}
         {% if is_incremental() %}
-        AND bind.call_block_time >= date_trunc("day", now() - interval '1 week')
-        AND tx.block_time >= date_trunc("day", now() - interval '1 week')
+        AND bind.call_block_time >= date_trunc("day", now() - interval '7' day)
+        AND tx.block_time >= date_trunc("day", now() - interval '7' day)
         {% endif %}
 
     UNION ALL
@@ -56,8 +57,8 @@ WITH events AS (
         AND tx.block_time >= '{{bind_start_date}}'
         {% endif %}
         {% if is_incremental() %}
-        AND rebind.call_block_time >= date_trunc("day", now() - interval '1 week')
-        AND tx.block_time >= date_trunc("day", now() - interval '1 week')
+        AND rebind.call_block_time >= date_trunc("day", now() - interval '7' day)
+        AND tx.block_time >= date_trunc("day", now() - interval '7' day)
         {% endif %}
     
     UNION ALL
@@ -78,8 +79,8 @@ WITH events AS (
         AND tx.block_time >= '{{bind_start_date}}'
         {% endif %}
         {% if is_incremental() %}
-        AND unbind.call_block_time >= date_trunc("day", now() - interval '1 week')
-        AND tx.block_time >= date_trunc("day", now() - interval '1 week')
+        AND unbind.call_block_time >= date_trunc("day", now() - interval '7' day)
+        AND tx.block_time >= date_trunc("day", now() - interval '7' day)
         {% endif %}
 ),
 state_with_gaps AS (
