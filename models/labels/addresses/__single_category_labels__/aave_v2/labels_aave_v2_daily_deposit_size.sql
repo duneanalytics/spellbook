@@ -10,7 +10,7 @@ with latest_net_deposits AS (
                 , p.symbol
                 , d.contract_address AS lendingpool_contract
             FROM {{ source('aave_v2_ethereum', 'LendingPool_evt_Deposit')}} d 
-            LEFT JOIN {{ ref('prices_tokens_legacy') }} p
+            LEFT JOIN {{ ref('prices_tokens') }} p
                 ON p.contract_address = d.reserve
                 AND p.blockchain = 'ethereum'
             WHERE evt_block_time > NOW() - INTERVAL '1' day
@@ -25,7 +25,7 @@ with latest_net_deposits AS (
                 , p.symbol
                 , w.contract_address AS lendingpool_contract
             FROM {{ source('aave_v2_ethereum', 'LendingPool_evt_Withdraw')}} w
-            LEFT JOIN {{ ref('prices_tokens_legacy') }} p
+            LEFT JOIN {{ ref('prices_tokens') }} p
                 ON p.contract_address = w.reserve
                 AND p.blockchain = 'ethereum'
             WHERE evt_block_time > NOW() - INTERVAL '1' day
@@ -75,7 +75,7 @@ with latest_net_deposits AS (
                 , cast(d.availableLiquidity as double) / pow(10, p.decimals) AS available_liquidity
                 , d.call_block_time
             FROM {{ source('aave_v2_ethereum', 'DefaultReserveInterestRateStrategy_call_calculateInterestRates')}} d
-            LEFT JOIN {{ ref('prices_tokens_legacy') }} p
+            LEFT JOIN {{ ref('prices_tokens') }} p
                 ON p.contract_address = d.reserve
                 AND p.blockchain = 'ethereum'
             ORDER BY call_block_time DESC

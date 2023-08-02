@@ -724,7 +724,7 @@ SELECT  DATE_TRUNC('day', prices.usd.minute) AS period,
             AND accounts.token  = LOWER('0xae7ab96520DE3A18E5e111B5EaAb095312D7fE84')
         )
     )
-    LEFT JOIN {{ref('prices_tokens_legacy')}} pt ON accounts.token = pt.contract_address                     
+    LEFT JOIN {{ref('prices_tokens')}} pt ON accounts.token = pt.contract_address                     
     GROUP BY 1,2,3,4,5,6,8,9, tokens_prices.decimals, pt.decimals, tokens_prices.price, tokens_prices.token_eth_price
     ORDER BY period DESC
 
