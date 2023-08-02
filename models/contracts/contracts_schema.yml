@@ -1,7 +1,7 @@
 version: 2
 
 models:
-  - name: all
+  - name: decoded
     meta:
       blockchain: arbitrum, avalanche_c, base, bnb, ethereum, fantom, gnosis, optimism, polygon
       sector: contracts
