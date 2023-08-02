@@ -220,7 +220,7 @@ WHERE contract_order = 1
   --   ,t.contract_address
   --   ,t.symbol
   --   ,'erc20' as token_standard
-  -- from {{ ref('tokens_erc20_all') }} as t
+  -- from 'tokens_erc20_all' as t
   -- group by 1, 2, 3, 4
         SELECT '{{chain}}' AS blockchain, contract_address, NULL AS symbol, 'erc20' as standard
 
