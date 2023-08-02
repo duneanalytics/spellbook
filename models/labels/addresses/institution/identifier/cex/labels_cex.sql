@@ -30,7 +30,7 @@ FROM (
     , model_name
     , label_type
     FROM {{ cex_label_model }}
-    WHERE address IS NOT NULL -- some addresses are null
+
     {% if not loop.last %}
     UNION ALL
     {% endif %}
