@@ -90,8 +90,8 @@ WITH prices AS (
         FROM cumulative_usd_balance b
         INNER JOIN {{ ref('balancer_v1_ethereum_pools_tokens_weights') }} w ON b.pool = w.pool_id
         AND b.token = w.token_address
-        AND b.amount_usd > 0
-        AND w.normalized_weight > 0
+        AND CAST (b.amount_usd as DOUBLE) > CAST (0 as DOUBLE)
+        AND CAST (w.normalized_weight as DOUBLE) > CAST (0 as DOUBLE)
         GROUP BY 1, 2
     ),
     
