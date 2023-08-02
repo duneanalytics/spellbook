@@ -325,4 +325,4 @@ union all
 )
 select CONCAT(CONCAT(CONCAT(CONCAT(CONCAT(blockchain,CONCAT(' ', project)) ,' '), paired_token_symbol),':') , main_token_symbol, ' ', format('%,.3f',round(coalesce(fee,0),4))) as pool_name,* 
 from all_metrics
-where main_token_reserve > 1
+--where main_token_reserve > 1
