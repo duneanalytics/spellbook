@@ -23,7 +23,7 @@ WITH dexs AS
     --Biswap v3 on BNB Chain
     SELECT
         t.evt_block_time AS block_time
-        ,t.recipient AS taker
+        ,'' AS taker
         ,'' AS maker
         ,CASE WHEN sellXEarnY = true THEN abs(amountY) ELSE abs(amountX) END AS token_bought_amount_raw
         ,CASE WHEN sellXEarnY = true THEN abs(amountX) ELSE abs(amountY) END AS token_sold_amount_raw
