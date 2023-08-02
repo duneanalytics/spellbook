@@ -1,3 +1,14 @@
+{{  config(
+        tags = ['dunesql'], 
+        schema = 'contracts',
+        alias = alias('all'),
+        file_format = 'delta',
+        materialized = 'incremental',
+        incremental_strategy = 'merge',
+        unique_key = ['blockchain', 'abi_id', 'address', 'created_at']
+    )
+}}
+
 SELECT 
     'arbitrum' AS blockchain
     , abi_id
@@ -13,6 +24,9 @@ SELECT
     , detection_source
     , created_at 
 FROM arbitrum.contracts
+{% if is_incremental() %}
+WHERE created_at >= now() - interval '7' day
+{% endif %}
 UNION ALL
 SELECT 
     'avalanche_c' AS blockchain
@@ -29,6 +43,9 @@ SELECT
     , detection_source
     , created_at
 FROM avalanche_c.contracts
+{% if is_incremental() %}
+WHERE created_at >= now() - interval '7' day
+{% endif %}
 UNION ALL
 SELECT 
     'base' AS blockchain
@@ -45,6 +62,9 @@ SELECT
     , detection_source
     , created_at 
 FROM base.contracts
+{% if is_incremental() %}
+WHERE created_at >= now() - interval '7' day
+{% endif %}
 UNION ALL
 SELECT
     'bnb' AS blockchain
@@ -61,6 +81,9 @@ SELECT
     , detection_source
     , created_at
 FROM bnb.contracts
+{% if is_incremental() %}
+WHERE created_at >= now() - interval '7' day
+{% endif %}
 UNION ALL
 SELECT
     'ethereum' AS blockchain
@@ -77,6 +100,9 @@ SELECT
     , detection_source
     , created_at 
 FROM ethereum.contracts
+{% if is_incremental() %}
+WHERE created_at >= now() - interval '7' day
+{% endif %}
 UNION ALL
 SELECT
     'fantom' AS blockchain
@@ -93,6 +119,9 @@ SELECT
     , detection_source
     , created_at 
 FROM fantom.contracts
+{% if is_incremental() %}
+WHERE created_at >= now() - interval '7' day
+{% endif %}
 UNION ALL
 SELECT 
     'gnosis' AS blockchain
@@ -109,6 +138,9 @@ SELECT
     , detection_source
     , created_at 
 FROM gnosis.contracts
+{% if is_incremental() %}
+WHERE created_at >= now() - interval '7' day
+{% endif %}
 UNION ALL
 SELECT
     'optimism' AS blockchain
@@ -125,6 +157,9 @@ SELECT
     , detection_source
     , created_at 
 FROM optimism.contracts
+{% if is_incremental() %}
+WHERE created_at >= now() - interval '7' day
+{% endif %}
 UNION ALL
 SELECT 
     'polygon' AS blockchain
