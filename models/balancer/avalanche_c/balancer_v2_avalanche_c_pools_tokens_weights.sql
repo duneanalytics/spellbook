@@ -34,7 +34,7 @@ weighted_pool_factory AS (
         t2.normalized_weight AS normalized_weight
     FROM {{ source('balancer_v2_avalanche_c', 'WeightedPoolFactory_call_create') }} AS call_create
     CROSS JOIN UNNEST(call_create.tokens) WITH ORDINALITY t(token_address, pos)
-    CROSS JOIN UNNEST(call_create.weights) WITH ORDINALITY t2(normalized_weight, pos)
+    CROSS JOIN UNNEST(call_create.normalizedWeights) WITH ORDINALITY t2(normalized_weight, pos)
     WHERE t.pos = t2.pos
     {% if is_incremental() %}
     AND call_create.call_block_time >= date_trunc('day', now() - interval '7' day)
