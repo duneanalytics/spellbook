@@ -2,7 +2,7 @@
     config(
 	tags=['legacy'],
 	
-        alias = alias('eth', legacy_model=True), 
+        alias = alias('xdai', legacy_model=True), 
         materialized ='incremental',
         file_format ='delta',
         incremental_strategy='merge',

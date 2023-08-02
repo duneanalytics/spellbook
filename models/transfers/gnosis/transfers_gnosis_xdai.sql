@@ -1,6 +1,6 @@
 {{
     config(
-        alias =alias('eth'),
+        alias =alias('xdai'),
         tags = ['dunesql'],
         materialized ='incremental',
         file_format ='delta',
