@@ -3,6 +3,10 @@
         schema = 'nft_polygon',
         alias =alias('transfers'),
         partition_by=['block_month'],
+        pre_hook = {
+            'sql': '{{ set_trino_session_property(is_partitioned(model), \'join_distribution_type\', \'PARTITIONED\') }}',
+            'transaction': True
+        },
         materialized='incremental',
         file_format = 'delta',
         unique_key = ['unique_transfer_id']
