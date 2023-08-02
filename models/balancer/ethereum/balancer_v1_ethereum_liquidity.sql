@@ -105,7 +105,7 @@ WITH prices AS (
             liquidity * normalized_weight AS usd_amount
         FROM pool_liquidity_estimates b
         LEFT JOIN {{ ref('balancer_v1_ethereum_pools_tokens_weights') }} w ON b.pool = w.pool_id
-        AND w.normalized_weight > 0
+        AND CAST (w.normalized_weight as DOUBLE) > CAST (0 as DOUBLE)
         LEFT JOIN {{ ref('tokens_ethereum_erc20') }} t ON t.contract_address = w.token_address
         --LEFT JOIN pool_labels p ON p.address = w.pool_id
     )
