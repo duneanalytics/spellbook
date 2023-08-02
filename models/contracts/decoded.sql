@@ -1,7 +1,7 @@
 {{  config(
         tags = ['dunesql'], 
         schema = 'contracts',
-        alias = alias('all'),
+        alias = alias('decoded'),
         file_format = 'delta',
         materialized = 'incremental',
         incremental_strategy = 'merge',
