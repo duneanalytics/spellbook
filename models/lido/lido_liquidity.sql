@@ -14,7 +14,17 @@
  
 ] %}
 
+{% set project_start_date =  '2021-01-05'%} 
 
+
+with  dates as (
+    with day_seq as (select (sequence(cast('{{ project_start_date }}' as date), cast(now() as date), interval '1' day)) as day)
+select days.day
+from day_seq
+cross join unnest(day) as days(day)
+  )
+
+, pools as (  
 SELECT *
 FROM (
     {% for k_model in lido_liquidity_models %}
@@ -39,4 +49,23 @@ FROM (
     {% endif %}
     {% endfor %}
 )
+)
+
+SELECT pool_name, 
+           pool, 
+           blockchain, 
+           project, 
+           fee, 
+           d.day as time, 
+           main_token, 
+           main_token_symbol,
+           paired_token, 
+           paired_token_symbol, 
+           main_token_reserve, 
+           paired_token_reserve,
+           main_token_usd_reserve, 
+           paired_token_usd_reserve, 
+           trading_volume
+from dates d
+LEFT JOIN pools AS l on d.day >= DATE_TRUNC('day', l.time) and  d.day <  DATE_TRUNC('day', l.next_time)
 ;

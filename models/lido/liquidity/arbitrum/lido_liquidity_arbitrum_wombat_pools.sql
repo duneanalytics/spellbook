@@ -17,22 +17,13 @@
 
 {% set project_start_date =  '2023-05-25'%} 
 
-{% if not is_incremental() %}
+
 with  dates as (
     with day_seq as (select (sequence(cast('{{ project_start_date }}' as date), cast(now() as date), interval '1' day)) as day)
 select days.day
 from day_seq
 cross join unnest(day) as days(day)
   )
-{% endif %}
-{% if is_incremental() %} 
-with  dates as (
-    with day_seq as (select (sequence(cast(now() as date)-interval '1' day, cast(now() as date), interval '1' day)) as day)
-select days.day
-from day_seq
-cross join unnest(day) as days(day)
-  )
-{% endif %}
 ,
 tokens_prices_daily AS (
     SELECT DISTINCT
@@ -203,19 +194,42 @@ group by 1,2,3
     GROUP BY 1,2
   )
   
+  
+  select 
+  pool_name, pool, blockchain, project, fee, time, 
+   main_token, main_token_symbol, 
+   paired_token,  paired_token_symbol,
+   sum(main_token_reserve) as main_token_reserve, sum(paired_token_reserve) as paired_token_reserve,
+   sum(main_token_usd_reserve) as main_token_usd_reserve, sum(paired_token_usd_reserve) as paired_token_usd_reserve,
+   0 as trading_volume
+   from (
+
   select 'arbitrum wombat wstETH one-sided' as pool_name, 0xe14302040c0a1eb6fb5a4a79efa46d60029358d9 as pool,
   'arbitrum' as blockchain, 'wombat' as project, 0.01 as fee, cast(l.time as date) as time, 
   0x5979d7b546e38e414f7e9822514be443a4800529 as main_token, 'wstETH' as main_token_symbol, 
   cast(null as varbinary) as paired_token, '' as paired_token_symbol,
   l.amount0/1e18 as main_token_reserve, 0 as paired_token_reserve,
   p0.price*l.amount0/1e18 as main_token_usd_reserve, 0 as paired_token_usd_reserve,
+  0 as trading_volume
+  FROM --dates d 
+      --LEFT JOIN 
+      pool_liquidity AS l --on d.day >= DATE_TRUNC('day', l.time) and  d.day <  DATE_TRUNC('day', l.next_time)
+      LEFT JOIN tokens_prices_daily AS p0 ON DATE_TRUNC('day', l.time) = p0.time
+  --    LEFT JOIN trading_volume AS tv ON DATE_TRUNC('day', l.time) = tv.time
+  
+  union all
+
+  select 'arbitrum wombat wstETH one-sided' as pool_name, 0xe14302040c0a1eb6fb5a4a79efa46d60029358d9 as pool,
+  'arbitrum' as blockchain, 'wombat' as project, 0.01 as fee, cast(tv.time as date) as time, 
+  0x5979d7b546e38e414f7e9822514be443a4800529 as main_token, 'wstETH' as main_token_symbol, 
+  cast(null as varbinary) as paired_token, '' as paired_token_symbol,
+  0 as main_token_reserve, 0 as paired_token_reserve,
+  0 as main_token_usd_reserve, 0 as paired_token_usd_reserve,
   coalesce(tv.volume,0)/2 as trading_volume
-  FROM dates d 
-      LEFT JOIN pool_liquidity AS l on d.day >= DATE_TRUNC('day', l.time) and  d.day <  DATE_TRUNC('day', l.next_time)
-      LEFT JOIN tokens_prices_daily AS p0 ON d.day = p0.time
-      LEFT JOIN trading_volume AS tv ON d.day = tv.time
-
-
+  FROM trading_volume AS tv 
+  
+)
+group by 1,2,3,4,5,6,7,8,9,10,15
 
  
  
