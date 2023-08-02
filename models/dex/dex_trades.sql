@@ -15,7 +15,7 @@
  
 {% set dex_trade_models = [
  ref('uniswap_trades')
-,ref('sushiswap_trades_legacy')
+,ref('sushiswap_trades')
 ,ref('kyberswap_trades')
 ,ref('fraxswap_trades')
 ,ref('curvefi_trades')
