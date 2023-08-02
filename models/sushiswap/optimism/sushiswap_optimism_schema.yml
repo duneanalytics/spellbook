@@ -20,11 +20,11 @@ models:
             - version
             - tx_hash
             - evt_index
-      - check_dex_seed_legacy:
+      - check_dex_seed:
           blockchain: optimism
           project: sushiswap
           version: trident-cpp
-      - check_dex_seed_legacy:
+      - check_dex_seed:
           blockchain: optimism
           project: sushiswap
           version: trident-sp
