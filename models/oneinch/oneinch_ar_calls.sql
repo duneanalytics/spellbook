@@ -41,13 +41,13 @@
 %}
 
 
-select {{ columns | join(', ') }} from (
-    {% for blockchain in blockchains %}
-        select * from {{ ref('oneinch_' + blockchain + '_ar_calls_transfers') }}
-        {% if not loop.last %}
-            union all
-        {% endif %}
-    {% endfor %}
-)
-group by {{ columns | join(', ') }}
+
+{% for blockchain in blockchains %}
+    select {{ columns | join(', ') }} from {{ ref('oneinch_' + blockchain + '_ar_calls_transfers') }}
+    group by {{ columns | join(', ') }}
+    {% if not loop.last %}
+        union all
+    {% endif %}
+{% endfor %}
+
 
