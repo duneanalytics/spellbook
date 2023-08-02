@@ -1,5 +1,5 @@
 {{ config(
-        alias ='current_bids',
+        alias = alias('current_bids'),
         unique_key='punk_id',
         post_hook='{{ expose_spells_hide_trino(\'["ethereum"]\',
                                     "project",
@@ -50,7 +50,7 @@ with combined_events_table as (
                 , block_number
                 , sub_tx_trade_id as evt_index
                 , tx_hash
-        from  {{ ref('nft_ethereum_trades_beta_legacy') }}
+        from  {{ ref('nft_ethereum_trades_beta') }}
         WHERE project = 'cryptopunks'
     ) a
 )

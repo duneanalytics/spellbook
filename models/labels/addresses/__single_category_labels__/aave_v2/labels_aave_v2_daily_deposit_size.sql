@@ -1,4 +1,4 @@
-{{config(alias='aave_v2_deposit_size')}}
+{{config(alias = alias('aave_v2_deposit_size'))}}
 
 with latest_net_deposits AS ( 
         with annual_flows AS (  

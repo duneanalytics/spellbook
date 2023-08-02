@@ -1,7 +1,7 @@
 {{ config(
-        schema = 'prices_fantom',
+        schema='prices_fantom',
         alias = alias('tokens'),
-        materialized = 'table',
+        materialized='table',
         file_format = 'delta',
         tags = ['static', 'dunesql']
         )

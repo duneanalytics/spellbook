@@ -1,7 +1,7 @@
 {{ config(
-        schema = 'prices_ethereum',
+        schema='prices_ethereum',
         alias = alias('tokens'),
-        materialized = 'table',
+        materialized='table',
         file_format = 'delta',
         tags = ['static', 'dunesql']
         )

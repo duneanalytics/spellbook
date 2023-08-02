@@ -1,7 +1,7 @@
 {{ config(
-        schema = 'prices_avalanche_c',
+        schema='prices_avalanche_c',
         alias = alias('tokens'),
-        materialized = 'table',
+        materialized='table',
         file_format = 'delta',
         tags = ['static', 'dunesql']
         )

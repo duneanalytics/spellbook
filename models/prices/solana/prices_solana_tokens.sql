@@ -1,7 +1,7 @@
 {{ config(
-        schema = 'prices_solana',
+        schema='prices_solana',
         alias = alias('tokens'),
-        materialized = 'table',
+        materialized='table',
         file_format = 'delta',
         tags = ['static', 'dunesql']
         )

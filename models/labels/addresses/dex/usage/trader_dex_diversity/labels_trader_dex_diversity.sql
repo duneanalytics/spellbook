@@ -1,6 +1,6 @@
 {{
     config(
-        alias='trader_dex_diversity',
+        alias = alias('trader_dex_diversity'),
         post_hook='{{ expose_spells(\'
         ["ethereum", "fantom", "arbitrum", "avalanche_c", "gnosis", "bnb", "optimism", "polygon"]\', 
         "sector", 

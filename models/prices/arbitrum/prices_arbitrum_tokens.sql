@@ -1,7 +1,7 @@
 {{ config(
-        schema = 'prices_arbitrum',
+        schema='prices_arbitrum',
         alias = alias('tokens'),
-        materialized = 'table',
+        materialized='table',
         file_format = 'delta',
         tags = ['static', 'dunesql']
         )

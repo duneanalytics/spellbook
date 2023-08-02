@@ -1,4 +1,4 @@
-{{config(alias='balancer_v2_gauges_ethereum',
+{{config(alias = alias('balancer_v2_gauges_ethereum'),
         post_hook='{{ expose_spells(\'["ethereum"]\',
                                     "sector",
                                     "labels",

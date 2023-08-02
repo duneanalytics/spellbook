@@ -1,5 +1,6 @@
 {{ config(
-        alias ='deposits',
+        alias = alias('deposits'),
+        tags = ['dunesql'],
         materialized='incremental',
         partition_by=['block_date'],
         file_format = 'delta',

@@ -1,7 +1,7 @@
 {{ config(
-        schema = 'prices_polygon',
+        schema='prices_polygon',
         alias = alias('tokens'),
-        materialized = 'table',
+        materialized='table',
         file_format = 'delta',
         tags = ['static', 'dunesql']
         )

@@ -3,7 +3,7 @@
         alias = alias('tokens_bridged', legacy_model=True),
         materialized='table',
         file_format = 'delta',
-        tags=['static']
+        tags=['legacy', 'static']
         )
 }}
 SELECT

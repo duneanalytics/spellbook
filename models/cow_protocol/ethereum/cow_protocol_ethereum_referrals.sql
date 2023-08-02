@@ -1,4 +1,6 @@
-{{ config(alias='referrals',
+{{ config(
+        alias=alias('referrals'),
+        tags=['dunesql'],
         post_hook='{{ expose_spells(\'["ethereum"]\',
                                     "project",
                                     "cow_protocol",

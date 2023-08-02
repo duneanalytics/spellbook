@@ -1,7 +1,7 @@
 {{ config(
-        schema = 'prices_optimism',
+        schema='prices_optimism',
         alias = alias('tokens'),
-        materialized = 'table',
+        materialized='table',
         file_format = 'delta',
         tags = ['static', 'dunesql']
         )
