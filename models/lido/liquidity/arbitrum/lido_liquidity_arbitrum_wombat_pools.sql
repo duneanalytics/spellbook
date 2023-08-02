@@ -201,7 +201,7 @@ group by 1,2,3
    paired_token,  paired_token_symbol,
    sum(main_token_reserve) as main_token_reserve, sum(paired_token_reserve) as paired_token_reserve,
    sum(main_token_usd_reserve) as main_token_usd_reserve, sum(paired_token_usd_reserve) as paired_token_usd_reserve,
-   0 as trading_volume
+   sum(trading_volume) as trading_volume
    from (
 
   select 'arbitrum wombat wstETH one-sided' as pool_name, 0xe14302040c0a1eb6fb5a4a79efa46d60029358d9 as pool,
@@ -229,7 +229,7 @@ group by 1,2,3
   FROM trading_volume AS tv 
   
 )
-group by 1,2,3,4,5,6,7,8,9,10,15
+group by 1,2,3,4,5,6,7,8,9,10
 
  
  

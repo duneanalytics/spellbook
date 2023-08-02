@@ -10,7 +10,8 @@
 
 {% set lido_liquidity_models = [
  
- ref('lido_liquidity_arbitrum_wombat_pools')
+ ref('lido_liquidity_arbitrum_wombat_pools'),
+ ref('lido_liquidity_arbitrum_kyberswap_pools')
  
 ] %}
 
@@ -52,6 +53,13 @@ FROM (
 )
 )
 
+, pools_per_dates as (
+  select day, pool
+  from dates
+  join (select distinct pool from pools) on 1=1
+)
+
+
 SELECT pool_name, 
            pool, 
            blockchain, 
@@ -67,7 +75,7 @@ SELECT pool_name,
            main_token_usd_reserve, 
            paired_token_usd_reserve, 
            trading_volume
-FROM dates d
-LEFT JOIN pools AS l on d.day >= DATE_TRUNC('day', l.time) and  d.day <  DATE_TRUNC('day', l.next_time)
-WHERE pool is not null
+FROM pools_per_dates d
+LEFT JOIN pools AS l on d.day >= DATE_TRUNC('day', l.time) and  d.day <  DATE_TRUNC('day', l.next_time) and d.pool = l.pool
+WHERE l.pool is not null
 ;
