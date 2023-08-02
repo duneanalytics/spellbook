@@ -48,25 +48,6 @@ FROM {{ source('avalanche_c', 'contracts') }}
 WHERE created_at >= now() - interval '7' day
 {% endif %}
 UNION ALL
--- SELECT 
---     'base' AS blockchain
---     , abi_id
---     , abi
---     , address
---     , "from" 
---     , code
---     , name
---     , namespace
---     , dynamic
---     , base
---     , factory
---     , detection_source
---     , created_at 
--- FROM {{ source('base', 'contracts') }}
--- {% if is_incremental() %}
--- WHERE created_at >= now() - interval '7' day
--- {% endif %}
--- UNION ALL
 SELECT
     'bnb' AS blockchain
     , abi_id
