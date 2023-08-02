@@ -136,7 +136,6 @@ models:
 
   - name: chainlink_polygon_ccip_onramps
     meta:
-      alias: chainlink_polygon_ccip_onramps_POLYGON
       blockchain: polygon
       sector: CCIP
       project: chainlink
@@ -173,7 +172,7 @@ models:
 
   - name: chainlink_polygon_ccip_offramps
     meta:
-      alias: chainlink_optimism_ccip_offramps_POLYGON
+      # alias: chainlink_optimism_ccip_offramps_POLYGON
       blockchain: polygon
       sector: CCIP
       project: chainlink

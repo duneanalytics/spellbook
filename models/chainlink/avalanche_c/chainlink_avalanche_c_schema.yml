@@ -3,7 +3,6 @@ version: 2
 models:
   - name: chainlink_avalanche_c_ccip_onramps
     meta:
-      alias: chainlink_avalanche_c_ccip_onramps_avax
       blockchain: avalanche_c
       sector: CCIP
       project: chainlink
@@ -40,7 +39,7 @@ models:
 
   - name: chainlink_avalanche_c_ccip_offramps
     meta:
-      alias: chainlink_avalanche_c_ccip_offramps_avax
+      # alias: chainlink_avalanche_c_ccip_offramps_avax
       blockchain: avalanche_c
       sector: CCIP
       project: chainlink

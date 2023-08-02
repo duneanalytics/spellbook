@@ -135,7 +135,6 @@ models:
 
   - name: chainlink_optimism_ccip_onramps
     meta:
-      alias: chainlink_optimism_ccip_onramps_OP
       blockchain: optimism
       sector: CCIP
       project: chainlink
@@ -172,7 +171,7 @@ models:
 
   - name: chainlink_optimism_ccip_offramps
     meta:
-      alias: chainlink_optimism_ccip_offramps_OP
+      # alias: chainlink_optimism_ccip_offramps_OP
       blockchain: optimism
       sector: CCIP
       project: chainlink
