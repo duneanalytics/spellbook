@@ -1586,7 +1586,6 @@ FROM
     ('dpay-devour', 'ethereum', 'DPAY', '0xE5A733681bbE6cd8c764Bb8078ef8E13a576Dd78', 18),
     ('ecox-ecox', 'ethereum', 'ECOX', '0xcccD1Ba9f7acD6117834E0D28F25645dECb1736a', 18),
     ('erc20-erc20', 'ethereum', 'ERC20', '0xc3761EB917CD790B30dAD99f6Cc5b4Ff93C4F9eA', 18),
-    ('fis-stafi', 'ethereum', 'FIS', '0xef3A930e1FfFFAcd2fc13434aC81bD278B0ecC8d', 18),
     ('fnx-finnexus', 'ethereum', 'FNX', '0xeF9Cd7882c067686691B6fF49e650b43AFBBCC6B', 18),
     ('hokk-hokkaido', 'ethereum', 'HOKK', '0x83b6d125EdF13e52fFDBea69956BE901B252c2a6', 18),
     ('kai-kardiachain', 'ethereum', 'KAI', '0xD9Ec3ff1f8be459Bb9369b4E79e9Ebcf7141C093', 18),
@@ -1614,9 +1613,10 @@ FROM
     ('woxen-wrapped-oxen', 'ethereum', 'WOXEN', '0xd1e2d5085b39B80C9948AeB1b9aA83AF6756bcc5', 9),
     ('xrio-realio-network-utility-token-exchangable', 'ethereum', 'XRIO', '0x0B4AC2BA3D4924C9A06D9C1d08D7867059A39cC1', 18),
     ('weth-weth', 'ethereum', 'bpETH', '0x0000000000a39bb272e79075ade125fd351887ac', 18),
-    ('pepe-pepe1', 'ethereum', 'PEPE', '0x6982508145454Ce325dDbE47a25d4ec3d2311933', 18),   
+    ('pepe-pepe1', 'ethereum', 'PEPE', '0x6982508145454Ce325dDbE47a25d4ec3d2311933', 18),
     ('grain-granary','ethereum','GRAIN','0xf88baf18fab7e330fa0c4f83949e23f52fececce', 18),
     ('verse-verse-token', 'ethereum', 'VERSE', '0x249ca82617ec3dfb2589c4c17ab7ec9765350a18', 18),
+    ('fis-stafi', 'ethereum', 'FIS', '0xef3A930e1FfFFAcd2fc13434aC81bD278B0ecC8d', 18),
     ('mc-merit-circle', 'ethereum', 'MC', '0x949d48eca67b17269629c7194f4b727d4ef9e5d6', 18),
     ('r-r-stablecoin', 'ethereum', 'R', '0x183015a9ba6ff60230fdeadc3f43b3d788b13e21', 18)
     ) as temp (token_id, blockchain, symbol, contract_address, decimals)
