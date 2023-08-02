@@ -23,6 +23,9 @@ models:
       - &block_date
         name: block_date
         description: "UTC event block date"
+      - &block_month
+        name: block_month
+        description: "UTC event block month"
       - &evt_type
         name: evt_type
         description:  "Event type (Borrow, Repay, Liquidation)"
@@ -197,3 +200,4 @@ models:
         description:  "Address that received the transaction"
       - *evt_index
       - *lien_id
+      - *block_month

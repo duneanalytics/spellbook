@@ -1,7 +1,7 @@
 {{ config(
     tags=['dunesql'],
     alias = alias('events'),
-    partition_by = ['block_date'],
+    partition_by = ['block_month'],
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
@@ -295,7 +295,8 @@ SELECT
     'ethereum' as blockchain, 
     'astaria' as project,
     1 as version, 
-    TRY_CAST(date_trunc('DAY', ae.evt_block_time) AS date) as block_date,
+    CAST(date_trunc('DAY', ae.evt_block_time) AS date) as block_date,
+    CAST(date_trunc('MONTH', ae.evt_block_time) AS date) as block_month,
     ae.*, 
     d.nft_symbol, 
     d.nft_token_standard,
@@ -307,4 +308,4 @@ all_events ae
 INNER JOIN 
 {{ ref('astaria_ethereum_daily_deposits') }} d
     ON ae.lien_collateral_id = CAST(d.collateral_id as VARCHAR)
-    AND TRY_CAST(date_trunc('DAY', ae.evt_block_time) AS date) = d.day
+    AND CAST(date_trunc('DAY', ae.evt_block_time) AS date) = d.day

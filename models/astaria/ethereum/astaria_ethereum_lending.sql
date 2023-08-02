@@ -1,7 +1,7 @@
 {{ config(
     tags=['dunesql'],
     alias = alias('lending'),
-    partition_by = ['block_date'],
+    partition_by = ['block_month'],
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
@@ -20,6 +20,7 @@ SELECT
     ae.project, 
     ae.version, 
     ae.block_date, 
+    CAST(date_trunc('month', ae.block_date) as date) as block_month, 
     ae.evt_block_time as block_time, 
     ae.evt_block_number as block_number, 
     ae.nft_token_id as token_id, 
