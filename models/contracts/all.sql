@@ -8,7 +8,8 @@
         unique_key = ['blockchain', 'abi_id', 'address', 'created_at']
     )
 }}
-
+        
+        
 SELECT 
     'arbitrum' AS blockchain
     , abi_id
@@ -23,7 +24,7 @@ SELECT
     , factory
     , detection_source
     , created_at 
-FROM arbitrum.contracts
+FROM {{ source('arbitrum', 'contracts') }}
 {% if is_incremental() %}
 WHERE created_at >= now() - interval '7' day
 {% endif %}
@@ -42,7 +43,7 @@ SELECT
     , factory
     , detection_source
     , created_at
-FROM avalanche_c.contracts
+FROM {{ source('avalanche_c', 'contracts') }}
 {% if is_incremental() %}
 WHERE created_at >= now() - interval '7' day
 {% endif %}
@@ -61,7 +62,7 @@ SELECT
     , factory
     , detection_source
     , created_at 
-FROM base.contracts
+FROM {{ source('base', 'contracts') }}
 {% if is_incremental() %}
 WHERE created_at >= now() - interval '7' day
 {% endif %}
@@ -80,7 +81,7 @@ SELECT
     , factory
     , detection_source
     , created_at
-FROM bnb.contracts
+FROM {{ source('bnb', 'contracts') }}
 {% if is_incremental() %}
 WHERE created_at >= now() - interval '7' day
 {% endif %}
@@ -99,7 +100,7 @@ SELECT
     , factory
     , detection_source
     , created_at 
-FROM ethereum.contracts
+FROM {{ source('ethereum', 'contracts') }}
 {% if is_incremental() %}
 WHERE created_at >= now() - interval '7' day
 {% endif %}
@@ -118,7 +119,7 @@ SELECT
     , factory
     , detection_source
     , created_at 
-FROM fantom.contracts
+FROM {{ source('fantom', 'contracts') }}
 {% if is_incremental() %}
 WHERE created_at >= now() - interval '7' day
 {% endif %}
@@ -137,7 +138,7 @@ SELECT
     , factory
     , detection_source
     , created_at 
-FROM gnosis.contracts
+FROM {{ source('gnosis', 'contracts') }}
 {% if is_incremental() %}
 WHERE created_at >= now() - interval '7' day
 {% endif %}
@@ -156,7 +157,7 @@ SELECT
     , factory
     , detection_source
     , created_at 
-FROM optimism.contracts
+FROM {{ source('optimism', 'contracts') }}
 {% if is_incremental() %}
 WHERE created_at >= now() - interval '7' day
 {% endif %}
@@ -175,7 +176,7 @@ SELECT
     , factory
     , detection_source
     , created_at 
-FROM polygon.contracts
+FROM {{ source('polygon', 'contracts') }}
 {% if is_incremental() %}
 WHERE created_at >= now() - interval '7' day
 {% endif %}
