@@ -1586,7 +1586,7 @@ FROM
     ('dpay-devour', 'ethereum', 'DPAY', '0xE5A733681bbE6cd8c764Bb8078ef8E13a576Dd78', 18),
     ('ecox-ecox', 'ethereum', 'ECOX', '0xcccD1Ba9f7acD6117834E0D28F25645dECb1736a', 18),
     ('erc20-erc20', 'ethereum', 'ERC20', '0xc3761EB917CD790B30dAD99f6Cc5b4Ff93C4F9eA', 18),
-    ('fis-stafi', 'ethereum', 'FIS', '0xef3a930e1ffffacd2fc13434ac81bd278b0ecc8d', 18),
+    ('fis-stafi', 'ethereum', 'FIS', '0xef3A930e1FfFFAcd2fc13434aC81bD278B0ecC8d', 18),
     ('fnx-finnexus', 'ethereum', 'FNX', '0xeF9Cd7882c067686691B6fF49e650b43AFBBCC6B', 18),
     ('hokk-hokkaido', 'ethereum', 'HOKK', '0x83b6d125EdF13e52fFDBea69956BE901B252c2a6', 18),
     ('kai-kardiachain', 'ethereum', 'KAI', '0xD9Ec3ff1f8be459Bb9369b4E79e9Ebcf7141C093', 18),
