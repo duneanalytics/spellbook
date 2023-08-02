@@ -106,10 +106,10 @@ models:
         name: project_contract_address
         description: "trading contract address"
 
-  - name: tigris_v1_arbitrum_events_add_margin
+  - name: tigris_arbitrum_events_add_margin
     meta:
       blockchain: arbitrum
-      project: tigris_v1
+      project: tigris
       contributors: Henrystats 
     config:
       tags: [ 'tigris', 'perps', 'margin' ]
@@ -123,6 +123,7 @@ models:
             - position_id 
             - trader
             - margin
+            - protocol_version
     columns:
       - *day
       - *evt_block_time
@@ -137,36 +138,12 @@ models:
       - *trader
       - *version
       - *project_contract_address
-
-  - name: tigris_v1_arbitrum_events_add_margin_tmp_test
-    meta:
-      blockchain: arbitrum
-      project: tigris_v1
-      contributors: Henrystats 
-    config:
-      tags: [ 'tigris', 'perps', 'margin' ]
-    description: >
-      add margin events for tigris events on v1, this is a test
-    tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - evt_block_time
-            - evt_tx_hash
-            - position_id 
-            - trader
-            - margin
-    columns:
-      - *day
-      - *evt_block_time
-      - *evt_index
-      - *evt_tx_hash
-      - *position_id
-      - *price
-      - *margin_change
-      - *margin
-      - *trader
-      - *version
-      - *project_contract_address
+      - &block_month
+        name: block_month
+        description: "date_trunc of block month of trade"
+      - &protocol_version
+        name: protocol_version
+        description: "protocol version"
 
   - name: tigris_v1_arbitrum_events_modify_margin
     meta:
@@ -325,36 +302,6 @@ models:
       - *pair
       - *direction
       - *referral
-      - *trader
-      - *version
-      - *project_contract_address
-
-  - name: tigris_v2_arbitrum_events_add_margin
-    meta:
-      blockchain: arbitrum
-      project: tigris_v2
-      contributors: Henrystats 
-    config:
-      tags: [ 'tigris', 'perps', 'margin' ]
-    description: >
-      add margin events for tigris events on v2
-    tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - evt_block_time
-            - evt_tx_hash
-            - position_id 
-            - trader
-            - margin
-    columns:
-      - *day
-      - *evt_block_time
-      - *evt_index
-      - *evt_tx_hash
-      - *position_id
-      - *price
-      - *margin_change
-      - *margin
       - *trader
       - *version
       - *project_contract_address

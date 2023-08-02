@@ -172,10 +172,11 @@ add_margin as (
                 am.trader,
                 am.project_contract_address
             FROM 
-                {{ ref('tigris_v1_arbitrum_events_add_margin') }} am 
+                {{ ref('tigris_arbitrum_events_add_margin') }} am 
             INNER JOIN 
                 {{ ref('tigris_v1_arbitrum_positions_leverage') }} l 
                 ON am.position_id = l.position_id 
+                AND am.protocol_version = '1'
                 AND am.evt_block_time > l.evt_block_time
                 {% if is_incremental() %}
                 AND l.evt_block_time >= date_trunc('day', now() - interval '7' day)

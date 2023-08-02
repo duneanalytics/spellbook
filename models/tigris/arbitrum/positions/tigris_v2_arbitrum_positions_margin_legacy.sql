@@ -15,7 +15,8 @@ margin as (
         margin,
         project_contract_address
     FROM 
-    {{ ref('tigris_v2_arbitrum_events_add_margin_legacy') }}
+    {{ ref('tigris_arbitrum_events_add_margin_legacy') }}
+    WHERE protocol_version = '2'
 
     UNION ALL
 
