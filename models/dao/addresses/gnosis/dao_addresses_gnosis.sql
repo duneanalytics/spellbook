@@ -1,20 +1,29 @@
-{{config(alias = alias('addresses_gnosis'))}}
+{{config(
+        tags = ['dunesql'],
+        alias = alias('addresses_gnosis'))}}
 
-WITH 
 
-mapping as (
-        SELECT blockchain, dao_creator_tool, dao, dao_wallet_address, created_block_time, created_date
-        FROM {{ ref('aragon_gnosis_dao_addresses') }}
+{% set addresses_models = [
+ref('aragon_gnosis_dao_addresses')
+,ref('daohaus_gnosis_dao_addresses')
+,ref('colony_gnosis_dao_addresses')
+] %}
 
-        UNION ALL 
 
-        SELECT blockchain, dao_creator_tool, dao, dao_wallet_address, created_block_time, created_date
-        FROM {{ ref('dao_addresses_gnosis_daohaus') }}
+SELECT *
 
-        UNION ALL 
-
-        SELECT blockchain, dao_creator_tool, dao, dao_wallet_address, created_block_time, created_date
-        FROM {{ ref('dao_addresses_gnosis_colony') }}
+FROM (
+    {% for dao_model in addresses_models %}
+    SELECT
+        blockchain,
+        dao_creator_tool, 
+        dao, 
+        dao_wallet_address,
+        created_block_time,
+        created_date
+    FROM {{ dao_model }}
+    {% if not loop.last %}
+    UNION ALL
+    {% endif %}
+    {% endfor %}
 )
-
-SELECT * FROM mapping
