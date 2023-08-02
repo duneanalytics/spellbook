@@ -43,7 +43,7 @@
 ] %}
 
 
-{% set evm_chains = all_evm_mainnets_testnets_chains() %} --macro: all_evm_mainnets_testnets_chains.sql
+{% set evm_chains = all_evm_mainnets_testnets_chains() %} --macro: all_evm_chains.sql
 
 WITH base_level as (
 
