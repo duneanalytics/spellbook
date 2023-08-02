@@ -5,7 +5,7 @@
     ,materialized = 'incremental'
     ,file_format = 'delta'
     ,incremental_strategy = 'merge'
-    ,unique_key = ['block_date', 'blockchain', 'project', 'version', 'tx_hash', 'evt_index', 'trace_address']
+    ,unique_key = ['block_date', 'blockchain', 'project', 'version', 'tx_hash', 'evt_index']
     )
 }}
 
@@ -22,7 +22,6 @@ WITH sushiswap_dex AS (
             case when amount0In = UINT256 '0' then token1 else token0 end as token_sold_address,
             t.contract_address                                           AS project_contract_address,
             t.evt_tx_hash                                                AS tx_hash,
-            CAST(NULL as array<bigint>)                                  AS trace_address,
             t.evt_index
     FROM {{ source('sushiswap_gnosis', 'UniswapV2Pair_evt_Swap') }} t
     INNER JOIN {{ source('sushiswap_gnosis', 'UniswapV2Factory_evt_PairCreated') }} f
@@ -63,7 +62,6 @@ SELECT
     sushiswap_dex.tx_hash,
     tx."from"                                                            AS tx_from,
     tx.to                                                              AS tx_to,
-    sushiswap_dex.trace_address,
     sushiswap_dex.evt_index
 FROM sushiswap_dex
 INNER JOIN {{ source('gnosis', 'transactions') }} tx

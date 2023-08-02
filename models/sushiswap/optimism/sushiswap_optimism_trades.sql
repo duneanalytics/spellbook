@@ -5,7 +5,7 @@
     ,materialized = 'incremental'
     ,file_format = 'delta'
     ,incremental_strategy = 'merge'
-    ,unique_key = ['block_date', 'blockchain', 'project', 'version', 'tx_hash', 'evt_index', 'trace_address']
+    ,unique_key = ['block_date', 'blockchain', 'project', 'version', 'tx_hash', 'evt_index']
     )
 }}
 
@@ -25,7 +25,6 @@ with dexs as (
         tokenIn as token_sold_address,
         t.contract_address as project_contract_address,
         t.evt_tx_hash as tx_hash,
-        CAST(NULL as array<bigint>) AS trace_address,
         t.evt_index
     FROM
         {{ source('sushi_optimism', 'ConstantProductPool_evt_Swap') }} t
@@ -49,7 +48,6 @@ with dexs as (
         tokenIn as token_sold_address,
         t.contract_address as project_contract_address,
         t.evt_tx_hash as tx_hash,
-        CAST(NULL as array<bigint>) AS trace_address,
         t.evt_index
     FROM
         {{ source('sushi_optimism', 'StablePool_evt_Swap') }} t
@@ -88,7 +86,6 @@ select
     dexs.tx_hash,
     tx."from" AS tx_from,
     tx.to AS tx_to,
-    dexs.trace_address,
     dexs.evt_index
 from dexs
 inner join {{ source('optimism', 'transactions') }} tx
