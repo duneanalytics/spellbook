@@ -9,7 +9,7 @@
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
-    unique_key = ['block_month', 'tx_hash', 'id'],
+    unique_key = ['block_month', 'evt_type', 'loan_id', 'id'],
     post_hook='{{ expose_spells(\'["solana"]\',
                                     "project",
                                     "sharky",
