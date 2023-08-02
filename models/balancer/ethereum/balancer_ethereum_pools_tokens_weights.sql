@@ -3,7 +3,7 @@
         tags = ['dunesql']
         )
 }}
-
+ 
 SELECT *
 FROM
 (
