@@ -39,7 +39,7 @@ WITH
             FROM {{ chain_source }}
 
             {% if is_incremental() %}
-            WHERE created_at >= cast(date_trunc("day", now() - interval '2 days') as timestamp)
+            WHERE cast(created_at as timestamp) >= cast(date_trunc("day", now() - interval '2 days') as timestamp)
             {% endif %}
 
             {% if not loop.last %}
@@ -58,7 +58,7 @@ WITH
             , abi
             , type
             , created_at
-            , date_trunc('month',created_at) as created_at_month
+            , date(date_trunc('month', created_at)) as created_at_month
             , unique_signature_id
             , row_number() over (partition by unique_signature_id order by created_at desc) recency
         FROM signatures
