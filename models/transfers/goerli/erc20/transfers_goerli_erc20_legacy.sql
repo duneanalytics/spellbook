@@ -1,6 +1,5 @@
 {{ config(
 	tags=['legacy'],
-    schema = 'base_transfers',
     alias = alias('erc20', legacy_model=True),
     ) }}
 

@@ -1,7 +1,6 @@
 {{ 
     config(
 	tags=['legacy'],
-	
         alias = alias('celo', legacy_model=True), 
         materialized ='incremental',
         file_format ='delta',
