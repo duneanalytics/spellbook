@@ -17,7 +17,7 @@
     )
 }}
 
-{%- set project_start_date = '2023-07-01' %} --if testing via GH action CI tests, look to shorten this date for performance gains
+{%- set project_start_date = '2022-04-14' %} --if testing via GH action CI tests, look to shorten this date for performance gains
 {%- set sharky_smart_contract = 'SHARKobtfF1bHhxD2eqftjHBdVSCbKo9JtgK71FhELP' %}
 
 WITH sharky_txs AS (
