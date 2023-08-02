@@ -14,7 +14,6 @@ models:
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
-            - block_date
             - blockchain
             - project
             - version
@@ -38,9 +37,9 @@ models:
       - &version
         name: version
         description: "Version of the contract built and deployed by the DEX project"
-      - &block_date
-        name: block_date
-        description: "UTC event block date of each DEX trade"
+      - &block_month
+        name: block_month
+        description: "UTC event block month of each DEX trade"
       - &block_time
         name: block_time
         description: "UTC event block time of each DEX trade"
@@ -170,7 +169,8 @@ models:
             - pid
             - evt_block_number
     columns:
-      - *block_date
+      - name: block_date
+        description: "UTC event block date of each DEX trade"
       - *blockchain
       - &evt_block_time
         name: evt_block_time
