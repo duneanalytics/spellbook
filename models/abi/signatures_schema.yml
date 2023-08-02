@@ -33,4 +33,4 @@ models:
         description:  unique signature id
         tests:
           - unique
-          - not_null 
+          - not_null

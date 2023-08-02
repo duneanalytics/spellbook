@@ -6,6 +6,7 @@
         file_format = 'delta',
         incremental_strategy = 'merge',
         unique_key = ['created_at', 'unique_signature_id'],
+        tags = ['dunesql'],
         post_hook='{{ expose_spells(\'["ethereum","bnb","avalanche_c","optimism","arbitrum","gnosis","polygon","fantom"]\',
                         "sector",
                         "abi",
@@ -34,7 +35,7 @@ WITH
                 id,
                 signature,
                 type,
-                concat(id, signature, type) as unique_signature_id
+                concat(cast(id as varchar), signature, type) as unique_signature_id
             FROM {{ chain_source }}
 
             {% if is_incremental() %}
