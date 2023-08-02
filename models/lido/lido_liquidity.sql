@@ -34,6 +34,7 @@ FROM (
            project, 
            cast(fee as double) as fee, 
            time, 
+           LEAD(time, 1, now() + INTERVAL '1' day) OVER (PARTITION BY pool ORDER BY time NULLS FIRST ) AS next_time,
            main_token, 
            main_token_symbol,
            paired_token, 
