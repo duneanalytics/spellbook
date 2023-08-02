@@ -1,7 +1,7 @@
 version: 2
 
 models:
-  - name: contracts
+  - name: all
     meta:
       blockchain: arbitrum, avalanche_c, base, bnb, ethereum, fantom, gnosis, optimism, polygon
       sector: contracts
@@ -9,7 +9,7 @@ models:
     config:
       tags: ['contracts', 'arbitrum', 'avalanche_c', 'base', 'bnb', 'ethereum', 'fantom', 'gnosis', 'optimism', 'polygon']
     description: >
-        Crosschain EVM contracts
+        All crosschain EVM contracts
     columns:
       - name: blockchain
         description: ""
