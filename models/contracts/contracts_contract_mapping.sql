@@ -213,7 +213,8 @@ WHERE contract_order = 1
 
 ,tokens as (
   {% for chain in evm_chains %}
-  --LIKELY MAKE A NEW ERC20 Tokens spell because existing tables were not sufficient
+  -- TO BE REPLACED WITH AN 'All Tokens Table' 
+
   -- select 
   --   '{{chain}}' as blockchain
   --   ,t.contract_address
@@ -221,12 +222,13 @@ WHERE contract_order = 1
   --   ,'erc20' as token_standard
   -- from {{ ref('tokens_erc20_all') }} as t
   -- group by 1, 2, 3, 4
-      {% for chain in evm_chains %}
         SELECT '{{chain}}' AS blockchain, contract_address, NULL AS symbol, 'erc20' as standard
 
         from {{ source('erc20_' + chain , 'evt_transfer') }} tr 
 
         WHERE 1=1
+
+        GROUP BY 1,2,3,4 --uniques
 
   UNION ALL
   {% endfor %}
