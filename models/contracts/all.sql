@@ -176,3 +176,6 @@ SELECT
     , detection_source
     , created_at 
 FROM polygon.contracts
+{% if is_incremental() %}
+WHERE created_at >= now() - interval '7' day
+{% endif %}
