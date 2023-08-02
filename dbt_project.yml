@@ -608,6 +608,12 @@ models:
         +schema: transfers_fantom
       base:
         +schema: transfers_base
+      goerli:
+        +schema: transfers_goerli
+      gnosis:
+        +schema: transfers_gnosis
+      celo:
+        +schema: transfers_celo
 
     sudoswap:
       +schema: sudoswap
