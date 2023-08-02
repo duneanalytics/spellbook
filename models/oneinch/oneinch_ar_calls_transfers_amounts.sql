@@ -27,7 +27,7 @@
 {% for blockchain in blockchains %}
     select * from {{ ref('oneinch_' + blockchain + '_ar_calls_transfers') }}
     where 
-        token_address is not null
+        contract_address is not null
         and tx_success 
         and call_success
         {% if blockchain == 'bnb' %}
