@@ -61,7 +61,7 @@ FROM (
 
 
 SELECT pool_name, 
-           pool, 
+           l.pool, 
            blockchain, 
            project, 
            fee, 
