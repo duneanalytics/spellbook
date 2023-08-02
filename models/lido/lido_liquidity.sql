@@ -67,6 +67,7 @@ SELECT pool_name,
            main_token_usd_reserve, 
            paired_token_usd_reserve, 
            trading_volume
-from dates d
+FROM dates d
 LEFT JOIN pools AS l on d.day >= DATE_TRUNC('day', l.time) and  d.day <  DATE_TRUNC('day', l.next_time)
+WHERE pool is not null
 ;
