@@ -1,6 +1,7 @@
 {{  config(
         tags = ['dunesql'], 
         schema = 'contracts',
+        partition_by = ['blockchain', 'address'],
         alias = alias('decoded'),
         file_format = 'delta',
         materialized = 'incremental',
