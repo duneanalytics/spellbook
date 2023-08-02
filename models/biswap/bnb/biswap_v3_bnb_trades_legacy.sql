@@ -35,7 +35,7 @@ WITH dexs AS
         ,'' AS trace_address
         ,t.evt_index
     FROM
-        (select a.*, cast(json_extract_scalar(returnValues, '$.amountX') as uint256) as amountX, cast(json_extract_scalar(returnValues, '$.amountY') as uint256) as amountY
+        (select a.*, cast(json_extract_scalar(returnValues, '$.amountX') as double) as amountX, cast(json_extract_scalar(returnValues, '$.amountY') as double) as amountY
          from {{ source('biswap_v3_bnb', 'BiswapPoolV3_evt_Swap') }} a) t 
     INNER JOIN 
         {{ source('biswap_v3_bnb', 'BiswapFactoryV3_evt_NewPool') }} f
