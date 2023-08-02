@@ -1,7 +1,7 @@
 {{ config(
-    tags=['dunesql'],
+    tags=['legacy'],
     schema = 'biswap_v3_bnb',
-    alias = alias('trades'),
+    alias = alias('trades', legacy_model=True),
     partition_by = ['block_date'],
     materialized = 'incremental',
     file_format = 'delta',
@@ -16,6 +16,7 @@
 
 {% set project_start_date = '2023-06-26' %}
 
+-- DUMMY TABLE, WILL BE REMOVED SOON
 
 WITH dexs AS
 (

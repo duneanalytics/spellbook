@@ -1,7 +1,7 @@
 {{ config(
-    tags=['dunesql'],
-    schema = 'biswap_v3_bnb',
-    alias = alias('trades'),
+    tags=['legacy'],
+    schema = 'maverick_v1_bnb',
+    alias = alias('trades', legacy_model=True),
     partition_by = ['block_date'],
     materialized = 'incremental',
     file_format = 'delta',
@@ -9,46 +9,43 @@
     unique_key = ['block_date', 'blockchain', 'project', 'version', 'tx_hash', 'evt_index'],
     post_hook='{{ expose_spells(\'["bnb"]\',
                                 "project",
-                                "biswap_v3",
+                                "maverick_v1",
                                 \'["chef_seaweed"]\') }}'
     )
 }}
 
-{% set project_start_date = '2023-06-26' %}
+{% set project_start_date = '2023-06-18' %}
 
+-- DUMMY TABLE, WILL BE REMOVED SOON
 
 WITH dexs AS
 (
-    --Biswap v3 on BNB Chain
+    --Maverick V1
     SELECT
         t.evt_block_time AS block_time
-        ,CAST(NULL AS VARBINARY)as taker
+        ,t.recipient AS taker
         ,CAST(NULL AS VARBINARY)as maker
-        ,CASE WHEN sellXEarnY = true THEN abs(amountY) ELSE abs(amountX) END AS token_bought_amount_raw
-        ,CASE WHEN sellXEarnY = true THEN abs(amountX) ELSE abs(amountY) END AS token_sold_amount_raw
+        ,amountOut AS token_bought_amount_raw
+        ,amountIn AS token_sold_amount_raw
         ,NULL AS amount_usd
-        ,CASE WHEN sellXEarnY = true THEN tokenY ELSE tokenX END AS token_bought_address
-        ,CASE WHEN sellXEarnY = true THEN tokenX ELSE tokenY END AS token_sold_address
+        ,CASE WHEN tokenAIn THEN f.tokenB ELSE f.tokenA END AS token_bought_address
+        ,CASE WHEN tokenAIn THEN f.tokenA ELSE f.tokenB END AS token_sold_address
         ,t.contract_address as project_contract_address
         ,t.evt_tx_hash AS tx_hash
         ,CAST(NULL as array<bigint>) AS trace_address
         ,t.evt_index
     FROM
-        (select a.*, cast(json_extract_scalar(returnValues, '$.amountX') as uint256) as amountX, cast(json_extract_scalar(returnValues, '$.amountY') as uint256) as amountY
-         from {{ source('biswap_v3_bnb', 'BiswapPoolV3_evt_Swap') }} a) t 
-    INNER JOIN 
-        {{ source('biswap_v3_bnb', 'BiswapFactoryV3_evt_NewPool') }} f
-        ON f.pool = t.contract_address
+        {{ source('maverick_v1_bnb', 'pool_evt_Swap') }} t
+    INNER JOIN {{ source('maverick_v1_bnb', 'factory_evt_PoolCreated') }} f
+        ON f.poolAddress = t.contract_address
     {% if is_incremental() %}
     WHERE t.evt_block_time >= date_trunc("day", now() - interval '7' day)
     {% endif %}
 )
-
-
 SELECT
     'bnb' AS blockchain
-    ,'biswap' AS project
-    ,'3' AS version
+    ,'maverick' AS project
+    ,'1' AS version
     ,TRY_CAST(date_trunc('DAY', dexs.block_time) AS date) AS block_date
     ,dexs.block_time
     ,erc20a.symbol AS token_bought_symbol
