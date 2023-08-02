@@ -72,7 +72,7 @@ contracts as (
             , contract_name
             , '{{ blockchain }}' as blockchain
             , block_time as created_at
-        from {{ blockchain }}.creation_traces
+        from {{ source(blockchain, 'creation_traces') }}
         join contracts using(address)
         where blockchain = '{{ blockchain }}'
 
@@ -205,7 +205,7 @@ contracts as (
         , (0x7f29a59d, 'LOP-V2', 'LOP', 2,  false,  map_from_entries(array[('offset_wallet',   0), ('offset_src_token', 0)])) -- simulateCalls
 
     ) as s(id, contract_id, protocol, version, main, offsets)
-    left join abi.signatures using(id)
+    left join {{ ref('signatures') }} using(id)
 )
 
 
