@@ -24,15 +24,15 @@ WITH dexs AS
     SELECT
         t.evt_block_time AS block_time
         ,t.recipient AS taker
-        ,CAST(NULL AS VARBINARY)as maker
+        ,'' AS maker
         ,amountOut AS token_bought_amount_raw
         ,amountIn AS token_sold_amount_raw
-        ,NULL AS amount_usd
+        ,CAST(NULL AS DOUBLE) AS amount_usd
         ,CASE WHEN tokenAIn THEN f.tokenB ELSE f.tokenA END AS token_bought_address
         ,CASE WHEN tokenAIn THEN f.tokenA ELSE f.tokenB END AS token_sold_address
         ,t.contract_address as project_contract_address
         ,t.evt_tx_hash AS tx_hash
-        ,CAST(NULL as array<bigint>) AS trace_address
+        ,'' AS trace_address
         ,t.evt_index
     FROM
         {{ source('maverick_v1_bnb', 'pool_evt_Swap') }} t

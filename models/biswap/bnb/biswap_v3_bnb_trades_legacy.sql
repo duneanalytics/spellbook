@@ -23,16 +23,16 @@ WITH dexs AS
     --Biswap v3 on BNB Chain
     SELECT
         t.evt_block_time AS block_time
-        ,CAST(NULL AS VARBINARY)as taker
-        ,CAST(NULL AS VARBINARY)as maker
+        ,t.recipient AS taker
+        ,'' AS maker
         ,CASE WHEN sellXEarnY = true THEN abs(amountY) ELSE abs(amountX) END AS token_bought_amount_raw
         ,CASE WHEN sellXEarnY = true THEN abs(amountX) ELSE abs(amountY) END AS token_sold_amount_raw
-        ,NULL AS amount_usd
+        ,CAST(NULL AS DOUBLE) AS amount_usd
         ,CASE WHEN sellXEarnY = true THEN tokenY ELSE tokenX END AS token_bought_address
         ,CASE WHEN sellXEarnY = true THEN tokenX ELSE tokenY END AS token_sold_address
         ,t.contract_address as project_contract_address
-        ,t.evt_tx_hash AS tx_hash
-        ,CAST(NULL as array<bigint>) AS trace_address
+         ,t.evt_tx_hash AS tx_hash
+        ,'' AS trace_address
         ,t.evt_index
     FROM
         (select a.*, cast(json_extract_scalar(returnValues, '$.amountX') as uint256) as amountX, cast(json_extract_scalar(returnValues, '$.amountY') as uint256) as amountY
