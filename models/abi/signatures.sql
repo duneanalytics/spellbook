@@ -39,7 +39,7 @@ WITH
             FROM {{ chain_source }}
 
             {% if is_incremental() %}
-            WHERE cast(block_time as timestamp) >= cast(date_add('day', -7, now()) as timestamp)
+            WHERE cast(created_at as timestamp) >= cast(date_add('day', -7, now()) as timestamp)
             {% endif %}
 
             {% if not loop.last %}
