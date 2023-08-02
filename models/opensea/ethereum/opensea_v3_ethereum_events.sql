@@ -1,6 +1,6 @@
 {{ config(
     schema = 'opensea_v3_ethereum',
-    alias = 'events',
+    alias = alias('events'),
     partition_by = ['block_date'],
     materialized = 'incremental',
     file_format = 'delta',
@@ -34,12 +34,12 @@ with source_ethereum_transactions as (
 )
 ,ref_tokens_nft as (
     select *
-      from {{ ref('tokens_nft_legacy') }}
+      from {{ ref('tokens_nft') }}
      where blockchain = 'ethereum'
 )
 ,ref_tokens_erc20 as (
     select *
-      from {{ ref('tokens_erc20_legacy') }}
+      from {{ ref('tokens_erc20') }}
     where blockchain = 'ethereum'
 )
 ,ref_nft_aggregators as (

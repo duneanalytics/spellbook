@@ -1,5 +1,5 @@
 {{ config(
-        alias ='flashloans',
+        alias = alias('flashloans'),
         post_hook='{{ expose_spells(\'["ethereum","arbitrum", "optimism", "polygon", "bnb"]\',
                                 "project",
                                 "uniswap",

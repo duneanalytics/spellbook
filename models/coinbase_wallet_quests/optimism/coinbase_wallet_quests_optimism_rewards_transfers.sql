@@ -1,5 +1,5 @@
 {{ config(
-    alias = 'rewards_transfers',
+    alias = alias('rewards_transfers'),
     partition_by = ['block_date'],
     materialized = 'incremental',
     file_format = 'delta',

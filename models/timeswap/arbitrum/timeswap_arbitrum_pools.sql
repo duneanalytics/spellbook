@@ -1,5 +1,5 @@
 {{ config(
-    alias = 'pools',
+    alias = alias('pools'),
     post_hook='{{ expose_spells(\'["arbitrum"]\',
                                 "project",
                                 "timeswap",
@@ -329,6 +329,20 @@ FROM
                 '8507059173023461586584365185794',
                 '1689336000',
                 'AuraWBTCTBTC-USDC',
+                'Arbitrum',
+                '0x61EDF35c6C6557010A7649c7fC9EFC75B9fEb2E1',
+                '0xea45312c915adc912e681728A5Bf55441c08Fcd7'
+            ),
+            (
+                'PTwstETH26JUN25',
+                'USDC',
+                '0x1255638EFeca62e12E344E0b6B22ea853eC6e2c7',
+                '0xFF970A61A04b1cA14834A43f5dE4533eBDDB5CC8',
+                18,
+                6,
+                '476395313689313848848724450405',
+                '1691409600',
+                'PTwstETH26JUN25-USDC',
                 'Arbitrum',
                 '0x61EDF35c6C6557010A7649c7fC9EFC75B9fEb2E1',
                 '0xea45312c915adc912e681728A5Bf55441c08Fcd7'

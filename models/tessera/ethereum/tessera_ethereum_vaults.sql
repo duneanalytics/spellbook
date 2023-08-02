@@ -1,5 +1,5 @@
 {{ config (
-    alias = 'vaults',
+    alias = alias('vaults'),
     post_hook = '{{ expose_spells(\'["ethereum"]\', "project", "tessera",\'["amadarrrr"]\') }}'
 ) }}
 -- VAULT DEPLOY

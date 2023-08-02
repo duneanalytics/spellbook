@@ -1,6 +1,6 @@
 {{ config(
     schema='layerzero',
-    alias = 'send',
+    alias = alias('send'),
     post_hook='{{ expose_spells(\'["ethereum", "gnosis", "avalanche_c", "arbitrum", "fantom", "optimism", "bnb", "polygon"]\',
                               "project",
                               "layerzero",

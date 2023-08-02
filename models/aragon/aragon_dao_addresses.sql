@@ -1,5 +1,6 @@
 {{ config(
-    alias = 'dao_addresses',
+    tags=['dunesql'],
+    alias = alias('dao_addresses'),
     materialized = 'view',
     file_format = 'delta',
     post_hook='{{ expose_spells(\'["ethereum", "gnosis", "polygon"]\',
@@ -26,6 +27,7 @@ FROM (
         dao_wallet_address,
         created_block_time,
         created_date,
+        block_month,
         product
     FROM {{ dao_model }}
     {% if not loop.last %}
@@ -33,4 +35,3 @@ FROM (
     {% endif %}
     {% endfor %}
 )
-;
