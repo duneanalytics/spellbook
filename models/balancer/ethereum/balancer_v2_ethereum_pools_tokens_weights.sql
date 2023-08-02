@@ -22,6 +22,9 @@ WITH registered AS (
         poolID AS pool_id,
         evt_block_time
     FROM {{ source('balancer_v2_ethereum', 'Vault_evt_PoolRegistered') }}
+    {% if is_incremental() %}
+    WHERE evt_block_time >= date_trunc('day', now() - interval '7' day)
+    {% endif %}
 ),
 weighted_pool_factory AS (
     SELECT
@@ -33,6 +36,9 @@ weighted_pool_factory AS (
     CROSS JOIN UNNEST(call_create.tokens) WITH ORDINALITY t(token_address, pos)
     CROSS JOIN UNNEST(call_create.weights) WITH ORDINALITY t2(normalized_weight, pos)
     WHERE t.pos = t2.pos
+    {% if is_incremental() %}
+    AND call_create.call_block_time >= date_trunc('day', now() - interval '7' day)
+    {% endif %}
 ),
 weighted_pool_2tokens_factory AS (
     SELECT
@@ -44,6 +50,9 @@ weighted_pool_2tokens_factory AS (
     CROSS JOIN UNNEST(call_create.tokens) WITH ORDINALITY t(token_address, pos)
     CROSS JOIN UNNEST(call_create.weights) WITH ORDINALITY t2(normalized_weight, pos)
     WHERE t.pos = t2.pos
+    {% if is_incremental() %}
+    AND call_create.call_block_time >= date_trunc('day', now() - interval '7' day)
+    {% endif %}
 ),
 weighted_pool_v2_factory AS (
     SELECT
@@ -55,6 +64,9 @@ weighted_pool_v2_factory AS (
     CROSS JOIN UNNEST(call_create.tokens) WITH ORDINALITY t(token_address, pos)
     CROSS JOIN UNNEST(call_create.normalizedWeights) WITH ORDINALITY t2(normalized_weight, pos)
     WHERE t.pos = t2.pos
+    {% if is_incremental() %}
+    AND call_create.call_block_time >= date_trunc('day', now() - interval '7' day)
+    {% endif %}
 ),
 normalized_weights AS (
     SELECT
@@ -79,6 +91,3 @@ SELECT r.pool_id, w.token_address, w.normalized_weight
 FROM normalized_weights w 
 LEFT JOIN registered r ON SUBSTRING(CAST(r.pool_id as varchar),1,42) = CAST(w.pool_id as varchar)
 WHERE w.pool_id IS NOT NULL
-{% if is_incremental() %}
-AND r.evt_block_time >= date_trunc('day', now() - interval '7' day)
-{% endif %}
