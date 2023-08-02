@@ -39,7 +39,7 @@ WITH
             FROM {{ chain_source }}
 
             {% if is_incremental() %}
-            WHERE created_at >= date_trunc("day", now() - interval '2 days')
+            WHERE created_at >= cast(date_trunc("day", now() - interval '2 days') as timestamp)
             {% endif %}
 
             {% if not loop.last %}
