@@ -17,4 +17,4 @@ SELECT blockchain
 , 'cex_' || blockchain AS model_name
 , 'identifier' AS label_type
 FROM {{ ref('cex_bitcoin_addresses') }}
-WHERE address IS NOT NULL
+WHERE regexp_like(address, '^[123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz]+$')
