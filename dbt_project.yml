@@ -1065,6 +1065,11 @@ models:
       +schema: tokenfy
       ethereum:
         +schema: tokenfy_ethereum
+    
+    tokenlon:
+      +schema: tokenlon
+      ethereum:
+        +schema: tokenlon_ethereum
 
     thales:
       +schema: thales
