@@ -70,7 +70,7 @@ with iv_offer_consideration as (
             , recipient
             , zone
             , posexplode(offer) as (offer_idx, offer_item)
-        from {{ source('opensea_optimism', 'Seaport_evt_OrderFulfilled') }}
+        from {{ source('seaport_optimism', 'Seaport_evt_OrderFulfilled') }}
         {% if not is_incremental() %}
         where evt_block_time >= date '{{c_seaport_first_date}}'  -- seaport first txn
         {% endif %}
@@ -130,7 +130,7 @@ with iv_offer_consideration as (
             , recipient
             , zone
             ,posexplode(consideration) as (consideration_idx, consideration_item)
-        from {{ source('opensea_optimism','Seaport_evt_OrderFulfilled') }}
+        from {{ source('seaport_optimism','Seaport_evt_OrderFulfilled') }}
         {% if not is_incremental() %}
         where evt_block_time >= date '{{c_seaport_first_date}}'  -- seaport first txn
         {% endif %}
