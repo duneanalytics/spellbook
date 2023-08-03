@@ -73,7 +73,7 @@ SELECT
     CAST(date_trunc('month', ae.evt_block_time)  as date) as block_month, 
     ae.evt_block_time as block_time, 
     ae.evt_block_number as block_number, 
-    ae.token_id, 
+    CAST(ae.token_id as VARCHAR) as token_id, 
     nft_token.name as collection, 
     p.price * (ae.amount_raw/POWER(10, collateral_currency.decimals)) as amount_usd, 
     nft_token.standard as token_standard, 
