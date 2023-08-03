@@ -9,7 +9,7 @@
         )
 }}
 
-{% set contracts_models = [
+{% set contracts_models = [ 
      ('ethereum', ref('ethereum_contracts_submitted'))
      , ('polygon', ref('polygon_contracts_submitted'))
      , ('bnb', ref('bnb_contracts_submitted'))
