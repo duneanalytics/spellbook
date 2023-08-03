@@ -1,6 +1,6 @@
 {{ config(
     tags=['dunesql'],
-    schema = 'tigris_v2_arbitrum',
+    schema = 'tigris_arbitrum',
     alias = alias('positions_margin')
     )
  }}
@@ -12,10 +12,10 @@ margin as (
         evt_block_time,
         position_id,
         margin,
-        project_contract_address
+        project_contract_address,
+        version
     FROM 
     {{ ref('tigris_arbitrum_events_add_margin') }}
-    WHERE protocol_version = '2'
 
     UNION ALL
 
@@ -23,10 +23,10 @@ margin as (
         evt_block_time,
         position_id,
         margin,
-        project_contract_address
+        project_contract_address,
+        version
     FROM 
     {{ ref('tigris_arbitrum_events_modify_margin') }}
-    WHERE protocol_version = '2'
 
     UNION ALL
 
@@ -34,10 +34,11 @@ margin as (
         evt_block_time,
         position_id,
         margin,
-        project_contract_address
+        project_contract_address,
+        version
     FROM 
     {{ ref('tigris_arbitrum_events_open_position') }}
-    WHERE protocol_version = '2'
+    WHERE open_type = 'open_position'
 
     UNION ALL
 
@@ -45,9 +46,10 @@ margin as (
         evt_block_time,
         position_id,
         new_margin as margin,
-        project_contract_address
+        project_contract_address,
+        version
     FROM 
-    {{ ref('tigris_v2_arbitrum_positions_close') }}
+    {{ ref('tigris_arbitrum_positions_close') }}
 
     UNION ALL 
 
@@ -55,11 +57,18 @@ margin as (
         evt_block_time,
         position_id,
         margin,
-        project_contract_address
+        project_contract_address,
+        version
     FROM 
     {{ ref('tigris_arbitrum_events_limit_order') }}
-    WHERE protocol_version = '2'
-
 )
 
-SELECT * FROM margin  
+SELECT
+    m.*, 
+    c.positions_contract
+FROM 
+margin m
+INNER JOIN 
+{{ ref('tigris_arbitrum_events_contracts_positions') }} c 
+    ON m.project_contract_address = c.trading_contract
+    AND m.version = c.trading_contract_version

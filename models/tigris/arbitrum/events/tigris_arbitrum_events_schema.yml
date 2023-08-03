@@ -290,7 +290,7 @@ models:
         name: trading_contract
         description: "trading contract address "
       - &positions_contract
-        name: position_contract
+        name: positions_contract
         description: "corresponding position contract address"
       - &trading_contract_version
         name: trading_contract_version
