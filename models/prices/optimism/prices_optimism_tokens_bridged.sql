@@ -8,7 +8,7 @@
 }}
 SELECT
     e.token_id
-    , LOWER(TRIM('optimism')) as blockchain
+    , 'optimism' as blockchain
     , e.symbol as symbol
     , o.l2_token as contract_address
     , e.decimals
