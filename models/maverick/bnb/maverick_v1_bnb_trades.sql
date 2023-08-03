@@ -1,11 +1,11 @@
 {{ config(tags=['dunesql'],
     schema = 'maverick_v1_bnb',
     alias = alias('trades'),
-    partition_by = ['block_month'],
+    partition_by = ['block_date'],
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
-    unique_key = ['blockchain', 'project', 'version', 'tx_hash', 'evt_index'],
+    unique_key = ['block_date', 'blockchain', 'project', 'version', 'tx_hash', 'evt_index'],
     post_hook='{{ expose_spells(\'["bnb"]\',
                                 "project",
                                 "maverick_v1",
@@ -43,7 +43,7 @@ SELECT
     'bnb' AS blockchain
     ,'maverick' AS project
     ,'1' AS version
-    ,CAST(date_trunc('month', dexs.block_time) AS DATE) as block_month
+    ,TRY_CAST(date_trunc('DAY', dexs.block_time) AS date) AS block_date
     ,dexs.block_time
     ,erc20a.symbol AS token_bought_symbol
     ,erc20b.symbol AS token_sold_symbol
