@@ -360,6 +360,7 @@ limit_cancel as (
         op.margin_asset,
         op.pair, 
         op.direction,
+        op.referral,
         lc.trader, 
         0 as margin_change,
         lc.version, 
