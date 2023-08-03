@@ -9,16 +9,16 @@
         )
 }}
 
-{% set contracts_models = [ 
-     ('ethereum', ref('ethereum_contracts_submitted'))
-     , ('polygon', ref('polygon_contracts_submitted'))
-     , ('bnb', ref('bnb_contracts_submitted'))
-     , ('avalanche_c', ref('avalanche_c_contracts_submitted'))
-     , ('gnosis', ref('gnosis_contracts_submitted'))
-     , ('fantom', ref('fantom_contracts_submitted'))
-     , ('optimism', ref('optimism_contracts_submitted'))
-     , ('arbitrum', ref('arbitrum_contracts_submitted'))
-     , ('celo', ref('celo_contracts_submitted'))
+{% set contracts_models = [
+     ('ethereum', source('ethereum', 'contracts_submitted'))
+     , ('polygon', source('polygon', 'contracts_submitted'))
+     , ('bnb', source('bnb', 'contracts_submitted'))
+     , ('avalanche_c', source('avalanche_c', 'contracts_submitted'))
+     , ('gnosis', source('gnosis', 'contracts_submitted'))
+     , ('fantom', source('fantom', 'contracts_submitted'))
+     , ('optimism', source('optimism', 'contracts_submitted'))
+     , ('arbitrum', source('arbitrum', 'contracts_submitted'))
+     , ('celo', source('celo', 'contracts_submitted'))
 ] %}
 
 SELECT *
