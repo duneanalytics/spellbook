@@ -13,7 +13,8 @@ leverage as (
         position_id,
         leverage,
         project_contract_address,
-        version
+        version,
+        positions_contract
     FROM 
     {{ ref('tigris_arbitrum_events_open_position') }}
     WHERE open_type = 'open_position'
@@ -25,7 +26,8 @@ leverage as (
         position_id,
         leverage,
         project_contract_address,
-        version 
+        version,
+        positions_contract
     FROM 
     {{ ref('tigris_arbitrum_events_modify_margin') }}
 
@@ -36,17 +38,13 @@ leverage as (
         position_id,
         leverage,
         project_contract_address,
-        version
+        version,
+        positions_contract
     FROM 
     {{ ref('tigris_arbitrum_events_limit_order') }}
 )
 
 SELECT 
-    l.*, 
-    c.positions_contract
+    l.*
 FROM 
 leverage l 
-INNER JOIN 
-{{ ref('tigris_arbitrum_events_contracts_positions') }} c 
-    ON l.project_contract_address = c.trading_contract
-    AND l.version = c.trading_contract_version

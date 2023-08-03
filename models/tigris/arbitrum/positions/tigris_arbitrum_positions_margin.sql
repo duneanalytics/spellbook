@@ -13,7 +13,8 @@ margin as (
         position_id,
         margin,
         project_contract_address,
-        version
+        version,
+        positions_contract
     FROM 
     {{ ref('tigris_arbitrum_events_add_margin') }}
 
@@ -24,7 +25,8 @@ margin as (
         position_id,
         margin,
         project_contract_address,
-        version
+        version,
+        positions_contract
     FROM 
     {{ ref('tigris_arbitrum_events_modify_margin') }}
 
@@ -35,7 +37,8 @@ margin as (
         position_id,
         margin,
         project_contract_address,
-        version
+        version,
+        positions_contract
     FROM 
     {{ ref('tigris_arbitrum_events_open_position') }}
     WHERE open_type = 'open_position'
@@ -47,7 +50,8 @@ margin as (
         position_id,
         new_margin as margin,
         project_contract_address,
-        version
+        version,
+        positions_contract
     FROM 
     {{ ref('tigris_arbitrum_positions_close') }}
 
@@ -58,17 +62,13 @@ margin as (
         position_id,
         margin,
         project_contract_address,
-        version
+        version,
+        positions_contract
     FROM 
     {{ ref('tigris_arbitrum_events_limit_order') }}
 )
 
 SELECT
-    m.*, 
-    c.positions_contract
+    *
 FROM 
-margin m
-INNER JOIN 
-{{ ref('tigris_arbitrum_events_contracts_positions') }} c 
-    ON m.project_contract_address = c.trading_contract
-    AND m.version = c.trading_contract_version
+margin

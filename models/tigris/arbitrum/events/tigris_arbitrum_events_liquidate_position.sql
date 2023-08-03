@@ -74,14 +74,24 @@ liquidate_position_v2 AS (
 )
 
 SELECT
-    *
+    a.*,
+    c.positions_contract
 FROM 
-liquidate_position_v1
+liquidate_position_v1 a 
+INNER JOIN 
+{{ ref('tigris_arbitrum_events_contracts_positions') }} c 
+    ON a.project_contract_address = c.trading_contract
+    AND a.version = c.trading_contract_version
 
 UNION ALL 
 
 SELECT 
-    * 
+    a.*,
+    c.positions_contract 
 FROM 
-liquidate_position_v2
+liquidate_position_v2 a 
+INNER JOIN 
+{{ ref('tigris_arbitrum_events_contracts_positions') }} c 
+    ON a.project_contract_address = c.trading_contract
+    AND a.version = c.trading_contract_version
 

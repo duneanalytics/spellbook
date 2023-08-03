@@ -97,6 +97,9 @@ models:
       - &open_type
         name: open_type
         description: "trade open type"
+      - &positions_contract
+        name: positions_contract
+        description: "corresponding position contract address"
 
   - name: tigris_arbitrum_events_add_margin
     meta:
@@ -132,6 +135,7 @@ models:
       - *project_contract_address
       - *block_month
       - *protocol_version
+      - *positions_contract
 
   - name: tigris_arbitrum_events_modify_margin
     meta:
@@ -169,6 +173,7 @@ models:
       - *project_contract_address
       - *protocol_version
       - *block_month
+      - *positions_contract
 
   - name: tigris_arbitrum_events_close_position
     meta:
@@ -204,6 +209,7 @@ models:
       - *project_contract_address
       - *protocol_version
       - *block_month
+      - *positions_contract
 
   - name: tigris_arbitrum_events_liquidate_position
     meta:
@@ -234,6 +240,7 @@ models:
       - *protocol_version
       - *block_month
       - *price
+      - *positions_contract
 
   - name: tigris_arbitrum_events_limit_order
     meta:
@@ -270,6 +277,7 @@ models:
       - *project_contract_address
       - *protocol_version
       - *block_month
+      - *positions_contract
 
   - name: tigris_arbitrum_events_contracts_positions
     meta:
@@ -289,9 +297,7 @@ models:
       - &trading_contract
         name: trading_contract
         description: "trading contract address "
-      - &positions_contract
-        name: positions_contract
-        description: "corresponding position contract address"
+      - *positions_contract
       - &trading_contract_version
         name: trading_contract_version
         description: "trading contract version"
@@ -326,3 +332,4 @@ models:
       - *protocol_version
       - *project_contract_address
       - *block_month
+      - *positions_contract

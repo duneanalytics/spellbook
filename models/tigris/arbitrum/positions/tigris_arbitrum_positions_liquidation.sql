@@ -66,18 +66,15 @@ SELECT
     lp.version,
     lp.price,
     lm.margin, 
-    ll.leverage 
+    ll.leverage, 
+    lp.positions_contract
 FROM 
 {{ ref('tigris_arbitrum_events_liquidate_position') }} lp 
 INNER JOIN 
-{{ ref('tigris_arbitrum_events_contracts_positions') }} c 
-        ON lp.project_contract_address = c.trading_contract
-        AND lp.version = c.trading_contract_version
-INNER JOIN 
 last_margin lm 
     ON lp.position_id = lm.position_id
-    AND c.positions_contract = lm.positions_contract
+    AND lp.positions_contract = lm.positions_contract
 INNER JOIN 
 last_leverage ll 
     ON lp.position_id = ll.position_id
-    AND c.positions_contract = lm.positions_contract
+    AND lp.positions_contract = lm.positions_contract

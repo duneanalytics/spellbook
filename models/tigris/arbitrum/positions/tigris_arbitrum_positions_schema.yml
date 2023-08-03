@@ -149,3 +149,4 @@ models:
       - *protocol_version
       - *version
       - *price
+      - *positions_contract

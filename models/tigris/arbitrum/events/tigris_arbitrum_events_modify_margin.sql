@@ -216,13 +216,23 @@ modify_margin_v2 as (
 )
 
 SELECT 
-    * 
+    a.*,
+    c.positions_contract 
 FROM 
-modify_margin_v1
+modify_margin_v1 a 
+INNER JOIN 
+{{ ref('tigris_arbitrum_events_contracts_positions') }} c 
+    ON a.project_contract_address = c.trading_contract
+    AND a.version = c.trading_contract_version
 
 UNION ALL 
 
 SELECT
-    *
+    a.*,
+    c.positions_contract
 FROM 
-modify_margin_v2
+modify_margin_v2 a
+INNER JOIN 
+{{ ref('tigris_arbitrum_events_contracts_positions') }} c 
+    ON a.project_contract_address = c.trading_contract
+    AND a.version = c.trading_contract_version

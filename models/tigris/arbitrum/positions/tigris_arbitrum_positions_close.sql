@@ -9,14 +9,9 @@ WITH
 
 get_positions_contract as (
     SELECT 
-        cp.*, 
-        c.positions_contract
+        *
     FROM 
-    {{ ref('tigris_arbitrum_events_close_position') }} cp 
-    INNER JOIN 
-    {{ ref('tigris_arbitrum_events_contracts_positions') }} c 
-        ON cp.project_contract_address = c.trading_contract
-        AND cp.version = c.trading_contract_version
+    {{ ref('tigris_arbitrum_events_close_position') }}
 ), 
 
 latest_leverage_time as (
@@ -34,7 +29,7 @@ latest_leverage_time as (
             ON cp.position_id = l.position_id
             AND cp.evt_block_time > l.evt_block_time
             AND cp.positions_contract = l.positions_contract
-        GROUP BY 2, 3, 4, 5
+        GROUP BY 2, 3, 4, 5, 6
 ),
 
 latest_leverage as (
