@@ -1,5 +1,5 @@
 {{ config(
-        alias ='api_fills',
+        alias = alias('api_fills'),
         post_hook='{{ expose_spells(\'["ethereum","arbitrum", "optimism", "polygon","fantom","avalanche_c"]\',
                                 "project",
                                 "zeroex",

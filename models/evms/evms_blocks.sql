@@ -1,7 +1,8 @@
 {{ config(
-        alias ='blocks',
+        tags = ['dunesql'],
+        alias = alias('blocks'),
         unique_key=['blockchain', 'number'],
-        post_hook='{{ expose_spells(\'["ethereum", "polygon", "bnb", "avalanche_c", "gnosis", "fantom", "optimism", "arbitrum"]\',
+        post_hook='{{ expose_spells(\'["ethereum", "polygon", "bnb", "avalanche_c", "gnosis", "fantom", "optimism", "arbitrum", "celo"]\',
                                     "sector",
                                     "evms",
                                     \'["hildobby"]\') }}'
@@ -17,6 +18,7 @@
      , ('fantom', source('fantom', 'blocks'))
      , ('optimism', source('optimism', 'blocks'))
      , ('arbitrum', source('arbitrum', 'blocks'))
+     , ('celo', source('celo', 'blocks'))
 ] %}
 
 SELECT *

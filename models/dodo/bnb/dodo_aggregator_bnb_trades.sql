@@ -1,6 +1,6 @@
 {{ config
 (
-    alias ='aggregator_trades',
+    alias = alias('aggregator_trades'),
     partition_by = ['block_date'],
     materialized = 'incremental',
     file_format = 'delta',

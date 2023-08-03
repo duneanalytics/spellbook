@@ -1,5 +1,5 @@
 {{  config(
-        alias='api_fills_deduped',
+        alias = alias('api_fills_deduped'),
         materialized='incremental',
         partition_by = ['block_date'],
         unique_key = ['block_date', 'tx_hash', 'evt_index'],

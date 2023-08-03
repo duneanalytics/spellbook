@@ -1,6 +1,6 @@
 {{ config(
     schema = 'thena_v1_bnb',
-    alias = 'trades',
+    alias = alias('trades'),
     partition_by = ['block_date'],
     materialized = 'incremental',
     file_format = 'delta',
@@ -32,7 +32,7 @@ WITH dexs AS
         t.evt_index
     FROM
         {{ source('thena_fi_bnb', 'pair_evt_swap') }} t
-        INNER JOIN {{ source('thena_bnb', 'PairFactoryUpgradeable_evt_PairCreated') }} f
+        INNER JOIN {{ source('thena_fi_bnb', 'PairFactoryUpgradeable_evt_PairCreated') }} f
     ON t.contract_address = f.pair
     {% if is_incremental() %}
     AND t.evt_block_time >= date_trunc("day", now() - interval '1 week')

@@ -1,7 +1,7 @@
 {{
   config(
         schema = 'chain_info',
-        alias='chain_ids'
+        alias = alias('chain_ids')
   )
 }}
 

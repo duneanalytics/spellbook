@@ -1,5 +1,6 @@
 {{ config(
-        alias ='sandwiches',
+        tags=['prod_exclude'],
+        alias = alias('sandwiches'),
         partition_by = ['block_date'],
         materialized = 'incremental',
         file_format = 'delta',

@@ -551,8 +551,8 @@ models:
             - token_id
             - sub_type
             - sub_idx
-      - check_seed:
-          seed_file: ref('quix_events_seed')
+      - check_seed_legacy:
+          seed_file: ref('quix_events_seed_legacy')
           filter:
             blockchain: optimism
             project: quix

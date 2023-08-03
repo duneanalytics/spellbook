@@ -2,7 +2,7 @@
  {{
   config(
         schema='arrakis_optimism',
-        alias='uniswap_pools',
+        alias = alias('uniswap_pools'),
         materialized = 'incremental',
         file_format = 'delta',
         incremental_strategy = 'merge',
@@ -29,7 +29,7 @@ SELECT distinct
 FROM {{ source('arrakis_optimism', 'ArrakisFactoryV1_evt_PoolCreated') }} pc 
     INNER JOIN {{ ref('uniswap_optimism_pools') }} up 
         ON up.pool = pc.uniPool
-    LEFT JOIN {{ ref('tokens_erc20') }} e0 
+    LEFT JOIN {{ ref('tokens_erc20') }} e0
         ON e0.contract_address = up.token0
         AND e0.blockchain = 'optimism'
     LEFT JOIN {{ ref('tokens_erc20') }} e1

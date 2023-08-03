@@ -1,6 +1,6 @@
 {{ config(
          schema = 'opensea_arbitrum',        
-         alias ='events'
+         alias = alias('events')
          )
 }}
 

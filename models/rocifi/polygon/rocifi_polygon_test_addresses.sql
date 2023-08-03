@@ -1,5 +1,5 @@
 {{ config (
-    alias = 'test_addresses',
+    alias = alias('test_addresses'),
     post_hook = '{{ 
         expose_spells(\'["polygon"]\',
         "project", 

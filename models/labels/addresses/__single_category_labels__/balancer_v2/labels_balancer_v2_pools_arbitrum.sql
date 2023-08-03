@@ -1,5 +1,5 @@
 {{config(
-    alias='balancer_v2_pools_arbitrum',
+    alias = alias('balancer_v2_pools_arbitrum'),
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
