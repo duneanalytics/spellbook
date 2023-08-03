@@ -2,6 +2,7 @@
         tags = ['dunesql'], 
         schema = 'contracts',
         alias = alias('decoded'),
+        partition_by = ['created_at'],
         file_format = 'delta',
         materialized = 'incremental',
         incremental_strategy = 'merge',
@@ -23,7 +24,7 @@ SELECT
     , base
     , factory
     , detection_source
-    , created_at 
+    , CAST(created_at AS DATE) AS created_at 
 FROM {{ source('arbitrum', 'contracts') }}
 {% if is_incremental() %}
 WHERE created_at >= now() - interval '7' day
@@ -42,7 +43,7 @@ SELECT
     , base
     , factory
     , detection_source
-    , created_at
+    , CAST(created_at AS DATE) AS created_at
 FROM {{ source('avalanche_c', 'contracts') }}
 {% if is_incremental() %}
 WHERE created_at >= now() - interval '7' day
@@ -61,7 +62,7 @@ SELECT
     , base
     , factory
     , detection_source
-    , created_at
+    , CAST(created_at AS DATE) AS created_at
 FROM {{ source('bnb', 'contracts') }}
 {% if is_incremental() %}
 WHERE created_at >= now() - interval '7' day
@@ -80,7 +81,7 @@ SELECT
     , base
     , factory
     , detection_source
-    , created_at 
+    , CAST(created_at AS DATE) AS created_at 
 FROM {{ source('ethereum', 'contracts') }}
 {% if is_incremental() %}
 WHERE created_at >= now() - interval '7' day
@@ -99,7 +100,7 @@ SELECT
     , base
     , factory
     , detection_source
-    , created_at 
+    , CAST(created_at AS DATE) AS created_at 
 FROM {{ source('fantom', 'contracts') }}
 {% if is_incremental() %}
 WHERE created_at >= now() - interval '7' day
@@ -118,7 +119,7 @@ SELECT
     , base
     , factory
     , detection_source
-    , created_at 
+    , CAST(created_at AS DATE) AS created_at 
 FROM {{ source('gnosis', 'contracts') }}
 {% if is_incremental() %}
 WHERE created_at >= now() - interval '7' day
@@ -137,7 +138,7 @@ SELECT
     , base
     , factory
     , detection_source
-    , created_at 
+    , CAST(created_at AS DATE) AS created_at 
 FROM {{ source('optimism', 'contracts') }}
 {% if is_incremental() %}
 WHERE created_at >= now() - interval '7' day
@@ -156,7 +157,7 @@ SELECT
     , base
     , factory
     , detection_source
-    , created_at 
+    , CAST(created_at AS DATE) AS created_at 
 FROM {{ source('polygon', 'contracts') }}
 {% if is_incremental() %}
 WHERE created_at >= now() - interval '7' day
