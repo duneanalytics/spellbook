@@ -2,7 +2,7 @@
     tags=['dunesql'],
     schema = 'biswap_v3_bnb',
     alias = alias('trades'),
-    partition_by = ['block_date'],
+    partition_by = ['block_month'],
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
@@ -50,6 +50,7 @@ SELECT
     ,'biswap' AS project
     ,'3' AS version
     ,TRY_CAST(date_trunc('DAY', dexs.block_time) AS date) AS block_date
+    ,CAST(date_trunc('month', dexs.block_time) AS DATE) as block_month
     ,dexs.block_time
     ,erc20a.symbol AS token_bought_symbol
     ,erc20b.symbol AS token_sold_symbol
