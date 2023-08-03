@@ -90,7 +90,7 @@ INNER JOIN
 UNION ALL 
 
 SELECT 
-    a.*.
+    a.*,
     c.positions_contract 
 FROM 
 close_position_v2 a 
