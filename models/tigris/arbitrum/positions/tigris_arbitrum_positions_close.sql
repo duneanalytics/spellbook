@@ -55,7 +55,7 @@ SELECT
     gc.position_id,
     gc.price, 
     (100/gc.perc_closed) * gc.payout as previous_margin, 
-    ((100/gc.perc_closed) * gc.payout) - cp.payout as new_margin,
+    ((100/gc.perc_closed) * gc.payout) - gc.payout as new_margin,
     ll.leverage, 
     gc.payout,
     gc.trader, 
