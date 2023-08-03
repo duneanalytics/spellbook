@@ -328,6 +328,9 @@ models:
       - &evt_index
         name: evt_index
         description: "Index of the corresponding lending event"
+      - &block_month
+        name: block_month
+        description: "UTC event block month"
 
   - name: nft_approvals
     meta:
