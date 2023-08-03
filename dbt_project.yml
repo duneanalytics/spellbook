@@ -641,6 +641,11 @@ models:
       fantom:
         +schema: lifi_fantom
 
+    astaria:
+      +schema: astaria
+      ethereum:
+        +schema: astaria_ethereum
+
     aragon:
       +schema: aragon
       ethereum:
@@ -1065,6 +1070,11 @@ models:
       +schema: tokenfy
       ethereum:
         +schema: tokenfy_ethereum
+    
+    tokenlon:
+      +schema: tokenlon
+      ethereum:
+        +schema: tokenlon_ethereum
 
     thales:
       +schema: thales
