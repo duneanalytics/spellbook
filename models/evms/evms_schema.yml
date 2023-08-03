@@ -265,6 +265,36 @@ models:
               values: ["factory", "base", "dynamic"]
       - name: created_at
         description: "Timestamp for contract creation"
+
+
+  - name: evms_contracts_submitted
+    meta:
+      blockchain: ethereum, polygon, bnb, avalanche_c, gnosis, fantom, optimism, arbitrum, celo
+      sector: evms
+      contributors: hildobby, thetroyharris
+    config:
+      tags:   ['evms', 'contracts']
+    description: "A view keeping track of what contracts have been submitted across EVM chains on Dune; contains information associated with the submitted contract such as namespace, name, address, ABI."
+    columns:
+      - *blockchain
+      - name: abi
+        description: "ABI of the submitted contract"
+      - name: address
+        description: "Address of the submitted contract"
+      - name: from
+        description: "Address that created/deployed this contract"
+      - name: code
+        description: "Code for contract creation"
+      - name: name
+        description: "Name of the submitted contract"
+      - name: namespace
+        description: "Namesapce of the submitted contract"
+      - name: dynamic
+        description: "Boolean indicating whether the contract is dynamic or not"
+      - name: factory
+        description: "Boolean indicating whether the contract is a factory contract or not"
+      - name: created_at
+        description: "Timestamp for contract creation"
       
   - name: evms_creation_traces
     meta:
