@@ -74,6 +74,7 @@ WITH traces AS (
 
 SELECT 'polygon' AS blockchain
 , traces.block_time
+, CAST(date_trunc('month', traces.block_time) AS date) as block_month
 , date_trunc('day', traces.block_time) AS block_date
 , traces.block_number
 , traces.tx_hash
