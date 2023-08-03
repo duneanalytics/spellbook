@@ -1,4 +1,5 @@
-{{ config(tags=['dunesql'],
+{{ config(
+        tags=['dunesql'],
         schema = 'yearn'
         , alias = alias('vaults')
         , materialized = 'incremental'
