@@ -1,7 +1,7 @@
 {{ config(
     tags=['dunesql']
     ,alias = alias('trades')
-    ,partition_by = ['block_date']
+    ,partition_by = ['block_month']
     ,materialized = 'incremental'
     ,file_format = 'delta'
     ,incremental_strategy = 'merge'
@@ -39,6 +39,7 @@ select
     'sushiswap' as project,
     '1' as version,
     try_cast(date_trunc('DAY', dexs.block_time) as date) as block_date,
+    cast(date_trunc('month', dexs.block_time) as date) as block_month,
     dexs.block_time,
     erc20a.symbol as token_bought_symbol,
     erc20b.symbol as token_sold_symbol,
