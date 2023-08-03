@@ -16,6 +16,6 @@
     erc4337_account_deployed(
         blockchain = 'gnosis',
         version = 'v0.5',
-        account_deployed_evt_model = source('erc4337_polygon','EntryPoint_v0_5_evt_AccountDeployed'),
+        account_deployed_evt_model = source('erc4337_gnosis','EntryPoint_v0_5_evt_AccountDeployed'),
     )
 }}
