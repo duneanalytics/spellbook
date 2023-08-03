@@ -59,11 +59,12 @@ SELECT
     lm.margin, 
     ll.leverage 
 FROM 
-{{ ref('tigris_v2_arbitrum_events_liquidate_position') }} lp 
+{{ ref('tigris_arbitrum_events_liquidate_position') }} lp 
 INNER JOIN 
 last_margin lm 
     ON lp.position_id = lm.position_id
 INNER JOIN 
 last_leverage ll 
     ON lp.position_id = ll.position_id
+WHERE protocol_version = '2'
     

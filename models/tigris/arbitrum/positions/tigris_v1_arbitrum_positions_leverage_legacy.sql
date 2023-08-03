@@ -15,7 +15,8 @@ leverage as (
         leverage,
         project_contract_address
     FROM 
-    {{ ref('tigris_v1_arbitrum_events_open_position_legacy') }}
+    {{ ref('tigris_arbitrum_events_open_position_legacy') }}
+    WHERE protocol_version = '1'
 
     UNION ALL
 
@@ -25,7 +26,8 @@ leverage as (
         leverage,
         project_contract_address
     FROM 
-    {{ ref('tigris_v1_arbitrum_events_modify_margin_legacy') }}
+    {{ ref('tigris_arbitrum_events_modify_margin_legacy') }}
+     WHERE protocol_version = '1'
 
     UNION ALL 
 
@@ -35,7 +37,8 @@ leverage as (
         leverage,
         project_contract_address
     FROM 
-    {{ ref('tigris_v1_arbitrum_events_limit_order_legacy') }}
+    {{ ref('tigris_arbitrum_events_limit_order_legacy') }}
+     WHERE protocol_version = '1'
 
 )
 

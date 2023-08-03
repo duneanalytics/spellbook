@@ -25,7 +25,8 @@ margin as (
         margin,
         project_contract_address
     FROM 
-    {{ ref('tigris_v1_arbitrum_events_modify_margin') }}
+    {{ ref('tigris_arbitrum_events_modify_margin') }}
+    WHERE protocol_version = '1'
 
     UNION ALL
 
@@ -35,7 +36,8 @@ margin as (
         margin,
         project_contract_address
     FROM 
-    {{ ref('tigris_v1_arbitrum_events_open_position') }}
+    {{ ref('tigris_arbitrum_events_open_position') }}
+    WHERE protocol_version = '1'
 
     UNION ALL
 
@@ -55,7 +57,8 @@ margin as (
         margin,
         project_contract_address
     FROM 
-    {{ ref('tigris_v1_arbitrum_events_limit_order') }}
+    {{ ref('tigris_arbitrum_events_limit_order') }}
+    WHERE protocol_version = '1'
 
 )
 

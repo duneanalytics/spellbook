@@ -32,9 +32,10 @@ open_position as (
         margin as margin_change, 
         version, 
         'open_position' as trade_type 
-    FROM {{ ref('tigris_v2_arbitrum_events_open_position') }}
+    FROM {{ ref('tigris_arbitrum_events_open_position') }}
+    WHERE protocol_version = '2'
     {% if is_incremental() %}
-    WHERE evt_block_time >= date_trunc('day', now() - interval '7' day)
+    AND evt_block_time >= date_trunc('day', now() - interval '7' day)
     {% endif %}
 ), 
 
@@ -58,9 +59,10 @@ limit_order as (
         margin as margin_change, 
         version, 
         'limit_order' as trade_type 
-    FROM {{ ref('tigris_v2_arbitrum_events_limit_order') }}
+    FROM {{ ref('tigris_arbitrum_events_limit_order') }}
+    WHERE protocol_version = '2'
     {% if is_incremental() %}
-    WHERE evt_block_time >= date_trunc('day', now() - interval '7' day)
+    AND evt_block_time >= date_trunc('day', now() - interval '7' day)
     {% endif %}
 ), 
 
@@ -223,13 +225,15 @@ modify_margin as (
         mm.version,
         CASE WHEN mm.modify_type = true THEN 'add_margin' ELSE 'remove_margin' END as trade_type
     FROM 
-        {{ ref('tigris_v2_arbitrum_events_modify_margin') }} mm 
+        {{ ref('tigris_arbitrum_events_modify_margin') }} mm 
     LEFT JOIN 
         open_position op 
         ON mm.position_id = op.position_id 
+        AND mm.protocol_version = '2'
     LEFT JOIN 
         limit_order lo 
         ON mm.position_id = lo.position_id 
+        AND mm.protocol_version = '2'
     {% if is_incremental() %}
     WHERE mm.evt_block_time >= date_trunc('day', now() - interval '7' day)
     {% endif %}

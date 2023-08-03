@@ -78,6 +78,7 @@ add_margin_v1 as (
         '1' as protocol_version,
         ae.version, 
         ae.day, 
+        CAST(date_trunc('MONTH', ae.day) AS date) as block_month,
         ae.evt_tx_hash,
         ae.evt_index,
         ae.evt_block_time,
@@ -103,6 +104,7 @@ add_margin_v2 AS (
             '2' as protocol_version,
             '{{ 'v2.' + loop.index | string }}' as version,
             CAST(date_trunc('DAY', evt_block_time) AS date) as day, 
+            CAST(date_trunc('MONTH', evt_block_time) AS date) as block_month,
             evt_tx_hash,
             evt_index,
             evt_block_time,
@@ -120,27 +122,18 @@ add_margin_v2 AS (
         UNION ALL
         {% endif %}
     {% endfor %}
-), 
-
-both_versions as (
-        SELECT 
-            * 
-        FROM 
-        add_margin_v1
-
-        UNION ALL 
-
-        SELECT
-            *
-        FROM 
-        add_margin_v2
 )
-
 SELECT 
-    CAST(date_trunc('MONTH', day) AS date) as block_month, 
+    * 
+FROM 
+add_margin_v1
+
+UNION ALL 
+
+SELECT
     *
 FROM 
-both_versions
+add_margin_v2
     
 
 
