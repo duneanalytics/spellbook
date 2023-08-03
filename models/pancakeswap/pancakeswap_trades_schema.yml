@@ -21,8 +21,8 @@ models:
       - &version
         name: version
         description: "Version of the contract built and deployed by the DEX project"
-      - &block_month
-        name: block_month
+      - &block_date
+        name: block_date
         description: "UTC event block date of each DEX trade"
       - &block_time
         name: block_time

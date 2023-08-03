@@ -14,6 +14,7 @@ models:
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
+            - block_date
             - blockchain
             - project
             - version
@@ -30,8 +31,8 @@ models:
         description: "Project name of the DEX"
       - name: version
         description: "Version of the contract built and deployed by the DEX project"
-      - name: block_month
-        description: "UTC event block month of each DEX trade"
+      - name: block_date
+        description: "UTC event block date of each DEX trade"
       - name: block_time
         description: "UTC event block time of each DEX trade"
       - name: token_bought_symbol
@@ -82,6 +83,7 @@ models:
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
+            - block_date
             - blockchain
             - project
             - version
@@ -98,8 +100,8 @@ models:
         description: "Project name of the DEX"
       - name: version
         description: "Version of the contract built and deployed by the DEX project"
-      - name: block_month
-        description: "UTC event block month of each DEX trade"
+      - name: block_date
+        description: "UTC event block date of each DEX trade"
       - name: block_time
         description: "UTC event block time of each DEX trade"
       - name: token_bought_symbol
@@ -150,6 +152,7 @@ models:
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
+            - block_date
             - blockchain
             - project
             - version
@@ -166,8 +169,8 @@ models:
         description: "Project name of the DEX"
       - name: version
         description: "Version of the contract built and deployed by the DEX project"
-      - name: block_month
-        description: "UTC event block month of each DEX trade"
+      - name: block_date
+        description: "UTC event block date of each DEX trade"
       - name: block_time
         description: "UTC event block time of each DEX trade"
       - name: token_bought_symbol
@@ -223,8 +226,8 @@ models:
         description: "Project name of the DEX"
       - name: version
         description: "Version of the contract built and deployed by the DEX project"
-      - name: block_month
-        description: "UTC event block month of each DEX trade"
+      - name: block_date
+        description: "UTC event block date of each DEX trade"
       - name: block_time
         description: "UTC event block time of each DEX trade"
       - name: token_bought_symbol

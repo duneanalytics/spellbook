@@ -1,11 +1,11 @@
 {{ config(tags=['dunesql'],
     schema = 'pancakeswap_v2_bnb',
     alias = alias('amm_trades'),
-    partition_by = ['block_month'],
+    partition_by = ['block_date'],
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
-    unique_key = ['blockchain', 'project', 'version', 'tx_hash', 'evt_index'],
+    unique_key = ['block_date', 'blockchain', 'project', 'version', 'tx_hash', 'evt_index'],
     post_hook='{{ expose_spells(\'["bnb"]\',
                                 "project",
                                 "pancakeswap_v2",
@@ -43,7 +43,7 @@ SELECT
     'bnb'                                                        AS blockchain
      , 'pancakeswap'                                             AS project
      , '2'                                                       AS version
-     , CAST(date_trunc('month', dexs.block_time) AS date)      AS block_month
+     , TRY_CAST(date_trunc('DAY', dexs.block_time) AS date)      AS block_date
      , dexs.block_time
      , bep20a.symbol                                             AS token_bought_symbol
      , bep20b.symbol                                             AS token_sold_symbol
