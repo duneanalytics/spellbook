@@ -11,7 +11,7 @@
 }}
         
         
-SELECT 
+SELECT
     'arbitrum' AS blockchain
     , abi_id
     , abi
