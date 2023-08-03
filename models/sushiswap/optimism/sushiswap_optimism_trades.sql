@@ -1,11 +1,11 @@
 {{ config(
     tags=['dunesql']
     ,alias = alias('trades')
-    ,partition_by = ['block_month']
+    ,partition_by = ['block_date']
     ,materialized = 'incremental'
     ,file_format = 'delta'
     ,incremental_strategy = 'merge'
-    ,unique_key = ['blockchain', 'project', 'version', 'tx_hash', 'evt_index']
+    ,unique_key = ['block_date', 'blockchain', 'project', 'version', 'tx_hash', 'evt_index']
     )
 }}
 
@@ -61,7 +61,7 @@ select
     'optimism' as blockchain,
     'sushiswap' as project,
     version,
-    cast(date_trunc('month', dexs.block_time) as date) as block_month,
+    try_cast(date_trunc('DAY', dexs.block_time) as date) as block_date,
     dexs.block_time,
     erc20a.symbol as token_bought_symbol,
     erc20b.symbol as token_sold_symbol,
