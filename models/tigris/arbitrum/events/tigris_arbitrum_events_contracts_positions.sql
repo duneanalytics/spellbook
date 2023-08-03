@@ -15,7 +15,7 @@ hardcoded_positions as ( -- harcoding the position contracts since there's no ev
         FROM (
         VALUES 
         -- v1 trading contracts 
-            (0x9c370D807CDB4E12A8558d9A5167F7D4b003C583, 0xb75bf135a05665855377a689d39203750cba6c30, 'v1.2', 'arbitrum'),
+            (0xe17a2829f0c23c02e662c616081dcad18dcbb7e4, 0xb75bf135a05665855377a689d39203750cba6c30, 'v1.2', 'arbitrum'),
             (0xDDe031307c185aB3FA1b51874f4EE57841B20292, 0xb75bf135a05665855377a689d39203750cba6c30, 'v1.3', 'arbitrum'),
             (0x0CC23BF1761C85e010D257F02fd638d4E4221579, 0xb75bf135a05665855377a689d39203750cba6c30, 'v1.4', 'arbitrum'),
             (0x6c5Da3f6A1f1B41feE2aA4a86b935272663b4957, 0xb75bf135a05665855377a689d39203750cba6c30, 'v1.5', 'arbitrum'),
