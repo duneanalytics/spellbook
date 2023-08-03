@@ -52,7 +52,14 @@ open_position_v1 AS (
             CAST(json_extract_scalar(_tradeInfo, '$.direction') as VARCHAR) as direction, 
             from_hex(json_extract_scalar(_tradeInfo, '$.referral')) as referral, 
             t._trader as trader,
-            t.contract_address as project_contract_address
+            t.contract_address as project_contract_address,
+            CASE 
+                WHEN CAST(_orderType as VARCHAR) = '1' AND CAST(json_extract_scalar(_tradeInfo, '$.direction') as VARCHAR) = 'true' THEN 'limit_buy'
+                WHEN CAST(_orderType as VARCHAR) = '1' AND CAST(json_extract_scalar(_tradeInfo, '$.direction') as VARCHAR) = 'false' THEN 'limit_sell'
+                WHEN CAST(_orderType as VARCHAR) = '2' AND CAST(json_extract_scalar(_tradeInfo, '$.direction') as VARCHAR) = 'true' THEN 'buy_stop'
+                WHEN CAST(_orderType as VARCHAR) = '2' AND CAST(json_extract_scalar(_tradeInfo, '$.direction') as VARCHAR) = 'false' THEN 'sell_stop'
+                ELSE 'open_position'
+            END as open_type 
         FROM {{ source('tigristrade_arbitrum', open_position_trading_evt) }} t
         INNER JOIN pairs ta
             ON CAST(json_extract_scalar(_tradeInfo, '$.asset') as double) = CAST(ta.asset_id as double)
@@ -86,7 +93,14 @@ open_position_v2 AS (
             CAST(json_extract_scalar(tradeInfo, '$.direction') as VARCHAR) as direction, 
             from_hex(json_extract_scalar(tradeInfo, '$.referral')) as referral, 
             t.trader as trader,
-            t.contract_address as project_contract_address
+            t.contract_address as project_contract_address,
+            CASE 
+                WHEN CAST(orderType as VARCHAR) = '1' AND CAST(json_extract_scalar(tradeInfo, '$.direction') as VARCHAR) = 'true' THEN 'limit_buy'
+                WHEN CAST(orderType as VARCHAR) = '1' AND CAST(json_extract_scalar(tradeInfo, '$.direction') as VARCHAR) = 'false' THEN 'limit_sell'
+                WHEN CAST(orderType as VARCHAR) = '2' AND CAST(json_extract_scalar(tradeInfo, '$.direction') as VARCHAR) = 'true' THEN 'buy_stop'
+                WHEN CAST(orderType as VARCHAR) = '2' AND CAST(json_extract_scalar(tradeInfo, '$.direction') as VARCHAR) = 'false' THEN 'sell_stop'
+                ELSE 'open_position'
+            END as open_type 
         FROM {{ source('tigristrade_v2_arbitrum', open_position_trading_evt) }} t
         INNER JOIN pairs ta
             ON CAST(json_extract_scalar(tradeInfo, '$.asset') as double) = CAST(ta.asset_id as double)
