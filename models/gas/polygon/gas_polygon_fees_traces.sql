@@ -45,7 +45,7 @@ WITH traces AS (
           , tx_success
           FROM {{ source('polygon','traces') }}
           {% if is_incremental() %}
-          WHERE block_time >= date_trunc('day', NOW() - interval '1 days')
+          WHERE block_time >= date_trunc('day', NOW() - interval '1' day)
           {% endif %}
           
           UNION ALL
@@ -66,7 +66,7 @@ WITH traces AS (
           FROM {{ source('polygon','traces') }}
           WHERE cardinality(trace_address) > 0
           {% if is_incremental() %}
-          AND block_time >= date_trunc('day', NOW() - interval '1 days')
+          AND block_time >= date_trunc('day', NOW() - interval '1' day)
           {% endif %}
           ) traces
      GROUP BY traces.tx_hash, traces.trace, traces.block_time, traces.block_number
