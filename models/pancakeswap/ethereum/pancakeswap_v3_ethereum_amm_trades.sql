@@ -1,7 +1,7 @@
 {{ config(tags=['dunesql'],
     schema = 'pancakeswap_v3_ethereum',
     alias = alias('amm_trades'),
-    partition_by = ['block_date'],
+    partition_by = ['block_month'],
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
@@ -44,6 +44,7 @@ SELECT
     ,'pancakeswap' AS project
     ,'3' AS version
     ,TRY_CAST(date_trunc('DAY', dexs.block_time) AS date) AS block_date
+    ,CAST(date_trunc('month', dexs.block_time) AS date)   AS block_month
     ,dexs.block_time
     ,erc20a.symbol AS token_bought_symbol
     ,erc20b.symbol AS token_sold_symbol
