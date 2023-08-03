@@ -47,8 +47,8 @@ WITH
 
 {% set add_margin_v2_call_tables = [
     'Trading_call_addMargin'
-    ,'Trading_call_addMargin'
-    ,'Trading_call_addMargin'
+    ,'TradingV2_call_addMargin'
+    ,'TradingV3_call_addMargin'
 ] %}
 
 modify_margin_events_v1 AS (
@@ -69,7 +69,7 @@ modify_margin_events_v1 AS (
             mm.contract_address as project_contract_address
         FROM {{ source('tigristrade_arbitrum', modify_margin_trading_evt) }} mm
         {% if is_incremental() %}
-        WHERE ap.evt_block_time >= date_trunc('day', now() - interval '7' day)
+        WHERE mm.evt_block_time >= date_trunc('day', now() - interval '7' day)
         {% endif %}
         {% if not loop.last %}
         UNION ALL
@@ -151,7 +151,7 @@ modify_margin_events_v2 AS (
             mm.contract_address as project_contract_address
         FROM {{ source('tigristrade_v2_arbitrum', modify_margin_trading_evt) }} mm
         {% if is_incremental() %}
-        WHERE ap.evt_block_time >= date_trunc('day', now() - interval '7' day)
+        WHERE mm.evt_block_time >= date_trunc('day', now() - interval '7' day)
         {% endif %}
         {% if not loop.last %}
         UNION ALL
