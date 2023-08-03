@@ -3,19 +3,22 @@
         alias = alias('tokens'),
         materialized='table',
         file_format = 'delta',
-        tags = ['static', 'dunesql']
+        tags = ['dunesql']
         )
 }}
 SELECT
-    e.token_id
-    , 'optimism' as blockchain
-    , e.symbol as symbol
-    , o.l2_token as contract_address
-    , e.decimals
-FROM
-    {{ ref('tokens_optimism_erc20_bridged_mapping') }} o
-INNER JOIN
-    {{ ref('prices_ethereum_tokens') }} e
-    ON e.contract_address = o.l1_token
-WHERE
-    e.decimals IS NOT NULL
+    token_id
+    , blockchain
+    , symbol
+    , contract_address
+    , decimals
+FROM {{ ref('prices_optimism_tokens_curated') }}
+UNION ALL
+SELECT
+     token_id
+    , blockchain
+    , symbol
+    , contract_address
+    , decimals
+FROM {{ ref('prices_optimism_tokens_bridged') }}
+WHERE contract_address not in (select contract_address from {{ ref('prices_optimism_tokens_curated') }})
