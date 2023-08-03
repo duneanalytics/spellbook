@@ -420,7 +420,7 @@ WHERE contract_order = 1
     left join {{ source( chain , 'contracts') }} as oc 
       ON l.contract_address = oc.address
   WHERE
-    l.contract_address NOT IN (SELECT cc.contract_address FROM creator_contracts cc WHERE cc.blockchain = '{{chain}}' cc)
+    l.contract_address NOT IN (SELECT cc.contract_address FROM creator_contracts cc WHERE cc.blockchain = '{{chain}}')
     {% if is_incremental() %} -- this filter will only be applied on an incremental run 
       and l.block_time >= date_trunc('day', now() - interval '7' day)
     {% endif %}
