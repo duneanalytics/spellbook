@@ -77,4 +77,4 @@ last_margin lm
 INNER JOIN 
 last_leverage ll 
     ON lp.position_id = ll.position_id
-    AND lp.positions_contract = lm.positions_contract
+    AND lp.positions_contract = ll.positions_contract

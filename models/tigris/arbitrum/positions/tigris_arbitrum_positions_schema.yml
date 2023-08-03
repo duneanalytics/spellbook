@@ -51,7 +51,7 @@ models:
           combination_of_columns:
             - evt_tx_hash
             - position_id
-            - latest_leverage_time
+            - evt_block_time
             - payout
             - evt_index
             - version
