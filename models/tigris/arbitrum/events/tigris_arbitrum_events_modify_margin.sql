@@ -102,7 +102,7 @@ remove_margin_calls_v1 AS (
             ap.call_success, 
             ap.call_tx_hash,
             ap._id as position_id,
-            ap._addMargin/1e18 as margin_change
+            ap._removeMargin/1e18 as margin_change
         FROM {{ source('tigristrade_arbitrum', remove_margin_trading_call) }} ap
         {% if is_incremental() %}
         WHERE ap.call_block_time >= date_trunc('day', now() - interval '7' day)
@@ -184,7 +184,7 @@ remove_margin_calls_v2 AS (
             ap.call_success, 
             ap.call_tx_hash,
             ap._id as position_id,
-            ap._addMargin/1e18 as margin_change
+            ap._removeMargin/1e18 as margin_change
         FROM {{ source('tigristrade_v2_arbitrum', remove_margin_trading_call) }} ap
         {% if is_incremental() %}
         WHERE ap.call_block_time >= date_trunc('day', now() - interval '7' day)
