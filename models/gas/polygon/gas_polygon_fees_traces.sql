@@ -6,7 +6,7 @@
         },
     schema = 'gas_polygon',
     alias = alias('fees_traces'),
-    partition_by = ['block_date'],
+    partition_by = ['block_month'],
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
