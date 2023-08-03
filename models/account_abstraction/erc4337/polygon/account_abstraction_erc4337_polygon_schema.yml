@@ -139,3 +139,97 @@ models:
         name: tx_fee_usd
         description: "the bundler paied gas (in usd) value for the transaction"
       - *beneficiary
+
+
+  - name: account_abstraction_erc4337_polygon_v0_5_account_deployed
+    meta:
+      blockchain: polygon
+      sector: erc4337
+      project: erc4337
+      contributors: 0xbitfly, hosuke
+    config:
+      tags: ["polygon", "erc4337", "account", "abstraction", "entrypoint"]
+    description: "erc4337 v0.5 account deployed on polygon"
+    columns:
+      - *blockchain
+      - *version
+      - *block_time
+      - *block_month
+      - *userop_hash
+      - *entrypoint_contract
+      - *tx_hash
+      - *sender
+      - *paymaster
+      - &factory
+        name: factory
+        description: "who can create a new AA Wallet. It's smart contract address"
+
+
+  - name: account_abstraction_erc4337_polygon_v0_6_account_deployed
+    meta:
+      blockchain: polygon
+      sector: erc4337
+      project: erc4337
+      contributors: 0xbitfly, hosuke
+    config:
+      tags: ["polygon", "erc4337", "account", "abstraction", "entrypoint"]
+    description: "erc4337 v0.6 account deployed on polygon"
+    columns:
+      - *blockchain
+      - *version
+      - *block_time
+      - *block_month
+      - *userop_hash
+      - *entrypoint_contract
+      - *tx_hash
+      - *sender
+      - *paymaster
+      - *factory
+
+  - name: account_abstraction_erc4337_polygon_account_deployed
+    meta:
+      blockchain: polygon
+      sector: erc4337
+      project: erc4337
+      contributors: 0xbitfly, hosuke
+    config:
+      tags: ["polygon", "erc4337", "account", "abstraction", "entrypoint"]
+    description: "erc4337 account deployed on polygon"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - userop_hash
+            - tx_hash
+      - check_seed:
+          seed_file: ref('account_abstraction_erc4337_account_deployed_seed')
+          filter:
+            blockchain: polygon
+            version: v0.5
+          match_columns:
+            - userop_hash
+            - tx_hash
+          check_columns:
+            - paymaster
+            - factory
+      - check_seed:
+          seed_file: ref('account_abstraction_erc4337_account_deployed_seed')
+          filter:
+            blockchain: polygon
+            version: v0.6
+          match_columns:
+            - userop_hash
+            - tx_hash
+          check_columns:
+            - paymaster
+            - factory
+    columns:
+      - *blockchain
+      - *version
+      - *block_time
+      - *block_month
+      - *userop_hash
+      - *entrypoint_contract
+      - *tx_hash
+      - *sender
+      - *paymaster
+      - *factory

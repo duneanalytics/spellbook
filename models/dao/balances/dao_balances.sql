@@ -1,4 +1,5 @@
 {{ config(
+    tags=['dunesql'],
     alias = alias('balances'),
     materialized = 'table',
     file_format = 'delta',
@@ -7,8 +8,6 @@
                                 "dao",
                                 \'["Henrystats"]\') }}')
 }}
-
-{% set project_start_date = '2018-10-27' %}
 
 WITH balances as (
     SELECT block_date as day,
@@ -54,12 +53,21 @@ balances_all as (
     GROUP BY 1, 3, 4, 5, 6, 7, 8
 ),
 
-days as (
-        select explode(
-                       sequence(
-                               to_date('{{project_start_date}}'), date_trunc('day', now()), interval 1 day
-                           )
-                   ) as day
+
+time_seq AS (
+    SELECT 
+        sequence(
+        CAST('2018-10-27' as timestamp),
+        date_trunc('day', cast(now() as timestamp)),
+        interval '1' day
+        ) AS time 
+),
+
+days AS (
+    SELECT 
+        time.time AS day 
+    FROM time_seq
+    CROSS JOIN unnest(time) AS time(time)
 ),
 
 daily_balances as (
@@ -77,7 +85,7 @@ SELECT d.day,
        db.dao,
        db.dao_wallet_address,
        db.balance,
-       db.balance * p.price as usd_value,
+       db.balance * COALESCE(p.price, e.price) as usd_value,
        db.asset,
        db.asset_contract_address
 FROM daily_balances db
@@ -89,4 +97,10 @@ LEFT JOIN
     ON p.contract_address = db.asset_contract_address
     AND d.day = p.minute
     AND p.blockchain = db.blockchain
-    
+LEFT JOIN 
+    {{ source('prices', 'usd') }} e 
+    ON db.asset_contract_address = 0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee
+    AND d.day = e.minute
+    AND db.blockchain = 'ethereum'
+    AND e.blockchain = 'ethereum'
+    AND e.symbol = 'WETH'
