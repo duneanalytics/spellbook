@@ -1,4 +1,5 @@
 {{ config(
+    tags=['dunesql'],
         alias = alias('lending'),
         partition_by = ['block_month'],
         materialized = 'incremental',
