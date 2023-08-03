@@ -1,4 +1,5 @@
 {{ config(
+    tags=['dunesql'],
     schema = 'tigris_v1_polygon',
     alias = alias('events_add_margin'),
     partition_by = ['day'],
@@ -13,7 +14,7 @@ WITH
 
 add_margin_v5 as (
         SELECT 
-            date_trunc('day', ap.evt_block_time) as day, 
+            TRY_CAST(date_trunc('DAY', ap.evt_block_time) AS date) as day, 
             ap.evt_tx_hash,
             ap.evt_index,
             ap.evt_block_time,
@@ -30,16 +31,16 @@ add_margin_v5 as (
             AND ap.evt_tx_hash = af.call_tx_hash 
             AND af.call_success = true 
             {% if is_incremental() %}
-            AND af.call_block_time >= date_trunc("day", now() - interval '1 week')
+            AND af.call_block_time >= date_trunc('day', now() - interval '7' day)
             {% endif %}
         {% if is_incremental() %}
-        WHERE ap.evt_block_time >= date_trunc("day", now() - interval '1 week')
+        WHERE ap.evt_block_time >= date_trunc('day', now() - interval '7' day)
         {% endif %}
 ),
 
 add_margin_v6 as (
         SELECT 
-            date_trunc('day', ap.evt_block_time) as day, 
+            TRY_CAST(date_trunc('DAY', ap.evt_block_time) AS date) as day, 
             ap.evt_tx_hash,
             ap.evt_index,
             ap.evt_block_time,
@@ -56,16 +57,16 @@ add_margin_v6 as (
             AND ap.evt_tx_hash = af.call_tx_hash 
             AND af.call_success = true
             {% if is_incremental() %}
-            AND af.call_block_time >= date_trunc("day", now() - interval '1 week')
+            AND af.call_block_time >= date_trunc('day', now() - interval '7' day)
             {% endif %} 
         {% if is_incremental() %}
-        WHERE ap.evt_block_time >= date_trunc("day", now() - interval '1 week')
+        WHERE ap.evt_block_time >= date_trunc('day', now() - interval '7' day)
         {% endif %}
 ),
 
 add_margin_v7 as (
         SELECT 
-            date_trunc('day', ap.evt_block_time) as day, 
+            TRY_CAST(date_trunc('DAY', ap.evt_block_time) AS date) as day, 
             ap.evt_tx_hash,
             ap.evt_index,
             ap.evt_block_time,
@@ -82,16 +83,16 @@ add_margin_v7 as (
             AND ap.evt_tx_hash = af.call_tx_hash 
             AND af.call_success = true 
             {% if is_incremental() %}
-            AND af.call_block_time >= date_trunc("day", now() - interval '1 week')
+            AND af.call_block_time >= date_trunc('day', now() - interval '7' day)
             {% endif %}
         {% if is_incremental() %}
-        WHERE ap.evt_block_time >= date_trunc("day", now() - interval '1 week')
+        WHERE ap.evt_block_time >= date_trunc('day', now() - interval '7' day)
         {% endif %}
 ),
 
 add_margin_v8 as (
         SELECT 
-            date_trunc('day', ap.evt_block_time) as day, 
+            TRY_CAST(date_trunc('DAY', ap.evt_block_time) AS date) as day, 
             ap.evt_tx_hash,
             ap.evt_index,
             ap.evt_block_time,
@@ -108,10 +109,10 @@ add_margin_v8 as (
             AND ap.evt_tx_hash = af.call_tx_hash 
             AND af.call_success = true 
             {% if is_incremental() %}
-            AND af.call_block_time >= date_trunc("day", now() - interval '1 week')
+            AND af.call_block_time >= date_trunc('day', now() - interval '7' day)
             {% endif %}
         {% if is_incremental() %}
-        WHERE ap.evt_block_time >= date_trunc("day", now() - interval '1 week')
+        WHERE ap.evt_block_time >= date_trunc('day', now() - interval '7' day)
         {% endif %}
 )
 
@@ -128,4 +129,3 @@ SELECT *, 'v1.7' as version FROM add_margin_v7
 UNION ALL
 
 SELECT *, 'v1.8' as version FROM add_margin_v8
-;

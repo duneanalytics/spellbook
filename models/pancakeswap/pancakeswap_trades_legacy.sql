@@ -1,6 +1,5 @@
 {{ config(
-	tags=['legacy'],
-	
+	    tags=['legacy'],
         alias = alias('trades', legacy_model=True),
         post_hook='{{ expose_spells(\'["bnb","ethereum"]\',
                                 "project",
