@@ -4,10 +4,6 @@
         schema = 'orca_whirlpool',
         alias = alias('trades'),
         partition_by = ['block_month'],
-        pre_hook = {
-            'sql': '{{ set_trino_session_property(is_partitioned(model), \'join_distribution_type\', \'PARTITIONED\') }}',
-            'transaction': True
-        },
         materialized = 'incremental',
         file_format = 'delta',
         incremental_strategy = 'merge',
