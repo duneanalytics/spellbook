@@ -1,8 +1,9 @@
 {{ config(
     tags = ['dunesql'],
     alias = alias('transactions'),
-    materialized = 'view',
+    materialized = 'incremental',
     file_format = 'delta',
+    unique_key = ['tx_hash', 'tx_index'],
     post_hook='{{ expose_spells(\'["ethereum", "gnosis", "polygon"]\',
                                 "sector",
                                 "dao",
@@ -25,12 +26,12 @@ FROM (
     {% for transactions_model in blockchains_models %}
     SELECT
         blockchain,
-        dao_creator_tool, 
-        dao, 
+        dao_creator_tool,
+        dao,
         dao_wallet_address,
         block_date,
-        block_time, 
-        tx_type, 
+        block_time,
+        tx_type,
         asset_contract_address,
         asset,
         raw_value,
