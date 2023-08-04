@@ -26,12 +26,12 @@ FROM (
     {% for transactions_model in blockchains_models %}
     SELECT
         blockchain,
-        dao_creator_tool, 
-        dao, 
+        dao_creator_tool,
+        dao,
         dao_wallet_address,
         block_date,
-        block_time, 
-        tx_type, 
+        block_time,
+        tx_type,
         asset_contract_address,
         asset,
         raw_value,
