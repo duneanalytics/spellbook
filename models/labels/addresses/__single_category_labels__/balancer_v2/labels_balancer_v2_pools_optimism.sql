@@ -28,7 +28,7 @@ WITH pools AS (
     FROM {{ source('balancer_v2_optimism', 'Vault_evt_PoolRegistered') }} c
     INNER JOIN {{ source('balancer_v2_optimism', 'WeightedPoolFactory_call_create') }} cc
       ON c.evt_tx_hash = cc.call_tx_hash
-      AND SUBSTRING(CAST(c.poolId AS varchar), 1, 42) = CAST(cc.output_0 AS varchar)
+      AND bytearray_substring(c.poolId, 1, 20) = cc.output_0
     CROSS JOIN UNNEST(cc.tokens) AS t(tokens)
     CROSS JOIN UNNEST(cc.weights) AS w(weights)
     {% if is_incremental() %}
@@ -55,7 +55,7 @@ WITH pools AS (
     FROM {{ source('balancer_v2_optimism', 'Vault_evt_PoolRegistered') }} c
     INNER JOIN {{ source('balancer_v2_optimism', 'WeightedPoolV2Factory_call_create') }} cc
       ON c.evt_tx_hash = cc.call_tx_hash
-      AND SUBSTRING(CAST(c.poolId AS varchar), 1, 42) = CAST(cc.output_0 AS varchar)
+      AND bytearray_substring(c.poolId, 1, 20) = cc.output_0
     CROSS JOIN UNNEST(cc.tokens) AS t(tokens)
     CROSS JOIN UNNEST(cc.normalizedWeights) AS w(weights)
     {% if is_incremental() %}
@@ -82,7 +82,7 @@ WITH pools AS (
     FROM {{ source('balancer_v2_optimism', 'Vault_evt_PoolRegistered') }} c
     INNER JOIN {{ source('balancer_v2_optimism', 'WeightedPool2TokensFactory_call_create') }} cc
       ON c.evt_tx_hash = cc.call_tx_hash
-      AND SUBSTRING(CAST(c.poolId AS varchar), 1, 42) = CAST(cc.output_0 AS varchar)
+      AND bytearray_substring(c.poolId, 1, 20) = cc.output_0
     CROSS JOIN UNNEST(cc.tokens) AS t(tokens)
     CROSS JOIN UNNEST(cc.weights) AS w(weights)
     {% if is_incremental() %}
@@ -102,7 +102,7 @@ WITH pools AS (
   FROM {{ source('balancer_v2_optimism', 'Vault_evt_PoolRegistered') }} c
   INNER JOIN {{ source('balancer_v2_optimism', 'StablePoolFactory_call_create') }} cc
     ON c.evt_tx_hash = cc.call_tx_hash
-    AND SUBSTRING(CAST(c.poolId AS varchar), 1, 42) = CAST(cc.output_0 AS varchar)
+    AND bytearray_substring(c.poolId, 1, 20) = cc.output_0
   CROSS JOIN UNNEST(cc.tokens) AS t(tokens)
   {% if is_incremental() %}
   WHERE c.evt_block_time >= date_trunc('day', now() - interval '7' day)
@@ -120,7 +120,7 @@ WITH pools AS (
   FROM {{ source('balancer_v2_optimism', 'Vault_evt_PoolRegistered') }} c
   INNER JOIN {{ source('balancer_v2_optimism', 'MetaStablePoolFactory_call_create') }} cc
     ON c.evt_tx_hash = cc.call_tx_hash
-    AND SUBSTRING(CAST(c.poolId AS varchar), 1, 42) = CAST(cc.output_0 AS varchar)
+    AND bytearray_substring(c.poolId, 1, 20) = cc.output_0
   CROSS JOIN UNNEST(cc.tokens) AS t(tokens)
   {% if is_incremental() %}
   WHERE c.evt_block_time >= date_trunc('day', now() - interval '7' day)
@@ -138,7 +138,7 @@ WITH pools AS (
   FROM {{ source('balancer_v2_optimism', 'Vault_evt_PoolRegistered') }} c
   INNER JOIN {{ source('balancer_v2_optimism', 'NoProtocolFeeLiquidityBootstrappingPoolFactory_call_create') }} cc
     ON c.evt_tx_hash = cc.call_tx_hash
-    AND SUBSTRING(CAST(c.poolId AS varchar), 1, 42) = CAST(cc.output_0 AS varchar)
+    AND bytearray_substring(c.poolId, 1, 20) = cc.output_0
   CROSS JOIN UNNEST(cc.tokens) AS t(tokens)
   {% if is_incremental() %}
   WHERE c.evt_block_time >= date_trunc('day', now() - interval '7' day)
@@ -156,7 +156,7 @@ WITH pools AS (
   FROM {{ source('balancer_v2_optimism', 'Vault_evt_PoolRegistered') }} c
   INNER JOIN {{ source('balancer_v2_optimism', 'ComposableStablePoolFactory_call_create') }} cc
     ON c.evt_tx_hash = cc.call_tx_hash
-    AND SUBSTRING(CAST(c.poolId AS varchar), 1, 42) = CAST(cc.output_0 AS varchar)
+    AND bytearray_substring(c.poolId, 1, 20) = cc.output_0
   CROSS JOIN UNNEST(cc.tokens) AS t(tokens)
   {% if is_incremental() %}
   WHERE c.evt_block_time >= date_trunc('day', now() - interval '7' day)
@@ -174,7 +174,7 @@ WITH pools AS (
   FROM {{ source('balancer_v2_optimism', 'Vault_evt_PoolRegistered') }} c
   INNER JOIN {{ source('balancer_v2_optimism', 'AaveLinearPoolFactory_call_create') }} cc
     ON c.evt_tx_hash = cc.call_tx_hash
-    AND SUBSTRING(CAST(c.poolId AS varchar), 1, 42) = CAST(cc.output_0 AS varchar)
+    AND bytearray_substring(c.poolId, 1, 20) = cc.output_0
   CROSS JOIN UNNEST(ARRAY[cc.mainToken, cc.wrappedToken]) AS t (element)
   {% if is_incremental() %}
   WHERE c.evt_block_time >= date_trunc('day', now() - interval '7' day)
