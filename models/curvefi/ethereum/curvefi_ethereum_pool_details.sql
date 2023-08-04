@@ -1,23 +1,23 @@
 {{ config(
-    alias = 'pool_details'
+    alias = alias('pool_details')
 ) }}
 
 SELECT
     version,
     `name`,
     symbol,
-    pool_address,
-    token_address,
-    gauge_contract,
-    coin0,
-    coin1,
-    coin2,
-    undercoin0,
-    undercoin1,
-    undercoin2,
-    undercoin3,
-    deposit_contract,
-    coin3
+    lower(pool_address) AS pool_address,
+    lower(token_address) AS token_address,
+    lower(gauge_contract) AS gauge_contract,
+    lower(coin0) AS coin0,
+    lower(coin1) AS coin1,
+    lower(coin2) AS coin2,
+    lower(undercoin0) AS undercoin0,
+    lower(undercoin1) AS undercoin1,
+    lower(undercoin2) AS undercoin2,
+    lower(undercoin3) AS undercoin3,
+    lower(deposit_contract) AS deposit_contract,
+    lower(coin3) AS coin3
 FROM
     (
         VALUES
@@ -52,23 +52,6 @@ FROM
                 '0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48',
                 '0xdac17f958d2ee523a2206206994597c13d831ec7',
                 NULL,
-                NULL,
-                NULL
-            ),
-            (
-                'Regular',
-                'alusd',
-                'alusd',
-                '0x43b4FdFD4Ff969587185cDB6f0BD875c5Fc83f8c',
-                '0x43b4FdFD4Ff969587185cDB6f0BD875c5Fc83f8c',
-                '0x9582C4ADACB3BCE56Fea3e590F05c3ca2fb9C477',
-                '0xbc6da0fe9ad5f3b0d58160288917aa56653660e9',
-                '0x6c3f90f043a72fa612cbac8115ee7e52bde6e490',
-                NULL,
-                '0xbc6da0fe9ad5f3b0d58160288917aa56653660e9',
-                '0x6b175474e89094c44da98b954eedeac495271d0f',
-                '0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48',
-                '0xdac17f958d2ee523a2206206994597c13d831ec7',
                 NULL,
                 NULL
             ),
@@ -122,23 +105,6 @@ FROM
                 '0x4fabb145d64652a948d72533023f6e7a623c7c53',
                 '0xb6c057591E073249F2D9D88Ba59a46CFC9B59EdB',
                 '0x04bc0ab673d88ae9dbc9da2380cb6b79c4bca9ae'
-            ),
-            (
-                'Regular',
-                'busdv2',
-                'busdv2',
-                '0x4807862AA8b2bF68830e4C8dc86D0e9A998e085A',
-                '0x4807862AA8b2bF68830e4C8dc86D0e9A998e085A',
-                '0xd4B22fEdcA85E684919955061fDf353b9d38389B',
-                '0x4fabb145d64652a948d72533023f6e7a623c7c53',
-                '0x6c3f90f043a72fa612cbac8115ee7e52bde6e490',
-                NULL,
-                '0x4fabb145d64652a948d72533023f6e7a623c7c53',
-                '0x6b175474e89094c44da98b954eedeac495271d0f',
-                '0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48',
-                '0xdac17f958d2ee523a2206206994597c13d831ec7',
-                NULL,
-                NULL
             ),
             (
                 'Regular',
@@ -261,23 +227,6 @@ FROM
             ),
             (
                 'Regular',
-                'frax',
-                'frax',
-                '0xd632f22692FaC7611d2AA1C0D552930D43CAEd3B',
-                '0xd632f22692FaC7611d2AA1C0D552930D43CAEd3B',
-                '0x72E158d38dbd50A483501c24f792bDAAA3e7D55c',
-                '0x853d955acef822db058eb8505911ed77f175b99e',
-                '0x6c3f90f043a72fa612cbac8115ee7e52bde6e490',
-                NULL,
-                '0x853d955acef822db058eb8505911ed77f175b99e',
-                '0x6b175474e89094c44da98b954eedeac495271d0f',
-                '0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48',
-                '0xdac17f958d2ee523a2206206994597c13d831ec7',
-                NULL,
-                NULL
-            ),
-            (
-                'Regular',
                 'gusd',
                 'gusd',
                 '0x4f062658EaAF2C1ccf8C8e36D6824CDf41167956',
@@ -376,40 +325,6 @@ FROM
                 '0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48',
                 '0xdac17f958d2ee523a2206206994597c13d831ec7',
                 '0x1de7f0866e2c4adAC7b457c58Cc25c8688CDa1f2',
-                NULL
-            ),
-            (
-                'Regular',
-                'lusd',
-                'lusd',
-                '0xEd279fDD11cA84bEef15AF5D39BB4d4bEE23F0cA',
-                '0xEd279fDD11cA84bEef15AF5D39BB4d4bEE23F0cA',
-                '0x9B8519A9a00100720CCdC8a120fBeD319cA47a14',
-                '0x5f98805a4e8be255a32880fdec7f6728c6568ba0',
-                '0x6c3f90f043a72fa612cbac8115ee7e52bde6e490',
-                NULL,
-                '0x5f98805a4e8be255a32880fdec7f6728c6568ba0',
-                '0x6b175474e89094c44da98b954eedeac495271d0f',
-                '0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48',
-                '0xdac17f958d2ee523a2206206994597c13d831ec7',
-                NULL,
-                NULL
-            ),
-            (
-                'Regular',
-                'mim',
-                'mim',
-                '0x5a6A4D54456819380173272A5E8E9B9904BdF41B',
-                '0x5a6A4D54456819380173272A5E8E9B9904BdF41B',
-                '0xd8b712d29381748dB89c36BCa0138d7c75866ddf',
-                '0x99d8a9c45b2eca8864373a26d1459e3dff1e17f3',
-                '0x6c3f90f043a72fa612cbac8115ee7e52bde6e490',
-                NULL,
-                '0x99d8a9c45b2eca8864373a26d1459e3dff1e17f3',
-                '0x6b175474e89094c44da98b954eedeac495271d0f',
-                '0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48',
-                '0xdac17f958d2ee523a2206206994597c13d831ec7',
-                NULL,
                 NULL
             ),
             (
@@ -637,18 +552,18 @@ FROM
                 'Regular',
                 'susdv2',
                 'susd',
-                '0xA5407eAE9Ba41422680e2e00537571bcC53efBfd',
-                '0xC25a3A3b969415c80451098fa907EC722572917f',
-                '0xA90996896660DEcC6E997655E065b23788857849',
-                '0x6b175474e89094c44da98b954eedeac495271d0f',
-                '0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48',
-                '0xdac17f958d2ee523a2206206994597c13d831ec7',
-                '0x6b175474e89094c44da98b954eedeac495271d0f',
-                '0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48',
-                '0xdac17f958d2ee523a2206206994597c13d831ec7',
-                '0x57Ab1E02fEE23774580C119740129eAC7081e9D3',
-                '0xFCBa3E75865d2d561BE8D220616520c171F12851',
-                '0x57ab1ec28d129707052df4df418d58a2d46d5f51'
+                '0xA5407eAE9Ba41422680e2e00537571bcC53efBfd', --pool_address
+                '0xC25a3A3b969415c80451098fa907EC722572917f', --token_address
+                '0xA90996896660DEcC6E997655E065b23788857849', --gauge_address
+                '0x6b175474e89094c44da98b954eedeac495271d0f', --coin0
+                '0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48', --coin1
+                '0xdac17f958d2ee523a2206206994597c13d831ec7', --coin2
+                '0x6b175474e89094c44da98b954eedeac495271d0f', --undercoin0
+                '0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48', --undercoin1
+                '0xdac17f958d2ee523a2206206994597c13d831ec7', --undercoin2
+                '0x57Ab1E02fEE23774580C119740129eAC7081e9D3', --undercoin3
+                '0xFCBa3E75865d2d561BE8D220616520c171F12851', --deposit_contract
+                '0x57ab1ec28d129707052df4df418d58a2d46d5f51' --coin3
             ),
             (
                 'Regular',
@@ -720,23 +635,6 @@ FROM
             ),
             (
                 'Regular',
-                'tusd',
-                'tusd',
-                '0xecd5e75afb02efa118af914515d6521aabd189f1',
-                '0xecd5e75afb02efa118af914515d6521aabd189f1',
-                '0x359FD5d6417aE3D8D6497d9B2e7A890798262BA4',
-                '0x0000000000085d4780b73119b644ae5ecd22b376',
-                '0x6c3f90f043a72fa612cbac8115ee7e52bde6e490',
-                NULL,
-                '0x0000000000085d4780b73119b644ae5ecd22b376',
-                '0x6b175474e89094c44da98b954eedeac495271d0f',
-                '0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48',
-                '0xdac17f958d2ee523a2206206994597c13d831ec7',
-                '0xA79828DF1850E8a3A3064576f380D90aECDD3359',
-                NULL
-            ),
-            (
-                'Regular',
                 'usdk',
                 'usdk',
                 '0x3E01dD8a5E1fb3481F0F589056b428Fc308AF0FB',
@@ -792,16 +690,16 @@ FROM
                 'usdt',
                 '0x52EA46506B9CC5Ef470C5bf89f17Dc28bB35D85c',
                 '0x9fC689CCaDa600B6DF723D9E47D84d76664a1F23',
-                '0xBC89cd85491d81C6AD2954E6d0362Ee29fCa8F53',
-                '0x5d3a536e4d6dbd6114cc1ead35777bab948e3643',
-                '0x39aa39c021dfbae8fac545936693ac917d5e7563',
-                '0xdac17f958d2ee523a2206206994597c13d831ec7',
-                '0x6b175474e89094c44da98b954eedeac495271d0f',
-                '0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48',
-                '0xdac17f958d2ee523a2206206994597c13d831ec7',
-                NULL,
-                '0xac795D2c97e60DF6a99ff1c814727302fD747a80',
-                NULL
+                '0xBC89cd85491d81C6AD2954E6d0362Ee29fCa8F53', --gauge_contract
+                '0x5d3a536e4d6dbd6114cc1ead35777bab948e3643', --coin0
+                '0x39aa39c021dfbae8fac545936693ac917d5e7563', --coin1
+                '0xdac17f958d2ee523a2206206994597c13d831ec7', --coin2
+                '0x6b175474e89094c44da98b954eedeac495271d0f', --undercoin0
+                '0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48', --undercoin1
+                '0xdac17f958d2ee523a2206206994597c13d831ec7', --undercoin2
+                NULL, --undercoin3
+                '0xac795D2c97e60DF6a99ff1c814727302fD747a80', --deposit_contract
+                NULL --coin3
             ),
             (
                 'Regular',
@@ -824,36 +722,56 @@ FROM
                 'Regular',
                 'xautusd',
                 'xautusd',
-                '0xAdCFcf9894335dC340f6Cd182aFA45999F45Fc44',
-                '0x8484673cA7BfF40F82B041916881aeA15ee84834',
-                '0x1B3E14157ED33F60668f2103bCd5Db39a1573E5B',
-                '0x68749665ff8d2d112fa859aa293f07a622782f38',
-                '0x6c3f90f043a72fa612cbac8115ee7e52bde6e490',
-                NULL,
-                '0x68749665ff8d2d112fa859aa293f07a622782f38',
-                '0x6b175474e89094c44da98b954eedeac495271d0f',
-                '0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48',
-                '0xdac17f958d2ee523a2206206994597c13d831ec7',
-                '0xc5FA220347375ac4f91f9E4A4AAb362F22801504',
-                NULL
-            ),
-            (
-                'Regular',
-                'y',
-                'y',
-                '0x45F783CCE6B7FF23B2ab2D70e416cdb7D6055f51',
-                '0xdF5e0e81Dff6FAF3A7e52BA697820c5e32D806A8',
-                '0xFA712EE4788C042e2B7BB55E6cb8ec569C4530c1',
-                '0x16de59092dae5ccf4a1e6439d611fd0653f0bd01',
-                '0xd6ad7a6750a7593e092a9b218d66c0a814a3436e',
-                '0x83f798e925bcd4017eb265844fddabb448f1707d',
-                '0x6b175474e89094c44da98b954eedeac495271d0f',
-                '0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48',
-                '0xdac17f958d2ee523a2206206994597c13d831ec7',
-                '0x0000000000085d4780B73119b644AE5ecd22b376',
-                '0xbBC81d23Ea2c3ec7e56D39296F0cbB648873a5d3',
-                '0x73a052500105205d34daf004eab301916da8190f'
+                '0xAdCFcf9894335dC340f6Cd182aFA45999F45Fc44', --pool_address
+                '0x8484673cA7BfF40F82B041916881aeA15ee84834', --token_address
+                '0x1B3E14157ED33F60668f2103bCd5Db39a1573E5B', --gauge_contract
+                '0x68749665ff8d2d112fa859aa293f07a622782f38', --coin0
+                '0x6c3f90f043a72fa612cbac8115ee7e52bde6e490', --coin1
+                NULL, --coin2
+                '0x68749665ff8d2d112fa859aa293f07a622782f38', --undercoin0
+                '0x6b175474e89094c44da98b954eedeac495271d0f', --undercoin1
+                '0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48', --undercoin2
+                '0xdac17f958d2ee523a2206206994597c13d831ec7', --undercoin3
+                '0xc5FA220347375ac4f91f9E4A4AAb362F22801504', --deposit_contract
+                NULL --coin3
             )
+
+            , (
+                'Regular' --version
+                , 'fraxusdc' --name
+                , 'FRAX/USDC' --symbol
+                , '0xDcEF968d416a41Cdac0ED8702fAC8128A64241A2' --pool_address
+                , '0x3175df0976dfa876431c2e9ee6bc45b65d3473cc' --token_address
+                , '0xcfc25170633581bf896cb6cdee170e3e3aa59503' --gauge_contract
+                , '0x853d955aCEf822Db058eb8505911ED77F175b99e' --coin0
+                , '0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48' --coin1
+                , NULL --coin2
+                , null --undercoin0
+                , null --undercoin1
+                , null --undercoin2
+                , null --undercoin3
+                , null --deposit_contract
+                , null --coin3
+            )
+
+            , (
+                'Regular' --version
+                , 'sbtc2' --name
+                , 'sbtc2' --symbol
+                , '0xf253f83aca21aabd2a20553ae0bf7f65c755a07f' --pool_address
+                , '0x051d7e5609917bd9b73f04bac0ded8dd46a74301' --token_address
+                , '0x6d787113f23bed1d5e1530402b3f364d0a6e5af3' --gauge_contract
+                , '0x2260FAC5E5542a773Aa44fBCfeDf7C193bc2C599' --coin0
+                , '0xfE18be6b3Bd88A2D2A7f928d00292E7a9963CfC6' --coin1
+                , NULL --coin2
+                , null --undercoin0
+                , null --undercoin1
+                , null --undercoin2
+                , null --undercoin3
+                , null --deposit_contract
+                , null --coin3
+            )
+
     ) AS temp_table (
         version,
         `name`,

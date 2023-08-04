@@ -1,5 +1,5 @@
 {{ config(
-    alias ='trades',
+    alias = alias('trades'),
     partition_by = ['block_date'],
     materialized = 'incremental',
     file_format = 'delta',
@@ -19,12 +19,12 @@ WITH dexs AS
     SELECT
         evt_block_time AS block_time,
         'light' AS version,
-        `senderWallet` AS taker,
-        `signerWallet` AS maker,
-        `senderAmount` AS token_bought_amount_raw,
-        `signerAmount` AS token_sold_amount_raw,
-        `senderToken` AS token_bought_address,
-        `signerToken` AS token_sold_address,
+        e.senderWallet AS taker,
+        e.signerWallet AS maker,
+        e.senderAmount AS token_sold_amount_raw,
+        e.signerAmount AS token_bought_amount_raw,
+        e.senderToken AS token_sold_address,
+        e.signerToken AS token_bought_address,
         contract_address AS project_contract_address,
         evt_tx_hash AS tx_hash,
         '' AS trace_address,
@@ -39,13 +39,34 @@ WITH dexs AS
 
     SELECT
         evt_block_time AS block_time,
+        'light_v0' AS version,
+        e.senderWallet AS taker,
+        e.signerWallet AS maker,
+        e.senderAmount AS token_sold_amount_raw,
+        e.signerAmount AS token_bought_amount_raw,
+        e.senderToken AS token_sold_address,
+        e.signerToken AS token_bought_address,
+        contract_address AS project_contract_address,
+        evt_tx_hash AS tx_hash,
+        '' AS trace_address,
+        cast(NULL as double) AS amount_usd,
+        evt_index
+    FROM {{ source('airswap_ethereum', 'Light_v0_evt_Swap')}} e
+    {% if is_incremental() %}
+    WHERE evt_block_time >= date_trunc("day", now() - interval '1 week')
+    {% endif %}
+
+    UNION ALL
+    
+    SELECT
+        evt_block_time AS block_time,
         'swap' AS version,
-        `senderWallet` AS taker,
-        `signerWallet` AS maker,
-        `senderAmount` AS token_bought_amount_raw,
-        `signerAmount` AS token_sold_amount_raw,
-        `senderToken` AS token_bought_address,
-        `signerToken` AS token_sold_address,
+        e.senderWallet AS taker,
+        e.signerWallet AS maker,
+        e.senderAmount AS token_sold_amount_raw,
+        e.signerAmount AS token_bought_amount_raw,
+        e.senderToken AS token_sold_address,
+        e.signerToken AS token_bought_address,
         contract_address AS project_contract_address,
         evt_tx_hash AS tx_hash,
         '' AS trace_address,
@@ -61,18 +82,39 @@ WITH dexs AS
     SELECT
         evt_block_time AS block_time,
         'swap_v3' AS version,
-        `senderWallet` AS taker,
-        `signerWallet` AS maker,
-        `senderAmount` AS token_bought_amount_raw,
-        `signerAmount` AS token_sold_amount_raw,
-        `senderToken` AS token_bought_address,
-        `signerToken` AS token_sold_address,
+        e.senderWallet AS taker,
+        e.signerWallet AS maker,
+        e.senderAmount AS token_sold_amount_raw,
+        e.signerAmount AS token_bought_amount_raw,
+        e.senderToken AS token_sold_address,
+        e.signerToken AS token_bought_address,
         contract_address AS project_contract_address,
         evt_tx_hash AS tx_hash,
         '' AS trace_address,
         cast(NULL as double) AS amount_usd,
         evt_index
     FROM {{ source('airswap_ethereum', 'Swap_v3_evt_Swap')}} e
+    {% if is_incremental() %}
+    WHERE evt_block_time >= date_trunc("day", now() - interval '1 week')
+    {% endif %}
+
+    UNION ALL
+
+    SELECT
+        evt_block_time AS block_time,
+        'swap_erc20_v4' AS version,
+        e.senderWallet AS taker,
+        e.signerWallet AS maker,
+        e.senderAmount AS token_sold_amount_raw,
+        e.signerAmount AS token_bought_amount_raw,
+        e.senderToken AS token_sold_address,
+        e.signerToken AS token_bought_address,
+        contract_address AS project_contract_address,
+        evt_tx_hash AS tx_hash,
+        '' AS trace_address,
+        cast(NULL as double) AS amount_usd,
+        evt_index
+    FROM {{ source('airswap_ethereum', 'SwapERC20_v4_evt_SwapERC20')}} e
     {% if is_incremental() %}
     WHERE evt_block_time >= date_trunc("day", now() - interval '1 week')
     {% endif %}
@@ -91,8 +133,8 @@ SELECT
     end as token_pair
     ,dexs.token_bought_amount_raw / power(10, erc20a.decimals) AS token_bought_amount
     ,dexs.token_sold_amount_raw / power(10, erc20b.decimals) AS token_sold_amount
-    ,dexs.token_bought_amount_raw
-    ,dexs.token_sold_amount_raw
+    ,CAST(dexs.token_bought_amount_raw AS DECIMAL(38,0)) AS token_bought_amount_raw
+    ,CAST(dexs.token_sold_amount_raw AS DECIMAL(38,0)) AS token_sold_amount_raw
     ,coalesce(
         dexs.amount_usd
         ,(dexs.token_bought_amount_raw / power(10, p_bought.decimals)) * p_bought.price
@@ -115,7 +157,7 @@ INNER JOIN {{ source('ethereum', 'transactions') }} tx
     AND tx.block_time >= '{{project_start_date}}'
     {% endif %}
     {% if is_incremental() %}
-    AND tx.block_time = date_trunc("day", now() - interval '1 week')
+    AND tx.block_time >= date_trunc("day", now() - interval '1 week')
     {% endif %}
 LEFT JOIN {{ ref('tokens_erc20') }} erc20a
     ON erc20a.contract_address = dexs.token_bought_address

@@ -1,5 +1,6 @@
 {{ config(
-        alias ='aggregators',
+        tags = ['dunesql'],
+        alias = alias('aggregators'),
         post_hook='{{ expose_spells(\'["avalanche_c","bnb","ethereum","polygon", "optimism"]\',
                                     "sector",
                                     "nft",
@@ -13,5 +14,8 @@ UNION ALL
 SELECT 'ethereum' as blockchain, * FROM  {{ ref('nft_ethereum_aggregators') }}
 UNION ALL
 SELECT 'polygon' as blockchain, * FROM  {{ ref('nft_polygon_aggregators') }}
-UNION
+UNION ALL
 SELECT 'optimism' as blockchain, * FROM  {{ ref('nft_optimism_aggregators') }}
+UNION ALL
+SELECT 'arbitrum' as blockchain, * FROM  {{ ref('nft_arbitrum_aggregators') }}
+

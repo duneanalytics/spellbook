@@ -6,7 +6,7 @@
 
     {%- if target.schema.startswith("git_") -%}
 
-            {{target.schema + '_' + node.name }}
+        {{ ( target.schema + '_' + node.name | trim ) | truncate(128,True,'',0)}}
 
     {%- else -%}
 

@@ -1,0 +1,64 @@
+version: 2
+
+models:
+  - name: cow_protocol_tx_hash_labels_treasury_management
+    meta:
+      blockchain: ethereum
+      sector: tx_hash_labels
+      category: treasury_management
+      contributors: gentrexha
+    config:
+      tags: ['labels', 'tx_hash', 'ethereum', 'treasury_management', 'dex']
+    description: "Trades that came from a DAO"
+    columns:
+      - &blockchain
+        name: blockchain
+        description: "Blockchain"   
+      - &tx_hash_key
+        name: tx_hash_key
+        description: "Transaction hash of a trade that comes from a DAO/treasury"
+      - &name
+        name: name
+        description: "Label name"
+      - &category
+        name: category
+        description: "Label category"
+      - &contributor
+        name: contributor
+        description: "Wizard(s) contributing to labels"
+      - &source
+        name: source
+        description: "How were labels generated (query)"
+      - &created_at
+        name: created_at
+        description: "When were labels created"
+      - &updated_at
+        name: updated_at
+        description: "When were labels updated for the last time"
+      - &model_name
+        name: model_name
+        description: "Name of the label model sourced from"
+      - &label_type
+        name: label_type
+        description: "Type of label (see labels overall readme)"
+
+  - name: cow_protocol_tx_hash_labels_treasury_management_ethereum
+    meta:
+      blockchain: ethereum
+      sector: labels
+      category: treasury_management
+      contributors: gentrexha
+    config:
+      tags: ['labels', 'tx_hash', 'ethereum', 'treasury_management', 'dex']
+    description:  "Trades that came from a DAO"
+    columns:
+      - *blockchain
+      - *tx_hash_key
+      - *name
+      - *category
+      - *contributor
+      - *source
+      - *created_at
+      - *updated_at
+      - *model_name
+      - *label_type

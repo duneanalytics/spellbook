@@ -1,5 +1,5 @@
 {{ config(
-    alias = 'fees',
+    alias = alias('fees'),
     partition_by = ['block_date'],
     materialized = 'incremental',
     file_format = 'delta',
@@ -55,7 +55,7 @@ AND block_time >= date_trunc("day", now() - interval '2 days')
 AND blocks.time >= date_trunc("day", now() - interval '2 days')
 {% endif %}
 LEFT JOIN {{ source('prices','usd') }} p ON p.minute = date_trunc('minute', block_time)
-AND p.symbol = 'AVAX'
+AND p.symbol = 'AVAX' and p.blockchain is null
 {% if is_incremental() %}
 AND p.minute >= date_trunc("day", now() - interval '2 days')
 WHERE block_time >= date_trunc("day", now() - interval '2 days')

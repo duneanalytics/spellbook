@@ -1,5 +1,5 @@
 {{ config(
-        alias ='bep20_agg_day',
+        alias = alias('bep20_agg_day'),
         partition_by = ['day'],
         materialized ='incremental',
         file_format ='delta',

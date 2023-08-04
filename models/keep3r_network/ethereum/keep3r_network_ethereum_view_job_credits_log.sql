@@ -1,6 +1,6 @@
 {{ config (
-    alias = 'job_credits_log',
-    post_hook = '{{ expose_spells(\'["ethereum"]\', "project", "keep3r", \'["wei3erHase", "agaperste"]\') }}'
+    alias = alias('job_credits_log'),
+    post_hook = '{{ expose_spells_hide_trino(\'["ethereum"]\', "project", "keep3r", \'["wei3erHase", "agaperste"]\') }}'
 ) }}
 
 {% set kp3r_token = "0x1ceb5cb57c4d4e2b2433641b95dd330a33185a44" %}
@@ -15,7 +15,7 @@ WITH work_evt AS (
         _job AS job,
         _keeper AS keeper,
         _credit AS token,
-        _amount / 1e18 AS amount
+        cast(_amount as DOUBLE) / 1e18 AS amount
     FROM
         (
             SELECT
@@ -64,8 +64,8 @@ reward_evt AS (
         _job AS job,
         NULL AS keeper,
         '{{KP3R_token}}' AS token,
-        _currentCredits / 1e18 AS amount,
-        _periodCredits / 1e18 AS period_credits
+        CAST(_currentCredits AS DOUBLE) / 1e18 AS amount,
+        CAST(_periodCredits AS DOUBLE) / 1e18 AS period_credits
     FROM
         (
             SELECT

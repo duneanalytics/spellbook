@@ -1,10 +1,11 @@
 {{ config(
-        alias ='test_dependent_view'
+        alias = alias('test_dependent_view')
         )
 }}
 
+
         select
-            'ethereum' as blockchain,
+            'ethereum-test' as blockchain,
             day,
             wallet_address,
             token_address,

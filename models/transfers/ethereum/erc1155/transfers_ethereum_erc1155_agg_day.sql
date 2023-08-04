@@ -1,5 +1,5 @@
 {{ config(
-        alias ='erc1155_agg_day',
+        alias = alias('erc1155_agg_day'),
         materialized ='incremental',
         file_format ='delta',
         incremental_strategy='merge',

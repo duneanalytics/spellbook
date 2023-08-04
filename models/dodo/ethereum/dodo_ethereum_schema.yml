@@ -6,7 +6,7 @@ models:
       blockchain: ethereum
       sector: dex
       project: dodo
-      contributors: scoffie
+      contributors: scoffie, owen05
     config:
       tags: ['ethereum','dodo','trades', 'dex']
     description: >
@@ -24,16 +24,13 @@ models:
     columns:
       - &blockchain
         name: blockchain
-        description: "Blockchain which the DEX is deployed"
+        description: "Blockchain which the DEX is deployed (specify: ethereum)"
       - &project
         name: project
-        description: "Project name of the DEX"
+        description: "Project name of the DEX (specify: DODO)"
       - &version
         name: version
-        description: "Version of the contract built and deployed by the DEX project"
-      - &category
-        name: category
-        description: "Type of route through which a trade happened. Through DEX contract or and Aggregator contract"
+        description: "Version of dodo contracts (0 - dodo_aggregator, 1 - DODOV1, 2_dvm - DODOV2 public pool, 2_dsp - DODOV2 stable pool, 2_dpp - DODOV2 private pool)"
       - &block_date
         name: block_date
         description: "Truncated to day UTC event block date of each DEX trade"
@@ -67,9 +64,6 @@ models:
       - &token_bought_address
         name: token_bought_address
         description: "Contract address of the token bought"
-        tests:
-          - dex_trades_token_bought:
-              dex_trades_seed: ref('dex_trades_seed')
       - &token_sold_address
         name: token_sold_address
         description: "Contract address of the token sold"
@@ -78,7 +72,7 @@ models:
         description: "Address of trader who purchased a token"
       - &maker
         name: maker
-        description: "Address of trader who sold a token. DEX contract always the maker"
+        description: "Address of trader who sold a token."
       - &project_contract_address
         name: project_contract_address
         description: "Project contract address which executed the trade on the blockchain"
@@ -97,3 +91,109 @@ models:
       - &evt_index
         name: evt_index
         description: "Index of the corresponding trade event"
+
+  - name: dodo_pools_ethereum_trades
+    meta:
+      blockchain: ethereum
+      sector: dex
+      project: dodo_pools
+      contributors: scoffie, owen05
+    config:
+      tags: ['ethereum','dodo','pools', 'trades', 'dex']
+    description: >
+        DodoV1 && DODOV2 pools' trades on Ethereum.
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_date
+            - blockchain
+            - project
+            - version
+            - tx_hash
+            - evt_index
+            - trace_address
+      - check_dex_seed_legacy:
+          blockchain: ethereum
+          project: DODO
+          version: 1
+      - check_dex_seed_legacy:
+          blockchain: ethereum
+          project: DODO
+          version: 2_dvm
+      - check_dex_seed_legacy:
+          blockchain: ethereum
+          project: DODO
+          version: 2_dsp
+    columns:
+      - *blockchain
+      - *project
+      - *version
+      - *block_date
+      - *block_time
+      - *token_bought_symbol
+      - *token_sold_symbol
+      - *token_pair
+      - *token_bought_amount
+      - *token_sold_amount
+      - *token_bought_amount_raw
+      - *token_sold_amount_raw
+      - *amount_usd
+      - *token_bought_address
+      - *token_sold_address
+      - *taker
+      - *maker
+      - *project_contract_address
+      - *tx_hash
+      - *tx_from
+      - *tx_to
+      - *trace_address
+      - *evt_index
+
+  - name: dodo_aggregator_ethereum_trades
+    meta:
+      blockchain: ethereum
+      sector: dex
+      project: dodo_aggregator
+      contributors: scoffie, owen05
+    config:
+      tags: ['ethereum','dodo',"aggregator", 'trades', 'dex']
+    description: >
+        DODO Aggregation on Ethereum.
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_date
+            - blockchain
+            - project
+            - version
+            - tx_hash
+            - evt_index
+            - trace_address
+      - check_dex_aggregator_seed_legacy:
+          blockchain: ethereum
+          project: DODO
+          version: 0
+    columns:
+      - *blockchain
+      - *project
+      - *version
+      - *block_date
+      - *block_time
+      - *token_bought_symbol
+      - *token_sold_symbol
+      - *token_pair
+      - *token_bought_amount
+      - *token_sold_amount
+      - *token_bought_amount_raw
+      - *token_sold_amount_raw
+      - *amount_usd
+      - *token_bought_address
+      - *token_sold_address
+      - *taker
+      - *maker
+      - *project_contract_address
+      - *tx_hash
+      - *tx_from
+      - *tx_to
+      - *trace_address
+      - *evt_index

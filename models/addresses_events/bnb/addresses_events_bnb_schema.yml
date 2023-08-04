@@ -1,0 +1,39 @@
+version: 2
+
+models:
+  - name: addresses_events_bnb_first_funded_by
+    meta:
+      blockchain: bnb
+      sector: addresses_events
+      project: addresses
+      contributors: hildobby
+    config:
+      tags: ['table', 'funded', 'addresses_events', 'bnb']
+    description: "Table showing who first funded each BNB address in BNB"
+    tests:
+      - check_seed:
+          seed_file: ref('first_funded_by_seed')
+          filter:
+            blockchain: bnb
+          match_columns:
+            - blockchain
+            - address
+          check_columns:
+            - first_funded_by
+            - block_number
+            - tx_hash
+    columns:
+      - name: blockchain
+        description: "Blockchain"
+      - name: address
+        description: "Concerned BNB address"
+        tests:
+          - unique
+      - name: first_funded_by
+        description: "Which BNB address first funded the address with BNB"
+      - name: block_time
+        description: "The block time on which the address was first funded with BNB"
+      - name: block_number
+        description: "The block number on which the address was first funded with BNB"
+      - name: tx_hash
+        description: "The transaction hash on which the address was first funded with BNB"

@@ -19,14 +19,6 @@ models:
           tests:
             - not_null
 
-  - name: test_table
-    description: "integration test for a table"
-    config:
-      tags: ['integration_test']
-      columns:
-        - name: blockchain
-          tests:
-            - not_null
   - name: test_view
     description: "integration test for a view"
     config:
