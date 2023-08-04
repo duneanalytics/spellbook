@@ -28,7 +28,7 @@ WITH pools AS (
     FROM {{ source('balancer_v2_gnosis', 'Vault_evt_PoolRegistered') }} c
     INNER JOIN {{ source('balancer_v2_gnosis', 'WeightedPoolV2Factory_call_create') }} cc
       ON c.evt_tx_hash = cc.call_tx_hash
-      AND SUBSTRING(CAST(c.poolId AS varchar), 1, 42) = CAST(cc.output_0 AS varchar)
+      AND bytearray_substring(c.poolId, 1, 20) = cc.output_0
     CROSS JOIN UNNEST(cc.tokens) AS t(tokens)
     CROSS JOIN UNNEST(cc.normalizedWeights) AS w(weights)
     {% if is_incremental() %}
@@ -48,7 +48,7 @@ WITH pools AS (
   FROM {{ source('balancer_v2_gnosis', 'Vault_evt_PoolRegistered') }} c
   INNER JOIN {{ source('balancer_v2_gnosis', 'StablePoolV2Factory_call_create') }} cc
     ON c.evt_tx_hash = cc.call_tx_hash
-    AND SUBSTRING(CAST(c.poolId AS varchar), 1, 42) = CAST(cc.output_0 AS varchar)
+    AND bytearray_substring(c.poolId, 1, 20) = cc.output_0
   CROSS JOIN UNNEST(cc.tokens) AS t(tokens)
   {% if is_incremental() %}
   WHERE c.evt_block_time >= date_trunc('day', now() - interval '7' day)
@@ -66,7 +66,7 @@ WITH pools AS (
   FROM {{ source('balancer_v2_gnosis', 'Vault_evt_PoolRegistered') }} c
   INNER JOIN {{ source('balancer_v2_gnosis', 'NoProtocolFeeLiquidityBootstrappingPoolFactory_call_create') }} cc
     ON c.evt_tx_hash = cc.call_tx_hash
-    AND SUBSTRING(CAST(c.poolId AS varchar), 1, 42) = CAST(cc.output_0 AS varchar)
+    AND bytearray_substring(c.poolId, 1, 20) = cc.output_0
   CROSS JOIN UNNEST(cc.tokens) AS t(tokens)
   {% if is_incremental() %}
   WHERE c.evt_block_time >= date_trunc('day', now() - interval '7' day)
@@ -84,7 +84,7 @@ WITH pools AS (
   FROM {{ source('balancer_v2_gnosis', 'Vault_evt_PoolRegistered') }} c
   INNER JOIN {{ source('balancer_v2_gnosis', 'ComposableStablePoolFactory_call_create') }} cc
     ON c.evt_tx_hash = cc.call_tx_hash
-    AND SUBSTRING(CAST(c.poolId AS varchar), 1, 42) = CAST(cc.output_0 AS varchar)
+    AND bytearray_substring(c.poolId, 1, 20) = cc.output_0
   CROSS JOIN UNNEST(cc.tokens) AS t(tokens)
   {% if is_incremental() %}
   WHERE c.evt_block_time >= date_trunc('day', now() - interval '7' day)
@@ -102,7 +102,7 @@ WITH pools AS (
   FROM {{ source('balancer_v2_gnosis', 'Vault_evt_PoolRegistered') }} c
   INNER JOIN {{ source('balancer_v2_gnosis', 'AaveLinearPoolFactory_call_create') }} cc
     ON c.evt_tx_hash = cc.call_tx_hash
-    AND SUBSTRING(CAST(c.poolId AS varchar), 1, 42) = CAST(cc.output_0 AS varchar)
+    AND bytearray_substring(c.poolId, 1, 20) = cc.output_0
   CROSS JOIN UNNEST(ARRAY[cc.mainToken, cc.wrappedToken]) AS t (element)
   {% if is_incremental() %}
   WHERE c.evt_block_time >= date_trunc('day', now() - interval '7' day)
@@ -120,7 +120,7 @@ WITH pools AS (
   FROM {{ source('balancer_v2_gnosis', 'Vault_evt_PoolRegistered') }} c
   INNER JOIN {{ source('balancer_v2_gnosis', 'AaveLinearPoolV3Factory_call_create') }} cc
     ON c.evt_tx_hash = cc.call_tx_hash
-    AND SUBSTRING(CAST(c.poolId AS varchar), 1, 42) = CAST(cc.output_0 AS varchar)
+    AND bytearray_substring(c.poolId, 1, 20) = cc.output_0
   CROSS JOIN UNNEST(ARRAY[cc.mainToken, cc.wrappedToken]) AS t (element)
   {% if is_incremental() %}
   WHERE c.evt_block_time >= date_trunc('day', now() - interval '7' day)
@@ -138,7 +138,7 @@ WITH pools AS (
   FROM {{ source('balancer_v2_gnosis', 'Vault_evt_PoolRegistered') }} c
   INNER JOIN {{ source('balancer_v2_gnosis', 'ComposableStablePoolV2Factory_call_create') }} cc
     ON c.evt_tx_hash = cc.call_tx_hash
-    AND SUBSTRING(CAST(c.poolId AS varchar), 1, 42) = CAST(cc.output_0 AS varchar)
+    AND bytearray_substring(c.poolId, 1, 20) = cc.output_0
   CROSS JOIN UNNEST(cc.tokens) AS t(tokens)
   {% if is_incremental() %}
   WHERE c.evt_block_time >= date_trunc('day', now() - interval '7' day)
