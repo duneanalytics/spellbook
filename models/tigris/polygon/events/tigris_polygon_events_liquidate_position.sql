@@ -68,7 +68,7 @@ liquidate_position_v1_2 AS (
             _id as position_id,
             CAST(NULL as double) as price, 
             contract_address as project_contract_address,
-            _trader as trader,
+            _trader as trader
         FROM {{ source('tigristrade_polygon', liquidate_position_trading_evt) }}
         {% if is_incremental() %}
         WHERE evt_block_time >= date_trunc('day', now() - interval '7' day)
