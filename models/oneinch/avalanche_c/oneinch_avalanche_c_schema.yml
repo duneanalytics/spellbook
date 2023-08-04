@@ -1,15 +1,15 @@
 version: 2
 
 models:
-  - name: oneinch_bnb_ar_calls_transfers
+  - name: oneinch_avalanche_c_ar_calls_transfers
     meta:
-      blockchain: ['bnb']
+      blockchain: ['avalanche_c']
       sector: oneinch
       contributors: ['grkhr']
     config:
       tags: ['oneinch', 'raw']
     description: >
-        oneinch bnb calls & transfers
+        oneinch avalanche_c calls & transfers
 
     columns:
       - &blockchain

@@ -1,15 +1,15 @@
 version: 2
 
 models:
-  - name: oneinch_bnb_ar_calls_transfers
+  - name: oneinch_polygon_ar_calls_transfers
     meta:
-      blockchain: ['bnb']
+      blockchain: ['polygon']
       sector: oneinch
       contributors: ['grkhr']
     config:
       tags: ['oneinch', 'raw']
     description: >
-        oneinch bnb calls & transfers
+        oneinch polygon calls & transfers
 
     columns:
       - &blockchain
