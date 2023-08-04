@@ -1,6 +1,6 @@
 {{ config(
 	tags=['legacy'],
-	
+
     schema = 'gas_polygon',
     alias = alias('fees_traces', legacy_model=True),
     partition_by = ['block_date'],
@@ -45,11 +45,11 @@ WITH traces AS (
           {% if is_incremental() %}
           WHERE block_time >= date_trunc("day", NOW() - interval '1 days')
           {% endif %}
-          
+
           UNION ALL
-          
-          SELECT CAST(NULL AS varchar(1)) AS from 
-          , CAST(NULL AS varchar(1)) AS to 
+
+          SELECT CAST(NULL AS varchar(1)) AS from
+          , CAST(NULL AS varchar(1)) AS to
           , tx_hash
           , slice(trace_address, 1, cardinality(trace_address) - 1) AS trace
           , CAST(NULL AS double) AS gas_used_original
