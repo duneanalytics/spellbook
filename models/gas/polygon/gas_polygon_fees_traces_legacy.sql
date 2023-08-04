@@ -7,6 +7,7 @@
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
+    incremental_predicates = 'block_time >= date_trunc(\'day\', now() - interval \'1\' week)',
     unique_key = ['tx_hash', 'trace'],
     )
 }}
