@@ -28,7 +28,7 @@ WITH pools AS (
     FROM {{ source('balancer_v2_arbitrum', 'Vault_evt_PoolRegistered') }} c
     INNER JOIN {{ source('balancer_v2_arbitrum', 'WeightedPoolFactory_call_create') }} cc
       ON c.evt_tx_hash = cc.call_tx_hash
-      AND SUBSTRING(CAST(c.poolId AS varchar), 1, 42) = CAST(cc.output_0 AS varchar)
+      AND bytearray_substring(c.poolId, 1, 20) = cc.output_0
     CROSS JOIN UNNEST(cc.tokens) AS t(tokens)
     CROSS JOIN UNNEST(cc.weights) AS w(weights)
     {% if is_incremental() %}
@@ -55,7 +55,7 @@ WITH pools AS (
     FROM {{ source('balancer_v2_arbitrum', 'Vault_evt_PoolRegistered') }} c
     INNER JOIN {{ source('balancer_v2_arbitrum', 'WeightedPoolV2Factory_call_create') }} cc
       ON c.evt_tx_hash = cc.call_tx_hash
-      AND SUBSTRING(CAST(c.poolId AS varchar), 1, 42) = CAST(cc.output_0 AS varchar)
+      AND bytearray_substring(c.poolId, 1, 20) = cc.output_0
     CROSS JOIN UNNEST(cc.tokens) AS t(tokens)
     CROSS JOIN UNNEST(cc.normalizedWeights) AS w(weights)
     {% if is_incremental() %}
@@ -82,7 +82,7 @@ WITH pools AS (
     FROM {{ source('balancer_v2_arbitrum', 'Vault_evt_PoolRegistered') }} c
     INNER JOIN {{ source('balancer_v2_arbitrum', 'InvestmentPoolFactory_call_create') }} cc
       ON c.evt_tx_hash = cc.call_tx_hash
-      AND SUBSTRING(CAST(c.poolId AS varchar), 1, 42) = CAST(cc.output_0 AS varchar)
+      AND bytearray_substring(c.poolId, 1, 20) = cc.output_0
     CROSS JOIN UNNEST(cc.tokens) AS t(tokens)
     CROSS JOIN UNNEST(cc.weights) AS w(weights)
     {% if is_incremental() %}
@@ -109,7 +109,7 @@ WITH pools AS (
     FROM {{ source('balancer_v2_arbitrum', 'Vault_evt_PoolRegistered') }} c
     INNER JOIN {{ source('balancer_v2_arbitrum', 'WeightedPool2TokensFactory_call_create') }} cc
       ON c.evt_tx_hash = cc.call_tx_hash
-      AND SUBSTRING(CAST(c.poolId AS varchar), 1, 42) = CAST(cc.output_0 AS varchar)
+      AND bytearray_substring(c.poolId, 1, 20) = cc.output_0
     CROSS JOIN UNNEST(cc.tokens) AS t(tokens)
     CROSS JOIN UNNEST(cc.weights) AS w(weights)
     {% if is_incremental() %}
@@ -129,7 +129,7 @@ WITH pools AS (
   FROM {{ source('balancer_v2_arbitrum', 'Vault_evt_PoolRegistered') }} c
   INNER JOIN {{ source('balancer_v2_arbitrum', 'StablePoolFactory_call_create') }} cc
     ON c.evt_tx_hash = cc.call_tx_hash
-    AND SUBSTRING(CAST(c.poolId AS varchar), 1, 42) = CAST(cc.output_0 AS varchar)
+    AND bytearray_substring(c.poolId, 1, 20) = cc.output_0
   CROSS JOIN UNNEST(cc.tokens) AS t(tokens)
   {% if is_incremental() %}
   WHERE c.evt_block_time >= date_trunc('day', now() - interval '7' day)
@@ -147,7 +147,7 @@ WITH pools AS (
   FROM {{ source('balancer_v2_arbitrum', 'Vault_evt_PoolRegistered') }} c
   INNER JOIN {{ source('balancer_v2_arbitrum', 'MetaStablePoolFactory_call_create') }} cc
     ON c.evt_tx_hash = cc.call_tx_hash
-    AND SUBSTRING(CAST(c.poolId AS varchar), 1, 42) = CAST(cc.output_0 AS varchar)
+    AND bytearray_substring(c.poolId, 1, 20) = cc.output_0
   CROSS JOIN UNNEST(cc.tokens) AS t(tokens)
   {% if is_incremental() %}
   WHERE c.evt_block_time >= date_trunc('day', now() - interval '7' day)
@@ -165,7 +165,7 @@ WITH pools AS (
   FROM {{ source('balancer_v2_arbitrum', 'Vault_evt_PoolRegistered') }} c
   INNER JOIN {{ source('balancer_v2_arbitrum', 'LiquidityBootstrappingPoolFactory_call_create') }} cc
     ON c.evt_tx_hash = cc.call_tx_hash
-    AND SUBSTRING(CAST(c.poolId AS varchar), 1, 42) = CAST(cc.output_0 AS varchar)
+    AND bytearray_substring(c.poolId, 1, 20) = cc.output_0
   CROSS JOIN UNNEST(cc.tokens) AS t(tokens)
   {% if is_incremental() %}
   WHERE c.evt_block_time >= date_trunc('day', now() - interval '7' day)
@@ -183,7 +183,7 @@ WITH pools AS (
   FROM {{ source('balancer_v2_arbitrum', 'Vault_evt_PoolRegistered') }} c
   INNER JOIN {{ source('balancer_v2_arbitrum', 'NoProtocolFeeLiquidityBootstrappingPoolFactory_call_create') }} cc
     ON c.evt_tx_hash = cc.call_tx_hash
-    AND SUBSTRING(CAST(c.poolId AS varchar), 1, 42) = CAST(cc.output_0 AS varchar)
+    AND bytearray_substring(c.poolId, 1, 20) = cc.output_0
   CROSS JOIN UNNEST(cc.tokens) AS t(tokens)
   {% if is_incremental() %}
   WHERE c.evt_block_time >= date_trunc('day', now() - interval '7' day)
@@ -201,7 +201,7 @@ WITH pools AS (
   FROM {{ source('balancer_v2_arbitrum', 'Vault_evt_PoolRegistered') }} c
   INNER JOIN {{ source('balancer_v2_arbitrum', 'ComposableStablePoolFactory_call_create') }} cc
     ON c.evt_tx_hash = cc.call_tx_hash
-    AND SUBSTRING(CAST(c.poolId AS varchar), 1, 42) = CAST(cc.output_0 AS varchar)
+    AND bytearray_substring(c.poolId, 1, 20) = cc.output_0
   CROSS JOIN UNNEST(cc.tokens) AS t(tokens)
   {% if is_incremental() %}
   WHERE c.evt_block_time >= date_trunc('day', now() - interval '7' day)
@@ -219,7 +219,7 @@ WITH pools AS (
   FROM {{ source('balancer_v2_arbitrum', 'Vault_evt_PoolRegistered') }} c
   INNER JOIN {{ source('balancer_v2_arbitrum', 'AaveLinearPoolFactory_call_create') }} cc
     ON c.evt_tx_hash = cc.call_tx_hash
-    AND SUBSTRING(CAST(c.poolId AS varchar), 1, 42) = CAST(cc.output_0 AS varchar)
+    AND bytearray_substring(c.poolId, 1, 20) = cc.output_0
   CROSS JOIN UNNEST(ARRAY[cc.mainToken, cc.wrappedToken]) AS t (element)
   {% if is_incremental() %}
   WHERE c.evt_block_time >= date_trunc('day', now() - interval '7' day)
@@ -237,7 +237,7 @@ WITH pools AS (
   FROM {{ source('balancer_v2_arbitrum', 'Vault_evt_PoolRegistered') }} c
   INNER JOIN {{ source('balancer_v2_arbitrum', 'ERC4626LinearPoolFactory_call_create') }} cc
     ON c.evt_tx_hash = cc.call_tx_hash
-    AND SUBSTRING(CAST(c.poolId AS varchar), 1, 42) = CAST(cc.output_0 AS varchar)
+    AND bytearray_substring(c.poolId, 1, 20) = cc.output_0
   CROSS JOIN UNNEST(ARRAY[cc.mainToken, cc.wrappedToken]) AS t (element)
   {% if is_incremental() %}
   WHERE c.evt_block_time >= date_trunc('day', now() - interval '7' day)
