@@ -101,7 +101,7 @@ FROM traces
 INNER JOIN {{ source('polygon','transactions') }} txs ON txs.block_time=traces.block_time
      AND txs.hash=traces.tx_hash
      {% if is_incremental() %}
-     AND txs.block_time >= date_trunc("day", NOW() - interval '1' week)
+     AND txs.block_time >= date_trunc("day", NOW() - interval '1 days')
      {% endif %}
 LEFT JOIN {{ source('prices', 'usd') }} pu ON pu.minute=date_trunc('minute', traces.block_time)
      AND pu.blockchain='polygon'
