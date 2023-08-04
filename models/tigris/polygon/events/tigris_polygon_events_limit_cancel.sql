@@ -67,7 +67,7 @@ limit_orders_v1_2 AS (
             t.evt_tx_hash,
             t._id as position_id,
             contract_address as project_contract_address,
-            t._trader as trader,
+            t._trader as trader
         FROM {{ source('tigristrade_polygon', limit_cancel_trading_evt) }} t
         {% if is_incremental() %}
         WHERE t.evt_block_time >= date_trunc('day', now() - interval '7' day) 
