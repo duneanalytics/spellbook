@@ -10,6 +10,11 @@ models:
       tags: ['arbitrum','gmx','glp']
     description: >
         View balances of tokens in the GMX vault
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_date
+            - minute
     columns:
       - &minute
         name: minute
@@ -17,6 +22,9 @@ models:
         tests: 
           - unique
           - not_null
+      - &block_date
+        name: block_date
+        description: "UTC event block time truncated to the date"
       - &frax_balance
         name: frax_balance
         description: "Balance of FRAX tokens in the GMX vault"

@@ -1,5 +1,5 @@
 {{ config(
-    alias = 'trades',
+    alias = alias('trades'),
     partition_by = ['block_date'],
     materialized = 'incremental',
     file_format = 'delta',
@@ -134,7 +134,7 @@ SELECT
 FROM
     conversions t
 
-UNION
+UNION ALL
 
 SELECT
     '3' AS version,
@@ -179,8 +179,8 @@ FROM {{ source('bancor3_ethereum', 'BancorNetwork_evt_TokensTraded') }} t
     end as token_pair,
     dexs.token_bought_amount_raw / power(10, erc20a.decimals) AS token_bought_amount,
     dexs.token_sold_amount_raw / power(10, erc20b.decimals) AS token_sold_amount,
-    dexs.token_bought_amount_raw,
-    dexs.token_sold_amount_raw,
+    CAST(dexs.token_bought_amount_raw AS DECIMAL(38,0)) AS token_bought_amount_raw,
+    CAST(dexs.token_sold_amount_raw AS DECIMAL(38,0)) AS token_sold_amount_raw,
     coalesce(
         dexs.amount_usd,
         (dexs.token_bought_amount_raw / power(10, p_bought.decimals)) * p_bought.price,
@@ -204,7 +204,7 @@ INNER JOIN {{ source('ethereum', 'transactions') }} tx
     AND tx.block_time >= '{{project_start_date}}'
     {% endif %}
     {% if is_incremental() %}
-    AND tx.block_time = date_trunc("day", now() - interval '1 week')
+    AND tx.block_time >= date_trunc("day", now() - interval '1 week')
     {% endif %}
 LEFT JOIN {{ ref('tokens_erc20') }} erc20a
     ON erc20a.contract_address = dexs.token_bought_address

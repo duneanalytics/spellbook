@@ -1,14 +1,10 @@
 {{ config(
-    alias = 'trades',
+    alias = alias('trades'),
     partition_by = ['block_date'],
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
     unique_key = ['block_date', 'blockchain', 'project', 'version', 'tx_hash', 'evt_index', 'trace_address'],
-    post_hook='{{ expose_spells(\'["avalanche_c"]\',
-                                "project",
-                                "curvefi",
-                                \'["henrystats"]\') }}'
     )
 }}
 
@@ -91,7 +87,7 @@ WITH dexs AS (
             WHERE evt_block_time >= date_trunc("day", now() - interval '1 week')
             {% endif %}
 
-        UNION 
+        UNION ALL 
 
         -- 3poolV2 tokenexchange 
         SELECT
@@ -121,7 +117,7 @@ WITH dexs AS (
             WHERE evt_block_time >= date_trunc("day", now() - interval '1 week')
             {% endif %}
 
-        UNION 
+        UNION ALL 
 
         -- Aavepool tokenexchange 
         SELECT
@@ -151,7 +147,7 @@ WITH dexs AS (
             WHERE evt_block_time >= date_trunc("day", now() - interval '1 week')
             {% endif %}
 
-        UNION 
+        UNION ALL 
 
         -- Aavepool tokenexchange underlying 
         SELECT
@@ -181,7 +177,7 @@ WITH dexs AS (
             WHERE evt_block_time >= date_trunc("day", now() - interval '1 week')
             {% endif %}
 
-        UNION 
+        UNION ALL 
     
         -- Aavev3 tokenexchange underlying 
         SELECT
@@ -211,7 +207,7 @@ WITH dexs AS (
             WHERE evt_block_time >= date_trunc("day", now() - interval '1 week')
             {% endif %}
 
-        UNION 
+        UNION ALL 
 
         -- agEURjEUR tokenexchange
         SELECT
@@ -239,7 +235,7 @@ WITH dexs AS (
             WHERE evt_block_time >= date_trunc("day", now() - interval '1 week')
             {% endif %}
 
-        UNION  
+        UNION ALL  
 
         -- arUSD tokenexchange
         SELECT
@@ -269,7 +265,7 @@ WITH dexs AS (
             WHERE evt_block_time >= date_trunc("day", now() - interval '1 week')
             {% endif %}
 
-        UNION 
+        UNION ALL 
 
         -- ATricryptopool tokenexchange
         SELECT
@@ -299,7 +295,7 @@ WITH dexs AS (
             WHERE evt_block_time >= date_trunc("day", now() - interval '1 week')
             {% endif %}
 
-        UNION 
+        UNION ALL 
 
         -- avax3pool tokenexchange 
         SELECT
@@ -329,7 +325,7 @@ WITH dexs AS (
             WHERE evt_block_time >= date_trunc("day", now() - interval '1 week')
             {% endif %}
 
-        UNION 
+        UNION ALL 
 
         -- axlUSDCUSDC tokenexchange 
         SELECT
@@ -357,7 +353,7 @@ WITH dexs AS (
             WHERE evt_block_time >= date_trunc("day", now() - interval '1 week')
             {% endif %}
 
-        UNION 
+        UNION ALL 
 
         -- axlUSDCUSDC_e tokenexchange 
         SELECT
@@ -385,7 +381,7 @@ WITH dexs AS (
             WHERE evt_block_time >= date_trunc("day", now() - interval '1 week')
             {% endif %}
 
-        UNION 
+        UNION ALL 
 
         -- blizz tokenexchange 
         SELECT
@@ -415,7 +411,7 @@ WITH dexs AS (
             WHERE evt_block_time >= date_trunc("day", now() - interval '1 week')
             {% endif %}
 
-        UNION 
+        UNION ALL 
 
         -- Curve_DD2_Pool tokenexchange 
         SELECT
@@ -443,7 +439,7 @@ WITH dexs AS (
             WHERE evt_block_time >= date_trunc("day", now() - interval '1 week')
             {% endif %}
 
-        UNION 
+        UNION ALL 
 
         -- deBridge_USDC tokenexchange underlying 
         SELECT
@@ -462,9 +458,9 @@ WITH dexs AS (
             END as token_bought_address,
             CASE
                 WHEN sold_id = 0 THEN '{{debridge_usdc_avalanche_c_token}}'
-                WHEN sold_id = 1 THEN '{{dai_e_avalanche_c_token}}'
-                WHEN sold_id = 2 THEN '{{usdc_e_avalanche_c_token}}'
-                WHEN sold_id = 3 THEN '{{usdt_e_avalanche_c_token}}'
+                WHEN sold_id = 1 THEN '{{av3CRV_avalanche_c_token}}'
+                WHEN sold_id = 2 THEN '{{av3CRV_avalanche_c_token}}'
+                WHEN sold_id = 3 THEN '{{av3CRV_avalanche_c_token}}'
             END as token_sold_address,
             contract_address AS project_contract_address,
             evt_tx_hash AS tx_hash,
@@ -475,7 +471,7 @@ WITH dexs AS (
             WHERE evt_block_time >= date_trunc("day", now() - interval '1 week')
             {% endif %}
 
-        UNION 
+        UNION ALL 
 
         -- defrost h20 tokenexchange 
         SELECT
@@ -503,7 +499,7 @@ WITH dexs AS (
             WHERE evt_block_time >= date_trunc("day", now() - interval '1 week')
             {% endif %}
 
-        UNION 
+        UNION ALL 
     
         -- defrost h20 tokenexchange underlying
         SELECT
@@ -522,9 +518,9 @@ WITH dexs AS (
             END as token_bought_address,
             CASE
                 WHEN sold_id = 0 THEN '{{defrost_h20_avalanche_c_token}}'
-                WHEN sold_id = 1 THEN '{{dai_e_avalanche_c_token}}'
-                WHEN sold_id = 2 THEN '{{usdc_e_avalanche_c_token}}'
-                WHEN sold_id = 3 THEN '{{usdt_e_avalanche_c_token}}'
+                WHEN sold_id = 1 THEN '{{av3CRV_avalanche_c_token}}'
+                WHEN sold_id = 2 THEN '{{av3CRV_avalanche_c_token}}'
+                WHEN sold_id = 3 THEN '{{av3CRV_avalanche_c_token}}'
             END as token_sold_address,
             contract_address AS project_contract_address,
             evt_tx_hash AS tx_hash,
@@ -535,7 +531,7 @@ WITH dexs AS (
             WHERE evt_block_time >= date_trunc("day", now() - interval '1 week')
             {% endif %}
 
-        UNION 
+        UNION ALL 
 
         -- eEURjEUR tokenexchange
         SELECT
@@ -563,7 +559,7 @@ WITH dexs AS (
             WHERE evt_block_time >= date_trunc("day", now() - interval '1 week')
             {% endif %}
 
-        UNION 
+        UNION ALL 
 
         -- frax tokenexchange 
         SELECT
@@ -591,7 +587,7 @@ WITH dexs AS (
             WHERE evt_block_time >= date_trunc("day", now() - interval '1 week')
             {% endif %}
 
-        UNION 
+        UNION ALL 
 
         -- frax tokenexchange  underlying
         SELECT
@@ -610,9 +606,9 @@ WITH dexs AS (
             END as token_bought_address,
             CASE
                 WHEN sold_id = 0 THEN '{{frax_avalanche_c_token}}'
-                WHEN sold_id = 1 THEN '{{dai_e_avalanche_c_token}}'
-                WHEN sold_id = 2 THEN '{{usdc_e_avalanche_c_token}}'
-                WHEN sold_id = 3 THEN '{{usdt_e_avalanche_c_token}}'
+                WHEN sold_id = 1 THEN '{{av3CRV_avalanche_c_token}}'
+                WHEN sold_id = 2 THEN '{{av3CRV_avalanche_c_token}}'
+                WHEN sold_id = 3 THEN '{{av3CRV_avalanche_c_token}}'
             END as token_sold_address,
             contract_address AS project_contract_address,
             evt_tx_hash AS tx_hash,
@@ -623,7 +619,7 @@ WITH dexs AS (
             WHERE evt_block_time >= date_trunc("day", now() - interval '1 week')
             {% endif %}
 
-        UNION 
+        UNION ALL 
 
         -- FUSD_MIM_Factory_Pool tokenexchange 
         SELECT
@@ -651,7 +647,7 @@ WITH dexs AS (
             WHERE evt_block_time >= date_trunc("day", now() - interval '1 week')
             {% endif %}
 
-        UNION 
+        UNION ALL 
 
         -- FUSDUSDC tokenexchange 
         SELECT
@@ -679,7 +675,7 @@ WITH dexs AS (
             WHERE evt_block_time >= date_trunc("day", now() - interval '1 week')
             {% endif %}
 
-        UNION 
+        UNION ALL 
 
         -- l2stableswap tokenexchange 
         SELECT
@@ -707,7 +703,7 @@ WITH dexs AS (
             WHERE evt_block_time >= date_trunc("day", now() - interval '1 week')
             {% endif %}
 
-        UNION 
+        UNION ALL 
 
         -- mai tokenexchange 
         SELECT
@@ -735,7 +731,7 @@ WITH dexs AS (
             WHERE evt_block_time >= date_trunc("day", now() - interval '1 week')
             {% endif %}
         
-        UNION 
+        UNION ALL 
 
         -- mai tokenexchange  underlying
         SELECT
@@ -754,9 +750,9 @@ WITH dexs AS (
             END as token_bought_address,
             CASE
                 WHEN sold_id = 0 THEN '{{mai_avalanche_c_token}}'
-                WHEN sold_id = 1 THEN '{{dai_e_avalanche_c_token}}'
-                WHEN sold_id = 2 THEN '{{usdc_e_avalanche_c_token}}'
-                WHEN sold_id = 3 THEN '{{usdt_e_avalanche_c_token}}'
+                WHEN sold_id = 1 THEN '{{av3CRV_avalanche_c_token}}'
+                WHEN sold_id = 2 THEN '{{av3CRV_avalanche_c_token}}'
+                WHEN sold_id = 3 THEN '{{av3CRV_avalanche_c_token}}'
             END as token_sold_address,
             contract_address AS project_contract_address,
             evt_tx_hash AS tx_hash,
@@ -767,7 +763,7 @@ WITH dexs AS (
             WHERE evt_block_time >= date_trunc("day", now() - interval '1 week')
             {% endif %}
 
-        UNION 
+        UNION ALL 
 
         -- mim tokenexchange 
         SELECT
@@ -795,7 +791,7 @@ WITH dexs AS (
             WHERE evt_block_time >= date_trunc("day", now() - interval '1 week')
             {% endif %}
 
-        UNION 
+        UNION ALL 
 
         -- mim tokenexchange  underlying
         SELECT
@@ -814,9 +810,9 @@ WITH dexs AS (
             END as token_bought_address,
             CASE
                 WHEN sold_id = 0 THEN '{{mim_avalanche_c_token}}'
-                WHEN sold_id = 1 THEN '{{dai_e_avalanche_c_token}}'
-                WHEN sold_id = 2 THEN '{{usdc_e_avalanche_c_token}}'
-                WHEN sold_id = 3 THEN '{{usdt_e_avalanche_c_token}}'
+                WHEN sold_id = 1 THEN '{{av3CRV_avalanche_c_token}}'
+                WHEN sold_id = 2 THEN '{{av3CRV_avalanche_c_token}}'
+                WHEN sold_id = 3 THEN '{{av3CRV_avalanche_c_token}}'
             END as token_sold_address,
             contract_address AS project_contract_address,
             evt_tx_hash AS tx_hash,
@@ -827,7 +823,7 @@ WITH dexs AS (
             WHERE evt_block_time >= date_trunc("day", now() - interval '1 week')
             {% endif %}
 
-        UNION 
+        UNION ALL 
 
         -- MoreMoney_USD tokenexchange 
         SELECT
@@ -855,7 +851,7 @@ WITH dexs AS (
             WHERE evt_block_time >= date_trunc("day", now() - interval '1 week')
             {% endif %}
 
-        UNION  
+        UNION ALL  
 
         -- MoreMoney_USD tokenexchange  underlying
         SELECT
@@ -874,9 +870,9 @@ WITH dexs AS (
             END as token_bought_address,
             CASE
                 WHEN sold_id = 0 THEN '{{moremoney_avalanche_c_token}}'
-                WHEN sold_id = 1 THEN '{{dai_e_avalanche_c_token}}'
-                WHEN sold_id = 2 THEN '{{usdc_e_avalanche_c_token}}'
-                WHEN sold_id = 3 THEN '{{usdt_e_avalanche_c_token}}'
+                WHEN sold_id = 1 THEN '{{av3CRV_avalanche_c_token}}'
+                WHEN sold_id = 2 THEN '{{av3CRV_avalanche_c_token}}'
+                WHEN sold_id = 3 THEN '{{av3CRV_avalanche_c_token}}'
             END as token_sold_address,
             contract_address AS project_contract_address,
             evt_tx_hash AS tx_hash,
@@ -887,7 +883,7 @@ WITH dexs AS (
             WHERE evt_block_time >= date_trunc("day", now() - interval '1 week')
             {% endif %}
 
-        UNION  
+        UNION ALL  
 
         -- NXUSDaV3CRV tokenexchange  underlying
         SELECT
@@ -906,9 +902,9 @@ WITH dexs AS (
             END as token_bought_address,
             CASE
                 WHEN sold_id = 0 THEN '{{nxusd_avalanche_c_token}}'
-                WHEN sold_id = 1 THEN '{{dai_e_avalanche_c_token}}'
-                WHEN sold_id = 2 THEN '{{usdc_e_avalanche_c_token}}'
-                WHEN sold_id = 3 THEN '{{usdt_e_avalanche_c_token}}'
+                WHEN sold_id = 1 THEN '{{av3CRV_avalanche_c_token}}'
+                WHEN sold_id = 2 THEN '{{av3CRV_avalanche_c_token}}'
+                WHEN sold_id = 3 THEN '{{av3CRV_avalanche_c_token}}'
             END as token_sold_address,
             contract_address AS project_contract_address,
             evt_tx_hash AS tx_hash,
@@ -919,7 +915,7 @@ WITH dexs AS (
             WHERE evt_block_time >= date_trunc("day", now() - interval '1 week')
             {% endif %}
 
-        UNION 
+        UNION ALL 
 
         -- ren tokenexchange 
         SELECT
@@ -947,7 +943,7 @@ WITH dexs AS (
             WHERE evt_block_time >= date_trunc("day", now() - interval '1 week')
             {% endif %}
 
-        UNION 
+        UNION ALL 
 
         -- ren tokenexchange underlying 
         SELECT
@@ -975,7 +971,7 @@ WITH dexs AS (
             WHERE evt_block_time >= date_trunc("day", now() - interval '1 week')
             {% endif %}
 
-        UNION 
+        UNION ALL 
 
         -- Topshelf_USDL tokenexchange  underlying
         SELECT
@@ -994,9 +990,9 @@ WITH dexs AS (
             END as token_bought_address,
             CASE
                 WHEN sold_id = 0 THEN '{{usdl_avalanche_c_token}}'
-                WHEN sold_id = 1 THEN '{{dai_e_avalanche_c_token}}'
-                WHEN sold_id = 2 THEN '{{usdc_e_avalanche_c_token}}'
-                WHEN sold_id = 3 THEN '{{usdt_e_avalanche_c_token}}'
+                WHEN sold_id = 1 THEN '{{av3CRV_avalanche_c_token}}'
+                WHEN sold_id = 2 THEN '{{av3CRV_avalanche_c_token}}'
+                WHEN sold_id = 3 THEN '{{av3CRV_avalanche_c_token}}'
             END as token_sold_address,
             contract_address AS project_contract_address,
             evt_tx_hash AS tx_hash,
@@ -1007,7 +1003,7 @@ WITH dexs AS (
             WHERE evt_block_time >= date_trunc("day", now() - interval '1 week')
             {% endif %}
 
-        UNION 
+        UNION ALL 
 
         -- USDCe_UST tokenexchange 
         SELECT
@@ -1035,7 +1031,7 @@ WITH dexs AS (
             WHERE evt_block_time >= date_trunc("day", now() - interval '1 week')
             {% endif %}
 
-        UNION 
+        UNION ALL 
 
         -- USD coin tokenexchange 
         SELECT
@@ -1063,7 +1059,7 @@ WITH dexs AS (
             WHERE evt_block_time >= date_trunc("day", now() - interval '1 week')
             {% endif %}
 
-        UNION 
+        UNION ALL 
 
         -- usds tokenexchange  underlying
         SELECT
@@ -1082,9 +1078,9 @@ WITH dexs AS (
             END as token_bought_address,
             CASE
                 WHEN sold_id = 0 THEN '{{usds_avalanche_c_token}}'
-                WHEN sold_id = 1 THEN '{{dai_e_avalanche_c_token}}'
-                WHEN sold_id = 2 THEN '{{usdc_e_avalanche_c_token}}'
-                WHEN sold_id = 3 THEN '{{usdt_e_avalanche_c_token}}'
+                WHEN sold_id = 1 THEN '{{av3CRV_avalanche_c_token}}'
+                WHEN sold_id = 2 THEN '{{av3CRV_avalanche_c_token}}'
+                WHEN sold_id = 3 THEN '{{av3CRV_avalanche_c_token}}'
             END as token_sold_address,
             contract_address AS project_contract_address,
             evt_tx_hash AS tx_hash,
@@ -1095,7 +1091,7 @@ WITH dexs AS (
             WHERE evt_block_time >= date_trunc("day", now() - interval '1 week')
             {% endif %}
 
-        UNION 
+        UNION ALL 
 
         -- yusdpool tokenexchange 
         SELECT
@@ -1140,8 +1136,8 @@ SELECT
     END as token_pair, 
     dexs.token_bought_amount_raw / power(10, erc20a.decimals) as token_bought_amount, 
     dexs.token_sold_amount_raw / power(10, erc20b.decimals) as token_sold_amount, 
-    dexs.token_bought_amount_raw, 
-    dexs.token_sold_amount_raw, 
+    CAST(dexs.token_bought_amount_raw AS DECIMAL(38,0)) AS token_bought_amount_raw, 
+    CAST(dexs.token_sold_amount_raw AS DECIMAL(38,0)) AS token_sold_amount_raw, 
     COALESCE(
         dexs.amount_usd, 
         (dexs.token_bought_amount_raw / power(10, p_bought.decimals)) * p_bought.price, 

@@ -1,20 +1,23 @@
 {{ config(
-        alias ='trades',
-        post_hook='{{ expose_spells(\'["avalanche_c"]\',
+        alias = alias('trades'),
+        post_hook='{{ expose_spells(\'["avalanche_c","optimism","ethereum","arbitrum"]\',
                                 "project",
                                 "kyberswap",
-                                \'["zhongyiio", "hosuke"]\') }}'
+                                \'["zhongyiio", "hosuke", "ppclunghe", "gregshestakovlido"]\') }}'
         )
 }}
 
 {% set kyber_models = [
-'kyberswap_avalanche_c_trades'
+ ref('kyberswap_avalanche_c_trades')
+,ref('kyberswap_optimism_trades')
+,ref('kyberswap_ethereum_trades')
+,ref('kyberswap_arbitrum_trades')
 ] %}
 
 
 SELECT *
 FROM (
-    {% for dex_model in kyber_models %}
+    {% for k_model in kyber_models %}
     SELECT
         blockchain,
         project,
@@ -39,9 +42,9 @@ FROM (
         tx_to,
         trace_address,
         evt_index
-    FROM {{ ref(dex_model) }}
+    FROM {{ k_model }}
     {% if not loop.last %}
-    UNION
+    UNION ALL
     {% endif %}
     {% endfor %}
 )

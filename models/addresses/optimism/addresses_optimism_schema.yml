@@ -1,19 +1,46 @@
 version: 2
 
 models:
-  - name: addresses_optimism_cex
+  - name: addresses_optimism_grants_funding
     meta:
       blockchain: optimism
-      sector: cex
+      sector: grants_funding
       project: addresses
       contributors: msilb7
     config:
-      tags: ['table', 'cex', 'addresses', 'optimism']
-    description: "Known centralized exchange and on-ramp addresses"
+      tags: ['table', 'grants', 'governance', 'incentives', 'addresses', 'optimism']
+    description: "Project address for receiving Optimism Governance and Partner Funding Grants."
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - address
+            - proposal_name
+            - funding_source
+    columns:
+      - name: category
+        description: "What type of address is this (i.e. Optimism vs Project)."
+      - name: address
+        description: "Address of the project's grant receiver address."
+      - name: project_name
+        description: "Proposal name mapped to a project name, if relevant."
+      - name: proposal_name
+        description: "The project name on the proposal mapping to the grant."
+      - name: funding_source
+        description: "Source of how the funding was received (i.e. governance seasons)"
+
+  - name: addresses_optimism_fee_vaults
+    meta:
+      blockchain: optimism
+      sector: fees
+      project: addresses
+      contributors: msilb7
+    config:
+      tags: ['table', 'fees', 'l2', 'addresses', 'optimism']
+    description: "Fee vault (receiver) addresses on Optimism Mainnet"
     columns:
       - name: address
-        description: "Address of known CEX/On-Ramp"
-      - name: cex_name
-        description: "Name of centralized exchange/ on-ramp"
-      - name: distinct_name
-        description: "Distinct name of centralized exchange / on-ramp address"
+        description: "Address of the fee vault"
+        tests:
+          - unique
+      - name: vault_name
+        description: "Fee vault type"

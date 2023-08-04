@@ -1,0 +1,27 @@
+version: 2
+
+sources:
+  - name: gmx_avalanche_c
+    freshness:
+          warn_after: { count: 12, period: hour }
+    description: >
+      Decoded tables related to GMX, a decentralized exchange.
+    tables:
+      - name: Vault_call_poolAmounts
+        loaded_at_field: call_block_time
+      - name: Vault_call_reservedAmounts
+        loaded_at_field: call_block_time
+      - name: Vault_call_guaranteedUsd
+        loaded_at_field: call_block_time
+      - name: Vault_call_getMaxPrice
+        loaded_at_field: call_block_time
+      - name: Vault_call_getMinPrice
+        loaded_at_field: call_block_time
+      - name: Vault_call_globalShortAveragePrices
+        loaded_at_field: call_block_time
+      - name: Vault_call_globalShortSizes
+        loaded_at_field: call_block_time
+      - name: GlpManager_evt_AddLiquidity
+        loaded_at_field: evt_block_time
+      - name: GlpManager_evt_RemoveLiquidity
+        loaded_at_field: evt_block_time

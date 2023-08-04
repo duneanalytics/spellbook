@@ -1,14 +1,10 @@
 {{ config(
-    alias = 'trades'
+    alias = alias('trades')
     ,partition_by = ['block_date']
     ,materialized = 'incremental'
     ,file_format = 'delta'
     ,incremental_strategy = 'merge'
     ,unique_key = ['block_date', 'blockchain', 'project', 'version', 'tx_hash', 'evt_index', 'trace_address']
-    ,post_hook='{{ expose_spells(\'["gnosis"]\',
-                                      "project",
-                                      "sushiswap",
-                                    \'["hosuke"]\') }}'
     )
 }}
 
@@ -51,8 +47,8 @@ SELECT
         END                                                            AS token_pair,
     sushiswap_dex.token_bought_amount_raw / power(10, erc20a.decimals) AS token_bought_amount,
     sushiswap_dex.token_sold_amount_raw / power(10, erc20b.decimals)   AS token_sold_amount,
-    sushiswap_dex.token_bought_amount_raw,
-    sushiswap_dex.token_sold_amount_raw,
+    CAST(sushiswap_dex.token_bought_amount_raw AS DECIMAL(38,0)) AS token_bought_amount_raw,
+    CAST(sushiswap_dex.token_sold_amount_raw AS DECIMAL(38,0)) AS token_sold_amount_raw,
     coalesce(
             sushiswap_dex.amount_usd
         , (sushiswap_dex.token_bought_amount_raw / power(10, p_bought.decimals)) * p_bought.price

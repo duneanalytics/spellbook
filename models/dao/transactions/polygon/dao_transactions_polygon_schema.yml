@@ -5,7 +5,7 @@ models:
     meta:
       blockchain: polygon
       sector: dao
-      contributors: henrystats 
+      contributors: Henrystats 
     config:
       tags: [ 'polygon','erc20','daos', 'dao creator tools', 'henrystats' ]
     description: >
@@ -21,10 +21,9 @@ models:
             - tx_hash 
             - tx_index
             - tx_type
-            - trace_address
             - address_interacted_with
             - value 
-            - asset 
+            - asset_contract_address
     columns:
       - &blockchain
         name: blockchain
@@ -77,12 +76,15 @@ models:
       - &address_interacted_with
         name: address_interacted_with
         description: "address the dao wallet interacted with"
+      - &block_month
+        name: block_month
+        description: "UTC event block month of tramsaction"
 
   - name: dao_transactions_polygon_eth 
     meta:
       blockchain: ethereum
       sector: dao
-      contributors: henrystats 
+      contributors: Henrystats 
     config:
       tags: [ 'polygon','eth','daos', 'dao creator tools', 'henrystats' ]
     description: >
@@ -101,7 +103,7 @@ models:
             - trace_address
             - address_interacted_with
             - value 
-            - asset 
+            - asset_contract_address
     columns:
       - *blockchain
       - *dao_creator_tool
@@ -119,3 +121,4 @@ models:
       - *tx_index
       - *trace_address
       - *address_interacted_with
+      - *block_month

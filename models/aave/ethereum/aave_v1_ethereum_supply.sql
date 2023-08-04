@@ -1,10 +1,6 @@
 {{ config(
     schema = 'aave_v1_ethereum'
-    , alias='supply'
-    , post_hook='{{ expose_spells(\'["ethereum"]\',
-                                  "project",
-                                  "aave_v1",
-                                  \'["batwayne", "chuxin"]\') }}'
+    , alias = alias('supply')
   )
 }}
 
@@ -19,8 +15,8 @@ SELECT
       depositor,
       withdrawn_to,
       liquidator,
-      amount / concat('1e',erc20.decimals) AS amount,
-      (amount / concat('1e',p.decimals)) * price AS usd_amount,
+      amount / CAST(CONCAT('1e',CAST(erc20.decimals AS VARCHAR(100))) AS DOUBLE) AS amount,
+      (amount / CAST(CONCAT('1e',CAST(p.decimals AS VARCHAR(100))) AS DOUBLE)) * price AS usd_amount,
       evt_tx_hash,
       evt_index,
       evt_block_time,
@@ -30,13 +26,13 @@ FROM (
     '1' AS version,
     'deposit' AS transaction_type,
     CASE
-        WHEN _reserve = '{{aave_mock_address}}' THEN '{{weth_address}}' --Using WETH instead of Aave "mock" address
-        ELSE _reserve
+        WHEN CAST(_reserve AS VARCHAR(100)) = '{{aave_mock_address}}' THEN '{{weth_address}}' --Using WETH instead of Aave "mock" address
+        ELSE CAST(_reserve AS VARCHAR(100))
     END AS token,
     _user AS depositor, 
-    NULL::string AS withdrawn_to,
-    NULL::string AS liquidator,
-    _amount AS amount,
+    CAST(NULL AS VARCHAR(5)) AS withdrawn_to,
+    CAST(NULL AS VARCHAR(5)) AS liquidator,
+    CAST(_amount AS DECIMAL(38,0)) AS amount,
     evt_tx_hash,
     evt_index,
     evt_block_time,
@@ -47,13 +43,13 @@ SELECT
     '1' AS version,
     'withdraw' AS transaction_type,
     CASE
-        WHEN _reserve = '{{aave_mock_address}}' THEN '{{weth_address}}' --Using WETH instead of Aave "mock" address
-        ELSE _reserve
+        WHEN CAST(_reserve AS VARCHAR(100)) = '{{aave_mock_address}}' THEN '{{weth_address}}' --Using WETH instead of Aave "mock" address
+        ELSE CAST(_reserve AS VARCHAR(100))
     END AS token,
     _user AS depositor,
-    _user AS withdrawn_to,
-    NULL::string AS liquidator,
-    - _amount AS amount,
+    CAST(_user AS VARCHAR(100)) AS withdrawn_to,
+    CAST(NULL AS VARCHAR(5)) AS liquidator,
+    - CAST(_amount AS DECIMAL(38,0)) AS amount,
     evt_tx_hash,
     evt_index,
     evt_block_time,
@@ -64,13 +60,13 @@ SELECT
     '1' AS version,
     'deposit_liquidation' AS transaction_type,
     CASE
-        WHEN _reserve = '{{aave_mock_address}}' THEN '{{weth_address}}' --Using WETH instead of Aave "mock" address
-        ELSE _collateral
+        WHEN CAST(_collateral AS VARCHAR(100)) = '{{aave_mock_address}}' THEN '{{weth_address}}' --Using WETH instead of Aave "mock" address
+        ELSE CAST(_collateral AS VARCHAR(100))
     END AS token,
     _user AS depositor,
-    _liquidator AS withdrawn_to,
-    _liquidator AS liquidator,
-    - _liquidatedCollateralAmount AS amount,
+    CAST(_liquidator AS VARCHAR(100)) AS withdrawn_to,
+    CAST(_liquidator AS VARCHAR(100)) AS liquidator,
+    - CAST(_liquidatedCollateralAmount AS DECIMAL(38,0)) AS amount,
     evt_tx_hash,
     evt_index,
     evt_block_time,
@@ -81,6 +77,6 @@ LEFT JOIN {{ ref('tokens_ethereum_erc20') }} erc20
     ON deposit.token = erc20.contract_address
 LEFT JOIN {{ source('prices','usd') }} p 
     ON p.minute = date_trunc('minute', deposit.evt_block_time) 
-    AND p.contract_address = deposit.token 
+    AND CAST(p.contract_address AS VARCHAR(100)) = deposit.token 
     AND p.blockchain = 'ethereum'
 ;

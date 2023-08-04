@@ -1,0 +1,86 @@
+version: 2
+
+models:
+  - name: chainlink_price_feeds
+    meta:
+      blockchain: ['bnb','optimism','polygon']
+      project: chainlink
+      contributors: ['msilb7','0xroll','linkpool_ryan']
+    config:
+      tags: ['chainlink', 'price', 'feed', 'bnb', 'optimism', 'polygon']
+    description: >
+        Table pulling price updates for known Chainlink oracle addresses
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+              - blockchain
+              - block_number
+              - proxy_address
+              - underlying_token_address
+    columns:
+      - &blockchain
+        name: blockchain
+        description: "Blockchain"
+      - &block_time
+        name: block_time
+        description: "Block Time"
+      - &block_date
+        name: block_date
+        description: "Block Time, truncated to date"
+      - &block_month
+        name: block_month
+        description: "Block time truncated to month"
+      - &block_number
+        name: block_number
+        description: "Block Number"
+      - &feed_name
+        name: feed_name
+        description:  "Feed name from Chainlink docs"  
+      - &oracle_price
+        name: oracle_price
+        description:  "Price returned by Chainlink oracle update" 
+      - &proxy_address
+        name: proxy_address
+        description:  "Address of the proxy contract for the Chainlink oracle"
+      - &aggregator_address
+        name: aggregator_address
+        description:  "Address of the aggregator contract tied to the proxy for the Chainlink oracle (via Read Contract)"
+      - &underlying_token_address
+        name: underlying_token_address
+        description:  "Address of any underlying tokens associated with the Chainlink oracle (i.e. AAVE, sAAVE)"
+      - &underlying_token_price
+        name: underlying_token_price
+        description:  "Price of the underlying token, with extra decimal adjustments if needed"
+
+  - name: chainlink_price_feeds_hourly
+    meta:
+      blockchain: ['bnb','optimism','polygon']
+      sector: oracle
+      project: chainlink
+      contributors: ["msilb7","0xroll", "linkpool_ryan"]
+    config:
+      tags: ['chainlink', 'price', 'feed', 'bnb', 'optimism', 'polygon']
+    description: >
+        Hourly chainlink price feed updates
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+              - blockchain
+              - hour
+              - proxy_address
+              - aggregator_address
+              - underlying_token_address
+    columns:
+      - *blockchain
+      - name: hour
+        description: "Block time of the oracle update - truncated to hour"
+      - *block_date
+      - *block_month
+      - *feed_name
+      - name: oracle_price_avg
+        description:  "Price returned by Chainlink oracle update" 
+      - *proxy_address
+      - *aggregator_address
+      - *underlying_token_address
+      - name: underlying_token_price_avg
+        description: "Price of the underlying token, with extra decimal adjustments if needed"
