@@ -41,6 +41,7 @@ contracts as (
             
               (0x11111254369792b2ca5d084ab5eea397ca8fa48b, 'AR-V1',  'Aggregation Router V1',   array['ethereum'])
             , (0x111111125434b319222cdbf8c261674adb56f3ae, 'AR-V2',  'Aggregation Router V2',   array['ethereum'])
+            , (0x111111254bf8547e7183e4bbfc36199f3cedf4a1, 'AR-V2',  'Aggregation Router V2',   array['bnb'])
             , (0x11111112542d85b3ef69ae05771c2dccff4faa26, 'AR-V3',  'Aggregation Router V3',   array['ethereum', 'bnb', 'polygon', 'arbitrum', 'optimism'])
             , (0x1111111254fb6c44bac0bed2854e76f90643097d, 'AR-V4',  'Aggregation Router V4',   array['ethereum', 'bnb', 'polygon', 'gnosis', 'arbitrum', 'avalanche_c', 'fantom'])
             , (0x1111111254760f7ab3f16433eea9304126dcd199, 'AR-V4',  'Aggregation Router V4',   array['optimism'])

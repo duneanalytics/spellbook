@@ -1,5 +1,5 @@
 {% set blockchain = 'bnb' %}
-{% set project_start_date_str = '2021-03-14' %}
+{% set project_start_date_str = '2021-02-18' %}
 {% set wrapper_token_address = '0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c' %}
 
 
