@@ -269,8 +269,6 @@ routers(
         , ('fantom', 'Kyber', 'Kyber: Aggregation Router', 'Aggregator', 0x1fc3607fa67b58deddb0faf7a116f417a20c551c)
         , ('fantom', 'Firebird', 'Firebird', 'Aggregator', 0xe0c38b2a8d09aad53f1c67734b9a95e43d5981c0)
         , ('fantom', 'OpenOcean', 'OpenOceanExchange.V2', 'Aggregator', 0x6352a56caadc4f1e25cd6c75970fa768a3304e64)
-        , ('fantom', 'BogSwap', 'BogSwap', 'Aggregator', 0xb099ed146fad4d0daa31e3810591fc0554af62bb)
-        , ('fantom', 'OpenOcean', 'OpenOceanExchange.V2', 'Aggregator', 0x6352a56caadc4f1e25cd6c75970fa768a3304e64)
         , ('fantom', 'Bogged Finance', 'BogSwap', 'Aggregator', 0xb099ed146fad4d0daa31e3810591fc0554af62bb)
         , ('fantom', 'Spookyswap', 'UniswapV2Router02', 'Router', 0xf491e7b69e4244ad4002bc14e878a34207e38c29)
         , ('fantom', 'Spookyswap', 'LiquidityBrewer', 'Router', 0x31f63a33141ffee63d4b26755430a390acdd8a4d)
