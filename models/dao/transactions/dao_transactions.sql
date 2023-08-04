@@ -1,9 +1,7 @@
 {{ config(
     tags = ['dunesql'],
     alias = alias('transactions'),
-    materialized = 'incremental',
-    file_format = 'delta',
-    unique_key = ['tx_hash', 'tx_index'],
+    materialized = 'view',
     post_hook='{{ expose_spells(\'["ethereum", "gnosis", "polygon"]\',
                                 "sector",
                                 "dao",
