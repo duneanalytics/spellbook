@@ -17,6 +17,7 @@ models:
             - evt_tx_hash
             - position_id 
             - trade_type
+            - positions_contract
     columns:
       - &blockchain
         name: blockchain
@@ -75,6 +76,12 @@ models:
       - &project_contract_address
         name: project_contract_address
         description: "trading contract address"
+      - &positions_contract
+        name: positions_contract
+        description: "corresponding position contract address"
+      - &block_month
+        name: block_month
+        description: "date_trunc of block month of trade"
       
   - name: tigris_v2_polygon_trades
     meta:
@@ -92,6 +99,7 @@ models:
             - evt_tx_hash
             - position_id 
             - trade_type
+            - positions_contract
     columns:
       - *blockchain
       - *day
@@ -112,6 +120,8 @@ models:
       - *trade_type
       - *version
       - *project_contract_address
+      - *block_month
+      - *positions_contract
 
   - name: tigris_polygon_trades
     meta:
@@ -142,3 +152,5 @@ models:
       - *trade_type
       - *version
       - *project_contract_address
+      - *block_month
+      - *positions_contract

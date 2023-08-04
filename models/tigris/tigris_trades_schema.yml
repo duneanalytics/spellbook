@@ -68,3 +68,9 @@ models:
       - &project_contract_address
         name: project_contract_address
         description: "trading contract address"
+      - &positions_contract
+        name: positions_contract
+        description: "corresponding position contract address"
+      - &block_month
+        name: block_month
+        description: "date_trunc of block month of trade"

@@ -2,7 +2,7 @@
     tags=['dunesql'],
     schema = 'tigris_v1_arbitrum',
     alias = alias('trades'),
-    partition_by = ['day'],
+    partition_by = ['block_month'],
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
