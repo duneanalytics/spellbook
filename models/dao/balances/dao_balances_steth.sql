@@ -167,7 +167,7 @@ INNER JOIN
 LEFT JOIN
    {{ source('prices', 'usd') }} p
     ON p.contract_address = 0xae7ab96520de3a18e5e111b5eaab095312d7fe84
-    AND d.day = p.minute
+    AND b.day = p.minute
     AND p.blockchain = 'ethereum'
 
 
