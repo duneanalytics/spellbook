@@ -9,7 +9,7 @@
         post_hook='{{ expose_spells(\'["ethereum"]\',
                                 "project",
                                 "safe",
-                                \'["hildobby"]\') }}'
+                                \'["hildobby", "hosuke"]\') }}'
     )
 }}
 
@@ -47,11 +47,11 @@ LEFT JOIN {{ ref('dex_prices') }} pu ON pu.blockchain = 'ethereum'
     AND pu.contract_address='{{safe_token_address}}'
     AND pu.hour = date_trunc('hour', t.evt_block_time)
     {% if is_incremental() %}
-    AND pu.hour >= date_trunc("day", now() - interval '1 week')
+    AND pu.hour >= date_trunc('day', now() - interval '7' day)
     {% endif %}
 WHERE t.contract_address = '{{safe_token_address}}'
 AND t.from = '0xa0b937d5c8e32a80e3a8ed4227cd020221544ee6'
-AND t.evt_block_time > '2022-09-28'
+AND t.evt_block_time > TIMESTAMP '2022-09-28'
 {% if is_incremental() %}
-AND t.evt_block_time >= date_trunc("day", now() - interval '1 week')
+AND t.evt_block_time >= date_trunc('day', now() - interval '7' day)
 {% endif %}

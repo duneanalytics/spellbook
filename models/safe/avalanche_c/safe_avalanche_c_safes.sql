@@ -10,13 +10,13 @@
         post_hook='{{ expose_spells(\'["avalanche_c"]\',
                                     "project",
                                     "safe",
-                                    \'["tschubotz"]\') }}'
+                                    \'["tschubotz", "hosuke"]\') }}'
     ) 
 }}
 
 select
     'avalanche_c' as blockchain,
-    et.from as address,
+    et."from" as address,
     case 
         when et.to = '0x8942595a2dc5181df0465af0d7be08c8f23c93af' then '0.1.0'
         when et.to = '0xb6029ea3b2c51d09a50b53ca8012feeb05bda35a' then '1.0.0'
@@ -44,8 +44,8 @@ where et.success = true
     )
     and et.gas_used > 10000  -- to ensure the setup call was successful. excludes e.g. setup calls with missing params that fallback
     {% if not is_incremental() %}
-    and et.block_time > '2021-10-05' -- for initial query optimisation    
+    and et.block_time > TIMESTAMP '2021-10-05' -- for initial query optimisation
     {% endif %}
     {% if is_incremental() %}
-    and et.block_time > date_trunc("day", now() - interval '1 week')
+    and et.block_time > date_trunc('day', now() - interval '7' day)
     {% endif %}

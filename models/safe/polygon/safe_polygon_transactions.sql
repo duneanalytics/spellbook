@@ -9,7 +9,7 @@
         post_hook='{{ expose_spells(\'["polygon"]\',
                                     "project",
                                     "safe",
-                                    \'["tschubotz"]\') }}'
+                                    \'["tschubotz", "hosuke"]\') }}'
     ) 
 }}
 
@@ -50,8 +50,8 @@ where substring(tr.input, 0, 10) in (
     )
     AND tr.call_type = 'delegatecall'
     {% if not is_incremental() %}
-    and tr.block_time > '2021-03-07' -- for initial query optimisation    
+    and tr.block_time > TIMESTAMP '2021-03-07' -- for initial query optimisation
     {% endif %}
     {% if is_incremental() %}
-    and tr.block_time > date_trunc("day", now() - interval '1 week')
+    and tr.block_time > date_trunc('day', now() - interval '7' day)
     {% endif %}
