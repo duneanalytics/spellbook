@@ -33,6 +33,7 @@
     , ref('labels_dex')
     , ref('labels_social')
     , ref('labels_nft')
+    , ref('labels_airdrop')
     , ref('labels_dao')
     , ref('labels_infrastructure')
 ] %}
