@@ -1,6 +1,7 @@
 {{ 
     config(
         materialized='incremental',
+        tags = ['dunesql'],
         alias = alias('eth_transfers'),
         partition_by = ['block_date'],
         unique_key = ['block_date', 'tx_hash', 'trace_address', 'amount_raw'],

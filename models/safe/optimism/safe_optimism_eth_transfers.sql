@@ -1,6 +1,7 @@
 {{ 
     config(
         materialized='incremental',
+        tags = ['dunesql'],
         alias = alias('eth_transfers'),
         partition_by = ['block_date'],
         unique_key = ['block_date', 'address', 'tx_hash', 'trace_address'],
@@ -74,7 +75,7 @@ from {{ source('erc20_optimism', 'evt_Transfer') }} r
 inner join {{ ref('safe_optimism_safes') }} s
     on r.to = s.address
 where 
-    r.contract_address = lower('0xDeadDeAddeAddEAddeadDEaDDEAdDeaDDeAD0000')
+    r.contract_address = 0xdeaddeaddeaddeaddeaddeaddeaddeaddead0000
     and r.value > UINT256 '0'
     {% if not is_incremental() %}
     and r.evt_block_time > TIMESTAMP '{{project_start_date}}' -- for initial query optimisation
@@ -97,7 +98,7 @@ from {{ source('erc20_optimism', 'evt_Transfer') }} r
 inner join {{ ref('safe_optimism_safes') }} s
     on r.from = s.address
 where 
-    r.contract_address = lower('0xDeadDeAddeAddEAddeadDEaDDEAdDeaDDeAD0000')
+    r.contract_address = 0xdeaddeaddeaddeaddeaddeaddeaddeaddead0000
     and r.value > UINT256 '0'
     {% if not is_incremental() %}
     and r.evt_block_time > TIMESTAMP '{{project_start_date}}' -- for initial query optimisation

@@ -1,6 +1,7 @@
 {{ 
     config(
         materialized='incremental',
+        tags = ['dunesql'],
         alias = alias('transactions'),
         partition_by = ['block_date'],
         unique_key = ['block_date', 'tx_hash', 'trace_address'], 
@@ -33,9 +34,9 @@ select
     tr.input,
     tr.output,
     case 
-        when substring(tr.input, 0, 10) = '0x6a761202' then 'execTransaction'
-        when substring(tr.input, 0, 10) = '0x468721a7' then 'execTransactionFromModule'
-        when substring(tr.input, 0, 10) = '0x5229073f' then 'execTransactionFromModuleReturnData'
+        when bytearray_substring(tr.input, 1, 4) = 0x6a761202 then 'execTransaction'
+        when bytearray_substring(tr.input, 1, 4) = 0x468721a7 then 'execTransactionFromModule'
+        when bytearray_substring(tr.input, 1, 4) = 0x5229073f then 'execTransactionFromModuleReturnData'
         else 'unknown'
     end as method
 from {{ source('fantom', 'traces') }} tr 
@@ -43,10 +44,10 @@ join {{ ref('safe_fantom_safes') }} s
     on s.address = tr.from
 join {{ ref('safe_fantom_singletons') }} ss
     on tr.to = ss.address
-where substring(tr.input, 0, 10) in (
-        '0x6a761202', -- execTransaction
-        '0x468721a7', -- execTransactionFromModule
-        '0x5229073f' -- execTransactionFromModuleReturnData
+where bytearray_substring(tr.input, 1, 4) in (
+        0x6a761202, -- execTransaction
+        0x468721a7, -- execTransactionFromModule
+        0x5229073f -- execTransactionFromModuleReturnData
     )
     and tr.call_type = 'delegatecall'
     {% if not is_incremental() %}

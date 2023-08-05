@@ -1,6 +1,7 @@
 {{
     config(
         materialized='incremental',
+        tags = ['dunesql'],
         schema='safe_celo',
         alias = alias('transfers'),
         partition_by = ['block_date'],
