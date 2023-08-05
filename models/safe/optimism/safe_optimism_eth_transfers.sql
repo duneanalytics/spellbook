@@ -68,7 +68,7 @@ select
     s.address, 
     try_cast(date_trunc('day', r.evt_block_time) as date) as block_date,
     r.evt_block_time as block_time,
-    r.value as amount_raw,
+    CAST(r.value AS INT256) as amount_raw,
     r.evt_tx_hash as tx_hash,
     cast(r.evt_index as varchar) as trace_address
 from {{ source('erc20_optimism', 'evt_Transfer') }} r
@@ -91,12 +91,12 @@ select
     s.address, 
     try_cast(date_trunc('day', r.evt_block_time) as date) as block_date,
     r.evt_block_time as block_time,
-    -r.value as amount_raw,
+    -CAST(r.value AS INT256) as amount_raw,
     r.evt_tx_hash as tx_hash,
     cast(r.evt_index as varchar) as trace_address
 from {{ source('erc20_optimism', 'evt_Transfer') }} r
 inner join {{ ref('safe_optimism_safes') }} s
-    on r.from = s.address
+    on r."from" = s.address
 where 
     r.contract_address = 0xdeaddeaddeaddeaddeaddeaddeaddeaddead0000
     and r.value > UINT256 '0'
