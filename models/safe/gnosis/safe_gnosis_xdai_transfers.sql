@@ -67,7 +67,7 @@ select
     s.address, 
     try_cast(date_trunc('day', a.evt_block_time) as date) as block_date,
     a.evt_block_time as block_time, 
-    a.amount as amount_raw,
+    CAST(a.amount AS INT256) as amount_raw,
     a.evt_tx_hash as tx_hash,
     cast(a.evt_index as varchar) as trace_address
 from {{ source('xdai_gnosis', 'BlockRewardAuRa_evt_AddedReceiver') }} a
