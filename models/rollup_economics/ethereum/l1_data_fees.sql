@@ -29,7 +29,7 @@ with tx_batch_appends as (
       FROM {{ source('arbitrum_ethereum', 'SequencerInbox_evt_SequencerBatchDeliveredFromOrigin') }} o
       WHERE evt_block_time >= timestamp '2022-01-01'
       {% if is_incremental() %}
-          and evt_block_time >= date_trunc('day', now() - interval '7' day)
+      AND evt_block_time >= date_trunc('day', now() - interval '7' day)
       {% endif %}
 
       UNION ALL
@@ -45,7 +45,7 @@ with tx_batch_appends as (
       WHERE evt_block_time >= timestamp '2022-01-01'
       )
       {% if is_incremental() %}
-          and call_block_time >= date_trunc('day', now() - interval '7' day)
+      AND call_block_time >= date_trunc('day', now() - interval '7' day)
       {% endif %}
 
       UNION ALL
@@ -61,7 +61,7 @@ with tx_batch_appends as (
       WHERE evt_block_time >= timestamp '2022-01-01'
       )
       {% if is_incremental() %}
-          and call_block_time >= date_trunc('day', now() - interval '7' day)
+      AND call_block_time >= date_trunc('day', now() - interval '7' day)
       {% endif %}
 
       UNION ALL
@@ -77,7 +77,7 @@ with tx_batch_appends as (
       WHERE evt_block_time >= timestamp '2022-01-01'
       )
       {% if is_incremental() %}
-          and call_block_time >= date_trunc('day', now() - interval '7' day)
+      AND call_block_time >= date_trunc('day', now() - interval '7' day)
       {% endif %}
     )b
     INNER JOIN {{ source('ethereum','transactions') }} t

@@ -22,14 +22,14 @@ with verify_txns as (
     1408 / cast(1024 AS double) / cast(1024 AS double) AS proof_size_mb
     FROM ethereum.transactions AS t
     INNER JOIN {{ source('prices','usd') }} p
-    ON p.minute = date_trunc('minute', t.block_time)
-    AND t.to = 0x3dB52cE065f728011Ac6732222270b3F2360d919 -- ValidatorTimelock
-    AND cast(t.data as varchar) LIKE '0x7739cbe7%' -- Prove Block
-    AND t.block_time >= timestamp '2023-03-01'
-    AND p.blockchain is null
-    AND p.symbol = 'ETH'
+      ON p.minute = date_trunc('minute', t.block_time)
+      AND t.to = 0x3dB52cE065f728011Ac6732222270b3F2360d919 -- ValidatorTimelock
+      AND cast(t.data as varchar) LIKE '0x7739cbe7%' -- Prove Block
+      AND t.block_time >= timestamp '2023-03-01'
+      AND p.blockchain is null
+      AND p.symbol = 'ETH'
     {% if is_incremental() %}
-        AND t.block_time >= date_trunc('day', now() - interval '7' day)
+       AND t.block_time >= date_trunc('day', now() - interval '7' day)
     {% endif %}
 
     UNION ALL SELECT
@@ -41,14 +41,14 @@ with verify_txns as (
     768 / cast(1024 AS double) / cast(1024 AS double) AS proof_size_mb
     FROM ethereum.transactions AS t
     INNER JOIN {{ source('prices','usd') }} p
-    ON p.minute = date_trunc('minute', t.block_time)
-    AND t.to = 0x5132a183e9f3cb7c848b0aac5ae0c4f0491b7ab2
-    AND cast(t.data as varchar) LIKE '0xa50a164b%' -- proveBatches
-    AND t.block_time >= timestamp '2023-03-01'
-    AND p.blockchain is null
-    AND p.symbol = 'ETH'
+      ON p.minute = date_trunc('minute', t.block_time)
+      AND t.to = 0x5132a183e9f3cb7c848b0aac5ae0c4f0491b7ab2
+      AND cast(t.data as varchar) LIKE '0xa50a164b%' -- proveBatches
+      AND t.block_time >= timestamp '2023-03-01'
+      AND p.blockchain is null
+      AND p.symbol = 'ETH'
     {% if is_incremental() %}
-        and t.block_time >= date_trunc('day', now() - interval '7' day)
+      AND t.block_time >= date_trunc('day', now() - interval '7' day)
     {% endif %}
 )
 
@@ -57,7 +57,7 @@ with verify_txns as (
     FROM {{ source('ethereum','blocks') }} as b
     WHERE b.time >= timestamp '2022-01-01'
     {% if is_incremental() %}
-        and b.time >= date_trunc('day', now() - interval '7' day)
+    AND b.time >= date_trunc('day', now() - interval '7' day)
     {% endif %}
 )
 
