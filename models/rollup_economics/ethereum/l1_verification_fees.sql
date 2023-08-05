@@ -14,7 +14,7 @@
 
 with verify_txns as (
     SELECT
-    'zkSync Era' AS name,
+    'zksync era' AS name,
     t.block_number,
     t.hash,
     (cast(gas_used as double) * (cast(gas_price as double) / 1e18)) as gas_spent,
@@ -33,7 +33,7 @@ with verify_txns as (
     {% endif %}
 
     UNION ALL SELECT
-    'Polygon zkEVM' AS name,
+    'polygon zkevm' AS name,
     t.block_number,
     t.hash,
     (cast(gas_used as double) * (cast(gas_price as double) / 1e18)) as gas_spent,

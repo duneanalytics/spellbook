@@ -93,7 +93,7 @@ with tx_batch_appends as (
 
     UNION ALL
     SELECT
-      op.name as name,
+      lower(op.name) as name,
       t.block_number,
       t.hash,
       (cast(gas_used as double) * (cast(gas_price as double) / 1e18)) as gas_spent,
@@ -117,7 +117,7 @@ with tx_batch_appends as (
     {% endif %}
 
     UNION ALL SELECT
-    'Starknet' AS chain,
+    'starknet' AS chain,
     t.block_number,
     t.hash,
     (cast(gas_used as double) * (cast(gas_price as double) / 1e18)) as gas_spent,
@@ -137,7 +137,7 @@ with tx_batch_appends as (
     {% endif %}
 
     UNION ALL SELECT
-    'zkSync Lite' AS name,
+    'zksync lite' AS name,
     t.block_number,
     t.hash,
     (cast(gas_used as double) * (cast(gas_price as double) / 1e18)) as gas_spent,
@@ -160,7 +160,7 @@ with tx_batch_appends as (
     {% endif %}
 
     UNION ALL SELECT
-    'zkSync Era' AS chain,
+    'zksync era' AS chain,
     t.block_number,
     t.hash,
     (cast(gas_used as double) * (cast(gas_price as double) / 1e18)) as gas_spent,
@@ -182,7 +182,7 @@ with tx_batch_appends as (
     {% endif %}
 
     UNION ALL SELECT
-    'Polygon zkEVM' AS chain,
+    'polygon zkevm' AS chain,
     t.block_number,
     t.hash,
     (cast(gas_used as double) * (cast(gas_price as double) / 1e18)) as gas_spent,
