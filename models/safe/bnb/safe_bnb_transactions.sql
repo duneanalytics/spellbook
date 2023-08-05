@@ -41,7 +41,7 @@ select
     end as method
 from {{ source('bnb', 'traces') }} tr 
 join {{ ref('safe_bnb_safes') }} s
-    on s.address = tr.from
+    on s.address = tr."from"
 join {{ ref('safe_bnb_singletons') }} ss
     on tr.to = ss.address
 where bytearray_substring(tr.input, 1, 4) in (
