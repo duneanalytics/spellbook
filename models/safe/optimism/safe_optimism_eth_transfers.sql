@@ -70,7 +70,7 @@ select
     r.evt_block_time as block_time,
     r.value as amount_raw,
     r.evt_tx_hash as tx_hash,
-    cast(array(r.evt_index) as string) as trace_address
+    cast(array[r.evt_index] as varchar) as trace_address
 from {{ source('erc20_optimism', 'evt_Transfer') }} r
 inner join {{ ref('safe_optimism_safes') }} s
     on r.to = s.address
@@ -93,7 +93,7 @@ select
     r.evt_block_time as block_time,
     -r.value as amount_raw,
     r.evt_tx_hash as tx_hash,
-    cast(array(r.evt_index) as string) as trace_address
+    cast(array[r.evt_index] as varchar) as trace_address
 from {{ source('erc20_optimism', 'evt_Transfer') }} r
 inner join {{ ref('safe_optimism_safes') }} s
     on r.from = s.address
