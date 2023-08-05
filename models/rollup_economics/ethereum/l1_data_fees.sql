@@ -205,7 +205,7 @@ with tx_batch_appends as (
     FROM {{ source('ethereum','blocks') }} as b
     WHERE b.time >= timestamp '2022-01-01'
     {% if is_incremental() %}
-        and b.time >= date_trunc('day', now() - interval '7' day)
+    AND b.time >= date_trunc('day', now() - interval '7' day)
     {% endif %}
 )
 
