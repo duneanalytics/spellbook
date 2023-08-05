@@ -69,7 +69,7 @@ select
     a.evt_block_time as block_time, 
     a.amount as amount_raw,
     a.evt_tx_hash as tx_hash,
-    cast(array(a.evt_index) as string) as trace_address
+    cast(array[a.evt_index] as varchar) as trace_address
 from {{ source('xdai_gnosis', 'BlockRewardAuRa_evt_AddedReceiver') }} a
 join {{ ref('safe_gnosis_safes') }} s
     on a.receiver = s.address
