@@ -3,8 +3,9 @@
     alias = alias('balancer_pools'),
     tags = ['dunesql'], 
     partition_by = ['time'],
-    materialized = 'table',
+    materialized = 'incremental',
     file_format = 'delta',
+    incremental_strategy = 'merge',
     unique_key = ['pool', 'time'],
     post_hook='{{ expose_spells(\'["arbitrum"]\',
                                 "project",
@@ -15,15 +16,9 @@
 
 {% set project_start_date = '2022-09-17' %} 
 
-with dates as (
-with day_seq as (select (sequence(cast('{{ project_start_date }}' as date), CURRENT_DATE, interval '1' day)) as day)
-select days.day
-from day_seq
-cross join unnest(day) as days(day)
-  )
+with 
 
-
-, pools(pool_id,  poolAddress) as (   
+ pools(pool_id,  poolAddress) as (   
 values 
 (0x36bf227d6bac96e2ab1ebb5492ecec69c691943f000200000000000000000316, 0x36bf227d6BaC96e2aB1EbB5492ECec69C691943f),
 (0x5a7f39435fd9c381e4932fa2047c9a5136a5e3e7000000000000000000000400, 0x5a7f39435fd9c381e4932fa2047c9a5136a5e3e7),
@@ -31,13 +26,13 @@ values
 (0xb5bd58c733948e3d65d86ba9604e06e5da276fd10002000000000000000003e6, 0xb5bd58c733948e3d65d86ba9604e06e5da276fd1),
 (0x178e029173417b1f9c8bc16dcec6f697bc323746000200000000000000000158, 0x178e029173417b1f9c8bc16dcec6f697bc323746)
 )
-
+/*
 , pool_per_date as ( 
 select dates.day, pools.*
 from dates
 left join pools on 1=1
 )
-
+*/
 , tokens as (
 select distinct token_address from (
 SELECT  tokens.token_address
@@ -86,7 +81,14 @@ WHERE call_create.output_0 in (select distinct  poolAddress from pools)
         decimals,
         avg(price) AS price
     FROM {{ source('prices', 'usd') }}
-    WHERE date_trunc('day', minute) >= date '{{ project_start_date }}'
+    --WHERE date_trunc('day', minute) >= date '{{ project_start_date }}'
+    {% if not is_incremental() %}
+    WHERE DATE_TRUNC('day', p.minute) >= DATE '{{ project_start_date }}'
+    {% endif %}
+    {% if is_incremental() %}
+    WHERE DATE_TRUNC('day', p.minute) >= DATE_TRUNC('day', NOW() - INTERVAL '1' day)
+    {% endif %}
+
     and date_trunc('day', minute) < current_date
     and blockchain = 'arbitrum'
     and contract_address in (select distinct token_address from tokens)
@@ -111,7 +113,14 @@ WHERE call_create.output_0 in (select distinct  poolAddress from pools)
         DATE_TRUNC('hour', minute) time,
         last_value(price) over (partition by DATE_TRUNC('hour', minute), contract_address ORDER BY  minute range between unbounded preceding AND unbounded following) AS price
     FROM {{ source('prices', 'usd') }}
-    WHERE date_trunc('day', minute) >=  date '{{ project_start_date }}'
+    --WHERE date_trunc('day', minute) >=  date '{{ project_start_date }}'
+    {% if not is_incremental() %}
+    WHERE DATE_TRUNC('day', p.minute) >= DATE '{{ project_start_date }}'
+    {% endif %}
+    {% if is_incremental() %}
+    WHERE DATE_TRUNC('day', p.minute) >= DATE_TRUNC('day', NOW() - INTERVAL '1' day)
+    {% endif %}
+
     and blockchain = 'arbitrum'
     and contract_address = 0x5979d7b546e38e414f7e9822514be443a4800529
 ))
@@ -131,17 +140,32 @@ WHERE call_create.output_0 in (select distinct  poolAddress from pools)
                     tokenIn AS token,
                     cast(amountIn as double) AS delta
                 FROM {{source('balancer_v2_arbitrum','Vault_evt_Swap')}}
-                WHERE date_trunc('day', evt_block_time) >= date '{{ project_start_date }}'
+                --WHERE date_trunc('day', evt_block_time) >= date '{{ project_start_date }}'
+                {% if not is_incremental() %}
+                WHERE DATE_TRUNC('day', evt_block_time) >= DATE '{{ project_start_date }}'
+                {% endif %}
+                {% if is_incremental() %}
+                WHERE DATE_TRUNC('day', evt_block_time) >= DATE_TRUNC('day', NOW() - INTERVAL '1' day)
+                {% endif %}
+
                 and poolId in (select pool_id from pools)
-                UNION
-                ALL
+                
+                UNION ALL
+                
                 SELECT
                     date_trunc('day', evt_block_time) AS day,
                     poolId AS pool_id,
                     tokenOut AS token,
                     -cast(amountOut as double) AS delta
                 FROM {{source('balancer_v2_arbitrum','Vault_evt_Swap')}}
-                WHERE date_trunc('day', evt_block_time) >= date '{{ project_start_date }}'
+                --WHERE date_trunc('day', evt_block_time) >= date '{{ project_start_date }}'
+                {% if not is_incremental() %}
+                WHERE DATE_TRUNC('day', evt_block_time) >= DATE '{{ project_start_date }}'
+                {% endif %}
+                {% if is_incremental() %}
+                WHERE DATE_TRUNC('day', evt_block_time) >= DATE_TRUNC('day', NOW() - INTERVAL '1' day)
+                {% endif %}
+
                 and poolId in (select pool_id from pools)
             ) swaps
         GROUP BY 1, 2, 3
@@ -155,7 +179,13 @@ WHERE call_create.output_0 in (select distinct  poolAddress from pools)
             cast(u.delta as double) as delta
         FROM {{source('balancer_v2_arbitrum','Vault_evt_PoolBalanceChanged')}}
          CROSS JOIN UNNEST(tokens, deltas) as u(token, delta)
-        WHERE date_trunc('day', evt_block_time) >= date '{{ project_start_date }}'
+        --WHERE date_trunc('day', evt_block_time) >= date '{{ project_start_date }}'
+        {% if not is_incremental() %}
+        WHERE DATE_TRUNC('day', evt_block_time) >= DATE '{{ project_start_date }}'
+        {% endif %}
+        {% if is_incremental() %}
+        WHERE DATE_TRUNC('day', evt_block_time) >= DATE_TRUNC('day', NOW() - INTERVAL '1' day)
+        {% endif %}    
         and poolId in (select pool_id from pools)
     )
 
@@ -166,7 +196,13 @@ WHERE call_create.output_0 in (select distinct  poolAddress from pools)
             token,
             cast(managedDelta as double) AS delta
         FROM {{source('balancer_v2_arbitrum','Vault_evt_PoolBalanceManaged')}}
-        WHERE date_trunc('day', evt_block_time) >= date '{{ project_start_date }}'
+        --WHERE date_trunc('day', evt_block_time) >= date '{{ project_start_date }}'
+        {% if not is_incremental() %}
+        WHERE DATE_TRUNC('day', evt_block_time) >= DATE '{{ project_start_date }}'
+        {% endif %}
+        {% if is_incremental() %}
+        WHERE DATE_TRUNC('day', evt_block_time) >= DATE_TRUNC('day', NOW() - INTERVAL '1' day)
+        {% endif %}
         and poolId in (select pool_id from pools)
 )
 
@@ -206,6 +242,18 @@ WHERE call_create.output_0 in (select distinct  poolAddress from pools)
         GROUP BY 1, 2, 3
 )
 
+, balance AS (
+        SELECT
+            day,
+            pool_id,
+            token,
+            LEAD(day, 1, current_date + interval '1' day) OVER (PARTITION BY token, pool_id ORDER BY DAY) AS day_of_next_change,
+            SUM(amount)  AS amount
+        FROM daily_delta_balance
+)
+
+
+/*
 , cumulative_balance AS (
         SELECT
             day,
@@ -251,7 +299,7 @@ WHERE call_create.output_0 in (select distinct  poolAddress from pools)
           and b.token not in (select poolAddress from pools)
 
 )
-
+*/
 
 , reserves as (
 select main.day, main.pool_id, 
@@ -268,7 +316,7 @@ SELECT
     token_symbol as main_token_symbol,
     coalesce(token_balance, token_balance_raw) as main_token_reserve,
     coalesce(amount_usd, 0) AS main_token_usd_reserve
-FROM cumulative_usd_balance b
+FROM balance b
 where token = 0x5979d7b546e38e414f7e9822514be443a4800529 ) main
 join 
 (
