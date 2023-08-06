@@ -13,6 +13,7 @@
  ref('lido_liquidity_arbitrum_wombat_pools'),
  ref('lido_liquidity_arbitrum_kyberswap_pools'),
  ref('lido_liquidity_arbitrum_uniswap_v3_pools'),
+ ref('lido_liquidity_arbitrum_curve_pools'),
  
 ] %}
 
