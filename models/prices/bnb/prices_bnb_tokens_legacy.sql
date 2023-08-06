@@ -201,7 +201,8 @@ FROM
     ("oath-oath","bnb","OATH","0xd3c6ceedd1cc7bd4304f72b011d53441d631e662",18),
     ("wbeth-wrapped-beacon-eth","bnb","WBETH","0xa2e3356610840701bdf5611a53974510ae27e2e1",18),
     ("edu-edu-coin", "bnb", "EDU", "0xbdeae1ca48894a1759a8374d63925f21f2ee2639", 18),
-    ("id2-space-id", "bnb", "ID", "0x2dff88a56767223a5529ea5960da7a3f5f766406", 18)
+    ("id2-space-id", "bnb", "ID", "0x2dff88a56767223a5529ea5960da7a3f5f766406", 18),
+    ("creo-creo-engine", "bnb", "CREO", "0x9521728bf66a867bc65a93ece4a543d817871eb7", 18)
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)
 where contract_address not in (
     '0x2ab0e9e4ee70fff1fb9d67031e44f6410170d00e', -- bXEN has bad price feed.
