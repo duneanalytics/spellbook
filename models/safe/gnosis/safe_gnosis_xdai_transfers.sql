@@ -68,7 +68,7 @@ union all
 select 
     s.address, 
     try_cast(date_trunc('day', a.evt_block_time) as date) as block_date,
-    CAST(date_trunc('month', a.block_time) as DATE) as block_month,
+    CAST(date_trunc('month', a.evt_block_time) as DATE) as block_month,
     a.evt_block_time as block_time, 
     CAST(a.amount AS INT256) as amount_raw,
     a.evt_tx_hash as tx_hash,
