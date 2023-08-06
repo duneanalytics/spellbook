@@ -4,7 +4,7 @@
         tags = ['dunesql'],
         alias = alias('eth_transfers'),
         partition_by = ['block_date'],
-        unique_key = ['block_date', 'tx_hash', 'trace_address', 'amount_raw'],
+        unique_key = ['address', 'tx_hash', 'trace_address'],
         on_schema_change='fail',
         file_format ='delta',
         incremental_strategy='merge',
@@ -33,7 +33,7 @@ where et.block_time > TIMESTAMP '2018-11-24' -- for initial query optimisation
 {% endif %}
 {% if is_incremental() %}
 -- to prevent potential counterfactual safe deployment issues we take a bigger interval
-where et.block_time > date_trunc('day', now() - interval '10' day)
+where et.block_time > date_trunc('day', now() - interval '7' day)
 {% endif %}
         
 union all
@@ -56,5 +56,5 @@ where et.block_time > TIMESTAMP '2018-11-24' -- for initial query optimisation
 {% endif %}
 {% if is_incremental() %}
 -- to prevent potential counterfactual safe deployment issues we take a bigger interval
-where et.block_time > date_trunc('day', now() - interval '10' day)
+where et.block_time > date_trunc('day', now() - interval '7' day)
 {% endif %}
