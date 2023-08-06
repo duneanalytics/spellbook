@@ -41,6 +41,12 @@ models:
     config:
       tags: ['safe', 'transfers', 'ethereum']
     description: "Eth transfers for safes"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - address
+            - tx_hash
+            - trace_address
     columns:
       - *address
       - *block_date
