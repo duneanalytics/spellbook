@@ -61,7 +61,7 @@ weth_prices_daily AS (
     SELECT distinct
         DATE_TRUNC('hour', minute) time
         , last_value(price) over (partition by DATE_TRUNC('hour', minute), contract_address ORDER BY  minute range between unbounded preceding AND unbounded following) AS price
-    FROM {{ source('prices', 'usd') }}
+    FROM {{ source('prices', 'usd') }} p
     --WHERE date_trunc('hour', minute) >= date '{{ project_start_date }}' 
     {% if not is_incremental() %}
     WHERE DATE_TRUNC('day', p.minute) >= DATE '{{ project_start_date }}'
@@ -82,7 +82,7 @@ weth_prices_daily AS (
         symbol,
         decimals,
         avg(price) AS price
-    FROM {{source('prices','usd')}}
+    FROM {{source('prices','usd')}} p
     --WHERE date_trunc('day', minute) >= date'{{ project_start_date }}' 
 
     {% if not is_incremental() %}
@@ -262,10 +262,10 @@ weth_prices_daily AS (
         , p2.symbol as main_token_symbol
         , p1.token as paired_token
         , p1.symbol as paired_token_symbol 
-        , coalesce(d.wsteth_amount_raw, 0)/1e18 as main_token_reserve
-        , coalesce(d.wsteth_amount_raw, 0)* p2.price/1e18 as main_token_usd_reserve
-        , coalesce(d.eth_amount_raw, 0)/1e18 as paired_token_reserve
-        , coalesce(d.eth_amount_raw, 0) * p1.price /1e18 as paired_token_usd_reserve
+        , coalesce(cast(d.wsteth_amount_raw as double), 0)/1e18 as main_token_reserve
+        , coalesce(cast(d.wsteth_amount_raw as double), 0)* p2.price/1e18 as main_token_usd_reserve
+        , coalesce(cast(d.eth_amount_raw as double), 0)/1e18 as paired_token_reserve
+        , coalesce(cast(d.eth_amount_raw as double), 0) * p1.price /1e18 as paired_token_usd_reserve
     from add_liquidity_events d
     left join weth_prices_daily p1 ON p1.time = d.time 
     left join wsteth_prices_daily p2 ON p2.time = d.time
@@ -278,10 +278,10 @@ weth_prices_daily AS (
         , p2.symbol as main_token_symbol
         , p1.token as paired_token
         , p1.symbol as paired_token_symbol 
-        , -coalesce(w.wsteth_amount_raw, 0)/1e18 as main_token_reserve
-        , -coalesce(w.wsteth_amount_raw, 0)* p2.price/1e18 as main_token_usd_reserve
-        , -coalesce(w.eth_amount_raw, 0)/1e18 as paired_token_reserve
-        , -coalesce(w.eth_amount_raw, 0) * p1.price /1e18 as paired_token_usd_reserve
+        , -coalesce(cast(w.wsteth_amount_raw as double), 0)/1e18 as main_token_reserve
+        , -coalesce(cast(w.wsteth_amount_raw as double), 0)* p2.price/1e18 as main_token_usd_reserve
+        , -coalesce(cast(w.eth_amount_raw as double), 0)/1e18 as paired_token_reserve
+        , -coalesce(cast(w.eth_amount_raw as double), 0) * p1.price /1e18 as paired_token_usd_reserve
     from remove_liquidity_events w
     left join weth_prices_daily p1 ON p1.time = w.time
     left join wsteth_prices_daily p2 ON p2.time = w.time
@@ -294,10 +294,10 @@ weth_prices_daily AS (
         , p2.symbol as main_token_symbol
         , p1.token as paired_token
         , p1.symbol as paired_token_symbol 
-        , coalesce(e.wsteth_amount_raw, 0)/1e18 as main_token_reserve
-        , coalesce(e.wsteth_amount_raw, 0)* p2.price/1e18 as main_token_usd_reserve
-        , coalesce(e.eth_amount_raw, 0)/1e18 as paired_token_reserve
-        , coalesce(e.eth_amount_raw, 0) * p1.price/1e18 as paired_token_usd_reserve
+        , coalesce(cast(e.wsteth_amount_raw as double), 0)/1e18 as main_token_reserve
+        , coalesce(cast(e.wsteth_amount_raw as double), 0)* p2.price/1e18 as main_token_usd_reserve
+        , coalesce(cast(e.eth_amount_raw as double), 0)/1e18 as paired_token_reserve
+        , coalesce(cast(e.eth_amount_raw as double), 0) * p1.price/1e18 as paired_token_usd_reserve
     from token_exchange_events e 
     left join weth_prices_daily p1 ON p1.time = e.time
     left join wsteth_prices_daily p2 ON p2.time = e.time
@@ -391,29 +391,7 @@ weth_prices_daily AS (
     from trading_volume
     )
     group by 1,2,3,4,5,6,7,8,9
-    
-
-
-
-    select 
-         pool 
-        , 'arbitrum' as blockchain
-        , 'curve' as project
-        , 0.04 as fee
-        , day as time
-        , main_token 
-        , main_token_symbol
-        , paired_token
-        , paired_token_symbol
-        , main_token_reserve 
-        , paired_token_reserve
-        , main_token_usd_reserve
-        , paired_token_usd_reserve
-        , coalesce(volume,0) as trading_volume 
-    from reserves r
-    left join trading_volume ON r.day = trading_volume.time
-    order by day desc
-)
+)    
 
 
 select CONCAT(CONCAT(CONCAT(CONCAT(CONCAT(blockchain,CONCAT(' ', project)) ,' '), coalesce(paired_token_symbol,'unknown')),':') , main_token_symbol, ' ',  format('%,.3f%%',round(coalesce(fee,0),4))) as pool_name,* 
