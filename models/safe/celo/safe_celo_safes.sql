@@ -4,7 +4,7 @@
         tags = ['dunesql'],
         schema='safe_celo',
         alias = alias('safes'),
-        partition_by = ['block_date'],
+        partition_by = ['block_month'],
         unique_key = ['block_date', 'address'],
         on_schema_change='fail',
         file_format ='delta',
@@ -32,6 +32,7 @@ select
         else 'unknown'
     end as creation_version,
     try_cast(date_trunc('day', et.block_time) as date) as block_date,
+    CAST(date_trunc('month', et.block_time) as DATE) as block_month,
     et.block_time as creation_time,
     et.tx_hash
 from {{ source('celo', 'traces') }} et

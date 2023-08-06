@@ -3,7 +3,7 @@
         materialized='incremental',
         tags = ['dunesql'],
         alias = alias('eth_transfers'),
-        partition_by = ['block_date'],
+        partition_by = ['block_month'],
         unique_key = ['address', 'tx_hash', 'trace_address'],
         on_schema_change='fail',
         file_format ='delta',
@@ -18,6 +18,7 @@
 select 
     s.address,
     try_cast(date_trunc('day', et.block_time) as date) as block_date,
+    CAST(date_trunc('month', et.block_time) as DATE) as block_month,
     et.block_time,
     -CAST(et.value AS INT256) as amount_raw,
     et.tx_hash,
@@ -41,6 +42,7 @@ union all
 select 
     s.address, 
     try_cast(date_trunc('day', et.block_time) as date) as block_date,
+    CAST(date_trunc('month', et.block_time) as DATE) as block_month,
     et.block_time,
     CAST(et.value AS INT256) as amount_raw,
     et.tx_hash,

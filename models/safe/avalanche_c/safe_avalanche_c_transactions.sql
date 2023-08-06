@@ -3,7 +3,7 @@
         materialized='incremental',
         tags = ['dunesql'],
         alias = alias('transactions'),
-        partition_by = ['block_date'],
+        partition_by = ['block_month'],
         unique_key = ['block_date', 'tx_hash', 'trace_address'], 
         file_format ='delta',
         incremental_strategy='merge',
@@ -17,6 +17,7 @@
 select 
     'avalanche_c' as blockchain,
     try_cast(date_trunc('day', tr.block_time) as date) as block_date,
+    CAST(date_trunc('month', tr.block_time) as DATE) as block_month,
     tr.block_time,
     tr.block_number,
     tr.tx_hash,
