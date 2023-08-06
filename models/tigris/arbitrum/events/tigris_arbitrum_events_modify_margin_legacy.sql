@@ -6,4 +6,4 @@
 }}
 
 SELECT 
-     1 
+     1  as dummy
