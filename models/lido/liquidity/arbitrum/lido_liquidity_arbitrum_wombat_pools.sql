@@ -200,7 +200,7 @@ group by 1,2,3
    main_token, main_token_symbol, 
    paired_token,  paired_token_symbol,
    sum(main_token_reserve) as main_token_reserve, sum(paired_token_reserve) as paired_token_reserve,
-   sum(main_token_usd_reserve) as main_token_usd_reserve, sum(paired_token_usd_reserve) as paired_token_usd_reserve,
+   max(main_token_usd_price) as main_token_usd_price, max(paired_token_usd_price) as paired_token_usd_price,
    sum(trading_volume) as trading_volume
    from (
 
@@ -209,7 +209,7 @@ group by 1,2,3
   0x5979d7b546e38e414f7e9822514be443a4800529 as main_token, 'wstETH' as main_token_symbol, 
   cast(null as varbinary) as paired_token, '' as paired_token_symbol,
   l.amount0/1e18 as main_token_reserve, 0 as paired_token_reserve,
-  p0.price*l.amount0/1e18 as main_token_usd_reserve, 0 as paired_token_usd_reserve,
+  p0.price as main_token_usd_price, 0 as paired_token_usd_price,
   0 as trading_volume
   FROM --dates d 
       --LEFT JOIN 
@@ -224,7 +224,7 @@ group by 1,2,3
   0x5979d7b546e38e414f7e9822514be443a4800529 as main_token, 'wstETH' as main_token_symbol, 
   cast(null as varbinary) as paired_token, '' as paired_token_symbol,
   0 as main_token_reserve, 0 as paired_token_reserve,
-  0 as main_token_usd_reserve, 0 as paired_token_usd_reserve,
+  0 as main_token_usd_price, 0 as paired_token_usd_price,
   coalesce(tv.volume,0)/2 as trading_volume
   FROM trading_volume AS tv 
   

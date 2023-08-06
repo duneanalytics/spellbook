@@ -279,7 +279,7 @@ group by 1,2
    main_token, main_token_symbol, 
    paired_token,  paired_token_symbol,
    sum(main_token_reserve) as main_token_reserve, sum(paired_token_reserve) as paired_token_reserve,
-   sum(main_token_usd_reserve) as main_token_usd_reserve, sum(paired_token_usd_reserve) as paired_token_usd_reserve,
+   max(main_token_usd_price) as main_token_usd_price, sum(paired_token_usd_price) as paired_token_usd_price,
    sum(trading_volume) as trading_volume
    from (
 
@@ -290,8 +290,8 @@ group by 1,2
     case when l.token0 = 0x5979D7b546E38E414F7E9822514be443A4800529 then p1.symbol else p0.symbol end paired_token_symbol, 
     case when l.token0 = 0x5979D7b546E38E414F7E9822514be443A4800529 then amount0/power(10, p0.decimals)  else amount1/power(10, p1.decimals)  end main_token_reserve,
     case when l.token0 = 0x5979D7b546E38E414F7E9822514be443A4800529 then amount1/power(10, p1.decimals)  else amount0/power(10, p0.decimals)  end paired_token_reserve,
-    case when l.token0 = 0x5979D7b546E38E414F7E9822514be443A4800529 then p0.price*amount0/power(10, p0.decimals) else p1.price*amount1/power(10, p1.decimals) end as main_token_usd_reserve,
-    case when l.token0 = 0x5979D7b546E38E414F7E9822514be443A4800529 then p1.price*amount1/power(10, p1.decimals) else p0.price*amount0/power(10, p0.decimals) end as paired_token_usd_reserve,
+    case when l.token0 = 0x5979D7b546E38E414F7E9822514be443A4800529 then p0.price else p1.price end as main_token_usd_price,
+    case when l.token0 = 0x5979D7b546E38E414F7E9822514be443A4800529 then p1.price else p0.price end as paired_token_usd_price,
     0 as trading_volume --volume
   from pool_liquidity l 
   left join pools on l.pool = pools.address
@@ -310,8 +310,8 @@ union all
     case when p.token0 = 0x5979D7b546E38E414F7E9822514be443A4800529 then p1.symbol else p0.symbol end paired_token_symbol, 
     0  as main_token_reserve,
     0  as paired_token_reserve,
-    0  as main_token_usd_reserve,
-    0  as paired_token_usd_reserve,
+    0  as main_token_usd_price,
+    0  as paired_token_usd_price,
     volume
   from trading_volume tv
   left join pools p on tv.pool = p.address

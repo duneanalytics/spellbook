@@ -14,7 +14,7 @@
  ref('lido_liquidity_arbitrum_kyberswap_pools'),
  ref('lido_liquidity_arbitrum_uniswap_v3_pools'),
  ref('lido_liquidity_arbitrum_curve_pools'),
- ref('lido_liquidity_optimism_curve_pools'),
+ --ref('lido_liquidity_optimism_curve_pools'),
 ] %}
 
 {% set project_start_date =  '2021-01-05'%} 
@@ -44,8 +44,8 @@ FROM (
            paired_token_symbol, 
            sum(main_token_reserve) over(partition by pool, main_token order by time) as main_token_reserve, 
            sum(paired_token_reserve) over(partition by pool, paired_token order by time) as paired_token_reserve,
-           sum(main_token_usd_reserve) over(partition by pool, main_token order by time) as main_token_usd_reserve, 
-           sum(paired_token_usd_reserve) over(partition by pool, paired_token order by time) as paired_token_usd_reserve, 
+           main_token_usd_price*sum(main_token_usd_reserve) over(partition by pool, main_token order by time) as main_token_usd_reserve, 
+           paired_token_usd_price*sum(paired_token_reserve) over(partition by pool, paired_token order by time) as paired_token_usd_reserve, 
            trading_volume
     FROM {{ k_model }}
     {% if not loop.last %}

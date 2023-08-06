@@ -371,7 +371,7 @@ with
     main_token, main_token_symbol, 
     paired_token,  paired_token_symbol,
     sum(main_token_reserve) as main_token_reserve, sum(paired_token_reserve) as paired_token_reserve,
-    sum(main_token_usd_reserve) as main_token_usd_reserve, sum(paired_token_usd_reserve) as paired_token_usd_reserve,
+    max(main_token_usd_price) as main_token_usd_price, max(paired_token_usd_price) as paired_token_usd_price,
     sum(trading_volume) as trading_volume
     from (
 
@@ -398,61 +398,21 @@ with
         ELSE p0.symbol
       END AS paired_token_symbol,
       CASE
-        WHEN l.token0 = 0x5979D7b546E38E414F7E9822514be443A4800529 THEN (
-          CASE
-            WHEN amount0 > 0 THEN amount0 / CAST(POWER(10, p0.decimals) AS DOUBLE)
-            ELSE 0
-          END
-        )
-        ELSE (
-          CASE
-            WHEN amount1 > 0 THEN amount1 / CAST(POWER(10, p1.decimals) AS DOUBLE)
-            ELSE 0
-          END
-        )
+        WHEN l.token0 = 0x5979D7b546E38E414F7E9822514be443A4800529 THEN amount0 / CAST(POWER(10, p0.decimals) as double)
+        ELSE amount1 / CAST(POWER(10, p1.decimals) AS DOUBLE)
       END AS main_token_reserve,
       CASE
-        WHEN l.token0 = 0x5979D7b546E38E414F7E9822514be443A4800529 THEN (
-          CASE
-            WHEN amount1 > 0 THEN amount1 / CAST(POWER(10, p1.decimals) AS DOUBLE)
-            ELSE 0
-          END
-        )
-        ELSE (
-          CASE
-            WHEN amount0 > 0 THEN amount0 / CAST(POWER(10, p0.decimals) AS DOUBLE)
-            ELSE 0
-          END
-        )
+        WHEN l.token0 = 0x5979D7b546E38E414F7E9822514be443A4800529 THEN amount1 / CAST(POWER(10, p1.decimals) as double)
+        ELSE amount0 / CAST(POWER(10, p0.decimals) AS DOUBLE)
       END AS paired_token_reserve,
       CASE
-        WHEN l.token0 = 0x5979D7b546E38E414F7E9822514be443A4800529 THEN (
-          CASE
-            WHEN amount0 > 0 THEN (p0.price * amount0) / CAST(POWER(10, p0.decimals) AS DOUBLE)
-            ELSE 0
-          END
-        )
-        ELSE (
-          CASE
-            WHEN amount1 > 0 THEN (p1.price * amount1) / CAST(POWER(10, p1.decimals) AS DOUBLE)
-            ELSE 0
-          END
-        )
-      END AS main_token_usd_reserve,
+        WHEN l.token0 = 0x5979D7b546E38E414F7E9822514be443A4800529 THEN p0.price
+        ELSE p1.price
+      END AS main_token_usd_price,
       CASE
-        WHEN l.token0 = 0x5979D7b546E38E414F7E9822514be443A4800529 THEN (
-          CASE
-            WHEN amount1 > 0 THEN (p1.price * amount1) / CAST(POWER(10, p1.decimals) AS DOUBLE)
-            ELSE 0
-          END
-        )
-        ELSE (
-          CASE
-            WHEN amount0 > 0 THEN (p0.price * amount0) / CAST(POWER(10, p0.decimals) AS DOUBLE)
-            ELSE 0
-          END
-        )
-      END AS paired_token_usd_reserve,
+        WHEN l.token0 = 0x5979D7b546E38E414F7E9822514be443A4800529 THEN p1.price
+        ELSE p0.price 
+      END AS paired_token_usd_price,
       0 AS trading_volume
     FROM
       pool_liquidity AS l
@@ -484,8 +444,8 @@ with
         ELSE p0.symbol END AS paired_token_symbol,
       0 AS main_token_reserve,
       0 AS paired_token_reserve,
-      0 AS main_token_usd_reserve,
-      0 AS paired_token_usd_reserve,
+      0 AS main_token_usd_price,
+      0 AS paired_token_usd_price,
       l.volume AS trading_volume
     FROM
       trading_volume AS l
