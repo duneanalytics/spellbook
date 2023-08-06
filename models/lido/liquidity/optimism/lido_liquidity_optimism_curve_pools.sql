@@ -117,10 +117,10 @@ with
     from {{source('curvefi_optimism','wstETH_swap_evt_AddLiquidity')}}
     --WHERE date_trunc('day', evt_block_time) >= date '{{ project_start_date }}'
     {% if not is_incremental() %}
-    WHERE DATE_TRUNC('day', mt.evt_block_time) >= DATE '{{ project_start_date }}'
+    WHERE DATE_TRUNC('day', evt_block_time) >= DATE '{{ project_start_date }}'
     {% endif %}
     {% if is_incremental() %}
-    WHERE DATE_TRUNC('day', mt.evt_block_time) >= DATE_TRUNC('day', NOW() - INTERVAL '1' day)
+    WHERE DATE_TRUNC('day', evt_block_time) >= DATE_TRUNC('day', NOW() - INTERVAL '1' day)
     {% endif %}
     
     group by 1, 2
@@ -237,7 +237,7 @@ with
         , coalesce(d.wsteth_amount_raw, 0)/1e18 as main_token_reserve
         , coalesce(d.wsteth_amount_raw, 0)* p2.price/1e18 as main_token_usd_reserve
         , coalesce(d.eth_amount_raw, 0)/1e18 as paired_token_reserve
-        , coalesce(d.eth_amount_raw, 0) * p1.price) /1e18 as paired_token_usd_reserve
+        , coalesce(d.eth_amount_raw, 0) * p1.price /1e18 as paired_token_usd_reserve
     from add_liquidity_events d
     left join weth_prices_daily p1 ON p1.time = d.time 
     left join wsteth_prices_daily p2 ON p2.time = d.time
@@ -283,10 +283,10 @@ with
     from {{source('curvefi_optimism','wstETH_swap_evt_TokenExchange')}}
     --WHERE date_trunc('day', evt_block_time) >= date '{{ project_start_date }}'
     {% if not is_incremental() %}
-    WHERE DATE_TRUNC('day', sw.evt_block_time) >= DATE '{{ project_start_date }}'
+    WHERE DATE_TRUNC('day', evt_block_time) >= DATE '{{ project_start_date }}'
     {% endif %}
     {% if is_incremental() %}
-    WHERE DATE_TRUNC('day', sw.evt_block_time) >= DATE_TRUNC('day', NOW() - INTERVAL '1' day)
+    WHERE DATE_TRUNC('day', evt_block_time) >= DATE_TRUNC('day', NOW() - INTERVAL '1' day)
     {% endif %} 
 
     group by 1   
@@ -346,11 +346,11 @@ with
     union all
 
     select  
-        pool 
+        0xb90b9b1f91a01ea22a182cd84c1e22222e39b415
         , 'optimism' as blockchain
         , 'curve' as project
         , 0.04 as fee
-        , cast(day as date) as time
+        , time
         , 0x1F32b1c2345538c0c6f582fCB022739c4A194Ebb
         , 'wstETH'
         , 0x4200000000000000000000000000000000000006
@@ -363,7 +363,7 @@ with
     from trading_volume
     )
     group by 1,2,3,4,5,6,7,8,9
-    order by day desc
+    
 )
 
 
