@@ -1,6 +1,6 @@
 {{ config(
     schema = 'superrare_ethereum',
-    tags = ['dunesql'],
+    tags = ['dunesql', 'prod_exclude'],
     alias = alias('base_trades'),
     partition_by = ['block_date'],
     materialized = 'incremental',
