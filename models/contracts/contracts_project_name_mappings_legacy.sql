@@ -7,5 +7,4 @@
 }}
 
 select 
-  1 as dune_name
-  ,1 as mapped_name
+  1

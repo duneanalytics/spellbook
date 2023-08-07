@@ -6,4 +6,4 @@
 }}
 
 SELECT
-    1 as contract_address, 1 as contract_name
+    1

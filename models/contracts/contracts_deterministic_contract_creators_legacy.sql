@@ -9,4 +9,4 @@
 
 SELECT
 
-1 AS creator_address, 1 AS creator_name
+1

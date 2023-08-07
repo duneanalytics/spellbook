@@ -7,6 +7,4 @@
 }}
 
 select 
-  1 as contract_address
-  ,1 AS contract_project
-  ,1 as contract_name
+  1

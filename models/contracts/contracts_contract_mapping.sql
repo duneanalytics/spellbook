@@ -206,7 +206,7 @@ SELECT *
     {% endif %}
     {% endfor %}
   ) as x
-  group by 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 22, 23, code
+  group by 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, to_iterate_creators, code
 ) y 
 WHERE contract_order = 1
 )

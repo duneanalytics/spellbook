@@ -8,4 +8,4 @@
 
 
 SELECT 
-  1 as creator_address, 1 as contract_project
+  1
