@@ -87,7 +87,7 @@ transactions as (
             'tx_in' as tx_type,
             evt_index as tx_index,
             "from" as address_interacted_with,
-            array(evt_index) as trace_address
+            array[evt_index] as trace_address
         FROM 
         {{ source('erc20_base', 'evt_transfer') }}
         {% if not is_incremental() %}
@@ -110,7 +110,7 @@ transactions as (
             'tx_out' as tx_type,
             evt_index as tx_index,
             "to" as address_interacted_with,
-            array(evt_index) as trace_address
+            array[evt_index] as trace_address
         FROM 
         {{ source('erc20_base', 'evt_transfer') }}
         {% if not is_incremental() %}
