@@ -1,10 +1,10 @@
-{{ config(
+{{ config(tags=['dunesql'],
     schema = 'balancer',
     alias = alias('trades'),
-    post_hook='{{ expose_spells(\'["arbitrum", "ethereum", "gnosis", "optimism", "polygon"]\',
+    post_hook='{{ expose_spells(\'["arbitrum", "ethereum", "optimism", "polygon"]\',
                                 "project",
                                 "balancer",
-                                \'["bizzyvinci", "thetroyharris"]\') }}'
+                                \'["bizzyvinci"]\') }}'
     )
 }}
 
@@ -42,7 +42,6 @@ FROM (
         tx_hash,
         tx_from,
         tx_to,
-        trace_address,
         evt_index
     FROM {{ dex_model }}
     {% if not loop.last %}
