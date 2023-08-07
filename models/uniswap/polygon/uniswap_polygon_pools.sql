@@ -1,4 +1,5 @@
 {{ config(
+    tags = 'dunesql',
     schema = 'uniswap_polygon',
     alias = alias('pools'),
     materialized = 'incremental',
@@ -8,7 +9,7 @@
     post_hook='{{ expose_spells(\'["polygon"]\',
                                 "project",
                                 "uniswap",
-                                \'["hildobby"]\') }}'
+                                \'["hildobby", "phu"]\') }}'
     )
 }}
 

@@ -1,4 +1,5 @@
 {{ config(
+    tags = 'dunesql',
     schema = 'uniswap_arbitrum',
     alias = alias('pools'),
     materialized = 'incremental',
@@ -8,7 +9,7 @@
     post_hook='{{ expose_spells(\'["arbitrum"]\',
                                 "project",
                                 "uniswap",
-                                \'["hildobby"]\') }}'
+                                \'["hildobby", "phu"]\') }}'
     )
 }}
 
