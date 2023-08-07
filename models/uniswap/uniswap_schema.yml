@@ -119,11 +119,11 @@ models:
 
   - name: uniswap_pools
     meta:
-      blockchain: ethereum, polygon, arbitrum
+      blockchain: ethereum, polygon, arbitrum, bnb
       sector: dex
-      contributors: hildobby
+      contributors: hildobby, phu
     config:
-      tags: ['ethereum', 'polygon', 'arbitrum', 'pools']
+      tags: ['ethereum', 'polygon', 'arbitrum', 'bnb', 'pools']
     description: >
       Uniswap DEX pools
     tests:
