@@ -1,5 +1,6 @@
 {{ config(
         alias = alias('liquidity'),
+        tags = ['dunesql'], 
         post_hook='{{ expose_spells(\'["ethereum", "arbitrum", "optimism"]\',
                                 "project",
                                 "lido_liquidity",
@@ -38,7 +39,7 @@ FROM (
            pool, 
            blockchain, 
            project, 
-           fee, 
+           cast(fee as double) as fee, 
            time, 
            main_token, 
            main_token_symbol,
