@@ -2,7 +2,6 @@ version: 2
 
 sources:
   - name: airswap_ethereum
-    database: delta_prod
     description: >
       Decoded tables related to Airswap dex trades.
     freshness: # default freshness
