@@ -27,6 +27,35 @@ jobs:
     steps:
       - name: Check out repository code
         uses: actions/checkout@v3
+      
+      - name: "Set vars from PR body"
+        env:
+          SKIP_CI: ${{ contains(github.event.pull_request.body, '[SKIP_CI]') }}
+          SKIP_SCHEMA_CHECK: ${{ contains(github.event.pull_request.body, '[SKIP_SCHEMA_CHECK]') }}
+          FORCE_DEX_SEEDS: ${{ contains(github.event.pull_request.body, '[FORCE_DEX_SEEDS]') }}
+        run: |
+          if ${SKIP_CI} == true; then
+            echo "SKIP_CI=true" >> $GITHUB_ENV
+            echo "SKIP_CI set to true"
+          else
+            echo "SKIP_CI=false" >> $GITHUB_ENV
+            echo "SKIP_CI set to false"
+          fi
+          if ${SKIP_SCHEMA_CHECK} == true; then
+            echo "SKIP_SCHEMA_CHECK=true" >> $GITHUB_ENV
+            echo "SKIP_SCHEMA_CHECK set to true"
+          else
+            echo "SKIP_SCHEMA_CHECK=false" >> $GITHUB_ENV
+            echo "SKIP_SCHEMA_CHECK set to false"
+          fi
+          if ${FORCE_DEX_SEEDS} == true; then
+            echo "FORCE_DEX_SEEDS=true" >> $GITHUB_ENV
+            echo "FORCE_DEX_SEEDS set to true"
+          else
+            echo "FORCE_DEX_SEEDS=false" >> $GITHUB_ENV
+            echo "FORCE_DEX_SEEDS set to false"
+          fi
+
 
       - name: Setup variables
         run: |
@@ -70,7 +99,7 @@ jobs:
         run: "dbt compile $PROFILE $COMPILE_TAG"
 
       - name: check schemas
-        if: matrix.engine == 'dunesql'
+        if: matrix.engine == 'dunesql' && env.SKIP_SCHEMA_CHECK != true
         run: |
           test=$(dbt --quiet --no-print ls $PROFILE --resource-type model --select  state:modified,config.schema:no_schema --output path --state .)
           [[ -z "$test" ]] && { echo "Success: All models have a custom schema"; exit 0; } || { echo "Found models without custom schema:"; echo "$test"; exit 1; }
@@ -83,6 +112,10 @@ jobs:
 
       - name: dbt seed
         run: "dbt seed $PROFILE --select state:modified$TAG --exclude tag:prod_exclude --state ."
+
+      - name: dbt seed for dex_trades
+        if: matrix.engine == 'dunesql' && env.FORCE_DEX_SEEDS != true
+        run: "dbt seed $PROFILE --select dex_trades_seed$TAG --exclude tag:prod_exclude --state ."
 
       - name: dbt run initial model(s)
         run: "dbt -x run $PROFILE --select state:modified$TAG --exclude tag:prod_exclude --defer --state ."
