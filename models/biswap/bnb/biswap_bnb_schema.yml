@@ -118,7 +118,6 @@ models:
             - version
             - tx_hash
             - evt_index
-            - trace_address
       - check_dex_seed:
           blockchain: bnb
           project: biswap
@@ -166,8 +165,6 @@ models:
         description: "Address which initiated the transaction"
       - name: tx_to
         description: "Address which received the transaction"
-      - name: trace_address
-        description: ""
       - name: evt_index
         description: "Index of the corresponding trade event"
 
