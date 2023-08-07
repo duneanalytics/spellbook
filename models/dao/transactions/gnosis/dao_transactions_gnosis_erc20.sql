@@ -22,6 +22,7 @@ dao_tmp as (
         FROM 
         {{ ref('dao_addresses_gnosis') }}
         WHERE dao_wallet_address IS NOT NULL 
+        AND dao_wallet_address NOT IN (0x)
 ), 
 
 transactions as (
