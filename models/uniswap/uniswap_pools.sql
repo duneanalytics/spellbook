@@ -1,5 +1,5 @@
 {{ config(
-        tags = 'dunesql'
+        tags = 'dunesql',
         alias = alias('pools'),
         post_hook='{{ expose_spells(\'["ethereum", "arbitrum", "polygon","optimism"]\',
                                 "project",
