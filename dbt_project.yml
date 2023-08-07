@@ -609,6 +609,8 @@ models:
         +schema: transfers_avalanche_c
       fantom:
         +schema: transfers_fantom
+      base:
+        +schema: transfers_base
 
     sudoswap:
       +schema: sudoswap
