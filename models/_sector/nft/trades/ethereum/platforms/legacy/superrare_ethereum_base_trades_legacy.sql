@@ -1,13 +1,12 @@
 {{ config(
-	tags=['legacy'],
-	
-    schema = 'superrare_ethereum',
-    alias = alias('base_trades', legacy_model=True),
-    partition_by = ['block_date'],
-    materialized = 'incremental',
-    file_format = 'delta',
-    incremental_strategy = 'merge',
-    unique_key = ['block_number','tx_hash','sub_tx_trade_id'],
+        tags=['legacy', 'prod_exclude'],
+        schema = 'superrare_ethereum',
+        alias = alias('base_trades', legacy_model=True),
+        partition_by = ['block_date'],
+        materialized = 'incremental',
+        file_format = 'delta',
+        incremental_strategy = 'merge',
+        unique_key = ['block_number','tx_hash','sub_tx_trade_id'],
     )
 }}
 {% set project_start_date='2018-04-05' %}
