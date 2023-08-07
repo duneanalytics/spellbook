@@ -14,8 +14,8 @@
 SELECT 
     'base' as blockchain,
     'aragon' as dao_creator_tool,
-    bytearray_ltrim(l.topic1) as dao,
-    bytearray_ltrim(l.topic1) as dao__wallet_address,
+    bytearray_ltrim(topic1) as dao,
+    bytearray_ltrim(topic1) as dao__wallet_address,
     block_time as created_block_time, 
     CAST(date_trunc('day', block_time) as DATE) as created_date, 
     CAST(date_trunc('month', block_time) as DATE) as block_month, 
