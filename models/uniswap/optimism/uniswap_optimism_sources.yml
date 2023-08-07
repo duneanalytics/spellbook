@@ -50,14 +50,19 @@ sources:
           - *evt_tx_hash
           - &fee
             name: fee
+            description: "The pools fee in hundredths of a bip i.e. 1e-6"
           - &pool
             name: pool
+            description: "Optimism chain address for the liquidity pool created"
           - &tickSpacing
             name: tickSpacing
+            description: "The pool tick spacing.  Ticks can only be used at multiples of this value, minimum of 1 and always positive"
           - &token0
             name: token0
+            description: "The first of the two tokens in the pool"
           - &token1
             name: token1
+            description: "The second of the two tokens in the pool"
 
       - name: Pair_evt_Flash
         loaded_at_field: evt_block_time

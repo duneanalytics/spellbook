@@ -1,9 +1,9 @@
 {{ config(
         alias = alias('pools'),
-        post_hook='{{ expose_spells(\'["ethereum", "arbitrum", "polygon"]\',
+        post_hook='{{ expose_spells(\'["ethereum", "arbitrum", "polygon","optimism"]\',
                                 "project",
                                 "uniswap",
-                                \'["hildobby"]\') }}'
+                                \'["hildobby","phu"]\') }}'
         )
 }}
 
@@ -11,6 +11,7 @@
 ref('uniswap_ethereum_pools')
 , ref('uniswap_arbitrum_pools')
 , ref('uniswap_polygon_pools')
+, ref('uniswap_bnb_pools')
 ] %}
 
 
