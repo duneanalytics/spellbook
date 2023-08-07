@@ -1,4 +1,5 @@
 {{ config(
+    tags= 'dunesql'
     schema = 'uniswap_bnb',
     alias = alias('pools'),
     materialized = 'incremental',
