@@ -1,7 +1,7 @@
 version: 2
 
 models:
-  - name: oneinch_fantom_calls_transfers
+  - name: oneinch_fantom_ar_calls_transfers
     meta:
       blockchain: ['fantom']
       sector: oneinch
@@ -9,48 +9,59 @@ models:
     config:
       tags: ['oneinch', 'raw']
     description: >
-        oneinch calls & transfers
-    tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - start
-            - _transfer_trace_address_not_null
-            - block_month
+        oneinch fantom calls & transfers
+
     columns:
-      - &tx_hash
-        name: tx_hash
+      - &blockchain
+        name: blockchain
         tests:
           - not_null
       - &block_time
         name: block_time
+      - &tx_hash
+        name: tx_hash
+        tests:
+          - not_null
       - &tx_from
         name: tx_from
-      - &start
-        name: start
-      - &transfer_trace_address
-        name: transfer_trace_address
-      - &token_address
-        name: token_address
-      - &amount
-        name: amount
-      - &transfer_from
-        name: transfer_from
-      - &transfer_to
-        name: transfer_to
+      - &tx_success
+        name: tx_success
+      - &call_success
+        name: call_success
+      - &call_trace_address
+        name: call_trace_address
       - &caller
         name: caller
       - &call_selector
         name: call_selector
-      - &call_success
-        name: call_success
-      - &tx_success
-        name: tx_success
+      - &transfer_trace_address
+        name: transfer_trace_address
+      - &contract_address
+        name: contract_address
+      - &amount
+        name: amount
+      - &native_token
+        name: native_token
+      - &transfer_from
+        name: transfer_from
+      - &transfer_to
+        name: transfer_to
       - &rn_ta_asc
         name: rn_ta_asc
       - &rn_ta_desc
         name: rn_ta_desc
+      - &call_output
+        name: call_output
+      - &call_input
+        name: call_input
+      - &minute
+        name: minute
       - &block_month
         name: block_month
-      - &_transfer_trace_address_not_null
-        name: _transfer_trace_address_not_null
+        tests:
+          - not_null
+      - &unique_call_transfer_id
+        name: unique_call_transfer_id
+        tests:
+          - unique
+          - not_null
