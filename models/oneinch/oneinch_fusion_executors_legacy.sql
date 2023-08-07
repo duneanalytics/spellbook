@@ -1,11 +1,10 @@
 {{
     config(
-	tags=['legacy'],
-	
-        schema='oneinch',
+        schema = 'oneinch',
         alias = alias('fusion_executors', legacy_model=True),
-        materialized='table',
-        file_format='delta',
+        materialized = 'table',
+        file_format = 'delta',
+        tags = ['legacy'],
         unique_key = ['resolver_executor', 'chain_id']
     )
 }}
