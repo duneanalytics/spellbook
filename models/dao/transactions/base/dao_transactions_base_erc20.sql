@@ -45,7 +45,7 @@ transactions as (
         WHERE evt_block_time >= date_trunc('day', now() - interval '7' Day)
         {% endif %}
         AND "to" IN (SELECT dao_wallet_address FROM dao_tmp)
-        AND contract_address != contract_address = 0xDeadDeAddeAddEAddeadDEaDDEAdDeaDDeAD0000
+        AND contract_address != 0xDeadDeAddeAddEAddeadDEaDDEAdDeaDDeAD0000
 
         UNION ALL 
 
@@ -68,7 +68,7 @@ transactions as (
         WHERE evt_block_time >= date_trunc('day', now() - interval '7' Day)
         {% endif %}
         AND "from" IN (SELECT dao_wallet_address FROM dao_tmp)
-        AND contract_address != contract_address = 0xDeadDeAddeAddEAddeadDEaDDEAdDeaDDeAD0000
+        AND contract_address != 0xDeadDeAddeAddEAddeadDEaDDEAdDeaDDeAD0000
 )
 
 SELECT 
