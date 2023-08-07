@@ -1,12 +1,11 @@
 {{ config(
 	tags=['legacy'],
-	
     alias = alias('transactions_polygon_eth', legacy_model=True),
-    partition_by = ['block_date'],
+    partition_by = ['block_month'],
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
-    unique_key = ['block_date', 'blockchain', 'dao_creator_tool', 'dao', 'dao_wallet_address', 'tx_hash', 'tx_index', 'tx_type', 'trace_address', 'address_interacted_with', 'asset_contract_address', 'value']
+    unique_key = ['block_date', 'blockchain', 'dao_creator_tool', 'dao', 'dao_wallet_address', 'tx_hash', 'tx_index', 'tx_type', 'trace_address', 'address_interacted_with', 'asset_contract_address', 'value', 'block_month']
     )
 }}
 
@@ -80,7 +79,8 @@ SELECT
     dt.dao_creator_tool, 
     dt.dao, 
     dt.dao_wallet_address, 
-    TRY_CAST(date_trunc('day', t.block_time) as DATE) as block_date, 
+    CAST(date_trunc('day', t.block_time) as DATE) as block_date, 
+    CAST(date_trunc('month', t.block_time) as DATE) as block_month, 
     t.block_time, 
     t.tx_type,
     t.token as asset_contract_address,
