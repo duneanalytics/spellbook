@@ -40,6 +40,7 @@
     ,"code_bytelength"
     ,"token_standard"
     ,"code_deploy_rank"
+    ,"code_deploy_rank_by_chain"
 ] %}
 
 
@@ -250,8 +251,8 @@ WHERE contract_order = 1
 {% for i in range(max_levels) -%}
 ,level{{i}} as (
     select
-      b.blockchain
-      ,{{i}} as level 
+      {{i}} as level 
+      ,b.blockchain
       ,b.trace_creator_address -- get the original contract creator address
       ,
       case when nd.creator_address IS NOT NULL
@@ -293,6 +294,7 @@ WHERE contract_order = 1
       ,b.is_self_destruct
       ,b.code_deploy_rank
       ,b.contract_order
+      ,b.code_deploy_rank_by_chain
       ,b.to_iterate_creators --check if base needs to be iterated, keep the base option
 
     {% if loop.first -%}
@@ -340,6 +342,7 @@ WHERE contract_order = 1
     ,f.code_bytelength
     ,f.is_self_destruct
     ,f.code_deploy_rank
+    ,f.code_deploy_rank_by_chain
   from (
     SELECT * FROM level{{max_levels - 1}} WHERE to_iterate_creators = 1 --get mapped contracts
     UNION ALL
@@ -381,6 +384,7 @@ WHERE contract_order = 1
     ,cc.created_tx_index
     ,cc.code_bytelength
     ,cc.code_deploy_rank
+    ,cc.code_deploy_rank_by_chain
     ,1 as map_rank
   from creator_contracts as cc 
   left join {{ source( chain , 'contracts') }} as oc 
@@ -415,6 +419,7 @@ WHERE contract_order = 1
     ,l.tx_index AS created_tx_index
     ,bytearray_length(oc.code) as code_bytelength
     ,1 as code_deploy_rank
+    ,1 as code_deploy_rank_by_chain
     ,2 as map_rank
   from {{ source( chain , 'logs') }} as l
     left join {{ source( chain , 'contracts') }} as oc 
@@ -460,6 +465,7 @@ WHERE contract_order = 1
       ,cast(NULL as bigint) AS created_tx_index
       ,cast(NULL as bigint) as code_bytelength --todo
       ,1 as code_deploy_rank
+      ,1 as code_deploy_rank_by_chain
       ,3 as map_rank
 
     FROM {{ ref('contracts_predeploys') }} pre
@@ -504,6 +510,7 @@ WHERE contract_order = 1
     ,c.code_bytelength
     ,t.token_standard AS token_standard
     ,c.code_deploy_rank
+    ,c.code_deploy_rank_by_chain
     ,MIN(c.map_rank) AS map_rank
 
   from combine as c 
@@ -540,7 +547,8 @@ SELECT
 , created_tx_to, created_tx_method_id, created_tx_index
 , top_level_time, top_level_tx_hash, top_level_block_number
 , top_level_tx_from, top_level_tx_to , top_level_tx_method_id
-, code_bytelength , token_standard , code_deploy_rank, is_eoa_deployed
+, code_bytelength , token_standard , code_deploy_rank, code_deploy_rank_by_chain
+, is_eoa_deployed
 
 FROM (
   select 
@@ -587,6 +595,7 @@ FROM (
     ,c.code_bytelength
     ,c.token_standard
     ,c.code_deploy_rank
+    ,c.code_deploy_rank_by_chain
     ,CASE WHEN c.trace_creator_address = c.created_tx_from THEN 1 ELSE 0 END AS is_eoa_deployed
 
   from cleanup as c 
