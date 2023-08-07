@@ -1,7 +1,7 @@
 {{ config(
     tags=['dunesql'],
     alias = alias('trades')
-    ,partition_by = ['block_date']
+    ,partition_by = ['block_month']
     ,materialized = 'incremental'
     ,file_format = 'delta'
     ,incremental_strategy = 'merge'
@@ -42,6 +42,7 @@ SELECT 'bnb'                                                            AS block
        'apeswap'                                                        AS project,
        '1'                                                              AS version,
        try_cast(date_trunc('DAY', apeswap_dex.block_time) AS date)      AS block_date,
+       cast(date_trunc('month', apeswap_dex.block_time) AS date)        AS block_month,
        apeswap_dex.block_time,
        erc20a.symbol                                                    AS token_bought_symbol,
        erc20b.symbol                                                    AS token_sold_symbol,
