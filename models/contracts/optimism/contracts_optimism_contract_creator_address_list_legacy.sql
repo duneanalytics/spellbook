@@ -581,6 +581,7 @@ WITH curated_list AS (
       ,('0x383Ea12347E56932E08638767B8A2B3c18700493', 'Hundred Finance')
       ,('0x8286dC6dF929C4BfA4f6951caB4dAe2EC02d4D72', 'Hundred Finance')
       ,('0xB45cf380FF9A33c2bf7c41043530dc8Bb2e5295B', 'ChainX')
+      ,('0x4c276F7FF3893a68cc9A947544B32E9F1e6d9912', 'Nouns Builder')
       
   ) as temp_table (creator_address, contract_project)
 )
