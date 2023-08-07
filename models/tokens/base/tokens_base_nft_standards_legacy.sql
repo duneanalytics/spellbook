@@ -5,5 +5,4 @@
 }}
 
  SELECT
-  1 as contract_address
-, 1 AS standard
+  1
