@@ -66,7 +66,7 @@ models:
       - name: unique_transfer_id
         tests:
           - unique
-          - not null
+          - not_null
         description: "Unique transfer ID (used for testing for duplicates)"
       - &blockchain
         name: blockchain
