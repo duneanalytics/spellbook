@@ -12,8 +12,8 @@
 {% set addresses_models = [
 ref('dao_addresses_ethereum')
 ,ref('dao_addresses_gnosis')
-,ref('dao_addresses_polygon'),
-,ref('dao_addresses_base'),
+,ref('dao_addresses_polygon')
+,ref('dao_addresses_base')
 ] %}
 
 
