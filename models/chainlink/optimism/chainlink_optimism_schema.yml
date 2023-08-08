@@ -5,25 +5,11 @@ models:
     meta:
       blockchain: optimism
       project: chainlink
-      contributors: ["msilb7", "0xroll", "linkpool_ryan"]
+      contributors: ["msilb7", "0xroll", "linkpool_ryan", "linkpool_jon"]
     config:
       tags: ["optimism", "chainlink", "oracle"]
     description: >
       Table pulling price updates for known Chainlink oracle addresses
-    tests:
-      - check_seed:
-          seed_file: ref('chainlink_get_price_seed')
-          filter:
-            blockchain: optimism
-          match_columns:
-            - blockchain
-            - block_number
-            - proxy_address
-            - underlying_token_address
-          check_columns:
-            - aggregator_address
-            - feed_name
-            - oracle_price
     columns:
       - &blockchain
         name: blockchain
@@ -52,9 +38,12 @@ models:
       - &aggregator_address
         name: aggregator_address
         description: "Address of the aggregator contract tied to the proxy for the Chainlink oracle (via Read Contract)"
-      - &underlying_token_address
-        name: underlying_token_address
-        description: "Address of any underlying tokens associated with the Chainlink oracle (i.e. AAVE, sAAVE)"
+      - &base
+        name: base
+        description: "Base token of the pair"
+      - &quote
+        name: quote
+        description: "Quote token of the pair"
       - &underlying_token_price
         name: underlying_token_price
         description: "Price of the underlying token, with extra decimal adjustments if needed"
@@ -75,7 +64,6 @@ models:
             - hour
             - proxy_address
             - aggregator_address
-            - underlying_token_address
     columns:
       - *blockchain
       - &hour
@@ -87,34 +75,15 @@ models:
       - *oracle_price
       - *proxy_address
       - *aggregator_address
-      - *underlying_token_address
+      - *base
+      - *quote
       - *underlying_token_price
-
-  - name: chainlink_optimism_price_feeds_oracle_token_mapping
-    meta:
-      blockchain: optimism
-      project: chainlink
-      contributors: ["msilb7", "0xroll", "linkpool_ryan"]
-    config:
-      tags: ["optimism", "chainlink", "oracle"]
-    description: >
-      Manually updated table for mapping chainlink oracle addresses to underlying ERC20 token addresses.
-    columns:
-      - *blockchain
-      - *feed_name
-      - *oracle_price
-      - *proxy_address
-      - *aggregator_address
-      - *underlying_token_address
-      - &extra_decimals
-        name: extra_decimals
-        description: "Additional decimals needed to adjust the Chainlink oracle answer to the underlying token (most often this is 0)"
 
   - name: chainlink_optimism_price_feeds_oracle_addresses
     meta:
       blockchain: optimism
       project: chainlink
-      contributors: ["msilb7", "0xroll", "linkpool_ryan"]
+      contributors: ["msilb7", "0xroll", "linkpool_ryan", "linkpool_jon"]
     config:
       tags: ["optimism", "chainlink", "oracle"]
     description: >

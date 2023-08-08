@@ -6,7 +6,7 @@ models:
       blockchain: ["bnb", "optimism", "polygon"]
       sector: oracle
       project: chainlink
-      contributors: ["msilb7", "0xroll", "linkpool_ryan"]
+      contributors: ["msilb7", "0xroll", "linkpool_ryan", "linkpool_jon"]
     config:
       tags: ["chainlink", "price", "feed", "bnb", "optimism", "polygon"]
     description: >
@@ -39,21 +39,46 @@ models:
       - &aggregator_address
         name: aggregator_address
         description: "Address of the aggregator contract tied to the proxy for the Chainlink oracle (via Read Contract)"
-      - &underlying_token_address
-        name: underlying_token_address
-        description: "Address of any underlying tokens associated with the Chainlink oracle (i.e. AAVE, sAAVE)"
+      - &base
+        name: base
+        description: "Base token of the pair"
+      - &quote
+        name: quote
+        description: "Quote token of the pair"
       - &underlying_token_price
         name: underlying_token_price
         description: "Price of the underlying token, with extra decimal adjustments if needed"
 
   - name: chainlink_price_feeds_hourly
     meta:
-      blockchain: ["bnb", "optimism", "polygon"]
+      blockchain:
+        [
+          "bnb",
+          "optimism",
+          "polygon",
+          "arbitrum",
+          "avalanche_c",
+          "ethereum",
+          "fantom",
+          "gnosis",
+        ]
       sector: oracle
       project: chainlink
-      contributors: ["msilb7", "0xroll", "linkpool_ryan"]
+      contributors: ["msilb7", "0xroll", "linkpool_ryan", "linkpool_jon"]
     config:
-      tags: ["chainlink", "price", "feed", "bnb", "optimism", "polygon"]
+      tags:
+        [
+          "chainlink",
+          "price",
+          "bnb",
+          "optimism",
+          "polygon",
+          "arbitrum",
+          "avalanche_c",
+          "ethereum",
+          "fantom",
+          "gnosis",
+        ]
     description: >
       Hourly chainlink price feed updates
     columns:
@@ -67,7 +92,8 @@ models:
         description: "Price returned by Chainlink oracle update"
       - *proxy_address
       - *aggregator_address
-      - *underlying_token_address
+      - *base
+      - *quote
       - name: underlying_token_price_avg
         description: "Price of the underlying token, with extra decimal adjustments if needed"
 

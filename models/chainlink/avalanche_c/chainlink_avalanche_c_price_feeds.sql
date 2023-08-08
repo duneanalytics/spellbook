@@ -7,17 +7,17 @@
     file_format='delta',
     incremental_strategy='merge',
     unique_key=['blockchain', 'block_number', 'proxy_address', 'aggregator_address'],
-    post_hook='{{ expose_spells(\'["optimism"]\',
+    post_hook='{{ expose_spells(\'["avalanche_c"]\',
                                 "project",
                                 "chainlink",
-                                \'["msilb7","0xroll","linkpool_ryan","linkpool_jon]\') }}'
+                                \'["linkpool_ryan","linkpool_jon]\') }}'
   )
 }}
 
 {% set incremental_interval = '7' %}
-{% set project_start_date = '2021-06-23' %}
+{% set project_start_date = '2020-09-21' %}
 
-SELECT 'optimism' as blockchain,
+SELECT 'avalanche_c' as blockchain,
        c.block_time,
        c.block_date,
        c.block_month,
@@ -50,9 +50,9 @@ FROM
            / POWER(10, cfa.decimals)
         ) as oracle_price
     FROM
-        {{ source('optimism', 'logs') }} l
+        {{ source('avalanche_c', 'logs') }} l
     INNER JOIN
-        {{ ref('chainlink_optimism_price_feeds_oracle_addresses') }} cfa ON l.contract_address = cfa.aggregator_address
+        {{ ref('chainlink_avalanche_c_price_feeds_oracle_addresses') }} cfa ON l.contract_address = cfa.aggregator_address
     WHERE
         l.topic0 = 0x0559884fd3a460db3073b7fc896cc77986f16e378210ded43186175bf646fc5f
         {% if not is_incremental() %}
