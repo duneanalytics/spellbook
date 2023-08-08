@@ -80,8 +80,8 @@ SELECT
     SELECT
       DATE_TRUNC('day', sw.evt_block_time) AS time,
       sw.contract_address AS pool,
-      SUM(case when fromToken = 0x5979d7b546e38e414f7e9822514be443a4800529 then cast(fromAmount as double) else -cast(toAmount AS DOUBLE) end) AS amount0,
-      SUM(case when fromToken = 0x5979d7b546e38e414f7e9822514be443a4800529 then -cast(toAmount as double) else cast(fromAmount AS DOUBLE) end) AS amount1
+      SUM(case when fromToken = 0x5979d7b546e38e414f7e9822514be443a4800529 then cast(fromAmount as double) else (-1)*cast(toAmount AS DOUBLE) end) AS amount0,
+      SUM(case when fromToken = 0x5979d7b546e38e414f7e9822514be443a4800529 then (-1)*cast(toAmount as double) else cast(fromAmount AS DOUBLE) end) AS amount1
     FROM {{source('wombat_arbitrum','wsteth_pool_evt_Swap')}} AS sw
     {% if not is_incremental() %}
     WHERE DATE_TRUNC('day', sw.evt_block_time) >= DATE '{{ project_start_date }}'
@@ -135,7 +135,7 @@ union all
 select time, pool, 0x5979d7b546e38e414f7e9822514be443a4800529 as token0, amount0
 from deposit_wsteth_events
 union all
-select time, pool, 0x5979d7b546e38e414f7e9822514be443a4800529 as token0, -amount0
+select time, pool, 0x5979d7b546e38e414f7e9822514be443a4800529 as token0, (-1)*amount0
 from withdraw_wsteth_events
 )
 group by 1,2,3

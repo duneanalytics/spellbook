@@ -278,9 +278,9 @@ weth_prices_daily AS (
         , p2.symbol as main_token_symbol
         , p1.token as paired_token
         , p1.symbol as paired_token_symbol 
-        , -coalesce(cast(w.wsteth_amount_raw as double), 0)/1e18 as main_token_reserve
+        , (-1)*coalesce(cast(w.wsteth_amount_raw as double), 0)/1e18 as main_token_reserve
         , p2.price as main_token_usd_price
-        , -coalesce(cast(w.eth_amount_raw as double), 0)/1e18 as paired_token_reserve
+        , (-1)*coalesce(cast(w.eth_amount_raw as double), 0)/1e18 as paired_token_reserve
         , p1.price as paired_token_usd_price
     from remove_liquidity_events w
     left join weth_prices_daily p1 ON p1.time = w.time
