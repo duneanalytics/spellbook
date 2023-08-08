@@ -20,7 +20,7 @@ set_name_detail as (
         , to                                                    as registrar
         , from_utf8(bytearray_rtrim(substr(input, 5 + 2 * 32))) as name
         , last_tx_hash
-    from ethereum.traces
+    from {{source('ethereum', 'traces')}}
     where block_number >= 3787060 -- 0x9062c0a6dbd6108336bcbe4593a3d1ce05512069 min(block_number)
         and to in (
               0x9062c0a6dbd6108336bcbe4593a3d1ce05512069 -- ENS: Old Reverse Registrar
@@ -44,7 +44,7 @@ set_name_detail as (
         , to as registrar
         , from_utf8(bytearray_rtrim(substr(data, 5 + 5 * 32))) as name
         , hash as tx_hash                                      
-    from ethereum.transactions
+    from {{source('ethereum', 'transactions')}}
     where block_number >= 16925606 -- 0xa58e81fe9b61b5c3fe2afd33cf304c454abfc7cb min(block_number)
         and to = 0xa58e81fe9b61b5c3fe2afd33cf304c454abfc7cb -- ENS: Reverse Registrar
         and substr(data, 1, 4) = 0x7a806d6b -- setNameForAddr
