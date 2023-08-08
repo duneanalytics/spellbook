@@ -82,16 +82,46 @@ models:
             - from
             - to
     columns:
-      - name: blockchain
-      - name: contract_address
-      - name: block_date
-      - name: evt_tx_hash
-      - name: evt_index
-      - name: evt_block_time
-      - name: evt_block_number
-      - name: from
-      - name: to
-      - name: value
+      - &blockchain
+        name: blockchain
+        description: "Blockchain"
+      - *contract_address
+      - &block_date
+        name: block_date
+        description: "UTC event block date of each DEX trade"
+      - &evt_tx_hash
+        name: evt_tx_hash
+        description: 'Transaction hash of transfer event'
+        tests:
+          - not_null
+      - &evt_index
+        name: evt_index
+        description: 'Event index'
+        tests:
+          - not_null
+      - &evt_block_time
+        name: evt_block_time
+        description: 'Block time of transfer event'
+        tests:
+          - not_null
+      - &evt_block_number
+        name: evt_block_number
+        description: 'Block number of transfer event'
+        tests:
+          - not_null
+      - &from
+        name: from
+        description: 'Address of BPT provider of transfer event'
+        tests:
+          - not_null
+      - &to
+        name: to
+        description: 'Address of BPT receiver of transfer event'
+        tests:
+          - not_null
+      - &value
+        name: value
+        description: 'Amount of BPT transferred in transfer event'
 
   - name: balancer_arbitrum_pools_tokens_weights
     meta:
@@ -158,7 +188,7 @@ models:
           project: balancer
           version: 2
     columns:
-      - &blockchain
+      - *blockchain
         name: blockchain
         description: "Blockchain"
       - &project
@@ -167,9 +197,7 @@ models:
       - &version
         name: version
         description: "Version of the project"
-      - &block_date
-        name: block_date
-        description: "Date of block"
+      - *block_date
       - *block_time
       - &token_bought_symbol
         name: token_bought_symbol
