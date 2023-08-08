@@ -337,7 +337,7 @@ models:
             - from
             - to
     columns:
-      - &blockchain
+      - *blockchain
         name: blockchain
         description: "Blockchain"
       - *contract_address
