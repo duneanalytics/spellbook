@@ -13,6 +13,9 @@
     )
 }}
 
+-- ENS: Old Reverse Registrar Contract Address Created Block Number
+{% - set initial_tx_block_number = 3787060 %}
+
 with 
 set_name_detail as (
     -- setName
@@ -22,7 +25,7 @@ set_name_detail as (
         , from_utf8(bytearray_rtrim(substr(input, 5 + 2 * 32))) as name
         , tx_hash
     from {{source('ethereum', 'traces')}}
-    where block_number >= 3787060 -- 0x9062c0a6dbd6108336bcbe4593a3d1ce05512069 min(block_number)
+    where block_number >= {{initial_tx_block_number}}
         and to in (
               0x9062c0a6dbd6108336bcbe4593a3d1ce05512069 -- ENS: Old Reverse Registrar
             , 0x084b1c3c81545d370f3634392de611caabff8148 -- ENS: Old Reverse Registrar 2
@@ -40,13 +43,11 @@ set_name_detail as (
     -- setNameForAddr
     select block_time       
         , substr(data, 5 + 12, 20) as address
-        -- , substr(data, 5 + 32 * 1 + 12, 20) as owner 
-        -- , substr(data, 5 + 32 * 2 + 12, 20) as resolver
         , to as registrar
         , from_utf8(bytearray_rtrim(substr(data, 5 + 5 * 32))) as name
         , hash as tx_hash                                      
     from {{source('ethereum', 'transactions')}}
-    where block_number >= 16925606 -- 0xa58e81fe9b61b5c3fe2afd33cf304c454abfc7cb min(block_number)
+    where block_number >= {{initial_tx_block_number}}
         and to = 0xa58e81fe9b61b5c3fe2afd33cf304c454abfc7cb -- ENS: Reverse Registrar
         and substr(data, 1, 4) = 0x7a806d6b -- setNameForAddr
         and substr(from_utf8(bytearray_rtrim(substr(data, 5 + 5 * 32))), -4) = '.eth'
