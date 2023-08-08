@@ -9,8 +9,12 @@ sources:
     tables:
       - name: 3pool_evt_TokenExchange
         loaded_at_field: evt_block_time
+        quoting:
+          identifier: true
       - name: 3poolV2_evt_TokenExchange
         loaded_at_field: evt_block_time
+        quoting:
+          identifier: true
       - name: AavePool_evt_TokenExchange
         loaded_at_field: evt_block_time
       - name: AavePool_evt_TokenExchangeUnderlying
