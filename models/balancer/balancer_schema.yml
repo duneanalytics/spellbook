@@ -209,12 +209,9 @@ models:
       - name: pool_liquidity_usd
         description: 'Liquidity of the token in the pool in USD, including BPTs'
 
-
-
   - name: balancer_transfers_bpt
     meta:
       blockchain: arbitrum, avalanche_c, ethereum, gnosis, optimism, polygon
-      project: balancer_v2
       contributors: victorstefenon, thetroyharris
     config:
       tags: ['arbitrum', 'avalanche_c', 'ethereum', 'gnosis', 'optimism', 'polygon',  'bpt', 'transfers']
