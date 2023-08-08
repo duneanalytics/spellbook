@@ -346,10 +346,6 @@ models:
         tests:
           - not_null
       - *evt_index
-        name: evt_index
-        description: 'Event index'
-        tests:
-          - not_null
       - &evt_block_time
         name: evt_block_time
         description: 'Block time of transfer event'
