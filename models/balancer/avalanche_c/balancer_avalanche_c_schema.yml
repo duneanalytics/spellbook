@@ -138,8 +138,6 @@ models:
             - to
     columns:
       - *blockchain
-        name: blockchain
-        description: "Blockchain"
       - &contract_address
         name: contract_address
         description: "Address of BPT being transfered"
