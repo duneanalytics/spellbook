@@ -185,7 +185,7 @@ models:
           project: balancer
           version: 2
     columns:
-      - &blockchain
+      - *blockchain
         name: blockchain
         description: "Blockchain"
       - &project
