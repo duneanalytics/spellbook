@@ -15,7 +15,7 @@
     )
 }}
 
-{% set event_signature = '0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef' %}
+{% set event_signature = 0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef %}
 {% set project_start_date = '2021-08-26' %}
 
 WITH registered_pools AS (
