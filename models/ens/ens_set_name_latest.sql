@@ -17,7 +17,7 @@ with
 set_name_detail as (
     -- setName
     select block_time
-        , "from"                                                as addr
+        , "from"                                                as address
         , to                                                    as registrar
         , from_utf8(bytearray_rtrim(substr(input, 5 + 2 * 32))) as name
         , tx_hash
@@ -32,14 +32,14 @@ set_name_detail as (
         and substr(from_utf8(bytearray_rtrim(substr(input, 5 + 2 * 32))), -4) = '.eth'
         and success = true 
         {% if is_incremental() %}
-        AND call_block_time >= date_trunc("day", now() - interval '1 week')
+        AND block_time >= date_trunc("day", now() - interval '1 week')
         {% endif %}
         
     union all
     
     -- setNameForAddr
     select block_time       
-        , substr(data, 5 + 12, 20) as addr
+        , substr(data, 5 + 12, 20) as address
         -- , substr(data, 5 + 32 * 1 + 12, 20) as owner 
         -- , substr(data, 5 + 32 * 2 + 12, 20) as resolver
         , to as registrar
@@ -52,16 +52,16 @@ set_name_detail as (
         and substr(from_utf8(bytearray_rtrim(substr(data, 5 + 5 * 32))), -4) = '.eth'
         and success = true 
         {% if is_incremental() %}
-        AND call_block_time >= date_trunc("day", now() - interval '1 week')
+        AND block_time >= date_trunc("day", now() - interval '1 week')
         {% endif %}
 ),
 
 set_name_rn as ( 
     select
-          row_number() over (partition by name order by block_time desc) as name_rn
-        , row_number() over (partition by addr order by block_time desc) as addr_rn
+          row_number() over (partition by name    order by block_time desc) as name_rn
+        , row_number() over (partition by address order by block_time desc) as addr_rn
         , block_time
-        , addr
+        , address
         , registrar
         , name
         , tx_hash 
@@ -70,7 +70,7 @@ set_name_rn as (
 
 select -- count(*)
       block_time as last_block_time
-    , addr
+    , address
     , registrar
     , name
     , tx_hash as last_tx_hash
