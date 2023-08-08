@@ -81,7 +81,7 @@ WHERE call_create.output_0 in (select distinct  poolAddress from pools)
         decimals,
         avg(price) AS price
     FROM {{ source('prices', 'usd') }}
-    --WHERE date_trunc('day', minute) >= date '{{ project_start_date }}'
+    
     {% if not is_incremental() %}
     WHERE DATE_TRUNC('day', p.minute) >= DATE '{{ project_start_date }}'
     {% endif %}
@@ -113,7 +113,7 @@ WHERE call_create.output_0 in (select distinct  poolAddress from pools)
         DATE_TRUNC('hour', minute) time,
         last_value(price) over (partition by DATE_TRUNC('hour', minute), contract_address ORDER BY  minute range between unbounded preceding AND unbounded following) AS price
     FROM {{ source('prices', 'usd') }}
-    --WHERE date_trunc('day', minute) >=  date '{{ project_start_date }}'
+    
     {% if not is_incremental() %}
     WHERE DATE_TRUNC('day', p.minute) >= DATE '{{ project_start_date }}'
     {% endif %}
@@ -140,7 +140,7 @@ WHERE call_create.output_0 in (select distinct  poolAddress from pools)
                     tokenIn AS token,
                     cast(amountIn as double) AS delta
                 FROM {{source('balancer_v2_arbitrum','Vault_evt_Swap')}}
-                --WHERE date_trunc('day', evt_block_time) >= date '{{ project_start_date }}'
+                
                 {% if not is_incremental() %}
                 WHERE DATE_TRUNC('day', evt_block_time) >= DATE '{{ project_start_date }}'
                 {% endif %}
@@ -156,9 +156,9 @@ WHERE call_create.output_0 in (select distinct  poolAddress from pools)
                     date_trunc('day', evt_block_time) AS day,
                     poolId AS pool_id,
                     tokenOut AS token,
-                    -cast(amountOut as double) AS delta
+                    (-1)*cast(amountOut as double) AS delta
                 FROM {{source('balancer_v2_arbitrum','Vault_evt_Swap')}}
-                --WHERE date_trunc('day', evt_block_time) >= date '{{ project_start_date }}'
+                
                 {% if not is_incremental() %}
                 WHERE DATE_TRUNC('day', evt_block_time) >= DATE '{{ project_start_date }}'
                 {% endif %}
@@ -179,7 +179,7 @@ WHERE call_create.output_0 in (select distinct  poolAddress from pools)
             cast(u.delta as double) as delta
         FROM {{source('balancer_v2_arbitrum','Vault_evt_PoolBalanceChanged')}}
          CROSS JOIN UNNEST(tokens, deltas) as u(token, delta)
-        --WHERE date_trunc('day', evt_block_time) >= date '{{ project_start_date }}'
+        
         {% if not is_incremental() %}
         WHERE DATE_TRUNC('day', evt_block_time) >= DATE '{{ project_start_date }}'
         {% endif %}
@@ -196,7 +196,7 @@ WHERE call_create.output_0 in (select distinct  poolAddress from pools)
             token,
             cast(managedDelta as double) AS delta
         FROM {{source('balancer_v2_arbitrum','Vault_evt_PoolBalanceManaged')}}
-        --WHERE date_trunc('day', evt_block_time) >= date '{{ project_start_date }}'
+        
         {% if not is_incremental() %}
         WHERE DATE_TRUNC('day', evt_block_time) >= DATE '{{ project_start_date }}'
         {% endif %}

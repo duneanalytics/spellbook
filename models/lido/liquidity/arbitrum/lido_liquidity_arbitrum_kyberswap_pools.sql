@@ -232,7 +232,7 @@ select 0x5979D7b546E38E414F7E9822514be443A4800529
       d.token1,
       amount0,
       amount1
-    FROM  daily_delta_balance d --on c.address = d.pool and c.day >= d.time and c.day < d.next_time
+    FROM  daily_delta_balance d 
 
 )
 
@@ -292,14 +292,14 @@ group by 1,2
     case when l.token0 = 0x5979D7b546E38E414F7E9822514be443A4800529 then amount1/power(10, p1.decimals)  else amount0/power(10, p0.decimals)  end paired_token_reserve,
     case when l.token0 = 0x5979D7b546E38E414F7E9822514be443A4800529 then p0.price else p1.price end as main_token_usd_price,
     case when l.token0 = 0x5979D7b546E38E414F7E9822514be443A4800529 then p1.price else p0.price end as paired_token_usd_price,
-    0 as trading_volume --volume
+    0 as trading_volume 
   from pool_liquidity l 
   left join pools on l.pool = pools.address
   left join tokens t0 on l.token0 = t0.address
   left join tokens t1 on l.token1 = t1.address
   left join tokens_prices_daily p0 on l.time = p0.time and l.token0 = p0.token
   left join tokens_prices_daily p1 on l.time = p1.time and l.token1 = p1.token
-  --left join trading_volume tv on l.time = tv.time and l.pool = tv.pool
+  
 
 union all
 
@@ -319,10 +319,10 @@ union all
   left join tokens t1 on p.token1 = t1.address
   left join tokens_prices_daily p0 on tv.time = p0.time and p.token0 = p0.token
   left join tokens_prices_daily p1 on tv.time = p1.time and p.token1 = p1.token
-  --left join trading_volume tv on l.time = tv.time and l.pool = tv.pool
+  
 
 ) group by 1,2,3,4,5,6,7,8,9
 )
 select CONCAT(CONCAT(CONCAT(CONCAT(CONCAT(blockchain,CONCAT(' ', project)) ,' '), paired_token_symbol),':') , main_token_symbol, ' ', format('%,.3f',round(coalesce(fee,0),4))) as pool_name,* 
 from all_metrics
---where main_token_reserve > 1
+

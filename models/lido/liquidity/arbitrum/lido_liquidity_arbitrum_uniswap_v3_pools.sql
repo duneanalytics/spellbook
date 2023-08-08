@@ -326,7 +326,7 @@ with
       d.token1,
       amount0,
       amount1
-    FROM daily_delta_balance d --on c.address = d.pool and c.day >= d.time and c.day < d.next_time
+    FROM daily_delta_balance d 
   ),
   
   swap_events_hourly AS (
@@ -421,7 +421,7 @@ with
       LEFT JOIN tokens AS t1 ON l.token1 = t1.address
       LEFT JOIN tokens_prices_daily AS p0 ON l.time = p0.time   AND l.token0 = p0.token
       LEFT JOIN tokens_prices_daily AS p1 ON l.time = p1.time   AND l.token1 = p1.token
-      --LEFT JOIN trading_volume AS tv ON l.time = tv.time AND l.pool = tv.pool
+      
 
       union all
     SELECT
@@ -454,7 +454,7 @@ with
       LEFT JOIN tokens AS t1 ON pools.token1 = t1.address
       LEFT JOIN tokens_prices_daily AS p0 ON l.time = p0.time   AND pools.token0 = p0.token
       LEFT JOIN tokens_prices_daily AS p1 ON l.time = p1.time   AND pools.token1 = p1.token
-      --LEFT JOIN trading_volume AS tv ON l.time = tv.time AND l.pool = tv.pool
+      
   ) group by 1,2,3,4,5,6,7,8,9
   )
 SELECT
