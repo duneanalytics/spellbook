@@ -20,7 +20,7 @@ set_name_detail as (
         , "from"                                                as addr
         , to                                                    as registrar
         , from_utf8(bytearray_rtrim(substr(input, 5 + 2 * 32))) as name
-        , last_tx_hash
+        , tx_hash
     from {{source('ethereum', 'traces')}}
     where block_number >= 3787060 -- 0x9062c0a6dbd6108336bcbe4593a3d1ce05512069 min(block_number)
         and to in (
