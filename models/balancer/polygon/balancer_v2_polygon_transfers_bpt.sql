@@ -30,6 +30,7 @@ WITH registered_pools AS (
 
 SELECT DISTINCT * FROM (
     SELECT
+        'polygon' AS blockchain,
         logs.contract_address,
         logs.tx_hash AS evt_tx_hash,
         logs.index AS evt_index,
