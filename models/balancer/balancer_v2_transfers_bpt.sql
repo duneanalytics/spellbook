@@ -30,8 +30,8 @@ FROM (
       , evt_index
       , evt_block_time
       , evt_block_number
-      , "from"
-      , to
+      , transfer_from
+      , transfer_to
       , value
     FROM {{ model }}
     {% if not loop.last %}
