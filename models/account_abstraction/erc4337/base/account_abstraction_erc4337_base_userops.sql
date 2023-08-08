@@ -15,8 +15,8 @@
 -- min deployed_date on chain
 {% set chain = 'base' %}
 {% set gas_symbol = 'ETH' %}
-{% set wrapped_gas_address = '0x4200000000000000000000000000000000000006' %}
-{% set version = 'v0.5' %}
+--currently, base chain price data is not integrated in Dune, use optimism instead
+{% set wrapped_gas_address = '0x4200000000000000000000000000000000000006' %} 
 {% set deployed_date = '2023-02-15' %}
 
 {% set erc4337_models = [
@@ -71,7 +71,7 @@ with userop as(
     from {{source('prices','usd')}}
     where minute > date '{{deployed_date}}' 
         and contract_address={{wrapped_gas_address}}
-        and blockchain='{{chain}}'
+        and blockchain='optimism'
         {% if is_incremental() %}
          and minute >= date_trunc('day', now() - interval '7' day)
         {% endif %}
