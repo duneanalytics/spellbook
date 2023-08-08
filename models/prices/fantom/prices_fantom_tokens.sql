@@ -10,7 +10,7 @@ SELECT
     TRIM(token_id) as token_id
     , LOWER(TRIM(blockchain)) as blockchain
     , TRIM(symbol) as symbol
-    , LOWER(TRIM(contract_address)) as contract_address
+    , contract_address
     , decimals
 FROM
 (
