@@ -108,15 +108,15 @@ models:
         name: median_price
         description: 'BPT median price'
   
-  - name: balancer_v2_gnosis_transfers_bpt
+  - name: balancer_v2_avalanche_c_transfers_bpt
     meta:
-      blockchain: gnosis
+      blockchain: avalanche_c
       project: balancer_v2
       contributors: victorstefenon, thetroyharris
     config:
-      tags: ['gnosis', 'bpt', 'prices']
+      tags: ['avalanche_c', 'bpt', 'prices']
     description: >
-      Balancer Pool Token (BPT) transfer logs on Balancer, an automated portfolio manager and trading platform, on gnosis.
+      Balancer Pool Token (BPT) transfer logs on Balancer, an automated portfolio manager and trading platform, on avalanche_c.
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -126,7 +126,7 @@ models:
       - check_seed_legacy:
           seed_file: ref('balancer_transfers_bpt_seed')
           filter:
-            blockchain: gnosis
+            blockchain: avalanche_c
           match_columns:
             - evt_tx_hash
             - evt_index
