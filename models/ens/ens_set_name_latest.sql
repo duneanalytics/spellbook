@@ -1,6 +1,7 @@
 {{
     config(
         alias='set_name_latest'
+        ,tags = ['dunesql']
         ,materialized = 'incremental'
         ,file_format = 'delta'
         ,incremental_strategy = 'merge'
