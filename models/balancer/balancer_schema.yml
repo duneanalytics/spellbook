@@ -208,3 +208,75 @@ models:
         description: 'Liquidity of the token in the pool in USD, except BPTs'
       - name: pool_liquidity_usd
         description: 'Liquidity of the token in the pool in USD, including BPTs'
+
+
+
+  - name: balancer_transfers_bpt
+    meta:
+      blockchain: arbitrum, avalanche_c, ethereum, gnosis, optimism, polygon
+      project: balancer_v2
+      contributors: victorstefenon, thetroyharris
+    config:
+      tags: ['arbitrum', 'avalanche_c', 'ethereum', 'gnosis', 'optimism', 'polygon',  'bpt', 'transfers']
+    description: >
+      Balancer Pool Token (BPT) transfer logs on Balancer, an automated portfolio manager and trading platform, on Arbitrum.
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - evt_tx_hash
+            - evt_index
+            - block_date
+      - check_seed_legacy:
+          seed_file: ref('balancer_transfers_bpt_seed')
+          filter:
+            blockchain: arbitrum
+          match_columns:
+            - evt_tx_hash
+            - evt_index
+            - block_date
+          check_columns:
+            - contract_address
+            - evt_block_number
+            - from
+            - to
+    columns:
+      - &blockchain
+        name: blockchain
+        description: "Blockchain"
+      - *contract_address
+      - &block_date
+        name: block_date
+        description: "UTC event block date of each DEX trade"
+      - &evt_tx_hash
+        name: evt_tx_hash
+        description: 'Transaction hash of transfer event'
+        tests:
+          - not_null
+      - &evt_index
+        name: evt_index
+        description: 'Event index'
+        tests:
+          - not_null
+      - &evt_block_time
+        name: evt_block_time
+        description: 'Block time of transfer event'
+        tests:
+          - not_null
+      - &evt_block_number
+        name: evt_block_number
+        description: 'Block number of transfer event'
+        tests:
+          - not_null
+      - &transfer_from
+        name: from
+        description: 'Address of BPT provider of transfer event'
+        tests:
+          - not_null
+      - &transfer_to
+        name: to
+        description: 'Address of BPT receiver of transfer event'
+        tests:
+          - not_null
+      - &value
+        name: value
+        description: 'Amount of BPT transferred in transfer event'
