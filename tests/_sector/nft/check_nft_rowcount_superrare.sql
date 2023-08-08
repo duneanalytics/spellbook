@@ -30,7 +30,7 @@ full outer join
         where evt_block_time <= (select max(block_time) from {{ ref('superrare_ethereum_base_trades')}})
         union all
         select count(*) as count_b from {{ source('superrare_ethereum','SuperRareAuctionHouse_evt_AuctionSettled') }}
-        where block_time <= (select max(block_time) from {{ ref('superrare_ethereum_base_trades')}})
+        where evt_block_time <= (select max(block_time) from {{ ref('superrare_ethereum_base_trades')}})
         )
     )
 on 1=1
