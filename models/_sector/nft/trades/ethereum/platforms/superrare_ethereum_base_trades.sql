@@ -1,6 +1,6 @@
 {{ config(
     schema = 'superrare_ethereum',
-    tags = ['dunesql', 'prod_exclude'],
+    tags = ['dunesql'],
     alias = alias('base_trades'),
     partition_by = ['block_date'],
     materialized = 'incremental',
@@ -146,9 +146,9 @@ with all_superrare_sales as (
             , {{var("ETH_ERC20_ADDRESS")}} as currency_contract -- SuperRareAuctionHouse hadn't currency_contract in AuctionSettled event.
             , evt_index as sub_tx_trade_id
     from {{ source('superrare_ethereum','SuperRareAuctionHouse_evt_AuctionSettled') }}
-        {% if is_incremental() %}
-        where evt_block_time >= date_trunc('day', now() - interval '7' day)
-        {% endif %}
+    {% if is_incremental() %}
+    where evt_block_time >= date_trunc('day', now() - interval '7' day)
+    {% endif %}
 )
 
 SELECT
