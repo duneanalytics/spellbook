@@ -14,7 +14,7 @@
 }}
 
 -- ENS: Old Reverse Registrar Contract Address Created Block Number
-{% - set initial_tx_block_number = 3787060 %}
+{% set initial_tx_block_number = 3787060 %}
 
 with 
 set_name_detail as (
