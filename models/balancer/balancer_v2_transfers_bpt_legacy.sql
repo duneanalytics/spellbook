@@ -23,7 +23,8 @@ SELECT *
 FROM (
     {% for model in balancer_models %}
     SELECT
-        contract_address
+        blockchain
+      , contract_address
       , block_date
       , evt_tx_hash
       , evt_index
