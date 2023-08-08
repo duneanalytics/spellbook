@@ -570,7 +570,6 @@ WITH curated_list AS (
       ,(0x36BDE71C97B33Cc4729cf772aE268934f7AB70B2, 'Worldcoin')
       ,(0xf60f3a45c7d4476019262fc1ff6756fc15042f13, 'Kyberswap')
       ,(0x5856d478832ff3a68c122388623c4ee027d0e65a, 'Mean Finance')
-      
   ) as temp_table (creator_address, contract_project)
 )
 
