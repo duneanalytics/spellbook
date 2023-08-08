@@ -15,7 +15,7 @@
 
 {% set project_start_date = '2021-05-22' %}     -- select min(evt_block_time) from biswap_bnb.BiswapPair_evt_Swap
 
-WITH biswap_dex AS (
+WITH dexs AS (
     SELECT  t.evt_block_time                                                                                AS block_time,
             t.to                                                                                            AS taker,
             sender                                                                                          AS maker,
@@ -65,9 +65,9 @@ SELECT 'bnb'                                                     AS blockchain
      , tx."from"                                                 AS tx_from
      , tx.to                                                     AS tx_to
      , dexs.evt_index
-FROM biswap_dex
+FROM dexs
 INNER JOIN {{ source('bnb', 'transactions') }} tx
-    ON biswap_dex.tx_hash = tx.hash
+    ON dexs.tx_hash = tx.hash
     {% if is_incremental() %}
     AND tx.block_time >= date_trunc('day', now() - interval '7' day)
     {% endif %}
@@ -75,14 +75,14 @@ INNER JOIN {{ source('bnb', 'transactions') }} tx
     AND tx.block_time >= TIMESTAMP '{{project_start_date}}'
     {% endif %}
 LEFT JOIN {{ ref('tokens_erc20') }} erc20a
-    ON erc20a.contract_address = biswap_dex.token_bought_address
+    ON erc20a.contract_address = dexs.token_bought_address
     AND erc20a.blockchain = 'bnb'
 LEFT JOIN {{ ref('tokens_erc20') }} erc20b
-    ON erc20b.contract_address = biswap_dex.token_sold_address
+    ON erc20b.contract_address = dexs.token_sold_address
     AND erc20b.blockchain = 'bnb'
 LEFT JOIN {{ source('prices', 'usd') }} p_bought
-    ON p_bought.minute = date_trunc('minute', biswap_dex.block_time)
-    AND p_bought.contract_address = biswap_dex.token_bought_address
+    ON p_bought.minute = date_trunc('minute', dexs.block_time)
+    AND p_bought.contract_address = dexs.token_bought_address
     AND p_bought.blockchain = 'bnb'
     {% if is_incremental() %}
     AND p_bought.minute >= date_trunc('day', now() - interval '7' day)
@@ -91,8 +91,8 @@ LEFT JOIN {{ source('prices', 'usd') }} p_bought
     AND p_bought.minute >= TIMESTAMP '{{project_start_date}}'
     {% endif %}
 LEFT JOIN {{ source('prices', 'usd') }} p_sold
-    ON p_sold.minute = date_trunc('minute', biswap_dex.block_time)
-    AND p_sold.contract_address = biswap_dex.token_sold_address
+    ON p_sold.minute = date_trunc('minute', dexs.block_time)
+    AND p_sold.contract_address = dexs.token_sold_address
     AND p_sold.blockchain = 'bnb'
     {% if is_incremental() %}
     AND p_sold.minute >= date_trunc('day', now() - interval '7' day)
