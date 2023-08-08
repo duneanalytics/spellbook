@@ -338,8 +338,6 @@ models:
             - to
     columns:
       - *blockchain
-        name: blockchain
-        description: "Blockchain"
       - *contract_address
       - *block_date
         name: block_date
