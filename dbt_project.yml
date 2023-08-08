@@ -199,6 +199,8 @@ models:
         +schema: nft_fantom
       goerli:
         +schema: nft_goerli
+      base:
+        +schema: nft_base
 
     cex:
       +schema: cex
@@ -577,6 +579,11 @@ models:
         +schema: tokens_solana
         +materialized: table
         +file_format: delta
+      base:
+        +schema: tokens_base
+        +materialized: table
+        +file_format: delta
+
 
     solana_utils:
       +schema: solana_utils
