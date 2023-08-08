@@ -32,7 +32,7 @@ set_name_detail as (
         and substr(from_utf8(bytearray_rtrim(substr(input, 5 + 2 * 32))), -4) = '.eth'
         and success = true 
         {% if is_incremental() %}
-        AND block_time >= date_trunc("day", now() - interval '1 week')
+        and block_time >  now() - interval '7' day
         {% endif %}
         
     union all
@@ -52,7 +52,7 @@ set_name_detail as (
         and substr(from_utf8(bytearray_rtrim(substr(data, 5 + 5 * 32))), -4) = '.eth'
         and success = true 
         {% if is_incremental() %}
-        AND block_time >= date_trunc("day", now() - interval '1 week')
+        and block_time >  now() - interval '7' day
         {% endif %}
 ),
 
