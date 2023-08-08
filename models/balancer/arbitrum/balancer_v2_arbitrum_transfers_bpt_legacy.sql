@@ -38,8 +38,8 @@ SELECT DISTINCT * FROM (
         logs.block_time AS evt_block_time,
         TRY_CAST(date_trunc('DAY', logs.block_time) AS date) AS block_date,
         logs.block_number AS evt_block_number,
-        CONCAT('0x', SUBSTRING(logs.topic2, 27, 40)) AS from,
-        CONCAT('0x', SUBSTRING(logs.topic3, 27, 40)) AS to,
+        CONCAT('0x', SUBSTRING(logs.topic2, 27, 40)) AS transfer_from,
+        CONCAT('0x', SUBSTRING(logs.topic3, 27, 40)) AS transfer_to,
         bytea2numeric(SUBSTRING(logs.data, 32, 64)) AS value
     FROM {{ source('arbitrum', 'logs') }} logs
     INNER JOIN registered_pools p ON p.pool_address = logs.contract_address
