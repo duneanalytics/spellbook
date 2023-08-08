@@ -24,6 +24,7 @@
 ,ref('nft_polygon_transfers')
 ,ref('nft_fantom_transfers')
 ,ref('nft_goerli_transfers')
+,ref('nft_base_transfers')
 ] %}
 
 SELECT *
