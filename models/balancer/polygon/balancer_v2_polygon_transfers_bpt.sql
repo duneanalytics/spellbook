@@ -15,7 +15,7 @@
     )
 }}
 
-{% set event_signature = '0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef' %}
+{% set event_signature = 0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef %}
 {% set project_start_date = '2021-06-19' %}
 
 WITH registered_pools AS (
@@ -42,7 +42,7 @@ SELECT DISTINCT * FROM (
         bytearray_to_uint256(logs.data) AS value
     FROM {{ source('polygon', 'logs') }} logs
     INNER JOIN registered_pools p ON p.pool_address = logs.contract_address
-    WHERE logs.topic0 = '{{ event_signature }}'
+    WHERE logs.topic0 = {{ event_signature }}
         {% if not is_incremental() %}
         AND logs.block_time >= '{{ project_start_date }}'
         {% endif %}
