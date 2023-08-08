@@ -75,7 +75,7 @@ models:
         description: "If the swap was filled/consumed thru 0x API"
       - &matcha_limit_order_flag
         name: matcha_limit_order_flag
-        description: "If the swap"s order was initially created and submitted thru Matcha. This is for Matcha related query needs."
+        description: "If the swap's order was initially created and submitted thru Matcha. This is for Matcha related query needs."
       - &volume_usd
         name: volume_usd
         description: "Trading volume measured in USD value"   
