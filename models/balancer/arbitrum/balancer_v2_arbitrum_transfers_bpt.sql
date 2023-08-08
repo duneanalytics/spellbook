@@ -42,7 +42,7 @@ SELECT DISTINCT * FROM (
         bytearray_to_uint256(logs.data) AS value
     FROM {{ source('arbitrum', 'logs') }} logs
     INNER JOIN registered_pools p ON p.pool_address = logs.contract_address
-    WHERE logs.topic0 = '{{ event_signature }}'
+    WHERE logs.topic0 = {{ event_signature }}
         {% if not is_incremental() %}
         AND logs.block_time >= '{{ project_start_date }}'
         {% endif %}
