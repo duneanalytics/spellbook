@@ -280,7 +280,7 @@ models:
     description: >
       DEX trades on balancer on ethereum
     columns:
-      - &blockchain
+      - *blockchain
         name: blockchain
         description: "Blockchain"
       - &project
