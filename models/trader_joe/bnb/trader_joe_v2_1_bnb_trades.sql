@@ -35,10 +35,10 @@ WITH dexs AS
         ,CAST(bytearray_to_int256(bytearray_substring(amountsIn,1,16)) AS INT256) - CAST(bytearray_to_int256(bytearray_substring(amountsOut,1,16)) AS INT256) AS amount1
         from {{ source('trader_joe_v2_1_bnb', 'LBPair_evt_Swap') }} a
         ) t
-    INNER JOIN {{ source('trader_joe_v2_1_bnb', 'LBFactory_evt_LBPairCreated') }} f
-        ON f.LBPair = t.contract_address 
-    {% if is_incremental() %}  -- comment to accomodate additions to prices.usd and force full reload
-    WHERE t.evt_block_time >= date_trunc("day", now() - interval '1 week')
+        INNER JOIN {{ source('trader_joe_v2_1_bnb', 'LBFactory_evt_LBPairCreated') }} f
+    ON f.LBPair = t.contract_address 
+    {% if is_incremental() %}  
+    WHERE t.evt_block_time >= date_trunc('day', now() - interval '7' day)
     {% endif %}
 )
 
