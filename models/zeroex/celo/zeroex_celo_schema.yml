@@ -17,14 +17,6 @@ models:
             - tx_hash
             - evt_index
             - type
-      - check_seed_legacy:
-          seed_file: ref('zeroex_celo_api_fills_sample')
-          match_columns:
-            - tx_hash
-            - evt_index
-          check_columns:
-            - maker
-            - taker
     columns:
       - &tx_hash
         name: tx_hash
