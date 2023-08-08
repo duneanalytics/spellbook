@@ -340,8 +340,6 @@ models:
       - *blockchain
       - *contract_address
       - *block_date
-        name: block_date
-        description: "UTC event block date"
       - &evt_tx_hash
         name: evt_tx_hash
         description: 'Transaction hash of transfer event'
