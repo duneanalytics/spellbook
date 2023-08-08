@@ -1047,6 +1047,8 @@ models:
       +schema: galxe
       ethereum:
         +schema: galxe_ethereum
+      optimism:
+        +schema: galxe_optimism
 
     gearbox:
       +schema: gearbox
@@ -1326,6 +1328,9 @@ models:
       bnb:
         +schema: thena_bnb
 
+    quests:
+      +schema: quests
+    
     account_abstraction:
       erc4337:
         +schema: account_abstraction_erc4337
