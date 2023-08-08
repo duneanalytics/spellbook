@@ -33,7 +33,7 @@ FROM (
       , "from"
       , to
       , value
-    FROM {{ dex_model }}
+    FROM {{ model }}
     {% if not loop.last %}
     UNION ALL
     {% endif %}
