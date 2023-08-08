@@ -1,7 +1,6 @@
-
 {{ config(
     tags=['legacy'],
-    schema = 'maverick_v1_ethereum',
+    schema = 'biswap_v2_bnb',
     alias = alias('trades', legacy_model=True)
     )
 }}
