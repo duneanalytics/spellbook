@@ -1,4 +1,4 @@
-{{ config(
+{{ config(tags=['dunesql'],
         alias = alias('trades'),
         post_hook='{{ expose_spells(\'["ethereum","bnb","polygon","arbitrum","optimism"]\',
                                 "project",
@@ -14,6 +14,7 @@ ref('dodo_ethereum_trades')
 , ref('dodo_arbitrum_trades')
 , ref('dodo_optimism_trades')
 ] %}
+
 
 SELECT *
 FROM (
@@ -40,7 +41,6 @@ FROM (
         tx_hash,
         tx_from,
         tx_to,
-        trace_address,
         evt_index
     FROM {{ dex_model }}
     {% if not loop.last %}
@@ -48,4 +48,3 @@ FROM (
     {% endif %}
     {% endfor %}
 )
-;

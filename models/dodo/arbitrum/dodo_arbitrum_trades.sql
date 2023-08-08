@@ -1,10 +1,10 @@
-{{ config(
+{{ config(tags=['dunesql'],
         alias = alias('trades'),
-        partition_by = ['block_date'],
+        partition_by = ['block_month'],
         materialized = 'incremental',
         file_format = 'delta',
         incremental_strategy = 'merge',
-        unique_key = ['block_date', 'blockchain', 'project', 'version', 'tx_hash', 'evt_index', 'trace_address'],
+        unique_key = ['block_date', 'blockchain', 'project', 'version', 'tx_hash', 'evt_index'],
         post_hook='{{ expose_spells(\'["arbitrum"]\',
                                     "project",
                                     "dodo",
@@ -42,15 +42,13 @@ FROM (
         tx_hash,
         tx_from,
         tx_to,
-        trace_address,
         evt_index
     FROM {{ dex_model }}
     {% if is_incremental() %}
-    WHERE block_date >= date_trunc("day", now() - interval '1 week')
+    WHERE block_date >= date_trunc('day', now() - interval '7' day)
     {% endif %}
     {% if not loop.last %}
     UNION ALL
     {% endif %}
     {% endfor %}
 )
-;
