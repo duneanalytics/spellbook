@@ -1,6 +1,6 @@
 {{ config(
     alias = alias('account_deployed', legacy_model=True),
-    tags=['dunesql']
+    tags=['legacy']
 )}}
 
 select 1 as unique_id
