@@ -16,7 +16,7 @@ FROM
 (
     VALUES
 
-    ("weth-weth", "fantom", "WETH", "0x74b23882a30290451A17c44f4F05243b6b58C76d", 18), 
+    ('weth-weth', 'fantom', 'WETH', 0x74b23882a30290451A17c44f4F05243b6b58C76d, 18), 
     ("wbtc-wrapped-bitcoin", "fantom", "WBTC", "0x321162Cd933E2Be498Cd2267a90534A804051b11", 8),
     ("ftm-fantom", "fantom", "WFTM", "0x21be370D5312f44cB42ce377BC9b8a0cEF1A4C83", 18),
     ("aave-new", "fantom", "AAVE", "0x6a07A792ab2965C72a5B8088d3a069A7aC3a993B", 18), 
