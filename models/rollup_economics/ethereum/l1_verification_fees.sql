@@ -20,7 +20,7 @@ with verify_txns as (
     (cast(gas_used as double) * (cast(gas_price as double) / 1e18)) as gas_spent,
     p.price * (cast(gas_used as double) * (cast(gas_price as double) / 1e18)) as gas_spent_usd,
     1408 / cast(1024 AS double) / cast(1024 AS double) AS proof_size_mb
-    FROM ethereum.transactions AS t
+    FROM {{ source('ethereum','transactions') }} AS t
     INNER JOIN {{ source('prices','usd') }} p
       ON p.minute = date_trunc('minute', t.block_time)
       AND t.to = 0x3dB52cE065f728011Ac6732222270b3F2360d919 -- ValidatorTimelock
@@ -39,7 +39,7 @@ with verify_txns as (
     (cast(gas_used as double) * (cast(gas_price as double) / 1e18)) as gas_spent,
     p.price * (cast(gas_used as double) * (cast(gas_price as double) / 1e18)) as gas_spent_usd,
     768 / cast(1024 AS double) / cast(1024 AS double) AS proof_size_mb
-    FROM ethereum.transactions AS t
+    FROM {{ source('ethereum','transactions') }} AS t
     INNER JOIN {{ source('prices','usd') }} p
       ON p.minute = date_trunc('minute', t.block_time)
       AND t.to = 0x5132a183e9f3cb7c848b0aac5ae0c4f0491b7ab2
