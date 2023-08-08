@@ -109,12 +109,12 @@ models:
         description: 'Block number of transfer event'
         tests:
           - not_null
-      - &from
+      - &transfer_from
         name: from
         description: 'Address of BPT provider of transfer event'
         tests:
           - not_null
-      - &to
+      - &transfer_to
         name: to
         description: 'Address of BPT receiver of transfer event'
         tests:
