@@ -228,7 +228,7 @@ liquidate_position as (
     LEFT JOIN
         limit_order_join lo 
         ON lp.position_id = lo.position_id 
-        AND lp.positions_contract = op.positions_contract
+        AND lp.positions_contract = lo.positions_contract
     WHERE protocol_version = '2'
     {% if is_incremental() %}
     AND lp.evt_block_time >= date_trunc('day', now() - interval '7' day)
