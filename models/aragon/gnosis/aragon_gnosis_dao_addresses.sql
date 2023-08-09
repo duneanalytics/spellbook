@@ -1,4 +1,6 @@
-{{config(alias = alias('dao_addresses'))}}
+{{config(
+    tags=['dunesql'],
+    alias = alias('dao_addresses'))}}
 
 {% set aragon_models = [
 ref('aragon_gnosis_client_dao_addresses')
@@ -16,6 +18,7 @@ FROM (
         dao_wallet_address,
         created_block_time,
         created_date,
+        block_month,
         product
     FROM {{ dao_model }}
     {% if not loop.last %}
@@ -23,4 +26,3 @@ FROM (
     {% endif %}
     {% endfor %}
 )
-;
