@@ -22,11 +22,12 @@
 ] %}
 
 with get_contracts AS (
-SELECT *, ROW_NUMBER() OVER (PARTITION BY contract_address ORDER BY pref_rnk ASC) AS c_rank
+SELECT *, ROW_NUMBER() OVER (PARTITION BY blockchain, contract_address ORDER BY pref_rnk ASC) AS c_rank
 FROM (
   -- other predeploys
   select 
-     cast(NULL as varbinary) as trace_creator_address
+    'optimism' as blockchain
+    ,cast(NULL as varbinary) as trace_creator_address
     ,cast(NULL as varbinary) as creator_address
     ,cast(NULL as varbinary) as contract_factory
     ,contract_address
@@ -44,7 +45,8 @@ FROM (
   -- ovm 1.0 contracts
 
   select 
-     creator_address AS trace_creator_address
+    'optimism' as blockchain
+    ,creator_address AS trace_creator_address
     ,creator_address
     ,cast(NULL as varbinary) as contract_factory
     ,contract_address
@@ -62,7 +64,8 @@ FROM (
   --synthetix genesis contracts
 
   select 
-     cast(NULL as varbinary) as trace_creator_address
+    'optimism' as blockchain
+    ,cast(NULL as varbinary) as trace_creator_address
     ,cast(NULL as varbinary) as creator_address
     ,cast(NULL as varbinary) as contract_factory
     ,snx.contract_address
@@ -81,7 +84,8 @@ FROM (
   --uniswap pools from ovm1
 
   select 
-     cast(NULL as varbinary) as trace_creator_address
+    'optimism' as blockchain
+    ,cast(NULL as varbinary) as trace_creator_address
     ,cast(NULL as varbinary) as creator_address
     ,cast(NULL as varbinary) as contract_factory
     ,newaddress as contract_address

@@ -552,7 +552,7 @@ SELECT
 
 FROM (
   select 
-    blockchain,
+    c.blockchain,
     COALESCE(c.trace_creator_address, CAST(NULL AS varbinary) ) AS trace_creator_address
     ,c.contract_address
     ,cast(
@@ -607,6 +607,6 @@ FROM (
   left join {{ this }} th -- grab if the contract was previously picked up as factory created
     ON th.contract_address = c.contract_address
     AND th.created_block_number = c.created_block_number
-    AND th.blockchain = c.blockchin
+    AND th.blockchain = c.blockchain
   {% endif %}
 ) f
