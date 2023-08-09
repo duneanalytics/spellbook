@@ -211,10 +211,10 @@ models:
 
   - name: balancer_transfers_bpt
     meta:
-      blockchain: arbitrum, avalanche_c, ethereum, gnosis, optimism, polygon
+      blockchain: arbitrum, avalanche_c, base, ethereum, gnosis, optimism, polygon
       contributors: victorstefenon, thetroyharris
     config:
-      tags: ['arbitrum', 'avalanche_c', 'ethereum', 'gnosis', 'optimism', 'polygon',  'bpt', 'transfers']
+      tags: ['arbitrum', 'avalanche_c', 'base', 'ethereum', 'gnosis', 'optimism', 'polygon',  'bpt', 'transfers']
     description: >
       Balancer Pool Token (BPT) transfer logs on Balancer, an automated portfolio manager and trading platform, on Arbitrum.
     tests:
