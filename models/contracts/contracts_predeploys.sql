@@ -105,18 +105,19 @@ FROM (
 ,cleanup as (
 --grab the first non-null value for each, i.e. if we have the contract via both contract mapping and optimism.contracts
   select
-    contract_address
+    blockchain
+    ,contract_address
     {% for col in cols %}
     ,(array_agg({{ col }}) filter (where {{ col }} is not NULL))[1] as {{ col }}
     {% endfor %}
   from get_contracts
   where contract_address is not NULL 
   AND c_rank = 1 -- get first instance, no dupes
-  group by 1
+  group by 1,2
 )
 
 SELECT
-  trace_creator_address,  contract_address, 
+  blockchain, trace_creator_address,  contract_address, 
   --initcap: https://jordanlamborn.medium.com/presto-sql-proper-case-initcap-how-to-capitalize-the-first-letter-of-each-word-in-presto-5fbac3f0154c
   (array_join((transform((split(lower(contract_project),' '))
     , x -> concat(upper(substr(x,1,1)),substr(x,2,length(x))))),' ',''))
@@ -126,7 +127,8 @@ SELECT
 , is_self_destruct, creation_tx_hash, source
 FROM (
   select 
-    c.trace_creator_address
+    blockchain
+    ,c.trace_creator_address
     ,c.contract_address
     ,cast(
         replace(
