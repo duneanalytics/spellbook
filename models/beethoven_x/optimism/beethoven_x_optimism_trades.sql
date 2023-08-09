@@ -1,4 +1,4 @@
-{{ config(
+{{ config(tags=['dunesql'],
     schema = 'beethoven_x_optimism',
     alias = 'trades',
     partition_by = ['block_month'],
