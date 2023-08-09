@@ -44,7 +44,7 @@ WITH dexs AS (
   WHERE swap.evt_block_time >= TIMESTAMP '{{project_start_date}}'
   {% endif %}
   {% if is_incremental() %}
-  WHERE swap.evt_block_time >= date_trunc("day", now() - interval '7' day)
+  WHERE swap.evt_block_time >= date_trunc('day', now() - interval '7' day)
   {% endif %}
 )
 
