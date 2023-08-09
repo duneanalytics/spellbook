@@ -29,7 +29,9 @@ FROM (
       date_month,
       node_address,
       token_amount,
-      usd_amount
+      usd_amount,
+      tx_hash,
+      tx_index
     FROM {{ ref(model) }}
     {% if not loop.last %}
     UNION ALL
