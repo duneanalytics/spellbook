@@ -64,7 +64,6 @@ select 'avalanche_c'                                             as blockchain,
        dexs.tx_hash,
        tx."from"                                                   AS tx_from,
        tx.to                                                     AS tx_to,
-       dexs.trace_address,
        dexs.evt_index
 from dexs
 inner join {{ source('avalanche_c', 'transactions') }} tx
