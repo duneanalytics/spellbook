@@ -38,7 +38,7 @@ INNER JOIN {{ source('prices','usd') }} p
 
 UNION ALL SELECT
 date_trunc('day', t.block_time) AS day
-, 'Arbitrum' AS name
+, 'arbitrum' AS name
 , SUM((t.gas_used * t.effective_gas_price)/POWER(10,18)) AS l2_rev
 , SUM(p.price * (t.gas_used * t.effective_gas_price)/POWER(10,18)) AS l2_rev_usd
 FROM {{ source('arbitrum','transactions') }} t
@@ -54,7 +54,7 @@ INNER JOIN {{ source('prices','usd') }} p
 
 UNION ALL SELECT
 date_trunc('day', t.block_time) AS day
-, 'Optimism' AS name
+, 'optimism' AS name
 , SUM(
   CASE WHEN cast(t.gas_price as double) = cast(0 as double) THEN 0
   ELSE (l1_fee + (cast(t.gas_used as double) * cast(t.gas_price as double))) /POWER(10,18)
@@ -67,6 +67,31 @@ date_trunc('day', t.block_time) AS day
   END)
 ) AS l2_rev_usd
 FROM {{ source('optimism','transactions') }} t
+INNER JOIN {{ source('prices','usd') }} p
+  ON p.minute = date_trunc('minute', tr.block_time)
+  AND p.blockchain is null
+  AND p.symbol = 'ETH'
+  ON t.block_time >= timestamp '2022-01-01'
+  {% if is_incremental() %}
+  AND t.block_time >= date_trunc('day', now() - interval '7' day)
+  {% endif %}
+  GROUP BY 1,2
+
+UNION ALL SELECT
+date_trunc('day', t.block_time) AS day
+, 'base' AS name
+, SUM(
+  CASE WHEN cast(t.gas_price as double) = cast(0 as double) THEN 0
+  ELSE (l1_fee + (cast(t.gas_used as double) * cast(t.gas_price as double))) /POWER(10,18)
+  END
+) AS l2_rev
+, SUM(
+  p.price *
+  (CASE WHEN cast(t.gas_price as double) = cast(0 as double) THEN 0
+  ELSE (l1_fee + (cast(t.gas_used as double) * cast(t.gas_price as double))) /POWER(10,18)
+  END)
+) AS l2_rev_usd
+FROM {{ source('base','transactions') }} t
 INNER JOIN {{ source('prices','usd') }} p
   ON p.minute = date_trunc('minute', tr.block_time)
   AND p.blockchain is null
