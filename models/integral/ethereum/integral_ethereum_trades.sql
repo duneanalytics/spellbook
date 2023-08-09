@@ -23,7 +23,7 @@ WITH dexs AS
         t.sender AS maker,
         CASE WHEN amount0Out = UINT256 '0' THEN amount1Out ELSE amount0Out END AS token_bought_amount_raw,
         CASE WHEN amount0In = UINT256 '0' OR amount1Out = UINT256 '0' THEN amount1In ELSE amount0In END AS token_sold_amount_raw,
-        CAST(NULL AS DOUBLE) AS amount_usd,
+        NULL AS amount_usd,
         CASE WHEN amount0Out = UINT256 '0' THEN f.token1 ELSE f.token0 END AS token_bought_address,
         CASE WHEN amount0In = UINT256 '0' OR amount1Out = UINT256 '0' THEN f.token1 ELSE f.token0 END AS token_sold_address,
         t.contract_address AS project_contract_address,
