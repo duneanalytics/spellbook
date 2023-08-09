@@ -9,7 +9,8 @@
 
 {% set rubi_models = [
 ref('rubicon_optimism_offers'),
-ref('rubicon_arbitrum_offers')
+ref('rubicon_arbitrum_offers'),
+ref('rubicon_base_offers'),
 ] %}
 
 SELECT * 
