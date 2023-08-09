@@ -390,7 +390,7 @@ WHERE contract_order = 1
   left join {{ source( chain , 'contracts') }} as oc 
     on cc.contract_address = oc.address 
   WHERE cc.blockchain = '{{chain}}'
-  group by 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24
+  group by 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25
   
   union all
   -- missing contracts
