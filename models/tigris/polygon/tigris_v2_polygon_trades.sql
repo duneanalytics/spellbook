@@ -206,7 +206,7 @@ liquidate_position as (
         lp.evt_index,
         lp.evt_tx_hash,
         lp.position_id, 
-        CAST(NULL as double) as price, 
+        lp.price,
         0 as new_margin, 
         lp.leverage, 
         lp.margin * lp.leverage as volume_usd, 
