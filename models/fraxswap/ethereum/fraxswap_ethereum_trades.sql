@@ -68,7 +68,6 @@ SELECT
     ,fraxswap_dex.tx_hash
     ,tx."from"                                                            AS tx_from
     ,tx.to                                                              AS tx_to
-    ,fraxswap_dex.trace_address
     ,fraxswap_dex.evt_index
 FROM fraxswap_dex
 INNER JOIN {{ source('ethereum', 'transactions') }} tx
