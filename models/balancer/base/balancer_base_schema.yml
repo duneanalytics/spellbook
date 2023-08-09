@@ -2,15 +2,15 @@ version: 2
 
 models:
   
-  - name: balancer_v2_avalanche_c_transfers_bpt
+  - name: balancer_v2_base_transfers_bpt
     meta:
-      blockchain: avalanche_c
+      blockchain: base
       project: balancer_v2
       contributors: victorstefenon, thetroyharris
     config:
-      tags: ['avalanche_c', 'bpt', 'prices']
+      tags: ['base', 'bpt', 'transfers']
     description: >
-      Balancer Pool Token (BPT) transfer logs on Balancer, an automated portfolio manager and trading platform, on avalanche_c.
+      Balancer Pool Token (BPT) transfer logs on Balancer, an automated portfolio manager and trading platform, on base.
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -20,7 +20,7 @@ models:
       # - check_seed_legacy:
       #     seed_file: ref('balancer_transfers_bpt_seed')
       #     filter:
-      #       blockchain: avalanche_c
+      #       blockchain: base
       #     match_columns:
       #       - evt_tx_hash
       #       - evt_index
