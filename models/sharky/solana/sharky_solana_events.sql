@@ -79,8 +79,8 @@ WITH sharky_txs AS (
                    )                                                                                        AS sharky_instructions,
                filtered_txs.signer                                                                          AS user,
                filtered_txs.id
-        FROM filtered_txs
-        INNER JOIN sharky_txs
+        FROM sharky_txs
+        INNER JOIN  filtered_txs
             ON sharky_txs.block_time = filtered_txs.block_time
             AND sharky_txs.id = filtered_txs.id
     ),
