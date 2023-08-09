@@ -1,6 +1,6 @@
-{{ config(tags=['dunesql'],
+{{ config(tags=['dunesql', 'prod_exclude'],
     schema = 'beethoven_x_optimism',
-    alias = 'trades',
+    alias = alias('trades'),
     partition_by = ['block_month'],
     materialized = 'incremental',
     file_format = 'delta',
