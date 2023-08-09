@@ -302,7 +302,7 @@ pools AS (
     FROM
         v2_updated_pools_deployed pd2u
     LEFT JOIN {{ source(
-        'curvefi_ethereum',
+        'curvefi_v2_ethereum',
         'CurveTricryptoFactory_evt_LiquidityGaugeDeployed'
         ) }} as g3
         ON pd2u.pool_address = g3.token
