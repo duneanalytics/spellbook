@@ -66,6 +66,7 @@ sources:
       - name: SuperRareBazaar_evt_AcceptOffer
       - name: SuperRareBazaar_evt_AuctionSettled
       - name: SuperRareBazaar_evt_Sold
+      - name: SuperRareAuctionHouse_evt_AuctionSettled
 
   - name: x2y2_ethereum
     tables:
