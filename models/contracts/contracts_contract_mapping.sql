@@ -223,7 +223,7 @@ WHERE contract_order = 1
   --   ,'erc20' as token_standard
   -- from 'tokens_erc20_all' as t
   -- group by 1, 2, 3, 4
-        SELECT '{{chain}}' AS blockchain, contract_address, NULL AS symbol, 'erc20' as standard
+        SELECT '{{chain}}' AS blockchain, contract_address, NULL AS symbol, 'erc20' as token_standard
 
         from {{ source('erc20_' + chain , 'evt_transfer') }} tr 
 
