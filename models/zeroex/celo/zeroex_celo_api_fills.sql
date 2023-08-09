@@ -46,7 +46,7 @@ WITH zeroex_tx AS (
                 )
                 
                 {% if is_incremental() %}
-                AND block_time >= date_trunc('day', now() - interval '1' week) 
+                AND block_time >= date_trunc('day', now() - interval '7' day) 
                 {% endif %}
                 {% if not is_incremental() %}
                 AND block_time >= cast('{{zeroex_v3_start_date}}' as date)
@@ -78,7 +78,7 @@ ERC20BridgeTransfer AS (
     WHERE topic1 = 0x349fc08071558d8e3aa92dec9396e4e9f2dfecd6bb9065759d1932e7da43b8a9
     
     {% if is_incremental() %}
-    AND block_time >= date_trunc('day', now() - interval '1' week)
+    AND block_time >= date_trunc('day', now() - interval '7' day)
     {% endif %}
     {% if not is_incremental() %}
     AND block_time >= cast('{{zeroex_v3_start_date}}' as date)
@@ -108,7 +108,7 @@ BridgeFill AS (
         AND contract_address = 0xdb6f1920a889355780af7570773609bd8cb1f498
 
         {% if is_incremental() %}
-        AND block_time >= date_trunc('day', now() - interval '1' week)
+        AND block_time >= date_trunc('day', now() - interval '7' day)
         {% endif %}
         {% if not is_incremental() %}
         AND block_time >= cast('{{zeroex_v4_start_date}}' as date)
@@ -137,7 +137,7 @@ NewBridgeFill AS (
         AND contract_address = 0xdb6f1920a889355780af7570773609bd8cb1f498
 
         {% if is_incremental() %}
-        AND block_time >= date_trunc('day', now() - interval '1' week)
+        AND block_time >= date_trunc('day', now() - interval '7' day)
         {% endif %}
         {% if not is_incremental() %}
         AND block_time >= cast('{{zeroex_v4_start_date}}' as date)
@@ -222,7 +222,7 @@ FROM all_tx
 INNER JOIN {{ source('celo', 'transactions')}} tx ON all_tx.tx_hash = tx.hash
 
 {% if is_incremental() %}
-AND tx.block_time >= date_trunc('day', now() - interval '1' week)
+AND tx.block_time >= date_trunc('day', now() - interval '7' day)
 {% endif %}
 {% if not is_incremental() %}
 AND tx.block_time >= cast('{{zeroex_v3_start_date}}' as date)
@@ -236,7 +236,7 @@ AND CASE
 AND tp.blockchain = 'celo'
 
 {% if is_incremental() %}
-AND tp.minute >= date_trunc('day', now() - interval '1' week)
+AND tp.minute >= date_trunc('day', now() - interval '7' day)
 {% endif %}
 {% if not is_incremental() %}
 AND tp.minute >= cast('{{zeroex_v3_start_date}}' as date)
@@ -250,7 +250,7 @@ AND CASE
 AND mp.blockchain = 'celo'
 
 {% if is_incremental() %}
-AND mp.minute >= date_trunc('day', now() - interval '1' week)
+AND mp.minute >= date_trunc('day', now() - interval '7' day)
 {% endif %}
 {% if not is_incremental() %}
 AND mp.minute >= cast('{{zeroex_v3_start_date}}' as date)
