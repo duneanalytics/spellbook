@@ -78,8 +78,8 @@ WITH dexs AS
     JOIN {{ ref('curvefi_ethereum_view_pools') }} p
         ON l.contract_address = p.pool_address
         AND (p.version = 'Factory V2' or p.version = 'Factory V2 updated' or p.version = 'Regular') --some Regular pools are new and use the below topic instead
-    WHERE l.topic1 = 0xb2e76ae99761dc136e598d4a629bb347eccb9532a5f8bbd72e18467c3c34cc98 --TokenExchange
-        or l.topic1 =  0x143f1f8e861fbdeddd5b46e844b7d3ac7b86a122f36e8c463859ee6811b1f29c --TokenExchange (v2 updated pool, has some other variables included after old ones so topic hash is changed.)
+    WHERE l.topic0 = 0xb2e76ae99761dc136e598d4a629bb347eccb9532a5f8bbd72e18467c3c34cc98 --TokenExchange
+        or l.topic0 =  0x143f1f8e861fbdeddd5b46e844b7d3ac7b86a122f36e8c463859ee6811b1f29c --TokenExchange (v2 updated pool, has some other variables included after old ones so topic hash is changed.)
         {% if not is_incremental() %}
         AND l.block_time >= TIMESTAMP '{{project_start_date}}'
         {% else %}
