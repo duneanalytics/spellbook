@@ -199,6 +199,8 @@ models:
         +schema: nft_fantom
       goerli:
         +schema: nft_goerli
+      base:
+        +schema: nft_base
 
     cex:
       +schema: cex
@@ -577,6 +579,11 @@ models:
         +schema: tokens_solana
         +materialized: table
         +file_format: delta
+      base:
+        +schema: tokens_base
+        +materialized: table
+        +file_format: delta
+
 
     solana_utils:
       +schema: solana_utils
@@ -1042,6 +1049,8 @@ models:
       +schema: galxe
       ethereum:
         +schema: galxe_ethereum
+      optimism:
+        +schema: galxe_optimism
 
     gearbox:
       +schema: gearbox
@@ -1321,6 +1330,9 @@ models:
       bnb:
         +schema: thena_bnb
 
+    quests:
+      +schema: quests
+    
     account_abstraction:
       erc4337:
         +schema: account_abstraction_erc4337
