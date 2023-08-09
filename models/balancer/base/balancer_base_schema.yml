@@ -1,0 +1,50 @@
+version: 2
+
+models:
+  
+  - name: balancer_v2_base_transfers_bpt
+    meta:
+      blockchain: base
+      project: balancer_v2
+      contributors: victorstefenon, thetroyharris
+    config:
+      tags: ['base', 'bpt', 'transfers']
+    description: >
+      Balancer Pool Token (BPT) transfer logs on Balancer, an automated portfolio manager and trading platform, on Base.
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - evt_tx_hash
+            - evt_index
+            - block_date
+    columns:
+      - &blockchain
+        name: blockchain
+        description: "Blockchain"
+      - &contract_address
+        name: contract_address
+        description: "Address of BPT being transfered"
+      - &block_date
+        name: block_date
+        description: "UTC event block date"
+      - &evt_tx_hash
+        name: evt_tx_hash
+        description: 'Transaction hash of transfer event'
+      - &evt_index
+        name: evt_index
+        description: 'Event index'
+      - &evt_block_time
+        name: evt_block_time
+        description: 'Block time of transfer event'
+      - &evt_block_number
+        name: evt_block_number
+        description: 'Block number of transfer event'
+      - &from
+        name: from
+        description: 'Address of BPT provider of transfer event'
+      - &to
+        name: to
+        description: 'Address of BPT receiver of transfer event'
+      - &value
+        name: value
+        description: 'Amount of BPT transferred in transfer event'
