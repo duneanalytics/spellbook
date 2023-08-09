@@ -328,6 +328,7 @@ LEFT JOIN {{ source('prices', 'usd') }} tp
     ON date_trunc('minute', all_tx.block_time) = tp.minute
     AND CASE
             WHEN all_tx.taker_token = '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee' THEN '0xb31f66aa3c1e785363f0875a1b74e27b85fd66c7'
+            WHEN (all_tx.taker_token = '0xa7d7079b0fead91f3e65f86e8915cb59c1a4c664' and tp.minute <= cast('2022-10-19' as date)) THEN '0x9702230a8ea53601f5cd2dc00fdbc13d4df4a8c7'
             ELSE all_tx.taker_token
         END = tp.contract_address
     AND tp.blockchain = 'avalanche_c'
@@ -342,6 +343,7 @@ LEFT JOIN {{ source('prices', 'usd') }} mp
     ON DATE_TRUNC('minute', all_tx.block_time) = mp.minute
     AND CASE
             WHEN all_tx.maker_token = '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee' THEN '0xb31f66aa3c1e785363f0875a1b74e27b85fd66c7'
+            WHEN (all_tx.maker_token = '0xa7d7079b0fead91f3e65f86e8915cb59c1a4c664' and mp.minute <= cast('2022-10-19' as date)) THEN '0x9702230a8ea53601f5cd2dc00fdbc13d4df4a8c7'
             ELSE all_tx.maker_token
         END = mp.contract_address
     AND mp.blockchain = 'avalanche_c'
