@@ -3,13 +3,13 @@
         alias = alias('tokens'),
         materialized='table',
         file_format = 'delta',
-        tags=['static','dunesql']
+        tags = ['static', 'dunesql']
         )
 }}
 SELECT 
-    TRIM(token_id) as token_id
-    , LOWER(TRIM(blockchain)) as blockchain
-    , TRIM(symbol) as symbol
+    token_id
+    , blockchain
+    , symbol
     , contract_address
     , decimals
 FROM
