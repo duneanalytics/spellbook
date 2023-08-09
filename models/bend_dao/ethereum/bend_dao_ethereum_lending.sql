@@ -30,7 +30,7 @@ borrow_events as (
             onBehalfOf as address, 
             amount as amount_raw, 
             reserve as collateral_currency_contract,
-            loanId as lien_id
+            CAST(loanId as VARCHAR) as lien_id
         FROM 
         {{source('bend_ethereum', 'LendingPool_evt_Borrow')}}
         {% if is_incremental() %}
@@ -51,7 +51,7 @@ repay_events as (
             borrower as address, 
             amount as amount_raw, 
             reserve as collateral_currency_contract,
-            loanId as lien_id
+            CAST(loanId as VARCHAR) as lien_id
         FROM 
         {{source('bend_ethereum', 'LendingPool_evt_Repay')}}
         {% if is_incremental() %}
