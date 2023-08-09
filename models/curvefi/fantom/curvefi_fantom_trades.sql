@@ -27,8 +27,8 @@ WITH exchange_evt_all as (
         buyer AS taker,
         tokens_bought AS token_bought_amount_raw,
         tokens_sold AS token_sold_amount_raw,
-        INT256 '0' as bought_id, --[bug] forcing 0, as the field doesn't exist in table on dunesql
-        INT256 '0' as sold_id, --[bug] forcing 0, as the field doesn't exist in table on dunesql
+        COALESCE(bought_id_int256, CAST(bought_id_uint256 as INT256)) as bought_id,
+        COALESCE(sold_id_int256, CAST(sold_id_uint256 as INT256)) as sold_id,
         contract_address AS project_contract_address,
         evt_tx_hash AS tx_hash,
         evt_index
