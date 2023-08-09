@@ -17,7 +17,7 @@
 }}
 
 {% set event_signature = '0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef' %}
-{% set project_start_date = '2021-04-20' %}
+{% set project_start_date = '2022-11-01' %}
 
 WITH registered_pools AS (
     SELECT
