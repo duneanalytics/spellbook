@@ -100,6 +100,9 @@ models:
       - &evt_index
         name: evt_index
         description: "Index of the corresponding lending event"
+      - &lien_id
+        name: lien_id
+        description:  "Unique loan id  "
 
   - name: bend_dao_ethereum_airdrop_claims
     meta:

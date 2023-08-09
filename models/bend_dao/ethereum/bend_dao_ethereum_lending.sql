@@ -29,7 +29,8 @@ borrow_events as (
             'Borrow' as evt_type, 
             onBehalfOf as address, 
             amount as amount_raw, 
-            reserve as collateral_currency_contract
+            reserve as collateral_currency_contract,
+            loanId as lien_id
         FROM 
         {{source('bend_ethereum', 'LendingPool_evt_Borrow')}}
         {% if is_incremental() %}
@@ -49,7 +50,8 @@ repay_events as (
             'Repay' as evt_type, 
             borrower as address, 
             amount as amount_raw, 
-            reserve as collateral_currency_contract
+            reserve as collateral_currency_contract,
+            loanId as lien_id
         FROM 
         {{source('bend_ethereum', 'LendingPool_evt_Repay')}}
         {% if is_incremental() %}
@@ -88,7 +90,8 @@ SELECT
     ae.evt_tx_hash as tx_hash, 
     et."from" as tx_from, 
     et.to as tx_to,
-    ae.evt_index
+    ae.evt_index, 
+    ae.lien_id
 FROM 
 all_events ae 
 INNER JOIN 
