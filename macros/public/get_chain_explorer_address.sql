@@ -14,6 +14,9 @@
          when 'solana' = chain_ then 'https://solscan.io/address/' || CAST(column_ AS VARCHAR)
          when 'fantom' = chain_ then 'https://ftmscan.com/address/' || CAST(column_ AS VARCHAR)
          when 'celo' = chain_ then 'https://celoscan.io/address/' || CAST(column_ AS VARCHAR)
+         when 'base' = chain_ then 'https://basescan.org/address/' || CAST(column_ AS VARCHAR)
+         when 'bitcoin' = chain_ then 'https://blockstream.info/address/' || CAST(column_ AS VARCHAR)
+         when 'goerli' = chain_ then 'https://goerli.basescan.org/address/' || CAST(column_ AS VARCHAR)
          else 'https://etherscan.io/address/' || CAST(column_ AS VARCHAR)
       end as explorer_address_url;
 {% endmacro %}
