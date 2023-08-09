@@ -1,17 +1,13 @@
 {{ config(
-        tags=['dunesql'],
-        alias = alias('trades'),
-        post_hook='{{ expose_spells(\'["bnb","ethereum","arbitrum"]\',
-                                "project",
-                                "pancakeswap",
-                                \'["hosuke", "chef_seaweed"]\') }}'
+	    tags=['legacy'],
+        alias = alias('trades', legacy_model=True)
         )
 }}
 
+
 {% set pancake_models = [
-    ref('pancakeswap_bnb_trades')
-,   ref('pancakeswap_ethereum_trades')
-,   ref('pancakeswap_arbitrum_trades')
+    ref('pancakeswap_v2_arbitrum_amm_trades_legacy')
+,   ref('pancakeswap_v3_arbitrum_amm_trades_legacy') 
 ] %}
 
 
@@ -40,6 +36,7 @@ FROM (
         tx_hash,
         tx_from,
         tx_to,
+        trace_address,
         evt_index
     FROM {{ dex_model }}
     {% if not loop.last %}
@@ -47,3 +44,4 @@ FROM (
     {% endif %}
     {% endfor %}
 )
+;

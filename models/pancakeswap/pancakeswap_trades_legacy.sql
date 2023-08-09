@@ -1,7 +1,7 @@
 {{ config(
 	    tags=['legacy'],
         alias = alias('trades', legacy_model=True),
-        post_hook='{{ expose_spells(\'["bnb","ethereum"]\',
+        post_hook='{{ expose_spells(\'["bnb","ethereum","arbitrum"]\',
                                 "project",
                                 "pancakeswap",
                                 \'["hosuke", "chef_seaweed"]\') }}'
@@ -11,6 +11,7 @@
 {% set pancake_models = [
     ref('pancakeswap_bnb_trades_legacy')
 ,   ref('pancakeswap_ethereum_trades_legacy')
+,   ref('pancakeswap_arbitrum_trades_legacy')
 ] %}
 
 
