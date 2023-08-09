@@ -1,9 +1,9 @@
 version: 2
 
 sources:
-  - name: balancer_v2_ethereum
+  - name: balancer_v2_base
     description: >
-      Decoded tables related to Balancer v2, an automated portfolio manager and trading platform, on Ethereum.
+      Decoded tables related to Balancer v2, an automated portfolio manager and trading platform, on Base.
     tables:
       - name: Vault_evt_PoolRegistered
         description: >
@@ -25,7 +25,7 @@ sources:
             name: evt_block_number
             description: 'Block number which processed the unique transaction hash'
           - name: poolAddress
-            description: 'Ethereum address for the liquidity pool used in transaction'
+            description: 'Base address for the liquidity pool used in transaction'
           - name: poolId
             description: 'Unique encoded identifier that refers to each pool'
           - name: specialization
