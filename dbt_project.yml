@@ -49,6 +49,9 @@ seeds:
 # Full documentation: https://docs.getdbt.com/docs/configuring-models
 models:
   spellbook:
+    +pre-hook:
+      - sql: "{{ set_trino_session_property(is_materialized(model) and is_partitioned(model), 'join_distribution_type', 'PARTITIONED') }}"
+        transaction: true
     +post-hook:
       - sql: "{{ set_trino_session_property(is_materialized(model), 'writer_min_size', model.config.get('writer_min_size', '500MB')) }}"
         transaction: true
@@ -196,6 +199,8 @@ models:
         +schema: nft_fantom
       goerli:
         +schema: nft_goerli
+      base:
+        +schema: nft_base
 
     cex:
       +schema: cex
@@ -574,6 +579,11 @@ models:
         +schema: tokens_solana
         +materialized: table
         +file_format: delta
+      base:
+        +schema: tokens_base
+        +materialized: table
+        +file_format: delta
+
 
     solana_utils:
       +schema: solana_utils
@@ -606,6 +616,8 @@ models:
         +schema: transfers_avalanche_c
       fantom:
         +schema: transfers_fantom
+      base:
+        +schema: transfers_base
 
     sudoswap:
       +schema: sudoswap
@@ -1035,6 +1047,8 @@ models:
       +schema: galxe
       ethereum:
         +schema: galxe_ethereum
+      optimism:
+        +schema: galxe_optimism
 
     gearbox:
       +schema: gearbox
@@ -1314,6 +1328,9 @@ models:
       bnb:
         +schema: thena_bnb
 
+    quests:
+      +schema: quests
+    
     account_abstraction:
       erc4337:
         +schema: account_abstraction_erc4337
