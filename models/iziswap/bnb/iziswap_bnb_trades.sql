@@ -35,7 +35,7 @@ select
 	, 'iziswap' as project
 	, '1' as version
 	, date_trunc('DAY', s.evt_block_time) as block_date
-    , date_trunc('month', s.evt_block_time) as block_month
+    , cast(date_trunc('month', s.evt_block_time) as date) as block_month
 	, s.evt_block_time as block_time
     , s.token_bought_amount_raw  AS token_bought_amount_raw
     , s.token_sold_amount_raw AS token_sold_amount_raw
