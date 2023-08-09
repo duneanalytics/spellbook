@@ -3,7 +3,7 @@
         post_hook='{{ expose_spells(\'["arbitrum","avalanche_c","bnb","ethereum","optimism", "gnosis", "fantom", "polygon"]\',
                                     "sector",
                                     "tokens",
-                                    \'["0xManny","hildobby","soispoke","dot2dotseurat","mtitus6"]\') }}')}}
+                                    \'["0xManny","hildobby","soispoke","dot2dotseurat","mtitus6", "denver"]\') }}')}}
 
 SELECT 'arbitrum' as blockchain, contract_address, symbol, decimals FROM  {{ ref('tokens_arbitrum_erc20') }}
 UNION ALL
@@ -22,3 +22,5 @@ UNION ALL
 SELECT 'polygon' as blockchain, contract_address, symbol, decimals FROM  {{ ref('tokens_polygon_erc20') }}
 UNION ALL
 SELECT 'fantom' as blockchain, contract_address, symbol, decimals FROM {{ ref('tokens_fantom_erc20') }}
+UNION ALL 
+SELECT 'base' as blockchain, contract_address, symbol, decimals FROM {{ ref('tokens_base_erc20') }}
