@@ -1,7 +1,6 @@
 {{
     config(
 	tags=['legacy'],
-	
         alias = alias('quest_participants', legacy_model=True),
         post_hook='{{ expose_spells(\'["optimism"]\', 
         "sector", 
@@ -10,6 +9,17 @@
     )
 }}
 
-SELECT * FROM {{ ref('labels_optimism_coinbase_wallet_quest_participants_legacy') }}
-UNION ALL
-SELECT * FROM {{ ref('labels_optimism_optimism_quest_participants_legacy') }}
+SELECT
+    blockchain
+    , quester_address as address
+    , platform || ': ' || 'participant' AS name
+    , 'quests' as category
+    , 'msilb7' as contributor
+    , 'query' as source
+    , MIN(block_time) created_at
+    , now() AS updated_at
+    , replace(platform,' ', '_') || '_participants' model_name
+    , 'persona' as label_type
+
+FROM {{ ref('quests_completions_legacy') }}
+GROUP BY blockchain, quester_address, platform -- distinct if addresses completed quests multiple times
