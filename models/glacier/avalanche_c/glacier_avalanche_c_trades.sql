@@ -1,6 +1,6 @@
 {{ config(tags=['dunesql'], 
     alias = alias('trades')
-    ,partition_by = ['block_date']
+    ,partition_by = ['block_month']
     ,materialized = 'incremental'
     ,file_format = 'delta'
     ,incremental_strategy = 'merge'
@@ -18,7 +18,7 @@ with dexs as (
     -- glacier_exchange
     SELECT t.evt_block_time                                             as block_time,
            t.to                                                         as taker,
-           0x                                                           as maker,
+           CAST(NULL as VARBINARY)                                      as maker,
            case when amount0Out = UINT256 '0' then amount1Out else amount0Out end as token_bought_amount_raw,
            case when amount0In = UINT256 '0' then amount1In else amount0In end    as token_sold_amount_raw,
            null                                                          as amount_usd,
@@ -32,13 +32,14 @@ with dexs as (
     INNER JOIN {{ source('glacier_avalanche_c', 'PairFactory_evt_PairCreated') }} f
         on f.pair = t.contract_address
     {% if is_incremental() %}
-    WHERE t.evt_block_time >= date_trunc("day", now() - interval '7' day)
+    WHERE t.evt_block_time >= date_trunc('day', now() - interval '7' day)
     {% endif %}
 )
 select 'avalanche_c'                                             as blockchain,
        'glacier'                                                 as project,
        '1'                                                       as version,
        try_cast(date_trunc('DAY', dexs.block_time) as date)      as block_date,
+       cast(date_trunc('month', dexs.block_time) as date)        as block_date,
        dexs.block_time,
        erc20a.symbol                                             as token_bought_symbol,
        erc20b.symbol                                             as token_sold_symbol,
@@ -72,7 +73,7 @@ inner join {{ source('avalanche_c', 'transactions') }} tx
     and tx.block_time >= TIMESTAMP '{{project_start_date}}'
     {% endif %}
     {% if is_incremental() %}
-    and tx.block_time >= date_trunc("day", now() - interval '7' day)
+    and tx.block_time >= date_trunc('day', now() - interval '7' day)
     {% endif %}
 left join {{ ref('tokens_erc20') }} erc20a
     on erc20a.contract_address = dexs.token_bought_address
@@ -88,7 +89,7 @@ left join {{ source('prices', 'usd') }} p_bought
     and p_bought.minute >= TIMESTAMP '{{project_start_date}}'
     {% endif %}
     {% if is_incremental() %}
-    and p_bought.minute >= date_trunc("day", now() - interval '7' day)
+    and p_bought.minute >= date_trunc('day', now() - interval '7' day)
     {% endif %}
 left join {{ source('prices', 'usd') }} p_sold
     on p_sold.minute = date_trunc('minute', dexs.block_time)
@@ -98,5 +99,5 @@ left join {{ source('prices', 'usd') }} p_sold
     and p_sold.minute >= TIMESTAMP '{{project_start_date}}'
     {% endif %}
     {% if is_incremental() %}
-    and p_sold.minute >= date_trunc("day", now() - interval '7' day)
+    and p_sold.minute >= date_trunc('day', now() - interval '7' day)
     {% endif %}
