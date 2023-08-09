@@ -1,4 +1,5 @@
 {{ config(
+        tags = ['dunesql'],
         alias = alias('trades'),
         post_hook='{{ expose_spells(\'["ethereum","avalanche_c","optimism","fantom"]\',
                                 "project",
@@ -40,7 +41,6 @@ FROM (
         tx_hash,
         tx_from,
         tx_to,
-        trace_address,
         evt_index
     FROM {{ curvefi_model }}
     {% if not loop.last %}
@@ -48,4 +48,3 @@ FROM (
     {% endif %}
     {% endfor %}
 )
-;
