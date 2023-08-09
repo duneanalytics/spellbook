@@ -1,0 +1,9 @@
+version: 2
+
+seeds:
+  - name: zeroex_celo_api_fills_sample
+    config:
+      tags: dunesql
+      column_types:
+        # TODO: Add column types here
+        # tx_hash,block_number,evt_index,contract_address,block_time,maker,taker,taker_token,taker_symbol,maker_token,maker_symbol,token_pair,taker_token_amount,taker_token_amount_raw,maker_token_amount,maker_token_amount_raw,type,affiliate_address,swap_flag,matcha_limit_order_flag,volume_usd,tx_from,tx_to
