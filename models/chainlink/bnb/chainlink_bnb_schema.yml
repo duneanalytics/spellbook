@@ -193,6 +193,13 @@ models:
       tags: ['chainlink', 'ocr', 'fulfilled', 'transactions', 'bnb']
     description: >
       Chainlink OCR Fulfilled Transactions
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+              - blockchain
+              - tx_hash
+              - tx_index
+              - node_address
     columns:
       - *blockchain
       - *block_time
@@ -220,6 +227,13 @@ models:
       tags: ['chainlink', 'ocr', 'reverted', 'transactions', 'bnb']
     description: >
       Chainlink OCR Reverted Transactions
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+              - blockchain
+              - tx_hash
+              - tx_index
+              - node_address
     columns:
       - *blockchain
       - *block_time
@@ -239,6 +253,12 @@ models:
       tags: ['chainlink','ocr', 'gas', 'daily', 'bnb']
     description: >
         Chainlink OCR Gas Daily
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+              - blockchain
+              - date_start
+              - node_address
     columns:
       - *blockchain
       - &date_start
@@ -277,6 +297,12 @@ models:
       tags: ['chainlink','ocr', 'request', 'daily', 'bnb']
     description: >
         Chainlink OCR Request Daily
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+              - blockchain
+              - date_start
+              - node_address
     columns:
       - *blockchain
       - *date_start
@@ -353,7 +379,7 @@ models:
           combination_of_columns:
               - blockchain
               - date_start
-              - admin_address      
+              - admin_address
     columns:
       - *blockchain
       - *date_start
@@ -371,6 +397,12 @@ models:
       tags: ['chainlink','ocr', 'reward', 'daily', 'bnb']
     description: >
         Chainlink OCR Reward Daily
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+              - blockchain
+              - date_start
+              - admin_address
     columns:
       - *blockchain
       - *date_start

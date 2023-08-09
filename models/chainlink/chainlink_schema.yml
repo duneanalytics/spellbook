@@ -133,6 +133,13 @@ models:
       tags: ['chainlink', 'ocr', 'fulfilled', 'transactions', 'arbitrum', 'avalanche_c', 'bnb', 'ethereum', 'fantom', 'gnosis', 'optimism', 'polygon']
     description: >
       Chainlink OCR Fulfilled Transactions
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+              - blockchain
+              - tx_hash
+              - tx_index
+              - node_address
     columns:
       - *blockchain
       - *block_time
@@ -161,6 +168,13 @@ models:
       tags: ['chainlink', 'ocr', 'reverted', 'transactions', 'arbitrum', 'avalanche_c', 'bnb', 'ethereum', 'fantom', 'gnosis', 'optimism', 'polygon']
     description: >
       Chainlink OCR Reverted Transactions
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+              - blockchain
+              - tx_hash
+              - tx_index
+              - node_address
     columns:
       - *blockchain
       - *block_time
@@ -181,6 +195,12 @@ models:
       tags: ['chainlink','ocr', 'gas', 'daily', 'arbitrum', 'avalanche_c', 'bnb', 'ethereum', 'fantom', 'gnosis', 'optimism', 'polygon']
     description: >
         Chainlink OCR Gas Daily
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+              - blockchain
+              - date_start
+              - node_address
     columns:
       - *blockchain
       - &date_start
@@ -220,6 +240,12 @@ models:
       tags: ['chainlink','ocr', 'request', 'daily', 'arbitrum', 'avalanche_c', 'bnb', 'ethereum', 'fantom', 'gnosis', 'optimism', 'polygon']
     description: >
         Chainlink OCR Request Daily
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+              - blockchain
+              - date_start
+              - node_address
     columns:
       - *blockchain
       - *date_start
@@ -299,7 +325,7 @@ models:
           combination_of_columns:
               - blockchain
               - date_start
-              - admin_address      
+              - admin_address
     columns:
       - *blockchain
       - *date_start
@@ -318,6 +344,12 @@ models:
       tags: ['chainlink','ocr', 'reward', 'daily', 'arbitrum', 'avalanche_c', 'bnb', 'ethereum', 'fantom', 'gnosis', 'optimism', 'polygon']
     description: >
         Chainlink OCR Reward Daily
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+              - blockchain
+              - date_start
+              - admin_address
     columns:
       - *blockchain
       - *date_start
