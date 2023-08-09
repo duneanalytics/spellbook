@@ -25,7 +25,7 @@ WITH dexs AS (
       WHEN swap.amount0In = UINT256 '0' THEN swap.amount1In
       ELSE swap.amount0In
     END AS token_sold_amount_raw,
-    CAST(NULL AS double) AS amount_usd,
+    NULL AS amount_usd,
     CASE
       WHEN swap.amount0Out = UINT256 '0' THEN pairs.token1
       ELSE pairs.token0
