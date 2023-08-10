@@ -183,7 +183,20 @@ SELECT *
       ,ct.code
       ,t.code_bytelength
       ,coalesce(sd.contract_address is not NULL, t.is_self_destruct, false) as is_self_destruct
-      , token_standard
+      , COALESCE(
+          token_standard --if this is null, validate that this isn't an erc20
+          ,CASE WHEN EXISTS (
+                          SELECT 1
+                          from {{ source('erc20_' + chain , 'evt_transfer') }} tr
+                            WHERE ct.address = tr.contract_address
+                            AND token_standard IS NULL
+                            AND tr.evt_block_time >= ct.block_time
+                            {% if is_incremental() %}
+                            AND tr.evt_block_time >= date_trunc('day', now() - interval '7' day)
+                            {% endif %}
+                            limit 1 --to speed up
+                          ) THEN 'erc20'
+          ELSE NULL END) AS token_standard
       , CASE
         WHEN nd.creator_address IS NOT NULL THEN 1
         WHEN ct."from" != t.trace_creator_address THEN 1 -- weird data ingestion issue?
