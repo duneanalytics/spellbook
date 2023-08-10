@@ -1,10 +1,10 @@
-{{ config(
+{{ config(tags=['dunesql'],
     alias = alias('trades'),
-    partition_by = ['block_date'],
+    partition_by = ['block_month'],
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
-    unique_key = ['block_date', 'blockchain', 'project', 'version', 'tx_hash', 'evt_index', 'trace_address'],
+    unique_key = ['block_date', 'blockchain', 'project', 'version', 'tx_hash', 'evt_index'],
     post_hook='{{ expose_spells(\'["ethereum"]\',
                                 "project",
                                 "kyberswap",
@@ -19,16 +19,15 @@ WITH
 kyberswap_dex AS (
     SELECT
         t.evt_block_time                                                    AS block_time
-        ,t.`to`                                                             AS taker
-        ,''                                                                 AS maker
-        ,CASE WHEN t.amount0Out = 0 THEN t.amount1Out ELSE t.amount0Out END AS token_bought_amount_raw
-        ,CASE WHEN t.amount0In = 0 THEN t.amount1In ELSE t.amount0In END    AS token_sold_amount_raw
-        ,cast(NULL as double)                                               AS amount_usd
-        ,CASE WHEN t.amount0Out = 0 THEN p.token1 ELSE p.token0 END         AS token_bought_address
-        ,CASE WHEN t.amount0In = 0 THEN p.token1 ELSE p.token0 END          AS token_sold_address
+        ,t."to"                                                             AS taker
+        ,CAST(NULL AS VARBINARY)                                                                 AS maker
+        ,CASE WHEN t.amount0Out = UINT256 '0' THEN t.amount1Out ELSE t.amount0Out END AS token_bought_amount_raw
+        ,CASE WHEN t.amount0In = UINT256 '0' THEN t.amount1In ELSE t.amount0In END    AS token_sold_amount_raw
+        ,NULL                                               AS amount_usd
+        ,CASE WHEN t.amount0Out = UINT256 '0' THEN p.token1 ELSE p.token0 END         AS token_bought_address
+        ,CASE WHEN t.amount0In = UINT256 '0' THEN p.token1 ELSE p.token0 END          AS token_sold_address
         ,t.contract_address                                                 AS project_contract_address
         ,t.evt_tx_hash                                                      AS tx_hash
-        ,''                                                                 AS trace_address
         ,'classic'                                                          AS version
         ,t.evt_index
 
@@ -36,9 +35,9 @@ kyberswap_dex AS (
     INNER JOIN {{ source('kyber_ethereum', 'DMMFactory_evt_PoolCreated') }} p
         ON t.contract_address = p.pool
     {% if is_incremental() %}
-    WHERE t.evt_block_time >= date_trunc("day", now() - interval '1 week')
+    WHERE t.evt_block_time >= date_trunc("day", now() - interval '7' day)
     {% else %}
-    WHERE t.evt_block_time >= '{{ project_start_date }}'
+    WHERE t.evt_block_time >= TIMESTAMP '{{ project_start_date }}'
     {% endif %}
 
     UNION ALL
@@ -51,12 +50,11 @@ kyberswap_dex AS (
         ,t.recipient                                                                   AS maker
         ,if(startswith(t.deltaQty0, '-'), t.deltaQty1, t.deltaQty0)                    AS token_bought_amount_raw
         ,replace(if(startswith(t.deltaQty0, '-'), t.deltaQty0, t.deltaQty1), '-', '')  AS token_sold_amount_raw
-        ,cast(NULL as double)                                                          AS amount_usd
+        ,NULL                                                          AS amount_usd
         ,if(startswith(t.deltaQty0, '-'), p.token1, p.token0)                          AS token_bought_address
         ,if(startswith(t.deltaQty0, '-'), p.token0, p.token1)                          AS token_sold_address
         ,t.contract_address                                                            AS project_contract_address
         ,t.evt_tx_hash                                                                 AS tx_hash
-        ,''                                                                            AS trace_address
         ,'elastic'                                                                     AS version	
         ,t.evt_index
 
@@ -64,9 +62,9 @@ kyberswap_dex AS (
     INNER JOIN {{ source('kyber_ethereum', 'Elastic_Factory_evt_PoolCreated') }} p
         ON t.contract_address = p.pool
     {% if is_incremental() %}
-    WHERE t.evt_block_time >= date_trunc("day", now() - interval '1 week')
+    WHERE t.evt_block_time >= date_trunc("day", now() - interval '7 days')
     {% else %}
-    WHERE t.evt_block_time >= '{{ project_start_date }}'
+    WHERE t.evt_block_time >= TIMESTAMP '{{ project_start_date }}'
     {% endif %}
     
 
@@ -86,19 +84,19 @@ SELECT
      END                                                                  AS token_pair
     ,kyberswap_dex.token_bought_amount_raw / power(10, erc20a.decimals)   AS token_bought_amount
     ,kyberswap_dex.token_sold_amount_raw / power(10, erc20b.decimals)     AS token_sold_amount
-    ,CAST(kyberswap_dex.token_bought_amount_raw AS DECIMAL(38,0)) AS token_bought_amount_raw
-    ,CAST(kyberswap_dex.token_sold_amount_raw AS DECIMAL(38,0)) AS token_sold_amount_raw
+    ,kyberswap_dex.token_bought_amount_raw AS token_bought_amount_raw
+    ,kyberswap_dex.token_sold_amount_raw AS token_sold_amount_raw
     ,coalesce(kyberswap_dex.amount_usd
             ,(kyberswap_dex.token_bought_amount_raw / power(10, p_bought.decimals)) * p_bought.price
             ,(kyberswap_dex.token_sold_amount_raw / power(10, p_sold.decimals)) * p_sold.price
      )                                                                   AS amount_usd
     ,kyberswap_dex.token_bought_address
     ,kyberswap_dex.token_sold_address
-    ,coalesce(kyberswap_dex.taker, tx.from)                              AS taker
+    ,coalesce(kyberswap_dex.taker, tx."from")                              AS taker
     ,kyberswap_dex.maker
     ,kyberswap_dex.project_contract_address
     ,kyberswap_dex.tx_hash
-    ,tx.from                                                             AS tx_from
+    ,tx."from"                                                             AS tx_from
     ,tx.to                                                               AS tx_to
     ,kyberswap_dex.trace_address
     ,kyberswap_dex.evt_index
@@ -106,9 +104,9 @@ FROM kyberswap_dex
 INNER JOIN {{ source('ethereum', 'transactions') }} tx
     ON kyberswap_dex.tx_hash = tx.hash
     {% if is_incremental() %}
-    AND tx.block_time >= date_trunc("day", now() - interval '1 week')
+    AND tx.block_time >= date_trunc("day", now() - interval '7' day)
     {% else %}
-    AND tx.block_time >= '{{project_start_date}}'
+    AND tx.block_time >= TIMESTAMP '{{project_start_date}}'
     {% endif %}
 LEFT JOIN {{ ref('tokens_erc20') }} erc20a
     ON erc20a.contract_address = kyberswap_dex.token_bought_address
@@ -121,19 +119,18 @@ LEFT JOIN {{ source('prices', 'usd') }} p_bought
     AND p_bought.contract_address = kyberswap_dex.token_bought_address
     AND p_bought.blockchain = 'ethereum'
     {% if is_incremental() %}
-    AND p_bought.minute >= date_trunc("day", now() - interval '1 week')
+    AND p_bought.minute >= date_trunc("day", now() - interval '7' day)
     {% else %}
-    AND p_bought.minute >= '{{project_start_date}}'
+    AND p_bought.minute >= TIMESTAMP '{{project_start_date}}'
     {% endif %}
 LEFT JOIN {{ source('prices', 'usd') }} p_sold
     ON p_sold.minute = date_trunc('minute', kyberswap_dex.block_time)
     AND p_sold.contract_address = kyberswap_dex.token_sold_address
     AND p_sold.blockchain = 'ethereum'
     {% if is_incremental() %}
-    AND p_sold.minute >= date_trunc("day", now() - interval '1 week')
+    AND p_sold.minute >= date_trunc("day", now() - interval '7' day)
     {% else %}
-    AND p_sold.minute >= '{{project_start_date}}'
+    AND p_sold.minute >= TIMESTAMP '{{project_start_date}}'
     {% endif %}
-WHERE (kyberswap_dex.token_bought_address != '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee'
-    OR kyberswap_dex.token_sold_address != '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee')
-;
+WHERE (kyberswap_dex.token_bought_address != 0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee
+    OR kyberswap_dex.token_sold_address != 0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee)
