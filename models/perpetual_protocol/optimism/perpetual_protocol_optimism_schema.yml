@@ -43,7 +43,7 @@ models:
         name: market_address
         description: "Contract address of the market"
         tests:
-          - perpetual_trades_market_address:
+          - perpetual_trades_market_address_legacy:
               perpetual_trades_seed_legacy: ref('perpetual_trades_seed_legacy')
       - &volume_usd
         name: volume_usd
