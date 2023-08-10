@@ -108,7 +108,6 @@ SELECT *
         bytearray_position(ct.code, 0x2eb2c2d6) >0 THEN 'erc1155'-- ('erc1155','safeBatchTransferFrom(address,address,uint256[],uint256[],bytes)', 0x2eb2c2d6),
         bytearray_position(ct.code, 0xf242432a) >0 THEN 'erc1155'-- ('erc1155','safeTransferFrom(address,address,uint256,uint256,bytes)', 0xf242432a),
 
-        bytearray_position(ct.code, 0x6352211e) >0 THEN 'erc721' -- ('erc721','ownerOf(uint256)', 0x6352211e),
         bytearray_position(ct.code, 0xb88d4fde) >0 THEN 'erc721' -- ('erc721','safeTransferFrom(address,address,uint256,bytes)', 0xb88d4fde),
         
         bytearray_position(ct.code, 0xa9059cbb) >0 THEN 'erc20' -- ('erc20','transfer(address,uint256)', 0xa9059cbb),
