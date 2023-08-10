@@ -62,7 +62,7 @@ SELECT 'bnb'                                                     AS blockchain
            else 'normal'
     end                                                          AS version
      , TRY_CAST(date_trunc('DAY', dexs.block_time) AS date)      AS block_date
-     , CAST(date_trunc('month', dexs.block_time) AS date)      AS block_dmonth
+     , CAST(date_trunc('month', dexs.block_time) AS date)      AS block_month
      , dexs.block_time
      , bep20a.symbol                                             AS token_bought_symbol
      , bep20b.symbol                                             AS token_sold_symbol
