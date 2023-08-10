@@ -22,7 +22,6 @@ ref('prices_native_tokens')
 ,ref('prices_optimism_tokens')
 ,ref('prices_polygon_tokens')
 ,ref('prices_solana_tokens')
-,ref('prices_base_tokens')
 ] %}
 
 
