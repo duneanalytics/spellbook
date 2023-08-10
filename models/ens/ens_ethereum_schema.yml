@@ -329,7 +329,5 @@ models:
           - unique
       - name: registrar
         description: "The registrar contract address of the address set name record"
-        tests:
-          - unique
       - name: last_tx_hash
         description: "Latest transaction hash of the ENS set name"
