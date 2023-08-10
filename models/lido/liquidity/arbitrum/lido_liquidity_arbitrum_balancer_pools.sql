@@ -365,7 +365,7 @@ on main.day = paired4.day and main.pool_id = paired4.pool_id
 
 
 , all_metrics as (
-select  pool_id as pool, 'arbitrum' as blockchain, 'balancer' as project, 0 as fee, day as time, main_token, main_token_symbol, 
+select  pool_id as pool, 'arbitrum' as blockchain, 'balancer' as project, 0 as fee, cast(day as date) as time, main_token, main_token_symbol, 
 paired1_token as paired_token,
 paired1_token_symbol as paired_token_symbol,
 main_token_reserve, paired1_token_reserve as paired_token_reserve,
