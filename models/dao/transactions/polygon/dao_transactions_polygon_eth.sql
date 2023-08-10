@@ -109,8 +109,9 @@ LEFT JOIN
     {% if is_incremental() %}
     AND p.minute >= date_trunc('day', now() - interval '7' Day)
     {% endif %}
--- LEFT JOIN 
--- {{ ref('dex_prices') }} dp 
+{#
+-- LEFT JOIN
+-- {{ ref('dex_prices') }} dp
 --     ON dp.hour = date_trunc('hour', t.block_time)
 --     AND dp.contract_address = 0x0d500b1d8e8ef31e21c99d1db9a6444d3adf1270
 --     AND dp.blockchain = 'polygon'
@@ -118,3 +119,4 @@ LEFT JOIN
 --     {% if is_incremental() %}
 --     AND dp.hour >= date_trunc('day', now() - interval '7' Day)
 --     {% endif %}
+#}
