@@ -22,21 +22,21 @@ WITH dexs AS
         , CAST(NULL as VARBINARY) as maker
         , case
             when l.topic0 = 0xd013ca23e77a65003c2c659c5442c00c805371b7fc1ebd4c206c41d1536bd90b
-                        AND cast(substring(l.data, 65, 32) as int) = 0
+                        AND cast(bytearray_substring(l.data, 65, 32) as int) = 0
                 then 'underlying_exchange_base'
                 else 'normal_exchange'
             end as swap_type
-        , bytearray_to_uint256(substring(l.data, 97, 32)) as token_bought_amount_raw
-        , bytearray_to_uint256(substring(l.data, 33, 32)) as token_sold_amount_raw
+        , bytearray_to_uint256(bytearray_substring(l.data, 97, 32)) as token_bought_amount_raw
+        , bytearray_to_uint256(bytearray_substring(l.data, 33, 32)) as token_sold_amount_raw
         , cast(NULL as double) AS amount_usd
         , case
             when l.topic0 = 0x8b3e96f2b889fa771c53c981b40daf005f63f637f1869f707052d15a3dd97140
                 then p.coins[cast(bytearray_to_uint256(bytearray_substring(l.data, 65, 32)) as int) + 1] 
-                else p.undercoins[cast(bytearray_to_uint256(bytearray_substring(l.data, 1, 32)) as int) + 1]
+                else p.undercoins[cast(bytearray_to_uint256(bytearray_substring(l.data, 65, 32)) as int) + 1]
             end as token_bought_address
         , case
             when l.topic0 = 0x8b3e96f2b889fa771c53c981b40daf005f63f637f1869f707052d15a3dd97140
-                then p.coins[cast(bytearray_to_uint256(bytearray_substring(l.data, 65, 32)) as int) + 1] 
+                then p.coins[cast(bytearray_to_uint256(bytearray_substring(l.data, 1, 32)) as int) + 1] 
                 else p.undercoins[cast(bytearray_to_uint256(bytearray_substring(l.data, 1, 32)) as int) + 1]
             end as token_sold_address
         , l.contract_address as project_contract_address --pool address
