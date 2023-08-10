@@ -59,7 +59,7 @@ WITH dexs AS
     INNER JOIN {{ source('arbswap_arbitrum', 'ArbswapStableSwapFactory_evt_NewStableSwapPair') }} f
         ON f.swapContract = t.contract_address
     {% if is_incremental() %}
-    WHERE t.evt_block_time >= date_trunc("day", now() - interval '7' day)
+    WHERE t.evt_block_time >= date_trunc('day', now() - interval '7' day)
     {% endif %}
     {% if not is_incremental() %}
     WHERE t.evt_block_time >= TIMESTAMP '{{ project_start_date }}'
