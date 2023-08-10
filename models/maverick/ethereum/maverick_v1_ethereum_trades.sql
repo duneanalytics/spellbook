@@ -29,7 +29,6 @@ WITH dexs AS
         ,CASE WHEN tokenAIn THEN f.tokenA ELSE f.tokenB END AS token_sold_address
         ,t.contract_address as project_contract_address
         ,t.evt_tx_hash AS tx_hash
-        ,CAST(NULL as array<bigint>) AS trace_address
         ,t.evt_index
     FROM
         {{ source('maverick_v1_ethereum', 'pool_evt_Swap') }} t
