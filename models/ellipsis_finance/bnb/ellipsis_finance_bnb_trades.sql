@@ -75,12 +75,12 @@ enriched_evt_all as(
         ,pb.token_address as token_sold_address
     FROM exchange_evt_all eb
     INNER JOIN {{ ref('ellipsis_finance_bnb_pool_tokens') }} pa
-        ON eb.bought_id = pa.token_id
+        ON eb.bought_id = cast(pa.token_id as int256)
         AND eb.project_contract_address = pa.pool
         AND pa.token_type = 'pool_token'
     INNER JOIN
     {{ ref('ellipsis_finance_bnb_pool_tokens') }} pb
-        ON eb.sold_id = pb.token_id
+        ON eb.sold_id = cast(pb.token_id as int256)
         AND eb.project_contract_address = pb.pool
         AND pb.token_type = 'pool_token'
 
@@ -92,12 +92,12 @@ enriched_evt_all as(
         ,pb.token_address as token_sold_address
     FROM exchange_und_evt_all eb
     INNER JOIN {{ ref('ellipsis_finance_bnb_pool_tokens') }} pa
-        ON eb.bought_id = pa.token_id
+        ON eb.bought_id = cast(pa.token_id as int256)
         AND eb.project_contract_address = pa.pool
         AND pa.token_type = 'underlying_token_bought'
     INNER JOIN
     {{ ref('ellipsis_finance_bnb_pool_tokens') }} pb
-        ON eb.sold_id = pb.token_id
+        ON eb.sold_id = cast(pb.token_id as int256)
         AND eb.project_contract_address = pb.pool
         AND pb.token_type = 'underlying_token_sold'
 )
@@ -150,7 +150,7 @@ LEFT JOIN {{ ref('tokens_erc20') }} erc20b
     AND erc20b.blockchain = 'bnb'
 LEFT JOIN {{ source('prices', 'usd') }} p_bought
     ON p_bought.minute = date_trunc('minute', dexs.block_time)
-    AND p_bought.contract_address = dexs.token_bought_address
+    AND cast(p_bought.contract_address as varbinary) = dexs.token_bought_address
     AND p_bought.blockchain = 'bnb'
     {% if not is_incremental() %}
     AND p_bought.minute >= timestamp '{{project_start_date}}'
@@ -160,7 +160,7 @@ LEFT JOIN {{ source('prices', 'usd') }} p_bought
     {% endif %}
 LEFT JOIN {{ source('prices', 'usd') }} p_sold
     ON p_sold.minute = date_trunc('minute', dexs.block_time)
-    AND p_sold.contract_address = dexs.token_sold_address
+    AND cast(p_sold.contract_address as varbinary) = dexs.token_sold_address
     AND p_sold.blockchain = 'bnb'
     {% if not is_incremental() %}
     AND p_sold.minute >= timestamp '{{project_start_date}}'
