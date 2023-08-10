@@ -61,13 +61,17 @@ with
 
 , set_name_rn as (
     select
-          row_number() over (partition by address, name order by block_time desc) as rn
-        , block_time
-        , address
-        , registrar
-        , name
-        , tx_hash
+          row_number() over (partition by name order by block_time desc) as name_rn
+        , *
     from set_name_detail
+)
+
+, set_name_address_rn as (
+    select
+          row_number() over (partition by address order by block_time desc) as address_rn
+        , *
+    from set_name_rn
+    where name_rn = 1
 )
 
 select
@@ -76,6 +80,5 @@ select
     , registrar
     , name
     , tx_hash as last_tx_hash
-from set_name_rn
-where rn = 1
-order by last_block_time desc
+from set_name_address_rn
+where address_rn = 1ß
