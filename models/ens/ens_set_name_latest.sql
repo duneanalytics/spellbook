@@ -17,7 +17,7 @@
 {% set initial_tx_block_number = 3787060 %}
 
 with
-  set_name_detail as (
+set_name_detail as (
     -- setName
     select
           block_time
@@ -57,16 +57,16 @@ with
         {% if is_incremental() %}
         and block_time >= now() - interval '7' day
         {% endif %}
-)
+),
 
-, set_name_rn as (
+set_name_rn as (
     select
           row_number() over (partition by name order by block_time desc) as name_rn
         , *
     from set_name_detail
-)
+),
 
-, set_name_address_rn as (
+set_name_address_rn as (
     select
           row_number() over (partition by address order by block_time desc) as address_rn
         , *
