@@ -1,5 +1,6 @@
 {{ config(
     schema = 'rubicon_base',
+    tags = ['dunesql'],
     alias = alias('offers'),
     partition_by = ['block_date'],
     materialized = 'incremental',

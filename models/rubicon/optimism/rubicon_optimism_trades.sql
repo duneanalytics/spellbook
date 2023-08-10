@@ -1,5 +1,6 @@
 {{ config(
     schema = 'rubicon_optimism',
+    tags = ['dunesql'],
     alias = alias('trades'),
     partition_by = ['block_date'],
     materialized = 'incremental',
