@@ -23,7 +23,7 @@ WITH dexs AS
         swapper AS taker,
         CAST(NULL AS VARBINARY) AS maker,
         "outputAmount" AS token_bought_amount_raw,
-        NULL AS token_sold_amount_raw,
+        CAST(NULL AS UINT256) AS token_sold_amount_raw,
         CASE WHEN "output" = 0x0000000000000000000000000000000000000000 THEN
             0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2 ELSE "output"
         END AS token_bought_address,
@@ -48,7 +48,7 @@ WITH dexs AS
         swapper AS taker,
         CAST(NULL AS VARBINARY) AS maker,
         "outputAmount" AS token_bought_amount_raw,
-        NULL AS token_sold_amount_raw,
+        CAST(NULL AS UINT256) AS token_sold_amount_raw,
         CASE WHEN "output" = 0x0000000000000000000000000000000000000000 THEN
             0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2 ELSE "output"
             END AS token_bought_address,
