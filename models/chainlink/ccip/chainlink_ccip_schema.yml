@@ -71,3 +71,49 @@ models:
       - &state
         name: state
         description: "state CCIP"
+
+  
+  - name: chainlink_ccip_events
+    meta:
+      blockchain: ethereum, optimism, avalanche_c, polygon
+      sector: CCIP
+      project: chainlink
+      contributors: synthquest
+    config:
+      tags: ['ethereum','optimism', 'avalanche_c', 'polygon', 'chainlink']
+    description: >
+        Chainlink CCIP messages
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - evt_index
+            - evt_tx_hash
+            - message
+    columns:
+      - *origin
+      - *destination
+      - *feeTokenAmount
+      - *sender
+      - *receiver
+      - *nonce
+      - *gasLimit
+      - *strict
+      - *data
+      - *destination_returnData
+      - *tokenAmounts
+      - *destination
+      - *feeToken
+      - *destination_state
+      - *messageId
+      - *router
+      - *origin_contract_address
+      - *destination_contract_address
+      - *origin_evt_tx_hash
+      - *destination_evt_tx_hash
+      - *origin_evt_block_time
+      - *destination_evt_block_time
+      - *origin_evt_index
+      - *destination_evt_index
+      - *origin_evt_block_number
+      - *destination_evt_block_number
+      - *destination_sequenceNumber      
