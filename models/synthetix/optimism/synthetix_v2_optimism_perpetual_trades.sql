@@ -33,7 +33,7 @@ WITH asset_price AS (
 	{% if is_incremental() %}
 	WHERE s.evt_block_time >= DATE_TRUNC('DAY', NOW() - INTERVAL '7' Day)
 	{% endif %}
-	GROUP BY market_address, asset, s.evt_block_time
+	GROUP BY 1, 2 , 3 
 ),
 
 synthetix_markets AS (
