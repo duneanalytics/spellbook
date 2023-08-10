@@ -44,7 +44,7 @@ FROM (
            paired_token_symbol, 
            sum(main_token_reserve) over(partition by pool, main_token order by time) as main_token_reserve, 
            sum(paired_token_reserve) over(partition by pool, paired_token order by time) as paired_token_reserve,
-           main_token_usd_price*sum(main_token_usd_reserve) over(partition by pool, main_token order by time) as main_token_usd_reserve, 
+           main_token_usd_price*sum(main_token_reserve) over(partition by pool, main_token order by time) as main_token_usd_reserve, 
            paired_token_usd_price*sum(paired_token_reserve) over(partition by pool, paired_token order by time) as paired_token_usd_reserve, 
            trading_volume
     FROM {{ k_model }}
