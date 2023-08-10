@@ -28,6 +28,7 @@ with userop as (
     select call_tx_hash as tx_hash,
            beneficiary
     from {{ handleops_call_model }}
+    where call_success = true
     {% if is_incremental() %}
         WHERE call_block_time >= date_trunc('day', now() - interval '7' day)
     {% endif %}
