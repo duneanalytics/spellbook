@@ -34,7 +34,7 @@ WITH dexs AS
         INNER JOIN {{ source('thena_bnb', 'PairFactoryUpgradeable_evt_PairCreated') }} f
     ON t.contract_address = f.pair
     {% if is_incremental() %}
-    AND t.evt_block_time >= date_trunc("day", now() - interval '7' day)
+    AND t.evt_block_time >= date_trunc('day', now() - interval '7' day)
     {% endif %}
 )
 
@@ -43,6 +43,7 @@ SELECT
      , 'thena'                                                   AS project
      , '1'                                                       AS version
      , TRY_CAST(date_trunc('DAY', dexs.block_time) AS date)      AS block_date
+     , CAST(date_trunc('month', dexs.block_time) AS date)      AS block_month
      , dexs.block_time
      , bep20a.symbol                                             AS token_bought_symbol
      , bep20b.symbol                                             AS token_sold_symbol
@@ -75,7 +76,7 @@ INNER JOIN {{ source('bnb', 'transactions') }} tx
     AND tx.block_time >= TIMESTAMP '{{project_start_date}}'
     {% endif %}
     {% if is_incremental() %}
-    AND tx.block_time >= date_trunc("day", now() - interval '7' day)
+    AND tx.block_time >= date_trunc('day', now() - interval '7' day)
     {% endif %}
 LEFT JOIN {{ ref('tokens_erc20') }} bep20a
     ON bep20a.contract_address = dexs.token_bought_address
@@ -91,7 +92,7 @@ LEFT JOIN {{ source('prices', 'usd') }} p_bought
     AND p_bought.minute >= TIMESTAMP '{{project_start_date}}'
     {% endif %}
     {% if is_incremental() %}
-    AND p_bought.minute >= date_trunc("day", now() - interval '7' day)
+    AND p_bought.minute >= date_trunc('day', now() - interval '7' day)
     {% endif %}
 LEFT JOIN {{ source('prices', 'usd') }} p_sold
     ON p_sold.minute = date_trunc('minute', dexs.block_time)
@@ -101,5 +102,5 @@ LEFT JOIN {{ source('prices', 'usd') }} p_sold
     AND p_sold.minute >= TIMESTAMP '{{project_start_date}}'
     {% endif %}
     {% if is_incremental() %}
-    AND p_sold.minute >= date_trunc("day", now() - interval '7' day)
+    AND p_sold.minute >= date_trunc('day', now() - interval '7' day)
     {% endif %}
