@@ -1,5 +1,5 @@
 {{ config(
-    alias = 'send',
+    alias = alias('send'),
     partition_by = ['block_date'],
     materialized = 'incremental',
     file_format = 'delta',

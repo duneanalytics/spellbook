@@ -1,5 +1,5 @@
 {{ config(
-        alias ='native_mints',
+        alias = alias('native_mints'),
 		materialized = 'incremental',
 		file_format = 'delta',
 		incremental_strategy = 'merge',

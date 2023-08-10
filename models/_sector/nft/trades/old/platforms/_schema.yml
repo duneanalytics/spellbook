@@ -183,7 +183,7 @@ models:
             - token_id
             - sub_type
             - sub_idx
-      - check_seed:
+      - check_seed_legacy:
           seed_file: ref('nftearth_events_seed')
           filter:
             blockchain: optimism

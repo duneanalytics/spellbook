@@ -40,7 +40,8 @@ models:
       - &contract_project
         name: contract_project
         description: "Project name of the contract"
-      - name: token_symbol
+      - &token_symbol
+        name: token_symbol
         description: "Token symbol of the contract, if any"
       - &contract_name
         name: contract_name
@@ -51,9 +52,11 @@ models:
       - &created_time
         name: created_time
         description: "contract creation time"
-      - name: contract_creator_if_factory
+      - &contract_creator_if_factory
+        name: contract_creator_if_factory
         description: "Contract creator address if it is a factory contract"
-      - name: is_self_destruct
+      - &is_self_destruct
+        name: is_self_destruct
         description: "Flag if it is a self destruct contract"
       - &creation_tx_hash
         name: creation_tx_hash
@@ -104,6 +107,28 @@ models:
       - &is_eoa_deployed
         name: is_eoa_deployed
         description: "Was the contract deployed by an EOA (test if the trace creator = the transaction sender)"
+  
+  - name: contracts_optimism_predeploys
+    meta:
+      blockchain: optimism
+      sector: contracts
+      contributors: chuxin, msilb7
+    config:
+      tags: ['optimism', 'contracts', 'predeploy', 'addresses']
+    description: "Mapping of predeploy contracts to its creators and names on Optimism."
+    columns:
+      - *trace_creator_address
+      - *contract_address
+      - *contract_project
+      - *contract_name
+      - *creator_address
+      - *created_time
+      - *contract_creator_if_factory
+      - *is_self_destruct
+      - *creation_tx_hash
+      - &source
+        name: source
+        description: "Where the Predeploy contract was sourced from"
 
   - name: contracts_optimism_contract_creator_address_list
     meta:
@@ -168,12 +193,29 @@ models:
   - name: contracts_optimism_disperse_contracts
     meta:
       blockchain: optimism
-      project: op
+      sector: contracts
       contributors: msilb7
     config:
       tags: ['optimism','op','contracts','disperse']
     description: >
         A table containing mappings for disperse contract wallets that we want to map distributions with
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+              - contract_address
+    columns:
+      - *contract_address
+      - *contract_name
+  
+  - name: contracts_optimism_system_predeploys
+    meta:
+      blockchain: optimism
+      sector: contracts
+      contributors: msilb7
+    config:
+      tags: ['optimism','op','contracts','predeploy','system']
+    description: >
+        A table containing mappings for predeploy system contracts
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:

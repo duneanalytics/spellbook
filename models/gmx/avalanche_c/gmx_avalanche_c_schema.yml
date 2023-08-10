@@ -21,7 +21,7 @@ models:
             - tx_hash
             - evt_index
             - trace_address
-      - check_dex_seed:
+      - check_dex_seed_legacy:
           blockchain: avalanche_c
           project: gmx
           version: 1
@@ -115,7 +115,7 @@ models:
             - version
             - tx_hash
             - evt_index
-      - check_perpetuals_seed:
+      - check_perpetuals_seed_legacy:
           blockchain: avalanche_c
           project: gmx
           version: 1

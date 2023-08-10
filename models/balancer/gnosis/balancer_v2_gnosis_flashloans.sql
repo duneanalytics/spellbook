@@ -1,6 +1,6 @@
 {{ config(
       schema = 'balancer_v2_gnosis'
-      , alias = 'flashloans'
+      , alias = alias('flashloans')
       , materialized = 'incremental'
       , file_format = 'delta'
       , incremental_strategy = 'merge'

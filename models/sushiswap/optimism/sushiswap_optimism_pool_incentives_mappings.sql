@@ -1,5 +1,5 @@
 {{ config(
-    alias = 'pool_incentives_mappings'
+    alias = alias('pool_incentives_mappings')
     )
 }}
 

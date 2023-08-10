@@ -1,5 +1,5 @@
 {{ config(schema='opensea_v3_arbitrum'
-         ,alias='events')
+         ,alias = alias('events'))
 }}
 
 -- opensea.trades has the same columns as seaport.trades

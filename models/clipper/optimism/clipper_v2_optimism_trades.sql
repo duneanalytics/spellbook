@@ -1,6 +1,6 @@
 {{ config(
     schema = 'clipper_v2_optimism',
-    alias = 'trades',
+    alias = alias('trades'),
     partition_by = ['block_date'],
     materialized = 'incremental',
     file_format = 'delta',

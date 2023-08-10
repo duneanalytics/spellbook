@@ -1,4 +1,6 @@
-{{config(alias='cex_polygon',
+{{config(
+        tags = ['dunesql'],
+        alias = alias('cex_polygon'),
         post_hook='{{ expose_spells(\'["polygon"]\',
                                     "sector",
                                     "labels",
