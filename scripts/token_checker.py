@@ -1,5 +1,6 @@
 import json
 import logging
+import re
 
 import requests
 
@@ -26,12 +27,26 @@ class TokenChecker:
 
     @staticmethod
     def parse_token(line):
-        values = json.loads(line.rstrip(',').replace('(', '[').replace(')', ']'))
+        matches = re.findall(r"\((.*?)\)", line)
+        if not matches:
+            return None
+
+        parts = [item.strip() for item in matches[0].split(",")]
+        values = []
+        for val in parts:
+            if val.startswith("'"):
+                values.append(val.strip("'"))
+            elif val.startswith("0x"):
+                values.append(val)
+            else:
+                values.append(int(val))
+
         return {
             "id": values[0],
             "blockchain": values[1],
             "symbol": values[2],
-            "contract_address": values[3].lower() if values[3] is not None else values[3]
+            "contract_address": values[3].lower() if values[3] is not None else values[3],
+            "decimal": values[4]
         }
 
     @staticmethod
