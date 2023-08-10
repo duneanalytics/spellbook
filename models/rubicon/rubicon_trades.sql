@@ -48,4 +48,3 @@ FROM (
     {% endif %}
     {% endfor %}
 )
-;
