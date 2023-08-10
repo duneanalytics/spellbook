@@ -1356,3 +1356,7 @@ models:
           +schema: account_abstraction_erc4337_polygon
         gnosis:
           +schema: account_abstraction_erc4337_gnosis
+        base:
+          +schema: account_abstraction_erc4337_base
+        bnb:
+          +schema: account_abstraction_erc4337_bnb
