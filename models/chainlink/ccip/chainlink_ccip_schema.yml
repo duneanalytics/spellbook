@@ -90,30 +90,79 @@ models:
             - evt_tx_hash
             - message
     columns:
-      - *origin
-      - *destination
-      - *feeTokenAmount
-      - *sender
-      - *receiver
-      - *nonce
-      - *gasLimit
-      - *strict
-      - *data
-      - *destination_returnData
-      - *tokenAmounts
-      - *destination
-      - *feeToken
-      - *destination_state
+      - &origin
+        name: origin
+        description: "Origin chain for specific messageId tx."
+      - &destination
+        name: destination
+        description: "destination chain for specific messageId tx."
+      - &feeTokenAmount
+        name: feeTokenAmount
+        description: "fee paid for specific messageId tx."
+      - &sender
+        name: sender
+        description: "send address for specific messageId tx."
+      - &receiver
+        name: receiver
+        description: "receiver address for specific messageId tx."
+      - &nonce
+        name: nonce
+        description: "nonce for specific messageId tx."
+      - &gasLimit
+        name: gasLimit
+        description: "gasLimit for specific messageId tx."
+      - &strict
+        name: strict
+        description: "strict for specific messageId tx."
+      - &data
+        name: data
+        description: "data for specific messageId tx."
+      - &destination_returnData
+        name: destination_returnData
+        description: "destination_returnData for specific messageId tx."
+      - &tokenAmounts
+        name: tokenAmounts
+        description: "tokenAmounts for specific messageId tx."
+      - &feeToken
+        name: feeToken
+        description: "feeToken for specific messageId tx."
+      - &destination_state
+        name: destination_state
+        description: "destination_state for specific messageId tx."
       - *messageId
-      - *router
-      - *origin_contract_address
-      - *destination_contract_address
-      - *origin_evt_tx_hash
-      - *destination_evt_tx_hash
-      - *origin_evt_block_time
-      - *destination_evt_block_time
-      - *origin_evt_index
-      - *destination_evt_index
-      - *origin_evt_block_number
-      - *destination_evt_block_number
-      - *destination_sequenceNumber      
+      - &router
+        name: router
+        description: "router for origin specific messageId tx."
+      - &origin_contract_address
+        name: origin_contract_address
+        description: "origin_contract_address for specific messageId tx."
+      - &destination_contract_address
+        name: destination_contract_address
+        description: "destination_contract_address for specific messageId tx."
+      - &origin_evt_tx_hash
+        name: origin_evt_tx_hash
+        description: "origin_evt_tx_hash for specific messageId tx."
+      - &destination_evt_tx_hash
+        name: destination_evt_tx_hash
+        description: "destination_evt_tx_hash for specific messageId tx."
+      - &origin_evt_block_time
+        name: origin_evt_block_time
+        description: "origin_evt_block_time for specific messageId tx."
+      - &destination_evt_block_time
+        name: destination_evt_block_time
+        description: "destination_evt_block_time for specific messageId tx."
+      - &origin_evt_index
+        name: origin_evt_index
+        description: "origin_evt_index for specific messageId tx."
+      - &destination_evt_index
+        name: destination_evt_index
+        description: "destination_evt_index for specific messageId tx."
+      - &origin_evt_block_number
+        name: origin_evt_block_number
+        description: "origin_evt_block_number for specific messageId tx."
+      - &destination_evt_block_number
+        name: destination_evt_block_number
+        description: "destination_evt_block_number for specific messageId tx."     
+      - &destination_sequenceNumber
+        name: destination_sequenceNumber
+        description: "destination_sequenceNumber for specific messageId tx."
