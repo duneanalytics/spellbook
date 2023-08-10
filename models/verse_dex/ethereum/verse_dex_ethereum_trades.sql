@@ -1,6 +1,6 @@
 {{ config(tags=['dunesql'],
     alias = alias('trades')
-    ,partition_by = ['block_date']
+    ,partition_by = ['block_month']
     ,materialized = 'incremental'
     ,file_format = 'delta'
     ,incremental_strategy = 'merge'
@@ -22,7 +22,7 @@ with dexs as (
         CAST(NULL AS VARBINARY) AS maker,
         case when amount0Out  = UINT256 '0' then amount1Out else amount0Out end as token_bought_amount_raw,
         case when amount0In = UINT256 '0' then amount1In else amount0In end as token_sold_amount_raw,
-        cast(null as double) as amount_usd,
+        null as amount_usd,
         case when amount0Out  = UINT256 '0' then f.token1 else f.token0 end as token_bought_address,
         case when amount0In = UINT256 '0' then f.token1 else f.token0 end as token_sold_address,
         t.contract_address as project_contract_address,
