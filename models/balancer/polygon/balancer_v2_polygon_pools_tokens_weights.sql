@@ -39,6 +39,21 @@ weighted_pool_factory AS (
     {% if is_incremental() %}
     AND call_create.call_block_time >= date_trunc('day', now() - interval '7' day)
     {% endif %}
+
+    UNION ALL
+
+    SELECT
+        call_create.output_0 AS pool_id,
+        t.pos AS pos,
+        t.token_address AS token_address,
+        t2.normalized_weight AS normalized_weight
+    FROM {{ source('balancer_v2_polygon', 'WeightedPoolFactory_call_create') }} AS call_create
+    CROSS JOIN UNNEST(call_create.tokens) WITH ORDINALITY t(token_address, pos)
+    CROSS JOIN UNNEST(call_create.normalizedWeights) WITH ORDINALITY t2(normalized_weight, pos)
+    WHERE t.pos = t2.pos
+    {% if is_incremental() %}
+    AND call_create.call_block_time >= date_trunc('day', now() - interval '7' day)
+    {% endif %}
 ),
 weighted_pool_2tokens_factory AS (
     SELECT
