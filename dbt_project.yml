@@ -821,8 +821,18 @@ models:
 
     chainlink:
       +schema: chainlink
+      arbitrum:
+        +schema: chainlink_arbitrum
+      avalanche_c:
+        +schema: chainlink_avalanche_c
       bnb:
         +schema: chainlink_bnb
+      ethereum:
+        +schema: chainlink_ethereum
+      fantom:
+        +schema: chainlink_fantom
+      gnosis:
+        +schema: chainlink_gnosis
       optimism:
         +schema: chainlink_optimism
       polygon:
