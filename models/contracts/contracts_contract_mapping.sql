@@ -101,19 +101,23 @@ SELECT *
       ,bytearray_substring(t.data,1,4) AS created_tx_method_id
       ,t.index as created_tx_index
       ,ct.code
-      ,bytearray_length(ct.code) AS code_bytelength --toreplace with bytearray_length in dunesql
+      ,bytearray_length(ct.code) AS code_bytelength
       ,coalesce(sd.contract_address is not NULL, false) as is_self_destruct
-      ,CASE WHEN EXISTS (
-                          SELECT 1
-                          from {{ source('erc20_' + chain , 'evt_transfer') }} tr
-                          WHERE ct.address = tr.contract_address
-                          AND tr.evt_block_time >= ct.block_time
-                          limit 1 --to speed up
-                          )
-                THEN 'erc20'
-            WHEN EXISTS (SELECT 1 from {{ ref('tokens_nft') }} t WHERE t.contract_address = ct.address AND t.blockchain = '{{chain}}' )
-                THEN 'nft'
-            ELSE NULL END AS token_standard
+      ,CASE 
+        bytearray_position(ct.code, 0x18160ddd) >0 THEN 'erc1155'-- ('erc1155','balanceOf(address,uint256)', 0x00fdd58e)
+        bytearray_position(ct.code, 0x2eb2c2d6) >0 THEN 'erc1155'-- ('erc1155','safeBatchTransferFrom(address,address,uint256[],uint256[],bytes)', 0x2eb2c2d6),
+        bytearray_position(ct.code, 0xf242432a) >0 THEN 'erc1155'-- ('erc1155','safeTransferFrom(address,address,uint256,uint256,bytes)', 0xf242432a),
+
+        bytearray_position(ct.code, 0x6352211e) >0 THEN 'erc721' -- ('erc721','ownerOf(uint256)', 0x6352211e),
+        bytearray_position(ct.code, 0xb88d4fde) >0 THEN 'erc721' -- ('erc721','safeTransferFrom(address,address,uint256,bytes)', 0xb88d4fde),
+        
+        bytearray_position(ct.code, 0xa9059cbb) >0 THEN 'erc20' -- ('erc20','transfer(address,uint256)', 0xa9059cbb),
+        
+        bytearray_position(ct.code, 0x23b872dd) >0 THEN 'token' -- ('all','transferFrom(address,address,uint256)', 0x23b872dd),
+        bytearray_position(ct.code, 0x70a08231) >0 THEN 'token' -- ('all','balanceOf(address)', 0x70a08231),
+        bytearray_position(ct.code, 0x18160ddd) >0 THEN 'token' -- ('all','totalSupply()', 0x18160ddd),
+      ELSE NULL
+      END AS token_standard
       ,1 AS to_iterate_creators
     from {{ source( chain , 'creation_traces') }} as ct 
     inner join {{ source( chain , 'transactions') }} as t 
@@ -183,20 +187,7 @@ SELECT *
       ,ct.code
       ,t.code_bytelength
       ,coalesce(sd.contract_address is not NULL, t.is_self_destruct, false) as is_self_destruct
-      , COALESCE(
-          token_standard --if this is null, validate that this isn't an erc20
-          ,CASE WHEN EXISTS (
-                          SELECT 1
-                          from {{ source('erc20_' + chain , 'evt_transfer') }} tr
-                            WHERE ct.address = tr.contract_address
-                            AND token_standard IS NULL
-                            AND tr.evt_block_time >= ct.block_time
-                            {% if is_incremental() %}
-                            AND tr.evt_block_time >= date_trunc('day', now() - interval '7' day)
-                            {% endif %}
-                            limit 1 --to speed up
-                          ) THEN 'erc20'
-          ELSE NULL END) AS token_standard
+      ,token_standard
       , CASE
         WHEN nd.creator_address IS NOT NULL THEN 1
         WHEN ct."from" != t.trace_creator_address THEN 1 -- weird data ingestion issue?
@@ -239,17 +230,6 @@ WHERE contract_order = 1
 )
 
 ,tokens as (
-  {% for chain in evm_chains %}
-  -- TO BE REPLACED WITH AN 'All Tokens Table' 
-
-  -- select 
-  --   '{{chain}}' as blockchain
-  --   ,t.contract_address
-  --   ,t.symbol
-  --   ,'erc20' as token_standard
-  -- from 'tokens_erc20_all' as t
-  -- group by 1, 2, 3, 4
-
   select
     blockchain
     ,contract_address
@@ -258,12 +238,8 @@ WHERE contract_order = 1
 
   FROM {{ ref('tokens_erc20')}} --note: This doesn't yet contain all ERC20 tokens
 
-
   UNION ALL
-  {% endfor %}
 
-  -- THIS WILL BREAK IF CHAINS MAY BE MISSING FROM THIS SPELL
-  -- WE WILL NEED TO MAKE A NEW SPELL WITH MACRO FOR HANDLING CHAINS
   select 
     blockchain
     ,t.contract_address
