@@ -1,6 +1,6 @@
 {{ config(
     schema = 'openocean_v2_avalanche_c',
-    alias = 'trades',
+    alias = alias('trades'),
     partition_by = ['block_date'],
     materialized = 'incremental',
     file_format = 'delta',
@@ -40,7 +40,7 @@ dexs as (
         CAST(ARRAY() as array<bigint>) AS trace_address,
         evt_index
     FROM 
-    {{ source('openocean_v2_avalanche_c', 'OpenOceanExchangeProxy_evt_Swapped') }}
+    {{ source('openocean_v2_avalanche_c', 'OpenOceanExchange_evt_Swapped') }}
     {% if not is_incremental() %}
     WHERE evt_block_time >= '{{project_start_date}}'
     {% endif %}

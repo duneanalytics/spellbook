@@ -1,6 +1,7 @@
 {{ 
   config(
-    alias='project_name_mappings',
+    tags = ['dunesql','static'],
+    alias = alias('project_name_mappings'),
     unique_key='dune_name',
     post_hook='{{ expose_spells(\'["optimism"]\',
                               "sector",
@@ -10,12 +11,16 @@
 }}
 
 select 
-  cast(dune_name as varchar(250)) AS dune_name
-  ,cast(mapped_name as varchar(250)) AS mapped_name
+  dune_name
+  , mapped_name
 from (
     values
-    ('lyra_v1',	'Lyra')
-    ,('Lyra V1', 'Lyra')
+     ('lyra_v1',	'Lyra Finance')
+    ,('Lyra V1', 'Lyra Finance')
+    ,('lyra_avalon', 'Lyra Finance')
+    ,('Avalon Lyra', 'Lyra Finance')
+    ,('avalon_lyra', 'Lyra Finance')
+    ,('lyra', 'Lyra Finance')
     ,('aave_v3', 'Aave')
     ,('perp_v2', 'Perpetual Protocol')
     ,('synthetix_futures', 'Kwenta')
@@ -41,12 +46,9 @@ from (
     ,('balancer_v2', 'Beethoven X')
     ,('stargate', 'Stargate Finance')
     ,('quixotic_v5', 'Quix')
-    ,('lyra_avalon', 'Lyra')
-    ,('Lyra', 'Avalon Lyra')
     ,('Unlock', 'Unlock Protocol')
     ,('Xy Finance', 'XY Finance')
     ,('Qidao', 'QiDao')
-    ,('Defisaver', 'Defi Saver')
     ,('Layerzero', 'Layer Zero')
     ,('Xtoken', 'xToken')
     ,('Instadapp', 'InstaDapp')
@@ -68,11 +70,52 @@ from (
     ,('2pi_network','2Pi Network')
     ,('twopi_network','2Pi Network')
     ,('acryptos', 'AcryptoS')
-    ,('woofi', 'WooFi')
+    ,('woofi', 'Woo Network')
     ,('powerbomb_finance','Powerbomb Finance')
     ,('powerbomb','Powerbomb Finance')
     ,('lemma_finance','Lemma Finance')
     ,('lemma','Lemma Finance')
-    ,('collab_land_dao_pass', 'Collab Land')
-    ,('Llama', 'Llamapay')
+    ,('arrakis','Arrakis Finance')
+    ,('arrakis_finance','Arrakis Finance')
+    ,('collab_land_dao_pass', 'Collab.Land')
+    ,('Perpetualprotocol','Perpetual Protocol')
+    ,('perp_hottub','Perpetual Protocol')
+    ,('Collab Land', 'Collab.Land')
+    ,('collab_land', 'Collab.Land')
+    ,('Biconomy - Hyphen', 'Biconomy')
+    ,('angle', 'Angle Protocol')
+    ,('overnight', 'Overnight+')
+    ,('avt','AVT')
+    ,('Frax Finance', 'Frax')
+    ,('frax_finance', 'Frax')
+    ,('fraxfinance', 'Frax')
+    ,('DeFi Saver', 'DeFiSaver')
+    ,('defi_saver', 'DeFiSaver')
+    ,('Defisaver', 'DefiSaver')
+    ,('Decent', 'Decent.xyz')
+    ,('pika_tge', 'Pika Protocol')
+    ,('holograph_factory', 'Holograph')
+    ,('holograph_operator', 'Holograph')
+    ,('sound_xyz', 'Sound.xyz')
+    ,('sound xyz', 'Sound.xyz')
+    ,('splits','0xSplits')
+    ,('kyber', 'kyberswap')
+    ,('synthetix_v3', 'Synthetix')
+    ,('velodrome_v2', 'Velodrome')
+    ,('Maker','MakerDAO')
+    ,('Allo Protocol','Allo Protocol (Gitcoin)')
+    ,('pika_protocol_v4', 'Pika Protocol')
+    ,('summer_fi','Summer.fi')
+    ,('summerfi','Summer.fi')
+    ,('oasisapp','Summer.fi')
+    ,('niftykit_v2','NiftyKit')
+    ,('niftykit_v3','NiftyKit')
+    ,('cozy_v2_beta','Cozy Finance')
+    ,('cozy_v2_prod','Cozy Finance')
+    ,('highlight_xyz','Highlight.xyz')
+    ,('mint_fun','mint.fun')
+    ,('mintfun','mint.fun')
+    ,('allo_protocol', 'allo protocol (gitcoin)')
+    ,('union_protocol', 'Union Finance')
+
     ) as temp_table (dune_name, mapped_name)

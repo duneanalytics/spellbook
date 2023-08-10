@@ -81,3 +81,41 @@ models:
       - &evt_index
         name: evt_index
         description: ""
+  - name: hashflow_crosschain_trades
+    meta:
+      blockchain: arbitrum, avalanche_c, bnb, ethereum, optimism, polygon
+      sector: dex
+      project: hashflow
+      contributors: BroderickBonelli
+    config:
+      tags: ['avalanche_c', 'bnb', 'ethereum', 'hashflow','trades','dex','BroderickBonelli']
+    description: >
+        Table of Hashflow cross chain trades. Includes unique data for cross chain trades such as source and destination chains for further analysis of Hashflow's cross chain activity.
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_date
+            - source_chain
+            - tx_hash
+    columns:
+      - *block_date
+      - *block_time
+      - *token_bought_symbol
+      - *token_sold_symbol
+      - *token_bought_amount
+      - *token_sold_amount
+      - *token_bought_amount_raw
+      - *token_sold_amount_raw
+      - *amount_usd
+      - *token_bought_address
+      - *token_sold_address
+      - &trader 
+        name: trader
+        description: "Address of trader who executed the trade."
+      - *tx_hash
+      - &source_chain
+        name: source_chain
+        description: "Chain where the trade originated."
+      - &destination_chain
+        name: destination_chain
+        description: "Ending chain where swapped token balance will be received."

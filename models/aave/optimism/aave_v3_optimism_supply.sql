@@ -5,7 +5,7 @@
     , file_format = 'delta'
     , incremental_strategy = 'merge'
     , unique_key = ['version', 'token_address', 'evt_tx_hash', 'evt_block_number', 'evt_index']
-    , alias='supply'
+    , alias = alias('supply')
     , post_hook='{{ expose_spells(\'["optimism"]\',
                                   "project",
                                   "aave_v3",

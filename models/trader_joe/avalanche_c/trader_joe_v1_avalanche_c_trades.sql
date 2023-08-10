@@ -1,6 +1,6 @@
 {{ config(
     schema = 'trader_joe_v1_avalanche_c',
-    alias = 'trades',
+    alias = alias('trades'),
     partition_by = ['block_date'],
     materialized = 'incremental',
     file_format = 'delta',
