@@ -1,6 +1,6 @@
 {{
     config(
-        alias = alias('set_name_latest')
+         alias = alias('set_name_latest')
         ,tags = ['dunesql']
         ,materialized = 'incremental'
         ,file_format = 'delta'
@@ -81,4 +81,3 @@ from set_name_rn
 where name_rn = 1
     and addr_rn = 1
 order by last_block_time desc
-;
