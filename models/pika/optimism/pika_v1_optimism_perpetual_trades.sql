@@ -1,7 +1,8 @@
 {{ config(
+	tags=['dunesql'],
 	schema = 'pika_v1_optimism',
 	alias = alias('perpetual_trades'),
-	partition_by = ['block_date'],
+	partition_by = ['block_month'],
 	materialized = 'incremental',
 	file_format = 'delta',
 	incremental_strategy = 'merge',
@@ -20,7 +21,7 @@ WITH positions AS (
 		positionId
 		,user AS user
 		,productId
-		,CAST(isLong AS VARCHAR(5)) AS isLong
+		,CAST(isLong AS VARCHAR) AS isLong
 		,price
 		,oraclePrice
 		,margin
@@ -34,7 +35,7 @@ WITH positions AS (
 		,'1' AS version
 	FROM {{ source('pika_perp_optimism', 'PikaPerpV2_evt_NewPosition') }}
 	{% if is_incremental() %}
-	WHERE evt_block_time >= DATE_TRUNC("DAY", NOW() - INTERVAL '1 WEEK')
+	WHERE evt_block_time >= DATE_TRUNC('DAY', NOW() - INTERVAL '7' Day)
 	{% endif %}
 
 	UNION ALL
@@ -57,7 +58,7 @@ WITH positions AS (
 		,'1' AS version
 	FROM {{ source('pika_perp_optimism', 'PikaPerpV2_evt_ClosePosition') }}
 	{% if is_incremental() %}
-	WHERE evt_block_time >= DATE_TRUNC("DAY", NOW() - INTERVAL '1 WEEK')
+	WHERE evt_block_time >= DATE_TRUNC('DAY', NOW() - INTERVAL '7' Day)
 	{% endif %}
 ),
 
@@ -79,7 +80,7 @@ perps AS (
 		WHEN productId = 10 OR productId = 24 THEN 'APE'
 		WHEN productId = 11 OR productId = 25 THEN 'AXS'
 		WHEN productId = 12 OR productId = 26 THEN 'UNI'
-		ELSE CONCAT ('product_id_', productId)
+		ELSE CONCAT ('product_id_', CAST(productId as VARCHAR))
 		END AS virtual_asset
 
 		,CASE
@@ -95,7 +96,7 @@ perps AS (
 		WHEN productId = 10 OR productId = 24 THEN 'APE'
 		WHEN productId = 11 OR productId = 25 THEN 'AXS'
 		WHEN productId = 12 OR productId = 26 THEN 'UNI'
-		ELSE CONCAT ('product_id_', productId)
+		ELSE CONCAT ('product_id_', CAST(productId as VARCHAR))
 		END AS underlying_asset
 
 		,CASE
@@ -111,7 +112,7 @@ perps AS (
 		WHEN productId = 10 OR productId = 24 THEN 'APE-USD'
 		WHEN productId = 11 OR productId = 25 THEN 'AXS-USD'
 		WHEN productId = 12 OR productId = 26 THEN 'UNI-USD'
-		ELSE CONCAT ('product_id_', productId)
+		ELSE CONCAT ('product_id_', CAST(productId as VARCHAR))
 		END AS market
 		
 		,contract_address AS market_address
@@ -122,7 +123,7 @@ perps AS (
 		,CASE
 		WHEN isLong = 'true' THEN 'long'
 		WHEN isLong = 'false' THEN 'short'
-		ELSE isLong
+		ELSE CAST(isLong as VARCHAR)
 		END AS trade
 
 		,'Pika' AS project
@@ -137,7 +138,8 @@ perps AS (
 
 SELECT
 	'optimism' AS blockchain
-	,TRY_CAST(date_trunc('DAY', perps.block_time) AS date) AS block_date
+	,CAST(date_trunc('DAY', perps.block_time) AS date) AS block_date
+	,CAST(date_trunc('MONTH', perps.block_time) AS date) AS block_month
 	,perps.block_time
 	,perps.virtual_asset
 	,perps.underlying_asset
@@ -153,16 +155,16 @@ SELECT
 	,perps.trader
 	,perps.volume_raw
 	,perps.tx_hash
-	,tx.from AS tx_from
-	,tx.to AS tx_to
+	,tx."from" AS tx_from
+	,tx."to" AS tx_to
 	,perps.evt_index
 FROM perps
 INNER JOIN {{ source('optimism', 'transactions') }} AS tx
 	ON perps.tx_hash = tx.hash
 	AND perps.block_number = tx.block_number
 	{% if not is_incremental() %}
-	AND tx.block_time >= '{{project_start_date}}'
+	AND tx.block_time >= DATE '{{project_start_date}}'
 	{% endif %}
 	{% if is_incremental() %}
-	AND tx.block_time >= DATE_TRUNC("DAY", NOW() - INTERVAL '1 WEEK')
+	AND tx.block_time >= DATE_TRUNC('DAY', NOW() - INTERVAL '7' Day)
 	{% endif %}
