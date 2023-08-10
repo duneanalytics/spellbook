@@ -16,7 +16,7 @@ FROM
 (
     VALUES
 
-    ("celo-celo", "celo", "WETH", "0x471ece3750da237f93b8e339c536989b8978a438", 24), 
+    ("celo-celo", "celo", "CELO", "0x471ece3750da237f93b8e339c536989b8978a438", 24), 
     ("cusd-celo-dollar", "celo", "CUSD", "0x765de816845861e75a25fca122bb6898b8b1282a", 18)
    -- ("axl-axelar", "celo", "AXL", "0x23ee2343B892b1BB63503a4FAbc840E0e2C6810f", 6), --requested add to coinPaprika 2023-08-10
    -- ("ftm-fantom", "celo", "FTM", "0x218c3c3d49d0e7b37aff0d8bb079de36ae61a4c0", 18), --requested add to coinPaprika 2023-08-10
