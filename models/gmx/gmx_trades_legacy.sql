@@ -10,8 +10,8 @@
 }}
 
 {% set gmx_models = [
-'gmx_avalanche_c_trades'
-,'gmx_arbitrum_trades'
+'gmx_avalanche_c_trades_legacy'
+,'gmx_arbitrum_trades_legacy'
 ] %}
 
 

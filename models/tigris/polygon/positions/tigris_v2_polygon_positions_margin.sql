@@ -1,4 +1,5 @@
 {{ config(
+    tags=['dunesql'],
     schema = 'tigris_v2_polygon',
     alias = alias('positions_margin')
     )
@@ -53,4 +54,3 @@ margin as (
 )
 
 SELECT * FROM margin  
-;
