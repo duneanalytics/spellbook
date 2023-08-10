@@ -24,7 +24,6 @@ select
 , evt_tx_hash
 , evt_index
 , evt_block_time
-, evt_index
 , evt_block_number
 , messageId
 , returnData
