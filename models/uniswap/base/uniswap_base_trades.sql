@@ -1,5 +1,5 @@
 {{ config(tags=['dunesql'],
-        alias = 'trades'
+        alias = alias('trades')
         )
 }}
 

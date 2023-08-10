@@ -271,8 +271,11 @@ models:
         +schema: uniswap_optimism
       polygon:
         +schema: uniswap_polygon
+
       bnb:
         +schema: uniswap_bnb
+      base:
+        +schema: uniswap_base
 
     timeswap:
       +schema: timeswap
@@ -282,6 +285,7 @@ models:
         +schema: timeswap_arbitrum
       polygon:
         +schema: timeswap_polygon
+
 
     quickswap:
       +schema: quickswap
