@@ -1,0 +1,10 @@
+version: 2
+
+sources:
+  - name: optimism_quest_optimism
+    description: "decoded events and function calls for optimism quests on optimism"
+    freshness:
+      warn_after: { count: 12, period: hour }
+    tables:
+      - name: StarNFTV4_call_mint
+        loaded_at_field: call_block_time

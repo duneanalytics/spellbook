@@ -1,6 +1,6 @@
 {{
     config(
-        alias='tx_hash_labels_treasury_management_ethereum',
+        alias = alias('tx_hash_labels_treasury_management_ethereum'),
     )
 }}
 
@@ -9,7 +9,7 @@ with
     -- DAO list taken from dao multisig list from Dune
     -- https://github.com/duneanalytics/spellbook/blob/main/models/labels/dao/identifier/multisigs/labels_dao_multisig_ethereum.sql
     SELECT distinct address
-    FROM {{ ref('labels_all') }}
+    FROM {{ ref('labels_addresses') }}
     WHERE category = 'dao' and blockchain = 'ethereum' and label_type = 'identifier'
   ),
 
@@ -31,12 +31,12 @@ with
 
 select
   "ethereum" as blockchain,
-  concat(tx_hash, evt_index, project, version) as tx_hash_key,
+  concat(tx_hash, CAST(evt_index AS VARCHAR(100)), project, version) as tx_hash_key,
   "Treasury management" AS name,
   "tx_hash" AS category,
   "gentrexha" AS contributor,
   "query" AS source,
-  timestamp('2023-03-01') as created_at,
+  CAST('2023-03-01' AS TIMESTAMP) as created_at,
   now() as updated_at,
   "treasury_management" as model_name,
   "usage" as label_type

@@ -1,10 +1,11 @@
 {{ config(
-        alias ='trades'
+        alias = alias('trades')
         )
 }}
 
 {% set quickswap_polygon_models = [
-ref('quickswap_v3_polygon_trades')
+ref('quickswap_v3_polygon_trades'),
+ref('quickswap_v2_polygon_trades')
 ] %}
 
 

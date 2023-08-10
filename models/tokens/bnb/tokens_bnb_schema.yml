@@ -19,7 +19,8 @@ models:
         description: "BEP20 token symbol"
       - name: decimals
         description: "Number of decimals, refers to how divisible an BEP20 token can be"
-  - name: tokens_bnb_nft
+
+  - name: tokens_bnb_nft_curated
     meta:
       blockchain: bnb
       sector: nft
@@ -35,11 +36,48 @@ models:
         description: "The contract address is the unique address of where the NFTs are stored."
         tests:
           - unique
+
+  - name: tokens_bnb_nft
+    meta:
+      blockchain: bnb
+      sector: nft
+      contributors: 0xRob
+    config:
+      tags: [ 'tokens', 'bnb', 'nft', 'bep721', 'bep1155' ]
+    description: >
+      Selection of NFT token addresses.
+    columns:
+      - name: name
+        description: "NFT Project Name"
+      - name: contract_address
+        description: "The contract address is the unique address of where the NFTs are stored."
+        tests:
+          - unique
       - name: standard
         tests:
           - accepted_values:
-              values: ['erc721', 'erc1155' , 'erc20', 'cryptopunks','superrare', 'unknown']
+              values: [ 'bep721', 'bep1155']
         description: >
-            The token standard. This is the set of rules that the contract must respect 
-            to be compatible with the common standards. Accepted values are presently standards represented.
-            If you are adding a token with a new standard, remember to add it the accepted valeus list.
+          The token standard. This is the set of rules that the contract must respect 
+          to be compatible with the common standards. Accepted values are presently standards represented.
+          If you are adding a token with a new standard, remember to add it the accepted values list.
+
+  - name: tokens_bnb_nft_standards
+    meta:
+      blockchain: bnb
+      sector: nft
+      contributors: 0xRob
+    config:
+      tags: [ 'nft','bnb' ]
+    description: >
+      NFT contract standards
+    columns:
+      - name: contract_address
+        description: "the NFT contract address"
+        tests:
+          - unique
+      - name: standard
+        description: "The NFT standard erc721/erc1155/..."
+        tests:
+          - accepted_values:
+              values: [ 'bep721', 'bep1155' ]

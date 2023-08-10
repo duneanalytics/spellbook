@@ -1,0 +1,9 @@
+version: 2
+
+sources: 
+  - name: tokenfy_ethereum
+    description: >
+      Tokenfy ethereum contracts
+    tables:
+      - name: Tokenfy_call_claim
+        loaded_at_field: call_block_time

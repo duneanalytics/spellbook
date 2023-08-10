@@ -1,6 +1,6 @@
 {{
     config(
-        alias='tx_hash_labels_bluechip_investment_ethereum',
+        alias = alias('tx_hash_labels_bluechip_investment_ethereum'),
     )
 }}
 
@@ -36,12 +36,12 @@ with
 
 select
   "ethereum" as blockchain,
-  concat(tx_hash, evt_index, project, version) as tx_hash_key,
+  concat(tx_hash, CAST(evt_index AS VARCHAR(100)), project, version) as tx_hash_key,
   "Bluechip Investment" as name,
   "tx_hash" as category,
   "gentrexha" as contributor,
   "query" as source,
-  timestamp('2023-02-21') as created_at,
+  CAST('2023-02-21' AS TIMESTAMP) as created_at,
   now() as updated_at,
   "bluechip_investment" as model_name,
   "usage" as label_type

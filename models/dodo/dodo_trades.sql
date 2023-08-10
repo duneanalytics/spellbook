@@ -1,5 +1,5 @@
 {{ config(
-        alias ='trades',
+        alias = alias('trades'),
         post_hook='{{ expose_spells(\'["ethereum","bnb","polygon","arbitrum","optimism"]\',
                                 "project",
                                 "dodo",
@@ -14,7 +14,6 @@ ref('dodo_ethereum_trades')
 , ref('dodo_arbitrum_trades')
 , ref('dodo_optimism_trades')
 ] %}
-
 
 SELECT *
 FROM (

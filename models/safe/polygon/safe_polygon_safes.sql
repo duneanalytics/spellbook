@@ -1,7 +1,7 @@
 {{ 
     config(
         materialized='incremental',
-        alias='safes',
+        alias = alias('safes'),
         partition_by = ['block_date'],
         unique_key = ['block_date', 'address'],
         on_schema_change='fail',
@@ -47,5 +47,5 @@ where et.success = true
     and et.block_time > '2021-03-07' -- for initial query optimisation    
     {% endif %}
     {% if is_incremental() %}
-    and et.block_time > date_trunc("day", now() - interval '1 week')
+    and et.block_time >= date_trunc("day", now() - interval '1 week')
     {% endif %}

@@ -5,7 +5,7 @@ models:
     meta:
       blockchain: fantom
       project: zeroex
-      contributors: rantumBits, sui414, bakabhai993
+      contributors: rantum, danning.sui, bakabhai993
     config:
       tags: [fantom','0x','dex_aggregator','dex','aggregator']
     description: >
@@ -16,7 +16,7 @@ models:
             - block_date
             - tx_hash
             - evt_index
-      - check_seed:
+      - check_seed_legacy:
           seed_file: ref('zeroex_fantom_api_fills_sample')
           match_columns:
             - tx_hash
@@ -93,7 +93,7 @@ models:
     meta:
       blockchain: fantom
       project: zeroex
-      contributors: rantumBits, sui414, bakabhai993
+      contributors: rantum, danning.sui, bakabhai993
     config:
       tags: ['fantom','0x','dex_aggregator','dex','aggregator']
     description: >
@@ -104,7 +104,7 @@ models:
             - block_date
             - tx_hash
             - evt_index
-      - check_seed:
+      - check_seed_legacy:
           seed_file: ref('zeroex_fantom_api_fills_deduped_sample')
           match_columns:
             - tx_hash
@@ -141,6 +141,7 @@ models:
       - *evt_index       
       - *type
       - *swap_flag
+      - *contract_address
       - &fills_within
         name: fills_within
         description: "fills in then multihop, if present"          

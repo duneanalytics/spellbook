@@ -1,5 +1,5 @@
 {{ config(
-    alias = 'foundation_wallet_approvals',
+    alias = alias('foundation_wallet_approvals'),
     partition_by = ['block_date'],
     materialized = 'incremental',
     file_format = 'delta',
@@ -7,7 +7,7 @@
     unique_key = ['block_date', 'evt_block_time', 'evt_block_number', 'evt_tx_hash', 'evt_index'],
     post_hook='{{ expose_spells(\'["optimism"]\',
                                 "project",
-                                "op_token",
+                                "op_token_distributions",
                                 \'["msilb7"]\') }}'
     )
 }}

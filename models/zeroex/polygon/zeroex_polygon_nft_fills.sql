@@ -1,5 +1,5 @@
 {{  config(
-        alias='nft_fills',
+        alias = alias('nft_fills'),
         materialized='incremental',
         partition_by = ['block_date'],
         unique_key = ['block_date', 'tx_hash', 'evt_index'],
@@ -9,7 +9,7 @@
         post_hook='{{ expose_spells(\'["polygon"]\',
                                 "project",
                                 "zeroex",
-                                \'["rantum","bakabhai993", "sui414"]\') }}'
+                                \'["rantum","bakabhai993", "danning.sui"]\') }}'
     )
 }}
 

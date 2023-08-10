@@ -1,5 +1,5 @@
 {{ config(
-        alias='erc721_noncompliant'
+        alias = alias('erc721_noncompliant')
 ) 
 }}
 
@@ -19,4 +19,3 @@ multiple_owners as (
 )
 
 select distinct token_address as token_address FROM multiple_owners
-;

@@ -132,7 +132,7 @@ models:
             - token_id
             - sub_type
             - sub_idx
-      - check_seaport_seed:
+      - check_seaport_seed_legacy:
           blockchain: avalanche_c
           project: seaport
           version: v1

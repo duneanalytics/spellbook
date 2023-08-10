@@ -1,5 +1,5 @@
 {{ config(
-        alias ='perpetual_trades',
+        alias = alias('perpetual_trades'),
         post_hook='{{ expose_spells(\'["avalanche_c","arbitrum"]\',
                                 "project",
                                 "gmx",
@@ -29,6 +29,7 @@ FROM (
 		,trade
 		,project
 		,version
+		,frontend
 		,trader
 		,volume_raw
 		,tx_hash

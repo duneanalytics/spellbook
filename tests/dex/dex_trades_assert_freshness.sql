@@ -47,12 +47,6 @@
      'blockchain': 'ethereum',
      'schema': 'bancornetwork_ethereum',
      'table_name': 'BancorNetwork_v10_evt_Conversion',
-     'time_column': 'evt_block_time'},
-
-    {'project': 'airswap',
-     'blockchain': 'ethereum',
-     'schema': 'airswap_ethereum',
-     'table_name': 'swap_evt_Swap',
      'time_column': 'evt_block_time'}
 ] %}
 
