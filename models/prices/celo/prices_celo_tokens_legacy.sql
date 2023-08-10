@@ -1,5 +1,5 @@
 {{ config(
-        schema='prices_fantom',
+        schema='prices_celo',
         alias = alias('tokens', legacy_model=True),
         materialized='table',
         file_format = 'delta',
