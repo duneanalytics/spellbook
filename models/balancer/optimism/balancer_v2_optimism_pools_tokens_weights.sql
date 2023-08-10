@@ -42,7 +42,6 @@ weighted_pool_factory AS (
 
     UNION ALL
 
-    weighted_pool_factory AS (
     SELECT
         call_create.output_0 AS pool_id,
         t.pos AS pos,
