@@ -93,7 +93,7 @@ WITH dexs AS
         evt_index
     FROM {{ source('airswap_ethereum', 'Swap_v3_evt_Swap')}} e
     {% if is_incremental() %}
-    WHERE evt_block_time >= date_trunc('day', now() - interval '1 week')
+    WHERE evt_block_time >= date_trunc('day', now() - interval '7' day)
     {% endif %}
 
     UNION ALL
@@ -113,7 +113,7 @@ WITH dexs AS
         evt_index
     FROM {{ source('airswap_ethereum', 'SwapERC20_v4_evt_SwapERC20')}} e
     {% if is_incremental() %}
-    WHERE evt_block_time >= date_trunc('day', now() - interval '1 week')
+    WHERE evt_block_time >= date_trunc('day', now() - interval '7' day)
     {% endif %}
 )
 SELECT
