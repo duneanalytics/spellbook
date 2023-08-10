@@ -1,6 +1,7 @@
 {{ config(
+        tags=['dunesql'],
         schema = 'aave_v3'
-        , alias = 'tokens'
+        , alias = alias('tokens')
         , materialized = 'incremental'
         , file_format = 'delta'
         , incremental_strategy = 'merge'
@@ -28,8 +29,6 @@ SELECT distinct a.blockchain
               , a.arate_type
               , a.atoken_symbol
               , a.atoken_name
-              , et.decimals AS underlying_decimals
-              , et.symbol   AS underlying_symbol
 
 FROM (
     {% for aave_v3_chain in aave_v3_decoded_chains %}
@@ -44,7 +43,7 @@ FROM (
             , aTokenName AS atoken_name
         FROM {{source( 'aave_v3_' + aave_v3_chain, 'AToken_evt_Initialized' ) }}
         {% if is_incremental() %}
-        WHERE evt_block_time >= date_trunc("day", now() - interval '1 week')
+        WHERE evt_block_time >= date_trunc('day', now() - interval '7' day)
         {% endif %}
 
         UNION ALL
@@ -61,7 +60,7 @@ FROM (
         FROM {{source( 'aave_v3_' + aave_v3_chain, 'StableDebtToken_evt_Initialized' ) }}
         WHERE debtTokenName LIKE '%Stable%'
         {% if is_incremental() %}
-        AND evt_block_time >= date_trunc("day", now() - interval '1 week')
+        AND evt_block_time >= date_trunc('day', now() - interval '7' day)
         {% endif %}
 
         UNION ALL
@@ -78,7 +77,7 @@ FROM (
         FROM {{source( 'aave_v3_' + aave_v3_chain, 'VariableDebtToken_evt_Initialized' ) }}
         WHERE debtTokenName LIKE '%Variable%'
         {% if is_incremental() %}
-        AND evt_block_time >= date_trunc("day", now() - interval '1 week')
+        AND evt_block_time >= date_trunc('day', now() - interval '7' day)
         {% endif %}
 
         {% if not loop.last %}
@@ -86,6 +85,3 @@ FROM (
         {% endif %}
     {% endfor %}
     ) a
-LEFT JOIN {{ ref('tokens_erc20') }} et
-    ON a.underlying_address = et.contract_address
-    AND a.blockchain = et.blockchain

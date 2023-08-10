@@ -53,31 +53,6 @@ models:
         tests:
           - not_null
 
-  - name: balancer_v2_arbitrum_bpt_prices
-    meta:
-      blockchain: arbitrum
-      project: balancer_v2
-      contributors: victorstefenon
-    config:
-      tags: ['arbitrum', 'bpt', 'prices']
-    description: >
-      Balancer Pool Token (BPT) hourly median price by pool on Balancer, an automated portfolio manager and trading platform.
-    tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - hour
-            - contract_address
-    columns:
-      - &hour
-        name: hour
-        description: 'UTC event block time truncated to the hour mark'
-        tests:
-          - not_null
-      - *contract_address
-      - &median_price
-        name: median_price
-        description: 'BPT median price'
-
   - name: balancer_v2_arbitrum_transfers_bpt
     meta:
       blockchain: arbitrum
@@ -93,7 +68,7 @@ models:
             - evt_tx_hash
             - evt_index
             - block_date
-      - check_seed:
+      - check_seed_legacy:
           seed_file: ref('balancer_transfers_bpt_seed')
           filter:
             blockchain: arbitrum
@@ -205,7 +180,7 @@ models:
             - tx_hash
             - evt_index
             - trace_address
-      - check_dex_seed:
+      - check_dex_seed_legacy:
           blockchain: arbitrum
           project: balancer
           version: 2
@@ -272,11 +247,12 @@ models:
         description: ""
       - *evt_index
   
+
   - name: balancer_v2_arbitrum_liquidity
     meta:
       blockchain: arbitrum
       project: balancer_v2
-      contributors: victorstefenon
+      contributors: victorstefenon, viniabussafi
     config:
       tags: ['arbitrum', 'balancer', 'pools', 'liquidity']
     description: >
@@ -296,5 +272,120 @@ models:
       - *token_address
       - name: token_symbol
         description: 'Symbol of the token'
-      - name: usd_amount
-        description: 'Liquidity of the token in the pool in USD'
+      - name: token_balance_raw
+        description: 'Raw balance of the token in the pool'
+      - name: token_balance
+        description: 'Scaled balance of the token in the pool'
+      - name: protocol_liquidity_usd
+        description: 'Liquidity of the token in the pool in USD, except BPTs'
+      - name: pool_liquidity_usd
+        description: 'Liquidity of the token in the pool in USD, including BPTs'     
+
+  - name: balancer_v2_arbitrum_flashloans
+    meta:
+      blockchain: arbitrum
+      sector: lending
+      contributors: hildobby
+    config:
+      tags: ['arbitrum', 'flashloans']
+    description: >
+      All Balancer v2 flashloans on Arbitrum
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - tx_hash
+            - evt_index
+    columns:
+      - name: blockchain
+      - name: project
+      - name: version
+      - name: block_time
+      - name: block_number
+      - name: amount
+      - name: amount_usd
+      - name: tx_hash
+      - name: evt_index
+      - name: fee
+      - name: currency_contract
+      - name: currency_symbol
+      - name: recipient
+      - name: contract_address
+
+
+  - name: balancer_v2_arbitrum_bpt_prices
+    meta:
+      blockchain: arbitrum
+      project: balancer_v2
+      contributors: victorstefenon, thetroyharris
+    config:
+      tags: ['arbitrum', 'bpt', 'prices']
+    description: >
+      Balancer Pool Token (BPT) hourly median price by pool on Balancer, an automated portfolio manager and trading platform.
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - hour
+            - contract_address
+    columns:
+      - *blockchain
+      - &hour
+        name: hour
+        description: 'UTC event block time truncated to the hour mark'
+        tests:
+          - not_null
+      - *contract_address
+      - &median_price
+        name: median_price
+        description: 'BPT median price'
+  
+  - name: balancer_v2_arbitrum_trades
+    meta:
+      blockchain: arbitrum
+      sector: dex
+      contributors: bizzyvinci, thetroyharris
+    config:
+      tags: [ 'balancer', 'arbitrum', 'amm', 'trades', 'dex' ]
+    description: >
+      DEX trades on balancer v2 on arbitrum
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_date
+            - blockchain
+            - project
+            - version
+            - tx_hash
+            - evt_index
+            - trace_address
+      - check_dex_seed_legacy:
+          blockchain: arbitrum
+          project: balancer
+          version: 2
+    columns:
+      - name: blockchain
+      - name: project
+      - name: version
+      - name: block_date
+      - name: block_time
+      - name: token_bought_symbol
+      - name: token_sold_symbol
+      - name: token_pair
+      - name: token_bought_amount
+      - name: token_sold_amount
+      - name: token_bought_amount_raw
+      - name: token_sold_amount_raw
+      - name: amount_usd
+      - name: token_bought_address
+      - name: token_sold_address
+      - name: taker
+      - name: maker
+      - name: project_contract_address
+      - name: pool_id
+      - name: swap_fee
+      - name: tx_hash
+      - name: tx_from
+      - name: tx_to
+      - name: trace_address
+      - name: evt_index

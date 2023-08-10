@@ -1,5 +1,5 @@
 {{ config(
-        alias ='erc721_rolling_hour')
+        alias = alias('erc721_rolling_hour'))
 }}
 
         select
@@ -8,7 +8,7 @@
             wallet_address,
             token_address,
             tokenId,
-            current_timestamp() as updated_at,
+            NOW() as updated_at,
             sum(amount) over (partition by wallet_address, token_address, tokenId order by hour) as amount, 
             row_number() over (partition by wallet_address, token_address, tokenId order by hour desc) as recency_index
         from {{ ref('transfers_ethereum_erc721_agg_hour') }}

@@ -20,7 +20,7 @@ models:
             - tx_hash
             - evt_index
             - trace_address
-      - check_dex_seed:
+      - check_dex_seed_legacy:
           blockchain: gnosis
           project: balancer
           version: 2
@@ -94,3 +94,215 @@ models:
       - &evt_index
         name: evt_index
         description: "Event index"
+
+  - name: balancer_v2_gnosis_flashloans
+    meta:
+      blockchain: gnosis
+      sector: lending
+      contributors: hildobby
+    config:
+      tags: ['gnosis', 'flashloans']
+    description: >
+      All Balancer flashloans on Gnosis
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - tx_hash
+            - evt_index
+    columns:
+      - name: blockchain
+      - name: project
+      - name: version
+      - name: block_time
+      - name: block_number
+      - name: amount
+      - name: amount_usd
+      - name: tx_hash
+      - name: evt_index
+      - name: fee
+      - name: currency_contract
+      - name: currency_symbol
+      - name: recipient
+      - name: contract_address
+
+  - name: balancer_v2_gnosis_bpt_prices
+    meta:
+      blockchain: gnosis
+      project: balancer_v2
+      contributors: thetroyharris
+    config:
+      tags: ['ethereum', 'bpt', 'prices']
+    description: >
+      Balancer Pool Token (BPT) hourly median price by pool on Balancer, an automated portfolio manager and trading platform.
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - hour
+            - contract_address
+    columns:
+      - *blockchain
+      - &hour
+        name: hour
+        description: 'UTC event block time truncated to the hour mark'
+        tests:
+          - not_null
+      - &contract_address
+        name: contract_address
+        description: 'Gnosis address for the liquidity pool'
+        tests:
+          - not_null
+      - &median_price
+        name: median_price
+        description: 'BPT median price'
+        
+  - name: balancer_v2_gnosis_pools_fees
+    meta:
+      blockchain: gnosis
+      project: balancer_v2
+      contributors: jacektrocinski, thetroyharris
+    config:
+      tags: ['gnosis', 'balancer', 'pools_fees']
+    description: >
+      Balancer v2 swap fees stored at the pool level.
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_number
+            - tx_hash
+            - index
+    columns:
+      - name: contract_address
+      - name: tx_hash
+      - name: index
+      - name: tx_index
+      - name: block_time
+      - name: block_number
+      - name: swap_fee_percentage
+
+  - name: balancer_v2_gnosis_trades
+    meta:
+      blockchain: gnosis
+      sector: dex
+      contributors: bizzyvinci, thetroyharris
+    config:
+      tags: [ 'balancer', 'gnosis', 'amm', 'trades', 'dex' ]
+    description: >
+      DEX trades on balancer v2 on gnosis
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_date
+            - blockchain
+            - project
+            - version
+            - tx_hash
+            - evt_index
+            - trace_address
+      - check_dex_seed_legacy:
+          blockchain: gnosis
+          project: balancer
+          version: 2
+    columns:
+      - name: blockchain
+      - name: project
+      - name: version
+      - name: block_date
+      - name: block_time
+      - name: token_bought_symbol
+      - name: token_sold_symbol
+      - name: token_pair
+      - name: token_bought_amount
+      - name: token_sold_amount
+      - name: token_bought_amount_raw
+      - name: token_sold_amount_raw
+      - name: amount_usd
+      - name: token_bought_address
+      - name: token_sold_address
+      - name: taker
+      - name: maker
+      - name: project_contract_address
+      - name: pool_id
+      - name: swap_fee
+      - name: tx_hash
+      - name: tx_from
+      - name: tx_to
+      - name: trace_address
+      - name: evt_index
+
+  - name: balancer_v2_gnosis_liquidity
+    meta:
+      blockchain: gnosis
+      project: balancer_v2
+      contributors: victorstefenon, viniabussafi
+    config:
+      tags: ['gnosis', 'balancer', 'pools', 'liquidity']
+    description: >
+      Balancer v2 pools liquidity by token in Gnosis.
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - day
+            - pool_id
+            - token_address
+    columns:
+      - name: day
+        description: 'UTC event block time truncated to the day mark'
+      - name: pool_id
+        description: 'ID of the Pool'
+      - name: pool_symbol
+        description: 'Symbol of the pool, consisting of the symbol of its tokens and their respective weights'
+      - name: token_address
+        description: 'ID of the Token'
+      - name: token_symbol
+        description: 'Symbol of the token'
+      - name: token_balance_raw
+        description: 'Raw balance of the token in the pool'
+      - name: token_balance
+        description: 'Scaled balance of the token in the pool'
+      - name: protocol_liquidity_usd
+        description: 'Liquidity of the token in the pool in USD, except BPTs'
+      - name: pool_liquidity_usd
+        description: 'Liquidity of the token in the pool in USD, including BPTs'  
+
+  - name: balancer_gnosis_pools_tokens_weights
+    meta:
+      blockchain: gnosis
+      project: balancer
+      contributors: jacektrocinski, viniabussafi
+    config:
+      tags: ['gnosis', 'balancer', 'pools', 'tokens', 'weights']
+    description: >
+      Token weights in Balancer pools.
+    columns:
+      - &pool_id
+        name: pool_id
+        description: 'Unique encoded identifier that refers to each pool'
+        tests:
+          - not_null
+      - &token_address
+        name: token_address
+        description: 'Contract address for the token'
+      - &normalized_weight
+        name: normalized_weight
+        description: 'Weight of the token in the pool.'
+
+  - name: balancer_v2_gnosis_pools_tokens_weights
+    meta:
+      blockchain: gnosis
+      project: balancer
+      contributors: metacrypto, jacektrocinski, viniabussafi
+    config:
+      tags: ['gnosis', 'balancer', 'pools', 'tokens', 'weights']
+    description: >
+      Token weights in Balancer v2 pools.
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - pool_id
+            - token_address
+    columns:
+      - *pool_id
+      - *token_address
+      - *normalized_weight

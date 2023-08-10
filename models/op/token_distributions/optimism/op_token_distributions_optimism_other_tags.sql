@@ -1,5 +1,5 @@
 {{ config(
-    alias = 'other_tags'
+    alias = alias('other_tags')
     )
 }}
 
@@ -55,6 +55,6 @@ FROM (
     FROM tagged_wallets
     UNION ALL
     SELECT 'Other',address, cex_name
-    FROM {{ ref('addresses_optimism_cex') }}
+    FROM {{ ref('cex_optimism_addresses') }}
     )
 WHERE address NOT IN (SELECT address FROM {{ ref('op_token_distributions_optimism_project_wallets') }}) --not already tagged

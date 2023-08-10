@@ -13,34 +13,46 @@ sources:
         loaded_at_field: evt_block_time
         description: "" # to-do
         columns:
-          - name: baseToken
+          - &baseToken
+            name: baseToken
             description: "The contract address for the token the trader sells"
-          - name: baseTokenAmount
+          - &baseTokenAmount
+            name: baseTokenAmount
             description: "The raw amount of base tokens sold during the transaction in decimals"
           - &contract_address
             name: contract_address
             description: "TBC - The hashflow contract address"
-          - name: evt_block_number
+          - &evt_block_number
+            name: evt_block_number
             description: "Block number which processed the unique transaction hash"
-          - name: evt_block_time
+          - &evt_block_time
+            name: evt_block_time
             description: "Timestamp for block event time in UTC"
-          - name: evt_index
+          - &evt_index
+            name: evt_index
             description: "Index value of the transaction"
-          - name: evt_tx_hash
+          - &evt_tx_hash
+            name: evt_tx_hash
             description: "Primary key of the transaction"
             tests:
               - not_null
-          - name: fees
+          - &fees
+            name: fees
             description: "Fees charged if the order went through"
-          - name: pool
+          - &pool
+            name: pool
             description: "Contract address of the pool"
-          - name: quoteToken
+          - &quoteToken
+            name: quoteToken
             description:  "The contract address for the token the trader buys"
-          - name: quoteTokenAmount
+          - &quoteTokenAmount
+            name: quoteTokenAmount
             description: "The raw amount of quote tokens bought during the transaction in decimals"
-          - name: trader
+          - &trader
+            name: trader
             description: "The trader wallet address that will swap with the contract. This can be a proxy contract"
-          - name: txid
+          - &txid
+            name: txid
             description: "Unique identifier of the quote"
       - name: router_call_tradesinglehop
         loaded_at_field: call_block_time
@@ -59,3 +71,44 @@ sources:
             description: "Block number which processed the unique transaction hash"
           - name: quote
             description: "json object containing details related to the specific quote executed"
+      - name: Pool_evt_LzTrade
+        loaded_at_field: evt_block_time
+        description: "Pool layer zero trade events table"
+        columns:
+          - *evt_block_time
+          - *evt_index
+          - *evt_tx_hash
+          - *fees
+          - *quoteToken
+          - *baseToken
+          - *baseTokenAmount
+          - *contract_address
+          - &dstChainId
+            name: dstChainId
+          - &dstPool
+            name: dstPool
+          - *evt_block_number
+          - *quoteTokenAmount
+          - &srcChainId
+            name: srcChainId
+          - &srcPool
+            name: srcPool
+          - *trader
+          - *txid
+      - name: Pool_evt_XChainTrade
+        loaded_at_field: evt_block_time
+        description: "Pool XChain events table"
+        columns:
+          - *evt_block_time
+          - *evt_index
+          - *evt_tx_hash
+          - *quoteToken
+          - *baseToken
+          - *baseTokenAmount
+          - *contract_address
+          - *dstChainId
+          - *dstPool
+          - *evt_block_number
+          - *quoteTokenAmount
+          - *trader
+          - *txid

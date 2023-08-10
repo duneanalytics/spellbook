@@ -1,6 +1,6 @@
 {{ config(
     schema = 'paraswap_v5_fantom',
-    alias = 'trades',
+    alias = alias('trades'),
     partition_by = ['block_date'],
     materialized = 'incremental',
     file_format = 'delta',
@@ -13,7 +13,7 @@
     )
 }}
 
-{% set project_start_date = '2022-06-15' %} -- min(evet_block_time) in bought & swapped events
+{% set project_start_date = '2022-01-21' %} -- min(evet_block_time) in bought & swapped events
 
 WITH 
 
@@ -26,6 +26,7 @@ dexs as (
     {% for trade_tables in trade_event_tables %}
         SELECT 
             evt_block_time as block_time,
+            evt_block_number as block_number,
             beneficiary as taker, 
             initiator as maker, 
             receivedAmount as token_bought_amount_raw,
@@ -88,6 +89,7 @@ SELECT
 from dexs
 inner join {{ source('fantom', 'transactions') }} tx
     on dexs.tx_hash = tx.hash
+    and dexs.block_number = tx.block_number
     {% if not is_incremental() %}
     and tx.block_time >= '{{project_start_date}}'
     {% endif %}

@@ -1,4 +1,4 @@
-{{ config( alias='rebase', tags=['static'])}}
+{{ config( alias = alias('rebase'), tags=['static'])}}
 
 SELECT LOWER(contract_address) as contract_address, symbol, decimals 
 FROM (VALUES

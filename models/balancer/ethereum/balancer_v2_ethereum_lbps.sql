@@ -1,9 +1,9 @@
 {{
     config(
         schema = 'balancer_v2_ethereum',
-        alias='lbps',
+        alias = alias('lbps'),
         unique_key = ['pool_id'],
-        post_hook='{{ expose_spells(\'["ethereum"]\',
+        post_hook='{{ expose_spells_hide_trino(\'["ethereum"]\',
                                     "project",
                                     "balancer_v2",
                                     \'["stefenon"]\') }}'

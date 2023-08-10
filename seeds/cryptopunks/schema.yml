@@ -1,0 +1,7 @@
+version: 2
+
+seeds:
+  - name: cryptopunks_trades_buys_bids_seed
+    config:
+      column_types:
+        amount_raw: string

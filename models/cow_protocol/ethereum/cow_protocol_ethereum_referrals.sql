@@ -1,5 +1,7 @@
-{{ config(alias='referrals',
-        post_hook='{{ expose_spells_hide_trino(\'["ethereum"]\',
+{{ config(
+        alias=alias('referrals'),
+        tags=['dunesql'],
+        post_hook='{{ expose_spells(\'["ethereum"]\',
                                     "project",
                                     "cow_protocol",
                                     \'["bh2smith"]\') }}'

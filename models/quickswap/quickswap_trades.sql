@@ -1,9 +1,9 @@
 {{ config(
-        alias ='trades',
+        alias = alias('trades'),
         post_hook='{{ expose_spells(\'["polygon"]\',
                                 "project",
                                 "quickswap",
-                                \'["sameepsi", "tarusinghania123"]\') }}'
+                                \'["sameepsi", "tarusinghania123", "maybeYonas"]\') }}'
         )
 }}
 

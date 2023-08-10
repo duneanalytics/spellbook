@@ -1,0 +1,8 @@
+version: 2
+
+sources:
+  - name: ethereumnameservice_ethereum
+    freshness:
+    tables:
+      - name: ENSToken_evt_Claim
+        loaded_at_field: evt_block_time
