@@ -5,3 +5,7 @@
     )
 }}
 
+-- DUMMY TABLE, WILL BE REMOVED SOON
+select 
+  1
+EOL;
