@@ -36,6 +36,8 @@ class TokenChecker:
         for val in parts:
             if val.startswith("'"):
                 values.append(val.strip("'"))
+            elif val.startswith('"'):
+                values.append(val.strip('"'))
             elif val.startswith("0x"):
                 values.append(val)
             else:

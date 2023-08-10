@@ -1,16 +1,16 @@
 version: 2
 
 models:
-  - name: uniswap_v3_base_trades
+  - name: sushiswap_base_trades
     meta:
       blockchain: base
       sector: dex
-      project: uniswap_v3
+      project: sushiswap
       contributors: wuligy
     config:
-      tags: ['base','uniswap_v3','trades', 'uniswap','dex']
+      tags: ['base','sushiswap','trades','dex']
     description: >
-        Uniswap V3 contract trades on Base
+        Sushiswap contract trades on Base
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -22,15 +22,15 @@ models:
             - evt_index
       - check_dex_seed:
           blockchain: base
-          project: uniswap
-          version: 3
+          project: sushiswap
+          version: 1
     columns:
       - &blockchain
         name: blockchain
         description: "Blockchain which the DEX is deployed"
-      - &project
+      - &project 
         name: project
-        description: "Project name of the DEX"
+        description: "Project name of the DEX"  
       - &version
         name: version
         description: "Version of the contract built and deployed by the DEX project"
