@@ -3,13 +3,13 @@
         )
 }}
 
-{% set uniswap_models = [
+{% set uniswap_base_models = [
 'uniswap_v3_base_trades'
 ] %}
 
 SELECT *
 FROM (
-    {% for dex_model in uniswap_models %}
+    {% for dex_model in uniswap_base_models %}
     SELECT
         blockchain,
         project,
