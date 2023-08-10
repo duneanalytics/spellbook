@@ -305,7 +305,7 @@ pools AS (
         'curvefi_v2_ethereum',
         'CurveTricryptoFactory_evt_LiquidityGaugeDeployed'
         ) }} as g3
-        ON pd2u.pool_address = g3.token
+        ON pd2u.pool_address = g3.pool
 ),
 
 contract_name AS (
