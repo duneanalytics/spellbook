@@ -306,3 +306,30 @@ models:
       - &description
         name: description
         description: "Description of the proposal"
+
+  - name: ens_set_name_latest
+    meta:
+      blockchain: ethereum
+      project: ethereum_name_service
+      contributors: sankinyue
+    config:
+      tags: ['ethereum','ens','ethereum_name_service','ethereumnameservice','setname','latest']
+    description: >
+      View the latest ENS set name records
+    columns:
+      - name: last_block_time
+        description: "Block time of the latest transaction hash setting the name ENS"
+      - name: address
+        description: "The ETH address"
+        tests:
+          - unique
+      - name: name
+        description: "The reverse ENS name"
+        tests:
+          - unique
+      - name: registrar
+        description: "The registrar contract address of the address set name record"
+        tests:
+          - unique
+      - name: last_tx_hash
+        description: "Latest transaction hash of the ENS set name"
