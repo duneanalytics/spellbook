@@ -104,17 +104,17 @@ SELECT *
       ,bytearray_length(ct.code) AS code_bytelength
       ,coalesce(sd.contract_address is not NULL, false) as is_self_destruct
       ,CASE 
-        bytearray_position(ct.code, 0x18160ddd) >0 THEN 'erc1155'-- ('erc1155','balanceOf(address,uint256)', 0x00fdd58e)
-        bytearray_position(ct.code, 0x2eb2c2d6) >0 THEN 'erc1155'-- ('erc1155','safeBatchTransferFrom(address,address,uint256[],uint256[],bytes)', 0x2eb2c2d6),
-        bytearray_position(ct.code, 0xf242432a) >0 THEN 'erc1155'-- ('erc1155','safeTransferFrom(address,address,uint256,uint256,bytes)', 0xf242432a),
+        WHEN bytearray_position(ct.code, 0x18160ddd) >0 THEN 'erc1155'-- ('erc1155','balanceOf(address,uint256)', 0x00fdd58e)
+        WHEN bytearray_position(ct.code, 0x2eb2c2d6) >0 THEN 'erc1155'-- ('erc1155','safeBatchTransferFrom(address,address,uint256[],uint256[],bytes)', 0x2eb2c2d6),
+        WHEN bytearray_position(ct.code, 0xf242432a) >0 THEN 'erc1155'-- ('erc1155','safeTransferFrom(address,address,uint256,uint256,bytes)', 0xf242432a),
 
-        bytearray_position(ct.code, 0xb88d4fde) >0 THEN 'erc721' -- ('erc721','safeTransferFrom(address,address,uint256,bytes)', 0xb88d4fde),
+        WHEN bytearray_position(ct.code, 0xb88d4fde) >0 THEN 'erc721' -- ('erc721','safeTransferFrom(address,address,uint256,bytes)', 0xb88d4fde),
         
-        bytearray_position(ct.code, 0xa9059cbb) >0 THEN 'erc20' -- ('erc20','transfer(address,uint256)', 0xa9059cbb),
+        WHEN bytearray_position(ct.code, 0xa9059cbb) >0 THEN 'erc20' -- ('erc20','transfer(address,uint256)', 0xa9059cbb),
         
-        bytearray_position(ct.code, 0x23b872dd) >0 THEN 'token' -- ('all','transferFrom(address,address,uint256)', 0x23b872dd),
-        bytearray_position(ct.code, 0x70a08231) >0 THEN 'token' -- ('all','balanceOf(address)', 0x70a08231),
-        bytearray_position(ct.code, 0x18160ddd) >0 THEN 'token' -- ('all','totalSupply()', 0x18160ddd),
+        WHEN bytearray_position(ct.code, 0x23b872dd) >0 THEN 'token' -- ('all','transferFrom(address,address,uint256)', 0x23b872dd),
+        WHEN bytearray_position(ct.code, 0x70a08231) >0 THEN 'token' -- ('all','balanceOf(address)', 0x70a08231),
+        WHEN bytearray_position(ct.code, 0x18160ddd) >0 THEN 'token' -- ('all','totalSupply()', 0x18160ddd),
       ELSE NULL
       END AS token_standard
       ,1 AS to_iterate_creators
