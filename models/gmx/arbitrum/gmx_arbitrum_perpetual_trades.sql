@@ -106,11 +106,11 @@ SELECT
     CAST(date_trunc('day', pe.block_time) as date) as block_date, 
     CAST(date_trunc('month', pe.block_time) as date) as block_month,
     pe.block_time, 
-    COALESCE(erc20a.symbol, pe.virtual_asset) as virtual_asset, 
-    COALESCE(erc20b.symbol, pe.underlying_asset) as underlying_asset, 
+    COALESCE(erc20a.symbol, CAST(pe.virtual_asset as VARCHAR)) as virtual_asset, 
+    COALESCE(erc20b.symbol, CAST(pe.underlying_asset as VARCHAR)) as underlying_asset, 
     CASE 
-        WHEN pe.virtual_asset = pe.underlying_asset THEN COALESCE(erc20a.symbol, pe.virtual_asset)
-        ELSE COALESCE(erc20a.symbol, pe.virtual_asset) || '-' || COALESCE(erc20b.symbol, pe.underlying_asset)
+        WHEN pe.virtual_asset = pe.underlying_asset THEN COALESCE(erc20a.symbol, CAST(pe.virtual_asset as VARCHAR))
+        ELSE COALESCE(erc20a.symbol, CAST(pe.virtual_asset as VARCHAR)) || '-' || COALESCE(erc20b.symbol, CAST(pe.underlying_asset as VARCHAR))
     END as market, 
     pe.market_address,
     pe.volume_usd,
@@ -124,8 +124,8 @@ SELECT
     pe.trader, 
     pe.volume_raw,
     pe.tx_hash,
-    txns.to as tx_to,
-    txns.from as tx_from,
+    txns."to" as tx_to,
+    txns."from" as tx_from,
     pe.evt_index
 FROM 
 perp_events pe 
