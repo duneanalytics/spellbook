@@ -22,7 +22,7 @@ WITH dexs AS
         , CAST(NULL as VARBINARY) as maker
         , case
             when l.topic0 = 0xd013ca23e77a65003c2c659c5442c00c805371b7fc1ebd4c206c41d1536bd90b
-                        AND cast(bytearray_substring(l.data, 65, 32) as int) = 0
+                        AND cast(bytearray_to_uint256(bytearray_substring(l.data, 65, 32)) as int) = 0
                 then 'underlying_exchange_base'
                 else 'normal_exchange'
             end as swap_type
