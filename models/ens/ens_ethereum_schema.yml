@@ -318,13 +318,13 @@ models:
       View the latest ENS set name records
     columns:
       - name: last_block_time
-        description: "Block time of the latest transaction hash setting the name ENS"
+        description: "Block time of the latest transaction hash ENS set name record"
       - name: address
         description: "The ETH address"
         tests:
           - unique
       - name: name
-        description: "The reverse ENS name"
+        description: "The ENS set name"
         tests:
           - unique
       - name: registrar

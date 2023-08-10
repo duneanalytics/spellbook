@@ -17,7 +17,7 @@
 {% set initial_tx_block_number = 3787060 %}
 
 with
-set_name_detail as (
+  set_name_detail as (
     -- setName
     select
           block_time
@@ -36,7 +36,7 @@ set_name_detail as (
         and substr(from_utf8(bytearray_rtrim(substr(input, 5 + 2 * 32))), -4) = '.eth'
         and success = true
         {% if is_incremental() %}
-        and block_time >  now() - interval '7' day
+        and block_time >= now() - interval '7' day
         {% endif %}
 
     union all
@@ -55,14 +55,13 @@ set_name_detail as (
         and substr(from_utf8(bytearray_rtrim(substr(data, 5 + 5 * 32))), -4) = '.eth'
         and success = true 
         {% if is_incremental() %}
-        and block_time >  now() - interval '7' day
+        and block_time >= now() - interval '7' day
         {% endif %}
-),
+)
 
-set_name_rn as (
+, set_name_rn as (
     select
-          row_number() over (partition by name    order by block_time desc) as name_rn
-        , row_number() over (partition by address order by block_time desc) as addr_rn
+          row_number() over (partition by address, name order by block_time desc) as rn
         , block_time
         , address
         , registrar
@@ -78,6 +77,5 @@ select
     , name
     , tx_hash as last_tx_hash
 from set_name_rn
-where name_rn = 1
-    and addr_rn = 1
+where rn = 1
 order by last_block_time desc
