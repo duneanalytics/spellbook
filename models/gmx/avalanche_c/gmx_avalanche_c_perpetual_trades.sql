@@ -1,6 +1,7 @@
 {{ config(
+    tags=['dunesql'],
     alias = alias('perpetual_trades'),
-    partition_by = ['block_date'],
+    partition_by = ['block_month'],
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
@@ -36,10 +37,10 @@ perp_events as (
     FROM 
     {{ source('gmx_avalanche_c', 'Vault_evt_DecreasePosition') }}
     {% if not is_incremental() %}
-    WHERE evt_block_time >= '{{project_start_date}}'
+    WHERE evt_block_time >= DATE '{{project_start_date}}'
     {% endif %}
     {% if is_incremental() %}
-    WHERE evt_block_time >= date_trunc("day", now() - interval '1 week')
+    WHERE evt_block_time >= date_trunc('day', now() - interval '7' DAY)
     {% endif %}
 
     UNION ALL 
@@ -63,10 +64,10 @@ perp_events as (
     FROM 
     {{ source('gmx_avalanche_c', 'Vault_evt_IncreasePosition') }}
     {% if not is_incremental() %}
-    WHERE evt_block_time >= '{{project_start_date}}'
+    WHERE evt_block_time >= DATE '{{project_start_date}}'
     {% endif %}
     {% if is_incremental() %}
-    WHERE evt_block_time >= date_trunc("day", now() - interval '1 week')
+    WHERE evt_block_time >= date_trunc('day', now() - interval '7' DAY)
     {% endif %}
 
     UNION ALL 
@@ -90,10 +91,10 @@ perp_events as (
     FROM 
     {{ source('gmx_avalanche_c', 'Vault_evt_LiquidatePosition') }}
     {% if not is_incremental() %}
-    WHERE evt_block_time >= '{{project_start_date}}'
+    WHERE evt_block_time >= DATE '{{project_start_date}}'
     {% endif %}
     {% if is_incremental() %}
-    WHERE evt_block_time >= date_trunc("day", now() - interval '1 week')
+    WHERE evt_block_time >= date_trunc('day', now() - interval '7' DAY)
     {% endif %}
 )
 
@@ -102,7 +103,8 @@ SELECT
     'gmx' as project, 
     '1' as version, 
     'gmx' as frontend,
-    date_trunc('day', pe.block_time) as block_date, 
+    CAST(date_trunc('day', pe.block_time) as date) as block_date, 
+    CAST(date_trunc('month', pe.block_time) as date) as block_month,
     pe.block_time, 
     COALESCE(erc20a.symbol, pe.virtual_asset) as virtual_asset, 
     COALESCE(erc20b.symbol, pe.underlying_asset) as underlying_asset, 
@@ -131,10 +133,10 @@ INNER JOIN {{ source('avalanche_c', 'transactions') }} txns
     ON pe.tx_hash = txns.hash
     AND pe.block_number = txns.block_number
     {% if not is_incremental() %}
-    AND txns.block_time >= '{{project_start_date}}'
+    AND txns.block_time >= DATE '{{project_start_date}}'
     {% endif %}
     {% if is_incremental() %}
-    AND txns.block_time >= date_trunc("day", now() - interval '1 week')
+    AND txns.block_time >= date_trunc('day', now() - interval '7' DAY)
     {% endif %}
 LEFT JOIN {{ ref('tokens_erc20') }} erc20a
     ON erc20a.contract_address = pe.virtual_asset
