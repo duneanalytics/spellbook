@@ -74,6 +74,7 @@ SELECT *
 
     ,code_bytelength
     ,is_self_destruct
+    ,token_standard
     ,ROW_NUMBER() OVER (PARTITION BY code ORDER BY created_block_number ASC, created_tx_index ASC) AS code_deploy_rank
     ,ROW_NUMBER() OVER (PARTITION BY '{{chain}}', contract_address ORDER BY created_time ASC ) AS contract_order -- to ensure no dupes
     ,ROW_NUMBER() OVER (PARTITION BY '{{chain}}', code ORDER BY created_block_number ASC, created_tx_index ASC) AS code_deploy_rank_by_chain
@@ -102,6 +103,17 @@ SELECT *
       ,ct.code
       ,bytearray_length(ct.code) AS code_bytelength --toreplace with bytearray_length in dunesql
       ,coalesce(sd.contract_address is not NULL, false) as is_self_destruct
+      ,CASE WHEN EXISTS (
+                          SELECT 1
+                          from {{ source('erc20_' + chain , 'evt_transfer') }} tr
+                          WHERE ct.address = tr.contract_address
+                          AND tr.evt_block_time >= ct.block_time
+                          limit 1 --to speed up
+                          )
+                THEN 'erc20'
+            WHEN EXISTS (SELECT 1 from {{ ref('tokens_nft') }} t WHERE t.contract_address = ct.address AND t.blockchain = '{{chain}}' )
+                THEN 'nft'
+            ELSE NULL END AS token_standard
       ,1 AS to_iterate_creators
     from {{ source( chain , 'creation_traces') }} as ct 
     inner join {{ source( chain , 'transactions') }} as t 
@@ -171,6 +183,7 @@ SELECT *
       ,ct.code
       ,t.code_bytelength
       ,coalesce(sd.contract_address is not NULL, t.is_self_destruct, false) as is_self_destruct
+      , token_standard
       , CASE
         WHEN nd.creator_address IS NOT NULL THEN 1
         WHEN ct."from" != t.trace_creator_address THEN 1 -- weird data ingestion issue?
@@ -207,7 +220,7 @@ SELECT *
     {% endif %}
     {% endfor %}
   ) as x
-  group by 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, to_iterate_creators, code
+  group by 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, to_iterate_creators, code
 ) y 
 WHERE contract_order = 1
 )
@@ -223,13 +236,15 @@ WHERE contract_order = 1
   --   ,'erc20' as token_standard
   -- from 'tokens_erc20_all' as t
   -- group by 1, 2, 3, 4
-        SELECT '{{chain}}' AS blockchain, contract_address, NULL AS symbol, 'erc20' as token_standard
 
-        from {{ source('erc20_' + chain , 'evt_transfer') }} tr 
+  select
+    blockchain
+    ,contract_address
+    ,symbol
+    ,'erc20' as token_standard
 
-        WHERE 1=1
+  FROM {{ ref('tokens_erc20')}} --note: This doesn't yet contain all ERC20 tokens
 
-        GROUP BY 1,2,3,4 --uniques
 
   UNION ALL
   {% endfor %}
@@ -292,6 +307,7 @@ WHERE contract_order = 1
       
       ,b.code_bytelength
       ,b.is_self_destruct
+      ,b.token_standard
       ,b.code_deploy_rank
       ,b.contract_order
       ,b.code_deploy_rank_by_chain
@@ -341,6 +357,7 @@ WHERE contract_order = 1
     ,f.created_tx_index
     ,f.code_bytelength
     ,f.is_self_destruct
+    ,f.token_standard
     ,f.code_deploy_rank
     ,f.code_deploy_rank_by_chain
   from (
@@ -369,6 +386,7 @@ WHERE contract_order = 1
     ,oc.name as contract_name 
     ,cc.created_time
     ,coalesce(cc.is_self_destruct, false) as is_self_destruct
+    ,cc.token_standard
     ,'creator contracts' as source
     ,cc.top_level_time
     ,cc.creation_tx_hash
@@ -390,7 +408,7 @@ WHERE contract_order = 1
   left join {{ source( chain , 'contracts') }} as oc 
     on cc.contract_address = oc.address 
   WHERE cc.blockchain = '{{chain}}'
-  group by 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25
+  group by 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26
   
   union all
   -- missing contracts
@@ -404,6 +422,7 @@ WHERE contract_order = 1
     ,oc.name as contract_name 
     ,COALESCE(oc.created_at, MIN(block_time)) AS created_time
     ,false as is_self_destruct
+    ,NULL AS token_standard
     ,'missing contracts' as source
     ,COALESCE(oc.created_at, MIN(block_time)) as top_level_time
     ,CAST(NULL AS varbinary) as top_level_tx_hash
@@ -450,6 +469,7 @@ WHERE contract_order = 1
       ,contract_name
       ,created_time
       ,is_self_destruct
+      ,NULL AS token_standard
       ,source
       ,created_time as top_level_time
       ,CAST(NULL AS varbinary) as top_level_tx_hash
@@ -474,7 +494,7 @@ WHERE contract_order = 1
     {% if is_incremental() %} -- this filter will only be applied on an incremental run 
     and 1=0 --do not run on incremental builds
     {% endif %}
-    GROUP BY 1,2,3,4,5,6,7,8,9,10
+    GROUP BY 1,2,3,4,5,6,7,8,9,10,11
 
 )
 
@@ -508,7 +528,7 @@ WHERE contract_order = 1
     ,c.top_level_tx_method_id
 
     ,c.code_bytelength
-    ,t.token_standard AS token_standard
+    ,COALESCE(t.token_standard, c.token_standard) AS token_standard
     ,c.code_deploy_rank
     ,c.code_deploy_rank_by_chain
     ,MIN(c.map_rank) AS map_rank
