@@ -60,8 +60,8 @@ calls as (
             {% else %}
                 block_time >= {{ project_start_date }}
             {% endif %}
-            and "to" in (
-                select distinct contract_address from {{ ref('oneinch_protocols') }}
+            and ("to", {{ selector }}) in (
+                select distinct contract_address, selector from {{ ref('oneinch_protocols') }}
                 where protocol = 'AR' and blockchain = '{{ blockchain }}' and main
             )
             and call_type = 'call'
