@@ -81,4 +81,4 @@ select
     , name
     , tx_hash as last_tx_hash
 from set_name_address_rn
-where address_rn = 1ß
+where address_rn = 1
