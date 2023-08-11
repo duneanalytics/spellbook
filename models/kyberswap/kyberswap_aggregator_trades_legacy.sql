@@ -1,16 +1,16 @@
 {{ config(
-    tags=['dunesql'],
+	    tags=['legacy'],
 
-    alias = alias('aggregator_trades'),
-    post_hook='{{ expose_spells(\'["arbitrum"]\',
-                            "project",
-                            "kyberswap",
-                            \'["nhd98z"]\') }}'
-    )
+        alias = alias('aggregator_trades'),
+        post_hook='{{ expose_spells(\'["arbitrum"]\',
+                                "project",
+                                "kyberswap",
+                                \'["nhd98z"]\') }}'
+        )
 }}
 
 {% set models = [
-ref('kyberswap_aggregator_arbitrum_trades')
+ref('kyberswap_aggregator_arbitrum_trades_legacy')
 ] %}
 
 
