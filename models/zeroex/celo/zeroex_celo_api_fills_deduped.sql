@@ -69,19 +69,19 @@ SELECT  a.blockchain
       , a.block_time
       , b.taker_symbol AS taker_symbol
       , b.maker_symbol AS maker_symbol
-CASE
-    WHEN LOWER(b.taker_symbol) > LOWER(b.maker_symbol)
-    THEN CONCAT(
-      CAST(COALESCE(CAST(COALESCE(TRY_CAST(b.maker_symbol AS VARCHAR), '') AS VARCHAR), '') AS VARCHAR),
-      CAST(COALESCE(CAST(COALESCE(TRY_CAST('-' AS VARCHAR), '') AS VARCHAR), '') AS VARCHAR),
-      CAST(COALESCE(CAST(COALESCE(TRY_CAST(b.taker_symbol AS VARCHAR), '') AS VARCHAR), '') AS VARCHAR)
-    )
-    ELSE CONCAT(
-      CAST(COALESCE(CAST(COALESCE(TRY_CAST(b.taker_symbol AS VARCHAR), '') AS VARCHAR), '') AS VARCHAR),
-      CAST(COALESCE(CAST(COALESCE(TRY_CAST('-' AS VARCHAR), '') AS VARCHAR), '') AS VARCHAR),
-      CAST(COALESCE(CAST(COALESCE(TRY_CAST(b.maker_symbol AS VARCHAR), '') AS VARCHAR), '') AS VARCHAR)
-    )
-    END AS token_pair     
+      ,CASE
+        WHEN LOWER(b.taker_symbol) > LOWER(b.maker_symbol)
+        THEN CONCAT(
+        CAST(COALESCE(CAST(COALESCE(TRY_CAST(b.maker_symbol AS VARCHAR), '') AS VARCHAR), '') AS VARCHAR),
+        CAST(COALESCE(CAST(COALESCE(TRY_CAST('-' AS VARCHAR), '') AS VARCHAR), '') AS VARCHAR),
+        CAST(COALESCE(CAST(COALESCE(TRY_CAST(b.taker_symbol AS VARCHAR), '') AS VARCHAR), '') AS VARCHAR)
+        )
+        ELSE CONCAT(
+        CAST(COALESCE(CAST(COALESCE(TRY_CAST(b.taker_symbol AS VARCHAR), '') AS VARCHAR), '') AS VARCHAR),
+        CAST(COALESCE(CAST(COALESCE(TRY_CAST('-' AS VARCHAR), '') AS VARCHAR), '') AS VARCHAR),
+        CAST(COALESCE(CAST(COALESCE(TRY_CAST(b.maker_symbol AS VARCHAR), '') AS VARCHAR), '') AS VARCHAR)
+        )
+        END AS token_pair     
       , b.taker_token_amount
       , b.maker_token_amount
       , CAST(b.taker_token_amount_raw AS DECIMAL(38,0)) AS taker_token_amount_raw
