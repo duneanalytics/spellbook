@@ -69,7 +69,6 @@ cast(date_trunc('month', dexs.block_time) as date) as block_month,
     dexs.tx_hash,
     tx."from" AS tx_from,
     tx.to AS tx_to,
-    dexs.trace_address,
     dexs.evt_index
 from dexs
 inner join {{ source('polygon', 'transactions') }} tx
