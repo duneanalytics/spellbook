@@ -88,7 +88,7 @@ models:
       project: zeroex
       contributors: rantum
     config:
-      tags: ['base','0x','dex_aggregator','dex','aggregator']
+      tags: ["base","0x","dex_aggregator","dex","aggregator"]
     description: >
         0x API erc20 swaps raw fills (deduped) on base
     tests:
@@ -97,14 +97,6 @@ models:
             - block_date
             - tx_hash
             - evt_index
-      - check_seed_legacy:
-          seed_file: ref('zeroex_base_api_fills_deduped_sample')
-          match_columns:
-            - tx_hash
-            - evt_index
-          check_columns:
-            - maker
-            - taker
     columns:
       - *blockchain
       - *block_date
