@@ -199,6 +199,8 @@ models:
         +schema: nft_fantom
       goerli:
         +schema: nft_goerli
+      base:
+        +schema: nft_base
 
     cex:
       +schema: cex
@@ -577,6 +579,11 @@ models:
         +schema: tokens_solana
         +materialized: table
         +file_format: delta
+      base:
+        +schema: tokens_base
+        +materialized: table
+        +file_format: delta
+
 
     solana_utils:
       +schema: solana_utils
@@ -609,6 +616,8 @@ models:
         +schema: transfers_avalanche_c
       fantom:
         +schema: transfers_fantom
+      base:
+        +schema: transfers_base
 
     sudoswap:
       +schema: sudoswap
@@ -812,8 +821,18 @@ models:
 
     chainlink:
       +schema: chainlink
+      arbitrum:
+        +schema: chainlink_arbitrum
+      avalanche_c:
+        +schema: chainlink_avalanche_c
       bnb:
         +schema: chainlink_bnb
+      ethereum:
+        +schema: chainlink_ethereum
+      fantom:
+        +schema: chainlink_fantom
+      gnosis:
+        +schema: chainlink_gnosis
       optimism:
         +schema: chainlink_optimism
       polygon:
@@ -1038,6 +1057,8 @@ models:
       +schema: galxe
       ethereum:
         +schema: galxe_ethereum
+      optimism:
+        +schema: galxe_optimism
 
     gearbox:
       +schema: gearbox
@@ -1317,6 +1338,9 @@ models:
       bnb:
         +schema: thena_bnb
 
+    quests:
+      +schema: quests
+    
     account_abstraction:
       erc4337:
         +schema: account_abstraction_erc4337
@@ -1332,3 +1356,7 @@ models:
           +schema: account_abstraction_erc4337_polygon
         gnosis:
           +schema: account_abstraction_erc4337_gnosis
+        base:
+          +schema: account_abstraction_erc4337_base
+        bnb:
+          +schema: account_abstraction_erc4337_bnb
