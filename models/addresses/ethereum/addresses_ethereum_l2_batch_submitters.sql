@@ -36,7 +36,7 @@ FROM (VALUES
 
         ,(0x76983dfed43c7ae7ebb592a92be2be972cae4348, 'Public Goods Network', 'L2OutputOracle','to_address','Bedrock','Public Goods Network: L2OutputOracle')
         ,(0xA38d0c4E6319F9045F20318BA5f04CDe94208608, 'Public Goods Network', 'L2OutputOracleProxy','to_address','Bedrock','Public Goods Network: L2OutputOracleProxy')
-        ,(,0x69968Ce0E92d9c101BAd81de55EFbcb69603cFe3 'Public Goods Network', 'L2OutputOracle','from_address','Bedrock','Public Goods Network: L2OutputOracle')
+        ,(0x69968Ce0E92d9c101BAd81de55EFbcb69603cFe3, 'Public Goods Network', 'L2OutputOracle','from_address','Bedrock','Public Goods Network: L2OutputOracle')
 
         ---
         ,(0x6F54Ca6F6EdE96662024Ffd61BFd18f3f4e34DFf, 'Zora Network', 'L1BatchInbox','to_address','Bedrock','Zora Network: L1BatchInbox')
