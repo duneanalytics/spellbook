@@ -79,7 +79,7 @@ ERC20BridgeTransfer AS (
             FALSE                                   AS matcha_limit_order_flag
     FROM {{ source('celo', 'logs') }} logs
     INNER JOIN zeroex_tx ON zeroex_tx.tx_hash = logs.tx_hash
-    WHERE topic1 = 0x349fc08071558d8e3aa92dec9396e4e9f2dfecd6bb9065759d1932e7da43b8a9
+    WHERE topic0 = 0x349fc08071558d8e3aa92dec9396e4e9f2dfecd6bb9065759d1932e7da43b8a9
     
     {% if is_incremental() %}
     AND block_time >= date_trunc('day', now() - interval '7' day)
@@ -108,7 +108,7 @@ BridgeFill AS (
             FALSE                                           AS matcha_limit_order_flag
     FROM {{ source('celo', 'logs') }} logs
     INNER JOIN zeroex_tx ON zeroex_tx.tx_hash = logs.tx_hash
-    WHERE topic1 = 0xff3bc5e46464411f331d1b093e1587d2d1aa667f5618f98a95afc4132709d3a9
+    WHERE topic0 = 0xff3bc5e46464411f331d1b093e1587d2d1aa667f5618f98a95afc4132709d3a9
         AND contract_address = 0xdb6f1920a889355780af7570773609bd8cb1f498
 
         {% if is_incremental() %}
@@ -137,7 +137,7 @@ NewBridgeFill AS (
             FALSE                                           AS matcha_limit_order_flag
     FROM {{ source('celo' ,'logs') }} logs
     INNER JOIN zeroex_tx ON zeroex_tx.tx_hash = logs.tx_hash
-    WHERE topic1 = 0xe59e71a14fe90157eedc866c4f8c767d3943d6b6b2e8cd64dddcc92ab4c55af8
+    WHERE topic0 = 0xe59e71a14fe90157eedc866c4f8c767d3943d6b6b2e8cd64dddcc92ab4c55af8
         AND contract_address = 0xdb6f1920a889355780af7570773609bd8cb1f498
 
         {% if is_incremental() %}
