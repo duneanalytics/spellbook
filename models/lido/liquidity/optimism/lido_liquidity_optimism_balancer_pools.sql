@@ -467,7 +467,7 @@ paired1_token_symbol as paired_token_symbol,
 --||decode(paired2_token_symbol, null, '', '/'||coalesce(paired2_token_symbol,''))||decode(paired3_token_symbol, null, '', '/'||coalesce(paired3_token_symbol,''))||decode(paired4_token_symbol, null, '', '/'||coalesce(paired4_token_symbol,'')) as paired_token_symbol,
 main_token_reserve, paired1_token_reserve as paired_token_reserve,
 main_token_usd_price,
-paired1_token_usd_price,
+paired1_token_usd_price as paired_token_usd_price,
 --+ coalesce(paired2_token_usd_reserve,0) 
 --+ coalesce(paired3_token_usd_reserve,0) + coalesce(paired4_token_usd_reserve,0) as paired_token_usd_reserve,
 coalesce(trading_volume.trading_volume,0) as trading_volume

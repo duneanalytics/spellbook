@@ -20,7 +20,8 @@
  ref('lido_liquidity_optimism_uniswap_v3_pools'),
  ref('lido_liquidity_optimism_curve_pools'),
  ref('lido_liquidity_optimism_balancer_pools'),
- ref('lido_liquidity_optimism_velodrome_pools')
+ ref('lido_liquidity_optimism_velodrome_pools'),
+ ref('lido_liquidity_polygon_balancer_pools')
 ] %}
 
 {% set project_start_date =  '2021-01-05'%} 
