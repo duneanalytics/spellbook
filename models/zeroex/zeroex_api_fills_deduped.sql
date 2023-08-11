@@ -1,6 +1,6 @@
 {{ config(
         alias = alias('api_fills_deduped'),
-        post_hook='{{ expose_spells(\'["ethereum","arbitrum", "optimism", "polygon","fantom","avalanche_c"]\',
+        post_hook='{{ expose_spells(\'["ethereum","arbitrum", "optimism", "polygon","fantom","avalanche_c","bnb","celo"]\',
                                 "project",
                                 "zeroex",
                                 \'["rantum","bakabhai993"]\') }}'
@@ -19,6 +19,8 @@ ref('zeroex_arbitrum_api_fills_deduped')
 ,ref('zeroex_fantom_api_fills_deduped')
 ,ref('zeroex_optimism_api_fills_deduped')
 ,ref('zeroex_bnb_api_fills_deduped')
+,ref('zeroex_celo_api_fills_deduped')
+,ref('zeroex_polygon_api_fills_deduped')
 ] %}
 
 

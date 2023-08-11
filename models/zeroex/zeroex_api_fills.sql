@@ -1,6 +1,6 @@
 {{ config(
         alias = alias('api_fills'),
-        post_hook='{{ expose_spells(\'["ethereum","arbitrum", "optimism", "polygon","fantom","avalanche_c"]\',
+        post_hook='{{ expose_spells(\'["ethereum","arbitrum", "optimism", "polygon","fantom","avalanche_c","bnb","celo"]\',
                                 "project",
                                 "zeroex",
                                 \'["rantum","bakabhai993"]\') }}'
@@ -15,6 +15,7 @@ ref('zeroex_arbitrum_api_fills')
 ,ref('zeroex_optimism_api_fills')
 ,ref('zeroex_polygon_api_fills')
 ,ref('zeroex_bnb_api_fills')
+,ref('zeroex_celo_api_fills')
 ] %}
 
 
