@@ -28,7 +28,7 @@ select
 , cast(json_extract_scalar(message, '$.strict') as BOOLEAN) as strict
 , cast(json_extract_scalar(message, '$.receiver') as VARCHAR) as receiver
 , cast(json_extract_scalar(message, '$.data') as varchar) as data
-, json_extract(message, '$.tokenAmounts') as tokenAmounts
+, cast(json_extract_scalar(message, '$.tokenAmounts') as INT256) as tokenAmounts
 , cast(json_extract_scalar(message, '$.feeToken') as VARCHAR) as feeToken
 , cast(json_extract_scalar(message, '$.messageId') as VARCHAR) as messageId
 , '{{eth_router}}' as router
