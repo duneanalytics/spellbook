@@ -96,7 +96,7 @@ FROM (
 )
 
 , pools_per_dates as (
-  select day, pool,rate
+  select dates.day, pool,rate
   from dates
   join (select distinct pool from pools) on 1=1
   left join wsteth_rate on dates.day = wsteth_rate.day
