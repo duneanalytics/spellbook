@@ -74,7 +74,7 @@ WITH
                 AND evt_block_time >= date_trunc('day', now() - interval '7' day)
                 {% endif %}
                 {% if not is_incremental() %}
-                AND evt_block_time >= '{{zeroex_v3_start_date}}'
+                AND evt_block_time >= TIMESTAMP '{{zeroex_v3_start_date}}'
                 {% endif %}
     )
 
@@ -134,7 +134,7 @@ WITH
                 AND evt_block_time >= date_trunc('day', now() - interval '7' day)
                 {% endif %}
                 {% if not is_incremental() %}
-                AND evt_block_time >= '{{zeroex_v3_start_date}}'
+                AND evt_block_time >= TIMESTAMP '{{zeroex_v3_start_date}}'
                 {% endif %}
     ), otc_fills as
     (
@@ -193,7 +193,7 @@ WITH
                 AND evt_block_time >= date_trunc('day', now() - interval '7' day)
                 {% endif %}
                 {% if not is_incremental() %}
-                AND evt_block_time >= '{{zeroex_v3_start_date}}'
+                AND evt_block_time >= TIMESTAMP '{{zeroex_v3_start_date}}'
                 {% endif %}
 
     ),
@@ -246,7 +246,7 @@ WITH
             AND tx.block_time >= date_trunc('day', now() - interval '7' day)
             {% endif %}
             {% if not is_incremental() %}
-            AND tx.block_time >= '{{zeroex_v3_start_date}}'
+            AND tx.block_time >= TIMESTAMP '{{zeroex_v3_start_date}}'
             {% endif %}
             
             
