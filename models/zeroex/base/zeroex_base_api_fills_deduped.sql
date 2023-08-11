@@ -96,4 +96,3 @@ SELECT  a.blockchain
 FROM fills_with_tx_fill_number a
 INNER JOIN deduped_bridge_fills b
     ON a.tx_hash = b.tx_hash AND a.evt_index = b.evt_index
-;
