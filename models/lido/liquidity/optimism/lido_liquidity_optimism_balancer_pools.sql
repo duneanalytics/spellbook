@@ -317,6 +317,19 @@ union all
         GROUP BY 1, 2, 3
 )
 
+, balance AS (
+        select  day, LEAD(day, 1, current_date + interval '1' day) OVER (PARTITION BY token, pool_id ORDER BY DAY) AS day_of_next_change, 
+                pool_id, token, amount
+        from (        
+        SELECT
+            day,
+            pool_id,
+            token,
+            SUM(amount)  AS amount
+        FROM daily_delta_balance
+        GROUP BY 1,2,3
+        )
+)
 
 , usd_balance AS (
         SELECT
@@ -327,7 +340,7 @@ union all
             p1.symbol AS token_symbol,
             amount as token_balance_raw,
             amount / POWER(10, p1.decimals) AS token_balance,
-            COALESCE(p1.price,0) as price
+            COALESCE(p1.price,0) as price,
             0 as row_numb
         FROM balance b 
         LEFT JOIN tokens_prices_daily p1 ON p1.time = b.day AND p1.token = b.token
@@ -353,19 +366,7 @@ union all
         
 )
 
-, balance AS (
-        select  day, LEAD(day, 1, current_date + interval '1' day) OVER (PARTITION BY token, pool_id ORDER BY DAY) AS day_of_next_change, 
-                pool_id, token, amount
-        from (        
-        SELECT
-            day,
-            pool_id,
-            token,
-            SUM(amount)  AS amount
-        FROM daily_delta_balance
-        GROUP BY 1,2,3
-        )
-)
+
 
 
 , reserves as (
@@ -461,7 +462,7 @@ select  pool_id as pool, 'optimism' as blockchain, 'beethoven_x' as project, 0 a
 cast(day as date) as time, main_token, main_token_symbol, 
 paired1_token as paired_token,
 --||decode(paired2_token, null, '', '/'||coalesce(paired2_token,''))||decode(paired3_token, null, '', '/'||coalesce(paired3_token,''))||decode(paired4_token, null, '', '/'||coalesce(paired4_token,'')) as paired_token,
-paired1_token_symbol as paired_token_symbol
+paired1_token_symbol as paired_token_symbol,
 --||case when paired2_token_symbol is null then '' else '/'||paired2_token_symbol end as paired_token_symbol,
 --||decode(paired2_token_symbol, null, '', '/'||coalesce(paired2_token_symbol,''))||decode(paired3_token_symbol, null, '', '/'||coalesce(paired3_token_symbol,''))||decode(paired4_token_symbol, null, '', '/'||coalesce(paired4_token_symbol,'')) as paired_token_symbol,
 main_token_reserve, paired1_token_reserve as paired_token_reserve,

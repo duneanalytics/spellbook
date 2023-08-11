@@ -324,8 +324,7 @@ with
     left join weth_prices_daily p1 ON p1.time = r.day 
     left join wsteth_prices_daily p2 ON p2.time = r.day
     left join trading_volume on  r.day = trading_volume.time
-    )
-    group by 1,2,3,4,5,6,7,8,9
+    
     
 )
 
