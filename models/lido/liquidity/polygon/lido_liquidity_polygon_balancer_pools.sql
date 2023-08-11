@@ -3,7 +3,7 @@
     alias = alias('balancer_pools'), 
     tags = ['dunesql'], 
     partition_by = ['time'],
-     materialized = 'incremental',
+    materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
     unique_key = ['pool', 'time'],
@@ -197,7 +197,7 @@ union all
                     tokenIn AS token,
                     cast(amountIn as double) AS delta
                 FROM {{source ('balancer_v2_polygon','Vault_evt_Swap')}}
-                 {% if not is_incremental() %}
+                {% if not is_incremental() %}
                 WHERE DATE_TRUNC('day', evt_block_time) >= DATE '{{ project_start_date }}'
                 {% endif %}
                 {% if is_incremental() %}
