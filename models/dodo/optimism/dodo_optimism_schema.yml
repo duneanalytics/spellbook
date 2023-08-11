@@ -105,13 +105,13 @@ models:
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
-            - block_date
+            - block_time
             - blockchain
             - project
             - version
             - tx_hash
             - evt_index
-            - trace_address
+            - tx_from
       - check_dex_seed:
           blockchain: optimism
           project: DODO
@@ -162,13 +162,13 @@ models:
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
-            - block_date
+            - block_time
             - blockchain
             - project
             - version
             - tx_hash
             - evt_index
-            - trace_address
+            - tx_from
       - check_dex_aggregator_seed:
           blockchain: optimism
           project: DODO
