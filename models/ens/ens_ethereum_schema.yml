@@ -320,7 +320,6 @@ models:
           combination_of_columns:
             - address
             - name
-            - last_tx_hash
     columns:
       - name: last_block_time
         description: "Block time of the latest transaction hash ENS set name record"
