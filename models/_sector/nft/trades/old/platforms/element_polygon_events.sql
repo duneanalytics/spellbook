@@ -172,4 +172,4 @@ LEFT JOIN {{ source('polygon','transactions') }} bt ON bt.hash=alet.tx_hash
     AND bt.block_time=alet.block_time
         {% if is_incremental() %}
         AND bt.block_time >= date_trunc('day', now() - interval '7' day)
-        {% endif %}
+        {% endif %} 
