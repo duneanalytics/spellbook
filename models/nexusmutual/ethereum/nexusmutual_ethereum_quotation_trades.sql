@@ -1,5 +1,5 @@
 {{ config(
-    alias = alias('trades'),
+    alias = alias('quotation_trades'),
     partition_by = ['block_date'],
     materialized = 'incremental',
     file_format = 'delta',
