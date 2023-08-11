@@ -17,8 +17,8 @@ WITH event_data as (
         evt_block_number as block_number,
         recipient as taker,
         CAST(NULL AS VARBINARY) AS maker,
-        CAST(inAmount AS DECIMAL(38,0)) AS token_sold_amount_raw,
-        CAST(outAmount AS DECIMAL(38,0)) AS token_bought_amount_raw,
+        inAmount AS token_sold_amount_raw,
+        outAmount AS token_bought_amount_raw,
         inAsset as token_sold_address,
         outAsset as token_bought_address,
         contract_address AS project_contract_address,
@@ -30,7 +30,7 @@ WITH event_data as (
     AND evt_block_time >= TIMESTAMP '{{project_start_date}}'
     {% endif %}
     {% if is_incremental() %}
-    AND evt_block_time >= date_trunc("day", now() - interval '7' day)
+    AND evt_block_time >= date_trunc('day', now() - interval '7' day)
     {% endif %}
 )
 
@@ -46,13 +46,13 @@ SELECT
         when lower(t_bought.symbol) > lower(t_sold.symbol) then concat(t_sold.symbol, '-', t_bought.symbol)
         else concat(t_bought.symbol, '-', t_sold.symbol)
     end as token_pair
-    ,CAST(e.token_bought_amount_raw AS DECIMAL(38,0)) / power(10, t_bought.decimals) AS token_bought_amount
-    ,CAST(e.token_sold_amount_raw AS DECIMAL(38,0)) / power(10, t_sold.decimals) AS token_sold_amount
-    ,CAST(e.token_bought_amount_raw AS DECIMAL(38,0)) AS token_bought_amount_raw
-    ,CAST(e.token_sold_amount_raw AS DECIMAL(38,0)) AS token_sold_amount_raw
+    ,e.token_bought_amount_raw / power(10, t_bought.decimals) AS token_bought_amount
+    ,e.token_sold_amount_raw / power(10, t_sold.decimals) AS token_sold_amount
+    ,e.token_bought_amount_raw AS token_bought_amount_raw
+    ,e.token_sold_amount_raw AS token_sold_amount_raw
     ,coalesce(
-        (CAST(e.token_bought_amount_raw AS DECIMAL(38,0)) / power(10, p_bought.decimals)) * p_bought.price
-        ,(CAST(e.token_sold_amount_raw AS DECIMAL(38,0)) / power(10, p_sold.decimals)) * p_sold.price
+        (e.token_bought_amount_raw / power(10, p_bought.decimals)) * p_bought.price
+        ,(e.token_sold_amount_raw / power(10, p_sold.decimals)) * p_sold.price
     ) AS amount_usd
     ,e.token_bought_address
     ,e.token_sold_address
@@ -72,7 +72,7 @@ INNER JOIN {{ source('optimism', 'transactions') }} tx
     AND tx.block_time >= TIMESTAMP '{{project_start_date}}'
     {% endif %}
     {% if is_incremental() %}
-    AND tx.block_time >= date_trunc("day", now() - interval '7' day)
+    AND tx.block_time >= date_trunc('day', now() - interval '7' day)
     {% endif %}
 LEFT JOIN {{ ref('tokens_erc20') }} t_bought
     ON t_bought.contract_address = e.token_bought_address
@@ -88,7 +88,7 @@ LEFT JOIN {{ source('prices', 'usd') }} p_bought
     AND p_bought.minute >= TIMESTAMP '{{project_start_date}}'
     {% endif %}
     {% if is_incremental() %}
-    AND p_bought.minute >= date_trunc("day", now() - interval '7' day)
+    AND p_bought.minute >= date_trunc('day', now() - interval '7' day)
     {% endif %}
 LEFT JOIN {{ source('prices', 'usd') }} p_sold
     ON p_sold.minute = date_trunc('minute', e.block_time)
@@ -98,5 +98,5 @@ LEFT JOIN {{ source('prices', 'usd') }} p_sold
     AND p_sold.minute >= TIMESTAMP '{{project_start_date}}'
     {% endif %}
     {% if is_incremental() %}
-    AND p_sold.minute >= date_trunc("day", now() - interval '7' day)
+    AND p_sold.minute >= date_trunc('day', now() - interval '7' day)
     {% endif %}
