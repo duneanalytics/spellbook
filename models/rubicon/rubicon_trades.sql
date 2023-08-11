@@ -1,7 +1,7 @@
 {{ config(
         tags = ['dunesql'],
         alias = alias('trades'),
-        post_hook='{{ expose_spells(\'["optimism"]\',
+        post_hook='{{ expose_spells(\'["optimism", "arbitrum", "base"]\',
                                 "project",
                                 "rubicon",
                                 \'["msilb7, denver"]\') }}'
