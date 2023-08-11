@@ -64,19 +64,19 @@ perps AS (
 	SELECT
 		s.evt_block_time AS block_time
 		,s.evt_block_number AS block_number
-		,from_utf8(sm.asset) as virtual_asset
+		,sm.asset as virtual_asset
 		-- ,DECODE(sm.asset, 'UTF-8') AS virtual_asset
 		
 		,CASE 
-			WHEN SUBSTRING((from_utf8(sm.asset)), 1, 1) = 's' THEN SUBSTRING((from_utf8(sm.asset)), 2)
-			ELSE from_utf8(sm.asset)
+			WHEN SUBSTRING((sm.asset), 1, 1) = 's' THEN SUBSTRING((sm.asset), 2)
+			ELSE sm.asset
 		END as underlying_asset
 		-- ,CASE
 		-- 	WHEN LEFT(sm.asset, 1) = 's' THEN SUBSTRING(sm.asset, 2) --removes 's' indicator from synthetic assets
 		-- 	ELSE sm.asset
 		-- END AS underlying_asset
 
-		,from_utf8(sm.marketKey) as market
+		,sm.marketKey as market
 		-- ,DECODE(sm.marketKey, 'UTF-8') AS market
 		,s.contract_address AS market_address
 		,ABS(s.tradeSize)/1e18 * p.price AS volume_usd
