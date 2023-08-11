@@ -29,11 +29,11 @@ WITH dexs AS(
         NULL          AS amount_usd,
         case 
             when json_extract_scalar(quoteInfo,'$.toAsset') = '0x0000000000000000000000000000000000000000' then 0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c
-            else cast(json_extract_scalar(quoteInfo,'$.toAsset') as VARBINARY)
+            else from_hex(json_extract_scalar(quoteInfo,'$.toAsset'))
         end                                                 as token_bought_address,
         case 
             when json_extract_scalar(quoteInfo,'$.fromAsset') = '0x0000000000000000000000000000000000000000' then 0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c
-            else cast(json_extract_scalar(quoteInfo,'$.fromAsset') as VARBINARY)
+            else from_hex(json_extract_scalar(quoteInfo,'$.fromAsset'))
         end                                                 as token_sold_address,
 
         contract_address              AS project_contract_address,
