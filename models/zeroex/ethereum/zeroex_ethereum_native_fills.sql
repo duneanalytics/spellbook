@@ -108,7 +108,7 @@ WITH
                     WHEN mp.symbol = 'WETH' THEN (fills.makerAssetFilledAmount / 1e18) * mp.price
                   ELSE COALESCE((fills.makerAssetFilledAmount / pow(10, mt.decimals))*mp.price,(fills.takerAssetFilledAmount / pow(10, tt.decimals))*tp.price)
                 END AS volume_usd, fills.contract_address
-            , cast(null as numeric) as protocol_fee_paid_eth
+            , cast(null as double) as protocol_fee_paid_eth
             , 'fills' as native_order_type
         FROM {{ source('zeroex_v2_ethereum', 'Exchange2_1_evt_Fill') }} fills
         LEFT JOIN {{ source('prices', 'usd') }} tp ON
@@ -229,7 +229,7 @@ WITH
                   WHEN mp.symbol = 'WETH' THEN (fills.makerTokenFilledAmount / 1e18) * mp.price
                   ELSE COALESCE((fills.makerTokenFilledAmount / pow(10, mt.decimals))*mp.price,(fills.takerTokenFilledAmount / pow(10, tt.decimals))*tp.price)
               END AS volume_usd
-          , cast(null as numeric) AS protocol_fee_paid_eth,
+          , cast(null as double) AS protocol_fee_paid_eth,
           fills.contract_address
           , 'rfq' as native_order_type
       FROM {{ source('zeroex_ethereum', 'ExchangeProxy_evt_RfqOrderFilled') }} fills
@@ -288,7 +288,7 @@ WITH
                   WHEN mp.symbol = 'WETH' THEN (fills.makerTokenFilledAmount / 1e18) * mp.price
                   ELSE COALESCE((fills.makerTokenFilledAmount / pow(10, mt.decimals))*mp.price,(fills.takerTokenFilledAmount / pow(10, tt.decimals))*tp.price)
               END AS volume_usd
-          , cast(null as numeric) AS protocol_fee_paid_eth
+          , cast(null as double) AS protocol_fee_paid_eth
           , fills.contract_address
           , 'otc' as native_order_type
       FROM {{ source('zeroex_ethereum', 'ExchangeProxy_evt_OtcOrderFilled') }} fills

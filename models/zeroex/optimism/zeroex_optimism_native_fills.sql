@@ -111,7 +111,7 @@ WITH
                   WHEN mp.symbol = 'WETH' THEN (fills.makerTokenFilledAmount / 1e18) * mp.price
                   ELSE COALESCE((fills.makerTokenFilledAmount / pow(10, mt.decimals))*mp.price,(fills.takerTokenFilledAmount / pow(10, tt.decimals))*tp.price)
               END AS volume_usd
-          , cast(null as numeric) AS protocol_fee_paid_eth
+          , cast(null as double) AS protocol_fee_paid_eth
       FROM {{ source('zeroex_optimism', 'ExchangeProxy_evt_RfqOrderFilled') }} fills
       LEFT JOIN {{ source('prices', 'usd') }} tp ON
           date_trunc('minute', evt_block_time) = tp.minute and tp.blockchain = 'optimism'
@@ -170,7 +170,7 @@ WITH
                   WHEN mp.symbol = 'WETH' THEN (fills.makerTokenFilledAmount / 1e18) * mp.price
                   ELSE COALESCE((fills.makerTokenFilledAmount / pow(10, mt.decimals))*mp.price,(fills.takerTokenFilledAmount / pow(10, tt.decimals))*tp.price)
               END AS volume_usd
-          ,cast(null as numeric) AS protocol_fee_paid_eth
+          ,cast(null as double) AS protocol_fee_paid_eth
         FROM {{ source('zeroex_optimism', 'ExchangeProxy_evt_OtcOrderFilled') }} fills
       LEFT JOIN {{ source('prices', 'usd') }} tp ON
           date_trunc('minute', evt_block_time) = tp.minute and tp.blockchain = 'optimism'

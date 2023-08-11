@@ -87,7 +87,7 @@ WITH
           , fills.takerTokenFilledAmount / pow(10, tt.decimals) AS taker_asset_filled_amount
           , FALSE AS matcha_limit_order_flag
           , COALESCE((fills.makerTokenFilledAmount / pow(10, mt.decimals))*mp.price,(fills.takerTokenFilledAmount / pow(10, tt.decimals))*tp.price) AS volume_usd
-          , cast(NULL as numeric) AS protocol_fee_paid_eth
+          , cast(NULL as double) AS protocol_fee_paid_eth
       FROM {{ source('zeroex_bnb', 'ExchangeProxy_evt_RfqOrderFilled') }} fills
       LEFT JOIN {{ source('prices', 'usd') }} tp ON
           date_trunc('minute', evt_block_time) = tp.minute and  tp.blockchain = 'bnb'
@@ -135,7 +135,7 @@ WITH
           , fills.takerTokenFilledAmount / pow(10, tt.decimals) AS taker_asset_filled_amount
           , FALSE AS matcha_limit_order_flag
           , COALESCE((fills.makerTokenFilledAmount / pow(10, mt.decimals))*mp.price,(fills.takerTokenFilledAmount / pow(10, tt.decimals))*tp.price) AS volume_usd
-          , cast(null as numeric) AS protocol_fee_paid_eth
+          , cast(null as double) AS protocol_fee_paid_eth
         FROM {{ source('zeroex_bnb', 'ExchangeProxy_evt_OtcOrderFilled') }} fills
       LEFT JOIN {{ source('prices', 'usd') }} tp ON
           date_trunc('minute', evt_block_time) = tp.minute and tp.blockchain = 'bnb'
