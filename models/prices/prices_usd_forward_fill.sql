@@ -43,8 +43,8 @@ WITH
     ,decimals
     ,symbol
     ,price
-    from timeseries t
-    left join unfinalized p
+    from unfinalized p
+    right join timeseries t
     ON t.minute >= p.minute and (p.next_update_minute is null OR t.minute < p.next_update_minute) -- perform forward fill
 )
 
