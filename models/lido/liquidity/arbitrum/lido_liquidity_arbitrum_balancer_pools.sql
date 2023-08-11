@@ -280,7 +280,8 @@ WHERE call_create.output_0 in (select distinct  poolAddress from pools)
             
         FROM balance b 
         LEFT JOIN tokens_prices_daily p1 ON p1.time = b.day 
-            AND p1.token = (case when b.token = 0xda1cd1711743e57dd57102e9e61b75f3587703da then 0x82aF49447D8a07e3bd95BD0d56f35241523fBab1 else b.token end)
+            AND p1.token = (case when b.token in (0xda1cd1711743e57dd57102e9e61b75f3587703da, 0xaD28940024117B442a9EFB6D0f25C8B59e1c950B) 
+                            then 0x82aF49447D8a07e3bd95BD0d56f35241523fBab1 else b.token end)
         WHERE b.token != 0x5979d7b546e38e414f7e9822514be443a4800529 
           and b.token not in (select poolAddress from pools)
 
