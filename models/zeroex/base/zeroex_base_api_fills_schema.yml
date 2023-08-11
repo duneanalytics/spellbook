@@ -81,3 +81,61 @@ models:
       - &blockchain
         name: blockchain
         description: "Blockchain which the aggregator project is deployed"
+        
+  - name: zeroex_base_api_fills_deduped
+    meta:
+      blockchain: base
+      project: zeroex
+      contributors: rantum
+    config:
+      tags: ['base','0x','dex_aggregator','dex','aggregator']
+    description: >
+        0x API erc20 swaps raw fills (deduped) on base
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_date
+            - tx_hash
+            - evt_index
+      - check_seed_legacy:
+          seed_file: ref('zeroex_base_api_fills_deduped_sample')
+          match_columns:
+            - tx_hash
+            - evt_index
+          check_columns:
+            - maker
+            - taker
+    columns:
+      - *blockchain
+      - *block_date
+      - *block_time
+      - &taker_symbol
+        name: taker_symbol
+        description: "Symbol of the token taker sells"
+      - &maker_symbol
+        name: maker_symbol
+        description: "Symbol of the token taker buys"
+      - &token_pair
+        name: token_pair
+        description: "Token pair traded"    
+      - *taker_token_amount
+      - *maker_token_amount
+      - *taker_token_amount_raw
+      - *maker_token_amount_raw
+      - *volume_usd
+      - *taker_token
+      - *maker_token
+      - *taker
+      - *maker
+      - *affiliate_address
+      - *tx_hash
+      - *tx_from
+      - *tx_to
+      - *evt_index       
+      - *type
+      - *swap_flag
+      - *contract_address
+      - &fills_within
+        name: fills_within
+        description: "fills in then multihop, if present"          
+ 
