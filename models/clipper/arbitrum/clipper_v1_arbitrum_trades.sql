@@ -63,7 +63,6 @@ SELECT
     ,e.tx_hash
     ,tx."from" AS tx_from
     ,tx.to AS tx_to
-    ,e.trace_address
     ,e.evt_index
 FROM event_data e
 INNER JOIN {{ source('arbitrum', 'transactions') }} tx
