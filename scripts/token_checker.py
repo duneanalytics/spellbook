@@ -83,6 +83,7 @@ class TokenChecker:
         token = self.parse_token(new_line)
         try:
             api_token = self.tokens_by_id[token['id']]
+            logging.info(f"INFO: verifying {token['id']}")
         except KeyError:
             logging.warning(f"WARN: Line: {new_line} token_id not found in CoinPaprika API")
             raise
