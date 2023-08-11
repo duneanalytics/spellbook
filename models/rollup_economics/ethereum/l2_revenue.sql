@@ -71,7 +71,7 @@ INNER JOIN {{ source('prices','usd') }} p
   ON p.minute = date_trunc('minute', tr.block_time)
   AND p.blockchain is null
   AND p.symbol = 'ETH'
-  ON t.block_time >= timestamp '2022-01-01'
+  AND t.block_time >= timestamp '2022-01-01'
   {% if is_incremental() %}
   AND t.block_time >= date_trunc('day', now() - interval '7' day)
   {% endif %}
