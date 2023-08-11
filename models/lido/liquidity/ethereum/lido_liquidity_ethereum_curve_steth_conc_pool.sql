@@ -109,8 +109,8 @@ select * from steth_out
 select time, 
 --lead(time,1, DATE_TRUNC('hour', now() + interval '1' hour)) over (order by time) as next_time,
 sum(steth_balance) as steth,
-sum(coalesce(wsteth_balance,steth_balance))  as wsteth, r.rate,
-sum(coalesce(wsteth_balance,steth_balance))*coalesce(r.rate, 1) as steth_from_wsteth 
+sum(coalesce(wsteth_balance,steth_balance)) as wsteth /*, r.rate,
+sum(coalesce(wsteth_balance,steth_balance))*coalesce(r.rate, 1) as steth_from_wsteth */
 from daily_balances b
 left join wsteth_rate r on b.time >= r.day and b.time < r.next_day 
 group by time, rate
@@ -283,9 +283,9 @@ select 'ethereum curve WETH:stETH concentrated 0.04' as pool_name,
 cast(b.time as date) as time, 
 0xae7ab96520DE3A18E5e111B5EaAb095312D7fE84 as main_token, 'stETH' as main_token_symbol,
 0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2 as paired_token, 'WETH' as paired_token_symbol,
-steth_from_wsteth as main_token_reserve,
+wsteth as main_token_reserve,
 coalesce(eth.weth, 0) as paired_token_reserve,
-coalesce(stethp.price, wethp.price)as main_token_usd_price,
+coalesce(stethp.price*r.rate, wethp.price*r.rate) as main_token_usd_price,
 wethp.price as paired_token_usd_price,
 v.volume as trading_volume
 from steth_balances b 
@@ -293,4 +293,5 @@ left join weth_balances eth on b.time = eth.time
 left join steth_prices_daily stethp on b.time = stethp.time 
 left join weth_prices_daily wethp on b.time = wethp.time 
 left join trading_volume v on b.time = v.time
+left join wsteth_rate r on b.time >= r.day and b.time < r.next_day 
 order by 1

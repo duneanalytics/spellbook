@@ -391,7 +391,7 @@ SELECT distinct
             b.token,
             p1.symbol AS token_symbol,
             amount as token_balance_raw,
-            amount / POWER(10, p1.decimals) AS token_balance,
+            amount / POWER(10, 18) AS token_balance,
             COALESCE(p1.price, steth_prices_daily.price*r.rate) AS price, 
             0 as row_numb
         FROM balance b         
