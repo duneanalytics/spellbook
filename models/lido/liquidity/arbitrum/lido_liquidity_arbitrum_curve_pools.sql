@@ -337,23 +337,7 @@ weth_prices_daily AS (
 
 
 , all_metrics as (
-        select pool 
-        , blockchain
-        , project
-        , fee
-        , time
-        , main_token
-        , main_token_symbol
-        , paired_token
-        , paired_token_symbol
-        , sum(main_token_reserve) as main_token_reserve 
-        , sum(paired_token_reserve) as paired_token_reserve
-        , max(main_token_usd_price) as main_token_usd_price
-        , max(paired_token_usd_price) as paired_token_usd_price
-        , sum(trading_volume) as trading_volume 
-
-    from (
-    
+       
     select  
         pool 
         , 'arbitrum' as blockchain
@@ -368,29 +352,10 @@ weth_prices_daily AS (
         , paired_token_reserve
         , main_token_usd_price
         , paired_token_usd_price
-        , 0 as trading_volume 
+        , coalesce(volume,0) as trading_volume
     from reserves r
+    left join trading_volume on  r.day = trading_volume.time
     
-    union all
-
-    select  
-        0x6eb2dc694eb516b16dc9fbc678c60052bbdd7d80
-        , 'arbitrum' as blockchain
-        , 'curve' as project
-        , 0.04 as fee
-        , cast(time as date) as time
-        , 0x5979d7b546e38e414f7e9822514be443a4800529
-        , 'wstETH'
-        , 0x82af49447d8a07e3bd95bd0d56f35241523fbab1
-        , 'WETH'
-        , 0
-        , 0
-        , 0
-        , 0
-        , coalesce(volume,0) as trading_volume 
-    from trading_volume
-    )
-    group by 1,2,3,4,5,6,7,8,9
 )    
 
 
