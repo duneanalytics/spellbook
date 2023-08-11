@@ -81,3 +81,37 @@ models:
       - &evt_index
         name: evt_index
         description: "the position of this event log within this transaction"
+  - name: kyberswap_aggregator_trades
+    meta:
+      blockchain: arbitrum
+      sector: dex_aggregator
+      project: kyberswap
+      contributors: nhd98z
+    config:
+      tags:  ['arbitrum', 'dex', 'aggregator', 'trades', 'kyberswap']
+    description: >
+      Kyberswap Aggregator. This table will load dex_aggregator trades downstream.
+    columns:
+      - *blockchain
+      - *project
+      - *version
+      - *block_date
+      - *block_time
+      - *token_bought_symbol
+      - *token_sold_symbol
+      - *token_pair
+      - *token_bought_amount
+      - *token_sold_amount
+      - *token_bought_amount_raw
+      - *token_sold_amount_raw
+      - *amount_usd
+      - *token_bought_address
+      - *token_sold_address
+      - *taker
+      - *maker
+      - *project_contract_address
+      - *tx_hash
+      - *tx_from
+      - *tx_to
+      - *trace_address
+      - *evt_index
