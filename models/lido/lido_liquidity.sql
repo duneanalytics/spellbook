@@ -15,7 +15,12 @@
  ref('lido_liquidity_arbitrum_uniswap_v3_pools'),
  ref('lido_liquidity_arbitrum_curve_pools'),
  ref('lido_liquidity_arbitrum_balancer_pools'),
- ref('lido_liquidity_arbitrum_camelot_pools')
+ ref('lido_liquidity_arbitrum_camelot_pools'),
+ ref('lido_liquidity_optimism_kyberswap_pools'),
+ ref('lido_liquidity_optimism_uniswap_v3_pools'),
+ ref('lido_liquidity_optimism_curve_pools'),
+ ref('lido_liquidity_optimism_balancer_pools'),
+ ref('lido_liquidity_optimism_velodrome_pools')
 ] %}
 
 {% set project_start_date =  '2021-01-05'%} 

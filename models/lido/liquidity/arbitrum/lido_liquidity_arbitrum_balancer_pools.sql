@@ -360,7 +360,12 @@ on main.day = paired4.day and main.pool_id = paired4.pool_id
              else p.price*amountIn/1e18 end) as trading_volume
     from delta_prod.balancer_v2_arbitrum.Vault_evt_Swap s
     left join wsteth_prices_hourly p on date_trunc('hour', s.evt_block_time) >= p.time and date_trunc('hour', s.evt_block_time) < p.next_time
-    WHERE date_trunc('day', s.evt_block_time) >= date '2022-09-17'
+    {% if not is_incremental() %}
+    WHERE DATE_TRUNC('day', evt_block_time) >= DATE '{{ project_start_date }}'
+    {% endif %}
+    {% if is_incremental() %}
+    WHERE DATE_TRUNC('day', evt_block_time) >= DATE_TRUNC('day', NOW() - INTERVAL '1' day)
+    {% endif %}
     and s.poolId in (select pool_id from pools)
     group by 1,2
 ) 
