@@ -70,7 +70,7 @@ SELECT quo_evt.cid,
        TRY_CAST(date_trunc('DAY', quo_evt.evt_block_time) AS date) AS block_date
 FROM quo_evt
 INNER JOIN {{ source('ethereum','transactions') }} tx
-    ON quo_evt.evt_tx_hash = CAST(tx.hash AS VARBINARY)
+    ON CAST(quo_evt.evt_tx_hash AS VARBINARY) = tx.hash
     AND tx.success is NOT NULL
     {% if not is_incremental() %}
     AND tx.block_time >= TIMESTAMP '{{project_start_date}}'
