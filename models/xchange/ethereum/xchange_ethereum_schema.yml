@@ -20,7 +20,6 @@ models:
             - version
             - tx_hash
             - evt_index
-            - trace_address
       - check_seed:
           seed_file: ref('xchange_ethereum_trades_seed')
           filter:

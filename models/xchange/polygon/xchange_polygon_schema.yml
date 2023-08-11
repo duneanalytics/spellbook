@@ -19,8 +19,7 @@ models:
             - project
             - version
             - tx_hash
-            - evt_index
-            - trace_address         
+            - evt_index         
       - check_dex_seed:
           blockchain: polygon
           project: xchange
