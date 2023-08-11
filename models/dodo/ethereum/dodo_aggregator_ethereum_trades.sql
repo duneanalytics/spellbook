@@ -261,4 +261,3 @@ LEFT JOIN {{ source('prices', 'usd') }} p_eth
     AND p_eth.minute >= date_trunc('day', now() - interval '7' day)
     {% endif %}
 WHERE dexs.token_bought_address <> dexs.token_sold_address
-;
