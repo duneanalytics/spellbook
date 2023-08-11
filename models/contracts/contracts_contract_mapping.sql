@@ -75,7 +75,7 @@ SELECT *
     ,code_bytelength
     ,is_self_destruct
     ,token_standard
-    ,ROW_NUMBER() OVER (PARTITION BY code ORDER BY created_block_time ASC, created_tx_index ASC) AS code_deploy_rank
+    ,ROW_NUMBER() OVER (PARTITION BY code ORDER BY created_time ASC, created_tx_index ASC) AS code_deploy_rank
     ,ROW_NUMBER() OVER (PARTITION BY '{{chain}}', contract_address ORDER BY created_time ASC ) AS contract_order -- to ensure no dupes
     ,ROW_NUMBER() OVER (PARTITION BY '{{chain}}', code ORDER BY created_block_number ASC, created_tx_index ASC) AS code_deploy_rank_by_chain
     ,to_iterate_creators
