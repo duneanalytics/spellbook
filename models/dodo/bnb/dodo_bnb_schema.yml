@@ -175,7 +175,7 @@ models:
             - trace_address
       - check_dex_aggregator_seed:
           blockchain: bnb
-          project: DODO
+          project: DODO X
           version: 0
     columns:
       - *blockchain
