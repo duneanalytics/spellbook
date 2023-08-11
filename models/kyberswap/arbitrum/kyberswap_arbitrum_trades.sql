@@ -34,7 +34,7 @@ kyberswap_dex AS (
     INNER JOIN {{ source('kyber_arbitrum', 'DMMFactory_evt_PoolCreated') }} p
         ON t.contract_address = p.pool
     {% if is_incremental() %}
-    WHERE t.evt_block_time >= date_trunc("day", now() - interval '7' day)
+    WHERE t.evt_block_time >= date_trunc('day', now() - interval '7' day)
     {% else %}
     WHERE t.evt_block_time >= TIMESTAMP '{{ project_start_date }}'
     {% endif %}
@@ -61,7 +61,7 @@ kyberswap_dex AS (
     INNER JOIN {{ source('kyber_arbitrum', 'Elastic_Factory_evt_PoolCreated') }} p
         ON t.contract_address = p.pool
     {% if is_incremental() %}
-    WHERE t.evt_block_time >= date_trunc("day", now() - interval '7' day)
+    WHERE t.evt_block_time >= date_trunc('day', now() - interval '7' day)
     {% else %}
     WHERE t.evt_block_time >= TIMESTAMP '{{ project_start_date }}'
     {% endif %}

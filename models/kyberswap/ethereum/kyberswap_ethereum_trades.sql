@@ -35,7 +35,7 @@ kyberswap_dex AS (
     INNER JOIN {{ source('kyber_ethereum', 'DMMFactory_evt_PoolCreated') }} p
         ON t.contract_address = p.pool
     {% if is_incremental() %}
-    WHERE t.evt_block_time >= date_trunc("day", now() - interval '7' day)
+    WHERE t.evt_block_time >= date_trunc('day', now() - interval '7' day)
     {% else %}
     WHERE t.evt_block_time >= TIMESTAMP '{{ project_start_date }}'
     {% endif %}
@@ -62,7 +62,7 @@ kyberswap_dex AS (
     INNER JOIN {{ source('kyber_ethereum', 'Elastic_Factory_evt_PoolCreated') }} p
         ON t.contract_address = p.pool
     {% if is_incremental() %}
-    WHERE t.evt_block_time >= date_trunc("day", now() - interval '7 days')
+    WHERE t.evt_block_time >= date_trunc('day', now() - interval '7' day)
     {% else %}
     WHERE t.evt_block_time >= TIMESTAMP '{{ project_start_date }}'
     {% endif %}
@@ -104,7 +104,7 @@ FROM kyberswap_dex
 INNER JOIN {{ source('ethereum', 'transactions') }} tx
     ON kyberswap_dex.tx_hash = tx.hash
     {% if is_incremental() %}
-    AND tx.block_time >= date_trunc("day", now() - interval '7' day)
+    AND tx.block_time >= date_trunc('day', now() - interval '7' day)
     {% else %}
     AND tx.block_time >= TIMESTAMP '{{project_start_date}}'
     {% endif %}
@@ -119,7 +119,7 @@ LEFT JOIN {{ source('prices', 'usd') }} p_bought
     AND cast(p_bought.contract_address as varbinary) = kyberswap_dex.token_bought_address
     AND p_bought.blockchain = 'ethereum'
     {% if is_incremental() %}
-    AND p_bought.minute >= date_trunc("day", now() - interval '7' day)
+    AND p_bought.minute >= date_trunc('day', now() - interval '7' day)
     {% else %}
     AND p_bought.minute >= TIMESTAMP '{{project_start_date}}'
     {% endif %}
@@ -128,7 +128,7 @@ LEFT JOIN {{ source('prices', 'usd') }} p_sold
     AND cast(p_sold.contract_address as varbinary) = kyberswap_dex.token_sold_address
     AND p_sold.blockchain = 'ethereum'
     {% if is_incremental() %}
-    AND p_sold.minute >= date_trunc("day", now() - interval '7' day)
+    AND p_sold.minute >= date_trunc('day', now() - interval '7' day)
     {% else %}
     AND p_sold.minute >= TIMESTAMP '{{project_start_date}}'
     {% endif %}

@@ -33,7 +33,7 @@ kyberswap_dex AS (
     INNER JOIN {{ source('kyber_avalanche_c', 'DMMFactory_evt_PoolCreated') }} p
         ON t.contract_address = p.pool
     {% if is_incremental() %}
-    WHERE t.evt_block_time >= date_trunc('day', now() - interval '7 days')
+    WHERE t.evt_block_time >= date_trunc('day', now() - interval '7' day)
     {% else %}
     WHERE t.evt_block_time >= TIMESTAMP '{{project_start_date}}'
     {% endif %}
@@ -123,8 +123,8 @@ SELECT
      END                                                                  AS token_pair
     ,kyberswap_dex.token_bought_amount_raw / power(10, erc20a.decimals)   AS token_bought_amount
     ,kyberswap_dex.token_sold_amount_raw / power(10, erc20b.decimals)     AS token_sold_amount
-    ,CAST(kyberswap_dex.token_bought_amount_raw AS DOUBLE) AS token_bought_amount_raw
-    ,CAST(kyberswap_dex.token_sold_amount_raw AS DOUBLE) AS token_sold_amount_raw
+    ,kyberswap_dex.token_bought_amount_raw AS token_bought_amount_raw
+    ,kyberswap_dex.token_sold_amount_raw AS token_sold_amount_raw
     ,coalesce(kyberswap_dex.amount_usd
             ,(kyberswap_dex.token_bought_amount_raw / power(10, p_bought.decimals)) * p_bought.price
             ,(kyberswap_dex.token_sold_amount_raw / power(10, p_sold.decimals)) * p_sold.price
