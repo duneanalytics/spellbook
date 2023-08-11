@@ -318,59 +318,71 @@ WITH
 
     ),
 
-    all_fills as (
-    
-    SELECT * FROM v3_fills
 
-    UNION ALL
+all_fills as (
+    {% set ctes = ['v3_fills', 'v2_1_fills', 'v4_limit_fills', 'v4_rfq_fills', 'otc_fills'] %}
+    {% for table in ctes %}
+        SELECT block_time,
+               block_number,
+               protocol_version,
+               transaction_hash,
+               evt_index,
+               maker_address,
+               taker_address,
+               maker_token,
+               maker_symbol,
+               token_pair,
+               taker_token_filled_amount_raw,
+               maker_token_filled_amount_raw,
+               maker_asset_filled_amount,
+               taker_token,
+               taker_symbol,
+               taker_asset_filled_amount,
+               matcha_limit_order_flag,
+               volume_usd,
+               protocol_fee_paid_eth,
+               contract_address,
+               native_order_type
+        FROM {{ table }}
+        {% if not loop.last %}
+        UNION ALL
+        {% endif %}
+    {% endfor %}
+)
 
-    SELECT * FROM v2_1_fills
-
-    UNION ALL
-
-    SELECT * FROM v4_limit_fills
-
-    UNION ALL
-
-    SELECT * FROM v4_rfq_fills
-
-    UNION ALL
-    
-    SELECT * FROM otc_fills
-    )
-            SELECT distinct 
-                all_fills.block_time AS block_time, 
+SELECT distinct all_fills.block_time                                    AS block_time,
                 all_fills.block_number,
-                protocol_version as version,
-                date_trunc('day', all_fills.block_time) as block_date,
+                protocol_version                                        as version,
+                date_trunc('day', all_fills.block_time)                 as block_date,
                 cast(date_trunc('month', all_fills.block_time) as date) as block_month,
-                transaction_hash as tx_hash,
+                transaction_hash                                        as tx_hash,
                 evt_index,
-                maker_address as maker,
-                taker_address as taker,
+                maker_address                                           as maker,
+                taker_address                                           as taker,
                 maker_token,
-                maker_token_filled_amount_raw as maker_token_amount_raw,
-                taker_token_filled_amount_raw as taker_token_amount_raw,
+                maker_token_filled_amount_raw                           as maker_token_amount_raw,
+                taker_token_filled_amount_raw                           as taker_token_amount_raw,
                 maker_symbol,
                 token_pair,
-                maker_asset_filled_amount maker_token_amount,
-                taker_token, 
+                maker_asset_filled_amount                                  maker_token_amount,
+                taker_token,
                 taker_symbol,
-                taker_asset_filled_amount taker_token_amount,
+                taker_asset_filled_amount                                  taker_token_amount,
                 matcha_limit_order_flag,
                 volume_usd,
                 protocol_fee_paid_eth,
-                'ethereum' as blockchain,
+                'ethereum'                                              as blockchain,
                 all_fills.contract_address,
                 native_order_type,
                 tx."from" AS tx_from,
-                tx.to AS tx_to
-            FROM all_fills
-            INNER JOIN {{ source('ethereum', 'transactions')}} tx ON all_fills.transaction_hash = tx.hash
-            AND all_fills.block_number = tx.block_number
-            {% if is_incremental() %}
-            AND tx.block_time >= date_trunc('day', now() - interval '7' day)
-            {% endif %}
-            {% if not is_incremental() %}
-            AND tx.block_time >= TIMESTAMP '{{zeroex_v3_start_date}}'
-            {% endif %}
+                tx.to                                                   AS tx_to
+FROM all_fills
+INNER JOIN {{ source('ethereum', 'transactions')}} tx
+    ON all_fills.transaction_hash = tx.hash
+    AND all_fills.block_number = tx.block_number
+    {% if is_incremental() %}
+    AND tx.block_time >= date_trunc('day', now() - interval '7' day)
+    {% endif %}
+    {% if not is_incremental() %}
+    AND tx.block_time >= TIMESTAMP '{{zeroex_v3_start_date}}'
+    {% endif %}
