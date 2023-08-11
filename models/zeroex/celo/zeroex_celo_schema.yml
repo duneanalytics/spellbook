@@ -97,7 +97,7 @@ models:
             - block_date
             - tx_hash
             - evt_index
-      - check_seed_legacy:
+      - check_seed:
           seed_file: ref('zeroex_celo_api_fills_deduped_sample')
           match_columns:
             - tx_hash
