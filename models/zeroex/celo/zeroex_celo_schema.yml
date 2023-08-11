@@ -81,6 +81,7 @@ models:
       - &blockchain
         name: blockchain
         description: "Blockchain which the aggregator project is deployed"
+        
   - name: zeroex_celo_api_fills_deduped
     meta:
       blockchain: celo
@@ -137,3 +138,4 @@ models:
       - &fills_within
         name: fills_within
         description: "fills in then multihop, if present"          
+ 
