@@ -359,7 +359,7 @@ WITH
                 taker_asset_filled_amount taker_token_amount,
                 matcha_limit_order_flag,
                 volume_usd,
-                cast(protocol_fee_paid_eth as double),
+                protocol_fee_paid_eth,
                 'ethereum' as blockchain,
                 all_fills.contract_address,
                 native_order_type,
