@@ -43,7 +43,7 @@ date_trunc('day', t.block_time) AS day
 , SUM(p.price * (t.gas_used * t.effective_gas_price)/POWER(10,18)) AS l2_rev_usd
 FROM {{ source('arbitrum','transactions') }} t
 INNER JOIN {{ source('prices','usd') }} p
-  ON p.minute = date_trunc('minute', tr.block_time)
+  ON p.minute = date_trunc('minute', t.block_time)
   AND p.blockchain is null
   AND p.symbol = 'ETH'
   AND t.block_time >= timestamp '2022-01-01'
@@ -68,7 +68,7 @@ date_trunc('day', t.block_time) AS day
 ) AS l2_rev_usd
 FROM {{ source('optimism','transactions') }} t
 INNER JOIN {{ source('prices','usd') }} p
-  ON p.minute = date_trunc('minute', tr.block_time)
+  ON p.minute = date_trunc('minute', t.block_time)
   AND p.blockchain is null
   AND p.symbol = 'ETH'
   AND t.block_time >= timestamp '2022-01-01'
@@ -93,7 +93,7 @@ date_trunc('day', t.block_time) AS day
 ) AS l2_rev_usd
 FROM {{ source('base','transactions') }} t
 INNER JOIN {{ source('prices','usd') }} p
-  ON p.minute = date_trunc('minute', tr.block_time)
+  ON p.minute = date_trunc('minute', t.block_time)
   AND p.blockchain is null
   AND p.symbol = 'ETH'
   AND t.block_time >= timestamp '2022-01-01'
