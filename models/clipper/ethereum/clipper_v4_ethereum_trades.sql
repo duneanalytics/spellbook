@@ -39,6 +39,7 @@ SELECT
     ,'clipper' AS project
     ,'4' AS version
     ,TRY_CAST(date_trunc('DAY', e.block_time) AS date) AS block_date
+    ,CAST(date_trunc('month', e.block_time) AS date) AS block_month
     ,e.block_time
     ,t_bought.symbol AS token_bought_symbol
     ,t_sold.symbol AS token_sold_symbol
