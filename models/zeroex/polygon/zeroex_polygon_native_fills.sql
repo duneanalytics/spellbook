@@ -24,14 +24,14 @@ WITH
             , fills.evt_index
             , fills.makerAddress AS maker_address
             , fills.takerAddress AS taker_address
-            , SUBSTRING(fills.makerAssetData,17,20) AS maker_token
+            , bytearray_substring(fills.makerAssetData, 8, 10) AS maker_token
             , CASE WHEN lower(tt.symbol) > lower(mt.symbol) THEN concat(mt.symbol, '-', tt.symbol) ELSE concat(tt.symbol, '-', mt.symbol) END AS token_pair
             , fills.takerAssetFilledAmount as taker_token_filled_amount_raw
             , fills.makerAssetFilledAmount as maker_token_filled_amount_raw
             , fills.contract_address 
             , mt.symbol AS maker_symbol
             , fills.makerAssetFilledAmount / pow(10, mt.decimals) AS maker_asset_filled_amount
-            , SUBSTRING(fills.takerAssetData,17,20) AS taker_token
+            , bytearray_substring(fills.takerAssetData, 8, 10) AS taker_token
             , tt.symbol AS taker_symbol
             , fills.takerAssetFilledAmount / pow(10, tt.decimals) AS taker_asset_filled_amount
             , (fills.feeRecipientAddress in 
@@ -56,18 +56,18 @@ WITH
             date_trunc('minute', evt_block_time) = tp.minute and tp.blockchain = 'polygon'
             AND CASE
                     -- Set Deversifi ETHWrapper to WETH
-                    WHEN SUBSTRING(fills.takerAssetData,17,20) IN (0x0000000000000000000000000000000000001010) THEN 0x0d500b1d8e8ef31e21c99d1db9a6444d3adf1270
-                    ELSE SUBSTRING(fills.takerAssetData,17,20)
+                    WHEN bytearray_substring(fills.takerAssetData, 8, 10) IN (0x0000000000000000000000000000000000001010) THEN 0x0d500b1d8e8ef31e21c99d1db9a6444d3adf1270
+                    ELSE bytearray_substring(fills.takerAssetData, 8, 10)
                 END = tp.contract_address
         LEFT JOIN {{ source('prices', 'usd') }} mp ON
             DATE_TRUNC('minute', evt_block_time) = mp.minute  and mp.blockchain = 'polygon'
             AND CASE
                     -- Set Deversifi ETHWrapper to WETH
-                    WHEN SUBSTRING(fills.makerAssetData,17,20) IN (0x0000000000000000000000000000000000001010) THEN 0x0d500b1d8e8ef31e21c99d1db9a6444d3adf1270
-                    ELSE SUBSTRING(fills.makerAssetData,17,20)
+                    WHEN bytearray_substring(fills.makerAssetData, 8, 10) IN (0x0000000000000000000000000000000000001010) THEN 0x0d500b1d8e8ef31e21c99d1db9a6444d3adf1270
+                    ELSE bytearray_substring(fills.makerAssetData, 8, 10)
                 END = mp.contract_address
-        LEFT OUTER JOIN {{ ref('tokens_erc20') }} mt ON mt.contract_address = SUBSTRING(fills.makerAssetData,17,20) and mt.blockchain = 'polygon'
-        LEFT OUTER JOIN {{ ref('tokens_erc20') }} tt ON tt.contract_address = SUBSTRING(fills.takerAssetData,17,20) and tt.blockchain = 'polygon'
+        LEFT OUTER JOIN {{ ref('tokens_erc20') }} mt ON mt.contract_address = bytearray_substring(fills.makerAssetData, 8, 10) and mt.blockchain = 'polygon'
+        LEFT OUTER JOIN {{ ref('tokens_erc20') }} tt ON tt.contract_address = bytearray_substring(fills.takerAssetData, 8, 10) and tt.blockchain = 'polygon'
          where 1=1  
                 {% if is_incremental() %}
                 AND evt_block_time >= date_trunc('day', now() - interval '7' day)
