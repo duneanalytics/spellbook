@@ -18,13 +18,13 @@ with
   dexs as (
     select
       call_block_time as block_time,
-      cast(json_extract_scalar(zzmo.makerOrder, '$.sellToken') as VARBINARY) as token_sold_address,
-      cast(json_extract_scalar(zzmo.makerOrder, '$.buyToken') as VARBINARY) as token_bought_address,
+      from_hex(json_extract_scalar(zzmo.makerOrder, '$.sellToken')) as token_sold_address,
+      from_hex(json_extract_scalar(zzmo.makerOrder, '$.buyToken')) as token_bought_address,
       cast(json_extract_scalar(zzmo.output_matchedFillResults, '$.takerSellFilledAmount') as UINT256) as token_bought_amount_raw,
       cast(json_extract_scalar(zzmo.output_matchedFillResults, '$.makerSellFilledAmount') as UINT256) as token_sold_amount_raw,
       NULL AS amount_usd,
-      cast(json_extract_scalar(zzmo.makerOrder, '$.user') as VARBINARY) as maker,
-      cast(json_extract_scalar(zzmo.takerOrder, '$.user') as VARBINARY) as taker,
+      from_hex(json_extract_scalar(zzmo.makerOrder, '$.user')) as maker,
+      from_hex(json_extract_scalar(zzmo.takerOrder, '$.user')) as taker,
       call_tx_hash as tx_hash,
       row_number() OVER(PARTITION BY call_tx_hash ORDER BY zzmo.makerOrder) AS evt_index, --prevent duplicates
       contract_address as project_contract_address
