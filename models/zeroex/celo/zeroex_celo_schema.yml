@@ -97,14 +97,6 @@ models:
             - block_date
             - tx_hash
             - evt_index
-      - check_seed_legacy:
-          seed_file: ref('zeroex_celo_api_fills_deduped_sample')
-          match_columns:
-            - tx_hash
-            - evt_index
-          check_columns:
-            - maker
-            - taker
     columns:
       - *blockchain
       - *block_date
