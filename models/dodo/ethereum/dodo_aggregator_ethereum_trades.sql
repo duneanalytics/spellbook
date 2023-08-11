@@ -32,7 +32,7 @@ WITH dexs AS
             toToken AS token_sold_address,
             contract_address AS project_contract_address,
             evt_tx_hash AS tx_hash,
-            CAST(ARRAY() as array<bigint>) AS trace_address,
+            CAST(NULL as array<bigint>) AS trace_address,
             evt_index
         FROM
             {{ source('dodo_ethereum' ,'DODOV1Proxy01_evt_OrderHistory')}}
@@ -56,7 +56,7 @@ WITH dexs AS
             toToken AS token_sold_address,
             contract_address AS project_contract_address,
             evt_tx_hash AS tx_hash,
-            CAST(ARRAY() as array<bigint>) AS trace_address,
+            CAST(NULL as array<bigint>) AS trace_address,
             evt_index
         FROM
             {{ source('dodo_ethereum' ,'DODOV1Proxy02_evt_OrderHistory')}}
@@ -104,7 +104,7 @@ WITH dexs AS
             toToken AS token_sold_address,
             contract_address AS project_contract_address,
             evt_tx_hash AS tx_hash,
-            CAST(ARRAY() as array<bigint>) AS trace_address,
+            CAST(NULL as array<bigint>) AS trace_address,
             evt_index
         FROM
             {{ source('dodo_ethereum', 'DODOV1Proxy04_evt_OrderHistory')}}
@@ -128,7 +128,7 @@ WITH dexs AS
             toToken AS token_sold_address,
             contract_address AS project_contract_address,
             evt_tx_hash AS tx_hash,
-            CAST(ARRAY() as array<bigint>) AS trace_address,
+            CAST(NULL as array<bigint>) AS trace_address,
             evt_index
         FROM
             {{ source('dodo_ethereum','DODOV2Proxy02_evt_OrderHistory')}}
@@ -152,7 +152,7 @@ WITH dexs AS
             toToken AS token_sold_address,
             contract_address AS project_contract_address,
             evt_tx_hash AS tx_hash,
-            CAST(ARRAY() as array<bigint>) AS trace_address,
+            CAST(NULL as array<bigint>) AS trace_address,
             evt_index
         FROM
             {{ source('dodo_ethereum','DODORouteProxy_evt_OrderHistory')}}
@@ -176,7 +176,7 @@ WITH dexs AS
             toToken AS token_sold_address,
             contract_address AS project_contract_address,
             evt_tx_hash AS tx_hash,
-            CAST(ARRAY() as array<bigint>) AS trace_address,
+            CAST(NULL as array<bigint>) AS trace_address,
             evt_index
         FROM
             {{ source('dodo_ethereum','DODOFeeRouteProxy_evt_OrderHistory')}}
@@ -202,8 +202,8 @@ SELECT
     ,dexs.token_sold_amount_raw  AS token_sold_amount_raw
     ,coalesce(
         dexs.amount_usd
-        ,(dexs.token_bought_amount_raw / power(10, (CASE dexs.token_bought_address WHEN '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee' THEN 18 ELSE p_bought.decimals END))) * (CASE dexs.token_bought_address WHEN '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee' THEN  p_eth.price ELSE p_bought.price END)
-        ,(dexs.token_sold_amount_raw / power(10, (CASE dexs.token_sold_address WHEN '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee' THEN 18 ELSE p_sold.decimals END))) * (CASE dexs.token_sold_address WHEN '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee' THEN  p_eth.price ELSE p_sold.price END)
+        ,(dexs.token_bought_amount_raw / power(10, (CASE dexs.token_bought_address WHEN 0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee THEN 18 ELSE p_bought.decimals END))) * (CASE dexs.token_bought_address WHEN 0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee THEN  p_eth.price ELSE p_bought.price END)
+        ,(dexs.token_sold_amount_raw / power(10, (CASE dexs.token_sold_address WHEN 0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee THEN 18 ELSE p_sold.decimals END))) * (CASE dexs.token_sold_address WHEN 0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee THEN  p_eth.price ELSE p_sold.price END)
     ) as amount_usd
     ,dexs.token_bought_address
     ,dexs.token_sold_address

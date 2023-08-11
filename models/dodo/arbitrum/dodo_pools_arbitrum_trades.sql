@@ -19,9 +19,9 @@
 WITH dodo_view_markets (market_contract_address, base_token_symbol, quote_token_symbol, base_token_address, quote_token_address) AS 
 (
     VALUES
-    (lower('0xFE176A2b1e1F67250d2903B8d25f56C0DaBcd6b2'), 'WETH', 'USDC', lower('0x82aF49447D8a07e3bd95BD0d56f35241523fBab1'), lower('0xFF970A61A04b1cA14834A43f5dE4533eBDDB5CC8')),
-    (lower('0xe4B2Dfc82977dd2DCE7E8d37895a6A8F50CbB4fB'), 'USDT', 'USDC', lower('0xFd086bC7CD5C481DCC9C85ebE478A1C0b69FCbb9'), lower('0xFF970A61A04b1cA14834A43f5dE4533eBDDB5CC8')),
-    (lower('0xb42a054D950daFD872808B3c839Fbb7AFb86E14C'), 'WBTC', 'USDC', lower('0x2f2a2543B76A4166549F7aaB2e75Bef0aefC5B0f'), lower('0xFF970A61A04b1cA14834A43f5dE4533eBDDB5CC8'))
+    (0xFE176A2b1e1F67250d2903B8d25f56C0DaBcd6b2, 'WETH', 'USDC', 0x82aF49447D8a07e3bd95BD0d56f35241523fBab1, 0xFF970A61A04b1cA14834A43f5dE4533eBDDB5CC8),
+    (0xe4B2Dfc82977dd2DCE7E8d37895a6A8F50CbB4fB, 'USDT', 'USDC', 0xFd086bC7CD5C481DCC9C85ebE478A1C0b69FCbb9, 0xFF970A61A04b1cA14834A43f5dE4533eBDDB5CC8),
+    (0xb42a054D950daFD872808B3c839Fbb7AFb86E14C, 'WBTC', 'USDC', 0x2f2a2543B76A4166549F7aaB2e75Bef0aefC5B0f, 0xFF970A61A04b1cA14834A43f5dE4533eBDDB5CC8)
 )
 , dexs AS 
 (
@@ -162,12 +162,12 @@ SELECT
     end as token_pair
     ,dexs.token_bought_amount_raw / power(10, erc20a.decimals) AS token_bought_amount
     ,dexs.token_sold_amount_raw / power(10, erc20b.decimals) AS token_sold_amount
-    ,dexs.token_bought_amount_raw  AS token_bought_amount_raw,
-    ,dexs.token_sold_amount_raw  AS token_sold_amount_raw,
+    ,dexs.token_bought_amount_raw  AS token_bought_amount_raw
+    ,dexs.token_sold_amount_raw  AS token_sold_amount_raw
     ,coalesce(
         dexs.amount_usd
-        ,(dexs.token_bought_amount_raw / power(10, (CASE dexs.token_bought_address WHEN '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee' THEN 18 ELSE p_bought.decimals END))) * (CASE dexs.token_bought_address WHEN '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee' THEN  p_eth.price ELSE p_bought.price END)
-        ,(dexs.token_sold_amount_raw / power(10, (CASE dexs.token_sold_address WHEN '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee' THEN 18 ELSE p_sold.decimals END))) * (CASE dexs.token_sold_address WHEN '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee' THEN  p_eth.price ELSE p_sold.price END)
+        ,(dexs.token_bought_amount_raw / power(10, (CASE dexs.token_bought_address WHEN 0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee THEN 18 ELSE p_bought.decimals END))) * (CASE dexs.token_bought_address WHEN 0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee THEN  p_eth.price ELSE p_bought.price END)
+        ,(dexs.token_sold_amount_raw / power(10, (CASE dexs.token_sold_address WHEN 0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee THEN 18 ELSE p_sold.decimals END))) * (CASE dexs.token_sold_address WHEN 0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee THEN  p_eth.price ELSE p_sold.price END)
     ) as amount_usd
     ,dexs.token_bought_address
     ,dexs.token_sold_address
