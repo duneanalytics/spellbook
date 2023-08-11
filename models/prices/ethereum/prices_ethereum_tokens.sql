@@ -82,6 +82,7 @@ FROM
     ('cocos-cocos-bcx', 'ethereum', 'COCOS', 0x0c6f5f7d555e7518f6841a79436bd2b1eef03381, 18),
     ('comp-compoundd', 'ethereum', 'COMP', 0xc00e94cb662c3520282e6f5717214004a7f26888, 18),
     ('cow-cow-protocol-token', 'ethereum', 'COW', 0xdef1ca1fb7fbcdc777520aa7f396b4e015f497ab, 18),
+    ('fis-stafi', 'ethereum', 'FIS', 0xef3a930e1ffffacd2fc13434ac81bd278b0ecc8d, 18),
     ('cre-carry', 'ethereum', 'CRE', 0x115ec79f1de567ec68b7ae7eda501b406626478e, 18),
     ('cream-cream', 'ethereum', 'CREAM', 0x2ba592f78db6436527729929aaf6c908497cb200, 18),
     ('cro-cryptocom-chain', 'ethereum', 'CRO', 0xa0b73e1ff0b80914ab6fe0444e65848c4c34450b, 8),
