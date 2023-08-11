@@ -2,7 +2,7 @@
 	tags=['legacy'],
 	
         alias = alias('api_fills_deduped', legacy_model=True),
-        post_hook='{{ expose_spells(\'["ethereum","arbitrum", "optimism", "polygon","fantom","avalanche_c","bnb","celo"]\',
+        post_hook='{{ expose_spells(\'["ethereum","arbitrum", "optimism", "polygon","fantom","avalanche_c","bnb"]\',
                                 "project",
                                 "zeroex",
                                 \'["rantum","bakabhai993"]\') }}'
@@ -18,7 +18,6 @@ ref('zeroex_arbitrum_api_fills_deduped_legacy')
 ,ref('zeroex_optimism_api_fills_deduped_legacy')
 ,ref('zeroex_bnb_api_fills_deduped_legacy')
 ,ref('zeroex_polygon_api_fills_deduped_legacy')
-,ref('zeroex_celo_api_fills_deduped')
 ] %}
 
 
