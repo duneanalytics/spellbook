@@ -20,7 +20,7 @@ WITH dexs AS
     SELECT
         t.evt_block_time                                                                AS block_time,
         t.to                                                                            AS taker,
-        0x                                                                              AS maker,
+        CAST(NULL AS VARBINARY)                                                         AS maker,
         CASE WHEN amount0Out = UINT256 '0' THEN amount1Out ELSE amount0Out END                  AS token_bought_amount_raw,
         CASE WHEN amount0In = UINT256 '0' OR amount1Out = UINT256 '0' THEN amount1In ELSE amount0In END AS token_sold_amount_raw,
         NULL                                                           AS amount_usd,
