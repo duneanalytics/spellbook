@@ -130,7 +130,7 @@ SELECT
 	,CAST(date_trunc('MONTH', perps.block_time) AS date) AS block_month
 	,perps.block_time
 	,perps.virtual_asset
-	,cast(perps.underlying_asset as VARCHAR)
+	,cast(perps.underlying_asset as VARCHAR) as underlying_asset
 	,perps.market
 	,perps.market_address
 	,perps.volume_usd
