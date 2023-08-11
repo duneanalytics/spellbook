@@ -35,7 +35,7 @@ WITH quo_evt AS (
     WHERE evt_block_time >= '{{project_start_date}}'
     {% endif %}
     {% if is_incremental() %}
-    WHERE evt_block_time >= date_trunc("day", now() - interval '1 week')
+    WHERE evt_block_time >= date_trunc('day', now() - interval '7' day)
     {% endif %}
 )
 
@@ -73,10 +73,10 @@ INNER JOIN {{ source('ethereum','transactions') }} tx
     ON quo_evt.evt_tx_hash = tx.hash
     AND tx.success is NOT NULL
     {% if not is_incremental() %}
-    AND tx.block_time >= '{{project_start_date}}'
+    AND tx.block_time >= TIMESTAMP '{{project_start_date}}'
     {% endif %}
     {% if is_incremental() %}
-    AND tx.block_time >= date_trunc("day", now() - interval '1 week')
+    AND tx.block_time >= date_trunc('day', now() - interval '7' day)
     {% endif %}
 LEFT JOIN {{ ref('tokens_erc20') }} erc20
     ON quo_evt.token = erc20.contract_address
