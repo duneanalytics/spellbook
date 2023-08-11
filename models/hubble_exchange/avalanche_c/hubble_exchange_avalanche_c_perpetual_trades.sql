@@ -20,7 +20,7 @@ WITH
 perp_events as (
     SELECT evt_block_time                                              as block_time,
            evt_block_number                                            as block_number,
-           CASE WHEN (baseAsset * 1) >= 0 THEN 'long' ELSE 'short' END as trade_type,       -- negative baseAsset is for short and positive is for long
+           CASE WHEN (CAST(baseAsset as double) * 1) >= 0 THEN 'long' ELSE 'short' END as trade_type,       -- negative baseAsset is for short and positive is for long
            'AVAX'                                                      as virtual_asset,    -- only AVAX can currently be traded on hubble exchange
            CAST(NULL as VARCHAR)                                                        as underlying_asset, -- there's no way to track the underlying asset as traders need to deposit into their margin account before they're able to trade which is tracked in a seperate event not tied to the margin positions opened.
            quoteAsset / 1E6                                            as volume_usd,
