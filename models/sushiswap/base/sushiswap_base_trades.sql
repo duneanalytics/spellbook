@@ -1,5 +1,6 @@
-{{ config(tags=['dunesql'],
-    schema = 'uniswap_v3_base',
+{{ config(
+    tags=['dunesql'],
+    schema = 'sushiswap_base',
     alias = alias('trades'),
     partition_by = ['block_month'],
     materialized = 'incremental',
@@ -13,11 +14,11 @@
     )
 }}
 
-{% set project_start_date = '2023-08-02' %}
+{% set project_start_date = '2023-07-25' %}
 
 WITH dexs AS
 (
-    --Uniswap v3
+    --Sushiswap
     SELECT
         t.evt_block_time AS block_time
         ,t.recipient AS taker
@@ -31,9 +32,9 @@ WITH dexs AS
         ,t.evt_tx_hash AS tx_hash
         ,t.evt_index
     FROM
-    {{ source('uniswap_v3_base', 'UniswapV3Pool_evt_Swap') }} t
+    {{ source('sushiswap_v3_base', 'UniswapV3Pool_evt_Swap') }} t
     INNER JOIN 
-    {{ source('uniswap_base', 'UniswapV3Factory_evt_PoolCreated') }} f
+    {{ source('sushiswap_base', 'UniswapV3Factory_evt_PoolCreated') }} f
         ON f.pool = t.contract_address
     {% if is_incremental() %}
     WHERE t.evt_block_time >= date_trunc('day', now() - interval '7' day)
@@ -41,8 +42,8 @@ WITH dexs AS
 )
 SELECT
     'base' AS blockchain
-    ,'uniswap' AS project
-    ,'3' AS version
+    ,'sushiswap' AS project
+    ,'1' AS version
     ,TRY_CAST(date_trunc('DAY', dexs.block_time) AS date) AS block_date
     ,dexs.block_time
     ,erc20a.symbol AS token_bought_symbol
@@ -68,7 +69,6 @@ SELECT
     ,dexs.tx_hash
     ,tx."from" AS tx_from
     ,tx.to AS tx_to
-    
     ,dexs.evt_index
 FROM dexs
 INNER JOIN 
