@@ -5,7 +5,7 @@ models:
     meta:
       blockchain: optimism
       sector: labels
-      category: coinbase_wallet_quest_participants
+      category: quest_participants
       contributors: msilb7
     config:
       tags: ['labels', 'quests','coinbase','optimism']
