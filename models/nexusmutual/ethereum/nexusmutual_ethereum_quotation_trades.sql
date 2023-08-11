@@ -81,4 +81,3 @@ INNER JOIN {{ source('ethereum','transactions') }} tx
 LEFT JOIN {{ ref('tokens_erc20') }} erc20
     ON quo_evt.token = erc20.contract_address
     AND erc20.blockchain = 'ethereum'
-;
