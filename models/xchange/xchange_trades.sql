@@ -1,4 +1,4 @@
-{{ config(
+{{ config(tags=['dunesql'],
         alias = alias('trades'),
         post_hook='{{ expose_spells(\'["ethereum","arbitrum", "polygon", "bnb"]\',
                                 "project",
