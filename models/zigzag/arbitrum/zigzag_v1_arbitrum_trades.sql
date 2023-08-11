@@ -18,15 +18,14 @@ with
   dexs as (
     select
       call_block_time as block_time,
-      cast(json_extract_scalar(zzmo.makerOrder, '$.sellToken') as UINT256) as token_sold_address,
-      cast(json_extract_scalar(zzmo.makerOrder, '$.buyToken') as UINT256) as token_bought_address,
+      cast(json_extract_scalar(zzmo.makerOrder, '$.sellToken') as VARBINARY) as token_sold_address,
+      cast(json_extract_scalar(zzmo.makerOrder, '$.buyToken') as VARBINARY) as token_bought_address,
       cast(json_extract_scalar(zzmo.output_matchedFillResults, '$.takerSellFilledAmount') as UINT256) as token_bought_amount_raw,
       cast(json_extract_scalar(zzmo.output_matchedFillResults, '$.makerSellFilledAmount') as UINT256) as token_sold_amount_raw,
       NULL AS amount_usd,
-      cast(json_extract_scalar(zzmo.makerOrder, '$.user') as UINT256) as maker,
-      cast(json_extract_scalar(zzmo.takerOrder, '$.user') as UINT256) as taker,
+      cast(json_extract_scalar(zzmo.makerOrder, '$.user') as VARBINARY) as maker,
+      cast(json_extract_scalar(zzmo.takerOrder, '$.user') as VARBINARY) as taker,
       call_tx_hash as tx_hash,
-
       row_number() OVER(PARTITION BY call_tx_hash ORDER BY zzmo.makerOrder) AS evt_index, --prevent duplicates
       contract_address as project_contract_address
     from
@@ -50,14 +49,14 @@ SELECT
         when lower(erc20a.symbol) > lower(erc20b.symbol) then concat(erc20b.symbol, '-', erc20a.symbol)
         else concat(erc20a.symbol, '-', erc20b.symbol)
     end as token_pair
-    ,CAST(dexs.token_bought_amount_raw AS UINT256) / power(10, erc20a.decimals) AS token_bought_amount
-    ,CAST(dexs.token_sold_amount_raw AS UINT256) / power(10, erc20b.decimals) AS token_sold_amount
-    ,CAST(dexs.token_bought_amount_raw AS UINT256)  AS token_bought_amount_raw
-    ,CAST(dexs.token_sold_amount_raw AS UINT256)  AS token_sold_amount_raw
+    ,dexs.token_bought_amount_raw / power(10, erc20a.decimals) AS token_bought_amount
+    ,dexs.token_sold_amount_raw / power(10, erc20b.decimals) AS token_sold_amount
+    ,dexs.token_bought_amount_raw  AS token_bought_amount_raw
+    ,dexs.token_sold_amount_raw  AS token_sold_amount_raw
     ,coalesce(
         dexs.amount_usd
-        ,(CAST(dexs.token_bought_amount_raw AS UINT256) / power(10, p_bought.decimals)) * p_bought.price
-        ,(CAST(dexs.token_sold_amount_raw AS UINT256) / power(10, p_sold.decimals)) * p_sold.price
+        ,(dexs.token_bought_amount_raw / power(10, p_bought.decimals)) * p_bought.price
+        ,(dexs.token_sold_amount_raw / power(10, p_sold.decimals)) * p_sold.price
     ) AS amount_usd
     ,dexs.token_bought_address
     ,dexs.token_sold_address
