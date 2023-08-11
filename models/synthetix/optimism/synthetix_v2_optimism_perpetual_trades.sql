@@ -94,7 +94,13 @@ perps AS (
 
 		,'Synthetix' AS project
 		,'2' AS version
-		,INITCAP(COALESCE(from_utf8(tr.trackingCode), 'Unspecified')) as frontend
+		,COALESCE(
+			CONCAT(
+					UPPER(SUBSTRING(from_utf8(tr.trackingCode), 1, 1)),
+					LOWER(SUBSTRING(from_utf8(tr.trackingCode), 2))
+			), 
+			'Unspecified'		
+		) as frontend
 		-- ,INITCAP(IFNULL(DECODE(UNHEX(SUBSTRING(tr.trackingCode, 3)), 'UTF-8'), 'Unspecified')) AS frontend
 		,s.account AS trader
 		,cast(s.tradeSize as double) AS volume_raw
