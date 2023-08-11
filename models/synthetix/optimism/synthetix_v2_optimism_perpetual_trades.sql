@@ -16,7 +16,9 @@
 
 {% set project_start_date = '2021-11-22' %}
 
-WITH asset_price AS (
+WITH 
+
+asset_price AS (
 	SELECT
 		s.contract_address AS market_address
 		,from_utf8(sm.asset) as asset
@@ -27,8 +29,8 @@ WITH asset_price AS (
 		-- 	) AS asset
 		,s.evt_block_time
 		,AVG(s.lastPrice/1e18) AS price
-	FROM {{ source('synthetix_futuresmarket_optimism', 'ProxyPerpsV2_evt_PositionModified') }} AS s
-	LEFT JOIN {{ source('synthetix_optimism', 'FuturesMarketManager_evt_MarketAdded') }} AS sm
+	FROM {{ source('synthetix_futuresmarket_optimism', 'ProxyPerpsV2_evt_PositionModified') }} s
+	LEFT JOIN {{ source('synthetix_optimism', 'FuturesMarketManager_evt_MarketAdded') }} sm
 		ON s.contract_address = sm.market
 	{% if is_incremental() %}
 	WHERE s.evt_block_time >= DATE_TRUNC('DAY', NOW() - INTERVAL '7' Day)
