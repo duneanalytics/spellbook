@@ -74,7 +74,7 @@ WITH
                 AND evt_block_time >= date_trunc('day', now() - interval '7' day)
                 {% endif %}
                 {% if not is_incremental() %}
-                AND evt_block_time >= '{{zeroex_v3_start_date}}'
+                AND evt_block_time >= TIMESTAMP '{{zeroex_v3_start_date}}'
                 {% endif %}
     )
 
