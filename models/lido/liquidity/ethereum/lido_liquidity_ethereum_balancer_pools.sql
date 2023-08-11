@@ -15,10 +15,71 @@
 
 {% set project_start_date = '2021-08-13' %} 
 
-
 with 
+/*dates as (
+    with day_seq as (select (sequence(cast('{{ project_start_date }}' as date), current_date, interval '1' day)) as day)
+select days.day
+from day_seq
+cross join unnest(day) as days(day)
+)
+*/
+ volumes as (
+select u.call_block_time as time,  
+cast(output_0 as double) as steth, cast(_wstETHAmount as double) as wsteth 
+from  {{source('lido_ethereum','WstETH_call_unwrap')}} u 
+where call_success = TRUE 
+union all
+select u.call_block_time, cast(_stETHAmount as double) as steth, cast(output_0 as double) as wsteth 
+from  {{source('lido_ethereum','WstETH_call_wrap')}} u
+where call_success = TRUE 
+)
 
-pools(pool_id, poolAddress) as (
+
+, wsteth_rate as (
+SELECT
+  day, rate as rate0, value_partition, first_value(rate) over (partition by value_partition order by day) as rate,
+  lead(day,1,date_trunc('day', now() + interval '1' day)) over(order by day) as next_day
+  
+FROM (
+select day, rate,
+sum(case when rate is null then 0 else 1 end) over (order by day) as value_partition
+from (
+select  date_trunc('day', v.time) as day, 
+       sum(cast(steth as double))/sum(cast(wsteth as double))  AS rate
+from  volumes v 
+group by 1
+))
+
+)
+, steth_prices_daily AS (
+    SELECT distinct
+        DATE_TRUNC('day', minute) AS time,
+        avg(price) AS price
+    FROM {{source('prices','usd')}} p
+    {% if not is_incremental() %}
+    WHERE DATE_TRUNC('day', p.minute) >= DATE '{{ project_start_date }}'
+    {% endif %}
+    {% if is_incremental() %}
+    WHERE DATE_TRUNC('day', p.minute) >= DATE_TRUNC('day', NOW() - INTERVAL '1' day)
+    {% endif %}
+
+    and date_trunc('day', minute) < current_date
+    and blockchain = 'ethereum'
+    and contract_address = 0xae7ab96520DE3A18E5e111B5EaAb095312D7fE84
+    group by 1
+    union all
+    SELECT distinct
+        DATE_TRUNC('day', minute), 
+        last_value(price) over (partition by DATE_TRUNC('day', minute), contract_address ORDER BY  minute range between unbounded preceding AND unbounded following) AS price
+    FROM {{source('prices','usd')}}
+    WHERE date_trunc('day', minute) = current_date
+    and blockchain = 'ethereum'
+    and contract_address = 0xae7ab96520DE3A18E5e111B5EaAb095312D7fE84
+
+)
+
+
+, pools(pool_id, poolAddress) as (
 values       
 (0x32296969EF14EB0C6D29669C550D4A0449130230000200000000000000000080, 0x32296969ef14eb0c6d29669c550d4a0449130230), 
 (0x5AEE1E99FE86960377DE9F88689616916D5DCABE000000000000000000000467, 0x5AEE1E99FE86960377DE9F88689616916D5DCABE),
@@ -325,16 +386,18 @@ SELECT distinct
 
 , usd_balance AS (
         SELECT
-            day,
+           b.day,
             pool_id,
             b.token,
             p1.symbol AS token_symbol,
             amount as token_balance_raw,
             amount / POWER(10, p1.decimals) AS token_balance,
-            COALESCE(p1.price, 0) AS price, 
+            COALESCE(p1.price, steth_prices_daily.price*r.rate) AS price, 
             0 as row_numb
         FROM balance b         
         LEFT JOIN tokens_prices_daily p1 ON p1.time = b.day AND p1.token = b.token
+        LEFT JOIN  wsteth_rate r on b.day >= r.day and b.day < r.next_day  
+        LEFT JOIN steth_prices_daily on steth_prices_daily.time = b.day
         WHERE b.token = 0x7f39C581F595B53c5cb19bD0b3f8dA6c935E2Ca0
         
         union all
@@ -417,7 +480,9 @@ on main.day = paired2.day and main.pool_id = paired2.pool_id
 
 , all_metrics as (
 select  pool_id as pool, 'ethereum' as blockchain, 'balancer' as project, 0 as fee, 
-cast(day as date) as time, main_token, main_token_symbol, 
+cast(day as date) as time, 
+case when pool_id = 0x32296969EF14EB0C6D29669C550D4A0449130230000200000000000000000080 then 0x7f39c581f595b53c5cb19bd0b3f8da6c935e2ca0 else main_token end as main_token, 
+case when pool_id = 0x32296969EF14EB0C6D29669C550D4A0449130230000200000000000000000080 then 'wstETH' else main_token_symbol end as main_token_symbol, 
 paired1_token as paired_token,
 paired1_token_symbol as paired_token_symbol,
 --||case when paired2_token_symbol is null then '' else '/'||paired2_token_symbol end as paired_token_symbol,
