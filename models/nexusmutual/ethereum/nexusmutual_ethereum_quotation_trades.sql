@@ -37,6 +37,7 @@ WITH quo_evt AS (
     WHERE evt_block_time >= date_trunc("day", now() - interval '1 week')
     {% endif %}
 )
+
 SELECT quo_evt.cid,
        quo_evt.contract_address,
        quo_evt.token                                                AS token_address,
