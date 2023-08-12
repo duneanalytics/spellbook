@@ -2,7 +2,7 @@
     config(
 	tags=['legacy'],
 	
-        alias = alias('likely_bot_contracts', legacy_model=True)
+        alias = alias('op_chains_likely_bot_contracts', legacy_model=True)
     )
 }}
 
