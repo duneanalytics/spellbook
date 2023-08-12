@@ -1,5 +1,6 @@
 {{ config
 (
+    tags=['dunesql'],
     alias = alias('aggregator_trades'),
     partition_by = ['block_date'],
     materialized = 'incremental',
