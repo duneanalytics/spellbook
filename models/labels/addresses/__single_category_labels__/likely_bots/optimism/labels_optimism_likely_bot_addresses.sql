@@ -15,7 +15,7 @@
 
 WITH sender_transfer_rates AS (
     -- For each transaction sender, get their hourly transaction data
-    SELECT `from` AS sender, DATE_TRUNC('hour',block_time) AS hr
+    SELECT "from" AS sender, DATE_TRUNC('hour',block_time) AS hr
             , MIN(block_time) AS min_block_time
             , MAX(block_time) AS max_block_time
             , COUNT(*) AS hr_txs
