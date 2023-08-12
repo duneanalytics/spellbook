@@ -25,12 +25,14 @@ SELECT *,
 
 FROM (
     {% for chain in op_chains %}
-        SELECT to AS contract, 
+        SELECT 
+            '{{chain}}' as blockchain,
+            to AS contract, 
             SUM(CASE WHEN EXISTS (SELECT 1 FROM {{ source('erc20_' + chain,'evt_transfer') }} r WHERE t.hash = r.evt_tx_hash AND t.block_number = r.evt_block_number) THEN 1 ELSE 0 END) AS num_erc20_tfer_txs,
-            SUM(CASE WHEN EXISTS (SELECT 1 FROM {{ ref('nft_transfers') }} r WHERE t.hash = r.tx_hash AND t.block_number = r.block_number AND blockchain = '{{chain}}') THEN 1 ELSE 0 END) AS num_nft_tfer_txs,
+            SUM(CASE WHEN EXISTS (SELECT 1 FROM {{ ref('nft_transfers') }} r WHERE t.hash = r.tx_hash AND t.block_number = r.block_number AND r.blockchain = '{{chain}}') THEN 1 ELSE 0 END) AS num_nft_tfer_txs,
             
             SUM(CASE WHEN EXISTS (SELECT 1 FROM {{ source('erc20_' + chain,'evt_transfer') }} r WHERE t.hash = r.evt_tx_hash AND t.block_number = r.evt_block_number) THEN 1 
-                    WHEN EXISTS (SELECT 1 FROM {{ ref('nft_transfers') }} r WHERE t.hash = r.tx_hash AND t.block_number = r.block_number AND blockchain = '{{chain}}') THEN 1
+                    WHEN EXISTS (SELECT 1 FROM {{ ref('nft_transfers') }} r WHERE t.hash = r.tx_hash AND t.block_number = r.block_number AND r.blockchain = '{{chain}}') THEN 1
                 ELSE 0 END) AS num_token_tfer_txs,
                 
             0 /*SUM(CASE WHEN EXISTS (SELECT 1 FROM [[ ref('dex_trades') ]] r WHERE t.hash = r.tx_hash AND t.block_time = r.block_time AND blockchain = '{{chain}}') THEN 1 ELSE 0 END)*/ AS num_dex_trade_txs,
