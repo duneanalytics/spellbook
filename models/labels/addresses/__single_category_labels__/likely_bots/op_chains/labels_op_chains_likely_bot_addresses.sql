@@ -35,7 +35,7 @@ WITH sender_transfer_rates AS (
             , 0 /*SUM(CASE WHEN EXISTS (SELECT 1 FROM [[ ref('perpetual_trades') ]] r WHERE t.hash = r.tx_hash AND t.block_time = r.block_time AND blockchain = '{{chain}}') THEN 1 ELSE 0 END)*/ AS num_perp_trade_txs
             , 0 /*SUM(CASE WHEN EXISTS (SELECT 1 FROM [[ ref('nft_trades') ]] r WHERE t.hash = r.tx_hash AND t.block_number = r.block_number AND blockchain = '{{chain}}') THEN 1 ELSE 0 END)*/ AS num_nft_trade_txs
             
-            FROM {{ source( {{chain}} ,'transactions') }} t
+            FROM {{ source( chain ,'transactions') }} t
 
         GROUP BY 1,2
 

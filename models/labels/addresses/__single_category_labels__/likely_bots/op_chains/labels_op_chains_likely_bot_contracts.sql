@@ -47,7 +47,7 @@ FROM (
             AS txs_per_hour
 
         -- SUM( CASE WHEN substring(data from 1 for 10) = mode(substring(data from 1 for 10) THEN 1 ELSE 0 END) ) AS method_dupe
-        FROM {{ source({{chain}},'transactions') }} t
+        FROM {{ source(chain ,'transactions') }} t
         GROUP BY 1
         
         -- search for various potential bot indicators
