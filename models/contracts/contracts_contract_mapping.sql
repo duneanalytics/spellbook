@@ -78,9 +78,9 @@ SELECT *
     ,code_deploy_rank
     ,code_deploy_rank_by_chain
     ,to_iterate_creators
-    ,is_new_contract
     ,code
     
+    ,is_new_contract
     ,ROW_NUMBER() OVER (PARTITION BY '{{chain}}', contract_address ORDER BY created_time ASC ) AS contract_order -- to ensure no dupes
 
   from (
@@ -294,15 +294,15 @@ WHERE contract_order = 1
         then b.created_tx_to else COALESCE(u.created_tx_to, b.created_tx_to ) end AS top_level_tx_to
       ,case when nd.creator_address IS NOT NULL
         then b.created_tx_method_id else COALESCE(u.created_tx_method_id, b.created_tx_method_id ) end AS top_level_tx_method_id
-      
+        
       ,b.code_bytelength
       ,b.is_self_destruct
       ,b.token_standard
-      ,b.code
       ,b.code_deploy_rank
-      ,b.contract_order
       ,b.code_deploy_rank_by_chain
       ,b.to_iterate_creators --check if base needs to be iterated, keep the base option
+      ,b.code
+      ,b.is_new_contract
 
     {% if loop.first -%}
     from base_level as b
