@@ -18,7 +18,6 @@
 
 WITH dexs AS
 (
-        -- MetaAggregationRouterV2
         SELECT
             evt_block_time AS block_time,
             'kyberswap' AS project,
@@ -63,7 +62,7 @@ SELECT
     ) as amount_usd
     ,dexs.token_bought_address
     ,dexs.token_sold_address
-    ,coalesce(dexs.taker, tx."from") AS taker -- subqueries rely on this COALESCE to avoid redundant joins with the transactions table
+    ,coalesce(dexs.taker, tx."from") AS taker
     ,dexs.maker
     ,dexs.project_contract_address
     ,dexs.tx_hash
