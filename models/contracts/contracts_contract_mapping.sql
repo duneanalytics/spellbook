@@ -294,7 +294,7 @@ WHERE contract_order = 1
         then b.created_tx_to else COALESCE(u.created_tx_to, b.created_tx_to ) end AS top_level_tx_to
       ,case when nd.creator_address IS NOT NULL
         then b.created_tx_method_id else COALESCE(u.created_tx_method_id, b.created_tx_method_id ) end AS top_level_tx_method_id
-        
+
       ,b.code_bytelength
       ,b.is_self_destruct
       ,b.token_standard
@@ -303,6 +303,7 @@ WHERE contract_order = 1
       ,b.to_iterate_creators --check if base needs to be iterated, keep the base option
       ,b.code
       ,b.is_new_contract
+      ,b.contract_order
 
     {% if loop.first -%}
     from base_level as b
