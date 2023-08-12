@@ -17,10 +17,6 @@ models:
             - pool
             - token_id
             - token_type
-      - check_dex_pools_seed:
-          blockchain: fantom
-          project: curve
-          version: 2
     columns:
       - &blockchain
         name: blockchain
