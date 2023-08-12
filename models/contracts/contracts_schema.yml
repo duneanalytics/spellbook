@@ -108,9 +108,9 @@ models:
       - &token_standard
         name: token_standard
         description: "What token standard the contract is. For non-tokens, this field will be null."
-      - &code_deploy_rank
-        name: code_deploy_rank
-        description: "Was this the 1st, 2rd, 3rd, etc time the same exact bytecode was deployed on any measured chain? (1 = 1st). This can be used for spam filtering."
+      # - &code_deploy_rank
+      #   name: code_deploy_rank
+      #   description: "Was this the 1st, 2rd, 3rd, etc time the same exact bytecode was deployed on any measured chain? (1 = 1st). This can be used for spam filtering."
       - &code_deploy_rank_by_chain
         name: code_deploy_rank_by_chain
         description: "Was this the 1st, 2rd, 3rd, etc time the same exact bytecode was deployed by chain? (1 = 1st). This can be used for spam filtering."

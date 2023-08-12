@@ -39,10 +39,10 @@
     ,"created_tx_index"
     ,"code_bytelength"
     ,"token_standard"
-    ,"code_deploy_rank"
+
     ,"code_deploy_rank_by_chain"
 ] %}
-
+    -- ,"code_deploy_rank"
 
 {% set evm_chains = all_evm_mainnets_testnets_chains() %} --macro: all_evm_chains.sql
 
@@ -75,7 +75,7 @@ SELECT *
     ,code_bytelength
     ,is_self_destruct
     ,token_standard
-    ,ROW_NUMBER() OVER (PARTITION BY code ORDER BY created_time ASC, created_tx_index ASC) AS code_deploy_rank
+    -- ,ROW_NUMBER() OVER (PARTITION BY code ORDER BY created_time ASC, created_tx_index ASC) AS code_deploy_rank
     ,ROW_NUMBER() OVER (PARTITION BY '{{chain}}', contract_address ORDER BY created_time ASC ) AS contract_order -- to ensure no dupes
     ,ROW_NUMBER() OVER (PARTITION BY '{{chain}}', code ORDER BY created_block_number ASC, created_tx_index ASC) AS code_deploy_rank_by_chain
     ,to_iterate_creators
@@ -296,7 +296,7 @@ WHERE contract_order = 1
       ,b.code_bytelength
       ,b.is_self_destruct
       ,b.token_standard
-      ,b.code_deploy_rank
+      -- ,b.code_deploy_rank
       ,b.contract_order
       ,b.code_deploy_rank_by_chain
       ,b.to_iterate_creators --check if base needs to be iterated, keep the base option
@@ -346,7 +346,7 @@ WHERE contract_order = 1
     ,f.code_bytelength
     ,f.is_self_destruct
     ,f.token_standard
-    ,f.code_deploy_rank
+    -- ,f.code_deploy_rank
     ,f.code_deploy_rank_by_chain
   from (
     SELECT * FROM level{{max_levels - 1}} WHERE to_iterate_creators = 1 --get mapped contracts
@@ -389,14 +389,14 @@ WHERE contract_order = 1
     ,cc.created_tx_method_id
     ,cc.created_tx_index
     ,cc.code_bytelength
-    ,cc.code_deploy_rank
+    -- ,cc.code_deploy_rank
     ,cc.code_deploy_rank_by_chain
     ,1 as map_rank
   from creator_contracts as cc 
   left join {{ source( chain , 'contracts') }} as oc 
     on cc.contract_address = oc.address 
   WHERE cc.blockchain = '{{chain}}'
-  group by 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26
+  group by 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25--, 26
   
   union all
   -- missing contracts
@@ -425,7 +425,7 @@ WHERE contract_order = 1
     ,CAST(NULL AS varbinary) as created_tx_method_id
     ,l.tx_index AS created_tx_index
     ,bytearray_length(oc.code) as code_bytelength
-    ,1 as code_deploy_rank
+    -- ,1 as code_deploy_rank
     ,1 as code_deploy_rank_by_chain
     ,2 as map_rank
   from {{ source( chain , 'logs') }} as l
@@ -472,7 +472,7 @@ WHERE contract_order = 1
       ,CAST(NULL AS varbinary) as created_tx_method_id
       ,cast(NULL as bigint) AS created_tx_index
       ,cast(NULL as bigint) as code_bytelength --todo
-      ,1 as code_deploy_rank
+      -- ,1 as code_deploy_rank
       ,1 as code_deploy_rank_by_chain
       ,3 as map_rank
 
@@ -517,7 +517,7 @@ WHERE contract_order = 1
 
     ,c.code_bytelength
     ,COALESCE(t.token_standard, c.token_standard) AS token_standard
-    ,c.code_deploy_rank
+    -- ,c.code_deploy_rank
     ,c.code_deploy_rank_by_chain
     ,MIN(c.map_rank) AS map_rank
 
@@ -525,7 +525,7 @@ WHERE contract_order = 1
   left join tokens as t 
     on c.contract_address = t.contract_address
     AND c.blockchain = t.blockchain
-  group by 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26
+  group by 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25--, 26
   ) a
   ORDER BY map_rank ASC NULLS LAST --order we pick
 )
@@ -555,7 +555,9 @@ SELECT
 , created_tx_to, created_tx_method_id, created_tx_index
 , top_level_time, top_level_tx_hash, top_level_block_number
 , top_level_tx_from, top_level_tx_to , top_level_tx_method_id
-, code_bytelength , token_standard , code_deploy_rank, code_deploy_rank_by_chain
+, code_bytelength , token_standard 
+-- , code_deploy_rank
+, code_deploy_rank_by_chain
 , is_eoa_deployed
 
 FROM (
@@ -602,7 +604,7 @@ FROM (
     
     ,c.code_bytelength
     ,c.token_standard
-    ,c.code_deploy_rank
+    -- ,c.code_deploy_rank
     ,c.code_deploy_rank_by_chain
     ,CASE WHEN c.trace_creator_address = c.created_tx_from THEN 1 ELSE 0 END AS is_eoa_deployed
 
