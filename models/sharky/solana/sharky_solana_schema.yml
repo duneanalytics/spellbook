@@ -63,6 +63,6 @@ models:
       - &orderbook
         name: orderbook
         description: "The orderbook where the loan is placed"
-      - &loan_id
+      - &nft
         name: nft
         description: "The mint address of the nft used as collateral"
