@@ -159,7 +159,7 @@ SELECT *
     union all 
 
     select 
-      blockchain,
+      t.blockchain,
       ,t.creator_address
       ,t.contract_creator_if_factory as contract_factory
       ,t.contract_address
@@ -232,17 +232,17 @@ WHERE contract_order = 1
 
 ,tokens as (
   select
-    blockchain
-    ,contract_address
-    ,symbol
+    e.blockchain
+    ,e.contract_address
+    ,e.symbol
     ,'erc20' as token_standard
 
-  FROM {{ ref('tokens_erc20')}} --note: This doesn't yet contain all ERC20 tokens
+  FROM {{ ref('tokens_erc20')}} e --note: This doesn't yet contain all ERC20 tokens
 
   UNION ALL
 
   select 
-    blockchain
+    t.blockchain
     ,t.contract_address
     ,t.name as symbol
     , standard AS token_standard
@@ -357,7 +357,7 @@ WHERE contract_order = 1
 
 
   SELECT 
-  blockchain, contract_address, code, created_block_number
+  nc.blockchain, nc.contract_address, nc.code, nc.created_block_number
     , COALESCE(cbc.max_code_deploy_rank_by_chain,0) + nc.code_deploy_rank_by_chain_intermediate AS code_deploy_rank_by_chain
     , COALESCE(cbt.max_code_deploy_rank,0) + nc.code_deploy_rank_intermediate AS code_deploy_rank
 
@@ -599,7 +599,7 @@ WHERE contract_order = 1
   group by 1,2
 )
 SELECT
-  blockchain,
+  c.blockchain,
   trace_creator_address,  contract_address, 
   --initcap: https://jordanlamborn.medium.com/presto-sql-proper-case-initcap-how-to-capitalize-the-first-letter-of-each-word-in-presto-5fbac3f0154c
   (array_join((transform((split(lower(contract_project),' '))
