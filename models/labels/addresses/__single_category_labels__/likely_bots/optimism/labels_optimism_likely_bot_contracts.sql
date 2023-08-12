@@ -1,6 +1,7 @@
 {{
     config(
         alias = alias('likely_bot_contracts'),
+        tags = ['dunesql'],
         post_hook='{{ expose_spells(\'["optimism"]\', 
         "sector", 
         "labels", 
@@ -18,7 +19,7 @@ SELECT *,
     cast(num_nft_tfer_txs as double) / cast( num_txs as double) AS pct_nft_tfer_txs,
     cast(num_token_tfer_txs as double) / cast( num_txs as double) AS pct_token_tfer_txs,
     cast(num_dex_trade_txs as double) / cast( num_txs as double) AS pct_dex_trade_txs,
-    cast(num_perp_trade_txs as double) / cast( num_txs as double) AS pct_perp_trade_txs, -- perpetual.trades has some dunesql incompatability
+    cast(num_perp_trade_txs as double) / cast( num_txs as double) AS pct_perp_trade_txs,
     cast(num_nft_trade_txs as double) / cast( num_txs as double) AS pct_nft_trade_txs
 
 FROM (
@@ -33,17 +34,16 @@ FROM (
             SUM(CASE WHEN EXISTS (SELECT 1 FROM {{ ref('dex_trades') }} r WHERE t.hash = r.tx_hash AND t.block_time = r.block_time AND blockchain = 'optimism') THEN 1 ELSE 0 END) AS num_dex_trade_txs,
             SUM(CASE WHEN EXISTS (SELECT 1 FROM {{ ref('perpetual_trades') }} r WHERE t.hash = r.tx_hash AND t.block_time = r.block_time AND blockchain = 'optimism') THEN 1 ELSE 0 END) AS num_perp_trade_txs,
             SUM(CASE WHEN EXISTS (SELECT 1 FROM {{ ref('nft_trades') }} r WHERE t.hash = r.tx_hash AND t.block_number = r.block_number AND blockchain = 'optimism') THEN 1 ELSE 0 END) AS num_nft_trade_txs,
-        COUNT(*) AS num_txs, COUNT(DISTINCT `from`) AS num_senders, COUNT(*)/COUNT(DISTINCT `from`) AS txs_per_sender,
+        COUNT(*) AS num_txs, COUNT(DISTINCT "from") AS num_senders, COUNT(*)/COUNT(DISTINCT "from") AS txs_per_sender,
         
-        cast(cast(COUNT(*) as double)/cast(COUNT(DISTINCT `from`) as double) as double) / 
-            ( cast( bigint(MAX(block_time)) - bigint(MIN(block_time)) as double) / (60.0*60.0) )
-            -- DuneSQL ( cast( date_DIFF('second', MIN(block_time), MAX(block_time)) as double) / (60.0*60.0) )  
+        cast(cast(COUNT(*) as double)/cast(COUNT(DISTINCT "from") as double) as double) / 
+            ( cast( date_DIFF('second', MIN(block_time), MAX(block_time)) as double) / (60.0*60.0) )  
             AS txs_per_addr_per_hour,
             
         cast(COUNT(*) as double) / 
-            ( cast( bigint(MAX(block_time)) - bigint(MIN(block_time)) as double) / (60.0*60.0) )
-            -- DuneSQL ( cast( date_DIFF('second', MIN(block_time), MAX(block_time)) as double) / (60.0*60.0) ) 
+            ( cast( date_DIFF('second', MIN(block_time), MAX(block_time)) as double) / (60.0*60.0) ) 
             AS txs_per_hour
+
         -- SUM( CASE WHEN substring(data from 1 for 10) = mode(substring(data from 1 for 10) THEN 1 ELSE 0 END) ) AS method_dupe
         FROM {{ source('optimism','transactions') }} t
         GROUP BY 1
@@ -52,24 +52,21 @@ FROM (
         HAVING
         -- early bots: > 25 txs / hour per address
         (COUNT(*) >= 100 AND
-        cast(cast(COUNT(*) as double)/cast(COUNT(DISTINCT `from`) as double) as double) / 
-            ( cast( bigint(MAX(block_time)) - bigint(MIN(block_time)) as double) / (60.0*60.0) ) >= 25 
-              -- Dunesql ( cast( date_DIFF('second', MIN(block_time), MAX(block_time)) as double) / (60.0*60.0) ) >= 25 
+        cast(cast(COUNT(*) as double)/cast(COUNT(DISTINCT "from") as double) as double) / 
+            ( cast( date_DIFF('second', MIN(block_time), MAX(block_time)) as double) / (60.0*60.0) ) >= 25 
         )
         OR
         -- established bots: less than 30 senders & > 2.5k txs & > 0.5 txs / hr (to make sure we don't accidently catch active multisigs)
-            (COUNT(*) >= 2500 AND COUNT(DISTINCT `from`) <=30
+            (COUNT(*) >= 2500 AND COUNT(DISTINCT "from") <=30
             AND cast(COUNT(*) as double) / 
-            ( cast( bigint(MAX(block_time)) - bigint(MIN(block_time)) as double) / (60.0*60.0) ) >= 0.5
-            -- DuneSQL( cast( date_DIFF('second', MIN(block_time), MAX(block_time)) as double) / (60.0*60.0) ) >= 0.5
+            DuneSQL( cast( date_DIFF('second', MIN(block_time), MAX(block_time)) as double) / (60.0*60.0) ) >= 0.5
             )
             OR 
         -- wider distribution bots: > 2.5k txs and > 1k txs per sender & > 0.5 txs / hr (to make sure we don't accidently catch active multisigs)
             (
-            COUNT(*) >= 2500 AND cast(COUNT(*) as double)/cast(COUNT(DISTINCT `from`) as double) >= 1000
+            COUNT(*) >= 2500 AND cast(COUNT(*) as double)/cast(COUNT(DISTINCT "from") as double) >= 1000
             AND cast(COUNT(*) as double) / 
-            ( cast( bigint(MAX(block_time)) - bigint(MIN(block_time)) as double) / (60.0*60.0) ) >= 0.5
-            -- DuneSQL( cast( date_DIFF('second', MIN(block_time), MAX(block_time)) as double) / (60.0*60.0) ) >= 0.5
+            ( cast( date_DIFF('second', MIN(block_time), MAX(block_time)) as double) / (60.0*60.0) ) >= 0.5
             )
     ) a
 )
@@ -81,10 +78,10 @@ select
   category,
   'msilb7' AS contributor,
   'query' AS source,
-  timestamp('2023-03-11') as created_at,
+  timestamp '2023-03-11' as created_at,
   now() as updated_at,
   'likely_bot_contracts' as model_name,
-'persona' as label_type
+  'persona' as label_type
 
   FROM (
 

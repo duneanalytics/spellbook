@@ -1,6 +1,7 @@
 {{
     config(
         alias = alias('likely_bot_addresses'),
+        tags = ['dunesql'],
         post_hook='{{ expose_spells(\'["optimism"]\', 
         "sector", 
         "labels", 
@@ -79,8 +80,7 @@ FROM (
             ,SUM(bot_concentration_txs) AS bot_concentration_txs
             
             ,cast(SUM(bot_concentration_txs) as double) / cast(SUM(wk_txs) as double) AS pct_bot_concentration_txs
-            -- DuneSQL ,( cast( date_DIFF('second', MIN(min_block_time), MAX(max_block_time)) as double) / (60.0*60.0) ) AS txs_per_hour
-            ,cast( bigint(MAX(max_block_time)) - bigint(MIN(min_block_time)) as double) / (60.0*60.0) AS txs_per_hour
+            ,( cast( date_DIFF('second', MIN(min_block_time), MAX(max_block_time)) as double) / (60.0*60.0) ) AS txs_per_hour
 
             ,SUM(num_erc20_tfer_txs) AS num_erc20_tfer_txs
             ,SUM(num_nft_tfer_txs) AS num_nft_tfer_txs
@@ -98,8 +98,7 @@ FROM (
                 OR 
                     (
                     cast(COUNT(*) as double) / 
-                        ( cast( bigint(MAX(max_block_time)) - bigint(MIN(min_block_time)) as double) / (60.0*60.0) ) >= 25 
-                        -- Dunesql ( cast( date_DIFF('second', MIN(min_block_time), MAX(max_block_time)) as double) / (60.0*60.0) ) >= 25 
+                        ( cast( date_DIFF('second', MIN(min_block_time), MAX(max_block_time)) as double) / (60.0*60.0) ) >= 25 
                     AND SUM(wk_txs) >= 100
                     ) --frequency gt 25 txs per hour
                 OR AVG(pct_weekly_hours_active) > 0.5 -- aliveness: transacting at least 50% of hours per week
@@ -116,7 +115,7 @@ select
   category,
   'msilb7' AS contributor,
   'query' AS source,
-  timestamp('2023-03-11') as created_at,
+  timestamp '2023-03-11' as created_at,
   now() as updated_at,
   'likely_bot_addresses' as model_name,
   'persona' as label_type
