@@ -1,19 +1,19 @@
 {{ config(
-    tags = ['dunesql'],
-    schema = 'uniswap_arbitrum',
+    tags=['dunesql'],
+    schema = 'uniswap_bnb',
     alias = alias('pools'),
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
     unique_key = ['pool'],
-    post_hook='{{ expose_spells(\'["arbitrum"]\',
+    post_hook='{{ expose_spells(\'["bnb"]\',
                                 "project",
                                 "uniswap",
-                                \'["hildobby"]\') }}'
+                                \'["mtitus6"]\') }}'
     )
 }}
 
-SELECT 'arbitrum' AS blockchain
+SELECT 'bnb' AS blockchain
 , 'uniswap' AS project
 , 'v3' AS version
 , pool
@@ -23,7 +23,7 @@ SELECT 'arbitrum' AS blockchain
 , evt_block_time AS creation_block_time
 , evt_block_number AS creation_block_number
 , contract_address
-FROM {{ source('uniswap_v3_arbitrum', 'Factory_evt_PoolCreated') }}
+FROM {{ source('uniswap_v3_bnb', 'Factory_evt_PoolCreated') }}
 {% if is_incremental() %}
 WHERE evt_block_time >= date_trunc('day', now() - interval '7' day)
 {% endif %}
