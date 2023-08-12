@@ -575,6 +575,9 @@ WITH curated_list AS (
       ,('0x8286dC6dF929C4BfA4f6951caB4dAe2EC02d4D72', 'Hundred Finance')
       ,('0xB45cf380FF9A33c2bf7c41043530dc8Bb2e5295B', 'ChainX')
       ,('0x4c276F7FF3893a68cc9A947544B32E9F1e6d9912', 'Nouns Builder')
+      ,('0x56d7303fB0d0781c2FbEf962d7F9461BF416916F', 'mint.fun')
+      ,('0xfBa662e1a8e91a350702cF3b87D0C2d2Fb4BA57F', 'Seaport')
+      ,('0x1083a997A822fED50aaaF785f95e2726440069E4', 'Gnosis Safe')
       
   ) as temp_table (creator_address, contract_project)
 )
