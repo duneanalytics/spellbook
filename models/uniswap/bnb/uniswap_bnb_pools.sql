@@ -1,7 +1,7 @@
 {{ config(
     tags=['dunesql'],
     schema = 'uniswap_bnb',
-    alias = 'pools',
+    alias = alias('pools'),
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
