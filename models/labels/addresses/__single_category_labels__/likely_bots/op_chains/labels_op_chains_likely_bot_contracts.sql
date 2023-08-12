@@ -61,7 +61,7 @@ FROM (
         -- established bots: less than 30 senders & > 2.5k txs & > 0.5 txs / hr (to make sure we don't accidently catch active multisigs)
             (COUNT(*) >= 2500 AND COUNT(DISTINCT "from") <=30
             AND cast(COUNT(*) as double) / 
-            DuneSQL( cast( date_DIFF('second', MIN(block_time), MAX(block_time)) as double) / (60.0*60.0) ) >= 0.5
+                ( cast( date_DIFF('second', MIN(block_time), MAX(block_time)) as double) / (60.0*60.0) ) >= 0.5
             )
             OR 
         -- wider distribution bots: > 2.5k txs and > 1k txs per sender & > 0.5 txs / hr (to make sure we don't accidently catch active multisigs)
