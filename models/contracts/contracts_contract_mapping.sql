@@ -75,14 +75,13 @@ SELECT *
     ,code_bytelength
     ,is_self_destruct
     ,token_standard
-    ,code
-    
-    ,ROW_NUMBER() OVER (PARTITION BY '{{chain}}', contract_address ORDER BY created_time ASC ) AS contract_order -- to ensure no dupes
-
     ,code_deploy_rank
     ,code_deploy_rank_by_chain
     ,to_iterate_creators
     ,is_new_contract
+    ,code
+    
+    ,ROW_NUMBER() OVER (PARTITION BY '{{chain}}', contract_address ORDER BY created_time ASC ) AS contract_order -- to ensure no dupes
 
   from (
   {% for chain in evm_chains %}
@@ -226,7 +225,7 @@ SELECT *
     {% endif %}
     {% endfor %}
   ) as x
-  group by 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, to_iterate_creators, code
+  group by 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26
 ) y 
 WHERE contract_order = 1
 )
@@ -451,7 +450,7 @@ WHERE contract_order = 1
   left join {{ source( chain , 'contracts') }} as oc 
     on cc.contract_address = oc.address 
   WHERE cc.blockchain = '{{chain}}'
-  group by 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26
+  group by 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27
   
   union all
   -- missing contracts
@@ -583,7 +582,7 @@ WHERE contract_order = 1
   left join tokens as t 
     on c.contract_address = t.contract_address
     AND c.blockchain = t.blockchain
-  group by 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26
+  group by 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27
   ) a
   ORDER BY map_rank ASC NULLS LAST --order we pick
 )
