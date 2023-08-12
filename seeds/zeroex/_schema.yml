@@ -8,7 +8,7 @@ seeds:
          timestamp: timestamp
          protocol_version: varchar
          tx_hash: varbinary
-         evt_index: uint256
+         evt_index: integer
          maker: varbinary
          taker: varbinary
          maker_token: varbinary
@@ -28,7 +28,7 @@ seeds:
          timestamp: timestamp
          protocol_version: varchar
          tx_hash: varbinary
-         evt_index: uint256
+         evt_index: integer
          maker: varbinary
          taker: varbinary
          maker_token: varbinary
@@ -48,7 +48,7 @@ seeds:
          timestamp: timestamp
          protocol_version: varchar
          tx_hash: varbinary
-         evt_index: uint256
+         evt_index: integer
          maker: varbinary
          taker: varbinary
          maker_token: varbinary
@@ -68,7 +68,7 @@ seeds:
          timestamp: timestamp
          protocol_version: varchar
          tx_hash: varbinary
-         evt_index: uint256
+         evt_index: integer
          maker: varbinary
          taker: varbinary
          maker_token: varbinary
