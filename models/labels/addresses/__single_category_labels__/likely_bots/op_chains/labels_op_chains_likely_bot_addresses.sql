@@ -22,7 +22,7 @@ WITH sender_transfer_rates AS (
             , MIN(block_time) AS min_block_time
             , MAX(block_time) AS max_block_time
             , COUNT(*) AS hr_txs
-            , SUM(CASE WHEN to IN (SELECT address FROM {{ ref('labels_op_chains_likely_bot_contracts') }} WHERE name != 'chain ops bot') THEN 1 ELSE 0 END) AS bot_concentration_txs
+            , SUM(CASE WHEN to IN (SELECT address FROM {{ ref('labels_op_chains_likely_bot_contracts') }} WHERE name != 'chain ops bot' AND blockchain = '{{chain}}') THEN 1 ELSE 0 END) AS bot_concentration_txs
             
             , SUM(CASE WHEN EXISTS (SELECT 1 FROM {{ source('erc20_' + chain,'evt_transfer') }} r WHERE t.hash = r.evt_tx_hash AND t.block_number = r.evt_block_number) THEN 1 ELSE 0 END) AS num_erc20_tfer_txs
             , SUM(CASE WHEN EXISTS (SELECT 1 FROM {{ ref('nft_transfers') }} r WHERE t.hash = r.tx_hash AND t.block_number = r.block_number AND blockchain = '{{chain}}') THEN 1 ELSE 0 END) AS num_nft_tfer_txs
@@ -36,6 +36,7 @@ WITH sender_transfer_rates AS (
             , 0 /*SUM(CASE WHEN EXISTS (SELECT 1 FROM [[ ref('nft_trades') ]] r WHERE t.hash = r.tx_hash AND t.block_number = r.block_number AND blockchain = '{{chain}}') THEN 1 ELSE 0 END)*/ AS num_nft_trade_txs
             
             FROM {{ source( chain ,'transactions') }} t
+            
 
         GROUP BY 1,2
 
@@ -82,7 +83,7 @@ SELECT *,
     
 FROM (
         SELECT
-            blockchain
+            '{{chain}}' AS blockchain
             , sender, MAX(wk_txs) AS max_wk_txs, MAX(max_hr_txs) AS max_hr_txs, AVG(wk_txs) AS avg_wk_txs
             ,MIN(min_block_time) AS min_block_time
             ,MAX(max_block_time) AS max_block_time
