@@ -39,10 +39,10 @@
     ,"created_tx_index"
     ,"code_bytelength"
     ,"token_standard"
-
+    ,"code"
+    ,"code_deploy_rank"
     ,"code_deploy_rank_by_chain"
 ] %}
-    -- ,"code_deploy_rank"
 
 {% set evm_chains = all_evm_mainnets_testnets_chains() %} --macro: all_evm_chains.sql
 
@@ -75,10 +75,14 @@ SELECT *
     ,code_bytelength
     ,is_self_destruct
     ,token_standard
-    -- ,ROW_NUMBER() OVER (PARTITION BY code ORDER BY created_time ASC, created_tx_index ASC) AS code_deploy_rank
+    ,code
+    
     ,ROW_NUMBER() OVER (PARTITION BY '{{chain}}', contract_address ORDER BY created_time ASC ) AS contract_order -- to ensure no dupes
-    ,ROW_NUMBER() OVER (PARTITION BY '{{chain}}', code ORDER BY created_block_number ASC, created_tx_index ASC) AS code_deploy_rank_by_chain
+
+    ,code_deploy_rank
+    ,code_deploy_rank_by_chain
     ,to_iterate_creators
+    ,is_new_contract
 
   from (
   {% for chain in evm_chains %}
@@ -101,6 +105,8 @@ SELECT *
       ,bytearray_substring(t.data,1,4) AS created_tx_method_id
       ,t.index as created_tx_index
       ,ct.code
+      ,CAST(NULL AS bigint) as code_deploy_rank
+      ,CAST(NULL AS bigint) as code_deploy_rank_by_chain
       ,bytearray_length(ct.code) AS code_bytelength
       ,coalesce(sd.contract_address is not NULL, false) as is_self_destruct
       ,CASE 
@@ -118,6 +124,7 @@ SELECT *
       ELSE NULL
       END AS token_standard
       ,1 AS to_iterate_creators
+      ,1 AS is_new_contract
     from {{ source( chain , 'creation_traces') }} as ct 
     inner join {{ source( chain , 'transactions') }} as t 
       ON t.hash = ct.tx_hash
@@ -183,7 +190,9 @@ SELECT *
       ,t.created_tx_to
       ,t.created_tx_method_id
       ,t.created_tx_index
-      ,ct.code
+      ,t.code
+      ,t.code_deploy_rank
+      ,t.code_deploy_rank
       ,t.code_bytelength
       ,coalesce(sd.contract_address is not NULL, t.is_self_destruct, false) as is_self_destruct
       ,token_standard
@@ -191,19 +200,13 @@ SELECT *
         WHEN nd.creator_address IS NOT NULL THEN 1
         WHEN ct."from" != t.trace_creator_address THEN 1 -- weird data ingestion issue?
         ELSE 0 END AS to_iterate_creators
+      ,0 AS is_new_contract
     from {{ this }} t
     left join {{ ref('contracts_self_destruct_contracts') }} as sd 
       on t.contract_address = sd.contract_address
       and t.creation_tx_hash = sd.creation_tx_hash
       and t.created_time = sd.created_time
       AND t.created_block_number = sd.created_block_number
-      AND t.blockchain = '{{chain}}'
-    left join {{ source(chain , 'creation_traces') }} as ct
-      ON t.contract_address = ct.address
-      AND t.created_time = ct.block_time
-      AND t.created_block_number = ct.block_number
-      AND t.creation_tx_hash = ct.tx_hash
-      AND sd.contract_address IS NULL
       AND t.blockchain = '{{chain}}'
 
     -- If the creator becomes marked as deterministic, we want to re-run it.
@@ -296,7 +299,8 @@ WHERE contract_order = 1
       ,b.code_bytelength
       ,b.is_self_destruct
       ,b.token_standard
-      -- ,b.code_deploy_rank
+      ,b.code
+      ,b.code_deploy_rank
       ,b.contract_order
       ,b.code_deploy_rank_by_chain
       ,b.to_iterate_creators --check if base needs to be iterated, keep the base option
@@ -322,6 +326,51 @@ WHERE contract_order = 1
 )
 {%- endfor %}
 
+, code_ranks AS ( --generate code deploy rank without ranking over all prior contracts (except for initial builds)
+  WITH new_contracts AS (
+  SELECT
+    blockchain
+    , contract_address
+    , created_block_number
+    , code
+    , ROW_NUMBER() OVER (PARTITION BY code ORDER BY created_time ASC) AS code_deploy_rank_intermediate
+    , ROW_NUMBER() OVER (PARTITION BY blockchain, code ORDER BY created_time ASC) AS code_deploy_rank_by_chain_intermediate
+
+  FROM base_level
+  WHERE is_new_contract = 1
+  )
+  , existing_contracts_by_chain AS (
+    SELECT
+    blockchain, code
+      , MAX_BY(code_deploy_rank_by_chain, code) AS max_code_deploy_rank_by_chain
+    FROM base_level
+    WHERE is_new_contract = 0 AND code IS NOT NULL
+    GROUP BY 1,2
+  )
+  , existing_contracts_total AS (
+    SELECT
+    code
+      , MAX_BY(code_deploy_rank, code) AS max_code_deploy_rank
+    FROM base_level
+    WHERE is_new_contract = 0 AND code IS NOT NULL
+    GROUP BY 1
+  )
+
+
+  SELECT 
+  blockchain, contract_address, code, created_block_number
+    , COALESCE(cbc.max_code_deploy_rank_by_chain,0) + nc.code_deploy_rank_by_chain_intermediate AS code_deploy_rank_by_chain
+    , COALESCE(cbt.max_code_deploy_rank,0) + nc.code_deploy_rank_intermediate AS code_deploy_rank
+
+  FROM new_contracts nc 
+    LEFT JOIN existing_contracts_by_chain cbc
+      ON cbc.code = nc.code
+      AND cbc.blockchain = nc.blockchain
+    LEFT JOIN existing_contracts_total cbt
+      ON cbt.code = nc.code
+
+)
+
 ,creator_contracts as (
   select 
     f.blockchain
@@ -346,8 +395,9 @@ WHERE contract_order = 1
     ,f.code_bytelength
     ,f.is_self_destruct
     ,f.token_standard
-    -- ,f.code_deploy_rank
-    ,f.code_deploy_rank_by_chain
+    ,f.code
+    ,COALESCE(f.code_deploy_rank, cr.code_deploy_rank) AS code_deploy_rank
+    ,COALESCE(f.code_deploy_rank_by_chain, cr.code_deploy_rank_by_chain) AS code_deploy_rank_by_chain
   from (
     SELECT * FROM level{{max_levels - 1}} WHERE to_iterate_creators = 1 --get mapped contracts
     UNION ALL
@@ -359,6 +409,10 @@ WHERE contract_order = 1
     on f.contract_factory = ccf.creator_address
   left join {{ ref('contracts_contract_creator_address_list') }} as cctr
     on f.trace_creator_address = cctr.creator_address
+  LEFT JOIN code_ranks cr --code ranks for new contracts
+    ON cr.blockchain = f.blockchain
+    AND cr.contract_address = f.contract_address
+    AND cr.created_block_number = f.created_block_number
   
   where f.contract_address is not null
  )
@@ -389,8 +443,9 @@ WHERE contract_order = 1
     ,cc.created_tx_method_id
     ,cc.created_tx_index
     ,cc.code_bytelength
-    -- ,cc.code_deploy_rank
+    ,cc.code_deploy_rank
     ,cc.code_deploy_rank_by_chain
+    ,cc.code
     ,1 as map_rank
   from creator_contracts as cc 
   left join {{ source( chain , 'contracts') }} as oc 
@@ -425,8 +480,9 @@ WHERE contract_order = 1
     ,CAST(NULL AS varbinary) as created_tx_method_id
     ,l.tx_index AS created_tx_index
     ,bytearray_length(oc.code) as code_bytelength
-    -- ,1 as code_deploy_rank
+    ,1 as code_deploy_rank
     ,1 as code_deploy_rank_by_chain
+    ,oc.code
     ,2 as map_rank
   from {{ source( chain , 'logs') }} as l
     left join {{ source( chain , 'contracts') }} as oc 
@@ -472,8 +528,9 @@ WHERE contract_order = 1
       ,CAST(NULL AS varbinary) as created_tx_method_id
       ,cast(NULL as bigint) AS created_tx_index
       ,cast(NULL as bigint) as code_bytelength --todo
-      -- ,1 as code_deploy_rank
+      ,1 as code_deploy_rank
       ,1 as code_deploy_rank_by_chain
+      ,CAST(NULL AS varbinary) AS code
       ,3 as map_rank
 
     FROM {{ ref('contracts_predeploys') }} pre
@@ -517,7 +574,8 @@ WHERE contract_order = 1
 
     ,c.code_bytelength
     ,COALESCE(t.token_standard, c.token_standard) AS token_standard
-    -- ,c.code_deploy_rank
+    ,c.code
+    ,c.code_deploy_rank
     ,c.code_deploy_rank_by_chain
     ,MIN(c.map_rank) AS map_rank
 
@@ -556,8 +614,8 @@ SELECT
 , top_level_time, top_level_tx_hash, top_level_block_number
 , top_level_tx_from, top_level_tx_to , top_level_tx_method_id
 , code_bytelength , token_standard 
--- , code_deploy_rank
-, code_deploy_rank_by_chain
+, code
+, code_deploy_rank, code_deploy_rank_by_chain
 , is_eoa_deployed
 
 FROM (
@@ -604,7 +662,8 @@ FROM (
     
     ,c.code_bytelength
     ,c.token_standard
-    -- ,c.code_deploy_rank
+    ,c.code
+    ,c.code_deploy_rank
     ,c.code_deploy_rank_by_chain
     ,CASE WHEN c.trace_creator_address = c.created_tx_from THEN 1 ELSE 0 END AS is_eoa_deployed
 
