@@ -38,7 +38,7 @@ WITH sender_transfer_rates AS (
             FROM {{ source( chain ,'transactions') }} t
             
 
-        GROUP BY 1,2
+        GROUP BY 1,2,3
 
         {% if not loop.last %}
         UNION ALL
