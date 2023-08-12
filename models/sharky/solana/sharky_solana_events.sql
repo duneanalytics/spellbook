@@ -315,7 +315,8 @@ WITH
                 ) THEN abs(post_balances[array_position(account_keys, account_escrow)] - pre_balances[array_position(account_keys, account_escrow)] )
             ELSE (abs(post_balances[1] - pre_balances[1]))
        END AS amount_raw
-    FROM (
+    FROM  {{ source('solana','transactions') }}
+    INNER JOIN (
         SELECT * FROM take
         UNION ALL
         SELECT * FROM rescind
@@ -325,8 +326,7 @@ WITH
         SELECT * FROM extend
         UNION ALL
         SELECT * FROM foreclose
-    ) AS events
-    INNER JOIN {{ source('solana','transactions') }} ON (call_block_time = block_time AND call_tx_id = id)
+    ) events ON (call_block_time = block_time AND call_tx_id = id)
 ), final_event AS (
     SELECT * FROM offers
     UNION ALL
