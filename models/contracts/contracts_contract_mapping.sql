@@ -600,7 +600,7 @@ WHERE contract_order = 1
   group by 1,2
 )
 SELECT
-  c.blockchain,
+  blockchain,
   trace_creator_address,  contract_address, 
   --initcap: https://jordanlamborn.medium.com/presto-sql-proper-case-initcap-how-to-capitalize-the-first-letter-of-each-word-in-presto-5fbac3f0154c
   (array_join((transform((split(lower(contract_project),' '))
