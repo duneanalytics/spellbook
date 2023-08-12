@@ -1,14 +1,14 @@
 version: 2
 
 models:
-  - name: labels_optimism_likely_bot_contracts
+  - name: labels_op_chains_likely_bot_contracts
     meta:
-      blockchain: optimism
+      blockchain: optimism, base
       sector: labels
       category: bot_contracts
       contributors: msilb7
     config:
-      tags: ['labels', 'optimism','bots']
+      tags: ['labels', 'optimism','base','op chain','bots']
     description: "Likely bot contract labels"
     tests:
       - dbt_utils.unique_combination_of_columns:
@@ -50,14 +50,14 @@ models:
         name: label_type
         description: "Type of label (see labels overall readme)"
 
-  - name: labels_optimism_likely_bot_addresses
+  - name: labels_op_chains_likely_bot_addresses
     meta:
-      blockchain: optimism
+      blockchain: optimism, base
       sector: labels
       category: bot_addresses
       contributors: msilb7
     config:
-      tags: ['labels', 'optimism','bots']
+      tags: ['labels', 'optimism','base','op chain','bots']
     description: "Likely bot address labels"
     tests:
       - dbt_utils.unique_combination_of_columns:
