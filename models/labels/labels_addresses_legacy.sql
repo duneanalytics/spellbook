@@ -35,7 +35,6 @@
     , ref('labels_dex_legacy')
     , ref('labels_social_legacy')
     , ref('labels_nft_legacy')
-    , ref('labels_airdrop_legacy')
     , ref('labels_dao_legacy')
     , ref('labels_infrastructure_legacy')
 ] %}
