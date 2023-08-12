@@ -596,6 +596,7 @@ WITH curated_list AS (
       ,(0x48b47C07DCCebdBecf76eC70890bADC59e722386, 'rhino.fi')
       ,(0x1083a997A822fED50aaaF785f95e2726440069E4, 'Gnosis Safe')
       ,(0xafd14cb2d326218f76104afdc0965b884e5e076a, 'Words3')
+      ,(0x84a74cC52048dd8421Df4a9EB139D91bb7744b4E, 'Masa Finance')
 
       
   ) as temp_table (creator_address, contract_project)
