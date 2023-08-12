@@ -1,5 +1,6 @@
 {{ config(
     tags=['dunesql'],
+    schema = 'sharky_solana',
     alias = alias('events'),
     partition_by = ['block_month'],
     pre_hook = {
@@ -310,12 +311,12 @@ WITH
        CASE
             -- For take and rescind instructions we can take the exact amount available in the escrow account
             WHEN (
-                    evt_type = 'Take'
-                    OR evt_type = 'Rescind'
-                ) THEN abs(post_balances[array_position(account_keys, account_escrow)] - pre_balances[array_position(account_keys, account_escrow)] )
-            ELSE (abs(post_balances[1] - pre_balances[1]))
+                    events.evt_type = 'Take'
+                    OR events.evt_type = 'Rescind'
+                ) THEN abs(st.post_balances[array_position(st.account_keys, events.account_escrow)] - st.pre_balances[array_position(st.account_keys, events.account_escrow)] )
+            ELSE (abs(st.post_balances[1] - st.pre_balances[1]))
        END AS amount_raw
-    FROM  {{ source('solana','transactions') }}
+    FROM  {{ source('solana','transactions') }} st
     INNER JOIN (
         SELECT * FROM take
         UNION ALL
@@ -326,7 +327,13 @@ WITH
         SELECT * FROM extend
         UNION ALL
         SELECT * FROM foreclose
-    ) events ON (call_block_time = block_time AND call_tx_id = id)
+    ) events ON (events.call_block_time = st.block_time AND events.call_tx_id = st.id)
+    WHERE
+        {% if not is_incremental() %}
+        AND st.block_time >= TIMESTAMP '{{ project_start_date }}'
+        {% else %}
+        AND st.block_time >= DATE_TRUNC('day', NOW() - INTERVAL '7' DAY)
+        {% endif %}
 ), final_event AS (
     SELECT * FROM offers
     UNION ALL

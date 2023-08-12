@@ -1232,11 +1232,6 @@ models:
       optimism:
         +schema: zipswap_optimism
 
-    sharky:
-      +schema: sharky
-      solana:
-        +schema: sharky_solana
-
     arbswap:
       +schema: arbswap
 
