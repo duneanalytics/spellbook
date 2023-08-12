@@ -329,6 +329,7 @@ WITH
         SELECT * FROM foreclose
     ) events ON (events.call_block_time = st.block_time AND events.call_tx_id = st.id)
     WHERE
+        True
         {% if not is_incremental() %}
         AND st.block_time >= TIMESTAMP '{{ project_start_date }}'
         {% else %}
