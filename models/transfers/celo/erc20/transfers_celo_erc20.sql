@@ -1,4 +1,6 @@
-{{ config(materialized='view', alias = alias('erc20'),
+{{ config(
+    tags = ['dunesql'],
+    materialized='view', alias = alias('erc20'),
         post_hook='{{ expose_spells(\'["celo"]\',
                                     "sector",
                                     "transfers",
