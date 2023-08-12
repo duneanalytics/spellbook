@@ -37,7 +37,7 @@ FROM (
         maker,
         project_contract_address,
         tx_hash,
-        tx_from,
+--        tx_from,
         tx_to,
         trace_address,
         evt_index
