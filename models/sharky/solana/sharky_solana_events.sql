@@ -349,6 +349,6 @@ SELECT
     evt_type,
     account_loan AS loan_id,
     account_orderBook AS orderbook,
-    account_collateralMint AS nft,
+    account_collateralMint AS nft
 FROM final_event
 LEFT JOIN sol_price p ON p.minute = date_trunc('minute', call_block_time)
