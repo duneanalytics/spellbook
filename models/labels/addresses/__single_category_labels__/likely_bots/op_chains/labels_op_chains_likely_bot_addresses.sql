@@ -1,6 +1,6 @@
 {{
     config(
-        alias = alias('likely_bot_addresses'),
+        alias = alias('op_chains_likely_bot_addresses'),
         tags = ['dunesql'],
         post_hook='{{ expose_spells(\'["optimism","base"]\', 
         "sector", 
