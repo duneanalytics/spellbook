@@ -103,7 +103,7 @@ select
   UNION ALL
 
     SELECT
-    blockchain
+    blockchain,
     contract AS address,
     'likely bot types' AS category,
     CASE
