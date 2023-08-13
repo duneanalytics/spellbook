@@ -58,11 +58,11 @@ FROM(
     , t.value AS amount
     , t."from"
     , t.to
-    {%- if denormalized == True -%}
+    {% if denormalized == True -%}
     , t.evt_tx_from AS executed_by
     {%- else -%}
     , et."from" AS executed_by
-    {%- endif -%}
+    {%- endif %}
     , t.evt_tx_hash AS tx_hash
     , '{{blockchain}}' || cast(t.evt_tx_hash as varchar) || '-{{token_standard_1155}}-' || cast(t.contract_address as varchar) || '-' || cast(t.id as varchar) || '-' || cast(t."from" as varchar) || '-' || cast(t.to as varchar) || '-' || cast(t.value as varchar) || '-' || cast(t.evt_index as varchar) AS unique_transfer_id
     FROM {{ erc1155_single }} t
@@ -97,11 +97,11 @@ FROM(
     , cast(t.value as uint256) AS amount
     , t."from"
     , t.to
-    {%- if denormalized == True -%}
+    {% if denormalized == True -%}
     , t.evt_tx_from AS executed_by
     {%- else -%}
     , et."from" AS executed_by
-    {%- endif -%}
+    {%- endif %}
     , t.evt_tx_hash AS tx_hash
     , '{{blockchain}}' || cast(t.evt_tx_hash as varchar) || '-{{token_standard_1155}}-' || cast(t.contract_address as varchar) || '-' || cast(t.id as varchar) || '-' || cast(t."from" as varchar) || '-' || cast(t.to as varchar) || '-' || cast(t.value as varchar) || '-' || cast(t.evt_index as varchar) AS unique_transfer_id
     FROM (
