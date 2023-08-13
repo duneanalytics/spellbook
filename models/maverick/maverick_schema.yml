@@ -67,13 +67,13 @@ models:
         description: "Project contract address which executed the trade on the blockchain"
       - &tx_hash
         name: tx_hash
-        description: "Unique transaction hash value tied to each transaction on the DEX"
+        description: "Transaction hash"
       - &tx_from
         name: tx_from
-        description: "Address which initiated the transaction"
+        description: "transaction.from"
       - &tx_to
         name: tx_to
-        description: "Address which received the transaction"
+        description: "transaction.to"
       - &evt_index
         name: evt_index
-        description: "the position of this event log within this transaction"
+        description: "Event index"
