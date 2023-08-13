@@ -1,6 +1,5 @@
 {{ config(
     tags=['dunesql'],
-
     alias = alias('aggregator_trades'),
     post_hook='{{ expose_spells(\'["arbitrum"]\',
                             "project",
