@@ -1,5 +1,6 @@
 
 {{ config(
+        tags=['dunesql'],
         schema ='dex_aggregator',
         alias = alias('trades'),
         partition_by = ['block_date'],
@@ -29,6 +30,7 @@ spells with issues, to be excluded in short term:
  ,ref('bebop_trades')
  ,ref('zeroex_trades')
  ,ref('dodo_aggregator_trades')
+ ,ref('kyberswap_aggregator_trades')
 ] %}
 
 SELECT *
