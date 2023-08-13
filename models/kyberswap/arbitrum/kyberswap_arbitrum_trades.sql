@@ -1,5 +1,4 @@
 {{ config(
-    tags=['dunesql'],
     alias = alias('trades'),
     partition_by = ['block_date'],
     materialized = 'incremental',
