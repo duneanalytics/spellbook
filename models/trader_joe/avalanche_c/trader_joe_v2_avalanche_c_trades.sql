@@ -23,7 +23,7 @@ WITH dexs AS
         ,CAST(NULL AS VARBINARY) AS maker
         ,amountOut AS token_bought_amount_raw
         ,amountIn AS token_sold_amount_raw
-        ,NULL AS amount_usd
+        ,cast(NULL as double)  AS amount_usd
         ,CASE WHEN swapForY = true THEN f.tokenY ELSE f.tokenX END AS token_bought_address -- when swapForY is true it means that tokenY is the token being bought else it's tokenX
         ,CASE WHEN swapForY = true THEN f.tokenX ELSE f.tokenY END AS token_sold_address
         ,t.contract_address AS project_contract_address
@@ -42,33 +42,33 @@ SELECT
     'avalanche_c' AS blockchain
     ,'trader_joe' AS project
     ,'2' AS version
-    ,TRY_CAST(date_trunc('DAY', dexs.block_time) AS date)       AS block_date
-    ,CAST(date_trunc('month', dexs.block_time) AS date)         AS block_month
+    ,TRY_CAST(date_trunc('day', dexs.block_time) AS date) AS block_date
+    ,CAST(date_trunc('month', dexs.block_time) AS date) AS block_month
     ,dexs.block_time
-    ,erc20a.symbol                                              AS token_bought_symbol
-    ,erc20b.symbol                                              AS token_sold_symbol
-    , case
-       when lower(erc20a.symbol) > lower(erc20b.symbol) then concat(erc20b.symbol, '-', erc20a.symbol)
-       else concat(erc20a.symbol, '-', erc20b.symbol)
-    end                                                       AS token_pair
-    , dexs.token_bought_amount_raw / power(10, erc20a.decimals) AS token_bought_amount
-    , dexs.token_sold_amount_raw / power(10, erc20b.decimals)   AS token_sold_amount
-    , dexs.token_bought_amount_raw  AS token_bought_amount_raw
-    , dexs.token_sold_amount_raw  AS token_sold_amount_raw
-    , coalesce(
-    dexs.amount_usd
-    , (dexs.token_bought_amount_raw / power(10, p_bought.decimals)) * p_bought.price
-    , (dexs.token_sold_amount_raw / power(10, p_sold.decimals)) * p_sold.price
-    )                                                        AS amount_usd
-    , dexs.token_bought_address
-    , dexs.token_sold_address
-    , coalesce(dexs.taker, tx."from")                           AS taker -- subqueries rely on this COALESCE to avoid redundant joins with the transactions table
-    , dexs.maker
-    , dexs.project_contract_address
-    , dexs.tx_hash
-    , tx."from"                                                 AS tx_from
-    , tx.to                                                     AS tx_to
-    , dexs.evt_index
+    ,erc20a.symbol AS token_bought_symbol
+    ,erc20b.symbol AS token_sold_symbol
+    ,case
+        when lower(erc20a.symbol) > lower(erc20b.symbol) then concat(erc20b.symbol, '-', erc20a.symbol)
+        else concat(erc20a.symbol, '-', erc20b.symbol)
+    end as token_pair
+    ,dexs.token_bought_amount_raw / power(10, erc20a.decimals) AS token_bought_amount
+    ,dexs.token_sold_amount_raw / power(10, erc20b.decimals) AS token_sold_amount
+    ,dexs.token_bought_amount_raw  AS token_bought_amount_raw
+    ,dexs.token_sold_amount_raw  AS token_sold_amount_raw
+    ,coalesce(
+        dexs.amount_usd
+        ,(dexs.token_bought_amount_raw / power(10, p_bought.decimals)) * p_bought.price
+        ,(dexs.token_sold_amount_raw / power(10, p_sold.decimals)) * p_sold.price
+    ) AS amount_usd
+    ,dexs.token_bought_address
+    ,dexs.token_sold_address
+    ,coalesce(dexs.taker, tx."from") AS taker -- subqueries rely on this COALESCE to avoid redundant joins with the transactions table
+    ,dexs.maker
+    ,dexs.project_contract_address
+    ,dexs.tx_hash
+    ,tx."from" AS tx_from
+    ,tx.to AS tx_to
+    ,dexs.evt_index
 FROM dexs
 INNER JOIN {{ source('avalanche_c', 'transactions') }} tx
     ON tx.hash = dexs.tx_hash
