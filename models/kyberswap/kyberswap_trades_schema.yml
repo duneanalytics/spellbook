@@ -88,7 +88,7 @@ models:
       project: kyberswap
       contributors: nhd98z
     config:
-      tags:  ['arbitrum', 'dex', 'aggregator', 'trades', 'kyberswap']
+      tags:  ['arbitrum', 'dex', 'aggregator', 'trades', 'kyberswap', 'nhd98z']
     description: >
       Kyberswap Aggregator. This table will load dex_aggregator trades downstream.
     columns:
