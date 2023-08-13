@@ -6,7 +6,7 @@ models:
       blockchain: celo
       sector: transfers
       project: celo
-      contributors: tomfutago
+      contributors: msilb7, chuxin, tomfutago
     config:
       tags: ["transfers", "celo"]
     description: "Events of native CELO transfers on Celo."
@@ -57,7 +57,7 @@ models:
       blockchain: celo
       sector: transfers
       project: erc20
-      contributors: tomfutago
+      contributors: soispoke, dot2dotseurat, tschubotz, tomfutago
     config:
       tags: ['transfers', 'celo', 'erc20']
     description: "ERC20 Token Transfers on Celo. This table is updated every 30 minutes."
