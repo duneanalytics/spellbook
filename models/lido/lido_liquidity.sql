@@ -26,7 +26,10 @@
  ref('lido_liquidity_ethereum_curve_steth_frxeth_pool'),
  ref('lido_liquidity_ethereum_curve_steth_pool'),
  ref('lido_liquidity_ethereum_curve_wsteth_reth_pool'),
- ref('lido_liquidity_ethereum_balancer_pools')
+ ref('lido_liquidity_ethereum_balancer_pools'),
+ ref('lido_liquidity_ethereum_kyberswap_pools'),
+ ref('lido_liquidity_ethereum_maverick_pools'),
+ ref('lido_liquidity_ethereum_uniswap_v3_pools')
  
 ] %}
 

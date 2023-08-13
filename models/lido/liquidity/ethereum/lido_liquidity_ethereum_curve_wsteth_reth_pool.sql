@@ -228,8 +228,8 @@ select 'ethereum curve rETH:wstETH 0.04' as pool_name,
         0xae78736Cd615f374D3085123A210448E74Fc6393 as paired_token, 'rETH' as paired_token_symbol,
         wsteth as main_token_reserve,
         coalesce(reth.reth, 0) as paired_token_reserve,
-        coalesce(wstethp.price, 0)as main_token_usd_reserve,
-        rethp.price as paired_token_usd_reserve,
+        coalesce(wstethp.price, 0)as main_token_usd_price,
+        rethp.price as paired_token_usd_price,
         v.volume as trading_volume
 from wsteth_balances b 
 left join reth_balances reth on b.time = reth.time 
