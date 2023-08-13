@@ -30,7 +30,7 @@ FROM(
         {% if is_incremental() %}
             LEFT JOIN {{this}} anti_table
                 ON t.evt_tx_hash = anti_table.tx_hash
-        {% endif %}%
+        {% endif %}
     {%- if denormalized == True -%}
     INNER JOIN {{ base_transactions }} et ON et.block_number = t.evt_block_number
         AND et.hash = t.evt_tx_hash
