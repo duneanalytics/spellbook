@@ -9,7 +9,7 @@
 with
     sent_transfers as (
         select
-            'send-' || cast(evt_tx_hash as varchar) || '-' || cast(evt_index as varchar) || '-' || cast("to" as varchar) as unique_transfer_id,
+            'send-' || cast(evt_tx_hash as varchar(150)) || '-' || cast(evt_index as varchar(150)) || '-' || cast("to" as varchar(150)) as unique_transfer_id,
             to as wallet_address,
             contract_address as token_address,
             evt_block_time,
@@ -24,7 +24,7 @@ with
     
     received_transfers as (
         select
-            'receive-' || cast(evt_tx_hash as varchar) || '-' || cast (evt_index as varchar) || '-' || cast("from" as varchar) as unique_transfer_id,
+            'receive-' || cast(evt_tx_hash as varchar(150)) || '-' || cast (evt_index as varchar(150)) || '-' || cast("from" as varchar(150)) as unique_transfer_id,
             "from" as wallet_address,
             contract_address as token_address,
             evt_block_time,
@@ -40,7 +40,7 @@ with
 
     deposited_wcelo as (
         select
-            'deposit-' || cast(tx_hash as varchar) || '-' || cast (index as varchar) || '-' ||  cast(bytearray_substring(topic1,13,20) as varchar) as unique_transfer_id,
+            'deposit-' || cast(tx_hash as varchar(150)) || '-' || cast (index as varchar(150)) || '-' ||  cast(bytearray_substring(topic1,13,20) as varchar(150)) as unique_transfer_id,
             bytearray_substring(topic1,13,20) as wallet_address,
             contract_address as token_address,
             block_time as evt_block_time,
@@ -57,7 +57,7 @@ with
 
     withdrawn_wcelo as (
         select
-            'withdraw-' || cast(tx_hash as varchar) || '-' || cast (index as varchar) || '-' ||  cast(bytearray_substring(topic1,13,20) as varchar) as unique_transfer_id,
+            'withdraw-' || cast(tx_hash as varchar(150)) || '-' || cast (index as varchar(150)) || '-' ||  cast(bytearray_substring(topic1,13,20) as varchar(150)) as unique_transfer_id,
             bytearray_substring(topic1,13,20) as wallet_address,
             contract_address as token_address,
             block_time as evt_block_time,
