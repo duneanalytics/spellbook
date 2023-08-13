@@ -58,9 +58,9 @@ jobs:
       - name: dbt dependencies
         run: "dbt deps"
 
-#      - name: Check no common models between DuneSQL and Spark
-#        if: matrix.engine == 'dunesql'
-#        run: "./scripts/dunesql_spark_empty_intersection.sh"
+      - name: Check no common models between DuneSQL and Spark
+        if: matrix.engine == 'dunesql'
+        run: "./scripts/dunesql_spark_empty_intersection.sh"
 
       - name: Check for missing legacy models
         if: matrix.engine == 'dunesql'
