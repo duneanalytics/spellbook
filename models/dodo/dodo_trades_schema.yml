@@ -120,3 +120,6 @@ models:
       - *tx_to
       - *trace_address
       - *evt_index
+      - &block_month
+        name: block_month
+        description: "Truncated to month UTC event block date of each DEX trade"

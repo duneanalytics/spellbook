@@ -24,6 +24,7 @@ FROM (
         project,
         version,
         block_date,
+        block_month,
         block_time,
         token_bought_symbol,
         token_sold_symbol,
@@ -45,7 +46,7 @@ FROM (
         evt_index
     FROM {{ dex_model }}
     {% if is_incremental() %}
-    WHERE block_date >= date_trunc("day", now() - interval '1 week')
+    WHERE block_date >= date_trunc('day', now() - interval '7' Day)
     {% endif %}
     {% if not loop.last %}
     UNION ALL

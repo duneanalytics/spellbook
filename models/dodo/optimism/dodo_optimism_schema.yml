@@ -169,7 +169,7 @@ models:
             - tx_hash
             - evt_index
             - trace_address
-      - check_dex_aggregator_seed_legacy:
+      - check_dex_aggregator_seed:
           blockchain: optimism
           project: DODO
           version: 0
@@ -197,3 +197,6 @@ models:
       - *tx_to
       - *trace_address
       - *evt_index
+      - &block_month
+        name: block_month
+        description: "Truncated to month UTC event block date of each DEX trade"
