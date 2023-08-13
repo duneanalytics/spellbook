@@ -2,11 +2,11 @@
 (
     tags = ['dunesql'],
     alias = alias('pool_trades'),
-    partition_by = ['block_date'],
+    partition_by = ['block_month'],
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
-    unique_key = ['block_time', 'blockchain', 'project', 'version', 'tx_hash', 'evt_index', 'tx_from'],
+    unique_key = ['block_date', 'blockchain', 'project', 'version', 'tx_hash', 'evt_index'],
     post_hook='{{ expose_spells(\'["optimism"]\',
                                     "project",
                                     "dodo",
@@ -32,7 +32,6 @@ WITH dexs AS
             toToken AS token_sold_address,
             contract_address AS project_contract_address,
             evt_tx_hash AS tx_hash,
-            CAST(NULL AS VARBINARY) AS trace_address,
             evt_index
         FROM
             {{ source('dodo_optimism', 'DVM_evt_DODOSwap')}}
@@ -56,7 +55,6 @@ WITH dexs AS
             toToken AS token_sold_address,
             contract_address AS project_contract_address,
             evt_tx_hash AS tx_hash,
-            CAST(NULL AS VARBINARY) AS trace_address,
             evt_index
         FROM
             {{ source('dodo_optimism', 'DPP_evt_DODOSwap')}}
@@ -80,7 +78,6 @@ WITH dexs AS
             toToken AS token_sold_address,
             contract_address AS project_contract_address,
             evt_tx_hash AS tx_hash,
-            CAST(NULL AS VARBINARY) AS trace_address,
             evt_index
         FROM
             {{ source('dodo_optimism', 'DSP_evt_DODOSwap')}}
@@ -93,6 +90,7 @@ SELECT
     ,project
     ,dexs.version as version
     ,TRY_CAST(date_trunc('day', dexs.block_time) AS date) AS block_date
+    ,TRY_CAST(date_trunc('month', dexs.block_time) AS date) AS block_month
     ,dexs.block_time
     ,erc20a.symbol AS token_bought_symbol
     ,erc20b.symbol AS token_sold_symbol
@@ -117,7 +115,6 @@ SELECT
     ,dexs.tx_hash
     ,tx."from" AS tx_from
     ,tx.to AS tx_to
-    ,dexs.trace_address
     ,dexs.evt_index
 FROM dexs
 INNER JOIN {{ source('optimism', 'transactions')}} tx
