@@ -37,13 +37,12 @@ FROM (
         maker,
         project_contract_address,
         tx_hash,
---        tx_from,
+        tx_from,
         tx_to,
-        trace_address,
         evt_index
     FROM {{ dex_model }}
     {% if is_incremental() %}
-    WHERE block_date >= date_trunc("day", now() - interval '1 week')
+    WHERE block_date >= date_trunc('day', now() - interval '7' day)
     {% endif %}
     {% if not loop.last %}
     UNION ALL

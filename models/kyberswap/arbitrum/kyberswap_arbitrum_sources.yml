@@ -18,9 +18,6 @@ sources:
       - name: MetaAggregationRouterV2_evt_Swapped
         loaded_at_field: evt_block_time
         columns:
-        # FIXME:
-        # It will implicitly load all columns, because I see trace_address is used in dodo_aggregator_arbitrum_trades.sql
-        # Maybe we don't need this.
           - name: contract_address
           - name: evt_tx_hash
           - name: evt_index
