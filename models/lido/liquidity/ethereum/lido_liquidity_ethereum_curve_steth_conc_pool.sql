@@ -107,13 +107,11 @@ select * from steth_out
 
 , steth_balances as (
 select time, 
---lead(time,1, DATE_TRUNC('hour', now() + interval '1' hour)) over (order by time) as next_time,
 sum(steth_balance) as steth,
-sum(coalesce(wsteth_balance,steth_balance)) as wsteth /*, r.rate,
-sum(coalesce(wsteth_balance,steth_balance))*coalesce(r.rate, 1) as steth_from_wsteth */
+sum(coalesce(wsteth_balance,steth_balance)) as wsteth
 from daily_balances b
-left join wsteth_rate r on b.time >= r.day and b.time < r.next_day 
-group by time, rate
+--left join wsteth_rate r on b.time >= r.day and b.time < r.next_day 
+group by time
 order by 1
 )
 
@@ -181,7 +179,6 @@ order by 1
     {% if is_incremental() %}
     WHERE DATE_TRUNC('day', p.minute) >= DATE_TRUNC('day', NOW() - INTERVAL '1' day)
     {% endif %}
- 
     and date_trunc('day', minute) < current_date
     and blockchain = 'ethereum'
     and symbol = 'WETH'
