@@ -19,11 +19,11 @@ FROM(
     , cast(1 as uint256) AS amount
     , t."from"
     , t.to
-    {%- if denormalized == True -%}
+    {% if denormalized == True -%}
     , t.tx_from AS executed_by
     {%- else -%}
     , et."from" AS executed_by
-    {%- endif -%}
+    {%- endif %}
     , t.evt_tx_hash AS tx_hash
     , '{{blockchain}}' || cast(t.evt_tx_hash as varchar) || '-{{token_standard_721}}-' || cast(t.contract_address as varchar) || '-' || cast(t.tokenId as varchar) || '-' || cast(t."from" as varchar) || '-' || cast(t.to as varchar) || '-1-' || cast(t.evt_index as varchar) AS unique_transfer_id
     FROM {{ erc721_transfers }} t
