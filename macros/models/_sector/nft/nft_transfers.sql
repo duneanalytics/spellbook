@@ -20,7 +20,7 @@ FROM(
     , t."from"
     , t.to
     {% if denormalized == True -%}
-    , t.tx_from AS executed_by
+    , t.evt_tx_from AS executed_by
     {%- else -%}
     , et."from" AS executed_by
     {%- endif %}
@@ -59,7 +59,7 @@ FROM(
     , t."from"
     , t.to
     {%- if denormalized == True -%}
-    , t.tx_from AS executed_by
+    , t.evt_tx_from AS executed_by
     {%- else -%}
     , et."from" AS executed_by
     {%- endif -%}
@@ -98,7 +98,7 @@ FROM(
     , t."from"
     , t.to
     {%- if denormalized == True -%}
-    , t.tx_from AS executed_by
+    , t.evt_tx_from AS executed_by
     {%- else -%}
     , et."from" AS executed_by
     {%- endif -%}
