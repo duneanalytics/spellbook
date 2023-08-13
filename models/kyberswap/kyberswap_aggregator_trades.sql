@@ -40,7 +40,8 @@ FROM (
         tx_hash,
         tx_from,
         tx_to,
-        evt_index
+        evt_index,
+        trace_address
     FROM {{ aggregator_dex_model }}
     {% if is_incremental() %}
     WHERE block_date >= date_trunc('day', now() - interval '7' day)

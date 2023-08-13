@@ -6,7 +6,7 @@
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
-    unique_key = ['block_date', 'blockchain', 'project', 'version', 'tx_hash', 'evt_index'],
+    unique_key = ['block_date', 'blockchain', 'project', 'version', 'tx_hash', 'evt_index', 'trace_address'],
     post_hook='{{ expose_spells(\'["arbitrum"]\',
                                     "project",
                                     "kyberswap",
@@ -32,6 +32,7 @@ WITH meta_router AS
             ,contract_address       AS project_contract_address
             ,evt_tx_hash            AS tx_hash
             ,evt_index              AS evt_index
+            ,ARRAY[-1]              AS trace_address,
         FROM
             {{ source('kyber_arbitrum', 'MetaAggregationRouterV2_evt_Swapped') }}
         {% if is_incremental() %}
