@@ -8,11 +8,6 @@
     )
 }}
 
-{% set maverick_models = [
-    ref('maverick_v1_ethereum_trades_legacy')
-,   ref('maverick_v1_bnb_trades_legacy')    
-] %}
-
 -- DUMMY TABLE, WILL BE REMOVED SOON
 select 
     1

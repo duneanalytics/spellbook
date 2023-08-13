@@ -9,11 +9,6 @@
         )
 }}
 
-{% set biswap_models = [
-    ref('biswap_v2_bnb_trades_legacy')
-,   ref('biswap_v3_bnb_trades_legacy')
-] %}
-
 -- DUMMY TABLE, WILL BE REMOVED SOON
 select 
     1
