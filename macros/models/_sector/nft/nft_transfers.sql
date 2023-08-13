@@ -105,7 +105,7 @@ FROM(
     , t.evt_tx_hash AS tx_hash
     , '{{blockchain}}' || cast(t.evt_tx_hash as varchar) || '-{{token_standard_1155}}-' || cast(t.contract_address as varchar) || '-' || cast(t.id as varchar) || '-' || cast(t."from" as varchar) || '-' || cast(t.to as varchar) || '-' || cast(t.value as varchar) || '-' || cast(t.evt_index as varchar) AS unique_transfer_id
     FROM (
-        SELECT t.evt_block_time, t.evt_block_number, t.evt_tx_hash, t.contract_address, t."from", t.to, t.evt_index, t.evt_tx_from
+        SELECT t.evt_block_time, t.evt_block_number, t.evt_tx_hash, t.contract_address, t."from", t.to, t.evt_index {% if denormalized == True %}, t.evt_tx_from {% endif %}
         , value, id
         FROM {{ erc1155_batch }} t
         CROSS JOIN unnest(zip(t."values", t.ids)) AS foo(value, id)
@@ -117,7 +117,7 @@ FROM(
         {% endif %}
         {% if spark_mode == True %}
         {# This deduplicates rows. Double check if this is correct or not #}
-        GROUP BY 1, 2, 3, 4, 5, 6, 7, 8, 9, 10
+        GROUP BY 1, 2, 3, 4, 5, 6, 7, 8, 9 {% if denormalized == True %}, 10 {% endif %}
         {% endif %}
         ) t
     {%- if denormalized == False %}
