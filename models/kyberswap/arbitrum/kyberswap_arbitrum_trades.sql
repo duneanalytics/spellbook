@@ -12,7 +12,7 @@
     )
 }}
 
-{% set project_start_date = '2022-02-11' %}  
+{% set project_start_date = '2022-02-11' %}
 
 WITH
 
@@ -57,7 +57,7 @@ kyberswap_dex AS (
         ,t.contract_address                                                            AS project_contract_address
         ,t.evt_tx_hash                                                                 AS tx_hash
         ,''                                                                            AS trace_address
-        ,'elastic'                                                                     AS version	
+        ,'elastic'                                                                     AS version
         ,t.evt_index
 
     FROM {{ source('kyber_arbitrum', 'Elastic_Pool_evt_swap') }} t
@@ -68,7 +68,7 @@ kyberswap_dex AS (
     {% else %}
     WHERE t.evt_block_time >= '{{ project_start_date }}'
     {% endif %}
-    
+
 
 )
 
