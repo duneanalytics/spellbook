@@ -31,7 +31,7 @@ FROM(
             LEFT JOIN {{this}} anti_table
                 ON t.evt_tx_hash = anti_table.tx_hash
         {% endif %}
-    {%- if denormalized == True -%}
+    {%- if denormalized == False -%}
     INNER JOIN {{ base_transactions }} et ON et.block_number = t.evt_block_number
         AND et.hash = t.evt_tx_hash
         {% if is_incremental() %}
@@ -70,7 +70,7 @@ FROM(
             LEFT JOIN {{this}} anti_table
                 ON t.evt_tx_hash = anti_table.tx_hash
         {% endif %}
-    {%- if denormalized == True %}
+    {%- if denormalized == False %}
     INNER JOIN {{ base_transactions }} et ON et.block_number = t.evt_block_number
         AND et.hash = t.evt_tx_hash
         {% if is_incremental() %}
@@ -120,7 +120,7 @@ FROM(
         GROUP BY 1, 2, 3, 4, 5, 6, 7, 8, 9, 10
         {% endif %}
         ) t
-    {%- if denormalized == True %}
+    {%- if denormalized == False %}
     INNER JOIN {{ base_transactions }} et ON et.block_number = t.evt_block_number
         AND et.hash = t.evt_tx_hash
         {% if is_incremental() %}
