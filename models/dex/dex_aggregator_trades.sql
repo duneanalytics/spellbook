@@ -1,5 +1,6 @@
 
 {{ config(
+        tags=['dunesql'],
         schema ='dex_aggregator',
         alias = alias('trades'),
         partition_by = ['block_date'],

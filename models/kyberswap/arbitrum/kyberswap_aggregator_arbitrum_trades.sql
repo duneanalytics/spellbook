@@ -32,7 +32,7 @@ WITH meta_router AS
             ,contract_address       AS project_contract_address
             ,evt_tx_hash            AS tx_hash
             ,evt_index              AS evt_index
-            ,ARRAY[-1]              AS trace_address,
+            ,ARRAY[-1]              AS trace_address
         FROM
             {{ source('kyber_arbitrum', 'MetaAggregationRouterV2_evt_Swapped') }}
         {% if is_incremental() %}
