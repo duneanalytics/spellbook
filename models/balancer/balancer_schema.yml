@@ -208,3 +208,35 @@ models:
         description: 'Liquidity of the token in the pool in USD, except BPTs'
       - name: pool_liquidity_usd
         description: 'Liquidity of the token in the pool in USD, including BPTs'
+
+  - name: balancer_transfers_bpt
+    meta:
+      blockchain: arbitrum, avalanche_c, base, ethereum, gnosis, optimism, polygon
+      contributors: victorstefenon, thetroyharris
+    config:
+      tags: ['arbitrum', 'avalanche_c', 'base', 'ethereum', 'gnosis', 'optimism', 'polygon',  'bpt', 'transfers']
+    description: >
+      Balancer Pool Token (BPT) transfer logs on Balancer, an automated portfolio manager and trading platform, on Arbitrum.
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - evt_tx_hash
+            - evt_index
+            - block_date
+    columns:
+      - *blockchain
+      - *contract_address
+      - *block_date
+      - *evt_tx_hash
+      - *evt_index
+      - *evt_block_time
+      - *evt_block_number
+      - &from
+        name: from
+        description: 'Address of BPT provider of transfer event'
+      - &to
+        name: to
+        description: 'Address of BPT receiver of transfer event'
+      - &value
+        name: value
+        description: 'Amount of BPT transferred in transfer event'

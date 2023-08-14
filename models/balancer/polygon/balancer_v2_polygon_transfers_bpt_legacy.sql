@@ -17,7 +17,7 @@
 }}
 
 {% set event_signature = '0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef' %}
-{% set project_start_date = '2021-06-19' %}
+{% set project_start_date = '2021-06-17' %}
 
 WITH registered_pools AS (
     SELECT
@@ -31,6 +31,7 @@ WITH registered_pools AS (
 
 SELECT DISTINCT * FROM (
     SELECT
+	'polygon' AS blockchain,
         logs.contract_address,
         logs.tx_hash AS evt_tx_hash,
         logs.index AS evt_index,
@@ -49,4 +50,3 @@ SELECT DISTINCT * FROM (
         {% if is_incremental() %}
         AND logs.block_time >= DATE_TRUNC('day', NOW() - interval '1 week')
         {% endif %} ) transfers
-
