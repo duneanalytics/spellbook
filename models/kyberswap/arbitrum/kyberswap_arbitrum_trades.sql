@@ -47,8 +47,8 @@ kyberswap_dex AS (
         t.evt_block_time                                                               AS block_time
         ,t.sender                                                                      AS taker
         ,t.recipient                                                                   AS maker
-        ,cast(if(starts_with(cast(t.deltaQty0 as varchar), '-'), t.deltaQty1, t.deltaQty0) as uint256)                    AS token_bought_amount_raw
-        ,cast(if(starts_with(cast(t.deltaQty0 as varchar), '-'), abs(t.deltaQty0), t.deltaQty1) as uint256)  AS token_sold_amount_raw
+        ,cast(if(starts_with(cast(t.deltaQty0 as varchar), '-'), abs(t.deltaQty1), abs(t.deltaQty0)) as uint256)                    AS token_bought_amount_raw
+        ,cast(if(starts_with(cast(t.deltaQty0 as varchar), '-'), abs(t.deltaQty0), abs(t.deltaQty1)) as uint256)  AS token_sold_amount_raw
         ,NULL                                                                          AS amount_usd
         ,if(starts_with(cast(t.deltaQty0 as varchar), '-'), p.token1, p.token0)                          AS token_bought_address
         ,if(starts_with(cast(t.deltaQty0 as varchar), '-'), p.token0, p.token1)                          AS token_sold_address
@@ -114,7 +114,7 @@ LEFT JOIN {{ ref('tokens_erc20') }} erc20b
     AND erc20b.blockchain = 'arbitrum'
 LEFT JOIN {{ source('prices', 'usd') }} p_bought
     ON p_bought.minute = date_trunc('minute', kyberswap_dex.block_time)
-    AND cast(p_bought.contract_address as varbinary) = kyberswap_dex.token_bought_address
+    AND p_bought.contract_address = kyberswap_dex.token_bought_address
     AND p_bought.blockchain = 'arbitrum'
     {% if is_incremental() %}
     AND p_bought.minute >= date_trunc('day', now() - interval '7' day)
@@ -123,7 +123,7 @@ LEFT JOIN {{ source('prices', 'usd') }} p_bought
     {% endif %}
 LEFT JOIN {{ source('prices', 'usd') }} p_sold
     ON p_sold.minute = date_trunc('minute', kyberswap_dex.block_time)
-    AND cast(p_sold.contract_address as varbinary) = kyberswap_dex.token_sold_address
+    AND p_sold.contract_address = kyberswap_dex.token_sold_address
     AND p_sold.blockchain = 'arbitrum'
     {% if is_incremental() %}
     AND p_sold.minute >= date_trunc('day', now() - interval '7' day)
