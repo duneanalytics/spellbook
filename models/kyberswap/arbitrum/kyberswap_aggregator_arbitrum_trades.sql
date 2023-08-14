@@ -21,14 +21,14 @@ WITH meta_router AS
         SELECT
             evt_block_time          AS block_time
             ,'kyberswap'            AS project
-            ,'0'                    AS version
+            ,'2'                    AS version
             ,sender                 AS taker
             ,dstReceiver            AS maker
-            ,spentAmount            AS token_bought_amount_raw
-            ,returnAmount           AS token_sold_amount_raw
+            ,returnAmount           AS token_bought_amount_raw
+            ,spentAmount            AS token_sold_amount_raw
             ,CAST(NULL AS DOUBLE)   AS amount_usd
-            ,srcToken               AS token_bought_address
-            ,dstToken               AS token_sold_address
+            ,dstToken               AS token_bought_address
+            ,srcToken               AS token_sold_address
             ,contract_address       AS project_contract_address
             ,evt_tx_hash            AS tx_hash
             ,evt_index              AS evt_index
@@ -71,6 +71,7 @@ SELECT
     ,tx."from"                                                          AS tx_from
     ,tx."to"                                                            AS tx_to
     ,meta_router.evt_index                                              AS evt_index
+    ,meta_router.trace_address                                          AS trace_address
 FROM meta_router
 INNER JOIN {{ source('arbitrum', 'transactions')}} tx
     ON meta_router.tx_hash = tx.hash

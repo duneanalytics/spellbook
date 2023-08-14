@@ -20,6 +20,7 @@ models:
             - version
             - tx_hash
             - evt_index
+            - trace_address
       - check_dex_seed:
           blockchain: arbitrum
           project: kyberswap
@@ -134,3 +135,4 @@ models:
       - name: tx_from
       - name: tx_to
       - name: evt_index
+      - name: trace_address
