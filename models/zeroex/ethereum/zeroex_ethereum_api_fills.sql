@@ -30,7 +30,7 @@ WITH zeroex_tx AS (
                 OR -- contains a bridge order
                 (
                     v3.feeRecipientAddress = 0x1000000000000000000000000000000000000011
-                    AND SUBSTRING(v3.makerAssetData, 1, 10) = '0xdc1600f3'
+                    AND bytearray_substring(v3.makerAssetData, 1, 10) = '0xdc1600f3'
                 )
             )
 
