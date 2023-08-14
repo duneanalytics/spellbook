@@ -585,6 +585,7 @@ WITH curated_list AS (
       ,('0x78357316239040e19fC823372cC179ca75e64b81', 'Pyth')
       ,('0xC8834C1FcF0Df6623Fc8C8eD25064A4148D99388', 'Holonym')
       ,('0xfC8d2f6d1937cd4CcAaD5c26FBB42a3dfc9dAc85', 'Gravita')
+      ,('0x96d55BD9c8C4706FED243c1e15825FF7854920fA', 'Worldcoin') --WorldID
       
   ) as temp_table (creator_address, contract_project)
 )
