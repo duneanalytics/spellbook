@@ -35,11 +35,6 @@ sources:
           - &tick
             name: tick
 
-  - name: uniswap_base
-    description: "Base decoded tables related to Uniswap v3 contract"
-    freshness:
-      warn_after: { count: 12, period: hour }
-    tables:
       - name: UniswapV3Factory_evt_PoolCreated
         loaded_at_field: evt_block_time
         description: "" # to-do

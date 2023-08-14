@@ -1,7 +1,7 @@
 {{ config(tags=['dunesql'],
     schema = 'uniswap_v3_base',
     alias = alias('trades'),
-    partition_by = ['block_month'],
+    partition_by = ['block_date'],
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
@@ -13,7 +13,7 @@
     )
 }}
 
-{% set project_start_date = '2023-08-02' %}
+{% set project_start_date = '2023-07-16' %}
 
 WITH dexs AS
 (
@@ -33,7 +33,7 @@ WITH dexs AS
     FROM
     {{ source('uniswap_v3_base', 'UniswapV3Pool_evt_Swap') }} t
     INNER JOIN 
-    {{ source('uniswap_base', 'UniswapV3Factory_evt_PoolCreated') }} f
+    {{ source('uniswap_v3_base', 'UniswapV3Factory_evt_PoolCreated') }} f
         ON f.pool = t.contract_address
     {% if is_incremental() %}
     WHERE t.evt_block_time >= date_trunc('day', now() - interval '7' day)
