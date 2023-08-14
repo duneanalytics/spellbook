@@ -97,7 +97,7 @@ SELECT blockchain,
     royalty_fee_percentage,
     unique_trade_id
 FROM {{ref('nft_events_old_legacy')}}
-WHERE (project, version) not in (SELECT distinct project, version FROM {{ref('nft_ethereum_trades_beta_ported_legacy')}})
+WHERE (project, version, blockchain) not in (SELECT distinct project, version, blockchain FROM {{ref('nft_ethereum_trades_beta_ported_legacy')}})
 {% if is_incremental() %}
 AND block_time >= date_trunc("day", now() - interval '1 week')
 {% endif %}
