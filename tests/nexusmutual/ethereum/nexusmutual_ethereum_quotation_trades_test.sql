@@ -1,7 +1,5 @@
 WITH unit_tests as
-(SELECT case when test.evt_tx_hash = actual.evt_tx_hash 
-
-                and test.evt_block_number = actual.evt_block_number
+(SELECT case when test.premium = actual.premium
 then True else False end as test
 FROM {{ ref('nexusmutual_ethereum_quotation_trades') }} actual
 JOIN {{ ref('nexusmutual_ethereum_trades_seed') }} test 
