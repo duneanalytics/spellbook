@@ -3,7 +3,7 @@
 
     schema = 'balancer',
     alias = alias('trades', legacy_model=True),
-    post_hook='{{ expose_spells(\'["arbitrum", "base", "ethereum", "gnosis", "optimism", "polygon"]\',
+    post_hook='{{ expose_spells(\'["arbitrum", "ethereum", "gnosis", "optimism", "polygon"]\',
                                 "project",
                                 "balancer",
                                 \'["bizzyvinci", "thetroyharris"]\') }}'
@@ -12,7 +12,6 @@
 
 {% set balancer_models = [
     ref('balancer_arbitrum_trades_legacy')
-    , ref('balancer_base_trades_legacy')
     , ref('balancer_ethereum_trades_legacy')
     , ref('balancer_gnosis_trades_legacy')
     , ref('balancer_optimism_trades_legacy')

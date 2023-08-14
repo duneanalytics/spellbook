@@ -3,7 +3,7 @@ version: 2
 models:
   - name: balancer_trades
     meta:
-      blockchain: arbitrum, base, ethereum, gnosis, optimism, polygon
+      blockchain: arbitrum, ethereum, gnosis, optimism, polygon
       sector: dex
       contributors: bizzyvinci, thetroyharris
     config:
