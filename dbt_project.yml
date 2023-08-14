@@ -933,6 +933,8 @@ models:
         +schema: kyberswap_ethereum
       arbitrum:
         +schema: kyberswap_arbitrum
+      bnb:
+        +schema: kyberswap_bnb
 
     hubble_exchange:
       +schema: hubble_exchange
