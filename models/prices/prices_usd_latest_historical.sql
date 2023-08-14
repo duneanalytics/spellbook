@@ -1,6 +1,6 @@
 {{ config(
         schema='prices',
-        alias = alias('usd_latest_old'),
+        alias = alias('usd_latest_historical'),
         tags= ['dunesql'],
         materialized = 'incremental',
         file_format = 'delta',
