@@ -33,7 +33,7 @@ with
     ,
     deposited_weth as (
         select
-            'deposit' '-' || CAST(evt_tx_hash AS VARCHAR) || '-' || CAST(evt_index AS VARCHAR) || '-' || CAST(dst AS VARCHAR) as unique_transfer_id,
+            'deposit-' || CAST(evt_tx_hash AS VARCHAR) || '-' || CAST(evt_index AS VARCHAR) || '-' || CAST(dst AS VARCHAR) as unique_transfer_id,
             dst as wallet_address,
             contract_address as token_address,
             evt_block_time,
