@@ -30,7 +30,7 @@ WITH zeroex_tx AS (
                 OR -- contains a bridge order
                 (
                     v3.feeRecipientAddress = 0x1000000000000000000000000000000000000011
-                    AND bytearray_substring(v3.makerAssetData, 1, 10) = '0xdc1600f3'
+                    AND bytearray_substring(v3.makerAssetData, 1, 10) = 0xdc1600f3
                 )
             )
 
@@ -38,7 +38,7 @@ WITH zeroex_tx AS (
             AND evt_block_time >= date_trunc('day', now() - interval '7' day)
             {% endif %}
             {% if not is_incremental() %}
-            AND evt_block_time >= '{{zeroex_v3_start_date}}'
+            AND evt_block_time >= cast('{{zeroex_v3_start_date}}' as date)
             {% endif %} 
 
         UNION ALL
@@ -71,7 +71,7 @@ WITH zeroex_tx AS (
                 AND block_time >= date_trunc('day', now() - interval '7' day)
                 {% endif %}
                 {% if not is_incremental() %}
-                AND block_time >= '{{zeroex_v3_start_date}}'
+                AND block_time >= cast('{{zeroex_v3_start_date}}' as date)
                 {% endif %}
     ) temp
     group by tx_hash
@@ -103,7 +103,7 @@ v3_fills_no_bridge AS (
          AND evt_block_time >= date_trunc('day', now() - interval '7' day)
         {% endif %}
         {% if not is_incremental() %}
-         AND evt_block_time >= '{{zeroex_v3_start_date}}'
+         AND evt_block_time >= cast('{{zeroex_v3_start_date}}' as date)
         {% endif %}
 
 ),
@@ -212,7 +212,7 @@ ERC20BridgeTransfer AS (
     AND block_time >= date_trunc('day', now() - interval '7' day)
     {% endif %}
     {% if not is_incremental() %}
-    AND block_time >= '{{zeroex_v3_start_date}}'
+    AND block_time >= cast('{{zeroex_v3_start_date}}' as date)
     {% endif %}
 
 ),
@@ -295,7 +295,7 @@ direct_PLP AS (
     WHERE evt_block_time >= date_trunc('day', now() - interval '7' day)
     {% endif %}
     {% if not is_incremental() %}
-    WHERE evt_block_time >= '{{zeroex_v3_start_date}}'
+    WHERE evt_block_time >= cast('{{zeroex_v3_start_date}}' as date)
     {% endif %}
 
 ),
@@ -338,7 +338,7 @@ direct_uniswapv2 AS (
         AND swap.evt_block_time >= date_trunc('day', now() - interval '7' day)
         {% endif %}
         {% if not is_incremental() %}
-        AND swap.evt_block_time >= '{{zeroex_v3_start_date}}'
+        AND swap.evt_block_time >= cast('{{zeroex_v3_start_date}}' as date)
         {% endif %}
 
 ),
@@ -381,7 +381,7 @@ direct_sushiswap AS (
         AND swap.evt_block_time >= date_trunc('day', now() - interval '7' day)
         {% endif %}
         {% if not is_incremental() %}
-        AND swap.evt_block_time >= '{{zeroex_v3_start_date}}'
+        AND swap.evt_block_time >= cast('{{zeroex_v3_start_date}}' as date)
         {% endif %}
 ),
 direct_uniswapv3 AS (
@@ -483,7 +483,7 @@ INNER JOIN {{ source('ethereum', 'transactions')}} tx ON all_tx.tx_hash = tx.has
 AND tx.block_time >= date_trunc('day', now() - interval '7' day)
 {% endif %}
 {% if not is_incremental() %}
-AND tx.block_time >= '{{zeroex_v3_start_date}}'
+AND tx.block_time >= cast('{{zeroex_v3_start_date}}' as date)
 {% endif %}
 
 LEFT JOIN {{ source('prices', 'usd') }} tp ON date_trunc('minute', all_tx.block_time) = tp.minute
@@ -497,7 +497,7 @@ AND tp.blockchain = 'ethereum'
 AND tp.minute >= date_trunc('day', now() - interval '7' day)
 {% endif %}
 {% if not is_incremental() %}
-AND tp.minute >= '{{zeroex_v3_start_date}}'
+AND tp.minute >= cast('{{zeroex_v3_start_date}}' as date)
 {% endif %}
 
 LEFT JOIN {{ source('prices', 'usd') }} mp ON DATE_TRUNC('minute', all_tx.block_time) = mp.minute
@@ -511,7 +511,7 @@ AND mp.blockchain = 'ethereum'
 AND mp.minute >= date_trunc('day', now() - interval '7' day)
 {% endif %}
 {% if not is_incremental() %}
-AND mp.minute >= '{{zeroex_v3_start_date}}'
+AND mp.minute >= cast('{{zeroex_v3_start_date}}' as date)
 {% endif %}
 
 LEFT OUTER JOIN {{ ref('tokens_ethereum_erc20') }} ts ON ts.contract_address = taker_token
