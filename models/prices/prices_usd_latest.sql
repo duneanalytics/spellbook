@@ -22,10 +22,10 @@ WHERE minute >= date_trunc('day', now() - interval '2' day)
 GROUP BY 1,2,3,4
 )
 SELECT
-  coalesce(new.blockchain, old.blockchain)
-, coalesce(new.contract_address, old.contract_address)
-, coalesce(new.decimals, old.decimals)
-, coalesce(new.symbol, old.symbol)
+  coalesce(new.blockchain, old.blockchain) as blockchain
+, coalesce(new.contract_address, old.contract_address) as contract_address
+, coalesce(new.decimals, old.decimals) as decimals
+, coalesce(new.symbol, old.symbol) as symbol
 , coalesce(new.minute, old.minute) as minute
 , coalesce(new.price, old.price) as price
 from {{ ref('prices_usd_latest_old') }} old
