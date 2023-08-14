@@ -99,7 +99,7 @@ models:
         description: "Version of dodo contracts (0 - dodo_aggregator, 1 - DODOV1, 2_dvm - DODOV2 public pool, 2_dsp - DODOV2 stable pool, 2_dpp - DODOV2 private pool)"
         tests:
           - dbt_utils.expression_is_true:
-              expression: "= 0"
+              expression: "= '0'"
       - *block_date
       - *block_time
       - *token_bought_symbol
