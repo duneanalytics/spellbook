@@ -382,8 +382,6 @@ direct_uniswapv3 AS (
             LAST_VALUE(swap.recipient) OVER (PARTITION BY swap.evt_tx_hash ORDER BY swap.evt_index) AS taker,
             CASE WHEN amount0 < cast(0 as int256)  THEN pair.token1 ELSE pair.token0 END AS taker_token,
             CASE WHEN amount0 < cast(0 as int256) THEN pair.token0 ELSE pair.token1 END AS maker_token,
-            CASE WHEN amount0 < cast(0 as int256)  THEN pair.token1 ELSE pair.token0 END AS taker_token,
-            CASE WHEN amount0 < cast(0 as int256) THEN pair.token0 ELSE pair.token1 END AS maker_token,
             CASE WHEN amount0 < cast(0 as int256) THEN ABS(swap.amount1) ELSE ABS(swap.amount0) END AS taker_token_amount_raw,
             CASE WHEN amount0 < cast(0 as int256) THEN ABS(swap.amount0) ELSE ABS(swap.amount1) END AS maker_token_amount_raw,
             'Uniswap V3 Direct'                                                                     AS type,
