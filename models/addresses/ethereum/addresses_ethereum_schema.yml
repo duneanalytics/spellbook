@@ -89,6 +89,8 @@ models:
     columns:
       - name: address
         description: "Address of known MEV users"
+        tests:
+          - unique
   
   - name: addresses_ethereum_l2_batch_submitters
     meta:

@@ -1,11 +1,12 @@
-{{ config(
+{{ config(tags=['dunesql'],
     alias = alias('trades'),
     tags=['dunesql'],
     partition_by = ['block_date'],
+    partition_by = ['block_month'],
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
-    unique_key = ['block_date', 'blockchain', 'project', 'version', 'tx_hash', 'evt_index', 'trace_address'],
+    unique_key = ['block_date', 'blockchain', 'project', 'version', 'tx_hash', 'evt_index'],
     post_hook='{{ expose_spells(\'["optimism"]\',
                                 "project",
                                 "velodrome",
@@ -23,16 +24,15 @@ WITH dexs AS
         ,t.evt_block_time AS block_time
         ,t.evt_block_number
         ,t.to AS taker
-        ,CAST(NULL AS varbinary) AS maker
+        ,CAST(NULL AS VARBINARY) AS maker
         -- logic from ethereum/dex/trades/insert_uniswap_v2
-	    ,CASE WHEN amount0Out = cast(0 as uint256) THEN amount1Out ELSE amount0Out END AS token_bought_amount_raw -- when amount0 is negative it means trader_a is buying token0 from the pool
-	    ,CASE WHEN amount0In = cast(0 as uint256) OR amount1Out = cast(0 as uint256) THEN amount1In ELSE amount0In END AS token_sold_amount_raw
+	    ,CASE WHEN amount0Out = UINT256 '0' THEN amount1Out ELSE amount0Out END AS token_bought_amount_raw -- when amount0 is negative it means trader_a is buying token0 from the pool
+	    ,CASE WHEN amount0In = UINT256 '0' OR amount1Out = UINT256 '0' THEN amount1In ELSE amount0In END AS token_sold_amount_raw
         ,NULL AS amount_usd
-        ,CASE WHEN amount0Out = cast(0 as uint256) THEN token1 ELSE token0 END AS token_bought_address
-	    ,CASE WHEN amount0In = cast(0 as uint256) OR amount1Out = cast(0 as uint256) THEN token1 ELSE token0 END AS token_sold_address
-        ,CAST(t.contract_address as varchar) as project_contract_address
+        ,CASE WHEN amount0Out = UINT256 '0' THEN token1 ELSE token0 END AS token_bought_address
+	    ,CASE WHEN amount0In = UINT256 '0' OR amount1Out = UINT256 '0' THEN token1 ELSE token0 END AS token_sold_address
+        ,t.contract_address as project_contract_address
         ,t.evt_tx_hash AS tx_hash
-        ,'' AS trace_address
         ,t.evt_index
     FROM
         {{ source('velodrome_optimism', 'Pair_evt_Swap') }} t
@@ -52,11 +52,11 @@ WITH dexs AS
         ,t.to AS taker
         ,CAST(NULL AS varbinary) AS maker
         -- logic from ethereum/dex/trades/insert_uniswap_v2
-	    ,CASE WHEN amount0Out = cast(0 as uint256) THEN amount1Out ELSE amount0Out END AS token_bought_amount_raw -- when amount0 is negative it means trader_a is buying token0 from the pool
-	    ,CASE WHEN amount0In = cast(0 as uint256) OR amount1Out = cast(0 as uint256) THEN amount1In ELSE amount0In END AS token_sold_amount_raw
+	    ,CASE WHEN amount0Out = UINT256 '0' THEN amount1Out ELSE amount0Out END AS token_bought_amount_raw -- when amount0 is negative it means trader_a is buying token0 from the pool
+	    ,CASE WHEN amount0In = UINT256 '0' OR amount1Out = UINT256 '0' THEN amount1In ELSE amount0In END AS token_sold_amount_raw
         ,NULL AS amount_usd
-        ,CASE WHEN amount0Out = cast(0 as uint256) THEN token1 ELSE token0 END AS token_bought_address
-	    ,CASE WHEN amount0In = cast(0 as uint256) OR amount1Out = cast(0 as uint256) THEN token1 ELSE token0 END AS token_sold_address
+        ,CASE WHEN amount0Out = UINT256 '0' THEN token1 ELSE token0 END AS token_bought_address
+	    ,CASE WHEN amount0In = UINT256 '0' OR amount1Out = UINT256 '0' THEN token1 ELSE token0 END AS token_sold_address
         ,CAST(t.contract_address as varchar) as project_contract_address
         ,t.evt_tx_hash AS tx_hash
         ,'' AS trace_address
@@ -73,8 +73,9 @@ WITH dexs AS
 SELECT
     'optimism' AS blockchain
     ,'velodrome' AS project
-    ,version
-    ,TRY_CAST(date_trunc('DAY', dexs.block_time) AS date) AS block_date
+    ,'1' AS version
+    ,TRY_CAST(date_trunc('day', dexs.block_time) AS date) AS block_date
+    ,CAST(date_trunc('month', dexs.block_time) AS date) AS block_month
     ,dexs.block_time
     ,erc20a.symbol AS token_bought_symbol
     ,erc20b.symbol AS token_sold_symbol
@@ -99,14 +100,13 @@ SELECT
     ,dexs.tx_hash
     ,tx."from" AS tx_from
     ,tx.to AS tx_to
-    ,dexs.trace_address
     ,dexs.evt_index
 FROM dexs
 INNER JOIN {{ source('optimism', 'transactions') }} tx
     ON tx.hash = dexs.tx_hash
     AND tx.block_number = dexs.evt_block_number
     {% if not is_incremental() %}
-    AND tx.block_time >= from_iso8601_timestamp('{{project_start_date}}')
+    AND tx.block_time >= TIMESTAMP '{{project_start_date}}'
     {% endif %}
     {% if is_incremental() %}
     AND tx.block_time >= date_trunc('day', now() - interval '7' day)
@@ -122,7 +122,7 @@ LEFT JOIN {{ source('prices', 'usd') }} p_bought
     AND p_bought.contract_address = dexs.token_bought_address
     AND p_bought.blockchain = 'optimism'
     {% if not is_incremental() %}
-    AND p_bought.minute >= from_iso8601_timestamp('{{project_start_date}}')
+    AND p_bought.minute >= TIMESTAMP '{{project_start_date}}'
     {% endif %}
     {% if is_incremental() %}
     AND p_bought.minute >= date_trunc('day', now() - interval '7' day)
@@ -132,7 +132,7 @@ LEFT JOIN {{ source('prices', 'usd') }} p_sold
     AND p_sold.contract_address = dexs.token_sold_address
     AND p_sold.blockchain = 'optimism'
     {% if not is_incremental() %}
-    AND p_sold.minute >= from_iso8601_timestamp('{{project_start_date}}')
+    AND p_sold.minute >= TIMESTAMP '{{project_start_date}}'
     {% endif %}
     {% if is_incremental() %}
     AND p_sold.minute >= date_trunc('day', now() - interval '7' day)
