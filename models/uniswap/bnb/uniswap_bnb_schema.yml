@@ -156,3 +156,33 @@ models:
       - name: currency_symbol
       - name: recipient
       - name: contract_address
+
+  - name: uniswap_bnb_pools
+    meta:
+      blockchain: bnb
+      sector: dex
+      contributors: mtitus6
+    config:
+      tags: ['bnb']
+    description: >
+      Uniswap DEX pools on BNB
+    columns:
+      - *blockchain
+      - *project
+      - *version
+      - name: pool
+        description: "DEX pool smart contract address"
+        tests:
+          - unique
+      - name: fee
+        description: "Defined fee"
+      - name: token0
+        description: "First token in pool"
+      - name: token1
+        description: "Second token in pool"
+      - name: creation_block_time
+        description: "Block time of pool creation"
+      - name: creation_block_number
+        description: "Block number of pool creation"
+      - name: contract_address
+        description: "Contract address used to create the pool"
