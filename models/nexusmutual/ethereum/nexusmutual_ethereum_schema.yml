@@ -45,7 +45,7 @@ models:
         nexusmutual quotation trades on Ethereum
     tests:
       - check_seed:
-          seed_file: ref('nexusmutual_ethereum_quotation_trades_seed')
+          seed_file: ref('nexusmutual_ethereum_trades_seed')
           match_columns:
             - evt_tx_hash
             - block_date
