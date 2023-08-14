@@ -3,13 +3,13 @@ version: 2
 sources:
   # Base Tables
   - name: base
-    description: "Base raw tables including transactions, traces and logs."
+    description: "Base raw tables including transactions, traces and logs (Same schema as Optimism - OP Chains)."
     freshness:
       warn_after: { count: 12, period: hour }
     tables:
       - name: transactions
         loaded_at_field: block_time
-        description: "An Base transaction refers to an action initiated by an externally-owned account (i.e., an account managed by a human, not a contract)."
+        description: "A Base transaction refers to an action initiated by an externally-owned account (i.e., an account managed by a human, not a contract)."
         columns:
           - &block_date
             name: block_date
@@ -74,11 +74,11 @@ sources:
           - name: l1_timestamp
             description: "The timestamp when the transaction is batched and confirmed on L1"
           - name: l1_tx_origin
-            description: "L1 transaction origin address. This is not null for L1→L2 transactions"
+            description: "L1 transaction origin address. This is not null for L1→L2 transactions: https://optimistic.etherscan.io/txsEnqueued"
 
       - name: traces
         loaded_at_field: block_time
-        description: "An Base trace is a small atomic action that modify the internal state of the Ethereum Virtual Machine. The three main trace types are call, create, and suicide."
+        description: "A Base trace is a small atomic action that modify the internal state of the Ethereum Virtual Machine. The three main trace types are call, create, and suicide."
         columns:
           - *block_date
           - *block_time
@@ -126,7 +126,7 @@ sources:
 
       - name: traces_decoded
         loaded_at_field: block_time
-        description: "An Base trace is a small atomic action that modify the internal state of the Ethereum Virtual Machine. The three main trace types are call, create, and suicide. Decoded traces include additional information based on submitted smart contracts and their ABI"
+        description: "A Base trace is a small atomic action that modify the internal state of the Ethereum Virtual Machine. The three main trace types are call, create, and suicide. Decoded traces include additional information based on submitted smart contracts and their ABI"
         columns:
           - *block_date
           - *block_time
@@ -147,7 +147,7 @@ sources:
 
       - name: logs
         loaded_at_field: block_time
-        description: "An Base log can be used to describe an event within a smart contract, like a token transfer or a change of ownership."
+        description: "A Base log can be used to describe an event within a smart contract, like a token transfer or a change of ownership."
         columns:
           - *block_date
           - *block_time
@@ -172,7 +172,7 @@ sources:
 
       - name: logs_decoded
         loaded_at_field: block_time
-        description: "An Base log can be used to describe an event within a smart contract, like a token transfer or a change of ownership. Those logs are decoded based on submitted smart contracts to make them human readable."
+        description: "A Base log can be used to describe an event within a smart contract, like a token transfer or a change of ownership. Those logs are decoded based on submitted smart contracts to make them human readable."
         columns:
           - *block_date
           - *block_time
@@ -287,7 +287,7 @@ sources:
           - *to
           - name: value
             description: "Amount of ERC20 token transferred"
-      - name: evt_approval
+      - name: evt_Approval
         loaded_at_field: evt_block_time
         description: "Approval events for ERC20 tokens on Base."
         freshness:

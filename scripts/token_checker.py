@@ -1,5 +1,6 @@
 import json
 import logging
+import re
 
 import requests
 
@@ -19,19 +20,36 @@ class TokenChecker:
                             # "arbitrum": "",
                             "gnosis": "gno-gnosis",
                             "optimism": "op-optimism",
-                            "fantom": "ftm-fantom"
+                            "fantom": "ftm-fantom",
+                            "celo": "celo-celo"
                             }
         self.tokens_by_id = self.get_tokens()
         self.contracts_by_chain = self.get_contracts()
 
     @staticmethod
     def parse_token(line):
-        values = json.loads(line.rstrip(',').replace('(', '[').replace(')', ']'))
+        matches = re.findall(r"\((.*?)\)", line)
+        if not matches:
+            return None
+
+        parts = [item.strip() for item in matches[0].split(",")]
+        values = []
+        for val in parts:
+            if val.startswith("'"):
+                values.append(val.strip("'"))
+            elif val.startswith('"'):
+                values.append(val.strip('"'))
+            elif val.startswith("0x"):
+                values.append(val)
+            else:
+                values.append(int(val))
+
         return {
             "id": values[0],
             "blockchain": values[1],
             "symbol": values[2],
-            "contract_address": values[3].lower() if values[3] is not None else values[3]
+            "contract_address": values[3].lower() if values[3] is not None else values[3],
+            "decimal": values[4]
         }
 
     @staticmethod
@@ -65,6 +83,7 @@ class TokenChecker:
         token = self.parse_token(new_line)
         try:
             api_token = self.tokens_by_id[token['id']]
+            logging.info(f"INFO: verifying {token['id']}")
         except KeyError:
             logging.warning(f"WARN: Line: {new_line} token_id not found in CoinPaprika API")
             raise
