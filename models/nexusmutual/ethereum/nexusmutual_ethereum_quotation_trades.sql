@@ -28,7 +28,7 @@ WITH quo_evt AS (
            premiumNXM,
            scAdd,
            sumAssured,
-           '0xd7c49cee7e9188cca6ad8ff264c1da2e69d4cf3b' as token
+           cast('0xd7c49cee7e9188cca6ad8ff264c1da2e69d4cf3b' as varbinary) as token
     FROM
         {{ source('nexusmutual_ethereum', 'QuotationData_evt_CoverDetailsEvent') }}
     {% if not is_incremental() %}
@@ -66,7 +66,7 @@ SELECT quo_evt.cid,
        quo_evt.evt_block_number                                    AS evt_block_number,
        quo_evt.evt_block_time                                      AS evt_block_time,
        quo_evt.expiry                                              AS evt_expiry,
-       to_timestamp(quo_evt.expiry)                                AS evt_expiry_date,
+       from_unixtime(TRY_CAST(quo_evt.expiry as double) ) AS evt_expiry_date,
        TRY_CAST(date_trunc('DAY', quo_evt.evt_block_time) AS date) AS block_date
 FROM quo_evt
 INNER JOIN {{ source('ethereum','transactions') }} tx
