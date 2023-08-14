@@ -1002,7 +1002,6 @@ models:
   - name: oneinch_ethereum_trades
     meta:
       blockchain: ethereum
-      sector: dex
       project: oneinch
       contributors: [jeff-dude, dsalv, k06a]
     config:
