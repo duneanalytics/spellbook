@@ -7,6 +7,7 @@
     file_format = 'delta',
     incremental_strategy = 'merge',
     unique_key = ['block_month', 'evt_type', 'loan_id', 'id'],
+    pre_hook='{{ enforce_join_distribution("PARTITIONED") }}',
     post_hook='{{ expose_spells(\'["solana"]\',
                                     "project",
                                     "sharky",
