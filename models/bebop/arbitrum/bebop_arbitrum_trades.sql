@@ -148,17 +148,18 @@ SELECT
     ELSE COALESCE(
         (t.token_bought_amount / power(10, coalesce(t_bought.decimals, 0))) * p_bought.price,
         (t.token_sold_amount / power(10, coalesce(t_sold.decimals, 0))) * p_sold.price
-    ) as amount_usd, -- when there's a Multi-trade, the usd value of the multi tokens traded is used as the amount_usd 
-  t.token_bought_address,
-  t.token_sold_address,
-  t.taker_address AS taker,
-  t.contract_address AS maker,
-  t.contract_address AS project_contract_address,
-  t.tx_hash,
-  tx."from" tx_from,
-  tx."to" AS tx_to,
-  t.trace_address,
-  t.evt_index
+    ) 
+    END as amount_usd, -- when there's a Multi-trade, the usd value of the multi tokens traded is used as the amount_usd 
+    t.token_bought_address,
+    t.token_sold_address,
+    t.taker_address AS taker,
+    t.contract_address AS maker,
+    t.contract_address AS project_contract_address,
+    t.tx_hash,
+    tx."from" tx_from,
+    tx."to" AS tx_to,
+    t.trace_address,
+    t.evt_index
 FROM
 simple_trades t
 INNER JOIN 
