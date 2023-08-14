@@ -935,6 +935,8 @@ models:
         +schema: kyberswap_arbitrum
       bnb:
         +schema: kyberswap_bnb
+      polygon:
+        +schema: kyberswap_polygon
 
     hubble_exchange:
       +schema: hubble_exchange

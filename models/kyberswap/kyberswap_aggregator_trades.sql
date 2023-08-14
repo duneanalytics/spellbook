@@ -15,6 +15,7 @@
     ,ref('kyberswap_aggregator_ethereum_trades')
     ,ref('kyberswap_aggregator_optimism_trades')
     ,ref('kyberswap_aggregator_bnb_trades')
+    ,ref('kyberswap_aggregator_polygon_trades')
 ] %}
 
 
