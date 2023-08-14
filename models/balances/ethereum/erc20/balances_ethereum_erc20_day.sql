@@ -1,4 +1,5 @@
 {{ config(
+        tags = ['dunesql'],
         alias = alias('erc20_day'),
         post_hook='{{ expose_spells_hide_trino(\'["ethereum"]\',
                                             "sector",
@@ -12,7 +13,7 @@ with
         select
             explode(
                 sequence(
-                    to_date('2015-01-01'), date_trunc('day', now()), interval 1 day
+                    to_date('2015-01-01'), date_trunc('day', now()), interval '1' day
                 )
             ) as day
     )
