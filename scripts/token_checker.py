@@ -20,7 +20,8 @@ class TokenChecker:
                             # "arbitrum": "",
                             "gnosis": "gno-gnosis",
                             "optimism": "op-optimism",
-                            "fantom": "ftm-fantom"
+                            "fantom": "ftm-fantom",
+                            "celo": "celo-celo"
                             }
         self.tokens_by_id = self.get_tokens()
         self.contracts_by_chain = self.get_contracts()
@@ -82,6 +83,7 @@ class TokenChecker:
         token = self.parse_token(new_line)
         try:
             api_token = self.tokens_by_id[token['id']]
+            logging.info(f"INFO: verifying {token['id']}")
         except KeyError:
             logging.warning(f"WARN: Line: {new_line} token_id not found in CoinPaprika API")
             raise
