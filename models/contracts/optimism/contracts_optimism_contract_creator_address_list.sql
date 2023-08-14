@@ -582,6 +582,7 @@ WITH curated_list AS (
       ,(0x4c276F7FF3893a68cc9A947544B32E9F1e6d9912, 'Nouns Builder')
       ,(0x78357316239040e19fC823372cC179ca75e64b81, 'Pyth')
       ,(0xC8834C1FcF0Df6623Fc8C8eD25064A4148D99388, 'Holonym')
+      ,(0xfC8d2f6d1937cd4CcAaD5c26FBB42a3dfc9dAc85, 'Gravita')
       
   ) as temp_table (creator_address, contract_project)
 )
