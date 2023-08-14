@@ -156,7 +156,7 @@ models:
       - &median_price
         name: median_price
         description: 'BPT median price'
-        
+
   - name: balancer_v2_gnosis_pools_fees
     meta:
       blockchain: gnosis
@@ -173,6 +173,7 @@ models:
             - tx_hash
             - index
     columns:
+      - name: blockchain
       - name: contract_address
       - name: tx_hash
       - name: index
@@ -264,7 +265,7 @@ models:
       - name: protocol_liquidity_usd
         description: 'Liquidity of the token in the pool in USD, except BPTs'
       - name: pool_liquidity_usd
-        description: 'Liquidity of the token in the pool in USD, including BPTs'  
+        description: 'Liquidity of the token in the pool in USD, including BPTs'
 
   - name: balancer_gnosis_pools_tokens_weights
     meta:
