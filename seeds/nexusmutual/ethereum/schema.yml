@@ -10,9 +10,9 @@ seeds:
         evt_block_number: bigint
         nonce: bigint
         curr: varbinary
-        premium: unit256
-        premium_nxm: unit256
-        sum_assured: unit256
+        premium: uint256
+        premium_nxm: uint256
+        sum_assured: uint256
 
   - name: nexusmutual_ethereum_capital_pool_eth_daily_transaction_summary_seed
     config:
