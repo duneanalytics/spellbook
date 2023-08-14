@@ -28,7 +28,7 @@ SELECT
 , coalesce(new.symbol, old.symbol) as symbol
 , coalesce(new.minute, old.minute) as minute
 , coalesce(new.price, old.price) as price
-from {{ ref('prices_usd_latest_old') }} old
+from {{ ref('prices_usd_latest_historical') }} old
 full outer join new_prices new
 on (new.blockchain = old.blockchain OR (new.blockchain is null and old.blockchain is null))
 and (new.contract_address = old.contract_address OR (new.contract_address is null and old.contract_address is null))
