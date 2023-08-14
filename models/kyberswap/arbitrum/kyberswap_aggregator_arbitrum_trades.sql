@@ -36,7 +36,7 @@ WITH meta_router AS
         FROM
             {{ source('kyber_arbitrum', 'MetaAggregationRouterV2_evt_Swapped') }}
         {% if is_incremental() %}
-        WHERE evt_block_time >= date_trunc('day', now() - interval '7' day)
+        WHERE evt_block_time >= date_trunc('day', now() - INTERVAL '7' DAY)
         {% endif %}
 )
 SELECT
@@ -57,14 +57,14 @@ SELECT
     ,meta_router.token_sold_amount_raw / power(10, erc20b.decimals)     AS token_sold_amount
     ,CAST(meta_router.token_bought_amount_raw AS UINT256)               AS token_bought_amount_raw
     ,CAST(meta_router.token_sold_amount_raw AS UINT256)                 AS token_sold_amount_raw
-    ,coalesce(
+    ,COALESCE(
         meta_router.amount_usd
         ,(meta_router.token_bought_amount_raw / power(10, (CASE meta_router.token_bought_address WHEN 0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee THEN 18 ELSE p_bought.decimals END))) * (CASE meta_router.token_bought_address WHEN 0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee THEN  p_eth.price ELSE p_bought.price END)
         ,(meta_router.token_sold_amount_raw / power(10, (CASE meta_router.token_sold_address WHEN 0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee THEN 18 ELSE p_sold.decimals END))) * (CASE meta_router.token_sold_address WHEN 0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee THEN  p_eth.price ELSE p_sold.price END)
         )                                                               AS amount_usd
     ,meta_router.token_bought_address                                   AS token_bought_address
     ,meta_router.token_sold_address                                     AS token_sold_address
-    ,coalesce(meta_router.taker, tx."from")                             AS taker
+    ,COALESCE(meta_router.taker, tx."from")                             AS taker
     ,meta_router.maker                                                  AS maker
     ,meta_router.project_contract_address                               AS project_contract_address
     ,meta_router.tx_hash                                                AS tx_hash
@@ -76,7 +76,7 @@ FROM meta_router
 INNER JOIN {{ source('arbitrum', 'transactions')}} tx
     ON meta_router.tx_hash = tx.hash
     {% if is_incremental() %}
-    AND tx.block_time >= date_trunc('day', now() - interval '7' day)
+    AND tx.block_time >= date_trunc('day', now() - INTERVAL '7' DAY)
     {% else %}
     AND tx.block_time >= TIMESTAMP '{{ project_start_date }}'
     {% endif %}
@@ -91,7 +91,7 @@ LEFT JOIN {{ source('prices', 'usd') }} p_bought
     AND p_bought.contract_address = meta_router.token_bought_address
     AND p_bought.blockchain = 'arbitrum'
     {% if is_incremental() %}
-    AND p_bought.minute >= date_trunc('day', now() - interval '7' day)
+    AND p_bought.minute >= date_trunc('day', now() - INTERVAL '7' DAY)
     {% else %}
     AND p_bought.minute >= TIMESTAMP '{{ project_start_date }}'
     {% endif %}
@@ -100,7 +100,7 @@ LEFT JOIN {{ source('prices', 'usd') }} p_sold
     AND p_sold.contract_address = meta_router.token_sold_address
     AND p_sold.blockchain = 'arbitrum'
     {% if is_incremental() %}
-    AND p_sold.minute >= date_trunc('day', now() - interval '7' day)
+    AND p_sold.minute >= date_trunc('day', now() - INTERVAL '7' DAY)
     {% else %}
     AND p_sold.minute >= TIMESTAMP '{{ project_start_date }}'
     {% endif %}
@@ -109,7 +109,7 @@ LEFT JOIN {{ source('prices', 'usd') }} p_eth
     AND p_eth.blockchain IS NULL
     AND p_eth.symbol = 'ETH'
     {% if is_incremental() %}
-    AND p_eth.minute >= date_trunc('day', now() - interval '7' day)
+    AND p_eth.minute >= date_trunc('day', now() - INTERVAL '7' DAY)
     {% else %}
     AND p_eth.minute >= TIMESTAMP '{{ project_start_date }}'
     {% endif %}
