@@ -310,15 +310,31 @@ direct_uniswapv2 AS (
             CASE WHEN swap.amount0In > swap.amount0Out THEN pair.token0 ELSE pair.token1 END AS taker_token,
             CASE WHEN swap.amount0In > swap.amount0Out THEN pair.token1 ELSE pair.token0 END AS maker_token,
             CASE
-            WHEN swap.amount0In > swap.amount0Out
-            THEN cast(swap.amount0In - swap.amount0Out as int256)
-            ELSE cast(swap.amount1In - swap.amount1Out as int256)
-            END AS taker_token_amount_raw,
-            CASE
-            WHEN swap.amount0In > swap.amount0Out
-            THEN cast(swap.amount1Out - swap.amount1In as int256)
-            ELSE cast(swap.amount0Out - swap.amount0In as int256)
-            END AS maker_token_amount_raw,
+                WHEN swap.amount0In > swap.amount0Out
+                THEN CASE 
+                        WHEN swap.amount0In >= swap.amount0Out THEN cast(swap.amount0In - swap.amount0Out as int256)
+                        ELSE 0
+                    END
+                ELSE
+                    CASE 
+                        WHEN swap.amount1In >= swap.amount1Out THEN cast(swap.amount1In - swap.amount1Out as int256)
+                        ELSE 0
+                    END
+                END AS taker_token_amount_raw,
+
+                CASE
+                WHEN swap.amount0In > swap.amount0Out
+                THEN
+                    CASE 
+                        WHEN swap.amount1Out >= swap.amount1In THEN cast(swap.amount1Out - swap.amount1In as int256)
+                        ELSE 0
+                    END
+                ELSE
+                    CASE 
+                        WHEN swap.amount0Out >= swap.amount0In THEN cast(swap.amount0Out - swap.amount0In as int256)
+                        ELSE 0
+                    END
+                END AS maker_token_amount_raw,
             'Uniswap V2 Direct' AS type,
             zeroex_tx.affiliate_address AS affiliate_address,
             TRUE AS swap_flag,
@@ -347,15 +363,32 @@ direct_sushiswap AS (
             CASE WHEN swap.amount0In > swap.amount0Out THEN pair.token0 ELSE pair.token1 END AS taker_token,
             CASE WHEN swap.amount0In > swap.amount0Out THEN pair.token1 ELSE pair.token0 END AS maker_token,
             CASE
-            WHEN swap.amount0In > swap.amount0Out
-            THEN cast(swap.amount0In - swap.amount0Out as int256)
-            ELSE cast(swap.amount1In - swap.amount1Out as int256)
-            END AS taker_token_amount_raw,
-            CASE
-            WHEN swap.amount0In > swap.amount0Out
-            THEN cast(swap.amount1Out - swap.amount1In as int256)
-            ELSE cast(swap.amount0Out - swap.amount0In as int256)
-            END AS maker_token_amount_raw,
+                WHEN swap.amount0In > swap.amount0Out
+                THEN CASE 
+                        WHEN swap.amount0In >= swap.amount0Out THEN cast(swap.amount0In - swap.amount0Out as int256)
+                        ELSE 0
+                    END
+                ELSE
+                    CASE 
+                        WHEN swap.amount1In >= swap.amount1Out THEN cast(swap.amount1In - swap.amount1Out as int256)
+                        ELSE 0
+                    END
+                END AS taker_token_amount_raw,
+
+                CASE
+                WHEN swap.amount0In > swap.amount0Out
+                THEN
+                    CASE 
+                        WHEN swap.amount1Out >= swap.amount1In THEN cast(swap.amount1Out - swap.amount1In as int256)
+                        ELSE 0
+                    END
+                ELSE
+                    CASE 
+                        WHEN swap.amount0Out >= swap.amount0In THEN cast(swap.amount0Out - swap.amount0In as int256)
+                        ELSE 0
+                    END
+                END AS maker_token_amount_raw,
+
             'Sushiswap Direct' AS type,
             zeroex_tx.affiliate_address AS affiliate_address,
             TRUE AS swap_flag,
