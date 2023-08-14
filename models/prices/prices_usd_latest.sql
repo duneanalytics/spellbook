@@ -30,7 +30,7 @@ SELECT
 , coalesce(new.price, old.price) as price
 from {{ ref('prices_usd_latest_old') }} old
 full outer join new_prices new
-on new.blockchain = old.blockchain
-and new.contract_address = old.contract_address
-and new.decimals = old.decimals
-and new.symbol = old.symbol
+on (new.blockchain = old.blockchain OR (new.blockchain is null and old.blockchain is null))
+and (new.contract_address = old.contract_address OR (new.contract_address is null and old.contract_address is null))
+and (new.decimals = old.decimals OR (new.decimals is null and old.decimals is null))
+and (new.symbol = old.symbol OR (new.symbol is null and old.symbol is null))
