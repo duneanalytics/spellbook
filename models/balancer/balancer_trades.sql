@@ -1,7 +1,7 @@
 {{ config(
     schema = 'balancer',
     alias = alias('trades'),
-    post_hook='{{ expose_spells(\'["arbitrum", "ethereum", "gnosis", "optimism", "polygon"]\',
+    post_hook='{{ expose_spells(\'["arbitrum", "avalanche_c", "base", "ethereum", "gnosis", "optimism", "polygon"]\',
                                 "project",
                                 "balancer",
                                 \'["bizzyvinci", "thetroyharris"]\') }}'
@@ -9,11 +9,13 @@
 }}
 
 {% set balancer_models = [
-    ref('balancer_arbitrum_trades'),
-    ref('balancer_ethereum_trades'),
-    ref('balancer_gnosis_trades'),
-    ref('balancer_optimism_trades'),
-    ref('balancer_polygon_trades')
+    ref('balancer_v2_arbitrum_trades')
+    , ref('balancer_v2_avalanche_c_trades')
+    , ref('balancer_v2_base_trades')
+    , ref('balancer_v2_ethereum_trades')
+    , ref('balancer_v2_gnosis_trades')
+    , ref('balancer_v2_optimism_trades')
+    , ref('balancer_v2_polygon_trades')
 ] %}
 
 

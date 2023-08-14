@@ -1,9 +1,6 @@
 {{ config(
-	tags=['legacy'],
-
-    schema = 'balancer',
-    alias = alias('trades', legacy_model=True),
-    post_hook='{{ expose_spells(\'["arbitrum", "avalanche_c", "base", "ethereum", "gnosis", "optimism", "polygon"]\',
+    alias = alias('trades'),
+    post_hook = '{{ expose_spells(\'["base"]\',
                                 "project",
                                 "balancer",
                                 \'["bizzyvinci", "thetroyharris"]\') }}'
@@ -11,15 +8,8 @@
 }}
 
 {% set balancer_models = [
-    ref('balancer_v2_arbitrum_trades_legacy')
-    , ref('balancer_v2_avalanche_c_trades_legacy')
-    , ref('balancer_v2_base_trades_legacy')
-    , ref('balancer_v2_ethereum_trades_legacy')
-    , ref('balancer_v2_gnosis_trades_legacy')
-    , ref('balancer_v2_optimism_trades_legacy')
-    , ref('balancer_v2_polygon_trades_legacy')
+    ref('balancer_v2_base_trades')
 ] %}
-
 
 SELECT *
 FROM (

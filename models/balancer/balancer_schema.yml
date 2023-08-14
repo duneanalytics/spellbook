@@ -3,7 +3,7 @@ version: 2
 models:
   - name: balancer_trades
     meta:
-      blockchain: arbitrum, ethereum, optimism, polygon, gnosis
+      blockchain: arbitrum, avalanche_c, base, ethereum, gnosis, optimism, polygon
       sector: dex
       contributors: bizzyvinci, thetroyharris
     config:
@@ -80,7 +80,7 @@ models:
       - &evt_index
         name: evt_index
         description: 'Event index'
-  
+
   - name: balancer_gauge_mappings
     meta:
       blockchain: optimism
@@ -153,7 +153,7 @@ models:
 
   - name: balancer_bpt_prices
     meta:
-      blockchain: ethereum, arbitrum, optimism, polygon, gnosis
+      blockchain: arbitrum, avalanche_c, base, ethereum, gnosis, optimism, polygon
       sector: dex
       contributors: thetroyharris, victorstefenon
     config:
@@ -171,7 +171,7 @@ models:
       - name: hour
       - name: contract_address
       - name: median_price
-   
+
   - name: balancer_v2_liquidity
     meta:
       blockchain: ethereum, arbitrum, optimism, polygon, gnosis, avalanche_c
