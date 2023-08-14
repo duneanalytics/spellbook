@@ -307,14 +307,8 @@ direct_uniswapv2 AS (
             swap.evt_block_time AS block_time,
             swap.contract_address AS maker,
             LAST_VALUE(swap.to) OVER ( PARTITION BY swap.evt_tx_hash ORDER BY swap.evt_index) AS taker,
-            CASE
-                WHEN CAST(swap.amount0In AS float) > CAST(swap.amount0Out AS float) THEN pair.token0
-                ELSE pair.token1
-            END AS taker_token,
-            CASE
-                WHEN CAST(swap.amount0In AS float) > CAST(swap.amount0Out AS float) THEN pair.token1
-                ELSE pair.token0
-            END AS maker_token,
+            CASE WHEN swap.amount0In > swap.amount0Out THEN pair.token0 ELSE pair.token1 END AS taker_token,
+            CASE WHEN swap.amount0In > swap.amount0Out THEN pair.token1 ELSE pair.token0 END AS maker_token,
             CASE
             WHEN swap.amount0In > swap.amount0Out
             THEN cast(swap.amount0In - swap.amount0Out as int256)
@@ -350,14 +344,8 @@ direct_sushiswap AS (
             swap.evt_block_time AS block_time,
             swap.contract_address AS maker,
             LAST_VALUE(swap.to) OVER (PARTITION BY swap.evt_tx_hash ORDER BY swap.evt_index) AS taker,
-            CASE
-                WHEN CAST(swap.amount0In AS float) > CAST(swap.amount0Out AS float) THEN pair.token0
-                ELSE pair.token1
-            END AS taker_token,
-            CASE
-                WHEN CAST(swap.amount0In AS float) > CAST(swap.amount0Out AS float) THEN pair.token1
-                ELSE pair.token0
-            END AS maker_token,
+            CASE WHEN swap.amount0In > swap.amount0Out THEN pair.token0 ELSE pair.token1 END AS taker_token,
+            CASE WHEN swap.amount0In > swap.amount0Out THEN pair.token1 ELSE pair.token0 END AS maker_token,
             CASE
             WHEN swap.amount0In > swap.amount0Out
             THEN cast(swap.amount0In - swap.amount0Out as int256)
