@@ -1,6 +1,7 @@
 {{ config(
     schema = 'rubicon_arbitrum',
     alias = alias('trades'),
+    tags = ['dunesql'],
     partition_by = ['block_date'],
     materialized = 'incremental',
     file_format = 'delta',
