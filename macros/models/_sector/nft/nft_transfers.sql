@@ -26,10 +26,6 @@ FROM(
     {%- endif %}
     , t.evt_tx_hash AS tx_hash
     FROM {{ erc721_transfers }} t
-        {% if is_incremental() %}
-            LEFT JOIN {{this}} anti_table
-                ON t.evt_tx_hash = anti_table.tx_hash
-        {% endif %}
     {%- if denormalized == False -%}
     INNER JOIN {{ base_transactions }} et ON et.block_number = t.evt_block_number
         AND et.hash = t.evt_tx_hash
@@ -39,7 +35,6 @@ FROM(
     {%- endif -%}
     {% if is_incremental() %}
     WHERE t.evt_block_time >= date_trunc('day', now() - interval '7' day)
-    AND anti_table.tx_hash is null
     {% endif %}
 
     UNION ALL
@@ -64,10 +59,6 @@ FROM(
     {%- endif %}
     , t.evt_tx_hash AS tx_hash
     FROM {{ erc1155_single }} t
-        {% if is_incremental() %}
-            LEFT JOIN {{this}} anti_table
-                ON t.evt_tx_hash = anti_table.tx_hash
-        {% endif %}
     {%- if denormalized == False %}
     INNER JOIN {{ base_transactions }} et ON et.block_number = t.evt_block_number
         AND et.hash = t.evt_tx_hash
@@ -77,7 +68,6 @@ FROM(
     {%- endif -%}
     {% if is_incremental() %}
     WHERE t.evt_block_time >= date_trunc('day', now() - interval '7' day)
-    AND anti_table.tx_hash is null
     {% endif %}
 
     UNION ALL
@@ -106,12 +96,6 @@ FROM(
         , value, id
         FROM {{ erc1155_batch }} t
         CROSS JOIN unnest(zip(t."values", t.ids)) AS foo(value, id)
-        {% if is_incremental() %}
-        LEFT JOIN {{this}} anti_table
-            ON t.evt_tx_hash = anti_table.tx_hash
-        WHERE t.evt_block_time >= date_trunc('day', now() - interval '7' day)
-            AND anti_table.tx_hash is null
-        {% endif %}
         {% if spark_mode == True %}
         {# This deduplicates rows. Double check if this is correct or not #}
         GROUP BY 1, 2, 3, 4, 5, 6, 7, 8, 9 {% if denormalized == True %}, 10 {% endif %}
