@@ -49,9 +49,6 @@ seeds:
 # Full documentation: https://docs.getdbt.com/docs/configuring-models
 models:
   spellbook:
-    +pre-hook:
-      - sql: "{{ set_trino_session_property(is_materialized(model) and is_partitioned(model), 'join_distribution_type', 'PARTITIONED') }}"
-        transaction: true
     +post-hook:
       - sql: "{{ set_trino_session_property(is_materialized(model), 'writer_min_size', model.config.get('writer_min_size', '500MB')) }}"
         transaction: true
