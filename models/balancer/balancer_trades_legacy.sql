@@ -11,13 +11,13 @@
 }}
 
 {% set balancer_models = [
-    ref('balancer_v2_arbitrum_trades_legacy')
-    , ref('balancer_v2_avalanche_c_trades_legacy')
-    , ref('balancer_v2_base_trades_legacy')
-    , ref('balancer_v2_ethereum_trades_legacy')
-    , ref('balancer_v2_gnosis_trades_legacy')
-    , ref('balancer_v2_optimism_trades_legacy')
-    , ref('balancer_v2_polygon_trades_legacy')
+    ref('balancer_arbitrum_trades_legacy')
+    , ref('balancer_avalanche_c_trades_legacy')
+    , ref('balancer_base_trades_legacy')
+    , ref('balancer_ethereum_trades_legacy')
+    , ref('balancer_gnosis_trades_legacy')
+    , ref('balancer_optimism_trades_legacy')
+    , ref('balancer_polygon_trades_legacy')
 ] %}
 
 
