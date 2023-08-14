@@ -10,7 +10,10 @@
 }}
 
 {% set models = [
-ref('kyberswap_aggregator_arbitrum_trades')
+    ref('kyberswap_aggregator_arbitrum_trades')
+    ,ref('kyberswap_aggregator_avalanche_c_trades')
+    ,ref('kyberswap_aggregator_ethereum_trades')
+    ,ref('kyberswap_aggregator_optimism_trades')
 ] %}
 
 
