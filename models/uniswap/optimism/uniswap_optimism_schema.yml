@@ -5,12 +5,21 @@ models:
     meta:
       blockchain: optimism
       project: uniswap
-      contributors: msilb7, chuxin
+      contributors: msilb7, chuxin, mtitus6
     config:
       tags: ['optimism','uniswap','pools']
     description: >
         A canonical table containing all Uniswap pools created on Optimism. Pools from OVM1 will be missing from factory_evt_poolcreated, so we use this table to get pool information.
     columns:
+      - &blockchain
+        name: blockchain
+        description: "Blockchain which the DEX is deployed"
+      - &project 
+        name: project
+        description: "Project name of the DEX"  
+      - &version
+        name: version
+        description: "Version of the contract built and deployed by the DEX project"
       - &pool
         name: pool
         description: "Uniswap liquidity pool contract address"
@@ -25,6 +34,15 @@ models:
       - &fee
         name: fee
         description:  "Swap fee of a Uniswap liquidity pool. Divide by 1e6 or power(10,6) to get the fee percentage"
+      - &creation_block_time
+        name: creation_block_time
+        description: "Block time of pool creation"
+      - &creation_block_number
+        name: creation_block_number
+        description: "Block number of pool creation"
+      - &contract_address
+        name: contract_address
+        description: "Contract address used to create the pool"  
 
   - name: uniswap_optimism_ovm1_pool_mapping
     meta:
@@ -74,15 +92,9 @@ models:
           project: uniswap
           version: 3
     columns:
-      - &blockchain
-        name: blockchain
-        description: "Blockchain which the DEX is deployed"
-      - &project
-        name: project
-        description: "Project name of the DEX"
-      - &version
-        name: version
-        description: "Version of the contract built and deployed by the DEX project"
+      - *blockchain
+      - *project
+      - *version
       - &block_date
         name: block_date
         description: "UTC event block date of each DEX trade"
