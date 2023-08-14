@@ -21,8 +21,8 @@ kyberswap_dex AS (
         t.evt_block_time                                                    AS block_time
         ,t."to"                                                             AS taker
         ,CAST(NULL AS VARBINARY)                                            AS maker
-        ,cast(CASE WHEN t.amount0Out = UINT256 '0' THEN t.amount1Out ELSE t.amount0Out END as int256) AS token_bought_amount_raw
-        ,cast(CASE WHEN t.amount0In = UINT256 '0' THEN t.amount1In ELSE t.amount0In END as int256)   AS token_sold_amount_raw
+        ,cast(CASE WHEN t.amount0Out = UINT256 '0' THEN t.amount1Out ELSE t.amount0Out END as uint256) AS token_bought_amount_raw
+        ,cast(CASE WHEN t.amount0In = UINT256 '0' THEN t.amount1In ELSE t.amount0In END as uint256)   AS token_sold_amount_raw
         ,NULL                                               AS amount_usd
         ,CASE WHEN t.amount0Out = UINT256 '0' THEN p.token1 ELSE p.token0 END         AS token_bought_address
         ,CASE WHEN t.amount0In = UINT256 '0' THEN p.token1 ELSE p.token0 END          AS token_sold_address
@@ -46,8 +46,8 @@ kyberswap_dex AS (
         t.evt_block_time                                                               AS block_time
         ,t.sender                                                                      AS taker
         ,t.recipient                                                                   AS maker
-        ,cast(if(starts_with(cast(t.deltaQty0 as varchar), '-'), t.deltaQty1, t.deltaQty0) as int256)                 AS token_bought_amount_raw
-        ,cast(if(starts_with(cast(t.deltaQty0 as varchar), '-'), abs(t.deltaQty0), t.deltaQty1) as int256)  AS token_sold_amount_raw
+        ,cast(if(starts_with(cast(t.deltaQty0 as varchar), '-'), t.deltaQty1, t.deltaQty0) as uint256)                 AS token_bought_amount_raw
+        ,cast(if(starts_with(cast(t.deltaQty0 as varchar), '-'), abs(t.deltaQty0), t.deltaQty1) as uint256)  AS token_sold_amount_raw
         ,NULL                                                                          AS amount_usd
         ,if(starts_with(cast(t.deltaQty0 as varchar), '-'), p.token1, p.token0)                          AS token_bought_address
         ,if(starts_with(cast(t.deltaQty0 as varchar), '-'), p.token0, p.token1)                          AS token_sold_address
@@ -69,8 +69,8 @@ kyberswap_dex AS (
         evt_block_time                                                     AS block_time
         ,sender                                                            AS taker
         ,CAST(NULL AS VARBINARY)                                           AS maker
-        ,cast(returnAmount as int256)                                      AS token_bought_amount_raw
-        ,cast(spentAmount as int256)                                       AS token_sold_amount_raw
+        ,cast(returnAmount as uint256)                                      AS token_bought_amount_raw
+        ,cast(spentAmount as uint256)                                       AS token_sold_amount_raw
         ,NULL                                                              AS amount_usd
         ,dstToken                                                          AS token_bought_address
         ,srcToken                                                          AS token_sold_address
@@ -91,8 +91,8 @@ kyberswap_dex AS (
         evt_block_time                                                     AS block_time
         ,sender                                                            AS taker
         ,CAST(NULL AS VARBINARY)                                                                AS maker
-        ,cast(returnAmount as int256)                                                      AS token_bought_amount_raw
-        ,cast(spentAmount as int256)                                                       AS token_sold_amount_raw
+        ,cast(returnAmount as uint256)                                                      AS token_bought_amount_raw
+        ,cast(spentAmount as uint256)                                                       AS token_sold_amount_raw
         ,NULL                                              AS amount_usd
         ,dstToken                                                          AS token_bought_address
         ,srcToken                                                          AS token_sold_address
@@ -154,7 +154,7 @@ LEFT JOIN {{ ref('tokens_erc20') }} erc20b
     AND erc20b.blockchain = 'avalanche_c'
 LEFT JOIN {{ source('prices', 'usd') }} p_bought
     ON p_bought.minute = date_trunc('minute', kyberswap_dex.block_time)
-    AND cast(p_bought.contract_address as varbinary) = kyberswap_dex.token_bought_address
+    AND p_bought.contract_address = kyberswap_dex.token_bought_address
     AND p_bought.blockchain = 'avalanche_c'
     {% if is_incremental() %}
     AND p_bought.minute >= date_trunc('day', now() - interval '7' day)
@@ -163,7 +163,7 @@ LEFT JOIN {{ source('prices', 'usd') }} p_bought
     {% endif %}
 LEFT JOIN {{ source('prices', 'usd') }} p_sold
     ON p_sold.minute = date_trunc('minute', kyberswap_dex.block_time)
-    AND cast(p_sold.contract_address as varbinary) = kyberswap_dex.token_sold_address
+    AND p_sold.contract_address = kyberswap_dex.token_sold_address
     AND p_sold.blockchain = 'avalanche_c'
     {% if is_incremental() %}
     AND p_sold.minute >= date_trunc('day', now() - interval '7' day)

@@ -21,8 +21,8 @@ kyberswap_dex AS (
         t.evt_block_time                                                    AS block_time
         ,t."to"                                                             AS taker
         ,CAST(NULL AS VARBINARY)                                                                 AS maker
-        ,CAST(CASE WHEN t.amount0Out = UINT256 '0' THEN t.amount1Out ELSE t.amount0Out END AS int256) AS token_bought_amount_raw
-        ,CAST(CASE WHEN t.amount0In = UINT256 '0' THEN t.amount1In ELSE t.amount0In END AS int256)    AS token_sold_amount_raw
+        ,CAST(CASE WHEN t.amount0Out = UINT256 '0' THEN t.amount1Out ELSE t.amount0Out END AS uint256) AS token_bought_amount_raw
+        ,CAST(CASE WHEN t.amount0In = UINT256 '0' THEN t.amount1In ELSE t.amount0In END AS uint256)    AS token_sold_amount_raw
         ,NULL                                             AS amount_usd
         ,CASE WHEN t.amount0Out = UINT256 '0' THEN p.token1 ELSE p.token0 END         AS token_bought_address
         ,CASE WHEN t.amount0In = UINT256 '0' THEN p.token1 ELSE p.token0 END          AS token_sold_address
@@ -47,8 +47,8 @@ kyberswap_dex AS (
         t.evt_block_time                                                               AS block_time
         ,t.sender                                                                      AS taker
         ,t.recipient                                                                   AS maker
-        ,cast(if(starts_with(cast(t.deltaQty0 as varchar), '-'), t.deltaQty1, t.deltaQty0) as int256)                    AS token_bought_amount_raw
-        ,cast(if(starts_with(cast(t.deltaQty0 as varchar), '-'), abs(t.deltaQty0), t.deltaQty1) as int256)  AS token_sold_amount_raw
+        ,cast(if(starts_with(cast(t.deltaQty0 as varchar), '-'), t.deltaQty1, t.deltaQty0) as uint256)                    AS token_bought_amount_raw
+        ,cast(if(starts_with(cast(t.deltaQty0 as varchar), '-'), abs(t.deltaQty0), t.deltaQty1) as uint256)  AS token_sold_amount_raw
         ,NULL                                                                          AS amount_usd
         ,if(starts_with(cast(t.deltaQty0 as varchar), '-'), p.token1, p.token0)                          AS token_bought_address
         ,if(starts_with(cast(t.deltaQty0 as varchar), '-'), p.token0, p.token1)                          AS token_sold_address
