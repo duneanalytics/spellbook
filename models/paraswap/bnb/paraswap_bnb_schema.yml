@@ -21,7 +21,7 @@ models:
             - tx_hash
             - evt_index
             - trace_address
-      - check_dex_aggregator_seed_legacy:
+      - check_dex_aggregator_seed:
           blockchain: bnb
           project: paraswap
           version: 4
@@ -95,6 +95,9 @@ models:
       - &evt_index
         name: evt_index
         description: ""
+      - &block_month
+        name: block_month
+        description: "UTC event block month of each DEX trade"
 
   - name: paraswap_v5_bnb_trades
     meta:
@@ -116,7 +119,7 @@ models:
             - tx_hash
             - evt_index
             - trace_address
-      - check_dex_aggregator_seed_legacy:
+      - check_dex_aggregator_seed:
           blockchain: bnb
           project: paraswap
           version: 5
@@ -144,6 +147,7 @@ models:
       - *tx_to
       - *trace_address
       - *evt_index
+      - *block_month
 
   - name: paraswap_bnb_trades
     meta:
@@ -179,3 +183,4 @@ models:
       - *tx_to
       - *trace_address
       - *evt_index
+      - *block_month
