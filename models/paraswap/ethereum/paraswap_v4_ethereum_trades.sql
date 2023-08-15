@@ -351,4 +351,4 @@ LEFT JOIN {{ source('prices', 'usd') }} p2 ON p2.minute = date_trunc('minute', d
     {% endif %}
     {% if is_incremental() %}
     AND p2.minute >= date_trunc('day', now() - interval '7' Day)
-    {% endif %}
+    {% endif %} 
