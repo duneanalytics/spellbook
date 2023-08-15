@@ -7,7 +7,7 @@
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
-    unique_key = ['block_date', 'blockchain', 'project', 'version', 'tx_hash', 'evt_index'],
+    unique_key = ['block_date', 'blockchain', 'project', 'version', 'tx_hash', 'evt_index', 'trace_address'],
     post_hook='{{ expose_spells(\'["ethereum"]\',
                                 "project",
                                 "uniswap_v3",
@@ -32,6 +32,7 @@ WITH dexs AS
         ,CAST(t.contract_address as string) as project_contract_address
         ,f.fee -- field is unique to this model and will not affect downstream spells
         ,t.evt_tx_hash AS tx_hash
+        ,'' AS trace_address
         ,t.evt_index
     FROM
         {{ source('uniswap_v3_ethereum', 'Pair_evt_Swap') }} t
@@ -71,6 +72,7 @@ SELECT
     ,dexs.tx_hash
     ,tx.from AS tx_from
     ,tx.to AS tx_to
+    ,dexs.trace_address
     ,dexs.evt_index
 FROM dexs
 INNER JOIN {{ source('ethereum', 'transactions') }} tx
