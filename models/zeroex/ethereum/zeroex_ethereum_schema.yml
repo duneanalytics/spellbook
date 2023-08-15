@@ -5,9 +5,9 @@ models:
     meta:
       blockchain: ethereum
       project: zeroex
-      contributors: danning.sui, bakabhai993, hosuke
+      contributors: danning.sui, bakabhai993, hosuke, rantum
     config:
-      tags: ['ethereum','0x','dex_aggregator','dex','aggregator']
+      tags: ["ethereum","0x","dex_aggregator","dex","aggregator"]
     description: >
         0x API erc20 swaps raw fills (including multihops) and also native swaps thru 0x exchange contracts (without using 0x API) on Ethereum
     tests:
