@@ -1,7 +1,7 @@
 version: 2
 
 seeds:
-  - name: opensea_wyvern_trades_samples
+  - name: opensea_polygon_zeroex_trades_samples
     config:
       column_types:
         token_id: uint256
