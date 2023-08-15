@@ -22,8 +22,8 @@ WITH fee_wallets as (
      blockchain = 'polygon'
      ,source_transactions = source('polygon','transactions')
      ,Seaport_evt_OrderFulfilled = source('seaport_polygon','Seaport_evt_OrderFulfilled')
-     ,Seaport_call_matchAdvancedOrders = source('seaport_arbitrum','Seaport_call_matchAdvancedOrders')
-     ,Seaport_call_matchOrders = source('seaport_arbitrum','Seaport_call_matchOrders')
+     ,Seaport_call_matchAdvancedOrders = source('seaport_polygon','Seaport_call_matchAdvancedOrders')
+     ,Seaport_call_matchOrders = source('seaport_polygon','Seaport_call_matchOrders')
      ,fee_wallet_list_cte = 'fee_wallets'
      ,native_token_address = '0x0000000000000000000000000000000000000000'
      ,alternative_token_address = '0x0000000000000000000000000000000000001010'
