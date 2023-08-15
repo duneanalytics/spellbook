@@ -1,7 +1,7 @@
 {{ config(
         tags=['dunesql'], 
         alias = alias('trades'),
-        partition_by = ['block_date'],
+        partition_by = ['block_month'],
         materialized = 'incremental',
         file_format = 'delta',
         incremental_strategy = 'merge',
@@ -26,6 +26,7 @@ FROM (
         project,
         version,
         block_date,
+        block_month,
         block_time,
         token_bought_symbol,
         token_sold_symbol,
