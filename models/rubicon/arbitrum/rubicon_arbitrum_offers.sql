@@ -1,6 +1,7 @@
 {{ config(
     schema = 'rubicon_arbitrum',
     alias = alias('offers'),
+    tags = ['dunesql'],
     partition_by = ['block_date'],
     materialized = 'incremental',
     file_format = 'delta',
@@ -155,7 +156,7 @@ SELECT
     ((CAST(txn.effective_gas_price AS DECIMAL(38,0)) / power(10, 18)) * CAST(txn.gas_used AS decimal(38,0))) * eth.price AS txn_cost_usd,
     offers.project_contract_address, 
     offers.tx_hash,
-    txn.from AS tx_from,
+    txn."from" AS tx_from,
     txn.to AS tx_to
 FROM offers
 
