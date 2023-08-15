@@ -1,17 +1,7 @@
 version: 2
 
 seeds:
-  - name: opensea_polygon_zeroex_trades_samples
-    config:
-      tags: dunesql
-      column_types:
-        token_id: uint256
-        tx_hash: varbinary
-        buyer: varbinary
-        seller: varbinary
-        nft_contract_address: varbinary
-
-  - name: opensea_polygon_seaport_trades_samples
+  - name: opensea_optimism_seaport_trades_samples
     config:
       tags: dunesql
       column_types:
@@ -23,3 +13,4 @@ seeds:
         amount_raw: uint256
         platform_fee_amount_raw: uint256
         royalty_fee_amount_raw: uint256
+
