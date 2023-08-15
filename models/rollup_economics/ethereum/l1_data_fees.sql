@@ -86,7 +86,9 @@ with tx_batch_appends as (
     AND success = true
     AND t.block_time >= timestamp '2022-01-01'
     INNER JOIN {{ source('prices','usd') }} p
-    ON p.minute = date_trunc('minute', t.block_time)
+      ON p.minute = date_trunc('minute', t.block_time)
+      AND p.blockchain is null
+      AND p.symbol = 'ETH'
     {% if is_incremental() %}
         AND t.block_time >= date_trunc('day', now() - interval '7' day)
     {% endif %}
@@ -112,6 +114,8 @@ with tx_batch_appends as (
       AND t.block_time >= timestamp '2022-01-01'
       INNER JOIN {{ source('prices','usd') }} p
         ON p.minute = date_trunc('minute', t.block_time)
+        AND p.blockchain is null
+        AND p.symbol = 'ETH'
     {% if is_incremental() %}
         AND t.block_time >= date_trunc('day', now() - interval '7' day)
     {% endif %}
@@ -126,6 +130,8 @@ with tx_batch_appends as (
     FROM {{ source('ethereum','transactions') }} AS t
     INNER JOIN {{ source('prices','usd') }} p
       ON p.minute = date_trunc('minute', t.block_time)
+      AND p.blockchain is null
+      AND p.symbol = 'ETH'
       AND (
           t."from" = 0x2c169dfe5fbba12957bdd0ba47d9cedbfe260ca7 -- StateUpdate poster
           AND t.to = 0xc662c410C0ECf747543f5bA90660f6ABeBD9C8c4 -- StateUpdate proxy contract
@@ -146,6 +152,8 @@ with tx_batch_appends as (
     FROM {{ source('ethereum','transactions') }} AS t
     INNER JOIN {{ source('prices','usd') }} p
       ON p.minute = date_trunc('minute', t.block_time)
+      AND p.blockchain is null
+      AND p.symbol = 'ETH'
       AND
       (
       t."from" = 0xda7357bbce5e8c616bc7b0c3c86f0c71c5b4eabb -- Old L2 Operator
@@ -169,6 +177,8 @@ with tx_batch_appends as (
     FROM {{ source('ethereum','transactions') }} AS t
     INNER JOIN {{ source('prices','usd') }} p
       ON p.minute = date_trunc('minute', t.block_time)
+      AND p.blockchain is null
+      AND p.symbol = 'ETH'
       AND t.to = 0x3dB52cE065f728011Ac6732222270b3F2360d919 -- ValidatorTimelock
       AND
       (
@@ -191,6 +201,8 @@ with tx_batch_appends as (
     FROM {{ source('ethereum','transactions') }} AS t
     INNER JOIN {{ source('prices','usd') }} p
       ON p.minute = date_trunc('minute', t.block_time)
+      AND p.blockchain is null
+      AND p.symbol = 'ETH'
       AND t.to = 0x5132a183e9f3cb7c848b0aac5ae0c4f0491b7ab2
       AND cast(t.data as varchar) LIKE '0x5e9145c9%' -- sequenceBatches
       AND t.block_time >= timestamp '2023-03-01'
