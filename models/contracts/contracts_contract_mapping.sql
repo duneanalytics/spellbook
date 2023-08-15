@@ -47,46 +47,9 @@
 
 {% set evm_chains = all_evm_mainnets_testnets_chains() %} --macro: all_evm_chains.sql
 
-WITH base_level as (
-
-SELECT *
-  FROM (
-  select 
-    blockchain
-    ,creator_address AS trace_creator_address -- get the original contract creator address
-    ,creator_address
-    ,contract_factory
-    ,contract_address
-
-    ,created_time
-    ,created_block_number
-    ,creation_tx_hash
-    ,created_tx_from
-    ,created_tx_to
-    ,created_tx_method_id
-    ,created_tx_index
-
-    ,top_level_time
-    ,top_level_block_number
-    ,top_level_tx_hash
-    ,top_level_tx_from
-    ,top_level_tx_to
-    ,top_level_tx_method_id
-
-    ,code_bytelength
-    ,is_self_destruct
-    ,token_standard
-    ,code_deploy_rank
-    ,code_deploy_rank_by_chain
-    ,to_iterate_creators
-    ,code
-    
-    ,is_new_contract
-    ,ROW_NUMBER() OVER (PARTITION BY '{{chain}}', contract_address ORDER BY created_time ASC ) AS contract_order -- to ensure no dupes
-
-  from (
+WITH incremental_contracts AS (
   {% for chain in evm_chains %}
-    select 
+  select 
       '{{chain}}' AS blockchain
       ,ct."from" as creator_address
       ,CAST(NULL AS varbinary) as contract_factory
@@ -155,7 +118,56 @@ SELECT *
             ELSE 0
           END 
       )
+      {% endif %} -- incremental filter
 
+    {% if not loop.last %}
+    UNION ALL
+    {% endif %}
+    {% endfor %}
+
+)
+
+, base_level as (
+
+SELECT *
+  FROM (
+  select 
+    blockchain
+    ,creator_address AS trace_creator_address -- get the original contract creator address
+    ,creator_address
+    ,contract_factory
+    ,contract_address
+
+    ,created_time
+    ,created_block_number
+    ,creation_tx_hash
+    ,created_tx_from
+    ,created_tx_to
+    ,created_tx_method_id
+    ,created_tx_index
+
+    ,top_level_time
+    ,top_level_block_number
+    ,top_level_tx_hash
+    ,top_level_tx_from
+    ,top_level_tx_to
+    ,top_level_tx_method_id
+
+    ,code_bytelength
+    ,is_self_destruct
+    ,token_standard
+    ,code_deploy_rank
+    ,code_deploy_rank_by_chain
+    ,to_iterate_creators
+    ,code
+    
+    ,is_new_contract
+    ,ROW_NUMBER() OVER (PARTITION BY '{{chain}}', contract_address ORDER BY created_time ASC, is_new_contract DESC ) AS contract_order -- to ensure no dupes
+
+  from (
+    SELECT * FROM incremental_contracts
+
+    {% if is_incremental() %}
     -- to get existing history of contract mapping / only select those we want to re-run
     union all 
 
@@ -207,7 +219,7 @@ SELECT *
       and t.creation_tx_hash = sd.creation_tx_hash
       and t.created_time = sd.created_time
       AND t.created_block_number = sd.created_block_number
-      AND t.blockchain = '{{chain}}'
+      AND t.blockchain = sd.blockchain
 
     -- If the creator becomes marked as deterministic, we want to re-run it.
     left join {{ref('contracts_deterministic_contract_creators')}} as nd 
@@ -215,16 +227,13 @@ SELECT *
 
     -- Don't pull contracts that are in the incremental group (prevent dupes)
     WHERE t.contract_address NOT IN (
-      SELECT address FROM {{ source(chain , 'creation_traces') }} WHERE block_time >= date_trunc('day', now() - interval '7' day)
+      SELECT address
+        FROM incremental_contracts i
+        WHERE i.blockchain = t.blockchain)
     )
-    -- pull one chain at a time
-    AND th.blockchain = '{{chain}}'
 
-      {% endif %} -- incremental filter
-    {% if not loop.last %}
-    UNION ALL
-    {% endif %}
-    {% endfor %}
+    {% endif %} -- incremental filter
+
   ) as x
   group by 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26
 ) y 
