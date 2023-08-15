@@ -189,7 +189,6 @@ with source_ethereum_transactions as (
         {% endif %}
     )
 )
--- todo: still need to properly migrate this CTE
 ,iv_match_output as (
     select block_time
           ,block_number
@@ -243,27 +242,26 @@ with source_ethereum_transactions as (
                   ,dense_rank() over (partition by call_tx_hash order by call_trace_address) as evt_index
                   ,'match_adv_ord' as sub_type
                   ,execution_idx + 1 as sub_idx
-                  ,advancedOrders[0]:parameters:zone as zone
-                  ,advancedOrders[0]:parameters:offerer as offerer
-                  ,advancedOrders[0]:parameters:offer[0]:itemType as offer_first_item
-                  ,advancedOrders[0]:parameters:consideration[0]:itemType as consider_first_item
-                  ,execution:offerer as sender
-                  ,execution:item:token as token_contract_address
-                  ,execution:item:amount as original_amount
-                  ,execution:item:itemType as item_type_code
-                  ,execution:item:identifier as token_id
-                  ,execution:item:recipient as receiver
+                  ,json_extract_scalar(json_extract_scalar(advancedOrders[1],'$.parameters'),'$.zone') as zone
+                  ,from_hex(json_extract_scalar(json_extract_scalar(advancedOrders[1],'$.parameters'),'$.offerer')) as offerer
+                  ,json_extract_scalar(json_extract_scalar(json_extract_scalar(advancedOrders[1],'$.parameters'),'$.offer[0]'),'$.itemType') as offer_first_item
+                  ,json_extract_scalar(json_extract_scalar(json_extract_scalar(advancedOrders[1],'$.parameters'),'$.consideration[0]'),'$.itemType') as consider_first_item
+                  ,from_hex(json_extract_scalar(execution,'$.offerer')) as sender
+                  ,from_hex(json_extract_scalar(json_extract_scalar(execution,'$.item'),'$.token')) as token_contract_address
+                  ,json_extract_scalar(json_extract_scalar(execution,'$.item'),'$.amount') as original_amount
+                  ,json_extract_scalar(json_extract_scalar(execution,'$.item'),'$.itemType') as item_type_code
+                  ,json_extract_scalar(json_extract_scalar(execution,'$.item'),'$.identifier') as token_id
+                  ,from_hex(json_extract_scalar(json_extract_scalar(execution,'$.item'),'$.recipient')) as receiver
                   ,contract_address as platform_contract_address
             from (select *
-                        ,posexplode(output_executions) as (execution_idx, execution)
                     from {{ source('opensea_optimism', 'Seaport_call_matchAdvancedOrders') }}
+                    cross join unnest(output_executions) with ordinality as foo(execution,execution_idx)
                    where call_success
-                     and contract_address = '0x00000000006c3852cbef3e08e8df289169ede581'  -- Seaport v1.1
+                     and contract_address = 0x00000000006c3852cbef3e08e8df289169ede581  -- Seaport v1.1
                  {% if not is_incremental() %}
-                     and call_block_time >= date '{{c_seaport_first_date}}'  -- seaport first txn
-                 {% endif %}
-                 {% if is_incremental() %}
-                     and call_block_time >= date_trunc("day", now() - interval '1 week')
+                     and call_block_time >= timestamp '{{c_seaport_first_date}}'  -- seaport first txn
+                 {% else %}
+                     and call_block_time >= date_trunc('day', now() - interval '7' day)
                  {% endif %}
                 )
             union all
@@ -273,27 +271,26 @@ with source_ethereum_transactions as (
                   ,dense_rank() over (partition by call_tx_hash order by call_trace_address) as evt_index
                   ,'match_ord' as sub_type
                   ,execution_idx + 1 as sub_idx
-                  ,orders[0]:parameters:zone as zone    -- TODO : column would be changed
-                  ,orders[0]:parameters:offerer as offerer
-                  ,orders[0]:parameters:offer[0]:itemType as offer_first_item
-                  ,orders[0]:parameters:consideration[0]:itemType as consider_first_item
-                  ,execution:offerer as sender
-                  ,execution:item:token as token_contract_address
-                  ,execution:item:amount as original_amount
-                  ,execution:item:itemType as item_type_code
-                  ,execution:item:identifier as token_id
-                  ,execution:item:recipient as receiver
+                  ,json_extract_scalar(json_extract_scalar(orders[1],'$.parameters'),'$.zone') as zone
+                  ,from_hex(json_extract_scalar(json_extract_scalar(orders[1],'$.parameters'),'$.offerer')) as offerer
+                  ,json_extract_scalar(json_extract_scalar(json_extract_scalar(orders[1],'$.parameters'),'$.offer[0]'),'$.itemType') as offer_first_item
+                  ,json_extract_scalar(json_extract_scalar(json_extract_scalar(orders[1],'$.parameters'),'$.consideration[0]'),'$.itemType') as consider_first_item
+                  ,from_hex(json_extract_scalar(execution,'$.offerer')) as sender
+                  ,from_hex(json_extract_scalar(json_extract_scalar(execution,'$.item'),'$.token')) as token_contract_address
+                  ,json_extract_scalar(json_extract_scalar(execution,'$.item'),'$.amount') as original_amount
+                  ,json_extract_scalar(json_extract_scalar(execution,'$.item'),'$.itemType') as item_type_code
+                  ,json_extract_scalar(json_extract_scalar(execution,'$.item'),'$.identifier') as token_id
+                  ,from_hex(json_extract_scalar(json_extract_scalar(execution,'$.item'),'$.recipient')) as receiver
                   ,contract_address as platform_contract_address
             from (select *
-                        ,posexplode(output_executions) as (execution_idx, execution)   -- output_executions
                     from {{ source('opensea_optimism', 'Seaport_call_matchOrders') }}
+                    cross join unnest(output_executions) with ordinality as foo(execution,execution_idx)
                    where call_success
-                     and contract_address = '0x00000000006c3852cbef3e08e8df289169ede581'  -- Seaport v1.1
+                     and contract_address = 0x00000000006c3852cbef3e08e8df289169ede581  -- Seaport v1.1
                  {% if not is_incremental() %}
-                     and call_block_time >= date '{{c_seaport_first_date}}'  -- seaport first txn
-                 {% endif %}
-                 {% if is_incremental() %}
-                     and call_block_time >= date_trunc("day", now() - interval '1 week')
+                     and call_block_time >= timestamp '{{c_seaport_first_date}}'  -- seaport first txn
+                  {% else %}
+                     and call_block_time >= date_trunc('day', now() - interval '7' day)
                  {% endif %}
                 )
     )
