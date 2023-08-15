@@ -1,4 +1,5 @@
 {{  config(
+        tags=['dunesql'],
         alias = alias('api_fills_deduped'),
         materialized='incremental',
         partition_by = ['block_date'],
@@ -24,10 +25,10 @@ AS
     WHERE 1=1
     AND swap_flag = 1
     {% if is_incremental() %}
-    AND block_time >= date_trunc('day', now() - interval '1 week')
+    AND block_time >= date_trunc('day', now() - interval '7' day)
     {% endif %}
     {% if not is_incremental() %}
-    AND block_time >= '{{zeroex_v3_start_date}}'
+    AND block_time >= cast('{{zeroex_v3_start_date}}' as date)
     {% endif %}    
 )
 , fills_first_last
@@ -87,12 +88,11 @@ SELECT  a.blockchain
       , a.tx_from
       , a.tx_to
       , b.evt_index
-      , CAST(ARRAY(-1) as array<bigint>) as trace_address
+      , TRY_CAST(ARRAY[-1] AS ARRAY(BIGINT)) AS trace_address,
       , a.type
       , a.swap_flag
       , b.fills_within
       , a.contract_address 
 FROM fills_with_tx_fill_number a
 INNER JOIN deduped_bridge_fills b
-    ON (a.tx_hash = b.tx_hash AND a.evt_index = b.evt_index)
-;
+    ON a.tx_hash = b.tx_hash AND a.evt_index = b.evt_index

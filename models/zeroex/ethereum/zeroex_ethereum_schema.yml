@@ -107,7 +107,7 @@ models:
     meta:
       blockchain: ethereum
       project: zeroex
-      contributors: bakabhai993
+      contributors: bakabhai993, rantum
     config:
       tags: ["ethereum","0x","dex_aggregator","dex","aggregator"]
     description: >
