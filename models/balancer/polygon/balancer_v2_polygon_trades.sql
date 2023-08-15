@@ -1,6 +1,5 @@
 {{ config(
     schema = 'balancer_v2_polygon',
-    tags = ['dunesql'],
     alias = alias('trades'),
     partition_by = ['block_date'],
     materialized = 'incremental',
@@ -14,24 +13,24 @@
     )
 }}
 
-{% set project_start_date = '2021-06-17' %}
+{% set project_start_date = '2021-06-24' %}
 
-WITH
+WITH 
     swap_fees AS (
         SELECT
             swaps.poolId,
             swaps.evt_tx_hash,
             swaps.evt_index,
             swaps.evt_block_number,
-            bytearray_substring(swaps.poolId, 1, 20) AS contract_address,
+            SUBSTRING(CAST(swaps.poolId AS varchar(66)), 1, 42) AS contract_address,
             fees.swap_fee_percentage,
             ROW_NUMBER() OVER (PARTITION BY poolId, evt_tx_hash, evt_index ORDER BY block_number DESC, index DESC) AS rn
         FROM {{ source ('balancer_v2_polygon', 'Vault_evt_Swap') }} swaps
         LEFT JOIN {{ ref('balancer_v2_polygon_pools_fees') }} fees
-            ON fees.contract_address = bytearray_substring(swaps.poolId, 1, 20)
-            AND ARRAY[fees.block_number] || ARRAY[fees.index] < ARRAY[swaps.evt_block_number] || ARRAY[swaps.evt_index]
+            ON CAST(fees.contract_address AS varchar(66)) = substring(CAST(swaps.poolId AS varchar(66)), 1, 42)
+            AND ARRAY(fees.block_number) || ARRAY(fees.index) < ARRAY(swaps.evt_block_number) || ARRAY(swaps.evt_index)
         {% if is_incremental() %}
-        WHERE swaps.evt_block_time >= date_trunc('day', NOW() - interval '7' day)
+        WHERE swaps.evt_block_time >= date_trunc('day', NOW() - interval '1 week')
         {% endif %}
     ),
     dexs AS (
@@ -73,13 +72,13 @@ WITH
         FROM
             dexs
             LEFT JOIN {{ ref('balancer_v2_polygon_bpt_prices') }} bpt_prices
-                ON bpt_prices.contract_address = CAST(dexs.token_bought_address AS VARCHAR)
+                ON bpt_prices.contract_address = dexs.token_bought_address
                 AND bpt_prices.hour <= dexs.block_time
                 {% if not is_incremental() %}
-                AND bpt_prices.hour >= CAST('{{ project_start_date }}' AS TIMESTAMP)
+                AND bpt_prices.hour >= '{{ project_start_date }}'
                 {% endif %}
                 {% if is_incremental() %}
-                AND bpt_prices.hour >= DATE_TRUNC("day", NOW() - interval '7' day)
+                AND bpt_prices.hour >= DATE_TRUNC("day", NOW() - interval '1 week')
                 {% endif %}
         GROUP BY 1, 2, 3, 4, 5
     ),
@@ -94,13 +93,13 @@ WITH
         FROM
             dexs
             LEFT JOIN {{ ref('balancer_v2_polygon_bpt_prices') }} bpt_prices
-                ON bpt_prices.contract_address = CAST(dexs.token_sold_address AS VARCHAR)
+                ON bpt_prices.contract_address = dexs.token_sold_address
                 AND bpt_prices.hour <= dexs.block_time
                 {% if not is_incremental() %}
-                AND bpt_prices.hour >= CAST('{{ project_start_date }}' AS TIMESTAMP)
+                AND bpt_prices.hour >= '{{ project_start_date }}'
                 {% endif %}
                 {% if is_incremental() %}
-                AND bpt_prices.hour >= DATE_TRUNC("day", NOW() - interval '7' day)
+                AND bpt_prices.hour >= DATE_TRUNC("day", NOW() - interval '1 week')
                 {% endif %}
         GROUP BY 1, 2, 3, 4, 5
     )
@@ -120,8 +119,10 @@ SELECT
     END AS token_pair,
     dexs.token_bought_amount_raw / POWER(10, COALESCE(erc20a.decimals, 18)) AS token_bought_amount,
     dexs.token_sold_amount_raw / POWER(10, COALESCE(erc20b.decimals, 18)) AS token_sold_amount,
-    CAST(dexs.token_bought_amount_raw AS UINT256) AS token_bought_amount_raw,
-    CAST(dexs.token_sold_amount_raw AS UINT256) AS token_sold_amount_raw,
+    CAST(dexs.token_bought_amount_raw AS DECIMAL(38,0)) AS token_bought_amount_raw,
+    CAST(dexs.token_sold_amount_raw AS DECIMAL(38,0)) AS token_sold_amount_raw,
+    -- dexs.token_bought_amount_raw,
+    -- dexs.token_sold_amount_raw,
     COALESCE(
         dexs.amount_usd,
         dexs.token_bought_amount_raw / POWER(10, p_bought.decimals) * p_bought.price,
@@ -131,13 +132,13 @@ SELECT
     ) AS amount_usd,
     dexs.token_bought_address,
     dexs.token_sold_address,
-    dexs.taker AS taker,
+    COALESCE(dexs.taker, tx.`from`) AS taker,
     dexs.maker,
     dexs.project_contract_address,
     dexs.poolId,
     dexs.swap_fee,
     dexs.tx_hash,
-    tx."from" AS tx_from,
+    tx.`from` AS tx_from,
     tx.to AS tx_to,
     dexs.trace_address,
     dexs.evt_index
@@ -146,10 +147,10 @@ FROM
     INNER JOIN {{ source ('polygon', 'transactions') }} tx
         ON tx.hash = dexs.tx_hash
         {% if not is_incremental() %}
-        AND tx.block_time >= CAST('{{ project_start_date }}' AS TIMESTAMP)
+        AND tx.block_time >= '{{ project_start_date }}'
         {% endif %}
         {% if is_incremental() %}
-        AND tx.block_time >= DATE_TRUNC("day", NOW() - interval '7' day)
+        AND tx.block_time >= DATE_TRUNC("day", NOW() - interval '1 week')
         {% endif %}
     LEFT JOIN {{ ref ('tokens_erc20') }} erc20a
         ON erc20a.contract_address = dexs.token_bought_address
@@ -162,20 +163,20 @@ FROM
         AND p_bought.contract_address = dexs.token_bought_address
         AND p_bought.blockchain = 'polygon'
         {% if not is_incremental() %}
-        AND p_bought.minute >= CAST('{{ project_start_date }}' AS TIMESTAMP)
+        AND p_bought.minute >= '{{ project_start_date }}'
         {% endif %}
         {% if is_incremental() %}
-        AND p_bought.minute >= DATE_TRUNC("day", NOW() - interval '7' day)
+        AND p_bought.minute >= DATE_TRUNC("day", NOW() - interval '1 week')
         {% endif %}
     LEFT JOIN {{ source ('prices', 'usd') }} p_sold
         ON p_sold.minute = DATE_TRUNC('minute', dexs.block_time)
         AND p_sold.contract_address = dexs.token_sold_address
         AND p_sold.blockchain = 'polygon'
         {% if not is_incremental() %}
-        AND p_sold.minute >= CAST('{{ project_start_date }}' AS TIMESTAMP)
+        AND p_sold.minute >= '{{ project_start_date }}'
         {% endif %}
         {% if is_incremental() %}
-        AND p_sold.minute >= DATE_TRUNC("day", NOW() - interval '7' day)
+        AND p_sold.minute >= DATE_TRUNC("day", NOW() - interval '1 week')
         {% endif %}
     INNER JOIN bpa
         ON bpa.evt_block_number = dexs.evt_block_number
@@ -185,10 +186,10 @@ FROM
         ON bpa_bpt_prices.contract_address = bpa.contract_address
         AND bpa_bpt_prices.hour = bpa.bpa_max_block_time
         {% if not is_incremental() %}
-        AND bpa_bpt_prices.hour >= CAST('{{ project_start_date }}' AS TIMESTAMP)
+        AND bpa_bpt_prices.hour >= '{{ project_start_date }}'
         {% endif %}
         {% if is_incremental() %}
-        AND bpa_bpt_prices.hour >= DATE_TRUNC("day", NOW() - interval '7' day)
+        AND bpa_bpt_prices.hour >= DATE_TRUNC("day", NOW() - interval '1 week')
         {% endif %}
     INNER JOIN bpb
         ON bpb.evt_block_number = dexs.evt_block_number
@@ -198,8 +199,8 @@ FROM
         ON bpb_bpt_prices.contract_address = bpb.contract_address
         AND bpb_bpt_prices.hour = bpb.bpb_max_block_time
         {% if not is_incremental() %}
-        AND bpa_bpt_prices.hour >= CAST('{{ project_start_date }}' AS TIMESTAMP)
+        AND bpa_bpt_prices.hour >= '{{ project_start_date }}'
         {% endif %}
         {% if is_incremental() %}
-        AND bpa_bpt_prices.hour >= DATE_TRUNC("day", NOW() - interval '7' day)
+        AND bpa_bpt_prices.hour >= DATE_TRUNC("day", NOW() - interval '1 week')
         {% endif %}
