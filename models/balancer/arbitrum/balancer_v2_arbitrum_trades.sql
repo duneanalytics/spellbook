@@ -13,7 +13,7 @@
                                 \'["mendesfabio", "jacektrocinski", "thetroyharris"]\') }}'
     )
 }}
-
+ 
 {% set project_start_date = '2021-08-26' %}
 
 WITH
