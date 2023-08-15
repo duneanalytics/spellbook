@@ -1,7 +1,7 @@
 {{ config(
         alias = alias('safes_all'),
         tags = ['dunesql'],
-        post_hook='{{ expose_spells(\'["arbitrum","avalanche_c","bnb","ethereum","fantom","gnosis","goerli","optimism","polygon"]\',
+        post_hook='{{ expose_spells(\'["arbitrum","avalanche_c","bnb","celo","ethereum","fantom","gnosis","goerli","optimism","polygon"]\',
                                 "project",
                                 "safe",
                                 \'["tschubotz", "danielpartida"]\') }}'
