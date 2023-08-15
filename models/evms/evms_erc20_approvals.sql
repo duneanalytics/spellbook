@@ -19,7 +19,7 @@
      , ('optimism', source('erc20_optimism', 'evt_Approval'))
      , ('arbitrum', source('erc20_arbitrum', 'evt_approval'))
      , ('celo', source('erc20_celo', 'evt_approval'))
-     , ('base', source('erc20_base', 'evt_approval'))
+     , ('base', source('erc20_base', 'evt_Approval'))
 ] %}
 
 SELECT *
