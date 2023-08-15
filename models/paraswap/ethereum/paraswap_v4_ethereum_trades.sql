@@ -154,7 +154,7 @@ call_swap_without_event AS (
             AND tx.block_time >= DATE '{{project_start_date}}'
             {% endif %}
             AND t.call_type = 'call'
-            AND CAST(t.value as doble) > 0
+            AND CAST(t.value as double) > 0
             AND CAST(tx.value as double) > 0 -- Swap ETH to other token
         GROUP BY 1, 2, 3, 4
     ),
