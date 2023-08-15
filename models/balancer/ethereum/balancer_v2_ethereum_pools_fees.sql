@@ -34,13 +34,13 @@ SELECT
     logs.index,
     logs.block_time,
     logs.block_number,
-    bytea2numeric(bytearray_ltrim(logs.data)) AS swap_fee_percentage
+    CAST(bytearray_to_uint256(bytearray_ltrim(logs.data)) AS DOUBLE) AS swap_fee_percentage
 FROM
     {{ source ('ethereum', 'logs') }}
     INNER JOIN registered_pools ON registered_pools.pool_address = logs.contract_address
-WHERE CAST(logs.topic0 AS VARCHAR) = '{{ event_signature }}'
+WHERE logs.topic0 = {{ event_signature }}
     {% if not is_incremental() %}
-    AND logs.block_time >= CAST('{{ project_start_date }}' AS TIMESTAMP)
+    AND logs.block_time >= TIMESTAMP '{{ project_start_date }}'
     {% endif %}
     {% if is_incremental() %}
     AND logs.block_time >= DATE_TRUNC('day', NOW() - interval '7' day)
