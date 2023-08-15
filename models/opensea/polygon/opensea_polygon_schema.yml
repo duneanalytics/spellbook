@@ -279,7 +279,7 @@ models:
           combination_of_columns:
             - block_date
             - unique_trade_id
-      - check_seed_legacy:
+      - check_seed:
           seed_file: ref('opensea_polygon_seaport_trades_samples')
           filter:
             blockchain: polygon
@@ -370,7 +370,7 @@ models:
           combination_of_columns:
             - block_date
             - unique_trade_id
-      - check_seed_legacy:
+      - check_seed:
           seed_file: ref('opensea_polygon_seaport_trades_samples')
           filter:
             blockchain: polygon
