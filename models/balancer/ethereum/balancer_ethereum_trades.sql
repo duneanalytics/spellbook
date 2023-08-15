@@ -1,14 +1,14 @@
 {{ config(
     alias = alias('trades'),
+    tags = ['dunesql'],
     post_hook='{{ expose_spells(\'["ethereum"]\',
                                 "project",
                                 "balancer",
-                                \'["bizzyvinci"]\') }}'
+                                \'["bizzyvinci", "thetroyharris"]\') }}'
     )
 }}
 
 {% set balancer_models = [
-    ref('balancer_v1_ethereum_trades'),
     ref('balancer_v2_ethereum_trades')
 ] %}
 
