@@ -652,6 +652,8 @@ models:
       +schema: lifi
       fantom:
         +schema: lifi_fantom
+      optimism:
+        +schema: lifi_optimism
 
     astaria:
       +schema: astaria

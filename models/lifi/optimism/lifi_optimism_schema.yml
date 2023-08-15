@@ -1,16 +1,30 @@
 version: 2
 
 models:
-  - name: lifi_trades
+  - name: lifi_v2_optimism_trades
     meta:
-      blockchain: fantom, optimism
+      blockchain: optimism
       sector: dex
-      project: lifi
+      project: lifi_v2
       contributors: Henrystats
     config:
-      tags: ['fantom', 'optimism', 'lifi','trades', 'dex', 'aggregator', 'Henrystats','cross-chain']
+      tags: ['optimism','lifi_v2','trades', 'lifi','dex']
     description: >
-        lifi aggregator trades on all chains across all contracts and versions. This table will load dex_aggregator trades downstream.
+        lifi v2 contract aggregator trades on optimism
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_date
+            - blockchain
+            - project
+            - version
+            - tx_hash
+            - evt_index
+            - trace_address
+      - check_dex_aggregator_seed:
+          blockchain: optimism
+          project: lifi
+          version: 2
     columns:
       - &blockchain
         name: blockchain
@@ -20,7 +34,7 @@ models:
         description: "Project name of the DEX"  
       - &version
         name: version
-        description: "Version of the contract built and deployed by the DEX project"  
+        description: "Version of the contract built and deployed by the DEX project"
       - &block_date
         name: block_date
         description: "UTC event block date of each DEX trade"
@@ -77,10 +91,46 @@ models:
         description: "Address which received the transaction"
       - &trace_address
         name: trace_address
-        description: "address of the trace within the call graph forest"
+        description: ""
       - &evt_index
         name: evt_index
-        description: "the position of this event log within this transaction"
+        description: ""
       - &block_month
         name: block_month
         description: "UTC event block month of each DEX trade"
+
+  - name: lifi_optimism_trades
+    meta:
+      blockchain: optimism
+      sector: dex
+      project: lifi
+      contributors: Henrystats
+    config:
+      tags: ['optimism','dex','trades', 'lifi']
+    description: >
+        lifi aggregator trades on optimism across all contracts and versions. This table will load dex trades downstream.
+    columns:
+      - *blockchain
+      - *project
+      - *version  
+      - *block_date
+      - *block_time
+      - *token_bought_symbol
+      - *token_sold_symbol
+      - *token_pair
+      - *token_bought_amount
+      - *token_sold_amount
+      - *token_bought_amount_raw
+      - *token_sold_amount_raw
+      - *amount_usd
+      - *token_bought_address
+      - *token_sold_address
+      - *taker
+      - *maker
+      - *project_contract_address
+      - *tx_hash
+      - *tx_from
+      - *tx_to
+      - *trace_address
+      - *evt_index
+      - *block_month
