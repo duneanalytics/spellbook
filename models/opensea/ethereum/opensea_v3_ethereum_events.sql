@@ -25,7 +25,8 @@ WITH fee_wallets as (
      blockchain = 'ethereum'
      ,source_transactions = source('ethereum','transactions')
      ,Seaport_evt_OrderFulfilled = source('seaport_ethereum','Seaport_evt_OrderFulfilled')
-     ,Seaport_evt_OrdersMatched = source('seaport_ethereum','Seaport_evt_OrdersMatched')
+     ,Seaport_call_matchAdvancedOrders = source('seaport_arbitrum','Seaport_call_matchAdvancedOrders')
+     ,Seaport_call_matchOrders = source('seaport_arbitrum','Seaport_call_matchOrders')
      ,fee_wallet_list_cte = 'fee_wallets'
      ,native_token_address = '0x0000000000000000000000000000000000000000'
      ,alternative_token_address = '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'

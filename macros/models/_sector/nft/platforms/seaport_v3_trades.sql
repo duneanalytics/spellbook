@@ -2,7 +2,8 @@
      blockchain
      ,source_transactions
      ,Seaport_evt_OrderFulfilled
-     ,Seaport_evt_OrdersMatched
+     ,Seaport_call_matchAdvancedOrders
+     ,Seaport_call_matchOrders
      ,fee_wallet_list_cte
      ,native_token_address = '0x0000000000000000000000000000000000000000'
      ,alternative_token_address = '0x0000000000000000000000000000000000000000'
@@ -254,12 +255,12 @@ with source_ethereum_transactions as (
                   ,from_hex(json_extract_scalar(json_extract_scalar(execution,'$.item'),'$.recipient')) as receiver
                   ,contract_address as platform_contract_address
             from (select *
-                    from {{ source('opensea_optimism', 'Seaport_call_matchAdvancedOrders') }}
+                    from {{ Seaport_call_matchAdvancedOrders }}
                     cross join unnest(output_executions) with ordinality as foo(execution,execution_idx)
                    where call_success
                      and contract_address = 0x00000000006c3852cbef3e08e8df289169ede581  -- Seaport v1.1
                  {% if not is_incremental() %}
-                     and call_block_time >= timestamp '{{c_seaport_first_date}}'  -- seaport first txn
+                     and call_block_time >= timestamp '{{start_date}}'  -- seaport first txn
                  {% else %}
                      and call_block_time >= date_trunc('day', now() - interval '7' day)
                  {% endif %}
@@ -283,12 +284,12 @@ with source_ethereum_transactions as (
                   ,from_hex(json_extract_scalar(json_extract_scalar(execution,'$.item'),'$.recipient')) as receiver
                   ,contract_address as platform_contract_address
             from (select *
-                    from {{ source('opensea_optimism', 'Seaport_call_matchOrders') }}
+                    from {{ Seaport_call_matchOrders }}
                     cross join unnest(output_executions) with ordinality as foo(execution,execution_idx)
                    where call_success
                      and contract_address = 0x00000000006c3852cbef3e08e8df289169ede581  -- Seaport v1.1
                  {% if not is_incremental() %}
-                     and call_block_time >= timestamp '{{c_seaport_first_date}}'  -- seaport first txn
+                     and call_block_time >= timestamp '{{start_date}}'  -- seaport first txn
                   {% else %}
                      and call_block_time >= date_trunc('day', now() - interval '7' day)
                  {% endif %}
