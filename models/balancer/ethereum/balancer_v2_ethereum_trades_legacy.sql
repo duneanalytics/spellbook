@@ -1,6 +1,6 @@
 {{ config(
 	tags=['legacy'],
-	
+
     schema = 'balancer_v2_ethereum',
     alias = alias('trades', legacy_model=True),
     partition_by = ['block_date'],
@@ -134,13 +134,13 @@ SELECT
     ) AS amount_usd,
     dexs.token_bought_address,
     dexs.token_sold_address,
-    COALESCE(dexs.taker, tx.`from`) AS taker,
+    COALESCE(dexs.taker, tx.from) AS taker,
     dexs.maker,
     dexs.project_contract_address,
     dexs.poolId,
     dexs.swap_fee,
     dexs.tx_hash,
-    tx.`from` AS tx_from,
+    tx.from AS tx_from,
     tx.to AS tx_to,
     dexs.trace_address,
     dexs.evt_index
