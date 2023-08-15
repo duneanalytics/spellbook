@@ -13,7 +13,8 @@ with
             "to" as wallet_address,
             contract_address as token_address,
             evt_block_time,
-            cast(value as int256) as amount_raw
+            value as amount_raw,
+            true as amount_positive
         from
             {{ source('erc20_ethereum', 'evt_transfer') }}
     )
@@ -25,7 +26,8 @@ with
         "from" as wallet_address,
         contract_address as token_address,
         evt_block_time,
-        - cast(value as int256) as amount_raw
+        value as amount_raw,
+        false as amount_positive
         from
             {{ source('erc20_ethereum', 'evt_transfer') }}
     )
@@ -37,7 +39,8 @@ with
             dst as wallet_address,
             contract_address as token_address,
             evt_block_time,
-            cast(wad as int256) as amount_raw
+            wad as amount_raw,
+            true as amount_positive
         from
             {{ source('zeroex_ethereum', 'weth9_evt_deposit') }}
     )
@@ -49,19 +52,20 @@ with
             src as wallet_address,
             contract_address as token_address,
             evt_block_time,
-            - cast(wad as int256) as amount_raw
+            wad as amount_raw,
+            false as amount_positive
         from
             {{ source('zeroex_ethereum', 'weth9_evt_withdrawal') }}
     )
     
-select unique_transfer_id, 'ethereum' as blockchain, wallet_address, token_address, evt_block_time, amount_raw
+select unique_transfer_id, 'ethereum' as blockchain, wallet_address, token_address, evt_block_time, amount_raw, amount_positive
 from sent_transfers
 union
-select unique_transfer_id, 'ethereum' as blockchain, wallet_address, token_address, evt_block_time, amount_raw
+select unique_transfer_id, 'ethereum' as blockchain, wallet_address, token_address, evt_block_time, amount_raw, amount_positive
 from received_transfers
 union
-select unique_transfer_id, 'ethereum' as blockchain, wallet_address, token_address, evt_block_time, amount_raw
+select unique_transfer_id, 'ethereum' as blockchain, wallet_address, token_address, evt_block_time, amount_raw, amount_positive
 from deposited_weth
 union
-select unique_transfer_id, 'ethereum' as blockchain, wallet_address, token_address, evt_block_time, amount_raw
+select unique_transfer_id, 'ethereum' as blockchain, wallet_address, token_address, evt_block_time, amount_raw, amount_positive
 from withdrawn_weth

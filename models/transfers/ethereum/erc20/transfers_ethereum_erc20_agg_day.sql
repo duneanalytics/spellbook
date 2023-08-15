@@ -15,8 +15,8 @@ select
     tr.token_address,
     t.symbol,
     cast(tr.wallet_address as varchar) || '-' || cast(tr.token_address as varchar) || '-' || cast(date_trunc('day', tr.evt_block_time) as varchar) as unique_transfer_id,
-    sum(tr.amount_raw) as amount_raw,
-    sum(tr.amount_raw / power(10, t.decimals)) as amount
+    sum(case when tr.amount_positive then tr.amount_raw else cast(0 as uint256) end) - sum(case when tr.amount_positive then cast(0 as uint256) else tr.amount_raw end) as amount_raw,
+    sum(case when tr.amount_positive then cast(tr.amount_raw as double) / power(10, t.decimals) else - cast(tr.amount_raw as double) / power(10, t.decimals) end) as amount
 from {{ ref('transfers_ethereum_erc20') }} tr
 left join {{ ref('tokens_ethereum_erc20') }} t on t.contract_address = tr.token_address
 {% if is_incremental() %}
