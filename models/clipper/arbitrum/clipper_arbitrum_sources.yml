@@ -11,3 +11,7 @@ sources:
         loaded_at_field: evt_block_time
       - name: ClipperCove_evt_CoveSwapped
         loaded_at_field: evt_block_time
+      - name: ClipperPackedVerifiedExchange_v2_evt_Swapped
+        loaded_at_field: evt_block_time
+      - name: ClipperCove_v2_evt_CoveSwapped
+        loaded_at_field: evt_block_time
