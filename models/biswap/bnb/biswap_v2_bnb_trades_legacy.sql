@@ -1,13 +1,13 @@
 {{ config(
-    tags=['legacy']
-    ,schema = 'biswap_v2_bnb'
-    ,alias = alias('trades', legacy_model=True)
-    ,partition_by = ['block_date']
-    ,materialized = 'incremental'
-    ,file_format = 'delta'
-    ,incremental_strategy = 'merge'
-    ,unique_key = ['block_date', 'blockchain', 'project', 'version', 'tx_hash', 'evt_index', 'trace_address']
-    ,post_hook='{{ expose_spells(\'["bnb"]\',
+    tags=['legacy'],
+    schema = 'biswap_v2_bnb',
+    alias = alias('trades', legacy_model=True),
+    partition_by = ['block_date'],
+    materialized = 'incremental',
+    file_format = 'delta',
+    incremental_strategy = 'merge',
+    unique_key = ['block_date', 'blockchain', 'project', 'version', 'tx_hash', 'evt_index', 'trace_address'],
+    post_hook='{{ expose_spells(\'["bnb"]\',
                                       "project",
                                       "biswap",
                                     \'["codingsh"]\') }}'
