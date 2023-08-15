@@ -127,7 +127,7 @@ SELECT
   CAST(f.royalty_fee_amount_raw / a.amount_raw * 100 AS double) AS royalty_fee_percentage,
   f.royalty_fee_receive_address,
   erc20.symbol AS royalty_fee_currency_symbol,
-  cast(a.tx_hash as varchar) || '-' || cast(a.evt_type as varchar)  || '-' || cast(a.evt_index as varchar) || '-' || cast(a.token_id as varchar) || '-' || cast(a.number_of_items as varchar)  AS unique_trade_id
+  cast(a.tx_hash as varchar) || '-' || cast(a.evt_type as varchar)  || '-' || cast(a.evt_index as varchar) || '-' || cast(a.token_id as varchar)  AS unique_trade_id
 FROM trades a
 INNER JOIN {{ source('polygon','transactions') }} t ON a.block_number = t.block_number AND a.tx_hash = t.hash
     {% if not is_incremental() %}
