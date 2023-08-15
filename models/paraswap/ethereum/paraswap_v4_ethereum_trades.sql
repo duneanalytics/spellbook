@@ -41,7 +41,7 @@ ethereum_transactions as (
         {% if is_incremental() %}
         AND block_time >= date_trunc('day', now() - interval '7' Day)
         {% endif %}
-        AND value > 0 
+        -- AND value > 0 
 ),
 
 ethereum_traces as (
@@ -56,8 +56,8 @@ ethereum_traces as (
         {% if is_incremental() %}
         AND block_time >= date_trunc('day', now() - interval '7' Day)
         {% endif %}
-        AND value > UINT256 '0'
-        AND call_type = 'call'
+        -- AND value > UINT256 '0'
+        -- AND call_type = 'call'
 ),
 
 erc20_transfers as (
@@ -72,7 +72,7 @@ erc20_transfers as (
         {% if is_incremental() %}
         AND evt_block_time >= date_trunc('day', now() - interval '7' Day)
         {% endif %}
-        AND value > 0 
+        -- AND value > 0 
 ),
 
 dex_swap AS (
