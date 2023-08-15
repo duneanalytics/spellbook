@@ -112,7 +112,7 @@ with source_ethereum_transactions as (
             , offer_item
         from {{ Seaport_evt_OrderFulfilled }}
         cross join unnest(offer) with ordinality as foo(offer_item, offer_idx)
-        where contract_address = 00x00000000006c3852cbef3e08e8df289169ede581    -- seaport v1.1
+        where contract_address = 0x00000000006c3852cbef3e08e8df289169ede581    -- seaport v1.1
          and recipient != 0x0000000000000000000000000000000000000000
         {% if not is_incremental() %}
         and evt_block_time >= TIMESTAMP '{{start_date}}'  -- seaport first txn
@@ -179,7 +179,7 @@ with source_ethereum_transactions as (
             , consideration_idx
         from {{ Seaport_evt_OrderFulfilled }}
         cross join unnest(consideration) with ordinality as foo(consideration_item,consideration_idx)
-       where contract_address = 00x00000000006c3852cbef3e08e8df289169ede581 -- Seaport v1.1
+       where contract_address = 0x00000000006c3852cbef3e08e8df289169ede581 -- Seaport v1.1
          and recipient != 0x0000000000000000000000000000000000000000
         {% if not is_incremental() %}
         and evt_block_time >= TIMESTAMP '{{start_date}}'  -- seaport first txn
