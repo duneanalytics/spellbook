@@ -28,7 +28,8 @@ select
 , cast(json_extract_scalar(message, '$.strict') as BOOLEAN) as strict
 , cast(json_extract_scalar(message, '$.receiver') as VARCHAR) as receiver
 , cast(json_extract_scalar(message, '$.data') as varchar) as data
-, json_extract(message, '$.tokenAmounts') as tokenAmounts
+-- model cannot handle JSON, convert to array for each unique tx
+, array_agg(json_format(json_extract(message, '$.tokenAmounts'))) over (partition by cast(json_extract_scalar(message, '$.messageId') as VARCHAR), evt_tx_hash) as tokenAmounts
 , cast(json_extract_scalar(message, '$.feeToken') as VARCHAR) as feeToken
 , cast(json_extract_scalar(message, '$.messageId') as VARCHAR) as messageId
 , '{{polygon_router}}' as router

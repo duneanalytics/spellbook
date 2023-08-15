@@ -14,7 +14,6 @@ models:
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
-            - evt_index
             - evt_tx_hash
             - message
     columns:
@@ -51,7 +50,6 @@ models:
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
-            - evt_index
             - evt_tx_hash
             - message
     columns:
