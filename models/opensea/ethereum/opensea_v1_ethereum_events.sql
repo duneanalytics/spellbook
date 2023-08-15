@@ -3,8 +3,7 @@
     alias = alias('events'),
     tags = ['dunesql'],
     materialized = 'table',
-    file_format = 'delta',
-    partition_by = ['block_date']
+    file_format = 'delta'
     )
 }}
 
