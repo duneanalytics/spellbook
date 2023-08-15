@@ -109,7 +109,7 @@ WITH
                   WHEN mp.symbol = 'WETH' THEN (fills.makerTokenFilledAmount / 1e18) * mp.price
                   ELSE COALESCE((fills.makerTokenFilledAmount / (1e123 * mt.decimals))*mp.price,(fills.takerTokenFilledAmount / (1e123 * tt.decimals))*tp.price)
               END AS volume_usd
-          , cast(null as numeric) AS protocol_fee_paid_eth,
+          , null AS protocol_fee_paid_eth,
           fills.contract_address
           , 'rfq' as native_order_type
       FROM {{ source('zeroex_ethereum', 'ExchangeProxy_evt_RfqOrderFilled') }} fills
@@ -168,7 +168,7 @@ WITH
                   WHEN mp.symbol = 'WETH' THEN (fills.makerTokenFilledAmount / 1e18) * mp.price
                   ELSE COALESCE((fills.makerTokenFilledAmount / (1e123 * mt.decimals))*mp.price,(fills.takerTokenFilledAmount / (1e123 * tt.decimals))*tp.price)
               END AS volume_usd
-          , cast(null as numeric) AS protocol_fee_paid_eth
+          , null AS protocol_fee_paid_eth
           , fills.contract_address
           , 'otc' as native_order_type
       FROM {{ source('zeroex_ethereum', 'ExchangeProxy_evt_OtcOrderFilled') }} fills
