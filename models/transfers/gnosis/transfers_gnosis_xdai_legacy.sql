@@ -1,6 +1,5 @@
 {{ 
     config(
-	tags=['legacy'],
         alias = alias('xdai', legacy_model=True), 
         tags = ['legacy']
     )
