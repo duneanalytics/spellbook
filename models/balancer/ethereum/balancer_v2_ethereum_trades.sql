@@ -26,7 +26,7 @@ WITH
             bytearray_substring(swaps.poolId, 1, 20) AS contract_address,
             fees.swap_fee_percentage,
             ROW_NUMBER() OVER (PARTITION BY poolId, evt_tx_hash, evt_index ORDER BY block_number DESC, index DESC) AS rn
-        FROM {{ source('balancer_v2_ethereum', 'Vault_evt_Swap') }} swaps
+        FROM {{ source ('balancer_v2_ethereum', 'Vault_evt_Swap') }} swaps
         LEFT JOIN {{ ref('balancer_v2_ethereum_pools_fees') }} fees
             ON fees.contract_address = bytearray_substring(swaps.poolId, 1, 20)
             AND ARRAY[fees.block_number] || ARRAY[fees.index] < ARRAY[swaps.evt_block_number] || ARRAY[swaps.evt_index]
@@ -53,7 +53,7 @@ WITH
             swap.evt_index
         FROM
             swap_fees
-            INNER JOIN {{ source('balancer_v2_ethereum', 'Vault_evt_Swap') }} swap
+            INNER JOIN {{ source ('balancer_v2_ethereum', 'Vault_evt_Swap') }} swap
                 ON swap.evt_block_number = swap_fees.evt_block_number
                 AND swap.evt_tx_hash = swap_fees.evt_tx_hash
                 AND swap.evt_index = swap_fees.evt_index
@@ -143,7 +143,7 @@ SELECT
     dexs.evt_index
 FROM
     dexs
-    INNER JOIN {{ source('ethereum', 'transactions') }} tx
+    INNER JOIN {{ source ('ethereum', 'transactions') }} tx
         ON tx.hash = dexs.tx_hash
         {% if not is_incremental() %}
         AND tx.block_time >= CAST('{{ project_start_date }}' AS TIMESTAMP)
@@ -151,13 +151,13 @@ FROM
         {% if is_incremental() %}
         AND tx.block_time >= DATE_TRUNC("day", NOW() - interval '7' day)
         {% endif %}
-    LEFT JOIN {{ ref('tokens_erc20') }} erc20a
+    LEFT JOIN {{ ref ('tokens_erc20') }} erc20a
         ON erc20a.contract_address = dexs.token_bought_address
         AND erc20a.blockchain = 'ethereum'
-    LEFT JOIN {{ ref('tokens_erc20') }} erc20b
+    LEFT JOIN {{ ref ('tokens_erc20') }} erc20b
         ON erc20b.contract_address = dexs.token_sold_address
         AND erc20b.blockchain = 'ethereum'
-    LEFT JOIN {{ source('prices', 'usd') }} p_bought
+    LEFT JOIN {{ source ('prices', 'usd') }} p_bought
         ON p_bought.minute = DATE_TRUNC('minute', dexs.block_time)
         AND p_bought.contract_address = dexs.token_bought_address
         AND p_bought.blockchain = 'ethereum'
@@ -167,7 +167,7 @@ FROM
         {% if is_incremental() %}
         AND p_bought.minute >= DATE_TRUNC("day", NOW() - interval '7' day)
         {% endif %}
-    LEFT JOIN {{ source('prices', 'usd') }} p_sold
+    LEFT JOIN {{ source ('prices', 'usd') }} p_sold
         ON p_sold.minute = DATE_TRUNC('minute', dexs.block_time)
         AND p_sold.contract_address = dexs.token_sold_address
         AND p_sold.blockchain = 'ethereum'
