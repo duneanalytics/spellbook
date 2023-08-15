@@ -25,7 +25,7 @@ WITH registered_pools AS (
       {{ source('balancer_v2_polygon', 'Vault_evt_PoolRegistered') }}
     {% if is_incremental() %}
     WHERE evt_block_time >= DATE_TRUNC('day', NOW() - interval '7' day)
-    {% endif %} 
+    {% endif %}
   )
 
 SELECT DISTINCT * FROM (
@@ -42,9 +42,9 @@ SELECT DISTINCT * FROM (
         bytearray_to_uint256(logs.data) AS value
     FROM {{ source('polygon', 'logs') }} logs
     INNER JOIN registered_pools p ON p.pool_address = logs.contract_address
-    WHERE CAST(logs.topic0 AS VARCHAR) = '{{ event_signature }}'
+    WHERE logs.topic0 = {{ event_signature }}
         {% if not is_incremental() %}
-        AND logs.block_time >= CAST('{{ project_start_date }}' AS TIMESTAMP)
+        AND logs.block_time >= TIMESTAMP '{{ project_start_date }}'
         {% endif %}
         {% if is_incremental() %}
         AND logs.block_time >= DATE_TRUNC('day', NOW() - interval '7' day)
