@@ -72,7 +72,7 @@ WITH
             MAX(bpt_prices.hour) AS bpa_max_block_time
         FROM
             dexs
-            LEFT JOIN {{ ref('balancer_v2_ethereum_bpt_prices') }} bpt_prices
+            LEFT JOIN {{ ref('balancer_v2_ethereum_bpt_prices_legacy') }} bpt_prices
                 ON bpt_prices.contract_address = CAST(dexs.token_bought_address AS VARCHAR)
                 AND bpt_prices.hour <= dexs.block_time
                 {% if not is_incremental() %}
@@ -93,7 +93,7 @@ WITH
             MAX(bpt_prices.hour) AS bpb_max_block_time
         FROM
             dexs
-            LEFT JOIN {{ ref('balancer_v2_ethereum_bpt_prices') }} bpt_prices
+            LEFT JOIN {{ ref('balancer_v2_ethereum_bpt_prices_legacy') }} bpt_prices
                 ON bpt_prices.contract_address = CAST(dexs.token_sold_address AS VARCHAR)
                 AND bpt_prices.hour <= dexs.block_time
                 {% if not is_incremental() %}
@@ -181,7 +181,7 @@ FROM
         ON bpa.evt_block_number = dexs.evt_block_number
         AND bpa.tx_hash = dexs.tx_hash
         AND bpa.evt_index = dexs.evt_index
-    LEFT JOIN {{ ref('balancer_v2_ethereum_bpt_prices') }} bpa_bpt_prices
+    LEFT JOIN {{ ref('balancer_v2_ethereum_bpt_prices_legacy') }} bpa_bpt_prices
         ON bpa_bpt_prices.contract_address = bpa.contract_address
         AND bpa_bpt_prices.hour = bpa.bpa_max_block_time
         {% if not is_incremental() %}
@@ -194,7 +194,7 @@ FROM
         ON bpb.evt_block_number = dexs.evt_block_number
         AND bpb.tx_hash = dexs.tx_hash
         AND bpb.evt_index = dexs.evt_index
-    LEFT JOIN {{ ref('balancer_v2_ethereum_bpt_prices') }} bpb_bpt_prices
+    LEFT JOIN {{ ref('balancer_v2_ethereum_bpt_prices_legacy') }} bpb_bpt_prices
         ON bpb_bpt_prices.contract_address = bpb.contract_address
         AND bpb_bpt_prices.hour = bpb.bpb_max_block_time
         {% if not is_incremental() %}
