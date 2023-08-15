@@ -11,7 +11,7 @@
             symbol,
             NOW() as last_updated,
             row_number() over (partition by token_address, wallet_address order by day desc) as recency_index,
-            sum(case amount_positive then amount_raw else cast(0 as uint256) end) - sum(case amount_positive then cast(0 as uint256) else amount_raw end) over (
+            sum(case when tr.amount_positive then cast(tr.amount_raw as double) else - cast(tr.amount_raw as double) end) over (
                 partition by token_address, wallet_address order by day
             ) as amount_raw,
             sum(amount) over (
