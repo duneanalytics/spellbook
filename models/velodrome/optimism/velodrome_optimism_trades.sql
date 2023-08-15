@@ -56,9 +56,8 @@ WITH dexs AS
         ,NULL AS amount_usd
         ,CASE WHEN amount0Out = UINT256 '0' THEN token1 ELSE token0 END AS token_bought_address
 	    ,CASE WHEN amount0In = UINT256 '0' OR amount1Out = UINT256 '0' THEN token1 ELSE token0 END AS token_sold_address
-        ,CAST(t.contract_address as varchar) as project_contract_address
+        ,t.contract_address as project_contract_address
         ,t.evt_tx_hash AS tx_hash
-        ,'' AS trace_address
         ,t.evt_index
     FROM
         {{ source('velodrome_v2_optimism', 'Pool_evt_Swap') }} t
