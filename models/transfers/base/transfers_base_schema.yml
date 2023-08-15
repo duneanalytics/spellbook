@@ -64,6 +64,9 @@ models:
     description: "ERC20 Token Transfers on base. This table is updated every 30 minutes."
     columns:
       - name: unique_transfer_id
+        tests:
+          - unique
+          - not_null
         description: "Unique transfer ID (used for testing for duplicates)"
       - &blockchain
         name: blockchain
