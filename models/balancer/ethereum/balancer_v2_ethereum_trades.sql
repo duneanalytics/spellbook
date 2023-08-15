@@ -76,7 +76,7 @@ WITH
                 ON bpt_prices.contract_address = CAST(dexs.token_bought_address AS VARCHAR)
                 AND bpt_prices.hour <= dexs.block_time
                 {% if not is_incremental() %}
-                AND bpt_prices.hour >= CAST('{{ project_start_date }}' AS TIMESTAMP)
+                AND bpt_prices.hour >= TIMESTAMP '{{project_start_date}}'
                 {% endif %}
                 {% if is_incremental() %}
                 AND bpt_prices.hour >= DATE_TRUNC("day", NOW() - interval '7' day)
@@ -97,7 +97,7 @@ WITH
                 ON bpt_prices.contract_address = CAST(dexs.token_sold_address AS VARCHAR)
                 AND bpt_prices.hour <= dexs.block_time
                 {% if not is_incremental() %}
-                AND bpt_prices.hour >= CAST('{{ project_start_date }}' AS TIMESTAMP)
+                AND bpt_prices.hour >= TIMESTAMP '{{project_start_date}}'
                 {% endif %}
                 {% if is_incremental() %}
                 AND bpt_prices.hour >= DATE_TRUNC("day", NOW() - interval '7' day)
@@ -146,7 +146,7 @@ FROM
     INNER JOIN {{ source('ethereum', 'transactions') }} tx
         ON tx.hash = dexs.tx_hash
         {% if not is_incremental() %}
-        AND tx.block_time >= CAST('{{ project_start_date }}' AS TIMESTAMP)
+        AND tx.block_time >= TIMESTAMP '{{project_start_date}}'
         {% endif %}
         {% if is_incremental() %}
         AND tx.block_time >= DATE_TRUNC("day", NOW() - interval '7' day)
@@ -162,7 +162,7 @@ FROM
         AND p_bought.contract_address = dexs.token_bought_address
         AND p_bought.blockchain = 'ethereum'
         {% if not is_incremental() %}
-        AND p_bought.minute >= CAST('{{ project_start_date }}' AS TIMESTAMP)
+        AND p_bought.minute >= TIMESTAMP '{{project_start_date}}'
         {% endif %}
         {% if is_incremental() %}
         AND p_bought.minute >= DATE_TRUNC("day", NOW() - interval '7' day)
@@ -172,7 +172,7 @@ FROM
         AND p_sold.contract_address = dexs.token_sold_address
         AND p_sold.blockchain = 'ethereum'
         {% if not is_incremental() %}
-        AND p_sold.minute >= CAST('{{ project_start_date }}' AS TIMESTAMP)
+        AND p_sold.minute >= TIMESTAMP '{{project_start_date}}'
         {% endif %}
         {% if is_incremental() %}
         AND p_sold.minute >= DATE_TRUNC("day", NOW() - interval '7' day)
@@ -185,7 +185,7 @@ FROM
         ON bpa_bpt_prices.contract_address = bpa.contract_address
         AND bpa_bpt_prices.hour = bpa.bpa_max_block_time
         {% if not is_incremental() %}
-        AND bpa_bpt_prices.hour >= CAST('{{ project_start_date }}' AS TIMESTAMP)
+        AND bpa_bpt_prices.hour >= TIMESTAMP '{{project_start_date}}'
         {% endif %}
         {% if is_incremental() %}
         AND bpa_bpt_prices.hour >= DATE_TRUNC("day", NOW() - interval '7' day)
@@ -198,7 +198,7 @@ FROM
         ON bpb_bpt_prices.contract_address = bpb.contract_address
         AND bpb_bpt_prices.hour = bpb.bpb_max_block_time
         {% if not is_incremental() %}
-        AND bpa_bpt_prices.hour >= CAST('{{ project_start_date }}' AS TIMESTAMP)
+        AND bpa_bpt_prices.hour >= TIMESTAMP '{{project_start_date}}'
         {% endif %}
         {% if is_incremental() %}
         AND bpa_bpt_prices.hour >= DATE_TRUNC("day", NOW() - interval '7' day)
