@@ -1,6 +1,7 @@
 {{ config(
     schema = 'opensea_v2_polygon',
     alias = alias('events'),
+    tags = ['dunesql'],
     partition_by = ['block_date'],
     materialized = 'incremental',
     file_format = 'delta',

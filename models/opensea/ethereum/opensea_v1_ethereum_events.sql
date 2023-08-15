@@ -1,6 +1,7 @@
 {{ config(
     schema = 'opensea_v1_ethereum',
     alias = alias('events'),
+    tags = ['dunesql'],
     materialized = 'table',
     file_format = 'delta',
     partition_by = ['block_date']
