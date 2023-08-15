@@ -115,7 +115,7 @@ call_swap_without_event AS (
                 {% if not is_incremental() %}
                 AND tx.block_time >=  DATE '{{project_start_date}}'
                 {% endif %}
-                AND tx.value = 0 -- Swap ERC20 to other token
+                AND CAST(tx.value as double) = 0 -- Swap ERC20 to other token
         ) t
         WHERE row_num = 1 -- Only use the first input row
 
@@ -154,8 +154,8 @@ call_swap_without_event AS (
             AND tx.block_time >= DATE '{{project_start_date}}'
             {% endif %}
             AND t.call_type = 'call'
-            AND t.value > '0'
-            AND tx.value > 0 -- Swap ETH to other token
+            AND CAST(t.value as doble) > 0
+            AND CAST(tx.value as double) > 0 -- Swap ETH to other token
         GROUP BY 1, 2, 3, 4
     ),
 
@@ -198,7 +198,7 @@ call_swap_without_event AS (
                 {% if not is_incremental() %}
                 AND tx.block_time >= DATE '{{project_start_date}}'
                 {% endif %}
-                AND tx.value = 0  -- Swap ERC20 to other token
+                AND CAST(tx.value as double) = 0  -- Swap ERC20 to other token
         ) t
         WHERE row_num = 1
 
@@ -233,8 +233,8 @@ call_swap_without_event AS (
             AND tx.block_time >= DATE '{{project_start_date}}'
             {% endif %}
             AND t.call_type = 'call'
-            AND t.value > '0'
-            AND tx.value = 0  -- Swap ERC20 to ETH
+            AND CAST(t.value as double) > 0
+            AND CAST(tx.value as double) = 0  -- Swap ERC20 to ETH
     )
 
     SELECT i.block_time,
