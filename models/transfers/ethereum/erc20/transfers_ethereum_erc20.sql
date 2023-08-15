@@ -25,7 +25,7 @@ with
         "from" as wallet_address,
         contract_address as token_address,
         evt_block_time,
-        '-' || CAST(value AS VARCHAR) as amount_raw
+        - cast(value as int256) as amount_raw
         from
             {{ source('erc20_ethereum', 'evt_transfer') }}
     )
@@ -49,19 +49,19 @@ with
             src as wallet_address,
             contract_address as token_address,
             evt_block_time,
-            '-' || CAST(wad AS VARCHAR) as amount_raw
+            - cast(wad as int256) as amount_raw
         from
             {{ source('zeroex_ethereum', 'weth9_evt_withdrawal') }}
     )
     
-select unique_transfer_id, 'ethereum' as blockchain, wallet_address, token_address, evt_block_time, CAST(amount_raw AS VARCHAR) as amount_raw
+select unique_transfer_id, 'ethereum' as blockchain, wallet_address, token_address, evt_block_time, amount_raw
 from sent_transfers
 union
-select unique_transfer_id, 'ethereum' as blockchain, wallet_address, token_address, evt_block_time, CAST(amount_raw AS VARCHAR) as amount_raw
+select unique_transfer_id, 'ethereum' as blockchain, wallet_address, token_address, evt_block_time, amount_raw
 from received_transfers
 union
-select unique_transfer_id, 'ethereum' as blockchain, wallet_address, token_address, evt_block_time, CAST(amount_raw AS VARCHAR) as amount_raw
+select unique_transfer_id, 'ethereum' as blockchain, wallet_address, token_address, evt_block_time, amount_raw
 from deposited_weth
 union
-select unique_transfer_id, 'ethereum' as blockchain, wallet_address, token_address, evt_block_time, CAST(amount_raw AS VARCHAR) as amount_raw
+select unique_transfer_id, 'ethereum' as blockchain, wallet_address, token_address, evt_block_time, amount_raw
 from withdrawn_weth
