@@ -3,7 +3,7 @@
 with test_data as (
     select count(*) as total
     from {{ ref('safe_ethereum_safes') }}
-    where creation_time < '2022-08-03'
+    where creation_time < TIMESTAMP '2022-08-03'
 ),
 
 test_result as (
