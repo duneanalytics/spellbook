@@ -72,7 +72,7 @@ SELECT
     dexs.maker,
     dexs.project_contract_address,
     dexs.tx_hash,
-    tx.from AS tx_from,
+    tx."from" AS tx_from,
     tx.to AS tx_to,
     dexs.trace_address,
     dexs.evt_index
