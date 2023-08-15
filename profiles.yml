@@ -10,3 +10,4 @@ spellbook-local:
       database: hive
       schema: wizard
       threads: 1
+      
