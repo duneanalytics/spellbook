@@ -23,7 +23,7 @@ AS
            , *
     FROM {{ ref('zeroex_ethereum_api_fills') }}
     WHERE 1=1
-    AND swap_flag = 1
+    AND swap_flag = true 
     {% if is_incremental() %}
     AND block_time >= date_trunc('day', now() - interval '7' day)
     {% endif %}
