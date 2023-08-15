@@ -26,7 +26,7 @@ WITH trades AS (
       'Trade' AS evt_type,
       from_hex(json_extract_scalar(a.leftOrder,'$.makerAddress')) AS buyer,
       from_hex(json_extract_scalar(a.rightOrder,'$.makerAddress')) AS seller,
-      from_hex('0x' || substring(json_extract_scalar(a.rightOrder,'$.makerAssetData'), 33, 40)) AS nft_contract_address,
+      from_hex('0x' || substring(json_extract_scalar(a.rightOrder,'$.makerAssetData'), 34, 40)) AS nft_contract_address,
       case when length(json_extract_scalar(a.rightOrder,'$.makerAssetData')) = 650 then bytearray_to_uint256(from_hex(substr(json_extract_scalar(a.rightOrder,'$.makerAssetData'),331,64)))
             else bytearray_to_uint256(from_hex(substr(json_extract_scalar(a.rightOrder,'$.makerAssetData'),75,64)))
       end AS token_id,
