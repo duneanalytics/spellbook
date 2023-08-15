@@ -80,7 +80,7 @@ WITH
                 AND bpt_prices.hour >= '{{ project_start_date }}'
                 {% endif %}
                 {% if is_incremental() %}
-                AND bpt_prices.hour >= DATE_TRUNC("day", NOW() - interval '1 week')
+                AND bpt_prices.hour >= DATE_TRUNC('day', NOW() - interval '1 week')
                 {% endif %}
         GROUP BY 1, 2, 3, 4, 5
     ),
@@ -101,7 +101,7 @@ WITH
                 AND bpt_prices.hour >= '{{ project_start_date }}'
                 {% endif %}
                 {% if is_incremental() %}
-                AND bpt_prices.hour >= DATE_TRUNC("day", NOW() - interval '1 week')
+                AND bpt_prices.hour >= DATE_TRUNC('day', NOW() - interval '1 week')
                 {% endif %}
         GROUP BY 1, 2, 3, 4, 5
     )
@@ -152,7 +152,7 @@ FROM
         AND tx.block_time >= '{{ project_start_date }}'
         {% endif %}
         {% if is_incremental() %}
-        AND tx.block_time >= DATE_TRUNC("day", NOW() - interval '1 week')
+        AND tx.block_time >= DATE_TRUNC('day', NOW() - interval '1 week')
         {% endif %}
     LEFT JOIN {{ ref('tokens_erc20_legacy') }} erc20a
         ON erc20a.contract_address = dexs.token_bought_address
@@ -168,7 +168,7 @@ FROM
         AND p_bought.minute >= '{{ project_start_date }}'
         {% endif %}
         {% if is_incremental() %}
-        AND p_bought.minute >= DATE_TRUNC("day", NOW() - interval '1 week')
+        AND p_bought.minute >= DATE_TRUNC('day', NOW() - interval '1 week')
         {% endif %}
     LEFT JOIN {{ source ('prices', 'usd') }} p_sold
         ON p_sold.minute = DATE_TRUNC('minute', dexs.block_time)
@@ -178,7 +178,7 @@ FROM
         AND p_sold.minute >= '{{ project_start_date }}'
         {% endif %}
         {% if is_incremental() %}
-        AND p_sold.minute >= DATE_TRUNC("day", NOW() - interval '1 week')
+        AND p_sold.minute >= DATE_TRUNC('day', NOW() - interval '1 week')
         {% endif %}
     INNER JOIN bpa
         ON bpa.evt_block_number = dexs.evt_block_number
@@ -191,7 +191,7 @@ FROM
         AND bpa_bpt_prices.hour >= '{{ project_start_date }}'
         {% endif %}
         {% if is_incremental() %}
-        AND bpa_bpt_prices.hour >= DATE_TRUNC("day", NOW() - interval '1 week')
+        AND bpa_bpt_prices.hour >= DATE_TRUNC('day', NOW() - interval '1 week')
         {% endif %}
     INNER JOIN bpb
         ON bpb.evt_block_number = dexs.evt_block_number
@@ -204,5 +204,5 @@ FROM
         AND bpa_bpt_prices.hour >= '{{ project_start_date }}'
         {% endif %}
         {% if is_incremental() %}
-        AND bpa_bpt_prices.hour >= DATE_TRUNC("day", NOW() - interval '1 week')
+        AND bpa_bpt_prices.hour >= DATE_TRUNC('day', NOW() - interval '1 week')
         {% endif %}
