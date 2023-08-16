@@ -1,7 +1,7 @@
 {{ config(
         tags = ['dunesql', 'static'],
         alias = alias('info'),
-        post_hook='{{ expose_spells(\'["ethereum", "polygon", "bnb", "avalanche_c", "gnosis", "fantom", "optimism", "arbitrum", "celo"]\',
+        post_hook='{{ expose_spells(\'["ethereum", "polygon", "bnb", "avalanche_c", "gnosis", "fantom", "optimism", "arbitrum", "celo", "base"]\',
                                     "sector",
                                     "evms",
                                     \'["hildobby"]\') }}')
