@@ -113,7 +113,6 @@ models:
             - version
             - tx_hash
             - evt_index
-            - trace_address
     columns:
       - *blockchain
       - *project
@@ -136,7 +135,6 @@ models:
       - *tx_hash
       - *tx_from
       - *tx_to
-      - *trace_address
       - *evt_index
 
   - name: dex_prices
