@@ -119,7 +119,6 @@ models:
         description: "UTC event block date of each DEX trade"
       - &token_address
         name: token_address
-        description: "Contract address for the token"
 
   - name: nexusmutual_ethereum_capital_pool_eth_daily_transaction_summary
     meta:
