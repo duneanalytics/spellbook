@@ -1,0 +1,13 @@
+version: 2
+
+seeds:
+  - name: balancer_transfers_bpt_seed
+    config:
+      tags: dunesql
+      column_types:
+        contract_address: varbinary
+        evt_tx_hash: varbinary
+        evt_block_time: timestamp
+        block_date: date
+        from: varbinary
+        to: varbinary

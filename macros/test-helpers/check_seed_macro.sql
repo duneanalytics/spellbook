@@ -7,40 +7,62 @@
     with matched_records as (
         select
             {%- for column_name in seed_matching_columns %}
-            seed.{{column_name}} as seed_{{column_name}},
-            model_sample.{{column_name}} as model_{{column_name}},
+                {% if column_name == 'from' %}
+                seed."{{column_name}}" as seed_{{column_name}},
+                model_sample."{{column_name}}" as model_{{column_name}},
+                {% else %}
+                seed.{{column_name}} as seed_{{column_name}},
+                model_sample.{{column_name}} as model_{{column_name}},
+                {% endif %}
             {% endfor -%}
             {%- for column_name in seed_check_columns %}
-            seed.{{column_name}} as seed_{{column_name}},
-            model_sample.{{column_name}} as model_{{column_name}} {% if not loop.last %},{% endif %}
+                {% if column_name == 'from' %}
+                seed."{{column_name}}" as seed_{{column_name}},
+                model_sample."{{column_name}}" as model_{{column_name}}{% if not loop.last %},{% endif %}
+                {% else %}
+                seed.{{column_name}} as seed_{{column_name}},
+                model_sample.{{column_name}} as model_{{column_name}}{% if not loop.last %},{% endif %}
+                {% endif %}
             {% endfor -%}
         from {{seed_file}} seed
         left join (
             select
                 {%- for column_name in seed_matching_columns %}
-                model.{{column_name}},
+                    {% if column_name == 'from' %}
+                    model."{{column_name}}",
+                    {% else %}
+                    model.{{column_name}},
+                    {% endif %}
                 {% endfor -%}
                 {%- for column_name in seed_check_columns %}
-                model.{{column_name}} {% if not loop.last %},{% endif %}
+                    {% if column_name == 'from' %}
+                    model."{{column_name}}"{% if not loop.last %},{% endif %}
+                    {% else %}
+                    model.{{column_name}}{% if not loop.last %},{% endif %}
+                    {% endif %}
                 {% endfor -%}
             from  {{seed_file}} seed
             inner join {{model}} model
                 ON 1=1
                     {%- for column_name in seed_matching_columns %}
-                    {% if column_name == 'trace_address' %}
-                    AND COALESCE(CAST(split(seed.{{column_name}}, ',') as array<bigint>), ARRAY[]) = model.{{column_name}}
-                    {% else %}
-                    AND seed.{{column_name}} = model.{{column_name}}
-                    {% endif %}
+                        {% if column_name == 'trace_address' %}
+                        AND COALESCE(CAST(split(seed.{{column_name}}, ',') as array<bigint>), ARRAY[]) = model.{{column_name}}
+                        {% elif column_name == 'from' %}
+                        AND seed."{{column_name}}" = model."{{column_name}}"
+                        {% else %}
+                        AND seed.{{column_name}} = model.{{column_name}}
+                        {% endif %}
                     {% endfor -%}
             ) model_sample
         ON 1=1
             {%- for column_name in seed_matching_columns %}
-            {% if column_name == 'trace_address' %}
-            AND COALESCE(CAST(split(seed.{{column_name}}, ',') as array<bigint>), ARRAY[]) = model_sample.{{column_name}}
-            {% else %}
-            AND seed.{{column_name}} = model_sample.{{column_name}}
-            {% endif %}
+                {% if column_name == 'trace_address' %}
+                AND COALESCE(CAST(split(seed.{{column_name}}, ',') as array<bigint>), ARRAY[]) = model_sample.{{column_name}}
+                {% elif column_name == 'from' %}
+                AND seed."{{column_name}}" = model_sample."{{column_name}}"
+                {% else %}
+                AND seed.{{column_name}} = model_sample.{{column_name}}
+                {% endif %}
             {% endfor -%}
         WHERE 1=1
               {%- if filter is not none %}
@@ -64,7 +86,7 @@
         from matched_records
         GROUP BY
             {%- for column_name in seed_matching_columns %}
-            seed_{{column_name}} {% if not loop.last %},{% endif %}
+            seed_{{column_name}}{% if not loop.last %},{% endif %}
             {% endfor -%}
     ) ,
 
