@@ -32,6 +32,6 @@ with
     
 select unique_transfer_id, 'arbitrum' as blockchain, wallet_address, token_address, evt_block_time, CAST(amount_raw AS VARCHAR(100)) as amount_raw
 from sent_transfers
-union
+union all
 select unique_transfer_id, 'arbitrum' as blockchain, wallet_address, token_address, evt_block_time, CAST(amount_raw AS VARCHAR(100)) as amount_raw
 from received_transfers
