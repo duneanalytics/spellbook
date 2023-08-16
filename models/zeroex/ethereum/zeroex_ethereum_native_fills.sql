@@ -18,7 +18,8 @@ WITH
  v4_limit_fills AS (
 
         SELECT
-            fills.evt_block_time AS block_time, fills.evt_block_number as block_number
+            cast(fills.evt_block_time as timestamp) AS block_time
+            , fills.evt_block_number as block_number
             , 'v4' AS protocol_version
             , fills.evt_tx_hash AS transaction_hash
             , fills.evt_index
@@ -80,7 +81,8 @@ WITH
 
     , v4_rfq_fills AS (
       SELECT
-          fills.evt_block_time AS block_time, fills.evt_block_number as block_number
+          cast(fills.evt_block_time as timestamp) AS block_time
+          , fills.evt_block_number as block_number
           , 'v4' AS protocol_version
           , fills.evt_tx_hash AS transaction_hash
           , fills.evt_index
@@ -139,7 +141,8 @@ WITH
     ), otc_fills as
     (
       SELECT
-          fills.evt_block_time AS block_time, fills.evt_block_number as block_number
+          cast(fills.evt_block_time as timestamp)  AS block_time
+          , fills.evt_block_number as block_number
           , 'v4' AS protocol_version
           , fills.evt_tx_hash AS transaction_hash
           , fills.evt_index
@@ -241,7 +244,7 @@ WITH
                 volume_usd,
                 cast(protocol_fee_paid_eth as double) as protocol_fee_paid_eth,
                 'ethereum' as blockchain,
-                all_fills.contract_address as cpmtract_address,
+                all_fills.contract_address as contract_address,
                 native_order_type,
                 tx."from" AS tx_from,
                 tx.to AS tx_to
