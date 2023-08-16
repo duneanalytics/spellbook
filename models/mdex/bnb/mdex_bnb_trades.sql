@@ -1,6 +1,7 @@
-{{ config(tags=['dunesql'],
+{{ config(
+    tags=['dunesql'],
     alias = alias('trades')
-    ,partition_by = ['block_date']
+    ,partition_by = ['block_month']
     ,materialized = 'incremental'
     ,file_format = 'delta'
     ,incremental_strategy = 'merge'
@@ -15,16 +16,16 @@
 {% set project_start_date = '2021-04-05' %}
 
 WITH mdex_dex AS (
-    SELECT  t.evt_block_time                                             AS block_time,
-            "to"                                                         AS taker,
-            sender                                                       AS maker,
+    SELECT  t.evt_block_time                                                       AS block_time,
+            "to"                                                                   AS taker,
+            sender                                                                 AS maker,
             CASE WHEN amount0Out = UINT256 '0' THEN amount1Out ELSE amount0Out END AS token_bought_amount_raw,
             CASE WHEN amount0In = UINT256 '0' THEN amount1In ELSE amount0In END    AS token_sold_amount_raw,
-            NULL                                         AS amount_usd,
+            NULL                                                                   AS amount_usd,
             CASE WHEN amount0Out = UINT256 '0' THEN token1 ELSE token0 END         AS token_bought_address,
             CASE WHEN amount0In = UINT256 '0' THEN token1 ELSE token0 END          AS token_sold_address,
-            t.contract_address                                           AS project_contract_address,
-            t.evt_tx_hash                                                AS tx_hash,
+            t.contract_address                                                     AS project_contract_address,
+            t.evt_tx_hash                                                          AS tx_hash,
             t.evt_index
     FROM {{ source('mdex_bnb', 'MdexPair_evt_Swap') }} t
     INNER JOIN {{ source('mdex_bnb', 'MdexFactory_evt_PairCreated') }} f
@@ -41,7 +42,8 @@ SELECT
     'bnb'                                                         AS blockchain,
     'mdex'                                                        AS project,
     '1'                                                           AS version,
-    try_cast(date_trunc('DAY', mdex_dex.block_time) AS date)      AS block_date,
+    cast(date_trunc('DAY', mdex_dex.block_time) AS date)          AS block_date,
+    cast(date_trunc('month', mdex_dex.block_time) AS date)        AS block_month,
     mdex_dex.block_time,
     erc20a.symbol                                                 AS token_bought_symbol,
     erc20b.symbol                                                 AS token_sold_symbol,
@@ -60,11 +62,11 @@ SELECT
         )                                                         AS amount_usd,
     mdex_dex.token_bought_address,
     mdex_dex.token_sold_address,
-    coalesce(mdex_dex.taker, tx."from")                             AS taker,
+    coalesce(mdex_dex.taker, tx."from")                           AS taker,
     mdex_dex.maker,
     mdex_dex.project_contract_address,
     mdex_dex.tx_hash,
-    tx."from"                                                       AS tx_from,
+    tx."from"                                                     AS tx_from,
     tx.to                                                         AS tx_to,
     mdex_dex.evt_index
 FROM mdex_dex
