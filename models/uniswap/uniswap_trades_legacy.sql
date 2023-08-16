@@ -2,10 +2,10 @@
 	tags=['legacy'],
 	
         alias = alias('trades', legacy_model=True),
-        post_hook='{{ expose_spells(\'["ethereum","arbitrum", "optimism", "polygon", "bnb", "base"]\',
+        post_hook='{{ expose_spells(\'["ethereum","arbitrum", "optimism", "polygon", "bnb"]\',
                                 "project",
                                 "uniswap",
-                                \'["jeff-dude","mtitus6", "Henrystats", "chrispearcx", "wuligy"]\') }}'
+                                \'["jeff-dude","mtitus6", "Henrystats", "chrispearcx"]\') }}'
         )
 }}
 
@@ -15,7 +15,6 @@ ref('uniswap_ethereum_trades_legacy')
 , ref('uniswap_arbitrum_trades_legacy')
 , ref('uniswap_polygon_trades_legacy')
 , ref('uniswap_bnb_trades_legacy')
-, ref('uniswap_base_trades_legacy')
 ] %}
 
 
