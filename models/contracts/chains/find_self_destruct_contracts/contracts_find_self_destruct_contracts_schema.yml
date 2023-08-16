@@ -27,7 +27,8 @@ models:
         description: "Address of the contract"
         tests:
           - not_null
-      - name: trace_element
+      - &trace_element
+        name: trace_element
         description: "First item in the `trace_address` array"
       - &destructed_time
         name: destructed_time
