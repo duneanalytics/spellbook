@@ -10,12 +10,16 @@
 
 with
     days as (
-        select
-            explode(
-                sequence(
-                    date('2015-01-01'), date_trunc('day', now()), interval '1' day
-                )
-            ) as day
+      select
+          "day"
+      from
+          unnest (
+              sequence(
+                  cast('2015-01-01' as date),
+                  current_date,
+                  interval '1' day
+              )
+          ) as _u ("day")
     )
 
 , daily_balances as
