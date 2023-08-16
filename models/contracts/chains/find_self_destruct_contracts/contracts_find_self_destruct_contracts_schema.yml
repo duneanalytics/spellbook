@@ -1,229 +1,232 @@
-- name: contracts_arbitrum_self_destruct_contracts
-    meta:
-      blockchain: arbitrum
-      sector: contracts
-      contributors: chuxin, msilb7
-    config:
-      tags: ['evm', 'contracts', 'addresses']
-    description: "A list of contracts that are self-destruct, with the time that they were most recently self-destructed."
-    columns:
-      - &blockchain
-        name: blockchain
-        description: "Name of chain in Dune database"
-      - &created_time
-        name: created_time
-        description: "contract creation time"
-      - &created_block_number
-        name: created_block_number
-        description: "Contract creation block number"
-      - &creation_tx_hash
-        name: creation_tx_hash
-        description: "Contract creation transaction hash"
-      - &contract_address
-        name: contract_address
-        description: "Address of the contract"
-        tests:
-          - not_null
-      - name: trace_element
-        description: "First item in the `trace_address` array"
-      - &destructed_time
-        name: destructed_time
-        description: "Block Time when contract was destructed"
-      - &destructed_block_number
-        name: destructed_block_number
-        description: "Block Number when contract was destructed"
-      - &destructed_tx_hash
-        name: destructed_tx_hash
-        description: "Tx Hash where contract was destructed"
+version: 2
+
+models:
+  - name: contracts_arbitrum_self_destruct_contracts
+      meta:
+        blockchain: arbitrum
+        sector: contracts
+        contributors: chuxin, msilb7
+      config:
+        tags: ['evm', 'contracts', 'addresses']
+      description: "A list of contracts that are self-destruct, with the time that they were most recently self-destructed."
+      columns:
+        - &blockchain
+          name: blockchain
+          description: "Name of chain in Dune database"
+        - &created_time
+          name: created_time
+          description: "contract creation time"
+        - &created_block_number
+          name: created_block_number
+          description: "Contract creation block number"
+        - &creation_tx_hash
+          name: creation_tx_hash
+          description: "Contract creation transaction hash"
+        - &contract_address
+          name: contract_address
+          description: "Address of the contract"
+          tests:
+            - not_null
+        - name: trace_element
+          description: "First item in the `trace_address` array"
+        - &destructed_time
+          name: destructed_time
+          description: "Block Time when contract was destructed"
+        - &destructed_block_number
+          name: destructed_block_number
+          description: "Block Number when contract was destructed"
+        - &destructed_tx_hash
+          name: destructed_tx_hash
+          description: "Tx Hash where contract was destructed"
 
 
-- name: contracts_avalanche_c_self_destruct_contracts
-    meta:
-      blockchain: avalanche_c
-      sector: contracts
-      contributors: chuxin, msilb7
-    config:
-      tags: ['evm', 'contracts', 'addresses']
-    description: "A list of contracts that are self-destruct, with the time that they were most recently self-destructed."
-    columns:
-      - *blockchain
-      - *created_time
-      - *created_block_number
-      - *creation_tx_hash
-      - *contract_address
-      - *trace_element
-      - *destructed_time
-      - *destructed_block_number
-      - *destructed_tx_hash
-      
+  - name: contracts_avalanche_c_self_destruct_contracts
+      meta:
+        blockchain: avalanche_c
+        sector: contracts
+        contributors: chuxin, msilb7
+      config:
+        tags: ['evm', 'contracts', 'addresses']
+      description: "A list of contracts that are self-destruct, with the time that they were most recently self-destructed."
+      columns:
+        - *blockchain
+        - *created_time
+        - *created_block_number
+        - *creation_tx_hash
+        - *contract_address
+        - *trace_element
+        - *destructed_time
+        - *destructed_block_number
+        - *destructed_tx_hash
+        
 
-- name: contracts_base_self_destruct_contracts
-    meta:
-      blockchain: base
-      sector: contracts
-      contributors: chuxin, msilb7
-    config:
-      tags: ['evm', 'contracts', 'addresses']
-    description: "A list of contracts that are self-destruct, with the time that they were most recently self-destructed."
-    columns:
-      - *blockchain
-      - *created_time
-      - *created_block_number
-      - *creation_tx_hash
-      - *contract_address
-      - *trace_element
-      - *destructed_time
-      - *destructed_block_number
-      - *destructed_tx_hash
+  - name: contracts_base_self_destruct_contracts
+      meta:
+        blockchain: base
+        sector: contracts
+        contributors: chuxin, msilb7
+      config:
+        tags: ['evm', 'contracts', 'addresses']
+      description: "A list of contracts that are self-destruct, with the time that they were most recently self-destructed."
+      columns:
+        - *blockchain
+        - *created_time
+        - *created_block_number
+        - *creation_tx_hash
+        - *contract_address
+        - *trace_element
+        - *destructed_time
+        - *destructed_block_number
+        - *destructed_tx_hash
 
-- name: contracts_bnb_self_destruct_contracts
-    meta:
-      blockchain: bnb
-      sector: contracts
-      contributors: chuxin, msilb7
-    config:
-      tags: ['evm', 'contracts', 'addresses']
-    description: "A list of contracts that are self-destruct, with the time that they were most recently self-destructed."
-    columns:
-      - *blockchain
-      - *created_time
-      - *created_block_number
-      - *creation_tx_hash
-      - *contract_address
-      - *trace_element
-      - *destructed_time
-      - *destructed_block_number
-      - *destructed_tx_hash
+  - name: contracts_bnb_self_destruct_contracts
+      meta:
+        blockchain: bnb
+        sector: contracts
+        contributors: chuxin, msilb7
+      config:
+        tags: ['evm', 'contracts', 'addresses']
+      description: "A list of contracts that are self-destruct, with the time that they were most recently self-destructed."
+      columns:
+        - *blockchain
+        - *created_time
+        - *created_block_number
+        - *creation_tx_hash
+        - *contract_address
+        - *trace_element
+        - *destructed_time
+        - *destructed_block_number
+        - *destructed_tx_hash
 
-- name: contracts_celo_self_destruct_contracts
-    meta:
-      blockchain: celo
-      sector: contracts
-      contributors: chuxin, msilb7
-    config:
-      tags: ['evm', 'contracts', 'addresses']
-    description: "A list of contracts that are self-destruct, with the time that they were most recently self-destructed."
-    columns:
-      - *blockchain
-      - *created_time
-      - *created_block_number
-      - *creation_tx_hash
-      - *contract_address
-      - *trace_element
-      - *destructed_time
-      - *destructed_block_number
-      - *destructed_tx_hash
+  - name: contracts_celo_self_destruct_contracts
+      meta:
+        blockchain: celo
+        sector: contracts
+        contributors: chuxin, msilb7
+      config:
+        tags: ['evm', 'contracts', 'addresses']
+      description: "A list of contracts that are self-destruct, with the time that they were most recently self-destructed."
+      columns:
+        - *blockchain
+        - *created_time
+        - *created_block_number
+        - *creation_tx_hash
+        - *contract_address
+        - *trace_element
+        - *destructed_time
+        - *destructed_block_number
+        - *destructed_tx_hash
 
-- name: contracts_ethereum_self_destruct_contracts
-    meta:
-      blockchain: ethereum
-      sector: contracts
-      contributors: chuxin, msilb7
-    config:
-      tags: ['evm', 'contracts', 'addresses']
-    description: "A list of contracts that are self-destruct, with the time that they were most recently self-destructed."
-    columns:
-      - *blockchain
-      - *created_time
-      - *created_block_number
-      - *creation_tx_hash
-      - *contract_address
-      - *trace_element
-      - *destructed_time
-      - *destructed_block_number
-      - *destructed_tx_hash
+  - name: contracts_ethereum_self_destruct_contracts
+      meta:
+        blockchain: ethereum
+        sector: contracts
+        contributors: chuxin, msilb7
+      config:
+        tags: ['evm', 'contracts', 'addresses']
+      description: "A list of contracts that are self-destruct, with the time that they were most recently self-destructed."
+      columns:
+        - *blockchain
+        - *created_time
+        - *created_block_number
+        - *creation_tx_hash
+        - *contract_address
+        - *trace_element
+        - *destructed_time
+        - *destructed_block_number
+        - *destructed_tx_hash
 
-- name: contracts_fantom_self_destruct_contracts
-    meta:
-      blockchain: fantom
-      sector: contracts
-      contributors: chuxin, msilb7
-    config:
-      tags: ['evm', 'contracts', 'addresses']
-    description: "A list of contracts that are self-destruct, with the time that they were most recently self-destructed."
-    columns:
-      - *blockchain
-      - *created_time
-      - *created_block_number
-      - *creation_tx_hash
-      - *contract_address
-      - *trace_element
-      - *destructed_time
-      - *destructed_block_number
-      - *destructed_tx_hash
+  - name: contracts_fantom_self_destruct_contracts
+      meta:
+        blockchain: fantom
+        sector: contracts
+        contributors: chuxin, msilb7
+      config:
+        tags: ['evm', 'contracts', 'addresses']
+      description: "A list of contracts that are self-destruct, with the time that they were most recently self-destructed."
+      columns:
+        - *blockchain
+        - *created_time
+        - *created_block_number
+        - *creation_tx_hash
+        - *contract_address
+        - *trace_element
+        - *destructed_time
+        - *destructed_block_number
+        - *destructed_tx_hash
 
-- name: contracts_gnosis_self_destruct_contracts
-    meta:
-      blockchain: gnosis
-      sector: contracts
-      contributors: chuxin, msilb7
-    config:
-      tags: ['evm', 'contracts', 'addresses']
-    description: "A list of contracts that are self-destruct, with the time that they were most recently self-destructed."
-    columns:
-      - *blockchain
-      - *created_time
-      - *created_block_number
-      - *creation_tx_hash
-      - *contract_address
-      - *trace_element
-      - *destructed_time
-      - *destructed_block_number
-      - *destructed_tx_hash
+  - name: contracts_gnosis_self_destruct_contracts
+      meta:
+        blockchain: gnosis
+        sector: contracts
+        contributors: chuxin, msilb7
+      config:
+        tags: ['evm', 'contracts', 'addresses']
+      description: "A list of contracts that are self-destruct, with the time that they were most recently self-destructed."
+      columns:
+        - *blockchain
+        - *created_time
+        - *created_block_number
+        - *creation_tx_hash
+        - *contract_address
+        - *trace_element
+        - *destructed_time
+        - *destructed_block_number
+        - *destructed_tx_hash
 
-- name: contracts_goerli_self_destruct_contracts
-    meta:
-      blockchain: goerli
-      sector: contracts
-      contributors: chuxin, msilb7
-    config:
-      tags: ['evm', 'contracts', 'addresses']
-    description: "A list of contracts that are self-destruct, with the time that they were most recently self-destructed."
-    columns:
-      - *blockchain
-      - *created_time
-      - *created_block_number
-      - *creation_tx_hash
-      - *contract_address
-      - *trace_element
-      - *destructed_time
-      - *destructed_block_number
-      - *destructed_tx_hash
+  - name: contracts_goerli_self_destruct_contracts
+      meta:
+        blockchain: goerli
+        sector: contracts
+        contributors: chuxin, msilb7
+      config:
+        tags: ['evm', 'contracts', 'addresses']
+      description: "A list of contracts that are self-destruct, with the time that they were most recently self-destructed."
+      columns:
+        - *blockchain
+        - *created_time
+        - *created_block_number
+        - *creation_tx_hash
+        - *contract_address
+        - *trace_element
+        - *destructed_time
+        - *destructed_block_number
+        - *destructed_tx_hash
 
-- name: contracts_optimism_self_destruct_contracts
-    meta:
-      blockchain: optimism
-      sector: contracts
-      contributors: chuxin, msilb7
-    config:
-      tags: ['evm', 'contracts', 'addresses']
-    description: "A list of contracts that are self-destruct, with the time that they were most recently self-destructed."
-    columns:
-      - *blockchain
-      - *created_time
-      - *created_block_number
-      - *creation_tx_hash
-      - *contract_address
-      - *trace_element
-      - *destructed_time
-      - *destructed_block_number
-      - *destructed_tx_hash
+  - name: contracts_optimism_self_destruct_contracts
+      meta:
+        blockchain: optimism
+        sector: contracts
+        contributors: chuxin, msilb7
+      config:
+        tags: ['evm', 'contracts', 'addresses']
+      description: "A list of contracts that are self-destruct, with the time that they were most recently self-destructed."
+      columns:
+        - *blockchain
+        - *created_time
+        - *created_block_number
+        - *creation_tx_hash
+        - *contract_address
+        - *trace_element
+        - *destructed_time
+        - *destructed_block_number
+        - *destructed_tx_hash
 
-- name: contracts_polygon_self_destruct_contracts
-    meta:
-      blockchain: polygon
-      sector: contracts
-      contributors: chuxin, msilb7
-    config:
-      tags: ['evm', 'contracts', 'addresses']
-    description: "A list of contracts that are self-destruct, with the time that they were most recently self-destructed."
-    columns:
-      - *blockchain
-      - *created_time
-      - *created_block_number
-      - *creation_tx_hash
-      - *contract_address
-      - *trace_element
-      - *destructed_time
-      - *destructed_block_number
-      - *destructed_tx_hash
+  - name: contracts_polygon_self_destruct_contracts
+      meta:
+        blockchain: polygon
+        sector: contracts
+        contributors: chuxin, msilb7
+      config:
+        tags: ['evm', 'contracts', 'addresses']
+      description: "A list of contracts that are self-destruct, with the time that they were most recently self-destructed."
+      columns:
+        - *blockchain
+        - *created_time
+        - *created_block_number
+        - *creation_tx_hash
+        - *contract_address
+        - *trace_element
+        - *destructed_time
+        - *destructed_block_number
+        - *destructed_tx_hash
