@@ -1,7 +1,7 @@
  {{
   config(
         tags = ['dunesql'],
-        alias = alias('contract_creator_project_mapping_arbitrum'),
+        alias = alias('contract_arbitrum_creator_project_mapping'),
         materialized ='incremental',
         file_format ='delta',
         incremental_strategy='merge',

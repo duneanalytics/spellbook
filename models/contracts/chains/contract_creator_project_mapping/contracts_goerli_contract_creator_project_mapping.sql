@@ -1,7 +1,7 @@
  {{
   config(
         tags = ['dunesql'],
-        alias = alias('contract_creator_project_mapping_goerli'),
+        alias = alias('contract_goerli_creator_project_mapping'),
         materialized ='incremental',
         file_format ='delta',
         incremental_strategy='merge',

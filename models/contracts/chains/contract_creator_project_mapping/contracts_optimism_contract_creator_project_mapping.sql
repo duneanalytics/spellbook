@@ -1,7 +1,7 @@
  {{
   config(
         tags = ['dunesql'],
-        alias = alias('contract_creator_project_mapping_optimism'),
+        alias = alias('contract_optimism_creator_project_mapping_'),
         materialized ='incremental',
         file_format ='delta',
         incremental_strategy='merge',

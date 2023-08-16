@@ -1,7 +1,7 @@
  {{
   config(
         tags = ['dunesql'],
-        alias = alias('find_self_destruct_contracts_polygon'),
+        alias = alias('find_polygon_self_destruct_contracts'),
         materialized ='incremental',
         file_format ='delta',
         incremental_strategy='merge',

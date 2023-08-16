@@ -1,7 +1,7 @@
  {{
   config(
         tags = ['dunesql'],
-        alias = alias('find_self_destruct_contracts_optimism'),
+        alias = alias('find_optimism_self_destruct_contracts'),
         materialized ='incremental',
         file_format ='delta',
         incremental_strategy='merge',
