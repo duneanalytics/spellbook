@@ -121,5 +121,3 @@ LEFT JOIN
 --     AND dp.hour >= date_trunc('day', now() - interval '7' Day)
 --     {% endif %}
 #}
-
-
