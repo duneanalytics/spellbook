@@ -1356,3 +1356,15 @@ models:
           +schema: account_abstraction_erc4337_base
         bnb:
           +schema: account_abstraction_erc4337_bnb
+
+      tokemak:
+
+        +schema: tokemak
+
+        +materialized: view
+
+        ethereum:
+
+          +schema: tokemak_ethereum
+
+          +materialized: view

@@ -5,7 +5,7 @@ models:
     meta:
       blockchain: ethereum
       project: tokemak
-      contributors: [addmorebass]
+      contributors: addmorebass
     config:
       tags: ["ethereum", "tokemak", "view"]
     description: Lookup table for Tokemak owned tokens.

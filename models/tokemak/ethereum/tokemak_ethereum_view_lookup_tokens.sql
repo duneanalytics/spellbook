@@ -1,3 +1,12 @@
+{{ config (
+    alias = 'tokemak_ethereum_view_lookup_tokens',
+    post_hook = '{{ expose_spells(\'["ethereum"]\',
+        "project", 
+            "Tokemak",
+             \'["needmorebass"]\') }}'
+) }}
+
+
 WITH tokemak_ethereum_view_lookup_tokens(symbol, display_name, address, pricing_contract, decimals, is_pool, is_active, is_liability, is_dollar_stable) AS
 (
     SELECT 'ETH' , 'Ether' ,'0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE' ,'0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2' , CAST(18 AS DECIMAL) , false, true, false, false
