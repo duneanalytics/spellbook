@@ -6,4 +6,4 @@ seeds:
       tags: dunesql
       column_types:
         maker: varbinary
-        buy_amount_raw: int256
+        buy_amount_raw: uint256
