@@ -7,3 +7,6 @@ seeds:
       column_types:
         maker: varbinary
         buy_amount_raw: uint256
+        sell_amount_raw: uint256
+        sold_amount_raw: uint256
+        bought_amount_raw: uint256
