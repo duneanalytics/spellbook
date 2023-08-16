@@ -1,14 +1,16 @@
-{{ config(tags=['dunesql'],
+{{ 
+    config(tags=['dunesql'],
     alias = alias('trades'),
     partition_by = ['block_month'],
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
     unique_key = ['block_date', 'blockchain', 'project', 'version', 'tx_hash', 'evt_index'],
-    post_hook='{{ expose_spells(\'["ethereum"]\',
-                                "project",
-                                "shibaswap",
-                                \'["0xRob"]\') }}'
+    post_hook='{{ 
+        expose_spells(\'["ethereum"]\',
+        "project",
+        "shibaswap",
+        \'["0xRob"]\') }}'
     )
 }}
 
