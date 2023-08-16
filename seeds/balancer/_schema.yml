@@ -7,7 +7,5 @@ seeds:
       column_types:
         contract_address: varbinary
         evt_tx_hash: varbinary
-        evt_block_time: timestamp
-        block_date: date
         from: varbinary
         to: varbinary
