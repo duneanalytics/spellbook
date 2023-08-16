@@ -110,6 +110,7 @@ LEFT JOIN
     {% if is_incremental() %}
     AND p.minute >= date_trunc('day', now() - interval '7' Day)
     {% endif %}
+{#
 -- LEFT JOIN 
 -- {{ ref('dex_prices') }} dp 
 --     ON dp.hour = date_trunc('hour', t.block_time)
@@ -119,6 +120,6 @@ LEFT JOIN
 --     {% if is_incremental() %}
 --     AND dp.hour >= date_trunc('day', now() - interval '7' Day)
 --     {% endif %}
-
+#}
 
 
