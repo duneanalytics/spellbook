@@ -41,7 +41,7 @@ open_position_v2 AS (
             CAST(json_extract_scalar(tradeInfo, '$.collateral') as double)/1e18 as collateral,
             from_hex(json_extract_scalar(tradeInfo, '$.collateralAsset')) as collateral_asset, 
             CAST(json_extract_scalar(tradeInfo, '$.direction') as VARCHAR) as direction, 
-            p.pair, 
+            ta.pair, 
             split_part( human_readable_seconds( CAST(json_extract_scalar(tradeInfo, '$.duration') as double) ),',',1) as options_period,
             from_hex(json_extract_scalar(tradeInfo, '$.referrer')) as referral,
             trader,
