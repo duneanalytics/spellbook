@@ -118,12 +118,12 @@ settings AS (
     p.symbol AS pool_symbol,
     p.pool_type
   FROM pools p
-  LEFT JOIN tokens.erc20 t ON p.token_address = t.contract_address
+  LEFT JOIN {{ ref('tokens_erc20') }} t ON p.token_address = t.contract_address
 )
 
 SELECT 
   'avalanche_c' AS blockchain,
-  SUBSTRING(CAST(pool_id AS varchar), 1, 42) AS address,
+  bytearray_substring(pool_id, 1, 20) AS address,
   CASE
     WHEN pool_type IN ('SP.LP.LBP') THEN lower(pool_symbol)
     ELSE lower(concat(array_join(array_sort(array_agg(token_symbol)), '/'), ' ', array_join(array_sort(array_agg(cast(norm_weight AS varchar))), '/')))
