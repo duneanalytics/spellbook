@@ -50,7 +50,7 @@ open_position_v2 AS (
         FROM {{ source('tigristrade_v2_polygon', open_position) }} t
         INNER JOIN pairs ta
             ON CAST(json_extract_scalar(tradeInfo, '$.asset') as double) = CAST(ta.asset_id as double)
-            AND ta.protocol_version = '1'
+            AND ta.protocol_version = '2'
         {% if is_incremental() %}
         WHERE t.evt_block_time >= date_trunc('day', now() - interval '7' day)
         {% endif %}
