@@ -251,7 +251,7 @@ with source_ethereum_transactions as (
                   ,from_hex(json_extract_scalar(json_extract_scalar(execution,'$.item'),'$.token')) as token_contract_address
                   ,json_extract_scalar(json_extract_scalar(execution,'$.item'),'$.amount') as original_amount
                   ,json_extract_scalar(json_extract_scalar(execution,'$.item'),'$.itemType') as item_type_code
-                  ,json_extract_scalar(json_extract_scalar(execution,'$.item'),'$.identifier') as token_id
+                  ,cast(json_extract_scalar(json_extract_scalar(execution,'$.item'),'$.identifier') as uint256) as token_id
                   ,from_hex(json_extract_scalar(json_extract_scalar(execution,'$.item'),'$.recipient')) as receiver
                   ,contract_address as platform_contract_address
             from (select *
@@ -280,7 +280,7 @@ with source_ethereum_transactions as (
                   ,from_hex(json_extract_scalar(json_extract_scalar(execution,'$.item'),'$.token')) as token_contract_address
                   ,json_extract_scalar(json_extract_scalar(execution,'$.item'),'$.amount') as original_amount
                   ,json_extract_scalar(json_extract_scalar(execution,'$.item'),'$.itemType') as item_type_code
-                  ,json_extract_scalar(json_extract_scalar(execution,'$.item'),'$.identifier') as token_id
+                  ,cast(json_extract_scalar(json_extract_scalar(execution,'$.item'),'$.identifier') as uint256) as token_id
                   ,from_hex(json_extract_scalar(json_extract_scalar(execution,'$.item'),'$.recipient')) as receiver
                   ,contract_address as platform_contract_address
             from (select *
