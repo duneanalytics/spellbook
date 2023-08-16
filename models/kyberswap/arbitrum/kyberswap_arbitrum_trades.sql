@@ -18,17 +18,17 @@ WITH
 
 kyberswap_dex AS (
     SELECT
-        t.evt_block_time                                                    AS block_time
-        ,t."to"                                                             AS taker
-        ,CAST(NULL AS VARBINARY)                                                                 AS maker
-        ,CAST(CASE WHEN t.amount0Out = UINT256 '0' THEN t.amount1Out ELSE t.amount0Out END AS uint256) AS token_bought_amount_raw
-        ,CAST(CASE WHEN t.amount0In = UINT256 '0' THEN t.amount1In ELSE t.amount0In END AS uint256)    AS token_sold_amount_raw
-        ,NULL                                             AS amount_usd
+        t.evt_block_time                                                              AS block_time
+        ,t."to"                                                                       AS taker
+        ,CAST(NULL AS VARBINARY)                                                      AS maker
+        ,CASE WHEN t.amount0Out = UINT256 '0' THEN t.amount1Out ELSE t.amount0Out END AS token_bought_amount_raw
+        ,CASE WHEN t.amount0In = UINT256 '0' THEN t.amount1In ELSE t.amount0In END    AS token_sold_amount_raw
+        ,NULL                                                                         AS amount_usd
         ,CASE WHEN t.amount0Out = UINT256 '0' THEN p.token1 ELSE p.token0 END         AS token_bought_address
         ,CASE WHEN t.amount0In = UINT256 '0' THEN p.token1 ELSE p.token0 END          AS token_sold_address
-        ,t.contract_address                                                 AS project_contract_address
-        ,t.evt_tx_hash                                                      AS tx_hash
-        ,'classic'                                                          AS version
+        ,t.contract_address                                                           AS project_contract_address
+        ,t.evt_tx_hash                                                                AS tx_hash
+        ,'classic'                                                                    AS version
         ,t.evt_index
     FROM {{ source('kyber_arbitrum', 'DMM_Pool_evt_Swap') }} t
     INNER JOIN {{ source('kyber_arbitrum', 'DMMFactory_evt_PoolCreated') }} p
@@ -44,17 +44,17 @@ kyberswap_dex AS (
     -- https://docs.kyberswap.com/contract/implement-a-swap
     -- deltaQty0 and deltaQty1, Negative numbers represent the sold amount, and positive numbers represent the buy amount
     SELECT
-        t.evt_block_time                                                               AS block_time
-        ,t.sender                                                                      AS taker
-        ,t.recipient                                                                   AS maker
-        ,cast(if(starts_with(cast(t.deltaQty0 as varchar), '-'), abs(t.deltaQty1), abs(t.deltaQty0)) as uint256)                    AS token_bought_amount_raw
+        t.evt_block_time                                                                                          AS block_time
+        ,t.sender                                                                                                 AS taker
+        ,t.recipient                                                                                              AS maker
+        ,cast(if(starts_with(cast(t.deltaQty0 as varchar), '-'), abs(t.deltaQty1), abs(t.deltaQty0)) as uint256)  AS token_bought_amount_raw
         ,cast(if(starts_with(cast(t.deltaQty0 as varchar), '-'), abs(t.deltaQty0), abs(t.deltaQty1)) as uint256)  AS token_sold_amount_raw
-        ,NULL                                                                          AS amount_usd
-        ,if(starts_with(cast(t.deltaQty0 as varchar), '-'), p.token1, p.token0)                          AS token_bought_address
-        ,if(starts_with(cast(t.deltaQty0 as varchar), '-'), p.token0, p.token1)                          AS token_sold_address
-        ,t.contract_address                                                            AS project_contract_address
-        ,t.evt_tx_hash                                                                 AS tx_hash
-        ,'elastic'                                                                     AS version	
+        ,NULL                                                                                                     AS amount_usd
+        ,if(starts_with(cast(t.deltaQty0 as varchar), '-'), p.token1, p.token0)                                   AS token_bought_address
+        ,if(starts_with(cast(t.deltaQty0 as varchar), '-'), p.token0, p.token1)                                   AS token_sold_address
+        ,t.contract_address                                                                                       AS project_contract_address
+        ,t.evt_tx_hash                                                                                            AS tx_hash
+        ,'elastic'                                                                                                AS version	
         ,t.evt_index
 
     FROM {{ source('kyber_arbitrum', 'Elastic_Pool_evt_swap') }} t
@@ -73,7 +73,7 @@ SELECT 'arbitrum'                                                         AS blo
      , 'kyberswap'                                                        AS project
      , version                                                            AS version
      , try_cast(date_trunc('day', kyberswap_dex.block_time) AS date)      AS block_date
-     , try_cast(date_trunc('month', kyberswap_dex.block_time) AS date)      AS block_month
+     , try_cast(date_trunc('month', kyberswap_dex.block_time) AS date)    AS block_month
      , kyberswap_dex.block_time
      , erc20a.symbol                                                      AS token_bought_symbol
      , erc20b.symbol                                                      AS token_sold_symbol
@@ -83,19 +83,19 @@ SELECT 'arbitrum'                                                         AS blo
     END                                                                   AS token_pair
      , kyberswap_dex.token_bought_amount_raw / power(10, erc20a.decimals) AS token_bought_amount
      , kyberswap_dex.token_sold_amount_raw / power(10, erc20b.decimals)   AS token_sold_amount
-     , kyberswap_dex.token_bought_amount_raw      AS token_bought_amount_raw
-     , kyberswap_dex.token_sold_amount_raw        AS token_sold_amount_raw
+     , kyberswap_dex.token_bought_amount_raw                              AS token_bought_amount_raw
+     , kyberswap_dex.token_sold_amount_raw                                AS token_sold_amount_raw
      , coalesce(kyberswap_dex.amount_usd
     , (kyberswap_dex.token_bought_amount_raw / power(10, p_bought.decimals)) * p_bought.price
     , (kyberswap_dex.token_sold_amount_raw / power(10, p_sold.decimals)) * p_sold.price
     )                                                                     AS amount_usd
      , kyberswap_dex.token_bought_address
      , kyberswap_dex.token_sold_address
-     , coalesce(kyberswap_dex.taker, tx."from")                             AS taker
+     , coalesce(kyberswap_dex.taker, tx."from")                           AS taker
      , kyberswap_dex.maker
      , kyberswap_dex.project_contract_address
      , kyberswap_dex.tx_hash
-     , tx."from"                                                            AS tx_from
+     , tx."from"                                                          AS tx_from
      , tx.to                                                              AS tx_to
      , kyberswap_dex.evt_index
 FROM kyberswap_dex

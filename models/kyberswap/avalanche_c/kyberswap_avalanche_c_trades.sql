@@ -18,16 +18,16 @@ WITH
 
 kyberswap_dex AS (
     SELECT
-        t.evt_block_time                                                    AS block_time
-        ,t."to"                                                             AS taker
-        ,CAST(NULL AS VARBINARY)                                            AS maker
-        ,cast(CASE WHEN t.amount0Out = UINT256 '0' THEN t.amount1Out ELSE t.amount0Out END as uint256) AS token_bought_amount_raw
-        ,cast(CASE WHEN t.amount0In = UINT256 '0' THEN t.amount1In ELSE t.amount0In END as uint256)   AS token_sold_amount_raw
-        ,NULL                                               AS amount_usd
-        ,CASE WHEN t.amount0Out = UINT256 '0' THEN p.token1 ELSE p.token0 END         AS token_bought_address
-        ,CASE WHEN t.amount0In = UINT256 '0' THEN p.token1 ELSE p.token0 END          AS token_sold_address
-        ,t.contract_address                                                 AS project_contract_address
-        ,t.evt_tx_hash                                                      AS tx_hash
+        t.evt_block_time                                                      AS block_time
+        ,t."to"                                                               AS taker
+        ,CAST(NULL AS VARBINARY)                                              AS maker
+        ,CASE WHEN t.amount0Out = 0 THEN t.amount1Out ELSE t.amount0Out END   AS token_bought_amount_raw
+        ,CASE WHEN t.amount0In =  0 THEN t.amount1In ELSE t.amount0In   END   AS token_sold_amount_raw
+        ,NULL                                                                 AS amount_usd
+        ,CASE WHEN t.amount0Out = UINT256 '0' THEN p.token1 ELSE p.token0 END AS token_bought_address
+        ,CASE WHEN t.amount0In = UINT256 '0' THEN p.token1 ELSE p.token0 END  AS token_sold_address
+        ,t.contract_address                                                   AS project_contract_address
+        ,t.evt_tx_hash                                                        AS tx_hash
         ,t.evt_index
     FROM {{ source('kyber_avalanche_c', 'DMMPool_evt_Swap') }} t
     INNER JOIN {{ source('kyber_avalanche_c', 'DMMFactory_evt_PoolCreated') }} p
@@ -43,16 +43,16 @@ kyberswap_dex AS (
     -- https://docs.kyberswap.com/contract/implement-a-swap
     -- deltaQty0 and deltaQty1, Negative numbers represent the sold amount, and positive numbers represent the buy amount
     SELECT
-        t.evt_block_time                                                               AS block_time
-        ,t.sender                                                                      AS taker
-        ,t.recipient                                                                   AS maker
-        ,cast(if(starts_with(cast(t.deltaQty0 as varchar), '-'), t.deltaQty1, t.deltaQty0) as uint256)                 AS token_bought_amount_raw
-        ,cast(if(starts_with(cast(t.deltaQty0 as varchar), '-'), abs(t.deltaQty0), t.deltaQty1) as uint256)  AS token_sold_amount_raw
-        ,NULL                                                                          AS amount_usd
-        ,if(starts_with(cast(t.deltaQty0 as varchar), '-'), p.token1, p.token0)                          AS token_bought_address
-        ,if(starts_with(cast(t.deltaQty0 as varchar), '-'), p.token0, p.token1)                          AS token_sold_address
-        ,t.contract_address                                                            AS project_contract_address
-        ,t.evt_tx_hash                                                                 AS tx_hash
+        t.evt_block_time                                                                                         AS block_time
+        ,t.sender                                                                                                AS taker
+        ,t.recipient                                                                                             AS maker
+        ,cast(if(starts_with(cast(t.deltaQty0 as varchar), '-'), abs(t.deltaQty1), abs(t.deltaQty0)) as uint256) AS token_bought_amount_raw
+        ,cast(if(starts_with(cast(t.deltaQty0 as varchar), '-'), abs(t.deltaQty0), abs(t.deltaQty1)) as uint256) AS token_sold_amount_raw
+        ,NULL                                                                                                    AS amount_usd
+        ,if(starts_with(cast(t.deltaQty0 as varchar), '-'), p.token1, p.token0)                                  AS token_bought_address
+        ,if(starts_with(cast(t.deltaQty0 as varchar), '-'), p.token0, p.token1)                                  AS token_sold_address
+        ,t.contract_address                                                                                      AS project_contract_address
+        ,t.evt_tx_hash                                                                                           AS tx_hash
         ,t.evt_index
     FROM {{ source('kyber_avalanche_c', 'Elastic_Pool_evt_swap') }} t
     INNER JOIN {{ source('kyber_avalanche_c', 'Elastic_Factory_evt_PoolCreated') }} p
@@ -69,8 +69,8 @@ kyberswap_dex AS (
         evt_block_time                                                     AS block_time
         ,sender                                                            AS taker
         ,CAST(NULL AS VARBINARY)                                           AS maker
-        ,cast(returnAmount as uint256)                                      AS token_bought_amount_raw
-        ,cast(spentAmount as uint256)                                       AS token_sold_amount_raw
+        ,cast(returnAmount as uint256)                                     AS token_bought_amount_raw
+        ,cast(spentAmount as uint256)                                      AS token_sold_amount_raw
         ,NULL                                                              AS amount_usd
         ,dstToken                                                          AS token_bought_address
         ,srcToken                                                          AS token_sold_address
@@ -88,16 +88,16 @@ kyberswap_dex AS (
     UNION ALL
 
     SELECT
-        evt_block_time                                                     AS block_time
-        ,sender                                                            AS taker
-        ,CAST(NULL AS VARBINARY)                                                                AS maker
-        ,cast(returnAmount as uint256)                                                      AS token_bought_amount_raw
-        ,cast(spentAmount as uint256)                                                       AS token_sold_amount_raw
-        ,NULL                                              AS amount_usd
-        ,dstToken                                                          AS token_bought_address
-        ,srcToken                                                          AS token_sold_address
-        ,contract_address                                                  AS project_contract_address
-        ,evt_tx_hash                                                       AS tx_hash
+        evt_block_time                 AS block_time
+        ,sender                        AS taker
+        ,CAST(NULL AS VARBINARY)       AS maker
+        ,cast(returnAmount as uint256) AS token_bought_amount_raw
+        ,cast(spentAmount as uint256)  AS token_sold_amount_raw
+        ,NULL                          AS amount_usd
+        ,dstToken                      AS token_bought_address
+        ,srcToken                      AS token_sold_address
+        ,contract_address              AS project_contract_address
+        ,evt_tx_hash                   AS tx_hash
         ,evt_index
     FROM {{ source('kyber_avalanche_c', 'MetaAggregationRouter_evt_Swapped') }}
     WHERE
@@ -113,7 +113,7 @@ SELECT
     ,'kyberswap'                                                          AS project
     ,'dmm'                                                                AS version
     ,try_cast(date_trunc('DAY', kyberswap_dex.block_time) AS date)        AS block_date
-    ,try_cast(date_trunc('month', kyberswap_dex.block_time) AS date)        AS block_month
+    ,try_cast(date_trunc('month', kyberswap_dex.block_time) AS date)      AS block_month
     ,kyberswap_dex.block_time
     ,erc20a.symbol                                                        AS token_bought_symbol
     ,erc20b.symbol                                                        AS token_sold_symbol
@@ -131,11 +131,11 @@ SELECT
      )                                                                   AS amount_usd
     ,kyberswap_dex.token_bought_address
     ,kyberswap_dex.token_sold_address
-    ,coalesce(kyberswap_dex.taker, tx."from")                              AS taker
+    ,coalesce(kyberswap_dex.taker, tx."from")                            AS taker
     ,kyberswap_dex.maker
     ,kyberswap_dex.project_contract_address
     ,kyberswap_dex.tx_hash
-    ,tx."from"                                                             AS tx_from
+    ,tx."from"                                                           AS tx_from
     ,tx.to                                                               AS tx_to
     ,kyberswap_dex.evt_index
 FROM kyberswap_dex
