@@ -1,11 +1,11 @@
 {{ config (
-    schema='tokemak_ethereum'
+    schema='tokemak_ethereum',
     alias = 'tokemak_ethereum_view_lookup_tokens',
     tags=['dunesql'],
     post_hook = '{{ expose_spells(\'["ethereum"]\',
         "project", 
             "Tokemak",
-             \'["needmorebass"]\') }}'
+             \'["addmorebass"]\') }}'
 ) }}
 
 
