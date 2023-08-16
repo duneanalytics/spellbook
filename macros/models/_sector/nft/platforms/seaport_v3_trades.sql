@@ -243,7 +243,7 @@ with source_ethereum_transactions as (
                   ,dense_rank() over (partition by call_tx_hash order by call_trace_address) as evt_index
                   ,'match_adv_ord' as sub_type
                   ,execution_idx + 1 as sub_idx
-                  ,json_extract_scalar(json_extract_scalar(advancedOrders[1],'$.parameters'),'$.zone') as zone
+                  ,from_hex(json_extract_scalar(json_extract_scalar(advancedOrders[1],'$.parameters'),'$.zone')) as zone
                   ,from_hex(json_extract_scalar(json_extract_scalar(advancedOrders[1],'$.parameters'),'$.offerer')) as offerer
                   ,json_extract_scalar(json_extract_scalar(json_extract_scalar(advancedOrders[1],'$.parameters'),'$.offer[0]'),'$.itemType') as offer_first_item
                   ,json_extract_scalar(json_extract_scalar(json_extract_scalar(advancedOrders[1],'$.parameters'),'$.consideration[0]'),'$.itemType') as consider_first_item
@@ -272,7 +272,7 @@ with source_ethereum_transactions as (
                   ,dense_rank() over (partition by call_tx_hash order by call_trace_address) as evt_index
                   ,'match_ord' as sub_type
                   ,execution_idx + 1 as sub_idx
-                  ,json_extract_scalar(json_extract_scalar(orders[1],'$.parameters'),'$.zone') as zone
+                  ,from_hex(json_extract_scalar(json_extract_scalar(orders[1],'$.parameters'),'$.zone')) as zone
                   ,from_hex(json_extract_scalar(json_extract_scalar(orders[1],'$.parameters'),'$.offerer')) as offerer
                   ,json_extract_scalar(json_extract_scalar(json_extract_scalar(orders[1],'$.parameters'),'$.offer[0]'),'$.itemType') as offer_first_item
                   ,json_extract_scalar(json_extract_scalar(json_extract_scalar(orders[1],'$.parameters'),'$.consideration[0]'),'$.itemType') as consider_first_item
