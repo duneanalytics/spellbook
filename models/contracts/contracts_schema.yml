@@ -122,7 +122,7 @@ models:
       
       - &is_updated_in_last_run
         name: is_updated_in_last_run
-        description: ""Was this contract updated on the last run (used for incremental table building)""
+        description: "Was this contract updated on the last run (used for incremental table building)"
   
   - name: contracts_predeploys
     meta:
