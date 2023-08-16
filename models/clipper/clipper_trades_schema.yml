@@ -3,7 +3,7 @@ version: 2
 models:
   - name: clipper_trades
     meta:
-      blockchain: avalanche_c,  bnb, polygon, ethereum
+      blockchain: arbitrum, ethereum, optimism, polygon
       sector: dex
       project: clipper
       contributors: 0xRob, amalashkevich

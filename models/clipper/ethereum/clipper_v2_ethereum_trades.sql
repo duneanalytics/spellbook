@@ -1,4 +1,5 @@
-{{ config(tags=['dunesql'],
+{{ 
+    config(tags=['dunesql'],
     schema = 'clipper_v2_ethereum',
     alias = alias('trades'),
     partition_by = ['block_month'],
@@ -38,7 +39,7 @@ SELECT
     'ethereum' AS blockchain
     ,'clipper' AS project
     ,'2' AS version
-    ,TRY_CAST(date_trunc('DAY', e.block_time) AS date) AS block_date
+    ,CAST(date_trunc('DAY', e.block_time) AS date) AS block_date
     ,CAST(date_trunc('month', e.block_time) AS date) AS block_month
     ,e.block_time
     ,t_bought.symbol AS token_bought_symbol

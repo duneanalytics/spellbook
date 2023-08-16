@@ -1,16 +1,17 @@
-{{ config(tags=['dunesql'],
-        alias = alias('trades'),
-        post_hook='{{ expose_spells(\'["optimism"]\',
-                                "project",
-                                "clipper",
-                                \'["amalashkevich"]\') }}'
-        )
+{{ 
+    config(tags=['dunesql'],
+    alias = alias('trades'),
+    post_hook='{{ expose_spells(\'["optimism"]\',
+        "project",
+        "clipper",
+        \'["amalashkevich"]\') }}'
+    )
 }}
 
 {% set clipper_models = [
-ref('clipper_v1_optimism_trades')
-, ref('clipper_v2_optimism_trades')
-, ref('clipper_coves_v1_optimism_trades')
+    ref('clipper_v1_optimism_trades')
+    , ref('clipper_v2_optimism_trades')
+    , ref('clipper_coves_v1_optimism_trades')
 ] %}
 
 

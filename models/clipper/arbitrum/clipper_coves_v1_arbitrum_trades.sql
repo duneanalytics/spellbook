@@ -1,4 +1,5 @@
-{{ config(tags=['dunesql'],
+{{ 
+    config(tags=['dunesql'],
     schema = 'clipper_coves_v1_arbitrum',
     alias = alias('trades'),
     partition_by = ['block_month'],
@@ -38,7 +39,7 @@ SELECT
     'arbitrum' AS blockchain
     ,'clipper' AS project
     ,'coves1' AS version
-    ,TRY_CAST(date_trunc('DAY', e.block_time) AS date) AS block_date
+    ,CAST(date_trunc('DAY', e.block_time) AS date) AS block_date
     ,CAST(date_trunc('month', e.block_time) AS date) AS block_month
     ,e.block_time
     ,t_bought.symbol AS token_bought_symbol

@@ -1,17 +1,18 @@
-{{ config(tags=['dunesql'],
-        alias = alias('trades'),
-        post_hook='{{ expose_spells(\'["arbitrum", "ethereum"]\',
-                                "project",
-                                "clipper",
-                                \'["0xRob", "amalashkevich"]\') }}'
-        )
+{{ 
+    config(tags=['dunesql'],
+    alias = alias('trades'),
+    post_hook='{{ expose_spells(\'["arbitrum", "ethereum"]\',
+        "project",
+        "clipper",
+        \'["0xRob", "amalashkevich"]\') }}'
+    )
 }}
 
 {% set clipper_models = [
-ref('clipper_ethereum_trades'),
-ref('clipper_arbitrum_trades'),
-ref('clipper_polygon_trades'),
-ref('clipper_optimism_trades')
+    ref('clipper_ethereum_trades'),
+    ref('clipper_arbitrum_trades'),
+    ref('clipper_polygon_trades'),
+    ref('clipper_optimism_trades')
 ] %}
 
 
