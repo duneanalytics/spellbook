@@ -77,7 +77,7 @@ select transfer_type,
        evt_block_time,
        CAST(amount_raw AS VARCHAR(100)) as amount_raw
 from sent_transfers
-union all
+union
 select transfer_type,
        'polygon'                        as blockchain,
        evt_tx_hash,
@@ -87,7 +87,7 @@ select transfer_type,
        evt_block_time,
        CAST(amount_raw AS VARCHAR(100)) as amount_raw
 from received_transfers
-union all
+union
 select transfer_type,
        'polygon'                        as blockchain,
        evt_tx_hash,
@@ -97,7 +97,7 @@ select transfer_type,
        evt_block_time,
        CAST(amount_raw AS VARCHAR(100)) as amount_raw
 from deposited_wmatic
-union all
+union
 select transfer_type,
        'polygon'                        as blockchain,
        evt_tx_hash,

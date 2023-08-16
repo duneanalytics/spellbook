@@ -54,12 +54,12 @@ with
     
 select unique_transfer_id, 'optimism' as blockchain, wallet_address, token_address, evt_block_time, CAST(amount_raw AS VARCHAR(100)) as amount_raw
 from sent_transfers
-union all
+union
 select unique_transfer_id, 'optimism' as blockchain, wallet_address, token_address, evt_block_time, CAST(amount_raw AS VARCHAR(100)) as amount_raw
 from received_transfers
-union all
+union
 select unique_transfer_id, 'optimism' as blockchain, wallet_address, token_address, evt_block_time, CAST(amount_raw AS VARCHAR(100)) as amount_raw
 from deposited_weth
-union all
+union
 select unique_transfer_id, 'optimism' as blockchain, wallet_address, token_address, evt_block_time, CAST(amount_raw AS VARCHAR(100)) as amount_raw
 from withdrawn_weth
