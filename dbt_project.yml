@@ -318,6 +318,8 @@ models:
       +schema: maverick
       ethereum:
         +schema: maverick_ethereum
+      bnb:
+        +schema: maverick_bnb  
 
     daohaus:
       +schema: daohaus
