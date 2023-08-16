@@ -112,15 +112,17 @@ models:
       - &code
         name: code
         description: "Runtime bytecode of the contract"
-      - &code_deploy_rank
-        name: code_deploy_rank
-        description: "Was this the 1st, 2rd, 3rd, etc time the same exact bytecode was deployed on any measured chain? (1 = 1st). This can be used for spam filtering."
+
       - &code_deploy_rank_by_chain
         name: code_deploy_rank_by_chain
         description: "Was this the 1st, 2rd, 3rd, etc time the same exact bytecode was deployed by chain? (1 = 1st). This can be used for spam filtering."
       - &is_eoa_deployed
         name: is_eoa_deployed
         description: "Was the contract deployed by an EOA (test if the trace creator = the transaction sender)"
+      
+      - &is_updated_in_last_run
+        name: is_updated_in_last_run
+        description: ""Was this contract updated on the last run (used for incremental table building)""
   
   - name: contracts_predeploys
     meta:
@@ -190,8 +192,18 @@ models:
       - *created_block_number
       - *creation_tx_hash
       - *contract_address
-      - name: trace_element
+      - &trace_element
+        name: trace_element
         description: "First item in the `trace_address` array"
+      - &destructed_time
+        name: destructed_time
+        description: "Block Time when contract was destructed"
+      - &destructed_block_number
+        name: destructed_block_number
+        description: "Block Number when contract was destructed"
+      - &destructed_tx_hash
+        name: destructed_tx_hash
+        description: "Tx Hash where contract was destructed"
     
   - name: contracts_deterministic_contract_creators
     meta:
