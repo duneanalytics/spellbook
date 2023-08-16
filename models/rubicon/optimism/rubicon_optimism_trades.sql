@@ -1,15 +1,16 @@
-{{ config(tags=['dunesql'],
-    schema = 'rubicon_optimism',
+{{ 
+    config(tags=['dunesql'],
     alias = alias('trades'),
     partition_by = ['block_month'],
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
     unique_key = ['block_date', 'blockchain', 'project', 'version', 'tx_hash', 'evt_index'],
-    post_hook='{{ expose_spells(\'["optimism"]\',
-                                "project",
-                                "rubicon",
-                                \'["msilb7"]\') }}'
+    post_hook='{{ 
+        expose_spells(\'["optimism"]\',
+        "project",
+        "rubicon",
+        \'["msilb7"]\') }}'
     )
 }}
 -- First trade event 2021-11-12
@@ -48,7 +49,7 @@ WITH dexs AS
     --From the prespective of the taker - emitTake
     SELECT
          t2.evt_block_time AS block_time
-        , t2.evt_block_number
+        ,t2.evt_block_number
         ,t2.taker AS taker
         ,t2.maker AS maker
         ,t2.take_amt AS token_bought_amount_raw
@@ -71,7 +72,7 @@ SELECT
      'optimism' AS blockchain
     ,'rubicon' AS project
     ,'1' AS version
-    ,TRY_CAST(date_trunc('day', dexs.block_time) AS date) AS block_date
+    ,CAST(date_trunc('day', dexs.block_time) AS date) AS block_date
     ,CAST(date_trunc('month', dexs.block_time) AS date) AS block_month
     ,dexs.block_time
     ,erc20a.symbol AS token_bought_symbol
