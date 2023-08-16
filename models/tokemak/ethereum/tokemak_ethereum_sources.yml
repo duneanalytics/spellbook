@@ -1,0 +1,10 @@
+version: 2 # Spells all have “version: 2” as that’s the version of our engine they use.
+
+sources:
+  - name: tokemak_ethereum
+
+    description: >
+      Decoded events for [Tokemak] (https://tokemak.xyz/), a decentralized liquidity management protocol.
+
+    tables:
+      - name: tokemak_ethereum_view_lookup_tokens
