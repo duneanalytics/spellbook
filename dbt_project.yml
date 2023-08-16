@@ -318,6 +318,8 @@ models:
       +schema: maverick
       ethereum:
         +schema: maverick_ethereum
+      bnb:
+        +schema: maverick_bnb  
 
     daohaus:
       +schema: daohaus
@@ -906,6 +908,8 @@ models:
         +schema: pancakeswap_bnb
       ethereum:
         +schema: pancakeswap_ethereum
+      arbitrum:
+        +schema: pancakeswap_arbitrum  
 
     bancor:
       +schema: bancor
