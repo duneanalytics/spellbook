@@ -56,7 +56,7 @@ FROM (
       {% endif %}
 
     -- WHERE cr.blockchain = '{{chain}}'
-    group by 1, 2, 3, 4, 5, 6
+    group by 1, 2, 3, 4, 5, 6, 7, 8, 9
 
     UNION ALL
 
@@ -85,7 +85,7 @@ FROM (
       and cr.contract_address NOT IN (SELECT contract_address FROM {{this}} th WHERE th.blockchain = '{{chain}}' ) --ensure no duplicates
       {% endif %}
     -- WHERE cr.blockchain = '{{chain}}'
-    group by 1, 2, 3, 4, 5, 6
+    group by 1, 2, 3, 4, 5, 6, 7, 8, 9
 
   ) inter
 
