@@ -19,7 +19,7 @@
 --    ) as foo(wallet_address, wallet_name)
 --)
 --, trades as (
---    {{ seaport_v3_trades(
+--     seaport_v3_trades(
 --     blockchain = 'optimism'
 --     ,source_transactions = source('optimism','transactions')
 --     ,Seaport_evt_OrderFulfilled = source('seaport_optimism','Seaport_evt_OrderFulfilled')
@@ -31,7 +31,7 @@
 --     ,native_token_symbol = 'ETH'
 --     ,start_date = '2023-02-01'
 --    )
---  }}
+--
 --)
 --
 --select *
