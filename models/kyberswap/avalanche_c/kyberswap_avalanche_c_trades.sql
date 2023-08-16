@@ -18,16 +18,16 @@ WITH
 
 kyberswap_dex AS (
     SELECT
-        t.evt_block_time                                                      AS block_time
-        ,t."to"                                                               AS taker
-        ,CAST(NULL AS VARBINARY)                                              AS maker
-        ,CASE WHEN t.amount0Out = 0 THEN t.amount1Out ELSE t.amount0Out END   AS token_bought_amount_raw
-        ,CASE WHEN t.amount0In =  0 THEN t.amount1In ELSE t.amount0In   END   AS token_sold_amount_raw
-        ,NULL                                                                 AS amount_usd
-        ,CASE WHEN t.amount0Out = UINT256 '0' THEN p.token1 ELSE p.token0 END AS token_bought_address
-        ,CASE WHEN t.amount0In = UINT256 '0' THEN p.token1 ELSE p.token0 END  AS token_sold_address
-        ,t.contract_address                                                   AS project_contract_address
-        ,t.evt_tx_hash                                                        AS tx_hash
+        t.evt_block_time                                                                AS block_time
+        ,t."to"                                                                         AS taker
+        ,CAST(NULL AS VARBINARY)                                                        AS maker
+        ,CASE WHEN t.amount0Out = UINT256 '0' THEN t.amount1Out ELSE t.amount0Out END   AS token_bought_amount_raw
+        ,CASE WHEN t.amount0In =  UINT256 '0' THEN t.amount1In ELSE t.amount0In   END   AS token_sold_amount_raw
+        ,NULL                                                                           AS amount_usd
+        ,CASE WHEN t.amount0Out = UINT256 '0' THEN p.token1 ELSE p.token0 END           AS token_bought_address
+        ,CASE WHEN t.amount0In = UINT256 '0' THEN p.token1 ELSE p.token0 END            AS token_sold_address
+        ,t.contract_address                                                             AS project_contract_address
+        ,t.evt_tx_hash                                                                  AS tx_hash
         ,t.evt_index
     FROM {{ source('kyber_avalanche_c', 'DMMPool_evt_Swap') }} t
     INNER JOIN {{ source('kyber_avalanche_c', 'DMMFactory_evt_PoolCreated') }} p
