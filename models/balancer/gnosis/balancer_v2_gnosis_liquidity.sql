@@ -67,7 +67,7 @@ WITH pool_labels AS (
             day,
             pool_id,
             token,
-            SUM(COALESCE(delta, CAST(0 as int256))) AS delta
+            SUM(COALESCE(delta, INT256 '0')) AS delta
         FROM
             (
                 SELECT
@@ -129,14 +129,14 @@ WITH pool_labels AS (
             day,
             pool_id,
             token,
-            SUM(COALESCE(amount, CAST(0 as int256))) AS amount
+            SUM(COALESCE(amount, INT256 '0')) AS amount
         FROM
             (
                 SELECT
                     day,
                     pool_id,
                     token,
-                    SUM(COALESCE(delta, CAST(0 as int256))) AS amount
+                    SUM(COALESCE(delta, INT256 '0')) AS amount
                 FROM
                     balances_changes
                 GROUP BY 1, 2, 3
