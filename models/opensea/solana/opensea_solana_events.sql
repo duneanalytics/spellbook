@@ -5,8 +5,7 @@
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
-    unique_key = ['block_date', 'unique_trade_id'],
-    pre_hook='{{ enforce_join_distribution("PARTITIONED") }}'
+    unique_key = ['block_date', 'unique_trade_id']
     )
 }}
 With solana_events as (
