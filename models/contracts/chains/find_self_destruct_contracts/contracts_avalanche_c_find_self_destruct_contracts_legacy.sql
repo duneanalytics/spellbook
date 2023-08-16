@@ -1,7 +1,7 @@
  {{
   config(
         tags = ['legacy'],
-        alias = alias('find_avalanche_c_self_destruct_contract', legacy_model=True)
+        alias = alias('find_avalanche_c_self_destruct_contracts', legacy_model=True)
   )
 }}
 

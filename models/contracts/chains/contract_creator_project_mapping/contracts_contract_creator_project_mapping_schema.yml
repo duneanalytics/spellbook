@@ -1,7 +1,7 @@
 version: 2
 
 models:
-  - name: contract_creator_project_mapping_arbitrum
+  - name: contract_arbitrum_creator_project_mapping
     meta:
       blockchain: arbitrum
       sector: contracts
@@ -105,7 +105,7 @@ models:
         name: is_updated_on_last_run
         description: "Was this contract updated on the last run (used for incremental table building)"
 
-  - name: contract_creator_project_mapping_avalanche_c
+  - name: contract_avalanche_c_creator_project_mapping
     meta:
       blockchain: avalanche_c
       sector: contracts
@@ -149,7 +149,7 @@ models:
       - *is_eoa_deployed
       - *is_updated_on_last_run
 
-  - name: contract_creator_project_mapping_base
+  - name: contract_base_creator_project_mapping
     meta:
       blockchain: base
       sector: contracts
@@ -193,7 +193,7 @@ models:
       - *is_eoa_deployed
       - *is_updated_on_last_run
 
-  - name: contract_creator_project_mapping_bnb
+  - name: contract_bnb_creator_project_mapping
     meta:
       blockchain: bnb
       sector: contracts
@@ -237,7 +237,7 @@ models:
       - *is_eoa_deployed
       - *is_updated_on_last_run
 
-  - name: contract_creator_project_mapping_celo
+  - name: contract_celo_creator_project_mapping
     meta:
       blockchain: celo
       sector: contracts
@@ -281,7 +281,7 @@ models:
       - *is_eoa_deployed
       - *is_updated_on_last_run
 
-  - name: contract_creator_project_mapping_ethereum
+  - name: contract_ethereum_creator_project_mapping
     meta:
       blockchain: ethereum
       sector: contracts
@@ -325,7 +325,7 @@ models:
       - *is_eoa_deployed
       - *is_updated_on_last_run
 
-  - name: contract_creator_project_mapping_fantom
+  - name: contract_fantom_creator_project_mapping
     meta:
       blockchain: fantom
       sector: contracts
@@ -369,7 +369,7 @@ models:
       - *is_eoa_deployed
       - *is_updated_on_last_run
 
-  - name: contract_creator_project_mapping_gnosis
+  - name: contract_gnosis_creator_project_mapping
     meta:
       blockchain: gnosis
       sector: contracts
@@ -413,7 +413,7 @@ models:
       - *is_eoa_deployed
       - *is_updated_on_last_run
 
-  - name: contract_creator_project_mapping_goerli
+  - name: contract_goerli_creator_project_mapping
     meta:
       blockchain: goerli
       sector: contracts
@@ -457,7 +457,7 @@ models:
       - *is_eoa_deployed
       - *is_updated_on_last_run
       
-  - name: contract_creator_project_mapping_optimism
+  - name: contract_optimism_creator_project_mapping
     meta:
       blockchain: optimism
       sector: contracts
@@ -501,7 +501,7 @@ models:
       - *is_eoa_deployed
       - *is_updated_on_last_run
       
-  - name: contract_creator_project_mapping_polygon
+  - name: contract_polygon_creator_project_mapping
     meta:
       blockchain: polygon
       sector: contracts

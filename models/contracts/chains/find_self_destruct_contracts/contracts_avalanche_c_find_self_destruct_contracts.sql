@@ -1,7 +1,7 @@
  {{
   config(
         tags = ['dunesql'],
-        alias = alias('find_avalanche_c_self_destruct_contract'),
+        alias = alias('find_avalanche_c_self_destruct_contracts'),
         materialized ='incremental',
         file_format ='delta',
         incremental_strategy='merge',

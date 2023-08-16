@@ -1,11 +1,7 @@
  {{
   config(
         tags = ['legacy'],
-        alias = alias('contract_gnosis_creator_project_mapping',legacy_model=True),
-        materialized ='incremental',
-        file_format ='delta',
-        incremental_strategy='merge',
-        unique_key='contract_address'
+        alias = alias('contract_gnosis_creator_project_mapping',legacy_model=True)
   )
 }}
 
