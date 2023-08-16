@@ -13,7 +13,7 @@ with
             "to" as wallet_address,
             contract_address as token_address,
             evt_block_time,
-            cast(value as double) as amount_raw,
+            cast(value as double) as amount_raw
         from
             {{ source('erc20_ethereum', 'evt_transfer') }}
     )
@@ -25,7 +25,7 @@ with
         "from" as wallet_address,
         contract_address as token_address,
         evt_block_time,
-        - cast(value as double) as amount_raw,
+        - cast(value as double) as amount_raw
         from
             {{ source('erc20_ethereum', 'evt_transfer') }}
     )
@@ -37,7 +37,7 @@ with
             dst as wallet_address,
             contract_address as token_address,
             evt_block_time,
-            cast(wad as double) as amount_raw,
+            cast(wad as double) as amount_raw
         from
             {{ source('zeroex_ethereum', 'weth9_evt_deposit') }}
     )
@@ -49,7 +49,7 @@ with
             src as wallet_address,
             contract_address as token_address,
             evt_block_time,
-            - cast(wad as double) as amount_raw,
+            - cast(wad as double) as amount_raw
         from
             {{ source('zeroex_ethereum', 'weth9_evt_withdrawal') }}
     )
