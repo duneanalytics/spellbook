@@ -9,3 +9,4 @@ seeds:
         evt_tx_hash: varbinary
         from: varbinary
         to: varbinary
+        value: uint256
