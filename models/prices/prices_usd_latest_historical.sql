@@ -10,7 +10,7 @@
 }}
 
 SELECT
-, {{ dbt_utils.generate_surrogate_key(['pu.blockchain', 'pu.contract_address', 'pu.decimals', 'pu.symbol']) }} as unique_key
+{{ dbt_utils.generate_surrogate_key(['pu.blockchain', 'pu.contract_address', 'pu.decimals', 'pu.symbol']) }} as unique_key
 , pu.blockchain
 , pu.contract_address
 , pu.decimals
