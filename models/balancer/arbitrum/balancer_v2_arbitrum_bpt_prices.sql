@@ -17,8 +17,7 @@
 WITH
     bpt_trades AS (
         SELECT * FROM {{ source('balancer_v2_arbitrum', 'Vault_evt_Swap') }} v
-        WHERE CAST(tokenIn AS VARCHAR(66)) = SUBSTRING(CAST(poolId AS VARCHAR(66)), 1, 42)
-        OR CAST(tokenOut AS VARCHAR(66)) = SUBSTRING(CAST(poolId AS VARCHAR(66)), 1, 42) 
+        WHERE tokenIn = bytearray_substring(poolId, 1, 20) OR tokenOut = bytearray_substring(poolId, 1, 20)
         {% if is_incremental() %}
         AND v.evt_block_time >= date_trunc('day', now() - interval '7' day)
         {% endif %} 
@@ -30,7 +29,7 @@ WITH
             a.evt_block_time AS block_time,
             a.evt_block_number AS block_number,
             CAST(a.poolId AS VARCHAR(66)) AS pool_id,
-            SUBSTRING(CAST(a.poolId AS VARCHAR(66)), 1, 42) AS bpt_address,
+            CAST(bytearray_substring(a.poolId, 1, 20) AS VARCHAR) AS bpt_address,
             CAST(a.tokenIn AS VARCHAR(66)) AS token_in,
             CAST(a.amountIn AS DOUBLE) AS amount_in,
             CAST(a.tokenOut AS VARCHAR(66)) AS token_out,
