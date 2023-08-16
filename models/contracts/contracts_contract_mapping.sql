@@ -88,8 +88,8 @@ WITH incremental_contracts AS (
       END AS token_standard
       ,1 AS to_iterate_creators
       ,1 AS is_new_contract
-    from {{ source( chain , 'creation_traces') }} as ct 
-    inner join {{ source( chain , 'transactions') }} as t 
+    from {{ source( chain , 'transactions') }} as t 
+    inner join  {{ source( chain , 'creation_traces') }} as ct 
       ON t.hash = ct.tx_hash
       AND t.block_time = ct.block_time
       AND t.block_number = ct.block_number
