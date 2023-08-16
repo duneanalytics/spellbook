@@ -144,7 +144,7 @@ models:
         tests:
           - not_null
       - &from
-        name: from
+        name: "from"
         description: 'Address of BPT provider of transfer event'
         tests:
           - not_null
