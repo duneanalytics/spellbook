@@ -54,7 +54,7 @@ INNER JOIN {{ source('prices','usd') }} p
 
 UNION ALL SELECT
 date_trunc('day', t.block_time) AS day
-, 'optimism' AS name
+, 'op mainnet' AS name
 , SUM(
   CASE WHEN cast(t.gas_price as double) = cast(0 as double) THEN 0
   ELSE (l1_fee + (cast(t.gas_used as double) * cast(t.gas_price as double))) /POWER(10,18)
@@ -71,10 +71,33 @@ INNER JOIN {{ source('prices','usd') }} p
   ON p.minute = date_trunc('minute', t.block_time)
   AND p.blockchain is null
   AND p.symbol = 'ETH'
-  AND t.block_time >= timestamp '2022-01-01'
+  AND t.block_time > timestamp '2023-06-06 16:11' --when bedrock upgrade happened
   {% if is_incremental() %}
   AND t.block_time >= date_trunc('day', now() - interval '7' day)
   {% endif %}
+  GROUP BY 1,2
+
+UNION ALL SELECT
+date_trunc('day', t.block_time) AS day
+, 'op mainnet (ovm2)' AS name
+, SUM(
+  CASE WHEN cast(t.gas_price as double) = cast(0 as double) THEN 0
+  ELSE (l1_fee + (cast(t.gas_used as double) * cast(t.gas_price as double))) /POWER(10,18)
+  END
+) AS l2_rev
+, SUM(
+  p.price *
+  (CASE WHEN cast(t.gas_price as double) = cast(0 as double) THEN 0
+  ELSE (l1_fee + (cast(t.gas_used as double) * cast(t.gas_price as double))) /POWER(10,18)
+  END)
+) AS l2_rev_usd
+FROM {{ source('optimism','transactions') }} t
+INNER JOIN {{ source('prices','usd') }} p
+  ON p.minute = date_trunc('minute', t.block_time)
+  AND p.blockchain is null
+  AND p.symbol = 'ETH'
+  AND t.block_time >= timestamp '2023-01-01'
+  AND t.block_time <= timestamp '2023-06-06 18:03'
   GROUP BY 1,2
 
 UNION ALL SELECT
