@@ -219,7 +219,7 @@ WITH
     SELECT * FROM otc_fills
     )
             SELECT distinct 
-                all_fills.block_time AS block_time, 
+                cast(all_fills.block_time as timestamp) AS block_time, 
                 all_fills.block_number,
                 protocol_version as version,
                 date_trunc('day', all_fills.block_time) as block_date,
