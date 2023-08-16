@@ -1,30 +1,32 @@
-{{ config(tags=['dunesql'],
+{{ 
+    config(tags=['dunesql'],
     alias = alias('trades')
-    ,partition_by = ['block_date']
+    ,partition_by = ['block_month']
     ,materialized = 'incremental'
     ,file_format = 'delta'
     ,incremental_strategy = 'merge'
     ,unique_key = ['block_date', 'blockchain', 'project', 'version', 'tx_hash', 'evt_index']
-    ,post_hook='{{ expose_spells(\'["bnb"]\',
-                                      "project",
-                                      "nomiswap",
-                                    \'["codingsh"]\') }}'
+    ,post_hook='{{ 
+        expose_spells(\'["bnb"]\',
+        "project",
+        "nomiswap",
+        \'["codingsh"]\') }}'
     )
 }}
 
 {% set project_start_date = '2022-08-31' %}     -- select min(evt_block_time) from nomiswap_bnb.NomiswapPair_evt_Swap
 
 WITH nomiswap_dex AS (
-    SELECT  t.evt_block_time                                             AS block_time,
-            to                                                         AS taker,
-            sender                                                       AS maker,
+    SELECT  t.evt_block_time                                                       AS block_time,
+            to                                                                     AS taker,
+            sender                                                                 AS maker,
             CASE WHEN amount0Out = UINT256 '0' THEN amount1Out ELSE amount0Out END AS token_bought_amount_raw,
             CASE WHEN amount0In = UINT256 '0' THEN amount1In ELSE amount0In END    AS token_sold_amount_raw,
-            NULL                                         AS amount_usd,
+            NULL                                                                   AS amount_usd,
             CASE WHEN amount0Out = UINT256 '0' THEN token1 ELSE token0 END         AS token_bought_address,
             CASE WHEN amount0In = UINT256 '0' THEN token1 ELSE token0 END          AS token_sold_address,
-            t.contract_address                                           AS project_contract_address,
-            t.evt_tx_hash                                                AS tx_hash,
+            t.contract_address                                                     AS project_contract_address,
+            t.evt_tx_hash                                                          AS tx_hash,
             t.evt_index
     FROM {{ source('nomiswap_bnb', 'NomiswapPair_evt_Swap') }} t
     INNER JOIN {{ source('nomiswap_bnb', 'NomiswapFactory_evt_PairCreated') }} p
@@ -41,7 +43,8 @@ SELECT
     'bnb'                                                             AS blockchain,
     'nomiswap'                                                        AS project,
     '1'                                                               AS version,
-    try_cast(date_trunc('DAY', nomiswap_dex.block_time) AS date)      AS block_date,
+    CAST(date_trunc('DAY', nomiswap_dex.block_time) AS date)          AS block_date,
+    CAST(date_trunc('month', nomiswap_dex.block_time) AS date)        AS block_month,
     nomiswap_dex.block_time,
     erc20a.symbol                                                     AS token_bought_symbol,
     erc20b.symbol                                                     AS token_sold_symbol,
@@ -60,11 +63,11 @@ SELECT
         )                                                             AS amount_usd,
     nomiswap_dex.token_bought_address,
     nomiswap_dex.token_sold_address,
-    coalesce(nomiswap_dex.taker, tx."from")                             AS taker,
+    coalesce(nomiswap_dex.taker, tx."from")                           AS taker,
     nomiswap_dex.maker,
     nomiswap_dex.project_contract_address,
     nomiswap_dex.tx_hash,
-    tx."from"                                                           AS tx_from,
+    tx."from"                                                         AS tx_from,
     tx.to                                                             AS tx_to,
     nomiswap_dex.evt_index
 FROM nomiswap_dex
