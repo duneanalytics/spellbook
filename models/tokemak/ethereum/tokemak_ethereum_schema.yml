@@ -54,3 +54,17 @@ models:
         description: "This token/pool is a stablecoin"
         tests:
           - not_null
+  - name: tokemak_ethereum_view_tokemak_addresses
+    meta:
+      blockchain: ethereum
+      project: tokemak
+      contributors: addmorebass
+    config:
+      tags: ["ethereum", "tokemak", "view", "dunesql"]
+    description: Lookup table for Tokemak owned addresses
+    columns:
+      - &address
+        name: address
+        description: "Tokemak address"
+        tests:
+          - not_null
