@@ -63,9 +63,9 @@ models:
       tags: ["ethereum", "tokemak", "view", "dunesql"]
     description: Lookup table for Tokemak owned addresses
     columns:
-      - *address
-        name: address
-        description: "Tokemak address"
+      - &tokemak_address
+        name: tokemak_address
+        description: "Tokemak owned address"
         tests:
           - not_null
   - name: tokemak_ethereum_view_tokemak_lookup_reactors
