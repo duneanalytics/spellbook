@@ -1,11 +1,11 @@
 {{config(
     tags=['legacy'],
-    alias = alias('balancer_v2_pools_avalanche_c', legacy_model=True),
+    alias = alias('balancer_v2_pools_base', legacy_model=True),
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
     unique_key = ['address'],
-    post_hook='{{ expose_spells(\'["avalanche_c"]\',
+    post_hook='{{ expose_spells(\'["base"]\',
                                      "sector",
                                     "labels",
                                     \'["balancerlabs"]\') }}'
@@ -23,8 +23,8 @@ WITH pools AS (
                explode(arrays_zip(cc.tokens, cc.normalizedWeights)) AS zip,
                cc.symbol,
                'WP' AS pool_type
-        FROM {{ source('balancer_v2_avalanche_c', 'Vault_evt_PoolRegistered') }} c
-        INNER JOIN {{ source('balancer_v2_avalanche_c', 'WeightedPoolFactory_call_create') }} cc
+        FROM {{ source('balancer_v2_base', 'Vault_evt_PoolRegistered') }} c
+        INNER JOIN {{ source('balancer_v2_base', 'WeightedPoolFactory_call_create') }} cc
         ON c.evt_tx_hash = cc.call_tx_hash
         AND SUBSTRING(c.poolId, 0, 42) = cc.output_0
         {% if is_incremental() %}
@@ -39,8 +39,8 @@ WITH pools AS (
         explode(cc.tokens) AS token_address,
         0 AS normalized_weight, cc.symbol,
         'LBP' AS pool_type
-    FROM {{ source('balancer_v2_avalanche_c', 'Vault_evt_PoolRegistered') }} c
-    INNER JOIN {{ source('balancer_v2_avalanche_c', 'NoProtocolFeeLiquidityBootstrappingPoolFactory_call_create') }} cc
+    FROM {{ source('balancer_v2_base', 'Vault_evt_PoolRegistered') }} c
+    INNER JOIN {{ source('balancer_v2_base', 'NoProtocolFeeLiquidityBootstrappingPoolFactory_call_create') }} cc
     ON c.evt_tx_hash = cc.call_tx_hash
     AND SUBSTRING(c.poolId, 0, 42) = cc.output_0
     {% if is_incremental() %}
@@ -54,8 +54,8 @@ WITH pools AS (
         explode(cc.tokens) AS token_address,
         CAST(NULL AS DOUBLE) AS normalized_weight,
         cc.symbol, 'SP' AS pool_type
-    FROM {{ source('balancer_v2_avalanche_c', 'Vault_evt_PoolRegistered') }} c
-    INNER JOIN {{ source('balancer_v2_avalanche_c', 'ComposableStablePoolFactory_call_create') }} cc
+    FROM {{ source('balancer_v2_base', 'Vault_evt_PoolRegistered') }} c
+    INNER JOIN {{ source('balancer_v2_base', 'ComposableStablePoolFactory_call_create') }} cc
     ON c.evt_tx_hash = cc.call_tx_hash
     AND SUBSTRING(c.poolId, 0, 42) = cc.output_0
     {% if is_incremental() %}
@@ -70,8 +70,8 @@ WITH pools AS (
         CAST(NULL AS DOUBLE) AS normalized_weight,
         cc.symbol,
         'LP' AS pool_type
-    FROM {{ source('balancer_v2_avalanche_c', 'Vault_evt_PoolRegistered') }} c
-    INNER JOIN {{ source('balancer_v2_avalanche_c', 'AaveLinearPoolFactory_call_create') }} cc
+    FROM {{ source('balancer_v2_base', 'Vault_evt_PoolRegistered') }} c
+    INNER JOIN {{ source('balancer_v2_base', 'AaveLinearPoolFactory_call_create') }} cc
     ON c.evt_tx_hash = cc.call_tx_hash
     AND SUBSTRING(c.poolId, 0, 42) = cc.output_0
     {% if is_incremental() %}
@@ -85,8 +85,8 @@ WITH pools AS (
         explode(array (cc.mainToken, cc.wrappedToken)) AS zip,
         CAST(NULL AS DOUBLE) AS normalized_weight, cc.symbol,
         'LP' AS pool_type
-    FROM {{ source('balancer_v2_avalanche_c', 'Vault_evt_PoolRegistered') }} c
-    INNER JOIN {{ source('balancer_v2_avalanche_c', 'ERC4626LinearPoolFactory_call_create') }} cc
+    FROM {{ source('balancer_v2_base', 'Vault_evt_PoolRegistered') }} c
+    INNER JOIN {{ source('balancer_v2_base', 'ERC4626LinearPoolFactory_call_create') }} cc
     ON c.evt_tx_hash = cc.call_tx_hash
     AND SUBSTRING(c.poolId, 0, 42) = cc.output_0
     {% if is_incremental() %}
@@ -106,7 +106,7 @@ settings AS (
 )
 
 SELECT
-  'avalanche_c' AS blockchain,
+  'base' AS blockchain,
   SUBSTRING(pool_id, 0, 42) AS address,
   CASE WHEN array_contains(array('SP', 'LP', 'LBP'), pool_type)
       THEN lower(pool_symbol)
@@ -117,7 +117,7 @@ SELECT
   'query' AS source,
   timestamp('2022-12-23') AS created_at,
   now() AS updated_at,
-  'balancer_v2_pools_avalanche_c' AS model_name,
+  'balancer_v2_pools_base' AS model_name,
   'identifier' as label_type
 FROM   (
     SELECT s1.pool_id,
