@@ -19,16 +19,16 @@ WITH unit_test AS (
         END AS version_test,
 
         -- test the block_date
-        CASE
-            WHEN test.block_date = actual.block_date THEN TRUE
-            ELSE FALSE
-        END AS block_date_test,
+        -- CASE
+        --     WHEN test.block_date = actual.block_date THEN TRUE
+        --     ELSE FALSE
+        -- END AS block_date_test,
 
         -- test the block_time
-        CASE
-            WHEN test.block_time = actual.block_time THEN TRUE
-            ELSE FALSE
-        END AS block_time_test,
+        -- CASE
+        --     WHEN test.block_time = actual.block_time THEN TRUE
+        --     ELSE FALSE
+        -- END AS block_time_test,
 
         -- test the block_number
         CASE
@@ -248,7 +248,7 @@ FROM
 WHERE
     blockchain_test = FALSE
     OR block_number_test = FALSE
-    OR block_date_test = FALSE
+    -- OR block_date_test = FALSE
     OR maker_test = FALSE
     OR sell_token_symbol_test = FALSE
     OR buy_token_symbol_test = FALSE

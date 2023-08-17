@@ -11,3 +11,9 @@ seeds:
         sell_amount_raw: uint256
         sold_amount_raw: uint256
         bought_amount_raw: uint256
+        sell_token_address: varbinary
+        buy_token_address: varbinary
+        project_contract_address: varbinary
+        tx_hash: varbinary
+        tx_from: varbinary
+        tx_to: varbinary
