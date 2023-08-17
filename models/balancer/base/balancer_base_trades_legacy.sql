@@ -1,6 +1,6 @@
 {{ config(
 	tags=['legacy'],
-	
+		schema = 'balancer_base',
     alias = alias('trades', legacy_model=True),
     post_hook='{{ expose_spells(\'["base"]\',
                                 "project",
