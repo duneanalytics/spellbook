@@ -1,7 +1,8 @@
 {{ config(
+	tags=['dunesql'],
 	schema = 'perpetual_protocol_v2_optimism',
 	alias = alias('perpetual_trades'),
-	partition_by = ['block_date'],
+	partition_by = ['block_month'],
 	materialized = 'incremental',
 	file_format = 'delta',
 	incremental_strategy = 'merge',
@@ -43,21 +44,22 @@ WITH perps AS (
 		ON p.evt_tx_hash = co.call_tx_hash
 		AND co.call_success = true
 		{% if is_incremental() %}
-		AND co.call_block_time >= DATE_TRUNC("DAY", NOW() - INTERVAL '1 WEEK')
+		AND co.call_block_time >= DATE_TRUNC('DAY', NOW() - INTERVAL '7' Day)
 		{% endif %}
 	LEFT JOIN {{ source('perp_v2_optimism', 'MarketRegistry_evt_PoolAdded') }} AS pp
 		ON p.baseToken = pp.baseToken
 	{% if is_incremental() %}
-	WHERE p.evt_block_time >= DATE_TRUNC("DAY", NOW() - INTERVAL '1 WEEK')
+	WHERE p.evt_block_time >= DATE_TRUNC('DAY', NOW() - INTERVAL '7' Day)
 	{% endif %}
 	GROUP BY 1, 2, 3, 4, 5, 6, 8, 9, 10, 11, 12, 13, 14, 15
 )
 
 SELECT
 	'optimism' AS blockchain
-	,TRY_CAST(date_trunc('DAY', perps.block_time) AS date) AS block_date
+	,CAST(date_trunc('DAY', perps.block_time) AS date) AS block_date
+	,CAST(date_trunc('MONTH', perps.block_time) AS date) AS block_month
 	,perps.block_time
-	,COALESCE(e.symbol, CAST(perps.baseToken AS STRING)) AS virtual_asset
+	,COALESCE(e.symbol, CAST(perps.baseToken AS VARCHAR)) AS virtual_asset
 	,SUBSTRING(e.symbol, 2) AS underlying_asset
 	,CONCAT(e.symbol, '-', 'USD') AS market
 	,perps.market_address
@@ -71,8 +73,8 @@ SELECT
 	,perps.trader
 	,perps.volume_raw
 	,perps.tx_hash
-	,tx.from AS tx_from
-	,tx.to AS tx_to
+	,tx."from" AS tx_from
+	,tx."to" AS tx_to
 	,perps.evt_index
 FROM perps
 LEFT JOIN {{ ref('tokens_erc20') }} AS e
@@ -82,8 +84,8 @@ INNER JOIN {{ source('optimism', 'transactions') }} AS tx
 	ON perps.tx_hash = tx.hash
 	AND perps.block_number = tx.block_number
 	{% if not is_incremental() %}
-	AND tx.block_time >= '{{project_start_date}}'
+	AND tx.block_time >= DATE '{{project_start_date}}'
 	{% endif %}
 	{% if is_incremental() %}
-	AND tx.block_time >= DATE_TRUNC("DAY", NOW() - INTERVAL '1 WEEK')
+	AND tx.block_time >= DATE_TRUNC('DAY', NOW() - INTERVAL '7' Day)
 	{% endif %}
