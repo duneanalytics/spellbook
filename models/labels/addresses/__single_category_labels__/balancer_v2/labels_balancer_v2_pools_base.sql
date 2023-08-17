@@ -131,7 +131,7 @@ SELECT
   'balancer_v2_pool' AS category,
   'balancerlabs' AS contributor,
   'query' AS source,
-  TIMESTAMP'2022-12-23 00:00' AS created_at,
+  TIMESTAMP '2023-08-17' AS created_at,
   now() AS updated_at,
   'balancer_v2_pools_base' AS model_name,
   'identifier' AS label_type
