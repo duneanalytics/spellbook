@@ -3,7 +3,7 @@ version: 2
 models:
   - name: uniswap_trades
     meta:
-      blockchain: ethereum, optimism, polygon, arbitrum, bnb
+      blockchain: ethereum, optimism, polygon, arbitrum, bnb, base
       sector: dex
       project: uniswap
       contributors: jeff-dude, masquot, soispoke, 0xBoxer, Henrystats, chrispearcx, wuligy
