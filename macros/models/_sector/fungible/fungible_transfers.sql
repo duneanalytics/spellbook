@@ -67,7 +67,7 @@ INNER JOIN {{ transactions }} et ON et.block_number=t.block_number
     {% if is_incremental() %}
     AND et.block_time >= date_trunc('day', now() - interval '7' day)
     {% endif %}
-LEFT JOIN {{ ref('prices_usd_forward_fill') }} pu ON pu.blockchain = 'ethereum'
+LEFT JOIN {{ ref('prices_usd_forward_fill') }} pu ON pu.blockchain = '{{blockchain}}'
     AND (pu.contract_address=t.contract_address
         OR t.contract_address IS NULL AND pu.contract_address=(SELECT wrapped_native_token_address FROM {{ ref('evms_info') }} WHERE blockchain='{{blockchain}}')
         )
