@@ -221,9 +221,9 @@ union all
             date_trunc('day', evt_block_time) AS day,
             poolId AS pool_id,
             u.token,
-            cast(u.delta as double) as delta
+            cast(u.delta as double) - cast(protocolFeeAmounts as double) as delta
         FROM {{source('balancer_v2_polygon','Vault_evt_PoolBalanceChanged')}}
-         CROSS JOIN UNNEST(tokens, deltas) as u(token, delta)
+         CROSS JOIN UNNEST(tokens, deltas) as u(token, delta, protocolFeeAmounts)
          {% if not is_incremental() %}
          WHERE DATE_TRUNC('day', evt_block_time) >= DATE '{{ project_start_date }}'
          {% else %}
