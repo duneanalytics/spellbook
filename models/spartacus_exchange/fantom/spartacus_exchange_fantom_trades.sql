@@ -40,7 +40,7 @@ select
     'fantom' as blockchain,
     'spartacus_exchange' as project,
     '1' as version,
-    TRY_CAST(date_trunc('day', dexs.block_time) AS date) AS block_date,
+    CAST(date_trunc('day', dexs.block_time) AS date) AS block_date,
     CAST(date_trunc('month', dexs.block_time) AS date) AS block_month,
     dexs.block_time,
     erc20a.symbol as token_bought_symbol,
