@@ -7,7 +7,7 @@
              \'["addmorebass"]\') }}'
 ) }}
 
-WITH tokemak_ethereum_view_tokemak_addresses AS (
+WITH tokemak_ethereum_view_tokemak_addresses(address) AS (
     SELECT '0x9e0bcE7ec474B481492610eB9dd5D69EB03718D5' AS address /*deployer*/
     UNION 
     SELECT '0x90b6C61B102eA260131aB48377E143D6EB3A9d4B' AS address/*coordinator*/

@@ -63,8 +63,37 @@ models:
       tags: ["ethereum", "tokemak", "view", "dunesql"]
     description: Lookup table for Tokemak owned addresses
     columns:
-      - &address
+      - *address
         name: address
         description: "Tokemak address"
+        tests:
+          - not_null
+  - name: tokemak_ethereum_view_tokemak_lookup_reactors
+    meta:
+      blockchain: ethereum
+      project: tokemak
+      contributors: addmorebass
+    config:
+      tags: ["ethereum", "tokemak", "view", "dunesql"]
+    description: Lookup table for Tokemak reactors
+    columns:
+      - &reactor_address
+        name: reactor_address
+        description: "Tokemak reactor address"
+        tests:
+          - not_null
+      - &underlyer_address
+        name: underlyer_address
+        description: "Underlying token address"
+        tests:
+          - not_null
+      - &reactor_name
+        name: reactor_name
+        description: "Name of the reactor"
+        tests:
+          - not_null
+      - &is_deployable
+        name: is_deployable
+        description: "Is the reactor deployable by Tokemak"
         tests:
           - not_null
