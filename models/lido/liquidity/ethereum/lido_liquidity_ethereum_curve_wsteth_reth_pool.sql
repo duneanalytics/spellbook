@@ -27,8 +27,7 @@ select
 from {{source('erc20_ethereum','evt_Transfer')}} t
 {% if not is_incremental() %}
  WHERE DATE_TRUNC('day', evt_block_time) >= DATE '{{ project_start_date }}'
- {% endif %}
- {% if is_incremental() %}
+ {% else %}
  WHERE DATE_TRUNC('day', evt_block_time) >= DATE_TRUNC('day', NOW() - INTERVAL '1' day)
  {% endif %}
  and contract_address = 0x7f39C581F595B53c5cb19bD0b3f8dA6c935E2Ca0 
@@ -43,8 +42,7 @@ select
 from {{source('erc20_ethereum','evt_Transfer')}} t
 {% if not is_incremental() %}
  WHERE DATE_TRUNC('day', evt_block_time) >= DATE '{{ project_start_date }}'
- {% endif %}
- {% if is_incremental() %}
+ {% else %}
  WHERE DATE_TRUNC('day', evt_block_time) >= DATE_TRUNC('day', NOW() - INTERVAL '1' day)
  {% endif %}
   and contract_address = 0x7f39C581F595B53c5cb19bD0b3f8dA6c935E2Ca0
@@ -77,8 +75,7 @@ select
 from {{source('erc20_ethereum','evt_Transfer')}} t
  {% if not is_incremental() %}
  WHERE DATE_TRUNC('day', evt_block_time) >= DATE '{{ project_start_date }}'
- {% endif %}
- {% if is_incremental() %}
+ {% else %}
  WHERE DATE_TRUNC('day', evt_block_time) >= DATE_TRUNC('day', NOW() - INTERVAL '1' day)
  {% endif %}
  and contract_address = 0xae78736Cd615f374D3085123A210448E74Fc6393
@@ -93,8 +90,7 @@ select
 from {{source('erc20_ethereum','evt_Transfer')}} t
  {% if not is_incremental() %}
  WHERE DATE_TRUNC('day', evt_block_time) >= DATE '{{ project_start_date }}'
- {% endif %}
- {% if is_incremental() %}
+ {% else %}
  WHERE DATE_TRUNC('day', evt_block_time) >= DATE_TRUNC('day', NOW() - INTERVAL '1' day)
  {% endif %}
  and contract_address = 0xae78736Cd615f374D3085123A210448E74Fc6393
@@ -125,8 +121,7 @@ order by 1
     FROM {{source('prices','usd')}} p
     {% if not is_incremental() %}
     WHERE DATE_TRUNC('day', p.minute) >= DATE '{{ project_start_date }}'
-    {% endif %}
-    {% if is_incremental() %}
+    {% else %}
     WHERE DATE_TRUNC('day', p.minute) >= DATE_TRUNC('day', NOW() - INTERVAL '1' day)
     {% endif %}
     and date_trunc('day', minute) < current_date
@@ -156,8 +151,7 @@ order by 1
     FROM {{source('prices','usd')}} p
     {% if not is_incremental() %}
     WHERE DATE_TRUNC('day', p.minute) >= DATE '{{ project_start_date }}'
-    {% endif %}
-    {% if is_incremental() %}
+    {% else %}
     WHERE DATE_TRUNC('day', p.minute) >= DATE_TRUNC('day', NOW() - INTERVAL '1' day)
     {% endif %}
     and blockchain = 'ethereum'
@@ -172,8 +166,7 @@ order by 1
     FROM {{source('prices','usd')}} p
     {% if not is_incremental() %}
     WHERE DATE_TRUNC('day', p.minute) >= DATE '{{ project_start_date }}'
-    {% endif %}
-    {% if is_incremental() %}
+    {% else %}
     WHERE DATE_TRUNC('day', p.minute) >= DATE_TRUNC('day', NOW() - INTERVAL '1' day)
     {% endif %}
     and date_trunc('day', minute) < current_date
@@ -197,8 +190,7 @@ order by 1
     from {{source('curvefi_ethereum','rETHwstETH_evt_TokenExchange')}} c
     {% if not is_incremental() %}
     WHERE DATE_TRUNC('day', evt_block_time) >= DATE '{{ project_start_date }}'
-    {% endif %}
-    {% if is_incremental() %}
+    {% else %}
     WHERE DATE_TRUNC('day', evt_block_time) >= DATE_TRUNC('day', NOW() - INTERVAL '1' day)
     {% endif %}
     group by 1

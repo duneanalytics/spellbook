@@ -16,14 +16,8 @@
 {% set project_start_date = '2021-08-13' %} 
 
 with 
-/*dates as (
-    with day_seq as (select (sequence(cast('{{ project_start_date }}' as date), current_date, interval '1' day)) as day)
-select days.day
-from day_seq
-cross join unnest(day) as days(day)
-)
-*/
- volumes as (
+
+volumes as (
 select u.call_block_time as time,  
 cast(output_0 as double) as steth, cast(_wstETHAmount as double) as wsteth 
 from  {{source('lido_ethereum','WstETH_call_unwrap')}} u 
@@ -58,8 +52,7 @@ group by 1
     FROM {{source('prices','usd')}} p
     {% if not is_incremental() %}
     WHERE DATE_TRUNC('day', p.minute) >= DATE '{{ project_start_date }}'
-    {% endif %}
-    {% if is_incremental() %}
+    {% else %}
     WHERE DATE_TRUNC('day', p.minute) >= DATE_TRUNC('day', NOW() - INTERVAL '1' day)
     {% endif %}
 
@@ -134,8 +127,7 @@ from (
     from {{source('frax_ethereum','sfrxETH_call_pricePerShare')}}
     {% if not is_incremental() %}
     WHERE DATE_TRUNC('day', call_block_time) >= DATE '{{ project_start_date }}'
-    {% endif %}
-    {% if is_incremental() %}
+    {% else %}
     WHERE DATE_TRUNC('day', call_block_time) >= DATE_TRUNC('day', NOW() - INTERVAL '1' day)
     {% endif %}
     and call_success
@@ -156,8 +148,7 @@ from (
     FROM {{source('prices','usd')}} p
     {% if not is_incremental() %}
     WHERE DATE_TRUNC('day', p.minute) >= DATE '{{ project_start_date }}'
-    {% endif %}
-    {% if is_incremental() %}
+    {% else %}
     WHERE DATE_TRUNC('day', p.minute) >= DATE_TRUNC('day', NOW() - INTERVAL '1' day)
     {% endif %}
     and date_trunc('day', minute) < current_date
@@ -185,8 +176,7 @@ from (
     FROM {{source('prices','usd')}} p
     {% if not is_incremental() %}
     WHERE DATE_TRUNC('day', p.minute) >= DATE '{{ project_start_date }}'
-    {% endif %}
-    {% if is_incremental() %}
+    {% else %}
     WHERE DATE_TRUNC('day', p.minute) >= DATE_TRUNC('day', NOW() - INTERVAL '1' day)
     {% endif %}
     and date_trunc('day', minute) < current_date
@@ -216,8 +206,7 @@ SELECT distinct
     left join sfrxeth_rate r on DATE_TRUNC('day', minute) >= r.time and DATE_TRUNC('day', minute) < r.next_time 
     {% if not is_incremental() %}
     WHERE DATE_TRUNC('day', p.minute) >= DATE '{{ project_start_date }}'
-    {% endif %}
-    {% if is_incremental() %}
+    {% else %}
     WHERE DATE_TRUNC('day', p.minute) >= DATE_TRUNC('day', NOW() - INTERVAL '1' day)
     {% endif %}
     and blockchain = 'ethereum'
@@ -233,8 +222,7 @@ SELECT distinct
     FROM {{source('prices','usd')}} p
     {% if not is_incremental() %}
     WHERE DATE_TRUNC('day', p.minute) >= DATE '{{ project_start_date }}'
-    {% endif %}
-    {% if is_incremental() %}
+    {% else %}
     WHERE DATE_TRUNC('day', p.minute) >= DATE_TRUNC('day', NOW() - INTERVAL '1' day)
     {% endif %}
     and blockchain = 'ethereum'
@@ -253,8 +241,7 @@ SELECT distinct
     FROM {{source('prices','usd')}} p
     {% if not is_incremental() %}
     WHERE DATE_TRUNC('day', p.minute) >= DATE '{{ project_start_date }}'
-    {% endif %}
-    {% if is_incremental() %}
+    {% else %}
     WHERE DATE_TRUNC('day', p.minute) >= DATE_TRUNC('day', NOW() - INTERVAL '1' day)
     {% endif %}
     and blockchain = 'ethereum'
@@ -279,8 +266,7 @@ SELECT distinct
                 FROM {{source('balancer_v2_ethereum','Vault_evt_Swap')}}
                 {% if not is_incremental() %}
                 WHERE DATE_TRUNC('day', evt_block_time) >= DATE '{{ project_start_date }}'
-                {% endif %}
-                {% if is_incremental() %}
+                {% else %}
                 WHERE DATE_TRUNC('day', evt_block_time) >= DATE_TRUNC('day', NOW() - INTERVAL '1' day)
                 {% endif %}
                 and poolId in (select pool_id from pools)
@@ -294,8 +280,7 @@ SELECT distinct
                 FROM {{source('balancer_v2_ethereum','Vault_evt_Swap')}}
                 {% if not is_incremental() %}
                 WHERE DATE_TRUNC('day', evt_block_time) >= DATE '{{ project_start_date }}'
-                {% endif %}
-                {% if is_incremental() %}
+                {% else %}
                 WHERE DATE_TRUNC('day', evt_block_time) >= DATE_TRUNC('day', NOW() - INTERVAL '1' day)
                 {% endif %}
                 and poolId in (select pool_id from pools)
@@ -314,8 +299,7 @@ SELECT distinct
          CROSS JOIN UNNEST(tokens, deltas) as u(token, delta)
         {% if not is_incremental() %}
         WHERE DATE_TRUNC('day', evt_block_time) >= DATE '{{ project_start_date }}'
-        {% endif %}
-        {% if is_incremental() %}
+        {% else %}
         WHERE DATE_TRUNC('day', evt_block_time) >= DATE_TRUNC('day', NOW() - INTERVAL '1' day)
         {% endif %}
         and poolId in (select pool_id from pools)
@@ -331,8 +315,7 @@ SELECT distinct
         FROM {{source('balancer_v2_ethereum','Vault_evt_PoolBalanceManaged')}}
         {% if not is_incremental() %}
         WHERE DATE_TRUNC('day', evt_block_time) >= DATE '{{ project_start_date }}'
-        {% endif %}
-        {% if is_incremental() %}
+        {% else %}
         WHERE DATE_TRUNC('day', evt_block_time) >= DATE_TRUNC('day', NOW() - INTERVAL '1' day)
         {% endif %}
         and poolId in (select pool_id from pools)
@@ -470,8 +453,7 @@ on main.day = paired2.day and main.pool_id = paired2.pool_id
     left join wsteth_prices_hourly wsteth_price on date_trunc('hour', s.evt_block_time) >= wsteth_price.time and date_trunc('hour', s.evt_block_time) < wsteth_price.next_time
     {% if not is_incremental() %}
     WHERE DATE_TRUNC('day', s.evt_block_time) >= DATE '{{ project_start_date }}'
-    {% endif %}
-    {% if is_incremental() %}
+    {% else %}
     WHERE DATE_TRUNC('day', s.evt_block_time) >= DATE_TRUNC('day', NOW() - INTERVAL '1' day)
     {% endif %} 
     and s.poolId in (select pool_id from pools)

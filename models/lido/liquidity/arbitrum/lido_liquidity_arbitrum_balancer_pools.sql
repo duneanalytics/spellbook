@@ -79,8 +79,7 @@ WHERE call_create.output_0 in (select distinct  poolAddress from pools)
     
     {% if not is_incremental() %}
     WHERE DATE_TRUNC('day', p.minute) >= DATE '{{ project_start_date }}'
-    {% endif %}
-    {% if is_incremental() %}
+    {% else %}
     WHERE DATE_TRUNC('day', p.minute) >= DATE_TRUNC('day', NOW() - INTERVAL '1' day)
     {% endif %}
 
@@ -111,8 +110,7 @@ WHERE call_create.output_0 in (select distinct  poolAddress from pools)
     
     {% if not is_incremental() %}
     WHERE DATE_TRUNC('day', p.minute) >= DATE '{{ project_start_date }}'
-    {% endif %}
-    {% if is_incremental() %}
+    {% else %}
     WHERE DATE_TRUNC('day', p.minute) >= DATE_TRUNC('day', NOW() - INTERVAL '1' day)
     {% endif %}
 
@@ -138,8 +136,7 @@ WHERE call_create.output_0 in (select distinct  poolAddress from pools)
                 
                 {% if not is_incremental() %}
                 WHERE DATE_TRUNC('day', evt_block_time) >= DATE '{{ project_start_date }}'
-                {% endif %}
-                {% if is_incremental() %}
+                {% else %}                
                 WHERE DATE_TRUNC('day', evt_block_time) >= DATE_TRUNC('day', NOW() - INTERVAL '1' day)
                 {% endif %}
 
@@ -156,8 +153,7 @@ WHERE call_create.output_0 in (select distinct  poolAddress from pools)
                 
                 {% if not is_incremental() %}
                 WHERE DATE_TRUNC('day', evt_block_time) >= DATE '{{ project_start_date }}'
-                {% endif %}
-                {% if is_incremental() %}
+                {% else %}
                 WHERE DATE_TRUNC('day', evt_block_time) >= DATE_TRUNC('day', NOW() - INTERVAL '1' day)
                 {% endif %}
 
@@ -177,8 +173,7 @@ WHERE call_create.output_0 in (select distinct  poolAddress from pools)
         
         {% if not is_incremental() %}
         WHERE DATE_TRUNC('day', evt_block_time) >= DATE '{{ project_start_date }}'
-        {% endif %}
-        {% if is_incremental() %}
+        {% else %}
         WHERE DATE_TRUNC('day', evt_block_time) >= DATE_TRUNC('day', NOW() - INTERVAL '1' day)
         {% endif %}    
         and poolId in (select pool_id from pools)
@@ -194,8 +189,7 @@ WHERE call_create.output_0 in (select distinct  poolAddress from pools)
         
         {% if not is_incremental() %}
         WHERE DATE_TRUNC('day', evt_block_time) >= DATE '{{ project_start_date }}'
-        {% endif %}
-        {% if is_incremental() %}
+        {% else %}
         WHERE DATE_TRUNC('day', evt_block_time) >= DATE_TRUNC('day', NOW() - INTERVAL '1' day)
         {% endif %}
         and poolId in (select pool_id from pools)
@@ -358,12 +352,11 @@ on main.day = paired4.day and main.pool_id = paired4.pool_id
         poolId,
         sum(case when tokenOut = 0x5979d7b546e38e414f7e9822514be443a4800529 then p.price*amountOut/1e18 
              else p.price*amountIn/1e18 end) as trading_volume
-    from delta_prod.balancer_v2_arbitrum.Vault_evt_Swap s
+    from {{source('balancer_v2_arbitrum','Vault_evt_Swap')}} s
     left join wsteth_prices_hourly p on date_trunc('hour', s.evt_block_time) >= p.time and date_trunc('hour', s.evt_block_time) < p.next_time
     {% if not is_incremental() %}
     WHERE DATE_TRUNC('day', evt_block_time) >= DATE '{{ project_start_date }}'
-    {% endif %}
-    {% if is_incremental() %}
+    {% else %}
     WHERE DATE_TRUNC('day', evt_block_time) >= DATE_TRUNC('day', NOW() - INTERVAL '1' day)
     {% endif %}
     and s.poolId in (select pool_id from pools)

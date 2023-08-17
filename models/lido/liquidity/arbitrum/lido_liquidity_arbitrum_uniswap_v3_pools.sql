@@ -63,8 +63,7 @@ with
     
     {% if not is_incremental() %}
     WHERE DATE_TRUNC('day', p.minute) >= DATE '{{ project_start_date }}'
-    {% endif %}
-    {% if is_incremental() %}
+    {% else %}
     WHERE DATE_TRUNC('day', p.minute) >= DATE_TRUNC('day', NOW() - INTERVAL '1' day)
     {% endif %}
 
@@ -114,8 +113,7 @@ with
         
         {% if not is_incremental() %}
         WHERE DATE_TRUNC('day', p.minute) >= DATE '{{ project_start_date }}'
-        {% endif %}
-        {% if is_incremental() %}
+        {% else %}
         WHERE DATE_TRUNC('day', p.minute) >= DATE_TRUNC('day', NOW() - INTERVAL '1' day)
         {% endif %}
 
@@ -137,13 +135,11 @@ with
       cr.token1,
       SUM(CAST(amount0 AS DOUBLE)) AS amount0,
       SUM(CAST(amount1 AS DOUBLE)) AS amount1
-    FROM
-      {{source('uniswap_v3_arbitrum','Pair_evt_Swap')}} AS sw
-      LEFT JOIN {{source('uniswap_v3_arbitrum','UniswapV3Factory_evt_PoolCreated')}} AS cr ON sw.contract_address = cr.pool
-      {% if not is_incremental() %}
+    FROM  {{source('uniswap_v3_arbitrum','Pair_evt_Swap')}} AS sw
+    LEFT JOIN {{source('uniswap_v3_arbitrum','UniswapV3Factory_evt_PoolCreated')}} AS cr ON sw.contract_address = cr.pool
+    {% if not is_incremental() %}
     WHERE DATE_TRUNC('day', sw.evt_block_time) >= DATE '{{ project_start_date }}'
-    {% endif %}
-    {% if is_incremental() %}
+    {% else %}
     WHERE DATE_TRUNC('day', sw.evt_block_time) >= DATE_TRUNC('day', NOW() - INTERVAL '1' day)
     {% endif %}
        and sw.contract_address IN (
@@ -162,13 +158,11 @@ with
       cr.token1,
       SUM(CAST(amount0 AS DOUBLE)) AS amount0,
       SUM(CAST(amount1 AS DOUBLE)) AS amount1
-    FROM
-      {{source('uniswap_v3_arbitrum','Pair_evt_Mint')}} AS mt
-      LEFT JOIN {{source('uniswap_v3_arbitrum','UniswapV3Factory_evt_PoolCreated')}} AS cr ON mt.contract_address = cr.pool
-      {% if not is_incremental() %}
+    FROM {{source('uniswap_v3_arbitrum','Pair_evt_Mint')}} AS mt
+    LEFT JOIN {{source('uniswap_v3_arbitrum','UniswapV3Factory_evt_PoolCreated')}} AS cr ON mt.contract_address = cr.pool
+    {% if not is_incremental() %}
     WHERE DATE_TRUNC('day', mt.evt_block_time) >= DATE '{{ project_start_date }}'
-    {% endif %}
-    {% if is_incremental() %}
+    {% else %}
     WHERE DATE_TRUNC('day', mt.evt_block_time) >= DATE_TRUNC('day', NOW() - INTERVAL '1' day)
     {% endif %}
       and mt.contract_address IN (
@@ -194,13 +188,11 @@ with
       (-1) * CAST(amount0 AS DOUBLE) AS amount0,
       (-1) * CAST(amount1 AS DOUBLE) AS amount1,
       c.evt_tx_hash
-    FROM
-      {{source('uniswap_v3_arbitrum','Pair_evt_Collect')}} AS c
-      LEFT JOIN {{source('uniswap_v3_arbitrum','UniswapV3Factory_evt_PoolCreated')}} AS cr ON c.contract_address = cr.pool
-      {% if not is_incremental() %}
+    FROM {{source('uniswap_v3_arbitrum','Pair_evt_Collect')}} AS c
+    LEFT JOIN {{source('uniswap_v3_arbitrum','UniswapV3Factory_evt_PoolCreated')}} AS cr ON c.contract_address = cr.pool
+    {% if not is_incremental() %}
     WHERE DATE_TRUNC('day', c.evt_block_time) >= DATE '{{ project_start_date }}'
-    {% endif %}
-    {% if is_incremental() %}
+    {% else %}
     WHERE DATE_TRUNC('day', c.evt_block_time) >= DATE_TRUNC('day', NOW() - INTERVAL '1' day)
     {% endif %}
       and c.contract_address IN (
@@ -210,41 +202,7 @@ with
           pools
       )
   ),
-  burn_events AS (
-    SELECT
-      DATE_TRUNC('day', bn.evt_block_time) AS time,
-      bn.contract_address AS pool,
-      cr.token0,
-      cr.token1,
-      (-1) * SUM(CAST(amount0 AS DOUBLE)) AS amount0,
-      (-1) * SUM(CAST(amount1 AS DOUBLE)) AS amount1
-    FROM
-      {{source('uniswap_v3_arbitrum','Pair_evt_Burn')}} AS bn
-      LEFT JOIN {{source('uniswap_v3_arbitrum','UniswapV3Factory_evt_PoolCreated')}} AS cr ON bn.contract_address = cr.pool
-      {% if not is_incremental() %}
-    WHERE DATE_TRUNC('day', bn.evt_block_time) >= DATE '{{ project_start_date }}'
-    {% endif %}
-    {% if is_incremental() %}
-    WHERE DATE_TRUNC('day', bn.evt_block_time) >= DATE_TRUNC('day', NOW() - INTERVAL '1' day)
-    {% endif %}
-      and bn.contract_address IN (
-        SELECT
-          address
-        FROM
-          pools
-      )
-      AND NOT bn.evt_tx_hash IN (
-        SELECT
-          evt_tx_hash
-        FROM
-          collect_events
-      )
-    GROUP BY
-      1,
-      2,
-      3,
-      4
-  ),
+  
   daily_delta_balance AS (
     select time,
       lead(time, 1, current_date + interval '1' day) over (partition by pool order by time) as next_time, 
@@ -281,17 +239,7 @@ with
           amount1
         FROM
           mint_events
-        /*UNION ALL
-        SELECT
-          time,
-          pool,
-          token0,
-          token1,
-          amount0,
-          amount1
-        FROM
-          burn_events
-        */UNION ALL
+        UNION ALL
         SELECT
           DATE_TRUNC('day', time),
           pool,
@@ -342,8 +290,7 @@ with
           inner join pools on sw.contract_address = pools.address
           {% if not is_incremental() %}
         WHERE DATE_TRUNC('day', sw.evt_block_time) >= DATE '{{ project_start_date }}'
-        {% endif %}
-        {% if is_incremental() %}
+        {% else %}
         WHERE DATE_TRUNC('day', sw.evt_block_time) >= DATE_TRUNC('day', NOW() - INTERVAL '1' day)
         {% endif %} 
          

@@ -29,8 +29,7 @@ with
     
     {% if not is_incremental() %}
     WHERE DATE_TRUNC('day', p.minute) >= DATE '{{ project_start_date }}'
-    {% endif %}
-    {% if is_incremental() %}
+   {% else %}
     WHERE DATE_TRUNC('day', p.minute) >= DATE_TRUNC('day', NOW() - INTERVAL '1' day)
     {% endif %}
 
@@ -65,8 +64,7 @@ with
     
     {% if not is_incremental() %}
     WHERE DATE_TRUNC('day', p.minute) >= DATE '{{ project_start_date }}'
-    {% endif %}
-    {% if is_incremental() %}
+    {% else %}
     WHERE DATE_TRUNC('day', p.minute) >= DATE_TRUNC('day', NOW() - INTERVAL '1' day)
     {% endif %}
 
@@ -86,8 +84,7 @@ with
 
     {% if not is_incremental() %}
     WHERE DATE_TRUNC('day', p.minute) >= DATE '{{ project_start_date }}'
-    {% endif %}
-    {% if is_incremental() %}
+    {% else %}
     WHERE DATE_TRUNC('day', p.minute) >= DATE_TRUNC('day', NOW() - INTERVAL '1' day)
     {% endif %}
     
@@ -115,11 +112,10 @@ with
         , sum(cast(token_amounts[1] as double)) as eth_amount_raw
         , sum(cast(token_amounts[2] as double)) as wsteth_amount_raw
     from {{source('curvefi_optimism','wstETH_swap_evt_AddLiquidity')}}
-    --WHERE date_trunc('day', evt_block_time) >= date '{{ project_start_date }}'
+    
     {% if not is_incremental() %}
     WHERE DATE_TRUNC('day', evt_block_time) >= DATE '{{ project_start_date }}'
-    {% endif %}
-    {% if is_incremental() %}
+    {% else %}
     WHERE DATE_TRUNC('day', evt_block_time) >= DATE_TRUNC('day', NOW() - INTERVAL '1' day)
     {% endif %}
     
@@ -134,14 +130,12 @@ with
         , double '0' as eth_amount_raw
         , cast(coin_amount as double) as wsteth_amount_raw
     from {{source('curvefi_optimism','wstETH_swap_evt_RemoveLiquidityOne')}}
-    --WHERE date_trunc('day', evt_block_time) >= date'{{ project_start_date }}'
+    
     {% if not is_incremental() %}
     WHERE DATE_TRUNC('day', evt_block_time) >= DATE '{{ project_start_date }}'
-    {% endif %}
-    {% if is_incremental() %}
+    {% else %}
     WHERE DATE_TRUNC('day', evt_block_time) >= DATE_TRUNC('day', NOW() - INTERVAL '1' day)
-    {% endif %}
-    
+    {% endif %}    
     and evt_tx_hash in (select evt_tx_hash from {{source('lido_optimism','wstETH_evt_Transfer')}})
     
     union all
@@ -151,14 +145,12 @@ with
         , cast(coin_amount as double) as eth_amount_raw
         , double '0' as wsteth_amount_raw
     from {{source('curvefi_optimism','wstETH_swap_evt_RemoveLiquidityOne')}}
-    --WHERE date_trunc('day', evt_block_time) >= date '{{ project_start_date }}'
+    
     {% if not is_incremental() %}
     WHERE DATE_TRUNC('day', evt_block_time) >= DATE '{{ project_start_date }}'
-    {% endif %}
-    {% if is_incremental() %}
+    {% else %}
     WHERE DATE_TRUNC('day', evt_block_time) >= DATE_TRUNC('day', NOW() - INTERVAL '1' day)
-    {% endif %}
-    
+    {% endif %}    
     and evt_tx_hash not in (select evt_tx_hash from {{source('lido_optimism','wstETH_evt_Transfer')}})
     
     union all
@@ -168,11 +160,10 @@ with
         , cast(token_amounts[1] as double)
         , cast(token_amounts[2] as double)
     from {{source('curvefi_optimism','wstETH_swap_evt_RemoveLiquidityImbalance')}}
-    --WHERE date_trunc('day', evt_block_time) >= date'{{ project_start_date }}'
+    
     {% if not is_incremental() %}
     WHERE DATE_TRUNC('day', evt_block_time) >= DATE '{{ project_start_date }}'
-    {% endif %}
-    {% if is_incremental() %}
+    {% else %}
     WHERE DATE_TRUNC('day', evt_block_time) >= DATE_TRUNC('day', NOW() - INTERVAL '1' day)
     {% endif %}
     
@@ -184,11 +175,10 @@ with
         , cast(token_amounts[1] as double)
         , cast(token_amounts[2] as double)
     from {{source('curvefi_optimism','wstETH_swap_evt_RemoveLiquidity')}}
-    --WHERE date_trunc('day', evt_block_time) >= date'{{ project_start_date }}'
+    
     {% if not is_incremental() %}
     WHERE DATE_TRUNC('day', evt_block_time) >= DATE '{{ project_start_date }}'
-    {% endif %}
-    {% if is_incremental() %}
+    {% else %}
     WHERE DATE_TRUNC('day', evt_block_time) >= DATE_TRUNC('day', NOW() - INTERVAL '1' day)
     {% endif %}
     
@@ -204,11 +194,10 @@ with
         , sum(case when cast(sold_id as double) = double '0'
             then (-1) * cast(tokens_bought as double) else cast(tokens_sold as double) end) as wsteth_amount_raw
     from {{source('curvefi_optimism','wstETH_swap_evt_TokenExchange')}}
-    --WHERE date_trunc('day', evt_block_time) >= date '{{ project_start_date }}'
+    
     {% if not is_incremental() %}
     WHERE DATE_TRUNC('day', evt_block_time) >= DATE '{{ project_start_date }}'
-    {% endif %}
-    {% if is_incremental() %}
+    {% else %}
     WHERE DATE_TRUNC('day', evt_block_time) >= DATE_TRUNC('day', NOW() - INTERVAL '1' day)
     {% endif %}
     
@@ -279,8 +268,7 @@ with
     
     {% if not is_incremental() %}
     WHERE DATE_TRUNC('day', evt_block_time) >= DATE '{{ project_start_date }}'
-    {% endif %}
-    {% if is_incremental() %}
+    {% else %}
     WHERE DATE_TRUNC('day', evt_block_time) >= DATE_TRUNC('day', NOW() - INTERVAL '1' day)
     {% endif %} 
 

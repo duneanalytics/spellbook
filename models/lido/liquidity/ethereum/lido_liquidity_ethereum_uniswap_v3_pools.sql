@@ -52,8 +52,7 @@ group by 1
     FROM {{source('prices','usd')}} p
     {% if not is_incremental() %}
     WHERE DATE_TRUNC('day', p.minute) >= DATE '{{ project_start_date }}'
-    {% endif %}
-    {% if is_incremental() %}
+    {% else %}
     WHERE DATE_TRUNC('day', p.minute) >= DATE_TRUNC('day', NOW() - INTERVAL '1' day)
     {% endif %}
 
@@ -117,8 +116,7 @@ group by 1
 
     {% if not is_incremental() %}
     WHERE DATE_TRUNC('day', p.minute) >= DATE '{{ project_start_date }}'
-    {% endif %}
-    {% if is_incremental() %}
+    {% else %}
     WHERE DATE_TRUNC('day', p.minute) >= DATE_TRUNC('day', NOW() - INTERVAL '1' day)
     {% endif %}    
     AND DATE_TRUNC('day', minute) < current_date
@@ -166,8 +164,7 @@ group by 1
           {{source('prices','usd')}} p
         {% if not is_incremental() %}
         WHERE DATE_TRUNC('day', p.minute) >= DATE '{{ project_start_date }}'
-        {% endif %}
-        {% if is_incremental() %}
+        {% else %}
         WHERE DATE_TRUNC('day', p.minute) >= DATE_TRUNC('day', NOW() - INTERVAL '1' day)
         {% endif %}    
         AND blockchain = 'ethereum'
@@ -188,8 +185,7 @@ group by 1
       LEFT JOIN {{source('uniswap_v3_ethereum','Factory_evt_PoolCreated')}} AS cr ON sw.contract_address = cr.pool
     {% if not is_incremental() %}
     WHERE DATE_TRUNC('day', sw.evt_block_time) >= DATE '{{ project_start_date }}'
-    {% endif %}
-    {% if is_incremental() %}
+    {% else %}
     WHERE DATE_TRUNC('day', sw.evt_block_time) >= DATE_TRUNC('day', NOW() - INTERVAL '1' day)
     {% endif %}
     and sw.contract_address IN (SELECT address FROM pools)
@@ -209,8 +205,7 @@ group by 1
       LEFT JOIN {{source('uniswap_v3_ethereum','Factory_evt_PoolCreated')}} AS cr ON mt.contract_address = cr.pool
     {% if not is_incremental() %}
     WHERE DATE_TRUNC('day', mt.evt_block_time) >= DATE '{{ project_start_date }}'
-    {% endif %}
-    {% if is_incremental() %}
+    {% else %}
     WHERE DATE_TRUNC('day', mt.evt_block_time) >= DATE_TRUNC('day', NOW() - INTERVAL '1' day)
     {% endif %}
       and mt.contract_address IN (SELECT address FROM pools)
@@ -232,8 +227,7 @@ group by 1
       LEFT JOIN {{source('uniswap_v3_ethereum','Factory_evt_PoolCreated')}} AS cr ON c.contract_address = cr.pool
     {% if not is_incremental() %}
     WHERE DATE_TRUNC('day', c.evt_block_time) >= DATE '{{ project_start_date }}'
-    {% endif %}
-    {% if is_incremental() %}
+    {% else %}
     WHERE DATE_TRUNC('day', c.evt_block_time) >= DATE_TRUNC('day', NOW() - INTERVAL '1' day)
     {% endif %}
     and c.contract_address IN (SELECT address FROM pools)
@@ -320,8 +314,7 @@ group by 1
 
         {% if not is_incremental() %}
         WHERE DATE_TRUNC('day', sw.evt_block_time) >= DATE '{{ project_start_date }}'
-        {% endif %}
-        {% if is_incremental() %}
+        {% else %}
         WHERE DATE_TRUNC('day', sw.evt_block_time) >= DATE_TRUNC('day', NOW() - INTERVAL '1' day)
         {% endif %}
          

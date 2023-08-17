@@ -137,8 +137,7 @@ select 0x5979D7b546E38E414F7E9822514be443A4800529
     left join {{ source('kyber_arbitrum', 'Elastic_Factory_evt_PoolCreated') }} cr on sw.contract_address = cr.pool
     {% if not is_incremental() %}
     WHERE DATE_TRUNC('day', sw.evt_block_time) >= DATE '{{ project_start_date }}'
-    {% endif %}
-    {% if is_incremental() %}
+    {% else %}
     WHERE DATE_TRUNC('day', sw.evt_block_time) >= DATE_TRUNC('day', NOW() - INTERVAL '1' day)
     {% endif %}
     and sw.contract_address in (select address from pools)
@@ -156,8 +155,7 @@ select 0x5979D7b546E38E414F7E9822514be443A4800529
     left join {{ source('kyber_arbitrum', 'Elastic_Factory_evt_PoolCreated') }} cr on mt.contract_address = cr.pool
     {% if not is_incremental() %}
     WHERE DATE_TRUNC('day', mt.evt_block_time) >= DATE '{{ project_start_date }}'
-    {% endif %}
-    {% if is_incremental() %}
+    {% else %}
     WHERE DATE_TRUNC('day', mt.evt_block_time) >= DATE_TRUNC('day', NOW() - INTERVAL '1' day)
     {% endif %}
     and mt.contract_address  in (select address from pools)
@@ -177,8 +175,7 @@ select 0x5979D7b546E38E414F7E9822514be443A4800529
     left join {{ source('kyber_arbitrum', 'Elastic_Factory_evt_PoolCreated') }} cr on bn.contract_address = cr.pool
     {% if not is_incremental() %}
     WHERE DATE_TRUNC('day', bn.evt_block_time) >= DATE '{{ project_start_date }}'
-    {% endif %}
-    {% if is_incremental() %}
+    {% else %}
     WHERE DATE_TRUNC('day', bn.evt_block_time) >= DATE_TRUNC('day', NOW() - INTERVAL '1' day)
     {% endif %}
     and bn.contract_address  in (select address from pools)
@@ -196,8 +193,7 @@ select 0x5979D7b546E38E414F7E9822514be443A4800529
     left join {{ source('kyber_arbitrum', 'Elastic_Factory_evt_PoolCreated') }} cr on bn.contract_address = cr.pool
     {% if not is_incremental() %}
     WHERE DATE_TRUNC('day', bn.evt_block_time) >= DATE '{{ project_start_date }}'
-    {% endif %}
-    {% if is_incremental() %}
+    {% else %}
     WHERE DATE_TRUNC('day', bn.evt_block_time) >= DATE_TRUNC('day', NOW() - INTERVAL '1' day)
     {% endif %}
     and bn.contract_address  in (select address from pools)
@@ -250,8 +246,7 @@ select 0x5979D7b546E38E414F7E9822514be443A4800529
     left join {{source('kyber_arbitrum','Elastic_Factory_evt_PoolCreated')}} cr on sw.contract_address = cr.pool
     {% if not is_incremental() %}
     WHERE DATE_TRUNC('day', sw.evt_block_time) >= DATE '{{ project_start_date }}'
-    {% endif %}
-    {% if is_incremental() %}
+    {% else %}
     WHERE DATE_TRUNC('day', sw.evt_block_time) >= DATE_TRUNC('day', NOW() - INTERVAL '1' day)
     {% endif %}
     and sw.contract_address in (select address from pools)

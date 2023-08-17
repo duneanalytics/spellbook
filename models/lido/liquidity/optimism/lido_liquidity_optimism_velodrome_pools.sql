@@ -57,8 +57,7 @@ select distinct
 FROM {{source('prices','usd')}} p
 {% if not is_incremental() %}
 WHERE DATE_TRUNC('day', p.minute) >= DATE '{{ project_start_date }}'
-{% endif %}
-{% if is_incremental() %}
+{% else %}
 WHERE DATE_TRUNC('day', p.minute) >= DATE_TRUNC('day', NOW() - INTERVAL '1' day)
 {% endif %}
 
@@ -91,8 +90,7 @@ select distinct
     FROM {{ source('prices', 'usd') }} p
     {% if not is_incremental() %}
     WHERE DATE_TRUNC('day', p.minute) >= DATE '{{ project_start_date }}'
-    {% endif %}
-    {% if is_incremental() %}
+    {% else %}
     WHERE DATE_TRUNC('day', p.minute) >= DATE_TRUNC('day', NOW() - INTERVAL '1' day)
     {% endif %}
 
@@ -120,8 +118,7 @@ from wsteth_prices_hourly
  
  {% if not is_incremental() %}
  WHERE DATE_TRUNC('day', m.evt_block_time) >= DATE '{{ project_start_date }}'
- {% endif %}
- {% if is_incremental() %}
+ {% else %}
  WHERE DATE_TRUNC('day', m.evt_block_time) >= DATE_TRUNC('day', NOW() - INTERVAL '1' day)
  {% endif %}
  
@@ -138,11 +135,10 @@ from wsteth_prices_hourly
       (-1)*SUM(CAST(amount1 AS DOUBLE)) AS amount1
  from {{source('velodrome_optimism','Pair_evt_Burn')}} b
  left join {{source('velodrome_optimism','PairFactory_evt_PairCreated')}} cr on b.contract_address = cr.pair 
- --WHERE date_trunc('day', b.evt_block_time) >= date '{{ project_start_date }}'
+ 
  {% if not is_incremental() %}
  WHERE DATE_TRUNC('day', b.evt_block_time) >= DATE '{{ project_start_date }}'
- {% endif %}
- {% if is_incremental() %}
+ {% else %}
  WHERE DATE_TRUNC('day', b.evt_block_time) >= DATE_TRUNC('day', NOW() - INTERVAL '1' day)
  {% endif %}
  
@@ -160,11 +156,10 @@ from wsteth_prices_hourly
       SUM(CAST(amount1In AS DOUBLE) - CAST(amount1Out AS DOUBLE)) AS amount1
  from {{source('velodrome_optimism','Pair_evt_Swap')}} s
  left join {{source('velodrome_optimism','PairFactory_evt_PairCreated')}} cr on s.contract_address = cr.pair 
- --WHERE date_trunc('day', s.evt_block_time) >= date '{{ project_start_date }}'
+ 
  {% if not is_incremental() %}
   WHERE DATE_TRUNC('day', s.evt_block_time) >= DATE '{{ project_start_date }}'
- {% endif %}
- {% if is_incremental() %}
+ {% else %}
   WHERE DATE_TRUNC('day', s.evt_block_time) >= DATE_TRUNC('day', NOW() - INTERVAL '1' day)
  {% endif %}
  
@@ -186,8 +181,7 @@ select
  
  {% if not is_incremental() %}
  WHERE DATE_TRUNC('day', s.evt_block_time) >= DATE '{{ project_start_date }}'
- {% endif %}
- {% if is_incremental() %}
+ {% else %}
  WHERE DATE_TRUNC('day', s.evt_block_time) >= DATE_TRUNC('day', NOW() - INTERVAL '1' day)
  {% endif %}
  and s.contract_address in (select address from pools)
@@ -246,8 +240,7 @@ GROUP BY 1,2,3,4
 
  {% if not is_incremental() %}
  WHERE DATE_TRUNC('day', s.evt_block_time) >= DATE '{{ project_start_date }}'
- {% endif %}
- {% if is_incremental() %}
+ {% else %}
  WHERE DATE_TRUNC('day', s.evt_block_time) >= DATE_TRUNC('day', NOW() - INTERVAL '1' day)
  {% endif %}
 

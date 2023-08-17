@@ -29,8 +29,8 @@ weth_prices_daily AS (
     --WHERE date_trunc('day', minute) >= date '{{ project_start_date }}' 
     {% if not is_incremental() %}
     WHERE DATE_TRUNC('day', p.minute) >= DATE '{{ project_start_date }}'
-    {% endif %}
-    {% if is_incremental() %}
+    {% else %}
+    
     WHERE DATE_TRUNC('day', p.minute) >= DATE_TRUNC('day', NOW() - INTERVAL '1' day)
     {% endif %}
 
@@ -65,8 +65,8 @@ weth_prices_daily AS (
     --WHERE date_trunc('hour', minute) >= date '{{ project_start_date }}' 
     {% if not is_incremental() %}
     WHERE DATE_TRUNC('day', p.minute) >= DATE '{{ project_start_date }}'
-    {% endif %}
-    {% if is_incremental() %}
+    {% else %}
+    
     WHERE DATE_TRUNC('day', p.minute) >= DATE_TRUNC('day', NOW() - INTERVAL '1' day)
     {% endif %}
 
@@ -87,8 +87,8 @@ weth_prices_daily AS (
 
     {% if not is_incremental() %}
     WHERE DATE_TRUNC('day', p.minute) >= DATE '{{ project_start_date }}'
-    {% endif %}
-    {% if is_incremental() %}
+    {% else %}
+    
     WHERE DATE_TRUNC('day', p.minute) >= DATE_TRUNC('day', NOW() - INTERVAL '1' day)
     {% endif %}
 
@@ -119,8 +119,8 @@ weth_prices_daily AS (
     --WHERE date_trunc('day', evt_block_time) >= date '{{ project_start_date }}'
     {% if not is_incremental() %}
     WHERE DATE_TRUNC('day', evt_block_time) >= DATE '{{ project_start_date }}'
-    {% endif %}
-    {% if is_incremental() %}
+    {% else %}
+    
     WHERE DATE_TRUNC('day', evt_block_time) >= DATE_TRUNC('day', NOW() - INTERVAL '1' day)
     {% endif %}
 
@@ -139,8 +139,8 @@ weth_prices_daily AS (
 
     {% if not is_incremental() %}
     WHERE DATE_TRUNC('day', evt_block_time) >= DATE '{{ project_start_date }}'
-    {% endif %}
-    {% if is_incremental() %}
+    {% else %}
+    
     WHERE DATE_TRUNC('day', evt_block_time) >= DATE_TRUNC('day', NOW() - INTERVAL '1' day)
     {% endif %}
 
@@ -157,8 +157,8 @@ weth_prices_daily AS (
 
     {% if not is_incremental() %}
     WHERE DATE_TRUNC('day', evt_block_time) >= DATE '{{ project_start_date }}'
-    {% endif %}
-    {% if is_incremental() %}
+    {% else %}
+    
     WHERE DATE_TRUNC('day', evt_block_time) >= DATE_TRUNC('day', NOW() - INTERVAL '1' day)
     {% endif %}
 
@@ -175,8 +175,8 @@ weth_prices_daily AS (
 
     {% if not is_incremental() %}
     WHERE DATE_TRUNC('day', evt_block_time) >= DATE '{{ project_start_date }}'
-    {% endif %}
-    {% if is_incremental() %}
+    {% else %}
+    
     WHERE DATE_TRUNC('day', evt_block_time) >= DATE_TRUNC('day', NOW() - INTERVAL '1' day)
     {% endif %}
 
@@ -193,8 +193,8 @@ weth_prices_daily AS (
 
     {% if not is_incremental() %}
     WHERE DATE_TRUNC('day', evt_block_time) >= DATE '{{ project_start_date }}'
-    {% endif %}
-    {% if is_incremental() %}
+    {% else %}
+    
     WHERE DATE_TRUNC('day', evt_block_time) >= DATE_TRUNC('day', NOW() - INTERVAL '1' day)
     {% endif %}
 
@@ -213,35 +213,14 @@ weth_prices_daily AS (
 
     {% if not is_incremental() %}
     WHERE DATE_TRUNC('day', evt_block_time) >= DATE '{{ project_start_date }}'
-    {% endif %}
-    {% if is_incremental() %}
+    {% else %}
+    
     WHERE DATE_TRUNC('day', evt_block_time) >= DATE_TRUNC('day', NOW() - INTERVAL '1' day)
     {% endif %}
 
     group by 1,2
 )
 
-/*, reserves as (
-    select day
-        , coalesce(d.pool, w.pool, e.pool, 0x6eb2dc694eb516b16dc9fbc678c60052bbdd7d80) as pool
-        , p2.token as main_token
-        , p2.symbol as main_token_symbol
-        , p1.token as paired_token
-        , p1.symbol as paired_token_symbol 
-        , (sum(coalesce(cast(d.wsteth_amount_raw as double), cast(0 as double)) - coalesce(cast(w.wsteth_amount_raw as double), cast(0 as double)) + coalesce(cast(e.wsteth_amount_raw as double), cast(0 as double))) over (order by dd.day))/1e18 as main_token_reserve
-        , ((sum(coalesce(cast(d.wsteth_amount_raw as double), cast(0 as double)) - coalesce(cast(w.wsteth_amount_raw as double), cast(0 as double)) + coalesce(cast(e.wsteth_amount_raw as double), cast(0 as double))) over (order by dd.day))* p2.price)/1e18 as main_token_usd_reserve
-        , (sum(coalesce(cast(d.eth_amount_raw as double), cast(0 as double)) - coalesce(cast(w.eth_amount_raw as double), cast(0 as double)) + coalesce(cast(e.eth_amount_raw as double), cast(0 as double))) over (order by dd.day))/1e18 as paired_token_reserve
-        , ((sum(coalesce(cast(d.eth_amount_raw as double), cast(0 as double)) - coalesce(cast(w.eth_amount_raw as double), cast(0 as double)) + coalesce(cast(e.eth_amount_raw as double), cast(0 as double))) over (order by dd.day)) * p1.price) /1e18 as paired_token_usd_reserve
-        
-    from dates dd
-    left join add_liquidity_events d on dd.day = d.time
-    left join remove_liquidity_events w on dd.day = w.time
-    left join token_exchange_events e on dd.day = e.time
-    left join weth_prices_daily p1 ON p1.time = dd.day 
-    left join wsteth_prices_daily p2 ON p2.time = dd.day
-    order by dd.day desc
-)
-*/
 
 , reserves as (
     select day
@@ -304,11 +283,10 @@ weth_prices_daily AS (
     select date_trunc('hour', evt_block_time) as time
         , sum(case when sold_id = int256 '0' then tokens_sold else tokens_bought end) as eth_amount_raw
     from {{source('curvefi_arbitrum','wstETH_swap_evt_TokenExchange')}}
-    --WHERE date_trunc('day', evt_block_time) >= date '{{ project_start_date }}'
+
     {% if not is_incremental() %}
     WHERE DATE_TRUNC('day', evt_block_time) >= DATE '{{ project_start_date }}'
-    {% endif %}
-    {% if is_incremental() %}
+    {% else %}
     WHERE DATE_TRUNC('day', evt_block_time) >= DATE_TRUNC('day', NOW() - INTERVAL '1' day)
     {% endif %}
 

@@ -33,8 +33,7 @@ tokens_prices_daily AS (
     FROM {{source('prices','usd')}} p
     {% if not is_incremental() %}
     WHERE DATE_TRUNC('day', p.minute) >= DATE '{{ project_start_date }}'
-    {% endif %}
-    {% if is_incremental() %}
+    {% else %}
     WHERE DATE_TRUNC('day', p.minute) >= DATE_TRUNC('day', NOW() - INTERVAL '1' day)
     {% endif %}
       AND DATE_TRUNC('day', minute) < DATE_TRUNC('day', now())
@@ -66,8 +65,7 @@ SELECT
     FROM {{source('prices','usd')}} p
       {% if not is_incremental() %}
     WHERE DATE_TRUNC('day', p.minute) >= DATE '{{ project_start_date }}'
-    {% endif %}
-    {% if is_incremental() %}
+    {% else %}
     WHERE DATE_TRUNC('day', p.minute) >= DATE_TRUNC('day', NOW() - INTERVAL '1' day)
     {% endif %}
       AND blockchain = 'arbitrum'
@@ -85,8 +83,7 @@ SELECT
     FROM {{source('wombat_arbitrum','wsteth_pool_evt_Swap')}} AS sw
     {% if not is_incremental() %}
     WHERE DATE_TRUNC('day', sw.evt_block_time) >= DATE '{{ project_start_date }}'
-    {% endif %}
-    {% if is_incremental() %}
+    {% else %}
     WHERE DATE_TRUNC('day', sw.evt_block_time) >= DATE_TRUNC('day', NOW() - INTERVAL '1' day)
     {% endif %}
     GROUP BY  1,2
@@ -100,8 +97,7 @@ SELECT
     FROM {{source('wombat_arbitrum','wsteth_pool_evt_Deposit')}} AS sw
     {% if not is_incremental() %}
     WHERE DATE_TRUNC('day', sw.evt_block_time) >= DATE '{{ project_start_date }}'
-    {% endif %}
-    {% if is_incremental() %}
+    {% else %}
     WHERE DATE_TRUNC('day', sw.evt_block_time) >= DATE_TRUNC('day', NOW() - INTERVAL '1' day)
     {% endif %}
     and token = 0x5979d7b546e38e414f7e9822514be443a4800529
@@ -117,8 +113,7 @@ SELECT
     FROM {{source('wombat_arbitrum','wsteth_pool_evt_Withdraw')}} AS sw
     {% if not is_incremental() %}
     WHERE DATE_TRUNC('day', sw.evt_block_time) >= DATE '{{ project_start_date }}'
-    {% endif %}
-    {% if is_incremental() %}
+    {% else %}
     WHERE DATE_TRUNC('day', sw.evt_block_time) >= DATE_TRUNC('day', NOW() - INTERVAL '1' day)
     {% endif %}
     and token = 0x5979d7b546e38e414f7e9822514be443a4800529
@@ -148,7 +143,6 @@ group by 1,2,3
       LEAD(time, 1, now() + INTERVAL '1' day) OVER (ORDER BY time NULLS FIRST ) AS next_time,
       pool,
       token0,
-      --SUM(amount0) OVER (PARTITION BY pool  ORDER BY time NULLS FIRST) AS 
       amount0
     FROM
       daily_delta_balance
@@ -162,8 +156,7 @@ group by 1,2,3
         FROM {{source('wombat_arbitrum','wsteth_pool_evt_Swap')}} AS sw 
         {% if not is_incremental() %}
         WHERE DATE_TRUNC('day', sw.evt_block_time) >= DATE '{{ project_start_date }}'
-        {% endif %}
-        {% if is_incremental() %}
+        {% else %}
         WHERE DATE_TRUNC('day', sw.evt_block_time) >= DATE_TRUNC('day', NOW() - INTERVAL '1' day)
         {% endif %}
         GROUP BY 1,2
@@ -202,11 +195,9 @@ group by 1,2,3
   l.amount0/1e18 as main_token_reserve, 0 as paired_token_reserve,
   p0.price as main_token_usd_price, 0 as paired_token_usd_price,
   coalesce(tv.volume,0)/2 as trading_volume
-  FROM --dates d 
-      --LEFT JOIN 
-      pool_liquidity AS l --on d.day >= DATE_TRUNC('day', l.time) and  d.day <  DATE_TRUNC('day', l.next_time)
-      LEFT JOIN tokens_prices_daily AS p0 ON DATE_TRUNC('day', l.time) = p0.time
-      LEFT JOIN trading_volume AS tv ON DATE_TRUNC('day', l.time) = tv.time
+  FROM  pool_liquidity AS l 
+  LEFT JOIN tokens_prices_daily AS p0 ON DATE_TRUNC('day', l.time) = p0.time
+  LEFT JOIN trading_volume AS tv ON DATE_TRUNC('day', l.time) = tv.time
  
 
  

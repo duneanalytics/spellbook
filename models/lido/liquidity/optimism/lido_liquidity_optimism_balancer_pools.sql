@@ -70,8 +70,7 @@ WHERE call_create.output_0 in (select distinct  poolAddress from pools)
     FROM {{ source('prices','usd')}} p
     {% if not is_incremental() %}
     WHERE DATE_TRUNC('day', p.minute) >= DATE '{{ project_start_date }}'
-    {% endif %}
-    {% if is_incremental() %}
+    {% else %}
     WHERE DATE_TRUNC('day', p.minute) >= DATE_TRUNC('day', NOW() - INTERVAL '1' day)
     {% endif %}
 
@@ -100,8 +99,7 @@ WHERE call_create.output_0 in (select distinct  poolAddress from pools)
     FROM {{ source('prices','usd')}} p
     {% if not is_incremental() %}
     WHERE DATE_TRUNC('day', p.minute) >= DATE '{{ project_start_date }}'
-    {% endif %}
-    {% if is_incremental() %}
+    {% else %}
     WHERE DATE_TRUNC('day', p.minute) >= DATE_TRUNC('day', NOW() - INTERVAL '1' day)
     {% endif %}
 
@@ -130,8 +128,7 @@ SELECT distinct
     FROM {{ source('prices','usd')}} p
     {% if not is_incremental() %}
     WHERE DATE_TRUNC('day', p.minute) >= DATE '{{ project_start_date }}'
-    {% endif %}
-    {% if is_incremental() %}
+    {% else %}
     WHERE DATE_TRUNC('day', p.minute) >= DATE_TRUNC('day', NOW() - INTERVAL '1' day)
     {% endif %}
 
@@ -160,8 +157,7 @@ SELECT distinct
     FROM {{ source('prices','usd')}} p
     {% if not is_incremental() %}
     WHERE DATE_TRUNC('day', p.minute) >= DATE '{{ project_start_date }}'
-    {% endif %}
-    {% if is_incremental() %}
+    {% else %}
     WHERE DATE_TRUNC('day', p.minute) >= DATE_TRUNC('day', NOW() - INTERVAL '1' day)
     {% endif %}
 
@@ -192,8 +188,7 @@ union all
     FROM {{ source('prices','usd')}} p
     {% if not is_incremental() %}
     WHERE DATE_TRUNC('day', p.minute) >= DATE '{{ project_start_date }}'
-    {% endif %}
-    {% if is_incremental() %}
+    {% else %}
     WHERE DATE_TRUNC('day', p.minute) >= DATE_TRUNC('day', NOW() - INTERVAL '1' day)
     {% endif %}
 
@@ -218,8 +213,7 @@ union all
                 FROM {{source('balancer_v2_optimism','Vault_evt_Swap')}}
                 {% if not is_incremental() %}
                 WHERE DATE_TRUNC('day', evt_block_time) >= DATE '{{ project_start_date }}'
-                {% endif %}
-                {% if is_incremental() %}
+                {% else %}
                 WHERE DATE_TRUNC('day', evt_block_time) >= DATE_TRUNC('day', NOW() - INTERVAL '1' day)
                 {% endif %}
                 
@@ -234,8 +228,7 @@ union all
                 FROM {{source('balancer_v2_optimism','Vault_evt_Swap')}}
                 {% if not is_incremental() %}
                 WHERE DATE_TRUNC('day', evt_block_time) >= DATE '{{ project_start_date }}'
-                {% endif %}
-                {% if is_incremental() %}
+                {% else %}
                 WHERE DATE_TRUNC('day', evt_block_time) >= DATE_TRUNC('day', NOW() - INTERVAL '1' day)
                 {% endif %}
                 
@@ -254,8 +247,7 @@ union all
          CROSS JOIN UNNEST(tokens, deltas) as u(token, delta)
         {% if not is_incremental() %}
         WHERE DATE_TRUNC('day', evt_block_time) >= DATE '{{ project_start_date }}'
-        {% endif %}
-        {% if is_incremental() %}
+        {% else %}
         WHERE DATE_TRUNC('day', evt_block_time) >= DATE_TRUNC('day', NOW() - INTERVAL '1' day)
         {% endif %}
         
@@ -273,8 +265,7 @@ union all
         FROM {{source('balancer_v2_optimism','Vault_evt_PoolBalanceManaged')}}
         {% if not is_incremental() %}
         WHERE DATE_TRUNC('day', evt_block_time) >= DATE '{{ project_start_date }}'
-        {% endif %}
-        {% if is_incremental() %}
+        {% else %}
         WHERE DATE_TRUNC('day', evt_block_time) >= DATE_TRUNC('day', NOW() - INTERVAL '1' day)
         {% endif %}
         
@@ -335,7 +326,6 @@ union all
         SELECT
             day,
             pool_id,
-            --poolAddress,
             b.token,
             p1.symbol AS token_symbol,
             amount as token_balance_raw,
@@ -348,8 +338,7 @@ union all
         union all
         SELECT
             day,
-            pool_id,
-            --c.poolAddress,
+            pool_id,            
             b.token,
             p1.symbol AS token_symbol,
             amount as token_balance_raw,
@@ -449,8 +438,7 @@ on main.day = paired4.day and main.pool_id = paired4.pool_id
     and date_trunc('hour', s.evt_block_time) < wsteth_price.next_time
     {% if not is_incremental() %}
     WHERE DATE_TRUNC('day', s.evt_block_time) >= DATE '{{ project_start_date }}'
-    {% endif %}
-    {% if is_incremental() %}
+    {% else %}
     WHERE DATE_TRUNC('day', s.evt_block_time) >= DATE_TRUNC('day', NOW() - INTERVAL '1' day)
     {% endif %} 
     and s.poolId in (select pool_id from pools)

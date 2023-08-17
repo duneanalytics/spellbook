@@ -49,8 +49,7 @@ select 0x7f39C581F595B53c5cb19bD0b3f8dA6c935E2Ca0
     FROM {{ source('prices', 'usd') }} p
     {% if not is_incremental() %}
     WHERE DATE_TRUNC('day', p.minute) >= DATE '{{ project_start_date }}'
-    {% endif %}
-    {% if is_incremental() %}
+    {% else %}
     WHERE DATE_TRUNC('day', p.minute) >= DATE_TRUNC('day', NOW() - INTERVAL '1' day)
     {% endif %}    
     and date_trunc('day', minute) < current_date
@@ -84,8 +83,7 @@ select 0x7f39C581F595B53c5cb19bD0b3f8dA6c935E2Ca0
     FROM {{ source('prices', 'usd') }} p
     {% if not is_incremental() %}
     WHERE DATE_TRUNC('day', p.minute) >= DATE '{{ project_start_date }}'
-    {% endif %}
-    {% if is_incremental() %}
+    {% else %}
     WHERE DATE_TRUNC('day', p.minute) >= DATE_TRUNC('day', NOW() - INTERVAL '1' day)
     {% endif %}
     and blockchain = 'ethereum'
@@ -106,8 +104,7 @@ select 0x7f39C581F595B53c5cb19bD0b3f8dA6c935E2Ca0
     left join {{ source('kyber_ethereum', 'Elastic_Factory_evt_PoolCreated') }} cr on sw.contract_address = cr.pool
     {% if not is_incremental() %}
     WHERE DATE_TRUNC('day', sw.evt_block_time) >= DATE '{{ project_start_date }}'
-    {% endif %}
-    {% if is_incremental() %}
+    {% else %}
     WHERE DATE_TRUNC('day', sw.evt_block_time) >= DATE_TRUNC('day', NOW() - INTERVAL '1' day)
     {% endif %}
     and sw.contract_address in (select address from pools)   
@@ -125,8 +122,7 @@ select 0x7f39C581F595B53c5cb19bD0b3f8dA6c935E2Ca0
     left join {{ source('kyber_ethereum', 'Elastic_Factory_evt_PoolCreated') }} cr on mt.contract_address = cr.pool
     {% if not is_incremental() %}
     WHERE DATE_TRUNC('day', mt.evt_block_time) >= DATE '{{ project_start_date }}'
-    {% endif %}
-    {% if is_incremental() %}
+    {% else %}
     WHERE DATE_TRUNC('day', mt.evt_block_time) >= DATE_TRUNC('day', NOW() - INTERVAL '1' day)
     {% endif %}
     and mt.contract_address in (select address from pools)    
@@ -145,8 +141,7 @@ select 0x7f39C581F595B53c5cb19bD0b3f8dA6c935E2Ca0
     left join {{ source('kyber_ethereum', 'Elastic_Factory_evt_PoolCreated') }} cr on bn.contract_address = cr.pool
     {% if not is_incremental() %}
     WHERE DATE_TRUNC('day', bn.evt_block_time) >= DATE '{{ project_start_date }}'
-    {% endif %}
-    {% if is_incremental() %}
+    {% else %}
     WHERE DATE_TRUNC('day', bn.evt_block_time) >= DATE_TRUNC('day', NOW() - INTERVAL '1' day)
     {% endif %}
     and bn.contract_address in (select address from pools)    
@@ -164,8 +159,7 @@ select 0x7f39C581F595B53c5cb19bD0b3f8dA6c935E2Ca0
     left join {{ source('kyber_ethereum', 'Elastic_Factory_evt_PoolCreated') }} cr on bn.contract_address = cr.pool
     {% if not is_incremental() %}
     WHERE DATE_TRUNC('day', bn.evt_block_time) >= DATE '{{ project_start_date }}'
-    {% endif %}
-    {% if is_incremental() %}
+    {% else %}
     WHERE DATE_TRUNC('day', bn.evt_block_time) >= DATE_TRUNC('day', NOW() - INTERVAL '1' day)
     {% endif %}
     and bn.contract_address in (select address from pools)    
@@ -213,8 +207,7 @@ select 0x7f39C581F595B53c5cb19bD0b3f8dA6c935E2Ca0
     left join {{source('kyber_ethereum','Elastic_Factory_evt_PoolCreated')}} cr on sw.contract_address = cr.pool
     {% if not is_incremental() %}
     WHERE DATE_TRUNC('day', sw.evt_block_time) >= DATE '{{ project_start_date }}'
-    {% endif %}
-    {% if is_incremental() %}
+    {% else %}
     WHERE DATE_TRUNC('day', sw.evt_block_time) >= DATE_TRUNC('day', NOW() - INTERVAL '1' day)
     {% endif %}
     and sw.contract_address in (select address from pools)

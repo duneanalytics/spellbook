@@ -50,8 +50,7 @@ select 0x7f39C581F595B53c5cb19bD0b3f8dA6c935E2Ca0
     FROM {{source('prices','usd')}} p
     {% if not is_incremental() %}
     WHERE DATE_TRUNC('day', p.minute) >= DATE '{{ project_start_date }}'
-    {% endif %}
-    {% if is_incremental() %}
+    {% else %}
     WHERE DATE_TRUNC('day', p.minute) >= DATE_TRUNC('day', NOW() - INTERVAL '1' day)
     {% endif %}    
     and date_trunc('day', minute) < current_date
@@ -80,8 +79,7 @@ select 0x7f39C581F595B53c5cb19bD0b3f8dA6c935E2Ca0
     FROM {{source('prices','usd')}} p
     {% if not is_incremental() %}
     WHERE DATE_TRUNC('day', p.minute) >= DATE '{{ project_start_date }}'
-    {% endif %}
-    {% if is_incremental() %}
+    {% else %}
     WHERE DATE_TRUNC('day', p.minute) >= DATE_TRUNC('day', NOW() - INTERVAL '1' day)
     {% endif %}    
     and blockchain = 'ethereum'
@@ -100,8 +98,7 @@ select 0x7f39C581F595B53c5cb19bD0b3f8dA6c935E2Ca0
     left join {{source('maverick_v1_ethereum','factory_evt_PoolCreated')}} cr on sw.contract_address = cr.poolAddress
     {% if not is_incremental() %}
     WHERE DATE_TRUNC('day', sw.evt_block_time) >= DATE '{{ project_start_date }}'
-    {% endif %}
-    {% if is_incremental() %}
+    {% else %}
     WHERE DATE_TRUNC('day', sw.evt_block_time) >= DATE_TRUNC('day', NOW() - INTERVAL '1' day)
     {% endif %}
     and sw.contract_address in (select poolAddress from pools) 
@@ -118,8 +115,7 @@ from {{source('maverick_v1_ethereum','pool_call_addLiquidity')}} a
 left join {{source('maverick_v1_ethereum','factory_evt_PoolCreated')}} cr on a.contract_address = cr.poolAddress
  {% if not is_incremental() %}
  WHERE DATE_TRUNC('day', a.call_block_time) >= DATE '{{ project_start_date }}'
- {% endif %}
- {% if is_incremental() %}
+ {% else %}
  WHERE DATE_TRUNC('day', a.call_block_time) >= DATE_TRUNC('day', NOW() - INTERVAL '1' day)
  {% endif %}
  and a.call_success 
@@ -137,8 +133,7 @@ from {{source('maverick_v1_ethereum','pool_call_removeLiquidity')}} a
 left join {{source('maverick_v1_ethereum','factory_evt_PoolCreated')}} cr on a.contract_address = cr.poolAddress
  {% if not is_incremental() %}
  WHERE DATE_TRUNC('day', a.call_block_time) >= DATE '{{ project_start_date }}'
- {% endif %}
- {% if is_incremental() %}
+ {% else %}
  WHERE DATE_TRUNC('day', a.call_block_time) >= DATE_TRUNC('day', NOW() - INTERVAL '1' day)
  {% endif %}
  and a.call_success 
@@ -195,8 +190,7 @@ GROUP BY 1,2,3,4,5
     left join {{source('maverick_v1_ethereum','factory_evt_PoolCreated')}} cr on sw.contract_address = cr.poolAddress
     {% if not is_incremental() %}
     WHERE DATE_TRUNC('day', sw.evt_block_time) >= DATE '{{ project_start_date }}'
-    {% endif %}
-    {% if is_incremental() %}
+    {% else %}
     WHERE DATE_TRUNC('day', sw.evt_block_time) >= DATE_TRUNC('day', NOW() - INTERVAL '1' day)
     {% endif %}
     and sw.contract_address in (select poolAddress from pools)
