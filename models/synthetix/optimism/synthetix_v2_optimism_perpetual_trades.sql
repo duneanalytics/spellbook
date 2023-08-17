@@ -73,7 +73,7 @@ perps AS (
 			'Unspecified'		
 		) as frontend
 		,s.account AS trader
-		,cast(ABS(s.tradeSize) as UINT256) AS volume_raw
+		,cast(s.tradeSize as double) AS volume_raw
 		,s.evt_tx_hash AS tx_hash
 		,s.evt_index
 	FROM {{ source('synthetix_futuresmarket_optimism', 'ProxyPerpsV2_evt_PositionModified') }} AS s
