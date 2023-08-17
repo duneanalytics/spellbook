@@ -36,7 +36,7 @@ WITH perps AS (
 		,'2' AS version
 		,'Perpetual' AS frontend
 		,p.trader
-		,CAST(ABS(exchangedPositionNotional) as UINT256) as volume_raw
+		,cast(p.exchangedPositionNotional as double) AS volume_raw
 		,p.evt_tx_hash AS tx_hash
 		,p.evt_index
 	FROM {{ source('perp_v2_optimism', 'ClearingHouse_evt_PositionChanged') }} AS p

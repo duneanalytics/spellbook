@@ -26,7 +26,7 @@ perp_events as (
            positionNotional / 1E18                                                 as volume_usd,
            fee / 1E18                                                              as fee_usd,
            margin / 1E18                                                           as margin_usd,
-           CAST(positionNotional as UINT256)                                        as volume_raw,
+           CAST(positionNotional as double)                                        as volume_raw,
            trader,
            amm                                                                     as market_address,
            evt_index,

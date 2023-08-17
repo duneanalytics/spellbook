@@ -153,7 +153,7 @@ SELECT
 	,perps.version
 	,perps.frontend
 	,perps.trader
-	,CAST(perps.volume_raw as UINT256) as volume_raw
+	,perps.volume_raw
 	,perps.tx_hash
 	,tx."from" AS tx_from
 	,tx."to" AS tx_to
