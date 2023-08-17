@@ -1,4 +1,5 @@
 {{ config(
+        tags = ['dunesql'],
         alias = alias('pools'),
         post_hook='{{ expose_spells(\'["ethereum", "arbitrum", "polygon"]\',
                                 "project",
@@ -11,6 +12,8 @@
 ref('uniswap_ethereum_pools')
 , ref('uniswap_arbitrum_pools')
 , ref('uniswap_polygon_pools')
+, ref('uniswap_optimism_pools')
+, ref('uniswap_bnb_pools')
 ] %}
 
 

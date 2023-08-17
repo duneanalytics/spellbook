@@ -1,0 +1,13 @@
+version: 2
+
+seeds:
+   - name: bend_dao_nft_lending
+     config:
+       tags: dunesql
+       column_types:
+         block_number: bigint
+         tx_hash: varbinary
+         evt_type: varchar
+         token_id: varchar
+         amount_original: double
+         address: varbinary
