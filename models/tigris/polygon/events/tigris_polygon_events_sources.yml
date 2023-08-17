@@ -194,3 +194,9 @@ sources:
         loaded_at_field: evt_block_time
       - name: options_evt_TradeOpened
         loaded_at_field: evt_block_time
+      - name: options_evt_OptionsLimitOrderExecuted
+        loaded_at_field: evt_block_time
+      - name: options_evt_TradeClosed
+        loaded_at_field: evt_block_time
+      - name: options_evt_OptionsLimitCancelled
+        loaded_at_field: evt_block_time

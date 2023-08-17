@@ -386,3 +386,120 @@ models:
       - &order_type
         name: order_type
         description: "type of order"
+
+  - name: tigris_polygon_events_options_close_position
+    meta:
+      blockchain: polygon
+      project: tigris
+      contributors: Henrystats 
+    config:
+      tags: [ 'tigris', 'perps', 'margin' ]
+    description: >
+      options close position across all versions
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - evt_block_time
+            - evt_tx_hash
+            - position_id
+            - protocol_version
+    columns:
+      - *day
+      - *evt_block_time
+      - *evt_index
+      - *evt_tx_hash
+      - *position_id
+      - *trader
+      - *version
+      - *protocol_version
+      - *project_contract_address
+      - *block_month
+      - *positions_contract
+      - *referral
+      - *pair 
+      - *direction
+      - *open_price
+      - *close_price
+      - *profitnLoss
+      - *collateral
+      - *collateral_asset
+      - *options_period
+      - *order_type
+
+  - name: tigris_polygon_events_options_limit_order
+    meta:
+      blockchain: polygon
+      project: tigris
+      contributors: Henrystats 
+    config:
+      tags: [ 'tigris', 'perps', 'margin' ]
+    description: >
+      options limit order across all versions
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - evt_block_time
+            - evt_tx_hash
+            - position_id
+            - protocol_version
+    columns:
+      - *day
+      - *evt_block_time
+      - *evt_index
+      - *evt_tx_hash
+      - *position_id
+      - *trader
+      - *version
+      - *protocol_version
+      - *project_contract_address
+      - *block_month
+      - *positions_contract
+      - *referral
+      - *pair 
+      - *direction
+      - *open_price
+      - *close_price
+      - *profitnLoss
+      - *collateral
+      - *collateral_asset
+      - *options_period
+      - *order_type
+
+  - name: tigris_polygon_events_options_limit_cancel
+    meta:
+      blockchain: polygon
+      project: tigris
+      contributors: Henrystats 
+    config:
+      tags: [ 'tigris', 'perps', 'margin' ]
+    description: >
+      options limit cancel across all versions
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - evt_block_time
+            - evt_tx_hash
+            - position_id
+            - protocol_version
+    columns:
+      - *day
+      - *evt_block_time
+      - *evt_index
+      - *evt_tx_hash
+      - *position_id
+      - *trader
+      - *version
+      - *protocol_version
+      - *project_contract_address
+      - *block_month
+      - *positions_contract
+      - *referral
+      - *pair 
+      - *direction
+      - *open_price
+      - *close_price
+      - *profitnLoss
+      - *collateral
+      - *collateral_asset
+      - *options_period
+      - *order_type
