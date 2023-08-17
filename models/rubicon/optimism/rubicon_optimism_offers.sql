@@ -71,8 +71,8 @@ raw_trades as (
         t1.pay_gem AS sell_token_address,
         t1.buy_gem AS buy_token_address,
         t1.evt_block_time,
-        CAST(t1.take_amt AS DECIMAL(38,0)) AS sold_amount_raw,
-        CAST(t1.give_amt AS DECIMAL(38,0)) AS bought_amount_raw
+        CAST(t1.take_amt as uint256) AS sold_amount_raw,
+        CAST(t1.give_amt as uint256) AS bought_amount_raw
     FROM {{ source('rubicon_optimism', 'RubiconMarket_evt_LogTake') }} t1 
 
     UNION
@@ -83,8 +83,8 @@ raw_trades as (
         t2.pay_gem AS sell_token_address,
         t2.buy_gem AS buy_token_address,
         t2.evt_block_time,
-        CAST(t2.take_amt AS DECIMAL(38,0)) AS sold_amount_raw,
-        CAST(t2.give_amt AS DECIMAL(38,0)) AS bought_amount_raw
+        CAST(t2.take_amt as uint256) AS sold_amount_raw,
+        CAST(t2.give_amt as uint256) AS bought_amount_raw
     FROM {{ source('rubicon_optimism', 'RubiconMarket_evt_emitTake') }} t2
 ),
 
@@ -94,10 +94,10 @@ trades AS
     SELECT t.*,  
         erc20_sell.symbol AS sell_token_symbol,
         erc20_buy.symbol AS buy_token_symbol,
-        CAST(t.sold_amount_raw AS DECIMAL(38,0)) / power(10, erc20_sell.decimals) AS sold_amount,
-        CAST(t.bought_amount_raw AS DECIMAL(38,0)) / power(10, erc20_buy.decimals) AS bought_amount,
-        (CAST(t.sold_amount_raw AS DECIMAL(38,0)) / power(10, erc20_sell.decimals)) * sell_token_price.price AS sold_amount_usd,
-        (CAST(t.bought_amount_raw AS DECIMAL(38,0)) / power(10, erc20_buy.decimals)) * buy_token_price.price AS bought_amount_usd
+        CAST(t.sold_amount_raw as uint256) / power(10, erc20_sell.decimals) AS sold_amount,
+        CAST(t.bought_amount_raw as uint256) / power(10, erc20_buy.decimals) AS bought_amount,
+        (CAST(t.sold_amount_raw as uint256) / power(10, erc20_sell.decimals)) * sell_token_price.price AS sold_amount_usd,
+        (CAST(t.bought_amount_raw as uint256) / power(10, erc20_buy.decimals)) * buy_token_price.price AS bought_amount_usd
     FROM raw_trades t
 
     -- get the relevant sell token data
@@ -174,16 +174,16 @@ SELECT
         WHEN lower(erc20_sell.symbol) > lower(erc20_buy.symbol) THEN concat(erc20_buy.symbol, '-', erc20_sell.symbol)
         ELSE concat(erc20_sell.symbol, '-', erc20_buy.symbol)
     END AS token_pair,
-    CAST(offers.sell_amount_raw AS DECIMAL(38, 0)) / power(10, erc20_sell.decimals) AS sell_amount,
-    cast(offers.buy_amount_raw AS DECIMAL(38, 0)) / power(10, erc20_buy.decimals) AS buy_amount,
-    CAST(offers.sell_amount_raw AS DECIMAL(38,0)) AS sell_amount_raw,
-    CAST(offers.buy_amount_raw AS DECIMAL(38,0)) AS buy_amount_raw,
+    CAST(offers.sell_amount_raw as uint256) / power(10, erc20_sell.decimals) AS sell_amount,
+    cast(offers.buy_amount_raw as uint256) / power(10, erc20_buy.decimals) AS buy_amount,
+    CAST(offers.sell_amount_raw as uint256) AS sell_amount_raw,
+    CAST(offers.buy_amount_raw as uint256) AS buy_amount_raw,
     trades.sold_amount AS sold_amount,
     trades.bought_amount AS bought_amount,
-    CAST(trades.sold_amount_raw AS DECIMAL(38,0)) AS sold_amount_raw,
-    CAST(trades.bought_amount_raw AS DECIMAL(38,0)) AS bought_amount_raw,
-    cast(offers.sell_amount_raw AS DECIMAL(38, 0)) / power(10, erc20_sell.decimals) * sell_token_price.price AS sell_amount_usd,
-    cast(offers.buy_amount_raw AS DECIMAL(38, 0)) / power(10, erc20_buy.decimals) * buy_token_price.price AS buy_amount_usd,
+    CAST(trades.sold_amount_raw as uint256) AS sold_amount_raw,
+    CAST(trades.bought_amount_raw as uint256) AS bought_amount_raw,
+    cast(offers.sell_amount_raw as uint256) / power(10, erc20_sell.decimals) * sell_token_price.price AS sell_amount_usd,
+    cast(offers.buy_amount_raw as uint256) / power(10, erc20_buy.decimals) * buy_token_price.price AS buy_amount_usd,
     trades.sold_amount_usd AS sold_amount_usd,
     trades.bought_amount_usd AS bought_amount_usd,
     txn.gas_price AS gas_price,
@@ -191,9 +191,9 @@ SELECT
     txn.l1_gas_price AS l1_gas_price,
     txn.l1_gas_used AS l1_gas_used,
     txn.l1_fee_scalar AS l1_fee_scalar,
-    ((CAST(txn.gas_used AS DECIMAL(38,0)) / power(10, 18)) * CAST(txn.gas_price AS decimal(38,0))) + ((CAST(txn.l1_gas_used AS DECIMAL(38,0)) / power(10, 18)) * CAST(txn.l1_gas_price AS decimal(38,0)) * CAST(txn.l1_fee_scalar AS decimal(38,0))) AS txn_cost_eth,
+    ((CAST(txn.gas_used as uint256) / power(10, 18)) * CAST(txn.gas_price as uint256)) + ((CAST(txn.l1_gas_used as uint256) / power(10, 18)) * CAST(txn.l1_gas_price as uint256) * CAST(txn.l1_fee_scalar as uint256)) AS txn_cost_eth,
     eth.price AS eth_price,
-    ((CAST(txn.gas_used AS DECIMAL(38,0)) / power(10, 18)) * CAST(txn.gas_price AS decimal(38,0))) + ((CAST(txn.l1_gas_used AS DECIMAL(38,0)) / power(10, 18)) * CAST(txn.l1_gas_price AS decimal(38,0)) * CAST(txn.l1_fee_scalar AS decimal(38,0))) * eth.price AS txn_cost_usd,
+    ((CAST(txn.gas_used as uint256) / power(10, 18)) * CAST(txn.gas_price as uint256)) + ((CAST(txn.l1_gas_used as uint256) / power(10, 18)) * CAST(txn.l1_gas_price as uint256) * CAST(txn.l1_fee_scalar as uint256)) * eth.price AS txn_cost_usd,
     offers.project_contract_address, 
     offers.tx_hash,
     txn."from" AS tx_from,
