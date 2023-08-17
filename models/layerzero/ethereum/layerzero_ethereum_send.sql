@@ -25,7 +25,7 @@ WITH send_detail AS (
         s._adapterParams AS adapter_params,
         s._refundAddress AS refund_address,
         s._zroPaymentAddress AS zro_payment_address,
-        t.from AS user_address,
+        t."from" AS user_address,
         t.to AS transaction_contract_address,
         CAST(t.value AS DOUBLE) AS transaction_value,
         CASE WHEN len(_destination) >= 82
