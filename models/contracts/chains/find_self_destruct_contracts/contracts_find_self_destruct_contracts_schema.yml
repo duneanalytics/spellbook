@@ -1,7 +1,7 @@
 version: 2
 
 models:
-  - name: find_arbitrum_self_destruct_contracts
+  - name: contracts_arbitrum_find_self_destruct_contracts
     meta:
       blockchain: arbitrum
       sector: contracts
@@ -41,7 +41,7 @@ models:
         description: "Tx Hash where contract was destructed"
 
 
-  - name: find_avalanche_c_self_destruct_contracts
+  - name: contracts_avalanche_c_find_self_destruct_contracts
     meta:
       blockchain: avalanche_c
       sector: contracts
@@ -61,7 +61,7 @@ models:
       - *destructed_tx_hash
       
 
-  - name: find_base_self_destruct_contracts
+  - name: contracts_base_find_self_destruct_contracts
     meta:
       blockchain: base
       sector: contracts
@@ -80,7 +80,7 @@ models:
       - *destructed_block_number
       - *destructed_tx_hash
 
-  - name: find_bnb_self_destruct_contracts
+  - name: contracts_bnb_find_self_destruct_contracts
     meta:
       blockchain: bnb
       sector: contracts
@@ -99,7 +99,7 @@ models:
       - *destructed_block_number
       - *destructed_tx_hash
 
-  - name: find_celo_self_destruct_contracts
+  - name: contracts_celo_find_self_destruct_contracts
     meta:
       blockchain: celo
       sector: contracts
@@ -118,7 +118,7 @@ models:
       - *destructed_block_number
       - *destructed_tx_hash
 
-  - name: find_ethereum_self_destruct_contracts
+  - name: contracts_ethereum_find_self_destruct_contracts
     meta:
       blockchain: ethereum
       sector: contracts
@@ -137,7 +137,7 @@ models:
       - *destructed_block_number
       - *destructed_tx_hash
 
-  - name: find_fantom_self_destruct_contracts
+  - name: contracts_fantom_find_self_destruct_contracts
     meta:
       blockchain: fantom
       sector: contracts
@@ -156,7 +156,7 @@ models:
       - *destructed_block_number
       - *destructed_tx_hash
 
-  - name: find_gnosis_self_destruct_contracts
+  - name: contracts_gnosis_find_self_destruct_contracts
     meta:
       blockchain: gnosis
       sector: contracts
@@ -175,7 +175,7 @@ models:
       - *destructed_block_number
       - *destructed_tx_hash
 
-  - name: find_goerli_self_destruct_contracts
+  - name: contracts_goerli_find_self_destruct_contracts
     meta:
       blockchain: goerli
       sector: contracts
@@ -194,7 +194,7 @@ models:
       - *destructed_block_number
       - *destructed_tx_hash
 
-  - name: find_optimism_self_destruct_contracts
+  - name: contracts_optimism_find_self_destruct_contracts
     meta:
       blockchain: optimism
       sector: contracts
@@ -213,7 +213,7 @@ models:
       - *destructed_block_number
       - *destructed_tx_hash
 
-  - name: find_polygon_self_destruct_contracts
+  - name: contracts_polygon_find_self_destruct_contracts
     meta:
       blockchain: polygon
       sector: contracts

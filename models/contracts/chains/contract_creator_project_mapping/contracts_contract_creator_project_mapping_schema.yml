@@ -1,7 +1,7 @@
 version: 2
 
 models:
-  - name: contract_arbitrum_creator_project_mapping
+  - name: contracts_arbitrum_creator_project_mapping
     meta:
       blockchain: arbitrum
       sector: contracts
@@ -22,18 +22,18 @@ models:
         name: trace_creator_address
         description: "Address creating the contract in the transaction trace"
       - &contract_address
-        name: contract_address
+        name: contracts_address
         description: "Address of the contract"
         tests:
           - not_null
       - &contract_project
-        name: contract_project
+        name: contracts_project
         description: "Project name of the contract"
       - &token_symbol
         name: token_symbol
         description: "Token symbol of the contract, if any"
       - &contract_name
-        name: contract_name
+        name: contracts_name
         description: "Contract name"
       - &creator_address
         name: creator_address
@@ -42,7 +42,7 @@ models:
         name: created_time
         description: "contract creation time"
       - &contract_creator_if_factory
-        name: contract_creator_if_factory
+        name: contracts_creator_if_factory
         description: "Contract creator address if it is a factory contract"
       - &is_self_destruct
         name: is_self_destruct
@@ -105,7 +105,7 @@ models:
         name: is_updated_on_last_run
         description: "Was this contract updated on the last run (used for incremental table building)"
 
-  - name: contract_avalanche_c_creator_project_mapping
+  - name: contracts_avalanche_c_creator_project_mapping
     meta:
       blockchain: avalanche_c
       sector: contracts
@@ -149,7 +149,7 @@ models:
       - *is_eoa_deployed
       - *is_updated_on_last_run
 
-  - name: contract_base_creator_project_mapping
+  - name: contracts_base_creator_project_mapping
     meta:
       blockchain: base
       sector: contracts
@@ -193,7 +193,7 @@ models:
       - *is_eoa_deployed
       - *is_updated_on_last_run
 
-  - name: contract_bnb_creator_project_mapping
+  - name: contracts_bnb_creator_project_mapping
     meta:
       blockchain: bnb
       sector: contracts
@@ -237,7 +237,7 @@ models:
       - *is_eoa_deployed
       - *is_updated_on_last_run
 
-  - name: contract_celo_creator_project_mapping
+  - name: contracts_celo_creator_project_mapping
     meta:
       blockchain: celo
       sector: contracts
@@ -281,7 +281,7 @@ models:
       - *is_eoa_deployed
       - *is_updated_on_last_run
 
-  - name: contract_ethereum_creator_project_mapping
+  - name: contracts_ethereum_creator_project_mapping
     meta:
       blockchain: ethereum
       sector: contracts
@@ -325,7 +325,7 @@ models:
       - *is_eoa_deployed
       - *is_updated_on_last_run
 
-  - name: contract_fantom_creator_project_mapping
+  - name: contracts_fantom_creator_project_mapping
     meta:
       blockchain: fantom
       sector: contracts
@@ -369,7 +369,7 @@ models:
       - *is_eoa_deployed
       - *is_updated_on_last_run
 
-  - name: contract_gnosis_creator_project_mapping
+  - name: contracts_gnosis_creator_project_mapping
     meta:
       blockchain: gnosis
       sector: contracts
@@ -413,7 +413,7 @@ models:
       - *is_eoa_deployed
       - *is_updated_on_last_run
 
-  - name: contract_goerli_creator_project_mapping
+  - name: contracts_goerli_creator_project_mapping
     meta:
       blockchain: goerli
       sector: contracts
@@ -457,7 +457,7 @@ models:
       - *is_eoa_deployed
       - *is_updated_on_last_run
       
-  - name: contract_optimism_creator_project_mapping
+  - name: contracts_optimism_creator_project_mapping
     meta:
       blockchain: optimism
       sector: contracts
@@ -501,7 +501,7 @@ models:
       - *is_eoa_deployed
       - *is_updated_on_last_run
       
-  - name: contract_polygon_creator_project_mapping
+  - name: contracts_polygon_creator_project_mapping
     meta:
       blockchain: polygon
       sector: contracts
