@@ -753,6 +753,9 @@ SELECT
     from_hex( json_extract_scalar(json_data, '$[' || cast(t.index as varchar) || '].newAddress') ) AS newAddress,
     from_hex( json_extract_scalar(json_data, '$[' || cast(t.index as varchar) || '].token0') ) AS token0,
     from_hex( json_extract_scalar(json_data, '$[' || cast(t.index as varchar) || '].token1') ) AS token1,
-    cast( json_extract_scalar(json_data, '$[' || cast(t.index as varchar) || '].fee') as bigint) AS fee
+    cast( json_extract_scalar(json_data, '$[' || cast(t.index as varchar) || '].fee') as bigint) AS fee,
+    cast('2021-01-14' as timestamp) as creation_block_time,
+    0 as creation_block_number,
+    0x0000000000000000000000000000000000000000 as contract_address
 FROM ovm1_legacy_pools_raw
 CROSS JOIN UNNEST(sequence(0, json_array_length(json_data) - 1)) AS t(index)

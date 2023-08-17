@@ -1,5 +1,5 @@
 {{ config(
-	tags=['legacy'],
+	tags=['legacy', 'prod_exclude'],
 	
     alias = alias('send', legacy_model=True),
     partition_by = ['block_date'],
