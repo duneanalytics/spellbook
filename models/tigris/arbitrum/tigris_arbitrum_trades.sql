@@ -218,7 +218,7 @@ liquidate_position as (
         open_position_join op 
         ON lp.position_id = op.position_id 
         AND lp.positions_contract = op.positions_contract
-        AND lp.protocol_version = lo.protocol_version
+        AND lp.protocol_version = op.protocol_version
     LEFT JOIN
         limit_order_join lo 
         ON lp.position_id = lo.position_id 
