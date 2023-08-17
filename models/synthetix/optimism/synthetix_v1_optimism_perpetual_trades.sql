@@ -22,11 +22,6 @@ asset_price AS (
 	SELECT
 		s.contract_address AS market_address
 		,from_utf8(sm.asset) as asset
-		-- ,DECODE(
-		-- 	UNHEX(
-		-- 		SUBSTRING(sm.asset, 3)
-		-- 		), 'UTF-8'
-		-- 	) AS asset
 		,s.evt_block_time
 		,AVG(s.lastPrice/1e18) AS price
 	FROM {{ source('synthetix_optimism', 'FuturesMarket_evt_PositionModified') }} s
@@ -40,25 +35,9 @@ asset_price AS (
 
 synthetix_markets AS (
 	SELECT DISTINCT
-		--finds the position of the first occurence '00' in the hex string which indicates null characters/padded zeroes
-		--characters before this position should be taken to get the asset's hex name; use 'unhex' to get the readable text
-
-		--if the position is on an even number, that means the first '0' is part of the hexed version of the asset's last letter
-		--in this case, this zero should be included in the hex characters to be unhexed to get the complete asset's name
-
-		--substring starts on 3 to skip the '0x' at the beginning of the string
 		from_utf8(asset) as asset
-		-- CASE
-		-- 	WHEN MOD(POSITION('00' IN SUBSTRING(asset, 3)), 2) = 0 THEN UNHEX(SUBSTRING(asset, 3, POSITION('00' IN SUBSTRING(asset, 3))))
-		-- 	ELSE UNHEX(SUBSTRING(asset, 3, POSITION('00' IN SUBSTRING(asset, 3))-1))
-		-- END AS asset
-		
 		,market
 		,from_utf8(marketKey) as marketKey
-		-- ,CASE
-		-- 	WHEN MOD(POSITION('00' IN SUBSTRING(marketKey, 3)), 2) = 0 THEN UNHEX(SUBSTRING(marketKey, 3, POSITION('00' IN SUBSTRING(marketKey, 3))))
-		-- 	ELSE UNHEX(SUBSTRING(asset, 3, POSITION('00' IN SUBSTRING(marketKey, 3))-1))
-		-- END AS marketKey
 	FROM {{ source('synthetix_optimism', 'FuturesMarketManager_evt_MarketAdded') }}
 ),
 
@@ -67,25 +46,16 @@ perps AS (
 		s.evt_block_time AS block_time
 		,s.evt_block_number AS block_number
 		,sm.asset as virtual_asset
-		-- ,DECODE(sm.asset, 'UTF-8') AS virtual_asset
-		
 		,CASE 
 			WHEN SUBSTRING((sm.asset), 1, 1) = 's' THEN SUBSTRING((sm.asset), 2)
 			ELSE sm.asset
 		END as underlying_asset
-		-- ,CASE
-		-- 	WHEN LEFT(sm.asset, 1) = 's' THEN SUBSTRING(sm.asset, 2) --removes 's' indicator from synthetic assets
-		-- 	ELSE sm.asset
-		-- END AS underlying_asset
-
 		,sm.marketKey as market
-		-- ,DECODE(sm.marketKey, 'UTF-8') AS market
 		,s.contract_address AS market_address
 		,ABS(s.tradeSize)/1e18 * p.price AS volume_usd
 		,s.fee/1e18 AS fee_usd
 		,s.margin/1e18 AS margin_usd
 		,(ABS(s.tradeSize)/1e18 * p.price) / (s.margin/1e18) AS leverage_ratio
-
 		,CASE
 		WHEN (CAST(s.margin AS DOUBLE) >= 0 AND CAST(s.size AS DOUBLE) = 0 AND CAST(s.tradeSize AS DOUBLE) < 0 AND s.size != s.tradeSize) THEN 'close'
 		WHEN (CAST(s.margin AS DOUBLE) >= 0 AND CAST(s.size AS DOUBLE) = 0 AND CAST(s.tradeSize AS DOUBLE) > 0 AND s.size != s.tradeSize) THEN 'close'
@@ -93,7 +63,6 @@ perps AS (
 		WHEN CAST(s.tradeSize AS DOUBLE) < 0 THEN 'short'
 		ELSE 'NA'
 		END AS trade
-
 		,'Synthetix' AS project
 		,'1' AS version
 		,COALESCE(
@@ -103,7 +72,6 @@ perps AS (
 			), 
 			'Unspecified'		
 		) as frontend
-		-- ,INITCAP(IFNULL(DECODE(UNHEX(SUBSTRING(tr.trackingCode, 3)), 'UTF-8'), 'Unspecified')) AS frontend
 		,s.account AS trader
 		,cast(s.tradeSize as double) AS volume_raw
 		,s.evt_tx_hash AS tx_hash
