@@ -102,7 +102,8 @@ models:
         description: 'UTC event block time truncated to the hour mark'
         tests:
           - not_null
-      - name: contract_address
+      - &contract_address
+        name: contract_address
         description: 'avalanche address for the liquidity pool used in transaction'
       - &median_price
         name: median_price
@@ -124,12 +125,8 @@ models:
             - evt_index
             - block_date
     columns:
-      - &blockchain
-        name: blockchain
-        description: "Blockchain"
-      - &contract_address
-        name: contract_address
-        description: "Address of BPT being transfered"
+      - *blockchain
+      - *contract_address
       - &block_date
         name: block_date
         description: "UTC event block date"
