@@ -57,7 +57,7 @@ select
     , coalesce(
         (s.toAmount / power(10, prices_b.decimals)) * prices_b.price
         ,(s.fromAmount / power(10, prices_s.decimals)) * prices_s.price
-    ) as amount_usd	
+    ) as amount_usd
 	, s.toToken as token_bought_address
 	, s.fromToken as token_sold_address
 	, erc20_b.symbol as token_bought_symbol
@@ -75,7 +75,7 @@ select
     , tx."from" as tx_from
     , tx.to as tx_to
 	, s.evt_index as evt_index
-from 
+from
     wombat_swaps_all_pools s
 inner join {{ source('bnb', 'transactions') }} tx
     on tx.hash = s.evt_tx_hash
@@ -87,7 +87,7 @@ inner join {{ source('bnb', 'transactions') }} tx
     {% endif %}
 -- bought tokens
 left join {{ ref('tokens_erc20') }} erc20_b
-    on erc20_b.contract_address = s.toToken 
+    on erc20_b.contract_address = s.toToken
     and erc20_b.blockchain = 'bnb'
 -- sold tokens
 left join {{ ref('tokens_erc20') }} erc20_s
