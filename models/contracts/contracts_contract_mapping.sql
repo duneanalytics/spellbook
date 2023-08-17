@@ -14,7 +14,7 @@
   )
 }}
 
-{% set chain_model = [
+{% set chain_models = [
  ref('contracts_arbitrum_contract_creator_project_mapping')
 ,ref('contracts_avalanche_c_contract_creator_project_mapping')
 ,ref('contracts_base_contract_creator_project_mapping')
