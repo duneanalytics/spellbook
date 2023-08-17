@@ -22,6 +22,7 @@
 ,ref('kyberswap_trades')
 ,ref('mdex_bnb_trades')
 ,ref('nomiswap_bnb_trades')
+,ref('hashflow_trades')
  #}
 
 {% set dex_trade_models = [
@@ -40,7 +41,6 @@
 ,ref('bancor_ethereum_trades')
 ,ref('platypus_finance_avalanche_c_trades')
 ,ref('trader_joe_trades')
-,ref('hashflow_trades')
 ,ref('mstable_ethereum_trades')
 ,ref('zigzag_trades')
 ,ref('gmx_trades')
