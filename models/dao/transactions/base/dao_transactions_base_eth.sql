@@ -1,6 +1,6 @@
 {{ config(
     tags = ['dunesql'],
-    alias = alias('transactions_ethereum_eth'),
+    alias = alias('transactions_base_eth'),
     partition_by = ['block_month'],
     materialized = 'incremental',
     file_format = 'delta',
@@ -9,7 +9,7 @@
     )
 }}
 
-{% set transactions_start_date = '2018-10-27' %}
+{% set transactions_start_date = '2023-08-02' %}
 
 WITH 
 
@@ -20,7 +20,7 @@ dao_tmp as (
             dao, 
             dao_wallet_address
         FROM 
-        {{ ref('dao_addresses_ethereum') }}
+        {{ ref('dao_addresses_base') }}
         WHERE dao_wallet_address IS NOT NULL
         AND dao_wallet_address NOT IN (0x0000000000000000000000000000000000000001, 0x000000000000000000000000000000000000dead, 0x)
 ), 
@@ -29,7 +29,7 @@ transactions as (
         SELECT 
             block_time, 
             tx_hash, 
-            0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee as token, 
+            0xDeadDeAddeAddEAddeadDEaDDEAdDeaDDeAD0000 as token, 
             value as value, 
             "to" as dao_wallet_address, 
             'tx_in' as tx_type, 
@@ -37,7 +37,7 @@ transactions as (
             COALESCE("from", 0x) as address_interacted_with,
             trace_address
         FROM 
-        {{ source('ethereum', 'traces') }}
+        {{ source('base', 'traces') }}
         {% if not is_incremental() %}
         WHERE block_time >= DATE '{{transactions_start_date}}'
         {% endif %}
@@ -54,7 +54,7 @@ transactions as (
         SELECT 
             block_time, 
             tx_hash, 
-            0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee as token, 
+            0xDeadDeAddeAddEAddeadDEaDDEAdDeaDDeAD0000 as token, 
             value as value, 
             "from" as dao_wallet_address, 
             'tx_out' as tx_type,
@@ -62,7 +62,7 @@ transactions as (
             COALESCE("to", 0x) as address_interacted_with,
             trace_address
         FROM 
-        {{ source('ethereum', 'traces') }}
+        {{ source('base', 'traces') }}
         {% if not is_incremental() %}
         WHERE block_time >= DATE '{{transactions_start_date}}'
         {% endif %}
@@ -73,6 +73,54 @@ transactions as (
         AND (LOWER(call_type) NOT IN ('delegatecall', 'callcode', 'staticcall') or call_type IS NULL)
         AND success = true 
         AND CAST(value as double) != 0 
+
+ --ETH Transfers from deposits and withdrawals are ERC20 transfers of the 'deadeadead' ETH token. These do not appear in traces. query copied over from MSilb7 base erc20 transfer spells!
+ 
+        UNION ALL 
+
+        SELECT 
+            evt_block_time as block_time, 
+            evt_tx_hash as tx_hash, 
+            0xDeadDeAddeAddEAddeadDEaDDEAdDeaDDeAD0000 as token,
+            value, 
+            "to" as dao_wallet_address,
+            'tx_in' as tx_type,
+            evt_index as tx_index,
+            "from" as address_interacted_with,
+            array[evt_index] as trace_address
+        FROM 
+        {{ source('erc20_base', 'evt_transfer') }}
+        {% if not is_incremental() %}
+        WHERE evt_block_time >= DATE '{{transactions_start_date}}'
+        {% endif %}
+        {% if is_incremental() %}
+        WHERE evt_block_time >= date_trunc('day', now() - interval '7' Day)
+        {% endif %}
+        AND "to" IN (SELECT dao_wallet_address FROM dao_tmp)
+        AND contract_address = 0xDeadDeAddeAddEAddeadDEaDDEAdDeaDDeAD0000
+
+        UNION ALL 
+
+        SELECT 
+            evt_block_time as block_time, 
+            evt_tx_hash as tx_hash, 
+            0xDeadDeAddeAddEAddeadDEaDDEAdDeaDDeAD0000 as token,
+            value, 
+            "from" as dao_wallet_address,
+            'tx_out' as tx_type,
+            evt_index as tx_index,
+            "to" as address_interacted_with,
+            array[evt_index] as trace_address
+        FROM 
+        {{ source('erc20_base', 'evt_transfer') }}
+        {% if not is_incremental() %}
+        WHERE evt_block_time >= DATE '{{transactions_start_date}}'
+        {% endif %}
+        {% if is_incremental() %}
+        WHERE evt_block_time >= date_trunc('day', now() - interval '7' Day)
+        {% endif %}
+        AND "from" IN (SELECT dao_wallet_address FROM dao_tmp)
+        AND contract_address = 0xDeadDeAddeAddEAddeadDEaDDEAdDeaDDeAD0000
 )
 
 SELECT 
@@ -103,7 +151,7 @@ LEFT JOIN
 {{ source('prices', 'usd') }} p 
     ON p.minute = date_trunc('minute', t.block_time)
     AND p.symbol = 'WETH'
-    AND p.blockchain = 'ethereum'
+    AND p.blockchain = 'base'
     {% if not is_incremental() %}
     AND p.minute >= DATE '{{transactions_start_date}}'
     {% endif %}
@@ -115,9 +163,12 @@ LEFT JOIN
 -- {{ ref('dex_prices') }} dp 
 --     ON dp.hour = date_trunc('hour', t.block_time)
 --     AND dp.contract_address = 0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2
---     AND dp.blockchain = 'ethereum'
+--     AND dp.blockchain = 'base'
 --     AND dp.hour >= DATE '{{transactions_start_date}}'
 --     {% if is_incremental() %}
 --     AND dp.hour >= date_trunc('day', now() - interval '7' Day)
 --     {% endif %}
 #}
+
+
+
