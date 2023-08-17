@@ -1195,7 +1195,7 @@ sources:
 
       - name: ERC4626LinearPoolFactory_call_create
         description: >
-          Decoded table of registered pools on the Balancer ComposableStablePoolFactory contract.
+          Decoded table of registered pools on the Balancer ERC4626LinearPoolFactory contract.
         loaded_at_field: call_block_time
         columns:
           - *call_block_number
@@ -1204,7 +1204,7 @@ sources:
           - *call_trace_address
           - *call_tx_hash
           - name: contract_address
-            description: 'Address of the ComposableStablePoolFactory contract'
+            description: 'Address of the ERC4626LinearPoolFactory contract'
           - name: name
             description: 'Name of the created pool'
           - *tokenRateCacheDurations
@@ -1219,7 +1219,7 @@ sources:
 
       - name: ManagedPoolFactory_call_create
         description: >
-          Decoded table of registered pools on the Balancer ComposableStablePoolFactory contract.
+          Decoded table of registered pools on the Balancer ManagedPoolFactory contract.
         loaded_at_field: call_block_time
         columns:
           - *call_block_number
@@ -1228,7 +1228,7 @@ sources:
           - *call_trace_address
           - *call_tx_hash
           - name: contract_address
-            description: 'Address of the ComposableStablePoolFactory contract'
+            description: 'Address of the ManagedStablePoolFactory contract'
           - name: name
             description: 'Name of the created pool'
           - *tokenRateCacheDurations
