@@ -1,7 +1,8 @@
 {{ config(
-    tags = ['dunesql'],
-    alias = alias('trades'),
-    post_hook='{{ expose_spells(\'["polygon"]\',
+	tags=['legacy'],
+	
+    alias = alias('trades', legacy_model=True),
+    post_hook='{{ expose_spells(\'["avalanche_c"]\',
                                 "project",
                                 "balancer",
                                 \'["bizzyvinci", "thetroyharris"]\') }}'
@@ -9,7 +10,7 @@
 }}
 
 {% set balancer_models = [
-    ref('balancer_v2_polygon_trades')
+    ref('balancer_v2_avalanche_c_trades_legacy')
 ] %}
 
 SELECT *

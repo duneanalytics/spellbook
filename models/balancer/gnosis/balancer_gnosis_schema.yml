@@ -20,7 +20,7 @@ models:
             - tx_hash
             - evt_index
             - trace_address
-      - check_dex_seed_legacy:
+      - check_dex_seed:
           blockchain: gnosis
           project: balancer
           version: 2
@@ -308,7 +308,6 @@ models:
       - *token_address
       - *normalized_weight
 
-
   - name: balancer_v2_gnosis_transfers_bpt
     meta:
       blockchain: gnosis
@@ -347,3 +346,7 @@ models:
       - &value
         name: value
         description: 'Amount of BPT transferred in transfer event'
+
+
+
+

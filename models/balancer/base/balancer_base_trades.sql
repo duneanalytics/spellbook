@@ -1,7 +1,7 @@
 {{ config(
     tags = ['dunesql'],
     alias = alias('trades'),
-    post_hook='{{ expose_spells(\'["polygon"]\',
+    post_hook='{{ expose_spells(\'["base"]\',
                                 "project",
                                 "balancer",
                                 \'["bizzyvinci", "thetroyharris"]\') }}'
@@ -9,7 +9,7 @@
 }}
 
 {% set balancer_models = [
-    ref('balancer_v2_polygon_trades')
+    ref('balancer_v2_base_trades')
 ] %}
 
 SELECT *
