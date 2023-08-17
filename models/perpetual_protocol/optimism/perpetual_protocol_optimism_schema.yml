@@ -84,6 +84,9 @@ models:
       - &evt_index
         name: evt_index
         description: "Event index number"
+      - &block_month
+        name: block_month
+        description: "Month of the transaction"
 
   - name: perpetual_protocol_optimism_perpetual_trades
     meta:
@@ -116,3 +119,4 @@ models:
       - *tx_from
       - *tx_to
       - *evt_index
+      - *block_month
