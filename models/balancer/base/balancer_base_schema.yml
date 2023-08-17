@@ -77,6 +77,12 @@ models:
       - &maker
         name: maker
         description: "Address of trader who sold a token"
+      - &pool_id
+        name: pool_id
+        description: "Pool id"
+      - &swap_fee
+        name: swap_fee
+        description: 'Swap fee'
       - &project_contract_address
         name: project_contract_address
         description: "Pool address"
@@ -137,9 +143,9 @@ models:
       - name: token_sold_address
       - name: taker
       - name: maker
-      - name: project_contract_address
       - name: pool_id
       - name: swap_fee
+      - name: project_contract_address
       - name: tx_hash
       - name: tx_from
       - name: tx_to

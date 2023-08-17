@@ -41,6 +41,8 @@ FROM (
         token_sold_address,
         taker,
         maker,
+        pool_id,
+        swap_fee,
         project_contract_address,
         tx_hash,
         tx_from,

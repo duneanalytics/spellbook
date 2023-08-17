@@ -209,6 +209,12 @@ models:
       - &maker
         name: maker
         description: "Address of trader who sold a token"
+      - &pool_id
+        name: pool_id
+        description: "Pool id"
+      - &swap_fee
+        name: swap_fee
+        description: 'Swap fee'
       - &project_contract_address
         name: project_contract_address
         description: "Pool address"
@@ -223,7 +229,6 @@ models:
         name: trace_address
         description: ""
       - *evt_index
-
 
   - name: balancer_v2_arbitrum_liquidity
     meta:
@@ -288,7 +293,6 @@ models:
       - name: currency_symbol
       - name: recipient
       - name: contract_address
-
 
   - name: balancer_v2_arbitrum_bpt_prices
     meta:
@@ -358,9 +362,9 @@ models:
       - name: token_sold_address
       - name: taker
       - name: maker
-      - name: project_contract_address
       - name: pool_id
       - name: swap_fee
+      - name: project_contract_address
       - name: tx_hash
       - name: tx_from
       - name: tx_to

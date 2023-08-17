@@ -46,7 +46,7 @@ WITH
             swap.tokenOut AS token_bought_address,
             swap.tokenIn AS token_sold_address,
             swap_fees.contract_address AS project_contract_address,
-            swap.poolId AS poolId,
+            swap.poolId AS pool_id,
             swap_fees.swap_fee_percentage / POWER(10, 18) AS swap_fee,
             swap.evt_tx_hash AS tx_hash,
             '' AS trace_address,
