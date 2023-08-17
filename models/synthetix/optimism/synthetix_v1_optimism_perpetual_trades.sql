@@ -120,7 +120,7 @@ perps AS (
 		AND s.tradeSize = tr.sizeDelta
 	WHERE CAST(s.tradeSize AS DOUBLE) != 0
 	{% if is_incremental() %}
-	AND s.evt_block_time >= DATE_TRUNC("DAY", NOW() - INTERVAL '1 WEEK')
+	AND s.evt_block_time >= DATE_TRUNC('DAY', NOW() - INTERVAL '7' Day)
 	{% endif %}
 )
 
