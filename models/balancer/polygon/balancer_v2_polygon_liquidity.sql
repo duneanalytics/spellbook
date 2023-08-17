@@ -29,30 +29,30 @@ WITH pool_labels AS (
         WHERE blockchain = 'polygon'
         GROUP BY 1, 2, 3
     ),
-
-    /*dex_prices_1 AS (
-        SELECT
-            date_trunc('day', HOUR) AS DAY,
-            contract_address AS token,
-            approx_percentile(median_price, 0.5) AS price,
-            sum(sample_size) AS sample_size
-        FROM {{ ref('dex_prices') }}
-        GROUP BY 1, 2
-        HAVING sum(sample_size) > 3
-    ),
-
-    dex_prices AS (
-        SELECT
-            *,
-            LEAD(DAY, 1, NOW()) OVER (
-                PARTITION BY token
-                ORDER BY
-                    DAY
-            ) AS day_of_next_change
-        FROM
-            dex_prices_1
-    ),*/
-
+{#
+--    dex_prices_1 AS (
+--        SELECT
+--            date_trunc('day', HOUR) AS DAY,
+--            contract_address AS token,
+--            approx_percentile(median_price, 0.5) AS price,
+--            sum(sample_size) AS sample_size
+--        FROM {{ ref('dex_prices') }}
+--       GROUP BY 1, 2
+--        HAVING sum(sample_size) > 3
+--    ),
+--
+--    dex_prices AS (
+--        SELECT
+--            *,
+--            LEAD(DAY, 1, NOW()) OVER (
+--                PARTITION BY token
+--                ORDER BY
+--                    DAY
+--            ) AS day_of_next_change
+--        FROM
+--            dex_prices_1
+--    ),
+#}
     bpt_prices AS(
         SELECT 
             date_trunc('day', HOUR) AS day,
@@ -192,11 +192,14 @@ WITH pool_labels AS (
         AND blockchain = 'polygon'
         LEFT JOIN prices p1 ON p1.day = b.day
         AND p1.token = b.token
-        /*LEFT JOIN dex_prices p2 ON p2.day <= c.day
-        AND c.day < p2.day_of_next_change
-        AND p2.token = b.token*/
-        LEFT JOIN bpt_prices p3 ON p3.day = b.day AND CAST(p3.token as varchar) = CAST(b.token as varchar(42))
-        WHERE CAST(b.token as varchar) != SUBSTRING(CAST(b.pool_id as varchar), 1, 42)
+        {#
+--        LEFT JOIN dex_prices p2 ON p2.day <= c.day
+--        AND c.day < p2.day_of_next_change
+--        AND p2.token = b.token
+        #}
+        LEFT JOIN bpt_prices p3 ON p3.day = b.day AND 
+        p3.token = CAST(b.token as VARCHAR)
+        WHERE b.token != BYTEARRAY_SUBSTRING(b.pool_id, 1, 20)
     ),
 
     pool_liquidity_estimates AS (
@@ -227,5 +230,5 @@ LEFT JOIN cumulative_usd_balance c ON c.day = b.day
 AND c.pool_id = b.pool_id
 LEFT JOIN {{ ref('balancer_v2_polygon_pools_tokens_weights') }} w ON b.pool_id = w.pool_id
 AND w.token_address = c.token
-LEFT JOIN pool_labels p ON CAST(p.pool_id as varchar) = SUBSTRING(CAST(b.pool_id as varchar), 1, 42)
+LEFT JOIN pool_labels p ON p.pool_id = BYTEARRAY_SUBSTRING(b.pool_id, 1, 20)
 

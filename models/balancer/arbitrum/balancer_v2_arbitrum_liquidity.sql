@@ -198,8 +198,8 @@ WITH pool_labels AS (
 --        AND p2.token = b.token
         #}
         LEFT JOIN bpt_prices p3 ON p3.day = b.day AND 
-        p3.token = b.token
-        WHERE b.token != BYTEARRAY_SUBSTRING(b.pool_id, 1, 42)
+        p3.token = CAST(b.token as VARCHAR)
+        WHERE b.token != BYTEARRAY_SUBSTRING(b.pool_id, 1, 20)
     ),
 
     pool_liquidity_estimates AS (
@@ -230,5 +230,5 @@ LEFT JOIN cumulative_usd_balance c ON c.day = b.day
 AND c.pool_id = b.pool_id
 LEFT JOIN {{ ref('balancer_v2_arbitrum_pools_tokens_weights') }} w ON b.pool_id = w.pool_id
 AND w.token_address = c.token
-LEFT JOIN pool_labels p ON p.pool_id = BYTEARRAY_SUBSTRING(b.pool_id, 1, 42)
+LEFT JOIN pool_labels p ON p.pool_id = BYTEARRAY_SUBSTRING(b.pool_id, 1, 20)
 
