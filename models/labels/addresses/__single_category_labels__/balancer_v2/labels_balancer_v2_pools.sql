@@ -16,3 +16,5 @@ UNION
 SELECT * FROM  {{ ref('labels_balancer_v2_pools_gnosis') }}
 UNION
 SELECT * FROM  {{ ref('labels_balancer_v2_pools_avalanche_c') }}
+UNION
+SELECT * FROM  {{ ref('labels_balancer_v2_pools_base') }}

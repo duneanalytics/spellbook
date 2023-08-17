@@ -2,7 +2,7 @@
         schema = 'balancer',
         alias = alias('liquidity'), 
         tags = ['dunesql'],
-        post_hook='{{ expose_spells(\'["ethereum","arbitrum", "optimism", "polygon", "gnosis","avalanche_c" 
+        post_hook='{{ expose_spells(\'["ethereum","arbitrum", "optimism", "polygon", "gnosis","avalanche_c", "base" 
         ]\',
                                 "project",
                                 "balancer",
@@ -17,6 +17,7 @@ ref('balancer_v2_ethereum_liquidity')
 , ref('balancer_v2_polygon_liquidity')
 , ref('balancer_v2_gnosis_liquidity')
 , ref('balancer_v2_avalanche_c_liquidity')
+, ref('balancer_v2_base_liquidity')
 ] %}
 
 

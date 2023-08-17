@@ -104,5 +104,5 @@ normalized_weights AS (
 )
 SELECT r.pool_id, w.token_address, w.normalized_weight
 FROM normalized_weights w 
-LEFT JOIN registered r ON SUBSTRING(CAST(r.pool_id as varchar),1,42) = CAST(w.pool_id as varchar)
+LEFT JOIN registered r ON BYTEARRAY_SUBSTRING(r.pool_id,1,20) = w.pool_id
 WHERE w.pool_id IS NOT NULL
