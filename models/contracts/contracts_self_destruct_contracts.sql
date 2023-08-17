@@ -13,7 +13,7 @@
                                     \'["msilb7", "chuxin"]\') }}'
   )
 }}
-{% set chain_model = [
+{% set chain_models = [
  ref('contracts_arbitrum_find_self_destruct_contracts')
 ,ref('contracts_avalanche_c_find_self_destruct_contracts')
 ,ref('contracts_base_find_self_destruct_contracts')
@@ -30,9 +30,7 @@
 SELECT *
 FROM (
     {% for chain_model in chain_models %}
-    SELECT
-          *
-    FROM {{ chain_model }}
+    SELECT * FROM {{ chain_model }}
     {% if is_incremental() %}
     WHERE destructed_time >= date_trunc('day', now() - interval '7' day)
     {% endif %}
