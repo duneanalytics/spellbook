@@ -1,13 +1,13 @@
 {{
     config(
-        schema = 'balancer_v2_gnosis',
-        alias = alias('bpt_prices'),
-        tags = ['dunesql'],
+        tags=['legacy'],
+        schema = 'balancer_v2_base',
+        alias = alias('bpt_prices', legacy_model=True),
         materialized = 'incremental',
         file_format = 'delta',
         incremental_strategy = 'merge',
         unique_key = ['blockchain', 'hour','contract_address'],
-        post_hook = '{{ expose_spells(\'["gnosis"]\',
+        post_hook = '{{ expose_spells(\'["base"]\',
                                     "project",
                                     "balancer_v2",
                                     \'["victorstefenon", "thetroyharris", "viniabussafi"]\') }}'
@@ -16,10 +16,11 @@
 
 WITH
     bpt_trades AS (
-        SELECT * FROM {{ source('balancer_v2_gnosis', 'Vault_evt_Swap') }} v
-        WHERE tokenIn = bytearray_substring(poolId, 1, 20) OR tokenOut = bytearray_substring(poolId, 1, 20)
+        SELECT * FROM {{ source('balancer_v2_base', 'Vault_evt_Swap') }} v
+        WHERE CAST(tokenIn AS VARCHAR(66)) = SUBSTRING(CAST(poolId AS VARCHAR(66)), 1, 42)
+        OR CAST(tokenOut AS VARCHAR(66)) = SUBSTRING(CAST(poolId AS VARCHAR(66)), 1, 42) 
         {% if is_incremental() %}
-        AND v.evt_block_time >= date_trunc('day', now() - interval '7' day)
+        AND v.evt_block_time >= date_trunc('day', now() - interval '1 week')
         {% endif %} 
     ), 
     
@@ -29,7 +30,7 @@ WITH
             a.evt_block_time AS block_time,
             a.evt_block_number AS block_number,
             CAST(a.poolId AS VARCHAR(66)) AS pool_id,
-            CAST(bytearray_substring(a.poolId, 1, 20) AS VARCHAR) AS bpt_address,
+            SUBSTRING(CAST(a.poolId AS VARCHAR(66)), 1, 42) AS bpt_address,
             CAST(a.tokenIn AS VARCHAR(66)) AS token_in,
             CAST(a.amountIn AS DOUBLE) AS amount_in,
             CAST(a.tokenOut AS VARCHAR(66)) AS token_out,
@@ -41,18 +42,18 @@ WITH
             COALESCE(p2.symbol, t2.symbol) AS token_out_sym,
             COALESCE(p2.decimals, t2.decimals) AS token_out_decimals
         FROM bpt_trades a
-        LEFT JOIN {{ source ('prices', 'usd') }} p1 ON p1.contract_address = a.tokenIn AND p1.blockchain = 'gnosis' 
+        LEFT JOIN {{ source ('prices', 'usd') }} p1 ON p1.contract_address = a.tokenIn AND p1.blockchain = 'base' 
             AND  p1.minute = date_trunc('minute', a.evt_block_time)
             {% if is_incremental() %}
-            AND p1.minute >= date_trunc('day', now() - interval '7' day)
+            AND p1.minute >= date_trunc('day', now() - interval '1 week')
             {% endif %} 
-        LEFT JOIN {{ source ('prices', 'usd') }} p2 ON p2.contract_address = a.tokenOut AND p2.blockchain = 'gnosis'
+        LEFT JOIN {{ source ('prices', 'usd') }} p2 ON p2.contract_address = a.tokenOut AND p2.blockchain = 'base'
             AND  p2.minute = date_trunc('minute', a.evt_block_time)
             {% if is_incremental() %}
-            AND p2.minute >= date_trunc('day', now() - interval '7' day)
+            AND p2.minute >= date_trunc('day', now() - interval '1 week')
             {% endif %} 
-        LEFT JOIN {{ ref ('tokens_erc20') }} t1 ON t1.contract_address = a.tokenIn AND t1.blockchain = 'gnosis'
-        LEFT JOIN {{ ref ('tokens_erc20') }} t2 ON t2.contract_address = a.tokenOut AND t2.blockchain = 'gnosis'
+        LEFT JOIN {{ ref ('tokens_erc20_legacy') }} t1 ON t1.contract_address = a.tokenIn AND t1.blockchain = 'base'
+        LEFT JOIN {{ ref ('tokens_erc20_legacy') }} t2 ON t2.contract_address = a.tokenOut AND t2.blockchain = 'base'
         ORDER BY a.evt_block_number DESC, a.evt_index DESC
     ), 
     
@@ -127,10 +128,10 @@ WITH
 
     price_formulation AS (
         SELECT
-            'gnosis' AS blockchain,
+            'base' AS blockchain,
             date_trunc('hour', block_time) AS hour,
             contract_address,
-            approx_percentile(price, 0.5) FILTER (WHERE is_finite(price)) AS median_price
+            approx_percentile(price, 0.5) AS median_price
         FROM (
             SELECT block_time, contract_address, token_in_price AS price 
             FROM backfill_pricing_2 b2 WHERE b2.contract_address = b2.token_in
