@@ -2,7 +2,7 @@
     config(
         alias = alias('balances'),
         tags = ['dunesql'],
-        post_hook='{{ expose_spells_hide_trino(\'["ethereum"]\',
+        post_hook='{{ expose_spells(\'["ethereum"]\',
                                     "project",
                                     "balancer",
                                     \'["metacrypto", "jacektrocinski", "viniabussafi"]\') }}'
@@ -72,5 +72,5 @@ running_cumulative_balance_by_token AS (
     LEFT JOIN cumulative_balance_by_token b ON b.day <= c.day AND c.day < b.day_of_next_change
 )
 
-SELECT * FROM running_cumulative_balance_by_token;
+SELECT * FROM running_cumulative_balance_by_token
 
