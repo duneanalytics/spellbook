@@ -13,3 +13,10 @@ seeds:
         bought_amount_raw: uint256
         l1_gas_price: uint256
         l1_gas_used: uint256
+        maker: varbinary
+        sell_token_address: varbinary
+        buy_token_address: varbinary
+        project_contract_address: varbinary
+        tx_hash: varbinary
+        tx_from: varbinary
+        tx_to: varbinary
