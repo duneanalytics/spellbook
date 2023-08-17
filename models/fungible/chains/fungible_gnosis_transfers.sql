@@ -6,7 +6,7 @@
 )
 }}
 
-{{nft_transfers(
+{{fungible_transfers(
     blockchain='gnosis'
     , native_symbol='xDAI'
     , traces = source('gnosis','traces')

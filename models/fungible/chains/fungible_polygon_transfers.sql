@@ -6,7 +6,7 @@
 )
 }}
 
-{{nft_transfers(
+{{fungible_transfers(
     blockchain='polygon'
     , native_symbol='MATIC'
     , traces = source('polygon','traces')

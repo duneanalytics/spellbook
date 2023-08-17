@@ -217,10 +217,6 @@ models:
         +schema: fungible_polygon
       fantom:
         +schema: fungible_fantom
-      goerli:
-        +schema: fungible_goerli
-      base:
-        +schema: fungible_base
 
     cex:
       +schema: cex

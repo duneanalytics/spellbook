@@ -6,7 +6,7 @@
 )
 }}
 
-{{nft_transfers(
+{{fungible_transfers(
     blockchain='ethereum'
     , native_symbol='ETH'
     , traces = source('ethereum','traces')

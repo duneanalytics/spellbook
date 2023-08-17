@@ -6,7 +6,7 @@
 )
 }}
 
-{{nft_transfers(
+{{fungible_transfers(
     blockchain='avalanche_c'
     , native_symbol='AVAX'
     , traces = source('avalanche_c','traces')

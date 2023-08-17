@@ -6,7 +6,7 @@
 )
 }}
 
-{{nft_transfers(
+{{fungible_transfers(
     blockchain='fantom'
     , native_symbol='FTM'
     , traces = source('fantom','traces')

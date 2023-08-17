@@ -6,7 +6,7 @@
 )
 }}
 
-{{nft_transfers(
+{{fungible_transfers(
     blockchain='arbitrum'
     , native_symbol='ETH'
     , traces = source('arbitrum','traces')
