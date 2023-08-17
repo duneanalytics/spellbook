@@ -50,7 +50,7 @@ seeds:
 models:
   spellbook:
     +post-hook:
-      - sql: "{{ set_trino_session_property(is_materialized(model), 'writer_min_size', model.config.get('writer_min_size', '500MB')) }}"
+      - sql: "{{ set_trino_session_property(is_materialized(model), 'writer_scaling_min_data_processed', model.config.get('writer_min_size', '500MB')) }}"
         transaction: true
       - sql: "{{ set_trino_session_property(is_materialized(model), 'task_scale_writers_enabled', false) }}"
         transaction: true
