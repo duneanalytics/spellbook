@@ -28,11 +28,11 @@ WITH send_detail AS (
         t."from" AS user_address,
         t.to AS transaction_contract_address,
         CAST(t.value AS DOUBLE) AS transaction_value,
-        CASE WHEN len(_destination) >= 82
-            THEN '0x' || right(_destination, 40)
-            ELSE '' END AS local_contract_address, -- 
-        CASE WHEN len(_destination) >= 82
-            THEN substring(_destination, 1, len(_destination) - 40)
+        CASE WHEN bytearray_length(_destination) >= 40
+            THEN bytearray_reverse(bytearray_substring(bytearray_reverse(_destination), 1, 20))
+            ELSE 0x END AS local_contract_address,
+        CASE WHEN bytearray_length(_destination) >= 40
+            THEN bytearray_reverse(bytearray_substring(bytearray_reverse(_destination), 21))
             ELSE _destination END AS remote_contract_address
     FROM {{ source ('layerzero_gnosis', 'gnosisendpoint_call_send') }} s
     INNER JOIN {{ source('gnosis','transactions') }} t on t.block_number = s.call_block_number
