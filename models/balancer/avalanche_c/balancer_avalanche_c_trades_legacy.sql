@@ -1,6 +1,6 @@
 {{ config(
 	tags=['legacy'],
-	
+		schema = 'balancer_avalanche_c',
     alias = alias('trades', legacy_model=True),
     post_hook='{{ expose_spells(\'["avalanche_c"]\',
                                 "project",
