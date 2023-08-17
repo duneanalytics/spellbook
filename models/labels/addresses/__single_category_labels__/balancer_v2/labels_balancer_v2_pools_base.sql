@@ -78,7 +78,7 @@ WITH pools AS (
   SELECT
     c.poolId AS pool_id,
     element AS token_address,
-    CAST(NULL AS DOUBLE) AS normalized_weight,
+    0 AS normalized_weight,
     cc.symbol,
     'LP' AS pool_type
   FROM {{ source('balancer_v2_base', 'Vault_evt_PoolRegistered') }} c
@@ -96,7 +96,7 @@ WITH pools AS (
   SELECT
     c.poolId AS pool_id,
     element AS token_address,
-    CAST(NULL AS DOUBLE) AS normalized_weight,
+    0 AS normalized_weight,
     cc.symbol,
     'LP' AS pool_type
   FROM {{ source('balancer_v2_base', 'Vault_evt_PoolRegistered') }} c
@@ -132,7 +132,7 @@ SELECT
   'balancerlabs' AS contributor,
   'query' AS source,
   timestamp '2023-08-17' AS created_at,
-  timestamp '2023-08-17' AS updated_at,
+  now() AS updated_at,
   'balancer_v2_pools_base' AS model_name,
   'identifier' AS label_type
 FROM (

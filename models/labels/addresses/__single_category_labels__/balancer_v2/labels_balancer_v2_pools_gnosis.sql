@@ -96,7 +96,7 @@ WITH pools AS (
   SELECT
     c.poolId AS pool_id,
     element AS token_address,
-    CAST(NULL AS DOUBLE) AS normalized_weight,
+    0 AS normalized_weight,
     cc.symbol,
     'LP' AS pool_type
   FROM {{ source('balancer_v2_gnosis', 'Vault_evt_PoolRegistered') }} c
@@ -114,7 +114,7 @@ WITH pools AS (
   SELECT
     c.poolId AS pool_id,
     element AS token_address,
-    CAST(NULL AS DOUBLE) AS normalized_weight,
+    0 AS normalized_weight,
     cc.symbol,
     'LP' AS pool_type
   FROM {{ source('balancer_v2_gnosis', 'Vault_evt_PoolRegistered') }} c
