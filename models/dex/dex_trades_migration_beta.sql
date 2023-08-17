@@ -116,7 +116,6 @@ FROM (
         tx_hash,
         tx_from,
         tx_to,
-        trace_address,
         evt_index,
         row_number() over (partition by tx_hash, evt_index order by tx_hash) as duplicates_rank
     FROM {{ dex_model }}
