@@ -1,7 +1,7 @@
 {{ config(
     alias = alias('quotation_trades'),
     tags=['dunesql'],
-    partition_by = ['block_date'],
+    partition_by = ['block_month'],
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
@@ -28,7 +28,7 @@ WITH quo_evt AS (
            premiumNXM,
            scAdd,
            sumAssured,
-           cast('0xd7c49cee7e9188cca6ad8ff264c1da2e69d4cf3b' as varbinary) as token
+           '0xd7c49cee7e9188cca6ad8ff264c1da2e69d4cf3b' as token
     FROM
         {{ source('nexusmutual_ethereum', 'QuotationData_evt_CoverDetailsEvent') }}
     {% if not is_incremental() %}
@@ -67,7 +67,8 @@ SELECT quo_evt.cid,
        quo_evt.evt_block_time                                      AS evt_block_time,
        quo_evt.expiry                                              AS evt_expiry,
        from_unixtime(TRY_CAST(quo_evt.expiry as double) ) AS evt_expiry_date,
-       TRY_CAST(date_trunc('DAY', quo_evt.evt_block_time) AS date) AS block_date
+       TRY_CAST(date_trunc('DAY', quo_evt.evt_block_time) AS date) AS block_date,
+       TRY_CAST(date_trunc('month', quo_evt.evt_block_time) AS date) AS block_month
 FROM quo_evt
 INNER JOIN {{ source('ethereum','transactions') }} tx
     ON CAST(quo_evt.evt_tx_hash AS VARBINARY) = tx.hash
@@ -79,5 +80,5 @@ INNER JOIN {{ source('ethereum','transactions') }} tx
     AND tx.block_time >= date_trunc('day', now() - interval '7' day)
     {% endif %}
 LEFT JOIN {{ ref('tokens_erc20') }} erc20
-    ON quo_evt.token = erc20.contract_address
+    ON CAST(quo_evt.token AS VARBINARY) = erc20.contract_address
     AND erc20.blockchain = 'ethereum'
