@@ -1,7 +1,7 @@
 version: 2
 
 models:
-  - name: contracts_arbitrum_creator_project_mapping
+  - name: contracts_arbitrum_contract_creator_project_mapping
     meta:
       blockchain: arbitrum
       sector: contracts
@@ -105,7 +105,7 @@ models:
         name: is_updated_on_last_run
         description: "Was this contract updated on the last run (used for incremental table building)"
 
-  - name: contracts_avalanche_c_creator_project_mapping
+  - name: contracts_avalanche_c_contract_creator_project_mapping
     meta:
       blockchain: avalanche_c
       sector: contracts
@@ -149,7 +149,7 @@ models:
       - *is_eoa_deployed
       - *is_updated_on_last_run
 
-  - name: contracts_base_creator_project_mapping
+  - name: contracts_base_contract_creator_project_mapping
     meta:
       blockchain: base
       sector: contracts
@@ -193,7 +193,7 @@ models:
       - *is_eoa_deployed
       - *is_updated_on_last_run
 
-  - name: contracts_bnb_creator_project_mapping
+  - name: contracts_bnb_contract_creator_project_mapping
     meta:
       blockchain: bnb
       sector: contracts
@@ -237,7 +237,7 @@ models:
       - *is_eoa_deployed
       - *is_updated_on_last_run
 
-  - name: contracts_celo_creator_project_mapping
+  - name: contracts_celo_contract_creator_project_mapping
     meta:
       blockchain: celo
       sector: contracts
@@ -281,7 +281,7 @@ models:
       - *is_eoa_deployed
       - *is_updated_on_last_run
 
-  - name: contracts_ethereum_creator_project_mapping
+  - name: contracts_ethereum_contract_creator_project_mapping
     meta:
       blockchain: ethereum
       sector: contracts
@@ -325,7 +325,7 @@ models:
       - *is_eoa_deployed
       - *is_updated_on_last_run
 
-  - name: contracts_fantom_creator_project_mapping
+  - name: contracts_fantom_contract_creator_project_mapping
     meta:
       blockchain: fantom
       sector: contracts
@@ -369,7 +369,7 @@ models:
       - *is_eoa_deployed
       - *is_updated_on_last_run
 
-  - name: contracts_gnosis_creator_project_mapping
+  - name: contracts_gnosis_contract_creator_project_mapping
     meta:
       blockchain: gnosis
       sector: contracts
@@ -413,7 +413,7 @@ models:
       - *is_eoa_deployed
       - *is_updated_on_last_run
 
-  - name: contracts_goerli_creator_project_mapping
+  - name: contracts_goerli_contract_creator_project_mapping
     meta:
       blockchain: goerli
       sector: contracts
@@ -457,7 +457,7 @@ models:
       - *is_eoa_deployed
       - *is_updated_on_last_run
       
-  - name: contracts_optimism_creator_project_mapping
+  - name: contracts_optimism_contract_creator_project_mapping
     meta:
       blockchain: optimism
       sector: contracts
@@ -501,7 +501,7 @@ models:
       - *is_eoa_deployed
       - *is_updated_on_last_run
       
-  - name: contracts_polygon_creator_project_mapping
+  - name: contracts_polygon_contract_creator_project_mapping
     meta:
       blockchain: polygon
       sector: contracts
