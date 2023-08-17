@@ -1,14 +1,15 @@
-{{ config(
+{{ config(tags=['dunesql'],
     alias = alias('trades'),
-    post_hook='{{ expose_spells(\'["ethereum"]\',
+    post_hook='{{ expose_spells(\'["bnb","ethereum"]\',
                                 "project",
                                 "maverick",
-                                \'["gte620v"]\') }}'
+                                \'["gte620v", "chef_seaweed"]\') }}'
     )
 }}
 
 {% set maverick_models = [
     ref('maverick_v1_ethereum_trades')
+,   ref('maverick_v1_bnb_trades')    
 ] %}
 
 
@@ -37,7 +38,6 @@ FROM (
         tx_hash,
         tx_from,
         tx_to,
-        trace_address,
         evt_index
     FROM {{ dex_model }}
     {% if not loop.last %}
