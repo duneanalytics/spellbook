@@ -665,6 +665,8 @@ models:
         +schema: aragon_gnosis
       polygon:
         +schema: aragon_polygon
+      base:
+        +schema: aragon_base
 
     spiritswap:
       +schema: spiritswap
