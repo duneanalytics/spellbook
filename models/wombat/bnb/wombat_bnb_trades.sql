@@ -52,8 +52,8 @@ select
 	, date_trunc('DAY', s.evt_block_time) as block_date
     , CAST(date_trunc('month', s.evt_block_time) AS DATE) as block_month
 	, s.evt_block_time as block_time
-    , CAST(s.toAmount AS DOUBLE) AS token_bought_amount_raw
-    , CAST(s.fromAmount AS DOUBLE) AS token_sold_amount_raw
+    , s.toAmount  AS token_bought_amount_raw
+    , s.fromAmount AS token_sold_amount_raw
     , coalesce(
         (s.toAmount / power(10, prices_b.decimals)) * prices_b.price
         ,(s.fromAmount / power(10, prices_s.decimals)) * prices_s.price
