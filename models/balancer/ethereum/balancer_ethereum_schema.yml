@@ -143,8 +143,6 @@ models:
       - &pool_id
         name: pool_id
         description: "Unique encoded identifier that refers to each pool"
-        tests:
-          - not_null
       - &token_address
         name: token_address
         description: "Contract address for the token"
