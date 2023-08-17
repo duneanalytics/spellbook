@@ -217,9 +217,7 @@ models:
             - block_date
     columns:
       - *blockchain
-      - &contract_address
-        name: contract_address
-        description: "Address of BPT being transfered"
+      - *contract_address
       - *block_date
       - &evt_tx_hash
         name: evt_tx_hash
