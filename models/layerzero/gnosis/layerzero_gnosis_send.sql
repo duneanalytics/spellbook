@@ -1,4 +1,5 @@
 {{ config(
+    tags=['dunesql'],
     alias = alias('send'),
     partition_by = ['block_date'],
     materialized = 'incremental',
@@ -37,17 +38,17 @@ WITH send_detail AS (
     INNER JOIN {{ source('gnosis','transactions') }} t on t.block_number = s.call_block_number
         AND t.hash = s.call_tx_hash
         {% if not is_incremental() %}
-        AND t.block_time >= '{{transaction_start_date}}'
+        AND t.block_time >= date('{{transaction_start_date}}')
         {% endif %}
         {% if is_incremental() %}
-        AND t.block_time >= date_trunc("day", now() - interval '1 week')
+        AND t.block_time >= date_trunc("day", now() - interval '7' day)
         {% endif %}
     WHERE s.call_success
         {% if not is_incremental() %}
-        AND s.call_block_time >= '{{transaction_start_date}}'
+        AND s.call_block_time >= date('{{transaction_start_date}}')
         {% endif %}
         {% if is_incremental() %}
-        AND s.call_block_time >= date_trunc("day", now() - interval '1 week')
+        AND s.call_block_time >= date_trunc("day", now() - interval '7' day)
         {% endif %}
 ),
 
@@ -71,10 +72,10 @@ destination_gas_detail AS (
         AND e.tx_hash = s.tx_hash
         AND e.trace_address = s.trace_address
         {% if not is_incremental() %}
-        AND e.block_time >= '{{transaction_start_date}}'
+        AND e.block_time >= date('{{transaction_start_date}}')
         {% endif %}
         {% if is_incremental() %}
-        AND e.block_time >= date_trunc("day", now() - interval '1 week')
+        AND e.block_time >= date_trunc("day", now() - interval '7' day)
         {% endif %}
 ),
 
@@ -105,10 +106,10 @@ trans_detail AS (
         INNER JOIN {{ source('erc20_gnosis', 'evt_transfer') }} et on et.evt_block_number = s.block_number
             AND et.evt_tx_hash = s.tx_hash
             {% if not is_incremental() %}
-            AND et.evt_block_time >= '{{transaction_start_date}}'
+            AND et.evt_block_time >= date('{{transaction_start_date}}')
             {% endif %}
             {% if is_incremental() %}
-            AND et.evt_block_time >= date_trunc("day", now() - interval '1 week')
+            AND et.evt_block_time >= date_trunc("day", now() - interval '7' day)
             {% endif %}
     ) t
     WHERE t.rn = 1
@@ -119,7 +120,7 @@ trans_detail AS (
     SELECT s.block_number,
         s.tx_hash,
         'native' AS transfer_type,
-        '{{native_token_contract}}' AS currency_contract,
+        {{native_token_contract}} AS currency_contract,
         s.transaction_value - dgs.amount_destination_gas AS amount_raw -- Transfer amount of the transaction
     FROM send_summary s
     INNER JOIN destination_gas_summary dgs ON dgs.block_number = s.block_number
@@ -165,8 +166,8 @@ LEFT JOIN {{ ref('tokens_erc20') }} erc ON erc.blockchain = 'gnosis' AND erc.con
 LEFT JOIN {{ source('prices', 'usd') }} p ON p.blockchain = 'gnosis' AND p.contract_address = t.currency_contract
     AND p.minute = date_trunc('minute', s.block_time)
     {% if not is_incremental() %}
-    AND p.minute >= '{{transaction_start_date}}'
+    AND p.minute >= date('{{transaction_start_date}}')
     {% endif %}
     {% if is_incremental() %}
-    AND p.minute >= date_trunc("day", now() - interval '1 week')
+    AND p.minute >= date_trunc("day", now() - interval '7' day)
     {% endif %}

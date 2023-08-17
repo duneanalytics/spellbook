@@ -1,4 +1,5 @@
 {{ config(
+    tags=['dunesql'],
     schema='layerzero',
     alias = alias('send'),
     post_hook='{{ expose_spells(\'["ethereum", "gnosis", "avalanche_c", "arbitrum", "fantom", "optimism", "bnb", "polygon"]\',
