@@ -1,22 +1,25 @@
 version: 2
 
 models:
-  - name: dao_addresses
+  - name: dao_addresses_base
     meta:
-      blockchain: ethereum, gnosis, polygon, base
+      blockchain: base
       sector: dao
       contributors: Henrystats 
     config:
-      tags: [ 'ethereum','gnosis', 'polygon', 'base', 'dao', 'dao creator tools', 'henrystats' ]
+      tags: [ 'base', 'dao', 'aragon', 'dao creator tools', 'Henrystats' ]
     description: >
-      wallet addresses of daos created using popular dao creator tools 
+      wallet addresses of daos created on base across all dao creator tools
     columns:
       - &blockchain
         name: blockchain
-        description: "blockchain which the DAO is deployed on"
+        description: "blockchain which the DAO is deployed"
       - &dao_creator_tool
         name: dao_creator_tool
-        description: "Name of creator tool used to create dao"
+        description: "Name of creator tool used to create DAO"
+        tests:
+          - dao_addresses_creator_tool:
+              dao_addresses_seed: ref('dao_addresses_seed')
       - &dao
         name: dao
         description: "address of the dao deployed"
