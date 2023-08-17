@@ -14,13 +14,20 @@
         )
 }}
 
+{#
+## Models not yet migrated
+,ref('curvefi_trades')
+,ref('zeroex_native_trades')
+,ref('dodo_trades')
+,ref('kyberswap_trades')
+,ref('mdex_bnb_trades')
+,ref('nomiswap_bnb_trades')
+ #}
 
 {% set dex_trade_models = [
  ref('uniswap_trades')
 ,ref('sushiswap_trades')
-,ref('kyberswap_trades')
 ,ref('fraxswap_trades')
-,ref('curvefi_trades')
 ,ref('airswap_ethereum_trades')
 ,ref('clipper_trades')
 ,ref('shibaswap_ethereum_trades')
@@ -28,7 +35,6 @@
 ,ref('defiswap_ethereum_trades')
 ,ref('dfx_ethereum_trades')
 ,ref('pancakeswap_trades')
-,ref('dodo_trades')
 ,ref('velodrome_optimism_trades')
 ,ref('woofi_trades')
 ,ref('bancor_ethereum_trades')
@@ -36,9 +42,7 @@
 ,ref('trader_joe_trades')
 ,ref('hashflow_trades')
 ,ref('mstable_ethereum_trades')
-,ref('mdex_bnb_trades')
 ,ref('zigzag_trades')
-,ref('nomiswap_bnb_trades')
 ,ref('gmx_trades')
 ,ref('biswap_bnb_trades')
 ,ref('wombat_bnb_trades')
@@ -65,7 +69,6 @@
 ,ref('glacier_avalanche_c_trades')
 ,ref('thena_trades')
 ,ref('camelot_trades')
-,ref('zeroex_native_trades')
 ,ref('xchange_trades')
 ] %}
 
