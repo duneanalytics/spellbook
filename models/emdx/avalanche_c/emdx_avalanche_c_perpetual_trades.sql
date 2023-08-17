@@ -1,6 +1,7 @@
 {{ config(
+    tags=['dunesql'],
     alias = alias('perpetual_trades'),
-    partition_by = ['block_date'],
+    partition_by = ['block_month'],
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
@@ -19,9 +20,9 @@ WITH
 perp_events as (
     SELECT evt_block_time                                                          as block_time,
            evt_block_number                                                        as block_number,
-           CASE WHEN (exchangedPositionSize * 1) >= 0 THEN 'long' ELSE 'short' END as trade_type,
-           ''                                                                      as virtual_asset,    -- cant find in events
-           ''                                                                      as underlying_asset, -- cant find in events
+           CASE WHEN (CAST(exchangedPositionSize as double) * 1) >= 0 THEN 'long' ELSE 'short' END as trade_type,
+           CAST(NULL as VARCHAR)                                                                 as virtual_asset,    -- cant find in events
+           CAST(NULL as VARCHAR)                                                                 as underlying_asset, -- cant find in events
            positionNotional / 1E18                                                 as volume_usd,
            fee / 1E18                                                              as fee_usd,
            margin / 1E18                                                           as margin_usd,
@@ -32,11 +33,8 @@ perp_events as (
            evt_tx_hash                                                             as tx_hash
     FROM 
     {{ source('emdx_avalanche_c', 'ClearingHouse_evt_PositionChanged') }}
-    {% if not is_incremental() %}
-    WHERE evt_block_time >= '{{project_start_date}}'
-    {% endif %}
     {% if is_incremental() %}
-    WHERE evt_block_time >= date_trunc("day", now() - interval '1 week')
+    WHERE evt_block_time >= date_trunc('day', now() - interval '7' Day)
     {% endif %}
 ), 
 
@@ -48,11 +46,8 @@ trade_data as (
     FROM 
     {{ source('emdx_avalanche_c', 'ClearingHouse_call_closePosition') }}
     WHERE call_success = true 
-    {% if not is_incremental() %}
-    AND call_block_time >= '{{project_start_date}}'
-    {% endif %}
     {% if is_incremental() %}
-    AND call_block_time >= date_trunc("day", now() - interval '1 week')
+    AND call_block_time >= date_trunc('day', now() - interval '7' Day)
     {% endif %}
 
     UNION ALL 
@@ -65,11 +60,8 @@ trade_data as (
     FROM 
     {{ source('emdx_avalanche_c', 'ClearingHouse_call_openPosition') }}
     WHERE call_success = true 
-    {% if not is_incremental() %}
-    AND call_block_time >= '{{project_start_date}}'
-    {% endif %}
     {% if is_incremental() %}
-    AND call_block_time >= date_trunc("day", now() - interval '1 week')
+    AND call_block_time >= date_trunc('day', now() - interval '7' Day)
     {% endif %}
 
     UNION ALL 
@@ -82,11 +74,8 @@ trade_data as (
     FROM 
     {{ source('emdx_avalanche_c', 'ClearingHouse_evt_PositionLiquidated') }}
     WHERE 1 = 1
-    {% if not is_incremental() %}
-    AND evt_block_time >= '{{project_start_date}}'
-    {% endif %}
     {% if is_incremental() %}
-    AND evt_block_time >= date_trunc("day", now() - interval '1 week')
+    AND evt_block_time >= date_trunc('day', now() - interval '7' Day)
     {% endif %}
 )
 
@@ -94,11 +83,12 @@ SELECT 'avalanche_c'                    as blockchain,
        'emdx'                           as project,
        '1'                              as version,
        'emdx'                           as frontend,
-       date_trunc('day', pe.block_time) as block_date,
+       CAST(date_trunc('day', pe.block_time) as date) as block_date,
+       CAST(date_trunc('month', pe.block_time) as date) as block_month,
        pe.block_time,
        pe.virtual_asset,
        pe.underlying_asset,
-       ''                               as market, -- no event emitted to get data
+       CAST(NULL as VARCHAR)                          as market, -- no event emitted to get data
        pe.market_address,
        pe.volume_usd,
        pe.fee_usd,
@@ -110,8 +100,8 @@ SELECT 'avalanche_c'                    as blockchain,
        pe.trader,
        pe.volume_raw,
        pe.tx_hash,
-       txns.to                          as tx_to,
-       txns.from                        as tx_from,
+       txns."to"                        as tx_to,
+       txns."from"                       as tx_from,
        pe.evt_index
 FROM 
 perp_events pe 
@@ -120,10 +110,10 @@ INNER JOIN
     ON pe.tx_hash = txns.hash
     AND pe.block_number = txns.block_number
     {% if not is_incremental() %}
-    AND txns.block_time >= '{{project_start_date}}'
+    AND txns.block_time >= DATE '{{project_start_date}}'
     {% endif %}
     {% if is_incremental() %}
-    AND txns.block_time >= date_trunc("day", now() - interval '1 week')
+    AND txns.block_time >= date_trunc('day', now() - interval '7' Day)
     {% endif %}
 LEFT JOIN 
 trade_data td 
