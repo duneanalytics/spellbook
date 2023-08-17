@@ -23,6 +23,10 @@
 ,ref('mdex_bnb_trades')
 ,ref('nomiswap_bnb_trades')
 ,ref('hashflow_trades')
+,ref('ellipsis_finance_trades')
+,ref('synthetix_spot_trades')
+,ref('zipswap_trades')
+,ref('balancer_trades')
  #}
 
 {% set dex_trade_models = [
@@ -49,17 +53,13 @@
 ,ref('iziswap_bnb_trades')
 ,ref('babyswap_bnb_trades')
 ,ref('apeswap_trades')
-,ref('ellipsis_finance_trades')
 ,ref('spartacus_exchange_fantom_trades')
 ,ref('spookyswap_fantom_trades')
 ,ref('beethoven_x_trades')
 ,ref('rubicon_trades')
-,ref('synthetix_spot_trades')
-,ref('zipswap_trades')
 ,ref('equalizer_exchange_fantom_trades')
 ,ref('wigoswap_fantom_trades')
 ,ref('arbswap_trades')
-,ref('balancer_trades')
 ,ref('spiritswap_fantom_trades')
 ,ref('quickswap_trades')
 ,ref('integral_trades')
