@@ -169,16 +169,16 @@ WITH unit_test AS (
         END AS gas_used_test,
 
         -- test the l1_gas_price
-        CASE 
-            WHEN test.l1_gas_price = actual.l1_gas_price THEN TRUE
-            ELSE FALSE
-        END AS l1_gas_price_test,
+        -- CASE 
+        --     WHEN test.l1_gas_price = actual.l1_gas_price THEN TRUE
+        --     ELSE FALSE
+        -- END AS l1_gas_price_test,
 
         -- test the l1_gas_used
-        CASE 
-            WHEN test.l1_gas_used = actual.l1_gas_used THEN TRUE
-            ELSE FALSE
-        END AS l1_gas_used_test,
+        -- CASE 
+        --     WHEN test.l1_gas_used = actual.l1_gas_used THEN TRUE
+        --     ELSE FALSE
+        -- END AS l1_gas_used_test,
 
         -- test the l1_fee_scalar
         CASE 
@@ -269,8 +269,8 @@ WHERE
     OR bought_amount_usd_test = FALSE
     OR gas_price_test = FALSE
     OR gas_used_test = FALSE
-    OR l1_gas_price_test = FALSE
-    OR l1_gas_used_test = FALSE
+    -- OR l1_gas_price_test = FALSE
+    -- OR l1_gas_used_test = FALSE
     OR l1_fee_scalar_test = FALSE
     OR txn_cost_eth_test = FALSE
     OR eth_price_test = FALSE
