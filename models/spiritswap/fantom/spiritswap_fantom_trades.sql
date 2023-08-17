@@ -1,14 +1,15 @@
-{{ config(tags=['dunesql'],
-    alias = alias('trades')
-    ,partition_by = ['block_date']
+{{ config(
+    tags=['dunesql']
+    ,alias = alias('trades')
+    ,partition_by = ['block_month']
     ,materialized = 'incremental'
     ,file_format = 'delta'
     ,incremental_strategy = 'merge'
     ,unique_key = ['block_date', 'blockchain', 'project', 'version', 'tx_hash', 'evt_index']
     ,post_hook='{{ expose_spells(\'["fantom"]\',
-                                      "project",
-                                      "spiritswap",
-                                    \'["Henrystats"]\') }}'
+        "project",
+        "spiritswap",
+        \'["Henrystats"]\') }}'
     )
 }}
 
@@ -40,7 +41,7 @@ select
     'fantom' as blockchain,
     'spiritswap' as project,
     '1' as version,
-    TRY_CAST(date_trunc('day', dexs.block_time) AS date) AS block_date,
+    CAST(date_trunc('day', dexs.block_time) AS date) AS block_date,
     CAST(date_trunc('month', dexs.block_time) AS date) AS block_month,
     dexs.block_time,
     erc20a.symbol as token_bought_symbol,
