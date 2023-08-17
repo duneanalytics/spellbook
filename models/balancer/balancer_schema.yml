@@ -103,9 +103,7 @@ models:
       - &pool_contract
         name: pool_contract
         description: "Address of the liquidity pool contract"
-      - &pool_id
-        name: pool_id
-        description: 'Unique encoded identifier that refers to each pool'
+      - *pool_id
       - &incentives_contract
         name: incentives_contract
         description: "Address of the contract where incentives are stored and emitted."
