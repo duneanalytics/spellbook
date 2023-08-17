@@ -26,33 +26,34 @@ WITH prices AS (
         {% endif %}
         GROUP BY 1, 2
     ),
-    
-    /*dex_prices_1 AS (
-        SELECT
-            date_trunc('day', hour) AS day,
-            contract_address AS token,
-            percentile(median_price, 0.5) AS price,
-            SUM(sample_size) AS sample_size
-        FROM {{ ref('dex_prices') }}
-        WHERE blockchain = 'ethereum'
-        {% if is_incremental() %}
-        AND hour >= date_trunc('day', now() - interval '7' day)
-        {% endif %}
-        GROUP BY 1, 2
-        HAVING SUM(sample_size) > 5
-        AND AVG(median_price) < 1e8
-    ),
-    
-    dex_prices AS (
-        SELECT
-            *,
-            LEAD(day, 1, NOW()) OVER (
-                PARTITION BY token
-                ORDER BY
-                    day
-            ) AS day_of_next_change
-        FROM dex_prices_1
-    ),*/
+    {#
+    --dex_prices_1 AS (
+    --   SELECT
+    --        date_trunc('day', hour) AS day,
+    --        contract_address AS token,
+    --        percentile(median_price, 0.5) AS price,
+    --        SUM(sample_size) AS sample_size
+    --    FROM {{ ref('dex_prices') }}
+    --    WHERE blockchain = 'ethereum'
+    --    {% if is_incremental() %}
+    --    AND hour >= date_trunc('day', now() - interval '7' day)
+    --    {% endif %}
+    --    GROUP BY 1, 2
+    --    HAVING SUM(sample_size) > 5
+    --    AND AVG(median_price) < 1e8
+    --),
+    --
+    --dex_prices AS (
+    --   SELECT
+    --        *,
+    --        LEAD(day, 1, NOW()) OVER (
+    --            PARTITION BY token
+    --            ORDER BY
+    --                day
+    --        ) AS day_of_next_change
+    --    FROM dex_prices_1
+    --),
+    #}
     
     cumulative_balance AS (
         SELECT
@@ -99,7 +100,9 @@ WITH prices AS (
         SELECT
             b.day,
             w.pool_id,
+            {#
             --p.name AS pool_symbol,
+            #}
             w.token_address,
             t.symbol AS token_symbol,
             liquidity * normalized_weight AS usd_amount
@@ -107,7 +110,9 @@ WITH prices AS (
         LEFT JOIN {{ ref('balancer_v1_ethereum_pools_tokens_weights') }} w ON b.pool = w.pool_id
         AND CAST (w.normalized_weight as DOUBLE) > CAST (0 as DOUBLE)
         LEFT JOIN {{ ref('tokens_ethereum_erc20') }} t ON t.contract_address = w.token_address
+        {#
         --LEFT JOIN pool_labels p ON p.address = w.pool_id
+        #}
     )
     
 SELECT * FROM balancer_liquidity ORDER BY 1, 2, 3
