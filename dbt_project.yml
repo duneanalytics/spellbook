@@ -49,9 +49,6 @@ seeds:
 # Full documentation: https://docs.getdbt.com/docs/configuring-models
 models:
   spellbook:
-    +pre-hook:
-      - sql: "{{ set_trino_session_property(is_materialized(model) and is_partitioned(model), 'join_distribution_type', 'PARTITIONED') }}"
-        transaction: true
     +post-hook:
       - sql: "{{ set_trino_session_property(is_materialized(model), 'writer_min_size', model.config.get('writer_min_size', '500MB')) }}"
         transaction: true
@@ -321,6 +318,8 @@ models:
       +schema: maverick
       ethereum:
         +schema: maverick_ethereum
+      bnb:
+        +schema: maverick_bnb  
 
     daohaus:
       +schema: daohaus
@@ -821,8 +820,18 @@ models:
 
     chainlink:
       +schema: chainlink
+      arbitrum:
+        +schema: chainlink_arbitrum
+      avalanche_c:
+        +schema: chainlink_avalanche_c
       bnb:
         +schema: chainlink_bnb
+      ethereum:
+        +schema: chainlink_ethereum
+      fantom:
+        +schema: chainlink_fantom
+      gnosis:
+        +schema: chainlink_gnosis
       optimism:
         +schema: chainlink_optimism
       polygon:
@@ -899,6 +908,8 @@ models:
         +schema: pancakeswap_bnb
       ethereum:
         +schema: pancakeswap_ethereum
+      arbitrum:
+        +schema: pancakeswap_arbitrum  
 
     bancor:
       +schema: bancor
@@ -1222,11 +1233,6 @@ models:
       optimism:
         +schema: zipswap_optimism
 
-    sharky:
-      +schema: sharky
-      solana:
-        +schema: sharky_solana
-
     arbswap:
       +schema: arbswap
 
@@ -1346,3 +1352,7 @@ models:
           +schema: account_abstraction_erc4337_polygon
         gnosis:
           +schema: account_abstraction_erc4337_gnosis
+        base:
+          +schema: account_abstraction_erc4337_base
+        bnb:
+          +schema: account_abstraction_erc4337_bnb
