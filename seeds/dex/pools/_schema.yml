@@ -1,0 +1,10 @@
+version: 2
+
+seeds:
+  - name: dex_pools_seed
+    config:
+      tags: dunesql
+      column_types:
+        pool: varbinary
+        token_id: int256
+        token_address: varbinary

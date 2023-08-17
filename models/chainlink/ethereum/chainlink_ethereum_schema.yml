@@ -1,0 +1,288 @@
+version: 2
+
+models:
+  - name: chainlink_ethereum_ocr_gas_transmission_logs
+    meta:
+      blockchain: ethereum
+      sector: chainlink
+      contributors: linkpool_ryan
+    config:
+      tags: ['chainlink', 'ocr', 'gas', 'transmission', 'logs', 'ethereum']
+    description: >
+      Chainlink OCR Gas Transmission Logs
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+              - blockchain
+              - block_number
+              - tx_hash
+              - tx_index
+    columns:
+      - &blockchain
+        name: blockchain
+        description: "Blockchain"
+      - &block_hash
+        name: block_hash
+        description: "Block Hash"
+      - &contract_address
+        name: contract_address
+        description: "Contract Address"
+      - &data
+        name: data
+        description: "Data"
+      - &topic0
+        name: topic0
+        description: "Topic 0"
+      - &topic1
+        name: topic1
+        description: "Topic 1"
+      - &topic2
+        name: topic2
+        description: "Topic 2"
+      - &topic3
+        name: topic3
+        description: "Topic 3"
+      - &tx_hash
+        name: tx_hash
+        description: "Transaction Hash"
+      - &block_number
+        name: block_number
+        description: "Block Number"
+      - &block_time
+        name: block_time
+        description: "Block Time"
+      - &index
+        name: index
+        description: "Index"
+      - &tx_index
+        name: tx_index
+        description: "Transaction Index"
+
+  - name: chainlink_ethereum_ocr_fulfilled_transactions
+    meta:
+      blockchain: ethereum
+      sector: chainlink
+      contributors: linkpool_ryan
+    config:
+      tags: ['chainlink', 'ocr', 'fulfilled', 'transactions', 'ethereum']
+    description: >
+      Chainlink OCR Fulfilled Transactions
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+              - blockchain
+              - tx_hash
+              - tx_index
+              - node_address
+    columns:
+      - *blockchain
+      - *block_time
+      - &date_month
+        name: date_month
+        description: "Date truncated by month"
+      - &node_address
+        name: node_address
+        description: "Node Address"
+      - &token_amount
+        name: token_amount
+        description: "Token Amount"
+      - &usd_amount
+        name: usd_amount
+        description: "USD Amount"
+      - *tx_hash
+      - *tx_index
+
+  - name: chainlink_ethereum_ocr_reverted_transactions
+    meta:
+      blockchain: ethereum
+      sector: chainlink
+      contributors: linkpool_ryan
+    config:
+      tags: ['chainlink', 'ocr', 'reverted', 'transactions', 'ethereum']
+    description: >
+      Chainlink OCR Reverted Transactions
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+              - blockchain
+              - tx_hash
+              - tx_index
+              - node_address
+    columns:
+      - *blockchain
+      - *block_time
+      - *date_month
+      - *node_address
+      - *token_amount
+      - *usd_amount
+      - *tx_hash
+      - *tx_index
+
+  - name: chainlink_ethereum_ocr_gas_daily
+    meta:
+      blockchain: ethereum
+      sector: chainlink
+      contributors: linkpool_ryan
+    config:
+      tags: ['chainlink','ocr', 'gas', 'daily', 'ethereum']
+    description: >
+        Chainlink OCR Gas Daily
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+              - blockchain
+              - date_start
+              - node_address
+    columns:
+      - *blockchain
+      - &date_start
+        name: date_start
+        description: "Date Start"
+      - *date_month
+      - *node_address
+      - &operator_name
+        name: operator_name
+        description: "Operator Name"
+      - &fulfilled_token_amount
+        name: fulfilled_token_amount
+        description: "Fulfilled Token Amount"
+      - &fulfilled_usd_amount
+        name: fulfilled_usd_amount
+        description: "Fulfilled USD Amount"
+      - &reverted_token_amount
+        name: reverted_token_amount
+        description: "Reverted Token Amount"
+      - &reverted_usd_amount
+        name: reverted_usd_amount
+        description: "Reverted USD Amount"
+      - &total_token_amount
+        name: total_token_amount
+        description: "Total Token Amount"
+      - &total_usd_amount
+        name: total_usd_amount
+        description: "Total USD Amount"
+
+  - name: chainlink_ethereum_ocr_request_daily
+    meta:
+      blockchain: ethereum
+      sector: chainlink
+      contributors: linkpool_ryan
+    config:
+      tags: ['chainlink','ocr', 'request', 'daily', 'ethereum']
+    description: >
+        Chainlink OCR Request Daily
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+              - blockchain
+              - date_start
+              - node_address
+    columns:
+      - *blockchain
+      - *date_start
+      - *date_month
+      - *node_address
+      - *operator_name
+      - &fulfilled_requests
+        name: fulfilled_requests
+        description: "Fulfilled Requests"
+      - &reverted_requests
+        name: reverted_requests
+        description: "Reverted Requests"
+      - &total_requests
+        name: total_requests
+        description: "Total Requests"
+
+  - name: chainlink_ethereum_ocr_reward_transmission_logs
+    meta:
+      blockchain: ethereum
+      sector: chainlink
+      contributors: linkpool_ryan
+    config:
+      tags: ['chainlink', 'ocr', 'reward', 'transmission', 'logs', 'ethereum']
+    description: >
+      Chainlink OCR Reward Transmission Logs
+    columns:
+      - *blockchain
+      - *block_hash
+      - *contract_address
+      - *data
+      - *topic0
+      - *topic1
+      - *topic2
+      - *topic3
+      - *tx_hash
+      - *block_number
+      - *block_time
+      - *index
+      - *tx_index
+
+  - name: chainlink_ethereum_ocr_reward_evt_transfer
+    meta:
+      blockchain: ethereum
+      sector: chainlink
+      contributors: linkpool_ryan
+    config:
+      tags: ['chainlink', 'ocr', 'reward', 'evt', 'transfer', 'ethereum']
+    description: >
+      Chainlink OCR Reward Event Transfers
+    columns:
+      - *blockchain
+      - &evt_block_time
+        name: evt_block_time
+        description: "Event Block Time"
+      - &admin_address
+        name: admin_address
+        description: "Admin Address"
+      - *operator_name
+      - &token_value
+        name: token_value
+        description: "Token Value"
+
+  - name: chainlink_ethereum_ocr_reward_evt_transfer_daily
+    meta:
+      blockchain: ethereum
+      sector: chainlink
+      contributors: linkpool_ryan
+    config:
+      tags: ['chainlink', 'ocr', 'reward', 'evt', 'transfer', 'daily', 'ethereum']
+    description: >
+      Chainlink OCR Reward Event Transfers Daily
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+              - blockchain
+              - date_start
+              - admin_address
+    columns:
+      - *blockchain
+      - *date_start
+      - *date_month
+      - *admin_address
+      - *operator_name
+      - *token_value
+
+  - name: chainlink_ethereum_ocr_reward_daily
+    meta:
+      blockchain: ethereum
+      sector: chainlink
+      contributors: linkpool_ryan
+    config:
+      tags: ['chainlink','ocr', 'reward', 'daily', 'ethereum']
+    description: >
+        Chainlink OCR Reward Daily
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+              - blockchain
+              - date_start
+              - admin_address
+    columns:
+      - *blockchain
+      - *date_start
+      - *date_month
+      - *admin_address
+      - *operator_name
+      - *token_amount
+      - *usd_amount
+
