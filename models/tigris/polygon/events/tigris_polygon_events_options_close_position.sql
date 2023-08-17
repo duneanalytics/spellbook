@@ -69,7 +69,7 @@ get_positions_contract as (
         COALESCE(o.collateral_asset, l.collateral_asset) as collateral_asset,
         COALESCE(o.direction, l.direction) as direction, 
         COALESCE(o.pair, l.pair) as pair, 
-        COALESCE(o.options_period, l.options_period) as pair,
+        COALESCE(o.options_period, l.options_period) as options_period,
         COALESCE(o.referral, l.referral) as referral,
         COALESCE(o.trader, l.trader) as trader, 
         COALESCE(o.order_type, l.order_type) as order_type,
