@@ -79,7 +79,7 @@ models:
         description: "Address of trader who sold a token"
       - &pool_id
         name: pool_id
-        description: "Pool id"
+        description: 'Unique encoded identifier that refers to each pool'
       - &swap_fee
         name: swap_fee
         description: 'Swap fee'
@@ -187,11 +187,7 @@ models:
     description: >
       Token weights in Balancer pools.
     columns:
-      - &pool_id
-        name: pool_id
-        description: 'Unique encoded identifier that refers to each pool'
-        tests:
-          - not_null
+      - *pool_id
       - &token_address
         name: token_address
         description: 'Contract address for the token'
