@@ -7,4 +7,4 @@
 
 SELECT 
 
-    1 as dummy 
+    1 as dummy  
