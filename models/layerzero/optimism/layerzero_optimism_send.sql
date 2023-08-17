@@ -41,14 +41,14 @@ WITH send_detail AS (
         AND t.block_time >= date('{{transaction_start_date}}')
         {% endif %}
         {% if is_incremental() %}
-        AND t.block_time >= date_trunc("day", now() - interval '7' day)
+        AND t.block_time >= date_trunc('day', now() - interval '7' day)
         {% endif %}
     WHERE s.call_success
         {% if not is_incremental() %}
         AND s.call_block_time >= date('{{transaction_start_date}}')
         {% endif %}
         {% if is_incremental() %}
-        AND s.call_block_time >= date_trunc("day", now() - interval '7' day)
+        AND s.call_block_time >= date_trunc('day', now() - interval '7' day)
         {% endif %}
 ),
 
@@ -75,7 +75,7 @@ destination_gas_detail AS (
         AND e.block_time >= date('{{transaction_start_date}}')
         {% endif %}
         {% if is_incremental() %}
-        AND e.block_time >= date_trunc("day", now() - interval '7' day)
+        AND e.block_time >= date_trunc('day', now() - interval '7' day)
         {% endif %}
 ),
 
@@ -109,7 +109,7 @@ trans_detail AS (
             AND et.evt_block_time >= date('{{transaction_start_date}}')
             {% endif %}
             {% if is_incremental() %}
-            AND et.evt_block_time >= date_trunc("day", now() - interval '7' day)
+            AND et.evt_block_time >= date_trunc('day', now() - interval '7' day)
             {% endif %}
     ) t
     WHERE t.rn = 1
@@ -169,5 +169,5 @@ LEFT JOIN {{ source('prices', 'usd') }} p ON p.blockchain = 'optimism' AND p.con
     AND p.minute >= date('{{transaction_start_date}}')
     {% endif %}
     {% if is_incremental() %}
-    AND p.minute >= date_trunc("day", now() - interval '7' day)
+    AND p.minute >= date_trunc('day', now() - interval '7' day)
     {% endif %}
