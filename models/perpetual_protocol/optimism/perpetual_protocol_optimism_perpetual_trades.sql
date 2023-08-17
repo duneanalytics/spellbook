@@ -12,7 +12,6 @@
  ref('perpetual_protocol_v2_optimism_perpetual_trades')
 ] %}
 
-
 SELECT *
 FROM (
     {% for perpetual_protocol_perpetual_trades in perpetual_protocol_optimism_perpetual_trade_models %}

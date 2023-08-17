@@ -13,7 +13,6 @@
     , ref('synthetix_v2_optimism_perpetual_trades')
 ] %}
 
-
 SELECT *
 FROM
 (
