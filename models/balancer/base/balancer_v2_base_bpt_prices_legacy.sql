@@ -1,7 +1,6 @@
 {{
     config(
-	tags=['legacy'],
-	
+        tags=['legacy'],
         schema = 'balancer_v2_base',
         alias = alias('bpt_prices', legacy_model=True),
         materialized = 'incremental',
@@ -11,7 +10,7 @@
         post_hook = '{{ expose_spells(\'["base"]\',
                                     "project",
                                     "balancer_v2",
-                                    \'["victorstefenon", "thetroyharris"]\') }}'
+                                    \'["victorstefenon", "thetroyharris", "viniabussafi"]\') }}'
     )
 }}
 
@@ -53,8 +52,8 @@ WITH
             {% if is_incremental() %}
             AND p2.minute >= date_trunc('day', now() - interval '1 week')
             {% endif %} 
-        LEFT JOIN {{ ref('tokens_erc20_legacy') }} t1 ON t1.contract_address = a.tokenIn AND t1.blockchain = 'base'
-        LEFT JOIN {{ ref('tokens_erc20_legacy') }} t2 ON t2.contract_address = a.tokenOut AND t2.blockchain = 'base'
+        LEFT JOIN {{ ref ('tokens_erc20_legacy') }} t1 ON t1.contract_address = a.tokenIn AND t1.blockchain = 'base'
+        LEFT JOIN {{ ref ('tokens_erc20_legacy') }} t2 ON t2.contract_address = a.tokenOut AND t2.blockchain = 'base'
         ORDER BY a.evt_block_number DESC, a.evt_index DESC
     ), 
     

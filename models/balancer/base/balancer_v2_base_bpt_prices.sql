@@ -17,15 +17,14 @@
 WITH
     bpt_trades AS (
         SELECT * FROM {{ source('balancer_v2_base', 'Vault_evt_Swap') }} v
-        WHERE tokenIn = bytearray_substring(poolId, 1, 20)
-        OR tokenOut = bytearray_substring(poolId, 1, 20)
+        WHERE tokenIn = bytearray_substring(poolId, 1, 20) OR tokenOut = bytearray_substring(poolId, 1, 20)
         {% if is_incremental() %}
         AND v.evt_block_time >= date_trunc('day', now() - interval '7' day)
-        {% endif %}
-    ),
-
+        {% endif %} 
+    ), 
+    
     all_trades_info AS (
-        SELECT
+        SELECT 
             a.evt_tx_hash AS tx_hash,
             a.evt_block_time AS block_time,
             a.evt_block_number AS block_number,
@@ -110,8 +109,8 @@ WITH
         FROM all_trades_calc_2 c2
         LEFT JOIN unique_tx_token_price u1 ON u1.tx_hash = c2.tx_hash AND u1.token = c2.token_in
         LEFT JOIN unique_tx_token_price u2 ON u2.tx_hash = c2.tx_hash AND u2.token = c2.token_out
-    ),
-
+    ), 
+    
     backfill_pricing_2 AS (
         SELECT
             block_time,
