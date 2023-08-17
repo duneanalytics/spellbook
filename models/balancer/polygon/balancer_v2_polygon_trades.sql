@@ -134,7 +134,7 @@ SELECT
     dexs.taker AS taker,
     dexs.maker,
     dexs.project_contract_address,
-    dexs.poolId,
+    dexs.pool_id,
     dexs.swap_fee,
     dexs.tx_hash,
     tx."from" AS tx_from,
