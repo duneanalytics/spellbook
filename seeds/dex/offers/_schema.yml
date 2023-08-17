@@ -1,0 +1,12 @@
+version: 2
+
+seeds:
+  - name: dex_offers_seed
+    config:
+      tags: dunesql
+      column_types:
+        block_date: date
+        sell_amount_raw: uint256
+        buy_amount_raw: uint256
+        sold_amount_raw: uint256
+        bought_amount_raw: uint256
