@@ -1,4 +1,5 @@
 {{ config(
+    schema = 'opensea_solana',
     alias = alias('events'),
     tags = ['dunesql'],
     materialized = 'incremental',
@@ -7,7 +8,6 @@
     unique_key = ['block_date', 'unique_trade_id']
     )
 }}
-
 With solana_events as (
 
 SELECT
@@ -15,7 +15,7 @@ SELECT
   'opensea' as project,
   'v1' as version,
   from_base58(signatures[1]) as tx_hash,
-  date_trunc('day',block_time) as block_date,
+  cast(date_trunc('day',block_time) as date)  as block_date,
   block_time,
   CAST(block_slot AS bigint) as block_number,
   abs(post_balances[1] / 1e9 - pre_balances[1] / 1e9) * p.price AS amount_usd,
