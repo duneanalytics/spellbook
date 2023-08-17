@@ -1,10 +1,11 @@
-{{ config(tags=['dunesql'],
-        alias = alias('trades'),
-        post_hook='{{ expose_spells(\'["bnb"]\',
-                                "project",
-                                "thena",
-                                \'["hsrvc"]\') }}'
-        )
+{{ config(
+    tags=['dunesql'],
+    alias = alias('trades'),
+    post_hook='{{ expose_spells(\'["bnb"]\',
+        "project",
+        "thena",
+        \'["hsrvc"]\') }}'
+    )
 }}
 
 {% set thena_models = [

@@ -1,4 +1,5 @@
-{{ config(tags=['dunesql'],
+{{ config(
+    tags=['dunesql'],
     schema = 'thena_fusion_bnb',
     alias = alias('trades'),
     partition_by = ['block_month'],
@@ -7,9 +8,9 @@
     incremental_strategy = 'merge',
     unique_key = ['block_date', 'blockchain', 'project', 'version', 'tx_hash', 'evt_index'],
     post_hook='{{ expose_spells(\'["bnb"]\',
-                                "project",
-                                "thena_fusion",
-                                \'["hsrvc"]\') }}'
+        "project",
+        "thena_fusion",
+        \'["hsrvc"]\') }}'
     )
 }}
 
@@ -42,7 +43,7 @@ SELECT
     'bnb' AS blockchain
     ,'thena' AS project
     ,'fusion' AS version
-    ,TRY_CAST(date_trunc('day', dexs.block_time) AS date) AS block_date
+    ,CAST(date_trunc('day', dexs.block_time) AS date) AS block_date
     ,CAST(date_trunc('month', dexs.block_time) AS date) AS block_month
     ,dexs.block_time
     ,erc20a.symbol AS token_bought_symbol
