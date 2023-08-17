@@ -21,6 +21,7 @@ WITH balances as (
     FROM
         {{ ref('dao_transactions') }}
     WHERE tx_type = 'tx_in'
+    AND asset_contract_address != 0xae7ab96520de3a18e5e111b5eaab095312d7fe84
     GROUP BY 1, 3, 4, 5, 6, 7, 8
 
     UNION ALL
@@ -37,6 +38,7 @@ WITH balances as (
     FROM
         {{ ref('dao_transactions') }}
     WHERE tx_type = 'tx_out'
+    AND asset_contract_address != 0xae7ab96520de3a18e5e111b5eaab095312d7fe84
     GROUP BY 1, 3, 4, 5, 6, 7, 8
 ),
 
@@ -104,3 +106,11 @@ LEFT JOIN
     AND db.blockchain = 'ethereum'
     AND e.blockchain = 'ethereum'
     AND e.symbol = 'WETH'
+
+
+UNION ALL 
+
+SELECT 
+    * 
+FROM 
+{{ ref('dao_balances_steth') }}
