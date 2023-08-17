@@ -193,7 +193,9 @@ models:
         description: 'UTC event block time truncated to the hour mark'
         tests:
           - not_null
-      - *contract_address
+      - &contract_address
+        name: contract_address
+        description: 'BPT contract address'
       - &median_price
         name: median_price
         description: 'BPT median price'
