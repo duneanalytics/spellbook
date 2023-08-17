@@ -1,6 +1,7 @@
 {{ config(
+    tags=['dunesql'],
     alias = alias('perpetual_trades'),
-    partition_by = ['block_date'],
+    partition_by = ['block_month'],
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
@@ -19,9 +20,9 @@ WITH
 perp_events as (
     SELECT evt_block_time                                              as block_time,
            evt_block_number                                            as block_number,
-           CASE WHEN (baseAsset * 1) >= 0 THEN 'long' ELSE 'short' END as trade_type,       -- negative baseAsset is for short and positive is for long
+           CASE WHEN (CAST(baseAsset as double) * 1) >= 0 THEN 'long' ELSE 'short' END as trade_type,       -- negative baseAsset is for short and positive is for long
            'AVAX'                                                      as virtual_asset,    -- only AVAX can currently be traded on hubble exchange
-           ''                                                          as underlying_asset, -- there's no way to track the underlying asset as traders need to deposit into their margin account before they're able to trade which is tracked in a seperate event not tied to the margin positions opened.
+           CAST(NULL as VARCHAR)                                                        as underlying_asset, -- there's no way to track the underlying asset as traders need to deposit into their margin account before they're able to trade which is tracked in a seperate event not tied to the margin positions opened.
            quoteAsset / 1E6                                            as volume_usd,
            CAST(NULL as double)                                        as fee_usd,          -- no event to track fees
            CAST(NULL as double)                                        as margin_usd,       -- no event to track margin
@@ -32,11 +33,8 @@ perp_events as (
            evt_tx_hash                                                 as tx_hash
     FROM 
     {{ source('hubble_exchange_avalanche_c', 'ClearingHouse_evt_PositionModified') }}
-    {% if not is_incremental() %}
-    WHERE evt_block_time >= '{{project_start_date}}'
-    {% endif %}
     {% if is_incremental() %}
-    WHERE evt_block_time >= date_trunc("day", now() - interval '1 week')
+    WHERE evt_block_time >= date_trunc('day', now() - interval '7' Day)
     {% endif %}
 ), 
 
@@ -48,11 +46,8 @@ trade_data as (
     FROM 
     {{ source('hubble_exchange_avalanche_c', 'ClearingHouse_call_closePosition') }}
     WHERE call_success = true 
-    {% if not is_incremental() %}
-    AND call_block_time >= '{{project_start_date}}'
-    {% endif %}
     {% if is_incremental() %}
-    AND call_block_time >= date_trunc("day", now() - interval '1 week')
+    AND call_block_time >= date_trunc('day', now() - interval '7' Day)
     {% endif %}
 
     UNION
@@ -65,11 +60,8 @@ trade_data as (
     FROM 
     {{ source('hubble_exchange_avalanche_c', 'ClearingHouse_call_openPosition') }}
     WHERE call_success = true 
-    {% if not is_incremental() %}
-    AND call_block_time >= '{{project_start_date}}'
-    {% endif %}
     {% if is_incremental() %}
-    AND call_block_time >= date_trunc("day", now() - interval '1 week')
+    AND call_block_time >= date_trunc('day', now() - interval '7' Day)
     {% endif %}
 
     UNION
@@ -82,11 +74,8 @@ trade_data as (
     FROM 
     {{ source('hubble_exchange_avalanche_c', 'ClearingHouse_evt_PositionLiquidated') }}
     WHERE 1 = 1
-    {% if not is_incremental() %}
-    AND evt_block_time >= '{{project_start_date}}'
-    {% endif %}
     {% if is_incremental() %}
-    AND evt_block_time >= date_trunc("day", now() - interval '1 week')
+    AND evt_block_time >= date_trunc('day', now() - interval '7' Day)
     {% endif %}
 )
 
@@ -94,7 +83,8 @@ SELECT 'avalanche_c'                    as blockchain,
        'hubble_exchange'                as project,
        '1'                              as version,
        'hubble_exchange'                as frontend,
-       date_trunc('day', pe.block_time) as block_date,
+       CAST(date_trunc('day', pe.block_time) as date) as block_date,
+       CAST(date_trunc('month', pe.block_time) as date) as block_month,
        pe.block_time,
        pe.virtual_asset,
        pe.underlying_asset,
@@ -110,8 +100,8 @@ SELECT 'avalanche_c'                    as blockchain,
        pe.trader,
        pe.volume_raw,
        pe.tx_hash,
-       txns.to                          as tx_to,
-       txns.from                        as tx_from,
+       txns."to"                          as tx_to,
+       txns."from"                        as tx_from,
        pe.evt_index
 FROM 
 perp_events pe 
@@ -120,10 +110,10 @@ INNER JOIN
     ON pe.tx_hash = txns.hash
     AND pe.block_number = txns.block_number
     {% if not is_incremental() %}
-    AND txns.block_time >= '{{project_start_date}}'
+    AND txns.block_time >= DATE '{{project_start_date}}'
     {% endif %}
     {% if is_incremental() %}
-    AND txns.block_time >= date_trunc("day", now() - interval '1 week')
+    AND txns.block_time >= date_trunc('day', now() - interval '7' Day)
     {% endif %}
 LEFT JOIN 
 trade_data td 
