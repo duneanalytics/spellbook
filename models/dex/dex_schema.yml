@@ -95,6 +95,99 @@ models:
         name: evt_index
         description: "Index of the corresponding trade event"
 
+  - name: dex_trades_migration_beta
+    meta:
+      blockchain: ethereum, bnb, avalanche_c, gnosis, optimism, fantom, arbitrum
+      sector: dex
+      contributors: jeff-dude
+    config:
+      tags: ['ethereum', 'amm', 'trades', 'dex', 'cross-chain','optimism']
+    description: >
+      DEX trades on all chains across all contracts and versions
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_date
+            - blockchain
+            - project
+            - version
+            - tx_hash
+            - evt_index
+    columns:
+      - &blockchain
+        name: blockchain
+        description: "Blockchain which the DEX is deployed"
+      - &project
+        name: project
+        description: "Project name of the DEX"
+      - &version
+        name: version
+        description: "Version of the contract built and deployed by the DEX project"
+      - &block_date
+        name: block_date
+        description: "UTC event block date of each DEX trade"
+      - &block_time
+        name: block_time
+        description: "UTC event block time of each DEX trade"
+      - &token_bought_symbol
+        name: token_bought_symbol
+        description: "Token symbol for token bought in the trade"
+      - &token_sold_symbol
+        name: token_sold_symbol
+        description: "Token symbol for token sold in the trade"
+      - &token_pair
+        name: token_pair
+        description: "Token symbol pair for each token involved in the trade"
+      - &token_bought_amount
+        name: token_bought_amount
+        description: "Value of the token bought at time of execution in the original currency"
+      - &token_sold_amount
+        name: token_sold_amount
+        description: "Value of the token sold at time of execution in the original currency"
+      - &token_bought_amount_raw
+        name: token_bought_amount_raw
+        description: "Raw value of the token bought at time of execution in the original currency"
+      - &token_sold_amount_raw
+        name: token_sold_amount_raw
+        description: "Raw value of the token sold at time of execution in the original currency"
+      - &amount_usd
+        name: amount_usd
+        description: "USD value of the trade at time of execution"
+        tests:
+          - dbt_utils.accepted_range:
+              max_value: 1000000000 # $1b is an arbitrary number, intended to flag outlier amounts early
+              severity: warn
+      - &token_bought_address
+        name: token_bought_address
+        description: "Contract address of the token bought"
+      - &token_sold_address
+        name: token_sold_address
+        description: "Contract address of the token sold"
+      - &taker
+        name: taker
+        description: "Address of trader who purchased a token"
+      - &maker
+        name: maker
+        description: "Address of trader who sold a token"
+      - &project_contract_address
+        name: project_contract_address
+        description: "Project contract address which executed the trade on the blockchain"
+      - &tx_hash
+        name: tx_hash
+        description: "Unique transaction hash value tied to each transaction on the DEX"
+      - &tx_from
+        name: tx_from
+        description: "Address which initiated the trade"
+      - &tx_to
+        name: tx_to
+        description: "Address which received the trade"
+      - &trace_address
+        name: trace_address
+        description: ""
+      - &evt_index
+        name: evt_index
+        description: "Index of the corresponding trade event"
+
   - name: dex_aggregator_trades
     meta:
       blockchain: ethereum, gnosis, avalanche_c, fantom, optimism, arbitrum, bnb
@@ -240,7 +333,7 @@ models:
         description: "Contract address used to create the pool"
 
   - name: dex_offers
-    meta: 
+    meta:
       blockchain: optimism
       sector: dex
       contributors: denver
@@ -248,7 +341,7 @@ models:
       tags: ['optimism', 'order-books', 'offers', 'dex', 'cross-chain', 'offers']
     description: >
       DEX offers across all chains across all contracts and versions
-    columns: 
+    columns:
       - *blockchain
       - *project
       - *version
@@ -287,7 +380,7 @@ models:
       - &buy_amount_raw
         name: buy_amount_raw
         description: "the raw amount of the token that the maker is buying"
-      - &sold_amount 
+      - &sold_amount
         name: sold_amount
         description: "the amount of the token that the offer has sold"
       - &bought_amount
@@ -310,7 +403,7 @@ models:
         description: "the amount of the token that the offer has sold in USD (summed bassed on the price at the time of each trade (if any))"
       - &bought_amount_usd
         name: bought_amount_usd
-        description: "the amount of the token that the offer has bought in USD (summed bassed on the price at the time of each trade (if any))"  
+        description: "the amount of the token that the offer has bought in USD (summed bassed on the price at the time of each trade (if any))"
       - &txn_cost_usd
         name: txn_cost_usd
         description: "the cost of the transaction in USD"
@@ -318,8 +411,8 @@ models:
       - *tx_hash
       - *tx_from
       - *tx_to
-  
-  
+
+
   - name: dex_flashloans
     meta:
       blockchain: arbitrum, avalanche_c, optimism, polygon, ethereum, fantom
@@ -353,7 +446,7 @@ models:
 
 
   - name: dex_sandwiches
-    meta: 
+    meta:
       blockchain: ethereum, bnb, avalanche_c, gnosis, optimism, fantom, arbitrum
       sector: dex
       contributors: hildobby
@@ -371,7 +464,7 @@ models:
             - frontrun_taker
             - currency_address
             - ratio_traded_token
-    columns: 
+    columns:
       - *blockchain
       - *project
       - *version
