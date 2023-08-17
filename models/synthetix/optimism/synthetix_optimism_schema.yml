@@ -20,7 +20,7 @@ models:
             - version
             - tx_hash
             - evt_index
-      - check_perpetuals_seed_legacy:
+      - check_perpetuals_seed:
           blockchain: optimism
           project: Synthetix
           version: 1
@@ -47,8 +47,8 @@ models:
         name: market_address
         description: "Contract address of the market"
         tests:
-          - perpetual_trades_market_address_legacy:
-              perpetual_trades_seed_legacy: ref('perpetual_trades_seed_legacy')
+          - perpetual_trades_market_address:
+              perpetual_trades_seed: ref('perpetual_trades_seed')
       - &volume_usd
         name: volume_usd
         description: "The size of the position taken for the swap in USD; already in absolute value and decimal normalized"
@@ -88,6 +88,9 @@ models:
       - &evt_index
         name: evt_index
         description: "Event index number"
+      - &block_month
+        name: block_month
+        description: "Month of the transaction"
   
   - name: synthetix_v2_optimism_perpetual_trades
     meta:
@@ -108,7 +111,7 @@ models:
             - version
             - tx_hash
             - evt_index
-      - check_perpetuals_seed_legacy:
+      - check_perpetuals_seed:
           blockchain: optimism
           project: Synthetix
           version: 2
@@ -132,6 +135,7 @@ models:
       - *tx_from
       - *tx_to
       - *evt_index
+      - *block_month
 
   - name: synthetix_optimism_perpetual_trades
     meta:
@@ -163,6 +167,7 @@ models:
       - *tx_from
       - *tx_to
       - *evt_index
+      - *block_month
   
   - name: synthetix_optimism_spot_trades
     meta:
