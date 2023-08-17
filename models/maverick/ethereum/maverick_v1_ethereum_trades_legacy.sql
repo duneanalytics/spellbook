@@ -1,6 +1,5 @@
 {{ config(
-	tags=['legacy'],
-	
+    tags=['legacy'],
     schema = 'maverick_v1_ethereum',
     alias = alias('trades', legacy_model=True),
     partition_by = ['block_date'],

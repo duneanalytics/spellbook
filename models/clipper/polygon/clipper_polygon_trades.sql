@@ -1,16 +1,17 @@
-{{ config(
-        alias = alias('trades'),
-        post_hook='{{ expose_spells(\'["polygon"]\',
-                                "project",
-                                "clipper",
-                                \'["amalashkevich"]\') }}'
-        )
+{{ 
+    config(tags=['dunesql'],
+    alias = alias('trades'),
+    post_hook='{{ expose_spells(\'["polygon"]\',
+        "project",
+        "clipper",
+        \'["amalashkevich"]\') }}'
+    )
 }}
 
 {% set clipper_models = [
-ref('clipper_v1_polygon_trades')
-, ref('clipper_v2_polygon_trades')
-, ref('clipper_coves_v1_polygon_trades')
+    ref('clipper_v1_polygon_trades')
+    , ref('clipper_v2_polygon_trades')
+    , ref('clipper_coves_v1_polygon_trades')
 ] %}
 
 
@@ -39,7 +40,6 @@ FROM (
         tx_hash,
         tx_from,
         tx_to,
-        trace_address,
         evt_index
     FROM {{ dex_model }}
     {% if not loop.last %}
@@ -47,4 +47,3 @@ FROM (
     {% endif %}
     {% endfor %}
 )
-;
