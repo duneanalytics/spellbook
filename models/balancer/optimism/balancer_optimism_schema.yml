@@ -209,9 +209,7 @@ models:
       - &maker
         name: maker
         description: "Address of trader who sold a token"
-      - &pool_id
-        name: pool_id
-        description: "Pool id"
+      - *pool_id
       - &swap_fee
         name: swap_fee
         description: 'Swap fee'
