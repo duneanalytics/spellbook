@@ -6,6 +6,7 @@ seeds:
       tags: dunesql
       column_types:
         block_date: date
+        version: varchar
         sell_amount_raw: uint256
         buy_amount_raw: uint256
         sold_amount_raw: uint256
