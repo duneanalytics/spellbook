@@ -235,6 +235,15 @@ models:
       ethereum:
         +schema: blur_ethereum
 
+    mint_fun:
+      +schema: mint_fun
+      ethereum:
+        +schema: mint_fun_ethereum
+      optimism:
+        +schema: mint_fun_optimism
+      base:
+        +schema: mint_fun_base
+
     looksrare:
       +schema: looksrare
       ethereum:

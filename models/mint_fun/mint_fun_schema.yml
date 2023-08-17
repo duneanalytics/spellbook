@@ -1,0 +1,61 @@
+version: 2
+
+models:
+  - name: mint_fun_optimism_mints
+    meta:
+      blockchain: ethereum, optimism, base
+      sector: mints
+      project: mint_fun
+      contributors: hildobby
+    config:
+      tags: ['table', 'mints', 'mint_fun']
+    description: "List of mint transactions that happened on mint.fun"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - tx_hash
+            - evt_index
+    columns:
+      - &blockchain
+        name: blockchain
+        description: "Blockchain"
+      - &block_time
+        name: block_time
+        description: "Block time of transaction"
+      - &block_number
+        name: block_number
+        description: "Block number of transaction"
+      - &tx_from
+        name: tx_from
+        description: "Address that initiated the transaction"
+      - &recipient
+        name: recipient
+        description: "Airdrop recipient"
+      - &nft_contract_address
+        name: nft_contract_address
+        description: "Contract address of the NFT"
+      - &nft_token_id
+        name: nft_token_id
+        description: "NFT Token ID"
+      - &nft_amount
+        name: nft_amount
+        description: "Amount of minted NFTs"
+      - &price_raw
+        name: price_raw
+        description: "Raw price paid"
+      - &price
+        name: price
+        description: "Price paid"
+      - &currency_address
+        name: currency_address
+        description: "Contract Address of currency used"
+      - &currency_symbol
+        name: currency_symbol
+        description: "Symbol of currency used"
+      - &tx_hash
+        name: tx_hash
+        description: "Transaction hash"
+      - &evt_index
+        name: evt_index
+        description: "Event Index"
