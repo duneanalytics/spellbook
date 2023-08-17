@@ -15,7 +15,9 @@ FROM (
     {% for perpetual_model in tigris_models %}
     SELECT
         blockchain,
+        block_month,
         day,
+        project_contract_address,
         evt_block_time,
         evt_index,
         evt_tx_hash,
@@ -31,11 +33,11 @@ FROM (
         trader,
         margin_change,
         trade_type,
-        version
+        version,
+        positions_contract
     FROM {{ perpetual_model }}
     {% if not loop.last %}
     UNION ALL
     {% endif %}
     {% endfor %}
 )
-;
