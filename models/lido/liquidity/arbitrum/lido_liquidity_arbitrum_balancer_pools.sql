@@ -169,7 +169,7 @@ WHERE call_create.output_0 in (select distinct  poolAddress from pools)
             u.token,
             cast(u.delta as double) - cast(protocolFeeAmounts as double) as delta
         FROM {{source('balancer_v2_arbitrum','Vault_evt_PoolBalanceChanged')}}
-         CROSS JOIN UNNEST(tokens, deltas) as u(token, delta, protocolFeeAmounts)
+         CROSS JOIN UNNEST(tokens, deltas, protocolFeeAmounts) as u(token, delta, protocolFeeAmounts)
         
         {% if not is_incremental() %}
         WHERE DATE_TRUNC('day', evt_block_time) >= DATE '{{ project_start_date }}'
