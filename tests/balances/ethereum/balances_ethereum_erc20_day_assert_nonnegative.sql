@@ -3,7 +3,7 @@
 
 select amount
 from {{ ref('balances_ethereum_erc20_day') }} bal
-where round(amount/power(10, 18), 6) < 0
+where round(amount/power(10, 18), 0) < 0
 -- limiting to a selection of tokens because we haven't filtered out all non-compliant tokens
 and symbol in ('AAVE', 'DAI', 'UNI', 'LINK')
 and bal.day > now() - interval '2' day
