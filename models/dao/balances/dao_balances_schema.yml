@@ -47,3 +47,30 @@ models:
       - &usd_value
         name: usd_value
         description: "asset value in USD"
+
+  - name: dao_balances_steth
+    meta:
+      blockchain: ethereum
+      sector: dao
+      contributors: Henrystats 
+    config:
+      tags: [ 'ethereum', 'steth', 'dao', 'dao creator tools', 'henrystats' ]
+    description: >
+      DAO wallet balances for steth token (rebase token so using different calculations)
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - dao_creator_tool
+            - dao
+            - dao_wallet_address
+            - day 
+    columns:
+      - *blockchain
+      - *dao_creator_tool
+      - *dao
+      - *dao_wallet_address
+      - *day
+      - *asset_contract_address
+      - *asset
+      - *balance
+      - *usd_value

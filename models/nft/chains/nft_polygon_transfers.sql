@@ -5,7 +5,8 @@
         partition_by=['block_month'],
         materialized='incremental',
         file_format = 'delta',
-        unique_key = ['unique_transfer_id']
+        unique_key = ['unique_transfer_id'],
+        pre_hook='{{ enforce_join_distribution("PARTITIONED") }}',
 )
 }}
 
