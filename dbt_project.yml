@@ -201,22 +201,6 @@ models:
 
     fungible:
       +schema: fungible
-      arbitrum:
-        +schema: fungible_arbitrum
-      avalanche_c:
-        +schema: fungible_avalanche_c
-      bnb:
-        +schema: fungible_bnb
-      ethereum:
-        +schema: fungible_ethereum
-      gnosis:
-        +schema: fungible_gnosis
-      optimism:
-        +schema: fungible_optimism
-      polygon:
-        +schema: fungible_polygon
-      fantom:
-        +schema: fungible_fantom
 
     cex:
       +schema: cex
