@@ -10,3 +10,5 @@ seeds:
         buy_amount_raw: uint256
         sold_amount_raw: uint256
         bought_amount_raw: uint256
+        l1_gas_price: uint256
+        l1_gas_used: uint256
