@@ -25,7 +25,7 @@ fees_v2 AS (
             evt_block_time,
             evt_index,
             evt_tx_hash,
-            botFees/1e18 + daoFees/1e18 + refFees/1e18 as fees 
+            botFees/1e18 + daoFees/1e18 + refFees/1e18 as fees,
             contract_address as project_contract_address
         FROM {{ source('tigristrade_v2_polygon', fees_evt) }}
         {% if is_incremental() %}

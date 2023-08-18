@@ -33,7 +33,7 @@ fees_v1 AS (
             evt_block_time,
             evt_index,
             evt_tx_hash,
-            _botFees/1e18 + _burnFees/1e18 + _daoFees/1e18 + _refFees/1e18 as fees 
+            _botFees/1e18 + _burnFees/1e18 + _daoFees/1e18 + _refFees/1e18 as fees, 
             contract_address as project_contract_address
         FROM {{ source('tigristrade_arbitrum', fees_evt) }}
         {% if is_incremental() %}
@@ -56,7 +56,7 @@ fees_v2 AS (
             evt_block_time,
             evt_index,
             evt_tx_hash,
-            botFees/1e18 + burnFees/1e18 + daoFees/1e18 + refFees/1e18 as fees 
+            botFees/1e18 + burnFees/1e18 + daoFees/1e18 + refFees/1e18 as fees,
             contract_address as project_contract_address
         FROM {{ source('tigristrade_v2_arbitrum', fees_evt) }}
         {% if is_incremental() %}
