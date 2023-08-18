@@ -5,7 +5,8 @@
         materialized ='incremental',
         file_format ='delta',
         incremental_strategy='merge',
-        unique_key='contract_address'
+        unique_key='contract_address',
+        partition_by = ['block_month']
   )
 }}
 
