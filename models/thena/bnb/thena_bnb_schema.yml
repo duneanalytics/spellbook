@@ -20,8 +20,7 @@ models:
             - version
             - tx_hash
             - evt_index
-            - trace_address
-      - check_dex_seed_legacy:
+      - check_dex_seed:
           blockchain: bnb
           project: thena
           version: 1
@@ -93,8 +92,7 @@ models:
             - version
             - tx_hash
             - evt_index
-            - trace_address
-      - check_dex_seed_legacy:
+      - check_dex_seed:
           blockchain: bnb
           project: thena
           version: fusion
@@ -107,6 +105,8 @@ models:
         description: "Version of the contract built and deployed by the DEX project"
       - name: block_date
         description: "UTC event block date of each DEX trade"
+      - name: block_month
+        description: "UTC event block month of each DEX trade"
       - name: block_time
         description: "UTC event block time of each DEX trade"
       - name: token_bought_symbol
@@ -165,6 +165,8 @@ models:
         description: "Version of the contract built and deployed by the DEX project"
       - name: block_date
         description: "UTC event block date of each DEX trade"
+      - name: block_month
+        description: "UTC event block month of each DEX trade"
       - name: block_time
         description: "UTC event block time of each DEX trade"
       - name: token_bought_symbol
