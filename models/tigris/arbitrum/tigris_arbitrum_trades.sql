@@ -364,11 +364,11 @@ limit_cancel as (
         lc.trader, 
         0 as margin_change,
         lc.version, 
-        CONCAT(op.open_type, ' cancelled') as trade_type,
+        COALESCE(CONCAT(op.open_type, ' cancelled'), 'missing-cancelled') as trade_type,
         lc.positions_contract
     FROM 
         {{ ref('tigris_arbitrum_events_limit_cancel') }} lc 
-    INNER JOIN 
+    LEFT JOIN 
     open_position_limit op 
         ON lc.position_id = op.position_id 
         AND lc.positions_contract = op.positions_contract
