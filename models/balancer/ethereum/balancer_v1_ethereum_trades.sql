@@ -15,7 +15,7 @@
 
 WITH v1 AS (
     select
-        VARCHAR '1' AS version,
+        '1' AS version,
         tokenOut AS token_bought_address,
         tokenAmountOut AS token_bought_amount_raw,
         tokenIn AS token_sold_address,
@@ -45,8 +45,8 @@ prices AS (
 
 
 select
-    VARCHAR 'ethereum' AS blockchain,
-    VARCHAR 'balancer' AS project,
+    'ethereum' AS blockchain,
+    'balancer' AS project,
     version,
     evt_block_time AS block_time,
     TRY_CAST(date_trunc('day', evt_block_time) AS DATE) AS block_date,
@@ -66,8 +66,8 @@ select
     ) AS amount_usd,
     token_bought_address,
     token_sold_address,
-    CAST(NULL AS VARCHAR) AS taker,
-    CAST(NULL AS VARCHAR) AS maker,
+    CAST(NULL AS VARCHAR(5)) AS taker,
+    CAST(NULL AS VARCHAR(5)) AS maker,
     CAST(NULL AS VARBINARY) AS pool_id,
     CAST(NULL AS DOUBLE) AS swap_fee,
     project_contract_address,
@@ -75,7 +75,7 @@ select
     tx."from" AS tx_from,
     tx.to AS tx_to,
     evt_index,
-    VARCHAR '' AS trace_address
+    CAST(NULL AS VARCHAR(5)) AS trace_address
 FROM v1 trades
 INNER JOIN {{ source('ethereum', 'transactions') }} tx
     ON trades.evt_tx_hash = tx.hash

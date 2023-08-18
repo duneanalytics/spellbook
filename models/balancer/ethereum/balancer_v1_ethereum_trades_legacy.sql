@@ -68,8 +68,8 @@ select
     ) AS amount_usd,
     token_bought_address,
     token_sold_address,
-    CAST(NULL AS VARCHAR) AS taker,
-    CAST(NULL AS VARCHAR) AS maker,
+    CAST(NULL AS VARCHAR(5)) AS taker,
+    CAST(NULL AS VARCHAR(5)) AS maker,
     CAST(NULL AS VARBINARY) AS pool_id,
     CAST(NULL AS DOUBLE) AS swap_fee,
     project_contract_address,
@@ -77,7 +77,7 @@ select
     tx.from AS tx_from,
     tx.to AS tx_to,
     evt_index,
-    '' AS trace_address
+    CAST(NULL AS VARCHAR) AS trace_address
 FROM v1 trades
 INNER JOIN {{ source('ethereum', 'transactions') }} tx
     ON trades.evt_tx_hash = tx.hash
