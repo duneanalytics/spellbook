@@ -174,11 +174,11 @@ models:
    
   - name: balancer_v2_liquidity
     meta:
-      blockchain: ethereum, arbitrum, optimism, polygon, gnosis, avalanche_c
+      blockchain: ethereum, arbitrum, optimism, polygon, gnosis, avalanche_c, base
       project: balancer_v2
       contributors: viniabussafi
     config:
-      tags: ['balancer', 'amm', 'dex', 'liquidity', 'ethereum', 'arbitrum', 'optimism', 'polygon', 'avalanche_c']
+      tags: ['balancer', 'amm', 'dex', 'liquidity', 'ethereum', 'arbitrum', 'optimism', 'polygon', 'avalanche_c', 'base']
     description: >
       Liquidity by token on Balancer, an automated portfolio manager and trading platform.
     tests:
