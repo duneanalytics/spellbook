@@ -18,6 +18,7 @@ models:
             - position_id 
             - trade_type
             - positions_contract
+            - protocol_version
     columns:
       - &blockchain
         name: blockchain
@@ -82,3 +83,6 @@ models:
       - &block_month
         name: block_month
         description: "date_trunc of block month of trade"
+      - &protocol_version
+        name: protocol_version
+        description: "tigris project version "

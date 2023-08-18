@@ -6,7 +6,7 @@
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
-    unique_key = ['evt_block_time', 'evt_tx_hash', 'position_id', 'trade_type', 'positions_contract']
+    unique_key = ['evt_block_time', 'evt_tx_hash', 'position_id', 'trade_type', 'positions_contract', 'protocol_version']
     )
 }}
 
@@ -33,7 +33,8 @@ open_position as (
         margin as margin_change, 
         version, 
         'open_position' as trade_type,
-        positions_contract
+        positions_contract,
+        protocol_version
     FROM {{ ref('tigris_polygon_events_open_position') }}
     WHERE open_type = 'open_position'
     {% if is_incremental() %}
@@ -117,7 +118,8 @@ limit_order as (
         margin as margin_change, 
         version, 
         'limit_order' as trade_type,
-        positions_contract
+        positions_contract,
+        protocol_version
     FROM {{ ref('tigris_polygon_events_limit_order') }}
     {% if is_incremental() %}
     WHERE evt_block_time >= date_trunc('day', now() - interval '7' day)
@@ -171,7 +173,8 @@ close_position as (
         c.payout as margin_change, 
         c.version, 
         'close_position' as trade_type,
-        c.positions_contract
+        c.positions_contract,
+        c.protocol_version
     FROM 
         {{ ref('tigris_polygon_positions_close') }} c
     LEFT JOIN
@@ -211,7 +214,8 @@ liquidate_position as (
         lp.margin as margin_change,
         lp.version, 
         'liquidate_position' as trade_type,
-        lp.positions_contract
+        lp.positions_contract,
+        lp.protocol_version
     FROM 
         {{ ref('tigris_polygon_positions_liquidation') }} lp 
     LEFT JOIN
@@ -250,7 +254,8 @@ add_margin as (
         am.margin_change,
         am.version, 
         'add_to_position' as trade_type, 
-        am.positions_contract
+        am.positions_contract,
+        am.protocol_version
     FROM 
     (
         SELECT 
@@ -326,7 +331,8 @@ modify_margin as (
         mm.margin_change,
         mm.version,
         CASE WHEN mm.modify_type = true THEN 'add_margin' ELSE 'remove_margin' END as trade_type,
-        mm.positions_contract
+        mm.positions_contract,
+        mm.protocol_version
     FROM 
         {{ ref('tigris_polygon_events_modify_margin') }} mm 
     LEFT JOIN 
@@ -365,7 +371,8 @@ limit_cancel as (
         0 as margin_change,
         lc.version, 
         COALESCE(CONCAT(op.open_type, ' cancelled'), 'missing-cancelled') as trade_type,
-        lc.positions_contract
+        lc.positions_contract,
+        lc.protocol_version
     FROM 
         {{ ref('tigris_polygon_events_limit_cancel') }} lc 
     LEFT JOIN 
