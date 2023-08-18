@@ -3,8 +3,9 @@
     alias = alias('balancer_pools'), 
     tags = ['dunesql'], 
     partition_by = ['time'],
-    materialized = 'table',
+    materialized = 'incremental',
     file_format = 'delta',
+    incremental_strategy = 'merge',
     unique_key = ['pool', 'time'],
     post_hook='{{ expose_spells(\'["polygon"]\', 
                                 "project",
@@ -16,25 +17,15 @@
 {% set project_start_date = '2023-03-02' %} 
 
 
-with dates as (
-    with day_seq as (select (sequence(cast('{{ project_start_date }}' as date), current_date, interval '1' day)) as day)
+with 
 
-select days.day
-from day_seq
-cross join unnest(day) as days(day)
-  )
-
-, pools(pool_id,poolAddress) as (  
+pools(pool_id,poolAddress) as (  
 values    
 (0x4a77ef015ddcd972fd9ba2c7d5d658689d090f1a000000000000000000000b38, 0x4a77ef015ddcd972fd9ba2c7d5d658689d090f1a),
 (0x65fe9314be50890fb01457be076fafd05ff32b9a000000000000000000000a96, 0x65fe9314be50890fb01457be076fafd05ff32b9a)
 )
 
-, pool_per_date as ( 
-select dates.day, pools.*
-from dates
-left join pools on 1=1
-)
+
 
 , tokens as (
 select distinct token_address from (
@@ -82,8 +73,12 @@ WHERE call_create.output_0 in (select distinct  poolAddress from pools)
         symbol,
         decimals,
         avg(price) AS price
-    FROM {{source ('prices','usd')}}
-    WHERE date_trunc('day', minute) >= date '{{ project_start_date }}' 
+    FROM {{source ('prices','usd')}} p
+    {% if not is_incremental() %}
+    WHERE DATE_TRUNC('day', p.minute) >= DATE '{{ project_start_date }}'
+    {% else %}
+    WHERE DATE_TRUNC('day', p.minute) >= DATE_TRUNC('day', NOW() - INTERVAL '1' day)
+    {% endif %}
     and date_trunc('day', minute) < current_date
     and blockchain = 'polygon'
     and contract_address in (select distinct token_address from tokens)
@@ -106,8 +101,12 @@ SELECT distinct
         'bb-a-WETH',
         18,
         avg(price) AS price
-    FROM {{source ('prices','usd')}}
-    WHERE date_trunc('day', minute) >= date '{{ project_start_date }}' 
+    FROM {{source ('prices','usd')}} p
+    {% if not is_incremental() %}
+    WHERE DATE_TRUNC('day', p.minute) >= DATE '{{ project_start_date }}'
+    {% else %}
+    WHERE DATE_TRUNC('day', p.minute) >= DATE_TRUNC('day', NOW() - INTERVAL '1' day)
+    {% endif %}
     and date_trunc('day', minute) < current_date
     and blockchain = 'polygon'
     and contract_address = 0x7ceb23fd6bc0add59e62ac25578270cff1b9f619
@@ -131,8 +130,12 @@ union all
     SELECT distinct
         DATE_TRUNC('hour', minute) time,
         last_value(price) over (partition by DATE_TRUNC('hour', minute), contract_address ORDER BY  minute range between unbounded preceding AND unbounded following) AS price
-    FROM {{source ('prices','usd')}}
-    WHERE date_trunc('day', minute) >= date '{{ project_start_date }}' 
+    FROM {{source ('prices','usd')}} p
+    {% if not is_incremental() %}
+    WHERE DATE_TRUNC('day', p.minute) >= DATE '{{ project_start_date }}'
+    {% else %}
+    WHERE DATE_TRUNC('day', p.minute) >= DATE_TRUNC('day', NOW() - INTERVAL '1' day)
+    {% endif %}
     and blockchain = 'polygon'
     and contract_address = 0x03b54A6e9a984069379fae1a4fC4dBAE93B3bCCD
 ))
@@ -145,8 +148,12 @@ union all
     SELECT distinct
         DATE_TRUNC('hour', minute) time
         , last_value(price) over (partition by DATE_TRUNC('hour', minute), contract_address ORDER BY  minute range between unbounded preceding AND unbounded following) AS price
-    FROM {{source ('prices','usd')}}
-    WHERE date_trunc('day', minute) >= date '{{ project_start_date }}' 
+    FROM {{source ('prices','usd')}} p
+    {% if not is_incremental() %}
+    WHERE DATE_TRUNC('day', p.minute) >= DATE '{{ project_start_date }}'
+    {% else %}
+    WHERE DATE_TRUNC('day', p.minute) >= DATE_TRUNC('day', NOW() - INTERVAL '1' day)
+    {% endif %}
     and blockchain = 'polygon'
     and contract_address = 0x7ceb23fd6bc0add59e62ac25578270cff1b9f619
 ))
@@ -160,8 +167,12 @@ union all
         DATE_TRUNC('hour', minute) AS time,
         0x43894DE14462B421372bCFe445fA51b1b4A0Ff3D as token,
         last_value(price) over (partition by DATE_TRUNC('hour', minute), contract_address ORDER BY  minute range between unbounded preceding AND unbounded following) AS price
-    FROM {{source ('prices','usd')}}
-    WHERE date_trunc('day', minute) >= date '{{ project_start_date }}' 
+    FROM {{source ('prices','usd')}} p
+    {% if not is_incremental() %}
+    WHERE DATE_TRUNC('day', p.minute) >= DATE '{{ project_start_date }}'
+    {% else %}
+    WHERE DATE_TRUNC('day', p.minute) >= DATE_TRUNC('day', NOW() - INTERVAL '1' day)
+    {% endif %}
     and blockchain = 'polygon'
     and contract_address = 0x7ceb23fd6bc0add59e62ac25578270cff1b9f619
     
@@ -169,11 +180,11 @@ union all
 )
 , swaps_changes as (
         SELECT
-            d. day,
+            day,
             pool_id,
             token,
             SUM(COALESCE(delta, 0)) AS delta
-        FROM dates d left join 
+        FROM 
             (
                 SELECT
                     date_trunc('day', evt_block_time) AS day,
@@ -181,7 +192,11 @@ union all
                     tokenIn AS token,
                     cast(amountIn as double) AS delta
                 FROM {{source ('balancer_v2_polygon','Vault_evt_Swap')}}
-                WHERE date_trunc('day', evt_block_time) >= date '{{ project_start_date }}' 
+                {% if not is_incremental() %}
+                WHERE DATE_TRUNC('day', evt_block_time) >= DATE '{{ project_start_date }}'
+                {% else %}
+                WHERE DATE_TRUNC('day', evt_block_time) >= DATE_TRUNC('day', NOW() - INTERVAL '1' day)
+                {% endif %}
                 and poolId in (select pool_id from pools)
                 UNION
                 ALL
@@ -191,9 +206,13 @@ union all
                     tokenOut AS token,
                     -cast(amountOut as double) AS delta
                 FROM {{source ('balancer_v2_polygon','Vault_evt_Swap')}}
-                WHERE date_trunc('day', evt_block_time) >= date '{{ project_start_date }}' 
+                 {% if not is_incremental() %}
+                WHERE DATE_TRUNC('day', evt_block_time) >= DATE '{{ project_start_date }}'
+                {% else %}
+                WHERE DATE_TRUNC('day', evt_block_time) >= DATE_TRUNC('day', NOW() - INTERVAL '1' day)
+                {% endif %}
                 and poolId in (select pool_id from pools)
-            ) swaps on d.day = swaps.day
+            ) swaps 
         GROUP BY 1, 2, 3
     )
     
@@ -202,10 +221,14 @@ union all
             date_trunc('day', evt_block_time) AS day,
             poolId AS pool_id,
             u.token,
-            cast(u.delta as double) as delta
+            cast(u.delta as double) - cast(u.protocolFeeAmounts as double) as delta
         FROM {{source('balancer_v2_polygon','Vault_evt_PoolBalanceChanged')}}
-         CROSS JOIN UNNEST(tokens, deltas) as u(token, delta)
-        WHERE date_trunc('day', evt_block_time) >= date '{{ project_start_date }}'
+         CROSS JOIN UNNEST(tokens, deltas, protocolFeeAmounts) as u(token, delta, protocolFeeAmounts)
+         {% if not is_incremental() %}
+         WHERE DATE_TRUNC('day', evt_block_time) >= DATE '{{ project_start_date }}'
+         {% else %}
+         WHERE DATE_TRUNC('day', evt_block_time) >= DATE_TRUNC('day', NOW() - INTERVAL '1' day)
+         {% endif %}
         and poolId in (select pool_id from pools)
         ORDER BY 1, 2, 3
     )
@@ -218,7 +241,11 @@ union all
             --cashDelta + 
             cast(managedDelta as double) AS delta
         FROM {{source ('balancer_v2_polygon','Vault_evt_PoolBalanceManaged')}}
-        WHERE date_trunc('day', evt_block_time) >= date '{{ project_start_date }}' 
+         {% if not is_incremental() %}
+         WHERE DATE_TRUNC('day', evt_block_time) >= DATE '{{ project_start_date }}'
+         {% else %}
+         WHERE DATE_TRUNC('day', evt_block_time) >= DATE_TRUNC('day', NOW() - INTERVAL '1' day)
+         {% endif %}
         and poolId in (select pool_id from pools)
 )
 
@@ -258,43 +285,41 @@ union all
         GROUP BY 1, 2, 3
 )
 
-, cumulative_balance AS (
+, balance AS (
         SELECT
             DAY,
             pool_id,
             token,
-            LEAD(DAY, 1, NOW()) OVER (PARTITION BY token, pool_id ORDER BY DAY) AS day_of_next_change,
-            SUM(amount) OVER (PARTITION BY pool_id, token ORDER BY DAY ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW) AS cumulative_amount
+            SUM(amount)  AS amount
         FROM daily_delta_balance
+        group by 1,2,3
 )
 
 
-, cumulative_usd_balance AS (
+, usd_balance AS (
         SELECT
-            c.day,
-            c.pool_id,
+            day,
+            pool_id,
             b.token,
             p1.symbol AS token_symbol,
-            cumulative_amount as token_balance_raw,
-            cumulative_amount / POWER(10, p1.decimals) AS token_balance,
-            cumulative_amount / POWER(10, p1.decimals) * COALESCE(p1.price, 0) AS amount_usd, 
+            amount as token_balance_raw,
+            amount / POWER(10, p1.decimals) AS token_balance,
+            COALESCE(p1.price, 0) AS price, 
             0 as row_numb
-        FROM   pool_per_date c 
-        LEFT JOIN cumulative_balance b ON b.day <= c.day AND c.day < b.day_of_next_change and c.pool_id = b.pool_id
+        FROM   balance b 
         LEFT JOIN tokens_prices_daily p1 ON p1.time = b.day AND p1.token = b.token
         WHERE  b.token in (0x03b54a6e9a984069379fae1a4fc4dbae93b3bccd)
         union all
         SELECT
-            c.day,
-            c.pool_id,
+            day,
+            pool_id,
             b.token,
             p1.symbol AS token_symbol,
-            cumulative_amount as token_balance_raw,
-            cumulative_amount / POWER(10, p1.decimals) AS token_balance,
-            cumulative_amount / POWER(10, p1.decimals) * COALESCE(p1.price, 0) AS amount_usd, 
-            row_number() OVER(PARTITION BY c.day,c.pool_id ORDER BY  c.day,c.pool_id, b.token) as row_numb
-        FROM   pool_per_date c 
-        LEFT JOIN cumulative_balance b ON b.day <= c.day AND c.day < b.day_of_next_change and c.pool_id = b.pool_id
+            amount as token_balance_raw,
+            amount / POWER(10, p1.decimals) AS token_balance,
+            COALESCE(p1.price, 0) AS price, 
+            row_number() OVER(PARTITION BY day,pool_id ORDER BY day,pool_id, b.token) as row_numb
+        FROM balance b 
         LEFT JOIN tokens_prices_daily p1 ON p1.time = b.day AND p1.token = b.token
         WHERE b.token not in (select distinct poolAddress from pools
                             union all
@@ -305,9 +330,9 @@ union all
 
 , reserves as (
 select main.day, main.pool_id, 
-main_token, main_token_symbol, main_token_reserve, main_token_usd_reserve,
-paired1_token, paired1_token_symbol, paired1_token_reserve, paired1_token_usd_reserve,
-paired2_token, paired2_token_symbol, paired2_token_reserve, paired2_token_usd_reserve
+main_token, main_token_symbol, main_token_reserve, main_token_usd_price,
+paired1_token, paired1_token_symbol, paired1_token_reserve, paired1_token_usd_price
+--paired2_token, paired2_token_symbol, paired2_token_reserve, paired2_token_usd_reserve
 --paired3_token, paired3_token_symbol, paired3_token_reserve, paired3_token_usd_reserve,
 --paired4_token, paired4_token_symbol, paired4_token_reserve, paired4_token_usd_reserve,
 --paired5_token, paired5_token_symbol, paired5_token_reserve, paired5_token_usd_reserve,
@@ -323,8 +348,8 @@ SELECT
     token AS main_token,
     token_symbol as main_token_symbol,
     coalesce(token_balance, token_balance_raw) as main_token_reserve,
-    coalesce(amount_usd, 0) AS main_token_usd_reserve
-FROM cumulative_usd_balance b
+    coalesce(price, 0) AS main_token_usd_price
+FROM usd_balance b
 where token = 0x03b54A6e9a984069379fae1a4fC4dBAE93B3bCCD) main
 
 join 
@@ -335,13 +360,13 @@ SELECT
     token AS paired1_token,
     token_symbol as paired1_token_symbol,
     coalesce(token_balance, token_balance_raw) as paired1_token_reserve,
-    coalesce(amount_usd, 0) AS paired1_token_usd_reserve
-FROM cumulative_usd_balance b
+    coalesce(price, 0) AS paired1_token_usd_price
+FROM usd_balance b
 where token not in (0x03b54a6e9a984069379fae1a4fc4dbae93b3bccd) 
   and cast(row_numb as int) = int '1'
 )paired1
 on main.day = paired1.day and main.pool_id = paired1.pool_id 
-
+/*
 left join 
 (
 SELECT
@@ -355,7 +380,7 @@ FROM cumulative_usd_balance b
 where token not in (0x03b54a6e9a984069379fae1a4fc4dbae93b3bccd) 
   and cast(row_numb as int) = int '2') paired2
 on main.day = paired2.day and main.pool_id = paired2.pool_id 
-/*
+
 left join 
 (
 SELECT
@@ -433,7 +458,11 @@ order by 1 desc
             else p.price*amountIn/1e18 end) as trading_volume
     from {{source('balancer_v2_polygon','Vault_evt_Swap')}} s
     left join wsteth_prices_hourly p on date_trunc('hour', s.evt_block_time) >= p.time and date_trunc('hour', s.evt_block_time) < p.next_time
-    WHERE date_trunc('day', evt_block_time) >= date '{{ project_start_date }}' 
+    {% if not is_incremental() %}
+    WHERE DATE_TRUNC('day', s.evt_block_time) >= DATE '{{ project_start_date }}'
+    {% else %}
+    WHERE DATE_TRUNC('day', s.evt_block_time) >= DATE_TRUNC('day', NOW() - INTERVAL '1' day)
+    {% endif %} 
     and s.poolId in (select pool_id from pools)
     group by 1,2
     
@@ -444,11 +473,13 @@ select  pool_id as pool, 'polygon' as blockchain, 'balancer' as project, 0 as fe
 cast(day as date) as time, main_token, main_token_symbol, 
 paired1_token as paired_token,
 --||decode(paired2_token, null, '', '/'||coalesce(paired2_token,''))||decode(paired3_token, null, '', '/'||coalesce(paired3_token,''))||decode(paired4_token, null, '', '/'||coalesce(paired4_token,'')) as paired_token,
-paired1_token_symbol||case when paired2_token_symbol is null then '' else '/'||paired2_token_symbol end as paired_token_symbol,
+paired1_token_symbol as paired_token_symbol,
+--||case when paired2_token_symbol is null then '' else '/'||paired2_token_symbol end as paired_token_symbol,
 --||decode(paired2_token_symbol, null, '', '/'||coalesce(paired2_token_symbol,''))||decode(paired3_token_symbol, null, '', '/'||coalesce(paired3_token_symbol,''))||decode(paired4_token_symbol, null, '', '/'||coalesce(paired4_token_symbol,'')) as paired_token_symbol,
 main_token_reserve, paired1_token_reserve as paired_token_reserve,
-main_token_usd_reserve,
-paired1_token_usd_reserve + coalesce(paired2_token_usd_reserve,0) as paired_token_usd_reserve,
+main_token_usd_price,
+paired1_token_usd_price as paired_token_usd_price,
+--+ coalesce(paired2_token_usd_reserve,0) as paired_token_usd_reserve,
 --+ coalesce(paired3_token_usd_reserve,0) + coalesce(paired4_token_usd_reserve,0) as paired_token_usd_reserve,
 coalesce(trading_volume.trading_volume,0) as trading_volume
 from reserves r
@@ -462,4 +493,3 @@ select
 blockchain ||' '|| project ||' '|| coalesce(paired_token_symbol,'unknown') ||':'|| main_token_symbol ||'('|| substring(cast(pool as varchar),64) ||')' as pool_name,
 * 
 from all_metrics
-where main_token_reserve > 1
