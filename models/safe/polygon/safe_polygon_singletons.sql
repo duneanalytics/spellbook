@@ -2,6 +2,7 @@
     config(
         materialized='table',
         alias = alias('singletons'),
+        tags = ['dunesql'],
         post_hook='{{ expose_spells(\'["polygon"]\',
                                     "project",
                                     "safe",

@@ -2,8 +2,9 @@
     alias = alias('maverick_pools'),
     tags = ['dunesql'],             
     partition_by = ['time'],
-    materialized = 'table',
+    materialized = 'incremental',
     file_format = 'delta',
+    incremental_strategy = 'merge',
     unique_key = ['pool', 'time'],
     post_hook='{{ expose_spells(\'["ethereum"]\',
                                 "project",
@@ -14,26 +15,15 @@
 
 {% set project_start_date = '2023-02-21' %} 
 
-with dates as (
-    with day_seq as (select (sequence(cast('{{ project_start_date }}' as date), current_date, interval '1' day)) as day)
-select days.day
-from day_seq
-cross join unnest(day) as days(day)
-)
+with 
 
-
-, pools as (
+pools as (
 select distinct poolAddress, tokenA, tokenB, cast(fee as double)/1e16 as fee 
 from {{source('maverick_v1_ethereum','factory_evt_PoolCreated')}}
 where tokenA = 0x7f39c581f595b53c5cb19bd0b3f8da6c935e2ca0 
    or tokenB = 0x7f39c581f595b53c5cb19bd0b3f8da6c935e2ca0
 )
 
-, pool_per_date as ( 
-select dates.day, pools.*
-from dates
-left join pools on 1=1
-)
 
 , tokens as (
 select distinct token as address
@@ -57,8 +47,12 @@ select 0x7f39C581F595B53c5cb19bD0b3f8dA6c935E2Ca0
         symbol,
         decimals,
         avg(price) AS price
-    FROM {{source('prices','usd')}}
-    WHERE date_trunc('hour', minute) >= date '{{ project_start_date }}'  
+    FROM {{source('prices','usd')}} p
+    {% if not is_incremental() %}
+    WHERE DATE_TRUNC('day', p.minute) >= DATE '{{ project_start_date }}'
+    {% else %}
+    WHERE DATE_TRUNC('day', p.minute) >= DATE_TRUNC('day', NOW() - INTERVAL '1' day)
+    {% endif %}    
     and date_trunc('day', minute) < current_date
     and blockchain = 'ethereum'
     and contract_address in (select address from tokens)
@@ -82,8 +76,12 @@ select 0x7f39C581F595B53c5cb19bD0b3f8dA6c935E2Ca0
     SELECT distinct
         DATE_TRUNC('hour', minute) time, 
         last_value(price) over (partition by DATE_TRUNC('hour', minute), contract_address ORDER BY  minute range between unbounded preceding AND unbounded following) AS price
-    FROM {{source('prices','usd')}}
-    WHERE date_trunc('hour', minute) >= date '{{ project_start_date }}' 
+    FROM {{source('prices','usd')}} p
+    {% if not is_incremental() %}
+    WHERE DATE_TRUNC('day', p.minute) >= DATE '{{ project_start_date }}'
+    {% else %}
+    WHERE DATE_TRUNC('day', p.minute) >= DATE_TRUNC('day', NOW() - INTERVAL '1' day)
+    {% endif %}    
     and blockchain = 'ethereum'
     and contract_address = 0x7f39C581F595B53c5cb19bD0b3f8dA6c935E2Ca0
     ) p
@@ -98,7 +96,11 @@ select 0x7f39C581F595B53c5cb19bD0b3f8dA6c935E2Ca0
         sum(case when tokenAIn then (-1)*cast(amountOut as double) else cast(amountIn as double) end) as amountB
     from {{source('maverick_v1_ethereum','pool_evt_Swap')}} sw
     left join {{source('maverick_v1_ethereum','factory_evt_PoolCreated')}} cr on sw.contract_address = cr.poolAddress
-    WHERE date_trunc('day', sw.evt_block_time) >= date '{{ project_start_date }}' 
+    {% if not is_incremental() %}
+    WHERE DATE_TRUNC('day', sw.evt_block_time) >= DATE '{{ project_start_date }}'
+    {% else %}
+    WHERE DATE_TRUNC('day', sw.evt_block_time) >= DATE_TRUNC('day', NOW() - INTERVAL '1' day)
+    {% endif %}
     and sw.contract_address in (select poolAddress from pools) 
     group by 1,2,3,4
 )
@@ -111,7 +113,11 @@ select 0x7f39C581F595B53c5cb19bD0b3f8dA6c935E2Ca0
         sum(cast(output_tokenBAmount as double)) as  amountB 
 from {{source('maverick_v1_ethereum','pool_call_addLiquidity')}} a
 left join {{source('maverick_v1_ethereum','factory_evt_PoolCreated')}} cr on a.contract_address = cr.poolAddress
-WHERE date_trunc('day', a.call_block_time) >= date '{{ project_start_date }}' 
+ {% if not is_incremental() %}
+ WHERE DATE_TRUNC('day', a.call_block_time) >= DATE '{{ project_start_date }}'
+ {% else %}
+ WHERE DATE_TRUNC('day', a.call_block_time) >= DATE_TRUNC('day', NOW() - INTERVAL '1' day)
+ {% endif %}
  and a.call_success 
  and a.contract_address in (select poolAddress from pools)
 group by 1,2,3,4
@@ -125,7 +131,11 @@ select  date_trunc('day', call_block_time) as time,
         (-1)*sum(cast(output_tokenBOut as double)) as  amountB
 from {{source('maverick_v1_ethereum','pool_call_removeLiquidity')}} a
 left join {{source('maverick_v1_ethereum','factory_evt_PoolCreated')}} cr on a.contract_address = cr.poolAddress
-WHERE date_trunc('day', a.call_block_time) >= date '{{ project_start_date }}' 
+ {% if not is_incremental() %}
+ WHERE DATE_TRUNC('day', a.call_block_time) >= DATE '{{ project_start_date }}'
+ {% else %}
+ WHERE DATE_TRUNC('day', a.call_block_time) >= DATE_TRUNC('day', NOW() - INTERVAL '1' day)
+ {% endif %}
  and a.call_success 
  and a.contract_address  in (select poolAddress from pools) 
 group by 1,2,3,4
@@ -151,21 +161,17 @@ from  removeliquidity_events
 ) group by 1,2,3,4
 )
 
-, daily_delta_balance_with_lead AS (
-select time, pool, tokenA, tokenB, amountA, amountB, lead(time, 1, now()) over (partition by pool order by time) as next_time
-from daily_delta_balance
-)
-
 
 , pool_liquidity as (
-SELECT c.day as time, fee,
-      c.poolAddress as pool,
-      c.tokenA,
-      c.tokenB,
-      coalesce((SUM(amountA) OVER (PARTITION BY  pool   ORDER BY time)),0) AS amountA,
-      coalesce((SUM(amountB) OVER (PARTITION BY  pool   ORDER BY time)),0) AS amountB
-    FROM pool_per_date c
-      left join daily_delta_balance_with_lead b  ON b.time = c.day and c.poolAddress  = b.pool
+SELECT  time, pools.fee,
+        pool,
+        b.tokenA,
+        b.tokenB,
+        coalesce((SUM(amountA)),0) AS amountA,
+        coalesce((SUM(amountB)),0) AS amountB
+FROM daily_delta_balance b  
+left join pools on b.pool = pools.poolAddress
+GROUP BY 1,2,3,4,5
 )
 
 
@@ -182,7 +188,11 @@ SELECT c.day as time, fee,
                  end) as amount
     from {{source('maverick_v1_ethereum','pool_evt_Swap')}} sw
     left join {{source('maverick_v1_ethereum','factory_evt_PoolCreated')}} cr on sw.contract_address = cr.poolAddress
-    WHERE date_trunc('day', sw.evt_block_time) >= date '{{ project_start_date }}' 
+    {% if not is_incremental() %}
+    WHERE DATE_TRUNC('day', sw.evt_block_time) >= DATE '{{ project_start_date }}'
+    {% else %}
+    WHERE DATE_TRUNC('day', sw.evt_block_time) >= DATE_TRUNC('day', NOW() - INTERVAL '1' day)
+    {% endif %}
     and sw.contract_address in (select poolAddress from pools)
     group by 1,2,3,4
 
@@ -216,8 +226,8 @@ select
         case when o.tokenA = 0x7f39c581f595b53c5cb19bd0b3f8da6c935e2ca0 then pB.symbol else pA.symbol end as paired_token_symbol,
         case when o.tokenA = 0x7f39c581f595b53c5cb19bd0b3f8da6c935e2ca0 then amountA/power(10,pA.decimals) else amountB/power(10,pB.decimals) end as main_token_reserve,
         case when o.tokenA = 0x7f39c581f595b53c5cb19bd0b3f8da6c935e2ca0 then amountB/power(10,pB.decimals) else amountA/power(10,pA.decimals) end as paired_token_reserve,
-        case when o.tokenA = 0x7f39c581f595b53c5cb19bd0b3f8da6c935e2ca0 then amountA*pA.price/power(10,pA.decimals) else amountB*pB.price/power(10,pB.decimals) end as main_token_usd_reserve,
-        case when o.tokenA = 0x7f39c581f595b53c5cb19bd0b3f8da6c935e2ca0 then amountB*pB.price/power(10,pB.decimals) else amountA*pA.price/power(10,pA.decimals) end as paired_token_usd_reserve,
+        case when o.tokenA = 0x7f39c581f595b53c5cb19bd0b3f8da6c935e2ca0 then pA.price else pB.price end as main_token_usd_price,
+        case when o.tokenA = 0x7f39c581f595b53c5cb19bd0b3f8da6c935e2ca0 then pB.price else pA.price end as paired_token_usd_price,
         coalesce(t.volume,0) as trading_volume
 from pool_liquidity o
 left join tokens_prices_daily pA on o.time = pA.time and o.tokenA = pA.token
@@ -238,9 +248,8 @@ select  CONCAT(CONCAT(CONCAT(CONCAT(CONCAT(blockchain,CONCAT(' ', project)) ,' '
         paired_token_symbol,
         main_token_reserve,
         paired_token_reserve,
-        main_token_usd_reserve,
-        paired_token_usd_reserve,
+        main_token_usd_price,
+        paired_token_usd_price,
         trading_volume
 from all_metrics
-where main_token_reserve > 1
-order by time desc
+
