@@ -600,6 +600,7 @@ WITH curated_list AS (
       ,(0x6103db328d4864dc16bd2f0ee1b9a92e3f87f915, 'Compound')
       ,(0x78d4BDEBc0B4140f01BAB63085F94A5a7A1294f2, 'Yearn')
       ,(0x0B634A8D61b09820E9F72F79cdCBc8A4D0Aad26b, 'Yearn')
+      ,(0xAEDdC8B2aa5E331B53c22F1da8069c18d02eF6ac, 'Gitcoin')
 
       
   ) as temp_table (creator_address, contract_project)
