@@ -20,8 +20,6 @@
 ,ref('zeroex_native_trades')
 ,ref('dodo_trades')
 ,ref('kyberswap_trades')
-,ref('mdex_bnb_trades')
-,ref('nomiswap_bnb_trades')
 ,ref('hashflow_trades')
 ,ref('ellipsis_finance_trades')
 ,ref('synthetix_spot_trades')
@@ -70,6 +68,8 @@
 ,ref('thena_trades')
 ,ref('camelot_trades')
 ,ref('xchange_trades')
+,ref('mdex_bnb_trades')
+,ref('nomiswap_bnb_trades')
 ] %}
 
 
