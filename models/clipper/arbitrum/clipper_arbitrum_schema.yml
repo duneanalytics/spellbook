@@ -141,6 +141,7 @@ models:
       - *trace_address
       - *evt_index
 
+
   - name: clipper_arbitrum_trades
     meta:
       blockchain: arbitrum
