@@ -43,7 +43,6 @@ models:
       - *token_address
       - *normalized_weight
 
-
   - name: balancer_v2_avalanche_c_liquidity
     meta:
       blockchain: avalanche_c
@@ -107,4 +106,73 @@ models:
       - &median_price
         name: median_price
         description: 'BPT median price'
-  
+
+  - name: balancer_v2_avalanche_c_transfers_bpt
+    meta:
+      blockchain: avalanche_c
+      project: balancer_v2
+      contributors: victorstefenon, thetroyharris
+    config:
+      tags: ['avalanche_c', 'bpt', 'transfers']
+    description: >
+      Balancer Pool Token (BPT) transfer logs on Balancer, an automated portfolio manager and trading platform, on Avalanche C Chain.
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - evt_tx_hash
+            - evt_index
+            - block_date
+    columns:
+      - *blockchain
+      - &contract_address
+        name: contract_address
+        description: "Address of BPT being transfered"
+      - &block_date
+        name: block_date
+        description: "UTC event block date"
+      - &block_month
+        name: block_month
+        description: "UTC event block month"
+      - &evt_index
+        name: evt_index
+        description: 'Event index'
+      - &evt_block_time
+        name: evt_block_time
+        description: 'Block time of transfer event'
+      - &evt_block_number
+        name: evt_block_number
+        description: 'Block number of transfer event'
+      - &from
+        name: from
+        description: 'Address of BPT provider of transfer event'
+      - &to
+        name: to
+        description: 'Address of BPT receiver of transfer event'
+      - &value
+        name: value
+        description: 'Amount of BPT transferred in transfer event'
+
+  - name: balancer_v2_avalanche_c_pools_fees
+    meta:
+      blockchain: avalanche_c
+      project: balancer_v2
+      contributors: jacektrocinski, thetroyharris
+    config:
+      tags: ['avalanche_c', 'balancer', 'pools', 'fees']
+    description: >
+      Balancer v2 swap fees stored at the pool level.
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_number
+            - tx_hash
+            - index
+    columns:
+      - name: blockchain
+      - name: contract_address
+      - name: tx_hash
+      - name: index
+      - name: tx_index
+      - name: block_time
+      - name: block_number
+      - name: swap_fee_percentage
