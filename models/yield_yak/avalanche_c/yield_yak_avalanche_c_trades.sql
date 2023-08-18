@@ -54,8 +54,8 @@ SELECT
     END as token_pair, 
     dexs.token_bought_amount_raw / power(10, erc20a.decimals) as token_bought_amount, 
     dexs.token_sold_amount_raw / power(10, erc20b.decimals) as token_sold_amount, 
-    CAST(dexs.token_bought_amount_raw AS UINT256) AS token_bought_amount_raw, 
-    CAST(dexs.token_sold_amount_raw AS UINT256) AS token_sold_amount_raw, 
+    dexs.token_bought_amount_raw AS token_bought_amount_raw, 
+    dexs.token_sold_amount_raw AS token_sold_amount_raw, 
     COALESCE(
         dexs.amount_usd, 
         (dexs.token_bought_amount_raw / power(10, p_bought.decimals)) * p_bought.price, 
@@ -68,14 +68,14 @@ SELECT
     dexs.project_contract_address, 
     dexs.tx_hash, 
     tx."from" as tx_from, 
-    tx."to" AS tx_to, 
+    tx.to AS tx_to, 
     dexs.trace_address,
     dexs.evt_index
 FROM dexs
 INNER JOIN {{ source('avalanche_c', 'transactions') }} tx
     ON tx.hash = dexs.tx_hash
     {% if not is_incremental() %}
-    AND tx.block_time >= DATE '{{project_start_date}}'
+    AND tx.block_time >= TIMESTAMP '{{project_start_date}}'
     {% endif %}
     {% if is_incremental() %}
     AND tx.block_time >= date_trunc('day', now() - interval '7' Day)
@@ -91,7 +91,7 @@ LEFT JOIN {{ source('prices', 'usd') }} p_bought
     AND p_bought.contract_address = dexs.token_bought_address
     AND p_bought.blockchain = 'avalanche_c'
     {% if not is_incremental() %}
-    AND p_bought.minute >= DATE '{{project_start_date}}'
+    AND p_bought.minute >= TIMESTAMP '{{project_start_date}}'
     {% endif %}
     {% if is_incremental() %}
     AND p_bought.minute >= date_trunc('day', now() - interval '7' Day)
@@ -101,7 +101,7 @@ LEFT JOIN {{ source('prices', 'usd') }} p_sold
     AND p_sold.contract_address = dexs.token_sold_address
     AND p_sold.blockchain = 'avalanche_c'
     {% if not is_incremental() %}
-    AND p_sold.minute >= DATE '{{project_start_date}}'
+    AND p_sold.minute >= TIMESTAMP '{{project_start_date}}'
     {% endif %}
     {% if is_incremental() %}
     AND p_sold.minute >= date_trunc('day', now() - interval '7' Day)
