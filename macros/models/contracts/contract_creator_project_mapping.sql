@@ -326,8 +326,8 @@ WHERE contract_order = 1
 
   , existing_contracts_by_chain AS (
     SELECT
-    , blockchain
-    , code
+      blockchain
+      , code
       , MAX_BY(code_deploy_rank_by_chain, code) AS max_code_deploy_rank_by_chain
     FROM base_level
     WHERE is_new_contract = 0 AND code IS NOT NULL
