@@ -2,11 +2,11 @@
     tags=['dunesql'],
     schema = 'tigris_v2_arbitrum',
     alias = alias('trades'),
-    partition_by = ['day'],
+    partition_by = ['block_month'],
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
-    unique_key = ['evt_block_time', 'evt_tx_hash', 'position_id', 'trade_type']
+    unique_key = ['evt_block_time', 'evt_tx_hash', 'position_id', 'trade_type', 'positions_contract']
     )
 }}
 
@@ -14,7 +14,9 @@ WITH
 
 open_position as (
     SELECT 
+        block_month,
         day, 
+        project_contract_address,
         evt_block_time, 
         evt_index,
         evt_tx_hash,
@@ -30,16 +32,21 @@ open_position as (
         trader,
         margin as margin_change, 
         version, 
-        'open_position' as trade_type 
-    FROM {{ ref('tigris_v2_arbitrum_events_open_position') }}
+        'open_position' as trade_type,
+        positions_contract
+    FROM {{ ref('tigris_arbitrum_events_open_position') }}
+    WHERE protocol_version = '2'
+    AND open_type = 'open_position'
     {% if is_incremental() %}
-    WHERE evt_block_time >= date_trunc('day', now() - interval '7' day)
+    AND evt_block_time >= date_trunc('day', now() - interval '7' day)
     {% endif %}
 ), 
 
-limit_order as (
+open_position_join as (
     SELECT 
+        block_month,
         day, 
+        project_contract_address,
         evt_block_time, 
         evt_index,
         evt_tx_hash,
@@ -55,16 +62,107 @@ limit_order as (
         trader,
         margin as margin_change, 
         version, 
-        'limit_order' as trade_type 
-    FROM {{ ref('tigris_v2_arbitrum_events_limit_order') }}
+        'open_position' as trade_type,
+        positions_contract
+    FROM {{ ref('tigris_arbitrum_events_open_position') }}
+    WHERE protocol_version = '2'
+    AND open_type = 'open_position'
+    -- {% if is_incremental() %}
+    -- AND evt_block_time >= date_trunc('day', now() - interval '7' day)
+    -- {% endif %}
+), 
+
+open_position_limit as (
+    SELECT 
+        block_month,
+        day, 
+        project_contract_address,
+        evt_block_time, 
+        evt_index,
+        evt_tx_hash,
+        position_id,
+        price, 
+        margin as new_margin,
+        leverage,
+        volume_usd,
+        margin_asset,
+        pair, 
+        direction,
+        referral,
+        trader,
+        margin as margin_change, 
+        version, 
+        'open_position' as trade_type,
+        open_type,
+        positions_contract
+    FROM {{ ref('tigris_arbitrum_events_open_position') }}
+    WHERE protocol_version = '2'
+    AND open_type != 'open_position'
+),
+
+limit_order as (
+    SELECT 
+        block_month,
+        day, 
+        project_contract_address,
+        evt_block_time, 
+        evt_index,
+        evt_tx_hash,
+        position_id,
+        price, 
+        margin as new_margin,
+        leverage,
+        volume_usd,
+        margin_asset,
+        pair, 
+        direction,
+        referral,
+        trader,
+        margin as margin_change, 
+        version, 
+        'limit_order' as trade_type,
+        positions_contract
+    FROM {{ ref('tigris_arbitrum_events_limit_order') }}
+    WHERE protocol_version = '2'
     {% if is_incremental() %}
-    WHERE evt_block_time >= date_trunc('day', now() - interval '7' day)
+    AND evt_block_time >= date_trunc('day', now() - interval '7' day)
     {% endif %}
+), 
+
+limit_order_join as (
+    SELECT 
+        block_month,
+        day, 
+        project_contract_address,
+        evt_block_time, 
+        evt_index,
+        evt_tx_hash,
+        position_id,
+        price, 
+        margin as new_margin,
+        leverage,
+        volume_usd,
+        margin_asset,
+        pair, 
+        direction,
+        referral,
+        trader,
+        margin as margin_change, 
+        version, 
+        'limit_order' as trade_type,
+        positions_contract
+    FROM {{ ref('tigris_arbitrum_events_limit_order') }}
+    WHERE protocol_version = '2'
+    -- {% if is_incremental() %}
+    -- AND evt_block_time >= date_trunc('day', now() - interval '7' day)
+    -- {% endif %}
 ), 
 
 close_position as (
     SELECT 
-        TRY_CAST(date_trunc('DAY', c.evt_block_time) AS date) as day, 
+        c.block_month,
+        c.day, 
+        c.project_contract_address,
         c.evt_block_time,
         c.evt_index,
         c.evt_tx_hash,
@@ -80,29 +178,35 @@ close_position as (
         c.trader, 
         c.payout as margin_change, 
         c.version, 
-        'close_position' as trade_type 
+        'close_position' as trade_type,
+        c.positions_contract
     FROM 
-        {{ ref('tigris_v2_arbitrum_positions_close') }} c
+        {{ ref('tigris_arbitrum_positions_close') }} c
     LEFT JOIN
-        open_position op 
+        open_position_join op 
         ON c.position_id = op.position_id
+        AND c.positions_contract = op.positions_contract
     LEFT JOIN
-        limit_order lo
+        limit_order_join lo
         ON c.position_id = lo.position_id
+        AND c.positions_contract = lo.positions_contract
+    WHERE protocol_version = '2'
     {% if is_incremental() %}
-    WHERE c.evt_block_time >= date_trunc('day', now() - interval '7' day)
+    AND c.evt_block_time >= date_trunc('day', now() - interval '7' day)
     {% endif %}
 
 ), 
 
 liquidate_position as (
     SELECT 
+        lp.block_month,
         lp.day, 
+        lp.project_contract_address,
         lp.evt_block_time,
         lp.evt_index,
         lp.evt_tx_hash,
         lp.position_id, 
-        CAST(NULL as double) as price, 
+        lp.price,
         0 as new_margin, 
         lp.leverage, 
         lp.margin * lp.leverage as volume_usd, 
@@ -113,23 +217,29 @@ liquidate_position as (
         lp.trader, 
         lp.margin as margin_change,
         lp.version, 
-        'liquidate_position' as trade_type
+        'liquidate_position' as trade_type,
+        lp.positions_contract
     FROM 
-        {{ ref('tigris_v2_arbitrum_positions_liquidation') }} lp 
+        {{ ref('tigris_arbitrum_positions_liquidation') }} lp 
     LEFT JOIN
-        open_position op 
+        open_position_join op 
         ON lp.position_id = op.position_id 
+        AND lp.positions_contract = op.positions_contract
     LEFT JOIN
-        limit_order lo 
+        limit_order_join lo 
         ON lp.position_id = lo.position_id 
+        AND lp.positions_contract = lo.positions_contract
+    WHERE protocol_version = '2'
     {% if is_incremental() %}
-    WHERE lp.evt_block_time >= date_trunc('day', now() - interval '7' day)
+    AND lp.evt_block_time >= date_trunc('day', now() - interval '7' day)
     {% endif %}
 ),
 
 add_margin as (
     SELECT 
+        am.block_month,
         am.day, 
+        am.project_contract_address,
         am.evt_block_time,
         am.evt_index,
         am.evt_tx_hash,
@@ -145,7 +255,8 @@ add_margin as (
         am.trader,
         am.margin_change,
         am.version, 
-        'add_to_position' as trade_type 
+        'add_to_position' as trade_type, 
+        am.positions_contract
     FROM 
     (
         SELECT 
@@ -155,6 +266,7 @@ add_margin as (
         (
             SELECT 
                 MIN(l.evt_block_time) as latest_leverage_time, 
+                am.block_month,
                 am.day, 
                 am.evt_block_time,
                 am.evt_tx_hash,
@@ -164,40 +276,42 @@ add_margin as (
                 am.margin, 
                 am.margin_change,
                 am.version,
-                am.trader
+                am.trader,
+                am.project_contract_address,
+                am.positions_contract
             FROM 
-                {{ ref('tigris_v2_arbitrum_events_add_margin') }} am 
+            {{ ref('tigris_arbitrum_events_add_margin') }} am
             INNER JOIN 
-                {{ ref('tigris_v2_arbitrum_positions_leverage') }} l 
+                {{ ref('tigris_arbitrum_positions_leverage') }} l 
                 ON am.position_id = l.position_id 
+                AND am.positions_contract = l.positions_contract
+                AND am.protocol_version = '2'
                 AND am.evt_block_time > l.evt_block_time
-                {% if is_incremental() %}
-                AND l.evt_block_time >= date_trunc('day', now() - interval '7' day)
-                {% endif %}
             {% if is_incremental() %}
             WHERE am.evt_block_time >= date_trunc('day', now() - interval '7' day)
             {% endif %}
-            GROUP BY 2, 3, 4, 5, 6, 7, 8, 9, 10, 11
+            GROUP BY 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14
         ) tmp 
         INNER JOIN 
-            {{ ref('tigris_v2_arbitrum_positions_leverage') }} l 
+            {{ ref('tigris_arbitrum_positions_leverage') }} l 
             ON tmp.position_id = l.position_id
             AND tmp.latest_leverage_time = l.evt_block_time
-            {% if is_incremental() %}
-            AND l.evt_block_time >= date_trunc('day', now() - interval '7' day)
-            {% endif %}
     ) am  
     LEFT JOIN 
-        open_position op 
+        open_position_join op 
         ON am.position_id = op.position_id 
+        AND am.positions_contract = op.positions_contract
     LEFT JOIN 
-        limit_order lo 
+        limit_order_join lo 
         ON am.position_id = lo.position_id 
+        AND am.positions_contract = lo.positions_contract
 ),
 
 modify_margin as (
     SELECT 
+        mm.block_month,
         mm.day, 
+        mm.project_contract_address,
         mm.evt_block_time,
         mm.evt_index,
         mm.evt_tx_hash,
@@ -213,17 +327,55 @@ modify_margin as (
         mm.trader, 
         mm.margin_change,
         mm.version,
-        CASE WHEN mm.modify_type = true THEN 'add_margin' ELSE 'remove_margin' END as trade_type
+        CASE WHEN mm.modify_type = true THEN 'add_margin' ELSE 'remove_margin' END as trade_type,
+        mm.positions_contract
     FROM 
-        {{ ref('tigris_v2_arbitrum_events_modify_margin') }} mm 
+        {{ ref('tigris_arbitrum_events_modify_margin') }} mm 
     LEFT JOIN 
-        open_position op 
+        open_position_join op 
         ON mm.position_id = op.position_id 
+        AND mm.positions_contract = op.positions_contract
     LEFT JOIN 
-        limit_order lo 
+        limit_order_join lo 
         ON mm.position_id = lo.position_id 
+        AND mm.positions_contract = lo.positions_contract
+    WHERE protocol_version = '2'
     {% if is_incremental() %}
-    WHERE mm.evt_block_time >= date_trunc('day', now() - interval '7' day)
+    AND mm.evt_block_time >= date_trunc('day', now() - interval '7' day)
+    {% endif %}
+),
+
+limit_cancel as (
+    SELECT 
+        lc.block_month, 
+        lc.day, 
+        lc.project_contract_address,
+        lc.evt_block_time,
+        lc.evt_index,
+        lc.evt_tx_hash,
+        lc.position_id,
+        op.price, 
+        0 as new_margin,
+        op.leverage,
+        0 as volume_usd,
+        op.margin_asset,
+        op.pair, 
+        op.direction,
+        op.referral,
+        lc.trader, 
+        0 as margin_change,
+        lc.version, 
+        CONCAT(op.open_type, ' cancelled') as trade_type,
+        lc.positions_contract
+    FROM 
+        {{ ref('tigris_arbitrum_events_limit_cancel') }} lc 
+    INNER JOIN 
+    open_position_limit op 
+        ON lc.position_id = op.position_id 
+        AND lc.positions_contract = op.positions_contract
+    WHERE protocol_version = '2'
+    {% if is_incremental() %}
+    AND lc.evt_block_time >= date_trunc('day', now() - interval '7' day)
     {% endif %}
 )
 
@@ -266,3 +418,11 @@ SELECT
     'arbitrum' as blockchain,
     *
 FROM limit_order
+
+UNION ALL 
+
+SELECT 
+    'arbitrum' as blockchain,
+    *
+FROM 
+limit_cancel
