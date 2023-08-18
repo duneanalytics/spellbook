@@ -157,7 +157,7 @@ SELECT
     t.contract_address AS project_contract_address,
     t.tx_hash,
     tx."from" tx_from,
-    tx."to" AS tx_to,
+    tx.to AS tx_to,
     t.trace_address,
     t.evt_index
 FROM
@@ -166,7 +166,7 @@ INNER JOIN
 {{ source('polygon', 'transactions')}} tx
     ON t.tx_hash = tx.hash
     {% if not is_incremental() %}
-    AND tx.block_time >= DATE '{{project_start_date}}'
+    AND tx.block_time >= TIMESTAMP '{{project_start_date}}'
     {% endif %}
     {% if is_incremental() %}
     AND tx.block_time >= date_trunc('day', now() - interval '7' Day)
@@ -185,7 +185,7 @@ INNER JOIN
     AND p_bought.contract_address = t.token_bought_address
     AND p_bought.blockchain = 'polygon'
   {% if not is_incremental() %}
-  AND p_bought.minute >= DATE '{{project_start_date}}'
+  AND p_bought.minute >= TIMESTAMP '{{project_start_date}}'
   {% endif %}
   {% if is_incremental() %}
   AND p_bought.minute >= date_trunc('day', now() - interval '7' Day)
@@ -196,7 +196,7 @@ INNER JOIN
     AND p_sold.contract_address = t.token_sold_address
     AND p_sold.blockchain = 'polygon'
   {% if not is_incremental() %}
-  AND p_sold.minute >= DATE '{{project_start_date}}'
+  AND p_sold.minute >= TIMESTAMP '{{project_start_date}}'
   {% endif %}
   {% if is_incremental() %}
   AND p_sold.minute >= date_trunc('day', now() - interval '7' Day)
