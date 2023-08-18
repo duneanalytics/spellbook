@@ -505,5 +505,5 @@ models:
         description: "First block time"
       - name: codebase
         description: "Codebase used"
-      - name: mainnet
-        description:  "Mainnet chain proofs are submitted to"
+      - name: data_availability
+        description:  "Chain where proofs are submitted to"
