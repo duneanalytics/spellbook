@@ -135,6 +135,4 @@ models:
       - *tx_from
       - *tx_to
       - *evt_index
-      - &block_month
-        name: block_month
-        description: "UTC event block month of each DEX trade"
+      - *block_month
