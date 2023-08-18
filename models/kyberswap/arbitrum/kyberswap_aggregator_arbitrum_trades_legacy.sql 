@@ -1,7 +1,7 @@
 {{ config
 (
     tags=['legacy'],
-    alias = alias('aggregator_trades', legacy_model=True),
+    alias = alias('aggregator_trades', legacy_model=True)
 )
 }}
 
