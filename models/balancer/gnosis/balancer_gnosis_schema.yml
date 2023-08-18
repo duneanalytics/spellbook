@@ -308,7 +308,6 @@ models:
       - *token_address
       - *normalized_weight
 
-
   - name: balancer_v2_gnosis_transfers_bpt
     meta:
       blockchain: gnosis
@@ -328,6 +327,7 @@ models:
       - *blockchain
       - *contract_address
       - *block_date
+      - name: block_month
       - &evt_tx_hash
         name: evt_tx_hash
         description: 'Transaction hash of transfer event'
