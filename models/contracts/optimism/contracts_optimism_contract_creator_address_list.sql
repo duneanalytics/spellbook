@@ -588,6 +588,7 @@ WITH curated_list AS (
       ,(0x0B634A8D61b09820E9F72F79cdCBc8A4D0Aad26b, 'Yearn')
       ,(0x36BDE71C97B33Cc4729cf772aE268934f7AB70B2, 'Worldcoin')
       ,(0x5856d478832ff3a68c122388623c4ee027d0e65a, 'Mean Finance')
+      ,(0xAEDdC8B2aa5E331B53c22F1da8069c18d02eF6ac, 'Gitcoin')
       
   ) as temp_table (creator_address, contract_project)
 )
