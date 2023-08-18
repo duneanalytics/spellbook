@@ -1,14 +1,14 @@
 version: 2
 
 models:
- - name: layerzero_avalanche_c_send
+ - name: layerzero_celo_send
    meta:
-     blockchain: avalanche_c
+     blockchain: celo
      project: layerzero
      contributors: bennyfeng
    config:
-     tags: ['avalanche_c', 'layerzero', 'send']
-   description: "LayerZero message send call on avalanche c"
+     tags: ['celo', 'layerzero', 'send']
+   description: "LayerZero message send call on celo"
    tests:
      - dbt_utils.unique_combination_of_columns:
          combination_of_columns: [ 'block_time', 'tx_hash', 'user_address', 'trace_address', 'source_chain_id', 'destination_chain_id' ]
