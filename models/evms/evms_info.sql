@@ -22,4 +22,6 @@ FROM (VALUES
         , (8453, 'base', 'Base', 'Layer 2', 'Optimistic Rollup', 'ETH', 0x4200000000000000000000000000000000000006, 'https://basescan.org/', timestamp '2023-06-15 00:35', 'OP Stack', 'ethereum')
         , (7777777, 'zora', 'ZORA Network', 'Layer 2', 'Optimistic Rollup', 'ETH', 0x4200000000000000000000000000000000000006, 'https://explorer.zora.energy/', timestamp '2023-06-14 00:03', 'OP Stack', 'ethereum')
         , (424, 'pgn', 'PGN', 'Layer 2', 'Optimistic Rollup', 'ETH', 0x4200000000000000000000000000000000000006, 'https://explorer.publicgoods.network', timestamp '2023-07-11 22:18', 'OP Stack', 'ethereum')
+        , (324, 'zksync', 'ZkSync', 'Layer 2', 'ZK Rollup', 'ETH', NULL , 'https://explorer.zksync.io', timestamp '2023-02-14 15:22', NULL, 'ethereum')
+        , (1101, 'polygonzkevm', 'Polygon zkEVM', 'Layer 2', 'ZK Rollup', 'ETH', NULL, 'https://zkevm.polygonscan.com', timestamp '2023-03-24 05:30', NULL, 'ethereum')
         ) AS temp_table (chain_id, blockchain, name, chain_type, rollup_type, native_token_symbol, wrapped_native_token_address, explorer_link, first_block_time, codebase, data_availability)
