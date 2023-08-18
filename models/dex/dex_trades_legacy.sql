@@ -106,8 +106,8 @@ FROM (
         token_pair,
         token_bought_amount,
         token_sold_amount,
-        token_bought_amount_raw,
-        token_sold_amount_raw,
+        CAST(token_bought_amount_raw AS DECIMAL(38,0)) AS token_bought_amount_raw, --remove in dunesql migration, we should cast to UINT256 in all upsteam level spells
+        CAST(token_sold_amount_raw AS DECIMAL(38,0)) AS token_sold_amount_raw, --remove in dunesql migration, we should cast to UINT256 in all upsteam level spells
         amount_usd,
         token_bought_address,
         token_sold_address,
