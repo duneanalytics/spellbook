@@ -37,7 +37,7 @@ WITH
         SELECT
             swap.evt_block_number,
             swap.evt_block_time AS block_time,
-            '' AS taker,
+            VARBINARY '' AS taker,
             '' AS maker,
             swap.amountOut AS token_bought_amount_raw,
             swap.amountIn AS token_sold_amount_raw,
