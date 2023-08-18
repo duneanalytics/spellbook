@@ -1,5 +1,8 @@
-
-{{ config( alias = alias('erc20'), tags=['static', 'dunesql'])}}
+{{ config(tags=['dunesql'], alias = alias('erc20'), materialized = 'table',
+    post_hook='{{ expose_spells(\'["base"]\',
+                                    "sector",
+                                    "tokens",
+                                    \'["hildobby"]\') }}')}}
 
 SELECT contract_address, symbol, decimals
 FROM (VALUES
