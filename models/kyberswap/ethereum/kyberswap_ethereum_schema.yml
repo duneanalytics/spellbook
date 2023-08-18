@@ -90,9 +90,6 @@ models:
         description: "Address which received the transaction"
       - &evt_index
         name: evt_index
-<<<<<<< HEAD
-        description: "the position of this event log within this transaction"
-=======
         description: "the position of this event log within this transaction"
   - name: kyberswap_aggregator_ethereum_trades
     meta:
@@ -143,4 +140,3 @@ models:
       - name: tx_to
       - name: evt_index
       - name: trace_address
->>>>>>> d4fab742 (Add optimism, avalanche_c, ethereum)
