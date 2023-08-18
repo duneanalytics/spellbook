@@ -28,7 +28,6 @@
     ,"code_bytelength"
     ,"token_standard"
     ,"code"
-    ,"code_deploy_rank"
     ,"code_deploy_rank_by_chain"
 ] %}
 
@@ -53,7 +52,6 @@ WITH incremental_contracts AS (
       ,bytearray_substring(t.data,1,4) AS created_tx_method_id
       ,t.index as created_tx_index
       ,ct.code
-      ,CAST(NULL AS bigint) as code_deploy_rank
       ,CAST(NULL AS bigint) as code_deploy_rank_by_chain
       ,bytearray_length(ct.code) AS code_bytelength
       ,coalesce(sd.contract_address is not NULL, false) as is_self_destruct
@@ -136,13 +134,12 @@ SELECT *
     ,code_bytelength
     ,is_self_destruct
     ,token_standard
-    ,code_deploy_rank
     ,code_deploy_rank_by_chain
     ,to_iterate_creators
     ,code
     
     ,is_new_contract
-    ,ROW_NUMBER() OVER (PARTITION BY '{{chain}}', contract_address ORDER BY created_time ASC, is_new_contract DESC ) AS contract_order -- to ensure no dupes
+    ,ROW_NUMBER() OVER (PARTITION BY contract_address ORDER BY created_time ASC, is_new_contract DESC ) AS contract_order -- to ensure no dupes
 
   from (
     SELECT * FROM incremental_contracts
@@ -183,8 +180,7 @@ SELECT *
       ,t.created_tx_method_id
       ,t.created_tx_index
       ,t.code
-      ,t.code_deploy_rank
-      ,t.code_deploy_rank
+      ,t.code_deploy_rank_by_chain
       ,t.code_bytelength
       ,coalesce(sd.contract_address is not NULL, t.is_self_destruct, false) as is_self_destruct
       ,token_standard
@@ -215,7 +211,7 @@ SELECT *
     {% endif %} -- incremental filter
 
   ) as x
-  group by 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26
+  group by 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25
 ) y 
 WHERE contract_order = 1
 )
@@ -288,7 +284,6 @@ WHERE contract_order = 1
       ,b.code_bytelength
       ,b.is_self_destruct
       ,b.token_standard
-      ,b.code_deploy_rank
       ,b.code_deploy_rank_by_chain
       ,b.to_iterate_creators --check if base needs to be iterated, keep the base option
       ,b.code
@@ -323,24 +318,16 @@ WHERE contract_order = 1
     , contract_address
     , created_block_number
     , code
-    , ROW_NUMBER() OVER (PARTITION BY code ORDER BY created_time ASC) AS code_deploy_rank_intermediate
-    , ROW_NUMBER() OVER (PARTITION BY blockchain, code ORDER BY created_time ASC) AS code_deploy_rank_by_chain_intermediate
+    , ROW_NUMBER() OVER (PARTITION BY code ORDER BY created_time ASC) AS code_deploy_rank_by_chain_intermediate
 
   FROM base_level
   WHERE is_new_contract = 1
   )
+
   , existing_contracts_by_chain AS (
     SELECT
-    blockchain, code
-      , MAX_BY(code_deploy_rank_by_chain, code) AS max_code_deploy_rank_by_chain
-    FROM base_level
-    WHERE is_new_contract = 0 AND code IS NOT NULL
-    GROUP BY 1,2
-  )
-  , existing_contracts_total AS (
-    SELECT
     code
-      , MAX_BY(code_deploy_rank, code) AS max_code_deploy_rank
+      , MAX_BY(code_deploy_rank_by_chain, code) AS max_code_deploy_rank_by_chain
     FROM base_level
     WHERE is_new_contract = 0 AND code IS NOT NULL
     GROUP BY 1
@@ -350,14 +337,10 @@ WHERE contract_order = 1
   SELECT 
   nc.blockchain, nc.contract_address, nc.code, nc.created_block_number
     , COALESCE(cbc.max_code_deploy_rank_by_chain,0) + nc.code_deploy_rank_by_chain_intermediate AS code_deploy_rank_by_chain
-    , COALESCE(cbt.max_code_deploy_rank,0) + nc.code_deploy_rank_intermediate AS code_deploy_rank
-
   FROM new_contracts nc 
     LEFT JOIN existing_contracts_by_chain cbc
       ON cbc.code = nc.code
       AND cbc.blockchain = nc.blockchain
-    LEFT JOIN existing_contracts_total cbt
-      ON cbt.code = nc.code
 
 )
 
@@ -386,7 +369,6 @@ WHERE contract_order = 1
     ,f.is_self_destruct
     ,f.token_standard
     ,f.code
-    ,COALESCE(f.code_deploy_rank, cr.code_deploy_rank) AS code_deploy_rank
     ,COALESCE(f.code_deploy_rank_by_chain, cr.code_deploy_rank_by_chain) AS code_deploy_rank_by_chain
   from (
     SELECT * FROM level{{max_levels - 1}} WHERE to_iterate_creators = 1 --get mapped contracts
@@ -433,7 +415,6 @@ WHERE contract_order = 1
     ,cc.created_tx_method_id
     ,cc.created_tx_index
     ,cc.code_bytelength
-    ,cc.code_deploy_rank
     ,cc.code_deploy_rank_by_chain
     ,cc.code
     ,1 as map_rank
@@ -441,7 +422,7 @@ WHERE contract_order = 1
   left join {{ source( chain , 'contracts') }} as oc 
     on cc.contract_address = oc.address 
   WHERE cc.blockchain = '{{chain}}'
-  group by 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27
+  group by 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26
   
   union all
   -- missing contracts
@@ -470,7 +451,6 @@ WHERE contract_order = 1
     ,CAST(NULL AS varbinary) as created_tx_method_id
     ,l.tx_index AS created_tx_index
     ,bytearray_length(oc.code) as code_bytelength
-    ,1 as code_deploy_rank
     ,1 as code_deploy_rank_by_chain
     ,oc.code
     ,2 as map_rank
@@ -514,7 +494,6 @@ WHERE contract_order = 1
       ,CAST(NULL AS varbinary) as created_tx_method_id
       ,cast(NULL as bigint) AS created_tx_index
       ,cast(NULL as bigint) as code_bytelength --todo
-      ,1 as code_deploy_rank
       ,1 as code_deploy_rank_by_chain
       ,CAST(NULL AS varbinary) AS code
       ,3 as map_rank
@@ -562,7 +541,6 @@ WHERE contract_order = 1
     ,c.code_bytelength
     ,COALESCE(t.token_standard, c.token_standard) AS token_standard
     ,c.code
-    ,c.code_deploy_rank
     ,c.code_deploy_rank_by_chain
     ,MIN(c.map_rank) AS map_rank
 
@@ -570,7 +548,7 @@ WHERE contract_order = 1
   left join tokens as t 
     on c.contract_address = t.contract_address
     AND c.blockchain = t.blockchain
-  group by 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27
+  group by 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26
   ) a
   ORDER BY map_rank ASC NULLS LAST --order we pick
 )
@@ -602,7 +580,7 @@ SELECT
 , top_level_tx_from, top_level_tx_to , top_level_tx_method_id
 , code_bytelength , token_standard 
 , code
-, code_deploy_rank, code_deploy_rank_by_chain
+, code_deploy_rank_by_chain
 , is_eoa_deployed
 
 , 
@@ -671,7 +649,6 @@ FROM (
     ,c.code_bytelength
     ,c.token_standard
     ,c.code
-    ,c.code_deploy_rank
     ,c.code_deploy_rank_by_chain
     ,CASE WHEN c.trace_creator_address = c.created_tx_from THEN 1 ELSE 0 END AS is_eoa_deployed
   from cleanup as c 
