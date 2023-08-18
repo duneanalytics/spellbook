@@ -1,9 +1,10 @@
-{{ config(
-        alias = alias('trades'),
-        post_hook='{{ expose_spells(\'["arbitrum"]\',
-                                "project",
-                                "clipper",
-                                \'["0xRob", "amalashkevich"]\') }}'
+{{ 
+    config(tags=['dunesql'],
+    alias = alias('trades'),
+    post_hook='{{ expose_spells(\'["arbitrum"]\',
+        "project",
+        "clipper",
+        \'["0xRob", "amalashkevich"]\') }}'
         )
 }}
 
@@ -40,7 +41,6 @@ FROM (
         tx_hash,
         tx_from,
         tx_to,
-        trace_address,
         evt_index
     FROM {{ dex_model }}
     {% if not loop.last %}
@@ -48,4 +48,3 @@ FROM (
     {% endif %}
     {% endfor %}
 )
-;
