@@ -503,3 +503,7 @@ models:
         description: "Explorer link"
       - name: first_block_time
         description: "First block time"
+      - name: stack
+        description: "Stack used"
+      - name: mainnet
+        description:  "Mainnet chain proofs are submitted to"
