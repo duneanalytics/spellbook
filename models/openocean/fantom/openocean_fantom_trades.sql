@@ -5,7 +5,7 @@
 }}
 
 {% set openocean_fantom_models = [
-ref('openocean_v2_fantom_trades')
+    ref('openocean_v2_fantom_trades')
 ] %}
 
 
@@ -34,6 +34,7 @@ FROM (
         tx_hash,
         tx_from,
         tx_to,
+        trace_address,
         evt_index
     FROM {{ dex_model }}
     {% if not loop.last %}

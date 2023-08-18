@@ -38,6 +38,7 @@ dexs as (
         END as token_sold_address,
         contract_address as project_contract_address,
         evt_tx_hash as tx_hash, 
+        ARRAY[-1] AS trace_address
         evt_index
     FROM 
     {{ source('open_ocean_fantom', 'OpenOceanExchange_evt_Swapped') }}
@@ -79,6 +80,7 @@ SELECT
     dexs.tx_hash, 
     tx."from" as tx_from, 
     tx.to AS tx_to,
+    trace_address,
     dexs.evt_index
 FROM dexs
 INNER JOIN {{ source('fantom', 'transactions') }} tx
