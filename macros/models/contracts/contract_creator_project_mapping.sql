@@ -331,7 +331,7 @@ WHERE contract_order = 1
       , MAX_BY(code_deploy_rank_by_chain, code) AS max_code_deploy_rank_by_chain
     FROM base_level
     WHERE is_new_contract = 0 AND code IS NOT NULL
-    GROUP BY 1
+    GROUP BY 1,2
   )
 
 
