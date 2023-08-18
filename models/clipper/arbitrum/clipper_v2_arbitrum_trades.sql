@@ -1,4 +1,4 @@
-{{ config(
+{{ config(tags=['dunesql'],
     schema = 'clipper_v2_arbitrum',
     alias = alias('trades'),
     partition_by = ['block_date'],
