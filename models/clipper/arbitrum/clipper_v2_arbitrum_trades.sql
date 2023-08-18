@@ -5,7 +5,7 @@
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
-    unique_key = ['block_date', 'blockchain', 'project', 'version', 'tx_hash', 'evt_index', 'trace_address']
+    unique_key = ['block_date', 'blockchain', 'project', 'version', 'tx_hash', 'evt_index']
     )
 }}
 
@@ -23,7 +23,6 @@ WITH event_data as (
         outAsset as token_bought_address,
         contract_address AS project_contract_address,
         evt_tx_hash AS tx_hash,
-        '' AS trace_address,
         evt_index
     FROM  {{ source('clipper_arbitrum', 'ClipperPackedVerifiedExchange_v2_evt_Swapped') }}
     WHERE 1=1
@@ -64,7 +63,6 @@ SELECT
     ,e.tx_hash
     ,tx.from AS tx_from
     ,tx.to AS tx_to
-    ,e.trace_address
     ,e.evt_index
 FROM event_data e
 INNER JOIN {{ source('arbitrum', 'transactions') }} tx

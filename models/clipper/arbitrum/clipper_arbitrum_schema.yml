@@ -111,7 +111,6 @@ models:
             - version
             - tx_hash
             - evt_index
-            - trace_address
       - check_dex_seed_legacy:
           blockchain: arbitrum
           project: clipper
@@ -138,7 +137,6 @@ models:
       - *tx_hash
       - *tx_from
       - *tx_to
-      - *trace_address
       - *evt_index
 
 
@@ -242,7 +240,6 @@ models:
             - version
             - tx_hash
             - evt_index
-            - trace_address
       - check_dex_seed_legacy:
           blockchain: arbitrum
           project: clipper
@@ -269,5 +266,4 @@ models:
       - *tx_hash
       - *tx_from
       - *tx_to
-      - *trace_address
       - *evt_index
