@@ -57,4 +57,3 @@ models:
         description: "Token's prices.usd contract address"
       - name: decimals
         description: "Token's number of decimals"
-        

@@ -583,6 +583,7 @@ models:
         +materialized: table
         +file_format: delta
 
+
     solana_utils:
       +schema: solana_utils
 
