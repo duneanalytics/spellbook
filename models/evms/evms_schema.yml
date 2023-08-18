@@ -503,3 +503,7 @@ models:
         description: "Explorer link"
       - name: first_block_time
         description: "First block time"
+      - name: codebase
+        description: "Codebase used"
+      - name: data_availability
+        description:  "Chain where proofs are submitted to"

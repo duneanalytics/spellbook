@@ -295,6 +295,7 @@ models:
             - version
             - tx_hash
             - evt_index
+            - lien_id
     columns:
       - *blockchain
       - *project
@@ -328,6 +329,12 @@ models:
       - &evt_index
         name: evt_index
         description: "Index of the corresponding lending event"
+      - &block_month
+        name: block_month
+        description: "UTC event block month"
+      - &lien_id
+        name: lien_id
+        description:  "Unique loan id  "
 
   - name: nft_approvals
     meta:
