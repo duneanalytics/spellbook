@@ -1,22 +1,11 @@
-{{ config(
-        schema='prices_base',
+{{ 
+    config(
+        schema = 'prices_base',
         alias = alias('tokens', legacy_model=True),
-        materialized='table',
-        file_format = 'delta',  
-        tags=['legacy', 'static']
-        )
+        tags=['legacy']
+    )
 }}
-SELECT 
-    TRIM(token_id) as token_id
-    , LOWER(TRIM(blockchain)) as blockchain
-    , TRIM(symbol) as symbol
-    , LOWER(TRIM(contract_address)) as contract_address
-    , decimals
-FROM
-(
-    VALUES
 
---    ('weth-weth', 'base', 'WETH', 0x4200000000000000000000000000000000000006, 18), --requested add to coinPaprika 2023-08-10
---    ('axl-axelar', 'base', 'AXL', 0x467719aD09025FcC6cF6F8311755809d45a5E5f3, 6), --requested add to coinPaprika 2023-08-10
-    ("bald-bald", "base", "BALD", "0x27D2DECb4bFC9C76F0309b8E88dec3a601Fe25a8", 18)
-) as temp (token_id, blockchain, symbol, contract_address, decimals)
+-- DUMMY TABLE, WILL BE REMOVED SOON
+select 
+    1
