@@ -1,7 +1,7 @@
 {{ config(
     tags=['dunesql'],
     alias = alias('send'),
-    partition_by = ['block_date'],
+    partition_by = ['block_month'],
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
@@ -38,14 +38,14 @@ WITH send_detail AS (
     INNER JOIN {{ source('avalanche_c','transactions') }} t on t.block_number = s.call_block_number
         AND t.hash = s.call_tx_hash
         {% if not is_incremental() %}
-        AND t.block_time >= date('{{transaction_start_date}}')
+        AND t.block_time >= TIMESTAMP '{{transaction_start_date}}'
         {% endif %}
         {% if is_incremental() %}
         AND t.block_time >= date_trunc('day', now() - interval '7' day)
         {% endif %}
     WHERE s.call_success
         {% if not is_incremental() %}
-        AND s.call_block_time >= date('{{transaction_start_date}}')
+        AND s.call_block_time >= TIMESTAMP '{{transaction_start_date}}'
         {% endif %}
         {% if is_incremental() %}
         AND s.call_block_time >= date_trunc('day', now() - interval '7' day)
@@ -72,7 +72,7 @@ destination_gas_detail AS (
         AND e.tx_hash = s.tx_hash
         AND e.trace_address = s.trace_address
         {% if not is_incremental() %}
-        AND e.block_time >= date('{{transaction_start_date}}')
+        AND e.block_time >= TIMESTAMP '{{transaction_start_date}}'
         {% endif %}
         {% if is_incremental() %}
         AND e.block_time >= date_trunc('day', now() - interval '7' day)
@@ -106,7 +106,7 @@ trans_detail AS (
         INNER JOIN {{ source('erc20_avalanche_c', 'evt_transfer') }} et on et.evt_block_number = s.block_number
             AND et.evt_tx_hash = s.tx_hash
             {% if not is_incremental() %}
-            AND et.evt_block_time >= date('{{transaction_start_date}}')
+            AND et.evt_block_time >= TIMESTAMP '{{transaction_start_date}}'
             {% endif %}
             {% if is_incremental() %}
             AND et.evt_block_time >= date_trunc('day', now() - interval '7' day)
@@ -139,6 +139,7 @@ SELECT 'avalanche_c' AS blockchain,
     s.block_number,
     s.contract_address AS endpoint_contract,
     cast(date_trunc('day', s.block_time) as date) AS block_date,
+    cast(date_trunc('month', s.block_time) as date) AS block_month,
     s.block_time,
     s.trace_address,
     s.adapter_params,
@@ -166,7 +167,7 @@ LEFT JOIN {{ ref('tokens_erc20') }} erc ON erc.blockchain = 'avalanche_c' AND er
 LEFT JOIN {{ source('prices', 'usd') }} p ON p.blockchain = 'avalanche_c' AND p.contract_address = t.currency_contract
     AND p.minute = date_trunc('minute', s.block_time)
     {% if not is_incremental() %}
-    AND p.minute >= date('{{transaction_start_date}}')
+    AND p.minute >= TIMESTAMP '{{transaction_start_date}}'
     {% endif %}
     {% if is_incremental() %}
     AND p.minute >= date_trunc('day', now() - interval '7' day)
