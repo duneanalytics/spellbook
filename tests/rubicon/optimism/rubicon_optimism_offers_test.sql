@@ -50,7 +50,7 @@ WITH unit_test AS (
 
         -- test the maker
         CASE
-            WHEN LOWER(test.maker) = LOWER(actual.maker) THEN TRUE
+            WHEN test.maker = actual.maker THEN TRUE
             ELSE FALSE
         END AS maker_test,
 
@@ -68,13 +68,13 @@ WITH unit_test AS (
 
         -- test the sell_token_address
         CASE
-            WHEN LOWER(test.sell_token_address) = LOWER(actual.sell_token_address) THEN TRUE
+            WHEN test.sell_token_address = actual.sell_token_address THEN TRUE
             ELSE FALSE
         END AS sell_token_address_test,
 
         -- test the buy_token_address
         CASE
-            WHEN LOWER(test.buy_token_address) = LOWER(actual.buy_token_address) THEN TRUE
+            WHEN test.buy_token_address = actual.buy_token_address THEN TRUE
             ELSE FALSE
         END AS buy_token_address_test,
 
@@ -206,25 +206,25 @@ WITH unit_test AS (
 
         -- test the project_contract_address
         CASE
-            WHEN LOWER(test.project_contract_address) = LOWER(actual.project_contract_address) THEN TRUE
+            WHEN test.project_contract_address = actual.project_contract_address THEN TRUE
             ELSE FALSE
         END AS project_contract_address_test,
 
         -- test the tx_hash
         CASE
-            WHEN LOWER(test.tx_hash) = LOWER(actual.tx_hash) THEN TRUE
+            WHEN test.tx_hash = actual.tx_hash THEN TRUE
             ELSE FALSE
         END AS tx_hash_test,
 
         -- test the tx_from
         CASE
-            WHEN LOWER(test.tx_from) = LOWER(actual.tx_from) THEN TRUE
+            WHEN test.tx_from = actual.tx_from THEN TRUE
             ELSE FALSE
         END AS tx_from_test,
 
         -- test the tx_to
         CASE
-            WHEN LOWER(test.tx_to) = LOWER(actual.tx_to) THEN TRUE
+            WHEN test.tx_to = actual.tx_to THEN TRUE
             ELSE FALSE
         END AS tx_to_test
 
