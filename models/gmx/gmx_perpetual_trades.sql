@@ -1,4 +1,5 @@
 {{ config(
+		tags=['dunesql'],
         alias = alias('perpetual_trades'),
         post_hook='{{ expose_spells(\'["avalanche_c","arbitrum"]\',
                                 "project",
@@ -18,6 +19,7 @@ FROM (
     SELECT
 		blockchain
 		,block_date
+		,block_month
 		,block_time
 		,virtual_asset
 		,underlying_asset
