@@ -133,7 +133,6 @@ models:
         name: block_month
         description: "UTC event block month"
       - &evt_tx_hash
-      - &evt_tx_hash
         name: evt_tx_hash
         description: 'Transaction hash of transfer event'
       - &evt_index
