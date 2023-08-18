@@ -1,6 +1,6 @@
-{{ config(tags=['dunesql'], 
+{{ config(tags=['dunesql'],
     alias = alias('trades')
-    ,partition_by = ['block_date']
+    ,partition_by = ['block_month']
     ,materialized = 'incremental'
     ,file_format = 'delta'
     ,incremental_strategy = 'merge'
@@ -30,7 +30,7 @@ with dexs as (
         t.evt_index
     FROM
         {{ source('wigoswap_fantom', 'Pair_evt_Swap') }} t
-        inner join {{ source('wigoswap_fantom', 'Factory_evt_PairCreated') }} f 
+        inner join {{ source('wigoswap_fantom', 'Factory_evt_PairCreated') }} f
             on f.pair = t.contract_address
     {% if is_incremental() %}
     WHERE t.evt_block_time >= date_trunc('day', now() - interval '7' day)
@@ -40,7 +40,7 @@ select
     'fantom' as blockchain,
     'wigoswap' as project,
     '1' as version,
-    TRY_CAST(date_trunc('day', dexs.block_time) AS date) AS block_date,
+    CAST(date_trunc('day', dexs.block_time) AS date) AS block_date,
     CAST(date_trunc('month', dexs.block_time) AS date) AS block_month,
     dexs.block_time,
     erc20a.symbol as token_bought_symbol,
