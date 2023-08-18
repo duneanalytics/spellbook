@@ -118,6 +118,9 @@ models:
       - *project
       - *version
       - *block_date
+      - &block_month
+        name: block_month
+        description: "UTC event block month of each DEX trade"
       - *block_time
       - *token_bought_symbol
       - *token_sold_symbol
