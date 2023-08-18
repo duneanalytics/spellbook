@@ -30,82 +30,7 @@
     ,"code"
     ,"code_deploy_rank_by_chain"
 ] %}
-
-
-WITH incremental_contracts AS (
-  select 
-      '{{chain}}' AS blockchain
-      ,ct."from" as creator_address
-      ,CAST(NULL AS varbinary) as contract_factory
-      ,ct.address as contract_address
-      ,ct.block_time as created_time
-      ,ct.block_number as created_block_number
-      ,ct.tx_hash as creation_tx_hash
-      ,t.block_time as top_level_time
-      ,t.block_number as top_level_block_number
-      ,t.hash as top_level_tx_hash
-      ,t."from" AS top_level_tx_from
-      ,t.to AS top_level_tx_to
-      ,bytearray_substring(t.data,1,4) AS top_level_tx_method_id
-      ,t."from" AS created_tx_from
-      ,t.to AS created_tx_to
-      ,bytearray_substring(t.data,1,4) AS created_tx_method_id
-      ,t.index as created_tx_index
-      ,ct.code
-      ,CAST(NULL AS bigint) as code_deploy_rank_by_chain
-      ,bytearray_length(ct.code) AS code_bytelength
-      ,coalesce(sd.contract_address is not NULL, false) as is_self_destruct
-      ,CASE 
-        WHEN bytearray_position(ct.code, 0x18160ddd) >0 THEN 'erc1155'-- ('erc1155','balanceOf(address,uint256)', 0x00fdd58e)
-        WHEN bytearray_position(ct.code, 0x2eb2c2d6) >0 THEN 'erc1155'-- ('erc1155','safeBatchTransferFrom(address,address,uint256[],uint256[],bytes)', 0x2eb2c2d6),
-        WHEN bytearray_position(ct.code, 0xf242432a) >0 THEN 'erc1155'-- ('erc1155','safeTransferFrom(address,address,uint256,uint256,bytes)', 0xf242432a),
-
-        WHEN bytearray_position(ct.code, 0xb88d4fde) >0 THEN 'erc721' -- ('erc721','safeTransferFrom(address,address,uint256,bytes)', 0xb88d4fde),
-        
-        WHEN bytearray_position(ct.code, 0xa9059cbb) >0 THEN 'erc20' -- ('erc20','transfer(address,uint256)', 0xa9059cbb),
-        
-        WHEN bytearray_position(ct.code, 0x23b872dd) >0 THEN 'token' -- ('all','transferFrom(address,address,uint256)', 0x23b872dd),
-        WHEN bytearray_position(ct.code, 0x70a08231) >0 THEN 'token' -- ('all','balanceOf(address)', 0x70a08231),
-        WHEN bytearray_position(ct.code, 0x18160ddd) >0 THEN 'token' -- ('all','totalSupply()', 0x18160ddd),
-      ELSE NULL
-      END AS token_standard
-      ,1 AS to_iterate_creators
-      ,1 AS is_new_contract
-    from {{ source( chain , 'transactions') }} as t 
-    inner join  {{ source( chain , 'creation_traces') }} as ct 
-      ON t.hash = ct.tx_hash
-      AND t.block_time = ct.block_time
-      AND t.block_number = ct.block_number
-      {% if is_incremental() %}
-      and t.block_time >= date_trunc('day', now() - interval '7' day)
-      AND ct.block_time >= date_trunc('day', now() - interval '7' day)
-      {% endif %}
-    left join {{ ref('contracts_self_destruct_contracts') }} as sd 
-      on ct.address = sd.contract_address
-      and ct.tx_hash = sd.creation_tx_hash
-      and ct.block_time = sd.created_time
-      AND sd.blockchain = '{{chain}}'
-      {% if is_incremental() %}
-      and sd.created_time >= date_trunc('day', now() - interval '7' day)
-      AND ct.block_time >= date_trunc('day', now() - interval '7' day)
-      {% endif %}
-    where 
-      1=1
-      {% if is_incremental() %}
-      and 1= (
-          CASE
-            -- have we never run this chain?
-            WHEN NOT EXISTS (SELECT 1 FROM {{this}} WHERE blockchain = '{{chain}}') THEN 1
-            -- if we have run it, then only do the last week
-            WHEN ct.block_time >= date_trunc('day', now() - interval '7' day)
-            ELSE 0
-          END 
-      )
-      {% endif %} -- incremental filter
-
-)
-
-, base_level as (
+WITH base_level as (
 
 SELECT *
   FROM (
@@ -142,6 +67,78 @@ SELECT *
     ,ROW_NUMBER() OVER (PARTITION BY contract_address ORDER BY created_time ASC, is_new_contract DESC ) AS contract_order -- to ensure no dupes
 
   from (
+    WITH incremental_contracts AS (
+        select 
+            '{{chain}}' AS blockchain
+            ,ct."from" as creator_address
+            ,CAST(NULL AS varbinary) as contract_factory
+            ,ct.address as contract_address
+            ,ct.block_time as created_time
+            ,ct.block_number as created_block_number
+            ,ct.tx_hash as creation_tx_hash
+            ,t.block_time as top_level_time
+            ,t.block_number as top_level_block_number
+            ,t.hash as top_level_tx_hash
+            ,t."from" AS top_level_tx_from
+            ,t.to AS top_level_tx_to
+            ,bytearray_substring(t.data,1,4) AS top_level_tx_method_id
+            ,t."from" AS created_tx_from
+            ,t.to AS created_tx_to
+            ,bytearray_substring(t.data,1,4) AS created_tx_method_id
+            ,t.index as created_tx_index
+            ,ct.code
+            ,CAST(NULL AS bigint) as code_deploy_rank_by_chain
+            ,bytearray_length(ct.code) AS code_bytelength
+            ,coalesce(sd.contract_address is not NULL, false) as is_self_destruct
+            ,CASE 
+              WHEN bytearray_position(ct.code, 0x18160ddd) >0 THEN 'erc1155'-- ('erc1155','balanceOf(address,uint256)', 0x00fdd58e)
+              WHEN bytearray_position(ct.code, 0x2eb2c2d6) >0 THEN 'erc1155'-- ('erc1155','safeBatchTransferFrom(address,address,uint256[],uint256[],bytes)', 0x2eb2c2d6),
+              WHEN bytearray_position(ct.code, 0xf242432a) >0 THEN 'erc1155'-- ('erc1155','safeTransferFrom(address,address,uint256,uint256,bytes)', 0xf242432a),
+
+              WHEN bytearray_position(ct.code, 0xb88d4fde) >0 THEN 'erc721' -- ('erc721','safeTransferFrom(address,address,uint256,bytes)', 0xb88d4fde),
+              
+              WHEN bytearray_position(ct.code, 0xa9059cbb) >0 THEN 'erc20' -- ('erc20','transfer(address,uint256)', 0xa9059cbb),
+              
+              WHEN bytearray_position(ct.code, 0x23b872dd) >0 THEN 'token' -- ('all','transferFrom(address,address,uint256)', 0x23b872dd),
+              WHEN bytearray_position(ct.code, 0x70a08231) >0 THEN 'token' -- ('all','balanceOf(address)', 0x70a08231),
+              WHEN bytearray_position(ct.code, 0x18160ddd) >0 THEN 'token' -- ('all','totalSupply()', 0x18160ddd),
+            ELSE NULL
+            END AS token_standard
+            ,1 AS to_iterate_creators
+            ,1 AS is_new_contract
+          from {{ source( chain , 'transactions') }} as t 
+          inner join  {{ source( chain , 'creation_traces') }} as ct 
+            ON t.hash = ct.tx_hash
+            AND t.block_time = ct.block_time
+            AND t.block_number = ct.block_number
+            {% if is_incremental() %}
+            and t.block_time >= date_trunc('day', now() - interval '7' day)
+            AND ct.block_time >= date_trunc('day', now() - interval '7' day)
+            {% endif %}
+          left join {{ ref('contracts_self_destruct_contracts') }} as sd 
+            on ct.address = sd.contract_address
+            and ct.tx_hash = sd.creation_tx_hash
+            and ct.block_time = sd.created_time
+            AND sd.blockchain = '{{chain}}'
+            {% if is_incremental() %}
+            and sd.created_time >= date_trunc('day', now() - interval '7' day)
+            AND ct.block_time >= date_trunc('day', now() - interval '7' day)
+            {% endif %}
+          where 
+            1=1
+            {% if is_incremental() %}
+            and 1= (
+                CASE
+                  -- have we never run this chain?
+                  WHEN NOT EXISTS (SELECT 1 FROM {{this}} WHERE blockchain = '{{chain}}') THEN 1
+                  -- if we have run it, then only do the last week
+                  WHEN ct.block_time >= date_trunc('day', now() - interval '7' day)
+                  ELSE 0
+                END 
+            )
+            {% endif %} -- incremental filter
+
+      )
     SELECT * FROM incremental_contracts
 
     {% if is_incremental() %}
@@ -565,6 +562,7 @@ WHERE contract_order = 1
   where contract_address is not NULL 
   group by 1,2
 )
+
 SELECT
   created_month,
   blockchain,
