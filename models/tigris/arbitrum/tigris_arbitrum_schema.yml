@@ -104,6 +104,10 @@ models:
             - trade_type
             - positions_contract
             - protocol_version
+      - check_perpetuals_seed:
+          blockchain: arbitrum
+          project: tigris_trade
+          version: v2.3
     columns:
       - *blockchain
       - &day
