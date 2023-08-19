@@ -149,7 +149,7 @@ WITH base_data AS (
     , nft.token_standard
     , nft.nft_contract_address
     , nft.trade_category
-    , nft.token_id
+    , nft.nft_token_id
     , MIN_BY(nftt."from", nftt.evt_index) AS seller
     , MAX_BY(nftt.to, nftt.evt_index) AS buyer
     FROM (
@@ -161,7 +161,7 @@ WITH base_data AS (
         , SUM(COALESCE(amount, 1)) AS nft_amount
         , MIN_BY(token_standard, trace_index) AS token_standard
         , MIN_BY(token_address, trace_index) AS nft_contract_address
-        , CAST(MIN_BY(identifier, trace_index) AS UINT256) AS token_id
+        , CAST(MIN_BY(identifier, trace_index) AS UINT256) AS nft_token_id
         , MIN_BY(trade_category, trace_index) AS trade_category
         FROM identified_traces
         WHERE trace_type = 'nft'
@@ -169,21 +169,21 @@ WITH base_data AS (
         ) nft
     LEFT JOIN {{ ref('nft_ethereum_transfers') }} nftt ON nft.block_number=nftt.block_number
         AND nft.nft_contract_address=nftt.contract_address
-        AND nft.token_id=nftt.token_id
+        AND nft.nft_token_id=nftt.token_id
     GROUP BY 1, 2, 3, 4, 5, 6, 7, 8, 9, 10
     )
 
 , fungible AS (
     SELECT ft.block_number
     , ft.order_hash
-    , ABS(SUM(COALESCE(ft.amount_raw, 0))) AS amount_raw
+    , CAST(ABS(SUM(COALESCE(ft.price_raw, 0))) AS UINT256) AS price_raw
     , CASE WHEN MIN_BY(ft.currency_contract, ft.trace_index)=0x0000000000000000000000000000000000000000 THEN 0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2 ELSE MIN_BY(ft.currency_contract, ft.trace_index) END AS currency_contract
     FROM (
         SELECT block_number
         , order_hash
         , token_address AS currency_contract
         , trace_index
-        , SUM(amount) AS amount_raw
+        , SUM(amount) AS price_raw
         FROM identified_traces
         WHERE trace_type IN ('payment_or_royalties', 'os_fees')
         AND trace_side = 'offer'
@@ -195,7 +195,7 @@ WITH base_data AS (
         , order_hash
         , token_address AS currency_contract
         , trace_index
-        , -SUM(amount) AS amount_raw
+        , -SUM(amount) AS price_raw
         FROM identified_traces
         WHERE trace_type IN ('payment_or_royalties', 'os_fees')
         AND trace_side = 'consideration'
@@ -212,7 +212,7 @@ WITH base_data AS (
     FROM identified_traces t
     INNER JOIN fungible ON fungible.block_number=t.block_number
         AND fungible.order_hash=t.order_hash
-        AND fungible.amount_raw >= 10*t.amount
+        AND fungible.price_raw >= CAST(10*t.amount AS UINT256)
     INNER JOIN nft ON nft.block_number=t.block_number
         AND nft.order_hash=t.order_hash
         AND t.recipient NOT IN (nft.seller, nft.buyer)
@@ -230,7 +230,8 @@ WITH base_data AS (
     GROUP BY 1, 2, 3
     )
 
-SELECT 'ethereum' AS blockchain
+SELECT date_trunc('day', nft.block_time) AS block_date
+, 'ethereum' AS blockchain
 , 'opensea' AS project
 , 'v3' AS version
 , nft.block_number
@@ -241,8 +242,9 @@ SELECT 'ethereum' AS blockchain
 , nft.buyer
 , nft.seller
 , nft.nft_contract_address
-, nft.token_id
+, nft.nft_token_id
 , nft.nft_amount
+, fungible.price_raw
 , fungible.currency_contract
 , nft.project_contract_address
 , COALESCE(os_fees.platform_fee_amount_raw, 0) AS platform_fee_amount_raw
