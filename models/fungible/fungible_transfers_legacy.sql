@@ -1,6 +1,6 @@
 {{ config(
         alias = alias('transfers', legacy_model=True),
-        post_hook='{{ expose_spells(\'["ethereum", "bnb", "avalanche_c", "gnosis", "optimism", "arbitrum", "polygon", "fantom"]\',
+        post_hook='{{ expose_spells(\'["ethereum", "bnb", "avalanche_c", "gnosis", "optimism", "arbitrum", "polygon", "fantom", "base"]\',
                                     "sector",
                                     "fungible",
                                     \'["hildobby"]\') }}'
@@ -16,6 +16,7 @@
 ,ref('fungible_arbitrum_transfers_legacy')
 ,ref('fungible_polygon_transfers_legacy')
 ,ref('fungible_fantom_transfers_legacy')
+,ref('fungible_base_transfers_legacy')
 ] %}
 
 SELECT *

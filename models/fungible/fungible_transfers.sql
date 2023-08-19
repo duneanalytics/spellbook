@@ -1,7 +1,7 @@
 {{ config(
         tags = ['dunesql'],
         alias =alias('transfers'),
-        post_hook='{{ expose_spells(\'["ethereum", "bnb", "avalanche_c", "gnosis", "optimism", "arbitrum", "polygon", "fantom"]\',
+        post_hook='{{ expose_spells(\'["ethereum", "bnb", "avalanche_c", "gnosis", "optimism", "arbitrum", "polygon", "fantom", "base"]\',
                                     "sector",
                                     "fungible",
                                     \'["hildobby"]\') }}'
@@ -17,6 +17,7 @@
 ,ref('fungible_arbitrum_transfers')
 ,ref('fungible_polygon_transfers')
 ,ref('fungible_fantom_transfers')
+,ref('fungible_base_transfers')
 ] %}
 
 SELECT *

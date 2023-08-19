@@ -3,11 +3,11 @@ version: 2
 models:
   - name: fungible_transfers
     meta:
-      blockchain: ethereum, polygon, bnb, avalanche_c, gnosis, optimism, arbitrum, fantom
+      blockchain: ethereum, polygon, bnb, avalanche_c, gnosis, optimism, arbitrum, fantomm base
       sector: fungible
       contributors: hildobby
     config:
-      tags: ['fungible', 'ethereum', 'polygon', 'bnb', 'avalanche_c', 'gnosis', 'optimism', 'arbitrum', 'fantom', 'transfers']
+      tags: ['fungible', 'ethereum', 'polygon', 'bnb', 'avalanche_c', 'gnosis', 'optimism', 'arbitrum', 'fantom', 'base', 'transfers']
     description: >
         Native and ERC20 transfers
     columns:
