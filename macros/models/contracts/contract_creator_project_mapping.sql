@@ -198,8 +198,10 @@ SELECT *
     left join {{ref('contracts_deterministic_contract_creators')}} as nd 
       ON nd.creator_address = t.creator_address
 
+    
+    WHERE t.blockchain = '{{chain}}'
     -- Don't pull contracts that are in the incremental group (prevent dupes)
-    WHERE t.contract_address NOT IN (
+    AND t.contract_address NOT IN (
       SELECT address
         FROM incremental_contracts i
         WHERE i.blockchain = t.blockchain
@@ -221,6 +223,8 @@ WHERE contract_order = 1
     ,'erc20' as token_standard
 
   FROM {{ ref('tokens_erc20')}} e --note: This doesn't yet contain all ERC20 tokens
+  WHERE e.blockchain = '{{chain}}'
+  GROUP BY 1,2,3,4
 
   UNION ALL
 
@@ -230,6 +234,7 @@ WHERE contract_order = 1
     ,t.name as symbol
     , standard AS token_standard
   from {{ ref('tokens_nft') }} as t
+  WHERE t.blockchain = '{{chain}}'
   group by 1, 2, 3, 4
 )
 
