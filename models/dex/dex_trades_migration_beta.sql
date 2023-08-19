@@ -17,13 +17,10 @@
 {#
 ## Models not yet migrated
 ,ref('curvefi_trades')
-,ref('zeroex_native_trades')
 ,ref('dodo_trades')
-,ref('kyberswap_trades')
 ,ref('hashflow_trades')
 ,ref('ellipsis_finance_trades')
 ,ref('synthetix_spot_trades')
-,ref('zipswap_trades')
 ,ref('balancer_trades')
  #}
 
@@ -70,6 +67,9 @@
 ,ref('xchange_trades')
 ,ref('mdex_bnb_trades')
 ,ref('nomiswap_bnb_trades')
+,ref('zipswap_trades')
+,ref('kyberswap_trades')
+,ref('zeroex_native_trades')
 ] %}
 
 
