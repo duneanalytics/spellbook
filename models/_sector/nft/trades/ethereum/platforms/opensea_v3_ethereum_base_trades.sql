@@ -250,7 +250,7 @@ SELECT date_trunc('day', nft.block_time) AS block_date
 , 'v3' AS version
 , nft.block_number
 , nft.tx_hash
-, CAST(ROW_NUMBER() OVER (PARTITION BY nft.block_number, nft.tx_hash ORDER BY nft.order_hash DESC) AS UINT256) AS sub_tx_trade_id
+, ROW_NUMBER() OVER (PARTITION BY nft.block_number, nft.tx_hash ORDER BY nft.order_hash DESC) AS sub_tx_trade_id
 , nft.trade_category
 , 'secondary' AS trade_type
 , nft.buyer
