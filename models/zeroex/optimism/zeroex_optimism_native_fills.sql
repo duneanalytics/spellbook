@@ -12,9 +12,9 @@
 {% set zeroex_v3_start_date = '2019-12-01' %}
 {% set zeroex_v4_start_date = '2021-01-06' %}
 
--- Test Query here: 
-WITH 
-   
+-- Test Query here:
+WITH
+
     v4_limit_fills AS (
 
         SELECT
@@ -29,14 +29,14 @@ WITH
             , CASE WHEN lower(tt.symbol) > lower(mt.symbol) THEN concat(mt.symbol, '-', tt.symbol) ELSE concat(tt.symbol, '-', mt.symbol) END AS token_pair
             , fills.takerTokenFilledAmount as taker_token_filled_amount_raw
             , fills.makerTokenFilledAmount as maker_token_filled_amount_raw
-            , fills.contract_address 
+            , fills.contract_address
             , mt.symbol AS maker_symbol
             , fills.makerTokenFilledAmount / pow(10, mt.decimals) AS maker_asset_filled_amount
             , fills.takerToken AS taker_token
             , tt.symbol AS taker_symbol
             , fills.takerTokenFilledAmount / pow(10, tt.decimals) AS taker_asset_filled_amount
-            , (fills.feeRecipient in 
-                (0x9b858be6e3047d88820f439b240deac2418a2551,0x86003b044f70dac0abc80ac8957305b6370893ed,0x5bc2419a087666148bfbe1361ae6c06d240c6131)) 
+            , (fills.feeRecipient in
+                (0x9b858be6e3047d88820f439b240deac2418a2551,0x86003b044f70dac0abc80ac8957305b6370893ed,0x5bc2419a087666148bfbe1361ae6c06d240c6131))
                 AS matcha_limit_order_flag
             , CASE
                     WHEN tp.symbol = 'USDC' THEN (fills.takerTokenFilledAmount / 1e6) ----don't multiply by anything as these assets are USD
@@ -69,7 +69,7 @@ WITH
                 END = mp.contract_address
         LEFT OUTER JOIN {{ ref('tokens_erc20') }} mt ON mt.contract_address = fills.makerToken and mt.blockchain = 'optimism'
         LEFT OUTER JOIN {{ ref('tokens_erc20') }} tt ON tt.contract_address = fills.takerToken and tt.blockchain = 'optimism'
-         where 1=1 
+         where 1=1
                 {% if is_incremental() %}
                 AND evt_block_time >= date_trunc('day', now() - interval '7' day)
                 {% endif %}
@@ -91,7 +91,7 @@ WITH
           , CASE WHEN lower(tt.symbol) > lower(mt.symbol) THEN concat(mt.symbol, '-', tt.symbol) ELSE concat(tt.symbol, '-', mt.symbol) END AS token_pair
           , fills.takerTokenFilledAmount as taker_token_filled_amount_raw
           , fills.makerTokenFilledAmount as maker_token_filled_amount_raw
-          , fills.contract_address 
+          , fills.contract_address
           , mt.symbol AS maker_symbol
           , fills.makerTokenFilledAmount / pow(10, mt.decimals) AS maker_asset_filled_amount
           , fills.takerToken AS taker_token
@@ -129,7 +129,7 @@ WITH
               END = mp.contract_address
       LEFT OUTER JOIN {{ ref('tokens_erc20') }} mt ON mt.contract_address = fills.makerToken and mt.blockchain = 'optimism'
       LEFT OUTER JOIN {{ ref('tokens_erc20') }} tt ON tt.contract_address = fills.takerToken and tt.blockchain = 'optimism'
-       where 1=1  
+       where 1=1
                 {% if is_incremental() %}
                 AND evt_block_time >= date_trunc('day', now() - interval '7' day)
                 {% endif %}
@@ -150,7 +150,7 @@ WITH
           , CASE WHEN lower(tt.symbol) > lower(mt.symbol) THEN concat(mt.symbol, '-', tt.symbol) ELSE concat(tt.symbol, '-', mt.symbol) END AS token_pair
           , fills.takerTokenFilledAmount as taker_token_filled_amount_raw
           , fills.makerTokenFilledAmount as maker_token_filled_amount_raw
-          , fills.contract_address 
+          , fills.contract_address
           , mt.symbol AS maker_symbol
           , fills.makerTokenFilledAmount / pow(10, mt.decimals) AS maker_asset_filled_amount
           , fills.takerToken AS taker_token
@@ -188,7 +188,7 @@ WITH
               END = mp.contract_address
       LEFT OUTER JOIN {{ ref('tokens_erc20') }} mt ON mt.contract_address = fills.makerToken and mt.blockchain = 'optimism'
       LEFT OUTER JOIN {{ ref('tokens_erc20') }} tt ON tt.contract_address = fills.takerToken and tt.blockchain = 'optimism'
-       where 1=1   
+       where 1=1
                 {% if is_incremental() %}
                 AND evt_block_time >= date_trunc('day', now() - interval '7' day)
                 {% endif %}
@@ -199,8 +199,8 @@ WITH
     ),
 
     all_fills as (
-    
-   
+
+
 
     SELECT * FROM v4_limit_fills
 
@@ -209,11 +209,11 @@ WITH
     SELECT * FROM v4_rfq_fills
 
     UNION ALL
-    
+
     SELECT * FROM otc_fills
     )
-            SELECT distinct 
-                all_fills.block_time AS block_time, 
+            SELECT distinct
+                all_fills.block_time AS block_time,
                 all_fills.block_number,
                 protocol_version as version,
                 date_trunc('day', all_fills.block_time) as block_date,
@@ -248,5 +248,4 @@ WITH
             {% if not is_incremental() %}
             AND tx.block_time >= TIMESTAMP '{{zeroex_v3_start_date}}'
             {% endif %}
-            
-            
+
