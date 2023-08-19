@@ -111,7 +111,7 @@ models:
             - version
             - tx_hash
             - evt_index
-      - check_dex_seed_legacy:
+      - check_dex_seed:
           blockchain: arbitrum
           project: clipper
           version: 2
@@ -240,7 +240,7 @@ models:
             - version
             - tx_hash
             - evt_index
-      - check_dex_seed_legacy:
+      - check_dex_seed:
           blockchain: arbitrum
           project: clipper
           version: coves2
