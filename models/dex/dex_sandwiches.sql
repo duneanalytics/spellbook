@@ -1,5 +1,6 @@
 {{ config(
         alias = alias('sandwiches'),
+        tags = ['dunesql'],
         partition_by = ['block_date'],
         materialized = 'incremental',
         file_format = 'delta',
