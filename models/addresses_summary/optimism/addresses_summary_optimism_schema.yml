@@ -1,0 +1,29 @@
+version: 2
+
+models:
+  - name: addresses_summary_optimism_mainet
+    meta:
+      blockchain: optimism
+      sector: addresses_summary
+      contributors: Henrystats
+    config:
+      tags: ['table', 'wallet summary', 'mainet', 'addresses_summary', 'optimism']
+    description: "Table showing summary of an address on Optimism mainet"
+    tests:
+    columns:
+      - name: blockchain
+        description: "Blockchain"
+      - name: address
+        description: "Concerned Optimism address"
+        tests:
+          - unique
+      - name: first_active_time
+        description: "The block time on which the address made it's first mainet transaction"
+      - name: first_transaction_hash
+        description: "The transaction hash on which the address made it's first mainet transaction"
+      - name: last_active_time
+        description: "The block time on which the address made it's last mainet transaction" 
+      - name: address_age
+        description: "Time period the address has been active for " 
+      - name: number_of_transactions
+        description: "Number of mainet transactions made by the address" 

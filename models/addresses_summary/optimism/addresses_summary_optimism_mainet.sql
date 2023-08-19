@@ -1,0 +1,62 @@
+{{ config(
+    tags=['dunesql'],
+    alias = alias('mainet'),
+    materialized='incremental',
+    file_format = 'delta',
+    incremental_strategy = 'merge',
+    unique_key = ['address'],
+    post_hook='{{ expose_spells(\'["optimism"]\',
+                                "sector",
+                                "addresses_summary",
+                                \'["Henrystats"]\') }}'
+    )
+}}
+
+{% if is_incremental() %}
+WITH 
+
+weekly_active_addresses as (
+    SELECT 
+        DISTINCT 
+            "from" as address 
+        FROM 
+        {{ source('optimism', 'transactions') }}
+        WHERE block_time >= date_trunc('day', now() - Interval '7' Day)
+)
+
+SELECT 
+    'optimism' as blockchain, 
+    wd.address, 
+    fa.block_time as first_active_time, 
+    fa.tx_hash as first_transaction_hash, 
+    MAX(ot.block_time) as last_active_time, 
+    date_diff('day', min(ot.block_time), max(ot.block_time))/7 as address_age, 
+    COUNT(ot.hash) as number_of_transactions
+FROM 
+weekly_active_addresses wd 
+INNER JOIN 
+ {{ source('optimism', 'transactions') }} ot 
+    ON wd.address = ot."from"
+INNER JOIN 
+{{ ref('addresses_events_optimism_first_activity') }} fa 
+    ON wd.address = fa.address
+GROUP BY 1, 2, 3, 4
+
+{% else %}
+
+SELECT 
+    'optimism' as blockchain,
+    ot."from" as address, 
+    fa.block_time as first_active_time, 
+    fa.tx_hash as first_transaction_hash, 
+    MAX(ot.block_time) as last_active_time, 
+    date_diff('day', min(ot.block_time), max(ot.block_time))/7 as address_age, 
+    COUNT(ot.hash) as number_of_transactions
+FROM 
+{{ source('optimism', 'transactions') }} ot 
+INNER JOIN 
+{{ ref('addresses_events_optimism_first_activity') }} fa 
+    ON ot."from" = fa.address
+GROUP BY 1, 2, 3, 4
+
+{% endif %}
