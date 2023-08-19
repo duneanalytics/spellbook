@@ -1,7 +1,7 @@
-{{  config(
+{{  config(tags=['dunesql'],
         alias = alias('native_fills'),
         materialized='incremental',
-        partition_by = ['block_date'],
+        partition_by = ['block_month'],
         unique_key = ['block_date', 'tx_hash', 'evt_index'],
         on_schema_change='sync_all_columns',
         file_format ='delta',
@@ -24,18 +24,18 @@ WITH
             , fills.evt_index
             , fills.makerAddress AS maker_address
             , fills.takerAddress AS taker_address
-            , SUBSTRING(fills.makerAssetData,17,20) AS maker_token
+            , bytearray_substring(fills.makerAssetData, 8, 10) AS maker_token
             , CASE WHEN lower(tt.symbol) > lower(mt.symbol) THEN concat(mt.symbol, '-', tt.symbol) ELSE concat(tt.symbol, '-', mt.symbol) END AS token_pair
             , fills.takerAssetFilledAmount as taker_token_filled_amount_raw
             , fills.makerAssetFilledAmount as maker_token_filled_amount_raw
             , fills.contract_address 
             , mt.symbol AS maker_symbol
             , fills.makerAssetFilledAmount / pow(10, mt.decimals) AS maker_asset_filled_amount
-            , SUBSTRING(fills.takerAssetData,17,20) AS taker_token
+            , bytearray_substring(fills.takerAssetData, 8, 10) AS taker_token
             , tt.symbol AS taker_symbol
             , fills.takerAssetFilledAmount / pow(10, tt.decimals) AS taker_asset_filled_amount
             , (fills.feeRecipientAddress in 
-                ('0x9b858be6e3047d88820f439b240deac2418a2551','0x86003b044f70dac0abc80ac8957305b6370893ed','0x5bc2419a087666148bfbe1361ae6c06d240c6131')) 
+                (0x9b858be6e3047d88820f439b240deac2418a2551,0x86003b044f70dac0abc80ac8957305b6370893ed,0x5bc2419a087666148bfbe1361ae6c06d240c6131)) 
                 AS matcha_limit_order_flag
             , CASE
                     WHEN tp.symbol = 'USDC' THEN (fills.takerAssetFilledAmount / 1e6) --don't multiply by anything as these assets are USD
@@ -56,24 +56,24 @@ WITH
             date_trunc('minute', evt_block_time) = tp.minute and tp.blockchain = 'polygon'
             AND CASE
                     -- Set Deversifi ETHWrapper to WETH
-                    WHEN SUBSTRING(fills.takerAssetData,17,20) IN ('0x0000000000000000000000000000000000001010') THEN '0x0d500b1d8e8ef31e21c99d1db9a6444d3adf1270'
-                    ELSE SUBSTRING(fills.takerAssetData,17,20)
+                    WHEN bytearray_substring(fills.takerAssetData, 8, 10) IN (0x0000000000000000000000000000000000001010) THEN 0x0d500b1d8e8ef31e21c99d1db9a6444d3adf1270
+                    ELSE bytearray_substring(fills.takerAssetData, 8, 10)
                 END = tp.contract_address
         LEFT JOIN {{ source('prices', 'usd') }} mp ON
             DATE_TRUNC('minute', evt_block_time) = mp.minute  and mp.blockchain = 'polygon'
             AND CASE
                     -- Set Deversifi ETHWrapper to WETH
-                    WHEN SUBSTRING(fills.makerAssetData,17,20) IN ('0x0000000000000000000000000000000000001010') THEN '0x0d500b1d8e8ef31e21c99d1db9a6444d3adf1270'
-                    ELSE SUBSTRING(fills.makerAssetData,17,20)
+                    WHEN bytearray_substring(fills.makerAssetData, 8, 10) IN (0x0000000000000000000000000000000000001010) THEN 0x0d500b1d8e8ef31e21c99d1db9a6444d3adf1270
+                    ELSE bytearray_substring(fills.makerAssetData, 8, 10)
                 END = mp.contract_address
-        LEFT OUTER JOIN {{ ref('tokens_erc20') }} mt ON mt.contract_address = SUBSTRING(fills.makerAssetData,17,20) and mt.blockchain = 'polygon'
-        LEFT OUTER JOIN {{ ref('tokens_erc20') }} tt ON tt.contract_address = SUBSTRING(fills.takerAssetData,17,20) and tt.blockchain = 'polygon'
+        LEFT OUTER JOIN {{ ref('tokens_erc20') }} mt ON mt.contract_address = bytearray_substring(fills.makerAssetData, 8, 10) and mt.blockchain = 'polygon'
+        LEFT OUTER JOIN {{ ref('tokens_erc20') }} tt ON tt.contract_address = bytearray_substring(fills.takerAssetData, 8, 10) and tt.blockchain = 'polygon'
          where 1=1  
                 {% if is_incremental() %}
-                AND evt_block_time >= date_trunc('day', now() - interval '1 week')
+                AND evt_block_time >= date_trunc('day', now() - interval '7' day)
                 {% endif %}
                 {% if not is_incremental() %}
-                AND evt_block_time >= '{{zeroex_v3_start_date}}'
+                AND evt_block_time >= TIMESTAMP '{{zeroex_v3_start_date}}'
                 {% endif %}
     )
    
@@ -98,7 +98,7 @@ WITH
             , tt.symbol AS taker_symbol
             , fills.takerTokenFilledAmount / pow(10, tt.decimals) AS taker_asset_filled_amount
             , (fills.feeRecipient in 
-                ('0x9b858be6e3047d88820f439b240deac2418a2551','0x86003b044f70dac0abc80ac8957305b6370893ed','0x5bc2419a087666148bfbe1361ae6c06d240c6131')) 
+                (0x9b858be6e3047d88820f439b240deac2418a2551,0x86003b044f70dac0abc80ac8957305b6370893ed,0x5bc2419a087666148bfbe1361ae6c06d240c6131)) 
                 AS matcha_limit_order_flag
             , CASE
                     WHEN tp.symbol = 'USDC' THEN (fills.takerTokenFilledAmount / 1e6) ----don't multiply by anything as these assets are USD
@@ -119,24 +119,24 @@ WITH
             date_trunc('minute', evt_block_time) = tp.minute and  tp.blockchain = 'polygon'
             AND CASE
                     -- Set Deversifi ETHWrapper to WETH
-                    WHEN fills.takerToken IN ('0x0000000000000000000000000000000000001010') THEN '0x0d500b1d8e8ef31e21c99d1db9a6444d3adf1270'
+                    WHEN fills.takerToken IN (0x0000000000000000000000000000000000001010) THEN 0x0d500b1d8e8ef31e21c99d1db9a6444d3adf1270
                     ELSE fills.takerToken
                 END = tp.contract_address
         LEFT JOIN {{ source('prices', 'usd') }} mp ON
             DATE_TRUNC('minute', evt_block_time) = mp.minute  and mp.blockchain = 'polygon'
             AND CASE
                     -- Set Deversifi ETHWrapper to WETH
-                    WHEN fills.makerToken IN ('0x0000000000000000000000000000000000001010') THEN '0x0d500b1d8e8ef31e21c99d1db9a6444d3adf1270'
+                    WHEN fills.makerToken IN (0x0000000000000000000000000000000000001010) THEN 0x0d500b1d8e8ef31e21c99d1db9a6444d3adf1270
                     ELSE fills.makerToken
                 END = mp.contract_address
         LEFT OUTER JOIN {{ ref('tokens_erc20') }} mt ON mt.contract_address = fills.makerToken and mt.blockchain = 'polygon'
         LEFT OUTER JOIN {{ ref('tokens_erc20') }} tt ON tt.contract_address = fills.takerToken and tt.blockchain = 'polygon'
          where 1=1  
                 {% if is_incremental() %}
-                AND evt_block_time >= date_trunc('day', now() - interval '1 week')
+                AND evt_block_time >= date_trunc('day', now() - interval '7' day)
                 {% endif %}
                 {% if not is_incremental() %}
-                AND evt_block_time >= '{{zeroex_v3_start_date}}'
+                AND evt_block_time >= TIMESTAMP '{{zeroex_v3_start_date}}'
                 {% endif %}
     )
 
@@ -173,37 +173,37 @@ WITH
                   WHEN mp.symbol = 'WETH' THEN (fills.makerTokenFilledAmount / 1e18) * mp.price
                   ELSE COALESCE((fills.makerTokenFilledAmount / pow(10, mt.decimals))*mp.price,(fills.takerTokenFilledAmount / pow(10, tt.decimals))*tp.price)
               END AS volume_usd
-          , cast(null as numeric) AS protocol_fee_paid_eth
+          , cast(null as double) AS protocol_fee_paid_eth
       FROM {{ source('zeroex_polygon', 'ExchangeProxy_evt_RfqOrderFilled') }} fills
       LEFT JOIN {{ source('prices', 'usd') }} tp ON
           date_trunc('minute', evt_block_time) = tp.minute and tp.blockchain = 'polygon'
           AND CASE
                   -- Set Deversifi ETHWrapper to WETH
-                    WHEN fills.takerToken IN ('0x0000000000000000000000000000000000001010') THEN '0x0d500b1d8e8ef31e21c99d1db9a6444d3adf1270'
+                    WHEN fills.takerToken IN (0x0000000000000000000000000000000000001010) THEN 0x0d500b1d8e8ef31e21c99d1db9a6444d3adf1270
                     ELSE fills.takerToken
               END = tp.contract_address
       LEFT JOIN {{ source('prices', 'usd') }} mp ON
           DATE_TRUNC('minute', evt_block_time) = mp.minute  and     mp.blockchain = 'polygon'
           AND CASE
                   -- Set Deversifi ETHWrapper to WETH
-                    WHEN fills.makerToken IN ('0x0000000000000000000000000000000000001010') THEN '0x0d500b1d8e8ef31e21c99d1db9a6444d3adf1270'
+                    WHEN fills.makerToken IN (0x0000000000000000000000000000000000001010) THEN 0x0d500b1d8e8ef31e21c99d1db9a6444d3adf1270
                     ELSE fills.makerToken
               END = mp.contract_address
       LEFT OUTER JOIN {{ ref('tokens_erc20') }} mt ON mt.contract_address = fills.makerToken and mt.blockchain = 'polygon'
       LEFT OUTER JOIN {{ ref('tokens_erc20') }} tt ON tt.contract_address = fills.takerToken and tt.blockchain = 'polygon'
        where 1=1  
                 {% if is_incremental() %}
-                AND evt_block_time >= date_trunc('day', now() - interval '1 week')
+                AND evt_block_time >= date_trunc('day', now() - interval '7' day)
                 {% endif %}
                 {% if not is_incremental() %}
-                AND evt_block_time >= '{{zeroex_v3_start_date}}'
+                AND evt_block_time >= TIMESTAMP '{{zeroex_v3_start_date}}'
                 {% endif %}
     ), otc_fills as
     (
       SELECT
           fills.evt_block_time AS block_time, fills.evt_block_number as block_number
-          , 'v4' AS protocol_version
           , 'otc' as native_order_type
+          , 'v4' AS protocol_version
           , fills.evt_tx_hash AS transaction_hash
           , fills.evt_index
           , fills.maker AS maker_address
@@ -232,30 +232,30 @@ WITH
                   WHEN mp.symbol = 'WETH' THEN (fills.makerTokenFilledAmount / 1e18) * mp.price
                   ELSE COALESCE((fills.makerTokenFilledAmount / pow(10, mt.decimals))*mp.price,(fills.takerTokenFilledAmount / pow(10, tt.decimals))*tp.price)
               END AS volume_usd
-          , cast(null as numeric) AS protocol_fee_paid_eth
+          , cast(null as double) AS protocol_fee_paid_eth
         FROM {{ source('zeroex_polygon', 'ExchangeProxy_evt_OtcOrderFilled') }} fills
       LEFT JOIN {{ source('prices', 'usd') }} tp ON
           date_trunc('minute', evt_block_time) = tp.minute and tp.blockchain = 'polygon'
           AND CASE
                   -- Set Deversifi ETHWrapper to WETH
-                    WHEN fills.takerToken IN ('0x0000000000000000000000000000000000001010') THEN '0x0d500b1d8e8ef31e21c99d1db9a6444d3adf1270'
+                    WHEN fills.takerToken IN (0x0000000000000000000000000000000000001010) THEN 0x0d500b1d8e8ef31e21c99d1db9a6444d3adf1270
                     ELSE fills.takerToken
               END = tp.contract_address
       LEFT JOIN {{ source('prices', 'usd') }} mp ON
           DATE_TRUNC('minute', evt_block_time) = mp.minute  and    mp.blockchain = 'polygon'
           AND CASE
                   -- Set Deversifi ETHWrapper to WETH
-                    WHEN fills.makerToken IN ('0x0000000000000000000000000000000000001010') THEN '0x0d500b1d8e8ef31e21c99d1db9a6444d3adf1270'
+                    WHEN fills.makerToken IN (0x0000000000000000000000000000000000001010) THEN 0x0d500b1d8e8ef31e21c99d1db9a6444d3adf1270
                     ELSE fills.makerToken
               END = mp.contract_address
       LEFT OUTER JOIN {{ ref('tokens_erc20') }} mt ON mt.contract_address = fills.makerToken and mt.blockchain = 'polygon'
       LEFT OUTER JOIN {{ ref('tokens_erc20') }} tt ON tt.contract_address = fills.takerToken and tt.blockchain = 'polygon'
        where 1=1  
                 {% if is_incremental() %}
-                AND evt_block_time >= date_trunc('day', now() - interval '1 week')
+                AND evt_block_time >= date_trunc('day', now() - interval '7' day)
                 {% endif %}
                 {% if not is_incremental() %}
-                AND evt_block_time >= '{{zeroex_v3_start_date}}'
+                AND evt_block_time >= TIMESTAMP '{{zeroex_v3_start_date}}'
                 {% endif %}
 
     ),
@@ -279,6 +279,7 @@ WITH
                 all_fills.block_number,
                 protocol_version as version,
                 date_trunc('day', all_fills.block_time) as block_date,
+                cast(date_trunc('month', all_fills.block_time) as date) as block_month,
                 transaction_hash as tx_hash,
                 evt_index,
                 maker_address as maker,
@@ -288,7 +289,6 @@ WITH
                 taker_token_filled_amount_raw as taker_token_amount_raw,
                 maker_symbol,
                 token_pair,
-                '1' as trace_address,
                 maker_asset_filled_amount maker_token_amount,
                 taker_token,
                 taker_symbol,
@@ -299,15 +299,15 @@ WITH
                 'polygon' as blockchain,
                 all_fills.contract_address,
                 native_order_type,
-                tx.from AS tx_from,
+                tx."from" AS tx_from,
                 tx.to AS tx_to
             FROM all_fills
             INNER JOIN {{ source('polygon', 'transactions')}} tx ON all_fills.transaction_hash = tx.hash
             AND all_fills.block_number = tx.block_number
             {% if is_incremental() %}
-            AND tx.block_time >= date_trunc('day', now() - interval '1 week')
+            AND tx.block_time >= date_trunc('day', now() - interval '7' day)
             {% endif %}
             {% if not is_incremental() %}
-            AND tx.block_time >= '{{zeroex_v3_start_date}}'
+            AND tx.block_time >= TIMESTAMP '{{zeroex_v3_start_date}}'
             {% endif %}
             
