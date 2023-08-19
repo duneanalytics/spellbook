@@ -8,7 +8,7 @@
 }}
 
 {% set quickswap_models = [
-ref ('quickswap_polygon_trades')
+ref('quickswap_polygon_trades')
 ] %}
 
 
@@ -19,6 +19,7 @@ FROM (
         blockchain,
         project,
         version,
+        block_month,
         block_date,
         block_time,
         token_bought_symbol,
