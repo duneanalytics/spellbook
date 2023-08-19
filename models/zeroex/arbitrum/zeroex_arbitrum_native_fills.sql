@@ -1,7 +1,7 @@
-{{  config(
+{{  config(tags=['dunesql'],
         alias = alias('native_fills'),
         materialized='incremental',
-        partition_by = ['block_date'],
+        partition_by = ['block_month'],
         unique_key = ['block_date', 'tx_hash', 'evt_index'],
         on_schema_change='sync_all_columns',
         file_format ='delta',
@@ -37,7 +37,7 @@ WITH
             , tt.symbol AS taker_symbol
             , fills.takerTokenFilledAmount / pow(10, tt.decimals) AS taker_asset_filled_amount
             , (fills.feeRecipient in 
-                ('0x9b858be6e3047d88820f439b240deac2418a2551','0x86003b044f70dac0abc80ac8957305b6370893ed','0x5bc2419a087666148bfbe1361ae6c06d240c6131')) 
+                (0x9b858be6e3047d88820f439b240deac2418a2551,0x86003b044f70dac0abc80ac8957305b6370893ed,0x5bc2419a087666148bfbe1361ae6c06d240c6131)) 
                 AS matcha_limit_order_flag
             , CASE
                     WHEN tp.symbol = 'USDC' THEN (fills.takerTokenFilledAmount / 1e6) ----don't multiply by anything as these assets are USD
@@ -58,24 +58,24 @@ WITH
             date_trunc('minute', evt_block_time) = tp.minute and  tp.blockchain = 'arbitrum'
             AND CASE
                     -- set native token to wrapped version
-                    WHEN fills.takerToken = '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee' THEN '0x82af49447d8a07e3bd95bd0d56f35241523fbab1'
+                    WHEN fills.takerToken = 0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee THEN 0x82af49447d8a07e3bd95bd0d56f35241523fbab1
                     ELSE fills.takerToken
                 END = tp.contract_address
         LEFT JOIN {{ source('prices', 'usd') }} mp ON
             DATE_TRUNC('minute', evt_block_time) = mp.minute  and mp.blockchain = 'arbitrum'
             AND CASE
                     -- set native token to wrapped version
-                    WHEN fills.makerToken = '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee' THEN '0x82af49447d8a07e3bd95bd0d56f35241523fbab1'
+                    WHEN fills.makerToken = 0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee THEN 0x82af49447d8a07e3bd95bd0d56f35241523fbab1
                     ELSE fills.makerToken
                 END = mp.contract_address
         LEFT OUTER JOIN {{ ref('tokens_erc20') }} mt ON mt.contract_address = fills.makerToken and mt.blockchain = 'arbitrum'
         LEFT OUTER JOIN {{ ref('tokens_erc20') }} tt ON tt.contract_address = fills.takerToken and tt.blockchain = 'arbitrum'
          where 1=1  
                 {% if is_incremental() %}
-                AND evt_block_time >= date_trunc('day', now() - interval '1 week')
+                AND evt_block_time >= date_trunc('day', now() - interval '7' day)
                 {% endif %}
                 {% if not is_incremental() %}
-                AND evt_block_time >= '{{zeroex_v3_start_date}}'
+                AND evt_block_time >= TIMESTAMP '{{zeroex_v3_start_date}}'
                 {% endif %}
     )
 
@@ -113,30 +113,30 @@ WITH
                   WHEN mp.symbol = 'WETH' THEN (fills.makerTokenFilledAmount / 1e18) * mp.price
                 ELSE COALESCE((fills.makerTokenFilledAmount / pow(10, mt.decimals))*mp.price,(fills.takerTokenFilledAmount / pow(10, tt.decimals))*tp.price)
               END AS volume_usd
-          , cast(NULL as numeric) AS protocol_fee_paid_eth
+          , cast(NULL as double) AS protocol_fee_paid_eth
       FROM {{ source('zeroex_arbitrum', 'ExchangeProxy_evt_RfqOrderFilled') }} fills
       LEFT JOIN {{ source('prices', 'usd') }} tp ON  tp.blockchain = 'arbitrum' and 
           date_trunc('minute', evt_block_time) = tp.minute 
           AND CASE
                   -- set native token to wrapped version
-                    WHEN fills.takerToken = '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee' THEN '0x82af49447d8a07e3bd95bd0d56f35241523fbab1'
+                    WHEN fills.takerToken = 0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee THEN 0x82af49447d8a07e3bd95bd0d56f35241523fbab1
                     ELSE fills.takerToken
               END = tp.contract_address
       LEFT JOIN {{ source('prices', 'usd') }} mp ON mp.blockchain = 'arbitrum' and
           DATE_TRUNC('minute', evt_block_time) = mp.minute  
           AND CASE
                   -- set native token to wrapped version
-                    WHEN fills.makerToken = '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee' THEN '0x82af49447d8a07e3bd95bd0d56f35241523fbab1'
+                    WHEN fills.makerToken = 0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee THEN 0x82af49447d8a07e3bd95bd0d56f35241523fbab1
                     ELSE fills.makerToken
               END = mp.contract_address
       LEFT OUTER JOIN {{ ref('tokens_erc20') }} mt ON mt.contract_address = fills.makerToken and mt.blockchain = 'arbitrum'
       LEFT OUTER JOIN {{ ref('tokens_erc20') }} tt ON tt.contract_address = fills.takerToken and tt.blockchain = 'arbitrum'
        where 1=1   
                 {% if is_incremental() %}
-                AND evt_block_time >= date_trunc('day', now() - interval '1 week')
+                AND evt_block_time >= date_trunc('day', now() - interval '7' day)
                 {% endif %}
                 {% if not is_incremental() %}
-                AND evt_block_time >= '{{zeroex_v3_start_date}}'
+                AND evt_block_time >= TIMESTAMP '{{zeroex_v3_start_date}}'
                 {% endif %}
     ), otc_fills as
     (
@@ -173,30 +173,30 @@ WITH
                   WHEN mp.symbol = 'WETH' THEN (fills.makerTokenFilledAmount / 1e18) * mp.price
                 ELSE COALESCE((fills.makerTokenFilledAmount / pow(10, mt.decimals))*mp.price,(fills.takerTokenFilledAmount / pow(10, tt.decimals))*tp.price)
               END AS volume_usd
-          , cast(NULL as numeric) AS protocol_fee_paid_eth
+          , cast(NULL as double) AS protocol_fee_paid_eth
         FROM {{ source('zeroex_arbitrum', 'ExchangeProxy_evt_OtcOrderFilled') }} fills
       LEFT JOIN {{ source('prices', 'usd') }} tp ON tp.blockchain = 'arbitrum'  and 
           date_trunc('minute', evt_block_time) = tp.minute 
           AND CASE
                   -- set native token to wrapped version
-                    WHEN fills.takerToken = '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee' THEN '0x82af49447d8a07e3bd95bd0d56f35241523fbab1'
+                    WHEN fills.takerToken = 0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee THEN 0x82af49447d8a07e3bd95bd0d56f35241523fbab1
                     ELSE fills.takerToken
               END = tp.contract_address
       LEFT JOIN {{ source('prices', 'usd') }} mp ON mp.blockchain = 'arbitrum' and 
           DATE_TRUNC('minute', evt_block_time) = mp.minute  
           AND CASE
                   -- set native token to wrapped version
-                    WHEN fills.makerToken = '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee' THEN '0x82af49447d8a07e3bd95bd0d56f35241523fbab1'
+                    WHEN fills.makerToken = 0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee THEN 0x82af49447d8a07e3bd95bd0d56f35241523fbab1
                     ELSE fills.makerToken
               END = mp.contract_address
       LEFT OUTER JOIN {{ ref('tokens_erc20') }} mt ON mt.contract_address = fills.makerToken and mt.blockchain = 'arbitrum'
       LEFT OUTER JOIN {{ ref('tokens_erc20') }} tt ON tt.contract_address = fills.takerToken and tt.blockchain = 'arbitrum'
        where 1=1  
                 {% if is_incremental() %}
-                AND evt_block_time >= date_trunc('day', now() - interval '1 week')
+                AND evt_block_time >= date_trunc('day', now() - interval '7' day)
                 {% endif %}
                 {% if not is_incremental() %}
-                AND evt_block_time >= '{{zeroex_v3_start_date}}'
+                AND evt_block_time >= TIMESTAMP '{{zeroex_v3_start_date}}'
                 {% endif %}
 
     ),
@@ -219,6 +219,7 @@ WITH
                 all_fills.block_time AS block_time, all_fills.block_number as block_number,
                 protocol_version as version,
                 date_trunc('day', all_fills.block_time) as block_date,
+                cast(date_trunc('month', all_fills.block_time) as date) as block_month,
                 transaction_hash as tx_hash,
                 evt_index,
                 maker_address as maker,
@@ -228,26 +229,25 @@ WITH
                 taker_token_filled_amount_raw as taker_token_amount_raw,
                 maker_symbol,
                 token_pair,
-                '1' as trace_address,
                 maker_asset_filled_amount maker_token_amount,
                 taker_token,
                 taker_symbol,
                 taker_asset_filled_amount taker_token_amount,
                 matcha_limit_order_flag,
                 volume_usd,
-                cast(protocol_fee_paid_eth as double),
+                protocol_fee_paid_eth,
                 'arbitrum' as blockchain,
                 all_fills.contract_address,
                 native_order_type,
-                tx.from AS tx_from,
+                tx."from" AS tx_from,
                 tx.to AS tx_to
             FROM all_fills
             INNER JOIN {{ source('arbitrum', 'transactions')}} tx ON all_fills.transaction_hash = tx.hash
             AND all_fills.block_number = tx.block_number
             {% if is_incremental() %}
-            AND tx.block_time >= date_trunc('day', now() - interval '1 week')
+            AND tx.block_time >= date_trunc('day', now() - interval '7' day)
             {% endif %}
             {% if not is_incremental() %}
-            AND tx.block_time >= '{{zeroex_v3_start_date}}'
+            AND tx.block_time >= TIMESTAMP '{{zeroex_v3_start_date}}'
             {% endif %}
             

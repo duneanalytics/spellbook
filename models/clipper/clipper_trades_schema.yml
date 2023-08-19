@@ -3,7 +3,7 @@ version: 2
 models:
   - name: clipper_trades
     meta:
-      blockchain: avalanche_c,  bnb, polygon, ethereum
+      blockchain: arbitrum, ethereum, optimism, polygon
       sector: dex
       project: clipper
       contributors: 0xRob, amalashkevich
@@ -75,9 +75,6 @@ models:
       - &tx_to
         name: tx_to
         description: "Address which received the transaction"
-      - &trace_address
-        name: trace_address
-        description: "address of the trace within the call graph forest"
       - &evt_index
         name: evt_index
         description: "the position of this event log within this transaction"
