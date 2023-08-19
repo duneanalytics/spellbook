@@ -250,20 +250,20 @@ SELECT date_trunc('day', nft.block_time) AS block_date
 , 'v3' AS version
 , nft.block_number
 , nft.tx_hash
-, nft.order_hash AS sub_tx_trade_id
+, CAST(ROW_NUMBER() OVER (PARTITION BY nft.block_number, nft.tx_hash ORDER BY nft.order_hash DESC) AS UINT256) AS sub_tx_trade_id
 , nft.trade_category
 , 'secondary' AS trade_type
 , nft.buyer
 , nft.seller
 , nft.nft_contract_address
-, nft.nft_token_id
-, nft.nft_amount
-, fungible.price_raw
+, CAST(nft.nft_token_id AS UINT256) AS nft_token_id
+, CAST(nft.nft_amount AS UINT256) AS nft_amount
+, CAST(fungible.price_raw AS UINT256) AS price_raw
 , fungible.currency_contract
 , nft.project_contract_address
-, COALESCE(os_fees.platform_fee_amount_raw, 0) AS platform_fee_amount_raw
+, CAST(COALESCE(os_fees.platform_fee_amount_raw, 0) AS UINT256) AS platform_fee_amount_raw
 , os_fees.platform_fee_address
-, COALESCE(royalty_fees.royalty_fee_amount_raw, 0) AS royalty_fee_amount_raw
+, CAST(COALESCE(royalty_fees.royalty_fee_amount_raw, 0) AS UINT256) AS royalty_fee_amount_raw
 , royalty_fees.royalty_fee_address
 FROM nft
 INNER JOIN fungible ON nft.block_number=fungible.block_number
