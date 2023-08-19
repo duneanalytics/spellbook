@@ -6,7 +6,7 @@
     file_format = 'delta',
     incremental_strategy = 'merge',
     unique_key = ['block_date', 'blockchain', 'project', 'version', 'tx_hash', 'evt_index'],
-    post_hook='{{ expose_spells(\'["arbitrum"]\',
+    post_hook='{{ expose_spells(\'["polygon"]\',
                                 "project",
                                 "tigris",
                                 \'["Henrystats"]\') }}'
@@ -26,10 +26,10 @@ fees_open_position_v1 as (
             ELSE 0 
         END as fees 
     FROM 
-    {{ ref('tigris_arbitrum_trades') }}
+    {{ ref('tigris_polygon_trades') }}
     WHERE protocol_version = '1'
     AND trade_type = 'open_position'
-    AND version IN ('v1.2', 'v1.3')
+    AND version IN ('v1.1', 'v1.2', 'v1.3', 'v1.4', 'v1.5', 'v1.6')
 ),
 
 fees_close_position_v1 as (
@@ -41,16 +41,16 @@ fees_close_position_v1 as (
             ELSE 0 
         END), 0) as fees 
     FROM 
-    {{ ref('tigris_arbitrum_trades') }} c 
+    {{ ref('tigris_polygon_trades') }} c 
     LEFT JOIN 
-    {{ ref('tigris_arbitrum_trades') }} o 
+    {{ ref('tigris_polygon_trades') }} o 
         ON c.position_id = o.position_id
         AND c.positions_contract = o.positions_contract
         AND o.trade_type = 'open_position'
         AND o.protocol_version = '1'
     WHERE c.protocol_version = '1'
     AND c.trade_type = 'close_position'
-    AND c.version IN ('v1.2', 'v1.3')
+    AND c.version IN ('v1.1', 'v1.2', 'v1.3', 'v1.4', 'v1.5', 'v1.6')
 ), 
 
 excluded_trades as (
@@ -58,10 +58,10 @@ excluded_trades as (
         *, 
         0 as fees 
     FROM 
-    {{ ref('tigris_arbitrum_trades') }}
+    {{ ref('tigris_polygon_trades') }}
     WHERE protocol_version = '1'
     AND trade_type NOT IN ('open_position', 'close_position')
-    AND version IN ('v1.2', 'v1.3')
+    AND version IN ('v1.1', 'v1.2', 'v1.3', 'v1.4', 'v1.5', 'v1.6')
 ), 
 
 trades_with_fees_event as (
@@ -69,12 +69,12 @@ trades_with_fees_event as (
         t.*, 
         COALESCE(f.fees, 0) as fees 
     FROM 
-    {{ ref('tigris_arbitrum_trades') }} t 
+    {{ ref('tigris_polygon_trades') }} t 
     LEFT JOIN 
-    {{ ref('tigris_arbitrum_events_fees_distributed') }} f 
+    {{ ref('tigris_polygon_events_fees_distributed') }} f 
         ON t.evt_block_time = f.evt_block_time
         AND t.evt_tx_hash = f.evt_tx_hash
-    WHERE t.version NOT IN ('v1.2', 'v1.3')
+    WHERE t.version NOT IN ('v1.1', 'v1.2', 'v1.3', 'v1.4', 'v1.5', 'v1.6')
 ),
 
 all_fees as (
@@ -125,7 +125,7 @@ SELECT
 FROM 
 all_fees t 
 INNER JOIN 
-{{ source('arbitrum', 'transactions') }} tx
+{{ source('polygon', 'transactions') }} tx
     ON t.evt_tx_hash = tx.hash
     AND t.evt_block_time = tx.block_time
     {% if not is_incremental() %}
@@ -137,7 +137,7 @@ INNER JOIN
 LEFT JOIN 
 {{ ref('tokens_erc20') }} er 
     ON t.margin_asset = er.contract_address 
-    AND er.blockchain = 'arbitrum'
+    AND er.blockchain = 'polygon'
 
 
 
