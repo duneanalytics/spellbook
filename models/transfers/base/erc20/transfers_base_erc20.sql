@@ -76,15 +76,15 @@ with
             and block_time >= date_trunc('day', now() - interval '7' day)
             {% endif %}
     )
-    
+
 select unique_transfer_id, 'base' as blockchain, wallet_address, token_address, evt_block_time, CAST(amount_raw AS varchar) as amount_raw
 from sent_transfers
-union
+union all
 select unique_transfer_id, 'base' as blockchain, wallet_address, token_address, evt_block_time, CAST(amount_raw AS varchar) as amount_raw
 from received_transfers
-union
+union all
 select unique_transfer_id, 'base' as blockchain, wallet_address, token_address, evt_block_time, CAST(amount_raw AS varchar) as amount_raw
 from deposited_weth
-union
+union all
 select unique_transfer_id, 'base' as blockchain, wallet_address, token_address, evt_block_time, CAST(amount_raw AS varchar) as amount_raw
 from withdrawn_weth
