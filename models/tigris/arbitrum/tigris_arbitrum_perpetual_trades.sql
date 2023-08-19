@@ -112,7 +112,7 @@ SELECT
     t.volume_usd,
     t.fees as fee_usd, 
     t.margin_change as margin_usd,
-    CONCAT(t.trade_type, '-', COALESCE((CASE WHEN t.direction = 'true' THEN 'long' ELSE 'false' END), 'Unspecified')) as trade, 
+    CONCAT(t.trade_type, '_', COALESCE((CASE WHEN t.direction = 'true' THEN 'long' ELSE 'false' END), 'Unspecified')) as trade, 
     'tigris_trade' as project, 
     t.version, 
     'tigris_trade' as frontend, 
