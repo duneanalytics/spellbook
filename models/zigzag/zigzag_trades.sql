@@ -8,7 +8,7 @@
 }}
 
 {% set zigzag_models = [
-'zigzag_v1_arbitrum_trades'
+ref('zigzag_v1_arbitrum_trades')
 ] %}
 
 
@@ -19,6 +19,7 @@ FROM (
         blockchain,
         project,
         version,
+        block_month,
         block_date,
         block_time,
         token_bought_symbol,
@@ -38,7 +39,7 @@ FROM (
         tx_from,
         tx_to,
         evt_index
-    FROM {{ ref(dex_model) }}
+    FROM {{ dex_model }}
     {% if not loop.last %}
     UNION ALL
     {% endif %}
