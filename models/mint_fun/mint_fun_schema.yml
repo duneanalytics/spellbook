@@ -1,7 +1,7 @@
 version: 2
 
 models:
-  - name: mint_fun_optimism_mints
+  - name: mint_fun_mints
     meta:
       blockchain: ethereum, optimism, base
       sector: mints
