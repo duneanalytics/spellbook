@@ -29,7 +29,7 @@ fees_open_position_v1 as (
     {{ ref('tigris_arbitrum_trades') }}
     WHERE protocol_version = '1'
     AND trade_type = 'open_position'
-    AND version NOT IN ('v1.2', 'v1.3')
+    AND version IN ('v1.2', 'v1.3')
 ),
 
 fees_close_position_v1 as (
@@ -50,7 +50,7 @@ fees_close_position_v1 as (
         AND o.protocol_version = '1'
     WHERE c.protocol_version = '1'
     AND c.trade_type = 'close_position'
-    AND c.version NOT IN ('v1.2', 'v1.3')
+    AND c.version IN ('v1.2', 'v1.3')
 ), 
 
 excluded_trades as (
@@ -61,7 +61,7 @@ excluded_trades as (
     {{ ref('tigris_arbitrum_trades') }}
     WHERE protocol_version = '1'
     AND trade_type NOT IN ('open_position', 'close_position')
-    AND version NOT IN ('v1.2', 'v1.3')
+    AND version IN ('v1.2', 'v1.3')
 ), 
 
 trades_with_fees_event as (
