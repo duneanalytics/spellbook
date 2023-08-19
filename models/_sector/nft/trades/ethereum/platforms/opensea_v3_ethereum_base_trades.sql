@@ -207,7 +207,7 @@ WITH base_data AS (
 , royalty_fees AS (
     SELECT block_number
     , order_hash
-    , MAX_BY(recipient, amount)  AS royalty_fee_address
+    , MAX_BY(recipient, amount) AS royalty_fee_address
     , SUM(amount) AS royalty_fee_amount_raw
     FROM (
         SELECT t.block_number
@@ -253,18 +253,18 @@ SELECT date_trunc('day', nft.block_time) AS block_date
 , nft.order_hash AS sub_tx_trade_id
 , nft.trade_category
 , 'secondary' AS trade_type
-, from_hex(nft.buyer) AS buyer
-, from_hex(nft.seller) AS seller
-, from_hex(nft.nft_contract_address) AS nft_contract_address
+, nft.buyer
+, nft.seller
+, nft.nft_contract_address
 , nft.nft_token_id
 , nft.nft_amount
 , fungible.price_raw
-, from_hex(fungible.currency_contract) AS currency_contract
-, from_hex(nft.project_contract_address) AS project_contract_address
+, fungible.currency_contract
+, nft.project_contract_address
 , COALESCE(os_fees.platform_fee_amount_raw, 0) AS platform_fee_amount_raw
-, from_hex(os_fees.platform_fee_address) AS platform_fee_address
+, os_fees.platform_fee_address
 , COALESCE(royalty_fees.royalty_fee_amount_raw, 0) AS royalty_fee_amount_raw
-, from_hex(royalty_fees.royalty_fee_address) AS royalty_fee_address
+, royalty_fees.royalty_fee_address
 FROM nft
 INNER JOIN fungible ON nft.block_number=fungible.block_number
     AND nft.order_hash=fungible.order_hash
