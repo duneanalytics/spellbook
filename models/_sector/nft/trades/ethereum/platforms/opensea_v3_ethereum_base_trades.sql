@@ -253,18 +253,18 @@ SELECT date_trunc('day', nft.block_time) AS block_date
 , nft.order_hash AS sub_tx_trade_id
 , nft.trade_category
 , 'secondary' AS trade_type
-, nft.buyer
-, nft.seller
-, nft.nft_contract_address
+, from_hex(nft.buyer) AS buyer
+, from_hex(nft.seller) AS seller
+, from_hex(nft.nft_contract_address) AS nft_contract_address
 , nft.nft_token_id
 , nft.nft_amount
 , fungible.price_raw
-, fungible.currency_contract
-, nft.project_contract_address
+, from_hex(fungible.currency_contract) AS currency_contract
+, from_hex(nft.project_contract_address) AS project_contract_address
 , COALESCE(os_fees.platform_fee_amount_raw, 0) AS platform_fee_amount_raw
-, os_fees.platform_fee_address
+, from_hex(os_fees.platform_fee_address) AS platform_fee_address
 , COALESCE(royalty_fees.royalty_fee_amount_raw, 0) AS royalty_fee_amount_raw
-, royalty_fees.royalty_fee_address
+, from_hex(royalty_fees.royalty_fee_address) AS royalty_fee_address
 FROM nft
 INNER JOIN fungible ON nft.block_number=fungible.block_number
     AND nft.order_hash=fungible.order_hash
