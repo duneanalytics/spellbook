@@ -115,7 +115,7 @@ SELECT *
             and t.block_time >= date_trunc('day', now() - interval '7' day)
             AND ct.block_time >= date_trunc('day', now() - interval '7' day)
             {% endif %}
-          left join {{ ref('contracts_'+ chain +'find_self_destruct_contracts') }} as sd 
+          left join {{ ref('contracts_'+ chain +'_find_self_destruct_contracts') }} as sd 
             on ct.address = sd.contract_address
             and ct.tx_hash = sd.creation_tx_hash
             and ct.block_time = sd.created_time
@@ -187,7 +187,7 @@ SELECT *
         ELSE 0 END AS to_iterate_creators
       , 0 AS is_new_contract
     from {{ this }} t
-    left join {{ ref('contracts_'+ chain +'find_self_destruct_contracts') }} as sd 
+    left join {{ ref('contracts_'+ chain +'_find_self_destruct_contracts') }} as sd 
       on t.contract_address = sd.contract_address
       and t.creation_tx_hash = sd.creation_tx_hash
       and t.created_time = sd.created_time
