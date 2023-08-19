@@ -207,7 +207,7 @@ WITH base_data AS (
 , royalty_fees AS (
     SELECT t.block_number
     , t.order_hash
-    , t.recipient AS royalty_fee_address
+    , MAX_BY(t.recipient,SUM(t.amount))  AS royalty_fee_address
     , SUM(t.amount) AS royalty_fee_amount_raw
     FROM identified_traces t
     INNER JOIN fungible ON fungible.block_number=t.block_number
@@ -217,17 +217,17 @@ WITH base_data AS (
         AND nft.order_hash=t.order_hash
         AND t.recipient NOT IN (nft.seller, nft.buyer)
     WHERE t.trace_type = 'payment_or_royalties'
-    GROUP BY 1, 2, 3
+    GROUP BY 1, 2
     )
 
 , os_fees AS (
     SELECT block_number
     , order_hash
-    , recipient AS platform_fee_address
+    , MAX_BY(recipient, SUM(amount)) AS platform_fee_address
     , SUM(amount) AS platform_fee_amount_raw
     FROM identified_traces
     WHERE trace_type = 'os_fees'
-    GROUP BY 1, 2, 3
+    GROUP BY 1, 2
     )
 
 SELECT date_trunc('day', nft.block_time) AS block_date
