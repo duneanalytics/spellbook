@@ -69,6 +69,14 @@ SELECT '{{blockchain}}' AS blockchain
 , recipient
 , offerer
 , seaport_contract_address
+-- Seaport versions documented here: https://github.com/ProjectOpenSea/seaport
+, CASE WHEN seaport_contract_address = 0x00000000006c3852cbef3e08e8df289169ede581 THEN '1.1'
+    WHEN seaport_contract_address = 0x00000000000006c7676171937c444f6bde3d6282 THEN '1.2'
+    WHEN seaport_contract_address = 0x0000000000000ad24e80fd803c6ac37206a45f15 THEN '1.3'
+    WHEN seaport_contract_address = 0x00000000000001ad428e4906ae43d8f9852d0dd6 THEN '1.4'
+    WHEN seaport_contract_address = 0x00000000000000adc04c56bf30ac9d3c0aaf14dc THEN '1.5'
+    ELSE 'unknown'
+    END AS seaport_version
 , trace_side
 , trace_index
 , trace_item

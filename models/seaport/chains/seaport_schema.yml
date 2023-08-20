@@ -44,6 +44,8 @@ models:
         description: "Index of the trace"
       - name: seaport_contract_address
         description: "Seaport contract address"
+      - name: seaport_version
+        description: "Seaport version"
       - name: token_address
         description: "Token address"
       - name: amount
@@ -100,6 +102,8 @@ models:
         description: "Index of the trace"
       - name: seaport_contract_address
         description: "Seaport contract address"
+      - name: seaport_version
+        description: "Seaport version"
       - name: token_address
         description: "Token address"
       - name: amount
@@ -156,6 +160,8 @@ models:
         description: "Index of the trace"
       - name: seaport_contract_address
         description: "Seaport contract address"
+      - name: seaport_version
+        description: "Seaport version"
       - name: token_address
         description: "Token address"
       - name: amount
@@ -212,6 +218,8 @@ models:
         description: "Index of the trace"
       - name: seaport_contract_address
         description: "Seaport contract address"
+      - name: seaport_version
+        description: "Seaport version"
       - name: token_address
         description: "Token address"
       - name: amount
@@ -268,6 +276,8 @@ models:
         description: "Index of the trace"
       - name: seaport_contract_address
         description: "Seaport contract address"
+      - name: seaport_version
+        description: "Seaport version"
       - name: token_address
         description: "Token address"
       - name: amount
@@ -324,6 +334,8 @@ models:
         description: "Index of the trace"
       - name: seaport_contract_address
         description: "Seaport contract address"
+      - name: seaport_version
+        description: "Seaport version"
       - name: token_address
         description: "Token address"
       - name: amount
