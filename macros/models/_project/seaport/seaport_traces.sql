@@ -82,7 +82,7 @@ SELECT '{{blockchain}}' AS blockchain
 , tx_hash
 , token_standard
 , token_address
-, CAST(SUM(amount) AS UINT256) AS amount
+, SUM(amount) AS amount
 , COUNT(*) AS bundle_size
 , identifier
 , recipient

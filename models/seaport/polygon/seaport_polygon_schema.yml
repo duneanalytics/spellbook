@@ -290,6 +290,7 @@ models:
             - trace_index
             - identifier
             - recipient
+            - offerer
     columns:
       - name: blockchain
         description: "Blockchain"
