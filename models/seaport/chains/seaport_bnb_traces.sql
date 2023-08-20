@@ -5,7 +5,7 @@
         partition_by=['block_date'],
         materialized='incremental',
         file_format = 'delta',
-        unique_key = ['block_number', 'order_hash', 'trace_side', 'trace_index'],
+        unique_key = ['block_number', 'order_hash', 'trace_side', 'trace_index', 'identifier'],
         post_hook='{{ expose_spells(\'["bnb"]\',
                                 "project",
                                 "seaport",

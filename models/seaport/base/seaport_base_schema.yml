@@ -17,6 +17,7 @@ models:
             - order_hash
             - trace_side
             - trace_index
+            - identifier
     columns:
       - name: blockchain
         description: "Blockchain"
