@@ -70,7 +70,6 @@ WITH base_data AS (
     , seaport_contract_address
     , trace_side
     , trace_index
-    , trace_item
     , zone
     FROM exploded_traces
     )
@@ -99,10 +98,9 @@ SELECT '{{blockchain}}' AS blockchain
     END AS seaport_version
 , trace_side
 , trace_index
-, trace_item
 , zone
 FROM decoded_exploded_traces
 GROUP BY block_time, block_number, order_hash, tx_hash, token_standard, token_address
-, identifier, recipient, offerer, seaport_contract_address, trace_side, trace_index, trace_item, zone
+, identifier, recipient, offerer, seaport_contract_address, trace_side, trace_index, zone
 
 {% endmacro %}
