@@ -20,7 +20,7 @@ WITH bridge_events AS (
     SELECT
         block_time, 
         CAST(DATE_TRUNC('day',block_time) as date) AS block_date, 
-        CAST(DATE_TRUNC('day',block_time) as date) AS block_month, 
+        CAST(DATE_TRUNC('month',block_time) as date) AS block_month, 
         sender,
         block_number, 
         tx_hash,
@@ -29,7 +29,7 @@ WITH bridge_events AS (
         recipient_address, 
         trace_address, a.evt_index, 
         project_contract_address,
-        COALESCE(message_nonce_hash,'unknown') AS transfer_id, 
+        COALESCE(message_nonce_hash, 0x) AS transfer_id, -- message_nonce_hash is in varbinary
         source_chain_id, 
         destination_chain_id
     FROM (
@@ -39,7 +39,7 @@ WITH bridge_events AS (
         , l.block_time
         ,l.block_number
         ,l.tx_hash
-        ,bytearray_ltrim(topic3) AS bridged_token_address
+        ,bytearray_ltrim(topic2) AS bridged_token_address
         ,bytearray_to_uint256(bytearray_substring(data,33,32)) as bridged_token_amount_raw
         , bytearray_substring(data, 13, 20) AS recipient_address
         , array[-1] AS trace_address
@@ -51,9 +51,9 @@ WITH bridge_events AS (
         ,DENSE_RANK() OVER (PARTITION BY tx_hash ORDER BY index ASC) AS tf_index
         
         FROM {{ source ('optimism', 'logs') }} l
-        WHERE topic1 = 0xb0444523268717a02698be47d0803aa7468c00acbed2f8bd93a0459cde61dd89 --Deposit Finalized
+        WHERE topic0 = 0xb0444523268717a02698be47d0803aa7468c00acbed2f8bd93a0459cde61dd89 --Deposit Finalized
         -- Other potentially helpful filters
-        AND (topic2 IS NOT NULL) AND (topic3 IS NOT NULL) AND (topic4 IS NOT NULL) AND (data IS NOT NULL)
+        AND (topic2 IS NOT NULL) AND (topic3 IS NOT NULL) AND (data IS NOT NULL)
         {% if is_incremental() %}
         AND block_time > NOW() - interval '14' Day
         {% endif %}
@@ -65,7 +65,7 @@ WITH bridge_events AS (
         , l.block_time
         , l.block_number
         , l.tx_hash
-        , bytearray_ltrim(topic3) AS bridged_token_address
+        , bytearray_ltrim(topic2) AS bridged_token_address
         , bytearray_to_uint256(bytearray_substring(data,33,32)) as bridged_token_amount_raw
         , bytearray_substring(data, 13, 20) AS recipient_address
         , array[-1] AS trace_address
@@ -77,9 +77,9 @@ WITH bridge_events AS (
         ,DENSE_RANK() OVER (PARTITION BY tx_hash ORDER BY index ASC) AS tf_index
         
         FROM {{ source ('optimism', 'logs') }} l
-        WHERE topic1 = 0x73d170910aba9e6d50b102db522b1dbcd796216f5128b445aa2135272886497e --Withdrawal Initiated
+        WHERE topic0 = 0x73d170910aba9e6d50b102db522b1dbcd796216f5128b445aa2135272886497e --Withdrawal Initiated
         -- Other potentially helpful filters
-        AND (topic2 IS NOT NULL) AND (topic3 IS NOT NULL) AND (topic4 IS NOT NULL) AND (data IS NOT NULL)
+        AND (topic2 IS NOT NULL) AND (topic3 IS NOT NULL) AND (data IS NOT NULL)
         {% if is_incremental() %}
         AND block_time > NOW() - interval '14' Day
         {% endif %}
@@ -102,6 +102,7 @@ SELECT
 , '' as version
 , tf.block_time
 , tf.block_date
+, tf.block_month
 , tf.block_number
 , tx_hash
 , COALESCE(sender,CAST(NULL as VARBINARY)) as sender
@@ -125,7 +126,7 @@ SELECT
 , tf.transfer_id
 , tf.evt_index
 , tf.trace_address
-, substring(t.data,1,10) AS tx_method_id
+, substring(t.data,1,5) AS tx_method_id
 
 FROM bridge_events tf
 
@@ -149,6 +150,6 @@ LEFT JOIN {{ source('prices', 'usd') }} p
     {% endif %}
     
 LEFT JOIN {{ ref('chain_info_chain_ids') }} cid_source
-    ON cid_source.chain_id = tf.source_chain_id
+    ON cid_source.chain_id =  CAST(tf.source_chain_id as VARCHAR)
 LEFT JOIN {{ ref('chain_info_chain_ids') }} cid_dest
-    ON cid_dest.chain_id = tf.destination_chain_id
+    ON cid_dest.chain_id = CAST(tf.destination_chain_id as VARCHAR)
