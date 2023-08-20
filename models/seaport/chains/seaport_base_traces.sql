@@ -1,5 +1,5 @@
 {{ config(
-        tags = ['dunesql'],
+        tags = ['dunesql', 'prod_exclude'],
         schema = 'seaport_base',
         alias =alias('traces'),
         partition_by=['block_date'],

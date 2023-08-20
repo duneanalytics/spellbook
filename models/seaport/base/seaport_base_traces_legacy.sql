@@ -1,6 +1,6 @@
 {{ config( 
   alias = alias('traces', legacy_model=True),
-  tags = ['legacy']
+  tags = ['legacy', 'prod_exclude']
   )
 }}
   
