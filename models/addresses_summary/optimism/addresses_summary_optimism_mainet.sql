@@ -49,7 +49,9 @@ SELECT
             WHEN (date_diff('day', min(ot.block_time), max(ot.block_time))/COUNT(ot.hash)) >= 0.0027397260274 THEN 'Yearly User'
             ELSE 'Sparse User'
     END as usage_frequency,
-    COUNT(ot.hash) as number_of_transactions
+    COUNT(ot.hash) as number_of_transactions,
+    COUNT(DISTINCT(cm.contract_project)) as unique_dapps 
+
 FROM 
 weekly_active_addresses wd 
 INNER JOIN 
@@ -58,6 +60,9 @@ INNER JOIN
 INNER JOIN 
 {{ ref('addresses_events_optimism_first_activity') }} fa 
     ON wd.address = fa.address
+INNER JOIN 
+{{ ref('contracts_optimism_contract_mapping') }} cm 
+    ON ot."to" = cm.contract_address 
 GROUP BY 1, 2, 3, 4
 
 {% else %}
@@ -87,12 +92,16 @@ SELECT
             WHEN (date_diff('day', min(ot.block_time), max(ot.block_time))/COUNT(ot.hash)) >= 0.0027397260274 THEN 'Yearly User'
             ELSE 'Sparse User'
     END as usage_frequency,
-    COUNT(ot.hash) as number_of_transactions
+    COUNT(ot.hash) as number_of_transactions,
+    COUNT(DISTINCT(cm.contract_project)) as unique_dapps 
 FROM 
 {{ source('optimism', 'transactions') }} ot 
 INNER JOIN 
 {{ ref('addresses_events_optimism_first_activity') }} fa 
     ON ot."from" = fa.address
+INNER JOIN 
+{{ ref('contracts_optimism_contract_mapping') }} cm 
+    ON ot."to" = cm.contract_address 
 GROUP BY 1, 2, 3, 4
 
 {% endif %}

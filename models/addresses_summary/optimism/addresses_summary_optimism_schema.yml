@@ -18,11 +18,11 @@ models:
         tests:
           - unique
       - name: first_active_time
-        description: "The block time on which the address made it's first mainet transaction"
+        description: "The block time on which the address made it's first OP mainet transaction"
       - name: first_transaction_hash
-        description: "The transaction hash on which the address made it's first mainet transaction"
+        description: "The transaction hash on which the address made it's first OP mainet transaction"
       - name: last_active_time
-        description: "The block time on which the address made it's last mainet transaction" 
+        description: "The block time on which the address made it's last OP mainet transaction" 
       - name: address_age
         description: "Time period the address has been active for " 
       - name: number_of_transactions
@@ -30,4 +30,6 @@ models:
       - name: usage_frequency
         description: "How often address is active"
       - name: gas_spent
-        description: "total gas spent by adddress"
+        description: "total gas spent by adddress on OP mainet"
+      - name: unique_dapps
+        description: "unique dapps address interacted with OP mainet"
