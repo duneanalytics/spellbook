@@ -1,4 +1,5 @@
 {{ config(
+    schema = 'fungible_ethereum',
     alias = alias('transfers', legacy_model=True),
     tags=['legacy']
 )}}

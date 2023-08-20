@@ -1,4 +1,5 @@
 {{ config(
+    schema = 'fungible_gnosis',
     alias = alias('transfers', legacy_model=True),
     tags=['legacy']
 )}}
