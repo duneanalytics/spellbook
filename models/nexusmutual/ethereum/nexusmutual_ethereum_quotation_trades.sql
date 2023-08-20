@@ -28,7 +28,7 @@ WITH quo_evt AS (
            premiumNXM,
            scAdd,
            sumAssured,
-           '0xd7c49cee7e9188cca6ad8ff264c1da2e69d4cf3b' as token
+           0xd7c49cee7e9188cca6ad8ff264c1da2e69d4cf3b as token
     FROM
         {{ source('nexusmutual_ethereum', 'QuotationData_evt_CoverDetailsEvent') }}
     {% if not is_incremental() %}
@@ -71,7 +71,7 @@ SELECT quo_evt.cid,
        TRY_CAST(date_trunc('month', quo_evt.evt_block_time) AS date) AS block_month
 FROM quo_evt
 INNER JOIN {{ source('ethereum','transactions') }} tx
-    ON CAST(quo_evt.evt_tx_hash AS VARBINARY) = tx.hash
+    ON from_hex(quo_evt.evt_tx_hash) = tx.hash
     AND tx.success is NOT NULL
     {% if not is_incremental() %}
     AND tx.block_time >= TIMESTAMP '{{project_start_date}}'
@@ -80,5 +80,5 @@ INNER JOIN {{ source('ethereum','transactions') }} tx
     AND tx.block_time >= date_trunc('day', now() - interval '7' day)
     {% endif %}
 LEFT JOIN {{ ref('tokens_erc20') }} erc20
-    ON CAST(quo_evt.token AS VARBINARY) = erc20.contract_address
+    ON quo_evt.token = erc20.contract_address
     AND erc20.blockchain = 'ethereum'
