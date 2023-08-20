@@ -9,7 +9,7 @@ seeds:
         timestamp: timestamp
         wallet_address: varbinary
         token_address: varbinary
-        amount_raw: uint256
+        amount_raw: int256
 
 
   - name: balances_ethereum_erc20_specific_wallet
