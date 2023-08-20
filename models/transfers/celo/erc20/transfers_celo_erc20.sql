@@ -5,6 +5,7 @@
     file_format='delta',
     incremental_strategy='merge',
     unique_key='unique_transfer_id',
+    partition_by = ['block_month'],
     post_hook='{{ expose_spells(\'["celo"]\',
                                 "sector",
                                 "transfers",
@@ -17,6 +18,7 @@ with
             to as wallet_address,
             contract_address as token_address,
             evt_block_time,
+            date_trunc('month', evt_block_time) as block_month,
             cast(value as double) as amount_raw
         from
             {{ source('erc20_celo', 'evt_transfer') }}
@@ -32,6 +34,7 @@ with
             "from" as wallet_address,
             contract_address as token_address,
             evt_block_time,
+            date_trunc('month', evt_block_time) as block_month,
             (-1) * cast(value as double) as amount_raw
         from
             {{ source('erc20_celo', 'evt_transfer') }}
@@ -48,6 +51,7 @@ with
             bytearray_substring(topic1,13,20) as wallet_address,
             contract_address as token_address,
             block_time as evt_block_time,
+            date_trunc('month', block_time) as block_month,
             cast(bytearray_to_uint256(data) as double) as amount_raw
         from
             {{ source('celo', 'logs') }}
@@ -65,6 +69,7 @@ with
             bytearray_substring(topic1,13,20) as wallet_address,
             contract_address as token_address,
             block_time as evt_block_time,
+            date_trunc('month', block_time) as block_month,
             (-1) * cast(bytearray_to_uint256(data) as double) as amount_raw
         from
             {{ source('celo', 'logs') }}
@@ -76,14 +81,14 @@ with
             {% endif %}
     )
     
-select unique_transfer_id, 'celo' as blockchain, wallet_address, token_address, evt_block_time, cast(amount_raw as varchar(100)) as amount_raw
+select unique_transfer_id, 'celo' as blockchain, wallet_address, token_address, evt_block_time, block_month, amount_raw
 from sent_transfers
 union
-select unique_transfer_id, 'celo' as blockchain, wallet_address, token_address, evt_block_time, cast(amount_raw as varchar(100)) as amount_raw
+select unique_transfer_id, 'celo' as blockchain, wallet_address, token_address, evt_block_time, block_month, amount_raw
 from received_transfers
 union
-select unique_transfer_id, 'celo' as blockchain, wallet_address, token_address, evt_block_time, cast(amount_raw as varchar(100)) as amount_raw
+select unique_transfer_id, 'celo' as blockchain, wallet_address, token_address, evt_block_time, block_month, amount_raw
 from deposited_wcelo
 union
-select unique_transfer_id, 'celo' as blockchain, wallet_address, token_address, evt_block_time, cast(amount_raw as varchar(100)) as amount_raw
+select unique_transfer_id, 'celo' as blockchain, wallet_address, token_address, evt_block_time, block_month, amount_raw
 from withdrawn_wcelo

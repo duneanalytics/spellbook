@@ -6,6 +6,7 @@
         file_format ='delta',
         incremental_strategy='merge',
         unique_key='unique_transfer_id',
+        partition_by = ['block_month'],
         post_hook='{{ expose_spells(\'["celo"]\',
                                     "sector",
                                     "transfers",
@@ -22,6 +23,7 @@ with celo_transfers as (
         ,cast(r.value as double)/1e18 as value_decimal
         ,r.tx_hash
         ,r.trace_address
+        ,date_trunc('month', r.block_time) as block_month,
         ,r.block_time as tx_block_time
         ,r.block_number as tx_block_number
         ,substring(to_hex(t.data), 1, 10) as tx_method_id
@@ -54,6 +56,7 @@ with celo_transfers as (
         ,cast(r.value as double)/1e18 as value_decimal
         ,r.evt_tx_hash as tx_hash
         ,array[r.evt_index] as trace_address
+        ,date_trunc('month', r.evt_block_time) as block_month,
         ,r.evt_block_time as tx_block_time
         ,r.evt_block_number as tx_block_number
         ,substring(to_hex(t.data), 1, 10) as tx_method_id
