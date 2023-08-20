@@ -15,5 +15,5 @@
 
 {{seaport_traces(
     blockchain='ethereum'
-    , seaport_events = {{ source('seaport_ethereum', 'Seaport_evt_OrderFulfilled') }}
+    , seaport_events = source('seaport_ethereum', 'Seaport_evt_OrderFulfilled')
 )}}

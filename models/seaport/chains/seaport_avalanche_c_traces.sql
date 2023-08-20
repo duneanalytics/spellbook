@@ -15,5 +15,5 @@
 
 {{seaport_traces(
     blockchain='avalanche_c'
-    , seaport_events = {{ source('seaport_avalanche_c', 'Seaport_evt_OrderFulfilled') }}
+    , seaport_events = source('seaport_avalanche_c', 'Seaport_evt_OrderFulfilled')
 )}}

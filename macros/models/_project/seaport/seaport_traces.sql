@@ -1,4 +1,4 @@
-{% macro nft_transfers(blockchain, seaport_events) %}
+{% macro seaport_traces(blockchain, seaport_events) %}
 {%- set token_standard_start = 'bep' if blockchain == 'bnb' else 'erc' -%}
 {%- set spark_mode = True -%} {# TODO: Potential bug. Consider disabling #}
 

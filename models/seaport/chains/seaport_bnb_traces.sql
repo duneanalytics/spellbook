@@ -15,5 +15,5 @@
 
 {{seaport_traces(
     blockchain='bnb'
-    , seaport_events = {{ source('seaport_bnb', 'Seaport_evt_OrderFulfilled') }}
+    , seaport_events = source('seaport_bnb', 'Seaport_evt_OrderFulfilled')
 )}}

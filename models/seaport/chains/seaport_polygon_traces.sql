@@ -15,5 +15,5 @@
 
 {{seaport_traces(
     blockchain='polygon'
-    , seaport_events = {{ source('seaport_polygon', 'Seaport_evt_OrderFulfilled') }}
+    , seaport_events = source('seaport_polygon', 'Seaport_evt_OrderFulfilled')
 )}}
