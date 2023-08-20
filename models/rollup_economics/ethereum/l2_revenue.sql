@@ -30,7 +30,7 @@ INNER JOIN {{ source('prices','usd') }} p
       OR tr."from" = 0xa9232040bf0e0aea2578a5b2243f2916dbfc0a69
     )
   AND cast(tr.value as double)/1e18 > 0
-  AND tr.block_time >= timestamp '2023-02-01'
+  AND tr.block_time >= timestamp '2022-02-01'
   {% if is_incremental() %}
   AND tr.block_time >= date_trunc('day', now() - interval '7' day)
   {% endif %}
@@ -96,7 +96,7 @@ INNER JOIN {{ source('prices','usd') }} p
   ON p.minute = date_trunc('minute', t.block_time)
   AND p.blockchain is null
   AND p.symbol = 'ETH'
-  AND t.block_time >= timestamp '2023-01-01'
+  AND t.block_time >= timestamp '2022-01-01'
   AND t.block_time <= timestamp '2023-06-06 18:03'
   GROUP BY 1,2
 
