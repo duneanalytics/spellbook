@@ -51,21 +51,41 @@ WITH base_data AS (
     CROSS JOIN UNNEST(consideration) WITH ordinality AS t (trace_item, trace_index)
     )
 
+, decoded_exploded_traces AS (
+    SELECT block_time
+    , block_number
+    , order_hash
+    , tx_hash
+    , CASE json_extract_scalar(trace_item, '$.itemType')
+        WHEN '0' THEN 'native'
+        WHEN '1' THEN '{{token_standard_start}}' || '20'
+        WHEN '2' THEN '{{token_standard_start}}' || '721'
+        WHEN '3' THEN '{{token_standard_start}}' || '1155'
+        END AS token_standard
+    , from_hex(json_extract_scalar(trace_item, '$.token')) AS token_address
+    , json_extract_scalar(trace_item, '$.amount')) AS amount
+    , json_extract_scalar(trace_item, '$.identifier') AS identifier
+    , recipient
+    , offerer
+    , seaport_contract_address
+    , trace_side
+    , trace_index
+    , trace_item
+    , zone
+    FROM exploded_traces
+    )
+
 SELECT '{{blockchain}}' AS blockchain
 , date_trunc('day', block_time) AS block_date
 , block_time
 , block_number
 , order_hash
 , tx_hash
-, CASE json_extract_scalar(trace_item, '$.itemType')
-    WHEN '0' THEN 'native'
-    WHEN '1' THEN '{{token_standard_start}}' || '20'
-    WHEN '2' THEN '{{token_standard_start}}' || '721'
-    WHEN '3' THEN '{{token_standard_start}}' || '1155'
-    END AS token_standard
-, from_hex(json_extract_scalar(trace_item, '$.token')) AS token_address
-, CAST(json_extract_scalar(trace_item, '$.amount') AS UINT256) AS amount
-, json_extract_scalar(trace_item, '$.identifier') AS identifier
+, token_standard
+, token_address
+, CAST(SUM(amount) AS UINT256) AS amount
+, COUNT(*) AS bundle_size
+, identifier
 , recipient
 , offerer
 , seaport_contract_address
@@ -81,6 +101,8 @@ SELECT '{{blockchain}}' AS blockchain
 , trace_index
 , trace_item
 , zone
-FROM exploded_traces
+FROM decoded_exploded_traces
+GROUP BY block_time, block_number, order_hash, tx_hash, token_standard, token_address
+, identifier, recipient, offerer, seaport_contract_address, trace_side, trace_index, trace_item, zone
 
 {% endmacro %}

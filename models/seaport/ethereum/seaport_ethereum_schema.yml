@@ -478,6 +478,8 @@ models:
         description: "Token address"
       - name: amount
         description: "Amount"
+      - name: bundle_size
+        description: "Number of bundled traces"
       - name: identifier
         description: "Token identified"
       - name: recipient
