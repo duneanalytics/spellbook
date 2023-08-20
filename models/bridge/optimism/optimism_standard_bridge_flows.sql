@@ -108,8 +108,8 @@ SELECT
 , COALESCE(sender,CAST(NULL as VARBINARY)) as sender
 , COALESCE(tf.recipient_address, CAST(NULL as VARBINARY)) as receiver
 , erc.symbol AS token_symbol
-, bridged_token_amount_raw / POWER(10,erc.decimals) AS token_amount
-, p.price*( bridged_token_amount_raw / POWER(10,erc.decimals) ) AS token_amount_usd
+, CAST(bridged_token_amount_raw as double)/ POWER(10,erc.decimals) AS token_amount
+, p.price*( CAST(bridged_token_amount_raw as double) / POWER(10,erc.decimals) ) AS token_amount_usd
 , bridged_token_amount_raw as token_amount_raw
 , 0 AS fee_amount
 , 0 AS fee_amount_usd
@@ -126,7 +126,7 @@ SELECT
 , tf.transfer_id
 , tf.evt_index
 , tf.trace_address
-, substring(t.data,1,4) AS tx_method_id
+, bytearray_substring(t.data,1,4) AS tx_method_id
 
 FROM bridge_events tf
 
