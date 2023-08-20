@@ -17,3 +17,10 @@ seeds:
 
   - name: balances_ethereum_erc20_daily_entries
     description: Legacy values from Postgres for daily token balances. Sampled on December 31st, 2021.
+    config:
+      tags: dunesql
+      column_types:
+        timestamp: timestamp
+        wallet_address: varbinary
+        token_address: varbinary
+        amount_raw: int256
