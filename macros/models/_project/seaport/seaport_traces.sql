@@ -63,8 +63,8 @@ WITH base_data AS (
         WHEN '3' THEN '{{token_standard_start}}' || '1155'
         END AS token_standard
     , from_hex(json_extract_scalar(trace_item, '$.token')) AS token_address
-    , json_extract_scalar(trace_item, '$.amount')) AS amount
-    , json_extract_scalar(trace_item, '$.identifier') AS identifier
+    , CAST(json_extract_scalar(trace_item, '$.amount') AS UINT256) AS amount
+    , CAST(json_extract_scalar(trace_item, '$.identifier') AS UINT256) AS identifier
     , recipient
     , offerer
     , seaport_contract_address
