@@ -26,4 +26,8 @@ models:
       - name: address_age
         description: "Time period the address has been active for " 
       - name: number_of_transactions
-        description: "Number of mainet transactions made by the address" 
+        description: "Number of mainet transactions made by the address"
+      - name: usage_frequency
+        description: "How often address is active"
+      - name: gas_spent
+        description: "total gas spent by adddress"
