@@ -51,21 +51,38 @@ WITH base_data AS (
     CROSS JOIN UNNEST(consideration) WITH ordinality AS t (trace_item, trace_index)
     )
 
+, all_traces AS (
+    SELECT block_time
+    , block_number
+    , order_hash
+    , tx_hash
+    , json_extract_scalar(trace_item, '$.itemType') AS item_type
+    , from_hex(json_extract_scalar(trace_item, '$.token')) AS token_address
+    , CAST(json_extract_scalar(trace_item, '$.amount') AS UINT256) AS amount
+    , CAST(json_extract_scalar(trace_item, '$.identifier') AS UINT256) AS identifier
+    , recipient
+    , offerer
+    , seaport_contract_address
+    , trace_side
+    , zone
+    FROM exploded_traces
+    )
+
 SELECT '{{blockchain}}' AS blockchain
 , date_trunc('day', block_time) AS block_date
 , block_time
 , block_number
 , order_hash
 , tx_hash
-, CASE json_extract_scalar(trace_item, '$.itemType')
+, CASE item_type
     WHEN '0' THEN 'native'
     WHEN '1' THEN '{{token_standard_start}}' || '20'
     WHEN '2' THEN '{{token_standard_start}}' || '721'
     WHEN '3' THEN '{{token_standard_start}}' || '1155'
     END AS token_standard
-, from_hex(json_extract_scalar(trace_item, '$.token')) AS token_address
-, CAST(json_extract_scalar(trace_item, '$.amount') AS UINT256) AS amount
-, CAST(json_extract_scalar(trace_item, '$.identifier') AS UINT256) AS identifier
+, token_address
+, amount
+, identifier
 , recipient
 , offerer
 , seaport_contract_address
@@ -78,8 +95,8 @@ SELECT '{{blockchain}}' AS blockchain
     ELSE 'unknown'
     END AS seaport_version
 , trace_side
-, ROW_NUMBER() OVER (PARTITION BY block_number, tx_hash, order_hash, trace_side) AS trace_index
+, ROW_NUMBER() OVER (PARTITION BY block_number, tx_hash, order_hash) AS trace_index
 , zone
-FROM exploded_traces
+FROM all_traces
 
 {% endmacro %}
