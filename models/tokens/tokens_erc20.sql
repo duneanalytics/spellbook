@@ -21,4 +21,4 @@ SELECT 'optimism' as blockchain, contract_address, symbol, decimals FROM  {{ ref
 UNION ALL
 SELECT 'polygon' as blockchain, contract_address, symbol, decimals FROM  {{ ref('tokens_polygon_erc20') }}
 UNION ALL
-SELECT 'fantom' as blockchain, contract_address, symbol, decimals FROM {{ ref('tokens_fantom_erc20') }}
+SELECT 'fantom' as blockchain, contract_address, symbol, decimals FROM {{ ref('tokens_fantom_erc20') }} 
