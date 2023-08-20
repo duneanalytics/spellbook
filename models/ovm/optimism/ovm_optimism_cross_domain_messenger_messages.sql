@@ -28,7 +28,7 @@ SELECT 'withdraw' AS msg_type, 'SentMessage' AS event, sender,
     
 UNION ALL
 
-SELECT 'deposit' AS m_type, 'RelayedMessage' AS event, '' as sender,
+SELECT 'deposit' AS m_type, 'RelayedMessage' AS event, CAST(NULL as VARBINARY) as sender,
     evt_tx_hash AS l2_tx_hash, evt_block_number AS l2_block_number, 
     evt_block_time AS l2_block_time, CAST(DATE_TRUNC('day',evt_block_time) as date) AS l2_block_date,
     CAST(DATE_TRUNC('month',evt_block_time) as date) AS block_month,
