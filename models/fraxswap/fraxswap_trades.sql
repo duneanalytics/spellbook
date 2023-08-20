@@ -8,11 +8,10 @@
 }}
 
 {% set frax_models = [
-'fraxswap_avalanche_c_trades',
-'fraxswap_ethereum_trades',
-'fraxswap_polygon_trades',
-'fraxswap_bnb_trades'
-
+ref('fraxswap_avalanche_c_trades'),
+ref('fraxswap_ethereum_trades'),
+ref('fraxswap_polygon_trades'),
+ref('fraxswap_bnb_trades')
 ] %}
 
 
@@ -24,6 +23,7 @@ FROM (
         blockchain,
         project,
         version,
+        block_month,
         block_date,
         block_time,
         token_bought_symbol,
@@ -43,7 +43,7 @@ FROM (
         tx_from,
         tx_to,
         evt_index
-    FROM {{ ref(dex_model) }}
+    FROM {{ dex_model }}
     {% if not loop.last %}
     UNION ALL
     {% endif %}

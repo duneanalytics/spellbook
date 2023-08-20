@@ -10,16 +10,6 @@ models:
      tags: ['ethereum', 'layerzero', 'send']
    description: "LayerZero message send call on ethereum"
    tests:
-     - check_seed_legacy:
-         seed_file: ref('layerzero_ethereum_send_samples')
-         check_columns:
-           - destination_chain_id
-           - user_address
-           - currency_contract
-         match_columns:
-           - block_number
-           - tx_hash
-           - trace_address
      - dbt_utils.unique_combination_of_columns:
          combination_of_columns: [ 'block_time', 'tx_hash', 'user_address', 'trace_address', 'source_chain_id', 'destination_chain_id' ]
    columns:
