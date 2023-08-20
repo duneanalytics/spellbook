@@ -13,7 +13,7 @@ WITH base_data AS (
     , consideration
     , offer
     , zone
-    FROM '{{seaport_events}}'
+    FROM {{ seaport_events }}
     {% if is_incremental() %}
     WHERE evt_block_time >= date_trunc('day', now() - interval '7' day)
     {% endif %}
