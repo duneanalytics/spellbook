@@ -1,10 +1,11 @@
 {{ config(
+    tags=['dunesql'],
         alias = alias('lending'),
-        partition_by = ['block_date'],
+        partition_by = ['block_month'],
         materialized = 'incremental',
         file_format = 'delta',
         incremental_strategy = 'merge',
-        unique_key = ['block_date', 'blockchain', 'project', 'version', 'tx_hash', 'evt_index'],
+        unique_key = ['block_date', 'blockchain', 'project', 'version', 'tx_hash', 'evt_index', 'lien_id'],
         post_hook='{{ expose_spells(\'["ethereum"]\',
                                     "sector",
                                     "nft",
@@ -14,6 +15,7 @@
 
 {% set nft_models = [
  ref('bend_dao_ethereum_lending')
+ ,ref('astaria_ethereum_lending')
 ] %}
 
 SELECT *
@@ -24,8 +26,10 @@ FROM (
         project,
         version,
         block_date,
+        block_month,
         block_time,
         block_number,
+        lien_id,
         token_id,
         collection,
         amount_usd,
@@ -44,11 +48,11 @@ FROM (
         evt_index
     FROM {{ nft_model }}
     {% if is_incremental() %}
-    WHERE block_time >= date_trunc("day", now() - interval '1 week')
+    WHERE block_time >= date_trunc('day', now() - interval '7' Day)
     {% endif %}
     {% if not loop.last %}
     UNION ALL
     {% endif %}
     {% endfor %}
 
-)
+) 

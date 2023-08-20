@@ -1,14 +1,15 @@
 {{ config(tags=['dunesql'],
     alias = alias('trades'),
-    post_hook='{{ expose_spells(\'["ethereum"]\',
+    post_hook='{{ expose_spells(\'["bnb","ethereum"]\',
                                 "project",
                                 "maverick",
-                                \'["gte620v"]\') }}'
+                                \'["gte620v", "chef_seaweed"]\') }}'
     )
 }}
 
 {% set maverick_models = [
     ref('maverick_v1_ethereum_trades')
+,   ref('maverick_v1_bnb_trades')
 ] %}
 
 
@@ -19,6 +20,7 @@ FROM (
         blockchain,
         project,
         version,
+        block_month,
         block_date,
         block_time,
         token_bought_symbol,
