@@ -40,7 +40,7 @@ WITH base_data AS (
     , block_number
     , order_hash
     , tx_hash
-    , from_hex(json_extract_scalar(consideration_item, '$.recipient')) AS recipient
+    , from_hex(json_extract_scalar(trace_item, '$.recipient')) AS recipient
     , offerer
     , seaport_contract_address
     , 'consideration' AS trace_side
