@@ -447,6 +447,7 @@ models:
             - trace_side
             - trace_index
             - identifier
+            - recipient
     columns:
       - name: blockchain
         description: "Blockchain"
