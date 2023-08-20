@@ -122,22 +122,12 @@ SELECT *
             AND sd.blockchain = '{{chain}}'
             {% if is_incremental() %}
             and sd.created_time >= date_trunc('day', now() - interval '7' day)
-            AND ct.block_time >= date_trunc('day', now() - interval '7' day)
             {% endif %}
           where 
             1=1
             {% if is_incremental() %}
-            and 1= (
-                CASE
-                  -- have we never run this chain?
-                  WHEN NOT EXISTS (SELECT 1 FROM {{this}} WHERE blockchain = '{{chain}}') THEN 1
-                  -- if we have run it, then only do the last week
-                  WHEN ct.block_time >= date_trunc('day', now() - interval '7' day)
-                  ELSE 0
-                END 
-            )
+            and ct.block_time >= date_trunc('day', now() - interval '7' day)
             {% endif %} -- incremental filter
-
       )
     SELECT * FROM incremental_contracts
 
