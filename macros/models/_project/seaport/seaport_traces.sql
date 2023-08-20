@@ -78,7 +78,7 @@ SELECT '{{blockchain}}' AS blockchain
     ELSE 'unknown'
     END AS seaport_version
 , trace_side
-, ROW_NUMBER() OVER (PARTITION BY block_number, tx_hash, order_hash, trace_side ORDER BY trace_index DESC) AS trace_index
+, ROW_NUMBER() OVER (PARTITION BY block_number, tx_hash, order_hash, trace_side) AS trace_index
 , zone
 FROM exploded_traces
 
