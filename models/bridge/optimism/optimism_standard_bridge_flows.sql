@@ -29,7 +29,7 @@ WITH bridge_events AS (
         recipient_address, 
         trace_address, a.evt_index, 
         project_contract_address,
-        COALESCE(message_nonce_hash, 0x) AS transfer_id, -- message_nonce_hash is in varbinary
+        message_nonce_hash AS transfer_id, -- removing the coalesce since this isn;t a unique key
         source_chain_id, 
         destination_chain_id
     FROM (
@@ -126,7 +126,7 @@ SELECT
 , tf.transfer_id
 , tf.evt_index
 , tf.trace_address
-, substring(t.data,1,5) AS tx_method_id
+, substring(t.data,1,4) AS tx_method_id
 
 FROM bridge_events tf
 
