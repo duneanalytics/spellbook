@@ -43,10 +43,10 @@ SELECT
            ELSE 'less than 1 week old User'
     END as address_age, 
     CASE
-            WHEN (COUNT(ot.hash)/date_diff('day', min(ot.block_time), max(ot.block_time))) >= 1 THEN 'Daily User'
-            WHEN (COUNT(ot.hash)/date_diff('day', min(ot.block_time), max(ot.block_time))) >= 0.142857142857 THEN 'Weekly User'
-            WHEN (COUNT(ot.hash)/date_diff('day', min(ot.block_time), max(ot.block_time))) >= 0.0333333333333 THEN 'Monthly User'
-            WHEN (COUNT(ot.hash)/date_diff('day', min(ot.block_time), max(ot.block_time))) >= 0.0027397260274 THEN 'Yearly User'
+            WHEN (COUNT(ot.hash)/(date_diff('day', min(ot.block_time), max(ot.block_time)) + 1)) >= 1 THEN 'Daily User'
+            WHEN (COUNT(ot.hash)/(date_diff('day', min(ot.block_time), max(ot.block_time)) + 1)) >= 0.142857142857 THEN 'Weekly User'
+            WHEN (COUNT(ot.hash)/(date_diff('day', min(ot.block_time), max(ot.block_time)) + 1)) >= 0.0333333333333 THEN 'Monthly User'
+            WHEN (COUNT(ot.hash)/(date_diff('day', min(ot.block_time), max(ot.block_time)) + 1)) >= 0.0027397260274 THEN 'Yearly User'
             ELSE 'Sparse User'
     END as usage_frequency,
     COUNT(ot.hash) as number_of_transactions,
@@ -86,10 +86,10 @@ SELECT
            ELSE 'less than 1 week old User'
     END as address_age, 
     CASE
-            WHEN (date_diff('day', min(ot.block_time), max(ot.block_time))/COUNT(ot.hash)) >= 1 THEN 'Daily User'
-            WHEN (date_diff('day', min(ot.block_time), max(ot.block_time))/COUNT(ot.hash)) >= 0.142857142857 THEN 'Weekly User'
-            WHEN (date_diff('day', min(ot.block_time), max(ot.block_time))/COUNT(ot.hash)) >= 0.0333333333333 THEN 'Monthly User'
-            WHEN (date_diff('day', min(ot.block_time), max(ot.block_time))/COUNT(ot.hash)) >= 0.0027397260274 THEN 'Yearly User'
+            WHEN (COUNT(ot.hash)/(date_diff('day', min(ot.block_time), max(ot.block_time)) + 1)) >= 1 THEN 'Daily User'
+            WHEN (COUNT(ot.hash)/(date_diff('day', min(ot.block_time), max(ot.block_time)) + 1)) >= 0.142857142857 THEN 'Weekly User'
+            WHEN (COUNT(ot.hash)/(date_diff('day', min(ot.block_time), max(ot.block_time)) + 1)) >= 0.0333333333333 THEN 'Monthly User'
+            WHEN (COUNT(ot.hash)/(date_diff('day', min(ot.block_time), max(ot.block_time)) + 1)) >= 0.0027397260274 THEN 'Yearly User'
             ELSE 'Sparse User'
     END as usage_frequency,
     COUNT(ot.hash) as number_of_transactions,
