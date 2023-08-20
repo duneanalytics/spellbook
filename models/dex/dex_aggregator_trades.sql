@@ -2,6 +2,7 @@
 {{ config(
         schema ='dex_aggregator',
         alias = alias('trades'),
+        tags = ['dunesql'],
         partition_by = ['block_date'],
         materialized = 'incremental',
         file_format = 'delta',
@@ -10,7 +11,7 @@
         post_hook='{{ expose_spells(\'["ethereum", "gnosis", "avalanche_c", "fantom", "bnb", "optimism", "arbitrum"]\',
                                 "sector",
                                 "dex_aggregator",
-                                \'["bh2smith", "Henrystats", "jeff-dude", "rantum" ]\') }}'
+                                \'["bh2smith", "Henrystats", "jeff-dude", "rantum", "nhd98z"]\') }}'
         )
 }}
 
@@ -29,6 +30,7 @@ spells with issues, to be excluded in short term:
  ,ref('bebop_trades')
  ,ref('zeroex_trades')
  ,ref('dodo_aggregator_trades')
+ ,ref('kyberswap_aggregator_trades')
 ] %}
 
 SELECT *
@@ -60,7 +62,7 @@ FROM (
          , evt_index
     FROM {{ aggregator_model }}
     {% if is_incremental() %}
-    WHERE block_date >= date_trunc("day", now() - interval '1 week')
+    WHERE block_date >= date_trunc('day', now() - interval '7' day)
     {% endif %}
     {% if not loop.last %}
     UNION ALL
