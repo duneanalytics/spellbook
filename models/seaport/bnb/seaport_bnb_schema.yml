@@ -309,7 +309,7 @@ models:
       - name: token_standard
         tests:
           - accepted_values:
-              values: ['native', bep20', 'bep721', 'bep1155']
+              values: ['native', 'bep20', 'bep721', 'bep1155']
         description: "Token standard"
       - name: trace_index
         description: "Index of the trace"
