@@ -33,7 +33,7 @@ WITH transfers AS (
     , t.contract_address
     , tok.symbol
     , tok.decimals
-    , 'erc20' AS token_standard
+    , '{{token_standard_20}}' AS token_standard
     , t."from"
     , t.to
     , t.evt_tx_hash AS tx_hash
