@@ -51,7 +51,6 @@ SELECT
     END as usage_frequency,
     COUNT(ot.hash) as number_of_transactions,
     COUNT(DISTINCT(cm.contract_project)) as unique_dapps 
-
 FROM 
 weekly_active_addresses wd 
 INNER JOIN 
@@ -60,7 +59,7 @@ INNER JOIN
 INNER JOIN 
 {{ ref('addresses_events_optimism_first_activity') }} fa 
     ON wd.address = fa.address
-INNER JOIN 
+LEFT JOIN 
 {{ ref('contracts_optimism_contract_mapping') }} cm 
     ON ot."to" = cm.contract_address 
 GROUP BY 1, 2, 3, 4
@@ -99,7 +98,7 @@ FROM
 INNER JOIN 
 {{ ref('addresses_events_optimism_first_activity') }} fa 
     ON ot."from" = fa.address
-INNER JOIN 
+LEFT JOIN 
 {{ ref('contracts_optimism_contract_mapping') }} cm 
     ON ot."to" = cm.contract_address 
 GROUP BY 1, 2, 3, 4
