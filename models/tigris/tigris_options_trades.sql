@@ -8,7 +8,7 @@
 	)
 }}
 
-{% set options_modes = [
+{% set options_models = [
  ref('tigris_arbitrum_options_trades')
  ,ref('tigris_polygon_options_trades')
 ] %}
