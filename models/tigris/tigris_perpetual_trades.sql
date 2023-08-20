@@ -8,7 +8,7 @@
 	)
 }}
 
-{% set perpetual_modes = [
+{% set perpetual_models = [
  ref('tigris_arbitrum_perpetual_trades')
  ,ref('tigris_polygon_perpetual_trades')
 ] %}
