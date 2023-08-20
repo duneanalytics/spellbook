@@ -1,4 +1,5 @@
 {{ config(
+        tags=['legacy'],
         alias = alias('transfers', legacy_model=True),
         post_hook='{{ expose_spells(\'["ethereum", "bnb", "avalanche_c", "gnosis", "optimism", "arbitrum", "polygon", "fantom", "base"]\',
                                     "sector",

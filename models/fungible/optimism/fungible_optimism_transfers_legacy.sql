@@ -1,5 +1,4 @@
 {{ config(
-    schema = 'fungible_optimism',
     alias = alias('transfers', legacy_model=True),
     tags=['legacy']
 )}}

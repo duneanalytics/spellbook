@@ -1,5 +1,4 @@
 {{ config(
-    schema = 'fungible_fantom',
     alias = alias('transfers', legacy_model=True),
     tags=['legacy']
 )}}

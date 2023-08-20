@@ -1,5 +1,4 @@
 {{ config(
-    schema = 'fungible_polygon',
     alias = alias('transfers', legacy_model=True),
     tags=['legacy']
 )}}

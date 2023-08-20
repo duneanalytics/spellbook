@@ -1,5 +1,4 @@
 {{ config(
-    schema = 'fungible_avalanche_c',
     alias = alias('transfers', legacy_model=True),
     tags=['legacy']
 )}}
