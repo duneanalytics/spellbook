@@ -282,6 +282,7 @@ models:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - block_number
+            - tx_hash
             - order_hash
             - trace_side
             - trace_index
