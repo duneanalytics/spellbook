@@ -71,7 +71,7 @@ SELECT quo_evt.cid,
        TRY_CAST(date_trunc('month', quo_evt.evt_block_time) AS date) AS block_month
 FROM quo_evt
 INNER JOIN {{ source('ethereum','transactions') }} tx
-    ON from_hex(quo_evt.evt_tx_hash) = tx.hash
+    ON quo_evt.evt_tx_hash = tx.hash
     AND tx.success is NOT NULL
     {% if not is_incremental() %}
     AND tx.block_time >= TIMESTAMP '{{project_start_date}}'
