@@ -5,7 +5,7 @@
 
 {% set trader_joe_models = [
     ref('trader_joe_v2_bnb_trades')
-,   ref('trader_joe_v2_1_bnb_trades')  
+,   ref('trader_joe_v2_1_bnb_trades')
 ] %}
 
 
@@ -16,6 +16,7 @@ FROM (
         blockchain,
         project,
         version,
+        block_month,
         block_date,
         block_time,
         token_bought_symbol,
