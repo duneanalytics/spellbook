@@ -121,7 +121,8 @@ SELECT
     t.evt_tx_hash as tx_hash, 
     tx."from" as tx_from, 
     tx.to as tx_to, 
-    t.evt_index
+    t.evt_index,
+    t.protocol_version
 FROM 
 all_fees t 
 INNER JOIN 

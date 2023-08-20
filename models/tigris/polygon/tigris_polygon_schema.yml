@@ -89,6 +89,9 @@ models:
       - &block_month
         name: block_month
         description: "Month of the transaction"
+      - &protocol_version
+        name: protocol_version
+        description: "tigris project version "
 
   - name: tigris_polygon_trades
     meta:
@@ -160,9 +163,7 @@ models:
         name: positions_contract
         description: "corresponding position contract address"
       - *block_month
-      - &protocol_version
-        name: protocol_version
-        description: "tigris project version "
+      - *protocol_version
 
   - name: tigris_polygon_options_trades
     meta:
