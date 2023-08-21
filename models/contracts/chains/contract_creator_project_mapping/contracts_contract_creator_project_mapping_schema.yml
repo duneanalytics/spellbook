@@ -1,14 +1,14 @@
 version: 2
 
 models:
-  - name: contracts_arbitrum_contract_creator_project_mapping
+  - name: contracts_ethereum_contract_creator_project_mapping
     meta:
-      blockchain: arbitrum
+      blockchain: ethereum
       sector: contracts
       contributors: chuxin, msilb7
     config:
       tags: ['evm', 'contracts', 'addresses']
-    description: "Mapping of contracts to its creators and names on Arbitrum."
+    description: "Mapping of contracts to its creators and names on Ethereum."
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -108,452 +108,452 @@ models:
         name: is_updated_on_last_run
         description: "Was this contract updated on the last run (used for incremental table building)"
 
-  - name: contracts_avalanche_c_contract_creator_project_mapping
-    meta:
-      blockchain: avalanche_c
-      sector: contracts
-      contributors: chuxin, msilb7
-    config:
-      tags: ['evm', 'contracts', 'addresses']
-    description: "Mapping of contracts to its creators and names on avalanche_c."
-    tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-              - contract_address
-              - blockchain
-    columns:
-      - *created_month
-      - *blockchain
-      - *trace_creator_address
-      - *contract_address
-      - *contract_project
-      - *token_symbol
-      - *contract_name
-      - *creator_address
-      - *created_time
-      - *contract_creator_if_factory
-      - *is_self_destruct
-      - *creation_tx_hash
-      - *created_block_number
-      - *created_tx_from
-      - *created_tx_to
-      - *created_tx_method_id
-      - *created_tx_index
-      - *top_level_time
-      - *top_level_tx_hash
-      - *top_level_block_number
-      - *top_level_tx_from
-      - *top_level_tx_to
-      - *top_level_tx_method_id
-      - *code_bytelength
-      - *token_standard
-      - *code
+  # - name: contracts_avalanche_c_contract_creator_project_mapping
+  #   meta:
+  #     blockchain: avalanche_c
+  #     sector: contracts
+  #     contributors: chuxin, msilb7
+  #   config:
+  #     tags: ['evm', 'contracts', 'addresses']
+  #   description: "Mapping of contracts to its creators and names on avalanche_c."
+  #   tests:
+  #     - dbt_utils.unique_combination_of_columns:
+  #         combination_of_columns:
+  #             - contract_address
+  #             - blockchain
+  #   columns:
+  #     - *created_month
+  #     - *blockchain
+  #     - *trace_creator_address
+  #     - *contract_address
+  #     - *contract_project
+  #     - *token_symbol
+  #     - *contract_name
+  #     - *creator_address
+  #     - *created_time
+  #     - *contract_creator_if_factory
+  #     - *is_self_destruct
+  #     - *creation_tx_hash
+  #     - *created_block_number
+  #     - *created_tx_from
+  #     - *created_tx_to
+  #     - *created_tx_method_id
+  #     - *created_tx_index
+  #     - *top_level_time
+  #     - *top_level_tx_hash
+  #     - *top_level_block_number
+  #     - *top_level_tx_from
+  #     - *top_level_tx_to
+  #     - *top_level_tx_method_id
+  #     - *code_bytelength
+  #     - *token_standard
+  #     - *code
       
-      - *code_deploy_rank_by_chain
-      - *is_eoa_deployed
-      - *is_updated_on_last_run
+  #     - *code_deploy_rank_by_chain
+  #     - *is_eoa_deployed
+  #     - *is_updated_on_last_run
 
-  - name: contracts_base_contract_creator_project_mapping
-    meta:
-      blockchain: base
-      sector: contracts
-      contributors: chuxin, msilb7
-    config:
-      tags: ['evm', 'contracts', 'addresses']
-    description: "Mapping of contracts to its creators and names on base."
-    tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-              - contract_address
-              - blockchain
-    columns:
-      - *created_month
-      - *blockchain
-      - *trace_creator_address
-      - *contract_address
-      - *contract_project
-      - *token_symbol
-      - *contract_name
-      - *creator_address
-      - *created_time
-      - *contract_creator_if_factory
-      - *is_self_destruct
-      - *creation_tx_hash
-      - *created_block_number
-      - *created_tx_from
-      - *created_tx_to
-      - *created_tx_method_id
-      - *created_tx_index
-      - *top_level_time
-      - *top_level_tx_hash
-      - *top_level_block_number
-      - *top_level_tx_from
-      - *top_level_tx_to
-      - *top_level_tx_method_id
-      - *code_bytelength
-      - *token_standard
-      - *code
+  # - name: contracts_base_contract_creator_project_mapping
+  #   meta:
+  #     blockchain: base
+  #     sector: contracts
+  #     contributors: chuxin, msilb7
+  #   config:
+  #     tags: ['evm', 'contracts', 'addresses']
+  #   description: "Mapping of contracts to its creators and names on base."
+  #   tests:
+  #     - dbt_utils.unique_combination_of_columns:
+  #         combination_of_columns:
+  #             - contract_address
+  #             - blockchain
+  #   columns:
+  #     - *created_month
+  #     - *blockchain
+  #     - *trace_creator_address
+  #     - *contract_address
+  #     - *contract_project
+  #     - *token_symbol
+  #     - *contract_name
+  #     - *creator_address
+  #     - *created_time
+  #     - *contract_creator_if_factory
+  #     - *is_self_destruct
+  #     - *creation_tx_hash
+  #     - *created_block_number
+  #     - *created_tx_from
+  #     - *created_tx_to
+  #     - *created_tx_method_id
+  #     - *created_tx_index
+  #     - *top_level_time
+  #     - *top_level_tx_hash
+  #     - *top_level_block_number
+  #     - *top_level_tx_from
+  #     - *top_level_tx_to
+  #     - *top_level_tx_method_id
+  #     - *code_bytelength
+  #     - *token_standard
+  #     - *code
       
-      - *code_deploy_rank_by_chain
-      - *is_eoa_deployed
-      - *is_updated_on_last_run
+  #     - *code_deploy_rank_by_chain
+  #     - *is_eoa_deployed
+  #     - *is_updated_on_last_run
 
-  - name: contracts_bnb_contract_creator_project_mapping
-    meta:
-      blockchain: bnb
-      sector: contracts
-      contributors: chuxin, msilb7
-    config:
-      tags: ['evm', 'contracts', 'addresses']
-    description: "Mapping of contracts to its creators and names on bnb."
-    tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-              - contract_address
-              - blockchain
-    columns:
-      - *created_month
-      - *blockchain
-      - *trace_creator_address
-      - *contract_address
-      - *contract_project
-      - *token_symbol
-      - *contract_name
-      - *creator_address
-      - *created_time
-      - *contract_creator_if_factory
-      - *is_self_destruct
-      - *creation_tx_hash
-      - *created_block_number
-      - *created_tx_from
-      - *created_tx_to
-      - *created_tx_method_id
-      - *created_tx_index
-      - *top_level_time
-      - *top_level_tx_hash
-      - *top_level_block_number
-      - *top_level_tx_from
-      - *top_level_tx_to
-      - *top_level_tx_method_id
-      - *code_bytelength
-      - *token_standard
-      - *code
+  # - name: contracts_bnb_contract_creator_project_mapping
+  #   meta:
+  #     blockchain: bnb
+  #     sector: contracts
+  #     contributors: chuxin, msilb7
+  #   config:
+  #     tags: ['evm', 'contracts', 'addresses']
+  #   description: "Mapping of contracts to its creators and names on bnb."
+  #   tests:
+  #     - dbt_utils.unique_combination_of_columns:
+  #         combination_of_columns:
+  #             - contract_address
+  #             - blockchain
+  #   columns:
+  #     - *created_month
+  #     - *blockchain
+  #     - *trace_creator_address
+  #     - *contract_address
+  #     - *contract_project
+  #     - *token_symbol
+  #     - *contract_name
+  #     - *creator_address
+  #     - *created_time
+  #     - *contract_creator_if_factory
+  #     - *is_self_destruct
+  #     - *creation_tx_hash
+  #     - *created_block_number
+  #     - *created_tx_from
+  #     - *created_tx_to
+  #     - *created_tx_method_id
+  #     - *created_tx_index
+  #     - *top_level_time
+  #     - *top_level_tx_hash
+  #     - *top_level_block_number
+  #     - *top_level_tx_from
+  #     - *top_level_tx_to
+  #     - *top_level_tx_method_id
+  #     - *code_bytelength
+  #     - *token_standard
+  #     - *code
       
-      - *code_deploy_rank_by_chain
-      - *is_eoa_deployed
-      - *is_updated_on_last_run
+  #     - *code_deploy_rank_by_chain
+  #     - *is_eoa_deployed
+  #     - *is_updated_on_last_run
 
-  - name: contracts_celo_contract_creator_project_mapping
-    meta:
-      blockchain: celo
-      sector: contracts
-      contributors: chuxin, msilb7
-    config:
-      tags: ['evm', 'contracts', 'addresses']
-    description: "Mapping of contracts to its creators and names on celo."
-    tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-              - contract_address
-              - blockchain
-    columns:
-      - *created_month
-      - *blockchain
-      - *trace_creator_address
-      - *contract_address
-      - *contract_project
-      - *token_symbol
-      - *contract_name
-      - *creator_address
-      - *created_time
-      - *contract_creator_if_factory
-      - *is_self_destruct
-      - *creation_tx_hash
-      - *created_block_number
-      - *created_tx_from
-      - *created_tx_to
-      - *created_tx_method_id
-      - *created_tx_index
-      - *top_level_time
-      - *top_level_tx_hash
-      - *top_level_block_number
-      - *top_level_tx_from
-      - *top_level_tx_to
-      - *top_level_tx_method_id
-      - *code_bytelength
-      - *token_standard
-      - *code
+  # - name: contracts_celo_contract_creator_project_mapping
+  #   meta:
+  #     blockchain: celo
+  #     sector: contracts
+  #     contributors: chuxin, msilb7
+  #   config:
+  #     tags: ['evm', 'contracts', 'addresses']
+  #   description: "Mapping of contracts to its creators and names on celo."
+  #   tests:
+  #     - dbt_utils.unique_combination_of_columns:
+  #         combination_of_columns:
+  #             - contract_address
+  #             - blockchain
+  #   columns:
+  #     - *created_month
+  #     - *blockchain
+  #     - *trace_creator_address
+  #     - *contract_address
+  #     - *contract_project
+  #     - *token_symbol
+  #     - *contract_name
+  #     - *creator_address
+  #     - *created_time
+  #     - *contract_creator_if_factory
+  #     - *is_self_destruct
+  #     - *creation_tx_hash
+  #     - *created_block_number
+  #     - *created_tx_from
+  #     - *created_tx_to
+  #     - *created_tx_method_id
+  #     - *created_tx_index
+  #     - *top_level_time
+  #     - *top_level_tx_hash
+  #     - *top_level_block_number
+  #     - *top_level_tx_from
+  #     - *top_level_tx_to
+  #     - *top_level_tx_method_id
+  #     - *code_bytelength
+  #     - *token_standard
+  #     - *code
       
-      - *code_deploy_rank_by_chain
-      - *is_eoa_deployed
-      - *is_updated_on_last_run
+  #     - *code_deploy_rank_by_chain
+  #     - *is_eoa_deployed
+  #     - *is_updated_on_last_run
 
-  - name: contracts_ethereum_contract_creator_project_mapping
-    meta:
-      blockchain: ethereum
-      sector: contracts
-      contributors: chuxin, msilb7
-    config:
-      tags: ['evm', 'contracts', 'addresses']
-    description: "Mapping of contracts to its creators and names on ethereum."
-    tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-              - contract_address
-              - blockchain
-    columns:
-      - *created_month
-      - *blockchain
-      - *trace_creator_address
-      - *contract_address
-      - *contract_project
-      - *token_symbol
-      - *contract_name
-      - *creator_address
-      - *created_time
-      - *contract_creator_if_factory
-      - *is_self_destruct
-      - *creation_tx_hash
-      - *created_block_number
-      - *created_tx_from
-      - *created_tx_to
-      - *created_tx_method_id
-      - *created_tx_index
-      - *top_level_time
-      - *top_level_tx_hash
-      - *top_level_block_number
-      - *top_level_tx_from
-      - *top_level_tx_to
-      - *top_level_tx_method_id
-      - *code_bytelength
-      - *token_standard
-      - *code
+  # - name: contracts_arbitrum_contract_creator_project_mapping
+  #   meta:
+  #     blockchain: arbitrum
+  #     sector: contracts
+  #     contributors: chuxin, msilb7
+  #   config:
+  #     tags: ['evm', 'contracts', 'addresses']
+  #   description: "Mapping of contracts to its creators and names on arbitrum."
+  #   tests:
+  #     - dbt_utils.unique_combination_of_columns:
+  #         combination_of_columns:
+  #             - contract_address
+  #             - blockchain
+  #   columns:
+  #     - *created_month
+  #     - *blockchain
+  #     - *trace_creator_address
+  #     - *contract_address
+  #     - *contract_project
+  #     - *token_symbol
+  #     - *contract_name
+  #     - *creator_address
+  #     - *created_time
+  #     - *contract_creator_if_factory
+  #     - *is_self_destruct
+  #     - *creation_tx_hash
+  #     - *created_block_number
+  #     - *created_tx_from
+  #     - *created_tx_to
+  #     - *created_tx_method_id
+  #     - *created_tx_index
+  #     - *top_level_time
+  #     - *top_level_tx_hash
+  #     - *top_level_block_number
+  #     - *top_level_tx_from
+  #     - *top_level_tx_to
+  #     - *top_level_tx_method_id
+  #     - *code_bytelength
+  #     - *token_standard
+  #     - *code
       
-      - *code_deploy_rank_by_chain
-      - *is_eoa_deployed
-      - *is_updated_on_last_run
+  #     - *code_deploy_rank_by_chain
+  #     - *is_eoa_deployed
+  #     - *is_updated_on_last_run
 
-  - name: contracts_fantom_contract_creator_project_mapping
-    meta:
-      blockchain: fantom
-      sector: contracts
-      contributors: chuxin, msilb7
-    config:
-      tags: ['evm', 'contracts', 'addresses']
-    description: "Mapping of contracts to its creators and names on fantom."
-    tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-              - contract_address
-              - blockchain
-    columns:
-      - *created_month
-      - *blockchain
-      - *trace_creator_address
-      - *contract_address
-      - *contract_project
-      - *token_symbol
-      - *contract_name
-      - *creator_address
-      - *created_time
-      - *contract_creator_if_factory
-      - *is_self_destruct
-      - *creation_tx_hash
-      - *created_block_number
-      - *created_tx_from
-      - *created_tx_to
-      - *created_tx_method_id
-      - *created_tx_index
-      - *top_level_time
-      - *top_level_tx_hash
-      - *top_level_block_number
-      - *top_level_tx_from
-      - *top_level_tx_to
-      - *top_level_tx_method_id
-      - *code_bytelength
-      - *token_standard
-      - *code
+  # - name: contracts_fantom_contract_creator_project_mapping
+  #   meta:
+  #     blockchain: fantom
+  #     sector: contracts
+  #     contributors: chuxin, msilb7
+  #   config:
+  #     tags: ['evm', 'contracts', 'addresses']
+  #   description: "Mapping of contracts to its creators and names on fantom."
+  #   tests:
+  #     - dbt_utils.unique_combination_of_columns:
+  #         combination_of_columns:
+  #             - contract_address
+  #             - blockchain
+  #   columns:
+  #     - *created_month
+  #     - *blockchain
+  #     - *trace_creator_address
+  #     - *contract_address
+  #     - *contract_project
+  #     - *token_symbol
+  #     - *contract_name
+  #     - *creator_address
+  #     - *created_time
+  #     - *contract_creator_if_factory
+  #     - *is_self_destruct
+  #     - *creation_tx_hash
+  #     - *created_block_number
+  #     - *created_tx_from
+  #     - *created_tx_to
+  #     - *created_tx_method_id
+  #     - *created_tx_index
+  #     - *top_level_time
+  #     - *top_level_tx_hash
+  #     - *top_level_block_number
+  #     - *top_level_tx_from
+  #     - *top_level_tx_to
+  #     - *top_level_tx_method_id
+  #     - *code_bytelength
+  #     - *token_standard
+  #     - *code
       
-      - *code_deploy_rank_by_chain
-      - *is_eoa_deployed
-      - *is_updated_on_last_run
+  #     - *code_deploy_rank_by_chain
+  #     - *is_eoa_deployed
+  #     - *is_updated_on_last_run
 
-  - name: contracts_gnosis_contract_creator_project_mapping
-    meta:
-      blockchain: gnosis
-      sector: contracts
-      contributors: chuxin, msilb7
-    config:
-      tags: ['evm', 'contracts', 'addresses']
-    description: "Mapping of contracts to its creators and names on gnosis."
-    tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-              - contract_address
-              - blockchain
-    columns:
-      - *created_month
-      - *blockchain
-      - *trace_creator_address
-      - *contract_address
-      - *contract_project
-      - *token_symbol
-      - *contract_name
-      - *creator_address
-      - *created_time
-      - *contract_creator_if_factory
-      - *is_self_destruct
-      - *creation_tx_hash
-      - *created_block_number
-      - *created_tx_from
-      - *created_tx_to
-      - *created_tx_method_id
-      - *created_tx_index
-      - *top_level_time
-      - *top_level_tx_hash
-      - *top_level_block_number
-      - *top_level_tx_from
-      - *top_level_tx_to
-      - *top_level_tx_method_id
-      - *code_bytelength
-      - *token_standard
-      - *code
+  # - name: contracts_gnosis_contract_creator_project_mapping
+  #   meta:
+  #     blockchain: gnosis
+  #     sector: contracts
+  #     contributors: chuxin, msilb7
+  #   config:
+  #     tags: ['evm', 'contracts', 'addresses']
+  #   description: "Mapping of contracts to its creators and names on gnosis."
+  #   tests:
+  #     - dbt_utils.unique_combination_of_columns:
+  #         combination_of_columns:
+  #             - contract_address
+  #             - blockchain
+  #   columns:
+  #     - *created_month
+  #     - *blockchain
+  #     - *trace_creator_address
+  #     - *contract_address
+  #     - *contract_project
+  #     - *token_symbol
+  #     - *contract_name
+  #     - *creator_address
+  #     - *created_time
+  #     - *contract_creator_if_factory
+  #     - *is_self_destruct
+  #     - *creation_tx_hash
+  #     - *created_block_number
+  #     - *created_tx_from
+  #     - *created_tx_to
+  #     - *created_tx_method_id
+  #     - *created_tx_index
+  #     - *top_level_time
+  #     - *top_level_tx_hash
+  #     - *top_level_block_number
+  #     - *top_level_tx_from
+  #     - *top_level_tx_to
+  #     - *top_level_tx_method_id
+  #     - *code_bytelength
+  #     - *token_standard
+  #     - *code
       
-      - *code_deploy_rank_by_chain
-      - *is_eoa_deployed
-      - *is_updated_on_last_run
+  #     - *code_deploy_rank_by_chain
+  #     - *is_eoa_deployed
+  #     - *is_updated_on_last_run
 
-  - name: contracts_goerli_contract_creator_project_mapping
-    meta:
-      blockchain: goerli
-      sector: contracts
-      contributors: chuxin, msilb7
-    config:
-      tags: ['evm', 'contracts', 'addresses']
-    description: "Mapping of contracts to its creators and names on goerli."
-    tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-              - contract_address
-              - blockchain
-    columns:
-      - *created_month
-      - *blockchain
-      - *trace_creator_address
-      - *contract_address
-      - *contract_project
-      - *token_symbol
-      - *contract_name
-      - *creator_address
-      - *created_time
-      - *contract_creator_if_factory
-      - *is_self_destruct
-      - *creation_tx_hash
-      - *created_block_number
-      - *created_tx_from
-      - *created_tx_to
-      - *created_tx_method_id
-      - *created_tx_index
-      - *top_level_time
-      - *top_level_tx_hash
-      - *top_level_block_number
-      - *top_level_tx_from
-      - *top_level_tx_to
-      - *top_level_tx_method_id
-      - *code_bytelength
-      - *token_standard
-      - *code
+  # - name: contracts_goerli_contract_creator_project_mapping
+  #   meta:
+  #     blockchain: goerli
+  #     sector: contracts
+  #     contributors: chuxin, msilb7
+  #   config:
+  #     tags: ['evm', 'contracts', 'addresses']
+  #   description: "Mapping of contracts to its creators and names on goerli."
+  #   tests:
+  #     - dbt_utils.unique_combination_of_columns:
+  #         combination_of_columns:
+  #             - contract_address
+  #             - blockchain
+  #   columns:
+  #     - *created_month
+  #     - *blockchain
+  #     - *trace_creator_address
+  #     - *contract_address
+  #     - *contract_project
+  #     - *token_symbol
+  #     - *contract_name
+  #     - *creator_address
+  #     - *created_time
+  #     - *contract_creator_if_factory
+  #     - *is_self_destruct
+  #     - *creation_tx_hash
+  #     - *created_block_number
+  #     - *created_tx_from
+  #     - *created_tx_to
+  #     - *created_tx_method_id
+  #     - *created_tx_index
+  #     - *top_level_time
+  #     - *top_level_tx_hash
+  #     - *top_level_block_number
+  #     - *top_level_tx_from
+  #     - *top_level_tx_to
+  #     - *top_level_tx_method_id
+  #     - *code_bytelength
+  #     - *token_standard
+  #     - *code
       
-      - *code_deploy_rank_by_chain
-      - *is_eoa_deployed
-      - *is_updated_on_last_run
+  #     - *code_deploy_rank_by_chain
+  #     - *is_eoa_deployed
+  #     - *is_updated_on_last_run
       
-  - name: contracts_optimism_contract_creator_project_mapping
-    meta:
-      blockchain: optimism
-      sector: contracts
-      contributors: chuxin, msilb7
-    config:
-      tags: ['evm', 'contracts', 'addresses']
-    description: "Mapping of contracts to its creators and names on optimism."
-    tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-              - contract_address
-              - blockchain
-    columns:
-      - *created_month
-      - *blockchain
-      - *trace_creator_address
-      - *contract_address
-      - *contract_project
-      - *token_symbol
-      - *contract_name
-      - *creator_address
-      - *created_time
-      - *contract_creator_if_factory
-      - *is_self_destruct
-      - *creation_tx_hash
-      - *created_block_number
-      - *created_tx_from
-      - *created_tx_to
-      - *created_tx_method_id
-      - *created_tx_index
-      - *top_level_time
-      - *top_level_tx_hash
-      - *top_level_block_number
-      - *top_level_tx_from
-      - *top_level_tx_to
-      - *top_level_tx_method_id
-      - *code_bytelength
-      - *token_standard
-      - *code
+  # - name: contracts_optimism_contract_creator_project_mapping
+  #   meta:
+  #     blockchain: optimism
+  #     sector: contracts
+  #     contributors: chuxin, msilb7
+  #   config:
+  #     tags: ['evm', 'contracts', 'addresses']
+  #   description: "Mapping of contracts to its creators and names on optimism."
+  #   tests:
+  #     - dbt_utils.unique_combination_of_columns:
+  #         combination_of_columns:
+  #             - contract_address
+  #             - blockchain
+  #   columns:
+  #     - *created_month
+  #     - *blockchain
+  #     - *trace_creator_address
+  #     - *contract_address
+  #     - *contract_project
+  #     - *token_symbol
+  #     - *contract_name
+  #     - *creator_address
+  #     - *created_time
+  #     - *contract_creator_if_factory
+  #     - *is_self_destruct
+  #     - *creation_tx_hash
+  #     - *created_block_number
+  #     - *created_tx_from
+  #     - *created_tx_to
+  #     - *created_tx_method_id
+  #     - *created_tx_index
+  #     - *top_level_time
+  #     - *top_level_tx_hash
+  #     - *top_level_block_number
+  #     - *top_level_tx_from
+  #     - *top_level_tx_to
+  #     - *top_level_tx_method_id
+  #     - *code_bytelength
+  #     - *token_standard
+  #     - *code
       
-      - *code_deploy_rank_by_chain
-      - *is_eoa_deployed
-      - *is_updated_on_last_run
+  #     - *code_deploy_rank_by_chain
+  #     - *is_eoa_deployed
+  #     - *is_updated_on_last_run
       
-  - name: contracts_polygon_contract_creator_project_mapping
-    meta:
-      blockchain: polygon
-      sector: contracts
-      contributors: chuxin, msilb7
-    config:
-      tags: ['evm', 'contracts', 'addresses']
-    description: "Mapping of contracts to its creators and names on polygon."
-    tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-              - contract_address
-              - blockchain
-    columns:
-      - *created_month
-      - *blockchain
-      - *trace_creator_address
-      - *contract_address
-      - *contract_project
-      - *token_symbol
-      - *contract_name
-      - *creator_address
-      - *created_time
-      - *contract_creator_if_factory
-      - *is_self_destruct
-      - *creation_tx_hash
-      - *created_block_number
-      - *created_tx_from
-      - *created_tx_to
-      - *created_tx_method_id
-      - *created_tx_index
-      - *top_level_time
-      - *top_level_tx_hash
-      - *top_level_block_number
-      - *top_level_tx_from
-      - *top_level_tx_to
-      - *top_level_tx_method_id
-      - *code_bytelength
-      - *token_standard
-      - *code
+  # - name: contracts_polygon_contract_creator_project_mapping
+  #   meta:
+  #     blockchain: polygon
+  #     sector: contracts
+  #     contributors: chuxin, msilb7
+  #   config:
+  #     tags: ['evm', 'contracts', 'addresses']
+  #   description: "Mapping of contracts to its creators and names on polygon."
+  #   tests:
+  #     - dbt_utils.unique_combination_of_columns:
+  #         combination_of_columns:
+  #             - contract_address
+  #             - blockchain
+  #   columns:
+  #     - *created_month
+  #     - *blockchain
+  #     - *trace_creator_address
+  #     - *contract_address
+  #     - *contract_project
+  #     - *token_symbol
+  #     - *contract_name
+  #     - *creator_address
+  #     - *created_time
+  #     - *contract_creator_if_factory
+  #     - *is_self_destruct
+  #     - *creation_tx_hash
+  #     - *created_block_number
+  #     - *created_tx_from
+  #     - *created_tx_to
+  #     - *created_tx_method_id
+  #     - *created_tx_index
+  #     - *top_level_time
+  #     - *top_level_tx_hash
+  #     - *top_level_block_number
+  #     - *top_level_tx_from
+  #     - *top_level_tx_to
+  #     - *top_level_tx_method_id
+  #     - *code_bytelength
+  #     - *token_standard
+  #     - *code
       
-      - *code_deploy_rank_by_chain
-      - *is_eoa_deployed
-      - *is_updated_on_last_run
+  #     - *code_deploy_rank_by_chain
+  #     - *is_eoa_deployed
+  #     - *is_updated_on_last_run
