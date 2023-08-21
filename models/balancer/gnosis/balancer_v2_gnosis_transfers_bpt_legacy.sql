@@ -4,7 +4,6 @@
 	
         schema='balancer_v2_gnosis',
         alias = alias('transfers_bpt', legacy_model=True),
-        partition_by = ['block_date'],
         partition_by = ['block_month'],
         materialized = 'incremental',
         file_format = 'delta',

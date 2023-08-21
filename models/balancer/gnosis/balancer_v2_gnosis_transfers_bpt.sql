@@ -3,7 +3,6 @@
         schema='balancer_v2_gnosis',
         tags = ['dunesql'],
         alias = alias('transfers_bpt'),
-        partition_by = ['block_date'],
         partition_by = ['block_month'],
         materialized = 'incremental',
         file_format = 'delta',
