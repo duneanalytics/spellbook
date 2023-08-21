@@ -81,3 +81,6 @@ models:
       - &evt_index
         name: evt_index
         description: "the position of this event log within this transaction"
+      - &block_month
+        name: block_month
+        description: "UTC event block month of each DEX trade"
