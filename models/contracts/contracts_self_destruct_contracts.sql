@@ -14,18 +14,20 @@
   )
 }}
 {% set chain_models = [
- ref('contracts_arbitrum_find_self_destruct_contracts')
-,ref('contracts_avalanche_c_find_self_destruct_contracts')
-,ref('contracts_base_find_self_destruct_contracts')
-,ref('contracts_bnb_find_self_destruct_contracts')
-,ref('contracts_celo_find_self_destruct_contracts')
-,ref('contracts_ethereum_find_self_destruct_contracts')
-,ref('contracts_fantom_find_self_destruct_contracts')
-,ref('contracts_gnosis_find_self_destruct_contracts')
-,ref('contracts_goerli_find_self_destruct_contracts')
-,ref('contracts_optimism_find_self_destruct_contracts')
-,ref('contracts_polygon_find_self_destruct_contracts')
+
+  ref('contracts_ethereum_find_self_destruct_contracts')
+
 ] %}
+--  ('contracts_arbitrum_find_self_destruct_contracts')
+-- ,('contracts_avalanche_c_find_self_destruct_contracts')
+-- ,('contracts_base_find_self_destruct_contracts')
+-- ,('contracts_bnb_find_self_destruct_contracts')
+-- ,('contracts_celo_find_self_destruct_contracts')
+-- ,('contracts_fantom_find_self_destruct_contracts')
+-- ,('contracts_gnosis_find_self_destruct_contracts')
+-- ,('contracts_goerli_find_self_destruct_contracts')
+-- ,('contracts_optimism_find_self_destruct_contracts')
+-- ,('contracts_polygon_find_self_destruct_contracts')
 
 SELECT *
 FROM (
