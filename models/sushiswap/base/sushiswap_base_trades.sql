@@ -38,13 +38,15 @@ WITH dexs AS
         ON f.pool = t.contract_address
     {% if is_incremental() %}
     WHERE t.evt_block_time >= date_trunc('day', now() - interval '7' day)
+    {% else %}
+    WHERE t.evt_block_time >= TIMESTAMP '{{project_start_date}}'
     {% endif %}
 )
 SELECT
     'base' AS blockchain
     ,'sushiswap' AS project
     ,'1' AS version
-    ,TRY_CAST(date_trunc('DAY', dexs.block_time) AS date) AS block_date
+    ,try_cast(date_trunc('day', dexs.block_time) AS date) AS block_date
     ,cast(date_trunc('month',dexs.block_time) as date) as block_month
     ,dexs.block_time
     ,erc20a.symbol AS token_bought_symbol
@@ -55,8 +57,8 @@ SELECT
     end as token_pair
     ,dexs.token_bought_amount_raw / power(10, erc20a.decimals) AS token_bought_amount
     ,dexs.token_sold_amount_raw / power(10, erc20b.decimals) AS token_sold_amount
-    ,CAST(dexs.token_bought_amount_raw AS UINT256) AS token_bought_amount_raw
-    ,CAST(dexs.token_sold_amount_raw AS UINT256) AS token_sold_amount_raw
+    ,dexs.token_bought_amount_raw AS token_bought_amount_raw
+    ,dexs.token_sold_amount_raw AS token_sold_amount_raw
     ,coalesce(
         dexs.amount_usd
         ,(dexs.token_bought_amount_raw / power(10, p_bought.decimals)) * p_bought.price
