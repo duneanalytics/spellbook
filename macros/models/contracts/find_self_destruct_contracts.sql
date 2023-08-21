@@ -49,7 +49,7 @@ FROM (
       AND cr.created_block_number = sd.block_number
       and cr.trace_element = (CASE WHEN cardinality(sd.trace_address) = 0 then cast(-1 as bigint) else sd.trace_address[1] end)
       and sd.type = 'suicide'
-      AND cr.blockchain = 'blockchain'
+      AND cr.blockchain = '{{chain}}'
       {% if is_incremental() %}
       and sd.block_time >= date_trunc('day', now() - interval '7' day)
       and cr.contract_address NOT IN (SELECT contract_address FROM {{this}} ) --ensure no duplicates
