@@ -63,6 +63,7 @@ WITH base_data AS (
     , recipient
     , offerer
     , seaport_contract_address
+    , trace_index
     , trace_side
     , zone
     FROM exploded_traces
@@ -95,7 +96,7 @@ SELECT '{{blockchain}}' AS blockchain
     ELSE 'unknown'
     END AS seaport_version
 , trace_side
-, ROW_NUMBER() OVER (PARTITION BY block_number, tx_hash, order_hash) AS trace_index
+, ROW_NUMBER() OVER (PARTITION BY block_number, tx_hash, order_hash ORDER BY trace_index, identifier, recipient, offerer) AS trace_index
 , zone
 FROM all_traces
 
