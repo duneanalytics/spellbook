@@ -25,7 +25,7 @@ models:
         name: trace_creator_address
         description: "Address creating the contract in the transaction trace"
       - &contract_address
-        name: contracts_address
+        name: contract_address
         description: "Address of the contract"
         tests:
           - not_null
