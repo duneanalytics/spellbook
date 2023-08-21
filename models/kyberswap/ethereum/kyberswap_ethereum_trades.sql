@@ -66,8 +66,33 @@ kyberswap_dex AS (
     {% else %}
     WHERE t.evt_block_time >= TIMESTAMP '{{ project_start_date }}'
     {% endif %}
-    
 
+    UNION ALL
+
+    -- https://docs.kyberswap.com/contract/implement-a-swap
+    -- deltaQty0 and deltaQty1, Negative numbers represent the sold amount, and positive numbers represent the buy amount
+    SELECT
+        t.evt_block_time                                                                                         AS block_time
+        ,t.sender                                                                                                AS taker
+        ,t.recipient                                                                                             AS maker
+        ,cast(if(starts_with(cast(t.deltaQty0 as varchar), '-'), abs(t.deltaQty1), abs(t.deltaQty0)) as uint256) AS token_bought_amount_raw
+        ,cast(if(starts_with(cast(t.deltaQty0 as varchar), '-'), abs(t.deltaQty0), abs(t.deltaQty1)) as uint256) AS token_sold_amount_raw
+        ,NULL                                                                                                    AS amount_usd
+        ,if(starts_with(cast(t.deltaQty0 as varchar), '-'), p.token1, p.token0)                                  AS token_bought_address
+        ,if(starts_with(cast(t.deltaQty0 as varchar), '-'), p.token0, p.token1)                                  AS token_sold_address
+        ,t.contract_address                                                                                      AS project_contract_address
+        ,t.evt_tx_hash                                                                                           AS tx_hash
+        ,'elastic'                                                                                               AS version
+        ,t.evt_index
+
+    FROM {{ source('kyber_ethereum', 'ElasticPoolV2_evt_swap') }} t
+    INNER JOIN {{ source('kyber_ethereum', 'ElasticFactoryV2_evt_PoolCreated') }} p
+        ON t.contract_address = p.pool
+    {% if is_incremental() %}
+    WHERE t.evt_block_time >= date_trunc('day', now() - interval '7' day)
+    {% else %}
+    WHERE t.evt_block_time >= TIMESTAMP '{{ project_start_date }}'
+    {% endif %}
 )
 
 SELECT
