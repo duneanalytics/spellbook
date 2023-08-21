@@ -32,6 +32,11 @@ models:
           - not_null
       - name: trace_address
         description: "All returned traces, gives the exact location in the call trace"
+      - &block_month
+        name: block_month
+        description: "Block Month column used to partition data in this table"
+        tests:
+          - not_null
       - &tx_block_time
         name: tx_block_time
         description: "Timestamp for block event time in UTC"
@@ -41,11 +46,6 @@ models:
       - &tx_method_id
         name: tx_method_id
         description: "Function calls specified by the first four bytes of data sent with a transaction"
-      - name: unique_transfer_id
-        description: "Unique transfer ID (used for testing for duplicates), made up with tx_hash and trace_address"
-        tests:
-          - not_null
-          - unique
       - &tx_to
         name: tx_to
         description: "To Address for the Transaction"
@@ -62,8 +62,6 @@ models:
       tags: ['transfers', 'celo', 'erc20']
     description: "ERC20 Token Transfers on Celo. This table is updated every 30 minutes."
     columns:
-      - name: unique_transfer_id
-        description: "Unique transfer ID (used for testing for duplicates)"
       - &blockchain
         name: blockchain
         description: "Blockchain"
@@ -73,9 +71,14 @@ models:
       - &token_address
         name: token_address
         description: "Contract address for token"
-      - &evt_block_time
-        name: evt_block_time
+      - &block_time
+        name: block_time
         description: "Timestamp for block event time in UTC"
+      - *block_month
       - &amount_raw
         name: amount_raw
         description: "Raw amount of ERC20 token held *before* taking into account token decimals"
+      - &index
+        name: index
+        description: "Event Index"
+      - *tx_hash
