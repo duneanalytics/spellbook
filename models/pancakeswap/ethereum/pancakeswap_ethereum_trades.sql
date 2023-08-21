@@ -8,7 +8,7 @@
 {% set pancake_models = [
     ref('pancakeswap_v2_ethereum_amm_trades')
 ,   ref('pancakeswap_v2_ethereum_mmpool_trades')
-,   ref('pancakeswap_v3_ethereum_amm_trades') 
+,   ref('pancakeswap_v3_ethereum_amm_trades')
 ] %}
 
 
@@ -19,6 +19,7 @@ FROM (
         blockchain,
         project,
         version,
+        block_month,
         block_date,
         block_time,
         token_bought_symbol,

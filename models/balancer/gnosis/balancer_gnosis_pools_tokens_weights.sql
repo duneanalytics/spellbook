@@ -1,5 +1,6 @@
 {{ config(
-        alias = alias('pools_tokens_weights')
+        alias = alias('pools_tokens_weights'),
+        tags = ['dunesql']
         )
 }}
 
