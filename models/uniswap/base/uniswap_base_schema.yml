@@ -1,29 +1,45 @@
 version: 2
 
 models:
-  - name: lifi_trades
+  - name: uniswap_v3_base_trades
     meta:
-      blockchain: fantom
+      blockchain: base
       sector: dex
-      project: lifi
-      contributors: Henrystats
+      project: uniswap_v3
+      contributors: wuligy
     config:
-      tags: ['fantom', 'lifi','trades', 'dex', 'aggregator', 'Henrystats','cross-chain']
+      tags: ['base','uniswap_v3','trades', 'uniswap','dex']
     description: >
-        lifi aggregator trades on all chains across all contracts and versions. This table will load dex_aggregator trades downstream.
+        Uniswap V3 contract trades on Base
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_date
+            - blockchain
+            - project
+            - version
+            - tx_hash
+            - evt_index
+      - check_dex_seed:
+          blockchain: base
+          project: uniswap
+          version: 3
     columns:
       - &blockchain
         name: blockchain
         description: "Blockchain which the DEX is deployed"
-      - &project 
+      - &project
         name: project
-        description: "Project name of the DEX"  
+        description: "Project name of the DEX"
       - &version
         name: version
-        description: "Version of the contract built and deployed by the DEX project"  
+        description: "Version of the contract built and deployed by the DEX project"
       - &block_date
         name: block_date
         description: "UTC event block date of each DEX trade"
+      - &block_month
+        name: block_month
+        description: "UTC event block month of each DEX trade"
       - &block_time
         name: block_time
         description: "UTC event block time of each DEX trade"
@@ -75,12 +91,6 @@ models:
       - &tx_to
         name: tx_to
         description: "Address which received the transaction"
-      - &trace_address
-        name: trace_address
-        description: "address of the trace within the call graph forest"
       - &evt_index
         name: evt_index
-        description: "the position of this event log within this transaction"
-      - &block_month
-        name: block_month
-        description: "UTC event block month of each DEX trade"
+        description: ""

@@ -1,21 +1,15 @@
-{{ config(
-    tags=['dunesql'],
-        alias = alias('trades'),
-        post_hook='{{ expose_spells(\'["fantom"]\',
-                                "project",
-                                "lifi",
-                                \'["Henrystats"]\') }}'
+{{ config(tags=['dunesql'],
+        alias = alias('trades')
         )
 }}
 
-{% set lifi_models = [
-ref('lifi_fantom_trades')
+{% set uniswap_base_models = [
+'uniswap_v3_base_trades'
 ] %}
-
 
 SELECT *
 FROM (
-    {% for dex_model in lifi_models %}
+    {% for dex_model in uniswap_base_models %}
     SELECT
         blockchain,
         project,
@@ -39,9 +33,8 @@ FROM (
         tx_hash,
         tx_from,
         tx_to,
-        trace_address, --ensure field is explicitly cast as array<bigint> in base models
         evt_index
-    FROM {{ dex_model }}
+    FROM {{ ref(dex_model) }}
     {% if not loop.last %}
     UNION ALL
     {% endif %}

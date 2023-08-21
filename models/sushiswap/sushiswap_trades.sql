@@ -1,10 +1,10 @@
 {{ config(
         tags=['dunesql'],
         alias = alias('trades'),
-        post_hook='{{ expose_spells(\'["ethereum", "gnosis", "avalanche_c", "arbitrum", "fantom", "optimism"]\',
+        post_hook='{{ expose_spells(\'["ethereum", "gnosis", "avalanche_c", "arbitrum", "fantom", "optimism", "base"]\',
                         "project",
                         "sushiswap",
-                        \'["augustog", "hosuke", "Henrystats", "msilb7", "chrispearcx", "codingsh"]\') }}'
+                        \'["augustog", "hosuke", "Henrystats", "msilb7", "chrispearcx", "codingsh", "wuligy"]\') }}'
         )
 }}
 
@@ -17,6 +17,7 @@ ref('sushiswap_ethereum_trades')
 , ref('sushiswap_optimism_trades')
 , ref('sushiswap_polygon_trades')
 , ref('sushiswap_bnb_trades')
+, ref('sushiswap_base_trades')
 ] %}
 
 
