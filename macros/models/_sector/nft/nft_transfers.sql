@@ -26,7 +26,7 @@ FROM(
     {%- endif %}
     , t.evt_tx_hash AS tx_hash
     FROM {{ erc721_transfers }} t
-    {%- if denormalized == False -%}
+    {% if denormalized == False %}
     INNER JOIN {{ base_transactions }} et ON et.block_number = t.evt_block_number
         AND et.hash = t.evt_tx_hash
         {% if is_incremental() %}
