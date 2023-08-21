@@ -50,6 +50,18 @@ models:
             - evt_tx_hash
             - evt_index
             - cid
+      - check_seed_legacy:
+          seed_file: ref("nexusmutual_ethereum_trades_seed")
+          match_columns:
+            - evt_tx_hash
+            - block_date
+            - evt_block_number
+            - nonce
+            - curr
+          check_columns:
+            - premium
+            - premium_nxm
+            - sum_assured
     columns:
       - &cid
         name: cid
@@ -65,16 +77,22 @@ models:
         name: curr
       - &premium
         name: premium
+        tests:
+          - not_null
       - &pre_amount
         name: pre_amount
       - &premium_nxm
         name: premium_nxm
+        tests:
+          - not_null
       - &pre_nxm_amount
         name: pre_nxm_amount
       - &sc_add
         name: sc_add
       - &sum_assured
         name: sum_assured
+        tests:
+          - not_null
       - &block_hash
         name: block_hash
       - &nonce
