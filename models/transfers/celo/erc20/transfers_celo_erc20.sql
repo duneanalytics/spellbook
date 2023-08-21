@@ -2,7 +2,6 @@
     alias=alias('erc20'),
     tags=['dunesql'],
     materialized='incremental',
-    file_format='delta',
     incremental_strategy='merge',
     unique_key='unique_transfer_id',
     partition_by = ['block_month'],
