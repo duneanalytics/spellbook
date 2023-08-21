@@ -1,12 +1,12 @@
 {{
     config(
-        alias =alias('celo'),
         tags = ['dunesql'],
-        materialized ='incremental',
-        file_format ='delta',
-        incremental_strategy='merge',
-        unique_key='unique_transfer_id',
+        alias = alias('celo'),
         partition_by = ['block_month'],
+        materialized = 'incremental',
+        file_format = 'delta',
+        incremental_strategy = 'merge',
+        unique_key = ['tx_block_time', 'tx_hash', 'trace_address'],
         post_hook='{{ expose_spells(\'["celo"]\',
                                     "sector",
                                     "transfers",
@@ -27,7 +27,6 @@ with celo_transfers as (
         ,r.block_time as tx_block_time
         ,r.block_number as tx_block_number
         ,substring(to_hex(t.data), 1, 10) as tx_method_id
-        ,cast(r.tx_hash as varchar) || '-' || array_join(r.trace_address,',') as unique_transfer_id
         ,t.to as tx_to
         ,t."from" as tx_from
     from {{ source('celo', 'traces') }} as r
@@ -60,7 +59,6 @@ with celo_transfers as (
         ,r.evt_block_time as tx_block_time
         ,r.evt_block_number as tx_block_number
         ,substring(to_hex(t.data), 1, 10) as tx_method_id
-        ,cast(r.evt_tx_hash as varchar) || '-' || cast(r.evt_index as varchar) as unique_transfer_id
         ,t.to AS tx_to
         ,t."from" AS tx_from
     from {{ source('erc20_celo', 'evt_transfer') }} as r
