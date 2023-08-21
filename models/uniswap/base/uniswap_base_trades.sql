@@ -1,31 +1,21 @@
 {{ config(tags=['dunesql'],
-        alias = alias('trades'),
-        post_hook='{{ expose_spells(\'["ethereum","arbitrum", "optimism", "polygon", "bnb", "base"]\',
-                                "project",
-                                "uniswap",
-                                \'["jeff-dude","mtitus6", "Henrystats", "chrispearcx", "wuligy"]\') }}'
+        alias = alias('trades')
         )
 }}
 
-{% set uniswap_models = [
-ref('uniswap_ethereum_trades')
-, ref('uniswap_optimism_trades')
-, ref('uniswap_arbitrum_trades')
-, ref('uniswap_polygon_trades')
-, ref('uniswap_bnb_trades')
-, ref('uniswap_base_trades')
+{% set uniswap_base_models = [
+'uniswap_v3_base_trades'
 ] %}
-
 
 SELECT *
 FROM (
-    {% for dex_model in uniswap_models %}
+    {% for dex_model in uniswap_base_models %}
     SELECT
         blockchain,
         project,
         version,
-        block_month,
         block_date,
+        block_month,
         block_time,
         token_bought_symbol,
         token_sold_symbol,
@@ -44,7 +34,7 @@ FROM (
         tx_from,
         tx_to,
         evt_index
-    FROM {{ dex_model }}
+    FROM {{ ref(dex_model) }}
     {% if not loop.last %}
     UNION ALL
     {% endif %}
