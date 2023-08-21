@@ -336,13 +336,9 @@ models:
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
-            - block_date
-            - blockchain
-            - project
-            - version
+            - block_time
             - tx_hash
             - evt_index
-            - trace_address
       - check_dex_seed:
           blockchain: ethereum
           project: balancer
