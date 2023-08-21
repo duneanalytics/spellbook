@@ -22,6 +22,7 @@
 ,ref('ellipsis_finance_trades')
 ,ref('synthetix_spot_trades')
 ,ref('balancer_trades')
+,ref('zeroex_native_trades')
  #}
 
 {% set dex_trade_models = [
@@ -69,7 +70,6 @@
 ,ref('nomiswap_bnb_trades')
 ,ref('zipswap_trades')
 ,ref('kyberswap_trades')
-,ref('zeroex_native_trades')
 ] %}
 
 
