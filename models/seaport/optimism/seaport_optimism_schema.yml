@@ -286,7 +286,6 @@ models:
             - block_number
             - tx_hash
             - order_hash
-            - trace_side
             - trace_index
     columns:
       - name: blockchain
