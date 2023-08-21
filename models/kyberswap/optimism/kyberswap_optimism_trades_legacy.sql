@@ -34,7 +34,7 @@ kyberswap_dex AS (
         ,t.evt_index
 
     FROM {{ source('kyber_optimism', 'DMM_Pool_evt_Swap') }} t
-    INNER JOIN {{ source('kyberswap_optimism', 'DMM_Factory_evt_PoolCreated') }} p
+    INNER JOIN {{ source('kyber_optimism', 'DMMFactory_evt_PoolCreated') }} p
         ON t.contract_address = p.pool
     {% if is_incremental() %}
     WHERE t.evt_block_time >= date_trunc("day", now() - interval '1 week')
@@ -132,7 +132,7 @@ kyberswap_dex AS (
         ,evt_tx_hash                                                       AS tx_hash
         ,''                                                                AS trace_address
         ,evt_index
-        
+
     FROM {{ source('kyber_optimism', 'MetaAggregationRouterV2_evt_Swapped') }}
     WHERE
         {% if is_incremental() %}
@@ -206,4 +206,3 @@ LEFT JOIN {{ source('prices', 'usd') }} p_sold
     {% endif %}
 WHERE kyberswap_dex.token_bought_address != '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee'
     OR kyberswap_dex.token_sold_address != '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee'
-;
