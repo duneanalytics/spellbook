@@ -50,7 +50,7 @@ models:
             - evt_tx_hash
             - evt_index
             - cid
-      - check_seed_legacy:
+      - check_seed:
           seed_file: ref("nexusmutual_ethereum_trades_seed")
           match_columns:
             - evt_tx_hash
