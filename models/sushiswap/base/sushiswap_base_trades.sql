@@ -61,8 +61,8 @@ SELECT
     ,cast(dexs.token_sold_amount_raw as uint256) AS token_sold_amount_raw
     ,coalesce(
         dexs.amount_usd
-        ,(dexs.token_bought_amount_raw / power(10, p_bought.decimals)) * p_bought.price
-        ,(dexs.token_sold_amount_raw / power(10, p_sold.decimals)) * p_sold.price
+        ,(cast(dexs.token_bought_amount_raw as double)/ power(10, p_bought.decimals)) * p_bought.price
+        ,(cast(dexs.token_sold_amount_raw as double) / power(10, p_sold.decimals)) * p_sold.price
     ) AS amount_usd
     ,dexs.token_bought_address
     ,dexs.token_sold_address
