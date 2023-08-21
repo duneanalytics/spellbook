@@ -54,10 +54,6 @@ models:
           seed_file: ref("nexusmutual_ethereum_trades_seed")
           match_columns:
             - evt_tx_hash
-            - block_date
-            - evt_block_number
-            - nonce
-            - curr
           check_columns:
             - premium
             - premium_nxm
