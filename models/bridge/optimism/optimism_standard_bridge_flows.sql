@@ -39,7 +39,7 @@ WITH bridge_events AS (
         , l.block_time
         ,l.block_number
         ,l.tx_hash
-        ,bytearray_ltrim(topic2) AS bridged_token_address
+        ,bytearray_substring(topic2, 13, 20) AS bridged_token_address
         ,bytearray_to_uint256(bytearray_substring(data,33,32)) as bridged_token_amount_raw
         , bytearray_substring(data, 13, 20) AS recipient_address
         , array[-1] AS trace_address
@@ -65,7 +65,7 @@ WITH bridge_events AS (
         , l.block_time
         , l.block_number
         , l.tx_hash
-        , bytearray_ltrim(topic2) AS bridged_token_address
+        , bytearray_substring(topic2, 13, 20) AS bridged_token_address
         , bytearray_to_uint256(bytearray_substring(data,33,32)) as bridged_token_amount_raw
         , bytearray_substring(data, 13, 20) AS recipient_address
         , array[-1] AS trace_address
