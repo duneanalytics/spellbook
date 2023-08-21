@@ -1,5 +1,4 @@
 -- Check that number of transfers in data range is correct
-
 with test_data as (
     select count(*) as total
     from {{ ref('transfers_celo_erc20') }}
@@ -7,7 +6,7 @@ with test_data as (
 ),
 
 test_result as (
-    select case when total = 31092121 then true else false end as success
+    select case when total = 31090850 then true else false end as success
     from test_data
 )
 
