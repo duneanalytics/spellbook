@@ -12,7 +12,7 @@ FROM (VALUES
     -- Binance, source: https://platform.arkhamintelligence.com/explorer/address/0x1b5b4e441f5a22bfd91b7772c780463f66a74b35
     -- Binance, source: https://platform.arkhamintelligence.com/explorer/address/0xf92402bb795fd7cd08fb83839689db79099c8c9c
     -- Binance, source: https://platform.arkhamintelligence.com/explorer/address/0x9430801ebaf509ad49202aabc5f5bc6fd8a3daf8
-      ('arbitrum', 0xb38e8c17e38363af6ebdcb3dae12e0243582891d, 'Binance', 'Binance: Hot Wallet', 'hildobby', date '2023-04-06')
+    ('arbitrum', 0xb38e8c17e38363af6ebdcb3dae12e0243582891d, 'Binance', 'Binance: Hot Wallet', 'hildobby', date '2023-04-06')
     , ('arbitrum', 0x1b5b4e441f5a22bfd91b7772c780463f66a74b35, 'Binance', 'Binance_0x1b5b',         'sankinyue', date '2023-08-21')
     , ('arbitrum', 0xf92402bb795fd7cd08fb83839689db79099c8c9c, 'Binance', 'Binance_0xf924',         'sankinyue', date '2023-08-21')
     , ('arbitrum', 0x9430801ebaf509ad49202aabc5f5bc6fd8a3daf8, 'Binance', 'Binance Deposit Funder', 'sankinyue', date '2023-08-21')
@@ -23,7 +23,7 @@ FROM (VALUES
     , ('arbitrum', 0x5bdf85216ec1e38d6458c870992a69e38e03f7ef, 'Bitget', 'Bitget 3', 'sankinyue', date '2023-08-21')
     -- Bybit, source: https://raw.githubusercontent.com/js-kingdata/indicators_factory/fefe53bca88ecf331a71fc59e34aab319f3415c5/crawlers/address_tags/cex/bitget_address.txt
     -- Bybit, source: https://www.oklink.com/arbitrum/address/0xa95b83af96d0b8a90bd507f2bd82ad8f3dbb86bc
-    , ('arbitrum', 0xf89d7b9c864f589bbf53a82105107622b35eaa40, 'Bybit', 'Bybit 1', 'hildobby' , date '2023-04-06')
+    , ('arbitrum', 0xf89d7b9c864f589bbf53a82105107622b35eaa40, 'Bybit', 'Bybit 1', 'hildobby', date '2023-04-06')
     , ('arbitrum', 0xa95b83af96d0b8a90bd507f2bd82ad8f3dbb86bc, 'Bybit', 'Bybit Deposit Funder', 'sankinyue', date '2023-08-21')
     -- Crypto.com, source: https://github.com/DefiLlama/DefiLlama-Adapters/blob/main/projects/crypto-com/index.js
     -- Crypto.com, source: https://platform.arkhamintelligence.com/explorer/address/0xd7a827fbaf38c98e8336c5658e4bcbcd20a4fd2d
