@@ -82,7 +82,7 @@ kyberswap_dex AS (
         ,if(starts_with(cast(t.deltaQty0 as varchar), '-'), p.token0, p.token1)                                  AS token_sold_address
         ,t.contract_address                                                                                      AS project_contract_address
         ,t.evt_tx_hash                                                                                           AS tx_hash
-        ,'elastic'                                                                                               AS version
+        ,'elastic_v2'                                                                                               AS version
         ,t.evt_index
 
     FROM {{ source('kyber_ethereum', 'ElasticPoolV2_evt_swap') }} t
