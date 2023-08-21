@@ -30,9 +30,6 @@ FROM (values
   ,('0xeedA95f4513f950957Ae84E4da221ee260Fa2f40',	'Deterministic Factory')
   ,('0x4e59b44847b379578588920cA78FbF26c0B4956C', 'CREATE2 Factory')
   ,('0xE21f6b2A09bB27149E1afec31D05675bcf581FEd', 'CREATE3Factory')
-  ,('0x93FEC2C00BfE902F733B57c5a6CeeD7CD1384AE1', 'CREATE3Factory')
   ,('0xdeaddeaddeaddeaddeaddeaddeaddeaddead0006', 'Genesis Contract')
-  -- excluded creators
-  ,('0x36BDE71C97B33Cc4729cf772aE268934f7AB70B2', 'Optimism: CDM Relay')
 
 ) a (creator_address, creator_name)
