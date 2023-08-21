@@ -77,7 +77,7 @@ select
     tx.from AS tx_from,
     tx.to AS tx_to,
     evt_index,
-    CAST(NULL AS VARCHAR) AS trace_address
+    CAST(NULL AS VARCHAR(5)) AS trace_address
 FROM v1 trades
 INNER JOIN {{ source('ethereum', 'transactions') }} tx
     ON trades.evt_tx_hash = tx.hash
