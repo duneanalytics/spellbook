@@ -1,16 +1,20 @@
 {{ config(tags=['dunesql'],
-        alias = alias('trades')
+        alias = alias('trades'),
+        post_hook='{{ expose_spells(\'["gnosis", "polygon"]\',
+                                "project",
+                                "honeyswap",
+                                \'["0xr3x"]\') }}'
         )
 }}
 
-{% set honeyswap_polygon_models = [
-ref('honeyswap_polygon_trades')
+{% set honeyswap_models = [
+ref('honeyswap_v2_gnosis_trades')
 ] %}
-
+-- , ref('honeyswap_v2_polygon_trades')
 
 SELECT *
 FROM (
-    {% for dex_model in honeyswap_polygon_models %}
+    {% for dex_model in honeyswap_models %}
     SELECT
         blockchain,
         project,
@@ -34,7 +38,6 @@ FROM (
         tx_hash,
         tx_from,
         tx_to,
-
         evt_index
     FROM {{ dex_model }}
     {% if not loop.last %}

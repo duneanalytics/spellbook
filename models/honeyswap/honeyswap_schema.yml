@@ -1,16 +1,16 @@
 version: 2
 
 models:
-  - name: honeyswap_trades
+  - name: honeyswap_v2_trades
     meta:
       blockchain: gnosis, polygon
       sector: dex
-      project: honeyswap
+      project: honeyswap_v2
       contributors: 0xr3x
     config:
-      tags: ['gnosis', 'polygon', 'honeyswap','trades', 'dex', '0xr3x','cross-chain']
+      tags: ['gnosis', 'polygon', 'honeyswap_v2','trades', 'dex', '0xr3x','cross-chain']
     description: >
-        Uniswap trades on all chains across all contracts and versions. This table will load dex trades downstream.
+        Honeyswap trades on all chains across all contracts and versions. This table will load dex trades downstream.
     columns:
       - &blockchain
         name: blockchain

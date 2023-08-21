@@ -65,7 +65,7 @@
 ,ref('camelot_trades')
 ,ref('zeroex_native_trades')
 ,ref('xchange_trades')
-,ref('honeyswap_trades')
+,ref('honeyswap_v2_trades')
 ] %}
 
 
