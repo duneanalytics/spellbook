@@ -1,12 +1,12 @@
 version: 2
 
 sources:
-  - name: uniswap_v3_polygon
-    description: "Polygon decoded tables related to Uniswap v3 contract"
+  - name: honeyswap_polygon
+    description: "Polygon decoded tables related to honeyswap contract"
     freshness:
       warn_after: { count: 12, period: hour }
     tables:
-      - name: UniswapV3Pool_evt_Swap
+      - name: honeyswapPool_evt_Swap
         loaded_at_field: evt_block_time
         description: "" # to-do
         columns:
@@ -74,5 +74,5 @@ sources:
             name: token1
             description: "The second of the two tokens in the pool"
 
-      - name: UniswapV3Pool_evt_Flash
+      - name: honeyswapPool_evt_Flash
         loaded_at_field: evt_block_time

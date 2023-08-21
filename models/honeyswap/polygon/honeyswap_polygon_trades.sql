@@ -3,14 +3,14 @@
         )
 }}
 
-{% set uniswap_polygon_models = [
-ref('uniswap_v3_polygon_trades')
+{% set honeyswap_polygon_models = [
+ref('honeyswap_polygon_trades')
 ] %}
 
 
 SELECT *
 FROM (
-    {% for dex_model in uniswap_polygon_models %}
+    {% for dex_model in honeyswap_polygon_models %}
     SELECT
         blockchain,
         project,

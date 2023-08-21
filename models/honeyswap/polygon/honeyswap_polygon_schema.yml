@@ -1,16 +1,16 @@
 version: 2
 
 models:
-  - name: uniswap_v3_polygon_trades
+  - name: honeyswap_polygon_trades
     meta:
       blockchain: polygon
       sector: dex
-      project: uniswap_v3
-      contributors: Henrystats
+      project: honeyswap
+      contributors: 0xr3x
     config:
-      tags: ['polygon','uniswap_v3','trades', 'uniswap','dex']
+      tags: ['polygon','honeyswap','trades', 'honeyswap','dex']
     description: >
-        Uniswap V3 contract trades on polygon
+        honeyswap contract trades on polygon
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -22,7 +22,7 @@ models:
             - evt_index
       - check_dex_seed:
           blockchain: polygon
-          project: uniswap
+          project: honeyswap
           version: 3
     columns:
       - &blockchain
@@ -95,16 +95,16 @@ models:
         name: evt_index
         description: ""
 
-  - name: uniswap_polygon_trades
+  - name: honeyswap_polygon_trades
     meta:
       blockchain: polygon
       sector: dex
-      project: uniswap
-      contributors: henrystats
+      project: honeyswap
+      contributors: 0xr3x
     config:
-      tags: ['polygon','dex','trades', 'uniswap']
+      tags: ['polygon','dex','trades', 'honeyswap']
     description: >
-        Uniswap trades on Polygon across all contracts and versions. This table will load dex trades downstream.
+        honeyswap trades on Polygon across all contracts and versions. This table will load dex trades downstream.
     columns:
       - *blockchain
       - *project
@@ -130,15 +130,15 @@ models:
       - *tx_to
       - *evt_index
 
-  - name: uniswap_polygon_pools
+  - name: honeyswap_polygon_pools
     meta:
       blockchain: polygon
       sector: dex
-      contributors: hildobby
+      contributors: 0xr3x
     config:
       tags: ['polygon']
     description: >
-      Uniswap DEX pools
+      honeyswap DEX pools
     columns:
       - *blockchain
       - *project
@@ -160,15 +160,15 @@ models:
       - name: contract_address
         description: "Contract address used to create the pool"
 
-  - name: uniswap_v3_polygon_flashloans
+  - name: honeyswap_polygon_flashloans
     meta:
       blockchain: polygon
       sector: lending
-      contributors: hildobby
+      contributors: 0xr3x
     config:
       tags: ['polygon', 'flashloans']
     description: >
-      All Uniswap v3 flashloans on Polygon
+      All honeyswap flashloans on Polygon
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
