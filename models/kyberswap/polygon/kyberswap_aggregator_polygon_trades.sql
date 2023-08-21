@@ -14,106 +14,14 @@
 )
 }}
 
-{% set project_start_date = '2021-01-01' %}
+{% set project_start_date = '2023-01-01' %}
 
 WITH meta_router AS
 (
         SELECT
             evt_block_time          AS block_time
             ,'kyberswap'            AS project
-            ,'aggregation_v1'       AS version
-            ,sender                 AS taker
-            ,dstReceiver            AS maker
-            ,returnAmount           AS token_bought_amount_raw
-            ,spentAmount            AS token_sold_amount_raw
-            ,CAST(NULL AS DOUBLE)   AS amount_usd
-            ,dstToken               AS token_bought_address
-            ,srcToken               AS token_sold_address
-            ,contract_address       AS project_contract_address
-            ,evt_tx_hash            AS tx_hash
-            ,evt_index              AS evt_index
-            ,ARRAY[-1]              AS trace_address
-        FROM
-            {{ source('kyber_polygon', 'AggregationRouter_evt_Swapped') }}
-        {% if is_incremental() %}
-        WHERE evt_block_time >= date_trunc('day', now() - INTERVAL '7' DAY)
-        {% endif %}
-
-        UNION ALL
-
-        SELECT
-            evt_block_time          AS block_time
-            ,'kyberswap'            AS project
-            ,'aggregation_v2'       AS version
-            ,sender                 AS taker
-            ,dstReceiver            AS maker
-            ,returnAmount           AS token_bought_amount_raw
-            ,spentAmount            AS token_sold_amount_raw
-            ,CAST(NULL AS DOUBLE)   AS amount_usd
-            ,dstToken               AS token_bought_address
-            ,srcToken               AS token_sold_address
-            ,contract_address       AS project_contract_address
-            ,evt_tx_hash            AS tx_hash
-            ,evt_index              AS evt_index
-            ,ARRAY[-1]              AS trace_address
-        FROM
-            {{ source('kyber_polygon', 'AggregationRouterV2_evt_Swapped') }}
-        {% if is_incremental() %}
-        WHERE evt_block_time >= date_trunc('day', now() - INTERVAL '7' DAY)
-        {% endif %}
-
-        UNION ALL
-
-        SELECT
-            evt_block_time          AS block_time
-            ,'kyberswap'            AS project
-            ,'aggregation_v3'       AS version
-            ,sender                 AS taker
-            ,dstReceiver            AS maker
-            ,returnAmount           AS token_bought_amount_raw
-            ,spentAmount            AS token_sold_amount_raw
-            ,CAST(NULL AS DOUBLE)   AS amount_usd
-            ,dstToken               AS token_bought_address
-            ,srcToken               AS token_sold_address
-            ,contract_address       AS project_contract_address
-            ,evt_tx_hash            AS tx_hash
-            ,evt_index              AS evt_index
-            ,ARRAY[-1]              AS trace_address
-        FROM
-            {{ source('kyber_polygon', 'AggregationRouterV3_evt_Swapped') }}
-        {% if is_incremental() %}
-        WHERE evt_block_time >= date_trunc('day', now() - INTERVAL '7' DAY)
-        {% endif %}
-
-        UNION ALL
-
-        SELECT
-            evt_block_time          AS block_time
-            ,'kyberswap'            AS project
-            ,'meta_v1'              AS version
-            ,sender                 AS taker
-            ,dstReceiver            AS maker
-            ,returnAmount           AS token_bought_amount_raw
-            ,spentAmount            AS token_sold_amount_raw
-            ,CAST(NULL AS DOUBLE)   AS amount_usd
-            ,dstToken               AS token_bought_address
-            ,srcToken               AS token_sold_address
-            ,contract_address       AS project_contract_address
-            ,evt_tx_hash            AS tx_hash
-            ,evt_index              AS evt_index
-            ,ARRAY[-1]              AS trace_address
-        FROM
-            {{ source('kyber_polygon', 'MetaAggregationRouter_evt_Swapped') }}
-        {% if is_incremental() %}
-        WHERE evt_block_time >= date_trunc('day', now() - INTERVAL '7' DAY)
-        {% endif %}
-
-        UNION ALL
-
-        SELECT
-            evt_block_time          AS block_time
-            ,'kyberswap'            AS project
-            ,'meta_v2'              AS version
+            ,'2'                    AS version
             ,sender                 AS taker
             ,dstReceiver            AS maker
             ,returnAmount           AS token_bought_amount_raw
