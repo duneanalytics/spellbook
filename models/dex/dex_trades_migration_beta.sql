@@ -124,10 +124,10 @@ FROM (
         evt_index,
         row_number() over (partition by tx_hash, evt_index order by tx_hash) as duplicates_rank
     FROM {{ dex_model }}
-    {% if not loop.last %}
     {% if is_incremental() %}
     WHERE block_date >= date_trunc('day', now() - interval '7' day)
     {% endif %}
+    {% if not loop.last %}
     UNION ALL
     {% endif %}
     {% endfor %}
