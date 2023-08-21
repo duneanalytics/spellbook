@@ -346,7 +346,7 @@ models:
       - check_dex_seed:
           blockchain: ethereum
           project: balancer
-          version: 2
+          version: 1
     columns:
       - *blockchain
       - *project
