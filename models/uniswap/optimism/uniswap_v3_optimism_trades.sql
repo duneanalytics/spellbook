@@ -1,7 +1,7 @@
 {{ config(tags=['dunesql'],
     schema = 'uniswap_v3_optimism',
     alias = alias('trades'),
-    partition_by = ['block_date'],
+    partition_by = ['block_month'],
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
@@ -30,7 +30,7 @@ WITH dexs AS
         ,CASE WHEN amount0 < INT256 '0' THEN f.token1 ELSE f.token0 END AS token_sold_address
         ,t.contract_address as project_contract_address
         ,t.evt_tx_hash AS tx_hash
-        
+
         ,t.evt_index
     FROM
         {{ source('uniswap_v3_optimism', 'Pair_evt_Swap') }} t
@@ -44,7 +44,8 @@ SELECT
     'optimism' AS blockchain
     ,'uniswap' AS project
     ,'3' AS version
-    ,TRY_CAST(date_trunc('DAY', dexs.block_time) AS date) AS block_date
+    ,CAST(date_trunc('month', dexs.block_time) AS date) AS block_month
+    ,CAST(date_trunc('DAY', dexs.block_time) AS date) AS block_date
     ,dexs.block_time
     ,erc20a.symbol AS token_bought_symbol
     ,erc20b.symbol AS token_sold_symbol
@@ -69,7 +70,7 @@ SELECT
     ,dexs.tx_hash
     ,tx."from" AS tx_from
     ,tx.to AS tx_to
-    
+
     ,dexs.evt_index
 FROM dexs
 INNER JOIN {{ source('optimism', 'transactions') }} tx
@@ -82,7 +83,7 @@ INNER JOIN {{ source('optimism', 'transactions') }} tx
     AND tx.block_time >= date_trunc('day', now() - interval '7' day)
     {% endif %}
 LEFT JOIN {{ ref('tokens_erc20') }} erc20a
-    ON erc20a.contract_address = dexs.token_bought_address 
+    ON erc20a.contract_address = dexs.token_bought_address
     AND erc20a.blockchain = 'optimism'
 LEFT JOIN {{ ref('tokens_erc20') }} erc20b
     ON erc20b.contract_address = dexs.token_sold_address
