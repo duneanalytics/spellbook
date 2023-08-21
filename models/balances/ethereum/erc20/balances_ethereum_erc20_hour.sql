@@ -1,4 +1,5 @@
 {{ config(
+        tags = ['dunesql'],
         alias = alias('erc20_hour'),
         post_hook='{{ expose_spells_hide_trino(\'["ethereum"]\',
                                             "sector",
@@ -10,11 +11,15 @@
 with
     hours as (
         select
-            explode(
+            "hour"
+        from
+            unnest (
                 sequence(
-                    to_date('2015-01-01'), date_trunc('hour', now()), interval 1 hour
+                    cast('2015-01-01' as timestamp),
+                    date_trunc('hour', localtimestamp),
+                    interval '1' hour
                 )
-            ) as hour
+            ) as _u ("hour")
     )
 
 , hourly_balances as

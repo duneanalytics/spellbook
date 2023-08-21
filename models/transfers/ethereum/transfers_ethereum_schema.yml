@@ -35,6 +35,7 @@ models:
       sector: transfers
       project: erc20
       contributors: soispoke, dot2dotseurat
+      description: "ERC20 Token Transfers on Ethereum hourly aggregates."
     config:
       tags: ['transfers', 'ethereum', 'erc20', 'agg_hour', 'soispoke', 'dot2dotseurat']
     columns:
