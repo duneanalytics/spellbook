@@ -22,7 +22,6 @@
 ,ref('ellipsis_finance_trades')
 ,ref('synthetix_spot_trades')
 ,ref('balancer_trades')
-,ref('zeroex_native_trades')
  #}
 
 {% set dex_trade_models = [
@@ -133,3 +132,5 @@ FROM (
     {% endfor %}
 )
 WHERE duplicates_rank = 1
+
+
