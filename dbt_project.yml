@@ -1310,6 +1310,10 @@ models:
         +schema: layerzero_polygon
       bnb:
         +schema: layerzero_bnb
+      celo:
+        +schema: layerzero_celo
+      base:
+        +schema: layerzero_base
 
     onepunchswap:
       +schema: onepunchswap

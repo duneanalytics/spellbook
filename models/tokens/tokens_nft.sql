@@ -14,6 +14,7 @@
     ,('gnosis',     ref('tokens_gnosis_nft'))
     ,('optimism',   ref('tokens_optimism_nft'))
     ,('polygon',    ref('tokens_polygon_nft'))
+    ,('base',       ref('tokens_base_nft'))
 ] %}
 
 SELECT *
