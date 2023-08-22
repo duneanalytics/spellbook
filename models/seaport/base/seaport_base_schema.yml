@@ -15,6 +15,7 @@ models:
           combination_of_columns:
             - block_number
             - tx_hash
+            - evt_index
             - order_hash
             - trace_side
             - trace_index

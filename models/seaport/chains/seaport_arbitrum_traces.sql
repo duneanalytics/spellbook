@@ -6,7 +6,7 @@
         materialized='incremental',
         incremental_strategy = 'merge',
         file_format = 'delta',
-        unique_key = ['block_number', 'tx_hash', 'order_hash', 'trace_side', 'trace_index'],
+        unique_key = ['block_number', 'tx_hash', 'evt_index', 'order_hash', 'trace_side', 'trace_index'],
         post_hook='{{ expose_spells(\'["arbitrum"]\',
                                 "project",
                                 "seaport",
