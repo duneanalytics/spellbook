@@ -589,6 +589,9 @@ WITH curated_list AS (
       ,(0x36BDE71C97B33Cc4729cf772aE268934f7AB70B2, 'Worldcoin')
       ,(0x5856d478832ff3a68c122388623c4ee027d0e65a, 'Mean Finance')
       ,(0xAEDdC8B2aa5E331B53c22F1da8069c18d02eF6ac, 'Gitcoin')
+      ,(0x0e0be581b17684f849af6964d731fce0f7d366bd, 'CyberConnect')
+      ,(0x68108902de3a5031197a6eb3b74b3b033e8e8e4d, 'Gnosis Safe')
+      ,(0x433704c40f80cbff02e86fd36bc8bac5e31eb0c1, 'Pimlico')
       
   ) as temp_table (creator_address, contract_project)
 )
