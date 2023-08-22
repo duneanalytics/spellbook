@@ -2,7 +2,7 @@
     tags=['dunesql'],
     schema='layerzero',
     alias = alias('send'),
-    post_hook='{{ expose_spells(\'["ethereum", "gnosis", "avalanche_c", "arbitrum", "fantom", "optimism", "bnb", "polygon", "celo", "base"]\',
+    post_hook='{{ expose_spells(\'["ethereum", "gnosis", "avalanche_c", "arbitrum", "fantom", "optimism", "bnb", "polygon", "celo", "base", "linea", "metis"]\',
                               "project",
                               "layerzero",
                               \'["bennyfeng"]\') }}'
@@ -20,6 +20,7 @@ ref('layerzero_arbitrum_send')
 , ref('layerzero_polygon_send')
 , ref('layerzero_celo_send')
 , ref('layerzero_base_send')
+, ref('layerzero_linea_send')
 ] %}
 
 SELECT *
