@@ -240,12 +240,12 @@ with source_ethereum_transactions as (
                 when offer_first_item_type in ('erc721','erc1155') then 'buy'
                 else 'etc' -- some txns has no nfts
             end as order_type
-            ,case when om_order_id = 1 then false
+            ,case when om_order_id = 2 then false
                 when offer_first_item_type = 'erc20' and sub_type = 'offer' and item_type = 'erc20' then true
                 when offer_first_item_type in ('erc721','erc1155') and sub_type = 'consideration' and item_type in ('native','erc20') then true
                 else false
             end is_price
-            ,case when om_order_id = 1 then false
+            ,case when om_order_id = 2 then false
                 when offer_first_item_type = 'erc20' and sub_type = 'consideration' and eth_erc_idx = 0 then true  -- offer accepted has no price at all. it has to be calculated.
                 when offer_first_item_type in ('erc721','erc1155') and sub_type = 'consideration' and eth_erc_idx = 1 then true
                 else false
@@ -253,13 +253,13 @@ with source_ethereum_transactions as (
             ,case when is_platform_fee then false
                 when offer_first_item_type = 'erc20' and sub_type = 'consideration' and eth_erc_idx > 0 then true
                 when offer_first_item_type in ('erc721','erc1155') and sub_type = 'consideration' and eth_erc_idx > 1 then true
-                when om_order_id = 1 and item_type = 'erc20' then true  -- hard code for order-matched joined additional creator fee, condition : 2nd order + erc20
+                when om_order_id = 2 and item_type = 'erc20' then true  -- hard code for order-matched joined additional creator fee, condition : 2nd order + erc20
                 else false
             end is_creator_fee
             ,sum(case when is_platform_fee then null
                     when offer_first_item_type = 'erc20' and sub_type = 'consideration' and eth_erc_idx > 0 then 1
                     when offer_first_item_type in ('erc721','erc1155') and sub_type = 'consideration' and eth_erc_idx > 1 then 1
-                    when om_order_id = 1 and item_type = 'erc20' then 1
+                    when om_order_id = 2 and item_type = 'erc20' then 1
                 end) over (partition by tx_hash, coalesce(om_evt_index, evt_index) order by evt_index, eth_erc_idx) as creator_fee_idx
             ,case when offer_first_item_type = 'erc20' and sub_type = 'consideration' and item_type in ('erc721','erc1155') then true
                 when offer_first_item_type in ('erc721','erc1155') and sub_type = 'offer' and item_type in ('erc721','erc1155') then true
