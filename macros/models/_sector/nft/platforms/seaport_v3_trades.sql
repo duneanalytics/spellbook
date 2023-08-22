@@ -61,7 +61,7 @@ with source_ethereum_transactions as (
             ,evt_tx_hash as tx_hash
             ,evt_index
             ,'offer' as sub_type
-            ,offer_idx + 1 as sub_idx
+            ,offer_idx as sub_idx
             ,case json_extract_scalar(element_at(offer,1),'$.itemType')
                 when '0' then 'native'
                 when '1' then 'erc20'
@@ -128,7 +128,7 @@ with source_ethereum_transactions as (
             ,evt_tx_hash as tx_hash
             ,evt_index
             ,'consideration' as sub_type
-            ,consideration_idx + 1 as sub_idx
+            ,consideration_idx as sub_idx
             ,case json_extract_scalar(element_at(offer,1),'$.itemType')
                 when '0' then 'native'
                 when '1' then 'erc20'
