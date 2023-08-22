@@ -26,15 +26,14 @@ select
     t.name,
     t.token_id,
     t.updated_at
-from
-    {{ source('reservoir', 'tokens_0010') }} t
+from reservoir.tokens_0010 t
     inner join (
         select
             id,
             max(updated_at) as recent_updated_at,
             max(filename) as last_filename
         from
-            {{ source('reservoir', 'tokens_0010') }}
+            reservoir.tokens_0010
         group by
             id
     ) tm on t.id = tm.id
