@@ -29,7 +29,7 @@
 --     ,native_token_address = '0x0000000000000000000000000000000000000000'
 --     ,alternative_token_address = '0x4200000000000000000000000000000000000006'
 --     ,native_token_symbol = 'ETH'
---     ,start_date = '2023-02-01'
+--     ,start_date = '2022-07-01'
 --    )
 --
 --)

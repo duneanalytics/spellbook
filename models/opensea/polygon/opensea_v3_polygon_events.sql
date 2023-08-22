@@ -28,7 +28,7 @@ WITH fee_wallets as (
      ,native_token_address = '0x0000000000000000000000000000000000000000'
      ,alternative_token_address = '0x0000000000000000000000000000000000001010'
      ,native_token_symbol = 'MATIC'
-     ,start_date = '2023-02-01'
+     ,start_date = '2022-07-01'
     )
   }}
 )
