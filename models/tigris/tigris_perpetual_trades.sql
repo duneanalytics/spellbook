@@ -40,6 +40,8 @@ FROM (
 		,tx_to
 		,evt_index
         ,protocol_version
+		,positions_contract
+		,position_id
     FROM {{ trade_model }}
     {% if not loop.last %}
     UNION ALL
