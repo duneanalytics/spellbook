@@ -7,7 +7,7 @@
     file_format='delta',
     incremental_strategy='merge',
     unique_key=['blockchain', 'hour', 'proxy_address', 'aggregator_address'],
-    post_hook='{{ expose_spells(\'["bnb"]\', "project", "chainlink", \'["linkpool_ryan", "linkpool_jon]\') }}'
+    post_hook='{{ expose_spells(\'["fantom"]\', "project", "chainlink", \'["linkpool_ryan", "linkpool_jon]\') }}'
   )
 }}
 
@@ -45,7 +45,7 @@ hourly_sequence AS (
           feed_name,
           proxy_address,
           aggregator_address
-        FROM {{ ref('chainlink_bnb_price_feeds_oracle_addresses') }}
+        FROM {{ ref('chainlink_fantom_price_feeds_oracle_addresses') }}
         CROSS JOIN hourly_sequence_meta
     ) oracle_addresses
 ),
@@ -61,7 +61,7 @@ aggregated_price_feeds AS (
         MAX(price_feeds.quote) AS quote,
         MAX(price_feeds.base) AS base
     FROM hourly_sequence 
-    LEFT JOIN {{ ref('chainlink_bnb_price_feeds') }} price_feeds 
+    LEFT JOIN {{ ref('chainlink_fantom_price_feeds') }} price_feeds 
         ON hourly_sequence.hr = date_trunc('hour', price_feeds.block_time)
         AND hourly_sequence.proxy_address = price_feeds.proxy_address
         AND hourly_sequence.aggregator_address = price_feeds.aggregator_address
@@ -77,7 +77,7 @@ aggregated_price_feeds AS (
 )
 
 SELECT 
-    'bnb' AS blockchain,
+    'fantom' AS blockchain,
     hour,
     cast(date_trunc('day', hour) as date) AS block_date,
     cast(date_trunc('month', hour) as date) AS block_month,
