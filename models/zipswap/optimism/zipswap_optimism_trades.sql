@@ -23,11 +23,11 @@ WITH dexs AS
     -- zipswap
     SELECT
         -- uni v2 fork https://github.com/duneanalytics/spellbook/blob/main/models/uniswap/ethereum/uniswap_v2_ethereum_trades.sql
-        
+
         t.evt_block_time AS block_time
         ,t.evt_block_number
         ,t.to AS taker
-        ,'' AS maker
+        ,CAST(NULL AS VARBINARY) AS maker
         ,CASE WHEN amount0Out = UINT256 '0' THEN amount1Out ELSE amount0Out END AS token_bought_amount_raw
         ,CASE WHEN amount0In = UINT256 '0' OR amount1Out = UINT256 '0' THEN amount1In ELSE amount0In END AS token_sold_amount_raw
         ,CAST(NULL as double) AS amount_usd
@@ -90,7 +90,7 @@ INNER JOIN {{ source('optimism', 'transactions') }} tx
     AND tx.block_time >= date_trunc('day', now() - interval '7' day)
     {% endif %}
 LEFT JOIN {{ ref('tokens_erc20') }} erc20a
-    ON erc20a.contract_address = dexs.token_bought_address 
+    ON erc20a.contract_address = dexs.token_bought_address
     AND erc20a.blockchain = 'optimism'
 LEFT JOIN {{ ref('tokens_erc20') }} erc20b
     ON erc20b.contract_address = dexs.token_sold_address
