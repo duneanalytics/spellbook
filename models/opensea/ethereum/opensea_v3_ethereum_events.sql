@@ -31,7 +31,7 @@ WITH fee_wallets as (
      ,native_token_address = '0x0000000000000000000000000000000000000000'
      ,alternative_token_address = '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'
      ,native_token_symbol = 'ETH'
-     ,start_date = '2023-02-01'
+     ,start_date = '2022-06-01'
     )
   }}
 )
