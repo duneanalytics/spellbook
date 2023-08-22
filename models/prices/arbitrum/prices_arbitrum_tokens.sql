@@ -84,6 +84,7 @@ FROM
     ('umami-umami-finance','arbitrum','UMAMI',0x1622bf67e6e5747b81866fe0b85178a93c7f86e3,9),
     ('uni-uniswap','arbitrum','UNI',0xfa7f8980b0f1e64a2062791cc3b0871572f1f7f0,18),
     ('usdc-usd-coin', 'arbitrum', 'USDC', 0xff970a61a04b1ca14834a43f5de4533ebddb5cc8, 6),
+    ('usdc-usd-coin-origin', 'arbitrum', 'USDC', 0xaf88d065e77c8cc2239327c5edb3a432268e5831, 6),
     ('usdd-usdd','arbitrum','USDD',0x680447595e8b7b3aa1b43beb9f6098c79ac2ab3f,18),
     ('usdr-usd-reserve','arbitrum','USDR',0xbc60ff90497f99cbf6fb84ce1e31845637033445,18),
     ('usdt-tether', 'arbitrum', 'USDT', 0xfd086bc7cd5c481dcc9c85ebe478a1c0b69fcbb9, 6),
