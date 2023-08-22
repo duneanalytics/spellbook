@@ -373,6 +373,7 @@ models:
       - name: project
       - name: version
       - name: block_date
+      - name: block_month
       - name: block_time
       - name: token_bought_symbol
       - name: token_sold_symbol
