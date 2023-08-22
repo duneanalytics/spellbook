@@ -228,7 +228,6 @@ models:
 
   - name: nft_transfers
     meta:
-      blockchain: ethereum, polygon, bnb, avalanche_c, gnosis, optimism, arbitrum, fantom, goerli
       blockchain: ethereum, base, polygon, bnb, avalanche_c, gnosis, optimism, arbitrum, fantom, goerli
       sector: nft
       contributors: hildobby
@@ -239,10 +238,10 @@ models:
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
-            - blockchain
             - tx_hash
             - evt_index
             - token_id
+            - amount
     columns:
       - *blockchain
       - name: block_time
