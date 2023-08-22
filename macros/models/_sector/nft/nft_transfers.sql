@@ -25,7 +25,7 @@ FROM(
     , et."from" AS executed_by
     {%- endif %}
     , t.evt_tx_hash AS tx_hash
-    , {{ dbt_utils.generate_surrogate_key(['t.tx_hash', 't.evt_index', 't.tokenId', 1]) }} as unique_transfer_id -- For backward compatibility
+    , {{ dbt_utils.generate_surrogate_key(['t.evt_tx_hash', 't.evt_index', 't.tokenId', 1]) }} as unique_transfer_id -- For backward compatibility
     FROM {{ erc721_transfers }} t
     {% if denormalized == False %}
     INNER JOIN {{ base_transactions }} et ON et.block_number = t.evt_block_number
@@ -59,7 +59,7 @@ FROM(
     , et."from" AS executed_by
     {%- endif %}
     , t.evt_tx_hash AS tx_hash
-    , {{ dbt_utils.generate_surrogate_key(['t.tx_hash', 't.evt_index', 't.id', 't.value']) }} as unique_transfer_id -- For backward compatibility
+    , {{ dbt_utils.generate_surrogate_key(['t.evt_tx_hash', 't.evt_index', 't.id', 't.value']) }} as unique_transfer_id -- For backward compatibility
     FROM {{ erc1155_single }} t
     {%- if denormalized == False %}
     INNER JOIN {{ base_transactions }} et ON et.block_number = t.evt_block_number
@@ -93,7 +93,7 @@ FROM(
     , et."from" AS executed_by
     {%- endif %}
     , t.evt_tx_hash AS tx_hash
-    , {{ dbt_utils.generate_surrogate_key(['t.tx_hash', 't.evt_index', 't.id', 't.value']) }} as unique_transfer_id -- For backward compatibility
+    , {{ dbt_utils.generate_surrogate_key(['t.evt_tx_hash', 't.evt_index', 't.id', 't.value']) }} as unique_transfer_id -- For backward compatibility
     FROM (
         SELECT t.evt_block_time, t.evt_block_number, t.evt_tx_hash, t.contract_address, t."from", t.to, t.evt_index {% if denormalized == True %}, t.evt_tx_from {% endif %}
         , value, id
