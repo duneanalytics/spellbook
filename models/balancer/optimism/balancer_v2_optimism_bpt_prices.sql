@@ -2,6 +2,7 @@
     config(
         schema = 'balancer_v2_optimism',
         alias = alias('bpt_prices'),
+        tags = ['dunesql'],
         materialized = 'incremental',
         file_format = 'delta',
         incremental_strategy = 'merge',
@@ -9,17 +10,16 @@
         post_hook = '{{ expose_spells(\'["optimism"]\',
                                     "project",
                                     "balancer_v2",
-                                    \'["victorstefenon", "thetroyharris"]\') }}'
+                                    \'["victorstefenon", "thetroyharris", "viniabussafi"]\') }}'
     )
 }}
 
 WITH
     bpt_trades AS (
         SELECT * FROM {{ source('balancer_v2_optimism', 'Vault_evt_Swap') }} v
-        WHERE CAST(tokenIn AS VARCHAR(66)) = SUBSTRING(CAST(poolId AS VARCHAR(66)), 1, 42)
-        OR CAST(tokenOut AS VARCHAR(66)) = SUBSTRING(CAST(poolId AS VARCHAR(66)), 1, 42) 
+        WHERE tokenIn = bytearray_substring(poolId, 1, 20) OR tokenOut = bytearray_substring(poolId, 1, 20)
         {% if is_incremental() %}
-        AND v.evt_block_time >= date_trunc('day', now() - interval '1 week')
+        AND v.evt_block_time >= date_trunc('day', now() - interval '7' day)
         {% endif %} 
     ), 
     
@@ -29,7 +29,7 @@ WITH
             a.evt_block_time AS block_time,
             a.evt_block_number AS block_number,
             CAST(a.poolId AS VARCHAR(66)) AS pool_id,
-            SUBSTRING(CAST(a.poolId AS VARCHAR(66)), 1, 42) AS bpt_address,
+            CAST(bytearray_substring(a.poolId, 1, 20) AS VARCHAR) AS bpt_address,
             CAST(a.tokenIn AS VARCHAR(66)) AS token_in,
             CAST(a.amountIn AS DOUBLE) AS amount_in,
             CAST(a.tokenOut AS VARCHAR(66)) AS token_out,
@@ -44,12 +44,12 @@ WITH
         LEFT JOIN {{ source ('prices', 'usd') }} p1 ON p1.contract_address = a.tokenIn AND p1.blockchain = 'optimism' 
             AND  p1.minute = date_trunc('minute', a.evt_block_time)
             {% if is_incremental() %}
-            AND p1.minute >= date_trunc('day', now() - interval '1 week')
+            AND p1.minute >= date_trunc('day', now() - interval '7' day)
             {% endif %} 
         LEFT JOIN {{ source ('prices', 'usd') }} p2 ON p2.contract_address = a.tokenOut AND p2.blockchain = 'optimism'
             AND  p2.minute = date_trunc('minute', a.evt_block_time)
             {% if is_incremental() %}
-            AND p2.minute >= date_trunc('day', now() - interval '1 week')
+            AND p2.minute >= date_trunc('day', now() - interval '7' day)
             {% endif %} 
         LEFT JOIN {{ ref ('tokens_erc20') }} t1 ON t1.contract_address = a.tokenIn AND t1.blockchain = 'optimism'
         LEFT JOIN {{ ref ('tokens_erc20') }} t2 ON t2.contract_address = a.tokenOut AND t2.blockchain = 'optimism'
@@ -130,7 +130,7 @@ WITH
             'optimism' AS blockchain,
             date_trunc('hour', block_time) AS hour,
             contract_address,
-            approx_percentile(price, 0.5) AS median_price
+            approx_percentile(price, 0.5) FILTER (WHERE is_finite(price)) AS median_price
         FROM (
             SELECT block_time, contract_address, token_in_price AS price 
             FROM backfill_pricing_2 b2 WHERE b2.contract_address = b2.token_in

@@ -16,7 +16,7 @@ models:
             - block_date
             - tx_hash
             - evt_index
-      - check_seed_legacy:
+      - check_seed:
           seed_file: ref('zeroex_fantom_api_fills_sample')
           match_columns:
             - tx_hash
@@ -104,7 +104,7 @@ models:
             - block_date
             - tx_hash
             - evt_index
-      - check_seed_legacy:
+      - check_seed:
           seed_file: ref('zeroex_fantom_api_fills_deduped_sample')
           match_columns:
             - tx_hash
