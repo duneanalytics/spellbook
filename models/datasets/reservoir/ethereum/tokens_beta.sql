@@ -1,9 +1,10 @@
-{ { config(
+{{ config(
     tags = ['dunesql'],
     alias = alias('tokens_beta'),
     post_hook = '{{ expose_dataset(\'["ethereum"]\',
                 \'[""]\') }}'
-) } }
+    )
+}}
 select
     t.created_at,
     t.collection_id,
