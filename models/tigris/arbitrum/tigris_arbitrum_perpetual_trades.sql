@@ -122,7 +122,9 @@ SELECT
     tx."from" as tx_from, 
     tx.to as tx_to, 
     t.evt_index,
-    t.protocol_version
+    t.protocol_version,
+    t.position_id,
+    t.positions_contract
 FROM 
 all_fees t 
 INNER JOIN 

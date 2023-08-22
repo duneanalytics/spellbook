@@ -92,6 +92,12 @@ models:
       - &protocol_version
         name: protocol_version
         description: "tigris project version "
+      - &positions_contract
+        name: positions_contract
+        description: "corresponding position contract address"
+      - &position_id
+        name: position_id
+        description: "unique nft id for position"
 
   - name: tigris_arbitrum_trades
     meta:
@@ -123,9 +129,7 @@ models:
       - &evt_tx_hash
         name: evt_tx_hash
         description: "event transaction hash"
-      - &position_id
-        name: position_id
-        description: "unique nft id for position"
+      - *position_id
       - &price
         name: price 
         description: "entry price of trade"
@@ -159,9 +163,7 @@ models:
       - &project_contract_address
         name: project_contract_address
         description: "trading contract address"
-      - &positions_contract
-        name: positions_contract
-        description: "corresponding position contract address"
+      - *positions_contract
       - *block_month
       - *protocol_version
 
