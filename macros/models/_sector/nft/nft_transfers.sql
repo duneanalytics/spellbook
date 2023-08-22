@@ -99,6 +99,9 @@ FROM(
         , value, id
         FROM {{ erc1155_batch }} t
         CROSS JOIN unnest(zip(t."values", t.ids)) AS foo(value, id)
+        {% if is_incremental() %}
+        WHERE t.evt_block_time >= date_trunc('day', now() - interval '7' day)
+        {% endif %}
         {% if spark_mode == True %}
         {# This deduplicates rows. Double check if this is correct or not #}
         GROUP BY 1, 2, 3, 4, 5, 6, 7, 8, 9 {% if denormalized == True %}, 10 {% endif %}
