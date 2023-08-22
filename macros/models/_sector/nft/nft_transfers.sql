@@ -25,6 +25,7 @@ FROM(
     , et."from" AS executed_by
     {%- endif %}
     , t.evt_tx_hash AS tx_hash
+    , '{{blockchain}}' || cast(t.evt_tx_hash as varchar) || '-{{token_standard_721}}-' || cast(t.contract_address as varchar) || '-' || cast(t.tokenId as varchar) || '-' || cast(t."from" as varchar) || '-' || cast(t.to as varchar) || '-1-' || cast(t.evt_index as varchar) AS unique_transfer_id
     FROM {{ erc721_transfers }} t
     {% if denormalized == False %}
     INNER JOIN {{ base_transactions }} et ON et.block_number = t.evt_block_number
@@ -58,6 +59,7 @@ FROM(
     , et."from" AS executed_by
     {%- endif %}
     , t.evt_tx_hash AS tx_hash
+    , '{{blockchain}}' || cast(t.evt_tx_hash as varchar) || '-{{token_standard_1155}}-' || cast(t.contract_address as varchar) || '-' || cast(t.id as varchar) || '-' || cast(t."from" as varchar) || '-' || cast(t.to as varchar) || '-' || cast(t.value as varchar) || '-' || cast(t.evt_index as varchar) AS unique_transfer_id
     FROM {{ erc1155_single }} t
     {%- if denormalized == False %}
     INNER JOIN {{ base_transactions }} et ON et.block_number = t.evt_block_number
@@ -91,6 +93,7 @@ FROM(
     , et."from" AS executed_by
     {%- endif %}
     , t.evt_tx_hash AS tx_hash
+    , '{{blockchain}}' || cast(t.evt_tx_hash as varchar) || '-{{token_standard_1155}}-' || cast(t.contract_address as varchar) || '-' || cast(t.id as varchar) || '-' || cast(t."from" as varchar) || '-' || cast(t.to as varchar) || '-' || cast(t.value as varchar) || '-' || cast(t.evt_index as varchar) AS unique_transfer_id
     FROM (
         SELECT t.evt_block_time, t.evt_block_number, t.evt_tx_hash, t.contract_address, t."from", t.to, t.evt_index {% if denormalized == True %}, t.evt_tx_from {% endif %}
         , value, id

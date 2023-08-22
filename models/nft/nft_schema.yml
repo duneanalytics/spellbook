@@ -275,6 +275,10 @@ models:
         description: "Address that executed the transaction"
       - name: tx_hash
         description: "Transaction hash"
+      - name: unique_transfer_id
+        tests:
+          - unique
+        description: "Unique transfer ID"
 
   - name: nft_lending
     meta:
