@@ -62,7 +62,7 @@ SELECT
     'gnosis' as blockchain, 
     'aragon' as dao_creator_tool, 
     ad.dao, 
-    COALESCE(gw.dao_wallet_address, CAST(NULL as VARBINARY)) as dao_wallet_address,
+    COALESCE(gw.dao_wallet_address, 0x) as dao_wallet_address,
     ad.created_block_time,
     CAST(ad.created_date as DATE) as created_date, 
     CAST(date_trunc('month', ad.created_date) as DATE) as block_month, 

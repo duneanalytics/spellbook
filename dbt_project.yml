@@ -270,6 +270,8 @@ models:
         +schema: uniswap_polygon
       bnb:
         +schema: uniswap_bnb
+      base:
+        +schema: uniswap_base
 
     timeswap:
       +schema: timeswap
@@ -351,6 +353,8 @@ models:
         +schema: sushiswap_polygon
       bnb:
         +schema: sushiswap_bnb
+      base:
+        +schema: sushiswap_base
 
     zerion:
       +schema: zerion
@@ -665,6 +669,8 @@ models:
         +schema: aragon_gnosis
       polygon:
         +schema: aragon_polygon
+      base:
+        +schema: aragon_base
 
     spiritswap:
       +schema: spiritswap
@@ -1308,6 +1314,10 @@ models:
         +schema: layerzero_polygon
       bnb:
         +schema: layerzero_bnb
+      celo:
+        +schema: layerzero_celo
+      base:
+        +schema: layerzero_base
 
     onepunchswap:
       +schema: onepunchswap
