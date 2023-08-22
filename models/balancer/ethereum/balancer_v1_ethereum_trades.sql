@@ -67,7 +67,7 @@ select
     token_bought_address,
     token_sold_address,
     tx."from" AS taker,
-    CAST(NULL AS VARCHAR(5)) AS maker,
+    CAST(NULL AS VARBINARY) AS maker,
     CAST(NULL AS VARBINARY) AS pool_id,
     CAST(NULL AS DOUBLE) AS swap_fee,
     project_contract_address,
