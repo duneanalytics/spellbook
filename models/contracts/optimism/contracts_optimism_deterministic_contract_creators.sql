@@ -33,6 +33,7 @@ FROM (values
   ,(0x93FEC2C00BfE902F733B57c5a6CeeD7CD1384AE1, 'CREATE3Factory')
   ,(0xdeaddeaddeaddeaddeaddeaddeaddeaddead0006, 'Genesis Contract')
   ,(0xe1cb04a0fa36ddd16a06ea828007e35e1a3cbc37, 'Singleton Factory')
+  ,(0x488E1A80133870CB71EE2b08f926CE329d56B084, 'Deployer')
   -- excluded creators
   ,(0x36BDE71C97B33Cc4729cf772aE268934f7AB70B2, 'Optimism: CDM Relay')
 

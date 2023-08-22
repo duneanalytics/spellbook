@@ -270,6 +270,8 @@ models:
         +schema: uniswap_polygon
       bnb:
         +schema: uniswap_bnb
+      base:
+        +schema: uniswap_base
 
     timeswap:
       +schema: timeswap
@@ -351,6 +353,8 @@ models:
         +schema: sushiswap_polygon
       bnb:
         +schema: sushiswap_bnb
+      base:
+        +schema: sushiswap_base
 
     zerion:
       +schema: zerion
