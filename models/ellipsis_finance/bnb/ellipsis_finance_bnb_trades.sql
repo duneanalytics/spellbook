@@ -126,12 +126,11 @@ SELECT
     dexs.token_bought_address,
     dexs.token_sold_address,
     dexs.taker,
-    '' as maker,
+    CAST(NULL AS VARBINARY) as maker,
     dexs.project_contract_address,
     dexs.tx_hash,
     tx."from" as tx_from,
     tx.to AS tx_to,
-    '' as trace_address,
     dexs.evt_index
 FROM enriched_evt_all dexs
 INNER JOIN {{ source('bnb', 'transactions') }} tx
@@ -150,7 +149,7 @@ LEFT JOIN {{ ref('tokens_erc20') }} erc20b
     AND erc20b.blockchain = 'bnb'
 LEFT JOIN {{ source('prices', 'usd') }} p_bought
     ON p_bought.minute = date_trunc('minute', dexs.block_time)
-    AND cast(p_bought.contract_address as varbinary) = dexs.token_bought_address
+    AND p_bought.contract_address = dexs.token_bought_address
     AND p_bought.blockchain = 'bnb'
     {% if not is_incremental() %}
     AND p_bought.minute >= timestamp '{{project_start_date}}'
@@ -160,7 +159,7 @@ LEFT JOIN {{ source('prices', 'usd') }} p_bought
     {% endif %}
 LEFT JOIN {{ source('prices', 'usd') }} p_sold
     ON p_sold.minute = date_trunc('minute', dexs.block_time)
-    AND cast(p_sold.contract_address as varbinary) = dexs.token_sold_address
+    AND p_sold.contract_address = dexs.token_sold_address
     AND p_sold.blockchain = 'bnb'
     {% if not is_incremental() %}
     AND p_sold.minute >= timestamp '{{project_start_date}}'
