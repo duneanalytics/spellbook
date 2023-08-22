@@ -125,6 +125,10 @@ models:
       fantom:
         +schema: dex_fantom
 
+    datasets:
+      ethereum:
+        +schema: reservoir
+
     airdrop:
       +schema: airdrop
       +materialized: table
