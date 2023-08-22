@@ -270,7 +270,7 @@ models:
         name: estimated_price
         description: "True if it is bundle trade and dividened price"
       - *is_private
-      
+
   - name: seaport_polygon_traces
     meta:
       blockchain: polygon
@@ -286,6 +286,7 @@ models:
             - block_number
             - tx_hash
             - order_hash
+            - trace_side
             - trace_index
     columns:
       - name: blockchain

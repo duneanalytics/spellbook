@@ -1,6 +1,5 @@
 {% macro seaport_traces(blockchain, seaport_events) %}
 {%- set token_standard_start = 'bep' if blockchain == 'bnb' else 'erc' -%}
-{%- set spark_mode = True -%} {# TODO: Potential bug. Consider disabling #}
 
 WITH base_data AS (
      SELECT evt_block_time AS block_time
@@ -33,7 +32,7 @@ WITH base_data AS (
     , zone
     FROM base_data
     CROSS JOIN UNNEST(offer) WITH ordinality AS t (trace_item, trace_index)
-    
+
     UNION ALL
 
     SELECT block_time
@@ -96,7 +95,7 @@ SELECT '{{blockchain}}' AS blockchain
     ELSE 'unknown'
     END AS seaport_version
 , trace_side
-, ROW_NUMBER() OVER (PARTITION BY block_number, tx_hash, order_hash) AS trace_index
+, trace_index
 , zone
 FROM all_traces
 
