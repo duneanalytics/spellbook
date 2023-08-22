@@ -8,7 +8,7 @@
     post_hook='{{ expose_spells(\'["ethereum"]\',
                                 "sector",
                                 "staking",
-                                \'["hildobby"]\') }}')
+                                \'["hildobby", "sankinyue"]\') }}')
 }}
 
 WITH contracts AS (
@@ -122,6 +122,22 @@ FROM
     , (0x4befa2aa9c305238aa3e0b5d17eb20c045269e9d, 'RockX', 'RockX', 'Staking Pools')
     , (0xea674fdde714fd979de3edf0f56aa9716b898ec8, 'Ethermine', 'Ethermine', 'Staking Pools')
     , (0x25e821b7197b146f7713c3b89b6a4d83516b912d, 'ether.fi', 'ether.fi', 'Liquid Staking')
+    , (0x44894aeee56c2dd589c1d5c8cb04b87576967f97, 'Upbit', 'Upbit 1', 'CEX')
+    , (0xcf95237ce34d4b5bf1e7de4474ee1dcc01f24ca9, 'Upbit', 'Upbit 2', 'CEX')
+    , (0x3085140568d02b7dca5db4070375040a6b2ece5b, 'Upbit', 'Upbit 3', 'CEX')
+    , (0x06a26f6bd71e7b66d0a4f1fd490792fea8ab6556, 'Upbit', 'Upbit 4', 'CEX')
+    , (0x4d623ddd9b11f7054c711295c5dc4c4eb12ee7d4, 'Upbit', 'Upbit 5', 'CEX')
+    , (0x20312e96b1a0568ac31c6630844a962383cc66c2, 'CoinSpot', 'CoinSpot Gas Supplier', 'CEX')
+    , (0x4757d97449aca795510b9f3152c6a9019a3545c3, 'Daniel Wang', 'wangdong.eth',   'Independent Staker')
+    , (0x69aa0361dbb0527d4f1e5312403bd41788fe61fe, 'Daniel Wang', 'danielwang.eth', 'Independent Staker')
+    , (0xa12baeb64d4de260ed48a3ab5de8d5cbea1acdbd, 'Daniel Wang', 'Daniel Wang 1',  'Independent Staker')
+    , (0x282a9e13ced2e838ac3b423995a9b174a54d6a4b, 'Daniel Wang', 'Daniel Wang 2',  'Independent Staker')
+    , (0xa3ae668b6239fa3eb1dc26daabb03f244d0259f0, 'Daniel Wang', 'Daniel Wang 3',  'Independent Staker')
+    , (0x75160f5cc50f57e16d6d18336c44c331f03794a2, 'EPotter', 'EPotter', 'Liquid Staking')
+    , (0x8c1bed5b9a0928467c9b1341da1d7bd5e10b6549, 'Liquid Collective', 'Liquid Collective', 'Liquid Staking')
+    , (0x1b63142628311395ceafeea5667e7c9026c862ca, 'Taylor Gerring', 'Taylor Gerring', 'Independent Staker')
+    , (0x2ed8eb76c91fa25b21d588128569dbc2f885e511, 'Linke Yang', 'Linke Yang', 'Independent Staker')
+    , (0x96f4489fe75d0494bd5088b0d80b17a5759dac37, 'Tranchess', 'Tranchess', 'Liquid Staking')
     ) 
     x (address, entity, entity_unique_name, category)
 
