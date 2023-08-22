@@ -46,6 +46,7 @@ FROM (
         , to
         , executed_by
         , tx_hash
+        , unique_transfer_id
     FROM {{ nft_model }}
     {% if is_incremental() %}
     WHERE block_time >= date_trunc('day', now() - interval '7' day)
