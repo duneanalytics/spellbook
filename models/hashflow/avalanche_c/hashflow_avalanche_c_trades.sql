@@ -25,7 +25,7 @@ with dexs AS (
         SELECT
             evt_block_time          AS block_time,
             trader                  AS taker,
-            ''                      AS maker,
+            CAST(NULL as VARBINARY) AS maker,
             quoteTokenAmount        AS token_bought_amount_raw,
             baseTokenAmount         AS token_sold_amount_raw,
             CAST(NULL AS double)    AS amount_usd,
@@ -115,4 +115,3 @@ LEFT JOIN {{ source('prices', 'usd') }} p_sold
     {% if is_incremental() %}
     AND p_sold.minute >= date_trunc('day', now() - interval '7' day)
     {% endif %}
-    
