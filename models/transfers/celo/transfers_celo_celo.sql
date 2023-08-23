@@ -76,4 +76,3 @@ with celo_transfers as (
 )
 select *
 from celo_transfers
-limit 100 -- just test
