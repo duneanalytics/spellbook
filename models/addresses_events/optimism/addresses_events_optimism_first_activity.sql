@@ -16,6 +16,8 @@ SELECT 'optimism' AS blockchain
 , MIN(et.block_number) AS block_number
 , MIN_BY(et.hash, et.block_number) AS tx_hash
 , MIN_BY((bytearray_substring(et.data, 1, 4)), et.block_number) as first_function
+, MIN_BY(et.value, et.block_number) as eth_transferred
+, MIN_BY(et.gas_used, et.block_number) as gas_used
 FROM (
     {% if not is_incremental() %}
     SELECT 
@@ -24,7 +26,9 @@ FROM (
         block_number,
         block_time,
         hash, 
-        data
+        data,
+        CAST(value as double) as value, 
+        gas_used 
     FROM 
     {{ source('optimism', 'transactions') }}
 
@@ -36,7 +40,9 @@ FROM (
         block_number,
         block_time,
         hash, 
-        data
+        data,
+        CAST(value as double) as value, 
+        gas_used
     FROM 
     {{ source('optimism_legacy_ovm1', 'transactions') }}
     {% else %} -- Only check data fron ovm table on first run 
@@ -46,7 +52,9 @@ FROM (
         block_number,
         block_time,
         hash, 
-        data
+        data,
+        CAST(value as double) as value, 
+        gas_used
     FROM 
     {{ source('optimism', 'transactions') }}
     {% endif %}

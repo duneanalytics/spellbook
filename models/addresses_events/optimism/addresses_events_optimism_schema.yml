@@ -74,3 +74,8 @@ models:
         description: "The transaction hash on which the address made it's first activity"
       - name: first_function
         description: "first function called by address"
+      - name: eth_transferred
+        description: "ETH transferred in transaction"
+      - name: gas_used
+        description: "gas used in transaction"
+

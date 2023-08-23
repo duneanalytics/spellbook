@@ -32,7 +32,7 @@ SELECT
     fa.tx_hash as first_transaction_hash, 
     CASE 
         WHEN fa.first_function != 0x THEN COALESCE(sig.function, CAST(fa.first_function as VARCHAR))
-        WHEN fa.first_function = 0x AND MIN_BY(ot.gas_used, ot.block_number) = 21000 AND MIN_BY(ot.value, ot.block_number) > 0 THEN 'eth_transfer'
+        WHEN fa.first_function = 0x AND fa.gas_used = 21000 AND fa.eth_transferred > 0 THEN 'eth_transfer'
     END as first_function,
     SUM(gas_spent) as gas_spent,
     MAX(ot.block_time) as last_active_time, 
@@ -81,9 +81,7 @@ INNER JOIN (
             block_time, 
             (l1_fee + (gas_used * gas_price))/1e18 as gas_spent,
             data, 
-            block_number,
-            gas_used, 
-            CAST(value as double) as value 
+            block_number
         FROM 
         {{ source('optimism', 'transactions') }}
 
@@ -98,9 +96,7 @@ INNER JOIN (
             else cast(gas_limit as double) * cast(gas_price as double)/1e18
             end as gas_spent,
             data,
-            block_number,
-            gas_used, 
-            CAST(value as double) as value 
+            block_number
         FROM 
         {{ source('optimism_legacy_ovm1', 'transactions') }}
 ) ot 
@@ -120,7 +116,7 @@ LEFT JOIN (
     where type = 'function_call'
 ) sig 
     ON sig.id = fa.first_function
-GROUP BY 1, 2, 3, 4
+GROUP BY 1, 2, 3, 4, 5 
 
 {% else %}
 
@@ -131,7 +127,7 @@ SELECT
     fa.tx_hash as first_transaction_hash, 
     CASE 
         WHEN fa.first_function != 0x THEN COALESCE(sig.function, CAST(fa.first_function as VARCHAR))
-        WHEN fa.first_function = 0x AND MIN_BY(ot.gas_used, ot.block_number) = 21000 AND MIN_BY(ot.value, ot.block_number) > 0 THEN 'eth_transfer'
+        WHEN fa.first_function = 0x AND fa.gas_used = 21000 AND fa.eth_transferred > 0 THEN 'eth_transfer'
     END as first_function,
     SUM(gas_spent) as gas_spent,
     MAX(ot.block_time) as last_active_time, 
@@ -179,9 +175,7 @@ FROM
             block_time, 
             (l1_fee + (gas_used * gas_price))/1e18 as gas_spent,
             data, 
-            block_number,
-            gas_used, 
-            CAST(value as double) as value 
+            block_number
         FROM 
         {{ source('optimism', 'transactions') }}
 
@@ -196,9 +190,7 @@ FROM
             else cast(gas_limit as double) * cast(gas_price as double)/1e18
             end as gas_spent,
             data,
-            block_number,
-            gas_used, 
-            CAST(value as double) as value 
+            block_number
         FROM 
         {{ source('optimism_legacy_ovm1', 'transactions') }}
 ) ot 
@@ -217,6 +209,6 @@ LEFT JOIN (
     where type = 'function_call'
 ) sig 
     ON sig.id = fa.first_function
-GROUP BY 1, 2, 3, 4
+GROUP BY 1, 2, 3, 4, 5 
 
 {% endif %}
