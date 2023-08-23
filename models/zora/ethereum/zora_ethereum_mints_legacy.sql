@@ -1,5 +1,5 @@
 {{ config(
-    schema = 'base_ethereum',
+    schema = 'zora_ethereum',
 	tags=['legacy'],
     alias = alias('mints', legacy_model=True)
 )
