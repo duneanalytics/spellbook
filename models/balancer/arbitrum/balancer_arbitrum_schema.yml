@@ -162,7 +162,7 @@ models:
             - tx_hash
             - evt_index
             - trace_address
-      - check_dex_seed_legacy:
+      - check_dex_seed:
           blockchain: arbitrum
           project: balancer
           version: 2
@@ -212,6 +212,10 @@ models:
       - &maker
         name: maker
         description: "Address of trader who sold a token"
+      - *pool_id
+      - &swap_fee
+        name: swap_fee
+        description: 'Swap fee'
       - &project_contract_address
         name: project_contract_address
         description: "Pool address"
@@ -337,7 +341,7 @@ models:
             - tx_hash
             - evt_index
             - trace_address
-      - check_dex_seed_legacy:
+      - check_dex_seed:
           blockchain: arbitrum
           project: balancer
           version: 2
@@ -346,6 +350,7 @@ models:
       - name: project
       - name: version
       - name: block_date
+      - name: block_month
       - name: block_time
       - name: token_bought_symbol
       - name: token_sold_symbol
@@ -359,9 +364,9 @@ models:
       - name: token_sold_address
       - name: taker
       - name: maker
-      - name: project_contract_address
       - name: pool_id
       - name: swap_fee
+      - name: project_contract_address
       - name: tx_hash
       - name: tx_from
       - name: tx_to

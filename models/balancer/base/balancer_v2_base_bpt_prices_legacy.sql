@@ -93,7 +93,7 @@ WITH
             SELECT tx_hash, token_out AS token, token_out_price AS token_price
             FROM all_trades_calc_2
         ) 
-        ORDER BY 1,2
+        ORDER BY 1, 2
     ),
     
     backfill_pricing_1 AS (
