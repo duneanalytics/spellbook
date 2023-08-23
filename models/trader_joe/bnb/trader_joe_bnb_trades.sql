@@ -1,21 +1,22 @@
-{{ config(
+{{ config(tags=['dunesql'],
         alias = alias('trades')
         )
 }}
 
-
-{% set pancake_models = [
+{% set trader_joe_models = [
     ref('trader_joe_v2_bnb_trades')
+,   ref('trader_joe_v2_1_bnb_trades')
 ] %}
 
 
 SELECT *
 FROM (
-    {% for dex_model in pancake_models %}
+    {% for dex_model in trader_joe_models %}
     SELECT
         blockchain,
         project,
         version,
+        block_month,
         block_date,
         block_time,
         token_bought_symbol,
@@ -34,7 +35,6 @@ FROM (
         tx_hash,
         tx_from,
         tx_to,
-        trace_address,
         evt_index
     FROM {{ dex_model }}
     {% if not loop.last %}
@@ -42,4 +42,3 @@ FROM (
     {% endif %}
     {% endfor %}
 )
-;

@@ -1,8 +1,9 @@
 {{ config(
+    tags=['dunesql'],
     alias = alias('dao_addresses'),
     materialized = 'view',
     file_format = 'delta',
-    post_hook='{{ expose_spells(\'["ethereum", "gnosis", "polygon"]\',
+    post_hook='{{ expose_spells(\'["ethereum", "gnosis", "polygon", "base"]\',
                                 "project",
                                 "aragon",
                                 \'["Henrystats"]\') }}')
@@ -12,6 +13,7 @@
 ref('aragon_ethereum_dao_addresses')
 ,ref('aragon_gnosis_dao_addresses')
 ,ref('aragon_polygon_dao_addresses')
+,ref('aragon_base_dao_addresses')
 ] %}
 
 
@@ -26,6 +28,7 @@ FROM (
         dao_wallet_address,
         created_block_time,
         created_date,
+        block_month,
         product
     FROM {{ dao_model }}
     {% if not loop.last %}
@@ -33,4 +36,3 @@ FROM (
     {% endif %}
     {% endfor %}
 )
-;
