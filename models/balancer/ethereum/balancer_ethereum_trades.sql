@@ -1,9 +1,10 @@
 {{ config(
+    tags = ['dunesql'],
     alias = alias('trades'),
     post_hook='{{ expose_spells(\'["ethereum"]\',
                                 "project",
                                 "balancer",
-                                \'["bizzyvinci"]\') }}'
+                                \'["bizzyvinci", "thetroyharris"]\') }}'
     )
 }}
 
@@ -33,6 +34,8 @@ FROM (
         token_sold_address,
         taker,
         maker,
+        pool_id,
+        swap_fee,
         project_contract_address,
         tx_hash,
         tx_from,

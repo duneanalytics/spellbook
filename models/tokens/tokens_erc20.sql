@@ -24,3 +24,4 @@ UNION ALL
 SELECT 'fantom' as blockchain, contract_address, symbol, decimals FROM {{ ref('tokens_fantom_erc20') }}
 UNION ALL
 SELECT 'base' as blockchain, contract_address, symbol, decimals FROM {{ ref('tokens_base_erc20') }}
+
