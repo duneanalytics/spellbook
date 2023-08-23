@@ -5,11 +5,7 @@
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
-    unique_key = ['block_time', 'unique_trade_id'],
-    post_hook='{{ expose_spells(\'["polygon"]\',
-                              "project",
-                              "opensea",
-                              \'["springzh"]\') }}'
+    unique_key = ['tx_hash', 'evt_type'. 'evt_index', 'token_id']
     )
 }}
 

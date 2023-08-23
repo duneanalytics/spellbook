@@ -325,7 +325,7 @@ with source_ethereum_transactions as (
             ,a.nft_cnt
             ,a.erc721_cnt
             ,a.erc1155_cnt
-            ,date_trunc('day', a.block_time) as block_date
+            ,cast(date_trunc('day', a.block_time) as date) as block_date
             ,case when offer_first_item_type = 'erc20' then 'offer accepted'
                   when offer_first_item_type in ('erc721','erc1155') then 'buy'
                   else 'etc' -- some txns has no nfts
@@ -426,7 +426,7 @@ with source_ethereum_transactions as (
             ,a.nft_cnt
             ,a.erc721_cnt
             ,a.erc1155_cnt
-            ,date_trunc('day', a.block_time) as block_date
+            ,cast(date_trunc('day', a.block_time) as date) as block_date
             ,case when offer_first_item_type in ('erc20','native') then 'offer accepted'
                   when offer_first_item_type in ('erc721','erc1155') then 'buy'
                   else 'etc' -- some txns has no nfts
