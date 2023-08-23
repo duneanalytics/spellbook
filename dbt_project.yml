@@ -539,8 +539,6 @@ models:
 
     addresses_summary:
       +schema: addresses_summary
-      optimism:
-        +schema: addresses_summary_optimism
 
     aztec:
       +schema: aztec

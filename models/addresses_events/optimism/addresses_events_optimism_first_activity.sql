@@ -17,7 +17,7 @@ SELECT 'optimism' AS blockchain
 , MIN_BY(et.hash, et.block_number) AS tx_hash
 , MIN_BY((bytearray_substring(et.data, 1, 4)), et.block_number) as first_function
 FROM (
-    {% if is_incremental() %}
+    {% if not is_incremental() %}
     SELECT 
         "from", 
         to,

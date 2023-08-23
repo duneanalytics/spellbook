@@ -1,14 +1,14 @@
 version: 2
 
 models:
-  - name: addresses_summary_optimism_mainet
+  - name: addresses_summary_op_mainnet
     meta:
       blockchain: optimism
       sector: addresses_summary
       contributors: Henrystats
     config:
       tags: ['table', 'wallet summary', 'mainet', 'addresses_summary', 'optimism']
-    description: "Table showing summary of an address on Optimism mainet"
+    description: "Table showing summary of an address on OP mainet"
     tests:
     columns:
       - name: blockchain
