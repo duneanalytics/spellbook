@@ -6,11 +6,11 @@
     materialized='incremental',
     file_format='delta',
     incremental_strategy='merge',
-    unique_key=['blockchain', 'block_number', 'proxy_address','underlying_token_address'],
+    unique_key=['blockchain', 'block_number', 'proxy_address', 'aggregator_address'],
     post_hook='{{ expose_spells(\'["bnb"]\',
                                 "project",
                                 "chainlink",
-                                \'["msilb7","0xroll","linkpool_ryan"]\') }}'
+                                \'["msilb7","0xroll","linkpool_ryan","linkpool_jon"]\') }}'
   )
 }}
 
@@ -26,8 +26,15 @@ SELECT 'bnb' as blockchain,
        c.oracle_price,
        c.proxy_address,
        c.aggregator_address,
-       o.underlying_token_address,
-       c.oracle_price / POWER(10, o.extra_decimals) as underlying_token_price
+       c.oracle_price / POWER(10, 0) as underlying_token_price,
+       CASE 
+           WHEN cardinality(split(c.feed_name, ' / ')) = 1 THEN c.feed_name
+           ELSE element_at(split(c.feed_name, ' / '), 1)
+       END AS base,
+       CASE 
+           WHEN cardinality(split(c.feed_name, ' / ')) = 1 THEN NULL
+           ELSE element_at(split(c.feed_name, ' / '), 2)
+       END AS quote
 FROM
 (
     SELECT
@@ -57,5 +64,3 @@ FROM
     GROUP BY
         1, 2, 3, 4, 5, 6
 ) c
-LEFT JOIN
-    {{ ref('chainlink_bnb_price_feeds_oracle_token_mapping') }} o ON c.proxy_address = o.proxy_address

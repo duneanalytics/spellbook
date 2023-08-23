@@ -1,6 +1,6 @@
 {{ config(
     schema = 'superrare_ethereum',
-    tags = ['dunesql', 'prod_exclude'],
+    tags = ['dunesql'],
     alias = alias('base_trades'),
     partition_by = ['block_date'],
     materialized = 'incremental',
@@ -13,6 +13,8 @@
 
 -- raw data table with all sales on superrare platform -- both primary and secondary
 with all_superrare_sales as (
+    -- 0x2947f98c42597966a0ec25e92843c09ac17fbaa7 -- SuperRareMarketAuction 
+    -- 0x65b49f7aee40347f5a90b714be4ef086f3fe5e2c -- SuperRareMarketAuction : V2 https://github.com/superrare/pixura-contracts/blob/66b39164255d29d07e00b4ad8df206c379bf35e7/contracts/build/SuperRareMarketAuctionV2.json
     select  evt_block_time as block_time
             , evt_block_number as block_number
             , "_originContract" as contract_address
@@ -33,13 +35,13 @@ with all_superrare_sales as (
     select evt_block_time
             , evt_block_number
             , contract_address
-            , "_tokenId"
-            , "_seller"
-            , "_buyer"
-            , "_amount"
+            , "_tokenId" as nft_token_id
+            , "_seller" as seller
+            , "_buyer" as buyer
+            , "_amount" as price_raw
             , evt_tx_hash
-            , {{var("ETH_ERC20_ADDRESS")}}
-            , evt_index
+            , {{var("ETH_ERC20_ADDRESS")}} as currency_contract
+            , evt_index as sub_tx_trade_id
     from {{ source('superrare_ethereum','SuperRare_evt_Sold') }}
     {% if is_incremental() %}
     where evt_block_time >= date_trunc('day', now() - interval '7' day)
@@ -50,13 +52,13 @@ with all_superrare_sales as (
     select evt_block_time
             , evt_block_number
             , "_originContract" as contract_address
-            , "_tokenId"
-            , "_seller"
-            , "_bidder"
-            , "_amount"
+            , "_tokenId" as nft_token_id
+            , "_seller" as seller
+            , "_bidder" as buyer
+            , "_amount" as price_raw
             , evt_tx_hash
-            , {{var("ETH_ERC20_ADDRESS")}}
-            , evt_index
+            , {{var("ETH_ERC20_ADDRESS")}} as currency_contract
+            , evt_index as sub_tx_trade_id
     from {{ source('superrare_ethereum','SuperRareMarketAuction_evt_AcceptBid') }}
     {% if is_incremental() %}
     where evt_block_time >= date_trunc('day', now() - interval '7' day)
@@ -67,13 +69,13 @@ with all_superrare_sales as (
     select evt_block_time
             , evt_block_number
             , contract_address
-            , "_tokenId"
-            , "_seller"
-            , "_bidder"
-            , "_amount"
+            , "_tokenId" as nft_token_id
+            , "_seller" as seller
+            , "_bidder" as buyer
+            , "_amount" as price_raw
             , evt_tx_hash
-            , {{var("ETH_ERC20_ADDRESS")}}
-            , evt_index
+            , {{var("ETH_ERC20_ADDRESS")}} as currency_contract
+            , evt_index as sub_tx_trade_id
     from {{ source('superrare_ethereum','SuperRare_evt_AcceptBid') }}
     {% if is_incremental() %}
     where evt_block_time >= date_trunc('day', now() - interval '7' day)
@@ -83,14 +85,14 @@ with all_superrare_sales as (
 
     select evt_block_time
             , evt_block_number
-            , "_originContract"
-            , "_tokenId"
-            , "_seller"
-            , "_bidder"
-            , "_amount"
+            , "_originContract" as contract_address
+            , "_tokenId" as nft_token_id
+            , "_seller" as seller
+            , "_bidder" as buyer
+            , "_amount" as price_raw
             , evt_tx_hash
-            , "_currencyAddress"
-            , evt_index
+            , "_currencyAddress" as currency_contract
+            , evt_index as sub_tx_trade_id
     from {{ source('superrare_ethereum','SuperRareBazaar_evt_AcceptOffer') }}
     {% if is_incremental() %}
     where evt_block_time >= date_trunc('day', now() - interval '7' day)
@@ -100,14 +102,14 @@ with all_superrare_sales as (
 
     select evt_block_time
             , evt_block_number
-            , "_contractAddress"
-            , "_tokenId"
-            , "_seller"
-            , "_bidder"
-            , "_amount"
+            , "_contractAddress" as contract_address
+            , "_tokenId" as nft_token_id
+            , "_seller" as seller
+            , "_bidder" as buyer
+            , "_amount" as price_raw
             , evt_tx_hash
-            , "_currencyAddress"
-            , evt_index
+            , "_currencyAddress" as currency_contract
+            , evt_index as sub_tx_trade_id
     from {{ source('superrare_ethereum','SuperRareBazaar_evt_AuctionSettled') }}
     {% if is_incremental() %}
     where evt_block_time >= date_trunc('day', now() - interval '7' day)
@@ -117,14 +119,14 @@ with all_superrare_sales as (
 
     select evt_block_time
             , evt_block_number
-            , "_originContract"
-            , "_tokenId"
-            , "_seller"
-            , "_buyer"
-            , "_amount"
+            , "_originContract" as contract_address
+            , "_tokenId" as nft_token_id
+            , "_seller" as seller
+            , "_buyer" as buyer
+            , "_amount" as price_raw
             , evt_tx_hash
-            , "_currencyAddress"
-            , evt_index
+            , "_currencyAddress" as currency_contract
+            , evt_index as sub_tx_trade_id
     from {{ source('superrare_ethereum','SuperRareBazaar_evt_Sold') }}
     {% if is_incremental() %}
     where evt_block_time >= date_trunc('day', now() - interval '7' day)
@@ -132,48 +134,21 @@ with all_superrare_sales as (
 
     union all
 
-    -- Superrare AuctionHouse (not decoded)
-    select  block_time
-            , block_number
-            , bytearray_substring(topic1, 13, 20) AS contract_address
-            , bytearray_to_uint256(topic3) AS nft_token_id
-            , bytearray_substring(data, 13, 20) AS seller
-            , bytearray_substring(topic2, 13, 20) AS buyer
-            , bytearray_to_uint256(bytearray_substring(data, 33, 32)) AS price_raw
-            , tx_hash
-            , {{var("ETH_ERC20_ADDRESS")}}
-            , index
-    from {{ source('ethereum','logs') }}
-    where contract_address = 0x8c9f364bf7a56ed058fc63ef81c6cf09c833e656
-        and topic0 = 0xea6d16c6bfcad11577aef5cc6728231c9f069ac78393828f8ca96847405902a9
-        {% if is_incremental() %}
-        and block_time >= date_trunc('day', now() - interval '7' day)
-        {% else %}
-        and block_time >= {{ project_start_date }}
-        {% endif %}
-
-    union all
-
-    -- Superrare Marketplace (not decoded)
-    select block_time
-            , block_number
-            , bytearray_substring(topic1, 13, 20) AS contract_address
-            , bytearray_to_uint256(bytearray_substring(data, 33, 32)) AS nft_token_id
-            , bytearray_substring(topic3, 13, 20) AS seller
-            , bytearray_substring(topic2, 13, 20) AS buyer
-            , bytearray_to_uint256(bytearray_substring(data, 1, 32)) as price_raw
-            , tx_hash
-            , {{var("ETH_ERC20_ADDRESS")}}
-            , index
-    from {{ source('ethereum','logs') }}
-    where contract_address =  0x65b49f7aee40347f5a90b714be4ef086f3fe5e2c
-        and topic0 in (0x2a9d06eec42acd217a17785dbec90b8b4f01a93ecd8c127edd36bfccf239f8b6
-                        ,0x5764dbcef91eb6f946584f4ea671217c686fa7e858ce4f9f42d08422b86556a9)
-        {% if is_incremental() %}
-        and block_time >= date_trunc('day', now() - interval '7' day)
-        {% else %}
-        and block_time >= {{ project_start_date }}
-        {% endif %}
+    -- 0x8c9f364bf7a56ed058fc63ef81c6cf09c833e656 -- SuperRareAuctionHouse : https://github.com/superrare/pixura-contracts/blob/66b39164255d29d07e00b4ad8df206c379bf35e7/contracts/build/SuperRareAuctionHouse.json
+    select  evt_block_time
+            , evt_block_number
+            , "_contractAddress" as contract_address
+            , "_tokenId" as nft_token_id
+            , "_seller" as seller
+            , "_bidder" as buyer
+            , "_amount" as price_raw
+            , evt_tx_hash
+            , {{var("ETH_ERC20_ADDRESS")}} as currency_contract -- SuperRareAuctionHouse hadn't currency_contract in AuctionSettled event.
+            , evt_index as sub_tx_trade_id
+    from {{ source('superrare_ethereum','SuperRareAuctionHouse_evt_AuctionSettled') }}
+    {% if is_incremental() %}
+    where evt_block_time >= date_trunc('day', now() - interval '7' day)
+    {% endif %}
 )
 
 SELECT

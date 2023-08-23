@@ -125,6 +125,31 @@ models:
       - *model_name
       - *label_type
 
+  - name: labels_balancer_v2_pools_base
+    meta:
+      blockchain: base
+      sector: labels
+      project: balancer_v2
+      contributors: balancerlabs
+    config:
+      tags: ['labels', 'base', 'balancer', 'pools']
+    description: 'Balancer V2 liquidity pools created on Base Chain.'
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - address
+    columns:
+      - *blockchain
+      - *address
+      - *name
+      - *category
+      - *contributor
+      - *source
+      - *created_at
+      - *updated_at
+      - *model_name
+      - *label_type
+
   - name: labels_balancer_v2_pools_arbitrum
     meta:
       blockchain: arbitrum

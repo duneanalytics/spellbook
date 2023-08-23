@@ -1,6 +1,5 @@
 {{ config(
-	tags=['legacy'],
-	
+	    tags=['legacy', 'prod_exclude'],
         schema = 'dex_polygon',
         alias = alias('sandwiches', legacy_model=True),
         partition_by = ['block_date'],
