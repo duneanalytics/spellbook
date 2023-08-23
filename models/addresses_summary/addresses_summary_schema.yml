@@ -27,6 +27,8 @@ models:
         description: "The block time on which the address made it's last OP mainet transaction" 
       - name: address_age
         description: "Time period the address has been active for labelled " 
+      - name: address_age
+        description: "Time period since the address was last active for labelled " 
       - name: address_age_in_days
         description: "Time period in days the address has been active for " 
       - name: recency_age_in_days

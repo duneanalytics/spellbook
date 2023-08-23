@@ -30,7 +30,10 @@ SELECT
     wd.address, 
     fa.block_time as first_active_time, 
     fa.tx_hash as first_transaction_hash, 
-    fa.first_function, 
+    CASE 
+        WHEN fa.first_function != 0x THEN COALESCE(sig.function, CAST(fa.first_function as VARCHAR))
+        WHEN fa.first_function = 0x AND MIN_BY(ot.gas_used, ot.block_number) = 21000 AND MIN_BY(ot.value, ot.block_number) > 0 THEN 'eth_transfer'
+    END as first_function,
     SUM(gas_spent) as gas_spent,
     MAX(ot.block_time) as last_active_time, 
     CASE
@@ -44,6 +47,17 @@ SELECT
            WHEN date_diff('day', min(ot.block_time), max(ot.block_time)) > 7 THEN '1 week old User'
            ELSE 'less than 1 week old User'
     END as address_age, 
+    CASE
+           WHEN date_diff('day', max(ot.block_time), CAST(NOW() as timestamp)) > 1825 THEN 'Last active more than 5 Years Ago'
+           WHEN date_diff('day', max(ot.block_time), CAST(NOW() as timestamp)) > 1460 THEN 'Last active more than 4 Years Ago'
+           WHEN date_diff('day', max(ot.block_time), CAST(NOW() as timestamp)) > 1095 THEN 'Last active more than 3 Years Ago'
+           WHEN date_diff('day', max(ot.block_time), CAST(NOW() as timestamp)) > 730 THEN 'Last active more than 2 Years Ago'
+           WHEN date_diff('day', max(ot.block_time), CAST(NOW() as timestamp)) > 365 THEN 'Last active more than 1 Year Ago'
+           WHEN date_diff('day', max(ot.block_time), CAST(NOW() as timestamp)) > 91 THEN 'Last active more than 3 months Ago'
+           WHEN date_diff('day', max(ot.block_time), CAST(NOW() as timestamp)) > 30 THEN 'Last active more than 1 month Ago'
+           WHEN date_diff('day', max(ot.block_time), CAST(NOW() as timestamp)) > 7 THEN 'Last active more than 1 week Ago'
+           ELSE 'Active within the past week'
+    END as recency_age, 
     date_diff('day', min(ot.block_time), max(ot.block_time)) as address_age_in_days,
     date_diff('day', max(ot.block_time), CAST(NOW() as timestamp)) as recency_in_days, 
     CASE
@@ -67,7 +81,9 @@ INNER JOIN (
             block_time, 
             (l1_fee + (gas_used * gas_price))/1e18 as gas_spent,
             data, 
-            block_number
+            block_number,
+            gas_used, 
+            CAST(value as double) as value 
         FROM 
         {{ source('optimism', 'transactions') }}
 
@@ -82,7 +98,9 @@ INNER JOIN (
             else cast(gas_limit as double) * cast(gas_price as double)/1e18
             end as gas_spent,
             data,
-            block_number
+            block_number,
+            gas_used, 
+            CAST(value as double) as value 
         FROM 
         {{ source('optimism_legacy_ovm1', 'transactions') }}
 ) ot 
@@ -93,6 +111,15 @@ INNER JOIN
 LEFT JOIN 
 {{ ref('contracts_optimism_contract_mapping') }} cm 
     ON ot."to" = cm.contract_address 
+LEFT JOIN (
+    SELECT 
+        DISTINCT id, 
+        split_part(signature,'(',1) as function 
+    FROM 
+    {{ ref('abi_signatures') }} 
+    where type = 'function_call'
+) sig 
+    ON sig.id = fa.first_function
 GROUP BY 1, 2, 3, 4, 5
 
 {% else %}
@@ -102,7 +129,10 @@ SELECT
     ot."from" as address, 
     fa.block_time as first_active_time, 
     fa.tx_hash as first_transaction_hash, 
-    fa.first_function, 
+    CASE 
+        WHEN fa.first_function != 0x THEN COALESCE(sig.function, CAST(fa.first_function as VARCHAR))
+        WHEN fa.first_function = 0x AND MIN_BY(ot.gas_used, ot.block_number) = 21000 AND MIN_BY(ot.value, ot.block_number) > 0 THEN 'eth_transfer'
+    END as first_function,
     SUM(gas_spent) as gas_spent,
     MAX(ot.block_time) as last_active_time, 
     CASE
@@ -116,6 +146,17 @@ SELECT
            WHEN date_diff('day', min(ot.block_time), max(ot.block_time)) > 7 THEN '1 week old User'
            ELSE 'less than 1 week old User'
     END as address_age, 
+    CASE
+           WHEN date_diff('day', max(ot.block_time), CAST(NOW() as timestamp)) > 1825 THEN 'Last active more than 5 Years Ago'
+           WHEN date_diff('day', max(ot.block_time), CAST(NOW() as timestamp)) > 1460 THEN 'Last active more than 4 Years Ago'
+           WHEN date_diff('day', max(ot.block_time), CAST(NOW() as timestamp)) > 1095 THEN 'Last active more than 3 Years Ago'
+           WHEN date_diff('day', max(ot.block_time), CAST(NOW() as timestamp)) > 730 THEN 'Last active more than 2 Years Ago'
+           WHEN date_diff('day', max(ot.block_time), CAST(NOW() as timestamp)) > 365 THEN 'Last active more than 1 Year Ago'
+           WHEN date_diff('day', max(ot.block_time), CAST(NOW() as timestamp)) > 91 THEN 'Last active more than 3 months Ago'
+           WHEN date_diff('day', max(ot.block_time), CAST(NOW() as timestamp)) > 30 THEN 'Last active more than 1 month Ago'
+           WHEN date_diff('day', max(ot.block_time), CAST(NOW() as timestamp)) > 7 THEN 'Last active more than 1 week Ago'
+           ELSE 'Active within the past week'
+    END as recency_age, 
     date_diff('day', min(ot.block_time), max(ot.block_time)) as address_age_in_days,
     date_diff('day', max(ot.block_time), CAST(NOW() as timestamp)) as recency_in_days, 
     CASE
@@ -138,7 +179,9 @@ FROM
             block_time, 
             (l1_fee + (gas_used * gas_price))/1e18 as gas_spent,
             data, 
-            block_number
+            block_number,
+            gas_used, 
+            CAST(value as double) as value 
         FROM 
         {{ source('optimism', 'transactions') }}
 
@@ -153,7 +196,9 @@ FROM
             else cast(gas_limit as double) * cast(gas_price as double)/1e18
             end as gas_spent,
             data,
-            block_number
+            block_number,
+            gas_used, 
+            CAST(value as double) as value 
         FROM 
         {{ source('optimism_legacy_ovm1', 'transactions') }}
 ) ot 
@@ -163,6 +208,15 @@ INNER JOIN
 LEFT JOIN 
 {{ ref('contracts_optimism_contract_mapping') }} cm 
     ON ot."to" = cm.contract_address 
+LEFT JOIN (
+    SELECT 
+        DISTINCT id, 
+        split_part(signature,'(',1) as function 
+    FROM 
+    {{ ref('abi_signatures') }} 
+    where type = 'function_call'
+) sig 
+    ON sig.id = fa.first_function
 GROUP BY 1, 2, 3, 4, 5 
 
 {% endif %}
