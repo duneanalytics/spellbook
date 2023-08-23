@@ -1,7 +1,8 @@
 {{ config(
-    tags = ['dunesql'],
-    alias = alias('trades'),
-    post_hook='{{ expose_spells(\'["ethereum"]\',
+	tags=['legacy'],
+		schema = 'balancer_base',
+    alias = alias('trades', legacy_model=True),
+    post_hook='{{ expose_spells(\'["base"]\',
                                 "project",
                                 "balancer",
                                 \'["bizzyvinci", "thetroyharris"]\') }}'
@@ -9,8 +10,7 @@
 }}
 
 {% set balancer_models = [
-    ref('balancer_v1_ethereum_trades'),
-    ref('balancer_v2_ethereum_trades')
+    ref('balancer_v2_base_trades_legacy')
 ] %}
 
 SELECT *

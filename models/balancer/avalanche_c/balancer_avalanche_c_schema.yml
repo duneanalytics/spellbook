@@ -2,6 +2,157 @@ version: 2
 
 models:
 
+  - name: balancer_avalanche_c_trades
+    meta:
+      blockchain: avalanche_c
+      sector: dex
+      contributors: bizzyvinci
+    config:
+      tags: ['balancer', 'avalanche_c', 'amm', 'trades', 'dex']
+    description: >
+      DEX trades on balancer on avalanche_c
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_date
+            - blockchain
+            - project
+            - version
+            - tx_hash
+            - evt_index
+            - trace_address
+      - check_dex_seed:
+          blockchain: avalanche_c
+          project: balancer
+          version: 2
+    columns:
+      - &blockchain
+        name: blockchain
+        description: "Blockchain"
+      - &project
+        name: project
+        description: "Project name (balancer)"
+      - &version
+        name: version
+        description: "Version of the project"
+      - &block_date
+        name: block_date
+        description: "Block date in UTC"
+      - &block_time
+        name: block_time
+        description: 'Block time in UTC'
+      - &token_bought_symbol
+        name: token_bought_symbol
+        description: "Token symbol for token bought in the trade"
+      - &token_sold_symbol
+        name: token_sold_symbol
+        description: "Token symbol for token sold in the trade"
+      - &token_pair
+        name: token_pair
+        description: "Token symbol pair for each token involved in the trade"
+      - &token_bought_amount
+        name: token_bought_amount
+        description: "Value of the token bought at time of execution in the original currency"
+      - &token_sold_amount
+        name: token_sold_amount
+        description: "Value of the token sold at time of execution in the original currency"
+      - &token_bought_amount_raw
+        name: token_bought_amount_raw
+        description: "Raw value of the token bought at time of execution in the original currency"
+      - &token_sold_amount_raw
+        name: token_sold_amount_raw
+        description: "Raw value of the token sold at time of execution in the original currency"
+      - &amount_usd
+        name: amount_usd
+        description: "USD value of the trade at time of execution"
+      - &token_bought_address
+        name: token_bought_address
+        description: "Contract address of the token bought"
+      - &token_sold_address
+        name: token_sold_address
+        description: "Contract address of the token sold"
+      - &taker
+        name: taker
+        description: "Address of trader who purchased a token"
+      - &maker
+        name: maker
+        description: "Address of trader who sold a token"
+      - &pool_id
+        name: pool_id
+        description: 'Unique encoded identifier that refers to each pool'
+      - &swap_fee
+        name: swap_fee
+        description: 'Swap fee'
+      - &project_contract_address
+        name: project_contract_address
+        description: "Pool address"
+      - &tx_hash
+        name: tx_hash
+        description: "Transaction hash"
+      - &tx_from
+        name: tx_from
+        description: "transaction.from"
+      - &tx_to
+        name: tx_to
+        description: "transaction.to"
+      - &trace_address
+        name: trace_address
+        description: "Trace address"
+      - &evt_index
+        name: evt_index
+        description: "Event index"
+
+  - name: balancer_v2_avalanche_c_trades
+    meta:
+      blockchain: avalanche_c
+      sector: dex
+      contributors: bizzyvinci, thetroyharris
+    config:
+      tags: [ 'balancer', 'avalanche_c', 'amm', 'trades', 'dex' ]
+    description: >
+      DEX trades on balancer v2 on avalanche_c
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_date
+            - blockchain
+            - project
+            - version
+            - tx_hash
+            - evt_index
+            - trace_address
+      - check_dex_seed:
+          blockchain: avalanche_c
+          project: balancer
+          version: 2
+    columns:
+      - name: blockchain
+      - name: project
+      - name: version
+      - name: block_date
+      - name: block_month
+      - name: block_time
+      - name: token_bought_symbol
+      - name: token_sold_symbol
+      - name: token_pair
+      - name: token_bought_amount
+      - name: token_sold_amount
+      - name: token_bought_amount_raw
+      - name: token_sold_amount_raw
+      - name: amount_usd
+      - name: token_bought_address
+      - name: token_sold_address
+      - name: taker
+      - name: maker
+      - name: pool_id
+      - name: swap_fee
+      - name: project_contract_address
+      - name: tx_hash
+      - name: tx_from
+      - name: tx_to
+      - name: trace_address
+      - name: evt_index
+
   - name: balancer_avalanche_c_pools_tokens_weights
     meta:
       blockchain: avalanche_c
@@ -12,11 +163,7 @@ models:
     description: >
       Token weights in Balancer pools.
     columns:
-      - &pool_id
-        name: pool_id
-        description: 'Unique encoded identifier that refers to each pool'
-        tests:
-          - not_null
+      - *pool_id
       - &token_address
         name: token_address
         description: 'Contract address for the token'
@@ -64,9 +211,7 @@ models:
       - *pool_id
       - name: pool_symbol
         description: 'Symbol of the pool, consisting of the symbol of its tokens and their respective weights'
-      - &blockchain
-        name: blockchain
-        description: "Blockchain"
+      - *blockchain
       - *token_address
       - name: token_symbol
         description: 'Symbol of the token'
@@ -127,15 +272,11 @@ models:
       - &contract_address
         name: contract_address
         description: "Address of BPT being transfered"
-      - &block_date
-        name: block_date
-        description: "UTC event block date"
+      - *block_date
       - &block_month
         name: block_month
         description: "UTC event block month"
-      - &evt_index
-        name: evt_index
-        description: 'Event index'
+      - *evt_index
       - &evt_block_time
         name: evt_block_time
         description: 'Block time of transfer event'
@@ -176,3 +317,9 @@ models:
       - name: block_time
       - name: block_number
       - name: swap_fee_percentage
+
+
+
+
+
+
