@@ -6,29 +6,35 @@
     materialized='incremental',
     file_format='delta',
     incremental_strategy='merge',
-    unique_key=['blockchain', 'block_number', 'proxy_address','underlying_token_address'],
+    unique_key=['blockchain', 'block_number', 'proxy_address', 'aggregator_address'],
     post_hook='{{ expose_spells(\'["polygon"]\',
                                 "project",
                                 "chainlink",
-                                \'["msilb7","0xroll","linkpool_ryan"]\') }}'
+                                \'["msilb7","0xroll","linkpool_ryan","linkpool_jon]\') }}'
   )
 }}
 
 {% set incremental_interval = '7' %}
 {% set project_start_date = '2020-10-26' %}
 
-SELECT
-    'polygon' as blockchain,
-    c.block_time,
-    c.block_date,
-    c.block_month,
-    c.block_number,
-    c.feed_name,
-    c.oracle_price,
-    c.proxy_address,
-    c.aggregator_address,
-    o.underlying_token_address,
-    c.oracle_price / POWER(10, o.extra_decimals) as underlying_token_price
+SELECT 'polygon' as blockchain,
+       c.block_time,
+       c.block_date,
+       c.block_month,
+       c.block_number,
+       c.feed_name,
+       c.oracle_price,
+       c.proxy_address,
+       c.aggregator_address,
+       c.oracle_price / POWER(10, 0) as underlying_token_price,
+       CASE 
+           WHEN cardinality(split(c.feed_name, ' / ')) = 1 THEN c.feed_name
+           ELSE element_at(split(c.feed_name, ' / '), 1)
+       END AS base,
+       CASE 
+           WHEN cardinality(split(c.feed_name, ' / ')) = 1 THEN NULL
+           ELSE element_at(split(c.feed_name, ' / '), 2)
+       END AS quote
 FROM
 (
     SELECT
@@ -40,8 +46,8 @@ FROM
         cfa.proxy_address,
         MAX(cfa.aggregator_address) as aggregator_address,
         AVG(
-            CAST(bytearray_to_uint256(bytearray_substring(l.topic1, 3, 64)) as DOUBLE) 
-            / POWER(10, cfa.decimals)
+           CAST(bytearray_to_uint256(bytearray_substring(l.topic1, 3, 64)) as DOUBLE) 
+           / POWER(10, cfa.decimals)
         ) as oracle_price
     FROM
         {{ source('polygon', 'logs') }} l
@@ -58,5 +64,3 @@ FROM
     GROUP BY
         1, 2, 3, 4, 5, 6
 ) c
-LEFT JOIN
-    {{ ref('chainlink_polygon_price_feeds_oracle_token_mapping') }} o ON c.proxy_address = o.proxy_address
