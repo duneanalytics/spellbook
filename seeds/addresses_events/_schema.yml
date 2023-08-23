@@ -18,5 +18,5 @@ seeds:
         blockchain: varchar
         address: varbinary
         first_activity_to: varbinary
-        block_number: bigint
-        tx_hash: varbinary
+        first_block_number: bigint
+        first_tx_hash: varbinary

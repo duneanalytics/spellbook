@@ -28,23 +28,20 @@ weekly_active_addresses as (
 SELECT 
     'optimism' as blockchain, 
     wd.address, 
-    fa.block_time as first_active_time, 
-    fa.tx_hash as first_transaction_hash, 
-    CASE 
-        WHEN fa.first_function != 0x THEN COALESCE(sig.function, CAST(fa.first_function as VARCHAR))
-        WHEN fa.first_function = 0x AND fa.gas_used = 21000 AND fa.eth_transferred > 0 THEN 'eth_transfer'
-    END as first_function,
+    fa.first_block_time as first_active_time, 
+    fa.first_tx_hash as first_tx_hash, 
+    fa.first_function,
     SUM(gas_spent) as gas_spent,
     MAX(ot.block_time) as last_active_time, 
     CASE
-           WHEN date_diff('day', min(ot.block_time), max(ot.block_time)) > 1825 THEN '5 years old User'
-           WHEN date_diff('day', min(ot.block_time), max(ot.block_time)) > 1460 THEN '4 years old User'
-           WHEN date_diff('day', min(ot.block_time), max(ot.block_time)) > 1095 THEN '3 years old User'
-           WHEN date_diff('day', min(ot.block_time), max(ot.block_time)) > 730 THEN '2 years old User'
-           WHEN date_diff('day', min(ot.block_time), max(ot.block_time)) > 365 THEN '1 year old User'
-           WHEN date_diff('day', min(ot.block_time), max(ot.block_time)) > 91 THEN '3 months old User'
-           WHEN date_diff('day', min(ot.block_time), max(ot.block_time)) > 30 THEN '1 month old User'
-           WHEN date_diff('day', min(ot.block_time), max(ot.block_time)) > 7 THEN '1 week old User'
+           WHEN date_diff('day', min(fa.first_block_time), max(ot.block_time)) > 1825 THEN '5 years old User'
+           WHEN date_diff('day', min(fa.first_block_time), max(ot.block_time)) > 1460 THEN '4 years old User'
+           WHEN date_diff('day', min(fa.first_block_time), max(ot.block_time)) > 1095 THEN '3 years old User'
+           WHEN date_diff('day', min(fa.first_block_time), max(ot.block_time)) > 730 THEN '2 years old User'
+           WHEN date_diff('day', min(fa.first_block_time), max(ot.block_time)) > 365 THEN '1 year old User'
+           WHEN date_diff('day', min(fa.first_block_time), max(ot.block_time)) > 91 THEN '3 months old User'
+           WHEN date_diff('day', min(fa.first_block_time), max(ot.block_time)) > 30 THEN '1 month old User'
+           WHEN date_diff('day', min(fa.first_block_time), max(ot.block_time)) > 7 THEN '1 week old User'
            ELSE 'less than 1 week old User'
     END as address_age, 
     CASE
@@ -58,13 +55,13 @@ SELECT
            WHEN date_diff('day', max(ot.block_time), CAST(NOW() as timestamp)) > 7 THEN 'Last active more than 1 week Ago'
            ELSE 'Active within the past week'
     END as recency_age, 
-    date_diff('day', min(ot.block_time), max(ot.block_time)) as address_age_in_days,
+    date_diff('day', min(fa.first_block_time), max(ot.block_time)) as address_age_in_days,
     date_diff('day', max(ot.block_time), CAST(NOW() as timestamp)) as recency_in_days, 
     CASE
-            WHEN (COUNT(ot.hash)/(date_diff('day', min(ot.block_time), max(ot.block_time)) + 1)) >= 1 THEN 'Daily User'
-            WHEN (COUNT(ot.hash)/(date_diff('day', min(ot.block_time), max(ot.block_time)) + 1)) >= 0.142857142857 THEN 'Weekly User'
-            WHEN (COUNT(ot.hash)/(date_diff('day', min(ot.block_time), max(ot.block_time)) + 1)) >= 0.0333333333333 THEN 'Monthly User'
-            WHEN (COUNT(ot.hash)/(date_diff('day', min(ot.block_time), max(ot.block_time)) + 1)) >= 0.0027397260274 THEN 'Yearly User'
+            WHEN (COUNT(ot.hash)/(date_diff('day', min(fa.first_block_time), max(ot.block_time)) + 1)) >= 1 THEN 'Daily User'
+            WHEN (COUNT(ot.hash)/(date_diff('day', min(fa.first_block_time), max(ot.block_time)) + 1)) >= 0.142857142857 THEN 'Weekly User'
+            WHEN (COUNT(ot.hash)/(date_diff('day', min(fa.first_block_time), max(ot.block_time)) + 1)) >= 0.0333333333333 THEN 'Monthly User'
+            WHEN (COUNT(ot.hash)/(date_diff('day', min(fa.first_block_time), max(ot.block_time)) + 1)) >= 0.0027397260274 THEN 'Yearly User'
             ELSE 'Sparse User'
     END as usage_frequency,
     COUNT(ot.hash) as number_of_transactions,
@@ -79,7 +76,9 @@ INNER JOIN (
             to, 
             hash,
             block_time, 
-            (l1_fee + (gas_used * gas_price))/1e18 as gas_spent,
+            case when gas_price = cast(0 as uint256) then 0
+            else cast(gas_used as double) * cast(gas_price as double)/1e18 + cast(l1_fee as double) /1e18
+            end as gas_spent,
             data, 
             block_number
         FROM 
@@ -107,16 +106,6 @@ INNER JOIN
 LEFT JOIN 
 {{ ref('contracts_optimism_contract_mapping') }} cm 
     ON ot."to" = cm.contract_address 
-LEFT JOIN (
-    SELECT 
-        DISTINCT id, 
-        split_part(signature,'(',1) as function 
-    FROM 
-    {{ ref('signatures') }} 
-    where type = 'function_call'
-    AND id NOT IN (0x09779838, 0x00000000) -- for some weird reason these have duplicates functions
-) sig 
-    ON sig.id = fa.first_function
 GROUP BY 1, 2, 3, 4, 5 
 
 {% else %}
@@ -124,23 +113,20 @@ GROUP BY 1, 2, 3, 4, 5
 SELECT 
     'optimism' as blockchain,
     ot."from" as address, 
-    fa.block_time as first_active_time, 
-    fa.tx_hash as first_transaction_hash, 
-    CASE 
-        WHEN fa.first_function != 0x THEN COALESCE(sig.function, CAST(fa.first_function as VARCHAR))
-        WHEN fa.first_function = 0x AND fa.gas_used = 21000 AND fa.eth_transferred > 0 THEN 'eth_transfer'
-    END as first_function,
+    fa.first_block_time as first_active_time, 
+    fa.first_tx_hash as first_tx_hash, 
+    fa.first_function,
     SUM(gas_spent) as gas_spent,
     MAX(ot.block_time) as last_active_time, 
     CASE
-           WHEN date_diff('day', min(ot.block_time), max(ot.block_time)) > 1825 THEN '5 years old User'
-           WHEN date_diff('day', min(ot.block_time), max(ot.block_time)) > 1460 THEN '4 years old User'
-           WHEN date_diff('day', min(ot.block_time), max(ot.block_time)) > 1095 THEN '3 years old User'
-           WHEN date_diff('day', min(ot.block_time), max(ot.block_time)) > 730 THEN '2 years old User'
-           WHEN date_diff('day', min(ot.block_time), max(ot.block_time)) > 365 THEN '1 year old User'
-           WHEN date_diff('day', min(ot.block_time), max(ot.block_time)) > 91 THEN '3 months old User'
-           WHEN date_diff('day', min(ot.block_time), max(ot.block_time)) > 30 THEN '1 month old User'
-           WHEN date_diff('day', min(ot.block_time), max(ot.block_time)) > 7 THEN '1 week old User'
+           WHEN date_diff('day', min(fa.first_block_time), max(ot.block_time)) > 1825 THEN '5 years old User'
+           WHEN date_diff('day', min(fa.first_block_time), max(ot.block_time)) > 1460 THEN '4 years old User'
+           WHEN date_diff('day', min(fa.first_block_time), max(ot.block_time)) > 1095 THEN '3 years old User'
+           WHEN date_diff('day', min(fa.first_block_time), max(ot.block_time)) > 730 THEN '2 years old User'
+           WHEN date_diff('day', min(fa.first_block_time), max(ot.block_time)) > 365 THEN '1 year old User'
+           WHEN date_diff('day', min(fa.first_block_time), max(ot.block_time)) > 91 THEN '3 months old User'
+           WHEN date_diff('day', min(fa.first_block_time), max(ot.block_time)) > 30 THEN '1 month old User'
+           WHEN date_diff('day', min(fa.first_block_time), max(ot.block_time)) > 7 THEN '1 week old User'
            ELSE 'less than 1 week old User'
     END as address_age, 
     CASE
@@ -154,13 +140,13 @@ SELECT
            WHEN date_diff('day', max(ot.block_time), CAST(NOW() as timestamp)) > 7 THEN 'Last active more than 1 week Ago'
            ELSE 'Active within the past week'
     END as recency_age, 
-    date_diff('day', min(ot.block_time), max(ot.block_time)) as address_age_in_days,
+    date_diff('day', min(fa.first_block_time), max(ot.block_time)) as address_age_in_days,
     date_diff('day', max(ot.block_time), CAST(NOW() as timestamp)) as recency_in_days, 
     CASE
-            WHEN (COUNT(ot.hash)/(date_diff('day', min(ot.block_time), max(ot.block_time)) + 1)) >= 1 THEN 'Daily User'
-            WHEN (COUNT(ot.hash)/(date_diff('day', min(ot.block_time), max(ot.block_time)) + 1)) >= 0.142857142857 THEN 'Weekly User'
-            WHEN (COUNT(ot.hash)/(date_diff('day', min(ot.block_time), max(ot.block_time)) + 1)) >= 0.0333333333333 THEN 'Monthly User'
-            WHEN (COUNT(ot.hash)/(date_diff('day', min(ot.block_time), max(ot.block_time)) + 1)) >= 0.0027397260274 THEN 'Yearly User'
+            WHEN (COUNT(ot.hash)/(date_diff('day', min(fa.first_block_time), max(ot.block_time)) + 1)) >= 1 THEN 'Daily User'
+            WHEN (COUNT(ot.hash)/(date_diff('day', min(fa.first_block_time), max(ot.block_time)) + 1)) >= 0.142857142857 THEN 'Weekly User'
+            WHEN (COUNT(ot.hash)/(date_diff('day', min(fa.first_block_time), max(ot.block_time)) + 1)) >= 0.0333333333333 THEN 'Monthly User'
+            WHEN (COUNT(ot.hash)/(date_diff('day', min(fa.first_block_time), max(ot.block_time)) + 1)) >= 0.0027397260274 THEN 'Yearly User'
             ELSE 'Sparse User'
     END as usage_frequency,
     COUNT(ot.hash) as number_of_transactions,
@@ -174,7 +160,9 @@ FROM
             to, 
             hash,
             block_time, 
-            (l1_fee + (gas_used * gas_price))/1e18 as gas_spent,
+            case when gas_price = cast(0 as uint256) then 0
+            else cast(gas_used as double) * cast(gas_price as double)/1e18 + cast(l1_fee as double) /1e18
+            end as gas_spent,
             data, 
             block_number
         FROM 
@@ -201,16 +189,6 @@ INNER JOIN
 LEFT JOIN 
 {{ ref('contracts_optimism_contract_mapping') }} cm 
     ON ot."to" = cm.contract_address 
-LEFT JOIN (
-    SELECT 
-        DISTINCT id, 
-        split_part(signature,'(',1) as function 
-    FROM 
-    {{ ref('signatures') }} 
-    where type = 'function_call'
-    AND id NOT IN (0x09779838, 0x00000000) -- for some weird reason these have duplicates functions
-) sig 
-    ON sig.id = fa.first_function
 GROUP BY 1, 2, 3, 4, 5 
 
 {% endif %}

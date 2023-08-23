@@ -7,41 +7,41 @@ models:
       sector: addresses_summary
       contributors: Henrystats
     config:
-      tags: ['table', 'wallet summary', 'mainet', 'addresses_summary', 'optimism']
-    description: "Table showing summary of an address on OP mainet"
+      tags: ['table', 'wallet summary', 'mainnet', 'addresses_summary', 'optimism']
+    description: "Table showing summary of an address on OP Mainnet"
     tests:
     columns:
       - name: blockchain
         description: "Blockchain"
       - name: address
-        description: "Concerned Optimism address"
+        description: "Concerned OP Mainnet address"
         tests:
           - unique
       - name: first_active_time
-        description: "The block time on which the address made it's first OP mainet transaction"
-      - name: first_transaction_hash
-        description: "The transaction hash on which the address made it's first OP mainet transaction"
+        description: "The block time on which the address made it's first OP Mainnet transaction"
+      - name: first_tx_hash
+        description: "The transaction hash on which the address made it's first OP Mainnet transaction"
       - name: first_function
-        description: "first function called by the address "
+        description: "first function called by the address"
       - name: last_active_time
-        description: "The block time on which the address made it's last OP mainet transaction" 
+        description: "The block time on which the address made it's last OP Mainnet transaction" 
       - name: address_age
-        description: "Time period the address has been active for labelled " 
+        description: "Time period the address has been active for labelled" 
       - name: address_age
-        description: "Time period since the address was last active for labelled " 
+        description: "Time period since the address was last active for labelled" 
       - name: address_age_in_days
-        description: "Time period in days the address has been active for " 
+        description: "Time period in days the address has been active for" 
       - name: recency_age_in_days
-        description: "Time period in days since the address was last active " 
+        description: "Time period in days since the address was last active" 
       - name: number_of_transactions
-        description: "Number of mainet transactions made by the address"
+        description: "Number of OP Mainnet transactions made by address"
       - name: usage_frequency
         description: "How often address is active"
       - name: gas_spent
-        description: "total gas spent by adddress on OP mainet"
+        description: "Total gas spent by an address on OP Mainnet"
       - name: unique_dapps
-        description: "unique dapps address interacted with OP mainet"
+        description: "Unique dapps that addresses interacted with on OP Mainnet"
       - name: first_to_project
-        description: "project address sent first transaction to "
+        description: "Project address sent first transaction to"
       - name: first_to_address
-        description: "contract address, address sent first transaction to "
+        description: "Contract address that an address sent first transaction to"
