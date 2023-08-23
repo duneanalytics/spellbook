@@ -116,7 +116,7 @@ LEFT JOIN (
         DISTINCT id, 
         split_part(signature,'(',1) as function 
     FROM 
-    {{ ref('abi_signatures') }} 
+    {{ ref('signatures') }} 
     where type = 'function_call'
 ) sig 
     ON sig.id = fa.first_function
@@ -213,7 +213,7 @@ LEFT JOIN (
         DISTINCT id, 
         split_part(signature,'(',1) as function 
     FROM 
-    {{ ref('abi_signatures') }} 
+    {{ ref('signatures') }} 
     where type = 'function_call'
 ) sig 
     ON sig.id = fa.first_function
