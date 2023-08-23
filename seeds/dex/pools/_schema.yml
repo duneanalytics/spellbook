@@ -6,5 +6,5 @@ seeds:
       tags: dunesql
       column_types:
         pool: varbinary
-        token_id: varchar
+        token_id: int256
         token_address: varbinary
