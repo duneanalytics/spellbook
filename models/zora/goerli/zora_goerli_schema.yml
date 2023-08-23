@@ -13,6 +13,8 @@ models:
     columns:
       - name: blockchain
         description: "Blockchain"
+      - name: block_date
+        description: "Block date"
       - name: block_time
         description: "Block time"
       - name: block_number

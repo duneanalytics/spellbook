@@ -58,6 +58,7 @@ WITH zora_mints AS (
     )
 
 SELECT '{{blockchain}}' AS blockchain
+, date_trunc('day', m.block_time) AS block_date
 , m.block_time
 , m.block_number
 , txs."from" AS minter

@@ -2,10 +2,10 @@
         tags = ['dunesql'],
         schema = 'zora_ethereum',
         alias =alias('mints'),
-        partition_by=['block_month'],
+        partition_by=['block_date'],
         materialized='incremental',
         file_format = 'delta',
-        unique_key = ['unique_transfer_id']
+        unique_key = ['tx_hash', 'evt_index']
 )
 }}
 
