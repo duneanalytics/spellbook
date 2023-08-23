@@ -49,11 +49,8 @@ seeds:
 # Full documentation: https://docs.getdbt.com/docs/configuring-models
 models:
   spellbook:
-    +pre-hook:
-      - sql: "{{ set_trino_session_property(is_materialized(model) and is_partitioned(model), 'join_distribution_type', 'PARTITIONED') }}"
-        transaction: true
     +post-hook:
-      - sql: "{{ set_trino_session_property(is_materialized(model), 'writer_min_size', model.config.get('writer_min_size', '500MB')) }}"
+      - sql: "{{ set_trino_session_property(is_materialized(model), 'writer_scaling_min_data_processed', model.config.get('writer_min_size', '500MB')) }}"
         transaction: true
       - sql: "{{ set_trino_session_property(is_materialized(model), 'task_scale_writers_enabled', false) }}"
         transaction: true
@@ -199,6 +196,8 @@ models:
         +schema: nft_fantom
       goerli:
         +schema: nft_goerli
+      base:
+        +schema: nft_base
 
     cex:
       +schema: cex
@@ -271,6 +270,8 @@ models:
         +schema: uniswap_polygon
       bnb:
         +schema: uniswap_bnb
+      base:
+        +schema: uniswap_base
 
     timeswap:
       +schema: timeswap
@@ -319,6 +320,8 @@ models:
       +schema: maverick
       ethereum:
         +schema: maverick_ethereum
+      bnb:
+        +schema: maverick_bnb  
 
     daohaus:
       +schema: daohaus
@@ -350,6 +353,8 @@ models:
         +schema: sushiswap_polygon
       bnb:
         +schema: sushiswap_bnb
+      base:
+        +schema: sushiswap_base
 
     zerion:
       +schema: zerion
@@ -577,6 +582,11 @@ models:
         +schema: tokens_solana
         +materialized: table
         +file_format: delta
+      base:
+        +schema: tokens_base
+        +materialized: table
+        +file_format: delta
+
 
     solana_utils:
       +schema: solana_utils
@@ -645,6 +655,8 @@ models:
       +schema: lifi
       fantom:
         +schema: lifi_fantom
+      optimism:
+        +schema: lifi_optimism
 
     astaria:
       +schema: astaria
@@ -659,6 +671,8 @@ models:
         +schema: aragon_gnosis
       polygon:
         +schema: aragon_polygon
+      base:
+        +schema: aragon_base
 
     spiritswap:
       +schema: spiritswap
@@ -814,8 +828,18 @@ models:
 
     chainlink:
       +schema: chainlink
+      arbitrum:
+        +schema: chainlink_arbitrum
+      avalanche_c:
+        +schema: chainlink_avalanche_c
       bnb:
         +schema: chainlink_bnb
+      ethereum:
+        +schema: chainlink_ethereum
+      fantom:
+        +schema: chainlink_fantom
+      gnosis:
+        +schema: chainlink_gnosis
       optimism:
         +schema: chainlink_optimism
       polygon:
@@ -892,6 +916,8 @@ models:
         +schema: pancakeswap_bnb
       ethereum:
         +schema: pancakeswap_ethereum
+      arbitrum:
+        +schema: pancakeswap_arbitrum  
 
     bancor:
       +schema: bancor
@@ -1040,6 +1066,8 @@ models:
       +schema: galxe
       ethereum:
         +schema: galxe_ethereum
+      optimism:
+        +schema: galxe_optimism
 
     gearbox:
       +schema: gearbox
@@ -1213,11 +1241,6 @@ models:
       optimism:
         +schema: zipswap_optimism
 
-    sharky:
-      +schema: sharky
-      solana:
-        +schema: sharky_solana
-
     arbswap:
       +schema: arbswap
 
@@ -1293,6 +1316,10 @@ models:
         +schema: layerzero_polygon
       bnb:
         +schema: layerzero_bnb
+      celo:
+        +schema: layerzero_celo
+      base:
+        +schema: layerzero_base
 
     onepunchswap:
       +schema: onepunchswap
@@ -1324,6 +1351,10 @@ models:
       optimism:
         +schema: sound_xyz_optimism
         
+
+    quests:
+      +schema: quests
+    
     account_abstraction:
       erc4337:
         +schema: account_abstraction_erc4337
@@ -1339,6 +1370,10 @@ models:
           +schema: account_abstraction_erc4337_polygon
         gnosis:
           +schema: account_abstraction_erc4337_gnosis
+        base:
+          +schema: account_abstraction_erc4337_base
+        bnb:
+          +schema: account_abstraction_erc4337_bnb
 
     zora:
       +schema: zora
