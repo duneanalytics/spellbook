@@ -77,4 +77,4 @@ with celo_transfers as (
 )
 select *
 from celo_transfers
-limit 1000000
+limit 100000
