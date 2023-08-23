@@ -114,6 +114,7 @@ LEFT JOIN (
     FROM 
     {{ ref('signatures') }} 
     where type = 'function_call'
+    AND id NOT IN (0x09779838, 0x00000000) -- for some weird reason these have duplicates functions
 ) sig 
     ON sig.id = fa.first_function
 GROUP BY 1, 2, 3, 4, 5 
@@ -207,6 +208,7 @@ LEFT JOIN (
     FROM 
     {{ ref('signatures') }} 
     where type = 'function_call'
+    AND id NOT IN (0x09779838, 0x00000000) -- for some weird reason these have duplicates functions
 ) sig 
     ON sig.id = fa.first_function
 GROUP BY 1, 2, 3, 4, 5 
