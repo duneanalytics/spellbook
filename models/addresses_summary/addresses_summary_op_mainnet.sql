@@ -45,7 +45,7 @@ SELECT
            ELSE 'less than 1 week old User'
     END as address_age, 
     date_diff('day', min(ot.block_time), max(ot.block_time)) as address_age_in_days,
-    date_diff('day', max(ot.block_time), CAST(NOW as timestamp)) as recency_in_days, 
+    date_diff('day', max(ot.block_time), CAST(NOW() as timestamp)) as recency_in_days, 
     CASE
             WHEN (COUNT(ot.hash)/(date_diff('day', min(ot.block_time), max(ot.block_time)) + 1)) >= 1 THEN 'Daily User'
             WHEN (COUNT(ot.hash)/(date_diff('day', min(ot.block_time), max(ot.block_time)) + 1)) >= 0.142857142857 THEN 'Weekly User'
@@ -117,7 +117,7 @@ SELECT
            ELSE 'less than 1 week old User'
     END as address_age, 
     date_diff('day', min(ot.block_time), max(ot.block_time)) as address_age_in_days,
-    date_diff('day', max(ot.block_time), CAST(NOW as timestamp)) as recency_in_days, 
+    date_diff('day', max(ot.block_time), CAST(NOW() as timestamp)) as recency_in_days, 
     CASE
             WHEN (COUNT(ot.hash)/(date_diff('day', min(ot.block_time), max(ot.block_time)) + 1)) >= 1 THEN 'Daily User'
             WHEN (COUNT(ot.hash)/(date_diff('day', min(ot.block_time), max(ot.block_time)) + 1)) >= 0.142857142857 THEN 'Weekly User'
