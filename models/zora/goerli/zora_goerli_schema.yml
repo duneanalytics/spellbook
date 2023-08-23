@@ -1,0 +1,61 @@
+version: 2
+
+models:
+  - name: zora_goerli_mints
+    meta:
+      blockchain: goerli
+      project: zora
+      contributors: hildobby
+    config:
+      tags: ['zora', 'goerli', 'mints']
+    description: >
+        Zora Mints on Goerli
+    columns:
+      - name: blockchain
+        description: "Blockchain"
+      - name: block_time
+        description: "Block time"
+      - name: block_number
+        description: "Block number"
+      - name: minter
+        description: "Minter"
+      - name: nft_recipient
+        description: "NFT recipient"
+      - name: nft_type
+        description: "Type of NFT"
+      - name: nft_contract_address
+        description: "NFT contract address"
+      - name: nft_token_id
+        description: "Token ID"
+      - name: amount
+        description: "Amount"
+      - name: price
+        description: "Price"
+      - name: tx_hash
+        description: "Transaction hash"
+      - name: marketplace_fee
+        description: "Marketplace fee"
+      - name: marketplace_fee_recipient
+        description: "Marketplace fee recipient"
+      - name: creator_fee
+        description: "Creator fee"
+      - name: creator_fee_recipient
+        description: "Creator fee recipient"
+      - name: create_referral_reward
+        description: "Create referral reward"
+      - name: create_referral_reward_recipient
+        description: "Create referral reward recipient"
+      - name: first_minter_reward
+        description: "First minter reward"
+      - name: first_minter_reward_recipient
+        description: "First minter reward recipient"
+      - name: mint_referral_reward
+        description: "Mint referral reward"
+      - name: mint_referral_reward_recipient
+        description: "Mint referral reward recipient"
+      - name: evt_index
+        description: "Event index"
+      - name: contract_address
+        description: "Contract address"
+      - name: rewards_version
+        description: "Zora reward version"

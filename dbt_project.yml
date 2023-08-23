@@ -235,6 +235,17 @@ models:
       ethereum:
         +schema: blur_ethereum
 
+    zora:
+      +schema: zora
+      ethereum:
+        +schema: zora_ethereum
+      optimism:
+        +schema: zora_optimism
+      base:
+        +schema: zora_base
+      goerli:
+        +schema: zora_goerli
+
     looksrare:
       +schema: looksrare
       ethereum:
