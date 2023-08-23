@@ -1,7 +1,7 @@
 {{ config(
     tags = ['dunesql'],
+    schema = 'zora',
     alias = alias('mints'),
-    partition_by = ['block_date'],
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
