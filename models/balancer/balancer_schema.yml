@@ -62,6 +62,12 @@ models:
       - &maker
         name: maker
         description: "Address of trader who sold a token"
+      - &pool_id
+        name: pool_id
+        description: "Pool id"
+      - &swap_fee
+        name: swap_fee
+        description: 'Swap fee'
       - &project_contract_address
         name: project_contract_address
         description: "Pool address"
@@ -97,9 +103,7 @@ models:
       - &pool_contract
         name: pool_contract
         description: "Address of the liquidity pool contract"
-      - &pool_id
-        name: pool_id
-        description: 'Unique encoded identifier that refers to each pool'
+      - *pool_id
       - &incentives_contract
         name: incentives_contract
         description: "Address of the contract where incentives are stored and emitted."

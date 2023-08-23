@@ -128,4 +128,5 @@ FROM (VALUES
         ,(0x09e18590e8f76b6cf471b3cd75fe1a1a9d2b2c2b, 'AIDOGE', 6)
         ,(0x82e64f49ed5ec1bc6e43dad4fc8af9bb3a2312ee, 'aPolDAI', 18)
         ,(0xcF879B434FE68d3D4Fe3616582D26537a220f04b, 'PLAY', 18)
+        ,(0x7E491F53bF807f836E2dd6C4A4FBd193e1913EFd, 'tigUSD', 18)
      ) AS temp_table (contract_address, symbol, decimals)
