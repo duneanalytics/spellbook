@@ -17,11 +17,12 @@ WITH
 
 weekly_active_addresses as (
     SELECT 
-        DISTINCT 
+            COUNT(*) as num_txns, 
             "from" as address 
         FROM 
         {{ source('optimism', 'transactions') }}
         WHERE block_time >= date_trunc('day', now() - Interval '7' Day)
+        GROUP BY 2 -- optimize with group by 
 )
 
 SELECT 
@@ -29,7 +30,8 @@ SELECT
     wd.address, 
     fa.block_time as first_active_time, 
     fa.tx_hash as first_transaction_hash, 
-    SUM((l1_fee + (gas_used * gas_price))/1e18) as gas_spent,
+    fa.first_function, 
+    SUM(gas_spent) as gas_spent,
     MAX(ot.block_time) as last_active_time, 
     CASE
            WHEN date_diff('day', min(ot.block_time), max(ot.block_time)) > 1825 THEN '5 years old User'
@@ -42,6 +44,8 @@ SELECT
            WHEN date_diff('day', min(ot.block_time), max(ot.block_time)) > 7 THEN '1 week old User'
            ELSE 'less than 1 week old User'
     END as address_age, 
+    date_diff('day', min(ot.block_time), max(ot.block_time)) as address_age_in_days,
+    date_diff('day', max(ot.block_time), CAST(NOW as timestamp)) as recency_in_days, 
     CASE
             WHEN (COUNT(ot.hash)/(date_diff('day', min(ot.block_time), max(ot.block_time)) + 1)) >= 1 THEN 'Daily User'
             WHEN (COUNT(ot.hash)/(date_diff('day', min(ot.block_time), max(ot.block_time)) + 1)) >= 0.142857142857 THEN 'Weekly User'
@@ -50,11 +54,38 @@ SELECT
             ELSE 'Sparse User'
     END as usage_frequency,
     COUNT(ot.hash) as number_of_transactions,
-    COUNT(DISTINCT(cm.contract_project)) as unique_dapps 
+    COUNT(DISTINCT(cm.contract_project)) as unique_dapps,
+    MIN_BY(cm.contract_project, ot.block_number) as first_to_project, 
+    MIN_BY(ot.to, ot.block_number) as first_to_address
 FROM 
 weekly_active_addresses wd 
-INNER JOIN 
- {{ source('optimism', 'transactions') }} ot 
+INNER JOIN (
+        SELECT 
+            "from",
+            to, 
+            hash,
+            block_time, 
+            (l1_fee + (gas_used * gas_price))/1e18 as gas_spent,
+            data, 
+            block_number
+        FROM 
+        {{ source('optimism', 'transactions') }}
+
+        UNION ALL 
+
+        SELECT 
+            "from",
+            to,
+            hash,
+            block_time,
+            case when gas_price = 0 then 0
+            else cast(gas_limit as double) * cast(gas_price as double)/1e18
+            end as gas_spent,
+            data,
+            block_number
+        FROM 
+        {{ source('optimism_legacy_ovm1', 'transactions') }}
+) ot 
     ON wd.address = ot."from"
 INNER JOIN 
 {{ ref('addresses_events_optimism_first_activity') }} fa 
@@ -62,7 +93,7 @@ INNER JOIN
 LEFT JOIN 
 {{ ref('contracts_optimism_contract_mapping') }} cm 
     ON ot."to" = cm.contract_address 
-GROUP BY 1, 2, 3, 4
+GROUP BY 1, 2, 3, 4, 5
 
 {% else %}
 
@@ -71,7 +102,8 @@ SELECT
     ot."from" as address, 
     fa.block_time as first_active_time, 
     fa.tx_hash as first_transaction_hash, 
-    SUM((l1_fee + (gas_used * gas_price))/1e18) as gas_spent,
+    fa.first_function, 
+    SUM(gas_spent) as gas_spent,
     MAX(ot.block_time) as last_active_time, 
     CASE
            WHEN date_diff('day', min(ot.block_time), max(ot.block_time)) > 1825 THEN '5 years old User'
@@ -84,6 +116,8 @@ SELECT
            WHEN date_diff('day', min(ot.block_time), max(ot.block_time)) > 7 THEN '1 week old User'
            ELSE 'less than 1 week old User'
     END as address_age, 
+    date_diff('day', min(ot.block_time), max(ot.block_time)) as address_age_in_days,
+    date_diff('day', max(ot.block_time), CAST(NOW as timestamp)) as recency_in_days, 
     CASE
             WHEN (COUNT(ot.hash)/(date_diff('day', min(ot.block_time), max(ot.block_time)) + 1)) >= 1 THEN 'Daily User'
             WHEN (COUNT(ot.hash)/(date_diff('day', min(ot.block_time), max(ot.block_time)) + 1)) >= 0.142857142857 THEN 'Weekly User'
@@ -92,15 +126,43 @@ SELECT
             ELSE 'Sparse User'
     END as usage_frequency,
     COUNT(ot.hash) as number_of_transactions,
-    COUNT(DISTINCT(cm.contract_project)) as unique_dapps 
+    COUNT(DISTINCT(cm.contract_project)) as unique_dapps,
+    MIN_BY(cm.contract_project, ot.block_number) as first_to_project, 
+    MIN_BY(ot.to, ot.block_number) as first_to_address
 FROM 
-{{ source('optimism', 'transactions') }} ot 
+(
+        SELECT 
+            "from",
+            to, 
+            hash,
+            block_time, 
+            (l1_fee + (gas_used * gas_price))/1e18 as gas_spent,
+            data, 
+            block_number
+        FROM 
+        {{ source('optimism', 'transactions') }}
+
+        UNION ALL 
+
+        SELECT 
+            "from",
+            to,
+            hash,
+            block_time,
+            case when gas_price = 0 then 0
+            else cast(gas_limit as double) * cast(gas_price as double)/1e18
+            end as gas_spent,
+            data,
+            block_number
+        FROM 
+        {{ source('optimism_legacy_ovm1', 'transactions') }}
+) ot 
 INNER JOIN 
 {{ ref('addresses_events_optimism_first_activity') }} fa 
     ON ot."from" = fa.address
 LEFT JOIN 
 {{ ref('contracts_optimism_contract_mapping') }} cm 
     ON ot."to" = cm.contract_address 
-GROUP BY 1, 2, 3, 4
+GROUP BY 1, 2, 3, 4, 5 
 
 {% endif %}
