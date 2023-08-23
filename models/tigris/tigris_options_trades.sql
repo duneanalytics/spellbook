@@ -14,6 +14,8 @@
 ] %}
 
 
+
+-- test 
 SELECT *
 FROM (
     {% for trade_model in options_models %}
