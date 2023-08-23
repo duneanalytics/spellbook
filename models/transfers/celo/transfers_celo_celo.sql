@@ -13,6 +13,7 @@
                                     \'["msilb7", "chuxin", "tomfutago"]\') }}'
     )
 }}
+
 with celo_transfers as (
     select
         r."from"
@@ -32,7 +33,7 @@ with celo_transfers as (
     from {{ source('celo', 'traces') }} as r
     join {{ source('celo', 'transactions') }} as t
         on r.tx_hash = t.hash
-        and r.block_number = t.block_number
+        and r.block_time = t.block_time
     where
         (r.call_type not in ('delegatecall', 'callcode', 'staticcall') or r.call_type is null)
         and r.tx_success
@@ -64,7 +65,7 @@ with celo_transfers as (
     from {{ source('erc20_celo', 'evt_transfer') }} as r
     join {{ source('celo', 'transactions') }} as t
         on r.evt_tx_hash = t.hash
-        and r.evt_block_number = t.block_number
+        and r.evt_block_time = t.block_time
     where
         r.contract_address = 0xDeadDeAddeAddEAddeadDEaDDEAdDeaDDeAD0000
         and t.success
@@ -76,3 +77,4 @@ with celo_transfers as (
 )
 select *
 from celo_transfers
+limit 1000000
