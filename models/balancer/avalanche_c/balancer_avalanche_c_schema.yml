@@ -276,9 +276,7 @@ models:
         name: contract_address
         description: "Address of BPT being transfered"
       - *block_date
-      - &block_month
-        name: block_month
-        description: "UTC event block month"
+      - *block_month
       - *evt_index
       - &evt_block_time
         name: evt_block_time
