@@ -14,15 +14,14 @@ SELECT 'optimism' AS blockchain
 , MIN_BY(et."to", et.block_number) AS first_activity_to
 , MIN(et.block_time) AS block_time
 , MIN(et.block_number) AS block_number
-, MIN_BY(et.tx_hash, et.block_number) AS tx_hash
-FROM {{ source('optimism', 'traces') }} et
+, MIN_BY(et.hash, et.block_number) AS tx_hash
+, MIN_BY((bytearray_substring(et.data, 1, 4)), et.block_number) as first_function
+FROM {{ source('optimism', 'transactions') }} et
 {% if is_incremental() %}
 LEFT JOIN {{this}} ffb ON et."from" = ffb.address WHERE ffb.address IS NULL
 {% else %}
 WHERE 1 = 1
 {% endif %}
-AND et.success
-AND (et.call_type NOT IN ('delegatecall', 'callcode', 'staticcall') OR et.call_type IS NULL)
 {% if is_incremental() %}
 AND et.block_time >= date_trunc('day', now() - interval '7' day)
 {% endif %}
