@@ -75,12 +75,12 @@ enriched_evt_all as(
         ,pb.token_address as token_sold_address
     FROM exchange_evt_all eb
     INNER JOIN {{ ref('ellipsis_finance_bnb_pool_tokens') }} pa
-        ON eb.bought_id = token_id
+        ON eb.bought_id = cast(pa.token_id as int256)
         AND eb.project_contract_address = pa.pool
         AND pa.token_type = 'pool_token'
     INNER JOIN
     {{ ref('ellipsis_finance_bnb_pool_tokens') }} pb
-        ON eb.sold_id = token_id
+        ON eb.sold_id = cast(pb.token_id as int256)
         AND eb.project_contract_address = pb.pool
         AND pb.token_type = 'pool_token'
 
@@ -92,12 +92,12 @@ enriched_evt_all as(
         ,pb.token_address as token_sold_address
     FROM exchange_und_evt_all eb
     INNER JOIN {{ ref('ellipsis_finance_bnb_pool_tokens') }} pa
-        ON eb.bought_id = token_id
+        ON eb.bought_id = cast(pa.token_id as int256)
         AND eb.project_contract_address = pa.pool
         AND pa.token_type = 'underlying_token_bought'
     INNER JOIN
     {{ ref('ellipsis_finance_bnb_pool_tokens') }} pb
-        ON eb.sold_id = token_id
+        ON eb.sold_id = cast(pb.token_id as int256)
         AND eb.project_contract_address = pb.pool
         AND pb.token_type = 'underlying_token_sold'
 )
