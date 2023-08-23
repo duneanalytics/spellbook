@@ -16,7 +16,41 @@ SELECT 'optimism' AS blockchain
 , MIN(et.block_number) AS block_number
 , MIN_BY(et.hash, et.block_number) AS tx_hash
 , MIN_BY((bytearray_substring(et.data, 1, 4)), et.block_number) as first_function
-FROM {{ source('optimism', 'transactions') }} et
+FROM (
+    {% if is_incremental() %}
+    SELECT 
+        "from", 
+        to,
+        block_number,
+        block_time,
+        hash, 
+        data
+    FROM 
+    {{ source('optimism', 'transactions') }}
+
+    UNION ALL 
+
+    SELECT 
+        "from", 
+        to,
+        block_number,
+        block_time,
+        hash, 
+        data
+    FROM 
+    {{ source('optimism_legacy_ovm1', 'transactions') }}
+    {% else %} -- Only check data fron ovm table on first run 
+        SELECT 
+        "from", 
+        to,
+        block_number,
+        block_time,
+        hash, 
+        data
+    FROM 
+    {{ source('optimism', 'transactions') }}
+    {% endif %}
+    ) et
 {% if is_incremental() %}
 LEFT JOIN {{this}} ffb ON et."from" = ffb.address WHERE ffb.address IS NULL
 {% else %}
