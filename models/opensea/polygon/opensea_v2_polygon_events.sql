@@ -102,6 +102,7 @@ SELECT
   a.token_standard,
   a.contract_address AS project_contract_address,
   a.evt_type,
+  a.evt_index,
   CAST(NULL AS varchar) AS collection,
   CASE WHEN a.number_of_items = uint256 '1' THEN 'Single Item Trade' ELSE 'Bundle Trade' END AS trade_type,
   coalesce(a.number_of_items, uint256 '1') AS number_of_items,
