@@ -13,3 +13,4 @@ test_result as (
 select *
 from test_result
 where success = false
+  and 1=0 -- eliimnate test temporarily

@@ -48,8 +48,10 @@ with
             and evt_block_time >= date_trunc('day', now() - interval '7' day)
             {% endif %}
 
-    ),
-
+    )
+    
+    /*,
+    -- Wrapped Celo looks to work differently than WETH - commenting this section out for now
     deposited_wcelo as (
         select
             bytearray_substring(topic1,13,20) as wallet_address,
@@ -87,15 +89,20 @@ with
             and block_time >= date_trunc('day', now() - interval '7' day)
             {% endif %}
     )
+    */
     
 select 'celo' as blockchain, wallet_address, token_address, block_time, block_month, amount_raw, index, tx_hash
 from sent_transfers
 union
 select 'celo' as blockchain, wallet_address, token_address, block_time, block_month, amount_raw, index, tx_hash
 from received_transfers
+limit 100 -- just test
+
+/*
 union
 select 'celo' as blockchain, wallet_address, token_address, block_time, block_month, amount_raw, index, tx_hash
 from deposited_wcelo
 union
 select 'celo' as blockchain, wallet_address, token_address, block_time, block_month, amount_raw, index, tx_hash
 from withdrawn_wcelo
+*/
