@@ -14,6 +14,8 @@ models:
       - &edition_address
         name: edition_address
         description: "Edition (token) Address"
+        tests:
+          - unique
       - &created_tx_hash
         name: created_tx_hash
         description: "TX hash when created"
@@ -23,7 +25,6 @@ models:
       - &created_block_time
         name: created_block_time
         description: "Block Time when created"
-
       - &edition_name
         name: edition_name
         description: "Edition (token) name"
@@ -39,7 +40,6 @@ models:
       - &royalty_pct
         name: royalty_pct
         description: "Royalty percentage (in decimal form)"
-      
       - &image_uri
         name: image_uri
         description: Image URI"
@@ -52,7 +52,6 @@ models:
       - &metadata_uri_base
         name: metadata_uri_base
         description: "metadata_uri_base"
-
       - &funds_recipient
         name: funds_recipient
         description: "Address receiving funds"

@@ -16,6 +16,8 @@ models:
       - &edition_address
         name: edition_address
         description: "Edition (token) Address"
+        tests:
+          - unique
       - &created_tx_hash
         name: created_tx_hash
         description: "TX hash when created"
@@ -25,7 +27,6 @@ models:
       - &created_block_time
         name: created_block_time
         description: "Block Time when created"
-
       - &admin
         name: admin
       - &name
