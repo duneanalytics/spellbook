@@ -96,5 +96,5 @@
         from equality_tests
     ) all
     -- equality check can be null so we have to check explicitly for nulls
-    where equality_check = false or equality_check is null
+    where equality_check is distinct from true
 {% endmacro %}
