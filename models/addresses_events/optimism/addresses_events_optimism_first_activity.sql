@@ -18,7 +18,7 @@ SELECT 'optimism' AS blockchain
 , MIN_BY((CASE 
             WHEN (bytearray_substring(et.data, 1, 4)) = 0x AND et.gas_used = 21000 AND et.value > 0 THEN 'eth_transfer' 
             ELSE COALESCE(sig.function, CAST((bytearray_substring(et.data, 1, 4)) as VARCHAR))  
-    ), et.block_number) as first_function
+    END), et.block_number) as first_function
 , MIN_BY(et.value/1e18, et.block_number) as first_eth_transferred
 FROM (
     {% if not is_incremental() %}
