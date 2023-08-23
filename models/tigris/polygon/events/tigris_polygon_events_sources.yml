@@ -142,11 +142,15 @@ sources:
         loaded_at_field: evt_block_time
       - name: TradingV3_evt_AddToPosition
         loaded_at_field: evt_block_time
+      - name: TradingV4_evt_AddToPosition
+        loaded_at_field: evt_block_time
       - name: Trading_evt_PositionClosed
         loaded_at_field: evt_block_time
       - name: TradingV2_evt_PositionClosed
         loaded_at_field: evt_block_time
       - name: TradingV3_evt_PositionClosed
+        loaded_at_field: evt_block_time
+      - name: TradingV4_evt_PositionClosed
         loaded_at_field: evt_block_time
       - name: Trading_evt_LimitOrderExecuted
         loaded_at_field: evt_block_time
@@ -154,17 +158,23 @@ sources:
         loaded_at_field: evt_block_time
       - name: TradingV3_evt_LimitOrderExecuted
         loaded_at_field: evt_block_time
+      - name: TradingV4_evt_LimitOrderExecuted
+        loaded_at_field: evt_block_time
       - name: Trading_evt_PositionLiquidated
         loaded_at_field: evt_block_time
       - name: TradingV2_evt_PositionLiquidated
         loaded_at_field: evt_block_time
       - name: TradingV3_evt_PositionLiquidated
         loaded_at_field: evt_block_time
+      - name: TradingV4_evt_PositionLiquidated
+        loaded_at_field: evt_block_time
       - name: Trading_evt_MarginModified
         loaded_at_field: evt_block_time
       - name: TradingV2_evt_MarginModified
         loaded_at_field: evt_block_time
       - name: TradingV3_evt_MarginModified
+        loaded_at_field: evt_block_time
+      - name: TradingV4_evt_MarginModified
         loaded_at_field: evt_block_time  
       - name: Trading_call_addMargin
         loaded_at_field: call_block_time
@@ -172,11 +182,15 @@ sources:
         loaded_at_field: call_block_time
       - name: TradingV3_call_addMargin
         loaded_at_field: call_block_time
+      - name: TradingV4_call_addMargin
+        loaded_at_field: call_block_time
       - name: Trading_call_removeMargin
         loaded_at_field: call_block_time
       - name: TradingV2_call_removeMargin
         loaded_at_field: call_block_time
       - name: TradingV3_call_removeMargin
+        loaded_at_field: call_block_time
+      - name: TradingV4_call_removeMargin
         loaded_at_field: call_block_time
       - name: Trading_evt_PositionOpened
         loaded_at_field: evt_block_time
@@ -184,9 +198,13 @@ sources:
         loaded_at_field: evt_block_time
       - name: TradingV3_evt_PositionOpened
         loaded_at_field: evt_block_time
+      - name: TradingV4_evt_PositionOpened
+        loaded_at_field: evt_block_time
       - name: limit_order_trading_evt
         loaded_at_field: evt_block_time
       - name: PairsContract_evt_AssetAdded
+        loaded_at_field: evt_block_time
+      - name: PairsContract_v2_evt_AssetAdded
         loaded_at_field: evt_block_time
       - name: Trading_evt_LimitCancelled
         loaded_at_field: evt_block_time
@@ -194,7 +212,7 @@ sources:
         loaded_at_field: evt_block_time
       - name: TradingV3_evt_LimitCancelled
         loaded_at_field: evt_block_time
-      - name: PairsContract_v2_evt_AssetAdded
+      - name: TradingV4_evt_LimitCancelled
         loaded_at_field: evt_block_time
       - name: options_evt_TradeOpened
         loaded_at_field: evt_block_time
@@ -209,6 +227,8 @@ sources:
       - name: TradingV2_evt_FeesDistributed
         loaded_at_field: evt_block_time
       - name: TradingV3_evt_FeesDistributed
+        loaded_at_field: evt_block_time
+      - name: TradingV4_evt_FeesDistributed
         loaded_at_field: evt_block_time
       - name: options_evt_OptionsFeesDistributed
         loaded_at_field: evt_block_time
