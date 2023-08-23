@@ -25,7 +25,7 @@ SELECT
 
 FROM {{ ref('contracts_optimism_contract_mapping') }}
 where 1=1 -- limit by time
-    and created_time > from_iso8601_timestamp('2023-06-01')
+    and created_time > TIMESTAMP '2023-06-01'
     {% if is_incremental() %}
     AND created_time >= date_trunc('day', now() - interval '7' day)
     {% endif %}
