@@ -88,6 +88,10 @@ sources:
         loaded_at_field: evt_block_time
       - name: TradingV5_evt_LimitCancelled
         loaded_at_field: evt_block_time
+      - name: TradingV4_evt_FeesDistributed
+        loaded_at_field: evt_block_time
+      - name: TradingV5_evt_FeesDistributed
+        loaded_at_field: evt_block_time
 
   - name: tigristrade_v2_arbitrum
     description: "tigris trade arbitrum decoded events & calls on v2"
@@ -151,4 +155,20 @@ sources:
       - name: TradingV2_evt_LimitCancelled
         loaded_at_field: evt_block_time
       - name: TradingV3_evt_LimitCancelled
+        loaded_at_field: evt_block_time
+      - name: options_evt_TradeOpened
+        loaded_at_field: evt_block_time
+      - name: options_evt_OptionsLimitOrderExecuted
+        loaded_at_field: evt_block_time
+      - name: options_evt_TradeClosed
+        loaded_at_field: evt_block_time
+      - name: options_evt_OptionsLimitCancelled
+        loaded_at_field: evt_block_time
+      - name: Trading_evt_FeesDistributed
+        loaded_at_field: evt_block_time
+      - name: TradingV2_evt_FeesDistributed
+        loaded_at_field: evt_block_time
+      - name: TradingV3_evt_FeesDistributed
+        loaded_at_field: evt_block_time
+      - name: options_evt_OptionsFeesDistributed
         loaded_at_field: evt_block_time

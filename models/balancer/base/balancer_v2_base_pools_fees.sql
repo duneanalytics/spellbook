@@ -22,9 +22,6 @@ WITH registered_pools AS (
         DISTINCT poolAddress AS pool_address
     FROM
         {{ source ('balancer_v2_base', 'Vault_evt_PoolRegistered') }}
-    {% if is_incremental() %}
-    WHERE evt_block_time >= DATE_TRUNC('day', NOW() - interval '7' day)
-    {% endif %}
 )
 SELECT
     'base' AS blockchain,
