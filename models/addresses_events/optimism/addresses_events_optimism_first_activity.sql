@@ -9,8 +9,6 @@
     )
 }}
 
-(bytearray_substring(et.data, 1, 4))
-
 SELECT 'optimism' AS blockchain
 , et."from" AS address
 , MIN_BY(et."to", et.block_number) AS first_activity_to
