@@ -128,6 +128,10 @@ sources:
         loaded_at_field: evt_block_time
       - name: TradingV8_evt_LimitCancelled
         loaded_at_field: evt_block_time
+      - name: TradingV7_evt_FeesDistributed
+        loaded_at_field: evt_block_time
+      - name: TradingV8_evt_FeesDistributed
+        loaded_at_field: evt_block_time
 
   - name: tigristrade_v2_polygon
     description: "tigris trade polygon decoded events & calls on v2"
@@ -191,4 +195,20 @@ sources:
       - name: TradingV3_evt_LimitCancelled
         loaded_at_field: evt_block_time
       - name: PairsContract_v2_evt_AssetAdded
+        loaded_at_field: evt_block_time
+      - name: options_evt_TradeOpened
+        loaded_at_field: evt_block_time
+      - name: options_evt_OptionsLimitOrderExecuted
+        loaded_at_field: evt_block_time
+      - name: options_evt_TradeClosed
+        loaded_at_field: evt_block_time
+      - name: options_evt_OptionsLimitCancelled
+        loaded_at_field: evt_block_time
+      - name: Trading_evt_FeesDistributed
+        loaded_at_field: evt_block_time
+      - name: TradingV2_evt_FeesDistributed
+        loaded_at_field: evt_block_time
+      - name: TradingV3_evt_FeesDistributed
+        loaded_at_field: evt_block_time
+      - name: options_evt_OptionsFeesDistributed
         loaded_at_field: evt_block_time

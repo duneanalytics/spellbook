@@ -1,7 +1,7 @@
 {{ config(
     tags=['dunesql'],
         alias = alias('trades'),
-        post_hook='{{ expose_spells(\'["fantom"]\',
+        post_hook='{{ expose_spells(\'["fantom", "optimism"]\',
                                 "project",
                                 "lifi",
                                 \'["Henrystats"]\') }}'
@@ -10,6 +10,7 @@
 
 {% set lifi_models = [
 ref('lifi_fantom_trades')
+,ref('lifi_optimism_trades')
 ] %}
 
 
