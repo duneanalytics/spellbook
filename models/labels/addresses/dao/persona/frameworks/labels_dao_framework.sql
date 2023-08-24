@@ -1,4 +1,7 @@
-{{config(alias = alias('dao_framework'))}}
+{{config(
+    tags=['dunesql'],
+    alias = alias('dao_framework')
+)}}
 
 WITH dao_address_w_name AS (
     SELECT
@@ -35,7 +38,7 @@ SELECT
     'dao' as category,
     'henrystats' as contributor,
     'query' as source, 
-    timestamp('2022-11-05') as created_at,
+    TIMESTAMP '2022-11-05' as created_at,
     now() as updated_at,
     'dao_framework' as model_name,
     'persona' as label_type
