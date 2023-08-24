@@ -36,6 +36,9 @@ models:
       - &positions_contract
         name: positions_contract
         description: "corresponding position contract address"
+      - &protocol_version
+        name: protocol_version
+        description: "tigris project version "
   
   - name: tigris_polygon_positions_close
     meta:
@@ -90,9 +93,7 @@ models:
       - &price
         name: price 
         description: "entry price of trade"
-      - &protocol_version
-        name: protocol_version
-        description: "tigris project version "
+      - *protocol_version
 
   - name: tigris_polygon_positions_margin
     meta:
