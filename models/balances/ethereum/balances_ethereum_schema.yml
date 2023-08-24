@@ -19,6 +19,9 @@ models:
       - &hour
         name: hour
         description: "UTC event block time truncated to the hour mark"
+      - &day
+        name: day
+        description: "UTC event block time truncated to the day mark"
       - &wallet_address
         name: wallet_address
         description: "Address of the wallet holding this ERC20 token"
@@ -51,9 +54,7 @@ models:
         Depends on erc20_ethereum_transfers.
     columns:
       - *blockchain
-      - &day
-        name: day
-        description: "UTC event block time truncated to the day mark"
+      - *day
       - *wallet_address
       - *token_address
       - *amount_raw
