@@ -1,7 +1,8 @@
 {{ config
 (
-    tags=['dunesql'],
-    alias = alias('aggregator_trades'),
+    tags = ['dunesql'],
+    schema = 'kyberswap_aggregator',
+    alias = alias('trades'),
     post_hook='{{ expose_spells(\'["arbitrum"]\',
                             "project",
                             "kyberswap",
