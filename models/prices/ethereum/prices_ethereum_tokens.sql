@@ -157,7 +157,6 @@ FROM
     ('fxc-flexacoin', 'ethereum', 'FXC', 0x4a57e687b9126435a9b19e4a802113e266adebde, 18),
     ('fxs-frax-share', 'ethereum', 'FXS', 0x3432b6a60d23ca0dfca7761b7ab56459d9c964d0, 18),
     ('gala-gala', 'ethereum', 'GALA', 0x15d4c048f83bd7e37d49ea4c83a07267ec4203da, 8),
-    ('gamma-gamma-strategies', 'ethereum', 'GAMMA', 0x6bea7cfef803d1e3d5f7c0103f7ded065644e197, 18),
     ('gbp-pound-sterling-token', 'ethereum', 'ibGBP', 0x69681f8fde45345c3870bcd5eaf4a05a60e7d227, 18),
     ('gcr-global-coin-research', 'ethereum', 'GCR', 0x6307b25a665efc992ec1c1bc403c38f3ddd7c661, 4),
     ('gen-daostack', 'ethereum', 'GEN', 0x543ff227f64aa17ea132bf9886cab5db55dcaddf, 18),
@@ -1135,7 +1134,6 @@ FROM
     ('dfnd-dfund', 'ethereum', 'DFND', 0xd2adc1c84443ad06f0017adca346bd9b6fc52cab, 18),
     ('el-elysia', 'ethereum', 'EL', 0x2781246fe707bb15cee3e5ea354e2154a2877b16, 18),
     ('flurry-flurry-finance', 'ethereum', 'FLURRY', 0x60f63b76e2fc1649e57a3489162732a90acf59fe, 18),
-    ('frr-frontrow', 'ethereum', 'FRR', 0xe6602b34d8510b033e000975b3322537c7172441, 18),
     ('gcake-pancake-games', 'ethereum', 'GCAKE', 0x5f944b0c4315cb7c3a846b025ab4045da44abf6c, 18),
     ('gny-gny', 'ethereum', 'GNY', 0xb1f871ae9462f1b2c6826e88a7827e76f86751d4, 18),
     ('krl-kryll', 'ethereum', 'KRL', 0x464ebe77c293e473b48cfe96ddcf88fcf7bfdac0, 18),
@@ -1618,7 +1616,8 @@ FROM
     ('grain-granary','ethereum','GRAIN',0xf88baf18fab7e330fa0c4f83949e23f52fececce,18),
     ('verse-verse-token', 'ethereum', 'VERSE', 0x249ca82617ec3dfb2589c4c17ab7ec9765350a18, 18),
     ('mc-merit-circle', 'ethereum', 'MC', 0x949d48eca67b17269629c7194f4b727d4ef9e5d6, 18),
-    ('r-r-stablecoin', 'ethereum', 'R', 0x183015a9ba6ff60230fdeadc3f43b3d788b13e21, 18)
+    ('r-r-stablecoin', 'ethereum', 'R', 0x183015a9ba6ff60230fdeadc3f43b3d788b13e21, 18),
+    ('gnx-genaro-network', 'ethereum', 'GNX', 0x6ec8a24cabdc339a06a172f8223ea557055adaa5, 9)
     ) as temp (token_id, blockchain, symbol, contract_address, decimals)
 where contract_address not in (
     -- bad price feeds

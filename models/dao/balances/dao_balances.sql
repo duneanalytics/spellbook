@@ -3,7 +3,7 @@
     alias = alias('balances'),
     materialized = 'table',
     file_format = 'delta',
-    post_hook='{{ expose_spells(\'["ethereum", "gnosis", "polygon"]\',
+    post_hook='{{ expose_spells(\'["ethereum", "gnosis", "polygon", "base"]\',
                                 "sector",
                                 "dao",
                                 \'["Henrystats"]\') }}')
@@ -101,7 +101,7 @@ LEFT JOIN
     AND p.blockchain = db.blockchain
 LEFT JOIN 
     {{ source('prices', 'usd') }} e 
-    ON db.asset_contract_address = 0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee
+    ON db.asset_contract_address IN (0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee, 0xDeadDeAddeAddEAddeadDEaDDEAdDeaDDeAD0000)
     AND d.day = e.minute
     AND db.blockchain = 'ethereum'
     AND e.blockchain = 'ethereum'
