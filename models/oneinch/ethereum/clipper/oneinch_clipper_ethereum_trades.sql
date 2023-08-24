@@ -284,4 +284,3 @@ LEFT JOIN {{ source('prices', 'usd') }} as prices_eth
     {% else %}
     AND prices_eth.minute >= TIMESTAMP '{{project_start_date}}'
     {% endif %}
-;
