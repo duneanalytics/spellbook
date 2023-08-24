@@ -16,6 +16,7 @@ WITH dao_address_w_name AS (
 
     FROM {{ ref('dao_addresses') }}
     WHERE dao_creator_tool != 'zodiac' -- excluding zodiac since they're gnosis safes
+      AND dao != 0x  -- excluding empty addresses
 
     UNION  -- using a union because there are daos whose contract address also receives and send funds
 
@@ -30,6 +31,7 @@ WITH dao_address_w_name AS (
     FROM {{ ref('dao_addresses') }}
     WHERE dao_creator_tool NOT IN ('zodiac', 'syndicate') -- excluding syndicate since their wallet addresses are controlled by EOAs
                                                          -- excluding zodiac since they're gnosis safes
+      AND dao_wallet_address != 0x  -- excluding empty addresses
 )
 SELECT 
     blockchain,
