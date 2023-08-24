@@ -20,7 +20,6 @@ models:
             - version
             - tx_hash
             - evt_index
-            - trace_address
       - check_dex_seed:
           blockchain: ethereum
           project: verse_dex
@@ -89,9 +88,6 @@ models:
       - &tx_to
         name: tx_to
         description: "Address which received the transaction"
-      - &trace_address
-        name: trace_address
-        description: ""
       - &evt_index
         name: evt_index
         description: ""

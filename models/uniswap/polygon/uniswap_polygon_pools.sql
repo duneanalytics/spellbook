@@ -1,6 +1,7 @@
 {{ config(
+    tags = ['dunesql'],
     schema = 'uniswap_polygon',
-    alias = 'pools',
+    alias = alias('pools'),
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
@@ -22,7 +23,7 @@ SELECT 'polygon' AS blockchain
 , evt_block_time AS creation_block_time
 , evt_block_number AS creation_block_number
 , contract_address
-FROM {{ source('uniswap_v3_polygon', 'factory_polygon_evt_PoolCreated') }}
+FROM {{ source('uniswap_v3_polygon', 'Factory_evt_PoolCreated') }}
 {% if is_incremental() %}
-WHERE evt_block_time >= date_trunc("day", now() - interval '1 week')
+WHERE evt_block_time >= date_trunc('day', now() - interval '7' day)
 {% endif %}

@@ -1,7 +1,7 @@
 version: 2
 
-sources: 
-  - name: arbitrum_airdrop_arbitrum
+sources:
+  - name: arbitrum_arbitrum
     description: >
       Arbitrum contracts on Arbitrum
     tables:

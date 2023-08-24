@@ -1,6 +1,6 @@
 {{ config(
     schema = 'synthetix_optimism',
-    alias = 'spot_trades',
+    alias = alias('spot_trades'),
     partition_by = ['block_date'],
     materialized = 'incremental',
     file_format = 'delta',

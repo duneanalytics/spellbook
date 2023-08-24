@@ -1,5 +1,5 @@
 {{ config(
-    alias ='product_information',
+    alias = alias('product_information'),
     materialized='table',
     file_format = 'delta',
     tags=['static'],

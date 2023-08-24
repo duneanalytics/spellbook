@@ -1,5 +1,5 @@
-{{ config(
-    alias = 'infrastructure',
+{{ config(tags=['dunesql'],
+    alias = alias('infrastructure'),
     materialized = 'table',
     file_format = 'delta',
     post_hook='{{ expose_spells(\'["ethereum"]\',

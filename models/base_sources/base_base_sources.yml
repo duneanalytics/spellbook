@@ -65,6 +65,20 @@ sources:
             description: "Transaction type"
           - name: access_list
             description: "Specifies a list of addresses and storage keys"
+          - name: l1_block_number
+            description: "Block number on L1"
+          - name: l1_fee
+            description: "L1 Fees that the Base protocol pays to submit L2 transactions to L1 (also referred to as L1 Security Fees or Security Costs)"
+          - name: l1_fee_scalar
+            description: "This value covers the change in L1 gas price between the time the transaction is submitted and when it is published, as well as the income Base needs to keep the system running. Currently set at 1.0"
+          - name: l1_gas_price
+            description: "Gas price on L1"
+          - name: l1_gas_used
+            description: "The gas used on L1 to publish the transaction"
+          - name: l1_timestamp
+            description: "The timestamp when the transaction is batched and confirmed on L1"
+          - name: l1_tx_origin
+            description: "L1 transaction origin address. This is not null for L1→L2 transactions: https://optimistic.etherscan.io/txsEnqueued"
 
       - name: traces
         loaded_at_field: block_time
@@ -116,7 +130,7 @@ sources:
 
       - name: traces_decoded
         loaded_at_field: block_time
-        description: "An Base trace is a small atomic action that modify the internal state of the Ethereum Virtual Machine. The three main trace types are call, create, and suicide. Decoded traces include additional information based on submitted smart contracts and their ABI"
+        description: "A Base trace is a small atomic action that modify the internal state of the Ethereum Virtual Machine. The three main trace types are call, create, and suicide. Decoded traces include additional information based on submitted smart contracts and their ABI"
         columns:
           - *block_date
           - *block_time
@@ -144,7 +158,7 @@ sources:
           - *block_number
           - *block_hash
           - name: contract_address
-            description: "Address of the base smart contract generating the log"
+            description: "Address of the Base smart contract generating the log"
           - name: topic1
             description: "Topics are 32-byte (256 bit) “words” that are used to describe what’s going on in an event. The first topic usually consists of the signature of the name of the event that occurred, including the types (uint256, string, etc.) of its parameters."
           - name: topic2
@@ -170,13 +184,13 @@ sources:
           - name: index
             description: "Log index"
           - name: contract_address
-            description: "Address of the base smart contract generating the log"
+            description: "Address of the Base smart contract generating the log"
           - name: contract_name
-            description: "Name of the base smart contract generating the log"
+            description: "Name of the Base smart contract generating the log"
           - name: event_name
-            description: "Name of the base smart contract event generating the log"
+            description: "Name of the Base smart contract event generating the log"
           - name: namespace
-            description: "Namespace of the base smart contract generating the log"
+            description: "Namespace of the Base smart contract generating the log"
           - name: signature
             description: "Signature of the event"
           - *tx_hash
@@ -222,7 +236,7 @@ sources:
           - name: dynamic
             description: "Boolean indicating whether the contract is dynamic or not"
           - name: base
-            description: "Boolean indicating whether the contract is the base contract or not"
+            description: "Boolean indicating whether the contract is the Base contract or not"
           - name: factory
             description: "Boolean indicating whether the contract is a factory contract or not"
           - name: detection_source
@@ -232,7 +246,6 @@ sources:
                   values: ["factory", "base", "dynamic"]
           - name: created_at
             description: "Timestamp for contract creation"
-
       - name: creation_traces
         loaded_at_field: block_time
         description: "Base creation traces"
@@ -277,30 +290,27 @@ sources:
           - name: value
             description: "Amount of ERC20 token transferred"
 
-      - name: evt_approval
+      - name: evt_Approval
         loaded_at_field: evt_block_time
         description: "Approval events for ERC20 tokens on Base."
+        freshness:
+          warn_after: { count: 12, period: hour }
+          error_after: { count: 24, period: hour }
         columns:
           - name: contract_address
             description: "ERC20 token contract address"
-          - *evt_tx_hash
-          - *evt_index
-          - *evt_block_time
           - *evt_block_number
-          - name: approved
-            description: "Approved"
-          - name: owner
-            description: "Owner"
-          - name: spender
-            description: "Spender"
-          - name: value
-            description: "Amount of ERC20 token transferred"
+          - *evt_block_time
+          - *evt_index
+          - *evt_tx_hash
+          - &owner
+            name: owner
+          - &spender
+            name: spender
+          - *value
 
   - name: erc1155_base
     description: "Transfers events for ERC1155 tokens on Base."
-    freshness:
-      warn_after: { count: 12, period: hour }
-      error_after: { count: 24, period: hour }
     tables:
       - name: evt_transfersingle
         loaded_at_field: evt_block_time
@@ -353,9 +363,7 @@ sources:
           - &approved
             name: approved
             description: "Is approved"
-          - &owner
-            name: owner
-            description: "Owner"
+          - *owner
           - name: account
             description: "Account"
           - &operator

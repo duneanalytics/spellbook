@@ -1,0 +1,12 @@
+version: 2
+
+seeds:
+  - name: first_funded_by_seed
+    config:
+      tags: dunesql
+      column_types:
+        blockchain: varchar
+        address: varbinary
+        first_funded_by: varbinary
+        block_number: bigint
+        tx_hash: varbinary

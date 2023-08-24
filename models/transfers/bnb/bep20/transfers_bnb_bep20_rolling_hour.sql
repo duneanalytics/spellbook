@@ -1,5 +1,5 @@
 {{ config(
-        alias ='bep20_rolling_hour'
+        alias = alias('bep20_rolling_hour')
         )
 }}
 

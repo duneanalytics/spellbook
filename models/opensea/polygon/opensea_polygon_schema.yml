@@ -225,8 +225,10 @@ models:
             - token_id
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
-            - block_date
-            - unique_trade_id
+            - tx_hash
+            - evt_type
+            - evt_index
+            - token_id
     columns:
       - *project
       - *version
@@ -278,7 +280,12 @@ models:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - block_date
-            - unique_trade_id
+            - tx_hash
+            - evt_index
+            - nft_contract_address
+            - token_id
+            - sub_type
+            - sub_idx
       - check_seed:
           seed_file: ref('opensea_polygon_seaport_trades_samples')
           filter:
@@ -369,7 +376,12 @@ models:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - block_date
-            - unique_trade_id
+            - tx_hash
+            - evt_index
+            - nft_contract_address
+            - token_id
+            - sub_type
+            - sub_idx
       - check_seed:
           seed_file: ref('opensea_polygon_seaport_trades_samples')
           filter:

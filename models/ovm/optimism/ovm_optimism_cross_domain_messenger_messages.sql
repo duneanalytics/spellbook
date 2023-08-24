@@ -1,5 +1,5 @@
 {{ config(
-    alias = 'cross_domain_messenger_messages',
+    alias = alias('cross_domain_messenger_messages'),
     partition_by = ['l2_block_date'],
     materialized = 'incremental',
     file_format = 'delta',

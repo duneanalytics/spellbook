@@ -269,11 +269,16 @@ models:
       tags: ['ethereum','opensea','v3','events']
     description: >
         OpenSea V3 events on Ethereum
-    tests:        
+    tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - block_date
-            - unique_trade_id
+            - tx_hash
+            - evt_index
+            - nft_contract_address
+            - token_id
+            - sub_type
+            - sub_idx
       - check_seed:
           seed_file: ref('opensea_ethereum_seaport_trades_samples')
           filter:
@@ -366,7 +371,12 @@ models:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - block_date
-            - unique_trade_id
+            - tx_hash
+            - evt_index
+            - nft_contract_address
+            - token_id
+            - sub_type
+            - sub_idx
       - check_seed:
           seed_file: ref('opensea_ethereum_seaport_trades_samples')
           filter:

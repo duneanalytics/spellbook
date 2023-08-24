@@ -1,5 +1,5 @@
 {{ config(
-        alias='erc1155_hour',
+        alias = alias('erc1155_hour'),
         post_hook='{{ expose_spells_hide_trino(\'["ethereum"]\',
                                             "sector",
                                             "balances",

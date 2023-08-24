@@ -10,7 +10,7 @@ models:
     config:
       tags: ['ethereum','pancakeswap_v2','trades', 'pancakeswap', 'dex']
     description: >
-        Pancakeswap V2 AMM trades on Ethereum 
+        Pancakeswap V2 AMM trades on Ethereum
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -20,7 +20,6 @@ models:
             - version
             - tx_hash
             - evt_index
-            - trace_address
       - check_dex_seed:
           blockchain: ethereum
           project: pancakeswap
@@ -32,8 +31,12 @@ models:
         description: "Project name of the DEX"
       - name: version
         description: "Version of the contract built and deployed by the DEX project"
+      - name: block_month
+        description: "UTC event block month of each DEX trade"
       - name: block_date
         description: "UTC event block date of each DEX trade"
+      - name: block_month
+        description: "UTC event block month of each DEX trade"
       - name: block_time
         description: "UTC event block time of each DEX trade"
       - name: token_bought_symbol
@@ -68,8 +71,6 @@ models:
         description: "Address which initiated the transaction"
       - name: tx_to
         description: "Address which received the transaction"
-      - name: trace_address
-        description: ""
       - name: evt_index
         description: "Index of the corresponding trade event"
 
@@ -92,7 +93,6 @@ models:
             - version
             - tx_hash
             - evt_index
-            - trace_address
       - check_dex_seed:
           blockchain: ethereum
           project: pancakeswap
@@ -106,6 +106,8 @@ models:
         description: "Version of the contract built and deployed by the DEX project"
       - name: block_date
         description: "UTC event block date of each DEX trade"
+      - name: block_month
+        description: "UTC event block month of each DEX trade"
       - name: block_time
         description: "UTC event block time of each DEX trade"
       - name: token_bought_symbol
@@ -140,8 +142,6 @@ models:
         description: "Address which initiated the transaction"
       - name: tx_to
         description: "Address which received the transaction"
-      - name: trace_address
-        description: ""
       - name: evt_index
         description: "Index of the corresponding trade event"
 
@@ -154,7 +154,7 @@ models:
     config:
       tags: ['ethereum','pancakeswap_v2','trades', 'pancakeswap', 'dex']
     description: >
-        Pancakeswap MMPool trades on Ethereum 
+        Pancakeswap MMPool trades on Ethereum
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -164,7 +164,6 @@ models:
             - version
             - tx_hash
             - evt_index
-            - trace_address
       - check_dex_seed:
           blockchain: ethereum
           project: pancakeswap
@@ -178,6 +177,8 @@ models:
         description: "Version of the contract built and deployed by the DEX project"
       - name: block_date
         description: "UTC event block date of each DEX trade"
+      - name: block_month
+        description: "UTC event block month of each DEX trade"
       - name: block_time
         description: "UTC event block time of each DEX trade"
       - name: token_bought_symbol
@@ -212,8 +213,6 @@ models:
         description: "Address which initiated the transaction"
       - name: tx_to
         description: "Address which received the transaction"
-      - name: trace_address
-        description: ""
       - name: evt_index
         description: "Index of the corresponding trade event"
 
@@ -271,7 +270,5 @@ models:
         description: "Address which initiated the transaction"
       - name: tx_to
         description: "Address which received the transaction"
-      - name: trace_address
-        description: ""
       - name: evt_index
         description: "Index of the corresponding trade event"

@@ -1,8 +1,9 @@
 {{
     config(
         materialized='table',
+        tags = ['dunesql'],
         schema='safe_celo',
-        alias='singletons',
+        alias = alias('singletons'),
         post_hook='{{ expose_spells(\'["celo"]\',
                                     "project",
                                     "safe",

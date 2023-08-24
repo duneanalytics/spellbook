@@ -1,6 +1,6 @@
 {{ config(
     schema = 'hop_protocol_optimism',
-    alias = 'flows',
+    alias = alias('flows'),
     partition_by = ['block_date'],
     materialized = 'incremental',
     file_format = 'delta',

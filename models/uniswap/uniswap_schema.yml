@@ -3,24 +3,27 @@ version: 2
 models:
   - name: uniswap_trades
     meta:
-      blockchain: ethereum, optimism, polygon, arbitrum, bnb
+      blockchain: ethereum, optimism, polygon, arbitrum, bnb, base
       sector: dex
       project: uniswap
-      contributors: jeff-dude, masquot, soispoke, 0xBoxer, Henrystats, chrispearcx
+      contributors: jeff-dude, masquot, soispoke, 0xBoxer, Henrystats, chrispearcx, wuligy
     config:
-      tags: ['ethereum', 'optimism', 'polygon', 'uniswap','trades', 'dex', 'jeff-dude','cross-chain', 'bnb']
+      tags: ['ethereum', 'optimism', 'polygon', 'uniswap','trades', 'dex', 'jeff-dude','cross-chain', 'bnb', 'base']
     description: >
         Uniswap trades on all chains across all contracts and versions. This table will load dex trades downstream.
     columns:
       - &blockchain
         name: blockchain
         description: "Blockchain which the DEX is deployed"
-      - &project 
+      - &project
         name: project
-        description: "Project name of the DEX"  
+        description: "Project name of the DEX"
       - &version
         name: version
-        description: "Version of the contract built and deployed by the DEX project"  
+        description: "Version of the contract built and deployed by the DEX project"
+      - &block_month
+        name: block_month
+        description: "UTC event block month of each DEX trade"
       - &block_date
         name: block_date
         description: "UTC event block date of each DEX trade"
@@ -75,9 +78,6 @@ models:
       - &tx_to
         name: tx_to
         description: "Address which received the transaction"
-      - &trace_address
-        name: trace_address
-        description: "address of the trace within the call graph forest"
       - &evt_index
         name: evt_index
         description: "the position of this event log within this transaction"

@@ -20,7 +20,7 @@ models:
             - tx_hash
             - evt_index
             - trace_address
-      - check_dex_aggregator_seed:
+      - check_dex_aggregator_seed_legacy:
           blockchain: ethereum
           project: 1inch
           version: 1
@@ -114,7 +114,7 @@ models:
             - tx_hash
             - evt_index
             - trace_address
-      - check_dex_aggregator_seed:
+      - check_dex_aggregator_seed_legacy:
           blockchain: ethereum
           project: 1inch
           version: 2
@@ -162,7 +162,7 @@ models:
             - tx_hash
             - evt_index
             - trace_address
-      - check_dex_aggregator_seed:
+      - check_dex_aggregator_seed_legacy:
           blockchain: ethereum
           project: 1inch
           version: 3
@@ -210,7 +210,7 @@ models:
             - tx_hash
             - evt_index
             - trace_address
-      - check_dex_aggregator_seed:
+      - check_dex_aggregator_seed_legacy:
           blockchain: ethereum
           project: 1inch
           version: 4
@@ -258,7 +258,7 @@ models:
             - tx_hash
             - evt_index
             - trace_address
-      - check_dex_aggregator_seed:
+      - check_dex_aggregator_seed_legacy:
           blockchain: ethereum
           project: 1inch
           version: 5
@@ -306,7 +306,7 @@ models:
             - tx_hash
             - evt_index
             - trace_address
-      - check_dex_aggregator_seed:
+      - check_dex_aggregator_seed_legacy:
           blockchain: ethereum
           project: 1inch
           version: 1split
@@ -354,7 +354,7 @@ models:
             - tx_hash
             - evt_index
             - trace_address
-      - check_dex_aggregator_seed:
+      - check_dex_aggregator_seed_legacy:
           blockchain: ethereum
           project: 1inch
           version: 1proto
@@ -402,7 +402,7 @@ models:
             - tx_hash
             - evt_index
             - trace_address
-      - check_dex_aggregator_seed:
+      - check_dex_aggregator_seed_legacy:
           blockchain: ethereum
           project: 1inch
           version: ZRX
@@ -494,7 +494,7 @@ models:
             - tx_hash
             - evt_index
             - trace_address
-      - check_dex_aggregator_seed:
+      - check_dex_aggregator_seed_legacy:
           blockchain: ethereum
           project: 1inch
           version: 'UNI v2'
@@ -586,7 +586,7 @@ models:
             - tx_hash
             - evt_index
             - trace_address
-      - check_dex_aggregator_seed:
+      - check_dex_aggregator_seed_legacy:
           blockchain: ethereum
           project: 1inch
           version: 'UNI v3'
@@ -634,7 +634,7 @@ models:
             - tx_hash
             - evt_index
             - trace_address
-      - check_dex_aggregator_seed:
+      - check_dex_aggregator_seed_legacy:
           blockchain: ethereum
           project: 1inch
           version: 'Clipper v1'
@@ -682,7 +682,7 @@ models:
             - tx_hash
             - evt_index
             - trace_address
-      - check_dex_aggregator_seed:
+      - check_dex_aggregator_seed_legacy:
           blockchain: ethereum
           project: 1inch Limit Order Protocol
           version: '1'
@@ -730,7 +730,7 @@ models:
             - tx_hash
             - evt_index
             - trace_address
-      - check_dex_aggregator_seed:
+      - check_dex_aggregator_seed_legacy:
           blockchain: ethereum
           project: 1inch Limit Order Protocol
           version: '2'
@@ -778,7 +778,7 @@ models:
             - tx_hash
             - evt_index
             - trace_address
-      - check_dex_aggregator_seed:
+      - check_dex_aggregator_seed_legacy:
           blockchain: ethereum
           project: 1inch Limit Order Protocol
           version: '3'
@@ -826,7 +826,7 @@ models:
             - tx_hash
             - evt_index
             - trace_address
-      - check_dex_aggregator_seed:
+      - check_dex_aggregator_seed_legacy:
           blockchain: ethereum
           project: 1inch Limit Order Protocol
           version: 'eRFQ v1'
@@ -874,7 +874,7 @@ models:
             - tx_hash
             - evt_index
             - trace_address
-      - check_dex_aggregator_seed:
+      - check_dex_aggregator_seed_legacy:
           blockchain: ethereum
           project: 1inch Limit Order Protocol
           version: 'RFQ v1'
@@ -922,7 +922,7 @@ models:
             - tx_hash
             - evt_index
             - trace_address
-      - check_dex_aggregator_seed:
+      - check_dex_aggregator_seed_legacy:
           blockchain: ethereum
           project: 1inch Limit Order Protocol
           version: 'RFQ v2'
@@ -970,7 +970,7 @@ models:
             - tx_hash
             - evt_index
             - trace_address
-      - check_dex_aggregator_seed:
+      - check_dex_aggregator_seed_legacy:
           blockchain: ethereum
           project: 1inch Limit Order Protocol
           version: 'RFQ v3'
@@ -1078,3 +1078,66 @@ models:
         name: token_symbol
         description: "Token symbol"
       - *evt_index
+
+
+  - name: oneinch_ethereum_ar_calls_transfers
+    meta:
+      blockchain: ['ethereum']
+      sector: oneinch
+      contributors: ['grkhr']
+    config:
+      tags: ['oneinch', 'raw']
+    description: >
+        oneinch ethereum calls & transfers
+
+    columns:
+      - &blockchain_not_null
+        name: blockchain
+        tests:
+          - not_null
+      - *block_time
+      - &tx_hash_not_null
+        name: tx_hash
+        tests:
+          - not_null
+      - *tx_from
+      - &tx_success
+        name: tx_success
+      - &call_success
+        name: call_success
+      - &call_trace_address
+        name: call_trace_address
+      - &caller
+        name: caller
+      - &call_selector
+        name: call_selector
+      - &transfer_trace_address
+        name: transfer_trace_address
+      - *contract_address
+      - &amount
+        name: amount
+      - &native_token
+        name: native_token
+      - &transfer_from
+        name: transfer_from
+      - &transfer_to
+        name: transfer_to
+      - &rn_ta_asc
+        name: rn_ta_asc
+      - &rn_ta_desc
+        name: rn_ta_desc
+      - &call_output
+        name: call_output
+      - &call_input
+        name: call_input
+      - &minute
+        name: minute
+      - &block_month_not_null
+        name: block_month
+        tests:
+          - not_null
+      - &unique_call_transfer_id
+        name: unique_call_transfer_id
+        tests:
+          - unique
+          - not_null
