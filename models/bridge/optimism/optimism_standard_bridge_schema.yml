@@ -95,4 +95,4 @@ models:
         description: "4byte function signature of the transaction (with leading 0x)"
       - &block_month
         name: block_month
-        description: Month of the block time 
+        description: Month of the block time

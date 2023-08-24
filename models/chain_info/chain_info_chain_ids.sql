@@ -630,4 +630,4 @@ FROM ( values
 ,('Molereum Network'	,'ETH'	,'MOLE'	,'6022140761023'	,'6022140761023'	,'https://github.com/Jdubedition/molereum'	,'')
 ,('Godwoken Testnet (V1)'	,'GWT'	,'CKB'	,'868455272153094'	,'868455272153094'	,'https://www.nervos.org'	,'https://v1.aggron.gwscan.com')
 
-) a ("name","chain","nativeCurrency","chainId","networkId","infoURL","explorer")
+) a ("name", "chain", "nativeCurrency", "chainId", "networkId", "infoURL", "explorer")

@@ -29,7 +29,7 @@ WITH bridge_events AS (
         recipient_address, 
         trace_address, a.evt_index, 
         project_contract_address,
-        message_nonce_hash AS transfer_id, -- removing the coalesce since this isn;t a unique key
+        message_nonce_hash AS transfer_id, -- removing the coalesce since this isn't a unique key
         source_chain_id, 
         destination_chain_id
     FROM (
