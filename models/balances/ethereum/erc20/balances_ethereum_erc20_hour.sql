@@ -37,7 +37,7 @@ with
 SELECT
     'ethereum' as blockchain,
     h.hour,
-    TRY_CAST(date_trunc('DAY', h.hour) AS date) as day
+    TRY_CAST(date_trunc('DAY', h.hour) AS date) as day,
     b.wallet_address,
     b.token_address,
     b.amount_raw,
