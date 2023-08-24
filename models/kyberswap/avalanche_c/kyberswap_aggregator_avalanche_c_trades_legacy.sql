@@ -1,7 +1,8 @@
 {{ config
 (
-    tags=['legacy'],
-    alias = alias('aggregator_trades', legacy_model=True)
+    tags = ['legacy'],
+    schema = 'kyberswap_aggregator_avalanche_c',
+    alias = alias('trades', legacy_model=True)
 )
 }}
 
