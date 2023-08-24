@@ -3,12 +3,12 @@ version: 2
 models:
   - name: uniswap_trades
     meta:
-      blockchain: ethereum, optimism, polygon, arbitrum, bnb
+      blockchain: ethereum, optimism, polygon, arbitrum, bnb, base
       sector: dex
       project: uniswap
-      contributors: jeff-dude, masquot, soispoke, 0xBoxer, Henrystats, chrispearcx
+      contributors: jeff-dude, masquot, soispoke, 0xBoxer, Henrystats, chrispearcx, wuligy
     config:
-      tags: ['ethereum', 'optimism', 'polygon', 'uniswap','trades', 'dex', 'jeff-dude','cross-chain', 'bnb']
+      tags: ['ethereum', 'optimism', 'polygon', 'uniswap','trades', 'dex', 'jeff-dude','cross-chain', 'bnb', 'base']
     description: >
         Uniswap trades on all chains across all contracts and versions. This table will load dex trades downstream.
     columns:

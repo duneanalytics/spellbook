@@ -7,6 +7,9 @@ sources:
     freshness:
       warn_after: { count: 12, period: hour }
     tables:
+      - name: transactions_0006
+        description: "underlying transactions table. base.transactions is an exposed view of this table."
+        loaded_at_field: block_time
       - name: transactions
         loaded_at_field: block_time
         description: "A Base transaction refers to an action initiated by an externally-owned account (i.e., an account managed by a human, not a contract)."
@@ -56,6 +59,7 @@ sources:
           - name: hash
             description: "Primary key of the transaction"
             tests:
+              - unique
               - not_null
           - name: type
             description: "Transaction type"
@@ -154,7 +158,7 @@ sources:
           - *block_number
           - *block_hash
           - name: contract_address
-            description: "Address of the base smart contract generating the log"
+            description: "Address of the Base smart contract generating the log"
           - name: topic1
             description: "Topics are 32-byte (256 bit) “words” that are used to describe what’s going on in an event. The first topic usually consists of the signature of the name of the event that occurred, including the types (uint256, string, etc.) of its parameters."
           - name: topic2
@@ -232,7 +236,7 @@ sources:
           - name: dynamic
             description: "Boolean indicating whether the contract is dynamic or not"
           - name: base
-            description: "Boolean indicating whether the contract is the base contract or not"
+            description: "Boolean indicating whether the contract is the Base contract or not"
           - name: factory
             description: "Boolean indicating whether the contract is a factory contract or not"
           - name: detection_source
@@ -242,7 +246,6 @@ sources:
                   values: ["factory", "base", "dynamic"]
           - name: created_at
             description: "Timestamp for contract creation"
-          
       - name: creation_traces
         loaded_at_field: block_time
         description: "Base creation traces"
@@ -256,7 +259,6 @@ sources:
             description: "Contract creator address"
           - name: code
             description: "Contract code"
-
 
   # ERC Transfer Tables
   - name: erc20_base
@@ -287,6 +289,7 @@ sources:
           - *to
           - name: value
             description: "Amount of ERC20 token transferred"
+
       - name: evt_Approval
         loaded_at_field: evt_block_time
         description: "Approval events for ERC20 tokens on Base."
@@ -320,7 +323,7 @@ sources:
           - *evt_block_time
           - *evt_block_number
           - name: operator
-            description: "Addresses authorized (or approved) by a NFT owner to spend all of his token Ids."
+            description: "Addresses authorized (or approved) by a NFT owner to spend all of his token IDs."
           - *from
           - *to
           - name: id
@@ -339,7 +342,7 @@ sources:
           - *evt_block_time
           - *evt_block_number
           - name: operator
-            description: "Addresses authorized (or approved) by a NFT owner to spend all of his token Ids."
+            description: "Addresses authorized (or approved) by a NFT owner to spend all of his token IDs."
           - *from
           - *to
           - name: ids
@@ -369,6 +372,9 @@ sources:
 
   - name: erc721_base
     description: "Transfers events for ERC721 tokens on Base."
+    freshness:
+      warn_after: { count: 12, period: hour }
+      error_after: { count: 24, period: hour }
     tables:
       - name: evt_transfer
         loaded_at_field: evt_block_time
