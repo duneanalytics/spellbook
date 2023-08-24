@@ -1,7 +1,7 @@
 {{ config(
     schema = 'magiceden_polygon',
     alias = alias('events'),
-    partition_by = ['block_date'],
+    tags = ['dunesql'],
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
