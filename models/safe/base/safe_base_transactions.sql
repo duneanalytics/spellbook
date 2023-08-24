@@ -3,7 +3,7 @@
         materialized='incremental',
         tags = ['dunesql'],
         alias= alias('transactions'),
-        partition_by = ['block_date'],
+        partition_by = ['block_month'],
         unique_key = ['block_date', 'tx_hash', 'trace_address'],
         file_format ='delta',
         incremental_strategy='merge',
@@ -17,6 +17,7 @@
 select
     'base' as blockchain,
     try_cast(date_trunc('day', tr.block_time) as date) as block_date,
+    CAST(date_trunc('month', tr.block_time) as DATE) as block_month,
     tr.block_time,
     tr.block_number,
     tr.tx_hash,
@@ -34,25 +35,25 @@ select
     tr.input,
     tr.output,
     case
-        when substring(tr.input from 1 for 4) = 0x6a761202 then 'execTransaction'
-        when substring(tr.input from 1 for 4) = 0x468721a7 then 'execTransactionFromModule'
-        when substring(tr.input from 1 for 4) = 0x5229073f then 'execTransactionFromModuleReturnData'
+        when bytearray_substring(tr.input, 1, 4) = 0x6a761202 then 'execTransaction'
+        when bytearray_substring(tr.input, 1, 4) = 0x468721a7 then 'execTransactionFromModule'
+        when bytearray_substring(tr.input, 1, 4) = 0x5229073f then 'execTransactionFromModuleReturnData'
         else 'unknown'
     end as method
 from {{ source('base', 'traces') }} tr
 join {{ ref('safe_base_safes') }} s
-    on s.address = tr.from
+    on s.address = tr."from"
 join {{ ref('safe_base_singletons') }} ss
     on tr.to = ss.address
-where substring(tr.input from 1 for 4) in (
+where bytearray_substring(tr.input, 1, 4) in (
         0x6a761202, -- execTransaction
         0x468721a7, -- execTransactionFromModule
         0x5229073f -- execTransactionFromModuleReturnData
     )
     and tr.call_type = 'delegatecall'
     {% if not is_incremental() %}
-    and tr.block_time > date('2023-07-01') -- for initial query optimisation
+    and tr.block_time > TIMESTAMP '2023-07-01' -- for initial query optimisation
     {% endif %}
     {% if is_incremental() %}
-    and tr.block_time > date_trunc("day", now() - interval '1 week')
+    and tr.block_time > date_trunc('day', now() - interval '7' day)
     {% endif %}
