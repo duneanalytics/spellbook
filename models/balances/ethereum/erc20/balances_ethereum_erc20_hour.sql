@@ -1,6 +1,7 @@
 {{ config(
         tags = ['dunesql'],
         alias = alias('erc20_hour'),
+        partition_by = ['day'],
         post_hook='{{ expose_spells_hide_trino(\'["ethereum"]\',
                                             "sector",
                                             "balances",
@@ -36,6 +37,7 @@ with
 SELECT
     'ethereum' as blockchain,
     h.hour,
+    TRY_CAST(date_trunc('DAY', h.hour) AS date) as day
     b.wallet_address,
     b.token_address,
     b.amount_raw,
