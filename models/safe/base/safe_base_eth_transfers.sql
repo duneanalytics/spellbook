@@ -24,7 +24,7 @@ select
     et.tx_hash,
     array_join(et.trace_address, ',') as trace_address
 from {{ source('base', 'traces') }} et
-join {{ ref('safe_base_safes') }} s on et.from = s.address
+join {{ ref('safe_base_safes') }} s on et."from" = s.address
     and et."from" != et.to -- exclude calls to self to guarantee unique key property
     and et.success = true
     and (lower(et.call_type) not in ('delegatecall', 'callcode', 'staticcall') or et.call_type is null)
