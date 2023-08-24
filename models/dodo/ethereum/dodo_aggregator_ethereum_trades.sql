@@ -10,7 +10,7 @@
     post_hook='{{ expose_spells(\'["ethereum"]\',
                                     "project",
                                     "dodo",
-                                    \'["scoffie","owen05"]\') }}'
+                                    \'["scoffie", "owen05", "hosuke"]\') }}'
 )
 }}
     
@@ -23,6 +23,7 @@ WITH dexs AS
             evt_block_time AS block_time,
             'DODO X' AS project,
             '0' AS version,
+            'dodo proxy01' as proxy,
             sender AS taker,
             CAST(NULL AS VARBINARY) AS maker,
             fromAmount AS token_bought_amount_raw,
@@ -47,6 +48,7 @@ WITH dexs AS
             evt_block_time AS block_time,
             'DODO X' AS project,
             '0' AS version,
+            'dodo proxy02' as proxy,
             sender AS taker,
             CAST(NULL AS VARBINARY) AS maker,
             fromAmount AS token_bought_amount_raw,
@@ -71,6 +73,7 @@ WITH dexs AS
             evt_block_time AS block_time,
             'DODO X' AS project,
             '0' AS version,
+            'dodo proxy03' as proxy,
             sender AS taker,
             CAST(NULL AS VARBINARY) AS maker,
             fromAmount AS token_bought_amount_raw,
@@ -95,6 +98,7 @@ WITH dexs AS
             evt_block_time AS block_time,
             'DODO X' AS project,
             '0' AS version,
+            'dodo proxy04' as proxy,
             sender AS taker,
             CAST(NULL AS VARBINARY) AS maker,
             fromAmount AS token_bought_amount_raw,
@@ -119,6 +123,7 @@ WITH dexs AS
             evt_block_time AS block_time,
             'DODO X' AS project,
             '0' AS version,
+            'dodov2 proxy02' as proxy,
             sender AS taker,
             CAST(NULL AS VARBINARY) AS maker,
             fromAmount AS token_bought_amount_raw,
@@ -143,6 +148,7 @@ WITH dexs AS
             evt_block_time AS block_time,
             'DODO X' AS project,
             '0' AS version,
+            'DODORouteProxy' as proxy,
             sender AS taker,
             CAST(NULL AS VARBINARY) AS maker,
             fromAmount AS token_bought_amount_raw,
@@ -167,6 +173,7 @@ WITH dexs AS
             evt_block_time AS block_time,
             'DODO X' AS project,
             '0' AS version,
+            'DODOFeeRouteProxy' as proxy,
             sender AS taker,
             CAST(NULL AS VARBINARY) AS maker,
             fromAmount AS token_bought_amount_raw,
