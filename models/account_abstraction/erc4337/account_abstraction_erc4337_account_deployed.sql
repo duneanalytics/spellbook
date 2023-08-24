@@ -40,4 +40,3 @@ FROM (
     {% endif %}
     {% endfor %}
 )
-;
