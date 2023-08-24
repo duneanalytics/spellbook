@@ -24,6 +24,8 @@ models:
         description: "Version of initially created safe"
       - &block_date
         name: block_date
+      - &block_month
+        name: block_month
       - &creation_time
         name: creation_time
         description: "Date/time of safe creation"
@@ -44,6 +46,7 @@ models:
     columns:
       - *address
       - *block_date
+      - *block_month
       - &block_time
         name: block_time
         description: "Date of Eth transfer"
@@ -86,6 +89,7 @@ models:
     columns:
       - *blockchain
       - *block_date
+      - *block_month
       - *block_time
       - &block_number
         name: block_number
