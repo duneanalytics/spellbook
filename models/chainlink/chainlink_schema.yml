@@ -3,14 +3,14 @@ version: 2
 models:
   - name: chainlink_price_feeds
     meta:
-      blockchain: ['bnb','optimism','polygon']
+      blockchain: ["bnb", "optimism", "polygon"]
       sector: oracle
       project: chainlink
-      contributors: ['msilb7','0xroll','linkpool_ryan']
+      contributors: ["msilb7", "0xroll", "linkpool_ryan", "linkpool_jon"]
     config:
-      tags: ['chainlink', 'price', 'feed', 'bnb', 'optimism', 'polygon']
+      tags: ["chainlink", "price", "feed", "bnb", "optimism", "polygon"]
     description: >
-        Table pulling price updates for known Chainlink oracle addresses
+      Table pulling price updates for known Chainlink oracle addresses
     columns:
       - &blockchain
         name: blockchain
@@ -29,33 +29,58 @@ models:
         description: "Block Number"
       - &feed_name
         name: feed_name
-        description:  "Feed name from Chainlink docs"  
+        description: "Feed name from Chainlink docs"
       - &oracle_price
         name: oracle_price
-        description:  "Price returned by Chainlink oracle update" 
+        description: "Price returned by Chainlink oracle update"
       - &proxy_address
         name: proxy_address
-        description:  "Address of the proxy contract for the Chainlink oracle"
+        description: "Address of the proxy contract for the Chainlink oracle"
       - &aggregator_address
         name: aggregator_address
-        description:  "Address of the aggregator contract tied to the proxy for the Chainlink oracle (via Read Contract)"
-      - &underlying_token_address
-        name: underlying_token_address
-        description:  "Address of any underlying tokens associated with the Chainlink oracle (i.e. AAVE, sAAVE)"
+        description: "Address of the aggregator contract tied to the proxy for the Chainlink oracle (via Read Contract)"
+      - &base
+        name: base
+        description: "Base token of the pair"
+      - &quote
+        name: quote
+        description: "Quote token of the pair"
       - &underlying_token_price
         name: underlying_token_price
-        description:  "Price of the underlying token, with extra decimal adjustments if needed"
+        description: "Price of the underlying token, with extra decimal adjustments if needed"
 
   - name: chainlink_price_feeds_hourly
     meta:
-      blockchain: ['bnb','optimism','polygon']
+      blockchain:
+        [
+          "bnb",
+          "optimism",
+          "polygon",
+          "arbitrum",
+          "avalanche_c",
+          "ethereum",
+          "fantom",
+          "gnosis",
+        ]
       sector: oracle
       project: chainlink
-      contributors: ["msilb7","0xroll", "linkpool_ryan"]
+      contributors: ["msilb7", "0xroll", "linkpool_ryan", "linkpool_jon"]
     config:
-      tags: ['chainlink', 'price', 'feed', 'bnb', 'optimism', 'polygon']
+      tags:
+        [
+          "chainlink",
+          "price",
+          "bnb",
+          "optimism",
+          "polygon",
+          "arbitrum",
+          "avalanche_c",
+          "ethereum",
+          "fantom",
+          "gnosis",
+        ]
     description: >
-        Hourly chainlink price feed updates
+      Hourly chainlink price feed updates
     columns:
       - *blockchain
       - name: hour
@@ -64,30 +89,56 @@ models:
       - *block_month
       - *feed_name
       - name: oracle_price_avg
-        description:  "Price returned by Chainlink oracle update" 
+        description: "Price returned by Chainlink oracle update"
       - *proxy_address
       - *aggregator_address
-      - *underlying_token_address
+      - *base
+      - *quote
       - name: underlying_token_price_avg
         description: "Price of the underlying token, with extra decimal adjustments if needed"
 
   - name: chainlink_ocr_gas_transmission_logs
     meta:
-      blockchain: ['arbitrum','avalanche_c','bnb','ethereum','fantom','gnosis','optimism','polygon']
+      blockchain:
+        [
+          "arbitrum",
+          "avalanche_c",
+          "bnb",
+          "ethereum",
+          "fantom",
+          "gnosis",
+          "optimism",
+          "polygon",
+        ]
       sector: oracle
       project: chainlink
-      contributors: ['linkpool_ryan','linkpool_jon']
+      contributors: ["linkpool_ryan", "linkpool_jon"]
     config:
-      tags: ['chainlink', 'ocr', 'gas', 'transmission', 'logs', 'arbitrum', 'avalanche_c', 'bnb', 'ethereum', 'fantom', 'gnosis', 'optimism', 'polygon']
+      tags:
+        [
+          "chainlink",
+          "ocr",
+          "gas",
+          "transmission",
+          "logs",
+          "arbitrum",
+          "avalanche_c",
+          "bnb",
+          "ethereum",
+          "fantom",
+          "gnosis",
+          "optimism",
+          "polygon",
+        ]
     description: >
       Chainlink OCR Gas Transmission Logs
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
-              - blockchain
-              - block_number
-              - tx_hash
-              - tx_index
+            - blockchain
+            - block_number
+            - tx_hash
+            - tx_index
     columns:
       - *blockchain
       - &block_hash
@@ -125,21 +176,45 @@ models:
 
   - name: chainlink_ocr_fulfilled_transactions
     meta:
-      blockchain: ['arbitrum','avalanche_c','bnb','ethereum','fantom','gnosis','optimism','polygon']
+      blockchain:
+        [
+          "arbitrum",
+          "avalanche_c",
+          "bnb",
+          "ethereum",
+          "fantom",
+          "gnosis",
+          "optimism",
+          "polygon",
+        ]
       sector: oracle
       project: chainlink
-      contributors: ['linkpool_ryan','linkpool_jon']
+      contributors: ["linkpool_ryan", "linkpool_jon"]
     config:
-      tags: ['chainlink', 'ocr', 'fulfilled', 'transactions', 'arbitrum', 'avalanche_c', 'bnb', 'ethereum', 'fantom', 'gnosis', 'optimism', 'polygon']
+      tags:
+        [
+          "chainlink",
+          "ocr",
+          "fulfilled",
+          "transactions",
+          "arbitrum",
+          "avalanche_c",
+          "bnb",
+          "ethereum",
+          "fantom",
+          "gnosis",
+          "optimism",
+          "polygon",
+        ]
     description: >
       Chainlink OCR Fulfilled Transactions
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
-              - blockchain
-              - tx_hash
-              - tx_index
-              - node_address
+            - blockchain
+            - tx_hash
+            - tx_index
+            - node_address
     columns:
       - *blockchain
       - *block_time
@@ -160,21 +235,45 @@ models:
 
   - name: chainlink_ocr_reverted_transactions
     meta:
-      blockchain: ['arbitrum','avalanche_c','bnb','ethereum','fantom','gnosis','optimism','polygon']
+      blockchain:
+        [
+          "arbitrum",
+          "avalanche_c",
+          "bnb",
+          "ethereum",
+          "fantom",
+          "gnosis",
+          "optimism",
+          "polygon",
+        ]
       sector: oracle
       project: chainlink
-      contributors: ['linkpool_ryan','linkpool_jon']
+      contributors: ["linkpool_ryan", "linkpool_jon"]
     config:
-      tags: ['chainlink', 'ocr', 'reverted', 'transactions', 'arbitrum', 'avalanche_c', 'bnb', 'ethereum', 'fantom', 'gnosis', 'optimism', 'polygon']
+      tags:
+        [
+          "chainlink",
+          "ocr",
+          "reverted",
+          "transactions",
+          "arbitrum",
+          "avalanche_c",
+          "bnb",
+          "ethereum",
+          "fantom",
+          "gnosis",
+          "optimism",
+          "polygon",
+        ]
     description: >
       Chainlink OCR Reverted Transactions
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
-              - blockchain
-              - tx_hash
-              - tx_index
-              - node_address
+            - blockchain
+            - tx_hash
+            - tx_index
+            - node_address
     columns:
       - *blockchain
       - *block_time
@@ -187,20 +286,44 @@ models:
 
   - name: chainlink_ocr_gas_daily
     meta:
-      blockchain: ['arbitrum','avalanche_c','bnb','ethereum','fantom','gnosis','optimism','polygon']
+      blockchain:
+        [
+          "arbitrum",
+          "avalanche_c",
+          "bnb",
+          "ethereum",
+          "fantom",
+          "gnosis",
+          "optimism",
+          "polygon",
+        ]
       sector: oracle
       project: chainlink
-      contributors: ['linkpool_ryan','linkpool_jon']
+      contributors: ["linkpool_ryan", "linkpool_jon"]
     config:
-      tags: ['chainlink','ocr', 'gas', 'daily', 'arbitrum', 'avalanche_c', 'bnb', 'ethereum', 'fantom', 'gnosis', 'optimism', 'polygon']
+      tags:
+        [
+          "chainlink",
+          "ocr",
+          "gas",
+          "daily",
+          "arbitrum",
+          "avalanche_c",
+          "bnb",
+          "ethereum",
+          "fantom",
+          "gnosis",
+          "optimism",
+          "polygon",
+        ]
     description: >
-        Chainlink OCR Gas Daily
+      Chainlink OCR Gas Daily
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
-              - blockchain
-              - date_start
-              - node_address
+            - blockchain
+            - date_start
+            - node_address
     columns:
       - *blockchain
       - &date_start
@@ -232,20 +355,44 @@ models:
 
   - name: chainlink_ocr_request_daily
     meta:
-      blockchain: ['arbitrum','avalanche_c','bnb','ethereum','fantom','gnosis','optimism','polygon']
+      blockchain:
+        [
+          "arbitrum",
+          "avalanche_c",
+          "bnb",
+          "ethereum",
+          "fantom",
+          "gnosis",
+          "optimism",
+          "polygon",
+        ]
       sector: oracle
       project: chainlink
-      contributors: ['linkpool_ryan','linkpool_jon']
+      contributors: ["linkpool_ryan", "linkpool_jon"]
     config:
-      tags: ['chainlink','ocr', 'request', 'daily', 'arbitrum', 'avalanche_c', 'bnb', 'ethereum', 'fantom', 'gnosis', 'optimism', 'polygon']
+      tags:
+        [
+          "chainlink",
+          "ocr",
+          "request",
+          "daily",
+          "arbitrum",
+          "avalanche_c",
+          "bnb",
+          "ethereum",
+          "fantom",
+          "gnosis",
+          "optimism",
+          "polygon",
+        ]
     description: >
-        Chainlink OCR Request Daily
+      Chainlink OCR Request Daily
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
-              - blockchain
-              - date_start
-              - node_address
+            - blockchain
+            - date_start
+            - node_address
     columns:
       - *blockchain
       - *date_start
@@ -264,12 +411,37 @@ models:
 
   - name: chainlink_ocr_reward_transmission_logs
     meta:
-      blockchain: ['arbitrum','avalanche_c','bnb','ethereum','fantom','gnosis','optimism','polygon']
+      blockchain:
+        [
+          "arbitrum",
+          "avalanche_c",
+          "bnb",
+          "ethereum",
+          "fantom",
+          "gnosis",
+          "optimism",
+          "polygon",
+        ]
       sector: oracle
       project: chainlink
-      contributors: ['linkpool_ryan','linkpool_jon']
+      contributors: ["linkpool_ryan", "linkpool_jon"]
     config:
-      tags: ['chainlink', 'ocr', 'reward', 'transmission', 'logs', 'arbitrum', 'avalanche_c', 'bnb', 'ethereum', 'fantom', 'gnosis', 'optimism', 'polygon']
+      tags:
+        [
+          "chainlink",
+          "ocr",
+          "reward",
+          "transmission",
+          "logs",
+          "arbitrum",
+          "avalanche_c",
+          "bnb",
+          "ethereum",
+          "fantom",
+          "gnosis",
+          "optimism",
+          "polygon",
+        ]
     description: >
       Chainlink OCR Reward Transmission Logs
     columns:
@@ -289,12 +461,37 @@ models:
 
   - name: chainlink_ocr_reward_evt_transfer
     meta:
-      blockchain: ['arbitrum','avalanche_c','bnb','ethereum','fantom','gnosis','optimism','polygon']
+      blockchain:
+        [
+          "arbitrum",
+          "avalanche_c",
+          "bnb",
+          "ethereum",
+          "fantom",
+          "gnosis",
+          "optimism",
+          "polygon",
+        ]
       sector: oracle
       project: chainlink
-      contributors: ['linkpool_ryan','linkpool_jon']
+      contributors: ["linkpool_ryan", "linkpool_jon"]
     config:
-      tags: ['chainlink', 'ocr', 'reward', 'evt', 'transfer', 'arbitrum', 'avalanche_c', 'bnb', 'ethereum', 'fantom', 'gnosis', 'optimism', 'polygon']
+      tags:
+        [
+          "chainlink",
+          "ocr",
+          "reward",
+          "evt",
+          "transfer",
+          "arbitrum",
+          "avalanche_c",
+          "bnb",
+          "ethereum",
+          "fantom",
+          "gnosis",
+          "optimism",
+          "polygon",
+        ]
     description: >
       Chainlink OCR Reward Event Transfers
     columns:
@@ -312,20 +509,46 @@ models:
 
   - name: chainlink_ocr_reward_evt_transfer_daily
     meta:
-      blockchain: ['arbitrum','avalanche_c','bnb','ethereum','fantom','gnosis','optimism','polygon']
+      blockchain:
+        [
+          "arbitrum",
+          "avalanche_c",
+          "bnb",
+          "ethereum",
+          "fantom",
+          "gnosis",
+          "optimism",
+          "polygon",
+        ]
       sector: oracle
       project: chainlink
-      contributors: ['linkpool_ryan','linkpool_jon']
+      contributors: ["linkpool_ryan", "linkpool_jon"]
     config:
-      tags: ['chainlink', 'ocr', 'reward', 'evt', 'transfer', 'daily', 'arbitrum', 'avalanche_c', 'bnb', 'ethereum', 'fantom', 'gnosis', 'optimism', 'polygon']
+      tags:
+        [
+          "chainlink",
+          "ocr",
+          "reward",
+          "evt",
+          "transfer",
+          "daily",
+          "arbitrum",
+          "avalanche_c",
+          "bnb",
+          "ethereum",
+          "fantom",
+          "gnosis",
+          "optimism",
+          "polygon",
+        ]
     description: >
       Chainlink OCR Reward Event Transfers Daily
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
-              - blockchain
-              - date_start
-              - admin_address
+            - blockchain
+            - date_start
+            - admin_address
     columns:
       - *blockchain
       - *date_start
@@ -336,20 +559,44 @@ models:
 
   - name: chainlink_ocr_reward_daily
     meta:
-      blockchain: ['arbitrum','avalanche_c','bnb','ethereum','fantom','gnosis','optimism','polygon']
+      blockchain:
+        [
+          "arbitrum",
+          "avalanche_c",
+          "bnb",
+          "ethereum",
+          "fantom",
+          "gnosis",
+          "optimism",
+          "polygon",
+        ]
       sector: oracle
       project: chainlink
-      contributors: ['linkpool_ryan','linkpool_jon']
+      contributors: ["linkpool_ryan", "linkpool_jon"]
     config:
-      tags: ['chainlink','ocr', 'reward', 'daily', 'arbitrum', 'avalanche_c', 'bnb', 'ethereum', 'fantom', 'gnosis', 'optimism', 'polygon']
+      tags:
+        [
+          "chainlink",
+          "ocr",
+          "reward",
+          "daily",
+          "arbitrum",
+          "avalanche_c",
+          "bnb",
+          "ethereum",
+          "fantom",
+          "gnosis",
+          "optimism",
+          "polygon",
+        ]
     description: >
-        Chainlink OCR Reward Daily
+      Chainlink OCR Reward Daily
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
-              - blockchain
-              - date_start
-              - admin_address
+            - blockchain
+            - date_start
+            - admin_address
     columns:
       - *blockchain
       - *date_start

@@ -1,6 +1,5 @@
 {{ config(
-	tags=['legacy'],
-	
+	    tags=['legacy'],
         alias = alias('trades', legacy_model=True),
         post_hook='{{ expose_spells(\'["ethereum", "avalanche_c", "bnb"]\',
                         "project",
@@ -9,9 +8,13 @@
         )
 }}
 
+{#
+## Models not yet migrated OR excluded in prod with tag:prod_exclude
+, ref('hashflow_ethereum_trades_legacy')
+ #}
+
 {% set hashflow_models = [
 ref('hashflow_avalanche_c_trades_legacy')
-, ref('hashflow_ethereum_trades_legacy')
 , ref('hashflow_bnb_trades_legacy')
 ] %}
  

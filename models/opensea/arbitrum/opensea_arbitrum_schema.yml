@@ -137,7 +137,7 @@ models:
         description:  "Token Decimal"
       - &platform_fee_receive_address
         name: platform_fee_receive_address
-        description:  "Platform fee receive address"          
+        description:  "Platform fee receive address"
       - &royalty_fee_receive_address_1
         name: royalty_fee_receive_address_1
         description:  "Wallet addresses receiving fees from the transaction"
@@ -206,8 +206,13 @@ models:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - block_date
-            - unique_trade_id
-      - check_seed_legacy:
+            - tx_hash
+            - evt_index
+            - nft_contract_address
+            - token_id
+            - sub_type
+            - sub_idx
+      - check_seed:
           seed_file: ref('opensea_arbitrum_seaport_trades_samples')
           filter:
             blockchain: arbitrum
@@ -228,7 +233,7 @@ models:
             - evt_index
             - sub_idx
             - nft_contract_address
-            - token_id        
+            - token_id
     columns:
       - *project
       - *version
@@ -239,7 +244,7 @@ models:
       - *token_standard
       - *trade_type
       - *number_of_items
-      - *trade_category 
+      - *trade_category
       - *evt_type
       - *seller
       - *buyer
@@ -297,8 +302,13 @@ models:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - block_date
-            - unique_trade_id
-      - check_seed_legacy:
+            - tx_hash
+            - evt_index
+            - nft_contract_address
+            - token_id
+            - sub_type
+            - sub_idx
+      - check_seed:
           seed_file: ref('opensea_arbitrum_seaport_trades_samples')
           filter:
             blockchain: arbitrum
@@ -319,7 +329,7 @@ models:
             - evt_index
             - sub_idx
             - nft_contract_address
-            - token_id  
+            - token_id
     columns:
       - *project
       - *version
@@ -330,7 +340,7 @@ models:
       - *token_standard
       - *trade_type
       - *number_of_items
-      - *trade_category 
+      - *trade_category
       - *evt_type
       - *seller
       - *buyer
