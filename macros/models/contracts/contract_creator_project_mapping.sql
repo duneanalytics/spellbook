@@ -136,7 +136,7 @@ SELECT *
     union all 
 
     select 
-      t.blockchain,
+      t.blockchain
       ,t.creator_address
       ,t.contract_creator_if_factory as contract_factory
       ,t.contract_address
@@ -237,8 +237,7 @@ WHERE contract_order = 1
       {{i}} as level 
       ,b.blockchain
       ,b.trace_creator_address -- get the original contract creator address
-      ,
-      case when nd.creator_address IS NOT NULL
+      ,case when nd.creator_address IS NOT NULL
         THEN b.created_tx_from --when deterministic creator, we take the tx sender
         ELSE coalesce(u.creator_address, b.creator_address)
       END as creator_address -- get the highest-level creator we know of
