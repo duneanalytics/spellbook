@@ -65,6 +65,9 @@ models:
       - &blockchain
         name: blockchain
         description: "Blockchain"
+      - &type
+        name: type
+        description: "Transfer Type: sent/received"
       - &wallet_address
         name: wallet_address
         description: "Wallet address of sender or receiver. If amount is negative, wallet address is the sender's."
@@ -78,7 +81,7 @@ models:
       - &amount_raw
         name: amount_raw
         description: "Raw amount of ERC20 token held *before* taking into account token decimals"
-      - &index
-        name: index
+      - &evt_index
+        name: evt_index
         description: "Event Index"
       - *tx_hash
