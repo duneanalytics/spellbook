@@ -6,7 +6,7 @@
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
-    unique_key = ['block_date', 'blockchain', 'project', 'version', 'tx_hash', 'evt_index', 'trace_address'],
+    unique_key = ['block_date', 'blockchain', 'project', 'version', 'tx_hash', 'evt_index'],
     post_hook = '{{ expose_spells(\'["arbitrum"]\',
                                 "project",
                                 "balancer_v2",
@@ -49,7 +49,6 @@ WITH
             swap.poolId AS pool_id,
             swap_fees.swap_fee_percentage / POWER(10, 18) AS swap_fee,
             swap.evt_tx_hash AS tx_hash,
-            '' AS trace_address,
             swap.evt_index
         FROM
             swap_fees
@@ -140,7 +139,6 @@ SELECT
     dexs.tx_hash,
     tx."from" AS tx_from,
     tx.to AS tx_to,
-    dexs.trace_address,
     dexs.evt_index
 FROM
     dexs
