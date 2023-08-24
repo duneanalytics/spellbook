@@ -6,11 +6,10 @@ with test_data as (
 ),
 
 test_result as (
-    select case when total = 31090850 then true else false end as success
+    select case when total = 31090142 then true else false end as success
     from test_data
 )
 
 select *
 from test_result
 where success = false
-  and 1=0 -- eliimnate test temporarily

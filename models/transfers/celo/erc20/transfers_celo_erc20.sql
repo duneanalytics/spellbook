@@ -96,7 +96,6 @@ from sent_transfers
 union
 select 'celo' as blockchain, wallet_address, token_address, block_time, block_month, amount_raw, index, tx_hash
 from received_transfers
---limit 1000
 
 /*
 union
