@@ -1,4 +1,5 @@
 {{ config(
+    tags=['dunesql'],
     alias = alias('dao'),
     materialized = 'table',
     file_format = 'delta',
