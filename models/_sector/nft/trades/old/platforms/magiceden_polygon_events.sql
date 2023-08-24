@@ -10,7 +10,7 @@
 }}
 
 {% set nft_start_date = "TIMESTAMP '2022-03-16'" %}
-{% set magic_eden_nonce = "cast('10013141590000000000000000000000000000' as uint256)" %}
+{% set magic_eden_nonce = '10013141590000000000000000000000000000' %}
 
 WITH trades AS (
     SELECT CASE when direction = 0 THEN 'buy' ELSE 'sell' END AS trade_category,
@@ -34,7 +34,7 @@ WITH trades AS (
           erc20TokenAmount AS amount_raw,
           erc20Token as original_erc20_token
     FROM {{ source ('zeroex_polygon', 'ExchangeProxy_evt_ERC721OrderFilled') }}
-    WHERE nonce = {{magic_eden_nonce}}
+    WHERE starts_with(cast(nonce as varchar),'{{magic_eden_nonce}}')
         {% if not is_incremental() %}
         AND evt_block_time >= {{nft_start_date}}
         {% endif %}
@@ -65,7 +65,7 @@ WITH trades AS (
           erc20FillAmount AS amount_raw,
           erc20Token as original_erc20_token
     FROM {{ source ('zeroex_polygon', 'ExchangeProxy_evt_ERC1155OrderFilled') }}
-    WHERE nonce = {{magic_eden_nonce}}
+    WHERE starts_with(cast(nonce as varchar),'{{magic_eden_nonce}}')
         {% if not is_incremental() %}
         AND evt_block_time >= {{nft_start_date}}
         {% endif %}
