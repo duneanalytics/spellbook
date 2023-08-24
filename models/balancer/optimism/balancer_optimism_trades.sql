@@ -19,6 +19,7 @@ FROM (
         blockchain,
         project,
         version,
+        block_month,
         block_date,
         block_time,
         token_bought_symbol,
@@ -39,7 +40,6 @@ FROM (
         tx_hash,
         tx_from,
         tx_to,
-        trace_address,
         evt_index
     FROM {{ dex_model }}
     {% if not loop.last %}
