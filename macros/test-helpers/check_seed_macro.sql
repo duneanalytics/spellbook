@@ -95,5 +95,6 @@
         select *
         from equality_tests
     ) all
-    where equality_check != true
+    -- equality check can be null so we have to check explicitly for nulls
+    where equality_check is distinct from true
 {% endmacro %}
