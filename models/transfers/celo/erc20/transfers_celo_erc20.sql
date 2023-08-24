@@ -20,7 +20,7 @@ with
             to as wallet_address,
             contract_address as token_address,
             evt_block_time as block_time,
-            date_trunc('month', evt_block_time) as block_month,
+            cast(date_trunc('month', evt_block_time) as date) as block_month,
             cast(value as double) as amount_raw,
             evt_index as index,
             evt_tx_hash as tx_hash
@@ -37,7 +37,7 @@ with
             "from" as wallet_address,
             contract_address as token_address,
             evt_block_time as block_time,
-            date_trunc('month', evt_block_time) as block_month,
+            cast(date_trunc('month', evt_block_time) as date) as block_month,
             (-1) * cast(value as double) as amount_raw,
             evt_index as index,
             evt_tx_hash as tx_hash
@@ -96,7 +96,7 @@ from sent_transfers
 union
 select 'celo' as blockchain, wallet_address, token_address, block_time, block_month, amount_raw, index, tx_hash
 from received_transfers
-limit 1000
+--limit 1000
 
 /*
 union
