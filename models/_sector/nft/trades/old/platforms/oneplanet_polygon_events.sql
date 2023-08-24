@@ -15,7 +15,7 @@ WITH fee_wallets as (
     ) as foo(wallet_address, wallet_name)
 )
 , trades as (
-    {{ seaport_v3_trades(
+    {{ seaport_fork_trades(
      blockchain = 'polygon'
      ,source_transactions = source('polygon','transactions')
      ,Seaport_evt_OrderFulfilled = source('oneplanet_polygon','Seaport_evt_OrderFulfilled')
@@ -26,6 +26,7 @@ WITH fee_wallets as (
      ,alternative_token_address = '0x0000000000000000000000000000000000001010'
      ,native_token_symbol = 'MATIC'
      ,start_date = '2023-09-03'
+     ,seaport_fork_address = '0xcbbecf690e030d096794f7685a1bf4a58378a575'
     )
   }}
 )

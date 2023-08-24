@@ -15,7 +15,7 @@ WITH fee_wallets as (
     ) as foo(wallet_address, wallet_name)
 )
 , trades as (
-    {{ seaport_v3_trades(
+    {{ seaport_fork_trades(
      blockchain = 'optimism'
      ,source_transactions = source('optimism','transactions')
      ,Seaport_evt_OrderFulfilled = source('nftearth_optimism','Seaport_evt_OrderFulfilled')
@@ -26,6 +26,7 @@ WITH fee_wallets as (
      ,alternative_token_address = '0x4200000000000000000000000000000000000006'
      ,native_token_symbol = 'ETH'
      ,start_date = '2023-01-31'
+     ,seaport_fork_address = '0x0f9b80fc3c8b9123d0aef43df58ebdbc034a8901'
     )
   }}
 )
