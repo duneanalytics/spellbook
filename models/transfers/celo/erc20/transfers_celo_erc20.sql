@@ -6,7 +6,7 @@
         materialized = 'incremental',
         file_format = 'delta',
         incremental_strategy = 'merge',
-        unique_key = ['block_time', 'tx_hash', 'index', 'wallet_address', 'amount_raw'],
+        unique_key = ['block_time', 'tx_hash', 'type', 'evt_index', 'wallet_address', 'amount_raw'],
         post_hook='{{ expose_spells(\'["celo"]\',
                                     "sector",
                                     "transfers",
@@ -17,12 +17,13 @@
 with
     sent_transfers as (
         select
+            'sent' as type,
             to as wallet_address,
             contract_address as token_address,
             evt_block_time as block_time,
             cast(date_trunc('month', evt_block_time) as date) as block_month,
             cast(value as double) as amount_raw,
-            evt_index as index,
+            evt_index,
             evt_tx_hash as tx_hash
         from
             {{ source('erc20_celo', 'evt_transfer') }}
@@ -34,12 +35,13 @@ with
     
     received_transfers as (
         select
+            'received' as type,
             "from" as wallet_address,
             contract_address as token_address,
             evt_block_time as block_time,
             cast(date_trunc('month', evt_block_time) as date) as block_month,
             (-1) * cast(value as double) as amount_raw,
-            evt_index as index,
+            evt_index,
             evt_tx_hash as tx_hash
         from
             {{ source('erc20_celo', 'evt_transfer') }}
@@ -91,10 +93,10 @@ with
     )
     */
     
-select 'celo' as blockchain, wallet_address, token_address, block_time, block_month, amount_raw, index, tx_hash
+select 'celo' as blockchain, type, wallet_address, token_address, block_time, block_month, amount_raw, evt_index, tx_hash
 from sent_transfers
 union
-select 'celo' as blockchain, wallet_address, token_address, block_time, block_month, amount_raw, index, tx_hash
+select 'celo' as blockchain, type, wallet_address, token_address, block_time, block_month, amount_raw, evt_index, tx_hash
 from received_transfers
 
 /*
