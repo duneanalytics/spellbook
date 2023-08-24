@@ -22,7 +22,7 @@ WITH meta_router AS
         SELECT
             evt_block_time          AS block_time
             ,'kyberswap'            AS project
-            ,'2'                    AS version
+            ,'meta_2'               AS version
             ,sender                 AS taker
             ,dstReceiver            AS maker
             ,returnAmount           AS token_bought_amount_raw
