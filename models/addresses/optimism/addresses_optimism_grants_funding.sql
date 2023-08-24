@@ -4,7 +4,7 @@
 	post_hook='{{ expose_spells(\'["optimism"]\',
 		"sector",
 		"addresses",
-		\'["msilb7"]\') }}')}}
+		\'["msilb7", "chuxin"]\') }}')}}
 
 WITH entries AS (
 SELECT
