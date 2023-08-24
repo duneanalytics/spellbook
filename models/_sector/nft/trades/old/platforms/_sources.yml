@@ -26,10 +26,15 @@ sources:
   - name: nftearth_optimism
     tables:
       - name: Seaport_evt_OrderFulfilled
+      - name: Seaport_call_matchOrders
+      - name: Seaport_call_matchAdvancedOrders
+
 
   - name: oneplanet_polygon
     tables:
       - name: Seaport_evt_OrderFulfilled
+      - name: Seaport_call_matchOrders
+      - name: Seaport_call_matchAdvancedOrders
 
   - name: pancakeswap_v2_bnb
     tables:
