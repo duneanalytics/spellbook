@@ -13,7 +13,6 @@
  ,ref('tigris_polygon_options_trades')
 ] %}
 
-
 SELECT *
 FROM (
     {% for trade_model in options_models %}
