@@ -195,6 +195,7 @@ SELECT
     'ethereum' AS blockchain
     ,project
     ,dexs.version as version
+    ,dexs.proxy as proxy
     ,TRY_CAST(date_trunc('day', dexs.block_time) AS date) AS block_date
     ,TRY_CAST(date_trunc('month', dexs.block_time) AS date) AS block_month
     ,dexs.block_time
