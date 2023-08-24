@@ -17,7 +17,7 @@ class TokenChecker:
                             "polygon": "matic-polygon",
                             "solana": "sol-solana",
                             "avalanche_c": "avax-avalanche",
-                            # "arbitrum": "",
+                            "arbitrum": "arb-arbitrum",
                             "gnosis": "gno-gnosis",
                             "optimism": "op-optimism",
                             "fantom": "ftm-fantom",
