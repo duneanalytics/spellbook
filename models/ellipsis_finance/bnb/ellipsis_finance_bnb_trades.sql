@@ -13,7 +13,7 @@
     )
 }}
 -- SELECT MIN(evt_block_time) FROM ellipsis_finance_bnb.StableSwap_evt_TokenExchange
-{% set project_start_date = '2021-03-01 00:00:00' %}
+{% set project_start_date = '2021-03-01' %}
 
 {%- set evt_TokenExchange_sources = [
      source('ellipsis_finance_bnb', 'StableSwap_evt_TokenExchange')
