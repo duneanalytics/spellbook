@@ -21,7 +21,7 @@ models:
             - tx_hash
             - evt_index
             - trace_address
-      - check_dex_aggregator_seed_legacy:
+      - check_dex_aggregator_seed:
           blockchain: avalanche_c
           project: yield_yak
           version: 1
@@ -95,3 +95,6 @@ models:
       - &evt_index
         name: evt_index
         description: ""
+      - &block_month
+        name: block_month
+        description: "UTC event block month of each DEX trade"

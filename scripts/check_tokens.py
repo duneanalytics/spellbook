@@ -13,9 +13,11 @@ parser = argparse.ArgumentParser()
 parser.add_argument('--file_name')
 args = parser.parse_args()
 
+# the following pattern supports hexstring address and varchar address
+static_record_pattern = r"\('([\w-]+)',\s*'([\w-]+)',\s*'([\w-]+)',\s*(0x[a-fA-F0-9]+|'[\w]+'),\s*(\d+)\),?"
 
 def filter_non_row_lines(new_lines):
-    filtered_lines = [line for line in new_lines if bool(re.search(r'\((.*?,.*?)\)', line)) and not line.startswith('--')]
+    filtered_lines = [line for line in new_lines if bool(re.search(static_record_pattern, line)) and not line.startswith('--')]
     return filtered_lines
 
 
