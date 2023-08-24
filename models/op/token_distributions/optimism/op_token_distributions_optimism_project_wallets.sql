@@ -60,6 +60,19 @@ FROM (values
     ,('0x5ad276439e3772fdb6696b6cb61401902d4e8b72', 'Geo Web', 'Protocol Treasury')
     ,('0x94beC50afA856533603DF45639aC11c7E6A64c1f', 'Airgap Wallet', 'Team Wallet')
     ,('0x5248be8b6c9b7257695275ebd7c3918326151ae6', 'Synthetix', 'Multisig')
+    ,('0x281BA4E9B7e28982d6CB53EE3836865f1453e12F', 'Cryptoversidad Team', 'Team Wallet')
+    ,('0x64FeD9e56B548343E7bb47c49ecd7FFa9f1A34FE', 'Cryptoversidad Team', 'Team Wallet')
+    ,('0x29D5C375dD7A9ff3dB56B39Aa62539f66bcEB605', 'Cryptoversidad Team', 'Team Wallet')
+    ,('0x1771A598886EaF4a7122f3896B244c8d02D5A00d', 'Cryptoversidad Team', 'Team Wallet')
+    ,('0x1BA12164cE1f4FBF7b528498C9864c432a53Da16', 'Cryptoversidad Team', 'Team Wallet')
+    ,('0xc30487F7Dc6405D3d4977616C3b43777c51a4f92', 'Cryptoversidad Team', 'Team Wallet')
+    ,('0x8404B8482d9a1051c67f15f12259577E8A0aa6dE', 'Cryptoversidad Team', 'Team Wallet')
+    ,('0x9e61753D841221A125Ac472e7b0AdfEC6ae34170', 'Cryptoversidad Team', 'Team Wallet')
+    ,('0xe1887ff140bfa9d3b45d0b2077b7471124acd242', 'Bankless Academy', 'Team Wallet')
+    ,('0x1960733e0087b50FDfb656eA572DefFc2fF69dc2', 'Tide Protocol', 'Team Wallet')
+    ,('0x7dcb4f75FF612Cf94E0b918160cbE55bE1C7b97d', 'Tide Protocol', 'Team Wallet')
+    ,('0x48e239Fa0B364Cd92Fc750A50045c9f9E04DD781', 'Solidity Survivor', 'Team Wallet')
+
 
     --quix - should come from CB
     ,('0x5Ad4A019F77e82940f6Dd15A5215362AF061A742','Quix','Distributor')
@@ -70,7 +83,11 @@ FROM (values
     ,('0xf56dd30d6ab0ebdae3a2892597ec5c8ee03df099', 'Perpetual Protocol','Grants Wallet')
     ,('0x2f837d64858d0867f8d22683b341f754d8258bc3', 'Synthetix','Multisig - Maybe Grants')
     ,('0x246d38588b16dd877c558b245e6d5a711c649fcf', 'Synthetix','Multisig - Maybe Grants')
-    
+    ,('0xE829ee7E7c45c4743576D1576245B97E02fAbF11', 'Governance Analytics Dashboard','Multisig - Maybe Grants')
+    ,('0xf80cd14ec747b2adf7b1a9911b38c65a885daeea', 'Bankless Academy', 'Multisig - Maybe Grants')
+    ,('0xE5A2c52B7715D2702d995563E4DfC715c5Cc097b', 'Tide Protocol', 'Multisig - Maybe Grants')
+
+
     ) a (address, proposal_name, address_descriptor)
     ) b
     WHERE rnk = 1 --check to prvent duplicates
@@ -195,6 +212,19 @@ FROM (values
     ,('0x6333000289bc27a090b3d51e734c2f13e3edc4fd', 'Hundred Finance', 'Token Treasury')
     ,('0x86c90fc464A668469A93Ca08D8B9872bdB16b356', 'Mux', 'TradingRebateDistributor')
     ,('0xBd1ba78A3976cAB420A9203E6ef14D18C2B2E031', 'Exactly', 'Distributor Multisig')
+
+    ,('0x52629961F71C1C2564C5aa22372CB1b9fa9EBA3E', 'Rabbithole', 'Distributor Factory Contract')
+
+    ,('0x973b9A7D490f06FEa3dd06432Cea3b097E9Cecb9', 'Vesper', 'vaETH')
+    ,('0x6104D21888CD996918C8cbA7480C71271DEE3120', 'Vesper', 'vaUSDC')
+    ,('0xE91172020777b03a94627dBe0b94c6b8389Fb99C', 'Vesper', 'vaOP')
+    ,('0x94E38F592d92964ebe0684A65F1318b91Dc54E9e', 'Vesper', 'vawstETH')
+
+    ,('0xEB40A065854bd90126A4E697aeA0976BA51b2eE7', 'Op Podcast NFTs', 'Distributor')
+
+    ,('0xc6BD76FA1E9e789345e003B361e4A0037DFb7260', 'Mux', 'Liquidity Mining Distributor')
+
+
         --Parnter Uniswap LM Program
     ,('0xAfBB6c1a235e105e568CCD4FD915dfFF76C415E1', 'Gamma', 'Partner Fund')
     ,('0x93dcd773eb0301bd555fc5b0bd7bb5ca5f22fce5', 'Arrakis Finance', 'Partner Fund')
