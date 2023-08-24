@@ -1,6 +1,5 @@
 {{ config(
 	tags=['legacy'],
-	
     schema = 'pancakeswap_v3_bnb',
     alias = alias('amm_trades', legacy_model=True),
     partition_by = ['block_date'],

@@ -3,9 +3,16 @@ version: 2
 seeds:
   - name: nexusmutual_ethereum_trades_seed
     config:
+      tags: dunesql
       column_types:
-        premium: string
-        premium_nxm: string
+        evt_tx_hash: varbinary
+        block_date: date
+        evt_block_number: bigint
+        nonce: bigint
+        curr: varbinary
+        premium: uint256
+        premium_nxm: uint256
+        sum_assured: uint256
 
   - name: nexusmutual_ethereum_capital_pool_eth_daily_transaction_summary_seed
     config:

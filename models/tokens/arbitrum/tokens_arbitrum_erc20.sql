@@ -3,7 +3,8 @@
 SELECT contract_address, symbol, decimals
 FROM (VALUES
         (0xfd086bc7cd5c481dcc9c85ebe478a1c0b69fcbb9, 'USDT', 6)
-        ,(0xff970a61a04b1ca14834a43f5de4533ebddb5cc8, 'USDC', 6)
+        ,(0xff970a61a04b1ca14834a43f5de4533ebddb5cc8, 'USDC.e', 6)
+        ,(0xaf88d065e77c8cc2239327c5edb3a432268e5831, 'USDC', 6)
         ,(0xda10009cbd5d07dd0cecc66161fc93d7c9000da1, 'DAI', 18)
         ,(0x2f2a2543b76a4166549f7aab2e75bef0aefc5b0f, 'WBTC', 8)
         ,(0xfa7f8980b0f1e64a2062791cc3b0871572f1f7f0, 'UNI', 18)
@@ -120,4 +121,12 @@ FROM (VALUES
         ,(0xd77b108d4f6cefaa0cae9506a934e825becca46e, 'WINR', 18)
         ,(0xd4d026322c88c2d49942a75dff920fcfbc5614c1, 'OLE', 18)
         ,(0xdd69db25f6d620a7bad3023c5d32761d353d3de9, 'GETH', 18)
+        ,(0x625e7708f30ca75bfd92586e17077590c60eb4cd, 'AMUSDC', 6)
+        ,(0x831b0afaa3b22e1435169c7585ccc1861a2c9cbc, 'fUSDC', 6)
+        ,(0x371c7ec6d8039ff7933a2aa28eb827ffe1f52f07, 'JOE', 18)
+        ,(0x9842989969687f7d249d01cae1d2ff6b7b6b6d35, 'CRYPTO', 18)
+        ,(0x09e18590e8f76b6cf471b3cd75fe1a1a9d2b2c2b, 'AIDOGE', 6)
+        ,(0x82e64f49ed5ec1bc6e43dad4fc8af9bb3a2312ee, 'aPolDAI', 18)
+        ,(0xcF879B434FE68d3D4Fe3616582D26537a220f04b, 'PLAY', 18)
+        ,(0x7E491F53bF807f836E2dd6C4A4FBd193e1913EFd, 'tigUSD', 18)
      ) AS temp_table (contract_address, symbol, decimals)

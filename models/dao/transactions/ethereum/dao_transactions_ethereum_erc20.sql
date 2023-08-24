@@ -22,7 +22,7 @@ dao_tmp as (
         FROM 
         {{ ref('dao_addresses_ethereum') }}
         WHERE dao_wallet_address IS NOT NULL 
-        AND dao_wallet_address NOT IN (0x0000000000000000000000000000000000000001, 0x000000000000000000000000000000000000dead)
+        AND dao_wallet_address NOT IN (0x0000000000000000000000000000000000000001, 0x000000000000000000000000000000000000dead, 0x)
 ), 
 
 transactions as (
@@ -108,6 +108,7 @@ LEFT JOIN
     {% if is_incremental() %}
     AND p.minute >= date_trunc('day', now() - interval '7' Day)
     {% endif %}
+{#
 -- LEFT JOIN comment out until dex_prices is migrated
 -- {{ ref('dex_prices') }} dp 
 --     ON dp.hour = date_trunc('hour', t.block_time)
@@ -117,5 +118,5 @@ LEFT JOIN
 --     {% if is_incremental() %}
 --     AND dp.hour >= date_trunc('day', now() - interval '7' Day)
 --     {% endif %}
-
+#}
 

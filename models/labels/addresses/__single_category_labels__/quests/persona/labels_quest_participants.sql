@@ -1,6 +1,7 @@
 {{
     config(
-        alias = alias('quest_participants'),
+        alias=alias('quest_participants'),
+        tags=['dunesql'],
         post_hook='{{ expose_spells(\'["optimism"]\', 
         "sector", 
         "labels", 
@@ -8,6 +9,17 @@
     )
 }}
 
-SELECT * FROM {{ ref('labels_optimism_coinbase_wallet_quest_participants') }}
-UNION ALL
-SELECT * FROM {{ ref('labels_optimism_optimism_quest_participants') }}
+SELECT
+    blockchain
+    , quester_address as address
+    , platform || ': ' || 'participant' AS name
+    , 'quests' as category
+    , 'msilb7' as contributor
+    , 'query' as source
+    , MIN(block_time) created_at
+    , now() AS updated_at
+    , replace(platform,' ', '_') || '_participants' model_name
+    , 'persona' as label_type
+
+FROM {{ ref('quests_completions') }}
+GROUP BY blockchain, quester_address, platform -- distinct if addresses completed quests multiple times

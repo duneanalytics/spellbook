@@ -5,7 +5,7 @@
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
-    unique_key = ['hash'],
+    unique_key = ['name', 'hash'],
     post_hook='{{ expose_spells(\'["ethereum"]\',
                                     "project",
                                     "rollup_economics",
@@ -15,10 +15,10 @@
 with tx_batch_appends as (
     SELECT
     'arbitrum' as name,
-    t.block_time,
     t.block_number,
     t.hash,
     (cast(gas_used as double) * (cast(gas_price as double) / 1e18)) as gas_spent,
+    p.price * (cast(gas_used as double) * (cast(gas_price as double) / 1e18)) as gas_spent_usd,
     length(t.data) as data_length
     FROM
     (
@@ -29,7 +29,7 @@ with tx_batch_appends as (
       FROM {{ source('arbitrum_ethereum', 'SequencerInbox_evt_SequencerBatchDeliveredFromOrigin') }} o
       WHERE evt_block_time >= timestamp '2022-01-01'
       {% if is_incremental() %}
-          and evt_block_time >= date_trunc('day', now() - interval '7' day)
+      AND evt_block_time >= date_trunc('day', now() - interval '7' day)
       {% endif %}
 
       UNION ALL
@@ -45,7 +45,7 @@ with tx_batch_appends as (
       WHERE evt_block_time >= timestamp '2022-01-01'
       )
       {% if is_incremental() %}
-          and call_block_time >= date_trunc('day', now() - interval '7' day)
+      AND call_block_time >= date_trunc('day', now() - interval '7' day)
       {% endif %}
 
       UNION ALL
@@ -61,7 +61,7 @@ with tx_batch_appends as (
       WHERE evt_block_time >= timestamp '2022-01-01'
       )
       {% if is_incremental() %}
-          and call_block_time >= date_trunc('day', now() - interval '7' day)
+      AND call_block_time >= date_trunc('day', now() - interval '7' day)
       {% endif %}
 
       UNION ALL
@@ -77,26 +77,29 @@ with tx_batch_appends as (
       WHERE evt_block_time >= timestamp '2022-01-01'
       )
       {% if is_incremental() %}
-          and call_block_time >= date_trunc('day', now() - interval '7' day)
+      AND call_block_time >= date_trunc('day', now() - interval '7' day)
       {% endif %}
     )b
     INNER JOIN {{ source('ethereum','transactions') }} t
     ON b.tx_hash = t.hash
     AND b.block_number = t.block_number
-    AND b.block_time = t.block_time
     AND success = true
     AND t.block_time >= timestamp '2022-01-01'
+    INNER JOIN {{ source('prices','usd') }} p
+      ON p.minute = date_trunc('minute', t.block_time)
+      AND p.blockchain is null
+      AND p.symbol = 'ETH'
     {% if is_incremental() %}
-        and t.block_time >= date_trunc('day', now() - interval '7' day)
+        AND t.block_time >= date_trunc('day', now() - interval '7' day)
     {% endif %}
 
     UNION ALL
     SELECT
-      op.name as name,
-      t.block_time,
+      lower(op.name) as name,
       t.block_number,
       t.hash,
       (cast(gas_used as double) * (cast(gas_price as double) / 1e18)) as gas_spent,
+      p.price * (cast(gas_used as double) * (cast(gas_price as double) / 1e18)) as gas_spent_usd,
       length(t.data) as data_length
     FROM
       {{ source('ethereum','transactions') }} as t
@@ -108,9 +111,103 @@ with tx_batch_appends as (
         t."from" = op.l2_output_oracle_from_address
         AND t.to = op.l2_output_oracle
       )
-    WHERE t.block_time >= timestamp '2022-01-01'
+      AND t.block_time >= timestamp '2022-01-01'
+      INNER JOIN {{ source('prices','usd') }} p
+        ON p.minute = date_trunc('minute', t.block_time)
+        AND p.blockchain is null
+        AND p.symbol = 'ETH'
     {% if is_incremental() %}
-        and t.block_time >= date_trunc('day', now() - interval '7' day)
+        AND t.block_time >= date_trunc('day', now() - interval '7' day)
+    {% endif %}
+
+    UNION ALL SELECT
+    'starknet' AS chain,
+    t.block_number,
+    t.hash,
+    (cast(gas_used as double) * (cast(gas_price as double) / 1e18)) as gas_spent,
+    p.price * (cast(gas_used as double) * (cast(gas_price as double) / 1e18)) as gas_spent_usd,
+    (length(t.data)) AS input_length
+    FROM {{ source('ethereum','transactions') }} AS t
+    INNER JOIN {{ source('prices','usd') }} p
+      ON p.minute = date_trunc('minute', t.block_time)
+      AND p.blockchain is null
+      AND p.symbol = 'ETH'
+      AND (
+          t."from" = 0x2c169dfe5fbba12957bdd0ba47d9cedbfe260ca7 -- StateUpdate poster
+          AND t.to = 0xc662c410C0ECf747543f5bA90660f6ABeBD9C8c4 -- StateUpdate proxy contract
+          AND cast(t.data as varchar) LIKE '0x77552641%'
+      )
+      AND t.block_time >= timestamp '2022-01-01'
+    {% if is_incremental() %}
+      AND t.block_time >= date_trunc('day', now() - interval '7' day)
+    {% endif %}
+
+    UNION ALL SELECT
+    'zksync lite' AS name,
+    t.block_number,
+    t.hash,
+    (cast(gas_used as double) * (cast(gas_price as double) / 1e18)) as gas_spent,
+    p.price * (cast(gas_used as double) * (cast(gas_price as double) / 1e18)) as gas_spent_usd,
+    (length(t.data)) AS input_length
+    FROM {{ source('ethereum','transactions') }} AS t
+    INNER JOIN {{ source('prices','usd') }} p
+      ON p.minute = date_trunc('minute', t.block_time)
+      AND p.blockchain is null
+      AND p.symbol = 'ETH'
+      AND
+      (
+      t."from" = 0xda7357bbce5e8c616bc7b0c3c86f0c71c5b4eabb -- Old L2 Operator
+      OR t."from" = 0x18c208921F7a741510a7fc0CfA51E941735DAE54 -- L2 Operator
+      OR t."from" = 0x01c3a1a6890a146ac187a019f9863b3ab2bff91e -- L2 Operator V1
+      )
+      AND t.to = 0xabea9132b05a70803a4e85094fd0e1800777fbef -- zksync
+      AND cast(t.data as varchar) LIKE '0x45269298%' -- Commit Block
+      AND t.block_time >= timestamp '2022-01-01'
+    {% if is_incremental() %}
+      AND t.block_time >= date_trunc('day', now() - interval '7' day)
+    {% endif %}
+
+    UNION ALL SELECT
+    'zksync era' AS chain,
+    t.block_number,
+    t.hash,
+    (cast(gas_used as double) * (cast(gas_price as double) / 1e18)) as gas_spent,
+    p.price * (cast(gas_used as double) * (cast(gas_price as double) / 1e18)) as gas_spent_usd,
+    (length(t.data)) AS input_length
+    FROM {{ source('ethereum','transactions') }} AS t
+    INNER JOIN {{ source('prices','usd') }} p
+      ON p.minute = date_trunc('minute', t.block_time)
+      AND p.blockchain is null
+      AND p.symbol = 'ETH'
+      AND t.to = 0x3dB52cE065f728011Ac6732222270b3F2360d919 -- ValidatorTimelock
+      AND
+      (
+      cast(t.data as varchar) LIKE '0x0c4dd81%' -- Commit Block
+      OR
+      cast(t.data as varchar) LIKE '0xce9dcf16%' -- Execute Block
+      )
+      AND t.block_time >= timestamp '2023-03-01'
+    {% if is_incremental() %}
+      AND t.block_time >= date_trunc('day', now() - interval '7' day)
+    {% endif %}
+
+    UNION ALL SELECT
+    'polygon zkevm' AS chain,
+    t.block_number,
+    t.hash,
+    (cast(gas_used as double) * (cast(gas_price as double) / 1e18)) as gas_spent,
+    p.price * (cast(gas_used as double) * (cast(gas_price as double) / 1e18)) as gas_spent_usd,
+    (length(t.data)) AS input_length
+    FROM {{ source('ethereum','transactions') }} AS t
+    INNER JOIN {{ source('prices','usd') }} p
+      ON p.minute = date_trunc('minute', t.block_time)
+      AND p.blockchain is null
+      AND p.symbol = 'ETH'
+      AND t.to = 0x5132a183e9f3cb7c848b0aac5ae0c4f0491b7ab2
+      AND cast(t.data as varchar) LIKE '0x5e9145c9%' -- sequenceBatches
+      AND t.block_time >= timestamp '2023-03-01'
+    {% if is_incremental() %}
+      AND t.block_time >= date_trunc('day', now() - interval '7' day)
     {% endif %}
 
 )
@@ -120,7 +217,7 @@ with tx_batch_appends as (
     FROM {{ source('ethereum','blocks') }} as b
     WHERE b.time >= timestamp '2022-01-01'
     {% if is_incremental() %}
-        and b.time >= date_trunc('day', now() - interval '7' day)
+    AND b.time >= date_trunc('day', now() - interval '7' day)
     {% endif %}
 )
 
@@ -130,7 +227,8 @@ txs.name,
 txs.hash,
 bxs.time as block_time,
 txs.data_length,
-gas_spent
+gas_spent,
+gas_spent_usd
 FROM tx_batch_appends txs
 INNER JOIN block_basefees bxs
 ON txs.block_number = bxs.block_number

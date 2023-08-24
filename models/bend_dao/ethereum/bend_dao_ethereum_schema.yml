@@ -20,7 +20,7 @@ models:
               - evt_type
               - tx_hash
               - evt_index
-        - check_seed_legacy:
+        - check_seed:
             seed_file: ref('bend_dao_nft_lending')
             match_columns:
               - block_number
@@ -46,6 +46,9 @@ models:
       - &block_date
         name: block_date
         description: "UTC event block date"
+      - &block_month
+        name: block_month
+        description: "UTC event block month"
       - &token_id
         name: token_id
         description: "NFT Token ID"
@@ -97,6 +100,9 @@ models:
       - &evt_index
         name: evt_index
         description: "Index of the corresponding lending event"
+      - &lien_id
+        name: lien_id
+        description:  "Unique loan id  "
 
   - name: bend_dao_ethereum_airdrop_claims
     meta:

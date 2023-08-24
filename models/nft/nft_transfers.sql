@@ -5,8 +5,9 @@
         materialized = 'incremental',
         file_format = 'delta',
         incremental_strategy = 'merge',
-        unique_key = ['blockchain', 'unique_transfer_id'],
-        post_hook='{{ expose_spells(\'["ethereum", "bnb", "avalanche_c", "gnosis", "optimism", "arbitrum", "polygon", "fantom", "goerli"]\',
+        incremental_predicates = ['DBT_INTERNAL_DEST.block_time >= date_trunc(\'day\', now() - interval \'7\' day)'],
+        unique_key = ['tx_hash', 'evt_index', 'token_id', 'amount'],
+        post_hook='{{ expose_spells(\'["ethereum", "bnb", "avalanche_c", "gnosis", "optimism", "arbitrum", "polygon", "fantom", "goerli", "base"]\',
                                     "sector",
                                     "nft",
                                     \'["hildobby", "0xRob"]\') }}'
@@ -23,6 +24,7 @@
 ,ref('nft_polygon_transfers')
 ,ref('nft_fantom_transfers')
 ,ref('nft_goerli_transfers')
+,ref('nft_base_transfers')
 ] %}
 
 SELECT *

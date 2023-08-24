@@ -3,13 +3,12 @@
         schema = 'nft_polygon',
         alias =alias('transfers'),
         partition_by=['block_month'],
-        pre_hook = {
-            'sql': '{{ set_trino_session_property(is_partitioned(model), \'join_distribution_type\', \'PARTITIONED\') }}',
-            'transaction': True
-        },
         materialized='incremental',
         file_format = 'delta',
-        unique_key = ['unique_transfer_id']
+        incremental_strategy = 'merge',
+        incremental_predicates = ['DBT_INTERNAL_DEST.block_time >= date_trunc(\'day\', now() - interval \'7\' day)'],
+        unique_key = ['tx_hash', 'evt_index', 'token_id', 'amount'],
+        pre_hook='{{ enforce_join_distribution("PARTITIONED") }}'
 )
 }}
 

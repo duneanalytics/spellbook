@@ -4,14 +4,11 @@
         schema = 'orca_whirlpool',
         alias = alias('trades'),
         partition_by = ['block_month'],
-        pre_hook = {
-            'sql': '{{ set_trino_session_property(is_partitioned(model), \'join_distribution_type\', \'PARTITIONED\') }}',
-            'transaction': True
-        },
         materialized = 'incremental',
         file_format = 'delta',
         incremental_strategy = 'merge',
         unique_key = ['tx_id', 'outer_instruction_index', 'inner_instruction_index', 'tx_index','block_month'],
+        pre_hook='{{ enforce_join_distribution("PARTITIONED") }}',
         post_hook='{{ expose_spells(\'["solana"]\',
                                     "project",
                                     "orca_whirlpool",

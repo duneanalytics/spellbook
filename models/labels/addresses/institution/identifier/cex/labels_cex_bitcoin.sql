@@ -7,7 +7,7 @@
                                     \'["hildobby"]\') }}')}}
 
 SELECT blockchain
-, address
+, from_base58(address) as address
 , distinct_name AS name
 , 'institution' AS category
 , added_by AS contributor
@@ -17,3 +17,4 @@ SELECT blockchain
 , 'cex_' || blockchain AS model_name
 , 'identifier' AS label_type
 FROM {{ ref('cex_bitcoin_addresses') }}
+WHERE regexp_like(address, '^[123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz]+$')
