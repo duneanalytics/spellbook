@@ -19,7 +19,6 @@ models:
             - version
             - tx_hash
             - evt_index
-            - trace_address
       - check_dex_seed:
           blockchain: gnosis
           project: balancer
@@ -34,6 +33,9 @@ models:
       - &version
         name: version
         description: "Version of the project"
+      - &block_month
+        name: block_month
+        description: "Block month in UTC"
       - &block_date
         name: block_date
         description: "Block date in UTC"
@@ -94,9 +96,6 @@ models:
       - &tx_to
         name: tx_to
         description: "transaction.to"
-      - &trace_address
-        name: trace_address
-        description: "Trace address"
       - &evt_index
         name: evt_index
         description: "Event index"
@@ -206,7 +205,6 @@ models:
             - version
             - tx_hash
             - evt_index
-            - trace_address
       - check_dex_seed:
           blockchain: gnosis
           project: balancer
@@ -236,7 +234,6 @@ models:
       - name: tx_hash
       - name: tx_from
       - name: tx_to
-      - name: trace_address
       - name: evt_index
 
   - name: balancer_v2_gnosis_liquidity
