@@ -11,7 +11,7 @@
 
 WITH fee_wallets as (
     select wallet_address, wallet_name from (
-    values (00xf7eB758c21a6d0f9029Da4655B9F24343c3924dB,'oneplanet')
+    values (0xf7eB758c21a6d0f9029Da4655B9F24343c3924dB,'oneplanet')
     ) as foo(wallet_address, wallet_name)
 )
 , trades as (
