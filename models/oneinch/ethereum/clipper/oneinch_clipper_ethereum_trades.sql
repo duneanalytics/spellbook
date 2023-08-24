@@ -278,7 +278,7 @@ LEFT JOIN {{ source('prices', 'usd') }} as prices_sold
 LEFT JOIN {{ source('prices', 'usd') }} as prices_eth
     ON prices_eth.minute = date_trunc('minute', src.block_time)
     AND prices_eth.blockchain is null
-    AND prices_eth.symbol = TIMESTAMP '{{project_start_date}}'
+    AND prices_eth.symbol = '{{blockchain_symbol}}'
     {% if is_incremental() %}
     AND prices_eth.minute >= date_trunc('day', now() - interval '7' Day)
     {% else %}
