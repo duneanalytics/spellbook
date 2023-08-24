@@ -120,7 +120,7 @@ native_order_total_amount AS (
         o.order_amount_raw / (cast(t.value AS uint256) - coalesce(r.return_amount_raw, cast(0 as uint256))) AS order_amount_percentage
     FROM native_order_summary o
     INNER JOIN {{ source('polygon', 'transactions') }} t ON o.evt_block_number = t.block_number
-        AND o.evt_tx_hash = t.hash
+        AND o.evt_tx_hash = t.hash AND t.value > 0
         {% if not is_incremental() %}
         AND t.block_time >= {{nft_start_date}}
         {% endif %}
