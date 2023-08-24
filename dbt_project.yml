@@ -1376,3 +1376,8 @@ models:
           +schema: account_abstraction_erc4337_base
         bnb:
           +schema: account_abstraction_erc4337_bnb
+          
+    worldcoin:
+      +schema: worldcoin
+      optimism:
+        +schema: worldcoin_optimism
