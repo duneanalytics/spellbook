@@ -162,18 +162,18 @@ WITH clipper AS
         amount AS token_sold_amount_raw,
         CAST(NULL as double) AS amount_usd,
         CASE
-            WHEN dstToken = '{{generic_null_address}}'
-            THEN '{{burn_address}}'
+            WHEN dstToken = {{generic_null_address}}
+            THEN {{burn_address}}
             ELSE dstToken
         END AS token_bought_address,
         CASE
-            WHEN srcToken = '{{generic_null_address}}'
-            THEN '{{burn_address}}'
+            WHEN srcToken = {{generic_null_address}}
+            THEN {{burn_address}}
             ELSE srcToken
         END AS token_sold_address,
         contract_address AS project_contract_address,
         call_tx_hash as tx_hash,
-        call_trace_address AS trace_address,
+        COALESCE(call_trace_address, array[-1]) AS trace_address, -- use coalesce for cases where trace address is null due to seed and unique keys?
         CAST(-1 as integer) AS evt_index
     FROM
         clipper
@@ -201,7 +201,7 @@ SELECT
         src.amount_usd
         , (src.token_bought_amount_raw / power(10,
             CASE
-                WHEN token_bought_address = '{{burn_address}}'
+                WHEN token_bought_address = {{burn_address}}
                     THEN 18
                 ELSE prices_bought.decimals
             END
@@ -210,14 +210,14 @@ SELECT
         *
         (
             CASE
-                WHEN token_bought_address = '{{burn_address}}'
+                WHEN token_bought_address = {{burn_address}}
                     THEN prices_eth.price
                 ELSE prices_bought.price
             END
         )
         , (src.token_sold_amount_raw / power(10,
             CASE
-                WHEN token_sold_address = '{{burn_address}}'
+                WHEN token_sold_address = {{burn_address}}
                     THEN 18
                 ELSE prices_sold.decimals
             END
@@ -226,7 +226,7 @@ SELECT
         *
         (
             CASE
-                WHEN token_sold_address = '{{burn_address}}'
+                WHEN token_sold_address = {{burn_address}}
                     THEN prices_eth.price
                 ELSE prices_sold.price
             END
