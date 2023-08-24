@@ -7,16 +7,16 @@ models:
       sector: chainlink
       contributors: linkpool_ryan
     config:
-      tags: ['chainlink', 'ocr', 'gas', 'transmission', 'logs', 'gnosis']
+      tags: ["chainlink", "ocr", "gas", "transmission", "logs", "gnosis"]
     description: >
       Chainlink OCR Gas Transmission Logs
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
-              - blockchain
-              - block_number
-              - tx_hash
-              - tx_index
+            - blockchain
+            - block_number
+            - tx_hash
+            - tx_index
     columns:
       - &blockchain
         name: blockchain
@@ -64,16 +64,16 @@ models:
       sector: chainlink
       contributors: linkpool_ryan
     config:
-      tags: ['chainlink', 'ocr', 'fulfilled', 'transactions', 'gnosis']
+      tags: ["chainlink", "ocr", "fulfilled", "transactions", "gnosis"]
     description: >
       Chainlink OCR Fulfilled Transactions
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
-              - blockchain
-              - tx_hash
-              - tx_index
-              - node_address
+            - blockchain
+            - tx_hash
+            - tx_index
+            - node_address
     columns:
       - *blockchain
       - *block_time
@@ -98,16 +98,16 @@ models:
       sector: chainlink
       contributors: linkpool_ryan
     config:
-      tags: ['chainlink', 'ocr', 'reverted', 'transactions', 'gnosis']
+      tags: ["chainlink", "ocr", "reverted", "transactions", "gnosis"]
     description: >
       Chainlink OCR Reverted Transactions
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
-              - blockchain
-              - tx_hash
-              - tx_index
-              - node_address
+            - blockchain
+            - tx_hash
+            - tx_index
+            - node_address
     columns:
       - *blockchain
       - *block_time
@@ -124,15 +124,15 @@ models:
       sector: chainlink
       contributors: linkpool_ryan
     config:
-      tags: ['chainlink','ocr', 'gas', 'daily', 'gnosis']
+      tags: ["chainlink", "ocr", "gas", "daily", "gnosis"]
     description: >
-        Chainlink OCR Gas Daily
+      Chainlink OCR Gas Daily
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
-              - blockchain
-              - date_start
-              - node_address
+            - blockchain
+            - date_start
+            - node_address
     columns:
       - *blockchain
       - &date_start
@@ -168,15 +168,15 @@ models:
       sector: chainlink
       contributors: linkpool_ryan
     config:
-      tags: ['chainlink','ocr', 'request', 'daily', 'gnosis']
+      tags: ["chainlink", "ocr", "request", "daily", "gnosis"]
     description: >
-        Chainlink OCR Request Daily
+      Chainlink OCR Request Daily
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
-              - blockchain
-              - date_start
-              - node_address
+            - blockchain
+            - date_start
+            - node_address
     columns:
       - *blockchain
       - *date_start
@@ -199,7 +199,7 @@ models:
       sector: chainlink
       contributors: linkpool_ryan
     config:
-      tags: ['chainlink', 'ocr', 'reward', 'transmission', 'logs', 'gnosis']
+      tags: ["chainlink", "ocr", "reward", "transmission", "logs", "gnosis"]
     description: >
       Chainlink OCR Reward Transmission Logs
     columns:
@@ -223,7 +223,7 @@ models:
       sector: chainlink
       contributors: linkpool_ryan
     config:
-      tags: ['chainlink', 'ocr', 'reward', 'evt', 'transfer', 'gnosis']
+      tags: ["chainlink", "ocr", "reward", "evt", "transfer", "gnosis"]
     description: >
       Chainlink OCR Reward Event Transfers
     columns:
@@ -245,15 +245,15 @@ models:
       sector: chainlink
       contributors: linkpool_ryan
     config:
-      tags: ['chainlink', 'ocr', 'reward', 'evt', 'transfer', 'daily', 'gnosis']
+      tags: ["chainlink", "ocr", "reward", "evt", "transfer", "daily", "gnosis"]
     description: >
       Chainlink OCR Reward Event Transfers Daily
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
-              - blockchain
-              - date_start
-              - admin_address
+            - blockchain
+            - date_start
+            - admin_address
     columns:
       - *blockchain
       - *date_start
@@ -268,15 +268,15 @@ models:
       sector: chainlink
       contributors: linkpool_ryan
     config:
-      tags: ['chainlink','ocr', 'reward', 'daily', 'gnosis']
+      tags: ["chainlink", "ocr", "reward", "daily", "gnosis"]
     description: >
-        Chainlink OCR Reward Daily
+      Chainlink OCR Reward Daily
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
-              - blockchain
-              - date_start
-              - admin_address
+            - blockchain
+            - date_start
+            - admin_address
     columns:
       - *blockchain
       - *date_start
@@ -286,3 +286,74 @@ models:
       - *token_amount
       - *usd_amount
 
+  - name: chainlink_gnosis_price_feeds
+    meta:
+      blockchain: gnosis
+      project: chainlink
+      contributors: ["linkpool_jon", "linkpool_ryan"]
+    config:
+      tags: ["gnosis", "chainlink", "oracle"]
+    description: >
+      Table pulling price updates for known Chainlink oracle addresses
+    columns:
+      - *blockchain
+      - *block_time
+      - &block_date
+        name: block_date
+        description: "Block time truncated to date"
+      - &block_month
+        name: block_month
+        description: "Block time truncated to month"
+      - *block_number
+      - &feed_name
+        name: feed_name
+        description: "Feed name from Chainlink docs"
+      - &oracle_price
+        name: oracle_price
+        description: "Price returned by Chainlink oracle update"
+      - &proxy_address
+        name: proxy_address
+        description: "Address of the proxy contract for the Chainlink oracle"
+      - &aggregator_address
+        name: aggregator_address
+        description: "Address of the aggregator contract tied to the proxy for the Chainlink oracle (via Read Contract)"
+      - &base
+        name: base
+        description: "Base token of the pair"
+      - &quote
+        name: quote
+        description: "Quote token of the pair"
+      - &underlying_token_price
+        name: underlying_token_price
+        description: "Price of the underlying token, with extra decimal adjustments if needed"
+
+  - name: chainlink_gnosis_price_feeds_hourly
+    meta:
+      blockchain: gnosis
+      project: chainlink
+      contributors: ["linkpool_jon", "linkpool_ryan"]
+    config:
+      tags: ["gnosis", "chainlink", "oracle"]
+    description: >
+      Table pulling price updates for known Chainlink oracle addresses, truncated to hourly average price for easier joining with other on-chain tables.
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - hour
+            - proxy_address
+            - aggregator_address
+    columns:
+      - *blockchain
+      - &hour
+        name: hour
+        description: "Block time of the oracle update - truncated to hour"
+      - *block_date
+      - *block_month
+      - *feed_name
+      - *oracle_price
+      - *proxy_address
+      - *aggregator_address
+      - *base
+      - *quote
+      - *underlying_token_price

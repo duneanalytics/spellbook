@@ -650,6 +650,10 @@ models:
         +schema: safe_fantom
       arbitrum:
         +schema: safe_arbitrum
+      goerli:
+        +schema: safe_goerli
+      base:
+        +schema: safe_base
 
     lifi:
       +schema: lifi
@@ -939,6 +943,10 @@ models:
         +schema: kyberswap_ethereum
       arbitrum:
         +schema: kyberswap_arbitrum
+      bnb:
+        +schema: kyberswap_bnb
+      polygon:
+        +schema: kyberswap_polygon
 
     hubble_exchange:
       +schema: hubble_exchange
@@ -1345,6 +1353,12 @@ models:
       +schema: thena
       bnb:
         +schema: thena_bnb
+    
+    sound_xyz:
+      +schema: sound_xyz
+      optimism:
+        +schema: sound_xyz_optimism
+        
 
     quests:
       +schema: quests
@@ -1368,3 +1382,23 @@ models:
           +schema: account_abstraction_erc4337_base
         bnb:
           +schema: account_abstraction_erc4337_bnb
+          
+    zora:
+      +schema: zora
+      optimism:
+        +schema: zora_optimism
+    
+    decent:
+      +schema: decent
+      optimism:
+        +schema: decent_optimism
+
+    mirror:
+      +schema: mirror
+      optimism:
+        +schema: mirror_optimism
+          
+    worldcoin:
+      +schema: worldcoin
+      optimism:
+        +schema: worldcoin_optimism
