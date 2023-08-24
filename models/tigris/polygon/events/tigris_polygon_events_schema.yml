@@ -333,3 +333,229 @@ models:
       - *project_contract_address
       - *block_month
       - *positions_contract
+
+  - name: tigris_polygon_events_options_open_position
+    meta:
+      blockchain: polygon
+      project: tigris
+      contributors: Henrystats 
+    config:
+      tags: [ 'tigris', 'perps', 'margin' ]
+    description: >
+      options open position across all versions
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - evt_block_time
+            - evt_tx_hash
+            - position_id
+            - protocol_version
+    columns:
+      - *day
+      - *evt_block_time
+      - *evt_index
+      - *evt_tx_hash
+      - *position_id
+      - *trader
+      - *version
+      - *protocol_version
+      - *project_contract_address
+      - *block_month
+      - *positions_contract
+      - *referral
+      - *pair 
+      - *direction
+      - &open_price
+        name: open_price 
+        description: "entry price of trade"
+      - &close_price
+        name: close_price 
+        description: "close price of trade"
+      - &profitnLoss
+        name: profitnLoss 
+        description: "profit or loss of trade"
+      - &collateral
+        name: collateral
+        description: "collateral added to trade"
+      - &collateral_asset
+        name: collateral_asset
+        description: "collateral asset added to trade"
+      - &options_period
+        name: options_period
+        description: "period of options trade"
+      - &order_type
+        name: order_type
+        description: "type of order"
+
+  - name: tigris_polygon_events_options_close_position
+    meta:
+      blockchain: polygon
+      project: tigris
+      contributors: Henrystats 
+    config:
+      tags: [ 'tigris', 'perps', 'margin' ]
+    description: >
+      options close position across all versions
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - evt_block_time
+            - evt_tx_hash
+            - position_id
+            - protocol_version
+    columns:
+      - *day
+      - *evt_block_time
+      - *evt_index
+      - *evt_tx_hash
+      - *position_id
+      - *trader
+      - *version
+      - *protocol_version
+      - *project_contract_address
+      - *block_month
+      - *positions_contract
+      - *referral
+      - *pair 
+      - *direction
+      - *open_price
+      - *close_price
+      - *profitnLoss
+      - *collateral
+      - *collateral_asset
+      - *options_period
+      - *order_type
+
+  - name: tigris_polygon_events_options_limit_order
+    meta:
+      blockchain: polygon
+      project: tigris
+      contributors: Henrystats 
+    config:
+      tags: [ 'tigris', 'perps', 'margin' ]
+    description: >
+      options limit order across all versions
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - evt_block_time
+            - evt_tx_hash
+            - position_id
+            - protocol_version
+    columns:
+      - *day
+      - *evt_block_time
+      - *evt_index
+      - *evt_tx_hash
+      - *position_id
+      - *trader
+      - *version
+      - *protocol_version
+      - *project_contract_address
+      - *block_month
+      - *positions_contract
+      - *referral
+      - *pair 
+      - *direction
+      - *open_price
+      - *close_price
+      - *profitnLoss
+      - *collateral
+      - *collateral_asset
+      - *options_period
+      - *order_type
+
+  - name: tigris_polygon_events_options_limit_cancel
+    meta:
+      blockchain: polygon
+      project: tigris
+      contributors: Henrystats 
+    config:
+      tags: [ 'tigris', 'perps', 'margin' ]
+    description: >
+      options limit cancel across all versions
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - evt_block_time
+            - evt_tx_hash
+            - position_id
+            - protocol_version
+    columns:
+      - *day
+      - *evt_block_time
+      - *evt_index
+      - *evt_tx_hash
+      - *position_id
+      - *trader
+      - *version
+      - *protocol_version
+      - *project_contract_address
+      - *block_month
+      - *positions_contract
+      - *referral
+      - *pair 
+      - *direction
+      - *open_price
+      - *close_price
+      - *profitnLoss
+      - *collateral
+      - *collateral_asset
+      - *options_period
+      - *order_type
+
+  - name: tigris_polygon_events_fees_distributed
+    meta:
+      blockchain: polygon
+      project: tigris
+      contributors: Henrystats 
+    config:
+      tags: [ 'tigris', 'perps', 'margin' ]
+    description: >
+      fees distributed events 
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - evt_block_time
+            - evt_tx_hash
+            - version
+            - protocol_version
+    columns:
+      - *day
+      - *evt_block_time
+      - *evt_index
+      - *evt_tx_hash
+      - *version
+      - *protocol_version
+      - *project_contract_address
+      - *block_month
+      - &fees
+        name: fees
+        description: "trading fees"
+
+  - name: tigris_polygon_events_options_fees_distributed
+    meta:
+      blockchain: polygon
+      project: tigris
+      contributors: Henrystats 
+    config:
+      tags: [ 'tigris', 'options', 'margin' ]
+    description: >
+      fees distributed events 
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - evt_block_time
+            - evt_tx_hash
+            - version
+            - protocol_version
+    columns:
+      - *day
+      - *evt_block_time
+      - *evt_index
+      - *evt_tx_hash
+      - *version
+      - *protocol_version
+      - *project_contract_address
+      - *block_month
+      - *fees
