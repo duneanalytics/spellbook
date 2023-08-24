@@ -1,13 +1,14 @@
 {{ config
 (
-    tags=['dunesql'],
-    alias = alias('aggregator_trades'),
+    tags = ['dunesql'],
+    schema = 'kyberswap_aggregator_arbitrum',
+    alias = alias('trades'),
     partition_by = ['block_month'],
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
     unique_key = ['block_date', 'blockchain', 'project', 'version', 'tx_hash', 'evt_index', 'trace_address'],
-    post_hook='{{ expose_spells(\'["arbitrum"]\',
+    post_hook = '{{ expose_spells(\'["arbitrum"]\',
                                     "project",
                                     "kyberswap",
                                     \'["nhd98z"]\') }}'
