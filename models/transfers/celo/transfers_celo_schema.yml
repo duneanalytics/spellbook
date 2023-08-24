@@ -10,6 +10,11 @@ models:
     config:
       tags: ["transfers", "celo"]
     description: "Events of native CELO transfers on Celo."
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - trace_address
     columns:
       - &from
         name: from
@@ -52,6 +57,7 @@ models:
       - &tx_from
           name: tx_from
           description: "From Address for the Transaction"
+
   - name: transfers_celo_erc20
     meta:
       blockchain: celo
@@ -61,6 +67,13 @@ models:
     config:
       tags: ['transfers', 'celo', 'erc20']
     description: "ERC20 Token Transfers on Celo. This table is updated every 30 minutes."
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - type
+            - evt_index
+            - wallet_address
     columns:
       - &blockchain
         name: blockchain
