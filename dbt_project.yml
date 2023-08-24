@@ -650,6 +650,10 @@ models:
         +schema: safe_fantom
       arbitrum:
         +schema: safe_arbitrum
+      goerli:
+        +schema: safe_goerli
+      base:
+        +schema: safe_base
 
     lifi:
       +schema: lifi
@@ -939,6 +943,10 @@ models:
         +schema: kyberswap_ethereum
       arbitrum:
         +schema: kyberswap_arbitrum
+      bnb:
+        +schema: kyberswap_bnb
+      polygon:
+        +schema: kyberswap_polygon
 
     hubble_exchange:
       +schema: hubble_exchange
