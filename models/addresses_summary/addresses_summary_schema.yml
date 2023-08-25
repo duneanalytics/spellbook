@@ -27,21 +27,25 @@ models:
         description: "The block time on which the address made it's last OP Mainnet transaction" 
       - name: address_age
         description: "Time period the address has been active for labelled" 
-      - name: address_age
+      - name: recency_age
         description: "Time period since the address was last active for labelled" 
       - name: address_age_in_days
         description: "Time period in days the address has been active for" 
-      - name: recency_age_in_days
+      - name: recency_in_days
         description: "Time period in days since the address was last active" 
       - name: number_of_transactions
         description: "Number of OP Mainnet transactions made by address"
       - name: usage_frequency
         description: "How often address is active"
       - name: gas_spent
-        description: "Total gas spent by an address on OP Mainnet"
+        description: "Total gas spent in ETH by an address on OP Mainnet"
       - name: unique_dapps
         description: "Unique dapps that addresses interacted with on OP Mainnet"
       - name: first_to_project
         description: "Project address sent first transaction to"
       - name: first_to_address
         description: "Contract address that an address sent first transaction to"
+      - name: last_to_project
+        description: "Project address sent last transaction to"
+      - name: last_to_address
+        description: "Contract address that an address sent last transaction to"

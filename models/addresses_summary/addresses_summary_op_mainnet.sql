@@ -67,7 +67,9 @@ SELECT
     COUNT(ot.hash) as number_of_transactions,
     COUNT(DISTINCT(cm.contract_project)) as unique_dapps,
     MIN_BY(cm.contract_project, ot.block_number) as first_to_project, 
-    MIN_BY(ot.to, ot.block_number) as first_to_address
+    MIN_BY(ot.to, ot.block_number) as first_to_address,
+    MAX_BY(cm.contract_project, ot.block_number) as last_to_project, 
+    MAX_BY(ot.to, ot.block_number) as last_to_address
 FROM 
 weekly_active_addresses wd 
 INNER JOIN (
@@ -79,7 +81,6 @@ INNER JOIN (
             case when gas_price = cast(0 as uint256) then 0
             else cast(gas_used as double) * cast(gas_price as double)/1e18 + cast(l1_fee as double) /1e18
             end as gas_spent,
-            data, 
             block_number
         FROM 
         {{ source('optimism', 'transactions') }}
@@ -94,7 +95,6 @@ INNER JOIN (
             case when gas_price = 0 then 0
             else cast(gas_limit as double) * cast(gas_price as double)/1e18
             end as gas_spent,
-            data,
             block_number
         FROM 
         {{ source('optimism_legacy_ovm1', 'transactions') }}
@@ -152,7 +152,9 @@ SELECT
     COUNT(ot.hash) as number_of_transactions,
     COUNT(DISTINCT(cm.contract_project)) as unique_dapps,
     MIN_BY(cm.contract_project, ot.block_number) as first_to_project, 
-    MIN_BY(ot.to, ot.block_number) as first_to_address
+    MIN_BY(ot.to, ot.block_number) as first_to_address,
+    MAX_BY(cm.contract_project, ot.block_number) as last_to_project, 
+    MAX_BY(ot.to, ot.block_number) as last_to_address
 FROM 
 (
         SELECT 
@@ -163,7 +165,6 @@ FROM
             case when gas_price = cast(0 as uint256) then 0
             else cast(gas_used as double) * cast(gas_price as double)/1e18 + cast(l1_fee as double) /1e18
             end as gas_spent,
-            data, 
             block_number
         FROM 
         {{ source('optimism', 'transactions') }}
@@ -178,7 +179,6 @@ FROM
             case when gas_price = 0 then 0
             else cast(gas_limit as double) * cast(gas_price as double)/1e18
             end as gas_spent,
-            data,
             block_number
         FROM 
         {{ source('optimism_legacy_ovm1', 'transactions') }}

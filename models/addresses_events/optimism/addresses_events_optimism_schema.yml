@@ -65,7 +65,7 @@ models:
         tests:
           - unique
       - name: first_activity_to
-        description: "Which Optimism address received the first activity of the address with ETH"
+        description: "First transaction activity to address"
       - name: first_block_time
         description: "The block time on which the address made it's first activity"
       - name: first_block_number
