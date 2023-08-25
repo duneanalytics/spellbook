@@ -45,7 +45,7 @@ WITH erc721_trades AS (
         {% if is_incremental() %}
         AND evt_block_time >= date_trunc('day', now() - interval '7' day)
         {% endif %}
-
+)
 , erc1155_trades as (
 
     SELECT CASE when direction = 0 THEN 'buy' ELSE 'sell' END AS trade_category,
@@ -145,7 +145,7 @@ WITH erc721_trades AS (
     )
     group by 1,2,3,4,5
 )
-trades as (
+, trades as (
     select
     t1.*
     ,f1.platform_fee_amount_raw
