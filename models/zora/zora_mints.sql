@@ -25,6 +25,7 @@ FROM (
     {% for zora_mints_model in zora_mints_models %}
     SELECT
           blockchain
+        , block_date
         , block_time
         , block_number
         , minter
