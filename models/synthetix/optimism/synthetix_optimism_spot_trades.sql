@@ -40,7 +40,7 @@ WITH dexs AS
         {{ source('synthetix_optimism', 'SNX_evt_SynthExchange') }} t
     {% if is_incremental() %}
     -- making this incremental length longer sicne there's manual token list updates needed
-    WHERE t.evt_block_time >= date_trunc('day', now() - interval '1 month')
+    WHERE t.evt_block_time >= date_trunc('day', now() - interval '7' day)
     {% endif %}
 )
 SELECT
@@ -82,7 +82,7 @@ INNER JOIN {{ source('optimism', 'transactions') }} tx
     AND tx.block_time >= '{{project_start_date}}'
     {% endif %}
     {% if is_incremental() %}
-    AND tx.block_time >= date_trunc('day', now() - interval '1' month)
+    AND tx.block_time >= date_trunc('day', now() - interval '7' day)
     {% endif %}
 LEFT JOIN {{ ref('tokens_erc20') }} erc20a
     ON erc20a.symbol = dexs.token_bought_symbol
@@ -98,7 +98,7 @@ LEFT JOIN {{ source('prices', 'usd') }} p_bought
     AND p_bought.minute >= '{{project_start_date}}'
     {% endif %}
     {% if is_incremental() %}
-    AND p_bought.minute >= date_trunc('day', now() - interval '1 month')
+    AND p_bought.minute >= date_trunc('day', now() - interval '7' day)
     {% endif %}
 LEFT JOIN {{ source('prices', 'usd') }} p_sold
     ON p_sold.minute = date_trunc('minute', dexs.block_time)
@@ -108,6 +108,6 @@ LEFT JOIN {{ source('prices', 'usd') }} p_sold
     AND p_sold.minute >= '{{project_start_date}}'
     {% endif %}
     {% if is_incremental() %}
-    AND p_sold.minute >= date_trunc('day', now() - interval '1 month')
+    AND p_sold.minute >= date_trunc('day', now() - interval '7' day)
     {% endif %}
 ;
