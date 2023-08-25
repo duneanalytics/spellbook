@@ -32,7 +32,7 @@ WITH dexs AS
             toToken AS token_sold_address,
             contract_address AS project_contract_address,
             evt_tx_hash AS tx_hash,
-            CAST(NULL AS ARRAY<bigint>) AS trace_address,
+            CAST(ARRAY[-1] as array<bigint>) as trace_address,
             evt_index
         FROM
             {{ source('dodo_arbitrum','DODOV2Proxy02_evt_OrderHistory')}}
@@ -56,7 +56,7 @@ WITH dexs AS
             toToken AS token_sold_address,
             contract_address AS project_contract_address,
             evt_tx_hash AS tx_hash,
-            CAST(NULL AS ARRAY<bigint>) AS trace_address,
+            CAST(ARRAY[-1] as array<bigint>) as trace_address,
             evt_index
         FROM
             {{ source('dodo_arbitrum','DODORouteProxy_evt_OrderHistory')}}
@@ -80,7 +80,7 @@ WITH dexs AS
             toToken AS token_sold_address,
             contract_address AS project_contract_address,
             evt_tx_hash AS tx_hash,
-            CAST(NULL AS ARRAY<bigint>) AS trace_address,
+            CAST(ARRAY[-1] as array<bigint>) as trace_address,
             evt_index
         FROM
             {{ source('dodo_arbitrum','DODOFeeRouteProxy_evt_OrderHistory')}}
