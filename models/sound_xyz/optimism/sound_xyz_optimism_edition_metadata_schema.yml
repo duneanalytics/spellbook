@@ -1,0 +1,63 @@
+version: 2
+
+models:
+  - name: sound_xyz_optimism_edition_metadata
+    meta:
+      blockchain: optimism
+      project: sound_xyz
+      contributors: [msilb7]
+    config:
+      tags: ['optimism','sound_xyz','nft','music_nfts']
+    description: >
+       Music editions minted on Sound.xyz on Optimism
+    columns:
+      - &edition_address
+        name: edition_address
+        description: "Edition (token) Address"
+        tests:
+          - unique
+      - &created_tx_hash
+        name: created_tx_hash
+        description: "TX hash when created"
+      - &created_block_number
+        name: created_block_number
+        description: "Block Number when created"
+      - &created_block_time
+        name: created_block_time
+        description: "Block Time when created"
+      - &edition_contracts
+        name: edition_contracts
+        description: "All contracts for the edition"
+      - &deployer_address
+        name: deployer_address
+        description: "Deployer Address"
+      - &base_uri
+        name: base_uri
+        description: Base URI"
+      - &contract_uri
+        name: contract_uri
+        description: "Contract URI"
+      - &edition_cutoff_time
+        name: edition_cutoff_time
+        description: "Edition Mint Cutoff Time"
+      - &edition_max_mints_lower
+        name: edition_max_mints_lower
+        description: "Edition mint range: Lower Bound"
+      - &edition_max_mints_upper
+        name: edition_max_mints_upper
+        description: "Edition mint range: Upper Bound"
+      - &funding_recipient
+        name: funding_recipient
+        description: "Funding Recipient"
+      - &metadata_module
+        name: metadata_module
+        description: "Metadata module"
+      - &royalty_pct
+        name: royalty_pct
+        description: "Royalty percentage (in decimal form)"
+      - &edition_name
+        name: edition_name
+        description: "Edition (token) name"
+      - &edition_symbol
+        name: edition_symbol
+        description: "Edition (token) symbol"

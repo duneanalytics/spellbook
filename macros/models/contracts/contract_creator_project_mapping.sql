@@ -197,7 +197,7 @@ SELECT *
     WHERE t.blockchain = '{{chain}}'
     -- Don't pull contracts that are in the incremental group (prevent dupes)
     AND t.contract_address NOT IN (
-      SELECT address
+      SELECT contract_address
         FROM incremental_contracts i
         WHERE i.blockchain = t.blockchain
     )
