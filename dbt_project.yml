@@ -537,6 +537,9 @@ models:
       goerli:
         +schema: addresses_events_testnets_goerli
 
+    addresses_summary:
+      +schema: addresses_summary
+
     aztec:
       +schema: aztec
       ethereum:
