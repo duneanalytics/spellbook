@@ -81,13 +81,13 @@ WITH erc721_trades AS (
 ,erc721_fees as (
 
     WITH sell_orders as (
-    select call_tx_hash, sellOrder from zeroex_polygon.ExchangeProxy_call_buyERC721
+    select call_tx_hash, sellOrder from {{ source('zeroex_polygon','ExchangeProxy_call_buyERC721') }}
     union all
     select * from (
         select
         call_tx_hash
         ,sellOrder
-        from zeroex_polygon.ExchangeProxy_call_batchBuyERC721s
+        from {{ source('zeroex_polygon','ExchangeProxy_call_batchBuyERC721s') }}
         cross join unnest(sellOrders) as foo(sellOrder)
         )
     )
@@ -114,13 +114,13 @@ WITH erc721_trades AS (
 )
 ,erc1155_fees as (
     WITH sell_orders as (
-    select call_tx_hash, sellOrder from zeroex_polygon.ExchangeProxy_call_buyERC1155
+    select call_tx_hash, sellOrder from {{ source('zeroex_polygon','ExchangeProxy_call_buyERC1155') }}
     union all
     select * from (
         select
         call_tx_hash
         ,sellOrder
-        from zeroex_polygon.ExchangeProxy_call_batchBuyERC1155s
+        from {{ source('zeroex_polygon','ExchangeProxy_call_batchBuyERC1155s') }}
         cross join unnest(sellOrders) as foo(sellOrder)
         )
     )
