@@ -30,8 +30,8 @@ WITH dexs AS
         ,CAST(NULL as VARBINARY) AS token_bought_address
         ,CAST(NULL as VARBINARY) AS token_sold_address
         -- we need to map token symbols. This is not ideal.
-        ,from_utf8(bytearray_ltrim(toCurrencyKey)) AS token_bought_symbol
-        ,from_utf8(bytearray_ltrim(fromCurrencyKey)) AS token_sold_symbol
+        ,from_utf8(bytearray_rtrim(toCurrencyKey)) AS token_bought_symbol
+        ,from_utf8(bytearray_rtrim(fromCurrencyKey)) AS token_sold_symbol
 
         ,t.contract_address as project_contract_address
         ,t.evt_tx_hash AS tx_hash
