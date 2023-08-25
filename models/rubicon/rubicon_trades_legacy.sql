@@ -10,7 +10,8 @@
 }}
 
 {% set rubi_models = [
-ref('rubicon_optimism_trades_legacy')
+ref('rubicon_optimism_trades_legacy'),
+ref('rubicon_arbitrum_trades_legacy')
 ] %}
 
 

@@ -30,7 +30,7 @@ FROM (
     ,cast(NULL as varchar(250)) as creator_address
     ,cast(NULL as varchar(250)) as contract_factory
     ,contract_address
-    ,'ovm' as contract_project
+    ,project_name as contract_project
     ,contract_name
     ,cast('2021-07-06 00:00:00' as timestamp) as created_time
     ,false as is_self_destruct
