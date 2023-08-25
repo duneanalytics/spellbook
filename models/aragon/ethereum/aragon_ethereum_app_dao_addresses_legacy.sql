@@ -1,12 +1,11 @@
 {{ config(
 	tags=['legacy'],
-	
     alias = alias('app_dao_addresses', legacy_model=True),
-    partition_by = ['created_date'],
+    partition_by = ['block_month'],
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
-    unique_key = ['created_block_time', 'dao_wallet_address', 'blockchain', 'dao', 'dao_creator_tool']
+    unique_key = ['created_block_time', 'dao_wallet_address', 'blockchain', 'dao', 'dao_creator_tool', 'block_month']
     )
 }}
 
@@ -20,7 +19,8 @@ SELECT
     CONCAT('0x', SUBSTRING(topic2, 27, 40)) as dao, 
     CONCAT('0x', SUBSTRING(topic2, 27, 40)) as dao_wallet_address, 
     block_time as created_block_time, 
-    TRY_CAST(date_trunc('day', block_time) as DATE) as created_date, 
+    CAST(date_trunc('day', block_time) as DATE) as created_date, 
+    CAST(date_trunc('month', block_time) as DATE) as block_month, 
     'aragon_app' as product 
 FROM 
 {{ source('ethereum', 'logs') }}

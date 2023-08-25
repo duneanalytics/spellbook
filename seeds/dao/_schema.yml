@@ -1,0 +1,25 @@
+version: 2
+
+seeds:
+   - name: dao_addresses_seed
+     config:
+       tags: dunesql
+       column_types:
+         blockchain: varchar
+         dao_creator_tool: varchar
+         dao: varbinary
+         dao_wallet_address: varbinary
+         created_date: date
+
+   - name: dao_transactions_seed
+     config:
+       tags: dunesql
+       column_types:
+         blockchain: varchar
+         dao_creator_tool: varchar
+         dao: varbinary
+         dao_wallet_address: varbinary
+         value: double
+         block_date: date
+         tx_type: varchar
+         tx_hash: varbinary

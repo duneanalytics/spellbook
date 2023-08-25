@@ -19,7 +19,7 @@
 
 -- macros/models/sector/erc4337
 {{
-    erc4337_userops_basics(
+    erc4337_userops_basics_legacy(
         blockchain = 'arbitrum',
         version = 'v0.5',
         userops_evt_model = source('erc4337_arbitrum','EntryPoint_v0_5_evt_UserOperationEvent'),

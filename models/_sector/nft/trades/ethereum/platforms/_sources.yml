@@ -14,6 +14,12 @@ sources:
     tables:
       - name: BlurExchange_evt_OrdersMatched
 
+  - name: blur_v2_ethereum
+    tables:
+      - name: BlurPool_evt_Execution721Packed
+      - name: BlurPool_evt_Execution721MakerFeePacked
+      - name: BlurPool_evt_Execution721TakerFeePacked
+
   - name: collectionswap_ethereum
     tables:
       - name: CollectionPool_evt_SwapNFTOutPool
@@ -60,6 +66,7 @@ sources:
       - name: SuperRareBazaar_evt_AcceptOffer
       - name: SuperRareBazaar_evt_AuctionSettled
       - name: SuperRareBazaar_evt_Sold
+      - name: SuperRareAuctionHouse_evt_AuctionSettled
 
   - name: x2y2_ethereum
     tables:

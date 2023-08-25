@@ -6,11 +6,7 @@
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
-    unique_key = ['userop_hash', 'tx_hash'],
-    post_hook='{{ expose_spells(\'["ethereum"]\',
-                                    "project",
-                                    "erc4337",
-                                    \'["0xbitfly", "hosuke"]\') }}'
+    unique_key = ['userop_hash', 'tx_hash']
 )
 }}
 
@@ -23,7 +19,7 @@
 
 -- macros/models/sector/erc4337
 {{
-    erc4337_userops_basics(
+    erc4337_userops_basics_legacy(
         blockchain = 'ethereum',
         version = 'v0.6',
         userops_evt_model = source('erc4337_ethereum','EntryPoint_v0_6_evt_UserOperationEvent'),

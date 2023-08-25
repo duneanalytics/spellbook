@@ -1,4 +1,6 @@
-{{config(alias = alias('contracts'),
+{{config(
+        tags=['dunesql'],
+        alias = alias('contracts'),
         post_hook='{{ expose_spells(\'["ethereum", "arbitrum", "gnosis", "optimism", "bnb", "avalanche_c", "fantom", "polygon"]\',
                                     "sector",
                                     "labels",
@@ -7,7 +9,7 @@
 
 SELECT 'ethereum' as blockchain,
        address, 
-       concat(upper(substring(namespace,1,1)),substring(namespace,2)) || ': ' || name as name,
+       CONCAT(UPPER(SUBSTR(namespace,1,1)),SUBSTR(namespace,2)) || ': ' || name as name,
        'contracts' as category,
        'soispoke' as contributor,
        'query' AS source,
@@ -19,7 +21,7 @@ FROM {{ source('ethereum','contracts') }}
 UNION 
 SELECT 'gnosis' as blockchain,
        address, 
-       concat(upper(substring(namespace,1,1)),substring(namespace,2)) || ': ' || name as name,
+       CONCAT(UPPER(SUBSTR(namespace,1,1)),SUBSTR(namespace,2)) || ': ' || name as name,
        'contracts' as category,
        'soispoke' as contributor,
        'query' AS source,
@@ -31,7 +33,7 @@ FROM {{ source('gnosis','contracts') }}
 UNION 
 SELECT 'avalanche_c' as blockchain,
        address, 
-       concat(upper(substring(namespace,1,1)),substring(namespace,2)) || ': ' || name as name,
+       CONCAT(UPPER(SUBSTR(namespace,1,1)),SUBSTR(namespace,2)) || ': ' || name as name,
        'contracts' as category,
        'soispoke' as contributor,
        'query' AS source,
@@ -43,7 +45,7 @@ FROM {{ source('avalanche_c','contracts') }}
 UNION 
 SELECT 'arbitrum' as blockchain,
        address, 
-       concat(upper(substring(namespace,1,1)),substring(namespace,2)) || ': ' || name as name,
+       CONCAT(UPPER(SUBSTR(namespace,1,1)),SUBSTR(namespace,2)) || ': ' || name as name,
        'contracts' as category,
        'soispoke' as contributor,
        'query' AS source,
@@ -55,7 +57,7 @@ FROM {{ source('arbitrum','contracts') }}
 UNION 
 SELECT 'bnb' as blockchain,
        address, 
-       concat(upper(substring(namespace,1,1)),substring(namespace,2)) || ': ' || name as name,
+       CONCAT(UPPER(SUBSTR(namespace,1,1)),SUBSTR(namespace,2)) || ': ' || name as name,
        'contracts' as category,
        'soispoke' as contributor,
        'query' AS source,
@@ -67,7 +69,7 @@ FROM {{ source('bnb','contracts') }}
 UNION 
 SELECT 'optimism' as blockchain,
        address, 
-       concat(upper(substring(namespace,1,1)),substring(namespace,2)) || ': ' || name as name,
+       CONCAT(UPPER(SUBSTR(namespace,1,1)),SUBSTR(namespace,2)) || ': ' || name as name,
        'contracts' as category,
        'soispoke' as contributor,
        'query' AS source,
@@ -79,7 +81,7 @@ FROM {{ source('optimism','contracts') }}
 UNION 
 SELECT 'fantom' as blockchain,
        address, 
-       concat(upper(substring(namespace,1,1)),substring(namespace,2)) || ': ' || name as name,
+       CONCAT(UPPER(SUBSTR(namespace,1,1)),SUBSTR(namespace,2)) || ': ' || name as name,
        'contracts' as category,
        'Henrystats' as contributor,
        'query' AS source,
@@ -91,7 +93,7 @@ FROM {{ source('fantom','contracts') }}
 UNION 
 SELECT 'polygon' as blockchain,
        address, 
-       concat(upper(substring(namespace,1,1)),substring(namespace,2)) || ': ' || name as name,
+       CONCAT(UPPER(SUBSTR(namespace,1,1)),SUBSTR(namespace,2)) || ': ' || name as name,
        'contracts' as category,
        'Henrystats' as contributor,
        'query' AS source,

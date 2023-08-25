@@ -1,6 +1,7 @@
 {{ config(
         schema = 'account_abstraction_erc4337',
         alias = alias('userops'),
+        tags=['dunesql'],
         post_hook='{{ expose_spells(\'["ethereum","polygon","arbitrum","optimism","avalanche_c","gnosis"]\',
                                 "project",
                                 "erc4337",
@@ -15,6 +16,8 @@
 , ref('account_abstraction_erc4337_optimism_userops')
 , ref('account_abstraction_erc4337_avalanche_c_userops')
 , ref('account_abstraction_erc4337_gnosis_userops')
+, ref('account_abstraction_erc4337_base_userops')
+, ref('account_abstraction_erc4337_bnb_userops')
 ] %}
 
 SELECT *
@@ -23,6 +26,7 @@ FROM (
     SELECT
           blockchain
         , version
+        , block_month
         , block_time
         , entrypoint_contract
         , tx_hash

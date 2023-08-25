@@ -13,6 +13,10 @@
          when 'bnb' = chain_ then 'https://bscscan.com'
          when 'solana' = chain_ then 'https://solscan.io'
          when 'fantom' = chain_ then 'https://ftmscan.com'
+         when 'base' = chain_ then 'https://basescan.org'
+         when 'bitcoin' = chain_ then 'https://blockstream.info'
+         when 'celo' = chain_ then 'https://celoscan.io'
+         when 'goerli' = chain_ then 'https://goerli.basescan.org'
          else 'https://etherscan.io'
       end as explorer_url;
 {% endmacro %}

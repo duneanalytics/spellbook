@@ -22,7 +22,7 @@
 ] %}
 
 {{
-    erc4337_userops_enrichments(
+    erc4337_userops_enrichments_legacy(
         blockchain = 'ethereum',
         base_models = erc4337_base_models,
         wrapped_gas_address = '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2',

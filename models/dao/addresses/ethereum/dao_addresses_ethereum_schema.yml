@@ -1,23 +1,15 @@
 version: 2
 
 models:
-  - name: dao_addresses_ethereum_daohaus
+  - name: dao_addresses_ethereum
     meta:
       blockchain: ethereum
-      project: daohaus
+      sector: dao
       contributors: Henrystats 
     config:
-      tags: [ 'ethereum', 'dao', 'daohaus', 'dao creator tools', 'Henrystats' ]
+      tags: [ 'ethereum', 'dao', 'aragon', 'zodiac', 'daohaus', 'dao creator tools', 'Henrystats' ]
     description: >
-      wallet addresses of daos created on daohaus
-    tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - created_date
-            - blockchain
-            - dao_creator_tool
-            - dao
-            - dao_wallet_address
+      wallet addresses of daos created on ethereum across all dao creator tools
     columns:
       - &blockchain
         name: blockchain
@@ -40,71 +32,3 @@ models:
       - &created_block_time
         name: created_block_time
         description: "UTC event block time of DAO creation"
-
-  - name: dao_addresses_ethereum_zodiac
-    meta:
-      blockchain: ethereum
-      project: zodiac
-      contributors: Henrystats 
-    config:
-      tags: [ 'ethereum', 'dao', 'zodiac', 'dao creator tools', 'Henrystats' ]
-    description: >
-      wallet addresses of daos created on zodiac 
-    tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - created_date
-            - blockchain
-            - dao_creator_tool
-            - dao
-            - dao_wallet_address
-    columns:
-      - *blockchain
-      - *dao_creator_tool
-      - *dao
-      - *dao_wallet_address
-      - *created_date
-      - *created_block_time
-
-  - name: dao_addresses_ethereum_syndicate
-    meta:
-      blockchain: ethereum
-      project: syndicate
-      contributors: Henrystats 
-    config:
-      tags: [ 'ethereum', 'dao', 'syndicate', 'dao creator tools', 'Henrystats' ]
-    description: >
-      wallet addresses of daos created on syndicate 
-    tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - created_date
-            - blockchain
-            - dao_creator_tool
-            - dao
-            - dao_wallet_address
-    columns:
-      - *blockchain
-      - *dao_creator_tool
-      - *dao
-      - *dao_wallet_address
-      - *created_date
-      - *created_block_time
-
-  - name: dao_addresses_ethereum
-    meta:
-      blockchain: ethereum
-      sector: dao
-      contributors: Henrystats 
-    config:
-      tags: [ 'ethereum', 'dao', 'aragon', 'zodiac', 'daohaus', 'dao creator tools', 'Henrystats' ]
-    description: >
-      wallet addresses of daos created on ethereum across all dao creator tools
-    columns:
-      - *blockchain
-      - name: dao_creator_tool
-        description: "Name of creator tool used to create DAO"
-      - *dao
-      - *dao_wallet_address
-      - *created_date
-      - *created_block_time

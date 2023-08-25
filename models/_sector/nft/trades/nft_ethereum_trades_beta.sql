@@ -15,6 +15,7 @@
     ,('superrare',    'v1',   ref('superrare_ethereum_base_trades'))
     ,('foundation',    'v1',   ref('foundation_ethereum_base_trades'))
     ,('blur',    'v1',   ref('blur_ethereum_base_trades'))
+    ,('blur',    'v2',   ref('blur_v2_ethereum_base_trades'))
     ,('element',    'v1',   ref('element_ethereum_base_trades'))
     ,('x2y2',    'v1',   ref('x2y2_ethereum_base_trades'))
     ,('zora',    'v1',   ref('zora_v1_ethereum_base_trades'))

@@ -1,4 +1,7 @@
-{{config(alias = alias('cex'))}}
+{{config(
+    tags = ['dunesql'],
+    alias = alias('cex')
+)}}
 
 
 {% set cex_label_models = [
@@ -27,6 +30,7 @@ FROM (
     , model_name
     , label_type
     FROM {{ cex_label_model }}
+
     {% if not loop.last %}
     UNION ALL
     {% endif %}

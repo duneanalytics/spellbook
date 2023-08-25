@@ -1,10 +1,11 @@
 {{ config(
+    tags=['dunesql'],
     alias = alias('app_dao_addresses'),
-    partition_by = ['created_date'],
+    partition_by = ['block_month'],
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
-    unique_key = ['created_block_time', 'dao_wallet_address', 'blockchain', 'dao', 'dao_creator_tool']
+    unique_key = ['created_block_time', 'dao_wallet_address', 'blockchain', 'dao', 'dao_creator_tool', 'block_month']
     )
 }}
 
@@ -19,13 +20,14 @@ SELECT
     dao, 
     dao as dao_wallet_address, 
     evt_block_time as created_block_time, 
-    TRY_CAST(date_trunc('day', evt_block_time) as DATE) as created_date, 
+    CAST(date_trunc('day', evt_block_time) as DATE) as created_date, 
+    CAST(date_trunc('month', evt_block_time) as DATE) as block_month, 
     'aragon_app' as product 
 FROM 
 {{ source('aragon_app_polygon', 'DAORegistry_evt_DAORegistered') }}
 {% if not is_incremental() %}
-WHERE evt_block_time >= '{{project_start_date}}'
+WHERE evt_block_time >= DATE '{{project_start_date}}'
 {% endif %}
 {% if is_incremental() %}
-WHERE evt_block_time >= date_trunc("day", now() - interval '1 week')
+WHERE evt_block_time >= date_trunc('day', now() - interval '7' day)
 {% endif %}

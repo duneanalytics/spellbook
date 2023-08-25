@@ -1,17 +1,17 @@
-{{ config(
+{{
+  config(
 	tags=['legacy'],
-	
-    alias = alias('price_feeds_hourly', legacy_model=True),
-    partition_by = ['block_date'],
-    materialized = 'incremental',
-    file_format = 'delta',
-    incremental_strategy = 'merge',
-    unique_key = ['blockchain', 'hour', 'proxy_address', 'underlying_token_address'],
+    alias=alias('price_feeds_hourly', legacy_model=True),
+    partition_by=['block_month'],
+    materialized='incremental',
+    file_format='delta',
+    incremental_strategy='merge',
+    unique_key=['blockchain', 'hour', 'proxy_address', 'underlying_token_address'],
     post_hook='{{ expose_spells(\'["polygon"]\',
                                 "project",
                                 "chainlink",
-                                \'["msilb7","0xroll"]\') }}'
-    )
+                                \'["msilb7","0xroll","linkpool_ryan"]\') }}'
+  )
 }}
 
 {% set project_start_date = '2020-10-26' %}
@@ -41,13 +41,14 @@ WITH gs AS (
                 feed_name,
                 proxy_address,
                 aggregator_address
-        FROM {{ ref('chainlink_polygon_oracle_addresses_legacy') }}
-    ) oa LEFT JOIN {{ ref('chainlink_polygon_oracle_token_mapping_legacy') }} c ON c.proxy_address = oa.proxy_address
+        FROM {{ ref('chainlink_polygon_price_feeds_oracle_addresses_legacy') }}
+    ) oa LEFT JOIN {{ ref('chainlink_polygon_price_feeds_oracle_token_mapping_legacy') }} c ON c.proxy_address = oa.proxy_address
 )
 
 SELECT 'polygon'                                            AS blockchain,
         hour,
         DATE_TRUNC('day',hour)                              AS block_date,
+        DATE_TRUNC('month',hour)                              AS block_month,
         feed_name,
         proxy_address,
         aggregator_address,

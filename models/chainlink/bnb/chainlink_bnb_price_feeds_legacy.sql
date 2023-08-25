@@ -1,17 +1,17 @@
-{{ config(
-	tags=['legacy'],
-	
-    alias = alias('price_feeds', legacy_model=True),
-    partition_by = ['block_date'],
-    materialized = 'incremental',
-    file_format = 'delta',
-    incremental_strategy = 'merge',
-    unique_key = ['blockchain', 'block_number', 'proxy_address','underlying_token_address'],
+{{
+  config(
+  	tags=['legacy'],
+    alias=alias('price_feeds', legacy_model=True),
+    partition_by=['block_month'],
+    materialized='incremental',
+    file_format='delta',
+    incremental_strategy='merge',
+    unique_key=['blockchain', 'block_number', 'proxy_address','underlying_token_address'],
     post_hook='{{ expose_spells(\'["bnb"]\',
                                 "project",
                                 "chainlink",
-                                \'["msilb7","0xroll"]\') }}'
-    )
+                                \'["msilb7","0xroll","linkpool_ryan"]\') }}'
+  )
 }}
 
 {% set project_start_date = '2020-08-29' %}
@@ -21,6 +21,7 @@
 SELECT 'bnb'                                        AS blockchain,
        c.block_time,
        c.block_date,
+       c.block_month,
        c.block_number,
        c.feed_name,
        c.oracle_price,
@@ -32,6 +33,7 @@ FROM
 (
     SELECT l.block_time,
            DATE_TRUNC('day', l.block_time)              AS block_date,
+           DATE_TRUNC('month', l.block_time)              AS block_month,
            l.block_number,
 	       cfa.feed_name,
            AVG(
@@ -42,7 +44,7 @@ FROM
 	       cfa.proxy_address,
            cfa.aggregator_address
 	FROM {{ source('bnb', 'logs') }} l
-	INNER JOIN {{ ref('chainlink_bnb_oracle_addresses_legacy') }} cfa ON l.contract_address = cfa.aggregator_address
+	INNER JOIN {{ ref('chainlink_bnb_price_feeds_oracle_addresses_legacy') }} cfa ON l.contract_address = cfa.aggregator_address
 	WHERE l.topic1 = '{{answer_updated}}'
         {% if not is_incremental() %}
         AND l.block_time >= '{{project_start_date}}'
@@ -58,4 +60,4 @@ FROM
         cfa.proxy_address,
         cfa.aggregator_address
 ) c
-LEFT JOIN {{ ref('chainlink_bnb_oracle_token_mapping_legacy') }} o ON c.proxy_address = o.proxy_address
+LEFT JOIN {{ ref('chainlink_bnb_price_feeds_oracle_token_mapping_legacy') }} o ON c.proxy_address = o.proxy_address

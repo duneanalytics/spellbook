@@ -203,7 +203,16 @@ models:
     description: >
         Opensea events on optimism, from Seaport v1.1
     tests:
-      - check_seed_legacy:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_date
+            - tx_hash
+            - evt_index
+            - nft_contract_address
+            - token_id
+            - sub_type
+            - sub_idx
+      - check_seed:
           seed_file: ref('opensea_optimism_seaport_trades_samples')
           filter:
             blockchain: optimism
@@ -293,8 +302,13 @@ models:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - block_date
-            - unique_trade_id
-      - check_seed_legacy:
+            - tx_hash
+            - evt_index
+            - nft_contract_address
+            - token_id
+            - sub_type
+            - sub_idx
+      - check_seed:
           seed_file: ref('opensea_optimism_seaport_trades_samples')
           filter:
             blockchain: optimism

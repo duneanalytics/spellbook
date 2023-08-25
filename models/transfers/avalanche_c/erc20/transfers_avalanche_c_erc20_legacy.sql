@@ -53,15 +53,15 @@ with
         from
             {{ source('wavax_avalanche_c', 'wavax_evt_withdrawal') }}
     )
-    
+
 select unique_transfer_id, 'avalanche_c' as blockchain, wallet_address, token_address, evt_block_time, CAST(amount_raw AS VARCHAR(100)) as amount_raw
 from sent_transfers
-union
+union all
 select unique_transfer_id, 'avalanche_c' as blockchain, wallet_address, token_address, evt_block_time, CAST(amount_raw AS VARCHAR(100)) as amount_raw
 from received_transfers
-union
+union all
 select unique_transfer_id, 'avalanche_c' as blockchain, wallet_address, token_address, evt_block_time, CAST(amount_raw AS VARCHAR(100)) as amount_raw
 from deposited_wavax
-union
+union all
 select unique_transfer_id, 'avalanche_c' as blockchain, wallet_address, token_address, evt_block_time, CAST(amount_raw AS VARCHAR(100)) as amount_raw
 from withdrawn_wavax

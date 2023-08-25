@@ -2,21 +2,27 @@
 	tags=['legacy'],
 	alias = alias('addresses_gnosis', legacy_model=True))}}
 
-WITH 
+{% set addresses_models = [
+ref('aragon_gnosis_dao_addresses_legacy')
+,ref('daohaus_gnosis_dao_addresses_legacy')
+,ref('colony_gnosis_dao_addresses_legacy')
+] %}
 
-mapping as (
-        SELECT blockchain, dao_creator_tool, dao, dao_wallet_address, created_block_time, created_date
-        FROM {{ ref('aragon_gnosis_dao_addresses_legacy') }}
 
-        UNION ALL 
+SELECT *
 
-        SELECT blockchain, dao_creator_tool, dao, dao_wallet_address, created_block_time, created_date
-        FROM {{ ref('dao_addresses_gnosis_daohaus_legacy') }}
-
-        UNION ALL 
-
-        SELECT blockchain, dao_creator_tool, dao, dao_wallet_address, created_block_time, created_date
-        FROM {{ ref('dao_addresses_gnosis_colony_legacy') }}
+FROM (
+    {% for dao_model in addresses_models %}
+    SELECT
+        blockchain,
+        dao_creator_tool, 
+        dao, 
+        dao_wallet_address,
+        created_block_time,
+        created_date
+    FROM {{ dao_model }}
+    {% if not loop.last %}
+    UNION ALL
+    {% endif %}
+    {% endfor %}
 )
-
-SELECT * FROM mapping

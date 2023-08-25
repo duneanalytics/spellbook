@@ -96,6 +96,7 @@ LEFT JOIN
     ON db.asset_contract_address = lower('0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee')
     AND d.day = e.minute
     AND db.blockchain = 'ethereum'
+    AND e.blockchain = 'ethereum'
     AND e.symbol = 'WETH'
 
     

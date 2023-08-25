@@ -7,7 +7,7 @@ models:
       project: safe
       contributors: tschubotz, danielpartida
     config:
-      tags: ['arbitrum', 'avalanche_c', 'bnb', 'ethereum', 'fantom', 'gnosis', 'goerli', 'optimism', 'polygon', 'safe']
+      tags: ['arbitrum', 'avalanche_c', 'bnb', 'celo','ethereum', 'fantom', 'gnosis', 'goerli', 'optimism', 'polygon', 'safe']
     description: >
         Lists all Safes across chains.
     columns:

@@ -3,7 +3,7 @@
         alias = alias('tokens'),
         materialized='table',
         file_format = 'delta',
-        tags=['static']
+        tags = ['dunesql']
         )
 }}
 SELECT
