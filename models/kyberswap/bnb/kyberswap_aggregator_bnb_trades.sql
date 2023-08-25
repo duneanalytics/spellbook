@@ -108,7 +108,7 @@ LEFT JOIN {{ source('prices', 'usd') }} p_sold
 LEFT JOIN {{ source('prices', 'usd') }} p_bnb
     ON p_bnb.minute = date_trunc('minute', meta_router.block_time)
     AND p_bnb.blockchain IS NULL
-    AND p_bnb.symbol = 'BNB'
+    AND p_bnb.symbol = 'ETH'
     {% if is_incremental() %}
     AND p_bnb.minute >= date_trunc('day', now() - INTERVAL '7' DAY)
     {% else %}

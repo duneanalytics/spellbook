@@ -108,7 +108,7 @@ LEFT JOIN {{ source('prices', 'usd') }} p_sold
 LEFT JOIN {{ source('prices', 'usd') }} p_avax
     ON p_avax.minute = date_trunc('minute', meta_router.block_time)
     AND p_avax.blockchain IS NULL
-    AND p_avax.symbol = 'AVAX'
+    AND p_avax.symbol = 'ETH'
     {% if is_incremental() %}
     AND p_avax.minute >= date_trunc('day', now() - INTERVAL '7' DAY)
     {% else %}
