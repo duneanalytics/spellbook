@@ -187,7 +187,7 @@ models:
               - version
               - tx_hash
               - evt_index
-      - check_dex_seed_legacy:
+      - check_dex_seed:
           blockchain: optimism
           project: synthetix
           version: 1
