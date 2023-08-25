@@ -140,6 +140,8 @@ models:
           - not_null
       - &caller
         name: caller
+      - &call_to
+        name: call_to
       - &call_selector
         name: call_selector
       - &call_input
@@ -171,6 +173,7 @@ models:
       - *call_success
       - *call_trace_address_not_null
       - *caller
+      - *call_to
       - *call_selector
       - &transfer_trace_address
         name: transfer_trace_address

@@ -35,6 +35,7 @@
         'call_success',
         'call_trace_address',
         'caller',
+        'call_to',
         'call_selector',
         'call_input',
         'call_output'
