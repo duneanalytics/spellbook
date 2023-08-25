@@ -98,6 +98,8 @@ known_solver_metadata (address, environment, name) as (
                  ('0xc9f2e6ea1637E499406986ac50ddC92401ce1f58', 'prod', 'PropellerSwap'),
                  ('0x0Ab21031124AF2165586Fbb495d93725A372C227', 'prod', 'Enso'),
                  ('0xFf662Eedb413273B6727e1F59755607CA6876044', 'prod', 'OpenOcean_Aggregator'),
+                 ('0xBEAf89aEc78A2990BE29E2a317feed6B75Bc78Cd', 'prod', 'Quasimodo'),
+                 ('0xaaC451d13cF8D6915f859f4c7Bc26dA2df10ECA6', 'barn', 'Quasimodo'),
                  ('0x9902F0B57b6B8b2Fa7339Cd3eFe0710CF63c86d6', 'barn', 'OpenOcean_Aggregator'),
                  ('0x40ADd124002E47119E9DeACdF650dE150F637b6f', 'barn', 'Enso'),
                  ('0x69f9365405762405cc17f7979aa8e94fd95c1e80', 'barn', 'Barter'),

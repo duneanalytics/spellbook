@@ -1,6 +1,6 @@
 {{ config(tags=['dunesql'],
     alias = alias('trades')
-    ,partition_by = ['block_date']
+    ,partition_by = ['block_month']
     ,materialized = 'incremental'
     ,file_format = 'delta'
     ,incremental_strategy = 'merge'
@@ -41,7 +41,8 @@ WITH babyswap_dex AS (
 SELECT 'bnb'                                                             AS blockchain,
        'babyswap'                                                        AS project,
        '1'                                                               AS version,
-       try_cast(date_trunc('DAY', babyswap_dex.block_time) AS date)      AS block_date,
+       cast(date_trunc('month', babyswap_dex.block_time) AS date)        AS block_month,
+       cast(date_trunc('DAY', babyswap_dex.block_time) AS date)          AS block_date,
        babyswap_dex.block_time,
        erc20a.symbol                                                     AS token_bought_symbol,
        erc20b.symbol                                                     AS token_sold_symbol,

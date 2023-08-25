@@ -9,7 +9,7 @@ models:
       contributors: niftytable
     config:
       tags: ['rollup', 'l2']
-    description: Fees paid by rollups for posting transaction data on Ethereum
+    description: Gas fees paid by rollups for posting transaction data on Ethereum
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -31,3 +31,56 @@ models:
       - &gas_spent
         name: gas_spent
         description: "ETH spent on posting data to L1"
+      - &gas_spent_usd
+        name: gas_spent_usd
+        description: "fee paid to post data on L1 in usd"
+
+  - name: l1_verification_fees
+    meta:
+      blockchain: ethereum
+      sector: rollup_economics
+      project: rollup_economics
+      contributors: niftytable
+    config:
+      tags: ['rollup', 'l2']
+    description: Gas fees paid by rollups for verifying proofs on Ethereum
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - name
+            - hash
+    columns:
+      - *name
+      - *hash
+      - *block_time
+      - &proof_size_mb
+        name: proof_size_mb
+        description: "size of proofs posted to l1 in MBs"
+      - *gas_spent
+      - *gas_spent_usd
+
+  - name: l2_revenue
+    meta:
+      blockchain: ethereum
+      sector: rollup_economics
+      project: rollup_economics
+      contributors: niftytable
+    config:
+      tags: ['rollup', 'l2']
+    description: Gas fees earned by rollup on L2
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - name
+            - day
+    columns:
+      - &day
+        name: day
+        description: "day gas fees were earned"
+      - *name
+      - &l2_rev
+        name: l2_rev
+        description: "revenue earned in eth"
+      - &l2_rev_usd
+        name: l2_rev_usd
+        description: "revenue earned in usd"

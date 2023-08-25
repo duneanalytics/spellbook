@@ -49,7 +49,6 @@ INNER JOIN
     AND et.block_time >= DATE '{{project_start_date}}'
     {% endif %}
     {% if is_incremental() %}
-    -- AND ae.evt_block_time >= date_trunc('day', now() - interval '7' Day)
     AND et.block_time >= date_trunc('day', now() - interval '7' Day)
     {% endif %}
 LEFT JOIN 
@@ -61,6 +60,5 @@ LEFT JOIN
     AND p.minute >= DATE '{{project_start_date}}'
     {% endif %}
     {% if is_incremental() %}
-    -- AND ae.evt_block_time >= date_trunc('day', now() - interval '7' Day)
     AND p.minute >= date_trunc('day', now() - interval '7' Day)
     {% endif %}

@@ -16,6 +16,8 @@
 , ref('account_abstraction_erc4337_optimism_account_deployed')
 , ref('account_abstraction_erc4337_avalanche_c_account_deployed')
 , ref('account_abstraction_erc4337_gnosis_account_deployed')
+, ref('account_abstraction_erc4337_base_account_deployed')
+, ref('account_abstraction_erc4337_bnb_account_deployed')
 ] %}
 
 SELECT *

@@ -71,5 +71,6 @@ FROM
     ('2shares-2share', 'fantom', '2SHARES', 0xc54A1684fD1bef1f077a336E6be4Bd9a3096a6Ca, 18), 
     ('3share-3share', 'fantom', '3SHARE', 0x6437adac543583c4b31bf0323a0870430f5cc2e7, 18),
     ('ico-axelar', 'fantom', 'AXL', 0x8b1f4432f943c465a973fedc6d7aa50fc96f1f65, 6),   
-    ('grain-granary', 'fantom', 'GRAIN', 0x02838746d9e1413e07ee064fcbada57055417f21, 18)
+    ('grain-granary', 'fantom', 'GRAIN', 0x02838746d9e1413e07ee064fcbada57055417f21, 18),
+    ('mim-magic-internet-money', 'fantom', 'MIM', 0x82f0b8b456c1a451378467398982d4834b6829c1, 18)
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)
