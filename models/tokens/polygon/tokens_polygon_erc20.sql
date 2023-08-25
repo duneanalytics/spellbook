@@ -492,4 +492,5 @@ SELECT contract_address, symbol, decimals
 ,(0x11d9efdf4ab4a3bfabf5c7089f56aa4f059aa14c ,'BREAD' ,18)
 ,(0x99b3f992c66123a73107f290ee86e04a2aa4cb89 ,'TRS' ,18)
 ,(0xa0826c84468d67e3f72621de012dda8558c3f833 ,'SHIBA' ,18)
+,(0x76973Ba2AFF24F87fFE41FDBfD15308dEBB8f7E8, 'tigUSD', 18)
 ) AS temp_table (contract_address, symbol, decimals)

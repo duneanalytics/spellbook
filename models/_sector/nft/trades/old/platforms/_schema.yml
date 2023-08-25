@@ -183,21 +183,6 @@ models:
             - token_id
             - sub_type
             - sub_idx
-      - check_seed_legacy:
-          seed_file: ref('nftearth_events_seed')
-          filter:
-            blockchain: optimism
-            project: nftearth
-            version: v1
-          match_columns:
-            - block_date
-            - tx_hash
-            - token_id
-            - seller
-            - evt_index
-          check_columns:
-            - buyer
-            - nft_contract_address
 
   - name: oneplanet_polygon_events
     meta:

@@ -25,7 +25,7 @@ sources:
             name: evt_block_number
             description: 'Block number which processed the unique transaction hash'
           - name: poolAddress
-            description: 'base address for the liquidity pool used in transaction'
+            description: 'Base address for the liquidity pool used in transaction'
           - name: poolId
             description: 'Unique encoded identifier that refers to each pool'
           - name: specialization
@@ -143,3 +143,6 @@ sources:
             description: 'Change in the amount of token managed by the asset manager'
           - name: cashDelta
             description: 'Change in the amount of token cashed the vault'
+
+
+

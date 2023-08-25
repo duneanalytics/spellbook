@@ -38,7 +38,8 @@ FROM (
         margin_change,
         trade_type,
         version,
-        positions_contract
+        positions_contract,
+        protocol_version
     FROM {{ model }}
     {% if not loop.last %}
     UNION ALL

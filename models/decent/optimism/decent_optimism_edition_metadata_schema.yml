@@ -1,0 +1,71 @@
+version: 2
+
+models:
+  - name: decent_optimism_edition_metadata
+    meta:
+      blockchain: optimism
+      project: decent
+      contributors: [msilb7]
+    config:
+      tags: ['optimism','decent','nft']
+    description: >
+       NFT editions minted on Decent on OP Mainnet
+    columns:
+      - &sdk_contract_address
+        name: sdk_contract_address
+      - &nft_contract_address
+        name: nft_contract_address
+        description: "NFT (token) Address"
+        tests:
+          - unique
+      - &created_tx_hash
+        name: created_tx_hash
+        description: "TX hash when created"
+      - &created_block_number
+        name: created_block_number
+        description: "Block Number when created"
+      - &created_block_time
+        name: created_block_time
+        description: "Block Time when created"
+      - &name
+        name: name
+      - &symbol
+        name: symbol
+      - &hasAdjustableCap
+        name: hasAdjustableCap
+      - &isSoulbound
+        name: isSoulbound
+      - &maxTokens
+        name: maxTokens
+      - &maxTokenPurchase
+        name: maxTokenPurchase
+      - &presaleStart
+        name: presaleStart
+      - &presaleEnd
+        name: presaleEnd
+      - &saleStart
+        name: saleStart
+      - &saleEnd
+        name: saleEnd
+      - &royalty_pct
+        name: royalty_pct
+      - &tokenPrice
+        name: tokenPrice
+      - &payoutAddress
+        name: payoutAddress
+      - &contractURI
+        name: contractURI
+      - &metadataURI
+        name: metadataURI
+      - &metadataRendererInit
+        name: metadataRendererInit
+      - &parentIP
+        name: parentIP
+      - &tokenAddress
+        name: tokenAddress
+      - &minBalance
+        name: minBalance
+      - &saleType
+        name: saleType
+      - &mint_type
+        name: mint_type
