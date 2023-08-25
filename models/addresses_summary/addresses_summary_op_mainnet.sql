@@ -58,11 +58,17 @@ SELECT
     date_diff('day', min(fa.first_block_time), max(ot.block_time)) as address_age_in_days,
     date_diff('day', max(ot.block_time), CAST(NOW() as timestamp)) as recency_in_days, 
     CASE
-            WHEN (COUNT(ot.hash)/(date_diff('day', min(fa.first_block_time), CAST(NOW() as timestamp)) + 1)) >= 1 THEN 'Daily User'
-            WHEN (COUNT(ot.hash)/(date_diff('day', min(fa.first_block_time), CAST(NOW() as timestamp)) + 1)) >= 0.142857142857 AND (COUNT(ot.hash)/(date_diff('day', min(fa.first_block_time), CAST(NOW() as timestamp)) + 1)) < 1  THEN 'Weekly User'
-            WHEN (COUNT(ot.hash)/(date_diff('day', min(fa.first_block_time), CAST(NOW() as timestamp)) + 1)) >= 0.0333333333333 AND (COUNT(ot.hash)/(date_diff('day', min(fa.first_block_time), CAST(NOW() as timestamp)) + 1)) < 0.142857142857 THEN 'Monthly User'
-            WHEN (COUNT(ot.hash)/(date_diff('day', min(fa.first_block_time), CAST(NOW() as timestamp)) + 1)) >= 0.0027397260274 AND (COUNT(ot.hash)/(date_diff('day', min(fa.first_block_time), CAST(NOW() as timestamp)) + 1)) < 0.0333333333333 THEN 'Yearly User'
-            ELSE 'Sparse User'
+        WHEN (date_diff('day', min(fa.first_block_time), CAST(NOW() as timestamp))) = 0 THEN 'First Time User'
+        WHEN (date_diff('day', min(fa.first_block_time), CAST(NOW() as timestamp))) != 0 AND COUNT(ot.hash) = 1 THEN 'One Time User'
+        WHEN (date_diff('day', min(fa.first_block_time), CAST(NOW() as timestamp))) != 0 AND COUNT(ot.hash) != 1 THEN (
+            CASE 
+                WHEN ((COUNT(ot.hash))/(date_diff('day', min(fa.first_block_time), CAST(NOW() as timestamp)))) >= 1 THEN 'Daily User'
+                WHEN ((COUNT(ot.hash))/(date_diff('day', min(fa.first_block_time), CAST(NOW() as timestamp)))) >= 0.142857142857 AND ((COUNT(ot.hash))/(date_diff('day', min(fa.first_block_time), CAST(NOW() as timestamp)))) < 1 THEN 'Weekly User'
+                WHEN ((COUNT(ot.hash))/(date_diff('day', min(fa.first_block_time), CAST(NOW() as timestamp)))) >= 0.0333333333333 AND ((COUNT(ot.hash))/(date_diff('day', min(fa.first_block_time), CAST(NOW() as timestamp)))) < 0.142857142857 THEN 'Monthly User'
+                WHEN ((COUNT(ot.hash))/(date_diff('day', min(fa.first_block_time), CAST(NOW() as timestamp)))) >= 0.0027397260274 AND ((COUNT(ot.hash))/(date_diff('day', min(fa.first_block_time), CAST(NOW() as timestamp)))) < 0.0333333333333 THEN 'Yearly User'
+                ELSE 'Sparse Trader'
+            END 
+        )
     END as usage_frequency,
     COUNT(ot.hash) as number_of_transactions,
     COUNT(DISTINCT(cm.contract_project)) as unique_dapps,
@@ -149,11 +155,17 @@ SELECT
     date_diff('day', min(fa.first_block_time), max(ot.block_time)) as address_age_in_days,
     date_diff('day', max(ot.block_time), CAST(NOW() as timestamp)) as recency_in_days, 
     CASE
-            WHEN (COUNT(ot.hash)/(date_diff('day', min(fa.first_block_time), CAST(NOW() as timestamp)) + 1)) >= 1 THEN 'Daily User'
-            WHEN (COUNT(ot.hash)/(date_diff('day', min(fa.first_block_time), CAST(NOW() as timestamp)) + 1)) >= 0.142857142857 AND (COUNT(ot.hash)/(date_diff('day', min(fa.first_block_time), CAST(NOW() as timestamp)) + 1)) < 1  THEN 'Weekly User'
-            WHEN (COUNT(ot.hash)/(date_diff('day', min(fa.first_block_time), CAST(NOW() as timestamp)) + 1)) >= 0.0333333333333 AND (COUNT(ot.hash)/(date_diff('day', min(fa.first_block_time), CAST(NOW() as timestamp)) + 1)) < 0.142857142857 THEN 'Monthly User'
-            WHEN (COUNT(ot.hash)/(date_diff('day', min(fa.first_block_time), CAST(NOW() as timestamp)) + 1)) >= 0.0027397260274 AND (COUNT(ot.hash)/(date_diff('day', min(fa.first_block_time), CAST(NOW() as timestamp)) + 1)) < 0.0333333333333 THEN 'Yearly User'
-            ELSE 'Sparse User'
+        WHEN (date_diff('day', min(fa.first_block_time), CAST(NOW() as timestamp))) = 0 THEN 'First Time User'
+        WHEN (date_diff('day', min(fa.first_block_time), CAST(NOW() as timestamp))) != 0 AND COUNT(ot.hash) = 1 THEN 'One Time User'
+        WHEN (date_diff('day', min(fa.first_block_time), CAST(NOW() as timestamp))) != 0 AND COUNT(ot.hash) != 1 THEN (
+            CASE 
+                WHEN ((COUNT(ot.hash))/(date_diff('day', min(fa.first_block_time), CAST(NOW() as timestamp)))) >= 1 THEN 'Daily User'
+                WHEN ((COUNT(ot.hash))/(date_diff('day', min(fa.first_block_time), CAST(NOW() as timestamp)))) >= 0.142857142857 AND ((COUNT(ot.hash))/(date_diff('day', min(fa.first_block_time), CAST(NOW() as timestamp)))) < 1 THEN 'Weekly User'
+                WHEN ((COUNT(ot.hash))/(date_diff('day', min(fa.first_block_time), CAST(NOW() as timestamp)))) >= 0.0333333333333 AND ((COUNT(ot.hash))/(date_diff('day', min(fa.first_block_time), CAST(NOW() as timestamp)))) < 0.142857142857 THEN 'Monthly User'
+                WHEN ((COUNT(ot.hash))/(date_diff('day', min(fa.first_block_time), CAST(NOW() as timestamp)))) >= 0.0027397260274 AND ((COUNT(ot.hash))/(date_diff('day', min(fa.first_block_time), CAST(NOW() as timestamp)))) < 0.0333333333333 THEN 'Yearly User'
+                ELSE 'Sparse Trader'
+            END 
+        )
     END as usage_frequency,
     COUNT(ot.hash) as number_of_transactions,
     COUNT(DISTINCT(cm.contract_project)) as unique_dapps,
