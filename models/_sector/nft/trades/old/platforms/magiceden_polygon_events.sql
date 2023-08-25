@@ -76,7 +76,7 @@ WITH erc721_trades AS (
         {% if is_incremental() %}
         AND evt_block_time >= date_trunc('day', now() - interval '7' day)
         {% endif %}
-),
+)
 
 ,erc721_fees as (
 
