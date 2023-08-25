@@ -50,4 +50,4 @@ models:
       - name: last_to_address
         description: "Contract address that an address sent last transaction to"
       - name: total_bridged_eth
-        description: "Total ETH bridged by address to optimism"   
+        description: "Total ETH bridged by address to OP Mainnet"   
