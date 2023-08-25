@@ -587,17 +587,17 @@ SELECT
 {% if is_incremental() %}
   CASE WHEN EXISTS (
       SELECT 1 FROM {{this}} th
-        WHERE th.trace_creator_address = c.trace_creator_address
-        AND th.contract_address = c.contract_address
-        AND th.created_time = c.created_time
-        AND th.created_block_number = c.created_block_number
-        AND th.contract_project = c.contract_project
-        AND th.top_level_tx_hash = c.top_level_tx_hash
-        AND th.token_symbol = c.token_symbol
-        AND th.contract_name = c.contract_name
-        AND th.creator_address = c.creator_address
-        AND th.code_deploy_rank_by_chain = c.code_deploy_rank_by_chain
-        AND th.token_standard = c.token_standard
+        WHERE th.trace_creator_address = f.trace_creator_address
+        AND th.contract_address = f.contract_address
+        AND th.created_time = f.created_time
+        AND th.created_block_number = f.created_block_number
+        AND th.contract_project = f.contract_project
+        AND th.top_level_tx_hash = f.top_level_tx_hash
+        AND th.token_symbol = f.token_symbol
+        AND th.contract_name = f.contract_name
+        AND th.creator_address = f.creator_address
+        AND th.code_deploy_rank_by_chain = f.code_deploy_rank_by_chain
+        AND th.token_standard = f.token_standard
     ) THEN 0 ELSE 1 END 
 {% else %}
   1
@@ -607,8 +607,8 @@ SELECT
 FROM (
   select 
     cast(DATE_TRUNC('month',c.created_time) as date) AS created_month
-    ,c.blockchain,
-    COALESCE(c.trace_creator_address, CAST(NULL AS varbinary) ) AS trace_creator_address
+    ,c.blockchain
+    ,c.trace_creator_address
     ,c.contract_address
     ,cast(
         replace(
