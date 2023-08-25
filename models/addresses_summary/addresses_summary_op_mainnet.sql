@@ -154,7 +154,8 @@ SELECT
     MIN_BY(cm.contract_project, ot.block_number) as first_to_project, 
     MIN_BY(ot.to, ot.block_number) as first_to_address,
     MAX_BY(cm.contract_project, ot.block_number) as last_to_project, 
-    MAX_BY(ot.to, ot.block_number) as last_to_address
+    MAX_BY(ot.to, ot.block_number) as last_to_address,
+    SUM()
 FROM 
 (
         SELECT 
@@ -188,7 +189,10 @@ INNER JOIN
     ON ot."from" = fa.address
 LEFT JOIN 
 {{ ref('contracts_optimism_contract_mapping') }} cm 
-    ON ot."to" = cm.contract_address 
+    ON ot."to" = cm.contract_address
+LEFT JOIN 
+{{ ref('optimism_standard_bridge_flows') }} bf 
+    ON ot."to" = bf.receiver
 GROUP BY 1, 2, 3, 4, 5 
 
 {% endif %}
