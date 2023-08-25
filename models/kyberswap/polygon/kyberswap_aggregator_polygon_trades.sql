@@ -60,8 +60,8 @@ SELECT
     ,CAST(meta_router.token_sold_amount_raw AS UINT256)                 AS token_sold_amount_raw
     ,COALESCE(
         meta_router.amount_usd
-        ,(meta_router.token_bought_amount_raw / power(10, (CASE meta_router.token_bought_address WHEN 0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee THEN 18 ELSE p_bought.decimals END))) * (CASE meta_router.token_bought_address WHEN 0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee THEN  p_eth.price ELSE p_bought.price END)
-        ,(meta_router.token_sold_amount_raw / power(10, (CASE meta_router.token_sold_address WHEN 0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee THEN 18 ELSE p_sold.decimals END))) * (CASE meta_router.token_sold_address WHEN 0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee THEN  p_eth.price ELSE p_sold.price END)
+        ,(meta_router.token_bought_amount_raw / power(10, (CASE meta_router.token_bought_address WHEN 0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee THEN 18 ELSE p_bought.decimals END))) * (CASE meta_router.token_bought_address WHEN 0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee THEN  p_matic.price ELSE p_bought.price END)
+        ,(meta_router.token_sold_amount_raw / power(10, (CASE meta_router.token_sold_address WHEN 0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee THEN 18 ELSE p_sold.decimals END))) * (CASE meta_router.token_sold_address WHEN 0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee THEN  p_matic.price ELSE p_sold.price END)
         )                                                               AS amount_usd
     ,meta_router.token_bought_address                                   AS token_bought_address
     ,meta_router.token_sold_address                                     AS token_sold_address
@@ -105,12 +105,12 @@ LEFT JOIN {{ source('prices', 'usd') }} p_sold
     {% else %}
     AND p_sold.minute >= TIMESTAMP '{{ project_start_date }}'
     {% endif %}
-LEFT JOIN {{ source('prices', 'usd') }} p_eth
-    ON p_eth.minute = date_trunc('minute', meta_router.block_time)
-    AND p_eth.blockchain IS NULL
-    AND p_eth.symbol = 'ETH'
+LEFT JOIN {{ source('prices', 'usd') }} p_matic
+    ON p_matic.minute = date_trunc('minute', meta_router.block_time)
+    AND p_matic.blockchain IS NULL
+    AND p_matic.symbol = 'MATIC'
     {% if is_incremental() %}
-    AND p_eth.minute >= date_trunc('day', now() - INTERVAL '7' DAY)
+    AND p_matic.minute >= date_trunc('day', now() - INTERVAL '7' DAY)
     {% else %}
-    AND p_eth.minute >= TIMESTAMP '{{ project_start_date }}'
+    AND p_matic.minute >= TIMESTAMP '{{ project_start_date }}'
     {% endif %}
