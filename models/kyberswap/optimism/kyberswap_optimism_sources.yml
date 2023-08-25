@@ -19,6 +19,8 @@ sources:
         loaded_at_field: evt_block_time
       - name: AggregationRouterV3_evt_Swapped
         loaded_at_field: evt_block_time
+      - name: MetaAggregationRouterV2_evt_Swapped
+        loaded_at_field: evt_block_time
 
   - name: kyberswap_optimism
     description: "Optimism decoded tables related to Kyberswap contract"
