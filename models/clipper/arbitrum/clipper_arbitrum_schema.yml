@@ -5,7 +5,7 @@ models:
     meta:
       blockchain: arbitrum
       sector: dex
-      project: clipper_v1
+      project: clipper
       contributors: 0xRob, amalashkevich
     config:
       tags: [ 'arbitrum','dex','trades', 'clipper', '0xRob', 'amalashkevich']
@@ -92,6 +92,54 @@ models:
         name: evt_index
         description: ""
 
+  - name: clipper_v2_arbitrum_trades
+    meta:
+      blockchain: arbitrum
+      sector: dex
+      project: clipper
+      contributors: amalashkevich
+    config:
+      tags: [ 'arbitrum','dex','trades', 'clipper', 'amalashkevich']
+    description: >
+      Clipper trades on Arbitrum on a specific contract/version.
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_date
+            - blockchain
+            - project
+            - version
+            - tx_hash
+            - evt_index
+      - check_dex_seed:
+          blockchain: arbitrum
+          project: clipper
+          version: 2
+    columns:
+      - *blockchain
+      - *project
+      - *version
+      - *block_date
+      - *block_time
+      - *token_bought_symbol
+      - *token_sold_symbol
+      - *token_pair
+      - *token_bought_amount
+      - *token_sold_amount
+      - *token_bought_amount_raw
+      - *token_sold_amount_raw
+      - *amount_usd
+      - *token_bought_address
+      - *token_sold_address
+      - *taker
+      - *maker
+      - *project_contract_address
+      - *tx_hash
+      - *tx_from
+      - *tx_to
+      - *evt_index
+
+
   - name: clipper_arbitrum_trades
     meta:
       blockchain: arbitrum
@@ -149,6 +197,53 @@ models:
           blockchain: arbitrum
           project: clipper
           version: coves1
+    columns:
+      - *blockchain
+      - *project
+      - *version
+      - *block_date
+      - *block_time
+      - *token_bought_symbol
+      - *token_sold_symbol
+      - *token_pair
+      - *token_bought_amount
+      - *token_sold_amount
+      - *token_bought_amount_raw
+      - *token_sold_amount_raw
+      - *amount_usd
+      - *token_bought_address
+      - *token_sold_address
+      - *taker
+      - *maker
+      - *project_contract_address
+      - *tx_hash
+      - *tx_from
+      - *tx_to
+      - *evt_index
+
+  - name: clipper_coves_v2_arbitrum_trades
+    meta:
+      blockchain: arbitrum
+      sector: dex
+      project: clipper
+      contributors: amalashkevich
+    config:
+      tags: ['arbitrum','clipper','trades','dex', 'amalashkevich']
+    description: >
+        Clipper trades on Arbitrum
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_date
+            - blockchain
+            - project
+            - version
+            - tx_hash
+            - evt_index
+      - check_dex_seed:
+          blockchain: arbitrum
+          project: clipper
+          version: coves2
     columns:
       - *blockchain
       - *project
