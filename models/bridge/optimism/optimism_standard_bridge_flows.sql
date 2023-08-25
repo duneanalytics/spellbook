@@ -46,8 +46,8 @@ WITH bridge_events AS (
         , l.index AS evt_index
         , l.contract_address AS project_contract_address
         , NULL AS transfer_id
-        , 1 AS source_chain_id
-        , 10 AS destination_chain_id
+        , UINT256 '1' AS source_chain_id
+        , UINT256 '10' AS destination_chain_id
         ,DENSE_RANK() OVER (PARTITION BY tx_hash ORDER BY index ASC) AS tf_index
         
         FROM {{ source ('optimism', 'logs') }} l
@@ -72,8 +72,8 @@ WITH bridge_events AS (
         , l.index AS evt_index
         , l.contract_address AS project_contract_address
         , NULL AS transfer_id
-        , 10 AS source_chain_id
-        , 1 AS destination_chain_id
+        , UINT256 '10' AS source_chain_id
+        , UINT256 '1' AS destination_chain_id
         ,DENSE_RANK() OVER (PARTITION BY tx_hash ORDER BY index ASC) AS tf_index
         
         FROM {{ source ('optimism', 'logs') }} l

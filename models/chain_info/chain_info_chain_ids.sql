@@ -13,8 +13,8 @@ SELECT
 "name" AS chain_name
 ,"chain" AS chain_shortname
 ,"nativeCurrency" AS native_currency_symbol
-,CAST("chainId" as INTEGER) AS chain_id
-,CAST("networkId" as INTEGER) AS network_id
+,CAST("chainId" as UINT256) AS chain_id
+,CAST("networkId" as UINT256) AS network_id
 ,"infoURL" AS info_url
 ,"explorer" AS explorer
 FROM ( values
