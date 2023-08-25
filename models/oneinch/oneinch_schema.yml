@@ -106,7 +106,6 @@ models:
 
   - name: oneinch_ar_calls
     meta:
-      blockchain: ['ethereum','optimism','polygon','arbitrum','avalanche_c','gnosis','bnb','fantom']
       blockchain: ['ethereum','optimism','polygon','arbitrum','avalanche_c','gnosis','bnb','fantom','base']
       sector: oneinch
       contributors: [grkhr]
@@ -151,7 +150,6 @@ models:
 
   - name: oneinch_ar_calls_transfers_amounts
     meta:
-      blockchain: ['ethereum','optimism','polygon','arbitrum','avalanche_c','gnosis','bnb','fantom']
       blockchain: ['ethereum','optimism','polygon','arbitrum','avalanche_c','gnosis','bnb','fantom','base']
       sector: oneinch
       contributors: [grkhr]

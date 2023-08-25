@@ -35,7 +35,7 @@ chains as (
         (0xa260f8b7c8f37c2f1bc11b04c19902829de6ac8a, 'Arctic Bastion', true),
         (0xcfa62f77920d6383be12c91c71bd403599e1116f, 'The Open DAO resolver', true),
         (0xe023f53f735c196e4a028233c2ee425957812a41, 'Seawise', true),
-        (0x754bcbaf851f94ca0065d0d06d53b168daab17b8, 'Alpha', false),
+        (0x754bcbaf851f94ca0065d0d06d53b168daab17b8, 'Alpha', true),
         (0xb2153caa185484fd377f488d89143a7fd76695ce, 'Laertes', true),
         (0xc975671642534f407ebdcaef2428d355ede16a2c, 'OTEX', true),
         (0xd7f6f541d4210550ca56f7b4c4a549efd4cafb49, 'The T Resolver', true),
@@ -45,7 +45,10 @@ chains as (
         (0xaf3803348f4f1f527a8b6f611c30c8702bacd2af, 'Resolver 0xaf38..d2af', true),
         (0xa6219c7d74edeb12d74a3c664f7aaeb7d01ab902, 'Resolver 0xa621..b902', false),
         (0x74c629c4096e234029c78c7760dc0aadb717adb0, 'Resolver 0x74c6..adb0', false),
-        (0x7c7047337995c338c1682f12bc38d4e4108309bb, 'Resolver 0x7c70..09bb', false)
+        (0x7c7047337995c338c1682f12bc38d4e4108309bb, 'Resolver 0x7c70..09bb', false),
+        (0x05d18b713dab812c34edb48c76cd9c836d56752b, 'Propeller Swap', true),
+        (0x685018ea5c682c5e6d9e4116193f02018f306255, 'Resolver 0x6850...6255', false),
+        (0x1113db6080ea2b9f92b2e9937ea712b3d730b3f1, 'Clipper', true)
     ) as t(resolver_address, resolver_name, kyc)
 )
 
