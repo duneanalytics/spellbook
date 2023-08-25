@@ -1,4 +1,5 @@
 {{ config(
+        tags = ['dunesql'],
         alias = alias('trades')
         )
 }}
@@ -60,4 +61,3 @@ FROM (
     {% endif %}
     {% endfor %}
 )
-;
