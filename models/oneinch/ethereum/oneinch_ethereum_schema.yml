@@ -685,7 +685,7 @@ models:
             - tx_hash
             - evt_index
             - trace_address
-      - check_dex_aggregator_seed_legacy:
+      - check_dex_aggregator_seed:
           blockchain: ethereum
           project: 1inch Limit Order Protocol
           version: '1'
@@ -734,7 +734,7 @@ models:
             - tx_hash
             - evt_index
             - trace_address
-      - check_dex_aggregator_seed_legacy:
+      - check_dex_aggregator_seed:
           blockchain: ethereum
           project: 1inch Limit Order Protocol
           version: '2'
@@ -783,7 +783,7 @@ models:
             - tx_hash
             - evt_index
             - trace_address
-      - check_dex_aggregator_seed_legacy:
+      - check_dex_aggregator_seed:
           blockchain: ethereum
           project: 1inch Limit Order Protocol
           version: '3'
@@ -832,7 +832,7 @@ models:
             - tx_hash
             - evt_index
             - trace_address
-      - check_dex_aggregator_seed_legacy:
+      - check_dex_aggregator_seed:
           blockchain: ethereum
           project: 1inch Limit Order Protocol
           version: 'eRFQ v1'
@@ -881,7 +881,7 @@ models:
             - tx_hash
             - evt_index
             - trace_address
-      - check_dex_aggregator_seed_legacy:
+      - check_dex_aggregator_seed:
           blockchain: ethereum
           project: 1inch Limit Order Protocol
           version: 'RFQ v1'
@@ -930,7 +930,7 @@ models:
             - tx_hash
             - evt_index
             - trace_address
-      - check_dex_aggregator_seed_legacy:
+      - check_dex_aggregator_seed:
           blockchain: ethereum
           project: 1inch Limit Order Protocol
           version: 'RFQ v2'
@@ -979,7 +979,7 @@ models:
             - tx_hash
             - evt_index
             - trace_address
-      - check_dex_aggregator_seed_legacy:
+      - check_dex_aggregator_seed:
           blockchain: ethereum
           project: 1inch Limit Order Protocol
           version: 'RFQ v3'
