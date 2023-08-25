@@ -2,7 +2,7 @@
     schema = 'balancer_v1_ethereum',
     tags = ['dunesql'],
     alias = alias('trades'),
-    partition_by = ['block_date'],
+    partition_by = ['block_month'],
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
@@ -49,6 +49,7 @@ select
     'balancer' AS project,
     version,
     evt_block_time AS block_time,
+    CAST(date_trunc('month', evt_block_time) AS DATE) AS block_month,
     TRY_CAST(date_trunc('day', evt_block_time) AS DATE) AS block_date,
     erc20a.symbol AS token_bought_symbol,
     erc20b.symbol AS token_sold_symbol,
@@ -74,8 +75,7 @@ select
     evt_tx_hash AS tx_hash,
     tx."from" AS tx_from,
     tx.to AS tx_to,
-    evt_index,
-    CAST(NULL AS VARCHAR(5)) AS trace_address
+    evt_index
 FROM v1 trades
 INNER JOIN {{ source('ethereum', 'transactions') }} tx
     ON trades.evt_tx_hash = tx.hash

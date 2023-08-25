@@ -17,7 +17,7 @@
 ref('hashflow_avalanche_c_trades')
 , ref('hashflow_bnb_trades')
 ] %}
- 
+
 SELECT *
 FROM (
     {% for dex_model in hashflow_models %}
@@ -25,6 +25,7 @@ FROM (
         blockchain,
         project,
         version,
+        block_month,
         block_date,
         block_time,
         token_bought_symbol,
