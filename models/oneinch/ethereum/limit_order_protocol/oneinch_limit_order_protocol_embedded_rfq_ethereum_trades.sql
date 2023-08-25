@@ -21,7 +21,7 @@ WITH limit_order_protocol_embedded_rfq AS
     SELECT
         call_block_number,
         call_block_time,
-        order,
+        "order",
         output_0,
         output_1,
         contract_address,
@@ -42,14 +42,14 @@ WITH limit_order_protocol_embedded_rfq AS
     SELECT
         call_block_number,
         call_block_time,
-        order,
+        "order",
         output_0,
         output_1,
         contract_address,
         call_tx_hash,
         call_trace_address
     FROM
-        {{ source('oneinch_v4_ethereum', 'AggregationRouterV4_call_fillOrderRFQTo') }}
+        {{ source('oneinch_v4_ethereum', 'AggregationRouterV4_call_fillorderRFQTo') }}
     WHERE
         call_success
         {% if is_incremental() %}
@@ -63,7 +63,7 @@ WITH limit_order_protocol_embedded_rfq AS
     SELECT
         call_block_number,
         call_block_time,
-        order,
+        "order",
         output_0,
         output_1,
         contract_address,

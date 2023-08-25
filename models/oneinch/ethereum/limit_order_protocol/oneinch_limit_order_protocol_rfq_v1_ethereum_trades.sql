@@ -50,7 +50,7 @@ WITH limit_order_protocol_rfq_v1 AS
         {{ source('ethereum', 'traces') }} as tf1
         ON call.call_tx_hash = tf1.tx_hash
         AND call.call_block_number = tf1.block_number
-        AND COALESCE(call.call_trace_address, ARRAY[]) || ARRAY[(ts.sub_traces - 1)] = tf1.trace_address
+        AND COALESCE(call.call_trace_address, ARRAY[]) || ARRAY[(ts.sub_traces - 2)] = tf1.trace_address
         {% if is_incremental() %}
         AND tf1.block_time >= date_trunc('day', now() - interval '7' Day)
         {% else %}

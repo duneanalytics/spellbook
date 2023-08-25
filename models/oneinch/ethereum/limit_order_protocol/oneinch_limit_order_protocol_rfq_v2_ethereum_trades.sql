@@ -21,7 +21,7 @@ WITH limit_order_protocol_rfq_v2 AS
     SELECT
         call_block_number,
         contract_address,
-        order,
+        "order",
         output_0,
         output_1,
         call_block_time,
@@ -42,7 +42,7 @@ WITH limit_order_protocol_rfq_v2 AS
     SELECT
         call_block_number,
         contract_address,
-        order,
+        "order",
         output_0,
         output_1,
         call_block_time,
@@ -63,7 +63,7 @@ WITH limit_order_protocol_rfq_v2 AS
     SELECT
         call_block_number,
         contract_address,
-        order,
+        "order",
         output_0,
         output_1,
         call_block_time,
