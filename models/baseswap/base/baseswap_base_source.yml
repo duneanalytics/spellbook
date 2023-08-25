@@ -1,0 +1,47 @@
+version: 2
+
+sources:
+  - name: baseswap_base
+    description: "Base decoded tables related to the Baseswap PancakePair contract"
+    freshness:
+      warn_after: { count: 12, period: hour }
+    tables:
+      - name: PancakePair_cbETH_USDbC_evt_Swap # TODO: change as soon as contracts are re-decoded correctly on dune
+        loaded_at_field: evt_block_time
+        description: ""
+        columns:
+            - &amount0In
+            name: amount0In
+          - &amount0Out
+            name: amount0Out
+          - &amount1In
+            name: amount1In
+          - &amount1Out
+            name: amount1Out
+          - *contract_address
+          - *evt_block_number
+          - *evt_block_time 
+          - *evt_index
+          - *evt_tx_hash
+          - &sender
+            name: sender
+          - &to
+            name: to
+
+      - name: PancakeFactory_evt_PairCreated
+        loaded_at_field: evt_block_time
+        description: ""
+        columns:
+         - &_0
+            name: _0
+          - *contract_address
+          - *evt_block_number
+          - *evt_block_time 
+          - *evt_index
+          - *evt_tx_hash
+          - &pair
+            name: pair
+          - &token0
+            name: token0
+          - &token1
+            name: token1
