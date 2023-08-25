@@ -117,18 +117,21 @@ native_order_total_amount AS (
         o.evt_tx_hash,
         o.order_amount_raw,
         cast(t.value AS uint256) - coalesce(r.return_amount_raw, cast(0 as uint256)) AS transaction_amount_raw,
-        o.order_amount_raw + uint256 '1' / (cast(t.value AS uint256) - coalesce(r.return_amount_raw, cast(0 as uint256))) AS order_amount_percentage
+        o.order_amount_raw  / (cast(t.value AS uint256) - coalesce(r.return_amount_raw, cast(0 as uint256))) AS order_amount_percentage
     FROM native_order_summary o
+    LEFT JOIN native_order_return_amount r ON o.evt_block_number = r.evt_block_number
+        AND o.evt_tx_hash = r.evt_tx_hash
     INNER JOIN {{ source('polygon', 'transactions') }} t ON o.evt_block_number = t.block_number
-        AND o.evt_tx_hash = t.hash AND t.value > 0
+        AND o.evt_tx_hash = t.hash
+        -- the below filter is done to exclude any divide by zero or underflow errors, probably not the best fix.
+        AND cast(t.value as uint256) > coalesce(r.return_amount_raw, cast(0 as uint256))
         {% if not is_incremental() %}
         AND t.block_time >= {{nft_start_date}}
         {% endif %}
         {% if is_incremental() %}
         AND t.block_time >= date_trunc('day', now() - interval '7' day)
         {% endif %}
-    LEFT JOIN native_order_return_amount r ON o.evt_block_number = r.evt_block_number
-        AND o.evt_tx_hash = r.evt_tx_hash
+
 ),
 
 native_trade_amount_summary AS (
@@ -136,7 +139,7 @@ native_trade_amount_summary AS (
         t.evt_tx_hash,
         t.token_id,
         t.currency_contract,
-        cast(cast(t.amount_raw AS uint256) + uint256 '2' / o.order_amount_percentage as uint256) as amount_raw,
+        cast(cast(t.amount_raw AS uint256) / o.order_amount_percentage as uint256) as amount_raw,
         -- When the payment to seller is less than 98%, we hard code platform fee to 2%
         cast(CASE WHEN 1.0 - o.order_amount_percentage >= 0.02 THEN cast(t.amount_raw AS uint256) / o.order_amount_percentage * 0.02
             ELSE cast(t.amount_raw AS uint256) / o.order_amount_percentage * (1.0 - o.order_amount_percentage)
@@ -245,7 +248,7 @@ SELECT
   s.platform_fee_amount_raw,
   CAST(s.platform_fee_amount_raw / power(10, erc.decimals) AS double) AS platform_fee_amount,
   CAST(s.platform_fee_amount_raw / power(10, erc.decimals) * p.price AS double) AS platform_fee_amount_usd,
-  CAST(s.platform_fee_amount_raw + uint256 '3' / s.amount_raw * 100 as double) as platform_fee_percentage,
+  CAST(s.platform_fee_amount_raw / s.amount_raw * 100 as double) as platform_fee_percentage,
   CAST(s.royalty_fee_amount_raw AS uint256) AS royalty_fee_amount_raw,
   CAST(s.royalty_fee_amount_raw / power(10, erc.decimals) AS double) AS royalty_fee_amount,
   CAST(s.royalty_fee_amount_raw / power(10, erc.decimals) * p.price AS double) AS royalty_fee_amount_usd,
