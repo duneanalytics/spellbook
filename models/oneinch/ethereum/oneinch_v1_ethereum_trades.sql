@@ -236,13 +236,13 @@ WITH oneinch_calls AS
         from_amount AS token_sold_amount_raw,
         CAST(NULL as double) AS amount_usd,
         CASE
-          WHEN to_token = '{{generic_null_address}}'
-            THEN '{{burn_address}}'
+          WHEN to_token = {{generic_null_address}}
+            THEN {{burn_address}}
             ELSE to_token
         END AS token_bought_address,
         CASE
-          WHEN from_token = '{{generic_null_address}}'
-              THEN '{{burn_address}}'
+          WHEN from_token = {{generic_null_address}}
+              THEN {{burn_address}}
               ELSE from_token
         END AS token_sold_address,
         contract_address AS project_contract_address,
@@ -282,7 +282,7 @@ SELECT
         src.amount_usd
         , (src.token_bought_amount_raw / power(10,
             CASE
-                WHEN token_bought_address = '{{burn_address}}'
+                WHEN token_bought_address = {{burn_address}}
                     THEN 18
                 ELSE prices_bought.decimals
             END
@@ -291,14 +291,14 @@ SELECT
         *
         (
             CASE
-                WHEN token_bought_address = '{{burn_address}}'
+                WHEN token_bought_address = {{burn_address}}
                     THEN prices_eth.price
                 ELSE prices_bought.price
             END
         )
         , (src.token_sold_amount_raw / power(10,
             CASE
-                WHEN token_sold_address = '{{burn_address}}'
+                WHEN token_sold_address = {{burn_address}}
                     THEN 18
                 ELSE prices_sold.decimals
             END
@@ -307,7 +307,7 @@ SELECT
         *
         (
             CASE
-                WHEN token_sold_address = '{{burn_address}}'
+                WHEN token_sold_address = {{burn_address}}
                     THEN prices_eth.price
                 ELSE prices_sold.price
             END
@@ -315,13 +315,13 @@ SELECT
     ) AS amount_usd
     ,src.token_bought_address
     ,src.token_sold_address
-    ,coalesce(src.taker, tx.from) AS taker
+    ,coalesce(src.taker, tx."from") AS taker
     ,src.maker
     ,src.project_contract_address
     ,src.tx_hash
-    ,tx.from AS tx_from
+    ,tx."from" AS tx_from
     ,tx.to AS tx_to
-    ,CAST(src.trace_address as array<long>) as trace_address
+    ,src.trace_address
     ,src.evt_index
 FROM oneinch as src
 INNER JOIN {{ source('ethereum', 'transactions') }} as tx

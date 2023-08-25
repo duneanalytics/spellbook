@@ -36,8 +36,8 @@ WITH zeroex AS
     WHERE
         feeRecipientAddress IN
         (
-            '0x910bf2d50fa5e014fd06666f456182d4ab7c8bd2'
-            ,'0x68a17b587caf4f9329f0e372e3a78d23a46de6b5'
+            0x910bf2d50fa5e014fd06666f456182d4ab7c8bd2
+            ,0x68a17b587caf4f9329f0e372e3a78d23a46de6b5
         )
         {% if is_incremental() %}
         AND evt_block_time >= date_trunc('day', now() - interval '7' DAY)
@@ -65,8 +65,8 @@ WITH zeroex AS
     WHERE
         feeRecipientAddress IN
         (
-            '0x910bf2d50fa5e014fd06666f456182d4ab7c8bd2'
-            ,'0x68a17b587caf4f9329f0e372e3a78d23a46de6b5'
+            0x910bf2d50fa5e014fd06666f456182d4ab7c8bd2
+            ,0x68a17b587caf4f9329f0e372e3a78d23a46de6b5
         )
         {% if is_incremental() %}
         AND evt_block_time >= date_trunc('day', now() - interval '7' DAY)
@@ -94,8 +94,8 @@ WITH zeroex AS
     WHERE
         feeRecipientAddress IN
         (
-            '0x910bf2d50fa5e014fd06666f456182d4ab7c8bd2'
-            ,'0x68a17b587caf4f9329f0e372e3a78d23a46de6b5'
+            0x910bf2d50fa5e014fd06666f456182d4ab7c8bd2
+            ,0x68a17b587caf4f9329f0e372e3a78d23a46de6b5
         )
         {% if is_incremental() %}
         AND evt_block_time >= date_trunc('day', now() - interval '7' DAY)
@@ -123,8 +123,8 @@ WITH zeroex AS
     WHERE
         feeRecipient IN
         (
-            '0x910bf2d50fa5e014fd06666f456182d4ab7c8bd2'
-            ,'0x68a17b587caf4f9329f0e372e3a78d23a46de6b5'
+            0x910bf2d50fa5e014fd06666f456182d4ab7c8bd2
+            ,0x68a17b587caf4f9329f0e372e3a78d23a46de6b5
         )
         {% if is_incremental() %}
         AND evt_block_time >= date_trunc('day', now() - interval '7' DAY)
@@ -174,7 +174,7 @@ SELECT
         src.amount_usd
         , (src.token_bought_amount_raw / power(10,
             CASE
-                WHEN token_bought_address = '{{burn_address}}'
+                WHEN token_bought_address = {{burn_address}}
                     THEN 18
                 ELSE prices_bought.decimals
             END
@@ -183,14 +183,14 @@ SELECT
         *
         (
             CASE
-                WHEN token_bought_address = '{{burn_address}}'
+                WHEN token_bought_address = {{burn_address}}
                     THEN prices_eth.price
                 ELSE prices_bought.price
             END
         )
         , (src.token_sold_amount_raw / power(10,
             CASE
-                WHEN token_sold_address = '{{burn_address}}'
+                WHEN token_sold_address = {{burn_address}}
                     THEN 18
                 ELSE prices_sold.decimals
             END
@@ -199,7 +199,7 @@ SELECT
         *
         (
             CASE
-                WHEN token_sold_address = '{{burn_address}}'
+                WHEN token_sold_address = {{burn_address}}
                     THEN prices_eth.price
                 ELSE prices_sold.price
             END
@@ -207,13 +207,13 @@ SELECT
     ) AS amount_usd
     ,src.token_bought_address
     ,src.token_sold_address
-    ,coalesce(src.taker, tx.from) AS taker
+    ,coalesce(src.taker, tx."from") AS taker
     ,src.maker
     ,src.project_contract_address
     ,src.tx_hash
-    ,tx.from AS tx_from
+    ,tx."from" AS tx_from
     ,tx.to AS tx_to
-    ,CAST(src.trace_address as array<long>) as trace_address
+    ,src.trace_address
     ,src.evt_index
 FROM
     oneinch as src

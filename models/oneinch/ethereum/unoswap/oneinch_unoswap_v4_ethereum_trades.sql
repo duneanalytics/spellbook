@@ -68,27 +68,27 @@ WITH unoswap AS
         src.call_block_time as block_time,
         '1inch' AS project,
         'UNI v2' AS version,
-        tx.from AS taker,
+        tx."from" AS taker,
         CAST(NULL as VARBINARY) as maker,
         src.output_returnAmount AS token_bought_amount_raw,
         src.amount AS token_sold_amount_raw,
         CAST(NULL as double) AS amount_usd,
         CASE
-            WHEN ll.to = '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'
+            WHEN ll.to = 0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2
                 AND SUBSTRING(src.pools[ARRAY_SIZE(src.pools) - 1], 1, 4) IN ('0xc0', '0x40') --spark uses 0-based array index, subtract 1 from size output
-            THEN '{{burn_address}}'
+            THEN {{burn_address}}
             ELSE ll.to
         END AS token_bought_address,
         CASE
-            WHEN src.srcToken = '{{generic_null_address}}'
-            THEN '{{burn_address}}'
+            WHEN src.srcToken = {{generic_null_address}}
+            THEN {{burn_address}}
             ELSE src.srcToken
         END AS token_sold_address,
         src.contract_address AS project_contract_address,
         src.call_tx_hash as tx_hash,
         src.call_trace_address AS trace_address,
         CAST(-1 as integer) AS evt_index,
-        tx.from AS tx_from,
+        tx."from" AS tx_from,
         tx.to AS tx_to
     FROM
         unoswap as src
@@ -111,7 +111,7 @@ WITH unoswap AS
                     ARRAY_SIZE(src.pools)
                     * 2 
                     + CASE
-                        WHEN src.srcToken = '{{generic_null_address}}'
+                        WHEN src.srcToken = {{generic_null_address}}
                         THEN 1
                         ELSE 0
                     END
@@ -147,7 +147,7 @@ SELECT
         src.amount_usd
         , (src.token_bought_amount_raw / power(10,
             CASE
-                WHEN src.token_bought_address = '{{burn_address}}'
+                WHEN src.token_bought_address = {{burn_address}}
                     THEN 18
                 ELSE prices_bought.decimals
             END
@@ -156,14 +156,14 @@ SELECT
         *
         (
             CASE
-                WHEN src.token_bought_address = '{{burn_address}}'
+                WHEN src.token_bought_address = {{burn_address}}
                     THEN prices_eth.price
                 ELSE prices_bought.price
             END
         )
         , (src.token_sold_amount_raw / power(10,
             CASE
-                WHEN src.token_sold_address = '{{burn_address}}'
+                WHEN src.token_sold_address = {{burn_address}}
                     THEN 18
                 ELSE prices_sold.decimals
             END
@@ -172,7 +172,7 @@ SELECT
         *
         (
             CASE
-                WHEN src.token_sold_address = '{{burn_address}}'
+                WHEN src.token_sold_address = {{burn_address}}
                     THEN prices_eth.price
                 ELSE prices_sold.price
             END
@@ -186,7 +186,7 @@ SELECT
     ,src.tx_hash
     ,src.tx_from
     ,src.tx_to
-    ,CAST(src.trace_address as array<long>) as trace_address
+    ,src.trace_address
     ,src.evt_index
 FROM
     oneinch as src
