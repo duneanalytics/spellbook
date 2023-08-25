@@ -12,6 +12,6 @@ sources:
       - name: ERC721Drop_evt_Sale
       - name: ERC721Drop_evt_MintFeePayout
       - name: ERC721Drop_evt_Transfer
-      - name: Zora1155_evt_Purchased
-      - name: Zora1155_evt_UpdatedRoyalties
+      - name: ZoraCreator1155_evt_Purchased
+      - name: ZoraCreator1155_evt_UpdatedRoyalties
       - name: ProtocolRewards_call_depositRewards
