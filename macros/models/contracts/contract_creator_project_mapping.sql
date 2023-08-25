@@ -173,10 +173,15 @@ SELECT *
       ,token_standard
       , CASE
         WHEN nd.creator_address IS NOT NULL THEN 1
-        WHEN ct."from" != t.trace_creator_address THEN 1 -- weird data ingestion issue?
+        WHEN ct."from" != t.trace_creator_address AND ct."from" IS NOT NULL THEN 1 -- correct a weird data ingestion issue, but don't rerun predeploys (without a creation trace)
         ELSE 0 END AS to_iterate_creators
       , 0 AS is_new_contract
     from {{ this }} t
+    left join {{ source( chain , 'creation_traces') }} as ct -- find created contracts (i.e. not predeploys)
+      ON t.contract_address = ct.address
+      and t.creation_tx_hash = ct.tx_hash
+      and t.created_time = ct.block_time
+      AND t.created_block_number = ct.block_number
     left join {{ ref('contracts_'+ chain +'_find_self_destruct_contracts') }} as sd 
       on t.contract_address = sd.contract_address
       and t.creation_tx_hash = sd.creation_tx_hash
