@@ -1111,6 +1111,8 @@ models:
         name: caller
       - &call_selector
         name: call_selector
+      - &call_to
+        name: call_to
       - &transfer_trace_address
         name: transfer_trace_address
       - *contract_address

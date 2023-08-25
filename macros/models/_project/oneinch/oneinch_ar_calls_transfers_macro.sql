@@ -23,6 +23,7 @@ calls as (
         tx_hash
         , gr_traces.start
         , gr_traces.caller
+        , gr.traces.call_to
         , transactions.tx_from
         , transactions.tx_success
         , gr_traces.call_success
@@ -53,6 +54,7 @@ calls as (
             , min_by({{ selector }}, trace_address) as call_selector
             , min_by(input, trace_address) as call_input
             , min_by(output, trace_address) as call_output
+            , min_by("to", trace_address) call_to
         from {{ source(blockchain, 'traces') }}
         where 
             {% if is_incremental() %}
@@ -83,6 +85,7 @@ calls as (
         , calls.start as call_trace_address
         , calls.caller
         , calls.call_selector
+        , calls.call_to
         -- transfer
         , transfers.trace_address as transfer_trace_address
         , transfers.contract_address
