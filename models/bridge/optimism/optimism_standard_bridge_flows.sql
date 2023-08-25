@@ -150,6 +150,6 @@ LEFT JOIN {{ source('prices', 'usd') }} p
     {% endif %}
     
 LEFT JOIN {{ ref('chain_info_chain_ids') }} cid_source
-    ON cid_source.chain_id =  CAST(tf.source_chain_id as VARCHAR)
+    ON cid_source.chain_id =  tf.source_chain_id
 LEFT JOIN {{ ref('chain_info_chain_ids') }} cid_dest
-    ON cid_dest.chain_id = CAST(tf.destination_chain_id as VARCHAR)
+    ON cid_dest.chain_id = tf.destination_chain_id
