@@ -106,7 +106,7 @@ WITH erc721_trades AS (
         ,from_hex(json_extract_scalar(sellOrder,'$.erc721Token')) as erc721Token
         ,cast(json_extract_scalar(sellOrder,'$.erc721TokenId')as uint256) as erc721TokenId
         ,from_hex(json_extract_scalar(fee_info,'$.recipient')) as recipient
-        ,json_extract_scalar(fee_info,'$.amount') as amount
+        ,cast(json_extract_scalar(fee_info,'$.amount') as uint256) as amount
         from sell_orders
         cross join unnest(cast(json_extract(sellOrder,'$.fees') as array<varchar>)) as foo(fee_info)
     )
@@ -139,7 +139,7 @@ WITH erc721_trades AS (
         ,from_hex(json_extract_scalar(sellOrder,'$.erc1155Token')) as erc1155Token
         ,cast(json_extract_scalar(sellOrder,'$.erc1155TokenId')as uint256) as erc1155TokenId
         ,from_hex(json_extract_scalar(fee_info,'$.recipient')) as recipient
-        ,json_extract_scalar(fee_info,'$.amount') as amount
+        ,cast(json_extract_scalar(fee_info,'$.amount') as uint256) as amount
         from sell_orders
         cross join unnest(cast(json_extract(sellOrder,'$.fees') as array<varchar>)) as foo(fee_info)
     )
