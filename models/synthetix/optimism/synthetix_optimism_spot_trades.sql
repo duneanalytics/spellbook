@@ -1,11 +1,12 @@
 {{ config(
+    tags=['dunesql'],
     schema = 'synthetix_optimism',
     alias = alias('spot_trades'),
     partition_by = ['block_date'],
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
-    unique_key = ['block_date', 'blockchain', 'project', 'version', 'tx_hash', 'evt_index', 'trace_address'],
+    unique_key = ['block_date', 'blockchain', 'project', 'version', 'tx_hash', 'evt_index'],
     post_hook='{{ expose_spells(\'["optimism"]\',
                                 "project",
                                 "synthetix",
@@ -22,19 +23,18 @@ WITH dexs AS
          t.evt_block_time AS block_time
         , t.evt_block_number
         ,'toAddress' AS taker
-        ,'' AS maker
-        ,t.toAmount AS token_bought_amount_raw 
+        ,CAST(NULL as VARBINARY) as maker
+        ,t.toAmount AS token_bought_amount_raw
         ,t.fromAmount AS token_sold_amount_raw
         ,cast(NULL as double) AS amount_usd
-        ,'' AS token_bought_address
-        ,'' AS token_sold_address
+        ,CAST(NULL as VARBINARY) AS token_bought_address
+        ,CAST(NULL as VARBINARY) AS token_sold_address
         -- we need to map token symbols. This is not ideal.
         ,trim('\u0000' from unhex(substring(toCurrencyKey, 3))) AS token_bought_symbol
         ,trim('\u0000' from unhex(substring(fromCurrencyKey, 3))) AS token_sold_symbol
 
         ,t.contract_address as project_contract_address
         ,t.evt_tx_hash AS tx_hash
-        ,'' AS trace_address
         ,t.evt_index
     FROM
         {{ source('synthetix_optimism', 'SNX_evt_SynthExchange') }} t
@@ -47,7 +47,8 @@ SELECT
      'optimism' AS blockchain
     ,'synthetix' AS project
     ,'1' AS version
-    ,TRY_CAST(date_trunc('DAY', dexs.block_time) AS date) AS block_date
+    ,cast(date_trunc('month', dexs.block_time) AS date) AS block_month
+    ,cast(date_trunc('DAY', dexs.block_time) AS date) AS block_date
     ,dexs.block_time
     ,erc20a.symbol AS token_bought_symbol
     ,erc20b.symbol AS token_sold_symbol
@@ -72,7 +73,6 @@ SELECT
     ,dexs.tx_hash
     ,tx.from AS tx_from
     ,tx.to AS tx_to
-    ,dexs.trace_address
     ,dexs.evt_index
 FROM dexs
 INNER JOIN {{ source('optimism', 'transactions') }} tx
@@ -85,7 +85,7 @@ INNER JOIN {{ source('optimism', 'transactions') }} tx
     AND tx.block_time >= date_trunc('day', now() - interval '1' month)
     {% endif %}
 LEFT JOIN {{ ref('tokens_erc20') }} erc20a
-    ON erc20a.symbol = dexs.token_bought_symbol 
+    ON erc20a.symbol = dexs.token_bought_symbol
     AND erc20a.blockchain = 'optimism'
 LEFT JOIN {{ ref('tokens_erc20') }} erc20b
     ON erc20b.symbol = dexs.token_sold_symbol
