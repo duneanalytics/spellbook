@@ -96,7 +96,7 @@ calls as (
         , if(transfers.trace_address is not null, row_number() over(partition by calls.tx_hash order by transfers.trace_address asc)) as rn_ta_asc 
         , if(transfers.trace_address is not null, row_number() over(partition by calls.tx_hash order by transfers.trace_address desc)) as rn_ta_desc
         -- ext
-        , calls.call_output
+        , calls.call_output 
         , calls.call_input
         , date_trunc('minute', calls.block_time) as minute
         , date(date_trunc('month', calls.block_time)) as block_month
