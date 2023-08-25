@@ -173,7 +173,7 @@ WITH clipper AS
         END AS token_sold_address,
         contract_address AS project_contract_address,
         call_tx_hash as tx_hash,
-        COALESCE(call_trace_address, array[-1]) AS trace_address, -- use coalesce for cases where trace address is null due to seed and unique keys?
+        call_trace_address AS trace_address,
         CAST(-1 as integer) AS evt_index
     FROM
         clipper

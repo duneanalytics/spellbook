@@ -1,7 +1,8 @@
 {{  config(
+    tags = ['dunesql'],
         schema='oneinch_limit_order_protocol_v2_ethereum',
         alias = alias('trades'),
-        partition_by = ['block_date'],
+        partition_by = ['block_month'],
         on_schema_change='sync_all_columns',
         file_format ='delta',
         materialized='incremental',
@@ -19,9 +20,9 @@ WITH limit_order_protocol AS
 (
     SELECT
         call_block_number,
-        get_json_object(order,'$.maker') AS maker,
-        get_json_object(order,'$.takerAsset') AS token_bought_address,
-        get_json_object(order,'$.makerAsset') AS token_sold_address,
+        from_hex(json_extract_scalar("order", '$.maker')) AS maker,
+        from_hex(json_extract_scalar("order", '$.takerAsset')) AS token_bought_address,
+        from_hex(json_extract_scalar("order", '$.makerAsset')) AS token_sold_address,
         contract_address,
         output_0,
         output_1,
@@ -33,18 +34,18 @@ WITH limit_order_protocol AS
     WHERE
         call_success
         {% if is_incremental() %}
-        AND call_block_time >= date_trunc("day", now() - interval '1 week')
+        AND call_block_time >= date_trunc('day', now() - interval '7' Day)
         {% else %}
-        AND call_block_time >= '{{project_start_date}}'
+        AND call_block_time >= TIMESTAMP '{{project_start_date}}'
         {% endif %}
             
     UNION ALL
         
     SELECT
         call_block_number,
-        get_json_object(order,'$.maker') AS maker,
-        get_json_object(order,'$.takerAsset') AS token_bought_address,
-        get_json_object(order,'$.makerAsset') AS token_sold_address,
+        from_hex(json_extract_scalar("order", '$.maker')) AS maker,
+        from_hex(json_extract_scalar("order", '$.takerAsset')) AS token_bought_address,
+        from_hex(json_extract_scalar("order", '$.makerAsset')) AS token_sold_address,
         contract_address,
         output_0,
         output_1,
@@ -56,18 +57,18 @@ WITH limit_order_protocol AS
     WHERE
         call_success
         {% if is_incremental() %}
-        AND call_block_time >= date_trunc("day", now() - interval '1 week')
+        AND call_block_time >= date_trunc('day', now() - interval '7' Day)
         {% else %}
-        AND call_block_time >= '{{project_start_date}}'
+        AND call_block_time >= TIMESTAMP '{{project_start_date}}'
         {% endif %}
             
     UNION ALL
         
     SELECT
         call_block_number,
-        get_json_object(order,'$.maker') AS maker,
-        get_json_object(order,'$.takerAsset') AS token_bought_address,
-        get_json_object(order,'$.makerAsset') AS token_sold_address,
+        from_hex(json_extract_scalar("order", '$.maker')) AS maker,
+        from_hex(json_extract_scalar("order", '$.takerAsset')) AS token_bought_address,
+        from_hex(json_extract_scalar("order", '$.makerAsset')) AS token_sold_address,
         contract_address,
         output_0,
         output_1,
@@ -79,9 +80,9 @@ WITH limit_order_protocol AS
     WHERE
         call_success
         {% if is_incremental() %}
-        AND call_block_time >= date_trunc("day", now() - interval '1 week')
+        AND call_block_time >= date_trunc('day', now() - interval '7' Day)
         {% else %}
-        AND call_block_time >= '{{project_start_date}}'
+        AND call_block_time >= TIMESTAMP '{{project_start_date}}'
         {% endif %}
 )
 , oneinch AS
@@ -91,7 +92,7 @@ WITH limit_order_protocol AS
         call_block_time as block_time,
         '1inch Limit Order Protocol' AS project,
         '2' as version,
-        CAST(NULL as string) as taker, -- get from base table downstream
+        CAST(NULL as VARBINARY) as taker, -- get from base table downstream
         maker,
         output_1 AS token_bought_amount_raw,
         output_0 AS token_sold_amount_raw,
@@ -110,7 +111,8 @@ SELECT
     '{{blockchain}}' AS blockchain
     ,src.project
     ,src.version
-    ,date_trunc('day', src.block_time) AS block_date
+    ,CAST(date_trunc('day', src.block_time) as date) AS block_date
+    ,CAST(date_trunc('month', src.block_time) as date) AS block_month
     ,src.block_time
     ,src.block_number
     ,token_bought.symbol AS token_bought_symbol
@@ -121,13 +123,13 @@ SELECT
     end as token_pair
     ,src.token_bought_amount_raw / power(10, token_bought.decimals) AS token_bought_amount
     ,src.token_sold_amount_raw / power(10, token_sold.decimals) AS token_sold_amount
-    ,CAST(src.token_bought_amount_raw AS DECIMAL(38,0)) AS token_bought_amount_raw
-    ,CAST(src.token_sold_amount_raw AS DECIMAL(38,0)) AS token_sold_amount_raw
+    ,src.token_bought_amount_raw
+    ,src.token_sold_amount_raw
     ,coalesce(
         src.amount_usd
         , (src.token_bought_amount_raw / power(10,
             CASE
-                WHEN token_bought_address = '{{burn_address}}'
+                WHEN token_bought_address = {{burn_address}}
                     THEN 18
                 ELSE prices_bought.decimals
             END
@@ -136,14 +138,14 @@ SELECT
         *
         (
             CASE
-                WHEN token_bought_address = '{{burn_address}}'
+                WHEN token_bought_address = {{burn_address}}
                     THEN prices_eth.price
                 ELSE prices_bought.price
             END
         )
         , (src.token_sold_amount_raw / power(10,
             CASE
-                WHEN token_sold_address = '{{burn_address}}'
+                WHEN token_sold_address = {{burn_address}}
                     THEN 18
                 ELSE prices_sold.decimals
             END
@@ -152,7 +154,7 @@ SELECT
         *
         (
             CASE
-                WHEN token_sold_address = '{{burn_address}}'
+                WHEN token_sold_address = {{burn_address}}
                     THEN prices_eth.price
                 ELSE prices_sold.price
             END
@@ -160,22 +162,22 @@ SELECT
     ) AS amount_usd
     ,src.token_bought_address
     ,src.token_sold_address
-    ,coalesce(src.taker, tx.from) AS taker
+    ,coalesce(src.taker, tx."from") AS taker
     ,src.maker
     ,src.project_contract_address
     ,src.tx_hash
-    ,tx.from AS tx_from
+    ,tx."from" AS tx_from
     ,tx.to AS tx_to
-    ,CAST(src.trace_address as array<long>) as trace_address
+    ,src.trace_address
     ,src.evt_index
 FROM oneinch as src
 INNER JOIN {{ source('ethereum', 'transactions') }} as tx
     ON src.tx_hash = tx.hash
     AND src.block_number = tx.block_number
     {% if is_incremental() %}
-    AND tx.block_time >= date_trunc("day", now() - interval '1 week')
+    AND tx.block_time >= date_trunc('day', now() - interval '7' Day)
     {% else %}
-    AND tx.block_time >= '{{project_start_date}}'
+    AND tx.block_time >= TIMESTAMP '{{project_start_date}}'
     {% endif %}
 LEFT JOIN {{ ref('tokens_erc20') }} as token_bought
     ON token_bought.contract_address = src.token_bought_address
@@ -188,26 +190,25 @@ LEFT JOIN {{ source('prices', 'usd') }} as prices_bought
     AND prices_bought.contract_address = src.token_bought_address
     AND prices_bought.blockchain = '{{blockchain}}'
     {% if is_incremental() %}
-    AND prices_bought.minute >= date_trunc("day", now() - interval '1 week')
+    AND prices_bought.minute >= date_trunc('day', now() - interval '7' Day)
     {% else %}
-    AND prices_bought.minute >= '{{project_start_date}}'
+    AND prices_bought.minute >= TIMESTAMP '{{project_start_date}}'
     {% endif %}
 LEFT JOIN {{ source('prices', 'usd') }} as prices_sold
     ON prices_sold.minute = date_trunc('minute', src.block_time)
     AND prices_sold.contract_address = src.token_sold_address
     AND prices_sold.blockchain = '{{blockchain}}'
     {% if is_incremental() %}
-    AND prices_sold.minute >= date_trunc("day", now() - interval '1 week')
+    AND prices_sold.minute >= date_trunc('day', now() - interval '7' Day)
     {% else %}
-    AND prices_sold.minute >= '{{project_start_date}}'
+    AND prices_sold.minute >= TIMESTAMP '{{project_start_date}}'
     {% endif %}
 LEFT JOIN {{ source('prices', 'usd') }} as prices_eth
     ON prices_eth.minute = date_trunc('minute', src.block_time)
     AND prices_eth.blockchain is null
     AND prices_eth.symbol = '{{blockchain_symbol}}'
     {% if is_incremental() %}
-    AND prices_eth.minute >= date_trunc("day", now() - interval '1 week')
+    AND prices_eth.minute >= date_trunc('day', now() - interval '7' Day)
     {% else %}
-    AND prices_eth.minute >= '{{project_start_date}}'
+    AND prices_eth.minute >= TIMESTAMP '{{project_start_date}}'
     {% endif %}
-;
