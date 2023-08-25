@@ -606,7 +606,7 @@ SELECT
 
 FROM (
   select 
-    cast(DATE_TRUNC('month',created_time) as date) AS created_month
+    cast(DATE_TRUNC('month',c.created_time) as date) AS created_month
     ,c.blockchain,
     COALESCE(c.trace_creator_address, CAST(NULL AS varbinary) ) AS trace_creator_address
     ,c.contract_address
