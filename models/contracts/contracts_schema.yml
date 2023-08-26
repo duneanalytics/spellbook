@@ -59,9 +59,6 @@ models:
       - &created_time
         name: created_time
         description: "contract creation time"
-      - &contract_creator_if_factory
-        name: contract_creator_if_factory
-        description: "Contract creator address if it is a factory contract"
       - &is_self_destruct
         name: is_self_destruct
         description: "Flag if it is a self destruct contract"
@@ -119,10 +116,6 @@ models:
       - &is_eoa_deployed
         name: is_eoa_deployed
         description: "Was the contract deployed by an EOA (test if the trace creator = the transaction sender)"
-      
-      - &is_updated_in_last_run
-        name: is_updated_in_last_run
-        description: "Was this contract updated on the last run (used for incremental table building)"
   
   - name: contracts_predeploys
     meta:
