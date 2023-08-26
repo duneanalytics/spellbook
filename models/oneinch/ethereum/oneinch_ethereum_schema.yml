@@ -586,7 +586,7 @@ models:
             - tx_hash
             - evt_index
             - trace_address
-      - check_dex_aggregator_seed_legacy:
+      - check_dex_aggregator_seed:
           blockchain: ethereum
           project: 1inch
           version: 'UNI v3'
@@ -614,6 +614,9 @@ models:
       - *tx_to
       - *trace_address
       - *evt_index
+      - &block_month
+        name: block_month
+        description: "UTC event block month of the trade"
 
   - name: oneinch_clipper_ethereum_trades
     meta:
