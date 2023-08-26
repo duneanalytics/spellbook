@@ -541,72 +541,93 @@ WHERE contract_order = 1
   group by 1,2
 )
 
-SELECT
-  created_month,
-  blockchain,
-  trace_creator_address,  contract_address, 
-  --initcap: https://jordanlamborn.medium.com/presto-sql-proper-case-initcap-how-to-capitalize-the-first-letter-of-each-word-in-presto-5fbac3f0154c
-  (array_join((transform((split(lower(contract_project),' '))
-    , x -> concat(upper(substr(x,1,1)),substr(x,2,length(x))))),' ',''))
-    AS contract_project
-  --
-, token_symbol
-, contract_name, creator_address, created_time
-, is_self_destruct, creation_tx_hash, created_block_number, created_tx_from
-, created_tx_to, created_tx_method_id, created_tx_index
-, top_level_time, top_level_tx_hash, top_level_block_number
-, top_level_tx_from, top_level_tx_to , top_level_tx_method_id
-, code_bytelength , token_standard 
-, code
-, code_deploy_rank_by_chain
-, is_eoa_deployed
 
-FROM (
-  select 
-    cast(DATE_TRUNC('month',c.created_time) as date) AS created_month
-    ,c.blockchain
-    ,c.trace_creator_address
-    ,c.contract_address
-    ,cast(
-        replace(
-        -- priority order: Override name, Mapped vs Dune, Raw/Actual names
-          coalesce(
-            co.contract_project
-            ,dnm.mapped_name
-            ,c.contract_project
-          ),
-        '_',
-        ' '
-    ) as varchar) as contract_project
-    ,c.token_symbol
-    ,cast( coalesce(co.contract_name, c.contract_name) as varchar) as contract_name
-    ,coalesce(c.creator_address, CAST(NULL AS varbinary) ) as creator_address
-    ,c.created_time
-    ,coalesce(c.is_self_destruct, false) as is_self_destruct
-    ,c.creation_tx_hash
-    ,COALESCE(c.created_block_number,0) AS created_block_number
-    ,c.created_tx_from
-    ,c.created_tx_to
-    ,c.created_tx_method_id
-    ,c.created_tx_index
+WITH updated_data AS (
+  SELECT
+    created_month,
+    blockchain,
+    trace_creator_address,  contract_address, 
+    --initcap: https://jordanlamborn.medium.com/presto-sql-proper-case-initcap-how-to-capitalize-the-first-letter-of-each-word-in-presto-5fbac3f0154c
+    (array_join((transform((split(lower(contract_project),' '))
+      , x -> concat(upper(substr(x,1,1)),substr(x,2,length(x))))),' ',''))
+      AS contract_project
+    --
+  , token_symbol
+  , contract_name, creator_address, created_time
+  , is_self_destruct, creation_tx_hash, created_block_number, created_tx_from
+  , created_tx_to, created_tx_method_id, created_tx_index
+  , top_level_time, top_level_tx_hash, top_level_block_number
+  , top_level_tx_from, top_level_tx_to , top_level_tx_method_id
+  , code_bytelength , token_standard 
+  , code
+  , code_deploy_rank_by_chain
+  , is_eoa_deployed
 
-    ,c.top_level_time
-    ,c.top_level_tx_hash
-    ,c.top_level_block_number
-    ,c.top_level_tx_from
-    ,c.top_level_tx_to
-    ,c.top_level_tx_method_id
-    
-    ,c.code_bytelength
-    ,c.token_standard
-    ,c.code
-    ,c.code_deploy_rank_by_chain
-    ,CASE WHEN c.trace_creator_address = c.created_tx_from THEN 1 ELSE 0 END AS is_eoa_deployed
-  from cleanup as c 
-  left join {{ ref('contracts_project_name_mappings') }} as dnm -- fix names for decoded contracts
-    on lower(c.contract_project) = lower(dnm.dune_name)
-  left join {{ ref('contracts_contract_overrides') }} as co --override contract maps
-    on c.contract_address = co.contract_address
-) f
+  FROM (
+    select 
+      cast(DATE_TRUNC('month',c.created_time) as date) AS created_month
+      ,c.blockchain
+      ,c.trace_creator_address
+      ,c.contract_address
+      ,cast(
+          replace(
+          -- priority order: Override name, Mapped vs Dune, Raw/Actual names
+            coalesce(
+              co.contract_project
+              ,dnm.mapped_name
+              ,c.contract_project
+            ),
+          '_',
+          ' '
+      ) as varchar) as contract_project
+      ,c.token_symbol
+      ,cast( coalesce(co.contract_name, c.contract_name) as varchar) as contract_name
+      ,coalesce(c.creator_address, CAST(NULL AS varbinary) ) as creator_address
+      ,c.created_time
+      ,coalesce(c.is_self_destruct, false) as is_self_destruct
+      ,c.creation_tx_hash
+      ,COALESCE(c.created_block_number,0) AS created_block_number
+      ,c.created_tx_from
+      ,c.created_tx_to
+      ,c.created_tx_method_id
+      ,c.created_tx_index
+
+      ,c.top_level_time
+      ,c.top_level_tx_hash
+      ,c.top_level_block_number
+      ,c.top_level_tx_from
+      ,c.top_level_tx_to
+      ,c.top_level_tx_method_id
+      
+      ,c.code_bytelength
+      ,c.token_standard
+      ,c.code
+      ,c.code_deploy_rank_by_chain
+      ,CASE WHEN c.trace_creator_address = c.created_tx_from THEN 1 ELSE 0 END AS is_eoa_deployed
+    from cleanup as c 
+    left join {{ ref('contracts_project_name_mappings') }} as dnm -- fix names for decoded contracts
+      on lower(c.contract_project) = lower(dnm.dune_name)
+    left join {{ ref('contracts_contract_overrides') }} as co --override contract maps
+      on c.contract_address = co.contract_address
+  ) f
+)
+
+SELECT u.*,
+
+  CASE WHEN
+    u.contract_project<>th.contract_project
+    OR u.token_symbol<>th.token_symbol
+    OR u.contract_name<>u.contract_name
+    OR u.creator_address<>u.creator_address
+    OR u.code_deploy_rank_by_chain<>u.code_deploy_rank_by_chain
+    OR th.token_standard<>u.token_standard
+  THEN 1 ELSE 0 END AS is_updated_in_last_run
+
+FROM updated_data u
+left join {{this}} th -- see if this was updated or not
+  ON th.contract_address = u.contract_address
+  AND th.blockchain = u.blockchain
+  AND th.created_block_number = u.created_block_number
+  AND th.created_time = u.created_time
 
 {% endmacro %}
