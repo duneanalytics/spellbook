@@ -114,7 +114,7 @@ models:
       - check_dex_aggregator_seed:
           blockchain: avalanche_c
           project: kyberswap
-          version: 2
+          version: meta_2
     columns:
       - name: blockchain
       - name: project
