@@ -267,6 +267,7 @@ models:
       - &version
         name: version
         description: "Version of the project"
+      - *block_month
       - *block_date
       - *block_time
       - &token_bought_symbol
@@ -319,9 +320,6 @@ models:
       - &tx_to
         name: tx_to
         description: "transaction.to"
-      - &trace_address
-        name: trace_address
-        description: ""
       - *evt_index
 
   - name: balancer_v1_ethereum_trades
@@ -347,6 +345,7 @@ models:
       - *blockchain
       - *project
       - *version
+      - *block_month
       - *block_date
       - *block_time
       - *token_bought_symbol
@@ -367,7 +366,6 @@ models:
       - *tx_hash
       - *tx_from
       - *tx_to
-      - *trace_address
       - *evt_index
 
   - name: balancer_v2_ethereum_trades
@@ -388,7 +386,6 @@ models:
             - version
             - tx_hash
             - evt_index
-            - trace_address
       - check_dex_seed:
           blockchain: ethereum
           project: balancer
@@ -418,7 +415,6 @@ models:
       - name: tx_hash
       - name: tx_from
       - name: tx_to
-      - name: trace_address
       - name: evt_index
 
   - name: balancer_v2_ethereum_liquidity

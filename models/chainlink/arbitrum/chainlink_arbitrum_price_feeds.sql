@@ -10,7 +10,7 @@
     post_hook='{{ expose_spells(\'["arbitrum"]\',
                                 "project",
                                 "chainlink",
-                                \'["linkpool_ryan","linkpool_jon]\') }}'
+                                \'["linkpool_ryan","linkpool_jon"]\') }}'
   )
 }}
 
