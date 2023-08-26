@@ -21,7 +21,7 @@ models:
         description: "Version of dodo contracts (0 - dodo_aggregator, 1 - DODOV1, 2_dvm - DODOV2 public pool, 2_dsp - DODOV2 stable pool, 2_dpp - DODOV2 private pool)"
         tests:
           - dbt_utils.expression_is_true:
-              expression: "!= 0"
+              expression: "!= '0'"
       - &block_date
         name: block_date
         description: "UTC event block date of each DEX trade"
@@ -76,9 +76,6 @@ models:
       - &tx_to
         name: tx_to
         description: "Address which received the transaction"
-      - &trace_address
-        name: trace_address
-        description: "address of the trace within the call graph forest"
       - &evt_index
         name: evt_index
         description: "the position of this event log within this transaction"
@@ -99,7 +96,7 @@ models:
         description: "Version of dodo contracts (0 - dodo_aggregator, 1 - DODOV1, 2_dvm - DODOV2 public pool, 2_dsp - DODOV2 stable pool, 2_dpp - DODOV2 private pool)"
         tests:
           - dbt_utils.expression_is_true:
-              expression: "= 0"
+              expression: "= '0'"
       - *block_date
       - *block_time
       - *token_bought_symbol
@@ -118,5 +115,6 @@ models:
       - *tx_hash
       - *tx_from
       - *tx_to
-      - *trace_address
+      - name: trace_address
+        description: "address of the trace within the call graph forest"
       - *evt_index
