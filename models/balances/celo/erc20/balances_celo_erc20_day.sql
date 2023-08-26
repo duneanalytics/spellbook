@@ -44,7 +44,8 @@ select
   b.symbol,
   b.amount_raw,
   b.amount,
-  b.amount * p.price as amount_usd
+  b.amount * p.price as amount_usd,
+  row_number() over (partition by b.token_address, b.wallet_address order by b.block_day desc) as recency_index
 from days d
   join daily_balances b on b.block_day <= d.day and d.day < b.next_day
   left join {{ source('prices', 'usd') }} p
@@ -52,7 +53,7 @@ from days d
     and d.day = p.minute
     and p.blockchain = 'celo'
   -- Removes rebase tokens from balances
-  --left join {{ ref('tokens_celo_rebase') }} r on b.token_address = r.contract_address
+  --left join ref('tokens_celo_rebase') r on b.token_address = r.contract_address
   -- Removes likely non-compliant tokens due to negative balances
   left join {{ ref('balances_celo_erc20_noncompliant') }} nc on b.token_address = nc.token_address
 where nc.token_address is null

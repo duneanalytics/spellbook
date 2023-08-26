@@ -24,7 +24,7 @@ select
   sum(tr.amount_raw) as amount_raw,
   sum(tr.amount_raw / power(10, 18)) as amount --sum(tr.amount_raw / power(10, t.decimals)) as amount
 from {{ ref('transfers_celo_erc20') }} tr
---left join {{ ref('tokens_celo_erc20') }} t on t.contract_address = tr.token_address
+--left join ref('tokens_celo_erc20') t on t.contract_address = tr.token_address
 {% if is_incremental() %}
 -- this filter will only be applied on an incremental run
 where tr.block_time >= date_trunc('day', now() - interval '7' day)
