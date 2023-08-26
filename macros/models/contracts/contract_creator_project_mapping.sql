@@ -542,7 +542,7 @@ WHERE contract_order = 1
 )
 
 
-WITH updated_data AS (
+, updated_data AS (
   SELECT
     created_month,
     blockchain,
