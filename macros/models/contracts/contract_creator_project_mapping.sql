@@ -615,7 +615,9 @@ WITH updated_data AS (
 SELECT u.*,
 
   CASE WHEN
-    u.contract_project<>th.contract_project
+    th.contract_address IS NULL -- did not exist
+    -- check if a major field was updated
+    OR u.contract_project<>th.contract_project
     OR u.token_symbol<>th.token_symbol
     OR u.contract_name<>u.contract_name
     OR u.creator_address<>u.creator_address
