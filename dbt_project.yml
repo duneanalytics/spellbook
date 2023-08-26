@@ -479,6 +479,8 @@ models:
       +schema: balances
       ethereum:
         +schema: balances_ethereum
+      celo:
+        +schema: balances_celo
 
     dodo:
       +schema: dodo
