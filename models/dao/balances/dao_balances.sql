@@ -3,7 +3,7 @@
     alias = alias('balances'),
     materialized = 'table',
     file_format = 'delta',
-    post_hook='{{ expose_spells(\'["ethereum", "gnosis", "polygon"]\',
+    post_hook='{{ expose_spells(\'["ethereum", "gnosis", "polygon", "base"]\',
                                 "sector",
                                 "dao",
                                 \'["Henrystats"]\') }}')
@@ -21,6 +21,7 @@ WITH balances as (
     FROM
         {{ ref('dao_transactions') }}
     WHERE tx_type = 'tx_in'
+    AND asset_contract_address != 0xae7ab96520de3a18e5e111b5eaab095312d7fe84
     GROUP BY 1, 3, 4, 5, 6, 7, 8
 
     UNION ALL
@@ -37,6 +38,7 @@ WITH balances as (
     FROM
         {{ ref('dao_transactions') }}
     WHERE tx_type = 'tx_out'
+    AND asset_contract_address != 0xae7ab96520de3a18e5e111b5eaab095312d7fe84
     GROUP BY 1, 3, 4, 5, 6, 7, 8
 ),
 
@@ -99,8 +101,16 @@ LEFT JOIN
     AND p.blockchain = db.blockchain
 LEFT JOIN 
     {{ source('prices', 'usd') }} e 
-    ON db.asset_contract_address = 0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee
+    ON db.asset_contract_address IN (0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee, 0xDeadDeAddeAddEAddeadDEaDDEAdDeaDDeAD0000)
     AND d.day = e.minute
     AND db.blockchain = 'ethereum'
     AND e.blockchain = 'ethereum'
     AND e.symbol = 'WETH'
+
+
+UNION ALL 
+
+SELECT 
+    * 
+FROM 
+{{ ref('dao_balances_steth') }}

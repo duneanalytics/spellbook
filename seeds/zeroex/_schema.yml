@@ -1,0 +1,82 @@
+version: 2
+
+seeds:
+   - name: zeroex_arbitrum_native_fills_sample
+     config:
+       tags: dunesql
+       column_types:
+         timestamp: timestamp
+         protocol_version: varchar
+         tx_hash: varbinary
+         evt_index: integer
+         maker: varbinary
+         taker: varbinary
+         maker_token: varbinary
+         maker_symbol: varchar
+         maker_asset_filled_amount: double
+         taker_token: varbinary
+         taker_symbol: varchar
+         taker_asset_filled_amount: double
+         fee_recipient_address: varbinary
+         volume_usd: double
+         protocol_fee_paid_eth: double
+
+   - name: zeroex_bnb_native_fills_sample
+     config:
+       tags: dunesql
+       column_types:
+         timestamp: timestamp
+         protocol_version: varchar
+         tx_hash: varbinary
+         evt_index: integer
+         maker: varbinary
+         taker: varbinary
+         maker_token: varbinary
+         maker_symbol: varchar
+         maker_asset_filled_amount: double
+         taker_token: varbinary
+         taker_symbol: varchar
+         taker_asset_filled_amount: double
+         fee_recipient_address: varbinary
+         volume_usd: double
+         protocol_fee_paid_eth: double
+
+   - name: zeroex_ethereum_native_fills_sample
+     config:
+       tags: dunesql
+       column_types:
+         timestamp: timestamp
+         protocol_version: varchar
+         tx_hash: varbinary
+         evt_index: integer
+         maker: varbinary
+         taker: varbinary
+         maker_token: varbinary
+         maker_symbol: varchar
+         maker_asset_filled_amount: double
+         taker_token: varbinary
+         taker_symbol: varchar
+         taker_asset_filled_amount: double
+         fee_recipient_address: varbinary
+         volume_usd: double
+         protocol_fee_paid_eth: double
+
+   - name: zeroex_polygon_native_fills_sample
+     config:
+       tags: dunesql
+       column_types:
+         timestamp: timestamp
+         protocol_version: varchar
+         tx_hash: varbinary
+         evt_index: integer
+         maker: varbinary
+         taker: varbinary
+         maker_token: varbinary
+         maker_symbol: varchar
+         maker_asset_filled_amount: double
+         taker_token: varbinary
+         taker_symbol: varchar
+         taker_asset_filled_amount: double
+         fee_recipient_address: varbinary
+         volume_usd: double
+         protocol_fee_paid_eth: double

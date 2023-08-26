@@ -153,7 +153,10 @@ SELECT *
       ,ct.code
       ,t.code_bytelength
       ,coalesce(sd.contract_address is not NULL, t.is_self_destruct, false) as is_self_destruct
-      , CASE WHEN nd.creator_address IS NOT NULL THEN 1 ELSE 0 END AS to_iterate_creators
+      , CASE
+        WHEN nd.creator_address IS NOT NULL THEN 1
+        WHEN ct."from" != t.trace_creator_address THEN 1 -- weird data ingestion issue?
+        ELSE 0 END AS to_iterate_creators
     from {{ this }} t
     left join {{ ref('contracts_optimism_self_destruct_contracts') }} as sd 
       on t.contract_address = sd.contract_address

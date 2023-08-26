@@ -1,6 +1,6 @@
 {{ config(
 	tags=['legacy'],
-	
+
     alias = alias('erc20', legacy_model=True),
     materialized = 'incremental',
     file_format = 'delta',
@@ -69,7 +69,7 @@ withdrawn_wmatic as (
     where evt_block_time >= date_trunc("day", now() - interval '1 week')
     {% endif %}
 )
-    
+
 select transfer_type,
        'polygon'                        as blockchain,
        evt_tx_hash,
@@ -79,7 +79,7 @@ select transfer_type,
        evt_block_time,
        CAST(amount_raw AS VARCHAR(100)) as amount_raw
 from sent_transfers
-union
+union all
 select transfer_type,
        'polygon'                        as blockchain,
        evt_tx_hash,
@@ -89,7 +89,7 @@ select transfer_type,
        evt_block_time,
        CAST(amount_raw AS VARCHAR(100)) as amount_raw
 from received_transfers
-union
+union all
 select transfer_type,
        'polygon'                        as blockchain,
        evt_tx_hash,
@@ -99,7 +99,7 @@ select transfer_type,
        evt_block_time,
        CAST(amount_raw AS VARCHAR(100)) as amount_raw
 from deposited_wmatic
-union
+union all
 select transfer_type,
        'polygon'                        as blockchain,
        evt_tx_hash,
