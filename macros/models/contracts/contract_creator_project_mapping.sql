@@ -183,7 +183,7 @@ SELECT *
       and t.created_time = sd.created_time
       AND t.created_block_number = sd.created_block_number
       AND t.blockchain = sd.blockchain
-      AND t.is_self_destruct is false --find new selfdestructs
+      AND t.is_self_destruct = false --find new selfdestructs
       AND sd.destructed_time >= date_trunc('day', now() - interval '7' day) -- new self-destructs only
 
     -- If the creator becomes marked as deterministic, we want to re-run it.
