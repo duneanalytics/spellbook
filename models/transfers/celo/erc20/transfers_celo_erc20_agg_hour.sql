@@ -20,7 +20,7 @@ select
   date_trunc('hour', tr.block_time) as block_hour,
   tr.wallet_address,
   tr.token_address,
-  null as symbol, -- t.symbol, -- null until tokens_celo_erc20 spell is created
+  cast(null as varchar(10)) as symbol, -- t.symbol, -- null until tokens_celo_erc20 spell is created
   sum(tr.amount_raw) as amount_raw,
   sum(tr.amount_raw / power(10, 18)) as amount --sum(tr.amount_raw / power(10, t.decimals)) as amount
 from {{ ref('transfers_celo_erc20') }} tr
