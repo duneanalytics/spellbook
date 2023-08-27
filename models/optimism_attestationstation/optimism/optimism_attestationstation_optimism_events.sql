@@ -1,5 +1,6 @@
 {{ config(
     alias = alias('events'),
+    tags = ['dunesql'],
     partition_by = ['block_date'],
     materialized = 'incremental',
     file_format = 'delta',
@@ -26,34 +27,22 @@ SELECT
         ,creator as issuer
         ,contract_address
         ,key as key_raw
-        ,
-        REGEXP_REPLACE(--Replace invisible characters
-            decode(
-                unhex(
-                  if (
-                    substring(key, 1, 6) in ("0xab7e", "0x9e43"), --Handle for Clique
-                    hex(key),
-                    substring(key, 3)
-                  )
-                ),
-                "utf8"
-              ) 
-            , '[^\x20-\x7E]','')
+        ,REGEXP_REPLACE(--Replace invisible characters
+            from_utf8(key), '[^\x20-\x7E]','')
         as key
-
         ,val as val_raw
 
         ,split(
                 REGEXP_REPLACE(--Replace invisible characters
-                        CASE WHEN cast( REGEXP_REPLACE(unhex(substring(val, 3)), '[^\x20-\x7E]','') as varchar(100)) != ""
-                            THEN cast(unhex(substring(val, 3)) as varchar(100))
-                            ELSE cast(bytea2numeric_v3(substring(val, 3)) as varchar(100))
+                        CASE WHEN cast( REGEXP_REPLACE(from_utf8(val), '[^\x20-\x7E]','') as varchar(100)) != ''
+                            THEN cast(from_utf8(val) as varchar(100))
+                            ELSE cast(bytearray_to_bigint(val) as varchar(100))
                         END  
                   , '[^\x20-\x7E]','')
-              ,",") as val
+              ,',') as val
             
 
-        ,bytea2numeric_v3(substring(val, 3)) AS val_byte2numeric
+        ,bytearray_to_bigint(val) AS val_byte2numeric
 
     from {{source('attestationstation_optimism','AttestationStation_evt_AttestationCreated')}}
     where 
