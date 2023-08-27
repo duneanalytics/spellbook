@@ -1,0 +1,38 @@
+version: 2
+
+models:
+  - name: labels_worldcoin_accounts
+    tests:
+    - dbt_utils.unique_combination_of_columns:
+        combination_of_columns:
+          - address
+          - blockchain
+    meta:
+      blockchain: ethereum
+      sector: labels
+      category: worldcoin
+      project: ['worldcoin']
+      contributors: msilb7
+    config:
+      tags: ['labels', 'worldcoin', 'ethereum']
+    description: "worldcoin query labels"   
+    columns:
+      - name: blockchain
+        description: "Blockchain"   
+      - name: address
+        description: "Safe address"
+      - name: name
+        description: "Label name"
+      - name: category
+        description: "Label category"
+      - name: contributor
+        description: "Wizard(s) contributing to labels"
+      - name: source
+        description: "How were labels generated (could be static or query)"
+      - name: created_at
+        description: "When were labels created"
+      - name: updated_at
+        description: "When were labels updated for the last time"
+      - name: model_name
+        description: "Name of the label model sourced from"
+      - name: label_type
