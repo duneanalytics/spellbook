@@ -36,13 +36,13 @@ SELECT
                 REGEXP_REPLACE(--Replace invisible characters
                         CASE WHEN cast( REGEXP_REPLACE(from_utf8(val), '[^\x20-\x7E]','') as varchar(100)) != ''
                             THEN cast(from_utf8(val) as varchar(100))
-                            ELSE cast(bytearray_to_bigint(val) as varchar(100))
+                            WHEN bytearray_length(val) <= 32 then cast(bytearray_to_uint256(val) as varchar(100))
                         END  
                   , '[^\x20-\x7E]','')
               ,',') as val
             
 
-        ,bytearray_to_bigint(val) AS val_byte2numeric
+        ,case when bytearray_length(val) <= 32 then bytearray_to_uint256(val) end AS val_byte2numeric
 
     from {{source('attestationstation_optimism','AttestationStation_evt_AttestationCreated')}}
     where 
