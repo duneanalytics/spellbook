@@ -86,7 +86,7 @@ WITH all_labels AS (
             FROM {{source('erc20_optimism','evt_transfer') }} tf
             -- We want either the send or receiver to be the foundation or a project (also includes utility transfers)
             INNER JOIN all_labels lbl_from
-                ON lbl_from.address = tf.`from`
+                ON lbl_from.address = tf."from"
             -- if the recipient is in this list to, then we track it
             LEFT JOIN all_labels lbl_to
                 ON lbl_to.address = tf.to
@@ -105,7 +105,7 @@ WITH all_labels AS (
                 ON tx.to = dc.address
             
             LEFT JOIN all_labels lbl_from_util_tx
-                ON lbl_from_util_tx.address = tx.`from` --label of the transaction sender
+                ON lbl_from_util_tx.address = tx."from" --label of the transaction sender
                 AND dc.address IS NOT NULL --we have a disperse
                 
             -- LEFT JOIN tx_labels txl
