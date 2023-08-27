@@ -20,7 +20,7 @@ models:
             - tx_hash
             - evt_index
             - trace_address
-      - check_dex_aggregator_seed_legacy:
+      - check_dex_aggregator_seed:
           blockchain: ethereum
           project: 1inch
           version: 1
@@ -94,6 +94,9 @@ models:
       - &evt_index
         name: evt_index
         description: "Index of the corresponding trade event"
+      - &block_month
+        name: block_month
+        description: "UTC event block month of the trade"
 
   - name: oneinch_v2_ethereum_trades
     meta:
@@ -114,7 +117,7 @@ models:
             - tx_hash
             - evt_index
             - trace_address
-      - check_dex_aggregator_seed_legacy:
+      - check_dex_aggregator_seed:
           blockchain: ethereum
           project: 1inch
           version: 2
@@ -142,6 +145,7 @@ models:
       - *tx_to
       - *trace_address
       - *evt_index
+      - *block_month
 
   - name: oneinch_v3_ethereum_trades
     meta:
@@ -162,7 +166,7 @@ models:
             - tx_hash
             - evt_index
             - trace_address
-      - check_dex_aggregator_seed_legacy:
+      - check_dex_aggregator_seed:
           blockchain: ethereum
           project: 1inch
           version: 3
@@ -190,6 +194,7 @@ models:
       - *tx_to
       - *trace_address
       - *evt_index
+      - *block_month
 
   - name: oneinch_v4_ethereum_trades
     meta:
@@ -210,7 +215,7 @@ models:
             - tx_hash
             - evt_index
             - trace_address
-      - check_dex_aggregator_seed_legacy:
+      - check_dex_aggregator_seed:
           blockchain: ethereum
           project: 1inch
           version: 4
@@ -238,6 +243,7 @@ models:
       - *tx_to
       - *trace_address
       - *evt_index
+      - *block_month
 
   - name: oneinch_v5_ethereum_trades
     meta:
@@ -258,7 +264,7 @@ models:
             - tx_hash
             - evt_index
             - trace_address
-      - check_dex_aggregator_seed_legacy:
+      - check_dex_aggregator_seed:
           blockchain: ethereum
           project: 1inch
           version: 5
@@ -286,6 +292,7 @@ models:
       - *tx_to
       - *trace_address
       - *evt_index
+      - *block_month
 
   - name: oneinch_onesplit_ethereum_trades
     meta:
