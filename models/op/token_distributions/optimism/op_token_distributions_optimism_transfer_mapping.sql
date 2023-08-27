@@ -1,5 +1,6 @@
 {{ config(
     alias = alias('transfer_mapping'),
+    tags = ['dunesql'],
     partition_by = ['block_date'],
     materialized = 'incremental',
     file_format = 'delta',
@@ -9,8 +10,7 @@
                                 "project",
                                 "op_token_distributions",
                                 \'["msilb7", "chuxin"]\') }}'
-    ),
-    tags = ['dunesql']
+    )
 }}
 
 
