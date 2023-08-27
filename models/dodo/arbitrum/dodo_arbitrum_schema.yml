@@ -20,7 +20,6 @@ models:
             - version
             - tx_hash
             - evt_index
-            - trace_address
     columns:
       - &blockchain
         name: blockchain
@@ -85,9 +84,6 @@ models:
       - &tx_to
         name: tx_to
         description: "Address which received the trade"
-      - &trace_address
-        name: trace_address
-        description: ""
       - &evt_index
         name: evt_index
         description: "Index of the corresponding trade event"
@@ -111,16 +107,15 @@ models:
             - version
             - tx_hash
             - evt_index
-            - trace_address
-      - check_dex_seed_legacy:
+      - check_dex_seed:
           blockchain: arbitrum
           project: DODO
           version: 1
-      - check_dex_seed_legacy:
+      - check_dex_seed:
           blockchain: arbitrum
           project: DODO
           version: 2_dvm
-      - check_dex_seed_legacy:
+      - check_dex_seed:
           blockchain: arbitrum
           project: DODO
           version: 2_dsp
@@ -146,7 +141,6 @@ models:
       - *tx_hash
       - *tx_from
       - *tx_to
-      - *trace_address
       - *evt_index
 
   - name: dodo_aggregator_arbitrum_trades
@@ -169,9 +163,9 @@ models:
             - tx_hash
             - evt_index
             - trace_address
-      - check_dex_aggregator_seed_legacy:
+      - check_dex_aggregator_seed:
           blockchain: arbitrum
-          project: DODO
+          project: DODO X
           version: 0
     columns:
       - *blockchain
@@ -195,5 +189,6 @@ models:
       - *tx_hash
       - *tx_from
       - *tx_to
-      - *trace_address
+      - name: trace_address
+        description: "address of the trace within the call graph forest"
       - *evt_index

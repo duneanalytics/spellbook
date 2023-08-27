@@ -218,4 +218,27 @@ models:
         tests:
           - accepted_values:
               values: [ 'erc721', 'erc1155' ]
+  
+  - name: tokens_optimism_nft_generated
+    meta:
+      blockchain: optimism
+      sector: nft
+      contributors: msilb7
+    config:
+      tags: ['tokens', 'optimism', 'nft']
+    description: >
+        Selection of NFT token addresses identified from other contracts (i.e. factoriees)
+    columns:
+      - name: contract_address
+        description: "The contract address is the unique address of where the NFTs are stored on Optimism."
+        tests:
+          - unique
+      - name: name
+        description: "NFT Project name"
+      - name: symbol
+        description: "NFT Project symbol"
+      - name: royalty_pct
+        description: "Percent Royalty in decimal form (i.e. 0.01 = 1% royalty)"
+      - name: platform
+        description: "Where was the NFT minted"
 
