@@ -1,11 +1,11 @@
 {{ config(
     alias = alias('all_distributions_labels'),
+    tags = ['dunesql'],
     post_hook='{{ expose_spells(\'["optimism"]\',
                                 "project",
                                 "op_token_distributions",
                                 \'["msilb7"]\') }}'
-    ),
-    tags = ['dunesql']
+    )
 }}
 
 WITH all_labels AS (
