@@ -1,9 +1,8 @@
 {{ config(
         schema = 'op_retropgf_optimism'
-        , tags = ['dunesql']
         , alias = alias('round2_recipients')
         , materialized='table'
-        , tags=['static']
+        , tags=['static', 'dunesql']
   )
 }}
 
