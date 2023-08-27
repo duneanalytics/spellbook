@@ -4,7 +4,8 @@
                                 "project",
                                 "op_token_distributions",
                                 \'["msilb7"]\') }}'
-    )
+    ),
+    tags = ['dunesql']
 }}
 
 WITH all_labels AS (
