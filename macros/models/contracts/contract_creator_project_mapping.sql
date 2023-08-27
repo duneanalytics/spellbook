@@ -614,6 +614,7 @@ WHERE contract_order = 1
 
 SELECT u.*,
 
+  {% if is_incremental() %}
   CASE WHEN
     th.contract_address IS NULL -- did not exist
     -- check if a major field was updated
@@ -623,13 +624,19 @@ SELECT u.*,
     OR u.creator_address<>u.creator_address
     OR u.code_deploy_rank_by_chain<>u.code_deploy_rank_by_chain
     OR th.token_standard<>u.token_standard
-  THEN 1 ELSE 0 END AS is_updated_in_last_run
+  THEN 1 ELSE 0 END
+  {% else -%}
+  1
+  {% endif %}
+  AS is_updated_in_last_run
 
 FROM updated_data u
+{% if is_incremental() %}
 left join {{this}} th -- see if this was updated or not
   ON th.contract_address = u.contract_address
   AND th.blockchain = u.blockchain
   AND th.created_block_number = u.created_block_number
   AND th.created_time = u.created_time
+{% endif %}
 
 {% endmacro %}
