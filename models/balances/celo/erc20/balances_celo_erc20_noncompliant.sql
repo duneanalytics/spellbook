@@ -14,5 +14,6 @@
 }}
 
 select distinct token_address
-from {{ ref('balances_celo_erc20_latest') }}
-where amount < -0.001
+from {{ ref('balances_celo_erc20_hour') }}
+where recency_index = 1
+  and amount < -0.001
