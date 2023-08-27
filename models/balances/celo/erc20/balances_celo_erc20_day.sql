@@ -17,9 +17,13 @@
 with
 
 days as (
-    select *
-    from (select sequence(timestamp '2020-04-22', cast(date_trunc('day', now()) as timestamp), interval '1' day) as day) s
-      cross join unnest(day) as s(day)
+    select day
+    from (
+          values (
+            sequence(timestamp '2020-04-22', cast(date_trunc('day', now()) as timestamp), interval '1' day)
+          )
+        ) s(date_array)
+      cross join unnest(date_array) as d(day)
 ),
 
 daily_balances as (
@@ -31,14 +35,14 @@ daily_balances as (
       amount,
       block_month,
       block_day,
-      lead(day, 1, now()) over (partition by token_address, wallet_address order by block_day) AS next_day
+      lead(block_day, 1, now()) over (partition by token_address, wallet_address order by block_day) as next_day
     from {{ ref('transfers_celo_erc20_rolling_day') }}
 )
 
 select
   'celo' as blockchain,
   b.block_month,
-  b.block_day,
+  d.day as block_day,
   b.wallet_address,
   b.token_address,
   b.symbol,

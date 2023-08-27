@@ -14,5 +14,5 @@
 }}
 
 select distinct token_address
-from {{ ref('transfers_celo_erc20_rolling_day') }}
+from {{ ref('balances_celo_erc20_latest') }}
 where amount < -0.001

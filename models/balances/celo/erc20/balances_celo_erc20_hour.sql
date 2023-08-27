@@ -16,10 +16,17 @@
 
 with
 
+years as (
+    select year
+    from (values (sequence(timestamp '2020-01-01', cast(date_trunc('year', now()) as timestamp), interval '1' year))) s(year_array)
+      cross join unnest(year_array) as d(year)
+),
+
 hours as (
-    select *
-    from (select sequence(timestamp '2020-04-22', cast(date_trunc('hour', now()) as timestamp), interval '1' hour) as hour) s
-      cross join unnest(hour) as s(hour)
+    select date_add('hour', s.n, y.year) as hour
+    from years y
+      cross join unnest(sequence(0, 9000)) s(n)
+    where s.n <= date_diff('hour', y.year, y.year + interval '1' year)
 ),
 
 daily_balances as (
@@ -31,14 +38,14 @@ daily_balances as (
       amount,
       block_month,
       block_hour,
-      lead(hour, 1, now()) over (partition by token_address, wallet_address order by block_hour) AS next_hour
+      lead(block_hour, 1, now()) over (partition by token_address, wallet_address order by block_hour) AS next_hour
     from {{ ref('transfers_celo_erc20_rolling_hour') }}
 )
 
 select
   'celo' as blockchain,
   b.block_month,
-  b.block_hour,
+  h.hour as block_hour,
   b.wallet_address,
   b.token_address,
   b.symbol,
@@ -46,11 +53,11 @@ select
   b.amount,
   b.amount * p.price as amount_usd,
   row_number() over (partition by b.token_address, b.wallet_address order by b.block_hour desc) as recency_index
-from hours d
-  join daily_balances b on b.block_hour <= d.hour and d.hour < b.next_hour
+from hours h
+  join daily_balances b on b.block_hour <= h.hour and h.hour < b.next_hour
   left join {{ source('prices', 'usd') }} p
     on p.contract_address = b.token_address
-    and d.hour = p.minute
+    and h.hour = p.minute
     and p.blockchain = 'celo'
   -- Removes rebase tokens from balances
   --left join ref('tokens_celo_rebase') r on b.token_address = r.contract_address
