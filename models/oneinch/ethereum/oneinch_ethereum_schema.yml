@@ -1032,6 +1032,7 @@ models:
       - *tx_to
       - *trace_address
       - *evt_index
+      - *block_month
 
   - name: oneinch_ethereum_airdrop_claims
     meta:
