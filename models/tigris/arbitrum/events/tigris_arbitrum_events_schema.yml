@@ -425,6 +425,9 @@ models:
       - *collateral_asset
       - *options_period
       - *order_type
+      - &evt_join_index
+        name: evt_join_index
+        description: "Event Join Index for duplicate transaction"
 
   - name: tigris_arbitrum_events_options_limit_order
     meta:
@@ -533,6 +536,7 @@ models:
       - &fees
         name: fees
         description: "trading fees"
+      - *evt_join_index
 
   - name: tigris_arbitrum_events_options_fees_distributed
     meta:

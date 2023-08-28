@@ -128,8 +128,7 @@ close_position as (
     {{ ref('tigris_arbitrum_events_options_fees_distributed') }} f
         ON op.evt_block_time = f.evt_block_time
         AND op.evt_tx_hash = f.evt_tx_hash
-        AND (CASE WHEN op.evt_tx_hash = 0xf0a5193fc41599987645f183ae0c3a8311da02ebc9e4ee136edcfd4916133e78 THEN CAST(op.evt_index as double) ELSE 1 END) = 
-        AND (CASE WHEN f.evt_tx_hash = 0xf0a5193fc41599987645f183ae0c3a8311da02ebc9e4ee136edcfd4916133e78 THEN CAST(f.evt_index as double) + 2 ELSE 1 END )
+        AND op.evt_join_index = f.evt_join_index
         -- can't join on position id as position id isn't present in fees event so using this workaround 
         {% if is_incremental() %}
         AND f.evt_block_time >= date_trunc('day', now() - interval '7' day)
