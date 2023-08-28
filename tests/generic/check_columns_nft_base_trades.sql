@@ -21,5 +21,4 @@
         'sub_tx_trade_id':'uint256'
     } -%}
    {{ check_column_types_macro(model,column_types) }}
-
 {% endtest %}
