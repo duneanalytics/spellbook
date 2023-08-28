@@ -35,7 +35,7 @@ WITH erc721_trades AS (
                THEN 0x0d500b1d8e8ef31e21c99d1db9a6444d3adf1270
                ELSE erc20Token
           END AS currency_contract,
-          erc20TokenAmount AS amount_raw,
+          erc20TokenAmount AS fill_amount_raw,
           erc20Token as original_erc20_token
     FROM {{ source ('zeroex_polygon', 'ExchangeProxy_evt_ERC721OrderFilled') }}
     WHERE starts_with(cast(nonce as varchar),'{{magic_eden_nonce}}')
@@ -66,7 +66,7 @@ WITH erc721_trades AS (
                THEN 0x0d500b1d8e8ef31e21c99d1db9a6444d3adf1270
                ELSE erc20Token
           END AS currency_contract,
-          erc20FillAmount AS amount_raw,
+          erc20FillAmount AS fill_amount_raw,
           erc20Token as original_erc20_token
     FROM {{ source ('zeroex_polygon', 'ExchangeProxy_evt_ERC1155OrderFilled') }}
     WHERE starts_with(cast(nonce as varchar),'{{magic_eden_nonce}}')
@@ -130,8 +130,8 @@ WITH erc721_trades AS (
     ,erc20TokenAmount
     ,erc1155Token
     ,erc1155TokenId
-    ,sum(amount) filter (where recipient in ({{fee_address_1}}, {{fee_address_2}})) as platform_fee_amount_raw
-    ,sum(amount) filter (where recipient not in ({{fee_address_1}}, {{fee_address_2}})) as royalty_fee_amount_raw
+    ,coalesce(sum(amount) filter (where recipient in ({{fee_address_1}}, {{fee_address_2}}))), uint256 '0') as platform_fee_amount_raw
+    ,coalesce(sum(amount) filter (where recipient not in ({{fee_address_1}}, {{fee_address_2}})), uint256 '0') as royalty_fee_amount_raw
     from(
         select call_tx_hash
         ,from_hex(json_extract_scalar(sellOrder,'$.maker')) as maker
@@ -148,6 +148,7 @@ WITH erc721_trades AS (
 , trades as (
     select
     t1.*
+    ,t1.fill_amount_raw + platform_fee_amount_raw + royalty_fee_amount_raw as amount_raw
     ,f1.platform_fee_amount_raw
     ,f1.royalty_fee_amount_raw
     from erc721_trades t1
@@ -155,10 +156,11 @@ WITH erc721_trades AS (
     on t1.evt_tx_hash = f1.call_tx_hash
         and t1.nft_contract_address = f1.erc721Token
         and t1.token_id = f1.erc721TokenId
-        and t1.amount_raw = f1.erc20TokenAmount
+        and t1.fill_amount_raw = f1.erc20TokenAmount
     union all
     select
     t2.*
+    ,t2.fill_amount_raw + platform_fee_amount_raw + royalty_fee_amount_raw as amount_raw
     ,f2.platform_fee_amount_raw
     ,f2.royalty_fee_amount_raw
     from erc1155_trades t2
@@ -166,7 +168,7 @@ WITH erc721_trades AS (
     on t2.evt_tx_hash = f2.call_tx_hash
         and t2.nft_contract_address = f2.erc1155Token
         and t2.token_id = f2.erc1155TokenId
-        and t2.amount_raw = f2.erc20TokenAmount
+        and t2.fill_amount_raw = f2.erc20TokenAmount
 )
 
 
