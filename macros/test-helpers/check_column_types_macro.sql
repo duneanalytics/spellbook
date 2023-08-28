@@ -9,5 +9,5 @@ select * from {{model}} limit 1
   {% if not loop.last %}union all{% endif %}
   {% endfor -%}
 )
-select * from equality_checks where not contains(split(expected_type,'/'),expected_type)
+select * from equality_checks where not contains(split(expected_type,'/'),actual_type)
 {% endmacro %}
