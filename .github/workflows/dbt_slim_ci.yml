@@ -42,7 +42,7 @@ jobs:
             echo "TAG=,tag:legacy" >> $GITHUB_ENV
             echo "COMPILE_TAG=--select tag:legacy" >> $GITHUB_ENV
             echo "S3_LOCATION=manifest-spellbook" >> $GITHUB_ENV
-            echo 
+            echo
           else
             echo "Unknown engine: ${{ matrix.engine }}"
             exit 1
@@ -82,13 +82,13 @@ jobs:
           [[ -z "$test" ]] && { echo "Success: No models without a tag"; exit 0; } || { echo "Found models with no dunesql or legacy tag:"; echo "$test"; exit 1; }
 
       - name: dbt seed
-        run: "dbt seed $PROFILE --select state:modified$TAG --exclude tag:prod_exclude --state ."
+        run: "dbt seed $PROFILE --select state:modified$TAG --exclude tag:prod_exclude tag:remove --state ."
 
       - name: dbt run initial model(s)
-        run: "dbt -x run $PROFILE --select state:modified$TAG --exclude tag:prod_exclude --defer --state ."
+        run: "dbt -x run $PROFILE --select state:modified$TAG --exclude tag:prod_exclude tag:remove --defer --state ."
 
       - name: dbt test initial model(s)
-        run: "dbt test $PROFILE --select state:new$TAG state:modified$TAG --exclude tag:prod_exclude --defer --state ."
+        run: "dbt test $PROFILE --select state:new$TAG state:modified$TAG --exclude tag:prod_exclude tag:remove --defer --state ."
 
       - name: Set environment variable for incremental model count
         run: |
@@ -96,11 +96,11 @@ jobs:
 
       - name: dbt run incremental model(s) if applicable
         if: env.INC_MODEL_COUNT > 0
-        run: "dbt run $PROFILE --select state:modified,config.materialized:incremental$TAG --exclude tag:prod_exclude --defer --state ."
+        run: "dbt run $PROFILE --select state:modified,config.materialized:incremental$TAG --exclude tag:prod_exclude tag:remove --defer --state ."
 
       - name: dbt test incremental model(s) if applicable
         if: env.INC_MODEL_COUNT > 0
-        run: "dbt test $PROFILE --select state:modified,config.materialized:incremental$TAG --exclude tag:prod_exclude --defer --state ."
+        run: "dbt test $PROFILE --select state:modified,config.materialized:incremental$TAG --exclude tag:prod_exclude tag:remove --defer --state ."
 
       - name: Run DuneSQL Check
         if: matrix.engine != 'dunesql'
