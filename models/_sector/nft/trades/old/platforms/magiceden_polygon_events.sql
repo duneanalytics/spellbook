@@ -160,9 +160,9 @@ WITH erc721_trades AS (
     union all
     select
     t2.*
-    ,t2.fill_amount_raw + platform_fee_amount_raw + royalty_fee_amount_raw as amount_raw
-    ,f2.platform_fee_amount_raw
-    ,f2.royalty_fee_amount_raw
+    ,coalesce(t1.fill_amount_raw, uint256 '0') + coalesce(platform_fee_amount_raw, uint256 '0') + coalesce(royalty_fee_amount_raw, uint256 '0') as amount_raw
+    ,coalesce(platform_fee_amount_raw, uint256 '0') as  platform_fee_amount_raw
+    ,coalesce(royalty_fee_amount_raw, uint256 '0') as royalty_fee_amount_raw
     from erc1155_trades t2
     left join erc1155_fees f2
     on t2.evt_tx_hash = f2.call_tx_hash
