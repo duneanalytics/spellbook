@@ -97,8 +97,8 @@ WITH erc721_trades AS (
     ,erc20TokenAmount
     ,erc721Token
     ,erc721TokenId
-    ,coalesce(sum(amount) filter (where recipient in ({{fee_address_1}}, {{fee_address_2}})), uint256 '0') as platform_fee_amount_raw
-    ,coalesce(sum(amount) filter (where recipient not in ({{fee_address_1}}, {{fee_address_2}})), uint256 '0') as royalty_fee_amount_raw
+    ,sum(amount) filter (where recipient in ({{fee_address_1}}, {{fee_address_2}})) as platform_fee_amount_raw
+    ,sum(amount) filter (where recipient not in ({{fee_address_1}}, {{fee_address_2}})) as royalty_fee_amount_raw
     from(
         select call_tx_hash
         ,from_hex(json_extract_scalar(sellOrder,'$.maker')) as maker
@@ -130,8 +130,8 @@ WITH erc721_trades AS (
     ,erc20TokenAmount
     ,erc1155Token
     ,erc1155TokenId
-    ,coalesce(sum(amount) filter (where recipient in ({{fee_address_1}}, {{fee_address_2}})), uint256 '0') as platform_fee_amount_raw
-    ,coalesce(sum(amount) filter (where recipient not in ({{fee_address_1}}, {{fee_address_2}})), uint256 '0') as royalty_fee_amount_raw
+    ,sum(amount) filter (where recipient in ({{fee_address_1}}, {{fee_address_2}})) as platform_fee_amount_raw
+    ,sum(amount) filter (where recipient not in ({{fee_address_1}}, {{fee_address_2}})) as royalty_fee_amount_raw
     from(
         select call_tx_hash
         ,from_hex(json_extract_scalar(sellOrder,'$.maker')) as maker
@@ -148,9 +148,9 @@ WITH erc721_trades AS (
 , trades as (
     select
     t1.*
-    ,t1.fill_amount_raw + platform_fee_amount_raw + royalty_fee_amount_raw as amount_raw
-    ,f1.platform_fee_amount_raw
-    ,f1.royalty_fee_amount_raw
+    ,coalesce(t1.fill_amount_raw, uint256 '0') + coalesce(platform_fee_amount_raw, uint256 '0') + coalesce(royalty_fee_amount_raw, uint256 '0') as amount_raw
+    ,coalesce(platform_fee_amount_raw, uint256 '0') as  platform_fee_amount_raw
+    ,coalesce(royalty_fee_amount_raw, uint256 '0') as royalty_fee_amount_raw
     from erc721_trades t1
     left join erc721_fees f1
     on t1.evt_tx_hash = f1.call_tx_hash
