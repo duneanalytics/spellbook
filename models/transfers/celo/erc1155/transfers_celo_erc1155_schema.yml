@@ -18,6 +18,7 @@ models:
             - wallet_address
             - token_address
             - token_id
+            - amount
     columns:
       - &blockchain
         name: blockchain
