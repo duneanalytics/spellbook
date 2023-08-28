@@ -9,7 +9,6 @@ models:
     config:
       tags: ['table', 'wallet summary', 'mainnet', 'addresses_summary', 'optimism']
     description: "Table showing summary of an address on OP Mainnet"
-    tests:
     columns:
       - name: blockchain
         description: "Blockchain"
@@ -24,15 +23,15 @@ models:
       - name: first_function
         description: "first function called by the address"
       - name: last_active_time
-        description: "The block time on which the address made it's last OP Mainnet transaction" 
+        description: "The block time on which the address made it's last OP Mainnet transaction"
       - name: address_age
-        description: "Time period the address has been active for labelled" 
+        description: "Time period the address has been active for labelled"
       - name: recency_age
-        description: "Time period since the address was last active for labelled" 
+        description: "Time period since the address was last active for labelled"
       - name: address_age_in_days
-        description: "Time period in days the address has been active for" 
+        description: "Time period in days the address has been active for"
       - name: recency_in_days
-        description: "Time period in days since the address was last active" 
+        description: "Time period in days since the address was last active"
       - name: number_of_transactions
         description: "Number of OP Mainnet transactions made by address"
       - name: usage_frequency

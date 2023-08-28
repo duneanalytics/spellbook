@@ -27,6 +27,8 @@ def get_tables_from_manifest(manifest_path):
             elif 'dunesql' in node_data["tags"]:
                 row = f"{schema}, {name}, {path}, dunesql\n"
                 dunecount += 1
+            else:
+                row = f"{schema}, {name}, {path}, none\n"
             table_csv_str += row
 
     print(f"{legacy_count} legacy and {dunecount} dunesql models found")
