@@ -226,9 +226,7 @@ models:
       - &block_hash
         name: block_hash
         description: "Block Hash"
-      - &contract_address
-        name: contract_address
-        description: "Contract Address"
+      - *contract_address
       - &data
         name: data
         description: "Data"
@@ -483,4 +481,3 @@ models:
       - *operator_name
       - *token_amount
       - *usd_amount
-a
