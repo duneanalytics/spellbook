@@ -184,7 +184,7 @@ call_swap_without_event AS (
             t.block_time,
             c."from" AS user_address,
             0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2 AS tokenIn, -- WETH
-            t.value AS amountIn,
+            SUM(t.value) AS amountIn,
             MAX(t.trace_address) AS trace_address,
             CAST(-1 as integer) AS evt_index
         FROM no_event_call_transaction c
