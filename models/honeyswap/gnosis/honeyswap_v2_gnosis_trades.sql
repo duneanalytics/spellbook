@@ -35,9 +35,8 @@ WITH dexs AS
         {{ source('honeyswap_v2_gnosis', 'UniswapV2Pair_evt_Swap') }} t
     INNER JOIN {{ source('honeyswap_v2_gnosis', 'UniswapV2Factory_evt_PairCreated') }} f
         ON f.pair = t.contract_address
-    WHERE t.contract_address
     {% if is_incremental() %}
-    AND t.evt_block_time >= date_trunc('day', now() - interval '7' day)
+    WHERE t.evt_block_time >= date_trunc('day', now() - interval '7' day)
     {% endif %}
 )
 SELECT
