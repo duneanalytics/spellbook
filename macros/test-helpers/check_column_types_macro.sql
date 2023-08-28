@@ -4,7 +4,7 @@ select * from {{model}} limit 1
 )
 , equality_checks as (
   {%- for col, col_type in column_types.items() %}
-  select '{{col}}' column_name, {{col_type}} as expected_type, typeof({{col}}) as actual_type
+  select '{{col}}' column_name, '{{col_type}}' as expected_type, typeof({{col}}) as actual_type
   from test_sample
   {% if not loop.last %}union all{% endif %}
   {% endfor -%}
