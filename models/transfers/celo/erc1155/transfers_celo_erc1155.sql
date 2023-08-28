@@ -20,7 +20,7 @@ transfer_batch as (
     select
         t.to, t."from", t.contract_address, t.evt_block_time,
         t.evt_tx_hash, a.token_id, a.amount
-    from {{ source('erc1155_celo', 'evt_TransferBatch') }} t
+    from {{ source('erc1155_celo', 'evt_transferbatch') }} t
         cross join unnest(ids, "values") as a(token_id, amount)
 ),
 
@@ -34,7 +34,7 @@ sent_transfers as (
         id as token_id,
         cast(value as double) as amount,
         evt_tx_hash as tx_hash
-    from {{ source('erc1155_celo', 'evt_TransferSingle') }}
+    from {{ source('erc1155_celo', 'evt_transfersingle') }}
     where 1=1
         {% if is_incremental() %} -- this filter will only be applied on an incremental run
         and evt_block_time >= date_trunc('day', now() - interval '7' day)
@@ -66,7 +66,7 @@ received_transfers as (
         id as token_id,
         (-1) * cast(value as double) as amount,
         evt_tx_hash as tx_hash
-    from {{ source('erc1155_celo', 'evt_TransferSingle') }}
+    from {{ source('erc1155_celo', 'evt_transfersingle') }}
     where 1=1
         {% if is_incremental() %} -- this filter will only be applied on an incremental run
         and evt_block_time >= date_trunc('day', now() - interval '7' day)
