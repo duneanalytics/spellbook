@@ -424,9 +424,7 @@ models:
       Chainlink OCR Reward Event Transfers
     columns:
       - *blockchain
-      - &evt_block_time
-        name: evt_block_time
-        description: "Event Block Time"
+      - *evt_block_time
       - &admin_address
         name: admin_address
         description: "Admin Address"
