@@ -22,7 +22,7 @@ models:
             - evt_index
       - check_dex_seed:
           blockchain: gnosis
-          project: honeyswap_v2
+          project: honeyswap
           version: 2
     columns:
       - &blockchain
