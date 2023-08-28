@@ -6,7 +6,7 @@
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
-    unique_key = ['evt_block_time', 'evt_tx_hash', 'evt_index', 'version', 'protocol_version']
+    unique_key = ['evt_block_time', 'evt_tx_hash', 'evt_index']
     )
 }}
 
