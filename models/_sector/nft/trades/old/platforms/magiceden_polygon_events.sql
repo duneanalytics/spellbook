@@ -162,7 +162,7 @@ WITH erc721_trades AS (
     ,f2.platform_fee_amount_raw
     ,f2.royalty_fee_amount_raw
     from erc1155_trades t2
-    left join erc721_fees f2
+    left join erc1155_fees f2
     on t2.evt_tx_hash = f2.call_tx_hash
         and t2.nft_contract_address = f2.erc1155Token
         and t2.token_id = f2.erc1155TokenId
