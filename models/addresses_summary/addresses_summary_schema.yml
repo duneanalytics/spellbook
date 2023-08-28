@@ -9,13 +9,13 @@ models:
     config:
       tags: ['table', 'wallet summary', 'mainnet', 'addresses_summary', 'optimism']
     description: "Table showing summary of an address on OP Mainnet"
-    tests:
-      - unique
     columns:
       - name: blockchain
         description: "Blockchain"
       - name: address
         description: "Concerned OP Mainnet address"
+        tests:
+          - unique
       - name: first_active_time
         description: "The block time on which the address made it's first OP Mainnet transaction"
       - name: first_tx_hash
