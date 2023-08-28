@@ -160,7 +160,7 @@ WITH erc721_trades AS (
     union all
     select
     t2.*
-    ,coalesce(t1.fill_amount_raw, uint256 '0') + coalesce(platform_fee_amount_raw, uint256 '0') + coalesce(royalty_fee_amount_raw, uint256 '0') as amount_raw
+    ,coalesce(t2.fill_amount_raw, uint256 '0') + coalesce(platform_fee_amount_raw, uint256 '0') + coalesce(royalty_fee_amount_raw, uint256 '0') as amount_raw
     ,coalesce(platform_fee_amount_raw, uint256 '0') as  platform_fee_amount_raw
     ,coalesce(royalty_fee_amount_raw, uint256 '0') as royalty_fee_amount_raw
     from erc1155_trades t2
