@@ -2,7 +2,7 @@
     schema = 'paraswap_v4_ethereum',
     alias = alias('trades'),
     tags = ['dunesql'],
-    partition_by = ['block_date'],
+    partition_by = ['block_month'],
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
@@ -53,7 +53,7 @@ WITH dex_swap AS (
             END AS token_sold_address,
             contract_address AS project_contract_address,
             evt_tx_hash AS tx_hash, 
-            ARRAY[cast(-1 as bigint)] AS trace_address,
+            ARRAY[-1] AS trace_address,
             evt_index
         FROM {{ trade_table }} p 
         {% if is_incremental() %}
@@ -107,8 +107,8 @@ call_swap_without_event AS (
                 t.evt_block_time AS block_time,
                 t."from" AS user_address,
                 t.contract_address AS tokenIn,
-                try_cast(t.value AS decimal(38, 0)) AS amountIn,
-                ARRAY[cast(-1 as bigint)] AS trace_address,
+                t.value AS amountIn,
+                ARRAY[-1] AS trace_address,
                 t.evt_index,
                 row_number() over (partition by t.evt_tx_hash order by t.evt_index) as row_num
             FROM no_event_call_transaction c
@@ -135,8 +135,9 @@ call_swap_without_event AS (
             c."from" AS user_address,
             0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2 AS tokenIn, -- WETH
             sum(case
-                when t."from" = c."from" then try_cast(t.value AS decimal(38, 0))
-                else -1 * try_cast(t.value AS decimal(38, 0))
+                when t."from" = c."from" 
+                then t.value
+                else -1 * t.value
             end) AS amountIn,
             MAX(t.trace_address) AS trace_address,
             CAST(-1 as integer) AS evt_index
@@ -146,7 +147,7 @@ call_swap_without_event AS (
             AND (t."from" = c."from" or t."to" = c."from")
             AND t.block_number >= {{ trade_call_start_block_number }}
             AND t.call_type = 'call'
-            AND t.value > cast(0 as uint256)
+            AND t.value > uint256 '0'
             {% if is_incremental() %}
             AND t.block_time >= date_trunc('day', now() - interval '7' day)
             {% endif %}
@@ -172,8 +173,8 @@ call_swap_without_event AS (
                 t.evt_block_time AS block_time,
                 t."to" AS user_address,
                 t.contract_address AS tokenOut,
-                try_cast(t.value AS decimal(38, 0)) AS amountOut,
-                ARRAY[cast(-1 as bigint)] AS trace_address,
+                t.value AS amountOut,
+                ARRAY[-1] AS trace_address,
                 t.evt_index,
                 row_number() over (partition by t.evt_tx_hash order by t.evt_index) AS row_num
             FROM no_event_call_transaction c
@@ -198,7 +199,7 @@ call_swap_without_event AS (
             t.block_time,
             t."to" AS user_address,
             0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2 AS tokenOut, -- WETH
-            try_cast(t.value AS decimal(38, 0)) AS amountOut,
+            t.value AS amountOut,
             t.trace_address,
             CAST(-1 as integer) AS evt_index
         FROM no_event_call_transaction c
@@ -207,7 +208,7 @@ call_swap_without_event AS (
             AND t."to" = c."from"
             AND t.block_number >= {{ trade_call_start_block_number }}
             AND t.call_type = 'call'
-            AND t.value > cast(0 as uint256)
+            AND t.value > uint256 '0'
             {% if is_incremental() %}
             AND t.block_time >= date_trunc('day', now() - interval '7' day)
             {% endif %}
@@ -239,8 +240,8 @@ dexs AS (
         block_number,
         taker, 
         maker, 
-        try_cast(token_bought_amount_raw as decimal(38, 0)) as token_bought_amount_raw,
-        try_cast(token_sold_amount_raw as decimal(38, 0)) as token_sold_amount_raw,
+        token_bought_amount_raw,
+        token_sold_amount_raw,
         amount_usd,
         token_bought_address,
         token_sold_address,
@@ -273,7 +274,8 @@ dexs AS (
 SELECT 'ethereum' AS blockchain,
     'paraswap' AS project,
     '4' AS version,
-    try_cast(date_trunc('day', d.block_time) as date) as block_date,
+    cast(date_trunc('day', d.block_time) as date) as block_date,
+    cast(date_trunc('month', d.block_time) as date) as block_month,
     d.block_time,
     e1.symbol AS token_bought_symbol,
     e2.symbol AS token_sold_symbol,
@@ -283,8 +285,8 @@ SELECT 'ethereum' AS blockchain,
     END AS token_pair,
     d.token_bought_amount_raw / power(10, e1.decimals) AS token_bought_amount,
     d.token_sold_amount_raw / power(10, e2.decimals) AS token_sold_amount,
-    CAST(d.token_bought_amount_raw AS DECIMAL(38,0)) AS token_bought_amount_raw,
-    CAST(d.token_sold_amount_raw AS DECIMAL(38,0)) AS token_sold_amount_raw,
+    d.token_bought_amount_raw,
+    d.token_sold_amount_raw,
     coalesce(
         d.amount_usd
         ,(d.token_bought_amount_raw / power(10, p1.decimals)) * p1.price

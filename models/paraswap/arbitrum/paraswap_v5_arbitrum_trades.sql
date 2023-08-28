@@ -2,7 +2,7 @@
     schema = 'paraswap_v5_arbitrum',
     alias = alias('trades'),
     tags = ['dunesql'],
-    partition_by = ['block_date'],
+    partition_by = ['block_month'],
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
@@ -43,7 +43,7 @@ WITH dexs AS (
             END AS token_sold_address,
             contract_address AS project_contract_address,
             evt_tx_hash AS tx_hash, 
-            ARRAY[cast(-1 as bigint)] AS trace_address,
+            ARRAY[-1] AS trace_address,
             evt_index
         FROM {{ trade_table }} p 
         {% if is_incremental() %}
@@ -58,7 +58,8 @@ WITH dexs AS (
 SELECT 'arbitrum' AS blockchain,
     'paraswap' AS project,
     '5' AS version,
-    try_cast(try_cast(date_trunc('day', d.block_time) as date) as date) as block_date,
+    cast(date_trunc('day', d.block_time) as date) as block_date,
+    cast(date_trunc('month', d.block_time) as date) as block_month,
     d.block_time,
     e1.symbol AS token_bought_symbol,
     e2.symbol AS token_sold_symbol,
@@ -68,8 +69,8 @@ SELECT 'arbitrum' AS blockchain,
     END AS token_pair,
     d.token_bought_amount_raw / power(10, e1.decimals) AS token_bought_amount,
     d.token_sold_amount_raw / power(10, e2.decimals) AS token_sold_amount,
-    CAST(d.token_bought_amount_raw AS DECIMAL(38,0)) AS token_bought_amount_raw,
-    CAST(d.token_sold_amount_raw AS DECIMAL(38,0)) AS token_sold_amount_raw,
+    d.token_bought_amount_raw,
+    d.token_sold_amount_raw,
     coalesce(
         d.amount_usd
         ,(d.token_bought_amount_raw / power(10, p1.decimals)) * p1.price
