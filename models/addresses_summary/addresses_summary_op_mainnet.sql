@@ -62,10 +62,10 @@ SELECT
         WHEN (date_diff('day', min(fa.first_block_time), CAST(NOW() as timestamp))) != 0 AND COUNT(ot.hash) = 1 THEN 'One Time User'
         WHEN (date_diff('day', min(fa.first_block_time), CAST(NOW() as timestamp))) != 0 AND COUNT(ot.hash) != 1 THEN (
             CASE 
-                WHEN ((COUNT(ot.hash))/(date_diff('day', min(fa.first_block_time), CAST(NOW() as timestamp)))) >= 1 THEN 'Daily User'
-                WHEN ((COUNT(ot.hash))/(date_diff('day', min(fa.first_block_time), CAST(NOW() as timestamp)))) >= 0.14285714 AND ((COUNT(ot.hash))/(date_diff('day', min(fa.first_block_time), CAST(NOW() as timestamp)))) < 1 THEN 'Weekly User'
-                WHEN ((COUNT(ot.hash))/(date_diff('day', min(fa.first_block_time), CAST(NOW() as timestamp)))) >= 0.03333333 AND ((COUNT(ot.hash))/(date_diff('day', min(fa.first_block_time), CAST(NOW() as timestamp)))) < 0.14285714 THEN 'Monthly User'
-                WHEN ((COUNT(ot.hash))/(date_diff('day', min(fa.first_block_time), CAST(NOW() as timestamp)))) >= 0.00273973 AND ((COUNT(ot.hash))/(date_diff('day', min(fa.first_block_time), CAST(NOW() as timestamp)))) < 0.03333333 THEN 'Yearly User'
+                WHEN COUNT(ot.hash)/CAST(date_diff('day', min(fa.first_block_time), CAST(NOW() as timestamp)) as double) >= 1 THEN 'Daily User'
+                WHEN COUNT(ot.hash)/CAST(date_diff('day', min(fa.first_block_time), CAST(NOW() as timestamp)) as double) >= 0.14285714 AND COUNT(ot.hash)/CAST(date_diff('day', min(fa.first_block_time), CAST(NOW() as timestamp)) as double) < 1 THEN 'Weekly User'
+                WHEN COUNT(ot.hash)/CAST(date_diff('day', min(fa.first_block_time), CAST(NOW() as timestamp)) as double) >= 0.03333333 AND COUNT(ot.hash)/CAST(date_diff('day', min(fa.first_block_time), CAST(NOW() as timestamp)) as double) < 0.14285714 THEN 'Monthly User'
+                WHEN COUNT(ot.hash)/CAST(date_diff('day', min(fa.first_block_time), CAST(NOW() as timestamp)) as double) >= 0.00273973 AND COUNT(ot.hash)/CAST(date_diff('day', min(fa.first_block_time), CAST(NOW() as timestamp)) as double) < 0.03333333 THEN 'Yearly User'
                 ELSE 'Sparse Trader'
             END 
         )
@@ -159,10 +159,10 @@ SELECT
         WHEN (date_diff('day', min(fa.first_block_time), CAST(NOW() as timestamp))) != 0 AND COUNT(ot.hash) = 1 THEN 'One Time User'
         WHEN (date_diff('day', min(fa.first_block_time), CAST(NOW() as timestamp))) != 0 AND COUNT(ot.hash) != 1 THEN (
             CASE 
-                WHEN ((COUNT(ot.hash))/(date_diff('day', min(fa.first_block_time), CAST(NOW() as timestamp)))) >= 1 THEN 'Daily User'
-                WHEN ((COUNT(ot.hash))/(date_diff('day', min(fa.first_block_time), CAST(NOW() as timestamp)))) >= 0.14285714 AND ((COUNT(ot.hash))/(date_diff('day', min(fa.first_block_time), CAST(NOW() as timestamp)))) < 1 THEN 'Weekly User'
-                WHEN ((COUNT(ot.hash))/(date_diff('day', min(fa.first_block_time), CAST(NOW() as timestamp)))) >= 0.03333333 AND ((COUNT(ot.hash))/(date_diff('day', min(fa.first_block_time), CAST(NOW() as timestamp)))) < 0.14285714 THEN 'Monthly User'
-                WHEN ((COUNT(ot.hash))/(date_diff('day', min(fa.first_block_time), CAST(NOW() as timestamp)))) >= 0.00273973 AND ((COUNT(ot.hash))/(date_diff('day', min(fa.first_block_time), CAST(NOW() as timestamp)))) < 0.03333333 THEN 'Yearly User'
+                WHEN COUNT(ot.hash)/CAST(date_diff('day', min(fa.first_block_time), CAST(NOW() as timestamp)) as double) >= 1 THEN 'Daily User'
+                WHEN COUNT(ot.hash)/CAST(date_diff('day', min(fa.first_block_time), CAST(NOW() as timestamp)) as double) >= 0.14285714 AND COUNT(ot.hash)/CAST(date_diff('day', min(fa.first_block_time), CAST(NOW() as timestamp)) as double) < 1 THEN 'Weekly User'
+                WHEN COUNT(ot.hash)/CAST(date_diff('day', min(fa.first_block_time), CAST(NOW() as timestamp)) as double) >= 0.03333333 AND COUNT(ot.hash)/CAST(date_diff('day', min(fa.first_block_time), CAST(NOW() as timestamp)) as double) < 0.14285714 THEN 'Monthly User'
+                WHEN COUNT(ot.hash)/CAST(date_diff('day', min(fa.first_block_time), CAST(NOW() as timestamp)) as double) >= 0.00273973 AND COUNT(ot.hash)/CAST(date_diff('day', min(fa.first_block_time), CAST(NOW() as timestamp)) as double) < 0.03333333 THEN 'Yearly User'
                 ELSE 'Sparse Trader'
             END 
         )
