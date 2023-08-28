@@ -201,11 +201,11 @@ SELECT
   a.platform_fee_amount_raw,
   CAST(a.platform_fee_amount_raw / power(10, erc.decimals) AS double) AS platform_fee_amount,
   CAST(a.platform_fee_amount_raw / power(10, erc.decimals) * p.price AS double) AS platform_fee_amount_usd,
-  CAST(a.platform_fee_amount_raw / a.amount_raw * 100 as double) as platform_fee_percentage,
+  coalesce(try(CAST(a.platform_fee_amount_raw / a.amount_raw * 100 as double)), double '0.0') as platform_fee_percentage,
   CAST(a.royalty_fee_amount_raw AS uint256) AS royalty_fee_amount_raw,
   CAST(a.royalty_fee_amount_raw / power(10, erc.decimals) AS double) AS royalty_fee_amount,
   CAST(a.royalty_fee_amount_raw / power(10, erc.decimals) * p.price AS double) AS royalty_fee_amount_usd,
-  CAST(a.royalty_fee_amount_raw / a.amount_raw * 100 AS double) AS royalty_fee_percentage,
+  coalesce(try(CAST(a.royalty_fee_amount_raw / a.amount_raw * 100 AS double)), double '0.0') AS royalty_fee_percentage,
   CAST(NULL AS varbinary) AS royalty_fee_receive_address,
   CAST(NULL AS varchar) AS royalty_fee_currency_symbol,
   cast(a.evt_tx_hash as varchar) || '-' || cast(a.evt_type as varchar)  || '-' || cast(a.evt_index as varchar) ||  '-' || cast(a.token_id as varchar) AS unique_trade_id
