@@ -1,0 +1,67 @@
+version: 2
+
+models:
+  - name: mirror_optimism_edition_metadata
+    meta:
+      blockchain: optimism
+      project: zora
+      contributors: [msilb7]
+    config:
+      tags: ['optimism','zora','nft']
+    description: >
+       NFT editions minted on Zora on OP Mainnet
+    columns:
+      - &deployer_contract
+        name: deployer_contract
+      - &edition_address
+        name: edition_address
+        description: "Edition (token) Address"
+        tests:
+          - unique
+      - &created_tx_hash
+        name: created_tx_hash
+        description: "TX hash when created"
+      - &created_block_number
+        name: created_block_number
+        description: "Block Number when created"
+      - &created_block_time
+        name: created_block_time
+        description: "Block Time when created"
+      - &admin
+        name: admin
+      - &name
+        name: name
+      - &symbol
+        name: symbol
+      - &description
+        name: description
+      - &imageURI
+        name: imageURI
+      - &contentURI
+        name: contentURI
+      - &price
+        name: price
+      - &limit
+        name: limit
+      - &fundingRecipient
+        name: fundingRecipient
+      - &owner
+        name: owner
+      - &contractURI
+        name: contractURI
+      - &uri
+        name: uri
+      - &trustedForwarders
+        name: trustedForwarders
+      - &primarySaleRecipient
+        name: primarySaleRecipient
+      - &royaltyRecipient
+        name: royaltyRecipient
+      - &royalty_pct
+        name: royalty_pct
+      - &platformFee
+        name: platformFee
+      - &platformFeeRecipient
+        name: platformFeeRecipient
+      - &salt
+        name: salt

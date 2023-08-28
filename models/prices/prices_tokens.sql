@@ -4,7 +4,7 @@
         materialized='table',
         file_format = 'delta',
         tags = ['static', 'dunesql'],
-        post_hook = '{{ expose_spells(\'["ethereum", "solana", "arbitrum", "gnosis", "optimism", "bnb", "avalanche_c", "polygon", "fantom", "celo"]\',
+        post_hook = '{{ expose_spells(\'["ethereum", "solana", "arbitrum", "gnosis", "optimism", "bnb", "avalanche_c", "polygon", "fantom", "celo", "base"]\',
                                     "sector",
                                     "prices",
                                     \'["aalan3", "jeff-dude", "umer_h_adil", "0xBoxer", "rantum"]\') }}'
@@ -23,6 +23,7 @@ ref('prices_native_tokens')
 ,ref('prices_polygon_tokens')
 ,ref('prices_solana_tokens')
 ,ref('prices_celo_tokens')
+,ref('prices_base_tokens')
 ] %}
 
 

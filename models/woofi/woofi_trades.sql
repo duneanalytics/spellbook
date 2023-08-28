@@ -8,8 +8,8 @@
 }}
 
 {% set woofi_models = [
-'woofi_avalanche_c_trades'
-,'woofi_bnb_trades'
+ref('woofi_avalanche_c_trades')
+,ref('woofi_bnb_trades')
 ] %}
 
 
@@ -20,6 +20,7 @@ FROM (
         blockchain,
         project,
         version,
+        block_month,
         block_date,
         block_time,
         token_bought_symbol,
@@ -39,7 +40,7 @@ FROM (
         tx_from,
         tx_to,
         evt_index
-    FROM {{ ref(dex_model) }}
+    FROM {{ dex_model }}
     {% if not loop.last %}
     UNION ALL
     {% endif %}

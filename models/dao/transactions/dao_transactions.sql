@@ -2,7 +2,7 @@
     tags = ['dunesql'],
     alias = alias('transactions'),
     materialized = 'view',
-    post_hook='{{ expose_spells(\'["ethereum", "gnosis", "polygon"]\',
+    post_hook='{{ expose_spells(\'["ethereum", "gnosis", "polygon", "base"]\',
                                 "sector",
                                 "dao",
                                 \'["Henrystats"]\') }}')
@@ -16,6 +16,8 @@ ref('dao_transactions_ethereum_erc20')
 ,ref('dao_transactions_gnosis_eth')
 ,ref('dao_transactions_polygon_erc20')
 ,ref('dao_transactions_polygon_eth')
+,ref('dao_transactions_base_erc20')
+,ref('dao_transactions_base_eth')
 ] %}
 
 SELECT *

@@ -1,4 +1,5 @@
 {{ config(
+    tags=['dunesql', 'prod_exclude'],
     alias = alias('trades'),
     partition_by = ['block_date'],
     materialized = 'incremental',
@@ -11,6 +12,11 @@
                                 \'["justabi", "jeff-dude"]\') }}'
     )
 }}
+
+{#
+## model not yet migrated to dunesql syntax and excluded in prod on both engines due to complexity
+## needs refactoring to read from decoded tables
+ #}
 
 {% set project_start_date = '2021-04-28' %}
 

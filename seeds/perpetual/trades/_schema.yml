@@ -1,0 +1,16 @@
+version: 2
+
+seeds:
+   - name: perpetual_trades_seed
+     config:
+       tags: dunesql
+       column_types:
+         blockchain: varchar
+         block_date: date
+         underlying_asset: varchar
+         market: varchar
+         market_address: varbinary
+         trade: varchar
+         project: varchar
+         version: varchar
+         tx_hash: varbinary
