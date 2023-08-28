@@ -1,9 +1,9 @@
 {{ config(
 	tags=['legacy'],
-	
+
         alias = alias('op_mainnet', legacy_model=True)
         )
 }}
 
-SELECT 
+SELECT
     1 as dummmy
