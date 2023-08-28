@@ -23,7 +23,7 @@
         'royalty_fee_amount_raw':'uint256',
         'platform_fee_address':'varbinary',
         'royalty_fee_address':'varbinary',
-        'sub_tx_trade_id':'integer'
+        'sub_tx_trade_id':'integer/bigint'
     } -%}
    {{ check_column_types_macro(model,column_types) }}
 {% endtest %}
