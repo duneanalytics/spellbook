@@ -31,9 +31,9 @@ FROM (
                     WHEN EXISTS (SELECT 1 FROM {{ ref('nft_transfers') }} r WHERE t.hash = r.tx_hash AND t.block_number = r.block_number AND blockchain = 'optimism') THEN 1
                 ELSE 0 END) AS num_token_tfer_txs,
                 
-            0 /*SUM(CASE WHEN EXISTS (SELECT 1 FROM [[ ref('dex_trades') ]] r WHERE t.hash = r.tx_hash AND t.block_time = r.block_time AND blockchain = 'optimism') THEN 1 ELSE 0 END)*/ AS num_dex_trade_txs,
-            0 /*SUM(CASE WHEN EXISTS (SELECT 1 FROM [[ ref('perpetual_trades') ]] r WHERE t.hash = r.tx_hash AND t.block_time = r.block_time AND blockchain = 'optimism') THEN 1 ELSE 0 END)*/ AS num_perp_trade_txs,
-            0 /*SUM(CASE WHEN EXISTS (SELECT 1 FROM [[ ref('nft_trades') ]] r WHERE t.hash = r.tx_hash AND t.block_number = r.block_number AND blockchain = 'optimism') THEN 1 ELSE 0 END)*/ AS num_nft_trade_txs,
+            0 /*SUM(CASE WHEN EXISTS (SELECT 1 FROM [[ dex_trades ]] r WHERE t.hash = r.tx_hash AND t.block_time = r.block_time AND blockchain = 'optimism') THEN 1 ELSE 0 END)*/ AS num_dex_trade_txs,
+            0 /*SUM(CASE WHEN EXISTS (SELECT 1 FROM [[ perpetual_trades ]] r WHERE t.hash = r.tx_hash AND t.block_time = r.block_time AND blockchain = 'optimism') THEN 1 ELSE 0 END)*/ AS num_perp_trade_txs,
+            0 /*SUM(CASE WHEN EXISTS (SELECT 1 FROM [[ nft_trades ]] r WHERE t.hash = r.tx_hash AND t.block_number = r.block_number AND blockchain = 'optimism') THEN 1 ELSE 0 END)*/ AS num_nft_trade_txs,
         COUNT(*) AS num_txs, COUNT(DISTINCT "from") AS num_senders, COUNT(*)/COUNT(DISTINCT "from") AS txs_per_sender,
         
         cast(cast(COUNT(*) as double)/cast(COUNT(DISTINCT "from") as double) as double) / 
@@ -92,21 +92,22 @@ select
 
     from first_contracts
 
-  UNION ALL
+  -- remove bot types until upstream models are migrated
+  -- UNION ALL
 
-    SELECT
-    contract AS address,
-    'likely bot types' AS category,
-    CASE
-      WHEN pct_dex_trade_txs >= 0.5 THEN 'dex trade bot contract' 
-      WHEN pct_nft_trade_txs >= 0.5 THEN 'nft trade bot contract' 
-      WHEN pct_perp_trade_txs >= 0.5 THEN 'perp trade bot contract' 
-      WHEN pct_erc20_tfer_txs >= 0.5 THEN 'erc20 transfer bot contract' 
-      WHEN pct_nft_tfer_txs >= 0.5 THEN 'nft transfer bot contract' 
-      WHEN pct_token_tfer_txs >= 0.5 THEN 'other token transfer bot contract' 
-    ELSE 'non-token bot contract'
-    END AS name
+  --   SELECT
+  --   contract AS address,
+  --   'likely bot types' AS category,
+  --   CASE
+  --     WHEN pct_dex_trade_txs >= 0.5 THEN 'dex trade bot contract' 
+  --     WHEN pct_nft_trade_txs >= 0.5 THEN 'nft trade bot contract' 
+  --     WHEN pct_perp_trade_txs >= 0.5 THEN 'perp trade bot contract' 
+  --     WHEN pct_erc20_tfer_txs >= 0.5 THEN 'erc20 transfer bot contract' 
+  --     WHEN pct_nft_tfer_txs >= 0.5 THEN 'nft transfer bot contract' 
+  --     WHEN pct_token_tfer_txs >= 0.5 THEN 'other token transfer bot contract' 
+  --   ELSE 'non-token bot contract'
+  --   END AS name
 
-  from first_contracts
+  -- from first_contracts
 
     ) a
