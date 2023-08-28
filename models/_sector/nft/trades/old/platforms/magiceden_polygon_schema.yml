@@ -24,6 +24,7 @@ models:
           check_columns:
             - amount_raw
             - platform_fee_amount_raw
+            - royalty_fee_amount_raw
     columns:
       - &blockchain
         name: blockchain
