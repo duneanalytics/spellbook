@@ -227,9 +227,7 @@ models:
       - &block_hash
         name: block_hash
         description: "Block Hash"
-      - &contract_address
-        name: contract_address
-        description: "Contract Address"
+      - *contract_address
       - &data
         name: data
         description: "Data"
@@ -427,9 +425,7 @@ models:
       Chainlink OCR Reward Event Transfers
     columns:
       - *blockchain
-      - &evt_block_time
-        name: evt_block_time
-        description: "Event Block Time"
+      - *evt_block_time
       - &admin_address
         name: admin_address
         description: "Admin Address"
