@@ -1,5 +1,6 @@
 {{
   config(
+      tags=['dunesql'],
         schema = 'chain_info',
         alias = alias('chain_ids')
   )
@@ -9,13 +10,13 @@
 -- data pull: https://github.com/MSilb7/msilb7-crypto-queries/blob/main/dune_spell_utils/chain_ids/gt_chain_ids.ipynb
 
 SELECT
-`name` AS chain_name
-,`chain` AS chain_shortname
-,`nativeCurrency` AS native_currency_symbol
-,`chainId` AS chain_id
-,`networkId` AS network_id
-,`infoURL` AS info_url
-,`explorer` AS explorer
+"name" AS chain_name
+,"chain" AS chain_shortname
+,"nativeCurrency" AS native_currency_symbol
+,CAST("chainId" as UINT256) AS chain_id
+,CAST("networkId" as UINT256) AS network_id
+,"infoURL" AS info_url
+,"explorer" AS explorer
 FROM ( values
  ('Ethereum Mainnet'	,'ETH'	,'ETH'	,'1'	,'1'	,'https://ethereum.org'	,'https://etherscan.io')
 ,('Expanse Network'	,'EXP'	,'EXP'	,'2'	,'1'	,'https://expanse.tech'	,'')
@@ -629,4 +630,4 @@ FROM ( values
 ,('Molereum Network'	,'ETH'	,'MOLE'	,'6022140761023'	,'6022140761023'	,'https://github.com/Jdubedition/molereum'	,'')
 ,('Godwoken Testnet (V1)'	,'GWT'	,'CKB'	,'868455272153094'	,'868455272153094'	,'https://www.nervos.org'	,'https://v1.aggron.gwscan.com')
 
-) a (`name`,`chain`,`nativeCurrency`,`chainId`,`networkId`,`infoURL`,`explorer`)
+) a ("name", "chain", "nativeCurrency", "chainId", "networkId", "infoURL", "explorer")

@@ -294,7 +294,7 @@ SELECT * FROM liquidation
 SELECT 
     'ethereum' as blockchain, 
     'astaria' as project,
-    1 as version, 
+    '1' as version, 
     CAST(date_trunc('DAY', ae.evt_block_time) AS date) as block_date,
     CAST(date_trunc('MONTH', ae.evt_block_time) AS date) as block_month,
     ae.*, 

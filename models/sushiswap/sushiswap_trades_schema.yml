@@ -3,10 +3,10 @@ version: 2
 models:
   - name: sushiswap_trades
     meta:
-      blockchain: ethereum, fantom, avalanche_c, arbitrum, gnosis, polygon, bnb
+      blockchain: ethereum, fantom, avalanche_c, arbitrum, gnosis, polygon, bnb, base
       sector: dex
       project: sushiswap
-      contributors: jeff-dude, masquot, soispoke, augustog, hosuke, Henrystats, chrispearcx, codingsh
+      contributors: jeff-dude, masquot, soispoke, augustog, hosuke, Henrystats, chrispearcx, codingsh, wuligy
     config:
       tags: ['ethereum','sushiswap','trades', 'dex', 'jeff-dude','cross-chain']
     description: >
