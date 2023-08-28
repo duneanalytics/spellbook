@@ -5,7 +5,7 @@
     post_hook='{{ expose_spells(\'["bnb","optimism","polygon","arbitrum","avalanche_c","ethereum","fantom","gnosis"]\',
                             "project",
                             "chainlink",
-                            \'["msilb7","0xroll","linkpool_ryan","linkpool_jon]\') }}'
+                            \'["msilb7","0xroll","linkpool_ryan","linkpool_jon"]\') }}'
   )
 }}
 
