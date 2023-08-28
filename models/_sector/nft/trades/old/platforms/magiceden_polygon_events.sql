@@ -154,7 +154,7 @@ WITH erc721_trades AS (
     left join erc721_fees f1
     on t1.evt_tx_hash = f1.call_tx_hash
         and t1.nft_contract_address = f1.erc721Token
-        and t1.nft_token_id = f1.erc721TokenId
+        and t1.token_id = f1.erc721TokenId
         and t1.amount_raw = f1.erc20TokenAmount
     union all
     select
@@ -165,7 +165,7 @@ WITH erc721_trades AS (
     left join erc721_fees f2
     on t2.evt_tx_hash = f2.call_tx_hash
         and t2.nft_contract_address = f2.erc1155Token
-        and t2.nft_token_id = f2.erc1155TokenId
+        and t2.token_id = f2.erc1155TokenId
         and t2.amount_raw = f2.erc20TokenAmount
 )
 
