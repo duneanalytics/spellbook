@@ -10,9 +10,7 @@ models:
       tags: ['table', 'wallet summary', 'mainnet', 'addresses_summary', 'optimism']
     description: "Table showing summary of an address on OP Mainnet"
     tests:
-      - dbt_utils.unique_combination_of_columns:
-        combination_of_columns:
-          - address
+      - unique
     columns:
       - name: blockchain
         description: "Blockchain"
