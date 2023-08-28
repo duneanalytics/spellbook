@@ -121,7 +121,7 @@ SELECT
     'paraswap' as project,
     '5' as version,
     cast(date_trunc('day', dexs.block_time) as date) as block_date,
-    cast(date_trunc('month', d.block_time) as date) as block_month,
+    cast(date_trunc('month', dexs.block_time) as date) as block_month,
     dexs.block_time,
     erc20a.symbol as token_bought_symbol,
     erc20b.symbol as token_sold_symbol,
