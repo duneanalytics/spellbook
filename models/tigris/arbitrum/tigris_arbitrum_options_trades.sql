@@ -1,5 +1,5 @@
 {{ config(
-    tags=['dunesql'],
+    tags=['dunesql', 'prod_exclude'],
     schema = 'tigris_arbitrum',
     alias = alias('options_trades'),
     partition_by = ['block_month'],
