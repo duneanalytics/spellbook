@@ -1,0 +1,17 @@
+version: 2
+
+sources:
+  - name: manifold_ethereum
+    description: "Decoded events and function calls for Manifold on Ethereum"
+    freshness:
+      warn_after: { count: 12, period: hour }
+      error_after: { count: 24, period: hour }
+    tables:
+      - name: ERC721LazyClaim_evt_ClaimMint
+        loaded_at_field: evt_block_time
+      - name: ERC721LazyClaim_evt_ClaimMintBatch
+        loaded_at_field: evt_block_time
+      - name: ERC1155LazyClaim_evt_ClaimMint
+        loaded_at_field: evt_block_time
+      - name: ERC1155LazyClaim_evt_ClaimMintBatch
+        loaded_at_field: evt_block_time

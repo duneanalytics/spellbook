@@ -235,6 +235,11 @@ models:
       ethereum:
         +schema: blur_ethereum
 
+    manifold:
+      +schema: manifold
+      ethereum:
+        +schema: manifold_ethereum
+
     looksrare:
       +schema: looksrare
       ethereum:
