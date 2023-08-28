@@ -11,9 +11,9 @@
 
 {% set nft_start_date = "TIMESTAMP '2022-03-16'" %}
 {% set magic_eden_nonce = '10013141590000000000000000000000000000' %}
-{% set fee_address_1 = '0xCA9337244B5F04cB946391bC8B8A980e988f9A6A' %}
-{% set fee_address_2 = '0x1Eca4dD8EcB97b45054c81438f6f49D18Ce4F343' %}
-{% set zeroex_proxy = '0xDef1C0ded9bec7F1a1670819833240f027b25EfF' %}
+{% set fee_address_1 = '0xca9337244b5f04cb946391bc8b8a980e988f9a6a' %}
+{% set fee_address_2 = '0x1eca4dd8ecb97b45054c81438f6f49d18ce4f343' %}
+{% set zeroex_proxy = '0xdef1c0ded9bec7f1a1670819833240f027b25eff' %}
 
 
 WITH erc721_trades AS (
