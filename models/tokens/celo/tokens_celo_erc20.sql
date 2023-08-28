@@ -39,4 +39,4 @@ FROM (VALUES
         (0xed6961928066d3238134933ee9cdd510ff157a6e, 'cDOGE', 18),
         (0xef4229c8c3250c675f21bcefa42f58efbff6002a, 'USDC', 6),
         (0xf3608f846ca73147f08fde8d57f45e27ceea4d61, 'cMETA', 18)
-) AS temp_table (contract_address, symbol, decimals);
+) AS temp_table (contract_address, symbol, decimals)
