@@ -97,8 +97,8 @@ WITH erc721_trades AS (
     ,erc20TokenAmount
     ,erc721Token
     ,erc721TokenId
-    ,sum(amount) filter (where recipient in ({{fee_address_1}}, {{fee_address_2}})) as platform_fee_amount_raw
-    ,sum(amount) filter (where recipient not in ({{fee_address_1}}, {{fee_address_2}})) as royalty_fee_amount_raw
+    ,coalesce(sum(amount) filter (where recipient in ({{fee_address_1}}, {{fee_address_2}})), uint256 '0') as platform_fee_amount_raw
+    ,coalesce(sum(amount) filter (where recipient not in ({{fee_address_1}}, {{fee_address_2}})), uint256 '0') as royalty_fee_amount_raw
     from(
         select call_tx_hash
         ,from_hex(json_extract_scalar(sellOrder,'$.maker')) as maker
@@ -130,7 +130,7 @@ WITH erc721_trades AS (
     ,erc20TokenAmount
     ,erc1155Token
     ,erc1155TokenId
-    ,coalesce(sum(amount) filter (where recipient in ({{fee_address_1}}, {{fee_address_2}}))), uint256 '0') as platform_fee_amount_raw
+    ,coalesce(sum(amount) filter (where recipient in ({{fee_address_1}}, {{fee_address_2}})), uint256 '0') as platform_fee_amount_raw
     ,coalesce(sum(amount) filter (where recipient not in ({{fee_address_1}}, {{fee_address_2}})), uint256 '0') as royalty_fee_amount_raw
     from(
         select call_tx_hash
