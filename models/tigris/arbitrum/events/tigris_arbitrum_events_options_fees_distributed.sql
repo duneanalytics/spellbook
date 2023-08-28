@@ -1,12 +1,12 @@
 {{ config(
-    tags=['dunesql', 'prod_exclude'],
+    tags=['dunesql'],
     schema = 'tigris_arbitrum',
     alias = alias('options_fees_distributed'),
     partition_by = ['block_month'],
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
-    unique_key = ['evt_block_time', 'evt_tx_hash', 'version', 'protocol_version']
+    unique_key = ['evt_block_time', 'evt_tx_hash', 'evt_index', 'version', 'protocol_version']
     )
 }}
 

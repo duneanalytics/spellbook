@@ -520,6 +520,7 @@ models:
             - evt_tx_hash
             - version
             - protocol_version
+            - evt_index
     columns:
       - *day
       - *evt_block_time
