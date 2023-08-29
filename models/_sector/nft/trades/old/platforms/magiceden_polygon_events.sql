@@ -154,8 +154,8 @@ WITH erc721_trades AS (
         + coalesce(try_cast(platform_fee_amount_raw*(cast(fill_amount_raw as double)/cast(f1.erc20TokenAmount as double)) as uint256), uint256 '0')
         + coalesce(try_cast(royalty_fee_amount_raw*(cast(fill_amount_raw as double)/cast(f1.erc20TokenAmount as double)) as uint256), uint256 '0')
         as amount_raw
-    ,coalesce(cast(platform_fee_amount_raw*(fill_amount_raw/cast(f1.erc20TokenAmount as double)) as uint256), uint256 '0') as platform_fee_amount_raw
-    ,coalesce(cast(royalty_fee_amount_raw*(fill_amount_raw/cast(f1.erc20TokenAmount as double)) as uint256), uint256 '0')  as royalty_fee_amount_raw
+    ,coalesce(try_cast(platform_fee_amount_raw*(fill_amount_raw/cast(f1.erc20TokenAmount as double)) as uint256), uint256 '0') as platform_fee_amount_raw
+    ,coalesce(try_cast(royalty_fee_amount_raw*(fill_amount_raw/cast(f1.erc20TokenAmount as double)) as uint256), uint256 '0')  as royalty_fee_amount_raw
     from erc721_trades t1
     left join erc721_fees f1
     on t1.evt_tx_hash = f1.call_tx_hash
@@ -168,8 +168,8 @@ WITH erc721_trades AS (
         + coalesce(try_cast(platform_fee_amount_raw*(cast(fill_amount_raw as double)/cast(f2.erc20TokenAmount as double)) as uint256), uint256 '0')
         + coalesce(try_cast(royalty_fee_amount_raw*(cast(fill_amount_raw as double)/cast(f2.erc20TokenAmount as double)) as uint256), uint256 '0')
         as amount_raw
-    ,coalesce(cast(platform_fee_amount_raw*(fill_amount_raw/cast(f2.erc20TokenAmount as double)) as uint256), uint256 '0') as platform_fee_amount_raw
-    ,coalesce(cast(royalty_fee_amount_raw*(fill_amount_raw/cast(f2.erc20TokenAmount as double)) as uint256), uint256 '0')  as royalty_fee_amount_raw
+    ,coalesce(try_cast(platform_fee_amount_raw*(fill_amount_raw/cast(f2.erc20TokenAmount as double)) as uint256), uint256 '0') as platform_fee_amount_raw
+    ,coalesce(try_cast(royalty_fee_amount_raw*(fill_amount_raw/cast(f2.erc20TokenAmount as double)) as uint256), uint256 '0')  as royalty_fee_amount_raw
     from erc1155_trades t2
     left join erc1155_fees f2
     on t2.evt_tx_hash = f2.call_tx_hash
