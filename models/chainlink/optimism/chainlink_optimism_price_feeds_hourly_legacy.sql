@@ -1,6 +1,6 @@
 {{
   config(
-	tags=['legacy'],	
+	tags=['legacy', 'remove'],
     alias=alias('price_feeds_hourly', legacy_model=True),
     partition_by=['block_month'],
     materialized='incremental',
@@ -29,7 +29,7 @@ WITH gs AS (
         SELECT
             explode(
                 sequence(
-                    DATE_TRUNC('hour', 
+                    DATE_TRUNC('hour',
                     {% if not is_incremental() %}
                         '{{project_start_date}}'::date
                     {% endif %}

@@ -161,6 +161,7 @@ FROM
     ('gcr-global-coin-research', 'ethereum', 'GCR', 0x6307b25a665efc992ec1c1bc403c38f3ddd7c661, 4),
     ('gen-daostack', 'ethereum', 'GEN', 0x543ff227f64aa17ea132bf9886cab5db55dcaddf, 18),
     ('get-get-protocol', 'ethereum', 'GET', 0x8a854288a5976036a725879164ca3e91d30c6a1b, 18),
+    ('gho-gho', 'ethereum', 'GHO', 0x40d16fc0246ad3160ccc09b8d0d3a2cd28ae6c2f, 18),
     ('gno-gnosis', 'ethereum', 'GNO', 0x6810e776880c02933d47db1b9fc05908e5386b96, 18),
     ('gnt-golem', 'ethereum', 'GNT', 0xa74476443119a942de498590fe1f2454d7d4ac0d, 18),
     ('govi-govi', 'ethereum', 'GOVI', 0xeeaa40b28a2d1b0b08f6f97bb1dd4b75316c6107, 18),
