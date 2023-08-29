@@ -1,6 +1,7 @@
 {{
     config(
         alias = alias('likely_bot_labels'),
+        tags = ['dunesql'],
         post_hook='{{ expose_spells(\'["optimism"]\', 
         "sector", 
         "labels", 
