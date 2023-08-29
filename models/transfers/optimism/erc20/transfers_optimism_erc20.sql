@@ -64,6 +64,7 @@ weth_events as (
 
 SELECT
     'optimism' as blockchain, 
+    transfer_type,
     evt_tx_hash, 
     evt_index,
     evt_block_time,
@@ -77,6 +78,7 @@ UNION ALL
 
 SELECT 
     'optimism' as blockchain, 
+    transfer_type,
     evt_tx_hash, 
     evt_index,
     evt_block_time,
