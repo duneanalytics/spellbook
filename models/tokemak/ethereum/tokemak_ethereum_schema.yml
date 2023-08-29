@@ -82,6 +82,7 @@ models:
         description: "Tokemak reactor address"
         tests:
           - not_null
+          - unique
       - &underlyer_address
         name: underlyer_address
         description: "Underlying token address"
