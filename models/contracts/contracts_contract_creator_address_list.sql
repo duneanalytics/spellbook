@@ -1,6 +1,7 @@
 {{ 
   config(
     tags = ['dunesql','static'],
+    schema = 'contracts',
     alias = alias('contract_creator_address_list'),
     unique_key='creator_address',
     post_hook='{{ expose_spells(\'["ethereum", "optimism", "arbitrum", "avalanche_c", "polygon", "bnb", "gnosis", "fantom", "base", "goerli"]\',

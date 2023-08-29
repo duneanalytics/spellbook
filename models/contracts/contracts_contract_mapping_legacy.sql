@@ -1,6 +1,7 @@
  {{
   config(
 	tags=['legacy'],
+        schema = 'contracts',
         alias = alias('contract_mapping', legacy_model=True)
   )
 }}

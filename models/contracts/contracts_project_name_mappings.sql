@@ -1,6 +1,7 @@
 {{ 
   config(
     tags = ['dunesql','static'],
+    schema = 'contracts',
     alias = alias('project_name_mappings'),
     unique_key='dune_name',
     post_hook='{{ expose_spells(\'["ethereum", "optimism", "arbitrum", "avalanche_c", "polygon", "bnb", "gnosis", "fantom", "base", "goerli"]\',

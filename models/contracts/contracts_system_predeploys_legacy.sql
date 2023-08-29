@@ -1,6 +1,7 @@
  {{
   config(
-        alias = alias('system_predeploys',legacy_model=True),
+    schema = 'contracts',
+    alias = alias('system_predeploys',legacy_model=True),
 		tags = ['legacy']
   )
 }}
