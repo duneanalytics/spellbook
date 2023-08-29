@@ -151,8 +151,8 @@ WITH erc721_trades AS (
     select
     t1.*
     ,coalesce(t1.fill_amount_raw, uint256 '0')
-        + coalesce(cast(platform_fee_amount_raw*(fill_amount_raw/cast(f1.erc20TokenAmount as double)) as uint256), uint256 '0')
-        + coalesce(cast(royalty_fee_amount_raw*(fill_amount_raw/cast(f1.erc20TokenAmount as double)) as uint256), uint256 '0')
+        + coalesce(try_cast(platform_fee_amount_raw*(cast(fill_amount_raw as double)/cast(f1.erc20TokenAmount as double)) as uint256), uint256 '0')
+        + coalesce(try_cast(royalty_fee_amount_raw*(cast(fill_amount_raw as double)/cast(f1.erc20TokenAmount as double)) as uint256), uint256 '0')
         as amount_raw
     ,coalesce(cast(platform_fee_amount_raw*(fill_amount_raw/cast(f1.erc20TokenAmount as double)) as uint256), uint256 '0') as platform_fee_amount_raw
     ,coalesce(cast(royalty_fee_amount_raw*(fill_amount_raw/cast(f1.erc20TokenAmount as double)) as uint256), uint256 '0')  as royalty_fee_amount_raw
@@ -165,8 +165,8 @@ WITH erc721_trades AS (
     select
     t2.*
     ,coalesce(t2.fill_amount_raw, uint256 '0')
-        + coalesce(cast(platform_fee_amount_raw*(fill_amount_raw/cast(f2.erc20TokenAmount as double)) as uint256), uint256 '0')
-        + coalesce(cast(royalty_fee_amount_raw*(fill_amount_raw/cast(f2.erc20TokenAmount as double)) as uint256), uint256 '0')
+        + coalesce(try_cast(platform_fee_amount_raw*(cast(fill_amount_raw as double)/cast(f2.erc20TokenAmount as double)) as uint256), uint256 '0')
+        + coalesce(try_cast(royalty_fee_amount_raw*(cast(fill_amount_raw as double)/cast(f2.erc20TokenAmount as double)) as uint256), uint256 '0')
         as amount_raw
     ,coalesce(cast(platform_fee_amount_raw*(fill_amount_raw/cast(f2.erc20TokenAmount as double)) as uint256), uint256 '0') as platform_fee_amount_raw
     ,coalesce(cast(royalty_fee_amount_raw*(fill_amount_raw/cast(f2.erc20TokenAmount as double)) as uint256), uint256 '0')  as royalty_fee_amount_raw
