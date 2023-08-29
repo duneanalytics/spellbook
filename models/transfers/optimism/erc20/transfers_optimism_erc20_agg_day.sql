@@ -10,7 +10,7 @@
 
 select
     tr.blockchain,
-    date_trunc('day', tr.evt_block_time) as day,
+    CAST(date_trunc('day', tr.evt_block_time) as date) as day,
     tr.wallet_address,
     tr.token_address,
     t.symbol,
