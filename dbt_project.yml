@@ -589,7 +589,10 @@ models:
         +schema: tokens_base
         +materialized: table
         +file_format: delta
-
+      celo:
+        +schema: tokens_celo
+        +materialized: table
+        +file_format: delta
 
     solana_utils:
       +schema: solana_utils
