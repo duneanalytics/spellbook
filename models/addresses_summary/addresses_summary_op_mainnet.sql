@@ -118,7 +118,7 @@ LEFT JOIN (
         SUM(token_amount) as token_amount,
         receiver
     FROM 
-    {{ ref('bridge_optimism_standard_bridge_flows') }} bf 
+    {{ ref('optimism_standard_bridge_flows') }} bf 
     WHERE destination_chain_name = 'Optimism'
     AND token_symbol = 'ETH'
     GROUP BY 2 
@@ -219,7 +219,7 @@ LEFT JOIN (
         SUM(token_amount) as token_amount,
         receiver
     FROM 
-    {{ ref('bridge_optimism_standard_bridge_flows') }} bf 
+    {{ ref('optimism_standard_bridge_flows') }} bf 
     WHERE destination_chain_name = 'Optimism'
     AND token_symbol = 'ETH'
     GROUP BY 2 
