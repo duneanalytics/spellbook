@@ -1,0 +1,44 @@
+version: 2
+
+models:
+  - name: transfers_optimism_erc20
+    meta:
+      blockchain: optimism
+      sector: transfers
+      project: erc20
+      contributors: soispoke, dot2dotseurat, tschubotz, Henrystats
+    config:
+      tags: ['transfers', 'optimism', 'erc20']
+    description: "ERC20 Token Transfers on optimism. This table is updated every 30 minutes."
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - transfer_type
+            - wallet_address
+            - evt_tx_hash
+            - evt_index
+    columns:
+      - &blockchain
+        name: blockchain
+        description: "Blockchain"
+      - &transfer_type
+        name: transfer_type
+        description: "Transfer type needed for unique test"
+      - &wallet_address
+        name: wallet_address
+        description: "Wallet address of sender or receiver. If amount is negative, wallet address is the sender's."
+      - &token_address
+        name: token_address
+        description: "Contract address for token"
+      - &evt_block_time
+        name: evt_block_time
+        description: "Timestamp for block event time in UTC"
+      - &evt_tx_hash
+        name: evt_tx_hash
+        description: "Event transaction hash"
+      - &evt_index
+        name: evt_index
+        description: "Event index"
+      - &amount_raw
+        name: amount_raw
+        description: "Raw amount of ERC20 token held *before* taking into account token decimals"
