@@ -22,7 +22,7 @@ with attestations as (
 SELECT 
     nm.block_date, nm.recipient as submitter_address, nm.issuer
     , trim(nm.val_string) AS recipient_name, trim(ca.val_string) AS recipient_category
-    , cast( regexp_replace(aw.val_string, '[^0-9\\.]+', '') AS uint256 ) AS award_amount
+    , cast( regexp_replace(aw.val_string, '[^0-9\\.]+', '') AS double ) AS award_amount
     , {{op_token}} AS award_token
     
     FROM (SELECT * FROM attestations where key_mapped = 'retropgf.round-2.name') nm
