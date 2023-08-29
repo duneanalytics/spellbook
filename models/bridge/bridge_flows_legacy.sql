@@ -15,7 +15,7 @@
 ] %}
 
 {% set native_bridge_flows_models = [
-    ref('optimism_standard_bridge_flows_legacy')
+    ref('bridge_optimism_standard_bridge_flows_legacy')
 ] %}
 
 WITH bridge_protocols AS (

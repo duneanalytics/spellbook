@@ -1,7 +1,7 @@
 version: 2
 
 models:
-  - name: optimism_standard_bridge_flows
+  - name: bridge_optimism_standard_bridge_flows
     meta:
       project: optimism
       contributors: msilb7, soispoke

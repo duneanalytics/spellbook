@@ -76,7 +76,7 @@ SELECT
     MIN_BY(ot.to, ot.block_number) as first_to_address,
     MAX_BY(cm.contract_project, ot.block_number) as last_to_project, 
     MAX_BY(ot.to, ot.block_number) as last_to_address,
-    SUM(bf.token_amount) as total_bridged_eth
+    bf.token_amount as total_bridged_eth
 FROM 
 weekly_active_addresses wd 
 INNER JOIN (
@@ -112,13 +112,19 @@ INNER JOIN
     ON wd.address = fa.address
 LEFT JOIN 
 {{ ref('contracts_optimism_contract_mapping') }} cm 
-    ON ot."to" = cm.contract_address 
-LEFT JOIN 
-{{ ref('optimism_standard_bridge_flows') }} bf 
+    ON ot."to" = cm.contract_address  
+LEFT JOIN (
+    SELECT 
+        SUM(token_amount) as token_amount,
+        receiver
+    FROM 
+    {{ ref('bridge_optimism_standard_bridge_flows') }} bf 
+    WHERE destination_chain_name = 'Optimism'
+    AND token_symbol = 'ETH'
+    GROUP BY 2 
+) bf
     ON wd.address = bf.receiver
-    AND bf.destination_chain_name = 'Optimism'
-    AND bf.token_symbol = 'ETH'
-GROUP BY 1, 2, 3, 4, 5 
+GROUP BY 1, 2, 3, 4, 5, 19 
 
 {% else %}
 
@@ -173,7 +179,7 @@ SELECT
     MIN_BY(ot.to, ot.block_number) as first_to_address,
     MAX_BY(cm.contract_project, ot.block_number) as last_to_project, 
     MAX_BY(ot.to, ot.block_number) as last_to_address,
-    SUM(bf.token_amount) as total_bridged_eth
+    bf.token_amount as total_bridged_eth
 FROM 
 (
         SELECT
@@ -208,11 +214,17 @@ INNER JOIN
 LEFT JOIN 
 {{ ref('contracts_optimism_contract_mapping') }} cm 
     ON ot."to" = cm.contract_address
-LEFT JOIN 
-{{ ref('optimism_standard_bridge_flows') }} bf 
+LEFT JOIN (
+    SELECT 
+        SUM(token_amount) as token_amount,
+        receiver
+    FROM 
+    {{ ref('bridge_optimism_standard_bridge_flows') }} bf 
+    WHERE destination_chain_name = 'Optimism'
+    AND token_symbol = 'ETH'
+    GROUP BY 2 
+) bf
     ON ot."from" = bf.receiver
-    AND bf.destination_chain_name = 'Optimism'
-    AND bf.token_symbol = 'ETH'
-GROUP BY 1, 2, 3, 4, 5 
+GROUP BY 1, 2, 3, 4, 5, 19 
 
 {% endif %}
