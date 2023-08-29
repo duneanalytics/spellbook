@@ -80,17 +80,17 @@ WITH erc721_trades AS (
 
 ,erc721_fees as (
 
-    WITH sell_orders as (
-    select call_tx_hash, sellOrder from {{ source('zeroex_polygon','ExchangeProxy_call_buyERC721') }}
+    WITH orders as (
+    select call_tx_hash, sellOrder as order_data from {{ source('zeroex_polygon','ExchangeProxy_call_buyERC721') }}
     union all
-    select call_tx_hash, sellOrder from {{ source('zeroex_polygon','ExchangeProxy_call_sellERC721') }}
+    select call_tx_hash, buyOrder as order_data from {{ source('zeroex_polygon','ExchangeProxy_call_sellERC721') }}
     union all
     select * from (
         select
         call_tx_hash
-        ,sellOrder
+        ,order_data
         from {{ source('zeroex_polygon','ExchangeProxy_call_batchBuyERC721s') }}
-        cross join unnest(sellOrders) as foo(sellOrder)
+        cross join unnest(sellOrders) as foo(order_data)
         )
     )
     select
@@ -103,29 +103,29 @@ WITH erc721_trades AS (
     ,sum(amount) filter (where recipient not in ({{fee_address_1}}, {{fee_address_2}})) as royalty_fee_amount_raw
     from(
         select call_tx_hash
-        ,from_hex(json_extract_scalar(sellOrder,'$.maker')) as maker
-        ,cast(json_extract_scalar(sellOrder,'$.erc20TokenAmount') as uint256) as erc20TokenAmount
-        ,from_hex(json_extract_scalar(sellOrder,'$.erc721Token')) as erc721Token
-        ,cast(json_extract_scalar(sellOrder,'$.erc721TokenId')as uint256) as erc721TokenId
+        ,from_hex(json_extract_scalar(order_data,'$.maker')) as maker
+        ,cast(json_extract_scalar(order_data,'$.erc20TokenAmount') as uint256) as erc20TokenAmount
+        ,from_hex(json_extract_scalar(order_data,'$.erc721Token')) as erc721Token
+        ,cast(json_extract_scalar(order_data,'$.erc721TokenId')as uint256) as erc721TokenId
         ,from_hex(json_extract_scalar(fee_info,'$.recipient')) as recipient
         ,cast(json_extract_scalar(fee_info,'$.amount') as uint256) as amount
         from sell_orders
-        cross join unnest(cast(json_extract(sellOrder,'$.fees') as array<varchar>)) as foo(fee_info)
+        cross join unnest(cast(json_extract(order_data,'$.fees') as array<varchar>)) as foo(fee_info)
     )
     group by 1,2,3,4,5
 )
 ,erc1155_fees as (
     WITH sell_orders as (
-    select call_tx_hash, sellOrder from {{ source('zeroex_polygon','ExchangeProxy_call_buyERC1155') }}
+    select call_tx_hash, sellOrder as order_data from {{ source('zeroex_polygon','ExchangeProxy_call_buyERC1155') }}
     union all
-    select call_tx_hash, sellOrder from {{ source('zeroex_polygon','ExchangeProxy_call_sellERC1155') }}
+    select call_tx_hash, buyOrder as order_data from {{ source('zeroex_polygon','ExchangeProxy_call_sellERC1155') }}
     union all
     select * from (
         select
         call_tx_hash
-        ,sellOrder
+        ,order_data
         from {{ source('zeroex_polygon','ExchangeProxy_call_batchBuyERC1155s') }}
-        cross join unnest(sellOrders) as foo(sellOrder)
+        cross join unnest(sellOrders) as foo(order_data)
         )
     )
     select
@@ -138,14 +138,14 @@ WITH erc721_trades AS (
     ,sum(amount) filter (where recipient not in ({{fee_address_1}}, {{fee_address_2}})) as royalty_fee_amount_raw
     from(
         select call_tx_hash
-        ,from_hex(json_extract_scalar(sellOrder,'$.maker')) as maker
-        ,cast(json_extract_scalar(sellOrder,'$.erc20TokenAmount') as uint256) as erc20TokenAmount
-        ,from_hex(json_extract_scalar(sellOrder,'$.erc1155Token')) as erc1155Token
-        ,cast(json_extract_scalar(sellOrder,'$.erc1155TokenId')as uint256) as erc1155TokenId
+        ,from_hex(json_extract_scalar(order_data,'$.maker')) as maker
+        ,cast(json_extract_scalar(order_data,'$.erc20TokenAmount') as uint256) as erc20TokenAmount
+        ,from_hex(json_extract_scalar(order_data,'$.erc1155Token')) as erc1155Token
+        ,cast(json_extract_scalar(order_data,'$.erc1155TokenId')as uint256) as erc1155TokenId
         ,from_hex(json_extract_scalar(fee_info,'$.recipient')) as recipient
         ,cast(json_extract_scalar(fee_info,'$.amount') as uint256) as amount
         from sell_orders
-        cross join unnest(cast(json_extract(sellOrder,'$.fees') as array<varchar>)) as foo(fee_info)
+        cross join unnest(cast(json_extract(order_data,'$.fees') as array<varchar>)) as foo(fee_info)
     )
     group by 1,2,3,4,5
 )
