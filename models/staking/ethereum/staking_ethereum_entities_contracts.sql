@@ -32,7 +32,7 @@ WITH contracts AS (
     )
 
 SELECT address
-, entity AS name
+, entity
 , CONCAT(entity, ' ', CAST(ROW_NUMBER() OVER (PARTITION BY entity ORDER BY first_used) AS VARCHAR)) AS entity_unique_name
 , category AS category
 FROM (
