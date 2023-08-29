@@ -133,7 +133,7 @@ kyberswap_dex AS (
         ,''                                                                AS trace_address
         ,evt_index
         
-    FROM {{ source('kyberswap_optimism', 'MetaAggregationRouter_evt_Swapped') }}
+    FROM {{ source('kyber_optimism', 'MetaAggregationRouterV2_evt_Swapped') }}
     WHERE
         {% if is_incremental() %}
         evt_block_time >= date_trunc("day", now() - interval '1 week')
