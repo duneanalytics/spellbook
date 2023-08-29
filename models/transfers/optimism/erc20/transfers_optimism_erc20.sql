@@ -62,8 +62,10 @@ weth_events as (
         {{ source('weth_optimism', 'weth9_evt_withdrawal') }}
 )
 
-SELECT 'optimism' as blockchain, * FROM erc20_transfers
+SELECT *, 'optimism' as blockchain
+FROM erc20_transfers
 
 UNION ALL 
 
-SELECT 'optimism' as blockchain, * FROM weth_events
+SELECT *, 'optimism' as blockchain
+FROM weth_events
