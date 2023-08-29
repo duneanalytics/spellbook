@@ -109,13 +109,13 @@ WITH erc721_trades AS (
         ,cast(json_extract_scalar(order_data,'$.erc721TokenId')as uint256) as erc721TokenId
         ,from_hex(json_extract_scalar(fee_info,'$.recipient')) as recipient
         ,cast(json_extract_scalar(fee_info,'$.amount') as uint256) as amount
-        from sell_orders
+        from orders
         cross join unnest(cast(json_extract(order_data,'$.fees') as array<varchar>)) as foo(fee_info)
     )
     group by 1,2,3,4,5
 )
 ,erc1155_fees as (
-    WITH sell_orders as (
+    WITH orders as (
     select call_tx_hash, sellOrder as order_data from {{ source('zeroex_polygon','ExchangeProxy_call_buyERC1155') }}
     union all
     select call_tx_hash, buyOrder as order_data from {{ source('zeroex_polygon','ExchangeProxy_call_sellERC1155') }}
@@ -144,7 +144,7 @@ WITH erc721_trades AS (
         ,cast(json_extract_scalar(order_data,'$.erc1155TokenId')as uint256) as erc1155TokenId
         ,from_hex(json_extract_scalar(fee_info,'$.recipient')) as recipient
         ,cast(json_extract_scalar(fee_info,'$.amount') as uint256) as amount
-        from sell_orders
+        from orders
         cross join unnest(cast(json_extract(order_data,'$.fees') as array<varchar>)) as foo(fee_info)
     )
     group by 1,2,3,4,5
