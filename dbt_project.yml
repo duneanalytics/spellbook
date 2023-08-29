@@ -474,6 +474,8 @@ models:
         +schema: seaport_avalanche_c
       polygon:
         +schema: seaport_polygon
+      base:
+        +schema: seaport_base
 
     balances:
       +schema: balances
