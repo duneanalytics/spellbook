@@ -479,6 +479,8 @@ models:
       +schema: balances
       ethereum:
         +schema: balances_ethereum
+      bitcoin:
+        +schema: balances_bitcoin
 
     dodo:
       +schema: dodo
@@ -629,6 +631,8 @@ models:
         +schema: transfers_base
       celo:
         +schema: transfers_celo
+      bitcoin:
+        +schema: transfers_bitcoin
 
     sudoswap:
       +schema: sudoswap

@@ -1,5 +1,6 @@
 {{ config(
         alias = alias('satoshi_agg_day'),
+        tags = ['dunesql'],
         materialized ='incremental',
         file_format ='delta',
         incremental_strategy='merge',

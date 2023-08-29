@@ -1,5 +1,6 @@
 {{ config(
         alias = alias('satoshi_day'),
+        tags = ['dunesql'],
         post_hook='{{ expose_spells_hide_trino(\'["bitcoin"]\',
                                             "sector",
                                             "balances",

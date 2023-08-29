@@ -1,4 +1,5 @@
 {{ config(materialized='view', alias = alias('satoshi'),
+        tags = ['dunesql'],
         post_hook='{{ expose_spells(\'["bitcoin"]\',
                                     "sector",
                                     "transfers",

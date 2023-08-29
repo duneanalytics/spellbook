@@ -1,5 +1,6 @@
 {{ config(
-        alias = alias('satoshi_rolling_day'))
+        alias = alias('satoshi_rolling_day'),
+        tags = ['dunesql'])
 }}
 
 select

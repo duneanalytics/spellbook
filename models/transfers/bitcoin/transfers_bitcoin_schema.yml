@@ -25,7 +25,8 @@ models:
         description: The block date
       - name: block_height
         description: The block number
-      - name: amount_raw
+      - &amount_raw
+        name: amount_raw
         description: "The number of Satoshis attached to this input or output"
       
   - name: transfers_bitcoin_satoshi_agg_day
@@ -42,11 +43,13 @@ models:
         name: day
         description: "UTC event block time truncated to the day mark."
       - *wallet_address
+      - *amount_raw
       - name: unique_transfer_id
         description: "Unique ID, used in order to apply the merge into incremental strategy"
         tests:
           - unique
-      - *amount_raw
+
+    
   
   - name: transfers_bitcoin_satoshi_rolling_day
     meta:
