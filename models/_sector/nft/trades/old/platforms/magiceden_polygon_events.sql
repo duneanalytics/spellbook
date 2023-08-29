@@ -145,6 +145,8 @@ WITH erc721_trades AS (
     )
     group by 1,2,3,4,5
 )
+-- we need to combine the trade and fee data but we also need to correct the fees
+-- if the fill_amount from the trade is different from the fill_amount in the fees
 , trades as (
     select
     t1.*
