@@ -83,8 +83,8 @@ SELECT
     end as token_pair
     ,cast(dexs.token_bought_amount_raw as double) / cast( power(10, erc20a.decimals) as double) AS token_bought_amount
     ,cast(dexs.token_sold_amount_raw as double) / cast( power(10, erc20b.decimals) as double) AS token_sold_amount
-    ,CAST(dexs.token_bought_amount_raw AS double) AS token_bought_amount_raw
-    ,CAST(dexs.token_sold_amount_raw AS double) AS token_sold_amount_raw
+    ,dexs.token_bought_amount_raw
+    ,dexs.token_sold_amount_raw
     ,coalesce(
         dexs.amount_usd
         ,(cast(dexs.token_bought_amount_raw as double) / cast(power(10, p_bought.decimals) as double) ) * p_bought.price
