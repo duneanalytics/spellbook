@@ -27,6 +27,7 @@ hours AS (
 ),
 
 hourly_balances as (
+    SELECT 
         blockchain, 
         hour, 
         wallet_address, 

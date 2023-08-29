@@ -26,6 +26,7 @@ days AS (
 ),
 
 daily_balances as (
+    SELECT
         blockchain, 
         day, 
         wallet_address, 
