@@ -1,6 +1,6 @@
 {{ config(
-	tags=['legacy'],
-	
+	tags=['legacy', 'remove'],
+
     alias = alias('userops', legacy_model=True),
     partition_by = ['block_time'],
     materialized = 'incremental',
@@ -29,7 +29,7 @@ with userop as(
     SELECT *
     FROM (
         {% for erc4337_model in erc4337_models %}
-        SELECT 
+        SELECT
             blockchain
             , version
             , block_time
@@ -48,16 +48,16 @@ with userop as(
         {% if not loop.last %}
         UNION ALL
         {% endif %}
-        {% endfor %} 
+        {% endfor %}
     )
 )
 , txs as (
-    select 
+    select
           hash as tx_hash
         , tx.from as tx_from
         , tx.to as tx_to
         , '{{gas_symbol}}' as gas_symbol
-        , ((cast(gas_used as double) * gas_price)+l1_fee) / 1e18 as tx_fee 
+        , ((cast(gas_used as double) * gas_price)+l1_fee) / 1e18 as tx_fee
     from {{ source('optimism', 'transactions') }} tx
     where hash in (
         select tx_hash from userop
@@ -68,7 +68,7 @@ with userop as(
     {% endif %}
 )
 , price as (
-    select symbol, decimals, minute, price  
+    select symbol, decimals, minute, price
     from {{source('prices','usd')}}
     where minute > timestamp  '{{deployed_date}}'
         and contract_address='{{wrapped_gas_address}}'
@@ -77,7 +77,7 @@ with userop as(
          and minute >= date_trunc("day", now() - interval '1 week')
         {% endif %}
 )
-select 
+select
       userop.blockchain
     , userop.version
     , userop.block_time
@@ -95,6 +95,6 @@ select
     , txs.tx_fee
     , txs.tx_fee * price.price as tx_fee_usd
     , userop.beneficiary
-from userop 
+from userop
 left join txs on userop.tx_hash = txs.tx_hash
 left join price on date_trunc('minute', userop.block_time) = price.minute
