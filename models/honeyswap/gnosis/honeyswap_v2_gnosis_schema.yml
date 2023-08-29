@@ -1,7 +1,7 @@
 version: 2
 
 models:
-  - name: honeyswap_gnosis_trades
+  - name: honeyswap_v2_gnosis_trades
     meta:
       blockchain: gnosis
       sector: dex

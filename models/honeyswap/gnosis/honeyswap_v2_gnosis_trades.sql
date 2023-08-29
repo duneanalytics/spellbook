@@ -1,5 +1,5 @@
 {{ config(tags=['dunesql'],
-    schema = 'honeyswap_gnosis',
+    schema = 'honeyswap_v2_gnosis',
     alias = alias('trades'),
     partition_by = ['block_month'],
     materialized = 'incremental',

@@ -1,5 +1,5 @@
 {{ config( 
-  schema = 'honeyswap_gnosis',
+  schema = 'honeyswap_v2_gnosis',
   alias = alias('trades', legacy_model=True),
   tags = ['legacy']
   )
