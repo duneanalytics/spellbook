@@ -1,7 +1,7 @@
 {{ config(
     alias = alias('entities_addresses'),
     tags = ['dunesql', 'static'],
-    unique_key = ['address']
+    unique_key = ['address'])
 }}
 
 SELECT address as address, entity as entity, entity_unique_name as entity_unique_name, category as category
