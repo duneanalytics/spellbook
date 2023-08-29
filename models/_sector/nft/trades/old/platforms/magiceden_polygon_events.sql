@@ -83,6 +83,8 @@ WITH erc721_trades AS (
     WITH sell_orders as (
     select call_tx_hash, sellOrder from {{ source('zeroex_polygon','ExchangeProxy_call_buyERC721') }}
     union all
+    select call_tx_hash, sellOrder from {{ source('zeroex_polygon','ExchangeProxy_call_sellERC721') }}
+    union all
     select * from (
         select
         call_tx_hash
@@ -115,6 +117,8 @@ WITH erc721_trades AS (
 ,erc1155_fees as (
     WITH sell_orders as (
     select call_tx_hash, sellOrder from {{ source('zeroex_polygon','ExchangeProxy_call_buyERC1155') }}
+    union all
+    select call_tx_hash, sellOrder from {{ source('zeroex_polygon','ExchangeProxy_call_sellERC1155') }}
     union all
     select * from (
         select
