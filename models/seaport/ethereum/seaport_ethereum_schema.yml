@@ -112,7 +112,7 @@ models:
       - check_seaport_seed_legacy:
           blockchain: ethereum
           project: seaport
-          version: v1        
+          version: v1
     columns:
       - &blockchain
         name: blockchain
@@ -269,7 +269,7 @@ models:
       - check_seaport_seed_legacy:
           blockchain: ethereum
           project: seaport
-          version: v1        
+          version: v1
     columns:
       - *blockchain
       - *project
@@ -443,7 +443,9 @@ models:
           combination_of_columns:
             - block_number
             - tx_hash
+            - evt_index
             - order_hash
+            - trace_side
             - trace_index
     columns:
       - name: blockchain

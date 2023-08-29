@@ -2,7 +2,7 @@
         tags = ['dunesql', 'prod_exclude'],
         schema = 'seaport_base',
         alias =alias('traces'),
-        unique_key = ['block_number', 'tx_hash', 'order_hash', 'trace_index'],
+        unique_key = ['block_number', 'tx_hash', 'evt_index', 'order_hash', 'trace_side', 'trace_index'],
         post_hook='{{ expose_spells(\'["base"]\',
                                 "project",
                                 "seaport",
