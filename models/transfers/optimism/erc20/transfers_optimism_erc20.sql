@@ -17,7 +17,7 @@ erc20_transfers  as (
             evt_block_time,
             to as wallet_address, 
             contract_address as token_address,
-            value as amount_raw
+            CAST(value as double) as amount_raw
         FROM 
         {{ source('erc20_optimism', 'evt_transfer') }}
 
@@ -30,7 +30,7 @@ erc20_transfers  as (
             evt_block_time,
             "from" as wallet_address, 
             contract_address as token_address,
-            -value as amount_raw
+            -CAST(value as double) as amount_raw
         FROM 
         {{ source('erc20_optimism', 'evt_transfer') }}
 ),
@@ -44,7 +44,7 @@ weth_events as (
             evt_block_time,
             dst as wallet_address, 
             contract_address as token_address, 
-            wad as amount_raw
+            CAST(wad as double) as amount_raw
         FROM 
         {{ source('weth_optimism', 'weth9_evt_deposit') }}
 
@@ -57,7 +57,7 @@ weth_events as (
             evt_block_time,
             src as wallet_address, 
             contract_address as token_address, 
-            -wad as amount_raw
+            -CAST(wad as double) as amount_raw
         FROM 
         {{ source('weth_optimism', 'weth9_evt_withdrawal') }}
 )
