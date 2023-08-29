@@ -14,7 +14,7 @@ select
     tr.wallet_address,
     tr.wallet_address || '-' || block_date as unique_transfer_id,
     sum(tr.amount_raw) as amount_raw,
-from {{ ref('transfers_bitcoin_satoshi') }} tr
+from {{ ref('transfers_bitcoin_satoshi_legacy') }} tr
 {% if is_incremental() %}
 -- this filter will only be applied on an incremental run
 where tr.evt_block_time >= date_trunc('day', now() - interval '1 week')
