@@ -28,7 +28,7 @@ erc20_transfers  as (
             evt_tx_hash,
             evt_index, 
             evt_block_time,
-            from as wallet_address, 
+            "from" as wallet_address, 
             contract_address as token_address,
             -value as amount_raw
         FROM 
@@ -62,10 +62,26 @@ weth_events as (
         {{ source('weth_optimism', 'weth9_evt_withdrawal') }}
 )
 
-SELECT *, 'optimism' as blockchain
-FROM erc20_transfers
+SELECT
+    'optimism' as blockchain, 
+    evt_tx_hash, 
+    evt_index,
+    evt_block_time,
+    wallet_address, 
+    token_address, 
+    amount_raw
+FROM 
+erc20_transfers
 
 UNION ALL 
 
-SELECT *, 'optimism' as blockchain
-FROM weth_events
+SELECT 
+    'optimism' as blockchain, 
+    evt_tx_hash, 
+    evt_index,
+    evt_block_time,
+    wallet_address, 
+    token_address, 
+    amount_raw
+FROM 
+weth_events
