@@ -96,3 +96,47 @@ models:
       - *symbol
       - *amount_raw
       - *amount
+
+  - name: transfers_optimism_erc20_rolling_hour
+    meta:
+      blockchain: optimism
+      sector: transfers
+      project: erc20
+      contributors: Henrystats
+    description: "ERC20 Token Transfers on Optimism per hour."
+    config:
+      tags: ['transfers', 'optimism', 'erc20', 'rolling_hour', 'Henrystats']
+    columns:
+      - *blockchain
+      - *hour
+      - *wallet_address
+      - *token_address
+      - *symbol
+      - *amount_raw
+      - *amount
+      - &updated_at
+        name: updated_at
+        description: "UTC timestamp when table was last updated"
+      - &recency_index
+        name: recency_index
+        description: "Index of most recent balance ascending. recency_index=1 is the wallet/contract pair's most recent balance"
+
+  - name: transfers_optimism_erc20_rolling_day
+    meta:
+      blockchain: optimism
+      sector: transfers
+      project: erc20
+      contributors: Henrystats
+    description: "ERC20 Token Transfers on Optimism per day."
+    config:
+      tags: ['transfers', 'optimism', 'erc20', 'rolling_day', 'Henrystats']
+    columns:
+      - *blockchain
+      - *hour
+      - *wallet_address
+      - *token_address
+      - *symbol
+      - *amount_raw
+      - *amount
+      - *updated_at
+      - *recency_index
