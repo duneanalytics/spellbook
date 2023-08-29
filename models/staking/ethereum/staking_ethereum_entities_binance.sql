@@ -8,7 +8,7 @@
 }}
 
 SELECT binance.address
-, 'Binance' AS name
+, 'Binance' AS entity
 , CONCAT('Binance ', CAST(ROW_NUMBER() OVER (ORDER BY MIN(t.block_time)) AS VARCHAR)) AS entity_unique_name
 , 'CEX' AS category
 FROM (

@@ -8,7 +8,7 @@
 }}
 
 WITH contracts AS (
-    SELECT address as address, entity as entity, category as category
+    SELECT address, entity, entity AS entity_unique_name, category
     FROM
     (VALUES
     (0xdcd51fc5cd918e0461b9b7fb75967fdfd10dae2f, 'Rocket Pool', 'Liquid Staking')
