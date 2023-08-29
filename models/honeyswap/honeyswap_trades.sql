@@ -9,7 +9,7 @@
 }}
 
 {% set honeyswap_models = [
-ref('honeyswap_gnosis_trades')
+ref('honeyswap_v2_gnosis_trades')
 ] %}
 -- , ref('honeyswap_polygon_trades')
 
