@@ -20,6 +20,8 @@ sources:
       - name: ExchangeProxy_call_batchBuyERC721s
       - name: ExchangeProxy_call_buyERC1155
       - name: ExchangeProxy_call_batchBuyERC1155s
+      - name: ExchangeProxy_call_sellERC721
+      - name: ExchangeProxy_call_sellERC1155
 
 
     # for native orders on v3
