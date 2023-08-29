@@ -2,7 +2,6 @@ version: 2
 
 sources:
   - name: honeyswap_v2_gnosis
-  - version: 2
     description: "Gnosis decoded tables related to Honeyswap contracts"
     freshness:
       warn_after: { count: 12, period: hour }
