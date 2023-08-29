@@ -107,6 +107,12 @@ models:
       contributors: soispoke, dot2dotseurat, tomfutago
     config:
       tags: ['transfers', 'celo', 'erc20', 'agg_hour', 'soispoke', 'dot2dotseurat', 'tomfutago']
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - wallet_address
+            - token_address
+            - block_hour
     columns:
       - *blockchain
       - *block_month
@@ -132,6 +138,12 @@ models:
     description: "ERC20 Token Transfers on Celo per hour."
     config:
       tags: ['transfers', 'celo', 'erc20', 'rolling_hour', 'soispoke', 'dot2dotseurat', 'tomfutago']
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - wallet_address
+            - token_address
+            - block_hour
     columns:
       - *blockchain
       - *block_month
@@ -158,6 +170,12 @@ models:
       contributors: soispoke, dot2dotseurat, tomfutago
     config:
       tags: ['transfers', 'celo', 'erc20', 'agg_day', 'soispoke', 'dot2dotseurat', 'tomfutago']
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - wallet_address
+            - token_address
+            - block_day
     columns:
       - *blockchain
       - *block_month
@@ -179,6 +197,12 @@ models:
     description: "ERC20 Token Transfers on Celo per day."
     config:
       tags: ['transfers', 'celo', 'erc20', 'rolling_day', 'soispoke', 'dot2dotseurat', 'tomfutago']
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - wallet_address
+            - token_address
+            - block_day
     columns:
       - *blockchain
       - *block_month
