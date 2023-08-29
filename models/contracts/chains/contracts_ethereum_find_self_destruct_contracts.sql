@@ -2,7 +2,7 @@
   config(
         tags = ['dunesql'],
         schema = 'contracts_ethereum',
-        alias = alias('find_self_destruct_contracts', legacy_model=True)
+        alias = alias('find_self_destruct_contracts', legacy_model=True),
         materialized ='incremental',
         file_format ='delta',
         incremental_strategy='merge',
