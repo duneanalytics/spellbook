@@ -16,7 +16,7 @@
 with intermediate_wallets AS (
 SELECT address, proposal_name, address_descriptor
 FROM (
-SELECT address, cast(proposal_name as varchar(100)) AS proposal_name, cast(address_descriptor as varchar(100)) AS address_descriptor
+SELECT address, cast(proposal_name as varchar) AS proposal_name, cast(address_descriptor as varchar) AS address_descriptor
         , ROW_NUMBER() OVER (PARTITION BY address ORDER BY address_descriptor) AS rnk
 FROM (values
      --suspected internal transfer addresses
@@ -73,6 +73,12 @@ FROM (values
     ,(0x1960733e0087b50FDfb656eA572DefFc2fF69dc2, 'Tide Protocol', 'Team Wallet')
     ,(0x7dcb4f75FF612Cf94E0b918160cbE55bE1C7b97d, 'Tide Protocol', 'Team Wallet')
     ,(0x48e239Fa0B364Cd92Fc750A50045c9f9E04DD781, 'Solidity Survivor', 'Team Wallet')
+    ,(0x450F82319f940936F1f4F253B468c3e6E566Cdd5, 'Synapse', 'OTC Wallet')
+    ,(0xB8313Eaf73AED8fEa1D9930dF199B3c1Bdb67b47, 'Paraswap', 'Multisig')
+    ,(0x0BeBD2FcA9854F657329324aA7dc90F656395189, 'Rotki', 'Multisig')
+    ,(0x634977e11C823a436e587C1a1Eca959588C64287, 'Giveth', 'Grants Wallet')
+    ,(0x4D9339dd97db55e3B9bCBE65dE39fF9c04d1C2cd, 'Giveth', 'Multisig')
+
     --quix - should come from CB
     ,(0x5Ad4A019F77e82940f6Dd15A5215362AF061A742,'Quix','Distributor')
     
@@ -98,8 +104,8 @@ FROM (values
 , distributor_wallets AS (
 SELECT address, proposal_name, address_descriptor
 FROM (
-SELECT address, cast(proposal_name as varchar(100)) AS proposal_name, cast(address_descriptor as varchar(100)) AS address_descriptor
-    , ROW_NUMBER() OVER (PARTITION BY address ORDER BY cast(address_descriptor as varchar(100)) ) AS rnk
+SELECT address, cast(proposal_name as varchar) AS proposal_name, cast(address_descriptor as varchar) AS address_descriptor
+    , ROW_NUMBER() OVER (PARTITION BY address ORDER BY cast(address_descriptor as varchar) ) AS rnk
 FROM (values
      (0xeA1e11E3D448F31C565d685115899A11Fd98E40E,'1inch','Distributor')
     ,(0xc9e53bb96a8923051326b189bbf93ee9ed87888b,'WePiggy','LockDrop')
@@ -206,10 +212,10 @@ FROM (values
     ,(0x86c90fc464A668469A93Ca08D8B9872bdB16b356, 'Mux', 'TradingRebateDistributor')
     ,(0xBd1ba78A3976cAB420A9203E6ef14D18C2B2E031, 'Exactly', 'Distributor Multisig')
     ,(0x52629961F71C1C2564C5aa22372CB1b9fa9EBA3E, 'Rabbithole', 'Distributor Factory Contract')
-    ,(0x973b9A7D490f06FEa3dd06432Cea3b097E9Cecb9, 'Vesper', 'vaETH')
-    ,(0x6104D21888CD996918C8cbA7480C71271DEE3120, 'Vesper', 'vaUSDC')
-    ,(0xE91172020777b03a94627dBe0b94c6b8389Fb99C, 'Vesper', 'vaOP')
-    ,(0x94E38F592d92964ebe0684A65F1318b91Dc54E9e, 'Vesper', 'vawstETH')
+    ,(0x973b9A7D490f06FEa3dd06432Cea3b097E9Cecb9, 'Vesper', 'vaETH Rewards')
+    ,(0x6104D21888CD996918C8cbA7480C71271DEE3120, 'Vesper', 'vaUSDC Rewards')
+    ,(0xE91172020777b03a94627dBe0b94c6b8389Fb99C, 'Vesper', 'vaOP Rewards')
+    ,(0x94E38F592d92964ebe0684A65F1318b91Dc54E9e, 'Vesper', 'vawstETH Rewards')
     ,(0xEB40A065854bd90126A4E697aeA0976BA51b2eE7, 'Op Podcast NFTs', 'Distributor')
     ,(0xc6BD76FA1E9e789345e003B361e4A0037DFb7260, 'Mux', 'Liquidity Mining Distributor')
         --Parnter Uniswap LM Program
@@ -288,7 +294,7 @@ FROM (
                 ) do_choice_rank
         ) fin
 LEFT JOIN {{ ref('op_token_distributions_optimism_project_name_mapping') }} pnm 
-        ON pnm.proposal_name = fin.proposal_name
+        ON trim(lower(pnm.proposal_name)) = trim(lower(fin.proposal_name))
 
 GROUP BY fin.address
 

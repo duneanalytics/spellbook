@@ -30,10 +30,6 @@ WITH all_labels AS (
     SELECT * FROM all_labels WHERE label = 'Utility'
     )
 
-, other_tags AS (
-        SELECT * FROM {{ ref('op_token_distributions_optimism_other_tags') }}
-)
-
 , outgoing_distributions AS (
     WITH tfers AS (
         -- transfers out
@@ -299,12 +295,12 @@ SELECT
     
 FROM distributions d
 -- read in other tags
-LEFT JOIN other_tags dto
+LEFT JOIN {{ ref('op_token_distributions_optimism_other_tags') }} dto
     ON dto.address = d.to_address
     AND d.to_name = 'Other' -- don't overwrite existing mapping
-LEFT JOIN other_tags dtxto
+LEFT JOIN {{ ref('op_token_distributions_optimism_other_tags') }} dtxto
     ON dtxto.address = d.tx_to_address
     AND d.to_name = 'Other' -- don't overwrite existing mapping
-LEFT JOIN other_tags dfrom
+LEFT JOIN {{ ref('op_token_distributions_optimism_other_tags') }} dfrom
     ON dfrom.address = d.from_address
     AND d.from_name = 'Other' -- don't overwrite existing mapping
