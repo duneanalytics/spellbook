@@ -1,5 +1,5 @@
 {{ config(tags=['dunesql'],
-        schema = 'honeyswap_v2_trades',
+        schema = 'honeyswap_trades',
         alias = alias('trades'),
         post_hook='{{ expose_spells(\'["gnosis", "polygon"]\',
                                 "project",
@@ -9,9 +9,9 @@
 }}
 
 {% set honeyswap_models = [
-ref('honeyswap_v2_gnosis_trades')
+ref('honeyswap_gnosis_trades')
 ] %}
--- , ref('honeyswap_v2_polygon_trades')
+-- , ref('honeyswap_polygon_trades')
 
 SELECT *
 FROM (

@@ -1,5 +1,5 @@
 {{ config(tags=['dunesql'],
-    schema = 'honeyswap_v2_gnosis',
+    schema = 'honeyswap_gnosis',
     alias = alias('trades'),
     partition_by = ['block_month'],
     materialized = 'incremental',
@@ -8,7 +8,7 @@
     unique_key = ['block_date', 'blockchain', 'project', 'version', 'tx_hash', 'evt_index'],
     post_hook='{{ expose_spells(\'["gnosis"]\',
                                 "project",
-                                "honeyswap_v2",
+                                "honeyswap",
                                 \'["0xr3x", "jeff-dude", "markusbkoch", "masquot", "milkyklim", "0xBoxer", "mewwts", "hagaetc"]\') }}'
     )
 }}
@@ -32,8 +32,8 @@ WITH dexs AS
 
         ,t.evt_index
     FROM
-        {{ source('honeyswap_v2_gnosis', 'UniswapV2Pair_evt_Swap') }} t
-    INNER JOIN {{ source('honeyswap_v2_gnosis', 'UniswapV2Factory_evt_PairCreated') }} f
+        {{ source('honeyswap_gnosis', 'UniswapV2Pair_evt_Swap') }} t
+    INNER JOIN {{ source('honeyswap_gnosis', 'UniswapV2Factory_evt_PairCreated') }} f
         ON f.pair = t.contract_address
     {% if is_incremental() %}
     WHERE t.evt_block_time >= date_trunc('day', now() - interval '7' day)

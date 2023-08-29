@@ -1,14 +1,14 @@
 version: 2
 
 models:
-  - name: honeyswap_v2_gnosis_trades
+  - name: honeyswap_gnosis_trades
     meta:
       blockchain: gnosis
       sector: dex
-      project: honeyswap_v2
+      project: honeyswap
       contributors: 0xr3x, jeff-dude, masquot, soispoke
     config:
-      tags: ['gnosis','honeyswap_v2','trades', 'dex']
+      tags: ['gnosis','honeyswap','trades', 'dex']
     description: >
         Honeyswap V2 contract trades on Gnosis
     tests:

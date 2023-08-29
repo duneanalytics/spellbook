@@ -69,7 +69,7 @@
 ,ref('zipswap_trades')
 ,ref('balancer_trades')
 ,ref('hashflow_trades')
-,ref('honeyswap_v2_trades')
+,ref('honeyswap_trades')
 ,ref('synthetix_spot_trades')
 ] %}
 
