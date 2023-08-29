@@ -24,7 +24,7 @@ models:
       - check_dex_aggregator_seed:
           blockchain: bnb
           project: kyberswap
-          version: 2
+          version: meta_2
     columns:
       - name: blockchain
       - name: project

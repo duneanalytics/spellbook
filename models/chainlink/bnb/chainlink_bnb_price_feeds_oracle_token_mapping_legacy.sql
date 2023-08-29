@@ -1,6 +1,6 @@
 {{
   config(
-  	tags=['legacy'],
+  	tags=['legacy', 'remove'],
     alias=alias('price_feeds_oracle_token_mapping', legacy_model=True),
     post_hook='{{ expose_spells(\'["bnb"]\',
                                 "project",
