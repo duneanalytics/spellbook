@@ -610,8 +610,9 @@ WITH curated_list AS (
       ,(0xc5557771673109cab9d05358e1d280fab5225977, 'NFTs2me')
       ,(0xe906b91103d216420f7ae13b29fde73ce9c206cd, 'CyberConnect')
       ,(0xede8a407913a874dd7e3d5b731afca135d30375e, 'Synthetix')
-
-
+      ,(0xbda458dfc28021debd72060671fc350fa5cb39e5, 'deBridge')
+      ,(0xfd830dd9b446c9b880b32a03fb9a750aae4a68aa, 'deBridge')
+      
   ) as temp_table (creator_address, contract_project)
 )
 

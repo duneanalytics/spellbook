@@ -1,6 +1,6 @@
 {{ config(
 	tags=['legacy'],
-	
+
     schema = 'balancer_v2_ethereum',
     alias = alias('trades', legacy_model=True),
     partition_by = ['block_date'],
@@ -47,7 +47,7 @@ WITH
             swap.tokenOut AS token_bought_address,
             swap.tokenIn AS token_sold_address,
             swap_fees.contract_address AS project_contract_address,
-            swap.poolId AS poolId,
+            swap.poolId AS pool_id,
             swap_fees.swap_fee_percentage / POWER(10, 18) AS swap_fee,
             swap.evt_tx_hash AS tx_hash,
             '' AS trace_address,
@@ -80,7 +80,7 @@ WITH
                 AND bpt_prices.hour >= '{{ project_start_date }}'
                 {% endif %}
                 {% if is_incremental() %}
-                AND bpt_prices.hour >= DATE_TRUNC("day", NOW() - interval '1 week')
+                AND bpt_prices.hour >= DATE_TRUNC('day', NOW() - interval '1 week')
                 {% endif %}
         GROUP BY 1, 2, 3, 4, 5
     ),
@@ -101,7 +101,7 @@ WITH
                 AND bpt_prices.hour >= '{{ project_start_date }}'
                 {% endif %}
                 {% if is_incremental() %}
-                AND bpt_prices.hour >= DATE_TRUNC("day", NOW() - interval '1 week')
+                AND bpt_prices.hour >= DATE_TRUNC('day', NOW() - interval '1 week')
                 {% endif %}
         GROUP BY 1, 2, 3, 4, 5
     )
@@ -134,13 +134,13 @@ SELECT
     ) AS amount_usd,
     dexs.token_bought_address,
     dexs.token_sold_address,
-    COALESCE(dexs.taker, tx.`from`) AS taker,
+    COALESCE(dexs.taker, tx.from) AS taker,
     dexs.maker,
     dexs.project_contract_address,
-    dexs.poolId,
+    dexs.pool_id,
     dexs.swap_fee,
     dexs.tx_hash,
-    tx.`from` AS tx_from,
+    tx.from AS tx_from,
     tx.to AS tx_to,
     dexs.trace_address,
     dexs.evt_index
@@ -152,7 +152,7 @@ FROM
         AND tx.block_time >= '{{ project_start_date }}'
         {% endif %}
         {% if is_incremental() %}
-        AND tx.block_time >= DATE_TRUNC("day", NOW() - interval '1 week')
+        AND tx.block_time >= DATE_TRUNC('day', NOW() - interval '1 week')
         {% endif %}
     LEFT JOIN {{ ref('tokens_erc20_legacy') }} erc20a
         ON erc20a.contract_address = dexs.token_bought_address
@@ -168,7 +168,7 @@ FROM
         AND p_bought.minute >= '{{ project_start_date }}'
         {% endif %}
         {% if is_incremental() %}
-        AND p_bought.minute >= DATE_TRUNC("day", NOW() - interval '1 week')
+        AND p_bought.minute >= DATE_TRUNC('day', NOW() - interval '1 week')
         {% endif %}
     LEFT JOIN {{ source ('prices', 'usd') }} p_sold
         ON p_sold.minute = DATE_TRUNC('minute', dexs.block_time)
@@ -178,7 +178,7 @@ FROM
         AND p_sold.minute >= '{{ project_start_date }}'
         {% endif %}
         {% if is_incremental() %}
-        AND p_sold.minute >= DATE_TRUNC("day", NOW() - interval '1 week')
+        AND p_sold.minute >= DATE_TRUNC('day', NOW() - interval '1 week')
         {% endif %}
     INNER JOIN bpa
         ON bpa.evt_block_number = dexs.evt_block_number
@@ -191,7 +191,7 @@ FROM
         AND bpa_bpt_prices.hour >= '{{ project_start_date }}'
         {% endif %}
         {% if is_incremental() %}
-        AND bpa_bpt_prices.hour >= DATE_TRUNC("day", NOW() - interval '1 week')
+        AND bpa_bpt_prices.hour >= DATE_TRUNC('day', NOW() - interval '1 week')
         {% endif %}
     INNER JOIN bpb
         ON bpb.evt_block_number = dexs.evt_block_number
@@ -204,5 +204,5 @@ FROM
         AND bpa_bpt_prices.hour >= '{{ project_start_date }}'
         {% endif %}
         {% if is_incremental() %}
-        AND bpa_bpt_prices.hour >= DATE_TRUNC("day", NOW() - interval '1 week')
+        AND bpa_bpt_prices.hour >= DATE_TRUNC('day', NOW() - interval '1 week')
         {% endif %}

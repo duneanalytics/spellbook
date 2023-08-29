@@ -1,4 +1,4 @@
-{{ config(tags=['dunesql'], 
+{{ config(tags=['dunesql'],
     alias = alias('trades')
     ,partition_by = ['block_month']
     ,materialized = 'incremental'
@@ -49,8 +49,8 @@ select 'avalanche_c'                                             as blockchain,
            end                                                   as token_pair,
        dexs.token_bought_amount_raw / power(10, erc20a.decimals) AS token_bought_amount,
        dexs.token_sold_amount_raw / power(10, erc20b.decimals)   AS token_sold_amount,
-       CAST(dexs.token_bought_amount_raw AS DECIMAL(38, 0))      AS token_bought_amount_raw,
-       CAST(dexs.token_sold_amount_raw AS DECIMAL(38, 0))        AS token_sold_amount_raw,
+       dexs.token_bought_amount_raw                              AS token_bought_amount_raw,
+       dexs.token_sold_amount_raw                                AS token_sold_amount_raw,
        coalesce(
                dexs.amount_usd
            , (dexs.token_bought_amount_raw / power(10, p_bought.decimals)) * p_bought.price
@@ -58,11 +58,11 @@ select 'avalanche_c'                                             as blockchain,
            )                                                     AS amount_usd,
        dexs.token_bought_address,
        dexs.token_sold_address,
-       coalesce(dexs.taker, tx."from")                             AS taker,
+       coalesce(dexs.taker, tx."from")                           AS taker,
        dexs.maker,
        dexs.project_contract_address,
        dexs.tx_hash,
-       tx."from"                                                   AS tx_from,
+       tx."from"                                                 AS tx_from,
        tx.to                                                     AS tx_to,
        dexs.evt_index
 from dexs

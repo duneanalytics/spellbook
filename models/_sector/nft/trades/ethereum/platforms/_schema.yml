@@ -11,6 +11,7 @@ models:
      tags: ['ethereum', 'nft', 'trades', 'archipelago']
    description: "Archipelago base trades"
    tests:
+     - check_columns_nft_base_trades
      - dbt_utils.unique_combination_of_columns:
          combination_of_columns: ['block_number','tx_hash','sub_tx_trade_id']
      - equal_rowcount_with_sources:
@@ -42,6 +43,7 @@ models:
      tags: [ 'ethereum', 'nft', 'trades', 'superrare' ]
    description: "Superrare base trades"
    tests:
+     - check_columns_nft_base_trades
      - dbt_utils.unique_combination_of_columns:
          combination_of_columns: [ 'block_number','tx_hash','sub_tx_trade_id' ]
      - check_seed:
@@ -70,6 +72,7 @@ models:
      tags: [ 'ethereum', 'nft', 'trades', 'foundation' ]
    description: "foundation base trades"
    tests:
+     - check_columns_nft_base_trades
      - dbt_utils.unique_combination_of_columns:
          combination_of_columns: [ 'block_number','tx_hash','sub_tx_trade_id' ]
      - equal_rowcount_with_sources:
@@ -103,6 +106,7 @@ models:
      tags: [ 'ethereum', 'nft', 'trades', 'cyptopunks' ]
    description: "cyptopunks base trades"
    tests:
+     - check_columns_nft_base_trades
      - dbt_utils.unique_combination_of_columns:
          combination_of_columns: [ 'block_number','tx_hash','sub_tx_trade_id' ]
      - equal_rowcount_with_sources:
@@ -134,6 +138,7 @@ models:
      tags: [ 'ethereum', 'nft', 'trades', 'blur' ]
    description: "Blur base trades"
    tests:
+     - check_columns_nft_base_trades
      - dbt_utils.unique_combination_of_columns:
          combination_of_columns: [ 'block_number','tx_hash','sub_tx_trade_id' ]
      - check_seed:
@@ -161,6 +166,7 @@ models:
      tags: [ 'ethereum', 'nft', 'trades', 'blur' ]
    description: "Blur v2 base trades"
    tests:
+     - check_columns_nft_base_trades
      - dbt_utils.unique_combination_of_columns:
          combination_of_columns: [ 'block_number','tx_hash','sub_tx_trade_id' ]
      - check_seed:
@@ -188,6 +194,7 @@ models:
      tags: [ 'ethereum', 'nft', 'trades', 'element' ]
    description: "element base trades"
    tests:
+     - check_columns_nft_base_trades
      - dbt_utils.unique_combination_of_columns:
          combination_of_columns: [ 'block_number','tx_hash','sub_tx_trade_id' ]
      - equal_rowcount_with_sources:
@@ -221,6 +228,7 @@ models:
      tags: [ 'ethereum', 'nft', 'trades', 'x2y2' ]
    description: "x2y2 base trades"
    tests:
+     - check_columns_nft_base_trades
      - dbt_utils.unique_combination_of_columns:
          combination_of_columns: [ 'block_number','tx_hash','sub_tx_trade_id' ]
      - equal_rowcount_with_sources:
@@ -251,6 +259,7 @@ models:
      tags: [ 'ethereum', 'nft', 'trades', 'looksrare' ]
    description: "looksrare v1 base trades"
    tests:
+     - check_columns_nft_base_trades
      - dbt_utils.unique_combination_of_columns:
          combination_of_columns: [ 'block_number','tx_hash','sub_tx_trade_id' ]
      - equal_rowcount_with_sources:
@@ -282,6 +291,7 @@ models:
      tags: [ 'ethereum', 'nft', 'trades', 'looksrare' ]
    description: "looksrare v2 base trades"
    tests:
+     - check_columns_nft_base_trades
      - dbt_utils.unique_combination_of_columns:
          combination_of_columns: [ 'block_number','tx_hash','sub_tx_trade_id' ]
      - equal_rowcount_with_sources:
@@ -312,6 +322,7 @@ models:
      tags: [ 'ethereum', 'nft', 'trades', 'zora' ]
    description: "zora v1 base trades"
    tests:
+     - check_columns_nft_base_trades
      - dbt_utils.unique_combination_of_columns:
          combination_of_columns: [ 'block_number','tx_hash','sub_tx_trade_id' ]
      - check_seed:
@@ -339,6 +350,7 @@ models:
      tags: [ 'ethereum', 'nft', 'trades', 'zora' ]
    description: "zora v2 base trades"
    tests:
+     - check_columns_nft_base_trades
      - dbt_utils.unique_combination_of_columns:
          combination_of_columns: [ 'block_number','tx_hash','sub_tx_trade_id' ]
      - equal_rowcount_with_sources:
@@ -369,6 +381,7 @@ models:
      tags: [ 'ethereum', 'nft', 'trades', 'zora' ]
    description: "zora v3 base trades"
    tests:
+     - check_columns_nft_base_trades
      - dbt_utils.unique_combination_of_columns:
          combination_of_columns: [ 'block_number','tx_hash','sub_tx_trade_id' ]
      - equal_rowcount_with_sources:
@@ -409,6 +422,7 @@ models:
      tags: [ 'ethereum', 'nft', 'trades', 'sudoswap' ]
    description: "sudoswap base trades"
    tests:
+     - check_columns_nft_base_trades
      - dbt_utils.unique_combination_of_columns:
          combination_of_columns: [ 'block_number','tx_hash','sub_tx_trade_id' ]
      - check_seed:
@@ -436,6 +450,7 @@ models:
      tags: [ 'ethereum', 'nft', 'trades', 'collectionswap' ]
    description: "collectionswap base trades"
    tests:
+     - check_columns_nft_base_trades
      - dbt_utils.unique_combination_of_columns:
          combination_of_columns: [ 'block_number','tx_hash','sub_tx_trade_id' ]
      - check_seed:

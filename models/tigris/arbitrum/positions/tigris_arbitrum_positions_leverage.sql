@@ -14,7 +14,8 @@ leverage as (
         leverage,
         project_contract_address,
         version,
-        positions_contract
+        positions_contract,
+        protocol_version
     FROM 
     {{ ref('tigris_arbitrum_events_open_position') }}
     WHERE open_type = 'open_position'
@@ -27,7 +28,8 @@ leverage as (
         leverage,
         project_contract_address,
         version,
-        positions_contract
+        positions_contract,
+        protocol_version
     FROM 
     {{ ref('tigris_arbitrum_events_modify_margin') }}
 
@@ -39,7 +41,8 @@ leverage as (
         leverage,
         project_contract_address,
         version,
-        positions_contract
+        positions_contract,
+        protocol_version
     FROM 
     {{ ref('tigris_arbitrum_events_limit_order') }}
 )
