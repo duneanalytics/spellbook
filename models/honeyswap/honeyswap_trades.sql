@@ -1,5 +1,5 @@
 {{ config(tags=['dunesql'],
-        schema = 'honeyswap_trades',
+        schema = 'honeyswap',
         alias = alias('trades'),
         post_hook='{{ expose_spells(\'["gnosis", "polygon"]\',
                                 "project",
