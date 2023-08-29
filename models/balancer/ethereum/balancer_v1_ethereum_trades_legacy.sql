@@ -7,7 +7,7 @@
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
-    unique_key = ['block_date', 'blockchain', 'project', 'version', 'tx_hash', 'evt_index', 'trace_address']
+    unique_key = ['block_time', 'tx_hash', 'evt_index']
     )
 }}
 
@@ -69,13 +69,15 @@ select
     token_bought_address,
     token_sold_address,
     tx.from AS taker,
-    cast(null AS varchar(5)) AS maker,
+    CAST(NULL AS VARCHAR(5)) AS maker,
+    project_contract_address AS pool_id,
+    CAST(NULL AS DOUBLE) AS swap_fee,
     project_contract_address,
     evt_tx_hash AS tx_hash,
     tx.from AS tx_from,
     tx.to AS tx_to,
     evt_index,
-    '' AS trace_address
+    CAST(NULL AS VARCHAR(5)) AS trace_address
 FROM v1 trades
 INNER JOIN {{ source('ethereum', 'transactions') }} tx
     ON trades.evt_tx_hash = tx.hash

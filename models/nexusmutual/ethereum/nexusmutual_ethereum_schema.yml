@@ -10,7 +10,7 @@ models:
         nexusmutual product information for v1
     tests:
       - check_seed_legacy:
-          seed_file: ref('nexusmutual_ethereum_product_information_seed')
+          seed_file: ref("nexusmutual_ethereum_product_information_seed")
           match_columns:
             - product_contract_address
           check_columns:
@@ -30,7 +30,7 @@ models:
         name: product_type
         tests:
           - accepted_values:
-              values: [ 'Protocol', 'Custody', 'Token', 'Eth2slashing', 'Sherlock']
+              values: [ "Protocol", "Custody", "Token", "Eth2slashing", "Sherlock"]
       - &syndicate
         name: syndicate
 
@@ -40,7 +40,7 @@ models:
       project: nexusmutual
       contributors: [zxf, jonah]
     config:
-      tags: ['ethereum','nexusmutual','trades']
+      tags: ["ethereum","nexusmutual","quotation_trades"]
     description: >
         nexusmutual quotation trades on Ethereum
     tests:
@@ -49,6 +49,15 @@ models:
             - block_date
             - evt_tx_hash
             - evt_index
+            - cid
+      - check_seed:
+          seed_file: ref("nexusmutual_ethereum_trades_seed")
+          match_columns:
+            - evt_tx_hash
+          check_columns:
+            - premium
+            - premium_nxm
+            - sum_assured
     columns:
       - &cid
         name: cid
@@ -65,15 +74,13 @@ models:
       - &premium
         name: premium
         tests:
-          - nexusmutual_trades_column_values:
-              nexusmutual_ethereum_trades_seed: ref('nexusmutual_ethereum_trades_seed')
+          - not_null
       - &pre_amount
         name: pre_amount
       - &premium_nxm
         name: premium_nxm
         tests:
-          - nexusmutual_trades_column_values:
-              nexusmutual_ethereum_trades_seed: ref('nexusmutual_ethereum_trades_seed')
+          - not_null
       - &pre_nxm_amount
         name: pre_nxm_amount
       - &sc_add
@@ -81,8 +88,7 @@ models:
       - &sum_assured
         name: sum_assured
         tests:
-          - nexusmutual_trades_column_values:
-              nexusmutual_ethereum_trades_seed: ref('nexusmutual_ethereum_trades_seed')
+          - not_null
       - &block_hash
         name: block_hash
       - &nonce
@@ -118,7 +124,6 @@ models:
         description: "UTC event block date of each DEX trade"
       - &token_address
         name: token_address
-        description: "Contract address for the token"
 
   - name: nexusmutual_ethereum_capital_pool_eth_daily_transaction_summary
     meta:
@@ -126,12 +131,12 @@ models:
       project: nexusmutual
       contributors: [guyhow]
     config:
-      tags: ['ethereum','nexusmutual','trades']
+      tags: ["ethereum","nexusmutual","trades"]
     description: >
         Daily summary for ethereum entering and leaving the nexus mutual capital pool contracts
     tests:
       - check_seed_legacy:
-          seed_file: ref('nexusmutual_ethereum_capital_pool_eth_daily_transaction_summary_seed')
+          seed_file: ref("nexusmutual_ethereum_capital_pool_eth_daily_transaction_summary_seed")
           match_columns:
             - day
           check_columns:
