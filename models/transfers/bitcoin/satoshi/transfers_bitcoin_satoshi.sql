@@ -7,7 +7,7 @@
 with 
     input_transfers as (
         select
-            CAST('input' AS VARCHAR(5)) || CAST('-' AS VARCHAR(1)) || CAST(tx_id AS VARCHAR(100)) || CAST('-' AS VARCHAR(1)) || CAST(index AS VARCHAR(100)) || CAST('-' AS VARCHAR(1)) || CAST(`address` AS VARCHAR(100)) as unique_transfer_id,
+            CAST('input' AS VARCHAR(5)) || CAST('-' AS VARCHAR(1)) || CAST(tx_id AS VARCHAR(100)) || CAST('-' AS VARCHAR(1)) || CAST(index AS VARCHAR(100)) || CAST('-' AS VARCHAR(1)) || CAST(address AS VARCHAR(100)) as unique_transfer_id,
             `address` as wallet_address,
             block_time,
             block_date,
@@ -19,7 +19,7 @@ with
     , 
     output_transfers as (
         select
-            CAST('output' AS VARCHAR(6)) || CAST('-' AS VARCHAR(1)) || CAST(tx_id AS VARCHAR(100)) || CAST('-' AS VARCHAR(1)) || CAST(index AS VARCHAR(100)) || CAST('-' AS VARCHAR(1)) || CAST(`address` AS VARCHAR(100)) as unique_transfer_id,
+            CAST('output' AS VARCHAR(6)) || CAST('-' AS VARCHAR(1)) || CAST(tx_id AS VARCHAR(100)) || CAST('-' AS VARCHAR(1)) || CAST(index AS VARCHAR(100)) || CAST('-' AS VARCHAR(1)) || CAST(address AS VARCHAR(100)) as unique_transfer_id,
             `address` as wallet_address,
             block_time,
             block_date,
