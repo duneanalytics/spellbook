@@ -7,6 +7,7 @@
                                     \'["Henrystats"]\') }}'
         )
 }}
+WITH 
 
 time_seq AS (
     SELECT 

@@ -8,6 +8,8 @@
         )
 }}
 
+WITH 
+
 time_seq AS (
     SELECT 
         sequence(
