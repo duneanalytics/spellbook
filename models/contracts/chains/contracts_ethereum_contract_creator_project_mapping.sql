@@ -1,7 +1,7 @@
  {{
   config(
         tags = ['dunesql'],
-        schema = 'contracts_ethereum'
+        schema = 'contracts_ethereum',
         alias = alias('creator_project_mapping'),
         materialized ='incremental',
         file_format ='delta',
