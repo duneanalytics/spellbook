@@ -1,6 +1,6 @@
 {{
   config(
-	  tags=['legacy'],
+	  tags=['legacy', 'remove'],
     alias=alias('price_feeds', legacy_model=True),
     partition_by=['block_month'],
     materialized='incremental',

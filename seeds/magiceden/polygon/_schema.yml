@@ -1,0 +1,16 @@
+version: 2
+
+seeds:
+  - name: magiceden_polygon_sample_trades
+    config:
+      tags: dunesql
+      column_types:
+        tx_hash: varbinary
+        nft_contract_address: varbinary
+        buyer: varbinary
+        seller: varbinary
+        token_id: uint256
+        currency_contract: varbinary
+        amount_raw: uint256
+        platform_fee_amount_raw: uint256
+        royalty_fee_amount_raw: uint256
