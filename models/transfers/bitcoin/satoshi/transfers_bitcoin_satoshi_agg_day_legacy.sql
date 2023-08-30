@@ -13,7 +13,7 @@ select
     block_date as day,
     tr.wallet_address,
     tr.wallet_address || '-' || block_date as unique_transfer_id,
-    sum(tr.amount_raw) as amount_raw,
+    sum(tr.amount_raw) as amount_raw
 from {{ ref('transfers_bitcoin_satoshi_legacy') }} tr
 {% if is_incremental() %}
 -- this filter will only be applied on an incremental run

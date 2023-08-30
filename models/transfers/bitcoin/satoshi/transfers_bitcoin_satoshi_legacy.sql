@@ -24,7 +24,7 @@ with
             block_time,
             block_date,
             block_height,
-            '-' || || CAST(value AS VARCHAR(100)) as amount_raw
+            '-' || CAST(value AS VARCHAR(100)) as amount_raw
         from
             {{ source('bitcoin', 'outputs') }}
     )
