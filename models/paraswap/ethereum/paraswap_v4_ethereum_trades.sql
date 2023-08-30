@@ -107,7 +107,7 @@ call_swap_without_event AS (
                 t.evt_block_time AS block_time,
                 t."from" AS user_address,
                 t.contract_address AS tokenIn,
-                cast(t.value AS int256) AS amountIn,
+                try_cast(t.value AS int256) AS amountIn,
                 ARRAY[-1] AS trace_address,
                 t.evt_index,
                 row_number() over (partition by t.evt_tx_hash order by t.evt_index) as row_num
@@ -135,8 +135,8 @@ call_swap_without_event AS (
             c."from" AS user_address,
             0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2 AS tokenIn, -- WETH
             SUM(case
-                when t."from" = c."from" then cast(t.value AS int256)
-                else -1 * cast(t.value AS int256)
+                when t."from" = c."from" then try_cast(t.value AS int256)
+                else -1 * try_cast(t.value AS int256)
             end) AS amountIn,
             MAX(t.trace_address) AS trace_address,
             CAST(-1 as integer) AS evt_index
@@ -172,7 +172,7 @@ call_swap_without_event AS (
                 t.evt_block_time AS block_time,
                 t."to" AS user_address,
                 t.contract_address AS tokenOut,
-                cast(t.value AS int256) AS amountOut,
+                try_cast(t.value AS int256) AS amountOut,
                 ARRAY[-1] AS trace_address,
                 t.evt_index,
                 row_number() over (partition by t.evt_tx_hash order by t.evt_index) AS row_num
@@ -198,7 +198,7 @@ call_swap_without_event AS (
             t.block_time,
             t."to" AS user_address,
             0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2 AS tokenOut, -- WETH
-            cast(t.value AS int256) AS amountOut,
+            try_cast(t.value AS int256) AS amountOut,
             t.trace_address,
             CAST(-1 as integer) AS evt_index
         FROM no_event_call_transaction c
