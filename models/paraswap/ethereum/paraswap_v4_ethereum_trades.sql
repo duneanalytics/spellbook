@@ -136,7 +136,7 @@ call_swap_without_event AS (
             0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2 AS tokenIn, -- WETH
             SUM(case
                 when t."from" = c."from" then cast(t.value AS decimal(38, 0))
-                else -1 * cast(t.value AS decimal(38, 0))
+                else -1 * cast(t.value AS decimal(38, 0)))
             end) AS amountIn,
             MAX(t.trace_address) AS trace_address,
             CAST(-1 as integer) AS evt_index
