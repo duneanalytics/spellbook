@@ -13,7 +13,7 @@
 
 {{nft_transfers(
     blockchain='celo'
-    , celo_transactions = source('celo','transactions')
+    , base_transactions = source('celo','transactions')
     , erc721_transfers = source('erc721_celo','evt_transfer')
     , erc1155_single = source('erc1155_celo','evt_transfersingle')
     , erc1155_batch = source('erc1155_celo', 'evt_transferbatch')
