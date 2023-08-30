@@ -17,9 +17,7 @@
 {#
 ## Models not yet migrated
 ,ref('curvefi_trades')
-,ref('dodo_trades')
 ,ref('ellipsis_finance_trades')
-,ref('synthetix_spot_trades')
  #}
 
 {% set dex_trade_models = [
@@ -70,7 +68,8 @@
 ,ref('zipswap_trades')
 ,ref('balancer_trades')
 ,ref('hashflow_trades')
-
+,ref('synthetix_spot_trades')
+,ref('dodo_trades')
 ] %}
 
 
