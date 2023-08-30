@@ -31,7 +31,7 @@ kyberswap_dex AS (
         ,t.evt_index
 
     FROM {{ source('kyber_optimism', 'DMM_Pool_evt_Swap') }} t
-    INNER JOIN {{ source('kyber_optimism', 'DMMFactory_evt_PoolCreated') }} p
+    INNER JOIN {{ source('kyber_optimism', 'DMM_Factory_evt_PoolCreated') }} p
         ON t.contract_address = p.pool
     {% if is_incremental() %}
     WHERE t.evt_block_time >= date_trunc('day', now() - interval '7' day)

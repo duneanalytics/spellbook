@@ -9,7 +9,7 @@ sources:
     tables:
       - name: DMM_Pool_evt_Swap
         loaded_at_field: evt_block_time
-      - name: DMMFactory_evt_PoolCreated
+      - name: DMM_Factory_evt_PoolCreated
         loaded_at_field: evt_block_time
       - name: Elastic_Pool_evt_swap
         loaded_at_field: evt_block_time
