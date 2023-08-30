@@ -488,6 +488,8 @@ models:
         description: "Offerer"
       - name: zone
         description: "Seaport zone"
+      - name: evt_index
+        description: "Event index"
 
   - name: seaport_ethereum_tagging
     meta:

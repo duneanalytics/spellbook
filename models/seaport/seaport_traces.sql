@@ -26,19 +26,20 @@ FROM (
     , block_date
     , block_time
     , block_number
-    , trace_side
     , order_hash
-    , tx_hash
-    , token_standard
-    , trace_index
-    , seaport_contract_address
-    , seaport_version
-    , token_address
     , amount
     , identifier
-    , recipient
     , offerer
+    , recipient
+    , token_address
+    , token_standard
+    , trace_index
+    , trace_side
+    , tx_hash
     , zone
+    , evt_index
+    , seaport_contract_address
+    , seaport_version
     FROM {{ seaport_model }}
     {% if not loop.last %}
     UNION ALL
