@@ -1,13 +1,11 @@
-{{
-    config(tags=['dunesql'],
+{{config(
+    tags=['dunesql'],
     alias = alias('trades'),
-    post_hook='{{
-        expose_spells(\'["optimism"]\',
-        "project",
-        "rubicon",
-        \'["msilb7, denver"]\') }}'
-        )
-}}
+    post_hook='{{expose_spells(\'["optimism"]\',
+                "project",
+                "rubicon",
+                \'["msilb7, denver"]\') }}'
+)}}
 
 {% set rubi_models = [
 ref('rubicon_optimism_trades'),
@@ -23,9 +21,7 @@ FROM (
         blockchain,
         project,
         version,
-        block_month,
         block_date,
-        block_month,
         block_time,
         token_bought_symbol,
         token_sold_symbol,
