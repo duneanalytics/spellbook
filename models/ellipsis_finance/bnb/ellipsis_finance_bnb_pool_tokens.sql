@@ -389,7 +389,7 @@ SELECT
     'ellipsis_finance' as project, 
     '1' as version, 
     pool, 
-    token_id, 
+    token_id,
     token_address, 
     token_type, 
     pool_type
