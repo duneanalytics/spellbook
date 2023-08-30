@@ -120,14 +120,14 @@ models:
             - sell_token_address
             - buy_token_address
             - token_pair
-            - sell_amount
-            - buy_amount
-            - sold_amount
-            - bought_amount
-            - sell_amount_usd
-            - buy_amount_usd
-            - sold_amount_usd
-            - bought_amount_usd
+#            - sell_amount
+#            - buy_amount
+#            - sold_amount
+#            - bought_amount
+#            - sell_amount_usd
+#            - buy_amount_usd
+#            - sold_amount_usd
+#            - bought_amount_usd
             - gas_price
             - gas_used
             - l1_gas_price
