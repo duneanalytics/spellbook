@@ -1,15 +1,15 @@
 version: 2
 
 models:
-  - name: seaport_base_traces
+  - name: seaport_traces
     meta:
-      blockchain: base
+      blockchain: arbitrum, avalanche_c, base, bnb, ethereum, optimism, polygon
       sector: nft
       contributors: hildobby
     config:
-      tags: ['seaport', 'base', 'traces']
+      tags: ['seaport', 'arbitrum', 'avalanche_c', 'base', 'bnb', 'ethereum', 'optimism', 'polygon', 'traces']
     description: >
-        Seaport emitted event traces on Base
+        Seaport emitted event traces across chains
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -63,15 +63,15 @@ models:
       - name: zone
         description: "Seaport zone"
 
-  - name: seaport_arbitrum_tagging
+  - name: seaport_tagging
     meta:
-      blockchain: arbitrum
+      blockchain: arbitrum, avalanche_c, base, bnb, ethereum, optimism, polygon
       sector: nft
       contributors: hildobby
     config:
-      tags: ['seaport', 'arbitrum', 'tagging']
+      tags: ['seaport', 'arbitrum', 'avalanche_c', 'base', 'bnb', 'ethereum', 'optimism', 'polygon', 'tagging']
     description: >
-        Seaport tagging to identify the different protocols using Seaport on Arbitrum 
+        Seaport tagging to identify the different protocols using Seaport across chains
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
