@@ -13,6 +13,7 @@ ref('gmx_avalanche_c_perpetual_trades')
 , ref('gmx_arbitrum_perpetual_trades')
 ] %}
 
+
 SELECT *
 FROM (
     {% for perpetual_model in gmx_perp_models %}

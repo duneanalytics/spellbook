@@ -14,9 +14,9 @@ models:
       - &blockchain
         name: blockchain
         description: "Blockchain which the DEX is deployed"
-      - &project 
+      - &project
         name: project
-        description: "Project name of the DEX"  
+        description: "Project name of the DEX"
       - &version
         name: version
         description: "Version of the contract built and deployed by the DEX project"
@@ -42,7 +42,7 @@ models:
         description: "Block number of pool creation"
       - &contract_address
         name: contract_address
-        description: "Contract address used to create the pool"  
+        description: "Contract address used to create the pool"
 
   - name: uniswap_optimism_ovm1_pool_mapping
     meta:
@@ -95,6 +95,9 @@ models:
       - *blockchain
       - *project
       - *version
+      - &block_month
+        name: block_month
+        description: "UTC event block month of each DEX trade"
       - &block_date
         name: block_date
         description: "UTC event block date of each DEX trade"
@@ -165,6 +168,7 @@ models:
       - *blockchain
       - *project
       - *version
+      - *block_month
       - *block_date
       - *block_time
       - *token_bought_symbol

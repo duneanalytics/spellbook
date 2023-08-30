@@ -23,6 +23,7 @@ WITH
     'Trading_evt_LimitCancelled'
     ,'TradingV2_evt_LimitCancelled'
     ,'TradingV3_evt_LimitCancelled'
+    ,'TradingV4_evt_LimitCancelled'
 ] %}
 
 limit_orders_v1 AS (
