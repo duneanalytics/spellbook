@@ -14,7 +14,6 @@ ref('seaport_arbitrum_tagging')
 , ref('seaport_base_tagging')
 , ref('seaport_bnb_tagging')
 , ref('seaport_ethereum_tagging')
-, ref('seaport_arbitrum_tagging')
 , ref('seaport_optimism_tagging')
 , ref('seaport_polygon_tagging')
 ] %}
