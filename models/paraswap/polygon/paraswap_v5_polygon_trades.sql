@@ -47,7 +47,7 @@ WITH dexs AS (
             END AS token_sold_address,
             contract_address AS project_contract_address,
             evt_tx_hash AS tx_hash, 
-            ARRAY[-1] AS trace_address,
+            CAST(ARRAY[-1] as array<bigint>) AS trace_address,
             evt_index
         FROM {{ trade_table }} p 
         {% if is_incremental() %}

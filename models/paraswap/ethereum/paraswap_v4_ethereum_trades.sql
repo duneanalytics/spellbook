@@ -53,7 +53,7 @@ WITH dex_swap AS (
             END AS token_sold_address,
             contract_address AS project_contract_address,
             evt_tx_hash AS tx_hash, 
-            ARRAY[-1] AS trace_address,
+            CAST(ARRAY[-1] as array<bigint>) AS trace_address,
             evt_index
         FROM {{ trade_table }} p 
         {% if is_incremental() %}
@@ -108,7 +108,7 @@ call_swap_without_event AS (
                 t."from" AS user_address,
                 t.contract_address AS tokenIn,
                 try_cast(t.value AS int256) AS amountIn,
-                ARRAY[-1] AS trace_address,
+                CAST(ARRAY[-1] as array<bigint>) AS trace_address,
                 t.evt_index,
                 row_number() over (partition by t.evt_tx_hash order by t.evt_index) as row_num
             FROM no_event_call_transaction c
@@ -173,7 +173,7 @@ call_swap_without_event AS (
                 t."to" AS user_address,
                 t.contract_address AS tokenOut,
                 try_cast(t.value AS int256) AS amountOut,
-                ARRAY[-1] AS trace_address,
+                CAST(ARRAY[-1] as array<bigint>) AS trace_address,
                 t.evt_index,
                 row_number() over (partition by t.evt_tx_hash order by t.evt_index) AS row_num
             FROM no_event_call_transaction c
