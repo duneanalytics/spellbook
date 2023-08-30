@@ -29,7 +29,7 @@ seeds:
         sold_amount_usd: double
         bought_amount_usd: double
         gas_price: uint256
-        gas_used: uint256
+        gas_used: bigint
         txn_cost_eth: double
         eth_price: double
         txn_cost_usd: double
