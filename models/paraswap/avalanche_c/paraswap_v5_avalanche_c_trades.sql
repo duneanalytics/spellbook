@@ -153,7 +153,7 @@ INNER JOIN {{ source('avalanche_c', 'transactions') }} tx
     ON dexs.tx_hash = tx.hash
     AND dexs.block_number = tx.block_number
     {% if not is_incremental() %}
-    AND tx.block_time >= date('{{project_start_date}}')
+    AND tx.block_time >= TIMESTAMP '{{project_start_date}}'
     {% endif %}
     {% if is_incremental() %}
     AND tx.block_time >= date_trunc('day', now() - interval '7' day)
@@ -169,7 +169,7 @@ LEFT JOIN {{ source('prices', 'usd') }} p_bought
     AND p_bought.contract_address = dexs.token_bought_address
     AND p_bought.blockchain = 'avalanche_c'
     {% if not is_incremental() %}
-    AND p_bought.minute >= date('{{project_start_date}}')
+    AND p_bought.minute >= TIMESTAMP '{{project_start_date}}'
     {% endif %}
     {% if is_incremental() %}
     AND p_bought.minute >= date_trunc('day', now() - interval '7' day)
@@ -183,7 +183,7 @@ LEFT JOIN {{ source('prices', 'usd') }} p_sold
     AND p_sold.contract_address = dexs.token_sold_address
     AND p_sold.blockchain = 'avalanche_c'
     {% if not is_incremental() %}
-    AND p_sold.minute >= date('{{project_start_date}}')
+    AND p_sold.minute >= TIMESTAMP '{{project_start_date}}'
     {% endif %}
     {% if is_incremental() %}
     AND p_sold.minute >= date_trunc('day', now() - interval '7' day)

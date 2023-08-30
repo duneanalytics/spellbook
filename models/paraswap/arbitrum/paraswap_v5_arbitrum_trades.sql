@@ -90,7 +90,7 @@ FROM dexs d
 INNER JOIN {{ source('arbitrum', 'transactions') }} tx ON d.tx_hash = tx.hash
     AND d.block_number = tx.block_number
     {% if not is_incremental() %}
-    AND tx.block_time >= date('{{project_start_date}}')
+    AND tx.block_time >= TIMESTAMP '{{project_start_date}}'
     {% endif %}
     {% if is_incremental() %}
     AND tx.block_time >= date_trunc('day', now() - interval '7' day)
@@ -103,7 +103,7 @@ LEFT JOIN {{ source('prices', 'usd') }} p1 ON p1.minute = date_trunc('minute', d
     AND p1.contract_address = d.token_bought_address
     AND p1.blockchain = 'arbitrum'
     {% if not is_incremental() %}
-    AND p1.minute >= date('{{project_start_date}}')
+    AND p1.minute >= TIMESTAMP '{{project_start_date}}'
     {% endif %}
     {% if is_incremental() %}
     AND p1.minute >= date_trunc('day', now() - interval '7' day)
@@ -112,7 +112,7 @@ LEFT JOIN {{ source('prices', 'usd') }} p2 ON p2.minute = date_trunc('minute', d
     AND p2.contract_address = d.token_sold_address
     AND p2.blockchain = 'arbitrum'
     {% if not is_incremental() %}
-    AND p2.minute >= date('{{project_start_date}}')
+    AND p2.minute >= TIMESTAMP '{{project_start_date}}'
     {% endif %}
     {% if is_incremental() %}
     AND p2.minute >= date_trunc('day', now() - interval '7' day)

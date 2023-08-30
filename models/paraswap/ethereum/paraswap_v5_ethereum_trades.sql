@@ -105,7 +105,7 @@ liqudity_swap AS (
     INNER JOIN {{ source('ethereum', 'transactions') }} tx ON p.evt_tx_hash = tx.hash
     AND p.evt_block_number = tx.block_number
     {% if not is_incremental() %}
-    AND tx.block_time >= date('{{project_start_date}}')
+    AND tx.block_time >= TIMESTAMP '{{project_start_date}}'
     {% endif %}
     {% if is_incremental() %}
     AND tx.block_time >= date_trunc('day', now() - interval '7' day)
@@ -130,7 +130,7 @@ call_swap_without_event AS (
                 AND tx.block_time >= date_trunc('day', now() - interval '7' day)
                 {% endif %}
                 {% if not is_incremental() %}
-                AND tx.block_time >= date('{{project_start_date}}')
+                AND tx.block_time >= TIMESTAMP '{{project_start_date}}'
                 {% endif %}
             WHERE c.call_success = true
             {% if is_incremental() %}
@@ -157,7 +157,7 @@ call_swap_without_event AS (
                 t.evt_block_time AS block_time,
                 t."from" AS user_address,
                 t.contract_address AS tokenIn,
-                t.value AS amountIn,
+                cast(t.value AS decimal(38, 0) AS amountIn,
                 ARRAY[-1] AS trace_address,
                 t.evt_index,
                 row_number() over (partition by t.evt_tx_hash order by t.evt_index) as row_num
@@ -170,7 +170,7 @@ call_swap_without_event AS (
                 AND t.evt_block_time >= date_trunc('day', now() - interval '7' day)
                 {% endif %}
                 {% if not is_incremental() %}
-                AND t.evt_block_time >= date('{{project_start_date}}')
+                AND t.evt_block_time >= TIMESTAMP '{{project_start_date}}'
                 {% endif %}
             where c.is_eth = false -- Swap ERC20 to other token
         ) t
@@ -184,7 +184,9 @@ call_swap_without_event AS (
             t.block_time,
             c."from" AS user_address,
             0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2 AS tokenIn, -- WETH
-            SUM(t.value) AS amountIn,
+            SUM(case
+                when t."from" = tx."from" then cast(t.value AS decimal(38, 0))
+                else -1 * cast(t.value AS decimal(38, 0)) AS amountIn,
             MAX(t.trace_address) AS trace_address,
             CAST(-1 as integer) AS evt_index
         FROM no_event_call_transaction c
@@ -198,7 +200,7 @@ call_swap_without_event AS (
             AND t.block_time >= date_trunc('day', now() - interval '7' day)
             {% endif %}
             {% if not is_incremental() %}
-            AND t.block_time >= date('{{project_start_date}}')
+            AND t.block_time >= TIMESTAMP '{{project_start_date}}'
             {% endif %}
         where c.is_eth -- Swap ETH to other token
         GROUP BY 1, 2, 3, 4
@@ -219,7 +221,7 @@ call_swap_without_event AS (
                 t.evt_block_time AS block_time,
                 t."to" AS user_address,
                 t.contract_address AS tokenOut,
-                t.value AS amountOut,
+                cast(t.value AS decimal(38, 0) AS amountOut,
                 ARRAY[-1] AS trace_address,
                 t.evt_index,
                 row_number() over (partition by t.evt_tx_hash order by t.evt_index) AS row_num
@@ -232,7 +234,7 @@ call_swap_without_event AS (
                 AND t.evt_block_time >= date_trunc('day', now() - interval '7' day)
                 {% endif %}
                 {% if not is_incremental() %}
-                AND t.evt_block_time >= date('{{project_start_date}}')
+                AND t.evt_block_time >= TIMESTAMP '{{project_start_date}}'
                 {% endif %}
             where c.is_eth = false -- Swap ERC20 to other token
         ) t
@@ -245,7 +247,7 @@ call_swap_without_event AS (
             t.block_time,
             t."to" AS user_address,
             0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2 AS tokenOut, -- WETH
-            t.value AS amountOut,
+            cast(t.value AS decimal(38, 0) AS amountOut,
             t.trace_address,
             CAST(-1 as integer) AS evt_index
         FROM no_event_call_transaction c
@@ -259,7 +261,7 @@ call_swap_without_event AS (
             AND t.block_time >= date_trunc('day', now() - interval '7' day)
             {% endif %}
             {% if not is_incremental() %}
-            AND t.block_time >= date('{{project_start_date}}')
+            AND t.block_time >= TIMESTAMP '{{project_start_date}}'
             {% endif %}
         where c.is_eth = false --  Swap ERC20 token to ETH
     )
@@ -268,8 +270,8 @@ call_swap_without_event AS (
         i.block_number,
         i.user_address AS taker,
         i.user_address AS maker,
-        o.amountOut AS token_bought_amount_raw,
-        i.amountIn AS token_sold_amount_raw,
+        cast(o.amountOut as uint256) AS token_bought_amount_raw,
+        cast(i.amountIn as uint256) AS token_sold_amount_raw,
         CAST(NULL AS double) AS amount_usd,
         o.tokenOut AS token_bought_address,
         i.tokenIn AS token_sold_address,
@@ -373,7 +375,7 @@ FROM dexs d
 INNER JOIN {{ source('ethereum', 'transactions') }} tx ON d.tx_hash = tx.hash
     AND d.block_number = tx.block_number
     {% if not is_incremental() %}
-    AND tx.block_time >= date('{{project_start_date}}')
+    AND tx.block_time >= TIMESTAMP '{{project_start_date}}'
     {% endif %}
     {% if is_incremental() %}
     AND tx.block_time >= date_trunc('day', now() - interval '7' day)
@@ -386,7 +388,7 @@ LEFT JOIN {{ source('prices', 'usd') }} p1 ON p1.minute = date_trunc('minute', d
     AND p1.contract_address = d.token_bought_address
     AND p1.blockchain = 'ethereum'
     {% if not is_incremental() %}
-    AND p1.minute >= date('{{project_start_date}}')
+    AND p1.minute >= TIMESTAMP '{{project_start_date}}'
     {% endif %}
     {% if is_incremental() %}
     AND p1.minute >= date_trunc('day', now() - interval '7' day)
@@ -395,7 +397,7 @@ LEFT JOIN {{ source('prices', 'usd') }} p2 ON p2.minute = date_trunc('minute', d
     AND p2.contract_address = d.token_sold_address
     AND p2.blockchain = 'ethereum'
     {% if not is_incremental() %}
-    AND p2.minute >= date('{{project_start_date}}')
+    AND p2.minute >= TIMESTAMP '{{project_start_date}}'
     {% endif %}
     {% if is_incremental() %}
     AND p2.minute >= date_trunc('day', now() - interval '7' day)
