@@ -1,4 +1,10 @@
-{{ config( alias = alias('native'), tags=['static'])}}
+{{ config(
+        alias=alias('native'),
+        tags=['static', 'dunesql'],
+        post_hook='{{ expose_spells(\'["arbitrum","avalanche_c","bnb","ethereum","optimism", "gnosis", "fantom", "polygon","solana", "celo"]\',
+                                    "sector",
+                                    "tokens",
+                                    \'["0xManny","hildobby","soispoke","dot2dotseurat","mtitus6","wuligy"]\') }}')}}
 
 SELECT chain, symbol, price_symbol, LOWER(price_address) as price_address, decimals
 FROM (VALUES
