@@ -35,7 +35,6 @@ FROM (
     , seaport_version
     , token_address
     , amount
-    , bundle_size
     , identifier
     , recipient
     , offerer
