@@ -45,9 +45,10 @@ SELECT
 
         ,split(
                 REGEXP_REPLACE(--Replace invisible characters
-                        CASE WHEN cast( REGEXP_REPLACE(from_utf8(val), '[^\x20-\x7E]','') as varchar(100)) != ''
-                            THEN cast(from_utf8(val) as varchar(100))
-                            ELSE cast(bytearray_to_uint256(if(bytearray_length(val) > 32, bytearray_substring(val, 1, 32), val)) as varchar(100))
+                        CASE WHEN cast( REGEXP_REPLACE(from_utf8(val), '[^\x20-\x7E]','') as varchar) != ''
+                            THEN cast(from_utf8(val) as varchar)
+                            ELSE cast(bytearray_to_uint256(
+                              if(bytearray_length(val) > 32, bytearray_substring(val, 1, 32), val)) as varchar
                         END  
                   , '[^\x20-\x7E]','')
               ,',') as val
