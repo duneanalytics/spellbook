@@ -92,7 +92,7 @@ WITH all_labels AS (
                 ON tx.hash = tf.evt_tx_hash
                 AND tx.block_number = tf.evt_block_number
                 {% if is_incremental() %} 
-                and tx.block_time >= date_trunc('day', now() - interval '1' week)
+                and tx.block_time >= date_trunc('day', now() - interval '7' day)
                 {% else %}
                 AND tx.block_time >= cast('{{op_token_launch_date}}' as date)
                 {% endif %}
@@ -114,7 +114,7 @@ WITH all_labels AS (
                             ,0x51d3a2f94e60cbecdce05ab41b61d7ce5240b8ff)
                     )
             {% if is_incremental() %} 
-            and tf.evt_block_time >= date_trunc('day', now() - interval '1' week)
+            and tf.evt_block_time >= date_trunc('day', now() - interval '7' day)
             {% else %}
             AND tf.evt_block_time >= cast('{{op_token_launch_date}}' as date)
             {% endif %}
@@ -166,7 +166,7 @@ WITH all_labels AS (
             tx_method
         FROM {{ ref('op_token_distributions_optimism_other_distributions_claims') }} o
         {% if is_incremental() %} 
-            where o.evt_block_time >= date_trunc('day', now() - interval '1' week)
+            where o.evt_block_time >= date_trunc('day', now() - interval '7' day)
         {% endif %}
 
         UNION ALL
@@ -200,7 +200,7 @@ WITH all_labels AS (
                 t.evt_tfer_index = o.max_evt_tfer_index
                 )
             {% if is_incremental() %} 
-            and o.evt_block_time >= date_trunc('day', now() - interval '1' week)
+            and o.evt_block_time >= date_trunc('day', now() - interval '7' day)
             {% endif %}
         WHERE o.evt_block_number IS NULL
 )
