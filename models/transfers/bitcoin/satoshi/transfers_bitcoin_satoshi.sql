@@ -14,7 +14,7 @@ with
             block_height,
             -1 * value as amount_raw
         from
-            {{ source('bitcoin', 'inputs') }} where address != null
+            {{ source('bitcoin', 'inputs') }} where address is null
     )
     , 
     output_transfers as (
@@ -26,7 +26,7 @@ with
             block_height,
             value as amount_raw
         from
-            {{ source('bitcoin', 'outputs') }} where address != null
+            {{ source('bitcoin', 'outputs') }} where address is null
     )
 
 select unique_transfer_id, 'bitcoin' as blockchain, wallet_address, block_time, block_date, block_height, amount_raw
