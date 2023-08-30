@@ -29,8 +29,8 @@ with
             {{ source('bitcoin', 'outputs') }} where address != null
     )
 
-select unique_transfer_id, 'bitcoin' as blockchain, wallet_address, block_time, block_date, block_height, CAST(amount_raw AS VARCHAR(100)) as amount_raw
+select unique_transfer_id, 'bitcoin' as blockchain, wallet_address, block_time, block_date, block_height, amount_raw
 from input_transfers
 union
-select unique_transfer_id, 'bitcoin' as blockchain, wallet_address, block_time, block_date, block_height, CAST(amount_raw AS VARCHAR(100)) as amount_raw
+select unique_transfer_id, 'bitcoin' as blockchain, wallet_address, block_time, block_date, block_height, amount_raw
 from output_transfers
