@@ -26,7 +26,7 @@ perp_events as (
            quoteAsset / 1E6                                            as volume_usd,
            CAST(NULL as double)                                        as fee_usd,          -- no event to track fees
            CAST(NULL as double)                                        as margin_usd,       -- no event to track margin
-           CAST(quoteAsset as double)                                  as volume_raw,
+           CAST(quoteAsset as UINT256)                                  as volume_raw,
            trader,
            contract_address                                            as market_address,
            evt_index,

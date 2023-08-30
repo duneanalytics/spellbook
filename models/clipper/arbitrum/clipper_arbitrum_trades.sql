@@ -1,4 +1,4 @@
-{{ 
+{{
     config(tags=['dunesql'],
     alias = alias('trades'),
     post_hook='{{ expose_spells(\'["arbitrum"]\',
@@ -9,8 +9,10 @@
 }}
 
 {% set clipper_models = [
-    ref('clipper_v1_arbitrum_trades')
-    , ref('clipper_coves_v1_arbitrum_trades')
+ref('clipper_v1_arbitrum_trades')
+, ref('clipper_v2_arbitrum_trades')
+, ref('clipper_coves_v1_arbitrum_trades')
+, ref('clipper_coves_v2_arbitrum_trades')
 ] %}
 
 
@@ -21,6 +23,7 @@ FROM (
         blockchain,
         project,
         version,
+        block_month,
         block_date,
         block_time,
         token_bought_symbol,
