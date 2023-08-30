@@ -4,7 +4,7 @@ models:
   - name: seaport_traces
     meta:
       blockchain: arbitrum, avalanche_c, base, bnb, ethereum, optimism, polygon
-      sector: nft
+      project: seaport
       contributors: hildobby
     config:
       tags: ['seaport', 'arbitrum', 'avalanche_c', 'base', 'bnb', 'ethereum', 'optimism', 'polygon', 'traces']
@@ -67,7 +67,7 @@ models:
   - name: seaport_tagging
     meta:
       blockchain: arbitrum, avalanche_c, base, bnb, ethereum, optimism, polygon
-      sector: nft
+      project: seaport
       contributors: hildobby
     config:
       tags: ['seaport', 'arbitrum', 'avalanche_c', 'base', 'bnb', 'ethereum', 'optimism', 'polygon', 'tagging']

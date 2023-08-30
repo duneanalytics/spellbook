@@ -272,7 +272,7 @@ models:
   - name: seaport_arbitrum_traces
     meta:
       blockchain: arbitrum
-      sector: nft
+      project: seaport
       contributors: hildobby
     config:
       tags: ['seaport', 'arbitrum', 'traces']
@@ -334,7 +334,7 @@ models:
   - name: seaport_arbitrum_tagging
     meta:
       blockchain: arbitrum
-      sector: nft
+      project: seaport
       contributors: hildobby
     config:
       tags: ['seaport', 'arbitrum', 'tagging']

@@ -272,7 +272,7 @@ models:
   - name: seaport_bnb_traces
     meta:
       blockchain: bnb
-      sector: nft
+      project: seaport
       contributors: hildobby
     config:
       tags: ['seaport', 'bnb', 'traces']
@@ -334,7 +334,7 @@ models:
   - name: seaport_bnb_tagging
     meta:
       blockchain: bnb
-      sector: nft
+      project: seaport
       contributors: hildobby
     config:
       tags: ['seaport', 'bnb', 'tagging']

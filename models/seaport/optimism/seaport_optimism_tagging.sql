@@ -1,7 +1,7 @@
 {{ config(
     alias = alias('tagging'),
     tags = ['dunesql', 'static'],
-    unique_key = ['address'])
+    unique_key = ['blockchain', 'tagging_method', 'identifier'])
 }}
 
 SELECT blockchain, tagging_method, identifier, protocol, protocol_type

@@ -4,7 +4,7 @@ models:
   - name: seaport_base_traces
     meta:
       blockchain: base
-      sector: nft
+      project: seaport
       contributors: hildobby
     config:
       tags: ['seaport', 'base', 'traces']
@@ -66,7 +66,7 @@ models:
   - name: seaport_base_tagging
     meta:
       blockchain: base
-      sector: nft
+      project: seaport
       contributors: hildobby
     config:
       tags: ['seaport', 'base', 'tagging']

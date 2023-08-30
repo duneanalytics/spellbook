@@ -274,7 +274,7 @@ models:
   - name: seaport_polygon_traces
     meta:
       blockchain: polygon
-      sector: nft
+      project: seaport
       contributors: hildobby
     config:
       tags: ['seaport', 'polygon', 'traces']
@@ -336,7 +336,7 @@ models:
   - name: seaport_polygon_tagging
     meta:
       blockchain: polygon
-      sector: nft
+      project: seaport
       contributors: hildobby
     config:
       tags: ['seaport', 'polygon', 'tagging']

@@ -274,7 +274,7 @@ models:
   - name: seaport_optimism_traces
     meta:
       blockchain: optimism
-      sector: nft
+      project: seaport
       contributors: hildobby
     config:
       tags: ['seaport', 'optimism', 'traces']
@@ -336,7 +336,7 @@ models:
   - name: seaport_optimism_tagging
     meta:
       blockchain: optimism
-      sector: nft
+      project: seaport
       contributors: hildobby
     config:
       tags: ['seaport', 'optimism', 'tagging']

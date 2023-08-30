@@ -272,7 +272,7 @@ models:
   - name: seaport_avalanche_c_traces
     meta:
       blockchain: avalanche_c
-      sector: nft
+      project: seaport
       contributors: hildobby
     config:
       tags: ['seaport', 'avalanche_c', 'traces']
@@ -334,7 +334,7 @@ models:
   - name: seaport_avalanche_c_tagging
     meta:
       blockchain: avalanche_c
-      sector: nft
+      project: seaport
       contributors: hildobby
     config:
       tags: ['seaport', 'avalanche_c', 'tagging']
