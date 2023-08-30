@@ -236,8 +236,8 @@ SELECT
   CAST(coalesce(s.royalty_fee_amount_raw,cast(0 as uint256)) / power(10, erc.decimals) as double) AS royalty_fee_amount,
   CAST(coalesce(s.royalty_fee_amount_raw,cast(0 as uint256)) / power(10, erc.decimals) * p.price AS double) AS royalty_fee_amount_usd,
   CAST(coalesce(s.royalty_fee_amount_raw,cast(0 as uint256)) / s.amount_raw * 100 AS double) AS royalty_fee_percentage,
-  0x AS royalty_fee_receive_address,
-  0x AS royalty_fee_currency_symbol,
+  cast(null as varbinary) AS royalty_fee_receive_address,
+  cast(null as varchar) AS royalty_fee_currency_symbol,
   cast(a.evt_tx_hash as varchar) || '-' || cast(a.evt_index as varchar) AS unique_trade_id
 FROM trades a
 INNER JOIN {{ source('polygon','transactions') }} t ON a.evt_block_number = t.block_number
