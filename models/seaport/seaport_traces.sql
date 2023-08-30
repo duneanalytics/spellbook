@@ -14,7 +14,6 @@ ref('seaport_arbitrum_traces')
 , ref('seaport_base_traces')
 , ref('seaport_bnb_traces')
 , ref('seaport_ethereum_traces')
-, ref('seaport_arbitrum_traces')
 , ref('seaport_optimism_traces')
 , ref('seaport_polygon_traces')
 ] %}
