@@ -62,6 +62,13 @@ models:
     config:
       tags: ['transfers', 'celo', 'erc721', 'agg_hour', 'soispoke', 'dot2dotseurat', 'tomfutago']
     description: "A helper table to construct erc721 balances"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - wallet_address
+            - token_address
+            - block_hour
+            - token_id
     columns:
       - *blockchain
       - *block_month
@@ -79,9 +86,16 @@ models:
       sector: transfers
       project: erc721
       contributors: soispoke, dot2dotseurat, tomfutago
-    description: "ERC721 Token Transfers on Celo per hour."
     config:
       tags: ['transfers', 'celo', 'erc721', 'rolling_hour', 'soispoke', 'dot2dotseurat', 'tomfutago']
+    description: "ERC721 Token Transfers on Celo per hour."
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - wallet_address
+            - token_address
+            - block_hour
+            - token_id
     columns:
       - *blockchain
       - *block_month
@@ -106,6 +120,13 @@ models:
     config:
       tags: ['transfers', 'celo', 'erc721', 'agg_day', 'soispoke', 'dot2dotseurat', 'tomfutago']
     description: "A helper table to construct erc721 balances"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - wallet_address
+            - token_address
+            - block_day
+            - token_id
     columns:
       - *blockchain
       - *block_month
@@ -123,9 +144,16 @@ models:
       sector: transfers
       project: erc721
       contributors: soispoke, dot2dotseurat, tomfutago
-    description: "ERC721 Token Transfers on Celo per day."
     config:
       tags: ['transfers', 'celo', 'erc721', 'rolling_day', 'soispoke', 'dot2dotseurat', 'tomfutago']
+    description: "ERC721 Token Transfers on Celo per day."
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - wallet_address
+            - token_address
+            - block_day
+            - token_id
     columns:
       - *blockchain
       - *block_month
