@@ -20,3 +20,16 @@ seeds:
         tx_hash: varbinary
         tx_from: varbinary
         tx_to: varbinary
+        sell_amount: double
+        buy_amount: double
+        sold_amount: double
+        bought_amount: double
+        sell_amount_usd: double
+        buy_amount_usd: double
+        sold_amount_usd: double
+        bought_amount_usd: double
+        gas_price: uint256
+        gas_used: uint256
+        txn_cost_eth: double
+        eth_price: double
+        txn_cost_usd: double
