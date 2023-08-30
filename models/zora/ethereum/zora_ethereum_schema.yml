@@ -10,6 +10,12 @@ models:
       tags: ['zora', 'ethereum', 'mints']
     description: >
         Zora Mints on Ethereum
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_number
+            - tx_hash
+            - evt_index
     columns:
       - name: blockchain
         description: "Blockchain"

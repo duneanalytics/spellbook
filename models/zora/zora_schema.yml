@@ -10,6 +10,13 @@ models:
       tags: ['zora', 'ethereum', 'optimism', 'base', 'goerli', 'mints']
     description: >
         Zora Mints
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - block_number
+            - tx_hash
+            - evt_index
     columns:
       - name: blockchain
         description: "Blockchain"

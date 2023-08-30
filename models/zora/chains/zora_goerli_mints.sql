@@ -5,7 +5,7 @@
         partition_by=['block_date'],
         materialized='incremental',
         file_format = 'delta',
-        unique_key = ['tx_hash', 'evt_index']
+        unique_key = ['block_number', 'tx_hash', 'evt_index']
 )
 }}
 
