@@ -1,18 +1,21 @@
-{{ config(
+{{ config(tags=['dunesql'],
+        schema = 'honeyswap',
         alias = alias('trades'),
-        tags = ['dunesql']
+        post_hook='{{ expose_spells(\'["gnosis", "polygon"]\',
+                                "project",
+                                "honeyswap",
+                                \'["0xr3x"]\') }}'
         )
 }}
 
-{% set paraswap_models = [
-    ref('paraswap_v4_bnb_trades')
-    ,ref('paraswap_v5_bnb_trades')
+{% set honeyswap_models = [
+ref('honeyswap_v2_gnosis_trades')
 ] %}
-
+-- , ref('honeyswap_polygon_trades')
 
 SELECT *
 FROM (
-    {% for dex_model in paraswap_models %}
+    {% for dex_model in honeyswap_models %}
     SELECT
         blockchain,
         project,
@@ -36,7 +39,6 @@ FROM (
         tx_hash,
         tx_from,
         tx_to,
-        trace_address,
         evt_index
     FROM {{ dex_model }}
     {% if not loop.last %}
@@ -44,4 +46,3 @@ FROM (
     {% endif %}
     {% endfor %}
 )
-;
