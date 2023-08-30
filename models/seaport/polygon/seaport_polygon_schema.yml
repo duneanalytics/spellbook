@@ -333,15 +333,15 @@ models:
       - name: zone
         description: "Seaport zone"
 
-  - name: seaport_arbitrum_tagging
+  - name: seaport_polygon_tagging
     meta:
-      blockchain: arbitrum
+      blockchain: polygon
       sector: nft
       contributors: hildobby
     config:
-      tags: ['seaport', 'arbitrum', 'tagging']
+      tags: ['seaport', 'polygon', 'tagging']
     description: >
-        Seaport tagging to identify the different protocols using Seaport on Arbitrum 
+        Seaport tagging to identify the different protocols using Seaport on Polygon 
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:

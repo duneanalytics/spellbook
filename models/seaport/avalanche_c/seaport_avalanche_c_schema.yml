@@ -331,15 +331,15 @@ models:
       - name: zone
         description: "Seaport zone"
 
-  - name: seaport_arbitrum_tagging
+  - name: seaport_avalanche_c_tagging
     meta:
-      blockchain: arbitrum
+      blockchain: avalanche_c
       sector: nft
       contributors: hildobby
     config:
-      tags: ['seaport', 'arbitrum', 'tagging']
+      tags: ['seaport', 'avalanche_c', 'tagging']
     description: >
-        Seaport tagging to identify the different protocols using Seaport on Arbitrum 
+        Seaport tagging to identify the different protocols using Seaport on Avalanche C-chain 
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:

@@ -491,15 +491,15 @@ models:
       - name: zone
         description: "Seaport zone"
 
-  - name: seaport_arbitrum_tagging
+  - name: seaport_ethereum_tagging
     meta:
-      blockchain: arbitrum
+      blockchain: ethereum
       sector: nft
       contributors: hildobby
     config:
-      tags: ['seaport', 'arbitrum', 'tagging']
+      tags: ['seaport', 'ethereum', 'tagging']
     description: >
-        Seaport tagging to identify the different protocols using Seaport on Arbitrum 
+        Seaport tagging to identify the different protocols using Seaport on Ethereum 
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:

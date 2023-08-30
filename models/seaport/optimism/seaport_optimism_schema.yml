@@ -333,15 +333,15 @@ models:
       - name: zone
         description: "Seaport zone"
 
-  - name: seaport_arbitrum_tagging
+  - name: seaport_optimism_tagging
     meta:
-      blockchain: arbitrum
+      blockchain: optimism
       sector: nft
       contributors: hildobby
     config:
-      tags: ['seaport', 'arbitrum', 'tagging']
+      tags: ['seaport', 'optimism', 'tagging']
     description: >
-        Seaport tagging to identify the different protocols using Seaport on Arbitrum 
+        Seaport tagging to identify the different protocols using Seaport on Optimism 
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
