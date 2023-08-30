@@ -14,7 +14,7 @@ with
         select
             explode(
                 sequence(
-                    date '2009-01-03', date_trunc('day', now()), interval 1 day
+                    date '2009-01-03', date_trunc('day', now()), interval '1 day'
                 )
             ) as day
     )
