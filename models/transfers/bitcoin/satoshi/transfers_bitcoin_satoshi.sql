@@ -12,9 +12,9 @@ with
             block_time,
             block_date,
             block_height,
-            value as amount_raw
+            '-' || CAST(value AS VARCHAR(100)) as amount_raw
         from
-            {{ source('bitcoin', 'inputs') }}
+            {{ source('bitcoin', 'inputs') }} where address != null
     )
     , 
     output_transfers as (
@@ -24,9 +24,9 @@ with
             block_time,
             block_date,
             block_height,
-            '-' || CAST(value AS VARCHAR(100)) as amount_raw
+            value as amount_raw
         from
-            {{ source('bitcoin', 'outputs') }}
+            {{ source('bitcoin', 'outputs') }} where address != null
     )
 
 select unique_transfer_id, 'bitcoin' as blockchain, wallet_address, block_time, block_date, block_height, CAST(amount_raw AS VARCHAR(100)) as amount_raw

@@ -10,9 +10,9 @@
 
 select
     'bitcoin' as blockchain,
-    block_date as day,
+    tr.block_date as day,
     tr.wallet_address,
-    tr.wallet_address || '-' || block_date as unique_transfer_id,
+    tr.wallet_address || '-' || cast(block_date as varchar(10)) as unique_transfer_id,
     sum(tr.amount_raw) as amount_raw
 from {{ ref('transfers_bitcoin_satoshi') }} tr
 {% if is_incremental() %}
