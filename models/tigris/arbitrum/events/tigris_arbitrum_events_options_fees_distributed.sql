@@ -1,12 +1,12 @@
 {{ config(
-    tags=['dunesql', 'prod_exclude'],
+    tags=['dunesql'],
     schema = 'tigris_arbitrum',
     alias = alias('options_fees_distributed'),
     partition_by = ['block_month'],
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
-    unique_key = ['evt_block_time', 'evt_tx_hash', 'version', 'protocol_version']
+    unique_key = ['evt_block_time', 'evt_tx_hash', 'evt_index']
     )
 }}
 
@@ -24,6 +24,7 @@ fees_v2 AS (
             CAST(date_trunc('MONTH', evt_block_time) AS date) as block_month, 
             evt_block_time,
             evt_index,
+            CASE WHEN evt_tx_hash = 0xf0a5193fc41599987645f183ae0c3a8311da02ebc9e4ee136edcfd4916133e78 THEN CAST(evt_index as double) + 2 ELSE -1 END as evt_join_index,
             evt_tx_hash,
             botFees/1e18 + daoFees/1e18 + refFees/1e18 as fees,
             contract_address as project_contract_address
