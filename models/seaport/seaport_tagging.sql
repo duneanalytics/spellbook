@@ -3,8 +3,8 @@
         alias = alias('tagging'),
         unique_key = ['blockchain', 'tagging_method', 'identifier'],
         post_hook='{{ expose_spells(\'["arbitrum", "avalanche_c", "base", "bnb", "ethereum", "optimism", "polygon"]\',
-                                    "sector",
-                                    "nft",
+                                    "project",
+                                    "seaport",
                                     \'["hildobby"]\') }}'
 )
 }}
