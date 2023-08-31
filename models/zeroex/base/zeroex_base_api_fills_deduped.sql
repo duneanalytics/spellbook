@@ -1,6 +1,7 @@
 {{  config(
         tags=['dunesql'],
-        alias = alias('api_fills_base_deduped'),
+        schema = 'zeroex_base',
+        alias = alias('api_fills_deduped'),
         materialized='incremental',
         partition_by = ['block_date'],
         unique_key = ['block_date', 'tx_hash', 'evt_index'],
@@ -80,8 +81,8 @@ SELECT  a.blockchain
         END AS token_pair   
       , b.taker_token_amount
       , b.maker_token_amount
-      , CAST(b.taker_token_amount_raw AS DECIMAL(38,0)) AS taker_token_amount_raw
-      , CAST(b.maker_token_amount_raw AS DECIMAL(38,0)) AS maker_token_amount_raw
+      , b.taker_token_amount_raw AS taker_token_amount_raw
+      , b.maker_token_amount_raw AS maker_token_amount_raw
       , a.volume_usd
       , b.taker_token
       , b.maker_token
