@@ -26,7 +26,7 @@ with
 
 SELECT
     'bitcoin' as blockchain,
-    b.day,
+    d.day,
     b.wallet_address,
     b.amount_raw,
     b.amount,

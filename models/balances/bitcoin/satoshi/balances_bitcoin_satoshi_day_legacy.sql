@@ -29,12 +29,13 @@ days as (
 
 SELECT
     'bitcoin' as blockchain,
-    b.day,
+    d.day,
     b.wallet_address,
     b.amount_raw,
     b.amount,
     b.amount * p.price as amount_usd
 FROM daily_balances b
+INNER JOIN days d ON b.day <= d.day AND d.day < b.next_day
 LEFT JOIN {{ source('prices', 'usd') }} p
     ON b.next_day = p.minute
     AND p.symbol='BTC'
