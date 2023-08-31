@@ -506,7 +506,7 @@ WHERE contract_order = 1
     -- to be replaced with all tokens table
       CASE 
       WHEN EXISTS (SELECT 1
-                        FROM {{source('erc1155_' + chain, 'evt_TransferSingle')}} r
+                        FROM {{source('erc1155_' + chain, 'evt_transfersingle')}} r
                         WHERE c.contract_address = r.contract_address
                         AND r.evt_block_time > c.created_time
                         {% if is_incremental() %} -- this filter will only be applied on an incremental run 
@@ -515,7 +515,7 @@ WHERE contract_order = 1
                         limit 1
                         ) THEN 'erc1155'
       WHEN EXISTS (SELECT 1
-                        FROM {{source('erc1155_' + chain, 'evt_TransferBatch')}} r
+                        FROM {{source('erc1155_' + chain, 'evt_transferbatch')}} r
                         WHERE c.contract_address = r.contract_address
                         AND r.evt_block_time > c.created_time
                         {% if is_incremental() %} -- this filter will only be applied on an incremental run 
