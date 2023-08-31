@@ -589,6 +589,9 @@ WITH curated_list AS (
       ,(0x36BDE71C97B33Cc4729cf772aE268934f7AB70B2, 'Worldcoin')
       ,(0x5856d478832ff3a68c122388623c4ee027d0e65a, 'Mean Finance')
       ,(0xAEDdC8B2aa5E331B53c22F1da8069c18d02eF6ac, 'Gitcoin')
+      ,(0xbda458dfc28021debd72060671fc350fa5cb39e5, 'deBridge')
+      ,(0xfd830dd9b446c9b880b32a03fb9a750aae4a68aa, 'deBridge')
+      ,(0x05f32b3cc3888453ff71b01135b34ff8e41263f2, 'Layerswap')
       
   ) as temp_table (creator_address, contract_project)
 )
