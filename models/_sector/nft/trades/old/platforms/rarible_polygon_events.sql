@@ -74,7 +74,7 @@ WITH trades AS (
         p.call_block_number AS evt_block_number,
         p.call_tx_hash AS evt_tx_hash,
         p.contract_address,
-        CAST(null as integer) AS evt_index,
+        CAST(1 as integer) AS evt_index,
         'Trade' AS evt_type,
         t."from" AS buyer, --p.direct:nftData
         from_hex(json_extract_scalar(p.direct,'$.sellOrderMaker')) AS seller,
@@ -112,7 +112,7 @@ WITH trades AS (
         p.call_block_number AS evt_block_number,
         p.call_tx_hash AS evt_tx_hash,
         p.contract_address,
-        CAST(null as integer) AS evt_index,
+        CAST(1 as integer) AS evt_index,
         'Trade' AS evt_type,
         from_hex(json_extract_scalar(p.direct,'$.bidMaker')) AS buyer,
         t."from" AS seller,
