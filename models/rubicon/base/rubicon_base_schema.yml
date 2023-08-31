@@ -110,6 +110,9 @@ models:
     tests:
       - check_seed:
           seed_file: ref('dex_offers_seed')
+          filter:
+            blockchain: base
+            project: rubicon
           match_columns:
             - block_date
             - blockchain
