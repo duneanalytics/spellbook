@@ -25,6 +25,7 @@ models:
         description: "Tokemak pool address"
         tests:
           - not_null
+          - unique
       - &pricing_contract
         name: pricing_contract
         description: "Token contract"
@@ -68,6 +69,7 @@ models:
         description: "Tokemak owned address"
         tests:
           - not_null
+          - unique
   - name: tokemak_ethereum_tokemak_lookup_reactors
     meta:
       blockchain: ethereum
