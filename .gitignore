@@ -1,7 +1,5 @@
 .DS_Store
 .vscode
-*.ipynb
-docker_ci.sh
 manifest.json
 macros/dune/create_views_of_dependencies.sql
 macros/dune/alter_table_locations.sql
