@@ -1,13 +1,13 @@
 version: 2
 
-sources: 
+sources:
   # for native orders on v4 + PLP VIP
   - name: zeroex_polygon
     description: "Polygon decoded tables related to 0x Exchange Proxy (v4)"
     freshness:
       warn_after: { count: 12, period: hour }
     loaded_at_field: evt_block_time
-    
+
     tables:
       - name: ExchangeProxy_evt_LimitOrderFilled
       - name: ExchangeProxy_evt_OtcOrderFilled
@@ -16,6 +16,13 @@ sources:
       - name: Exchange_evt_Fill
       - name: ExchangeProxy_evt_ERC721OrderFilled
       - name: ExchangeProxy_evt_ERC1155OrderFilled
+      - name: ExchangeProxy_call_buyERC721
+      - name: ExchangeProxy_call_batchBuyERC721s
+      - name: ExchangeProxy_call_buyERC1155
+      - name: ExchangeProxy_call_batchBuyERC1155s
+      - name: ExchangeProxy_call_sellERC721
+      - name: ExchangeProxy_call_sellERC1155
+
 
     # for native orders on v3
   - name: zeroex_v3_polygon

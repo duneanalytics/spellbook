@@ -20,7 +20,7 @@ models:
             - tx_hash
             - evt_index
             - trace_address
-      - check_dex_aggregator_seed_legacy:
+      - check_dex_aggregator_seed:
           blockchain: ethereum
           project: 1inch
           version: 1
@@ -94,6 +94,9 @@ models:
       - &evt_index
         name: evt_index
         description: "Index of the corresponding trade event"
+      - &block_month
+        name: block_month
+        description: "UTC event block month of the trade"
 
   - name: oneinch_v2_ethereum_trades
     meta:
@@ -114,7 +117,7 @@ models:
             - tx_hash
             - evt_index
             - trace_address
-      - check_dex_aggregator_seed_legacy:
+      - check_dex_aggregator_seed:
           blockchain: ethereum
           project: 1inch
           version: 2
@@ -142,6 +145,7 @@ models:
       - *tx_to
       - *trace_address
       - *evt_index
+      - *block_month
 
   - name: oneinch_v3_ethereum_trades
     meta:
@@ -162,7 +166,7 @@ models:
             - tx_hash
             - evt_index
             - trace_address
-      - check_dex_aggregator_seed_legacy:
+      - check_dex_aggregator_seed:
           blockchain: ethereum
           project: 1inch
           version: 3
@@ -190,6 +194,7 @@ models:
       - *tx_to
       - *trace_address
       - *evt_index
+      - *block_month
 
   - name: oneinch_v4_ethereum_trades
     meta:
@@ -210,7 +215,7 @@ models:
             - tx_hash
             - evt_index
             - trace_address
-      - check_dex_aggregator_seed_legacy:
+      - check_dex_aggregator_seed:
           blockchain: ethereum
           project: 1inch
           version: 4
@@ -238,6 +243,7 @@ models:
       - *tx_to
       - *trace_address
       - *evt_index
+      - *block_month
 
   - name: oneinch_v5_ethereum_trades
     meta:
@@ -258,7 +264,7 @@ models:
             - tx_hash
             - evt_index
             - trace_address
-      - check_dex_aggregator_seed_legacy:
+      - check_dex_aggregator_seed:
           blockchain: ethereum
           project: 1inch
           version: 5
@@ -286,6 +292,7 @@ models:
       - *tx_to
       - *trace_address
       - *evt_index
+      - *block_month
 
   - name: oneinch_onesplit_ethereum_trades
     meta:
@@ -306,7 +313,7 @@ models:
             - tx_hash
             - evt_index
             - trace_address
-      - check_dex_aggregator_seed_legacy:
+      - check_dex_aggregator_seed:
           blockchain: ethereum
           project: 1inch
           version: 1split
@@ -334,6 +341,7 @@ models:
       - *tx_to
       - *trace_address
       - *evt_index
+      - *block_month
 
   - name: oneinch_oneproto_ethereum_trades
     meta:
@@ -354,7 +362,7 @@ models:
             - tx_hash
             - evt_index
             - trace_address
-      - check_dex_aggregator_seed_legacy:
+      - check_dex_aggregator_seed:
           blockchain: ethereum
           project: 1inch
           version: 1proto
@@ -382,6 +390,7 @@ models:
       - *tx_to
       - *trace_address
       - *evt_index
+      - *block_month
 
   - name: oneinch_zeroex_ethereum_trades
     meta:
@@ -402,7 +411,7 @@ models:
             - tx_hash
             - evt_index
             - trace_address
-      - check_dex_aggregator_seed_legacy:
+      - check_dex_aggregator_seed:
           blockchain: ethereum
           project: 1inch
           version: ZRX
@@ -430,6 +439,7 @@ models:
       - *tx_to
       - *trace_address
       - *evt_index
+      - *block_month
 
   - name: oneinch_unoswap_v3_ethereum_trades
     meta:
@@ -474,6 +484,7 @@ models:
       - *tx_to
       - *trace_address
       - *evt_index
+      - *block_month
 
   - name: oneinch_unoswap_v4_ethereum_trades
     meta:
@@ -494,7 +505,7 @@ models:
             - tx_hash
             - evt_index
             - trace_address
-      - check_dex_aggregator_seed_legacy:
+      - check_dex_aggregator_seed:
           blockchain: ethereum
           project: 1inch
           version: 'UNI v2'
@@ -522,6 +533,7 @@ models:
       - *tx_to
       - *trace_address
       - *evt_index
+      - *block_month
 
   - name: oneinch_unoswap_v5_ethereum_trades
     meta:
@@ -566,6 +578,7 @@ models:
       - *tx_to
       - *trace_address
       - *evt_index
+      - *block_month
 
   - name: oneinch_uniswap_v3_ethereum_trades
     meta:
@@ -586,7 +599,7 @@ models:
             - tx_hash
             - evt_index
             - trace_address
-      - check_dex_aggregator_seed_legacy:
+      - check_dex_aggregator_seed:
           blockchain: ethereum
           project: 1inch
           version: 'UNI v3'
@@ -614,6 +627,7 @@ models:
       - *tx_to
       - *trace_address
       - *evt_index
+      - *block_month
 
   - name: oneinch_clipper_ethereum_trades
     meta:
@@ -634,7 +648,7 @@ models:
             - tx_hash
             - evt_index
             - trace_address
-      - check_dex_aggregator_seed_legacy:
+      - check_dex_aggregator_seed:
           blockchain: ethereum
           project: 1inch
           version: 'Clipper v1'
@@ -662,6 +676,7 @@ models:
       - *tx_to
       - *trace_address
       - *evt_index
+      - *block_month
 
   - name: oneinch_limit_order_protocol_v1_ethereum_trades
     meta:
@@ -682,7 +697,7 @@ models:
             - tx_hash
             - evt_index
             - trace_address
-      - check_dex_aggregator_seed_legacy:
+      - check_dex_aggregator_seed:
           blockchain: ethereum
           project: 1inch Limit Order Protocol
           version: '1'
@@ -710,6 +725,7 @@ models:
       - *tx_to
       - *trace_address
       - *evt_index
+      - *block_month
 
   - name: oneinch_limit_order_protocol_v2_ethereum_trades
     meta:
@@ -730,7 +746,7 @@ models:
             - tx_hash
             - evt_index
             - trace_address
-      - check_dex_aggregator_seed_legacy:
+      - check_dex_aggregator_seed:
           blockchain: ethereum
           project: 1inch Limit Order Protocol
           version: '2'
@@ -758,6 +774,7 @@ models:
       - *tx_to
       - *trace_address
       - *evt_index
+      - *block_month
 
   - name: oneinch_limit_order_protocol_v3_ethereum_trades
     meta:
@@ -778,7 +795,7 @@ models:
             - tx_hash
             - evt_index
             - trace_address
-      - check_dex_aggregator_seed_legacy:
+      - check_dex_aggregator_seed:
           blockchain: ethereum
           project: 1inch Limit Order Protocol
           version: '3'
@@ -806,6 +823,7 @@ models:
       - *tx_to
       - *trace_address
       - *evt_index
+      - *block_month
 
   - name: oneinch_limit_order_protocol_embedded_rfq_ethereum_trades
     meta:
@@ -826,7 +844,7 @@ models:
             - tx_hash
             - evt_index
             - trace_address
-      - check_dex_aggregator_seed_legacy:
+      - check_dex_aggregator_seed:
           blockchain: ethereum
           project: 1inch Limit Order Protocol
           version: 'eRFQ v1'
@@ -854,6 +872,7 @@ models:
       - *tx_to
       - *trace_address
       - *evt_index
+      - *block_month
 
   - name: oneinch_limit_order_protocol_rfq_v1_ethereum_trades
     meta:
@@ -874,7 +893,7 @@ models:
             - tx_hash
             - evt_index
             - trace_address
-      - check_dex_aggregator_seed_legacy:
+      - check_dex_aggregator_seed:
           blockchain: ethereum
           project: 1inch Limit Order Protocol
           version: 'RFQ v1'
@@ -902,6 +921,7 @@ models:
       - *tx_to
       - *trace_address
       - *evt_index
+      - *block_month
 
   - name: oneinch_limit_order_protocol_rfq_v2_ethereum_trades
     meta:
@@ -922,7 +942,7 @@ models:
             - tx_hash
             - evt_index
             - trace_address
-      - check_dex_aggregator_seed_legacy:
+      - check_dex_aggregator_seed:
           blockchain: ethereum
           project: 1inch Limit Order Protocol
           version: 'RFQ v2'
@@ -950,6 +970,7 @@ models:
       - *tx_to
       - *trace_address
       - *evt_index
+      - *block_month
 
   - name: oneinch_limit_order_protocol_rfq_v3_ethereum_trades
     meta:
@@ -970,7 +991,7 @@ models:
             - tx_hash
             - evt_index
             - trace_address
-      - check_dex_aggregator_seed_legacy:
+      - check_dex_aggregator_seed:
           blockchain: ethereum
           project: 1inch Limit Order Protocol
           version: 'RFQ v3'
@@ -998,6 +1019,7 @@ models:
       - *tx_to
       - *trace_address
       - *evt_index
+      - *block_month
 
   - name: oneinch_ethereum_trades
     meta:
@@ -1032,6 +1054,7 @@ models:
       - *tx_to
       - *trace_address
       - *evt_index
+      - *block_month
 
   - name: oneinch_ethereum_airdrop_claims
     meta:
