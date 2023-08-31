@@ -85,7 +85,7 @@ INNER JOIN {{ source('base', 'transactions') }} tx
     AND tx.block_time >= cast('{{ project_start_date }}' AS timestamp)
     {% endif %}
     {% if is_incremental() %}
-    AND tx.block_time >= date_trunc('day', now() - interval '1' week)
+    AND tx.block_time >= date_trunc('day', now() - interval '7' day)
     {% endif %}
 LEFT JOIN {{ ref('tokens_erc20') }} erc20a
     ON erc20a.contract_address = dexs.token_bought_address 
