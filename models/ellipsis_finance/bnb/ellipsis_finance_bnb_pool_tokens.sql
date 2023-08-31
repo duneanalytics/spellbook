@@ -149,7 +149,7 @@ plain_pools as ( -- getting plain pools data
             SELECT
                 pool,
                 'pool_token' as token_type,
-                token_id,
+                (token_id - 1) as token_id,
                 token_address
             FROM
             {{ source('ellipsis_finance_bnb', 'FactoryPool_evt_PlainPoolDeployed') }}
@@ -164,7 +164,7 @@ plain_pools as ( -- getting plain pools data
             SELECT
                 pool,
                 'pool_token' as token_type,
-                token_id,
+                (token_id - 1) as token_id,
                 token_address
             FROM
             {{ source('ellipsis_finance_bnb', 'FactoryPool_v2_evt_PlainPoolDeployed') }}
@@ -196,7 +196,7 @@ meta_pools as ( -- getting meta pools and their base pools
             SELECT
                 pool,
                 base_pool,
-                token_id,
+                (token_id - 1) as token_id,
                 token_address
             FROM
             {{ source('ellipsis_finance_bnb', 'FactoryPool_evt_MetaPoolDeployed') }}
@@ -211,7 +211,7 @@ meta_pools as ( -- getting meta pools and their base pools
             SELECT
                 pool,
                 base_pool,
-                token_id,
+                (token_id - 1) as token_id,
                 token_address
             FROM
             {{ source('ellipsis_finance_bnb', 'FactoryPool_v2_evt_MetaPoolDeployed') }}
@@ -331,7 +331,7 @@ crypto_pools as ( -- getting crypto pools
             SELECT
                 pool,
                 'pool_token' as token_type,
-                token_id,
+                (token_id - 1) as token_id,
                 token_address
             FROM
             {{ source('ellipsis_finance_bnb', 'FactoryPool_v3_evt_CryptoPoolDeployed') }}
@@ -346,7 +346,7 @@ crypto_pools as ( -- getting crypto pools
             SELECT
                 pool,
                 'pool_token' as token_type,
-                token_id,
+                (token_id - 1) as token_id,
                 token_address
             FROM
             {{ source('ellipsis_finance_bnb', 'FactoryPool_v4_evt_CryptoPoolDeployed') }}
