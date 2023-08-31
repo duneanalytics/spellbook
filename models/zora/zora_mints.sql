@@ -6,7 +6,7 @@
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
-    unique_key = ['blockchain', 'block_number', 'tx_hash', 'nft_token_id', 'evt_index']
+    unique_key = ['blockchain', 'block_number', 'tx_hash', 'nft_token_id', 'evt_index'],
     post_hook='{{ expose_spells(\'["ethereum","optimism","base","goerli"]\',
                     "project",
                     "zora",
