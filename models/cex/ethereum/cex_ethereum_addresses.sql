@@ -221,7 +221,7 @@ FROM (VALUES
     , ('ethereum', 0xf0458aaaf6d49192d3b4711960635d5fa2114e71, 'Huobi', 'Huobi Deposit Funder 4', 'hildobby', date '2023-08-31')
     , ('ethereum', 0x07ef60deca209ea0f3f3f08c1ad21a6db5ef9d33, 'Huobi', 'Huobi Deposit Funder 5', 'hildobby', date '2023-08-31')
     -- https://twitter.com/ArkhamIntel/status/1696931898117800322?s=20
-    , ('ethereum', 0x40b38765696e3d5d8d9d834d8aad4bb6e418e489, 'RobinHood', 'RobinHood', 'hildobby', date '2023-08-31')
+    , ('ethereum', 0x40b38765696e3d5d8d9d834d8aad4bb6e418e489, 'Robinhood', 'Robinhood', 'hildobby', date '2023-08-31')
     -- Gate.io, Source: https://etherscan.io/accounts/label/gate-io
     , ('ethereum', 0x0d0707963952f2fba59dd06f2b425ace40b492fe, 'Gate.io', 'Gate.io 1', 'hildobby', date '2022-08-28')
     , ('ethereum', 0x7793cd85c11a924478d358d49b05b37e91b5810f, 'Gate.io', 'Gate.io 2', 'hildobby', date '2022-08-28')
