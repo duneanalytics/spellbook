@@ -1,5 +1,6 @@
 {{ config(
-    alias = alias('other_tags')
+    alias = alias('other_tags'),
+    tags = ['dunesql', 'static']
     )
 }}
 
@@ -8,7 +9,7 @@
 WITH tagged_wallets AS (
 SELECT distinct address, address_name
 FROM (
-SELECT LOWER(address) AS address, cast(address_name as varchar(250)) AS address_name
+SELECT CAST(address as varbinary) AS address, cast(address_name as varchar) AS address_name
     , ROW_NUMBER() OVER (PARTITION BY address ORDER BY cast(address_name as varchar(250)) ) AS rnk
 FROM (values
              ('0x030058ac851ba6f282ec0e717a7ed577d09dff0b','Perp Foundation')

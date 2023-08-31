@@ -2,7 +2,7 @@
         schema = 'op_retropgf_optimism'
         , alias = alias('round2_voters')
         , materialized='table'
-        , tags=['static']
+        , tags=['static', 'dunesql']
   )
 }}
 
@@ -12,7 +12,7 @@ with attestations as (
         , REGEXP_REPLACE(key, '[[:cntrl:]]', '') AS key_mapped
     FROM {{ ref('optimism_attestationstation_optimism_events') }}
     
-    WHERE issuer = '0x60c5c9c98bcbd0b0f2fd89b24c16e533baa8cda3'
+    WHERE issuer = 0x60c5c9c98bcbd0b0f2fd89b24c16e533baa8cda3
     AND REGEXP_REPLACE(key, '[[:cntrl:]]', '') = 'retropgf.round-2.can-vote'
     AND block_date BETWEEN cast('2023-02-01' as date) AND cast('2023-04-01' as date)
     )
