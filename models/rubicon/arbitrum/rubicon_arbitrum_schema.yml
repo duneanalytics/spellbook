@@ -109,6 +109,9 @@ models:
     tests:
       - check_seed:
           seed_file: ref('rubicon_arbitrum_offers_seed')
+          filter:
+            blockchain: arbitrum
+            project: rubicon
           match_columns:
             - block_date
             - blockchain
