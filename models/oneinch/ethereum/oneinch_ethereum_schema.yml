@@ -313,7 +313,7 @@ models:
             - tx_hash
             - evt_index
             - trace_address
-      - check_dex_aggregator_seed_legacy:
+      - check_dex_aggregator_seed:
           blockchain: ethereum
           project: 1inch
           version: 1split
@@ -341,6 +341,7 @@ models:
       - *tx_to
       - *trace_address
       - *evt_index
+      - *block_month
 
   - name: oneinch_oneproto_ethereum_trades
     meta:
