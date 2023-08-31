@@ -230,3 +230,4 @@ LEFT JOIN {{ source('prices', 'usd') }} as prices_eth
     AND prices_eth.minute >= TIMESTAMP '{{project_start_date}}'
     {% endif %}
 WHERE oneinch.tx_hash IS NULL
+-- add comment to trigger run 
