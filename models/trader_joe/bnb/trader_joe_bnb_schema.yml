@@ -10,7 +10,7 @@ models:
     config:
       tags: ['bnb','trader_joe_v2','trades', 'Trader Joe','dex']
     description: >
-        Trader Joe Liquidity Book trades on BNB chain 
+        Trader Joe Liquidity Book trades on BNB chain
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -28,9 +28,9 @@ models:
       - &blockchain
         name: blockchain
         description: "Blockchain which the DEX is deployed"
-      - &project 
+      - &project
         name: project
-        description: "Project name of the DEX"  
+        description: "Project name of the DEX"
       - &version
         name: version
         description: "Version of the contract built and deployed by the DEX project"
@@ -39,7 +39,7 @@ models:
         description: "UTC event block date of each DEX trade"
       - &block_month
         name: block_month
-        description: "UTC event block month of each DEX trade"  
+        description: "UTC event block month of each DEX trade"
       - &block_time
         name: block_time
         description: "UTC event block time of each DEX trade"
@@ -104,7 +104,7 @@ models:
     config:
       tags: ['bnb','trader_joe_v2_1','trades', 'Trader Joe','dex']
     description: >
-        Trader Joe Liquidity Book trades on BNB chain 
+        Trader Joe Liquidity Book trades on BNB chain
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -157,6 +157,7 @@ models:
       - *blockchain
       - *project
       - *version
+      - *block_month
       - *block_date
       - *block_time
       - *token_bought_symbol

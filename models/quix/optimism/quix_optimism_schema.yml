@@ -145,7 +145,7 @@ models:
         name: royalty_fee_currency_symbol
         description: "Symbol of the token in which fees are paid out"
 
-  - name: quix_seaport_optimism_base_pairs
+  - name: quix_seaport_optimism_base_pairs_legacy
     meta:
       blockchain: optimism
       project: quix
@@ -551,8 +551,8 @@ models:
             - token_id
             - sub_type
             - sub_idx
-      - check_seed_legacy:
-          seed_file: ref('quix_events_seed_legacy')
+      - check_seed:
+          seed_file: ref('quix_events_seed')
           filter:
             blockchain: optimism
             project: quix

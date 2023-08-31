@@ -1,10 +1,11 @@
-{{ config(tags=['dunesql'],
+{{ config(
     alias = alias('trades'),
+    tags=['dunesql'],
     partition_by = ['block_month'],
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
-    unique_key = ['block_date', 'blockchain', 'project', 'version', 'tx_hash', 'evt_index'],
+    unique_key = ['block_month', 'blockchain', 'project', 'version', 'tx_hash', 'evt_index'],
     post_hook='{{ expose_spells(\'["optimism"]\',
                                 "project",
                                 "velodrome",
@@ -18,7 +19,8 @@
 WITH dexs AS
 (
     SELECT
-        t.evt_block_time AS block_time
+        '1' as version
+        ,t.evt_block_time AS block_time
         ,t.evt_block_number
         ,t.to AS taker
         ,CAST(NULL AS VARBINARY) AS maker
@@ -35,6 +37,33 @@ WITH dexs AS
         {{ source('velodrome_optimism', 'Pair_evt_Swap') }} t
     INNER JOIN {{ source('velodrome_optimism', 'PairFactory_evt_PairCreated') }} f
         ON f.pair = t.contract_address
+        AND t.evt_block_number >= f.evt_block_number
+    {% if is_incremental() %}
+    WHERE t.evt_block_time >= date_trunc('day', now() - interval '7' day)
+    {% endif %}
+
+    UNION ALL
+
+    SELECT
+        '2' as version
+        ,t.evt_block_time AS block_time
+        ,t.evt_block_number
+        ,t.to AS taker
+        ,CAST(NULL AS varbinary) AS maker
+        -- logic from ethereum/dex/trades/insert_uniswap_v2
+	    ,CASE WHEN amount0Out = UINT256 '0' THEN amount1Out ELSE amount0Out END AS token_bought_amount_raw -- when amount0 is negative it means trader_a is buying token0 from the pool
+	    ,CASE WHEN amount0In = UINT256 '0' OR amount1Out = UINT256 '0' THEN amount1In ELSE amount0In END AS token_sold_amount_raw
+        ,NULL AS amount_usd
+        ,CASE WHEN amount0Out = UINT256 '0' THEN token1 ELSE token0 END AS token_bought_address
+	    ,CASE WHEN amount0In = UINT256 '0' OR amount1Out = UINT256 '0' THEN token1 ELSE token0 END AS token_sold_address
+        ,t.contract_address as project_contract_address
+        ,t.evt_tx_hash AS tx_hash
+        ,t.evt_index
+    FROM
+        {{ source('velodrome_v2_optimism', 'Pool_evt_Swap') }} t
+    INNER JOIN {{ source('velodrome_v2_optimism', 'PoolFactory_evt_PoolCreated') }} f
+        ON f.pool = t.contract_address
+        AND t.evt_block_number >= f.evt_block_number
     {% if is_incremental() %}
     WHERE t.evt_block_time >= date_trunc('day', now() - interval '7' day)
     {% endif %}
@@ -54,8 +83,8 @@ SELECT
     end as token_pair
     ,dexs.token_bought_amount_raw / power(10, erc20a.decimals) AS token_bought_amount
     ,dexs.token_sold_amount_raw / power(10, erc20b.decimals) AS token_sold_amount
-    ,dexs.token_bought_amount_raw  AS token_bought_amount_raw
-    ,dexs.token_sold_amount_raw  AS token_sold_amount_raw
+    ,dexs.token_bought_amount_raw
+    ,dexs.token_sold_amount_raw
     ,coalesce(
         dexs.amount_usd
         ,(dexs.token_bought_amount_raw / power(10, p_bought.decimals)) * p_bought.price

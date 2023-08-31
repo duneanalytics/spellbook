@@ -36,7 +36,8 @@ pairs as (
 {% set open_position_v2_evt_tables = [
     'Trading_evt_PositionOpened',
     'TradingV2_evt_PositionOpened',
-    'TradingV3_evt_PositionOpened'
+    'TradingV3_evt_PositionOpened',
+    'TradingV4_evt_PositionOpened'
 ] %} 
 
 open_position_v1_1 AS (

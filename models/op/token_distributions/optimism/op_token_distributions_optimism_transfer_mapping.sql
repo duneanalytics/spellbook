@@ -1,5 +1,6 @@
 {{ config(
     alias = alias('transfer_mapping'),
+    tags = ['dunesql'],
     partition_by = ['block_date'],
     materialized = 'incremental',
     file_format = 'delta',
@@ -8,7 +9,7 @@
     post_hook='{{ expose_spells(\'["optimism"]\',
                                 "project",
                                 "op_token_distributions",
-                                \'["msilb7"]\') }}'
+                                \'["msilb7", "chuxin"]\') }}'
     )
 }}
 
@@ -29,16 +30,18 @@ WITH all_labels AS (
     SELECT * FROM all_labels WHERE label = 'Utility'
     )
 
-, other_tags AS (
-        SELECT * FROM {{ ref('op_token_distributions_optimism_other_tags') }}
-)
-
 , outgoing_distributions AS (
     WITH tfers AS (
         -- transfers out
             SELECT
-                evt_block_time, evt_block_number, evt_index,
-                tf.`from` AS from_address, tf.to AS to_address, tx.to AS tx_to_address, tx.`from` AS tx_from_address,  evt_tx_hash,
+                evt_block_time, 
+                evt_block_number, 
+                evt_index,
+                tf."from" AS from_address, 
+                tf.to AS to_address, 
+                tx.to AS tx_to_address, 
+                tx."from" AS tx_from_address,  
+                evt_tx_hash,
             
             COALESCE(
                     lbl_from_util_tx.address_descriptor
@@ -74,12 +77,12 @@ WITH all_labels AS (
                 cast(tf.value as double)/cast( 1e18 as double) AS op_amount_decimal,
                 evt_index AS evt_tfer_index,
                 
-                substring(tx.data,1,10) AS tx_method --bytearray_substring(tx.data, 1, 4) AS tx_method
+                bytearray_substring(tx.data, 1, 4) AS tx_method
                 
             FROM {{source('erc20_optimism','evt_transfer') }} tf
             -- We want either the send or receiver to be the foundation or a project (also includes utility transfers)
             INNER JOIN all_labels lbl_from
-                ON lbl_from.address = tf.`from`
+                ON lbl_from.address = tf."from"
             -- if the recipient is in this list to, then we track it
             LEFT JOIN all_labels lbl_to
                 ON lbl_to.address = tf.to
@@ -89,7 +92,7 @@ WITH all_labels AS (
                 ON tx.hash = tf.evt_tx_hash
                 AND tx.block_number = tf.evt_block_number
                 {% if is_incremental() %} 
-                and tx.block_time >= date_trunc('day', now() - interval '1 week')
+                and tx.block_time >= date_trunc('day', now() - interval '7' day)
                 {% else %}
                 AND tx.block_time >= cast('{{op_token_launch_date}}' as date)
                 {% endif %}
@@ -98,20 +101,20 @@ WITH all_labels AS (
                 ON tx.to = dc.address
             
             LEFT JOIN all_labels lbl_from_util_tx
-                ON lbl_from_util_tx.address = tx.`from` --label of the transaction sender
+                ON lbl_from_util_tx.address = tx."from" --label of the transaction sender
                 AND dc.address IS NOT NULL --we have a disperse
                 
             -- LEFT JOIN tx_labels txl
             --     ON txl.tx_hash = tf.evt_tx_hash
                 
-            WHERE tf.contract_address = '{{op_token_address}}'
+            WHERE tf.contract_address = {{op_token_address}}
             --exclude Wintermute funding tfers
-            AND NOT (tf.`from` = '0x2501c477d0a35545a387aa4a3eee4292a9a8b3f0'
-                    and tf.to IN ('0x4f3a120e72c76c22ae802d129f599bfdbc31cb81'
-                            ,'0x51d3a2f94e60cbecdce05ab41b61d7ce5240b8ff')
+            AND NOT (tf."from" = 0x2501c477d0a35545a387aa4a3eee4292a9a8b3f0
+                    and tf.to IN (0x4f3a120e72c76c22ae802d129f599bfdbc31cb81
+                            ,0x51d3a2f94e60cbecdce05ab41b61d7ce5240b8ff)
                     )
             {% if is_incremental() %} 
-            and tf.evt_block_time >= date_trunc('day', now() - interval '1 week')
+            and tf.evt_block_time >= date_trunc('day', now() - interval '7' day)
             {% else %}
             AND tf.evt_block_time >= cast('{{op_token_launch_date}}' as date)
             {% endif %}
@@ -131,9 +134,9 @@ WITH all_labels AS (
                 WHEN dc.address IS NULL THEN 1 -- when not a utility transfer, keep it
                 WHEN dc.address IS NOT NULL
                     AND (
-                        tx.`from` IN (SELECT address FROM all_labels WHERE label != 'Utility')
+                        tx."from" IN (SELECT address FROM all_labels WHERE label != 'Utility')
                         OR
-                        tf.`from` IN (SELECT address FROM all_labels WHERE label != 'Utility')
+                        tf."from" IN (SELECT address FROM all_labels WHERE label != 'Utility')
                      ) THEN 1 --when utility, make sure the transaction or transfer is from a project wallet
                 ELSE 0
                 END
@@ -145,20 +148,46 @@ WITH all_labels AS (
             )
 
         SELECT
-            evt_block_time, evt_block_number, evt_index,
-            from_address, to_address, tx_to_address, tx_from_address, evt_tx_hash,
-            from_type, to_type, from_label, from_name, to_label, o.to_name, op_amount_decimal, tx_method
+            evt_block_time, 
+            evt_block_number, 
+            evt_index,
+            from_address, 
+            to_address, 
+            tx_to_address, 
+            tx_from_address, 
+            evt_tx_hash,
+            from_type, 
+            to_type, 
+            from_label, 
+            from_name, 
+            to_label, 
+            o.to_name, 
+            op_amount_decimal, 
+            tx_method
         FROM {{ ref('op_token_distributions_optimism_other_distributions_claims') }} o
         {% if is_incremental() %} 
-            where o.evt_block_time >= date_trunc('day', now() - interval '1 week')
+            where o.evt_block_time >= date_trunc('day', now() - interval '7' day)
         {% endif %}
 
         UNION ALL
         
         SELECT
-            t.evt_block_time, t.evt_block_number, t.evt_index,
-            t.from_address, t.to_address, t.tx_to_address, t.tx_from_address, t.evt_tx_hash,
-            t.from_type, t.to_type, t.from_label, t.from_name, t.to_label, t.to_name, t.op_amount_decimal, t.tx_method
+            t.evt_block_time, 
+            t.evt_block_number, 
+            t.evt_index,
+            t.from_address, 
+            t.to_address, 
+            t.tx_to_address, 
+            t.tx_from_address, 
+            t.evt_tx_hash,
+            t.from_type, 
+            t.to_type, 
+            t.from_label, 
+            t.from_name, 
+            t.to_label, 
+            t.to_name, 
+            t.op_amount_decimal, 
+            t.tx_method
         
         FROM tfers t
         LEFT JOIN {{ ref('op_token_distributions_optimism_other_distributions_claims') }} o --don't double count - at the amount level b/c there could be multiple claims in one tx
@@ -171,7 +200,7 @@ WITH all_labels AS (
                 t.evt_tfer_index = o.max_evt_tfer_index
                 )
             {% if is_incremental() %} 
-            and o.evt_block_time >= date_trunc('day', now() - interval '1 week')
+            and o.evt_block_time >= date_trunc('day', now() - interval '7' day)
             {% endif %}
         WHERE o.evt_block_number IS NULL
 )
@@ -266,12 +295,12 @@ SELECT
     
 FROM distributions d
 -- read in other tags
-LEFT JOIN other_tags dto
+LEFT JOIN {{ ref('op_token_distributions_optimism_other_tags') }} dto
     ON dto.address = d.to_address
     AND d.to_name = 'Other' -- don't overwrite existing mapping
-LEFT JOIN other_tags dtxto
+LEFT JOIN {{ ref('op_token_distributions_optimism_other_tags') }} dtxto
     ON dtxto.address = d.tx_to_address
     AND d.to_name = 'Other' -- don't overwrite existing mapping
-LEFT JOIN other_tags dfrom
+LEFT JOIN {{ ref('op_token_distributions_optimism_other_tags') }} dfrom
     ON dfrom.address = d.from_address
     AND d.from_name = 'Other' -- don't overwrite existing mapping
