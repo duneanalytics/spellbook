@@ -198,6 +198,8 @@ models:
         +schema: nft_goerli
       base:
         +schema: nft_base
+      celo:
+        +schema: nft_celo
 
     cex:
       +schema: cex
