@@ -60,6 +60,7 @@ get_positions_contract as (
         t.evt_block_time, 
         t.evt_tx_hash,
         t.evt_index,
+        CASE WHEN t.evt_tx_hash = 0xf0a5193fc41599987645f183ae0c3a8311da02ebc9e4ee136edcfd4916133e78 THEN CAST(t.evt_index as double) ELSE -1 END as evt_join_index,
         t.id as position_id,
         COALESCE(o.open_price, l.open_price) as open_price,
         t.closePrice/1e18 as close_price,

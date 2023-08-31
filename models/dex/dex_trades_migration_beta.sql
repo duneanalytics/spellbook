@@ -10,16 +10,14 @@
         post_hook='{{ expose_spells(\'["ethereum", "bnb", "avalanche_c", "gnosis", "optimism", "arbitrum", "fantom", "polygon"]\',
                                 "sector",
                                 "dex",
-                                \'["jeff-dude", "hosuke", "0xRob", "pandajackson42", "Henrystats", "scoffie", "zhongyiio", "justabi", "umer_h_adil", "mtitus6", "dbustos20", "tian7", "bh2smith", "rantum", "mike-x7f"]\') }}'
+                                \'["jeff-dude", "hosuke", "0xRob", "pandajackson42", "Henrystats", "scoffie", "zhongyiio", "justabi", "umer_h_adil", "mtitus6", "dbustos20", "tian7", "bh2smith", "rantum", "mike-x7f", "0xr3x"]\') }}'
         )
 }}
 
 {#
 ## Models not yet migrated
 ,ref('curvefi_trades')
-,ref('dodo_trades')
 ,ref('ellipsis_finance_trades')
-,ref('synthetix_spot_trades')
  #}
 
 {% set dex_trade_models = [
@@ -70,7 +68,9 @@
 ,ref('zipswap_trades')
 ,ref('balancer_trades')
 ,ref('hashflow_trades')
-
+,ref('honeyswap_trades')
+,ref('synthetix_spot_trades')
+,ref('dodo_trades')
 ] %}
 
 

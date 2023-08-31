@@ -425,6 +425,9 @@ models:
       - *collateral_asset
       - *options_period
       - *order_type
+      - &evt_join_index
+        name: evt_join_index
+        description: "Event Join Index for duplicate transaction"
 
   - name: tigris_arbitrum_events_options_limit_order
     meta:
@@ -547,8 +550,7 @@ models:
           combination_of_columns:
             - evt_block_time
             - evt_tx_hash
-            - version
-            - protocol_version
+            - evt_index
     columns:
       - *day
       - *evt_block_time
@@ -559,3 +561,4 @@ models:
       - *project_contract_address
       - *block_month
       - *fees
+      - *evt_join_index
