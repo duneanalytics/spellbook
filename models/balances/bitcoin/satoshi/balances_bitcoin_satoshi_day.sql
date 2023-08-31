@@ -11,7 +11,7 @@
 
 with 
     days as (
-        with list_day as (select sequence(date('2009-01-03'),  date_trunc('day', now()), interval '1' day) as day)
+        with list_day as (select sequence(date('2009-01-03'),  date(now()), interval '1' day) as day)
 
         select u.day from list_day cross join unnest(day) as u(day)
     )
