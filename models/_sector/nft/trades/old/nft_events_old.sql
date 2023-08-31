@@ -18,6 +18,7 @@
 ,ref('fractal_polygon_events')
 ,ref('liquidifty_bnb_events')
 ,ref('liquidifty_ethereum_events')
+,ref('magiceden_polygon_events')
 ,ref('magiceden_solana_events')
 ,ref('nftb_bnb_events')
 ,ref('nftearth_optimism_events')
@@ -54,7 +55,7 @@
 ,ref('decentraland_polygon_events')
 ] %}
 --missing still
---,ref('magiceden_polygon_events')
+--
 
 SELECT *
 FROM (
