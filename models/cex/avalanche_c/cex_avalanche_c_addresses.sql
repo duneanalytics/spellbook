@@ -26,6 +26,8 @@ FROM (VALUES
     , ('avalanche_c', 0x1c4b70a3968436b9a0a9cf5205c787eb81bb558c, 'Gate.io', 'Gate.io 2', 'hildobby', date '2022-11-14')
     , ('avalanche_c', 0xd793281182a0e3e023116004778f45c29fc14f19, 'Gate.io', 'Gate.io 3', 'hildobby', date '2022-11-14')
     , ('avalanche_c', 0xc882b111a75c0c657fc507c04fbfcd2cc984f071, 'Gate.io', 'Gate.io 4', 'hildobby', date '2022-11-14')
+    -- https://twitter.com/ArkhamIntel/status/1696931898117800322?s=20
+    , ('avalanche_c', 0x40b38765696e3d5d8d9d834d8aad4bb6e418e489, 'Robinhood', 'Robinhood', 'hildobby', date '2023-08-31')
     -- Huobi, source: https://raw.githubusercontent.com/js-kingdata/indicators_factory/fefe53bca88ecf331a71fc59e34aab319f3415c5/crawlers/address_tags/cex/huobi_address.txt
     , ('avalanche_c', 0xe195b82df6a797551eb1acd506e892531824af27, 'Huobi', 'Huobi 1', 'hildobby', date '2023-04-06')
     -- OKX, source: https://raw.githubusercontent.com/js-kingdata/indicators_factory/fefe53bca88ecf331a71fc59e34aab319f3415c5/crawlers/address_tags/cex/okx_address.txt
