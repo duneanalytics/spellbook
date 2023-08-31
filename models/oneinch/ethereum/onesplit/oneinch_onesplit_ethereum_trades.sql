@@ -154,43 +154,40 @@ SELECT
     ,src.evt_index
 FROM
     oneinch as src
-{#
--- commenting out until the models are migrated
--- LEFT ANTI JOIN --where tx_hash isn't already pulled from oneinch version spells
---     (
---         SELECT DISTINCT
---             tx_hash
---             , block_number
---         FROM
---             {{ ref('oneinch_v1_ethereum_trades') }}
---         UNION ALL
---         SELECT DISTINCT
---             tx_hash
---             , block_number
---         FROM
---             {{ ref('oneinch_v2_ethereum_trades') }}
---         UNION ALL
---         SELECT DISTINCT
---             tx_hash
---             , block_number
---         FROM
---             {{ ref('oneinch_v3_ethereum_trades') }}
---         UNION ALL
---         SELECT DISTINCT
---             tx_hash
---             , block_number
---         FROM
---             {{ ref('oneinch_v4_ethereum_trades') }}
---         UNION ALL
---         SELECT DISTINCT
---             tx_hash
---             , block_number
---         FROM
---             {{ ref('oneinch_v5_ethereum_trades') }}
---     ) oneinch
---     ON src.tx_hash = oneinch.tx_hash
---     AND src.block_number = oneinch.block_number
-#}
+LEFT ANTI JOIN --where tx_hash isn't already pulled from oneinch version spells
+    (
+        SELECT DISTINCT
+            tx_hash
+            , block_number
+        FROM
+            {{ ref('oneinch_v1_ethereum_trades') }}
+        UNION ALL
+        SELECT DISTINCT
+            tx_hash
+            , block_number
+        FROM
+            {{ ref('oneinch_v2_ethereum_trades') }}
+        UNION ALL
+        SELECT DISTINCT
+            tx_hash
+            , block_number
+        FROM
+            {{ ref('oneinch_v3_ethereum_trades') }}
+        UNION ALL
+        SELECT DISTINCT
+            tx_hash
+            , block_number
+        FROM
+            {{ ref('oneinch_v4_ethereum_trades') }}
+        UNION ALL
+        SELECT DISTINCT
+            tx_hash
+            , block_number
+        FROM
+            {{ ref('oneinch_v5_ethereum_trades') }}
+    ) oneinch
+    ON src.tx_hash = oneinch.tx_hash
+    AND src.block_number = oneinch.block_number
 INNER JOIN {{ source('ethereum', 'transactions') }} as tx
     ON src.tx_hash = tx.hash
     AND src.block_number = tx.block_number
