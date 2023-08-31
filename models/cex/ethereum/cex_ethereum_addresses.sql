@@ -112,7 +112,7 @@ FROM (VALUES
     , ('ethereum', 0xce352e98934499be70f641353f16a47d9e1e3abd, 'Coinbase', 'Coinbase Commerce Fee 4', 'hildobby', date '2023-08-31')
     , ('ethereum', 0x90e18a6920985dbacc3d76cf27a3f2131923c720, 'Coinbase', 'Coinbase Commerce Fee 5', 'hildobby', date '2023-08-31')
     , ('ethereum', 0x4b23d52eff7c67f5992c2ab6d3f69b13a6a33561, 'Coinbase', 'Coinbase Commerce Fee 6', 'hildobby', date '2023-08-31')
-    , ('ethereum', , 'Coinbase', 'Coinbase Commerce Fee', 'hildobby', date '2023-08-31')
+    , ('ethereum', 0xbe3c68821d585cf1552214897a1c091014b1eb0a, 'Coinbase', 'Coinbase Account Blacklister', 'hildobby', date '2023-08-31')
     -- OKX, Source: https://etherscan.io/accounts/label/okx
     , ('ethereum', 0x6cc5f688a315f3dc28a7781717a9a798a59fda7b, 'OKX', 'OKX', 'hildobby', date '2022-08-28')
     , ('ethereum', 0x236f9f97e0e62388479bf9e5ba4889e46b0273c3, 'OKX', 'OKX 2', 'hildobby', date '2022-08-28')
