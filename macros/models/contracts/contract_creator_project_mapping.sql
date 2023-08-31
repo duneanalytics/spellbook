@@ -535,7 +535,7 @@ WHERE contract_order = 1
       WHEN EXISTS (SELECT 1
                         FROM {{source('erc20_' + chain, 'evt_transfer')}} r
                         WHERE c.contract_address = r.contract_address
-                        AND r.block_time > c.created_time
+                        AND r.evt_block_time > c.created_time
                         {% if is_incremental() %} -- this filter will only be applied on an incremental run 
                         AND r.evt_block_time > NOW() - interval '7' day
                         {% endif %}
