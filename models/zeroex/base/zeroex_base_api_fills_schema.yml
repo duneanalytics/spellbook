@@ -16,7 +16,7 @@ models:
             - block_time
             - tx_hash
             - evt_index
-            - type
+            - taker_token
     columns:
       - &tx_hash
         name: tx_hash
