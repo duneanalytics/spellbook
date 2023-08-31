@@ -1,6 +1,7 @@
 {{ config(
         alias = alias('satoshi_day', legacy_model=True),
         tags = ['legacy'],
+        partition_by = ['day'],
         post_hook='{{ expose_spells_hide_trino(\'["bitcoin"]\',
                                             "sector",
                                             "balances",
