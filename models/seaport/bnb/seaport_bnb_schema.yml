@@ -272,12 +272,12 @@ models:
   - name: seaport_bnb_traces
     meta:
       blockchain: bnb
-      sector: nft
+      project: seaport
       contributors: hildobby
     config:
       tags: ['seaport', 'bnb', 'traces']
     description: >
-        Seaport emitted evemt traces on BNB
+        Seaport emitted event traces on BNB
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -320,8 +320,6 @@ models:
         description: "Token address"
       - name: amount
         description: "Amount"
-      - name: bundle_size
-        description: "Number of bundled traces"
       - name: identifier
         description: "Token identified"
       - name: recipient
@@ -330,3 +328,35 @@ models:
         description: "Offerer"
       - name: zone
         description: "Seaport zone"
+      - name: evt_index
+        description: "Event index"
+
+  - name: seaport_bnb_tagging
+    meta:
+      blockchain: bnb
+      project: seaport
+      contributors: hildobby
+    config:
+      tags: ['seaport', 'bnb', 'tagging']
+    description: >
+        Seaport tagging to identify the different protocols using Seaport on BNB 
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - tagging_method
+            - identifier
+    columns:
+      - name: blockchain
+        description: "Blockchain"
+      - name: tagging_method
+        description: "Identification method"
+        tests:
+          - accepted_values:
+              values: ['zone', 'fee_recipient', 'tx_data_salt']
+      - name: identifier
+        description: "Identifier hash"
+      - name: protocol
+        description: "Protocol"
+      - name: protocol_type
+        description: "Type of Protocol"
