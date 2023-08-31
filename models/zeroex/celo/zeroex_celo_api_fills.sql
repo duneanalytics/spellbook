@@ -131,7 +131,7 @@ NewBridgeFill AS (
             bytearray_substring(DATA, 45, 20) AS taker_token,
             bytearray_substring(DATA, 77, 20) AS maker_token,
             cast((bytearray_substring(DATA, 110, 20))as uint256) AS taker_token_amount_raw,
-            cast(bytearray_substring(DATA, 142, 20))as uint256) AS maker_token_amount_raw,
+            cast(bytearray_substring(DATA, 142, 20)as uint256) AS maker_token_amount_raw,
             'BridgeFill'                                 AS type,
             zeroex_tx.affiliate_address                     AS affiliate_address,
             TRUE                                            AS swap_flag,
