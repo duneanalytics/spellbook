@@ -513,7 +513,7 @@ models:
         description: "Identification method"
         tests:
           - accepted_values:
-              values: ['zone', 'fee_recipient']
+              values: ['zone', 'fee_recipient', 'tx_data_salt']
       - name: identifier
         description: "Identifier hash"
       - name: protocol
