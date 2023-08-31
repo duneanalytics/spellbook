@@ -64,7 +64,7 @@ WITH zora_mints AS (
     GROUP BY 1, 2, 3, 4, 5, 6, 7, 9, 10, 11, 12, 13, 14, 15
     )
 
-SELECT '{{blockchain}}' AS blockchain
+SELECT distinct '{{blockchain}}' AS blockchain
 , date_trunc('day', m.block_time) AS block_date
 , m.block_time
 , m.block_number
