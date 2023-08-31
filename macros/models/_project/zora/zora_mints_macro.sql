@@ -7,7 +7,7 @@ WITH zora_mints AS (
     , s.evt_block_time AS block_time
     , s.evt_block_number AS block_number
     , s.quantity AS amount
-    , t.to AS nft_recipient
+    , MAX_BY(t.to, t.evt_index) AS nft_recipient
     , COALESCE((s.pricePerToken+f.mintFeeAmount)/1e18, 0) AS price
     , COALESCE(f.mintFeeAmount/1e18, 0) AS marketplace_fee
     , f.mintFeeRecipient AS marketplace_fee_recipient
@@ -35,6 +35,7 @@ WITH zora_mints AS (
     {% if is_incremental() %}
     WHERE s.evt_block_time >= date_trunc("day", now() - interval '7' day)
     {% endif %}
+    GROUP BY 1, 2, 3, 4, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15
     
     UNION ALL
     
