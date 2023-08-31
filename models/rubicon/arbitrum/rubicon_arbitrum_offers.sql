@@ -36,7 +36,7 @@ WITH offers AS
     -- filter out offers that were created before the project start date
     WHERE e.evt_block_time >= cast('{{ project_start_date }}' AS timestamp)
     {% if is_incremental() %} -- only run this filter if it is an incremental run
-    AND e.evt_block_time >= date_trunc('day', now() - interval '1 week')
+    AND e.evt_block_time >= date_trunc('day', now() - interval '7' day)
     {% endif %}
 ),
 
@@ -76,7 +76,7 @@ trades AS
         AND sell_token_price.minute >= cast('{{ project_start_date }}' AS timestamp)
         {% endif %}
         {% if is_incremental() %}
-        AND sell_token_price.minute >= date_trunc('day', now() - interval '1 week')
+        AND sell_token_price.minute >= date_trunc('day', now() - interval '7' day)
         {% endif %}
     
     -- get the buy token price
@@ -88,13 +88,13 @@ trades AS
         AND buy_token_price.minute >= cast('{{ project_start_date }}' AS timestamp)
         {% endif %}
         {% if is_incremental() %}
-        AND buy_token_price.minute >= date_trunc('day', now() - interval '1 week')
+        AND buy_token_price.minute >= date_trunc('day', now() - interval '7' day)
         {% endif %}
     
     -- filter out trades that were created before the project start date
     WHERE t.evt_block_time >= cast('{{ project_start_date }}' AS timestamp) 
     {% if is_incremental() %} -- only run this filter if it is an incremental run
-    AND t.evt_block_time >= date_trunc('day', now() - interval '1 week')
+    AND t.evt_block_time >= date_trunc('day', now() - interval '7' day)
     {% endif %}
 ),
 
@@ -168,7 +168,7 @@ INNER JOIN {{ source('arbitrum', 'transactions') }} txn
     AND txn.block_time >= cast('{{ project_start_date }}' AS timestamp)
     {% endif %}
     {% if is_incremental() %} -- only run this filter if it is an incremental run
-    AND txn.block_time >= date_trunc('day', now() - interval '1 week')
+    AND txn.block_time >= date_trunc('day', now() - interval '7' day)
     {% endif %}
     
 -- get the relevant sell token data
@@ -190,7 +190,7 @@ LEFT JOIN {{ source('prices', 'usd') }} sell_token_price
     AND sell_token_price.minute >= cast('{{ project_start_date }}' AS timestamp)
     {% endif %}
     {% if is_incremental() %}
-    AND sell_token_price.minute >= date_trunc('day', now() - interval '1 week')
+    AND sell_token_price.minute >= date_trunc('day', now() - interval '7' day)
     {% endif %}
     
 -- get the price data for the buy token
@@ -202,7 +202,7 @@ LEFT JOIN {{ source('prices', 'usd') }} buy_token_price
     AND buy_token_price.minute >= cast('{{ project_start_date }}' AS timestamp)
     {% endif %}
     {% if is_incremental() %}
-    AND buy_token_price.minute >= date_trunc('day', now() - interval '1 week')
+    AND buy_token_price.minute >= date_trunc('day', now() - interval '7' day)
     {% endif %}
 
 -- get the price of eth at the time of the offer 
@@ -214,7 +214,7 @@ LEFT JOIN {{ source('prices', 'usd') }}  eth
     AND eth.minute >= cast('{{ project_start_date }}' AS timestamp)
     {% endif %}
     {% if is_incremental() %}
-    AND eth.minute >= date_trunc('day', now() - interval '1 week')
+    AND eth.minute >= date_trunc('day', now() - interval '7' day)
     {% endif %}
     
 -- get the trades that filled the offer
