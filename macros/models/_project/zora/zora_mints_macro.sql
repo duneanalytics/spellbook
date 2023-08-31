@@ -33,7 +33,7 @@ WITH zora_mints AS (
         AND traces.value > CAST(0 AS UINT256)
         AND (traces.call_type NOT IN ('delegatecall', 'callcode', 'staticcall') OR traces.call_type IS null)
     {% if is_incremental() %}
-    WHERE s.evt_block_time >= date_trunc("day", now() - interval '7' day)
+    WHERE s.evt_block_time >= date_trunc('day', now() - interval '7' day)
     {% endif %}
     GROUP BY 1, 2, 3, 4, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15
     
@@ -59,7 +59,7 @@ WITH zora_mints AS (
         AND JSON_EXTRACT_SCALAR(r.configuration, '$.royaltyRecipient') != '0x0000000000000000000000000000000000000000'
         AND r.evt_block_number < s.evt_block_number
     {% if is_incremental() %}
-    WHERE s.evt_block_time >= date_trunc("day", now() - interval '7' day)
+    WHERE s.evt_block_time >= date_trunc('day', now() - interval '7' day)
     {% endif %}
     GROUP BY 1, 2, 3, 4, 5, 6, 7, 9, 10, 11, 12, 13, 14, 15
     )
