@@ -16,6 +16,7 @@ models:
             - blockchain
             - block_number
             - tx_hash
+            - nft_token_id
             - evt_index
     columns:
       - name: blockchain
