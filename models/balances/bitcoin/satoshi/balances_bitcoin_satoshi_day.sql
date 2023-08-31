@@ -21,7 +21,7 @@ with
     amount_raw,
     amount_raw as amount,
     day,
-    day + interval '1' day AS next_day
+    lead(day, 1, date(now())) OVER (PARTITION BY token_address, wallet_address ORDER BY day) AS next_day
     FROM {{ ref('transfers_bitcoin_satoshi_rolling_day') }})
 
 SELECT
