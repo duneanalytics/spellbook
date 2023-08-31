@@ -512,7 +512,6 @@ WHERE contract_order = 1
                         {% if is_incremental() %} -- this filter will only be applied on an incremental run 
                         AND r.evt_block_time > NOW() - interval '7' day
                         {% endif %}
-                        limit 1
                         ) THEN 'erc1155'
       WHEN EXISTS (SELECT 1
                         FROM {{source('erc1155_' + chain, 'evt_transferbatch')}} r
@@ -521,7 +520,6 @@ WHERE contract_order = 1
                         {% if is_incremental() %} -- this filter will only be applied on an incremental run 
                         AND r.evt_block_time > NOW() - interval '7' day
                         {% endif %}
-                        limit 1
                         ) THEN 'erc1155'
       WHEN EXISTS (SELECT 1
                         FROM {{source('erc721_' + chain, 'evt_transfer')}} r
@@ -530,7 +528,6 @@ WHERE contract_order = 1
                         {% if is_incremental() %} -- this filter will only be applied on an incremental run 
                         AND r.evt_block_time > NOW() - interval '7' day
                         {% endif %}
-                        limit 1
                         ) THEN 'erc721'
       WHEN EXISTS (SELECT 1
                         FROM {{source('erc20_' + chain, 'evt_transfer')}} r
@@ -539,7 +536,6 @@ WHERE contract_order = 1
                         {% if is_incremental() %} -- this filter will only be applied on an incremental run 
                         AND r.evt_block_time > NOW() - interval '7' day
                         {% endif %}
-                        limit 1
                         ) THEN 'erc20'
       ELSE NULL END
       ) AS token_standard
