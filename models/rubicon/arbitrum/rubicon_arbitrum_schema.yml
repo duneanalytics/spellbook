@@ -155,6 +155,7 @@ models:
       - *version
       - *block_date
       - *block_time
+      - *block_month
       - &block_number
         name: block_number
         description: "the block number of the block that the offer was created in"
