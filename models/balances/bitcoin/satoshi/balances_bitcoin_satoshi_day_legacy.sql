@@ -9,13 +9,22 @@
 }}
 
 
-with daily_balances as
+with 
+days as (
+        select
+            explode(
+                sequence(
+                    to_date('2009-01-03'), date_trunc('day', now()), interval '1 day'
+                )
+            ) as day
+    )
+, daily_balances as
  (SELECT
     wallet_address,
     amount_raw,
     amount_raw as amount,
     day,
-    day + interval '1' day AS next_day
+    day + interval '1 day' AS next_day
     FROM {{ ref('transfers_bitcoin_satoshi_rolling_day_legacy') }})
 
 SELECT

@@ -9,7 +9,13 @@
 }}
 
 
-with daily_balances as
+with 
+    days as (
+        with list_day as (select sequence(date('2009-01-03'),  date_trunc('day', now()), interval '1' day) as day)
+
+        select u.day from list_day cross join unnest(day) as u(day)
+    )
+  , daily_balances as
  (SELECT
     wallet_address,
     amount_raw,
@@ -26,7 +32,8 @@ SELECT
     b.amount,
     b.amount * p.price as amount_usd
 FROM daily_balances b
+INNER JOIN days d ON b.day <= d.day AND d.day < b.next_day
 LEFT JOIN {{ source('prices', 'usd') }} p
-    ON b.next_day = p.minute
+    ON d.day = p.minute
     AND p.symbol='BTC'
     AND p.blockchain is null
