@@ -133,7 +133,7 @@ SELECT
     ,src.evt_index
 FROM
     oneinch as src
-LEFT ANTI JOIN --where tx_hash isn't already pulled from oneinch version spells
+LEFT JOIN --where tx_hash isn't already pulled from oneinch version spells
     (
         SELECT DISTINCT
             tx_hash
@@ -208,3 +208,4 @@ LEFT JOIN {{ source('prices', 'usd') }} as prices_eth
     {% else %}
     AND prices_eth.minute >= TIMESTAMP '{{project_start_date}}'
     {% endif %}
+WHERE oneinch.tx_hash IS NULL
