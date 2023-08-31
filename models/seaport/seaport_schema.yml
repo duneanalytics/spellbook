@@ -1,18 +1,19 @@
 version: 2
 
 models:
-  - name: seaport_base_traces
+  - name: seaport_traces
     meta:
-      blockchain: base
+      blockchain: arbitrum, avalanche_c, base, bnb, ethereum, optimism, polygon
       project: seaport
       contributors: hildobby
     config:
-      tags: ['seaport', 'base', 'traces']
+      tags: ['seaport', 'arbitrum', 'avalanche_c', 'base', 'bnb', 'ethereum', 'optimism', 'polygon', 'traces']
     description: >
-        Seaport emitted event traces on Base
+        Seaport emitted event traces across chains
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
+            - blockchain
             - block_number
             - tx_hash
             - evt_index
@@ -40,7 +41,7 @@ models:
       - name: token_standard
         tests:
           - accepted_values:
-              values: ['native', 'erc20', 'erc721', 'erc1155']
+              values: ['native', 'erc20', 'erc721', 'erc1155', 'bep20', 'bep721', 'bep1155']
         description: "Token standard"
       - name: trace_index
         description: "Index of the trace"
@@ -63,15 +64,15 @@ models:
       - name: evt_index
         description: "Event index"
 
-  - name: seaport_base_tagging
+  - name: seaport_tagging
     meta:
-      blockchain: base
+      blockchain: arbitrum, avalanche_c, base, bnb, ethereum, optimism, polygon
       project: seaport
       contributors: hildobby
     config:
-      tags: ['seaport', 'base', 'tagging']
+      tags: ['seaport', 'arbitrum', 'avalanche_c', 'base', 'bnb', 'ethereum', 'optimism', 'polygon', 'tagging']
     description: >
-        Seaport tagging to identify the different protocols using Seaport on Base 
+        Seaport tagging to identify the different protocols using Seaport across chains
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
