@@ -32,7 +32,9 @@ WITH zora_mints AS (
         AND traces."from"=s.evt_tx_hash
         AND traces.value > CAST(0 AS UINT256)
         AND (traces.call_type NOT IN ('delegatecall', 'callcode', 'staticcall') OR traces.call_type IS null)
-    WHERE s.evt_block_time > NOW() - interval '7' day
+    {% if is_incremental() %}
+    WHERE s.evt_block_time >= date_trunc("day", now() - interval '7' day)
+    {% endif %}
     
     UNION ALL
     
@@ -43,7 +45,7 @@ WITH zora_mints AS (
     , s.minter AS nft_recipient
     , s.value/1e18 AS price
     , CASE WHEN s.value/1e18 >= 0.000777 THEN 0.000777 ELSE 0 END AS marketplace_fee
-    , from_hex(JSON_EXTRACT_SCALAR(r.configuration, '$.royaltyRecipient')) AS marketplace_fee_recipient
+    , from_hex(JSON_EXTRACT_SCALAR(MAX_BY(r.configuration, r.evt_block_time), '$.royaltyRecipient')) AS marketplace_fee_recipient
     , GREATEST((s.value/1e18)-0.000777, 0) AS creator_fee
     , CAST(NULL AS varbinary) AS creator_fee_recipient
     , s.contract_address AS nft_contract_address
@@ -54,7 +56,11 @@ WITH zora_mints AS (
     FROM {{erc1155_mints}} s
     LEFT JOIN {{erc1155_royalties}} r ON r.contract_address=s.contract_address
         AND JSON_EXTRACT_SCALAR(r.configuration, '$.royaltyRecipient') != '0x0000000000000000000000000000000000000000'
-    WHERE s.evt_block_time > NOW() - interval '7' day
+        AND r.evt_block_number < s.evt_block_number
+    {% if is_incremental() %}
+    WHERE s.evt_block_time >= date_trunc("day", now() - interval '7' day)
+    {% endif %}
+    GROUP BY 1, 2, 3, 4, 5, 6, 7, 9, 10, 11, 12, 13, 14, 15
     )
 
 SELECT '{{blockchain}}' AS blockchain
