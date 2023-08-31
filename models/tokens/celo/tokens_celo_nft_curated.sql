@@ -24,6 +24,7 @@ from (
     (0x8237f38694211F25b4c872F147F027044466Fa80, 'Nomstronaut', 'Nomstronaut'),
     (0x660C6442F01c75fE1e389A607A4a7662342f2FD2, 'CeloPaints', 'CPAINT'),
     (0xAc80c3c8b122DB4DcC3C351ca93aC7E0927C605d, 'Celostrials', 'NFET'),
+    (0xB346E32c9c5196A580F7466a039D902b505Ae7d4, 'Carbonized Celostrials', 'NFET02'),
     (0xb69948766ADeF1e85291c322114c3d98eEbA8695, 'ChinChilla_Gang_Airdrop', 'GANGAIRDROP'),
     (0xc8DF51073CD581902b4fb50131d31f29343131F0, 'ChinChillaGang', 'GANG'),
     (0xA83a8C2f6a762F8BE760A0f45540E3864750dE0F, 'SToadzNFT', 'STOADZ'),
@@ -35,5 +36,13 @@ from (
     (0x56546DAF99C69c0F6271FA287b30A1946cA466f0, 'CeloErectus', 'CER'),
     (0x6eBc8879Ee57334B14a9B1e3A2fDe55E172193C6, 'CeloWhales', 'CWHALE'),
     (0x91d0e3A2BCCf036bcf61536D2BDFD47D79946aAE, 'Shiki', 'SHIKI'),
-    (0x8481d620CBa0Dc4a4421D1015DAbc60Ec55d6172, 'Ariart', 'ARIa')
+    (0x8481d620CBa0Dc4a4421D1015DAbc60Ec55d6172, 'Ariart', 'ARIa'),
+    (0x850F0b409cF1b8FB5E03821870fBf9F119Dbe52e, 'Impact Quest - CELO - Save2Savee', 'ImpactQuest'),
+    (0x640a33Ab2102ba5Dc802fac852A87BC2F2770F8a, 'Impact Quest 2', 'ImpactQuest2'),
+    (0x9DeF34B1ace8C135029AEC19f9744762A572b2c3, 'Toucan Protocol: Retirement Certificates for Tokenized Carbon Offsets', 'TOUCAN-CERT'),
+    (0x8E19B1Ad222147193a9aF9B0A844B680721a007D, 'Wheelcoin Vehicles', 'WHL-VHC'),
+    (0xD1240Efd4C8B90A9b5B126eD1Dd8Ca099F832342, 'First WheelCoin Collection', 'WHL1'),
+    (0x90e723DaaeE9FDcD95d5353f6bfC464Ff2d4591a, 'CELOAKS', 'CELOAKS'),
+    (0x376f5039Df4e9E9c864185d8FaBad4f04A7E394A, 'Celo Domain Name', 'CDN'),
+    (0xe41CE70624CFECb425f9Ef0049784f2ed6Ea4019, 'Stewards for Change', 'STWRD')
 ) as temp_table (contract_address, name, symbol)
