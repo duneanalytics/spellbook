@@ -40,6 +40,9 @@ models:
       - &block_time
         name: block_time
         description: "UTC event block time of each DEX trade"
+      - &block_month
+        name: block_month
+        description: "UTC event block month of each DEX trade"
       - &token_bought_symbol
         name: token_bought_symbol
         description: "Token symbol for token bought in the transaction"
