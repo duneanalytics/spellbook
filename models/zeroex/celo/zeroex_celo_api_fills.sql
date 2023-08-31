@@ -1,8 +1,9 @@
 {{  config(
     tags=['dunesql'],
-        alias = alias('api_fills_celo'),
+        schema = 'zeroex_celo',
+        alias = alias('api_fills'),
         materialized='incremental',
-        partition_by = ['block_date'],
+        partition_by = ['block_month'],
         unique_key = ['block_date', 'tx_hash', 'evt_index'],
         on_schema_change='sync_all_columns',
         file_format ='delta',
@@ -194,7 +195,8 @@ SELECT
         all_tx.evt_index,
         all_tx.contract_address,
         all_tx.block_time,
-        try_cast(date_trunc('day', all_tx.block_time) AS date) AS block_date,
+        cast(date_trunc('day', all_tx.block_time) AS date) AS block_date,
+        cast(date_trunc('month', all_tx.block_time) AS date) AS block_month,
         maker,
         CASE
              WHEN taker = 0xdef1c0ded9bec7f1a1670819833240f027b25eff THEN tx."from"
