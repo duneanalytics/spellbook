@@ -1,7 +1,7 @@
 version: 2
 
 models:
-  - name: tokemak_ethereum_view_lookup_tokens
+  - name: tokemak_ethereum_lookup_tokens
     meta:
       blockchain: ethereum
       project: tokemak
@@ -54,7 +54,7 @@ models:
         description: "This token/pool is a stablecoin"
         tests:
           - not_null
-  - name: tokemak_ethereum_view_tokemak_addresses
+  - name: tokemak_ethereum_tokemak_addresses
     meta:
       blockchain: ethereum
       project: tokemak
@@ -68,7 +68,7 @@ models:
         description: "Tokemak owned address"
         tests:
           - not_null
-  - name: tokemak_ethereum_view_tokemak_lookup_reactors
+  - name: tokemak_ethereum_tokemak_lookup_reactors
     meta:
       blockchain: ethereum
       project: tokemak

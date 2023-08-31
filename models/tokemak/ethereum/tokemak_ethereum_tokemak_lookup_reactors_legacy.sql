@@ -1,6 +1,6 @@
 {{ config( 
   schema = 'tokemak_ethereum',
-  alias = alias('view_lookup_tokens', legacy_model=True),
+  alias = alias('tokemak_lookup_reactors', legacy_model=True),
   tags = ['legacy']
   )
 }}

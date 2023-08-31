@@ -7,4 +7,4 @@ sources:
       Decoded events for [Tokemak] (https://tokemak.xyz/), a decentralized liquidity management protocol.
 
     tables:
-      - name: tokemak_ethereum_view_lookup_tokens
+      - name: tokemak_ethereum_lookup_tokens
