@@ -17,6 +17,7 @@ models:
             - tx_id
             - index
             - wallet_address
+            - block_height
     columns:
       - name: type
       - name: tx_id
