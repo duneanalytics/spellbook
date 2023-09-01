@@ -80,7 +80,7 @@ FROM (
     ,contract_name
     ,from_iso8601_timestamp( '2021-07-06' ) as created_time
     ,false as is_self_destruct
-    ,'synthetix contracts' as source
+    ,'ovm1 synthetix contracts' as source
     ,cast(NULL as varbinary) as creation_tx_hash
     , 3 as pref_rnk
   from {{ source('ovm1_optimism', 'synthetix_genesis_contracts') }} as snx
