@@ -46,6 +46,6 @@ with
 
 select type, tx_id, index, 'bitcoin' as blockchain, wallet_address, block_time, block_date, block_height, amount_raw
 from input_transfers
-union all
+union
 select type, tx_id, index, 'bitcoin' as blockchain, wallet_address, block_time, block_date, block_height, amount_raw
 from output_transfers
