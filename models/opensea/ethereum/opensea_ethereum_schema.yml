@@ -472,7 +472,8 @@ models:
           combination_of_columns:
             - block_number
             - tx_hash
-            - sub_tx_trade_id
+            - evt_index
+            - sub_idx
       - check_seed:
           seed_file: ref('opensea_ethereum_seaport_trades_samples')
           filter:
