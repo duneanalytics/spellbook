@@ -33,8 +33,8 @@ WITH dexs AS
         ,t.evt_tx_hash AS tx_hash
         ,t.evt_index
     FROM
-        {{ source('aerodrome_v2_base', 'Pool_evt_Swap') }} t
-    INNER JOIN {{ source('aerodrome_v2_base', 'PoolFactory_evt_PoolCreated') }} f
+        {{ source('aerodrome_base', 'Pool_evt_Swap') }} t
+    INNER JOIN {{ source('aerodrome_base', 'PoolFactory_evt_PoolCreated') }} f
         ON f.pool = t.contract_address
         AND t.evt_block_number >= f.evt_block_number
     {% if is_incremental() %}

@@ -33,5 +33,5 @@ FROM (
         , evt_tx_hash
         , evt_index
 
-        FROM {{ source('aerodrome_v2_base','Voter_evt_GaugeCreated') }} gc
+        FROM {{ source('aerodrome_base','Voter_evt_GaugeCreated') }} gc
 ) a
