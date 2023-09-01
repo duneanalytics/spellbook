@@ -18,6 +18,7 @@ models:
             - index
             - wallet_address
     columns:
+      - name: unique_transfer_id
       - name: type
       - name: tx_id
       - name: index
