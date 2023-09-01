@@ -104,6 +104,7 @@ models:
       - *blockchain
       - *block_date
       - *block_time
+      - *block_month
       - &taker_symbol
         name: taker_symbol
         description: "Symbol of the token taker sells"
