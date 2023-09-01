@@ -22,5 +22,3 @@ UNION ALL
 SELECT 'polygon' as blockchain, * FROM  {{ ref('tokens_polygon_erc20_legacy') }}
 UNION ALL
 SELECT 'fantom' as blockchain, * FROM {{ ref('tokens_fantom_erc20_legacy') }}
-UNION ALL 
-SELECT 'base' as blockchain, * FROM {{ ref('tokens_base_erc20_legacy') }}
