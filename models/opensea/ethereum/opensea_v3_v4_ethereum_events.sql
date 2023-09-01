@@ -13,7 +13,7 @@
 SELECT 'ethereum' AS blockchain
 , date_trunc('day', s.block_time) AS date_time
 , 'opensea' AS project
-, CASE WHEN seaport_version IN ('1.1', '1.2', '1.3') THEN 'v3' ELSE 'v4' END AS version
+, CASE WHEN s.seaport_version IN ('1.1', '1.2', '1.3') THEN 'v3' ELSE 'v4' END AS version
 , s.block_number
 , s.tx_hash
 , s.evt_index
@@ -43,6 +43,6 @@ OR "RIGHT"(CAST(txs.data AS varchar), 8) = '360c6ebe')
 {% if is_incremental() %}
 AND s.block_time >= date_trunc('day', now() - interval '7' day)
 {% endif %}
-GROUP BY s.block_number, s.tx_hash, s.order_hash, s.seaport_contract_address
+GROUP BY s.block_time, s.block_number, s.tx_hash, s.evt_index, s.order_hash, s.seaport_contract_address, s.seaport_version
 HAVING MAX(CASE WHEN s.token_standard IN ('erc721', 'erc1155') AND s.trace_side='consideration' THEN true ELSE false END) != MAX(CASE WHEN s.token_standard IN ('erc721', 'erc1155') AND s.trace_side='offer' THEN true ELSE false END) -- Checks there's only an/multiple NFT(s) on one side
 AND MAX(CASE WHEN s.token_standard IN ('native', 'erc20') AND s.trace_side='consideration' THEN true ELSE false END) != MAX(CASE WHEN s.token_standard IN ('native', 'erc20') AND s.trace_side='offer' THEN true ELSE false END) -- Checks there's only an/multiple native tokens/erc20s on one side
