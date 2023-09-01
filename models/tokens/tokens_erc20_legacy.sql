@@ -3,7 +3,7 @@
         post_hook='{{ expose_spells(\'["arbitrum","avalanche_c","bnb","ethereum","optimism", "gnosis", "fantom", "polygon"]\',
                                     "sector",
                                     "tokens",
-                                    \'["0xManny","hildobby","soispoke","dot2dotseurat","mtitus6", "denver"]\') }}')}}
+                                    \'["0xManny","hildobby","soispoke","dot2dotseurat","mtitus6"]\') }}')}}
 
 SELECT 'arbitrum' as blockchain, * FROM  {{ ref('tokens_arbitrum_erc20_legacy') }}
 UNION ALL
