@@ -1,6 +1,6 @@
 {{
   config(
-	tags=['legacy'],
+	tags=['legacy', 'remove'],
     alias=alias('price_feeds_hourly', legacy_model=True),
     partition_by=['block_month'],
     materialized='incremental',
@@ -35,7 +35,7 @@ WITH gs AS (
                         DATE_TRUNC('hour', NOW()),
                         interval '1 hour'
                         )
-            ) AS hr, 
+            ) AS hr,
                 feed_name,
                 proxy_address,
                 aggregator_address
@@ -60,15 +60,15 @@ FROM (
         proxy_address,
         aggregator_address,
         underlying_token_address,
-        first_value(oracle_price_avg) 
+        first_value(oracle_price_avg)
             OVER (
-                PARTITION BY feed_name, 
+                PARTITION BY feed_name,
                              proxy_address,
                              aggregator_address,
                              underlying_token_address,
-                             grp 
+                             grp
                 ORDER BY hr)                                AS oracle_price_avg,
-        first_value(underlying_token_price_avg) 
+        first_value(underlying_token_price_avg)
             OVER (
                 PARTITION BY feed_name,
                              proxy_address,
@@ -86,7 +86,7 @@ FROM (
             oracle_price_avg,
             underlying_token_address,
             underlying_token_price_avg,
-            count(oracle_price_avg) 
+            count(oracle_price_avg)
                 OVER (
                     PARTITION BY feed_name,
                                  proxy_address,

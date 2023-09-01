@@ -203,7 +203,7 @@ models:
     description: >
         Opensea Wyvern trades on Polygon
     tests:
-      - check_seed_legacy:
+      - check_seed:
           seed_file: ref('opensea_polygon_zeroex_trades_samples')
           filter:
             blockchain: polygon
@@ -225,8 +225,10 @@ models:
             - token_id
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
-            - block_date
-            - unique_trade_id
+            - tx_hash
+            - evt_type
+            - evt_index
+            - token_id
     columns:
       - *project
       - *version
@@ -278,8 +280,13 @@ models:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - block_date
-            - unique_trade_id
-      - check_seed_legacy:
+            - tx_hash
+            - evt_index
+            - nft_contract_address
+            - token_id
+            - sub_type
+            - sub_idx
+      - check_seed:
           seed_file: ref('opensea_polygon_seaport_trades_samples')
           filter:
             blockchain: polygon
@@ -369,8 +376,13 @@ models:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - block_date
-            - unique_trade_id
-      - check_seed_legacy:
+            - tx_hash
+            - evt_index
+            - nft_contract_address
+            - token_id
+            - sub_type
+            - sub_idx
+      - check_seed:
           seed_file: ref('opensea_polygon_seaport_trades_samples')
           filter:
             blockchain: polygon
