@@ -1,6 +1,8 @@
 {{  config(
     tags=['legacy'],
-        alias = alias('api_fills_base', legacy_model=True)
+        
+        schema = 'zeroex_base',
+        alias = alias('api_fills', legacy_model=True)
         
     )
 }}
