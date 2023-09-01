@@ -2,6 +2,7 @@
         materialized='incremental',
         alias = alias('satoshi'),
         tags = ['dunesql'],
+        file_format = 'delta',
         unique_key = ['type', 'tx_id', 'index', 'block_height', 'wallet_address'],
         post_hook='{{ expose_spells(\'["bitcoin"]\',
                                     "sector",
