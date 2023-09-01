@@ -11,8 +11,9 @@ models:
       tags: ["transfers", "bitcoin", "satoshi"]
     description: "Transfer satoshi in Bitcoin"
     columns:
-      - name: unique_transfer_id
-        description: "Unique transfer ID (used for testing for duplicates)"
+      - name: type
+      - name: tx_id
+      - name: index
       - &blockchain
         name: blockchain
         description: "Chai name"
