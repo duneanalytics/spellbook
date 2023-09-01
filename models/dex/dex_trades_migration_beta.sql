@@ -17,7 +17,6 @@
 {#
 ## Models not yet migrated
 ,ref('curvefi_trades')
-,ref('ellipsis_finance_trades')
  #}
 
 {% set dex_trade_models = [
@@ -71,6 +70,7 @@
 ,ref('honeyswap_trades')
 ,ref('synthetix_spot_trades')
 ,ref('dodo_trades')
+,ref('ellipsis_finance_trades')
 ] %}
 
 
