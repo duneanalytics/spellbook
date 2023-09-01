@@ -72,6 +72,7 @@ SELECT  a.blockchain
       , cast(null as varchar(10)) as version
       , a.block_date
       , a.block_time
+      , a.block_month
       , b.taker_symbol AS taker_symbol
       , b.maker_symbol AS maker_symbol
       , CASE
