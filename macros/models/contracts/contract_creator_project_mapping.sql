@@ -88,20 +88,7 @@ SELECT *
             ,CAST(NULL AS bigint) as code_deploy_rank_by_chain
             ,bytearray_length(ct.code) AS code_bytelength
             ,coalesce(sd.contract_address is not NULL, false) as is_self_destruct
-            ,CASE 
-              WHEN bytearray_position(ct.code, 0x18160ddd) >0 THEN 'erc1155'-- ('erc1155','balanceOf(address,uint256)', 0x00fdd58e)
-              WHEN bytearray_position(ct.code, 0x2eb2c2d6) >0 THEN 'erc1155'-- ('erc1155','safeBatchTransferFrom(address,address,uint256[],uint256[],bytes)', 0x2eb2c2d6),
-              WHEN bytearray_position(ct.code, 0xf242432a) >0 THEN 'erc1155'-- ('erc1155','safeTransferFrom(address,address,uint256,uint256,bytes)', 0xf242432a),
-
-              WHEN bytearray_position(ct.code, 0xb88d4fde) >0 THEN 'erc721' -- ('erc721','safeTransferFrom(address,address,uint256,bytes)', 0xb88d4fde),
-              
-              WHEN bytearray_position(ct.code, 0xa9059cbb) >0 THEN 'erc20' -- ('erc20','transfer(address,uint256)', 0xa9059cbb),
-              
-              WHEN bytearray_position(ct.code, 0x23b872dd) >0 THEN 'token' -- ('all','transferFrom(address,address,uint256)', 0x23b872dd),
-              WHEN bytearray_position(ct.code, 0x70a08231) >0 THEN 'token' -- ('all','balanceOf(address)', 0x70a08231),
-              WHEN bytearray_position(ct.code, 0x18160ddd) >0 THEN 'token' -- ('all','totalSupply()', 0x18160ddd),
-            ELSE NULL
-            END AS token_standard
+            ,NULL AS token_standard
             ,1 AS to_iterate_creators
             ,1 AS is_new_contract
           from {{ source( chain , 'transactions') }} as t 
@@ -515,7 +502,43 @@ WHERE contract_order = 1
     ,c.top_level_tx_method_id
 
     ,c.code_bytelength
-    ,COALESCE(t.token_standard, c.token_standard) AS token_standard
+    ,COALESCE(t.token_standard, c.token_standard,
+    -- to be replaced with all tokens table
+      CASE 
+      WHEN EXISTS (SELECT 1
+                        FROM {{source('erc1155_' + chain, 'evt_transfersingle')}} r
+                        WHERE c.contract_address = r.contract_address
+                        AND r.evt_block_time > c.created_time
+                        {% if is_incremental() %} -- this filter will only be applied on an incremental run 
+                        AND r.evt_block_time > NOW() - interval '7' day
+                        {% endif %}
+                        ) THEN 'erc1155'
+      WHEN EXISTS (SELECT 1
+                        FROM {{source('erc1155_' + chain, 'evt_transferbatch')}} r
+                        WHERE c.contract_address = r.contract_address
+                        AND r.evt_block_time > c.created_time
+                        {% if is_incremental() %} -- this filter will only be applied on an incremental run 
+                        AND r.evt_block_time > NOW() - interval '7' day
+                        {% endif %}
+                        ) THEN 'erc1155'
+      WHEN EXISTS (SELECT 1
+                        FROM {{source('erc721_' + chain, 'evt_transfer')}} r
+                        WHERE c.contract_address = r.contract_address
+                        AND r.evt_block_time > c.created_time
+                        {% if is_incremental() %} -- this filter will only be applied on an incremental run 
+                        AND r.evt_block_time > NOW() - interval '7' day
+                        {% endif %}
+                        ) THEN 'erc721'
+      WHEN EXISTS (SELECT 1
+                        FROM {{source('erc20_' + chain, 'evt_transfer')}} r
+                        WHERE c.contract_address = r.contract_address
+                        AND r.evt_block_time > c.created_time
+                        {% if is_incremental() %} -- this filter will only be applied on an incremental run 
+                        AND r.evt_block_time > NOW() - interval '7' day
+                        {% endif %}
+                        ) THEN 'erc20'
+      ELSE NULL END
+      ) AS token_standard
     ,c.code
     ,c.code_deploy_rank_by_chain
     ,MIN(c.map_rank) AS map_rank
