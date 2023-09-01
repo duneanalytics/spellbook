@@ -29,7 +29,6 @@ models:
       - &pricing_contract
         name: pricing_contract
         description: "Token contract"
-        tests:
       - &decimals
         name: decimals
         description: "Decimal count"
