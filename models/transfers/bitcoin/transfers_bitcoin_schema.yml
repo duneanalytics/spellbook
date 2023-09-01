@@ -10,6 +10,13 @@ models:
     config:
       tags: ["transfers", "bitcoin", "satoshi"]
     description: "Transfer satoshi in Bitcoin"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - type
+            - tx_id
+            - index
+            - wallet_address
     columns:
       - name: type
       - name: tx_id
@@ -38,6 +45,11 @@ models:
       contributors: longnhbkhn
     config:
       tags: ['transfers', 'bitcoin', 'satoshi', 'agg_day', 'longnhbkhn']
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - day
+            - wallet_address
     columns:
       - *blockchain
       - &day
@@ -45,10 +57,6 @@ models:
         description: "UTC event block time truncated to the day mark."
       - *wallet_address
       - *amount_raw
-      - name: unique_transfer_id
-        description: "Unique ID, used in order to apply the merge into incremental strategy"
-        tests:
-          - unique
 
     
   

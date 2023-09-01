@@ -1,7 +1,7 @@
 {{ config(
         alias = alias('satoshi_rolling_day'),
-        tags = ['dunesql'])
-}}
+        tags = ['dunesql']
+)}}
 
 select
     'bitcoin' as blockchain,
