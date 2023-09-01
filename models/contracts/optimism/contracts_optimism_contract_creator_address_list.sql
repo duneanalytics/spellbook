@@ -635,4 +635,4 @@ WHERE f.creator_address NOT IN (
 )
 
 GROUP BY 1,2
-;
+
