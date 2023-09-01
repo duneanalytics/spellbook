@@ -1,15 +1,15 @@
 version: 2
 
 models:
-  - name: rubicon_arbitrum_trades
+  - name: rubicon_base_trades
     meta:
-      blockchain: arbitrum
+      blockchain: base
       project: rubicon
       contributors: denver
     config:
-      tags: ['arbitrum','rubicon','dex']
+      tags: ['base','rubicon','dex']
     description: >
-        A table containing all trades of rubicon on arbitrum
+        A table containing all trades of rubicon on base
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -20,7 +20,7 @@ models:
               - tx_hash
               - evt_index
       - check_dex_seed:
-          blockchain: arbitrum
+          blockchain: base
           project: rubicon
           version: 1
     columns:
@@ -36,12 +36,12 @@ models:
       - &block_date
         name: block_date
         description: "UTC event block date of each DEX trade"
-      - &block_month
-        name: block_month
-        description: "UTC event block month of each DEX trade"
       - &block_time
         name: block_time
         description: "UTC event block time of each DEX trade"
+      - &block_month
+        name: block_month
+        description: "UTC event block month of each DEX trade"
       - &token_bought_symbol
         name: token_bought_symbol
         description: "Token symbol for token bought in the transaction"
@@ -94,20 +94,20 @@ models:
         name: evt_index
         description: "the event index of the trade"
 
-  - name: rubicon_arbitrum_offers
+  - name: rubicon_base_offers
     meta:
-      blockchain: arbitrum
+      blockchain: base
       project: rubicon
       contributors: denver
     config:
-      tags: ['arbitrum','rubicon','dex']
+      tags: ['base','rubicon','dex']
     description: >
-        A table containing all offers of rubicon on arbitrum
+        A table containing all offers of rubicon on base
     tests:
       - check_seed:
-          seed_file: ref('rubicon_arbitrum_offers_seed')
+          seed_file: ref('dex_offers_seed')
           filter:
-            blockchain: arbitrum
+            blockchain: base
             project: rubicon
           match_columns:
             - block_date
@@ -130,8 +130,10 @@ models:
 #            - buy_amount_usd
 #            - sold_amount_usd
 #            - bought_amount_usd
-            - effective_gas_price
+            - gas_price
             - gas_used
+            - l1_gas_price
+            - l1_gas_used
             - txn_cost_eth
             - eth_price 
             - txn_cost_usd
@@ -210,12 +212,21 @@ models:
       - &bought_amount_usd
         name: bought_amount_usd
         description: "the amount of the token that the offer has bought in USD (summed bassed on the price at the time of each trade (if any))"  
-      - &effective_gas_price
-        name: effective_gas_price
+      - &gas_price
+        name: gas_price
         description: "the gas price of the transaction that created the offer"
       - &gas_used
         name: gas_used
         description: "the gas used by the transaction that created the offer"
+      - &l1_gas_price
+        name: l1_gas_price
+        description: "the gas price of the transaction that created the offer on ethereum mainnet"
+      - &l1_gas_used
+        name: l1_gas_used
+        description: "the gas used by the transaction that created the offer on ethereum mainnet"
+      - &l1_fee_scalar
+        name: l1_fee
+        description: "the fee paid to ethereum mainnet"
       - &txn_cost_eth
         name: txn_cost_eth
         description: "the cost of the transaction in ETH"
@@ -229,5 +240,3 @@ models:
       - *tx_hash
       - *tx_from
       - *tx_to
-
-      
