@@ -1,4 +1,5 @@
 {{ config(
+    schema = 'aerodrome_base',
     alias = alias('trades'),
     tags=['dunesql'],
     partition_by = ['block_month'],
