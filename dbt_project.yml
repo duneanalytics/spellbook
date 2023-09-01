@@ -198,6 +198,8 @@ models:
         +schema: nft_goerli
       base:
         +schema: nft_base
+      celo:
+        +schema: nft_celo
 
     cex:
       +schema: cex
@@ -1357,6 +1359,11 @@ models:
       +schema: glacier
       avalanche_c:
         +schema: glacier_avalanche_c
+    
+    tokemak:
+      +schema: tokemak
+      ethereum:
+        +schema: tokemak_ethereum
 
 
     thena:
@@ -1392,7 +1399,7 @@ models:
           +schema: account_abstraction_erc4337_base
         bnb:
           +schema: account_abstraction_erc4337_bnb
-          
+
     zora:
       +schema: zora
       optimism:
