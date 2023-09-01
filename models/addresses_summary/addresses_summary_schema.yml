@@ -48,3 +48,5 @@ models:
         description: "Project address sent last transaction to"
       - name: last_to_address
         description: "Contract address that an address sent last transaction to"
+      - name: total_bridged_eth
+        description: "Total ETH bridged by address to OP Mainnet"   

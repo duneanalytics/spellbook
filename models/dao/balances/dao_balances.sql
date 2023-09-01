@@ -103,7 +103,7 @@ LEFT JOIN
     {{ source('prices', 'usd') }} e 
     ON db.asset_contract_address IN (0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee, 0xDeadDeAddeAddEAddeadDEaDDEAdDeaDDeAD0000)
     AND d.day = e.minute
-    AND db.blockchain = 'ethereum'
+    AND db.blockchain IN ('ethereum', 'base')
     AND e.blockchain = 'ethereum'
     AND e.symbol = 'WETH'
 

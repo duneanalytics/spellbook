@@ -19,3 +19,65 @@ models:
         description: "ERC20 token symbol"
       - name: decimals
         description: "Number of decimals, refers to how divisible an ERC20 token can be"
+
+  - name: tokens_celo_nft_curated
+    meta:
+      blockchain: celo
+      sector: nft
+      contributors: tomfutago
+    config:
+      tags: ['tokens', 'celo', 'nft', 'erc721', 'erc1155']
+    description: >
+        Selection of NFT token addresses.
+    columns:
+      - name: contract_address
+        description: "The contract address is the unique address of where the NFTs are stored on Optimism."
+        tests:
+          - unique
+      - name: name
+        description: "NFT Project Name"
+
+  - name: tokens_celo_nft
+    meta:
+      blockchain: celo
+      sector: nft
+      contributors: tomfutago
+    config:
+      tags: [ 'tokens', 'celo', 'nft', 'erc721', 'erc1155' ]
+    description: >
+      Selection of NFT token addresses.
+    columns:
+      - name: contract_address
+        description: "The contract address is the unique address of where the NFTs are stored on Optimism."
+        tests:
+          - unique
+      - name: name
+        description: "NFT Project Name"
+      - name: standard
+        tests:
+          - accepted_values:
+              values: [ 'erc721', 'erc1155']
+        description: >
+          The token standard. This is the set of rules that the contract must respect 
+          to be compatible with the common standards. Accepted values are presently standards represented.
+          If you are adding a token with a new standard, remember to add it the accepted values list.   
+
+  - name: tokens_celo_nft_standards
+    meta:
+      blockchain: celo
+      sector: nft
+      contributors: tomfutago
+    config:
+      tags: [ 'nft','celo' ]
+    description: >
+      NFT contract standards
+    columns:
+      - name: contract_address
+        description: "the NFT contract address"
+        tests:
+          - unique
+      - name: standard
+        description: "The NFT standard erc721/erc1155/..."
+        tests:
+          - accepted_values:
+              values: [ 'erc721', 'erc1155' ]
