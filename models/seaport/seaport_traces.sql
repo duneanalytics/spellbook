@@ -3,8 +3,8 @@
         alias = alias('traces'),
         unique_key = ['blockchain', 'block_number', 'tx_hash', 'evt_index', 'order_hash', 'trace_side', 'trace_index'],
         post_hook='{{ expose_spells(\'["arbitrum", "avalanche_c", "base", "bnb", "ethereum", "optimism", "polygon"]\',
-                                    "sector",
-                                    "nft",
+                                    "project",
+                                    "seaport",
                                     \'["hildobby"]\') }}'
 )
 }}
