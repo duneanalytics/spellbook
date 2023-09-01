@@ -1,6 +1,7 @@
 {{ config(
         tags=['dunesql'],
         alias = alias('trades'),
+        partition_by = ['block_month'],
         post_hook='{{ expose_spells(\'["bnb"]\',
                                 "project",
                                 "ellipsis_finance",
@@ -22,6 +23,7 @@ FROM (
         version,
         block_date,
         block_time,
+        block_month,
         token_bought_symbol,
         token_sold_symbol,
         token_pair,
