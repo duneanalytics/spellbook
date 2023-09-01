@@ -86,7 +86,7 @@ WITH
     FROM
       (
         SELECT
-          pos,
+          pos - 1 as pos,
           col,
           output_0 AS pool
         FROM {{ source('curvefi_optimism', 'PoolFactory_call_deploy_plain_pool') }}

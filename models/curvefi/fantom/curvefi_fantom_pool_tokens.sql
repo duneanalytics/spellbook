@@ -168,7 +168,7 @@ WITH
       (
         SELECT
           output_0 as pool,
-          coin_elements.token_id,
+          coin_elements.token_id - 1 as token_id,
           coin_elements.token_address,
           'pool_token' as token_type
         FROM
