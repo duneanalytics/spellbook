@@ -148,34 +148,7 @@ NewBridgeFill AS (
         AND block_time >= cast('{{zeroex_v4_start_date}}' as date)
         {% endif %}
 ),
-/*
-direct_PLP AS (
-    SELECT 
-            plp.evt_tx_hash,
-            plp.evt_index               AS evt_index,
-            plp.contract_address,
-            plp.evt_block_time          AS block_time,f
-            provider                    AS maker,
-            recipient                   AS taker,
-            inputToken                  AS taker_token,
-            outputToken                 AS maker_token,
-            inputTokenAmount            AS taker_token_amount_raw,
-            outputTokenAmount           AS maker_token_amount_raw,
-            'LiquidityProviderSwap'     AS type,
-            zeroex_tx.affiliate_address AS affiliate_address,
-            TRUE                        AS swap_flag,
-            FALSE                       AS matcha_limit_order_flag
-    FROM {{ source('zeroex_celo', 'ExchangeProxy_evt_LiquidityProviderSwap') }} plp
-    INNER JOIN zeroex_tx ON zeroex_tx.tx_hash = plp.evt_tx_hash
 
-    {% if is_incremental() %}
-    WHERE evt_block_time >= date_trunc('day', now() - interval '1 week')
-    {% endif %}
-    {% if not is_incremental() %}
-    WHERE evt_block_time >= cast('{{zeroex_v3_start_date}}' as date)
-    {% endif %}
-), 
- */
 all_tx AS (
     
     SELECT *
