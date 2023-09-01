@@ -18,4 +18,4 @@ from {{ ref('transfers_bitcoin_satoshi') }} tr
 -- this filter will only be applied on an incremental run
 where tr.block_date >= date_trunc('day', now() - interval '7' day)
 {% endif %}
-group by 1, 2, 3, 4
+group by 1, 2, 3
