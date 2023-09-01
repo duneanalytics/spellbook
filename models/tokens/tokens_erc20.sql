@@ -1,11 +1,9 @@
-{{ config( 
-        alias = alias('erc20'),
+{{ config( alias = alias('erc20'),
         tags=['static', 'dunesql'],
         post_hook='{{ expose_spells(\'["arbitrum","avalanche_c","bnb","ethereum","optimism", "gnosis", "fantom", "polygon","base", "celo"]\',
                                     "sector",
                                     "tokens",
-                                    \'["0xManny","hildobby","soispoke","dot2dotseurat","mtitus6","denver","wuligy"]\') }}'
-)}}
+                                    \'["0xManny","hildobby","soispoke","dot2dotseurat","mtitus6","wuligy"]\') }}')}}
 
 SELECT 'arbitrum' as blockchain, contract_address, symbol, decimals FROM  {{ ref('tokens_arbitrum_erc20') }}
 UNION ALL
