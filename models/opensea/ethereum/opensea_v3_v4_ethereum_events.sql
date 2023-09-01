@@ -11,7 +11,7 @@
 }}
 
 SELECT 'ethereum' AS blockchain
-, date_trunc('day', s.block_time) AS date_time
+, date_trunc('day', s.block_time) AS block_date
 , 'opensea' AS project
 , CASE WHEN s.seaport_version IN ('1.1', '1.2', '1.3') THEN 'v3' ELSE 'v4' END AS version
 , s.block_number
