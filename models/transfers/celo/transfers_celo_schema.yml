@@ -71,15 +71,15 @@ models:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - tx_hash
-            - type
+            - transfer_type
             - evt_index
             - wallet_address
     columns:
       - &blockchain
         name: blockchain
         description: "Blockchain"
-      - &type
-        name: type
+      - &transfer_type
+        name: transfer_type
         description: "Transfer Type: sent/received"
       - &wallet_address
         name: wallet_address
