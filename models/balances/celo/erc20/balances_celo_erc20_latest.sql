@@ -10,7 +10,7 @@
         post_hook='{{ expose_spells(\'["celo"]\',
                                     "sector",
                                     "balances",
-                                    \'["soispoke", "dot2dotseurat", "tomfutago"]\') }}'
+                                    \'["tomfutago"]\') }}'
     )
 }}
 
