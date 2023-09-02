@@ -3,7 +3,7 @@
         alias = alias('satoshi'),
         tags = ['dunesql'],
         file_format = 'delta',
-        unique_key = ['unique_transfer_id'],
+        unique_key = ['type', 'tx_id', 'index', 'wallet_address'],
         post_hook='{{ expose_spells(\'["bitcoin"]\',
                                     "sector",
                                     "transfers",
@@ -11,7 +11,6 @@
 with 
     input_transfers as (
         select
-            CAST('input' AS VARCHAR(5)) || CAST('-' AS VARCHAR(1)) || CAST(tx_id AS VARCHAR(100)) || CAST('-' AS VARCHAR(1)) || CAST(index AS VARCHAR(100)) || CAST('-' AS VARCHAR(1)) || CAST(address AS VARCHAR(100)) as unique_transfer_id,
             'input' as type,
             tx_id,
             index,
@@ -30,7 +29,6 @@ with
     , 
     output_transfers as (
         select
-            CAST('output' AS VARCHAR(6)) || CAST('-' AS VARCHAR(1)) || CAST(tx_id AS VARCHAR(100)) || CAST('-' AS VARCHAR(1)) || CAST(index AS VARCHAR(100)) || CAST('-' AS VARCHAR(1)) || CAST(address AS VARCHAR(100)) as unique_transfer_id,
             'output' as type,
             tx_id,
             index,
@@ -47,8 +45,20 @@ with
         {% endif %}
     )
 
-select unique_transfer_id, type, tx_id, index, 'bitcoin' as blockchain, wallet_address, block_time, block_date, block_height, amount_raw
-from input_transfers
+select any_value(type) as type, 
+    tx_id, index, 'bitcoin' as blockchain, 
+    any_value(wallet_address) as wallet_address, 
+    any_value(block_time) as block_time, 
+    any_value(block_date) as block_date, 
+    any_value(block_height) as block_height, 
+    any_value(amount_raw) as amount_raw
+from input_transfers group by tx_id, index
 union
-select unique_transfer_id, type, tx_id, index, 'bitcoin' as blockchain, wallet_address, block_time, block_date, block_height, amount_raw
-from output_transfers
+select any_value(type) as type, 
+    tx_id, index, 'bitcoin' as blockchain, 
+    any_value(wallet_address) as wallet_address, 
+    any_value(block_time) as block_time, 
+    any_value(block_date) as block_date, 
+    any_value(block_height) as block_height, 
+    any_value(amount_raw) as amount_raw
+from output_transfers group by tx_id, index

@@ -1,5 +1,7 @@
 {{ config(materialized='view', alias = alias('satoshi', legacy_model=True),
         tags = ['legacy'],
+        file_format = 'delta',
+        unique_key = ['type', 'tx_id', 'index', 'wallet_address'],
         post_hook='{{ expose_spells(\'["bitcoin"]\',
                                     "sector",
                                     "transfers",
@@ -7,30 +9,54 @@
 with 
     input_transfers as (
         select
-            CAST('input' AS VARCHAR(5)) || CAST('-' AS VARCHAR(1)) || CAST(tx_id AS VARCHAR(100)) || CAST('-' AS VARCHAR(1)) || CAST(index AS VARCHAR(100)) || CAST('-' AS VARCHAR(1)) || CAST(address AS VARCHAR(100)) as unique_transfer_id,
+            'input' as type,
+            tx_id,
+            index,
             address as wallet_address,
             block_time,
             block_date,
             block_height,
             -1 * value as amount_raw
         from
-            {{ source('bitcoin', 'inputs') }} where address is not null
+            {{ source('bitcoin', 'inputs') }} 
+        where address is not null
+        {% if is_incremental() %}
+        and block_time >= date_trunc('day', now() - interval '7' day)
+        {% endif %}
     )
     , 
     output_transfers as (
         select
-            CAST('output' AS VARCHAR(6)) || CAST('-' AS VARCHAR(1)) || CAST(tx_id AS VARCHAR(100)) || CAST('-' AS VARCHAR(1)) || CAST(index AS VARCHAR(100)) || CAST('-' AS VARCHAR(1)) || CAST(address AS VARCHAR(100)) as unique_transfer_id,
-            `address` as wallet_address,
+            'output' as type,
+            tx_id,
+            index,
+            address as wallet_address,
             block_time,
             block_date,
             block_height,
             value as amount_raw
         from
-            {{ source('bitcoin', 'outputs') }} where address is not null
+            {{ source('bitcoin', 'outputs') }} 
+        where address is not null
+        {% if is_incremental() %}
+        and block_time >= date_trunc('day', now() - interval '7' day)
+        {% endif %}
     )
 
-select unique_transfer_id, 'bitcoin' as blockchain, wallet_address, block_time, block_date, block_height, amount_raw
-from input_transfers
+select last(type) as type, 
+    tx_id, index, 'bitcoin' as blockchain, 
+    last(wallet_address) as wallet_address, 
+    last(block_time) as block_time, 
+    last(block_date) as block_date, 
+    last(block_height) as block_height, 
+    last(amount_raw) as amount_raw
+from input_transfers group by tx_id, index
 union
-select unique_transfer_id, 'bitcoin' as blockchain, wallet_address, block_time, block_date, block_height, amount_raw
-from output_transfers
+select last(type) as type, 
+    tx_id, index, 'bitcoin' as blockchain, 
+    last(wallet_address) as wallet_address, 
+    last(block_time) as block_time, 
+    last(block_date) as block_date, 
+    last(block_height) as block_height, 
+    last(amount_raw) as amount_raw
+from output_transfers group by tx_id, index
