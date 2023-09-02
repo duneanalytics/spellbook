@@ -44,6 +44,10 @@ daily_balances as (
       block_hour,
       lead(block_hour, 1, now()) over (partition by token_address, wallet_address order by block_hour) AS next_hour
     from {{ ref('transfers_celo_erc20_rolling_hour') }}
+    where 1=1
+      {% if is_incremental() %} -- this filter will only be applied on an incremental run
+      and block_hour >= date_trunc('day', now() - interval '3' day)
+      {% endif %}
 )
 
 select

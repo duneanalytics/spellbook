@@ -37,6 +37,10 @@ daily_balances as (
       block_day,
       lead(block_day, 1, now()) over (partition by token_address, wallet_address order by block_day) as next_day
     from {{ ref('transfers_celo_erc20_rolling_day') }}
+    where 1=1
+      {% if is_incremental() %} -- this filter will only be applied on an incremental run
+      and block_day >= date_trunc('day', now() - interval '7' day)
+      {% endif %}
 )
 
 select
