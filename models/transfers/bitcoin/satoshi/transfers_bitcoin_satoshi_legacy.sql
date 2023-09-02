@@ -1,6 +1,7 @@
 {{ config(materialized='view', alias = alias('satoshi', legacy_model=True),
         tags = ['legacy'],
         file_format = 'delta',
+        incremental_strategy = 'merge',
         unique_key = ['type', 'tx_id', 'index', 'wallet_address'],
         post_hook='{{ expose_spells(\'["bitcoin"]\',
                                     "sector",
@@ -43,20 +44,8 @@ with
         {% endif %}
     )
 
-select last(type) as type, 
-    tx_id, index, 'bitcoin' as blockchain, 
-    last(wallet_address) as wallet_address, 
-    last(block_time) as block_time, 
-    last(block_date) as block_date, 
-    last(block_height) as block_height, 
-    last(amount_raw) as amount_raw
-from input_transfers group by tx_id, index
+select type, tx_id, index, 'bitcoin' as blockchain, wallet_address, block_time, block_date, block_height, amount_raw
+from input_transfers
 union
-select last(type) as type, 
-    tx_id, index, 'bitcoin' as blockchain, 
-    last(wallet_address) as wallet_address, 
-    last(block_time) as block_time, 
-    last(block_date) as block_date, 
-    last(block_height) as block_height, 
-    last(amount_raw) as amount_raw
-from output_transfers group by tx_id, index
+select type, tx_id, index, 'bitcoin' as blockchain, wallet_address, block_time, block_date, block_height, amount_raw
+from output_transfers
