@@ -1620,7 +1620,8 @@ FROM
     ('r-r-stablecoin', 'ethereum', 'R', 0x183015a9ba6ff60230fdeadc3f43b3d788b13e21, 18),
     ('gnx-genaro-network', 'ethereum', 'GNX', 0x6ec8a24cabdc339a06a172f8223ea557055adaa5, 9),
     ('pndc-pond-coin', 'ethereum', 'PNDC', 0x423f4e6138e475d85cf7ea071ac92097ed631eea, 18),
-    ('crvusd-curvefi-usd-stablecoin', 'ethereum', 'CRVUSD', 0xf939e0a03fb07f59a73314e73794be0e57ac1b4e, 18)
+    ('crvusd-curvefi-usd-stablecoin', 'ethereum', 'CRVUSD', 0xf939e0a03fb07f59a73314e73794be0e57ac1b4e, 18),
+    ('mav-maverick-token', 'ethereum', 'MAV', 0x7448c7456a97769f6cd04f1e83a4a23ccdc46abd, 18)
     ) as temp (token_id, blockchain, symbol, contract_address, decimals)
 where contract_address not in (
     -- bad price feeds
