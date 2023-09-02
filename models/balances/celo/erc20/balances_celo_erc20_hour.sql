@@ -90,5 +90,5 @@ from token_fill_hours fd
     and fd.block_hour = p.minute
     and p.blockchain = 'celo'
   -- Removes likely non-compliant tokens due to negative balances
-  left join {{ ref('balances_celo_erc20_noncompliant') }} nc on b.token_address = nc.token_address
+  left join {{ ref('balances_celo_erc20_noncompliant') }} nc on fd.token_address = nc.token_address
 where nc.token_address is null
