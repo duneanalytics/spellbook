@@ -46,8 +46,20 @@ with
         {% endif %}
     )
 
-select type, tx_id, index, 'bitcoin' as blockchain, wallet_address, block_time, block_date, block_height, amount_raw
-from input_transfers
+select any_value(type) as type, 
+    tx_id, index, 'bitcoin' as blockchain, 
+    any_value(wallet_address) as wallet_address, 
+    any_value(block_time) as block_time, 
+    any_value(block_date) as block_date, 
+    any_value(block_height) as block_height, 
+    any_value(amount_raw) as amount_raw
+from input_transfers group by tx_id, index
 union
-select type, tx_id, index, 'bitcoin' as blockchain, wallet_address, block_time, block_date, block_height, amount_raw
-from output_transfers
+select any_value(type) as type, 
+    tx_id, index, 'bitcoin' as blockchain, 
+    any_value(wallet_address) as wallet_address, 
+    any_value(block_time) as block_time, 
+    any_value(block_date) as block_date, 
+    any_value(block_height) as block_height, 
+    any_value(amount_raw) as amount_raw
+from output_transfers group by tx_id, index
