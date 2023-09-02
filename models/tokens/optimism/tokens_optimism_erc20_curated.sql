@@ -394,6 +394,7 @@ WITH raw_token_list AS (
     ,(0x3a18dcc9745edcd1ef33ecb93b0b6eba5671e7ca, 'KUJI', 6,  'underlying')
     ,(0xdC6fF44d5d932Cbd77B52E5612Ba0529DC6226F1, 'WLD', 18, 'underlying')
     ,(0x894134a25a5faC1c2C26F1d8fBf05111a3CB9487, 'GRAI', 18, 'underlying')
+    ,(0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913, 'USDC', 6, 'underlying')
 
     ) AS temp_table (contract_address, symbol, decimals, token_type)
 )
