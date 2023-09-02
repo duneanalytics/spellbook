@@ -614,22 +614,10 @@ WITH curated_list AS (
       
   ) as temp_table (creator_address, contract_project)
 )
-
-, mapped_list AS (
-  SELECT
-    address AS creator_address, project_name AS contract_project
-    FROM {{ ref('addresses_optimism_grants_funding') }} pro
-)
-
 SELECT 
   creator_address, contract_project
 --filter out creators that we never want to map
-  FROM (
-    SELECT creator_address, contract_project FROM curated_list cl
-    UNION ALL
-    SELECT creator_address, contract_project FROM mapped_list ml
-      WHERE ml.creator_address NOT IN (SELECT creator_address FROM curated_list)
-    ) f
+  FROM curated_list f
 WHERE f.creator_address NOT IN (
    SELECT creator_address FROM {{ ref('contracts_optimism_deterministic_contract_creators') }}
 )
