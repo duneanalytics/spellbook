@@ -46,7 +46,7 @@ WITH trades AS (
         {% endif %}
     WHERE dt.blockchain = 'arbitrum'
     {% if is_incremental() %}
-    AND block_date >= date_trunc("day", now() - interval '1 week')
+    AND dt.block_date >= date_trunc("day", now() - interval '1 week')
     {% endif %}
     GROUP BY 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15
     )
