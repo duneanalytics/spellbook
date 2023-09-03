@@ -15,13 +15,13 @@
 WITH flashloans AS (
     SELECT f.evt_block_time AS block_time
     , f.evt_block_number AS block_number
-    , CASE WHEN f.amount0 = 0 THEN f.amount1 ELSE f.amount0 END AS amount_raw
+    , CASE WHEN cast(f.amount0 as double) = 0 THEN f.amount1 ELSE f.amount0 END AS amount_raw
     , f.evt_tx_hash AS tx_hash
     , f.evt_index
-    , CASE WHEN f.amount0 = 0 THEN f.paid1 ELSE f.paid0 END AS fee
-    , CASE WHEN f.amount0 = 0 THEN p.token1 ELSE p.token0 END AS currency_contract
-    , CASE WHEN f.amount0 = 0 THEN erc20b.symbol ELSE erc20a.symbol END AS currency_symbol
-    , CASE WHEN f.amount0 = 0 THEN erc20b.decimals ELSE erc20a.decimals END AS currency_decimals
+    , CASE WHEN cast(f.amount0 as double) = 0 THEN f.paid1 ELSE f.paid0 END AS fee
+    , CASE WHEN cast(f.amount0 as double) = 0 THEN p.token1 ELSE p.token0 END AS currency_contract
+    , CASE WHEN cast(f.amount0 as double) = 0 THEN erc20b.symbol ELSE erc20a.symbol END AS currency_symbol
+    , CASE WHEN cast(f.amount0 as double) = 0 THEN erc20b.decimals ELSE erc20a.decimals END AS currency_decimals
     , f.contract_address
     FROM {{ source('uniswap_v3_celo','UniswapV3Pool_evt_Flash') }} f
         INNER JOIN {{ source('uniswap_v3_celo','UniswapV3Factory_evt_PoolCreated') }} p ON f.contract_address = p.pool
@@ -29,7 +29,7 @@ WITH flashloans AS (
     LEFT JOIN {{ ref('tokens_celo_erc20') }} erc20b ON p.token1 = erc20b.contract_address
     WHERE f.evt_block_time > NOW() - interval '1' month
         {% if is_incremental() %}
-        AND f.evt_block_time >= date_trunc("day", now() - interval '1 week')
+        AND f.evt_block_time >= date_trunc('day', now() - interval '7' day)
         {% endif %}
     )
 
