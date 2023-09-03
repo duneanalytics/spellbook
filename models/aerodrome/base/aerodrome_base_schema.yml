@@ -108,7 +108,6 @@ models:
           combination_of_columns:
               - pool_contract
               - incentives_contract
-              - allowed_rewards
     columns:
       - *blockchain
       - *project
