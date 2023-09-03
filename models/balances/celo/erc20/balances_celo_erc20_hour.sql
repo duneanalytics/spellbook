@@ -15,7 +15,17 @@
 }}
 
 -- placeholder until hourly balance fully built
-select 1
+select
+  'celo' as blockchain,
+  now() as block_month,
+  now() as block_hour,
+  0x0000000000000000000000000000000000000000 as wallet_address,
+  0x0000000000000000000000000000000000000000 as token_address,
+  'XXX' as symbol,
+  0 as amount_raw,
+  0 as amount,
+  0 as amount_usd,
+  0 as recency_index
 
 /*
 with

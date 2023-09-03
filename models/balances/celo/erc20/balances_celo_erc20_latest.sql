@@ -15,7 +15,16 @@
 }}
 
 -- placeholder until hourly balance fully built
-select 1
+select
+  'celo' as blockchain,
+  now() as block_month,
+  0x0000000000000000000000000000000000000000 as wallet_address,
+  0x0000000000000000000000000000000000000000 as token_address,
+  'XXX' as symbol,
+  0 as amount_raw,
+  0 as amount,
+  0 as amount_usd,
+  now() as last_updated
 
 /*
 select
