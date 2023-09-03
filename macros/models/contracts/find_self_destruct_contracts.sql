@@ -47,6 +47,7 @@ FROM (
       on cr.creation_tx_hash = sd.tx_hash
       and cr.created_time = sd.block_time
       AND cr.created_block_number = sd.block_number
+      and (sd.address = cr.contract_address OR sd.address IS NULL) -- handle for if the destruct has a null address, but make sure we don't mis-map
       and cr.trace_element = (CASE WHEN cardinality(sd.trace_address) = 0 then cast(-1 as bigint) else sd.trace_address[1] end)
       and sd.type = 'suicide'
       AND cr.blockchain = '{{chain}}'
