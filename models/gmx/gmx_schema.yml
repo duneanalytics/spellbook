@@ -136,3 +136,6 @@ models:
       - *tx_to
       - *evt_index
       - *block_month
+      - &test_format_figure
+        name: test_format_figure
+        description: "Test column for format figure function"

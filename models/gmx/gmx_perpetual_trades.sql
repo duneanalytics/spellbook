@@ -39,6 +39,7 @@ FROM (
 		,tx_from
 		,tx_to
 		,evt_index
+		,format_figure(volume_usd, '3', '$') as test_format_figure
     FROM {{ perpetual_model }}
     {% if not loop.last %}
     UNION ALL
