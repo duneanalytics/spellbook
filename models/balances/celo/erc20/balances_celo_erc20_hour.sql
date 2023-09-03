@@ -14,6 +14,10 @@
     )
 }}
 
+-- placeholder until hourly balance fully built
+select 1
+
+/*
 with
 
 daily_balances as (
@@ -56,3 +60,4 @@ from {{ ref('balances_celo_erc20_hour_helper') }} hh
   -- Removes likely non-compliant tokens due to negative balances
   left join {{ ref('balances_celo_erc20_noncompliant') }} nc on hh.token_address = nc.token_address
 where nc.token_address is null
+*/
