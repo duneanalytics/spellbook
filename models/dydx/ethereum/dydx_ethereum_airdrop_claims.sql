@@ -48,7 +48,7 @@ LEFT JOIN {{ ref('prices_usd_forward_fill') }} pu ON pu.blockchain = 'ethereum'
     AND pu.minute >= date_trunc('day', now() - interval '7' Day)
     {% endif %}
 WHERE t.contract_address = {{dydx_token_address}}
-AND t.from = 0x639192d54431f8c816368d3fb4107bc168d0e871
+AND t."from" = 0x639192d54431f8c816368d3fb4107bc168d0e871
 AND t.evt_block_time > timestamp '2021-09-08'
 {% if is_incremental() %}
 AND t.evt_block_time >= date_trunc('day', now() - interval '7' Day)
