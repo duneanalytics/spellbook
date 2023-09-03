@@ -48,5 +48,5 @@ LEFT JOIN {{ ref('prices_usd_forward_fill') }} pu ON pu.blockchain = 'ethereum'
     AND pu.minute >= date_trunc('day', now() - interval '7' Day)
     {% endif %}
 {% if is_incremental() %}
-WHERE t.evt_block_time >= date_trunc("day", now() - interval '7' Day)
+WHERE t.evt_block_time >= date_trunc('day', now() - interval '7' Day)
 {% endif %}
