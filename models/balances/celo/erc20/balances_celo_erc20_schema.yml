@@ -12,6 +12,12 @@ models:
     description: >
         Hourly token balances of ERC20 Celo tokens per wallet and contract address pair.
         Depends on transfers_celo_erc20
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_hour
+            - wallet_address
+            - token_address
     columns:
       - &blockchain
         name: blockchain
@@ -57,6 +63,12 @@ models:
     description: >
         Helper table with hourly history filled for ERC20 Celo tokens per wallet and contract address pair.
         Added to aid in incremental build performance. Depends on transfers_celo_erc20_rolling_hour.
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_hour
+            - wallet_address
+            - token_address
     columns:
       - *wallet_address
       - *token_address
@@ -74,6 +86,12 @@ models:
     description: >
         Daily token balances of ERC20 Celo tokens per wallet and contract address pair.
         Depends on transfers_celo_erc20.
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_day
+            - wallet_address
+            - token_address
     columns:
       - *blockchain
       - *block_month
@@ -99,9 +117,13 @@ models:
     description: >
         Latest token balances of ERC20 Celo tokens per wallet and contract address pair.
         Depends on transfers_celo_erc20.
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - wallet_address
+            - token_address
     columns:
       - *blockchain
-      - *block_month
       - *wallet_address
       - *token_address
       - *symbol
@@ -126,6 +148,10 @@ models:
         could have been introduced by interger overflow due to very large ints. 
         It's likely that the token contract is non-compliant if a negative balance occurs. 
         Therefore, we use this table to remove those contracts from our token balances tables.
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - token_address
     columns:
       - name: token_address
         description: "Token Address for possibly non-compliant erc20 token"

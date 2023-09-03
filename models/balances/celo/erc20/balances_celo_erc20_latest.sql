@@ -2,7 +2,6 @@
     config(
         tags = ['dunesql'],
         alias = alias('erc20_latest'),
-        partition_by = ['block_month'],
         materialized = 'incremental',
         file_format = 'delta',
         incremental_strategy = 'merge',
@@ -17,7 +16,6 @@
 -- placeholder until hourly balance fully built
 select
   'celo' as blockchain,
-  now() as block_month,
   0x0000000000000000000000000000000000000000 as wallet_address,
   0x0000000000000000000000000000000000000000 as token_address,
   'XXX' as symbol,
@@ -29,7 +27,6 @@ select
 /*
 select
   blockchain,
-  block_month,
   wallet_address,
   token_address,
   symbol,
