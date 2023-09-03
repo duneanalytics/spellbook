@@ -9,6 +9,8 @@ macros:
     description: "gets either the symbol, prices_symbol, or prices_address"
   - name: get_chain_explorer
     description: "Converts chain to explorer base url"
+  - name: format_figure
+    description: "The format_figures function converts numerical values into a human-readable format, adjusting for units like \"m\" for millions. It takes a number, desired decimal precision, and a currency symbol to return the formatted figure"
   - name: bytea2numeric_v3
     description: "Creates the bytea2numeric_v3 function, which converts a hex string to a numeric value and supports up to 64 hex chars"
   - name: bytea2numeric
