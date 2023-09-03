@@ -1,4 +1,5 @@
 {{ config(
+        tags = ['dunesql'],
         alias = alias('flashloans'),
         post_hook='{{ expose_spells(\'["ethereum","arbitrum", "optimism", "polygon", "bnb"]\',
                                 "project",
@@ -13,6 +14,7 @@ ref('uniswap_v3_ethereum_flashloans')
 , ref('uniswap_v3_arbitrum_flashloans')
 , ref('uniswap_v3_polygon_flashloans')
 , ref('uniswap_v3_bnb_flashloans')
+, ref('uniswap_v3_celo_flashloans')
 ] %}
 
 

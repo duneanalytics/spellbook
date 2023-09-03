@@ -159,3 +159,34 @@ models:
         description: "Block number of pool creation"
       - name: contract_address
         description: "Contract address used to create the pool"
+
+  - name: uniswap_v3_celo_flashloans
+    meta:
+      blockchain: celo
+      sector: lending
+      contributors: hildobby, tomfutago
+    config:
+      tags: ['celo', 'flashloans']
+    description: >
+      All Uniswap v3 flashloans on Celo
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - tx_hash
+            - evt_index
+    columns:
+      - *blockchain
+      - *project
+      - *version
+      - *block_time
+      - name: block_number
+      - name: amount
+      - name: amount_usd
+      - *tx_hash
+      - *evt_index
+      - *fee
+      - name: currency_contract
+      - name: currency_symbol
+      - name: recipient
+      - name: contract_address

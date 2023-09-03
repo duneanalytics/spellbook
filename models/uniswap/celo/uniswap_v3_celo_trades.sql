@@ -31,9 +31,9 @@ WITH dexs AS
         ,t.evt_tx_hash AS tx_hash
         ,t.evt_index
     FROM
-        {{ source('uniswap_v3_celo', 'Pair_evt_Swap') }} t
+        {{ source('uniswap_v3_celo', 'UniswapV3Pool_evt_Swap') }} t
     INNER JOIN
-        {{ source('uniswap_v3_celo', 'Factory_evt_PoolCreated') }} f
+        {{ source('uniswap_v3_celo', 'UniswapV3Factory_evt_PoolCreated') }} f
         ON f.pool = t.contract_address
     {% if is_incremental() %}
     WHERE t.evt_block_time >= date_trunc('day', now() - interval '7' day)
@@ -69,7 +69,6 @@ SELECT DISTINCT
     ,dexs.tx_hash
     ,tx."from" AS tx_from
     ,tx.to AS tx_to
-
     ,dexs.evt_index
 FROM dexs
 INNER JOIN
