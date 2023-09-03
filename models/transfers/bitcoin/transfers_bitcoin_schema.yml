@@ -43,6 +43,7 @@ models:
       sector: transfers
       project: satoshi
       contributors: longnhbkhn
+    description: "Transfer satoshi aggregate in Bitcoin by day"
     config:
       tags: ['transfers', 'bitcoin', 'satoshi', 'agg_day', 'longnhbkhn']
     tests:
