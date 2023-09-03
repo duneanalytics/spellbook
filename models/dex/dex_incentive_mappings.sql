@@ -1,7 +1,7 @@
 {{ config(
         alias = alias('incentive_mappings'),
         tags = ['dunesql'],
-        post_hook='{{ expose_spells(\'["optimism"]\',
+        post_hook='{{ expose_spells(\'["optimism","base"]\',
                                 "sector",
                                 "dex",
                                 \'["msilb7"]\') }}'
