@@ -1,5 +1,5 @@
 {{ config(
-      schema = 'uniswap_v3_celo'
+      tags = ['dunesql']
       , alias = alias('flashloans')
       , materialized = 'incremental'
       , file_format = 'delta'
