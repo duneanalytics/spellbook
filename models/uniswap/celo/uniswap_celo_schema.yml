@@ -185,7 +185,7 @@ models:
       - name: amount_usd
       - *tx_hash
       - *evt_index
-      - *fee
+      - name: fee
       - name: currency_contract
       - name: currency_symbol
       - name: recipient
