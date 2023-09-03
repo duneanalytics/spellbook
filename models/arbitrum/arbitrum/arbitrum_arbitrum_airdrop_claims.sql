@@ -32,7 +32,7 @@ SELECT 'arbitrum' AS blockchain
 , t.recipient
 , t.contract_address
 , t.evt_tx_hash AS tx_hash
-, t.amount amount_raw
+, t.amount as amount_raw
 , CAST(t.amount/POWER(10, 18) AS double) AS amount_original
 , CASE WHEN t.evt_block_time >= (SELECT minute FROM early_price) THEN CAST(pu.price*t.amount/POWER(10, 18) AS double)
     ELSE CAST((SELECT price FROM early_price)*t.amount/POWER(10, 18) AS double)
