@@ -11,6 +11,7 @@
 {% set dex_inc_models = [
          ref('balancer_gauge_mappings')
         ,ref('velodrome_optimism_bribe_mappings')
+        ,ref('aerodrome_base_bribe_mappings')
 ] %}
 
 

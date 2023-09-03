@@ -17,7 +17,7 @@ SELECT
   'base' as blockchain
 , 'aerodrome' AS project
 , version
-, pool_contract, incentives_contract, incentives_type, allowed_rewards
+, pool_contract, incentives_contract, incentives_type
 , evt_block_time, evt_block_number, contract_address, evt_tx_hash, evt_index
 
 FROM (
@@ -26,7 +26,6 @@ FROM (
         , pool    AS pool_contract
         , gauge  AS incentives_contract
         , 'gauge' as incentives_type
-        , NULL AS allowed_rewards
         , evt_block_time
         , evt_block_number
         , contract_address
