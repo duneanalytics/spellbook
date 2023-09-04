@@ -75,5 +75,5 @@ models:
         description: "The transaction hash on which the address made it's first activity"
       - name: first_function
         description: "first function called by address"
-      - name: first_eth_transferred
+      - name: first_matic_transferred
         description: "MATIC transferred in transaction"
