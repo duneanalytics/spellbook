@@ -1,6 +1,6 @@
 {{ config(
     alias = alias('transfer_mapping'),
-    tags = ['dunesql'],
+    tags = ['dunesql', 'prod_exclude'],
     partition_by = ['block_date'],
     materialized = 'incremental',
     file_format = 'delta',
