@@ -98,6 +98,7 @@ models:
             - token_address
             - block_hour
             - token_id
+            - amount
     columns:
       - *blockchain
       - *block_month
@@ -129,6 +130,7 @@ models:
             - token_address
             - block_day
             - token_id
+            - amount
     columns:
       - *blockchain
       - *block_month
@@ -156,6 +158,7 @@ models:
             - token_address
             - block_day
             - token_id
+            - amount
     columns:
       - *blockchain
       - *block_month
