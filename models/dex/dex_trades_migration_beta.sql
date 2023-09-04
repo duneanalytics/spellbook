@@ -14,12 +14,6 @@
         )
 }}
 
-{#
-## Models not yet migrated
-,ref('curvefi_trades')
-,ref('ellipsis_finance_trades')
- #}
-
 {% set dex_trade_models = [
  ref('uniswap_trades')
 ,ref('sushiswap_trades')
@@ -71,6 +65,8 @@
 ,ref('honeyswap_trades')
 ,ref('synthetix_spot_trades')
 ,ref('dodo_trades')
+,ref('curvefi_trades')
+,ref('ellipsis_finance_trades')
 ] %}
 
 
