@@ -1,6 +1,6 @@
 {{ config(
 	tags=['legacy'],
-	
+
         schema = 'dex_ethereum',
         alias = alias('sandwiches', legacy_model=True),
         partition_by = ['block_date'],
@@ -46,7 +46,7 @@ WITH trades AS (
         {% endif %}
     WHERE dt.blockchain = 'ethereum'
     {% if is_incremental() %}
-    AND block_date >= date_trunc("day", now() - interval '1 week')
+    AND dt.block_time >= date_trunc("day", now() - interval '1 week')
     {% endif %}
     GROUP BY 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15
     )
