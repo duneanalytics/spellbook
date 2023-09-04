@@ -7,7 +7,7 @@
         file_format = 'delta',
         incremental_strategy = 'merge',
         unique_key = ['block_hour', 'wallet_address', 'token_address'],
-        post_hook='{{ expose_spells(\'["celo"]\',
+        post_hook='{{ expose_spells_hide_trino(\'["celo"]\',
                                     "sector",
                                     "balances",
                                     \'["tomfutago"]\') }}'

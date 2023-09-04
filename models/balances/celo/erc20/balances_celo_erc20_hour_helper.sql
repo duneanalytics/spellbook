@@ -14,6 +14,14 @@
     )
 }}
 
+-- placeholder to build balances in stages (dayily first)
+select
+  0x0000000000000000000000000000000000000000 as wallet_address,
+  0x0000000000000000000000000000000000000000 as token_address,
+  now() as block_month,
+  now() as block_hour
+
+/*
 with
 
 years as (
@@ -53,3 +61,4 @@ select
   h.hour as block_hour
 from token_first_acquired tfa
   join hours h on tfa.first_block_hour <= h.hour
+*/
