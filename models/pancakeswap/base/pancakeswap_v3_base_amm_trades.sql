@@ -13,7 +13,7 @@
     )
 }}
 
-{% set project_start_date = '2023-08-09' %}
+{% set project_start_date = '2023-08-30' %}
 
 WITH dexs AS
 (
