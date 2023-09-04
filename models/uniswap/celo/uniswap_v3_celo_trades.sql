@@ -31,7 +31,7 @@ WITH dexs AS
         ,t.evt_tx_hash AS tx_hash
         ,t.evt_index
     FROM
-        {{ source('uniswap_v3_celo', 'UniswapV3Pool_evt_Swap') }} t
+        {{ source('uniswap_v3_celo', 'Pair_evt_Swap') }} t
     INNER JOIN
         {{ source('uniswap_v3_celo', 'UniswapV3Factory_evt_PoolCreated') }} f
         ON f.pool = t.contract_address
