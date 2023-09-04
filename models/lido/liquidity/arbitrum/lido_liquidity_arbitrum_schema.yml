@@ -53,12 +53,12 @@ models:
       - &paired_token_reserve
         name: paired_token_reserve
         description: "Liquidity reserve of the paired token in the pool"
-      - &main_token_usd_reserve
-        name: main_token_usd_reserve
-        description: "Liquidity of the main token in the pool in USD"
-      - &paired_token_usd_reserve
-        name: paired_token_usd_reserve
-        description: "Liquidity of the paired token in the pool in USD"
+      - &main_token_usd_price
+        name: main_token_usd_price
+        description: "Price of the main token in the pool in USD"
+      - &paired_token_usd_price
+        name: paired_token_usd_price
+        description: "Price of the paired token in the pool"
       - &trading_volume
         name: trading_volume
         description: "USD value of the trade"
@@ -91,8 +91,8 @@ models:
       - *paired_token_symbol
       - *main_token_reserve
       - *paired_token_reserve
-      - *main_token_usd_reserve
-      - *paired_token_usd_reserve
+      - *main_token_usd_price
+      - *paired_token_usd_price
       - *trading_volume
 
   - name: lido_liquidity_arbitrum_uniswap_v3_pools
@@ -123,8 +123,8 @@ models:
       - *paired_token_symbol
       - *main_token_reserve
       - *paired_token_reserve
-      - *main_token_usd_reserve
-      - *paired_token_usd_reserve
+      - *main_token_usd_price
+      - *paired_token_usd_price
       - *trading_volume
 
   - name: lido_liquidity_arbitrum_balancer_pools
@@ -155,8 +155,8 @@ models:
       - *paired_token_symbol
       - *main_token_reserve
       - *paired_token_reserve
-      - *main_token_usd_reserve
-      - *paired_token_usd_reserve
+      - *main_token_usd_price
+      - *paired_token_usd_price
       - *trading_volume
 
   - name: lido_liquidity_arbitrum_curve_pools
@@ -187,6 +187,6 @@ models:
       - *paired_token_symbol
       - *main_token_reserve
       - *paired_token_reserve
-      - *main_token_usd_reserve
-      - *paired_token_usd_reserve
+      - *main_token_usd_price
+      - *paired_token_usd_price
       - *trading_volume

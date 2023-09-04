@@ -2,6 +2,7 @@
     config(
         schema='balancer_v1_ethereum',
         alias = alias('pools_tokens_weights'),
+        tags = ['dunesql'],
         materialized = 'incremental',
         file_format = 'delta',
         incremental_strategy = 'merge',
@@ -13,7 +14,7 @@
     )
 }}
 
-{% set bind_start_date = '2020-02-28' %}
+{% set bind_start_date =  '2020-02-28' %}
 {% set rebind_start_date = '2020-04-01' %}
 {% set unbind_start_date = '2020-04-05' %}
 
@@ -25,17 +26,17 @@ WITH events AS (
         bind.call_trace_address,
         bind.contract_address AS pool,
         bind.token,
-        bind.denorm
+        CAST(bind.denorm as int256) as denorm
     FROM {{ source('balancer_v1_ethereum', 'BPool_call_bind') }} bind
     INNER JOIN {{ source('ethereum', 'transactions') }} tx ON tx.hash = bind.call_tx_hash 
     WHERE bind.call_success = TRUE
         {% if not is_incremental() %}
-        AND bind.call_block_time >= '{{bind_start_date}}'
-        AND tx.block_time >= '{{bind_start_date}}'
+        AND bind.call_block_time >= TIMESTAMP '{{bind_start_date}}'
+        AND tx.block_time >= TIMESTAMP '{{bind_start_date}}'
         {% endif %}
         {% if is_incremental() %}
-        AND bind.call_block_time >= date_trunc("day", now() - interval '1 week')
-        AND tx.block_time >= date_trunc("day", now() - interval '1 week')
+        AND bind.call_block_time >= date_trunc('day', now() - interval '7' day)
+        AND tx.block_time >= date_trunc('day', now() - interval '7' day)
         {% endif %}
 
     UNION ALL
@@ -47,17 +48,17 @@ WITH events AS (
         rebind.call_trace_address,
         rebind.contract_address AS pool,
         rebind.token,
-        rebind.denorm
+        CAST(rebind.denorm as int256) as denorm
     FROM {{ source('balancer_v1_ethereum', 'BPool_call_rebind') }} rebind
     INNER JOIN {{ source('ethereum', 'transactions') }} tx ON tx.hash = rebind.call_tx_hash 
     WHERE rebind.call_success = TRUE
         {% if not is_incremental() %}
-        AND rebind.call_block_time >= '{{bind_start_date}}'
-        AND tx.block_time >= '{{bind_start_date}}'
+        AND rebind.call_block_time >= TIMESTAMP '{{bind_start_date}}'
+        AND tx.block_time >= TIMESTAMP '{{bind_start_date}}'
         {% endif %}
         {% if is_incremental() %}
-        AND rebind.call_block_time >= date_trunc("day", now() - interval '1 week')
-        AND tx.block_time >= date_trunc("day", now() - interval '1 week')
+        AND rebind.call_block_time >= date_trunc('day', now() - interval '7' day)
+        AND tx.block_time >= date_trunc('day', now() - interval '7' day)
         {% endif %}
     
     UNION ALL
@@ -69,17 +70,17 @@ WITH events AS (
         unbind.call_trace_address,
         unbind.contract_address AS pool,
         unbind.token,
-        '0' AS denorm
+        CAST('0' as int256) AS denorm
     FROM {{ source('balancer_v1_ethereum', 'BPool_call_unbind') }} unbind
     INNER JOIN {{ source('ethereum', 'transactions') }} tx ON tx.hash = unbind.call_tx_hash 
     WHERE unbind.call_success = TRUE
         {% if not is_incremental() %}
-        AND unbind.call_block_time >= '{{bind_start_date}}'
-        AND tx.block_time >= '{{bind_start_date}}'
+        AND unbind.call_block_time >= TIMESTAMP '{{bind_start_date}}'
+        AND tx.block_time >= TIMESTAMP '{{bind_start_date}}'
         {% endif %}
         {% if is_incremental() %}
-        AND unbind.call_block_time >= date_trunc("day", now() - interval '1 week')
-        AND tx.block_time >= date_trunc("day", now() - interval '1 week')
+        AND unbind.call_block_time >= date_trunc('day', now() - interval '7' day)
+        AND tx.block_time >= date_trunc('day', now() - interval '7' day)
         {% endif %}
 ),
 state_with_gaps AS (
@@ -102,7 +103,7 @@ settings AS (
     FROM state_with_gaps
     WHERE
         next_block_number IS NULL
-        AND denorm <> '0'
+        AND denorm <> CAST('0' as int256)
 ),
 sum_denorm AS (
     SELECT
@@ -111,7 +112,7 @@ sum_denorm AS (
     FROM state_with_gaps
     WHERE
         next_block_number IS NULL
-        AND denorm <> '0'
+        AND denorm <> CAST('0' as int256)
     GROUP BY pool
 ),
 norm_weights AS (
@@ -130,4 +131,3 @@ SELECT
     token_address,
     normalized_weight
 FROM norm_weights
-;

@@ -1,6 +1,6 @@
-{{ config(tags=['dunesql'], 
+{{ config(tags=['dunesql'],
     alias = alias('trades')
-    ,partition_by = ['block_date']
+    ,partition_by = ['block_month']
     ,materialized = 'incremental'
     ,file_format = 'delta'
     ,incremental_strategy = 'merge'
@@ -30,7 +30,7 @@ with dexs as (
         t.evt_index
     FROM
         {{ source('equalizer_exchange_fantom', 'Pair_evt_Swap') }} t
-        inner join {{ source('equalizer_exchange_fantom', 'PairFactory_evt_PairCreated') }} f 
+        inner join {{ source('equalizer_exchange_fantom', 'PairFactory_evt_PairCreated') }} f
             on f.pair = t.contract_address
     {% if is_incremental() %}
     WHERE t.evt_block_time >= date_trunc('day', now() - interval '7' day)
