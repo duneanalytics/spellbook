@@ -19,7 +19,7 @@ SELECT 'ethereum' AS blockchain
 , s.evt_index
 , ROW_NUMBER() OVER (PARTITION BY s.block_number, s.tx_hash, s.evt_index ORDER BY s.order_hash) AS sub_idx
 , s.seaport_contract_address AS project_contract_address
-, SUM(COALESCE(s.amount, UINT256 '0')) FILTER (WHERE s.token_standard IN ('native', 'erc20')) AS amount_raw
+, SUM(COALESCE(s.amount, UINT256 '0')) FILTER (WHERE s.token_standard IN ('native', 'erc20') AND s.trace_side != MIN(CASE WHEN MIN(CASE WHEN s.token_standard IN ('erc721', 'erc1155') THEN s.trace_side END))) AS amount_raw
 , SUM(COALESCE(s.amount, UINT256 '1')) FILTER (WHERE s.token_standard IN ('erc721', 'erc1155')) AS number_of_items
 , MIN_BY(s.token_standard, s.trace_index) FILTER (WHERE s.token_standard IN ('erc721', 'erc1155')) AS token_standard
 , MIN_BY(s.token_address, s.trace_index) FILTER (WHERE s.token_standard IN ('erc721', 'erc1155')) AS nft_contract_address
@@ -45,4 +45,4 @@ AND s.block_time >= date_trunc('day', now() - interval '7' day)
 {% endif %}
 GROUP BY s.block_time, s.block_number, s.tx_hash, s.evt_index, s.order_hash, s.seaport_contract_address, s.seaport_version
 HAVING MAX(CASE WHEN s.token_standard IN ('erc721', 'erc1155') AND s.trace_side='consideration' THEN true ELSE false END) != MAX(CASE WHEN s.token_standard IN ('erc721', 'erc1155') AND s.trace_side='offer' THEN true ELSE false END) -- Checks there's only an/multiple NFT(s) on one side
-AND MAX(CASE WHEN s.token_standard IN ('native', 'erc20') AND s.trace_side='consideration' THEN true ELSE false END) != MAX(CASE WHEN s.token_standard IN ('native', 'erc20') AND s.trace_side='offer' THEN true ELSE false END) -- Checks there's only an/multiple native tokens/erc20s on one side
+--AND MAX(CASE WHEN s.token_standard IN ('native', 'erc20') AND s.trace_side='consideration' THEN true ELSE false END) != MAX(CASE WHEN s.token_standard IN ('native', 'erc20') AND s.trace_side='offer' THEN true ELSE false END) -- Checks there's only an/multiple native tokens/erc20s on one side
