@@ -1,6 +1,6 @@
 {{ config(
-        alias = alias('erc721_noncompliant')
-) 
+    alias = alias('erc721_noncompliant'),
+    tags=['dunesql'])
 }}
 
 WITH 

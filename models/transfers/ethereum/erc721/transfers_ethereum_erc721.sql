@@ -1,31 +1,34 @@
-{{ config(materialized='view', alias = alias('erc721')) }}
+{{ config(
+    materialized='view',
+    alias = alias('erc721'),
+    tags= ['dunesql'])
+}}
 
-with
-    received_transfers as (
-        select 'receive' || '-' ||  evt_tx_hash || '-' || CAST(evt_index AS VARCHAR(100)) || '-' || `to` as unique_tx_id,
-            `to` as wallet_address,
-            contract_address as token_address,
+WITH
+    received_transfers AS (
+        SELECT CONCAT('receive', '-', CAST(evt_tx_hash AS VARCHAR), '-', CAST(evt_index AS VARCHAR), '-', 'to') AS unique_tx_id,
+            "to" AS wallet_address,
+            contract_address AS token_address,
             evt_block_time,
             tokenId,
-            1 as amount
-        from
+            1 AS amount
+        FROM
             {{ source('erc721_ethereum', 'evt_transfer') }}
-    )
+    ),
 
-    ,
-    sent_transfers as (
-        select 'send' || '-' || evt_tx_hash || '-' || CAST(evt_index AS VARCHAR(100)) || '-' || `from` as unique_tx_id,
-            `from` as wallet_address,
-            contract_address as token_address,
+    sent_transfers AS (
+        SELECT CONCAT('send', '-', CAST(evt_tx_hash AS VARCHAR), '-', CAST(evt_index AS varchar), '-', 'from') AS unique_tx_id,
+            "from" AS wallet_address,
+            contract_address AS token_address,
             evt_block_time,
             tokenId,
-            -1 as amount
-        from
-            {{ source('erc721_ethereum', 'evt_transfer') }}
+            -1 AS amount
+        FROM
+           {{ source('erc721_ethereum', 'evt_transfer') }}
     )
-    
-select 'ethereum' as blockchain, wallet_address, token_address, evt_block_time, tokenId, amount, unique_tx_id
-from received_transfers
-union
-select 'ethereum' as blockchain, wallet_address, token_address, evt_block_time, tokenId, amount, unique_tx_id
-from sent_transfers
+
+SELECT 'ethereum' AS blockchain, wallet_address, token_address, evt_block_time, tokenId, amount, unique_tx_id
+FROM received_transfers
+UNION
+SELECT 'ethereum' AS blockchain, wallet_address, token_address, evt_block_time, tokenId, amount, unique_tx_id
+FROM sent_transfers

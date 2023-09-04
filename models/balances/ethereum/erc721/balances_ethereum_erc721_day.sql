@@ -1,9 +1,9 @@
 {{ config(
         alias = alias('erc721_day'),
         post_hook='{{ expose_spells_hide_trino(\'["ethereum"]\',
-                                            "sector",
-                                            "balances",
-                                            \'["hildobby","soispoke","dot2dotseurat"]\') }}'
+                        "sector",
+                        "balances",
+                        \'["hildobby","soispoke","dot2dotseurat"]\') }}'
         )
 }}
 
@@ -23,15 +23,15 @@ with
     b.token_address,
     b.tokenId,
     b.day,
-    b.amount, 
+    b.amount,
     lead(b.day, 1, now()) OVER (PARTITION BY b.wallet_address, b.token_address, b.tokenId ORDER BY day) AS next_day
 FROM {{ ref('transfers_ethereum_erc721_rolling_day') }} b
 LEFT JOIN {{ ref('balances_ethereum_erc721_noncompliant') }}  as nc
     ON b.token_address = nc.token_address
-WHERE nc.token_address IS NULL 
+WHERE nc.token_address IS NULL
 )
 
-SELECT 
+SELECT
     'ethereum' as blockchain,
     d.day,
     b.wallet_address,
