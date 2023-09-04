@@ -46,7 +46,7 @@ models:
       contributors: Henrystats
     config:
       tags: ['table', 'activity', 'addresses_events', 'arbitrum']
-    description: "Table showing first activity of each OP Mainnet address"
+    description: "Table showing first activity of each Arbitrum Mainnet address"
     tests:
       - check_seed:
           seed_file: ref('first_activity_seed')
@@ -62,7 +62,7 @@ models:
       - name: blockchain
         description: "Blockchain"
       - name: address
-        description: "Concerned OP Mainnet address"
+        description: "Concerned Arbitrum Mainnet address"
         tests:
           - unique
       - name: first_activity_to
