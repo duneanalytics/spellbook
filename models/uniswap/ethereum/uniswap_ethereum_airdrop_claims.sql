@@ -13,7 +13,7 @@
     )
 }}
 
-{% set uni_token_address = '0x1f9840a85d5af5bf1d1762f925bdaddc4201f984' %}
+{% set uni_token_address = 0x1f9840a85d5af5bf1d1762f925bdaddc4201f984 %}
 
 WITH early_price AS (
     SELECT MIN(minute) AS minute
