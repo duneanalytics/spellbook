@@ -55,13 +55,14 @@ SELECT DISTINCT
     csv.votes_total / 1e9 * 100 AS participation, -- Total votes / Total supply (1B for Uniswap)
     pcr.startBlock as start_block,
     pcr.endBlock as end_block,
-    CASE 
-         WHEN pex.id is not null and now() > pex.evt_block_time THEN 'Executed' 
-         WHEN pca.id is not null and now() > pca.evt_block_time THEN 'Canceled'
-         WHEN cast(pcr.startBlock as bigint) < pcr.evt_block_number AND pcr.evt_block_number < cast(pcr.endBlock as bigint) THEN 'Active'
-         WHEN now() > pqu.evt_block_time AND cast(pcr.startBlock as bigint) > pcr.evt_block_number THEN 'Queued'
-         ELSE 'Defeated' END AS status,
-    description as description
+    CASE
+        WHEN pex.id is not null and now() > pex.evt_block_time THEN 'Executed' 
+        WHEN pca.id is not null and now() > pca.evt_block_time THEN 'Canceled'
+        WHEN cast(pcr.startBlock as bigint) < pcr.evt_block_number AND pcr.evt_block_number < cast(pcr.endBlock as bigint) THEN 'Active'
+        WHEN now() > pqu.evt_block_time AND cast(pcr.startBlock as bigint) > pcr.evt_block_number THEN 'Queued'
+        ELSE 'Defeated'
+    END AS "status",
+    "description"
 FROM  {{ source('uniswap_v3_ethereum', 'GovernorBravoDelegate_evt_ProposalCreated') }} pcr
 LEFT JOIN cte_sum_votes csv ON csv.proposalId = pcr.id
 LEFT JOIN {{ source('uniswap_v3_ethereum', 'GovernorBravoDelegate_evt_ProposalCanceled') }} pca ON pca.id = pcr.id
