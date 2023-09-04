@@ -2,10 +2,10 @@
 	tags=['legacy'],
 	
         alias = alias('trades', legacy_model=True),
-        post_hook='{{ expose_spells(\'["optimism"]\',
+        post_hook='{{ expose_spells(\'["optimism", "base"]\',
                                 "project",
                                 "rubicon",
-                                \'["msilb7"]\') }}'
+                                \'["msilb7", "denver"]\') }}'
         )
 }}
 
