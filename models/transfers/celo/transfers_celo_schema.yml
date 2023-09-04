@@ -71,15 +71,15 @@ models:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - tx_hash
-            - type
+            - transfer_type
             - evt_index
             - wallet_address
     columns:
       - &blockchain
         name: blockchain
         description: "Blockchain"
-      - &type
-        name: type
+      - &transfer_type
+        name: transfer_type
         description: "Transfer Type: sent/received"
       - &wallet_address
         name: wallet_address
@@ -98,3 +98,121 @@ models:
         name: evt_index
         description: "Event Index"
       - *tx_hash
+
+  - name: transfers_celo_erc20_agg_hour
+    meta:
+      blockchain: celo
+      sector: transfers
+      project: erc20
+      contributors: soispoke, dot2dotseurat, tomfutago
+    config:
+      tags: ['transfers', 'celo', 'erc20', 'agg_hour', 'soispoke', 'dot2dotseurat', 'tomfutago']
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - wallet_address
+            - token_address
+            - block_hour
+    columns:
+      - *blockchain
+      - *block_month
+      - &block_hour
+        name: block_hour
+        description: "UTC event block time truncated to the hour mark."
+      - *wallet_address
+      - *token_address
+      - &symbol
+        name: symbol
+        description: "ERC20 token symbol"
+      - *amount_raw
+      - &amount
+        name: amount
+        description: "Raw amount of ERC20 token held *after* taking into account token decimals"
+
+  - name: transfers_celo_erc20_rolling_hour
+    meta:
+      blockchain: celo
+      sector: transfers
+      project: erc20
+      contributors: soispoke, dot2dotseurat, tomfutago
+    description: "ERC20 Token Transfers on Celo per hour."
+    config:
+      tags: ['transfers', 'celo', 'erc20', 'rolling_hour', 'soispoke', 'dot2dotseurat', 'tomfutago']
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - wallet_address
+            - token_address
+            - block_hour
+    columns:
+      - *blockchain
+      - *block_month
+      - *block_hour
+      - *wallet_address
+      - *token_address
+      - *symbol
+      - name: amount_raw
+        description: "Rolling sum of raw amount of ERC20 token held *before* taking into account token decimals"
+      - name: amount
+        description: "Rolling sum of raw amount of ERC20 token held *after* taking into account token decimals"
+      - &recency_index
+        name: recency_index
+        description: "Index of most recent balance ascending. recency_index=1 is the wallet/contract pair's most recent balance"
+      - &last_updated
+        name: last_updated
+        description: "UTC timestamp when table was last updated"
+
+  - name: transfers_celo_erc20_agg_day
+    meta:
+      blockchain: celo
+      sector: transfers
+      project: erc20
+      contributors: soispoke, dot2dotseurat, tomfutago
+    config:
+      tags: ['transfers', 'celo', 'erc20', 'agg_day', 'soispoke', 'dot2dotseurat', 'tomfutago']
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - wallet_address
+            - token_address
+            - block_day
+    columns:
+      - *blockchain
+      - *block_month
+      - &block_day
+        name: block_day
+        description: "UTC event block time truncated to the day mark."
+      - *wallet_address
+      - *token_address
+      - *symbol
+      - *amount_raw
+      - *amount
+
+  - name: transfers_celo_erc20_rolling_day
+    meta:
+      blockchain: celo
+      sector: transfers
+      project: erc20
+      contributors: soispoke, dot2dotseurat, tomfutago
+    description: "ERC20 Token Transfers on Celo per day."
+    config:
+      tags: ['transfers', 'celo', 'erc20', 'rolling_day', 'soispoke', 'dot2dotseurat', 'tomfutago']
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - wallet_address
+            - token_address
+            - block_day
+    columns:
+      - *blockchain
+      - *block_month
+      - *block_day
+      - *wallet_address
+      - *token_address
+      - *symbol
+      - name: amount_raw
+        description: "Rolling sum of raw amount of ERC20 token held *before* taking into account token decimals"
+      - name: amount
+        description: "Rolling sum of raw amount of ERC20 token held *after* taking into account token decimals"
+      - *recency_index
+      - *last_updated

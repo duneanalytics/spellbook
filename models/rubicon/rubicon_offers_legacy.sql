@@ -2,7 +2,7 @@
 	tags=['legacy'],
 	
         alias = alias('offers', legacy_model=True),
-        post_hook='{{ expose_spells(\'["optimism"]\',
+        post_hook='{{ expose_spells(\'["optimism", "base"]\',
                                 "project",
                                 "rubicon",
                                 \'["denver"]\') }}'
