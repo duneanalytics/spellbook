@@ -16,7 +16,7 @@ SELECT 'fantom' AS blockchain
 , MIN(et.block_number) AS first_block_number
 , MIN_BY(et.hash, et.block_number) AS first_tx_hash
 , MIN_BY((CASE 
-            WHEN (bytearray_substring(et.data, 1, 4)) = 0x AND CAST(et.value as double) > 0 THEN 'ftm_transfer' 
+            WHEN (bytearray_substring(et.data, 1, 4)) = 0x AND et.gas_used = 21000 AND CAST(et.value as double) > 0 THEN 'ftm_transfer' 
             ELSE COALESCE(sig.function, CAST((bytearray_substring(et.data, 1, 4)) as VARCHAR))  
     END), et.block_number) as first_function
 , MIN_BY(et.value/1e18, et.block_number) as first_ftm_transferred
