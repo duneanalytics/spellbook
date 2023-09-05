@@ -58,8 +58,8 @@ SELECT DISTINCT
     CASE
         WHEN pex.id is not null and now() > pex.evt_block_time THEN 'Executed' 
         WHEN pca.id is not null and now() > pca.evt_block_time THEN 'Canceled'
-        WHEN cast(pcr.startblock as bigint) < pcr.evt_block_number AND pcr.evt_block_number < cast(pcr.endblock as bigint) THEN 'Active'
-        WHEN now() > pqu.evt_block_time AND cast(pcr.startblock as bigint) > pcr.evt_block_number THEN 'Queued'
+        --WHEN cast(pcr.startblock as bigint) < pcr.evt_block_number AND pcr.evt_block_number < cast(pcr.endblock as bigint) THEN 'Active'
+        --WHEN now() > pqu.evt_block_time AND cast(pcr.startblock as bigint) > pcr.evt_block_number THEN 'Queued'
         ELSE 'Defeated'
     END AS status,
     description
