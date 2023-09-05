@@ -2,11 +2,6 @@
     config(
         tags = ['dunesql'],
         alias = alias('erc1155_rolling_day'),
-        partition_by = ['block_month'],
-        materialized = 'incremental',
-        file_format = 'delta',
-        incremental_strategy = 'merge',
-        unique_key = ['wallet_address', 'token_address', 'block_day', 'token_id', 'amount'],
         post_hook='{{ expose_spells(\'["celo"]\',
                                     "sector",
                                     "transfers",

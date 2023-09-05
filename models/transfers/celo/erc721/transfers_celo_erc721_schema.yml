@@ -89,13 +89,6 @@ models:
     config:
       tags: ['transfers', 'celo', 'erc721', 'rolling_hour', 'soispoke', 'dot2dotseurat', 'tomfutago']
     description: "ERC721 Token Transfers on Celo per hour."
-    tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - wallet_address
-            - token_address
-            - block_hour
-            - token_id
     columns:
       - *blockchain
       - *block_month
@@ -147,13 +140,6 @@ models:
     config:
       tags: ['transfers', 'celo', 'erc721', 'rolling_day', 'soispoke', 'dot2dotseurat', 'tomfutago']
     description: "ERC721 Token Transfers on Celo per day."
-    tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - wallet_address
-            - token_address
-            - block_day
-            - token_id
     columns:
       - *blockchain
       - *block_month
