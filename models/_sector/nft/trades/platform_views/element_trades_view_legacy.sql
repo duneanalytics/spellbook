@@ -14,3 +14,4 @@
 SELECT *
 FROM {{ ref('nft_trades_legacy') }}
 WHERE project = "element"
+-- comment to trigger rerun

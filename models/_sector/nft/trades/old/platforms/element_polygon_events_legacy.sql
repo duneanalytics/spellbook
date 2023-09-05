@@ -175,3 +175,4 @@ LEFT JOIN {{ source('polygon','transactions') }} bt ON bt.hash=alet.tx_hash
         {% if is_incremental() %}
         AND bt.block_time >= date_trunc("day", now() - interval '1 week')
         {% endif %}
+-- comment to trigger rerun

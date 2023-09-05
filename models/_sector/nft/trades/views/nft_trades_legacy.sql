@@ -13,3 +13,4 @@
 SELECT *
 FROM {{ ref('nft_events_legacy') }}
 WHERE evt_type = "Trade"
+-- comment to trigger rerun

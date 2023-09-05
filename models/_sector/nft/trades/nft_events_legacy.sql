@@ -102,4 +102,6 @@ WHERE (project, version, blockchain) not in (SELECT distinct project, version, b
 AND block_time >= date_trunc("day", now() - interval '1 week')
 {% endif %}
 
+-- comment to trigger re run 
+
 
