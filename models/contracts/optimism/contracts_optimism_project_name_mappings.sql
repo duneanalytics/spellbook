@@ -23,7 +23,7 @@ from (
     ,('lyra', 'Lyra Finance')
     ,('aave_v3', 'Aave')
     ,('perp_v2', 'Perpetual Protocol')
-    ,('synthetix_futures', 'Kwenta')
+    ,('synthetix_futures', 'Synthetix')
     ,('zeroex', 'Zeroex (0x)' )
     ,('uniswap_v3', 'Uniswap')
     ,('Uniswap V3', 'Uniswap')
@@ -117,5 +117,6 @@ from (
     ,('mintfun','mint.fun')
     ,('allo_protocol', 'allo protocol (gitcoin)')
     ,('union_protocol', 'Union Finance')
+    ,('synthetix_futuresmarket', 'Synthetix')
 
     ) as temp_table (dune_name, mapped_name)
