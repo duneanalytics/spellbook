@@ -16,7 +16,6 @@ models:
             - block_time
             - tx_hash
             - evt_index
-            - type
     columns:
       - &tx_hash
         name: tx_hash

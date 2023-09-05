@@ -43,7 +43,7 @@ WITH zeroex_tx AS (
                 0x4aa817c6f383c8e8ae77301d18ce48efb16fd2be,
                 0x4ef40d1bf0983899892946830abf99eca2dbc5ce, 
                 -- exchange proxy
-                0xdef189deaef76e379df891899eb5a00a94cbc250
+                0xdef1c0ded9bec7f1a1670819833240f027b25eff
                 )
                 AND (
                     bytearray_position(INPUT, 0x869584cd ) <> 0
