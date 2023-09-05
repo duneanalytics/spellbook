@@ -3,10 +3,10 @@
     tags=['dunesql'])
 }}
 
-WITH 
+WITH
 
 multiple_owners as (
-    select 
+    select
         blockchain,
         token_address,
         tokenId,

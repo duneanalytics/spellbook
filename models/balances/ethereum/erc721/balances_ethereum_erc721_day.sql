@@ -3,16 +3,18 @@
         post_hook='{{ expose_spells_hide_trino(\'["ethereum"]\',
                         "sector",
                         "balances",
-                        \'["hildobby","soispoke","dot2dotseurat"]\') }}'
+                        \'["hildobby","soispoke","dot2dotseurat"]\') }}',
+                        tags=['dunesql']
         )
 }}
 
 with
     days as (
-        select
-            explode(
+        select *
+        from
+            unnest(
                 sequence(
-                    to_date('2015-01-01'), date_trunc('day', now()), interval 1 day
+                    date('2015-01-01'), date_trunc('day', cast(now() as timestamp)), interval '1' day
                 )
             ) as day
     )
