@@ -1,11 +1,11 @@
 {{ config(
+        schema = 'balances_bitcoin',
         alias = alias('satoshi_day'),
         tags = ['dunesql'],
-        partition_by = ['day'],
-        post_hook='{{ expose_spells_hide_trino(\'["bitcoin"]\',
-                                            "sector",
-                                            "balances",
-                                            \'["longnhbkhn"]\') }}'
+        post_hook='{{ expose_spells(\'["bitcoin"]\',
+                                        "sector",
+                                        "balances",
+                                        \'["longnhbkhn"]\') }}'
         )
 }}
 

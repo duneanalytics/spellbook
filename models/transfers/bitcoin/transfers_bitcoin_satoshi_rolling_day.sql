@@ -1,4 +1,5 @@
 {{ config(
+        schema = 'transfers_bitcoin',
         alias = alias('satoshi_rolling_day'),
         tags = ['dunesql']
 )}}

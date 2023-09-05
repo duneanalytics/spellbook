@@ -1,7 +1,8 @@
 {{ config(
-        materialized='incremental',
-        alias = alias('satoshi'),
         tags = ['dunesql'],
+        schema = 'transfers_bitcoin',
+        alias = alias('satoshi'),
+        materialized='incremental',
         file_format = 'delta',
         incremental_strategy = 'merge',
         unique_key = ['type', 'tx_id', 'index', 'wallet_address'],
