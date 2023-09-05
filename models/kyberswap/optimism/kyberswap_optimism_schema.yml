@@ -1,6 +1,5 @@
 version: 2
 
-
 models:
   - name: kyberswap_optimism_trades
     meta:
