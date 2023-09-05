@@ -3,7 +3,7 @@
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
-    unique_key = ['transfer_type', 'tx_hash', 'trace_address', 'wallet_address'], 
+    unique_key = ['transfer_type', 'tx_hash', 'trace_address', 'wallet_address', 'block_time'], 
     alias = alias('eth_tfers'),
     post_hook='{{ expose_spells(\'["optimism"]\',
                                     "sector",

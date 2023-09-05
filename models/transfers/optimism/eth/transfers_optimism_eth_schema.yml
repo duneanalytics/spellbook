@@ -17,6 +17,7 @@ models:
             - wallet_address
             - tx_hash
             - trace_address
+            - block_time
     columns:
       - &blockchain
         name: blockchain
