@@ -5,7 +5,7 @@
     incremental_strategy = 'merge',
     unique_key = ['transfer_type', 'tx_hash', 'trace_address', 'wallet_address', 'block_time'], 
     alias = alias('eth_tfers'),
-    post_hook='{{ expose_spells(\'["optimism"]\',
+    post_hook='{{ expose_spells(\'["base"]\',
                                     "sector",
                                     "transfers",
                                     \'["Henrystats"]\') }}') }}
@@ -22,7 +22,7 @@ eth_transfers  as (
             0xDeadDeAddeAddEAddeadDEaDDEAdDeaDDeAD0000 as token_address,
             CAST(value as double) as amount_raw
         FROM 
-        {{ source('optimism', 'traces') }}
+        {{ source('base', 'traces') }}
         WHERE (call_type NOT IN ('delegatecall', 'callcode', 'staticcall') OR call_type IS NULL)
         AND success
         AND CAST(value as double) > 0
@@ -42,7 +42,7 @@ eth_transfers  as (
             0xDeadDeAddeAddEAddeadDEaDDEAdDeaDDeAD0000 as token_address,
             -CAST(value as double) as amount_raw
         FROM 
-        {{ source('optimism', 'traces') }}
+        {{ source('base', 'traces') }}
         WHERE (call_type NOT IN ('delegatecall', 'callcode', 'staticcall') OR call_type IS NULL)
         AND success
         AND CAST(value as double) > 0
@@ -63,7 +63,7 @@ erc20_eth_transfers  as (
             contract_address as token_address,
             CAST(value as double) as amount_raw
         FROM 
-        {{ source('erc20_optimism', 'evt_transfer') }}
+        {{ source('erc20_base', 'evt_transfer') }}
         WHERE contract_address = 0xDeadDeAddeAddEAddeadDEaDDEAdDeaDDeAD0000
         {% if is_incremental() %}
             AND evt_block_time >= date_trunc('day', now() - interval '7' Day)
@@ -80,7 +80,7 @@ erc20_eth_transfers  as (
             contract_address as token_address,
             -CAST(value as double) as amount_raw
         FROM 
-        {{ source('erc20_optimism', 'evt_transfer') }}
+        {{ source('erc20_base', 'evt_transfer') }}
         WHERE contract_address = 0xDeadDeAddeAddEAddeadDEaDDEAdDeaDDeAD0000
         {% if is_incremental() %}
             AND evt_block_time >= date_trunc('day', now() - interval '7' Day)
@@ -100,14 +100,14 @@ gas_fee as (
             ELSE (CAST(gas_used as DOUBLE) * CAST(gas_price as DOUBLE)) + (CAST(l1_fee as DOUBLE))
         END) as amount_raw
     FROM 
-    {{ source('optimism', 'transactions') }}
+    {{ source('base', 'transactions') }}
     {% if is_incremental() %}
         WHERE block_time >= date_trunc('day', now() - interval '7' Day)
     {% endif %}
 )
 
 SELECT
-    'optimism' as blockchain, 
+    'base' as blockchain, 
     transfer_type,
     tx_hash, 
     trace_address,
@@ -121,7 +121,7 @@ eth_transfers
 UNION ALL 
 
 SELECT 
-    'optimism' as blockchain, 
+    'base' as blockchain, 
     transfer_type,
     tx_hash, 
     trace_address,
@@ -135,7 +135,7 @@ erc20_eth_transfers
 UNION ALL 
 
 SELECT 
-    'optimism' as blockchain, 
+    'base' as blockchain, 
     transfer_type,
     tx_hash, 
     trace_address,

@@ -1,17 +1,17 @@
 version: 2
 
 models:
-  - name: balances_optimism_eth_hour
+  - name: balances_base_eth_hour
     meta:
-      blockchain: optimism
+      blockchain: base
       sector: balances
       project: eth
       contributors: Henrystats
     config:
-      tags: ['balances', 'optimism', 'eth', 'hour', 'Henrystats']
+      tags: ['balances', 'base', 'eth', 'hour', 'Henrystats']
     description: >
-        Hourly token balances of ETH for each address on optimism.
-        Depends on transfers_optimism_eth
+        Hourly token balances of ETH for each address on base.
+        Depends on transfers_base_eth
     columns:
       - &blockchain
         name: blockchain
@@ -24,7 +24,7 @@ models:
         description: "Address of the wallet holding ETH"
       - &token_address
         name: token_address
-        description: "ETH Dead Address on Optimism"
+        description: "ETH Dead Address on base"
       - &amount_raw
         name: amount_raw
         description: "Raw amount of ETH token held *before* taking into account token decimals"
@@ -38,17 +38,17 @@ models:
         name: symbol
         description: "Token symbol"
 
-  - name: balances_optimism_eth_day
+  - name: balances_base_eth_day
     meta:
-      blockchain: optimism
+      blockchain: base
       sector: balances
       project: eth
       contributors: Henrystats
     config:
-      tags: ['balances', 'optimism', 'eth', 'day', 'Henrystats']
+      tags: ['balances', 'base', 'eth', 'day', 'Henrystats']
     description: >
-        Daily token balances of ETH for each address on optimism.
-        Depends on transfers_optimism_eth.
+        Daily token balances of ETH for each address on base.
+        Depends on transfers_base_eth.
     columns:
       - *blockchain
       - &day
@@ -62,17 +62,17 @@ models:
       - *symbol
 
 
-  - name: balances_optimism_eth_latest
+  - name: balances_base_eth_latest
     meta:
-      blockchain: optimism
+      blockchain: base
       sector: balances
       project: eth
       contributors: Henrystats
     config:
-      tags: ['balances', 'optimism', 'eth', 'latest', 'Henrystats']
+      tags: ['balances', 'base', 'eth', 'latest', 'Henrystats']
     description: >
-        Latest token balances of ETH for each address on optimism.
-        Depends on transfers_optimism_eth.
+        Latest token balances of ETH for each address on base.
+        Depends on transfers_base_eth.
     columns:
       - *blockchain
       - &last_updated

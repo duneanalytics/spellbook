@@ -1,7 +1,7 @@
 {{ config(
         tags = ['dunesql'],
-        alias = alias('hour'),
-        post_hook='{{ expose_spells(\'["optimism"]\',
+        alias = alias('eth_hour'),
+        post_hook='{{ expose_spells(\'["base"]\',
                                     "sector",
                                     "balances",
                                     \'["Henrystats"]\') }}'
@@ -14,7 +14,7 @@ WITH
 
 years as (
     select year
-    from (values (sequence(timestamp '2021-11-11', cast(date_trunc('year', now()) as timestamp), interval '1' year))) s(year_array)
+    from (values (sequence(timestamp '2023-06-15', cast(date_trunc('year', now()) as timestamp), interval '1' year))) s(year_array)
       cross join unnest(year_array) as d(year)
 ),
 
@@ -36,7 +36,7 @@ hourly_balances as (
         symbol,
         LEAD(hour, 1, current_timestamp) OVER (PARTITION BY token_address, wallet_address ORDER BY hour) AS next_hour
     FROM 
-    {{ ref('transfers_optimism_erc20_rolling_hour') }}
+    {{ ref('transfers_base_eth_rolling_hour') }}
 )
 
 SELECT
@@ -58,9 +58,5 @@ LEFT JOIN
 {{ source('prices', 'usd') }} p
     ON p.contract_address = b.token_address
     AND d.hour = p.minute
-    AND p.blockchain = 'optimism'
--- Removes likely non-compliant tokens due to negative balances
-LEFT JOIN 
-{{ ref('balances_optimism_erc20_noncompliant') }} nc
-    ON b.token_address = nc.token_address
-WHERE nc.token_address IS NULL
+    AND p.blockchain = 'base'
+

@@ -14,4 +14,4 @@
             SUM(amount_raw) OVER (PARTITION BY token_address, wallet_address ORDER BY hour) as amount_raw, 
             SUM(amount) OVER (PARTITION BY token_address, wallet_address ORDER BY hour) as amount          
         FROM 
-        {{ ref('transfers_optimism_eth_agg_hour') }}
+        {{ ref('transfers_base_eth_agg_hour') }}

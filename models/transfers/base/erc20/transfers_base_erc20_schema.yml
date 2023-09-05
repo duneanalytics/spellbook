@@ -1,23 +1,22 @@
 version: 2
 
 models:
-  - name: transfers_optimism_eth_tfers
+  - name: transfers_base_erc20
     meta:
-      blockchain: optimism
+      blockchain: base
       sector: transfers
-      project: eth
-      contributors: Henrystats
+      project: erc20
+      contributors: soispoke, dot2dotseurat, tschubotz, Henrystats
     config:
-      tags: ['transfers', 'optimism', 'eth']
-    description: "ETH Transfers on optimism. This table is updated every 30 minutes."
+      tags: ['transfers', 'base', 'erc20']
+    description: "ERC20 Token Transfers on base. This table is updated every 30 minutes."
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - transfer_type
             - wallet_address
-            - tx_hash
-            - trace_address
-            - block_time
+            - evt_tx_hash
+            - evt_index
     columns:
       - &blockchain
         name: blockchain
@@ -31,27 +30,27 @@ models:
       - &token_address
         name: token_address
         description: "Contract address for token"
-      - &block_time
-        name: block_time
+      - &evt_block_time
+        name: evt_block_time
         description: "Timestamp for block event time in UTC"
-      - &tx_hash
-        name: tx_hash
-        description: "Transaction hash"
-      - &trace_address
-        name: trace_address
-        description: "Trace index"
+      - &evt_tx_hash
+        name: evt_tx_hash
+        description: "Event transaction hash"
+      - &evt_index
+        name: evt_index
+        description: "Event index"
       - &amount_raw
         name: amount_raw
-        description: "Raw amount of ETH token held *before* taking into account token decimals"
+        description: "Raw amount of ERC20 token held *before* taking into account token decimals"
 
-  - name: transfers_optimism_eth_agg_hour
+  - name: transfers_base_erc20_agg_hour
     meta:
-      blockchain: optimism
+      blockchain: base
       sector: transfers
-      project: eth
+      project: erc20
       contributors: Henrystats
     config:
-      tags: ['transfers', 'optimism', 'eth', 'agg_hour', 'Henrystats']
+      tags: ['transfers', 'base', 'erc20', 'agg_hour', 'Henrystats']
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -67,20 +66,20 @@ models:
       - *token_address
       - &symbol
         name: symbol
-        description: "ETH token symbol"
+        description: "ERC20 token symbol"
       - *amount_raw
       - &amount
         name: amount
-        description: "Raw amount of ETH token held *after* taking into account token decimals"
+        description: "Raw amount of ERC20 token held *after* taking into account token decimals"
 
-  - name: transfers_optimism_eth_agg_day
+  - name: transfers_base_erc20_agg_day
     meta:
-      blockchain: optimism
+      blockchain: base
       sector: transfers
-      project: eth
+      project: erc20
       contributors: Henrystats
     config:
-      tags: ['transfers', 'optimism', 'eth', 'agg_day', 'Henrystats']
+      tags: ['transfers', 'base', 'erc20', 'agg_day', 'Henrystats']
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -98,15 +97,15 @@ models:
       - *amount_raw
       - *amount
 
-  - name: transfers_optimism_eth_rolling_hour
+  - name: transfers_base_erc20_rolling_hour
     meta:
-      blockchain: optimism
+      blockchain: base
       sector: transfers
-      project: eth
+      project: erc20
       contributors: Henrystats
-    description: "eth Token Transfers on Optimism per hour."
+    description: "ERC20 Token Transfers on base per hour."
     config:
-      tags: ['transfers', 'optimism', 'eth', 'rolling_hour', 'Henrystats']
+      tags: ['transfers', 'base', 'erc20', 'rolling_hour', 'Henrystats']
     columns:
       - *blockchain
       - *hour
@@ -122,15 +121,15 @@ models:
         name: recency_index
         description: "Index of most recent balance ascending. recency_index=1 is the wallet/contract pair's most recent balance"
 
-  - name: transfers_optimism_eth_rolling_day
+  - name: transfers_base_erc20_rolling_day
     meta:
-      blockchain: optimism
+      blockchain: base
       sector: transfers
-      project: eth
+      project: erc20
       contributors: Henrystats
-    description: "ETH Token Transfers on Optimism per day."
+    description: "ERC20 Token Transfers on base per day."
     config:
-      tags: ['transfers', 'optimism', 'eth', 'rolling_day', 'Henrystats']
+      tags: ['transfers', 'base', 'erc20', 'rolling_day', 'Henrystats']
     columns:
       - *blockchain
       - *hour

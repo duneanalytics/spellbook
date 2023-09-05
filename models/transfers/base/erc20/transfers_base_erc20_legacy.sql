@@ -1,7 +1,7 @@
 {{ config(
 	tags=['legacy'],
 	materialized='view', alias = alias('erc20', legacy_model=True),
-        post_hook='{{ expose_spells(\'["optimism"]\',
+        post_hook='{{ expose_spells(\'["base"]\',
                                     "sector",
                                     "transfers",
                                     \'["soispoke", "dot2dotseurat", "tschubotz"]\') }}') }}
@@ -15,7 +15,7 @@ with
             evt_block_time,
             value as amount_raw
         from
-            {{ source('erc20_optimism', 'evt_transfer') }}
+            {{ source('erc20_base', 'evt_transfer') }}
     )
 
     ,
@@ -27,7 +27,7 @@ with
         evt_block_time,
         '-' || CAST(value AS VARCHAR(100)) as amount_raw
         from
-            {{ source('erc20_optimism', 'evt_transfer') }}
+            {{ source('erc20_base', 'evt_transfer') }}
     )
 
     ,
@@ -39,7 +39,7 @@ with
             evt_block_time,
             wad as amount_raw
         from
-            {{ source('weth_optimism', 'weth9_evt_deposit') }}
+            {{ source('weth_base', 'weth9_evt_deposit') }}
     )
 
     ,
@@ -51,17 +51,17 @@ with
             evt_block_time,
             '-' || CAST(wad AS VARCHAR(100)) as amount_raw
         from
-            {{ source('weth_optimism', 'weth9_evt_withdrawal') }}
+            {{ source('weth_base', 'weth9_evt_withdrawal') }}
     )
 
-select unique_transfer_id, 'optimism' as blockchain, wallet_address, token_address, evt_block_time, CAST(amount_raw AS VARCHAR(100)) as amount_raw
+select unique_transfer_id, 'base' as blockchain, wallet_address, token_address, evt_block_time, CAST(amount_raw AS VARCHAR(100)) as amount_raw
 from sent_transfers
 union all
-select unique_transfer_id, 'optimism' as blockchain, wallet_address, token_address, evt_block_time, CAST(amount_raw AS VARCHAR(100)) as amount_raw
+select unique_transfer_id, 'base' as blockchain, wallet_address, token_address, evt_block_time, CAST(amount_raw AS VARCHAR(100)) as amount_raw
 from received_transfers
 union all
-select unique_transfer_id, 'optimism' as blockchain, wallet_address, token_address, evt_block_time, CAST(amount_raw AS VARCHAR(100)) as amount_raw
+select unique_transfer_id, 'base' as blockchain, wallet_address, token_address, evt_block_time, CAST(amount_raw AS VARCHAR(100)) as amount_raw
 from deposited_weth
 union all
-select unique_transfer_id, 'optimism' as blockchain, wallet_address, token_address, evt_block_time, CAST(amount_raw AS VARCHAR(100)) as amount_raw
+select unique_transfer_id, 'base' as blockchain, wallet_address, token_address, evt_block_time, CAST(amount_raw AS VARCHAR(100)) as amount_raw
 from withdrawn_weth
