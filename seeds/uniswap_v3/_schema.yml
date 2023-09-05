@@ -6,7 +6,7 @@ seeds:
       tags: dunesql
       column_types:
         blockchain: varchar
-        proposal_id: int
+        proposal_id: uint256
         outcome: varchar
 
   - name: uniswap_v3_votes_seed
@@ -14,6 +14,6 @@ seeds:
       tags: dunesql
       column_types:
         blockchain: varchar
-        proposal_id: int
+        proposal_id: uint256
         voter_address: varbinary
         votes: bigint

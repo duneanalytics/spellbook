@@ -1,4 +1,5 @@
 {{ config(
+    tags = ['dunesql'],
     schema = 'uniswap_v3_ethereum',
     alias = alias('votes'),
     partition_by = ['block_date'],
