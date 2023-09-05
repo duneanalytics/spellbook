@@ -22,6 +22,7 @@ dao_tmp as (
         FROM 
         {{ ref('dao_addresses_gnosis') }}
         WHERE dao_wallet_address IS NOT NULL 
+        AND dao_wallet_address NOT IN (0x)
 ), 
 
 transactions as (
@@ -108,8 +109,8 @@ LEFT JOIN
     AND p.minute >= date_trunc('day', now() - interval '7' Day)
     {% endif %}
 {#
--- LEFT JOIN
--- {{ ref('dex_prices') }} dp
+-- LEFT JOIN 
+-- {{ ref('dex_prices') }} dp 
 --     ON dp.hour = date_trunc('hour', t.block_time)
 --     AND dp.contract_address = t.token 
 --     AND dp.blockchain = 'gnosis'

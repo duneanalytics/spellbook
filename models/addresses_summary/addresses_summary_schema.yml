@@ -1,0 +1,52 @@
+version: 2
+
+models:
+  - name: addresses_summary_op_mainnet
+    meta:
+      blockchain: optimism
+      sector: addresses_summary
+      contributors: Henrystats
+    config:
+      tags: ['table', 'wallet summary', 'mainnet', 'addresses_summary', 'optimism']
+    description: "Table showing summary of an address on OP Mainnet"
+    columns:
+      - name: blockchain
+        description: "Blockchain"
+      - name: address
+        description: "Concerned OP Mainnet address"
+        tests:
+          - unique
+      - name: first_active_time
+        description: "The block time on which the address made it's first OP Mainnet transaction"
+      - name: first_tx_hash
+        description: "The transaction hash on which the address made it's first OP Mainnet transaction"
+      - name: first_function
+        description: "first function called by the address"
+      - name: last_active_time
+        description: "The block time on which the address made it's last OP Mainnet transaction"
+      - name: address_age
+        description: "Time period the address has been active for labelled"
+      - name: recency_age
+        description: "Time period since the address was last active for labelled"
+      - name: address_age_in_days
+        description: "Time period in days the address has been active for"
+      - name: recency_in_days
+        description: "Time period in days since the address was last active"
+      - name: number_of_transactions
+        description: "Number of OP Mainnet transactions made by address"
+      - name: usage_frequency
+        description: "How often address is active"
+      - name: gas_spent
+        description: "Total gas spent in ETH by an address on OP Mainnet"
+      - name: unique_dapps
+        description: "Unique dapps that addresses interacted with on OP Mainnet"
+      - name: first_to_project
+        description: "Project address sent first transaction to"
+      - name: first_to_address
+        description: "Contract address that an address sent first transaction to"
+      - name: last_to_project
+        description: "Project address sent last transaction to"
+      - name: last_to_address
+        description: "Contract address that an address sent last transaction to"
+      - name: total_bridged_eth
+        description: "Total ETH bridged by address to OP Mainnet"   

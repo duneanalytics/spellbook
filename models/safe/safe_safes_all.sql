@@ -1,6 +1,7 @@
 {{ config(
         alias = alias('safes_all'),
-        post_hook='{{ expose_spells(\'["arbitrum","avalanche_c","bnb","ethereum","fantom","gnosis","goerli","optimism","polygon"]\',
+        tags = ['dunesql'],
+        post_hook='{{ expose_spells(\'["arbitrum","avalanche_c","base","bnb","celo","ethereum","fantom","gnosis","goerli","optimism","polygon"]\',
                                 "project",
                                 "safe",
                                 \'["tschubotz", "danielpartida"]\') }}'
@@ -10,7 +11,9 @@
 {% set safe_safes_models = [
  ref('safe_arbitrum_safes')
 ,ref('safe_avalanche_c_safes')
+,ref('safe_base_safes')
 ,ref('safe_bnb_safes')
+,ref('safe_celo_safes')
 ,ref('safe_ethereum_safes')
 ,ref('safe_fantom_safes')
 ,ref('safe_gnosis_safes')

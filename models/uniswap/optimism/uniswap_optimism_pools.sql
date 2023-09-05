@@ -13,26 +13,43 @@
 }}
 with uniswap_v3_poolcreated as (
   select 
-    pool
-    ,token0
-    ,token1
-    ,fee
+    'optimism' AS blockchain
+    , 'uniswap' AS project
+    , 'v3' AS version
+    , pool
+    , token0
+    , token1
+    , fee
+    , evt_block_time AS creation_block_time
+    , evt_block_number AS creation_block_number
+    , contract_address
   from {{ source('uniswap_v3_optimism', 'Factory_evt_PoolCreated') }}
-  group by 1, 2, 3, 4
 )
 
 select 
-   newAddress as pool
+  'optimism' AS blockchain
+  , 'uniswap' AS project
+  , 'v3' AS version
+  , newAddress as pool
   , token0
   , token1
-  ,fee
+  , fee
+  , creation_block_time
+  , creation_block_number
+  , contract_address
 from {{ ref('uniswap_optimism_ovm1_pool_mapping') }}
 
 union
 
 select
-  pool
+  blockchain
+  , project
+  , version
+  , pool
   , token0
   , token1
   , fee
+  , creation_block_time
+  , creation_block_number
+  , contract_address
 from uniswap_v3_poolcreated

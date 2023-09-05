@@ -22,7 +22,7 @@ dao_tmp as (
         FROM 
         {{ ref('dao_addresses_ethereum') }}
         WHERE dao_wallet_address IS NOT NULL 
-        AND dao_wallet_address NOT IN (0x0000000000000000000000000000000000000001, 0x000000000000000000000000000000000000dead)
+        AND dao_wallet_address NOT IN (0x0000000000000000000000000000000000000001, 0x000000000000000000000000000000000000dead, 0x)
 ), 
 
 transactions as (

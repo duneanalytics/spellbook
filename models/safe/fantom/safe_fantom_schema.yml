@@ -41,6 +41,8 @@ models:
         description: "Initial version during creation"
       - &block_date
         name: block_date
+      - &block_month
+        name: block_month
       - &creation_time
         name: creation_time
         description: "Datetime of Safe creation"
@@ -61,6 +63,7 @@ models:
     columns:
       - *blockchain
       - *block_date
+      - *block_month
       - &block_time
         name: block_time
         description: "Datetime of block"
