@@ -1,0 +1,82 @@
+version: 2
+
+models:
+  - name: transfers_bitcoin_satoshi
+    meta:
+      blockchain: bitcoin
+      sector: transfers
+      project: satoshi
+      contributors: longnhbkhn
+    config:
+      tags: ["transfers", "bitcoin", "satoshi"]
+    description: "Transfer satoshi in Bitcoin"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - type
+            - tx_id
+            - index
+            - wallet_address
+    columns:
+      - name: type
+      - name: tx_id
+      - name: index
+      - &blockchain
+        name: blockchain
+        description: "Chai name"
+      - &wallet_address
+        name: wallet_address
+        description: "Wallet address of sender or receiver. If amount is negative, wallet address is the sender's."
+      - name: block_time
+        description: The block time
+      - name: block_date
+        description: The block date
+      - name: block_height
+        description: The block number
+      - &amount_raw
+        name: amount_raw
+        description: "The number of Satoshis attached to this input or output"
+      
+  - name: transfers_bitcoin_satoshi_agg_day
+    meta:
+      blockchain: bitcoin
+      sector: transfers
+      project: satoshi
+      contributors: longnhbkhn
+    description: "Transfer satoshi aggregate in Bitcoin by day"
+    config:
+      tags: ['transfers', 'bitcoin', 'satoshi', 'agg_day', 'longnhbkhn']
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - day
+            - wallet_address
+    columns:
+      - *blockchain
+      - &day
+        name: day
+        description: "UTC event block time truncated to the day mark."
+      - *wallet_address
+      - *amount_raw
+
+    
+  
+  - name: transfers_bitcoin_satoshi_rolling_day
+    meta:
+      blockchain: bitcoin
+      sector: transfers
+      project: satoshi
+      contributors: longnhbkhn
+    description: "Number satoshi was hold by wallet"
+    config:
+      tags: ['transfers', 'bitcoin', 'satoshi', 'rolling_day', 'longnhbkhn']
+    columns:
+      - *blockchain
+      - *day
+      - *wallet_address
+      - *amount_raw
+      - name: last_updated
+        description: "UTC timestamp when table was last updated"
+      - name: recency_index
+        description: "Index of most recent balance ascending. recency_index=1 is the wallet/contract pair's most recent balance"
+  
