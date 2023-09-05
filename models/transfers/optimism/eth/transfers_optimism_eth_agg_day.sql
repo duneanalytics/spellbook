@@ -1,6 +1,6 @@
 {{ config(
         tags = ['dunesql'],
-        alias = alias('agg_day'),
+        alias = alias('eth_agg_day'),
         materialized ='incremental',
         file_format ='delta',
         incremental_strategy='merge',

@@ -1,6 +1,6 @@
 {{ config(
         tags = ['dunesql'],
-        alias = alias('hour'),
+        alias = alias('eth_hour'),
         post_hook='{{ expose_spells(\'["optimism"]\',
                                     "sector",
                                     "balances",

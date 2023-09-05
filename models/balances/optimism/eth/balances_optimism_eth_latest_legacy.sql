@@ -1,6 +1,6 @@
 {{ config(
         tags = ['legacy'],
-        alias = alias('latest', legacy_model=True)
+        alias = alias('eth_latest', legacy_model=True)
         )
 }}
 

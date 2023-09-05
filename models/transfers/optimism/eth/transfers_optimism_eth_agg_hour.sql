@@ -1,6 +1,6 @@
 {{ config(
         tags = ['dunesql'],
-        alias = alias('agg_hour'),
+        alias = alias('eth_agg_hour'),
         materialized ='incremental',
         file_format ='delta',
         incremental_strategy='merge',

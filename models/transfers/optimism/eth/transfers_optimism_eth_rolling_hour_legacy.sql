@@ -1,6 +1,6 @@
 {{ config(
         tags = ['legacy'],
-        alias = alias('rolling_hour', legacy_model=True)
+        alias = alias('eth_rolling_hour', legacy_model=True)
         )
 }}
 
