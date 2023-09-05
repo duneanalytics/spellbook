@@ -47,7 +47,7 @@ with base_level as (
 SELECT *
   FROM (
   select 
-     creator_address AS trace_creator_address -- get the original contract creator address
+     trace_creator_address -- get the original contract creator address
     ,creator_address
     ,contract_factory
     ,contract_address
@@ -75,7 +75,8 @@ SELECT *
 
   from (
     select 
-      ct."from" as creator_address
+      ct."from" as trace_creator_address
+      ,ct."from" as creator_address
       ,CAST(NULL AS varbinary) as contract_factory
       ,ct.address as contract_address
       ,ct.block_time as created_time
@@ -121,7 +122,8 @@ SELECT *
     union all 
 
     select 
-       t.creator_address
+      ,t.trace_creator_address
+      ,t.creator_address
       ,t.contract_creator_if_factory as contract_factory
       ,t.contract_address
       ,t.created_time
