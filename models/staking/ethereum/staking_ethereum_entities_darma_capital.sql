@@ -22,3 +22,4 @@ INNER JOIN {{ source('ethereum', 'transactions') }} txs2 ON txs."from" = 0x7bf65
     {% if is_incremental() %}
     AND txs.block_time >= date_trunc('day', now() - interval '7' day)
     {% endif %}
+GROUP BY 1
