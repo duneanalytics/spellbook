@@ -26,6 +26,7 @@ eth_transfers  as (
         WHERE (call_type NOT IN ('delegatecall', 'callcode', 'staticcall') OR call_type IS NULL)
         AND success
         AND CAST(value as double) > 0
+        AND to IS NOT NULL 
         {% if is_incremental() %}
             AND block_time >= date_trunc('day', now() - interval '7' Day)
         {% endif %}
@@ -45,6 +46,7 @@ eth_transfers  as (
         WHERE (call_type NOT IN ('delegatecall', 'callcode', 'staticcall') OR call_type IS NULL)
         AND success
         AND CAST(value as double) > 0
+        AND "from" IS NOT NULL 
         {% if is_incremental() %}
             AND block_time >= date_trunc('day', now() - interval '7' Day)
         {% endif %}
