@@ -1,6 +1,9 @@
 {{ config(
     tags=['dunesql'],
-    materialized='view', 
+    materialized = 'incremental',
+    file_format = 'delta',
+    incremental_strategy = 'merge',
+    unique_key = ['transfer_type', 'evt_tx_hash', 'evt_index', 'wallet_address'], 
     alias = alias('erc20'),
     post_hook='{{ expose_spells(\'["optimism"]\',
                                     "sector",
@@ -20,6 +23,9 @@ erc20_transfers  as (
             CAST(value as double) as amount_raw
         FROM 
         {{ source('erc20_optimism', 'evt_transfer') }}
+        {% if is_incremental() %}
+            WHERE evt_block_time >= date_trunc('day', now() - interval '7' Day)
+        {% endif %}
 
         UNION ALL 
 
@@ -33,6 +39,9 @@ erc20_transfers  as (
             -CAST(value as double) as amount_raw
         FROM 
         {{ source('erc20_optimism', 'evt_transfer') }}
+        {% if is_incremental() %}
+            WHERE evt_block_time >= date_trunc('day', now() - interval '7' Day)
+        {% endif %}
 ),
 
 
@@ -47,6 +56,9 @@ weth_events as (
             CAST(wad as double) as amount_raw
         FROM 
         {{ source('weth_optimism', 'weth9_evt_deposit') }}
+        {% if is_incremental() %}
+            WHERE evt_block_time >= date_trunc('day', now() - interval '7' Day)
+        {% endif %}
 
         UNION ALL 
 
@@ -60,6 +72,9 @@ weth_events as (
             -CAST(wad as double) as amount_raw
         FROM 
         {{ source('weth_optimism', 'weth9_evt_withdrawal') }}
+        {% if is_incremental() %}
+            WHERE evt_block_time >= date_trunc('day', now() - interval '7' Day)
+        {% endif %}
 )
 
 SELECT
