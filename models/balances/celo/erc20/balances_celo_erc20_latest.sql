@@ -2,10 +2,6 @@
     config(
         tags = ['dunesql'],
         alias = alias('erc20_latest'),
-        materialized = 'incremental',
-        file_format = 'delta',
-        incremental_strategy = 'merge',
-        unique_key = ['wallet_address', 'token_address'],
         post_hook='{{ expose_spells_hide_trino(\'["celo"]\',
                                     "sector",
                                     "balances",

@@ -2,10 +2,6 @@
     config(
         tags = ['dunesql'],
         alias = alias('erc20_noncompliant'),
-        materialized = 'incremental',
-        file_format = 'delta',
-        incremental_strategy = 'merge',
-        unique_key = ['token_address'],
         post_hook='{{ expose_spells(\'["celo"]\',
                                     "sector",
                                     "balances",
