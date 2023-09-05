@@ -64,7 +64,7 @@ kyberswap_dex AS (
     {% else %}
     WHERE t.evt_block_time >= TIMESTAMP '{{project_start_date}}'
     {% endif %}
-
+    
     UNION ALL
 
     SELECT
@@ -110,7 +110,7 @@ kyberswap_dex AS (
         {% else %}
         evt_block_time >= TIMESTAMP '{{project_start_date}}'
         {% endif %}
-
+    
     UNION ALL
 
     SELECT
@@ -125,7 +125,7 @@ kyberswap_dex AS (
         ,contract_address                                                  AS project_contract_address
         ,evt_tx_hash                                                       AS tx_hash
         ,evt_index
-
+        
     FROM {{ source('kyber_optimism', 'MetaAggregationRouterV2_evt_Swapped') }}
     WHERE
         {% if is_incremental() %}

@@ -1,6 +1,6 @@
 {{ config(
 	tags=['legacy'],
-
+	
     alias = alias('trades', legacy_model=True),
     partition_by = ['block_date'],
     materialized = 'incremental',
@@ -68,7 +68,7 @@ kyberswap_dex AS (
     {% else %}
     WHERE t.evt_block_time >= '{{ project_start_date }}'
     {% endif %}
-
+    
     UNION ALL
 
     SELECT
@@ -116,7 +116,7 @@ kyberswap_dex AS (
         {% else %}
         evt_block_time >= '{{ project_start_date }}'
         {% endif %}
-
+    
     UNION ALL
 
     SELECT
@@ -132,7 +132,7 @@ kyberswap_dex AS (
         ,evt_tx_hash                                                       AS tx_hash
         ,''                                                                AS trace_address
         ,evt_index
-
+        
     FROM {{ source('kyber_optimism', 'MetaAggregationRouterV2_evt_Swapped') }}
     WHERE
         {% if is_incremental() %}
