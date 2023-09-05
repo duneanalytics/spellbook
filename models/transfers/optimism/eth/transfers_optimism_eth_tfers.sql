@@ -95,10 +95,10 @@ gas_fee as (
         block_time, 
         "from" as wallet_address, 
         0xDeadDeAddeAddEAddeadDEaDDEAdDeaDDeAD0000 as token_address, 
-        CASE 
+        -(CASE 
             WHEN gas_price = cast(0 as UINT256) THEN 0
-            ELSE CAST(gas_used as DOUBLE) * CAST(gas_price as DOUBLE)/1e18 + CAST(l1_fee as DOUBLE) /1e18
-        END as amount_raw
+            ELSE (CAST(gas_used as DOUBLE) * CAST(gas_price as DOUBLE)/1e18) + (CAST(l1_fee as DOUBLE)/1e18)
+        END) as amount_raw
     FROM 
     {{ source('optimism', 'transactions') }}
     {% if is_incremental() %}
@@ -142,6 +142,6 @@ SELECT
     block_time,
     wallet_address, 
     token_address, 
-    -amount_raw
+    amount_raw
 FROM 
 gas_fee
