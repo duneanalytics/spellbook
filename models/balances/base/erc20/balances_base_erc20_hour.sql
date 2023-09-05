@@ -10,19 +10,20 @@
 
 WITH 
 
--- credits @tomfutago - https://dune.com/queries/2988360
-
-years as (
-    select year
-    from (values (sequence(timestamp '2023-06-15', cast(date_trunc('year', now()) as timestamp), interval '1' year))) s(year_array)
-      cross join unnest(year_array) as d(year)
+time_seq AS (
+    SELECT 
+        sequence(
+        CAST('2023-06-15' as timestamp),
+        date_trunc('hour', cast(now() as timestamp)),
+        interval '1' hour
+        ) AS time 
 ),
 
-hours as (
-    select date_add('hour', s.n, y.year) as hour
-    from years y
-      cross join unnest(sequence(0, 9000)) s(n)
-    where s.n <= date_diff('hour', y.year, y.year + interval '1' year)
+hours AS (
+    SELECT 
+        time.time AS hour
+    FROM time_seq
+    CROSS JOIN unnest(time) AS time(time)
 ),
 
 hourly_balances as (
