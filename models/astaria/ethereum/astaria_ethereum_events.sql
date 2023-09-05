@@ -57,7 +57,7 @@ borrows as (
         CAST(point_amount as double) as lien_amount_raw,
         point_last as lien_start, 
         point_end as lien_end, 
-        CAST(point_lienId as VARCHAR) as lien_id, 
+        CAST(cl.output_lienId as VARCHAR) as lien_id, 
         CAST(lien_collateralId as VARCHAR) as lien_collateral_id, 
         b.contract_address
     FROM 
