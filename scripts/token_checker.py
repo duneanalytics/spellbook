@@ -21,8 +21,7 @@ class TokenChecker:
                             "gnosis": "gno-gnosis",
                             "optimism": "op-optimism",
                             "fantom": "ftm-fantom",
-                            "celo": "celo-celo",
-                            "base": "base-base"
+                            "celo": "celo-celo"
                             }
         self.tokens_by_id = self.get_tokens()
         self.contracts_by_chain = self.get_contracts()
