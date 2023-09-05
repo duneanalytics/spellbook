@@ -1,5 +1,6 @@
 {{ config(
     tags = ['dunesql'],
+    schema = 'uniswap_v3_ethereum',
     alias = alias('proposals'),
     partition_by = ['block_date'],
     materialized = 'table',
@@ -37,13 +38,13 @@ from cte_support
 GROUP BY proposalId)
 
 SELECT DISTINCT
-    {{blockchain}} as blockchain,
-    {{project}} as project,
-    {{project_version}} as version,
+    '{{blockchain}}' as blockchain,
+    '{{project}}' as project,
+    '{{project_version}}' as version,
     pcr.evt_block_time as created_at,
     date_trunc('DAY', pcr.evt_block_time) AS block_date,
     pcr.evt_tx_hash as tx_hash, -- Proposal Created tx hash
-    {{dao_name}} as dao_name,
+    '{{dao_name}}' as dao_name,
     {{dao_address}} as dao_address,
     proposer,
     pcr.id as proposal_id,
@@ -58,8 +59,8 @@ SELECT DISTINCT
     CASE
         WHEN pex.id is not null and now() > pex.evt_block_time THEN 'Executed' 
         WHEN pca.id is not null and now() > pca.evt_block_time THEN 'Canceled'
-        --WHEN cast(pcr.startblock as bigint) < pcr.evt_block_number AND pcr.evt_block_number < cast(pcr.endblock as bigint) THEN 'Active'
-        --WHEN now() > pqu.evt_block_time AND cast(pcr.startblock as bigint) > pcr.evt_block_number THEN 'Queued'
+        WHEN cast(pcr.startblock as bigint) < pcr.evt_block_number AND pcr.evt_block_number < cast(pcr.endblock as bigint) THEN 'Active'
+        WHEN now() > pqu.evt_block_time AND cast(pcr.startblock as bigint) > pcr.evt_block_number THEN 'Queued'
         ELSE 'Defeated'
     END AS status,
     description
