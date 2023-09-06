@@ -1,11 +1,10 @@
 {{
     config(
-        tags=['dunesql'],
+        tags=['dunesql', 'static'],
         schema = 'ens_ethereum',
         alias = alias('airdrop_claims'),
-        materialized = 'incremental',
+        materialized = 'table',
         file_format = 'delta',
-        incremental_strategy = 'merge',
         unique_key = ['recipient', 'tx_hash', 'evt_index'],
         post_hook='{{ expose_spells(\'["ethereum"]\',
                                 "project",
@@ -44,9 +43,4 @@ FROM {{ source('ethereumnameservice_ethereum', 'ENSToken_evt_Claim') }} t
 LEFT JOIN {{ ref('prices_usd_forward_fill') }} pu ON pu.blockchain = 'ethereum'
     AND pu.contract_address= {{ens_token_address}}
     AND pu.minute=date_trunc('minute', t.evt_block_time)
-    {% if is_incremental() %}
-    AND pu.minute >= date_trunc('day', now() - interval '7' Day)
-    {% endif %}
-{% if is_incremental() %}
-WHERE t.evt_block_time >= date_trunc('day', now() - interval '7' Day)
-{% endif %}
+WHERE t.evt_block_time BETWEEN timestamp '2021-11-09' AND timestamp '2022-11-25'
