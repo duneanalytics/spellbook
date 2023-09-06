@@ -1,46 +1,44 @@
 version: 2
 
-sources:
-  - name: mahadao_polygon
-    freshness:
-      warn_after: { count: 12, period: hour }
-    tables:
-      - name: wmatic_evt_deposit
-        loaded_at_field: evt_block_time
-        description: "wmatic deposits"
-        columns:
-          - &contract_address
-            name: contract_address
-            description: "Contract address for token"
-          - &dst
-            name: dst
-            description: "Wallet address for wmatic deposits"
-          - &evt_block_number
-            name: evt_block_number
-            description: "Block event number"
-          - &evt_block_time
-            name: evt_block_time
-            description: "Timestamp for block event time in UTC"
-          - &evt_index
-            name: evt_index
-            description: "Event index"
-          - &evt_tx_hash
-            name: evt_tx_hash
-            description: "Event transaction hash"
-          - &wad
-            name: wad
-            description: "Raw amount of wmatic"
-            
-      - name: wmatic_evt_withdrawal
-        loaded_at_field: evt_block_time
-        description: "wmatic withdrawals"
-        columns:
-          - *contract_address
-          - &src
-            name: src
-            description: "Wallet address for wmatic withdrawals"
-          - *evt_block_number
-          - *evt_block_time
-          - *evt_index
-          - *evt_tx_hash
-          - *wad
+models:
+  - name: transfers_polygon_erc20
+    meta:
+      blockchain: polygon
+      sector: transfers
+      project: erc20
+      contributors: soispoke, dot2dotseurat, tschubotz, hosuke
+    config:
+      tags: ['transfers', 'polygon', 'erc20']
+    description: "ERC20 Token Transfers on polygon. This table is updated every 30 minutes."
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - transfer_type
+            - evt_tx_hash
+            - evt_index
+            - wallet_address
+    columns:
+      - name: transfer_type
+        description: "Transfer type, can be one of [send, receive, deposit, withdrawn]"
+        tests:
+          - accepted_values:
+              values: [ "send", "receive", "deposit", "withdrawn"]
+      - name: evt_tx_hash
+        description: "Transaction hash for the transfer event"
+      - name: evt_index
+        description: "Event index for the transfer"
+      - &blockchain
+        name: blockchain
+        description: "Blockchain"
+      - &wallet_address
+        name: wallet_address
+        description: "Wallet address of sender or receiver. If amount is negative, wallet address is the sender's."
+      - &token_address
+        name: token_address
+        description: "Contract address for token"
+      - &evt_block_time
+        name: evt_block_time
+        description: "Timestamp for block event time in UTC"
+      - &amount_raw
+        name: amount_raw
+        description: "Raw amount of ERC20 token held *before* taking into account token decimals"
