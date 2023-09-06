@@ -198,6 +198,8 @@ models:
         +schema: nft_goerli
       base:
         +schema: nft_base
+      celo:
+        +schema: nft_celo
 
     cex:
       +schema: cex
@@ -474,6 +476,8 @@ models:
         +schema: seaport_avalanche_c
       polygon:
         +schema: seaport_polygon
+      base:
+        +schema: seaport_base
 
     balances:
       +schema: balances
@@ -537,6 +541,9 @@ models:
       goerli:
         +schema: addresses_events_testnets_goerli
 
+    addresses_summary:
+      +schema: addresses_summary
+
     aztec:
       +schema: aztec
       ethereum:
@@ -586,7 +593,10 @@ models:
         +schema: tokens_base
         +materialized: table
         +file_format: delta
-
+      celo:
+        +schema: tokens_celo
+        +materialized: table
+        +file_format: delta
 
     solana_utils:
       +schema: solana_utils
@@ -621,6 +631,8 @@ models:
         +schema: transfers_fantom
       base:
         +schema: transfers_base
+      celo:
+        +schema: transfers_celo
 
     sudoswap:
       +schema: sudoswap
@@ -650,6 +662,10 @@ models:
         +schema: safe_fantom
       arbitrum:
         +schema: safe_arbitrum
+      goerli:
+        +schema: safe_goerli
+      base:
+        +schema: safe_base
 
     lifi:
       +schema: lifi
@@ -939,6 +955,10 @@ models:
         +schema: kyberswap_ethereum
       arbitrum:
         +schema: kyberswap_arbitrum
+      bnb:
+        +schema: kyberswap_bnb
+      polygon:
+        +schema: kyberswap_polygon
 
     hubble_exchange:
       +schema: hubble_exchange
@@ -1339,12 +1359,23 @@ models:
       +schema: glacier
       avalanche_c:
         +schema: glacier_avalanche_c
+    
+    tokemak:
+      +schema: tokemak
+      ethereum:
+        +schema: tokemak_ethereum
 
 
     thena:
       +schema: thena
       bnb:
         +schema: thena_bnb
+    
+    sound_xyz:
+      +schema: sound_xyz
+      optimism:
+        +schema: sound_xyz_optimism
+        
 
     quests:
       +schema: quests
@@ -1368,3 +1399,23 @@ models:
           +schema: account_abstraction_erc4337_base
         bnb:
           +schema: account_abstraction_erc4337_bnb
+
+    zora:
+      +schema: zora
+      optimism:
+        +schema: zora_optimism
+    
+    decent:
+      +schema: decent
+      optimism:
+        +schema: decent_optimism
+
+    mirror:
+      +schema: mirror
+      optimism:
+        +schema: mirror_optimism
+          
+    worldcoin:
+      +schema: worldcoin
+      optimism:
+        +schema: worldcoin_optimism

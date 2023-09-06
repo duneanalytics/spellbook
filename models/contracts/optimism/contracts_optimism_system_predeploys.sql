@@ -10,7 +10,8 @@
 }}
 
 -- https://github.com/ethereum-optimism/optimism/blob/c93958755b4f6ab7f95cc0b2459f39ca95c06684/specs/predeploys.md?plain=1#L48
-SELECT contract_name, contract_address
+-- OP Predeploys
+SELECT 'OVM' as project_name, contract_name, contract_address
 FROM (values
 	 ('LegacyMessagePasser',			0x4200000000000000000000000000000000000000)
 	,('DeployerWhitelist',				0x4200000000000000000000000000000000000002)
@@ -30,5 +31,15 @@ FROM (values
 	,('ProxyAdmin',					0x4200000000000000000000000000000000000018)
 	,('BaseFeeVault',				0x4200000000000000000000000000000000000019)
 	,('L1FeeVault',					0x420000000000000000000000000000000000001a)
+
+) a (contract_name, contract_address)
+
+UNION ALL
+-- EAS Predeploys
+SELECT 'EAS' as project_name, contract_name, contract_address
+FROM (values
+	-- Other Predeploys
+	 ('EAS',					0x4200000000000000000000000000000000000021)
+	,('SchemaRegistry',				0x4200000000000000000000000000000000000020)
 
 ) a (contract_name, contract_address)

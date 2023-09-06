@@ -20,7 +20,8 @@ WITH
 {% set fees_distributed_v2_evt_tables = [
     'Trading_evt_FeesDistributed',
     'TradingV2_evt_FeesDistributed',
-    'TradingV3_evt_FeesDistributed'
+    'TradingV3_evt_FeesDistributed',
+    'TradingV4_evt_FeesDistributed'
 ] %}
 
 fees_v1 AS (

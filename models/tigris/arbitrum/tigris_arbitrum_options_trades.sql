@@ -40,16 +40,9 @@ open_position as (
         'open_position' as trade_type,
         op.positions_contract,
         op.project_contract_address,
-        f.fees as fees 
+        0 as fees 
     FROM 
     {{ ref('tigris_arbitrum_events_options_open_position') }} op 
-    INNER JOIN 
-    {{ ref('tigris_arbitrum_events_options_fees_distributed') }} f
-        ON op.evt_block_time = f.evt_block_time
-        AND op.evt_tx_hash = f.evt_tx_hash
-        {% if is_incremental() %}
-        AND f.evt_block_time >= date_trunc('day', now() - interval '7' day)
-        {% endif %}
     WHERE order_type = '0'
     {% if is_incremental() %}
     AND op.evt_block_time >= date_trunc('day', now() - interval '7' day)
@@ -88,16 +81,9 @@ limit_order as (
         'limit_position' as trade_type,
         op.positions_contract,
         op.project_contract_address,
-        f.fees as fees 
+        0 as fees 
     FROM 
     {{ ref('tigris_arbitrum_events_options_limit_order') }} op 
-    INNER JOIN 
-    {{ ref('tigris_arbitrum_events_options_fees_distributed') }} f
-        ON op.evt_block_time = f.evt_block_time
-        AND op.evt_tx_hash = f.evt_tx_hash
-        {% if is_incremental() %}
-        AND f.evt_block_time >= date_trunc('day', now() - interval '7' day)
-        {% endif %}
     {% if is_incremental() %}
     WHERE op.evt_block_time >= date_trunc('day', now() - interval '7' day)
     {% endif %}
@@ -142,6 +128,8 @@ close_position as (
     {{ ref('tigris_arbitrum_events_options_fees_distributed') }} f
         ON op.evt_block_time = f.evt_block_time
         AND op.evt_tx_hash = f.evt_tx_hash
+        AND op.evt_join_index = f.evt_join_index
+        -- can't join on position id as position id isn't present in fees event so using this workaround 
         {% if is_incremental() %}
         AND f.evt_block_time >= date_trunc('day', now() - interval '7' day)
         {% endif %}
@@ -203,4 +191,5 @@ SELECT * FROM close_position
 UNION ALL 
 
 SELECT * FROM limit_cancel
+
 

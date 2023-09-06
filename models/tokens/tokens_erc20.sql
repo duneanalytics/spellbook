@@ -1,6 +1,6 @@
 {{ config( alias = alias('erc20'),
         tags=['static', 'dunesql'],
-        post_hook='{{ expose_spells(\'["arbitrum","avalanche_c","bnb","ethereum","optimism", "gnosis", "fantom", "polygon","base"]\',
+        post_hook='{{ expose_spells(\'["arbitrum","avalanche_c","bnb","ethereum","optimism", "gnosis", "fantom", "polygon","base", "celo"]\',
                                     "sector",
                                     "tokens",
                                     \'["0xManny","hildobby","soispoke","dot2dotseurat","mtitus6","wuligy"]\') }}')}}
@@ -24,4 +24,5 @@ UNION ALL
 SELECT 'fantom' as blockchain, contract_address, symbol, decimals FROM {{ ref('tokens_fantom_erc20') }}
 UNION ALL
 SELECT 'base' as blockchain, contract_address, symbol, decimals FROM {{ ref('tokens_base_erc20') }}
-
+UNION ALL
+SELECT 'celo' as blockchain, contract_address, symbol, decimals FROM {{ ref('tokens_celo_erc20') }}

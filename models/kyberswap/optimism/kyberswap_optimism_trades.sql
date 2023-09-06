@@ -126,7 +126,7 @@ kyberswap_dex AS (
         ,evt_tx_hash                                                       AS tx_hash
         ,evt_index
         
-    FROM {{ source('kyberswap_optimism', 'MetaAggregationRouter_evt_Swapped') }}
+    FROM {{ source('kyber_optimism', 'MetaAggregationRouterV2_evt_Swapped') }}
     WHERE
         {% if is_incremental() %}
         evt_block_time >= date_trunc('day', now() - interval '7' day)
