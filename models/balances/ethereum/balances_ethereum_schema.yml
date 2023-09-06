@@ -13,14 +13,30 @@ models:
         Daily token balances of ERC20 Ethereum tokens per wallet and contract address pair.
         Depends on erc20_ethereum_transfers.
     columns:
-      - *blockchain
-      - *day
-      - *wallet_address
-      - *token_address
-      - *amount_raw
-      - *amount
-      - *amount_usd
-      - *symbol
+      - &blockchain
+        name: blockchain
+        description: "Blockchain"
+      - &day
+        name: day
+        description: "UTC event block time truncated to the day mark"
+      - &wallet_address
+        name: wallet_address
+        description: "Address of the wallet holding this ERC20 token"
+      - &token_address
+        name: token_address
+        description: "Contract address for the ERC20 token"
+      - &amount_raw
+        name: amount_raw
+        description: "Raw amount of ERC20 token held *before* taking into account token decimals"
+      - &amount
+        name: amount
+        description: "Raw amount of ERC20 token held *after* taking into account token decimals"
+      - &amount_usd
+        name: amount_usd
+        description: "Amount of ERC20 token held in USD if we have it"
+      - &symbol
+        name: symbol
+        description: "Token symbol"
 
 
   - name: balances_ethereum_erc20_latest
