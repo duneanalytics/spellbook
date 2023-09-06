@@ -1,5 +1,6 @@
 {{  config(
-        tags=['prod_exclude'],
+        schema = 'zeroex_polygon',
+        tags=['dunesql'],
         alias = alias('api_fills_deduped'),
         materialized='incremental',
         partition_by = ['block_date'],
@@ -19,12 +20,12 @@ AS
            , *
     FROM {{ ref('zeroex_polygon_api_fills') }}
     WHERE 1=1
-    AND swap_flag = 1
+    AND swap_flag = true
     {% if is_incremental() %}
-    AND block_time >= date_trunc('day', now() - interval '1 week')
+    AND block_time >= date_trunc('day', now() - interval '7' day)
     {% endif %}
     {% if not is_incremental() %}
-    AND block_time >= '{{zeroex_v3_start_date}}'
+    AND block_time >= cast('{{zeroex_v3_start_date}}' as date)
     {% endif %}    
 )
 , fills_first_last
