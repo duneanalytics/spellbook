@@ -1,6 +1,6 @@
 {{ config(
         tags = ['dunesql'],
-        alias = alias('eth_hour'),
+        alias = alias('matic_hour'),
         post_hook='{{ expose_spells(\'["polygon"]\',
                                     "sector",
                                     "balances",
@@ -14,7 +14,7 @@ WITH
 
 years as (
     select year
-    from (values (sequence(timestamp '2021-11-11', cast(date_trunc('year', now()) as timestamp), interval '1' year))) s(year_array)
+    from (values (sequence(timestamp '2020-05-30', cast(date_trunc('year', now()) as timestamp), interval '1' year))) s(year_array)
       cross join unnest(year_array) as d(year)
 ),
 
@@ -36,7 +36,7 @@ hourly_balances as (
         symbol,
         LEAD(hour, 1, current_timestamp) OVER (PARTITION BY token_address, wallet_address ORDER BY hour) AS next_hour
     FROM 
-    {{ ref('transfers_polygon_eth_rolling_hour') }}
+    {{ ref('transfers_polygon_matic_rolling_hour') }}
 )
 
 SELECT

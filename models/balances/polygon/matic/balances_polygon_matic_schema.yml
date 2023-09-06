@@ -1,17 +1,17 @@
 version: 2
 
 models:
-  - name: balances_polygon_eth_hour
+  - name: balances_polygon_matic_hour
     meta:
       blockchain: polygon
       sector: balances
-      project: eth
+      project: matic
       contributors: Henrystats
     config:
-      tags: ['balances', 'polygon', 'eth', 'hour', 'Henrystats']
+      tags: ['balances', 'polygon', 'matic', 'hour', 'Henrystats']
     description: >
-        Hourly token balances of ETH for each address on polygon.
-        Depends on transfers_polygon_eth
+        Hourly token balances of matic for each address on polygon.
+        Depends on transfers_polygon_matic
     columns:
       - &blockchain
         name: blockchain
@@ -21,34 +21,34 @@ models:
         description: "UTC event block time truncated to the hour mark"
       - &wallet_address
         name: wallet_address
-        description: "Address of the wallet holding ETH"
+        description: "Address of the wallet holding matic"
       - &token_address
         name: token_address
-        description: "ETH Dead Address on polygon"
+        description: "matic Dead Address on polygon"
       - &amount_raw
         name: amount_raw
-        description: "Raw amount of ETH token held *before* taking into account token decimals"
+        description: "Raw amount of matic token held *before* taking into account token decimals"
       - &amount
         name: amount
-        description: "Raw amount of ETH token held *after* taking into account token decimals"
+        description: "Raw amount of matic token held *after* taking into account token decimals"
       - &amount_usd
         name: amount_usd
-        description: "Amount of ETH token held in USD if we have it"
+        description: "Amount of matic token held in USD if we have it"
       - &symbol
         name: symbol
         description: "Token symbol"
 
-  - name: balances_polygon_eth_day
+  - name: balances_polygon_matic_day
     meta:
       blockchain: polygon
       sector: balances
-      project: eth
+      project: matic
       contributors: Henrystats
     config:
-      tags: ['balances', 'polygon', 'eth', 'day', 'Henrystats']
+      tags: ['balances', 'polygon', 'matic', 'day', 'Henrystats']
     description: >
-        Daily token balances of ETH for each address on polygon.
-        Depends on transfers_polygon_eth.
+        Daily token balances of matic for each address on polygon.
+        Depends on transfers_polygon_matic.
     columns:
       - *blockchain
       - &day
@@ -62,17 +62,17 @@ models:
       - *symbol
 
 
-  - name: balances_polygon_eth_latest
+  - name: balances_polygon_matic_latest
     meta:
       blockchain: polygon
       sector: balances
-      project: eth
+      project: matic
       contributors: Henrystats
     config:
-      tags: ['balances', 'polygon', 'eth', 'latest', 'Henrystats']
+      tags: ['balances', 'polygon', 'matic', 'latest', 'Henrystats']
     description: >
-        Latest token balances of ETH for each address on polygon.
-        Depends on transfers_polygon_eth.
+        Latest token balances of matic for each address on polygon.
+        Depends on transfers_polygon_matic.
     columns:
       - *blockchain
       - &last_updated

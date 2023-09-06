@@ -1,6 +1,6 @@
 {{ config(
         tags = ['dunesql'],
-        alias = alias('eth_day'),
+        alias = alias('matic_day'),
         post_hook='{{ expose_spells(\'["polygon"]\',
                                     "sector",
                                     "balances",
@@ -12,7 +12,7 @@ WITH
 time_seq AS (
     SELECT 
         sequence(
-        CAST('2023-06-15' as timestamp),
+        CAST('2020-05-30' as timestamp),
         date_trunc('day', cast(now() as timestamp)),
         interval '1' day
         ) AS time 
@@ -36,7 +36,7 @@ daily_balances as (
         symbol,
         LEAD(day, 1, current_timestamp) OVER (PARTITION BY token_address, wallet_address ORDER BY day) AS next_day
     FROM 
-    {{ ref('transfers_polygon_eth_rolling_day') }}
+    {{ ref('transfers_polygon_matic_rolling_day') }}
 )
 
 SELECT
