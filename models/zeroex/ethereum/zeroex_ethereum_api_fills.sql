@@ -87,8 +87,8 @@ v3_fills_no_bridge AS (
             fills.takerAddress                                                         AS taker,
             bytearray_substring(fills.takerAssetData, 34, 40) AS taker_token,
             bytearray_substring(fills.makerAssetData, 34, 40) AS maker_token,
-            cast(fills.takerAssetFilledAmount  as uint256) AS taker_token_amount_raw,
-            cast(fills.makerAssetFilledAmount  as uint256)AS maker_token_amount_raw,
+            cast(fills.takerAssetFilledAmount  as int256) AS taker_token_amount_raw,
+            cast(fills.makerAssetFilledAmount  as int256)AS maker_token_amount_raw,
             'Fill'                                                                     AS type,
             COALESCE(zeroex_tx.affiliate_address, fills.feeRecipientAddress)           AS affiliate_address,
             (zeroex_tx.tx_hash IS NOT NULL)                                            AS swap_flag,
@@ -198,8 +198,8 @@ ERC20BridgeTransfer AS (
             bytearray_substring(DATA, 172, 20) AS taker,
             bytearray_substring(DATA, 14, 20) AS taker_token,
             bytearray_substring(DATA, 45, 20) AS maker_token,
-            bytearray_to_uint256(bytearray_substring(DATA, 77, 20)) AS taker_token_amount_raw,
-            bytearray_to_uint256(bytearray_substring(DATA, 110, 20)) AS maker_token_amount_raw,
+            bytearray_to_int256(bytearray_substring(DATA, 77, 20)) AS taker_token_amount_raw,
+            bytearray_to_int256(bytearray_substring(DATA, 110, 20)) AS maker_token_amount_raw,
             'ERC20BridgeTransfer'                   AS type,
             zeroex_tx.affiliate_address             AS affiliate_address,
             TRUE                                    AS swap_flag,
@@ -226,8 +226,8 @@ BridgeFill AS (
             0xdef1c0ded9bec7f1a1670819833240f027b25eff AS taker,
             bytearray_substring(DATA, 45, 20) AS taker_token,
             bytearray_substring(DATA, 77, 20) AS maker_token,
-            bytearray_to_uint256(bytearray_substring(DATA, 110, 20)) AS taker_token_amount_raw,
-            bytearray_to_uint256(bytearray_substring(DATA, 142, 20)) AS maker_token_amount_raw,
+            bytearray_to_int256(bytearray_substring(DATA, 110, 20)) AS taker_token_amount_raw,
+            bytearray_to_int256(bytearray_substring(DATA, 142, 20)) AS maker_token_amount_raw,
             'BridgeFill'                                    AS type,
             zeroex_tx.affiliate_address                     AS affiliate_address,
             TRUE                                            AS swap_flag,
@@ -254,8 +254,8 @@ NewBridgeFill AS (
             0xdef1c0ded9bec7f1a1670819833240f027b25eff AS taker,
             bytearray_substring(DATA, 45, 20) AS taker_token,
             bytearray_substring(DATA, 77, 20) AS maker_token,
-            bytearray_to_uint256(bytearray_substring(DATA, 110, 20)) AS taker_token_amount_raw,
-            bytearray_to_uint256(bytearray_substring(DATA, 142, 20)) AS maker_token_amount_raw,
+            bytearray_to_int256(bytearray_substring(DATA, 110, 20)) AS taker_token_amount_raw,
+            bytearray_to_int256(bytearray_substring(DATA, 142, 20)) AS maker_token_amount_raw,
             'NewBridgeFill'                                 AS type,
             zeroex_tx.affiliate_address                     AS affiliate_address,
             TRUE                                            AS swap_flag,
@@ -282,8 +282,8 @@ direct_PLP AS (
             recipient                   AS taker,
             inputToken                  AS taker_token,
             outputToken                 AS maker_token,
-            cast(inputTokenAmount  as uint256) AS taker_token_amount_raw,
-            cast(outputTokenAmount  as uint256)AS maker_token_amount_raw,
+            cast(inputTokenAmount  as int256) AS taker_token_amount_raw,
+            cast(outputTokenAmount  as int256)AS maker_token_amount_raw,
             'LiquidityProviderSwap'     AS type,
             zeroex_tx.affiliate_address AS affiliate_address,
             TRUE                        AS swap_flag,
@@ -310,11 +310,11 @@ direct_uniswapv2 AS (
             CASE WHEN swap.amount0In > swap.amount0Out THEN pair.token0 ELSE pair.token1 END AS taker_token,
             CASE WHEN swap.amount0In > swap.amount0Out THEN pair.token1 ELSE pair.token0 END AS maker_token,
             CASE WHEN swap.amount0In > swap.amount0Out THEN 
-                CASE WHEN swap.amount0In >= swap.amount0Out THEN cast(swap.amount0In - swap.amount0Out as uint256) ELSE cast(0 as uint256) END ELSE 
-                CASE WHEN swap.amount1In >= swap.amount1Out THEN cast(swap.amount1In - swap.amount1Out as uint256) ELSE cast(0 as uint256) END END AS taker_token_amount_raw,
+                CASE WHEN swap.amount0In >= swap.amount0Out THEN cast(swap.amount0In - swap.amount0Out as int256) ELSE cast(0 as int256) END ELSE 
+                CASE WHEN swap.amount1In >= swap.amount1Out THEN cast(swap.amount1In - swap.amount1Out as int256) ELSE cast(0 as int256) END END AS taker_token_amount_raw,
             CASE WHEN swap.amount0In > swap.amount0Out THEN 
-                CASE WHEN swap.amount1Out >= swap.amount1In THEN cast(swap.amount1Out - swap.amount1In as uint256) ELSE cast(0 as uint256) END ELSE 
-                CASE WHEN swap.amount0Out >= swap.amount0In THEN cast(swap.amount0Out - swap.amount0In as uint256) ELSE cast(0 as uint256) END END AS maker_token_amount_raw,
+                CASE WHEN swap.amount1Out >= swap.amount1In THEN cast(swap.amount1Out - swap.amount1In as int256) ELSE cast(0 as int256) END ELSE 
+                CASE WHEN swap.amount0Out >= swap.amount0In THEN cast(swap.amount0Out - swap.amount0In as int256) ELSE cast(0 as int256) END END AS maker_token_amount_raw,
             'Uniswap V2 Direct' AS type,
             zeroex_tx.affiliate_address AS affiliate_address,
             TRUE AS swap_flag,
@@ -343,11 +343,11 @@ direct_sushiswap AS (
             CASE WHEN swap.amount0In > swap.amount0Out THEN pair.token0 ELSE pair.token1 END AS taker_token,
             CASE WHEN swap.amount0In > swap.amount0Out THEN pair.token1 ELSE pair.token0 END AS maker_token,
             CASE WHEN swap.amount0In > swap.amount0Out THEN 
-                CASE WHEN swap.amount0In >= swap.amount0Out THEN cast(swap.amount0In - swap.amount0Out as uint256) ELSE cast(0 as uint256) END ELSE 
-                CASE WHEN swap.amount1In >= swap.amount1Out THEN cast(swap.amount1In - swap.amount1Out as uint256) ELSE cast(0 as uint256) END END AS taker_token_amount_raw,
+                CASE WHEN swap.amount0In >= swap.amount0Out THEN cast(swap.amount0In - swap.amount0Out as int256) ELSE cast(0 as int256) END ELSE 
+                CASE WHEN swap.amount1In >= swap.amount1Out THEN cast(swap.amount1In - swap.amount1Out as int256) ELSE cast(0 as int256) END END AS taker_token_amount_raw,
             CASE WHEN swap.amount0In > swap.amount0Out THEN 
-                CASE WHEN swap.amount1Out >= swap.amount1In THEN cast(swap.amount1Out - swap.amount1In as uint256) ELSE cast(0 as uint256) END ELSE 
-                CASE WHEN swap.amount0Out >= swap.amount0In THEN cast(swap.amount0Out - swap.amount0In as uint256) ELSE cast(0 as uint256) END END AS maker_token_amount_raw,
+                CASE WHEN swap.amount1Out >= swap.amount1In THEN cast(swap.amount1Out - swap.amount1In as int256) ELSE cast(0 as int256) END ELSE 
+                CASE WHEN swap.amount0Out >= swap.amount0In THEN cast(swap.amount0Out - swap.amount0In as int256) ELSE cast(0 as int256) END END AS maker_token_amount_raw,
 
             'Sushiswap Direct' AS type,
             zeroex_tx.affiliate_address AS affiliate_address,
@@ -373,10 +373,10 @@ direct_uniswapv3 AS (
             swap.evt_block_time                                                                     AS block_time,
             swap.contract_address                                                                   AS maker,
             LAST_VALUE(swap.recipient) OVER (PARTITION BY swap.evt_tx_hash ORDER BY swap.evt_index) AS taker,
-            CASE WHEN cast(amount0 as uint256) < cast(0 as uint256)  THEN pair.token1 ELSE pair.token0 END AS taker_token,
-            CASE WHEN cast(amount0 as uint256) < cast(0 as uint256) THEN pair.token0 ELSE pair.token1 END AS maker_token,
-            CASE WHEN cast(amount0 as uint256) < cast(0 as uint256) THEN ABS(cast(swap.amount1 as uint256)) ELSE ABS(cast(swap.amount0 as uint256)) END AS taker_token_amount_raw,
-            CASE WHEN cast(amount0 as uint256) < cast(0 as uint256) THEN ABS(cast(swap.amount0 as uint256)) ELSE ABS(cast(swap.amount1 as uint256)) END AS maker_token_amount_raw,
+            CASE WHEN amount0 < cast(0 as int256)  THEN pair.token1 ELSE pair.token0 END AS taker_token,
+            CASE WHEN amount0 < cast(0 as int256) THEN pair.token0 ELSE pair.token1 END AS maker_token,
+            CASE WHEN amount0 < cast(0 as int256) THEN ABS(swap.amount1) ELSE ABS(swap.amount0) END AS taker_token_amount_raw,
+            CASE WHEN amount0 < cast(0 as int256) THEN ABS(swap.amount0) ELSE ABS(swap.amount1) END AS maker_token_amount_raw,
             'Uniswap V3 Direct'                                                                     AS type,
             zeroex_tx.affiliate_address                                                             AS affiliate_address,
             TRUE                                                                                    AS swap_flag,
@@ -438,9 +438,9 @@ SELECT
         ms.symbol AS maker_symbol,
         CASE WHEN lower(ts.symbol) > lower(ms.symbol) THEN concat(ms.symbol, '-', ts.symbol) ELSE concat(ts.symbol, '-', ms.symbol) END AS token_pair,
         taker_token_amount_raw / pow(10, tp.decimals) AS taker_token_amount,
-        taker_token_amount_raw,
+        cast(taker_token_amount_raw as uint256) as taker_token_amount_raw,
         maker_token_amount_raw / pow(10, mp.decimals) AS maker_token_amount,
-        maker_token_amount_raw,
+        cast(maker_token_amount_raw as uint256) as maker_token_amount_raw,
         all_tx.type,
         max(affiliate_address) over (partition by all_tx.tx_hash) as affiliate_address,
         swap_flag,
