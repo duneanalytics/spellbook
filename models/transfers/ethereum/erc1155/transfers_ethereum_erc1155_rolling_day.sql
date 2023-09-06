@@ -1,17 +1,22 @@
-{{ config(
-        alias = alias('erc1155_rolling_day')
-        )
+{{ 
+    config(
+        tags = ['dunesql'],
+        alias = alias('erc1155_rolling_day'),
+        post_hook='{{ expose_spells(\'["ethereum"]\',
+                                    "sector",
+                                    "transfers",
+                                    \'["tomfutago"]\') }}'
+    )
 }}
 
-        select
-            'ethereum' as blockchain,
-            day,
-            wallet_address,
-            token_address,
-            tokenId,
-            NOW() as updated_at,
-            row_number() over (partition by token_address, tokenId, wallet_address order by day desc) as recency_index,
-            sum(amount) over (
-                partition by token_address, tokenId, wallet_address order by day
-            ) as amount
-        from {{ ref('transfers_ethereum_erc1155_agg_day') }}
+select
+  'ethereum' as blockchain,
+  block_month,
+  block_day,
+  wallet_address,
+  token_address,
+  token_id,
+  sum(amount) over (partition by token_address, wallet_address, token_id order by block_day) as amount,
+  row_number() over (partition by token_address, wallet_address, token_id order by block_day desc) as recency_index,
+  now() as last_updated
+from {{ ref('transfers_ethereum_erc1155_agg_day') }}

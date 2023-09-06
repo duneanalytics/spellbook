@@ -1,25 +1,30 @@
-{{ config(
+{{ 
+    config(
+        tags = ['dunesql'],
         alias = alias('erc1155_agg_hour'),
-        materialized ='incremental',
-        file_format ='delta',
-        incremental_strategy='merge',
-        unique_key='unique_transfer_id'
-        )
+        partition_by = ['block_month'],
+        materialized = 'incremental',
+        file_format = 'delta',
+        incremental_strategy = 'merge',
+        unique_key = ['wallet_address', 'token_address', 'block_hour', 'token_id'],
+        post_hook='{{ expose_spells(\'["ethereum"]\',
+                                    "sector",
+                                    "transfers",
+                                    \'["tomfutago"]\') }}'
+    )
 }}
 
 select
-    'ethereum' as blockchain,
-    date_trunc('hour', evt_block_time) as hour,
-    wallet_address,
-    token_address,
-    tokenId,
-    sum(amount) as amount,
-    unique_tx_id || '-' || wallet_address || '-' || token_address || tokenId || '-' || sum(amount)::string as unique_transfer_id
-FROM {{ ref('transfers_ethereum_erc1155') }}
+  'ethereum' as blockchain,
+  cast(date_trunc('month', tr.block_time) as date) as block_month,
+  date_trunc('hour', tr.block_time) as block_hour,
+  tr.wallet_address,
+  tr.token_address,
+  tr.token_id,
+  sum(tr.amount) as amount
+from {{ ref('transfers_ethereum_erc1155') }} tr
 {% if is_incremental() %}
 -- this filter will only be applied on an incremental run
-where date_trunc('hour', evt_block_time) > now() - interval 2 days
+where tr.block_time >= date_trunc('day', now() - interval '7' day)
 {% endif %}
-group by
-    date_trunc('hour', evt_block_time), wallet_address, token_address, tokenId, unique_tx_id
-;
+group by 1, 2, 3, 4, 5, 6
