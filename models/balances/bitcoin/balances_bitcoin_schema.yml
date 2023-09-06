@@ -25,6 +25,13 @@ models:
         description: "The number of Satoshis in the wallets"
       - name: amount
         description: "The number of Bitcoins in the wallets"
+      - name: price_btc
+        description: "Price of btc at day"
+      - &amount_transfer_usd
+        name: amount_transfer_usd
+        description: Amount by usd
       - &amount_usd
         name: amount_usd
         description: "Amount of Bitcoin held in USD if we have it"
+      - name: profit
+        description: "Profit of wallet"
