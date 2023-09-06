@@ -18,7 +18,7 @@
 
 WITH zeroex_tx AS (
     SELECT distinct 
-            SELECT tr.tx_hash,
+             tr.tx_hash,
                        CASE
                             WHEN bytearray_position(INPUT, 0x869584cd ) <> 0 THEN SUBSTRING(INPUT
                                                                                    FROM (bytearray_position(INPUT, 0x869584cd) + 16)
