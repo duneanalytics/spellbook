@@ -51,7 +51,7 @@ WITH zeroex_tx AS (
                 {% if not is_incremental() %}
                 AND block_time >= cast('{{zeroex_v3_start_date}}' as date)
                 {% endif %}
-            group by tr.tx_hash, tr.to, tr.from, tr.block_number, tr.block_time
+            group by tr.tx_hash, tr.block_number, tr.block_time
 ),
 
 v4_rfq_fills_no_bridge AS (
