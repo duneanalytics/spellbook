@@ -28,6 +28,7 @@ bnb_transfers  as (
         AND success
         AND CAST(value as double) > 0
         AND to IS NOT NULL 
+        AND to != 0x0000000000000000000000000000000000000000
         {% if is_incremental() %}
             AND block_time >= date_trunc('day', now() - interval '3' Day)
         {% endif %}
@@ -48,6 +49,7 @@ bnb_transfers  as (
         AND success
         AND CAST(value as double) > 0
         AND "from" IS NOT NULL 
+        AND "from" != 0x0000000000000000000000000000000000000000 -- this is causing duplicates in the test because for some weird reason there are transactions showing in bnb.transactions of this address that doesn't have a tx_hash
         {% if is_incremental() %}
             AND block_time >= date_trunc('day', now() - interval '3' Day)
         {% endif %}
