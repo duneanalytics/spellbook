@@ -1,0 +1,152 @@
+version: 2
+
+models:
+  - name: transfers_celo_erc721
+    meta:
+      blockchain: celo
+      sector: transfers
+      project: erc721
+      contributors: soispoke, dot2dotseurat, tschubotz, tomfutago
+    config:
+      tags: ['transfers', 'celo', 'erc721']
+    description: "ERC721 Token Transfers on Celo. This table is updated every 30 minutes."
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - transfer_type
+            - wallet_address
+            - token_address
+            - token_id
+    columns:
+      - &blockchain
+        name: blockchain
+        description: "Blockchain"
+      - &transfer_type
+        name: transfer_type
+        description: "Transfer Type: sent/received"
+      - &wallet_address
+        name: wallet_address
+        description: "Wallet address of sender or receiver. If amount is negative, wallet address is the sender's."
+      - &token_address
+        name: token_address
+        description: "Contract address for token"
+      - &block_month
+        name: block_month
+        description: "Block Month column used to partition data in this table"
+        tests:
+          - not_null
+      - &block_time
+        name: block_time
+        description: "Timestamp for block event time in UTC"
+        tests:
+          - not_null
+      - &token_id
+        name: token_id
+        description: "ID of the ERC721 token"
+      - &amount
+        name: amount
+        description: "Amount of ERC721 token held"
+      - &tx_hash
+        name: tx_hash
+        description: "Transaction hash"
+        tests:
+          - not_null
+
+  - name: transfers_celo_erc721_agg_hour
+    meta:
+      blockchain: celo
+      sector: transfers
+      project: erc721
+      contributors: soispoke, dot2dotseurat, tomfutago
+    config:
+      tags: ['transfers', 'celo', 'erc721', 'agg_hour', 'soispoke', 'dot2dotseurat', 'tomfutago']
+    description: "A helper table to construct erc721 balances"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - wallet_address
+            - token_address
+            - block_hour
+            - token_id
+    columns:
+      - *blockchain
+      - *block_month
+      - &block_hour
+        name: block_hour
+        description: "UTC event block time truncated to the hour mark."
+      - *wallet_address
+      - *token_address
+      - *token_id
+      - *amount
+
+  - name: transfers_celo_erc721_rolling_hour
+    meta:
+      blockchain: celo
+      sector: transfers
+      project: erc721
+      contributors: soispoke, dot2dotseurat, tomfutago
+    config:
+      tags: ['transfers', 'celo', 'erc721', 'rolling_hour', 'soispoke', 'dot2dotseurat', 'tomfutago']
+    description: "ERC721 Token Transfers on Celo per hour."
+    columns:
+      - *blockchain
+      - *block_month
+      - *block_hour
+      - *wallet_address
+      - *token_address
+      - *token_id
+      - *amount
+      - &recency_index
+        name: recency_index
+        description: "Index of most recent balance ascending. recency_index=1 is the wallet/contract pair's most recent balance"
+      - &last_updated
+        name: last_updated
+        description: "UTC timestamp when table was last updated"
+
+  - name: transfers_celo_erc721_agg_day
+    meta:
+      blockchain: celo
+      sector: transfers
+      project: erc721
+      contributors: soispoke, dot2dotseurat, tomfutago
+    config:
+      tags: ['transfers', 'celo', 'erc721', 'agg_day', 'soispoke', 'dot2dotseurat', 'tomfutago']
+    description: "A helper table to construct erc721 balances"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - wallet_address
+            - token_address
+            - block_day
+            - token_id
+    columns:
+      - *blockchain
+      - *block_month
+      - &block_day
+        name: block_day
+        description: "UTC event block time truncated to the day mark."
+      - *wallet_address
+      - *token_address
+      - *token_id
+      - *amount
+
+  - name: transfers_celo_erc721_rolling_day
+    meta:
+      blockchain: celo
+      sector: transfers
+      project: erc721
+      contributors: soispoke, dot2dotseurat, tomfutago
+    config:
+      tags: ['transfers', 'celo', 'erc721', 'rolling_day', 'soispoke', 'dot2dotseurat', 'tomfutago']
+    description: "ERC721 Token Transfers on Celo per day."
+    columns:
+      - *blockchain
+      - *block_month
+      - *block_day
+      - *wallet_address
+      - *token_address
+      - *token_id
+      - *amount
+      - *recency_index
+      - *last_updated

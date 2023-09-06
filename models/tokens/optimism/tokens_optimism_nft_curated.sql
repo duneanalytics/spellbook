@@ -299,5 +299,6 @@ FROM
 ,(0xf27a25bf230c02f52721324266583aaed85284e8, 'Sismo Early Community NFT')
 ,(0xcebcf213f4b01321ab2f672ab0cdc2fc400e297c, 'Trending !FUN')
 ,(0xFC558443dDF413a16C0bE340137e145765D9ADB4, 'Nansen 2 Early Access')
+,(0x11e76ab2e2c48e4a561ac96935399c8595619fa4, 'Optimism Superchain Builder NFT')
 
 ) as temp_table (contract_address, name)

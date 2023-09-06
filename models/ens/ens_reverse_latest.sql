@@ -37,8 +37,10 @@ with node_names as (
     output as node
     from {{ source('ethereum', 'traces') }} tr
     where success
-        and (to = 0x9062c0a6dbd6108336bcbe4593a3d1ce05512069 -- ReverseRegistrar v1
-            or to = 0x084b1c3c81545d370f3634392de611caabff8148 -- ReverseRegistrar v2
+        and to in (
+              0x9062c0a6dbd6108336bcbe4593a3d1ce05512069 -- ReverseRegistrar v1
+            , 0x084b1c3c81545d370f3634392de611caabff8148 -- ReverseRegistrar v2
+            , 0xa58e81fe9b61b5c3fe2afd33cf304c454abfc7cb -- ReverseRegistrar v3
         )
         and bytearray_substring(input,1,4) in (
             0xc47f0027 -- setName(string)
