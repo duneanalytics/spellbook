@@ -1,11 +1,10 @@
 {{  config(
-    tags=['legacy'],
-        alias = alias('api_fills_celo', legacy_model=True)
-        
-    )
+  tags=['legacy'],
+  schema = 'zeroex_celo',
+  alias = alias('api_fills', legacy_model=True)      
+)
 }}
 
 -- DUMMY TABLE, WILL BE REMOVED SOON
 select 
   1
-EOL;

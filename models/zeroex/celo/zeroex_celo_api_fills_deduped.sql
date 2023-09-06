@@ -94,7 +94,7 @@ SELECT  a.blockchain
       , a.tx_from
       , a.tx_to
       , b.evt_index
-      , TRY_CAST(ARRAY[-1] AS ARRAY(BIGINT)) AS trace_address
+      , ARRAY[-1] AS trace_address
       , a.type
       , a.swap_flag
       , b.fills_within
