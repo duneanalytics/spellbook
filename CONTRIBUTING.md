@@ -76,7 +76,7 @@ select 2 as col1, "moon" as col2, tx_id
 from {{ source('mock', 'source_table') }}
 ```
 
-If your models refers to another model it should use a `ref` with the model's file name. e.g. `{{ ref('transfers_ethereum_erc20_rolling_hour') }}`.
+If your models refers to another model it should use a `ref` with the model's file name. e.g. `{{ ref('transfers_ethereum_erc20_rolling_day') }}`.
 
 Raw or decoded tables (anything that isn't an abstraction) should be referenced as `sources` e.g. `{{ source('erc20_ethereum', 'evt_transfer') }}`. 
 
