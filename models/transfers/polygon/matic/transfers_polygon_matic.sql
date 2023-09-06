@@ -78,7 +78,7 @@ SELECT
     tx_hash, 
     trace_address,
     block_time,
-    CAST(date_trunc('month', block_time)) as block_month,
+    CAST(date_trunc('month', block_time) as date) as block_month,
     wallet_address, 
     token_address, 
     amount_raw
@@ -93,7 +93,7 @@ SELECT
     tx_hash, 
     trace_address,
     block_time,
-    CAST(date_trunc('month', block_time)) as block_month,
+    CAST(date_trunc('month', block_time) as date) as block_month,
     wallet_address, 
     token_address, 
     amount_raw
