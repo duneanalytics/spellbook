@@ -19,14 +19,14 @@
 WITH zeroex_tx AS (
     SELECT distinct 
              tr.tx_hash,
-                       CASE
+                       max(CASE
                             WHEN bytearray_position(INPUT, 0x869584cd ) <> 0 THEN SUBSTRING(INPUT
                                                                                    FROM (bytearray_position(INPUT, 0x869584cd) + 16)
                                                                                    FOR 20)
                             WHEN bytearray_position(INPUT, 0xfbc019a7) <> 0 THEN SUBSTRING(INPUT
                                                                                    FROM (bytearray_position(INPUT, 0xfbc019a7 ) + 16)
                                                                                    FOR 20)
-                        END AS affiliate_address,
+                        END) AS affiliate_address,
             tr.block_number as block_number,
             tr.block_time as block_time
         FROM {{ source('polygon', 'traces') }} tr
