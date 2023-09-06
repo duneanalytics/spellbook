@@ -7,7 +7,7 @@
     file_format='delta',
     incremental_strategy='merge',
     unique_key=['date_start', 'node_address'],
-    post_hook='{{ expose_spells(\'["arbitrum"]\',
+    post_hook='{{ expose_spells(\'["polygon"]\',
                                 "project",
                                 "chainlink",
                                 \'["linkpool_jon"]\') }}'
@@ -33,8 +33,8 @@ WITH
       COALESCE(SUM(fulfilled.token_amount * fulfilled.usd_amount), 0) as fulfilled_usd_amount,
       COALESCE(SUM(reverted.token_amount * reverted.usd_amount), 0) as reverted_usd_amount
     FROM
-      {{ ref('chainlink_arbitrum_fm_fulfilled_transactions') }} fulfilled
-      FULL OUTER JOIN {{ ref('chainlink_arbitrum_fm_reverted_transactions') }} reverted ON
+      {{ ref('chainlink_polygon_fm_fulfilled_transactions') }} fulfilled
+      FULL OUTER JOIN {{ ref('chainlink_polygon_fm_reverted_transactions') }} reverted ON
         reverted.block_time = fulfilled.block_time AND
         reverted.node_address = fulfilled.node_address
     {% if is_incremental() %}
@@ -49,7 +49,7 @@ WITH
   ),
   fm_gas_daily AS (
     SELECT
-      'arbitrum' as blockchain,
+      'polygon' as blockchain,
       date_start,
       cast(date_trunc('month', date_start) as date) as date_month,
       fm_gas_daily_meta.node_address as node_address,
@@ -61,7 +61,7 @@ WITH
       fulfilled_token_amount + reverted_token_amount as total_token_amount,
       fulfilled_usd_amount + reverted_usd_amount as total_usd_amount
     FROM fm_gas_daily_meta
-    LEFT JOIN {{ ref('chainlink_arbitrum_ocr_operator_node_meta') }} fm_operator_node_meta ON fm_operator_node_meta.node_address = fm_gas_daily_meta.node_address
+    LEFT JOIN {{ ref('chainlink_polygon_ocr_operator_node_meta') }} fm_operator_node_meta ON fm_operator_node_meta.node_address = fm_gas_daily_meta.node_address
   )
 SELECT 
   blockchain,

@@ -7,7 +7,7 @@
     file_format = 'delta',
     incremental_strategy = 'merge',
     unique_key = ['date_start', 'admin_address'],
-    post_hook='{{ expose_spells(\'["arbitrum"]\',
+    post_hook='{{ expose_spells(\'["bnb"]\',
                                 "project",
                                 "chainlink",
                                 \'["linkpool_jon"]\') }}'
@@ -21,7 +21,7 @@ WITH
     SELECT DISTINCT
       admin_address
     FROM
-      {{ref('chainlink_arbitrum_fm_reward_evt_transfer_daily')}} fm_reward_evt_transfer_daily
+      {{ref('chainlink_bnb_fm_reward_evt_transfer_daily')}} fm_reward_evt_transfer_daily
   ),
   link_usd_daily AS (
     SELECT
@@ -61,7 +61,7 @@ WITH
         SELECT
           MAX(fm_reward_evt_transfer_daily.date_start)
         FROM
-          {{ref('chainlink_arbitrum_fm_reward_evt_transfer_daily')}} fm_reward_evt_transfer_daily
+          {{ref('chainlink_bnb_fm_reward_evt_transfer_daily')}} fm_reward_evt_transfer_daily
         WHERE
           fm_reward_evt_transfer_daily.date_start <= link_usd_daily_expanded_by_admin_address.date_start
           AND fm_reward_evt_transfer_daily.admin_address = link_usd_daily_expanded_by_admin_address.admin_address
@@ -70,7 +70,7 @@ WITH
         SELECT
           MIN(fm_reward_evt_transfer_daily.date_start)
         FROM
-          {{ref('chainlink_arbitrum_fm_reward_evt_transfer_daily')}} fm_reward_evt_transfer_daily
+          {{ref('chainlink_bnb_fm_reward_evt_transfer_daily')}} fm_reward_evt_transfer_daily
         WHERE
           fm_reward_evt_transfer_daily.date_start > link_usd_daily_expanded_by_admin_address.date_start
           AND fm_reward_evt_transfer_daily.admin_address = link_usd_daily_expanded_by_admin_address.admin_address
@@ -91,14 +91,14 @@ WITH
     FROM 
       payment_meta
     LEFT JOIN 
-      {{ref('chainlink_arbitrum_fm_reward_evt_transfer_daily')}} fm_reward_evt_transfer_daily ON
+      {{ref('chainlink_bnb_fm_reward_evt_transfer_daily')}} fm_reward_evt_transfer_daily ON
         payment_meta.next_payment_date = fm_reward_evt_transfer_daily.date_start AND
         payment_meta.admin_address = fm_reward_evt_transfer_daily.admin_address
-    LEFT JOIN {{ ref('chainlink_arbitrum_ocr_operator_admin_meta') }} ocr_operator_admin_meta ON ocr_operator_admin_meta.admin_address = fm_reward_evt_transfer_daily.admin_address
+    LEFT JOIN {{ ref('chainlink_bnb_ocr_operator_admin_meta') }} ocr_operator_admin_meta ON ocr_operator_admin_meta.admin_address = fm_reward_evt_transfer_daily.admin_address
     ORDER BY date_start
   )
 SELECT
-  'arbitrum' as blockchain,
+  'bnb' as blockchain,
   date_start,
   date_month,
   admin_address,

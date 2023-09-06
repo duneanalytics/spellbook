@@ -1,6 +1,107 @@
 version: 2
 
 models:
+  - name: chainlink_ethereum_price_feeds
+    meta:
+      blockchain: ethereum
+      project: chainlink
+      contributors: ["msilb7", "0xroll", "linkpool_ryan", "linkpool_jon"]
+    config:
+      tags: ["ethereum", "chainlink", "oracle"]
+    description: >
+      Table pulling price updates for known Chainlink oracle addresses
+    columns:
+      - &blockchain
+        name: blockchain
+        description: "Blockchain"
+      - &block_time
+        name: block_time
+        description: "Block time"
+      - &block_date
+        name: block_date
+        description: "Block time truncated to date"
+      - &block_month
+        name: block_month
+        description: "Block time truncated to month"
+      - &block_number
+        name: block_number
+        description: "Block number"
+      - &feed_name
+        name: feed_name
+        description: "Feed name from Chainlink docs"
+      - &oracle_price
+        name: oracle_price
+        description: "Price returned by Chainlink oracle update"
+      - &proxy_address
+        name: proxy_address
+        description: "Address of the proxy contract for the Chainlink oracle"
+      - &aggregator_address
+        name: aggregator_address
+        description: "Address of the aggregator contract tied to the proxy for the Chainlink oracle (via Read Contract)"
+      - &base
+        name: base
+        description: "Base token of the pair"
+      - &quote
+        name: quote
+        description: "Quote token of the pair"
+      - &underlying_token_price
+        name: underlying_token_price
+        description: "Price of the underlying token, with extra decimal adjustments if needed"
+
+  - name: chainlink_ethereum_price_feeds_hourly
+    meta:
+      blockchain: ethereum
+      project: chainlink
+      contributors: ["msilb7", "0xroll", "linkpool_ryan"]
+    config:
+      tags: ["ethereum", "chainlink", "oracle"]
+    description: >
+      Table pulling price updates for known Chainlink oracle addresses, truncated to hourly average price for easier joining with other on-chain tables.
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - hour
+            - proxy_address
+            - aggregator_address
+    columns:
+      - *blockchain
+      - &hour
+        name: hour
+        description: "Block time of the oracle update - truncated to hour"
+      - *block_date
+      - *block_month
+      - *feed_name
+      - *oracle_price
+      - *proxy_address
+      - *aggregator_address
+      - *base
+      - *quote
+      - *underlying_token_price
+
+  - name: chainlink_ethereum_price_feeds_oracle_addresses
+    meta:
+      blockchain: ethereum
+      project: chainlink
+      contributors: ["msilb7", "0xroll", "linkpool_ryan", "linkpool_jon"]
+    config:
+      tags: ["ethereum", "chainlink", "oracle"]
+    description: >
+      Manually updated table for mapping chainlink feeds to proxy addresses and the aggregator addresses (where updates read to)
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - proxy_address
+            - aggregator_address
+    columns:
+      - *blockchain
+      - *feed_name
+      - &decimals
+        name: decimals
+        description: "Decimal adjustment for the oracle answer"
+      - *proxy_address
+      - *aggregator_address
+
   - name: chainlink_ethereum_ocr_gas_transmission_logs
     meta:
       blockchain: ethereum
@@ -18,9 +119,7 @@ models:
             - tx_hash
             - tx_index
     columns:
-      - &blockchain
-        name: blockchain
-        description: "Blockchain"
+      - *blockchain
       - &block_hash
         name: block_hash
         description: "Block Hash"
@@ -45,12 +144,8 @@ models:
       - &tx_hash
         name: tx_hash
         description: "Transaction Hash"
-      - &block_number
-        name: block_number
-        description: "Block Number"
-      - &block_time
-        name: block_time
-        description: "Block Time"
+      - *block_number
+      - *block_time
       - &index
         name: index
         description: "Index"
@@ -287,74 +382,202 @@ models:
       - *token_amount
       - *usd_amount
 
-  - name: chainlink_ethereum_price_feeds
+  - name: chainlink_ethereum_fm_gas_daily
     meta:
       blockchain: ethereum
-      project: chainlink
-      contributors: ["linkpool_jon", "linkpool_ryan"]
+      sector: chainlink
+      contributors: linkpool_jon
     config:
-      tags: ["ethereum", "chainlink", "oracle"]
+      tags: ["chainlink", "fm", "gas", "daily", "ethereum"]
     description: >
-      Table pulling price updates for known Chainlink oracle addresses
-    columns:
-      - *blockchain
-      - *block_time
-      - &block_date
-        name: block_date
-        description: "Block time truncated to date"
-      - &block_month
-        name: block_month
-        description: "Block time truncated to month"
-      - *block_number
-      - &feed_name
-        name: feed_name
-        description: "Feed name from Chainlink docs"
-      - &oracle_price
-        name: oracle_price
-        description: "Price returned by Chainlink oracle update"
-      - &proxy_address
-        name: proxy_address
-        description: "Address of the proxy contract for the Chainlink oracle"
-      - &aggregator_address
-        name: aggregator_address
-        description: "Address of the aggregator contract tied to the proxy for the Chainlink oracle (via Read Contract)"
-      - &base
-        name: base
-        description: "Base token of the pair"
-      - &quote
-        name: quote
-        description: "Quote token of the pair"
-      - &underlying_token_price
-        name: underlying_token_price
-        description: "Price of the underlying token, with extra decimal adjustments if needed"
-
-  - name: chainlink_ethereum_price_feeds_hourly
-    meta:
-      blockchain: ethereum
-      project: chainlink
-      contributors: ["linkpool_jon", "linkpool_ryan"]
-    config:
-      tags: ["ethereum", "chainlink", "oracle"]
-    description: >
-      Table pulling price updates for known Chainlink oracle addresses, truncated to hourly average price for easier joining with other on-chain tables.
+      Chainlink FM Gas Daily
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
-            - hour
-            - proxy_address
-            - aggregator_address
+            - date_start
+            - node_address
     columns:
       - *blockchain
-      - &hour
-        name: hour
-        description: "Block time of the oracle update - truncated to hour"
-      - *block_date
-      - *block_month
-      - *feed_name
-      - *oracle_price
-      - *proxy_address
-      - *aggregator_address
-      - *base
-      - *quote
-      - *underlying_token_price
+      - *date_start
+      - *date_month
+      - *node_address
+      - *operator_name
+      - *fulfilled_token_amount
+      - *fulfilled_usd_amount
+      - *reverted_token_amount
+      - *reverted_usd_amount
+      - *total_token_amount
+      - *total_usd_amount
+
+  - name: chainlink_ethereum_fm_gas_submission_logs
+    meta:
+      blockchain: ethereum
+      sector: chainlink
+      contributors: linkpool_jon
+    config:
+      tags: ["chainlink", "fm", "gas", "submission", "logs", "ethereum"]
+    description: >
+      Chainlink FM Gas Transmission Logs
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - block_number
+            - tx_hash
+            - index
+    columns:
+      - *blockchain
+      - *block_hash
+      - *contract_address
+      - *data
+      - *topic0
+      - *topic1
+      - *topic2
+      - *topic3
+      - *tx_hash
+      - *block_number
+      - *block_time
+      - *index
+      - *tx_index
+
+  - name: chainlink_ethereum_fm_fulfilled_transactions
+    meta:
+      blockchain: ethereum
+      sector: chainlink
+      contributors: linkpool_jon
+    config:
+      tags: ["chainlink", "fm", "fulfilled", "transactions", "ethereum"]
+    description: >
+      Chainlink FM Fulfilled Transactions
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - tx_hash
+            - tx_index
+            - node_address
+    columns:
+      - *blockchain
+      - *block_time
+      - *date_month
+      - *node_address
+      - *token_amount
+      - *usd_amount
+      - *tx_hash
+      - *tx_index
+
+  - name: chainlink_ethereum_fm_request_daily
+    meta:
+      blockchain: ethereum
+      sector: chainlink
+      contributors: linkpool_jon
+    config:
+      tags: ["chainlink", "fm", "request", "daily", "ethereum"]
+    description: >
+      Chainlink FM Request Daily
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - date_start
+            - node_address
+    columns:
+      - *blockchain
+      - *date_start
+      - *date_month
+      - *node_address
+      - *operator_name
+      - *fulfilled_requests
+      - *reverted_requests
+      - *total_requests
+
+  - name: chainlink_ethereum_fm_reverted_transactions
+    meta:
+      blockchain: ethereum
+      sector: chainlink
+      contributors: linkpool_jon
+    config:
+      tags: ["chainlink", "fm", "reverted", "transactions", "ethereum"]
+    description: >
+      Chainlink FM Reverted Transactions
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - tx_hash
+            - tx_index
+            - node_address
+    columns:
+      - *blockchain
+      - *block_time
+      - *date_month
+      - *node_address
+      - *token_amount
+      - *usd_amount
+      - *tx_hash
+      - *tx_index
+
+  - name: chainlink_ethereum_fm_reward_daily
+    meta:
+      blockchain: ethereum
+      sector: chainlink
+      contributors: linkpool_jon
+    config:
+      tags: ["chainlink", "fm", "reward", "daily", "ethereum"]
+    description: >
+      Chainlink FM Reward Daily
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - date_start
+            - admin_address
+    columns:
+      - *blockchain
+      - *date_start
+      - *date_month
+      - *admin_address
+      - *operator_name
+      - *token_amount
+      - *usd_amount
+
+  - name: chainlink_ethereum_fm_reward_evt_transfer
+    meta:
+      blockchain: ethereum
+      sector: chainlink
+      contributors: linkpool_jon
+    config:
+      tags: ["chainlink", "fm", "reward", "evt", "transfer", "ethereum"]
+    description: >
+      Chainlink FM Reward Event Transfers
+    columns:
+      - *blockchain
+      - *evt_block_time
+      - *admin_address
+      - *operator_name
+      - *token_value
+
+  - name: chainlink_ethereum_fm_reward_evt_transfer_daily
+    meta:
+      blockchain: ethereum
+      sector: chainlink
+      contributors: linkpool_jon
+    config:
+      tags:
+        ["chainlink", "fm", "reward", "evt", "transfer", "daily", "ethereum"]
+    description: >
+      Chainlink FM Reward Event Transfers Daily
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - date_start
+            - admin_address
+    columns:
+      - *blockchain
+      - *date_start
+      - *date_month
+      - *admin_address
+      - *operator_name
+      - *token_value
