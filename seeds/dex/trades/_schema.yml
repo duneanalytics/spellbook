@@ -10,3 +10,4 @@ seeds:
         token_sold_address: varbinary
         token_bought_amount: double
         token_sold_amount: double
+        block_date: timestamp

@@ -1,0 +1,10 @@
+version: 2
+
+seeds:
+  - name: ens_view_registrations_postgres
+    config:
+      tags: dunesql
+      column_types:
+        label: varbinary
+        evt_block_number: bigint
+        evt_index: bigint

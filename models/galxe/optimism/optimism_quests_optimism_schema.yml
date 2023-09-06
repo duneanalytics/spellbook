@@ -1,0 +1,46 @@
+version: 2
+
+models:
+
+  - name: galxe_optimism_nft_mints
+    meta:
+      blockchain: optimism
+      project: optimism_quests
+      contributors: msilb7
+    config:
+      tags: ['optimism','galxe', 'quests']
+    description: >
+        A table containing all quest completion NFT mints for Galxe.
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+              - block_number
+              - tx_hash
+              - nft_contract_address
+              - tokenId
+              - evt_index
+    columns:
+      - &block_date
+        name: block_date
+        description: "Date of the transaction"
+      - &block_time
+        name: block_time
+      - &block_number
+        name: block_number
+      - &tx_from
+        name: tx_from
+      - &tx_to
+        name: tx_to
+      - &tx_hash
+        name: tx_hash
+      - &tx_method_id
+        name: tx_method_id
+      - &token_transfer_to
+        name: token_transfer_to
+      - &nft_contract_address
+        name: nft_contract_address
+      - &tokenId
+        name: tokenId
+      - &evt_index
+        name: evt_index
+      

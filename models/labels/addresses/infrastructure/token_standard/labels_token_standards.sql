@@ -1,4 +1,5 @@
-{{config(alias = alias('token_standards'),
+{{config(tags=['dunesql'],
+        alias = alias('token_standards'),
         post_hook='{{ expose_spells(\'["arbitrum", "avalanche_c", "bnb", "ethereum", "fantom", "gnosis","goerli","optimism","polygon"]\',
                                     "sector",
                                     "labels",
@@ -22,11 +23,20 @@ ref('labels_token_standards_arbitrum')
 SELECT *
 FROM (
         {% for label in labels_models %}
-        SELECT *
+        SELECT
+            blockchain
+            , address
+            , name
+            , category
+            , contributor
+            , source
+            , created_at
+            , updated_at
+            , model_name
+            , label_type
         FROM  {{ label }}
         {% if not loop.last %}
         UNION
         {% endif %}
         {% endfor %}
 )
-;

@@ -1,6 +1,7 @@
 {{config(
         schema='optimism_quests_optimism',
-        alias = alias('nft_id_mapping'),
+        tags=['dunesql'],
+        alias=alias('nft_id_mapping'),
         post_hook='{{ expose_spells(\'["optimism"]\',
                                     "project",
                                     "optimism_quests",
@@ -9,7 +10,7 @@
 
 
 with quest_nft_ids AS (
-    SELECT contract_project, quest_project, cast(nft_id as varchar(4)) as nft_id
+    SELECT contract_project, quest_project, cast(nft_id as varchar) as nft_id
     FROM (values
          ('Beethoven X', 'Beethoven X', 6366)
         ,('Clipper','Clipper', 6357)

@@ -1,5 +1,6 @@
  {{
   config(
+        tags = ['dunesql'],
         alias = alias('self_destruct_contracts'),
         materialized ='incremental',
         file_format ='delta',
@@ -18,14 +19,14 @@ with creates as (
       , block_number AS created_block_number
       ,tx_hash as creation_tx_hash
       ,address as contract_address
-      ,trace_address[0] as trace_element
+      ,(CASE WHEN cardinality(trace_address) = 0 then cast(-1 as bigint) else trace_address[1] end) as trace_element
     from {{ source('optimism', 'traces') }}
     where 
       type = 'create'
       and success
       and tx_success
       {% if is_incremental() %}
-      and block_time >= date_trunc('day', now() - interval '1 week')
+      and block_time >= date_trunc('day', now() - interval '7' day)
       {% endif %}
 )
 
@@ -49,10 +50,10 @@ FROM (
       on cr.creation_tx_hash = sd.tx_hash
       and cr.created_time = sd.block_time
       AND cr.created_block_number = sd.block_number
-      and cr.trace_element = sd.trace_address[0]
-      and sd.`type` = 'suicide'
+      and cr.trace_element = (CASE WHEN cardinality(sd.trace_address) = 0 then cast(-1 as bigint) else sd.trace_address[1] end)
+      and sd.type = 'suicide'
       {% if is_incremental() %}
-      and sd.block_time >= date_trunc('day', now() - interval '1 week')
+      and sd.block_time >= date_trunc('day', now() - interval '7' day)
       and cr.contract_address NOT IN (SELECT contract_address FROM {{this}} ) --ensure no duplicates
       {% endif %}
     group by 1, 2, 3, 4, 5
@@ -75,7 +76,7 @@ FROM (
       AND sds.type = 'suicide'
       AND sds.address IS NOT NULL
       {% if is_incremental() %}
-      and sds.block_time >= date_trunc('day', now() - interval '1 week')
+      and sds.block_time >= date_trunc('day', now() - interval '7' day)
       and cr.contract_address NOT IN (SELECT contract_address FROM {{this}} ) --ensure no duplicates
       {% endif %}
   ) inter

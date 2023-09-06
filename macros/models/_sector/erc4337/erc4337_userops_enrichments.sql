@@ -12,6 +12,7 @@
 WITH userops_base_union AS (
     SELECT      blockchain
                 , version
+                , block_month
                 , block_time
                 , entrypoint_contract
                 , tx_hash
@@ -25,6 +26,7 @@ WITH userops_base_union AS (
         {% for erc4337_model in base_models %}
           SELECT blockchain
                 , version
+                , block_month
                 , block_time
                 , entrypoint_contract
                 , tx_hash
@@ -36,7 +38,7 @@ WITH userops_base_union AS (
                 , beneficiary
         FROM {{ erc4337_model }}
         {% if is_incremental() %}
-        WHERE block_time >= date_trunc("day", now() - interval '1 week')
+        WHERE block_time >= date_trunc('day', now() - interval '7' day)
         {% endif %}
         {% if not loop.last %}
         UNION ALL
@@ -48,7 +50,7 @@ WITH userops_base_union AS (
 , txs as (
     select
           hash as tx_hash
-        , tx.from as tx_from
+        , tx."from" as tx_from
         , tx.to as tx_to
         , '{{gas_symbol}}' as gas_symbol
         , cast(gas_used as double) * gas_price / 1e18 as tx_fee
@@ -56,25 +58,26 @@ WITH userops_base_union AS (
     where hash in (
         select tx_hash from userops_base_union
     )
-    and block_time > timestamp '{{deployed_date}}'
+    and block_time > date '{{deployed_date}}'
     {% if is_incremental() %}
-        and block_time >= date_trunc("day", now() - interval '1 week')
+        and block_time >= date_trunc('day', now() - interval '7' day)
     {% endif %}
 )
 , price as (
     select symbol, decimals, minute, price
     from {{ prices_model }}
-    where minute > timestamp  '{{deployed_date}}'
-        and contract_address='{{wrapped_gas_address}}'
+    where minute > date '{{deployed_date}}'
+        and contract_address={{wrapped_gas_address}}
         and blockchain='{{ blockchain }}'
     {% if is_incremental() %}
-        and minute >= date_trunc("day", now() - interval '1 week')
+        and minute >= date_trunc('day', now() - interval '7' day)
     {% endif %}
 )
 
 select
       userop.blockchain
     , userop.version
+    , userop.block_month
     , userop.block_time
     , userop.entrypoint_contract
     , userop.tx_hash

@@ -1,4 +1,7 @@
-{{config(alias = alias('three_letter_ens_count'))}}
+{{config(
+    tags=['dunesql'],
+    alias = alias('three_letter_ens_count')
+)}}
 
 WITH three_letter_ens_count AS (
     SELECT 
@@ -15,14 +18,14 @@ WITH three_letter_ens_count AS (
 
 SELECT
     'ethereum' as blockchain,
-    (CONCAT('0x', substring(cast(owner as string), 3))) as address,
+    owner as address,
     'most_three_letter_ens_owner' as model_name,
     'spanish-or-vanish' as contributor,
     'query' as source,
     'social' as category,
-    timestamp('2022-03-03') as created_at,
+    TIMESTAMP '2022-03-03' as created_at,
     now() as updated_at,
     'personas' as label_type,
-    concat('Number of three letter ENS Domains owned: ', ens_count) as name
+    concat('Number of three letter ENS Domains owned: ', CAST(ens_count AS VARCHAR)) as name
 FROM three_letter_ens_count
 WHERE owner is not null

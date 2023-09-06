@@ -1,4 +1,7 @@
-{{config(alias = alias('aave_v2_deposit_size'))}}
+{{config(
+    tags=['dunesql']
+    , alias = alias('aave_v2_deposit_size')
+)}}
 
 with latest_net_deposits AS ( 
         with annual_flows AS (  
@@ -115,7 +118,7 @@ SELECT
     , 'deposit size' AS category
     , 'paulx' AS contributor
     , 'wizard' AS source
-    , date('2023-03-26') AS created_at
+    , date '2023-03-26' AS created_at
     , now() AS updated_at
     , 'aave_v2 daily deposits' AS model_name
     , 'persona' AS label_type
@@ -138,4 +141,3 @@ SELECT
     , model_name
     , label_type
 FROM final_base_label
-;

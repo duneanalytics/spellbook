@@ -1,17 +1,17 @@
-{{ config(
-	tags=['legacy'],
-	
-    alias = alias('price_feeds_hourly', legacy_model=True),
-    partition_by = ['block_date'],
-    materialized = 'incremental',
-    file_format = 'delta',
-    incremental_strategy = 'merge',
-    unique_key = ['blockchain', 'hour', 'proxy_address', 'underlying_token_address'],
+{{
+  config(
+	tags=['legacy', 'remove'],
+    alias=alias('price_feeds_hourly', legacy_model=True),
+    partition_by=['block_month'],
+    materialized='incremental',
+    file_format='delta',
+    incremental_strategy='merge',
+    unique_key=['blockchain', 'hour', 'proxy_address', 'underlying_token_address'],
     post_hook='{{ expose_spells(\'["polygon"]\',
                                 "project",
                                 "chainlink",
-                                \'["msilb7","0xroll"]\') }}'
-    )
+                                \'["msilb7","0xroll","linkpool_ryan"]\') }}'
+  )
 }}
 
 {% set project_start_date = '2020-10-26' %}
@@ -26,7 +26,7 @@ WITH gs AS (
     FROM (
         SELECT explode(
                 sequence(
-                        DATE_TRUNC('hour', 
+                        DATE_TRUNC('hour',
                         {% if not is_incremental() %}
                             cast('{{project_start_date}}' as date)
                         {% endif %}
@@ -37,17 +37,18 @@ WITH gs AS (
                         DATE_TRUNC('hour', NOW()),
                         interval '1 hour'
                         )
-            ) AS hr, 
+            ) AS hr,
                 feed_name,
                 proxy_address,
                 aggregator_address
-        FROM {{ ref('chainlink_polygon_oracle_addresses_legacy') }}
-    ) oa LEFT JOIN {{ ref('chainlink_polygon_oracle_token_mapping_legacy') }} c ON c.proxy_address = oa.proxy_address
+        FROM {{ ref('chainlink_polygon_price_feeds_oracle_addresses_legacy') }}
+    ) oa LEFT JOIN {{ ref('chainlink_polygon_price_feeds_oracle_token_mapping_legacy') }} c ON c.proxy_address = oa.proxy_address
 )
 
 SELECT 'polygon'                                            AS blockchain,
         hour,
         DATE_TRUNC('day',hour)                              AS block_date,
+        DATE_TRUNC('month',hour)                              AS block_month,
         feed_name,
         proxy_address,
         aggregator_address,
@@ -61,15 +62,15 @@ FROM (
         proxy_address,
         aggregator_address,
         underlying_token_address,
-        first_value(oracle_price_avg) 
+        first_value(oracle_price_avg)
             OVER (
-                PARTITION BY feed_name, 
+                PARTITION BY feed_name,
                              proxy_address,
                              aggregator_address,
                              underlying_token_address,
-                             grp 
+                             grp
                 ORDER BY hr)                                AS oracle_price_avg,
-        first_value(underlying_token_price_avg) 
+        first_value(underlying_token_price_avg)
             OVER (
                 PARTITION BY feed_name,
                              proxy_address,
@@ -87,7 +88,7 @@ FROM (
             oracle_price_avg,
             underlying_token_address,
             underlying_token_price_avg,
-            count(oracle_price_avg) 
+            count(oracle_price_avg)
                 OVER (
                     PARTITION BY feed_name,
                                  proxy_address,

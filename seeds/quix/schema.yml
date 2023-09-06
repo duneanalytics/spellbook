@@ -1,0 +1,17 @@
+version: 2
+
+seeds:
+  - name: quix_events_seed
+    config:
+      tags: dunesql
+      column_types:
+        tx_hash: varbinary
+        buyer: varbinary
+        seller: varbinary
+        nft_contract_address: varbinary
+        project_contract_address: varbinary
+        tx_from: varbinary
+        tx_to: varbinary
+        royalty_fee_receive_address: varbinary
+        token_id: uint256
+        block_date: date

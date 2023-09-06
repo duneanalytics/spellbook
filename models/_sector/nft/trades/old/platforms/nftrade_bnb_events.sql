@@ -1,7 +1,7 @@
 {{ config(
     schema = 'nftrade_bnb',
     alias = alias('events'),
-    partition_by = ['block_date'],
+    tags = ['dunesql'],
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
@@ -24,10 +24,10 @@ source_inventory as (
         makerAddress as maker_address,
         makerAssetAmount as maker_asset_amount_raw,
         makerAssetAmount/POW(10, 18) as maker_asset_amount,
-        CONCAT('0x', SUBSTRING(makerAssetData, 35, 40)) as maker_asset_address,
-        CAST(bytea2numeric_v3(SUBSTRING(makerAssetData, 77, 64)) as decimal(38)) as maker_id,
+        bytearray_substring(makerAssetData, 17, 20) as maker_asset_address,
+        bytearray_to_uint256(bytearray_substring(makerAssetData, 38, 32)) as maker_id,
         marketplaceIdentifier as marketplace_identifier,
-        protocolFeePaid * 1 as protocol_fees_raw,
+        protocolFeePaid as protocol_fees_raw,
         protocolFeePaid/POW(10, 18) as protocol_fees,
         royaltiesAddress as royalties_address,
         royaltiesAmount as royalty_fees_raw,
@@ -36,13 +36,13 @@ source_inventory as (
         takerAddress as taker_address,
         takerAssetAmount as taker_asset_amount_raw,
         takerAssetAmount/POW(10, 18) as taker_asset_amount,
-        CONCAT('0x', SUBSTRING(takerAssetData, 35, 40)) as taker_asset_address,
-        CAST(bytea2numeric_v3(SUBSTRING(takerAssetData, 77, 64)) as decimal(38)) as taker_id
+        bytearray_substring(takerAssetData, 17, 20) as taker_asset_address,
+        bytearray_to_uint256(bytearray_substring(takerAssetData, 38, 32)) as taker_id
     FROM
     {{ source('nftrade_bnb', 'NiftyProtocol_evt_Fill') }}
-    WHERE evt_block_time >= '{{project_start_date}}'
+    WHERE evt_block_time >= TIMESTAMP '{{project_start_date}}'
     {% if is_incremental() %}
-    AND evt_block_time >= date_trunc("day", now() - interval '1 week')
+    AND evt_block_time >= date_trunc('day', now() - interval '7' day)
     {% endif %}
 ),
 
@@ -50,39 +50,39 @@ source_inventory_enriched as (
     SELECT
         src.*,
         CASE
-            WHEN src.maker_id = 0 OR src.maker_id IS NULL THEN taker_asset_address
+            WHEN src.maker_id = cast(0 as uint256) OR src.maker_id IS NULL THEN taker_asset_address
             ELSE maker_asset_address
         END as nft_contract_address,
-        CAST((CASE
-            WHEN src.maker_id = 0 OR src.maker_id IS NULL THEN src.taker_id
-            ELSE src.maker_id
-        END) AS VARCHAR(100)) as token_id,
-        CAST((CASE
-            WHEN src.maker_id = 0 OR src.maker_id IS NULL THEN src.maker_asset_amount_raw
-            ELSE src.taker_asset_amount_raw
-        END) AS DECIMAL(38, 0)) as amount_raw,
         CASE
-            WHEN src.maker_id = 0 OR src.maker_id IS NULL THEN src.maker_asset_amount
+            WHEN src.maker_id = cast(0 as uint256) OR src.maker_id IS NULL THEN src.taker_id
+            ELSE src.maker_id
+        END as token_id,
+        CASE
+            WHEN src.maker_id = cast(0 as uint256) OR src.maker_id IS NULL THEN src.maker_asset_amount_raw
+            ELSE src.taker_asset_amount_raw
+        END as amount_raw,
+        CASE
+            WHEN src.maker_id = cast(0 as uint256) OR src.maker_id IS NULL THEN src.maker_asset_amount
             ELSE src.taker_asset_amount
         END as amount_original,
         CASE
-            WHEN src.maker_id = 0 or src.maker_id IS NULL THEN 'Sell'
+            WHEN src.maker_id = cast(0 as uint256) or src.maker_id IS NULL THEN 'Sell'
             ELSE 'Buy'
         END as trade_category,
         CASE
-            WHEN src.maker_id = 0 or src.maker_id IS NULL THEN src.maker_address
+            WHEN src.maker_id = cast(0 as uint256) or src.maker_id IS NULL THEN src.maker_address
             ELSE src.taker_address
         END as buyer,
         CASE
-            WHEN src.maker_id = 0 or src.maker_id IS NULL THEN src.taker_address
+            WHEN src.maker_id = cast(0 as uint256) or src.maker_id IS NULL THEN src.taker_address
             ELSE src.maker_address
         END as seller,
         CASE
-            WHEN src.maker_id = 0 OR src.maker_id IS NULL THEN (src.protocol_fees/src.maker_asset_amount) * 100
+            WHEN src.maker_id = cast(0 as uint256) OR src.maker_id IS NULL THEN (src.protocol_fees/src.maker_asset_amount) * 100
             ELSE (src.protocol_fees/src.taker_asset_amount) * 100
         END as platform_fee_percentage,
         CASE
-            WHEN src.maker_id = 0 OR src.maker_id IS NULL THEN (src.royalty_fees/src.maker_asset_amount) * 100
+            WHEN src.maker_id = cast(0 as uint256) OR src.maker_id IS NULL THEN (src.royalty_fees/src.maker_asset_amount) * 100
             ELSE (src.royalty_fees/src.taker_asset_amount) * 100
         END as royalty_fee_percentage
     FROM
@@ -98,7 +98,7 @@ source_inventory_enriched as (
         src.evt_block_number as block_number,
         src.token_id,
         nft_token.name as collection,
-        CAST(src.amount_raw AS DECIMAL(38,0)) as amount_raw,
+        src.amount_raw,
         src.amount_original,
         src.amount_original * p.price as amount_usd,
         CASE
@@ -106,32 +106,32 @@ source_inventory_enriched as (
             ELSE 'erc1155'
         END as token_standard,
         'Single Item Trade' as trade_type,
-        CAST(1 AS DECIMAL(38,0)) AS number_of_items,
+        CAST(1 AS uint256) AS number_of_items,
         src.trade_category,
         'Trade' as evt_type,
         src.buyer,
         src.seller,
         'BNB' as currency_symbol,
-        LOWER('0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c') as currency_contract,
+        0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c as currency_contract,
         src.nft_contract_address,
         src.contract_address as project_contract_address,
         agg.name as aggregator_name,
         agg.contract_address as aggregator_address,
         src.evt_tx_hash as tx_hash,
-        btx.from as tx_from,
+        btx."from" as tx_from,
         btx.to as tx_to,
-        CAST(src.protocol_fees_raw AS DOUBLE) as platform_fee_amount_raw,
+        CAST(src.protocol_fees_raw AS uint256) as platform_fee_amount_raw,
         CAST(src.protocol_fees AS DOUBLE) as platform_fee_amount,
         CAST(src.protocol_fees * p.price AS DOUBLE) as platform_fee_amount_usd,
         CAST(src.platform_fee_percentage AS DOUBLE) as platform_fee_percentage,
-        CAST(src.royalty_fees_raw  AS DOUBLE) as royalty_fee_amount_raw,
+        CAST(src.royalty_fees_raw  AS uint256) as royalty_fee_amount_raw,
         src.royalty_fees as royalty_fee_amount,
         src.royalty_fees * p.price as royalty_fee_amount_usd,
         CAST(src.royalty_fee_percentage AS DOUBLE) as royalty_fee_percentage,
         'BNB' as royalty_fee_currency_symbol,
         royalties_address as royalty_fee_receive_address,
         src.evt_index,
-        'bnb-nftrade-v1' || '-' || src.evt_block_number || '-' || src.evt_tx_hash || '-' ||  src.evt_index AS unique_trade_id
+        'bnb-nftrade-v1' || '-' || cast(src.evt_block_number as varchar) || '-' || cast(src.evt_tx_hash as varchar) || '-' ||  cast(src.evt_index as varchar) AS unique_trade_id
     FROM
     source_inventory_enriched src
     INNER JOIN
@@ -139,10 +139,10 @@ source_inventory_enriched as (
         ON btx.block_time = src.evt_block_time
         AND btx.hash = src.evt_tx_hash
         {% if not is_incremental() %}
-        AND btx.block_time >= '{{project_start_date}}'
+        AND btx.block_time >= TIMESTAMP '{{project_start_date}}'
         {% endif %}
         {% if is_incremental() %}
-        AND btx.block_time >= date_trunc("day", now() - interval '1 week')
+        AND btx.block_time >= date_trunc('day', now() - interval '7' day)
         {% endif %}
     LEFT JOIN
     {{ ref('tokens_bnb_nft') }} nft_token
@@ -151,12 +151,12 @@ source_inventory_enriched as (
     {{ source('prices','usd') }} p
         ON p.blockchain = 'bnb'
         AND p.minute = date_trunc('minute', src.evt_block_time)
-        AND p.contract_address = '0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c'
+        AND p.contract_address = 0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c
         {% if not is_incremental() %}
-        AND p.minute >= '{{project_start_date}}'
+        AND p.minute >= TIMESTAMP '{{project_start_date}}'
         {% endif %}
         {% if is_incremental() %}
-        AND p.minute >= date_trunc("day", now() - interval '1 week')
+        AND p.minute >= date_trunc('day', now() - interval '7' day)
         {% endif %}
     LEFT JOIN
     {{ ref('nft_bnb_aggregators') }} agg
@@ -169,10 +169,10 @@ source_inventory_enriched as (
         AND erc721.tokenId = src.token_id
         AND erc721.to = src.buyer
         {% if not is_incremental() %}
-        AND erc721.evt_block_time >= '{{project_start_date}}'
+        AND erc721.evt_block_time >= TIMESTAMP '{{project_start_date}}'
         {% endif %}
         {% if is_incremental() %}
-        AND erc721.evt_block_time >= date_trunc("day", now() - interval '1 week')
+        AND erc721.evt_block_time >= date_trunc('day', now() - interval '7' day)
         {% endif %}
 
 

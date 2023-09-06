@@ -1,4 +1,5 @@
-{{config(alias = alias('flashbots_ethereum'),
+{{config(tags=['dunesql'],
+    alias = alias('flashbots_ethereum'),
         post_hook='{{ expose_spells(\'["ethereum"]\',
                                     "sector",
                                     "labels",

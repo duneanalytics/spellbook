@@ -11,7 +11,7 @@ models:
     description: >
         Magic Eden events on Polygon
     tests:
-      - check_seed_legacy:
+      - check_seed:
           seed_file: ref('magiceden_polygon_sample_trades')
           match_columns:
             - block_number
@@ -24,6 +24,7 @@ models:
           check_columns:
             - amount_raw
             - platform_fee_amount_raw
+            - royalty_fee_amount_raw
     columns:
       - &blockchain
         name: blockchain

@@ -10,10 +10,10 @@
 }}
 
 {% set frax_models = [
-'fraxswap_avalanche_c_trades',
-'fraxswap_ethereum_trades',
-'fraxswap_polygon_trades',
-'fraxswap_bnb_trades'
+'fraxswap_avalanche_c_trades_legacy',
+'fraxswap_ethereum_trades_legacy',
+'fraxswap_polygon_trades_legacy',
+'fraxswap_bnb_trades_legacy'
 
 ] %}
 

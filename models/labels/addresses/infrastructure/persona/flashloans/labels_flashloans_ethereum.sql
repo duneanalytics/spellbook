@@ -1,4 +1,4 @@
-{{config(
+{{config(tags=['dunesql'],
     alias = alias('flashloans_ethereum'),
     post_hook='{{ expose_spells(\'["ethereum"]\',
                                     "sector",
@@ -18,7 +18,7 @@ SELECT DISTINCT _target                   AS address,
 FROM
     {{ source('aave_ethereum', 'LendingPool_evt_FlashLoan') }}
 WHERE
-    _amount != 0
+    _amount != uint256 '0'
 
 UNION ALL
 SELECT DISTINCT target                   AS address,
@@ -31,7 +31,7 @@ SELECT DISTINCT target                   AS address,
 FROM
     {{ source('aave_v2_ethereum', 'LendingPool_evt_FlashLoan') }}
 WHERE
-    amount != 0
+    amount != uint256 '0'
 
 UNION ALL
 SELECT DISTINCT target                   AS address,
@@ -44,7 +44,7 @@ SELECT DISTINCT target                   AS address,
 FROM
     {{ source('aave_v3_ethereum', 'Pool_evt_FlashLoan') }}
 WHERE
-    amount != 0
+    amount != uint256 '0'
 
 UNION ALL
 SELECT DISTINCT recipient                    AS address,
@@ -57,7 +57,7 @@ SELECT DISTINCT recipient                    AS address,
 FROM
     {{ source('balancer_v2_ethereum', 'Vault_evt_FlashLoan') }}
 WHERE
-    amount != 0
+    amount != uint256 '0'
 
 UNION ALL
 SELECT DISTINCT recipient                   AS address,
@@ -70,7 +70,7 @@ SELECT DISTINCT recipient                   AS address,
 FROM
     {{ source('uniswap_v3_ethereum', 'Pair_evt_Flash') }}
 WHERE
-    amount0 != 0
+    amount0 != uint256 '0'
 )
 
 SELECT *

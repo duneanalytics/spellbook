@@ -1,5 +1,6 @@
 {{ config(
     alias = alias('resolver_records'),
+    tags = ['dunesql'],
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
@@ -20,7 +21,7 @@ with resolver_records as (
     ,evt_index
     from {{ source('ethereumnameservice_ethereum','PublicResolver_evt_AddrChanged') }}
     {% if is_incremental() %}
-    WHERE evt_block_time >= date_trunc("day", now() - interval '1 week')
+    WHERE evt_block_time >= date_trunc('day', now() - interval '7' day)
     {% endif %}
    )
 

@@ -10,8 +10,8 @@
 }}
 
 {% set woofi_models = [
-'woofi_avalanche_c_trades'
-,'woofi_bnb_trades'
+'woofi_avalanche_c_trades_legacy'
+,'woofi_bnb_trades_legacy'
 ] %}
 
 

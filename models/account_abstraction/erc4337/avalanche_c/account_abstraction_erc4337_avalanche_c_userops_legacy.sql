@@ -1,6 +1,6 @@
 {{ config(
-	tags=['legacy'],
-	
+	tags=['legacy', 'remove'],
+
     alias = alias('userops', legacy_model=True),
     partition_by = ['block_time'],
     materialized = 'incremental',
@@ -22,7 +22,7 @@
 ] %}
 
 {{
-    erc4337_userops_enrichments(
+    erc4337_userops_enrichments_legacy(
         blockchain = 'avalanche_c',
         base_models = erc4337_base_models,
         wrapped_gas_address = '0xb31f66aa3c1e785363f0875a1b74e27b85fd66c7',

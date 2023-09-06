@@ -15,17 +15,6 @@ models:
           combination_of_columns:
             - block_date
             - unique_trade_id
-      - check_seed_legacy:
-          seed_file: ref('tofu_optimism_trades_samples')
-          match_columns:
-            - block_date
-            - tx_hash
-            - token_id
-            - seller
-          check_columns:
-            - nft_contract_address
-            - amount_original
-            - buyer
 
     columns:
       - &blockchain

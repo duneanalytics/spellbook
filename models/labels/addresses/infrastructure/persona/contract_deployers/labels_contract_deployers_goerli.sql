@@ -1,5 +1,5 @@
 {{
-    config(
+    config(tags=['dunesql'],
         alias = alias('contract_deployers_goerli'),
         post_hook='{{ expose_spells(\'["goerli"]\',
                                     "sector",
@@ -9,7 +9,7 @@
 }}
 
 SELECT distinct 'goerli'             AS blockchain
-              , creation.`from`      AS address
+              , creation."from"      AS address
               , 'Contract Deployer'  AS name
               , 'infrastructure'     AS category
               , 'hildobby'           AS contributor
@@ -19,5 +19,6 @@ SELECT distinct 'goerli'             AS blockchain
               , 'contract_deployers' AS model_name
               , 'persona'            AS label_type
 FROM {{ source('goerli', 'creation_traces') }} creation
-LEFT ANTI JOIN {{ source('goerli', 'creation_traces') }} anti_table
-ON creation.from = anti_table.address
+LEFT JOIN {{ source('goerli', 'creation_traces') }} anti_table
+    ON creation."from" = anti_table.address
+WHERE anti_table.address is NULL

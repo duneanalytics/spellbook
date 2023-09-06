@@ -1,0 +1,203 @@
+version: 2
+
+models:
+  - name: astaria_ethereum_events
+    meta:
+      blockchain: ethereum
+      project: astaria
+      contributors: [Henrystats]
+    config:
+      tags: ['ethereum','astaria','v1','lending']
+    description: >
+        Astaria events (lending, repay & borrow)
+    columns:
+      - &blockchain
+        name: blockchain
+        description: "Blockchain"
+      - &project
+        name: project
+        description: "Project"
+      - &version
+        name: version
+        description: "Project version"
+      - &block_date
+        name: block_date
+        description: "UTC event block date"
+      - &block_month
+        name: block_month
+        description: "UTC event block month"
+      - &evt_type
+        name: evt_type
+        description:  "Event type (Borrow, Repay, Liquidation)"
+      - &evt_tx_hash
+        name: evt_tx_hash
+        description:  "Event Transaction hash"
+      - &evt_block_number
+        name: evt_block_number
+        description: "Event Block number in which the transaction was executed "
+      - &evt_index
+        name: evt_index
+        description: "Index of the corresponding lending event"
+      - &borrower
+        name: borrower
+        description:  "Address that opened the loan"
+      - &lien_token
+        name: lien_token
+        description:  "Contract address of collateral currency used for loan "
+      - &lien_symbol
+        name: lien_symbol
+        description:  "Token Symbol of collateral currency used for loan "
+      - &lien_rate
+        name: lien_rate
+        description:  "Rate per second of loan "
+      - &lien_duration
+        name: lien_duration
+        description:  "Duration of loans in seconds "
+      - &lien_amount
+        name: lien_amount
+        description:  "Amount Repaid, Borrowed or Liquidated "
+      - &lien_amount_raw
+        name: lien_amount_raw
+        description:  "Raw Amount Repaid, Borrowed or Liquidated "
+      - &lien_start
+        name: lien_start
+        description:  "Loan opened date in unix timestamp "
+      - &lien_end
+        name: lien_end
+        description:  "Loan end date in unix timestamp "
+      - &lien_id
+        name: lien_id
+        description:  "Unique loan id  "
+      - &lien_collateral_id
+        name: lien_collateral_id
+        description:  "Unique loan collateral id  "
+      - &contract_address
+        name: contract_address
+        description:  "Project contract addresses"
+      - &nft_symbol
+        name: nft_symbol
+        description:  "Collateral NFT Symbol"
+      - &nft_token_standard
+        name: nft_token_standard
+        description:  "Collateral NFT Token standard "
+      - &nft_contract_address
+        name: nft_contract_address
+        description:  "NFT contract address"
+      - &nft_collection
+        name: nft_collection
+        description: "NFT collection name "
+      - &nft_token_id
+        name: nft_token_id
+        description: "NFT Token ID"
+
+  - name: astaria_ethereum_daily_deposits
+    meta:
+      blockchain: ethereum
+      project: astaria
+      contributors: [Henrystats]
+    config:
+      tags: ['ethereum','astaria','v1','lending']
+    description: >
+        Astaria collateral balances 
+    columns:
+      - &day
+        name: day
+        description: "Day "
+      - &collateral_token_id
+        name: collateral_token_id
+        description: "Token ID Of the Collateral (NFT)"
+      - &collateral_currency_contract
+        name: collteral_currency_contract
+        description: "Contract Address of the Collateral (NFT)"
+      - &daily_balance
+        name: daily_balance
+        description: "Daily balance (0 or 1)"
+      - *nft_symbol
+      - *nft_token_standard
+      - &collateral_id
+        name: collateral_id
+        description: "Collateral ID tied to NFT Contract address "
+
+  - name: astaria_ethereum_lending
+    meta:
+      blockchain: ethereum
+      project: astaria
+      contributors: [Henrystats]
+    config:
+      tags: ['ethereum','astaria','v1','lending']
+    description: >
+        Astaria lending (repay & borrow & liquidation) on ethereum
+    tests:
+        - dbt_utils.unique_combination_of_columns:
+            combination_of_columns:
+              - block_date
+              - blockchain
+              - project
+              - version
+              - evt_type
+              - tx_hash
+              - evt_index
+              - lien_id
+        - check_seed:
+            seed_file: ref('astaria_lending_seed')
+            match_columns:
+              - block_number
+              - tx_hash
+              - token_id
+            check_columns:
+              - amount_original
+              - evt_type
+              - address
+    columns:
+      - *blockchain
+      - *project
+      - *version
+      - &block_time
+        name: block_time
+        description: "UTC event block time"
+      - *block_date
+      - &token_id
+        name: token_id
+        description: "NFT Token ID"
+      - &collection
+        name: collection
+        description: "NFT collection name"
+      - &amount_usd
+        name: amount_usd
+        description:  "USD value of the trade at time of execution"
+      - &token_standard
+        name: token_standard
+        description:  "Token standard"
+      - *evt_type
+      - &address
+        name: address
+        description:  "Address repaying or borrowing"
+      - &amount_original
+        name: amount_original
+        description:  "Traded amount in original currency"
+      - &amount_raw
+        name: amount_raw
+        description:   "Traded amount in original currency before decimals correction"
+      - &collateral_currency_symbol
+        name: collateral_currency_symbol
+        description:  "Symbol of collateral currency used for loan"
+      - *collateral_currency_contract
+      - *nft_contract_address
+      - &project_contract_address
+        name: project_contract_address
+        description:  "Contract address used by the project, in this case bend_dao contract"
+      - &tx_hash
+        name: tx_hash
+        description:  "Transaction hash"
+      - &block_number
+        name: block_number
+        description: "Block number in which the transaction was executed "
+      - &tx_from
+        name: tx_from
+        description:  "Address that initiated the transaction"
+      - &tx_to
+        name: tx_to
+        description:  "Address that received the transaction"
+      - *evt_index
+      - *lien_id
+      - *block_month

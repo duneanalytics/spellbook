@@ -20,7 +20,7 @@ models:
             - tx_hash
             - evt_index
             - bundle_index
-      - check_seed_legacy:
+      - check_seed:
           seed_file: ref('tofu_polygon_nft_trades_samples')
           match_columns:
             - block_number

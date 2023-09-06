@@ -1,6 +1,6 @@
 {{ config(
-	tags=['legacy'],
-	
+	tags=['legacy', 'remove'],
+
     alias = alias('v0_5_userops_basics', legacy_model=True),
     partition_by = ['block_time'],
     materialized = 'incremental',
@@ -19,7 +19,7 @@
 
 -- macros/models/sector/erc4337
 {{
-    erc4337_userops_basics(
+    erc4337_userops_basics_legacy(
         blockchain = 'gnosis',
         version = 'v0.5',
         userops_evt_model = source('erc4337_gnosis','EntryPoint_v0_5_evt_UserOperationEvent'),

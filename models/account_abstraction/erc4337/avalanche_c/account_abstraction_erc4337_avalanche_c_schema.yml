@@ -10,12 +10,7 @@ models:
       contributors: 0xbitfly, hosuke
     config:
       tags: ["avalanche_c", "erc4337", "account", "abstraction", "entrypoint"]
-    description: erc4337 v0.5 user operations on avalanche_c
-    tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - userop_hash
-            - tx_hash
+    description: "erc4337 v0.5 user operations on avalanche_c"
     columns:
       - &blockchain
         name: blockchain
@@ -23,6 +18,9 @@ models:
       - &version
         name: version
         description: "version of the EntryPoint contract"
+      - &block_month
+        name: block_month
+        description: "UTC event block date of each User Operation"
       - &block_time
         name: block_time
         description: "UTC event block time of each User Operation"
@@ -46,7 +44,7 @@ models:
         description: "the address that pay for the user operation gas fees on behalf of the user"
       - &op_fee
         name: op_fee
-        description: "The user operation gas paid by sender or paymaster. It’s depends on the chain gas setting."
+        description: "The gas paid by sender or paymaster It depends on the chain gas setting"
       - &beneficiary
         name: beneficiary
         description: "the address where the bundler setting for the user operation pay for thier gas fee"
@@ -58,15 +56,11 @@ models:
       contributors: 0xbitfly, hosuke
     config:
       tags: ["avalanche_c", "erc4337", "account", "abstraction", "entrypoint"]
-    description: erc4337 v0.6 user operations on avalanche_c
-    tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - userop_hash
-            - tx_hash
+    description: "erc4337 v0.6 user operations on avalanche_c"
     columns:
       - *blockchain
       - *version
+      - *block_month
       - *block_time
       - *entrypoint_contract
       - *tx_hash
@@ -84,7 +78,7 @@ models:
       contributors: 0xbitfly, hosuke
     config:
       tags: ["avalanche_c", "erc4337", "account", "abstraction", "entrypoint"]
-    description: erc4337 user operation on avalanche_c
+    description: "erc4337 user operation on avalanche_c"
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -97,8 +91,9 @@ models:
             version: v0.5
           match_columns:
             - userop_hash
-          check_columns:
             - tx_hash
+          check_columns:
+            - paymaster
             - bundler
       - check_seed:
           seed_file: ref('account_abstraction_erc4337_userops_seed')
@@ -107,12 +102,14 @@ models:
             version: v0.6
           match_columns:
             - userop_hash
-          check_columns:
             - tx_hash
+          check_columns:
+            - paymaster
             - bundler
     columns:
       - *blockchain
       - *version
+      - *block_month
       - *block_time
       - *entrypoint_contract
       - *tx_hash
@@ -140,3 +137,97 @@ models:
         name: tx_fee_usd
         description: "the bundler paied gas (in usd) value for the transaction"
       - *beneficiary
+
+
+  - name: account_abstraction_erc4337_avalanche_c_v0_5_account_deployed
+    meta:
+      blockchain: avalanche_c
+      sector: erc4337
+      project: erc4337
+      contributors: 0xbitfly
+    config:
+      tags: ["avalanche_c", "erc4337", "account", "abstraction", "entrypoint"]
+    description: "erc4337 v0.5 account deployed on avalanche_c"
+    columns:
+      - *blockchain
+      - *version
+      - *block_time
+      - *block_month
+      - *userop_hash
+      - *entrypoint_contract
+      - *tx_hash
+      - *sender
+      - *paymaster
+      - &factory
+        name: factory
+        description: "who can create a new AA Wallet. It's smart contract address"
+
+
+  - name: account_abstraction_erc4337_avalanche_c_v0_6_account_deployed
+    meta:
+      blockchain: avalanche_c
+      sector: erc4337
+      project: erc4337
+      contributors: 0xbitfly
+    config:
+      tags: ["avalanche_c", "erc4337", "account", "abstraction", "entrypoint"]
+    description: "erc4337 v0.6 account deployed on avalanche_c"
+    columns:
+      - *blockchain
+      - *version
+      - *block_time
+      - *block_month
+      - *userop_hash
+      - *entrypoint_contract
+      - *tx_hash
+      - *sender
+      - *paymaster
+      - *factory
+
+  - name: account_abstraction_erc4337_avalanche_c_account_deployed
+    meta:
+      blockchain: avalanche_c
+      sector: erc4337
+      project: erc4337
+      contributors: 0xbitfly
+    config:
+      tags: ["avalanche_c", "erc4337", "account", "abstraction", "entrypoint"]
+    description: "erc4337 account deployed on avalanche_c"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - userop_hash
+            - tx_hash
+      - check_seed:
+          seed_file: ref('account_abstraction_erc4337_account_deployed_seed')
+          filter:
+            blockchain: avalanche_c
+            version: v0.5
+          match_columns:
+            - userop_hash
+            - tx_hash
+          check_columns:
+            - paymaster
+            - factory
+      - check_seed:
+          seed_file: ref('account_abstraction_erc4337_account_deployed_seed')
+          filter:
+            blockchain: avalanche_c
+            version: v0.6
+          match_columns:
+            - userop_hash
+            - tx_hash
+          check_columns:
+            - paymaster
+            - factory
+    columns:
+      - *blockchain
+      - *version
+      - *block_time
+      - *block_month
+      - *userop_hash
+      - *entrypoint_contract
+      - *tx_hash
+      - *sender
+      - *paymaster
+      - *factory

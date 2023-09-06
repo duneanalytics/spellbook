@@ -2,7 +2,7 @@
 -- actual implementation in macros/test-helpers/check_seed.sql
 {% test check_dex_aggregator_seed_legacy(model, blockchain=None, project=None, version=None) %}
 
-    {%- set seed_file = ref('dex_aggregator_seed') -%}
+    {%- set seed_file = ref('dex_aggregator_seed_legacy') -%}
     {%- set seed_check_columns = ['token_bought_address','token_sold_address'] -%}
     {%- set seed_matching_columns = ['block_date','blockchain','project','version','tx_hash','evt_index','trace_address'] -%}
     {%- set filter = {'blockchain':blockchain, 'project':project, 'version':version} -%}

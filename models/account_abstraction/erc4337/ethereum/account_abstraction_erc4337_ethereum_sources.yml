@@ -27,3 +27,13 @@ sources:
         description: >
           Decoded table related to the erc4337 handle operation calls, version v0.6.
         loaded_at_field: evt_block_time
+
+      - name: EntryPoint_evt_AccountDeployed
+        description: >
+          Decoded table related to the erc4337 account deployed events, version v0.5.
+        loaded_at_field: evt_block_time
+
+      - name: EntryPoint_v0_6_evt_AccountDeployed
+        description: >
+          Decoded table related to the erc4337 account deployed events, version v0.6.
+        loaded_at_field: evt_block_time

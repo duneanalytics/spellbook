@@ -5,6 +5,7 @@ sources:
     tables:
     - name: Pair_call_tokens
     - name: Pair_call_getReserves
+    - name: BribeFactoryV2_call_createBribe
   - name: thena_bnb
     tables:
     - name: BribeFactoryV2_call_createBribe

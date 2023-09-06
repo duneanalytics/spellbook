@@ -1,5 +1,6 @@
 {{ config(
     alias = alias('resolver_latest'),
+    tags = ['dunesql'],
     post_hook='{{ expose_spells(\'["ethereum"]\',
                             "project",
                             "ens",

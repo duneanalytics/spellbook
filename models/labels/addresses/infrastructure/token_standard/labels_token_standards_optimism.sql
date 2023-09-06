@@ -1,4 +1,5 @@
-{{config(alias = alias('token_standards_optimism'),
+{{config(tags=['dunesql'],
+    alias = alias('token_standards_optimism'),
         post_hook='{{ expose_spells(\'["optimism"]\',
                                     "sector",
                                     "labels",
@@ -10,14 +11,16 @@ SELECT distinct 'optimism' AS blockchain
 , 'infrastructure' AS category
 , 'hildobby' AS contributor
 , 'query' AS source
-, date('2023-03-02') AS created_at
-, NOW() AS modified_at
+, TIMESTAMP '2023-03-02' AS created_at
+, NOW() AS updated_at
 , 'token_standard' AS model_name
 , 'persona' as label_type
 FROM {{ source('erc20_optimism', 'evt_transfer') }} erc20
 {% if is_incremental() %}
-LEFT ANTI JOIN this t ON t.address = erc20.contract_address
-WHERE erc20.evt_block_time >= date_trunc('day', now() - interval '1 week')
+LEFT JOIN this t
+    ON t.address = erc20.contract_address
+WHERE t.address IS NULL
+    AND erc20.evt_block_time >= date_trunc('day', now() - interval '7' day)
 {% endif %}
 
 UNION ALL
@@ -28,12 +31,14 @@ SELECT distinct 'optimism' AS blockchain
 , 'infrastructure' AS category
 , 'hildobby' AS contributor
 , 'query' AS source
-, date('2023-03-02') AS created_at
-, NOW() AS modified_at
+, TIMESTAMP '2023-03-02' AS created_at
+, NOW() AS updated_at
 , 'token_standard' AS model_name
 , 'persona' as label_type
 FROM {{ ref('nft_optimism_transfers') }} nft
 {% if is_incremental() %}
-LEFT ANTI JOIN this t ON t.address = nft.contract_address
-WHERE nft.block_time >= date_trunc('day', now() - interval '1 week')
+LEFT JOIN this t
+    ON t.address = nft.contract_address
+WHERE t.address IS NULL
+    AND nft.block_time >= date_trunc('day', now() - interval '7' day)
 {% endif %}

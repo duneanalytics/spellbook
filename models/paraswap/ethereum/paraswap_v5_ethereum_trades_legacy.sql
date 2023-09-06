@@ -23,6 +23,7 @@
     ,source('paraswap_ethereum', 'AugustusSwapper6_0_evt_Swapped')
     ,source('paraswap_ethereum', 'AugustusSwapper6_0_evt_Swapped2')
     ,source('paraswap_ethereum', 'AugustusSwapper6_0_evt_SwappedV3')
+    ,source('paraswap_ethereum', 'AugustusSwapper6_0_evt_SwappedDirect')
 ] %}
 {% set trade_call_start_block_number = 13056913 %}
 {% set trade_call_tables = [

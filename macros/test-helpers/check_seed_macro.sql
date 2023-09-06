@@ -28,7 +28,7 @@
                 ON 1=1
                     {%- for column_name in seed_matching_columns %}
                     {% if column_name == 'trace_address' %}
-                    AND COALESCE(CAST(split(seed.{{column_name}}, ',') as array<bigint>), ARRAY()) = model.{{column_name}}
+                    AND COALESCE(CAST(split(seed.{{column_name}}, ',') as array<bigint>), ARRAY[]) = model.{{column_name}}
                     {% else %}
                     AND seed.{{column_name}} = model.{{column_name}}
                     {% endif %}
@@ -37,7 +37,7 @@
         ON 1=1
             {%- for column_name in seed_matching_columns %}
             {% if column_name == 'trace_address' %}
-            AND COALESCE(CAST(split(seed.{{column_name}}, ',') as array<bigint>), ARRAY()) = model_sample.{{column_name}}
+            AND COALESCE(CAST(split(seed.{{column_name}}, ',') as array<bigint>), ARRAY[]) = model_sample.{{column_name}}
             {% else %}
             AND seed.{{column_name}} = model_sample.{{column_name}}
             {% endif %}
@@ -95,5 +95,6 @@
         select *
         from equality_tests
     ) all
-    where equality_check != true
+    -- equality check can be null so we have to check explicitly for nulls
+    where equality_check is distinct from true
 {% endmacro %}

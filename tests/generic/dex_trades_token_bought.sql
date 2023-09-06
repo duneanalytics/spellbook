@@ -1,4 +1,4 @@
-{% test dex_trades_token_bought(model, column_name, dex_trades_seed) %}
+{% test dex_trades_token_bought(model, column_name, dex_trades_seed_legacy) %}
 
     with unit_test as
     (

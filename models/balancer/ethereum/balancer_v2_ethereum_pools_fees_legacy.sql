@@ -1,7 +1,7 @@
 {{
     config(
 	tags=['legacy'],
-	
+
         schema = 'balancer_v2_ethereum',
         alias = alias('pools_fees', legacy_model=True),
         materialized = 'incremental',
@@ -25,6 +25,7 @@ WITH registered_pools AS (
         {{ source ('balancer_v2_ethereum', 'Vault_evt_PoolRegistered') }}
 )
 SELECT
+    'ethereum' AS blockchain,
     logs.contract_address,
     logs.tx_hash,
     logs.tx_index,
@@ -43,4 +44,3 @@ WHERE logs.topic1 = '{{ event_signature }}'
     AND logs.block_time >= DATE_TRUNC('day', NOW() - interval '1 week')
     {% endif %}
 ;
-

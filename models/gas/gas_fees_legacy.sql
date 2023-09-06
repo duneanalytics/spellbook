@@ -10,11 +10,11 @@
 }}
 
 {% set gas_fees_models = [
-'gas_ethereum_fees',
-'gas_bnb_fees',
-'gas_avalanche_c_fees',
-'gas_optimism_fees',
-'gas_arbitrum_fees'
+'gas_ethereum_fees_legacy',
+'gas_bnb_fees_legacy',
+'gas_avalanche_c_fees_legacy',
+'gas_optimism_fees_legacy',
+'gas_arbitrum_fees_legacy'
 ] %}
 
 SELECT *

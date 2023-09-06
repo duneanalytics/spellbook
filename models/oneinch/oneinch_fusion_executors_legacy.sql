@@ -1,11 +1,10 @@
 {{
     config(
-	tags=['legacy'],
-	
-        schema='oneinch',
+        schema = 'oneinch',
         alias = alias('fusion_executors', legacy_model=True),
-        materialized='table',
-        file_format='delta',
+        materialized = 'table',
+        file_format = 'delta',
+        tags = ['legacy'],
         unique_key = ['resolver_executor', 'chain_id']
     )
 }}
@@ -58,6 +57,7 @@ chains as (
         , `from` as resolver_address
         , '0x'||substring(input, 99, 40) as resolver_executor
         , bytea2numeric_v3(substring(input, 11, 64)) as chain_id
+        , block_time
     from {{ source('ethereum', 'traces') }}
     where `to` = '0xcb8308fcb7bc2f84ed1bea2c016991d34de5cc77'
         and substring(input, 1, 10) = '0xf204bdb9'
@@ -74,6 +74,7 @@ select distinct
     , resolver_name
     , kyc
     , max(tx_hash) over(partition by resolver_executor, chain_id) as tx_hash_example
+    , max(block_time) over(partition by resolver_executor, chain_id) as last_block_time
 from traces
 left join names using(resolver_address)
 left join chains using(chain_id)

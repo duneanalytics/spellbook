@@ -17,6 +17,9 @@ models:
       - &version
         name: version
         description: "version of the EntryPoint contract"
+      - &block_month
+        name: block_month
+        description: "UTC event block date of each User Operation"
       - &block_time
         name: block_time
         description: "UTC event block time of each User Operation"
@@ -40,7 +43,7 @@ models:
         description: "the address that pay for the user operation gas fees on behalf of the user"
       - &op_fee
         name: op_fee
-        description: "The user operation gas paid by sender or paymaster. It’s depends on the chain gas setting."
+        description: "The gas paid by sender or paymaster It depends on the chain gas setting"
       - &op_fee_usd
         name: op_fee_usd
         description: "The user operation gas (in usd) paid by sender or paymaster. "
@@ -62,3 +65,28 @@ models:
       - &beneficiary
         name: beneficiary
         description: "the address where the bundler setting for the user operation pay for thier gas fee"
+
+
+  - name: account_abstraction_erc4337_account_deployed
+    meta:
+      blockchain: ethereum, polygon, arbitrum, optimism, avalanche_c, gnosis
+      sector: erc4337
+      project: erc4337
+      contributors: 0xbitfly
+    config:
+      tags: ['ethereum', 'polygon', 'arbitrum', 'optimism', 'avalanche_c', 'gnosis', 'erc4337', 'account', 'abstraction',]
+    description: >
+        erc4337 account deployed across six blockchain.
+    columns:
+      - *blockchain
+      - *version
+      - *block_time
+      - *block_month
+      - *userop_hash
+      - *entrypoint_contract
+      - *tx_hash
+      - *sender
+      - *paymaster
+      - &factory
+        name: factory
+        description: "who can create a new AA Wallet. It's smart contract address"

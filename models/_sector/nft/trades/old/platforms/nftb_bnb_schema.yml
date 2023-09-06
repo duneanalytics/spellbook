@@ -16,7 +16,7 @@ models:
              - block_date
              - tx_hash
              - evt_index
-       - check_seed_legacy:
+       - check_seed:
            seed_file: ref('nftb_nft_trades_samples')
            match_columns:
              - block_number

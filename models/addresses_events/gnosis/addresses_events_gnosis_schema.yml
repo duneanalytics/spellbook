@@ -11,7 +11,7 @@ models:
       tags: ['table', 'funded', 'addresses_events', 'gnosis']
     description: "Table showing who first funded each Gnosis address in xDAI"
     tests:
-      - check_seed_legacy:
+      - check_seed:
           seed_file: ref('first_funded_by_seed')
           filter:
             blockchain: gnosis

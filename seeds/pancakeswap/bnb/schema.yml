@@ -1,0 +1,11 @@
+version: 2
+
+seeds:
+  - name: pancakeswap_nft_trades_samples
+    config:
+      tags: dunesql
+      column_types:
+        tx_hash: varbinary
+        buyer: varbinary
+        seller: varbinary
+        token_id: uint256

@@ -1,6 +1,7 @@
 {{ config(
     schema = 'trove_ethereum',
     alias = alias('events'),
+    tags = ['dunesql'],
     partition_by = ['block_date'],
     materialized = 'incremental',
     file_format = 'delta',
@@ -15,14 +16,14 @@ with marketplace as (
         evt_block_time as block_time,
         tokenId as token_id,
         case
-            when quantity='1' then 'Single Item Trade'
+            when quantity = uint256 '1' then 'Single Item Trade'
             else 'Bulk Purchase'
         end as trade_type,
-        cast(quantity as decimal(38, 0)) as number_of_items,
+        quantity as number_of_items,
         'Buy' as trade_category,
         seller,
         buyer,
-        cast(pricePerItem as decimal(38, 0)) * cast(quantity as decimal(38, 0)) as amount_raw,
+        cast(pricePerItem * quantity as uint256) as amount_raw,
         paymentToken as currency_contract,
         nftAddress as nft_contract_address,
         contract_address as project_contract_address,
@@ -35,9 +36,9 @@ with marketplace as (
             contract_address, bidder as buyer
         from {{ source('treasure_trove_ethereum', 'TreasureMarketplace_evt_BidAccepted') }}
         {% if is_incremental() %}
-        where evt_block_time >= date_trunc("day", now() - interval '1 week')
+        where evt_block_time >= date_trunc('day', now() - interval '7' day)
         {% else %}
-        where evt_block_time >= '{{project_start_date}}'
+        where evt_block_time >= TIMESTAMP '{{project_start_date}}'
         {% endif %}
         union all
         select evt_block_time,evt_index, tokenId, quantity, seller, pricePerItem,
@@ -45,9 +46,9 @@ with marketplace as (
             contract_address, buyer
         from {{ source('treasure_trove_ethereum', 'TreasureMarketplace_evt_ItemSold') }}
         {% if is_incremental() %}
-        where evt_block_time >= date_trunc("day", now() - interval '1 week')
+        where evt_block_time >= date_trunc('day', now() - interval '7' day)
         {% else %}
-        where evt_block_time >= '{{project_start_date}}'
+        where evt_block_time >= TIMESTAMP '{{project_start_date}}'
         {% endif %}
     )
 )
@@ -57,7 +58,7 @@ select
     'ethereum' as blockchain,
     'trove' as project,
     'v2' as version,
-    date_trunc('day',mp.block_time) as block_date,
+    cast(date_trunc('day',mp.block_time) as date) as block_date,
     mp.block_time,
     token_id,
     nft_tokens.name as collection,
@@ -75,31 +76,31 @@ select
     currency_contract,
     nft_contract_address,
     project_contract_address,
-    cast(null as varchar(5)) as aggregator_name,
-    cast(null as varchar(5)) as aggregator_address,
+    cast(null as varchar) as aggregator_name,
+    cast(null as varbinary) as aggregator_address,
     mp.tx_hash,
     mp.block_number,
-    tx.`from`  as tx_from,
+    tx."from"  as tx_from,
     tx.to as tx_to,
-    cast(null as decimal(38)) as platform_fee_amount_raw,
+    cast(null as uint256) as platform_fee_amount_raw,
     cast(null as double) as platform_fee_amount,
     cast(null as double) as platform_fee_amount_usd,
     cast(null as double) as platform_fee_percentage,
-    cast(null as decimal(38)) as royalty_fee_amount_raw,
+    cast(null as uint256) as royalty_fee_amount_raw,
     cast(null as double) as royalty_fee_amount,
     cast(null as double) as royalty_fee_amount_usd,
     cast(null as double) as royalty_fee_percentage,
-    cast(null as varchar(1)) as royalty_fee_receive_address,
+    cast(null as varbinary) as royalty_fee_receive_address,
     erc20.symbol as royalty_fee_currency_symbol,
-    mp.block_number || '-' || mp.tx_hash || '-' || mp.evt_index as unique_trade_id
+    cast(mp.block_number as varchar) || '-' || cast(mp.tx_hash as varchar) || '-' || cast(mp.evt_index as varchar) as unique_trade_id
 from marketplace mp
 inner join {{ source('ethereum', 'transactions') }} tx
     on tx.block_number = mp.block_number
     and tx.hash = mp.tx_hash
     {% if is_incremental() %}
-    and tx.block_time >= date_trunc("day", now() - interval '1 week')
+    and tx.block_time >= date_trunc('day', now() - interval '7' day)
     {% else %}
-    and tx.block_time >= '{{project_start_date}}'
+    and tx.block_time >= TIMESTAMP '{{project_start_date}}'
     {% endif %}
 left join {{ ref('tokens_ethereum_erc20') }} erc20
     on erc20.contract_address = mp.currency_contract
@@ -110,8 +111,8 @@ left join {{ source('prices', 'usd') }} as prices
     and prices.contract_address = mp.currency_contract
     and prices.blockchain = 'ethereum'
     {% if is_incremental() %}
-    and prices.minute >= date_trunc("day", now() - interval '1 week')
+    and prices.minute >= date_trunc('day', now() - interval '7' day)
     {% else %}
-    and prices.minute >= '{{project_start_date}}'
+    and prices.minute >= TIMESTAMP '{{project_start_date}}'
     {% endif %}
 

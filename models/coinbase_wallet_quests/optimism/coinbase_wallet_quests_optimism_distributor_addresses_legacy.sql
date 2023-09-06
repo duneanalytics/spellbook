@@ -1,8 +1,7 @@
 {{config(
-	tags=['legacy'],
-	
+        tags =['legacy'],
         schema='coinbase_wallet_quests_optimism',
-        alias = alias('distributor_addresses', legacy_model=True),
+        alias=alias('distributor_addresses', legacy_model=True),
         post_hook='{{ expose_spells(\'["optimism"]\',
                                     "project",
                                     "coinbase_wallet_quests",
@@ -19,6 +18,7 @@ FROM (values
     ,('0x9F4F2B8BdA8D2d3832021b3119747470ea86A183','{{op_token}}','Quest 2 - Delegation')
     ,('0x1fe95e0497a0E38AFBE18Bd19B9a2b42116880f0','{{op_token}}','Quest 3 - Attestation')
     ,('0x12d9aEF514EE8Bc3f7B2d523ae26164632b71acB','{{op_token}}','Quest 4 - Deposit')
+    ,('0x0b1cef4cab511426b001f430b8d000d5a8c83ad0','{{op_token}}','Quest 5 - NFT Mint')
         
     ) a (distributor_address, rewards_token, quest_name)
 

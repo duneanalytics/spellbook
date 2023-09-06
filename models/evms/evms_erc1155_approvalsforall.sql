@@ -2,7 +2,7 @@
         tags = ['dunesql'],
         alias = alias('erc1155_approvalsforall'),
         unique_key=['blockchain', 'tx_hash', 'evt_index'],
-        post_hook='{{ expose_spells(\'["ethereum", "polygon", "bnb", "avalanche_c", "gnosis", "fantom", "optimism", "arbitrum", "celo"]\',
+        post_hook='{{ expose_spells(\'["ethereum", "polygon", "bnb", "avalanche_c", "gnosis", "fantom", "optimism", "arbitrum", "celo", "base"]\',
                                     "sector",
                                     "evms",
                                     \'["hildobby"]\') }}'
@@ -19,6 +19,7 @@
      , ('optimism', source('erc1155_optimism', 'evt_ApprovalForAll'))
      , ('arbitrum', source('erc1155_arbitrum', 'evt_ApprovalForAll'))
      , ('celo', source('erc1155_celo', 'evt_ApprovalForAll'))
+     , ('base', source('erc1155_base', 'evt_ApprovalForAll'))
 ] %}
 
 SELECT *
