@@ -5,9 +5,9 @@ models:
     meta:
       blockchain: ethereum
       project: zeroex
-      contributors: danning.sui, bakabhai993, hosuke, rantum
+      contributors: danning.sui, bakabhai993, hosuke
     config:
-      tags: ["ethereum","0x","dex_aggregator","dex","aggregator"]
+      tags: ['ethereum','0x','dex_aggregator','dex','aggregator']
     description: >
         0x API erc20 swaps raw fills (including multihops) and also native swaps thru 0x exchange contracts (without using 0x API) on Ethereum
     tests:
@@ -107,9 +107,9 @@ models:
     meta:
       blockchain: ethereum
       project: zeroex
-      contributors: bakabhai993, rantum
+      contributors: bakabhai993
     config:
-      tags: ["ethereum","0x","dex_aggregator","dex","aggregator"]
+      tags: ['ethereum','0x','dex_aggregator','dex','aggregator']
     description: >
         0x API erc20 swaps raw fills (deduped) on Ethereum
     tests:
@@ -154,7 +154,7 @@ models:
       project: zeroex
       contributors: bakabhai993, danning.sui
     config:
-      tags: ["ethereum","0x","nft"]
+      tags: ['ethereum','0x','nft']
     description: >
         NFT Swaps enabled by 0x exchange contracts
     tests:
@@ -163,7 +163,7 @@ models:
             - block_date
             - tx_hash
             - evt_index
-      - check_seed_legacy:
+      - check_seed:
           seed_file: ref('zeroex_ethereum_nft_fills_sample')
           match_columns:
             - block_date
@@ -224,15 +224,26 @@ models:
       project: zeroex
       contributors: rantum, danning.sui, bakabhai993
     config:
-      tags: ["ethereum","0x","dex"]
+      tags: ['ethereum','0x','dex_aggregator','dex','aggregator']
     description: >
         0x API erc20 swaps raw fills (including multihops) and also native swaps thru 0x exchange contracts (without using 0x API) on Ethereum
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
-            - block_date
+            - block_time
             - tx_hash
             - evt_index
+            - volume_usd
+      - check_seed:
+          seed_file: ref('zeroex_ethereum_native_fills_sample')
+          match_columns:
+            - tx_hash
+            - evt_index
+          check_columns:
+            - maker
+            - taker
+            - maker_token
+            - taker_token
     columns:
       - *tx_hash
       - *contract_address
