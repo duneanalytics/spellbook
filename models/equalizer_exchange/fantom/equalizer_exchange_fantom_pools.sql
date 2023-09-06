@@ -1,4 +1,5 @@
 {{ config(
+    tags=['dunesql'],
     alias = alias('pools'),
     materialized = 'incremental',
     file_format = 'delta',
@@ -15,7 +16,7 @@ SELECT 'fantom' AS blockchain
 , 'equalizer_exchange' AS project
 , '1' AS version
 , pair AS pool
-, CASE WHEN stable = true THEN 0.02 ELSE 0.2 END as fee 
+, CASE WHEN stable = true THEN CAST(0.02 as decimal) ELSE CAST(0.2 as decimal) END as fee 
 , token0
 , token1
 , evt_block_time AS creation_block_time
@@ -23,5 +24,5 @@ SELECT 'fantom' AS blockchain
 , contract_address
 FROM {{ source('equalizer_exchange_fantom', 'PairFactory_evt_PairCreated') }}
 {% if is_incremental() %}
-WHERE evt_block_time >= date_trunc("day", now() - interval '1 week')
+WHERE evt_block_time >= date_trunc('day', now() - interval '7' Day)
 {% endif %}

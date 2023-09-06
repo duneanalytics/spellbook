@@ -1042,6 +1042,8 @@ models:
         +schema: zeroex_arbitrum
       bnb:
         +schema: zeroex_bnb
+      celo:
+        +schema: zeroex_celo
 
 
     ampleforth:
