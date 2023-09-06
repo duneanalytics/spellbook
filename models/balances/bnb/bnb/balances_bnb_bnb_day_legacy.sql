@@ -1,6 +1,6 @@
 {{ config(
         tags = ['legacy'],
-        alias = alias('matic_day', legacy_model=True)
+        alias = alias('bnb_day', legacy_model=True)
         )
 }}
 

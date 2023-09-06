@@ -1,17 +1,17 @@
 version: 2
 
 models:
-  - name: balances_polygon_matic_hour
+  - name: balances_bnb_bnb_hour
     meta:
-      blockchain: polygon
+      blockchain: bnb
       sector: balances
-      project: matic
+      project: bnb
       contributors: Henrystats
     config:
-      tags: ['balances', 'polygon', 'matic', 'hour', 'Henrystats']
+      tags: ['balances', 'bnb', 'bnb', 'hour', 'Henrystats']
     description: >
-        Hourly token balances of matic for each address on polygon.
-        Depends on transfers_polygon_matic
+        Hourly token balances of bnb for each address on bnb.
+        Depends on transfers_bnb_bnb
     columns:
       - &blockchain
         name: blockchain
@@ -21,34 +21,34 @@ models:
         description: "UTC event block time truncated to the hour mark"
       - &wallet_address
         name: wallet_address
-        description: "Address of the wallet holding matic"
+        description: "Address of the wallet holding bnb"
       - &token_address
         name: token_address
-        description: "matic Dead Address on polygon"
+        description: "bnb Dead Address on bnb"
       - &amount_raw
         name: amount_raw
-        description: "Raw amount of matic token held *before* taking into account token decimals"
+        description: "Raw amount of bnb token held *before* taking into account token decimals"
       - &amount
         name: amount
-        description: "Raw amount of matic token held *after* taking into account token decimals"
+        description: "Raw amount of bnb token held *after* taking into account token decimals"
       - &amount_usd
         name: amount_usd
-        description: "Amount of matic token held in USD if we have it"
+        description: "Amount of bnb token held in USD if we have it"
       - &symbol
         name: symbol
         description: "Token symbol"
 
-  - name: balances_polygon_matic_day
+  - name: balances_bnb_bnb_day
     meta:
-      blockchain: polygon
+      blockchain: bnb
       sector: balances
-      project: matic
+      project: bnb
       contributors: Henrystats
     config:
-      tags: ['balances', 'polygon', 'matic', 'day', 'Henrystats']
+      tags: ['balances', 'bnb', 'bnb', 'day', 'Henrystats']
     description: >
-        Daily token balances of matic for each address on polygon.
-        Depends on transfers_polygon_matic.
+        Daily token balances of bnb for each address on bnb.
+        Depends on transfers_bnb_bnb.
     columns:
       - *blockchain
       - &day
@@ -62,17 +62,17 @@ models:
       - *symbol
 
 
-  - name: balances_polygon_matic_latest
+  - name: balances_bnb_bnb_latest
     meta:
-      blockchain: polygon
+      blockchain: bnb
       sector: balances
-      project: matic
+      project: bnb
       contributors: Henrystats
     config:
-      tags: ['balances', 'polygon', 'matic', 'latest', 'Henrystats']
+      tags: ['balances', 'bnb', 'bnb', 'latest', 'Henrystats']
     description: >
-        Latest token balances of matic for each address on polygon.
-        Depends on transfers_polygon_matic.
+        Latest token balances of bnb for each address on bnb.
+        Depends on transfers_bnb_bnb.
     columns:
       - *blockchain
       - &last_updated

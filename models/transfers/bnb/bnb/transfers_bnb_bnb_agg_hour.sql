@@ -15,7 +15,7 @@ select
     block_month,
     tr.wallet_address,
     tr.token_address,
-    'MATIC' as symbol,
+    'BNB' as symbol,
     sum(tr.amount_raw) as amount_raw,
     sum(tr.amount_raw / power(10, 18)) as amount
 FROM 

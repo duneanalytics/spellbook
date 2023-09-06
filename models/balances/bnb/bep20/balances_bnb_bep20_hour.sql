@@ -1,7 +1,7 @@
 {{ config(
         tags = ['dunesql'],
-        alias = alias('matic_hour'),
-        post_hook='{{ expose_spells(\'["polygon"]\',
+        alias = alias('hour'),
+        post_hook='{{ expose_spells(\'["bnb"]\',
                                     "sector",
                                     "balances",
                                     \'["Henrystats"]\') }}'
@@ -14,7 +14,7 @@ WITH
 
 years as (
     select year
-    from (values (sequence(timestamp '2020-05-30', cast(date_trunc('year', now()) as timestamp), interval '1' year))) s(year_array)
+    from (values (sequence(timestamp '2020-08-29', cast(date_trunc('year', now()) as timestamp), interval '1' year))) s(year_array)
       cross join unnest(year_array) as d(year)
 ),
 
@@ -36,7 +36,7 @@ hourly_balances as (
         symbol,
         LEAD(hour, 1, current_timestamp) OVER (PARTITION BY token_address, wallet_address ORDER BY hour) AS next_hour
     FROM 
-    {{ ref('transfers_polygon_matic_rolling_hour') }}
+    {{ ref('transfers_bnb_bep20_rolling_hour') }}
 )
 
 SELECT
@@ -58,5 +58,9 @@ LEFT JOIN
 {{ source('prices', 'usd') }} p
     ON p.contract_address = b.token_address
     AND d.hour = p.minute
-    AND p.blockchain = 'polygon'
-
+    AND p.blockchain = 'bnb'
+-- Removes likely non-compliant tokens due to negative balances
+LEFT JOIN 
+{{ ref('balances_bnb_bep20_noncompliant') }} nc
+    ON b.token_address = nc.token_address
+WHERE nc.token_address IS NULL

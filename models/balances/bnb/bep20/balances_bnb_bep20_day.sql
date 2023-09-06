@@ -1,7 +1,7 @@
 {{ config(
         tags = ['dunesql'],
         alias = alias('day'),
-        post_hook='{{ expose_spells(\'["polygon"]\',
+        post_hook='{{ expose_spells(\'["bnb"]\',
                                     "sector",
                                     "balances",
                                     \'["Henrystats"]\') }}'
@@ -12,7 +12,7 @@ WITH
 time_seq AS (
     SELECT 
         sequence(
-        CAST('2020-05-30' as timestamp),
+        CAST('2020-08-29' as timestamp),
         date_trunc('day', cast(now() as timestamp)),
         interval '1' day
         ) AS time 
@@ -36,7 +36,7 @@ daily_balances as (
         symbol,
         LEAD(day, 1, current_timestamp) OVER (PARTITION BY token_address, wallet_address ORDER BY day) AS next_day
     FROM 
-    {{ ref('transfers_polygon_erc20_rolling_day') }}
+    {{ ref('transfers_bnb_bep20_rolling_day') }}
 )
 
 SELECT
@@ -58,9 +58,9 @@ LEFT JOIN
 {{ source('prices', 'usd') }} p
     ON p.contract_address = b.token_address
     AND d.day = p.minute
-    AND p.blockchain = 'polygon'
+    AND p.blockchain = 'bnb'
 -- Removes likely non-compliant tokens due to negative balances
 LEFT JOIN 
-{{ ref('balances_polygon_erc20_noncompliant') }} nc
+{{ ref('balances_bnb_bep20_noncompliant') }} nc
     ON b.token_address = nc.token_address
 WHERE nc.token_address IS NULL
