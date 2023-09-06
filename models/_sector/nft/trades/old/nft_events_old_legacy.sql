@@ -100,5 +100,3 @@ FROM (
     {% endfor %}
 )
 WHERE duplicates_rank = 1
-
-
