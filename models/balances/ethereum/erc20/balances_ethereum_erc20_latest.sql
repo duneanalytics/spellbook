@@ -1,4 +1,5 @@
 {{ config(
+        tags = ['dunesql'],
         alias = alias('erc20_latest'),
         post_hook='{{ expose_spells_hide_trino(\'["ethereum"]\',
                                             "sector",
