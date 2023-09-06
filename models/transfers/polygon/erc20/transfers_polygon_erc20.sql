@@ -1,6 +1,7 @@
 {{ config(
     tags=['dunesql'],
     materialized = 'incremental',
+    partition_by = ['block_month'],
     file_format = 'delta',
     incremental_strategy = 'merge',
     unique_key = ['transfer_type', 'evt_tx_hash', 'evt_index', 'wallet_address'], 
@@ -25,7 +26,7 @@ erc20_transfers  as (
         FROM 
         {{ source('erc20_polygon', 'evt_transfer') }}
         {% if is_incremental() %}
-            WHERE evt_block_time >= date_trunc('day', now() - interval '7' Day)
+            WHERE evt_block_time >= date_trunc('day', now() - interval '3' Day)
         {% endif %}
 
         UNION ALL 
@@ -41,7 +42,7 @@ erc20_transfers  as (
         FROM 
         {{ source('erc20_polygon', 'evt_transfer') }}
         {% if is_incremental() %}
-            WHERE evt_block_time >= date_trunc('day', now() - interval '7' Day)
+            WHERE evt_block_time >= date_trunc('day', now() - interval '3' Day)
         {% endif %}
 ),
 
@@ -57,7 +58,7 @@ wmatic_events as (
         FROM 
         {{ source('mahadao_polygon', 'wmatic_evt_deposit') }}
         {% if is_incremental() %}
-        WHERE evt_block_time >= date_trunc('day', now() - interval '7' Day)
+        WHERE evt_block_time >= date_trunc('day', now() - interval '3' Day)
         {% endif %}
 
         UNION ALL 
@@ -73,7 +74,7 @@ wmatic_events as (
         FROM 
         {{ source('mahadao_polygon', 'wmatic_evt_withdrawal') }}
         {% if is_incremental() %}
-        WHERE evt_block_time >= date_trunc('day', now() - interval '7' Day)
+        WHERE evt_block_time >= date_trunc('day', now() - interval '3' Day)
         {% endif %}
 )
 SELECT
@@ -82,6 +83,7 @@ SELECT
     evt_tx_hash, 
     evt_index,
     evt_block_time,
+    CAST(date_trunc('month', evt_block_time) as date) as block_month,
     wallet_address, 
     token_address, 
     amount_raw
@@ -96,6 +98,7 @@ SELECT
     evt_tx_hash, 
     evt_index,
     evt_block_time,
+    CAST(date_trunc('month', evt_block_time) as date) as block_month,
     wallet_address, 
     token_address, 
     amount_raw

@@ -33,6 +33,9 @@ models:
       - &evt_block_time
         name: evt_block_time
         description: "Timestamp for block event time in UTC"
+      - &block_month
+        name: block_month
+        description: "Block time truncated to month used for partitioning"
       - &evt_tx_hash
         name: evt_tx_hash
         description: "Event transaction hash"
@@ -62,6 +65,7 @@ models:
       - &hour
         name: hour
         description: "UTC event block time truncated to the hour mark."
+      - *block_month
       - *wallet_address
       - *token_address
       - &symbol
@@ -91,6 +95,7 @@ models:
       - &day
         name: day
         description: "UTC event block time truncated to the day mark."
+      - *block_month 
       - *wallet_address
       - *token_address
       - *symbol
