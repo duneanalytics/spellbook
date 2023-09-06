@@ -1,6 +1,7 @@
 {{ config(
     tags=['dunesql'],
     materialized = 'incremental',
+    partition_by = ['block_month'],
     file_format = 'delta',
     incremental_strategy = 'merge',
     unique_key = ['transfer_type', 'tx_hash', 'trace_address', 'wallet_address', 'block_time'], 
@@ -77,6 +78,7 @@ SELECT
     tx_hash, 
     trace_address,
     block_time,
+    CAST(date_trunc('month', block_time)) as block_month,
     wallet_address, 
     token_address, 
     amount_raw
@@ -91,6 +93,7 @@ SELECT
     tx_hash, 
     trace_address,
     block_time,
+    CAST(date_trunc('month', block_time)) as block_month,
     wallet_address, 
     token_address, 
     amount_raw
