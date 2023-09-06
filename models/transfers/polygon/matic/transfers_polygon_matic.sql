@@ -61,7 +61,7 @@ gas_fee as (
         "from" as wallet_address, 
         0x0d500B1d8E8eF31E21C99d1Db9A6444d3ADf1270 as token_address, 
         -(CASE 
-            WHEN gas_price = cast(0 as UINT256) THEN 0
+            WHEN CAST(gas_price  as double) = 0 THEN 0
             ELSE (CAST(gas_used as DOUBLE) * CAST(gas_price as DOUBLE))
         END) as amount_raw
     FROM 
