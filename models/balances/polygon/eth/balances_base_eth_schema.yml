@@ -1,0 +1,87 @@
+version: 2
+
+models:
+  - name: balances_polygon_eth_hour
+    meta:
+      blockchain: polygon
+      sector: balances
+      project: eth
+      contributors: Henrystats
+    config:
+      tags: ['balances', 'polygon', 'eth', 'hour', 'Henrystats']
+    description: >
+        Hourly token balances of ETH for each address on polygon.
+        Depends on transfers_polygon_eth
+    columns:
+      - &blockchain
+        name: blockchain
+        description: "Blockchain"
+      - &hour
+        name: hour
+        description: "UTC event block time truncated to the hour mark"
+      - &wallet_address
+        name: wallet_address
+        description: "Address of the wallet holding ETH"
+      - &token_address
+        name: token_address
+        description: "ETH Dead Address on polygon"
+      - &amount_raw
+        name: amount_raw
+        description: "Raw amount of ETH token held *before* taking into account token decimals"
+      - &amount
+        name: amount
+        description: "Raw amount of ETH token held *after* taking into account token decimals"
+      - &amount_usd
+        name: amount_usd
+        description: "Amount of ETH token held in USD if we have it"
+      - &symbol
+        name: symbol
+        description: "Token symbol"
+
+  - name: balances_polygon_eth_day
+    meta:
+      blockchain: polygon
+      sector: balances
+      project: eth
+      contributors: Henrystats
+    config:
+      tags: ['balances', 'polygon', 'eth', 'day', 'Henrystats']
+    description: >
+        Daily token balances of ETH for each address on polygon.
+        Depends on transfers_polygon_eth.
+    columns:
+      - *blockchain
+      - &day
+        name: day
+        description: "UTC event block time truncated to the day mark"
+      - *wallet_address
+      - *token_address
+      - *amount_raw
+      - *amount
+      - *amount_usd
+      - *symbol
+
+
+  - name: balances_polygon_eth_latest
+    meta:
+      blockchain: polygon
+      sector: balances
+      project: eth
+      contributors: Henrystats
+    config:
+      tags: ['balances', 'polygon', 'eth', 'latest', 'Henrystats']
+    description: >
+        Latest token balances of ETH for each address on polygon.
+        Depends on transfers_polygon_eth.
+    columns:
+      - *blockchain
+      - &last_updated
+        name: last_updated
+        description: "UTC timestamp when data was last updated"
+      - *wallet_address
+      - *token_address
+      - *amount_raw
+      - *amount
+      - *amount_usd
+      - *symbol
+
