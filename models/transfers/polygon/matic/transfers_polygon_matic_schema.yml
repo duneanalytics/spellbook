@@ -1,7 +1,7 @@
 version: 2
 
 models:
-  - name: transfers_polygon_matic_tfers
+  - name: transfers_polygon_matic
     meta:
       blockchain: polygon
       sector: transfers
