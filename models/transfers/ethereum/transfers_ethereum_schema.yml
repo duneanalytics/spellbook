@@ -29,56 +29,6 @@ models:
         name: amount_raw
         description: "Raw amount of ERC20 token held *before* taking into account token decimals"
 
-  - name: transfers_ethereum_erc20_agg_hour
-    meta:
-      blockchain: ethereum
-      sector: transfers
-      project: erc20
-      contributors: soispoke, dot2dotseurat
-      description: "ERC20 Token Transfers on Ethereum hourly aggregates."
-    config:
-      tags: ['transfers', 'ethereum', 'erc20', 'agg_hour', 'soispoke', 'dot2dotseurat']
-    columns:
-      - *blockchain
-      - &hour
-        name: hour
-        description: "UTC event block time truncated to the hour mark."
-      - *wallet_address
-      - *token_address
-      - name: symbol
-        description: "ERC20 token symbol"
-      - *amount_raw
-      - name: amount
-        description: "Raw amount of ERC20 token held *after* taking into account token decimals"
-      - name: unique_transfer_id
-        description: "Unique ID, used in order to apply the merge into incremental strategy"
-        tests:
-          - unique
-
-  - name: transfers_ethereum_erc20_rolling_hour
-    meta:
-      blockchain: ethereum
-      sector: transfers
-      project: erc20
-      contributors: soispoke, dot2dotseurat
-    description: "ERC20 Token Transfers on Ethereum per hour."
-    config:
-      tags: ['transfers', 'ethereum', 'erc20', 'rolling_hour', 'soispoke', 'dot2dotseurat']
-    columns:
-      - *blockchain
-      - *hour
-      - *wallet_address
-      - *token_address
-      - name: symbol
-        description: "ERC20 token symbol"
-      - *amount_raw
-      - name: amount
-        description: "Rolling sum of raw amount of ERC20 token held *after* taking into account token decimals"
-      - name: updated_at
-        description: "UTC timestamp when table was last updated"
-      - name: recency_index
-        description: "Index of most recent balance ascending. recency_index=1 is the wallet/contract pair's most recent balance"
-
   - name: transfers_ethereum_erc20_agg_day
     meta:
       blockchain: ethereum
