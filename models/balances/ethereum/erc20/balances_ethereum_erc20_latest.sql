@@ -14,7 +14,7 @@ SELECT
     rh.amount*p.price as amount_usd,
     rh.symbol,
     rh.last_updated
-FROM {{ ref('transfers_ethereum_erc20_rolling_hour') }} rh
+FROM {{ ref('transfers_ethereum_erc20_rolling_day') }} rh
 LEFT JOIN {{ source('prices', 'usd') }} p
     ON p.contract_address = rh.token_address
     AND p.minute = date_trunc('minute', rh.last_updated) - INTERVAL 10 minutes
