@@ -15,7 +15,7 @@ tofu_v1_events(
     MarketNG_call_run = source('tofu_nft_polygon', 'MarketNG_call_run'),
     MarketNG_evt_EvInventoryUpdate = source('tofu_nft_polygon', 'MarketNG_evt_EvInventoryUpdate'),
     raw_transactions = source('polygon','transactions'),
-    project_start_date = "TIMESTAMP '2021-11-01'",
+    project_start_date = '2021-11-01',
     NATIVE_ERC20_REPLACEMENT = '0x0000000000000000000000000000000000001010',
     NATIVE_SYMBOL_REPLACEMENT = 'MATIC'
     )

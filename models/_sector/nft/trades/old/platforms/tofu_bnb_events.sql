@@ -15,7 +15,7 @@ tofu_v1_events(
     MarketNG_call_run = source('tofu_nft_bnb', 'MarketNG_call_run'),
     MarketNG_evt_EvInventoryUpdate = source('tofu_nft_bnb', 'MarketNG_evt_EvInventoryUpdate'),
     raw_transactions = source('bnb','transactions'),
-    project_start_date = "TIMESTAMP '2021-12-09'",
+    project_start_date = '2021-10-01',
     NATIVE_ERC20_REPLACEMENT = '0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c',
     NATIVE_SYMBOL_REPLACEMENT = 'BNB'
     )

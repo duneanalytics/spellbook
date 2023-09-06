@@ -15,7 +15,7 @@ tofu_v1_events(
     MarketNG_call_run = source('tofunft_arbitrum', 'MarketNG_call_run'),
     MarketNG_evt_EvInventoryUpdate = source('tofunft_arbitrum', 'MarketNG_evt_EvInventoryUpdate'),
     raw_transactions = source('arbitrum','transactions'),
-    project_start_date = "TIMESTAMP '2021-12-09'",
+    project_start_date = '2021-12-09',
     NATIVE_ERC20_REPLACEMENT = '0x82af49447d8a07e3bd95bd0d56f35241523fbab1',
     NATIVE_SYMBOL_REPLACEMENT = 'ARETH'
     )
