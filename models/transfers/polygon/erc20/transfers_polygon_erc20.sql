@@ -9,7 +9,8 @@
                                     "sector",
                                     "transfers",
                                     \'["soispoke", "dot2dotseurat", "tschubotz", "hosuke", "Henrystats"]\') }}'
-
+    )
+}}
 WITH 
 
 erc20_transfers  as (
