@@ -1,0 +1,36 @@
+version: 2
+
+sources:
+  - name: bnb_bnb
+    freshness:
+      warn_after: { count: 12, period: hour }
+    tables:
+      - name: WBNB_evt_Deposit
+        loaded_at_field: evt_block_time
+        description: "WBNB deposits"
+        columns:
+          - *contract_address
+          - &dst
+            name: dst
+            description: "Wallet address for WBNB deposits"
+          - *evt_block_number
+          - *evt_block_time
+          - *evt_index
+          - *evt_tx_hash
+          - &wad
+            name: wad
+            description: "Raw amount of WBNB"
+
+      - name: WBNB_evt_Withdrawal
+        loaded_at_field: evt_block_time
+        description: "WBNB withdrawals"
+        columns:
+          - *contract_address
+          - &src
+            name: src
+            description: "Wallet address for WBNB withdrawals from"
+          - *evt_block_number
+          - *evt_block_time
+          - *evt_index
+          - *evt_tx_hash
+          - *wad

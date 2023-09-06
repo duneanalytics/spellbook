@@ -1,15 +1,15 @@
 version: 2
 
 models:
-  - name: transfers_polygon_matic
+  - name: transfers_bnb_bnb
     meta:
-      blockchain: polygon
+      blockchain: bnb
       sector: transfers
-      project: matic
+      project: bnb
       contributors: Henrystats
     config:
-      tags: ['transfers', 'polygon', 'matic']
-    description: "matic Transfers on polygon. This table is updated every 30 minutes."
+      tags: ['transfers', 'bnb', 'bnb']
+    description: "bnb Transfers on bnb. This table is updated every 30 minutes."
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -45,16 +45,16 @@ models:
         description: "Trace index"
       - &amount_raw
         name: amount_raw
-        description: "Raw amount of matic token held *before* taking into account token decimals"
+        description: "Raw amount of bnb token held *before* taking into account token decimals"
 
-  - name: transfers_polygon_matic_agg_hour
+  - name: transfers_bnb_bnb_agg_hour
     meta:
-      blockchain: polygon
+      blockchain: bnb
       sector: transfers
-      project: matic
+      project: bnb
       contributors: Henrystats
     config:
-      tags: ['transfers', 'polygon', 'matic', 'agg_hour', 'Henrystats']
+      tags: ['transfers', 'bnb', 'bnb', 'agg_hour', 'Henrystats']
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -71,20 +71,20 @@ models:
       - *token_address
       - &symbol
         name: symbol
-        description: "matic token symbol"
+        description: "bnb token symbol"
       - *amount_raw
       - &amount
         name: amount
-        description: "Raw amount of matic token held *after* taking into account token decimals"
+        description: "Raw amount of bnb token held *after* taking into account token decimals"
 
-  - name: transfers_polygon_matic_agg_day
+  - name: transfers_bnb_bnb_agg_day
     meta:
-      blockchain: polygon
+      blockchain: bnb
       sector: transfers
-      project: matic
+      project: bnb
       contributors: Henrystats
     config:
-      tags: ['transfers', 'polygon', 'matic', 'agg_day', 'Henrystats']
+      tags: ['transfers', 'bnb', 'bnb', 'agg_day', 'Henrystats']
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -103,15 +103,15 @@ models:
       - *amount_raw
       - *amount
 
-  - name: transfers_polygon_matic_rolling_hour
+  - name: transfers_bnb_bnb_rolling_hour
     meta:
-      blockchain: polygon
+      blockchain: bnb
       sector: transfers
-      project: matic
+      project: bnb
       contributors: Henrystats
-    description: "matic Token Transfers on polygon per hour."
+    description: "bnb Token Transfers on bnb per hour."
     config:
-      tags: ['transfers', 'polygon', 'matic', 'rolling_hour', 'Henrystats']
+      tags: ['transfers', 'bnb', 'bnb', 'rolling_hour', 'Henrystats']
     columns:
       - *blockchain
       - *hour
@@ -127,15 +127,15 @@ models:
         name: recency_index
         description: "Index of most recent balance ascending. recency_index=1 is the wallet/contract pair's most recent balance"
 
-  - name: transfers_polygon_matic_rolling_day
+  - name: transfers_bnb_bnb_rolling_day
     meta:
-      blockchain: polygon
+      blockchain: bnb
       sector: transfers
-      project: matic
+      project: bnb
       contributors: Henrystats
-    description: "matic Token Transfers on polygon per day."
+    description: "bnb Token Transfers on bnb per day."
     config:
-      tags: ['transfers', 'polygon', 'matic', 'rolling_day', 'Henrystats']
+      tags: ['transfers', 'bnb', 'bnb', 'rolling_day', 'Henrystats']
     columns:
       - *blockchain
       - *hour

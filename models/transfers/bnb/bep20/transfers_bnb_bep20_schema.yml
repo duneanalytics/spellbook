@@ -1,15 +1,15 @@
 version: 2
 
 models:
-  - name: transfers_polygon_erc20
+  - name: transfers_bnb_bep20
     meta:
-      blockchain: polygon
+      blockchain: bnb
       sector: transfers
-      project: erc20
-      contributors: soispoke, dot2dotseurat, tschubotz, hosuke, Henrystats
+      project: bep20
+      contributors: soispoke, dot2dotseurat, tschubotz, Henrystats
     config:
-      tags: ['transfers', 'polygon', 'erc20']
-    description: "ERC20 Token Transfers on polygon. This table is updated every 30 minutes."
+      tags: ['transfers', 'bnb', 'bep20']
+    description: "bep20 Token Transfers on bnb. This table is updated every 30 minutes."
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -44,16 +44,16 @@ models:
         description: "Event index"
       - &amount_raw
         name: amount_raw
-        description: "Raw amount of ERC20 token held *before* taking into account token decimals"
+        description: "Raw amount of bep20 token held *before* taking into account token decimals"
 
-  - name: transfers_polygon_erc20_agg_hour
+  - name: transfers_bnb_bep20_agg_hour
     meta:
-      blockchain: polygon
+      blockchain: bnb
       sector: transfers
-      project: erc20
-      contributors: Henrystats
+      project: bep20
+      contributors: hosuke
     config:
-      tags: ['transfers', 'polygon', 'erc20', 'agg_hour', 'Henrystats']
+      tags: ['transfers', 'bnb', 'bep20', 'agg_hour', 'hosuke']
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -70,20 +70,20 @@ models:
       - *token_address
       - &symbol
         name: symbol
-        description: "ERC20 token symbol"
+        description: "bep20 token symbol"
       - *amount_raw
       - &amount
         name: amount
-        description: "Raw amount of ERC20 token held *after* taking into account token decimals"
+        description: "Raw amount of bep20 token held *after* taking into account token decimals"
 
-  - name: transfers_polygon_erc20_agg_day
+  - name: transfers_bnb_bep20_agg_day
     meta:
-      blockchain: polygon
+      blockchain: bnb
       sector: transfers
-      project: erc20
-      contributors: Henrystats
+      project: bep20
+      contributors: hosuke
     config:
-      tags: ['transfers', 'polygon', 'erc20', 'agg_day', 'Henrystats']
+      tags: ['transfers', 'bnb', 'bep20', 'agg_day', 'hosuke']
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -102,15 +102,15 @@ models:
       - *amount_raw
       - *amount
 
-  - name: transfers_polygon_erc20_rolling_hour
+  - name: transfers_bnb_bep20_rolling_hour
     meta:
-      blockchain: polygon
+      blockchain: bnb
       sector: transfers
-      project: erc20
-      contributors: Henrystats
-    description: "ERC20 Token Transfers on polygon per hour."
+      project: bep20
+      contributors: hosuke
+    description: "bep20 Token Transfers on bnb per hour."
     config:
-      tags: ['transfers', 'polygon', 'erc20', 'rolling_hour', 'Henrystats']
+      tags: ['transfers', 'bnb', 'bep20', 'rolling_hour', 'hosuke']
     columns:
       - *blockchain
       - *hour
@@ -126,15 +126,15 @@ models:
         name: recency_index
         description: "Index of most recent balance ascending. recency_index=1 is the wallet/contract pair's most recent balance"
 
-  - name: transfers_polygon_erc20_rolling_day
+  - name: transfers_bnb_bep20_rolling_day
     meta:
-      blockchain: polygon
+      blockchain: bnb
       sector: transfers
-      project: erc20
-      contributors: Henrystats
-    description: "ERC20 Token Transfers on polygon per day."
+      project: bep20
+      contributors: hosuke
+    description: "bep20 Token Transfers on bnb per day."
     config:
-      tags: ['transfers', 'polygon', 'erc20', 'rolling_day', 'Henrystats']
+      tags: ['transfers', 'bnb', 'bep20', 'rolling_day', 'hosuke']
     columns:
       - *blockchain
       - *hour

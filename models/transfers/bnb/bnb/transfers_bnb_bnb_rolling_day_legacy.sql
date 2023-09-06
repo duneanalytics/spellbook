@@ -1,6 +1,6 @@
 {{ config(
         tags = ['legacy'],
-        alias = alias('agg_hour', legacy_model=True)
+        alias = alias('bnb_rolling_day', legacy_model=True)
         )
 }}
 

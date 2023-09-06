@@ -1,6 +1,6 @@
 {{ config(
         tags = ['legacy'],
-        alias = alias('matic_rolling_hour', legacy_model=True)
+        alias = alias('bnb_agg_hour', legacy_model=True)
         )
 }}
 

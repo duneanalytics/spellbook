@@ -5,25 +5,25 @@
     file_format = 'delta',
     incremental_strategy = 'merge',
     unique_key = ['transfer_type', 'tx_hash', 'trace_address', 'wallet_address', 'block_time'], 
-    alias = alias('matic'),
-    post_hook='{{ expose_spells(\'["polygon"]\',
+    alias = alias('bnb'),
+    post_hook='{{ expose_spells(\'["bnb"]\',
                                     "sector",
                                     "transfers",
                                     \'["Henrystats"]\') }}') }}
 
 WITH 
 
-matic_transfers  as (
+bnb_transfers  as (
         SELECT 
             'receive' as transfer_type, 
             tx_hash,
             trace_address, 
             block_time,
             to as wallet_address, 
-            0x0d500B1d8E8eF31E21C99d1Db9A6444d3ADf1270 as token_address,
+            0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c as token_address,
             CAST(value as double) as amount_raw
         FROM 
-        {{ source('polygon', 'traces') }}
+        {{ source('bnb', 'traces') }}
         WHERE (call_type NOT IN ('delegatecall', 'callcode', 'staticcall') OR call_type IS NULL)
         AND success
         AND CAST(value as double) > 0
@@ -40,10 +40,10 @@ matic_transfers  as (
             trace_address, 
             block_time,
             "from" as wallet_address, 
-            0x0d500B1d8E8eF31E21C99d1Db9A6444d3ADf1270 as token_address,
+            0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c as token_address,
             -CAST(value as double) as amount_raw
         FROM 
-        {{ source('polygon', 'traces') }}
+        {{ source('bnb', 'traces') }}
         WHERE (call_type NOT IN ('delegatecall', 'callcode', 'staticcall') OR call_type IS NULL)
         AND success
         AND CAST(value as double) > 0
@@ -60,20 +60,20 @@ gas_fee as (
         array[index] as trace_address, 
         block_time, 
         "from" as wallet_address, 
-        0x0d500B1d8E8eF31E21C99d1Db9A6444d3ADf1270 as token_address, 
+        0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c as token_address, 
         -(CASE 
             WHEN CAST(gas_price  as double) = 0 THEN 0
             ELSE (CAST(gas_used as DOUBLE) * CAST(gas_price as DOUBLE))
         END) as amount_raw
     FROM 
-    {{ source('polygon', 'transactions') }}
+    {{ source('bnb', 'transactions') }}
     {% if is_incremental() %}
         WHERE block_time >= date_trunc('day', now() - interval '3' Day)
     {% endif %}
 )
 
 SELECT
-    'polygon' as blockchain, 
+    'bnb' as blockchain, 
     transfer_type,
     tx_hash, 
     trace_address,
@@ -83,12 +83,12 @@ SELECT
     token_address, 
     amount_raw
 FROM 
-matic_transfers
+bnb_transfers
 
 UNION ALL 
 
 SELECT 
-    'polygon' as blockchain, 
+    'bnb' as blockchain, 
     transfer_type,
     tx_hash, 
     trace_address,
