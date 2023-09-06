@@ -375,8 +375,8 @@ direct_uniswapv3 AS (
             LAST_VALUE(swap.recipient) OVER (PARTITION BY swap.evt_tx_hash ORDER BY swap.evt_index) AS taker,
             CASE WHEN cast(amount0 as uint256) < cast(0 as uint256)  THEN pair.token1 ELSE pair.token0 END AS taker_token,
             CASE WHEN cast(amount0 as uint256) < cast(0 as uint256) THEN pair.token0 ELSE pair.token1 END AS maker_token,
-            CASE WHEN cast(amount0 as uint256) < cast(0 as uint256) THEN ABS(swap.amount1) ELSE ABS(swap.amount0) END AS taker_token_amount_raw,
-            CASE WHEN cast(amount0 as uint256) < cast(0 as uint256) THEN ABS(swap.amount0) ELSE ABS(swap.amount1) END AS maker_token_amount_raw,
+            CASE WHEN cast(amount0 as uint256) < cast(0 as uint256) THEN ABS(cast(swap.amount1 as uint256)) ELSE ABS(cast(swap.amount0 as uint256)) END AS taker_token_amount_raw,
+            CASE WHEN cast(amount0 as uint256) < cast(0 as uint256) THEN ABS(cast(swap.amount0 as uint256)) ELSE ABS(cast(swap.amount1 as uint256)) END AS maker_token_amount_raw,
             'Uniswap V3 Direct'                                                                     AS type,
             zeroex_tx.affiliate_address                                                             AS affiliate_address,
             TRUE                                                                                    AS swap_flag,
@@ -429,7 +429,7 @@ SELECT
         cast(date_trunc('month', all_tx.block_time) AS date) AS block_month,
         maker,
         CASE
-            WHEN taker = 0xdef1c0ded9bec7f1a1670819833240f027b25eff THEN tx."from"
+            WHEN taker = 0xdef1c0ded9bec7fgit push1a1670819833240f027b25eff THEN tx."from"
             ELSE taker
         END AS taker, -- fix the user masked by ProxyContract issue
         taker_token,
