@@ -2,7 +2,7 @@
         tags=['dunesql'],
         alias = alias('api_fills_deduped'),
         materialized='incremental',
-        partition_by = ['block_date'],
+        partition_by = ['block_month'],
         unique_key = ['block_date', 'tx_hash', 'evt_index'],
         on_schema_change='sync_all_columns',
         file_format ='delta',
@@ -71,6 +71,7 @@ SELECT  a.blockchain
       , cast(null as varchar(10)) as version
       , a.block_date
       , a.block_time
+      , a.block_month
       , b.taker_symbol AS taker_symbol
       , b.maker_symbol AS maker_symbol
       , CASE WHEN lower(b.taker_symbol) > lower(b.maker_symbol) THEN concat(b.maker_symbol, '-', b.taker_symbol) ELSE concat(b.taker_symbol, '-', b.maker_symbol) END AS token_pair
@@ -88,7 +89,7 @@ SELECT  a.blockchain
       , a.tx_from
       , a.tx_to
       , b.evt_index
-      , TRY_CAST(ARRAY[-1] AS ARRAY(BIGINT)) AS trace_address
+      , ARRAY[-1] as trace_address
       , a.type
       , a.swap_flag
       , b.fills_within
