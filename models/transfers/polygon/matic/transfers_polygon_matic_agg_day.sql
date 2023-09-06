@@ -17,7 +17,7 @@ select
     sum(tr.amount_raw) as amount_raw,
     sum(tr.amount_raw / power(10, 18)) as amount
 FROM 
-{{ ref('transfers_polygon_matic_tfers') }} tr
+{{ ref('transfers_polygon_matic') }} tr
 {% if is_incremental() %}
 -- this filter will only be applied on an incremental run
 WHERE tr.block_time >= date_trunc('day', now() - interval '7' Day)
