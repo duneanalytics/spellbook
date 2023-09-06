@@ -3,7 +3,7 @@
         tags=['dunesql'],
         alias = alias('api_fills'),
         materialized='incremental',
-        partition_by = ['block_date'],
+        partition_by = ['block_month'],
         unique_key = ['block_date', 'tx_hash', 'evt_index'],
         on_schema_change='sync_all_columns',
         file_format ='delta',
@@ -246,19 +246,11 @@ direct_PLP AS (
 ), 
 
 all_tx AS (
-    /*
-    SELECT *
-    FROM direct_uniswapv3
-    UNION ALL
-    */
     SELECT *
     FROM direct_PLP
     UNION ALL
     SELECT *
     FROM ERC20BridgeTransfer
-    /* UNION ALL
-    SELECT *
-    FROM BridgeFill */
     UNION ALL 
     SELECT *
     FROM v4_limit_fills_no_bridge
@@ -279,7 +271,8 @@ SELECT distinct
         all_tx.evt_index,
         all_tx.contract_address,
         all_tx.block_time,
-        try_cast(date_trunc('day', all_tx.block_time) AS date) AS block_date,
+        cast(date_trunc('day', all_tx.block_time) AS date) AS block_date,
+        cast(date_trunc('month', all_tx.block_time) AS date) AS block_month,
         maker,
         tx.from AS taker, -- fix the user masked by ProxyContract issue
         taker_token,
