@@ -21074,6 +21074,7 @@ FROM (VALUES
         ,(0x5c6d51ecba4d8e4f20373e3ce96a62342b125d6d, 'ELFI', 18)
         ,(0x5f17b7dfa191c75911a01e03a40397eb4a766fc8, 'MTM', 18)
         ,(0x6982508145454ce325ddbe47a25d4ec3d2311933, 'PEPE', 18)
+        ,(0x423f4e6138E475D85CF7Ea071AC92097Ed631eea, 'PNDC', 18)
         ,(0x6d6b11219a15aefc32a430ac7ad6429ad36748c9, 'SHUGGI', 18)
         ,(0x7690202e2c2297bcd03664e31116d1dffe7e3b73, 'boxETH', 18)
         ,(0x96889af723ac5b082930c418a82a84bbbc8a495d, 'CXAI', 9)
@@ -30246,4 +30247,5 @@ FROM (VALUES
         ,(0x476ea162927a9eb9b715e1b70feec590e76f9b25, 'BOG', 9)
         ,(0xca51a473305624a6333516157950b4e1e83b1c37, 'MAYO', 9)
         ,(0xd92bafea2d2d9f9318a4d0cae798b403566c665c, 'SBOT', 18)
+        ,(0x14778860E937f509e651192a90589dE711Fb88a9, 'CYBER', 18)
      ) AS temp_table (contract_address, symbol, decimals)
