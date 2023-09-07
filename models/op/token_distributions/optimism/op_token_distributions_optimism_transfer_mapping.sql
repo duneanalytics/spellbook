@@ -268,7 +268,7 @@ SELECT
 
 
 SELECT 
-    DATE_TRUNC('day',evt_block_time) AS block_date
+    cast(DATE_TRUNC('day',evt_block_time) AS date) AS block_date
     , evt_block_time, evt_block_number, evt_index, evt_tx_hash
     --
     , from_address, to_address
