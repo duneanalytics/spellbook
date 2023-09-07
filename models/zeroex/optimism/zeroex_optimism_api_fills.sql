@@ -296,4 +296,3 @@ AND mp.minute >= cast('{{zeroex_v3_start_date}}' as date)
 
 LEFT OUTER JOIN {{ ref('tokens_erc20') }} ts ON ts.contract_address = taker_token and ts.blockchain = 'optimism'
 LEFT OUTER JOIN {{ ref('tokens_erc20') }} ms ON ms.contract_address = maker_token and ms.blockchain = 'optimism'
-;
