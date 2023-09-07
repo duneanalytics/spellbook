@@ -27,7 +27,7 @@ WITH zeroex_tx AS (
                             WHEN bytearray_position(INPUT, 0xfbc019a7) <> 0 THEN SUBSTRING(INPUT
                                                                                    FROM (bytearray_position(INPUT, 0xfbc019a7 ) + 16)
                                                                                    FOR 20)
-                        END AS affiliate_address,
+                        END AS affiliate_address
         FROM {{ source('optimism', 'traces') }} tr
         WHERE tr.to IN (
                  -- exchange contract

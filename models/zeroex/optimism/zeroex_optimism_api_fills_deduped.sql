@@ -1,5 +1,5 @@
 {{  config(
-         schema = 'zeroex_optimism',
+        schema = 'zeroex_optimism',
         tags=['dunesql'],
         alias = alias('api_fills_deduped'),
         materialized='incremental',
