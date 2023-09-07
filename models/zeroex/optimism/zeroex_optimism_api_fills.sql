@@ -228,7 +228,7 @@ SELECT
         all_tx.contract_address,
         all_tx.block_time,
         cast(date_trunc('day', all_tx.block_time) AS date) AS block_date,
-        cast(date_trunc('month', all_tx.block_time) AS date) AS block_date,
+        cast(date_trunc('month', all_tx.block_time) AS date) AS block_month,
         maker,
         CASE
             WHEN taker = 0xdef1abe32c034e558cdd535791643c58a13acc10 THEN tx."from"
