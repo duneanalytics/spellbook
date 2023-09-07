@@ -19,6 +19,7 @@
               'dune.data_explorer.abstraction.type': spell_type,
               'dune.data_explorer.abstraction.name': spell_name,
               'dune.data_explorer.contributors': contributors | as_text,
+              'dune.vacuum': '{"enabled":true}'
             } -%}
       {%- if model.config.materialized == "view" -%}
         CALL {{ model.database }}._internal.alter_view_properties('{{ model.schema }}', '{{ model.alias }}',
