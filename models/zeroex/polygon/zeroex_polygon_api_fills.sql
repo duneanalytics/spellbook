@@ -81,7 +81,7 @@ v4_rfq_fills_no_bridge AS (
     WHERE evt_block_time >= date_trunc('day', now() - interval '7' day)
     {% endif %}
     {% if not is_incremental() %}
-    WHERE evt_block_time >= '{{zeroex_v4_start_date}}'
+    WHERE evt_block_time >= cast('{{zeroex_v4_start_date}}' as date)
     {% endif %}
 ),
 
@@ -114,7 +114,7 @@ v4_limit_fills_no_bridge AS (
     WHERE evt_block_time >= date_trunc('day', now() - interval '7' day)
     {% endif %}
     {% if not is_incremental() %}
-    WHERE evt_block_time >= '{{zeroex_v4_start_date}}'
+    WHERE evt_block_time >= cast('{{zeroex_v4_start_date}}' as date)
     {% endif %}
 ),
 
@@ -145,7 +145,7 @@ otc_fills AS (
     WHERE evt_block_time >= date_trunc('day', now() - interval '7' day)
     {% endif %}
     {% if not is_incremental() %}
-    WHERE evt_block_time >= '{{zeroex_v4_start_date}}'
+    WHERE evt_block_time >= cast('{{zeroex_v4_start_date}}' as date)
     {% endif %}
 
 ),
@@ -210,7 +210,7 @@ NewBridgeFill AS (
         AND logs.block_time >= date_trunc('day', now() - interval '7' day)
         {% endif %}
         {% if not is_incremental() %}
-        AND logs.block_time >= '{{zeroex_v4_start_date}}'
+        AND logs.block_time >= cast('{{zeroex_v4_start_date}}' as date)
         {% endif %}
 ),
 
