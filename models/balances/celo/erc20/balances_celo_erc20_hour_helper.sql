@@ -2,11 +2,6 @@
     config(
         tags = ['dunesql'],
         alias = alias('erc20_hour_helper'),
-        partition_by = ['block_month'],
-        materialized = 'incremental',
-        file_format = 'delta',
-        incremental_strategy = 'merge',
-        unique_key = ['block_hour', 'wallet_address', 'token_address'],
         post_hook='{{ expose_spells_hide_trino(\'["celo"]\',
                                     "sector",
                                     "balances",
