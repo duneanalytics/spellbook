@@ -260,6 +260,7 @@ direct_uniswapv3 AS (
             CASE WHEN amount0 < cast(0 as int256) THEN cast(ABS(swap.amount0) as uint256)  ELSE cast(ABS(swap.amount1) as uint256)  END AS maker_token_amount_raw,
             'Uniswap V3 Direct'                                                                     AS type,
             zeroex_tx.affiliate_address                                                             AS affiliate_address,
+            zeroex_tx.block_number,
             TRUE                                                                                    AS swap_flag,
             FALSE                                                                                   AS matcha_limit_order_flag
     FROM {{ source('uniswap_v3_polygon', 'UniswapV3Pool_evt_Swap') }} swap
