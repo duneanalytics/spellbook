@@ -1,70 +1,61 @@
 {{ config(
-    alias = alias('erc20'),
+    tags=['dunesql'],
     materialized = 'incremental',
+    partition_by = ['block_month'],
     file_format = 'delta',
     incremental_strategy = 'merge',
-    unique_key = ['transfer_type', 'evt_tx_hash', 'evt_index', 'wallet_address'],
+    unique_key = ['transfer_type', 'evt_tx_hash', 'evt_index', 'wallet_address'], 
+    alias = alias('erc20'),
     post_hook='{{ expose_spells(\'["fantom"]\',
                                     "sector",
                                     "transfers",
-                                    \'["soispoke", "dot2dotseurat", "tschubotz", "hosuke"]\') }}'
+                                    \'["soispoke", "dot2dotseurat", "tschubotz", "hosuke", "Henrystats"]\') }}'
     )
 }}
+WITH 
 
-with
-    sent_transfers as (
-        select 
-            'send'as transfer_type,
+erc20_transfers  as (
+        SELECT 
+            'receive' as transfer_type, 
             evt_tx_hash,
-            evt_index,
-            et.to as wallet_address,
-            contract_address as token_address,
+            evt_index, 
             evt_block_time,
-            value as amount_raw
-        from
-            {{ source('erc20_fantom', 'evt_transfer') }} et
-        {% if is_incremental() %}
-            where evt_block_time >= date_trunc("day", now() - interval '1 week')
-        {% endif %}
-    ),
-    received_transfers as (
-        select
-            'receive'as transfer_type,
-            evt_tx_hash,
-            evt_index,
-            et.from as wallet_address,
+            to as wallet_address, 
             contract_address as token_address,
-            evt_block_time,
-            '-' || CAST(value AS VARCHAR(100)) as amount_raw
-        from
-            {{ source('erc20_fantom', 'evt_transfer') }} et
+            CAST(value as double) as amount_raw
+        FROM 
+        {{ source('erc20_fantom', 'evt_transfer') }}
         {% if is_incremental() %}
-            where evt_block_time >= date_trunc("day", now() - interval '1 week')
+            WHERE evt_block_time >= date_trunc('day', now() - interval '3' Day)
         {% endif %}
-    )
 
--- There is no need to add wrapped FTM deposits / withdrawals since wrapped FTM on fantom triggers transfer events for both.
-    
-select 
-    transfer_type,
+        UNION ALL 
+
+        SELECT 
+            'send' as transfer_type, 
+            evt_tx_hash,
+            evt_index, 
+            evt_block_time,
+            "from" as wallet_address, 
+            contract_address as token_address,
+            -CAST(value as double) as amount_raw
+        FROM 
+        {{ source('erc20_fantom', 'evt_transfer') }}
+        {% if is_incremental() %}
+            WHERE evt_block_time >= date_trunc('day', now() - interval '3' Day)
+        {% endif %}
+)
+
+
+SELECT
     'fantom' as blockchain, 
-    evt_tx_hash,
+    transfer_type,
+    evt_tx_hash, 
     evt_index,
-    wallet_address,
-    token_address,
     evt_block_time,
-    CAST(amount_raw AS VARCHAR(100)) as amount_raw
-from sent_transfers
-
-union
-
-select 
-    transfer_type,
-    'fantom' as blockchain, 
-    evt_tx_hash,
-    evt_index,
-    wallet_address,
-    token_address,
-    evt_block_time, 
-    CAST(amount_raw AS VARCHAR(100)) as amount_raw
-from received_transfers
+    CAST(date_trunc('month', evt_block_time) as date) as block_month,
+    wallet_address, 
+    token_address, 
+    amount_raw
+FROM 
+erc20_transfers
