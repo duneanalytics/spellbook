@@ -38,7 +38,7 @@ models:
         description: "The number of Satoshis attached to this input or output"
       - &amount_transfer_usd
         name: amount_transfer_usd
-        description: Amount by usd
+        description: Amount of the transfer by usd
 
   - name: transfers_bitcoin_satoshi_agg_day
     meta:

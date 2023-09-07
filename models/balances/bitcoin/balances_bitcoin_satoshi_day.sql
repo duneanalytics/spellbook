@@ -33,9 +33,9 @@ SELECT
     b.amount_raw,
     b.amount,
     p.price as price_btc,
-    b.amount_transfer_usd,
+    b.amount_transfer_usd as profit,
     b.amount * p.price as amount_usd,
-    b.amount * p.price + b.amount_transfer_usd as profit
+    b.amount * p.price + b.amount_transfer_usd as total_asset
 FROM daily_balances b
 INNER JOIN days d ON b.day <= d.day AND d.day < b.next_day
 LEFT JOIN {{ source('prices', 'usd') }} p
