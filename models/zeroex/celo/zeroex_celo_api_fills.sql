@@ -1,6 +1,6 @@
 {{  config(
     tags=['dunesql'],
-    schema = 'zeroex_base',
+        schema = 'zeroex_celo',
         alias = alias('api_fills'),
         materialized='incremental',
         partition_by = ['block_month'],
@@ -8,7 +8,7 @@
         on_schema_change='sync_all_columns',
         file_format ='delta',
         incremental_strategy='merge',
-        post_hook='{{ expose_spells(\'["base"]\',
+        post_hook='{{ expose_spells(\'["celo"]\',
                                 "project",
                                 "zeroex",
                                 \'["rantum"]\') }}'
@@ -19,7 +19,7 @@
 {% set zeroex_v3_start_date = '2019-12-01' %}
 {% set zeroex_v4_start_date = '2021-01-06' %}
 
--- Test Query here: https://dune.com/queries/2834419
+-- Test Query here: https://dune.com/queries/2755622  / https://dune.com/queries/2755822 
 
 WITH zeroex_tx AS (
     SELECT tx_hash,
@@ -34,7 +34,7 @@ WITH zeroex_tx AS (
                                                                                    FROM (bytearray_position(INPUT, 0xfbc019a7 ) + 16)
                                                                                    FOR 20)
                         END AS affiliate_address
-        FROM {{ source('base', 'traces') }} tr
+        FROM {{ source('celo', 'traces') }} tr
         WHERE tr.to IN (
                 -- exchange contract
                 0x61935cbdd02287b511119ddb11aeb42f1593b7ef, 
@@ -72,13 +72,13 @@ ERC20BridgeTransfer AS (
             bytearray_substring(DATA, 172, 20) AS taker,
             bytearray_substring(DATA, 14, 20) AS taker_token,
             bytearray_substring(DATA, 45, 20) AS maker_token,
-            bytearray_to_uint256(bytearray_substring(DATA, 77, 20)) AS taker_token_amount_raw,
+            bytearray_to_uint256((bytearray_substring(DATA, 77, 20)) ) AS taker_token_amount_raw,
             bytearray_to_uint256(bytearray_substring(DATA, 110, 20)) AS maker_token_amount_raw,
             'ERC20BridgeTransfer'                   AS type,
             zeroex_tx.affiliate_address             AS affiliate_address,
             TRUE                                    AS swap_flag,
             FALSE                                   AS matcha_limit_order_flag
-    FROM {{ source('base', 'logs') }} logs
+    FROM {{ source('celo', 'logs') }} logs
     INNER JOIN zeroex_tx ON zeroex_tx.tx_hash = logs.tx_hash
     WHERE topic0 = 0x349fc08071558d8e3aa92dec9396e4e9f2dfecd6bb9065759d1932e7da43b8a9
     
@@ -101,13 +101,13 @@ BridgeFill AS (
             0xdef1c0ded9bec7f1a1670819833240f027b25eff AS taker,
             bytearray_substring(DATA, 45, 20) AS taker_token,
             bytearray_substring(DATA, 77, 20) AS maker_token,
-            bytearray_to_uint256(bytearray_substring(DATA, 110, 20)) AS taker_token_amount_raw,
-            bytearray_to_uint256(bytearray_substring(DATA, 142, 20)) AS maker_token_amount_raw,
+            bytearray_to_uint256((bytearray_substring(DATA, 110, 20))) AS taker_token_amount_raw,
+            bytearray_to_uint256((bytearray_substring(DATA, 142, 20))) AS maker_token_amount_raw,
             'BridgeFill'                                    AS type,
             zeroex_tx.affiliate_address                     AS affiliate_address,
             TRUE                                            AS swap_flag,
             FALSE                                           AS matcha_limit_order_flag
-    FROM {{ source('base', 'logs') }} logs
+    FROM {{ source('celo', 'logs') }} logs
     INNER JOIN zeroex_tx ON zeroex_tx.tx_hash = logs.tx_hash
     WHERE topic0 = 0xff3bc5e46464411f331d1b093e1587d2d1aa667f5618f98a95afc4132709d3a9
         AND contract_address = 0xdb6f1920a889355780af7570773609bd8cb1f498
@@ -136,7 +136,7 @@ NewBridgeFill AS (
             zeroex_tx.affiliate_address                     AS affiliate_address,
             TRUE                                            AS swap_flag,
             FALSE                                           AS matcha_limit_order_flag
-    FROM {{ source('base' ,'logs') }} logs
+    FROM {{ source('celo' ,'logs') }} logs
     INNER JOIN zeroex_tx ON zeroex_tx.tx_hash = logs.tx_hash
     WHERE topic0 = 0xe59e71a14fe90157eedc866c4f8c767d3943d6b6b2e8cd64dddcc92ab4c55af8
         AND contract_address = 0xdb6f1920a889355780af7570773609bd8cb1f498
@@ -196,9 +196,9 @@ SELECT
              END AS volume_usd,
         tx."from" AS tx_from,
         tx.to AS tx_to,
-        'base' AS blockchain
+        'celo' AS blockchain
 FROM all_tx
-INNER JOIN {{ source('base', 'transactions')}} tx ON all_tx.tx_hash = tx.hash
+INNER JOIN {{ source('celo', 'transactions')}} tx ON all_tx.tx_hash = tx.hash
 
 {% if is_incremental() %}
 AND tx.block_time >= date_trunc('day', now() - interval '7' day)
@@ -212,7 +212,7 @@ AND CASE
          WHEN all_tx.taker_token = 0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee THEN 0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2
         ELSE all_tx.taker_token
     END = tp.contract_address
-AND tp.blockchain = 'base'
+AND tp.blockchain = 'celo'
 
 {% if is_incremental() %}
 AND tp.minute >= date_trunc('day', now() - interval '7' day)
@@ -226,7 +226,7 @@ AND CASE
         WHEN all_tx.maker_token =  0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee THEN 0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2
         ELSE all_tx.maker_token
     END = mp.contract_address
-AND mp.blockchain = 'base'
+AND mp.blockchain = 'celo'
 
 {% if is_incremental() %}
 AND mp.minute >= date_trunc('day', now() - interval '7' day)
@@ -235,5 +235,5 @@ AND mp.minute >= date_trunc('day', now() - interval '7' day)
 AND mp.minute >= cast('{{zeroex_v3_start_date}}' as date)
 {% endif %}
 
-LEFT OUTER JOIN {{ ref('tokens_erc20')  }} ts ON ts.contract_address = taker_token and ts.blockchain = 'base'
-LEFT OUTER JOIN {{ ref('tokens_erc20')  }} ms ON ms.contract_address = maker_token and ms.blockchain = 'base'
+LEFT OUTER JOIN {{ ref('tokens_erc20')  }} ts ON ts.contract_address = taker_token and ts.blockchain = 'celo'
+LEFT OUTER JOIN {{ ref('tokens_erc20')  }} ms ON ms.contract_address = maker_token and ms.blockchain = 'celo'
