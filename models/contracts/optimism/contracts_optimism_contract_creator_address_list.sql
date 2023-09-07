@@ -616,6 +616,7 @@ WITH curated_list AS (
       ,(0x4b70c4308ea49d17fd946ddacd6884e8e1e18b56, 'Gitcoin Passport')
       ,(0x9aaa603cb8ce688cdb48ab132dd1b8ad7b5ade02, 'Bulls DAO')
       ,(0x9bbFB9919062C29a5eE15aCD93c9D7c3b14d31aa, 'AttestationStation')
+      ,(0xC8D7d0BD61C5Ca5A493a229f6754Da5560F486ae, 'Magpie')
       
   ) as temp_table (creator_address, contract_project)
 )
