@@ -77,8 +77,8 @@ SELECT  a.blockchain
       , CASE WHEN lower(b.taker_symbol) > lower(b.maker_symbol) THEN concat(b.maker_symbol, '-', b.taker_symbol) ELSE concat(b.taker_symbol, '-', b.maker_symbol) END AS token_pair
       , b.taker_token_amount
       , b.maker_token_amount
-      , CAST(b.taker_token_amount_raw AS unint256) AS taker_token_amount_raw
-      , CAST(b.maker_token_amount_raw AS unint256) AS maker_token_amount_raw
+      , CAST(b.taker_token_amount_raw AS uint256) AS taker_token_amount_raw
+      , CAST(b.maker_token_amount_raw AS uint256) AS maker_token_amount_raw
       , a.volume_usd
       , b.taker_token
       , b.maker_token
