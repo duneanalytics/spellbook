@@ -32,6 +32,6 @@ models:
         description: Amount by usd
       - &amount_usd
         name: amount_usd
-        description: "Amount of Bitcoin held in USD if we have it"
+        description: "Income by USD of wallet"
       - name: profit
-        description: "Profit of wallet"
+        description: "Total asset by USD of wallet"
