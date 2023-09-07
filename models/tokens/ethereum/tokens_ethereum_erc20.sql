@@ -30246,4 +30246,5 @@ FROM (VALUES
         ,(0x476ea162927a9eb9b715e1b70feec590e76f9b25, 'BOG', 9)
         ,(0xca51a473305624a6333516157950b4e1e83b1c37, 'MAYO', 9)
         ,(0xd92bafea2d2d9f9318a4d0cae798b403566c665c, 'SBOT', 18)
+        ,(0x14778860E937f509e651192a90589dE711Fb88a9, 'CYBER', 18)
      ) AS temp_table (contract_address, symbol, decimals)
