@@ -1,18 +1,13 @@
 {{ config(
         tags=['dunesql'],
-        alias = alias('trades'),
-        post_hook='{{ expose_spells(\'["bnb","ethereum","arbitrum","base"]\',
-                                "project",
-                                "pancakeswap",
-                                \'["hosuke", "chef_seaweed"]\') }}'
+        alias = alias('trades')
         )
 }}
 
+
 {% set pancake_models = [
-    ref('pancakeswap_bnb_trades')
-,   ref('pancakeswap_ethereum_trades')
-,   ref('pancakeswap_arbitrum_trades')
-,   ref('pancakeswap_base_trades')
+    ref('pancakeswap_v2_base_amm_trades')
+,   ref('pancakeswap_v3_base_amm_trades')
 ] %}
 
 
