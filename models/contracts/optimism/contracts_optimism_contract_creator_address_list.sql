@@ -577,7 +577,6 @@ WITH curated_list AS (
       ,(0x9098b50ee2d9e4c3c69928a691da3b192b4c9673, 'Aura')
       ,(0x71F718D3e4d1449D1502A6A7595eb84eBcCB1683, 'Curve')
       ,(0x383Ea12347E56932E08638767B8A2B3c18700493, 'Hundred Finance')
-      ,(0x8286dC6dF929C4BfA4f6951caB4dAe2EC02d4D72, 'Hundred Finance')
       ,(0xB45cf380FF9A33c2bf7c41043530dc8Bb2e5295B, 'ChainX')
       ,(0x4c276F7FF3893a68cc9A947544B32E9F1e6d9912, 'Nouns Builder')
       ,(0x78357316239040e19fC823372cC179ca75e64b81, 'Pyth')
@@ -589,31 +588,39 @@ WITH curated_list AS (
       ,(0x36BDE71C97B33Cc4729cf772aE268934f7AB70B2, 'Worldcoin')
       ,(0x5856d478832ff3a68c122388623c4ee027d0e65a, 'Mean Finance')
       ,(0xAEDdC8B2aa5E331B53c22F1da8069c18d02eF6ac, 'Gitcoin')
+      ,(0x0e0be581b17684f849af6964d731fce0f7d366bd, 'CyberConnect')
+      ,(0x68108902de3a5031197a6eb3b74b3b033e8e8e4d, 'Gnosis Safe')
+      ,(0x433704c40f80cbff02e86fd36bc8bac5e31eb0c1, 'Pimlico')
+      ,(0x1ff1db6a9ee9df4c7fa1e7d91dfa5db0229ed3ee, 'Biconomy')
+      ,(0x5b555b6fc357434eb7ba572a87f3aca30ab5d272, 'Yearn')
+      ,(0x6de9109a2333845a15dde1f2f0c020b37421e1f5, 'Odos')
+      ,(0x6f24a47fc8ae5441eb47effc3665e70e69ac3f05, 'Axelar')
+      ,(0x10A06b6C715495Bf533B49bfD23CA267B83cFEB9, 'NiftyKit')
+      ,(0x55fb751f3022d56888fb3249002c1004579753c7, 'Mimic Finance')
+      ,(0x088b75daa0c202fb2d1f0583a6f235e4c8ed0163, 'PHISHING CONTRACT CREATOR')
+      ,(0x725e704b6933be9896c717f735e5a5edbfc7193f, 'Gyroscope')
+      ,(0x982486bd81ecc9ad0ce830f72b19dfd22fab07d5, 'Aave')
+      ,(0x79427367e9be16353336d230de3031d489b1b3c3, 'Gitcoin')
+      ,(0xa5110aff41981ef4d79f9290631af0cf3493f269, 'Balancer')
+      ,(0xa6722f19382f5e0377be6dd89a92ee236e048120, 'Zyberswap')
+      ,(0xab44ae5f00fc4d79ff6d61853ae9ea3f1c2457c7, 'HanChain')
+      ,(0xab630c7ff1b52e0cfe303bff70154a308b3b8d71, 'GoodNodes')
+      ,(0xb7cefe980d41f2f83d4272526b0a0f04617da96b, 'Kwenta')
+      ,(0xc5557771673109cab9d05358e1d280fab5225977, 'NFTs2me')
+      ,(0xe906b91103d216420f7ae13b29fde73ce9c206cd, 'CyberConnect')
+      ,(0xede8a407913a874dd7e3d5b731afca135d30375e, 'Synthetix')
       ,(0xbda458dfc28021debd72060671fc350fa5cb39e5, 'deBridge')
       ,(0xfd830dd9b446c9b880b32a03fb9a750aae4a68aa, 'deBridge')
-      ,(0x05f32b3cc3888453ff71b01135b34ff8e41263f2, 'Layerswap')
       
   ) as temp_table (creator_address, contract_project)
 )
-
-, mapped_list AS (
-  SELECT
-    address AS creator_address, project_name AS contract_project
-    FROM {{ ref('addresses_optimism_grants_funding') }} pro
-)
-
 SELECT 
   creator_address, contract_project
 --filter out creators that we never want to map
-  FROM (
-    SELECT creator_address, contract_project FROM curated_list cl
-    UNION ALL
-    SELECT creator_address, contract_project FROM mapped_list ml
-      WHERE ml.creator_address NOT IN (SELECT creator_address FROM curated_list)
-    ) f
+  FROM curated_list f
 WHERE f.creator_address NOT IN (
    SELECT creator_address FROM {{ ref('contracts_optimism_deterministic_contract_creators') }}
 )
 
 GROUP BY 1,2
-;
+

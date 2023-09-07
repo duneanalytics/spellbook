@@ -26,10 +26,10 @@ def test_token_missing_contract1(caplog):
     assert [log for log in caplog.records if log.levelname == 'WARNING']
 
 
-def test_token_missing_contract2():
+def test_valid_token0():
     test_line = "('link-chainlink','arbitrum','LINK',0xf97f4df75117a78c1a5a0dbb814af92458539fb4,18),"
-    with pytest.raises(AssertionError):
-        checker.validate_token(test_line)
+    # contract address is now existed: https://api.coinpaprika.com/v1/coins/link-chainlink
+    checker.validate_token(test_line)
 
 
 def test_valid_token1():
@@ -61,6 +61,8 @@ def test_valid_token6():
     test_line = "('bets-betswirl', 'polygon', 'BETS', 0x9246a5f10a79a5a939b0c2a75a3ad196aafdb43b, 18),"
     checker.validate_token(test_line)
 
-def test_valid_token7():
+def test_inactive_token():
     test_line = "('grain-granary', 'fantom', 'GRAIN', 0x02838746d9e1413e07ee064fcbada57055417f21, 18),"
-    checker.validate_token(test_line)
+    # grain-granary is no longer active: https://api.coinpaprika.com/v1/coins/grain-granary
+    with pytest.raises(AssertionError):
+        checker.validate_token(test_line)
