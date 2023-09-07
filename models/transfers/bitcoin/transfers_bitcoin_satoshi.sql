@@ -73,5 +73,8 @@ SELECT t.type, t.tx_id, t.index, t.blockchain,
 FROM transfer_btc t
 LEFT JOIN {{ source('prices', 'usd') }} p
     ON date_trunc('minute', t.block_time) = p.minute
+    {% if is_incremental() %}
+        and p.minute >= date_trunc('day', now() - interval '7' day)
+    {% endif %}
     AND p.symbol='BTC'
     AND p.blockchain is null
