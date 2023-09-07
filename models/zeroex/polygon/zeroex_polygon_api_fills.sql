@@ -245,6 +245,37 @@ direct_PLP AS (
     {% endif %}
 ), 
 
+
+direct_uniswapv3 AS (
+    SELECT 
+            swap.evt_tx_hash                                                                        AS tx_hash,
+            swap.evt_index,
+            swap.contract_address,
+            swap.evt_block_time                                                                     AS block_time,
+            swap.contract_address                                                                   AS maker,
+            LAST_VALUE(swap.recipient) OVER (PARTITION BY swap.evt_tx_hash ORDER BY swap.evt_index) AS taker,
+            CASE WHEN amount0 < '0' THEN pair.token1 ELSE pair.token0 END                           AS taker_token,
+            CASE WHEN amount0 < '0' THEN pair.token0 ELSE pair.token1 END                           AS maker_token,
+             CASE WHEN amount0 < cast(0 as int256) THEN cast(ABS(swap.amount1) as uint256) ELSE cast(ABS(swap.amount0)as uint256) END AS taker_token_amount_raw,
+            CASE WHEN amount0 < cast(0 as int256) THEN cast(ABS(swap.amount0) as uint256)  ELSE cast(ABS(swap.amount1) as uint256)  END AS maker_token_amount_raw,
+            'Uniswap V3 Direct'                                                                     AS type,
+            zeroex_tx.affiliate_address                                                             AS affiliate_address,
+            TRUE                                                                                    AS swap_flag,
+            FALSE                                                                                   AS matcha_limit_order_flag
+    FROM {{ source('uniswap_v3_polygon', 'UniswapV3Pool_evt_Swap') }} swap
+   LEFT JOIN {{ source('uniswap_v3_polygon', 'Factory_evt_PoolCreated') }} pair ON pair.pool = swap.contract_address
+   INNER JOIN zeroex_tx ON zeroex_tx.tx_hash = swap.evt_tx_hash
+   WHERE sender = 0xdef1c0ded9bec7f1a1670819833240f027b25eff
+
+        {% if is_incremental() %}
+        AND swap.evt_block_time >= date_trunc('day', now() - interval '7' day)
+        {% endif %}
+        {% if not is_incremental() %}
+        AND swap.evt_block_time >= cast('{{zeroex_v4_start_date}}' as date)
+        {% endif %}
+
+), 
+
 all_tx AS (
     SELECT *
     FROM direct_PLP
@@ -263,6 +294,8 @@ all_tx AS (
     UNION ALL
     SELECT *
     FROM otc_fills 
+    UNION ALL 
+    SELECT * from direct_uniswapv3
 )
 
 SELECT distinct 
