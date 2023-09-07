@@ -17,7 +17,7 @@ with trader_age as (
         from {{ ref('dex_aggregator_trades') }}
         UNION ALL
         select blockchain, taker, block_date
-        from {{ ref('dex_trades') }}
+        from {{ ref('dex_trades_migration_beta') }}
     )
     group by taker, blockchain
 )

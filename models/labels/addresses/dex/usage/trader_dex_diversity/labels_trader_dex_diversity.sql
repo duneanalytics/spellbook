@@ -18,7 +18,7 @@ with
           from {{ ref('dex_aggregator_trades') }}
           union all
           select blockchain, taker, project
-          from {{ ref('dex_trades') }})
+          from {{ ref('dex_trades_migration_beta') }})
     group by taker, blockchain 
  )
 

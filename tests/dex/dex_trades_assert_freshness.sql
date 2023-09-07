@@ -57,7 +57,7 @@ with delays as (
         project
         , blockchain
         , int(now() - max(block_time))/3600 as age_of_last_record_hours
-    from {{ ref('dex_trades') }}
+    from {{ ref('dex_trades_migration_beta') }}
     group by 1,2
 )
 

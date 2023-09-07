@@ -17,7 +17,7 @@ with
         where blockchain = 'ethereum'
         UNION ALL
         select distinct taker
-        from {{ ref('dex_trades') }}
+        from {{ ref('dex_trades_migration_beta') }}
         where blockchain = 'ethereum'
     )
     group by wallet_address

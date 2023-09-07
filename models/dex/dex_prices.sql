@@ -20,7 +20,7 @@ dex_trades as (
         COALESCE(d.amount_usd/d.token_bought_amount, d.amount_usd/(d.token_bought_amount_raw/POW(10, er.decimals))) as price, 
         d.block_time, 
         d.blockchain
-    FROM {{ ref('dex_trades') }} d 
+    FROM {{ ref('dex_trades_migration_beta') }} d 
     LEFT JOIN {{ ref('tokens_erc20') }} er
         ON d.token_bought_address = er.contract_address
         AND d.blockchain = er.blockchain
@@ -37,7 +37,7 @@ dex_trades as (
         COALESCE(d.amount_usd/d.token_sold_amount, d.amount_usd/(d.token_sold_amount_raw/POW(10, er.decimals))) as price, 
         d.block_time, 
         d.blockchain
-    FROM {{ ref('dex_trades') }} d 
+    FROM {{ ref('dex_trades_migration_beta') }} d 
     LEFT JOIN {{ ref('tokens_erc20') }} er
         ON d.token_sold_address = er.contract_address
         AND d.blockchain = er.blockchain

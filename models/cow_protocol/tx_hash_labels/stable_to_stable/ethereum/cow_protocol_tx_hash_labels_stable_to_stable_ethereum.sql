@@ -16,7 +16,7 @@ with
         and token_sold_address in (select contract_address from {{ ref('tokens_ethereum_erc20_stablecoins') }})
         UNION ALL
         select tx_hash, evt_index, project, version
-        from {{ ref('dex_trades') }}
+        from {{ ref('dex_trades_migration_beta') }}
         where blockchain = 'ethereum'
         and token_bought_address in (select contract_address from {{ ref('tokens_ethereum_erc20_stablecoins') }})
         and token_sold_address in (select contract_address from {{ ref('tokens_ethereum_erc20_stablecoins') }})

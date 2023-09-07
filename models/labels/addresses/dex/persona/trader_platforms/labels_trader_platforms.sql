@@ -25,7 +25,7 @@ with trader_platforms as (
                taker,
                project,
                block_time
-        from {{ ref('dex_trades') }}
+        from {{ ref('dex_trades_migration_beta') }}
           )
     group by taker, project, blockchain
     order by first_trade

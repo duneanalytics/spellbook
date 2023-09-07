@@ -56,7 +56,7 @@ with
                token_sold_address,
                token_bought_address,
                evt_index
-        FROM {{ref('dex_trades')}}
+        FROM {{ref('dex_trades_migration_beta')}}
 
         UNION ALL
 
@@ -76,7 +76,7 @@ with
                token_sold_address,
                token_bought_address,
                evt_index
-        FROM {{ref('dex_trades')}}
+        FROM {{ref('dex_trades_migration_beta')}}
         UNION ALL
         SELECT taker,
                tx_hash,

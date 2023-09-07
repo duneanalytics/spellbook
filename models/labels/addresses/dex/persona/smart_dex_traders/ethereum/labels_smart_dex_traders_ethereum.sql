@@ -72,7 +72,7 @@ swappers as (
         token_sold_address,
         taker,
         tx_hash
-    from {{ ref('dex_trades') }}
+    from {{ ref('dex_trades_migration_beta') }}
     where 
         blockchain = 'ethereum' 
         and block_date > now() - interval '60' day
@@ -186,7 +186,7 @@ swappers as (
         taker,
         amount_usd / token_bought_amount as cost_basis,
         project as venue
-    from {{ ref('dex_trades') }}
+    from {{ ref('dex_trades_migration_beta') }}
     where
         blockchain = 'ethereum'
         and block_time > now() - interval '60' day
@@ -216,7 +216,7 @@ swappers as (
         taker,
         amount_usd / token_sold_amount as cost_basis,
         project as venue
-    from {{ ref('dex_trades') }}
+    from {{ ref('dex_trades_migration_beta') }}
     where
         blockchain = 'ethereum'
         and block_time > now() - interval '60' day

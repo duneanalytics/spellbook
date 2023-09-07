@@ -19,7 +19,7 @@ with
         from {{ ref('dex_aggregator_trades') }}
         UNION ALL
         select taker, blockchain, amount_usd
-        from {{ ref('dex_trades') }}
+        from {{ ref('dex_trades_migration_beta') }}
     )
     group by taker, blockchain
  )

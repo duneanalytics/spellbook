@@ -13,11 +13,11 @@ with
  SELECT address, blockchain
  FROM (
     select taker as address, blockchain
-    from {{ref('dex_trades')}}
+    from {{ref('dex_trades_migration_beta')}}
     GROUP BY taker, blockchain  --distinct
     UNION ALL
     select tx_from as address, blockchain
-    from {{ref('dex_trades')}}
+    from {{ref('dex_trades_migration_beta')}}
      GROUP BY tx_from, blockchain --distinct
      ) uni
   GROUP BY address, blockchain--distinct

@@ -3,7 +3,7 @@ with volume as (
         project
         , blockchain
         , sum(amount_usd) volume
-    from {{ ref('dex_trades') }}
+    from {{ ref('dex_trades_migration_beta') }}
     where block_time >= now() - interval '7 days'
     group by 1,2
 )

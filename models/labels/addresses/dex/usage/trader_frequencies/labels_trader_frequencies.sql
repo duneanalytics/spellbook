@@ -20,7 +20,7 @@ with
         from {{ ref('dex_aggregator_trades') }}
         UNION ALL
         select blockchain, taker, block_date, tx_hash
-        from {{ ref('dex_trades') }}
+        from {{ ref('dex_trades_migration_beta') }}
     )
     group by taker, blockchain
     -- That have at least more than 1 trade

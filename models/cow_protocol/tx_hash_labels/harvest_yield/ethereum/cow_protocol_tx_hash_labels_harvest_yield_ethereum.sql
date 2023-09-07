@@ -33,7 +33,7 @@ with
         and token_sold_address in (select harvest_yield_token_address from harvest_yield_tokens)
         UNION ALL
         select tx_hash, evt_index, project, version
-        from {{ ref('dex_trades') }}
+        from {{ ref('dex_trades_migration_beta') }}
         where blockchain = 'ethereum'
         and token_sold_address in (select harvest_yield_token_address from harvest_yield_tokens)
     )

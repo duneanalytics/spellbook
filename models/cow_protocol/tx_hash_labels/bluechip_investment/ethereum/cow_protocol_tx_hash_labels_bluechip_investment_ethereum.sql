@@ -27,7 +27,7 @@ with
         and token_sold_address not in (select bluechip_address from bluechips)
         UNION ALL
         select tx_hash, evt_index, project, version
-        from {{ ref('dex_trades') }}
+        from {{ ref('dex_trades_migration_beta') }}
         where blockchain = 'ethereum'
         and token_bought_address in (select bluechip_address from bluechips)
         and token_sold_address not in (select bluechip_address from bluechips)
