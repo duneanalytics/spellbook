@@ -266,7 +266,7 @@ direct_uniswapv3 AS (
     FROM {{ source('uniswap_v3_polygon', 'UniswapV3Pool_evt_Swap') }} swap
    LEFT JOIN {{ source('uniswap_v3_polygon', 'Factory_evt_PoolCreated') }} pair ON pair.pool = swap.contract_address
    INNER JOIN zeroex_tx ON zeroex_tx.tx_hash = swap.evt_tx_hash
-   WHERE sender = 0xdef1c0ded9bec7f1a1670819833240f027b25eff
+   WHERE 1=1 --sender = 0xdef1c0ded9bec7f1a1670819833240f027b25eff
 
         {% if is_incremental() %}
         AND swap.evt_block_time >= date_trunc('day', now() - interval '7' day)
