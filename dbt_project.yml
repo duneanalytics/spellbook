@@ -933,7 +933,9 @@ models:
       ethereum:
         +schema: pancakeswap_ethereum
       arbitrum:
-        +schema: pancakeswap_arbitrum  
+        +schema: pancakeswap_arbitrum
+      base:
+        +schema: pancakeswap_base 
 
     bancor:
       +schema: bancor

@@ -148,6 +148,7 @@ WITH dao_wallet AS (
         ('RWA008-A',CAST(NULL as date),CAST(NULL as date),12310,31170,CAST(NULL AS NUMERIC(38))),
         ('RWA009-A',CAST(NULL as date),CAST(NULL as date),12310,31170,CAST(NULL AS NUMERIC(38))),
         ('RWA014-A',CAST(NULL as date),CAST(NULL as date),13411,31180,CAST(NULL AS NUMERIC(38))),
+	('RWA015-A',CAST(NULL as date),CAST(NULL as date),12320,31172,CAST(NULL AS NUMERIC(38))),
         ('UNIV2DAIUSDC-A',CAST(NULL as date),CAST(NULL as date),11140,31140,CAST(NULL AS NUMERIC(38))), --need to list all UNIV2% LP that are stable LPs, all else assumed volatile
         ('UNIV2DAIUSDT-A',CAST(NULL as date),CAST(NULL as date),11140,31140,CAST(NULL AS NUMERIC(38)))
 )
