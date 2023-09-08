@@ -1,11 +1,11 @@
 {{ config(
+        tags = ['dunesql'],
         alias = alias('offers'),
-        partition_by = ['block_date'],
         materialized = 'incremental',
         file_format = 'delta',
         incremental_strategy = 'merge',
         unique_key = ['block_date', 'blockchain', 'project', 'version', 'tx_hash', 'evt_index'],
-        post_hook='{{ expose_spells(\'["optimism"]\',
+        post_hook='{{ expose_spells(\'["optimism", "arbitrum", "base"]\',
                                 "sector",
                                 "dex",
                                 \'["denver"]\') }}'
