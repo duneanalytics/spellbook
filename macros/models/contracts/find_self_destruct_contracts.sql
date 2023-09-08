@@ -30,7 +30,6 @@ FROM (
       and   (CASE WHEN cardinality(cr.trace_address) = 0 then cast(-1 as bigint) else cr.trace_address[1] end)
           = (CASE WHEN cardinality(sd.trace_address) = 0 then cast(-1 as bigint) else sd.trace_address[1] end)
       and sd.type = 'suicide'
-      AND cr.blockchain = sd.blockchain
       {% if is_incremental() %}
       and sd.block_time >= date_trunc('day', now() - interval '7' day)
       and cr.address NOT IN (SELECT contract_address FROM {{this}} ) --ensure no duplicates
@@ -63,7 +62,6 @@ FROM (
       AND cr.block_number <= sds.block_number
       AND sds.type = 'suicide'
       AND sds.address IS NOT NULL
-      AND cr.blockchain = sd.blockchain
       {% if is_incremental() %}
       and sds.block_time >= date_trunc('day', now() - interval '7' day)
       and cr.address NOT IN (SELECT contract_address FROM {{this}} th WHERE th.blockchain = '{{chain}}' ) --ensure no duplicates
