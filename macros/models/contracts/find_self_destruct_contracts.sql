@@ -15,7 +15,7 @@ FROM (
     select
       '{{chain}}' as blockchain
       ,cr.block_time as created_time 
-      ,cr.block_number ascreated_block_number
+      ,cr.block_number as created_block_number
       ,cr.tx_hash as creation_tx_hash 
       ,cr.address as contract_address
       ,sd.block_time as destructed_time
@@ -24,8 +24,8 @@ FROM (
     from {{ source( chain , 'traces') }} as cr
     join {{ source( chain , 'traces') }} as sd
       on cr.tx_hash = sd.tx_hash
-      and cr.created_time = sd.block_time
-      AND cr.created_block_number = sd.block_number
+      and cr.block_time = sd.block_time
+      AND cr.block_number = sd.block_number
       and (sd.address = cr.address OR sd.address IS NULL) -- handle for if the destruct has a null address, but make sure we don't mis-map
       and   (CASE WHEN cardinality(cr.trace_address) = 0 then cast(-1 as bigint) else cr.trace_address[1] end)
           = (CASE WHEN cardinality(sd.trace_address) = 0 then cast(-1 as bigint) else sd.trace_address[1] end)
