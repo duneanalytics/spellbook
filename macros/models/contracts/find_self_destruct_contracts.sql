@@ -1,14 +1,14 @@
 {% macro find_self_destruct_contracts_by_chain( chain ) %}
 
 SELECT
-blockchain, created_time, created_block_number, creation_tx_hash, contract_address,
-  ,destructed_time, destructed_block_number, destructed_tx_hash
+blockchain, created_time, created_block_number, creation_tx_hash, contract_address
+  , destructed_time, destructed_block_number, destructed_tx_hash
 FROM (
 
   SELECT
-  blockchain, created_time, created_block_number, creation_tx_hash, contract_address,
-  ,destructed_time, destructed_block_number, destructed_tx_hash
-  , ROW_NUMBER() OVER (PARTITION BY blockchain, contract_address ORDER BY created_block_number DESC) as rn
+  blockchain, created_time, created_block_number, creation_tx_hash, contract_address
+    , destructed_time, destructed_block_number, destructed_tx_hash
+    , ROW_NUMBER() OVER (PARTITION BY blockchain, contract_address ORDER BY created_block_number DESC) as rn
   FROM (
 
     --self destruct method 1: same tx
