@@ -26,7 +26,7 @@ WITH flashloans AS (
     , flash.evt_index
     , CAST(flash.premium AS double) AS fee
     , CASE WHEN flash.asset= {{aave_mock_address}} THEN {{wavax_address}} ELSE flash.asset END AS currency_contract
-    , CASE WHEN flash.asset= {{aave_mock_address}} THEN AVAX ELSE erc20.symbol END AS currency_symbol
+    , CASE WHEN flash.asset= {{aave_mock_address}} THEN 'AVAX' ELSE erc20.symbol END AS currency_symbol
     , CASE WHEN flash.asset= {{aave_mock_address}} THEN 18 ELSE erc20.decimals END AS currency_decimals
     , flash.target AS recipient
     , flash.contract_address
