@@ -67,6 +67,7 @@
 ,ref('dodo_trades')
 ,ref('curvefi_trades')
 ,ref('ellipsis_finance_trades')
+,ref('carbon_defi_ethereum_trades')
 ] %}
 
 
