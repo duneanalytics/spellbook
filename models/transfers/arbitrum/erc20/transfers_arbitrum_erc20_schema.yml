@@ -1,15 +1,15 @@
 version: 2
 
 models:
-  - name: transfers_base_erc20
+  - name: transfers_arbitrum_erc20
     meta:
-      blockchain: base
+      blockchain: arbitrum
       sector: transfers
       project: erc20
       contributors: soispoke, dot2dotseurat, tschubotz, Henrystats
     config:
-      tags: ['transfers', 'base', 'erc20']
-    description: "ERC20 Token Transfers on base. This table is updated every 30 minutes."
+      tags: ['transfers', 'arbitrum', 'erc20']
+    description: "ERC20 Token Transfers on arbitrum. This table is updated every 30 minutes."
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -43,14 +43,14 @@ models:
         name: amount_raw
         description: "Raw amount of ERC20 token held *before* taking into account token decimals"
 
-  - name: transfers_base_erc20_agg_hour
+  - name: transfers_arbitrum_erc20_agg_hour
     meta:
-      blockchain: base
+      blockchain: arbitrum
       sector: transfers
       project: erc20
       contributors: Henrystats
     config:
-      tags: ['transfers', 'base', 'erc20', 'agg_hour', 'Henrystats']
+      tags: ['transfers', 'arbitrum', 'erc20', 'agg_hour', 'Henrystats']
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -72,14 +72,14 @@ models:
         name: amount
         description: "Raw amount of ERC20 token held *after* taking into account token decimals"
 
-  - name: transfers_base_erc20_agg_day
+  - name: transfers_arbitrum_erc20_agg_day
     meta:
-      blockchain: base
+      blockchain: arbitrum
       sector: transfers
       project: erc20
       contributors: Henrystats
     config:
-      tags: ['transfers', 'base', 'erc20', 'agg_day', 'Henrystats']
+      tags: ['transfers', 'arbitrum', 'erc20', 'agg_day', 'Henrystats']
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -97,15 +97,15 @@ models:
       - *amount_raw
       - *amount
 
-  - name: transfers_base_erc20_rolling_hour
+  - name: transfers_arbitrum_erc20_rolling_hour
     meta:
-      blockchain: base
+      blockchain: arbitrum
       sector: transfers
       project: erc20
       contributors: Henrystats
-    description: "ERC20 Token Transfers on base per hour."
+    description: "ERC20 Token Transfers on arbitrum per hour."
     config:
-      tags: ['transfers', 'base', 'erc20', 'rolling_hour', 'Henrystats']
+      tags: ['transfers', 'arbitrum', 'erc20', 'rolling_hour', 'Henrystats']
     columns:
       - *blockchain
       - *hour
@@ -121,15 +121,15 @@ models:
         name: recency_index
         description: "Index of most recent balance ascending. recency_index=1 is the wallet/contract pair's most recent balance"
 
-  - name: transfers_base_erc20_rolling_day
+  - name: transfers_arbitrum_erc20_rolling_day
     meta:
-      blockchain: base
+      blockchain: arbitrum
       sector: transfers
       project: erc20
       contributors: Henrystats
-    description: "ERC20 Token Transfers on base per day."
+    description: "ERC20 Token Transfers on arbitrum per day."
     config:
-      tags: ['transfers', 'base', 'erc20', 'rolling_day', 'Henrystats']
+      tags: ['transfers', 'arbitrum', 'erc20', 'rolling_day', 'Henrystats']
     columns:
       - *blockchain
       - *hour

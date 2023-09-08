@@ -1,15 +1,15 @@
 version: 2
 
 models:
-  - name: transfers_base_eth_tfers
+  - name: transfers_arbitrum_eth
     meta:
-      blockchain: base
+      blockchain: arbitrum
       sector: transfers
       project: eth
       contributors: Henrystats
     config:
-      tags: ['transfers', 'base', 'eth']
-    description: "ETH Transfers on base. This table is updated every 30 minutes."
+      tags: ['transfers', 'arbitrum', 'eth']
+    description: "ETH Transfers on arbitrum. This table is updated every 30 minutes."
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -44,14 +44,14 @@ models:
         name: amount_raw
         description: "Raw amount of ETH token held *before* taking into account token decimals"
 
-  - name: transfers_base_eth_agg_hour
+  - name: transfers_arbitrum_eth_agg_hour
     meta:
-      blockchain: base
+      blockchain: arbitrum
       sector: transfers
       project: eth
       contributors: Henrystats
     config:
-      tags: ['transfers', 'base', 'eth', 'agg_hour', 'Henrystats']
+      tags: ['transfers', 'arbitrum', 'eth', 'agg_hour', 'Henrystats']
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -73,14 +73,14 @@ models:
         name: amount
         description: "Raw amount of ETH token held *after* taking into account token decimals"
 
-  - name: transfers_base_eth_agg_day
+  - name: transfers_arbitrum_eth_agg_day
     meta:
-      blockchain: base
+      blockchain: arbitrum
       sector: transfers
       project: eth
       contributors: Henrystats
     config:
-      tags: ['transfers', 'base', 'eth', 'agg_day', 'Henrystats']
+      tags: ['transfers', 'arbitrum', 'eth', 'agg_day', 'Henrystats']
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -98,15 +98,15 @@ models:
       - *amount_raw
       - *amount
 
-  - name: transfers_base_eth_rolling_hour
+  - name: transfers_arbitrum_eth_rolling_hour
     meta:
-      blockchain: base
+      blockchain: arbitrum
       sector: transfers
       project: eth
       contributors: Henrystats
-    description: "eth Token Transfers on base per hour."
+    description: "eth Token Transfers on arbitrum per hour."
     config:
-      tags: ['transfers', 'base', 'eth', 'rolling_hour', 'Henrystats']
+      tags: ['transfers', 'arbitrum', 'eth', 'rolling_hour', 'Henrystats']
     columns:
       - *blockchain
       - *hour
@@ -122,15 +122,15 @@ models:
         name: recency_index
         description: "Index of most recent balance ascending. recency_index=1 is the wallet/contract pair's most recent balance"
 
-  - name: transfers_base_eth_rolling_day
+  - name: transfers_arbitrum_eth_rolling_day
     meta:
-      blockchain: base
+      blockchain: arbitrum
       sector: transfers
       project: eth
       contributors: Henrystats
-    description: "ETH Token Transfers on base per day."
+    description: "ETH Token Transfers on arbitrum per day."
     config:
-      tags: ['transfers', 'base', 'eth', 'rolling_day', 'Henrystats']
+      tags: ['transfers', 'arbitrum', 'eth', 'rolling_day', 'Henrystats']
     columns:
       - *blockchain
       - *hour

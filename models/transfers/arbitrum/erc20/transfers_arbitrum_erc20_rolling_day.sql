@@ -1,6 +1,6 @@
 {{ config(
         tags = ['dunesql'],
-        alias = alias('eth_rolling_day'))
+        alias = alias('rolling_day'))
 }}
 
         SELECT
@@ -14,4 +14,4 @@
             SUM(amount_raw) OVER (PARTITION BY token_address, wallet_address ORDER BY day) as amount_raw, 
             SUM(amount) OVER (PARTITION BY token_address, wallet_address ORDER BY day) as amount          
         FROM 
-        {{ ref('transfers_base_eth_agg_day') }}
+        {{ ref('transfers_arbitrum_erc20_agg_day') }}

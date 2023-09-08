@@ -1,7 +1,7 @@
 {{ config(
         tags = ['dunesql'],
-        alias = alias('day'),
-        post_hook='{{ expose_spells(\'["base"]\',
+        alias = alias('eth_day'),
+        post_hook='{{ expose_spells(\'["arbitrum"]\',
                                     "sector",
                                     "balances",
                                     \'["Henrystats"]\') }}'
@@ -12,7 +12,7 @@ WITH
 time_seq AS (
     SELECT 
         sequence(
-        CAST('2023-06-15' as timestamp),
+        CAST('2021-05-29' as timestamp),
         date_trunc('day', cast(now() as timestamp)),
         interval '1' day
         ) AS time 
@@ -36,7 +36,7 @@ daily_balances as (
         symbol,
         LEAD(day, 1, current_timestamp) OVER (PARTITION BY token_address, wallet_address ORDER BY day) AS next_day
     FROM 
-    {{ ref('transfers_base_erc20_rolling_day') }}
+    {{ ref('transfers_arbitrum_eth_rolling_day') }}
 )
 
 SELECT
@@ -58,9 +58,4 @@ LEFT JOIN
 {{ source('prices', 'usd') }} p
     ON p.contract_address = b.token_address
     AND d.day = p.minute
-    AND p.blockchain = 'base'
--- Removes likely non-compliant tokens due to negative balances
-LEFT JOIN 
-{{ ref('balances_base_erc20_noncompliant') }} nc
-    ON b.token_address = nc.token_address
-WHERE nc.token_address IS NULL
+    AND p.blockchain = 'arbitrum'

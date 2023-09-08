@@ -1,6 +1,6 @@
 {{ config(
         tags = ['legacy'],
-        alias = alias('eth_tfers', legacy_model=True)
+        alias = alias('eth', legacy_model=True)
         )
 }}
 

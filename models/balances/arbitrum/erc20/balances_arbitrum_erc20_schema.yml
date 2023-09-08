@@ -1,17 +1,17 @@
 version: 2
 
 models:
-  - name: balances_base_erc20_hour
+  - name: balances_arbitrum_erc20_hour
     meta:
-      blockchain: base
+      blockchain: arbitrum
       sector: balances
       project: erc20
       contributors: Henrystats
     config:
-      tags: ['balances', 'base', 'erc20', 'hour', 'Henrystats']
+      tags: ['balances', 'arbitrum', 'erc20', 'hour', 'Henrystats']
     description: >
-        Hourly token balances of ERC20 base tokens per wallet and contract address pair.
-        Depends on erc20_base_transfers
+        Hourly token balances of ERC20 arbitrum tokens per wallet and contract address pair.
+        Depends on erc20_arbitrum_transfers
     columns:
       - &blockchain
         name: blockchain
@@ -38,17 +38,17 @@ models:
         name: symbol
         description: "Token symbol"
 
-  - name: balances_base_erc20_day
+  - name: balances_arbitrum_erc20_day
     meta:
-      blockchain: base
+      blockchain: arbitrum
       sector: balances
       project: erc20
       contributors: Henrystats
     config:
-      tags: ['balances', 'base', 'erc20', 'day', 'Henrystats']
+      tags: ['balances', 'arbitrum', 'erc20', 'day', 'Henrystats']
     description: >
-        Daily token balances of ERC20 base tokens per wallet and contract address pair.
-        Depends on erc20_base_transfers.
+        Daily token balances of ERC20 arbitrum tokens per wallet and contract address pair.
+        Depends on erc20_arbitrum_transfers.
     columns:
       - *blockchain
       - &day
@@ -62,17 +62,17 @@ models:
       - *symbol
 
 
-  - name: balances_base_erc20_latest
+  - name: balances_arbitrum_erc20_latest
     meta:
-      blockchain: base
+      blockchain: arbitrum
       sector: balances
       project: erc20
       contributors: Henrystats
     config:
-      tags: ['balances', 'base', 'erc20', 'latest', 'Henrystats']
+      tags: ['balances', 'arbitrum', 'erc20', 'latest', 'Henrystats']
     description: >
-        Latest token balances of ERC20 base tokens per wallet and contract address pair.
-        Depends on erc20_base_transfers.
+        Latest token balances of ERC20 arbitrum tokens per wallet and contract address pair.
+        Depends on erc20_arbitrum_transfers.
     columns:
       - *blockchain
       - &last_updated
@@ -85,9 +85,9 @@ models:
       - *amount_usd
       - *symbol
 
-  - name: balances_base_erc20_noncompliant
+  - name: balances_arbitrum_erc20_noncompliant
     meta:
-      blockchain: base
+      blockchain: arbitrum
       sector: balances
       project: erc20
       contributors: Henrystats
