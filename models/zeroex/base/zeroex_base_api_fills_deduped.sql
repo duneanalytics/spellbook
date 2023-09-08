@@ -8,10 +8,7 @@
         on_schema_change='sync_all_columns',
         file_format ='delta',
         incremental_strategy='merge',
-        post_hook='{{ expose_spells(\'["base"]\',
-                                "project",
-                                "zeroex",
-                                \'["rantum"]\') }}'
+        
     )
 }}
 
