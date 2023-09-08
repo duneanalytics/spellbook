@@ -16,7 +16,7 @@
 SELECT 'ethereum' AS blockchain
 , 'Fiat DAO' AS project
 , 1 AS version
-, CAST(date_trunc('Month', flash.evt_blockt_time) AS date) as block_month
+, CAST(date_trunc('Month', flash.evt_block_time) AS date) as block_month
 , flash.evt_block_time AS block_time
 , flash.evt_block_number AS block_number
 , flash.amount/POWER(10, 18) AS amount
