@@ -23,7 +23,7 @@ FROM (
       ,sd.tx_hash as destructed_tx_hash 
     from {{ source( chain , 'traces') }} as cr
     join {{ source( chain , 'traces') }} as sd
-      on cr.creation_tx_hash = sd.tx_hash
+      on cr.tx_hash = sd.tx_hash
       and cr.created_time = sd.block_time
       AND cr.created_block_number = sd.block_number
       and (sd.address = cr.address OR sd.address IS NULL) -- handle for if the destruct has a null address, but make sure we don't mis-map
