@@ -38,7 +38,7 @@ FROM (
     WHERE 1=1 --cr.blockchain = '{{chain}}'
       AND cr.type = 'create'
       {% if is_incremental() %}
-      and block_time >= date_trunc('day', now() - interval '7' day) --we know same tx
+      and cr.block_time >= date_trunc('day', now() - interval '7' day) --we know same tx
       {% endif %}
     group by 1, 2, 3, 4, 5, 6, 7, 8
 
@@ -54,8 +54,8 @@ FROM (
       ,sds.block_time as destructed_time
       ,sds.block_number as destructed_block_number
       ,sds.tx_hash as destructed_tx_hash 
-    from creates as cr
 
+    from {{ source( chain , 'traces') }} as cr
     JOIN {{ source( chain , 'traces') }} as sds
       ON cr.address = sds.address
       AND cr.block_time <= sds.block_time
