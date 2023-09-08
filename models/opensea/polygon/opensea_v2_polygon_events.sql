@@ -32,8 +32,8 @@ WITH trades AS (
        end AS token_standard,
       paymentTokenAddress AS currency_contract,
       least(
-        coalesce(cast(json_extract_scalar(output_matchedFillResults,'$.left.makerFeePaid') as uint256), cast(json_extract_scalar(output_matchedFillResults,'$.right.takerFeePaid') as uint256))
-        ,coalesce(cast(json_extract_scalar(output_matchedFillResults,'$.right.takerFeePaid') as uint256), cast(json_extract_scalar(output_matchedFillResults,'$.left.makerFeePaid') as uint256))
+        coalesce(cast(json_extract_scalar(json_extract_scalar(output_matchedFillResults,'$.left'),'$.makerFeePaid') as uint256), cast(json_extract_scalar(json_extract_scalar(output_matchedFillResults,'$.right'),'$.takerFeePaid') as uint256))
+        ,coalesce(cast(json_extract_scalar(json_extract_scalar(output_matchedFillResults,'$.right'),'$.takerFeePaid') as uint256), cast(json_extract_scalar(json_extract_scalar(output_matchedFillResults,'$.left'),'$.makerFeePaid') as uint256))
         ) AS amount_raw,
       2.5 AS platform_fee,
       from_hex(json_extract_scalar(element_at(feeData,1),'$.recipient')) AS fee_recipient,
