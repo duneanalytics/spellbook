@@ -1,7 +1,7 @@
 {{ config(
         tags=['dunesql'],
         alias = alias('trades'),
-        post_hook='{{ expose_spells(\'["bnb","ethereum","arbitrum"]\',
+        post_hook='{{ expose_spells(\'["bnb","ethereum","arbitrum","base"]\',
                                 "project",
                                 "pancakeswap",
                                 \'["hosuke", "chef_seaweed"]\') }}'
@@ -12,6 +12,7 @@
     ref('pancakeswap_bnb_trades')
 ,   ref('pancakeswap_ethereum_trades')
 ,   ref('pancakeswap_arbitrum_trades')
+,   ref('pancakeswap_base_trades')
 ] %}
 
 
