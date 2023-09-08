@@ -47,5 +47,5 @@ SELECT 'ethereum' AS blockchain
         AND pu.minute >= date_trunc('day', now() - interval '7' Day)
         {% endif %}
     {% if is_incremental() %}
-    WHERE b.evt_block_time >= ddate_trunc('day', now() - interval '7' Day)
+    WHERE b.evt_block_time >= date_trunc('day', now() - interval '7' Day)
     {% endif %}
