@@ -57,4 +57,4 @@ seeds:
         volume_usd: double
         tx_from: varbinary
         tx_to: varbinary
-        fills_within: numeric 
+        fills_within: int 
