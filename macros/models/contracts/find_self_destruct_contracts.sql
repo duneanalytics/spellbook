@@ -55,7 +55,7 @@ FROM (
       ,sds.block_number as destructed_block_number
       ,sds.tx_hash as destructed_tx_hash 
 
-    from {{ source( chain , 'traces') }} as cr
+    from {{ source( chain , 'creation_traces') }} as cr
     JOIN {{ source( chain , 'traces') }} as sds
       ON cr.address = sds.address
       AND cr.block_time <= sds.block_time
@@ -68,7 +68,6 @@ FROM (
       {% endif %}
 
     WHERE 1=1 --cr.blockchain = '{{chain}}'
-      AND cr.type = 'create'
       -- no incremental check on creates, since we've seen destructs happen as long as 100 days later.
     group by 1, 2, 3, 4, 5, 6, 7, 8
 
