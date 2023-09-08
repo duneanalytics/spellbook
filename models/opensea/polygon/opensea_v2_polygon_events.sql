@@ -84,7 +84,7 @@ trade_amount_summary as (
         -- Some tx has no royalty fee: https://polygonscan.com/tx/0x7a583aa2ac9aa7b25fdf969ddc7e3a860f4565e4e48e83c2d5d513355dd952a5
         (case when row_count = 2 then fee_amount_raw_2 else fee_amount_raw_1 end) AS platform_fee_amount_raw,
         (case when row_count = 2 then receive_address else null end) AS royalty_fee_receive_address,
-        (case when row_count = 2 then fee_amount_raw_1 else null end) AS royalty_fee_amount_raw
+        (case when row_count = 2 then fee_amount_raw_1 else cast(0 as uint256) end) AS royalty_fee_amount_raw
     FROM trade_amount_grouped
 )
 
