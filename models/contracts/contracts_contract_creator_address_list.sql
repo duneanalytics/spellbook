@@ -633,6 +633,7 @@ WITH curated_list AS (
       ,(0x9aaa603cb8ce688cdb48ab132dd1b8ad7b5ade02, 'Bulls DAO')
       ,(0x9bbFB9919062C29a5eE15aCD93c9D7c3b14d31aa, 'AttestationStation')
       ,(0xC8D7d0BD61C5Ca5A493a229f6754Da5560F486ae, 'Magpie')
+      ,(0xe83f922c34a1962e9ae9f52b59e18239764f2818, 'Aerodrome')
 
       
   ) as temp_table (creator_address, contract_project)
