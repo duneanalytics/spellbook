@@ -71,9 +71,7 @@ FROM (
 
     WHERE 1=1 --cr.blockchain = '{{chain}}'
       AND cr.type = 'create'
-      {% if is_incremental() %}
-      and cr.block_time >= date_trunc('day', now() - interval '7' day) --assume self-destructs don't happen > 1 wk later
-      {% endif %}
+      -- no incremental check on creates, since we've seen destructs happen as long as 100 days later.
     group by 1, 2, 3, 4, 5, 6, 7, 8
 
   ) inter
