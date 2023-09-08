@@ -37,3 +37,43 @@ models:
         description: "The block number on which the address was first funded with MATIC"
       - name: tx_hash
         description: "The transaction hash on which the address was first funded with MATIC"
+
+  - name: addresses_events_polygon_first_activity
+    meta:
+      blockchain: polygon
+      sector: addresses_events
+      project: addresses
+      contributors: Henrystats
+    config:
+      tags: ['table', 'activity', 'addresses_events', 'polygon']
+    description: "Table showing first activity of each Polygon Mainnet address"
+    tests:
+      - check_seed:
+          seed_file: ref('first_activity_seed')
+          filter:
+            blockchain: polygon
+          match_columns:
+            - address
+          check_columns:
+            - first_activity_to
+            - first_block_number
+            - first_tx_hash
+    columns:
+      - name: blockchain
+        description: "Blockchain"
+      - name: address
+        description: "Concerned Polygon Mainnet address"
+        tests:
+          - unique
+      - name: first_activity_to
+        description: "First transaction activity to address"
+      - name: first_block_time
+        description: "The block time on which the address made it's first activity"
+      - name: first_block_number
+        description: "The block number on which the address made it's first activity"
+      - name: first_tx_hash
+        description: "The transaction hash on which the address made it's first activity"
+      - name: first_function
+        description: "first function called by address"
+      - name: first_matic_transferred
+        description: "MATIC transferred in transaction"
