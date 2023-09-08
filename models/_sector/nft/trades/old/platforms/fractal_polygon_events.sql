@@ -98,9 +98,9 @@ SELECT
     CAST(coalesce(a.amount_raw * double '0.03',cast(0 as uint256)) / power(10, erc.decimals) * p.price AS double) AS platform_fee_amount_usd,
     CAST(coalesce(a.amount_raw * double '0.03',cast(0 as uint256))  / a.amount_raw * 100 as double) as platform_fee_percentage,
     cast(0 AS uint256) AS royalty_fee_amount_raw,
-    cast(0 AS uint256 AS double) AS royalty_fee_amount,
-    cast(0 AS uint256 AS double) AS royalty_fee_amount_usd,
-    cast(0 AS uint256 AS double) AS royalty_fee_percentage,
+    cast(0 AS double) AS royalty_fee_amount,
+    cast(0 AS double) AS royalty_fee_amount_usd,
+    cast(0 AS double) AS royalty_fee_percentage,
     CAST(NULL AS varbinary) AS royalty_fee_receive_address,
     CAST(NULL AS varchar) AS royalty_fee_currency_symbol,
     cast(a.evt_tx_hash as varchar) || '-' || cast(a.evt_type as varchar) || '-' || cast(a.evt_index as varchar) || '-' || cast(a.token_id as varchar)  AS unique_trade_id
