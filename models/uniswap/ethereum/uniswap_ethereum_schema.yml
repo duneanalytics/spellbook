@@ -254,8 +254,6 @@ models:
         description: "DAO wallet address"
       - &proposal_id
         name: proposal_id
-        tests:
-          - unique
       - &votes
         name: votes
         description: "Votes weighted by the amount of governance tokens"
