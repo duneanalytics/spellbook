@@ -7,7 +7,7 @@ seeds:
       column_types:
         blockchain: varchar
         proposal_id: uint256
-        outcome: varchar
+        status: varchar
 
   - name: uniswap_v3_votes_seed
     config:

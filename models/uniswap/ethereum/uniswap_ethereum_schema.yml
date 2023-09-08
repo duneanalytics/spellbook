@@ -235,6 +235,15 @@ models:
       tags: ['ethereum', 'votes', 'dao', 'cross-chain']
     description: >
       DAO votes on all chains across all contracts and versions
+    tests:
+      - check_seed:
+          seed_file: ref('uniswap_v3_votes_seed')
+          match_columns:
+            - blockchain
+            - proposal_id
+          check_columns:
+            - voter_address
+            - votes
     columns:
       - name: blockchain
       - name: project
@@ -253,6 +262,8 @@ models:
         description: "DAO wallet address"
       - &proposal_id
         name: proposal_id
+        tests:
+          - unique
       - &votes
         name: votes
         description: "Votes weighted by the amount of governance tokens"
@@ -287,6 +298,14 @@ models:
       tags: ['ethereum', 'proposals', 'dao', 'cross-chain']
     description: >
       DAO proposals on all chains across all contracts and versions
+    tests:
+      - check_seed:
+          seed_file: ref('uniswap_v3_proposals_seed')
+          match_columns:
+            - blockchain
+            - proposal_id
+          check_columns:
+            - status
     columns:
       - name: blockchain
       - name: project
