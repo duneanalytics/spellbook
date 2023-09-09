@@ -68,6 +68,7 @@
 ,ref('curvefi_trades')
 ,ref('ellipsis_finance_trades')
 ,ref('aerodrome_base_trades')
+,ref('carbon_defi_ethereum_trades')
 ] %}
 
 
