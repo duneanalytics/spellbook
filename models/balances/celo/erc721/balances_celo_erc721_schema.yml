@@ -42,9 +42,6 @@ models:
       - &collection
         name: collection
         description: "Name of NFT collection"
-      - &recency_index
-        name: recency_index
-        description: "Index of most recent balance ascending. recency_index=1 is the wallet/contract pair's most recent balance"
 
   - name: balances_celo_erc721_hour_helper
     meta:
@@ -96,7 +93,6 @@ models:
       - *token_address
       - *token_id
       - *collection
-      - *recency_index
 
   - name: balances_celo_erc721_latest
     meta:

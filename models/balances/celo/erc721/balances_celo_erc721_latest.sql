@@ -9,27 +9,27 @@
     )
 }}
 
--- placeholder until hourly balance fully built
-select
-  'celo' as blockchain,
-  0x0000000000000000000000000000000000000000 as wallet_address,
-  0x0000000000000000000000000000000000000000 as token_address,
-  'XXX' as symbol,
-  0 as amount_raw,
-  0 as amount,
-  0 as amount_usd,
-  now() as last_updated
+with
 
-/*
+recent_balances as (
+  select
+    blockchain,
+    wallet_address,
+    token_address,
+    token_id,
+    collection,
+    block_hour,
+    row_number() over (partition by wallet_address, token_address order by block_hour desc) as recency_index
+  from {{ ref('balances_celo_erc721_hour') }}
+  where block_hour >= date_trunc('day', now() - interval '1' day) -- safety net to allow 1 day delay in balances refresh
+)
+
 select
   blockchain,
   wallet_address,
   token_address,
-  symbol,
-  amount_raw,
-  amount,
-  amount_usd,
-  now() as last_updated
-from {{ ref('balances_celo_erc721_hour') }}
+  token_id,
+  collection, 
+  block_hour as last_updated
+from recent_balances
 where recency_index = 1
-*/

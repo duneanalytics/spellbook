@@ -36,21 +36,15 @@ models:
       - &token_address
         name: token_address
         description: "Contract address for the ERC1155 token"
-      - &symbol
-        name: symbol
-        description: "Token symbol"
-      - &amount_raw
-        name: amount_raw
-        description: "Raw amount of ERC1155 token held *before* taking into account token decimals"
+      - &token_id
+        name: token_id
+        description: "ID of the ERC1155 token"
       - &amount
         name: amount
-        description: "Raw amount of ERC1155 token held *after* taking into account token decimals"
-      - &amount_usd
-        name: amount_usd
-        description: "Amount of ERC1155 token held in USD if we have it"
-      - &recency_index
-        name: recency_index
-        description: "Index of most recent balance ascending. recency_index=1 is the wallet/contract pair's most recent balance"
+        description: "Amount of ERC1155 tokens"
+      - &collection
+        name: collection
+        description: "Name of NFT collection"
 
   - name: balances_celo_erc1155_hour_helper
     meta:
@@ -100,11 +94,9 @@ models:
         description: "UTC event block time truncated to the day mark"
       - *wallet_address
       - *token_address
-      - *symbol
-      - *amount_raw
+      - *token_id
       - *amount
-      - *amount_usd
-      - *recency_index
+      - *collection
 
   - name: balances_celo_erc1155_latest
     meta:
@@ -126,10 +118,9 @@ models:
       - *blockchain
       - *wallet_address
       - *token_address
-      - *symbol
-      - *amount_raw
+      - *token_id
       - *amount
-      - *amount_usd
+      - *collection
       - &last_updated
         name: last_updated
         description: "UTC timestamp when data was last updated"
