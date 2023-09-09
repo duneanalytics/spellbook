@@ -52,7 +52,7 @@ get_transactions_details as (
         SELECT 
             ot."from" as address, 
             ot.to as to_address,
-            CAST(ot.value as double) as value, 
+            ot.value, 
             ot.gas_used,
             ot.block_time,
             ot.block_number,
@@ -63,7 +63,7 @@ get_transactions_details as (
             SELECT 
                 "from", 
                 to, 
-                value, 
+                CAST(value as double) as value, 
                 gas_used,
                 block_time,
                 block_number,
@@ -76,7 +76,7 @@ get_transactions_details as (
             SELECT 
                 "from", 
                 to, 
-                value, 
+                CAST(value as double) as value, 
                 gas_used,
                 block_time,
                 block_number,
@@ -88,7 +88,7 @@ get_transactions_details as (
             SELECT 
                 "from", 
                 to, 
-                value, 
+                CAST(value as double) as value, 
                 gas_used,
                 block_time,
                 block_number,
