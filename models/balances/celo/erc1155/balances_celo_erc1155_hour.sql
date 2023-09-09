@@ -27,7 +27,7 @@ daily_balances as (
       lead(t.block_hour, 1, now() + interval '1' hour) over ( -- now + 1 hour so that last hour..
         partition by t.token_address, t.wallet_address order by t.block_hour
       ) - interval '1' hour as next_hour -- .. becomes hour-1 so it covers 'between' hours excatly in next query
-    from {{ ref('transfers_celo_erc1155_rolling_day') }} t
+    from {{ ref('transfers_celo_erc1155_rolling_hour') }} t
     where 1=1
       {% if is_incremental() %} -- this filter will only be applied on an incremental run
       and t.block_hour >= date_trunc('day', now() - interval '7' day)
