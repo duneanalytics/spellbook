@@ -13,14 +13,14 @@
     )
 }}
 
-{% set torn_token_address = 0x77777feddddffc19ff86db637967013e6c6a116c %}
+{% set torn_token_address = '0x77777feddddffc19ff86db637967013e6c6a116c' %}
 
 WITH early_price AS (
     SELECT MIN(minute) AS minute
     , MIN_BY(price, minute) AS price
     FROM {{ source('prices', 'usd') }}
     WHERE blockchain = 'ethereum'
-    AND contract_address = from_hex('{{torn_token_address}}')
+    AND contract_address = {{torn_token_address}}
     )
 
 SELECT 'ethereum' AS blockchain
@@ -41,6 +41,7 @@ SELECT 'ethereum' AS blockchain
 , t.evt_index
 FROM {{ source('erc20_ethereum', 'evt_transfer') }} t
 LEFT JOIN {{ ref('prices_usd_forward_fill') }} pu ON pu.blockchain = 'ethereum'
-    AND pu.contract_address = from_hex('{{torn_token_address}}')
+    AND pu.contract_address = {{torn_token_address}}
     AND pu.minute=date_trunc('minute', t.evt_block_time)
 WHERE t.evt_block_time BETWEEN TIMESTAMP '2020-12-18' AND TIMESTAMP '2021-12-13'
+    AND t.contract_address = {{torn_token_address}}
