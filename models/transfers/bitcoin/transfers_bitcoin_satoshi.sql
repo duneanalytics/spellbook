@@ -25,7 +25,7 @@ with
             {{ source('bitcoin', 'inputs') }} 
         where address is not null
         {% if is_incremental() %}
-        and block_time >= date('2023-09-01')
+        and block_time >= date_trunc('day', now() - interval '7' day)
         {% endif %}
     )
     , 
@@ -43,27 +43,19 @@ with
             {{ source('bitcoin', 'outputs') }} 
         where address is not null
         {% if is_incremental() %}
-        and block_time >= date('2023-09-01')
+        and block_time >= date_trunc('day', now() - interval '7' day)
         {% endif %}
     )
     , transfer_btc as (
-        select any_value(type) as type, 
-            tx_id, index, 'bitcoin' as blockchain, 
-            any_value(wallet_address) as wallet_address, 
-            any_value(block_time) as block_time, 
-            any_value(block_date) as block_date, 
-            any_value(block_height) as block_height, 
-            any_value(amount_raw) as amount_raw
-        from input_transfers group by tx_id, index
-        union
-        select any_value(type) as type, 
-            tx_id, index, 'bitcoin' as blockchain, 
-            any_value(wallet_address) as wallet_address, 
-            any_value(block_time) as block_time, 
-            any_value(block_date) as block_date, 
-            any_value(block_height) as block_height, 
-            any_value(amount_raw) as amount_raw
-        from output_transfers group by tx_id, index
+        select type, tx_id, index, 'bitcoin' as blockchain, 
+            wallet_address, block_time, block_date, 
+            block_height, amount_raw
+        from input_transfers
+        union all
+        select type, tx_id, index, 'bitcoin' as blockchain, 
+            wallet_address, block_time, block_date, 
+            block_height, amount_raw
+        from output_transfers
     )
 
 SELECT t.type, t.tx_id, t.index, t.blockchain,
@@ -74,7 +66,7 @@ FROM transfer_btc t
 LEFT JOIN {{ source('prices', 'usd') }} p
     ON date_trunc('minute', t.block_time) = p.minute
     {% if is_incremental() %}
-        and p.minute >= date('2023-09-01')
+        and p.minute >= date_trunc('day', now() - interval '7' day)
     {% endif %}
     AND p.symbol='BTC'
     AND p.blockchain is null
