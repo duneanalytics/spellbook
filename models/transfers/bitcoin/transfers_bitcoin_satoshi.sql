@@ -25,7 +25,7 @@ with
             {{ source('bitcoin', 'inputs') }} 
         where address is not null
         {% if is_incremental() %}
-        and block_time >= date_trunc('day', now() - interval '7' day)
+        and block_time >= date('2023-09-01')
         {% endif %}
     )
     , 
@@ -43,7 +43,7 @@ with
             {{ source('bitcoin', 'outputs') }} 
         where address is not null
         {% if is_incremental() %}
-        and block_time >= date_trunc('day', now() - interval '7' day)
+        and block_time >= date('2023-09-01')
         {% endif %}
     )
     , transfer_btc as (
@@ -74,7 +74,7 @@ FROM transfer_btc t
 LEFT JOIN {{ source('prices', 'usd') }} p
     ON date_trunc('minute', t.block_time) = p.minute
     {% if is_incremental() %}
-        and p.minute >= date_trunc('day', now() - interval '7' day)
+        and p.minute >= date('2023-09-01')
     {% endif %}
     AND p.symbol='BTC'
     AND p.blockchain is null
