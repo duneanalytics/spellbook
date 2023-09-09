@@ -24,9 +24,9 @@ with
         from
             {{ source('bitcoin', 'inputs') }} 
         where address is not null
-        {% if is_incremental() %}
-        and block_time >= date_trunc('day', now() - interval '7' day)
-        {% endif %}
+        -- {% if is_incremental() %}
+        -- and block_time >= date_trunc('day', now() - interval '7' day)
+        -- {% endif %}
     )
     , 
     output_transfers as (
@@ -42,20 +42,28 @@ with
         from
             {{ source('bitcoin', 'outputs') }} 
         where address is not null
-        {% if is_incremental() %}
-        and block_time >= date_trunc('day', now() - interval '7' day)
-        {% endif %}
+        -- {% if is_incremental() %}
+        -- and block_time >= date_trunc('day', now() - interval '7' day)
+        -- {% endif %}
     )
     , transfer_btc as (
-        select type, tx_id, index, 'bitcoin' as blockchain, 
-            wallet_address, block_time, block_date, 
-            block_height, amount_raw
-        from input_transfers
-        union all
-        select type, tx_id, index, 'bitcoin' as blockchain, 
-            wallet_address, block_time, block_date, 
-            block_height, amount_raw
-        from output_transfers
+        select any_value(type) as type, 
+            tx_id, index, 'bitcoin' as blockchain, 
+            any_value(wallet_address) as wallet_address, 
+            any_value(block_time) as block_time, 
+            any_value(block_date) as block_date, 
+            any_value(block_height) as block_height, 
+            any_value(amount_raw) as amount_raw
+        from input_transfers group by tx_id, index
+        union
+        select any_value(type) as type, 
+            tx_id, index, 'bitcoin' as blockchain, 
+            any_value(wallet_address) as wallet_address, 
+            any_value(block_time) as block_time, 
+            any_value(block_date) as block_date, 
+            any_value(block_height) as block_height, 
+            any_value(amount_raw) as amount_raw
+        from output_transfers group by tx_id, index
     )
 
 SELECT t.type, t.tx_id, t.index, t.blockchain,
@@ -63,6 +71,9 @@ SELECT t.type, t.tx_id, t.index, t.blockchain,
     t.block_height, t.amount_raw,
     -1 * t.amount_raw * p.price as amount_transfer_usd
 FROM transfer_btc t
+{% if is_incremental() %}
+where block_time >= date_trunc('day', now() - interval '7' day)
+{% endif %}
 LEFT JOIN {{ source('prices', 'usd') }} p
     ON date_trunc('minute', t.block_time) = p.minute
     {% if is_incremental() %}
