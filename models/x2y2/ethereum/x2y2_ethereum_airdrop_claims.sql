@@ -44,3 +44,4 @@ LEFT JOIN {{ ref('prices_usd_forward_fill') }} pu ON pu.blockchain = 'ethereum'
     AND pu.contract_address= {{xtyt_token_address}}
     AND pu.minute=date_trunc('minute', t.evt_block_time)
 WHERE t.evt_block_time BETWEEN timestamp '2022-02-15' AND timestamp '2022-03-31'
+    AND t.contract_address = {{xtyt_token_address}}
