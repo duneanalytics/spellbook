@@ -50,3 +50,6 @@ FROM flashloans flash
 LEFT JOIN {{ source('prices','usd') }} pu ON pu.blockchain = 'ethereum'  
     AND pu.contract_address = flash.currency_contract
     AND pu.minute = date_trunc('minute', flash.block_time)
+    {% if is_incremental() %}
+    AND pu.minute >= date_trunc('day', now() - interval '7' day)
+    {% endif %}
