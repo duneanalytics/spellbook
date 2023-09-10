@@ -29,7 +29,8 @@ select
 , cast(json_extract_scalar(message, '$.receiver') as VARCHAR) as receiver
 , cast(json_extract_scalar(message, '$.data') as varchar) as data
 -- model cannot handle JSON, convert to array for each unique tx
-, array_agg(json_format(cast(json_extract_scalar(message, '$.tokenAmounts') as INT256))) over (partition by cast(json_extract_scalar(message, '$.messageId') as VARCHAR), evt_tx_hash) as tokenAmounts
+-- , array_agg(json_format(cast(json_extract_scalar(message, '$.tokenAmounts') as INT256))) over (partition by cast(json_extract_scalar(message, '$.messageId') as VARCHAR), evt_tx_hash) as tokenAmounts
+, array_agg(CAST(json_extract_scalar(message, '$.tokenAmounts') AS INT256)) OVER (PARTITION BY CAST(json_extract_scalar(message, '$.messageId') AS VARCHAR), evt_tx_hash) AS tokenAmounts
 , cast(json_extract_scalar(message, '$.feeToken') as VARCHAR) as feeToken
 , cast(json_extract_scalar(message, '$.messageId') as VARCHAR) as messageId
 , '{{eth_router}}' as router
