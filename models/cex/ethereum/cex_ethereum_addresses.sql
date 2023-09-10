@@ -616,7 +616,7 @@ FROM (VALUES
     -- IDAX
     , ('ethereum', 0x3c11c3025ce387d76c2eddf1493ec55a8cc2a0f7, 'IDAX', 'IDAX', 'hildobby', date '2022-08-28') -- https://etherscan.io/address/0x3c11c3025ce387d76c2eddf1493ec55a8cc2a0f7
     -- IDEX, Source: https://etherscan.io/accounts/label/IDEX
-    , ('ethereum', 0x2a0c0dbecc7e4d658f48e01e3fa353f44050c208, 'IDEX', 'IDEX 1', 'hildobby', date '2023-09-08') -
+    , ('ethereum', 0x2a0c0dbecc7e4d658f48e01e3fa353f44050c208, 'IDEX', 'IDEX 1', 'hildobby', date '2023-09-08')
     , ('ethereum', 0xa7a7899d944fe658c4b0a1803bab2f490bd3849e, 'IDEX', 'IDEX 2', 'hildobby', date '2023-09-08')
     -- FlataExchange
     , ('ethereum', 0x14301566b9669b672878d86ff0b1d18dd58054e9, 'FlataExchange', 'FlataExchange', 'hildobby', date '2022-08-28') -- https://etherscan.io/address/0x14301566b9669b672878d86ff0b1d18dd58054e9
