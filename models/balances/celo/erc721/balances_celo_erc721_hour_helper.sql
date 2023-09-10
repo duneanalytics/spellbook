@@ -6,7 +6,7 @@
         materialized = 'incremental',
         file_format = 'delta',
         incremental_strategy = 'merge',
-        unique_key = ['block_hour', 'wallet_address', 'token_address'],
+        unique_key = ['block_hour', 'wallet_address', 'token_address', 'token_id'],
         post_hook='{{ expose_spells_hide_trino(\'["celo"]\',
                                     "sector",
                                     "balances",
@@ -35,20 +35,24 @@ hours as (
 
 token_first_acquired as (
     select
+      blockchain,
       wallet_address,
       token_address,
+      token_id,
       min(block_hour) as first_block_hour
     from {{ ref('transfers_celo_erc721_rolling_hour') }}
     where 1=1
       {% if is_incremental() %} -- this filter will only be applied on an incremental run
       and block_hour >= date_trunc('day', now() - interval '7' day)
       {% endif %}
-    group by 1, 2
+    group by 1, 2, 3, 4
 )
 
 select
+  tfa.blockchain,
   tfa.wallet_address,
   tfa.token_address,
+  tfa.token_id,
   cast(date_trunc('month', h.hour) as date) as block_month,
   h.hour as block_hour
 from token_first_acquired tfa

@@ -22,7 +22,6 @@ daily_balances as (
       t.token_address,
       t.token_id,
       t.amount,
-      t.block_month,
       t.block_hour,
       lead(t.block_hour, 1, now() + interval '1' hour) over ( -- now + 1 hour so that last hour..
         partition by t.token_address, t.wallet_address order by t.block_hour
@@ -37,7 +36,7 @@ daily_balances as (
 )
 
 select
-  'celo' as blockchain,
+  hh.blockchain,
   hh.block_month,
   hh.block_hour,
   hh.wallet_address,
@@ -45,8 +44,10 @@ select
   db.token_id,
   nft_tokens.name as collection
 from {{ ref('balances_celo_erc721_hour_helper') }} hh
-  join daily_balances db on hh.wallet_address = db.wallet_address and hh.token_address = db.token_address
+  join daily_balances db on hh.wallet_address = db.wallet_address
+    and hh.token_address = db.token_address
+    and hh.token_id = db.token_id
     and hh.block_hour between db.block_hour and db.next_hour
   left join {{ ref('tokens_nft') }} nft_tokens on db.token_address = nft_tokens.contract_address
-    and nft_tokens.blockchain = 'celo'
+    and hh.blockchain = nft_tokens.blockchain
 where db.amount = 1

@@ -76,9 +76,12 @@ models:
             - block_hour
             - wallet_address
             - token_address
+            - token_id
     columns:
+      - *blockchain
       - *wallet_address
       - *token_address
+      - *token_id
       - *block_month
       - *block_hour
 
