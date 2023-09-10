@@ -17,8 +17,6 @@ ref('chainlink_ethereum_ccip_onramps')
 ] %}
 
 
-
-
 SELECT *
 FROM (
     {% for onramps in chainlink_models_on %}
@@ -42,15 +40,12 @@ FROM (
         , evt_tx_hash 
         , evt_block_time 
         , evt_index 
-        , evt_block_number 
-
-
-    
+        , evt_block_number
     FROM {{ onramps }}
-)
     {% if not loop.last %}
     UNION ALL
     {% endif %}
     {% endfor %}
+)
 
 

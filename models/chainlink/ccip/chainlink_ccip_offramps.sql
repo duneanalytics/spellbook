@@ -17,8 +17,6 @@ ref('chainlink_ethereum_ccip_offramps')
 ] %}
 
 
-
-
 SELECT *
 FROM (
     {% for offramps in chainlink_models_off %}
@@ -34,13 +32,11 @@ FROM (
         , returnData
         , sequenceNumber
         , state
-
-    
     FROM {{ offramps }}
-)
     {% if not loop.last %}
     UNION ALL
     {% endif %}
     {% endfor %}
+)
 
 
