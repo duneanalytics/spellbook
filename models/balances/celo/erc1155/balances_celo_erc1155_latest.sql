@@ -2,7 +2,7 @@
     config(
         tags = ['dunesql'],
         alias = alias('erc1155_latest'),
-        post_hook='{{ expose_spells_hide_trino(\'["celo"]\',
+        post_hook='{{ expose_spells(\'["celo"]\',
                                     "sector",
                                     "balances",
                                     \'["tomfutago"]\') }}'

@@ -18,10 +18,13 @@ models:
             - block_hour
             - wallet_address
             - token_address
+            - token_id
     columns:
       - &blockchain
         name: blockchain
         description: "Blockchain"
+        tests:
+          - not_null
       - &block_month
         name: block_month
         description: "Block Month column used to partition data in this table"
@@ -30,15 +33,23 @@ models:
       - &block_hour
         name: block_hour
         description: "UTC event block time truncated to the hour mark"
+        tests:
+          - not_null
       - &wallet_address
         name: wallet_address
         description: "Address of the wallet holding this ERC721 token"
+        tests:
+          - not_null
       - &token_address
         name: token_address
         description: "Contract address for the ERC721 token"
+        tests:
+          - not_null
       - &token_id
         name: token_id
         description: "ID of the ERC721 token"
+        tests:
+          - not_null
       - &collection
         name: collection
         description: "Name of NFT collection"
@@ -83,12 +94,15 @@ models:
             - block_day
             - wallet_address
             - token_address
+            - token_id
     columns:
       - *blockchain
       - *block_month
       - &block_day
         name: block_day
         description: "UTC event block time truncated to the day mark"
+        tests:
+          - not_null
       - *wallet_address
       - *token_address
       - *token_id
@@ -110,6 +124,7 @@ models:
           combination_of_columns:
             - wallet_address
             - token_address
+            - token_id
     columns:
       - *blockchain
       - *wallet_address
@@ -131,5 +146,9 @@ models:
     description: >
         ERC721 NFT contract addresses that allow multiple minting(from 0x000..000) of the same tokenId.
         Depends on erc721_celo_transfers.
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - token_address
     columns:
       - *token_address

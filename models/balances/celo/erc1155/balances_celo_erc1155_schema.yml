@@ -18,10 +18,13 @@ models:
             - block_hour
             - wallet_address
             - token_address
+            - token_id
     columns:
       - &blockchain
         name: blockchain
         description: "Blockchain"
+        tests:
+          - not_null
       - &block_month
         name: block_month
         description: "Block Month column used to partition data in this table"
@@ -30,18 +33,28 @@ models:
       - &block_hour
         name: block_hour
         description: "UTC event block time truncated to the hour mark"
+        tests:
+          - not_null
       - &wallet_address
         name: wallet_address
         description: "Address of the wallet holding this ERC1155 token"
+        tests:
+          - not_null
       - &token_address
         name: token_address
         description: "Contract address for the ERC1155 token"
+        tests:
+          - not_null
       - &token_id
         name: token_id
         description: "ID of the ERC1155 token"
+        tests:
+          - not_null
       - &amount
         name: amount
         description: "Amount of ERC1155 tokens"
+        tests:
+          - not_null
       - &collection
         name: collection
         description: "Name of NFT collection"
@@ -86,12 +99,15 @@ models:
             - block_day
             - wallet_address
             - token_address
+            - token_id
     columns:
       - *blockchain
       - *block_month
       - &block_day
         name: block_day
         description: "UTC event block time truncated to the day mark"
+        tests:
+          - not_null
       - *wallet_address
       - *token_address
       - *token_id
@@ -114,6 +130,7 @@ models:
           combination_of_columns:
             - wallet_address
             - token_address
+            - token_id
     columns:
       - *blockchain
       - *wallet_address

@@ -6,8 +6,8 @@
         materialized = 'incremental',
         file_format = 'delta',
         incremental_strategy = 'merge',
-        unique_key = ['block_hour', 'wallet_address', 'token_address'],
-        post_hook='{{ expose_spells_hide_trino(\'["celo"]\',
+        unique_key = ['block_hour', 'wallet_address', 'token_address', 'token_id'],
+        post_hook='{{ expose_spells(\'["celo"]\',
                                     "sector",
                                     "balances",
                                     \'["tomfutago"]\') }}'
