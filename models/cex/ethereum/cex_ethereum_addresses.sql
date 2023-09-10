@@ -495,9 +495,9 @@ FROM (VALUES
     -- TopBTC, Source: https://etherscan.io/accounts/label/topbtc
     , ('ethereum', 0xb2cc3cdd53fc9a1aeaf3a68edeba2736238ddc5d, 'TopBTC', 'TopBTC 1', 'hildobby', date '2022-08-28')
     -- QudragaCX
-    , ('ethereum', 0x027beefcbad782faf69fad12dee97ed894c68549, 'QudragaCX', 'QudragaCX 1', 'hildobby', date '2023-09-09')
-    , ('ethereum', 0xb6aac3b56ff818496b747ea57fcbe42a9aae6218, 'QudragaCX', 'QudragaCX 2', 'hildobby', date '2023-09-09')
-    , ('ethereum', 0x0ee4e2d09aec35bdf08083b649033ac0a41aa75e, 'QudragaCX', 'QudragaCX 3', 'hildobby', date '2023-09-09')
+    , ('ethereum', 0x027beefcbad782faf69fad12dee97ed894c68549, 'QuadrigaCX', 'QuadrigaCX 1', 'hildobby', date '2023-09-09')
+    , ('ethereum', 0xb6aac3b56ff818496b747ea57fcbe42a9aae6218, 'QuadrigaCX', 'QuadrigaCX 2', 'hildobby', date '2023-09-09')
+    , ('ethereum', 0x0ee4e2d09aec35bdf08083b649033ac0a41aa75e, 'QuadrigaCX', 'QuadrigaCX 3', 'hildobby', date '2023-09-09')
     -- Trade.io, Source: https://etherscan.io/accounts/label/trade-io
     , ('ethereum', 0x1119aaefb02bf12b84d28a5d8ea48ec3c90ef1db, 'Trade.io', 'Trade.io 1', 'hildobby', date '2022-08-28')
     , ('ethereum', 0x58f75ddacffb183a30f69fe58a67a0d0985fce0f, 'Trade.io', 'Trade.io Wallet 1', 'hildobby', date '2022-08-28')
