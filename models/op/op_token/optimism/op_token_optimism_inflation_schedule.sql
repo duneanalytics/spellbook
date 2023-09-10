@@ -1,4 +1,5 @@
 {{ config(
+        tags = ['dunesql'],
         schema = 'op_token_optimism',
         alias = alias('inflation_schedule')
         , unique_key = ['schedule_confirmed_date', 'schedule_start_date']
