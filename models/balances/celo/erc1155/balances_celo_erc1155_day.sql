@@ -58,7 +58,7 @@ daily_balances as (
       t.block_day,
       lead(t.block_day, 1, now() + interval '1' day) over ( -- now + 1 day so that last day..
         partition by t.token_address, t.wallet_address order by t.block_day
-      ) - interval '1' day as next_day -- .. becomes today's and -1 so it covers 'between' days excatly in next cte
+      ) - interval '1' day as next_day -- .. becomes today's and -1 so it covers 'between' days excatly in the next query
     from {{ ref('transfers_celo_erc1155_rolling_day') }} t
     where 1=1
       {% if is_incremental() %} -- this filter will only be applied on an incremental run

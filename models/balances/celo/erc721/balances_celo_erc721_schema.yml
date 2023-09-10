@@ -54,32 +54,6 @@ models:
         name: collection
         description: "Name of NFT collection"
 
-  - name: balances_celo_erc721_hour_helper
-    meta:
-      blockchain: celo
-      sector: balances
-      project: erc721
-      contributors: tomfutago
-    config:
-      tags: ['balances', 'celo', 'erc721', 'hour', 'helper', 'tomfutago']
-    description: >
-        Helper table with hourly history filled for ERC721 Celo tokens per wallet and contract address pair.
-        Added to aid in incremental build performance. Depends on transfers_celo_erc721_rolling_hour.
-    tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - block_hour
-            - wallet_address
-            - token_address
-            - token_id
-    columns:
-      - *blockchain
-      - *wallet_address
-      - *token_address
-      - *token_id
-      - *block_month
-      - *block_hour
-
   - name: balances_celo_erc721_day
     meta:
       blockchain: celo
