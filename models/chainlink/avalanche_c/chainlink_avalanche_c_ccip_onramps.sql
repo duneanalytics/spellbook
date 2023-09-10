@@ -32,7 +32,7 @@ select
 , array_agg(json_format(json_extract(message, '$.tokenAmounts'))) over (partition by cast(json_extract_scalar(message, '$.messageId') as VARCHAR), evt_tx_hash) as tokenAmounts
 , cast(json_extract_scalar(message, '$.feeToken') as VARCHAR) as feeToken
 , cast(json_extract_scalar(message, '$.messageId') as VARCHAR) as messageId
-, '{{avax_router}}' as router
+, {{avax_router}} as router
 , contract_address
 , evt_tx_hash
 , evt_block_time
