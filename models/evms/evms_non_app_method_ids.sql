@@ -37,7 +37,7 @@ SELECT NULL as blockchains, method_id, method_descriptor
         ,(0xb88d4fde,'ERC721 Transfer'), (0xf3993d11,'ERC721 Transfer')
         ,(0xf242432a,'ERC1155 Transfer'), (0x2eb2c2d6,'ERC1155 Transfer')
         ,(0xa22cb465,'ERC721/ERC1155 Approval') --'ERC721 Approval'
-        ,(0x60806040,'Contract Creation'), ('0x60c06040','Contract Creation') --'Contract Creation'
+        ,(0x60806040,'Contract Creation'), (0x60c06040,'Contract Creation') --'Contract Creation'
         ) a (method_id, method_descriptor)
 
 UNION ALL --Optimism-Specific Methods
@@ -46,7 +46,7 @@ SELECT 'optimism' AS blockchains, method_id, method_descriptor
     FROM (values
          (0xcbd4ece9,'Bridge In (L1 to L2)') --'Bridge In (L1 to L2)'
         ,(0x32b7006d,'Bridge Out (L2 to L1)') --'Bridge Out (L2 to L1)'
-        ,(0xbede39b5,'OVM Gas Price Oracle'), ('0xbf1fe420','OVM Gas Price Oracle') --'OVM Gas Price Oracle'
+        ,(0xbede39b5,'OVM Gas Price Oracle'), (0xbf1fe420,'OVM Gas Price Oracle') --'OVM Gas Price Oracle'
         ,(0x015d8eb9,'Set L1 Block Values') -- Set L1 Block Values System Transaction (Bedrock and later)
         ) a (method_id, method_descriptor)
 
