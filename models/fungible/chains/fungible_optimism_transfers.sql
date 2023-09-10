@@ -2,7 +2,6 @@
         tags = ['dunesql'],
         schema = 'fungible_optimism',
         alias=alias('transfers'),
-        file_format = 'delta',
 )
 }}
 

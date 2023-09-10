@@ -6,8 +6,8 @@
 WITH transfers AS (
     SELECT block_time
     , block_number
-    , CAST(value AS double) AS amount_raw
-    , CAST(value AS double)/1e18 AS amount
+    , value AS amount_raw
+    , value/1e18 AS amount
     , CAST(NULL AS varbinary) AS contract_address
     , '{{native_symbol}}' AS symbol
     , 18 AS decimals
@@ -20,16 +20,13 @@ WITH transfers AS (
     WHERE success
     AND (call_type NOT IN ('delegatecall', 'callcode', 'staticcall') OR call_type IS null)
     AND value > UINT256 '0'
-    {% if is_incremental() %}
-    AND block_time >= date_trunc('day', now() - interval '7' day)
-    {% endif %}
     
     UNION ALL
     
     SELECT t.evt_block_time AS block_time
     , t.evt_block_number AS block_number
-    , CAST(t.value AS double) AS amount_raw
-    , CAST(t.value AS double)/POWER(10, tok.decimals) AS amount
+    , t.value AS amount_raw
+    , t.value/POWER(10, tok.decimals) AS amount
     , t.contract_address
     , tok.symbol
     , tok.decimals
@@ -40,9 +37,6 @@ WITH transfers AS (
     , t.evt_index
     FROM {{ erc20_transfers }} t
     LEFT JOIN {{ erc20_tokens }} tok ON tok.contract_address=t.contract_address
-        {% if is_incremental() %}
-        AND t.evt_block_time >= date_trunc('day', now() - interval '7' day)
-        {% endif %}
     )
 
 SELECT '{{blockchain}}' as blockchain
@@ -64,9 +58,6 @@ SELECT '{{blockchain}}' as blockchain
 FROM transfers t
 INNER JOIN {{ transactions }} et ON et.block_number=t.block_number
     AND et.hash=t.tx_hash
-    {% if is_incremental() %}
-    AND et.block_time >= date_trunc('day', now() - interval '7' day)
-    {% endif %}
 LEFT JOIN {{ ref('prices_usd_forward_fill') }} pu ON pu.blockchain = '{{blockchain}}'
     AND (pu.contract_address=t.contract_address
         OR t.contract_address IS NULL AND pu.contract_address=(SELECT wrapped_native_token_address FROM {{ ref('evms_info') }} WHERE blockchain='{{blockchain}}')
