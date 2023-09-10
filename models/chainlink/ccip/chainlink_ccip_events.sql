@@ -51,17 +51,13 @@ FROM (
         , evt_tx_hash as origin_evt_tx_hash
         , evt_block_time as origin_evt_block_time
         , evt_index as origin_evt_index
-        , evt_block_number as origin_evt_block_number
-
-
-    
+        , evt_block_number as origin_evt_block_number 
     FROM {{ onramps }}
-)
     {% if not loop.last %}
     UNION ALL
     {% endif %}
     {% endfor %}
-
+    )
 )
 
 , offRamp_base as (
@@ -81,15 +77,12 @@ FROM (
         , returnData as destination_returnData
         , sequenceNumber as destination_sequenceNumber
         , state as destination_state
-
-    
     FROM {{ offramps }}
-)
     {% if not loop.last %}
     UNION ALL
     {% endif %}
     {% endfor %}
-    
+    )
 )
 
 SELECT 
