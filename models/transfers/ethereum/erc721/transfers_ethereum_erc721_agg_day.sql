@@ -13,7 +13,7 @@ select
     wallet_address,
     token_address,
     tokenId,
-    concat(cast(wallet_address as varchar), '-', date_trunc('day', evt_block_time), '-', CAST(token_address as varchar), '-', cast(tokenId as varchar)) as unique_transfer_id,
+    concat(cast(wallet_address as varchar), '-', to_iso8601(date_trunc('day', evt_block_time)), '-', CAST(token_address as varchar), '-', cast(tokenId as varchar)) as unique_transfer_id,
     sum(amount) as amount
 from {{ ref('transfers_ethereum_erc721') }}
 {% if is_incremental() %}
