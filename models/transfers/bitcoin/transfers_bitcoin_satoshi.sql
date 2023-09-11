@@ -1,8 +1,11 @@
 {{ config(
         tags = ['dunesql'],
-        materialized='view',
         schema = 'transfers_bitcoin',
         alias = alias('satoshi'),
+        materialized='incremental',
+        file_format = 'delta',
+        incremental_strategy = 'merge',
+        unique_key = ['type', 'tx_id', 'index', 'wallet_address'],
         post_hook='{{ expose_spells(\'["bitcoin"]\',
                                     "sector",
                                     "transfers",
@@ -21,6 +24,9 @@ with
         from
             {{ source('bitcoin', 'inputs') }} 
         where address is not null
+        -- {% if is_incremental() %}
+        -- and block_time >= date_trunc('day', now() - interval '7' day)
+        -- {% endif %}
     )
     , 
     output_transfers as (
@@ -36,6 +42,9 @@ with
         from
             {{ source('bitcoin', 'outputs') }} 
         where address is not null
+        -- {% if is_incremental() %}
+        -- and block_time >= date_trunc('day', now() - interval '7' day)
+        -- {% endif %}
     )
     , transfer_btc as (
         select any_value(type) as type, 
@@ -46,7 +55,7 @@ with
             any_value(block_height) as block_height, 
             any_value(amount_raw) as amount_raw
         from input_transfers group by tx_id, index
-        union all
+        union
         select any_value(type) as type, 
             tx_id, index, 'bitcoin' as blockchain, 
             any_value(wallet_address) as wallet_address, 
@@ -62,7 +71,13 @@ SELECT t.type, t.tx_id, t.index, t.blockchain,
     t.block_height, t.amount_raw,
     -1 * t.amount_raw * p.price as amount_transfer_usd
 FROM transfer_btc t
+{% if is_incremental() %}
+where block_time >= date_trunc('day', now() - interval '7' day)
+{% endif %}
 LEFT JOIN {{ source('prices', 'usd') }} p
     ON date_trunc('minute', t.block_time) = p.minute
+    {% if is_incremental() %}
+        and p.minute >= date_trunc('day', now() - interval '7' day)
+    {% endif %}
     AND p.symbol='BTC'
     AND p.blockchain is null

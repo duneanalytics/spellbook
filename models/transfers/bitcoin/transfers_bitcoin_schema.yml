@@ -10,6 +10,13 @@ models:
     config:
       tags: ["transfers", "bitcoin", "satoshi"]
     description: "Transfer satoshi in Bitcoin"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - type
+            - tx_id
+            - index
+            - wallet_address
     columns:
       - name: type
       - name: tx_id
