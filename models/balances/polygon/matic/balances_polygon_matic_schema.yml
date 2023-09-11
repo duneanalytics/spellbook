@@ -84,4 +84,3 @@ models:
       - *amount
       - *amount_usd
       - *symbol
-

@@ -1,6 +1,6 @@
 {{ config(
         tags = ['dunesql'],
-        alias = alias('noncompliant'),
+        alias = alias('erc20_noncompliant'),
         materialized ='table',
         file_format = 'delta'
         )
