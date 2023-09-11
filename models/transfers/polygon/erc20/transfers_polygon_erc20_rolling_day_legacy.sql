@@ -1,6 +1,6 @@
 {{ config(
         tags = ['legacy'],
-        alias = alias('rolling_day', legacy_model=True)
+        alias = alias('erc20_rolling_day', legacy_model=True)
         )
 }}
 
