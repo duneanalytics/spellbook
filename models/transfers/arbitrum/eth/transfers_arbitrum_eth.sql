@@ -52,41 +52,6 @@ eth_transfers  as (
         {% endif %}
 ),
 
- --ETH Transfers from deposits and withdrawals are ERC20 transfers of the 'deadeadead' ETH token. These do not appear in traces.
-erc20_eth_transfers  as (
-        SELECT 
-            'deposits' as transfer_type, 
-            evt_tx_hash as tx_hash,
-            array[evt_index] as trace_address, 
-            evt_block_time as block_time,
-            to as wallet_address, 
-            contract_address as token_address,
-            CAST(value as double) as amount_raw
-        FROM 
-        {{ source('erc20_arbitrum', 'evt_transfer') }}
-        WHERE contract_address = 0xDeadDeAddeAddEAddeadDEaDDEAdDeaDDeAD0000
-        {% if is_incremental() %}
-            AND evt_block_time >= date_trunc('day', now() - interval '7' Day)
-        {% endif %}
-
-        UNION ALL 
-
-        SELECT 
-            'withdrawals' as transfer_type, 
-            evt_tx_hash as tx_hash,
-            array[evt_index] as trace_address, 
-            evt_block_time as block_time,
-            "from" as wallet_address, 
-            contract_address as token_address,
-            -CAST(value as double) as amount_raw
-        FROM 
-        {{ source('erc20_arbitrum', 'evt_transfer') }}
-        WHERE contract_address = 0xDeadDeAddeAddEAddeadDEaDDEAdDeaDDeAD0000
-        {% if is_incremental() %}
-            AND evt_block_time >= date_trunc('day', now() - interval '7' Day)
-        {% endif %}
-),
-
 gas_fee as (
     SELECT 
         'gas_fee' as transfer_type,
@@ -117,20 +82,6 @@ SELECT
     amount_raw
 FROM 
 eth_transfers
-
-UNION ALL 
-
-SELECT 
-    'arbitrum' as blockchain, 
-    transfer_type,
-    tx_hash, 
-    trace_address,
-    block_time,
-    wallet_address, 
-    token_address, 
-    amount_raw
-FROM 
-erc20_eth_transfers
 
 UNION ALL 
 
