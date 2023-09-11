@@ -483,6 +483,8 @@ models:
       +schema: balances
       ethereum:
         +schema: balances_ethereum
+      polygon:
+        +schema: balances_polygon
 
     dodo:
       +schema: dodo
