@@ -96,8 +96,5 @@ SELECT t.type
     , t.amount_raw
     , -1 * t.amount_raw * p.price as amount_transfer_usd
 FROM transfer_btc t
-{% if is_incremental() %}
-where t.block_time >= date_trunc('day', now() - interval '7' day)
-{% endif %}
 LEFT JOIN prices p
     ON date_trunc('minute', t.block_time) = p.minute
