@@ -656,6 +656,6 @@ SELECT
   END) AS contract_project
   FROM filtered_list list
   LEFT JOIN {{ ref('contracts_optimism_project_name_mappings')}} mapping
-WHERE lower(list.contract_project) = lower(mapping.dune_name)
+ON lower(list.contract_project) = lower(mapping.dune_name)
 GROUP BY 1,2
 
