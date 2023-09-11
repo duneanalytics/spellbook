@@ -1,5 +1,6 @@
 {{ config (
-    alias = alias('etv_unbondLiquidityFromJob')
+    tags=['dunesql']
+    , alias = alias('etv_unbondLiquidityFromJob')
     , unique_key = ['blockchain', 'block_time']
     , post_hook = '{{ expose_spells(\'["ethereum", "optimism", "polygon"]\',
                                 "project", 

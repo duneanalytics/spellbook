@@ -1,7 +1,8 @@
-{{ config (
-    alias = alias('etv_addliquiditytoJob')
-    , unique_key = ['blockchain', 'block_time']
-    , post_hook = '{{ expose_spells(\'["ethereum", "optimism", "polygon"]\',
+{{ config(
+      tags=['dunesql']
+      , alias = alias('etv_addliquiditytoJob')
+      , unique_key = ['blockchain', 'block_time']
+      , post_hook = '{{ expose_spells(\'["ethereum", "optimism", "polygon"]\',
                                 "project", 
                                 "keep3r",
                                  \'["0xr3x"]\') }}'
