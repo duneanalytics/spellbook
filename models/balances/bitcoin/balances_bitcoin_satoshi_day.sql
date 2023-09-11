@@ -2,6 +2,7 @@
         schema = 'balances_bitcoin',
         alias = alias('satoshi_day'),
         tags = ['dunesql'],
+        partition_by = ['day'],
         post_hook='{{ expose_spells(\'["bitcoin"]\',
                                         "sector",
                                         "balances",
