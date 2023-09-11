@@ -60,10 +60,7 @@ gas_fee as (
         block_time, 
         "from" as wallet_address, 
         0xDeadDeAddeAddEAddeadDEaDDEAdDeaDDeAD0000 as token_address, 
-        -(CASE 
-            WHEN gas_price = cast(0 as UINT256) THEN 0
-            ELSE (CAST(gas_used as DOUBLE) * CAST(gas_price as DOUBLE)) + (CAST(l1_fee as DOUBLE))
-        END) as amount_raw
+        CAST(effective_gas_price as double) * CAST(gas_used as double) as amount_raw
     FROM 
     {{ source('arbitrum', 'transactions') }}
     {% if is_incremental() %}
