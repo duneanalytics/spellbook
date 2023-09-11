@@ -1,4 +1,5 @@
 {{ config(
+        tags=['dunesql'],
         alias = alias('claims'),
         materialized = 'incremental',
         file_format = 'delta',
@@ -42,7 +43,7 @@ FROM (
         , evt_index
     FROM {{ airdrop_claims_model }}
     {% if is_incremental() %}
-    WHERE block_time >= date_trunc("day", now() - interval '1 week')
+    WHERE block_time >= date_trunc('day', now() - interval '7' Day)
     {% endif %}
     {% if not loop.last %}
     UNION ALL
