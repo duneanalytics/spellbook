@@ -60,7 +60,7 @@ gas_fee as (
         block_time, 
         "from" as wallet_address, 
         0xDeadDeAddeAddEAddeadDEaDDEAdDeaDDeAD0000 as token_address, 
-        CAST(effective_gas_price as double) * CAST(gas_used as double) as amount_raw
+        CAST(gas_price as double) * CAST(gas_used as double) as amount_raw
     FROM 
     {{ source('arbitrum', 'transactions') }}
     {% if not is_incremental() %}
