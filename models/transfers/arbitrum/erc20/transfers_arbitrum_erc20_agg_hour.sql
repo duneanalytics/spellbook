@@ -26,4 +26,4 @@ LEFT JOIN
 -- this filter will only be applied on an incremental run
 WHERE tr.evt_block_time >= date_trunc('hour', now() - interval '3' Day)
 {% endif %}
-GROUP BY 1, 2, 3, 4, 5
+GROUP BY 1, 2, 3, 4, 5, 6
