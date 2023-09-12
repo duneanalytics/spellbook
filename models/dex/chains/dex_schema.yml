@@ -14,7 +14,7 @@ models:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
-            - maker
+            - project_contract_address
             - evt_indices
     columns: 
       - &blockchain
@@ -103,7 +103,7 @@ models:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
-            - maker
+            - project_contract_address
             - evt_indices
     columns: 
       - *blockchain
@@ -144,7 +144,7 @@ models:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
-            - maker
+            - project_contract_address
             - evt_indices
     columns: 
       - *blockchain
@@ -185,7 +185,7 @@ models:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
-            - maker
+            - project_contract_address
             - evt_indices
     columns: 
       - *blockchain
@@ -226,7 +226,7 @@ models:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
-            - maker
+            - project_contract_address
             - evt_indices
     columns: 
       - *blockchain
@@ -267,7 +267,7 @@ models:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
-            - maker
+            - project_contract_address
             - evt_indices
     columns: 
       - *blockchain
@@ -308,7 +308,7 @@ models:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
-            - maker
+            - project_contract_address
             - evt_indices
     columns: 
       - *blockchain
@@ -349,7 +349,7 @@ models:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
-            - maker
+            - project_contract_address
             - evt_indices
     columns: 
       - *blockchain
@@ -390,7 +390,7 @@ models:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
-            - maker
+            - project_contract_address
             - evt_indices
     columns: 
       - *blockchain
