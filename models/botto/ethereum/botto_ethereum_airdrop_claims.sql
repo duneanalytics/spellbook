@@ -1,10 +1,10 @@
 {{
     config(
+        tags=['dunesql', 'static'],
         schema = 'botto_ethereum',
         alias = alias('airdrop_claims'),
         materialized = 'table',
         file_format = 'delta',
-        tags=['static'],
         unique_key = ['recipient', 'tx_hash', 'evt_index'],
         post_hook='{{ expose_spells(\'["ethereum"]\',
                                 "project",
@@ -20,7 +20,7 @@ WITH early_price AS (
     , MIN_BY(price, minute) AS price
     FROM {{ source('prices', 'usd') }}
     WHERE blockchain = 'ethereum'
-    AND contract_address='{{botto_token_address}}'
+    AND contract_address= {{botto_token_address}}
     )
 
 SELECT 'ethereum' AS blockchain
@@ -31,16 +31,16 @@ SELECT 'ethereum' AS blockchain
 , t.to AS recipient
 , t.contract_address
 , t.evt_tx_hash AS tx_hash
-, CAST(t.amount AS DECIMAL(38,0)) AS amount_raw
+, t.amount AS amount_raw
 , CAST(t.amount/POWER(10, 18) AS double) AS amount_original
 , CASE WHEN t.evt_block_time >= (SELECT minute FROM early_price) THEN CAST(pu.price*t.amount/POWER(10, 18) AS double)
     ELSE CAST((SELECT price FROM early_price)*t.amount/POWER(10, 18) AS double)
     END AS amount_usd
-, '{{botto_token_address}}' AS token_address
+, {{botto_token_address}} AS token_address
 , 'BOTTO' AS token_symbol
 , t.evt_index
 FROM {{ source('botto_ethereum', 'BottoAirdrop_evt_AirdropTransfer') }} t
 LEFT JOIN {{ ref('prices_usd_forward_fill') }} pu ON pu.blockchain = 'ethereum'
-    AND pu.contract_address='{{botto_token_address}}'
+    AND pu.contract_address= {{botto_token_address}}
     AND pu.minute=date_trunc('minute', t.evt_block_time)
-WHERE t.evt_block_time BETWEEN '2021-10-07' AND '2022-01-09'
+WHERE t.evt_block_time BETWEEN timestamp '2021-10-07' AND timestamp '2022-01-09'

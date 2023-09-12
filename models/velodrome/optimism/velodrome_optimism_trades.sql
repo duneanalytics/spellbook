@@ -71,7 +71,7 @@ WITH dexs AS
 SELECT
     'optimism' AS blockchain
     ,'velodrome' AS project
-    ,'1' AS version
+    ,version
     ,TRY_CAST(date_trunc('day', dexs.block_time) AS date) AS block_date
     ,CAST(date_trunc('month', dexs.block_time) AS date) AS block_month
     ,dexs.block_time
