@@ -319,6 +319,7 @@ FROM (VALUES
     , ('ethereum', 0xb302bfe9c246c6e150af70b1caaa5e3df60dac05, 'Gemini', 'Gemini 5', 'hildobby', date '2022-08-28')
     , ('ethereum', 0x8d6f396d210d385033b348bcae9e4f9ea4e045bd, 'Gemini', 'Gemini 6', 'hildobby', date '2022-08-28')
     , ('ethereum', 0xd69b0089d9ca950640f5dc9931a41a5965f00303, 'Gemini', 'Gemini 7', 'hildobby', date '2022-08-28')
+    , ('ethereum', 0x183b1Ffb0Aa9213b9335AdFAd82E47bfb02f8d24, 'Gemini', 'Gemini 8', 'hildobby', date '2023-09-05')
     , ('ethereum', 0xdd51f01d9fc0fd084c1a4737bbfa5becb6ced9bc, 'Gemini', 'Gemini Deployer', 'hildobby', date '2023-08-31')
     , ('ethereum', 0x4c2f150fc90fed3d8281114c2349f1906cde5346, 'Gemini', 'Gemini Deployer 2', 'hildobby', date '2023-08-31')
     , ('ethereum', 0x07ee55aa48bb72dcc6e9d78256648910de513eca, 'Gemini', 'Gemini Contract 1', 'hildobby', date '2023-08-31')
