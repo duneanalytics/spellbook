@@ -56,7 +56,7 @@ with delays as (
     SELECT
         project
         , blockchain
-        , int(now() - max(block_time))/3600 as age_of_last_record_hours
+        , date_diff('hour', max(block_time), now()) as age_of_last_record_hours
     from {{ ref('dex_trades') }}
     group by 1,2
 )
@@ -67,7 +67,7 @@ with delays as (
  select
         '{{ trade_source['project'] }}' as project
         , '{{ trade_source['blockchain'] }}' as blockchain
-        , int(now() - max({{ trade_source['time_column'] }}))/3600 as age_of_last_record_hours
+        , date_diff('hour', max({{ trade_source['time_column'] }}), now()) as age_of_last_record_hours
  from {{ source(trade_source['schema'],trade_source['table_name']) }}
  group by 1,2
 {% if not loop.last %}
