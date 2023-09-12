@@ -553,8 +553,8 @@ FROM (VALUES
     -- Bilaxy
     , ('ethereum', 0xf7793d27a1b76cdf14db7c83e82c772cf7c92910, 'Bilaxy', 'Bilaxy 1', 'hildobby', date '2022-08-28') -- https://etherscan.io/address/0xf7793d27a1b76cdf14db7c83e82c772cf7c92910
     , ('ethereum', 0xcce8d59affdd93be338fc77fa0a298c2cb65da59, 'Bilaxy', 'Bilaxy 2', 'hildobby', date '2022-08-28') -- https://etherscan.io/address/0xcce8d59affdd93be338fc77fa0a298c2cb65da59
-    , ('ethereum', 0xf7793d27a1b76cdf14db7c83e82c772cf7c92910, 'Bilaxy', 'Bilaxy 3', 'hildobby', date '2023-09-09') -- https://etherscan.io/address/0x3b3d4eefdc603b232907a7f3d0ed1eea5c62b5f7
-    , ('ethereum', 0x9ba3560231e3e0ad7dde23106f5b98c72e30b468, 'Bilaxy', 'Bilaxy 4', 'hildobby', date '2023-09-09') -- https://etherscan.io/address/0x3b3d4eefdc603b232907a7f3d0ed1eea5c62b5f7
+    , ('ethereum', 0xf22a4b9d9d1b20b44699e36a1e3903e78143f9da, 'Bilaxy', 'Bilaxy 3', 'hildobby', date '2023-09-09')
+    , ('ethereum', 0x9ba3560231e3e0ad7dde23106f5b98c72e30b468, 'Bilaxy', 'Bilaxy 4', 'hildobby', date '2023-09-09')
     -- Bity
     , ('ethereum', 0xfb9f7f41319157ac5c5dccae308a63a4337ad5d9, 'Bity', 'Bity', 'hildobby', date '2022-08-28') -- https://etherscan.io/address/0xfb9f7f41319157ac5c5dccae308a63a4337ad5d9
     -- BW 
