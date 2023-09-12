@@ -57,7 +57,6 @@ erc20_transfers  as (
             contract_address as token_address,
             -CAST(value as double) as amount_raw
         FROM 
-        FROM 
             (
             {% if not is_incremental() %}
                 SELECT 
