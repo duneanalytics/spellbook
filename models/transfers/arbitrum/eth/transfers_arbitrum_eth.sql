@@ -1,6 +1,7 @@
 {{ config(
     tags=['dunesql'],
     materialized = 'incremental',
+    partition_by = ['block_month'],
     file_format = 'delta',
     incremental_strategy = 'merge',
     unique_key = ['transfer_type', 'tx_hash', 'trace_address', 'wallet_address', 'block_time'], 
@@ -28,7 +29,7 @@ eth_transfers  as (
         AND CAST(value as double) > 0
         AND to IS NOT NULL 
         {% if is_incremental() %}
-            AND block_time >= date_trunc('day', now() - interval '7' Day)
+            AND block_time >= date_trunc('day', now() - interval '3' Day)
         {% endif %}
 
         UNION ALL 
@@ -48,7 +49,7 @@ eth_transfers  as (
         AND CAST(value as double) > 0
         AND "from" IS NOT NULL 
         {% if is_incremental() %}
-            AND block_time >= date_trunc('day', now() - interval '7' Day)
+            AND block_time >= date_trunc('day', now() - interval '3' Day)
         {% endif %}
 ),
 
@@ -67,7 +68,7 @@ gas_fee as (
     WHERE CONCAT(CAST(hash as VARCHAR), CAST(block_number as VARCHAR)) != '0xf135954c7b2a17c094f917fff69aa215fa9af86443e55f167e701e39afa5ff0f15458950' -- this is weirdly duplicated on arbitrum.transactions table with a different block_number
     {% endif %}
     {% if is_incremental() %}
-        WHERE block_time >= date_trunc('day', now() - interval '7' Day)
+        WHERE block_time >= date_trunc('day', now() - interval '3' Day)
     {% endif %}
 )
 
@@ -77,6 +78,7 @@ SELECT
     tx_hash, 
     trace_address,
     block_time,
+    CAST(date_trunc('month', block_time) as date) as block_month,
     wallet_address, 
     token_address, 
     amount_raw
@@ -91,6 +93,7 @@ SELECT
     tx_hash, 
     trace_address,
     block_time,
+    CAST(date_trunc('month', block_time) as date) as block_month,
     wallet_address, 
     token_address, 
     amount_raw

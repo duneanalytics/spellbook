@@ -1,6 +1,6 @@
 {{ config(
         tags = ['dunesql'],
-        alias = alias('rolling_hour'))
+        alias = alias('erc20_rolling_hour'))
 }}
 
         SELECT

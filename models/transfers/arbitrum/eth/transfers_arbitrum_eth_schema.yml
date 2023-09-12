@@ -34,6 +34,9 @@ models:
       - &block_time
         name: block_time
         description: "Timestamp for block event time in UTC"
+      - &block_month
+        name: block_month
+        description: "Block time truncated to month used for partitioning"
       - &tx_hash
         name: tx_hash
         description: "Transaction hash"
@@ -72,6 +75,7 @@ models:
       - &amount
         name: amount
         description: "Raw amount of ETH token held *after* taking into account token decimals"
+      - *block_month
 
   - name: transfers_arbitrum_eth_agg_day
     meta:
@@ -97,6 +101,7 @@ models:
       - *symbol
       - *amount_raw
       - *amount
+      - *block_month
 
   - name: transfers_arbitrum_eth_rolling_hour
     meta:

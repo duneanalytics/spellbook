@@ -33,6 +33,9 @@ models:
       - &evt_block_time
         name: evt_block_time
         description: "Timestamp for block event time in UTC"
+      - &block_month
+        name: block_month
+        description: "Block time truncated to month used for partitioning"
       - &evt_tx_hash
         name: evt_tx_hash
         description: "Event transaction hash"
@@ -71,6 +74,7 @@ models:
       - &amount
         name: amount
         description: "Raw amount of ERC20 token held *after* taking into account token decimals"
+      - *block_month
 
   - name: transfers_arbitrum_erc20_agg_day
     meta:
@@ -96,6 +100,7 @@ models:
       - *symbol
       - *amount_raw
       - *amount
+      - *block_month
 
   - name: transfers_arbitrum_erc20_rolling_hour
     meta:

@@ -1,7 +1,8 @@
 {{ config(
         tags = ['dunesql'],
-        alias = alias('agg_day'),
+        alias = alias('erc20_agg_day'),
         materialized ='incremental',
+        partition_by = ['block_month'],
         file_format ='delta',
         incremental_strategy='merge',
         unique_key = ['day', 'wallet_address', 'token_address']
@@ -11,6 +12,7 @@
 select
     tr.blockchain,
     CAST(date_trunc('day', tr.evt_block_time) as date) as day,
+    block_month,
     tr.wallet_address,
     tr.token_address,
     t.symbol,
@@ -22,6 +24,6 @@ LEFT JOIN
 {{ ref('tokens_arbitrum_erc20') }} t on t.contract_address = tr.token_address
 {% if is_incremental() %}
 -- this filter will only be applied on an incremental run
-WHERE tr.evt_block_time >= date_trunc('day', now() - interval '7' Day)
+WHERE tr.evt_block_time >= date_trunc('day', now() - interval '3' Day)
 {% endif %}
-GROUP BY 1, 2, 3, 4, 5
+GROUP BY 1, 2, 3, 4, 5, 6
