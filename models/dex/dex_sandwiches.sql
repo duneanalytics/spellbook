@@ -6,7 +6,7 @@
         file_format = 'delta',
         incremental_strategy = 'merge',
         unique_key = ['blockchain', 'sandwiched_pool', 'frontrun_tx_hash', 'frontrun_taker', 'frontrun_index', 'currency_address'],
-        post_hook='{{ expose_spells(\'["ethereum", "bnb", "avalanche_c", "gnosis", "optimism", "arbitrum", "fantom", "polygon"]\',
+        post_hook='{{ expose_spells(\'["ethereum", "bnb", "avalanche_c", "gnosis", "optimism", "arbitrum", "fantom", "polygon", "base"]\',
                                 "sector",
                                 "dex",
                                 \'["hildobby"]\') }}'
@@ -22,6 +22,7 @@
      , (ref('dex_gnosis_sandwiches'))
      , (ref('dex_optimism_sandwiches'))
      , (ref('dex_polygon_sandwiches'))
+     , (ref('dex_base_sandwiches'))
 ] %}
 
 SELECT *
