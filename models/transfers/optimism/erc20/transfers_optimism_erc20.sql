@@ -3,6 +3,7 @@
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
+    partition_by = ['block_month'],
     unique_key = ['transfer_type', 'evt_tx_hash', 'evt_index', 'wallet_address'], 
     alias = alias('erc20'),
     post_hook='{{ expose_spells(\'["optimism"]\',
