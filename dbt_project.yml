@@ -201,9 +201,6 @@ models:
       celo:
         +schema: nft_celo
 
-    fungible:
-      +schema: fungible
-
     cex:
       +schema: cex
       arbitrum:
