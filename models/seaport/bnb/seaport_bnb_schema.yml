@@ -19,7 +19,7 @@ models:
             - sub_type
             - sub_idx
     columns:
-      - &block_time    
+      - &block_time
         name: block_time
         description: "Block time in UTC"
       - &block_number
@@ -27,7 +27,7 @@ models:
         description: "Block number of transaction"
       - &tx_hash
         name: tx_hash
-        description: "Hash ID of transaction" 
+        description: "Hash ID of transaction"
       - &evt_index
         name: evt_index
         description: "Event log index"
@@ -36,7 +36,7 @@ models:
         description: "Exploded column : `offer`|`consideration`"
       - &sub_idx
         name: sub_idx
-        description: "Index number of `sub_type`" 
+        description: "Index number of `sub_type`"
       - &offer_first_item_type
         name: offer_first_item_type
         description: "First item_type of offer in this trade : `native`|`erc20`|`erc721`|`erc1155`"
@@ -261,10 +261,102 @@ models:
       - &right_hash
         name: right_hash
         description: "right 8 character of data column on Transaction"
-      - &zone_address 
+      - &zone_address
         name: zone_address
         description: "zone address of Seaport transaction"
       - &estimated_price
         name: estimated_price
         description: "True if it is bundle trade and dividened price"
       - *is_private
+
+  - name: seaport_bnb_traces
+    meta:
+      blockchain: bnb
+      project: seaport
+      contributors: hildobby
+    config:
+      tags: ['seaport', 'bnb', 'traces']
+    description: >
+        Seaport emitted event traces on BNB
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_number
+            - tx_hash
+            - evt_index
+            - order_hash
+            - trace_side
+            - trace_index
+    columns:
+      - name: blockchain
+        description: "Blockchain"
+      - name: block_date
+        description: "UTC event block date"
+      - name: block_time
+        description: "UTC event block time"
+      - name: block_number
+        description: "Block number in which the transaction was executed"
+      - name: trace_side
+        tests:
+          - accepted_values:
+              values: ['consideration', 'offer']
+        description: "Side of the trace"
+      - name: order_hash
+        description: "Unique trade identifier hash"
+      - name: tx_hash
+        description: "Transaction hash"
+      - name: token_standard
+        tests:
+          - accepted_values:
+              values: ['native', 'bep20', 'bep721', 'bep1155']
+        description: "Token standard"
+      - name: trace_index
+        description: "Index of the trace"
+      - name: seaport_contract_address
+        description: "Seaport contract address"
+      - name: seaport_version
+        description: "Seaport version"
+      - name: token_address
+        description: "Token address"
+      - name: amount
+        description: "Amount"
+      - name: identifier
+        description: "Token identified"
+      - name: recipient
+        description: "Recipient"
+      - name: offerer
+        description: "Offerer"
+      - name: zone
+        description: "Seaport zone"
+      - name: evt_index
+        description: "Event index"
+
+  - name: seaport_bnb_tagging
+    meta:
+      blockchain: bnb
+      project: seaport
+      contributors: hildobby
+    config:
+      tags: ['seaport', 'bnb', 'tagging']
+    description: >
+        Seaport tagging to identify the different protocols using Seaport on BNB 
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - tagging_method
+            - identifier
+    columns:
+      - name: blockchain
+        description: "Blockchain"
+      - name: tagging_method
+        description: "Identification method"
+        tests:
+          - accepted_values:
+              values: ['zone', 'fee_recipient', 'tx_data_salt']
+      - name: identifier
+        description: "Identifier hash"
+      - name: protocol
+        description: "Protocol"
+      - name: protocol_type
+        description: "Type of Protocol"

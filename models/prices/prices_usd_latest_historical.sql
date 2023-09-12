@@ -5,12 +5,13 @@
         materialized = 'incremental',
         file_format = 'delta',
         incremental_strategy = 'merge',
-        unique_key = ['blockchain','contract_address','decimals','symbol']
+        unique_key = ['unique_key']
         )
 }}
 
 SELECT
-  pu.blockchain
+{{ dbt_utils.generate_surrogate_key(['pu.blockchain', 'pu.contract_address', 'pu.decimals', 'pu.symbol']) }} as unique_key
+, pu.blockchain
 , pu.contract_address
 , pu.decimals
 , pu.symbol
@@ -20,4 +21,4 @@ FROM {{ source('prices', 'usd') }} pu
 {% if is_incremental() %}
     WHERE minute >= date_trunc('day', now() - interval '2' day)
 {% endif %}
-GROUP BY 1,2,3,4
+GROUP BY 1,2,3,4,5

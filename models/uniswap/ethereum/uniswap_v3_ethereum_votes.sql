@@ -1,7 +1,8 @@
 {{ config(
+    tags = ['dunesql'],
     schema = 'uniswap_v3_ethereum',
     alias = alias('votes'),
-    partition_by = ['block_date'],
+    partition_by = ['block_month'],
     materialized = 'table',
     file_format = 'delta',
     post_hook='{{ expose_spells(\'["ethereum"]\',
@@ -29,6 +30,7 @@ SELECT
     '{{project_version}}' as version,
     vc.evt_block_time as block_time,
     date_trunc('DAY', vc.evt_block_time) AS block_date,
+    CAST(date_trunc('month', vc.evt_block_time) AS date) AS block_month,
     vc.evt_tx_hash as tx_hash,
     '{{dao_name}}' as dao_name,
     '{{dao_address}}' as dao_address,

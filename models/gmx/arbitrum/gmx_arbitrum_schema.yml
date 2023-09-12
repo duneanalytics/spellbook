@@ -111,7 +111,7 @@ models:
             - version
             - tx_hash
             - evt_index
-      - check_perpetuals_seed_legacy:
+      - check_perpetuals_seed:
           blockchain: arbitrum
           project: gmx
           version: 1
@@ -158,3 +158,6 @@ models:
       - *tx_from
       - *tx_to
       - *evt_index
+      - &block_month
+        name: block_month
+        description: "UTC event block month of each DEX trade"

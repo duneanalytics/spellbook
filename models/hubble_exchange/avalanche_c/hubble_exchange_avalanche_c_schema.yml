@@ -20,7 +20,7 @@ models:
             - version
             - tx_hash
             - evt_index
-      - check_perpetuals_seed_legacy:
+      - check_perpetuals_seed:
           blockchain: avalanche_c
           project: hubble_exchange
           version: 1
@@ -85,3 +85,6 @@ models:
       - &evt_index
         name: evt_index
         description: "Event index number"
+      - &block_month
+        name: block_month
+        description: "Month of the transaction"

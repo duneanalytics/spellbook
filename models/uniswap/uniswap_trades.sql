@@ -1,9 +1,9 @@
 {{ config(tags=['dunesql'],
         alias = alias('trades'),
-        post_hook='{{ expose_spells(\'["ethereum","arbitrum", "optimism", "polygon", "bnb"]\',
+        post_hook='{{ expose_spells(\'["ethereum","arbitrum", "optimism", "polygon", "bnb", "base", "celo"]\',
                                 "project",
                                 "uniswap",
-                                \'["jeff-dude","mtitus6", "Henrystats", "chrispearcx"]\') }}'
+                                \'["jeff-dude","mtitus6", "Henrystats", "chrispearcx", "wuligy", "tomfutago"]\') }}'
         )
 }}
 
@@ -13,6 +13,8 @@ ref('uniswap_ethereum_trades')
 , ref('uniswap_arbitrum_trades')
 , ref('uniswap_polygon_trades')
 , ref('uniswap_bnb_trades')
+, ref('uniswap_base_trades')
+, ref('uniswap_celo_trades')
 ] %}
 
 
@@ -23,6 +25,7 @@ FROM (
         blockchain,
         project,
         version,
+        block_month,
         block_date,
         block_time,
         token_bought_symbol,

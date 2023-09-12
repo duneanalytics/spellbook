@@ -1,7 +1,8 @@
 {{ config(
+    tags = ['dunesql'],
     schema = 'balancer',
     alias = alias('trades'),
-    post_hook='{{ expose_spells(\'["arbitrum", "ethereum", "gnosis", "optimism", "polygon"]\',
+    post_hook='{{ expose_spells(\'["arbitrum", "avalanche_c", "base", "ethereum", "gnosis", "optimism", "polygon"]\',
                                 "project",
                                 "balancer",
                                 \'["bizzyvinci", "thetroyharris"]\') }}'
@@ -10,6 +11,8 @@
 
 {% set balancer_models = [
     ref('balancer_arbitrum_trades'),
+    ref('balancer_avalanche_c_trades'),
+    ref('balancer_base_trades'),
     ref('balancer_ethereum_trades'),
     ref('balancer_gnosis_trades'),
     ref('balancer_optimism_trades'),
@@ -24,6 +27,7 @@ FROM (
         blockchain,
         project,
         version,
+        block_month,
         block_date,
         block_time,
         token_bought_symbol,
@@ -38,11 +42,12 @@ FROM (
         token_sold_address,
         taker,
         maker,
+        pool_id,
+        swap_fee,
         project_contract_address,
         tx_hash,
         tx_from,
         tx_to,
-        trace_address,
         evt_index
     FROM {{ dex_model }}
     {% if not loop.last %}

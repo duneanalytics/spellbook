@@ -53,12 +53,12 @@ models:
       - &paired_token_reserve
         name: paired_token_reserve
         description: "Liquidity reserve of the paired token in the pool"
-      - &main_token_usd_reserve
-        name: main_token_usd_reserve
-        description: "Liquidity of the main token in the pool in USD"
-      - &paired_token_usd_reserve
-        name: paired_token_usd_reserve
-        description: "Liquidity of the paired token in the pool in USD"
+      - &main_token_usd_price
+        name: main_token_usd_price
+        description: "Price of the main token in the pool in USD"
+      - &paired_token_usd_price
+        name: paired_token_usd_price
+        description: "Price of the paired token in the pool in USD"
       - &trading_volume
         name: trading_volume
         description: "USD value of the trade"
@@ -91,8 +91,8 @@ models:
       - *paired_token_symbol
       - *main_token_reserve
       - *paired_token_reserve
-      - *main_token_usd_reserve
-      - *paired_token_usd_reserve
+      - *main_token_usd_price
+      - *paired_token_usd_price
       - *trading_volume
 
   - name: lido_liquidity_ethereum_curve_steth_pool
@@ -123,8 +123,8 @@ models:
       - *paired_token_symbol
       - *main_token_reserve
       - *paired_token_reserve
-      - *main_token_usd_reserve
-      - *paired_token_usd_reserve
+      - *main_token_usd_price
+      - *paired_token_usd_price
       - *trading_volume
 
   - name: lido_liquidity_ethereum_curve_steth_conc_pool
@@ -155,8 +155,8 @@ models:
       - *paired_token_symbol
       - *main_token_reserve
       - *paired_token_reserve
-      - *main_token_usd_reserve
-      - *paired_token_usd_reserve
+      - *main_token_usd_price
+      - *paired_token_usd_price
       - *trading_volume
 
   - name: lido_liquidity_ethereum_curve_steth_ng_pool
@@ -187,8 +187,8 @@ models:
       - *paired_token_symbol
       - *main_token_reserve
       - *paired_token_reserve
-      - *main_token_usd_reserve
-      - *paired_token_usd_reserve
+      - *main_token_usd_price
+      - *paired_token_usd_price
       - *trading_volume
 
   - name: lido_liquidity_ethereum_curve_steth_frxeth_pool
@@ -219,8 +219,8 @@ models:
       - *paired_token_symbol
       - *main_token_reserve
       - *paired_token_reserve
-      - *main_token_usd_reserve
-      - *paired_token_usd_reserve
+      - *main_token_usd_price
+      - *paired_token_usd_price
       - *trading_volume
 
   - name: lido_liquidity_ethereum_curve_wsteth_reth_pool
@@ -251,8 +251,8 @@ models:
       - *paired_token_symbol
       - *main_token_reserve
       - *paired_token_reserve
-      - *main_token_usd_reserve
-      - *paired_token_usd_reserve
+      - *main_token_usd_price
+      - *paired_token_usd_price
       - *trading_volume
 
 
@@ -284,6 +284,6 @@ models:
       - *paired_token_symbol
       - *main_token_reserve
       - *paired_token_reserve
-      - *main_token_usd_reserve
-      - *paired_token_usd_reserve
+      - *main_token_usd_price
+      - *paired_token_usd_price
       - *trading_volume

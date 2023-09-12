@@ -19,7 +19,6 @@ models:
             - version
             - tx_hash
             - evt_index
-            - trace_address
     columns:
       - &blockchain
         name: blockchain
@@ -33,6 +32,9 @@ models:
       - &block_date
         name: block_date
         description: "UTC event block date of each DEX trade"
+      - &block_month
+        name: block_month
+        description: "UTC event block month of each DEX trade"
       - &block_time
         name: block_time
         description: "UTC event block time of each DEX trade"
@@ -88,9 +90,6 @@ models:
       - &tx_to
         name: tx_to
         description: "Address which received the trade"
-      - &trace_address
-        name: trace_address
-        description: ""
       - &evt_index
         name: evt_index
         description: "Index of the corresponding trade event"
@@ -135,6 +134,8 @@ models:
       - *tx_hash
       - *tx_from
       - *tx_to
+      - &trace_address
+        name: trace_address
       - *evt_index
 
   - name: dex_prices
@@ -238,7 +239,7 @@ models:
         description: "Contract address used to create the pool"
 
   - name: dex_offers
-    meta: 
+    meta:
       blockchain: optimism
       sector: dex
       contributors: denver
@@ -246,7 +247,7 @@ models:
       tags: ['optimism', 'order-books', 'offers', 'dex', 'cross-chain', 'offers']
     description: >
       DEX offers across all chains across all contracts and versions
-    columns: 
+    columns:
       - *blockchain
       - *project
       - *version
@@ -285,7 +286,7 @@ models:
       - &buy_amount_raw
         name: buy_amount_raw
         description: "the raw amount of the token that the maker is buying"
-      - &sold_amount 
+      - &sold_amount
         name: sold_amount
         description: "the amount of the token that the offer has sold"
       - &bought_amount
@@ -308,7 +309,7 @@ models:
         description: "the amount of the token that the offer has sold in USD (summed bassed on the price at the time of each trade (if any))"
       - &bought_amount_usd
         name: bought_amount_usd
-        description: "the amount of the token that the offer has bought in USD (summed bassed on the price at the time of each trade (if any))"  
+        description: "the amount of the token that the offer has bought in USD (summed bassed on the price at the time of each trade (if any))"
       - &txn_cost_usd
         name: txn_cost_usd
         description: "the cost of the transaction in USD"
@@ -316,8 +317,8 @@ models:
       - *tx_hash
       - *tx_from
       - *tx_to
-  
-  
+
+
   - name: dex_flashloans
     meta:
       blockchain: arbitrum, avalanche_c, optimism, polygon, ethereum, fantom
@@ -351,7 +352,7 @@ models:
 
 
   - name: dex_sandwiches
-    meta: 
+    meta:
       blockchain: ethereum, bnb, avalanche_c, gnosis, optimism, fantom, arbitrum
       sector: dex
       contributors: hildobby
@@ -369,7 +370,7 @@ models:
             - frontrun_taker
             - currency_address
             - ratio_traded_token
-    columns: 
+    columns:
       - *blockchain
       - *project
       - *version
