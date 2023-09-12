@@ -32,6 +32,7 @@ WITH flashloans AS (
     WHERE f.evt_block_time > NOW() - interval '1' month
         {% if is_incremental() %}
         AND f.evt_block_time >= date_trunc('day', now() - interval '7' Day)
+
         {% endif %}
     )
 
@@ -53,3 +54,6 @@ FROM flashloans flash
 LEFT JOIN {{ source('prices','usd') }} pu ON pu.blockchain = 'arbitrum'  
     AND pu.contract_address = flash.currency_contract
     AND pu.minute = date_trunc('minute', flash.block_time)
+    {% if is_incremental() %}
+    AND pu.minute >= date_trunc('day', now() - interval '7' day)
+    {% endif %}

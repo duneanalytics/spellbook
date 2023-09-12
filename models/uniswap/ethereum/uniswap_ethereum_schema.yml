@@ -243,6 +243,7 @@ models:
         description: "Version of the contract built and deployed by the DAO project"
       - name: block_time
         description: "UTC event block time of each DAO vote"
+      - *block_month
       - name: tx_hash
         description: "Unique transaction hash value tied to each vote on the DAO"
       - &dao_name
@@ -287,6 +288,14 @@ models:
       tags: ['ethereum', 'proposals', 'dao', 'cross-chain']
     description: >
       DAO proposals on all chains across all contracts and versions
+    tests:
+      - check_seed:
+          seed_file: ref('uniswap_v3_proposals_seed')
+          match_columns:
+            - blockchain
+            - proposal_id
+          check_columns:
+            - status
     columns:
       - name: blockchain
       - name: project
@@ -299,6 +308,7 @@ models:
         description: "Unique transaction hash value tied to each DAO proposal"
       - *dao_name
       - *dao_address
+      - *block_month
       - name: proposal_id
         tests:
           - unique
