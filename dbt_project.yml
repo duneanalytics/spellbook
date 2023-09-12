@@ -274,6 +274,8 @@ models:
         +schema: uniswap_bnb
       base:
         +schema: uniswap_base
+      celo:
+        +schema: uniswap_celo
 
     timeswap:
       +schema: timeswap
@@ -485,6 +487,8 @@ models:
         +schema: balances_ethereum
       celo:
         +schema: balances_celo
+      polygon:
+        +schema: balances_polygon
 
     dodo:
       +schema: dodo
@@ -935,7 +939,9 @@ models:
       ethereum:
         +schema: pancakeswap_ethereum
       arbitrum:
-        +schema: pancakeswap_arbitrum  
+        +schema: pancakeswap_arbitrum
+      base:
+        +schema: pancakeswap_base 
 
     bancor:
       +schema: bancor
@@ -1423,3 +1429,8 @@ models:
       +schema: worldcoin
       optimism:
         +schema: worldcoin_optimism
+    
+    aerodrome:
+      +schema: aerodrome
+      base:
+        +schema: aerodrome_base
