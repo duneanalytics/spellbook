@@ -1,16 +1,29 @@
 version: 2
 
 models:
-  - name: uniswap_trades
+  - name: uniswap_v3_celo_trades
     meta:
-      blockchain: ethereum, optimism, polygon, arbitrum, bnb, base, celo
+      blockchain: celo
       sector: dex
-      project: uniswap
-      contributors: jeff-dude, masquot, soispoke, 0xBoxer, Henrystats, chrispearcx, wuligy, fomfutago
+      project: uniswap_v3
+      contributors: jeff-dude, masquot, soispoke, tomfutago
     config:
-      tags: ['ethereum', 'optimism', 'polygon', 'uniswap','trades', 'dex', 'jeff-dude','cross-chain', 'bnb', 'base', 'celo']
+      tags: ['celo','uniswap_v3','trades', 'uniswap','dex']
     description: >
-        Uniswap trades on all chains across all contracts and versions. This table will load dex trades downstream.
+        Uniswap V3 contract trades on Celo
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_date
+            - blockchain
+            - project
+            - version
+            - tx_hash
+            - evt_index
+      - check_dex_seed:
+          blockchain: celo
+          project: uniswap
+          version: 3
     columns:
       - &blockchain
         name: blockchain
@@ -80,66 +93,60 @@ models:
         description: "Address which received the transaction"
       - &evt_index
         name: evt_index
-        description: "the position of this event log within this transaction"
+        description: ""
 
-  - name: uniswap_liquidity_manager_pools
+  - name: uniswap_celo_trades
     meta:
-      blockchain: optimism
+      blockchain: celo
+      sector: dex
       project: uniswap
-      contributors: msilb7
+      contributors: jeff-dude, masquot, soispoke, tomfutago
     config:
-      tags: ['optimism','uniswap','pools','liquidity managers']
+      tags: ['celo','dex','trades', 'uniswap']
     description: >
-        A table containing Uniswap mappings for known liquidity manager pools created.
+        Uniswap trades on Celo across all contracts and versions. This table will load dex trades downstream.
     columns:
-      - &blockchain_lm
-        name: blockchain
-        description: 'Blockchain of the LP Token'
-      - &dex_project_name
-        name: dex_project_name
-        description: "DEX Project Name - This will be used for overall DEX LM incentives models"
-      - &dex_project_version
-        name: dex_project_version
-        description: "DEX Project Version - This will be used for overall DEX LM incentives models"
-      - &project_lm
-        name: project
-        description: 'Project Name of the LP Token'
-      - &contract_address_lm
-        name: contract_address
-        description: 'Manager LP Token contract address'
-      - &pool_contract
-        name: pool_contract
-        description: "Uniswap liquidity pool contract address"
-      - &fee
-        name: fee
-        description:  "Swap fee of a Uniswap liquidity pool. Divide by 1e4 or power(10,4) to get the fee percentage"
-      - &token0
-        name: token0
-        description:  "Token0 contract address"
-      - &token1
-        name: token1
-        description:  "Token1 contract address"
+      - *blockchain
+      - *project
+      - *version
+      - *block_month
+      - *block_date
+      - *block_time
+      - *token_bought_symbol
+      - *token_sold_symbol
+      - *token_pair
+      - *token_bought_amount
+      - *token_sold_amount
+      - *token_bought_amount_raw
+      - *token_sold_amount_raw
+      - *amount_usd
+      - *token_bought_address
+      - *token_sold_address
+      - *taker
+      - *maker
+      - *project_contract_address
+      - *tx_hash
+      - *tx_from
+      - *tx_to
+      - *evt_index
 
-  - name: uniswap_pools
+  - name: uniswap_celo_pools
     meta:
-      blockchain: ethereum, polygon, arbitrum, celo
+      blockchain: celo
       sector: dex
       contributors: hildobby, tomfutago
     config:
-      tags: ['ethereum', 'polygon', 'arbitrum', 'celo', 'pools']
+      tags: ['celo']
     description: >
       Uniswap DEX pools
-    tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - pool
     columns:
       - *blockchain
       - *project
       - *version
       - name: pool
         description: "DEX pool smart contract address"
+        tests:
+          - unique
       - name: fee
         description: "Defined fee"
       - name: token0
@@ -153,15 +160,15 @@ models:
       - name: contract_address
         description: "Contract address used to create the pool"
 
-  - name: uniswap_flashloans
+  - name: uniswap_v3_celo_flashloans
     meta:
-      blockchain: ethereum, bnb, arbitrum, optimism, polygon, celo
+      blockchain: celo
       sector: lending
       contributors: hildobby, tomfutago
     config:
-      tags: ['ethereum', 'bnb', 'arbitrum', 'optimism', 'polygon', 'celo', 'flashloans']
+      tags: ['celo', 'flashloans']
     description: >
-      All Uniswap flashloans
+      All Uniswap v3 flashloans on Celo
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -169,15 +176,15 @@ models:
             - tx_hash
             - evt_index
     columns:
-      - name: blockchain
-      - name: project
-      - name: version
-      - name: block_time
+      - *blockchain
+      - *project
+      - *version
+      - *block_time
       - name: block_number
       - name: amount
       - name: amount_usd
-      - name: tx_hash
-      - name: evt_index
+      - *tx_hash
+      - *evt_index
       - name: fee
       - name: currency_contract
       - name: currency_symbol
