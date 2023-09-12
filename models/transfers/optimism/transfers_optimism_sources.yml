@@ -44,3 +44,8 @@ sources:
           - *evt_index
           - *evt_tx_hash
           - *wad
+
+  - name: optimism_legacy_ovm1
+    tables:
+      - name: traces
+        loaded_at_field: block_time
