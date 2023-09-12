@@ -1,6 +1,6 @@
 {{ config(
         tags = ['dunesql'],
-        alias = alias('day'),
+        alias = alias('erc20_day'),
         post_hook='{{ expose_spells(\'["base"]\',
                                     "sector",
                                     "balances",
