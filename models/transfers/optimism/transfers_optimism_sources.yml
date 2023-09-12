@@ -49,3 +49,8 @@ sources:
     tables:
       - name: traces
         loaded_at_field: block_time
+
+  - name: erc20_optimism_legacy_ovm1
+    tables:
+      - name: evt_transfer
+        loaded_at_field: evt_block_time
