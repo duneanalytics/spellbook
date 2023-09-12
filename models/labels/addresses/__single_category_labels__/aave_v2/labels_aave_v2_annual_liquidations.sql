@@ -1,4 +1,7 @@
-{{config(alias = alias('aave_v2_liquidations'))}}
+{{config(
+    tags=['dunesql']
+    , alias = alias('aave_v2_liquidations')
+)}}
 
 
 WITH mev_addresses AS (
@@ -40,7 +43,7 @@ SELECT
     , 'liquidation type' AS category
     , 'paulx' AS contributor
     , 'query' AS source
-    , date('2023-03-12') AS created_at
+    , date '2023-03-12' AS created_at
     , now() AS updated_at
     , 'aave_v2 annual liquidations' AS model_name
     , 'persona' AS label_type
@@ -63,4 +66,3 @@ SELECT
     , model_name
     , label_type
 FROM final_base_label
-;

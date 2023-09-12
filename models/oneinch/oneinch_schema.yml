@@ -57,3 +57,145 @@ models:
         name: tx_hash_example
       - &last_block_time
         name: last_block_time
+
+  - name: oneinch_protocols
+    meta:
+      blockchain: ['ethereum','optimism','polygon','arbitrum','avalanche_c','gnosis','bnb','fantom']
+      sector: oneinch
+      contributors: [grkhr]
+    config:
+      tags: ['oneinch', 'metadata']
+    description: >
+        protocols, methods, offsets
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - contract_address
+            - blockchain
+            - selector
+    columns:
+      - &contract_id
+        name: contract_id
+      - &contract_address_not_null
+        name: contract_address
+        tests:
+          - not_null
+      - *contract_name
+      - &blockchain_not_null
+        name: blockchain
+        tests:
+          - not_null
+      - &created_at
+        name: created_at
+      - &selector_not_null
+        name: selector
+        tests:
+          - not_null
+      - &method
+        name: method
+      - &protocol
+        name: protocol
+      - &version
+        name: version
+      - &main
+        name: main
+      - &offsets
+        name: offsets
+      - &signature
+        name: signature
+
+  - name: oneinch_ar_calls
+    meta:
+      blockchain: ['ethereum','optimism','polygon','arbitrum','avalanche_c','gnosis','bnb','fantom']
+      sector: oneinch
+      contributors: [grkhr]
+    config:
+      tags: ['oneinch', 'raw']
+    description: >
+        calls all chains
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - tx_hash
+            - call_trace_address
+    columns:
+      - *blockchain_not_null
+      - &block_time
+        name: block_time
+      - &tx_hash_not_null
+        name: tx_hash
+        tests:
+          - not_null
+      - &tx_from
+        name: tx_from
+      - &tx_success
+        name: tx_success
+      - &call_success
+        name: call_success
+      - &call_trace_address_not_null
+        name: call_trace_address
+        tests:
+          - not_null
+      - &caller
+        name: caller
+      - &call_selector
+        name: call_selector
+      - &call_input
+        name: call_input
+      - &call_output
+        name: call_output
+
+  - name: oneinch_ar_calls_transfers_amounts
+    meta:
+      blockchain: ['ethereum','optimism','polygon','arbitrum','avalanche_c','gnosis','bnb','fantom']
+      sector: oneinch
+      contributors: [grkhr]
+    config:
+      tags: ['oneinch', 'raw']
+    description: >
+        calls transfer amounts all chains
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - unique_call_transfer_id
+    columns:
+      - *blockchain_not_null
+      - *block_time
+      - *tx_hash_not_null
+      - *tx_from
+      - *tx_success
+      - *call_success
+      - *call_trace_address_not_null
+      - *caller
+      - *call_selector
+      - &transfer_trace_address
+        name: transfer_trace_address
+      - *contract_address
+      - &amount
+        name: amount
+      - &native_token
+        name: native_token
+      - &transfer_from
+        name: transfer_from
+      - &transfer_to
+        name: transfer_to
+      - &rn_ta_asc
+        name: rn_ta_asc
+      - &rn_ta_desc
+        name: rn_ta_desc
+      - *call_output
+      - *call_input
+      - &minute
+        name: minute
+      - &block_month_not_null
+        name: block_month
+        tests:
+          - not_null
+      - &unique_call_transfer_id
+        name: unique_call_transfer_id
+        tests:
+          - unique
+          - not_null
+

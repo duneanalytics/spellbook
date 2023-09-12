@@ -2,7 +2,7 @@
 	tags=['legacy'],
 	
     alias = alias('quest_completions', legacy_model=True),
-    partition_by = ['block_date'],
+    partition_by = ['block_month'],
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
@@ -18,13 +18,16 @@
 
 SELECT
     DATE_TRUNC('day',call_block_time) AS block_date,
+    DATE_TRUNC('month',call_block_time) AS block_month,
     account AS quester_address,
     call_tx_hash AS tx_hash,
     call_block_number AS block_number,
     call_block_time AS block_time,
     nft_id,
     contract_project,
-    quest_project
+    quest_project,
+    contract_address AS nft_contract_address,
+    output_0 as tokenId
 
 FROM
     {{source('optimism_quest_optimism','StarNFTV4_call_mint')}} m

@@ -1,6 +1,7 @@
 {{ config(
+    tags=['dunesql'],
     alias = alias('trades'),
-    partition_by = ['block_date'],
+    partition_by = ['block_month'],
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
@@ -14,148 +15,190 @@
 
 {% set project_start_date = '2023-03-30' %}
 
-WITH
-  bebop_raw_data AS (
+WITH 
+
+bebop_raw_data AS (
     SELECT
-      call_block_time AS block_time,
-      call_block_number AS block_number,
-      call_tx_hash AS tx_hash,
-      evt_index,
-      ex.contract_address,
-      get_json_object(order, '$.expiry') AS expiry,
-      cast(
-        get_json_object(order, '$.taker_address') AS string
-      ) AS taker_address,
-      array_distinct(
-        from_json(
-          get_json_object(order, '$.maker_addresses'), 'array<string>'
-        )
-      ) AS maker_addresses,
-      arrays_zip(
-        array_distinct(
-          flatten(
-            from_json(
-              get_json_object(order, '$.taker_tokens') , 'array<array<string>>'
-            )
-          )
-        ),
-        array_distinct(
-          flatten(
-            from_json(
-              get_json_object(order, '$.taker_amounts') , 'array<array<DECIMAL(38, 0)>>'
-            )
-          )
-        )
-      ) AS taker_tokens,
-      arrays_zip(
-        array_distinct(
-          flatten(
-            from_json(
-              get_json_object(order, '$.maker_tokens') , 'array<array<string>>'
-            )
-          )
-        ),
-        array_distinct(
-          flatten(
-            from_json(
-              get_json_object(order, '$.maker_amounts') , 'array<array<DECIMAL(38, 0)>>'
-            )
-          )
-        )
-      ) AS maker_tokens
-    FROM
-      {{ source('bebop_v3_ethereum', 'BebopAggregationContract_evt_AggregateOrderExecuted') }}
-      LEFT JOIN {{ source('bebop_v3_ethereum', 'BebopAggregationContract_call_SettleAggregateOrder') }} ex ON ex.call_tx_hash = evt_tx_hash
-    WHERE
-      call_success = true
-      {% if not is_incremental() %}
-      AND evt_block_time >= '{{project_start_date}}'
-      {% endif %}
-      {% if is_incremental() %}
-      AND evt_block_time >= date_trunc("day", now() - interval '1 week')
-      {% endif %}
-  ),
-  explode_taker_tokens_data as (
+        call_block_time AS block_time,
+        call_block_number AS block_number,
+        call_tx_hash AS tx_hash,
+        evt_index,
+        ex.contract_address,
+        JSON_EXTRACT_SCALAR(ex."order", '$.expiry') AS expiry,
+        from_hex(JSON_EXTRACT_SCALAR(ex."order", '$.taker_address')) as taker_address,
+        from_hex(JSON_EXTRACT_SCALAR(JSON_EXTRACT(ex."order", '$.maker_addresses'), '$[0]'))  AS maker_address,
+        JSON_EXTRACT(ex."order", '$.taker_tokens') AS taker_tokens_json,
+        JSON_EXTRACT(ex."order", '$.maker_tokens') AS maker_tokens_json,
+        JSON_EXTRACT(ex."order", '$.taker_amounts') AS taker_amounts_json,
+        JSON_EXTRACT(ex."order", '$.maker_amounts') AS maker_amounts_json,
+        json_array_length(json_extract((JSON_EXTRACT(ex."order", '$.taker_tokens')), '$[0]')) as taker_length,
+        json_array_length(json_extract((JSON_EXTRACT(ex."order", '$.maker_tokens')), '$[0]')) as maker_length
+    FROM 
+    {{ source('bebop_v3_ethereum', 'BebopAggregationContract_evt_AggregateOrderExecuted') }} evt
+    LEFT JOIN 
+    {{ source('bebop_v3_ethereum', 'BebopAggregationContract_call_SettleAggregateOrder') }} ex
+        ON ex.call_tx_hash = evt.evt_tx_hash
+    WHERE ex.call_success = TRUE
+    {% if is_incremental() %}
+    AND evt.evt_block_time >= date_trunc('day', now() - interval '7' Day)
+    {% endif %}
+),
+
+unnested_array_taker AS (
     SELECT
-      *,
-      posexplode (taker_tokens) as (taker_ind, taker_token_pair)
-    FROM
-      bebop_raw_data
-  ),
-  explode_tokens_data as (
+        block_time,
+        block_number,
+        tx_hash,
+        evt_index,
+        contract_address,
+        expiry,
+        taker_address,
+        maker_address,
+        taker_tokens_json,
+        maker_tokens_json,
+        taker_amounts_json,
+        maker_amounts_json,
+        taker_length,
+        maker_length,
+        element_at(CAST(json_extract(taker_tokens_json, '$[0]') AS ARRAY<VARCHAR>), sequence_number) AS taker_token_address,
+        element_at(CAST(json_extract(taker_amounts_json, '$[0]') AS ARRAY<VARCHAR>), sequence_number) AS taker_token_amounts, 
+        sequence_number - 1 AS taker_index
+    FROM bebop_raw_data
+    CROSS JOIN UNNEST(sequence(1, json_array_length(json_extract(taker_tokens_json, '$[0]')))) AS t(sequence_number)
+), 
+
+unnested_array_maker AS (
     SELECT
-      *,
-      posexplode (maker_tokens) as (maker_ind, maker_token_pair)
-    FROM
-      explode_taker_tokens_data
-  ),
-  simple_trades as (
-    SELECT
-      block_time,
+        block_time,
+        block_number,
+        tx_hash,
+        evt_index,
+        contract_address,
+        expiry,
+        taker_address,
+        maker_address,
+        taker_tokens_json,
+        maker_tokens_json,
+        taker_amounts_json,
+        maker_amounts_json,
+        taker_token_address,
+        taker_token_amounts,
+        taker_index,
+        taker_length,
+        maker_length,
+        element_at(CAST(json_extract(maker_tokens_json, '$[0]') AS ARRAY<VARCHAR>), sequence_number) AS maker_token_address,
+        element_at(CAST(json_extract(maker_amounts_json, '$[0]') AS ARRAY<VARCHAR>), sequence_number) AS maker_token_amounts, 
+        sequence_number - 1 AS maker_index
+    FROM unnested_array_taker
+    CROSS JOIN UNNEST(sequence(1, json_array_length(json_extract(maker_tokens_json, '$[0]')))) AS t(sequence_number)
+), 
+
+simple_trades as (
+    SELECT 
+      block_time, 
       block_number,
-      contract_address,
-      tx_hash,
+      contract_address, 
+      tx_hash, 
       evt_index,
-      taker_address,
-      cast(array(taker_ind, maker_ind) as array<bigint>) as trace_address,
-      taker_token_pair.`0` as taker_token,
-      (taker_token_pair.`1` / cardinality(maker_tokens)) as taker_amount,
-      maker_token_pair.`0` as maker_token,
-      (maker_token_pair.`1` / cardinality(taker_tokens)) as maker_amount
-    FROM
-      explode_tokens_data
-  )
+      taker_address, 
+      maker_address,
+      CASE 
+        WHEN taker_length = 1 AND maker_length > 1 THEN CAST(array[taker_index, maker_index] as array<bigint>)
+        WHEN maker_length = 1 AND taker_length > 1 THEN CAST(array[maker_index, taker_index] as array<bigint>)
+      ELSE CAST(array[taker_index, maker_index] as array<bigint>)
+      END as trace_address,
+      CASE 
+        WHEN taker_length = 1 AND maker_length > 1 THEN 'Multi-Buy' -- inverted 
+        WHEN maker_length = 1 AND taker_length > 1 THEN 'Multi-Sell' -- inverted, noted below... 
+      ELSE 'Simple-Swap'
+      END as trade_type,
+      from_hex(maker_token_address) as token_bought_address, -- for some weird reason, this is inverted, based on the spark version of this query & also on arbiscan
+      from_hex(taker_token_address) as token_sold_address, -- noted above 
+      CAST(maker_token_amounts as UINT256) as token_bought_amount_raw,
+      CAST(maker_token_amounts as double) as token_bought_amount,
+      CAST(taker_token_amounts as UINT256) as token_sold_amount_raw,
+      CAST(taker_token_amounts as double) as token_sold_amount
+    FROM 
+    unnested_array_maker
+    WHERE maker_token_address IS NOT NULL 
+    AND taker_token_address IS NOT NULL 
+)
+
 SELECT
   'ethereum' AS blockchain,
   'bebop' AS project,
   '1' AS version,
-  TRY_CAST(date_trunc('DAY', t.block_time) AS date) AS block_date,
+  CAST(date_trunc('DAY', t.block_time) AS date) AS block_date,
+  CAST(date_trunc('MONTH', t.block_time) AS date) AS block_month,
   t.block_time AS block_time,
+  t.trade_type,
   t_bought.symbol AS token_bought_symbol,
   t_sold.symbol AS token_sold_symbol,
   CASE
     WHEN lower(t_bought.symbol) > lower(t_sold.symbol) THEN concat(t_sold.symbol, '-', t_bought.symbol)
     ELSE concat(t_bought.symbol, '-', t_sold.symbol)
   END AS token_pair,
-  cast(t.maker_amount AS DECIMAL (38, 0)) / power(10, coalesce(t_bought.decimals, 0)) AS token_bought_amount,
-  cast(t.taker_amount AS DECIMAL (38, 0)) / power(10, coalesce(t_sold.decimals, 0)) AS token_sold_amount,
-  cast(t.maker_amount AS DECIMAL (38, 0)) AS token_bought_amount_raw,
-  cast(t.taker_amount AS DECIMAL (38, 0)) AS token_sold_amount_raw,
-  coalesce(
-    (maker_amount / power(10, coalesce(p_bought.decimals, 0))) * p_bought.price,
-    (taker_amount / power(10, coalesce(p_sold.decimals, 0))) * p_sold.price
-  ) AS amount_usd,
-  t_bought.contract_address AS token_bought_address,
-  t_sold.contract_address AS token_sold_address,
-  t.taker_address AS taker,
-  t.contract_address AS maker,
-  t.contract_address AS project_contract_address,
-  t.tx_hash,
-  t.taker_address AS tx_from,
-  t.contract_address AS tx_to,
-  t.trace_address,
-  t.evt_index
+  t.token_bought_amount / power(10, coalesce(t_bought.decimals, 0)) AS token_bought_amount,
+  t.token_sold_amount / power(10, coalesce(t_sold.decimals, 0)) AS token_sold_amount,
+  t.token_bought_amount_raw,
+  t.token_sold_amount_raw,
+  CASE 
+    WHEN t.trade_type = 'Multi-Buy' THEN (t.token_bought_amount / power(10, coalesce(t_bought.decimals, 0))) * p_bought.price
+    WHEN t.trade_type = 'Multi-Sell' THEN (t.token_sold_amount / power(10, coalesce(t_sold.decimals, 0))) * p_sold.price
+    ELSE COALESCE(
+        (t.token_bought_amount / power(10, coalesce(t_bought.decimals, 0))) * p_bought.price,
+        (t.token_sold_amount / power(10, coalesce(t_sold.decimals, 0))) * p_sold.price
+    ) 
+    END as amount_usd, -- when there's a Multi-trade, the usd value of the multi tokens traded is used as the amount_usd 
+    t.token_bought_address,
+    t.token_sold_address,
+    t.taker_address AS taker,
+    t.contract_address AS maker,
+    t.contract_address AS project_contract_address,
+    t.tx_hash,
+    tx."from" tx_from,
+    tx.to AS tx_to,
+    t.trace_address,
+    t.evt_index
 FROM
-  simple_trades t
-  LEFT JOIN {{ ref('tokens_erc20') }} t_bought ON cast(t_bought.contract_address AS string) = t.maker_token
-  AND t_bought.blockchain = 'ethereum'
-  LEFT JOIN {{ ref('tokens_erc20') }} t_sold ON cast(t_sold.contract_address AS string) = t.taker_token
-  AND t_sold.blockchain = 'ethereum'
-  LEFT JOIN {{ source('prices', 'usd') }} p_bought ON p_bought.minute = date_trunc('minute', t.block_time)
-  AND cast(p_bought.contract_address AS string) = t.maker_token
-  AND p_bought.blockchain = 'ethereum'
+simple_trades t
+INNER JOIN 
+{{ source('ethereum', 'transactions')}} tx
+    ON t.tx_hash = tx.hash
+    {% if not is_incremental() %}
+    AND tx.block_time >= TIMESTAMP '{{project_start_date}}'
+    {% endif %}
+    {% if is_incremental() %}
+    AND tx.block_time >= date_trunc('day', now() - interval '7' Day)
+    {% endif %}
+  LEFT JOIN 
+  {{ ref('tokens_erc20') }} t_bought 
+    ON t_bought.contract_address = t.token_bought_address
+    AND t_bought.blockchain = 'ethereum'
+  LEFT JOIN 
+  {{ ref('tokens_erc20') }} t_sold
+    ON t_sold.contract_address = t.token_sold_address
+    AND t_sold.blockchain = 'ethereum'
+  LEFT JOIN 
+  {{ source('prices', 'usd') }} p_bought 
+    ON p_bought.minute = date_trunc('minute', t.block_time)
+    AND p_bought.contract_address = t.token_bought_address
+    AND p_bought.blockchain = 'ethereum'
   {% if not is_incremental() %}
-  AND p_bought.minute >= '{{project_start_date}}'
+  AND p_bought.minute >= TIMESTAMP '{{project_start_date}}'
   {% endif %}
   {% if is_incremental() %}
-  AND p_bought.minute >= date_trunc("day", now() - interval '1 week')
+  AND p_bought.minute >= date_trunc('day', now() - interval '7' Day)
   {% endif %}
-  LEFT JOIN {{ source('prices', 'usd') }} p_sold ON p_sold.minute = date_trunc('minute', t.block_time)
-  AND cast(p_sold.contract_address AS string) = t.taker_token
-  AND p_sold.blockchain = 'ethereum'
+  LEFT JOIN 
+  {{ source('prices', 'usd') }} p_sold 
+    ON p_sold.minute = date_trunc('minute', t.block_time)
+    AND p_sold.contract_address = t.token_sold_address
+    AND p_sold.blockchain = 'ethereum'
   {% if not is_incremental() %}
-  AND p_sold.minute >= '{{project_start_date}}'
+  AND p_sold.minute >= TIMESTAMP '{{project_start_date}}'
   {% endif %}
   {% if is_incremental() %}
-  AND p_sold.minute >= date_trunc("day", now() - interval '1 week')
+  AND p_sold.minute >= date_trunc('day', now() - interval '7' Day)
   {% endif %}
+   

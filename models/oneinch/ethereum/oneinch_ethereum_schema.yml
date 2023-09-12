@@ -7,8 +7,9 @@ models:
       project: oneinch
       contributors: [jeff-dude, dsalv, k06a]
     config:
-      tags: ["ethereum", "oneinch", "v1", "trades", "dex", "aggregator"]
-    description: 1inch v1 aggregator trades on the Ethereum mainnet
+      tags: ['ethereum','oneinch', 'v1', 'trades', 'dex', 'aggregator']
+    description: > #todo: find a viable description to put here
+        1inch aggregator trades on the Ethereum mainnet
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -39,9 +40,6 @@ models:
       - &block_time
         name: block_time
         description: "UTC event block time of the trade"
-      - &block_month
-        name: block_month
-        description: "UTC event block month of the trade"
       - &token_bought_symbol
         name: token_bought_symbol
         description: "Token symbol for token bought in the trade"
@@ -96,6 +94,9 @@ models:
       - &evt_index
         name: evt_index
         description: "Index of the corresponding trade event"
+      - &block_month
+        name: block_month
+        description: "UTC event block month of the trade"
 
   - name: oneinch_v2_ethereum_trades
     meta:
@@ -103,9 +104,9 @@ models:
       project: oneinch
       contributors: [jeff-dude, dsalv, k06a]
     config:
-      tags: ["ethereum", "oneinch", "v2", "trades", "dex", "aggregator"]
+      tags: ['ethereum','oneinch', 'v2', 'trades', 'dex', 'aggregator']
     description: > #todo: find a viable description to put here
-      1inch aggregator trades on the Ethereum mainnet
+        1inch aggregator trades on the Ethereum mainnet
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -116,7 +117,7 @@ models:
             - tx_hash
             - evt_index
             - trace_address
-      - check_dex_aggregator_seed_legacy:
+      - check_dex_aggregator_seed:
           blockchain: ethereum
           project: 1inch
           version: 2
@@ -144,6 +145,7 @@ models:
       - *tx_to
       - *trace_address
       - *evt_index
+      - *block_month
 
   - name: oneinch_v3_ethereum_trades
     meta:
@@ -151,9 +153,9 @@ models:
       project: oneinch
       contributors: [jeff-dude, dsalv, k06a]
     config:
-      tags: ["ethereum", "oneinch", "v3", "trades", "dex", "aggregator"]
+      tags: ['ethereum','oneinch', 'v3', 'trades', 'dex', 'aggregator']
     description: > #todo: find a viable description to put here
-      1inch aggregator trades on the Ethereum mainnet
+        1inch aggregator trades on the Ethereum mainnet
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -164,7 +166,7 @@ models:
             - tx_hash
             - evt_index
             - trace_address
-      - check_dex_aggregator_seed_legacy:
+      - check_dex_aggregator_seed:
           blockchain: ethereum
           project: 1inch
           version: 3
@@ -192,6 +194,7 @@ models:
       - *tx_to
       - *trace_address
       - *evt_index
+      - *block_month
 
   - name: oneinch_v4_ethereum_trades
     meta:
@@ -199,9 +202,9 @@ models:
       project: oneinch
       contributors: [jeff-dude, dsalv, k06a]
     config:
-      tags: ["ethereum", "oneinch", "v4", "trades", "dex", "aggregator"]
+      tags: ['ethereum','oneinch', 'v4', 'trades', 'dex', 'aggregator']
     description: > #todo: find a viable description to put here
-      1inch aggregator trades on the Ethereum mainnet
+        1inch aggregator trades on the Ethereum mainnet
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -212,7 +215,7 @@ models:
             - tx_hash
             - evt_index
             - trace_address
-      - check_dex_aggregator_seed_legacy:
+      - check_dex_aggregator_seed:
           blockchain: ethereum
           project: 1inch
           version: 4
@@ -240,6 +243,7 @@ models:
       - *tx_to
       - *trace_address
       - *evt_index
+      - *block_month
 
   - name: oneinch_v5_ethereum_trades
     meta:
@@ -247,9 +251,9 @@ models:
       project: oneinch
       contributors: [jeff-dude, dsalv, k06a]
     config:
-      tags: ["ethereum", "oneinch", "v5", "trades", "dex", "aggregator"]
+      tags: ['ethereum','oneinch', 'v5', 'trades', 'dex', 'aggregator']
     description: > #todo: find a viable description to put here
-      1inch aggregator trades on the Ethereum mainnet
+        1inch aggregator trades on the Ethereum mainnet
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -260,7 +264,7 @@ models:
             - tx_hash
             - evt_index
             - trace_address
-      - check_dex_aggregator_seed_legacy:
+      - check_dex_aggregator_seed:
           blockchain: ethereum
           project: 1inch
           version: 5
@@ -288,6 +292,7 @@ models:
       - *tx_to
       - *trace_address
       - *evt_index
+      - *block_month
 
   - name: oneinch_onesplit_ethereum_trades
     meta:
@@ -295,9 +300,9 @@ models:
       project: oneinch
       contributors: [jeff-dude, dsalv, k06a]
     config:
-      tags: ["ethereum", "oneinch", "onesplit", "trades", "dex", "aggregator"]
+      tags: ['ethereum','oneinch', 'onesplit', 'trades', 'dex', 'aggregator']
     description: > #todo: find a viable description to put here
-      1inch aggregator trades on the Ethereum mainnet
+        1inch aggregator trades on the Ethereum mainnet
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -308,7 +313,7 @@ models:
             - tx_hash
             - evt_index
             - trace_address
-      - check_dex_aggregator_seed_legacy:
+      - check_dex_aggregator_seed:
           blockchain: ethereum
           project: 1inch
           version: 1split
@@ -336,6 +341,7 @@ models:
       - *tx_to
       - *trace_address
       - *evt_index
+      - *block_month
 
   - name: oneinch_oneproto_ethereum_trades
     meta:
@@ -343,9 +349,9 @@ models:
       project: oneinch
       contributors: [jeff-dude, dsalv, k06a]
     config:
-      tags: ["ethereum", "oneinch", "oneproto", "trades", "dex", "aggregator"]
+      tags: ['ethereum','oneinch', 'oneproto', 'trades', 'dex', 'aggregator']
     description: > #todo: find a viable description to put here
-      1inch aggregator trades on the Ethereum mainnet
+        1inch aggregator trades on the Ethereum mainnet
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -356,7 +362,7 @@ models:
             - tx_hash
             - evt_index
             - trace_address
-      - check_dex_aggregator_seed_legacy:
+      - check_dex_aggregator_seed:
           blockchain: ethereum
           project: 1inch
           version: 1proto
@@ -384,6 +390,7 @@ models:
       - *tx_to
       - *trace_address
       - *evt_index
+      - *block_month
 
   - name: oneinch_zeroex_ethereum_trades
     meta:
@@ -391,9 +398,9 @@ models:
       project: oneinch
       contributors: [jeff-dude, dsalv, k06a]
     config:
-      tags: ["ethereum", "oneinch", "0x", "trades", "dex", "aggregator"]
+      tags: ['ethereum','oneinch', '0x', 'trades', 'dex', 'aggregator']
     description: > #todo: find a viable description to put here
-      1inch aggregator trades on the Ethereum mainnet
+        1inch aggregator trades on the Ethereum mainnet
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -404,7 +411,7 @@ models:
             - tx_hash
             - evt_index
             - trace_address
-      - check_dex_aggregator_seed_legacy:
+      - check_dex_aggregator_seed:
           blockchain: ethereum
           project: 1inch
           version: ZRX
@@ -432,6 +439,7 @@ models:
       - *tx_to
       - *trace_address
       - *evt_index
+      - *block_month
 
   - name: oneinch_unoswap_v3_ethereum_trades
     meta:
@@ -439,18 +447,9 @@ models:
       project: oneinch
       contributors: [jeff-dude, dsalv, k06a]
     config:
-      tags:
-        [
-          "ethereum",
-          "oneinch",
-          "unoswap",
-          "unoswap_v3",
-          "trades",
-          "dex",
-          "aggregator",
-        ]
+      tags: ['ethereum','oneinch', 'unoswap', 'unoswap_v3', 'trades', 'dex', 'aggregator']
     description: > #todo: find a viable description to put here
-      1inch aggregator trades on the Ethereum mainnet
+        1inch aggregator trades on the Ethereum mainnet
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -485,6 +484,7 @@ models:
       - *tx_to
       - *trace_address
       - *evt_index
+      - *block_month
 
   - name: oneinch_unoswap_v4_ethereum_trades
     meta:
@@ -492,18 +492,9 @@ models:
       project: oneinch
       contributors: [jeff-dude, dsalv, k06a]
     config:
-      tags:
-        [
-          "ethereum",
-          "oneinch",
-          "unoswap",
-          "unoswap_v4",
-          "trades",
-          "dex",
-          "aggregator",
-        ]
+      tags: ['ethereum','oneinch', 'unoswap', 'unoswap_v4', 'trades', 'dex', 'aggregator']
     description: > #todo: find a viable description to put here
-      1inch aggregator trades on the Ethereum mainnet
+        1inch aggregator trades on the Ethereum mainnet
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -514,10 +505,10 @@ models:
             - tx_hash
             - evt_index
             - trace_address
-      - check_dex_aggregator_seed_legacy:
+      - check_dex_aggregator_seed:
           blockchain: ethereum
           project: 1inch
-          version: "UNI v2"
+          version: 'UNI v2'
     columns:
       - *blockchain
       - *project
@@ -542,6 +533,7 @@ models:
       - *tx_to
       - *trace_address
       - *evt_index
+      - *block_month
 
   - name: oneinch_unoswap_v5_ethereum_trades
     meta:
@@ -549,18 +541,9 @@ models:
       project: oneinch
       contributors: [jeff-dude, dsalv, k06a]
     config:
-      tags:
-        [
-          "ethereum",
-          "oneinch",
-          "unoswap",
-          "unoswap_v5",
-          "trades",
-          "dex",
-          "aggregator",
-        ]
+      tags: ['ethereum','oneinch', 'unoswap', 'unoswap_v5', 'trades', 'dex', 'aggregator']
     description: > #todo: find a viable description to put here
-      1inch aggregator trades on the Ethereum mainnet
+        1inch aggregator trades on the Ethereum mainnet
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -595,6 +578,7 @@ models:
       - *tx_to
       - *trace_address
       - *evt_index
+      - *block_month
 
   - name: oneinch_uniswap_v3_ethereum_trades
     meta:
@@ -602,18 +586,9 @@ models:
       project: oneinch
       contributors: [jeff-dude, dsalv, k06a]
     config:
-      tags:
-        [
-          "ethereum",
-          "oneinch",
-          "uniswap",
-          "uniswap_v3",
-          "trades",
-          "dex",
-          "aggregator",
-        ]
+      tags: ['ethereum','oneinch', 'uniswap', 'uniswap_v3', 'trades', 'dex', 'aggregator']
     description: > #todo: find a viable description to put here
-      1inch aggregator trades on the Ethereum mainnet
+        1inch aggregator trades on the Ethereum mainnet
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -624,10 +599,10 @@ models:
             - tx_hash
             - evt_index
             - trace_address
-      - check_dex_aggregator_seed_legacy:
+      - check_dex_aggregator_seed:
           blockchain: ethereum
           project: 1inch
-          version: "UNI v3"
+          version: 'UNI v3'
     columns:
       - *blockchain
       - *project
@@ -652,6 +627,7 @@ models:
       - *tx_to
       - *trace_address
       - *evt_index
+      - *block_month
 
   - name: oneinch_clipper_ethereum_trades
     meta:
@@ -659,9 +635,9 @@ models:
       project: oneinch
       contributors: [jeff-dude, dsalv, k06a]
     config:
-      tags: ["ethereum", "oneinch", "clipper", "trades", "dex", "aggregator"]
+      tags: ['ethereum','oneinch', 'clipper', 'trades', 'dex', 'aggregator']
     description: > #todo: find a viable description to put here
-      1inch aggregator trades on the Ethereum mainnet
+        1inch aggregator trades on the Ethereum mainnet
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -672,10 +648,10 @@ models:
             - tx_hash
             - evt_index
             - trace_address
-      - check_dex_aggregator_seed_legacy:
+      - check_dex_aggregator_seed:
           blockchain: ethereum
           project: 1inch
-          version: "Clipper v1"
+          version: 'Clipper v1'
     columns:
       - *blockchain
       - *project
@@ -700,6 +676,7 @@ models:
       - *tx_to
       - *trace_address
       - *evt_index
+      - *block_month
 
   - name: oneinch_limit_order_protocol_v1_ethereum_trades
     meta:
@@ -707,18 +684,9 @@ models:
       project: oneinch
       contributors: [jeff-dude, dsalv, k06a]
     config:
-      tags:
-        [
-          "ethereum",
-          "oneinch",
-          "limit_order_protocol",
-          "v1",
-          "trades",
-          "dex",
-          "aggregator",
-        ]
+      tags: ['ethereum','oneinch', 'limit_order_protocol', 'v1', 'trades', 'dex', 'aggregator']
     description: > #todo: find a viable description to put here
-      1inch aggregator trades on the Ethereum mainnet
+        1inch aggregator trades on the Ethereum mainnet
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -729,10 +697,10 @@ models:
             - tx_hash
             - evt_index
             - trace_address
-      - check_dex_aggregator_seed_legacy:
+      - check_dex_aggregator_seed:
           blockchain: ethereum
           project: 1inch Limit Order Protocol
-          version: "1"
+          version: '1'
     columns:
       - *blockchain
       - *project
@@ -757,6 +725,7 @@ models:
       - *tx_to
       - *trace_address
       - *evt_index
+      - *block_month
 
   - name: oneinch_limit_order_protocol_v2_ethereum_trades
     meta:
@@ -764,18 +733,9 @@ models:
       project: oneinch
       contributors: [jeff-dude, dsalv, k06a]
     config:
-      tags:
-        [
-          "ethereum",
-          "oneinch",
-          "limit_order_protocol",
-          "v2",
-          "trades",
-          "dex",
-          "aggregator",
-        ]
+      tags: ['ethereum','oneinch', 'limit_order_protocol', 'v2', 'trades', 'dex', 'aggregator']
     description: > #todo: find a viable description to put here
-      1inch aggregator trades on the Ethereum mainnet
+        1inch aggregator trades on the Ethereum mainnet
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -786,10 +746,10 @@ models:
             - tx_hash
             - evt_index
             - trace_address
-      - check_dex_aggregator_seed_legacy:
+      - check_dex_aggregator_seed:
           blockchain: ethereum
           project: 1inch Limit Order Protocol
-          version: "2"
+          version: '2'
     columns:
       - *blockchain
       - *project
@@ -814,6 +774,7 @@ models:
       - *tx_to
       - *trace_address
       - *evt_index
+      - *block_month
 
   - name: oneinch_limit_order_protocol_v3_ethereum_trades
     meta:
@@ -821,18 +782,9 @@ models:
       project: oneinch
       contributors: [jeff-dude, dsalv, k06a]
     config:
-      tags:
-        [
-          "ethereum",
-          "oneinch",
-          "limit_order_protocol",
-          "v3",
-          "trades",
-          "dex",
-          "aggregator",
-        ]
+      tags: ['ethereum','oneinch', 'limit_order_protocol', 'v3', 'trades', 'dex', 'aggregator']
     description: > #todo: find a viable description to put here
-      1inch aggregator trades on the Ethereum mainnet
+        1inch aggregator trades on the Ethereum mainnet
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -843,10 +795,10 @@ models:
             - tx_hash
             - evt_index
             - trace_address
-      - check_dex_aggregator_seed_legacy:
+      - check_dex_aggregator_seed:
           blockchain: ethereum
           project: 1inch Limit Order Protocol
-          version: "3"
+          version: '3'
     columns:
       - *blockchain
       - *project
@@ -871,6 +823,7 @@ models:
       - *tx_to
       - *trace_address
       - *evt_index
+      - *block_month
 
   - name: oneinch_limit_order_protocol_embedded_rfq_ethereum_trades
     meta:
@@ -878,18 +831,9 @@ models:
       project: oneinch
       contributors: [jeff-dude, dsalv, k06a]
     config:
-      tags:
-        [
-          "ethereum",
-          "oneinch",
-          "limit_order_protocol",
-          "eRFQ v1",
-          "trades",
-          "dex",
-          "aggregator",
-        ]
+      tags: ['ethereum','oneinch', 'limit_order_protocol', 'eRFQ v1', 'trades', 'dex', 'aggregator']
     description: > #todo: find a viable description to put here
-      1inch aggregator trades on the Ethereum mainnet
+        1inch aggregator trades on the Ethereum mainnet
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -900,10 +844,10 @@ models:
             - tx_hash
             - evt_index
             - trace_address
-      - check_dex_aggregator_seed_legacy:
+      - check_dex_aggregator_seed:
           blockchain: ethereum
           project: 1inch Limit Order Protocol
-          version: "eRFQ v1"
+          version: 'eRFQ v1'
     columns:
       - *blockchain
       - *project
@@ -928,6 +872,7 @@ models:
       - *tx_to
       - *trace_address
       - *evt_index
+      - *block_month
 
   - name: oneinch_limit_order_protocol_rfq_v1_ethereum_trades
     meta:
@@ -935,18 +880,9 @@ models:
       project: oneinch
       contributors: [jeff-dude, dsalv, k06a]
     config:
-      tags:
-        [
-          "ethereum",
-          "oneinch",
-          "limit_order_protocol",
-          "RFQ v1",
-          "trades",
-          "dex",
-          "aggregator",
-        ]
+      tags: ['ethereum','oneinch', 'limit_order_protocol', 'RFQ v1', 'trades', 'dex', 'aggregator']
     description: > #todo: find a viable description to put here
-      1inch aggregator trades on the Ethereum mainnet
+        1inch aggregator trades on the Ethereum mainnet
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -957,10 +893,10 @@ models:
             - tx_hash
             - evt_index
             - trace_address
-      - check_dex_aggregator_seed_legacy:
+      - check_dex_aggregator_seed:
           blockchain: ethereum
           project: 1inch Limit Order Protocol
-          version: "RFQ v1"
+          version: 'RFQ v1'
     columns:
       - *blockchain
       - *project
@@ -985,6 +921,7 @@ models:
       - *tx_to
       - *trace_address
       - *evt_index
+      - *block_month
 
   - name: oneinch_limit_order_protocol_rfq_v2_ethereum_trades
     meta:
@@ -992,18 +929,9 @@ models:
       project: oneinch
       contributors: [jeff-dude, dsalv, k06a]
     config:
-      tags:
-        [
-          "ethereum",
-          "oneinch",
-          "limit_order_protocol",
-          "RFQ v2",
-          "trades",
-          "dex",
-          "aggregator",
-        ]
+      tags: ['ethereum','oneinch', 'limit_order_protocol', 'RFQ v2', 'trades', 'dex', 'aggregator']
     description: > #todo: find a viable description to put here
-      1inch aggregator trades on the Ethereum mainnet
+        1inch aggregator trades on the Ethereum mainnet
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -1014,10 +942,10 @@ models:
             - tx_hash
             - evt_index
             - trace_address
-      - check_dex_aggregator_seed_legacy:
+      - check_dex_aggregator_seed:
           blockchain: ethereum
           project: 1inch Limit Order Protocol
-          version: "RFQ v2"
+          version: 'RFQ v2'
     columns:
       - *blockchain
       - *project
@@ -1042,6 +970,7 @@ models:
       - *tx_to
       - *trace_address
       - *evt_index
+      - *block_month
 
   - name: oneinch_limit_order_protocol_rfq_v3_ethereum_trades
     meta:
@@ -1049,18 +978,9 @@ models:
       project: oneinch
       contributors: [jeff-dude, dsalv, k06a]
     config:
-      tags:
-        [
-          "ethereum",
-          "oneinch",
-          "limit_order_protocol",
-          "RFQ v3",
-          "trades",
-          "dex",
-          "aggregator",
-        ]
+      tags: ['ethereum','oneinch', 'limit_order_protocol', 'RFQ v3', 'trades', 'dex', 'aggregator']
     description: > #todo: find a viable description to put here
-      1inch aggregator trades on the Ethereum mainnet
+        1inch aggregator trades on the Ethereum mainnet
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -1071,10 +991,10 @@ models:
             - tx_hash
             - evt_index
             - trace_address
-      - check_dex_aggregator_seed_legacy:
+      - check_dex_aggregator_seed:
           blockchain: ethereum
           project: 1inch Limit Order Protocol
-          version: "RFQ v3"
+          version: 'RFQ v3'
     columns:
       - *blockchain
       - *project
@@ -1099,6 +1019,7 @@ models:
       - *tx_to
       - *trace_address
       - *evt_index
+      - *block_month
 
   - name: oneinch_ethereum_trades
     meta:
@@ -1106,9 +1027,9 @@ models:
       project: oneinch
       contributors: [jeff-dude, dsalv, k06a]
     config:
-      tags: ["ethereum", "oneinch", "trades", "dex", "aggregator"]
+      tags: ['ethereum','oneinch', 'trades', 'dex', 'aggregator']
     description: > #todo: find a viable description to put here
-      1inch aggregator trades on the Ethereum mainnet
+        1inch aggregator trades on the Ethereum mainnet
     columns:
       - *blockchain
       - *project
@@ -1133,6 +1054,7 @@ models:
       - *tx_to
       - *trace_address
       - *evt_index
+      - *block_month
 
   - name: oneinch_ethereum_airdrop_claims
     meta:
@@ -1141,7 +1063,7 @@ models:
       project: oneinch
       contributors: hildobby
     config:
-      tags: ["table", "airdrop", "ethereum", "claim", "oneinch"]
+      tags: ['table', 'airdrop', 'ethereum', 'claim', 'oneinch']
     description: "List of claim transactions for the $1INCH airdrop"
     tests:
       - dbt_utils.unique_combination_of_columns:
@@ -1179,3 +1101,66 @@ models:
         name: token_symbol
         description: "Token symbol"
       - *evt_index
+
+
+  - name: oneinch_ethereum_ar_calls_transfers
+    meta:
+      blockchain: ['ethereum']
+      sector: oneinch
+      contributors: ['grkhr']
+    config:
+      tags: ['oneinch', 'raw']
+    description: >
+        oneinch ethereum calls & transfers
+
+    columns:
+      - &blockchain_not_null
+        name: blockchain
+        tests:
+          - not_null
+      - *block_time
+      - &tx_hash_not_null
+        name: tx_hash
+        tests:
+          - not_null
+      - *tx_from
+      - &tx_success
+        name: tx_success
+      - &call_success
+        name: call_success
+      - &call_trace_address
+        name: call_trace_address
+      - &caller
+        name: caller
+      - &call_selector
+        name: call_selector
+      - &transfer_trace_address
+        name: transfer_trace_address
+      - *contract_address
+      - &amount
+        name: amount
+      - &native_token
+        name: native_token
+      - &transfer_from
+        name: transfer_from
+      - &transfer_to
+        name: transfer_to
+      - &rn_ta_asc
+        name: rn_ta_asc
+      - &rn_ta_desc
+        name: rn_ta_desc
+      - &call_output
+        name: call_output
+      - &call_input
+        name: call_input
+      - &minute
+        name: minute
+      - &block_month_not_null
+        name: block_month
+        tests:
+          - not_null
+      - &unique_call_transfer_id
+        name: unique_call_transfer_id
+        tests:
+          - unique
+          - not_null

@@ -1,0 +1,17 @@
+version: 2
+
+sources:
+  - name: decent_optimism
+    description: "op mainnet decoded tables related to decent contracts"
+    freshness: # default freshness
+      warn_after: { count: 12, period: hour }
+      error_after: { count: 24, period: hour }
+    tables:
+      - name: DCNTSDK_call_deployDCNT721A
+        loaded_at_field: call_block_time
+      - name: DCNTSDK_call_deployDCNT4907A
+        loaded_at_field: call_block_time
+      - name: DCNTSDK_call_deployDCNTCrescendo
+        loaded_at_field: call_block_time
+      - name: DCNTSDK_call_deployDCNTSeries
+        loaded_at_field: call_block_time

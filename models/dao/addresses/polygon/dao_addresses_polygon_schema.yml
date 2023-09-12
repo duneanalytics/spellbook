@@ -1,23 +1,15 @@
 version: 2
 
 models:
-  - name: dao_addresses_polygon_syndicate
+  - name: dao_addresses_polygon
     meta:
       blockchain: polygon
-      project: syndicate
+      sector: dao
       contributors: Henrystats 
     config:
-      tags: [ 'polygon', 'daos', 'syndicate', 'dao creator tools', 'henrystats' ]
+      tags: [ 'polygon', 'daos', 'aragon', 'syndicate', 'dao creator tools', 'henrystats' ]
     description: >
-      wallet addresses of daos created on syndicate 
-    tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - created_date
-            - blockchain
-            - dao_creator_tool
-            - dao
-            - dao_wallet_address
+      wallet addresses of daos created on polygon across all dao creator tools
     columns:
       - &blockchain
         name: blockchain
@@ -26,8 +18,8 @@ models:
         name: dao_creator_tool
         description: "Name of creator tool used to create DAO"
         tests:
-          - dao_addresses_creator_tool_legacy:
-              dao_addresses_seed_legacy: ref('dao_addresses_seed_legacy')
+          - dao_addresses_creator_tool:
+              dao_addresses_seed: ref('dao_addresses_seed')
       - &dao
         name: dao
         description: "address of the dao deployed"
@@ -40,21 +32,3 @@ models:
       - &created_block_time
         name: created_block_time
         description: "UTC event block time of DAO creation"
-
-  - name: dao_addresses_polygon
-    meta:
-      blockchain: polygon
-      sector: dao
-      contributors: Henrystats 
-    config:
-      tags: [ 'polygon', 'daos', 'aragon', 'syndicate', 'dao creator tools', 'henrystats' ]
-    description: >
-      wallet addresses of daos created on polygon across all dao creator tools
-    columns:
-      - *blockchain
-      - name: dao_creator_tool
-        description: "Name of creator tool used to create DAO"
-      - *dao
-      - *dao_wallet_address
-      - *created_date
-      - *created_block_time

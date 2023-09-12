@@ -1,6 +1,7 @@
 {{ config(
+    tags=['dunesql'],
     alias = alias('lending'),
-    partition_by = ['block_date'],
+    partition_by = ['block_month'],
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
@@ -28,11 +29,12 @@ borrow_events as (
             'Borrow' as evt_type, 
             onBehalfOf as address, 
             amount as amount_raw, 
-            reserve as collateral_currency_contract
+            reserve as collateral_currency_contract,
+            CAST(loanId as VARCHAR) as lien_id
         FROM 
         {{source('bend_ethereum', 'LendingPool_evt_Borrow')}}
         {% if is_incremental() %}
-        WHERE evt_block_time >= date_trunc("day", now() - interval '1 week')
+        WHERE evt_block_time >= date_trunc('day', now() - interval '7' Day)
         {% endif %}
 ), 
 
@@ -48,11 +50,12 @@ repay_events as (
             'Repay' as evt_type, 
             borrower as address, 
             amount as amount_raw, 
-            reserve as collateral_currency_contract
+            reserve as collateral_currency_contract,
+            CAST(loanId as VARCHAR) as lien_id
         FROM 
         {{source('bend_ethereum', 'LendingPool_evt_Repay')}}
         {% if is_incremental() %}
-        WHERE evt_block_time >= date_trunc("day", now() - interval '1 week')
+        WHERE evt_block_time >= date_trunc('day', now() - interval '7' Day)
         {% endif %}
 ), 
 
@@ -68,25 +71,27 @@ SELECT
     'ethereum' as blockchain, 
     'bend_dao' as project, 
     '1' as version, 
-    date_trunc('day', ae.evt_block_time) as block_date, 
+    CAST(date_trunc('day', ae.evt_block_time)  as date) as block_date, 
+    CAST(date_trunc('month', ae.evt_block_time)  as date) as block_month, 
     ae.evt_block_time as block_time, 
     ae.evt_block_number as block_number, 
-    ae.token_id, 
+    CAST(ae.token_id as VARCHAR) as token_id, 
     nft_token.name as collection, 
     p.price * (ae.amount_raw/POWER(10, collateral_currency.decimals)) as amount_usd, 
     nft_token.standard as token_standard, 
     ae.evt_type, 
     ae.address, 
     ae.amount_raw/POWER(10, collateral_currency.decimals) as amount_original, 
-    CAST(ae.amount_raw as DECIMAL(38,0)) as amount_raw, 
+    CAST(ae.amount_raw as double) as amount_raw, 
     collateral_currency.symbol as collateral_currency_symbol, 
     ae.collateral_currency_contract, 
     ae.nft_contract_address, 
     ae.contract_address as project_contract_address, 
     ae.evt_tx_hash as tx_hash, 
-    et.from as tx_from, 
+    et."from" as tx_from, 
     et.to as tx_to,
-    ae.evt_index
+    ae.evt_index, 
+    ae.lien_id
 FROM 
 all_events ae 
 INNER JOIN 
@@ -94,10 +99,10 @@ INNER JOIN
     ON et.block_time = ae.evt_block_time
     AND et.hash = ae.evt_tx_hash
     {% if not is_incremental() %}
-    AND et.block_time >= '{{project_start_date}}'
+    AND et.block_time >= DATE '{{project_start_date}}'
     {% endif %}
     {% if is_incremental() %}
-    AND et.block_time >= date_trunc("day", now() - interval '1 week')
+    AND et.block_time >= date_trunc('day', now() - interval '7' Day)
     {% endif %}
 LEFT JOIN 
 {{ ref('tokens_ethereum_nft') }} nft_token
@@ -111,8 +116,8 @@ LEFT JOIN
     AND p.contract_address = ae.collateral_currency_contract
     AND p.blockchain = 'ethereum'
     {% if not is_incremental() %}
-    AND p.minute >= '{{project_start_date}}'
+    AND p.minute >=  DATE '{{project_start_date}}'
     {% endif %}
     {% if is_incremental() %}
-    AND p.minute >= date_trunc("day", now() - interval '1 week')
+    AND p.minute >= date_trunc('day', now() - interval '7' Day)
     {% endif %}

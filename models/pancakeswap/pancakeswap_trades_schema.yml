@@ -3,14 +3,14 @@ version: 2
 models:
   - name: pancakeswap_trades
     meta:
-      blockchain: bnb, ethereum
+      blockchain: bnb, ethereum, arbitrum, base
       sector: dex
       project: pancakeswap
       contributors: hosuke, chef_seaweed
     config:
-      tags: ['bnb', 'ethereum', 'pancakeswap','trades', 'dex', 'hosuke', 'chef_seaweed']
+      tags: ['bnb', 'ethereum', 'arbitrum', 'base', 'pancakeswap', 'trades', 'dex', 'hosuke', 'chef_seaweed']
     description: >
-        PancakeSwap trades on BNB smart chain and Ethereum across all contracts and versions. This table will load dex trades downstream.
+        PancakeSwap trades on BNB chain, Ethereum, Arbitrum and Base across all contracts and versions. This table will load dex trades downstream.
     columns:
       - &blockchain
         name: blockchain
@@ -21,6 +21,9 @@ models:
       - &version
         name: version
         description: "Version of the contract built and deployed by the DEX project"
+      - &block_month
+        name: block_month
+        description: "UTC event block month of each DEX trade"
       - &block_date
         name: block_date
         description: "UTC event block date of each DEX trade"
@@ -75,9 +78,6 @@ models:
       - &tx_to
         name: tx_to
         description: "Address which received the transaction"
-      - &trace_address
-        name: trace_address
-        description: "address of the trace within the call graph forest"
       - &evt_index
         name: evt_index
         description: "the position of this event log within this transaction"

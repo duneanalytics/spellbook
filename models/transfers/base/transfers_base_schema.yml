@@ -1,0 +1,85 @@
+version: 2
+
+models:
+  - name: transfers_base_eth
+    meta:
+      blockchain: base
+      sector: transfers
+      project: eth
+      contributors: msilb7, chuxin
+    config:
+      tags: ["transfers", "base", "eth"]
+    description: "Events of native ETH transfers on Base."
+    columns:
+      - &from
+        name: from
+        description: "Wallet address that initiated the transaction"
+      - &to
+        name: to
+        description: "Wallet address that received the transaction"
+      - name: contract_address
+        description: "Using the ETH deposit placeholder address to match with prices tables"
+      - &value
+        name: value
+        description: "Amount of ETH transferred from sender to recipient"
+      - &value_decimal
+        name: value_decimal
+        description: "Amount of ETH transferred in decimals from sender to recipient"
+      - &tx_hash
+        name: tx_hash
+        description: "Primary key of the transaction"
+        tests:
+          - not_null
+      - name: trace_address
+        description: "All returned traces, gives the exact location in the call trace"
+      - &tx_block_time
+        name: tx_block_time
+        description: "Timestamp for block event time in UTC"
+      - &tx_block_number
+        name: tx_block_number
+        description: "Block number"
+      - &tx_method_id
+        name: tx_method_id
+        description: "Function calls specified by the first four bytes of data sent with a transaction"
+      - name: unique_transfer_id
+        description: "Unique transfer ID (used for testing for duplicates), made up with tx_hash and trace_address"
+        tests:
+          - not_null
+          - unique
+      - &tx_to
+        name: tx_to
+        description: "To Address for the Transaction"
+      - &tx_from
+          name: tx_from
+          description: "From Address for the Transaction"
+          
+  - name: transfers_base_erc20
+    meta:
+      blockchain: base
+      sector: transfers
+      project: erc20
+      contributors: soispoke, dot2dotseurat, tschubotz
+    config:
+      tags: ['transfers', 'base', 'erc20']
+    description: "ERC20 Token Transfers on base. This table is updated every 30 minutes."
+    columns:
+      - name: unique_transfer_id
+        tests:
+          - unique
+          - not_null
+        description: "Unique transfer ID (used for testing for duplicates)"
+      - &blockchain
+        name: blockchain
+        description: "Blockchain"
+      - &wallet_address
+        name: wallet_address
+        description: "Wallet address of sender or receiver. If amount is negative, wallet address is the sender's."
+      - &token_address
+        name: token_address
+        description: "Contract address for token"
+      - &evt_block_time
+        name: evt_block_time
+        description: "Timestamp for block event time in UTC"
+      - &amount_raw
+        name: amount_raw
+        description: "Raw amount of ERC20 token held *before* taking into account token decimals"
