@@ -23,10 +23,28 @@ erc20_transfers  as (
             contract_address as token_address,
             CAST(value as double) as amount_raw
         FROM 
-        {{ source('erc20_optimism', 'evt_transfer') }}
-        {% if is_incremental() %}
-            WHERE evt_block_time >= date_trunc('day', now() - interval '7' Day)
-        {% endif %}
+            (
+            {% if not is_incremental() %}
+                SELECT 
+                    * 
+                FROM 
+                {{ source('erc20_optimism', 'evt_transfer') }}
+
+                UNION ALL 
+
+                SELECT 
+                    * 
+                FROM 
+                {{ source('erc20_optimism_legacy_ovm1', 'evt_transfer') }}
+            {% endif %}
+            {% if is_incremental() %}
+                SELECT 
+                    * 
+                FROM 
+                {{ source('erc20_optimism', 'evt_transfer') }}
+                WHERE evt_block_time >= date_trunc('day', now() - interval '3' Day)0
+            {% endif %}
+            ) x 
 
         UNION ALL 
 
@@ -39,10 +57,29 @@ erc20_transfers  as (
             contract_address as token_address,
             -CAST(value as double) as amount_raw
         FROM 
-        {{ source('erc20_optimism', 'evt_transfer') }}
-        {% if is_incremental() %}
-            WHERE evt_block_time >= date_trunc('day', now() - interval '7' Day)
-        {% endif %}
+        FROM 
+            (
+            {% if not is_incremental() %}
+                SELECT 
+                    * 
+                FROM 
+                {{ source('erc20_optimism', 'evt_transfer') }}
+
+                UNION ALL 
+
+                SELECT 
+                    * 
+                FROM 
+                {{ source('erc20_optimism_legacy_ovm1', 'evt_transfer') }}
+            {% endif %}
+            {% if is_incremental() %}
+                SELECT 
+                    * 
+                FROM 
+                {{ source('erc20_optimism', 'evt_transfer') }}
+                WHERE evt_block_time >= date_trunc('day', now() - interval '3' Day)0
+            {% endif %}
+            ) x 
 ),
 
 
@@ -58,7 +95,7 @@ weth_events as (
         FROM 
         {{ source('weth_optimism', 'weth9_evt_deposit') }}
         {% if is_incremental() %}
-            WHERE evt_block_time >= date_trunc('day', now() - interval '7' Day)
+            WHERE evt_block_time >= date_trunc('day', now() - interval '3' Day)
         {% endif %}
 
         UNION ALL 
@@ -74,7 +111,7 @@ weth_events as (
         FROM 
         {{ source('weth_optimism', 'weth9_evt_withdrawal') }}
         {% if is_incremental() %}
-            WHERE evt_block_time >= date_trunc('day', now() - interval '7' Day)
+            WHERE evt_block_time >= date_trunc('day', now() - interval '3' Day)
         {% endif %}
 )
 
@@ -84,6 +121,7 @@ SELECT
     evt_tx_hash, 
     evt_index,
     evt_block_time,
+    CAST(date_trunc('month', evt_block_time) as date) as block_month, 
     wallet_address, 
     token_address, 
     amount_raw
@@ -98,6 +136,7 @@ SELECT
     evt_tx_hash, 
     evt_index,
     evt_block_time,
+    CAST(date_trunc('month', evt_block_time) as date) as block_month, 
     wallet_address, 
     token_address, 
     amount_raw

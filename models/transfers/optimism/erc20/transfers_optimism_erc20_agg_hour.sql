@@ -1,7 +1,8 @@
 {{ config(
         tags = ['dunesql'],
-        alias = alias('agg_hour'),
+        alias = alias('erc20_agg_hour'),
         materialized ='incremental',
+        partition_by = ['block_month'],
         file_format ='delta',
         incremental_strategy='merge',
         unique_key = ['hour', 'wallet_address', 'token_address']
@@ -11,6 +12,7 @@
 select
     tr.blockchain,
     date_trunc('hour', tr.evt_block_time) as hour,
+    block_month,
     tr.wallet_address,
     tr.token_address,
     t.symbol,
@@ -24,4 +26,4 @@ LEFT JOIN
 -- this filter will only be applied on an incremental run
 WHERE tr.evt_block_time >= date_trunc('hour', now() - interval '7' Day)
 {% endif %}
-GROUP BY 1, 2, 3, 4, 5
+GROUP BY 1, 2, 3, 4, 5, 6
