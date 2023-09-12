@@ -1,5 +1,6 @@
 {{ config(
-      schema = 'uniswap_v3_optimism'
+      tags=['dunesql']
+      , schema = 'uniswap_v3_optimism'
       , alias = alias('flashloans')
       , materialized = 'incremental'
       , file_format = 'delta'
@@ -15,13 +16,13 @@
 WITH flashloans AS (
     SELECT f.evt_block_time AS block_time
     , f.evt_block_number AS block_number
-    , CASE WHEN f.amount0 = 0 THEN f.amount1 ELSE f.amount0 END AS amount_raw
+    , CASE WHEN f.amount0 = UINT256 '0' THEN f.amount1 ELSE f.amount0 END AS amount_raw
     , f.evt_tx_hash AS tx_hash
     , f.evt_index
-    , CASE WHEN f.amount0 = 0 THEN f.paid1 ELSE f.paid0 END AS fee
-    , CASE WHEN f.amount0 = 0 THEN p.token1 ELSE p.token0 END AS currency_contract
-    , CASE WHEN f.amount0 = 0 THEN erc20b.symbol ELSE erc20a.symbol END AS currency_symbol
-    , CASE WHEN f.amount0 = 0 THEN erc20b.decimals ELSE erc20a.decimals END AS currency_decimals
+    , CASE WHEN f.amount0 = UINT256 '0' THEN f.paid1 ELSE f.paid0 END AS fee
+    , CASE WHEN f.amount0 = UINT256 '0' THEN p.token1 ELSE p.token0 END AS currency_contract
+    , CASE WHEN f.amount0 = UINT256 '0' THEN erc20b.symbol ELSE erc20a.symbol END AS currency_symbol
+    , CASE WHEN f.amount0 = UINT256 '0' THEN erc20b.decimals ELSE erc20a.decimals END AS currency_decimals
     , f.contract_address
     FROM {{ source('uniswap_v3_optimism','Pair_evt_Flash') }} f
         INNER JOIN {{ source('uniswap_v3_optimism','factory_evt_poolcreated') }} p ON f.contract_address = p.pool
@@ -29,7 +30,7 @@ WITH flashloans AS (
     LEFT JOIN tokens_optimism.erc20 erc20b ON p.token1 = erc20b.contract_address
     WHERE f.evt_block_time > NOW() - interval '1' month
         {% if is_incremental() %}
-        AND f.evt_block_time >= date_trunc("day", now() - interval '1 week')
+        AND f.evt_block_time >= date_trunc('day', now() - interval '7' day)
         {% endif %}
     )
 
@@ -50,3 +51,6 @@ FROM flashloans flash
 LEFT JOIN {{ source('prices','usd') }} pu ON pu.blockchain = 'optimism'  
     AND pu.contract_address = flash.currency_contract
     AND pu.minute = date_trunc('minute', flash.block_time)
+    {% if is_incremental() %}
+    AND pu.minute >= date_trunc('day', now() - interval '7' day)
+    {% endif %}

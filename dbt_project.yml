@@ -274,6 +274,8 @@ models:
         +schema: uniswap_bnb
       base:
         +schema: uniswap_base
+      celo:
+        +schema: uniswap_celo
 
     timeswap:
       +schema: timeswap
