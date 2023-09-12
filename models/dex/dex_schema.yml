@@ -112,6 +112,7 @@ models:
             - version
             - tx_hash
             - evt_index
+            - trace_address
     columns:
       - *blockchain
       - *project
