@@ -1,7 +1,7 @@
 
 {{ config(
         schema = 'method_ids',
-        tags = ['dunesql','static']
+        tags = ['dunesql','static'],
         alias = alias('evm_smart_account_method_ids'),
         post_hook='{{ expose_spells(\'["ethereum","optimism","arbitrum","polygon","gnosis","avalanche_c","fantom","goerli","bnb","base","celo"]\',
                                 "sector",
