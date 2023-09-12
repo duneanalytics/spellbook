@@ -63,6 +63,9 @@ gas_fee as (
         CAST(effective_gas_price as double) * CAST(gas_used as double) as amount_raw
     FROM 
     {{ source('arbitrum', 'transactions') }}
+    {% if not is_incremental() %}
+    WHERE CONCAT(CAST(hash as VARCHAR), CAST(block_number as VARCHAR)) != 'test2'
+    {% endif %}
     {% if is_incremental() %}
         WHERE block_time >= date_trunc('day', now() - interval '7' Day)
     {% endif %}
