@@ -25,7 +25,7 @@ WITH element_txs AS (
         , ee.maker AS seller
         , ee.taker AS buyer
         , ee.erc20TokenAmount AS amount_raw
-        , CASE WHEN ee.erc20Token='0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee' THEN '0x0d500B1d8E8eF31E21C99d1Db9A6444d3ADf1270'
+        , CASE WHEN ee.erc20Token='0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee' THEN lower('0x0d500B1d8E8eF31E21C99d1Db9A6444d3ADf1270')
             ELSE ee.erc20Token END AS currency_contract
         , CASE WHEN ee.erc20Token='0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee' THEN 'WMATIC' END AS currency_symbol
         , ee.erc721Token AS nft_contract_address
@@ -53,7 +53,7 @@ WITH element_txs AS (
         , ee.taker AS seller
         , ee.maker AS buyer
         , ee.erc20TokenAmount AS amount_raw
-        , CASE WHEN ee.erc20Token='0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee' THEN '0x0d500B1d8E8eF31E21C99d1Db9A6444d3ADf1270'
+        , CASE WHEN ee.erc20Token='0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee' THEN lower('0x0d500B1d8E8eF31E21C99d1Db9A6444d3ADf1270')
             ELSE ee.erc20Token END AS currency_contract
         , CASE WHEN ee.erc20Token='0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee' THEN 'WMATIC' END AS currency_symbol
         , ee.erc721Token AS nft_contract_address
@@ -81,7 +81,7 @@ WITH element_txs AS (
         , ee.maker AS seller
         , ee.taker AS buyer
         , ee.erc20FillAmount AS amount_raw
-        , CASE WHEN ee.erc20Token='0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee' THEN '0x0d500B1d8E8eF31E21C99d1Db9A6444d3ADf1270'
+        , CASE WHEN ee.erc20Token='0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee' THEN lower('0x0d500B1d8E8eF31E21C99d1Db9A6444d3ADf1270')
             ELSE ee.erc20Token END AS currency_contract
         , CASE WHEN ee.erc20Token='0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee' THEN 'WMATIC' END AS currency_symbol
         , ee.erc1155Token AS nft_contract_address
@@ -109,7 +109,7 @@ WITH element_txs AS (
         , ee.taker AS seller
         , ee.maker AS buyer
         , ee.erc20FillAmount AS amount_raw
-        , CASE WHEN ee.erc20Token='0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee' THEN '0x0d500B1d8E8eF31E21C99d1Db9A6444d3ADf1270'
+        , CASE WHEN ee.erc20Token='0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee' THEN lower('0x0d500B1d8E8eF31E21C99d1Db9A6444d3ADf1270')
             ELSE ee.erc20Token END AS currency_contract
         , CASE WHEN ee.erc20Token='0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee' THEN 'WMATIC' END AS currency_symbol
         , ee.erc1155Token AS nft_contract_address
@@ -175,3 +175,4 @@ LEFT JOIN {{ source('polygon','transactions') }} bt ON bt.hash=alet.tx_hash
         {% if is_incremental() %}
         AND bt.block_time >= date_trunc("day", now() - interval '1 week')
         {% endif %}
+-- comment to trigger rerun

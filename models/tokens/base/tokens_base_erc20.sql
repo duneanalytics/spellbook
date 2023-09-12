@@ -794,6 +794,8 @@ FROM (VALUES
         (0x70368091b4c5f9d58b6b9273972f1003524bef88,'Bram',18),
         (0x1355846a72b6341a0dcdd42bc215a0d8aebbe052,'LUNA',18),
         (0x75bfabda570c1b998930e76c266e9866db6cc627,'FRIEND',18),
+        (0x4a3a6dd60a34bb2aba60d73b4c88315e9ceb6a3d,'MIM',18),
+        (0x23ee2343b892b1bb63503a4fabc840e0e2c6810f,'AXL',6),
         (0x1a49655a4AFca3D004E058ef0ea0D45eC158ae80,'AERO',18),
         (0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913,'USDC',6)
      ) AS temp_table (contract_address, symbol, decimals)
