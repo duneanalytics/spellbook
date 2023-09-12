@@ -188,9 +188,6 @@ models:
       - *created_block_number
       - *creation_tx_hash
       - *contract_address
-      - &trace_element
-        name: trace_element
-        description: "First item in the `trace_address` array"
       - &destructed_time
         name: destructed_time
         description: "Block Time when contract was destructed"

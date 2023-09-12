@@ -14,10 +14,7 @@ deposit_events AS (
         evt_block_time AS event_time,
         1 AS balance_change
     FROM
-    {{source('astaria_ethereum', 'CollateralToken_evt_Deposit721')}}
-    -- {% if is_incremental() %} 
-    -- WHERE evt_block_time >= date_trunc("day", now() - interval '1 week')
-    -- {% endif %}
+    {{source('astaria_v1_ethereum', 'CollateralToken_evt_Deposit721')}}
 ),
 
 release_events AS (
@@ -27,11 +24,7 @@ release_events AS (
         evt_block_time AS event_time,
         -1 AS balance_change
     FROM
-    {{source('astaria_ethereum', 'CollateralToken_evt_ReleaseTo')}}
-    -- {% if is_incremental() %} -- commenting out since can;t figure an incremental version without making the query complex
-    -- WHERE evt_block_time >= date_trunc("day", now() - interval '1 week')
-    -- {% endif %}
-    --     astaria_ethereum.CollateralToken_evt_ReleaseTo
+    {{source('astaria_v1_ethereum', 'CollateralToken_evt_ReleaseTo')}}
 ),
 
 all_events AS (
@@ -58,16 +51,16 @@ days AS (
 
 rolling_balance AS (
     SELECT 
-        TRY_CAST(date_trunc('DAY', event_time) AS date) as day, 
+        CAST(date_trunc('DAY', event_time) AS date) as day, 
         collateral_token_id,
         collateral_token_contract,
         SUM(balance_change) OVER (
             PARTITION BY collateral_token_id, collateral_token_contract 
-            ORDER BY TRY_CAST(date_trunc('DAY', event_time) AS date)
+            ORDER BY CAST(date_trunc('DAY', event_time) AS date)
         ) AS balance_over_time,
-        lead(TRY_CAST(date_trunc('DAY', event_time) AS date), 1, current_timestamp) OVER (
+        lead(CAST(date_trunc('DAY', event_time) AS date), 1, current_timestamp) OVER (
             PARTITION BY collateral_token_id, collateral_token_contract 
-            ORDER BY TRY_CAST(date_trunc('DAY', event_time) AS date)
+            ORDER BY CAST(date_trunc('DAY', event_time) AS date)
         ) AS next_day
     FROM 
         all_events
