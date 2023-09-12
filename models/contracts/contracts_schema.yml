@@ -116,6 +116,12 @@ models:
       - &is_eoa_deployed
         name: is_eoa_deployed
         description: "Was the contract deployed by an EOA (test if the trace creator = the transaction sender)"
+      - &is_smart_wallet_deployed
+        name: is_smart_wallet_deployed
+        description: "Was the contract deployed by a smart wallet (i.e. Gnosis Safe, ERC4337 wallet)"
+      - &is_deterministic_deployer_deployed
+        name: is_deterministic_deployer_deployed
+        description: "Was the contract deployed by a deterministic deployer factory (i.e. create2)"
       
       - &is_updated_on_last_run
         name: is_updated_on_last_run

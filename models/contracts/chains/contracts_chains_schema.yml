@@ -104,6 +104,13 @@ models:
       - &is_eoa_deployed
         name: is_eoa_deployed
         description: "Was the contract deployed by an EOA (test if the trace creator = the transaction sender)"
+      - &is_smart_wallet_deployed
+        name: is_smart_wallet_deployed
+        description: "Was the contract deployed by a smart wallet (i.e. Gnosis Safe, ERC4337 wallet)"
+      - &is_deterministic_deployer_deployed
+        name: is_deterministic_deployer_deployed
+        description: "Was the contract deployed by a deterministic deployer factory (i.e. create2)"
+
       - &is_updated_on_last_run
         name: is_updated_on_last_run
         description: "Was this contract updated on the last run (used for incremental table building)"
@@ -151,6 +158,8 @@ models:
       
   #     - *code_deploy_rank_by_chain
   #     - *is_eoa_deployed
+  #     - *is_smart_wallet_deployed
+  #     - *is_deterministic_deployer_deployed
   #     - *is_updated_on_last_run
 
   # - name: contracts_base_contract_creator_project_mapping
@@ -196,6 +205,8 @@ models:
       
   #     - *code_deploy_rank_by_chain
   #     - *is_eoa_deployed
+  #     - *is_smart_wallet_deployed
+  #     - *is_deterministic_deployer_deployed
   #     - *is_updated_on_last_run
 
   # - name: contracts_bnb_contract_creator_project_mapping
@@ -241,6 +252,8 @@ models:
       
   #     - *code_deploy_rank_by_chain
   #     - *is_eoa_deployed
+  #     - *is_smart_wallet_deployed
+  #     - *is_deterministic_deployer_deployed
   #     - *is_updated_on_last_run
 
   # - name: contracts_celo_contract_creator_project_mapping
@@ -286,6 +299,8 @@ models:
       
   #     - *code_deploy_rank_by_chain
   #     - *is_eoa_deployed
+  #     - *is_smart_wallet_deployed
+  #     - *is_deterministic_deployer_deployed
   #     - *is_updated_on_last_run
 
   # - name: contracts_arbitrum_contract_creator_project_mapping
@@ -331,6 +346,8 @@ models:
       
   #     - *code_deploy_rank_by_chain
   #     - *is_eoa_deployed
+  #     - *is_smart_wallet_deployed
+  #     - *is_deterministic_deployer_deployed
   #     - *is_updated_on_last_run
 
   # - name: contracts_fantom_contract_creator_project_mapping
@@ -376,6 +393,8 @@ models:
       
   #     - *code_deploy_rank_by_chain
   #     - *is_eoa_deployed
+  #     - *is_smart_wallet_deployed
+  #     - *is_deterministic_deployer_deployed
   #     - *is_updated_on_last_run
 
   # - name: contracts_gnosis_contract_creator_project_mapping
@@ -421,6 +440,8 @@ models:
       
   #     - *code_deploy_rank_by_chain
   #     - *is_eoa_deployed
+  #     - *is_smart_wallet_deployed
+  #     - *is_deterministic_deployer_deployed
   #     - *is_updated_on_last_run
 
   # - name: contracts_goerli_contract_creator_project_mapping
@@ -466,6 +487,8 @@ models:
       
   #     - *code_deploy_rank_by_chain
   #     - *is_eoa_deployed
+  #     - *is_smart_wallet_deployed
+  #     - *is_deterministic_deployer_deployed
   #     - *is_updated_on_last_run
       
   # - name: contracts_optimism_contract_creator_project_mapping
@@ -511,6 +534,8 @@ models:
       
   #     - *code_deploy_rank_by_chain
   #     - *is_eoa_deployed
+  #     - *is_smart_wallet_deployed
+  #     - *is_deterministic_deployer_deployed
   #     - *is_updated_on_last_run
       
   # - name: contracts_polygon_contract_creator_project_mapping
@@ -556,6 +581,8 @@ models:
       
   #     - *code_deploy_rank_by_chain
   #     - *is_eoa_deployed
+  #     - *is_smart_wallet_deployed
+  #     - *is_deterministic_deployer_deployed
   #     - *is_updated_on_last_run
   - name: contracts_ethereum_find_self_destruct_contracts
     meta:

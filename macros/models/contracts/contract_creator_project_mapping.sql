@@ -69,7 +69,11 @@ SELECT *
         select 
             '{{chain}}' AS blockchain
             ,ct."from" as trace_creator_address
-            ,ct."from" as creator_address
+            ,CASE WHEN ct."from" IN (SELECT creator_address from {{ref('contracts_deterministic_contract_creators')}} ) THEN t."from" --tx sender
+              WHEN aa.project = 'Gnosis Safe' THEN t.to --smart wallet
+              WHEN aa.project = 'ERC4337' THEN bytearray_substring(t.data, 145,20) --smart wallet sender
+              ELSE ct."from"
+            END as creator_address
             ,ct.address as contract_address
             ,ct.block_time as created_time
             ,ct.block_number as created_block_number
@@ -108,6 +112,8 @@ SELECT *
             {% if is_incremental() %}
             and sd.created_time >= date_trunc('day', now() - interval '7' day)
             {% endif %}
+          left join {{ ref('evm_smart_account_method_ids') }} aa 
+            ON aa.method_id = bytearray_substring(t.data,1,4)
           where 
             1=1
             {% if is_incremental() %}
@@ -627,6 +633,8 @@ WHERE contract_order = 1
       ,c.code
       ,c.code_deploy_rank_by_chain
       ,CASE WHEN c.trace_creator_address = c.created_tx_from THEN 1 ELSE 0 END AS is_eoa_deployed
+      ,CASE WHEN c.top_level_tx_method_id in (SELECT method_id FROM {{ ref('evm_smart_account_method_ids') }}) THEN 1 ELSE 0 END AS is_smart_wallet_deployed
+      ,CASE WHEN c.trace_creator_address in (SELECT creator_address from {{ref('contracts_deterministic_contract_creators')}} ) THEN 1 ELSE 0 END AS is_deterministic_deployer_deployed
     from cleanup as c 
     left join {{ ref('contracts_project_name_mappings') }} as dnm -- fix names for decoded contracts
       on lower(c.contract_project) = lower(dnm.dune_name)
