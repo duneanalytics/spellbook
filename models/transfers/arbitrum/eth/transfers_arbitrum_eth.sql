@@ -96,6 +96,6 @@ SELECT
     CAST(date_trunc('month', block_time) as date) as block_month,
     wallet_address, 
     token_address, 
-    amount_raw
+    -amount_raw
 FROM 
 gas_fee
