@@ -70,8 +70,8 @@ SELECT *
             '{{chain}}' AS blockchain
             ,ct."from" as trace_creator_address
             ,CASE WHEN ct."from" IN (SELECT creator_address from {{ref('contracts_deterministic_contract_creators')}} ) THEN t."from" --tx sender
-              WHEN aa.project = 'Gnosis Safe' THEN t.to --smart wallet
-              WHEN aa.project = 'ERC4337' THEN bytearray_substring(t.data, 145,20) --smart wallet sender
+              WHEN aa.contract_project = 'Gnosis Safe' THEN t.to --smart wallet
+              WHEN aa.contract_project = 'ERC4337' THEN bytearray_substring(t.data, 145,20) --smart wallet sender
               ELSE ct."from"
             END as creator_address
             ,ct.address as contract_address
