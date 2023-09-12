@@ -64,7 +64,7 @@ gas_fee as (
     FROM 
     {{ source('arbitrum', 'transactions') }}
     {% if not is_incremental() %}
-    WHERE CONCAT(CAST(hash as VARCHAR), CAST(block_number as VARCHAR)) != 'test2'
+    WHERE CONCAT(CAST(hash as VARCHAR), CAST(block_number as VARCHAR)) != '0xf135954c7b2a17c094f917fff69aa215fa9af86443e55f167e701e39afa5ff0f15458950' -- this is weirdly duplicated on arbitrum.transactions table with a different block_number
     {% endif %}
     {% if is_incremental() %}
         WHERE block_time >= date_trunc('day', now() - interval '7' Day)
