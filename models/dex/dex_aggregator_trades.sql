@@ -1,12 +1,14 @@
 
 {{ config(
+        tags=['dunesql'],
         schema ='dex_aggregator',
         alias = alias('trades'),
-        partition_by = ['block_date'],
+        partition_by = ['block_month'],
         materialized = 'incremental',
         file_format = 'delta',
         incremental_strategy = 'merge',
         unique_key = ['block_date', 'blockchain', 'project', 'version', 'tx_hash', 'evt_index', 'trace_address'],
+        incremental_predicates = ['DBT_INTERNAL_DEST.block_date >= date_trunc(\'day\', now() - interval \'7\' day)'],
         post_hook='{{ expose_spells(\'["ethereum", "gnosis", "avalanche_c", "fantom", "bnb", "optimism", "arbitrum"]\',
                                 "sector",
                                 "dex_aggregator",
@@ -16,55 +18,81 @@
 
 /********************************************************
 spells with issues, to be excluded in short term:
--- ,ref('odos_trades') contains duplicates
+-- ,ref('odos_trades') contains duplicates and not migrated to dunesql
 ********************************************************/
 
 {% set dex_aggregator_models = [
- ref('cow_protocol_trades')
- ,ref('oneinch_ethereum_trades')
- ,ref('openocean_trades')
- ,ref('paraswap_trades')
- ,ref('lifi_trades')
- ,ref('yield_yak_avalanche_c_trades')
- ,ref('bebop_trades')
- ,ref('zeroex_trades')
- ,ref('dodo_aggregator_trades')
+    ref('cow_protocol_trades')
+    ,ref('oneinch_ethereum_trades')
+    ,ref('openocean_trades')
+    ,ref('paraswap_trades')
+    ,ref('lifi_trades')
+    ,ref('yield_yak_avalanche_c_trades')
+    ,ref('bebop_trades')
+    {# ,ref('zeroex_trades') #}
+    ,ref('dodo_aggregator_trades')
 ] %}
 
-SELECT *
+SELECT
+    blockchain
+    , project
+    , version
+    , block_date
+    , block_month
+    , block_time
+    , token_bought_symbol
+    , token_sold_symbol
+    , token_pair
+    , token_bought_amount
+    , token_sold_amount
+    , token_bought_amount_raw
+    , token_sold_amount_raw
+    , amount_usd
+    , token_bought_address
+    , token_sold_address
+    , taker
+    , maker
+    , project_contract_address
+    , tx_hash
+    , tx_from
+    , tx_to
+    , trace_address
+    , evt_index
 FROM (
     {% for aggregator_model in dex_aggregator_models %}
     SELECT
-          blockchain
-         , project
-         , version
-         , block_date
-         , block_time
-         , token_bought_symbol
-         , token_sold_symbol
-         , token_pair
-         , token_bought_amount
-         , token_sold_amount
-         , token_bought_amount_raw
-         , token_sold_amount_raw
-         , amount_usd
-         , token_bought_address
-         , token_sold_address
-         , taker
-         , maker
-         , project_contract_address
-         , tx_hash
-         , tx_from
-         , tx_to
-         , trace_address --ensure field is explicitly cast as array<bigint> in base models
-         , evt_index
+        blockchain
+        , project
+        , version
+        , block_date
+        , block_month
+        , block_time
+        , token_bought_symbol
+        , token_sold_symbol
+        , token_pair
+        , token_bought_amount
+        , token_sold_amount
+        , token_bought_amount_raw
+        , token_sold_amount_raw
+        , amount_usd
+        , token_bought_address
+        , token_sold_address
+        , taker
+        , maker
+        , project_contract_address
+        , tx_hash
+        , tx_from
+        , tx_to
+        , trace_address
+        , evt_index
+        , row_number() over (partition by tx_hash, trace_address, evt_index order by tx_hash) as duplicates_rank
     FROM {{ aggregator_model }}
     {% if is_incremental() %}
-    WHERE block_date >= date_trunc("day", now() - interval '1 week')
+    WHERE block_date >= date_trunc('day', now() - interval '7' day)
     {% endif %}
     {% if not loop.last %}
     UNION ALL
     {% endif %}
     {% endfor %}
 )
-;
+WHERE duplicates_rank = 1

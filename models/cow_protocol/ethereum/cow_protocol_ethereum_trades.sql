@@ -1,8 +1,8 @@
 {{  config(
-        alias=alias('trades'),
         tags=['dunesql'],
+        alias=alias('trades'),
         materialized='incremental',
-        partition_by = ['block_date'],
+        partition_by = ['block_month'],
         unique_key = ['tx_hash', 'order_uid', 'evt_index'],
         on_schema_change='sync_all_columns',
         file_format ='delta',
@@ -20,6 +20,7 @@ WITH
 -- Also deducts fee from sell amount.
 trades_with_prices AS (
     SELECT cast(date_trunc('day', evt_block_time) as date) as block_date,
+           cast(date_trunc('month', evt_block_time) as date) as block_month,
            evt_block_time            as block_time,
            evt_block_number          as block_number,
            evt_tx_hash               as tx_hash,
@@ -61,6 +62,7 @@ trades_with_prices AS (
 -- Second subquery gets token symbol and decimals from tokens.erc20 (to display units bought and sold)
 trades_with_token_units as (
     SELECT block_date,
+           block_month,
            block_time,
            block_number,
            tx_hash,
@@ -174,11 +176,12 @@ eth_flow_senders as (
 
 valued_trades as (
     SELECT block_date,
+           block_month,
            block_time,
            block_number,
            tx_hash,
            evt_index,
-           CAST(NULL as array<bigint>) as trace_address,
+           ARRAY[-1] as trace_address,
            project_contract_address,
            trades.order_uid,
            -- ETH Flow orders have trader = sender of orderCreation.
