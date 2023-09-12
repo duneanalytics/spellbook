@@ -39,7 +39,7 @@ WITH
     {% if is_incremental() %}
       WHERE
         fulfilled.block_time >= date_trunc('day', now() - interval '{{incremental_interval}}' day)
-        AND reverted.block_time >= date_trunc('day', now() - interval '{{incremental_interval}}' day)
+        OR reverted.block_time >= date_trunc('day', now() - interval '{{incremental_interval}}' day)
     {% endif %}
     GROUP BY
       1, 2
