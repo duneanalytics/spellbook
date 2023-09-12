@@ -1,5 +1,6 @@
 {{ config(
-      tags=['dunesql']
+        tags=['dunesql']
+      , partition_by = ['block_month']
       , schema = 'uniswap_v3_optimism'
       , alias = alias('flashloans')
       , materialized = 'incremental'
@@ -30,13 +31,14 @@ WITH flashloans AS (
     LEFT JOIN tokens_optimism.erc20 erc20b ON p.token1 = erc20b.contract_address
     WHERE f.evt_block_time > NOW() - interval '1' month
         {% if is_incremental() %}
-        AND f.evt_block_time >= date_trunc('day', now() - interval '7' day)
+        AND f.evt_block_time >= date_trunc('day', now() - interval '7' Day)
         {% endif %}
     )
 
 SELECT 'optimism' AS blockchain
 , 'Uniswap' AS project
 , '3' AS version
+, CAST(date_trunc('Month', flash.block_time) as date) as block_month
 , flash.block_time
 , flash.block_number
 , flash.amount_raw/POWER(10, flash.currency_decimals) AS amount
