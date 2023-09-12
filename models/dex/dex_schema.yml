@@ -135,6 +135,8 @@ models:
       - *tx_hash
       - *tx_from
       - *tx_to
+      - &trace_address
+        name: trace_address
       - *evt_index
 
   - name: dex_prices
