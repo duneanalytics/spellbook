@@ -1,5 +1,6 @@
 {{ config(
-        tags=['prod_exclude'],
+        tags=['prod_exclude', 'dunesql'],
+        schema='dex',
         alias = alias('sandwiches'),
         partition_by = ['block_date'],
         materialized = 'incremental',
