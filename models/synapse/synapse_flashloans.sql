@@ -29,8 +29,8 @@ FROM (
       SELECT blockchain
       , project
       , version
-      , block_month
       , block_time
+      , block_month
       , block_number
       , amount
       , amount_usd
