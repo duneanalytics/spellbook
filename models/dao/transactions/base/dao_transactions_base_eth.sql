@@ -136,8 +136,7 @@ SELECT
     'ETH' asset,
     CAST(t.value AS double) as raw_value, 
     t.value/POW(10, 18) as value, 
-    t.value/POW(10, 18) * p.price as usd_value,
-    -- COALESCE(p.price, dp.median_price) as usd_value, 
+    t.value/POW(10, 18) * COALESCE(p.price, dp.median_price) as usd_value,
     t.tx_hash, 
     t.tx_index,
     t.address_interacted_with,
@@ -153,22 +152,21 @@ LEFT JOIN
     AND p.symbol = 'WETH'
     AND p.blockchain = 'base'
     {% if not is_incremental() %}
-    AND p.minute >= DATE '{{transactions_start_date}}'
+    AND p.minute >= TIMESTAMP '{{transactions_start_date}}'
     {% endif %}
     {% if is_incremental() %}
     AND p.minute >= date_trunc('day', now() - interval '7' Day)
     {% endif %}
-{#
--- LEFT JOIN 
--- {{ ref('dex_prices') }} dp 
---     ON dp.hour = date_trunc('hour', t.block_time)
---     AND dp.contract_address = 0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2
---     AND dp.blockchain = 'base'
---     AND dp.hour >= DATE '{{transactions_start_date}}'
---     {% if is_incremental() %}
---     AND dp.hour >= date_trunc('day', now() - interval '7' Day)
---     {% endif %}
-#}
+LEFT JOIN 
+{{ ref('dex_prices') }} dp 
+    ON dp.hour = date_trunc('hour', t.block_time)
+    AND dp.contract_address = 0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2
+    AND dp.blockchain = 'base'
+    AND dp.hour >= TIMESTAMP '{{transactions_start_date}}'
+    {% if is_incremental() %}
+    AND dp.hour >= date_trunc('day', now() - interval '7' Day)
+    {% endif %}
+
 
 
 
