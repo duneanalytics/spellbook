@@ -2,11 +2,7 @@
   config(
     tags=['dunesql'],
     alias=alias('fm_reward_evt_transfer'),
-    materialized='view',
-    post_hook='{{ expose_spells(\'["fantom"]\',
-                                "project",
-                                "chainlink",
-                                \'["linkpool_jon"]\') }}'
+    materialized='view'
   )
 }}
 

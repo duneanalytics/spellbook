@@ -2,11 +2,7 @@
   config(
     tags=['dunesql'],
     alias=alias('fm_gas_submission_logs'),
-    materialized='view',
-    post_hook='{{ expose_spells(\'["ethereum"]\',
-                                "project",
-                                "chainlink",
-                                \'["linkpool_jon"]\') }}'
+    materialized='view'
   )
 }}
 

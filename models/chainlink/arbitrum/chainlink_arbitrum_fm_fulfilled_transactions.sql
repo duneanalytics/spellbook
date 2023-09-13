@@ -6,11 +6,7 @@
     materialized='incremental',
     file_format='delta',
     incremental_strategy='merge',
-    unique_key=['tx_hash', 'tx_index', 'node_address'],
-    post_hook='{{ expose_spells(\'["arbitrum"]\',
-                                "project",
-                                "chainlink",
-                                \'["linkpool_jon"]\') }}'
+    unique_key=['tx_hash', 'tx_index', 'node_address']
   )
 }}
 
@@ -43,6 +39,9 @@ WITH
     FROM
       {{ source('arbitrum', 'transactions') }} tx
       RIGHT JOIN {{ ref('chainlink_arbitrum_fm_gas_submission_logs') }} fm_gas_submission_logs ON fm_gas_submission_logs.tx_hash = tx.hash
+      {% if is_incremental() %}
+        AND fm_gas_submission_logs.block_time >= date_trunc('day', now() - interval '{{incremental_interval}}' day)
+      {% endif %}
       LEFT JOIN arbitrum_usd ON date_trunc('minute', tx.block_time) = arbitrum_usd.block_time
     {% if is_incremental() %}
       WHERE tx.block_time >= date_trunc('day', now() - interval '{{incremental_interval}}' day)
