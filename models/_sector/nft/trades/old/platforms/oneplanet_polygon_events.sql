@@ -27,6 +27,8 @@ WITH fee_wallets as (
      ,native_token_symbol = 'MATIC'
      ,start_date = '2023-09-03'
      ,seaport_fork_address = '0xcbbecf690e030d096794f7685a1bf4a58378a575'
+     ,project = 'oneplanet'
+     ,version = 'v1'
     )
   }}
 )
