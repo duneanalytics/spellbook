@@ -1,7 +1,7 @@
 {{ config(
     alias = alias('linked_addresses'),
     tags = ['dunesql'],
-    schema = 'nft'
+    schema = 'nft',
     partition_by = ['blockchain'],
     materialized = 'incremental',
     file_format = 'delta',
