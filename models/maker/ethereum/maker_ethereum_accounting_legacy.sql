@@ -297,16 +297,16 @@ WITH dao_wallet AS (
         SELECT d_c_b.call_tx_hash
             , d_c_b.usr
             , dao_wallet.wallet_label LIKE '% Keepers' as is_keeper
-        FROM maker_ethereum.dai_call_burn as d_c_b
+        FROM {{ source('maker_ethereum', 'dai_call_burn') }} as d_c_b
         JOIN dao_wallet on d_c_b.usr = dao_wallet.wallet_address
         where call_success
         UNION ALL
         SELECT d_c_b.call_tx_hash
             , d_c_b.usr
             , false as is_keeper
-        FROM maker_ethereum.dai_call_burn as d_c_b
+        FROM {{ source('maker_ethereum', 'dai_call_burn') }} as d_c_b
         where call_success
-        AND usr = 0x0048fc4357db3c0f45adea433a07a20769ddb0cf
+        AND usr = '0x0048fc4357db3c0f45adea433a07a20769ddb0cf'
     )
     --   {% if is_incremental() %}
     --   AND call_block_time >= date_trunc("day", now() - interval '1 week')
