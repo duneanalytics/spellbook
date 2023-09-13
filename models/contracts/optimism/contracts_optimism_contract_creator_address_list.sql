@@ -651,7 +651,7 @@ GROUP BY 1,2
 SELECT list.creator_address,
   (CASE
     WHEN lower(list.contract_project) = lower(mapping.dune_name) THEN mapping.mapped_name
-    ELSE mapping.contract_project
+    ELSE list.contract_project
   END) AS contract_project
   FROM filtered_list list
   LEFT JOIN {{ ref('contracts_optimism_project_name_mappings') }} mapping
