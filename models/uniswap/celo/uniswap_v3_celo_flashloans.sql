@@ -36,6 +36,7 @@ WITH flashloans AS (
 SELECT 'celo' AS blockchain
 , 'Uniswap' AS project
 , '3' AS version
+, CAST(date_trunc('Month', flash.block_time) as date) as block_month
 , flash.block_time
 , flash.block_number
 , flash.amount_raw/POWER(10, flash.currency_decimals) AS amount
