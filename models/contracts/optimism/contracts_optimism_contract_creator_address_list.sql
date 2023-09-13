@@ -520,7 +520,7 @@ WITH curated_list AS (
       ,(0x3B52ad533687Ce908bA0485ac177C5fb42972962, 'Manifold')
       ,(0xB8cEF765721A6da910f14Be93e7684e9a3714123, 'Allo Protocol (Gitcoin)') --Gitcoin Grants Stack
       ,(0x123694886DBf5Ac94DDA07135349534536D14cAf, 'Threshold Network')
-      ,(0x956a5152D0f498dBA0c5966577bb44262F8F7078, 'OP AttestationStation')
+      ,(0x956a5152D0f498dBA0c5966577bb44262F8F7078, 'AttestationStation')
       ,(0x9c6373de60c2d3297b18a8f964618ac46e011b58, 'OP Citizens House')
       ,(0x1a5309f208f161a393e8b5a253de8ab894a67188, 'Bond Protocol')
       ,(0x07537D4360aF2489FC1Ca086EA9741c054d804de, 'Velodrome')
@@ -611,6 +611,12 @@ WITH curated_list AS (
       ,(0xede8a407913a874dd7e3d5b731afca135d30375e, 'Synthetix')
       ,(0xbda458dfc28021debd72060671fc350fa5cb39e5, 'deBridge')
       ,(0xfd830dd9b446c9b880b32a03fb9a750aae4a68aa, 'deBridge')
+      ,(0x3d41487a3c5662ede90d0ee8854f3cc59e8d66ad, 'TangibleDAO')
+      ,(0x00b97496700288c1bceb90ecc04a40c4aeac8bb4, 'OmniSea')
+      ,(0x4b70c4308ea49d17fd946ddacd6884e8e1e18b56, 'Gitcoin Passport')
+      ,(0x9aaa603cb8ce688cdb48ab132dd1b8ad7b5ade02, 'Bulls DAO')
+      ,(0x9bbFB9919062C29a5eE15aCD93c9D7c3b14d31aa, 'AttestationStation')
+      ,(0xC8D7d0BD61C5Ca5A493a229f6754Da5560F486ae, 'Magpie')
       
   ) as temp_table (creator_address, contract_project)
 )
