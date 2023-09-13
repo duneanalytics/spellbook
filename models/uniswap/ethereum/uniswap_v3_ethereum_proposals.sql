@@ -1,7 +1,8 @@
 {{ config(
+    tags = ['dunesql'],
     schema = 'uniswap_v3_ethereum',
     alias = alias('proposals'),
-    partition_by = ['block_date'],
+    partition_by = ['block_month'],
     materialized = 'table',
     file_format = 'delta',
     post_hook='{{ expose_spells(\'["ethereum"]\',
@@ -42,9 +43,10 @@ SELECT DISTINCT
     '{{project_version}}' as version,
     pcr.evt_block_time as created_at,
     date_trunc('DAY', pcr.evt_block_time) AS block_date,
+    CAST(date_trunc('month', pcr.evt_block_time) AS date) AS block_month,
     pcr.evt_tx_hash as tx_hash, -- Proposal Created tx hash
     '{{dao_name}}' as dao_name,
-    '{{dao_address}}' as dao_address,
+    {{dao_address}} as dao_address,
     proposer,
     pcr.id as proposal_id,
     csv.votes_for,
@@ -53,15 +55,16 @@ SELECT DISTINCT
     csv.votes_total,
     csv.number_of_voters,
     csv.votes_total / 1e9 * 100 AS participation, -- Total votes / Total supply (1B for Uniswap)
-    pcr.startBlock as start_block,
-    pcr.endBlock as end_block,
-    CASE 
-         WHEN pex.id is not null and now() > pex.evt_block_time THEN 'Executed' 
-         WHEN pca.id is not null and now() > pca.evt_block_time THEN 'Canceled'
-         WHEN pcr.startBlock < pcr.evt_block_number < pcr.endBlock THEN 'Active'
-         WHEN now() > pqu.evt_block_time AND startBlock > pcr.evt_block_number THEN 'Queued'
-         ELSE 'Defeated' END AS status,
-    description as description
+    pcr.startblock as start_block,
+    pcr.endblock as end_block,
+    CASE
+        WHEN pex.id is not null and now() > pex.evt_block_time THEN 'Executed' 
+        WHEN pca.id is not null and now() > pca.evt_block_time THEN 'Canceled'
+        WHEN cast(pcr.startblock as bigint) < pcr.evt_block_number AND pcr.evt_block_number < cast(pcr.endblock as bigint) THEN 'Active'
+        WHEN now() > pqu.evt_block_time AND cast(pcr.startblock as bigint) > pcr.evt_block_number THEN 'Queued'
+        ELSE 'Defeated'
+    END AS status,
+    description
 FROM  {{ source('uniswap_v3_ethereum', 'GovernorBravoDelegate_evt_ProposalCreated') }} pcr
 LEFT JOIN cte_sum_votes csv ON csv.proposalId = pcr.id
 LEFT JOIN {{ source('uniswap_v3_ethereum', 'GovernorBravoDelegate_evt_ProposalCanceled') }} pca ON pca.id = pcr.id
