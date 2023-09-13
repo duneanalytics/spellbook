@@ -24,6 +24,7 @@ FROM (
         blockchain,
         project,
         version,
+        block_month,
         block_time,
         amount,
         amount_usd,
