@@ -1,6 +1,6 @@
 {{ config(
         tags = ['dunesql'],
-        alias = alias('latest'),
+        alias = alias('bep20_latest'),
         post_hook='{{ expose_spells(\'["bnb"]\',
                                     "sector",
                                     "balances",
