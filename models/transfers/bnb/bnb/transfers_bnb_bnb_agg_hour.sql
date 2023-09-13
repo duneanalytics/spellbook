@@ -1,6 +1,6 @@
 {{ config(
         tags = ['dunesql'],
-        alias = alias('bep20_agg_hour'),
+        alias = alias('bnb_agg_hour'),
         partition_by = ['block_month'],
         materialized ='incremental',
         file_format ='delta',
@@ -11,19 +11,17 @@
 
 select
     tr.blockchain,
-    date_trunc('hour', tr.evt_block_time) as hour,
-    tr.block_month,
+    date_trunc('hour', tr.block_time) as hour,
+    block_month,
     tr.wallet_address,
     tr.token_address,
-    t.symbol,
+    'BNB' as symbol,
     sum(tr.amount_raw) as amount_raw,
-    sum(tr.amount_raw / power(10, t.decimals)) as amount
+    sum(tr.amount_raw / power(10, 18)) as amount
 FROM 
-{{ ref('transfers_bnb_bep20') }} tr
-LEFT JOIN 
-{{ ref('tokens_bnb_bep20') }} t on t.contract_address = tr.token_address
+{{ ref('transfers_bnb_bnb') }} tr
 {% if is_incremental() %}
 -- this filter will only be applied on an incremental run
-WHERE tr.evt_block_time >= date_trunc('hour', now() - interval '3' Day)
+WHERE tr.block_time >= date_trunc('hour', now() - interval '3' Day)
 {% endif %}
 GROUP BY 1, 2, 3, 4, 5, 6
