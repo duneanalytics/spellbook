@@ -23,3 +23,5 @@ macros:
       - name: value
         type: column name or expression
         description: "Valid base58 string"
+  - name: dune_link
+    description: "Creates a custom parameterized Dune Dashboard link"
