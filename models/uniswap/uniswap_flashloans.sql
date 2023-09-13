@@ -26,6 +26,7 @@ FROM (
         project,
         version,
         block_time,
+        block_month,
         amount,
         amount_usd,
         tx_hash,
