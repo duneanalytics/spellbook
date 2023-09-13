@@ -24,7 +24,7 @@ WITH trades AS (
     , SUM(COALESCE(token_sold_amount, 0)) AS token_sold_amount
     , SUM(COALESCE(token_bought_amount, 0)) AS token_bought_amount
     , SUM(COALESCE(amount_usd, 0)) AS amount_usd
-    FROM {{ ref('dex_trades') }}
+    FROM {{ ref('dex_trades_migration_beta') }}
     WHERE blockchain='{{blockchain}}'
     {% if is_incremental() %}
     AND block_date >= date_trunc("day", now() - interval '7' day)
