@@ -1,7 +1,8 @@
 {{ config(
     schema = 'nft',
     alias = alias('events'),
-    partition_by = ['block_date'],
+    tags = ['dunesql'],
+    partition_by = ['blockchain','project','block_month'],
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
@@ -17,6 +18,7 @@ SELECT
     project,
     version,
     block_date,
+    block_month,
     block_time,
     token_id,
     collection,
@@ -53,13 +55,14 @@ SELECT
     unique_trade_id
 FROM {{ ref('nft_ethereum_trades_beta_ported')}}
 {% if is_incremental() %}
-WHERE block_time >= date_trunc("day", now() - interval '1 week')
+WHERE block_time >= date_trunc('day', now() - interval '7' day)
 {% endif %}
 UNION ALL
 SELECT blockchain,
     project,
     version,
     block_date,
+    block_month,
     block_time,
     token_id,
     collection,
@@ -97,7 +100,7 @@ SELECT blockchain,
 FROM {{ref('nft_events_old')}}
 WHERE (project, version) not in (SELECT distinct project, version FROM {{ref('nft_ethereum_trades_beta_ported')}})
 {% if is_incremental() %}
-AND block_time >= date_trunc("day", now() - interval '1 week')
+AND block_time >= date_trunc('day', now() - interval '7' day)
 {% endif %}
 
 
