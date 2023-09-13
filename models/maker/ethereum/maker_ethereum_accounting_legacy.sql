@@ -376,11 +376,11 @@ WITH dao_wallet AS (
     SELECT call_tx_hash
         , CASE WHEN usr = '0x6c6d4be2223b5d202263515351034861dd9afdb6' THEN 'RWA009-A'
             WHEN usr = '0xef1b095f700be471981aae025f92b03091c3ad47' THEN 'RWA007-A'
-            WHEN usr = '0x5c82d7eafd66d7f5edc2b844860bfd93c3b0474f' THEN 'RWA014-A'
+            WHEN usr = '0x71ec6d5ee95b12062139311ca1fe8fd698cbe0cf' THEN 'RWA014-A'
         END AS ilk
     FROM {{ source('maker_ethereum', 'dai_call_burn') }}
     WHERE call_success
-      AND usr IN ('0x6c6d4be2223b5d202263515351034861dd9afdb6', '0xef1b095f700be471981aae025f92b03091c3ad47', '0x5c82d7eafd66d7f5edc2b844860bfd93c3b0474f') --HVB RWA JAR, MIP65 RWA JAR, COINBASE RWA JAR
+      AND usr IN ('0x6c6d4be2223b5d202263515351034861dd9afdb6', '0xef1b095f700be471981aae025f92b03091c3ad47', '0x71ec6d5ee95b12062139311ca1fe8fd698cbe0cf') --HVB RWA JAR, MIP65 RWA JAR, COINBASE RWA JAR
     --   {% if is_incremental() %}
     --   AND call_block_time >= date_trunc("day", now() - interval '1 week')
     --   {% endif %}
