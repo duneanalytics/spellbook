@@ -636,18 +636,15 @@ WITH curated_list AS (
   ) as temp_table (creator_address, contract_project)
 )
 ,filtered_list AS (
-  SELECT creator_address, contract_project
-  --filter out creators that we never want to map
-    FROM (
-      SELECT creator_address, contract_project FROM curated_list cl
-      UNION ALL
-      SELECT creator_address, contract_project FROM mapped_list ml
-        WHERE ml.creator_address NOT IN (SELECT creator_address FROM curated_list)
-      ) f
-  WHERE f.creator_address NOT IN (
-    SELECT creator_address FROM {{ ref('contracts_optimism_deterministic_contract_creators') }}
-  )
-  GROUP BY 1,2
+  SELECT 
+    creator_address, contract_project
+--filter out creators that we never want to map
+  FROM curated_list f
+WHERE f.creator_address NOT IN (
+   SELECT creator_address FROM {{ ref('contracts_optimism_deterministic_contract_creators') }}
+)
+
+GROUP BY 1,2
 )
 
 -- Enforce consistent project name mapping to contracts_optimism_project_name_mappings.sql
@@ -659,3 +656,4 @@ SELECT list.creator_address,
   FROM filtered_list list
   LEFT JOIN {{ ref('contracts_optimism_project_name_mappings') }} mapping
   ON lower(list.contract_project) = lower(mapping.dune_name)
+  
