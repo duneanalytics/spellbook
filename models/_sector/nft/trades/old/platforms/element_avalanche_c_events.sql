@@ -127,7 +127,7 @@ SELECT alet.blockchain
 , alet.amount_raw/POWER(10, ava_erc20_tokens.decimals)*prices.price AS amount_usd
 , alet.token_standard
 , CASE WHEN agg.name IS NOT NULL THEN 'Bundle Trade' ELSE 'Single Item Trade' END AS trade_type
-, alet.number_of_items
+, cast(alet.number_of_items as uint256) as number_of_items
 , alet.trade_category
 , 'Trade' AS evt_type
 , alet.seller

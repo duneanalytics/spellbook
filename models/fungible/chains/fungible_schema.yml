@@ -1,0 +1,370 @@
+version: 2
+
+models:
+  - name: fungible_arbitrum_transfers
+    meta:
+      blockchain: arbitrum
+      sector: fungible
+      contributors: hildobby
+    config:
+      tags: ['fungible', 'arbitrum', 'transfers']
+    description: >
+        Native and ERC20 transfers
+    columns:
+      - name: blockchain
+        description: "Blockchain"
+      - name: block_time
+        description: "UTC event block time"
+      - name: block_number
+        description: "Block number in which the transaction was executed"
+      - name: amount_raw
+        description: "Raw amount"
+      - name: amount
+        description: "Amount"
+      - name: usd_price
+        description: "Price in USD"
+      - name: usd_amount
+        description: "Amount in USD"
+      - name: contract_address
+        description: "Fungible contract address"
+      - name: symbol
+        description: "Symbol of fungible token"
+      - name: decimals
+        description: "The number of decimals of the fungible token"
+      - name: token_standard
+        tests:
+          - accepted_values:
+              values: ['native', 'erc20']
+        description: "Token standard"
+      - name: tx_from
+        description: "Address that initiated the transaction"
+      - name: from
+        description: "Address that sent the token(s)"
+      - name: to
+        description: "Address that received the token(s)"
+      - name: tx_hash
+        description: "Transaction hash"
+      - name: evt_index
+        description: "Event index"
+
+  - name: fungible_avalanche_c_transfers
+    meta:
+      blockchain: avalanche_c
+      sector: fungible
+      contributors: hildobby
+    config:
+      tags: ['fungible', 'avalanche_c', 'transfers']
+    description: >
+        Native and ERC20 transfers
+    columns:
+      - name: blockchain
+        description: "Blockchain"
+      - name: block_time
+        description: "UTC event block time"
+      - name: block_number
+        description: "Block number in which the transaction was executed"
+      - name: amount_raw
+        description: "Raw amount"
+      - name: amount
+        description: "Amount"
+      - name: usd_price
+        description: "Price in USD"
+      - name: usd_amount
+        description: "Amount in USD"
+      - name: contract_address
+        description: "Fungible contract address"
+      - name: symbol
+        description: "Symbol of fungible token"
+      - name: decimals
+        description: "The number of decimals of the fungible token"
+      - name: token_standard
+        tests:
+          - accepted_values:
+              values: ['native', 'erc20']
+        description: "Token standard"
+      - name: tx_from
+        description: "Address that initiated the transaction"
+      - name: from
+        description: "Address that sent the token(s)"
+      - name: to
+        description: "Address that received the token(s)"
+      - name: tx_hash
+        description: "Transaction hash"
+      - name: evt_index
+        description: "Event index"
+
+  - name: fungible_bnb_transfers
+    meta:
+      blockchain: bnb
+      sector: fungible
+      contributors: hildobby
+    config:
+      tags: ['fungible', 'bnb', 'transfers']
+    description: >
+        Native and ERC20 transfers
+    columns:
+      - name: blockchain
+        description: "Blockchain"
+      - name: block_time
+        description: "UTC event block time"
+      - name: block_number
+        description: "Block number in which the transaction was executed"
+      - name: amount_raw
+        description: "Raw amount"
+      - name: amount
+        description: "Amount"
+      - name: usd_price
+        description: "Price in USD"
+      - name: usd_amount
+        description: "Amount in USD"
+      - name: contract_address
+        description: "Fungible contract address"
+      - name: symbol
+        description: "Symbol of fungible token"
+      - name: decimals
+        description: "The number of decimals of the fungible token"
+      - name: token_standard
+        tests:
+          - accepted_values:
+              values: ['native', 'bep20']
+        description: "Token standard"
+      - name: tx_from
+        description: "Address that initiated the transaction"
+      - name: from
+        description: "Address that sent the token(s)"
+      - name: to
+        description: "Address that received the token(s)"
+      - name: tx_hash
+        description: "Transaction hash"
+      - name: evt_index
+        description: "Event index"
+
+  - name: fungible_ethereum_transfers
+    meta:
+      blockchain: ethereum
+      sector: fungible
+      contributors: hildobby
+    config:
+      tags: ['fungible', 'ethereum', 'transfers']
+    description: >
+        Native and ERC20 transfers
+    columns:
+      - name: blockchain
+        description: "Blockchain"
+      - name: block_time
+        description: "UTC event block time"
+      - name: block_number
+        description: "Block number in which the transaction was executed"
+      - name: amount_raw
+        description: "Raw amount"
+      - name: amount
+        description: "Amount"
+      - name: usd_price
+        description: "Price in USD"
+      - name: usd_amount
+        description: "Amount in USD"
+      - name: contract_address
+        description: "Fungible contract address"
+      - name: symbol
+        description: "Symbol of fungible token"
+      - name: decimals
+        description: "The number of decimals of the fungible token"
+      - name: token_standard
+        tests:
+          - accepted_values:
+              values: ['native', 'erc20']
+        description: "Token standard"
+      - name: tx_from
+        description: "Address that initiated the transaction"
+      - name: from
+        description: "Address that sent the token(s)"
+      - name: to
+        description: "Address that received the token(s)"
+      - name: tx_hash
+        description: "Transaction hash"
+      - name: evt_index
+        description: "Event index"
+
+  - name: fungible_fantom_transfers
+    meta:
+      blockchain: fantom
+      sector: fungible
+      contributors: hildobby
+    config:
+      tags: ['fungible', 'fantom', 'transfers']
+    description: >
+        Native and ERC20 transfers
+    columns:
+      - name: blockchain
+        description: "Blockchain"
+      - name: block_time
+        description: "UTC event block time"
+      - name: block_number
+        description: "Block number in which the transaction was executed"
+      - name: amount_raw
+        description: "Raw amount"
+      - name: amount
+        description: "Amount"
+      - name: usd_price
+        description: "Price in USD"
+      - name: usd_amount
+        description: "Amount in USD"
+      - name: contract_address
+        description: "Fungible contract address"
+      - name: symbol
+        description: "Symbol of fungible token"
+      - name: decimals
+        description: "The number of decimals of the fungible token"
+      - name: token_standard
+        tests:
+          - accepted_values:
+              values: ['native', 'erc20']
+        description: "Token standard"
+      - name: tx_from
+        description: "Address that initiated the transaction"
+      - name: from
+        description: "Address that sent the token(s)"
+      - name: to
+        description: "Address that received the token(s)"
+      - name: tx_hash
+        description: "Transaction hash"
+      - name: evt_index
+        description: "Event index"
+
+  - name: fungible_gnosis_transfers
+    meta:
+      blockchain: gnosis
+      sector: fungible
+      contributors: hildobby
+    config:
+      tags: ['fungible', 'gnosis', 'transfers']
+    description: >
+        Native and ERC20 transfers
+    columns:
+      - name: blockchain
+        description: "Blockchain"
+      - name: block_time
+        description: "UTC event block time"
+      - name: block_number
+        description: "Block number in which the transaction was executed"
+      - name: amount_raw
+        description: "Raw amount"
+      - name: amount
+        description: "Amount"
+      - name: usd_price
+        description: "Price in USD"
+      - name: usd_amount
+        description: "Amount in USD"
+      - name: contract_address
+        description: "Fungible contract address"
+      - name: symbol
+        description: "Symbol of fungible token"
+      - name: decimals
+        description: "The number of decimals of the fungible token"
+      - name: token_standard
+        tests:
+          - accepted_values:
+              values: ['native', 'erc20']
+        description: "Token standard"
+      - name: tx_from
+        description: "Address that initiated the transaction"
+      - name: from
+        description: "Address that sent the token(s)"
+      - name: to
+        description: "Address that received the token(s)"
+      - name: tx_hash
+        description: "Transaction hash"
+      - name: evt_index
+        description: "Event index"
+
+  - name: fungible_optimism_transfers
+    meta:
+      blockchain: optimism
+      sector: fungible
+      contributors: hildobby
+    config:
+      tags: ['fungible', 'optimism', 'transfers']
+    description: >
+        Native and ERC20 transfers
+    columns:
+      - name: blockchain
+        description: "Blockchain"
+      - name: block_time
+        description: "UTC event block time"
+      - name: block_number
+        description: "Block number in which the transaction was executed"
+      - name: amount_raw
+        description: "Raw amount"
+      - name: amount
+        description: "Amount"
+      - name: usd_price
+        description: "Price in USD"
+      - name: usd_amount
+        description: "Amount in USD"
+      - name: contract_address
+        description: "Fungible contract address"
+      - name: symbol
+        description: "Symbol of fungible token"
+      - name: decimals
+        description: "The number of decimals of the fungible token"
+      - name: token_standard
+        tests:
+          - accepted_values:
+              values: ['native', 'erc20']
+        description: "Token standard"
+      - name: tx_from
+        description: "Address that initiated the transaction"
+      - name: from
+        description: "Address that sent the token(s)"
+      - name: to
+        description: "Address that received the token(s)"
+      - name: tx_hash
+        description: "Transaction hash"
+      - name: evt_index
+        description: "Event index"
+
+  - name: fungible_polygon_transfers
+    meta:
+      blockchain: polygon
+      sector: fungible
+      contributors: hildobby
+    config:
+      tags: ['fungible', 'polygon', 'transfers']
+    description: >
+        Native and ERC20 transfers
+    columns:
+      - name: blockchain
+        description: "Blockchain"
+      - name: block_time
+        description: "UTC event block time"
+      - name: block_number
+        description: "Block number in which the transaction was executed"
+      - name: amount_raw
+        description: "Raw amount"
+      - name: amount
+        description: "Amount"
+      - name: usd_price
+        description: "Price in USD"
+      - name: usd_amount
+        description: "Amount in USD"
+      - name: contract_address
+        description: "Fungible contract address"
+      - name: symbol
+        description: "Symbol of fungible token"
+      - name: decimals
+        description: "The number of decimals of the fungible token"
+      - name: token_standard
+        tests:
+          - accepted_values:
+              values: ['native', 'erc20']
+        description: "Token standard"
+      - name: tx_from
+        description: "Address that initiated the transaction"
+      - name: from
+        description: "Address that sent the token(s)"
+      - name: to
+        description: "Address that received the token(s)"
+      - name: tx_hash
+        description: "Transaction hash"
+      - name: evt_index
+        description: "Event index"
