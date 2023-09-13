@@ -10,6 +10,8 @@
      ,native_token_symbol = 'ETH'
      ,start_date = '2023-02-01'
      ,seaport_fork_address = '0x00000000006c3852cbef3e08e8df289169ede581'
+     ,project = 'seaport_fork'
+     ,version = 'seaport'
 ) %}
 --This macro is a copy of seaport_v3_trades with support for a different contract address
 
@@ -640,8 +642,8 @@ with source_ethereum_transactions as (
 select
         -- basic info
          '{{blockchain}}' as blockchain
-        ,'opensea' as project
-        ,'v3' as version
+        ,'{{project}}' as project
+        ,'{{version}}' as version
 
         -- order info
         ,block_date
