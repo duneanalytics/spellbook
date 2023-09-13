@@ -58,6 +58,6 @@ hours d
 LEFT JOIN 
 {{ source('prices', 'usd') }} p
     ON p.contract_address = b.token_address
-    AND d.lock_hour = p.minute
+    AND d.block_hour = p.minute
     AND p.blockchain = 'bnb'
 
